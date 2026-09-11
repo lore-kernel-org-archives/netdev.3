@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6732937A827
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 17:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3F933F5A9
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 17:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789146796; cv=none; b=hulLZlZO6R1q3izB6h5DtamgGiQ4fIaWbK+K1v2JZp58nvQCK2hPSYTUAiAqRemj8rv6XqsEmQvXhl7IV1uhEKmRWZgSSdkLoGjoK1BZLFcJeTGfLtqi9i2X2/t4vXWhVOvvQXKRdb6UvZnfJResNEURarov2KjrKLNKbadkfVQ=
+	t=1789146797; cv=none; b=GrMfAP7Z5E7Cj0DfV5z3KJPXzK7AglHkoNlMrDNhMtoR4Q22y8n3ceLzCKZehugdMhImF+PGzyDERBey2RZt+8ayvcD94RbAUn+W6ves0iC4O2YQk/CaU8RlBOxYZb+PMemILWbtkRlFfQhmXQ/aWpnJLJaFmobpoEQKzPAvMxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789146796; c=relaxed/simple;
-	bh=my0hsYE8//1YF39GTIu70NX8+hmZ+O4hxbCBCqpMuXk=;
+	s=arc-20240116; t=1789146797; c=relaxed/simple;
+	bh=G6WMmvNBQJKLqE+l7pWsN0Q7fo+Sq2RvtlY2C9SANnQ=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=s5o4PXiJAdE0WTti9CWX3k4D4oqC2bZkLAUgg9Xs4OvSgFckWs+dXUlsEKRCiPQfDTHD1weORfuqaorsmIoCO4/QWXcRBJ10PYeHIHvBY85JIyElWWucuO7Pk0dOLi0e3pd1+CIxlvFtj9DdEaTvBOPiYsuHgVybAt6ZZZoIAYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ccvB0z1d; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=TCqBcdQruBV6XklhCzgNF4AJsDDKIRufEhVKdWyG/SVOnu7rBT/CQ3EMphlkyUJPsL/vDveu4HBtq7nzHWtN1JBYosxAHA1GP6MAPoWpIyYCJPR8/jZqSDNMoyPs8D5Qcns7VqIE2hP6vkKRQmG+7TbBYkk/XS86PSzjU84hzAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kh3aAe3w; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ccvB0z1d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 881C91F000FF;
-	Fri, 11 Sep 2026 17:13:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kh3aAe3w"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB87E1F00893;
+	Fri, 11 Sep 2026 17:13:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789146795;
-	bh=hTLrAFl4VygQLbuB2SNPhNOGsqjGYBa8jLFGm8VfMEU=;
+	s=k20260515; t=1789146796;
+	bh=+/Y1vhtrRWmmzBNn9QMZFRJ/eb2RySk5VRrzrxK2isM=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ccvB0z1dnfXbsCZghxwsugRZZfs1WrfOpNCu8Vfcs7R1FIwk0sTBzEf7bzM6jI8rc
-	 D9Q+sWLqkkOhwBtKXmVkvXaLA1tgNYYmt5YNkUxA3PTDYo0MFHckm/VoCxzdno9qWv
-	 oU+BIiCG65Q1/sE5IloD+3cZ2llOVVk02wGlPXjDAMEnrPKxYnuPoCjryJKgffFMqJ
-	 H3AvPj4w50FXfoUui27lwK2jvwQCVdB8musdhOlzrSs7dpTDVD5nfZya3czMVpXw1M
-	 N1RQVKJlwiqSNOICOnz7VT7tqcNMwavgDU8PW3uzLKNxE2CdOzfuCjMeXTW3vLo13k
-	 F1T9ylat8+KPg==
-Subject: Re: [PATCH net-next v9 1/7] net: rtnetlink: add pacing_offload
- attribute to net_device
+	b=kh3aAe3wwYPnBLmnUhg5uhs5v/VmXU93FvesvsWSgHqm1PsMehXGXq5wJTYOMENew
+	 gaecQvd9Wzh5msSInPJeZKm2b3hWWErTYfPShsrkM8QQRfCRRhGn8xHSUQ3rOl+m2L
+	 zpbD6oRoPgln5uhF21cOTZwLvT80Dm2HjaFrfhzTpy3K1ZvsFCy+G3l5nhJpLjsfbZ
+	 cm5fKtuJtirAjOsMoW0wONIw1r5I55dypVi5EDegq6YMp1ewjQ6h7Ub/gbgkC/OUOt
+	 x6eKWj3A6L44fPlRtIJDyDl/Uws+CCCKs0GrRV7oDuso0Rp3VSQ/a3os6p5I0Dl9JY
+	 OiO6duoyvJz9g==
+Subject:
+ Re: [PATCH net-next v9 2/7] net_sched: sch_fq: check device pacing offload
 From: netdev-bot+sashiko@kernel.org
 To: willemdebruijn.kernel@gmail.com
 Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
  edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
  andrew+netdev@lunn.ch, willemb@google.com
-Date: Fri, 11 Sep 2026 17:13:14 +0000
-Message-ID: <178914679401.219967.11906428098360110344@kernel.org>
-In-Reply-To: <20260910171131.2532487-2-willemdebruijn.kernel@gmail.com>
-References: <20260910171131.2532487-2-willemdebruijn.kernel@gmail.com>
+Date: Fri, 11 Sep 2026 17:13:15 +0000
+Message-ID: <178914679525.219967.9347882764408033378@kernel.org>
+In-Reply-To: <20260910171131.2532487-3-willemdebruijn.kernel@gmail.com>
+References: <20260910171131.2532487-3-willemdebruijn.kernel@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -47,189 +47,233 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1 (1)
+Critical: 0 · High: 0 · Medium: 2 · Low: 2
 
-- [Medium] `pacing_offload:1` is added as the first *runtime-mutable* bit
-  of the `struct_group(priv_flags_fast, ...)` bitfield word in struct…
-- [Low] Concern (verified as NOT a defect): dev->pacing_offload /
-  IFLA_PACING_OFFLOAD is claimed to have no in-tree consumer at this…
-
-Pre-existing issues:
-- [Low] Pre-existing YAML spec gap adjacent to the change: the shared
-  getlink do/dump reply list (`&link-all-attrs`,…
+- [Medium] New, undocumented netlink rejection in fq_change(): `tc qdisc
+  {add,replace,change} ... fq offload_horizon N` with N != 0 now returns…
+- [Medium] Configured vs. effective offload horizon are now inconsistent
+  across the three FQ interfaces.
+- [Low] The patch introduces a per-packet TX fast-path read of
+  `dev->max_pacing_offload_horizon` (fq_offload_horizon(),…
+- [Low] fq_offload_horizon() reads `dev->pacing_offload` as a plain,
+  unannotated load from the qdisc data path (net/sched/sch_fq.c:315,…
 
 --
 
-net: rtnetlink: add pacing_offload attribute to net_device
+net_sched: sch_fq: check device pacing offload
 
-This adds a new IFLA_PACING_OFFLOAD link attribute plus a matching
-pacing_offload:1 bitfield in struct net_device, so pacing offload can be
-turned on and off administratively.  It also marks
-IFLA_MAX_PACING_OFFLOAD_HORIZON as NLA_REJECT and documents the new
-attribute in the rt-link YAML spec.
+FQ now consults the device's pacing offload state before applying the
+configured offload horizon, via a new fq_offload_horizon() helper that is
+evaluated once per packet in fq_classify() and fq_dequeue().  The helper
+returns 0 when the device flag is clear or when the configured horizon
+exceeds the device maximum, and fq_change() gains a new rejection when a
+non-zero horizon is requested on a device with pacing offload disabled.
 
 A few questions below.
 
-> diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netlink/specs/rt-link.yaml
-> index 5217d0bb4a3a5..7a72cd1b7e1ee 100644
-> --- a/Documentation/netlink/specs/rt-link.yaml
-> +++ b/Documentation/netlink/specs/rt-link.yaml
-> @@ -1091,6 +1091,10 @@ attribute-sets:
->        -
->          name: tailroom
->          type: u16
-> +      -
-> +        name: pacing-offload
-> +        type: u32
-> +        doc: Enable EDT pacing offload (0 - disabled, 1 - enabled).
->    -
->      name: prop-list-link-attrs
->      subset-of: link-attrs
-> @@ -2559,6 +2563,7 @@ operations:
->              - devlink-port
->              - gso-ipv4-max-size
->              - gro-ipv4-max-size
-> +            - pacing-offload
+> diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
+> index 35f940b2205df..dfc7f98b600f8 100644
+> --- a/net/sched/sch_fq.c
+> +++ b/net/sched/sch_fq.c
+> @@ -301,6 +301,26 @@ static void fq_gc(struct fq_sched_data *q,
+>  	q->stat_gc_flows += fcnt;
+>  }
+>  
+> +static u64 fq_offload_horizon(const struct Qdisc *sch,
+> +			      const struct fq_sched_data *q)
+> +{
+> +	const struct net_device *dev;
+> +	u64 offload_horizon;
+> +
+> +	offload_horizon = READ_ONCE(q->offload_horizon);
+> +	if (!offload_horizon)
+> +		return 0;
+> +
+> +	dev = qdisc_dev(sch);
+> +	if (!dev->pacing_offload)
+> +		return 0;
 
 [Severity: Low]
-This isn't something introduced by this patch, but while the shared
-getlink reply list (&link-all-attrs) is being extended here, should
-max-pacing-offload-horizon be added as well?
+Is this read of dev->pacing_offload racy?
 
-rtnl_fill_ifinfo() emits it unconditionally in the same nla_put chain as
-the new attribute:
+The two neighbouring loads in this same helper use READ_ONCE(), but
+pacing_offload is read plainly here.  It is a 1-bit bitfield inside
+struct_group(priv_flags_fast) in struct net_device, and the sibling
+rtnetlink change makes it runtime-writable:
 
-	    nla_put_uint(skb, IFLA_MAX_PACING_OFFLOAD_HORIZON,
-			 READ_ONCE(dev->max_pacing_offload_horizon)) ||
-
-The same holds for netns-immutable, headroom and tailroom, which are also
-always emitted but not listed in the reply set.
-
-The commit message advertises reading the horizon with
-
-    ynl --family rt-link --do getlink ... | grep pacing
-
-which works, because the Python decoder resolves reply members from
-attribute-set: link-attrs, but consumers generated from the per-operation
-reply list would not see these members.
-
-> diff --git a/Documentation/networking/net_cachelines/net_device.rst b/Documentation/networking/net_cachelines/net_device.rst
-> index 512f6d6fa3d8f..8eceaa80b6860 100644
-> --- a/Documentation/networking/net_cachelines/net_device.rst
-> +++ b/Documentation/networking/net_cachelines/net_device.rst
-> @@ -11,6 +11,7 @@ Type                                Name                        fastpath_tx_acce
->  unsigned_long:32                    priv_flags                  read_mostly                             __dev_queue_xmit(tx)
->  unsigned_long:1                     lltx                        read_mostly                             HARD_TX_LOCK,HARD_TX_TRYLOCK,HARD_TX_UNLOCK(tx)
->  unsigned_long:2                     netmem_tx:2;                read_mostly
-> +unsigned_long:1                     pacing_offload              read_mostly                             sch_fq
->  char                                name[16]
->  struct netdev_name_node*            name_node
->  struct dev_ifalias*                 ifalias
-> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-> index 707b2e51c2b97..1f0710eef185b 100644
-> --- a/include/linux/netdevice.h
-> +++ b/include/linux/netdevice.h
-
-[ ... ]
-
-> @@ -2170,6 +2171,7 @@ struct net_device {
->  		unsigned long		priv_flags:32;
->  		unsigned long		lltx:1;
->  		unsigned long		netmem_tx:2;
-> +		unsigned long		pacing_offload:1;
->  	);
-
-[Severity: Medium]
-This puts the first runtime-mutable bit into the priv_flags_fast group.  On
-64-bit, priv_flags, lltx, netmem_tx and pacing_offload all live in one
-unsigned long, and adjacent bitfields are a single memory location, so a
-store to one of them is a read-modify-write of the others.
-
-do_setlink() writes the new bit under RTNL only:
+net/core/rtnetlink.c:do_setlink() {
+	if (tb[IFLA_PACING_OFFLOAD]) {
+		bool val = nla_get_u32(tb[IFLA_PACING_OFFLOAD]);
 
 		if (dev->pacing_offload != val) {
 			dev->pacing_offload = val;
+	...
+}
 
-but priv_flags in the same word is modified from softirq context with no
-RTNL held, in net/ncsi/ncsi-rsp.c:
+The writer holds only RTNL, while this reader runs from fq_classify() and
+fq_dequeue() under the qdisc root lock, so the two sides share no lock and
+both accesses are plain.  Would KCSAN flag this?
 
-	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
+Because it is a bitfield, READ_ONCE()/WRITE_ONCE() cannot be applied to it.
+Would a dedicated non-bitfield member (or bitops on a separate unsigned
+long), or at minimum data_race() on this read, be preferable?
 
-That appears in ncsi_rsp_handler_oem_bcm() and ncsi_rsp_handler_gmcma(),
-both reached from ncsi_rcv_rsp(), which is a packet_type receive handler.
+Separately, storing a single bit is a read-modify-write of the whole
+declared unsigned long storage unit, which also holds priv_flags:32,
+lltx:1 and netmem_tx:2 - fields read locklessly on the TX path.  Which
+lock is intended to serialize RMWs of that word now that one of its bits
+changes at runtime?  I did not find a non-RTNL writer of the neighbouring
+bits, so this part is speculative.
 
-Can these two read-modify-writes lose each other's update, so that either
-IFF_LIVE_ADDR_CHANGE is silently dropped, or pacing_offload reads back 0
-after do_setlink() already set DO_SETLINK_MODIFIED and sent a notification?
-
-A second point on the same field: a 1-bit bitfield cannot be accessed with
-READ_ONCE()/WRITE_ONCE(), yet the net_cachelines row added above documents
-pacing_offload as a read_mostly field consumed lockless by sch_fq.  Every
-neighbouring netdev field in these paths is accessed with
-READ_ONCE()/WRITE_ONCE(), including max_pacing_offload_horizon right next
-to it.
-
-Would a plain bool/u8, or a dedicated unsigned long used with
-set_bit()/test_bit(), work here instead?  That would make the update
-independent of the neighbouring bits and allow marked lockless reads.
-
-> diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-> index be9d1625bac31..e3444fd240615 100644
-> --- a/net/core/rtnetlink.c
-> +++ b/net/core/rtnetlink.c
-
-[ ... ]
-
-> @@ -2176,6 +2177,8 @@ static int rtnl_fill_ifinfo(struct sk_buff *skb,
->  			READ_ONCE(dev->tso_max_segs)) ||
->  	    nla_put_uint(skb, IFLA_MAX_PACING_OFFLOAD_HORIZON,
->  			 READ_ONCE(dev->max_pacing_offload_horizon)) ||
-> +	    nla_put_u32(skb, IFLA_PACING_OFFLOAD,
-> +			dev->pacing_offload) ||
->  #ifdef CONFIG_RPS
->  	    nla_put_u32(skb, IFLA_NUM_RX_QUEUES,
->  			READ_ONCE(dev->num_rx_queues)) ||
-
-[ ... ]
-
-> @@ -3342,6 +3355,15 @@ static int do_setlink(const struct sk_buff *skb, struct net_device *dev,
->  		}
->  	}
->  
-> +	if (tb[IFLA_PACING_OFFLOAD]) {
-> +		bool val = nla_get_u32(tb[IFLA_PACING_OFFLOAD]);
 > +
-> +		if (dev->pacing_offload != val) {
-> +			dev->pacing_offload = val;
-> +			status |= DO_SETLINK_MODIFIED;
-> +		}
-> +	}
+> +	if (offload_horizon > READ_ONCE(dev->max_pacing_offload_horizon))
+> +		return 0;
 > +
->  	if (tb[IFLA_OPERSTATE])
->  		set_operstate(dev, nla_get_u8(tb[IFLA_OPERSTATE]));
+> +	return offload_horizon;
+> +}
+> +
 
 [Severity: Low]
-This isn't a bug, just a note on reading the patch in isolation: at this
-commit do_setlink() is the only place that touches dev->pacing_offload, so
-the new knob has no reader, and the net_cachelines row that names sch_fq as
-the consumer has nothing to point at yet.
+Should Documentation/networking/net_cachelines/net_device.rst be updated
+here?
 
-Checking the rest of the series shows the consumers arrive right after:
-fq_offload_horizon() in net/sched/sch_fq.c returns 0 when
-!dev->pacing_offload and is called from fq_classify() and fq_dequeue(),
-fq_change() rejects TCA_FQ_OFFLOAD_HORIZON with "device pacing offload is
-disabled", and idpf adds both the first advertiser of
-max_pacing_offload_horizon and the
+This adds a per-packet TX read of dev->max_pacing_offload_horizon, but the
+row for that field in net_device.rst still has empty fastpath_tx_access and
+Comments columns.  The companion bit added by the preceding patch in the
+series was annotated:
 
-	if (!tx_q->netdev->pacing_offload)
-		return;
+  unsigned_long:1        pacing_offload    read_mostly    ...    sch_fq
 
-check in its TX path.  So the annotation and the setlink example do become
-accurate once the whole series is applied, and the commit message already
-says no driver advertises max_pacing_offload_horizon yet.
+struct net_device also carries a comment asking for the document to be kept
+in sync ("Please update the document when adding new fields").
+
+max_pacing_offload_horizon still lives in the cold region of struct
+net_device next to irq_moder/napi_config, outside the net_device_read_tx
+cacheline group, so for qdiscs that configured an offload horizon the TX
+path now touches an extra otherwise-cold cache line per enqueue and per
+dequeue.  Was that placement considered?
+
+>  /* Fast path can be used if :
+>   * 1) Packet tstamp is in the past, or within the pacing offload horizon.
+>   * 2) FQ qlen == 0   OR
+
+[ ... ]
+
+> @@ -357,6 +377,7 @@ static struct fq_flow *fq_classify(struct Qdisc *sch, struct sk_buff *skb,
+>  				   u64 now)
+>  {
+>  	struct fq_sched_data *q = qdisc_priv(sch);
+> +	u64 offload_horizon = fq_offload_horizon(sch, q);
+>  	struct rb_node **p, *parent;
+>  	struct sock *sk = skb->sk;
+>  	struct rb_root *root;
+
+[ ... ]
+
+> @@ -705,6 +728,7 @@ static struct fq_flow_head *fq_pband_head_select(struct fq_perband_flows *pband)
+>  static struct sk_buff *fq_dequeue(struct Qdisc *sch)
+>  {
+>  	struct fq_sched_data *q = qdisc_priv(sch);
+> +	u64 offload_horizon = fq_offload_horizon(sch, q);
+>  	struct fq_perband_flows *pband;
+>  	struct fq_flow_head *head;
+>  	struct sk_buff *skb;
+
+[ ... ]
+
+> @@ -1179,11 +1204,15 @@ static int fq_change(struct Qdisc *sch, struct nlattr *opt,
+>  		u64 offload_horizon = (u64)NSEC_PER_USEC *
+>  				      nla_get_u32(tb[TCA_FQ_OFFLOAD_HORIZON]);
+>  
+> -		if (offload_horizon <= qdisc_dev(sch)->max_pacing_offload_horizon) {
+> -			WRITE_ONCE(q->offload_horizon, offload_horizon);
+> -		} else {
+> +		if (offload_horizon && !qdisc_dev(sch)->pacing_offload) {
+> +			NL_SET_ERR_MSG_MOD(extack, "device pacing offload is disabled");
+> +			err = -EINVAL;
+
+[Severity: Medium]
+Is this new configuration-time rejection intended, and should the commit
+message mention it?
+
+The changelog only describes runtime behaviour:
+
+    In FQ, only offload if the feature is enabled and within the supported
+    device horizon.
+
+but this hunk also makes
+
+  tc qdisc replace dev X root fq offload_horizon 500us
+
+return -EINVAL whenever qdisc_dev(sch)->pacing_offload is 0.  Before the
+patch the only gate was offload_horizon <= max_pacing_offload_horizon.
+Since the only setter of that bit is do_setlink() via IFLA_PACING_OFFLOAD,
+does this create an ordering dependency where the link attribute must be
+enabled before the qdisc can be configured?
+
+The new fq_offload_horizon() already degrades to 0 when the device flag is
+clear, so the datapath is safe without the hard rejection:
+
+	dev = qdisc_dev(sch);
+	if (!dev->pacing_offload)
+		return 0;
+
+Would accepting the value (and letting it stay inert until the device flag
+is enabled) be preferable to failing the command?
+
+> +		} else if (offload_horizon >
+> +			   qdisc_dev(sch)->max_pacing_offload_horizon) {
+>  			NL_SET_ERR_MSG_MOD(extack, "invalid offload_horizon");
+>  			err = -EINVAL;
+> +		} else {
+> +			WRITE_ONCE(q->offload_horizon, offload_horizon);
+>  		}
+>  	}
+>  	if (!err) {
+
+[Severity: Medium]
+Does this make the value reported by fq_dump() inaccurate and no longer
+re-appliable?
+
+fq_dump() is untouched and still reports the raw stored value:
+
+	offload_horizon = READ_ONCE(q->offload_horizon);
+	do_div(offload_horizon, NSEC_PER_USEC);
+	...
+	    nla_put_u32(skb, TCA_FQ_OFFLOAD_HORIZON, (u32)offload_horizon) ||
+
+Consider:
+
+  ip link set dev X pacing_offload on
+  tc qdisc replace dev X root fq offload_horizon 500us   /* stored */
+  ip link set dev X pacing_offload off                   /* do_setlink() */
+
+Nothing clears q->offload_horizon, so fq_offload_horizon() returns 0 and
+the datapath does pure software pacing while tc qdisc show still prints
+offload_horizon 500us.  Replaying that same dump then hits the new -EINVAL
+above, where it previously succeeded.
+
+The same silent divergence appears when a device lowers
+max_pacing_offload_horizon on re-init, for example
+idpf_vport_set_pacing_offload() doing
+WRITE_ONCE(netdev->max_pacing_offload_horizon, max_horizon) with
+max_horizon possibly 0 - the "device renegotiation" case named in the
+changelog.
+
+The uAPI comment also still promises unconditional behaviour:
+
+include/uapi/linux/pkt_sched.h:
+	TCA_FQ_OFFLOAD_HORIZON,	/* dequeue packets in the past, if within horizon */
+
+Should fq_dump() report the effective horizon, or should the comment note
+the dependency on device administrative state?
+
+One smaller inconsistency: fq_offload_horizon() uses READ_ONCE() for
+dev->max_pacing_offload_horizon while fq_change() reads the same field, and
+pacing_offload, plainly.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260910171131.2532487-1-willemdebruijn.kernel%40gmail.com
