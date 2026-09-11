@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C83F858E2DA
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 20:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D736E598BEF
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 20:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789157479; cv=none; b=q+ERNVYxe7JSlzw+qIyq/2omlu6NnjZ2AlwpWRhzbnrwK3QRmD6d9n37nVIIKgGbY/PGiVOtpxqYfTIDrN2gCuqsb6TiERxof8m5oulg2OPXz8jjtw+ecNa9X+SFQIxt5SduYu4mZss9Xg3i510OOfVVUcBV59+qJcvPcKolEYg=
+	t=1789157480; cv=none; b=pjOLlw7vYypx6SwDp1c44BcdZFSW23Ba3gldZmEu/khMluLRhyIpbezjmi3l9RwCTDUKiSHRTevuBb3OW0ieMwcWsnk92QBwVnO777b486bkQkyhwAupglr0TPAx/KQU5fNvtDTlPHUIZ2LNTitcl0E6c6XT7NO2Pl7618EMiv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789157479; c=relaxed/simple;
-	bh=bEj6LRHH/iYBAItO5ClIVGe9flUu9CcILYvzjdrAmPk=;
+	s=arc-20240116; t=1789157480; c=relaxed/simple;
+	bh=BS0Za6dhK9t8gONJ6/AZ2yHnOWi2NkzHx3T0TOaWvQc=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=G4r2hFv3/ZT7wq0YcOKiYxvgNJeEKXUXrlytA3cJQ+sMx6XyLembdBkzso9PqMI9dnM3OqJzQQXa8TaqWX4nytJwQDKWKk158hlgKWWs4csw4fVjNvxebniINk5SZgFTlpPbRsWAdoGSOETT/GO8SgoVw1dw/jGngCNWVQpECvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=flbYajC4; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=s+a2GNjap2LmZbxh4Kh0CaATCwQOP2854Yd56qObYqQTbVG5NjoUoeZdPGUm3/XKeBKXomttkdTZyqETF1BUzoIwi2IzzqcwN8sjeesr0kvzMN+UjzRMPiNxGt1iKRKVQIH3thMO0PbKmYzFAs+AXBqQnRL8NXU3DJBc9HmiP/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=alYqsp+W; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="flbYajC4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E14931F000FF;
-	Fri, 11 Sep 2026 20:11:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="alYqsp+W"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA6C1F00893;
+	Fri, 11 Sep 2026 20:11:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789157477;
-	bh=7z4m9dwWKRpuOxjsIiyqwaDadFI1Xk2Qxcgzy+rxtGs=;
+	s=k20260515; t=1789157478;
+	bh=0eLBy84tnDMTfKR+D3gCCvICKuwCQomApAcY8GjoEnc=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=flbYajC42vzY53+Oz7QF7H82IYzpMwLrlzxPcI8OaTpmXelLeNoxNiF5/0TYlea6u
-	 r2vXEOxAQvBiD4mVSspJ80SMvVMFyf7RHBX2ACDMFtfIgYSoZFQ8+WBbSAOtJC4j6O
-	 dSd0sM1SIl4M2YTr4cEW+IIqlGghr3HINdQbfiVOffHltR1OL0+STWc0F9W9qfROh3
-	 lZcVLLkAa5ekFfof6FjaPQhDwgvrA/wxcc6mEqxmwnRoqgE+fFm6VC3+AI9VXeXt7U
-	 p5Eyv3k0vdNr+cobn+G/Ibzd9Gi4J9PhIWRd9nFwbKYSZWvAWHeQznwxHgz1crxwW1
-	 TGbJgo18GBGNw==
-Subject: Re: [PATCH net-next 4/8] netlink: specs: devlink: complete the port
- function nest
+	b=alYqsp+W8FukeO+RjfNL5LSNP3kGCqlf5BBL4bp2NRVIrehDRLoMX2ZpU+nfcz2QQ
+	 EnRna0wgWYLuH6Qk0Ya0rfyyiA7X16bObRPOgtZpShV/szANPWylhYH219ab738T66
+	 vRBiQAutkqH8/S2gneql3gIkdUd3uebCvUZB5pc9C6npSFwUvmQc9g4fgKZmHRR6lX
+	 PKV8HUOugkdCoprU4AsOK62+uRx7Vp4cMdW57qPdLIWZqFY2jNsJQgH59aZSozwS7g
+	 RSCF53K40HlI0UojJvcHGjqKhSgMv5S8iZMvyn6/jHCWWDGiIbPRJkST/LmcZWg4cP
+	 /RhIu2G3R8CNA==
+Subject: Re: [PATCH net-next 6/8] netlink: specs: devlink: populate multi-attr
+ attrs for region read and line card
 From: netdev-bot+sashiko@kernel.org
 To: kuba@kernel.org
 Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
  pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, jiri@resnulli.us,
  tariqt@nvidia.com, moshe@nvidia.com, donald.hunter@gmail.com
-Date: Fri, 11 Sep 2026 20:11:16 +0000
-Message-ID: <178915747642.219967.2565421837062696358@kernel.org>
-In-Reply-To: <20260910200312.2665792-5-kuba@kernel.org>
-References: <20260910200312.2665792-5-kuba@kernel.org>
-X-sashiko-severity: Low
+Date: Fri, 11 Sep 2026 20:11:17 +0000
+Message-ID: <178915747774.219967.6070132870760204550@kernel.org>
+In-Reply-To: <20260910200312.2665792-7-kuba@kernel.org>
+References: <20260910200312.2665792-7-kuba@kernel.org>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,132 +50,85 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 0 · Low: 1 (1)
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-- [Low] The patch fixes a user-visible tooling breakage (any ynl/spec-
-  driven decoder aborts on a devlink port-get do/dump reply with "Space…
-
-Pre-existing issues:
-- [Low] The nest newly referenced by the added `devlink` attribute (`dl-
-  nested-devlink`, subset-of devlink) declares `netns-id` as `type: u32`…
+- [High] The commit message enumerates three repeated attributes that
+  need both `multi-attr: true` and an entry in the operation attribute…
 
 --
 
-netlink: specs: devlink: complete the port function nest
+netlink: specs: devlink: populate multi-attr attrs for region read and line card
 
-The dl-port-function attribute set in the devlink spec stopped at caps,
-while the kernel also emits DEVLINK_PORT_FN_ATTR_DEVLINK and
-DEVLINK_PORT_FN_ATTR_MAX_IO_EQS on port-get do and dump.  The patch adds
-both attributes to the spec and regenerates the netlink policy.
+This adds multi-attr: true to the region-snapshot, region-chunk and
+linecard-type attributes, and adds region-chunks to the region-read reply
+plus the linecard state/type attributes to the linecard-get reply.  The
+stated goal is that all three repeated attributes get both the multi-attr
+property and an entry in the attribute list used by C code generation.
 
 > diff --git a/Documentation/netlink/specs/devlink.yaml b/Documentation/netlink/specs/devlink.yaml
-> index 7ec52f81c3230..962789dfbfacf 100644
+> index f23466fb27f97..9d816a0b7da41 100644
 > --- a/Documentation/netlink/specs/devlink.yaml
 > +++ b/Documentation/netlink/specs/devlink.yaml
-> @@ -992,6 +992,14 @@ attribute-sets:
->          type: bitfield32
->          enum: port-fn-attr-cap
->          enum-as-flags: true
-> +      -
-> +        name: devlink
-> +        type: nest
-> +        nested-attributes: dl-nested-devlink
-> +        doc: Handle of the peer devlink instance instantiated for this function.
-> +      -
-> +        name: max-io-eqs
-> +        type: u32
+> @@ -1264,6 +1264,7 @@ attribute-sets:
+>      attributes:
+>        -
+>          name: region-snapshot
+> +        multi-attr: true
 
-[Severity: Low]
-Two attributes are added here, but the commit message attributes the spec
-gap to a single commit:
+[Severity: High]
+The commit message says that for all three attributes "the attributes
+themselves are missing from the attr list used by C code gen".  For
+region-chunks and the linecard attributes the patch adds them to the
+respective replies, but is the region-snapshots half missing?
 
-  Commit 5af3e3876d56 ("devlink: Support setting max_io_eqs") added the
-  uAPI value and the hand written policy but never touched the spec.
+Grepping the spec, region-snapshots only appears in its own definition in
+the devlink attribute set and as the dl-region-snapshots subset name; no
+operation lists it.  The region-get reply is still:
 
-git blame on enum devlink_port_function_attr in
-include/uapi/linux/devlink.h shows the two values come from different
-commits:
+        reply: &region-get-reply
+          value: 42
+          attributes: *region-id-attrs
 
-  0b7a2721e36c11 (Jiri Pirko   2023-09-13) DEVLINK_PORT_FN_ATTR_DEVLINK,  /* nested */
-  5af3e3876d567f (Parav Pandit 2024-04-06) DEVLINK_PORT_FN_ATTR_MAX_IO_EQS, /* u32 */
+where region-id-attrs is {bus-name, dev-name, index, port-index,
+region-name}.
 
-Should the message also mention 0b7a2721e36c1 as the origin of the
-missing devlink nest attribute?
+Since ynl-gen-c only generates parsing code for attribute sets reachable
+from an operation's attribute list, does the new multi-attr: true on
+region-snapshot have any effect?  The generated region-get reply struct
+would still have no snapshot list.
 
-Since devlink_nl_port_function_attrs_put() emits both attributes on every
-port fill:
+There is also a related gap in what the spec describes: for every
+REGION_GET do and dump message, devlink_nl_region_fill() in
+net/devlink/region.c emits attributes the reply does not declare:
 
-  net/devlink/port.c:devlink_nl_port_function_attrs_put() {
-	err = devlink_port_fn_max_io_eqs_fill(port, msg, extack, &msg_updated);
-	if (err)
-		goto out;
-	err = devlink_rel_devlink_handle_put(msg, port->devlink,
-					     port->rel_index,
-					     DEVLINK_PORT_FN_ATTR_DEVLINK,
-					     &msg_updated);
-  }
+	err = devlink_nl_put_u64(msg, DEVLINK_ATTR_REGION_SIZE, region->size);
+	...
+	err = nla_put_u32(msg, DEVLINK_ATTR_REGION_MAX_SNAPSHOTS, region->max_snapshots);
+	...
+	err = devlink_nl_region_snapshots_id_put(msg, devlink, region);
 
-any spec-driven decoder fails on such a reply.  Would Fixes: tags for both
-commits be appropriate so this gets picked up for the affected stable
-trees?
+and devlink_nl_region_snapshots_id_put() nests one
+DEVLINK_ATTR_REGION_SNAPSHOT per entry of region->snapshot_list:
 
-> diff --git a/net/devlink/netlink_gen.c b/net/devlink/netlink_gen.c
-> index 30f01901b5877..17d1edcdb935e 100644
-> --- a/net/devlink/netlink_gen.c
-> +++ b/net/devlink/netlink_gen.c
-> @@ -46,17 +46,26 @@ devlink_attr_param_type_validate(const struct nlattr *attr,
->  }
+	snapshots_attr = nla_nest_start_noflag(msg, DEVLINK_ATTR_REGION_SNAPSHOTS);
+	...
+	list_for_each_entry(snapshot, &region->snapshot_list, list) {
+		err = devlink_nl_region_snapshot_id_put(msg, devlink, snapshot);
+
+Would it make sense to add region-snapshots (and region-size /
+region-max-snapshots) to the region-get reply, or otherwise to narrow the
+commit message to the two operations the patch actually completes?
+
+Checking the tip of the series (59624e85e9fb), the region-get reply is
+still attributes: *region-id-attrs, so no later patch in the series
+changes this.
+
+> @@ -2045,6 +2048,7 @@ operations:
+>              - index
+>              - port-index
+>              - region-name
+> +            - region-chunks
 >  
->  /* Common nested types */
-> +const struct nla_policy devlink_dl_nested_devlink_nl_policy[DEVLINK_ATTR_INDEX + 1] = {
-> +	[DEVLINK_ATTR_BUS_NAME] = { .type = NLA_NUL_STRING, },
-> +	[DEVLINK_ATTR_DEV_NAME] = { .type = NLA_NUL_STRING, },
-> +	[DEVLINK_ATTR_INDEX] = NLA_POLICY_FULL_RANGE(NLA_UINT, &devlink_attr_index_range),
-> +	[DEVLINK_ATTR_NETNS_ID] = { .type = NLA_U32, },
-> +};
-
-[Severity: Low]
-This is a pre-existing issue and not introduced by this patch, but the new
-devlink attribute points at dl-nested-devlink, which makes the netns-id
-member reachable from the port-function reply, and the spec declares it
-unsigned:
-
-  Documentation/netlink/specs/devlink.yaml:
-      -
-        name: netns-id
-        type: u32
-
-The kernel writes that member as signed, and the value can be the
-negative sentinel:
-
-  net/devlink/netlink.c:devlink_nl_put_nested_handle() {
-	int id = peernet2id_alloc(net, devl_net, GFP_ATOMIC);
-
-	rcu_read_unlock();
-	if (nla_put_s32(msg, DEVLINK_ATTR_NETNS_ID, id))
-		return -EMSGSIZE;
-  }
-
-  net/core/net_namespace.c:peernet2id_alloc() {
-	if (!check_net(net))
-		return NETNSA_NSID_NOT_ASSIGNED;
-  }
-
-So for a peer devlink instance in another namespace whose nsid is not
-assigned, a spec-driven decoder prints 4294967295 instead of -1 and cannot
-recognise the not-assigned sentinel.  Length validation is the same for
-NLA_U32 and NLA_S32, so kernel side behaviour is unaffected.
-
-Documentation/netlink/specs/netdev.yaml declares the equivalent attribute
-as s32:
-
-      -
-        name: netns-id
-        doc: The network namespace id of the netdev.
-        type: s32
-
-Would it make sense to change netns-id in devlink.yaml to s32 (or sint)
-here as well?  It is still type: u32 at the end of this series.
 
 [ ... ]
 
