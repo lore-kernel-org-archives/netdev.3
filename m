@@ -1,51 +1,51 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FEA385D68
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 11:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C96357D0D
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 11:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789126748; cv=none; b=VmD6iocvNRlZ1+p2UNK8whe7FuxSHOfv5mcSKULBIcRmCd8miaomWoIZFQunquGFHLIxJXtDdz3jq8iSFaR1iM4hhnnMcBEk9pZbAzIHGf01NI/Geq+m1UwuOp3NWG3d9hXRLcWj3UXa5L33S9b03yPlC6IiWPjEf/7Z+FRPla0=
+	t=1789126750; cv=none; b=G2J456wfmAwf7FcghgThpnOhdsFxwSrUzKpKej5wPVB+pGpQag9BnxmGHnVuIj8+jH10ep+if57A32oPkluJi3BAugXdwLkI0fTfrJn605PQe8ZAvWT/yz0/AYiXou1NdLKOE9TuEyPoHVSkMRob1b1NLB2KoFsQGrjRTjuL84Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789126748; c=relaxed/simple;
-	bh=yZGMqDQKZVafTUD6mXjzgg/r+vPOzWaA5vBTGT1HiBU=;
+	s=arc-20240116; t=1789126750; c=relaxed/simple;
+	bh=AuaOWD3jGMYAysDk1Aw30zB+BClJT8BRzZUW50HSm5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PMH/D1Kp/LxM9s07nKNtjFmNwUr79TuTUh8RdGlzx/qLfLj3O9zPYW0Lzmekl/Gep550TfWWRfhAS3ijTNbJSoIslKmTyJvNGTbd8SYm21+f5kCQOvluEVXxR5WjcpJ4itQwaG27XRBvgSj97Tld+jo2kKOE3i8Q8w6bBDf7JtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l2xTsta+; arc=none smtp.client-ip=198.175.65.9
+	 MIME-Version; b=Ux6JorCA0ziS1czc6co21P61uQXyEYBG9Afw8pcQ8z4nXGtbLvSRv9FVNQDxush+ysevTyWVzh8oeMBt5jgxn3klGS6S3tymtdZf5p+7YTB08EvpJcMX5VXZ1TTYxPfuqt2dMztmiJi5S8hC6QUzqEetNk/JOEdrlm3LndI3duw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aVj7zqd9; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l2xTsta+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aVj7zqd9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789126746; x=1820662746;
+  t=1789126748; x=1820662748;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=yZGMqDQKZVafTUD6mXjzgg/r+vPOzWaA5vBTGT1HiBU=;
-  b=l2xTsta+t7l3gB42n4YCRpnT5HFZhEACpwc/5eNoqkbYNZR3vQty0Wbl
-   JWSu6RnVW54Aw63ljW36+4f9uzXDW51r4MNX07GvwEVdIXEvafqq1Kz/E
-   zi0nlrz68tR45Zu36eESae3By04Xrg4RRPuSPLZhY+/mtrX1suLtIUtkG
-   2jRWur6TiL1FNhxU5JrvuJNBuZB4STh/ImPcMPnN7GLzi9AArHRWS+lnM
-   vo2uMeh5NMuDwao8CQe6c9iNo+z+OjrLb9il0cdUFYtHTTc29mjB9o1+L
-   Pu1AUxeVTPbcDVwx6bXAS89wKl0SDzsU3rAkApTO7Efyyui9DLD8WyJP7
+  bh=AuaOWD3jGMYAysDk1Aw30zB+BClJT8BRzZUW50HSm5U=;
+  b=aVj7zqd9cIXj7cbpQuHcSTOT8d8GQUphdMrABlOgJrBN3EsZjpKjXYJw
+   R5opt3bWBzvKXbzV59+vraEgxsMS1LNOBQA17yafgaLTssDls1NMf3nIS
+   iD+qJWhEUJQwVKhEt60J5tYKdTzlf+DZ7bhDQ+KgftXkQjJelZl8/HVWW
+   5wmWlkVhtT3CeSALp/Ap3xNNTr/fxcXb0TyL4e9lFhFIdqSsDfzX2zFC0
+   tIOjHuE4ZMFpe8wV5tPTXB4+9EMnTnIXRNjPl+I1oZ01xQZieUE1+Fl3D
+   VdRY7hnHxLAwOOb5M26kXxp6AjqecAoR1MxzMtn7IixWdAAiZlWBYl1OR
    Q==;
-X-CSE-ConnectionGUID: 8RlMHTxFQ9WY9AAMoKUDIA==
-X-CSE-MsgGUID: 0h6GheJVREGdqWBNomMoiA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="112359895"
+X-CSE-ConnectionGUID: wsh+RDjVSXqNpxaCF07ZBw==
+X-CSE-MsgGUID: wFvrX7y8Sqq3p2d5LXnFCA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="112359902"
 X-IronPort-AV: E=Sophos;i="6.27,97,1787036400"; 
-   d="scan'208";a="112359895"
+   d="scan'208";a="112359902"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 04:39:05 -0700
-X-CSE-ConnectionGUID: zAEWc20WTMGT7Sfm8kklEQ==
-X-CSE-MsgGUID: sX7sgY+cR9uAvZdEtPIeSQ==
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 04:39:07 -0700
+X-CSE-ConnectionGUID: 0lrwuez5Rhm/SZ0o0nLzhQ==
+X-CSE-MsgGUID: Qyt2asG6RCmbaOBJYSQfeA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,97,1787036400"; 
-   d="scan'208";a="270135848"
+   d="scan'208";a="270135862"
 Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by orviesa006.jf.intel.com with ESMTP; 11 Sep 2026 04:39:03 -0700
+  by orviesa006.jf.intel.com with ESMTP; 11 Sep 2026 04:39:04 -0700
 Received: from pkitszel-desk.intel.com (unknown [10.245.244.110])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id C2FB42877D;
-	Fri, 11 Sep 2026 12:39:01 +0100 (IST)
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id B6A9728781;
+	Fri, 11 Sep 2026 12:39:02 +0100 (IST)
 From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 To: netdev@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>
@@ -58,9 +58,9 @@ Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
 	pabeni@redhat.com,
 	davem@davemloft.net,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: [PATCH net v3 2/5] ice: extract ice_vsi_new_stat_arrays()
-Date: Fri, 11 Sep 2026 13:26:17 +0200
-Message-ID: <20260911113848.44086-3-przemyslaw.kitszel@intel.com>
+Subject: [PATCH net v3 3/5] ice: extract ice_vsi_get_num_qs()
+Date: Fri, 11 Sep 2026 13:26:18 +0200
+Message-ID: <20260911113848.44086-4-przemyslaw.kitszel@intel.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20260911113848.44086-1-przemyslaw.kitszel@intel.com>
 References: <20260911113848.44086-1-przemyslaw.kitszel@intel.com>
@@ -72,94 +72,189 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Split the allocation of a struct ice_vsi_stats and its two ring stats
-arrays out of ice_vsi_alloc_stat_arrays(), which is left with just the
-lookup and the store into pf->vsi_stats[].
+ice_vsi_set_num_qs() mixed two things: deciding how many queues a VSI
+gets, and applying all the side effects of that decision. Split the
+decision out into ice_vsi_get_num_qs(), returning both counts at once.
 
-The sole caller keeps passing the very same queue counts as before,
-vsi->alloc_txq and vsi->alloc_rxq. A later commit adds a second caller
-in the rebuild path, which cannot use vsi->alloc_* because it has to
-size the arrays before the VSI is reconfigured.
+To make that possible, group alloc_txq and alloc_rxq in struct ice_vsi
+with struct_group_tagged(), which gives the return type without adding
+any new storage. Field order changes slightly, num_txq now follows
+alloc_rxq, but nothing depends on it.
 
-Note that the error path no longer clears pf->vsi_stats[vsi->idx]; the
-early return above guarantees it is already NULL.
+ice_vsi_get_num_qs() takes @held_txq and @held_rxq from the start, even
+though the only caller so far passes zero for both. They let a caller
+ask what the counts would be once the queues the VSI currently owns are
+back in the PF pool. A later commit adds the caller that needs this: the
+rebuild path has to size its ring stats arrays before ice_vsi_decfg()
+releases the queues, yet the arrays must match what ice_vsi_set_num_qs()
+computes afterwards.
 
 No functional change intended.
 Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_lib.c | 47 +++++++++++++-----------
- 1 file changed, 25 insertions(+), 22 deletions(-)
+ drivers/net/ethernet/intel/ice/ice.h     |  6 +-
+ drivers/net/ethernet/intel/ice/ice_lib.c | 86 ++++++++++++++----------
+ 2 files changed, 55 insertions(+), 37 deletions(-)
 
+diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
+index cf1b0ba8dc29..48f4312df4a4 100644
+--- a/drivers/net/ethernet/intel/ice/ice.h
++++ b/drivers/net/ethernet/intel/ice/ice.h
+@@ -403,9 +403,11 @@ struct ice_vsi {
+ 	u8 rx_mapping_mode;		 /* ICE_MAP_MODE_[CONTIG|SCATTER] */
+ 	u16 *txq_map;			 /* index in pf->avail_txqs */
+ 	u16 *rxq_map;			 /* index in pf->avail_rxqs */
+-	u16 alloc_txq;			 /* Allocated Tx queues */
++	struct_group_tagged(ice_vsi_alloc_queues_params, alloc_txq_rxq,
++		u16 alloc_txq;		 /* Allocated Tx queues */
++		u16 alloc_rxq;		 /* Allocated Rx queues */
++	);
+ 	u16 num_txq;			 /* Used Tx queues */
+-	u16 alloc_rxq;			 /* Allocated Rx queues */
+ 	u16 num_rxq;			 /* Used Rx queues */
+ 	u16 req_txq;			 /* User requested Tx queues */
+ 	u16 req_rxq;			 /* User requested Rx queues */
 diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index cd78c5c69a30..9c2863fc696c 100644
+index 9c2863fc696c..998b9eb6e9fe 100644
 --- a/drivers/net/ethernet/intel/ice/ice_lib.c
 +++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -519,6 +519,30 @@ static irqreturn_t ice_msix_clean_rings(int __always_unused irq, void *data)
- 	return IRQ_HANDLED;
+@@ -153,16 +153,56 @@ static void ice_vsi_set_num_desc(struct ice_vsi *vsi)
+ 	}
  }
  
-+static struct ice_vsi_stats *ice_vsi_new_stat_arrays(int txq, int rxq)
-+{
-+	struct ice_ring_stats **tx_ring_stats;
-+	struct ice_ring_stats **rx_ring_stats;
-+	struct ice_vsi_stats *vsi_stat;
-+
-+	vsi_stat = kzalloc_obj(*vsi_stat);
-+	tx_ring_stats = kzalloc_objs(*tx_ring_stats, txq);
-+	rx_ring_stats = kzalloc_objs(*rx_ring_stats, rxq);
-+	if (!vsi_stat || !tx_ring_stats || !rx_ring_stats) {
-+		kfree(vsi_stat);
-+		kfree(tx_ring_stats);
-+		kfree(rx_ring_stats);
-+		return NULL;
-+	}
-+
-+	vsi_stat->tx_ring_stats = tx_ring_stats;
-+	vsi_stat->rx_ring_stats = rx_ring_stats;
-+	vsi_stat->tx_ring_stats_len = txq;
-+	vsi_stat->rx_ring_stats_len = rxq;
-+
-+	return vsi_stat;
+-static u16 ice_get_rxq_count(struct ice_pf *pf)
++static u16 ice_get_rxq_count(struct ice_pf *pf, u16 held)
+ {
+-	return min(ice_get_avail_rxq_count(pf),
+-		   netif_get_num_default_rss_queues());
++	return min_t(u16, ice_get_avail_rxq_count(pf) + held,
++		     netif_get_num_default_rss_queues());
+ }
+ 
+-static u16 ice_get_txq_count(struct ice_pf *pf)
++static u16 ice_get_txq_count(struct ice_pf *pf, u16 held)
+ {
+-	return min(ice_get_avail_txq_count(pf),
+-		   netif_get_num_default_rss_queues());
++	return min_t(u16, ice_get_avail_txq_count(pf) + held,
++		     netif_get_num_default_rss_queues());
 +}
 +
- /**
-  * ice_vsi_alloc_stat_arrays - Allocate statistics arrays
-  * @vsi: VSI pointer
-@@ -537,33 +561,12 @@ static int ice_vsi_alloc_stat_arrays(struct ice_vsi *vsi)
- 	/* realloc will happen in rebuild path */
- 		return 0;
- 
--	vsi_stat = kzalloc_obj(*vsi_stat);
-+	vsi_stat = ice_vsi_new_stat_arrays(vsi->alloc_txq, vsi->alloc_rxq);
- 	if (!vsi_stat)
- 		return -ENOMEM;
- 
--	vsi_stat->tx_ring_stats =
--		kzalloc_objs(*vsi_stat->tx_ring_stats, vsi->alloc_txq);
--	if (!vsi_stat->tx_ring_stats)
--		goto err_alloc_tx;
--	vsi_stat->tx_ring_stats_len = vsi->alloc_txq;
--
--	vsi_stat->rx_ring_stats =
--		kzalloc_objs(*vsi_stat->rx_ring_stats, vsi->alloc_rxq);
--	if (!vsi_stat->rx_ring_stats)
--		goto err_alloc_rx;
--	vsi_stat->rx_ring_stats_len = vsi->alloc_rxq;
--
- 	pf->vsi_stats[vsi->idx] = vsi_stat;
--
- 	return 0;
--
--err_alloc_rx:
--	kfree(vsi_stat->rx_ring_stats);
--err_alloc_tx:
--	kfree(vsi_stat->tx_ring_stats);
--	kfree(vsi_stat);
--	pf->vsi_stats[vsi->idx] = NULL;
--	return -ENOMEM;
++/* @held_txq, @held_rxq: queues the VSI still owns but is about to return to the
++ * PF pool, so that the result matches what it will be once they are back there.
++ */
++static struct ice_vsi_alloc_queues_params
++ice_vsi_get_num_qs(struct ice_vsi *vsi, u16 held_txq, u16 held_rxq)
++{
++	struct ice_vsi_alloc_queues_params qs = {};
++	struct ice_pf *pf = vsi->back;
++
++	switch (vsi->type) {
++	case ICE_VSI_PF:
++		qs.alloc_txq = vsi->req_txq ?: ice_get_txq_count(pf, held_txq);
++
++		/* only 1 Rx queue unless RSS is enabled */
++		if (!test_bit(ICE_FLAG_RSS_ENA, pf->flags))
++			qs.alloc_rxq = 1;
++		else
++			qs.alloc_rxq = vsi->req_rxq ?:
++				       ice_get_rxq_count(pf, held_rxq);
++		break;
++	case ICE_VSI_SF:
++	case ICE_VSI_CTRL:
++	case ICE_VSI_LB:
++		qs.alloc_txq = 1;
++		qs.alloc_rxq = 1;
++		break;
++	case ICE_VSI_VF:
++		qs.alloc_txq = vsi->vf->num_req_qs ?: vsi->vf->num_vf_qs;
++		qs.alloc_rxq = qs.alloc_txq;
++		break;
++	case ICE_VSI_CHNL:
++		break;
++	default:
++		dev_warn(ice_pf_to_dev(pf), "Unknown VSI type %d\n", vsi->type);
++		return vsi->alloc_txq_rxq;
++	}
++
++	return qs;
  }
  
  /**
+@@ -180,68 +220,44 @@ static void ice_vsi_set_num_qs(struct ice_vsi *vsi)
+ 	if (WARN_ON(vsi_type == ICE_VSI_VF && !vf))
+ 		return;
+ 
++	vsi->alloc_txq_rxq = ice_vsi_get_num_qs(vsi, 0, 0);
++
+ 	switch (vsi_type) {
+ 	case ICE_VSI_PF:
+-		if (vsi->req_txq) {
+-			vsi->alloc_txq = vsi->req_txq;
++		if (vsi->req_txq)
+ 			vsi->num_txq = vsi->req_txq;
+-		} else {
+-			vsi->alloc_txq = ice_get_txq_count(pf);
+-		}
++		if (vsi->req_rxq && test_bit(ICE_FLAG_RSS_ENA, pf->flags))
++			vsi->num_rxq = vsi->req_rxq;
+ 
+ 		pf->num_lan_tx = vsi->alloc_txq;
+-
+-		/* only 1 Rx queue unless RSS is enabled */
+-		if (!test_bit(ICE_FLAG_RSS_ENA, pf->flags)) {
+-			vsi->alloc_rxq = 1;
+-		} else {
+-			if (vsi->req_rxq) {
+-				vsi->alloc_rxq = vsi->req_rxq;
+-				vsi->num_rxq = vsi->req_rxq;
+-			} else {
+-				vsi->alloc_rxq = ice_get_rxq_count(pf);
+-			}
+-		}
+-
+ 		pf->num_lan_rx = vsi->alloc_rxq;
+ 
+ 		vsi->num_q_vectors = max(vsi->alloc_rxq, vsi->alloc_txq);
+ 		break;
+ 	case ICE_VSI_SF:
+-		vsi->alloc_txq = 1;
+-		vsi->alloc_rxq = 1;
+ 		vsi->num_q_vectors = 1;
+ 		vsi->irq_dyn_alloc = true;
+ 		break;
+ 	case ICE_VSI_VF:
+ 		if (vf->num_req_qs)
+ 			vf->num_vf_qs = vf->num_req_qs;
+-		vsi->alloc_txq = vf->num_vf_qs;
+-		vsi->alloc_rxq = vf->num_vf_qs;
+ 		/* pf->vfs.num_msix_per includes (VF miscellaneous vector +
+ 		 * data queue interrupts). Since vsi->num_q_vectors is number
+ 		 * of queues vectors, subtract 1 (ICE_NONQ_VECS_VF) from the
+ 		 * original vector count
+ 		 */
+ 		vsi->num_q_vectors = vf->num_msix - ICE_NONQ_VECS_VF;
+ 		break;
+ 	case ICE_VSI_CTRL:
+-		vsi->alloc_txq = 1;
+-		vsi->alloc_rxq = 1;
+ 		vsi->num_q_vectors = 1;
+ 		break;
+ 	case ICE_VSI_CHNL:
+-		vsi->alloc_txq = 0;
+-		vsi->alloc_rxq = 0;
+ 		break;
+ 	case ICE_VSI_LB:
+-		vsi->alloc_txq = 1;
+-		vsi->alloc_rxq = 1;
+ 		/* A dummy q_vector, no actual IRQ. */
+ 		vsi->num_q_vectors = 1;
+ 		break;
+ 	default:
+-		dev_warn(ice_pf_to_dev(pf), "Unknown VSI type %d\n", vsi_type);
+ 		break;
+ 	}
+ 
 -- 
 2.51.1
 
