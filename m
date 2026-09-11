@@ -1,144 +1,111 @@
-Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4869F3ED5CD
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 23:12:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789168361; cv=pass; b=oTILK7C21lM2DCk315tnzdCp9qJQ6iIikFwXq/6UuOph+N6Ko9Vp1Y0YReOJFYKB/SehRBFvKMOdorZewWmAVx7sxA0+PCR6xSEDquFS7kqR3o06Y1kHSAh3Ndf2hC5LVwpTDMeocaEOpOa6F4/mWdlemUvojktf5JPVFX1K5hI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789168361; c=relaxed/simple;
-	bh=U5b2EGQ0h1hGiuvcKNAxlYftbTygKbTmyhHzJL26viU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OFreIbZDgPpNnWoasTdFj3yg+2KUC9QjjplSj3sv0KKklxA6aDOzZlt3qou7IV6hkHPTrGQoNdAuz+O2BaDrdm1SC83Qttshl4Os3PzjqjqENLpZbnnJSI6LtG/QV//xN0Pq/5YqRA05qFAlIfAeb1qf/AkSuhs3qnEzLR03nEU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=bDJBQdJM; arc=pass smtp.client-ip=74.125.228.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47F33F44D7
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 23:15:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789168516; cv=none; b=B2d90jGQcZRn/lFmqn/UcKgRhK+/jt3JF3EBmua8Dfc15Jx5/xzSlIa6++xxBTu1jQn7DAxzZQryCpVcOplPG9ztCqVkuXfraAWJkqwM50ouYMEBaSyMTKk81Ko/Z2kYBAwoRLIJts7dpHxUimyrqS6lkT/QXkoBVxQBH8bVfa4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789168516; c=relaxed/simple;
+	bh=gOjvvX82AUYe7RXXt/0k2kXy8hscDaCjw8dbHhtTwhA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nexYSAbcoLV90mlP1ZMzvpzkVAtjmYRVAsAEREVGgefGso6I6APvN2l5hGRL6UBvPOAsFac6FtVZzRR3Y4VguVB5OV7667h/QMR2e0igKEpMd7wgG0S7q9muxcAf4qQVxua7FejTtgLPzBnN1SRv/8mhypgYQC0EbTbq50RU2mY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RngWluNg; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="bDJBQdJM"
-Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-85469d249c4so499565b3a.2
-        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 16:12:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789168359; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ck1jZVHFk5E5/xbviDsP4McELjMmH5KQ2iCo7xGzZjmOkazBLlsxRJFidZwXTV6R0I
-         z72ZUrGPr2TACaV+IqJZGAxAZbhSpoGC/3+Yy21D0XN7MosPgzVEYLEIassNsRdGeZXE
-         Gtt5XFmh512xCPc4wVuSTtq4SYQUyf73c2WiU1bmsGjpfoWDaaTfZCi8NdxBUpb+76yR
-         A1oqvabOdFtPjJsta0P01Pu5y6Dgn73lsKzW3MyV2QByS2Qff3eUt+kLywStlRkFfn38
-         oPeckCdhgEbnEgbi1X7qjX8ye9py0VPWef7fyp4hZg6f35mi6jfowXQswUels5/Q7oMw
-         kl2Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NVHoZLNQTSNiN6B8aYa+VAei/rQkC1SW8nQqoOBjgYM=;
-        fh=/qS7pDVx1PdVvAFUzdBqbRDUaeOTJaWGdiQkx73LwTg=;
-        b=JbQB+w32oX4PQC6P4ZmN6x9OYFv8Zb8gK4kdgAVFlOCjb/ubm0d+LGBdffp/NPyfPq
-         Bk4FJLU9zSYGKRz0k148a2wPtZIzTRcObpnCzxQdXmAED6OQdSwLDire7Wrm+xVVABH6
-         dC7gVWQCvUpBYU0IJYPYqM09fF6Dw+YMCtrO8DOcWPPR5gnKBTSrvkKQnNV+8XLtNlpQ
-         UVTsre/9p7izqVOzipNrKd+qR5D/6k68OXFm+u5v4351PWclvyCVkt6E2Jwc88EuSLXk
-         QyLooa5WBNLGt8a48GiM+dJRADsn1RU+PBTTkivqCinWhXucgeJObb6LL27ShtTbYA7V
-         vkeg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RngWluNg"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912d37b5so2379475e9.2
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 16:15:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1789168359; x=1789773159; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NVHoZLNQTSNiN6B8aYa+VAei/rQkC1SW8nQqoOBjgYM=;
-        b=bDJBQdJMUqEJ50EiXOho9fklpxlxedv//KcHhF5I09IZPnWY0ZK77hZhgg63T4gPDR
-         rNFqKhEtwDhvXpMUcyZizQbJpwdfhmhhFrfv3bZnaKdYCknLELNhRVakV/Yl8Mz4qFIE
-         YsKakeem92K9QzyrTgL0a6/3jxSKN/yyO6RVE=
+        d=gmail.com; s=20251104; t=1789168513; x=1789773313; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=b2mWYsIChjfxQsD+xpNWBWCUshmCpIYMChyiD6YqWGA=;
+        b=RngWluNgpD13XAk7pl1fwT8Z7AJvo/4gZPv4DhiQLuwbuaV9c1KRcMUaDN5XGUO9km
+         bi+s7s64SGJBiQGo+kyPnVva88soskgrmZUTGVIO2YYlTZZg6zqQT42f0LVm1JKys7dt
+         MPZl5V92B7G7HA+DvjpILm8/yeBtWeLUuphO2VnZGlaqKj8eSw3GnQ43mqNZSi1PfEJZ
+         d1Uy51JPOBYwrNa7OoiF3eU+iI4s19QpnmmIsaI2EXWQd8LvwbznPvrFeQRMdDxJVC9K
+         ufvIfRqgZxWe3vdm7S2ycRjo192xFiVpu+LAXb7d0W2pk3RjHnRkHxitMz1nkERSw86E
+         Sy1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789168359; x=1789773159;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NVHoZLNQTSNiN6B8aYa+VAei/rQkC1SW8nQqoOBjgYM=;
-        b=FRh/AgOmaMw2ejEufORthcCT+nt+fvG85vDhVjDuSLloAyamuMqY3TE3taAtfkLqki
-         HDxRcgmzxmGfh8MwTFQA+Zh6MXeA5XJuFde11YiMrxri7hetHcSXpxiTXi9g6Lr7dYe9
-         KqW8wigc3beUfpEAeqMAm8dpcDyvlkuTsTm/asn3gxl/zM/jAWSmI8o01XgxRAEki9aJ
-         NDZ/oJRrdgyHQo+LE+hrsBWbmTgMGuGh1dlAImL+Zl7a0akkVILKBnsldgYf5bkcwGD9
-         b3CwWOaKOj2uPM/zB9WtVwSRgWOOcObit27GOg0j8CdlnrcS7tWDPRMSSO+ctJNHhdht
-         GWNA==
-X-Gm-Message-State: AFuF++nEmnJB49ADuLQU42aGaVvy1Zq3UZ5yf++IFbGR27o7QrhhDk+3
-	eT5r7UMMZXMa/UKzrjdATuWreTWF6RyhIGUYDFqnL7m31OjFNH70HKm18/r0a4I9kgWYCHwrbw6
-	Vpr2Ac/1d7IJA70c7u1nn3O+C6c64blPcOFTB3r/a
-X-Gm-Gg: AYBFou0LrnM0CSNBIzcDXgDp19PjzEIjLRfMPKzKg1WFtK1E4FmRyQHECeFJBIDiaGJ
-	a8jWVHDXS1ndc7jY1oJsOR5XKzGFhwOEPUrmIsBRMWCK1yhAj5qxg4dFQnDuc+rkFh7Y6RbVMJk
-	X+gmBSSg9LQwV4t5FM8XKNT23FhOw1QHTxiEapDBaVBRRsjRk+pO1GUKo6IFxsWdCePbm6rnV3m
-	hE/THNRBQ18jwg4+ZZpChnDDXFB/H15nuuMdtaOGRY/ovU1YUJH0IkmAGbLu7drtPvbi4CKpt02
-	JSdsHofvbUkeVjKv91xZQ5JjQSJQiLtwv+OEmeHGYhfqcOh+Xe7XqTu/kXwRZaH0I/XHKBBFbrY
-	itv/SAwW78K9HSBOuOIWDNhZTteXy9SOJQQ==
-X-Received: by 2002:a05:6a00:7541:b0:86c:b39b:66e4 with SMTP id
- d2e1a72fcca58-86cb39b6a6bmr818636b3a.18.1789168359596; Fri, 11 Sep 2026
- 16:12:39 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1789168513; x=1789773313;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=b2mWYsIChjfxQsD+xpNWBWCUshmCpIYMChyiD6YqWGA=;
+        b=WPqZbORwIe/pPBzn+dQ+DUXY4dCCPlo/7No1u1PYvvLxXVS0gLJiFjJWZWynFagKu5
+         MAiA9hqYBxnDNQrzKxVsEALzOCOjClF3Jzhqr3W0ZmT+vcMxTtwjDctIUiOtJTjBxquR
+         Y0IsJ7ux1d/3iU641vMRGSGzVMS5h1yGWDH+33GqSLHZhu60SQQSdhhgG4dOhsBpVfFm
+         kYwhKQiL7Ot6TwzhLgfw/rV3ob46/P55TZo+qGxR6GYrOtzVHCc7km1vNZT/m1AXTBQK
+         7lwNaG2QIcrHfwtOlY2jK4MgL44NqV/2vOilGG6FoPrF7TMQ5vJTh21wz58cZ3J4qaFw
+         p84Q==
+X-Forwarded-Encrypted: i=1; AKwUvByLoS+HCUdYbK/LFtMgwpF0DuB3Pq6JcGTwyDEwR3VQUGpu9pThF2ppDnwITytFf1/dvx0EBiA=@vger.kernel.org
+X-Gm-Message-State: AFuF++m9MbIYKzMcjf9wOJ7JdabJwHVm6Tja9j4BZLaTbaG+HuONUclT
+	2G3Jl+EHc2RI4fWWDq5dJ9Sie1eggJcXoj3I2tV/NJkceCTyJTRWcGSY
+X-Gm-Gg: AYBFou0Z5+1zsHOGDOytT2cKTjIvY2ivUdFj0lMvOYB5k8zitY3hCCZWdD4s18Odj93
+	HcRdQszMxvwDDax5ol6ddpT3E14zl1AEZHJ3jv4ORg/6d2KuqCx+hyctxpJPZv0S80G9HehgVTj
+	q2In7P1KKQCX91+H5189gGSqq0xy1cCNu2YeLtcpenXekKnM064QuR/X4Q55K9zZeFgZ9acgM0Q
+	iw5711uuEtj2wUIwmFQTaNX+7er5ivOEQZ6GTOnE771kq3fezPPEbGEfZDcW0hdskQcQ953QctF
+	q2XKzskivlJFcAcPv4lXdYtrxNVtl38iS41mbDfdHEfCvc/qbS6IB8v30LvUgrJRvZtwuHzO3fq
+	c0zM8oBikPmED4Y9JHmOqamezk+RkQMmoL4iBUuFE6XDT9p7p0p4Q/Gq4UWUYpvovQajg9qPXo9
+	WN3yveXLum+hPVhmCMnrTWQqgCE/QOszz6Gl1BBC9I180m+MiH4/hJWqZ1da9bK0sqLVHDEsnt7
+	3rL9cMf7obQvlkkvPTcTFLIS+2eMebrpj/DGAL2Y8TOW1uCHmXqQyyxwJ56iwvej2+FqJ+7Y3LG
+	jNzurV0YjN+Wew7h1urOVQTX4BTWo+Isnk3Waw==
+X-Received: by 2002:a05:600c:4e0c:b0:49c:ed94:cdd8 with SMTP id 5b1f17b1804b1-49e6198734emr184554905e9.6.1789168512866;
+        Fri, 11 Sep 2026 16:15:12 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-095-114-033-154.95.114.pool.telefonica.de. [95.114.33.154])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d26c39086sm171124655e9.10.2026.09.11.16.15.11
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 11 Sep 2026 16:15:11 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Antonio Quartulli <antonio@openvpn.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] ovpn: Fix the return value in ovpn_bind_from_sockaddr() kernel-doc
+Date: Sat, 12 Sep 2026 01:13:52 +0200
+Message-Id: <20260911231352.12706-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <QDISC-1L5H.v1.20260903184552@mojatatu.com> <CANn89iKFVvFaNcZyGOxmyPbpc6ax49ZqwMWDeBAsH5dav-y-SA@mail.gmail.com>
- <CAM0EoMn5M__WHkniZLw8GNtHpTresTC2dQuL6brmAzUXH1YUKw@mail.gmail.com>
-In-Reply-To: <CAM0EoMn5M__WHkniZLw8GNtHpTresTC2dQuL6brmAzUXH1YUKw@mail.gmail.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Fri, 11 Sep 2026 19:12:28 -0400
-X-Gm-Features: AcwNN1VxwBhgJyQS3MJEPkDfRRZ_FKlaOla_PtSbjvxx1Fh58EDgtZfXE8iGhas
-Message-ID: <CAM0EoMkzo3s7QTLm=w4RkyAbKat3iVZ89dPtPeQoFRvqigs_4Q@mail.gmail.com>
-Subject: Re: [PATCH net 1/2] net/sched: codel: bound the dropping loop per
- dequeue call
-To: Eric Dumazet <edumazet@google.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, 
-	Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Victor Nogueira <victor@mojatatu.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	linux-wireless@vger.kernel.org, Vega <vega@nebusec.ai>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 4, 2026 at 4:31=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.com> =
-wrote:
->
-> On Thu, Sep 3, 2026 at 8:35=E2=80=AFPM Eric Dumazet <edumazet@google.com>=
- wrote:
-> >
-> > On Thu, Sep 3, 2026 at 10:56=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.=
-com> wrote:
-> > >
-> > > The CoDel control law schedules the next drop one interval/sqrt(count=
-)
-> > > after the previous drop, using the configured interval
-> > > (codel_params.interval). For very small intervals the scheduled step
-> > > rounds down to zero, so the dropping loop in codel_dequeue() never
-> > > advances and drains the entire backlog under the qdisc lock in one
-> > > call - an unprivileged user can trigger a soft lockup this way.
-> > >
-> >
-> > ...
-> >
-> > >  static bool codel_should_drop(const struct sk_buff *skb,
-> > > @@ -156,6 +161,7 @@ static struct sk_buff *codel_dequeue(void *ctx,
-> > >         struct sk_buff *skb =3D dequeue_func(vars, ctx);
-> > >         codel_time_t now;
-> > >         bool drop;
-> > > +       unsigned int drops =3D 0;
-> >
-> > SGTM, note that this line breaks RCT.
-> >
->
-> Grrr.. it was in my brain to fix it, but my fingers didnt get the command=
- ;->
-> If needed, I will send a v2.
+ovpn_bind_from_sockaddr() returns an ERR_PTR() on failure, never NULL,
+but its kernel-doc says "NULL otherwise". Say ERR_PTR().
 
-Should i resend this? sashiko-nipa never reviewed and other one found no is=
-sues.
+The wrong text came in with commit 80747caef33d ("ovpn: introduce the
+ovpn_peer object").
 
-cheers,
-jamal
-> > Reviewed-by: Eric Dumazet <edumazet@google.com>
->
-> Thanks for the review - struggled a bit with this one and wasnt 100%
-> sure it was the right approach.
-> cheers,
-> jamal
+Assisted-by: LLM
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+---
+ drivers/net/ovpn/bind.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ovpn/bind.c b/drivers/net/ovpn/bind.c
+index e42b60cd04a9852c80a0cc478d499821836ab909..62a5ccfd3502a2680b45b0732804eafd47d79a2c 100644
+--- a/drivers/net/ovpn/bind.c
++++ b/drivers/net/ovpn/bind.c
+@@ -18,7 +18,7 @@
+  * ovpn_bind_from_sockaddr - retrieve binding matching sockaddr
+  * @ss: the sockaddr to match
+  *
+- * Return: the bind matching the passed sockaddr if found, NULL otherwise
++ * Return: the new bind for the passed sockaddr, an ERR_PTR() on failure
+  */
+ struct ovpn_bind *ovpn_bind_from_sockaddr(const struct sockaddr_storage *ss)
+ {
+-- 
+2.39.5 (Apple Git-154)
+
