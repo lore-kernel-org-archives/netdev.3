@@ -1,120 +1,131 @@
-Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B0B4314AC;
-	Fri, 11 Sep 2026 10:48:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.135.140.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BD7406261;
+	Fri, 11 Sep 2026 10:49:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789123730; cv=none; b=Lxop9zI0Tc3H++iVjvvRYCx5ICeMJ/Wr5c6+XO+fm7HTQBhb62l0lwlqwcDcpcc1UlrqqX1s9mRTCrYuUMCPDzuBxn+TbocBPW7AEHLjFwfW0sTfCjERK4SI8UoOhAW/I+WhxE5gDH9Y7ATDOtof5UhFKmhZgzj2/TY8XoMstrE=
+	t=1789123752; cv=none; b=mHID9VKcjHQiYLbvjz7J3X6OReFkx9YnXOROa5FaP3Mx4r7+ZVuaupoMQlYfJskYQBY+JPsDiXnCFx9JcD2H6R+6qmgfBjQJ7UzfKzSh9y6826P9gj4uiotTTBJBv2Y/+0fk6oW3ZCL1bLLrZ+3+RtTDAZ2d8bsi6qzHOKstm6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789123730; c=relaxed/simple;
-	bh=tnflonDr48lsshfUyuIgvJBhDLqlOrj5th4ydM6DGRQ=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=PLB4nsjn9hKS7YzMsYgsnRl232R5hElnZXWAl5fZbyXsctnaLLMsrF1Bd3CzlAy5LxKWIJUyKpB4eYeG6b+cFn72XpFGHnVyB//VsmcFXvlQlAjUPrgnrNK1sxmJ4FcSHImP7VbO1VNPBUhh6/FTFPBGheqw0wKQol4nQ7ItWno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=none smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=rNCxHeT0; arc=none smtp.client-ip=5.135.140.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cjdns.fr
+	s=arc-20240116; t=1789123752; c=relaxed/simple;
+	bh=RwRtP4Lcq0BV+opg54mfK4Ls3dmbz/L53U9120/hdnk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oUks2GxXae6Kifq5nTKH4kriPN+XEGcFTsowBPZyVRlLIkCmBIw3DuDbv4SRp94Ygb3EdJphDLuJd9q4dXsXp/bTjMem90nQxG9MiaSzVqxNuhknxdeu9TkK/MGjPknUl3acHGOr9ceCnVlQXa0xAq2u7AdJmz+pV7wIsBQP/Rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RuKqc86t; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="rNCxHeT0"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0103741E8BE;
-	Fri, 11 Sep 2026 12:48:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
-	t=1789123724; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=11f6SdDiBsLZEK+6xrnQANC+Z+Fp65AqSdwdx2iIhKY=;
-	b=rNCxHeT0mYxpRuViaP9flP64qaNE7U13NSACKvh4kwEmZxhLqJvnHMHn+ZDVGA94hobwD5
-	Wz488/BOmE+sW3/sExZD+3AQn4f42BvPwAczpKRJaTioBufsRF1vRytLB4aeNgho/DF2Eh
-	mmZsHO0P1OXeG2vs2qALwismh3GhVf9kF+1oHVzP5NfOzxTdVekykCevZkO+R/y534nfFh
-	PDWYSu2Gkd/CE1DOZ72CwjSHIbD84VjEJg/2NZDzslRLOwWVNFC8mW5eRX29ZXkI3JEJIq
-	t6/Fh4zTELjtdNRp5Uqa+pOnZ99IuQMZrPl8h4zV9krgQyf6Xs8j8qa3HuEukw==
-Message-ID: <3f0244b6-f557-497a-9e28-bcec63891398@cjdns.fr>
-Date: Fri, 11 Sep 2026 12:48:35 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RuKqc86t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73AD71F00893;
+	Fri, 11 Sep 2026 10:49:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789123750;
+	bh=45+Ft2ZAJDuHr7rFRHIETQgmiTQPSrUEooULEMW8brA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=RuKqc86tYs/hwCpVsjKj2QXihaZ05u1oaWB2qbPumW4wzoQgevco56iZBiyyIlEYk
+	 j3Oaxy60u6jsyAoNh70MG0FGm0zl9Ele7IBa7lxKCIMKkxD2pwCqtyKNnXFZVWsHqZ
+	 qNe283slfFDxcAecXp4nD6PwzBkRecUMOW1Tpj9RVf4bPrHZGnyz5YQD6PDUW6zhrp
+	 VXTPMGucithm/sb8ZAHlZaccSU9//9h32YqfR/FCaY2qby2OfQgfhVtSlLZGXmuR/x
+	 2Tc8QD2fN9dQWoLxuH9ShWUxNdQt/CezWyeTU22TrlnGfb6x435Fauisg/0JXTNpRO
+	 mnoLJLI9xHu2g==
+Date: Fri, 11 Sep 2026 11:49:06 +0100
+From: Simon Horman <horms@kernel.org>
+To: Abdifatah Suruur <suruurism@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, andrew+netdev@lunn.ch,
+	subash.a.kasiviswanathan@qualcomm.com, sean.tranchetti@qualcomm.com,
+	dnlplm@gmail.com, stable@vger.kernel.org
+Subject: Re: [PATCH net v7] net: qualcomm: rmnet: require CAP_NET_ADMIN in
+ the real device netns for config ops
+Message-ID: <20260911104906.GC48209@horms.kernel.org>
+References: <20260910082643.14437-1-suruurism@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net-next] net: phy: mediatek: support MT7530 PHYs on
- EN71221 MCM
-From: Caleb James DeLisle <cjd@cjdns.fr>
-To: Daniel Golle <daniel@makrotopia.org>
-Cc: netdev@vger.kernel.org, dqfext@gmail.com, SkyLake.Huang@mediatek.com,
- andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- Matheus Sampaio Queiroga <srherobrine20@gmail.com>
-References: <20260909213250.3184238-1-cjd@cjdns.fr>
- <aqHlfmYa249e3HRM@makrotopia.org>
- <7a3479c8-45cc-4b88-b111-c35d59f370e1@cjdns.fr>
- <aqIOGgVujIKT7H2H@makrotopia.org>
- <f1c898c4-2a84-41e8-ad8d-8c79df3feb47@cjdns.fr>
-Content-Language: en-US
-In-Reply-To: <f1c898c4-2a84-41e8-ad8d-8c79df3feb47@cjdns.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260910082643.14437-1-suruurism@gmail.com>
 
->>
->> Dumping the PHY register space and comparing it with MT7530 could also
->> help to indentify any better way than relying on the parent DT
->> compatible which *is* a bit of a stretch (but could well be
->> unavoidable, of course).
->
-> I'll give it a shot but I have low confidence in it because AFAIK this 
-> is actually a real MT7530 MCM just like MT7621 but it just happens to 
-> be clocked to a weird PLL frequency.
+On Thu, Sep 10, 2026 at 11:26:42AM +0300, Abdifatah Suruur wrote:
+> An rmnet device may be created with its real device in a different
+> netns than the rmnet device itself (rmnet_newlink() resolves it in
+> link_net), and the config paths below only check CAP_NET_ADMIN against
+> dev_net(dev), while mutating rmnet port state attached to the real
+> device:
+> 
+> - rmnet_changelink() rewrites the endpoint mux table and
+>   port->data_format and, via rmnet_vnd_update_dev_mtu(), can shrink the
+>   MTU of the rmnet endpoint netdevs.
+> - rmnet_add_bridge() and rmnet_del_bridge(), reachable via
+>   ndo_add_slave/ndo_del_slave through RTM_SETLINK IFLA_MASTER, flip
+>   port->rmnet_mode and port->bridge_ep on the real device's port; with
+>   bridge_ep pointing at a caller-owned device, rmnet_rx_handler() then
+>   forwards real-device ingress frames to it.
+> - rmnet_set_coalesce() rewrites the port aggregation parameters via
+>   ETHTOOL_SCOALESCE (ioctl) or ETHTOOL_MSG_COALESCE_SET (netlink),
+>   whose capability checks likewise only cover dev's netns.
+> 
+> A caller privileged only in the rmnet device's netns can therefore
+> rewrite the shared cellular data-path state owned by another netns, and
+> steer its ingress traffic.
+> 
+> Gate the rtnl paths with rtnl_dev_link_net_capable(), matching the
+> "require CAP_NET_ADMIN in the device netns for changelink" series
+> (vxlan/geneve, CVE-2026-68432), and gate the ethtool setter with
+> ns_capable() in the real device netns, mirroring the check dev_ethtool()
+> already applies to dev's netns.  Report the new rejections through
+> extack where one is available.
+> 
+> The gates cover the configuration paths only.  Teardown (RTM_DELLINK
+> reaching rmnet_dellink(), and rmnet_config_notify_cb() unregistering
+> the bridge when the slave device is deleted) is intentionally left
+> ungated: link deletion is normal netdev lifecycle behaviour, and the
+> changelink series this matches (vxlan/geneve, CVE-2026-68432) gated
+> only the configuration paths.
+> 
+> Fixes: 2abb5792387e ("net: qualcomm: rmnet: Allow configuration updates to existing devices")
+> Fixes: 60d58f971c1077 ("net: qualcomm: rmnet: Implement bridge mode")
+> Fixes: db8a563a9d9024 ("net: qualcomm: rmnet: add ethtool support for configuring tx aggregation")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Abdifatah Suruur <suruurism@gmail.com>
+> ---
+> v7:
+> - state explicitly in the commit message that the dellink and notifier
+>   teardown paths are out of scope, per the Sashiko review
+> - drop the master-moved-into-the-real-device-netns rationale from the
+>   rmnet_add_bridge() comment: on the add path do_set_master() resolves
+>   the master in the slave's netns, so the rationale only applies to
+>   rmnet_del_bridge(), where the master comes from
+>   netdev_master_upper_dev_get()
+> - use the netdev comment style in rmnet_set_coalesce(), per the
+>   Sashiko review
+> v6:
+> - gate rmnet_add_bridge() and rmnet_del_bridge() on slave_dev, the
+>   RTM_SETLINK target the caller was actually authorized against,
+>   instead of rmnet_dev: a master moved into the real device's netns
+>   short-circuits rtnl_dev_link_net_capable() through the net_eq()
+>   check, so a caller only privileged in the slave's netns could
+>   otherwise attach or clear the bridge state of the real device's
+>   port
+> - add the Fixes tag for the commit that introduced rmnet_set_coalesce()
+> v5:
+> - also gate rmnet_set_coalesce(), the ethtool setter that rewrites the
+>   port aggregation parameters of the real device's port, per the
+>   Sashiko review
+> - report the new capability rejections through extack where available
+> v4:
+> - use the netdev comment style, per Subash Abhinov Kasiviswanathan
+> v3:
+> - cover rmnet_add_bridge() and rmnet_del_bridge() with the same gate;
+>   they mutate the same real-device port state via ndo_add_slave/
+>   ndo_del_slave and have no capability check of their own
+> - correct the impact wording: rmnet_vnd_update_dev_mtu() only reads
+>   real_dev->mtu; the MTU store lands on the rmnet endpoint netdevs via
+>   rmnet_vnd_change_mtu(), not on the real device
+> v2:
+> - drop Reported-by: (implied for the author), per Jakub Kicinski
 
-
-I just sent a v2 and I didn't find a register that looks obviously like 
-a chip sub-id so I left the check based on the DT. But since I have no 
-documentation on any of this, here are the differences I found in case 
-you or someone else may know something that I don't.
-
-
-I dumped the pages (g0-g7,l0-l4,ext,misc,lpi,test,tr) and the 
-MDIO_MMD_VEND(1|2) of non-0 non-active PHYs on MT7621 and EN7526G. The 
-differences that seem potentially relevant are:
-
-
-MT7621:
-EXT   23 (0x17): 0x0800
-MISC  20 (0x14): 0x0200
-MISC  21 (0x15): 0xffff
-
-EN7526G:
-EXT   23 (0x17): 0x1800
-MISC  20 (0x14): 0xffff
-MISC  21 (0x15): 0x00fe
-
-
-MMD is here: 
-https://docs.google.com/spreadsheets/d/1kzdVxYqu4cTpe6ascNshn5PoCmxrbTkr3bAuWkqKkeg/edit?gid=835011309#gid=835011309 
-with about 16 differences in total.
-
-
-And regarding what's being changed by the patch, the registers, their 
-MT7621 value, and the value set by the driver are as follows:
-
-EXT 0x14 (MTK_PHY_AUX_CTRL_AND_STATUS) -> MT7621 = 0x3a55, EN751221 
-sets 0x3a04
-
-MDIO_MMD_VEND2 0x417 -> MT7521 = 0x7773, EN751221 sets 0x7775
-
-MDIO_MMD_VEND1 0xa6 -> MT7621 = 0x03e0, EN751221 sets 0x0350
-
-MDIO_MMD_VEND1 0x12 -> MT7621 = 0x7210, EN751221 sets 0xd210
-
-The other difference of this implementation is both master/slave 
-negotiation and EEE are unreliable. Maybe these give a hint as to what's 
-different with this implementation - whether it's same silicon different 
-frequency, different package, different FAB run, etc.
-
-
-Thanks,
-
-Caleb
+Reviewed-by: Simon Horman <horms@kernel.org>
 
