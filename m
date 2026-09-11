@@ -1,45 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314EE3F075A;
-	Fri, 11 Sep 2026 03:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DBC92F7EE7;
+	Fri, 11 Sep 2026 03:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789098119; cv=none; b=Kh1DoDfumu6zvLwMfA9aITX1AiNn4juugZo9JUEDNwgF/DhM6FtWDVjqiQ/hcXJ66gwoVHJ9c7tvFp4VHF/inMNuA53nnR5lubOpvmRe6wMCOQpaS5fW9TV/LoWbslWMpSKc7pNBDIOSAh+tYNbFEYalW/xwgUsHsKC+rmO8iI4=
+	t=1789098689; cv=none; b=LFt66ogsuSGn3UiPntR7cVw1rZ0SLNx8uN/lr2jTAvhV7o32LrPZBrVbvO7+fORdmCPOpU2X5ZUW4CnfmgdHscBxW6uLmjYHsaT6kYluZzhGrNJxVtxQb3IGi0fmlQSUlOxTxfy85s1hmt5ahh5ysqoNmrrOx1+lnPbntyDYrUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789098119; c=relaxed/simple;
-	bh=VpJGxMTipozDFAvYMDee2tr9QCYZI5q2bpenjluesyw=;
+	s=arc-20240116; t=1789098689; c=relaxed/simple;
+	bh=jhaXMbEqFAGG1BYQ4hT83wZRdrqFjoRbXyE95aYGjHQ=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=u5pFGbhDsLk6gclcGoPX8LOlTKsHCIiK4kYy9M4wbumqKuoYpj1gaNG142cKSGQivLYJPOEV/nF2MuIw6D1zxLSVts/MheuDxzvtY0jsn95j5ynO4tzFNipM3OCg2uMW7NkcbGBOetd1KhDsulgp35QKFH9FZwXiHirwrXes324=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h8+JpELe; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=X8Q2bBeORjJk4yNxfJez+xmsew0mBcnHc0HhiVYofDZnpwwUD/y2Ao9Y7kjp7Vn/l8BYb4whZTM2Up04WZz9aHSDIeSP4gF5ut31dO7yWF7egpYgrRabKmvT9afGNXwPm6MAcgYXSJvMcE0dEW5/4D8UkU0l+K8G02mV10/ird4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OBDw4vXK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h8+JpELe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE55D1F00898;
-	Fri, 11 Sep 2026 03:41:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OBDw4vXK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 143E91F00893;
+	Fri, 11 Sep 2026 03:51:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789098116;
-	bh=eRxR7RzZLbKx/bUm1gKHR338EUGdzrRDXLG5n5wIHcc=;
+	s=k20260515; t=1789098687;
+	bh=4PIIPLikARhx+ISSplyjJ5hdNCv4TnEMaKWm21wWOGk=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=h8+JpELeHqO8nvZTwVm2fbiwANf7pnx4oQ2s+fI4nFFufjobi6+FDUtpNBpU1snwF
-	 hXm+Iuh1+Noa6TgKKwX5BuECghri2kvjLFuha23e8UCm1btageDK9TAXCCuX+9BhdH
-	 hl2bNf+ubakyqPJcPhWbX2bDBz+xCiT1qvWnvNJ+E6lEWzj1DClmQTANC0sP/fPqRW
-	 5ZdJDvisNzLV1oxmoovUuAvN/MrFwBPwP7/ugkVr5g3BM+Ycoh6l/x70PEvRObb6x6
-	 ZIh9hH1A2LDunrHxJC8vMmxinhRQrMd6sWJWDvE+KYpG8JVbtSYqiSpZ++jFMr6laq
-	 p4JKGUr8NaX5g==
-Subject: Re: [PATCH v27 net-next 10/10] net/nebula-matrix: add common dev
- start/stop operation
+	b=OBDw4vXKDOjy6fUzmiNlXIJhK1JGQ2zR7Hr3muhsla5AVKh47csbU99oOF+i1ovNc
+	 aUBBJ/sEvEL6foglA1pIFU5erFy5oYFRE3FpHadKmgF4iQeHh0WVlgc+sYaQ6a8g9n
+	 EN9x2el4CNoyjoJ1sY6tRzzAL4v6woMo8yyfcC57e/jem/U5AEIYaAJ0bj9P8XhIl1
+	 jUjhyjK2GbGQVeQZLZ16nzF1/L/Ipl6hokfdvrarTYkbLo725llY8+EP6s1iJSKEUO
+	 FXOjiSgMxtPc3jjI7jL7jHWKLMerPttgc/XOa6NfHvsGJVgL8f/M8gtrmZTtlIZxDe
+	 RjTVs2mwrciVQ==
+Subject:
+ Re: [PATCH net v6 2/2] net: phy: restore the interrupt the bus gave a PHY
 From: netdev-bot+sashiko@kernel.org
-To: illusion.wang@nebula-matrix.com
-Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
- sam.chen@nebula-matrix.com, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
- corbet@lwn.net, kuba@kernel.org, horms@kernel.org, linux-doc@vger.kernel.org,
- pabeni@redhat.com, vadim.fedorenko@linux.dev, lukas.bulwahn@redhat.com,
- edumazet@google.com, enelsonmoore@gmail.com, skhan@linuxfoundation.org,
- hkallweit1@gmail.com, linux-kernel@vger.kernel.org
-Date: Fri, 11 Sep 2026 03:41:55 +0000
-Message-ID: <178909811525.219967.16038617986565417580@kernel.org>
-In-Reply-To: <20260907123848.30256-11-illusion.wang@nebula-matrix.com>
-References: <20260907123848.30256-11-illusion.wang@nebula-matrix.com>
+To: f@lex.la
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Fri, 11 Sep 2026 03:51:26 +0000
+Message-ID: <178909868657.219967.11602145101392158508@kernel.org>
+In-Reply-To: <20260908155025.4155289-3-f@lex.la>
+References: <20260908155025.4155289-3-f@lex.la>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,473 +48,185 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 8 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 5 · Low: 3
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
 
-- [Medium] nbl_dev_setup_common_dev() (drivers/net/ethernet/nebula-
-  matrix/nbl/nbl_core/nbl_dev.c:304-314) drops the `if…
-- [Medium] nbl_dev_stop() (nbl_dev.c:510-521) and the nbl_dev_start()
-  err_destroy_map unwind (nbl_dev.c:472-488) only log a failed…
-- [Medium] nbl_dev_enable_mailbox_irq() (nbl_dev.c:80-99) publishes the
-  software interrupt-mode flag before the hardware interrupt exists: it…
-- [Medium] In nbl_dev_start() (nbl_dev.c:446-448) a failure of
-  nbl_dev_cfg_msix_map() jumps to err_cancel_work, deliberately skipping…
-- [Medium] The device is enabled with pcim_enable_device() in
-  nbl_probe(), which makes MSI/MSI-X vector release devres-managed:…
-- [Low] The err_destroy_map comment added to nbl_dev_start()
-  (nbl_dev.c:480-481) states "If the RPC fails the device may remain…
-- [Low] The comment in nbl_dev_init_msix_cnt() (nbl_dev.c:22-24) states
-  that the mailbox vector is "allocated in nbl_dev_start() via…
-- [Low] Several newly added call sites in nbl_dev.c have continuation
-  lines that do not line up with the open parenthesis (checkpatch CHECK:…
+- [Medium] phy_restore_probe_irq() bails out whenever
+  phydev->phy_link_change is non-NULL and records no pending…
+- [Medium] phy_restore_probe_irq() performs an unsynchronized check-then-
+  act on state owned by the rtnl-side attach/detach paths.
+- [Low] No Fixes: tag (and no target-tree indication) on a patch whose
+  changelog describes a concrete, lasting user-visible defect.
 
 --
 
-net/nebula-matrix: add common dev start/stop operation
+net: phy: restore the interrupt the bus gave a PHY
 
-This adds nbl_dev_start() and nbl_dev_stop() to configure the hardware
-MSI-X map, allocate MSI-X vectors, request the mailbox interrupt and tear
-all of that down again.  Thin nbl_core_start() / nbl_core_stop() wrappers
-are hooked into nbl_probe() and nbl_remove().  The VSI/ETH identity fetch
-in nbl_dev_setup_common_dev() is also changed to run unconditionally.
+phy_probe() demotes phydev->irq to PHY_POLL when the binding driver has no
+interrupt support, and nothing restores it afterwards.  This patch adds a
+helper that copies the number back out of mdiobus->irq[], and calls it from
+phy_remove(), phy_probe()'s error exit and the phy_attach_direct() unwind.
+The helper skips the restore while phydev->phy_link_change marks an attached
+consumer.
 
-A few questions below on the interrupt enable ordering, the rollback paths
-and some of the new comments.
+>     A bus whose driver writes only phydev->irq and never the table is not
+>     covered, because the table then holds PHY_POLL and there is nothing to
+>     give back; lan78xx, smsc95xx and sxgbe are in that position today and
+>     registering the interrupt with the bus is theirs to do.
+>
+>     This needs commit e0d1c55501d3 ("net: phy: fix
+>     phy_uses_state_machine()") to be of any use: without it the mark this
+>     skips on is never cleared once a consumer has attached, and the restore
+>     never runs.
+>
+>     Assisted-by: LLM
+>     Signed-off-by: Aleksei Sviridkin <f@lex.la>
 
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-> index 7813ff31a3cfc..af003a240e7ba 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+[Severity: Low]
+The changelog describes a lasting user-visible defect ("polls for the rest
+of the uptime once the real driver takes over"), but the tag block carries
+no Fixes: line and the subject has no net/net-next scoping.
 
-[ ... ]
+The assignment being undone, in phy_probe():
 
-> @@ -17,6 +28,189 @@ static void nbl_dev_init_msix_cnt(struct nbl_dev_mgt *dev_mgt)
->  	msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num = 1;
+	if (!phy_drv_supports_irq(phydrv) && phy_interrupt_is_valid(phydev))
+		phydev->irq = PHY_POLL;
+
+is the natural blame target.  Could a Fixes: tag pointing at it (or an
+explicit statement that this targets net-next as a behavioural change) be
+added?
+
+This matters more than usual given the stated dependency on e0d1c55501d3,
+which is what clears phydev->phy_link_change in phy_detach().  On a tree
+without that commit the new restore in phy_remove() is a silent no-op, so a
+backport applies cleanly and changes nothing.  Should that boundary be
+spelled out for stable?
+
+> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+> index 94b2e85e00a3..b55402569300 100644
+> --- a/drivers/net/phy/phy_device.c
+> +++ b/drivers/net/phy/phy_device.c
+> @@ -1734,6 +1734,19 @@ static bool phy_drv_supports_irq(const struct phy_driver *phydrv)
+>  	return phydrv->config_intr && phydrv->handle_interrupt;
 >  }
->  
-
-[ ... ]
-
-> +static int nbl_dev_enable_mailbox_irq(struct nbl_dev_mgt *dev_mgt)
+>
+> +/* Give back what phy_probe() took, from the bus that owns the number, but
+> + * not while phy_link_change marks a consumer: it skipped
+> + * phy_request_interrupt() on the value it saw, so phy_disconnect() would
+> + * free an interrupt nobody requested.
+> + */
+> +static void phy_restore_probe_irq(struct phy_device *phydev)
 > +{
-> +	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
-> +	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
-> +	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
-> +	struct nbl_msix_info *msix_info = &dev_common->msix_info;
-> +	u16 local_vec_id;
+> +	if (phydev->phy_link_change || phydev->irq != PHY_POLL)
+> +		return;
 > +
-> +	if (!msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num)
-> +		return 0;
-> +
-> +	local_vec_id =
-> +		msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].base_vector_id;
-> +	chan_ops->set_queue_state(dev_mgt->chan_ops_tbl->priv,
-> +				  NBL_CHAN_IRQ_RDY,
-> +				  NBL_CHAN_TYPE_MAILBOX, true);
-> +
-> +	return disp_ops->set_mailbox_irq(dev_mgt->disp_ops_tbl->priv,
-> +					    local_vec_id, true);
+> +	phydev->irq = phydev->mdio.bus->irq[phydev->mdio.addr];
 > +}
 
 [Severity: Medium]
-Is this ordering the reverse of the invariant documented a few lines below
-in nbl_dev_disable_mailbox_irq()?  NBL_CHAN_IRQ_RDY is published here
-before the hardware interrupt is armed, and on a non-control PF
-set_mailbox_irq() is itself an ack-requesting mailbox RPC
-(nbl_disp_chan_set_mailbox_irq_req()).
+Can this check-then-act run concurrently with the attach/detach paths that
+own phydev->phy_link_change and phydev->irq?
 
-With IRQ_RDY already set, nbl_chan_send_msg() takes the sleeping branch:
+The helper reads phy_link_change and irq, then writes irq, running from
+phy_probe()/phy_remove() under the mdio device lock only.  The writers of
+that same state take neither the mdio device lock nor phydev->lock:
 
-	if (test_bit(NBL_CHAN_IRQ_RDY, chan_info->state)) {
-		while (!READ_ONCE(wait_head->acked)) {
-			ret = wait_event_timeout(wait_head->wait_queue, ...);
-
-That branch has no queue_work(clean_task) fallback, unlike the polling
-else-branch, so the ring is only drained by the very mailbox MSI-X this RPC
-is supposed to arm.  nbl_hw_cfg_mailbox_qinfo() clears MSIX_IDX and
-MSIX_IDX_VALID at init and only nbl_hw_set_mailbox_irq() sets them again.
-
-If the responder's nbl_disp_chan_set_mailbox_irq_resp() takes an error
-branch, it still sends the ack without arming the requester's routing:
-
-	if (src_id >= disp_mgt->common->max_pf) { err = NBL_CHAN_RESP_PERM_DENY; goto ack_out; }
+phy_attach_direct()
+	phydev->phy_link_change = phy_link_change;
 	...
-	ack_out:
-		nbl_chan_fill_ack_info(&chan_ack, src_id, NBL_CHAN_MSG_MAILBOX_SET_IRQ, msg_id, err, NULL, 0);
+	if (phydev->dev_flags & PHY_F_NO_IRQ)
+		phydev->irq = PHY_POLL;
 
-Can that wakeup then be lost, so the sender burns the full
-NBL_CHAN_ACK_WAIT_TIME and reports -ETIMEDOUT instead of the remote error,
-with the late ack later hitting a slot already marked
-NBL_MBX_STATUS_TIMEOUT?  That looks like exactly the "Channel waiting ack
-failed" / "Skip ack with invalid status" class of message the disable-path
-comment says it wants to avoid.
+	if (!phy_drv_supports_irq(phydev->drv) && phy_interrupt_is_valid(phydev))
+		phydev->irq = PHY_POLL;
 
-Would arming the hardware while still in polling mode and setting
-NBL_CHAN_IRQ_RDY afterwards be the mirror of the disable path?
+phy_detach()
+	phydev->phy_link_change = NULL;
 
-[Severity: Low]
-This isn't a bug, but the continuation line here is indented past the open
-parenthesis, which checkpatch flags as "Alignment should match open
-parenthesis".  The same applies to the set_mailbox_irq() call in
-nbl_dev_disable_mailbox_irq(), the cfg_msix_map() call in
-nbl_dev_cfg_msix_map(), and the reworked get_eth_id() call in
-nbl_dev_setup_common_dev().
+phy_driver_register() leaves suppress_bind_attrs unset, so a root sysfs
+unbind can enter phy_remove() at any time, and __device_release_driver()
+clears dev->driver only after ->remove() returns, so a concurrent
+phy_attach_direct() still sees d->driver != NULL and proceeds.
 
-[ ... ]
+One interleaving:
 
-> +static int nbl_dev_init_interrupt_scheme(struct nbl_dev_mgt *dev_mgt)
-> +{
-> +	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
-> +	struct nbl_msix_info *msix_info = &dev_common->msix_info;
-> +	struct nbl_common_info *common = dev_mgt->common;
-> +	int needed = 0;
-> +	int err;
-> +	int i;
+CPU0 phy_remove() -> phy_restore_probe_irq()
+	reads phy_link_change == NULL, irq == PHY_POLL
+	(preempted before the store)
+
+CPU1 phy_attach_direct()
+	phydev->phy_link_change = phy_link_change;
+	phydev->irq = PHY_POLL;		/* no phy_request_interrupt() */
+
+CPU0 resumes
+	phydev->irq = phydev->mdio.bus->irq[phydev->mdio.addr];
+
+Does that leave a valid IRQ published for a consumer that requested
+nothing, so that teardown hits:
+
+phy_disconnect()
+	if (phy_interrupt_is_valid(phydev))
+		phy_free_interrupt(phydev);
+
+and free_irq(phydev->irq, phydev) warns about freeing an already-free IRQ?
+phy_polling_mode() is also false at that point, so link changes would be
+neither polled nor interrupt driven, which is the situation the new comment
+says it avoids.
+
+The reverse order gives the opposite outcome: phy_remove() observes a still
+non-NULL phy_link_change just before phy_detach() clears it, and the PHY is
+left unbound with irq == PHY_POLL.
+
+Would making the individual accesses atomic help here, or does the decision
+plus the store need to be serialized against the whole attach/detach and
+interrupt request/free sequence, for example by driving the restore from
+phy_detach() under rtnl?
+
+> @@ -3848,6 +3864,8 @@ static int phy_remove(struct device *dev)
+>  	if (phydev->drv && phydev->drv->remove)
+>  		phydev->drv->remove(phydev);
+>
+> +	phy_restore_probe_irq(phydev);
 > +
-> +	for (i = 0; i < NBL_MSIX_TYPE_MAX; i++)
-> +		needed += msix_info->serv_info[i].num;
-> +
-> +	err = pci_alloc_irq_vectors(common->pdev, needed, needed,
-> +				    PCI_IRQ_MSIX | PCI_IRQ_AFFINITY);
-
-[Severity: Low]
-With this function added, is the existing comment in nbl_dev_init_msix_cnt()
-still accurate?
-
-	/* mailbox vector allocated in nbl_dev_start() via
-	 * nbl_dev_request_mailbox_irq()
-	 */
-
-The vectors are allocated here by pci_alloc_irq_vectors(), while
-nbl_dev_request_mailbox_irq() only resolves an already allocated vector via
-pci_irq_vector() and attaches a handler with request_irq().  The matching
-release is likewise in nbl_dev_clear_interrupt_scheme(), not in
-nbl_dev_free_mailbox_irq().  The commit message itself lists allocation as
-step 2 and the IRQ request as step 3, so should that comment be updated to
-point at nbl_dev_init_interrupt_scheme()?
-
-> +	if (err < 0) {
-> +		dev_err(common->dev,
-> +			"pci_alloc_irq_vectors failed, err = %d\n", err);
-> +		return err;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static void nbl_dev_clear_interrupt_scheme(struct nbl_dev_mgt *dev_mgt)
-> +{
-> +	struct nbl_common_info *common = dev_mgt->common;
-> +
-> +	pci_free_irq_vectors(common->pdev);
-> +}
 
 [Severity: Medium]
-nbl_probe() enables the device with pcim_enable_device(), which makes MSI-X
-release devres-managed: pci_alloc_irq_vectors() -> __pci_enable_msix_range()
--> pci_setup_msi_context() -> pcim_setup_msi_release() registers
-pcim_msi_release(), and that action calls pci_free_irq_vectors() itself on
-detach.
+When phy_restore_probe_irq() takes the phy_link_change early return here, is
+the interrupt number ever restored later?
 
-Is the explicit call here safe in that case?  The kernel-doc of
-pci_free_irq_vectors() in drivers/pci/msi/api.c says:
+The changelog says restoring at the three bind-cycle exits means "a bind
+that is undone by any path leaves the PHY as it was found", but nothing
+records a pending restore for the skipped case.
 
- * WARNING: Do not call this function if the device has been enabled
- * with pcim_enable_device(). In that case, IRQ vectors are automatically
- * managed via pcim_msi_release() and calling pci_free_irq_vectors() can
- * lead to double-free issues.
+A driver unbind while a consumer is still attached:
 
-Today the second call appears to be absorbed by the !dev->msix_enabled early
-return in pci_disable_msix(), but should the driver either use unmanaged
-pci_enable_device() with explicit cleanup, or leave the release to the
-managed lifecycle?
+unbind_store()
+	if (dev && dev->driver == drv) {
+		device_driver_detach(dev);
 
-[ ... ]
+reaches phy_remove() with phy_link_change still set by phy_attach_direct(),
+so the helper returns early and phy_remove() then clears phydev->drv.
 
-> @@ -99,17 +301,18 @@ static int nbl_dev_setup_common_dev(struct nbl_adapter *adapter)
->  	INIT_WORK(&common_dev->clean_mbx_task, nbl_dev_clean_mailbox_task);
->  	nbl_dev_register_chan_task(dev_mgt, NBL_CHAN_TYPE_MAILBOX,
->  				   &common_dev->clean_mbx_task);
-> -	if (common->has_ctrl) {
-> -		ret = disp_ops->get_vsi_id(priv, NBL_VSI_DATA, &common->vsi_id);
-> -		if (ret)
-> -			goto err_cleanup;
-> -		ret = disp_ops->get_eth_id(priv, common->vsi_id,
-> -					   &common->eth_num,
-> -					   &common->eth_id,
-> -					   &common->logic_eth_id);
-> -		if (ret)
-> -			goto err_cleanup;
-> -	}
-> +	/*
-> +	 * Even if has_ctrl=false (no dedicated control PF channel), we fetch
-> +	 * VSI/ETH info via regular mailbox message instead of dedicated
-> +	 * control command.
-> +	 */
-> +	ret = disp_ops->get_vsi_id(priv, NBL_VSI_DATA, &common->vsi_id);
-> +	if (ret)
-> +		goto err_cleanup;
-> +	ret = disp_ops->get_eth_id(priv, common->vsi_id, &common->eth_num,
-> +			     &common->eth_id, &common->logic_eth_id);
-> +	if (ret)
-> +		goto err_cleanup;
+When the consumer disconnects afterwards, phy_detach() clears the marker but
+its release is gated:
 
-[Severity: Medium]
-Dropping the has_ctrl guard makes every non-control PF issue two
-synchronous mailbox RPCs from inside its own probe():
-
-nbl_probe() -> nbl_core_init() -> nbl_dev_init() ->
-nbl_dev_setup_common_dev() -> nbl_disp_chan_get_vsi_id_req() ->
-nbl_chan_send_msg(dstid = common->mgt_pf = 0)
-
-and the transport error propagates straight out:
-
-	ret = chan_ops->send_msg(disp_mgt->chan_ops_tbl->priv, &chan_send);
-	if (ret < 0)
-		return ret;
-
-What happens if function 0 is not bound yet?  The mailbox QINFO entries used
-to route a non-control PF's traffic are programmed only by the control PF:
-
-nbl_chan_cfg_qinfo_map_table() {
-	hw_ops->get_host_pf_mask(p, &pf_mask);
-	for (func_id = 0; func_id < NBL_MAX_PF; func_id++)
-		if (!(pf_mask & (1 << func_id)))
-			hw_ops->cfg_mailbox_qinfo(p, func_id, bus, devid, func_id);
-}
-
-and that is only reached from nbl_dev_setup_ctrl_dev().  So before PF0's
-probe has run, does the non-control PF get -ETIMEDOUT here and fail probe
-permanently, with no -EPROBE_DEFER and no retry?
-
-This is reachable without special hardware, for example unbinding PF0 and
-then binding another PF, PF0 probe failing for an unrelated reason, or
-async_probe making PF1 race ahead of PF0.
-
-The commit message says:
-
-    The control PF's responder is reachable once its own probe has
-    completed and the mailbox queue is operational.
-
-Should the identity fetch be deferred to a later point such as
-nbl_dev_start() or ndo_open(), or should probe return -EPROBE_DEFER when
-the manager PF has not answered?  This cross-PF probe dependency also looks
-unrelated to the patch subject.
-
->  
->  	dev_mgt->common_dev = common_dev;
->  	nbl_dev_init_msix_cnt(dev_mgt);
-> @@ -231,3 +434,96 @@ void nbl_dev_remove(struct nbl_adapter *adapter)
->  		nbl_dev_remove_ctrl_dev(adapter);
->  	nbl_dev_remove_common_dev(adapter);
->  }
-> +
-> +/* ----------  Dev start process  ---------- */
-> +int nbl_dev_start(struct nbl_adapter *adapter)
-> +{
-> +	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
-> +	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
-> +	int cleanup_ret;
-> +	int ret;
-> +
-> +	ret = nbl_dev_cfg_msix_map(dev_mgt);
-> +	if (ret)
-> +		goto err_cancel_work;
-
-[Severity: Medium]
-Does skipping nbl_dev_destroy_msix_map() on this branch leak resources on
-the manager PF?
-
-On a non-control PF, cfg_msix_map is an ack-requesting RPC
-(nbl_disp_chan_cfg_msix_map_req()), and `if (ret < 0) return ret;` cannot
-tell "remote never configured" from "remote configured but the ack was lost
-or timed out".  On the responder side the commit point has no rollback:
-
-nbl_res_intr_cfg_msix_map() {
-	intr_mgt->func_intr_res[func_id].interrupts = tmp_interrupts;
+	phydev->phy_link_change = NULL;
 	...
-	hw_ops->cfg_msix_map(res_mgt->hw_ops_tbl->priv, func_id,
-			     true, official_tbl->dma, common->hw_bus,
-			     common->devid, common->function);
-}
+	if (phydev->is_genphy_driven) {
+		device_release_driver(&phydev->mdio.dev);
+		phydev->is_genphy_driven = 0;
+	}
 
-so the coherent MSI-X map table, the interrupts[] array, the global vector
-IDs taken from intr_net_bmap/intr_other_bmap and an armed FUNCTION_MSIX_MAP
-entry all stay committed for the requesting function.
+and for an already-unbound device device_release_driver() is a no-op, so
+phy_remove() does not run again and no restore happens.  A later
+interrupt-capable driver then sees phydev->irq == PHY_POLL in phy_probe(),
+phy_interrupt_is_valid() is false, and polling continues.
 
-The requester never sends NBL_CHAN_MSG_DESTROY_MSIX_MAP afterwards, since
-nbl_probe() only runs nbl_core_remove() when nbl_core_start() fails:
-
-	core_start_err:
-		nbl_core_remove(adapter);
-
-Calling nbl_dev_destroy_msix_map() on this path looks harmless, as
-__nbl_res_intr_destroy_msix_map() returns 0 immediately when interrupts is
-NULL.  Would jumping to err_destroy_map here be more consistent with the
-commit message claim that "a failure at any stage leaves the device and
-kernel in a consistent state"?
-
-> +
-> +	ret = nbl_dev_init_interrupt_scheme(dev_mgt);
-> +	if (ret)
-> +		goto err_destroy_map;
-> +
-> +	ret = nbl_dev_request_mailbox_irq(dev_mgt);
-> +	if (ret)
-> +		goto err_destroy_map;
-> +
-> +	ret = nbl_dev_enable_mailbox_irq(dev_mgt);
-> +	if (ret)
-> +		goto err_disable_irq;
-> +
-> +	return 0;
-> +
-> +err_disable_irq:
-> +	cleanup_ret = nbl_dev_disable_mailbox_irq(dev_mgt);
-> +	if (cleanup_ret)
-> +		dev_err(dev_mgt->common->dev,
-> +			"rollback: disable mailbox IRQ failed: %d\n",
-> +			cleanup_ret);
-> +	nbl_dev_free_mailbox_irq(dev_mgt);
-> +err_destroy_map:
-> +	/*
-> +	 * Destroy device-side MSI-X map BEFORE releasing kernel-side
-> +	 * vectors.  This masks all hardware vectors and clears the
-> +	 * pcompleter map entry, so no MSI-X message can fire after
-> +	 * pci_free_irq_vectors() releases the vectors.
-> +	 *
-> +	 * For non-control PFs this is a polling-mode mailbox RPC
-> +	 * (IRQ_RDY already cleared by disable above, or never set).
-> +	 * If the RPC fails the device may remain armed; pci_clear_master()
-> +	 * in nbl_remove() is the final safety net.
-> +	 */
-
-[Severity: Low]
-Is nbl_remove() actually reached on this path?  A nbl_dev_start() failure
-propagates through nbl_core_start() into nbl_probe(), which does
-`goto core_start_err` and falls through to the adapter_init_err label:
-
-	core_start_err:
-		nbl_core_remove(adapter);
-	adapter_init_err:
-		pci_clear_master(pdev);
-		return err;
-
-The PCI core does not call .remove after a failed probe, so the safety net
-described here appears to live in nbl_probe()'s error label rather than in
-nbl_remove().  Could the comment name the label that really runs?
-
-> +	cleanup_ret = nbl_dev_destroy_msix_map(dev_mgt);
-> +	if (cleanup_ret)
-> +		dev_err(dev_mgt->common->dev,
-> +			"rollback: destroy MSI-X map failed: %d\n",
-> +			cleanup_ret);
-> +	nbl_dev_clear_interrupt_scheme(dev_mgt);
-> +err_cancel_work:
-> +	/*
-> +	 * destroy_msix_map() polling send may requeue clean_mbx_task.
-> +	 * Drain before returning on all rollback paths.
-> +	 */
-> +	cancel_work_sync(&common_dev->clean_mbx_task);
-> +	return ret;
-> +}
-> +
-> +void nbl_dev_stop(struct nbl_adapter *adapter)
-> +{
-> +	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
-> +	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
-> +	int ret;
-> +
-> +	ret = nbl_dev_disable_mailbox_irq(dev_mgt);
-> +	if (ret)
-> +		dev_err(dev_mgt->common->dev,
-> +			"Failed to disable mailbox IRQ: %d\n", ret);
-> +	nbl_dev_free_mailbox_irq(dev_mgt);
-> +
-> +	/*
-> +	 * Destroy hardware MSI-X map BEFORE releasing kernel-side
-> +	 * vectors.  Masks all device vectors and clears pcompleter
-> +	 * map entry first; pci_free_irq_vectors() then runs with no
-> +	 * possibility of a stale MSI-X message arriving.
-> +	 */
-> +	ret = nbl_dev_destroy_msix_map(dev_mgt);
-> +	if (ret)
-> +		dev_err(dev_mgt->common->dev,
-> +			"Failed to destroy MSI-X map: %d\n", ret);
-> +
-> +	nbl_dev_clear_interrupt_scheme(dev_mgt);
-
-[Severity: Medium]
-Does the code above match the comment when nbl_dev_destroy_msix_map()
-fails?  The failure is only logged and pci_free_irq_vectors() runs anyway,
-so the device-side pcompleter map entry stays valid and the vectors stay
-armed while the host side releases them.  The same applies to the
-err_destroy_map path in nbl_dev_start().
-
-On a non-control PF that RPC can return -ETIMEDOUT, -EREMOTEIO or -EPERM
-whenever the manager PF cannot answer (PF0 unbound first, lost ack,
-responder error).
-
-The fallback named in both the comment and the changelog also looks like it
-runs too late.  In nbl_remove():
-
-	nbl_core_stop(adapter);
-	nbl_core_remove(adapter);
-
-	pci_clear_master(pdev);
-
-pci_clear_master() only executes after the vectors are already freed.  And
-nbl_res_intr_cfg_msix_map() tags the map-table DMA with the control PF's
-BDF:
-
-	/*
-	 * cfg_msix_map uses the control PF's own BDF (common->hw_bus etc.),
-	 * not the target function's BDF. ...
-	 */
-	hw_ops->cfg_msix_map(..., true, official_tbl->dma, common->hw_bus, common->devid, common->function);
-
-so can clearing bus mastering on the departing non-control PF quiesce that
-DMA at all?  Should the teardown either retry or keep the vectors until the
-device-side map is confirmed destroyed, and should the comment and the
-changelog sentence "pci_clear_master() in nbl_remove() provides the final
-safety net if a teardown RPC to the manager PF cannot complete" be adjusted?
-
-> +
-> +	/*
-> +	 * destroy_msix_map() sends ack-requested messages which may
-> +	 * requeue clean_mbx_task via polling send path.  Drain work
-> +	 * after the operation.
-> +	 */
-> +	cancel_work_sync(&common_dev->clean_mbx_task);
-> +}
-
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-> index 9896c1b49be2b..02cb35d32012f 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-
-[ ... ]
-
-> @@ -127,7 +137,13 @@ static int nbl_probe(struct pci_dev *pdev,
->  		goto adapter_init_err;
->  	}
->  	pci_set_drvdata(pdev, adapter);
-> +	err = nbl_core_start(adapter);
-> +	if (err)
-> +		goto core_start_err;
-> +
->  	return 0;
-> +core_start_err:
-> +	nbl_core_remove(adapter);
->  adapter_init_err:
->  	pci_clear_master(pdev);
->  	return err;
-
-[ ... ]
-
-Thanks for considering these.
+The early return itself looks necessary, since restoring under an attached
+consumer is what would make phy_disconnect() free an unrequested IRQ.  Could
+the skipped restore instead be completed in phy_detach() right after
+phy_link_change is cleared?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260907123848.30256-1-illusion.wang%40nebula-matrix.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260908155025.4155289-1-f%40lex.la
