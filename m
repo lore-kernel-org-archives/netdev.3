@@ -1,166 +1,165 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90C8377AA8;
-	Fri, 11 Sep 2026 12:11:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789128685; cv=none; b=fjpooV4DiKggIAPVPm2aqwWyT6F54KzqSLSsZ4auNeH/fwzfaaxWVVSOgUtSF+5nzexnupzCfQmEqZW8jWlxKFkcPF76+Dz9zXgxa79jftsKXOluU2YU5W95i1LV1oq8U4jN0VEoZn7NNRAcLuFR/t9sLChlPguxdr+GvIad/pI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789128685; c=relaxed/simple;
-	bh=qWvAj6q9qff1XmQhQodWtBa490kcfZfg8aWpElwKVg8=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=r/VcBwQb7UmDWvj2Ll48gEV4CcYgCqTE9mrCRSWhxwnJXW3+R6NzY4ljwQ8UE38p3ESL/sTSk4eReHm+27XdDrTzA8+Xn/j/C6QrDoiiAaZQZZRkxhYJQKTBndX99po1H9uA2vWDy5jnMJZSMwBI8G9suAY8tiP5TMUYrrsX5Lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=jtAVBmD8; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE89746E006;
+	Fri, 11 Sep 2026 12:19:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789129180; cv=fail; b=jtPVCNgOWPypqQoPvR5qMQPEhylyRWmSUwWX6unCnMorivOtq9Hnj6xIJBd7Xnmtb83yYqm0jY2PE/xmWxrUlgiyhcreJuYAsuI9QyTm9/SU8s7MgTcvDzr9ackFXjlmtz0wnDNwxwHxkJKfE/bR7knFr/AZa6tAUqIUUhxuATE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789129180; c=relaxed/simple;
+	bh=w2xaXfcwBVN/wkbQuo0hNB8E1QdY4zElje1Mih9a/vE=;
+	h=Date:From:To:CC:Subject:Message-ID:Content-Type:
+	 Content-Disposition:MIME-Version; b=gn4KdSu9zE8j2VvmYGbgD181R0RfYcg0YVcZ/HCSSsP4iFldu1+jQuLkIytyEpZ6V43PDN3ksKxl/l5jmHTY6HyN9vnLuxrdhBlzZVP6uYSKWLBX1HZjdm95pn6XgeIOJ55KtzEKR8TAFdpdaYiuCRC60+CYFpEGYUkZnQ7hJ/E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KIHYiY3n; arc=fail smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="jtAVBmD8"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 87FD6A8F56;
-	Fri, 11 Sep 2026 14:11:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1789128680; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=q+wUGVC84NcfVhc1UyBgX5sHnxJ8szuBZMCoF16InyM=;
-	b=jtAVBmD8siFhUXI+RrN57Qg6ElzrMbhxWmTemCn17cTimDy9qiBfCHtH/dwFMYJApeq9mF
-	Hxe8PFsKjhhfV5DD1Niao2ZNrYsP+x61nnKMrRVvzavrmAJPpwOXOdZZfFF5UsBYzsJJh0
-	W79oI6dmlGzrG1wye5l+062wmTaPol60QkDeKtRMO9yFz8NHEA67sWFDeB0zoVJsBT/DPU
-	0CDS5htywcXHOwFBZS0dpQvboEfVheU5AbYuBKdE5ywOtiGQFsFmQ18jj6UFKkn1UuThMD
-	eb5eK7LBPElB5J7baBgLiTqiB2bB00w1O306WRn32VPhRUonk10Ie9OzIzfu+A==
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KIHYiY3n"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789129175; x=1820665175;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=w2xaXfcwBVN/wkbQuo0hNB8E1QdY4zElje1Mih9a/vE=;
+  b=KIHYiY3nwfp4atzUQIP/biGmcle70N3Yg0E2NBI0t7ucF7UPIH9eIa8J
+   IcHxg2GiNJfjNGZk86Kfg8RQuuxazD8QlPt7E0S0nwvwUOR2Iu7dQnB4A
+   D6CWa/WQXvKELRmDXWy8OqPkvOwbDljInLZzIfH4ZTqbJ47xJVyjxhcNi
+   fOz0fyPH/yse9Q/FrgIJslfUrOJgbeXwNciaSND71zrC20lLeQc4yyLtj
+   7RAO7b3hlAVmzXn6nNi4IeZcl9FQxcLL+/gKMnIpR7GvecNRteuI4A5aj
+   ZsvJsH6iiJICKT+O9fQdba4GmaEIR5lqLvLzATs1GCyVvJPLNq4/A23Fl
+   A==;
+X-CSE-ConnectionGUID: pIApi/NrTZCqKTFasN4nrQ==
+X-CSE-MsgGUID: /3t8jf0ySbeHoYSolviobg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="100253899"
+X-IronPort-AV: E=Sophos;i="6.27,97,1787036400"; 
+   d="scan'208";a="100253899"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 05:19:31 -0700
+X-CSE-ConnectionGUID: +QF57FxGRdqurCrUvG7Kzw==
+X-CSE-MsgGUID: 94khLlHwTmmzAqFmHKHISg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,97,1787036400"; 
+   d="scan'208";a="270530759"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 05:19:32 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Fri, 11 Sep 2026 05:19:30 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Fri, 11 Sep 2026 05:19:30 -0700
+Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.36) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Fri, 11 Sep 2026 05:19:30 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rc65kzunv0fSI9aaI/D3X5WDUnJ8MTlTdJd470W5peGSjuHIOrsk0GZTkVz+25Hl0cwVMlG3tgUqx+rEf3sp8cDAKSt0iZurcLD0QmYQBjAFmu1gG+RPppAalegAYHBZAPE2NtiVPwmd6KaYXYhejt5O8WBXp89gA1BSoIvlYsqTidlVFALhxoMB6t3OIY+XBZ0JzxaW4Pk5QBicBXLQbdleqUP+AGNkGKBUcJ95hppPtIBDzZnYnr5K88YM6cVmGMoAKk9H1DOce1PIJdklpb/8/1zLBPVon7Ys2iYtxEpLYNIPdZfCTUKX+jRSqlOwkZmAnQVyyPQFcJfN+taaFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=w2xaXfcwBVN/wkbQuo0hNB8E1QdY4zElje1Mih9a/vE=;
+ b=flklzMXsXcTMrPf70eonQRit9KBXeRCGe2NedWob+QfqIX6g/27zEW4zRa03fDB6MccGFBmIutQgSXExPa4p0YH5ektgMUPjUpq2ZbgG2Cf/4Y2kYkZm/nhW+9bEBt0OBMSsidXXzVACg34UOfHW7qPSEuNiNIYa+QgCrZc6REIhH7Y4MgthbzJjUftRwyhHn9fQmPlYEiDdAEHw1SAk/Q2Uv//K6BFwje5XvncbB1R1sV9g5vnVaTG0OCPDJAiwZXl8oJWHNqG5zu9DOfguqmMPS4CzwA+dmqLBX294WxH9QBWR3G/6Ww1YJgGrC1EN4uLFLYKTKU5Qp5QB1S3kTA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM4PR11MB6117.namprd11.prod.outlook.com (2603:10b6:8:b3::19) by
+ IA1PR11MB7889.namprd11.prod.outlook.com (2603:10b6:208:3fe::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.10; Fri, 11 Sep
+ 2026 12:19:28 +0000
+Received: from DM4PR11MB6117.namprd11.prod.outlook.com
+ ([fe80::d9b3:e942:2686:3cdd]) by DM4PR11MB6117.namprd11.prod.outlook.com
+ ([fe80::d9b3:e942:2686:3cdd%6]) with mapi id 15.21.0382.014; Fri, 11 Sep 2026
+ 12:19:28 +0000
+Date: Fri, 11 Sep 2026 14:19:17 +0200
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+To: <netdev@vger.kernel.org>
+CC: <bpf@vger.kernel.org>, <magnus.karlsson@intel.com>, <bjorn@kernel.org>,
+	<sdf@fomichev.me>
+Subject: [ANN] AF_XDP office hours
+Message-ID: <aqPxxX9MeGmAqGy6@boxer>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+X-ClientProxiedBy: DUZPR01CA0031.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:468::16) To DM4PR11MB6117.namprd11.prod.outlook.com
+ (2603:10b6:8:b3::19)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 11 Sep 2026 14:11:18 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Linus Walleij <linusw@kernel.org>
-Cc: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>, Simon Horman
- <horms@kernel.org>, Russell King <linux@armlinux.org.uk>,
- netdev@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next v12 3/4] net: dsa: microchip: Support Microchip
- KSZ8995XA / KS8995XA
-In-Reply-To: <20260911-ks8995-to-ksz8-v12-3-5c3422d0d72e@kernel.org>
-References: <20260911-ks8995-to-ksz8-v12-0-5c3422d0d72e@kernel.org>
- <20260911-ks8995-to-ksz8-v12-3-5c3422d0d72e@kernel.org>
-Message-ID: <6fdac2ceffe33e0ee02b8a6768bf7492@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR11MB6117:EE_|IA1PR11MB7889:EE_
+X-MS-Office365-Filtering-Correlation-Id: b3c901cf-18f2-4aff-848c-08df0ffeec98
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|23010399003|1800799024|10067099003|11063799006|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info: E8gfVQiAHsPIhu759s01LE90ToYMmnBFZD3oVAHrsUOCPzmm2wDpk6iTJDECuraQKP/HgzWJgUncOpZ8wbSJqleuJhc86QdZBoEa2gtluoiBWoZZwFjNVE73z90kSU2wJRcJ8AnfNNByRzzqBhmB4j3UyhBD6jdN0K97BTVaGgy34mgKfM46drke+AiKQJYgA6ZQ7pS8ZYnEjqgrxIF6JhDQrWhJpAEGA8Pogtd70FWn18MVg+xn1bONRbAG2cARsKkh3sMAI+/fGP5UsvNzFJDIZtNMr3HqqzEwP3E2deNSulVlgxvUziRzCQtqygSGcVwtPq+LtenFMBHUiHLkqFT25whQCwkaU9agWP6rxUiF46tWeSbKssJ2f6U8cVJR+UgR8EZI8vZalCa8Za1tWESEfSA/30sB0Qg68JwQMnMx+PhiWwg4TbOpbrY2qKk0YY70Vi4dXFHB937CSAMtkgsInzJg4NCGq5IN9Z0LPocAxqRswP/bpttHC1EL96O9uLIyLAy2W+fL3aeUH0T1ssQCs1PttawCHPZv4u8hU/0Xc2hlI3Vd0BVhl2KMAQ3nktcIyNXVqFfs2diduoGV0MatmPlEANf9XL6IzFyrbF1nQG+IJjZzsMUtxtGrd3mQ
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6117.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(10067099003)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?x9nf3v7J0cOhLamSn5lQf47UMc6LFzYXGmpB3uDWWMB1kYDLnbzs9TCIA4Hz?=
+ =?us-ascii?Q?KY0rBBaOrYkrlWw4ySiNArhkVNM1MNHwAsCam3IRnJ7rBLvK/ei4decW0eMw?=
+ =?us-ascii?Q?mfgGPsmAY5sQI9LY4CF34xEGB8PZunIHf0FTXY8Kk2yCB0p/+8NHNvLfJW76?=
+ =?us-ascii?Q?IHpTdilCpmXYS0TeHIhmN68eiP0EYCESJu9EaPDAwGHLPiIjB2B+r/631eHc?=
+ =?us-ascii?Q?S69pUKrs4aB/+E0+0e/XMdjaFqLy3qcRiM52pS9X8U51iniNfoJZv0xPwXMn?=
+ =?us-ascii?Q?5l+TLA1hA+Z/eYqpKqaXi6Mt9XSx7kPmlpVEdaRW6n4N0JJnhSgULKgvEgwz?=
+ =?us-ascii?Q?GzzBFzB+pe3mVNYSk3KGpQImPfm5T5vlHjuvJhlHwAMy5sIkLH886cg5mBb8?=
+ =?us-ascii?Q?eGYbX55D4bTDyecWxMc2nqYKGWBDKW3RYTPfHBTQqkYst0FHWfVUqjkNrKfx?=
+ =?us-ascii?Q?0x8HFXqtY6scfTky5QDI/XdMiVUxZsr36SiPSdX/O319H1FFVIPjEMSmSlwW?=
+ =?us-ascii?Q?+yjIcXthFmnwy6uQ0fl96gErzTccy8IVd97al9inYpm2VtINr3ugVXtsTiXb?=
+ =?us-ascii?Q?DYLsdNck6Z9EYmL3DxbCr5WELXMpCsP76mMHRrmsnNrG1i5UDRUcyM2T0TkW?=
+ =?us-ascii?Q?UVWX5nLXHQNXALNJ7OZv4svTgISmDnP87m1BEuUiFm0w48vNTvFb+oDu2mr+?=
+ =?us-ascii?Q?LmYYs/hFuF6L3TPus3ZobNsqqJF8tdJQd4ghPgVGhMVl0MiIRyGQ+t4qhjtG?=
+ =?us-ascii?Q?i8na4Ni+Eiy4FF92MMhij1E28vcKn9vjFmGlEoXoh/Uzu3hdxYoGGlvPZzWR?=
+ =?us-ascii?Q?yNrWbPTLW0SKCDBsLtIZOm4+DDIIq4CevjQo3s3m3kXF+UUzBPqL3YtQAo4e?=
+ =?us-ascii?Q?8ux41DJ4vcTif0GypnbQbcZtfczBssi6k8bBeAWwU8tuJ9GjwYbs97481lS8?=
+ =?us-ascii?Q?OHap4mvqfhXS3cXiG1mOphPP/VGmEEqkoj9AeA7x5Arad6jS6Dhlbr8gcvs9?=
+ =?us-ascii?Q?kOIGNY/lj8GJuPSPP5FMWrNDNuz1u20j6W2cW9BcHmjfehzNL//oRyfcPXd1?=
+ =?us-ascii?Q?THFQY72h3A2VQliEI05Ac6PE940kFx861v2RZy7/KV89ioHhi3YnQBoKTtK5?=
+ =?us-ascii?Q?pvIL8FvgSRnXoeNov8evXsBR81FNg98cKSNu2+awfq86UIPjfMkH4nWw2J+E?=
+ =?us-ascii?Q?MupoQa8R8K7IlwOjttyVu94Rd0aqhYjjeFuiF7agiTCySOfTfP1z0P9zgNib?=
+ =?us-ascii?Q?eG4f1LUeLmsjPnnWv1fwXbosOZVcj8rL/2QPKNvv8ELOBFHeC8FXy/PRO48a?=
+ =?us-ascii?Q?/BjIOv+DfazS2w7sRDnNNPWSVVxVd5+cwl7JaH/qZoBVmpN3Ewy0O2WqhpEV?=
+ =?us-ascii?Q?bd1zMyH+XydKNIUiOscxHjF+VMYB2BN0C6xpbj8LmOOfwjx53TMGRidtQUUF?=
+ =?us-ascii?Q?Rdo7KTmz+BdXLXnS7Brb/a2+cNut08ei/vb2Qe4L95lSkGnscv2jCgeTSHFs?=
+ =?us-ascii?Q?jSo92ftbyvLD1W/pmQ/9EQWrD8ipjp5IFqjUlZFC8ODV5dLGhH3mjCDHbfjz?=
+ =?us-ascii?Q?UK8h9KUmJS+yIXO8jLw/ovoenxmitMM49a8ZdlofwN4ptm0s471kID4/J6xv?=
+ =?us-ascii?Q?t5KG6jYpf7sOzI4ldiwtkokQQIip5f7WwB+Ah4SNaPbg/4G1FPWU8NVn4PZ5?=
+ =?us-ascii?Q?NFmZoi3SSeRWBN7viqrxIW8ZRAOJu9sDYp8lucevs42EdjDzdIgFdmaAI88L?=
+ =?us-ascii?Q?T6ZumU8ERyBZD/VTpqQiU6zSEIs5c+s=3D?=
+X-Exchange-RoutingPolicyChecked: qhEe0LeSreX7WCiqjfakFn+MCr4piqkZA/VilqFCE8dknBIdFX9G6Pn/60cXseY6Xyi0pXXWj3QVWkKVz7FQ5tSzLdURgRVSL6pUuWMTOzOC/bdevH1mLVFj97eJdcsaaKZNCFCCLniT27B0cdrTCcvc1qMSCgY7+JiisbcvKhWsuKZtvWUKFtFstB66AMJITZuaiY8q0rOFKI/bRNol8VxzsZt0jKtmsCYcOvBwcSSjpTDYfxQN06lrtmySljWcIoE/1vu4t269bCS1Y9n5ja8vAzVKCYmkSGCwzCPsCgvViWBJNkcF9JQ19Ch0Mh6hTYheBiRSsxu3yuwNxy/n3w==
+X-MS-Exchange-CrossTenant-Network-Message-Id: b3c901cf-18f2-4aff-848c-08df0ffeec98
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6117.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2026 12:19:28.2126
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lBm57I1eFzaJtzRPgUT4zmsg/qdJ0lcSLBRqqDEIsH+fG3m+usdShLP4qv2pE/U9mR4Wvq1uDIqjT0Eh4WNSkGAGP5OWbhHY0nupdTnj9i4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7889
+X-OriginatorOrg: intel.com
 
-Hi Linus
+Hi!
 
-On 11.9.2026 11:09, Linus Walleij wrote:
-> This adds support for the Microchip KSZ8995XA also known as the
-> Micrel KS8995XA switch to the KSZ driver.
-> 
-> The KSZ8995XA shares family ID 0x95 and chip-ID nibble 0x0 with
-> the KS8995MA, so hardware detection cannot distinguish them. The
-> legacy "micrel,ks8995" compatible is therefore treated as KSZ8995XA.
-> No KS8995MA users are known, and KS8995E has no documented SPI
-> management interface. Neither MA nor E has been verified with this
-> driver.
-> 
-> The helper macros are named ksz_is_ksz8995xa() to make it
-> possible to add E and MA support in the future.
-> 
-> Wait for the self-clearing per-port PHY reset bits before continuing
-> with switch setup. Poll each port for up to 600 ms and allow an
-> additional millisecond for the PHYs to settle.
-> 
-> The KSZ8995XA has eight global TOS priority registers with one
-> bit per DSCP code point, providing two internal priority levels.
-> The registers are ordered in the opposite direction from the
-> other KSZ8 switches. Describe the two priorities in the chip
-> data, then augment the DCB helpers for this.
-> 
-> Practical testing also shows that its packet-size control bits use
-> the same semantics as the other KSZ8 switches. The polarity in the
-> manual appears to be wrong and makes the switch hang on big packets.
-> 
-> The legacy KS8995 driver also matches the Micrel compatibles for
-> KSZ8864 and KSZ8795. Add these to the KSZ SPI driver here and use
-> an exact tristate dependency to make the drivers mutually exclusive.
-> This transfers ownership atomically, avoiding module probe races and
-> gaps in driver coverage between patches.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Linus Walleij <linusw@kernel.org>
-> ---
+We feel that there are efforts on various sides related to AF_XDP
+development so we thought it would be nice to have a mechanism to have
+cross-company syncs or discussions.
 
-> [...]
+Therefore, let us introduce AF_XDP office hours. Plan is to have a meeting
+every Wednesday 9am pacific time. Similar to what BPF did, we're gonna
+have a public spreadsheet where people can put topics for discussions:
 
-> diff --git a/drivers/net/dsa/microchip/ksz8.c 
-> b/drivers/net/dsa/microchip/ksz8.c
-> index 941ae9f66f70..4acce01ca063 100644
-> --- a/drivers/net/dsa/microchip/ksz8.c
-> +++ b/drivers/net/dsa/microchip/ksz8.c
+https://docs.google.com/spreadsheets/d/16GL6AbdjDyT81cJ3-qUnYvFxqO-RlhtYTS68bfQQDbw/
 
-> [...]
+At this point we are planning to meet even though agenda is empty for
+given week, this might change in a future.
 
-> 
-> +/*
-> + * Restricted operations for KSZ8995XA, so many things are not 
-> supported
-> + * by this old switch that we need diet DSA operations.
-> + */
-> +const struct dsa_switch_ops ksz8995xa_switch_ops = {
-> +	.get_tag_protocol	= ksz8995xa_get_tag_protocol,
-> +	.setup			= ksz8_setup,
-> +	.teardown		= ksz_teardown,
-> +	.phy_read		= ksz8_phy_read16,
-> +	.phy_write		= ksz8_phy_write16,
-> +	.phylink_get_caps	= ksz8_phylink_get_caps,
-> +	.port_setup		= ksz8_dsa_port_setup,
-> +	.port_bridge_join	= ksz_port_bridge_join,
-> +	.port_bridge_leave	= ksz_port_bridge_leave,
-> +	.port_set_mac_address	= ksz_port_set_mac_address,
-> +	.port_stp_state_set	= ksz_port_stp_state_set,
-> +	.port_pre_bridge_flags	= ksz_port_pre_bridge_flags,
-> +	.port_bridge_flags	= ksz_port_bridge_flags,
-> +	.port_fast_age		= ksz8_flush_dyn_mac_table,
-
-
-KSZ8995XA datasheet [1] (table 4-2) states fast-age enable as reg 0x03 
-bit 1,
-but ksz8_flush_dyn_mac_table() sets reg 0x02 bit 5. It needs an override
-similar to the existing one for KSZ8463, but accounting for XA's 800 us
-ageing time.
-
-> +	.port_mirror_add	= ksz8_port_mirror_add,
-> +	.port_mirror_del	= ksz8_port_mirror_del,
-> +	.port_change_mtu	= ksz8995xa_change_mtu,
-> +	.port_max_mtu		= ksz88xx_max_mtu,
-> +	.port_get_default_prio	= ksz_port_get_default_prio,
-> +	.port_set_default_prio	= ksz_port_set_default_prio,
-> +	.port_get_dscp_prio	= ksz_port_get_dscp_prio,
-> +	.port_add_dscp_prio	= ksz_port_add_dscp_prio,
-> +	.port_del_dscp_prio	= ksz_port_del_dscp_prio,
-> +	.port_get_apptrust	= ksz_port_get_apptrust,
-> +	.port_set_apptrust	= ksz_port_set_apptrust,
-
-If I read the datasheet correctly, PCP and DSCP priorities are or-ed,
-but ksz_port_set_apptrust() accepts both to be set (with PCP taking 
-precedence).
-Not sure if this would break anything though ...
-
-The other things look fine to me.
-
-> +};
-> +
-
-> [...]
-
-[1] 
-https://ww1.microchip.com/downloads/en/DeviceDoc/KSZ8995XA-Integrated-5-Port-10-100-QoS-Switch-DS00003677A.pdf
 
 Thanks,
-Nicolai
+Maciej
