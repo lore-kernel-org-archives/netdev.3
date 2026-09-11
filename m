@@ -1,76 +1,81 @@
-Received: from mta0.migadu.com (out-156.mta0.migadu.com [91.218.175.156])
+Received: from va-2-26.ptr.blmpb.com (va-2-26.ptr.blmpb.com [209.127.231.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F94D3839A0
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 06:40:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C935E43A7E9
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 06:42:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.26
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789108837; cv=none; b=NAcooxPjD2N8lEgzWAa6q0VxeTj3PCm+0S72BUYgZN8gOfhQl1t5voH49VKkgRi4t9rxRM3oP7D1ikTdsmmSHgrchx5OKK0gZ1WC1vq+CUA3FOvmE0CrJwgQkpz8zsYXd8jWKnq72lwow+JL7xlqGBC0TQJ2+GVh+Rt1kxHdw1k=
+	t=1789108953; cv=none; b=bZ+xEf4LwKCEaUZ9jj49dviVT5LbUbDHgNbyqv2s1yZHgsBTDGdwwpdzHCcXtrl2hFtU/5rogdEkIurDTsNIxrXq8u4B+hakwjn7xLRmi8qXx50yUwsgeeaVeLlRC9VIDsoPAaU1XrlvGC+f3v+gGgJQAWKFGJhG/ugQ0+/s350=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789108837; c=relaxed/simple;
-	bh=DRgM2sZR9+U2TYq2r7Swte23UdF70NogfAQ1RXcZ558=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BlajxLvBjWkJEImF4b+bnZXkx3SWPtD9LYFB9O87Fs6jwJtxhcmLRf0ip6mfQngufvZCX+bjCmFuOlrqu/LPBV7FAaXIzbx0QOoxfTzkQu22D7migv1hGCiuAzCFzsgYFMjC4B6o8HEPkPWzOw7AL6KL2FqUIB30iqNi1YoLzNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=XqojSlfy; arc=none smtp.client-ip=91.218.175.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1789108953; c=relaxed/simple;
+	bh=rIdd17wtFJwx3gqbO/dMeKlTkfLS/Hgoze/PYnQOJro=;
+	h=References:From:Content-Type:To:Cc:Message-Id:Mime-Version:
+	 Subject:Date:In-Reply-To; b=iq7L8Kkb44L2LZWs4lfcZBZn/75SJJDNazLedir4lJen2GW9iG3ItmiVnlqrXLK+RA3LUsDORsiUs9ZYH9PkfsTnZvp2aDXe6KGDtVMi9ZctyQOnS2i1NOcvGrmaEkijxOEW3hALqqBs5XTvv+9F8QIWSki3p0gkrbXk7zcVud8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=moonshot.ai; spf=pass smtp.mailfrom=moonshot.ai; dkim=pass (2048-bit key) header.d=moonshot.ai header.i=@moonshot.ai header.b=WTzgbTYx; arc=none smtp.client-ip=209.127.231.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=moonshot.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=moonshot.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="XqojSlfy"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=DRgM2sZR9+U2TYq2r7Swte23UdF70NogfAQ1RXcZ558=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789108826; v=1; x=1789713626;
- b=XqojSlfymz8jHdYj36Y+bB1kVE/4I8LUpjQdpke5hooDot2DPtCEU03O5ji0xRmnRfM5n52Q
- BJDCP3mUjW8lYc4ycyBH25v6r7h66xkYx5ix7em0FcsswIXWwO0tCXxlrK1iGUSMqcS1RDlfnPY
- 6V70P42BFu2aPciz5nVdTPic=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 1cdcfac8cafa065e;
-	Fri, 11 Sep 2026 06:40:22 +0000
-X-Mizu-Trace-ID: 1cdcfac8cafa065e
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <a9099104-3348-4df5-ade6-25d9503bc74d@linux.dev>
-Date: Fri, 11 Sep 2026 14:40:11 +0800
+	dkim=pass (2048-bit key) header.d=moonshot.ai header.i=@moonshot.ai header.b="WTzgbTYx"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=feishu2510091218; d=moonshot.ai; t=1789108931; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=rIdd17wtFJwx3gqbO/dMeKlTkfLS/Hgoze/PYnQOJro=;
+ b=WTzgbTYxEgJJJM05kfU6eMb65R7k/qRCinS5rWdpB8O8TKIaKbhz/ARZ7Q09vZqu9xKLLu
+ 7NF8ZszLLXbt3UOUncNevqz4wPAPOlJfksAnSCDeytyjbMNZD3Ot3+fW0I4xNNx/Ka1AAz
+ RBivUaLT3XkwKBN/g3aulEJ1hBvrRNgYWTiOYz5AhLT3mYpA7nRfuxtxGi0+XWdGtqO+Hl
+ VpQJgEBtGNknZQM32cf3ihIXsalAU3i2dMO4KCuS7CaWpICc1Jq2Ckvac2PmRE17QRKWdY
+ Tmijgydu569zMU2AFo6gt2/A1o+553y0uz1ZwqROQbWiG/BeBCfD7Y5bzkdhrQ==
+References: 
+From: "Yilin Zhang" <yilinzhang@moonshot.ai>
+X-Lms-Return-Path: <lba+26aa3a2c1+95f80a+vger.kernel.org+yilinzhang@moonshot.ai>
+X-Original-From: Yilin Zhang <yilinzhang@moonshot.ai>
+X-Mailer: git-send-email 2.34.1
+Received: from dev.msh-dev.svc.cluster.local ([117.157.206.135]) by smtp.feishu.cn with ESMTPS; Fri, 11 Sep 2026 14:42:08 +0800
+Content-Type: text/plain; charset=UTF-8
+To: "Jiayuan Chen" <jiayuan.chen@linux.dev>, 
+	"Paolo Abeni" <pabeni@redhat.com>, 
+	"Matthieu Baerts" <matttbe@kernel.org>
+Cc: "Yilin Zhang" <yilinzhang@moonshot.ai>, 
+	"Mat Martineau" <martineau@kernel.org>, <netdev@vger.kernel.org>, 
+	<mptcp@lists.linux.dev>, "Kimi Security Team" <bug-report@moonshot.ai>
+Message-Id: <20260911064201.46922-1-yilinzhang@moonshot.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: reject a forward path that loops back to the
- tunnel
-To: Farhad Alemi <farhad.alemi@berkeley.edu>
-Cc: falemi@asu.edu, Simon Horman <horms@kernel.org>,
- Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
- netfilter-devel@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, David Ahern <dsahern@kernel.org>,
- Ido Schimmel <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-References: <CA+0ovCj+Pd5owGH+51rA8-RDu9YFx5oYUv8bV0zOE72QgVfY0A@mail.gmail.com>
-From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
-In-Reply-To: <CA+0ovCj+Pd5owGH+51rA8-RDu9YFx5oYUv8bV0zOE72QgVfY0A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Mime-Version: 1.0
+Subject: Re: [PATCH v2] tcp: fastopen: check rsk_drop_req() in tcp_fastopen_create_child()
+Date: Fri, 11 Sep 2026 14:42:01 +0800
+In-Reply-To: <845b1b97-706f-42f8-b08c-90e863edef0a@linux.dev>
 Content-Transfer-Encoding: 7bit
 
-> ipip_fill_forward_path() and ip6_tnl_fill_forward_path() assign the outer
-> route's device to ctx->dev without checking that it differs from the tunnel
-> device itself.  When a tunnel's outer route resolves back to that same
-> tunnel, the walk in dev_fill_forward_path() makes no progress and trips its
-> loop check WARN_ON_ONCE(last_dev == ctx->dev). Release the route and
-> return -EOPNOTSUPP when the resolved dst device equals ctx->dev, so the
-> path walk either advances to a different device or fails cleanly.
+Hi Jiayuan, Paolo, Matt,
+
+On 11/09/2026, Jiayuan Chen wrote:
+> Should we accept this subflow ?
 >
-> Closes: https://lore.kernel.org/all/CA+0ovCgaRvbd0Udj70b2xxG8Cx3CaCpNhnf1V4RWQuDveZYZhA@mail.gmail.com/
-> Signed-off-by: Farhad Alemi <farhad.alemi@berkeley.edu>
+> It's just a SYN with MPJ + valid fastopen cookie, replying SYNACK
+> and fallback to 3-way handshake may be easier.
+> (I'm not sure whether RFC define it or not.)
 
-Please add the missing Fixes tags. These appear to be the relevant
-commits:
+This looks good to me. Falling back like this is also standard TFO
+behavior (RFC 7413, sec. 4.2.2), so IIUC the RFCs don't object.
 
-Fixes: ab427db178858 ("netfilter: flowtable: Add IPIP rx sw acceleration")
-Fixes: d98103575dcdd ("netfilter: flowtable: Add IP6IP6 rx sw acceleration")
+On 10/09/2026, Paolo Abeni wrote:
+> If so mptcp should reject entirely MPJ + fastopen and no addtional
+> code required on the TCP side.
+
+With Jiayuan's SYN-flag check in subflow_syn_recv_sock(), we can do
+exactly that: return NULL there, and tcp_conn_request() falls back to
+the regular MP_JOIN handshake. No TCP-side changes needed.
+
+> A minor process note: the changelog should come after the tag area
+> and a '---' separator.
+
+Noted, thanks for the reminder. I'll draft a v3 shortly along these
+lines.
 
 Thanks,
-Xuanqiang
-
+Yilin
