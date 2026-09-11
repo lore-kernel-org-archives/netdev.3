@@ -1,137 +1,138 @@
-Received: from mta0.migadu.com (out-53.mta0.migadu.com [91.218.175.53])
+Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A2B3A4F5F
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 03:32:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325A33EC81A
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 03:32:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789097533; cv=none; b=gCKo9VogsXz92usx1lyS0oVsPX2hJjS1CJqFL0h3dVchZzZ/TeBwVbf6s6Y6gy07T87mG2LeoaFdvyaLJdkP3XPgST8r5Y7L6ueQIDnp3bRlt0ImHbMAc8mM54/qzRC1uMRhGvujvB9tdkaQVVevagPZJEgfAlmNxuNMHrQ8B2A=
+	t=1789097545; cv=none; b=i5saOZUIPeFE1no5RtzMiNtVeFyV6hBKOyjDlU2Wy5GRmeKryOh58Eepy69sX20TYr5WuOIZmi2ncp+znEQ8NBASS3N96H4lXp5y15AU2D4P7Tl+YZfgXof0mEtcs8J3vi+C3N5Su9TcTFPQaAU7CIJkGYz9KNvENdh/8UKLJuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789097533; c=relaxed/simple;
-	bh=DR0+fgEQrwNl6R1crdAoG7L+5iDGJklBvZ41CTFEp/M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZCzY2edee2yFNr5bemv5n4iRXUqtxx7xx6+27p9CrOj9gw8SxUJIQuizauZzbjMgeVGOspztBE/sP0vpmQj7A+dvGgldGW+X6+v074a5Q3TNhmexpSjO+/Y7XGqbhm579+yyw5rjI6tqcsGr5B0PEuMvxj1ZT8Zs36l66qmicko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qoA1uG67; arc=none smtp.client-ip=91.218.175.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1789097545; c=relaxed/simple;
+	bh=tTcdgtfkRdrrInk4x8w8aSGGE+X4ge2928bklO9RIEM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=auDVaOwm+HpCqP8viiVH6JnJ1xP5QMc2XXr+iyVq1ZEAR+MYWdRLm4lUBQ3TW9ZN472IKzq/ELIa7DqedelgCObMT+1FevVO3F7k0fNeAlqhBSnJXPQSRu3rOsx7CYm4rC32NSms/ox2djAjIIcuOgVp9P42l8GtM6pzTkRjKyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AGek2WNa; arc=none smtp.client-ip=74.125.230.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qoA1uG67"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=DR0+fgEQrwNl6R1crdAoG7L+5iDGJklBvZ41CTFEp/M=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789097525; v=1; x=1789702325;
- b=qoA1uG67tuH2V/YUydQlxDCPR9zjIj3a/LGNlNDgWWXwUQZT7fixtigFYebPcSgJs4GwCTw+
- DvA4lUBbhigolD5OUj5/QZ32t342GpUUJYCSYT6nimdlhbzaWhqa/fhqxYv5yxtWojSrg583ATb
- hZRDAZyONUTYEWnzDUxgcyBc=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta12.migadu.com with ESMTPS id 03ed5f65af5ab86f;
-	Fri, 11 Sep 2026 03:32:05 +0000
-X-Mizu-Trace-ID: 03ed5f65af5ab86f
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 11 Sep 2026 11:31:55 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
-	Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
-Subject: Re: [PATCH net-next v2] selftests: net: move log_test to lib file
- and remove duplicate code
-Message-ID: <aqN2K7rAm-S6QI86@fedora>
-References: <20260831-self_log_test-v2-1-eda2e8490cf9@kylinos.cn>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AGek2WNa"
+Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-90cdfc9b6e3so5056006d6.1
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 20:32:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789097542; x=1789702342; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=628v54VOGyoBAzqTpzRM1YpRZTIxWjHP4RZIO6itcPY=;
+        b=AGek2WNaZQBNZR6cbs9PdtuTlu256AZlOE0Nj7UCc7exC0d9XHgc3pWlfFOW0qFbGn
+         s98XTPxQvflF1KA4klCirXNYU4pejJLbfAtP1JmmCVwP0vYtB2bOhqLbfoH6SNQHN+5N
+         wj6D15dDGdBHDBctlPN/YGtEHIXUNhzmWiXKNYbPSP5zlVJoBHeykIeH1COuk0aKXSfx
+         Gwr4g42Xc5FSlIVheMIDoDF1ojC9E2RlyZ7VuQG/2ctNP1q09brwpdEMO67yXGyzqBM5
+         o7dx5k/dMn6UHmpTMhGiVYEbt32XEpc0mfNlf0E9emfIIG9+x7T4Gku3ZbpXRj7Q1sW2
+         Ru1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789097542; x=1789702342;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=628v54VOGyoBAzqTpzRM1YpRZTIxWjHP4RZIO6itcPY=;
+        b=DXdaWng0R12v7gT/WPY98FyZXKNuJLMaqIdqc40ftk9XxgMfPhPo8rGTXQUq0gB/4B
+         kpK+ajGA3ZeNy9w+zfL89CzTaVAl9ZYHJ6HVWh6jbX88vz2IbqpUrPLm4a0UA130sJoQ
+         fhbRK63n4nL1+R88SPm3daN2E+aDPXaC92UfCdV+hUEC87IZj5YEx8Nrb448IBTnmssV
+         3HQ1V5cTZ9aWViC//QxbnNnFoXRzB0ePjzCV2KN2FS8qYknkISSx3LU+XCNjFt6/hhpb
+         GWx8XKU/5gLY4cwkKh45uA1oiEf9BXu8ktXQxpIBsZqWMPJhf09lTaIr67ieqguoKS6K
+         gvUg==
+X-Forwarded-Encrypted: i=1; AKwUvBz74v+WABC3d+Ysrnr8jhncmNyhd+2vQ4ZlT8ROkcnlY8zvScZuAugt11p/0+RYX5NZ/8A3K50=@vger.kernel.org
+X-Gm-Message-State: AFuF++kPGy8wG67qfjTQ4YQoNnKe0O4pE7eH4C+KnrBMRuscIj29MSx8
+	q+QfTVBUK1YTvg4Keo45ERuswQNeTzr8ThVa+pZya4wsaeNbrVY3ylc=
+X-Gm-Gg: AYBFou3JUWA5NzUk7AHAwOAU8CVKdZ3twm2SLW8qRiMHCrxLfmq4pMAgYutD6cKgAMt
+	HA0gTSMzyhJgm3NQc6ah6dZxaRFi5pXEjBlEV+FLJGEBzDl7Pzh8A/8iNq1qgVDvGjl98ztr8I1
+	VOBWRZca+Kn4O6aZUmr14gnvmjcCBgSWwjw/50WY92c0EORLYixEVv7SQN1nBvLhvaqBZUeMrw8
+	lqHdHtjzAg3SnVG6C8wIlllbuRxbnWDuPI3AQuEkZBcQdjMouHtzcEgB7uTyEAQnYAlHhCGBOna
+	Ytw1pF/QjZLnkHll+uzg0OSKOn41p++MpNxrUBSFAT/BRkK6B8stjOjC5oOLlidXsDcvbqSgjJH
+	HeRUYHF10Agqls6wE7TU8dxd+KWY52PYbNpTXjpjRhVpHO0LsEFDY3A4DXI1uri8uJmxoB2bk1e
+	T2QOOG1MC2fUf4ZvLiXV6LBu4UZt329IWM/iZkp7+DadPg+NNaMx87t3mm+eaj880cxbny2NbYg
+	0rGMeP3EMpDJ/QhjLEiJzEMCMsTliRPsIWqdIP9LTSrHekTAbgY4mY2YuUr6MMQeCSWETl6EDuE
+	tckA5pZEm3U8MVf2Y1r9Iau7i+Ek4McqhQ==
+X-Received: by 2002:a05:6214:2504:b0:907:dd19:fcb3 with SMTP id 6a1803df08f44-912120f0f85mr29026286d6.24.1789097541743;
+        Thu, 10 Sep 2026 20:32:21 -0700 (PDT)
+Received: from localhost.localdomain ([104.39.73.78])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9120f4d389esm11109516d6.42.2026.09.10.20.32.20
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 10 Sep 2026 20:32:20 -0700 (PDT)
+From: Myeonghun Pak <mhun512@gmail.com>
+To: GR-Linux-NIC-Dev@marvell.com
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ijae Kim <ae878000@gmail.com>
+Subject: [PATCH net] net/qla3xxx: Use managed PCI device enablement
+Date: Thu, 10 Sep 2026 23:32:19 -0400
+Message-ID: <20260911033219.34566-1-mhun512@gmail.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260831-self_log_test-v2-1-eda2e8490cf9@kylinos.cn>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 31, 2026 at 05:21:28PM +0800, Hangbin Liu wrote:
-> From: Hangbin Liu <liuhangbin@kylinos.cn>
-> 
-> Many test scripts under tools/testing/selftests/net/ each define their own
-> log_test() function with near-identical logic for comparing a return
-> code against an expected value and printing OK/FAIL. Add a shared
-> log_test_expected() to lib.sh and replace each local definition with a
-> thin wrapper that delegates to it.
-> 
-> The function is named log_test_expected() rather than log_test() because
-> lib.sh already exports log_test() with a different signature used by
-> the forwarding tests.
-> 
-> Two tests required special handling:
-> 
-> - icmp_redirect.sh passed a fourth "xfail" argument to log_test(). The
->   underlying issue has been fixed and the argument is always absent now,
->   so it is simply dropped.
-> 
-> - fib_nexthops.sh checked for ksft_skip (exit code 4) inside log_test(),
->   but no test in the file produces that code. The check is removed,
->   callers that need to report a skip should use log_test_skip() instead.
->   Two callers compared against exit code 2 are left as-is since code 2
->   correctly counts as a failure in the previous log_test().
-> 
-> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
-> ---
-> Changes in v2:
-> - Remove skip/xfail checking in lib.sh, as any command can exits with 2 or 4 (sashiko)
-> - Remove nskip counter in fib_nexthops.sh
-> - Link to v1: https://lore.kernel.org/r/20260813-self_log_test-v1-1-f88b1107842e@kylinos.cn
-> ---
->  tools/testing/selftests/net/drop_monitor_tests.sh  | 13 +------
->  tools/testing/selftests/net/fcnal-test.sh          | 29 +-------------
->  tools/testing/selftests/net/fdb_flush.sh           | 35 +----------------
->  tools/testing/selftests/net/fib-onlink-tests.sh    | 18 +--------
->  .../selftests/net/fib_nexthop_multiprefix.sh       | 21 +----------
->  tools/testing/selftests/net/fib_nexthop_nongw.sh   | 21 +----------
->  tools/testing/selftests/net/fib_nexthops.sh        | 44 ++--------------------
->  tools/testing/selftests/net/fib_rule_tests.sh      | 19 +---------
->  tools/testing/selftests/net/fib_tests.sh           | 26 +------------
->  tools/testing/selftests/net/gre_gso.sh             | 26 +------------
->  tools/testing/selftests/net/icmp_redirect.sh       | 28 ++------------
->  tools/testing/selftests/net/l2tp.sh                | 19 +---------
->  tools/testing/selftests/net/lib.sh                 | 31 +++++++++++++++
->  .../selftests/net/ndisc_unsolicited_na_test.sh     | 26 +------------
->  .../selftests/net/srv6_encap_lookup_l3vpn_test.sh  | 19 +---------
->  .../selftests/net/srv6_end_dt46_l3vpn_test.sh      | 19 +---------
->  .../selftests/net/srv6_end_dt4_l3vpn_test.sh       | 19 +---------
->  .../selftests/net/srv6_end_dt6_l3vpn_test.sh       | 19 +---------
->  .../selftests/net/srv6_end_dx4_netfilter_test.sh   | 23 ++---------
->  .../selftests/net/srv6_end_dx6_netfilter_test.sh   | 23 ++---------
->  .../testing/selftests/net/srv6_end_flavors_test.sh | 23 ++---------
->  .../selftests/net/srv6_end_next_csid_l3vpn_test.sh | 19 +---------
->  .../net/srv6_end_x_next_csid_l3vpn_test.sh         | 19 +---------
->  .../selftests/net/srv6_hencap_red_l3vpn_test.sh    | 19 +---------
->  .../selftests/net/srv6_hl2encap_red_l2vpn_test.sh  | 19 +---------
->  .../selftests/net/test_bridge_backup_port.sh       | 32 +---------------
->  .../selftests/net/test_bridge_neigh_suppress.sh    | 33 +---------------
->  tools/testing/selftests/net/test_vxlan_mdb.sh      | 32 +---------------
->  .../selftests/net/test_vxlan_nolocalbypass.sh      | 32 +---------------
->  .../selftests/net/test_vxlan_vnifiltering.sh       | 26 +------------
->  tools/testing/selftests/net/vrf-xfrm-tests.sh      | 19 +---------
->  tools/testing/selftests/net/vrf_route_leaking.sh   | 19 +---------
->  .../testing/selftests/net/vrf_strict_mode_test.sh  | 19 +---------
->  33 files changed, 73 insertions(+), 716 deletions(-)
+ql3xxx_probe() enables the PCI device and balances that reference on
+probe failure. However, ql3xxx_remove() releases the mappings and PCI
+regions without disabling the device, leaving the enable reference
+held after unbind.
 
-Hi everyone,
+Use pcim_enable_device() so the PCI device is disabled automatically on
+probe failure and driver detach. Remove the explicit disable from the
+probe error path to avoid disabling the managed device twice.
 
-This patch is a bit too long for review, and maybe cause conflicts for
-stable backports. I plan to split it into small frags. But there are 2
-ways to split it.
+Keep the existing manual cleanup of register mappings, PCI regions and
+the netdev. These resources are released before the managed PCI disable
+action runs.
 
-1. Split based on the test name. e.g. srv6 part, fib part, test_* part, and
-   others.
-2. Split based on the changes. e.g. group the tests that using exactly same
-   log_test functions into one patch.
+This issue was identified during our ongoing static-analysis research while
+reviewing kernel code.
 
-Does anyone has any suggestion?
-
-Thanks
-Hangbin
+Fixes: 5a4faa873782 ("[PATCH] qla3xxx NIC driver")
+Co-developed-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+---
+ drivers/net/ethernet/qlogic/qla3xxx.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+diff --git a/drivers/net/ethernet/qlogic/qla3xxx.c b/drivers/net/ethernet/qlogic/qla3xxx.c
+index 861a13ad7e1ac50fd1607818d592828c869dba0e..c1fe943c91319956c62e317e99478b936562663f 100644
+--- a/drivers/net/ethernet/qlogic/qla3xxx.c
++++ b/drivers/net/ethernet/qlogic/qla3xxx.c
+@@ -3755,7 +3755,7 @@ static int ql3xxx_probe(struct pci_dev *pdev,
+ 	static int cards_found;
+ 	int err;
+ 
+-	err = pci_enable_device(pdev);
++	err = pcim_enable_device(pdev);
+ 	if (err) {
+ 		pr_err("%s cannot enable PCI device\n", pci_name(pdev));
+ 		goto err_out;
+@@ -3764,7 +3764,7 @@ static int ql3xxx_probe(struct pci_dev *pdev,
+ 	err = pci_request_regions(pdev, DRV_NAME);
+ 	if (err) {
+ 		pr_err("%s cannot obtain PCI resources\n", pci_name(pdev));
+-		goto err_out_disable_pdev;
++		goto err_out;
+ 	}
+ 
+ 	pci_set_master(pdev);
+@@ -3891,8 +3891,6 @@ static int ql3xxx_probe(struct pci_dev *pdev,
+ 	free_netdev(ndev);
+ err_out_free_regions:
+ 	pci_release_regions(pdev);
+-err_out_disable_pdev:
+-	pci_disable_device(pdev);
+ err_out:
+ 	return err;
+ }
+-- 
+2.53.0
