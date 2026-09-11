@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495873FB05A;
-	Fri, 11 Sep 2026 18:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2873C40E8C5;
+	Fri, 11 Sep 2026 18:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789152732; cv=none; b=ZMBYtCeNq7fMrMAnKaMhEZsJLSgMRKeuFAf4Nf9xjXoRiqPOP7r9Gpbu7FIv64La8ero7FTXcrTxVQa4FwJaFstNSJc3lK25UtpOLaQhf1xha38LPUXHVkZ9joToALqAj9nuPqnu0oMoFx4TDB/lxh/x7uF3nSWBJnm71DYO2MU=
+	t=1789152734; cv=none; b=ajsMJPJYH4kkG+1RNDSasEBscQxVF0e4tHFpsQ/aTrGCw9bsXo2CaHgfGbxOPZYnhRel9VbHMGXskFhWjsUoQU8YDT7/KnzHis4jNFDDDlvSM0LzUyn88LHfZnHppQtAZLlSeU1md7ozPazL3fM+YX+rvMF/wVCxlboUEas/7Cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789152732; c=relaxed/simple;
-	bh=9Huzq8M2+09FRqtWfB+IUeG9XO9Zcqv8eW8fGF3KC/M=;
+	s=arc-20240116; t=1789152734; c=relaxed/simple;
+	bh=bj79E99oig6qlCh4KkOiwmhKNqZRLPsBi3CK6RfBMB8=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jPlUHFA2asDIyovjOLgadp3Bh2DjfvO+pa6R2j6wkX8gPO88Z2g++BOcMUBR2Ls2O6j+ARzPsoMcLnidKL+9x7k4mwDSk2ORLsLK9XMFpUer9Wm9BwqzQ58Y6pHPQqqQTiwJaAD34riQKbAVfaYmLvCaiiQXKPZ8Yckvr4XuF1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RCnjftY6; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=SmRFxIo8yNGA62yaBnE01VOb3ccCE29oPHbYR7zAkE+px4nzJnED9r6MapIjadLTgucNp4Ws0+Ez+uoKMJqSczNo+74Yn2Af2kIVT6cuJb9uWaOFGSaZOgfc03tskacDbTuSa94Bp1Od4hiqPKV61p1sh+BOuIKtjcuIafVPa1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j3CcZjLQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RCnjftY6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF1C1F000FF;
-	Fri, 11 Sep 2026 18:52:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j3CcZjLQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FCF91F00893;
+	Fri, 11 Sep 2026 18:52:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789152729;
-	bh=Yo7yRsSPgH9fp6rWbrvzGiLjFsvTI26AJbX7GyjJFx8=;
+	s=k20260515; t=1789152731;
+	bh=xyJ+gcPTi2KHDABFSW2UO4GWib7OLEERzfpo6bOkIEk=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RCnjftY6FoQgojpl0WgXUmhXclIn93TKDImZfhxTkMIb1v3SRhFy/n3emZDoy35EG
-	 9rXfNe8pR4PTc5xionnV+NwX6RrBCsjm8c/2crNGmDQ9vYz00Plgxpd5ZRVGwQfTHu
-	 gH1LC9MZMtDCtgrTSNCXtVsFKJLJxRYrOWz4ni79pk2OA6GNb9HHgeIN+hGBZ09OPB
-	 XHDx5XWDg8SFba1uaQBNVkgcZMxZ97Ply/yXZsrlm8ktz6N7twmqKj6I3iKQpBrCwO
-	 TaDe5ZOqOopK1IGVd7278NqjKUbB08HLw8bJtKl+JgfrzB+lmOx5CUfbQ9q7foz1Wi
-	 NMzykz+qp+bKA==
-Subject: Re: [PATCH RESEND net-next v17 06/10] net: phy: phy_port: Store
- information about a port's upstream
+	b=j3CcZjLQ95JHlAlS6xmGE+K4jJ9SBhTzI9fqr5NLbLCTqRjnHp46sikvdK6WYjEod
+	 gZijAnkOxvj2vsJp9KyKPRsGeUwUsff24bI8mXLcrR9L0jcMgNB+rFKmRguGN3NHtj
+	 ukvStSrus3gnr0BPej7iMIeodrDBl1iLB0L9bbhKR4QkTRAM9EyrttakgtOw9KDMoP
+	 am9SGhXZmoKvX+COxxj2SjxPDze/x1zwKyISx9QZi7mZga5/bvFKq2UYWN5RFYPaFX
+	 2Wid5zSaj3r8wGdLo4QjJ2jeRgvAEOvaJ+e9LYH6LIqFRJtZjM3MTHgB4xLMl2RzNm
+	 2zUIUxieznsVw==
+Subject: Re: [PATCH RESEND net-next v17 07/10] net: phy: phy_link_topology:
+ Add a helper to retrieve ports
 From: netdev-bot+sashiko@kernel.org
 To: maxime.chevallier@bootlin.com
 Cc: davem@davemloft.net, andrew@lunn.ch, kuba@kernel.org, edumazet@google.com,
@@ -39,11 +39,11 @@ Cc: davem@davemloft.net, andrew@lunn.ch, kuba@kernel.org, edumazet@google.com,
  nicveronese@gmail.com, horms@kernel.org, mwojtas@chromium.org,
  romain.gantois@bootlin.com, daniel@makrotopia.org,
  dimitri.fedrau@liebherr.com, frank.wunderlich@linux.dev, p.ameruoso@live.it
-Date: Fri, 11 Sep 2026 18:52:07 +0000
-Message-ID: <178915272783.219967.7690619054974247239@kernel.org>
-In-Reply-To: <20260910170103.1029108-7-maxime.chevallier@bootlin.com>
-References: <20260910170103.1029108-7-maxime.chevallier@bootlin.com>
-X-sashiko-severity: Low
+Date: Fri, 11 Sep 2026 18:52:09 +0000
+Message-ID: <178915272984.219967.7179871656200305196@kernel.org>
+In-Reply-To: <20260910170103.1029108-8-maxime.chevallier@bootlin.com>
+References: <20260910170103.1029108-8-maxime.chevallier@bootlin.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -53,260 +53,253 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 0 (1) · Low: 3
+Critical: 0 · High: 2 · Medium: 2 (1) · Low: 1
 
-- [Low] The commit message states the change keeps track of "the port id
-  of the MII port backing it", but phy_set_upstream_port()…
-- [Low] The kernel-doc of the newly exported phy_set_upstream_port()
-  (drivers/net/phy/phy_device.c:3786-3791) documents only that it "Sets…
-- [Low] Claimed missing error-path rollback: both new connect_phy
-  implementations (phy_sfp_connect_phy() at…
+- [High] NULL pointer dereference newly introduced in
+  phy_link_topo_add_port(): the added `if…
+- [High] phy_link_topo_get_port() hands out a raw, unreferenced `struct
+  phy_port *` and documents RTNL as the sole lifetime guarantee ("Caller…
+- [Medium] The ops-locked guard added to phy_link_topo_add_port() is
+  sampled too early to establish the invariant it exists for.
+- [Medium] The commit message ("net: phy: phy_link_topology: Add a helper
+  to retrieve ports") describes only the addition of the read helper,…
+- [Low] Reported for completeness, assessed as not currently a bug:
+  phy_link_topo_add_port() turns the ops-locked case into a hard failure…
 
 Pre-existing issues:
-- [Medium] phy_set_upstream_port()
-  (drivers/net/phy/phy_device.c:3792-3803) traverses phydev->ports with…
+- [Medium] Reported for completeness, assessed as a pre-existing pattern
+  with unproven reachability: phy_link_topo_get_port() loads…
 
 --
 
-net: phy: phy_port: Store information about a port's upstream
+net: phy: phy_link_topology: Add a helper to retrieve ports
 
-This adds an upstream_port pointer to struct phy_port and struct phy_device,
-along with a new exported helper phy_set_upstream_port(), so that an MDI port
-backed by an MII port (for example an SFP module port backed by the SFP cage
-port) records the port feeding it. The SFP connect/disconnect callbacks in
-both phy_device.c and phylink.c are updated to set and clear it.
+This adds phy_link_topo_get_port(), an inline helper that looks up a
+phy_port in a netdev's link topology xarray under rtnl, and adds an
+ops-locked guard to phy_link_topo_add_port().
 
-A few questions below.
-
-> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-> index 26634ef274f33..561d19edf331c 100644
-> --- a/drivers/net/phy/phy_device.c
-> +++ b/drivers/net/phy/phy_device.c
-> @@ -1493,6 +1493,7 @@ static int phy_sfp_connect_phy(void *upstream, struct phy_device *phy)
->  	int ret;
->  
->  	phydev->has_sfp_mod_phy = true;
-> +	phy_set_upstream_port(phy, phydev->sfp_cage_port);
->  
->  	/* If we aren't attached to a netdev, we can't add the SFP PHY to its
->  	 * topology.
-
-[Severity: Low]
-Here and in phylink_sfp_connect_phy(), the cage port pointer is published
-into the module PHY before a fallible step (phy_link_topo_add_phy() here,
-phylink_sfp_config_phy() there) and is not cleared if that step fails.
-sfp_register_bus() also returns a connect_phy() error without calling
-disconnect_phy().
-
-Is a rollback needed on those paths, or is it intentionally left out?
-
-Tracing it through suggests no dangling pointer is reachable today:
-
-  sfp_sm_probe_phy()
-      err = sfp_add_phy(sfp->sfp_bus, phy);
-      if (err) {
-              phy_device_remove(phy);
-              phy_device_free(phy);
-
-so the module phy_device and its ports are destroyed on that failure, and
-the cage port is still alive at that point. The two paths that free the
-cage port (phy_sfp_probe() out_port below, and phylink_register_sfp() ->
-phylink_destroy_sfp_cage_port()) only run when sfp_register_bus() fails,
-which requires bus->phydev to be non-NULL:
-
-  sfp_register_bus()
-      if (ops->connect_phy && bus->phydev) {
-              ret = ops->connect_phy(bus->upstream, bus->phydev);
-
-and the state machine detaches the module PHY (sfp_sm_phy_detach() ->
-sfp_remove_phy(), which clears bus->phydev and invokes disconnect_phy())
-before any upstream can register again. Would it still be worth making
-the failure path symmetric so this does not depend on that ordering?
-
-> @@ -1526,6 +1527,8 @@ static void phy_sfp_disconnect_phy(void *upstream, struct phy_device *phy)
->  
->  	if (dev)
->  		phy_link_topo_del_phy(dev, phy);
-> +
-> +	phy_set_upstream_port(phy, NULL);
->  }
->  
->  /**
-
-[ ... ]
-
-> @@ -1816,6 +1821,8 @@ static int phy_sfp_probe(struct phy_device *phydev)
->  		}
->  	}
->  
-> +	phydev->sfp_cage_port = port;
-> +
->  	ret = sfp_bus_add_upstream(bus, phydev, &sfp_phydev_ops);
->  	if (ret)
->  		goto out_port;
-> @@ -1825,14 +1832,13 @@ static int phy_sfp_probe(struct phy_device *phydev)
->  	 */
->  	sfp_bus_put(bus);
->  
-> -	phydev->sfp_cage_port = port;
-> -
->  	return ret;
->  
->  out_port:
->  	if (port) {
->  		phy_del_port(phydev, port);
->  		phy_port_destroy(port);
-> +		phydev->sfp_cage_port = NULL;
->  	}
->  out_sfp:
->  	sfp_bus_put(bus);
-
-[ ... ]
-
-> @@ -3777,6 +3783,25 @@ struct phy_port *phy_get_sfp_port(struct phy_device *phydev)
->  }
->  EXPORT_SYMBOL_GPL(phy_get_sfp_port);
->  
-> +/**
-> + * phy_set_upstream_port() - Sets the phy_port controlling the MII this PHY is
-> + *			     attached to.
-> + * @phydev: pointer to the PHY device we set the upstream of.
-> + * @port: The phy_port upstream of this PHY, can be NULL.
-> + */
-> +void phy_set_upstream_port(struct phy_device *phydev, struct phy_port *port)
-> +{
-> +	struct phy_port *local_port;
-> +
-> +	ASSERT_RTNL();
-
-[Severity: Low]
-The kernel-doc for phy_set_upstream_port() describes only that it sets the
-phy_port controlling the MII, but the body does two more things that callers
-need to know about: it hard-asserts RTNL, and it overwrites upstream_port on
-every entry of phydev->ports.
-
-Since this is EXPORT_SYMBOL_GPL() and the prototype in include/linux/phy.h
-carries no locking annotation either, a caller following only the documented
-contract will trip the WARN_ONCE() in ASSERT_RTNL(). Could the kernel-doc
-state that RTNL must be held and that the value is propagated to all of the
-PHY's ports?
-
-> +
-> +	phydev->upstream_port = port;
-> +
-> +	phy_for_each_port(phydev, local_port)
-> +		local_port->upstream_port = port;
-> +}
-> +EXPORT_SYMBOL_GPL(phy_set_upstream_port);
+> In order to allow netlink access to phy_ports, let's add a helper to
+> retrieve them. When handling a port coming from phy_link_topology, the
+> caller must hold rtnl until it's done with it.
 
 [Severity: Medium]
-This isn't a bug introduced by this patch, but the phy_for_each_port()
-traversal here relies solely on ASSERT_RTNL(), while the list entries are
-unlinked and freed from the driver-core unbind path, which does not take
-RTNL:
+The message describes only the new read helper, but the patch also changes
+the behaviour of the existing exported write path.  Should the message
+mention that phy_link_topo_add_port() now refuses registration with
+-EOPNOTSUPP (plus a WARN splat) for ops-locked devices?
 
-  phy_remove()
-      phy_sfp_release() / phy_cleanup_ports()
-          list_for_each_entry_safe(port, tmp, &phydev->ports, head) {
-                  phy_del_port(phydev, port);
-                  phy_port_destroy(port);
-          }
+All callers turn that into a hard failure:
 
-phy_get_sfp_port() and phy_link_topo_del_phy() already walk the same list
-under the same RTNL-only convention, so the pattern predates this change,
-and all in-tree callers of the new helper run from the SFP state machine
-with RTNL held (sfp.c takes rtnl_lock() around sfp_sm_event()). The only
-concurrent mutator found is a root-initiated sysfs unbind of the module PHY
-driver.
+  phylink_create_sfp_cage_port() -> phylink_register_sfp() -> phylink_create()
+  phylink_add_sfp_mod_port()   (SFP module insertion)
+  phy_add_sfp_mod_port() / phy_attach_direct()  (PHY attach)
 
-Would it make sense to either take phydev->lock around the traversal, or
-write down the rule that phydev->ports is immutable while the PHY is
-registered?
+The new getter has no callers in this patch, so the add_port() hunk is the
+only behaviour-affecting change here, which makes it easy to misread the
+patch as an inert helper addition.
 
-Also, phy_add_sfp_mod_port() and phylink_add_sfp_mod_port() assign
-port->upstream_port directly, and this helper later rewrites every port of
-the PHY. Which of the two is meant to be authoritative?
-
+> diff --git a/drivers/net/phy/phy_link_topology.c b/drivers/net/phy/phy_link_topology.c
+> index 28c5bf3a8849a..22885bf2e0455 100644
+> --- a/drivers/net/phy/phy_link_topology.c
+> +++ b/drivers/net/phy/phy_link_topology.c
+> @@ -65,6 +65,14 @@ int phy_link_topo_add_port(struct net_device *dev, struct phy_port *port)
+>  	struct phy_link_topology *topo;
+>  	int ret;
 >  
->  /**
->   * fwnode_mdio_find_device - Given a fwnode, find the mdio_device
->   * @fwnode: pointer to the mdio_device's fwnode
+> +	/* Ports can now be queried without rtnl for ops-locked devices, which
+> +	 * we don't support now as port retrieval is done under rtnl.
+> +	 * We don't have phy_port enabled devices yet, let's make sure
+> +	 * we are loudly warned about that when it happens.
+> +	 */
+> +	if (WARN_ON_ONCE(netdev_need_ops_lock(dev)))
+> +		return -EOPNOTSUPP;
+> +
+
+[Severity: High]
+Can this dereference a NULL dev->netdev_ops during probe?  With
+CONFIG_NET_SHAPER=y, netdev_need_ops_lock() in include/net/netdev_lock.h
+does:
+
+	bool ret = dev->request_ops_lock || !!dev->queue_mgmt_ops;
+
+  #if IS_ENABLED(CONFIG_NET_SHAPER)
+	ret |= !!dev->netdev_ops->net_shaper_ops;
+  #endif
+
+phy_link_topo_add_port() is reachable from probe via
+
+  phylink_create() -> phylink_register_sfp() -> phylink_create_sfp_cage_port()
+  -> phy_link_topo_add_port()
+
+and some drivers call phylink_create() before installing netdev_ops.  In
+mtk_add_mac() the phylink_create() call comes first and
+"eth->netdev[id]->netdev_ops = &mtk_netdev_ops;" is only executed further
+down; the netdev comes from alloc_etherdev_mqs() and net/core does not
+install a default netdev_ops, so dev->netdev_ops is still NULL at the time
+of the new check.  MediaTek boards with "sfp = <&sfpN>" on the eth-mac node
+exist in tree (mt7986a-bananapi-bpi-r3.dts, mt7988a-bananapi-bpi-r4.dts),
+so pl->sfp_bus is non-NULL and the cage port path is taken.
+
+Note the identical pre-existing check in phy_link_topo_add_phy() is only
+reached from phy_attach_direct(), i.e. after netdev_ops is set, so this is
+new exposure for the port path.
+
+[Severity: Medium]
+Related to the above ordering: is this guard sampled early enough to be
+meaningful for the SFP cage port?
+
+For the cage port the check runs inside phylink_create(), before drivers
+populate the very fields netdev_need_ops_lock() inspects
+(dev->request_ops_lock, dev->queue_mgmt_ops,
+dev->netdev_ops->net_shaper_ops).  mtk_add_mac() again shows the ordering:
+phylink_create() first, netdev_ops assignment afterwards, with the netdev
+freshly zeroed by alloc_etherdev_mqs().
+
+A driver that becomes ops-locked after phylink_create() would therefore
+register ports with no warning at all, which leaves exactly the
+rtnl-versus-netdev_lock combination that the new
+phy_link_topo_get_port() ASSERT_RTNL() assumes has been excluded.  Would
+checking at a later point, or asserting in phy_link_topo_get_port()'s
+caller path, catch that case?
+
+[Severity: Low]
+This isn't a bug today, but is the hard -EOPNOTSUPP the intended
+granularity?  Every caller propagates it as fatal (probe failure via
+phylink_create(), or a failed SFP module insertion / PHY attach), whereas
+simply declining to register the port (return 0, leave it out of the
+xarray) would be enough for an rtnl-only getter.
+
+For what it is worth, no in-tree ops-locked driver hits this yet: among the
+drivers with queue_mgmt_ops / request_ops_lock / net_shaper_ops only fbnic
+uses phylink, and fbnic_phylink_create() passes fwnode == NULL, so
+phylink_register_sfp() returns early and the cage port is never created.
+
+>  	topo = phy_link_topo_get_or_alloc(dev);
+>  	if (IS_ERR(topo))
+>  		return PTR_ERR(topo);
+> diff --git a/include/linux/phy_link_topology.h b/include/linux/phy_link_topology.h
+> index 296ee514ba463..9585282cae3fc 100644
+> --- a/include/linux/phy_link_topology.h
+> +++ b/include/linux/phy_link_topology.h
 
 [ ... ]
 
-> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-> index c8f57d78f96eb..320c8c2dd206a 100644
-> --- a/drivers/net/phy/phylink.c
-> +++ b/drivers/net/phy/phylink.c
-> @@ -4132,6 +4134,8 @@ static int phylink_sfp_connect_phy(void *upstream, struct phy_device *phy)
->  	phy_interface_and(phy->host_interfaces, phylink_sfp_interfaces,
->  			  pl->config->supported_interfaces);
->  
-> +	phy_set_upstream_port(phy, pl->sfp_cage_port);
-> +
->  	/* Do the initial configuration */
->  	return phylink_sfp_config_phy(pl, phy);
->  }
-> @@ -4140,6 +4144,7 @@ static void phylink_sfp_disconnect_phy(void *upstream,
->  				       struct phy_device *phydev)
->  {
->  	phylink_disconnect_phy(upstream);
-> +	phy_set_upstream_port(phydev, NULL);
+> @@ -71,6 +72,25 @@ phy_link_topo_get_phy(struct net_device *dev, u32 phyindex)
+>  	return NULL;
 >  }
 >  
->  static const struct sfp_upstream_ops sfp_phylink_ops = {
-
-> diff --git a/include/linux/phy.h b/include/linux/phy.h
-> index cb579b8a5b5f7..335821eb22171 100644
-> --- a/include/linux/phy.h
-> +++ b/include/linux/phy.h
-> @@ -615,6 +615,7 @@ struct phy_oatc14_sqi_capability {
->   * @sfp_bus: SFP bus attached to this PHY's fiber port
->   * @sfp_cage_port: The phy_port connected to the downstream SFP cage
->   * @mod_port: phy_port representing the SFP module, if it is phy-less
-> + * @upstream_port: phy_port this PHY's MII attaches to, if any
->   * @attached_dev: The attached enet driver's device instance ptr
->   * @adjust_link: Callback for the enet controller to respond to changes: in the
->   *               link state.
-> @@ -809,6 +810,7 @@ struct phy_device {
->  	struct sfp_bus *sfp_bus;
->  	struct phy_port *sfp_cage_port;
->  	struct phy_port *mod_port;
-> +	struct phy_port *upstream_port;
-
-[Severity: Low]
-Is this new phy_device member read anywhere? phy_set_upstream_port() assigns
-it, but grepping for upstream_port through the end of the series shows the
-only reader is in net/ethtool/port.c:
-
-  reply->upstream_port = port->upstream_port ? port->upstream_port->id : 0;
-
-which uses the phy_port field, not the phy_device one. Could
-phy_device::upstream_port be dropped, or is there a planned consumer?
-
-Related to that, the commit message says:
-
-  "let's keep track of the port id of the MII port backing it"
-
-but what is stored is a raw struct phy_port pointer, not an id, and the new
-phy_device field is not mentioned at all. Could the wording be adjusted to
-match what the code stores?
-
->  	struct phylink *phylink;
->  	struct net_device *attached_dev;
->  	struct mii_timestamper *mii_ts;
-> @@ -2493,6 +2495,8 @@ int __phy_hwtstamp_set(struct phy_device *phydev,
->  
->  struct phy_port *phy_get_sfp_port(struct phy_device *phydev);
->  
-> +void phy_set_upstream_port(struct phy_device *phydev, struct phy_port *port);
+> +static inline struct phy_port *
+> +phy_link_topo_get_port(struct net_device *dev, u32 port_id)
+> +{
+> +	struct phy_link_topology *topo = dev->link_topo;
 > +
->  /**
->   * phy_module_driver() - Helper macro for registering PHY drivers
->   * @__phy_drivers: array of PHY drivers to register
+> +	if (!topo)
+> +		return NULL;
+> +
+
+[Severity: Medium]
+This is a pre-existing pattern rather than something introduced here
+(phy_link_topo_get_phy() reads dev->link_topo the same way, and
+netdev_alloc_phy_link_topology() is untouched), but the plain load of
+dev->link_topo happens before ASSERT_RTNL(), and the NULL path skips the
+assertion entirely.
+
+The publishing side has no release semantics either:
+
+  drivers/net/phy/phy_link_topology.c:netdev_alloc_phy_link_topology() {
+	xa_init_flags(&topo->ports, XA_FLAGS_ALLOC1);
+	topo->next_port_index = 1;
+
+	dev->link_topo = topo;
+  }
+
+and phy_link_topo_get_or_alloc() documents that this can run "from
+.probe() : No rtnl, no netdev_lock".  In practice register_netdevice()
+takes rtnl after the probe-time allocation, which appears to order the
+xarray init against any rtnl-holding reader, so I could not construct a
+reachable interleaving.  Would publishing dev->link_topo with release
+semantics and asserting rtnl before touching it be worth doing anyway?
+
+> +	/* ports in the topo are RTNL protected, but may be accessed under
+> +	 * netdev_lock for ops-locked devices. For now keep them under rtnl
+> +	 * protection, as no ops-locked devices have phy_port capabilities
+> +	 * yet.
+> +	 */
+> +	ASSERT_RTNL();
+> +
+> +	/* Caller must hold RTNL while handling the phy_port */
+> +	return xa_load(&topo->ports, port_id);
+> +}
+
+[Severity: High]
+Is rtnl really sufficient to keep the returned phy_port alive?  The helper
+hands out a raw pointer with no reference taken, but the write side of
+topo->ports neither takes nor asserts rtnl, and phy_port_destroy() is a
+bare kfree() with no kref and no RCU deferral:
+
+  drivers/net/phy/phy_port.c:phy_port_destroy() {
+	kfree(port);
+  }
+
+phy_link_topo_del_port() has no lock assertion either:
+
+  drivers/net/phy/phy_link_topology.c:phy_link_topo_del_port() {
+	struct phy_link_topology *topo = dev->link_topo;
+
+	if (!topo)
+		return;
+
+	xa_erase(&topo->ports, port->id);
+  }
+
+Two free paths appear to run without rtnl.  On PHY driver unbind:
+
+  phy_remove() -> phy_cleanup_ports() {
+	list_for_each_entry_safe(port, tmp, &phydev->ports, head) {
+		phy_del_port(phydev, port);
+		phy_port_destroy(port);
+	}
+  }
+
+and phylink teardown, whose kerneldoc states the opposite of the getter's
+contract:
+
+  drivers/net/phy/phylink.c
+   * Note: the rtnl lock must not be held when calling this function.
+   */
+  void phylink_destroy(struct phylink *pl)
+
+  phylink_destroy_sfp_cage_port() {
+	if (pl->netdev && pl->sfp_cage_port)
+		phy_link_topo_del_port(pl->netdev, pl->sfp_cage_port);
+
+	if (pl->sfp_cage_port)
+		phy_port_destroy(pl->sfp_cage_port);
+  }
+
+xa_erase() stops new lookups but gives no grace period, so a reader that
+already obtained the pointer under rtnl can dereference freed memory.
+Later in this series net/ethtool/port.c does exactly that:
+
+	port = phy_link_topo_get_port(req_info->dev, request->port_id);
+	if (!port)
+		return -ENODEV;
+
+	linkmode_copy(reply->supported, port->supported);
+
+Would a kref on phy_port (or kfree_rcu, or taking and asserting the same
+lock on every add/del/destroy path) close this?  For reference, the SFP
+state machine paths do look safe here: drivers/net/phy/sfp.c takes
+rtnl_lock() around sfp_sm_event(), so the module-port add/del are
+serialized; it is the probe/unbind/destroy paths above that are not.
+
+> +
+>  #else
+>  static inline int phy_link_topo_add_phy(struct net_device *dev,
+>  					struct phy_device *phy,
 
 [ ... ]
 
