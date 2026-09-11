@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C453AFAF1;
-	Fri, 11 Sep 2026 11:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093473D4116;
+	Fri, 11 Sep 2026 11:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789125933; cv=none; b=ZouhemaEwA6+MDWZ1YkhY/Ci9Szf//eSN8saDzTHtgtl/52J9zrAdOauk90fkEbtfg/XDrspcMnlV+jkQClwEHsQo3hgVJZ9TZ/HyXV1Hthi5yuWSV8SvUtVrYa97PYRy0mX0A7R+h1zZnWHyNpHbUyg1+ZyBBxJ/8u6mlyGE0E=
+	t=1789125932; cv=none; b=KTMFNHh5LeZorBwRu98b6GOmIt5GMOVceujrYDpLBn8T3Ijgj65XerJZU6tbRsz/3ax7j02vErTLTaisQsP4IomnV78n+GVu/NIkQbD4VUHrsLJNo2Ntad3luySwVntrKOZvAv6A6UJNoONO+Ceswsx/3KxLfE7G+0M3JyOI+Yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789125933; c=relaxed/simple;
-	bh=LZ8Lc0mh2leJir+6Pvh9e2uZbtKbxBNKGrTtBhlF5X4=;
+	s=arc-20240116; t=1789125932; c=relaxed/simple;
+	bh=JGDTX2OStM2e37UgfWdfDt5r7ozgdUeUC3G7DcOvtvM=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EksKjxJtJeXRC0si7pCEO9pgHYLr0RXxzYaekF8BTTeO0PV54l9K3Xy0z/+X4OA6Oo6teYZvrMzIYdnZoggOVGNWUS4xzoGWQfGHk6JtmxZcLrpAKeIdQ0Fjs9NkeuXVycfaGHqAIQVCWcXeqVdUOfbyWx5rjjm50Cp8HNeCULg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ove7lllu; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=pA6aBTtVik8177w9Y6zw4s+GXoIrl17t/3S61+WkW9+AfTwvCrP0yrqVO68YTAPCw+M3e5rFlYpVrqY+cSJfdEbqJ84hBqjAXy1dUM0OnRGsJ8ocCH3PQLXR8uTwysbEVEuDl0lt0vUFtwpMddrEZ8UPrBBR37mmGCDpFjM9/ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RdtyzogD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ove7lllu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9751F0089E;
-	Fri, 11 Sep 2026 11:25:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RdtyzogD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F421F000FF;
+	Fri, 11 Sep 2026 11:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789125924;
-	bh=V1UQQs4RgrcoOL7IoOSvZHUpHULa8UMlbZavMMWsIAI=;
+	s=k20260515; t=1789125923;
+	bh=Giz3DgoV1Kkxp/ItQMDYkJ9vVxOeemBUbGyOg9d1k88=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ove7lllus3Mnvt02TUZBfOze1KGDqlxb6R9rnMNqnw6Kf1E4pznctBgX++hb19PQa
-	 uWhOJGsg4oCtC5SrOcR1sZTis0HJWhaSlIV6CX6cGY1DozSwXAtGPODo/zK7UiNYGK
-	 jAppYtz+UeKU2G2RDRJSjnH6SzZjj1qrYcNtIdYbQRB0qIlJ0cWKgKEHbVJxi3yVn9
-	 vnRdMOsO+5Kzxx29nikCI02OiXNXW7tHhUqnnI3DN9Gc9YoiLIVn9RgHFzxkCfmt7x
-	 7c/mu1yLry3EYV2K+UpNS9bc8IxSXjdup1uG3MSGsvga+lpilQEFP8GnWCq0pdej/B
-	 NR4uFPy9ZVczg==
-Subject:
- Re: [PATCH net-next v2 9/9] net: stmmac: qcom-ethqos: add Shikra EMAC support
+	b=RdtyzogDQ01XzqOUeKqOMt1W9a+vkJRa0bUdI0tJRjpEDw23pe71irCkBXep+h8HL
+	 NPjaj6HHcA3bTHZxcz9mW63lA5QtGQV4/jqH+L3vJejZe5+XjKOgvRZVyvimGSVWTR
+	 KR7sepXRjTkumHQdPTgKlyNL356VjyhA2XIGzA5ZAU345VmWeppoTOdJjmWGCs7dpa
+	 4OWiNyiqtn+58AVocIzrYnyxj74thlDyi1iAOZAMACvBRHjnA648E7RvpbVH8fn3ZN
+	 zG/NUkQIUGaTnJ27nRRwJQRewMdQuBJxkl/5aDpEB59QgE2Dlaq3t7MJGzq3T7VRf7
+	 NJybqGTqBGJ2w==
+Subject: Re: [PATCH net-next v2 8/9] net: stmmac: qcom-ethqos: add
+ per-platform NOC clock voting
 From: netdev-bot+sashiko@kernel.org
 To: mohd.anwar@oss.qualcomm.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
@@ -40,11 +40,11 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
  linux-stm32@st-md-mailman.stormreply.com,
  linux-arm-kernel@lists.infradead.org
-Date: Fri, 11 Sep 2026 11:25:23 +0000
-Message-ID: <178912592322.219967.17232145160989235559@kernel.org>
-In-Reply-To: <20260908-shikra_ethernet-v2-9-bbe3389d0652@oss.qualcomm.com>
-References: <20260908-shikra_ethernet-v2-9-bbe3389d0652@oss.qualcomm.com>
-X-sashiko-severity: High
+Date: Fri, 11 Sep 2026 11:25:21 +0000
+Message-ID: <178912592132.219967.18300009845024056442@kernel.org>
+In-Reply-To: <20260908-shikra_ethernet-v2-8-bbe3389d0652@oss.qualcomm.com>
+References: <20260908-shikra_ethernet-v2-8-bbe3389d0652@oss.qualcomm.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -54,163 +54,143 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [High] shikra_data (drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-
-  ethqos.c:337) provides no .rgmii_por/.num_rgmii_por table, while the…
-- [Medium] Adding the core-owned "stmmaceth" clock to shikra_noc_clks[]
-  decouples that clock's programmed rate and enable state from the…
+- [Medium] New hard dependency on the PM_OPP subsystem is not expressed
+  in Kconfig.
 
 --
 
-net: stmmac: qcom-ethqos: add Shikra EMAC support
+net: stmmac: qcom-ethqos: add per-platform NOC clock voting
 
-Adds a qcom,shikra-ethqos compatible with a new shikra_data descriptor that
-declares three NOC clocks (axi-noc, pcie-tile-axi-noc, stmmaceth) at
-120 MHz and a 36-bit DMA address width.  A couple of questions below about
-the new descriptor.
+This adds an ethqos_noc_clk_cfg description so each compatible can declare
+its own set of System NOC clocks with per-clock rates. The clocks are
+acquired in probe via qcom_ethqos_init_noc_clks() and enabled/disabled
+alongside the link clock in ethqos_clks_config(), with an OPP table used to
+propagate the VDD_CX performance state.
 
 > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> index 8871d28594116..c474f1e5a0437 100644
+> index 2471871562ed9..8871d28594116 100644
 > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
 > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> @@ -328,6 +328,36 @@ static const struct ethqos_emac_driver_data emac_v4_0_0_data = {
->  	},
->  };
+> @@ -7,6 +7,7 @@
+>  #include <linux/platform_device.h>
+>  #include <linux/phy.h>
+>  #include <linux/phy/phy.h>
+> +#include <linux/pm_opp.h>
 >  
-> +static const struct ethqos_noc_clk_cfg shikra_noc_clks[] = {
-> +	{ "axi-noc", 120000000 },
-> +	{ "pcie-tile-axi-noc", 120000000 },
-> +	{ "stmmaceth", 120000000 },
-
-[Severity: Medium]
-Is it safe to put the core-owned "stmmaceth" clock into this table, given
-that the 120 MHz rate and the OPP/VDD_CX vote then come from different
-owners?
-
-On the resume path the core enables the clock before this driver raises the
-vote:
-
-stmmac_platform.c:stmmac_bus_clks_config() {
-	...
-	ret = clk_prepare_enable(plat_dat->stmmac_clk);
-	...
-	if (plat_dat->clks_config) {
-		ret = plat_dat->clks_config(plat_dat->bsp_priv, enabled);
-	...
-}
-
-ethqos_clks_config(true) is the only place that calls
-dev_pm_opp_set_rate(dev, ethqos->noc_clk_rates[0]), so for that window
-stmmaceth is running at the previously programmed 120 MHz with the vote at
-zero.  The same inversion happens at probe, where
-devm_stmmac_probe_config_dt() enables stmmaceth before
-qcom_ethqos_init_noc_clks() installs the OPP.
-
-At detach the devm actions unwind in the opposite order to how they were
-registered, so ethqos_clks_disable() runs before
-devm_stmmac_remove_config_dt():
-
-	} else {
-		if (ethqos->num_noc_clks)
-			clk_bulk_disable_unprepare(ethqos->num_noc_clks,
-						   ethqos->noc_clks);
-		clk_disable_unprepare(ethqos->link_clk);
-		if (ethqos->num_noc_clks)
-			dev_pm_opp_set_rate(&ethqos->pdev->dev, 0);
-	}
-
-The bulk disable only drops the glue's extra reference, the core still holds
-one, so does this withdraw the performance-state vote while stmmaceth is
-still running at 120 MHz?
-
-The mid-sequence failure paths in ethqos_clks_config() look similar: if
-clk_set_rate() fails for a later index, or clk_bulk_prepare_enable() fails,
-only dev_pm_opp_set_rate(dev, 0) is issued and the rates already raised are
-not rolled back.  The original stmmaceth rate is never recorded or restored
-either.
-
-> +};
-> +
-> +static const struct ethqos_emac_driver_data shikra_data = {
-> +	.dma_addr_width = 36,
-> +	.has_emac_ge_3 = true,
-> +	.noc_clk_cfg = shikra_noc_clks,
-> +	.num_noc_clks = ARRAY_SIZE(shikra_noc_clks),
-> +	.rgmii_config_loopback_en = false,
-
-[Severity: High]
-Was a .rgmii_por / .num_rgmii_por table meant to be part of this patch?
-
-All the other descriptors (emac_v2_1_0_data, emac_v2_3_0_data,
-emac_v3_0_0_data, emac_v4_0_0_data) supply one, and shikra_data leaves
-.link_clk_name unset, so qcom_ethqos_probe() ends up doing
-devm_clk_get(dev, "rgmii"):
-
-	ethqos->link_clk = devm_clk_get(dev, data->link_clk_name ?: "rgmii");
-
-With num_rgmii_por == 0 the reset loop at the top of
-ethqos_fix_mac_speed_rgmii() does nothing:
-
-	/* Reset to POR values and enable clk */
-	for (i = 0; i < ethqos->num_rgmii_por; i++)
-		rgmii_writel(ethqos, ethqos->rgmii_por[i].value,
-			     ethqos->rgmii_por[i].offset);
-
-so RGMII_IO_MACRO_CONFIG, SDCC_HC_REG_DLL_CONFIG, SDCC_HC_REG_DDR_CONFIG and
-RGMII_IO_MACRO_CONFIG2 are never brought back to a baseline before the
-speed-specific programming, which is read-modify-write.
-
-Can that leave stale bits across a speed change?  For has_emac_ge_3 (true
-here) at 10/100M, ethqos_rgmii_macro_init() arms the extended RX-clock delay
-path:
-
-		rgmii_setmask(ethqos, SDCC_DDR_CONFIG_EXT_PRG_RCLK_DLY,
-			      SDCC_HC_REG_DDR_CONFIG);
-
-		rgmii_setmask(ethqos, SDCC_DDR_CONFIG_EXT_PRG_RCLK_DLY_EN,
-			      SDCC_HC_REG_DDR_CONFIG);
-	} else {
-
-and the 1000M branch only programs the other path:
-
-		rgmii_updatel(ethqos, SDCC_DDR_CONFIG_PRG_RCLK_DLY,
-			      FIELD_PREP(SDCC_DDR_CONFIG_PRG_RCLK_DLY,
-					 prg_rclk_dly), SDCC_HC_REG_DDR_CONFIG);
-
-		rgmii_setmask(ethqos, SDCC_DDR_CONFIG_PRG_DLY_EN,
-			      SDCC_HC_REG_DDR_CONFIG);
-
-EXT_PRG_RCLK_DLY_EN is never cleared, so after 100M -> 1000M both delay
-paths are enabled.  On the other platforms the POR write of 0x80040800 to
-SDCC_HC_REG_DDR_CONFIG clears the extended path first.
-
-Two related fields also look like they depend on the POR table:
-
-- SDCC_DDR_CONFIG_TCXO_CYCLES_CNT is written nowhere else in the driver, yet
-  the 1G delay values are derived from "TCXO period * TCXO_CYCLES_CNT /
-  (2 * RX delay ns)", which assumes the POR value of 4.
-- SDCC_HC_REG_DLL_CONFIG is never restored to its 0x2004642c baseline, and
-  CDR_EN / CDR_EXT_EN set by ethqos_dll_configure() at 1G are not cleared
-  when dropping to 10/100M, so residual values feed the DLL_RST/PDN toggle
-  and the SDC4_STATUS_DLL_LOCK poll.
-- RGMII_CONFIG_MAX_SPD_PRG_2 / MAX_SPD_PRG_9 are set for 100M/10M and not
-  cleared for 1000M.
-
-If Shikra is in fact not an RGMII part, then the descriptor and the binding
-added in the same series look inconsistent the other way: the binding pins
-the fourth clock to const "rgmii" and the descriptor sets the RGMII-only
-.rgmii_config_loopback_en field.  Which of the two is intended?
-
-> +	.dwmac4_addrs = {
+>  #include "stmmac.h"
+>  #include "stmmac_platform.h"
 
 [ ... ]
 
-> +};
+> @@ -689,15 +703,51 @@ static int ethqos_mac_finish_serdes(struct net_device *ndev, void *priv,
+>  static int ethqos_clks_config(void *priv, bool enabled)
+>  {
+>  	struct qcom_ethqos *ethqos = priv;
+> +	unsigned int i;
+>  	int ret = 0;
+>  
+>  	if (enabled) {
+> +		if (ethqos->num_noc_clks) {
+> +			ret = dev_pm_opp_set_rate(&ethqos->pdev->dev,
+> +						  ethqos->noc_clk_rates[0]);
+> +			if (ret) {
+> +				dev_err(&ethqos->pdev->dev,
+> +					"NOC OPP rate set failed: %d\n", ret);
+> +				return ret;
+> +			}
+
+[ ... ]
+
+> @@ -734,6 +789,51 @@ static void ethqos_ptp_clk_freq_config(struct stmmac_priv *priv)
+>  	netdev_dbg(priv->dev, "PTP rate %lu\n", plat_dat->clk_ptp_rate);
+>  }
+>  
+> +static void qcom_ethqos_noc_opp_cleanup(void *dev)
+> +{
+> +	dev_pm_opp_set_rate(dev, 0);
+> +}
 > +
+> +/* Some SoCs gate NOC access behind dedicated clocks. Acquire them here
+> + * so ethqos_clks_config() can enable/disable them at runtime. The OPP
+> + * table is used to propagate the required VDD_CX performance state via
+> + * dev_pm_opp_set_rate().
+> + */
+> +static int qcom_ethqos_init_noc_clks(struct qcom_ethqos *ethqos,
+> +				     const struct ethqos_emac_driver_data *data)
+> +{
+
+[ ... ]
+
+> +	ret = devm_clk_bulk_get(dev, ethqos->num_noc_clks, ethqos->noc_clks);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Failed to get NOC clocks\n");
+> +
+> +	ret = devm_pm_opp_set_clkname(dev, data->noc_clk_cfg[0].id);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Failed to set OPP clock name\n");
+> +
+> +	ret = devm_pm_opp_of_add_table(dev);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Failed to add OPP table\n");
+> +
+> +	ret = dev_pm_opp_set_rate(dev, data->noc_clk_cfg[0].rate);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "Failed to set initial NOC OPP rate\n");
+
+[Severity: Medium]
+Should DWMAC_QCOM_ETHQOS gain a PM_OPP dependency now that these calls are
+mandatory for compatibles that declare NOC clocks?
+
+The Kconfig entry currently reads:
+
+drivers/net/ethernet/stmicro/stmmac/Kconfig:
+config DWMAC_QCOM_ETHQOS
+	tristate "Qualcomm ETHQOS support"
+	default ARCH_QCOM
+	depends on OF && (ARCH_QCOM || COMPILE_TEST)
+
+There is no depends on PM_OPP and no select PM_OPP, and PM_OPP itself is a
+hidden symbol with no prompt:
+
+drivers/opp/Kconfig:
+config PM_OPP
+	bool
+
+so CONFIG_DWMAC_QCOM_ETHQOS=y with CONFIG_PM_OPP=n is a reachable
+configuration. In that case the stubs are used:
+
+include/linux/pm_opp.h:
+static inline int dev_pm_opp_set_rate(struct device *dev, unsigned long target_freq)
+{
+	return -EOPNOTSUPP;
+}
+...
+static inline int devm_pm_opp_of_add_table(struct device *dev)
+{
+	return -EOPNOTSUPP;
+}
+
+qcom_ethqos_probe() -> qcom_ethqos_init_noc_clks() ->
+devm_pm_opp_set_clkname() would then return -EOPNOTSUPP, and the
+dev_err_probe() above aborts probe with "Failed to set OPP clock name", so
+no netdev is registered for any compatible that sets num_noc_clks
+(qcom,shikra-ethqos, added later in this series).
+
+The same applies on the runtime path: ethqos_clks_config(priv, true)
+propagates the -EOPNOTSUPP from dev_pm_opp_set_rate() on every enable and
+resume.
+
+Would adding select PM_OPP (or depends on PM_OPP) to DWMAC_QCOM_ETHQOS, or
+tolerating -EOPNOTSUPP on the OPP path, be preferable here?
+
+> +
+> +	return devm_add_action_or_reset(dev, qcom_ethqos_noc_opp_cleanup, dev);
+> +}
 
 [ ... ]
 
