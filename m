@@ -1,161 +1,138 @@
-Received: from mta0.migadu.com (out-61.mta0.migadu.com [91.218.175.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazon11020130.outbound.protection.outlook.com [52.101.229.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D93E2F5A2D
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 07:45:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.61
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789112750; cv=none; b=OG8b6rLs6bFCCjRuD6VCdmyH3xpeFBa52EDDmYHVwawcTWzcDU3xVK+wS8/pe4cs7jdbxd1TMjcp/T0huUzEiWKk7KRyjYxL1emuCBYpGXSGKvKZnQz0gBKWbw89VZaaZze/7UzyN3YCExj8bhK2S16CZJ78hdaRjiwFV3tqpWc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789112750; c=relaxed/simple;
-	bh=7m7syOs1gD5W9Jz1PtLFXWzV5Kqkfqnh5sc+5M+foB0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PnEUdp1ztXg0hWxOBIg1C81sW5omtJgDsJMOTxAuaV6oDkJqELvDxB5Ie7jiStf3pF1WI8+l3Yk62Ny3qOXMHhJId6pnLO7lufuRLtsXDTMngdKmASz1T0RKaU2yDGv4Bh1Y7WpAVN54fP/bvKib8yu4Gd02d/EjA+bY98FHzF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=RKPVlvSD; arc=none smtp.client-ip=91.218.175.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32DE02EBB8D;
+	Fri, 11 Sep 2026 07:48:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.229.130
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789112931; cv=fail; b=Bc06XzoWTbg5CsbCDRLrNUI1qW6LtXMSYbYfR4EGlPQvu7mMhQcCmUdkYdtX7dwR8idvxdwopUWAY68TwpJN2znJMimu9enKb2IE4Nv4mvx0PXHIUU+onfZOrni336YDbYu8wu4FEXoa3hGJHuwqNuIzpGu8oNNK/aoqEthy/sw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789112931; c=relaxed/simple;
+	bh=JwJzkxn0D10q6Kn6y0+WwqZ5jfnHxczLUVY4VgtxD2w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Elt+1PqyC3DsqHun82Zk+0r6G8pf0v8X+WZJddYcmZAwJAGsUJmjIKKUYS/XcEBMS9YR95dAmlH/g0/ffet+JAWLGpcgav8lPqmao1aod3eF5N+YIzHnLHuWUZP2IfoWU2rG7qaF5XcrYwhkWu6Ix0lFNJUkIc18Ug+L0bpj6WA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=lungoPHM; arc=fail smtp.client-ip=52.101.229.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="RKPVlvSD"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=7m7syOs1gD5W9Jz1PtLFXWzV5Kqkfqnh5sc+5M+foB0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789112745; v=1; x=1789717545;
- b=RKPVlvSDpuINjSFbTOuUJltO258fqf/j2ZJf33sF+kzkm+9GqkzSlGJRD+8+WWmnpQEgk0J0
- EmzLTClauArz3DnU3LnYuxG6yUzBQnUuzXqHyprdeJblAc+5H3OrrwDr9iCCDbkPeFwH9OyUMdt
- MyFAVr6PEjdrYTu/axZ4xH5Q=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 1ec7040721a1edf5;
-	Fri, 11 Sep 2026 07:45:45 +0000
-X-Mizu-Trace-ID: 1ec7040721a1edf5
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <c3f2a61d-d5bc-454c-987d-717b5f8c8809@linux.dev>
-Date: Fri, 11 Sep 2026 15:45:34 +0800
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="lungoPHM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ym+Jx0oo5cSdbTKof5xn1tS3mhSHO4I5LzDxgTOeqS+l/mowIsXxquPkHbAndbnHATe2oL8F8Htd7QHXScuoFQMAYh7wPoj/RB8Ttw+0oAFYpUUeHVEowcZ3OcJ/m13wB2DA9gk0eMma+jcMOloduEsTr3r4PjQYWyFSxAFEdmXdnNHkWRuWW+FwUD3DA//RD7hIoijZAp7gDbK+A6xORnFa+uVHoVTcWOn4qOefrqxC6K8N9aTv6FAyXwsTVqWPQpQ1JgfDZg4uPcp57/+FME7+XYRRKZp426ReAhCUluAN2lsSNYoaPcGgQBgssa2n2M3OJjGYcKQHpRCj+E2Hsw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FUtYiTkOtmlujCG73sTAZW3n4BQY3fyiWgG1pZtCOP8=;
+ b=YyUZL1PEmc4bDh7cW0WI0d66ujR5QybvGtgoQWiOHH8l+4DW7sSAhwSf/QkOav/aH/vsC/bZ5dwqN8FtBrevw1oP5Kd4jFTEBiayw8Hcan3sHphf+Be4GBLyX5SMH0ATprznugL+uNohzKRwjbv6yZ4eTP36TtM2Sn5q/qG/fcCmqLtVY7R7cnPdo67tvLR4Cc0xI+voS0yBIQdoO93dmfrxhAVgrIYFc24+6y1QE4PO+2hTWvls+XAXFLXWqbUcEe51sHBfbu830lgDnYxSoapc3Q/Oj+GxQe5J+34KggzdJX+7f1Qd+DqNNE793oWX7LWp72VPcBI4FsbRLqxcLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FUtYiTkOtmlujCG73sTAZW3n4BQY3fyiWgG1pZtCOP8=;
+ b=lungoPHMr1MQLuDP5Vt33GnvPrNH0T7ZmBClDixtFk+2g9Ac4KxEcFGBg3R3BxxvcuAYtvCNkzZT0NPmJWsTmaSz4YfptpqlgJx3NSPg9MbbAC2SnY+AX3mOsV+G1b2qLygsVwdjk4DGwSZN3x5kSJVe6ql82vDholeGvByx03k=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
+ by TY3P286MB3583.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:3b6::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Fri, 11 Sep
+ 2026 07:48:46 +0000
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32%4]) with mapi id 15.21.0406.007; Fri, 11 Sep 2026
+ 07:48:46 +0000
+Date: Fri, 11 Sep 2026 16:48:45 +0900
+From: Koichiro Den <den@valinux.co.jp>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>, 
+	Allen Hubbe <allenbh@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, ntb@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 3/4] NTB: ntb_transport: Add per-payload
+ client metadata
+Message-ID: <odfl7c5xkvybndm7sqvk5srhn5cfjlcbswxrmzvnyqrpgxydqi@6o3ic5taxfhi>
+References: <20260904052134.2970111-1-den@valinux.co.jp>
+ <20260904052134.2970111-4-den@valinux.co.jp>
+ <20260910171856.251c90d3@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260910171856.251c90d3@kernel.org>
+X-ClientProxiedBy: TYCP301CA0035.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:400:380::11) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:38f::10)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf] bpf: Fix NULL pointer dereference in
- __bpf_sk_storage_map_seq_show
-To: "Cen Zhang (Microsoft Security FORGE Labs)" <blbllhy@gmail.com>
-Cc: ameryhung@gmail.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, wangfushuai@baidu.com,
- bestswngs@gmail.com, mattbobrowski@google.com, kees@kernel.org,
- menglong8.dong@gmail.com, bpf@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, AutonomousCodeSecurity@microsoft.com,
- xmei5@asu.edu, tgopinath@linux.microsoft.com, kys@microsoft.com,
- ast@kernel.org, daniel@iogearbox.net, martin.lau@kernel.org
-References: <20260827051859.45511-1-blbllhy@gmail.com>
-From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
-In-Reply-To: <20260827051859.45511-1-blbllhy@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|TY3P286MB3583:EE_
+X-MS-Office365-Filtering-Correlation-Id: eb146b2f-c5d6-4185-48db-08df0fd91c3e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|10070799003|23010399003|376014|7416014|4143699003|56012099006|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	J/jdjEMinS4te738MHuUWJQXTzV4bRurx2cTI3YaYvNTVD7l/WfVjkoQK/BHuCvE4yEkLQGDXJR/1m7PdhN/J/hHKu4XzfJSbN/NONpuD/IJJfmXvTxTwtdl3aqNzzDszBeoBB1GvvdcyMc/bLky/gcRK75qKgvNtc+2AVSvz5vyAj0zuIolz5Ja9rfP21WmKDLCtrY1sShpEZghCw687kIYg9s2XMmCVkttaLioROoep1lesBcHTQNTGhkP8MpY0A70Xbrk8isi8SHeh3lza+DGt65m/tvmFILjQo2H3u/7BtBaFU5lvuJWlPg5Lf7jhj5KcALUTgvml7Zmig5naGjzV8wSE/eBfRhZBqRR2NiPP1bTERcXh0HcFmr9DsfXICYn1pmf5pBc/MBr8QupMrziJJoX2uVgOfeYC6S8jq8dBQdgCCVhMJJavjyOM594u609iR0eIJbPXi95nmwUqqjVs72pAokNEvzZQ8EYq1zsFa6HGWTfKNiXTCuOyGYAm0O6EBiVUtYwItwJyBEqOmqpbVbNG05ztsR6GL0ZnMn5mMgec+Bpq+Y4cKSsBJ4IxbYtNeWqYZsfkoKqf6995OyNd4BDKgVKCLKZfkUnIiSBI4wsMBUJjqAfprkd3nfcFy/UYp3a3pK04ZINu3vaEHshNqWUUp2chEaVJMUl7Uc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(23010399003)(376014)(7416014)(4143699003)(56012099006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?cVV+/pGHAYD7uBbU4S2WPxMfWcBfAYoruzVF1BgCU9QNhUH0vqer7SVGmJi/?=
+ =?us-ascii?Q?+lAdlYXt+Aq1hbixfxcO8rnIC1HgEfbjkfguonFhp2pOnUbVgskrxJOPSUfL?=
+ =?us-ascii?Q?7nyGcljiny+hD+Qy2IQgQvoV9T1+XAmBc2efjPhVN2q4Z8mQDXFr7Duwnml9?=
+ =?us-ascii?Q?fbnP/Djw8p9qmChmrnyqdVIt6efXLM1gvlwPw7tQXmRdwGhzs0wJCbl2wSOV?=
+ =?us-ascii?Q?o/qFXsDsBoLVNYm05rghAq1d12pJghmdHWILCi6ix8YfF+iGrV7hVKkiE//G?=
+ =?us-ascii?Q?ORNKhQ9yHsHNaPuJN74mRXQxW6eQuwilry035ji0WfaL5Y6yWBaxq4dvTNT0?=
+ =?us-ascii?Q?Afhw6HNyKE6pRz43snI3qVfzE/T+aQ0dvYtcxX/3hs6RfP4Lbd4/PF2Yzq+y?=
+ =?us-ascii?Q?sQ/gAgKWNQbW1kBqmSM+7Vm29nsjOswkDBjrvY9lEDHfZV27KEEsdu54MoKm?=
+ =?us-ascii?Q?/IiabKhUqKF070V6OKe5ms38L9nbWWKn4+wX1vc4kiPqWaqnr3X942P7d/7K?=
+ =?us-ascii?Q?8sDQDmzMLynVoc/41wlzPMbvs+VhRetSqcPrj0FW7GGEyXD26f7kVoFPt7Jo?=
+ =?us-ascii?Q?AZSKWh30nNGh6mCoFbyceuFlr7M75YMtDgYBr9wYsOEuIoI/zRaBs3tX+KvA?=
+ =?us-ascii?Q?bo0ynBm0L90G6EVdrQgBCSWfqh0PjTtqiV/wtqqYYCbnVj2RF+QV5w6tympu?=
+ =?us-ascii?Q?11yzNEkjfeBF5rOms9HwS/uAoIiryGZABOamSYVDbDlgOKx4eVB8VgxF/Kxa?=
+ =?us-ascii?Q?Y27Y9/oyAG2DJAYnQlzfrnmrLNIeZKk2rkoPvxyHG/myeEpR4PoUsUD8028w?=
+ =?us-ascii?Q?NCqePcEjOrbB869xRx/3xNIUN4QHCAN6Zmu/HzaGlY3z/R3cHzT8CmSjhkxI?=
+ =?us-ascii?Q?ZmnHXhUj2X+434aksCW+e3ZdAvhm/R4AqIUuwbinTYqZQ8uoxsuZICy7Xa+1?=
+ =?us-ascii?Q?wUL18SpzYhqG0yDnacfWQY/lxJIjXdCBM+stzhN6HwtHcfBuF9Rwy3o9TESk?=
+ =?us-ascii?Q?57QQ9346UsUKrzp1pDIoTv5oXPcRtfW5aLkU0IuX630MypxHSVVLC0f8WNLU?=
+ =?us-ascii?Q?pM4qr2gMW28CJ+1RtUS8gGeFFJkLAd/04NwNdZRY314ywqbdDoWzGBlBr55y?=
+ =?us-ascii?Q?TvaYencjLCdwUXBaXgZJcDtHySjEmUGnhSxq0O8QCgbao44b+eL/38lDCTwN?=
+ =?us-ascii?Q?kW/+dw9moMZV9xQky7E81dcXVAMwpxLWIPQfR1fCjjMhgYWgWMefDypxH4xu?=
+ =?us-ascii?Q?HqY06BEAY+FJLoEqLGRUZL9DTa6cL6F++6+sCHx7+7V8LqH9Sw/eT9ZOEwqg?=
+ =?us-ascii?Q?7ytUoGQUgtxGhvmARlT2GahiAKeDPe4QWLrSgtROxeHXwSQgGRhZeArwdYHE?=
+ =?us-ascii?Q?iJ4uYxppaVye706pYCf3U0RsDB8HJZqOuGqJwwC8pRs1UpayqheaEtDISAee?=
+ =?us-ascii?Q?WFHiHVXjzdLMsL3+7HWPj5QszvQIILmyHZ0QAcczJt0LqzWwe1bKu16NkqnH?=
+ =?us-ascii?Q?qqouVVg2inxiFn9S5GzT3T9K8e/q7Hk4we4QydKEbBqWmBeWjcvjJU4Cr39T?=
+ =?us-ascii?Q?gbU1nSEZ55iS4b5E/q/daCf7GJNlRiacNV3HaxaA+PKkXr60EICyGGZDt/pk?=
+ =?us-ascii?Q?eTfLQ9njOhOeGXFqQT9AAtADOyzqNFEZYd7xY27vserqxNfok5vqdv0eDGv1?=
+ =?us-ascii?Q?1P6qgM6Z0C6ZRC49QJnUrybSlmVd5iMBjib2CEV2CvOlgltFKJGMyuEeXVuv?=
+ =?us-ascii?Q?MJHAeoVAupIit8HkQxWSd3YWG7if5HONcKdxqUGwbGMRUTClAcaI?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: eb146b2f-c5d6-4185-48db-08df0fd91c3e
+X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2026 07:48:46.7035
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: z8YeAXzwJqhpUIEDXIn97oZoe+/vJyBnjejf/Y0uhxmHeA90bMvNkHJ6lVbPS+v9l0MDUR5kokoS0odtCYUWAw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY3P286MB3583
 
-Hi Cen Zhang,
+On Thu, Sep 10, 2026 at 05:18:56PM -0700, Jakub Kicinski wrote:
+> On Fri,  4 Sep 2026 14:21:33 +0900 Koichiro Den wrote:
+> > +/* Reserve the low byte for transport flags. */
+> > +#define DESC_META_SHIFT		8
+> > +#define DESC_META_MASK		(~0U << DESC_META_SHIFT)
+> 
+> IMHO the code would be more readable if you defined this with 
+> one GENMASK and then used FILED_GET() / _PREP() / _MAX() on it
 
-在 2026/8/27 13:18, Cen Zhang (Microsoft Security FORGE Labs) 写道:
+Will do, thanks for the review!
 
-> Iterating a sk_storage map is two stages:
-> bpf_sk_storage_map_seq_find_next()
-> returns a selem, then __bpf_sk_storage_map_seq_show() uses that selem.
-> __bpf_sk_storage_map_seq_show() re-reads selem->local_storage via
-> rcu_dereference() with no NULL check. A concurrent close() can run
-> bpf_selem_unlink_nofail() in between and set that field to NULL, causing
-> a NULL dereference of sk_storage->owner.
->
-> Oops: general protection fault, probably for non-canonical
->     address 0xdffffc0000000011
->    net/core/bpf_sk_storage.c:809 __bpf_sk_storage_map_seq_show()
->    bpf_seq_read+0x366/0x1120
->    vfs_read+0x174/0xa50
->    ksys_read+0xfc/0x1d0
->
-> Return if the re-read yields NULL.
-
-I also reproduced this issue and came across your patch while preparing
-to submit a fix. Do you have any plans to send a v2?
-
-Here is the crash log from my reproducer:
-
-[  756.754624] Unable to handle kernel paging request at virtual address dfff800000000011
-[  756.754631] KASAN: null-ptr-deref in range [0x0000000000000088-0x000000000000008f]
-[  756.754635] Mem abort info:
-[  756.754638]   ESR = 0x0000000096000006
-[  756.754641]   EC = 0x25: DABT (current EL), IL = 32 bits
-[  756.754645]   SET = 0, FnV = 0
-[  756.754649]   EA = 0, S1PTW = 0
-[  756.754651]   FSC = 0x06: level 2 translation fault
-[  756.754655] Data abort info:
-[  756.754657]   ISV = 0, ISS = 0x00000006, ISS2 = 0x00000000
-[  756.754660]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[  756.754664]   GCS = 0, Overlay = 0, DirtyBit = 0
-[  756.754667] [dfff800000000011] address between user and kernel address ranges
-[  756.754673] Internal error: Oops: 0000000096000006 [#1]  SMP
-[  756.815224] Modules linked in: vfat fat sr_mod cdrom virtio_scsi virtio_console cfg80211 rfkill binfmt_misc sch_fq_codel virtio_net net_failover failover fuse vsock_loopback vmw_vsock_virtio_transport_common vsock virtio_rng
-[  756.821030] CPU: 1 UID: 0 PID: 914 Comm: poc Tainted: G        W           7.3.0-rc1+ #33 PREEMPTLAZY
-[  756.823909] Tainted: [W]=WARN
-[  756.824703] Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
-[  756.826443] pstate: 40000005 (nZcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[  756.828224] pc : __bpf_sk_storage_map_seq_show+0x158/0x1d8
-[  756.830842] lr : __bpf_sk_storage_map_seq_show+0x148/0x1d8
-[  756.832300] sp : ffff8000a32afa30
-[  756.833144] x29: ffff8000a32afa30 x28: ffff0000ceb5ec80 x27: ffff0000ceb5eca8
-[  756.834956] x26: ffff0000d516d400 x25: ffffa9f37d85e3a0 x24: ffff8000a32afad0
-[  756.836764] x23: 1ffff00014655f4e x22: ffff8000a3300000 x21: ffff0000d516d400
-[  756.838716] x20: 0000000000000000 x19: ffffa9f37d85e080 x18: 0000000000000000
-[  756.840556] x17: 65642d6572702030 x16: 3030303033336130 x15: 303038666666663d
-[  756.842400] x14: 0000000000000000 x13: 0000000000000001 x12: ffff700014655eef
-[  756.844210] x11: 1ffff00014655eee x10: ffff700014655eee x9 : ffffa9f37a9be66c
-[  756.846018] x8 : 00008fffeb9aa112 x7 : ffff8000a32af777 x6 : 0000000000000001
-[  756.847825] x5 : ffff8000a32af770 x4 : ffff700014655eef x3 : ffffa9f37a9be380
-[  756.849630] x2 : 0000000000000011 x1 : dfff800000000000 x0 : 0000000000000088
-[  756.851437] Call trace:
-[  756.852086]  __bpf_sk_storage_map_seq_show+0x158/0x1d8 (P)
-[  756.853498]  bpf_sk_storage_map_seq_show+0x18/0x30
-[  756.854715]  bpf_seq_read+0x2ec/0xd28
-[  756.855707]  vfs_read+0x188/0x7b0
-[  756.856577]  ksys_read+0xe4/0x1b8
-[  756.857424]  __arm64_sys_read+0x78/0xb0
-[  756.858402]  invoke_syscall+0x78/0x260
-[  756.859372]  el0_svc_common.constprop.0+0xb0/0x240
-[  756.860585]  do_el0_svc+0x4c/0x70
-[  756.861430]  el0_svc+0x54/0x118
-[  756.862287]  el0t_64_sync_handler+0xa0/0xe8
-[  756.863352]  el0t_64_sync+0x198/0x1a0
-[  756.864288] Code: 91022280 d2d00001 f2fbffe1 d343fc02 (38e16841)
-[  756.865828] ---[ end trace 0000000000000000 ]---
-
-> Fixes: 5d800f87d0a5 ("bpf: Support lockless unlink when freeing map or local storage")
-
-Would 0be08389c7f2 be a more accurate Fixes tag?
-
-5d800f87d0a5 only introduced bpf_selem_unlink_nofail(), while
-0be08389c7f2 switched the destruction path to use it.
-
-> Reported-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
-> Cc: AutonomousCodeSecurity@microsoft.com
-> Assisted-by: Copilot (Grok 4.6)
-> Signed-off-by: Cen Zhang (Microsoft Security FORGE Labs) <blbllhy@gmail.com>
-> ---
->   net/core/bpf_sk_storage.c | 2 ++
->   1 file changed, 2 insertions(+)
->
-> diff --git a/net/core/bpf_sk_storage.c b/net/core/bpf_sk_storage.c
-> index 1d295a8769fa..7228520aa2b6 100644
-> --- a/net/core/bpf_sk_storage.c
-> +++ b/net/core/bpf_sk_storage.c
-> @@ -806,6 +806,8 @@ static int __bpf_sk_storage_map_seq_show(struct seq_file *seq,
->   		ctx.map = info->map;
->   		if (selem) {
->   			sk_storage = rcu_dereference(selem->local_storage);
-> +			if (!sk_storage)
-> +				return 0;
-
-Also, I agree that returning SEQ_SKIP would be appropriate here.
-
-Thanks,
-Xuanqiang
-
+Best regards,
+Koichiro
