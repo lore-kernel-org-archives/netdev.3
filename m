@@ -1,71 +1,56 @@
-Received: from mail-pj2-f8.google.com (mail-pj2-f8.google.com [74.125.227.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8410D48BD46
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 13:59:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.136
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F3A31715D;
+	Fri, 11 Sep 2026 14:03:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789135191; cv=none; b=Pn2tk7fCSM9QbysKMmxGNPTyQL4ksLdGiWs4swEasrnwq0MJdTwScoVHEIf2vMiAdHNXvPBOuPysoGwqB2j8sOynHI7BeoKSor0dGZ8StB5YCmbkC8rHIuTfIy+bgVhqJJPhCPdO626lqeA7Y7ABnzt0lx4rfbtB3cpFi8wWlxE=
+	t=1789135413; cv=none; b=JpTo27N7uYYlkOob5QCuhSM17SxFMncrp+VJ6BJFqGXzOcUeoQX173+UVnQdw1fQJn/LcumIj+o/lHRfuJFLtqrY1cDDzgNeZYFkY5F1roFZ3GMVd8IqAwd/Q1daBkU4xSvUJ+tW9FR5k7oRnl9Wh5FVhi5ExLNesFMseS1tB6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789135191; c=relaxed/simple;
-	bh=9NzkkeJIC1gI957bIMNPTqjNnQNaFzgoibDIOA3Ag7c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IWNlnrndwV4p7tZtgGGaIcNZCTwiz/McBNUce/l8BbuTezfbb9nlscGXOaJbbAb9PR+dmutB3wi3uRngsG6bfcSwLik9P5Dn5UuHzeexYBhayqiWywxzGKNOHEB31pWJkRsdeaPXeXbAWAUXByGCeffsfFK3GK+A7VWAuAX8WKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CyP6xAJR; arc=none smtp.client-ip=74.125.227.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789135413; c=relaxed/simple;
+	bh=BtmDOcrJzTirInUyJZ4Yn0/HlvkxpOsf18Vh5suxajg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VNyZZYtJEgXrLiFucM9hB1fSSs0LTpRrvCV3eJyWcfLHuNmkSwkKAJHpAQvOmAeZOfefAuLL73qPnCagL4NyC85MWbgK1RWUdXtatTmr9pRIixRmgjyDZvPErI7/D7Ax6xkCvotQ2LZnHe71ESJcTNPRWXaI+QTTyphb+cNlFAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=F+qBxK/k; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CyP6xAJR"
-Received: by mail-pj2-f8.google.com with SMTP id 98e67ed59e1d1-38fd9408220so302152a91.1
-        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 06:59:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789135186; x=1789739986; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1rOeitkour1l8Dq3e7NE1rrMsSjA05zIKyiXuF35rlM=;
-        b=CyP6xAJRxnbrsufulFVchjeZKfntOrkD1Tl8phYBSmcxFeLw8vHSQEwzUtNZF0R1CQ
-         DnfinrJgTjNaRnkMdQ4aKEW/0EETY6Y+x07+fpDkz48f3SxXlAxsyqwuQbkRnQGKPjhw
-         ZIFZHckQwngxRceJizdki8MJE2SEnKiiLiFt3ioZsQDHzQQNMTkJL9KwEYDytUX62fUr
-         85PwP4a8+zQV+a9RXLb7dyyD9aFyAto0+TpSyu3RY34Qt9be8h9AqyOLODUqraS7Wyf0
-         xq0QmYMRMIhSWv+AWzrg9DMY//AFRI25j+20pWT2QnoesYeO/Xbr1NG5ZpuHP2HAliju
-         wi2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789135186; x=1789739986;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1rOeitkour1l8Dq3e7NE1rrMsSjA05zIKyiXuF35rlM=;
-        b=guXTVKPH9yqyowiS1mKnvbbYIml4OploaeR9dqF21ndWnEJinNC6B06kQArmVym5om
-         iaCeB9AsoryBQqb/GUcjJDzytQu0SnDLTuPedJ6fsqQ7fw8+HhrcFaNTU7HpF4Eh+j/C
-         6Coyxe+X9+2ahA3cto1Fv73d3bd684lb8d38kr5b4dviT29rk9WDUqcLaQeTC/sau0OQ
-         DYK0GR0If9yjonsCyuIwsFYQvW4QKeov7gsPkp47kt8NOHg+64hpfoWeBM3/9pxsVdek
-         2dHGTyGV4ohuO/8TEuITKB72rwyo1zyTZvOmNKUQQlhGrkh3Qm/nmFAwa7VUwIPSDIC0
-         PFzQ==
-X-Gm-Message-State: AFuF++kS3Pj+6NcVHK0Bs9ikpO90ze0X8EhjVCGoqJhtuzqiz6oF07pu
-	wsbR+R6roqE213RMPa7JU8EuehhIc3lvdnDenUzDfSeM879G+3lUfViv3Qa31saIQzg=
-X-Gm-Gg: AYBFou1xvLkQg3fyt+59Dyw6EymSBjDjBodPfBfqoK4SUvaZbCZfuNsPG1g0zRTLKpY
-	3ZtEU4FRFYhS3NKLaWnf8d6bDSzM3NtI1n1zZ3uZwJUDyi/jO3cE9acVmHbP9bKa5kUpBAIpqGv
-	Ac4ip7u4KLt9TXVRJJH6y7Ehzb2JmHSm7lFU4jZhHDkbi+gyFSqCBO1KEpBnZqhowr/tnd2GynQ
-	AmM2NnuLOkakSBh0/QxILGzJFObhsYt0bMizBWCqCtugB5rebeoNN/BxZ1z+OK1YeeLzhSl6jg8
-	CdGtx0X/mMCFIfc9/NDazTgHGEuXSXYqgZq56QlhmpjVMamcyl0Mv6UdzDkrLFnzMs7gY7Qqzz9
-	AYwRLX605D861zS3HU8PejzdDPXLYpvFCGu/5Y+iUZNn0w5mlpF/PnudD6mEdf4NTqoOd85RoYV
-	pWhKy6qXQkodQrku+w4vOSggAQ2SGIYIVfK+dLeINjDNpudyHRYsh97k1lFeO3ENfm1B+V/gs2C
-	D6kPScKd7fBooiydLdWdtY=
-X-Received: by 2002:a17:90b:2741:b0:398:e436:384 with SMTP id 98e67ed59e1d1-39d9bbd7b60mr7767890a91.1.1789135186115;
-        Fri, 11 Sep 2026 06:59:46 -0700 (PDT)
-Received: from dell-r530-61.gsslab.pnq2.redhat.com ([182.66.90.254])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33ba4b1f409sm8040073eec.0.2026.09.11.06.59.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Sep 2026 06:59:45 -0700 (PDT)
-From: Prijesh Patel <prijeshpatel.dev@gmail.com>
-To: netdev@vger.kernel.org
-Cc: dsahern@kernel.org,
-	stephen@networkplumber.org,
-	prpatel@redhat.com,
-	Prijesh Patel <prijeshpatel.dev@gmail.com>
-Subject: [PATCH iproute2-next] man: ip-route: document tcp_usec_ts route feature
-Date: Fri, 11 Sep 2026 09:59:25 -0400
-Message-ID: <20260911135925.147934-1-prijeshpatel.dev@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="F+qBxK/k"
+Received: from localhost.localdomain (unknown [4.194.122.144])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 967FE20B7166;
+	Fri, 11 Sep 2026 07:02:37 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 967FE20B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1789135369;
+	bh=nko1lzDX3HYjX2ZcfcghQ19ySoGi04r5ioAQrMQSqwE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=F+qBxK/ke+HD0YetRgg/ZMn/CIDC2IdYBk5xKNw+U0ZGTYZNZj3EAkWjEOrJEOTWu
+	 PnGCq7kMSzHKULddloXe4Yzxzd2m6zm7SbJ2YhWxuU6ZJ3MFoAh/9BQReh8JIAJOdA
+	 64L0IykprkeZ6WipYdaK+43ijmekDCU9b+Az6TX0=
+From: "Cen Zhang (Microsoft Security FORGE Labs)" <cenzhang@linux.microsoft.com>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@kernel.org>
+Cc: Amery Hung <ameryhung@gmail.com>,
+	Xuanqiang Luo <xuanqiang.luo@linux.dev>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Fushuai Wang <wangfushuai@baidu.com>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Matt Bobrowski <mattbobrowski@google.com>,
+	Kees Cook <kees@kernel.org>,
+	Menglong Dong <menglong8.dong@gmail.com>,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	AutonomousCodeSecurity@microsoft.com,
+	xmei5@asu.edu,
+	tgopinath@linux.microsoft.com,
+	kys@microsoft.com
+Subject: [PATCH bpf v2] bpf: Fix NULL pointer dereference in __bpf_sk_storage_map_seq_show
+Date: Fri, 11 Sep 2026 10:03:08 -0400
+Message-ID: <20260911140308.81560-1-cenzhang@linux.microsoft.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,62 +59,59 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ip route supports a "tcp_usec_ts" per-route feature
-(RTAX_FEATURE_TCP_USEC_TS) to request microsecond-resolution TCP
-timestamps for connections to/from a given destination, but this was
-never added to the ip-route(8) man page or its FEATURES synopsis.
+Iterating a sk_storage map is a two-stage operation:
+bpf_sk_storage_map_seq_find_next() returns a selem, then
+__bpf_sk_storage_map_seq_show() uses it. The latter re-reads
+selem->local_storage via rcu_dereference() without checking for NULL.
+A concurrent socket close can unlink the selem and clear that pointer
+between the two stages, causing a NULL dereference of sk_storage->owner.
 
-Document tcp_usec_ts alongside the existing ecn feature.
+Oops: general protection fault, probably for non-canonical
+   address 0xdffffc0000000011
+  net/core/bpf_sk_storage.c:809 __bpf_sk_storage_map_seq_show()
+  bpf_seq_read+0x366/0x1120
+  vfs_read+0x174/0xa50
+  ksys_read+0xfc/0x1d0
 
-Signed-off-by: Prijesh Patel <prijeshpatel.dev@gmail.com>
+Return SEQ_SKIP if the re-read yields NULL. This prevents the dereference
+and tells bpf_seq_read() that the stale element was skipped, so it does
+not consume an iterator sequence number without running the BPF program.
+
+Fixes: 0be08389c7f2 ("bpf: Switch to bpf_selem_unlink_nofail in bpf_local_storage_{map_free, destroy}")
+Reported-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
+Closes: https://lore.kernel.org/all/20260827051859.45511-1-blbllhy@gmail.com/
+Suggested-by: Amery Hung <ameryhung@gmail.com>
+Suggested-by: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+Link: https://lore.kernel.org/all/CAMB2axNFOC9G2RwOCnsWDth83REMWnmPE8gxMwbLYoGusw9miA@mail.gmail.com/
+Link: https://lore.kernel.org/all/c3f2a61d-d5bc-454c-987d-717b5f8c8809@linux.dev/
+Cc: AutonomousCodeSecurity@microsoft.com
+Signed-off-by: Cen Zhang (Microsoft Security FORGE Labs) <cenzhang@linux.microsoft.com>
+Assisted-by: Copilot (Grok 4.6)
 ---
- man/man8/ip-route.8.in | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+Changes in v2:
+- Return SEQ_SKIP instead of 0 when the storage disappeared, preserving
+  the iterator sequence number for the next valid element.
+- Correct the Fixes tag to the commit that switched the destruction path
+  to bpf_selem_unlink_nofail().
+- Rebase onto the current bpf master branch.
 
-diff --git a/man/man8/ip-route.8.in b/man/man8/ip-route.8.in
-index fd04432f..ed901fb9 100644
---- a/man/man8/ip-route.8.in
-+++ b/man/man8/ip-route.8.in
-@@ -186,7 +186,7 @@ throw " | " unreachable " | " prohibit " | " blackhole " | " nat " ]"
- 
- .ti -8
- .IR FEATURES " := [ "
--.BR ecn " | ]"
-+.BR ecn " | " tcp_usec_ts " ]"
- 
- .ti -8
- .IR PREF " := [ "
-@@ -569,16 +569,26 @@ Actual window size is this value multiplied by the MSS of the connection.
- The default value is zero, meaning to use Slow Start value.
- 
- .TP
--.BI features " FEATURES " (Linux 3.18+ only)
--Enable or disable per-route features. Only available feature at this
--time is
-+.BI features " FEATURES "
-+Enable or disable per-route features. Available features are
- .B ecn
--to enable explicit congestion notification when initiating connections to the
-+and
-+.B tcp_usec_ts.
-+.in +8
-+.B ecn
-+.RI ( "Linux 3.18+ only" )
-+Enables explicit congestion notification when initiating connections to the
- given destination network.
- When responding to a connection request from the given network, ecn will
- also be used even if the
- .B net.ipv4.tcp_ecn
- sysctl is set to 0.
-+.sp
-+.B tcp_usec_ts
-+.RI ( "Linux 6.7+ only" )
-+Enables microsecond-resolution TCP timestamps for connections to/from the
-+given destination network, instead of the default millisecond resolution.
-+.in -8
- 
- .TP
- .BI quickack " BOOL " "(Linux 3.11+ only)"
+ net/core/bpf_sk_storage.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/net/core/bpf_sk_storage.c b/net/core/bpf_sk_storage.c
+index 1d295a8769fa..7d02245aa704 100644
+--- a/net/core/bpf_sk_storage.c
++++ b/net/core/bpf_sk_storage.c
+@@ -806,6 +806,8 @@ static int __bpf_sk_storage_map_seq_show(struct seq_file *seq,
+ 		ctx.map = info->map;
+ 		if (selem) {
+ 			sk_storage = rcu_dereference(selem->local_storage);
++			if (!sk_storage)
++				return SEQ_SKIP;
+ 			ctx.sk = sk_storage->owner;
+ 			ctx.value = SDATA(selem)->data;
+ 		}
+
+base-commit: 15071f2a1263e82150c77eeb1e94dbfc31950a8e
 -- 
-2.52.0
-
+2.55.0
