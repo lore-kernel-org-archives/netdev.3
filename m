@@ -1,195 +1,292 @@
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BEC13148A7
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 18:41:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3C92EBB84;
+	Fri, 11 Sep 2026 18:41:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789152113; cv=none; b=ueaSAKlgbRw0H9IRgDZHHlm14AHroALooZuExJElNBdqtrRd9wmlT1VIEAQ+N/brXu3y2NeJvgQo191f8IrmMSW3uC1gTm2LAewh0BSAP5JE5jtZ2dBMVxnepaR9GdH1hM1XxersZ5LpUi6fFJCFEOlNOxKN1NMmofW90U1cODo=
+	t=1789152117; cv=none; b=J6kO3tLVrsowags8C/GaaCHrtAlq0NB0h3O5mTXa6Albsm442xmnkN+iOv037TqLdFVedBwJ5uPQyOogXJqYOKeuqfV4WZtai91J1NvJfVVeIfK5JUtLBNCdnQwB5cO8TQ+xzMsbhL0tf+dmyuo10Gng8yfpynJeTcYDQAAEVj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789152113; c=relaxed/simple;
-	bh=CRgZ0azeESVx05XN/DI2CTmUes8DOfM/w7avTS/EtcM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=MPSNHzP1C4AVU1gNBSt1fqpiNhS1MFnhyhkURJc8vvn36sofvtr32kIYD/qmzgvW8HyZH56eQsRzmWd+Uq/Qq1/jRhJUl8Oth2mcu2Vup8ywdbT6cz6owXoq3B/2gu2lhNX//eBfNwn8f40r4nc/YnybAPfamfUnulXrAh8YFc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marliere.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=marliere.net header.i=@marliere.net header.b=GmvhFeG/; arc=none smtp.client-ip=209.85.210.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marliere.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789152117; c=relaxed/simple;
+	bh=GU3HVbWvMuk5BYOYxHSjKK3L1+JcDqIPoatgfbJRJXw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PiaovKv2W3gUvooAV7Y/MxLg1x0cVdrgXqo5180X8vL95unxTUCiMNEfxfzqp/5bkF0Tr6t3Qt5qiER4yWmjRSVO+KXBapyySW8vahfqr1iEnHQvMsqeDudfO/ifxaK08FsHg5sIyqwPhCw+qHY+6OkfK0c35uaGE8Hr9ysb9CE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=RkY/M0mS; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=wlq1Qg4Q; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Ms4mfNdu; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=t1HRb21j; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marliere.net header.i=@marliere.net header.b="GmvhFeG/"
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7f5934ba2a5so740801a34.3
-        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 11:41:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789152102; x=1789756902;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yMbZw9icvnNTXwCanhAuRSvqQw9hREcvdfSXLJ7VSbo=;
-        b=lM7wSF/2n42M4khxxcNeJ3T7nAvhQvfAgMe8trpZHaU0OorwgEzT4bQWKLiNC2FsiO
-         XJLcuVMR2/vIC8vyYPPMvx7RlqGXX8otooLKsOEH4mhnm4IxhDXNHmVu9nYLV0LMLw05
-         zsFbTbaSqkUH93Tp0xS6Agc7KTesWo6n0i372Omu8K8GqXRwIL6vbAkMkZ7cnMOsVLQB
-         vNGxiSYLmlKfhKcVkwpV7/MMk5clB8qb7tsXkhDXK2n3XUfuUWFiddD+nJdcbdk75hG4
-         eba44defhru9vMPs2D0oReWdVm9xAp8YmlSHOsIl9AHpMi+E/BipHSP/MrW3zQ10kcnf
-         kxgw==
-X-Gm-Message-State: AFuF++lH1g456XIoJbBJ4kjwERJHlAGl2J9loPDga1Qp80pLoJGQXsWz
-	4q3xtxtxUnkO6wgPvf0oe1CZf5ACzUPn7fmobVGrMzLMa1KHjDBvfIfu
-X-Gm-Gg: AYBFou0F7K7SfR/eCbsHS7Iw1b5vVYAf/m0PgkoVi1/xEvXf5NdUkwgjLa2sT2hFlbZ
-	uwhJTo9IMqZv4jDRVuzp0wNV4MalUCh+AT7RPFEorGIKajuKAe6wbyLNmiwcXx7idv3U2YhVqd2
-	+U0f5qqg+p4B2I8wghYjB+HJS4VPR9a8fQQKvV0eUZoylcNerF6tP+r+HAE+5hARCmKNj74Lvch
-	YkXhno0gNiQf452GTpQ3/MWSAhP9V9IjqiwN+ZIeCIta73V8TjMPzb6s+s8ZghvrkmC960CO+b4
-	HLeIo3pluO9vYuDSSgpWFKL1l/gNu/WC1PLhur400GqHxreWL7CbuMbfQaDmZ/83jA+sDZJIyh/
-	A/drCvKmHKfsxGLSVnL6iu5qMDO9zlj4TMPTSAKvKp2ogMuON6Jv28gzqm8d5AmJsWLWB010x/I
-	uIsHjDD2FKobCThKd80F/+z2NBUu7RU7/hx75Pa0tMuKqrWgcqHN2P6AxBgO5AR4YDaMAR14Btm
-	ncR1t5Fxho7j/A0W8lPOqgovm1XwK6J25TRq+9WXGENv0L+tipyZi4dtEii8zDjWaOJTNZ8mSoZ
-X-Received: by 2002:a05:6830:67d2:b0:7fa:ab72:9e01 with SMTP id 46e09a7af769-803ffea3bb4mr4180312a34.25.1789152102165;
-        Fri, 11 Sep 2026 11:41:42 -0700 (PDT)
-Received: from mail.marliere.net (137.65.66.34.bc.googleusercontent.com. [34.66.65.137])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-804e70994aasm1411448a34.19.2026.09.11.11.41.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Sep 2026 11:41:41 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8237260B4C;
-	Fri, 11 Sep 2026 18:41:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
-	s=dkim; t=1789152100;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=yMbZw9icvnNTXwCanhAuRSvqQw9hREcvdfSXLJ7VSbo=;
-	b=GmvhFeG/edXAwhxbHy4zVlJAHL3Difik2/7rqr8mkCuh/eBqLiRhB+/rB/z+YRScVpTDWZ
-	jaPlwREiXGWzCpJ87c4wMcm4tF2ScT5m7fye3rL1SQtytITIdf83hgUqxEMZa5lF+J4FJe
-	iQD9OsSY0mWOLNPQb3lOX8gOfOnD1eeK5g9pybwMdWj36qh/OirRFnyFcTth+ELzvFe/PV
-	32C3NzzGMhDvSgXiO3Vm0nNYzNf9wDfm09UFBEUl9m7bRwRQMb490N21y4+OeMwRUR/079
-	KuswwzL9e6PSQV11tX540K0KfngidjL5L1LRUDAin9ak82HUPppUtWnuynvktw==
-From: =?utf-8?q?Ricardo_B=2E_Marli=C3=A8re_=28SUSE=29?= <ricardo@marliere.net>
-Date: Fri, 11 Sep 2026 15:41:33 -0300
-Subject: [PATCH net v2] selftests/net: Fix icmp.sh race between ping and
- tcpdump startup
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="RkY/M0mS";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="wlq1Qg4Q";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Ms4mfNdu";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="t1HRb21j"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 61E0B21D08;
+	Fri, 11 Sep 2026 18:41:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1789152109; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Y0gb1YTzyq1tY8Su9YkmnVJWgy1TkvTwTxxXy9SCpjo=;
+	b=RkY/M0mSQDtBwqIu6f/fIc29Amt/L8mUaFwnHx0GIwah9Lzw/pNGlorIFjfrEOSXWVkH7Q
+	GlheZ17kgncviUXpcaqC1WryqKQUfloiSZ9/LpyY/kBJJEnqjbHcNfSVn4RciI24eGVnqg
+	TKxQP8HMZ5JDjuGHNxmWMcBB5CSb58E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1789152109;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Y0gb1YTzyq1tY8Su9YkmnVJWgy1TkvTwTxxXy9SCpjo=;
+	b=wlq1Qg4QibM0Nx9TOoJ7itJSTMV2mU3MqDiCInKrVBCNHhApf4+FRz4Rtkzoul+9lvUb7i
+	UEtjI2UQT7ejN1DA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1789152105; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Y0gb1YTzyq1tY8Su9YkmnVJWgy1TkvTwTxxXy9SCpjo=;
+	b=Ms4mfNducoXCdJdwgneA930TXB6lfwJEeLdqj+a/+gyLPolyAdvQwKtYKzxeTmImdfxBJ+
+	p0CviZSbqz9XVvXwhL8ePfQ1f7gAFlHr2rBcP2QBE0wbns+N47l2LDu6nSV5IfRxpitZZT
+	ad67zye62h/9XjaeScPg3PMVyV3l3Sg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1789152105;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Y0gb1YTzyq1tY8Su9YkmnVJWgy1TkvTwTxxXy9SCpjo=;
+	b=t1HRb21jf6dXlxt4qlVQM0JwQp+OHn2WmSxNuC3U1RcaI0tQ7A6zjqjE1Bii0IC6O3Bb1A
+	+f6M/tqvTZHjeyDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 60FFB132D3;
+	Fri, 11 Sep 2026 18:41:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 5yPcFGhLpGpifgAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Fri, 11 Sep 2026 18:41:44 +0000
+Message-ID: <fcb24a94-d62d-4166-b51b-4585a021500b@suse.de>
+Date: Fri, 11 Sep 2026 20:41:10 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260911-selftests-net-icmp_race-v2-1-c7458dec9d0b@marliere.net>
-X-B4-Tracking: v=1; b=H4sIAFxLpGoC/4WOQQ6CMBBFr0K6tto2BsGV9zDGlDLAGClkphIN4
- e629QAu/58/L28VDITA4lysgmBBxsnHYHaFcIP1PUhsYxZGmVLVSkuGZxeAA0sPQaIb5ztZB7I
- 0ZdVWVWmONYj4PRN0+M7kq4hTcfuV/Goe4EJiplljGWRD1rshVRNhj/4wWg5A6T4gh4k+2W/RG
- fZXZdFSS9UYa05Qa6vcZbT0RCDYZ5Ft276gfxMX+AAAAA==
-X-Change-ID: 20260901-selftests-net-icmp_race-6268d886249e
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Shuah Khan <shuah@kernel.org>, David Ahern <dsahern@kernel.org>, 
- =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- =?utf-8?q?Ricardo_B=2E_Marli=C3=A8re_=28SUSE=29?= <ricardo@marliere.net>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openssh-sha256; t=1789152095; l=4012;
- i=ricardo@marliere.net; h=from:subject:message-id;
- bh=CRgZ0azeESVx05XN/DI2CTmUes8DOfM/w7avTS/EtcM=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgguRCc5X8/UX9M40lkMnr//aFGOhce
- x5ezt8MFNUFlqYAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QL6TGAIu2GyzsEiydnqTAMIRSsCPc75Zq4paR9dHvCGfGc8ymZdjH+qmG4Ttl/cy5pGe2sXfUhs
- SezPyzixKOAI=
-X-Developer-Key: i=ricardo@marliere.net; a=openssh;
- fpr=SHA256:pzhe0fJpYLz+3cZ33FFPhIfaUElk9CXPFFXmalIH+1g
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 03/13 net-next] net: inet: relocate ip_generic_getfrag and
+ guard IPv4 socket logic
+To: Stanislav Fomichev <sdf.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, horms@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, edumazet@google.com, davem@davemloft.net,
+ David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+ Willem de Bruijn <willemb@google.com>, Kees Cook <kees@kernel.org>,
+ Kuniyuki Iwashima <kuniyu@google.com>,
+ Richard Gobert <richardbgobert@gmail.com>,
+ Marc Kleine-Budde <mkl@pengutronix.de>, Jeff Layton <jlayton@kernel.org>,
+ Qi Tang <tpluszz77@gmail.com>, linux-kernel@vger.kernel.org
+References: <20260910144914.8025-1-fmancera@suse.de>
+ <20260910144914.8025-4-fmancera@suse.de>
+ <aqMeeDnj4pcuvz7-@devvm7509.cco0.facebook.com>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <aqMeeDnj4pcuvz7-@devvm7509.cco0.facebook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Level: 
+X-Spam-Score: -2.80
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	TAGGED_RCPT(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,redhat.com,google.com,davemloft.net,nvidia.com,gmail.com,pengutronix.de];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo]
 
-icmp.sh backgrounds ping and then starts tcpdump, with no synchronization
-between the two. If tcpdump is not capturing yet by the time the ICMP
-unreachable replies come back, the test fails even though the kernel
-behaved correctly:
 
-  FAIL - got ICMP response from , should be 192.0.0.8
 
-The empty address is misleading: it means the capture matched nothing
-before its 10s timeout, not that the reply had a wrong source address.
-NS1's Icmp InDestUnreachs counter still increments across such a failure,
-so the replies were generated and did reach NS1. Ping sends several probes
-over its 3s deadline, so losing every one of them takes a multi-second
-stall in tcpdump startup, which does happen on loaded CI hosts [1].
+On 9/10/26 11:19 PM, Stanislav Fomichev wrote:
+> On 09/10, Fernando Fernandez Mancera wrote:
+>> To enable compiling the INET subsystem without IPv4, shared generic
+>> utilities must be relocated and IPv4 socket logic must be guarded for
+>> CONFIG_IPV4.
+>>
+>> This patch moves the generic ip_generec_getfrag() from ip_output.c to
+>> af_inet.c. It also introduces CONFIG_IPV4 guards around af_inet.c to
+>> reject IPv4-specific ioctls, protocol registrations and bind requests.
+>> The same guard is added to reject IPv4-mapped IPv6.
+>>
+>> Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+>> ---
+>>   net/ipv4/af_inet.c   | 96 +++++++++++++++++++++++++++++++++++++-------
+>>   net/ipv4/ip_output.c | 18 ---------
+>>   net/ipv6/af_inet6.c  |  5 +++
+>>   net/ipv6/datagram.c  | 12 ++++++
+>>   4 files changed, 99 insertions(+), 32 deletions(-)
+>>
+>> diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+>> index d9421ac38d78..b0c48ba544bf 100644
+>> --- a/net/ipv4/af_inet.c
+>> +++ b/net/ipv4/af_inet.c
+>> @@ -129,6 +129,28 @@
+>>   int disable_ipv6_mod;
+>>   EXPORT_SYMBOL(disable_ipv6_mod);
+>>   
+>> +/* Keep the function here for now as it is generic, it should be moved
+>> + * to a common L3 place
+>> + */
+>> +int
+>> +ip_generic_getfrag(void *from, char *to, int offset, int len, int odd, struct sk_buff *skb)
+>> +{
+>> +	struct msghdr *msg = from;
+>> +
+>> +	if (skb->ip_summed == CHECKSUM_PARTIAL) {
+>> +		if (!copy_from_iter_full(to, len, &msg->msg_iter))
+>> +			return -EFAULT;
+>> +	} else {
+>> +		__wsum csum = 0;
+>> +
+>> +		if (!csum_and_copy_from_iter_full(to, len, &csum, &msg->msg_iter))
+>> +			return -EFAULT;
+>> +		skb->csum = csum_block_add(skb->csum, csum, odd);
+>> +	}
+>> +	return 0;
+>> +}
+>> +EXPORT_SYMBOL(ip_generic_getfrag);
+>> +
+>>   /* The inetsw table contains everything that inet_create needs to
+>>    * build a new socket.
+>>    */
+>> @@ -425,8 +447,10 @@ int inet_release(struct socket *sock)
+>>   		if (!sk->sk_kern_sock)
+>>   			BPF_CGROUP_RUN_PROG_INET_SOCK_RELEASE(sk);
+>>   
+>> +#if IS_ENABLED(CONFIG_IPV4)
+>>   		/* Applications forget to leave groups before exiting */
+>>   		ip_mc_drop_socket(sk);
+>> +#endif
+>>   
+>>   		/* If linger is set, we don't return until the close
+>>   		 * is complete.  Otherwise we return immediately. The
+>> @@ -478,6 +502,7 @@ EXPORT_SYMBOL(inet_bind);
+>>   int __inet_bind(struct sock *sk, struct sockaddr_unsized *uaddr, int addr_len,
+>>   		u32 flags)
+>>   {
+>> +#if IS_ENABLED(CONFIG_IPV4)
+>>   	struct sockaddr_in *addr = (struct sockaddr_in *)uaddr;
+>>   	struct inet_sock *inet = inet_sk(sk);
+>>   	struct net *net = sock_net(sk);
+>> @@ -570,6 +595,9 @@ int __inet_bind(struct sock *sk, struct sockaddr_unsized *uaddr, int addr_len,
+>>   		release_sock(sk);
+>>   out:
+>>   	return err;
+>> +#else
+>> +	return -EAFNOSUPPORT;
+>> +#endif
+>>   }
+>>   
+>>   int inet_dgram_connect(struct socket *sock, struct sockaddr_unsized *uaddr,
+>> @@ -962,18 +990,24 @@ EXPORT_SYMBOL(inet_shutdown);
+>>   int inet_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+>>   {
+>>   	struct sock *sk = sock->sk;
+>> -	int err = 0;
+>> -	struct net *net = sock_net(sk);
+>> +#if IS_ENABLED(CONFIG_IPV4)
+>>   	void __user *p = (void __user *)arg;
+>> -	struct ifreq ifr;
+>> +	struct net *net = sock_net(sk);
+>>   	struct rtentry rt;
+>> +	struct ifreq ifr;
+>> +#endif
+>> +	int err = 0;
+>>   
+>>   	switch (cmd) {
+>>   	case SIOCADDRT:
+>>   	case SIOCDELRT:
+>> +#if IS_ENABLED(CONFIG_IPV4)
+>>   		if (copy_from_user(&rt, p, sizeof(struct rtentry)))
+>>   			return -EFAULT;
+>>   		err = ip_rt_ioctl(net, cmd, &rt);
+>> +#else
+>> +		err = -EOPNOTSUPP;
+>> +#endif
+>>   		break;
+>>   	case SIOCRTMSG:
+>>   		err = -EINVAL;
+>> @@ -981,18 +1015,26 @@ int inet_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+>>   	case SIOCDARP:
+>>   	case SIOCGARP:
+>>   	case SIOCSARP:
+>> +#if IS_ENABLED(CONFIG_IPV4)
+>>   		err = arp_ioctl(net, cmd, (void __user *)arg);
+>> +#else
+>> +		err = -EOPNOTSUPP;
+>> +#endif
+>>   		break;
+>>   	case SIOCGIFADDR:
+>>   	case SIOCGIFBRDADDR:
+>>   	case SIOCGIFNETMASK:
+>>   	case SIOCGIFDSTADDR:
+>>   	case SIOCGIFPFLAGS:
+>> +#if IS_ENABLED(CONFIG_IPV4)
+>>   		if (get_user_ifreq(&ifr, NULL, p))
+>>   			return -EFAULT;
+>>   		err = devinet_ioctl(net, cmd, &ifr);
+>>   		if (!err && put_user_ifreq(&ifr, p))
+>>   			err = -EFAULT;
+>> +#else
+>> +		err = -EOPNOTSUPP;
+>> +#endif
+>>   		break;
+>>   
+>>   	case SIOCSIFADDR:
+>> @@ -1001,9 +1043,13 @@ int inet_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+>>   	case SIOCSIFDSTADDR:
+>>   	case SIOCSIFPFLAGS:
+>>   	case SIOCSIFFLAGS:
+>> +#if IS_ENABLED(CONFIG_IPV4)
+>>   		if (get_user_ifreq(&ifr, NULL, p))
+>>   			return -EFAULT;
+>>   		err = devinet_ioctl(net, cmd, &ifr);
+>> +#else
+>> +		err = -EOPNOTSUPP;
+>> +#endif
+> 
+> (passing by comment)
+> 
+> Don't we have a coding style rule to avoid ifdef conditional in C code?
+> Should we add some new devinet4_ioctl/etc wrappers that we can conditionally
+> compile out in the headers?
 
-Fix it by starting tcpdump first and waiting for its "listening" banner
-via slowwait() before sending traffic. Run ping synchronously, then kill
-and reap tcpdump if it did not already exit on -c 1.
-
-Fixes: 7e9838b7915e ("selftests/net: Add icmp.sh for testing ICMP dummy address responses")
-Link: https://openqa.opensuse.org/tests/5907626/logfile?filename=icmp_sh.tap.txt#line-2 [1]
-Signed-off-by: Ricardo B. Marlière (SUSE) <ricardo@marliere.net>
----
-Changes in v2:
- - Drop timeout(1) wrapper from tcpdump invocation.
- - Run ping synchronously in the foreground.
- - Kill and reap tcpdump PID after ping returns if it did not exit on -c 1.
- - Simplify commit message description of the fix.
-- Link to v1: https://patch.msgid.link/20260901-selftests-net-icmp_race-v1-1-0b2a27e91a0c@marliere.net
-
-To: "David S. Miller" <davem@davemloft.net>
-To: Eric Dumazet <edumazet@google.com>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-To: Simon Horman <horms@kernel.org>
-To: Shuah Khan <shuah@kernel.org>
-To: Toke Høiland-Jørgensen <toke@redhat.com>
-To: David Ahern <dsahern@kernel.org>
-Cc: netdev@vger.kernel.org
-Cc: linux-kselftest@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
----
- tools/testing/selftests/net/icmp.sh | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
-
-diff --git a/tools/testing/selftests/net/icmp.sh b/tools/testing/selftests/net/icmp.sh
-index 824cb0e35eff..1670caef2b90 100755
---- a/tools/testing/selftests/net/icmp.sh
-+++ b/tools/testing/selftests/net/icmp.sh
-@@ -28,10 +28,11 @@ RT2=172.16.0.0/24
- H2_IP6=2001:db8:1::2
- 
- TMPFILE=$(mktemp)
-+TCPDUMP_ERR=$(mktemp)
- 
- cleanup()
- {
--    rm -f "$TMPFILE"
-+    rm -f "$TMPFILE" "$TCPDUMP_ERR"
-     cleanup_ns $NS1 $NS2
- }
- 
-@@ -53,11 +54,22 @@ ip -netns $NS2 route add $RT2 via inet6 $H1_IP6
- # Make sure ns2 will respond with ICMP unreachable
- ip netns exec $NS2 sysctl -qw net.ipv4.icmp_ratelimit=0 net.ipv4.ip_forward=1
- 
--# Run the test - a ping runs in the background, and we capture ICMP responses
--# with tcpdump; -c 1 means it should exit on the first ping, but add a timeout
--# in case something goes wrong
--ip netns exec $NS1 ping -w 3 -i 0.5 $PINGADDR >/dev/null &
--ip netns exec $NS1 timeout 10 tcpdump -tpni veth0 -c 1 'icmp and icmp[icmptype] != icmp-echo' > $TMPFILE 2>/dev/null
-+# Run the test - start tcpdump and wait for it to be capturing before
-+# sending any traffic. -c 1 means tcpdump exits on its own once it captures
-+# a reply; kill it afterwards in case it is still waiting.
-+ip netns exec $NS1 tcpdump -tpni veth0 -c 1 \
-+    'icmp and icmp[icmptype] != icmp-echo' > $TMPFILE 2>$TCPDUMP_ERR &
-+TCPDUMP_PID=$!
-+if ! slowwait 3 grep -qs "listening" "$TCPDUMP_ERR"; then
-+    echo "FAIL - tcpdump did not start listening"
-+    cat "$TCPDUMP_ERR"
-+    exit 1
-+fi
-+
-+ip netns exec $NS1 ping -w 3 -i 0.5 $PINGADDR >/dev/null
-+
-+kill $TCPDUMP_PID 2>/dev/null
-+wait $TCPDUMP_PID 2>/dev/null
- 
- # Parse response and check for dummy address
- # tcpdump output looks like:
-
----
-base-commit: 08df884136f1c1197bab2a27814404fd329d9aac
-change-id: 20260901-selftests-net-icmp_race-6268d886249e
-
-Best regards,
---  
-Ricardo B. Marlière (SUSE) <ricardo@marliere.net>
+I think yes but when it makes sense. Of course, that is something a bit 
+hard to judge IMHO. I tried to use it when it makes sense, like for 
+stubs or for functions that are protocol agnostic but contains a small 
+part related to IPv4/IPV6. I was willing to avoid code duplication as 
+much as possible.
 
