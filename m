@@ -1,115 +1,149 @@
-Received: from mail-oo2-f43.google.com (mail-oo2-f43.google.com [74.125.231.171])
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1874364038
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 15:10:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9636B36A033
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 15:22:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789139419; cv=none; b=Fnb7VyicdBUrXQYpCtG+UykAUNWBXoemMu6YDu2B4QhMRPsfKbgbAkCLk1wA+DpShONiSwq1ctXX8DtEeLB4vfmU3Y19i48MJrf3V/9yHy5twbveNZOFwkLIKHMovXVOH/rJOan71sRPj2Vc5QqBtP/sO9H6ZBGNe2nBxbyqbXU=
+	t=1789140176; cv=none; b=LYM14pp0GQy7vEwoiYVfgrV+k+TCciIHsZnFmkiaDcfHjv8JvcJ5SEk5KD0L5OfAabhvlpGb43QvK+7mC9CDludRAiL+RewE1RNpPVlX1LEdR3qNW7a85AsHPspQOJjJEw2nz7qwbc0zpo4YNR1b74Z7ANrX+x3rfYHUB8leKrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789139419; c=relaxed/simple;
-	bh=mqiwDcKpOaRNus8j/Fg3j0JoEM5rH/wkoPe7vyjGseA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=J+dx/ZkJzUP7Y2T5sE6rSfjHmks2EtrtjD8MNNBAVH6GmaerN0YgLNGZlOhNw0b+2u2mubu3FqD3rFx36lBiMV37lkMyO8+uAQgQAbY8VBlpb/IV0JMD/KbAnsEpm5e9HBAXdPSBl8logJH8UAS4vj0nrm1h+CXO9MsgYgIdQc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=kK4G/F9w; arc=none smtp.client-ip=74.125.231.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+	s=arc-20240116; t=1789140176; c=relaxed/simple;
+	bh=XvBFvoj3NtxLfiq/QPGad++OX0rfUzOCIFlG+2oc4js=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VVhc1nojlwouxQEqdBc2V264xUgjtKTtNziqaMKcxsf3yakIvKbTCF4U59jgNlM9ukuvFtDsZ34T6wTPEoQhkIqVEePtd1BKsFzW17xFVsgYoAKNHuOww2QY/9+tRFVjXcMgTZgHWRwQiV2wuN3R2/7BI64wRBO4xBPosInLpCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=cpre2c2Y; arc=none smtp.client-ip=74.125.225.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="kK4G/F9w"
-Received: by mail-oo2-f43.google.com with SMTP id 46e09a7af769-7f4f0cfb33cso740181a34.0
-        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 08:10:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="cpre2c2Y"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-48434392b02so804286f8f.3
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 08:22:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1789139415; x=1789744215; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cMKSvjVBgJtd6CjrRqlh3dJgvYQUN3eoWH2kuKct2qs=;
-        b=kK4G/F9wPPusW8S1G4rXbeFmBv+/IN48Euc/NhlP+M7DENbx5tgQNCT9J3oNAowLsx
-         ugow5y7Oiez1bisxwk6MJ2UIRxoPG5gZPnQYO5mCqAAwB5ZjhTKjRtSJs92RM0yZ+yt1
-         CJq1uT7goVyNFuQ15NS/hMr4b4T6bt3YCeoRlMJFQ7IEqkHbZ4NJhB6NMfJqRVLD1Czk
-         9QzeEZ4YV7Q7JCuFCRVKamzfNym6sf3Y8yL7V3kKj5ns7po0oiAUVN2UIcw6SXz8dO9C
-         3U3VoEuO9qcaMhml2ivm5wRn5w9ISrpjEa5184/d9LUBlicwmSuLk0s6OT0CZ7OZ/T/e
-         9zNA==
+        d=blackwall.org; s=google; t=1789140173; x=1789744973; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=uPVHK0UKh13XuzvPAq0t2DICkCsJRRtiu4q34ZJGYJA=;
+        b=cpre2c2Y2Ms1Xfs1w/w+FsbQlM4oPFoEr5zCN4nNrDizwjARIxlrRZmjEPnQRxqSbP
+         pog35KOSQ0HGyXNWXnmSIlXhcGd2LWivZBEQq1Ur+rfJHfp/a41XRZYXlnUQln6N8tbI
+         ES6oTqpdt1x8XDfAuRH71ydAiAlLqJIFBrjk5dDSh+cuSrzPe+3T7BGcQ06Vo04V+ScV
+         e1+b3ltOA908Gqro9JBmZxT+BDH5dRNEmAe2Khcp4REOKf/4nlXzZ7gnuvTSjrffvjmV
+         3ewESIOd1ICDR3syKEsPZLXSnCMa5LJSgOdbmJmVmQKlI2vFJMc4ICnx/FbB2mgl062r
+         QOtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789139415; x=1789744215;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1789140173; x=1789744973;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=cMKSvjVBgJtd6CjrRqlh3dJgvYQUN3eoWH2kuKct2qs=;
-        b=LUmoHAD81O3NQsi0CsMlrPWZA3fAe42vbQDC0TXcWSoQGf84RJVdFMrICI0005E09K
-         9NFDhROuNI9zKiIqYU0LFnId9Xy3JnVbJ18eHx+vRfWc7f2Fb9Rwapz1uXAsRhHSUVg8
-         3x55SnrC4FLYwc5jWOqCQnsCnWy5kOcq+6J2jmUSUeuiSvejfFBWf/Lca1n9VzIzDFcQ
-         pavlOWC9qmv2vIdg8nFh1FQEiWlewvpWQCss8fYOhK4ZfvL6fmY92QRUBEaW8PfL/pEx
-         glTWZVhrgMjGsergfpJxPCkqxfqiGW7UMXx/IlKyvPOsnF1Y43xe+bwdwJ6VyxZB93HA
-         VetA==
-X-Forwarded-Encrypted: i=1; AKwUvBzuzeCDRFrRC5+R4QwDWzcc4twocDj7o2wjCCWG2Qmqzdz24JxY56iJHsi4tVIU3KijRTSyDzQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++mGlZjMTJ+aQUXRWd3EmnhGFAl5uQQE3YvBTqTQwJYvUxgGFn5/
-	BQS8cM3CljS1txNFUBQJe3wT1jS7PIeMpt4Ul1Z7a1CRsKBv+kvFNSiKvPIJrEE9++o=
-X-Gm-Gg: AYBFou17hb2eAPhm0cKo1AH4UUTI51JOEutLuB8ioK/deAmE5N3GRHG0/Va3TjEY3Zg
-	WMHMzs+k2KTkHsjm2g2QXlQzMZj7+3vWtKEJR1Hlk/fSP3YIewGhsAkWS9DCfjEwKLRZD5yasCQ
-	v5tNLITewFQc/28yGDuYYWX+9KaH1BrPebc4IEDYPTVFTyOzy21DMbFB3K7Puoig7649ftG7Fyj
-	aa9Agf1ceoSaLq5246U05Qfzf1KnUlsAYPx55OqsYhNvaUZGDouUJOryWqH4WLbMT3bU+cxanwX
-	BkeP3X2nCjlGzyBSr5CQ4RWO1WcpcVDblTK4fUCcxY8zDVz40BuAfylDdYVM8OGhB62G/qe2Ql4
-	A/Mvi/gdXsWBkqfcY6yzzqRMur+Dr90PbSVF2/QMasIktHNI20t98NHYdMEbXLOyGwJGouEczqp
-	YA7K5V+tZg4rTExbpStSalOE4JKS5UMQD483o9YsGCZvJV9hpO9pNTtba5AY6eT9OP8SsfI2sHY
-	NEkn2ylTUf5E8C5wazD9U+TBMvkdw+ZLO0NTFp28opHTHqY8HwcRSct
-X-Received: by 2002:a05:6830:82c3:b0:7f6:ec23:7956 with SMTP id 46e09a7af769-803fe1bd730mr7936240a34.2.1789139414671;
-        Fri, 11 Sep 2026 08:10:14 -0700 (PDT)
-Received: from [192.168.1.102] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-803f6d1875csm2548656a34.22.2026.09.11.08.10.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Sep 2026 08:10:14 -0700 (PDT)
-Message-ID: <258d93cd-a18d-4860-bab7-2c9c7d43a015@kernel.dk>
-Date: Fri, 11 Sep 2026 09:10:12 -0600
+        bh=uPVHK0UKh13XuzvPAq0t2DICkCsJRRtiu4q34ZJGYJA=;
+        b=kTn7/rkvTzRLeSpoMoZ5u989B/NsB5AnAz34Ku8WX7o/hOlzLkfAm3qO1OeVS46uY5
+         FRZg/1KB8GxHRiQuFYVbN0ToPDztPjp9u8INXj39nTnxA3Os2mh2yq0mmh4owdLyCCMl
+         oQs/arKjSD6jICbQ+2lIaNxMqOkvyeU7OfzUw9lXhuswFX6GH0XqwsT8vFusAGu7I8rm
+         e6bP7daFUlPifNCECD27YfBFWQd9lraFsFcXzpWhghgLlUIAWn00lrnvwcv9fl/ga4gX
+         CNTexfsxpKu9HMjTB1dOIUj0nLr4Tz1vNw5K9CBHLzsDaAFrOBK9FKdXkU6OGhbFw5c0
+         RMnA==
+X-Gm-Message-State: AFuF++naEp6S6tBXPz5ktOctbnIFLa+oMvzLpSUzAiyaS1k8c5bSnlnF
+	SDyiSArvP8nVcLjXuWOmnCxnUxo2H2vjSYyTPts0sfqPwch8mjqMmplzTbU1rATvyrI8UzvesU7
+	Z/VMcFXE=
+X-Gm-Gg: AYBFou3nFQIeTcVUDEdZKJ8mmTzMYJRfBtZFvYajE03M858fW3LcLLW6miakglfYMMz
+	AkvKLRhT/9CdMgXFJZ3KwC8Norzg57IAY9oNwM8Tpaa7EDyi78yKr5vFaCU5RjomX5OoQpkDIsY
+	N/YRMVgvxkx2mVrb+NAX5NAWFkbAe7AfAkDFeUaGVzMBUIYrUWlPQgGskCi3yiZ+mrsOQoBu9VP
+	PA9jcQgiwt6s1NwQeJURlJjirXfz4bxFvcc5ObjrFKMbgrHeOq1GHDS2UUJM9cEINIF7aDUbwBk
+	1ubQ2ZshsByZ8Fmg/HhkPYPpTb+BrIXJQfV9YH22NfFtcc1jO5MmB9mxhd7o3L6Hk5AF0bSXM4s
+	CSNO2rJ8B13+5koP3YQQ4H30o2vjmNEIS+W4mmwoZBepAz8hNL+TKUMBMsRfzFNSv6yIZFdfCik
+	+s3+Suu93UHt2+xGwZtygf2icLWki5tRw6SzZSSbosmhbTbtVbukDfRKpdCYSH2dSJzzDtKAOs8
+	sXldLjPi4du+zNdul0Opg==
+X-Received: by 2002:a05:6000:4b1d:b0:484:3312:f127 with SMTP id ffacd0b85a97d-486eb35fc9cmr11591303f8f.27.1789140172622;
+        Fri, 11 Sep 2026 08:22:52 -0700 (PDT)
+Received: from localhost (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-486eb34e608sm6815862f8f.23.2026.09.11.08.22.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Sep 2026 08:22:51 -0700 (PDT)
+From: Nikolay Aleksandrov <razor@blackwall.org>
+To: netdev@vger.kernel.org
+Cc: idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	tobias@waldekranz.com,
+	bridge@lists.linux.dev,
+	Nikolay Aleksandrov <razor@blackwall.org>
+Subject: [PATCH net] net: bridge: mst: move switchdev call outside rcu
+Date: Fri, 11 Sep 2026 13:50:21 +0300
+Message-ID: <20260911105021.1385934-1-razor@blackwall.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/6] block: Include error-injection.h for
- ALLOW_ERROR_INJECTION()
-To: Petr Pavlu <petr.pavlu@suse.com>, Jakub Kicinski <kuba@kernel.org>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Jani Nikula <jani.nikula@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>,
- Matthew Brost <matthew.brost@intel.com>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Cc: Simon Horman <horms@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Francois Dugast
- <francois.dugast@intel.com>, Luis Chamberlain <mcgrof@kernel.org>,
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- Aaron Tomlin <atomlin@atomlin.com>, linux-block@vger.kernel.org,
- netdev@vger.kernel.org, linux-api@vger.kernel.org,
- intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-modules@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260911-module-include-error_injection-v1-0-5da895d8c84d@suse.com>
- <20260911-module-include-error_injection-v1-1-5da895d8c84d@suse.com>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20260911-module-include-error_injection-v1-1-5da895d8c84d@suse.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/11/26 9:04 AM, Petr Pavlu wrote:
-> block/blk-core.c uses ALLOW_ERROR_INJECTION(), which is defined in
-> asm-generic/error-injection.h. It currently relies on this header being
-> included indirectly through linux/module.h -> linux/error-injection.h.
-> 
-> Add the missing include in preparation for removing the
-> linux/error-injection.h include from linux/module.h.
+This is a follow-up of one of sashiko's pre-existing bug reports.
+br_mst_set_state() calls switchdev_port_attr_set() for nonzero MSTIs
+while holding rcu_read_lock() which invokes the blocking switchdev
+notifier chain and may sleep. Nonzero MSTI changes come from netlink
+with rtnl held. Move the switchdev call before entering the rcu section and
+assert that rtnl is held.
 
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
+The call cannot be deferred because netlink needs its error and extack.
+Also DSA reads the old bridge MST state during the callback and checks it.
+A deferred callback will be late and will see the updated state.
 
-if you want to shove this upstream somewhere else.
+Fixes: 7ae9147f4312 ("net: bridge: mst: Notify switchdev drivers of MST state changes")
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+---
+ net/bridge/br_mst.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
+diff --git a/net/bridge/br_mst.c b/net/bridge/br_mst.c
+index 43a300ae6bfa..ce537cb71fe8 100644
+--- a/net/bridge/br_mst.c
++++ b/net/bridge/br_mst.c
+@@ -107,21 +107,24 @@ int br_mst_set_state(struct net_bridge_port *p, u16 msti, u8 state,
+ 	struct net_bridge_vlan *v;
+ 	int err = 0;
+ 
+-	rcu_read_lock();
+-	vg = nbp_vlan_group_rcu(p);
+-	if (!vg)
+-		goto out;
+-
+ 	/* MSTI 0 (CST) state changes are notified via the regular
+-	 * SWITCHDEV_ATTR_ID_PORT_STP_STATE.
++	 * SWITCHDEV_ATTR_ID_PORT_STP_STATE. All other MSTIs are handled via
++	 * netlink with RTNL held
+ 	 */
+ 	if (msti) {
++		ASSERT_RTNL();
++
+ 		err = switchdev_port_attr_set(p->dev, &attr, extack);
+ 		if (err && err != -EOPNOTSUPP)
+ 			goto out;
++		err = 0;
+ 	}
+ 
+-	err = 0;
++	rcu_read_lock();
++	vg = nbp_vlan_group_rcu(p);
++	if (!vg)
++		goto out_rcu_unlock;
++
+ 	list_for_each_entry_rcu(v, &vg->vlan_list, vlist) {
+ 		if (v->brvlan->msti != msti)
+ 			continue;
+@@ -129,8 +132,9 @@ int br_mst_set_state(struct net_bridge_port *p, u16 msti, u8 state,
+ 		br_mst_vlan_set_state(vg, v, state);
+ 	}
+ 
+-out:
++out_rcu_unlock:
+ 	rcu_read_unlock();
++out:
+ 	return err;
+ }
+ 
 -- 
-Jens Axboe
+2.47.3
 
