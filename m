@@ -1,71 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-29.mta0.migadu.com [91.218.175.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2AB242E8D6
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 10:19:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0377542C513
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 10:19:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789121969; cv=none; b=nTECo/UZu2UwQsmO3R5P+6Zl9qt5MkHXi9KbAXvUwwUpoBhb/kDfDmBf2BDMFDEpoo4TV9gloBazfSVY45ShDyWG9bpcc+cGg+4QCcYLshcdKFbLcvWrH7zrsrn+m5SfsWzVrPiXTFrxuAJqCFbqTYwRSt7PXuSAQkoe5bieLgs=
+	t=1789121984; cv=none; b=EfbJlRoWqCEswFx1E5ydajV5G6Lad55b7/lA+nTqTvlhgDzrtI5TqSPPNKTUehSooaki1GrV3KwXm7V5DojFsjbc5brZwwWejHwY2+fLW9LBact8ZV0ux0b/QMy063J/XVf6ETwhQn83X3D7F8nML672uvMW112boXPMXuAxX8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789121969; c=relaxed/simple;
-	bh=LyM82dSPAoxD1ECL3cim9jzMpE05vcHmndgsrH4nxHE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sce6RFNNb+qPn8MqDQF8hmBADPX3y/fbyUrPSQ0fUaWF5APuTkgsN12TbnE7koXsUbLSMQx/vfSX/wr12EvUJR9kmwOQAb++Tj75kQrNzkKSY2FpL07Nf/GwRCVZOwcyhoTM98NG4RCUQF4T02a7nUdAvOf0X7NUaU6IwKicy/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bZIhiUjZ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789121984; c=relaxed/simple;
+	bh=KsROwYNjEq1HSbXeZo4M0Jw+ikml7L0+xYgSbjmQXvE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qXo7AxHoc4b9CiPuvq+eRF59mhEjZea2HH2dIFmxI1Mdao9wnmvhycKqpmICeY24asoU+w2LfU4g4wgkON5UpvR7x/KBgEZdlQMRgYDCTpaJakbbq+5Nrf2355J0uNQOgQKEbSBnDFn+MeZ3n1OudmMq6kNCbDuOHofxdsyRPr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=S78oWLY1; arc=none smtp.client-ip=91.218.175.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bZIhiUjZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 733A61F000FF;
-	Fri, 11 Sep 2026 10:19:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789121967;
-	bh=RujwQAraUAFps8XFWwJ00y0IuC6HN+2wM5m56sc/vpc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=bZIhiUjZ2l8LZMATomme7DqNaXjDz/ghJ1aOwpz4WSYdndTPuYzlna1VxFSfyUdkI
-	 HtNUV9pKo3N4HDusN07LB5Fi/JlIcO2lfMdqdBBaxoJhkNOXOiObN8jhuAQELcHNZd
-	 YulQWUjlzjBQ0CGiiKJq9mf8wIjF3om8uzetYkvyQOa4PLN/xFCFQ1+gQyiZJ5vk+l
-	 stua/1He6Ry9uDKhshPVfQwLGxklE4eOez4u0+2JmX8opNdayND5h13e5mMKsKiy5D
-	 WwBBIdJiwF+/O1LgjfxaHe/ZS7tppBNDP0nZurEeaJEZqeCTsMgMIyjAADUcpVPT4b
-	 bPOmDkbNBSjVg==
-Date: Fri, 11 Sep 2026 11:19:21 +0100
-From: Simon Horman <horms@kernel.org>
-To: Mohsin Bashir <mohsin.bashr@gmail.com>
-Cc: netdev@vger.kernel.org, alexanderduyck@fb.com, kuba@kernel.org,
-	kernel-team@meta.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, pabeni@redhat.com, mike.marciniszyn@gmail.com,
-	lee@trager.us, jacob.e.keller@intel.com, leitao@debian.org,
-	vadim.fedorenko@linux.dev, daskald@meta.com, bobbyeshleman@meta.com,
-	asml.silence@gmail.com
-Subject: Re: [PATCH net-next] eth: fbnic: Make Rx completion coalescing
- configurable
-Message-ID: <20260911101921.GA48209@horms.kernel.org>
-References: <20260909211111.1795726-1-mohsin.bashr@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="S78oWLY1"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=KsROwYNjEq1HSbXeZo4M0Jw+ikml7L0+xYgSbjmQXvE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789121979; v=1; x=1789726779;
+ b=S78oWLY1wdFL/I0/XfmRU9S+Inovnil781RSx6jOq1cbilL3Lee2odt6kroq4dGcmSbVxAAf
+ h2AQSbLE18MiEBVMEvBmzG3u4j8XuT/MpcRvTuuZgSMnJIQDVHyNEL6p6nRwmrfSJegYNTY2g+j
+ PtRb/GUllqE2hEEbVUFVzMRU=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id a98d2990b29644a7;
+	Fri, 11 Sep 2026 10:19:39 +0000
+X-Mizu-Trace-ID: a98d2990b29644a7
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <d50caa88-ea1b-4e01-ae29-7f6007575ee8@linux.dev>
+Date: Fri, 11 Sep 2026 18:19:25 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260909211111.1795726-1-mohsin.bashr@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 01/14] bpf: Introduce per-packet metadata
+ storage for BPF programs
+To: Jakub Sitnicki <jakub@cloudflare.com>, netdev@vger.kernel.org,
+ Alexei Starovoitov <ast@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Stanislav Fomichev <sdf@fomichev.me>
+Cc: bpf@vger.kernel.org, kernel-team@cloudflare.com,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+ Emil Tsalapatis <emil@etsalapatis.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Simon Horman <horms@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Florian Westphal <fw@strlen.de>, Jack Wang <163wangjack@gmail.com>
+References: <20260910-bpf-meta-inside-skb-ext-v2-0-0b21e42180b0@cloudflare.com>
+ <20260910-bpf-meta-inside-skb-ext-v2-1-0b21e42180b0@cloudflare.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20260910-bpf-meta-inside-skb-ext-v2-1-0b21e42180b0@cloudflare.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 09, 2026 at 02:11:11PM -0700, Mohsin Bashir wrote:
-> From: Mohsin Bashir <hmohsin@meta.com>
-> 
-> The Rx completion queue writeback coalescing window controls how long
-> the queue manager may defer writing completions to host memory.
-> 
-> Expose this window through the standard rx-cqe-nsecs ethtool
-> parameter. Preserve the existing 2000 ns default and accept values
-> from 1000 ns through the device maximum (~109 us).
-> 
-> Hardware expresses COAL_WAIT in 600 MHz core clock cycles, or 1.667 ns
-> per cycle. Programming rounds the configured value to the nearest clock
-> cycle, resulting in an error of less than 1 ns. Retain the requested
-> value for get_coalesce() because this error is below the one-nanosecond
-> resolution of the ethtool interface.
-> 
-> Signed-off-by: Mohsin Bashir <hmohsin@meta.com>
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+> diff --git a/net/Kconfig b/net/Kconfig
+> index e38477393551..6d57320dfea3 100644
+> --- a/net/Kconfig
+> +++ b/net/Kconfig
+> @@ -540,4 +540,24 @@ config NET_TEST
+>   
+>   	  If unsure, say N.
+>   
+> +config BPF_SKB_EXT
+> +	bool "skb extension for BPF metadata"
+> +	depends on BPF_SYSCALL
+> +	select SKB_EXTENSIONS
+> +	help
+> +	  Enable an sk_buff extension for storing BPF metadata. This allows BPF
+> +	  programs to associate arbitrary data with individual packets as they
+> +	  traverse the network stack. The storage is automatically freed when
+> +	  the sk_buff is freed.
+> +
+> +config BPF_SKB_EXT_SIZE
+> +	int "Size of the BPF skb extension metadata buffer"
+> +	depends on BPF_SKB_EXT
+> +	range 1 256
+> +	default 64
+> +	help
+> +	  Configures the size of the inline metadata buffer in struct
+> +	  bpf_skb_ext, which is the maximum amount of data a BPF program can
+> +	  store or retrieve with bpf_dynptr_from_skb_ext().
+> +
+>   endif   # if NET
+
+
+
+Can we do it like this? So that enabling BPF_SKB_EXT_SIZE only is enough 
+and make it easier.
+
+
+config BPF_SKB_EXT_SIZE
+     int "Per-packet BPF metadata in skb, in bytes (0 to disable)"
+     depends on BPF_SYSCALL
+     range 0 256
+     default 0
+     help
+       Configures the size of the inline metadata buffer in struct
+       ....
+       The skb extension chunk is sized in units of 8 bytes, so values
+       that are not a multiple of 8 just waste the remainder.
+
+config BPF_SKB_EXT
+     def_bool BPF_SKB_EXT_SIZE != 0
+     select SKB_EXTENSIONS
+     help
+       xxx
 
