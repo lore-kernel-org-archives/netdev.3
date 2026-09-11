@@ -1,55 +1,56 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF0B48822D
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 13:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139D0489877
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 13:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789133406; cv=none; b=P1GgP3OSOD9sdo1ygsxCeIpCtXLtNtSgaGWIbcPwGxKLiyaBiaEbQ3zOdCPKrGZv+Ds/ql2ZwY+MYsPie5/r9q2E0eef2A0zEE2RZeebocYr/zr6s8O2MyCP9n7AmFiDmOWleOXggmjK9OGSz2Tj+xlGTAI9AfQM7DnDjHALLbs=
+	t=1789133407; cv=none; b=SBbWvtAgtTgp9pmMpzDcIpTVEl+p95GDH+syk+7JHGpXdY4BqdbBLq7pfWVf2qhCUbxhUeTJCkK8HiBuaqQHBmhmWqH/yPwEsBvysNaX3XJhxEusTEMPpfBXpinctEaNIj9FNxp/EYptC19P80gR95ymANDGiIbh2nXZ+ZMHt4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789133406; c=relaxed/simple;
-	bh=qHS1b2tjdRdvqr4P/sS38v3L3WhD2s8Lh9q0gj/hIiw=;
+	s=arc-20240116; t=1789133407; c=relaxed/simple;
+	bh=NdUyRRAq/orlglGiQ3Pqj8h/NIOiIbOnC2Y0Yq+IK6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BXrItrT9E7clX3B5fvZrBFusEu1sXvqiq9gWUVVo6/Qhht8OluklICz5B0JwV0B9hgkIm4Y4hYwW7o7HsXtlvzq2TIvKGc4Y/WSwA1dGpS1zCDFjyB3Zeq0Ov186mOTsO+IOxi2qDNUpDtqePZVumOZymOAXsytwN5uLSYnHhFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UDLPkmo1; arc=none smtp.client-ip=192.198.163.4
+	 MIME-Version; b=CHm9plRm2Qc9/Qvui5Q9Jeh7mbtEgwzS0zwbGZ60yLOwJOt2iM3BsouiDeD1KNapowaWGgyCkrqItPCtZvMAZoFwUXB826uBi/4G2rkItXjnOh13kfN/7B0pJ4i/en6DUKqmoR49M5Y1FdZOSYfUghemBOeyngaA44LTLuTiDoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MOx9gn2c; arc=none smtp.client-ip=192.198.163.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UDLPkmo1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MOx9gn2c"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789133405; x=1820669405;
+  t=1789133406; x=1820669406;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=qHS1b2tjdRdvqr4P/sS38v3L3WhD2s8Lh9q0gj/hIiw=;
-  b=UDLPkmo1JFT1sTuXRKHgJpqbrKatmduakveG8PppR8wKUUKwqMDK0jjp
-   MNYxLa8oISfkytH2hM7mPyGsfZFqT2viRAzdN93n3x7oArkf5cm1G11OO
-   XNPO6N1bqh4mtCxIphp2bMpR4dwbOtErznwlmVg25enuCsepWcTClzOQh
-   tDWlNyZ2y/5Mu1UdFJn+c64m25tT/66HsahFRweWkygNjoOT3D0zt98ok
-   MIogHGuAvXGPqz7qWwhbshEZYMmosKM2IgeLAgl9X00OJY6AsAauhPYj6
-   a4MQRHXI0Ya0zcfq9j27D3CKbjCUPM2Jrob22g0MUcS1dHmrAcXnL82+Y
-   A==;
-X-CSE-ConnectionGUID: 84HcC1b2SdKLyVo+9poUIg==
-X-CSE-MsgGUID: DZddnE58TvCdCGKBw/Vfrw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="107547"
+  bh=NdUyRRAq/orlglGiQ3Pqj8h/NIOiIbOnC2Y0Yq+IK6Y=;
+  b=MOx9gn2cI/jxJId69PU7j+ebVEl5pZyXDXqK76k+KpF2g+SHRjAXBFkp
+   K3rNv3/+RXxT3EGt1jDPVdlyaB5TIMYQfh9i5s7RZmzezLePHfQB6L1YI
+   k2omt0Zb4E7f5HitlShQGecyTY4lv2z0fbaTcVC/T9oHCgSqK7EKNJ7ap
+   y6CnssfneFy5vllKNUX2m0JoPQvvP+Kwob6Ol+EDBol/bwVSv3jA1aeoq
+   CLfIrZBF5Bqo5IuvUqJ9hCeacvxkHW3obIq/bHTic+LdgeUOudiN6EmuC
+   0Kqmmwlh9H6vofBSIf5sC3h3n3UTNspxu3U33dq4u0vhlYqAa3CNt04VP
+   Q==;
+X-CSE-ConnectionGUID: g/A7S7U6SzGQfS5sgJHUqw==
+X-CSE-MsgGUID: anD1WjZdQziUrKI4u50NTw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="107549"
 X-IronPort-AV: E=Sophos;i="6.27,97,1787036400"; 
-   d="scan'208";a="107547"
+   d="scan'208";a="107549"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa114.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 06:30:04 -0700
-X-CSE-ConnectionGUID: 47hF93LsR8mgeD/zGZZk9A==
-X-CSE-MsgGUID: RJ7LK1itTGehIeud5m0z6A==
+  by fmvoesa114.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 06:30:06 -0700
+X-CSE-ConnectionGUID: aZG0P84JQ0K5aLnjTKeMyA==
+X-CSE-MsgGUID: ZUlasN0KSICgTmNdTqQm6Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,97,1787036400"; 
-   d="scan'208";a="270541296"
+   d="scan'208";a="270541303"
 Received: from os-delivery.igk.intel.com ([10.102.21.165])
-  by orviesa010.jf.intel.com with ESMTP; 11 Sep 2026 06:30:03 -0700
+  by orviesa010.jf.intel.com with ESMTP; 11 Sep 2026 06:30:05 -0700
 From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 To: intel-wired-lan@lists.osuosl.org
 Cc: netdev@vger.kernel.org,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Subject: [PATCH iwl-next v2 09/10] ixd: support for getting lan memory regions
-Date: Fri, 11 Sep 2026 14:49:20 +0200
-Message-ID: <20260911124921.2881348-10-michal.swiatkowski@linux.intel.com>
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: [PATCH iwl-next v2 10/10] ixd: use interrupt for mailbox communication
+Date: Fri, 11 Sep 2026 14:49:21 +0200
+Message-ID: <20260911124921.2881348-11-michal.swiatkowski@linux.intel.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20260911124921.2881348-1-michal.swiatkowski@linux.intel.com>
 References: <20260911124921.2881348-1-michal.swiatkowski@linux.intel.com>
@@ -61,328 +62,316 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Send and parse get lan memory regions command. Map the regions from
-the command response.
+Switch from polling to interrupt for invoking mailbox operations when it
+is available.
 
-It is needed to set number of regions to not zero value even when
-just sending the command. Set it to 1 and add comment about that.
+Add flag to store the information about the mailbox interrupt. If
+interrupt is turned off mailbox will be handled by periodic workqueue.
+If it is enabled interrupt will take care of it.
 
-It is possible that get lan memory regions isn't supported. Driver
-should cover this situation by mapping regions needed for running.
-
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 ---
- drivers/net/ethernet/intel/ixd/ixd.h          |   3 +
- drivers/net/ethernet/intel/ixd/ixd_main.c     | 131 +++++++++++++++---
- drivers/net/ethernet/intel/ixd/ixd_virtchnl.c |  90 +++++++++++-
- 3 files changed, 201 insertions(+), 23 deletions(-)
+ drivers/net/ethernet/intel/ixd/Kconfig        |   1 +
+ drivers/net/ethernet/intel/ixd/ixd.h          |  28 ++++
+ drivers/net/ethernet/intel/ixd/ixd_ctlq.c     |   8 +-
+ drivers/net/ethernet/intel/ixd/ixd_lan_regs.h |  10 ++
+ drivers/net/ethernet/intel/ixd/ixd_lib.c      | 126 ++++++++++++++++++
+ drivers/net/ethernet/intel/ixd/ixd_main.c     |   2 +
+ 6 files changed, 173 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/net/ethernet/intel/ixd/Kconfig b/drivers/net/ethernet/intel/ixd/Kconfig
+index 0a48b3bb7bc2..69c37c2cdb67 100644
+--- a/drivers/net/ethernet/intel/ixd/Kconfig
++++ b/drivers/net/ethernet/intel/ixd/Kconfig
+@@ -6,6 +6,7 @@ config IXD
+ 	depends on PCI_MSI
+ 	select LIBIE_CP
+ 	select LIBIE_PCI
++	select LIBIE_IRQ
+ 	select NET_DEVLINK
+ 	help
+ 	  This driver supports Intel(R) Control Plane PCI Function
 diff --git a/drivers/net/ethernet/intel/ixd/ixd.h b/drivers/net/ethernet/intel/ixd/ixd.h
-index 2a09ccba13d5..4a1590f937b5 100644
+index 4a1590f937b5..ed5ffe04f48d 100644
 --- a/drivers/net/ethernet/intel/ixd/ixd.h
 +++ b/drivers/net/ethernet/intel/ixd/ixd.h
-@@ -63,5 +63,8 @@ bool ixd_check_reset_complete(struct ixd_adapter *adapter);
- void ixd_init_task(struct work_struct *work);
- int ixd_init_dflt_mbx(struct ixd_adapter *adapter);
- void ixd_deinit_dflt_mbx(struct ixd_adapter *adapter);
-+int ixd_iomap_running_regions(struct ixd_adapter *adapter);
-+bool ixd_iomap_is_not_start_region(struct libie_mmio_info *info,
-+				   struct libie_pci_mmio_region *reg);
+@@ -5,9 +5,20 @@
+ #define _IXD_H_
  
- #endif /* _IXD_H_ */
-diff --git a/drivers/net/ethernet/intel/ixd/ixd_main.c b/drivers/net/ethernet/intel/ixd/ixd_main.c
-index 5db992d4f9fb..488a919f3b1b 100644
---- a/drivers/net/ethernet/intel/ixd/ixd_main.c
-+++ b/drivers/net/ethernet/intel/ixd/ixd_main.c
-@@ -48,37 +48,124 @@ static void ixd_shutdown(struct pci_dev *pdev)
+ #include <linux/net/intel/libie/controlq.h>
++#include <linux/net/intel/libie/irq.h>
+ 
+ #define IXD_INIT_TASK_DELAY_JIFFIES	msecs_to_jiffies(500)
+ 
++/**
++ * enum ixd_flags - Whole device flags
++ * @IXD_MB_INTR_MODE: Mailbox in interrupt mode
++ * @IXD_FLAGS_NBITS: Must be last
++ */
++enum ixd_flags {
++	IXD_MB_INTR_MODE,
++	IXD_FLAGS_NBITS,
++};
++
+ /**
+  * struct ixd_adapter - Data structure representing a CPF
+  * @cp_ctx: Control plane communication context
+@@ -24,6 +35,11 @@
+  * @vc_ver.major: Negotiated major virtchnl version
+  * @vc_ver.minor: Negotiated minor virtchnl version
+  * @caps: Negotiated virtchnl capabilities
++ * @mb_irq: index and virq to track mailbox
++ * @irq: libie irq for interrupts management
++ * @mb_dyn_ctl: mailbox dynamic control register address
++ * @oicr_ena: direct OICR enable register address
++ * @flags: look at enum ixd_flags for more details
+  */
+ struct ixd_adapter {
+ 	struct libie_ctlq_ctx cp_ctx;
+@@ -42,6 +58,11 @@ struct ixd_adapter {
+ 		u32 minor;
+ 	} vc_ver;
+ 	struct virtchnl2_get_capabilities caps;
++	struct msi_map mb_irq;
++	struct libie_irq irq;
++	void __iomem *mb_dyn_ctl;
++	void __iomem *oicr_ena;
++	DECLARE_BITMAP(flags, IXD_FLAGS_NBITS);
+ };
  
  /**
-  * ixd_iomap_regions - iomap PCI BARs
-- * @adapter: adapter to map memory regions for
-+ * @mmio_info: PCI resources info
-+ * @num: number of regions to map
-+ * @regions: array of regions to map (offset and size)
-  *
-  * Returns: %0 on success, negative on failure
-  */
--static int ixd_iomap_regions(struct ixd_adapter *adapter)
-+static int ixd_iomap_regions(struct libie_mmio_info *mmio_info, int num,
-+			     const struct ixd_bar_region *regions)
- {
--	const struct ixd_bar_region regions[] = {
--		{
--			.offset = PFGEN_RTRIG,
--			.size = PFGEN_RTRIG_REG_LEN,
--		},
--		{
--			.offset = PF_FW_MBX,
--			.size = PF_FW_MBX_REG_LEN,
--		},
--	};
--
--	for (int i = 0; i < ARRAY_SIZE(regions); i++) {
--		struct libie_mmio_info *mmio_info = &adapter->cp_ctx.mmio_info;
-+	for (int i = 0; i < num; i++) {
- 		bool map_ok;
+@@ -55,6 +76,11 @@ static inline struct device *ixd_to_dev(struct ixd_adapter *adapter)
+ 	return &adapter->cp_ctx.mmio_info.pdev->dev;
+ }
  
- 		map_ok = libie_pci_map_mmio_region(mmio_info,
- 						   regions[i].offset,
- 						   regions[i].size);
--		if (!map_ok) {
--			dev_err(ixd_to_dev(adapter),
--				"Failed to map PCI device MMIO region\n");
--
--			libie_pci_unmap_all_mmio_regions(mmio_info);
-+		if (!map_ok)
- 			return -EIO;
--		}
-+	}
++static inline struct pci_dev *ixd_to_pdev(struct ixd_adapter *adapter)
++{
++	return adapter->cp_ctx.mmio_info.pdev;
++}
++
+ void ixd_ctlq_reg_init(struct ixd_adapter *adapter,
+ 		       struct libie_ctlq_reg *ctlq_reg_tx,
+ 		       struct libie_ctlq_reg *ctlq_reg_rx);
+@@ -66,5 +92,7 @@ void ixd_deinit_dflt_mbx(struct ixd_adapter *adapter);
+ int ixd_iomap_running_regions(struct ixd_adapter *adapter);
+ bool ixd_iomap_is_not_start_region(struct libie_mmio_info *info,
+ 				   struct libie_pci_mmio_region *reg);
++void ixd_deinit_interrupts(struct ixd_adapter *adapter);
++void ixd_mailbox_irq_enable(struct ixd_adapter *adapter);
+ 
+ #endif /* _IXD_H_ */
+diff --git a/drivers/net/ethernet/intel/ixd/ixd_ctlq.c b/drivers/net/ethernet/intel/ixd/ixd_ctlq.c
+index 8712e10c8c50..43daef30689a 100644
+--- a/drivers/net/ethernet/intel/ixd/ixd_ctlq.c
++++ b/drivers/net/ethernet/intel/ixd/ixd_ctlq.c
+@@ -134,8 +134,12 @@ void ixd_ctlq_rx_task(struct work_struct *work)
+ 
+ 	adapter = container_of(work, struct ixd_adapter, mbx_task.work);
+ 
+-	queue_delayed_work(system_dfl_wq, &adapter->mbx_task,
+-			   IXD_CTLQ_RX_TASK_DELAY_JIFFIES);
++	if (test_bit(IXD_MB_INTR_MODE, adapter->flags))
++		/* Just re-enable irq in HW. */
++		ixd_mailbox_irq_enable(adapter);
++	else
++		queue_delayed_work(system_dfl_wq, &adapter->mbx_task,
++				   IXD_CTLQ_RX_TASK_DELAY_JIFFIES);
+ 
+ 	ixd_ctlq_recv_mb_msg(adapter);
+ }
+diff --git a/drivers/net/ethernet/intel/ixd/ixd_lan_regs.h b/drivers/net/ethernet/intel/ixd/ixd_lan_regs.h
+index 58e58c75981b..b924ada5f831 100644
+--- a/drivers/net/ethernet/intel/ixd/ixd_lan_regs.h
++++ b/drivers/net/ethernet/intel/ixd/ixd_lan_regs.h
+@@ -31,6 +31,16 @@
+ #define PF_FW_ATQH			(PF_FW_MBX + 0x20)
+ #define PF_FW_ATQT			(PF_FW_MBX + 0x24)
+ 
++/* Interrupts */
++#define PF_GLINT_DYN_CTL_INTENA_S	0
++#define PF_GLINT_DYN_CTL_INTENA_M	BIT(PF_GLINT_DYN_CTL_INTENA_S)
++#define PF_GLINT_DYN_CTL_ITR_INDX_S	3
++#define PF_GLINT_DYN_CTL_ITR_INDX_M	GENMASK(4, 3)
++
++/* Generic registers */
++#define PF_INT_DIR_OICR_ENA		0x08406000
++#define PF_INT_DIR_OICR_ENA_M		GENMASK(31, 0)
++
+ /* Reset registers */
+ #define PFGEN_RTRIG_REG_LEN		2048
+ #define PFGEN_RTRIG			0x08407000	/* Device resets */
+diff --git a/drivers/net/ethernet/intel/ixd/ixd_lib.c b/drivers/net/ethernet/intel/ixd/ixd_lib.c
+index 8311f7590666..e13614603a9e 100644
+--- a/drivers/net/ethernet/intel/ixd/ixd_lib.c
++++ b/drivers/net/ethernet/intel/ixd/ixd_lib.c
+@@ -4,6 +4,7 @@
+ #include "ixd.h"
+ #include "ixd_ctlq.h"
+ #include "ixd_devlink.h"
++#include "ixd_lan_regs.h"
+ #include "ixd_virtchnl.h"
+ 
+ #define IXD_DFLT_MBX_Q_LEN 64
+@@ -57,6 +58,125 @@ static void ixd_adapter_fill_dflt_ctlqs(struct ixd_adapter *adapter)
+ 				       LIBIE_CTLQ_MBX_ID);
+ }
+ 
++static irqreturn_t ixd_mailbox_irq_handler(int __always_unused irq, void *data)
++{
++	struct ixd_adapter *adapter = (struct ixd_adapter *)data;
++
++	queue_delayed_work(system_dfl_wq, &adapter->mbx_task, 0);
++
++	return IRQ_HANDLED;
++}
++
++void ixd_mailbox_irq_enable(struct ixd_adapter *adapter)
++{
++	writel(PF_GLINT_DYN_CTL_INTENA_M | PF_GLINT_DYN_CTL_ITR_INDX_M,
++	       adapter->mb_dyn_ctl);
++	writel(PF_INT_DIR_OICR_ENA_M, adapter->oicr_ena);
++}
++
++static void ixd_mailbox_irq_disable(struct ixd_adapter *adapter)
++{
++	/* Clear INTENA, keep the ITR index pointing to the no update one. */
++	writel(PF_GLINT_DYN_CTL_ITR_INDX_M, adapter->mb_dyn_ctl);
++	writel(0, adapter->oicr_ena);
++}
++
++static int ixd_mailbox_irq_regs_init(struct ixd_adapter *adapter)
++{
++	struct libie_mmio_info *mmio = &adapter->cp_ctx.mmio_info;
++	u32 dyn_ctl = le32_to_cpu(adapter->caps.mailbox_dyn_ctl);
++
++	adapter->mb_dyn_ctl = libie_pci_get_mmio_addr(mmio, dyn_ctl);
++	adapter->oicr_ena = libie_pci_get_mmio_addr(mmio, PF_INT_DIR_OICR_ENA);
++
++	if (!adapter->mb_dyn_ctl || !adapter->oicr_ena)
++		return -EINVAL;
 +
 +	return 0;
 +}
 +
-+/* Regions needed to reset the device and to talk to the control plane.
-+ * They are mapped in probe and stay mapped for the whole driver life.
-+ */
-+static const struct ixd_bar_region ixd_start_regions[] = {
-+	{
-+		.offset = PFGEN_RTRIG,
-+		.size = PFGEN_RTRIG_REG_LEN,
-+	},
-+	{
-+		.offset = PF_FW_MBX,
-+		.size = PF_FW_MBX_REG_LEN,
-+	},
-+};
-+
-+/**
-+ * ixd_iomap_is_not_start_region - check if the region isn't a start region
-+ * @info: PCI resources info, unused
-+ * @reg: region to check
-+ *
-+ * Return: %true if it isn't a start region, %false otherwise
-+ */
-+bool ixd_iomap_is_not_start_region(struct libie_mmio_info *info,
-+				   struct libie_pci_mmio_region *reg)
++static void ixd_mailbox_irq_deinit(struct ixd_adapter *adapter)
 +{
-+	for (unsigned int i = 0; i < ARRAY_SIZE(ixd_start_regions); i++) {
-+		if (reg->bar_idx == 0 &&
-+		    reg->offset == ixd_start_regions[i].offset &&
-+		    reg->size == ixd_start_regions[i].size)
-+			return false;
-+	}
++	if (!test_and_clear_bit(IXD_MB_INTR_MODE, adapter->flags))
++		return;
 +
-+	return true;
++	ixd_mailbox_irq_disable(adapter);
++
++	/* The mailbox task re-arms the interrupt, make sure it isn't running
++	 * anymore before the irq line is freed.
++	 */
++	cancel_delayed_work_sync(&adapter->mbx_task);
++
++	kfree(free_irq(adapter->mb_irq.virq, adapter));
++	libie_irq_free(&adapter->irq, adapter->mb_irq);
 +}
 +
-+/**
-+ * ixd_iomap_start_regions - iomap PCI BARs needed for driver startup
-+ * @adapter: adapter to map memory regions for
-+ *
-+ * Returns: %0 on success, negative on failure
-+ */
-+static int ixd_iomap_start_regions(struct ixd_adapter *adapter)
++static int ixd_mailbox_irq_init(struct ixd_adapter *adapter)
 +{
-+	struct libie_mmio_info *mmio_info = &adapter->cp_ctx.mmio_info;
++	struct msi_map *irq = &adapter->mb_irq;
++	char *name;
 +	int err;
 +
-+	err = ixd_iomap_regions(mmio_info, ARRAY_SIZE(ixd_start_regions),
-+				ixd_start_regions);
-+	if (err) {
-+		dev_err(ixd_to_dev(adapter),
-+			"Failed to map startup PCI device MMIO region\n");
++	*irq = libie_irq_alloc(&adapter->irq, LIBIE_IRQ_STATIC);
++	if (irq->index < 0)
++		return irq->index;
 +
-+		libie_pci_unmap_all_mmio_regions(mmio_info);
++	name = kasprintf(GFP_KERNEL, "%s-%s-%d",
++			 dev_driver_string(ixd_to_dev(adapter)), "Mailbox", 0);
++	if (!name) {
++		libie_irq_free(&adapter->irq, adapter->mb_irq);
++
++		return -ENOMEM;
 +	}
++
++	err = request_irq(irq->virq, ixd_mailbox_irq_handler, 0, name, adapter);
++	if (err) {
++		kfree(name);
++		libie_irq_free(&adapter->irq, adapter->mb_irq);
++		dev_err(ixd_to_dev(adapter), "IRQ request for mailbox failed, error: %d\n",
++			err);
++
++		return err;
++	}
++
++	set_bit(IXD_MB_INTR_MODE, adapter->flags);
++
++	return 0;
++}
++
++void ixd_deinit_interrupts(struct ixd_adapter *adapter)
++{
++	ixd_mailbox_irq_deinit(adapter);
++	libie_irq_deinit(&adapter->irq);
++}
++
++static int ixd_init_interrupts(struct ixd_adapter *adapter)
++{
++	struct libie_irq *irq = &adapter->irq;
++	int err;
++
++	err = libie_irq_init(irq, ixd_to_pdev(adapter), 1, 1);
++	if (err)
++		return err;
++
++	err = ixd_mailbox_irq_regs_init(adapter);
++	if (err)
++		goto free_irq;
++
++	err = ixd_mailbox_irq_init(adapter);
++	if (err)
++		goto free_irq;
++
++	ixd_mailbox_irq_enable(adapter);
++
++	return 0;
++
++free_irq:
++	libie_irq_deinit(irq);
 +
 +	return err;
 +}
 +
-+/**
-+ * ixd_iomap_running_regions - iomap PCI BARs needed for driver when running
-+ * @adapter: adapter to map memory regions for
-+ *
-+ * It should be called only when the GET_LAN_MEMORY_REGIONS virtchnl command
-+ * isn't supported. Calculate the offsets and sizes for the regions before,
-+ * in between, and after the start regions (mailbox and reset registers) and
-+ * map those ranges.
-+ *
-+ * Returns: %0 on success, negative on failure
-+ */
-+int ixd_iomap_running_regions(struct ixd_adapter *adapter)
-+{
-+	struct libie_mmio_info *mmio_info = &adapter->cp_ctx.mmio_info;
-+	resource_size_t start, size;
-+	bool ok = true;
+ /**
+  * ixd_deinit_dflt_mbx - Deinitialize default mailbox
+  * @adapter: adapter info struct
+@@ -154,6 +274,12 @@ void ixd_init_task(struct work_struct *work)
+ 		adapter->init_task.vc_retries = 0;
+ 		adapter->init_task.success = true;
+ 		ixd_devlink_register(adapter);
 +
-+	/* Region preceding the mailbox */
-+	size = PF_FW_MBX;
-+	ok &= !size || libie_pci_map_mmio_region(mmio_info, 0, size);
-+
-+	/* Region between the mailbox and the reset registers */
-+	start = PF_FW_MBX + PF_FW_MBX_REG_LEN;
-+	size = PFGEN_RTRIG - start;
-+	ok &= !size || libie_pci_map_mmio_region(mmio_info, start, size);
-+
-+	/* Region after the reset registers */
-+	start = PFGEN_RTRIG + PFGEN_RTRIG_REG_LEN;
-+	size = pci_resource_len(mmio_info->pdev, 0) - start;
-+	ok &= !size || libie_pci_map_mmio_region(mmio_info, start, size);
-+
-+	if (!ok) {
-+		dev_err(ixd_to_dev(adapter),
-+			"Failed to map running PCI device MMIO region\n");
-+
-+		libie_pci_unmap_fltr_regs(mmio_info,
-+					  ixd_iomap_is_not_start_region);
-+
-+		return -EIO;
++		err = ixd_init_interrupts(adapter);
++		if (err)
++			dev_err(ixd_to_dev(adapter),
++				"Failed to initialize interrupts: %d\n",
++				err);
+ 		return;
  	}
  
- 	return 0;
-@@ -109,7 +196,7 @@ static int ixd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- 	pci_set_drvdata(pdev, adapter);
- 
--	err = ixd_iomap_regions(adapter);
-+	err = ixd_iomap_start_regions(adapter);
- 	if (err)
- 		goto free_adapter;
- 
-diff --git a/drivers/net/ethernet/intel/ixd/ixd_virtchnl.c b/drivers/net/ethernet/intel/ixd/ixd_virtchnl.c
-index fc3b6d2e28c5..3487183b49c9 100644
---- a/drivers/net/ethernet/intel/ixd/ixd_virtchnl.c
-+++ b/drivers/net/ethernet/intel/ixd/ixd_virtchnl.c
-@@ -3,6 +3,7 @@
- 
- #include "ixd.h"
- #include "ixd_ctlq.h"
-+#include "ixd_lan_regs.h"
- #include "ixd_virtchnl.h"
+diff --git a/drivers/net/ethernet/intel/ixd/ixd_main.c b/drivers/net/ethernet/intel/ixd/ixd_main.c
+index 488a919f3b1b..e83550da3e9a 100644
+--- a/drivers/net/ethernet/intel/ixd/ixd_main.c
++++ b/drivers/net/ethernet/intel/ixd/ixd_main.c
+@@ -9,6 +9,7 @@
+ MODULE_DESCRIPTION("Intel(R) Control Plane Function Device Driver");
+ MODULE_IMPORT_NS("LIBIE_CP");
+ MODULE_IMPORT_NS("LIBIE_PCI");
++MODULE_IMPORT_NS("LIBIE_IRQ");
+ MODULE_LICENSE("GPL");
  
  /**
-@@ -62,6 +63,14 @@ static int ixd_handle_caps(struct ixd_adapter *adapter, void *recv_buff,
- 	return 0;
- }
+@@ -25,6 +26,7 @@ static void ixd_remove(struct pci_dev *pdev)
+ 	ixd_devlink_unregister(adapter);
  
-+static void ixd_fill_caps(struct ixd_adapter *adapter, void *send_buff,
-+			  void *ctx)
-+{
-+	struct virtchnl2_get_capabilities *caps = send_buff;
-+
-+	caps->other_caps = cpu_to_le64(VIRTCHNL2_CAP_LAN_MEMORY_REGIONS);
-+}
-+
- /**
-  * ixd_req_vc_caps - Request and save device capability
-  * @adapter: The adapter to get the capabilities for
-@@ -74,13 +83,18 @@ static int ixd_req_vc_caps(struct ixd_adapter *adapter)
- 		.opcode = VIRTCHNL2_OP_GET_CAPS,
- 		.send_size = sizeof(struct virtchnl2_get_capabilities),
- 		.ctx = NULL,
--		.send_buff_init = NULL,
-+		.send_buff_init = ixd_fill_caps,
- 		.recv_process = ixd_handle_caps,
- 	};
- 
- 	return ixd_ctlq_do_req(adapter, &req);
- }
- 
-+static bool ixd_is_cap_ena(struct ixd_adapter *adapter, u64 cap)
-+{
-+	return (le64_to_cpu(adapter->caps.other_caps) & cap) == cap;
-+}
-+
- /**
-  * ixd_get_vc_ver - Get version info from adapter
-  *
-@@ -160,6 +174,69 @@ static int ixd_req_vc_version(struct ixd_adapter *adapter)
- 	return ixd_ctlq_do_req(adapter, &req);
- }
- 
-+static void ixd_fill_lan_mmio_regions(struct ixd_adapter *adapter,
-+				      void *send_buff, void *ctx)
-+{
-+	struct virtchnl2_get_lan_memory_regions *lan = send_buff;
-+
-+	/* Needed to be parsed correctly, this mem_region doesn't matter. */
-+	lan->num_memory_regions = cpu_to_le16(1);
-+}
-+
-+static int ixd_handle_lan_mmio_regions(struct ixd_adapter *adapter,
-+				       void *recv_buff, size_t recv_size,
-+				       void *ctx)
-+{
-+	struct libie_mmio_info *mmio_info = &adapter->cp_ctx.mmio_info;
-+	struct virtchnl2_get_lan_memory_regions *recv_mmio = recv_buff;
-+	int num_regions;
-+
-+	if (recv_size < sizeof(*recv_mmio))
-+		return -EBADMSG;
-+
-+	num_regions = le16_to_cpu(recv_mmio->num_memory_regions);
-+	if (!num_regions)
-+		return -EBADMSG;
-+
-+	if (recv_size < struct_size(recv_mmio, mem_reg, num_regions))
-+		return -EBADMSG;
-+
-+	for (int i = 0; i < num_regions; i++) {
-+		struct virtchnl2_mem_region *reg = &recv_mmio->mem_reg[i];
-+		resource_size_t offset, size;
-+
-+		offset = le64_to_cpu(reg->start_offset);
-+		size = le64_to_cpu(reg->size);
-+
-+		/* Empty regions are used as a padding, skip them. */
-+		if (!size)
-+			continue;
-+
-+		if (!libie_pci_map_mmio_region(mmio_info, offset, size)) {
-+			/* Unmap already mapped */
-+			libie_pci_unmap_fltr_regs(mmio_info,
-+						  ixd_iomap_is_not_start_region);
-+			return -EIO;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int ixd_req_lan_mmio_regions(struct ixd_adapter *adapter)
-+{
-+	const struct ixd_ctlq_req req = {
-+		.opcode = VIRTCHNL2_OP_GET_LAN_MEMORY_REGIONS,
-+		.send_size = sizeof(struct virtchnl2_get_lan_memory_regions) +
-+			     sizeof(struct virtchnl2_mem_region),
-+		.ctx = NULL,
-+		.send_buff_init = ixd_fill_lan_mmio_regions,
-+		.recv_process = ixd_handle_lan_mmio_regions,
-+	};
-+
-+	return ixd_ctlq_do_req(adapter, &req);
-+}
-+
- /**
-  * ixd_vc_dev_init - virtchnl device core initialization
-  * @adapter: device information
-@@ -186,5 +263,16 @@ int ixd_vc_dev_init(struct ixd_adapter *adapter)
- 		return err;
- 	}
- 
-+	if (ixd_is_cap_ena(adapter, VIRTCHNL2_CAP_LAN_MEMORY_REGIONS))
-+		err = ixd_req_lan_mmio_regions(adapter);
-+	else
-+		/* Fallback to mapping the remaining regions of the whole BAR */
-+		err = ixd_iomap_running_regions(adapter);
-+
-+	if (err)
-+		dev_warn(ixd_to_dev(adapter),
-+			 "Getting LAN mmio regions failed, error=%pe\n",
-+			 ERR_PTR(err));
-+
- 	return err;
- }
+ 	/* Leave the device clean on exit */
++	ixd_deinit_interrupts(adapter);
+ 	if (adapter->xnm)
+ 		libie_ctlq_xn_shutdown(adapter->xnm);
+ 	ixd_trigger_reset(adapter);
 -- 
 2.49.0
 
