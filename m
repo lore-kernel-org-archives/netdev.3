@@ -1,48 +1,48 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011048.outbound.protection.outlook.com [52.101.65.48])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010003.outbound.protection.outlook.com [52.101.84.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4F14779A3;
-	Fri, 11 Sep 2026 17:13:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56954A3D3F;
+	Fri, 11 Sep 2026 17:14:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.3
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789146834; cv=fail; b=X148KfMV77NwHM5oeRWWrd6Y8Q/IzOIxyQkknsImqc6VGTqavFMsRsKEk6oKZd4ik35B16zPTM6/SaU62Fhkjz6n/PebCJb9v6jbARaWiH7ME90VZwDg7tOorBt2wW2x9655NvBcZGoDgD17pwBAqLYKAwgr6AyeGi4NA2toRUU=
+	t=1789146878; cv=fail; b=rtalhpsQADWgWFNrjfMVq1xyGFayt90bRWrhWbDJo4onbgjqxHkqqQ2rwc1bc7Y1Sf68qSnenBnKzHeyV/cYHG8nBJgt+OCt+HM5GZ39NqxSbRwbjARmaSd8xKE3nIowqnBSooP8NdoUu5EzK8aHjgsV9ujDeP3pw2os80a1JQg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789146834; c=relaxed/simple;
-	bh=jHsDZrXzg4fsfEOddmnR0VlKMROGxQ7yteTE1ti3nn0=;
+	s=arc-20240116; t=1789146878; c=relaxed/simple;
+	bh=hU8NvvdhaJiQVRxYVxDK40M6EK8PFEBtoNTigrhA4Qo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=SEzjq3MSKQLWkOu7BJqrnz9KdOAStbiGn1N18VAX33JDn16qUT+pRToJ/c780zjpLE0Rx+B+wfuGEbWP8v9CB8syHJGV8qRY/adnzHAq6M/AVP8I7tpLVpgDXZCVsWUDqW4N8NigbhgM49AFr4PRR8JbFGhOvIPrcaR7uYydWLg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=lCCNgiDB; arc=fail smtp.client-ip=52.101.65.48
+	 Content-Disposition:In-Reply-To:MIME-Version; b=pZANLsLxObCnzpD+MYrfDojVZqVVquymzAjT5F+4wSGu0dZEjEbVR0+OXeaKSL0Om/yibp6+yKL6idq2GeFUhWsqAwmE0pupWK+nheyFaaSrOB68IK4Btjl4WXg3/J7maemhi0VT7BSpl3v1AwsplHik2jofuQukg7sM5j0fynU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=nt2mlS5J; arc=fail smtp.client-ip=52.101.84.3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="lCCNgiDB"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="nt2mlS5J"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=W2IiIUYPhw/PtgyD9fyABbfrKmvYWynVSmMb+VypVTffsz70qmFO3luzcSGkdSkNgBJwcEd0wSJzreeWkuP+oXO7fEvMOAFjRp66r7/kiy7x3ht6wabZ8z+em6mwg8o69T7ogKxzsXfzWDc+pnmW88wA1uPTJlTLdIO08p/WfHSIvyVEM/FEIy2OJMoeCiGfs36nlyimzexuqVNqM/bOfj+eBnCEv3fpua1zxT4lri4YyiINxDGUoVnipSVTpTFacw1gy0nkTjJb1Rdwdcy3M8PfVdAdA3ZGW8yuwNlRTb4vGZESPfXfMoTzzBeeIT3m9y+5ATmK0Mo9802ZJ3a0iQ==
+ b=ULgfwPie0tYt94E24HJJMN1pIpKD/ATQ9SqPfw+o60kYEEeHS5tLw0T3Wrq3U3vtNLOEoz+r18XeDaDdPcleQ/MlvNQvXGoi+Tpry1jEGdbq/Jp+cmHyJZiXao2DbyPogNye41+Zwp2MyGPdT/sx1dmET4f3KNtgbgxlYgm8fy/vAS0l8FjpWb4TYkBtJ8dnkbydyi6spvXhbDpkSNIknfyCWd0aL8yoT6ipxADVdbKW0FYR7eg6gzBJ5X3YwixT+O753wG/c3pJX6i7oe40VhfvdxL1D7Pwpw7ivNq/1evJdU6nRdLYIkWxP4cKCkppQSOed5p1/x2+C7pXIxOJ6Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xC+QsT3SsbvW0eDe4tpTCTH7S+rJJd9Y03UcCDDUw8s=;
- b=dG6jt5ii7yZkA8fOP+txlr2K23fQr9ZkANLaIWKJXVcRBVGiCKAT7doXPgV+IvriqItCLc/F17r8/ST6e3X8M7WNzXXFdte4E8kxiqNz9J8SZBTclHUKJ+RwLURF3Wf9Pc1EfY2NghOD51msXxQKM8q9Y7lmH+2enC6tmCHSd97VnCRF0jJ3dsjqKF0L7c3m2f3yn3KAaQv2e/j059ytBam7J3rzoM1xSY0LNF6JvfZkOnJqgaXyf1HZ3KBHdwqDO3B7xtk5TkGxylxbYFq74shpnyXjAXKhKRe0UugyUOEl7VqIauLmg+/7IWAbJcF8X0bJfnK+CBdXm8Zl4paSJg==
+ bh=6XecmXT69Z+ab0z5DBLgIaUEPgBa/z6RBS5UICHgPyU=;
+ b=dFHWjyDYibWvVDh0s+0fptvfgLeJB6I9WJ1KCDiIty2baCTn/hXvSrtneJe2hKU1N6OccyeOdxrg5zmJ3EDN2PJQLzAsKACPm+EIvCrFn90npVHUOrDyxp5SWQVLLR688BQ9aCmRws4SAJLUcSQbyx1segjO0ZbhgN++FJCVY2tOSlq1CnZhODHflWLNWSpsVmYdKzdrvwYp8nBwltwkDBNKNJdI4Yl3dO/GUfaU8JTHrcK8Lup/+2jHUdLFYDa6/pXjfOuJZ1AwtSFj1gZ9S/Hq+t2YtZDHd8Xk/euEqk+ULle7ZvPGpTVU+frwb8/987wV088mM8+wIn06cdn7OQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
  dkim=pass header.d=oss.nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
  s=selector1-NXP1-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xC+QsT3SsbvW0eDe4tpTCTH7S+rJJd9Y03UcCDDUw8s=;
- b=lCCNgiDBB3SCZDH7ayiiFfFt+qAH9hVHjlxktdE+XNL/HEM1XC8uWV3fskXrSlnakSEVmHqiVCeeZpXcYgusFWhPkjDwLiMk6Bp3F0qdEMIB3WAIvgEeGQGMvE65jd5Clck/fSBturFFD4f59SHBT3Aog8XNiG72r9x6/MI5PPYUC5NHJtflGZzkAGmjPbKGXxa/K/yrLr/2Rze2+nqD1/GvibncHulMQ9WyjDK+TkDSk283YuOblC0XLc6uqzXBBP5+esFOzd9ld7OwhFTL7/CPtq8aWOQx2IhpDtjBr/87COOYYSTZtMeswEeazcqw8hIcTJSVNywQz1FtR0t2dQ==
+ bh=6XecmXT69Z+ab0z5DBLgIaUEPgBa/z6RBS5UICHgPyU=;
+ b=nt2mlS5J+rFKSBEalqqf7nfp+yxlFlV6s8aDvV7Ymyhs/v9LK4fqZkLd+ESyULZlAdb9BNtfSXm4/v/onqcqXb4g45tS99P6G75/qivYFVn5upy4rrGaH/5mbifoVnxxcnxuiHTFvUNyMQK5PZtXxQfgINZRWVeWgPwx/LqPvA0AbAPExJC/oY8L7Vag0a+7TRpT6Ed35Jm2GMBP5rMbn6E1tpUSubVR0PpLbZ0r1z9smNbDYxzLmTB8Y5xgcsuao1qBxzsYTdyfMsDMyNCTMdx9onuL8PhAiWM04RYzq1evusITAdnMnGNIYIp5tVxJJwh6yJhRNhNR1/PK+cUNlw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=oss.nxp.com;
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com (2603:10a6:150:2cf::9)
  by GV1PR04MB10126.eurprd04.prod.outlook.com (2603:10a6:150:1a5::6) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Fri, 11 Sep
- 2026 17:13:49 +0000
+ 2026 17:14:24 +0000
 Received: from GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c]) by GV2PR04MB11799.eurprd04.prod.outlook.com
  ([fe80::2146:83a2:5329:b7c%7]) with mapi id 15.21.0406.007; Fri, 11 Sep 2026
- 17:13:49 +0000
-Date: Fri, 11 Sep 2026 13:13:40 -0400
+ 17:14:24 +0000
+Date: Fri, 11 Sep 2026 13:14:15 -0400
 From: Frank Li <Frank.li@oss.nxp.com>
 To: Subasri S <subasris1210@gmail.com>
 Cc: Peter Chen <peter.chen@kernel.org>,
@@ -59,15 +59,15 @@ Cc: Peter Chen <peter.chen@kernel.org>,
 	linux-usb@vger.kernel.org, imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
 	linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] usb: misc: Use %pe to print error pointers
-Message-ID: <aqQ2xOWaHllbEyJ3@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH v2 3/3] usb: typec: Use %pe to print error pointers
+Message-ID: <aqQ252-G4cMDw5Lv@lizhi-Precision-Tower-5810>
 References: <20260801-usb-ptr_err_patchset-v2-0-1698e298c1e3@gmail.com>
- <20260801-usb-ptr_err_patchset-v2-2-1698e298c1e3@gmail.com>
+ <20260801-usb-ptr_err_patchset-v2-3-1698e298c1e3@gmail.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260801-usb-ptr_err_patchset-v2-2-1698e298c1e3@gmail.com>
-X-ClientProxiedBy: CY8P220CA0016.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:930:46::20) To GV2PR04MB11799.eurprd04.prod.outlook.com
+In-Reply-To: <20260801-usb-ptr_err_patchset-v2-3-1698e298c1e3@gmail.com>
+X-ClientProxiedBy: CYZPR14CA0032.namprd14.prod.outlook.com
+ (2603:10b6:930:a0::9) To GV2PR04MB11799.eurprd04.prod.outlook.com
  (2603:10a6:150:2cf::9)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -77,154 +77,133 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: GV2PR04MB11799:EE_|GV1PR04MB10126:EE_
-X-MS-Office365-Filtering-Correlation-Id: 732468d4-368d-47aa-cd28-08df10280b92
+X-MS-Office365-Filtering-Correlation-Id: 6c0a7fca-adec-4886-2809-08df102820d5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|376014|7416014|23010399003|19092799006|366016|4143699003|10067099003|11063799006|56012099006|22082099003|18002099003|41080700001;
 X-Microsoft-Antispam-Message-Info:
-	yTenbfG0ILwVBtIPzl6UQSSbQ7XbcxmczxrnPIF/qn6XySpJcuqDYDEfzu2uLgoNXzaUKbuIWxPoabbXVl9IgDeuRFVYgdKh6v0ldRT7cfL7xA9h4z9FPWynYURSixV3q80/qHcEep8PmbNLz1PbUe8fw9l+2EmoA5FlDG6lAwbrvsKYCBfWwTY70v/+KYB9/4fs5Y1x7VLrGTk5hEjPNqvg2nlNSmjCrvmTQMuP9BhqdU3O7ZLwKPYxgFHbguh6E/NHGabqs0khuYLN4iuH2N1WmFB/AFYd/vWEjCmLk7pSfDFG4xFXYAWp9sqwIUeaKQSuoZzO8etSx7vE4dbqACF4D/t3WjjK/SefCiRZltziagP6Vrib+FeOErypZIqZxNXq9RTd3mgn/WiKxuObNyKk0wQ30xYemO0w8WFwJop60SdVQRGliyj7KLNeJJop/tFk6OYmFjBw6XknhJzQxYKTwH2/7xoHgmMX4rS62r1d3DLI0dMXBazjASP9RDkGQcUn7YW7gj+PPvFKWvWyGsd0LWXba32UblcCLSV/aNXF3Om2Ajqvfci+R3BRfhVq4UTYXgaHFaPQZJXgxc3TUt1RTHAa/NRC3J/QYP8qnjOKo5KtNEOCGy9ZaGnUErATm0XxcfifOL8/iIhfidZ79uzHXDvxo3Xgi6+54oOjPr2awaxFb8+0AzXvdmOM+h0cm5ultthyQJqvOAHMbBW/Z7lm//0IBzAtgeDphg7fHcY=
+	drvgM6sf+WJqX1CvZhk5eIHCUNgvkVv5WaYnPC6LP+Fy8UjKSpIzan7J7ysyNd/rWAKyXBDeQXqeTwQvWGfD1l9vRKy6Pxax530skrQ9u6qgvHgXcVp+eZg5ERgoHA3I+HEsV0mCmuvbzd088wIIhXIjBGtEpQbhCFhkNOYjNMhkWFmqe6blfCQl6hK5X6MiOMlxMUZKsWfsyuzVZSuvjw320boQmysOkPqBwwSMwssY8dGUjHxyaVlzzBssOBurgp5Rhs//o/A7459/ShcshCy0mQ09hzmDBvSnqDeKVL0uUtF7pSaF0txDlvEAcHerelJXpc1z7MJxxmzw9rHXyj/uxgW5I78a9EwvoeXs5AFovSSmdlkUG1byAQAsWWEYT3vej8Al1hlSgog5QVaT3CwzYwtOfA85OvL364NQpdMUQsDENjrqHUGrBE54l3PyOfX8oVrELUxaO/Q0XpRnoFhxcZ4S4xxMfswFp+RRaDXSYhs+bolRS6qWTH0InY+N7r6NMx054QzTh8WSo8HuevUAmXndpSvOkhRFqlvKumG6emImn9dG9Bznz5X+Ka8TEGiZk5l8PX33+mZ5lLwZKl2+/J7yDWwLLfXgsdbiCrf2SyoohNUve0vfoglwnQJVNrpCrfqOipkLFCUM37bObhK1toSCBvgd56egSw12C0DMvcEuhKrgonKnsbSFKEdJ1OsXqwo8Q1ZH1thT8r9C/1gkrPZFEi/f5ZlO0N8P1J8=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11799.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(23010399003)(19092799006)(366016)(4143699003)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003)(41080700001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?4KT6Zqjmqi6quMUGmtXIWv1orH3SuaM8CzpfHWNbtvuA75tWKkaFh1zDyWNO?=
- =?us-ascii?Q?HNkWfUoY1pUpzByWSgL7Z41arKnSXkKnYpNjVPDA57lYxRMvQAcNkbdtudKT?=
- =?us-ascii?Q?N3mjL4nAOsVs5V4l/fAfo75sgdyyWXoygfrovjjxWkvsxA/mKfPDo+dkMAnH?=
- =?us-ascii?Q?7Mv5eyOL0EksBY33EhyQtTyi42uTj5rx2x3iLNNP6VXNlx3RoVHiieWkXyuC?=
- =?us-ascii?Q?pFjW/oXWeT6wnJFq0ggZOiq/3vidvbUBQ2is52UvXaQjaMIKZOXIPw2luuzi?=
- =?us-ascii?Q?Px3LbO6ZcnXcNIWAiVPS+aoowTT/Ew6IxYWZ0JrGF5IqbgKrfsqw8JQQZR7v?=
- =?us-ascii?Q?jbBd4t7yX+wBepNLdV2rcX5Sm/QheQcsj1CJGuO8M2QjiRQ2TW2MkLQG/OtS?=
- =?us-ascii?Q?JswVUYZPUaVhkLIpFqazsoorBPNQzsY5gqLIsWMBsy7op7OrMRq0BhfH9kNq?=
- =?us-ascii?Q?RG+kVFfBY/UyGYWN+BlyIWTw+RHxB27MvtS2H3WUyIAOg/9PQkOPsaIppeQt?=
- =?us-ascii?Q?Ubyc7WDLa7pTYV0qnc/aLqN2Ly63vIj/UIVJzL4+OwZkGWPlVp6PYgAP9BP7?=
- =?us-ascii?Q?UHvsZcaHr7SazcSDml6eR7dJuP0y4T0l9RQ6tYAJujTMMELWlbOQ9s30Q7Xr?=
- =?us-ascii?Q?IuOnV4ryegS5+UiOZ0iZekBmxn4DxN94ogipd9P0Ee/gvDm5aAvBJbI5qwR+?=
- =?us-ascii?Q?6MY7r4SIR5jFpfHBJMgISmYW57xjp5ff5RBF4wGwkhMXiYxCM7zBH6+npFdh?=
- =?us-ascii?Q?/dH+vsbY7wFVad7ZoBcBbMa0fDRNsCUlZgVs/eji3qV4PYuYNXaUWmzj20DW?=
- =?us-ascii?Q?3HQICegJKEg7CemEK1TqCc7d8HYB7WyOQM/xrL9IDbW9BJGItji7DDGykCIO?=
- =?us-ascii?Q?oFDYocSo9N1VJ1QFwRI20TdgW1mIZuHdkHtVGo7+ZUKm1xW5xJCHKFHKsJL2?=
- =?us-ascii?Q?lGD+TzzZ5xDNQedD3d3vbEylBdohM+GWUDach+GX93WU0vPaEd+GdyeIm/JN?=
- =?us-ascii?Q?OYveqI/ODhGRzBDNSHN0UJJbGSiPDGbynorIJaOePgBa9NT6bY3hKZTbjs5B?=
- =?us-ascii?Q?mriqvGiFNcVwMt0NW+QWEDtaAWA7g2+rGjsn0gu3w0Juu6q5jKkLEQouuGzF?=
- =?us-ascii?Q?M2+9aTOcYhl6lG6qEl7ojkZNqJHvkATJzojjClKqfgg4Euv5rhUMLW3XpmC3?=
- =?us-ascii?Q?v6ZvmZZl5Xxmay9dlNqF7VfBiJS6q862SAyuudqMjt/RnnCYFYoOPnsqBFtj?=
- =?us-ascii?Q?NwcN6fM4qNrOl6jVtASk2AFI2UABQlClipVpgWhpo3NRBOjv5EKR/VCJupBc?=
- =?us-ascii?Q?mO3OwDOtyGi2ZDxo5hMjoezzYytJFNoBRj7RgbljWolTFql5umGKDeblFJnd?=
- =?us-ascii?Q?anIqv8zvMlWA0iSasQog7jL9XY/7QfWbOn7RuGZV16NJ+3ircD4E9Ba3d7TE?=
- =?us-ascii?Q?pbjSukXxf6u2ZxvMJ5ZO1HMDlbmu/XuqKxxn2rJNJ26Fbb7dWzrKYi3c37eQ?=
- =?us-ascii?Q?73S46YzsyzASdxDkrrTSnPWDUV6vDViztOb2xHroyY9mXUa1HzyxKQPVg4bP?=
- =?us-ascii?Q?j+K+G9xfJmEG1PkAYnyHu+MQo9UbvQsH0pz2RT/SjAZFW2FfA7d6wtP7LJzL?=
- =?us-ascii?Q?dz5u4zgGPhli0OYaRhnFXCxDWmUOdowem1zUCQqrZktnmnwQVDO3DE34o0wu?=
- =?us-ascii?Q?wNhR/vzbLk8GGXBwqZl4/iYiCPhykZb+UlLkbprtpFSGajfWLvDtc1NFbARO?=
- =?us-ascii?Q?gA/aOYfCXzP8Xfy585z/lwTtUw/14Q5LRllCi91F7wZFG2sm6Olz?=
+	=?us-ascii?Q?dNGtdmMYxXrJIzDO/Aa3ENNQrZzMFR2JXy+5ZuG9NgR5w0m4lbzEedhNwjd/?=
+ =?us-ascii?Q?tAZK1s+cnEpQIt3EK6xy+EI7ncNNV3oku8rKh0tuH+9iWuJirhhksIehAmd/?=
+ =?us-ascii?Q?h1miGrWcnphxPrx61msoRh0LSKR1P6KpbMr1sUAKgsQN8EXv0ukaxMKmg7Dl?=
+ =?us-ascii?Q?2+Ie/EWICoSXzodZ/8QNZyZheFX3PM2EE49Y51w0mu+z5URbskRNJ3443lDb?=
+ =?us-ascii?Q?X648iG+RX1gE56oIESQ40rGQwuAHMcWgKN6N3gwzGfW3e8Ra8a3XjmduWdOr?=
+ =?us-ascii?Q?ZnqmM3F81aEDLqfMLwKXV43DLlwvPhlc1UwnR8/0zv1soa8+V1gASaSm1rBN?=
+ =?us-ascii?Q?FasJbKuDKulEFFvpbJg7mTwMRekE0NJxaQOPo6L3nZr2cMcJJKLHVk/22q5o?=
+ =?us-ascii?Q?lznfgYhTGJcpRbrQAjnZAm1OqNWKQaA6bbfRi/x0eYs1Pslo5fcHC8eh0otT?=
+ =?us-ascii?Q?nQehsmjn5S7VDg2zBSmgCMkRwYIEtn4npOZE22VJmYLl+nTyXeNewf20evuk?=
+ =?us-ascii?Q?bC9so/PahDM+8e6q6UyAw13FCdWs9UHKpaJE2ZvMW0Xohh9y6yu9LkNQ8yjT?=
+ =?us-ascii?Q?Zl4LZ7JhvtMwW/Hyw8nVgHQY0BHcEGB4rDJNgTOvH2iwfUJ5SSQbg3vcV1I3?=
+ =?us-ascii?Q?FNVb8s7gdzBSDWqYkJGkBDYrXLXdk9roAKCEtrWJDW6QWknLDc5vupnK1A0v?=
+ =?us-ascii?Q?C2UxA6AvdF/wLgksHtf7kaSj6Z//oDCyOZpGomyCcN6uznjRzAjCNaN+z3pk?=
+ =?us-ascii?Q?9WIWR1XPa92mY9RaVLTt6BaNlxVxeTuxw/hexlGehUw5lTuvUaxa3auJtaYd?=
+ =?us-ascii?Q?UODQjYjKjiQooMuiskTqOyC9jLERRed+zqXgj8Glyzz04xw32h+KKQeUN8B/?=
+ =?us-ascii?Q?Obg2Me3+AGLTQOWpEua+xioPxsRRUgoU01ZXKmQW8rPoMgHJjCTZeQxvmfPU?=
+ =?us-ascii?Q?mncXXIbIbuc0KL9RwQzwP+KF2fE9KJPuAko/pMstT9ZcsLjsVp1l6uY71nAu?=
+ =?us-ascii?Q?PDwK6nDgYM5ZncckZpV9GprPHoaFHiI6lbFQxUuSO0P+I1w9SYh6aFwEvi+u?=
+ =?us-ascii?Q?sjzJrR4mcVLhKukgoAXiJvJnujL4rYQkek8qJeKaVNa7DUVuZRHUjgy1hThc?=
+ =?us-ascii?Q?sP2dgB3MX7qzbu4jTZ/KjsYQkUZT7Av/MEZZpaZJnQUZ2jDrSz8v863jrIS7?=
+ =?us-ascii?Q?VDi8reP/C+/CNVIXPAvo5f1Agz1/4UTIGuTSd+Kg7+Rkm4MVYS+t5UZPU/0f?=
+ =?us-ascii?Q?jOVQpzUXgUfVqix1XaWk27qGuupW7vpz2BX6XQepG819wiOQcM/tSWQMTWY3?=
+ =?us-ascii?Q?bNU/Ucc4ZQoRI0BkGJ95fr5sUWGZuGjoK2bYvzmlcamjhR0sDlH03FSHpqXl?=
+ =?us-ascii?Q?rrFXhv4oHTq83bQhTszOZ1IYyc/nVKoRUFdvkPD9AlzZSeSHyGUAvuu2EOLn?=
+ =?us-ascii?Q?Rim8CUljqJp4jEbxKd5sSE8FK3b292Ab9SZVFhTQoUCMkLfafiKwN2PGWWlb?=
+ =?us-ascii?Q?0hqxbcPz066xpwphtQSR5j0E8MfEHUeraIvhxRRUTefQO32+XWSBDACSTYV2?=
+ =?us-ascii?Q?/H5/4BXWt7VqqNNwacx5xt2kKZiNNjvfOoRFple5iNWaXimTt7wu2al1m4zt?=
+ =?us-ascii?Q?SjESrNPPz9IRwtPToXSVG7B72347wXqXfEdQVZIqS9V7axZp7+jB+/DTvqUb?=
+ =?us-ascii?Q?Y6/+ymKjOLu8DCSGDOWYJM1LImKAlMUlv+R5otnLLqBGej/fZsx/q3RKH1Nt?=
+ =?us-ascii?Q?aGPnoH4tJiQ43fuZyHsrR1chP+lARSjQUcGSTw3T6pyL1yKxZncD?=
 X-OriginatorOrg: oss.nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 732468d4-368d-47aa-cd28-08df10280b92
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6c0a7fca-adec-4886-2809-08df102820d5
 X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11799.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2026 17:13:49.0839
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2026 17:14:24.7541
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: o8vnIqyY2lr6sJ5xDmhtDyQavw/dXbWJ+y/T6Vr9/6Q27UC86j1lxnjAmKAI3M2kkzPuxbxAP9e2r60MWY0gVDax5WBcPH0tvRI0YHmr5+OY6gS8Ig5HH731jgsGORiY
+X-MS-Exchange-CrossTenant-UserPrincipalName: ue4FBGV2dyRBwPPZoRFXYzXMfdtKwIPPthUMRgBU7Ro/IFrR4Lp6Ezqe4vMZw2ic/rv7vE47ax5yK3pzS5Aig3HwCEOs5X8z6Q5QhJDWx09pog4fizWjhgVTBYgiKxFZ
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10126
 
-On Sat, Aug 01, 2026 at 05:59:51PM +0530, Subasri S wrote:
+On Sat, Aug 01, 2026 at 05:59:52PM +0530, Subasri S wrote:
 > Use the %pe format specifier instead of %ld with PTR_ERR() for printing
-> error pointers in various drivers across usb subsystem.
-> This prints symbolic error names (e.g.-ENOMEM) instead of
-> errno numbers (e.g. -12), making error logs more readable.
+> error pointers in various typec drivers. This prints symbolic
+> error names (e.g.-ENOMEM) instead of errno numbers (e.g. -12),
+> making error logs more readable.
 >
-> Fix coccinelle reported warnings:
+> Fix coccinelle reported warning:
 > WARNING: Consider using %pe to print PTR_ERR()
 >
 > Compile tested only.
 >
+> Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
 > Signed-off-by: Subasri S <subasris1210@gmail.com>
 > ---
 
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
->  drivers/usb/atm/usbatm.c               | 4 ++--
->  drivers/usb/core/hub.c                 | 3 +--
->  drivers/usb/dwc2/pci.c                 | 3 +--
->  drivers/usb/gadget/function/u_serial.c | 4 ++--
->  drivers/usb/misc/usb3503.c             | 3 +--
->  5 files changed, 7 insertions(+), 10 deletions(-)
+>  drivers/usb/typec/mux/pi3usb30532.c | 6 ++----
+>  drivers/usb/typec/tcpm/tcpm.c       | 2 +-
+>  drivers/usb/typec/wusb3801.c        | 4 ++--
+>  3 files changed, 5 insertions(+), 7 deletions(-)
 >
-> diff --git a/drivers/usb/atm/usbatm.c b/drivers/usb/atm/usbatm.c
-> index 9600e1ec0993..c78caa1b57c9 100644
-> --- a/drivers/usb/atm/usbatm.c
-> +++ b/drivers/usb/atm/usbatm.c
-> @@ -979,8 +979,8 @@ static int usbatm_heavy_init(struct usbatm_data *instance)
->  	t = kthread_create(usbatm_do_heavy_init, instance, "%s",
->  			instance->driver->driver_name);
->  	if (IS_ERR(t)) {
-> -		usb_err(instance, "%s: failed to create kernel_thread (%ld)!\n",
-> -				__func__, PTR_ERR(t));
-> +		usb_err(instance, "%s: failed to create kernel_thread (%pe)!\n",
-> +				__func__, t);
->  		return PTR_ERR(t);
+> diff --git a/drivers/usb/typec/mux/pi3usb30532.c b/drivers/usb/typec/mux/pi3usb30532.c
+> index 985683fe49e9..b32f4c433de9 100644
+> --- a/drivers/usb/typec/mux/pi3usb30532.c
+> +++ b/drivers/usb/typec/mux/pi3usb30532.c
+> @@ -139,8 +139,7 @@ static int pi3usb30532_probe(struct i2c_client *client)
+>
+>  	pi->sw = typec_switch_register(dev, &sw_desc);
+>  	if (IS_ERR(pi->sw)) {
+> -		dev_err(dev, "Error registering typec switch: %ld\n",
+> -			PTR_ERR(pi->sw));
+> +		dev_err(dev, "Error registering typec switch: %pe\n", pi->sw);
+>  		return PTR_ERR(pi->sw);
 >  	}
 >
-> diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-> index 5262e11c12cd..8c750a93c350 100644
-> --- a/drivers/usb/core/hub.c
-> +++ b/drivers/usb/core/hub.c
-> @@ -5671,8 +5671,7 @@ static void hub_port_connect_change(struct usb_hub *hub, int port1,
->  			descr = usb_get_device_descriptor(udev);
->  			if (IS_ERR(descr)) {
->  				dev_dbg(&udev->dev,
-> -						"can't read device descriptor %ld\n",
-> -						PTR_ERR(descr));
-> +						"can't read device descriptor %pe\n", descr);
->  			} else {
->  				if (descriptors_changed(udev, descr,
->  						udev->bos)) {
-> diff --git a/drivers/usb/dwc2/pci.c b/drivers/usb/dwc2/pci.c
-> index f3a1e4232a31..7ff9c4df941e 100644
-> --- a/drivers/usb/dwc2/pci.c
-> +++ b/drivers/usb/dwc2/pci.c
-> @@ -68,8 +68,7 @@ static int dwc2_pci_probe(struct pci_dev *pci,
->
->  	phy = usb_phy_generic_register();
->  	if (IS_ERR(phy)) {
-> -		dev_err(dev, "error registering generic PHY (%ld)\n",
-> -			PTR_ERR(phy));
-> +		dev_err(dev, "error registering generic PHY (%pe)\n", phy);
->  		return PTR_ERR(phy);
+> @@ -151,8 +150,7 @@ static int pi3usb30532_probe(struct i2c_client *client)
+>  	pi->mux = typec_mux_register(dev, &mux_desc);
+>  	if (IS_ERR(pi->mux)) {
+>  		typec_switch_unregister(pi->sw);
+> -		dev_err(dev, "Error registering typec mux: %ld\n",
+> -			PTR_ERR(pi->mux));
+> +		dev_err(dev, "Error registering typec mux: %pe\n", pi->mux);
+>  		return PTR_ERR(pi->mux);
 >  	}
 >
-> diff --git a/drivers/usb/gadget/function/u_serial.c b/drivers/usb/gadget/function/u_serial.c
-> index cdd1dfc666c4..da31e5cea0a5 100644
-> --- a/drivers/usb/gadget/function/u_serial.c
-> +++ b/drivers/usb/gadget/function/u_serial.c
-> @@ -1311,8 +1311,8 @@ int gserial_alloc_line_no_console(unsigned char *line_num)
->  	tty_dev = tty_port_register_device(&port->port,
->  			gs_tty_driver, port_num, NULL);
->  	if (IS_ERR(tty_dev)) {
-> -		pr_err("%s: failed to register tty for port %d, err %ld\n",
-> -				__func__, port_num, PTR_ERR(tty_dev));
-> +		pr_err("%s: failed to register tty for port %d, err %pe\n",
-> +				__func__, port_num, tty_dev);
->
->  		ret = PTR_ERR(tty_dev);
->  		mutex_lock(&ports[port_num].lock);
-> diff --git a/drivers/usb/misc/usb3503.c b/drivers/usb/misc/usb3503.c
-> index 759770a13260..1160dc594b1c 100644
-> --- a/drivers/usb/misc/usb3503.c
-> +++ b/drivers/usb/misc/usb3503.c
-> @@ -202,8 +202,7 @@ static int usb3503_probe(struct usb3503 *hub)
->
->  		hub->clk = devm_clk_get_optional(dev, "refclk");
->  		if (IS_ERR(hub->clk)) {
-> -			dev_err(dev, "unable to request refclk (%ld)\n",
-> -					PTR_ERR(hub->clk));
-> +			dev_err(dev, "unable to request refclk (%pe)\n", hub->clk);
->  			return PTR_ERR(hub->clk);
+> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+> index 89eec20a2064..ad10470ea73b 100644
+> --- a/drivers/usb/typec/tcpm/tcpm.c
+> +++ b/drivers/usb/typec/tcpm/tcpm.c
+> @@ -4796,7 +4796,7 @@ static void tcpm_typec_connect(struct tcpm_port *port)
+>  			port->partner_desc.accessory = TYPEC_ACCESSORY_NONE;
+>  		partner = typec_register_partner(port->typec_port, &port->partner_desc);
+>  		if (IS_ERR(partner)) {
+> -			dev_err(port->dev, "Failed to register partner (%ld)\n", PTR_ERR(partner));
+> +			dev_err(port->dev, "Failed to register partner (%pe)\n", partner);
+>  			return;
 >  		}
 >
+> diff --git a/drivers/usb/typec/wusb3801.c b/drivers/usb/typec/wusb3801.c
+> index 6062875fb04a..86d13ab41670 100644
+> --- a/drivers/usb/typec/wusb3801.c
+> +++ b/drivers/usb/typec/wusb3801.c
+> @@ -277,8 +277,8 @@ static void wusb3801_hw_update(struct wusb3801 *wusb3801)
+>  		if (partner_type != WUSB3801_STAT_PARTNER_STANDBY) {
+>  			wusb3801->partner = typec_register_partner(port, &desc);
+>  			if (IS_ERR(wusb3801->partner))
+> -				dev_err(dev, "Failed to register partner: %ld\n",
+> -					PTR_ERR(wusb3801->partner));
+> +				dev_err(dev, "Failed to register partner: %pe\n",
+> +					wusb3801->partner);
+>  		}
+>
+>  		data_role = pwr_role == TYPEC_SOURCE ? TYPEC_HOST : TYPEC_DEVICE;
 >
 > --
 > 2.43.0
