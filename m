@@ -1,181 +1,212 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397B64AD7C0
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 17:54:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789149272; cv=none; b=OViuIwChmJUvl6zpTyKGc7sRlzJAhkBcDK+0imbeqSe1Kk2WVvw4tGh6k6KA3IQpRm2kR+EaLJ0AB77EsrxSvRVjCY1+F6zaR8pJpRGzjvXDinbqqxV5714bCqm8bb/iPmTsfmb45EApG/jzP3JCEl4/pwhOggAdjGsdaBTA03Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789149272; c=relaxed/simple;
-	bh=L4wtI723HCIDSARdKEZgFkF5oUZmZn6k/3N147HwuaQ=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QdFWmmvm27fvhJbuSR0GbsFz0cVM/c6wdusP17JNeaRXjUmwqScg9gAhY0aqBzC6FMV1DniuzwSLauXqfQL4vsQZlWbVOGcZI2ZOcRAp+Qgd2sLniVGgI9MU2sBM2mBmc/Rjo5j90ovq61Zjf6HJpQr0b3zdRjaPI+qeHDly3Ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oxQeBhRP; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F1648820B
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 18:00:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789149611; cv=pass; b=qkiKqkPWyAGWdF0ZZtRpFrlWIUQFseJc+l0g+jNXWffqBw4PNMF4CnyPe23jBbawPRgy90sMHfgyq4aFarc2+MEhUWjmFv5LIWnJSJBdfQKJZza8NJOHj3Hg+UcKxOBxYJ5y0hE3X3aCXYzO+o/McgrOZquOWkqsKvyBjDSA4EM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789149611; c=relaxed/simple;
+	bh=75B6zdKCfHIJgushz+4ScUK9jZ/KjqUsttYbzMJwht8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ui0TgRDN5559YFbs8nmzJOrAu8iPbk6p+VKDPtO6AYxSouVZ3R2/GBats5MQ5JswiDJM28Qgy3Qjry2aA3JoYFu59WxlcmQnJZ91gh2tyczWp6j8P1IVOcsLfvvzmUwEvjWB2CkOKMI6pWVQF8Mun+FA//xYeZ7q8s3YR8ceqJg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W5xQ4yOc; arc=pass smtp.client-ip=74.125.228.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oxQeBhRP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1503A1F000FF;
-	Fri, 11 Sep 2026 17:54:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789149268;
-	bh=8KXoc4CQ4lfWWo+6gHxTYOqQVXyOnyX7bSY7BKHIY6M=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=oxQeBhRPSo/J4/EN8tKK3WTfPpZw7UNFDHUyH59NbU2tVguB+41yCMxsHIpuEGz+v
-	 EqRHe9iZxOUtqF6ikOWyk54099JJeddW3r7fiUbYKWQrqIPoGow4TeIm/cU8ZPe9iG
-	 gof0NdqyO0/xutTk4uKIiQ1RvXvt4nvkDgksvjS9DhWuQsXHmcHFl5BlhajOAWijPu
-	 fQDfJvcrnvXr2TbOWGVGEsXRSB5w0W/NGuEciq0FvTeTpcMc+Pa+CQ4NbzvVDlTdM0
-	 0x2R5WICV6Swcu1CduiaJHHTSHzPe27giXd/K3vNLYjGIb88g8UA/jco303vIdRWX3
-	 YvuSskiIc7OKA==
-Subject: Re: [PATCH net 1/1] net: preserve socketpair output on setup failure
-From: netdev-bot+sashiko@kernel.org
-To: sgrubb@redhat.com
-Cc: netdev@vger.kernel.org, edumazet@google.com, kuniyu@google.com,
- pabeni@redhat.com, willemb@google.com, davem@davemloft.net, kuba@kernel.org,
- horms@kernel.org, shuah@kernel.org
-Date: Fri, 11 Sep 2026 17:54:27 +0000
-Message-ID: <178914926756.219967.8405366872721807955@kernel.org>
-In-Reply-To: <JyK226D0S5CWGUpAC4MO4A@redhat.com>
-References: <JyK226D0S5CWGUpAC4MO4A@redhat.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W5xQ4yOc"
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a5d8fd8d88so2886a12.0
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 11:00:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789149608; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mRs5slSAB7Y8F2uA11vdIDQ+lh+TlIscwzOKFaHsSy2Eotlee3l/KuBSslUg8m+yvT
+         We97igj5A03yFfq7m48XDm08EtlzjjjE3rNopgvseHRotjJxsWWioms4aS8LZuB7UKe+
+         VZVy3zZCrrLScjwv8/4F+fKPfZxgQsbCW+6ysWUUhZy4MAquhYgjsYUJ2G7VsakuVqzd
+         3h6C18KV4IaxXoEDxSaPisqbWTSg/OYb0Wu3sfoymr1Zn38lscQwFgWVpxsrUPCYVWQL
+         szU7G+iGMN9UqQb/Cpl/REAFjZJ2RJKEpgjMRAM5lhQaQUrXma4/dXbsoSjqy/lQNoUc
+         KLiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=EPuBfl5vK2ggyAXvAEaHgEtOqAJU0sZXA/862mNKi+A=;
+        fh=1uR2LhNr6LBdQn+A9M50qYSEMxIkrc8hdgBLUzyhRHc=;
+        b=Hhu1EnMgjbCWL4dytNPEFRC87HYlYPJzczd/g9FVtQILLJkkTkWKdx9rE5+5FU2XWf
+         8zHPMJ+eLVejeUHucrQU1n1EoB9tU6+A9vh/b9MoPxVN2P61OW6MY187jR74cUxNeDww
+         IoD4PqZv3gbsOZkFs8KvP24+Oy337k2WTTrHcw/QtCvlwJSMAKVMxzsDUdeuvnmobPBg
+         +kQesGmnFQISQAh3QYRCQoVNu2ynddxgbAPIs6DOnCTFKGVq9q3hMvPcbsNBVziNkmnr
+         veCtPXkwUXPXIqR4ENdmkBPjBhX5iHpa0qcVebMOir0KAzczmoLWQd1RuhI2pWtSiKEx
+         jKMA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789149608; x=1789754408; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=EPuBfl5vK2ggyAXvAEaHgEtOqAJU0sZXA/862mNKi+A=;
+        b=W5xQ4yOcI2ba7kEPjjFVpiDYDWsePTb35OMen34pxhsRcj/EsVJa8jBN9D0+G8kjEb
+         p6phj4M9okxjfsWQCt9Q1yO3I+Afop71+pnBCtRw3scve8CdKKxhbULBlbnoFGt3AjbS
+         XFKqC0Q1S/m5qF9fRBvrpkwzQ8jQXCIx5T6C1Muyn2sCaAnFWEKKIYRxRFK+K+nsSsqC
+         lhOLD68Zed9fm7EWIF03GX7KTqKtYOcd9GuuNymYR95GxC/mXAXHpPSSQxKHCf+1YBIH
+         38/tjaid5qRrK5Q5lCOQ6OHD+q9CcfpRdSMl4uVSv8CjjLf86aiBnRQPWV89sL7854NL
+         deqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789149608; x=1789754408;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=EPuBfl5vK2ggyAXvAEaHgEtOqAJU0sZXA/862mNKi+A=;
+        b=alsvqP6As9/bzySfASAiQ4ZYeNX3yxM2XPg+rVVmmt8IxQhF9XJrFuDJPGomBxhUxF
+         pmxFLkTindnMYaQFmtdYMlHYxphRs+y3TrniG7SNvMwNSezcKvIiy9CqrffLj09Kva3N
+         Gl8kDznrVLREM34ZzcLkBGozgxpN9wrcAdvIKpM4p8QXpGxERwqJcw7RKVcXsu3h6tue
+         Sb3xuWwC8R6yLUZ32nL2Lr8kis2jsqcmgFYUxw5eszCmYeOj3hNchUwo+zRe7GBpeiH4
+         xVPkhhVOVbW4lVhHO8NQ/Nz74rzFHA/pAlP0pavg/ZmBpfGmTP7aIIMqf4E33DPX6iMv
+         idZQ==
+X-Gm-Message-State: AFuF++km2k69636ez1lOJSykEQuCCjRtR9KNcPmLK6oAHD9KwAv7q9vR
+	xjOvJMNFngOOix+UyGZe29ro1Gg0USFiAAGThI5ymetfZxY9ZUP4oseSx/PEUzAaIesc7jW2hNl
+	2+S8wA3Fw41OlFXpfE65JKseMlak7Ig0zYpOidnYJ
+X-Gm-Gg: AYBFou08sglZR98Xqtl398XuuUzWa9qF+3ujJo0LzLcRlmLtZ47pguLHlpN03Y7XV4j
+	S39p9epaV0ATxhWECrkBle2Cjjs1roHVkI2PD4zcUc4L3kwQJM6FJAg2exDMqYWB3I7hCr9rMyl
+	v11AQKd3xccSXZa+gtb8HfMl0vewhdqjdvTw4dlu8i2ORw+EVS4qEjGdmdegmKzWXf+8X/kFtNr
+	wHr7L2H0bSEDlKihO/ukJUBHFE2oDE+9WhOzpDlIkHt+JY4JzVPnl4OWL+i46kK98lTLpQWJha+
+	q4vq/udpJQKt4Sg4q4Cl9832fzR1Bg5PIB3+bzTyUHZX+3PJZJk+reSvTUbaiSwP4xRnGcb/jBn
+	ujLsMdktkdQ==
+X-Received: by 2002:aa7:ccd9:0:b0:6a6:6ded:b4b6 with SMTP id
+ 4fb4d7f45d1cf-6a9cae90c46mr922a12.13.1789149607454; Fri, 11 Sep 2026 11:00:07
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260910143652.166683-1-f3lix.dev@gmx.de>
+In-Reply-To: <20260910143652.166683-1-f3lix.dev@gmx.de>
+From: Mina Almasry <almasrymina@google.com>
+Date: Fri, 11 Sep 2026 10:59:56 -0700
+X-Gm-Features: AcwNN1UFTPO9vNySiDMkdtVBGNXMPcgymzAD6eUPPtQ0NvEiLfkuP4abad7ttbk
+Message-ID: <CAHS8izOJfCCistkyZfMpfvf8jGEgtZ5gB5qROC59qnW43PPC=A@mail.gmail.com>
+Subject: Re: [PATCH net] net: devmem: fix TX binding UAF on netdevice unregister
+To: Felix Hoffmann <f3lix.dev@gmx.de>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Kaiyuan Zhang <kaiyuanz@google.com>, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
+On Thu, Sep 10, 2026 at 7:37=E2=80=AFAM Felix Hoffmann <f3lix.dev@gmx.de> w=
+rote:
+>
+> RX dma-buf bindings are invalidated by their memory provider when a
+> netdevice is unregistered. TX bindings have no bound RX queues and no
+> equivalent uninstall callback, so their physical and virtual netdevice
+> pointers remain live after the devices are freed.
+>
+> Closing the owning netlink socket after device removal then makes
+> netdev_nl_sock_priv_destroy() dereference the freed physical netdevice to
+> hold and lock it. KASAN reports a slab-use-after-free and the kernel can
+> panic.
+>
+> The binding can also outlive the device used for its dma-buf attachment.
+> Since dma_buf_attach() does not hold a reference to that device, deferred
+> binding cleanup can pass a freed device to dma_buf_unmap_attachment().
+>
+> Invalidate TX bindings that refer to either the physical or virtual
+> netdevice during unregister. Keep a reference on the exact DMA device
+> until the attachment is unmapped. The netlink socket destructor then uses
+> the existing device-gone path, while delayed dma-buf cleanup retains a
+> valid DMA device.
+>
+> NETDEV_CMD_BIND_TX does not require GENL_ADMIN_PERM. The failure was
+> reproduced with the binding owned by UID 65534 across module removal.
+>
+> Fixes: bd61848900bf ("net: devmem: Implement TX path")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Codex:gpt-5
+> Signed-off-by: Felix Hoffmann <f3lix.dev@gmx.de>
+> ---
+> The reproducer is available privately on request.
+>
+> Testing:
+> - Full x86-64 kernel build with generic KASAN enabled
+> - Unpatched kernel: UID 65534 bind, netdevice removal, and socket close
+>   produced the reported KASAN use-after-free and panic
+> - Patched kernel: the identical sequence completed without a KASAN report
+> - Patched kernel: 10 additional bind, removal, and close iterations passe=
+d
+>
+>  net/core/dev.c    |  2 ++
+>  net/core/devmem.c | 47 +++++++++++++++++++++++++++++++++++++++++++++--
+>  net/core/devmem.h |  7 +++++++
+>  3 files changed, 54 insertions(+), 2 deletions(-)
+>
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index ecfbd72d5d1a..c325fa7e0d6f 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -12401,6 +12401,8 @@ static void dev_memory_provider_uninstall(struct =
+net_device *dev)
+>
+>                 __netif_mp_uninstall_rxq(rxq, &rxq->mp_params);
+>         }
+> +
+> +       net_devmem_uninstall_tx_bindings(dev);
+>  }
+>
+>  /* devices must be UP and netdev_lock()'d */
+> diff --git a/net/core/devmem.c b/net/core/devmem.c
+> index f4d60654ce7f..a21a8fe92f58 100644
+> --- a/net/core/devmem.c
+> +++ b/net/core/devmem.c
+> @@ -77,6 +77,7 @@ void __net_devmem_dmabuf_binding_free(struct work_struc=
+t *wq)
+>         dma_buf_unmap_attachment_unlocked(binding->attachment, binding->s=
+gt,
+>                                           binding->direction);
+>         dma_buf_detach(binding->dmabuf, binding->attachment);
+> +       put_device(binding->dma_dev);
+>         dma_buf_put(binding->dmabuf);
+>         xa_destroy(&binding->bound_rxqs);
+>         percpu_ref_exit(&binding->ref);
+> @@ -153,6 +154,46 @@ void net_devmem_unbind_dmabuf(struct net_devmem_dmab=
+uf_binding *binding)
+>         percpu_ref_kill(&binding->ref);
+>  }
+>
+> +void net_devmem_uninstall_tx_bindings(struct net_device *dev)
+> +{
+> +       struct net_devmem_dmabuf_binding *binding;
+> +       struct net_devmem_dmabuf_binding *found;
+> +       unsigned long xa_idx;
+> +
+> +       /* Unlike RX bindings, TX bindings have no memory provider whose
+> +        * uninstall callback can invalidate their net_device pointers.
+> +        */
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Please remove these LLM generated comments that make no sense. The
+comment is correct but no one reading this code is wondering if the TX
+binding have a memory provider.
 
-- [Medium] The new publication step in `__sys_socketpair()`
-  (net/socket.c:1908-1916) still uses two independent `put_user()`…
-- [Low] Undisclosed partial revert of commit 016a266bdfeda2
-  ("socketpair(): allocate descriptors first") with no Fixes: tag and no…
-
---
-
-net: preserve socketpair output on setup failure
-
-This moves the two put_user() stores of the reserved descriptor numbers in
-__sys_socketpair() from before socket creation to after both struct file
-objects have been allocated, so a setup failure no longer leaves the
-caller's array modified.  On a store failure both file references are
-dropped before the reserved descriptor slots are released.
-
-> diff --git a/net/socket.c b/net/socket.c
-> index c05d86e63abf7..4cb8662869f09 100644
-> --- a/net/socket.c
-> +++ b/net/socket.c
-> @@ -1851,10 +1851,7 @@ int __sys_socketpair(int family, int type, int protocol, int __user *usockvec)
->  	if (SOCK_NONBLOCK != O_NONBLOCK && (flags & SOCK_NONBLOCK))
->  		flags = (flags & ~SOCK_NONBLOCK) | O_NONBLOCK;
->  
-> -	/*
-> -	 * reserve descriptors and make sure we won't fail
-> -	 * to return them to userland.
-> -	 */
-> +	/* Reserve both descriptors before creating the sockets. */
-
-[Severity: Low]
-Should this change carry a Fixes: tag?
-
-git blame on net/socket.c shows the early put_user() pair and the comment
-being removed here both came from commit 016a266bdfeda2 ("socketpair():
-allocate descriptors first"), which deliberately published the descriptor
-numbers before socket and file creation so the store to userland could not
-fail late, and used that to simplify the failure exits.
-
-Moving the stores back after sock_alloc_file() and re-adding the
-two-object failure exit reverts that part of 016a266bdfeda2, and the
-replacement comment drops the recorded invariant.  Could the changelog
-mention 016a266bdfeda2 as the origin of the ordering being changed, so
-that backporters can see what is being partially reverted?
-
->  	fd1 = get_unused_fd_flags(flags);
->  	if (unlikely(fd1 < 0))
->  		return fd1;
-> @@ -1865,14 +1862,6 @@ int __sys_socketpair(int family, int type, int protocol, int __user *usockvec)
->  		return fd2;
->  	}
->  
-> -	err = put_user(fd1, &usockvec[0]);
-> -	if (err)
-> -		goto out;
-> -
-> -	err = put_user(fd2, &usockvec[1]);
-> -	if (err)
-> -		goto out;
-> -
->  	/*
->  	 * Obtain the first socket and check if the underlying protocol
->  	 * supports the socketpair call.
-
-[ ... ]
-
-> @@ -1916,6 +1905,16 @@ int __sys_socketpair(int family, int type, int protocol, int __user *usockvec)
->  		goto out;
->  	}
->  
-> +	/* Publish the descriptors now that it shouldn't fail. */
-> +	err = put_user(fd1, &usockvec[0]);
-> +	if (!err)
-> +		err = put_user(fd2, &usockvec[1]);
-> +	if (err) {
-> +		fput(newfile2);
-> +		fput(newfile1);
-> +		goto out;
-> +	}
+> +again:
+> +       found =3D NULL;
+> +       rcu_read_lock();
+> +       xa_for_each(&net_devmem_dmabuf_bindings, xa_idx, binding) {
+> +               if (binding->direction !=3D DMA_TO_DEVICE ||
+> +                   (READ_ONCE(binding->dev) !=3D dev &&
+> +                    READ_ONCE(binding->vdev) !=3D dev))
+> +                       continue;
 > +
 
-[Severity: Medium]
-Can usockvec[0] still be left modified on an error return here?
+Can you do a deeper investigation on what to do here or explain why
+this is correct. I'm not sure we should do anything on the vdev
+unregestiring? hmm...
 
-The publication is two independent stores, so the first can commit while
-the second faults, for instance when usockvec is placed with the first int
-in a writable page and the second int in a PROT_NONE page, or when an
-mprotect()/userfaultfd race lands between the two accesses:
+FWIW I think probably an in-tree test would not go to net, but would
+be a separate patch that goes to net-next? Maybe? IDK. Up to stan.
 
-	err = put_user(fd1, &usockvec[0]);	/* commits */
-	if (!err)
-		err = put_user(fd2, &usockvec[1]);	/* -EFAULT */
-
-The error path then falls through to:
-
-out:
-	put_unused_fd(fd2);
-	put_unused_fd(fd1);
-	return err;
-
-so -EFAULT is returned to the caller while usockvec[0] still holds fd1,
-and fd1 has been released and will be handed back out by the next
-open()/socket()/accept() in the process.
-
-The commit message says the current code "leaves a modified caller's array
-despite returning an error, contrary to POSIX".  Is that state still
-reachable after this change for the partial-store case?
-
-Also, the new comment "Publish the descriptors now that it shouldn't fail."
-is immediately followed by the handler for that publication failing.
-Could the comment be reworded, or the two stores replaced with a single
-copy_to_user() of a two-element array as do_pipe2() does in fs/pipe.c?
-
-	if (unlikely(copy_to_user(fildes, fd, sizeof(fd)))) {
-		fput(files[0]);
-		fput(files[1]);
-		put_unused_fd(fd[0]);
-		put_unused_fd(fd[1]);
-		error = -EFAULT;
-
-Note that even the do_pipe2() form can copy the first int before faulting
-on the second, so a straddling buffer leaves a residual window there too.
-
-For the record, the two-store publication is not new in this patch, the
-baseline had the same pattern; the question is only whether the changelog
-claim of removing this behaviour holds.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/JyK226D0S5CWGUpAC4MO4A%40redhat.com
+--
+Thanks,
+Mina
