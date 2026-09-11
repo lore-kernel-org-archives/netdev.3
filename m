@@ -1,277 +1,116 @@
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120723E5A09;
-	Fri, 11 Sep 2026 03:59:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=183.62.165.209
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789099188; cv=none; b=cmLajCcsLJwjY7EZyHZZ9AN7PRYiwtRXsqLyxXFpTpU+tLTKhAElzYHYzGPXgXGDiztPVFQ64cikjausRIMA7u+F/X9tiifd6mmXfbAInfUS92Jmi/LIjbWcsQyn53cIJNgpEMxPY37tr0MoXeooHR9xa9K4i2MmMH9FRAgpLWg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789099188; c=relaxed/simple;
-	bh=scYRCW1PmMF7LMvqbjKMAR0tIErTtjSSnYOfgR1MZtA=;
-	h=Message-ID:In-Reply-To:References:Date:Mime-Version:From:To:Cc:
-	 Subject:Content-Type; b=WMUF39q83R4V62EvK3MdcPJ/xib4qfg66GYRkrNcMYKeO2jJTbOeYbyyW+XrfAIzenKC+AfSLTElu8sCbVkvc9yTNvLor9IAhJCRQu7m1Y0k0aQAtFQuoXLuMKnMRHugUaDpXpDsuNJ7DJ2qi+yZgtDESKh5giK2HFjC4udbyQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=183.62.165.209
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4hh15L4841z58fdL;
-	Fri, 11 Sep 2026 11:59:34 +0800 (CST)
-Received: from njy2app04.zte.com.cn ([10.40.12.64])
-	by mse-fl2.zte.com.cn with SMTP id 68B3xSIq019649;
-	Fri, 11 Sep 2026 11:59:28 +0800 (+08)
-	(envelope-from han.junyang@zte.com.cn)
-Received: from mapi (njy2app04[null])
-	by mapi (Zmail) with MAPI id mid204;
-	Fri, 11 Sep 2026 11:59:29 +0800 (CST)
-X-Zmail-TransId: 2afc6aa37ca1f49-8c66b
-X-Mailer: Zmail v1.0
-Message-ID: <20260911115929435mXJzcTF08xlUAdjnT8qqm@zte.com.cn>
-In-Reply-To: <20260911115632342CS2YMSVejTTmnYEU3XbRs@zte.com.cn>
-References: 20260911115632342CS2YMSVejTTmnYEU3XbRs@zte.com.cn
-Date: Fri, 11 Sep 2026 11:59:29 +0800 (CST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC3F246BCD
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 04:02:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789099349; cv=pass; b=PwQpNCfM+lzmZ9L7CvwfgCqk0RHawaFgSVACGojPeGiTIJjbaf+Cp1D4zaqlv+NTPyfeG2Z92UPSH/v+h/XvQsVlOLdMLnbbRrm1QTleLGwxEX6Jj0yGlhTUj9/zFf9ENKU1c6t5kuxRARFneHeFql2tTkpAkBrsNvJZnan5r7U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789099349; c=relaxed/simple;
+	bh=/unsMahU5AWxxZKqAdHfGOlD5WJuLIUU0biyoYkbP6c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gLND0nuN7iY+lRlxz+ocLa/w6Fe1wfhsnt1IIi+/KRpHTuwt+LE0n6BOS/M/D/+h9sfg0qfjzP6TR66nuiYMkUxbC6liOLPA787m4QN8/wokhBdwqncPCOMJSM0v64Re2QBDlWCpkZTQM5zPVBCcokz5fGAptqK7rTzXFBdgdYQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BLeUw4vd; arc=pass smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BLeUw4vd"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2d9520b9155so4786525ad.3
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 21:02:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789099347; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZhnLvGsPKETjc+1mQQ1goiRJ8Rt4E9v6JoDP/fqlsk78nTo65rwJS4OnuaCw8HyqHJ
+         pCEJjX08mcdl9dYubm5ilYTDVKP8Qpk/qDBZkLS7ToybesXBAg8yh1arpXhU+HeJsuTi
+         xGA0n20CjRuY/tZjvd0o9PkrmxdiJvhOY5eGlNDgS0qxI16/dGVp8ByVhCo9p/hIZGhY
+         QHPg0JiijBvKvyyQmT8hlbtB/IatRhN/VaoPD7AKKsJXZJhA6fQI3FVhelPShKCGovPf
+         80Nvrl4X4x8K84GHtioQPOmCA6ZMTIWSrBkHLFCh9yt49fIhzeFazTbe45qWlcWhWl3G
+         iPHA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=/unsMahU5AWxxZKqAdHfGOlD5WJuLIUU0biyoYkbP6c=;
+        fh=wXRnNiEX5x8WyZro2a0fUjLYIIFlpIm8xbVksUQM4vc=;
+        b=IERrHNqhwFD+jY1cB0Hh0EkJss8dB5ZRuU34cCKdqGZpOxB2T2FOcK9gen0u7R27ZY
+         FaKZrnvuOKm5+YVHbnvfzOqlDMpV9DL7up35jH8dKZXTMlluwIrPZzMnfNSbqy9v4aXL
+         DeLJnmEtELe6KZxLgEZa8hTHhtybXXEXbN9QLcWBD6jjMW/QacD2oKP/y45AfUq+oo4v
+         fttf5RBDIu+mTcBvQrcSkbCkOkVvIWPaqOakaPcJv/Guo/a0WAq1QPc0SIcscIjLgQzt
+         BPlbbMsFrEmF3cyQ5p3IX4r8dZQeJMoeELHw3T3bV5wet8Vxl5Nee+XclUABAi498Se0
+         sKZw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789099347; x=1789704147; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/unsMahU5AWxxZKqAdHfGOlD5WJuLIUU0biyoYkbP6c=;
+        b=BLeUw4vdjqqNSpEHvR+GPh8B7ESlVFw3WHIOz6jFGo20HHkk7RuC8cM/5yZiiqR+Ju
+         j+B/2WkOn7mJTSB7DRTX+wf5LWv0O7dVy2fT84UqXbeIcely0L7AP11zq5qoJkgRF38X
+         cBGpBhPlGqWsTG0VVHWU97A3u83LCnLzzWfnsKK+gD9EjWiU/ZV90jU579ulN+PrxfSu
+         DETQXg9w23YilW56zWK95sQspCfjXNPO9hZaER3mIBjTnoGkUNnaAFZi00gOXImuYdQw
+         xxPEA4qlytV+RWUpvtnJK7JwOB/U48OCY3VkhRF+9fo0hvdjWsi3ICqoJQYhj9xXcEFK
+         qUVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789099347; x=1789704147;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=/unsMahU5AWxxZKqAdHfGOlD5WJuLIUU0biyoYkbP6c=;
+        b=Zi1dIjjci/dBB/q6o4iI7ZIYv++6laEL2iJgVjP6g6lpqN3lXJ8+W0KaE3Z/mc96Wp
+         pJ51EAspHbuktzEUyJVVPwVOQmyEIFl8/J+8Jl6MOCrDzpc5HyLCaxEjYZ3e0+Vo9wBp
+         QtxUisO3OssTi2uXJM/VjaMtWzaqR0xTT0lsiQNEEc8WawzGM4qHKsbzOJxq15IRceOE
+         2zJt8QSVFjgTTvXhr2BD4dx8j6lNIaWl4hpY2ozwkE3A9OkNHVOJQAwjW1HYgz/V2LDe
+         mhbeHXaO98CLJ3P8q0NLKNoBDmL5pZD0sjJOjR4TFXCNJWYiPaZ4lB43Uev9aoT4nl6+
+         m2YQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzpPjTtQSygLF+ruJ7Amar0DNy+7QADziq1FO8/fjj/41KJc8Xm3oiaptH7QHV7jXPUcn0RDFk=@vger.kernel.org
+X-Gm-Message-State: AFuF++lnj5gQedrfKakEDUNosZHVWPnIMPS+pMXJlzGRP9US/PP0H4St
+	SVJeL6gpkx2qDl+mPvphXNfKKZHdOAMalVx48SbSxIV6MKh0xwGyFlaAhLCRi9m0z+x163a5FZw
+	Qy2JW0jdRp1ND6DkydIe+ALQ/m3do384=
+X-Gm-Gg: AYBFou3c+N/gNPRjPFxQ8eyRt9HrN/dcLMj+GkKRTw2U4uZL+orbIE72QT7OFoqALRE
+	JPQJZx1FzIPKsdkM7xOLCW3JfXhLe6N7hja6XyUYrniUWpQ+TOs6wlM55yD3Yu055f5pXiuVswT
+	NQaKCDS1QjxVxCuaAsjDS/imcYZ0FSeMJSC1/qyz9iJkX6M3fDkYe9Zo7egS2jFPK7YfvtNXjFC
+	Tz4InwMG+ueshRkBcoF/ZeG98BTk+gOC6TVKHbEd4zx1IJZcMuvzSmxJB5A56Ncxll+hoqqvIl9
+	iQPgmj4hUXkMp6OQbtdkHM1ABs6ZEcsKY8Eu2ky4qwzxT2JWFOgLqiD5CvyocUu3JZBSLzUJy18
+	KsI/pTBoXtV9fGtQNNVUNbbMmXPbQ2fMNX+Hxq6j30rJ6Hw7id5IzXlpILCWqPv7DVy4=
+X-Received: by 2002:a17:903:124d:b0:2d9:3bee:4f32 with SMTP id
+ d9443c01a7336-2dd2a45889cmr41780545ad.20.1789099347397; Thu, 10 Sep 2026
+ 21:02:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-From: <han.junyang@zte.com.cn>
-To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <han.junyang@zte.com.cn>, <ran.ming@zte.com.cn>,
-        <han.chengfei@zte.com.cn>, <zhang.yanze@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIG5ldC1uZXh0IHYyIDEvM10gZGluZ2hhaTogYWRkIGZpcm13YXJlIHZlcnNpb24gY2hlY2sgYW5kwqBSSVNDLVYgcmVhZGluZXNzIHBvbGxpbmc=?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 68B3xSIq019649
-X-TLS: YES
-X-ENVELOPE-SENDER: han.junyang@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Fri, 11 Sep 2026 11:59:34 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6AA37CA6.000/4hh15L4841z58fdL
+MIME-Version: 1.0
+References: <20260909064712.22539-1-phucduc.bui@gmail.com> <20260910180733.2d4d48e9@kernel.org>
+In-Reply-To: <20260910180733.2d4d48e9@kernel.org>
+From: Bui Duc Phuc <phucduc.bui@gmail.com>
+Date: Fri, 11 Sep 2026 11:02:15 +0700
+X-Gm-Features: AcwNN1XnERV3Y99vrub4Kb9Mq8NYZCHahFiWxUXpMZS4wj3JAmLqVaaCGWrPlw4
+Message-ID: <CAABR9nERt4w_vKgnYRS5+fhTQ64yJW7=vfyBBi_C+PLmNVfzeQ@mail.gmail.com>
+Subject: Re: [PATCH net v5 1/2] net: fec: Propagate PTP initialization errors
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Wei Fang <wei.fang@nxp.com>, Frank Li <frank.li@nxp.com>, 
+	Shenwei Wang <shenwei.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	Simon Horman <horms@kernel.org>, davem@davemloft.net, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, 
+	Stephen Boyd <swboyd@chromium.org>, imx@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Junyang Han <han.junyang@zte.com.cn>
+Hi Jakub,
 
-The DingHai firmware publishes a version compatibility block and a
-RISC-V health buffer at fixed offsets within BAR 0.
+Thank you for your review.
 
-After the PCI capabilities are mapped, poll the compatibility block
-until the firmware populates it (the region reads as all ones until
-then) and verify the driver/firmware version contract. Then wait for
-the RISC-V management core to set its power-on flag in the health
-buffer before the rest of the probe continues.
+> > -void fec_ptp_init(struct platform_device *pdev, int irq_idx)
+> > +int fec_ptp_init(struct platform_device *pdev, int irq_idx)
+>
+> This function has a kdoc, you need to document the return value now.
+>
+> Please repost this for net-next without the Fixes tags.
 
-Firmware images predating the health buffer protocol (health version
-other than 1 and patch level below ZXDH_HPIRQ_PATCH) skip the
-readiness wait.
+I will update the KDoc and repost this for net-next without the Fixes:
+tags soon.
 
-Signed-off-by: Junyang Han <han.junyang@zte.com.cn>
----
- drivers/net/ethernet/zte/dinghai/en_pf.c | 107 +++++++++++++++++++++++
- drivers/net/ethernet/zte/dinghai/en_pf.h |  46 ++++++++++
- 2 files changed, 153 insertions(+)
-
-diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.c b/drivers/net/ethernet/zte/dinghai/en_pf.c
-index 86d437408820..d257d8e9b612 100644
---- a/drivers/net/ethernet/zte/dinghai/en_pf.c
-+++ b/drivers/net/ethernet/zte/dinghai/en_pf.c
-@@ -6,6 +6,8 @@
-
- #include <linux/module.h>
- #include <linux/pci.h>
-+#include <linux/io.h>
-+#include <linux/iopoll.h>
- #include <net/devlink.h>
- #include <linux/dma-mapping.h>
- #include "en_pf.h"
-@@ -369,6 +371,99 @@ int zxdh_pf_modern_cfg_init(struct zxdh_core_dev *zxdh_dev)
- 	return ret;
- }
-
-+/* Read the firmware version block and verify the driver/firmware
-+ * version contract.
-+ */
-+static int zxdh_pf_fw_compat_check(struct zxdh_core_dev *zxdh_dev)
-+{
-+	struct zxdh_pf_dev *pf_dev = zxdh_dev->priv;
-+	struct zxdh_fw_compat __iomem *compat;
-+	struct zxdh_fw_compat *fw_compat;
-+	u32 erased;
-+
-+	fw_compat = &pf_dev->fw_compat;
-+	compat = pf_dev->pci_ioremap_addr[0] + ZXDH_FW_COMPAT_OFFSET;
-+
-+	/* The region reads as all ones until the firmware populates it at
-+	 * the end of its boot; allow up to 200 s for a cold boot.
-+	 */
-+	readx_poll_timeout(ioread32, compat, erased, erased != 0xffffffffU,
-+			   USEC_PER_SEC,
-+			   ZXDH_FW_COMPAT_TIMEOUT_SEC * USEC_PER_SEC);
-+
-+	/* Firmware predating the compatibility region keeps the erased
-+	 * pattern, which fails the module id check below and defers the
-+	 * decision to the readiness wait.
-+	 */
-+	fw_compat->module_id = ioread8(&compat->module_id);
-+	fw_compat->major = ioread8(&compat->major);
-+	fw_compat->fw_minor = ioread8(&compat->fw_minor);
-+	fw_compat->drv_minor = ioread8(&compat->drv_minor);
-+	fw_compat->patch = ioread16(&compat->patch);
-+
-+	if (fw_compat->module_id != ZXDH_MODULE_ID) {
-+		dev_info(zxdh_dev->device,
-+			 "unknown module id %u, skip fw compat check\n",
-+			 fw_compat->module_id);
-+		return 0;
-+	}
-+
-+	if (fw_compat->major != ZXDH_MAJOR) {
-+		dev_err(zxdh_dev->device,
-+			"driver major %u incompatible with firmware major %u\n",
-+			ZXDH_MAJOR, fw_compat->major);
-+		return -EINVAL;
-+	}
-+
-+	if (fw_compat->fw_minor < ZXDH_FW_MINOR) {
-+		dev_err(zxdh_dev->device,
-+			"firmware fw_minor %d older than required %u\n",
-+			fw_compat->fw_minor, ZXDH_FW_MINOR);
-+		return -EINVAL;
-+	}
-+
-+	if (fw_compat->drv_minor > ZXDH_DRV_MINOR) {
-+		dev_err(zxdh_dev->device,
-+			"driver drv_minor %u older than required by firmware %u\n",
-+			ZXDH_DRV_MINOR, fw_compat->drv_minor);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+/* Wait for the RISC-V management core of the firmware to finish
-+ * booting, so that later probe steps can talk to it.
-+ */
-+static int zxdh_pf_wait_riscv_ready(struct zxdh_core_dev *zxdh_dev)
-+{
-+	struct zxdh_pf_dev *pf_dev = zxdh_dev->priv;
-+	struct zxdh_health_buffer __iomem *hb;
-+	u8 health_version;
-+	u8 power_on;
-+	int err;
-+
-+	hb = pf_dev->pci_ioremap_addr[0] + ZXDH_RISCV_HB_OFFSET;
-+	health_version = ioread8(&hb->health_version);
-+
-+	/* Firmware predating the health buffer protocol has neither a
-+	 * valid version byte nor a power-on flag to wait for.
-+	 */
-+	if (health_version != 1 &&
-+	    pf_dev->fw_compat.patch < ZXDH_HPIRQ_PATCH)
-+		return 0;
-+
-+	err = readx_poll_timeout(ioread8, &hb->riscv_power_on, power_on,
-+				 power_on == 1, USEC_PER_SEC,
-+				 ZXDH_RISCV_READY_TIMEOUT_SEC * USEC_PER_SEC);
-+	if (err) {
-+		dev_err(zxdh_dev->device, "timed out waiting for riscv power on\n");
-+		return err;
-+	}
-+
-+	return 0;
-+}
-+
- static int zxdh_pf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- {
- 	struct zxdh_core_dev *zxdh_dev;
-@@ -405,6 +500,18 @@ static int zxdh_pf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 		goto err_cfg_init;
- 	}
-
-+	ret = zxdh_pf_fw_compat_check(zxdh_dev);
-+	if (ret) {
-+		dev_err(&pdev->dev, "zxdh_pf_fw_compat_check failed: %d\n", ret);
-+		goto err_cfg_init;
-+	}
-+
-+	ret = zxdh_pf_wait_riscv_ready(zxdh_dev);
-+	if (ret) {
-+		dev_err(&pdev->dev, "zxdh_pf_wait_riscv_ready failed: %d\n", ret);
-+		goto err_cfg_init;
-+	}
-+
- 	devlink_register(devlink);
-
- 	return 0;
-diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.h b/drivers/net/ethernet/zte/dinghai/en_pf.h
-index 7373dee8d1a9..bc275ddd75b8 100644
---- a/drivers/net/ethernet/zte/dinghai/en_pf.h
-+++ b/drivers/net/ethernet/zte/dinghai/en_pf.h
-@@ -29,6 +29,51 @@
- #define ZXDH_PF_ALIGN2			2
- #define ZXDH_PF_MAP_MINLEN2		2
-
-+/* Fixed offsets of the firmware interface regions within BAR 0. */
-+#define ZXDH_RISCV_HB_OFFSET	0x5300
-+#define ZXDH_FW_COMPAT_OFFSET	0x5400
-+
-+/* Driver/firmware version contract. The firmware publishes its side of
-+ * the contract in the region at ZXDH_FW_COMPAT_OFFSET.
-+ */
-+#define ZXDH_MODULE_ID		1
-+#define ZXDH_MAJOR		1
-+#define ZXDH_FW_MINOR		0
-+#define ZXDH_DRV_MINOR		0
-+/* Firmware patch level that introduced the health buffer protocol. */
-+#define ZXDH_HPIRQ_PATCH	4
-+
-+#define ZXDH_FW_COMPAT_TIMEOUT_SEC	200
-+#define ZXDH_RISCV_READY_TIMEOUT_SEC	40
-+
-+/* Firmware version compatibility block at ZXDH_FW_COMPAT_OFFSET.
-+ * Fields are read through ioread*(), which converts from little-endian.
-+ */
-+struct zxdh_fw_compat {
-+	u8 module_id;
-+	u8 major;
-+	s8 fw_minor;
-+	u8 drv_minor;
-+	u16 patch;
-+	u16 rsv;
-+} __packed;
-+
-+/* Health buffer at ZXDH_RISCV_HB_OFFSET, maintained by the RISC-V
-+ * management core of the firmware. Fields are read through ioread*().
-+ */
-+struct zxdh_health_buffer {
-+	u32 synd;		/* Bitmask of active syndrome flags. */
-+	u32 health_counter;	/* Incremented heartbeat counter. */
-+	u8 status;
-+	u8 rfr;
-+	u8 fw_exception;
-+	u8 riscv_power_on;	/* Set to 1 once the core finished booting. */
-+	u8 fw_version[32];
-+	u8 pf_status[5];
-+	u8 health_version;	/* Health buffer protocol version. */
-+	u8 rsv1[30];
-+} __packed;
-+
- struct zxdh_core_dev {
- 	struct device *device;
- 	struct pci_dev *pdev;
-@@ -54,6 +99,7 @@ struct zxdh_pf_dev {
- 	s32 modern_bars;
- 	void __iomem *pci_ioremap_addr[6];
- 	u32 dev_cfg_bar_off;
-+	struct zxdh_fw_compat fw_compat;
- };
-
- void *zxdh_core_alloc_priv(struct zxdh_core_dev *zxdh_dev, size_t size);
--- 
-2.27.0
+Best regards,
+Phuc
