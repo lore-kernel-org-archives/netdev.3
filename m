@@ -1,253 +1,122 @@
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
+Received: from mta0.migadu.com (out-237.mta0.migadu.com [91.218.175.237])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43A034E75D
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 15:09:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F129230BDB
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 15:29:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.237
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789225804; cv=none; b=G0E8i8FyRJDpinobNLi0iVhcEDo72+bmOSym6EYYqGe8i2lWnwKiiGpidyDe0brWMoSecSRIlu3r6yZTctTFvVIOTjcvuoUlfL9ePTfyQZ+0OLjqVB57R4UrQzN6RkcyYlPh7YpJpSP/QhZZYSJO3XhGYBiAnri4V5/XCMVlA2w=
+	t=1789226963; cv=none; b=kJEIQSyxQLhwwioj64benxAiMBuX0s6ti1WUhGSlOmq8e7W7FFUqbRtqNJuJLoKRIWkf8dr35xbhxvRa7dLp9YYxqj/Csn/UTuWiF043ZJKxxXxBWMB8VFOZR43W1PRwsSVl/SC03UQsxOYHlber0xacnzKd0pUbe4cGQ2qQ87k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789225804; c=relaxed/simple;
-	bh=eBxf0jN/BofyAEUPu/ShIi4CzGy5kB74x6e6cK2wVdE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZWWelHiqTroeC6o9I+dudxhEqnR7zwM7xf4/ge7GINDA54EIIQ+2PQuXtLoD3ulQnN4qe9gasqTGVxMHRw9dYRkhXw+qa4OV1mqWK96dbYxJzyr334sNzPkVzhzzqu7FdF+sOEyvD96mZhyMisVJnBC6xnbbdISaGUeBBj7m2FQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Oo5d0cRL; arc=none smtp.client-ip=209.85.160.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1789226963; c=relaxed/simple;
+	bh=VLTV4yhURmrrYdpeMYGN1I9/xOig2B5O0huJzXmR8oQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bhXjADsxxO4GryK/2s1sJG0ht888Wz8V3IX11cd62Sq5L/ZoL+wuhHV7lDgxJXUTZGSK/ivP7t8TSWd87fkTqKsbwFOd9BJVk3azbZzfqmDyDHPUlHsoz5NBpG9q73kBKTBQtTxP1C9M8luaex5B8fbzfbYFXV5vLcH2PLnYqg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=JM6id/of; arc=none smtp.client-ip=91.218.175.237
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Oo5d0cRL"
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-52fc0097865so49873421cf.2
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 08:09:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789225792; x=1789830592; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9ycfWUguf/XxIY7p7CtJJINpUIqVgWVn4z/VyRPXg9g=;
-        b=Oo5d0cRLlP9WVgnn+rW+ymk6kQED94c1/x53YdH7dOpychUiaRzyA1iBV3VvzvvMX2
-         8JolTLyrVitY3/pRPvlhssSetPu3nIj5N2FogGo6Tj/154z9YmY9M4v1jENwobzwh8KQ
-         Y+Q4Yif04jVyya9uN7kos/PJMXf9nBc2dmftMEaqVyeOcBjXHM+gKY6tpEpLT6R8pXWn
-         j+gClRX1CTe3nSgTmB9htQPyJR16aCRbmNJd3CUt/9L7TepO6TrSy1xuMz7hJReUPyPj
-         PYONGipF0WwhNUYnsHoqHrlyDjVz48/LO2f3orVKWenr8eXwgYjgVw/v/gKMXeJxiOEB
-         Sr8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789225792; x=1789830592;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9ycfWUguf/XxIY7p7CtJJINpUIqVgWVn4z/VyRPXg9g=;
-        b=mEfI7a3wgq0NQorncwcTL6gZe22SSXkw9EmWl78/6TsqtZGi7mOma/aPJ8nUgwVxVD
-         uRS2q8sP36Ael7+pfh/rq5HWJNjxuPBzUcB367AFnWz/vUrpTi0dVuuMvQO9+AzJp7rX
-         1BFRDuiqP4o8X5MUw84s7Wqj+0GiNowO37QsH1TY5DsaQgZuGI2CpuA4hYy/8U3uPYy4
-         H2ii9s5qKUvbSMR7AYwu94gYCZTKALSElBrMPdJ33NMS1dWGFaJKs4AcQSgYIKpTvVz4
-         Z96xxejcvL9pkLxxkjrmBxi/IVwaMBMkONdKlYiZ+2GWnGc5IF8v9SPTu+AQSAdJqY2n
-         8PCw==
-X-Forwarded-Encrypted: i=1; AKwUvByEFiHo2tnOmUXQBIQ+lt6inBlVDuRudo1cM8aQ00Y4fbwjybcMAkO9Cc75oCO3sM6AghJbMmM=@vger.kernel.org
-X-Gm-Message-State: AFuF++kZvIRyUWr5Yy9UFKSb0f/XFxsPyURFAqwqQYQCA6QEVvUBk1K+
-	dGHu6Fdhw72mhYEfAowMNPsTbem/PNq2sha924VUWTgh/FOul4tVn9zO5HTJG+9iswWrNTZ+hlg
-	SJ8awAadqEtPd7Q==
-X-Received: from qtbma3.prod.google.com ([2002:a05:622a:8603:b0:51b:fc9e:edef])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:1ba1:b0:530:b2e1:2f3b with SMTP id d75a77b69052e-530e81f8c8cmr42362721cf.50.1789225792354;
- Sat, 12 Sep 2026 08:09:52 -0700 (PDT)
-Date: Sat, 12 Sep 2026 15:09:43 +0000
-In-Reply-To: <20260912150944.3470971-1-edumazet@google.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="JM6id/of"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=VLTV4yhURmrrYdpeMYGN1I9/xOig2B5O0huJzXmR8oQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789226956; v=1; x=1789831756;
+ b=JM6id/ofN6zAcmCT7KetVPQbLZAOUXsIAUXvWzLxlAdRDOEkkIquJUbXunzJN/SOIHVO70NG
+ XIYJVd+1RNx1EiZ7n+h0YG8oh9A8y/VsJvVox88kNnDObhCoHWv1DICwd6PY4AM77GXoFpiO4H2
+ vkzvcFaIaOU4i6e8XuREVd9A=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 747f465cc1ed9945;
+	Sat, 12 Sep 2026 15:29:06 +0000
+X-Mizu-Trace-ID: 747f465cc1ed9945
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <8a331d2f-526d-4aad-bad5-af84073c183d@linux.dev>
+Date: Sat, 12 Sep 2026 23:29:01 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260912150944.3470971-1-edumazet@google.com>
-X-Mailer: git-send-email 2.55.0.1007.g17ff1f9808-goog
-Message-ID: <20260912150944.3470971-3-edumazet@google.com>
-Subject: [PATCH net 2/3] ip_gre: compute tunnel lengths absolutely instead of
- by delta
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
-	Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: skbuff: do not leave stale header offsets after
+ pskb_carve()
+To: Eric Dumazet <edumazet@google.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com,
+ syzbot+586af68eb819833c2d91@syzkaller.appspotmail.com,
+ Allison Henderson <achender@kernel.org>, rds-devel@oss.oracle.com,
+ "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+References: <20260911114922.621937-1-edumazet@google.com>
+ <a53a81cd-88b6-4db2-a0e6-ee3dccfeef42@linux.dev>
+ <CANn89iJw5P-wARumRgxdPaHXBJ3qF0zu6FNaNOFKonyww9AJpg@mail.gmail.com>
+ <d9cb00fe-85fe-466f-b6ee-c5694d134ed4@linux.dev>
+ <CANn89iJYEGDBcFxC3kh1KPbvxs3Qh0aU8YrgH=h6xdHMJm0iyQ@mail.gmail.com>
+From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+In-Reply-To: <CANn89iJYEGDBcFxC3kh1KPbvxs3Qh0aU8YrgH=h6xdHMJm0iyQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-ipgre_link_update() adjusts the device lengths by a difference it
-computes from tun_hlen alone:
+在 2026/9/12 21:44, Eric Dumazet 写道:
+> On Sat, Sep 12, 2026 at 6:39 AM Xuanqiang Luo <xuanqiang.luo@linux.dev> wrote:
+>>
+>> 在 2026/9/12 16:57, Eric Dumazet 写道:
+>>> On Fri, Sep 11, 2026 at 11:38 PM luoxuanqiang <xuanqiang.luo@linux.dev> wrote:
+>>>>
+>>>> 在 2026/9/11 19:49, Eric Dumazet 写道:
+>>>>> pskb_carve_inside_header() and pskb_carve_inside_nonlinear() remove
+>>>>> the first bytes of a packet and reallocate skb->head.
+>>>>>
+>>>>> All the headers that were present before the operation are gone,
+>>>>> but both functions call skb_headers_offset_update(skb, 0), which
+>>>>> is a no-op : skb->mac_header, skb->network_header,
+>>>>> skb->transport_header and skb->csum_start are left with their old
+>>>>> values, now pointing into the freshly allocated (and possibly much
+>>>>> smaller) skb->head.
+>>>>>
+>>>>> For pskb_carve_inside_nonlinear() the result is a zombie skb with
+>>>>> an empty linear part (skb->data == skb_tail_pointer(skb),
+>>>>> skb_headlen(skb) == 0) but skb_mac_header_was_set() still true and
+>>>>> skb->mac_header pointing far beyond skb_end_pointer(skb).
+>>>>>
+>>>> Could you please clarify how the MAC pointer ends up beyond
+>>>> skb_end_pointer() here? The carve helpers allocate based on the old
+>>>> skb_end_offset(), and kmalloc_reserve() adds room for skb_shared_info,
+>>>> so the new capacity shouldn't be smaller.
+>>>>
+>>>> The dump shows mac=234 and end=384. I understand how the stale offset
+>>>> causes skb_pull() on an empty linear area and triggers the BUG, but I
+>>>> don't see how it ends up beyond the new end. Am I missing another
+>>>> condition?
+>>>
+>>> skb_headers_offset_update(skb, 0) is a no-op, so mac=234, net=248,
+>>> trans=288 and csum_start=288 survive and now describe bytes that are not
+>>> there anymore. skb_mac_header_was_set() still returns true, so drop_monitor
+>>> does skb_pull(skb, 234) on an empty linear part and hits the BUG in
+>>> __skb_pull().
+>>>
+>>> pskb_carve_inside_header() has the same issue, the remaining linear data is
+>>> shifted by off bytes while the offsets are left untouched.
+>>>
+>> Thanks for the explanation. The fix itself looks correct to me, and I
+>> understand why the stale MAC offset causes the BUG.
+>>
+>> Could I check my understanding of "far beyond skb_end_pointer()"?
+>> The dump shows headroom=0 and headlen=0, so head=data=tail. With
+>> end-tail=384 and mac=234, the MAC pointer is head+234, still before
+>> end at head+384. For this nonlinear skb, did you mean beyond
+>> skb_tail_pointer() rather than skb_end_pointer()?
+> 
+> Is it an LLM which triggers your replies?
+> 
+> Do you have an issue with the code?
 
-	len = tunnel->tun_hlen;
-	tunnel->tun_hlen = gre_calc_hlen(tunnel->parms.o_flags);
-	len = tunnel->tun_hlen - len;
-	tunnel->hlen = tunnel->hlen + len;
+Yes, I use an LLM to help analyze patches on the mailing list and polish
+my replies. I only reply once I understand the relevant code.
 
-But tunnel->hlen also contains encap_hlen, which ipgre_changelink() can
-change through ipgre_newlink_encap_setup(). Such a request leaves @len
-at zero: adding "encap fou" to an existing gre device keeps the MTU of a
-bare tunnel, while creating it with "encap fou" from the start gets the
-smaller MTU from ip_tunnel_bind_dev().
+I haven't found an issue with the code. My follow-up questions were only
+about the commit message wording.
 
-A difference is the wrong tool anyway: ip_tunnel_bind_dev() already
-assigns dev->needed_headroom from tunnel->hlen, so changing the link and
-the encapsulation at once is accounted twice, and ip_tunnel_encap_setup()
-publishes a new tunnel->hlen before the request is validated, making the
-next difference bogus.
+Sorry for repeatedly asking about that point.
 
-Recompute tunnel->hlen from tun_hlen and encap_hlen, as
-__gre_tunnel_init() does, and add ip_tunnel_refresh_lengths() so that
-ip_tunnel_bind_dev() is the only writer of the device lengths.
-ipgre_changelink() must then refresh on its error paths too, since the
-new encapsulation is published by then.
-
-The dev->header_ops branch is removed rather than converted:
-ip_tunnel_bind_dev() does not add to dev->hard_header_len, it subtracts
-it from the MTU as the inner Ethernet header.
-
-@old_hlen survives only as a predicate telling whether the MTU became
-stale, never as a difference, so it can not make the lengths drift. When
-the header length does change, the MTU is now recomputed rather than
-shifted, as ip_tunnel_update() already does for a link or fwmark change.
-
-There is no memory safety issue: ip_tunnel_xmit() computes its own
-headroom from ip_encap_hlen(&tunnel->encap) and calls skb_cow_head()
-before pushing the encapsulation.
-
-Fixes: dd9d598c6657 ("ip_gre: add the support for i/o_flags update via netlink")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- include/net/ip_tunnels.h |  1 +
- net/ipv4/ip_gre.c        | 46 +++++++++++++++++++++++++---------------
- net/ipv4/ip_tunnel.c     | 16 ++++++++++++++
- 3 files changed, 46 insertions(+), 17 deletions(-)
-
-diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-index 7c9aadfe8fe396da10a47e93499a97141ac04f4c..fd0396aa5039538a0391a352ace6d15f554df874 100644
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -429,6 +429,7 @@ int ip_tunnel_newlink(struct net *net, struct net_device *dev,
- 		      struct nlattr *tb[], struct ip_tunnel_parm_kern *p,
- 		      __u32 fwmark);
- void ip_tunnel_setup(struct net_device *dev, unsigned int net_id);
-+void ip_tunnel_refresh_lengths(struct net_device *dev, bool set_mtu);
- 
- bool ip_tunnel_netlink_encap_parms(struct nlattr *data[],
- 				   struct ip_tunnel_encap *encap);
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index 40b922362a7ca4e8ee0c3ee6c0af8d4a9fdc42d3..556ebf2c5bd0d110290f2ed82ca1221dcc19c5f2 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -789,23 +789,28 @@ static netdev_tx_t gre_tap_xmit(struct sk_buff *skb,
- 	return NETDEV_TX_OK;
- }
- 
--static void ipgre_link_update(struct net_device *dev, bool set_mtu)
-+/* tunnel->hlen depends on tunnel->parms.o_flags and on tunnel->encap_hlen,
-+ * both of which ipgre_changelink() can change. Recompute it the way
-+ * __gre_tunnel_init() does, then let ip_tunnel_bind_dev() derive the device
-+ * lengths from it.
-+ *
-+ * @old_hlen is only used to tell whether the MTU became stale, never as a
-+ * difference to apply, so it can not make the lengths drift. It must be
-+ * sampled before ip_tunnel_encap_setup(), which already publishes the new
-+ * tunnel->hlen for us.
-+ */
-+static void ipgre_link_update(struct net_device *dev, bool set_mtu,
-+			      int old_hlen)
- {
- 	struct ip_tunnel *tunnel = netdev_priv(dev);
--	int len;
- 
--	len = tunnel->tun_hlen;
- 	tunnel->tun_hlen = gre_calc_hlen(tunnel->parms.o_flags);
--	len = tunnel->tun_hlen - len;
--	tunnel->hlen = tunnel->hlen + len;
--
--	if (dev->header_ops)
--		dev->hard_header_len += len;
--	else
--		dev->needed_headroom += len;
-+	tunnel->hlen = tunnel->tun_hlen + tunnel->encap_hlen;
- 
--	if (set_mtu)
--		WRITE_ONCE(dev->mtu, max_t(int, dev->mtu - len, 68));
-+	/* Only reset a MTU that the header length just invalidated, so that
-+	 * a MTU configured by the user survives an unrelated change.
-+	 */
-+	ip_tunnel_refresh_lengths(dev, set_mtu && tunnel->hlen != old_hlen);
- 
- 	if (test_bit(IP_TUNNEL_SEQ_BIT, tunnel->parms.o_flags) ||
- 	    (test_bit(IP_TUNNEL_CSUM_BIT, tunnel->parms.o_flags) &&
-@@ -853,7 +858,7 @@ static int ipgre_tunnel_ctl(struct net_device *dev,
- 		ip_tunnel_flags_copy(t->parms.o_flags, p->o_flags);
- 
- 		if (strcmp(dev->rtnl_link_ops->kind, "erspan"))
--			ipgre_link_update(dev, true);
-+			ipgre_link_update(dev, true, t->hlen);
- 	}
- 
- 	i_flags = gre_tnl_flags_to_gre_flags(p->i_flags);
-@@ -1471,6 +1476,7 @@ static int ipgre_changelink(struct net_device *dev, struct nlattr *tb[],
- 	struct ip_tunnel *t = netdev_priv(dev);
- 	struct ip_tunnel_parm_kern p;
- 	__u32 fwmark = t->fwmark;
-+	int old_hlen = t->hlen;
- 	int err;
- 
- 	if (!rtnl_dev_link_net_capable(dev, t->net))
-@@ -1482,18 +1488,24 @@ static int ipgre_changelink(struct net_device *dev, struct nlattr *tb[],
- 
- 	err = ipgre_netlink_parms(dev, data, tb, &p, &fwmark);
- 	if (err < 0)
--		return err;
-+		goto link_update;
- 
- 	err = ip_tunnel_changelink(dev, tb, &p, fwmark);
- 	if (err < 0)
--		return err;
-+		goto link_update;
- 
- 	ip_tunnel_flags_copy(t->parms.i_flags, p.i_flags);
- 	ip_tunnel_flags_copy(t->parms.o_flags, p.o_flags);
- 
--	ipgre_link_update(dev, !tb[IFLA_MTU]);
-+link_update:
-+	/* ipgre_newlink_encap_setup() has published a new encapsulation even
-+	 * if the rest of the request failed, so the lengths must be refreshed
-+	 * on the error paths as well. This has to come last, because
-+	 * ipgre_link_update() needs the flags copied above.
-+	 */
-+	ipgre_link_update(dev, !tb[IFLA_MTU], old_hlen);
- 
--	return 0;
-+	return err;
- }
- 
- static int erspan_changelink(struct net_device *dev, struct nlattr *tb[],
-diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index e6bcf01411d0bcd12cc9a88e449d9283c4a83c64..6b93c1fda4948d320ec00532ebb16c700590373d 100644
---- a/net/ipv4/ip_tunnel.c
-+++ b/net/ipv4/ip_tunnel.c
-@@ -326,6 +326,22 @@ static int ip_tunnel_bind_dev(struct net_device *dev)
- 	return mtu;
- }
- 
-+/* Recompute dev->needed_headroom and dev->mtu after tunnel->hlen changed.
-+ *
-+ * Both are derived from tunnel->hlen, so they must be recomputed from it
-+ * rather than adjusted by the difference: ip_tunnel_bind_dev() is also
-+ * called from ndo_init() and from ip_tunnel_update(), and a driver adding
-+ * its own delta on top would double count it.
-+ */
-+void ip_tunnel_refresh_lengths(struct net_device *dev, bool set_mtu)
-+{
-+	int mtu = ip_tunnel_bind_dev(dev);
-+
-+	if (set_mtu)
-+		WRITE_ONCE(dev->mtu, mtu);
-+}
-+EXPORT_SYMBOL_GPL(ip_tunnel_refresh_lengths);
-+
- static struct ip_tunnel *ip_tunnel_create(struct net *net,
- 					  struct ip_tunnel_net *itn,
- 					  struct ip_tunnel_parm_kern *parms)
--- 
-2.55.0.1007.g17ff1f9808-goog
-
+Thanks,
