@@ -1,44 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA0413D53C
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 20:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12BF913D53C;
+	Sat, 12 Sep 2026 20:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789244387; cv=none; b=kk7N1OW96fRnngGicfNcOoQKtwPJrj6qKi5V7r7LWX6kW/uxX7iBSgK+EyYPjY2EHpqeeCjeoOb1v+wzS+TzjD03GdRwYCIOseSpgGLFE+au0ZXfQiDdis3WjpsPybY9eB+b+MJBa7b8xdEwMFkyh+09+wTPJe19Cu9ZccBWmj4=
+	t=1789244390; cv=none; b=O1PJJsdv6t7AKH163M5mUdG0IMwrvQ2RztFI8qaRZ61Zddx9h8jF1A2kdQjPyBdhAsR4ZjXbq5JDgrLaNOhRRDhRUWRYYnTUj/ncjCazuoVRIEJt8d6R1pcH7kKx63cSJZ8QZ/lG82FTzTIn9U7e9DCxceCUYaTb4KijRBs0mHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789244387; c=relaxed/simple;
-	bh=BIf90RX/JHTZzee7Q6peRu51omLGEg/qpsJkb7fSmlM=;
+	s=arc-20240116; t=1789244390; c=relaxed/simple;
+	bh=AUKycJACMVz2Gk21IN24EX2E4oM2G13pkuX1hgS6AaM=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=N6QXx74Ux7I3RFlTQe42ta8TA6BXF1DgUn5Fs3umcdedxHI73FpV4RHckMaZivQ2JRlPF8gBKJx0hDKRNmR9JGNmBkaC5lPYG5Nybf9hBKMrHsNG3Vb3DZOOXNZOllmSPdyg+w6u8kcFZzCjHUCFD2BOVSA41DlrPVQT/v9S3sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YaL4ba7N; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=fiM3cHcSwR7FZItH0vWAsh/ydag4HRih2Kzhj9WOcTwu704wwmibcrNgC6eEFrVegzJ605EQ2F3347803XSh/lErNP6Bq9YZIqNfd5WkIW4nyCiU4NkszqulDwXQwazXtOm8Surezw/7NoCI/LQQFG2GIpMtZKynzwe1A0iIEPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T9edPZ5H; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YaL4ba7N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA191F00893;
-	Sat, 12 Sep 2026 20:19:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T9edPZ5H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 446C81F000FF;
+	Sat, 12 Sep 2026 20:19:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789244386;
-	bh=Fp1HFgZ7ybXKz8qOFsXFsS76s/ZXe4D9ZUBQX+6g6Sk=;
+	s=k20260515; t=1789244388;
+	bh=3ZOeXZk4a6bXWzhlnINYnl7uianZzMfav2/SWA/BfTs=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=YaL4ba7N9rUhUVia5b26adysyMYqm84K1nXVZz/qogETtTxkt3femvD0udjjfC6b2
-	 8pdTN8S9AQ6RzifVzedn5uuG3hK3y1O7L0o1Q4aMl8Aol5+mvQhw2R9X6f03DvtzPq
-	 X07x4MrwrhLMmjKwpT8n4Ja35KHoutKJgzCgAhZ66ZJBBLkqMWMwkH7LNmBKzvrsDL
-	 6c2qDlroaY7UuMlOXteT78o4ElRqD1ngSZYNnP8PFW5kXOBGFcmX/bEkiVUxb5ndTz
-	 a4tl4dh+gHWMcwwnH9Af/EhBXDSmrgDCiYa65lknVQyKDLNDXskXUFiHDH0dJGNEWi
-	 gRRarIkLjJilg==
-Subject: Re: [PATCH net] net: libwx: fix races in Tx timestamp handling
+	b=T9edPZ5Hy/biZ9093QAp1VUgDpnCsHF0H28JM9d2ubr67+H7I4As/Qump2YFOYzL4
+	 brXZxu+ri98VzUc8Bf6MkBPMJ62ZNOOHHMgk5lHDYJLdsO4Az6AcfaUSmvEWN/5SVU
+	 fa1vyFxnbJGjrzwHXhSIermuDF2+BXSlnr7IJ3TGmRh9iqL+isZSmGCrce11LrekFX
+	 Pzi+uEOwqWhsKCP71gIqXVyAZVrwtN53oOlzt0neO+HbIBXi209T+8uQmp+6UGpt1k
+	 wr1Jd+W9CGASa4hF6aycHR/O3gF3bciTO9c/C1m9DzA2lnhAnJpDJ9Y0XSOsGpFjQf
+	 kXhIDQdFHYUpg==
+Subject: Re: [PATCH net-next v3 1/8] r8152: refactor r8156_init
 From: netdev-bot+sashiko@kernel.org
-To: jiawenwu@trustnetic.com
-Cc: netdev@vger.kernel.org, mengyuanlou@net-swift.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- richardcochran@gmail.com, jacob.e.keller@intel.com, kees@kernel.org,
- aleksandr.loktionov@intel.com, vadim.fedorenko@linux.dev,
- sashiko-bot@kernel.org
-Date: Sat, 12 Sep 2026 20:19:44 +0000
-Message-ID: <178924438495.3125.9357764978603392354@kernel.org>
-In-Reply-To: <8F4D34F6863177CC+20260908081142.86235-1-jiawenwu@trustnetic.com>
-References: <8F4D34F6863177CC+20260908081142.86235-1-jiawenwu@trustnetic.com>
-X-sashiko-severity: Medium
+To: hsu.chih.kai@realtek.com
+Cc: davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
+ nic_swsd@realtek.com, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ edumazet@google.com, bjorn@mork.no, pabeni@redhat.com, andrew+netdev@lunn.ch
+Date: Sat, 12 Sep 2026 20:19:47 +0000
+Message-ID: <178924438783.3125.10975381287375934654@kernel.org>
+In-Reply-To: <20260908075634.23740-2-nic_swsd@realtek.com>
+References: <20260908075634.23740-2-nic_swsd@realtek.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,277 +46,365 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
+Critical: 0 · High: 2 · Medium: 2 (1) · Low: 0
 
-- [Medium] Incomplete locking conversion: wx_ptp_quiesce() still
-  detaches/frees wx->ptp_tx_skb and clears WX_STATE_PTP_TX_IN_PROGRESS…
-- [Medium] The new identity check `if (wx->ptp_tx_skb == skb)` in
-  wx_xmit_frame_ring()'s cleanup_tx_tstamp path (wx_lib.c:1692) compares…
+- [High] wait_autoload_done() drops the per-iteration
+  test_bit(RTL8152_INACCESSIBLE, &tp->flags) abort that every one of the…
+- [High] On a genuine autoload timeout the new `if
+  (wait_autoload_done(tp)) return;` aborts initialization mid-sequence…
+- [Medium] Commit message mischaracterizes the change: a patch titled
+  "refactor r8156_init" adds brand-new hardware programming and changes…
+- [Medium] The new wait_autoload_done() helper is applied to five open-
+  coded autoload-done loops that belong to chips outside the patch's…
+
+Pre-existing issues:
+- [Medium] `tp->coalesce = 15000;` carries the comment `/* 15 us */`, but
+  tp->coalesce is exported verbatim to userspace as…
 
 --
 
-net: libwx: fix races in Tx timestamp handling
+r8152: refactor r8156_init
 
-This adds a dedicated spinlock (wx->ptp_tx_lock) to serialize publication
-and consumption of wx->ptp_tx_skb between the Tx path, the PTP auxiliary
-worker and the timestamp cleanup paths.  The skb is detached and the
-WX_STATE_PTP_TX_IN_PROGRESS bit cleared under the lock, with delivery and
-release done after unlocking.  The Tx DMA mapping error path also gains an
-skb identity check.
+This splits the shared r8156_init() into per-chip init functions for
+RTL8156, RTL8156B, RTL8157 and RTL8159, and introduces a new
+wait_autoload_done() helper that replaces the open-coded autoload-done
+poll loops in several init and UPS paths.
 
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/6C7EC12D69217315%2B20260818074721.45536-1-jiawenwu%40trustnetic.com
+> diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+> index f61686433031c..013e8d1abfc24 100644
+> --- a/drivers/net/usb/r8152.c
+> +++ b/drivers/net/usb/r8152.c
+> @@ -78,6 +78,7 @@
+>  #define PLA_EEE_TXTWSYS_2P5G	0xe058
+>  #define PLA_EEEP_CR		0xe080
+>  #define PLA_MAC_PWR_CTRL	0xe0c0
+> +#define PLA_RMT_WAKE		0xe0c8
+>  #define PLA_MAC_PWR_CTRL2	0xe0ca
+>  #define PLA_MAC_PWR_CTRL3	0xe0cc
+>  #define PLA_MAC_PWR_CTRL4	0xe0ce
+> @@ -371,6 +372,9 @@
+>  #define MCU_CLK_RATIO_MASK	0x0f0f0f0f
+>  #define ALDPS_SPDWN_RATIO	0x0f87
+>  
+> +/* PLA_RMT_WAKE */
+> +#define RMT_WAKE_EN		BIT(0)
+> +
+>  /* PLA_MAC_PWR_CTRL2 */
+>  #define EEE_SPDWN_RATIO		0x8007
+>  #define MAC_CLK_SPDWN_EN	BIT(15)
+> @@ -417,6 +421,7 @@
+>  
+>  /* PLA_INDICATE_FALG */
+>  #define UPCOMING_RUNTIME_D3	BIT(0)
+> +#define PREBOOT_OPTION		BIT(1)
 
-> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-> index ed5aad7857bd9..9118813334a9e 100644
-> --- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-> +++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+[Severity: Medium]
+
+The changelog says:
+
+    Split r8156_init into per-chip functions:
+    - r8156_init (VER_10/11)
+    - r8156b_init (VER_12/13/15)
+    - r8157_init (VER_16)
+    - r8159_init (VER_17)
+
+Is that a complete description of what the patch does?  These new register
+and bit definitions have no user in the baseline, so the clears that use
+them are new hardware programming rather than code motion:
+
+  PLA_RMT_WAKE (0xe0c8) / RMT_WAKE_EN
+  PLA_INDICATE_FALG / PREBOOT_OPTION
+
+The same applies to several other writes that appear only after this patch:
+
+  r8156b_u2phy_backup(): USB 0xd3ce/0xd3d0/0xd3d4/0xd3d8/0xd3dc
+  r8157_init() and r8159_init(): USB 0xcd06 BIT(11) clear
+  r8159_init(): USB 0xb9a6 BIT(0) clear and the write 0xb9a2 = 0x0448
+
+A few existing sequences also change behaviour: AUTO_SPEEDUP is now cleared
+for VER_16/VER_17 (previously only inside the VER_12..VER_15 block), the
+0xcf04 interrupt-mitigation clear now also runs during init (previously
+only in the unload path), and r8156b_wait_loading_flash() moved from before
+the autoload poll to after it for VER_16/17.
+
+Would it be possible to split the mechanical function split from the new
+chip programming, so that a regression on RTL8156/8156B/8157/8159 does not
+bisect to a commit that describes itself as a pure refactor?
 
 [ ... ]
 
-> @@ -1649,6 +1650,7 @@ static netdev_tx_t wx_xmit_frame_ring(struct sk_buff *skb,
+> @@ -4193,6 +4199,22 @@ static u16 r8153_phy_status(struct r8152 *tp, u16 desired)
+>  	return data;
+>  }
 >  
->  	if (unlikely(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) &&
->  	    wx->ptp_clock) {
-> +		spin_lock_bh(&wx->ptp_tx_lock);
->  		if (wx->tstamp_config.tx_type == HWTSTAMP_TX_ON &&
->  		    !test_and_set_bit_lock(WX_STATE_PTP_TX_IN_PROGRESS,
->  					   wx->state)) {
-> @@ -1659,6 +1661,7 @@ static netdev_tx_t wx_xmit_frame_ring(struct sk_buff *skb,
->  		} else {
->  			wx->tx_hwtstamp_skipped++;
->  		}
-> +		spin_unlock_bh(&wx->ptp_tx_lock);
->  	}
->  
->  	/* record initial flags and protocol */
-> @@ -1685,10 +1688,17 @@ static netdev_tx_t wx_xmit_frame_ring(struct sk_buff *skb,
->  	first->skb = NULL;
->  cleanup_tx_tstamp:
->  	if (unlikely(tx_flags & WX_TX_FLAGS_TSTAMP)) {
-> -		dev_kfree_skb_any(wx->ptp_tx_skb);
-> -		wx->ptp_tx_skb = NULL;
-> +		spin_lock_bh(&wx->ptp_tx_lock);
-> +		if (wx->ptp_tx_skb == skb) {
+> +static int wait_autoload_done(struct r8152 *tp)
+> +{
+> +	u16 ocp_data;
+> +	int ret;
+> +
+> +	ret = read_poll_timeout(ocp_read_word, ocp_data,
+> +				ocp_data & AUTOLOAD_DONE, 20000,
+> +				10 * USEC_PER_SEC, false, tp, MCU_TYPE_PLA,
+> +				PLA_BOOT_CTRL);
+> +
+> +	if (ret)
+> +		dev_err(&tp->intf->dev, "autoload done timeout\n");
+> +
+> +	return ret;
+> +}
+> +
 
-[Severity: Medium]
-Can this comparison match a different skb that happens to reuse the same
-slab address?
+[Severity: High]
 
-By the time cleanup_tx_tstamp runs after a wx_tx_map() failure, this
-function no longer holds any reference on skb.  The PTP branch above took
-one via wx->ptp_tx_skb = skb_get(skb), but wx_tx_map()'s dma_error path
-drops the ring reference before returning:
+Every loop this helper replaces tested RTL8152_INACCESSIBLE on each
+iteration, but the new poll has no exit other than the condition or the
+10 second deadline.  Can this keep sleeping for 10 seconds under
+tp->control after the device is gone?
 
-drivers/net/ethernet/wangxun/libwx/wx_lib.c:wx_tx_map() {
+Once RTL8152_INACCESSIBLE is set (rtl_set_unplug() on disconnect, pre-reset,
+or a failed control transfer), the read never touches the caller's buffer:
+
+drivers/net/usb/r8152.c:generic_ocp_read() {
+	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
+		return -ENODEV;
 	...
-dma_error:
-	...
-	dev_kfree_skb_any(first->skb);
-	first->skb = NULL;
-	tx_ring->next_to_use = i;
-
-	return -ENOMEM;
 }
 
-So the only remaining reference on skb is the one held by wx->ptp_tx_skb,
-and the local skb variable is just a bare pointer value.
+and ocp_read_word() ignores that error while converting an uninitialized
+variable:
 
-If the PTP aux worker on another CPU consumes that request before this CPU
-takes ptp_tx_lock:
+drivers/net/usb/r8152.c:ocp_read_word() {
+	u32 data;
+	__le32 tmp;
+	...
+	generic_ocp_read(tp, index, sizeof(tmp), &tmp, type | byen);
 
-CPU1 wx_ptp_tx_hwtstamp_work()
-	skb = wx->ptp_tx_skb;
-	wx->ptp_tx_skb = NULL;
-	clear_bit_unlock(WX_STATE_PTP_TX_IN_PROGRESS, wx->state);
-	spin_unlock_bh(&wx->ptp_tx_lock);
-	skb_tstamp_tx(skb, &shhwtstamps);
-	dev_kfree_skb_any(skb);		<-- last reference gone
+	data = __le32_to_cpu(tmp);
+	...
+}
 
-CPU2 wx_xmit_frame_ring()
-	wx->ptp_tx_skb = skb_get(skb);	<-- new skb on the recycled object
+So is the poll condition ocp_data & AUTOLOAD_DONE decided by stack garbage
+in that state?  If bit 1 happens to be set, wait_autoload_done() reports
+success and the caller programs the whole bring-up sequence, including
+tp->rtl_ops.hw_phy_cfg() from r8153b_ups_en()/r8153c_ups_en(), against a
+device that is already gone.  If bit 1 is clear, the caller sleeps the full
+10 seconds and then logs a timeout that did not really happen.
 
-CPU0 then reaches the compare with a stale pointer whose value now names
-the newer request, so wx->ptp_tx_skb == skb is true and the newer request
-is detached and cancelled, with WX_STATE_PTP_TX_IN_PROGRESS cleared and
-tx_hwtstamp_errors charged for it.  skb_tstamp_tx() never runs for that
-packet and SKBTX_IN_PROGRESS stays set.
+There is a related case on plain transfer failures:
 
-Would something recycle-proof work better here, for example keeping the
-local reference across the compare, or a per-request generation counter
-instead of the pointer value?
+drivers/net/usb/r8152.c:get_registers() {
+	...
+	if (ret < 0)
+		memset(data, 0xff, size);
+	...
+}
 
-The commit message says the change makes it "so that the error path cannot
-clear a newer timestamp request" - does the pointer comparison alone
-achieve that?
+0xffff & AUTOLOAD_DONE (0x0002) is non-zero, so the poll reports completion
+on read errors too.
 
-> +			ptp_tx_skb = wx->ptp_tx_skb;
-> +			wx->ptp_tx_skb = NULL;
-> +			clear_bit_unlock(WX_STATE_PTP_TX_IN_PROGRESS,
-> +					 wx->state);
-> +		}
-> +		spin_unlock_bh(&wx->ptp_tx_lock);
-> +
-> +		dev_kfree_skb_any(ptp_tx_skb);
->  		wx->tx_hwtstamp_errors++;
-> -		clear_bit_unlock(WX_STATE_PTP_TX_IN_PROGRESS, wx->state);
->  	}
->  
->  	return NETDEV_TX_OK;
-> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-> index 4708e7f3958f7..a0929b4844e8d 100644
-> --- a/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-> +++ b/drivers/net/ethernet/wangxun/libwx/wx_ptp.c
-> @@ -139,12 +139,16 @@ static int wx_ptp_settime64(struct ptp_clock_info *ptp,
->   */
->  static void wx_ptp_clear_tx_timestamp(struct wx *wx)
+All the other wait loops in this file (r8153_phy_status(),
+r8156b_wait_loading_flash(), rtl_phy_patch_request(), rtl_disable(),
+r8153_aldps_en()) still honour RTL8152_INACCESSIBLE.  Should the poll
+condition terminate on that flag as well, and should the read path preserve
+the error status instead of returning an undefined value?
+
+>  static void r8153b_ups_en(struct r8152 *tp, bool enable)
 >  {
-> +	struct sk_buff *skb;
-> +
-> +	spin_lock_bh(&wx->ptp_tx_lock);
->  	rd32ptp(wx, WX_TSC_1588_STMPH);
-> -	if (wx->ptp_tx_skb) {
-> -		dev_kfree_skb_any(wx->ptp_tx_skb);
-> -		wx->ptp_tx_skb = NULL;
+>  	if (enable) {
+> @@ -4211,16 +4233,8 @@ static void r8153b_ups_en(struct r8152 *tp, bool enable)
+>  				  UPS_FORCE_PWR_DOWN);
+>  
+>  		if (ocp_read_word(tp, MCU_TYPE_USB, USB_MISC_0) & PCUT_STATUS) {
+> -			int i;
+> -
+> -			for (i = 0; i < 500; i++) {
+> -				if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
+> -					return;
+> -				if (ocp_read_word(tp, MCU_TYPE_PLA, PLA_BOOT_CTRL) &
+> -				    AUTOLOAD_DONE)
+> -					break;
+> -				msleep(20);
+> -			}
+> +			if (wait_autoload_done(tp))
+> +				return;
+>  
+>  			tp->rtl_ops.hw_phy_cfg(tp);
+>  
+
+[ ... ]
+
+> @@ -7246,22 +7252,14 @@ static void r8152b_init(struct r8152 *tp)
+>  static void r8153_init(struct r8152 *tp)
+>  {
+>  	u32 ocp_data;
+> -	int i;
+>  
+>  	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
+>  		return;
+>  
+>  	r8153_u1u2en(tp, false);
+>  
+> -	for (i = 0; i < 500; i++) {
+> -		if (ocp_read_word(tp, MCU_TYPE_PLA, PLA_BOOT_CTRL) &
+> -		    AUTOLOAD_DONE)
+> -			break;
+> -
+> -		msleep(20);
+> -		if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
+> -			break;
 > -	}
-> +	skb = wx->ptp_tx_skb;
-> +	wx->ptp_tx_skb = NULL;
->  	clear_bit_unlock(WX_STATE_PTP_TX_IN_PROGRESS, wx->state);
-> +	spin_unlock_bh(&wx->ptp_tx_lock);
-> +
-> +	dev_kfree_skb_any(skb);
->  }
+> +	if (wait_autoload_done(tp))
+> +		return;
+>  
+>  	r8153_phy_status(tp, 0);
+>  
 
 [Severity: Medium]
-Was wx_ptp_quiesce() intentionally left out of this conversion?
 
-It is the one remaining place that detaches and frees wx->ptp_tx_skb and
-clears WX_STATE_PTP_TX_IN_PROGRESS without taking the new lock:
+The helper is also applied to five call sites outside the chips named in
+the changelog: r8153_init() (VER_03..06), r8153b_init() (VER_08/09),
+r8153c_init() (VER_14), r8153b_ups_en() and r8153c_ups_en().
 
-drivers/net/ethernet/wangxun/libwx/wx_ptp.c:wx_ptp_quiesce() {
-	...
-	if (wx->ptp_tx_skb) {
-		dev_kfree_skb_any(wx->ptp_tx_skb);
-		wx->ptp_tx_skb = NULL;
-	}
-	clear_bit_unlock(WX_STATE_PTP_TX_IN_PROGRESS, wx->state);
-	...
-}
+For r8153_init() and r8153b_init() the previous poll only did break on
+expiry and then executed the rest of the bring-up (power-cut disable,
+u1u2 re-enable, LPM, RX aggregation, rtl_tally_reset(), and the
+tp->coalesce assignment at the tail of r8153_init).  With the new
 
-That is also the pattern this hunk replaces, i.e. freeing under the same
-sequence the other three sites now perform while holding ptp_tx_lock, and
-it skips the rd32ptp(wx, WX_TSC_1588_STMPH) unlatch read that
-wx_ptp_clear_tx_timestamp(), wx_ptp_tx_hwtstamp_work() and wx_ptp_tx_hang()
-all do.
+	if (wait_autoload_done(tp))
+		return;
 
-Today the only caller is wx_soft_quiesce(), which does netif_tx_disable()
-and wx_napi_disable_all() first, and wx_ptp_quiesce() itself does
-ptp_cancel_worker_sync() before touching the pointer, so I could not build
-a concurrent execution against the locked consumers.  But wx_ptp_quiesce()
-is exported, and the exclusion depends entirely on that call ordering
-rather than on the lock the patch adds.
+all of that is skipped instead.  The helper also newly emits
+dev_err("autoload done timeout") on paths that were previously silent, and
+drops the per-iteration test_bit(RTL8152_INACCESSIBLE, &tp->flags) abort.
 
-Could this site just call wx_ptp_clear_tx_timestamp(), or use a factored
-unlocked helper plus a locked wrapper, so all four paths share one
-sequence?
-
-> [ ... ]
-
-> @@ -174,50 +178,43 @@ static void wx_ptp_convert_to_hwtstamp(struct wx *wx,
->  	hwtstamp->hwtstamp = ns_to_ktime(ns);
->  }
->  
-> -/**
-> - * wx_ptp_tx_hwtstamp - utility function which checks for TX time stamp
-> - * @wx: the private board struct
-> - *
-> - * if the timestamp is valid, we convert it into the timecounter ns
-> - * value, then store that result into the shhwtstamps structure which
-> - * is passed up the network stack
-> - */
-> -static void wx_ptp_tx_hwtstamp(struct wx *wx)
-> +static int wx_ptp_tx_hwtstamp_work(struct wx *wx)
->  {
->  	struct skb_shared_hwtstamps shhwtstamps;
-> -	struct sk_buff *skb = wx->ptp_tx_skb;
-> +	struct sk_buff *skb;
-> +	u32 tsynctxctl;
->  	u64 regval = 0;
->  
-> -	regval |= (u64)rd32ptp(wx, WX_TSC_1588_STMPL);
-> -	regval |= (u64)rd32ptp(wx, WX_TSC_1588_STMPH) << 32;
-> -
-> -	wx_ptp_convert_to_hwtstamp(wx, &shhwtstamps, regval);
-> -
-> -	wx->ptp_tx_skb = NULL;
-> -	clear_bit_unlock(WX_STATE_PTP_TX_IN_PROGRESS, wx->state);
-> -	skb_tstamp_tx(skb, &shhwtstamps);
-> -	dev_kfree_skb_any(skb);
-> -	wx->tx_hwtstamp_pkts++;
-> -}
-> -
-> -static int wx_ptp_tx_hwtstamp_work(struct wx *wx)
-> -{
-> -	u32 tsynctxctl;
-> +	spin_lock_bh(&wx->ptp_tx_lock);
->  
->  	/* we have to have a valid skb to poll for a timestamp */
->  	if (!wx->ptp_tx_skb) {
-> -		wx_ptp_clear_tx_timestamp(wx);
-> +		rd32ptp(wx, WX_TSC_1588_STMPH);
-> +		clear_bit_unlock(WX_STATE_PTP_TX_IN_PROGRESS, wx->state);
-> +		spin_unlock_bh(&wx->ptp_tx_lock);
->  		return 0;
->  	}
->  
->  	/* stop polling once we have a valid timestamp */
->  	tsynctxctl = rd32ptp(wx, WX_TSC_1588_CTL);
-> -	if (tsynctxctl & WX_TSC_1588_CTL_VALID) {
-> -		wx_ptp_tx_hwtstamp(wx);
-> -		return 0;
-> +	if (!(tsynctxctl & WX_TSC_1588_CTL_VALID)) {
-> +		spin_unlock_bh(&wx->ptp_tx_lock);
-> +		return -1;
->  	}
->  
-> -	return -1;
-> +	regval |= (u64)rd32ptp(wx, WX_TSC_1588_STMPL);
-> +	regval |= (u64)rd32ptp(wx, WX_TSC_1588_STMPH) << 32;
-> +	wx_ptp_convert_to_hwtstamp(wx, &shhwtstamps, regval);
-> +	skb = wx->ptp_tx_skb;
-> +	wx->ptp_tx_skb = NULL;
-> +	clear_bit_unlock(WX_STATE_PTP_TX_IN_PROGRESS, wx->state);
-> +	spin_unlock_bh(&wx->ptp_tx_lock);
-> +
-> +	skb_tstamp_tx(skb, &shhwtstamps);
-> +	dev_kfree_skb_any(skb);
-> +	wx->tx_hwtstamp_pkts++;
-> +
-> +	return 0;
->  }
+Is this change of failure semantics on the RTL8153/8153B/8153C families
+intended?  Right now a regression there would bisect to a commit titled
+"r8152: refactor r8156_init".
 
 [ ... ]
 
-> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-> index 9454e90258d8e..6b9460147ca93 100644
-> --- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-> +++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-> @@ -1430,6 +1430,7 @@ struct wx {
->  	unsigned long last_overflow_check;
->  	unsigned long last_rx_ptp_check;
->  	unsigned long ptp_tx_start;
-> +	spinlock_t ptp_tx_lock; /* protects ptp_tx_skb and ptp_tx_start */
+> @@ -8351,90 +8331,132 @@ static void r8157_hw_phy_cfg(struct r8152 *tp)
+>  	set_bit(PHY_RESET, &tp->flags);
+>  }
+>  
+> -static int r8159_wait_backup_restore(struct r8152 *tp)
+> +static void r8156_init(struct r8152 *tp)
+>  {
+
+[ ... ]
+
+> +	r8156_mdio_force_mode(tp);
+> +	rtl_tally_reset(tp);
+> +
+> +	tp->coalesce = 15000; /* 15 us */
+>  }
 
 [Severity: Medium]
-This comment states the lock protects ptp_tx_skb, but wx_ptp_quiesce()
-still reads, frees and NULLs wx->ptp_tx_skb without it, as noted above.
-Should the comment be narrowed, or wx_ptp_quiesce() updated to match it?
 
->  	seqlock_t hw_tc_lock; /* seqlock for ptp */
->  	struct cyclecounter hw_cc;
->  	struct timecounter hw_tc;
+This is a pre-existing issue and not introduced by this patch, but the
+comment and the value disagree with the unit that is exported to
+userspace.  tp->coalesce is handed to ethtool verbatim as
+ETHTOOL_COALESCE_USECS:
+
+drivers/net/usb/r8152.c:rtl8152_get_coalesce() {
+	...
+	coalesce->rx_coalesce_usecs = tp->coalesce;
+	...
+}
+
+drivers/net/usb/r8152.c:rtl8152_set_coalesce() {
+	...
+	tp->coalesce = coalesce->rx_coalesce_usecs;
+	...
+}
+
+while the internal unit is nanoseconds, one register tick being 8 ns:
+
+drivers/net/usb/r8152.c:r8153_set_rx_early_timeout() {
+	u32 ocp_data = tp->coalesce / 8;
+	...
+	/* ... For USB_RX_EARLY_TIMEOUT, we fix it to 128ns. */
+	ocp_write_word(tp, MCU_TYPE_USB, USB_RX_EARLY_TIMEOUT, 128 / 8);
+	...
+}
+
+So ethtool -c reports rx-usecs 15000 for a 15 us setting, and
+ethtool -C rx-usecs 15 programs about 15 ns.  Since this patch replicates
+the same constant and comment into r8156b_init(), r8157_init() and
+r8159_init(), would it make sense to fix the unit (or at least the comment)
+while these functions are being created?
+
+> +
+> +static void r8157_init(struct r8152 *tp)
+> +{
+> +	u16 data;
+> +
+> +	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
+> +		return;
+> +
+> +	/* Enable SW reset */
+> +	ocp_byte_set_bits(tp, MCU_TYPE_USB, 0xcffe, BIT(3));
+> +	ocp_byte_clr_bits(tp, MCU_TYPE_USB, 0xd3ca, BIT(0));
+> +
+> +	ocp_byte_clr_bits(tp, MCU_TYPE_USB, USB_ECM_OP, EN_ALL_SPEED);
+> +
+> +	ocp_word_set_bits(tp, MCU_TYPE_USB, USB_ECM_OPTION, BYPASS_MAC_RESET);
+> +
+> +	r8153b_u1u2en(tp, false);
+> +
+> +	if (wait_autoload_done(tp))
+> +		return;
+
+[Severity: High]
+
+On a real autoload timeout this returns in the middle of the sequence, after
+the SW reset bits (0xcffe BIT(3), 0xd3ca BIT(0)) and the U1/U2 disable have
+already been applied, and without marking the device inaccessible.
+
+What state does the adapter end up in?  The rest of the function is skipped:
+r8153b_u1u2en(tp, true), usb_enable_lpm(), r8156_mac_clk_spd(), the
+PLA_MCU_SPDWN_EN clear, the PLA_EXTRA_STATUS link polling setup, the RX
+aggregation / RX_DESC_16B / BMU programming, r8156_mdio_force_mode(),
+rtl_tally_reset() and tp->coalesce.
+
+tp->coalesce then stays 0 in the freshly allocated private area, and:
+
+drivers/net/usb/r8152.c:r8153_set_rx_early_timeout() {
+	u32 ocp_data = tp->coalesce / 8;
+	...
+}
+
+programs USB_RX_EARLY_TIMEOUT / USB_RX_EXTRA_AGGR_TMR with 0.  The same
+applies to r8153_init(), where the tp->coalesce = COALESCE_SUPER/HIGH/SLOW
+switch sits at the very end of the function.
+
+Since ops->init is void and the timeout path sets neither
+RTL8152_INACCESSIBLE nor PROBE_SHOULD_RETRY, does anything upstream learn
+about the failure?  rtl8152_probe_once() still registers the netdev and
+rtl8152_reset_resume() still continues into the normal resume path.
+
+The intended contract seems to be the one used a few lines below in the
+same patch for the other failure of the same class:
+
+> +	if (r8159_wait_backup_restore(tp)) {
+> +		rtl_set_inaccessible(tp);
+> +		dev_err(&tp->intf->dev,
+> +			"init failed, backup-restore timed out\n");
+> +		return;
+>  	}
+
+Should the autoload timeout do the same (rtl_set_inaccessible() plus an
+error), so the device is not registered and used half-programmed?
+
+The same early return in r8153b_ups_en()/r8153c_ups_en() skips
+hw_phy_cfg() and rtl8152_set_speed() right after the chip left power-cut,
+and in r8153c_ups_en() also the trailing PLA_CRWECR/PLA_CONFIG34 writes
+that previously always ran.
+
+[ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/8F4D34F6863177CC%2B20260908081142.86235-1-jiawenwu%40trustnetic.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260908075634.23740-1-nic_swsd%40realtek.com
