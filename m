@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB32287518;
-	Sat, 12 Sep 2026 00:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662062BCF7F;
+	Sat, 12 Sep 2026 00:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789172939; cv=none; b=GIorBAOaJTNdz0VRNGZPXKS6XdM3s+qlPAD8rOi2ROy1azeJzK/s7pT4E06ikMIRLQ9mCJZXHmoB+1VykTioZPwuBIjAeLe4y1aP1IrXRW7TobqUMFOyjV22HUSSk8lZGLWCBs8ezHxeEQ2WqjpSz9iPeiYLaPVkGIOea9HN2yI=
+	t=1789172946; cv=none; b=m+iI8fbn3RMhH4sCbx/bX8qrv3rfllq1fXskXqODTwGftSVo3yUEw5O+NvCLZxYCqlQq3mNi9oCYL7Xw+t2Phhvwi73jrESfOTOfIoKI/dXiShWAj5y9ldI6eyUVms2EcsTh+IFPbByRC0JNeduitadR8I0+p4af4c7SHHiBatE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789172939; c=relaxed/simple;
-	bh=s7G11paDjFpsVaz2XwV78H67cL6QKSBj29+De38RXDU=;
+	s=arc-20240116; t=1789172946; c=relaxed/simple;
+	bh=G3Pi6UhKBF0fIpwIX35B8iV4CClZQCcFqfjIPOs5IyU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nRMZHqh3IZn/RUnBdRyZOz9XY5sAT/JrHksQEA3u4pYTTHrVAlpe4E8mI7A/FcfxzTJm/dyBqzszRixiQTxav2rvmnYJWSXmIWWRyKsOdcC3bmaSb4XapjOe13+BgeCvpwmv6oc9n+qJM4QV1eGPY8Zhb5DiDgYK4POuuxQTMKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bA3xEcWr; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=iOBeIS5SKZJtBiUGIllLzWG3lnstTcHP6C1kdmwf2Zk7pBL8v7AMe9ye/2BfOIT2FZYQvUpGB84Ir7r4swFcA20LN5gLWDUvRR3XGIL/8LsiMZwOc+DrgRA/i1BoJOJme4cMNJmOgNnUn9r2hZBEWu+vuhLJGwT+xZmH/aVSXOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZiqYeQD8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bA3xEcWr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8ED21F000FF;
-	Sat, 12 Sep 2026 00:28:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZiqYeQD8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BE231F00898;
+	Sat, 12 Sep 2026 00:28:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789172937;
-	bh=1DUv7brlRMzeWa7Rkb0k29OtDqUJfE93cd+2I0DTrQM=;
+	s=k20260515; t=1789172939;
+	bh=bNuGpLdNUIqdLPTJ8MiJBre87z3YX17baMPKrMx/PFI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=bA3xEcWrqxeHWee0ONsuzNl4r/SdjTJ71WtJjtZYNW9KmR5QvRcCt+j0UyW2P97V4
-	 23dBjxYgxU55vRaCoWmgt6PPsHGfUeEx8++Figpi4AhoTBSLpT88Jxifs7VgF9H7+l
-	 DvYkCH6U19UmVq4JVAChojz2yDM1MVxGj5WtHwGBTuHbsEe5n9LAUtFhAQdqmDl906
-	 TtI1+fHn0bARZdqDAK3YeawFgsMfd0RUZNbglbsXSe43Dd9fRmnp7GGzWykZO/XYxw
-	 VEZlrnoNygzjmFVcuteRSIo1ibStZgNIZUqH+Ul7R3unU0ostH2iMTXkXPm9iSeIav
-	 Tz5P0GP0ahhEw==
-Subject: Re: [PATCH net-next v14 4/6] net: dsa: mxl862xx: add devlink
- flash_update and info_get
+	b=ZiqYeQD8ZHPpAz5tznOf4GuS26kOFAT7Mp5prq0BgutT3mQioVClfdTDqoalsU5c5
+	 4/V26rIWI1IwD5ZKHOZX4T3KZuuXWfT/3Njb8Cj9/iHvJ4Bu7Emls6453rgg7Sc661
+	 vasQREjLZQV9LYTQotFOLZQiAQUoP92/HyKhFBpRyDea3Cow5YPIhBkWlx3kXFi8w+
+	 y+UCTlsukLLQxpK/kr7JsLAounAuFoCt3e7Y0hkcohGoGAreOfgKMReCazxukgXgWF
+	 wJBUVn2NTqBNNnFlNYqFaKJ6PPXPnM7f1WgqiQjf68fS25goPC0Nhp5bkLbKqZQ4X4
+	 ktNK/h/4jo7wg==
+Subject: Re: [PATCH net-next v14 5/6] net: dsa: mxl862xx: recover switch stuck
+ in MCUboot rescue mode
 From: netdev-bot+sashiko@kernel.org
 To: daniel@makrotopia.org
 Cc: jiri@resnulli.us, davem@davemloft.net, edumazet@google.com,
@@ -36,11 +36,11 @@ Cc: jiri@resnulli.us, davem@davemloft.net, edumazet@google.com,
  rafael@kernel.org, dakr@kernel.org, andrew@lunn.ch, olteanv@gmail.com,
  netdev@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org, driver-core@lists.linux.dev
-Date: Sat, 12 Sep 2026 00:28:56 +0000
-Message-ID: <178917293624.219967.1596425447722739945@kernel.org>
-In-Reply-To: =?utf-8?q?=3C88154e67987195ab7c5199fa0269ab6a5e80d2a7=2E1788976?=
+Date: Sat, 12 Sep 2026 00:28:57 +0000
+Message-ID: <178917293786.219967.6720618074821278877@kernel.org>
+In-Reply-To: =?utf-8?q?=3Cd86b8833a198030c39dce8e4d4b20a2e47f75573=2E1788976?=
  =?utf-8?q?064=2Egit=2Edaniel=40makrotopia=2Eorg=3E?=
-References: =?utf-8?q?=3C88154e67987195ab7c5199fa0269ab6a5e80d2a7=2E17889760?=
+References: =?utf-8?q?=3Cd86b8833a198030c39dce8e4d4b20a2e47f75573=2E17889760?=
  =?utf-8?q?64=2Egit=2Edaniel=40makrotopia=2Eorg=3E?=
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
@@ -52,230 +52,245 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 (1) · Medium: 2 · Low: 0
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
 
-- [Medium] priv->flash_reading is documented (kernel-doc for struct
-  mxl862xx_priv and the in-function comment in mxl862xx_api_wrap()) as…
-- [Medium] In mxl862xx_flash_firmware() the return value of the final,
-  purely optional END (0x3cc3) STAT write is propagated as the result of…
-
-Pre-existing issues:
-- [High] mxl862xx_remove() stops the periodic stats poll with
-  set_bit(MXL862XX_FLAG_WORK_STOPPED) followed by…
+- [Medium] The new `rescue_heal_work` drain can block driver unbind and
+  system shutdown for ~17 s: `mxl862xx_rescue_drain()` tests…
+- [Medium] `mxl862xx_rescue_mode_detect()` recognises only READY
+  (0xc55c), DL_READY (0xc33c) and 0; every other non-zero STAT is…
+- [Low] `priv->rescue_mode` is cleared as a plain store under
+  `priv->mdiodev->bus->mdio_lock` in `mxl862xx_devlink_flash_update()`,…
 
 --
 
-net: dsa: mxl862xx: add devlink flash_update and info_get
+net: dsa: mxl862xx: recover switch stuck in MCUboot rescue mode
 
-This adds runtime firmware upgrade through "devlink dev flash" and version
-reporting through "devlink dev info" for the mxl862xx DSA driver. The flash
-path closes the user and conduit interfaces, blocks firmware API commands,
-transfers the image over the SB PDI protocol and then schedules a deferred
-re-probe.
-
-A few questions about the new code below.
+This adds probe-time detection of a switch left in its MCUboot loader over
+the clause-22 SMDIO mailbox, registers the switch in a reduced "rescue
+mode" so devlink stays usable, and drains an interrupted download back to a
+clean loader state from a background work item.
 
 > diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-fw.c b/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
-> new file mode 100644
-> index 0000000000000..e8913954b2bae
-> --- /dev/null
+> index e8913954b2bae..042a4eee6af81 100644
+> --- a/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
 > +++ b/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
-> @@ -0,0 +1,642 @@
 
 [ ... ]
 
-> +	mxl862xx_flash_notify(dl, "Flashing", payload_size, payload_size);
+> @@ -218,6 +265,338 @@ static void mxl862xx_flash_notify(struct devlink *dl, const char *status,
+>  	devlink_flash_update_status_notify(dl, status, NULL, done, total);
+>  }
+>  
+
+[ ... ]
+
+> +/* The loader is not asking for a chunk: it may still be programming the last
+> + * one, or the counter has reached zero and it is verifying the image and
+> + * resetting into READY. Wait that out -- STAT cannot tell the two apart, and
+> + * guessing would mean writing END into a live receive loop.
+> + *
+> + * Return: 0 once the loader has left the loop, -EAGAIN if it asks for another
+> + * chunk after all, -EIO for a loader still holding the count when the verify
+> + * window expires, or an SMDIO bus error.
+> + */
+> +static int mxl862xx_rescue_drain_finish(struct mxl862xx_priv *priv, u32 chunk)
+> +{
+> +	struct device *dev = &priv->mdiodev->dev;
+> +	int stat;
 > +
-> +	/* Success: the loader has left the receive loop at r_remain == 0 and
-> +	 * verified the image, so END(0x3cc3) is a finalise/boot request rather
-> +	 * than a byte count. Signal it here -- and only here -- to boot the new
-> +	 * image without waiting out the loader's 2 s END timeout.
-> +	 */
-> +	ret = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_STAT,
-> +				   MXL862XX_SB_PDI_END);
-> +	msleep(MXL862XX_FW_REBOOT_DELAY_MS);
-> +	return ret;
+> +	stat = mxl862xx_sb_pdi_poll_drain(priv, MXL862XX_SB_PDI_VERIFY_MS);
+
+[ ... ]
+
+> +static int mxl862xx_rescue_drain(struct mxl862xx_priv *priv)
+> +{
+> +	struct device *dev = &priv->mdiodev->dev;
+> +	/* Bound: twice the loader's 16 MiB image cap, one byte per chunk. */
+> +	u32 max_chunks = 2u * (16u << 20) / MXL862XX_DRAIN_CHUNK_BYTES;
+> +	u32 chunk = 0;
+> +	int ret, stat;
+> +
+> +	while (chunk < max_chunks) {
+> +		/* Teardown can interrupt this long drain. */
+> +		if (test_bit(MXL862XX_FLAG_WORK_STOPPED, &priv->flags))
+> +			return -ECANCELED;
+> +
+> +		stat = mxl862xx_sb_pdi_poll_drain(priv, MXL862XX_SB_PDI_STEP_MS);
+> +		if (stat < 0)
+> +			return stat;
+> +		if (stat == MXL862XX_SB_PDI_READY)
+> +			return 0;
+> +
+> +		if (stat) {
+> +			ret = mxl862xx_rescue_drain_finish(priv, chunk);
+> +			if (ret != -EAGAIN)
+> +				return ret;
+> +		}
 
 [Severity: Medium]
-Should the status of this last END write really decide the outcome of the
-whole flash?
+The MXL862XX_FLAG_WORK_STOPPED test only runs at the top of each chunk
+iteration, but neither poll that follows it re-tests the flag.
 
-At this point mxl862xx_sb_pdi_flush_last() has already returned 0, which per
-its own logic only happens after the loader published
-MXL862XX_SB_PDI_VERIFY_OK, so the image is fully transferred, verified and
-will be booted. The comment above the write and the file's protocol comment
-both say END is optional because the loader finalises on its own 2 s timeout.
+mxl862xx_sb_pdi_poll_drain() sleeps up to MXL862XX_SB_PDI_STEP_MS (2000 ms)
+and, when STAT still holds a count, mxl862xx_rescue_drain_finish() sleeps up
+to MXL862XX_SB_PDI_VERIFY_MS (15000 ms) on top of that, with the stop flag
+in neither poll condition.
 
-mxl862xx_smdio_write() forwards __mdiobus_write()'s return, so it can fail
-with -ETIMEDOUT or -EIO from the bus driver. In that case
-mxl862xx_devlink_flash_update() takes the failure path: the
-mxl862xx_wait_ready() confirmation is skipped, priv->fw_version, asic_id and
-asic_rev are zeroed, and a retry is refused with -EBUSY since skip_teardown
-is now set. So a successful update is reported as a transfer failure and
-"devlink dev info" reports no versions at all until the re-probe runs.
+The join point is synchronous:
 
-Would it make sense to log the END write failure and still return success
-here, given the verdict has already been read?
+drivers/net/dsa/mxl862xx/mxl862xx-host.c:mxl862xx_host_shutdown() {
+	cancel_work_sync(&priv->crc_err_work);
+	cancel_work_sync(&priv->rescue_heal_work);
+}
+
+Can this stall driver unbind and, via mxl862xx_shutdown(), reboot and
+poweroff for roughly 17 s whenever the switch is in the wedged-download
+state that rescue_heal_work exists to handle?
+
+Would it be reasonable to fold the stop flag into the poll conditions of
+mxl862xx_sb_pdi_poll_drain() so the wait aborts as soon as teardown asks
+for it?
 
 [ ... ]
 
-> +int mxl862xx_devlink_flash_update(struct dsa_switch *ds,
-> +				  struct devlink_flash_update_params *params,
-> +				  struct netlink_ext_ack *extack)
+> +/* Detect MCUboot rescue mode over clause-22 SMDIO alone, so the caller can rule
+> + * the loader out before any C45 API request (which spews CRC errors when no WSP
+> + * firmware answers). A scratch write to ADDR/DATA must latch or the chip is
+> + * absent (-ENODEV); the mailbox is reset first, or a transfer interrupted with
+> + * CTRL=WR would take that write as a payload word instead of latching it. STAT
+> + * then classifies the state, poked destructively only when 0, the one value a
+> + * running firmware never holds:
+> + *
+> + *  - 0xc33c: flashless loop; recognised but not supported here.
+> + *  - 0xc55c: console loop, if the register-read challenge is serviced.
+> + *  - other non-zero: running firmware, left unpoked.
+> + *  - 0: wedged receive loop; the 1-byte slice-advance then says whether it
+> + *    still needs draining or has just finished.
+
+[ ... ]
+
+> +int mxl862xx_rescue_mode_detect(struct mxl862xx_priv *priv)
 > +{
 
 [ ... ]
 
-> +	set_bit(MXL862XX_FLAG_WORK_STOPPED, &priv->flags);
-> +	disable_delayed_work_sync(&priv->stats_work);
-> +	cancel_work_sync(&priv->crc_err_work);
-> +	for (i = 0; i < ds->num_ports; i++)
-> +		cancel_work_sync(&priv->ports[i].host_flood_work);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but the same stats_work re-arm
-race that disable_delayed_work_sync() closes here is still open in
-mxl862xx_remove(), which uses the plain cancel:
-
-drivers/net/dsa/mxl862xx/mxl862xx.c:mxl862xx_remove() {
-	set_bit(MXL862XX_FLAG_WORK_STOPPED, &priv->flags);
-	cancel_delayed_work_sync(&priv->stats_work);
-
-	dsa_unregister_switch(ds);
-	...
-}
-
-The reader side tests the flag locklessly:
-
-drivers/net/dsa/mxl862xx/mxl862xx.c:mxl862xx_get_stats64() {
-	...
-	if (!test_bit(MXL862XX_FLAG_WORK_STOPPED, &priv->flags))
-		schedule_delayed_work(&priv->stats_work, 0);
-}
-
-Can a get_stats64() caller that already passed the test_bit() re-arm the work
-after cancel_delayed_work_sync() has returned? cancel_delayed_work_sync()
-only dequeues and waits, it does not make a later schedule_delayed_work() a
-no-op, and no further cancel follows, so mxl862xx_stats_work_fn() would then
-iterate dsa_switch_for_each_available_port() over ports released by
-dsa_unregister_switch() and dereference the devm-allocated priv and ds after
-mxl862xx_remove() returns.
-
-The user netdevs are still registered at that point, so the racing reader can
-be something as ordinary as "ip -s link" during an unbind. Would converting
-remove() to disable_delayed_work_sync() as well be appropriate, either here
-or as a separate fix?
-
-> +
-> +	ret = mxl862xx_flash_firmware(priv, params->fw, payload_size,
-> +				      ds->devlink);
-> +	if (ret)
-> +		NL_SET_ERR_MSG_MOD(extack, "firmware transfer failed");
-> +
-> +	if (!ret) {
-> +		mutex_lock_nested(&priv->mdiodev->bus->mdio_lock,
-> +				  MDIO_MUTEX_NESTED);
-> +		/* Keep block_host set so host writes stay blocked, but let the
-> +		 * readiness poll below read the freshly booted firmware.
-> +		 */
-> +		priv->flash_reading = true;
-> +		mutex_unlock(&priv->mdiodev->bus->mdio_lock);
-> +
-> +		/* Refresh the cached versions so the flash update only
-> +		 * completes once the new firmware is confirmed running and
-> +		 * devlink dev info reports it. Must happen before setting
-> +		 * skip_teardown, which discards all firmware API reads.
-> +		 */
-> +		ret = mxl862xx_wait_ready(ds);
+> +	/* Any other non-zero value is a running firmware, not a loader. */
+> +	if (stat)
+> +		return MXL862XX_NOT_RESCUE;
 
 [Severity: Medium]
-Does priv->flash_reading actually restrict the bypass to the flash path?
+STAT is also where the download handshake lives, and it is host-writable.
+Are the loader's handshake wait states covered by this catch-all?
 
-The gate it feeds only looks at the direction of the command:
+mxl862xx_sb_pdi_reset() writes CTRL, ADDR and DATA only, so a value already
+in STAT survives it:
 
-drivers/net/dsa/mxl862xx/mxl862xx-host.c:mxl862xx_api_wrap() {
+drivers/net/dsa/mxl862xx/mxl862xx-fw.c:mxl862xx_sb_pdi_reset() {
+	ret = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_CTRL,
+				   MXL862XX_SB_PDI_CTRL_RST);
 	...
-	if (priv->block_host && cmd != SYS_MISC_FW_UPDATE &&
-	    !(priv->flash_reading && read)) {
-		ret = -EBUSY;
-		goto out;
-	}
+	ret = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_ADDR,
+				   MXL862XX_SB_PDI_CTRL_RST);
 	...
+	return mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_DATA,
+				    MXL862XX_SB_PDI_CTRL_RST);
 }
 
-There is no check of the calling context and no narrowing to
-SYS_MISC_FW_VERSION or MXL862XX_COMMON_CFGGET, so while the flag is set every
-read-type firmware API command from any context reaches the switch: the
-ethtool MAC/RMON/pause stat handlers, mxl862xx_port_fdb_dump(), the
-MXL862XX_MAC_TABLEENTRYQUERY half of mxl862xx_port_mdb_add() and
-mxl862xx_port_mdb_del(), MXL862XX_COMMON_CFGGET and INT_GPHY_READ.
+In mxl862xx_flash_firmware() there is a window between the START handshake
+and the header byte count where STAT holds 0xf48f (written by the host) or
+0xf490 (published by the loader while it waits for the header words and
+their count):
 
-The window is not short either. mxl862xx_wait_ready() starts with
-msleep(2000) and polls up to MXL862XX_READY_TIMEOUT_MS, and rtnl is dropped
-by then, while the user netdevs are only closed and detached, still
-registered. So "ethtool -S swp0" or "bridge fdb show" in that window issues
-admitted reads against the freshly booted firmware.
+	ret = mxl862xx_sb_pdi_poll_stat(priv, MXL862XX_SB_PDI_START + 1,
+					MXL862XX_FW_ACK_TIMEOUT_MS);
+	...
+	for (i = 0; i < MXL862XX_FW_HDR_SIZE / 2; i++) {
+		...
+		if (ret < 0)
+			goto write_err;
+	}
 
-There is a second effect for read-modify-write sequences: mdb_add() gets its
-MXL862XX_MAC_TABLEENTRYQUERY read admitted and then hits -EBUSY on the
-following MXL862XX_MAC_TABLEENTRYADD write, so it fails half executed rather
-than being refused up front.
+Any SMDIO error there takes the write_err/no_end paths, which return without
+advancing or aborting the loader; a host crash in the same burst has the same
+effect. On the next probe, detection sees 0xf48f or 0xf490 and returns
+MXL862XX_NOT_RESCUE, so mxl862xx_setup() runs mxl862xx_reset() and
+mxl862xx_wait_ready() over clause-45 against a switch with no firmware,
+re-runs detection, gets NOT_RESCUE again and fails probe with -ETIMEDOUT.
 
-Should the bypass be keyed on the flash path itself, for instance on the
-specific commands the readiness poll issues?
+That is the CRC-error storm plus probe abort this patch sets out to avoid,
+and it also conflicts with the commit message:
+
+    after a failed one the switch is still in MCUboot, rescue mode
+    is detected again, and the user can retry.
+
+Should the handshake magics (START, ACK, and a lingering host-written count)
+be classified as a loader rather than as running firmware, or should STAT be
+reset out of the handshake before the flash path returns an error?
+
+[ ... ]
+
+> @@ -602,6 +1021,7 @@ int mxl862xx_devlink_flash_update(struct dsa_switch *ds,
+>  		 * readiness poll below read the freshly booted firmware.
+>  		 */
+>  		priv->flash_reading = true;
+> +		priv->rescue_mode = false;
+>  		mutex_unlock(&priv->mdiodev->bus->mdio_lock);
+
+[Severity: Low]
+This is the only post-registration writer of rescue_mode, and it is a plain
+store under mdio_lock. mxl862xx_api_wrap() reads it under the same lock, but
+the readers this patch adds run in a different lock domain (rtnl_lock, or no
+lock at all) and use neither mdio_lock nor READ_ONCE():
+
+mxl862xx_port_enable()
+mxl862xx_port_disable()
+mxl862xx_port_stp_state_set()
+mxl862xx_port_mdb_del()
+mxl862xx_phylink_mac_select_pcs()
+
+rtnl_lock and mdio_lock do not order these against the store, so a reader can
+observe a stale value indefinitely. Would WRITE_ONCE()/READ_ONCE() pairing be
+worth adding here, matching what the same patch already does for the sibling
+rescue_ready and rescue_failed flags?
+
+mxl862xx_port_mdb_del() has a second ordering detail: the flag is read after
+mxl862xx_api_wrap() has already dropped mdio_lock, so the -ENODEV
+classification can use a value that changed in between:
+
+	ret = MXL862XX_API_READ(priv, MXL862XX_MAC_TABLEENTRYQUERY, qparam);
+	...
+	if (ret == -ENODEV && (priv->skip_teardown || priv->rescue_mode))
+		return 0;
 
 [ ... ]
 
 > diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-host.c b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
-> index 11759fa6069b1..caa4f74a86cf1 100644
+> index caa4f74a86cf1..23e5dfe81e364 100644
 > --- a/drivers/net/dsa/mxl862xx/mxl862xx-host.c
 > +++ b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
-> @@ -340,6 +341,21 @@ int mxl862xx_api_wrap(struct mxl862xx_priv *priv, u16 cmd, void *_data,
->  
->  	mutex_lock_nested(&priv->mdiodev->bus->mdio_lock, MDIO_MUTEX_NESTED);
->  
-> +	if (priv->skip_teardown) {
-> +		ret = read ? -ENODEV : 0;
-> +		goto out;
-> +	}
-> +
-> +	/* During the post-flash readiness poll block_host stays set, but the
-> +	 * flash path's own firmware version reads must reach the new image;
-> +	 * host writes stay blocked so stale resource IDs cannot corrupt it.
-> +	 */
-> +	if (priv->block_host && cmd != SYS_MISC_FW_UPDATE &&
-> +	    !(priv->flash_reading && read)) {
-> +		ret = -EBUSY;
-> +		goto out;
-> +	}
-> +
-
-The comment here says "the flash path's own firmware version reads", but the
-condition admits any read from any caller, as noted above.
 
 [ ... ]
 
-> diff --git a/drivers/net/dsa/mxl862xx/mxl862xx.h b/drivers/net/dsa/mxl862xx/mxl862xx.h
-> index 432a5f3f2e08e..7231ed6c9187c 100644
-> --- a/drivers/net/dsa/mxl862xx/mxl862xx.h
-> +++ b/drivers/net/dsa/mxl862xx/mxl862xx.h
-> @@ -319,6 +323,12 @@ struct mxl862xx_fw_version {
->   * @evlan_ingress_size: per-port ingress Extended VLAN block size
->   * @evlan_egress_size:  per-port egress Extended VLAN block size
->   * @vf_block_size:      per-port VLAN Filter block size
-> + * @block_host:         reject firmware API commands (except FW_UPDATE)
-> + *                      during a firmware flash
-> + * @flash_reading:      let the flash path's own firmware reads through
-> + *                      block_host while polling the freshly booted image
-
-The kernel-doc for @flash_reading documents the same flash-path-only
-restriction that the predicate in mxl862xx_api_wrap() does not implement.
-Should either the wording or the check be adjusted so the two agree?
+> @@ -554,9 +560,11 @@ int mxl862xx_smdio_write(struct mxl862xx_priv *priv, u32 addr, u16 val)
+>  void mxl862xx_host_init(struct mxl862xx_priv *priv)
+>  {
+>  	INIT_WORK(&priv->crc_err_work, mxl862xx_crc_err_work_fn);
+> +	INIT_WORK(&priv->rescue_heal_work, mxl862xx_rescue_heal_work_fn);
+>  }
+>  
+>  void mxl862xx_host_shutdown(struct mxl862xx_priv *priv)
+>  {
+>  	cancel_work_sync(&priv->crc_err_work);
+> +	cancel_work_sync(&priv->rescue_heal_work);
+>  }
 
 [ ... ]
+
+Thanks for the detailed protocol comments in mxl862xx-fw.c, they made the
+state machine much easier to follow while reading this.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1788976064.git.daniel%40makrotopia.org
