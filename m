@@ -1,60 +1,62 @@
 Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691CC42CB1C
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 18:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1C23AE1BD
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 18:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789236566; cv=none; b=XEjb1gbHVwHH7RB04CIlP0NvTCzmtSrmnpvlp4vNdNF4bNQK08C4GnHZ7XFi/P9GuYO1Rbt3lPF934gjT03Ot/W7HTiZ6Tx361zKPG1y+DYf1mAfn5J5SV18g1Kn7DE0Sya2Iuh+oNwAWe0A+kdlElwgqabxO6BUQ5SZEhc8jh0=
+	t=1789236568; cv=none; b=rmFuGMmLJuGH+kRyyC2REepXkG33Tcmh3cURnQrVvvfJ6RadYFQsTX6xN9+eo3S4QsAgycVTp/1tYI8z3cJgcYn4k/gz4x2QvaF1Du+H6cDw75c3Wfjuzi8pKiy1DGrhBNsxSWxpaWtYh7GDDdcoEPbwuqOZU0KhY3/jWdOnkNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789236566; c=relaxed/simple;
-	bh=NinSsXmfOfgPvxnBoe7vC+IiUfHvMJVbWS0gsHPYMJE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gfAQ57yHccWVW+9jvvh+H4+UETCNeYJUFOs2uakICCYVgktke/bp9SAD5TBzoLw1HfA0ghknueTL4CEzWh5vMwwQY7iDD78QjTtMbLmRCT4LQthbo8gXLy1uNe8dCMxLmj1+yP5eoMK7m4YGtNQgrFRanXKn4Lx4CvpZCE63P6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=O/aQMIwP; arc=none smtp.client-ip=74.125.230.140
+	s=arc-20240116; t=1789236568; c=relaxed/simple;
+	bh=ZCovFqiMjtqVQsqXGw//gYwhLWDer5nSHiejNsreRFY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=WJj8Vuxkz2M+Q03I1gEeAcPrd2lxeAji9sh5Y/oUgF+Jv8+AnzmTWFtIbx70oz64qde5OMIY7bGNAtt8o/d0QvXrCZiElfWuq9KKeNunBaVBczYmoH40XjZ39DKElGVKlN6m4lY4W/bpAZ+BWZhdq1UlYoFjtD4lLV2kuhWI7Eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=hVyRaZI3; arc=none smtp.client-ip=74.125.230.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="O/aQMIwP"
-Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-90cdfe60d5fso10637616d6.1
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 11:09:25 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="hVyRaZI3"
+Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-90cdfcc3e14so3833046d6.0
+        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 11:09:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1789236564; x=1789841364; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=SRBaZYE5z7xsuSNFqidS68BnKXd+kuHah3BsDyd5EZg=;
-        b=O/aQMIwP+urfIINCnlfLfXO/hoNh8ErszlX1Q+0lQJpY0sdW3mInHYoZHtuQHBhjsH
-         acaHL/AodHw9nC2rdS1bKQCOw3MkpjOt963X4ur5hUq11YLJLj92A+oCGRZizdUeXDOm
-         4mKahZBHkqgTFfRzcpxUFsspLNMfNkRvh3m68=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789236564; x=1789841364;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=mojatatu.com; s=google; t=1789236566; x=1789841366; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=SRBaZYE5z7xsuSNFqidS68BnKXd+kuHah3BsDyd5EZg=;
-        b=AIwmqk1sbcNBXA+mNqfVkx8A/dhUJGjKgxIevNb0ASml6lnp0jALj25S1J8Y+DduCh
-         meiEIBECmpUoa19PoJtkN8CCrMVYa43Oqf+2bYPtuF1fytQIA/rG8eLN4LwFksWIqYN9
-         Azxz5lQ9MaubENmO+Vj8TsfpMFI42nG6UTOvb9p23oYFN8MvqYza92K25kVctdlSBjI4
-         K9zisCScu280jRq5rN5Ve99d5b5XlmHVoUX42t8pPk7TtkO/EqhDJcX9NpeNMsyKC53g
-         j4KX7OADJoHg6olHqM9kVrqatVyJ7GQyWTmBudYTLgx3MfnvmV9BVEZxnU/njSgvwXMv
-         aOLg==
-X-Gm-Message-State: AFuF++k50/UHEq8EvO7lq988jt3Dthma4u5BsTW0tpkDoK087tis1Prv
-	zwx83BQpvZZCqBh3fTHmfQjTPXrXJIVLI3GPNrDad4Kp8SQUadsVPDKcOPusSEICf3WgUvCgOmN
-	xTf995w==
-X-Gm-Gg: AYBFou1wb0/IqTh6NR1dbVee7q8gMMlywQsyx95re5jo+G5qM6ThI45m1S8EbbGGqwG
-	NCUkgcPrqtA45armIC/w112jWxglSfEfdJ/23JWD+8TW4I0FMFG3JunlrnO5xzKUldq1NL6k12M
-	PdCvs1twB812GClT4yv/3ARxE5zfHjt3Wt8LbS7i3NFeg0/Q54M/vYa7fdeyhIxeakYNDLbw1X4
-	1zbQZ3q90Yzt9O/g6P0YaYeAdj0vvecoO4+Orx3fhucK5CakJSc3G7wZOG6qJCotG9wa8RZpixm
-	fZMS9ECCOO8b94rZgFrq5XAZD75MpgWOvhJItRtAmRhbknxdbaKFewT9S7oDqq5LLUPxJ3aE77G
-	q/VSHtoKsCVJK4bIC+yukxxlZC8vvbIhxYYRibYXHzxKuK4A5k3wpm4xpnQ4tA4opoTGMI5KZ2S
-	xQqKhn4Irvmf+3EaUw2hGcE2oG6sEGf5IbUz+JhukxagOXbQm9VEg9RNNxSymBqvXVTsocM25LM
-	spc6ZW5aT83ZOlheKvHbh+iirfQ/Z3uKSAa27GF/xT/kBysEanFOVA+Q4Dt6CNQlzWQb6G8iS3k
-	9pf6/F0yYc/WW1JYnSfr5WQ=
-X-Received: by 2002:a05:620a:2b42:b0:939:16f6:4d01 with SMTP id af79cd13be357-93a03673558mr519299785a.21.1789236564218;
-        Sat, 12 Sep 2026 11:09:24 -0700 (PDT)
+        bh=ZVsgq1Aq3D81njq/SPaFOtkNYzTEGSYorhvpSAlQpRk=;
+        b=hVyRaZI38Z8UXT8w82R0UCBIyc/ENY11mz82PxFeY6OMPwFtsPxvPWl6sYhLsY9QO+
+         g4ZD48322JsI/UuKX0kPqaMRViP5X0RWJ2SbuarHdKpOi79J1x2q/hr+cXfdvGv77UNn
+         qIPAu0IMIqFJ/atmc8LFiHowpGRLvwGZWj3pc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789236566; x=1789841366;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZVsgq1Aq3D81njq/SPaFOtkNYzTEGSYorhvpSAlQpRk=;
+        b=QtSn9SJLeuJACIlsAg57tKlg9nRAFVRMW78Pl+7lYVIIaYXuYZ54etqBfitouDkRij
+         PJivGLG/m+nYyzRx0/vEGK3GtLwqjg6JY5X+FoUzNjApwvAPgDaQjw7Ttb7fipwYjNnI
+         I9Af84acDwUTVQIAqkZ2Dy7Q1DYhjHruqvdfhDt1sP2fUbQsc+By3LA2jEaMY6vY5fLF
+         ReisZXO/XKazPrYD7L9eAl7XQSYincBFY3UajPmG1ZZxmvRW5NAgjKvJBlMJNsgicst3
+         dfIDXes/YVOpPHbCCfWQgFoMg/+csLAZt4vNjKbWVSpw29B51YIs/COQTzsOnzJQt1qA
+         R2sw==
+X-Gm-Message-State: AFuF++nABOuDqS3wBnpXs7ErnOLGdyLLT96aR05rsYhehwOSCBc0Yj9U
+	na4jU0zmnYCJLv36efezUZ+FaT2ZLYfPprt3FUDv39g3koPihdRkxw4RxL5MZyToyPICUFpIFEo
+	Sow75tQ==
+X-Gm-Gg: AYBFou1HXmHD6CN5eDonwfcK9RgQSt2FGH6l04S1/5o0S354yxlk1V5afRTSYk4RCb5
+	a/XfJM2jcwyccGvd68r4YFLb+/+cLhAnClTcrq+F/lwkgWvM5ycZty2e+iI6bGtI75TZX11+anz
+	gC8i4PKjN6QPHu/0DhrkcF4LLKSMHiGhn3WsAEzM0kwJVfTXL0MGQpSi9eCU9qn5/vnwh2wooiq
+	HxoI1qCbZil5jal0pgTJpG/6HjJH75KYcwDPEycs5S2Hv7a+cMBOEby2BNf5Bjku/ar1dOZsqBo
+	hFB5Rp8c5EATFoFQVHv4P+kWHphrLHWr5X2uf04B6lnM9DCr9ufjf6kACK93rijNcwlz0y6ezvt
+	WcSpx7R0FG1HVIA2WzZxK4pzgaD8DIovFZ5fFQARKmQUFkp6jUBIyCryBGt6ltOVdOrluY+jM3T
+	wXcyZeIDIUtnJu+zRNrIqk8Abi9vLl3iM/uYxOinwGBtNj34oIXa+129UolRZ8Zob2e5gvRUm9l
+	7i/GQONurqjEpZgSYGC1O9p+YTNA1rvp1XbkGyrIHr4tLpYBPIbmq2CCQL1GOF9VqyHeysE3ISW
+	NRLsQ+fNVWfCXsUg7azgAxg=
+X-Received: by 2002:a05:620a:6f04:b0:939:7d14:1c75 with SMTP id af79cd13be357-939e8afb739mr1339388585a.6.1789236565939;
+        Sat, 12 Sep 2026 11:09:25 -0700 (PDT)
 Received: from majuu.waya (pool-174-112-106-84.cpe.net.cable.rogers.com. [174.112.106.84])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-939e811cffdsm549888285a.46.2026.09.12.11.09.22
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-939e811cffdsm549888285a.46.2026.09.12.11.09.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Sep 2026 11:09:23 -0700 (PDT)
+        Sat, 12 Sep 2026 11:09:25 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
@@ -64,15 +66,16 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Terry Lam <vtlam@google.com>,
-	stable@vger.kernel.org,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org,
 	Victor Nogueira <victor@mojatatu.com>,
-	hybris <hybris@mojatatu.ai>,
-	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH net 1/2] net/sched: hhf: cap hh_flows_limit at change time
-Date: Sat, 12 Sep 2026 14:09:19 -0400
-Message-Id: <QDISC-B855.v1.20260911153152@mojatatu.com>
+	hybris <hybris@mojatatu.ai>
+Subject: [PATCH net 2/2] selftests/tc-testing: add hhf hh_limit cap tests
+Date: Sat, 12 Sep 2026 14:09:20 -0400
+Message-Id: <QDISC-B855.v1.20260911153152@mojatatu.com.2>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <QDISC-B855.v1.20260911153152@mojatatu.com>
+References: <QDISC-B855.v1.20260911153152@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,86 +84,155 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-hhf_change() stores TCA_HHF_HH_FLOWS_LIMIT with no upper bound. A huge
-hh_flows_limit lets each new heavy-hitter flow pass the
-hh_flows_current_cnt check in alloc_new_hh() and forces a fixed-size
-kzalloc(GFP_ATOMIC) per flow under spoofed traffic, for unbounded memory
-growth.
+Cover the new TCA_HHF_HH_FLOWS_LIMIT bound: values above 2*HH_FLOWS_CNT
+(4294967295, 65536, 2049) are rejected with the configured limit left
+untouched on both the change and the add path, the boundary value 2048 is
+accepted (installed at 100 first so the boundary change is load-bearing),
+and an add-time hh_limit 500 is preserved instead of being clobbered by
+the default.
 
-Bound the attribute with NLA_POLICY_MAX() at 2*HH_FLOWS_CNT (the
-hhf_init() default) and report the rejected value via extack. The
-deprecated nested parse is kept: legacy tc does not set NLA_F_NESTED on
-TCA_OPTIONS. Configs relying on hh_limit above the default were relying
-on unbounded, unsafe behaviour and are not supported going forward.
-
-hhf_init() also ran hhf_change() before setting the default
-hh_flows_limit, so a user-supplied hh_limit at add time was clobbered
-back to 2048. Set the default before hhf_change() so the configured
-value sticks.
-
-This is a follow-up to commit eb56a495f59b ("net/sched: hhf: clamp
-quantum in change and init paths"), which bounded the quantum of the
-same qdisc; the hh_flows_limit bound is the remaining unbounded knob of
-that series' scope.
-
-Conditions to recreate the bug: CAP_NET_ADMIN in a user namespace;
-tc qdisc change dev X root hhf hh_limit 4294967295 succeeds and the
-value is echoed by tc qdisc show, unbounding heavy-hitter flow
-allocations; also tc qdisc add dev X root hhf hh_limit 500 stores 2048
-instead of 500.
-
-Fixes: 10239edf86f1 ("net-qdisc-hhf: Heavy-Hitter Filter (HHF) qdisc")
-Cc: stable@vger.kernel.org
-Reported-by: Sashiko (gemini) <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260822195509.112717-1-jhs@mojatatu.com
 Reviewed-by: Victor Nogueira <victor@mojatatu.com>
 Tested-by: hybris <hybris@mojatatu.ai>
 Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 ---
- net/sched/sch_hhf.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ .../tc-tests/qdiscs/hhf_flows_limit.json      | 128 ++++++++++++++++++
+ 1 file changed, 128 insertions(+)
+ create mode 100644 tools/testing/selftests/tc-testing/tc-tests/qdiscs/hhf_flows_limit.json
 
-diff --git a/net/sched/sch_hhf.c b/net/sched/sch_hhf.c
-index fc72f825fbd9..5dec1ed969ad 100644
---- a/net/sched/sch_hhf.c
-+++ b/net/sched/sch_hhf.c
-@@ -527,7 +527,7 @@ static void hhf_destroy(struct Qdisc *sch)
- static const struct nla_policy hhf_policy[TCA_HHF_MAX + 1] = {
- 	[TCA_HHF_BACKLOG_LIMIT]	 = { .type = NLA_U32 },
- 	[TCA_HHF_QUANTUM]	 = { .type = NLA_U32 },
--	[TCA_HHF_HH_FLOWS_LIMIT] = { .type = NLA_U32 },
-+	[TCA_HHF_HH_FLOWS_LIMIT] = NLA_POLICY_MAX(NLA_U32, 2 * HH_FLOWS_CNT),
- 	[TCA_HHF_RESET_TIMEOUT]	 = { .type = NLA_U32 },
- 	[TCA_HHF_ADMIT_BYTES]	 = { .type = NLA_U32 },
- 	[TCA_HHF_EVICT_TIMEOUT]	 = { .type = NLA_U32 },
-@@ -546,7 +546,7 @@ static int hhf_change(struct Qdisc *sch, struct nlattr *opt,
- 	u32 new_hhf_non_hh_weight = q->hhf_non_hh_weight;
- 
- 	err = nla_parse_nested_deprecated(tb, TCA_HHF_MAX, opt, hhf_policy,
--					  NULL);
-+					  extack);
- 	if (err < 0)
- 		return err;
- 
-@@ -624,6 +624,9 @@ static int hhf_init(struct Qdisc *sch, struct nlattr *opt,
- 	q->hhf_evict_timeout = HZ;      /* 1  sec */
- 	q->hhf_non_hh_weight = 2;
- 
-+	/* Cap max active HHs at twice len of hh_flows table. */
-+	q->hh_flows_limit = 2 * HH_FLOWS_CNT;
-+
- 	if (opt) {
- 		int err = hhf_change(sch, opt, extack);
- 
-@@ -639,8 +642,6 @@ static int hhf_init(struct Qdisc *sch, struct nlattr *opt,
- 		for (i = 0; i < HH_FLOWS_CNT; i++)
- 			INIT_LIST_HEAD(&q->hh_flows[i]);
- 
--		/* Cap max active HHs at twice len of hh_flows table. */
--		q->hh_flows_limit = 2 * HH_FLOWS_CNT;
- 		q->hh_flows_overlimit = 0;
- 		q->hh_flows_total_cnt = 0;
- 		q->hh_flows_current_cnt = 0;
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/hhf_flows_limit.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/hhf_flows_limit.json
+new file mode 100644
+index 000000000000..44538b9266b6
+--- /dev/null
++++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/hhf_flows_limit.json
+@@ -0,0 +1,128 @@
++[
++    {
++        "id": "e3cc",
++        "name": "HHF hh_limit rejects value above 2*HH_FLOWS_CNT cap (4294967295)",
++        "category": [
++            "qdisc",
++            "hhf"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "$TC qdisc add dev $DUMMY handle 1: root hhf"
++        ],
++        "cmdUnderTest": "$TC qdisc change dev $DUMMY handle 1: root hhf hh_limit 4294967295",
++        "expExitCode": "2",
++        "verifyCmd": "$TC qdisc show dev $DUMMY",
++        "matchPattern": "qdisc hhf 1: root refcnt [0-9]+.*hh_limit 2048",
++        "matchCount": "1",
++        "teardown": [
++            "$TC qdisc del dev $DUMMY handle 1: root"
++        ]
++    },
++    {
++        "id": "f681",
++        "name": "HHF hh_limit rejects 65536 (above 2*HH_FLOWS_CNT cap)",
++        "category": [
++            "qdisc",
++            "hhf"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "$TC qdisc add dev $DUMMY handle 1: root hhf"
++        ],
++        "cmdUnderTest": "$TC qdisc change dev $DUMMY handle 1: root hhf hh_limit 65536",
++        "expExitCode": "2",
++        "verifyCmd": "$TC qdisc show dev $DUMMY",
++        "matchPattern": "qdisc hhf 1: root refcnt [0-9]+.*hh_limit 2048",
++        "matchCount": "1",
++        "teardown": [
++            "$TC qdisc del dev $DUMMY handle 1: root"
++        ]
++    },
++    {
++        "id": "223d",
++        "name": "HHF hh_limit accepts boundary value 2048 (2*HH_FLOWS_CNT)",
++        "category": [
++            "qdisc",
++            "hhf"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "$TC qdisc add dev $DUMMY handle 1: root hhf hh_limit 100"
++        ],
++        "cmdUnderTest": "$TC qdisc change dev $DUMMY handle 1: root hhf hh_limit 2048",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $DUMMY",
++        "matchPattern": "qdisc hhf 1: root refcnt [0-9]+.*hh_limit 2048",
++        "matchCount": "1",
++        "teardown": [
++            "$TC qdisc del dev $DUMMY handle 1: root"
++        ]
++    },
++    {
++        "id": "147f",
++        "name": "HHF hh_limit rejects first value above cap (2049)",
++        "category": [
++            "qdisc",
++            "hhf"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "$TC qdisc add dev $DUMMY handle 1: root hhf"
++        ],
++        "cmdUnderTest": "$TC qdisc change dev $DUMMY handle 1: root hhf hh_limit 2049",
++        "expExitCode": "2",
++        "verifyCmd": "$TC qdisc show dev $DUMMY",
++        "matchPattern": "qdisc hhf 1: root refcnt [0-9]+.*hh_limit 2048",
++        "matchCount": "1",
++        "teardown": [
++            "$TC qdisc del dev $DUMMY handle 1: root"
++        ]
++    },
++    {
++        "id": "4d4f",
++        "name": "HHF add-time hh_limit 500 is preserved (init does not clobber user value)",
++        "category": [
++            "qdisc",
++            "hhf"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [],
++        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root hhf hh_limit 500",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $DUMMY",
++        "matchPattern": "qdisc hhf 1: root refcnt [0-9]+.*hh_limit 500",
++        "matchCount": "1",
++        "teardown": [
++            "$TC qdisc del dev $DUMMY handle 1: root"
++        ]
++    },
++    {
++        "id": "ca99",
++        "name": "HHF add-time hh_limit 4294967295 is rejected (no qdisc installed)",
++        "category": [
++            "qdisc",
++            "hhf"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [],
++        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root hhf hh_limit 4294967295",
++        "expExitCode": "2",
++        "verifyCmd": "$TC qdisc show dev $DUMMY",
++        "matchPattern": "qdisc hhf 1: root",
++        "matchCount": "0",
++        "teardown": []
++    }
++]
 -- 
 2.43.0
 
