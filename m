@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6682472618;
-	Sat, 12 Sep 2026 00:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF05931D362;
+	Sat, 12 Sep 2026 00:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789171273; cv=none; b=hK7tHbPf7k71/oSrj3XOg8ItUCmzA7sxazyNUPhrjquscYCCY9ibT6yT1IM++1VUHOaNZJxvnlVQnRKOjD3zO/uEjWbXTEC03pf7x2WXL3gyrJzxLTaQaPft6PkoNB/aehSOlaYHF3bB1HfRktcakR5OMFPugV/0tm8UJc4Twao=
+	t=1789171274; cv=none; b=en7jfnHUPZHxYKEGawl/xZ5bbXluhz4y0+zntchXeJcfCKRN9t0iJSXF6Wi+6ROht8vlQlZgR6ittV43LdWd7Q6iOKLUxQzSC3E2iZOVeiHDheONwISxNYwQtgZIUCKxa32gudXyzglGqC3JuIjaiy0Fn5xw1g80EaYZ8SWnAr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789171273; c=relaxed/simple;
-	bh=ias3orlQOVGhgvtygaq7mlbWlUdw+FHnfAjGlIDxzKQ=;
+	s=arc-20240116; t=1789171274; c=relaxed/simple;
+	bh=eKI+gI+JKGdVOkJu5X7JeHWpiGuoWuu7uo/Sb1pkctc=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=gK9BFw3CcS5cx4IPs/q0A/L+dm9yvdmOi4PEHRLo72uuLYC23VAyocVZsDVO4JxVW1NibwDDdgrnLvyH/sWxmaPRcjkBcIy+ybtCBjVUwAF20xNbNLZO8gzpJWdqbC/WAmfSqshkMLrdkgFvowKxFB3IotItVpSjfXu4RJOdrGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iSEISiB2; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=S2+Nk3gY9a5M9OQyZUNf9TKmgQ6H7pVN14S8eAwbHKUdNXiMcPmeEAAGSB1XG0bh7GqxTFQAgNA6yww6v/aVz0e9t7UMpCz9hxWM8kpbAr9QAgXRLJpCpBTT96XwS+EV1DSFqpB36ibM96X/p5hBd1Mfd/hKAOSA51jTPr/4hqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jYi8jYwt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iSEISiB2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 724071F000FF;
-	Sat, 12 Sep 2026 00:01:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jYi8jYwt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDA4F1F00893;
+	Sat, 12 Sep 2026 00:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789171269;
-	bh=Xye9fWl0NprshaDkSXHnPwGcRpNe4YR+sZgVP06S7k0=;
+	s=k20260515; t=1789171271;
+	bh=J3dP6TQ01nerFYbQUPmYoRE/18ptxGTy8+QhUv+PZFE=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=iSEISiB2gv4u+XhCtCGMVQQXZ54zw8gFEcB8BEbfYbD7mPyrZAcyW4hB8pGOgD1es
-	 w92ubWeDfTlb4C8mPtkomUoTfv5i0s8EGZFV6oeYUKsCzqbJvD7M8o/LV/HQ5JeYNP
-	 VhTWIDM+I9yqq1fQ2/6LwLFAZ0TfPbyT8ygNitIExObvUVRT8KGYU8BzEB5v2VQK6u
-	 b5SE/1z5HHBX0Mc3SYMGyCSPpJVVDAsQJMrJWOCpf8uZ2rymy1TTbxG1EyTA2LKQY9
-	 L9TAkhXaW5uaJHxqHTJV1EdKrAX0A5M9POw/XkyBKryIhiVQiMUAAVwHkG2Irm5NhC
-	 rGIfXJCHqOsaQ==
+	b=jYi8jYwt+DUsfPMZdr2mcWWlFdyAGfP03MoX4fkL5Sh3zbPIHy3VMiZJQuW/SQm/F
+	 KzunQ/m297CLzNUYxHPr2F0AsQAzdvhE0OewwYHNg1Ob2Fg+3euL/8N3kPsCflRXQC
+	 oAnIVlTGYseRQyuaFIkKdujMaMu0shCL8wTJkhuUMgSV8cyJBiWrFkISpW/SAOXznJ
+	 Ug7hjNkhDGg8y+HW5rMcD1erxCL7aHf/oVl5VVQDTISKDsq9fBSEsPc2c3vKUn8B6j
+	 bSM6jKvReaU1yPd7d9ULf2mbjTkCp9e/hHj0QS5hfQbYGPEwwDilCpY2D08klSCkeQ
+	 IN2xwCGfA5Yfg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 567C8392445B;
-	Sat, 12 Sep 2026 00:00:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0BB4392445B;
+	Sat, 12 Sep 2026 00:00:08 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,56 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 0/7] netlink: specs: conntrack: minor spec fixes
+Subject: Re: [PATCH net-next v5] net: dropreason: add
+ SKB_DROP_REASON_IP_TTL_EXCEEDED
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178917120589.3168051.14265843320183598835.git-patchwork-notify@kernel.org>
-Date: Sat, 12 Sep 2026 00:00:05 +0000
-References: <20260910003852.2184031-1-kuba@kernel.org>
-In-Reply-To: <20260910003852.2184031-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- donald.hunter@gmail.com, ast@fiberby.net, i.maximets@ovn.org,
- one-d-wide@protonmail.com, fw@strlen.de, pablo@netfilter.org,
- netfilter-devel@vger.kernel.org
+ <178917120738.3168051.8796678700758467343.git-patchwork-notify@kernel.org>
+Date: Sat, 12 Sep 2026 00:00:07 +0000
+References: <20260910094937.536150-1-junjie.cao@intel.com>
+In-Reply-To: <20260910094937.536150-1-junjie.cao@intel.com>
+To: Junjie Cao <junjie.cao@intel.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, dsahern@kernel.org, horms@kernel.org, idosch@nvidia.com,
+ fmancera@suse.de, jiayuan.chen@linux.dev, hangbin.liu@linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed,  9 Sep 2026 17:38:44 -0700 you wrote:
-> Clashiko raised a bunch of pre-existing issues on a recent series
-> from Ilya. Let's fix those and whatever else pops out in AI review
-> and looks relatively legitimate.
-> 
-> Jakub Kicinski (7):
->   netlink: specs: conntrack: timestamp is a nest, not a be64
->   netlink: specs: conntrack: fix the get reply attribute lists
->   netlink: specs: conntrack: fix SCTP conntrack state names
->   netlink: specs: conntrack: fix the nat-attrs attribute IDs
->   netlink: specs: conntrack: describe CTA_HELP_INFO
->   netlink: specs: conntrack: fix the per-CPU stats reply
->   netlink: specs: conntrack: tweak definition of obsolete attrs
+On Thu, 10 Sep 2026 17:49:37 +0800 you wrote:
+> The forwarding paths report an expired TTL or hop limit as
+> SKB_DROP_REASON_IP_INHDR, the reason otherwise used for a header that is
+> malformed (ip_input.c, exthdrs.c, br_netfilter). Nothing else in the drop
+> path separates the two: IPSTATS_MIB_INHDRERRORS covers both, and the TTL
+> check runs before NF_INET_FORWARD, so netfilter tracing stops at
+> PREROUTING and never sees the drop.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,1/7] netlink: specs: conntrack: timestamp is a nest, not a be64
-    https://git.kernel.org/netdev/net-next/c/68fd293d99e4
-  - [net-next,2/7] netlink: specs: conntrack: fix the get reply attribute lists
-    https://git.kernel.org/netdev/net-next/c/19be13c9c1e9
-  - [net-next,3/7] netlink: specs: conntrack: fix SCTP conntrack state names
-    https://git.kernel.org/netdev/net-next/c/924c8a610d3a
-  - [net-next,4/7] netlink: specs: conntrack: fix the nat-attrs attribute IDs
-    https://git.kernel.org/netdev/net-next/c/58c7df883ada
-  - [net-next,5/7] netlink: specs: conntrack: describe CTA_HELP_INFO
-    https://git.kernel.org/netdev/net-next/c/6c98fd455ed5
-  - [net-next,6/7] netlink: specs: conntrack: fix the per-CPU stats reply
-    https://git.kernel.org/netdev/net-next/c/f869aa4ceaa2
-  - [net-next,7/7] netlink: specs: conntrack: tweak definition of obsolete attrs
-    https://git.kernel.org/netdev/net-next/c/55edd9e55711
+  - [net-next,v5] net: dropreason: add SKB_DROP_REASON_IP_TTL_EXCEEDED
+    https://git.kernel.org/netdev/net-next/c/219c6b768ec7
 
 You are awesome, thank you!
 -- 
