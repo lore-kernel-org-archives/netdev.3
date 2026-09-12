@@ -1,136 +1,251 @@
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458E42C032E
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 01:11:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52BFE1A6838;
+	Sat, 12 Sep 2026 01:19:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789175481; cv=none; b=HAmFpEN9sMsk+JEfRMnSkpXn/F6NSljoajpN0oBg8q/HTffMJmnf7YhFdfA8iLNU6m/Sp+OYP5TSjZbG2a9J7F2fxoGbnw1ZL55+Y6xt6Xoc80PxH0U/6QANmK5iCGgsRt9ZzNk7IyCs6f+n+wUUDdeeQRr50AZBU68Uw672nvE=
+	t=1789175999; cv=none; b=OVAcHrL7xuvO0XT+/0Ynari3g4wnR17Ti+D+yUNlGF3g+8DyvVFvqpLLwWtXqCRQKyNr1UVGa3SsnpBMpZ3sapEfT0F3ACpTwkl9xFD1fbFgiur+Ybt0CpcOcsan/qalReP4TtUrDd7mf6l0evoVGUmR2cCTgrSBsFs3+G0T+OI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789175481; c=relaxed/simple;
-	bh=eMB6tvT0hZZyGsnNThdI/TAeAqIFVfVoL7cYicGIp54=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=HpGWyuSZX+TPOHtM+f74iescBn3whf6OzWaFhscylXE0XOD3MYOZG4z2TeKbjdRou1RlixuZqC555yo+COPhc94K7S86vigL/W3QYNRAazybh+We341c8vKOCQzcFdL4n1CamjToO3n/5UOMu2BElqwG4WO9ctmT4NYgjg4yGFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--namangulati.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=utlUI72m; arc=none smtp.client-ip=209.85.222.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--namangulati.bounces.google.com
+	s=arc-20240116; t=1789175999; c=relaxed/simple;
+	bh=S5WJuLkmN/8VBiUyWmYZ8z6Zvi4V1Wqn7ma3J3c/Hfc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=rZIdDHlUWQuL9hh3rUs1aK2SC3n+GO9vx1GlbfDlnPHJDpp/xE21+TMjb7RDwfdJI00HWKlehMpaQ5rW5wHYmDN+ZzJEtPlm4gm8UYHgLJaPRt6Whbg2dMmcoP/42quModgWNcCePAZbh3gjGx0uzomJiMCpYgwtcPnrNzJqtVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f4sv6tCu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="utlUI72m"
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-939f27c80a3so223877085a.1
-        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 18:11:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789175479; x=1789780279; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Tj1falKDmwZv4EHgKITMnazbfSQ8aahAK4wcOUV9Ux4=;
-        b=utlUI72mFHnxKAoepbO1dq9abyciRINtThNYU8EziifnOfEiDNcthZtfRZ2S3/O0/D
-         Pa8nQitp2keQvMFQg2rmQF/i7Xx9YnG6h6OGpN8uQT7huNZANuudAvQtoADecvB1NWgE
-         gYA9l15/7Ps/6D2ceWsIi/29d+PlSpR/4lFJ6nv2MPlM3rUuKg4o+HhotWCmI1vPilZV
-         rNBSbDytJn5chstG44+wdQiitzQoZmsC6xvO5F3SdNQMMuLt181rhqySdSCTOrk+UL5u
-         D68MXRK6hOSpdn+eXuxKsBi/6kU8a03VgGf/hD4ypA0iU8sgLz2IKs3YHsLGAHKOoXSQ
-         7XoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789175479; x=1789780279;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Tj1falKDmwZv4EHgKITMnazbfSQ8aahAK4wcOUV9Ux4=;
-        b=JtfyveBPe2jbgEoBizTAB9RSyTzJWEZvN/pSVb6KbH7MTfeVpk2P0p8LCvR1DVuZQj
-         nVpf0aAlaILy5FabmHDacch4nNHq3iqrpUCYwEX9I1HEtZ7wjn2tYqOoU1P26QLcFSwn
-         ZgxWNhqQBSWkURlbgc0soxPZY3+49tb02umRJJ2O5oTvQuF2za7xkMl5ZWAp7GcSwBmQ
-         oj4aVvEjXQSaHQg0f1M0CzrGpHs9jxabpIVA5YdG4PzhXamKqRg3HRFStVnT2nwPiWtq
-         +65nWHlPEdXKSCN4cohutYg2ZJAG6IdY7AUw0JJRG8eptbAAYH+dElw7anGiT61GjUwO
-         ScEg==
-X-Forwarded-Encrypted: i=1; AKwUvBw9pmaXnJZB5lsnCqoHd7dw/3aICWAfiHU9JRey+QxN8XaYAvj3YanJ1f6XHEGRZcvnExaD46A=@vger.kernel.org
-X-Gm-Message-State: AFuF++mIEIVkrQWInvonH+oJQIzeXmmqbndsy4GYtoXkXyR2e8iffRSE
-	GJX0ucIgNacAs6nQt9TZDzJpjRnQKE2cGHX6kKft22OzhNYLstRFG7IBZg3q/5327Rxlr7euc6m
-	i9TaCsYg/pEIkLX/pQueSnQUMnQ==
-X-Received: from qkbe26-n2.prod.google.com ([2002:a05:620a:a41a:20b0:93a:761:e75c])
- (user=namangulati job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:4443:b0:936:eeab:307e with SMTP id af79cd13be357-93a0357e40fmr130193285a.9.1789175478663;
- Fri, 11 Sep 2026 18:11:18 -0700 (PDT)
-Date: Sat, 12 Sep 2026 01:10:51 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f4sv6tCu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E3451F000FF;
+	Sat, 12 Sep 2026 01:19:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789175998;
+	bh=ZYcy4/6OA/EPIdzKHMx2xuitb5UBMDtdsKy6hKD2wRo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=f4sv6tCuB+khtwP951p8qaRZJOqRGvetOQ+A0VsWTq1bj/N1o9lMTozlDrC0N43n2
+	 Cllbq+mq2ZUf0xetJiT/0jCgjEBBxmKoWrl/TFIsDkjacaGzyjx6YEPWId9uNrttRV
+	 6iPptMnuecDRrCZYCf8pTf4hp7qvd/Wb6sTVAr6PkuNlRrc3gzya/hUCsyAhmmE88m
+	 3h6aF7obeOMA4DJIRHPE8fnQ7l/c/enq+Jd8OHxr3X91YQZ1uc3dQImZuoQHER3vCa
+	 L4OBt6vJl4iqS9Bgzan3XiKMFtBFFlKgTxTGYP2QGE4KMnBH13CUlKO/dJaL2d6KbO
+	 IVFbdI9Xr90Fw==
+Subject: Re: [PATCH net-next 1/2] net: add sockopt_expand_out()
+From: netdev-bot+sashiko@kernel.org
+To: leitao@debian.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, kuniyu@google.com, willemb@google.com,
+ dsahern@kernel.org, idosch@nvidia.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, david.laight.linux@gmail.com,
+ kernel-team@meta.com
+Date: Sat, 12 Sep 2026 01:19:56 +0000
+Message-ID: <178917599686.219967.7073291341401255599@kernel.org>
+In-Reply-To: <20260910-getsockopt_phase6-v1-1-e681e102d5b8@debian.org>
+References: <20260910-getsockopt_phase6-v1-1-e681e102d5b8@debian.org>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.1007.g17ff1f9808-goog
-Message-ID: <20260912011051.4092897-1-namangulati@google.com>
-Subject: [PATCH net] netfilter: ctnetlink: fix suspicious RCU usage in expect_iter_name
-From: Naman Gulati <namangulati@google.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Phil Sutter <phil@nwl.cc>, Simon Horman <horms@kernel.org>, netfilter-devel@vger.kernel.org, 
-	coreteam@netfilter.org, netdev@vger.kernel.org, 
-	syzbot+4bd730aede2791e40bdf@syzkaller.appspotmail.com, 
-	Naman Gulati <namangulati@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
 
-expect_iter_name() is invoked by nf_ct_expect_iterate_net() under
-spin_lock_bh(&nf_conntrack_expect_lock). It does not hold
-rcu_read_lock().
+Thank you for your contribution! Sashiko AI review found 5 potential
+issue(s) to consider:
 
-When accessing exp->helper with rcu_dereference() in syzbot's report,
-lockdep warns:
+Critical: 0 · High: 0 · Medium: 1 · Low: 4
 
-  =============================
-  WARNING: suspicious RCU usage
-  syzkaller #0 Not tainted
-  -----------------------------
-  net/netfilter/nf_conntrack_netlink.c:3393 suspicious rcu_dereference_check() usage!
+- [Medium] sockopt_expand_out() (include/linux/net.h:82-93) mixes two
+  length semantics: the growth predicate compares @size against…
+- [Low] Undocumented linkage change: net/socket.c drops `static` from
+  sockptr_to_sockopt() and include/linux/net.h publishes its prototype,…
+- [Low] sockopt_expand_out() (include/linux/net.h:82-93) rejects a
+  kernel-backed optval with WARN_ON_ONCE(!iter_is_ubuf(&opt->iter_out))…
+- [Low] sockopt_expand_out() is introduced with no callers and the commit
+  message never names the options that 'write past optlen today', so its…
+- [Low] sockopt_expand_out() installs a caller-supplied size_t as the new
+  count of a user-buffer iterator with no ceiling at all — no INT_MAX…
 
-  locks held by syz-executor381/5628: 2, last CPU#1:
-   #0: ffffffff9aee42a0 (nfnl_subsys_ctnetlink_exp){+.+.}-{4:4},
-       at: nfnetlink_rcv_msg+0xa69/0x12b0
-   #1: ffffffff8ea74d58 (nf_conntrack_expect_lock){+...}-{3:3},
-       at: nf_ct_expect_iterate_net+0x38/0x180
+--
 
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0xe8/0x150
-   lockdep_rcu_suspicious+0x140/0x1d0
-   expect_iter_name+0xfb/0x100
-   nf_ct_expect_iterate_net+0xf2/0x180
-   ctnetlink_del_expect+0x45d/0x640
-   nfnetlink_rcv_msg+0xcc2/0x12b0
-   netlink_rcv_skb+0x226/0x4a0
-   nfnetlink_rcv+0x2b9/0x28c0
-   netlink_unicast+0x7bd/0x940
-   netlink_sendmsg+0x813/0xb40
-   ____sys_sendmsg+0x54e/0x850
-   ___sys_sendmsg+0x2a5/0x360
-   __sys_sendmsg+0x2a5/0x360
-   do_syscall_64+0x166/0x520
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+net: add sockopt_expand_out()
 
-Use rcu_dereference_protected() with lockdep_is_held() on
-nf_conntrack_expect_lock instead, similar to expect_iter_me() in
-nf_conntrack_helper.c.
+This adds a sockopt_expand_out() helper that regrows opt->iter_out past the
+optlen userspace declared, for the getsockopt options whose reply length is
+derived from a count stored in optval instead of from optlen.  It also makes
+sockptr_to_sockopt() non-static and declares it in include/linux/net.h.
 
-Fixes: f01794106042 ("netfilter: nf_conntrack_expect: use expect->helper")
-Reported-by: syzbot+4bd730aede2791e40bdf@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6aa4a377.f81106d8.2ab401.0024.GAE@google.com/T/#u
-Signed-off-by: Naman Gulati <namangulati@google.com>
----
- net/netfilter/nf_conntrack_netlink.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+A few questions below.
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 579ada063b1b..4e5d7c701436 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3392,7 +3392,8 @@ static bool expect_iter_name(struct nf_conntrack_expect *exp, void *data)
- 	struct nf_conntrack_helper *helper;
- 	const char *name = data;
- 
--	helper = rcu_dereference(exp->helper);
-+	helper = rcu_dereference_protected(exp->helper,
-+					   lockdep_is_held(&nf_conntrack_expect_lock));
- 	if (!helper)
- 		return false;
- 
+> diff --git a/include/linux/net.h b/include/linux/net.h
+> index 470100ae71077..de0ed362b3779 100644
+> --- a/include/linux/net.h
+> +++ b/include/linux/net.h
+> @@ -70,6 +70,31 @@ static inline int sockopt_init_user(sockopt_t *opt, char __user *optval,
+>  	return 0;
+>  }
+>  
+> +/*
+> + * Grow optval to @size, for the options whose reply is sized by a count the
+> + * caller left in optval rather than by optlen. Those write past optlen today
+> + * and userspace relies on it.
+> + *
+> + * Call it before writing through opt->iter_out: it re-anchors the iterator at
+> + * the head of optval. Only a user buffer can be longer than the optlen the
+> + * caller declared, so a kernel-backed optval is refused with -EINVAL.
+> + */
+> +static inline int sockopt_expand_out(sockopt_t *opt, size_t size)
+> +{
+
+[Severity: Low]
+This isn't a bug, but the helper lands with no callers and the changelog
+never names the options whose "reply is sized by a count the caller left in
+optval".
+
+The first user shows up in the following patch of the series, where
+ip_mc_msfget() in net/ipv4/igmp.c calls it for the IP_MSFILTER reply.
+
+Could the changelog name IP_MSFILTER, so the semantics of the new helper can
+be read against a concrete conversion?
+
+> +	if (size <= iov_iter_count(&opt->iter_out))
+> +		return 0;
+> +
+
+[Severity: Medium]
+This test compares @size against iov_iter_count(&opt->iter_out), which is the
+number of bytes still remaining in the iterator, while the growth action below
+re-anchors at the head of optval:
+
+	iov_iter_ubuf(&opt->iter_out, ITER_DEST, opt->iter_out.ubuf, size);
+
+For ITER_UBUF, iov_iter_advance() only bumps iov_offset and shrinks count;
+ubuf keeps pointing at the head of the buffer.
+
+So if a callback ever calls sockopt_expand_out() after copying part of its
+reply, does the write cursor get rewound and the already-copied bytes
+overwritten?
+
+The same mismatch has two more effects: a @size that fits within the declared
+optlen can still fall into the kernel-backed -EINVAL branch once the iterator
+has been advanced, and the no-op branch can return 0 with the cursor sitting
+mid-buffer.
+
+opt->iter_in and opt->optlen also keep describing the old, smaller buffer
+after the expansion.  Only ip_mc_msfget() assigning opt->optlen = msf_size
+itself covers that up:
+
+	err = sockopt_expand_out(opt, msf_size);
+	if (err)
+		return err;
+
+	opt->optlen = msf_size;
+	if (copy_to_iter(msf, IP_MSFILTER_SIZE(0), &opt->iter_out) !=
+
+Nothing is broken today, since that single caller invokes the helper as the
+first operation on a freshly built iterator, and the "call it before writing
+through opt->iter_out" rule is stated in the comment.
+
+Would comparing against opt->optlen (or iov_offset + count) and refusing a
+partially consumed iterator make the helper's verdict independent of how much
+has already been written?
+
+> +	if (WARN_ON_ONCE(!iter_is_ubuf(&opt->iter_out)))
+> +		return -EINVAL;
+> +
+
+[Severity: Low]
+The changelog says only that "a kernel-backed optval keeps the bounded
+iterator and the callback gets -EINVAL if it asks to grow", but this path also
+emits a splat.
+
+sockptr_to_sockopt() builds an ITER_KVEC iter_out whenever optval.is_kernel:
+
+	if (optval.is_kernel) {
+		kvec->iov_base = optval.kernel;
+		kvec->iov_len = koptlen;
+		iov_iter_kvec(&opt->iter_out, ITER_DEST, kvec, 1, koptlen);
+
+so the state this WARN treats as impossible is a supported construction.
+
+Following the reachability at the end of the series, the only caller of
+sockopt_expand_out() is ip_mc_msfget(), reached only through the IP_MSFILTER
+case of do_ip_getsockopt(), and the only kernel-backed entry into
+do_ip_getsockopt() is sol_ip_sockopt() in net/core/filter.c:
+
+	switch (optname) {
+	case IP_TOS:
+	case IP_TRANSPARENT:
+		if (*optlen != sizeof(int))
+			return -EINVAL;
+		break;
+	default:
+		return -EINVAL;
+	}
+
+so IP_MSFILTER is rejected before any sockopt_t is built and no in-tree path
+can trip the WARN.
+
+Could the changelog mention the WARN as well, given it advertises only the
+-EINVAL?
+
+> +	iov_iter_ubuf(&opt->iter_out, ITER_DEST, opt->iter_out.ubuf, size);
+> +
+> +	return 0;
+> +}
+> +
+
+[Severity: Low]
+The caller-supplied @size becomes the new count of a user-buffer iterator with
+no ceiling here: no INT_MAX clamp, even though opt->optlen and the getsockopt
+optlen ABI are int, and no MAX_RW_COUNT limit of the kind import_ubuf()
+applies to the same ITER_UBUF construction.  The comment above says @size
+comes from "a count the caller left in optval", i.e. from user data.
+
+At the only call site the value is bounded, so nothing overflows today:
+
+	copycount = count < msf->imsf_numsrc ? count : msf->imsf_numsrc;
+	len = flex_array_size(psl, sl_addr, copycount);
+	msf->imsf_numsrc = count;
+	msf_size = IP_MSFILTER_SIZE(copycount);
+
+with psl->sl_count capped by net.ipv4.sysctl_igmp_max_msf, and the write past
+the declared optlen matches what IP_MSFILTER already did before the
+conversion.
+
+Would a clamp on @size here, or a note that the helper is meant only for the
+legacy options, be worth adding for future consumers?
+
+> +int sockptr_to_sockopt(sockopt_t *opt, sockptr_t optval, sockptr_t optlen,
+> +		       struct kvec *kvec);
+> +
+>  struct poll_table_struct;
+>  struct pipe_inode_info;
+>  struct inode;
+> diff --git a/net/socket.c b/net/socket.c
+> index c05d86e63abf7..29a0f7f8e2cab 100644
+> --- a/net/socket.c
+> +++ b/net/socket.c
+> @@ -2437,8 +2437,8 @@ INDIRECT_CALLABLE_DECLARE(bool tcp_bpf_bypass_getsockopt(int level,
+>   * It is important to remember that both iov points to the same data, but,
+>   * .iter_in is read-only and .iter_out is write-only by the protocol callbacks
+>   */
+> -static int sockptr_to_sockopt(sockopt_t *opt, sockptr_t optval,
+> -			      sockptr_t optlen, struct kvec *kvec)
+> +int sockptr_to_sockopt(sockopt_t *opt, sockptr_t optval,
+> +		       sockptr_t optlen, struct kvec *kvec)
+
+[Severity: Low]
+The subject and changelog cover only sockopt_expand_out(), but this hunk also
+drops static from sockptr_to_sockopt() and the header hunk publishes its
+prototype.
+
+The cross-file user only appears in the next patch, where do_ip_getsockopt()
+in net/ipv4/ip_sockglue.c calls it:
+
+	err = sockptr_to_sockopt(&opt, optval, optlen, &kvec);
+
+Since ip_sockglue.o is obj-y and CONFIG_INET is a bool, no EXPORT_SYMBOL is
+needed and nothing breaks.  Could the changelog say why sockptr_to_sockopt()
+is being made global here?
+
 -- 
-2.55.0.1007.g17ff1f9808-goog
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260910-getsockopt_phase6-v1-0-e681e102d5b8%40debian.org
