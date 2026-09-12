@@ -1,111 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FB033EAF3;
-	Sat, 12 Sep 2026 18:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD71E3A4F35;
+	Sat, 12 Sep 2026 20:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789238439; cv=none; b=JqQ/FfjC1jdEu+HCi6Mgxe3PWERs2rTtdTFNbBI5abwHg7KM4utqywe1DrnhY/Tu0wI6A628SLdfjpREurXPeEbF1nXXAlyZmeJoTFDR/0s1US71IhBy7J8UrImg2atMDfWE++H/103epZVRKPb5oNm2C3u6kw+NIn8xrKHmihs=
+	t=1789243487; cv=none; b=s+bPSNPO9KLZCpq5qq8GPnmsQkJzv2WlE32NM/ZzqWQS9/Xjl8UZy/aIKacLsORU6KTOONhVbEpVEOOQam7+A5T9McH5CZf43Fex3Eiu8GINWYXb/8Wlzl1vp3wKr5iC8cY8mROIFYd5J1EMJ3oLjy5VUJ639MwEDZAf+xbAvUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789238439; c=relaxed/simple;
-	bh=feGQjLsjp9QR+P8XbdIRYHpjRLB04VfdxUjH1AfHsW4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hODKoJ6ca8AO1e/7O7VuO5+D8VYiD9mGSE0+ivzAxafzZY+MLRh6t8K8tHlPc22PKVe4IKU1BV6zK31Q6EflwzIPCKphpSW0OFol1lAdmtSfuORkoy2+T6ZCGugXa6Nt9Qm2Xq3NOztUGIAtphriS4ABgQhrSxZlzmFq6skAeCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G6I9qaVI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789243487; c=relaxed/simple;
+	bh=tmEvGZIL5vXtpEuXE0uOBicD54Gwa1umGdgnpskAWmA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=U7ZKL24ko537UtM3ouQ8gYiE2rKBz9vZE6S+zVchOUklwWajI2ayEkUO0GQaD0jpmBOz7KAp4m4PSfvjhr4m/Rh3oDb9iyNJNzNxvkIftsNyUGn3ynVe5SLrXlTki9pcsXWG+eiJRZWQEoPrCBqK61cytXiYN7VrLxGYa9+7xws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k+vwqfpX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G6I9qaVI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE981F000FF;
-	Sat, 12 Sep 2026 18:40:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k+vwqfpX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 130461F0089C;
+	Sat, 12 Sep 2026 20:04:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789238427;
-	bh=PyVUkoEzTYYgdYhMfWVlTxZE00BQsQtl3tpKIEMb6KE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=G6I9qaVIIxavxCzZxKS0RHdqQrO8/fIaUP+iZZX2t5yMP8yGfj1MWcpJst/PnmrTU
-	 fhNFy1wThxie3BEqI/zw0YH1eeUp6q3mhTD3Pj8X+AqbfcvRER6qRmdh2rdYQEei3L
-	 17kJcMTrDm+rc/vEiWhRvFRKwP4g62NvellUivh49ClI7FIY+gZ93RmVmN9izMn9DT
-	 exMHaEIcwTIeB0MgFv/phK8ZE/5txFGs4BM3iEdybKFQBPWD+BOOl6C7ryWvauoEI2
-	 xDbLNkmAJw67BiueH8q8AiWMU6ZEc6lRs66CSsP5J+Od390zaUJP12zqq0hhTxJJMV
-	 Cvx/lgmn91yNA==
-Date: Sat, 12 Sep 2026 11:40:26 -0700
+	s=k20260515; t=1789243481;
+	bh=/AJ0OU1zHH0UlnOeZ0jiSbZa3MIGsSezQQ1wIF4XSOE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=k+vwqfpXqzzfRi36rfEy+tXdwhyFHr3lJiYwBz0pey0vSVr3A3BFqahfvILJZ1A1v
+	 c72Ip/mYWbvtbA8Rj3xZ0JvWLpBuJBPB3darhsza86m9V77FZjBf2p54DhXXwgfeU1
+	 sYsn77nhTdin21a9O32B3VEOwXthJVqSOeEmKt8FeedgRSFtV47WsKGYc+7AtAudEP
+	 /ReavesP+2Oejcy50vjl5eLNyRSk+KtPKbXeJy7rj9g9g3O3/ukGmYZYs2OsnZOQRb
+	 JPFUxLe5YUlu25C6mwJqU1w7ne8yfS48fIabau0D/MhQ46lG5ODjjCplQbFYTLVgyI
+	 xDj5T/wennp+w==
 From: Jakub Kicinski <kuba@kernel.org>
-To: Narcisa Vasile <narcisav.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, daniel.zahka@gmail.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- shuah@kernel.org, horms@kernel.org, willemb@google.com, petrm@nvidia.com,
- anubhavsinggh@google.com, richardbgobert@gmail.com,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2] selftests: drv-net: add BIG TCP test cases
-Message-ID: <20260912114026.6a39fb91@kernel.org>
-In-Reply-To: <aqWYNpcPRjTAoDok@gmail.com>
-References: <20260912050327.20616-1-narcisav.kernel@gmail.com>
-	<20260912093226.529ff414@kernel.org>
-	<aqWYNpcPRjTAoDok@gmail.com>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	daniel.zahka@gmail.com,
+	willemdebruijn.kernel@gmail.com,
+	donald.hunter@gmail.com,
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH net-next 2/6] psp: don't report the main netdevice's ifindex to associated namespaces
+Date: Sat, 12 Sep 2026 13:04:22 -0700
+Message-ID: <20260912200426.121025-3-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260912200426.121025-1-kuba@kernel.org>
+References: <20260912200426.121025-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Sat, 12 Sep 2026 11:21:42 -0700 Narcisa Vasile wrote:
-> On Sat, Sep 12, 2026 at 09:32:26AM -0700, Jakub Kicinski wrote:
-> > On Fri, 11 Sep 2026 22:03:27 -0700 Narcisa Vasile wrote:  
-> > > Add four new test cases that validate coalescing
-> > > under increased size limits (BIG TCP):
-> > > 
-> > > big_tcp_data_same
-> > >   - validates that equal-sized segments coalesce past
-> > >    the legacy IP_MAXPACKET limit.
-> > > big_tcp_data_lrg_sml
-> > >   - validates that a smaller final segment coalesces into the
-> > >     previous chain of large-sized segments while crossing the
-> > >     IP_MAXPACKET limit.
-> > > big_tcp_tcp_seq
-> > >   - validates that a packet with a wrong sequence number doesn't
-> > >     coalesce. The test uses a sequence number for which the low 16 bits
-> > >     correspond to the correct sequence number to validate against
-> > >     truncation bugs, since total aggregate length crosses over the
-> > >     legacy size limit for BIG TCP.
-> > > big_tcp_large_max
-> > >   - validates that coalescing stops at the configured BIG TCP limit.  
-> >  
-> > Still failing:
-> > 
-> > https://netdev-ctrl.bots.linux.dev/logs/vmksft/net-drv-dbg/results/819882/3-gro-sw-py/stdout
-> > 
-> > https://netdev-ctrl.bots.linux.dev/logs/vmksft/net-drv-dbg/results/819882/3-gro-sw-py-retry/stdout
-> > 
-> > Grep gro_lib.py for KSFT_MACHINE_SLOW  
-> 
-> Are you suggesting to just skip the big tcp test cases on slow machines?
-> That's the current behavior for the large_* existing tests.
+PSP device is visible in a netns if any of the devices (eg. netkit)
+are associated with that PSP device. In the main netns we show
+all the associated netdevs + their netns id. In the "container"
+netns we show only the local devices. But we were listing the main
+netdev in all cases, even though it's meaningless outside of
+the main netns.
 
-Yup!
+Report ifindex only in the main netdevice's namespace. Absence is
+already unambiguous, the by-association flag is set exactly in the
+messages which no longer carry the ifindex.
 
-> > Then the 15x increase is probably unnecessary/too high as well, since
-> > we GRO 64k 128k shouldn't need more than 2x ?  
-> 
-> If I skip them in slow envs, then yes, 2x should be enough.
-> Those pre-existing up-to-64K large tests don't pass either in the run
-> above. They're skipped, so we don't actually know the proper
-> timeout value for them in this test envirnoment. From the test run above:
-> 
-> # #           Received {40560 [!=65495]24935 [!=599]599 [!=0]}, Total 3 packets.
-> # #           /srv/vmksft/testing/wt-18/tools/testing/selftests/net/lib/gro: incorrect number of packets
-> # # Ignoring ipv4/large_max failure due to slow environment
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+ Documentation/netlink/specs/psp.yaml | 2 ++
+ net/psp/psp_nl.c                     | 7 +++++--
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-Exactly, that's what made me remember the MACHINE_SLOW hack :S
+diff --git a/Documentation/netlink/specs/psp.yaml b/Documentation/netlink/specs/psp.yaml
+index e9c2ee7e28e0..f3266763c325 100644
+--- a/Documentation/netlink/specs/psp.yaml
++++ b/Documentation/netlink/specs/psp.yaml
+@@ -38,6 +38,8 @@ name: psp
+         doc: |
+           ifindex of the main netdevice linked to the PSP device,
+           or the ifindex to associate with the PSP device.
++          Only reported to the network namespace the main netdevice
++          lives in, an ifindex has no meaning outside of it.
+         type: u32
+       -
+         name: psp-versions-cap
+diff --git a/net/psp/psp_nl.c b/net/psp/psp_nl.c
+index f91665748dde..b57366b5e032 100644
+--- a/net/psp/psp_nl.c
++++ b/net/psp/psp_nl.c
+@@ -294,13 +294,16 @@ psp_nl_dev_fill(struct psp_dev *psd, struct sk_buff *rsp,
+ 		return -EMSGSIZE;
+ 
+ 	if (nla_put_u32(rsp, PSP_A_DEV_ID, psd->id) ||
+-	    nla_put_u32(rsp, PSP_A_DEV_IFINDEX, psd->main_netdev->ifindex) ||
+ 	    nla_put_u32(rsp, PSP_A_DEV_PSP_VERSIONS_CAP, psd->caps->versions) ||
+ 	    nla_put_u32(rsp, PSP_A_DEV_PSP_VERSIONS_ENA, psd->config.versions))
+ 		goto err_cancel_msg;
+ 
+ 	if (cur_net == dev_net(psd->main_netdev)) {
+-		/* Primary device - dump assoc list */
++		/* Primary device - report the netdev, dump assoc list. */
++		if (nla_put_u32(rsp, PSP_A_DEV_IFINDEX,
++				psd->main_netdev->ifindex))
++			goto err_cancel_msg;
++
+ 		err = psp_nl_fill_assoc_dev_list(psd, rsp, cur_net, NULL);
+ 		if (err)
+ 			goto err_cancel_msg;
+-- 
+2.55.0
 
-> Instead of skipping them, I was thinking to change the approach and
-> send packets continuously, enough for more than just one aggregate.
-> The the test would verify that at least one aggregate passed the 64K boundary.
-> I'd also keep the increased timeout. What do you think?
-
-Probably not worth it? The SLOW machines testing is primarily
-aimed at catching debug asserts/WARNINGS/kasan issues etc.
-Here we are trying to test the receiver behavior but the SLOW
-machine is slowing down the sender. We could try to optimize
-the sender somehow but it will probably add complexity to the
-test and catch no additional bugs?
