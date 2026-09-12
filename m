@@ -1,194 +1,192 @@
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7BA3F929C
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 09:22:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.204
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789204946; cv=pass; b=Z+sgpkrFBTezPNrLo6lTjSWoq3VO4ai6QNLijdeuUfxFnyh2odsVUkpWsRwTbaK5SXZFGPmKEYBp8XVHeFWC7G0+hjYbLynmid5babEBWOBH9FQXMo2XzafJw72MTtgsL7/9TboxSNlIxpDSF6AyqiCAiz5eSf4thgIJF9Slwis=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789204946; c=relaxed/simple;
-	bh=aO9zUlhZ/cIsv4TahIImjijy5eZpJLxUISCtfDgt/zQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HED+w8tu6063Vd9HHE/w6HwcQpHhfsShXvzD4jD/NCzDM29eUUyFJsqRCEIYDJREke0gJcBPt7dgniNMixus2g9x6B0JbhCyi0EcF5kcmrJj5pTKe35wl/ezGNRDrz+VlEiNcyY0jOWqRPU3gMYEg/XnsCyPFPCRqGTZInKwt4U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Aan9x3L1; arc=pass smtp.client-ip=74.125.230.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB3A7416870
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 09:36:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789205773; cv=none; b=MxbbSkXKoZXFAeSDxc83CuVTQnJZRg4eAmM1FkUwJtI/60W7y/wDzjOM0y3kj+rvxlRRjuwp/ojUP37Hmmzrq03Wg1kP+51VtW3PsmBLXb2LVE6VxB1BxSzwDurgPDx6IZeyjxUIR4O72UomDYIHd5iPbx8ah0XdBeHyobLBRiE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789205773; c=relaxed/simple;
+	bh=5PP8v4e2du4jh4kzrNUVVWrWELbxgQwsg4sJKZimPh4=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=etID5ikkBNOvMSBIEvp4Xl7MdPPxruG22z91Kbu2hxiqTQ7JbZUMJO5ZVIaoQh7I14SKlh4BbZBVM0v56JKG8Mxerd7cWnLzXTp2CjNxQ2P8VO6kdECFIvIrLWXcJbfmprYJDXpGp/j5c37J1REo7TZS+nCAGJL+wfAfXHGnU+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lRM605ro; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Aan9x3L1"
-Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-52fb76ef1d1so10119051cf.3
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 02:22:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789204943; cv=none;
-        d=google.com; s=arc-20260327;
-        b=J+jOd22Um0snl8QpuSQhvWS8tKA6XyIhzENUQxlLarDoKf5nuMxRIqPCO3RPuveTk6
-         sXh6uPZ4eIxx/H4+g4+HuXed9gRfnQkDA2kmU6jZV0jG3Bo/MHeuZiBcz8WsfdCsidLb
-         MpTTnnhK/AXsz431o1hpwGGDXrIOD+oqKo7Wrkj1OAEql4ZlMckgaSjJsgPK2th5oP2y
-         QJjZ9n2bPJ3QTvUZo5zrAkGX/yl/uDIh6sXyDUWPQlVyKLiIxE3zHQ6bOe7jaLCfNDCN
-         tWcZwvf69ZSBDC14uqS7An5SJA2S2ulXf9dsUG5g54lQUBqca6toSGUejsmtlyEk4ges
-         GX7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Po/KtSuUEH8MfPngI4Th6eiOf/oind2PYZNZlItxXP8=;
-        fh=M+Jq/vBRy3rwq2dxV0l0PpOMS5MVzA8AOvE8p2w/wLI=;
-        b=agjGgKs7rF3Yx7dBPltl4ClN9OxAmdCYIXFu7UsNoWTa3Q3nZmpZFgNIzCry/fy6pT
-         SZUKHEfPKwCwNU0+pCWNibDTJFNgG3qp2ipynWnY7MqCsl5jd8osQCAJAf8MgF2Igyxd
-         EcqMAuh3SYurcy9sByrBxZGcaENJn8RPC7KmRjnB78Aive7rdNtfKuZM/jUARxwhNVKi
-         YWgU+5FRa0lQD9fCTzk9JMWCe/FakTLwzOM7lpWrUj84WSyUsCQQqmtz4w7iLTJi/8d5
-         iwkW4TzXkBj/N+7ldQ+CFxAddE+zVr978S1RJBrp+gBmSQ2+1ihx43tTc0mCYIymEV1z
-         0/yg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789204943; x=1789809743; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Po/KtSuUEH8MfPngI4Th6eiOf/oind2PYZNZlItxXP8=;
-        b=Aan9x3L1Lt5oHgui16Ioup1xXWhpqxzzNO2wiUMssNcxnhXGG13f9316vSC60/ytw0
-         Tnp17vAc6ly0XcjzgytE0uxOjpeEu0RERMMIWn7x4iDgmOS7q/vqpVyY4HZVYtCFQg88
-         9k2OcIS6j6Euv2kVxq+jn1v8sQl+T8azF0stGteBQ2ppEsYMFlWUeHi7F89Mp6hYolPu
-         t13BGKo9rgnCb0iSQTewddHGq9OdNmnszSnIqvhR/WyDrV6MLvWmSYZKuyi2eMPj7fMT
-         /8LE+1K/fOMkWsC6WB2FMaTnBOnhWvWRwWJWKVOnxZ++kxGZcYStPXLkCvpUHcmI6VEb
-         RJrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789204943; x=1789809743;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Po/KtSuUEH8MfPngI4Th6eiOf/oind2PYZNZlItxXP8=;
-        b=W+AauOuGSej/TFmOd64YUlN4vYabJyV5ojseW2GTbh/NHNfGp2VKaUnXEhk7NVqQRW
-         3/5KjJQNwFOQjoh3ZswWlXkQSvaeGtaUS67mNJHE+A/INsUMZXl2F1FP1VTReIotR1pa
-         yfdsZBqmNS3kU3Q/Xb71HU/VHKDa1e392NSlxqySXFvLjyL6jXKJzmvYOxs3GG98Ovh2
-         sdr7Fq90Cb/itTOmCBF2sQsjcNgjdPT2dsfQxDGrQwR1OBpSDIfdk8RV147ryalxj26j
-         Kent4OEb+n4cdeYfGECqgJXzar3TeVOlKTLt4DBbBrn65El3ug4PbJcYVRm/VhISfvP3
-         oq/g==
-X-Forwarded-Encrypted: i=1; AKwUvBzndLTpXM2Vfs4EtJQfEwBTrXcSOHlhJfZo/9qb+LUVwjK3oS/lpACSqIkfZhDuZLqsGuUAGnI=@vger.kernel.org
-X-Gm-Message-State: AFuF++kG49CbZ06AfIOWSY6aawolPqnv8OgNXojHDrnlkqrwb4noKiGa
-	2aq4FANzAlA8xvecWyssBog/IAzcM6IkuuUy0l7Ky7M/VwJpChl4uIULCGbCEcJvjS59pEOC967
-	5lOLh/TIbjxhr/5LNFo6iBXzcUAlNpJGJyNJelT/d
-X-Gm-Gg: AYBFou036IsC5Cik9GO/NuQ2jiOZaqcmW4tKRRAEBKUJ9eVlcmgZARLByJvCIMPOB0X
-	gcUkvE0z9WKgNCRAmFJaQfYPrHHlQcSxqhzOqZYGVrZY5PGOWp+1qUN3c1+MaXbldfdgXch+/pA
-	mx8c12v3mm+OZOsx9kPKEdS5RoaXpbaSeWwuCkUg72DnDtB3OusXSaZIyGY1LvYretBnqMLgP6/
-	XsxGyPC4QuA3isjSbg2AIS5YyukAz/LhGsV8HxP9zico2w2Ht6yn+49zp93NjZRQ6EzcUHtTYoe
-	4hvIKE1gROonRg1p6edN6cTqSOVrIOvhqbyQ5Bs89VPu0lk3daV7zBm/9zjhD9mt5JLJtZCTDDg
-	ZDgrHC/E/GNxJxQjL2O+YTV1n5JoWKO8VaBcU3pvqr/9U/4Ajp8VT/nPoc64vOoev0Zo=
-X-Received: by 2002:a05:622a:13d4:b0:530:e080:93be with SMTP id
- d75a77b69052e-530e0809981mr66816991cf.46.1789204942535; Sat, 12 Sep 2026
- 02:22:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lRM605ro"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 169D61F000FF;
+	Sat, 12 Sep 2026 09:36:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789205767;
+	bh=K4VBslU50Db8yLz4VgYqKBKLwKUHuhdN+m9L2JFZUT4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=lRM605rooaXUHtr/Z4ppO3h+ebI51gvG0eDQ2GXmaT0uCZ5ZUQ+wRkS/idCfPy6j0
+	 vb3N6WDk6LEQAJy5yDjDyDjcRgv2Q0bcFBD6vEH+7IeSCQnIed4XPctxjcgfxf+D/i
+	 Ijj8FDkpkPUEeB2Ebfm6r6qamckXfJl+u2sfOuJSxI7EVpQCtAm/EckONanFtoc0uR
+	 ZywuSSyKXYlJ6fJqNJWXVWoK6fhIs8LsMgKEPdhyOqhIuKL+iReppnsiUQm2lxHKfc
+	 jeg0jhMiDfwc1bKtTDpPn8B+VmvHYMUJ37lEwkBBN/6xAuaVuKc+LzA2tm13mcHGkR
+	 KujB91SKrsroA==
+Subject: Re: [PATCH net 2/5] idpf: disable PTM on probe failure and on remove
+From: netdev-bot+sashiko@kernel.org
+To: anthony.l.nguyen@intel.com
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
+ ae878000@gmail.com, mhun512@gmail.com, joshua.a.hay@intel.com,
+ sridhar.samudrala@intel.com, milena.olech@intel.com,
+ vadim.fedorenko@linux.dev, willemb@google.com, jacob.e.keller@intel.com,
+ przemyslaw.kitszel@intel.com, jbrandeb@kernel.org, alexander.nowlin@intel.com
+Date: Sat, 12 Sep 2026 09:36:05 +0000
+Message-ID: <178920576561.219967.8682374011760278855@kernel.org>
+In-Reply-To: <20260908214502.528440-3-anthony.l.nguyen@intel.com>
+References: <20260908214502.528440-3-anthony.l.nguyen@intel.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260912055304.1415016-1-cnfourt@gmail.com>
-In-Reply-To: <20260912055304.1415016-1-cnfourt@gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Sat, 12 Sep 2026 02:22:11 -0700
-X-Gm-Features: AcwNN1V9Y4R_ylpJWfxtuU1JoTDq0Gs2lcrzQUAf6_3bVo65JvmOfd5F0cefuwQ
-Message-ID: <CANn89iKk2smjZ5OVJGQBw+F1KJ8DDdfMUmquSKAUq16rMcHg8A@mail.gmail.com>
-Subject: Re: [PATCH] net: ip_tunnel: initialize `options_len` before
- referencing options
-To: Gris Ge <cnfourt@gmail.com>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Cosmin Ratiu <cratiu@nvidia.com>, Gal Pressman <gal@nvidia.com>, 
-	Kees Cook <kees@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, 
-	"open list:NETWORKING [IPv4/IPv6]" <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 11, 2026 at 10:53=E2=80=AFPM Gris Ge <cnfourt@gmail.com> wrote:
->
-> The following command triggers a kernel panic:
->
->   ip link add d0 type dummy; ip link set d0 up
->   ip route add 10.30.0.0/16 \
->     encap ip id 300 geneve_opts 4660:66:11223344 dev d0
->
->   memcpy: detected buffer overflow: 4 byte write of buffer size 0
->   kernel BUG at lib/string_helpers.c:1044!
->   ...
->   ip_tun_parse_opts.part.0.cold+0x10/0x10
->   ip_tun_build_state+0x116/0x2a0
->
-> On kernels built with GCC 15+ and `CONFIG_FORTIFY_SOURCE`, the fortified
-> `memcpy()` got 0 sized destination with request of 4 bytes length:
->
->   static int ip_tun_parse_opts_geneve(...)
->   {
->       ...
->       attr =3D tb[LWTUNNEL_IP_OPT_GENEVE_DATA];
->       data_len =3D nla_len(attr); /* =3D=3D 4 */
->
->       struct geneve_opt *opt =3D ip_tunnel_info_opts(info) + opts_len;
->       memcpy(opt->opt_data, nla_data(attr), data_len);
->       /*     ^^^^^^^^^^^^^ 0 since options_len is assigned afterwards */
->
-> Fixed by initializing the counter before the options are referenced
-> matching what `ip_tunnel_info_opts_set()` already does
->
-> Fixes: bb5e62f2d547 ("net: Add options as a flexible array to struct ip_t=
-unnel_info")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gris Ge <cnfourt@gmail.com>
-> ---
->  net/ipv4/ip_tunnel_core.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
-> index 5168d546ea2f..8fb4742aca92 100644
-> --- a/net/ipv4/ip_tunnel_core.c
-> +++ b/net/ipv4/ip_tunnel_core.c
-> @@ -711,6 +711,7 @@ static int ip_tun_build_state(struct net *net, struct=
- nlattr *attr,
->         new_state->type =3D LWTUNNEL_ENCAP_IP;
->
->         tun_info =3D lwt_tun_info(new_state);
-> +       tun_info->options_len =3D opt_len;
->
->         err =3D ip_tun_set_opts(tb[LWTUNNEL_IP_OPTS], tun_info, extack);
->         if (err < 0) {
-> @@ -753,7 +754,6 @@ static int ip_tun_build_state(struct net *net, struct=
- nlattr *attr,
->         }
->
->         tun_info->mode =3D IP_TUNNEL_INFO_TX;
-> -       tun_info->options_len =3D opt_len;
->
->         *ts =3D new_state;
->
-> @@ -1005,6 +1005,7 @@ static int ip6_tun_build_state(struct net *net, str=
-uct nlattr *attr,
->         new_state->type =3D LWTUNNEL_ENCAP_IP6;
->
->         tun_info =3D lwt_tun_info(new_state);
-> +       tun_info->options_len =3D opt_len;
->
->         err =3D ip_tun_set_opts(tb[LWTUNNEL_IP6_OPTS], tun_info, extack);
->         if (err < 0) {
-> @@ -1040,7 +1041,6 @@ static int ip6_tun_build_state(struct net *net, str=
-uct nlattr *attr,
->         }
->
->         tun_info->mode =3D IP_TUNNEL_INFO_TX | IP_TUNNEL_INFO_IPV6;
-> -       tun_info->options_len =3D opt_len;
->
->         *ts =3D new_state;
->
-> --
-> 2.55.0
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-You forgot a 'net' in [PATCH net] . Please read
-Documentation/process/maintainer-netdev.rst
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
 
-Looks good, but please add a comment on the assignment stating
-it must precede the option parsing, otherwise a future cleanup might move
-it back down?
+- [Medium] Incomplete unwind: the new `pcie_ptm_enabled(pdev)` guard in
+  `idpf_decfg_device()`…
 
-Or maybe use something similar than tunnel_key_opts_set() in
-net/sched/act_tunnel_key.c
-for consistency.
+Pre-existing issues:
+- [Medium] Unserialized read-modify-write on shared upstream PTM state:
+  `idpf_decfg_device()` (idpf_main.c:111-112) now calls…
+
+--
+
+idpf: disable PTM on probe failure and on remove
+
+idpf_probe() enables PCIe PTM but never disables it, so the PTM enable
+counts of the device and of its upstream path stay elevated after probe
+failure or removal.  This adds a pci_disable_ptm() call to
+idpf_decfg_device(), guarded by pcie_ptm_enabled() so that a failed
+pci_enable_ptm() does not drive the count negative.
+
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
+> index 9840580fbe51..129bccaa6baa 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_main.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
+> @@ -106,6 +106,11 @@ static int idpf_dev_init(struct idpf_adapter *adapter,
+>   */
+>  static void idpf_decfg_device(struct idpf_adapter *adapter)
+>  {
+> +	struct pci_dev *pdev = adapter->pdev;
+> +
+> +	if (pcie_ptm_enabled(pdev))
+> +		pci_disable_ptm(pdev);
+> +
+
+[Severity: Medium]
+Does the pcie_ptm_enabled() guard skip the disable in exactly the case
+the commit message describes as broken?
+
+pcie_ptm_enabled() only looks at this device's own count:
+
+    static inline bool pcie_ptm_enabled(struct pci_dev *dev)
+    {
+        return dev && atomic_read(&dev->ptm_enable_cnt) > 0;
+    }
+
+But pci_enable_ptm() in drivers/pci/pcie/ptm.c enables the upstream path
+first, and only then tries the local device:
+
+    parent = pci_upstream_ptm(dev);
+    if (!parent)
+            return -EINVAL;
+    /* Enable PTM for the parent */
+    rc = pci_enable_ptm(parent);
+    if (rc)
+            return rc;
+    ...
+    if (atomic_inc_return(&dev->ptm_enable_cnt) > 1)
+            return 0;
+
+    rc = __pci_enable_ptm(dev);
+    if (rc) {
+            atomic_dec(&dev->ptm_enable_cnt);
+            return rc;
+    }
+
+So when __pci_enable_ptm(dev) fails, the local count returns to zero but
+the parents that were just enabled and refcounted are never unwound.
+__pci_enable_ptm() fails locally for a device with no PTM capability, and
+for an endpoint that is not a PTM requester:
+
+    if (!ptm)
+            return -EINVAL;
+    ...
+    case PCI_EXP_TYPE_ENDPOINT:
+    case PCI_EXP_TYPE_LEG_END:
+            if (!dev->ptm_requester)
+                    return -EINVAL;
+
+idpf_cfg_device() discards that error and continues probing:
+
+    err = pci_enable_ptm(pdev);
+    if (err)
+            pci_dbg(pdev, "PCIe PTM is not supported by PCIe bus/controller\n");
+
+In that state pdev->ptm_enable_cnt is 0 while each upstream PTM device
+sits at +1, pcie_ptm_enabled(pdev) is false, and idpf_decfg_device() does
+nothing on probe failure or on remove.
+
+Doesn't that leave the upstream enable counts and PTM Control bits
+elevated with no bound driver, which is what the changelog says this fixes
+("the PTM enable counts of this device and of its upstream path stay
+elevated with no bound driver")?  Every bind/unbind cycle of such a
+function, for example an idpf VF under a PTM-capable upstream port, would
+add another leaked upstream reference, and a sibling endpoint's later
+pci_disable_ptm() can then never bring the shared parent back to zero.
+
+Calling pci_disable_ptm() unconditionally is not the answer either, for
+the reason given in the changelog.  Would it make sense to record whether
+pci_enable_ptm() succeeded in idpf_cfg_device() and key the unwind off
+that instead, or to have the PCI core unwind the parent enables on local
+failure?
+
+[Severity: Medium]
+This is a pre-existing issue in the PCI core and was not introduced by
+this patch, but this is the first place idpf reaches it, so noting it
+here.
+
+pci_disable_ptm() recurses over bridges shared with sibling endpoints,
+and the counter transition and the config-space write are separate steps
+with no common lock:
+
+    if (atomic_dec_and_test(&dev->ptm_enable_cnt))
+            __pci_disable_ptm(dev);
+
+    parent = pci_upstream_ptm(dev);
+    if (parent)
+            pci_disable_ptm(parent);
+
+pci_enable_ptm() is symmetric:
+
+    if (atomic_inc_return(&dev->ptm_enable_cnt) > 1)
+            return 0;
+
+    rc = __pci_enable_ptm(dev);
+
+Can a remove running idpf_decfg_device() (shared parent 1 -> 0, then the
+disable write) interleave with an asynchronous probe of a sibling under
+the same upstream port (0 -> 1, then the enable write)?  If the sibling's
+enable write lands before the remover's disable write, the shared parent
+ends up PTM-disabled in hardware while ptm_enable_cnt is 1, and the
+sibling would then gate on pcie_ptm_enabled() in idpf_ptp and offer
+getcrosststamp over a PTM path that is off.
+
+The window is narrow and confined to driver bind/unbind, and every
+pci_disable_ptm() caller in the tree has the same exposure, so this looks
+like something for the PCI core rather than this patch.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260908214502.528440-1-anthony.l.nguyen%40intel.com
