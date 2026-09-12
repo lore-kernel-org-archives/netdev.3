@@ -1,288 +1,207 @@
-Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409324BEE5E
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 00:25:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B6322FF22;
+	Sat, 12 Sep 2026 00:28:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789172709; cv=none; b=XY4wTU1e49+vxtGF9Jsp4ANAFr27ffkvAFVAy1JHJuwqg1objR9iiaJGfV1TnaJVPETGP7XjZT5EdlFS/vHs6/87yxLtH4uPQdDrXUbaP/johEVmBwnisS/P0WmxZXraH4A++g/k8NINdhMELbJLB4VXIo3HIc7Hw7p6FtlwoBI=
+	t=1789172936; cv=none; b=cqtFDOp6uKagJ+5AjJGoqIe88df9Qvp18rfRQXTMYgeFrhj+U9ueBhUGN2t/2vHW8ewubzfGGaLTz4RGtQLKTSvU5wuTvFNVyQmOQLujGQTI7jEtuGjXjZCi3YFV0RnKBAAJVs5+CXnLq3adp99hQleIPMiBTyUC+qX96TzAAPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789172709; c=relaxed/simple;
-	bh=RV07BViCfjhajAEEiMEJRubWk4Kk7JUtEOgtifKYzUI=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=LpOxMBeXcqloWjTT43sNFGnRZIB6hNV/krHL8IrC/5JWnAYWXskxamH/D4XlkKD9dX+BBZBSu7IARjM0h5d3Fb68XRum7TUfwP3X7Ba1NcoMtT79biPyotr28O83uO3soEcew9eiULMOSrtDaKr76u70uXVrs876ZGO8FY8It9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xeh1qNr7; arc=none smtp.client-ip=74.125.224.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789172936; c=relaxed/simple;
+	bh=eToU4BHQ6da9kVpf5qP3yx4Og2UglyPSx3RDqR0I63w=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=WiBWiFvUpA5ibqSnFA21QUyjQ84UDoOC2objkb4wyVTcF74G6Beld/mB1Rm3O20ZQSMXjSZgehl6oSAIQaRdkBceM43uCQ06q2KCmxioQF9YYC4YPTicSkzDoG7OryUuuAE8ofMTDNJLc3nxmcn/bEjiUj1Y6pHjb175A0CR1oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Upfg1afm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xeh1qNr7"
-Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66e4ab19127so310567d50.1
-        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 17:25:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789172707; x=1789777507; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=eJAUa0v8AtambqStL4Ts+NgnmAh0NjIHz1wP4CNcV3Q=;
-        b=Xeh1qNr7YuFDMZ3s4YpwYoow+ATTmlZaSWm0BuCERSpz0NS7g/bl/EtBm/rJTv8LRi
-         uqPjTaQQeyPCXdujEy8Eeunla3EvtIZrhhFErX7SHN/EDoC1OUxgyuEz703myTRv9YVn
-         7GesubrythTxhmNeWPU7YRHDvLVQN0dBffM4f5PSyRiPx/c3P7j0Q31GlvE41R2T8oJ8
-         wAsvFNpBLMNo84tNffVvJnaJw8W58e2QwQOh0A1hPgMdUrsicTULtChHZGFFw7EOvJ0a
-         gy86RaGfcCm6GKarrlim8TRh+7f7Fwd6MJD9AdAFUzj2/x6YqY7CjrSA7BEL+5vvSiYm
-         rUvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789172707; x=1789777507;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=eJAUa0v8AtambqStL4Ts+NgnmAh0NjIHz1wP4CNcV3Q=;
-        b=CkDJgRdo55699gp3pGyQr/RiXdpX4kl2vqwPjMNZGs+IMl8MEmNLz0qmVFvzYE3OIo
-         OHL7/nxyHQ/V7f3Bn8wKQv2i1ClwwcjqV5CooDYSG+Jd0fv/RnrSpS2jgPQp7ZMimprs
-         1ocH3HPRAXave777Z24+ioamdNqhfSY3Lno5kbAqku3l0IHUCgELvAQhwK514tfrUida
-         l745opaK6yIeEnrc8D7mPJN+RFC2ATt0M6IBevWdxXUfzusx4sPZkjaA1mSvO/wk8Sj0
-         isTact4t4e0bjkreOuBbyO8cWjhkwV81EBMPI/3W8f93GJ9vZwyv7ic5qWXG6uPqopJT
-         AZ1A==
-X-Gm-Message-State: AFuF++lnFT3pnFKeP6K1ZGwyZmAfHNfPdupwaWcET1x+/sOJGgs+0VSO
-	HoL5Ts6OtgWCZxJIlmh7M/DgfEkH2osJLPfUF+XctcuaEjFNLanYQ4gF
-X-Gm-Gg: AYBFou2TtBUza+NuBzOrO2GvGoroOqQpTCBD+uG/j41wf4IZlCniFLUsg+L3vaqWrNY
-	gwimMNxgsXwBp7G8X1Y8eAfdwiEbw8qSn9Qks3aOF7ZpSe7lo2i82onkTYWXJHi/rNze2VEX3LY
-	zINPgPbcg/TkUcHBknIhtixIJ+pG2Gp+A3LHg90biY+LlVhKF6RSkNBuYJ+U1AYofbxPxZBLvHM
-	e5LTttPkvas0ej3x23BfOIlMOqHawdxpfCeSMVNE56h5M3iVvflhwJe3m+KRttIk6U6fhfBWvAk
-	FTuMXGS33Cqqx0Q6gU+iOxCVCrTvrLrywAWgffIpY3PDN3ZFjuwt+aMH80B+LusVdQTFg4CRdvJ
-	jLcZ1pgshSFujftwAL1VeanxTHllNxr1CI35P3eVPyT/4nx4aoU02Ig23nkZnqED4ZN5VjzP8ti
-	UKNlL51dpaVIU/DImGzunpQgaBz97IeUI9eRB7An5iCXE9obpwowA+dWCGBe64984K6VxfOpzYr
-	6/S72JcOm0LGL7XVPj02ZTh+amvxYgSvJyp3BJFP8P2/xcdiygRtg==
-X-Received: by 2002:a05:690e:d58:b0:66f:c1d9:c029 with SMTP id 956f58d0204a3-67124767292mr2976235d50.53.1789172707047;
-        Fri, 11 Sep 2026 17:25:07 -0700 (PDT)
-Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-884873fa467sm16724717b3.25.2026.09.11.17.25.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Sep 2026 17:25:06 -0700 (PDT)
-Date: Fri, 11 Sep 2026 20:25:05 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: netdev-bot+sashiko@kernel.org, 
- willemdebruijn.kernel@gmail.com
-Cc: netdev@vger.kernel.org, 
- davem@davemloft.net, 
- kuba@kernel.org, 
- edumazet@google.com, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- andrew+netdev@lunn.ch, 
- willemb@google.com
-Message-ID: <willemdebruijn.kernel.20893f9a2f273@gmail.com>
-In-Reply-To: <178914679401.219967.11906428098360110344@kernel.org>
-References: <20260910171131.2532487-2-willemdebruijn.kernel@gmail.com>
- <178914679401.219967.11906428098360110344@kernel.org>
-Subject: Re: [PATCH net-next v9 1/7] net: rtnetlink: add pacing_offload
- attribute to net_device
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Upfg1afm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C51D1F000FF;
+	Sat, 12 Sep 2026 00:28:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789172934;
+	bh=CTD3K0LRtS7se4NoRtsizVYkgPim6OQ+nwetjOdhM84=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Upfg1afmn8w66u9POsKP11EqOYbYjnO2qrCGwk32UGLq5FD2MU65RbLcqcwoc43xh
+	 up8fkxF5DWlDnhHks7e6KSQ7T2kpSFj5jf6xIjNry2t4kgTbOn0xJRhuprvbo47kWl
+	 OjmueHPb0gqShW5T0EhIR47uchqzs+JoTLoQ+3RR0i0Sd59GHGy5SvWqWpo5OiHE9h
+	 zbBc5YtN+VfA8h1oYk60/l/fDMvLVDXmy6PAcDHThLwFyjcUUTKiuO5XIoklJOL09L
+	 vP4l7JhAMs/BzZgdJED9/xnUpghQEh87aQ8AtB7S+bHCUA7BXGkIl02UC1qygQMZ7e
+	 fE9prWDRM6X0g==
+Subject: Re: [PATCH net-next v14 1/6] net: dsa: add devlink flash_update
+ callback to dsa_switch_ops
+From: netdev-bot+sashiko@kernel.org
+To: daniel@makrotopia.org
+Cc: jiri@resnulli.us, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
+ skhan@linuxfoundation.org, rdunlap@infradead.org, gregkh@linuxfoundation.org,
+ rafael@kernel.org, dakr@kernel.org, andrew@lunn.ch, olteanv@gmail.com,
+ netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, driver-core@lists.linux.dev
+Date: Sat, 12 Sep 2026 00:28:53 +0000
+Message-ID: <178917293319.219967.10417320204779425879@kernel.org>
+In-Reply-To: =?utf-8?q?=3Cd7a5b34bdb1e9c171aa9af94d435dea08c05e363=2E1788976?=
+ =?utf-8?q?064=2Egit=2Edaniel=40makrotopia=2Eorg=3E?=
+References: =?utf-8?q?=3Cd7a5b34bdb1e9c171aa9af94d435dea08c05e363=2E17889760?=
+ =?utf-8?q?64=2Egit=2Edaniel=40makrotopia=2Eorg=3E?=
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-netdev-bot+sashiko@ wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider:
-> =
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 1 (1)
-> =
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-> - [Medium] `pacing_offload:1` is added as the first *runtime-mutable* b=
-it
->   of the `struct_group(priv_flags_fast, ...)` bitfield word in struct=E2=
-=80=A6
-> - [Low] Concern (verified as NOT a defect): dev->pacing_offload /
->   IFLA_PACING_OFFLOAD is claimed to have no in-tree consumer at this=E2=
-=80=A6
+- [Medium] net/dsa/devlink.c now installs `.flash_update =
+  dsa_devlink_flash_update` unconditionally in the single shared…
 
-TL;DR: I think all reports to this series are false positives.
+--
 
-I'll respond in detail, skipping only some too obvious low ones
-(e.g., "this feature is not used yet, but will be in a next patch").
- =
+net: dsa: add devlink flash_update callback to dsa_switch_ops
 
-> Pre-existing issues:
-> - [Low] Pre-existing YAML spec gap adjacent to the change: the shared
->   getlink do/dump reply list (`&link-all-attrs`,=E2=80=A6
-> =
+This adds a devlink_flash_update callback to dsa_switch_ops and a
+trampoline in net/dsa/devlink.c that forwards to it, returning
+-EOPNOTSUPP when the driver does not implement the callback.  The
+trampoline is installed unconditionally in the shared dsa_devlink_ops.
 
-> --
-> =
+(No Link: tags in the commit header.)
 
-> net: rtnetlink: add pacing_offload attribute to net_device
-> =
+> diff --git a/include/net/dsa.h b/include/net/dsa.h
+> index 7507d632e7c6d..9babab92a0fc6 100644
+> --- a/include/net/dsa.h
+> +++ b/include/net/dsa.h
+> @@ -1174,6 +1174,9 @@ struct dsa_switch_ops {
+>  	int	(*devlink_info_get)(struct dsa_switch *ds,
+>  				    struct devlink_info_req *req,
+>  				    struct netlink_ext_ack *extack);
+> +	int	(*devlink_flash_update)(struct dsa_switch *ds,
+> +					struct devlink_flash_update_params *params,
+> +					struct netlink_ext_ack *extack);
+>  	int	(*devlink_sb_pool_get)(struct dsa_switch *ds,
+>  				       unsigned int sb_index, u16 pool_index,
+>  				       struct devlink_sb_pool_info *pool_info);
+> diff --git a/net/dsa/devlink.c b/net/dsa/devlink.c
+> index ed342f345692b..25311a87cbc56 100644
+> --- a/net/dsa/devlink.c
+> +++ b/net/dsa/devlink.c
+> @@ -20,6 +20,18 @@ static int dsa_devlink_info_get(struct devlink *dl,
+>  	return -EOPNOTSUPP;
+>  }
+>  
+> +static int dsa_devlink_flash_update(struct devlink *dl,
+> +				    struct devlink_flash_update_params *params,
+> +				    struct netlink_ext_ack *extack)
+> +{
+> +	struct dsa_switch *ds = dsa_devlink_to_ds(dl);
+> +
+> +	if (!ds->ops->devlink_flash_update)
+> +		return -EOPNOTSUPP;
+> +
+> +	return ds->ops->devlink_flash_update(ds, params, extack);
+> +}
+> +
+>  static int dsa_devlink_sb_pool_get(struct devlink *dl,
+>  				   unsigned int sb_index, u16 pool_index,
+>  				   struct devlink_sb_pool_info *pool_info)
 
-> This adds a new IFLA_PACING_OFFLOAD link attribute plus a matching
-> pacing_offload:1 bitfield in struct net_device, so pacing offload can b=
-e
-> turned on and off administratively.  It also marks
-> IFLA_MAX_PACING_OFFLOAD_HORIZON as NLA_REJECT and documents the new
-> attribute in the rt-link YAML spec.
-> =
+[ ... ]
 
-> A few questions below.
-> =
+> @@ -169,6 +181,7 @@ dsa_devlink_sb_occ_tc_port_bind_get(struct devlink_port *dlp,
+>  
+>  static const struct devlink_ops dsa_devlink_ops = {
+>  	.info_get			= dsa_devlink_info_get,
+> +	.flash_update			= dsa_devlink_flash_update,
 
-> > diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation=
-/netlink/specs/rt-link.yaml
-> > index 5217d0bb4a3a5..7a72cd1b7e1ee 100644
-> > --- a/Documentation/netlink/specs/rt-link.yaml
-> > +++ b/Documentation/netlink/specs/rt-link.yaml
-> > @@ -1091,6 +1091,10 @@ attribute-sets:
-> >        -
-> >          name: tailroom
-> >          type: u16
-> > +      -
-> > +        name: pacing-offload
-> > +        type: u32
-> > +        doc: Enable EDT pacing offload (0 - disabled, 1 - enabled).
-> >    -
-> >      name: prop-list-link-attrs
-> >      subset-of: link-attrs
-> > @@ -2559,6 +2563,7 @@ operations:
-> >              - devlink-port
-> >              - gso-ipv4-max-size
-> >              - gro-ipv4-max-size
-> > +            - pacing-offload
-> =
+[Severity: Medium]
+Since dsa_devlink_ops is a single const structure shared by every DSA
+switch, does installing .flash_update unconditionally make the devlink
+core's capability probe always succeed for DSA?
 
-> [Severity: Low]
-> This isn't something introduced by this patch, but while the shared
-> getlink reply list (&link-all-attrs) is being extended here, should
-> max-pacing-offload-horizon be added as well?
-> =
+The core uses the presence of the op as the gate, in
+devlink_nl_flash_update_doit():
 
-> rtnl_fill_ifinfo() emits it unconditionally in the same nla_put chain a=
-s
-> the new attribute:
-> =
+	if (!devlink->ops->flash_update)
+		return -EOPNOTSUPP;
 
-> 	    nla_put_uint(skb, IFLA_MAX_PACING_OFFLOAD_HORIZON,
-> 			 READ_ONCE(dev->max_pacing_offload_horizon)) ||
-> =
+With the trampoline always present, that check can no longer fire for
+any DSA switch, and the -EOPNOTSUPP from dsa_devlink_flash_update() is
+only reached after the core has already done work:
 
-> The same holds for netns-immutable, headroom and tailroom, which are al=
-so
-> always emitted but not listed in the reply set.
-> =
+net/devlink/dev.c:devlink_nl_flash_update_doit() {
+	...
+	ret = request_firmware_direct(&params.fw, file_name, devlink->dev);
+	if (ret) {
+		NL_SET_ERR_MSG_ATTR(info->extack, nla_file_name,
+				    "failed to locate the requested firmware file");
+		return ret;
+	}
 
-> The commit message advertises reading the horizon with
-> =
+	devlink_flash_update_begin_notify(devlink);
+	ret = devlink->ops->flash_update(devlink, &params, info->extack);
+	devlink_flash_update_end_notify(devlink);
+	...
+}
 
->     ynl --family rt-link --do getlink ... | grep pacing
-> =
+The commit message covers the firmware fetch:
 
-> which works, because the Python decoder resolves reply members from
-> attribute-set: link-attrs, but consumers generated from the per-operati=
-on
-> reply list would not see these members.
+    the devlink core will then have fetched the firmware file from
+    userspace before the request fails, which is acceptable for an
+    operation as infrequent as a firmware update.
 
-This patch follows the established behavior of other recent read-only
-rt-link attrs.
+Are the other two effects of that ordering intended as well?  A
+FLASH_UPDATE / FLASH_UPDATE_END notification pair is now broadcast to
+monitors for a flash that never reached any hardware, and if the named
+file does not exist the caller gets -ENOENT with the extack "failed to
+locate the requested firmware file" rather than -EOPNOTSUPP, which hides
+the fact that the switch cannot be flashed at all.
 
-It's a limitation of how get-link and set-link use the same attrs.
+There is also a second entry point that the commit message does not
+mention.  DSA user ports have no ethtool_ops->flash_device but do have a
+devlink port, so ETHTOOL_FLASHDEV falls through:
 
-This is a damned if you do, damned if you don't issue where the bot
-will call you out either way.
+net/ethtool/ioctl.c:ethtool_flash_device() {
+	if (!dev->ethtool_ops->flash_device) {
+		req->devlink = netdev_to_devlink_get(dev);
+		return 0;
+	}
+	...
+}
 
-> > diff --git a/Documentation/networking/net_cachelines/net_device.rst b=
-/Documentation/networking/net_cachelines/net_device.rst
-> > index 512f6d6fa3d8f..8eceaa80b6860 100644
-> > --- a/Documentation/networking/net_cachelines/net_device.rst
-> > +++ b/Documentation/networking/net_cachelines/net_device.rst
-> > @@ -11,6 +11,7 @@ Type                                Name           =
-             fastpath_tx_acce
-> >  unsigned_long:32                    priv_flags                  read=
-_mostly                             __dev_queue_xmit(tx)
-> >  unsigned_long:1                     lltx                        read=
-_mostly                             HARD_TX_LOCK,HARD_TX_TRYLOCK,HARD_TX_=
-UNLOCK(tx)
-> >  unsigned_long:2                     netmem_tx:2;                read=
-_mostly
-> > +unsigned_long:1                     pacing_offload              read=
-_mostly                             sch_fq
-> >  char                                name[16]
-> >  struct netdev_name_node*            name_node
-> >  struct dev_ifalias*                 ifalias
-> > diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-> > index 707b2e51c2b97..1f0710eef185b 100644
-> > --- a/include/linux/netdevice.h
-> > +++ b/include/linux/netdevice.h
-> =
+which lands in devlink_compat_flash_update(), where the same gate is now
+always passed and the op is called with extack == NULL:
 
-> [ ... ]
-> =
+net/devlink/dev.c:devlink_compat_flash_update() {
+	...
+	if (!devlink->ops->flash_update) {
+		ret = -EOPNOTSUPP;
+		goto out_unlock;
+	}
 
-> > @@ -2170,6 +2171,7 @@ struct net_device {
-> >  		unsigned long		priv_flags:32;
-> >  		unsigned long		lltx:1;
-> >  		unsigned long		netmem_tx:2;
-> > +		unsigned long		pacing_offload:1;
-> >  	);
-> =
+	ret = request_firmware_direct(&params.fw, file_name, devlink->dev);
+	...
+	ret = devlink->ops->flash_update(devlink, &params, NULL);
+	...
+}
 
-> [Severity: Medium]
-> This puts the first runtime-mutable bit into the priv_flags_fast group.=
-  On
-> 64-bit, priv_flags, lltx, netmem_tx and pacing_offload all live in one
-> unsigned long, and adjacent bitfields are a single memory location, so =
-a
-> store to one of them is a read-modify-write of the others.
-> =
+Should any extack message a DSA driver sets be documented as dropped on
+that path?
 
-> do_setlink() writes the new bit under RTNL only:
-> =
+Would gating the assignment of the .flash_update pointer on
+ds->ops->devlink_flash_update (for instance a second devlink_ops variant
+selected at registration) keep the core's probe truthful?  The existing
+trampolines this one follows (info_get, sb_*) are pure queries with no
+core-side side effects before the op is called, so the -EOPNOTSUPP-from-
+the-trampoline convention does not carry the same cost there.
 
-> 		if (dev->pacing_offload !=3D val) {
-> 			dev->pacing_offload =3D val;
-> =
+For context on the series: at the end of the range mxl862xx does
+implement devlink_flash_update, so that driver has a real
+implementation, but all other DSA drivers (b53, mv88e6xxx, microchip,
+ocelot, sja1105, ...) still advertise flash support without one.
 
-> but priv_flags in the same word is modified from softirq context with n=
-o
-> RTNL held, in net/ncsi/ncsi-rsp.c:
-> =
-
-> 	ndev->priv_flags |=3D IFF_LIVE_ADDR_CHANGE;
-> =
-
-> That appears in ncsi_rsp_handler_oem_bcm() and ncsi_rsp_handler_gmcma()=
-,
-> both reached from ncsi_rcv_rsp(), which is a packet_type receive handle=
-r.
-
-The bug here is in ncsi_ imho.
-
-The other fields are written at net_device init and immutable
-otherwise. The rule for these fields is immutable or RTNL held, AFAIK.
-
-> Can these two read-modify-writes lose each other's update, so that eith=
-er
-> IFF_LIVE_ADDR_CHANGE is silently dropped, or pacing_offload reads back =
-0
-> after do_setlink() already set DO_SETLINK_MODIFIED and sent a notificat=
-ion?
-> =
-
-> A second point on the same field: a 1-bit bitfield cannot be accessed w=
-ith
-> READ_ONCE()/WRITE_ONCE(), yet the net_cachelines row added above docume=
-nts
-> pacing_offload as a read_mostly field consumed lockless by sch_fq.  Eve=
-ry
-> neighbouring netdev field in these paths is accessed with
-> READ_ONCE()/WRITE_ONCE(), including max_pacing_offload_horizon right ne=
-xt
-> to it.
-> =
-
-> Would a plain bool/u8, or a dedicated unsigned long used with
-> set_bit()/test_bit(), work here instead?  That would make the update
-> independent of the neighbouring bits and allow marked lockless reads.=
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1788976064.git.daniel%40makrotopia.org
