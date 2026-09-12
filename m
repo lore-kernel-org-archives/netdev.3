@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC273C4574;
-	Sat, 12 Sep 2026 20:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40F73C872C;
+	Sat, 12 Sep 2026 20:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789244008; cv=none; b=NKj/g4XPuBSsaGs+rm+TcVhkRbAax7h04NMbEwNQRYuXPRS7UZq9jV4BTI7Bt58xC2KdWtjImF/z7e4luGaYBw449PRwjayoZEjmMk5a1IhAZ8CsHYBCaH+qA4TbLDsTt7alwP+wBWZalc6nruWPQKzDFDT/w2AqX8hloHgOS2I=
+	t=1789244010; cv=none; b=ayfctTPJgTam/NBWXUUJ5qU0doNRg7MfyUh6UUI/BNkGJZybIhRdejXEwnltB05GaQchuoqwD2kn4KiJl1aPBSNYp+yBZPL1aKkoYHFC6EX7Hjfu5dkY6uMajt+OKlealgeWx/D9y0nFxPkelsnC7f8ODMaUR2BFjNviNDBYw3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789244008; c=relaxed/simple;
-	bh=+LYtuS6GivF/Heaxrik/xAxl7bZ6yvsuxawU1alxXz0=;
+	s=arc-20240116; t=1789244010; c=relaxed/simple;
+	bh=yvrg170OEnY+QKhkFStJJVCQqzbiEGfNfvzFf20XwNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pSBfw26z8q9Vnsbf8lj5YJnkFZyrXPqgPiiALBQG/DBAzJRHzgsBpLPOd9hvRHFwp8gGtnLYIAOKCCQxw8KdmeROtYtT4JonoZzRhn6v3kjtz+YOF5XLCNI/0Fi9QZnnMYRrB0zXLAeQhhIQFQjib2EZNZNnp9flf1hskRbcmE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I0MmQ30h; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=bx/OQLcmTQd0lg3ZkVVDl7bSF4uQnKgNDlu9dxdWW+CP25KDqBGyiKt9O0GLJqXJOjxJxGCg3zayAy0PaDWkg1AXNc6Efog/3fIdw7d2MMaeBZb4Hcmakv261yiGNtotwBehc+cb6YLWrd1NiYsV7mMMpSdxQV1zwFISYSGIM3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M+472J58; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I0MmQ30h"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C9CE1F00893;
-	Sat, 12 Sep 2026 20:13:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M+472J58"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623F91F00899;
+	Sat, 12 Sep 2026 20:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789244004;
-	bh=+NJwNoOVu5Lw2f15qRrrWFOurl539RxGcb8Qsu6qCEI=;
+	s=k20260515; t=1789244007;
+	bh=+gErbFmr8l6Csxg/evZTdwlWQQZXDTF+uohyIeq0mWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=I0MmQ30h5SiJq+iVMB+LoHrWxU7iu+LRN7wyVVy4A/D7qto9ZHf8XdClVJETygujI
-	 zIW4yw3u6f6RzEL9glKC9/xM/40dnOb0vPNczffwUIM5x8goXwgJal1F/ENE+I73wn
-	 UBXl2nAN1241vMF/GsQNLU5Cdn8mwAu/Plg/jMAO4UuNFNKbJoCTH7l4EChE5ts20U
-	 fASguPrLxwrm0Gf6KIPKGrvIpLP9+O+vO4QxzNYqs56V0PBBP9ZfoO67DRrjC2csQu
-	 k/08PfDMeS2T4CmqNOKx1ihf90sSyvqe+FDKQtjZj0q1ngf7Kh26aQnSMU1iEQuadj
-	 2+Z2XHCPJuxrA==
+	b=M+472J58SS6FHC26IiUSYLFLWkVTIW77JV+CRWUQX2flhpcz7VZF2AniBUtfzbVTL
+	 n3E5bZ3Chlvq0MVIFzMB7EvBRlq5aAMmP0uuecydeyG+dj5i8T2X98yl3ibDpqtZr5
+	 YG3E9nRTr22cYyCq0C+oQCLdgwDLY4v7mKctTSvpzzwHzEPnY+YrHjZshVJD7YuF3Z
+	 PEWXIgZw9AejtlhBBvDDZIBMylQiRMsG7cFLI9p6B/OTNKY4HJqXOkcxJ81WuYumpl
+	 f1IDDYZsXfY77jgxbpBrD7kGEFcpENl7CJH1uOA0FT/r30O4rz07dRyzfGT0VFXE4f
+	 DzdzepsJfJmKA==
 From: Jakub Kicinski <kuba@kernel.org>
 To: coiaprant@gmail.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -56,12 +56,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	linux-phy@lists.infradead.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH net-next v4 03/10] phy: rockchip: naneng-combphy: add SGMII MAC selection for RK3568
-Date: Sat, 12 Sep 2026 13:13:22 -0700
-Message-ID: <20260912201322.126940-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v4 05/10] arm64: dts: rockchip: rk3568: add XPCS and fixed-clock nodes
+Date: Sat, 12 Sep 2026 13:13:25 -0700
+Message-ID: <20260912201325.127009-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260907153713.2572547-5-coiaprant@gmail.com>
-References: <20260907153713.2572547-5-coiaprant@gmail.com>
+In-Reply-To: <20260907153713.2572547-7-coiaprant@gmail.com>
+References: <20260907153713.2572547-7-coiaprant@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,147 +73,137 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-phy: rockchip: naneng-combphy: add SGMII MAC selection for RK3568
+arm64: dts: rockchip: rk3568: add XPCS and fixed-clock nodes
 
-This adds a "rockchip,sgmii-mac-sel" DT property to the RK3568 combphy
-driver so the SGMII interface can be routed to GMAC0 or GMAC1 through the
-pipe GRF pipe_sgmii_mac_sel bit. The value defaults to 1 (GMAC1) when the
-property is absent, and is written during PHY_TYPE_SGMII configuration.
+This adds the RK3568 Synopsys DesignWare XPCS node (with four pcs-mii
+sub-nodes) plus two 125 MHz fixed-clock nodes used as GMAC reference
+clocks.  The XPCS node and its sub-nodes are disabled by default and are
+meant to be completed and enabled at the board level.
 
-Link: https://dl.radxa.com/rock3/docs/hw/datasheet/Rockchip%20RK3568%20TRM%20Part1%20V1.1-20210301.pdf (Page 229)
+A couple of questions about the new nodes below.
 
-A few questions below.
-
-> diff --git a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-> index 7843356a4dd47..919bb97a4b182 100644
-> --- a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-> +++ b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-
-[ ... ]
-
-> @@ -212,6 +213,7 @@ struct rockchip_combphy_priv {
->  	bool enable_ssc;
->  	bool ext_refclk;
->  	struct clk *refclk;
-> +	u32 sgmii_mac_sel;
->  };
+> diff --git a/arch/arm64/boot/dts/rockchip/rk3568.dtsi b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
+> index 3bc653f027f1f..989e164c0eb39 100644
+> --- a/arch/arm64/boot/dts/rockchip/rk3568.dtsi
+> +++ b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
+> @@ -110,6 +110,51 @@ sata0: sata@fc000000 {
+>  		status = "disabled";
+>  	};
 >  
->  static void rockchip_combphy_updatel(struct rockchip_combphy_priv *priv,
-> @@ -375,6 +377,9 @@ static int rockchip_combphy_parse_dt(struct device *dev, struct rockchip_combphy
->  
->  	priv->ext_refclk = device_property_present(dev, "rockchip,ext-refclk");
->  
-> +	priv->sgmii_mac_sel = 1;
-> +	device_property_read_u32(dev, "rockchip,sgmii-mac-sel", &priv->sgmii_mac_sel);
-> +
+> +	xpcs: pcs@fda00000 {
+> +		compatible = "rockchip,rk3568-xpcs";
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +		reg = <0x0 0xfda00000 0x0 0x200000>;
+> +		clocks = <&cru PCLK_XPCS>, <&cru CLK_XPCS_EEE>;
+> +		clock-names = "csr", "eee";
+> +		power-domains = <&power RK3568_PD_PIPE>;
+> +		status = "disabled";
 
 [Severity: Medium]
-Since the return value of device_property_read_u32() is discarded here,
-rockchip_combphy_parse_dt() cannot distinguish "the DT asked for GMAC1"
-from "the DT said nothing about the mux".
+Does this node validate against the binding added earlier in the same
+series?  Documentation/devicetree/bindings/net/pcs/rockchip-dwxpcs.yaml
+lists phys and phy-names unconditionally:
 
-The result is that rk3568_combphy_cfg() writes PIPE_GRF 0x0040 bit 1 on
-every PHY_TYPE_SGMII bring-up, including for device trees that do not have
-the new property. Before this patch that bit was never touched, so whatever
-routing the SoC reset or the boot firmware established was left alone.
+required:
+  - compatible
+  - reg
+  - "#address-cells"
+  - "#size-cells"
+  - clocks
+  - clock-names
+  - phys
+  - phy-names
+  - power-domains
 
-The commit message states:
+The node here supplies neither, and dt-validate does not skip nodes with
+status = "disabled", so dtbs_check should report "'phys' is a required
+property" and "'phy-names' is a required property" for every rk3568 dtb
+that includes this dtsi.
 
-  "The hardware reset value is GMAC1 (1). If the property is set to 0,
-  the driver routes SGMII to GMAC0; if set to 1 (or omitted), it
-  remains at GMAC1."
+At the tip of the series only rk3568-photonicat.dts fills them in:
 
-The "or omitted" case now depends entirely on that reset value being 1. If
-the reset value is actually 0, or if firmware routed SGMII to GMAC0 on a
-board wired that way and its DT lacks the property, does phy_init() still
-return success while the XPCS ends up attached to the wrong MAC, giving a
-link that never comes up and no message explaining why?
+&xpcs {
+	status = "okay";
+	phys = <&combphy2 PHY_TYPE_SGMII>;
+	phy-names = "serdes";
+};
 
-Would it make sense to only write the bit when the property is actually
-present, for example:
+so rk3568-evb, rk3568-rock-3a, rk3568-roc-pc, rk3568-radxa-cm3j,
+rk3568-wolfvision-pf5 and friends would still be missing them.
 
-	if (!device_property_read_u32(dev, "rockchip,sgmii-mac-sel",
-				      &priv->sgmii_mac_sel))
-		priv->sgmii_mac_sel_valid = true;
+If which combphy carries SGMII is genuinely a board-level choice, should
+phys/phy-names be moved out of the unconditional required: list in the
+binding instead, or should the dtsi provide a default?
 
-so that omitting the property leaves the mux untouched?
-
->  	priv->phy_rst = devm_reset_control_get_exclusive(dev, "phy");
->  	/* fallback to old behaviour */
->  	if (PTR_ERR(priv->phy_rst) == -ENOENT)
-> @@ -873,6 +878,8 @@ static int rk3568_combphy_cfg(struct rockchip_combphy_priv *priv)
->  		break;
->  
->  	case PHY_TYPE_SGMII:
-> +		rockchip_combphy_param_write(priv->pipe_grf, &cfg->pipe_sgmii_mac_sel,
-> +					priv->sgmii_mac_sel > 0);
-
-[Severity: Low]
-The binding added in the preceding patch of this series declares the
-property as:
-
-  rockchip,sgmii-mac-sel:
-    $ref: /schemas/types.yaml#/definitions/uint32
-    enum: [0, 1]
-    default: 1
-
-but "priv->sgmii_mac_sel > 0" collapses the value to a boolean, and
-rockchip_combphy_parse_dt() does no range check.
-
-Does that mean a device tree setting the property to 2 or 0xffffffff is
-silently treated as GMAC1 rather than rejected? Similarly, a
-present-but-malformed property (wrong length or type) makes
-device_property_read_u32() fail, and the pre-seeded default of 1 is used
-with no diagnostic.
-
-dtschema only validates in-tree device trees, so for bootloader-supplied
-DTs or overlays the driver is the only place the enum can be enforced.
-Would checking the value against {0, 1} and returning an error, or
-alternatively documenting the property as a plain flag, close that gap?
+> +
+> +		xpcs_mii0: pcs-mii@0 {
+> +			reg = <0>;
+> +			status = "disabled";
+> +		};
 
 [Severity: Low]
-The mux write is only added to the PHY_TYPE_SGMII case. The adjacent
-PHY_TYPE_QSGMII case in rk3568_combphy_cfg() programs the same pipe-grf
-register (pipe_xpcs_phy_ready at offset 0x0040 bit 2) but never touches
-the MAC-select bit:
+This isn't a bug, just a note for the record: at this commit there is no
+in-tree consumer of "rockchip,rk3568-xpcs" or of the pcs-mii sub-nodes.
+Both arrive later in the same series - xpcs_rk_of_ids in
+drivers/net/pcs/pcs-xpcs-rk.c gains the compatible, and rk_pcs_init() in
+drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c parses pcs-handle and
+calls xpcs_rk_create().  With the nodes disabled by default the
+intermediate state looks harmless, so nothing needs changing here.
 
-	case PHY_TYPE_QSGMII:
-		rockchip_combphy_param_write(priv->pipe_grf, &cfg->pipe_xpcs_phy_ready, true);
-		...
+> +
+> +		xpcs_mii1: pcs-mii@1 {
+> +			reg = <1>;
+> +			status = "disabled";
+> +		};
+> +
+> +		xpcs_mii2: pcs-mii@2 {
+> +			reg = <2>;
+> +			status = "disabled";
+> +		};
+> +
+> +		xpcs_mii3: pcs-mii@3 {
+> +			reg = <3>;
+> +			status = "disabled";
+> +		};
+> +	};
+> +
+> +	xpcs_gmac0_clk: xpcs-gmac0-clock {
+> +		compatible = "fixed-clock";
+> +		clock-frequency = <125000000>;
+> +		clock-output-names = "clk_gmac0_xpcs_mii";
+> +		#clock-cells = <0>;
+> +	};
+> +
+> +	xpcs_gmac1_clk: xpcs-gmac1-clock {
+> +		compatible = "fixed-clock";
+> +		clock-frequency = <125000000>;
+> +		clock-output-names = "clk_gmac1_xpcs_mii";
+> +		#clock-cells = <0>;
+> +	};
 
-The binding gates the property on the compatible only, not on the PHY
-type, and rockchip_combphy_parse_dt() runs at probe time before the PHY
-type is known from rockchip_combphy_xlate().
+[Severity: Low]
+These two node names take the deprecated branch of the fixed-clock
+$nodename schema.  Documentation/devicetree/bindings/clock/fixed-clock.yaml
+has:
 
-If a device tree sets rockchip,sgmii-mac-sel on a combphy that a consumer
-later claims with PHY_TYPE_QSGMII, is the requested routing simply dropped
-with no warning? If the property is meant to be SGMII-only, would
-rejecting or warning about it for other PHY types make that explicit?
+  $nodename:
+    anyOf:
+      - description:
+          Preferred name is 'clock-<freq>' with <freq> being the output
+          frequency as defined in the 'clock-frequency' property.
+        pattern: "^clock-([0-9]+|[a-z0-9-]+)$"
+      - description: Any name allowed
+        deprecated: true
 
->  		rockchip_combphy_param_write(priv->pipe_grf, &cfg->pipe_xpcs_phy_ready, true);
->  		rockchip_combphy_param_write(priv->phy_grf, &cfg->pipe_phymode_sel, true);
->  		rockchip_combphy_param_write(priv->phy_grf, &cfg->pipe_sel_qsgmii, true);
-> @@ -984,6 +991,7 @@ static const struct rockchip_combphy_grfcfg rk3568_combphy_grfcfgs = {
->  	.con3_for_sata		= { 0x000c, 15, 0, 0x00, 0x4407 },
->  	/* pipe-grf */
->  	.pipe_con0_for_sata	= { 0x0000, 15, 0, 0x00, 0x2220 },
-> +	.pipe_sgmii_mac_sel	= { 0x0040, 1, 1, 0x00, 0x01 },
->  	.pipe_xpcs_phy_ready	= { 0x0040, 2, 2, 0x00, 0x01 },
->  	.u3otg0_port_en		= { 0x0104, 15, 0, 0x0181, 0x1100 },
->  	.u3otg1_port_en		= { 0x0144, 15, 0, 0x0181, 0x1100 },
+xpcs-gmac0-clock and xpcs-gmac1-clock do not match the preferred
+pattern, so they land on the "Any name allowed" branch.  Newer Rockchip
+dtsi files use the preferred form already, for example rk3528.dtsi with
+xin24m: clock-xin24m and gmac0_clk: clock-gmac50m.
 
-For reference on the first two comments: this disable/enable encoding
-({ 0x0040, 1, 1, 0x00, 0x01 }) is what maps the DT value onto GMAC0/GMAC1,
-and rockchip_combphy_param_write() always sets the write-enable mask:
+Could these be named clock-xpcs-gmac0 and clock-xpcs-gmac1?  The labels
+xpcs_gmac0_clk / xpcs_gmac1_clk and all references would stay the same.
 
-	tmp = en ? reg->enable : reg->disable;
-	mask = GENMASK(reg->bitend, reg->bitstart);
-	val = (tmp << reg->bitstart) | (mask << BIT_WRITEABLE_SHIFT);
-
-so the bit is committed to hardware on every SGMII bring-up regardless of
-whether the device tree expressed a preference. Could the TRM bit polarity
-and the claimed reset value of 1 be confirmed in the commit message?
-
-Note that no in-tree Rockchip device tree requests PHY_TYPE_SGMII before
-this series, and the only user (rk3568-photonicat.dts) is added later in
-the series, so nothing in-tree changes behaviour today.
+>  	pipe_phy_grf0: syscon@fdc70000 {
+>  		compatible = "rockchip,rk3568-pipe-phy-grf", "syscon";
+>  		reg = <0x0 0xfdc70000 0x0 0x1000>;
