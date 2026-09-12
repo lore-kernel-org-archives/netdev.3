@@ -1,64 +1,65 @@
 Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435BE38F659
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 18:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8556047ACDA
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 18:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789236520; cv=none; b=FwIndimP9n+pq+kkYRokCYMcSgx+ltSRx19YJ2HcthbeEuv4SKCuMXRoMbjvT3/gCSlYanTt306qZPkDenVq4NvaHt/z/F29G6Wa7Ixjz/GXl8BFUXhJbJczJx073ymU07UPe9UbMw3m1opNPW3wRqe9NHDLcycjEih8K73Tl7I=
+	t=1789236522; cv=none; b=JbkwKg2YdofX8MvckzxWZ4tVVyjVjDbiQz1m9ZgfnV7F4mh5samE2F5WADIv35os83A5U43UbNaJn3J2345idQKeBRbAbzie7aKpWagU2wAAfqqiJZSSHCYXCNVxaQIfqQuOrIgf0FWvaJcDPtT4thrR9NPs+CO5Yi7iZhlyhA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789236520; c=relaxed/simple;
-	bh=YCGNqCzZatBNp9mkN8kezIg2lUy/SNtT8kMkmWxd92Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pg3pmY/KCoffQrFYD3IHRwne6dOW3+5cOdtnS1HhnI7+oRyCkyMj4cUaXxdK9KAMUwMnxqURxu2R+U5QQBAcMc+t3mCrbd/YRVV0WjYurfk8YnKJ5ForX2cZIbiyw5/vWW8lk+WefLdt3goB+4xoQko1ZmocSEh68h+9IVhbtRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=mH3CYn0P; arc=none smtp.client-ip=74.125.230.205
+	s=arc-20240116; t=1789236522; c=relaxed/simple;
+	bh=iMgmrmeBfySHY5ZM+ZW1tmd+ehN5fp061ezQDwEMvJk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=hoJeA/jKsOVA/8x08Jh35aUtrdWVERJZ4pUSURILIaQnQNcgwyIRp+1e6EFL6kiiKPWMzNUF21Kq2RF9Jahpx9OE5vMJZmfP5vDdfo9yec1lOEyzZivBd0sN8PtAqD/b+OkBKi+vOG7aj7M83CXjSBGd5VbolyhaaNdw4mpoI7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=nuuAcl1a; arc=none smtp.client-ip=74.125.230.205
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="mH3CYn0P"
-Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-52fb76ef1d1so14141621cf.3
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 11:08:38 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="nuuAcl1a"
+Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-93910ca5aa6so110105785a.0
+        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 11:08:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1789236517; x=1789841317; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ShtnYNWVoQX+/xNdTOnJtzhcZz7uw5CPa5C82dT5fA4=;
-        b=mH3CYn0P5T/B1Bn68/AD7A9iuWGnFuEXirg0qUbm43pDULGacPtYIqnqLcgFl/NJa9
-         CqhbRciQGsfMnqYVfEiKjW4lgQl0n776kNiJ4dx4BLhNmwO5iwFFvOf617ylBzXAaojA
-         MXCpIGwQk3EiHdM6Kv8mC0DQmXwlWqyLm6R9Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789236517; x=1789841317;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=mojatatu.com; s=google; t=1789236519; x=1789841319; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ShtnYNWVoQX+/xNdTOnJtzhcZz7uw5CPa5C82dT5fA4=;
-        b=iNyJ4UcfTO9mJLYYmNsRc8Bve7ImMzyUw6a4H+Zl6+IrpRcSqCfI+mfHfITEdIMWGJ
-         w7hScYp8GDQGNrovc7IC8GjWcarlHFXlNGPTKHVic6VCgy1Vgoy8kx5tJiofHzF1UuRa
-         d3dd9sWUiNQ4ijw45ZHwi9hJ7qf53W7LRT8Dj3fl1NXvDAeqesTGzIiDp+rI8sBVbFhk
-         +Kl3qay2CZ1+XDpJfccSWEWXj8D2oCB5QTQbJcpVRcHcEZb2HoTqgZDRlimhFoXeGBWe
-         I6TMrVIOOtpjG01TvwtrctRmBI50boIG0r20RfANVg7jMgMplz2SA+Oj/ga4ckPlBpO7
-         BAYA==
-X-Gm-Message-State: AFuF++nBgn7HdfoUQVV+Ob8DfMyBDMB83kP+id3D67b/Avrf+q7EL5ZZ
-	oEePNTcdkHRhuPFVvx6YrS1OcJoeVidhrRBQvpz7+SUQWVlHe9XFbpWLkyl0AoSHF/KpxEwv9di
-	100SwHg==
-X-Gm-Gg: AYBFou1O13aq2ZbMESsBMiPVI59gm7BhqzhFS3i4V7jI3Aou4jMLKrDMlMBfL3pH14n
-	BlFGjBiZOQvCmw+KsZ4il8Hz/9GVhnbicyIJxa/4cBS8aT2GQ2dY9I2Qt5Fry5W7iDk221+3aYW
-	kidHtuzktrTgPWsCDY2Zj28wgAPxvu/JoGm+1PUyZ1V9+HD6+xL3GxslJBDW9mpIAXOCOHhNmjN
-	0rTgRRRRGH/icoA9+xv0eGRew/9nxQd/cZfbP9bt3fkZOZdDGUKzf/xT7dqQDL7fKq9IP9FEDfh
-	kPIpE2ddJDcFD5CrfjxiOET7v4UeDxUw3veRRlpWPI+Mv2COxMxCJe2V248eFDxRbthwlVz0Yv1
-	Inxxh6q7dZ2qYbL9VT/+l1ex4V4cjztNE4Xeb0+4/pHHuVv/majS/+tDActqRHGZqNddZrc8+RJ
-	sV7GqTgmuLx8i+DZD4MK2wrXWOb5sijhM/6THUWdqDI0QXrR5ypoRu0I41REOtZ/oCid82+dEdy
-	lDBSVobnauQDmXyUh3/2wsRVCU74Hw9IpdIKVrs/oIj3Czn9OuEfbanFn0yUyUCMox/NDHYiJh9
-	Dgz1GxHZ1ydOkHKWW8pgoCE=
-X-Received: by 2002:a05:622a:507:b0:527:631:8d6 with SMTP id d75a77b69052e-530c859b38fmr137612511cf.25.1789236516942;
-        Sat, 12 Sep 2026 11:08:36 -0700 (PDT)
+        bh=+nM61jMT2mQop3K/7RN9vY9A4c5ZEECZp4TTfH4j17E=;
+        b=nuuAcl1asTNlJkCNiWdXG+oDKQNIr8r5B21xCa9s8ZQIMXKzvpW4GacR+zQOeiM7SH
+         n6oUE/Dsh003e2SYRRsmtg3+D379bvbpHtmtnzwkSzJuMIK7bhZoBlcG43WVkpaVUPeC
+         bvxKajzo5Q1lhM7yF2JM43qtNgnW4yjuxNjBs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789236519; x=1789841319;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+nM61jMT2mQop3K/7RN9vY9A4c5ZEECZp4TTfH4j17E=;
+        b=tEPYWI3rJ1bc7GVfrM+KdNMM81XvxFEg+rcxjBgYDKXspcIA7/PU2LWRwAOeB0B3fv
+         Co29JODHKaZ35UvQhvyGWiW08OVc1ZG7uBNOCJ+q9ictBmfcM9yP7pO9N57Qp+s2UZj8
+         4Dpmn0ygd8ZMpyHYISF9KZAnw6fwxT0N1XvCw77dm4VkHQRqr97BVjwaD8M4qljRSQZX
+         tYzyKHE0aXXk0iDjRsuOgUk3HLbQvIfmbgNF0qf6+BF1fFCWfSModixc+cRxlKYBovds
+         XTRiKzEIW9bfFpBHKnUI5pkh4KE9Lz7LaQ36hw+sb31NhuRCZ0CR4NWLjMOzfvK3oDXW
+         4Tww==
+X-Gm-Message-State: AFuF++mp2GQm4zSFl7TI9+erVcJkiEaXdWaqdZyjl5MDwck1P3ZOtiVw
+	hMCQXSx4YT0hdFZRLZJkkDeSU9a0kMS84sqqYnOUVnY4WdTC9ma9JBPFfTv6NfoA1flbOF4EE2D
+	alLKg1g==
+X-Gm-Gg: AYBFou07ueCamg0ZHC26po71mdRHc19G3N7G79L69FnInJDgACRJkvfwVQ2yZzyuUdd
+	/wUtFH63HLMjU8jGTmLRCpNf7xZX26aL+zGuMjI85qxKDjjTPtFGnSHuUabM+5+Cb8VoChicrbj
+	dfqiaL+3qUXXzD8hV4KkW9bKCa5yFSS1ORUYj9zDPts2b42StKXR6/29J+qqXxo62nMAwpjWaJ4
+	2GHGN7ec98vefENfGuEljG3o/NmPuh8ey/AvZ4VpZqBf8QEZxx0qWVUYv1A39TnW7LAtzZxllU6
+	ucOFgqzyt4nKNBspsJENanbN4MZK7PSWvLGURtpBlK9COdYGHIOVEuOwVjm5soD5DwUdlt+uPOf
+	V93ca1yiSaEtDYefPm8B1xuv4Gd/9iqzWX93EYypYu8PK2qWv6Q+AnBugy7iXY0dtlLysb1R7PU
+	0BphDRhEfji3RQx2w9jxHWQSrAIS+2UoPGw3W3lbXw81ubti0GlHAj5Yx71SCU1g6/sQhunp5pL
+	/h/S4+xmBQFklOJ5g7Rn4giPh17A5A70Pvg5LgKA1sl6o6p+XRhRpZAqWxpn0ZPmO/CgvVS2nvs
+	ukPTVRNXknjeysys31sQ1+4=
+X-Received: by 2002:a05:620a:6308:20b0:939:ed4a:dd75 with SMTP id af79cd13be357-939ed4ae3b1mr1021513885a.21.1789236519366;
+        Sat, 12 Sep 2026 11:08:39 -0700 (PDT)
 Received: from majuu.waya (pool-174-112-106-84.cpe.net.cable.rogers.com. [174.112.106.84])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9120ef650a6sm52190296d6.0.2026.09.12.11.08.35
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9120ef650a6sm52190296d6.0.2026.09.12.11.08.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Sep 2026 11:08:36 -0700 (PDT)
+        Sat, 12 Sep 2026 11:08:37 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
-	stable@vger.kernel.org,
 	Jiri Pirko <jiri@resnulli.us>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
@@ -68,11 +69,14 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	Victor Nogueira <victor@mojatatu.com>,
 	Johannes Berg <johannes@sipsolutions.net>,
 	linux-wireless@vger.kernel.org,
+	Shuah Khan <shuah@kernel.org>,
 	Vega <vega@nebusec.ai>
-Subject: [PATCH net repost 1/2] net/sched: codel: bound the dropping loop per dequeue call
-Date: Sat, 12 Sep 2026 14:08:30 -0400
-Message-Id: <QDISC-1L5H.v1.20260912080102@mojatatu.com>
+Subject: [PATCH net repost 2/2] selftests/tc-testing: add codel/fq_codel interval boundary cases
+Date: Sat, 12 Sep 2026 14:08:31 -0400
+Message-Id: <QDISC-1L5H.v1.20260912080102@mojatatu.com.2>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <QDISC-1L5H.v1.20260912080102@mojatatu.com>
+References: <QDISC-1L5H.v1.20260912080102@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,115 +85,196 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The CoDel control law schedules the next drop one interval/sqrt(count)
-after the previous drop, using the configured interval
-(codel_params.interval). For very small intervals the scheduled step
-rounds down to zero, so the dropping loop in codel_dequeue() never
-advances and drains the entire backlog under the qdisc lock in one
-call - an unprivileged user can trigger a soft lockup this way.
+Add tdc cases locking the codel/fq_codel small-interval uAPI after
+the dropping-loop bound (previous patch): sub-tick and two-tick
+intervals are ACCEPTED (the loop bound makes them safe), the
+1024us boundary is accepted, and a sub-tick target sojourn delay is
+accepted (it does not participate in the control law):
 
-Fix in the shared codel code used by both codel and fq_codel:
+  codel:     6e44/a8c3/a695/9793 - interval 1us/3us/1024us and
+             target 1us accepted (rendered 0us/2us/1.02ms/0us by tc)
+  fq_codel:  1b4d/3540/49c5/3e0f - interval 1us/3us/1024us and
+             target 1us accepted
 
-1. Make the control-law step at least 1 tick so the dropping loop
-   always moves forward.
+The positive cases match the full rendered qdisc line (tc renders
+interval 1us as 0us, 3us as 2us, 1024us as 1.02ms), mirroring the
+existing tests in these files.
 
-2. Cap the dropping loop at CODEL_MAX_DROPS_PER_DEQUEUE (256) drops
-   per codel_dequeue() call, resyncing drop_next to now when the cap
-   is hit: the catch-up owed to the loop grows with the idle gap and
-   the backlog, which no interval threshold can bound. This is a
-   deliberate behaviour change after long idle gaps.
+These cases do not test the dropping-loop bound itself: tdc cannot
+observe per-dequeue drop counts. c797 (fq_codel target 1 interval 1)
+passes unmodified on the patched kernel, which is the uAPI evidence
+for the previous patch.
 
-The cap applies to fq_codel (4b549a2ef4be) and the mac80211 TXQ path
-(fixed interval, cap only).
-
-The target sojourn delay (codel_params.target) is not validated: it
-does not feed the control law, so a sub-tick value is aggressive
-rather than deadlock-prone.
-
-Conditions to recreate the bug:
-  - tc qdisc add dev lo root handle 1: tbf rate 1kbit burst 2kb limit 1000000
-  - tc qdisc add dev lo parent 1:1 handle 10: codel interval 2us target 1ms noecn limit 1000000 (same for fq_codel)
-  - unpatched kernel: tc accepts it; a UDP flood under the 1kbit tbf
-    soft-lockups (watchdog: BUG: soft lockup) while one
-    codel_dequeue() call drops the backlog under the qdisc lock
-  - patched kernel: same setup, at most 256 drops per dequeue call,
-    no soft lockup
-
-Testing: claim reproducer and interval 2us/3us variants run clean;
-tdc qdisc category passes (see the selftests patch).
-
-Fixes: 76e3cc126bb2 ("codel: Controlled Delay AQM")
-Reported-by: Vega <vega@nebusec.ai>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Tested-by: Victor Nogueira <victor@mojatatu.com>
 Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 ---
- include/net/codel.h      |  5 +++++
- include/net/codel_impl.h | 16 +++++++++++++++-
- 2 files changed, 20 insertions(+), 1 deletion(-)
+ .../tc-testing/tc-tests/qdiscs/codel.json     | 72 +++++++++++++++++++
+ .../tc-testing/tc-tests/qdiscs/fq_codel.json  | 72 +++++++++++++++++++
+ 2 files changed, 144 insertions(+)
 
-diff --git a/include/net/codel.h b/include/net/codel.h
-index aa80f744826c..183d43c2bd43 100644
---- a/include/net/codel.h
-+++ b/include/net/codel.h
-@@ -140,6 +140,11 @@ struct codel_vars {
- /* needed shift to get a Q0.32 number from rec_inv_sqrt */
- #define REC_INV_SQRT_SHIFT (32 - REC_INV_SQRT_BITS)
- 
-+/* Cap on drops per codel_dequeue() call: the loop's work depends on the
-+ * idle gap and backlog, both outside our control; resync when exceeded.
-+ */
-+#define CODEL_MAX_DROPS_PER_DEQUEUE 256
-+
- /**
-  * struct codel_stats - contains codel shared variables and stats
-  * @maxpacket:	largest packet we've seen so far
-diff --git a/include/net/codel_impl.h b/include/net/codel_impl.h
-index 2c1f0ec309e9..8f26132d45b7 100644
---- a/include/net/codel_impl.h
-+++ b/include/net/codel_impl.h
-@@ -93,12 +93,17 @@ static void codel_Newton_step(struct codel_vars *vars)
-  * CoDel control_law is t + interval/sqrt(count)
-  * We maintain in rec_inv_sqrt the reciprocal value of sqrt(count) to avoid
-  * both sqrt() and divide operation.
-+ *
-+ * Clamp the increment to at least 1 tick: a very small interval (or a
-+ * large count) can truncate it to zero, stalling the dropping loop.
-  */
- static codel_time_t codel_control_law(codel_time_t t,
- 				      codel_time_t interval,
- 				      u32 rec_inv_sqrt)
- {
--	return t + reciprocal_scale(interval, rec_inv_sqrt << REC_INV_SQRT_SHIFT);
-+	return t + max_t(u32, 1,
-+			 reciprocal_scale(interval,
-+					  rec_inv_sqrt << REC_INV_SQRT_SHIFT));
- }
- 
- static bool codel_should_drop(const struct sk_buff *skb,
-@@ -154,6 +159,7 @@ static struct sk_buff *codel_dequeue(void *ctx,
- 				     codel_skb_dequeue_t dequeue_func)
- {
- 	struct sk_buff *skb = dequeue_func(vars, ctx);
-+	unsigned int drops = 0;
- 	codel_time_t now;
- 	bool drop;
- 
-@@ -180,6 +186,14 @@ static struct sk_buff *codel_dequeue(void *ctx,
- 			 */
- 			while (vars->dropping &&
- 			       codel_time_after_eq(now, vars->drop_next)) {
-+				if (++drops > CODEL_MAX_DROPS_PER_DEQUEUE) {
-+					/* fell far behind the schedule */
-+					WRITE_ONCE(vars->drop_next,
-+						   codel_control_law(now,
-+								     params->interval,
-+								     vars->rec_inv_sqrt));
-+					break;
-+				}
- 				/* dont care of possible wrap
- 				 * since there is no more divide.
- 				 */
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/codel.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/codel.json
+index 6d515d0e5ed6..a894e6f0e267 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/codel.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/codel.json
+@@ -213,5 +213,77 @@
+         "matchPattern": "qdisc codel 1: root refcnt [0-9]+ limit 1p target 5ms interval 100ms",
+         "matchCount": "1",
+         "teardown": ["$TC qdisc del dev $DEV1 handle 1: root"]
++    },
++    {
++        "id": "6e44",
++        "name": "Create CODEL with 1us interval, accepted (sub-tick, uAPI locked)",
++        "category": [
++            "qdisc",
++            "codel"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [],
++        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root codel interval 1us",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $DUMMY",
++        "matchPattern": "qdisc codel 1: root refcnt [0-9]+ limit 1000p target 5ms interval 0us",
++        "matchCount": "1",
++        "teardown": ["$TC qdisc del dev $DUMMY handle 1: root"]
++    },
++    {
++        "id": "a8c3",
++        "name": "Create CODEL with 3us interval, accepted (two ticks)",
++        "category": [
++            "qdisc",
++            "codel"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [],
++        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root codel interval 3us",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $DUMMY",
++        "matchPattern": "qdisc codel 1: root refcnt [0-9]+ limit 1000p target 5ms interval 2us",
++        "matchCount": "1",
++        "teardown": ["$TC qdisc del dev $DUMMY handle 1: root"]
++    },
++    {
++        "id": "a695",
++        "name": "Create CODEL with 1024us interval boundary accepted",
++        "category": [
++            "qdisc",
++            "codel"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [],
++        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root codel interval 1024us",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $DUMMY",
++        "matchPattern": "qdisc codel 1: root refcnt [0-9]+ limit 1000p target 5ms interval 1.02ms",
++        "matchCount": "1",
++        "teardown": ["$TC qdisc del dev $DUMMY handle 1: root"]
++    },
++    {
++        "id": "9793",
++        "name": "Create CODEL with 1us target, accepted (target not in control law)",
++        "category": [
++            "qdisc",
++            "codel"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [],
++        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root codel target 1us",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $DUMMY",
++        "matchPattern": "qdisc codel 1: root refcnt [0-9]+ limit 1000p target 0us interval 100ms",
++        "matchCount": "1",
++        "teardown": ["$TC qdisc del dev $DUMMY handle 1: root"]
+     }
+ ]
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq_codel.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq_codel.json
+index 4ce62b857fd7..de6a1b8d954a 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq_codel.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq_codel.json
+@@ -316,5 +316,77 @@
+         "matchPattern": "qdisc fq_codel 1: root refcnt [0-9]+ limit 1p flows 1024 quantum.*target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64",
+         "matchCount": "1",
+         "teardown": ["$TC qdisc del dev $DEV1 handle 1: root"]
++    },
++    {
++        "id": "1b4d",
++        "name": "Create FQ_CODEL with 1us interval, accepted (sub-tick, uAPI locked)",
++        "category": [
++            "qdisc",
++            "fq_codel"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [],
++        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root fq_codel interval 1us",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $DUMMY",
++        "matchPattern": "qdisc fq_codel 1: root refcnt [0-9]+ limit 10240p flows 1024 quantum [0-9]+ target 5ms interval 0us memory_limit 32Mb ecn drop_batch 64",
++        "matchCount": "1",
++        "teardown": ["$TC qdisc del dev $DUMMY handle 1: root"]
++    },
++    {
++        "id": "3540",
++        "name": "Create FQ_CODEL with 3us interval, accepted (two ticks)",
++        "category": [
++            "qdisc",
++            "fq_codel"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [],
++        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root fq_codel interval 3us",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $DUMMY",
++        "matchPattern": "qdisc fq_codel 1: root refcnt [0-9]+ limit 10240p flows 1024 quantum [0-9]+ target 5ms interval 2us memory_limit 32Mb ecn drop_batch 64",
++        "matchCount": "1",
++        "teardown": ["$TC qdisc del dev $DUMMY handle 1: root"]
++    },
++    {
++        "id": "49c5",
++        "name": "Create FQ_CODEL with 1024us interval boundary accepted",
++        "category": [
++            "qdisc",
++            "fq_codel"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [],
++        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root fq_codel interval 1024us",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $DUMMY",
++        "matchPattern": "qdisc fq_codel 1: root refcnt [0-9]+ limit 10240p flows 1024 quantum [0-9]+ target 5ms interval 1.02ms memory_limit 32Mb ecn drop_batch 64",
++        "matchCount": "1",
++        "teardown": ["$TC qdisc del dev $DUMMY handle 1: root"]
++    },
++    {
++        "id": "3e0f",
++        "name": "Create FQ_CODEL with 1us target, accepted (target not in control law)",
++        "category": [
++            "qdisc",
++            "fq_codel"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [],
++        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root fq_codel target 1us",
++        "expExitCode": "0",
++        "verifyCmd": "$TC qdisc show dev $DUMMY",
++        "matchPattern": "qdisc fq_codel 1: root refcnt [0-9]+ limit 10240p flows 1024 quantum [0-9]+ target 0us interval 100ms memory_limit 32Mb ecn drop_batch 64",
++        "matchCount": "1",
++        "teardown": ["$TC qdisc del dev $DUMMY handle 1: root"]
+     }
+ ]
 -- 
 2.43.0
 
