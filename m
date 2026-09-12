@@ -1,123 +1,162 @@
-Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D2C3603C3;
-	Sat, 12 Sep 2026 06:25:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22085192D8A
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 06:38:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789194364; cv=none; b=qdDOwBzo6tqxgoFZRntc9hJMnkfMECNKswMVTJW5lfrme8IuvdmVEBiJstBSJ68CwEyiyk3ARz8vBynWGGfxKQuiNuds7aPCJBc5QaJFFkNN2AsuqykE4hni+bay2VNjI50+SDRJDwAST+N3Stljrtf3HoPaDyZjUWVW+xZ7L38=
+	t=1789195119; cv=none; b=V70/AtRi9NaOP1nElwjGdKh7ctN/7CKOL5oE3yH/GN2zuyR44ZyO/oAyw0Uj3qsB6EXLhnGoJTrskm9ZulTH0CRGzK9EkHlyFDWRCewREiGcK/TrUgK0CpGKKT1X8sIqGZNK8LaPlqoD9yt+oxKVtOUJA11Qu1pHay+d/6UYX5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789194364; c=relaxed/simple;
-	bh=LXFB/ZwOqDYyjksqQ2b0dmXeG+8rjPHlC4T+NYMGW5I=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=IeCIhM55a3qrjHI47Nkg9ruxOD0uwG85GyOZcYI0AURFXDbTREr8vGWX+DZyI2RgaenzyfqdijRF62KInEcf+p7kCmLZXqmuGlJglGOqTIvei2MtyOF7bK27qTtryhUynm5Z4XuL48ki9+SoeKvNafsMHp3RDz5lbxABzogqxjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=CqvRM8QL; arc=none smtp.client-ip=109.224.244.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1789195119; c=relaxed/simple;
+	bh=eThVeK9Rdr8B+7Kk33ATnWZVWzlbeKK014LL59XzXs8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p/gPUyCufvYu1FKYqItmc4FNhxPbitN8i2VcXYJbpuIC0TaUdq/E2EjIgupGfR2T6a8GJL0nq8lliwAV1kc9qPoiOxM+r7oeRU3JrEHqaErOsanmI5znOoijeggxA0GHlfnYrHq/BSZqzaUi8sfxOOodKLtRNuLp3A99+/Y02iQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=suv0M7TO; arc=none smtp.client-ip=91.218.175.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="CqvRM8QL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=umyhfihd7raclp6qpvkn3iaxra.protonmail; t=1789194350; x=1789453550;
-	bh=2Ln0c+cFT05cfCP/yMw4EfUk9itFzGT2tqOdce2BmS8=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=CqvRM8QLQi+3tntgR/hLfo4OXkJKcnbL5ZpLS1ki62eT57pC5I55cv3vCIkOzM4lc
-	 fwM5yKzqV+5QQVDE/be1XqQbelLrDzQ/gvWoU1IlyIMjIdnmfkLp2uZqZImqURn8RR
-	 /vxAQBf83397UbEoDs9RuvRufnNI4OQrmUEXs4QfevzsMGyeELF1c+Ji0EuBcthomJ
-	 zl5h5iFSetPJ5cm1tKFPGdY/KeyjbJts7B2yIbcXZtsttPcPAyvnZ4yxDE3nJNZRS9
-	 t40JjuXDbKB2l5tPJ1M1YfBhIp5YTdUR0SiPFtXPbHAHJrhhnMZ6R0xWB9yMK0G/Hg
-	 mwr9/nsSlXX7A==
-Date: Sat, 12 Sep 2026 06:25:45 +0000
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-From: Sagar Taunk <sagartaunk@proton.me>
-Cc: Sagar Taunk <sagartaunk@proton.me>
-Subject: [PATCH] rust: net: netlink: Migrate to zerocopy's `IntoBytes`
-Message-ID: <20260912062536.363720-1-sagartaunk@proton.me>
-Feedback-ID: 130121444:user:proton
-X-Pm-Message-ID: d76dbb697311a0626cdb87e99dc332e72c880d27
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="suv0M7TO"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=eThVeK9Rdr8B+7Kk33ATnWZVWzlbeKK014LL59XzXs8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789195114; v=1; x=1789799914;
+ b=suv0M7TOC7sXjytRA75omxo9p9U4ITfTzagF1DseuZ8SdvPg6T/WPEDpxbBKzDxhgnRrzDlU
+ LQFuKs2lPTMXvADIvRU/B+gBfX8fZCt779SZYyVOzlC68yewAgyBmh+sYHaYykOIjn2ENnesToW
+ ggjXq+VyT/katGzjjQqauOS4=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 55b0e02d6a79e046;
+	Sat, 12 Sep 2026 06:38:24 +0000
+X-Mizu-Trace-ID: 55b0e02d6a79e046
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <a53a81cd-88b6-4db2-a0e6-ee3dccfeef42@linux.dev>
+Date: Sat, 12 Sep 2026 14:38:20 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: skbuff: do not leave stale header offsets after
+ pskb_carve()
+To: Eric Dumazet <edumazet@google.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com,
+ syzbot+586af68eb819833c2d91@syzkaller.appspotmail.com,
+ Allison Henderson <achender@kernel.org>, rds-devel@oss.oracle.com,
+ "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+References: <20260911114922.621937-1-edumazet@google.com>
+From: luoxuanqiang <xuanqiang.luo@linux.dev>
+In-Reply-To: <20260911114922.621937-1-edumazet@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Replace the kernel's own `transmute::FromBytes` and `AsBytes` traits
-with their zerocopy equivalents. Specifically, this updates
-`GenlMsg::put` to rely on `IntoBytes` for converting attributes into
-byte slices.
+在 2026/9/11 19:49, Eric Dumazet 写道:
+> pskb_carve_inside_header() and pskb_carve_inside_nonlinear() remove
+> the first bytes of a packet and reallocate skb->head.
+> 
+> All the headers that were present before the operation are gone,
+> but both functions call skb_headers_offset_update(skb, 0), which
+> is a no-op : skb->mac_header, skb->network_header,
+> skb->transport_header and skb->csum_start are left with their old
+> values, now pointing into the freshly allocated (and possibly much
+> smaller) skb->head.
+> 
+> For pskb_carve_inside_nonlinear() the result is a zombie skb with
+> an empty linear part (skb->data == skb_tail_pointer(skb),
+> skb_headlen(skb) == 0) but skb_mac_header_was_set() still true and
+> skb->mac_header pointing far beyond skb_end_pointer(skb).
+> 
+Could you please clarify how the MAC pointer ends up beyond
+skb_end_pointer() here? The carve helpers allocate based on the old
+skb_end_offset(), and kmalloc_reserve() adds room for skb_shared_info,
+so the new capacity shouldn't be smaller.
 
-Also, add `Immutable` trait bound on `GenlMsg::put` as zerocopy
-splits the `no interior mutability` guarantee that `AsBytes` bundled
-together.
+The dump shows mac=234 and end=384. I understand how the stale offset
+causes skb_pull() on an empty linear area and triggers the BUG, but I
+don't see how it ends up beyond the new end. Am I missing another
+condition?
 
-Moreover, shashiko pointed out `put()` trusted an unchecked `as` cast
-from `usize` to `c_int` for the attribute length. A length larger than
-`i32::MAX` wraps to a negative value in that cast, which can pass
-`nla_put()`'s own signed `skb_tailroom()` check and then be reinterpreted
-as an enormous unsigned length via `__nla_reserve()`/`skb_put()`, leading
-to a kernel panic via `skb_over_panic()`. Validate the length with
-`c_int::try_from()` and reject it with `EMSGSIZE` instead.
+Thanks,
+Xuanqiang
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1241
-Signed-off-by: Sagar Taunk <sagartaunk@proton.me>
----
- rust/kernel/net/netlink.rs | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
-
-diff --git a/rust/kernel/net/netlink.rs b/rust/kernel/net/netlink.rs
-index 22ef3dde36fa..f929f63b32c1 100644
---- a/rust/kernel/net/netlink.rs
-+++ b/rust/kernel/net/netlink.rs
-@@ -12,11 +12,12 @@
-     alloc::{self, AllocError},
-     error::to_result,
-     prelude::*,
--    transmute::AsBytes,
-     types::Opaque,
-     ThisModule,
- };
-=20
-+use zerocopy::{Immutable, IntoBytes};
-+
- use core::{
-     mem::ManuallyDrop,
-     ptr::NonNull, //
-@@ -84,14 +85,22 @@ impl GenlMsg {
-     #[inline]
-     fn put<T>(&mut self, attrtype: c_int, value: &T) -> Result
-     where
--        T: ?Sized + AsBytes,
-+        T: ?Sized + IntoBytes + Immutable,
-     {
-         let skb =3D self.skb.skb.as_ptr();
--        let len =3D size_of_val(value);
--        let ptr =3D core::ptr::from_ref(value).cast::<c_void>();
--        // SAFETY: `skb` is valid by `NetlinkSkBuff` type invariants, and =
-the provided value is
--        // readable and initialized for its `size_of` bytes.
--        to_result(unsafe { bindings::nla_put(skb, attrtype, len as c_int, =
-ptr) })
-+        let bytes =3D value.as_bytes();
-+        // `nla_put()` takes attrlen as a plain `c_int`. If `bytes.len()`
-+        // doesn't fit, an `as` cast would wrap around a negative value.
-+        // Which then, would feed a huge unsigned length to `__nla_reserve=
-()`
-+        // and `skb_put()` causing it to panic via `skb_over_panic()`. So,
-+        // the following check will reject it instead.
-+        let len =3D c_int::try_from(bytes.len()).map_err(|_| EMSGSIZE)?;
-+        let ptr =3D bytes.as_ptr().cast::<c_void>();
-+        // SAFETY: `skb` is valid as per `NetlinkSkBuff` type invariants.
-+        // `bytes` is a valid Rust slice, so `ptr` is readable for `len`
-+        // bytes, and `T: Immutable` guarantees nothing can mutate `*value=
-`
-+        // while `nla_put()` copies it.
-+        to_result(unsafe { bindings::nla_put(skb, attrtype, len, ptr) })
-     }
-=20
-     /// Puts a `u32` attribute into the message.
---=20
-2.55.0
-
+> The only user of pskb_extract() is rds_tcp_data_recv(), and the
+> carved skb is queued on tinc->ti_skb_list. When the RDS incoming
+> message is released, rds_tcp_inc_free() calls skb_queue_purge(),
+> which frees the skbs with SKB_DROP_REASON_QUEUE_PURGE. This is
+> visible from drop_monitor, which then tries to pull back to the
+> (bogus) mac header :
+> 
+> skbuff: __skb_pull(len=234)
+> skb len=6968 data_len=6968 headroom=0 headlen=0 tailroom=0
+> end-tail=384 mac=(234,14) mac_len=14 net=(248,40) trans=288
+> shinfo(txflags=0 nr_frags=1 gso(size=1428 type=16 segs=5))
+> csum(0x100120 start=288 offset=16 ip_summed=3 complete_sw=0 valid=1 level=0)
+> hash(0x7b446c6c sw=0 l4=1) proto=0x86dd pkttype=0 iif=60
+> ------------[ cut here ]------------
+> kernel BUG at ./include/linux/skbuff.h:2847!
+> 
+> Add skb_carve_reset_headers() to mark the mac and transport headers
+> as not set, reset the network header, clear skb->mac_len, and drop
+> a now meaningless CHECKSUM_PARTIAL (csum_start would point outside
+> of the new buffer).
+> 
+> Fixes: 6fa01ccd8830 ("skbuff: Add pskb_extract() helper function")
+> Reported-by: syzbot+586af68eb819833c2d91@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/netdev/6aa3e9d3.f2639fcc.29487d.0028.GAE@google.com/
+> Cc: Allison Henderson <achender@kernel.org>
+> Cc: rds-devel@oss.oracle.com
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> ---
+>   net/core/skbuff.c | 21 +++++++++++++++++++--
+>   1 file changed, 19 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index cc3b4b70288b4e3f17984cd4f4e4b7a330353e15..0e6637db6da201fe2640c244e1b0983fca39b918 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
+> @@ -6832,6 +6832,23 @@ struct sk_buff *alloc_skb_with_frags(unsigned long header_len,
+>   }
+>   EXPORT_SYMBOL(alloc_skb_with_frags);
+>   
+> +/* pskb_carve_inside_header() and pskb_carve_inside_nonlinear()
+> + * remove the first bytes of a packet and reallocate skb->head.
+> + *
+> + * Whatever headers were present before the operation are gone,
+> + * we must not leave stale offsets, otherwise users of this skb
+> + * (skb_dump(), drop_monitor, taps, ...) would read or pull garbage.
+> + */
+> +static void skb_carve_reset_headers(struct sk_buff *skb)
+> +{
+> +	skb_unset_mac_header(skb);
+> +	skb_unset_transport_header(skb);
+> +	skb_reset_network_header(skb);
+> +	skb->mac_len = 0;
+> +	if (skb->ip_summed == CHECKSUM_PARTIAL)
+> +		skb->ip_summed = CHECKSUM_NONE;
+> +}
+> +
+>   /* carve out the first off bytes from skb when off < headlen */
+>   static int pskb_carve_inside_header(struct sk_buff *skb, const u32 off,
+>   				    const int headlen, gfp_t gfp_mask)
+> @@ -6887,7 +6904,7 @@ static int pskb_carve_inside_header(struct sk_buff *skb, const u32 off,
+>   	skb->head_frag = 0;
+>   	skb_set_end_offset(skb, size);
+>   	skb_set_tail_pointer(skb, skb_headlen(skb));
+> -	skb_headers_offset_update(skb, 0);
+> +	skb_carve_reset_headers(skb);
+>   	skb->cloned = 0;
+>   	skb->hdr_len = 0;
+>   	skb->nohdr = 0;
+> @@ -7027,7 +7044,7 @@ static int pskb_carve_inside_nonlinear(struct sk_buff *skb, const u32 off,
+>   	skb->data = data;
+>   	skb_set_end_offset(skb, size);
+>   	skb_reset_tail_pointer(skb);
+> -	skb_headers_offset_update(skb, 0);
+> +	skb_carve_reset_headers(skb);
+>   	skb->cloned   = 0;
+>   	skb->hdr_len  = 0;
+>   	skb->nohdr    = 0;
 
