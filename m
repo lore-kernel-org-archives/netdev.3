@@ -1,65 +1,65 @@
-Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
+Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893A8155757
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 00:33:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9322212FAD
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 00:36:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789173197; cv=none; b=dhQ8RhVpt1DA18ZWLYCQTfwHrKGOFu7n3Usta32ty7CMNsWbLadT85rJ3Aj77glOubFq9Aa28A0OR2H2NlAGwRN6EW559YzS7WfLChp9c/dWPT762vJQ0jXbUlaROZdQ6ntWF4AqSN3NN/SPlnY/3fVQyl7c3de8bpS1Rz3XkGw=
+	t=1789173402; cv=none; b=DnfxZ5a+LAizL1pXBNqN/cXrtK67mHcrX7xFuCc/zX6E1DdYy8/ZinfV38xwrOcDKv4+iFYTR/jTU7ozbwxTEpBvBV93RkSwBep7YYjTN62wafWtuAHCpCNnnVKlFzutKXio9g74pemL4TVzYkb3YHm/9umtYOOlvPMHLlCkW5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789173197; c=relaxed/simple;
-	bh=DZa/b424onuQVIbrTsp1pjQMeSp2fRQZq54Omh8BsjM=;
+	s=arc-20240116; t=1789173402; c=relaxed/simple;
+	bh=LgPZibBxwsr9We1MhdSN6LfddVtbgcoClOxRnKesldk=;
 	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=NqSWspVF835jK8wpQOIOD5IRowgqHakwfq+Lb8oaDyfQixLAH7wLudgWAVtcWBhivhKv6PSlxtQSHVnW3QbXFFSqI2Oh2aFQU0dVgHDtrOjmZas5QeTvbETiihf41V2gP1oz7Jh5+EHw0+cOWNOK/2kGZzJI0TQs8r8peIdMrpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IL39VzqI; arc=none smtp.client-ip=74.125.224.141
+	 MIME-Version:Content-Type; b=Wgf/8d7VKyn5NUtAjDPpNf9CgBvnZPZP6ZvQX0dKXeujycmP+cXe7d6PBGZKMK04TVj5WivvjXCZzJBDQbRH0IDt4ELKbxk2jGXb7NOZ1eE4KK8ohpoQZgu2b4fwUyCXN6mYvQpeyFrLFgbmfrgnnldvAG0VIAASkfYZZyg6xgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o8czRNI/; arc=none smtp.client-ip=74.125.224.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IL39VzqI"
-Received: by mail-yx2-f13.google.com with SMTP id 00721157ae682-8659af7454eso1268647b3.1
-        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 17:33:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o8czRNI/"
+Received: by mail-yx2-f12.google.com with SMTP id 956f58d0204a3-66e4ab20a32so141215d50.2
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 17:36:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789173194; x=1789777994; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789173399; x=1789778199; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=anowyQwhyqw67BPN3qj90ejI3+8sv+wxw9pYdpv+uj8=;
-        b=IL39VzqIcMv5nv2plzFFzJZyXqHfSR6qoc7SyEyX9tQHgjsF5KQtVDsgDvTgWZO8H2
-         bRDEQfoyj+P4WELsnUhnclE5l9faSYWy3NMoLQv7xq8hO76RZgLNyilWAfZ0JVP9BAqK
-         T6dQ01IU4KafKfyhYkTYhz0zNyiHJeAjj0R5VZQ69Vm9+3qnw9OyVGE6rta9+C1rwX+k
-         mSUWt5hAp7d01zXEJTTjx/uLDdCBwfxD7YeHFZBWU5rXdqzGDEL4g1J7hijcNAXlw4FO
-         AwS3ytjH8Py4FbxzC8G43/uX+vYj/nQuEfdEIC9hJNmxU5gihGgGQftyNBjTRuBqb24g
-         g6Ng==
+        bh=AxyQnKjUz4YhqRWuU6gTMOmki5fFi29cToDP8KUVL50=;
+        b=o8czRNI/P98pBC1MSqEKTTdcKTEzdHL9HGREFxGx+YKXTwZbmFsbvRVjlvhLoHRrSo
+         66ZvR8cM9d9yDxahSKOe/k6qxziNp1cb+Zo0T2RQZmnUMlX9gXJiBTmrB9ldr24VEc6K
+         MIapliNmZEhzMLQVsVMek7an7DqoT1PhLBPXG2yIk2SjNNbkcMVkQ2XUajHMPmn3MAo4
+         BkAS57uu7r8wPlMxmGRCUaA2q1McO+YqO+t17hmf9KFvNHSFm3u2kLWj4Xm7Kfu0kcfG
+         cztkR4K9elk8zi+V/E55ItSXcqzwU5ISHKdn51EYWgw2xVI3Fcd9NpPfRDGVJ8MatQBT
+         34Jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789173194; x=1789777994;
+        d=1e100.net; s=20251104; t=1789173399; x=1789778199;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=anowyQwhyqw67BPN3qj90ejI3+8sv+wxw9pYdpv+uj8=;
-        b=H1/2gVgGZC4vL0Yk7/5S2zA5emyM+7shZIOhU/yyugiPLu1znDjkboZWx0Kh6NBxeC
-         iu5WU1RORKdDfCBH50/iyhSKQT/dWXLpk4r8VF4GtJ2WJWqWtTZpvlr5XV7gnm+7wank
-         YNAzpfWGD7KhCLuwV4aiBsUUnYKJDV4X82b6l5kidB/2J4qtIe0IrELjD4kYIN75ULQ/
-         PFIX1uuFQPv4wHq2SetC1abv2quXMJSHIvH+y7JEOLVhm2VOuiD5+/+9Re2xv82aOWyg
-         7yLx3Skh7EJSA9RwBwLPbXI0t5o33DWcuqi0vu9hYHl+M32fvgJ4W2SBs80A2JpFGceD
-         SlhA==
-X-Gm-Message-State: AFuF++lSO0xGncxaQRDXkqwo/a0s35CXjDKxTw6L40OYRxtW5b4Sqy8q
-	HukbcXCrcRyVa5XjI7ondTUaCRYa1IXH9de+yc6GNbeglXm/bhVVU2Xh
-X-Gm-Gg: AYBFou06oJ8EuvACT7dRnlDY7ziKuT47xu+EIcnozqEE7Yhx0ot2P0LDG7WxQHhxOlG
-	/TrUxofHwUQsKozUDfQWkROamaoP88R8g0QH7VuNBuxMsBGS6fM7vAhkXg/3wkfm6nUbq//RKtx
-	sXrXvjenFAstKi3qV4D5w+WfiQs7GYmXMt40fLbWi3G3BqpN0osjgW0zeAR694XQjc1hzOmmWym
-	JvPSCFCrmwkpU6cj270ZKhx/5JXWM1dftG26eIlnZWo4SnXY9rnYPs9d1joV0LrioNE4lK/414R
-	2S0GYqVNKBHorxc2STXoWpRKdzd8s5bLr2bbYheBSknr9fPSlZvlWjnZq7WpPd/3cozwHoBMRko
-	I/uTpolbIazw+vZyIlPCiem+FsxR4Bh+mA/KU99LPfG34a8UIEoS2KqNONQH15PPe3WI3Zuu/3D
-	/mSfo2fcM0lBvg6fqlzq2sKmuvY/fcn56UyiwKtpt+rdGw84suhMpDk42Lp7bTuSeENBlVdrHzE
-	G0NFhKFIBJ4uxbEmNsLcc3P7toLFr/VnRDwxdjswDe8CYHCUR5C
-X-Received: by 2002:a05:690c:309:b0:80b:de9c:8a2c with SMTP id 00721157ae682-887a8d99ba6mr2835927b3.8.1789173194350;
-        Fri, 11 Sep 2026 17:33:14 -0700 (PDT)
+        bh=AxyQnKjUz4YhqRWuU6gTMOmki5fFi29cToDP8KUVL50=;
+        b=DCeXqrdXA9qWsWJthLpT/3EygDjnLpF4DC/uOoi+rzpzLiBHxQ16T7EbHX4pYx6Ln8
+         vyeE2ZjIGbtlrUh6G9IJthSNS6F8jmjfAPKkpscpNMO2+XJlnublqLbAB2R9cesJUAfT
+         PPxhy06nHbWNoxxllvap9OkMNIr+yqdjmCpS72dldrHkvnccZxfArKVlu8AfTTmc8fjU
+         gGW8Qn3xJo6BdvYrDySloTW5xZhMOSoylDkS1tgW12jJvT1u0XyXQ9FVz4bnx5AzO58y
+         YjocmqPbp1LI/O/sCvmLgCYxHGTQE6SbQ53uoQ9tuzoo7wLd1yfc98h9nY8rGnH8Twcn
+         HnGA==
+X-Gm-Message-State: AFuF++lL71Ee8NznnDw/ndA6NXD9lZ6KSbuLcyWpNo86GNISQWFoldrd
+	6FOQEKWw592dbmbsoa1rUKEUm2KfwmREtBdl/957FsYjBAmKQV56QlW5
+X-Gm-Gg: AYBFou21MWOjlFxh6aA0Fs2jeSQzVriXnW8+miLEsoUDF1B8J8RADX9zplj10CZPe8X
+	jDgsil59QIxtGuqMDoJC9/+7mMwjEo9SO21tfG6b93YV7V3168auN4lnxhTRirbbDo2SpNd8eMU
+	ENiB0cZ2UykVCq/phixoVttCZv8aC2T0DVBVZl9aMgP+r4rDmEQFw8cxKgnGPZiuV2nqw9MUhqe
+	GuKrkeXy+b+o67S+S6LbeH2sznc2T6eBWfopPC0pBMeNThBiEZefRYtVimNugbtjsl2chhgzbFf
+	5aNnRSlQgTKr7JlebARZvn23VWYi8ZKsmm+mSshj36mFowODwBRSXgt+pbyNnB2/LdkB1UeK+xY
+	BC/0paATaZaHTwozw0OB9Mt99DylbZowSGwqMqI/XjfQr4c0vwhJXtw9x0h/FTVDILBGFSOYZEf
+	hnpcB6ewdjynE7Xczle2fuWMM7tAqPh5RPZrQJ6ql0awChuPZVZo4SXrZ+ZNley2YCrUY/bG7oj
+	STb6Nxv8iB5Q9pv68Vby5Cc4XiGb8Ewx7Us/Z+M6GMpsRy6WYZD
+X-Received: by 2002:a05:690e:11c9:b0:66f:c1bc:4078 with SMTP id 956f58d0204a3-67135aa3e70mr103084d50.59.1789173399498;
+        Fri, 11 Sep 2026 17:36:39 -0700 (PDT)
 Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-88488c3ab26sm16995557b3.40.2026.09.11.17.33.12
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67125e7c190sm1693841d50.17.2026.09.11.17.36.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Sep 2026 17:33:13 -0700 (PDT)
-Date: Fri, 11 Sep 2026 20:33:12 -0400
+        Fri, 11 Sep 2026 17:36:37 -0700 (PDT)
+Date: Fri, 11 Sep 2026 20:36:37 -0400
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 To: netdev-bot+sashiko@kernel.org, 
  willemdebruijn.kernel@gmail.com
@@ -71,12 +71,12 @@ Cc: netdev@vger.kernel.org,
  horms@kernel.org, 
  andrew+netdev@lunn.ch, 
  willemb@google.com
-Message-ID: <willemdebruijn.kernel.1f5d02e9eaca2@gmail.com>
-In-Reply-To: <178914679525.219967.9347882764408033378@kernel.org>
-References: <20260910171131.2532487-3-willemdebruijn.kernel@gmail.com>
- <178914679525.219967.9347882764408033378@kernel.org>
-Subject: Re: [PATCH net-next v9 2/7] net_sched: sch_fq: check device pacing
- offload
+Message-ID: <willemdebruijn.kernel.1571be0acb9a@gmail.com>
+In-Reply-To: <178914679635.219967.4563834866783696110@kernel.org>
+References: <20260910171131.2532487-4-willemdebruijn.kernel@gmail.com>
+ <178914679635.219967.4563834866783696110@kernel.org>
+Subject: Re: [PATCH net-next v9 3/7] net_sched: sch_fq: clear past skb->tstamp
+ if offloading pacing
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,354 +88,251 @@ Content-Type: text/plain;
 Content-Transfer-Encoding: quoted-printable
 
 netdev-bot+sashiko@ wrote:
-> Thank you for your contribution! Sashiko AI review found 4 potential
+> Thank you for your contribution! Sashiko AI review found 2 potential
 > issue(s) to consider:
 > =
 
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 2 =C2=B7 Low: 2
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 1
 > =
 
-> - [Medium] New, undocumented netlink rejection in fq_change(): `tc qdis=
-c
->   {add,replace,change} ... fq offload_horizon N` with N !=3D 0 now retu=
-rns=E2=80=A6
-> - [Medium] Configured vs. effective offload horizon are now inconsisten=
-t
->   across the three FQ interfaces.
-> - [Low] The patch introduces a per-packet TX fast-path read of
->   `dev->max_pacing_offload_horizon` (fq_offload_horizon(),=E2=80=A6
-> - [Low] fq_offload_horizon() reads `dev->pacing_offload` as a plain,
->   unannotated load from the qdisc data path (net/sched/sch_fq.c:315,=E2=
+> - [Medium] The two new clearing sites use different predicates, and the=
+
+>   dequeue-side one folds in a schedule the offloading device never sees=
+.
+> - [Low] Incomplete coverage of the new "clear an expired EDT before
+>   handing the skb to a pacing-offload device" logic on FQ's internal=E2=
 =80=A6
 > =
 
 > --
 > =
 
-> net_sched: sch_fq: check device pacing offload
+> net_sched: sch_fq: clear past skb->tstamp if offloading pacing
 > =
 
-> FQ now consults the device's pacing offload state before applying the
-> configured offload horizon, via a new fq_offload_horizon() helper that =
-is
-> evaluated once per packet in fq_classify() and fq_dequeue().  The helpe=
-r
-> returns 0 when the device flag is clear or when the configured horizon
-> exceeds the device maximum, and fq_change() gains a new rejection when =
-a
-> non-zero horizon is requested on a device with pacing offload disabled.=
-
+> When pacing offload is active, sch_fq now clears skb->tstamp for packet=
+s
+> whose EDT has already passed (or is within a 400 nsec slack window) so
+> the device does not have to compare the timestamp against the current
+> time.  The clearing is done in two places: in fq_classify() for fastpat=
+h
+> packets, and at the out: label of fq_dequeue() for regular flows.
 > =
 
-> A few questions below.
+> A couple of questions about the coverage of the new clearing below.
 > =
 
 > > diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
-> > index 35f940b2205df..dfc7f98b600f8 100644
+> > index dfc7f98b600f8..a282812c192ee 100644
 > > --- a/net/sched/sch_fq.c
 > > +++ b/net/sched/sch_fq.c
-> > @@ -301,6 +301,26 @@ static void fq_gc(struct fq_sched_data *q,
-> >  	q->stat_gc_flows +=3D fcnt;
-> >  }
+> > @@ -159,6 +159,9 @@ struct fq_sched_data {
+> >  	u64		stat_allocation_errors;
+> >  };
 > >  =
 
-> > +static u64 fq_offload_horizon(const struct Qdisc *sch,
-> > +			      const struct fq_sched_data *q)
-> > +{
-> > +	const struct net_device *dev;
-> > +	u64 offload_horizon;
+> > +/* EDT timestamps to clear beyond now. */
+> > +static const int fq_offload_slack_ns =3D 400;
 > > +
-> > +	offload_horizon =3D READ_ONCE(q->offload_horizon);
-> > +	if (!offload_horizon)
-> > +		return 0;
-> > +
-> > +	dev =3D qdisc_dev(sch);
-> > +	if (!dev->pacing_offload)
-> > +		return 0;
-> =
-
-> [Severity: Low]
-> Is this read of dev->pacing_offload racy?
-> =
-
-> The two neighbouring loads in this same helper use READ_ONCE(), but
-> pacing_offload is read plainly here.  It is a 1-bit bitfield inside
-> struct_group(priv_flags_fast) in struct net_device, and the sibling
-> rtnetlink change makes it runtime-writable:
-> =
-
-> net/core/rtnetlink.c:do_setlink() {
-> 	if (tb[IFLA_PACING_OFFLOAD]) {
-> 		bool val =3D nla_get_u32(tb[IFLA_PACING_OFFLOAD]);
-> =
-
-> 		if (dev->pacing_offload !=3D val) {
-> 			dev->pacing_offload =3D val;
-> 	...
-> }
-> =
-
-> The writer holds only RTNL, while this reader runs from fq_classify() a=
-nd
-> fq_dequeue() under the qdisc root lock, so the two sides share no lock =
-and
-> both accesses are plain.  Would KCSAN flag this?
-> =
-
-> Because it is a bitfield, READ_ONCE()/WRITE_ONCE() cannot be applied to=
- it.
-
-Since it is a bitfield, READ_ONCE/WRITE_ONCE cannot be applied, indeed.
-
-> Would a dedicated non-bitfield member (or bitops on a separate unsigned=
-
-> long), or at minimum data_race() on this read, be preferable?
-> =
-
-> Separately, storing a single bit is a read-modify-write of the whole
-> declared unsigned long storage unit, which also holds priv_flags:32,
-> lltx:1 and netmem_tx:2 - fields read locklessly on the TX path.  Which
-> lock is intended to serialize RMWs of that word now that one of its bit=
-s
-> changes at runtime?  I did not find a non-RTNL writer of the neighbouri=
-ng
-> bits, so this part is speculative.
-> =
-
-> > +
-> > +	if (offload_horizon > READ_ONCE(dev->max_pacing_offload_horizon))
-> > +		return 0;
-> > +
-> > +	return offload_horizon;
-> > +}
-> > +
-> =
-
-> [Severity: Low]
-> Should Documentation/networking/net_cachelines/net_device.rst be update=
-d
-> here?
-> =
-
-> This adds a per-packet TX read of dev->max_pacing_offload_horizon, but =
-the
-> row for that field in net_device.rst still has empty fastpath_tx_access=
- and
-> Comments columns.  The companion bit added by the preceding patch in th=
-e
-> series was annotated:
-> =
-
->   unsigned_long:1        pacing_offload    read_mostly    ...    sch_fq=
-
-
-This is fair. Very minor, but will do if respinning.
- =
-
-> struct net_device also carries a comment asking for the document to be =
-kept
-> in sync ("Please update the document when adding new fields").
-> =
-
-> max_pacing_offload_horizon still lives in the cold region of struct
-> net_device next to irq_moder/napi_config, outside the net_device_read_t=
-x
-> cacheline group, so for qdiscs that configured an offload horizon the T=
-X
-> path now touches an extra otherwise-cold cache line per enqueue and per=
-
-> dequeue.  Was that placement considered?
-> =
-
-> >  /* Fast path can be used if :
-> >   * 1) Packet tstamp is in the past, or within the pacing offload hor=
-izon.
-> >   * 2) FQ qlen =3D=3D 0   OR
-> =
-
-> [ ... ]
-> =
-
-> > @@ -357,6 +377,7 @@ static struct fq_flow *fq_classify(struct Qdisc *=
-sch, struct sk_buff *skb,
-> >  				   u64 now)
+> >  /* return the i-th 2-bit value ("crumb") */
+> >  static u8 fq_prio2band(const u8 *prio2band, unsigned int prio)
 > >  {
-> >  	struct fq_sched_data *q =3D qdisc_priv(sch);
-> > +	u64 offload_horizon =3D fq_offload_horizon(sch, q);
-> >  	struct rb_node **p, *parent;
-> >  	struct sock *sk =3D skb->sk;
-> >  	struct rb_root *root;
-> =
-
-> [ ... ]
-> =
-
-> > @@ -705,6 +728,7 @@ static struct fq_flow_head *fq_pband_head_select(=
-struct fq_perband_flows *pband)
-> >  static struct sk_buff *fq_dequeue(struct Qdisc *sch)
-> >  {
-> >  	struct fq_sched_data *q =3D qdisc_priv(sch);
-> > +	u64 offload_horizon =3D fq_offload_horizon(sch, q);
-> >  	struct fq_perband_flows *pband;
-> >  	struct fq_flow_head *head;
-> >  	struct sk_buff *skb;
-> =
-
-> [ ... ]
-> =
-
-> > @@ -1179,11 +1204,15 @@ static int fq_change(struct Qdisc *sch, struc=
-t nlattr *opt,
-> >  		u64 offload_horizon =3D (u64)NSEC_PER_USEC *
-> >  				      nla_get_u32(tb[TCA_FQ_OFFLOAD_HORIZON]);
+> > @@ -421,6 +424,10 @@ static struct fq_flow *fq_classify(struct Qdisc =
+*sch, struct sk_buff *skb,
+> >  			smp_store_release(&sk->sk_pacing_status,
+> >  					  SK_PACING_FQ);
 > >  =
 
-> > -		if (offload_horizon <=3D qdisc_dev(sch)->max_pacing_offload_horizo=
-n) {
-> > -			WRITE_ONCE(q->offload_horizon, offload_horizon);
-> > -		} else {
-> > +		if (offload_horizon && !qdisc_dev(sch)->pacing_offload) {
-> > +			NL_SET_ERR_MSG_MOD(extack, "device pacing offload is disabled");
-> > +			err =3D -EINVAL;
-> =
-
-> [Severity: Medium]
-> Is this new configuration-time rejection intended, and should the commi=
-t
-> message mention it?
-
-Yes, this block rejecting enabling of pacing offload in FQ if the
-device does not support it is intentional.
-
-If respinning I'll add the statement to the commit msg.
-
-> The changelog only describes runtime behaviour:
-> =
-
->     In FQ, only offload if the feature is enabled and within the suppor=
-ted
->     device horizon.
-> =
-
-> but this hunk also makes
-> =
-
->   tc qdisc replace dev X root fq offload_horizon 500us
-> =
-
-> return -EINVAL whenever qdisc_dev(sch)->pacing_offload is 0.  Before th=
-e
-> patch the only gate was offload_horizon <=3D max_pacing_offload_horizon=
-.
-> Since the only setter of that bit is do_setlink() via IFLA_PACING_OFFLO=
-AD,
-> does this create an ordering dependency where the link attribute must b=
-e
-> enabled before the qdisc can be configured?
-> =
-
-> The new fq_offload_horizon() already degrades to 0 when the device flag=
- is
-> clear, so the datapath is safe without the hard rejection:
-> =
-
-> 	dev =3D qdisc_dev(sch);
-> 	if (!dev->pacing_offload)
-> 		return 0;
-> =
-
-> Would accepting the value (and letting it stay inert until the device f=
-lag
-> is enabled) be preferable to failing the command?
-> =
-
-> > +		} else if (offload_horizon >
-> > +			   qdisc_dev(sch)->max_pacing_offload_horizon) {
-> >  			NL_SET_ERR_MSG_MOD(extack, "invalid offload_horizon");
-> >  			err =3D -EINVAL;
-> > +		} else {
-> > +			WRITE_ONCE(q->offload_horizon, offload_horizon);
-> >  		}
+> > +		if (offload_horizon &&
+> > +		    fq_skb_cb(skb)->time_to_send <=3D now + fq_offload_slack_ns)
+> > +			skb_set_delivery_time(skb, 0, SKB_CLOCK_REALTIME);
+> > +
+> >  		return &q->internal;
 > >  	}
-> >  	if (!err) {
+> >  =
+
+> =
+
+> [ ... ]
+> =
+
+> > @@ -745,7 +753,7 @@ static struct sk_buff *fq_dequeue(struct Qdisc *s=
+ch)
+> >  	if (skb) {
+> >  		q->internal.qlen--;
+> >  		fq_dequeue_skb(sch, &q->internal, skb);
+> > -		goto out;
+> > +		return skb;
+> >  	}
+> >  =
+
+> >  	now =3D ktime_get_ns();
+> =
+
+> [Severity: Low]
+> For packets on q->internal the clearing decision is now taken only once=
+,
+> at enqueue time in fq_classify(), using the enqueue-time now.  With the=
+
+> goto out changed to return skb, internal-queue packets no longer reach =
+the
+> new block at the out: label, and they are returned before now is even
+> sampled.
+> =
+
+> fq_fastpath_check() admits a packet whose txtime is up to offload_horiz=
+on
+> in the future:
+> =
+
+> 	if (fq_skb_cb(skb)->time_to_send > now + offload_horizon)
+> 		return false;
+> =
+
+> and the internal queue is not single-slot:
+> =
+
+> 		if (q->internal.qlen >=3D 8)
+> 			return false;
+> =
+
+> So a packet can be admitted with a future txtime, sit behind up to seve=
+n
+> others (or behind a stopped tx queue), and by the time fq_dequeue()
+> returns it the txtime has expired, yet skb->tstamp is still set and the=
+
+> device performs exactly the future-time comparison the change is meant =
+to
+> avoid.  Is that gap intentional, or should the internal-queue path also=
+
+> re-test at dequeue?
+
+Testing fast path only in fq_enqueue is intentional.
+ =
+
+> Relatedly, the second exit to the internal queue in fq_classify(), the
+> allocation failure path:
+> =
+
+> 	f =3D kmem_cache_zalloc(fq_flow_cachep, GFP_ATOMIC | __GFP_NOWARN);
+> 	if (unlikely(!f)) {
+> 		q->stat_allocation_errors++;
+> 		return &q->internal;
+> 	}
+> =
+
+> does no clearing at all, so even an already-expired EDT survives to the=
+
+> device there.  Should that path get the same treatment?
+> =
+
+> The predicate itself is conservative (nothing more than
+> fq_offload_slack_ns in the future is ever cleared), so this looks like =
+a
+> missed optimization rather than a wrong transmit time, but the commit
+> message reads as though all packets whose txtime has passed get
+> skb->tstamp cleared.
+> =
+
+> > @@ -782,8 +790,8 @@ static struct sk_buff *fq_dequeue(struct Qdisc *s=
+ch)
+> >  =
+
+> >  	skb =3D fq_peek(f);
+> >  	if (skb) {
+> > -		u64 time_next_packet =3D max_t(u64, fq_skb_cb(skb)->time_to_send,
+> > -					     f->time_next_packet);
+> > +		time_next_packet =3D max_t(u64, fq_skb_cb(skb)->time_to_send,
+> > +					 f->time_next_packet);
+> >  =
+
+> >  		if (now + offload_horizon < time_next_packet) {
+> >  			head->first =3D f->next;
+> =
+
+> [ ... ]
+> =
+
+> > @@ -862,6 +870,10 @@ static struct sk_buff *fq_dequeue(struct Qdisc *=
+sch)
+> >  	}
+> >  =
+
+> >  out:
+> > +	if (offload_horizon &&
+> > +	    time_next_packet && time_next_packet <=3D now + fq_offload_slac=
+k_ns)
+> > +		skb_set_delivery_time(skb, 0, SKB_CLOCK_REALTIME);
+> > +
+> >  	return skb;
+> >  }
 > =
 
 > [Severity: Medium]
-> Does this make the value reported by fq_dump() inaccurate and no longer=
+> Should this test the packet's own txtime rather than time_next_packet?
 
-> re-appliable?
+EDT calculations in FQ must use time_next_packet over skb->tstamp.
+
+> The fq_classify() site uses fq_skb_cb(skb)->time_to_send, while here
+> time_next_packet is:
 > =
 
-> fq_dump() is untouched and still reports the raw stored value:
+> 		time_next_packet =3D max_t(u64, fq_skb_cb(skb)->time_to_send,
+> 					 f->time_next_packet);
 > =
 
-> 	offload_horizon =3D READ_ONCE(q->offload_horizon);
-> 	do_div(offload_horizon, NSEC_PER_USEC);
-> 	...
-> 	    nla_put_u32(skb, TCA_FQ_OFFLOAD_HORIZON, (u32)offload_horizon) ||
+> f->time_next_packet is FQ's own rate-pacing schedule.  Grepping
+> net/sched/sch_fq.c, skb->tstamp is only ever written by
+> fq_mono_to_skb_tstamp() on the fq_enqueue() horizon-cap path, so
+> f->time_next_packet is never propagated into skb->tstamp and the device=
+
+> never sees it.
 > =
 
-> Consider:
+> The effect shows up when FQ enforces its own rate, e.g.:
+>
+>   tc qdisc replace dev X root fq maxrate 1gbit offload_horizon <=3D \
+>       dev->max_pacing_offload_horizon
 > =
 
->   ip link set dev X pacing_offload on
->   tc qdisc replace dev X root fq offload_horizon 500us   /* stored */
->   ip link set dev X pacing_offload off                   /* do_setlink(=
-) */
-
-The choice is a conscious one to check all three conditions at runtime
-
-1. q->offload_horizon is set
-2. dev->pacing_offload is enabled
-3. dev->max_pacing_offload >=3D q->pacing_offload
-
-and keeping them independent variables that are not disabled
-cascadingly at runtime.
-
-As a result, fq_dump will indeed dump the state of the fq variable,
-which !=3D whether offloading happens.
-
-For that the user will also have to read the dev rt-link settings
-and/or device counters.
-
-I can make this explicit in the commit message.
-
-> Nothing clears q->offload_horizon, so fq_offload_horizon() returns 0 an=
-d
-> the datapath does pure software pacing while tc qdisc show still prints=
-
-> offload_horizon 500us.  Replaying that same dump then hits the new -EIN=
-VAL
-> above, where it previously succeeded.
+> For an EDT packet the branch that consults sk_pacing_rate is skipped:
 > =
 
-> The same silent divergence appears when a device lowers
-> max_pacing_offload_horizon on re-init, for example
-> idpf_vport_set_pacing_offload() doing
-> WRITE_ONCE(netdev->max_pacing_offload_horizon, max_horizon) with
-> max_horizon possibly 0 - the "device renegotiation" case named in the
-> changelog.
+> 	if (!skb->tstamp) {
+> 		if (skb->sk)
+> 			rate =3D min(READ_ONCE(skb->sk->sk_pacing_rate), rate);
 > =
 
-> The uAPI comment also still promises unconditional behaviour:
+> so rate stays at q->flow_max_rate and the previous dequeue set
+> f->time_next_packet =3D now + len.  The flow is then throttled until
+> f->time_next_packet - offload_horizon, so on release:
 > =
 
-> include/uapi/linux/pkt_sched.h:
-> 	TCA_FQ_OFFLOAD_HORIZON,	/* dequeue packets in the past, if within hori=
-zon */
+> 	now + 400 < f->time_next_packet <=3D now + offload_horizon
 > =
 
-> Should fq_dump() report the effective horizon, or should the comment no=
-te
-> the dependency on device administrative state?
+> and the predicate is false even though fq_skb_cb(skb)->time_to_send is
+> already well in the past.  In that configuration the clearing never
+> happens, while the fq_classify() peer site would have cleared the same
+> packet.  Note fq_fastpath_check() rejects the fastpath when
+> q->flow_max_rate !=3D ~0UL, so maxrate flows always take this path.
 > =
 
-> One smaller inconsistency: fq_offload_horizon() uses READ_ONCE() for
-> dev->max_pacing_offload_horizon while fq_change() reads the same field,=
- and
-> pacing_offload, plainly.
+> Since time_next_packet is always >=3D time_to_send, nothing with a genu=
+inely
+> future EDT gets cleared, so this looks like a silently ineffective
+> optimization rather than a correctness problem.  Was using
 
-I will look at this
- =
+The interplay of EDT and FQ maxrate is complex. A "silently
+ineffective optimization" is acceptable.
+
+> fq_skb_cb(skb)->time_to_send here considered, to keep the two sites
+> consistent?
+> =
+
+> -- =
+
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/pat=
+chset/20260910171131.2532487-1-willemdebruijn.kernel%40gmail.com
 
 
