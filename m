@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7819125DB0D;
-	Sat, 12 Sep 2026 00:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB32287518;
+	Sat, 12 Sep 2026 00:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789172938; cv=none; b=LJqpa4ZY3otmqr5O/Ug9EitNtz7ys0mZh1TpyCt6Ok8cJ/XLf02eofOyIfrHh9rBLTQKgq/FiO/WncVpLqna/14d4Xby3J/NkcNi7KpP3YGALMil8KaYQXpUZgBEdiUkimo5iVGRMC2DXDs8RZB1zdEuLTRa+cWv0xHEEnZDQIE=
+	t=1789172939; cv=none; b=GIorBAOaJTNdz0VRNGZPXKS6XdM3s+qlPAD8rOi2ROy1azeJzK/s7pT4E06ikMIRLQ9mCJZXHmoB+1VykTioZPwuBIjAeLe4y1aP1IrXRW7TobqUMFOyjV22HUSSk8lZGLWCBs8ezHxeEQ2WqjpSz9iPeiYLaPVkGIOea9HN2yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789172938; c=relaxed/simple;
-	bh=66bztnUPANIKM3GoZrL92tIV4OfkOWM0ng2b67LvDqo=;
+	s=arc-20240116; t=1789172939; c=relaxed/simple;
+	bh=s7G11paDjFpsVaz2XwV78H67cL6QKSBj29+De38RXDU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=q5HF1ACs9EP+zbv7PfTXwmNmMlMSyPYOODRRHErcGhdXxWE77+qpCupCSo9vf3+Q/aD2oAsZd1PNaLeH6fijedSmSH+HSxdNEnZElPWOIXq/XjdZw0VfU7BAQjApmb945+c9RBLWVKPNwa4/fNiDHptN+2H39dCWFBVGx4RJu5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IQZ+n7An; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=nRMZHqh3IZn/RUnBdRyZOz9XY5sAT/JrHksQEA3u4pYTTHrVAlpe4E8mI7A/FcfxzTJm/dyBqzszRixiQTxav2rvmnYJWSXmIWWRyKsOdcC3bmaSb4XapjOe13+BgeCvpwmv6oc9n+qJM4QV1eGPY8Zhb5DiDgYK4POuuxQTMKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bA3xEcWr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IQZ+n7An"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256121F00893;
-	Sat, 12 Sep 2026 00:28:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bA3xEcWr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8ED21F000FF;
+	Sat, 12 Sep 2026 00:28:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789172936;
-	bh=7CyK2LnRKJzzXqOaPiKnWWQUHGiqEFH5AJsjV3xCGUg=;
+	s=k20260515; t=1789172937;
+	bh=1DUv7brlRMzeWa7Rkb0k29OtDqUJfE93cd+2I0DTrQM=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=IQZ+n7AnQd/36iokUFFuXiF1lwIx0RVslvpRPuHACtllIStOXaUi4c+v4grD1ihGz
-	 +vd0t6Wx5gj2yAj13dUbI56eGXBLV+IvAsXZszDOUSerGBXTLK5NpQKxPfTZktx4qm
-	 ujXaMY7sIMR3cmsojMJM+1WDG9NZQntT9i1U7PM/XHy4MlXWGWh5TgGGU99BAcI42Q
-	 UfXYMszrH2i1bXxtFfQQ2DAih2SmP+ZVksB3VxvCOx5lsG2g/LGDAY1hchAel3lBqj
-	 Qauz6E4pxySZjpv5R2eX+vWjuPa1IDUKtus2G7pL339gmakqpds4q2/3jLlTHA9hsh
-	 K/nruc872Ct+g==
-Subject:
- Re: [PATCH net-next v14 3/6] driver core: add device_schedule_reprobe()
+	b=bA3xEcWrqxeHWee0ONsuzNl4r/SdjTJ71WtJjtZYNW9KmR5QvRcCt+j0UyW2P97V4
+	 23dBjxYgxU55vRaCoWmgt6PPsHGfUeEx8++Figpi4AhoTBSLpT88Jxifs7VgF9H7+l
+	 DvYkCH6U19UmVq4JVAChojz2yDM1MVxGj5WtHwGBTuHbsEe5n9LAUtFhAQdqmDl906
+	 TtI1+fHn0bARZdqDAK3YeawFgsMfd0RUZNbglbsXSe43Dd9fRmnp7GGzWykZO/XYxw
+	 VEZlrnoNygzjmFVcuteRSIo1ibStZgNIZUqH+Ul7R3unU0ostH2iMTXkXPm9iSeIav
+	 Tz5P0GP0ahhEw==
+Subject: Re: [PATCH net-next v14 4/6] net: dsa: mxl862xx: add devlink
+ flash_update and info_get
 From: netdev-bot+sashiko@kernel.org
 To: daniel@makrotopia.org
 Cc: jiri@resnulli.us, davem@davemloft.net, edumazet@google.com,
@@ -36,11 +36,11 @@ Cc: jiri@resnulli.us, davem@davemloft.net, edumazet@google.com,
  rafael@kernel.org, dakr@kernel.org, andrew@lunn.ch, olteanv@gmail.com,
  netdev@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org, driver-core@lists.linux.dev
-Date: Sat, 12 Sep 2026 00:28:54 +0000
-Message-ID: <178917293473.219967.3333541093262308@kernel.org>
-In-Reply-To: =?utf-8?q?=3C88efc948074a871d043f386c2623bd4af89ff671=2E1788976?=
+Date: Sat, 12 Sep 2026 00:28:56 +0000
+Message-ID: <178917293624.219967.1596425447722739945@kernel.org>
+In-Reply-To: =?utf-8?q?=3C88154e67987195ab7c5199fa0269ab6a5e80d2a7=2E1788976?=
  =?utf-8?q?064=2Egit=2Edaniel=40makrotopia=2Eorg=3E?=
-References: =?utf-8?q?=3C88efc948074a871d043f386c2623bd4af89ff671=2E17889760?=
+References: =?utf-8?q?=3C88154e67987195ab7c5199fa0269ab6a5e80d2a7=2E17889760?=
  =?utf-8?q?64=2Egit=2Edaniel=40makrotopia=2Eorg=3E?=
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
@@ -52,343 +52,230 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 6 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 3
+Critical: 0 · High: 0 (1) · Medium: 2 · Low: 0
 
-- [Medium] The new shutdown guard is per-device and set lazily:
-  device_shutdown() (drivers/base/core.c:4913-4914) sets…
-- [Medium] device_schedule_reprobe() validates the device (dev->bus,
-  dev->p, device_is_registered(), dev->driver) at dd.c:1531-1534 and…
-- [Medium] The shutdown_done test that is supposed to suppress the detach
-  half is evaluated once (dd.c:1472) before __device_release_driver()…
-- [Low] Commit message framing vs. what the patch does: the message
-  devotes most of its length to two concrete bug classes in three named…
-- [Low] device_reprobe_work_fn() reports every negative device_attach()
-  return with dev_err_probe(dev, ret, "re-probe failed, device left…
-- [Low] device_reprobe_work_fn() decides whether to forcibly detach a
-  device solely by comparing dev->driver against the raw pointer value…
+- [Medium] priv->flash_reading is documented (kernel-doc for struct
+  mxl862xx_priv and the in-function comment in mxl862xx_api_wrap()) as…
+- [Medium] In mxl862xx_flash_firmware() the return value of the final,
+  purely optional END (0x3cc3) STAT write is propagated as the result of…
+
+Pre-existing issues:
+- [High] mxl862xx_remove() stops the periodic stats poll with
+  set_bit(MXL862XX_FLAG_WORK_STOPPED) followed by…
 
 --
 
-driver core: add device_schedule_reprobe()
+net: dsa: mxl862xx: add devlink flash_update and info_get
 
-This adds a driver-core helper that schedules a delayed detach and
-re-probe of a device on system_freezable_wq, pinning the device and its
-parent and recording the bound driver pointer so a stale re-probe does
-nothing.  It also adds a shutdown_done flag to struct device_private,
-set by device_shutdown() under the device lock, and makes
-__device_release_driver() return whether it was the caller that released
-the driver.
+This adds runtime firmware upgrade through "devlink dev flash" and version
+reporting through "devlink dev info" for the mxl862xx DSA driver. The flash
+path closes the user and conduit interfaces, blocks firmware API commands,
+transfers the image over the SB PDI protocol and then schedules a deferred
+re-probe.
 
-A few questions below.
+A few questions about the new code below.
 
-    Both classes disappear when the driver core owns the deferred work.
-    Add device_schedule_reprobe(), which schedules a detach and re-probe
-    of a device after a caller-specified delay:
-
-[Severity: Low]
-This isn't a bug, but could the message say more plainly that the three
-drivers it describes are not converted here or later in this series?
-
-At the end of the series, iwl_trans_reprobe_wk() in
-drivers/net/wireless/intel/iwlwifi/iwl-trans.c and
-h5_btrtl_reprobe_worker() in drivers/bluetooth/hci_h5.c still end with:
-
-	if (device_reprobe(reprobe->dev))
-		dev_err(reprobe->dev, "reprobe failed!\n");
-	put_device(reprobe->dev);
-	kfree(reprobe);
-	module_put(THIS_MODULE);
-
-with no bound-state check, and btintel_pcie is unchanged, so both bug
-classes are still present in-tree.  The helper does gain in-tree callers
-in this series (two call sites in drivers/net/dsa/mxl862xx/mxl862xx-fw.c),
-just not in the three motivating drivers.
-
-> diff --git a/drivers/base/base.h b/drivers/base/base.h
-> index a5b7abc10ff02..6234e37de7e99 100644
-> --- a/drivers/base/base.h
-> +++ b/drivers/base/base.h
-> @@ -106,6 +106,10 @@ struct driver_private {
->   * @dead: This device is currently either in the process of or has been
->   *	  removed from the system. Any asynchronous events scheduled for this
->   *	  device should exit without taking any action.
-> + * @shutdown_done: Set once device_shutdown() has reached this device, under
-> + *	  the device lock, before any shutdown callback runs. Read under the
-> + *	  device lock. A deferred re-probe scheduled with
-> + *	  device_schedule_reprobe() must not detach the device anymore.
->   *
->   * Nothing outside of the driver core should ever touch these fields.
->   */
+> diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-fw.c b/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
+> new file mode 100644
+> index 0000000000000..e8913954b2bae
+> --- /dev/null
+> +++ b/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
+> @@ -0,0 +1,642 @@
 
 [ ... ]
 
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index 4c0c373998a19..3dcd8a3c3aa55 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -4910,6 +4910,9 @@ void device_shutdown(void)
->  			device_lock(parent);
->  		device_lock(dev);
->  
-> +		if (dev->p)
-> +			dev->p->shutdown_done = true;
+> +	mxl862xx_flash_notify(dl, "Flashing", payload_size, payload_size);
 > +
+> +	/* Success: the loader has left the receive loop at r_remain == 0 and
+> +	 * verified the image, so END(0x3cc3) is a finalise/boot request rather
+> +	 * than a byte count. Signal it here -- and only here -- to boot the new
+> +	 * image without waiting out the loader's 2 s END timeout.
+> +	 */
+> +	ret = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_STAT,
+> +				   MXL862XX_SB_PDI_END);
+> +	msleep(MXL862XX_FW_REBOOT_DELAY_MS);
+> +	return ret;
 
 [Severity: Medium]
-This flag is set only when the reverse-order walk reaches each device, so
-it means "this device has been reached", not "shutdown is in progress".
-What happens when a scheduled re-probe fires after device_shutdown() has
-started but before the walk reaches @dev?
+Should the status of this last END write really decide the outcome of the
+whole flash?
 
-The guard in device_reprobe_work_fn() sees dead == false and
-shutdown_done == false, so the detach half runs:
+At this point mxl862xx_sb_pdi_flush_last() has already returned 0, which per
+its own logic only happens after the loader published
+MXL862XX_SB_PDI_VERIFY_OK, so the image is fully transferred, verified and
+will be booted. The comment above the write and the file's protocol comment
+both say END is optional because the loader finalises on its own 2 s timeout.
 
-	__device_release_driver() -> device_remove() -> drv->remove()
+mxl862xx_smdio_write() forwards __mdiobus_write()'s return, so it can fail
+with -ETIMEDOUT or -EIO from the bus driver. In that case
+mxl862xx_devlink_flash_update() takes the failure path: the
+mxl862xx_wait_ready() confirmation is skipped, priv->fw_version, asic_id and
+asic_rev are zeroed, and a retry is refused with -EBUSY since skip_teardown
+is now set. So a successful update is reported as a transfer failure and
+"devlink dev info" reports no versions at all until the re-probe runs.
 
-at a point where every device registered after @dev (children, later
-probing suppliers) already had bus->shutdown()/driver->shutdown() run.
-
-The re-attach that follows cannot succeed either, because
-device_shutdown() calls device_block_probing() before the walk and
-really_probe() then returns -EPROBE_DEFER:
-
-	if (defer_all_probes) {
-		...
-		return -EPROBE_DEFER;
-	}
-
-device_unblock_probing() is only reached from dpm_complete(), never on the
-shutdown path, so the device stays unbound.
-
-And when the walk finally reaches @dev, this test in device_shutdown():
-
-	} else if (dev->driver && dev->driver->shutdown) {
-
-is false, so the driver's ->shutdown() is skipped for that device.  Would
-a global condition (probing blocked, or system_state) be a better guard
-here than a per-device flag?
-
->  		/* Don't allow any more runtime suspends */
->  		pm_runtime_get_noresume(dev);
->  		pm_runtime_barrier(dev);
-
-> diff --git a/drivers/base/dd.c b/drivers/base/dd.c
-> index f6525a7ee8c54..81a3433f726e8 100644
-> --- a/drivers/base/dd.c
-> +++ b/drivers/base/dd.c
+Would it make sense to log the END write failure and still return success
+here, given the verdict has already been read?
 
 [ ... ]
 
-> @@ -1336,7 +1336,7 @@ static void __device_release_driver(struct device *dev, struct device *parent)
->  			 */
->  			if (dev->driver != drv) {
->  				pm_runtime_put(dev);
-> -				return;
-> +				return false;
->  			}
->  		}
-
-[Severity: Medium]
-The commit message mentions this window ("One pre-existing window
-remains: __device_release_driver() transiently drops the locks while
-consumer device links are busy").  Since the new caller tests
-shutdown_done only once, before the call, this loop revalidates only
-dev->driver after retaking the locks:
-
-	while (device_links_busy(dev)) {
-		__device_driver_unlock(dev, parent);
-		device_links_unbind_consumers(dev);
-		__device_driver_lock(dev, parent);
-		if (dev->driver != drv) {
-			pm_runtime_put(dev);
-			return false;
-		}
-	}
-
-In that window device_shutdown() can take both locks, set shutdown_done
-and run ->shutdown(), after which the work continues into device_remove()
-and ->remove() runs after ->shutdown().  Would re-testing
-dev->p->shutdown_done right after __device_driver_lock() close this for
-the new helper?
-
-[ ... ]
-
-> @@ -1436,3 +1439,116 @@ void driver_detach(const struct device_driver *drv)
->  		put_device(dev);
->  	}
->  }
-> +
-> +struct device_reprobe {
-> +	struct delayed_work work;
-> +	struct device *dev;
-> +	struct device *parent;
-> +	const struct device_driver *drv;
-> +	bool parent_lock;
-> +};
-> +
-> +static void device_reprobe_work_fn(struct work_struct *work)
+> +int mxl862xx_devlink_flash_update(struct dsa_switch *ds,
+> +				  struct devlink_flash_update_params *params,
+> +				  struct netlink_ext_ack *extack)
 > +{
-> +	struct device_reprobe *rp = container_of(work, struct device_reprobe,
-> +						 work.work);
-> +	struct device *parent = rp->parent;
-> +	struct device *dev = rp->dev;
-> +	bool detached = false;
-> +	int ret;
+
+[ ... ]
+
+> +	set_bit(MXL862XX_FLAG_WORK_STOPPED, &priv->flags);
+> +	disable_delayed_work_sync(&priv->stats_work);
+> +	cancel_work_sync(&priv->crc_err_work);
+> +	for (i = 0; i < ds->num_ports; i++)
+> +		cancel_work_sync(&priv->ports[i].host_flood_work);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but the same stats_work re-arm
+race that disable_delayed_work_sync() closes here is still open in
+mxl862xx_remove(), which uses the plain cancel:
+
+drivers/net/dsa/mxl862xx/mxl862xx.c:mxl862xx_remove() {
+	set_bit(MXL862XX_FLAG_WORK_STOPPED, &priv->flags);
+	cancel_delayed_work_sync(&priv->stats_work);
+
+	dsa_unregister_switch(ds);
+	...
+}
+
+The reader side tests the flag locklessly:
+
+drivers/net/dsa/mxl862xx/mxl862xx.c:mxl862xx_get_stats64() {
+	...
+	if (!test_bit(MXL862XX_FLAG_WORK_STOPPED, &priv->flags))
+		schedule_delayed_work(&priv->stats_work, 0);
+}
+
+Can a get_stats64() caller that already passed the test_bit() re-arm the work
+after cancel_delayed_work_sync() has returned? cancel_delayed_work_sync()
+only dequeues and waits, it does not make a later schedule_delayed_work() a
+no-op, and no further cancel follows, so mxl862xx_stats_work_fn() would then
+iterate dsa_switch_for_each_available_port() over ports released by
+dsa_unregister_switch() and dereference the devm-allocated priv and ds after
+mxl862xx_remove() returns.
+
+The user netdevs are still registered at that point, so the racing reader can
+be something as ordinary as "ip -s link" during an unbind. Would converting
+remove() to disable_delayed_work_sync() as well be appropriate, either here
+or as a separate fix?
+
 > +
-> +	/*
-> +	 * A device unregistered before the work runs may have outlived the
-> +	 * module providing its bus type, so dev->bus is not read until the
-> +	 * device is known to be live.
-> +	 */
-> +	if (rp->parent_lock)
-> +		device_lock(parent);
-> +	device_lock(dev);
-> +	/*
-> +	 * rp->drv is only ever compared, never dereferenced: the driver it
-> +	 * points to may have been unregistered and freed by now.
-> +	 */
-> +	if (!dev->p->dead && !dev->p->shutdown_done && dev->driver == rp->drv)
-> +		detached = __device_release_driver(dev, parent);
-> +	device_unlock(dev);
-> +	if (rp->parent_lock)
-> +		device_unlock(parent);
+> +	ret = mxl862xx_flash_firmware(priv, params->fw, payload_size,
+> +				      ds->devlink);
+> +	if (ret)
+> +		NL_SET_ERR_MSG_MOD(extack, "firmware transfer failed");
 > +
-> +	if (detached) {
-> +		/*
-> +		 * device_attach() must run with the parent locked on buses
-> +		 * that require it, mirroring bus_rescan_devices_helper().
+> +	if (!ret) {
+> +		mutex_lock_nested(&priv->mdiodev->bus->mdio_lock,
+> +				  MDIO_MUTEX_NESTED);
+> +		/* Keep block_host set so host writes stay blocked, but let the
+> +		 * readiness poll below read the freshly booted firmware.
 > +		 */
-> +		if (rp->parent_lock)
-> +			device_lock(parent);
-> +		ret = device_attach(dev);
-> +		if (ret < 0)
-> +			dev_err_probe(dev, ret,
-> +				      "re-probe failed, device left unbound\n");
+> +		priv->flash_reading = true;
+> +		mutex_unlock(&priv->mdiodev->bus->mdio_lock);
+> +
+> +		/* Refresh the cached versions so the flash update only
+> +		 * completes once the new firmware is confirmed running and
+> +		 * devlink dev info reports it. Must happen before setting
+> +		 * skip_teardown, which discards all firmware API reads.
+> +		 */
+> +		ret = mxl862xx_wait_ready(ds);
 
-[Severity: Low]
-For ret == -EPROBE_DEFER, dev_err_probe() does more than pick a log
-level.  __dev_probe_failed() in drivers/base/core.c does:
+[Severity: Medium]
+Does priv->flash_reading actually restrict the bypass to the flash path?
 
-	case -EPROBE_DEFER:
-		device_set_deferred_probe_reason(dev, &vaf);
-		dev_dbg(dev, "error %pe: %pV", ERR_PTR(err), &vaf);
+The gate it feeds only looks at the direction of the command:
 
-so this string is stored in dev->p->deferred_probe_reason, which
-drivers/base/base.h documents as the message retrieved via debugfs, and
-any reason recorded earlier by the driver's own probe is overwritten.
+drivers/net/dsa/mxl862xx/mxl862xx-host.c:mxl862xx_api_wrap() {
+	...
+	if (priv->block_host && cmd != SYS_MISC_FW_UPDATE &&
+	    !(priv->flash_reading && read)) {
+		ret = -EBUSY;
+		goto out;
+	}
+	...
+}
 
--EPROBE_DEFER is reachable here: really_probe() returns it while
-defer_all_probes is set, and __device_attach_driver()/__device_attach()
-pass it back unchanged.  In that case /sys/kernel/debug/devices_deferred
-reports "re-probe failed, device left unbound" for a device that is
-queued for a retry.  Should the -EPROBE_DEFER case be handled separately
-from a real failure?
+There is no check of the calling context and no narrowing to
+SYS_MISC_FW_VERSION or MXL862XX_COMMON_CFGGET, so while the flag is set every
+read-type firmware API command from any context reaches the switch: the
+ethtool MAC/RMON/pause stat handlers, mxl862xx_port_fdb_dump(), the
+MXL862XX_MAC_TABLEENTRYQUERY half of mxl862xx_port_mdb_add() and
+mxl862xx_port_mdb_del(), MXL862XX_COMMON_CFGGET and INT_GPHY_READ.
 
-> +		if (rp->parent_lock)
-> +			device_unlock(parent);
+The window is not short either. mxl862xx_wait_ready() starts with
+msleep(2000) and polls up to MXL862XX_READY_TIMEOUT_MS, and rtnl is dropped
+by then, while the user netdevs are only closed and detached, still
+registered. So "ethtool -S swp0" or "bridge fdb show" in that window issues
+admitted reads against the freshly booted firmware.
+
+There is a second effect for read-modify-write sequences: mdb_add() gets its
+MXL862XX_MAC_TABLEENTRYQUERY read admitted and then hits -EBUSY on the
+following MXL862XX_MAC_TABLEENTRYADD write, so it fails half executed rather
+than being refused up front.
+
+Should the bypass be keyed on the flash path itself, for instance on the
+specific commands the readiness poll issues?
+
+[ ... ]
+
+> diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-host.c b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
+> index 11759fa6069b1..caa4f74a86cf1 100644
+> --- a/drivers/net/dsa/mxl862xx/mxl862xx-host.c
+> +++ b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
+> @@ -340,6 +341,21 @@ int mxl862xx_api_wrap(struct mxl862xx_priv *priv, u16 cmd, void *_data,
+>  
+>  	mutex_lock_nested(&priv->mdiodev->bus->mdio_lock, MDIO_MUTEX_NESTED);
+>  
+> +	if (priv->skip_teardown) {
+> +		ret = read ? -ENODEV : 0;
+> +		goto out;
 > +	}
 > +
-> +	put_device(dev);
-> +	put_device(parent);
-> +	kfree(rp);
-> +}
-> +
-
-[ ... ]
-
-> + * scheduling time. In particular an administrative unbind is never
-> + * undone by a stale re-probe.
-
-[ ... ]
-
-> +int device_schedule_reprobe(struct device *dev, unsigned int delay_ms)
-> +{
-> +	struct device_reprobe *rp;
-> +
-> +	if (!dev->bus || !dev->p || !device_is_registered(dev))
-> +		return -EINVAL;
-> +	if (!dev->driver)
-> +		return -EINVAL;
-> +
-> +	rp = kzalloc_obj(*rp);
-> +	if (!rp)
-> +		return -ENOMEM;
-> +
-> +	rp->dev = get_device(dev);
-> +	/*
-> +	 * Pin the parent too: the work locks it, and an unregister of @dev
-> +	 * would otherwise drop the last reference before the work runs.
+> +	/* During the post-flash readiness poll block_host stays set, but the
+> +	 * flash path's own firmware version reads must reach the new image;
+> +	 * host writes stay blocked so stale resource IDs cannot corrupt it.
 > +	 */
-> +	rp->parent = get_device(dev->parent);
-> +	rp->parent_lock = dev->parent && dev->bus->need_parent_lock;
-
-[Severity: Medium]
-These reads happen without the device lock, and after a kzalloc_obj()
-that can sleep, so the checks above them may already be stale.
-
-device_del() takes its own copy of dev->parent at entry, unbinds the
-driver, calls kobject_del() (which clears the only thing
-device_is_registered() tests) and ends with:
-
-	kobject_del(&dev->kobj);
-	cleanup_glue_dir(dev, glue_dir);
-	memalloc_noio_restore(noio_flag);
-	put_device(parent);
-
-dev->parent itself is never cleared.  Can a caller that passed the checks
-and then slept in the allocation reach get_device(dev->parent) after that
-final put_device(parent) dropped the last reference, i.e. kobject_get() on
-a freed struct device, followed later by device_lock(parent) and
-put_device(parent) in the work?
-
-Separately, rp->parent and rp->parent_lock come from two independent
-reads of dev->parent, and device_move() assigns it without the device
-lock:
-
-	old_parent = dev->parent;
-	dev->parent = new_parent;
-
-so can rp->parent end up NULL while rp->parent_lock is true, leaving
-device_reprobe_work_fn() calling device_lock(NULL)?
-
-Would re-validating and snapshotting parent/parent_lock/driver under
-device_lock(dev), checking dev->p->dead (which kill_device() sets under
-that lock at the start of device_del(), before its put_device(parent)),
-avoid both cases?
-
-> +	rp->drv = READ_ONCE(dev->driver);
-
-[Severity: Low]
-Is a raw pointer value enough to identify the binding that asked for the
-re-probe?
-
-Within delay_ms, an unbind followed by a bind of the same driver:
-
-	echo dev > /sys/bus/.../unbind
-	echo dev > /sys/bus/.../bind
-
-restores dev->driver == rp->drv, so the check in
-device_reprobe_work_fn() matches and the stale work runs a detach and
-re-attach on a binding that never requested one.  That also narrows the
-kernel-doc claim above, "an administrative unbind is never undone by a
-stale re-probe": a plain unbind is honoured, an unbind plus rebind is
-not.
-
-And once the original module is unloaded, can another module's static
-struct device_driver end up at the same address and make the comparison
-succeed for an unrelated driver?  Would a generation counter, or a
-recorded driver name, be a more stable token here?
-
-> +	INIT_DELAYED_WORK(&rp->work, device_reprobe_work_fn);
-> +	queue_delayed_work(system_freezable_wq, &rp->work,
-> +			   msecs_to_jiffies(delay_ms));
+> +	if (priv->block_host && cmd != SYS_MISC_FW_UPDATE &&
+> +	    !(priv->flash_reading && read)) {
+> +		ret = -EBUSY;
+> +		goto out;
+> +	}
 > +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(device_schedule_reprobe);
+
+The comment here says "the flash path's own firmware version reads", but the
+condition admits any read from any caller, as noted above.
+
+[ ... ]
+
+> diff --git a/drivers/net/dsa/mxl862xx/mxl862xx.h b/drivers/net/dsa/mxl862xx/mxl862xx.h
+> index 432a5f3f2e08e..7231ed6c9187c 100644
+> --- a/drivers/net/dsa/mxl862xx/mxl862xx.h
+> +++ b/drivers/net/dsa/mxl862xx/mxl862xx.h
+> @@ -319,6 +323,12 @@ struct mxl862xx_fw_version {
+>   * @evlan_ingress_size: per-port ingress Extended VLAN block size
+>   * @evlan_egress_size:  per-port egress Extended VLAN block size
+>   * @vf_block_size:      per-port VLAN Filter block size
+> + * @block_host:         reject firmware API commands (except FW_UPDATE)
+> + *                      during a firmware flash
+> + * @flash_reading:      let the flash path's own firmware reads through
+> + *                      block_host while polling the freshly booted image
+
+The kernel-doc for @flash_reading documents the same flash-path-only
+restriction that the predicate in mxl862xx_api_wrap() does not implement.
+Should either the wording or the check be adjusted so the two agree?
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1788976064.git.daniel%40makrotopia.org
