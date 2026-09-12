@@ -1,48 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696E122FF22;
-	Sat, 12 Sep 2026 00:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6975123D2B1;
+	Sat, 12 Sep 2026 00:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789172946; cv=none; b=tgK8jdmVhNMJeGIlTEHfrG6g1/CFia92Cy7kYr5MB12YJFxXmOXOZ8AfiqDHazC4A+WJGJ4T9Xp6VJvRwn+tay52u75ClCOIctFxqqLs/TdXY/mCCgdjseLl5WxMvpqk3SLJfjcdHJbqMfovnyzXgyFMJ1RB/wlY6icLthxS6bE=
+	t=1789172947; cv=none; b=CUsFZ423B1v5r/Go/EXd9Ju5uNAbgTYXvd5hVgVARBo1yfCtbTJoTusDeo8DXI/a/j8GXC+sOWNn+oXSe5ICaFRYfMFU6SAqRJFGXWTBY1gAIf2DWgEmzMlHDaECPKJmeI9ZLLbnTrJc3YYd5JyScrCu/qeriUodGK7MBXqLv3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789172946; c=relaxed/simple;
-	bh=yRInyT4nAwQjg+M4AjyOXPgq3Tn/6M48qni9EzTqffY=;
+	s=arc-20240116; t=1789172947; c=relaxed/simple;
+	bh=7V+1FQXJSpysw+tUgbWJ5tg5hki9iB3nsAHB4fDlLAg=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DhcCczgLCbiXZMK8WVzReSyFhzpH1piereINp9m9HPi80qEYHqaubF0wejEpKSktzYZxmZa+4irm5vTc+z6EfDWoDeyazagDUP4DClgLb/ZhATtslNwKk2hzQY/FJvSiTNOdI1Qmv0puXUpp+POTBBia8i60vo9dxy2k8R8Q08Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n7Qc59br; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=EjZKDujlL3+JS238kLti6g8udTUKsewX06ni0Re+pVKylMEnBG2/0QxJCC4ofUeAAPed8sRgyvzD/BzDcJRw6EVyuMkCwo/MzRIY2Zh554L6dMgVq0BUtl/xwyG7cIfVBN0LMfgmJgl0g2/2i1nO2FLnMsQUuiJdJ3q7ga2nvSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AxqY6qAT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n7Qc59br"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1831F000FF;
-	Sat, 12 Sep 2026 00:28:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AxqY6qAT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C6B1F00893;
+	Sat, 12 Sep 2026 00:29:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789172941;
-	bh=6CSta5XhIEPFGyil8kLX3aNZhGbqnm9QcBrHZcXnFkA=;
+	s=k20260515; t=1789172943;
+	bh=cD53z2Pns1P+7sJ0xqddc3cQaAGdODJ7m6lHfTDi/ec=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=n7Qc59brARl+nNjXgAcuCuR/XEFef3Fk18OB5E/Zv59cMsMbeCa0zYE+1xxDd1D0p
-	 ut8YTzL0gqafmKVP3wsptrGg5z88HeO61gm1hqzjJqglNpn4LGJHgNNdE+fxZrxA4P
-	 iE4MVj3TscEQmXAZL/MpytvkWbdv1eb7giclK/K0exAxaRkcG+6iM/AjCm7RUekNEX
-	 uNhf9jnnXmvMH825rFcw2oBwsIuCHKude5lhaW1x50Gn1QB98KL5GwFgq3lImcxwHN
-	 d8gKUYuHPMhrdZguXZP1hBexbcD/yFLSsCTbqVs3Ybh/KO9Jlb9ZR6yTbnlj4scsLp
-	 p3DBONSsOGSbg==
-Subject: Re: [PATCH net-next v14 6/6] net: dsa: mxl862xx: document devlink
- flash and info support
+	b=AxqY6qATDQCLSJCQ4yaaGmRALvwGp72k0e0KXFiZSzzQaARaBBn+VyfNdx5HbJDQO
+	 wADi71gLgsxfFBGf2eEXQnOIyHYpJNY6Yk4EiQOuTjT0q4Jx2sJH7k4Cwtz1zuSh5j
+	 DWaoP10hOe9VK0iGMklw7fBlLrWn75otHH2bozW0oRyU2Q7fTURB0qYo9NOsvDWMc5
+	 n4LOlPF/9a+yydgb9R9XQ4YRFpxpeOmMaxjIlwzb4qt3pkVyNh4KPz6VtvMIq8cvaz
+	 N8UNEuIwOWvVEG9cKqmIw0Kve75Q+eo9vNv/iPn+PDssRfBIwTiRmpUaUGByBpowLJ
+	 LqRs7GkKW+IMA==
+Subject: Re: [PATCH net 1/2] net: psp: avoid conflicts with skb->decrypted and
+ sk_validate_xmit_skb()
 From: netdev-bot+sashiko@kernel.org
-To: daniel@makrotopia.org
-Cc: jiri@resnulli.us, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
- skhan@linuxfoundation.org, rdunlap@infradead.org, gregkh@linuxfoundation.org,
- rafael@kernel.org, dakr@kernel.org, andrew@lunn.ch, olteanv@gmail.com,
- netdev@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, driver-core@lists.linux.dev
-Date: Sat, 12 Sep 2026 00:28:59 +0000
-Message-ID: <178917293947.219967.869838796504417154@kernel.org>
-In-Reply-To: =?utf-8?q?=3Cb442cc1c7dc708aecef0e4044298c31a86959238=2E1788976?=
- =?utf-8?q?064=2Egit=2Edaniel=40makrotopia=2Eorg=3E?=
-References: =?utf-8?q?=3Cb442cc1c7dc708aecef0e4044298c31a86959238=2E17889760?=
- =?utf-8?q?64=2Egit=2Edaniel=40makrotopia=2Eorg=3E?=
-X-sashiko-severity: Low
+To: daniel.zahka@gmail.com
+Cc: edumazet@google.com, ncardwell@google.com, kuniyu@google.com,
+ davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ willemdebruijn.kernel@gmail.com, andrew+netdev@lunn.ch, shuah@kernel.org,
+ willemb@google.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+Date: Sat, 12 Sep 2026 00:29:01 +0000
+Message-ID: <178917294180.219967.2431474539892551274@kernel.org>
+In-Reply-To: <20260910-psp-ktls-fix-v1-1-e3f30aaeca4e@gmail.com>
+References: <20260910-psp-ktls-fix-v1-1-e3f30aaeca4e@gmail.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -52,104 +49,162 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 0 · Low: 2
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Low] Documentation/networking/devlink/mxl862xx.rst (new "Flash update"
-  section, lines 70-74) states unconditionally that `-EIO` from `devlink…
-- [Low] Documentation/networking/devlink/mxl862xx.rst describes
-  ``asic.rev`` as "The chip version read from the same register word" as…
+- [Medium] The new mutual-exclusion gate keys off
+  `sk->sk_validate_xmit_skb`, a function pointer that is inherited…
 
 --
 
-net: dsa: mxl862xx: document devlink flash and info support
+net: psp: avoid conflicts with skb->decrypted and sk_validate_xmit_skb()
 
-Adds a new Documentation/networking/devlink/mxl862xx.rst describing the
-devlink info versions and the flash update flow of the mxl862xx DSA
-driver, including the MCUboot rescue mode recovery. The file is linked
-from the devlink index and added to the driver's MAINTAINERS entry.
+This adds a mutual exclusion gate so that a socket cannot carry both PSP
+state and a TCP ULP, since the two conflict over skb->decrypted and
+sk->sk_validate_xmit_skb(). The gate is applied in __tcp_set_ulp() and in
+psp_sock_assoc_set_rx().
 
-Two questions about the wording of the new document below.
+> diff --git a/include/net/sock.h b/include/net/sock.h
+> index 51185222aac29..ba5e5092f192c 100644
+> --- a/include/net/sock.h
+> +++ b/include/net/sock.h
+> @@ -2312,6 +2312,17 @@ static inline void sk_gso_disable(struct sock *sk)
+>  	sk->sk_route_caps &= ~NETIF_F_GSO_MASK;
+>  }
+>  
+> +static inline bool sk_has_validate_xmit_skb(const struct sock *sk)
+> +{
+> +#ifdef CONFIG_SOCK_VALIDATE_XMIT
+> +	return !!sk->sk_validate_xmit_skb;
+> +#else
+> +	return false;
+> +#endif
+> +}
 
-> diff --git a/Documentation/networking/devlink/mxl862xx.rst b/Documentation/networking/devlink/mxl862xx.rst
-> new file mode 100644
-> index 0000000000000..5b24d8cb57bc9
-> --- /dev/null
-> +++ b/Documentation/networking/devlink/mxl862xx.rst
-> @@ -0,0 +1,74 @@
+[Severity: Medium]
+Is sk_validate_xmit_skb a reliable indicator of live per-socket state here?
+The field sits after sk_dontcopy_end in struct sock, so sock_copy() copies
+it verbatim into a cloned socket, and neither sk_clone() nor
+inet_csk_clone_lock() resets it.  By contrast, sk_clone() does explicitly
+clear the PSP association:
+
+net/core/sock.c:sk_clone() {
+	sock_copy(newsk, sk);
+	...
+#if IS_ENABLED(CONFIG_INET_PSP)
+	RCU_INIT_POINTER(newsk->psp_assoc, NULL);
+#endif
+
+So a socket accepted from a listener that had PSP Tx state installed ends up
+with sk_validate_xmit_skb == psp_validate_xmit while psp_assoc == NULL, and
+sk_has_validate_xmit_skb() then reports true for a child that has neither a
+PSP association nor a ULP.
+
+Can PSP state be installed on a listening socket in the first place?  The only
+socket check before installation appears to be in psp_nl.c:
+
+net/psp/psp_nl.c:psp_assoc_device_get_locked() {
+	...
+	if (!sk_is_tcp(socket->sk)) {
+
+and neither psp_sock_assoc_set_rx() nor psp_sock_assoc_set_tx() inspects
+sk_state, while psp_sock_assoc_set_tx() does:
+
+net/psp/psp_sock.c:psp_sock_assoc_set_tx() {
+	...
+	WRITE_ONCE(sk->sk_validate_xmit_skb, psp_validate_xmit);
+
+> +
+> +bool sk_has_decrypt_user(const struct sock *sk);
+> +
+>  static inline int skb_do_copy_data_nocache(struct sock *sk, struct sk_buff *skb,
+>  					   struct iov_iter *from, char *to,
+>  					   int copy, int offset)
+> diff --git a/net/core/sock.c b/net/core/sock.c
+> index fa60b7494c586..9489d9c479493 100644
+> --- a/net/core/sock.c
+> +++ b/net/core/sock.c
 
 [ ... ]
 
-> +   * - ``asic.rev``
-> +     - fixed
-> +     - 0
-> +     - The chip version read from the same register word, so it is
-> +       omitted whenever ``asic.id`` is.
+> @@ -2670,6 +2671,12 @@ void sk_setup_caps(struct sock *sk, struct dst_entry *dst)
+>  }
+>  EXPORT_SYMBOL_GPL(sk_setup_caps);
+>  
+> +bool sk_has_decrypt_user(const struct sock *sk)
+> +{
+> +	return psp_sk_assoc(sk) ||
+> +	       (sk_is_inet(sk) && inet_csk_has_ulp(sk)); /* for tls */
+> +}
+> +
+>  /*
+>   *	Simple resource managers for sockets.
+>   */
+> diff --git a/net/ipv4/tcp_ulp.c b/net/ipv4/tcp_ulp.c
+> index 2aa442128630e..f3e0c9d379bb6 100644
+> --- a/net/ipv4/tcp_ulp.c
+> +++ b/net/ipv4/tcp_ulp.c
+> @@ -136,6 +136,10 @@ static int __tcp_set_ulp(struct sock *sk, const struct tcp_ulp_ops *ulp_ops)
+>  	if (icsk->icsk_ulp_ops)
+>  		goto out_err;
+>  
+> +	err = -EINVAL;
+> +	if (sk_has_decrypt_user(sk) || sk_has_validate_xmit_skb(sk))
+> +		goto out_err;
+> +
 
-[Severity: Low]
-Is "the same register word" accurate here?  mxl862xx_read_chip_id() in
-mxl862xx.c reads two separate words and builds the part number from both:
+[Severity: Medium]
+For such an accepted child, sk_has_decrypt_user() returns false (psp_assoc is
+NULL and there is no ULP yet), but sk_has_validate_xmit_skb() returns true
+from the inherited pointer, so setsockopt(TCP_ULP) now fails with -EINVAL for
+every socket accepted from that listener.
 
-	reg.addr = cpu_to_le32(MXL862XX_CHIPID_L);
-	...
-	reg.addr = cpu_to_le32(MXL862XX_CHIPID_M);
-	...
-	priv->asic_id = FIELD_GET(MXL862XX_CHIPID_L_PNUML, chipid_l) |
-			FIELD_GET(MXL862XX_CHIPID_M_PNUMM, chipid_m) << 4;
-	priv->asic_rev = FIELD_GET(MXL862XX_CHIPID_M_VERSION, chipid_m);
+Before this patch the stale pointer was harmless, since psp_validate_xmit()
+reads the association from the skb extension and treats a NULL association as
+good.  Should the check key off live per-socket state via psp_sk_assoc()
+instead, or should sk_validate_xmit_skb be cleared in sk_clone() next to the
+existing psp_assoc reset?
 
-So the revision comes only from MXL862XX_CHIPID_M, while the part number
-spans MXL862XX_CHIPID_L and MXL862XX_CHIPID_M.  The adjacent asic.id row
-already says "CHIP ID registers" in the plural.
+>  	if (sk->sk_socket)
+>  		clear_bit(SOCK_SUPPORT_ZC, &sk->sk_socket->flags);
+>  
+> diff --git a/net/psp/psp_sock.c b/net/psp/psp_sock.c
+> index 1a2a6b7516b0f..509035617894a 100644
+> --- a/net/psp/psp_sock.c
+> +++ b/net/psp/psp_sock.c
+> @@ -143,6 +143,10 @@ int psp_sock_assoc_set_rx(struct sock *sk, struct psp_assoc *pas,
+>  		NL_SET_ERR_MSG(extack, "Socket already has PSP state");
+>  		err = -EBUSY;
+>  		goto exit_unlock;
+> +	} else if (sk_has_decrypt_user(sk) || sk_has_validate_xmit_skb(sk)) {
+> +		NL_SET_ERR_MSG(extack, "Socket has incompatible state");
+> +		err = -EINVAL;
+> +		goto exit_unlock;
+>  	}
 
-The row's conclusion still holds, but for a different reason: both puts in
-mxl862xx_devlink_info_get() sit behind one gate,
+[Severity: Medium]
+The same inherited pointer hits this branch too: the psp_sk_assoc(sk) test
+above passes because the child's association was cleared, then this else-if
+fires on sk_validate_xmit_skb and returns -EINVAL with "Socket has
+incompatible state".  Does that mean PSP itself can no longer be set up on any
+socket accepted from a listener that had PSP Tx state?
 
-	if (priv->asic_id) {
+Also worth noting on reachability: PSP_CMD_RX_ASSOC and PSP_CMD_TX_ASSOC carry
+only GENL_CMD_CAP_DO in net/psp/psp-nl-gen.c, without GENL_ADMIN_PERM, so a
+process with access to the PSP device can install the association on a
+TCP_LISTEN fd.  On a listener the preconditions in psp_sock_assoc_set_tx()
+hold: psp_sock_recv_queue_check() walks empty queues and returns 0,
+tcp_write_collapse_fence() is a no-op on the empty write queue, and
+icsk_sync_mss is tcp_sync_mss from tcp_init_sock().
 
-and a failed read of either word leaves both cached values at zero.  Would
-it be clearer to say the revision comes from the CHIP ID registers as well
-and that both are omitted because they share that gate?
+The follow-up commit in the series, "selftests: drv-net: psp: test PSP and TCP
+ULP mutual exclusion", only touches tools/testing/selftests, so this case does
+not appear to be addressed later in the series.
 
-[ ... ]
-
-> +If the recovery fails, the loader needs a power cycle: ``devlink dev
-> +flash`` then returns ``-EIO`` and says so in its extack message. The
-> +driver only re-examines the switch when it binds, so on a board where
-> +the switch can be power cycled on its own, unbind and rebind the driver
-> +afterwards to have the recovered switch recognised.
-
-[Severity: Low]
-Does -EIO always mean the loader needs a power cycle?  The only site
-producing that errno is mxl862xx_devlink_flash_update() in mxl862xx-fw.c:
-
-	if (READ_ONCE(priv->rescue_failed)) {
-		NL_SET_ERR_MSG_MOD(extack,
-				   "download recovery failed, power cycle the switch");
-		return -EIO;
-	}
-
-but mxl862xx_rescue_heal_work_fn() also sets that flag after a drain that
-succeeded:
-
-	if (device_schedule_reprobe(dev, MXL862XX_FW_REPROBE_DELAY_MS))
-		WRITE_ONCE(priv->rescue_failed, true);
-
-device_schedule_reprobe() in drivers/base/dd.c returns -ENOMEM when its
-kzalloc_obj() fails, and -EINVAL when the device raced an unbind.  In that
-case the loader is back at READY and only the reprobe hand-off was lost, so
-what is actually needed is an unbind/rebind rather than a power cycle -
-rescue_ready is only ever set by mxl862xx_rescue_mode_detect() at probe.
-
-The flag is also set when mxl862xx_rescue_drain() aborts on a transient
-SMDIO error or -ETIMEDOUT, not just on the loader-stuck verdict from
-mxl862xx_rescue_drain_finish().
-
-Could the sentence be softened to say -EIO means the driver gave up on the
-recovery and the switch needs a power cycle and/or a driver rebind before it
-is re-examined?
+>  
+>  	refcount_inc(&pas->refcnt);
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1788976064.git.daniel%40makrotopia.org
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260910-psp-ktls-fix-v1-0-e3f30aaeca4e%40gmail.com
