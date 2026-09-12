@@ -1,80 +1,81 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D97315785
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 01:28:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E523368B6
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 01:32:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789176509; cv=none; b=BurmzAHCDGh2x/Z+yrV+1UXFy+zJcgq/2eWUTiVXZY6NF+tcUXEJUv4258pN7ttlbz2GPSld7R5kEr9wQgUZsD65m0CHbP1NDNMCZ8VZEmTOrlf1ek5ANWKECiNQjaMwf/jiOB5Dk3EWVBUrI1s7Kp0aubd1ZiZJRJv53ryDjBo=
+	t=1789176760; cv=none; b=Z/hLcOOpuVBgrlKchBGLdEGqls8NSjGgNM5iTb+r9QdbjNIyKMhhl49adp9a9Iga0F1de3c+yWW9HNzRmoPr25imOyPufHRoq5jqgiS4A+ppbRBRTOaC6ghic2WBJ/ic6qdFv/EnVcVEVUjGb8myn2H99mnEIfpC70sshN69nJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789176509; c=relaxed/simple;
-	bh=uVvlkd3r7AzFL0bwoPRshRxUVPE5PJY2DyGjC0onaAw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RRX/S3+hifFEl5tN1mEMABwyJPGQ3TUWjtsRAV/E0OE26eexvBDtqAbUceL89sm440zAdwAOoq3XuszNDIbbhCzBf0rUySLct2QIvThqwsMwHZgxLtVJRZpbczFa0RtHHda+IjER94CijtwgwDq2j4PFrps+nVi+btYWR0sey4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g03UzGRQ; arc=none smtp.client-ip=74.125.228.12
+	s=arc-20240116; t=1789176760; c=relaxed/simple;
+	bh=iO5IsBdVcKSJKd6NiDoXmZ5UkiJqIiE+p+VNxy8J4R4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PENoZmCREJ23LxDhU6GYKDsNuT0AvqWGnD9BX0p04NuE8mZID0AAuS5bQjbOxA2hezrpY7NuOF95bBUl3gb8LKNL7oz2l2u7q3XYVl4pJZwYL9Dc0hP+7ovIPii7RvDdAurhyfhEJKUuypjai0Qe2OaR0ih1zB3E2qHRXhivkuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xd8xc5/c; arc=none smtp.client-ip=209.85.221.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g03UzGRQ"
-Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469b35611so80688b3a.0
-        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 18:28:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xd8xc5/c"
+Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-5c7c25d9f6fso1374591e0c.2
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 18:32:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789176506; x=1789781306; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789176758; x=1789781558; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=5Ohl5GXWK7z9PSL07FA+1qnT/VjHf89JQfhIV3tvy2o=;
-        b=g03UzGRQ9ZwuOM24HyaKxUOZBtLeszngZetHR/AM1wKRhPNdOc8dRDPwVpOuKaR/lb
-         P/w3KGQ/fATjOO3sU1bmsrbdbr5GvPHjKRjWT5Jnp3UdMvdvpZk+3j2BsJFY/+CVlKhT
-         66ko0/1OzzCC3zyHvTgsrYRZ5U65thM+N9vsz0SSh7YMIOYaT8l9JIg7MlXpbwV7xMvm
-         IQKM36WfZ48cwoia5ZgwYRQPDyeRP2xCL+/YNGWsRTKkvda27Z2YcgcNt2Hqk6LWo4AR
-         tnPSEndhX+ucn9QwLf2dP0T4cjVk2joD8XgvfsJke9bkvBsqe76dEgqvtdu53i4zAyoQ
-         7CwQ==
+        bh=ZvfD/NIMhAY/sAhVFEMBC5cGXIs+97HZdpNLEZY0qTk=;
+        b=Xd8xc5/cMoVy5cXn0lyTLg6FbvW3KammyCP2h7zw7rH+6Hsa8boFJtHmzWAdJusOqH
+         qj6Ry3VEYCYFcA8Udv6Rs1JqimYGLf51n0yxG/iLgN/iMooU0E7MkhJbgZEmn5Bcbmhl
+         hH9r18LjCq6W+9UIKzweaDqO4U8MwnrzKaDRnAXxIFxTIcfEJfWZbwOaqUK8xsFkeHdD
+         GTPZTDvF48q/8jac7e5g07s3357wSdRLcLki3ymQZgd5NPxr8C5XoQSfKVwIlIcrIWex
+         FzHTam4HB/7jLBF+HKmiulHhyHIQu5WYgaNrKcLUTGAurk6XR0QMVDU6G1D1JpytEBaP
+         iF+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789176506; x=1789781306;
+        d=1e100.net; s=20251104; t=1789176758; x=1789781558;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=5Ohl5GXWK7z9PSL07FA+1qnT/VjHf89JQfhIV3tvy2o=;
-        b=PUzTho6RImyfYb1Mlk3gSuKgGKRS7JsCngOITYRSmiz1ZM2HW7vswtkLTiwrLvn/ns
-         f9u9eli+sj2NClLS2ZmLM5WJaye+1m6NTfwck6k85oJ+Bg6Dp//NpgjEDxTU+XETWXK+
-         v5ptPrWWOWwyDZDdet6vRoLavcOqi7hSwVN+/hJyeY8CeYfu8pCSvoQjcMvlLLGQQtVd
-         28xLdY5L1HEuRVoShG1+ZMOy18eA0g1bH3F8SZeME46vaEXhujUV59m/nbB1fmKAeG4X
-         3nrbI2daD5GoBh911KaJ4F/fN2+K/kuDaAJetFyAzT6yoZzuWotuRY/mijocJVxMj8Ym
-         pZTQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwnruyoOkrqc3YsNDEtFQwJwgzgF16Q6VOnWAuKa8U5z1RNlHb3pg46SHtFaR3/1xkDvQzreVo=@vger.kernel.org
-X-Gm-Message-State: AFuF++lG1RjtVBq0zm7lXBWqe2zeNqmHZ5SOyyIEhNjkCgh2G50I5dQd
-	Dqw89VcyMYYg4QHpzZH3sZoX+z09biqNxi8NBNtlZtBtr5dHmIPPsiY=
-X-Gm-Gg: AYBFou1yEwoveWw1bUNm+F4sIflrXr6AjOW2uhNFH0aU6DPrxUR60qzJ4gDKq1yX7Pt
-	VoN7eL49jMdcQXxXe/X8V85QDZk54NjaCkzRWMaDyBRubCJS+eKadoa7UfTtgQhdGcFVY6tQJ4G
-	B28in1HYCIcVEYToX5j2KlPHHmFlc4nOWPSoBrOmLFajbjb8abMbjKkO03eXNtjKKY8h1S0nfQy
-	KKOob0BC1fq48mJjMQ5b65ro8yMg6jwwlKQZ1dmBHiEMrAvgdQkoVXhUPZeqkYkCkslZ0vS7ZcY
-	SsrMWJajeTH6HNhgMv6qLP7Ysq9f6ZAa7QGMJfi5B0c43GWjcKbe3jRLluKk05d30DBnkboEiuw
-	XQoE8uSCu+P0WP+lu5ZRn3vPngioehNnhytYxD/nOraO1jXwl+jmQknHaXWpysYLWjMivdBdYe7
-	RuFaz7FsCGAXE/alyHpivEd+h64LiuIxcqACx1U2dgfKDujEWHG6n/GAF5LAJj+idFwIhhOb2XP
-	3j89xfHcLNuQEUC9SpOBJrrXr1JahJTQ7I=
-X-Received: by 2002:a05:6a00:94fd:b0:84e:89a:b8ec with SMTP id d2e1a72fcca58-86cca73e429mr1155632b3a.11.1789176506482;
-        Fri, 11 Sep 2026 18:28:26 -0700 (PDT)
-Received: from ydg-Zenbook-14-UM3406GA ([211.230.25.193])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86b291c1601sm1805850b3a.31.2026.09.11.18.28.22
+        bh=ZvfD/NIMhAY/sAhVFEMBC5cGXIs+97HZdpNLEZY0qTk=;
+        b=ov5d7/XjBifSRo+qRRuprg68D1qVSZ08+2AbbnINfd8ZhbDzhAEaQ+TpEWxTOTgqjo
+         LzIwIVGPKcs3rl8FVlOw3lo9F9tjtKABjdKok8949a30C7JJTMVW+FQY4yoyxlDLuoiP
+         R/QqirMpGncig5p/UYK4xOtA11EXOfEgXftf1giRdV/4XYJn756jioIkGPkPiQ1e0B4q
+         c/oGf/rx0w6q3c7ESZKDWZlA3WePAxMpFuUEqfh7umaNhimMpLx4O5J0aH34K/B3mQdq
+         EitRHwGs1rtAbOvjKq4eK7WenWL+TVJn5IQ/o6hblMjI71/z6jb+1b6CRYcpY2rqyLlS
+         Qgtg==
+X-Forwarded-Encrypted: i=1; AKwUvBxnGTHzgqBUHcXBOmFp/bwqbjz3zfsVpnLPmFAxzfe4usEOS+gdAHhIwAtbRn663vwdSia8dQI=@vger.kernel.org
+X-Gm-Message-State: AFuF++lSuqpmhfj53fqDUl/QadwbkGv7Kd2Yq6U7xPkxtGrBTfy6Vv2X
+	PnJ32x2XzCdmbfAQPOWOeYIw7evfZfEEk9O9aW0DkY1+hYurjA3sbKgZ
+X-Gm-Gg: AYBFou0LvjvAwDRXpCKXekdGkk+ABycp08WYxrZopaFdxrxeG+3uCQXgRp8qoPCFBd3
+	M5Wj51PNaMaAxfYIaV9iT6IQTyXVyQ4p7aDM/A/guS0M0iof+OSgs0T2bAp0HK8iKrE/xYvI2LD
+	PWH+i5mkQdwN8OF9eLQNgPAsQtc5vR55p1zAoSi41Tz0gRPtecH5i7TI7Xo+EPek9DVYB176EMF
+	oPO1T3PTSVDbze2b9XtC5HeMAnli7Dlco4tCC2wG9jA8YdPWmg9usDgXO168F98VIX5jBKLH8jN
+	7gkAtT8xGuCYlhNWB6rE/SmeY/9+z8BenFezdb24OLOEYaYkKsVt/8LiaTPPO8y9SiqQfXiFDkU
+	jlB1zdFEP7rrDwr3piqlm0ScdFlruceZVo4fGrswlnAAEIpLjSwVNam79DvoVPzManGX3mYPHHg
+	MEYJKNzb0uKch5uY3kNcTCyiI+cz/7s9XXn8w1Ud5OnPYDX/5bipOt8CHEc6/0lg+8tWqvgxQtg
+	wg=
+X-Received: by 2002:a05:6122:1c8e:b0:5c7:9445:f468 with SMTP id 71dfb90a1353d-5c8462bff30mr10202112e0c.6.1789176757830;
+        Fri, 11 Sep 2026 18:32:37 -0700 (PDT)
+Received: from adriano ([190.215.95.120])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5c84714c380sm4738262e0c.15.2026.09.11.18.32.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Sep 2026 18:28:25 -0700 (PDT)
-From: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
+        Fri, 11 Sep 2026 18:32:37 -0700 (PDT)
+From: Adriano Cordova <adrianox@gmail.com>
+To: Simon Horman <horms@verge.net.au>,
+	Julian Anastasov <ja@ssi.bg>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Russell King <linux@armlinux.org.uk>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
 	netdev@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sashiko <sashiko-bot@kernel.org>,
-	donggeunyoo.kernel@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: phy: qca808x: handle the active-high LED polarity mode
-Date: Sat, 12 Sep 2026 10:28:19 +0900
-Message-ID: <20260912012819.2072067-1-donggeunyoo.kernel@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	lvs-devel@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	Adriano Cordova <adrianox@gmail.com>
+Subject: [PATCH 0/4] ipvs: add per-service secure_tcp
+Date: Fri, 11 Sep 2026 22:32:12 -0300
+Message-ID: <20260912013216.588300-1-adrianox@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,60 +84,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Commit a274465cc3be ("net: phy: support 'active-high' property for PHY
-LEDs") added PHY_LED_ACTIVE_HIGH but did not cover qca808x, so
-qca808x_led_polarity_set() returns -EINVAL for it. phy_probe() propagates
-that, leaving the mdio device unbound and phy_attach_direct() falling back
-to the genphy driver.
+IPVS currently exposes secure_tcp as a per-netns sysctl. It switches the
+TCP state machine to the hardened tcp_states_dos table.
 
-Accepting the mode alone is not enough: led_polarity_mode records
-active_low, so an explicit 'active-high' node stores 0, while
-qca808x_config_init() re-asserts QCA808X_LED_ACTIVE_HIGH only for -1. The
-bit does not survive the reset phy_init_hw() runs first, so the LED would
-come up active-low.
+These patches make it per-service: a virtual service can set
+IP_VS_SVC_F_SECURE_TCP which is passed into IP_VS_CONN_F_SECURE_TCP at
+connection creation. set_tcp_state() then selects tcp_states_dos for those
+connections with IP_VS_CONN_F_SECURE_TCP set and keeps pd->tcp_state_table
+(the netns default, including the nomem floor) otherwise.
 
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260908105959.70453-1-donggeunyoo.kernel%40gmail.com
-Cc: stable@vger.kernel.org
-Fixes: a274465cc3be ("net: phy: support 'active-high' property for PHY LEDs")
-Signed-off-by: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
-Assisted-by: Claude:claude-fable-5 checkpatch sparse
----
-Supersedes [PATCH net v3 3/3] (20260908105959.70453-4-donggeunyoo.kernel@gmail.com);
-1/3 and 2/3 are in mainline. Andrew Lunn's Reviewed-by on v3 3/3 is dropped --
-this changes behavior.
+The flag is part of BACKUP_MASK, so it is preserved on sync to backups.
 
-Compile-tested only (W=1, sparse). I have no QCA808x hardware, and there is no
-KUnit suite or MDIO mock under drivers/net/phy to exercise the MMD7 write
-without it.
- drivers/net/phy/qcom/qca808x.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+  1. uapi: define the per-service secure_tcp flags
+  2. carry the flag on every connection-creation path (scheduler,
+     persistence, RS-initiated, cache-bypass) and on FTP data channels
+  3. honor it in the TCP state machine, resolving the stale FIXME
+  4. kselftest contrasting a secure vs. a plain service.
 
-diff --git a/drivers/net/phy/qcom/qca808x.c b/drivers/net/phy/qcom/qca808x.c
-index 8eb51b1a006c..68fd4d0fe31b 100644
---- a/drivers/net/phy/qcom/qca808x.c
-+++ b/drivers/net/phy/qcom/qca808x.c
-@@ -200,8 +200,8 @@ static int qca808x_config_init(struct phy_device *phydev)
- 	struct qca808x_priv *priv = phydev->priv;
- 	int ret;
- 
--	/* Default to LED Active High if active-low not in DT */
--	if (priv->led_polarity_mode == -1) {
-+	/* Set LED Active High unless active-low was requested in DT */
-+	if (priv->led_polarity_mode != 1) {
- 		ret = phy_set_bits_mmd(phydev, MDIO_MMD_AN,
- 				       QCA808X_MMD7_LED_POLARITY_CTRL,
- 				       QCA808X_LED_ACTIVE_HIGH);
-@@ -603,6 +603,9 @@ static int qca808x_led_polarity_set(struct phy_device *phydev, int index,
- 		case PHY_LED_ACTIVE_LOW:
- 			active_low = true;
- 			break;
-+		case PHY_LED_ACTIVE_HIGH:
-+			active_low = false;
-+			break;
- 		default:
- 			return -EINVAL;
- 		}
+Not sure about patch 4... could be dropped or absorbed into ipvs.sh
+
+Adriano Cordova (4):
+  ipvs: add flags for per-service secure TCP state table
+  ipvs: stamp per-service secure_tcp on new connections
+  ipvs: tcp: enable per-connection secure_tcp in state machine
+  selftests: netfilter: ipvs: add per-service secure_tcp test
+
+ include/uapi/linux/ip_vs.h                    |   5 +-
+ net/netfilter/ipvs/ip_vs_core.c               |  23 +-
+ net/netfilter/ipvs/ip_vs_ftp.c                |   8 +-
+ net/netfilter/ipvs/ip_vs_proto_tcp.c          |  16 +-
+ .../testing/selftests/net/netfilter/Makefile  |   6 +
+ .../selftests/net/netfilter/gen_tcp_probe.c   | 127 +++++++
+ .../net/netfilter/ipvs_secure_tcp.sh          | 158 +++++++++
+ .../net/netfilter/ipvs_secure_tcp_mln.c       | 310 ++++++++++++++++++
+ 8 files changed, 638 insertions(+), 15 deletions(-)
+ create mode 100644 tools/testing/selftests/net/netfilter/gen_tcp_probe.c
+ create mode 100755 tools/testing/selftests/net/netfilter/ipvs_secure_tcp.sh
+ create mode 100644 tools/testing/selftests/net/netfilter/ipvs_secure_tcp_mln.c
+
 -- 
-2.53.0
+2.51.0
 
