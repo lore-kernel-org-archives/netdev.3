@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40F73C872C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37DC3C8717;
 	Sat, 12 Sep 2026 20:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789244010; cv=none; b=ayfctTPJgTam/NBWXUUJ5qU0doNRg7MfyUh6UUI/BNkGJZybIhRdejXEwnltB05GaQchuoqwD2kn4KiJl1aPBSNYp+yBZPL1aKkoYHFC6EX7Hjfu5dkY6uMajt+OKlealgeWx/D9y0nFxPkelsnC7f8ODMaUR2BFjNviNDBYw3A=
+	t=1789244011; cv=none; b=TkvWbuJoBhz2YhxmwLMK13Wn/Den/9Lvc/0FXhS4dOhtcthlM8WTuCRdcoOZBsTl2QhIFfPKZfua99negpzBUHTnpp62u45FQQpc46k8fc+E8E4VLwFro7Eyu+ZNgHBrVUxpe+8j4jhwjyBngD4MQxdFgXWlL+BHG/lBS7bW0C4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789244010; c=relaxed/simple;
-	bh=yvrg170OEnY+QKhkFStJJVCQqzbiEGfNfvzFf20XwNc=;
+	s=arc-20240116; t=1789244011; c=relaxed/simple;
+	bh=9r16/rLVu0hIEnMVfLuNuKkeUqkH1cYay050h+Pir90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bx/OQLcmTQd0lg3ZkVVDl7bSF4uQnKgNDlu9dxdWW+CP25KDqBGyiKt9O0GLJqXJOjxJxGCg3zayAy0PaDWkg1AXNc6Efog/3fIdw7d2MMaeBZb4Hcmakv261yiGNtotwBehc+cb6YLWrd1NiYsV7mMMpSdxQV1zwFISYSGIM3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M+472J58; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=SENMDDmwOingF7JasRW8wPUcZJjKqe/ZTctFB5NxUsZOs3A1EUFhnRVP42RXLAiDk03SRqZ7Zto112RGZq0m4MJwVzxPZE9nvIwTQ2M3yh3PLUoTGt4lmRJ7P9Gg+NFJg4X5rxBenuS5+24GUmdQp/+/catLTsohKBcOq34nIlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PEdrAyl0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M+472J58"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623F91F00899;
-	Sat, 12 Sep 2026 20:13:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PEdrAyl0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C95771F00898;
+	Sat, 12 Sep 2026 20:13:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789244007;
-	bh=+gErbFmr8l6Csxg/evZTdwlWQQZXDTF+uohyIeq0mWI=;
+	s=k20260515; t=1789244005;
+	bh=UE5bH0ObBqaZ7dEveSGaGgFsPOY86iRhftTZrAJaBUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M+472J58SS6FHC26IiUSYLFLWkVTIW77JV+CRWUQX2flhpcz7VZF2AniBUtfzbVTL
-	 n3E5bZ3Chlvq0MVIFzMB7EvBRlq5aAMmP0uuecydeyG+dj5i8T2X98yl3ibDpqtZr5
-	 YG3E9nRTr22cYyCq0C+oQCLdgwDLY4v7mKctTSvpzzwHzEPnY+YrHjZshVJD7YuF3Z
-	 PEWXIgZw9AejtlhBBvDDZIBMylQiRMsG7cFLI9p6B/OTNKY4HJqXOkcxJ81WuYumpl
-	 f1IDDYZsXfY77jgxbpBrD7kGEFcpENl7CJH1uOA0FT/r30O4rz07dRyzfGT0VFXE4f
-	 DzdzepsJfJmKA==
+	b=PEdrAyl0Fiw6f57sLkmOmjJjZpMDwFTzgy+EEFxO39KnWzow38fijHh0TTb7PPOa0
+	 Dvsujffa6QeqsXE89Zae82JPOQ8l00jtH69WUIlr5VJdnonH8iJ0rZTG0PzBDryxyf
+	 BCIttDAYUsdj8rSj97V4CxbhNVg89gwi7ZW6581LHBoE0kVs4RaO9i6DVzhOgTMW2a
+	 fnTkXmyoESiS2vsbW2NeAye5D/AS/2O3efjwGcAdapOo0buHOwUq9qKNH+DnYYuIA/
+	 oHhDh2s318bOoOSi2dpaEy5ilh/Gn2oC1SQpPaDaJZHGk5sJdvWv/HivWThIWgWVYK
+	 nBCikZJkxUvPg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: coiaprant@gmail.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -56,12 +56,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	linux-phy@lists.infradead.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-renesas-soc@vger.kernel.org
-Subject: Re: [PATCH net-next v4 05/10] arm64: dts: rockchip: rk3568: add XPCS and fixed-clock nodes
-Date: Sat, 12 Sep 2026 13:13:25 -0700
-Message-ID: <20260912201325.127009-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v4 04/10] dt-bindings: net: pcs: add rockchip,rk3568-xpcs support
+Date: Sat, 12 Sep 2026 13:13:24 -0700
+Message-ID: <20260912201324.126973-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260907153713.2572547-7-coiaprant@gmail.com>
-References: <20260907153713.2572547-7-coiaprant@gmail.com>
+In-Reply-To: <20260907153713.2572547-6-coiaprant@gmail.com>
+References: <20260907153713.2572547-6-coiaprant@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,137 +73,234 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-arm64: dts: rockchip: rk3568: add XPCS and fixed-clock nodes
+dt-bindings: net: pcs: add rockchip,rk3568-xpcs support
 
-This adds the RK3568 Synopsys DesignWare XPCS node (with four pcs-mii
-sub-nodes) plus two 125 MHz fixed-clock nodes used as GMAC reference
-clocks.  The XPCS node and its sub-nodes are disabled by default and are
-meant to be completed and enabled at the board level.
+This adds a new standalone schema describing the Synopsys DesignWare XPCS
+as integrated on the Rockchip RK3568, with a CSR window, csr/eee clocks, a
+Naneng Combo SerDes phy, a power domain and four MII child ports.  A few
+questions about the property set and the file naming below.
 
-A couple of questions about the new nodes below.
+> diff --git a/Documentation/devicetree/bindings/net/pcs/rockchip-dwxpcs.yaml b/Documentation/devicetree/bindings/net/pcs/rockchip-dwxpcs.yaml
+> new file mode 100644
+> index 0000000000000..0852d0bcb66a2
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/pcs/rockchip-dwxpcs.yaml
+> @@ -0,0 +1,110 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/pcs/rockchip-dwxpcs.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 
-> diff --git a/arch/arm64/boot/dts/rockchip/rk3568.dtsi b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-> index 3bc653f027f1f..989e164c0eb39 100644
-> --- a/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-> +++ b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-> @@ -110,6 +110,51 @@ sata0: sata@fc000000 {
->  		status = "disabled";
->  	};
->  
-> +	xpcs: pcs@fda00000 {
-> +		compatible = "rockchip,rk3568-xpcs";
-> +		#address-cells = <1>;
-> +		#size-cells = <0>;
-> +		reg = <0x0 0xfda00000 0x0 0x200000>;
-> +		clocks = <&cru PCLK_XPCS>, <&cru CLK_XPCS_EEE>;
-> +		clock-names = "csr", "eee";
-> +		power-domains = <&power RK3568_PD_PIPE>;
-> +		status = "disabled";
+[Severity: Low]
+
+This isn't a bug, but should the file be named after the documented
+compatible, i.e. rockchip,rk3568-xpcs.yaml?  The other schemas in
+Documentation/devicetree/bindings/net/pcs/ all use that form:
+snps,dw-xpcs.yaml, fsl,lynx-pcs.yaml, mediatek,sgmiisys.yaml,
+renesas,rzn1-miic.yaml.
+
+A rename would also have to update the $id line above, since it encodes the
+same name.
+
+Related: the example at the bottom uses pcs@fda00000 and pcs-mii@0, while
+the sibling PCS binding uses the generic ethernet-pcs@... node name, and no
+$nodename constraint is added here.  The SoC dtsi added later in the series
+copies the pcs@/pcs-mii@ names verbatim.
+
+> +
+> +title: Rockchip RK3568 Synopsys DesignWare Ethernet PCS
+
+[ ... ]
+
+> +properties:
+> +  compatible:
+> +    const: rockchip,rk3568-xpcs
+
+[Severity: Low]
+
+This isn't a bug, but would a set of SoC-specific if/then blocks in
+Documentation/devicetree/bindings/net/pcs/snps,dw-xpcs.yaml be preferred
+over a second schema for the same IP?
+
+To be clear, a snps,dw-xpcs fallback compatible or a $ref to that schema
+would be wrong here.  The glue driver added later in the series builds CSR
+addresses with only a 3-bit MMD field:
+
+	return FIELD_PREP(0x70000, dev) | FIELD_PREP(0xffff, reg);
+
+and remaps the vendor MMDs in xpcs_rk_mdio_read_remapping() /
+xpcs_rk_mdio_write_remapping(), so the generic direct mapping described in
+snps,dw-xpcs.yaml would compute different offsets.
+
+So the only question is where the description should live, not whether the
+compatible should be shared.
+
+> +
+> +  reg:
+> +    maxItems: 1
+
+[Severity: Low]
+
+Should the sbd_intr_o output be described as an optional interrupts
+property?  With additionalProperties: false at the end of the file, a
+conforming device tree cannot carry it, although adding it later stays
+backward compatible.
+
+The single unnamed 2 MiB window itself does match the driver:
+xpcs_rk_init_res() uses platform_get_resource(pdev, IORESOURCE_MEM, 0) and
+requires resource_size(res) >= SZ_2M, and the largest computed offset
+0x7FFFF << 2 = 0x1FFFFC still falls inside 0x200000, so reg-names and
+reg-io-width are not needed.
+
+> +
+> +  "#address-cells":
+> +    const: 1
+> +
+> +  "#size-cells":
+> +    const: 0
+> +
+> +  clocks:
+> +    items:
+> +      - description: APB3 bus interface clock (clk_csr_i), required for register access
+> +      - description: EEE clock (clk_eee_i), required for Energy Efficient Ethernet operation
+> +
+> +  clock-names:
+> +    items:
+> +      - const: csr
+> +      - const: eee
+> +
+> +  phys:
+> +    maxItems: 1
+> +
+> +  phy-names:
+> +    const: serdes
+> +
+> +  power-domains:
+> +    maxItems: 1
+
+[Severity: Low]
+
+Should resets/reset-names be described here too?  The RK3568 CRU exposes
+four dedicated reset lines for this block in
+include/dt-bindings/clock/rk3568-cru.h:
+
+	#define SRST_XPCS		150
+	#define SRST_XPCS_TX_DIV10	151
+	#define SRST_XPCS_RX_DIV10	152
+	#define SRST_XPCS_XGXS_RX	153
+
+Since the schema ends with additionalProperties: false, a conforming device
+tree cannot express them at all, and the glue driver added later in the
+series never requests a reset control, so it depends on those resets already
+being de-asserted.
+
+Peer blocks in the same island do describe theirs, e.g. combphy0 with
+resets = <&cru SRST_PIPEPHY0> and gmac0 with resets = <&cru SRST_A_GMAC0>.
+
+Note the XPCS core does provide a register-level reset via xpcs_soft_reset()
+in drivers/net/pcs/pcs-xpcs.c, so a state-machine restart is possible
+without the CRU resets, and an optional resets property can be added later
+without breaking the ABI.
+
+> +
+> +patternProperties:
+> +  "^pcs-mii@[0-3]$":
+> +    type: object
+> +    description:
+> +      One of the four MII ports of the XPCS. The port is linked to an
+> +      Ethernet MAC controller via the pcs-handle property in the MAC's
+> +      device tree node.
+> +
+> +    properties:
+> +      reg:
+> +        description: MII port number.
+> +        enum: [0, 1, 2, 3]
+
+[Severity: Low]
+
+This isn't a bug, but is pcs-mii@N the intended name for these per-port
+children rather than the generic ethernet-pcs@N?
+
+Resolving a MAC pcs-handle that points at one of these children does work
+with the rest of the series: xpcs_rk_create() in
+drivers/net/pcs/pcs-xpcs-rk.c reads the child reg, walks up with
+of_get_parent() and calls xpcs_create_mdiodev(pxpcs->bus, port), and
+rk_pcs_init() in drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c does
+of_parse_phandle(np, "pcs-handle", 0).  So the open point is just the node
+naming.
+
+> +
+> +    required:
+> +      - reg
+> +
+> +    additionalProperties: false
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - "#address-cells"
+> +  - "#size-cells"
+> +  - clocks
+> +  - clock-names
+> +  - phys
+> +  - phy-names
+> +  - power-domains
 
 [Severity: Medium]
-Does this node validate against the binding added earlier in the same
-series?  Documentation/devicetree/bindings/net/pcs/rockchip-dwxpcs.yaml
-lists phys and phy-names unconditionally:
 
-required:
-  - compatible
-  - reg
-  - "#address-cells"
-  - "#size-cells"
-  - clocks
-  - clock-names
-  - phys
-  - phy-names
-  - power-domains
+Does requiring phys and phy-names here make dtbs_check fail for the RK3568
+boards?  The SoC node added later in the same series omits both, because the
+SerDes selection is board specific:
 
-The node here supplies neither, and dt-validate does not skip nodes with
-status = "disabled", so dtbs_check should report "'phys' is a required
-property" and "'phy-names' is a required property" for every rk3568 dtb
-that includes this dtsi.
+arch/arm64/boot/dts/rockchip/rk3568.dtsi:
+	xpcs: pcs@fda00000 {
+		compatible = "rockchip,rk3568-xpcs";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		reg = <0x0 0xfda00000 0x0 0x200000>;
+		clocks = <&cru PCLK_XPCS>, <&cru CLK_XPCS_EEE>;
+		clock-names = "csr", "eee";
+		power-domains = <&power RK3568_PD_PIPE>;
+		status = "disabled";
 
-At the tip of the series only rk3568-photonicat.dts fills them in:
+and only the board fills them in:
 
-&xpcs {
-	status = "okay";
-	phys = <&combphy2 PHY_TYPE_SGMII>;
-	phy-names = "serdes";
-};
+arch/arm64/boot/dts/rockchip/rk3568-photonicat.dts:
+	&xpcs {
+		status = "okay";
+		phys = <&combphy2 PHY_TYPE_SGMII>;
+		phy-names = "serdes";
+	};
 
-so rk3568-evb, rk3568-rock-3a, rk3568-roc-pc, rk3568-radxa-cm3j,
-rk3568-wolfvision-pf5 and friends would still be missing them.
+dtschema validates nodes irrespective of status = "disabled", so wouldn't
+every rk3568*.dtb apart from the Photonicat report "'phys', 'phy-names' are
+required properties"?
 
-If which combphy carries SGMII is genuinely a board-level choice, should
-phys/phy-names be moved out of the unconditional required: list in the
-binding instead, or should the dtsi provide a default?
+Should phys/phy-names be dropped from required (or made conditional), or
+should the SoC dtsi carry them instead?
 
 > +
-> +		xpcs_mii0: pcs-mii@0 {
-> +			reg = <0>;
-> +			status = "disabled";
-> +		};
-
-[Severity: Low]
-This isn't a bug, just a note for the record: at this commit there is no
-in-tree consumer of "rockchip,rk3568-xpcs" or of the pcs-mii sub-nodes.
-Both arrive later in the same series - xpcs_rk_of_ids in
-drivers/net/pcs/pcs-xpcs-rk.c gains the compatible, and rk_pcs_init() in
-drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c parses pcs-handle and
-calls xpcs_rk_create().  With the nodes disabled by default the
-intermediate state looks harmless, so nothing needs changing here.
-
+> +additionalProperties: false
 > +
-> +		xpcs_mii1: pcs-mii@1 {
-> +			reg = <1>;
-> +			status = "disabled";
-> +		};
+> +examples:
+> +  - |
+> +    #include <dt-bindings/clock/rk3568-cru.h>
+> +    #include <dt-bindings/power/rk3568-power.h>
+> +    #include <dt-bindings/phy/phy.h>
 > +
-> +		xpcs_mii2: pcs-mii@2 {
-> +			reg = <2>;
-> +			status = "disabled";
-> +		};
+> +    pcs@fda00000 {
+> +      compatible = "rockchip,rk3568-xpcs";
+> +      reg = <0xfda00000 0x200000>;
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +      clocks = <&cru PCLK_XPCS>, <&cru CLK_XPCS_EEE>;
+> +      clock-names = "csr", "eee";
+> +      phys = <&combphy2 PHY_TYPE_SGMII>;
+> +      phy-names = "serdes";
+> +      power-domains = <&power RK3568_PD_PIPE>;
 > +
-> +		xpcs_mii3: pcs-mii@3 {
-> +			reg = <3>;
-> +			status = "disabled";
-> +		};
-> +	};
-> +
-> +	xpcs_gmac0_clk: xpcs-gmac0-clock {
-> +		compatible = "fixed-clock";
-> +		clock-frequency = <125000000>;
-> +		clock-output-names = "clk_gmac0_xpcs_mii";
-> +		#clock-cells = <0>;
-> +	};
-> +
-> +	xpcs_gmac1_clk: xpcs-gmac1-clock {
-> +		compatible = "fixed-clock";
-> +		clock-frequency = <125000000>;
-> +		clock-output-names = "clk_gmac1_xpcs_mii";
-> +		#clock-cells = <0>;
-> +	};
-
-[Severity: Low]
-These two node names take the deprecated branch of the fixed-clock
-$nodename schema.  Documentation/devicetree/bindings/clock/fixed-clock.yaml
-has:
-
-  $nodename:
-    anyOf:
-      - description:
-          Preferred name is 'clock-<freq>' with <freq> being the output
-          frequency as defined in the 'clock-frequency' property.
-        pattern: "^clock-([0-9]+|[a-z0-9-]+)$"
-      - description: Any name allowed
-        deprecated: true
-
-xpcs-gmac0-clock and xpcs-gmac1-clock do not match the preferred
-pattern, so they land on the "Any name allowed" branch.  Newer Rockchip
-dtsi files use the preferred form already, for example rk3528.dtsi with
-xin24m: clock-xin24m and gmac0_clk: clock-gmac50m.
-
-Could these be named clock-xpcs-gmac0 and clock-xpcs-gmac1?  The labels
-xpcs_gmac0_clk / xpcs_gmac1_clk and all references would stay the same.
-
->  	pipe_phy_grf0: syscon@fdc70000 {
->  		compatible = "rockchip,rk3568-pipe-phy-grf", "syscon";
->  		reg = <0x0 0xfdc70000 0x0 0x1000>;
+> +      pcs-mii@0 {
+> +        reg = <0>;
+> +      };
+> +    };
