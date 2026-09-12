@@ -1,108 +1,104 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1E91F1534
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 08:24:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBED91F1534
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 08:25:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789201500; cv=none; b=pe8131Ii7OSp5Q2DJ7afuiW9KeipM6XqTxIh3ckHsaCdced5jGpr3DGz4EWKIMpKCsp2O1rvEDWBn1r5jibAQ9cVY2WD4NP3kca7/NEhNjSkQufr/2WEdijyh9ouJl9i9THk4B1RSyElhyp/lksVZyFQulcFT+bs0McWexGIXco=
+	t=1789201533; cv=none; b=r+zud/OjVDJGO2Wf9mVMiwgeNlug5/SA/7meJygNX7+rE2/ZH71SQw/qF2Tgj/7nB4ORyPuxvKnKOqu7WzBJmSH+MHe56EzCgTZ+J/LSt+FpxkSIIJzw5uUI1YF80E00piGFCKPMgjUY/RH6HbS0XoRyMZ7ETaT4WbxJVrJop4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789201500; c=relaxed/simple;
-	bh=HePa01BSQ8UnENgYJL7VILabP+Y5JdzS304wrdimaTY=;
+	s=arc-20240116; t=1789201533; c=relaxed/simple;
+	bh=1fZwNjFgiv1iwilnK3XMfsjBAKCokGbGyTYW29bcql8=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=oJa6Oh282aoN7aba1MWtT97pa9HcQCFxN7NjT5QKyMDzy+eArOHSvdfosFaCLaT0gSWbHvk4LQIQF2AKSkWy+npME9wUTNXDAhJps4tUv16XZKxAmxM4PP/yiBFXu+lVSu3/mhrhea/L91NbF36EzQEM6CCgo03BswINJRDazFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=egV/G6vZ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ioVs3Y+X; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=ZnwSOdrlD7QhePWWknD0+szE7lCqfR6UURZz2VnNORSQRwbZ3dHeDViIoKjzTWpNITFOn3n2imXvPdCx9nbg5V1y0F3yjdeh+wtd/JKu3zg/QNq54FztsGzQsRaadV5e3Ne42POkIGoZLXWB4FG9UvLIpgn6shuJBjx2+Qj3hus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=E2SRJZDg; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=fBTy3Xoj; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="egV/G6vZ";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ioVs3Y+X"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="E2SRJZDg";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="fBTy3Xoj"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789201497;
+	s=mimecast20190719; t=1789201529;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HePa01BSQ8UnENgYJL7VILabP+Y5JdzS304wrdimaTY=;
-	b=egV/G6vZriH0rntLcguVEdldCUmFynshyyBqPkB4HjVe4/NfLJNwDHE/qeNSwynArQjpi9
-	i+46UuzcsgY5aWLo6BgBPnWxJi7OfWItDBsfNJSpj4aihBrKcCqBIEy6dkKLdGH9tRfn9Z
-	crnFsMZln1ltKSvOGQu+a9154ZahjnM=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=1fZwNjFgiv1iwilnK3XMfsjBAKCokGbGyTYW29bcql8=;
+	b=E2SRJZDgOL88PYxlg9KboS3E4VFnJI+to43Meg3EVY0itVsPhpOBQcjerU6joYnCIkUifG
+	9QPr8mIPm1VkDmFsbqWjTtw/mjdt5wmOvEekiaTULTCl/HwdTi43oeXZi3XFOLLPDaytw7
+	DJjEyOIx3RPpsNGdbPL44DKDk2lps64=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-539-i20bTeq-Nae7pPJQz8coNQ-1; Sat, 12 Sep 2026 04:24:54 -0400
-X-MC-Unique: i20bTeq-Nae7pPJQz8coNQ-1
-X-Mimecast-MFC-AGG-ID: i20bTeq-Nae7pPJQz8coNQ_1789201493
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49b8c651ac0so22168405e9.2
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 01:24:54 -0700 (PDT)
+ us-mta-2-jxJH1s7cOLazYETwtWUI2w-1; Sat, 12 Sep 2026 04:25:27 -0400
+X-MC-Unique: jxJH1s7cOLazYETwtWUI2w-1
+X-Mimecast-MFC-AGG-ID: jxJH1s7cOLazYETwtWUI2w_1789201527
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49e65ecd557so8595685e9.1
+        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 01:25:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789201493; x=1789806293; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1789201527; x=1789806327; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=HePa01BSQ8UnENgYJL7VILabP+Y5JdzS304wrdimaTY=;
-        b=ioVs3Y+XCC+Byvzir4hoXBWUBihBXvhWzkkUAy8y1n980pODPmdq7HkiLdkjfJXuZp
-         5Dw3SXA5IiJK+l/g0piqVITaRv3bRC4EbROcDfpiv5Sq8GN5NNJhFjhYqAsKBMm06yJj
-         8jsHWZyPZWYSVUdFMZFJ4bSyHOywF7iyaaJnLcp961EEk4ZI8i7A99f4FaC6/J2aXoir
-         dt0APTKMFiaNNNML8Qw5zdi79j0QgEY3d6wxvgA6tFeQmVOBpVmDcXyCTyvFl3HLp+U4
-         4IK7iULa8qFHYwcq1gkAYL8fak1YuFW7255WEsQDrpdDWDcXBWH8C/uf2q09bB0zkZSe
-         9tsQ==
+        bh=1fZwNjFgiv1iwilnK3XMfsjBAKCokGbGyTYW29bcql8=;
+        b=fBTy3Xoj8rrGohZufZw+lscoAoxqTwmmv15C+YefjVczI/Ah1rjGcn012CceOLlWza
+         yG7enn9Ec+jxhPj6pEizfr5ZzqV8utplHL/6bpKAUF6TQDnLVrPjG+PTPn3ZBvL63M2T
+         NHvEnxzmjvCXoXiL7qVchvY3v6lcPpkwQxMrDvbPxIj3g6hy/6L+UMFaIjB36AFk0n8X
+         2n6QZgFo6ACz0GOx3OnQ6yAiu7qWjNfmFpKMo8teXii/5H1lGrG5Sv9GKlQkyDPAmNix
+         p77mZyzGNMSkzPG9eViZTfBmLshEJX5GJIUMPsm5dMEdKjqTb8xcrO8jHHAfecLL8U0H
+         CyTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789201493; x=1789806293;
+        d=1e100.net; s=20251104; t=1789201527; x=1789806327;
         h=content-transfer-encoding:content-type:mime-version:message-id:date
          :references:in-reply-to:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=HePa01BSQ8UnENgYJL7VILabP+Y5JdzS304wrdimaTY=;
-        b=V4MYAsSR70+MWC1/BIo6CgO0yTQmVvytzrhvdRvvUFP/rK3j7qTcNko55fbrtFxrMh
-         2PXGhaDgUH4RATyJroDGOdlxIfYSamULqDC9+pXbbzpUTylKjknS88ZC6g8XxKHBwTDN
-         6Co1PvmGng5m6nBMIlrtGTX7720Ev4qAPuDwfbrdxNWzCcU29jicrRmyIw/Usd8pwPSd
-         KfPGuonfFa3HwxUGzdW/j5h3BV93xk+iLCXa0hk5MS/OkHmjDVSFxStwMY/x2WnHW6IX
-         KODqbqD0Qf7ItLwsuDSktGcTErrY+GyuUbJnw40pidj82vtLOSBfSO4uAQO+LdxSnN1y
-         3VJQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzjOCvtoCAjQqaM0smCYy0TL/SBLXXVOm55xo4LX64qm9umrCEMMTqWldLo8NWQNQwI35qMIho=@vger.kernel.org
-X-Gm-Message-State: AFuF++mMJ5njaUW9oCc5j3Q9/wggO6gyjmxvBrB6gG25dA6qTlBY+QNy
-	by2qAT0IgGZ5Yrjw2k2PHkLk/bWdpymowgmsD8ZjUdV3R5PqHZOsZj7bPhOG72LN1kuZf37cS4l
-	WvQls9Aen7dktUhYVwiEJBTTTJ+Ch7IJh/1MfG2kqDTjHZGqle+oF0L2gBA==
-X-Gm-Gg: AYBFou0EpzdEIvMWfX0gm70dVJAAOpZVLLdrztGImdSZakkzPP1Z8zN17j6j0Rqsn2a
-	T9WXTStlPo4SdgkXTnq9+S4S8cBiu76tvR6oUxGNHXMNjYfn+F0KRN+pJIscOqbSnipaDMM5NRg
-	3ErDXCsrNch+GJXQro2Zeb00fcASS0TPvSFDVqzwgm31OVtazl9JkZ0nynCmQN9Wtlyx8d/73Mu
-	zEFXSOo43bofJFpjzi6LPLnq3jU1LW7iJpNS7JaktxO/DYYxq63piMnpRUDgPmvW/M4t7B2wQae
-	ObzChwzgYs/Jxk0nhhk1mVjNKvICjFYvKsI+3L/7w3cDaoemTuFUONfk//6FppBiFy1B+f/tzFF
-	aVC7t/yV2RgBSIVgwFETwqGa4
-X-Received: by 2002:a05:600c:4743:b0:49c:fe46:7219 with SMTP id 5b1f17b1804b1-49e619bbccfmr86068015e9.20.1789201493210;
-        Sat, 12 Sep 2026 01:24:53 -0700 (PDT)
-X-Received: by 2002:a05:600c:4743:b0:49c:fe46:7219 with SMTP id 5b1f17b1804b1-49e619bbccfmr86067825e9.20.1789201492882;
-        Sat, 12 Sep 2026 01:24:52 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e60adaee4sm201614725e9.14.2026.09.12.01.24.51
+        bh=1fZwNjFgiv1iwilnK3XMfsjBAKCokGbGyTYW29bcql8=;
+        b=TZOEnJVqNcoM6QcPwWHUY7GtOlmHdTuNca/6PegbylED5fHjQGby+cef31LebGsS+B
+         PnO6USqxwFlT0du47yvH0KulBgqf5jdUGq865CDzaLnPhgXR7qcxElhkfj1gq67f7c0o
+         hWcWvWerJrNBKVs29ZBpqi66kPfUYcnO7lEqzBIyPVORf+i/M2wDX/aTFx2gxBmQ00Kd
+         krkcNcUEkdx54D2J/yUH/lBm+6g/qd6pxnCewlmQwXZGNWfz+enDFm3qDI08zSn8VYcz
+         Xq5foRp/4vX4ItWV8OTTa2DiS8Gawce4yAOXHNAgNiswGDvV9f7oG0VV0eQwEWsLFJyc
+         tSfg==
+X-Forwarded-Encrypted: i=1; AKwUvBwFdDsxiPKp/DzysE3Ln7FGNWvGR+UEdy7+5IypihR2jidnJoGq57+ObtQ4pDYmD3ErsiyjLdE=@vger.kernel.org
+X-Gm-Message-State: AFuF++nqRVEqCKBFQigKiU7N5QJefWa6f8GQzTHCHr4taGiV/evOVo4V
+	COvclsdDrlJTanLbwUEO6OYWl/xPscGNSFFGmzbQvrOfqFqRV1JezeJrHvT/crYkE9VT/24jDJ0
+	ZGOSo8rsXQMoz2ABD7FW1GiyQccqTr4G2t4kLchSVkYIBQlk9uKpdDklAlQ==
+X-Gm-Gg: AYBFou1Nu5RFzPvoHt+GfhpY5GKqIH6htEzT8sizEiHAf4mfzmODPVz4LxUEN2fkoZz
+	768GQZ3VXFDOLfbMybpig27kI8DMpMQg/KZHWhl7RZdNig2yLFWTCKRopa7BoVVqwI5RfsOE5DF
+	/bwuHVkgO/Yvb3yp9poh+QxUyFVlfEHJ43+noa+sCcgxqNdYr2ITIN646RMXnb9zlXDcQ9HXYCt
+	wH+JcPx0Oh6vJTZSYMHhd3y85Jvua0hJw2DR52bukZN7BiREOg6UFfp9Tyu9dCeUvOCmKRgAHLv
+	J+tPjhZoQS9gyNhvwj289hLGa5DmdmW6ct3AYZ90q9zlKAKtHhHzO4TQ1K5Zab0AzK/u5gjg4Rr
+	ZpcfHBhdljxmewzwizIeu4Hs+nFU=
+X-Received: by 2002:a05:600c:4583:b0:49c:fc6e:8cbb with SMTP id 5b1f17b1804b1-49e619e148fmr89799145e9.31.1789201526775;
+        Sat, 12 Sep 2026 01:25:26 -0700 (PDT)
+X-Received: by 2002:a05:600c:4583:b0:49c:fc6e:8cbb with SMTP id 5b1f17b1804b1-49e619e148fmr89799015e9.31.1789201526524;
+        Sat, 12 Sep 2026 01:25:26 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk (alrua-x1.borgediget.toke.dk. [2a0c:4d80:42:443::2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e6c0cb676sm46482905e9.14.2026.09.12.01.25.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Sep 2026 01:24:52 -0700 (PDT)
+        Sat, 12 Sep 2026 01:25:25 -0700 (PDT)
 Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 596029B9A94; Sat, 12 Sep 2026 10:24:51 +0200 (CEST)
+	id 897FC9B9A96; Sat, 12 Sep 2026 10:25:24 +0200 (CEST)
 From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, Alexei Starovoitov
- <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, "David S.
- Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Jesper
- Dangaard Brouer <hawk@kernel.org>, John Fastabend
- <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, Andrii
- Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Kumar
- Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau
- <martin.lau@linux.dev>, Song Liu <song@kernel.org>, Yonghong Song
- <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, Emil Tsalapatis
- <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>, Shuah
- Khan <shuah@kernel.org>, bpf@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH bpf-next v2 3/4] selftests/bpf: Adopt
- bpf_program__add_flags() helper
-In-Reply-To: <CAEf4BzbToKWpKwkYNovhOrB-ZvXXyMr71BBaTQN9DsM7KrFzPQ@mail.gmail.com>
-References: <20260910183222.307208-1-toke@redhat.com>
- <20260910183222.307208-3-toke@redhat.com>
- <0e8f9a9c-6295-49ad-b29b-84613dfbfd65@linux.dev> <871pb0dshe.fsf@toke.dk>
- <CAEf4BzbToKWpKwkYNovhOrB-ZvXXyMr71BBaTQN9DsM7KrFzPQ@mail.gmail.com>
+To: =?utf-8?Q?Asbj=C3=B8rn?= Sloth =?utf-8?Q?T=C3=B8nnesen?=
+ <ast@fiberby.net>, netdev@vger.kernel.org
+Cc: =?utf-8?Q?Asbj=C3=B8rn?= Sloth =?utf-8?Q?T=C3=B8nnesen?=
+ <ast@fiberby.net>, Jakub Kicinski
+ <kuba@kernel.org>, Donald Hunter <donald.hunter@gmail.com>, Danielle
+ Ratson <danieller@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
+ Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, Jamal Hadi Salim
+ <jhs@mojatatu.com>, Jonas =?utf-8?Q?K=C3=B6ppeler?=
+ <j.koeppeler@tu-berlin.de>, "Matthieu
+ Baerts (NGI0)" <matttbe@kernel.org>
+Subject: Re: [PATCH net-next 09/10] netlink: specs: tc: fix typo in cls-flags
+In-Reply-To: <20260911214148.1184806-10-ast@fiberby.net>
+References: <20260911214148.1184806-1-ast@fiberby.net>
+ <20260911214148.1184806-10-ast@fiberby.net>
 X-Clacks-Overhead: GNU Terry Pratchett
-Date: Sat, 12 Sep 2026 10:24:51 +0200
-Message-ID: <87bja2dgh8.fsf@toke.dk>
+Date: Sat, 12 Sep 2026 10:25:24 +0200
+Message-ID: <878q56dggb.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -112,43 +108,18 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Andrii Nakryiko <andrii.nakryiko@gmail.com> writes:
+Asbj=C3=B8rn Sloth T=C3=B8nnesen <ast@fiberby.net> writes:
 
-> On Fri, Sep 11, 2026 at 2:53=E2=80=AFAM Toke H=C3=B8iland-J=C3=B8rgensen =
-<toke@redhat.com> wrote:
->>
->> Jiayuan Chen <jiayuan.chen@linux.dev> writes:
->>
->> > On 9/11/26 2:32 AM, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> >> Adopt the newly added bpf_program__add_flags() helper everywhere the
->> >> selftests non-destructively modifies program flags (which turns out to
->> >> be every use of bpf_program__set_flags() in the tests).
->> >>
->> >> Acked-by: Ihor Solodrai <ihor.solodrai@linux.dev>
->> >> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
->> >
->> >
->> > Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
->> >
->> >
->> > =E2=80=8CAI pays excessive attention to wording.
->> >
->> > maybe just delete whole parenthetical notes=E2=80=8C "(which turns out=
- ...)"
->>
->> Well, the two instances the bot is complaining about turns out to have
->> been added after I wrote that commit message; I didn't re-run the 'git
->> grep' after rebasing for v2, so I didn't notice this.
->>
->> I'm not sure if those two are candidates for conversion as well, TBH. I
->> can respin with your suggested change to the commit message, or just
->> convert those two as well. Or just leave it as-is, I suppose. What do
->> the maintainers think? :)
->>
+> Fix a typo in the naming of a cls-flags constant.
 >
-> let's replace, you'll need another revision anyways, thanks!
+> The correct name for TCA_CLS_FLAGS_NOT_IN_HW is "not-in-hw",
+> not "not-in-nw".
+>
+> Signed-off-by: Asbj=C3=B8rn Sloth T=C3=B8nnesen <ast@fiberby.net>
+> CC: Jamal Hadi Salim <jhs@mojatatu.com>
+> CC: "Jonas K=C3=B6ppeler" <j.koeppeler@tu-berlin.de>
+> CC: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+> CC: "Toke H=C3=B8iland-J=C3=B8rgensen" <toke@redhat.com>
 
-ACK, will do :)
-
--Toke
+Reviewed-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
 
