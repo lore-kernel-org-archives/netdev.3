@@ -1,160 +1,195 @@
-Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D8935F184;
-	Sat, 12 Sep 2026 17:50:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435BE38F659
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 18:08:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789235453; cv=none; b=H+4eEwc0/LeC648t8KGxF7d5Rvr9D5nZlPfJtUi7ZgiI5a+8aDDaJ/mRGg0XrwT3sPsizcOw8ejn/ZiKJTFOLC5nd1XPE1sJ3be6s2RlzGGltupcYqHB2RspxsgXS19oaQJeQaa62RtW0JG/cg6bCHc0/Hz4Y2A0ZyQg+yIc+ik=
+	t=1789236520; cv=none; b=FwIndimP9n+pq+kkYRokCYMcSgx+ltSRx19YJ2HcthbeEuv4SKCuMXRoMbjvT3/gCSlYanTt306qZPkDenVq4NvaHt/z/F29G6Wa7Ixjz/GXl8BFUXhJbJczJx073ymU07UPe9UbMw3m1opNPW3wRqe9NHDLcycjEih8K73Tl7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789235453; c=relaxed/simple;
-	bh=52mxefBNL18TSW0EPrMFo62pk6fFfbgczGcDISCects=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=FMTSJ6FVGGTgsCwSfvvJax92gQlCDLk8ub6Jv+EwHS2JfgobJWz5ereAGsgZxJdsIZD94Ib5Zba/ratuHsQUeTLqtbq1B/xPqFEX640YUbXmm/rVxk77HS/dRNgHCbA+oJpwnpDQGrVq3cVXHusgU/uK4VWQnIrCjjWwzuxCiU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=OJGID+qA; arc=none smtp.client-ip=193.238.174.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
+	s=arc-20240116; t=1789236520; c=relaxed/simple;
+	bh=YCGNqCzZatBNp9mkN8kezIg2lUy/SNtT8kMkmWxd92Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pg3pmY/KCoffQrFYD3IHRwne6dOW3+5cOdtnS1HhnI7+oRyCkyMj4cUaXxdK9KAMUwMnxqURxu2R+U5QQBAcMc+t3mCrbd/YRVV0WjYurfk8YnKJ5ForX2cZIbiyw5/vWW8lk+WefLdt3goB+4xoQko1ZmocSEh68h+9IVhbtRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=mH3CYn0P; arc=none smtp.client-ip=74.125.230.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="OJGID+qA"
-Received: from mx.ssi.bg (localhost [127.0.0.1])
-	by mx.ssi.bg (Potsfix) with ESMTP id 55DB222741;
-	Sat, 12 Sep 2026 20:50:31 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
-	:content-type:content-type:date:from:from:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
-	 bh=7r8oFDAgjy8muNhyo4CeqelFFPqnHlw5fWun4gzb8Z4=; b=OJGID+qAQy2Y
-	3zRJitxMU8ygncW89pWOrD56ChopmCF9pL6S2/KCzTmVuwkoAl8tB7gOHfwfIPvV
-	Tz8PH7mliLoxvSJznImrkM+WH7tIJNHQZqDDvELTwvRJjU1cLAXdGR1Bqx5AEtUa
-	Ibnq+7AJTu3dNqv98Yf/1WoPFQUcLVs4v1Xt9cCZZC5B7y+NjdXMJir96VlEz3/F
-	0GrS2tymlWH2o8RrFKmWIAsPxalOU+u0cF1ooah0+PCfqKkM0BklZq3TSPFAfWHQ
-	4ZAAC+09kyIs5Xf+jSI4Emm8RSqFi8EVMK6GJqBz2bnSjC28c2FD4wUDYp76AldX
-	/qQ9AR+IGV2Ocow5r3H+vwe7KIVa4X3IFwAiaSyPgWQAsQAbPuI0GMIKFfK0E18Z
-	YYdBWmSZXWZX+sfXk0Zz1u6wiW9/9YK6zuM0ByBEFZ8AJHOH8GGweuhkjIQJfwZi
-	Sv+sBJAVHnCNh0ONZkfqOY2djeMThUkVf0YVZb9SDq+fN28ycGKm55/0ex67ISZC
-	4X+ydQQJNiBeWps5Y5ZURX0/brPsoCYRdNGAT2DbaCtU2X4ju6P02wY+wnvyYxHM
-	JD9IdVmKfnBwb6AcFQQxPTb/jxHfnddP25B2i2SzeLNDr+0MsH+Z4oseuBq9oHpi
-	iOkSdgK97iKT9ky1uDlvnEY4t/FwNIA=
-Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
-	by mx.ssi.bg (Potsfix) with ESMTPS;
-	Sat, 12 Sep 2026 20:50:31 +0300 (EEST)
-Received: from ja.ssi.bg (unknown [213.16.62.126])
-	by box.ssi.bg (Potsfix) with ESMTPSA id E2A0360898;
-	Sat, 12 Sep 2026 20:50:32 +0300 (EEST)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 68CHoTkT030622;
-	Sat, 12 Sep 2026 20:50:29 +0300
-Date: Sat, 12 Sep 2026 20:50:29 +0300 (EEST)
-From: Julian Anastasov <ja@ssi.bg>
-To: Zihan Xi <zihanx@nebusec.ai>
-cc: horms@verge.net.au, pablo@netfilter.org, fw@strlen.de, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, phil@nwl.cc,
-        netdev@vger.kernel.org, lvs-devel@vger.kernel.org,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH nf 0/1] ipvs: avoid stack overflow from recursive connection
- expiration
-In-Reply-To: <cover.1789110326.git.zihanx@nebusec.ai>
-Message-ID: <d99cb205-24fc-7446-55ad-4ec9d79aac1d@ssi.bg>
-References: <cover.1789110326.git.zihanx@nebusec.ai>
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="mH3CYn0P"
+Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-52fb76ef1d1so14141621cf.3
+        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 11:08:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1789236517; x=1789841317; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ShtnYNWVoQX+/xNdTOnJtzhcZz7uw5CPa5C82dT5fA4=;
+        b=mH3CYn0P5T/B1Bn68/AD7A9iuWGnFuEXirg0qUbm43pDULGacPtYIqnqLcgFl/NJa9
+         CqhbRciQGsfMnqYVfEiKjW4lgQl0n776kNiJ4dx4BLhNmwO5iwFFvOf617ylBzXAaojA
+         MXCpIGwQk3EiHdM6Kv8mC0DQmXwlWqyLm6R9Y=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789236517; x=1789841317;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ShtnYNWVoQX+/xNdTOnJtzhcZz7uw5CPa5C82dT5fA4=;
+        b=iNyJ4UcfTO9mJLYYmNsRc8Bve7ImMzyUw6a4H+Zl6+IrpRcSqCfI+mfHfITEdIMWGJ
+         w7hScYp8GDQGNrovc7IC8GjWcarlHFXlNGPTKHVic6VCgy1Vgoy8kx5tJiofHzF1UuRa
+         d3dd9sWUiNQ4ijw45ZHwi9hJ7qf53W7LRT8Dj3fl1NXvDAeqesTGzIiDp+rI8sBVbFhk
+         +Kl3qay2CZ1+XDpJfccSWEWXj8D2oCB5QTQbJcpVRcHcEZb2HoTqgZDRlimhFoXeGBWe
+         I6TMrVIOOtpjG01TvwtrctRmBI50boIG0r20RfANVg7jMgMplz2SA+Oj/ga4ckPlBpO7
+         BAYA==
+X-Gm-Message-State: AFuF++nBgn7HdfoUQVV+Ob8DfMyBDMB83kP+id3D67b/Avrf+q7EL5ZZ
+	oEePNTcdkHRhuPFVvx6YrS1OcJoeVidhrRBQvpz7+SUQWVlHe9XFbpWLkyl0AoSHF/KpxEwv9di
+	100SwHg==
+X-Gm-Gg: AYBFou1O13aq2ZbMESsBMiPVI59gm7BhqzhFS3i4V7jI3Aou4jMLKrDMlMBfL3pH14n
+	BlFGjBiZOQvCmw+KsZ4il8Hz/9GVhnbicyIJxa/4cBS8aT2GQ2dY9I2Qt5Fry5W7iDk221+3aYW
+	kidHtuzktrTgPWsCDY2Zj28wgAPxvu/JoGm+1PUyZ1V9+HD6+xL3GxslJBDW9mpIAXOCOHhNmjN
+	0rTgRRRRGH/icoA9+xv0eGRew/9nxQd/cZfbP9bt3fkZOZdDGUKzf/xT7dqQDL7fKq9IP9FEDfh
+	kPIpE2ddJDcFD5CrfjxiOET7v4UeDxUw3veRRlpWPI+Mv2COxMxCJe2V248eFDxRbthwlVz0Yv1
+	Inxxh6q7dZ2qYbL9VT/+l1ex4V4cjztNE4Xeb0+4/pHHuVv/majS/+tDActqRHGZqNddZrc8+RJ
+	sV7GqTgmuLx8i+DZD4MK2wrXWOb5sijhM/6THUWdqDI0QXrR5ypoRu0I41REOtZ/oCid82+dEdy
+	lDBSVobnauQDmXyUh3/2wsRVCU74Hw9IpdIKVrs/oIj3Czn9OuEfbanFn0yUyUCMox/NDHYiJh9
+	Dgz1GxHZ1ydOkHKWW8pgoCE=
+X-Received: by 2002:a05:622a:507:b0:527:631:8d6 with SMTP id d75a77b69052e-530c859b38fmr137612511cf.25.1789236516942;
+        Sat, 12 Sep 2026 11:08:36 -0700 (PDT)
+Received: from majuu.waya (pool-174-112-106-84.cpe.net.cable.rogers.com. [174.112.106.84])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9120ef650a6sm52190296d6.0.2026.09.12.11.08.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 12 Sep 2026 11:08:36 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	stable@vger.kernel.org,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	linux-wireless@vger.kernel.org,
+	Vega <vega@nebusec.ai>
+Subject: [PATCH net repost 1/2] net/sched: codel: bound the dropping loop per dequeue call
+Date: Sat, 12 Sep 2026 14:08:30 -0400
+Message-Id: <QDISC-1L5H.v1.20260912080102@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 
+The CoDel control law schedules the next drop one interval/sqrt(count)
+after the previous drop, using the configured interval
+(codel_params.interval). For very small intervals the scheduled step
+rounds down to zero, so the dropping loop in codel_dequeue() never
+advances and drains the entire backlog under the qdisc lock in one
+call - an unprivileged user can trigger a soft lockup this way.
 
-	Hello,
+Fix in the shared codel code used by both codel and fq_codel:
 
-On Sat, 12 Sep 2026, Zihan Xi wrote:
+1. Make the control-law step at least 1 tick so the dropping loop
+   always moves forward.
 
-> Hi Linux kernel maintainers,
-> 
-> We found and validated an issue triggered through
-> net/netfilter/ipvs/ip_vs_ftp.c. An unprivileged user can trigger it by
-> creating a user namespace and a network namespace. We tested the fix with
-> the same trigger. The change applies to the generic
-> ip_vs_conn_expire() control-chain cleanup path. For the reported trigger,
-> it only defers recursive controller expiration; testing showed no change to
-> other IPVS behavior.
-> 
-> We will provide detailed information about the bug
-> in this email, along with a PoC to trigger it.
-> 
-> ---- details below ----
-> 
-> Bug details:
-> 
-> The trigger entry point is ip_vs_ftp_out() in
-> net/netfilter/ipvs/ip_vs_ftp.c. It parses an EPSV reply and creates a
-> wildcard data connection using the advertised port. If that port is 21,
-> ip_vs_conn_new() binds the new connection to the FTP helper a second time,
-> because 21 is the helper's control port. The connection has
-> IP_VS_CONN_F_NO_CPORT, so the next connection from the same client to the
-> VIP on port 21 matches the wildcard entry instead of creating a new
-> top-level entry. Repeating EPSV builds a chain of controlled connections.
+2. Cap the dropping loop at CODEL_MAX_DROPS_PER_DEQUEUE (256) drops
+   per codel_dequeue() call, resyncing drop_next to now when the cap
+   is hit: the catch-up owed to the loop grows with the idle gap and
+   the backlog, which no interval threshold can bound. This is a
+   deliberate behaviour change after long idle gaps.
 
-	Hm, may be we should also avoid such long chains.
-Probably in separate patch, for example:
+The cap applies to fq_codel (4b549a2ef4be) and the mac80211 TXQ path
+(fixed interval, cap only).
 
-diff --git a/net/netfilter/ipvs/ip_vs_ftp.c b/net/netfilter/ipvs/ip_vs_ftp.c
-index 9e3e005a8263..0622169b5970 100644
---- a/net/netfilter/ipvs/ip_vs_ftp.c
-+++ b/net/netfilter/ipvs/ip_vs_ftp.c
-@@ -237,6 +237,17 @@ static int ip_vs_ftp_get_addrport(char *data, char *data_limit,
- 	return 1;
+The target sojourn delay (codel_params.target) is not validated: it
+does not feed the control law, so a sub-tick value is aggressive
+rather than deadlock-prone.
+
+Conditions to recreate the bug:
+  - tc qdisc add dev lo root handle 1: tbf rate 1kbit burst 2kb limit 1000000
+  - tc qdisc add dev lo parent 1:1 handle 10: codel interval 2us target 1ms noecn limit 1000000 (same for fq_codel)
+  - unpatched kernel: tc accepts it; a UDP flood under the 1kbit tbf
+    soft-lockups (watchdog: BUG: soft lockup) while one
+    codel_dequeue() call drops the backlog under the qdisc lock
+  - patched kernel: same setup, at most 256 drops per dequeue call,
+    no soft lockup
+
+Testing: claim reproducer and interval 2us/3us variants run clean;
+tdc qdisc category passes (see the selftests patch).
+
+Fixes: 76e3cc126bb2 ("codel: Controlled Delay AQM")
+Reported-by: Vega <vega@nebusec.ai>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+---
+ include/net/codel.h      |  5 +++++
+ include/net/codel_impl.h | 16 +++++++++++++++-
+ 2 files changed, 20 insertions(+), 1 deletion(-)
+
+diff --git a/include/net/codel.h b/include/net/codel.h
+index aa80f744826c..183d43c2bd43 100644
+--- a/include/net/codel.h
++++ b/include/net/codel.h
+@@ -140,6 +140,11 @@ struct codel_vars {
+ /* needed shift to get a Q0.32 number from rec_inv_sqrt */
+ #define REC_INV_SQRT_SHIFT (32 - REC_INV_SQRT_BITS)
+ 
++/* Cap on drops per codel_dequeue() call: the loop's work depends on the
++ * idle gap and backlog, both outside our control; resync when exceeded.
++ */
++#define CODEL_MAX_DROPS_PER_DEQUEUE 256
++
+ /**
+  * struct codel_stats - contains codel shared variables and stats
+  * @maxpacket:	largest packet we've seen so far
+diff --git a/include/net/codel_impl.h b/include/net/codel_impl.h
+index 2c1f0ec309e9..8f26132d45b7 100644
+--- a/include/net/codel_impl.h
++++ b/include/net/codel_impl.h
+@@ -93,12 +93,17 @@ static void codel_Newton_step(struct codel_vars *vars)
+  * CoDel control_law is t + interval/sqrt(count)
+  * We maintain in rec_inv_sqrt the reciprocal value of sqrt(count) to avoid
+  * both sqrt() and divide operation.
++ *
++ * Clamp the increment to at least 1 tick: a very small interval (or a
++ * large count) can truncate it to zero, stalling the dropping loop.
+  */
+ static codel_time_t codel_control_law(codel_time_t t,
+ 				      codel_time_t interval,
+ 				      u32 rec_inv_sqrt)
+ {
+-	return t + reciprocal_scale(interval, rec_inv_sqrt << REC_INV_SQRT_SHIFT);
++	return t + max_t(u32, 1,
++			 reciprocal_scale(interval,
++					  rec_inv_sqrt << REC_INV_SQRT_SHIFT));
  }
  
-+static bool is_control_port(u16 port)
-+{
-+	int i;
-+
-+	for (i = 0; i < ports_count; i++) {
-+		if (ports[i] == port)
-+			return true;
-+	}
-+	return false;
-+}
-+
- /* Look at outgoing ftp packets to catch the response to a PASV/EPSV command
-  * from the server (inside-to-outside).
-  * When we see one, we build a connection entry with the client address,
-@@ -293,6 +304,9 @@ static int ip_vs_ftp_out(struct ip_vs_app *app, struct ip_vs_conn *cp,
+ static bool codel_should_drop(const struct sk_buff *skb,
+@@ -154,6 +159,7 @@ static struct sk_buff *codel_dequeue(void *ctx,
+ 				     codel_skb_dequeue_t dequeue_func)
+ {
+ 	struct sk_buff *skb = dequeue_func(vars, ctx);
++	unsigned int drops = 0;
+ 	codel_time_t now;
+ 	bool drop;
  
- 		IP_VS_DBG(7, "PASV response (%pI4:%u) -> %pI4:%u detected\n",
- 			  &from.ip, ntohs(port), &cp->caddr.ip, 0);
-+		/* Do not redirect data to control ports */
-+		if (!port || is_control_port(ntohs(port)))
-+			return 0;
- 	} else if (cp->app_data == (void *) IP_VS_FTP_EPSV) {
- 		data = ip_vs_ftp_data_ptr(skb, ipvsh);
- 		data_limit = skb_tail_pointer(skb);
-@@ -529,6 +543,9 @@ static int ip_vs_ftp_in(struct ip_vs_app *app, struct ip_vs_conn *cp,
- 		return 1;
- 	}
- 
-+	if (!port)
-+		return 0;
-+
- 	/* Passive mode off */
- 	cp->app_data = (void *) IP_VS_FTP_ACTIVE;
-
-	The only problem I see with your proposed change is
-that we may need 2-3 timer ticks to expire a DATA->CTL->TPL
-chain. Or it expires on the same tick?
-
-	Alternative would be to jump to the beginnig of the
-function after successful timer_delete() for our cp->control,
-i.e. to use loop instead of recursion. I.e. ip_vs_conn_del_put()
-can be converted to function that returns bool instead of
-calling ip_vs_conn_expire(), so that we can know if to loop.
-
-	If ip_vs_conn_flush() demands faster expiring, a
-loop will work faster. What do you think?
-
-Regards
-
---
-Julian Anastasov <ja@ssi.bg>
+@@ -180,6 +186,14 @@ static struct sk_buff *codel_dequeue(void *ctx,
+ 			 */
+ 			while (vars->dropping &&
+ 			       codel_time_after_eq(now, vars->drop_next)) {
++				if (++drops > CODEL_MAX_DROPS_PER_DEQUEUE) {
++					/* fell far behind the schedule */
++					WRITE_ONCE(vars->drop_next,
++						   codel_control_law(now,
++								     params->interval,
++								     vars->rec_inv_sqrt));
++					break;
++				}
+ 				/* dont care of possible wrap
+ 				 * since there is no more divide.
+ 				 */
+-- 
+2.43.0
 
