@@ -1,178 +1,142 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837CB38423B
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 07:21:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789197711; cv=none; b=dbU0pk/xxrY9+2h9ihtjOBiz6aCcOjaxmWhqP2dmA3LkINXG545gjuTitH+wOkbYkj0QqInplkxq809JCP1a8Tyng+S+DquMkyv3LBkPmu4oo5RRw/L5b6V9LBpGLUwg33iGOR7r54tbdSSEJQUuXw5fYgm0z5adEiPNiXt/HRI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789197711; c=relaxed/simple;
-	bh=jW6DHewTV5Iuz02zyTooBDmtkJN0q02fQNJ9kMUp56U=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=jjU98XD/NPztHxrMZkb5LZfu3UC6R0DxNOP+ACAyFoCbWtmtsxOBkTdohWrfwLQdWfEk5/MAueNngyD9ksfhxY866oDdJp1JIFB12h0iJVKStyvJ77aJiF/zObD8uNKI6a+Koe8rrJcZq/Sb2nZHuVuNPHshKjhnUi43fuh5uac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZYdCtGPz; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CAE72DECC2
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 07:40:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789198813; cv=pass; b=fdI13mmuVjo0xEXSGjEMmYieS95QVJ9/QpfQxh4GlLL6d8M8BNhhlbLYjQyY3nq/w09868BcVoJmwt3OdEUg0q5VH+QRlZxc+G3REL0MHgdGxeY1StLRdc9FnO104ceKc8UZzRxWM3WgMQaaHZcS7SSmXuVE4FYou85qgkMOts0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789198813; c=relaxed/simple;
+	bh=a5BgZIa2nN3V7GG8MnhDOEO9Xluz3rwKpxUKZrZY1y0=;
+	h=From:MIME-Version:Date:Message-ID:Subject:To:Cc:Content-Type; b=M8i+2p7S/PTO2pRStH6wSFlfC+bOf9Uh25UNZhZShMxLO6+e78G/5o9UjK0QjhYRtDtGyUGOGnkSVyh2efcwWFTYGjXA0vKpJgdIpAUg/SKUtDasMN1x0qoJ3Z8Rz+IhVgmk1VXv2u/A0zXoS0M/zx8wj7lkmqrO4uTwOh4RzFY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=berkeley.edu; spf=pass smtp.mailfrom=berkeley.edu; dkim=pass (2048-bit key) header.d=berkeley.edu header.i=@berkeley.edu header.b=OMN+nqkl; arc=pass smtp.client-ip=74.125.228.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=berkeley.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=berkeley.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZYdCtGPz"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-49b965570d7so20801305e9.0
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 00:21:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=berkeley.edu header.i=@berkeley.edu header.b="OMN+nqkl"
+Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-86b90133ae8so498357b3a.1
+        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 00:40:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789198811; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Rg0GNgC8HKXU+o09zOEMeGwtgcy19aUyLA7e75nHqMSxdTq/DhHshz0KWbhBr/78Ak
+         g6mkxwYOERb29cNbC6tomkZUWn2yLDAJMtsv1O/W4HpI4+6RkHLnoWoBQZkQNBzaDcTf
+         R0X6P5sUKNRvWlR8dF9V/4V2VsV3a15WMbrJH1NBcdtB+UXAB8GwTfbot8SVLKpAgW69
+         Ha6O038nEB9MFUqIO1PaaXBJL2hf/0Nn2uMAyy1w5Oolma2/sWAKWhooILxlkLr70SuP
+         rsnm3fnUDUVulBMuDYdyAiWzelEjy+PRKeqArGDk8XjZUKd6IaDk0jWQ2MdzctMe5VEE
+         rgYg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:from:dkim-signature;
+        bh=QG2SNeNOqKf6itNXVRATkNtIQBJP4qkHEst2cXeq/Oc=;
+        fh=66GzX/s8lyBPT428SZvCCQejFJ79WCMBYSqpVWqgPdc=;
+        b=rrVANsx0rLkoym+qfoZlaI+c2X5Kzm71dBYlyIGgBU8uxdL7GW+7PYYhvATrEs13/7
+         lJ78Ke28i4iAi3FhtRyAzirSXujfn7bQ06kLRStJm/h0HV2QNvEtRXDadIn7tThL4guk
+         pHEXQ6K/nubkyYnVfHVMCFbbDpLK+8HafVysDf1NTc8sPlr5GqbcdJotS3QPJZ/jj49/
+         djX+wuZWo3zFYANtFeFAfy2ZbRn4zQ+5De+5ZifCSKxzTy4bo2BECq5BFK9UClkOBh1c
+         tFXvmq4hHhrjJ8UFUBLtE2cpfzciEFjG3ii+lnNSl1IP3irnrDNOrVQCedWV1HQtfubw
+         ZhrQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789197708; x=1789802508; darn=vger.kernel.org;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vQoExyqpI1OF/5KNZtaEOZhfxUGnySYAtcYjoRnUz0o=;
-        b=ZYdCtGPzcnJSI91Z93tbVXZaX/0I820KyhUn8fVIQVPzE6dB5ybpm7qEFkqTF80EyH
-         8jgN8Nxm6BN4stAlim/ykr2j05tBLKQ/txLkf6S5HlUE9KV2q2MoUuXWRjphooxXX3mS
-         ah9BaEQLCGymwQavmv1FN77hSz4p1u884rPGtfv8EGz9k+3fp809sX3ghnAjMFNGrIc6
-         ih7GgXHVTwzt5zP5BDmlA1cqDrzMx+Cv92vosMGsvdvrH5MmzFoA5KVhAwzUW1s6j7W/
-         /Xjwhi+/m9MOQbQ6DIAmCv0UQzeBuqQl2/WgMcvaa7oZLT1DGWW0wa/Guub2H1N08p6D
-         kppQ==
+        d=berkeley.edu; s=google; t=1789198811; x=1789803611; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:from:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QG2SNeNOqKf6itNXVRATkNtIQBJP4qkHEst2cXeq/Oc=;
+        b=OMN+nqklVDfMdt0nt/oR8IX/v2tMsZLPn7d5gYUNxzhpm9jH0ORZw2hKmqg8lWA0rB
+         lzwa1bcYSLxPxJbrw0VCk6T4Zrq03uEZfbeDk1GQbLSbRhMoZHUrIySl0qSiMFCrWOe7
+         LEDz/C7y57r0G14FWil9ccCN5nfGtSkZ/ryy2NWWN47c3JLy0cRu14fi5nIm2bV2P2NI
+         X3PsPA4NxDRDgVqXTkSAsPvQEjMBtr9G6u8VZ3NCmxsYpM22RI1/40hd3uFJVOkbylCI
+         e6otxTorETJ0MtznvOJNQLO3YpPQu/IADoppXDIwBE9my5qCEu9brIez2rm+oGKdeHNb
+         UDLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789197708; x=1789802508;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vQoExyqpI1OF/5KNZtaEOZhfxUGnySYAtcYjoRnUz0o=;
-        b=gaJOpLAgp5nRotxvxbTI76ghNNL19yvBuhT9Ktj+iKiIhlUiIWLUyyQz8HnEsCanfn
-         pq0qbwc6nv3UupQzSHWN6N9WzN6XoHheRIJmMsPqqtoNU1YBZiSVFTBuLxEkUjWQnivy
-         eh/mOuqGEZu5jsmeayB9xolvmerq+UJ9G9kknksd6pXOJvWbcC1DiX559HXlhKUXFHUr
-         bOs4ZCiVg+1RCQfwNz0Ic9nNM/b94wzdLcKMN+nbuyEZeSe6GB3CFeCpVwNChi+Hb4zu
-         NcnXBr5QKVJr7ZTyagrOvUmQ3xz5/L+nFQAcHlIwHszq9hBmx/nF5ExFF7hIIX/EypWV
-         q4kg==
-X-Gm-Message-State: AFuF++l7LW/L0CJtzvohJ/fzr6LP2cR+5JBaONK26Oem2S05wGXZGmBF
-	Cu+HspgAkEpMtKRJVpZn9sJc5hzBFkABHbBxnLBAENQr2hm1LcYmah10
-X-Gm-Gg: AYBFou2jr4bJou40p7Db7DBZoS0TyM7zeYsbsByvwwLMlJEFGMVHcMr4cwV7mfcCakb
-	EQ8FE7mluCx4oV7nsEavgGMLCUIhLZTQT/UXiHy/nbvCFZK4eZSGFZaEaatkWAgzSfaiDdgYHNH
-	Ve4L132HZ8ESQaoqF+95LAYjLhTXvI2K5CA85Lk7AwR4eay5q6JowO90RYH5dhIesSXUu9vOJ08
-	ls/LTUmxBVUqeXl1aXCdezHkNfRYjTv/gHlUXvG1/hdJ1N5dGTNG4TzRO8Qv3OJ82QV9XDQ6NuK
-	T6G7mvX1B3wRxcBILruQ7EpAFINWTY/izhNn72AvNaYovbKTN2tdmU7L7Lq8y4SWT97nknOA4MC
-	0Ci0Q4Rc1BK2NouP05Z0oYBlFeeH2ewfX/aBDcFokMdIMLmAeodJWiDRXttn/7Zxpu/0KySJX7L
-	vgwlWWBbxrYPR5JVMfY7nJlI4pm8HS9jRujypjZBzOs0o2hOmnkysAi3piDJKWfPujCkQ=
-X-Received: by 2002:a05:600c:1385:b0:49c:fc6e:8cbd with SMTP id 5b1f17b1804b1-49e619e86c6mr74779865e9.33.1789197707260;
-        Sat, 12 Sep 2026 00:21:47 -0700 (PDT)
-Received: from localhost ([2c0f:3d00:6be:8900:ce5e:9212:ea4b:f30])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486eb32d5f1sm11844392f8f.12.2026.09.12.00.21.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Sep 2026 00:21:46 -0700 (PDT)
-Date: Sat, 12 Sep 2026 10:21:43 +0300
-From: Dan Carpenter <error27@gmail.com>
-To: Yevhen Orlov <yevhen.orlov@plvision.eu>
-Cc: netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [bug report] net: marvell: prestera: Add router nexthops ABI
-Message-ID: <aqT9h61WBcslE0gJ@stanley.mountain>
+        d=1e100.net; s=20251104; t=1789198811; x=1789803611;
+        h=content-type:cc:to:subject:message-id:date:mime-version:from
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=QG2SNeNOqKf6itNXVRATkNtIQBJP4qkHEst2cXeq/Oc=;
+        b=RTYwYY5sawI+wYCMdVBPupzKT8YC8s5SEilLxoHGnd/DLndTYv/Gk2/ckstGS4Avdw
+         EetI0/1Sz0U+WB+OA3h8R4S2RlzmuV5tjN3HWLyDQilSKIVcg3QVp8j0n6OsAUPk+J2u
+         n78OalKIrHu/RH1jdXHc00LcOQ5uJJ8f9J9K4Jq6CkpnSMC/ZmWrTL0wU2akfpfnOgzR
+         TFK/eBixM4NlV3SjAeb2CIXsOIlB9d8YfVeLgjDBgEXdRiqBPwzdIk6Mras+tFHI0+yI
+         3WaZhbsGvO4EsNj4PnTQjObJGADEPJ0FuA/tVpz3QrFy00q+w1JvDTNr4PIiiy0+szk9
+         BYsw==
+X-Forwarded-Encrypted: i=1; AKwUvBxx6pmDqhSFgVgi1Y8s/aD6rLOz2VEiIbjEgQMi61yoHA9i0+cBSZSzDsGNnAL/M1xOIB7QMRo=@vger.kernel.org
+X-Gm-Message-State: AFuF++nib4PBn7bZmKheq3Wg87aCiOLfQJH2cc2YKNTI2AKroA2a61Wo
+	u/nKw5eSrbxE2omJcL48DaAN/cpw+/XDssZLpiwYQSLxWjbRRgtSfwY3yimzx1Ws0tCJfZQacm3
+	8B86fQ763sl2sg8QN+2M1GFbZARVoO+hJl7jBGEoB
+X-Gm-Gg: AYBFou3kaNhgwMZFixuk0Kzke0P7DmM3+H0tYDNKX8Yfi+7tD2+oF12s1HKMfyekJFG
+	GylmbZV1yasoGde+D8FgfRmj0P8jwbmeiLV0kDys5UEwG+pJxpoIPZOaiuqQM2VdpQQ6nGdv8fw
+	Nh5a3rPph6QGxavXib4+rvDnD5FFehovuUi0lciOyokYh/lbJQL7XAbIefxhI4HYKZ/qIPmhcvD
+	cYopUhQJ896j2viufe03n61QU/qWyUlIh1z1NtDcpV9ikHHT8A1UHyMfhKlN5HvzBbmqRVubWpa
+	lxJeXZ8Fh9sFcpokqkuBbtsntTz+4tSyOUeZns20IfdxW01KxtEhTxdDYhlE8oEcDlvm2I9pKHG
+	Cm/qiz4CbDDh4XLUX7TexRm9031YuU6hY7X/0MLkahoQ=
+X-Received: by 2002:a05:6a20:3ca8:b0:3d0:868d:8ccb with SMTP id
+ adf61e73a8af0-3daed418649mr14691447637.13.1789198810266; Sat, 12 Sep 2026
+ 00:40:10 -0700 (PDT)
+Received: from 474444807712 named unknown by gmailapi.google.com with
+ HTTPREST; Sat, 12 Sep 2026 07:40:09 +0000
+Received: from 474444807712 named unknown by gmailapi.google.com with
+ HTTPREST; Sat, 12 Sep 2026 07:40:09 +0000
+From: Farhad Alemi <farhad.alemi@berkeley.edu>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Date: Sat, 12 Sep 2026 07:40:09 +0000
+X-Gm-Features: AcwNN1U7oiMPPggvAGkLxJ8f4FS-S3NfnynfUNKYcvJ3EJSPIXU-keM5UBnvdpg
+Message-ID: <CA+0ovCgKDOk+Bg6Gh5Lwx94u_jJjQ30-vY1JcY2BYfhnWJJbPA@mail.gmail.com>
+Subject: [PATCH net v2] net: remove WARN_ON_ONCE() from the
+ dev_fill_forward_path() loop check
+To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: falemi@asu.edu, Simon Horman <horms@kernel.org>, 
+	Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Xuanqiang Luo <xuanqiang.luo@linux.dev>, 
+	netfilter-devel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-I don't know if anyone still is maintaining this driver.  Let me add
-this as a KTODO in case someone wants to address it later.
+ipip_fill_forward_path() and ip6_tnl_fill_forward_path() look up the
+route to the tunnel's remote endpoint and set ctx->dev to its device,
+which is the tunnel itself when that route resolves back to the tunnel.
+dev_fill_forward_path() then makes no progress and trips
+WARN_ON_ONCE(last_dev == ctx->dev) as soon as a flowtable tries to
+offload a flow through the tunnel. That routing loop is a configuration
+any CAP_NET_ADMIN user can set up, and ip_tunnel_xmit() and
+ip6_tnl_xmit() already treat it as a tx error, so remove the warning and
+just fail the walk, as commit 008e7a7c293b ("net: remove WARN_ON_ONCE
+when accessing forward path array") did for the path stack overflow.
 
-KTODO: fix potential use after free in prestera_router_init()
+Fixes: ab427db17885 ("netfilter: flowtable: Add IPIP rx sw acceleration")
+Fixes: d98103575dcd ("netfilter: flowtable: Add IP6IP6 rx sw acceleration")
+Closes: https://lore.kernel.org/all/CA+0ovCgaRvbd0Udj70b2xxG8Cx3CaCpNhnf1V4RWQuDveZYZhA@mail.gmail.com/
+Suggested-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Assisted-by: Claude:claude-opus-5 syzkaller
+Signed-off-by: Farhad Alemi <farhad.alemi@berkeley.edu>
+---
+v2:
+ - Remove the WARN_ON_ONCE() in dev_fill_forward_path() instead of
+   rejecting the looping route in the tunnel drivers (Pablo Neira Ayuso).
+ - Add the Fixes: tags (Xuanqiang Luo).
 
-Hello Yevhen Orlov,
+v1: https://lore.kernel.org/all/CA+0ovCj+Pd5owGH+51rA8-RDu9YFx5oYUv8bV0zOE72QgVfY0A@mail.gmail.com/
 
-Commit 0a23ae237171 ("net: marvell: prestera: Add router nexthops
-ABI") from Oct 1, 2022 (linux-next), leads to the following Smatch
-static checker warning:
+diff --git a/net/core/dev.c b/net/core/dev.c
+index ecfbd72d5d1a..c67900354fa6 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -789,7 +789,7 @@ int dev_fill_forward_path(struct net_device_path_ctx
+ 			goto err_out;
 
-	drivers/net/ethernet/marvell/prestera/prestera_router.c:1623 prestera_router_init()
-	error: dereferencing freed memory 'sw->router->nexthop_group_ht.tbl' (line 1560)
+ 		stack->num_paths++;
+-		if (WARN_ON_ONCE(last_dev == ctx->dev))
++		if (last_dev == ctx->dev)
+ 			goto err_out;
+ 	}
 
-drivers/net/ethernet/marvell/prestera/prestera_router.c
-    1548 int prestera_router_init(struct prestera_switch *sw)
-    1549 {
-    1550         struct prestera_router *router;
-    1551         int err, nhgrp_cache_bytes;
-    1552 
-    1553         router = kzalloc_obj(*sw->router);
-    1554         if (!router)
-    1555                 return -ENOMEM;
-    1556 
-    1557         sw->router = router;
-    1558         router->sw = sw;
-    1559 
-    1560         err = prestera_router_hw_init(sw);
-    1561         if (err)
-    1562                 goto err_router_lib_init;
-
-prestera_router_hw_init() calls rhashtable_destroy() on error but then
-still returns success.
-
-    1563 
-    1564         err = rhashtable_init(&router->kern_fib_cache_ht,
-    1565                               &__prestera_kern_fib_cache_ht_params);
-    1566         if (err)
-    1567                 goto err_kern_fib_cache_ht_init;
-    1568 
-    1569         err = rhashtable_init(&router->kern_neigh_cache_ht,
-    1570                               &__prestera_kern_neigh_cache_ht_params);
-    1571         if (err)
-    1572                 goto err_kern_neigh_cache_ht_init;
-    1573 
-    1574         nhgrp_cache_bytes = sw->size_tbl_router_nexthop / 8 + 1;
-    1575         router->nhgrp_hw_state_cache = kzalloc(nhgrp_cache_bytes, GFP_KERNEL);
-    1576         if (!router->nhgrp_hw_state_cache) {
-    1577                 err = -ENOMEM;
-    1578                 goto err_nh_state_cache_alloc;
-    1579         }
-    1580 
-    1581         err = prestera_neigh_work_init(sw);
-    1582         if (err)
-    1583                 goto err_neigh_work_init;
-    1584 
-    1585         router->inetaddr_valid_nb.notifier_call = __prestera_inetaddr_valid_cb;
-    1586         err = register_inetaddr_validator_notifier(&router->inetaddr_valid_nb);
-    1587         if (err)
-    1588                 goto err_register_inetaddr_validator_notifier;
-    1589 
-    1590         router->inetaddr_nb.notifier_call = __prestera_inetaddr_cb;
-    1591         err = register_inetaddr_notifier(&router->inetaddr_nb);
-    1592         if (err)
-    1593                 goto err_register_inetaddr_notifier;
-    1594 
-    1595         router->netevent_nb.notifier_call = prestera_router_netevent_event;
-    1596         err = register_netevent_notifier(&router->netevent_nb);
-    1597         if (err)
-    1598                 goto err_register_netevent_notifier;
-    1599 
-    1600         router->fib_nb.notifier_call = __prestera_router_fib_event;
-    1601         err = register_fib_notifier(&init_net, &router->fib_nb,
-    1602                                     /* TODO: flush fib entries */ NULL, NULL);
-    1603         if (err)
-    1604                 goto err_register_fib_notifier;
-    1605 
-    1606         return 0;
-    1607 
-    1608 err_register_fib_notifier:
-    1609         unregister_netevent_notifier(&router->netevent_nb);
-    1610 err_register_netevent_notifier:
-    1611         unregister_inetaddr_notifier(&router->inetaddr_nb);
-    1612 err_register_inetaddr_notifier:
-    1613         unregister_inetaddr_validator_notifier(&router->inetaddr_valid_nb);
-    1614 err_register_inetaddr_validator_notifier:
-    1615         prestera_neigh_work_fini(sw);
-    1616 err_neigh_work_init:
-    1617         kfree(router->nhgrp_hw_state_cache);
-    1618 err_nh_state_cache_alloc:
-    1619         rhashtable_destroy(&router->kern_neigh_cache_ht);
-    1620 err_kern_neigh_cache_ht_init:
-    1621         rhashtable_destroy(&router->kern_fib_cache_ht);
-    1622 err_kern_fib_cache_ht_init:
---> 1623         prestera_router_hw_fini(sw);
-    1624 err_router_lib_init:
-    1625         kfree(sw->router);
-    1626         return err;
-    1627 }
-
-This email is a free service from the Smatch-CI project [smatch.sf.net].
-
-regards,
-dan carpenter
+-- 
+2.53.0
