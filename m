@@ -1,141 +1,151 @@
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86F2366052
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 08:57:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.205
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789203436; cv=pass; b=UqxPwy4jOL02ARZxaUu5pgNh2nSypr8+NzTIpjE9ezaBBsLbr3IzsI1efZkbUX2GPs16DxgG1MiS3E/V2qgJZWJjLmKwXUfhLcGCc5VZA14iHM8Y81ZFW+B0xcLtB2OGUAPgwWAz0UuQBGxygEu+paGAWMBGXuS5LGVn2TJKSRY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789203436; c=relaxed/simple;
-	bh=i8AG+o+oG2drX0eM+5FUXfPF6XzifyWqD7/H8eV3x1Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eXuPut4ie7t3rM7wsXdUdJf7uxQEqWKrVi/Ne8b8wxHh1Z2BbXxpnVb8A1tS+oCDb/2A5quSRYtMyfYUVpVDehUapOU4aWVltT92fdIclyDh4hvQZ7KpHwTp+S7q3eXhsR7WqVhCRyQz5Yznz1ZGtTUpggseZzsPLfCAfn6EZKs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X6zb6CUc; arc=pass smtp.client-ip=74.125.230.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E023237C916
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 09:04:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789203890; cv=none; b=ZloIJD5hGmdZj9S2lmJDR/c8VWT2vNcvku14MqrPEGgSSDaY5FDS/GKyEGWz0d2gaV95WS1SxZzPj4Cl0F9cqC4WptLlF8EfhnPsFKPccL5wAKW24/+4VO/7ck6JmSqfsBOPQ2e0tbUal0BFhkT2wBjjKGBUR7seHf6pWcHo88A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789203890; c=relaxed/simple;
+	bh=T2GpveXf86xU4PJdOWIIi5lBw5gHgOvqTYsANeAQESM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PPOz0CtlseDCamN0l0FR+esBTk3gRqCWQpK/vblQaB791FUKAiHLUi6HS0y2G7GwCBN6PgbSjjkrtR401EUazCBdzLE78THc6HNuGhanqVIeZ2mt/kbUSge+do03rMzydqEvDXNT7fBmnPiVFDtz4g0Rbd8c6JrTLpgzx6f/cXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kqbLTT9J; arc=none smtp.client-ip=74.125.227.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X6zb6CUc"
-Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-5309d6188e1so8605211cf.2
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 01:57:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789203433; cv=none;
-        d=google.com; s=arc-20260327;
-        b=AUlkibBpK37L4Npmc05NR09mxUQw6dgpsf3CkFivdFef/FtI5XbClGr2UsURwjMXMd
-         9BB47wDveR7R1RH+sbsG9+/s8DvN+NeyTkbRfbCaVtoGmZJmPM6eoFEiCQEctrgvFJZm
-         gR3/1En7ny0+kqRsTbs1b2dn+4zysCF7UV9xqz/lsFI62QNZcudzj02aCuWwm/hL+Gi/
-         VsV16PavufLBKzwZkexgAjC2CYO4y+WlPKRElavmxlGkXisj6LEhJOI5O7SOi+SqGokF
-         OQsrUYT7ORiZc+SL/yAa2G65jdiBD/h2r5cB3adveuA7q3Em+EvUDNXaO14PimND059P
-         X9Xw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=i8AG+o+oG2drX0eM+5FUXfPF6XzifyWqD7/H8eV3x1Y=;
-        fh=ZDbAm4VzJ8nFLvZrc2kSs8sc9+kHCTfEOinddMTIX3s=;
-        b=Q57pk3jk6duqUzszD/J8JKd9YkIiOyy7++wuWc70kPho+PUT3SkQKsOWyHpaf6031/
-         BGlkFFEzMz7FXKwt+o+5HdPohSMVmdToQYmVb6WFTXWejGMssJVM0VdJSrx2w5pQH3Zi
-         c4ValGsuoBZNq8z2aWf82eJZK7ApEyITsG8savE77FH3wRlYHeaJANxMrfL/qjwUImDy
-         KM1wcK8AHCUP9JG+59b9YFrZlxP5nAloYbyPvNS+cyIx1atqLBYWGMh9m9XDPSk0mH5f
-         +WBKCVLhUOLRvwYiTXMBWKAYThApHrJw612scMcThy0pjJWkJzsKpXXtveh4p3qOk5i2
-         ayxQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kqbLTT9J"
+Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d90ba1d807so8959405ad.3
+        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 02:04:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789203433; x=1789808233; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=i8AG+o+oG2drX0eM+5FUXfPF6XzifyWqD7/H8eV3x1Y=;
-        b=X6zb6CUcmmGanRHr8GcOnxgIRBghSzgMiIK0t5S5V9LA0zKAvsOnwfFCcFLXnMCkiP
-         LRd9PjMvIazMwB/LOfWdxLR2Ysjt0g+muhtnp8wIb4ceAFVloxJgYKvbBDOEIfnD6Fkv
-         DZaYr6SC4FxLQTSRhv4kreU6IqeoNaNtTE6idSuapYo1b1EOUj6Sm0ig8cqMxcfcZLMK
-         6CnCYaJcPC2h4V5YqrrejT3s4QhztoavMTwd/E7+OiN1pf6c+m4f3hg8CZceev1nuqmf
-         T3tEkl+xX9cFNv7lrtkXTo3QUYLk72pCsXPrkj5XA8MZm303nIsIivxVJSiyePkyM+0A
-         yguw==
+        d=gmail.com; s=20251104; t=1789203888; x=1789808688; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=i5SaSEoCo9RleDHysc9IxVyTl6w7IzP28iEqT/KO1Rk=;
+        b=kqbLTT9JTLyQIoa+DfxYHVB3Jc2De4iPTrYPsf9c0C3rFuVlfoCC5MP1EO/hlV5U3Q
+         Gsx9UTTI8fGOT0rMXX0VWCgon5dKgM8g1W0slKMn56QLJCaypjrPZS09okkb6P9AkpnY
+         lE1Oa1o9KQNQQz1KfIO1SiWUYlxhAv2MEq6EwU6qDEhRK4OskN7jmm6+l+6dZLCuL7fn
+         jk081qsUNRpqCykNU2Tq0e96fLELWoebdBgIkSsSLGgpqrqYB9AIK+hJKP05S8quOzGO
+         szQsJ686ubH2H8cLlcItJw12GHe5u9GsbxkWaxg4HRcUggL2Iyrn2uPA7MNJQNihm/t0
+         PRdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789203433; x=1789808233;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=i8AG+o+oG2drX0eM+5FUXfPF6XzifyWqD7/H8eV3x1Y=;
-        b=M2ujO3ArPzqffSXDx6hpm0Z80LXjWSu3CMhLdwwPdLk2VQQL1luIZ21uZ45sd1r8zW
-         uZagGTNC+CUwh7jqXS78Z5aWb/xjq9Wd6kdF+PZ7KXoNn2kq+l79NRpK9dOH10WNKRpL
-         pj+kelbEXvgxazwefamlVVIoSJS378I9g6i+/Y4ECjYNtD6XBI+i6qOdeZJI6Gr3mhZc
-         Hdh2g8oq2SmB1pSKVOfQEPkVfacl+4k8xx+sZ3oX0LhTubnmr13JoH70S9aN98DGzfaT
-         O2jQu5pZeoXy7DEDNEtP/qe2aTCEy8BxT/uCm0Fb4ev9GLeVQoESOITZtxjZa288WnXu
-         gwpA==
-X-Forwarded-Encrypted: i=1; AKwUvBzLuk6JpXlZMumAPGAunkhyWcTmurMU3w6fgTm9XJ7SX0/OObyNF7dqWlK7Y1pInqYOzuCBBNw=@vger.kernel.org
-X-Gm-Message-State: AFuF++noWsje+nvKmDaEIG76lIHTS2pQAcgKiTObOgIzOh5QtC1YMqVv
-	vIXABsR41dbyFG+SH7UwZweDi+QTeLOhsjrHXxxq9uL+d8AtFHYUEAx0unLp7VWShgtpa2bWgQ/
-	sP5Gutb7Vnnt3/A7I/37iOhTmNF95i6ZG8lp8L67G
-X-Gm-Gg: AYBFou09vBhakO4IHwbNY78brjFgZb4QAwTCnCnmP3eUM+Ub0mDWQxOsORSsKo+VQ+z
-	gzLOKVidP81nWUWQqi0YfOzb/sBM0tDlkhqBILN84oNNCeOF34OfrN70uo8+JAYxouKUsu1i3Sn
-	pMGfwVBU4VCy9BjjHAsNovagBR9i6zFQg1Pwzr28VCnW1Fd8MR824eOnvHPOrpxA30ZwV0rw2P1
-	x8HjPHW58ldP0oi5SrM7LRvSNBys+Vn0+J71xxF3rZj4HtFC0alLKuH/YckudLOjggV1vxThE/v
-	xLnaQOWhGc/MuaGVEFgP44AeSIZvGtbhxD5n7n7ogZhgL3FFLIvsWg1TMCHqyWmm2JyHLsr171k
-	FBuZ3F6jfxrCmChnB5tzbLqUZVC67ExdLXadBOHIITdNwqt3kSSttqV18u3v/y4lzzYGHO5aiNL
-	UFmA==
-X-Received: by 2002:a05:622a:90b:b0:530:b2e3:86c6 with SMTP id
- d75a77b69052e-530c87afc8cmr136523391cf.56.1789203432809; Sat, 12 Sep 2026
- 01:57:12 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1789203888; x=1789808688;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=i5SaSEoCo9RleDHysc9IxVyTl6w7IzP28iEqT/KO1Rk=;
+        b=o9vMny4R3QPZrPhxmIg/yA5ERkbQGyv0JMsxVctVPE9QNqfNN//jhDauakA3Ec3k6N
+         sHp1SIj/ERGZlC4KFFBgvU28CiOP/U58qecQIyMya4Bc2WkIiUhFG/VyCemZBnSueaUr
+         GWTXJI3oM/26QfXWc2sAKIVBq5apFlAANB96W+uKq7picjE6/pEOYQaN3E4tMwY8Rnkh
+         AQEnm5GHNgaVZv1kzUsSN4eKbguXPqmCpfT2ZkiYw/0mPwhoZHXUD5jYDg8v9Kx/h6XD
+         FQ56TxYZRzIX6vEuhrGEoWhI2ib4GrZ1RxVqkunp/7kaLTOzwkZSa8oVYWXyOhKVYYOI
+         e32A==
+X-Forwarded-Encrypted: i=1; AKwUvByQ2tyEvsdx2SSKglW5eUZtt/seiSri5A7Uyza/1GzpHS1t5/Z2wq5ZZWDWOUSydMVZKRyOkNY=@vger.kernel.org
+X-Gm-Message-State: AFuF++lhwtt2NSTxMrYpBwAw2jkq+U90BgqyazIQdMt82Nnx94MxmMEb
+	BzsHHnMo8DRW3j9zPY3c/WbcoJjqc1S6JG3/zIa6XPUWqxbbk/vocodK
+X-Gm-Gg: AYBFou38lbx+P0oji2F+TCX0HcqN4SMwxERdw6+L0ehA0J9BF0IOh1ZvW16OAPeAzXG
+	osrZ10lpnYXjRP1nuiqZMX8OY5YyLD4L6c7hguIJ16upFo3PyCu8GulRtLInT5QLB1vxX4PO8BM
+	LX4WLseV8VB1LWVfbb1jknyOD3Jc2lr8tRzB96SDooy3eRtHOf0fuZvDqekiIcJ5EOEzQj1QEI9
+	7dE9ghMyPKPk51+sqXIGB1fsA1bhl1vcbjDJUwwPPVp7mQXBnVR9cih5Ls8JRTNsnkMb+ouvjF2
+	oYJm3LecfH5GhGtxIimsd2SVlm37v8eMargaI+lXmWk5yOp7aC1eYpcCnJA3PXXBPbWbQNIvpUL
+	moj+V92wdiaEUZEmD4388a5J2T43SlXdOMTELnenA1wXWdehWJdOK81oc9pR8tXZKIqW4GDrgBT
+	0TVwE9kzTfQUbw/l1NwgM61mll1HvSaic5UlteFLFqA6O1F+Nu7lAkkvGdY4fVdYQQXFRd3uw=
+X-Received: by 2002:a17:90b:5246:b0:398:d2a0:87ff with SMTP id 98e67ed59e1d1-39d9bc67660mr14176109a91.1.1789203888155;
+        Sat, 12 Sep 2026 02:04:48 -0700 (PDT)
+Received: from gmail.com ([188.253.12.32])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33ba4f7390csm12345338eec.26.2026.09.12.02.04.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 12 Sep 2026 02:04:47 -0700 (PDT)
+From: Jia Jia <physicalmtea@gmail.com>
+To: mst@redhat.com,
+	jasowangio@gmail.com,
+	michael.christie@oracle.com,
+	pbonzini@redhat.com,
+	stefanha@redhat.com,
+	eperezma@redhat.com
+Cc: virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] vhost-scsi: do not relock event vq mutex on send_evt fallback
+Date: Sat, 12 Sep 2026 17:04:20 +0800
+Message-Id: <20260912090420.47439-1-physicalmtea@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260911114922.621937-1-edumazet@google.com> <a53a81cd-88b6-4db2-a0e6-ee3dccfeef42@linux.dev>
-In-Reply-To: <a53a81cd-88b6-4db2-a0e6-ee3dccfeef42@linux.dev>
-From: Eric Dumazet <edumazet@google.com>
-Date: Sat, 12 Sep 2026 01:57:00 -0700
-X-Gm-Features: AcwNN1VGV2PYklkTQBMHr0GPZ_uipU9yOuNRs9TZwpxRiJ1EC10u4Gff-4dujMs
-Message-ID: <CANn89iJw5P-wARumRgxdPaHXBJ3qF0zu6FNaNOFKonyww9AJpg@mail.gmail.com>
-Subject: Re: [PATCH net] net: skbuff: do not leave stale header offsets after pskb_carve()
-To: luoxuanqiang <xuanqiang.luo@linux.dev>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	syzbot+586af68eb819833c2d91@syzkaller.appspotmail.com, 
-	Allison Henderson <achender@kernel.org>, rds-devel@oss.oracle.com, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 11, 2026 at 11:38=E2=80=AFPM luoxuanqiang <xuanqiang.luo@linux.=
-dev> wrote:
->
-> =E5=9C=A8 2026/9/11 19:49, Eric Dumazet =E5=86=99=E9=81=93:
-> > pskb_carve_inside_header() and pskb_carve_inside_nonlinear() remove
-> > the first bytes of a packet and reallocate skb->head.
-> >
-> > All the headers that were present before the operation are gone,
-> > but both functions call skb_headers_offset_update(skb, 0), which
-> > is a no-op : skb->mac_header, skb->network_header,
-> > skb->transport_header and skb->csum_start are left with their old
-> > values, now pointing into the freshly allocated (and possibly much
-> > smaller) skb->head.
-> >
-> > For pskb_carve_inside_nonlinear() the result is a zombie skb with
-> > an empty linear part (skb->data =3D=3D skb_tail_pointer(skb),
-> > skb_headlen(skb) =3D=3D 0) but skb_mac_header_was_set() still true and
-> > skb->mac_header pointing far beyond skb_end_pointer(skb).
-> >
-> Could you please clarify how the MAC pointer ends up beyond
-> skb_end_pointer() here? The carve helpers allocate based on the old
-> skb_end_offset(), and kmalloc_reserve() adds room for skb_shared_info,
-> so the new capacity shouldn't be smaller.
->
-> The dump shows mac=3D234 and end=3D384. I understand how the stale offset
-> causes skb_pull() on an empty linear area and triggers the BUG, but I
-> don't see how it ends up beyond the new end. Am I missing another
-> condition?
+vhost_scsi_send_evt() is called with the event virtqueue mutex held.
+If the worker is gone, the fallback currently calls
+vhost_scsi_complete_events(), which tries to acquire the same mutex again
+and deadlocks the caller.
 
-skb_headers_offset_update(skb, 0) is a no-op, so mac=3D234, net=3D248,
-trans=3D288 and csum_start=3D288 survive and now describe bytes that are no=
-t
-there anymore. skb_mac_header_was_set() still returns true, so drop_monitor
-does skb_pull(skb, 234) on an empty linear part and hits the BUG in
-__skb_pull().
+Split event completion into a helper for callers that already hold the
+mutex and a locking wrapper for the event worker. Use the helper on the
+fallback path.
 
-pskb_carve_inside_header() has the same issue, the remaining linear data is
-shifted by off bytes while the offsets are left untouched.
+Link: https://lore.kernel.org/all/20260905005352.1E5B01F00A3D@smtp.kernel.org/
+Fixes: b1b2ce58ed23 ("vhost-scsi: Handle vhost_vq_work_queue failures for events")
+Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+---
+Sashiko AI flagged this while reviewing
+the vhost-scsi event queue fix.
+This is a pre-existing self-deadlock. It was reproduced in a follow-up test.
 
-Thanks,
+Trigger: vq->worker == NULL. vhost_vq_work_queue() then returns false,
+and a subsequent vhost_scsi_do_plug() call deadlocks. I do not know what
+normal condition gets us here; the normal vhost-scsi worker detach/reset
+paths do not reach this code. The only reproduction I could come up with
+was killing the vhost-scsi worker. This still looks like a low-probability
+condition.
+
+ drivers/vhost/scsi.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index 7a1f39a32..7c905e9ad 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -630,19 +630,26 @@ vhost_scsi_do_evt_work(struct vhost_scsi *vs, struct vhost_scsi_evt *evt)
+ 	vhost_scsi_log_write(vq, vq_log, log_num);
+ }
+ 
+-static void vhost_scsi_complete_events(struct vhost_scsi *vs, bool drop)
++/* Caller must hold the event virtqueue mutex. */
++static void __vhost_scsi_complete_events(struct vhost_scsi *vs, bool drop)
+ {
+-	struct vhost_virtqueue *vq = &vs->vqs[VHOST_SCSI_VQ_EVT].vq;
+ 	struct vhost_scsi_evt *evt, *t;
+ 	struct llist_node *llnode;
+ 
+-	mutex_lock(&vq->mutex);
+ 	llnode = llist_del_all(&vs->vs_event_list);
+ 	llist_for_each_entry_safe(evt, t, llnode, list) {
+ 		if (!drop)
+ 			vhost_scsi_do_evt_work(vs, evt);
+ 		vhost_scsi_free_evt(vs, evt);
+ 	}
++}
++
++static void vhost_scsi_complete_events(struct vhost_scsi *vs, bool drop)
++{
++	struct vhost_virtqueue *vq = &vs->vqs[VHOST_SCSI_VQ_EVT].vq;
++
++	mutex_lock(&vq->mutex);
++	__vhost_scsi_complete_events(vs, drop);
+ 	mutex_unlock(&vq->mutex);
+ }
+ 
+@@ -1829,7 +1836,7 @@ vhost_scsi_send_evt(struct vhost_scsi *vs, struct vhost_virtqueue *vq,
+ 
+ 	llist_add(&evt->list, &vs->vs_event_list);
+ 	if (!vhost_vq_work_queue(vq, &vs->vs_event_work))
+-		vhost_scsi_complete_events(vs, true);
++		__vhost_scsi_complete_events(vs, true);
+ }
+ 
+ static void vhost_scsi_evt_handle_kick(struct vhost_work *work)
