@@ -1,133 +1,160 @@
-Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25EA53DD51A
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 17:41:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D8935F184;
+	Sat, 12 Sep 2026 17:50:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789234898; cv=none; b=IcA+kBil7GJlI2sZnaHFr939qCimtw6Py1t1lAzCBRtmTHc2BQkU9k+8ZavBEaNW5e8t2oHuJwXJ3dgzcu23H+Wgz9GGBchDqPFrLYAu8pj36XrLs8NKf2ra2JuJuXYWKPYVGM0hu58+c3dhEyAfsnJpWCOW6uUzC/CfLRvhzRk=
+	t=1789235453; cv=none; b=H+4eEwc0/LeC648t8KGxF7d5Rvr9D5nZlPfJtUi7ZgiI5a+8aDDaJ/mRGg0XrwT3sPsizcOw8ejn/ZiKJTFOLC5nd1XPE1sJ3be6s2RlzGGltupcYqHB2RspxsgXS19oaQJeQaa62RtW0JG/cg6bCHc0/Hz4Y2A0ZyQg+yIc+ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789234898; c=relaxed/simple;
-	bh=WwdB+ukEtegGwsv+CHfPaA5VNrMqODmWH1XFSPC8TsU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=FfY95uhMBl4EemHN2MoT7dFUXmE5WQ5ctglKzTFc3xMTDjRwYMBlh5ThGmbWllkhdxZSn3hvs+Tp66tYsI9kaB0iaT+tCqenOamFO4ZFu/jBL/Fr+LXRyDx98QDSGyHw4YGiAiF3sGuSiQeFCymjz1a2fuvt1PzRvy2KuLnUWzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marliere.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=marliere.net header.i=@marliere.net header.b=INz7LgxS; arc=none smtp.client-ip=209.85.161.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marliere.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789235453; c=relaxed/simple;
+	bh=52mxefBNL18TSW0EPrMFo62pk6fFfbgczGcDISCects=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=FMTSJ6FVGGTgsCwSfvvJax92gQlCDLk8ub6Jv+EwHS2JfgobJWz5ereAGsgZxJdsIZD94Ib5Zba/ratuHsQUeTLqtbq1B/xPqFEX640YUbXmm/rVxk77HS/dRNgHCbA+oJpwnpDQGrVq3cVXHusgU/uK4VWQnIrCjjWwzuxCiU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=OJGID+qA; arc=none smtp.client-ip=193.238.174.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marliere.net header.i=@marliere.net header.b="INz7LgxS"
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-6b12942ed04so1804638eaf.1
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 10:41:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789234896; x=1789839696;
-        h=in-reply-to:references:cc:subject:from:to:message-id:date
-         :content-type:content-transfer-encoding:mime-version:dkim-signature
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=Rf6X63a3owflg9x45ncqhPfrFvxaABmj6y0D/zWTVkY=;
-        b=IhpnI4nRaorzzz1J2BYR16Z+OGrSCWvSN244lms194I2d4aUhRdAossjimjOuCqquY
-         2HCM0J6lYX5JgQn9w3CoBg0+vUSB5mJ6SVTBJuQFLKrwU0xE5zfP2lQYIjSFU+WeAW2Q
-         oyWlVcz5G2OFf+cIAr3pXtV/TTCkTOXSGcwtVFIbIOFNGPAoB6+rJRdXEFk+gKKXWPWb
-         PR1fTD7euezDnfg9ZAn+4W8fW4Qbq8cxfnHNH9OHPF1IrowokyyKH4WA0mCmin+Sx2dY
-         /TngkF/ffDM2QCnrbn3wd+OHayNWqVFsGhPQEjOJJYSsLzkhFhvtZ6Q3c0cwCAvkYF2D
-         ZDBw==
-X-Forwarded-Encrypted: i=1; AKwUvBzoSUX+JBDkXeIQvJwgsh4J204QlYfrrHTizEoM3afTHTJpfQZTzCXAukGGbfd6E0JiaNhzpgA=@vger.kernel.org
-X-Gm-Message-State: AFuF++kqJclVZAve8NxLCahjRYZozN0bWzEZaT60JDwzOI0FigHKxb67
-	NJhVuVhuyxasONohnXlLGQCjp0CRV3uUrTjnjjKU8pHIsLpc+nsx4zbvrnAXyByVS9M=
-X-Gm-Gg: AYBFou3gDbYVTQiZEIGcP/DWL+ecuFojIaYJlosvfZh22G0QXHy2VttLq3n1X85ypUy
-	heO64ZG7a6jeFDh7V16yjWRu1fEli5bhLvnnXu90mL6seaeL/Obw5onqG4BLMugcdM0GBuKUEyd
-	GiwNs/DjZc62K9pTdF6SXekfqmc3u3vaZuPjm1He1J68EnYaAOWeUjHWF0+vwO2FsylnjzSFqql
-	bG7YmAYPWaY5pyPxRFn8xy1KUvNgm7kB9+qlbcTM0FqUTpR4r++I1ZONpiBK9p/Qu+PCXpT/FDW
-	8ppijpngZSzzADOOzEP+FU1UvXGuBCwz4wGFE2xqlmkLkARMDqCo/HfCLY/UUgPBeaahUtVYoxF
-	H2fCge3Zv5jtPiYyEzCzrtAdmf+rQUsBwr22SbLn9eTk9IHuZxiAd8woaC/5BHDrnEacothTVef
-	tZ/EB6aJsdrgarxtFRTtzkXnPF3Ph8XIk6jYiwbzb4CXboU0fIjbtulWI5dgvrCnE9DPEGP+f3E
-	FxPkZWDK0yc6SgJLF9E63MoSSsB2RFJidE5myQL79yBEsrCmDFfG9jbeO10GSCzXtnuUxZm8rWt
-X-Received: by 2002:a05:6820:5604:20b0:6b7:83c5:fde5 with SMTP id 006d021491bc7-6c0bb1f3cedmr4855066eaf.38.1789234895896;
-        Sat, 12 Sep 2026 10:41:35 -0700 (PDT)
-Received: from mail.marliere.net (137.65.66.34.bc.googleusercontent.com. [34.66.65.137])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6c0996dc5a6sm6063572eaf.6.2026.09.12.10.41.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Sep 2026 10:41:35 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 181FF614C0;
-	Sat, 12 Sep 2026 17:41:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
-	s=dkim; t=1789234892;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Rf6X63a3owflg9x45ncqhPfrFvxaABmj6y0D/zWTVkY=;
-	b=INz7LgxSl5imgrkvj+dGIF2TkBK5hTdU1+riBZTI1WABNWSP3oVx1rqL9aNE//Ce6V0jMs
-	54U/ObBDcHvQq8EkwcUSZ/L2JOqGh7Mseu03lj6sa/HCQhPXi9uzpInQjZEywRe6ps6M4G
-	9SSOY9kOVVxu1OFSya8tYfOwCivhh1oeKfr2+zqqIllXGK3O8CccLrYMZe87sZbDQOPLEP
-	G8ZhhxrFuTzaizjRYvAPA6zCfLeJT+oUR0/8iR4CAPmU7A5q8Wm7bFL//IKucf/ta8GhEG
-	rUUwt2S9uUJfctL2l62UOQqC6FOq+u+M5VMXYZ2D1mp+LW1HbU+JAGbGYlgkzg==
+	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="OJGID+qA"
+Received: from mx.ssi.bg (localhost [127.0.0.1])
+	by mx.ssi.bg (Potsfix) with ESMTP id 55DB222741;
+	Sat, 12 Sep 2026 20:50:31 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
+	:content-type:content-type:date:from:from:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
+	 bh=7r8oFDAgjy8muNhyo4CeqelFFPqnHlw5fWun4gzb8Z4=; b=OJGID+qAQy2Y
+	3zRJitxMU8ygncW89pWOrD56ChopmCF9pL6S2/KCzTmVuwkoAl8tB7gOHfwfIPvV
+	Tz8PH7mliLoxvSJznImrkM+WH7tIJNHQZqDDvELTwvRJjU1cLAXdGR1Bqx5AEtUa
+	Ibnq+7AJTu3dNqv98Yf/1WoPFQUcLVs4v1Xt9cCZZC5B7y+NjdXMJir96VlEz3/F
+	0GrS2tymlWH2o8RrFKmWIAsPxalOU+u0cF1ooah0+PCfqKkM0BklZq3TSPFAfWHQ
+	4ZAAC+09kyIs5Xf+jSI4Emm8RSqFi8EVMK6GJqBz2bnSjC28c2FD4wUDYp76AldX
+	/qQ9AR+IGV2Ocow5r3H+vwe7KIVa4X3IFwAiaSyPgWQAsQAbPuI0GMIKFfK0E18Z
+	YYdBWmSZXWZX+sfXk0Zz1u6wiW9/9YK6zuM0ByBEFZ8AJHOH8GGweuhkjIQJfwZi
+	Sv+sBJAVHnCNh0ONZkfqOY2djeMThUkVf0YVZb9SDq+fN28ycGKm55/0ex67ISZC
+	4X+ydQQJNiBeWps5Y5ZURX0/brPsoCYRdNGAT2DbaCtU2X4ju6P02wY+wnvyYxHM
+	JD9IdVmKfnBwb6AcFQQxPTb/jxHfnddP25B2i2SzeLNDr+0MsH+Z4oseuBq9oHpi
+	iOkSdgK97iKT9ky1uDlvnEY4t/FwNIA=
+Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
+	by mx.ssi.bg (Potsfix) with ESMTPS;
+	Sat, 12 Sep 2026 20:50:31 +0300 (EEST)
+Received: from ja.ssi.bg (unknown [213.16.62.126])
+	by box.ssi.bg (Potsfix) with ESMTPSA id E2A0360898;
+	Sat, 12 Sep 2026 20:50:32 +0300 (EEST)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 68CHoTkT030622;
+	Sat, 12 Sep 2026 20:50:29 +0300
+Date: Sat, 12 Sep 2026 20:50:29 +0300 (EEST)
+From: Julian Anastasov <ja@ssi.bg>
+To: Zihan Xi <zihanx@nebusec.ai>
+cc: horms@verge.net.au, pablo@netfilter.org, fw@strlen.de, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, phil@nwl.cc,
+        netdev@vger.kernel.org, lvs-devel@vger.kernel.org,
+        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH nf 0/1] ipvs: avoid stack overflow from recursive connection
+ expiration
+In-Reply-To: <cover.1789110326.git.zihanx@nebusec.ai>
+Message-ID: <d99cb205-24fc-7446-55ad-4ec9d79aac1d@ssi.bg>
+References: <cover.1789110326.git.zihanx@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 12 Sep 2026 14:41:28 -0300
-Message-Id: <DLDIU0FHU2UY.2SR6QH3U7PYB1@marliere.net>
-To: "Jakub Kicinski" <kuba@kernel.org>,
- =?utf-8?b?UmljYXJkbyBCLiBNYXJsacOocmUgKFNVU0Up?= <ricardo@marliere.net>
-From: =?utf-8?b?UmljYXJkbyBCLiBNYXJsacOocmUgKFNVU0Up?=
- <ricardo@marliere.net>
-Subject: Re: [PATCH net v2] selftests/net: Fix icmp.sh race between ping and
- tcpdump startup
-Cc: "David S. Miller" <davem@davemloft.net>, "Eric Dumazet"
- <edumazet@google.com>, "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman"
- <horms@kernel.org>, "Shuah Khan" <shuah@kernel.org>, "David Ahern"
- <dsahern@kernel.org>, =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?=
- <toke@redhat.com>, <netdev@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.22.0-16-ge144528849ba
-References: <20260911-selftests-net-icmp_race-v2-1-c7458dec9d0b@marliere.net> <20260911174045.76579e91@kernel.org>
-In-Reply-To: <20260911174045.76579e91@kernel.org>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 
-On Fri Sep 11, 2026 at 9:40 PM -03, Jakub Kicinski wrote:
-> On Fri, 11 Sep 2026 15:41:33 -0300 Ricardo B. Marli=C3=A8re (SUSE) wrote:
->> icmp.sh backgrounds ping and then starts tcpdump, with no synchronizatio=
-n
->> between the two. If tcpdump is not capturing yet by the time the ICMP
->> unreachable replies come back, the test fails even though the kernel
->> behaved correctly:
->>=20
->>   FAIL - got ICMP response from , should be 192.0.0.8
->>=20
->> The empty address is misleading: it means the capture matched nothing
->> before its 10s timeout, not that the reply had a wrong source address.
->> NS1's Icmp InDestUnreachs counter still increments across such a failure=
-,
->> so the replies were generated and did reach NS1. Ping sends several prob=
-es
->> over its 3s deadline, so losing every one of them takes a multi-second
->> stall in tcpdump startup, which does happen on loaded CI hosts [1].
->>=20
->> Fix it by starting tcpdump first and waiting for its "listening" banner
->> via slowwait() before sending traffic. Run ping synchronously, then kill
->> and reap tcpdump if it did not already exit on -c 1.
->
-> It used to pass in NIPA CI and now it fails:
-> https://netdev-ctrl.bots.linux.dev/logs/vmksft/net-dbg/results/819341/86-=
-icmp-sh/stdout
 
-Thanks for the pointer, I'll prepare v3
+	Hello,
 
->
->> Fixes: 7e9838b7915e ("selftests/net: Add icmp.sh for testing ICMP dummy =
-address responses")
->
-> Please don't add Fixes tags to selftest improvements.
+On Sat, 12 Sep 2026, Zihan Xi wrote:
 
-Wouldn't this mean that the commit would not be picked up by stable,
-creating a gap there?
+> Hi Linux kernel maintainers,
+> 
+> We found and validated an issue triggered through
+> net/netfilter/ipvs/ip_vs_ftp.c. An unprivileged user can trigger it by
+> creating a user namespace and a network namespace. We tested the fix with
+> the same trigger. The change applies to the generic
+> ip_vs_conn_expire() control-chain cleanup path. For the reported trigger,
+> it only defers recursive controller expiration; testing showed no change to
+> other IPVS behavior.
+> 
+> We will provide detailed information about the bug
+> in this email, along with a PoC to trigger it.
+> 
+> ---- details below ----
+> 
+> Bug details:
+> 
+> The trigger entry point is ip_vs_ftp_out() in
+> net/netfilter/ipvs/ip_vs_ftp.c. It parses an EPSV reply and creates a
+> wildcard data connection using the advertised port. If that port is 21,
+> ip_vs_conn_new() binds the new connection to the FTP helper a second time,
+> because 21 is the helper's control port. The connection has
+> IP_VS_CONN_F_NO_CPORT, so the next connection from the same client to the
+> VIP on port 21 matches the wildcard entry instead of creating a new
+> top-level entry. Repeating EPSV builds a chain of controlled connections.
 
->
->> Link: https://openqa.opensuse.org/tests/5907626/logfile?filename=3Dicmp_=
-sh.tap.txt#line-2 [1]
->> Signed-off-by: Ricardo B. Marli=C3=A8re (SUSE) <ricardo@marliere.net>
+	Hm, may be we should also avoid such long chains.
+Probably in separate patch, for example:
 
+diff --git a/net/netfilter/ipvs/ip_vs_ftp.c b/net/netfilter/ipvs/ip_vs_ftp.c
+index 9e3e005a8263..0622169b5970 100644
+--- a/net/netfilter/ipvs/ip_vs_ftp.c
++++ b/net/netfilter/ipvs/ip_vs_ftp.c
+@@ -237,6 +237,17 @@ static int ip_vs_ftp_get_addrport(char *data, char *data_limit,
+ 	return 1;
+ }
+ 
++static bool is_control_port(u16 port)
++{
++	int i;
++
++	for (i = 0; i < ports_count; i++) {
++		if (ports[i] == port)
++			return true;
++	}
++	return false;
++}
++
+ /* Look at outgoing ftp packets to catch the response to a PASV/EPSV command
+  * from the server (inside-to-outside).
+  * When we see one, we build a connection entry with the client address,
+@@ -293,6 +304,9 @@ static int ip_vs_ftp_out(struct ip_vs_app *app, struct ip_vs_conn *cp,
+ 
+ 		IP_VS_DBG(7, "PASV response (%pI4:%u) -> %pI4:%u detected\n",
+ 			  &from.ip, ntohs(port), &cp->caddr.ip, 0);
++		/* Do not redirect data to control ports */
++		if (!port || is_control_port(ntohs(port)))
++			return 0;
+ 	} else if (cp->app_data == (void *) IP_VS_FTP_EPSV) {
+ 		data = ip_vs_ftp_data_ptr(skb, ipvsh);
+ 		data_limit = skb_tail_pointer(skb);
+@@ -529,6 +543,9 @@ static int ip_vs_ftp_in(struct ip_vs_app *app, struct ip_vs_conn *cp,
+ 		return 1;
+ 	}
+ 
++	if (!port)
++		return 0;
++
+ 	/* Passive mode off */
+ 	cp->app_data = (void *) IP_VS_FTP_ACTIVE;
+
+	The only problem I see with your proposed change is
+that we may need 2-3 timer ticks to expire a DATA->CTL->TPL
+chain. Or it expires on the same tick?
+
+	Alternative would be to jump to the beginnig of the
+function after successful timer_delete() for our cp->control,
+i.e. to use loop instead of recursion. I.e. ip_vs_conn_del_put()
+can be converted to function that returns bool instead of
+calling ip_vs_conn_expire(), so that we can know if to loop.
+
+	If ip_vs_conn_flush() demands faster expiring, a
+loop will work faster. What do you think?
+
+Regards
+
+--
+Julian Anastasov <ja@ssi.bg>
 
