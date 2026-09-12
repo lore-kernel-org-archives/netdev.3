@@ -1,120 +1,84 @@
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4693C4BEE36;
-	Sat, 12 Sep 2026 01:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C30E18DF80
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 03:08:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789176911; cv=none; b=ETIcQmOlBa1SvMHyT2suhVe8JP5QcaHAIt2te6MPXc1uLms88ldZCoMD1K89Ko27OuO02ELf+o8zvXv3JpORchqjZ/XkUL6uPaV3K0S2s0ZYdkEYXEnn6QE4HTL9KR4f993z6ogkhZ5ADdHNjn6oBHSmQUU4HOAtS0fFBs0WP1Y=
+	t=1789182536; cv=none; b=X5bvN8Xm1A8MVGRc7uQn2kRYqwUrgXPOj4dGTbkU5EUusaIX/F1EpGUalPFb6hbrjLU9oMM3YKqQsfr4039vkLyreA0NuxoxZBiDyGmtl8lcdWJoRzhlewcjQoOITzz5h3vh+vCUFwjHtKM2Gc4SD5mNEpFXEstHJJnGRvNMrE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789176911; c=relaxed/simple;
-	bh=GQrpXj/EoHiq0d7y4bhq7ebIOFeO6urL2IUBWZQToHw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=L75E5cSFuEMqCDRHpwzo0/+falKUD+mkQerJxXHkVclYBfUSI+2V3bJsjLiACcIUUgFnbaCWdzPwD0QC6vOnNPsLe1qi8QzUu2ykFvjMRTxcK7C6oPFXNkvclgOaWdUIySBrmpGP3X/7vz5PuXLMMmi389SAdcP2Rf4qvhvsTuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=oLXTLqak; arc=none smtp.client-ip=117.135.210.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	s=arc-20240116; t=1789182536; c=relaxed/simple;
+	bh=jR8prQ/z+4qG3oHvPOxgSNTJ/8880iAVc9SgaaUwX5U=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=AZEG/NiXEAS3uWniQN4+QtMbrnvqQKustgHLX/EBzDiRBXH1oN1zcUyaYhyWIJfSNXtdo/z/SyspXrmGGs79C8INalCpcjoWES0LLnjHSa+g/tMsFhWFzQP6sCduG89Gr+32yIVtKJIXMYwuMM6jbCU5QUJsCuIijQGHTQ3lig8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i7IivPOJ; arc=none smtp.client-ip=209.85.214.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="oLXTLqak"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=o7
-	8Hqq6g/lBoilGmoy0z1ftAj0h9kvkoIITlXb/oArQ=; b=oLXTLqak803ESVHVfL
-	y6pGU8lgTI2EFLofFcZRV0vIm8PIQhsuB9rfx95OZ97ZOLl8t7PH1Hn3U6X0Y4xZ
-	rjebZb7KjWysXSMRKIk2Iq34s6P7DBl5Xq33xVGhOtRQNpObeQhSBPPxN6wgo8NS
-	RiIV4b6zmwfAZDYFOXxMIsxhc=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wD3n3IMrKRqxdEPBA--.2642S2;
-	Sat, 12 Sep 2026 09:34:04 +0800 (CST)
-From: Linkui Xiao <xiaolinkui@126.com>
-To: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Linkui Xiao <xiaolinkui@kylinos.cn>
-Subject: [PATCH] ixgbe: fix incomplete ACI command buffer backup on retry
-Date: Sat, 12 Sep 2026 09:34:03 +0800
-Message-Id: <20260912013403.2818191-1-xiaolinkui@126.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i7IivPOJ"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2d9336581a2so28952905ad.3
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 20:08:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789182534; x=1789787334; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=nSVz7tjFqGbEDanGAlxgCdas/nBBOQrZ4IZ4+hVaVls=;
+        b=i7IivPOJwAbHUb/lWFbcdBUIUz4nPzfrfcKY+4DhLitGlZs+q6SpaZlDvBmWOUZjNI
+         ptemceA3VT/lbuuYF57XaTadxubBIKk9TooJ42X1BPlDBF9ZEDM0An6xxtenNIJ1Yco/
+         NwyxD4WORUZIEm/geU8Jke1s7JRoKbgb+BH2aDBpjpUpRorNkENXTG2tEVPRbBv5IcZY
+         r4XKUaFUH+sixY15iTJJc5uSFeGe80m+6gfbEKqX++Nk3W9i1OdGQxcTmhnKiRAECCXI
+         /4be3IGJANrOAwmExwQrZZR2mWRgOxAiI93Wa4fIOTW8Tj+EABg6aqfrAG/iVPSY8HeE
+         g/EQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789182534; x=1789787334;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=nSVz7tjFqGbEDanGAlxgCdas/nBBOQrZ4IZ4+hVaVls=;
+        b=LQAoWNCdo2pebXmO55fxWZhY+Z+R3vg6jMNcWkSDpY9G/fviZE9HmrVVM6nCrQOAsa
+         gWpoj1xCuzr/RMM3CNPFU0DWA8UU6c6Qrf68x5RwCRRy0ag7qmSaf6jt3UkHw5N9rqXh
+         +BOQVvFdqDmBeQoQT+6/ihrc21HBpUqaXKAjSOPswj1rMw3HLt7hSYPJG85vMkTGe58S
+         rjvXxpqtnZfV6GLY3VUX/WdxEt4d4yR/YGJsamb5XSeGXLHPRqzBucIvWZNeC/0z+0qQ
+         C6yMnAeD9C72NQWLoY7YgqpxOwqg6vmtL+17JV0k8GS+SceFoB9bhekkxlgGxCJ3DFaq
+         PPRQ==
+X-Forwarded-Encrypted: i=1; AKwUvBznXbi+7RAPiOrjtijYpMbFk1QAM7N78SyQzbxCaIMAIh/eKVwH/K1wntXlAL1u8gNCSEIrHU8=@vger.kernel.org
+X-Gm-Message-State: AFuF++lLYK6ZDI3pb4wor193rSLoiTSuU7L9M1Y3HRP1oqE8RyiWgLKP
+	wUCt1T38wXni1DhASieYRz/i0aFJab/gOyjEiI/d2OFU4symoAH2GF3QpT6gcyxuUjq3e6B9oqF
+	GIfbFVA==
+X-Received: from plim4.prod.google.com ([2002:a17:903:3b44:b0:2db:36ca:f184])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d2d0:b0:2dd:1701:3b6e
+ with SMTP id d9443c01a7336-2dd4bd7854bmr18812495ad.16.1789182534338; Fri, 11
+ Sep 2026 20:08:54 -0700 (PDT)
+Date: Sat, 12 Sep 2026 03:07:50 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3n3IMrKRqxdEPBA--.2642S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7KFW8Ww4rKryfZryUKFy8Xwb_yoW8trWfpF
-	4rWF93AF4kXr4rurn2vw48XFWY93WIqrZ8K3ySvws5uw10yr1qgFyUK3W0kry8urWfXryS
-	qFsF9w43Ja13J3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07ULFxUUUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqQzxyGqkrAzCRgAA32
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.1007.g17ff1f9808-goog
+Message-ID: <20260912030852.1467872-1-kuniyu@google.com>
+Subject: [PATCH v1 net 0/2] af_unix: Fix inconsistent scc_index.
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
+James Burton reported that a single SCC could have multiple
+scc_index and unix_vertex_dead() fails to detect a dead SCC.
 
-ixgbe_aci_send_cmd() backs up the indirect command buffer so that it can
-be restored before an EBUSY retry, but the backup only copies the very
-first byte of it:
+Patch 1 fixes it and Patch 2 adds a test case.
 
-    buf_cpy = kmalloc(buf_size, GFP_KERNEL);
-    ...
-    *buf_cpy = *(u8 *)buf;
 
-while the restore path copies the full buffer back out of it:
+Kuniyuki Iwashima (2):
+  af_unix: Unify scc_index when finalising SCC in __unix_walk_scc().
+  selftest: af_unix: Add test case with mixed lowpoint in scm_rights.c.
 
-    if (buf)
-        memcpy(buf, buf_cpy, buf_size);
+ net/unix/garbage.c                              | 17 ++++++++++-------
+ .../testing/selftests/net/af_unix/scm_rights.c  | 17 +++++++++++++++++
+ 2 files changed, 27 insertions(+), 7 deletions(-)
 
-So every retry hands the firmware a buffer whose content, apart from the
-first byte, is uninitialized slab memory, and on a read command the
-caller's buffer is overwritten with that garbage when the retry finally
-gives up. The buffer of a read command is an output buffer, so the caller
-does not initialize it either.
-
-Use kmemdup() to copy the whole buffer, exactly like the equivalent
-ice_sq_send_cmd() already does.
-
-Also skip the backup when buf_size is 0. kmalloc(0) returns
-ZERO_SIZE_PTR and the single byte store above would write to it, and
-restore based on buf_cpy instead of buf so that this case never passes
-ZERO_SIZE_PTR to memcpy().
-
-Fixes: 46761fd52a88 ("ixgbe: Add support for E610 FW Admin Command Interface")
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
----
- drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-index 4d8ae5b56145..5dd88ee7ea58 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-@@ -214,11 +214,10 @@ int ixgbe_aci_send_cmd(struct ixgbe_hw *hw, struct libie_aq_desc *desc,
- 
- 	is_cmd_for_retry = ixgbe_should_retry_aci_send_cmd_execute(opcode);
- 	if (is_cmd_for_retry) {
--		if (buf) {
--			buf_cpy = kmalloc(buf_size, GFP_KERNEL);
-+		if (buf && buf_size) {
-+			buf_cpy = kmemdup(buf, buf_size, GFP_KERNEL);
- 			if (!buf_cpy)
- 				return -ENOMEM;
--			*buf_cpy = *(u8 *)buf;
- 		}
- 		desc_cpy = *desc;
- 	}
-@@ -234,7 +233,7 @@ int ixgbe_aci_send_cmd(struct ixgbe_hw *hw, struct libie_aq_desc *desc,
- 		    last_status != LIBIE_AQ_RC_EBUSY)
- 			break;
- 
--		if (buf)
-+		if (buf_cpy)
- 			memcpy(buf, buf_cpy, buf_size);
- 		*desc = desc_cpy;
- 
 -- 
-2.25.1
+2.55.0.1007.g17ff1f9808-goog
 
