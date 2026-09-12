@@ -1,78 +1,192 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazolkn19010022.outbound.protection.outlook.com [52.103.33.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3BE3905E6;
-	Sat, 12 Sep 2026 16:32:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789230750; cv=none; b=GndhkFC34nM7cpxxIr5jD4soTlIjNkFnXHXbKKZRAz/VYY/PP/UjHVe6MJgrlaeO6Jlm2gEL5HNTEnrLgqzonmLE4I+1HgmELa/lZZSih+qpquW6PGTT3Ofy0cBwZQfI+7HQVWlHhCc4yZu/akufoC3PXgE53dP7U1b9OJNBaiU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789230750; c=relaxed/simple;
-	bh=MwqnkcrroB1Z/gKOCvZPf8Po2tfaNM3vNbYxYVyAF1M=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dVeFDCTIDTsFsceOvOfTZ7l/1Fl33rFKqTMw42kI/lR3mfM5Z0eN9sOWsEaDY8D4FLyGRkLpQ3q2MU/95BR2EwkYuERwvj8pDL8noppgDGUlhyDFDNguKnUAS54MgKXRlAVjfKJ9jpMh77CKFKPGpshrA7mA0ROse/7DQLZEL60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ISNonprm; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB5747A89B;
+	Sat, 12 Sep 2026 16:52:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.33.22
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789231975; cv=fail; b=clWCpFWk8nTZSz/NPHnkTAnywma4fUcUVgXs8zJzQjjqVvWiRYWmElFGYgQyibPq8JwwR6DIKLwC5JsgjcAnCCOgDJd/v2AjJd2q7YH8t/vr7/33E8r78rl0iek9M/GZm8bf0J8EciYdlt/Rvo7d0uoTXSM53yf+mIQ2l0yArZ0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789231975; c=relaxed/simple;
+	bh=ja1ge2IeEyhlA48K1+GNlrCCKprMxf11TVdd05VupFg=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=CXNDGdLNTFVHBwbZmN1WVgNhrACh2FNXqAWzhGQm8TEVsX8metBh81/B07Splb5Z7SH7PAsTsHAMXbscLduJTVRCwE+zsoHsrxiGiRYZ3IdDC3A4jrmacfvDrC2MHWreRkH0mUQtLvtD3eS1DBeamTtnuZs1t8uTx8S95jzE8WE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk; spf=pass smtp.mailfrom=hotmail.co.uk; dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b=rgJ+7Y75; arc=fail smtp.client-ip=52.103.33.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ISNonprm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F13DB1F00893;
-	Sat, 12 Sep 2026 16:32:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789230749;
-	bh=LHEWLDzI+B3/97tgLaQiQi7rrWzRXqtmbhj7QQQB41k=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ISNonprmfxAOsJA5OY7LeJTVCye+0tJCeCeQY+8mK+0AXPBnTLCM5EjKouET3qKlL
-	 Wf/j3uL70/o21kM4l3nuOswHxSkn1/S7+ktNPWjFMYpdXav5qq/NektNGX5f/rvOiC
-	 Q84dORAbDGYk6KeabzM1JJXVP9FF+x0YHPrgp0ciBmEtqULbnAM0Hdu9zpkSJAAUEO
-	 cP3gpox8018Ayic91pKRoUEleWoMskpQUGTbh1xmM85dwvuwXvXAsspFAT5ZnfLoBI
-	 bVHoolpWdCQl8g3LXmTkYqN4WUggDMGL7N0XBMZ5pRCR4oR4ugczJtrcJkxG9gIVHb
-	 ZHjer+L01/YrQ==
-Date: Sat, 12 Sep 2026 09:32:26 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Narcisa Vasile <narcisav.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, daniel.zahka@gmail.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- shuah@kernel.org, horms@kernel.org, willemb@google.com, petrm@nvidia.com,
- anubhavsinggh@google.com, richardbgobert@gmail.com,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2] selftests: drv-net: add BIG TCP test cases
-Message-ID: <20260912093226.529ff414@kernel.org>
-In-Reply-To: <20260912050327.20616-1-narcisav.kernel@gmail.com>
-References: <20260912050327.20616-1-narcisav.kernel@gmail.com>
+	dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b="rgJ+7Y75"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HjmGazaVsLmqa9sUKgWff8I3DB/r8VL4Rwcle0PYIIcSQ5WyTEHg307kmNUTGTMOg4qazIlnKHcjv0PSnw7UHiu+fhYpbHN5P4YezFOpp6TRbteIH47luSk6FyZcfg9/ybJGRyaxWhylf1fywtq5dVay6Znlnzo0YOqsW8m1+6xyKWzkERwdNo1gP/23vWxeVMvEqqm+7HVh8SSv/ONym4HfE1+1Ujl6mtQyHh4O17NMS2z/MYohc1AgbV5+ONKBZG/FPt+L0UMD4HpolK/8jajhgr17uM2fkJtXZVXazM68+GzhmySfcIKBQps/7Qbm01VFkWQulKfg35nZtd4ZEA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=g9dJnW1OiLd13tJJLZDJTM/1LwPj0n6omPip4h8lVeE=;
+ b=Un4LlbOrhc0AeH+GqQcRIfy6wZ+4ylyiyNaHsWbvtUAJ5OdA4xzI8pvV1vZpgnoCeBy6y2bfmqrP/5eQfqCzWUDTiaOZnkc/Ruc3jIfdiilQ2kHKBD3re/kBdz4hvz9w3zUaWNpps4aDD3Y/JBgMD+b4dAoe4n/92aj6c6H5w1RLCzY9uhtS1cQxXdOO44fUCB65ug4qLwHkB8zbv92vvrJ6EU75hSpIcQrR34GCE6A1xHiHOwNS+Skur1Eerjgeth027X6uZFZm2dM7o377FrGvuk2dzv1aWtK995OLplADg4dwy07HPjhUCKyLzJyvZqsg1ga55Rm/ROYmbYw6hg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.CO.UK;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=g9dJnW1OiLd13tJJLZDJTM/1LwPj0n6omPip4h8lVeE=;
+ b=rgJ+7Y75x5QRX3IEy7/ipXCx3pIeFMaZ72WS7O1ORxo4Xxb3Bf6IHitJs17nFxfx+vvDhq9YJXNUrEaMp3RCo0v3XtHThXyzHaEsOB+LTnbwXSsg1rzjpE2g9CVPf5vT7oVk9thUZDKdI6zliVsWP7Wrfak5/SnnqVKcYnP7Atwmq1PNW8uwoMbViLEwh0KVD+ctunNhHUflOqRz3wqaxKpk/rwFtkLBcK2gFtRS2FoHLrAk1GDSWyAX+Bm009M/QIZ6IUmtdoHzdtA+VeqDiJpB68MtTeC7Rj8NKDZKsac4bhTrgxFTaxQzVg0mZC+2KBPovxIl/2W38+JHL4/Xgg==
+Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:344::22)
+ by AS8P251MB0086.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:346::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.11; Sat, 12 Sep
+ 2026 16:52:51 +0000
+Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+ ([fe80::2952:d4d0:4ba:8352]) by AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+ ([fe80::2952:d4d0:4ba:8352%3]) with mapi id 15.21.0406.007; Sat, 12 Sep 2026
+ 16:52:51 +0000
+From: Aamir Ahmed <elb12345@hotmail.co.uk>
+To: David Heidelberg <david@ixit.cz>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Christophe Ricard <christophe.ricard@gmail.com>,
+	Samuel Ortiz <sameo@linux.intel.com>,
+	yun.zhou@windriver.com,
+	oe-linux-nfc@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v2] nfc: nci: validate CORE_CONN_CREATE response length before reading fields
+Date: Sat, 12 Sep 2026 17:52:49 +0100
+Message-ID:
+ <AS8P251MB0001A22DC617BB5B888945DFC8BD2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.55.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: LO6P123CA0021.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:313::12) To AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:20b:344::22)
+X-Microsoft-Original-Message-ID:
+ <20260912165249.45578-1-elb12345@hotmail.co.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8P251MB0001:EE_|AS8P251MB0086:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9e37e987-a155-4f4d-ef26-08df10ee4828
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|15080799012|23021999003|25031999004|37011999003|8060799015|12121999013|19110799012|5062599005|55001999006|24021099003|5072599009|4140399003|25010399006|51005399006|4302099013|3412199025|440099028|26104999009|1602099012|40105399003|2607281247196008|10035399007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?enCe5Ec6utrC3uqVeTodP7trFymZoEFUeXFVxUOPEqC8pLUz4ze0/bba9QLy?=
+ =?us-ascii?Q?bkxax9sySAyQLop7Lsn55yXwHqU2Hk7jMiIr4WSxgw0OQlSoKl6xCMU2vnde?=
+ =?us-ascii?Q?KPSbzjJ6HyD8W90kkF824f4TzSK9ChA4OpHhR9Sq/U1UHh9ad8n2m+CulJwy?=
+ =?us-ascii?Q?eoFyQlVNDUADzHE3GGekHMU+1otRSfJX+1RfLcrddkTBbT9mIvUwpgGAEdJ3?=
+ =?us-ascii?Q?el4ti68HAlm/6SoI8OFPM4W8wUhY7nXR7db12ZtBBgrRNHRDK2rwOXAIDVIh?=
+ =?us-ascii?Q?ISp64q6L2Rb5l8rJ1bx9vmqcadx04USgf5sR7Ei4tMlN8EQFup0+HlHkIDRw?=
+ =?us-ascii?Q?6pZeVTC+QKvk+AfqCPTlWxOslrLlZfnHkrHRMiO+AS0E+L3uw1iH9b0iUETy?=
+ =?us-ascii?Q?2ftDuxsO5siUPqFGPz+7XLqspvdBkpeE/j5FHDi5G2wc558r95OExE1shGjd?=
+ =?us-ascii?Q?hvAmtKGjqAJdysoPL9XFL8VSvoKz4wm19OcH1WfZ+30sgKuvTqkyVQnaiZSE?=
+ =?us-ascii?Q?M3SMyPphSxrvj3SN4tNHkB9YPXvK1kiAjvL3Qsf0rkLoMl9B0vN3xWBoqeTs?=
+ =?us-ascii?Q?R39Ni94ljsy8mPkDJbKB+FyN29A5CnfDys0FfroyvQgpLM1r7pe0olrFI/GZ?=
+ =?us-ascii?Q?IZhFzBQDMMLMETOEajLN9AGaA83JKtB7GTbXZ/0/EQArLc5bdAidD/XiTgzd?=
+ =?us-ascii?Q?JBdZb1qykTYqwbvOUWLFe4XjUi9OKK+xt/o/gFMXc2+LieMxNZc549aBvEhj?=
+ =?us-ascii?Q?4K/9Mi49BbGaCznE9XNPb1RagxIu/kjzWd+b/eGzpEpPOplQiqYJHx4M3Y0j?=
+ =?us-ascii?Q?ZM/cOKitMH4YZoYsLE7CfYrb4k0K6h6lF/kdimdMdxnvdMB6PJyZ4Y3eazKP?=
+ =?us-ascii?Q?IvKhBHqiaG0UHAW+5tdwr5NKBaiFTp0NqJsBxx3WYzT0rR6IyiwC3mAvKXjZ?=
+ =?us-ascii?Q?GAlgCyB84Qi2kOOc//8IFiOegMmRs3Tbl6ccrlIXGk0HWlMX6Uj1qD5seVcp?=
+ =?us-ascii?Q?i27E5ruKZDskP73N4D9GTk03C0hrv7YD1wxzHJeNfYwZhCt31qp5DAhie/uB?=
+ =?us-ascii?Q?UmW2+3J5dBVY4cu5Cqr4xx3EflCle+WxRWTmlN39WTXDp5bu0VhfFWbdqqth?=
+ =?us-ascii?Q?xVln7LcpE0pL5JlaRNLts00JafqJD1EM4K24V2WVcN/pwmkojfyghDYnkwAZ?=
+ =?us-ascii?Q?OHSs90mazcceY1ku?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?D1E8MNGy7nDoUisvH3Ieg4aWse319gnZOmHNdtdUrJMWthIR7T2j0LM0G2f4?=
+ =?us-ascii?Q?FNXZTJK9rXiT5/5EX0KAEMdIOpQHLPup0sVk/M6gkwCU9zFP6jLPskoGkheh?=
+ =?us-ascii?Q?x+dHpU5AXFgzahC/2SkLEefngGPWDxfEAcjd2QHZTRZHLQpmADhrAEn5BG9n?=
+ =?us-ascii?Q?QGp1W2C81F/8evSkYWqpMOOWNrGUMnGrWvZCXc1CCkwv0zGWP1N9kPWFxO1Y?=
+ =?us-ascii?Q?V3Pyd9ZhiPVpAJf6OTDvdbTMrNrwMXB+EraUtppwevC//6TWTMjD0AJscVCG?=
+ =?us-ascii?Q?0s3SYV+KRQ+eNlTu3MaLu+e6CrYJ2bsYG8TpKvWQf3hnNOzzI9sLTx1mOBP/?=
+ =?us-ascii?Q?41bFsVwcK29WPk7j/M8Kqu/t8hSPUhrn40MOnamqofjTemfKgyKmS9PSYZA3?=
+ =?us-ascii?Q?b/GwtXh2OFOW+pExMClpEF2UEepNZIRTk71hYYhvas7S20UUUXiJ5Rm8iMxL?=
+ =?us-ascii?Q?f3MGXIH1wGHuZbKi42rBGM7Eo5Fx/UoLhprH7Z7Bpy4TUnxSSWk60RTR5xgv?=
+ =?us-ascii?Q?ySIvULgmGbiFrhUqp8l+mj7iY0DOfSioSFtx+aKPVwpc6S5K2IkLw/0e+rzm?=
+ =?us-ascii?Q?0IQ1qSB7eDNYqZ1kjCPmKwVytExZdjt0iVic53/FjfFGr08j/crJoDIdO/BG?=
+ =?us-ascii?Q?sSU9wqnhb8BXoMiYsQ0r8Y61fQUvBgX6Hplz/eBjGK9LLA1+d7Fh4X3gTANg?=
+ =?us-ascii?Q?Eg4vY6w27IugxbDcH/XiWgR59//uuNI/0JX7Iw0mgN4HRrvw4gHocEIU9FcU?=
+ =?us-ascii?Q?87ldNa2Pkfh8WjRQnElHRA09hlB+8f1Fks5mItcRHllkUV73MNS/lL97YI32?=
+ =?us-ascii?Q?XLjL7aUUXfDl0G48boa5RHc8ekwT9L0rDaxU3egQ84jo3URtgBx2/ENy8phs?=
+ =?us-ascii?Q?iy0taoX7YBCoQJlT+eGkWX0zPoHhyA/rs7t6cQ09nvoQKvFBJOw6POZg8qOS?=
+ =?us-ascii?Q?iNEf8AnLRCDv/RJ6uiPG9G6UKxTB3ZV7G+wTbKmX8+RHPJi6Wiu9RmZCuyBk?=
+ =?us-ascii?Q?tiLuEl9DIKEfdZyE8ej27O4IYEwAxEFct/bv/VgCVg8R+irJGtH46gGfUhs7?=
+ =?us-ascii?Q?CQKiKxD7ox3YqfDHWFLRUO2FYF93ig2mgiIl+Cjd9zyEFHOB9nCanUELq+UO?=
+ =?us-ascii?Q?wE/ajHCOMtzZgSN/VauXdEG0vy0k/pICvz/0zWi+n0XOJw1+85lja0Eq6yZ6?=
+ =?us-ascii?Q?AJwILqXmVL8NYaZ56eQRS1PfaYCRl5DEwvpKGfx+z14zluANXPvHZCFL38ml?=
+ =?us-ascii?Q?o0HR7Bb7fXcLRyrlwvHAA4L/8ia54tNYKENnx5TRR9+KAmKG+XopkLmtmJoJ?=
+ =?us-ascii?Q?uiT7ua54/hhItwsNGn2DwhzeGSLHspgXdHszko345zDzHojjeuQQ/Kylls3D?=
+ =?us-ascii?Q?WI0tSfutpcX0ViUiV0FVnfuU8T5ZWYudq8O1u6I3F6j4qzjz1A2Mj3NaNrc3?=
+ =?us-ascii?Q?YgfLZB0+HLfCUTu/Nmw/dY1/4lfySH/n?=
+X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9e37e987-a155-4f4d-ef26-08df10ee4828
+X-MS-Exchange-CrossTenant-AuthSource: AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Sep 2026 16:52:51.1317
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8P251MB0086
 
-On Fri, 11 Sep 2026 22:03:27 -0700 Narcisa Vasile wrote:
-> Add four new test cases that validate coalescing
-> under increased size limits (BIG TCP):
-> 
-> big_tcp_data_same
->   - validates that equal-sized segments coalesce past
->    the legacy IP_MAXPACKET limit.
-> big_tcp_data_lrg_sml
->   - validates that a smaller final segment coalesces into the
->     previous chain of large-sized segments while crossing the
->     IP_MAXPACKET limit.
-> big_tcp_tcp_seq
->   - validates that a packet with a wrong sequence number doesn't
->     coalesce. The test uses a sequence number for which the low 16 bits
->     correspond to the correct sequence number to validate against
->     truncation bugs, since total aggregate length crosses over the
->     legacy size limit for BIG TCP.
-> big_tcp_large_max
->   - validates that coalescing stops at the configured BIG TCP limit.
+nci_core_conn_create_rsp_packet() casts skb->data to struct
+nci_core_conn_create_rsp and accesses its conn_id,
+max_ctrl_pkt_payload_len, and credits_cnt fields (offsets 1-3) when
+the status byte is NCI_STATUS_OK.  However, the NCI transport layer
+(nci_valid_size) only guarantees that the payload contains at least
+one byte.  A malformed response with plen=1 and status=0 passes this
+check, and the handler then reads three bytes past the valid payload,
+using uninitialised slab data to populate the connection info that is
+later used for NFC data exchange.
+
+This can be triggered from userspace via the virtual_ncidev interface
+by injecting a short CORE_CONN_CREATE_RSP frame.
+
+Add a length check for the full response structure before accessing
+any field beyond the status byte.
+
+Fixes: 736bb9577407 ("NFC: nci: Support logical connections management")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Aamir Ahmed <elb12345@hotmail.co.uk>
+Reviewed-by: Simon Horman <horms@kernel.org>
+---
+v2:
+  - add the Assisted-by: LLM tag (Simon)
+  - designate the target tree in the subject
+  - collect Simon's Reviewed-by
+No code change.
+v1: https://lore.kernel.org/netdev/AS8P251MB00015EC8F8C2D4D9B536F94DC8B22@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM/
+
+Compile-tested only; I have no NFC hardware.
+
+ net/nfc/nci/rsp.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/net/nfc/nci/rsp.c b/net/nfc/nci/rsp.c
+index b0ab4f5acbce..72b748f0be9f 100644
+--- a/net/nfc/nci/rsp.c
++++ b/net/nfc/nci/rsp.c
+@@ -312,6 +312,10 @@ static void nci_core_conn_create_rsp_packet(struct nci_dev *ndev,
+ 	pr_debug("status 0x%x\n", status);
  
-Still failing:
+ 	if (status == NCI_STATUS_OK) {
++		if (skb->len < sizeof(*rsp)) {
++			status = NCI_STATUS_SYNTAX_ERROR;
++			goto exit;
++		}
+ 		rsp = (struct nci_core_conn_create_rsp *)skb->data;
+ 
+ 		conn_info = devm_kzalloc(&ndev->nfc_dev->dev,
 
-https://netdev-ctrl.bots.linux.dev/logs/vmksft/net-drv-dbg/results/819882/3-gro-sw-py/stdout
+base-commit: df2908090cda368b01ff43709f51890076c56157
+-- 
+2.55.0
 
-https://netdev-ctrl.bots.linux.dev/logs/vmksft/net-drv-dbg/results/819882/3-gro-sw-py-retry/stdout
-
-Grep gro_lib.py for KSFT_MACHINE_SLOW
-Then the 15x increase is probably unnecessary/too high as well, since
-we GRO 64k 128k shouldn't need more than 2x ?
