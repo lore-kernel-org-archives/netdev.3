@@ -1,203 +1,152 @@
-Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558E823BD06
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 14:46:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789224397; cv=pass; b=hJM3QVQRfpmw8Zy5/UsoguNykf8MlhLyA3PyPFBoiYEpsj/mjM/M1KErJXrbyHL6Ntimy+jTIVUxp+HLi2fZBWjPwWImuliD69u0zC+Ra5PnRhm5RaZsJPJw8Ry2dQKn9k+gxClIwFXIZTXHODEC46leATYHu4DjsmXtoUrvixI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789224397; c=relaxed/simple;
-	bh=mM6CMQtxHOJ2ZVazZmmC3ICHQaR5iINKYtOLFHq1P24=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sLXdQakLfJ6xz4mbQbZD0PQc+l6sOTc3XC4zOwvI1hkXvToRARUdZr7jq34m+Tb/xrIlo6Hhn1oPDNHUQQzHNQcvBmOMYn47glN9Mk/Z0bXDiMZ6+4ZTbBYTHjOw/5aaD7T6h6JF0rxANsYuGe1wGdIA3gSTq/hkWk1G0k/UE+c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=roM59Nj6; arc=pass smtp.client-ip=74.125.230.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5711EED8
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 14:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.199
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789224532; cv=none; b=MbfMInVedERqyWrlrX9IF0dW20/7AVceBpU1SoZax/PoRrUZds7ia1+aannD5U4flLr/TzRwIyxwqWnzYXjK7WZucH0ZcsiOXyzegVVgXbXYMZSwiwGRUbgaTmcM1iIm+o+7f7LrQprVBrEJxTB8UxxHHvHhCAKs8nByQuXsAA4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789224532; c=relaxed/simple;
+	bh=c9c5nbx6QkMCv0r3S19yDKG5is0wWwd9bxsvIlf048o=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=C24/5oAKZIpdYITQOV0R9HjKdRxQ2c8npuIDnUemEMypvcI5QxHD7XYerXz8vLXPdMwkf2TzreknzaHejYGeXpWLwnL/qg+alOxLdQ3QUB3AZ5d0SiMAl7hqFVVffOSVT59ROTQyEef3qiZtQFpKZ5dNHj/MjRg2H9pl062b6hQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FJ6kB9LT; arc=none smtp.client-ip=209.85.160.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="roM59Nj6"
-Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-90cdfcc3e03so3259276d6.1
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 07:46:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789224395; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kBRNjpBy6a5GxYwCr+qmLvINljmMDBbklxdjrhTFucjZroL8rdv0Vg05ne5QWSiaYC
-         L+Mb4IbpsFXNBLs3xG24ezk/DwnRzcj3ktko0ZBTfKzgejS7ZndbwUA2t6U8rQUPEZ/l
-         G50s1afTubFDKHPEMZ8jaVpBvjZf8QWwP2ln396X4Z0S9MTgEdsK7PZ9TxCQsHcsug3g
-         N6vPumGnNk8qsT/KwI0iOAC0WMxGR56LhUOKPVYaQAgR7z1Zzb/+AzbC2JcRYa7hpWfk
-         CRqMOBjbb+TLTnd9dhuXzXkYLd/Kg5GuO+N5Q2acl+lWFRe5iksQGpLFIws9b8GdJ+1X
-         qfLw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=OuQuBFcX3yZNdDUR7lLCDHWseHQkWB2TV3A4fJ0TYSk=;
-        fh=FcuxPN7HkJwEG4Wi7IHJdeooa4FnN5YJjfSm1icawBM=;
-        b=VzsL21a5SJAi1b4o5PIBAo/+5mjBKr6Nm5xn/cjdcE4pieXbSizzbxZ5dr8RoxQW6F
-         wEJ2aa1Gz6+608YV+m1qRKuUYhE7Mzm0QXN+EzeQhN0r98FsRpR6wsNM/uCcDIkBOAVd
-         c/t+X2Nc4uHaOGQ3rDH7pvXEHy6y3SHFpuFB9TqsdcgQ3ji9ZrXbq0/BYajegd8xrYQB
-         0DsNeQrTL7utQSDEcO1iI10pdEdZnkJZFXr4wUrblBBGDsEWFtVsavT/outScJsKMQD4
-         o8Nxhezf1+Z5RqlIIzZmRJUv53tVapYmWKtCznup+XbtjN7bRTmPbZkix2nAiZQjYwJq
-         vhow==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FJ6kB9LT"
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-530e89b584cso10697021cf.3
+        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 07:48:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789224395; x=1789829195; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=OuQuBFcX3yZNdDUR7lLCDHWseHQkWB2TV3A4fJ0TYSk=;
-        b=roM59Nj6Pr+eBocXZcn2wo79gUoyiSPhy4cLTm8DTlrSXzUAkIXyXOVlwB1Ds+dQ6S
-         I1UdqzCEWNKYE4FM9UOp192fjZgZr+iGmGYmFo4yXsyc8hxfgaGGh0cQfoUYmAcYC3KR
-         Ym40zYimrGa2U9LQ5Jr8iqxBJJjrHD6/dSULPFhv/UbVGiVaCSlvlORp4gAuZUaZwhDa
-         HtWqhwLjvNChkijrAqNjbXLrk73lvIJ2KLLHH+4VyqDYnkWND8vE0IsulS7vWKso4I8V
-         HrsSrjPY/ZNiXskyAfwLixl0ZzckV3irrZtMhbGtTIkekHlWET2hpN6NVEloGe09KLdJ
-         JYGQ==
+        d=google.com; s=20251104; t=1789224530; x=1789829330; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=V68nnfetgPV0z4oofellYAvD3CZanEe6c9ajxPnNXNw=;
+        b=FJ6kB9LTOOQdrvMZo2mRETjY6ny4cqPCIfLVdqvJBGm6OkRRgwif9xq6JkKBrJObJW
+         jW+MTkK0WcYpBJDMcGSthWY/qpQ3XUgWO3e+aonExsK0w62oE2xfOmuklszmnaq2hvc8
+         6bp019a3wIuG78sC5fw+1yf+zwc+/ewj4FhZBMOOwCEwyYkn8v7crrtL0f3LsUwPFz+h
+         VfO5TvQq0BalOz9GsHkye5L3/9ODs11ViCS3c2Bd/YaNFuRQsBM8qT0Mbknjmip2+mm1
+         XO1v4PkrwKq1aW1vpN15eqoNSetUt7RN2lQacPHi626/fCiAHwbC6MJjI0jtPi7c2sFR
+         /BzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789224395; x=1789829195;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1789224530; x=1789829330;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=OuQuBFcX3yZNdDUR7lLCDHWseHQkWB2TV3A4fJ0TYSk=;
-        b=o6ap64ixeYru6cfBqKU+3rsMohd1kaXZoGdLkphlBXvFhvBh5ENNqUHskmcccPGCEl
-         CT8EBSz8/bkYebsggOstjYr1ycF1i8AQlGBzZz289ITujjeLWT/2u6DHuFb7pNdSn3UF
-         f7yrb6xTwMS/KDhQF7stCNPQ+7QB612WXN7anbMYq8zoLaN1mbq6xLYFcXllUoxp2y4q
-         DITETe9KT20kHSwzSV/0YpSri9ndPnX2iDRfJKeew4bgGygrkcez3ZNeT0hkqBE6AQCV
-         1YgelF0m1rwsy6Ggym1/jhtFsQN+A+afbAndcagx/QyVYjxXf4QS0QRLlSH7M6npcJdR
-         txkQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzSh+yqug7EZ6mHkohxHLe8+RV+DkPeFw2UUDDqMpclOwAF70fq5XzqjmaeAWlkw0ufnR56NsM=@vger.kernel.org
-X-Gm-Message-State: AFuF++lWWvRrxea1KxU+ZF9W6sCjYUufTrgLXGblRac6QjbKqKxhHgSs
-	jcWPFkNltILlcBPRNb7Pyw+nAVwUzOU7VfU41QZD6jMGZFDdmKW1SYE9gX1bYHfIgt5Uzny7PGR
-	AetxS3ocBpDSYUvugV963Et2BcWscqGOZ5uqlxyao
-X-Gm-Gg: AYBFou0Ad6g8+fjgnk6u/Bn1r/PTCfCA6L7/V7iWAXX0XtN1i/zpkiIg63P/ajswlcV
-	v3K9GNC1PdYAA5y0SLrof8ZNepWyEpO4msiKhcRgvYkeCwHGtRuMtMQm29LPvs5A0sVUByEgXuX
-	3e1yT+w5EtPGFK1guOUQpEOF8BEAvRT3xOPMBIDWb1i3LIl6YExP4rAcNixxPe3rhMqlph8nob2
-	vBe4SsBzuk1GsvtdHt7II35pWW1TXbpaD5YiUkoTQdYUAw9R7hFezIm8PgD/tbp/Mibv6aGDSuK
-	Vik5KETeFEIFNzBeHoE0BnCs0h9IMBXGOV0dBrZ0bKMXfAzv4KWa0F+BV4E5b3qfKZpu2WDBoV6
-	kmxaX7jHlGxjkiALqc8ULg5GHoDS3H7Luw04qC4ZWg6ppEUNbpyRW0poSyZ9euyaJZcs=
-X-Received: by 2002:ac8:7f84:0:b0:51c:1ea:e290 with SMTP id
- d75a77b69052e-530c86f81camr110737751cf.17.1789224394322; Sat, 12 Sep 2026
- 07:46:34 -0700 (PDT)
+        bh=V68nnfetgPV0z4oofellYAvD3CZanEe6c9ajxPnNXNw=;
+        b=JeG5f/8jzH7PTuirwLTBtJ0v5sB6cPr+XAG7rYUoACMR+chL3ImQRC/7/GrSnNFQki
+         WfMol2fZ3uougGx1/WadFqN574ZJYnHbsWsmSkkgFNF+BAMV3Nl1FxeVw1Uv4yOe6kjH
+         ikBr4mlbOVuf7r9jv2LbugE07MOLBfdFCJ1zIqLgSJCw1pfEcVAbOQPmMUL3TIytEcRK
+         xQ5vZ8onWoVAJOMr7WpBqhop8TkkcyAUmeAfW2OZbEyZZT++gKOQMkIBhsTU8kzzViIV
+         LX6KOhfCcdIINdo0YhFsdCFVBnrR2FzSgYwnGGa+hf2ZK5BQO0NJOalHJmfekflRC6IM
+         l9gg==
+X-Forwarded-Encrypted: i=1; AKwUvBwaR13XdDTk0uw1XPHMZzQ3P+FIsdCe2zwpc1khzQa8DezFmSLyQuFRwUxe5ml82K8Ib7q8hZw=@vger.kernel.org
+X-Gm-Message-State: AFuF++m+ix09uU7qhkCSaeQs3l8nIqLGW5S1iHlUa6mMTxWPaPuBE882
+	Dz5QC2pVFPKfswZneOG23mANPtJQN1xDCZeQ2BCq8wL4aScWkivkdMWlia4QJZp2oP9PFtFMV9b
+	lbfFhJSFmQKVgWw==
+X-Received: from qtbx12.prod.google.com ([2002:a05:622b:14c:b0:530:d5f8:4d68])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:622a:1ba1:b0:530:b2e1:2f3b with SMTP id d75a77b69052e-530e81f8c8cmr41077591cf.50.1789224529480;
+ Sat, 12 Sep 2026 07:48:49 -0700 (PDT)
+Date: Sat, 12 Sep 2026 14:48:48 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260910204612.3762015-5-edumazet@google.com> <178916088869.219967.8693161380477380266@kernel.org>
-In-Reply-To: <178916088869.219967.8693161380477380266@kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.1007.g17ff1f9808-goog
+Message-ID: <20260912144848.3448026-1-edumazet@google.com>
+Subject: [PATCH net] tcp: do not let tcp_rmem be set below 4096
 From: Eric Dumazet <edumazet@google.com>
-Date: Sat, 12 Sep 2026 07:46:23 -0700
-X-Gm-Features: AcwNN1XZFa2sumrCSrS3InCmSg_M37YSMOACghqZ5BLavQt3jtK3a8PqrCHB694
-Message-ID: <CANn89iJtmTQVaBsupEv55wvYLV2Q31eWcv9ZhBwZEm3P2Ai5Pw@mail.gmail.com>
-Subject: Re: [PATCH net 4/4] drop_monitor: fix out-of-bounds write in reset_per_cpu_data()
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	netdev@vger.kernel.org, eric.dumazet@gmail.com
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 11, 2026 at 2:08=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
-te:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider:
->
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 0
->
-> - [Medium] Commit message overstates the impact: the pre-patch memset()
->   in reset_per_cpu_data() (net/core/drop_monitor.c:165) is NOT an out-=E2=
-=80=A6
->
-> --
->
-> drop_monitor: fix out-of-bounds write in reset_per_cpu_data()
->
-> The patch stops adding sizeof(struct nlattr) to al in
-> reset_per_cpu_data(), and instead allocates the skb with
-> genlmsg_new(nla_total_size(al), GFP_KERNEL) so that al describes only the
-> attribute payload that is later zeroed via memset(msg, 0, al).
->
-> > diff --git a/net/core/drop_monitor.c b/net/core/drop_monitor.c
-> > index 795c15dd1771a..edc660778408e 100644
-> > --- a/net/core/drop_monitor.c
-> > +++ b/net/core/drop_monitor.c
-> > @@ -141,9 +141,8 @@ static struct sk_buff *reset_per_cpu_data(struct pe=
-r_cpu_dm_data *data)
-> >
-> >       al =3D sizeof(struct net_dm_alert_msg);
-> >       al +=3D dm_hit_limit * sizeof(struct net_dm_drop_point);
-> > -     al +=3D sizeof(struct nlattr);
-> >
-> > -     skb =3D genlmsg_new(al, GFP_KERNEL);
-> > +     skb =3D genlmsg_new(nla_total_size(al), GFP_KERNEL);
->
-> [Severity: Medium]
-> Is the impact described in the changelog accurate?  The subject says "fix
-> out-of-bounds write", and the body says the memset() is
->
->     exceeding the allocated buffer by sizeof(struct nlattr) (4 bytes) and
->     corrupting skb_shared_info.
->
-> With the in-tree constants, dm_hit_limit is a fixed "static int
-> dm_hit_limit =3D 64" with no module_param and no way for userspace to cha=
-nge
-> it, sizeof(struct net_dm_alert_msg) is 4 and sizeof(struct
-> net_dm_drop_point) is 12, so the old al was 4 + 768 + 4 =3D 776.
->
-> That gives genlmsg_new(776) -> nlmsg_new(780) -> alloc_skb(796), and with
-> nlmsghdr [0,16), genlmsghdr [16,20) and the nlattr header [20,24), msg si=
-ts
-> at offset 24 and memset(msg, 0, 776) writes up to offset 800, i.e. 4 byte=
-s
-> past the 796 bytes that were requested.
->
-> But the head buffer that gets allocated is larger than the request, and
-> skb_shared_info is placed at the end of the rounded-up zone:
->
-> net/core/skbuff.c:kmalloc_reserve() {
->         ...
->         obj_size =3D SKB_HEAD_ALIGN(*size);
->         ...
->         obj_size =3D kmalloc_size_roundup(obj_size);
->         *size =3D (unsigned int)obj_size;
-> }
->
-> net/core/skbuff.c:__alloc_skb() {
->         ...
->         /* kmalloc_size_roundup() might give us more room than requested.
->          * Put skb_shared_info exactly at the end of allocated zone,
->          * to allow max possible filling before reallocation.
->          */
->         __finalize_skb_around(skb, data, size);
-> }
->
-> For a 796-byte request SKB_HEAD_ALIGN(796) is 832 + 320 =3D 1152, which
-> kmalloc_size_roundup() rounds to 2048, so skb->end lands near offset 1728
-> and the 4 extra zeroed bytes fall in unused tailroom.  KASAN would also n=
-ot
-> report anything, since kmalloc is called with the already-rounded size.  =
-The
-> small-head-cache path gives *size =3D SKB_SMALL_HEAD_CACHE_SIZE, which is=
- also
-> comfortably above 800.
->
-> Also, nla_total_size(772) is 776, exactly the previous genlmsg_new()
-> argument, so the allocation size is unchanged by this patch; only the mem=
-set
-> length shrinks from 776 to 772, which matches the usable payload (796 - 2=
-4 =3D
-> 772 =3D 4 + 64 * 12) and the fill limit enforced in trace_drop_common().
->
-> The code change itself looks correct, but with the Fixes: 683703a26e46 ta=
-g
-> this will be picked up for stable and CVE triage as an out-of-bounds writ=
-e.
-> Could the changelog be reworded to describe it as a size-accounting clean=
-up,
-> and to drop the claim about corrupting skb_shared_info?
+We can hit a division by zero crash in tcp_rcvbuf_grow()
+and tcp_rcv_space_adjust():
 
-This feedback is quite shocking and annoying.
+divide error: 0000 [#1] PREEMPT SMP
+RIP: 0010:tcp_rcvbuf_grow+0x187/0x450 net/ipv4/tcp_input.c:939
+...
+grow = div_u64(((u64)rcvwin << 1) * (newval - oldval), oldval);
 
-Do I need to double check everything and make precise computations?
+The division uses oldval = tp->rcvq_space.space as divisor.
+When tp->rcvq_space.space is zero, this leads to a divide-by-zero
+exception.
 
-No, I do not.
+tp->rcvq_space.space is initialized in tcp_init_buffer_space():
+    tp->rcvq_space.space = min3(tp->rcv_ssthresh, tp->rcv_wnd,
+                                (u32)TCP_INIT_CWND * tp->advmss);
+
+If tcp_rmem[1] is configured to very small values (such as 1),
+sk->sk_rcvbuf is initialized to 1. Then tcp_full_space(sk), which
+computes (sk->sk_rcvbuf * scaling_ratio) >> 8, truncates to 0.
+This sets tp->window_clamp = 0, tp->rcv_ssthresh = 0, and
+tp->rcvq_space.space = 0. Later, when data arrives and DRS is invoked,
+tcp_rcvbuf_grow() divides by oldval == 0.
+
+Back in 2015, commit b1cb59cf2efe ("net: sysctl_net_core: check SNDBUF
+and RCVBUF for min length") ensured that net.core.rmem_default and
+net.core.rmem_max cannot be set below SOCK_MIN_RCVBUF. Similarly,
+SO_RCVBUF setsockopt enforces max_t(int, val * 2, SOCK_MIN_RCVBUF).
+
+However, net.ipv4.tcp_rmem still had .extra1 = SYSCTL_ONE, allowing
+arbitrarily small values.
+
+Because SOCK_MIN_RCVBUF depends on sizeof(struct sk_buff) and cacheline
+alignment, its value varies across architectures and configuration options.
+Using a fixed constant of 4096 ensures a predictable, architecture-
+independent lower bound that is safely above SOCK_MIN_RCVBUF everywhere
+and matches the documented 4K default.
+
+Fix this by setting tcp_rmem.extra1 to 4096 and updating the documentation.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ Documentation/networking/ip-sysctl.rst | 2 ++
+ net/ipv4/sysctl_net_ipv4.c             | 4 +++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
+index b05829e44d8fcb5efe1a0e27569a5ffa37915e49..f7af0286341c9b20047f4719d4c5b81d3a12a107 100644
+--- a/Documentation/networking/ip-sysctl.rst
++++ b/Documentation/networking/ip-sysctl.rst
+@@ -874,6 +874,8 @@ tcp_rmem - vector of 3 INTEGERs: min, default, max
+ 	case this value is ignored.
+ 	Default: between 131072 and 32MB, depending on RAM size.
+ 
++	Each of the three values cannot be set below 4096.
++
+ tcp_sack - BOOLEAN
+ 	Enable select acknowledgments (SACKS).
+ 
+diff --git a/net/ipv4/sysctl_net_ipv4.c b/net/ipv4/sysctl_net_ipv4.c
+index 2f0363bca2a88d68276670cfce6fb04398f82bc5..e3760daa347064cf455d1e6e9bbee390dab930d9 100644
+--- a/net/ipv4/sysctl_net_ipv4.c
++++ b/net/ipv4/sysctl_net_ipv4.c
+@@ -51,6 +51,8 @@ static int tcp_ecn_mode_max = 5;
+ static u32 icmp_errors_extension_mask_all =
+ 	GENMASK_U8(ICMP_ERR_EXT_COUNT - 1, 0);
+ 
++static int tcp_min_rcvbuf = 4096;
++
+ /* obsolete */
+ static int sysctl_tcp_low_latency __read_mostly;
+ 
+@@ -1462,7 +1464,7 @@ static const struct ctl_table ipv4_net_table[] = {
+ 		.maxlen		= sizeof(init_net.ipv4.sysctl_tcp_rmem),
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_dointvec_minmax,
+-		.extra1		= SYSCTL_ONE,
++		.extra1		= &tcp_min_rcvbuf,
+ 	},
+ 	{
+ 		.procname	= "tcp_comp_sack_delay_ns",
+-- 
+2.55.0.1007.g17ff1f9808-goog
+
