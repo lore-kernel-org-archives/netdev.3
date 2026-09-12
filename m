@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D30492525;
-	Sat, 12 Sep 2026 20:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C56496D4C
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 20:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789245390; cv=none; b=eP7+1fUqMn0nqYOlCXl6T10LX1gVVO+OsZ0VMvyos5Qyvch8uuJOehpD6IOUW2aWrnlKZIIAJK/mO4bsdjmTMI77fzoAD/vLvRJVBIPyeVd7tQN4/oHNUlZdMF4cwBkRBXnbWpkzIc2a2y04eNmytnV731wZNsPyL4mygLt3Mlo=
+	t=1789245390; cv=none; b=ARuol8gXDjp4ZEmQtZMAQ5oWcgxw3NcTBvkktitG0JCxTDeKgLqCai5Dj+s8J5ewqU7Pg0dgX06qdJK20dH63tC30TGAkhcIEV9ymfFECg1e1dQv46/t33D/iK7cgNHinIZm5dyUBArWHK73to0NT/g/aD1wV7BoG4HljZqm6oI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789245390; c=relaxed/simple;
-	bh=jn9vX+q58BrI+9ioEcXtx3rSiX9KFO2u0GRr8qeaUrY=;
+	bh=w644z/uGUOLViaTnJAFURdO3RXlXAtD3dZW20pc0L/k=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MRojIeZ/xbQ9xoMAQ5swZjRa6azneo6pnRgKkl8d1cURx/pnLd5qekLc7ZGEYGH+xfiDoNnjBvxXcetUnZXzEqB6FeeASmJo6qULCDniGabnfmYEbGUAh5FDw25SK9X3QY0ZLxAM+PKhpdK6E8q5XxNcn2M+NIMdmqcE0HPA2Xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GSo/QTgv; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=forpwGbn+3cvDgSDmCtg1/oCB9tL+M8v2FtMz/91KVXBz5XESKPkwi+jVrwpARDstbjgqnuSLwgULsCnGYe+DrCCFJzbOWedWUk+2CEZqXML7oJtfWBrbBMbxN9KKQaQIsF+lBskfykoHCwtFvsGwxBgseuPtnX7b105yNxufAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OzjvQGKC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GSo/QTgv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50EB31F000FF;
-	Sat, 12 Sep 2026 20:36:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OzjvQGKC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C70271F0089A;
+	Sat, 12 Sep 2026 20:36:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789245386;
-	bh=vBtCT1cEpxXIQveby/xZxccmBUQ0gx20Lk8uxT2bWdA=;
+	s=k20260515; t=1789245387;
+	bh=XnXuF7ayH3K6i0gi+gwQwSkztFiLufZed8doCHe7QEw=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=GSo/QTgvDot3uKE2881MBnPz4OV6poe3E/3p7vvF3YWV1/2IU8Rmj33RDj5cInt3W
-	 9IMI19Ie08XdBqKpnrkdGhc4tGpe1k6aKJRy36TvSmt9YvILUg6PleQZK63fn5dvzB
-	 QgN/JtGPUzwoYJmV7SYoKnjq3sOsNUIvWsi7yZdo6amAyVp6JygGyvjevhkUuNV2fY
-	 dQrEUv+xLYekpXM+WNWJpHkAhpMTGAr0X4a81ssZB3QEWbVG6kCcnZwXUNxeLZS6qe
-	 xParvFPqb2kc0ZmoBVpkeK9dqWEO13V/Q05rOy9ofh+hE8Z4UCJ6nTq7NY5AXJTJ+/
-	 aiiqvOZlSgDfA==
-Subject: Re: [PATCH net 2/2] selftests/tc-testing: add hhf hh_limit cap tests
+	b=OzjvQGKCvktvti4QnX+SQNHuToXNe5FP47WouXyfttSb5wGCpNiu2xMkQks/2kB6z
+	 +Ovku0L+uRrr29TgKHdi3Qnbeu6pEvY5XMeDdPkzpTb8/HoxcG+Jb4ExaqEpdqVzYE
+	 BMx78y8UtiQOEXqaHB/ddeM3PWWKNVPew/9NYUnjrp0aqzfvPAH+rbAWXG9E2iqHZ2
+	 9CufRg4FImDGJDOuwW7idl5r233tLvzCLrB7FwOTUtHIJrDrVjdfjrOMvcQlR9uW1k
+	 L9WxYOCH8RY/7ldiT06oq5JkRZzl8s+lt7VxWKlEUHBXuYX2qTdh7Jc2lnFaGk07Bp
+	 OGdHsZoN4xboQ==
+Subject:
+ Re: [PATCH net] net/sched: sch_hfsc: bound the classify inner-filter walk
 From: netdev-bot+sashiko@kernel.org
 To: jhs@mojatatu.com
 Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net,
  edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- vtlam@google.com, stable@vger.kernel.org, victor@mojatatu.com,
- hybris@mojatatu.ai, sashiko-bot@kernel.org
-Date: Sat, 12 Sep 2026 20:36:24 +0000
-Message-ID: <178924538491.3125.17360124122407490999@kernel.org>
-In-Reply-To: <QDISC-B855.v1.20260911153152@mojatatu.com.2>
-References: <QDISC-B855.v1.20260911153152@mojatatu.com.2>
-X-sashiko-severity: Medium
+ kaber@trash.net, sashiko-bot@kernel.org, victor@mojatatu.com,
+ hybris@mojatatu.ai
+Date: Sat, 12 Sep 2026 20:36:26 +0000
+Message-ID: <178924538639.3125.3879861212376394770@kernel.org>
+In-Reply-To: <QDISC-CTUU.v1.20260908094501@mojatatu.com>
+References: <QDISC-CTUU.v1.20260908094501@mojatatu.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -47,150 +48,133 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-- [Medium] The three change-path rejection tests (e3cc, f681, 147f)
-  assert a witness value that is identical to the kernel default, so…
-- [Low] Commit message overstates the add-path coverage of the new test
-  file.
+- [High] hfsc_classify() (net/sched/sch_hfsc.c:1146) seeds the new cycle
+  guard with `hops = head->level` where `head = &q->root`.
 
 --
 
-selftests/tc-testing: add hhf hh_limit cap tests
+net/sched: sch_hfsc: bound the classify inner-filter walk
 
-Adds tools/testing/selftests/tc-testing/tc-tests/qdiscs/hhf_flows_limit.json
-with six cases exercising the TCA_HHF_HH_FLOWS_LIMIT policy bound on the hhf
-qdisc, covering rejected out-of-range values, the accepted boundary value
-2048, and an add-time value of 500.
+This adds a hop budget to the inner-filter walk in hfsc_classify(), seeded
+from the root class level, and drops the packet with a rate-limited warning
+when the budget is exhausted. The intent is to stop the classify walk from
+spinning forever when two flowid binds end up pointing at each other after
+hfsc_adjust_levels() raises a class level.
 
-A couple of questions about the coverage claims and the assertions.
+Link: https://sashiko.dev/#/patchset/20260824161809.4147223-1-victor@mojatatu.com
 
-> Cover the new TCA_HHF_HH_FLOWS_LIMIT bound: values above 2*HH_FLOWS_CNT
-> (4294967295, 65536, 2049) are rejected with the configured limit left
-> untouched on both the change and the add path, the boundary value 2048 is
-> accepted (installed at 100 first so the boundary change is load-bearing),
-> and an add-time hh_limit 500 is preserved instead of being clobbered by
-> the default.
+> diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
+> index e87f5021a1995..71744a6c2f38e 100644
+> --- a/net/sched/sch_hfsc.c
+> +++ b/net/sched/sch_hfsc.c
+> @@ -1133,6 +1133,7 @@ hfsc_classify(struct sk_buff *skb, struct Qdisc *sch, int *qerr)
+>  	struct hfsc_class *head, *cl;
+>  	struct tcf_result res;
+>  	struct tcf_proto *tcf;
+> +	unsigned int hops;
+>  	int result;
+>  
+>  	if (TC_H_MAJ(skb->priority ^ sch->handle) == 0 &&
+> @@ -1142,6 +1143,7 @@ hfsc_classify(struct sk_buff *skb, struct Qdisc *sch, int *qerr)
+>  
+>  	*qerr = NET_XMIT_SUCCESS | __NET_XMIT_BYPASS;
+>  	head = &q->root;
+> +	hops = head->level;
+        ^^^^^^^^^^^^^^^^^^
 
-[Severity: Low]
-Does the file really cover all three values "on both the change and the add
-path"?
+[Severity: High]
 
-In hhf_flows_limit.json the values 4294967295, 65536 and 2049 appear only in
-cmdUnderTest lines that use "qdisc change" (tests e3cc, f681 and 147f).
+Can a legal, acyclic chain of flowid binds consume more hops than
+q->root.level and get dropped here?
 
-The only invalid add-path case is ca99, and it uses 4294967295 only:
+The budget root->level is an upper bound on the number of internal classes
+visited only if every filter step strictly descends the tree. But as the
+commit message itself points out, the descent check is only reached on the
+classid-lookup path:
 
-    "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root hhf hh_limit 4294967295",
-    "expExitCode": "2",
-    "verifyCmd": "$TC qdisc show dev $DUMMY",
-    "matchPattern": "qdisc hhf 1: root",
-    "matchCount": "0",
+	cl = (struct hfsc_class *)res.class;
+	if (!cl) {
+		cl = hfsc_find_class(res.classid, sch);
+		if (!cl)
+			break; /* filter selected invalid classid */
+		if (cl->level >= head->level)
+			break; /* filter may only point downwards */
+	}
 
-Also, ca99 asserts that no qdisc exists at all, so there is no "configured
-limit left untouched" property being checked on the add path.
+For a flowid bind, res.class is already set and no level relation is
+enforced at classify time.  hfsc_bind_tcf() checks the relation once, at
+bind time:
 
-Could the changelog describe the actual matrix, or could add-path cases for
-65536 and 2049 be added?
+	if (cl != NULL) {
+		if (p != NULL && p->level <= cl->level)
+			return 0;
 
-> diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/hhf_flows_limit.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/hhf_flows_limit.json
-> new file mode 100644
-> index 0000000000000..44538b9266b65
-> --- /dev/null
-> +++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/hhf_flows_limit.json
-> @@ -0,0 +1,128 @@
-> +[
-> +    {
-> +        "id": "e3cc",
-> +        "name": "HHF hh_limit rejects value above 2*HH_FLOWS_CNT cap (4294967295)",
+and hfsc_adjust_levels() later raises levels without revalidating the
+stored res.class:
 
-[ ... ]
+		WRITE_ONCE(cl->level, level);
 
-> +        "setup": [
-> +            "$TC qdisc add dev $DUMMY handle 1: root hhf"
-> +        ],
-> +        "cmdUnderTest": "$TC qdisc change dev $DUMMY handle 1: root hhf hh_limit 4294967295",
-> +        "expExitCode": "2",
-> +        "verifyCmd": "$TC qdisc show dev $DUMMY",
-> +        "matchPattern": "qdisc hhf 1: root refcnt [0-9]+.*hh_limit 2048",
-> +        "matchCount": "1",
+So the walk can step between classes of equal level without cycling.
+A configuration that the current code accepts at every step, with no cycle
+at all:
 
-[Severity: Medium]
-Can this assertion distinguish "limit left untouched" from "limit reset or
-clamped to the cap"?
+- A1 child of root with one leaf child -> A1->level == 1, root->level == 2,
+  so hops == 2.
+- A2 as a leaf child of root (level 0); filter on A1 with flowid A2 is
+  accepted because p(A1)->level 1 > cl(A2)->level 0.
+- Add a leaf child to A2 -> A2->level becomes 1 (root->level stays 2).
+- A3 as a leaf child of root; filter on A2 with flowid A3 accepted
+  (1 > 0); then add a leaf child to A3 -> A3->level == 1.
+- Filter on A3 with flowid A3's leaf child (strictly descending), root
+  filter selects A1.
 
-The setup adds hhf without hh_limit, so hhf_init() leaves the default in
-place:
+Walking a matching packet: A1 (hops 2 -> 1), A2 (hops 1 -> 0), A3 hits
+hops-- == 0 and returns NULL, so hfsc_enqueue() drops the packet even
+though the next step was a leaf.  Before this patch the same packet was
+enqueued into A3's leaf.
 
-net/sched/sch_hhf.c:hhf_init() {
-	...
-	/* Cap max active HHs at twice len of hh_flows table. */
-	q->hh_flows_limit = 2 * HH_FLOWS_CNT;
-	...
-}
+Would a configuration-independent constant avoid this, the way the HTB
+side does it in htb_classify()?
 
-With HH_FLOWS_CNT 1024 that default is 2048, which is also the policy bound
-used for the attribute:
+	if (++hops > TC_HTB_MAXDEPTH) {
+		pr_warn_ratelimited("htb: classify loop detected, dropping packet\n");
+		return NULL;
+	}
 
-	[TCA_HHF_HH_FLOWS_LIMIT] = NLA_POLICY_MAX(NLA_U32, 2 * HH_FLOWS_CNT),
+The commit message says "Bound the traversal the same way the HTB side was
+fixed: a sane walk strictly descends the class tree, so it consumes fewer
+hops than the level the walk starts at".  Is that premise consistent with
+the rest of the message, which states the strict-descent check "never runs"
+for flowid binds and that levels drift after bind time?
 
-So the matched witness "hh_limit 2048" is the same string that hhf_dump()
-would print if a future implementation validated late and wrote or clamped
-q->hh_flows_limit to 2048 before returning the error. Only expExitCode 2 is
-actually pinned down here.
+>  	tcf = rcu_dereference_bh(q->root.filter_list);
+>  	while (tcf && (result = tcf_classify_qdisc(skb, tcf, &res, false)) >= 0) {
+>  #ifdef CONFIG_NET_CLS_ACT
+> @@ -1167,6 +1169,15 @@ hfsc_classify(struct sk_buff *skb, struct Qdisc *sch, int *qerr)
+>  		if (cl->level == 0)
+>  			return cl; /* hit leaf class */
+>  
+> +		/*
+> +		 * flowid binds skip the level check above, and levels
+> +		 * drift after bind time, so this walk can cycle.
+> +		 */
+> +		if (hops-- == 0) {
+> +			pr_warn_ratelimited("hfsc: classify loop detected, dropping packet\n");
+> +			return NULL;
+> +		}
+> +
+>  		/* apply inner filter chain */
+>  		tcf = rcu_dereference_bh(cl->filter_list);
+>  		head = cl;
 
-The same applies to f681 (hh_limit 65536) and 147f (hh_limit 2049) below,
-which use the identical defaulted setup and the identical "hh_limit 2048"
-matchPattern.
-
-Would installing a distinct in-range value in setup, e.g.
-"$TC qdisc add dev $DUMMY handle 1: root hhf hh_limit 100" and then matching
-"hh_limit 100" after the rejected change, make these three assertions
-load-bearing? Test 223d further down already uses exactly that technique:
-
-> +        "setup": [
-> +            "$TC qdisc add dev $DUMMY handle 1: root hhf hh_limit 100"
-> +        ],
-> +        "cmdUnderTest": "$TC qdisc change dev $DUMMY handle 1: root hhf hh_limit 2048",
-
-[ ... ]
-
-> +    {
-> +        "id": "f681",
-> +        "name": "HHF hh_limit rejects 65536 (above 2*HH_FLOWS_CNT cap)",
-
-[ ... ]
-
-> +        "setup": [
-> +            "$TC qdisc add dev $DUMMY handle 1: root hhf"
-> +        ],
-> +        "cmdUnderTest": "$TC qdisc change dev $DUMMY handle 1: root hhf hh_limit 65536",
-> +        "expExitCode": "2",
-> +        "verifyCmd": "$TC qdisc show dev $DUMMY",
-> +        "matchPattern": "qdisc hhf 1: root refcnt [0-9]+.*hh_limit 2048",
-> +        "matchCount": "1",
-
-[ ... ]
-
-> +    {
-> +        "id": "147f",
-> +        "name": "HHF hh_limit rejects first value above cap (2049)",
-
-[ ... ]
-
-> +        "setup": [
-> +            "$TC qdisc add dev $DUMMY handle 1: root hhf"
-> +        ],
-> +        "cmdUnderTest": "$TC qdisc change dev $DUMMY handle 1: root hhf hh_limit 2049",
-> +        "expExitCode": "2",
-> +        "verifyCmd": "$TC qdisc show dev $DUMMY",
-> +        "matchPattern": "qdisc hhf 1: root refcnt [0-9]+.*hh_limit 2048",
-> +        "matchCount": "1",
-
-[ ... ]
+Also, since budget exhaustion is reported unconditionally as "classify loop
+detected" without any evidence that a class was revisited, would the
+warning be misleading for the acyclic case above?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-B855.v1.20260911153152%40mojatatu.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-CTUU.v1.20260908094501%40mojatatu.com
