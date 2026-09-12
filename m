@@ -1,46 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1171495021;
-	Sat, 12 Sep 2026 20:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2924549505D;
+	Sat, 12 Sep 2026 20:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789245384; cv=none; b=uIUM3kvEb4Vs56k1UpU0tIpdeEK67x4OBcrWTkET8leX/+zkOH/sZ690YgxZxNymqj8BeijnGcPPJ2tVL8+e3aJWEbP5yB6nFmqSM6OrYgfQmhtOHsa4JrWwhOzpcmI2QLwZauGYSNrDKA2TAs+kFDVyHLJtXzRV0XxYpXZ2Vn0=
+	t=1789245386; cv=none; b=kSsTU7sVsCAESTwpkB7w2dzBWPZrGCcXQPwYTFMNXlb9eHnWjbBmYaMfdeSZGWVnYEwyTMUtNgDkuGXhRWTu6vbINYRDyuPPvygg6nInZrBaGLjFrdN/zCGeEctvL/oifWHgHESDNXQkCDhVY3wVOWpTQleKNRxpbnhKW40aNEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789245384; c=relaxed/simple;
-	bh=wZ6ON7nbByGn6aphJaFrr3m6yrZUFPatxIwXW1TVGgY=;
+	s=arc-20240116; t=1789245386; c=relaxed/simple;
+	bh=1vJNEFCmpsEkh10gNad3iTXuzCz6W9V9XFIpJbERUKc=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PUQ//gyM+1xs7ksUNXXNzevIpc3Hm/N89gTB/TDy1bu93UkeZTzGC5gQ5uMkcW4wR/RJi1wjfv2oAN+Xfbw+Lgi9Th6pRHx249IJzou587YM28Oqobv7VmHIrJi5+Q1RQkifuxhd1gVA54ivHPrUoIOuMo78Nwiu+jAYnjUVWao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nt8NHwrz; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=gTB0JPZto9YArqQfSJMkzKdWM1BNbDzCh/sw0RyPRSe3OVpjZxz2pUUXNmDqyvtGhtl8kdk0IpfD8pXeriqLm74kudDGUWhz1J/oMzrz01VbTYKopF1uKTebTqj/4ueU4W8zuZIdw+5VFuMOxXdhbZPVOHYSNEhcyYtnwDQYcBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UnzYYeUb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nt8NHwrz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD341F0089C;
-	Sat, 12 Sep 2026 20:36:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UnzYYeUb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 462061F0089B;
+	Sat, 12 Sep 2026 20:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789245379;
-	bh=zSsm6oTmFMVfKovf/ccETQl62thue38ciB9y/XGgrIc=;
+	s=k20260515; t=1789245383;
+	bh=re1FxNKOTk60DfizzkKQ/TC8pr1T40dfBa4Ili/w84A=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=nt8NHwrz7tjVMmsF1D2RYudIdaMVokWyjkEZWsDPCLc+G4GIxN8/Oiou5T7ZBsFxU
-	 gxn64RQ2VFYwEl/GE+dBznbxVSSMOgSRXluuldkHMZrvl9BXIoEMoLu9qELFGG7zZi
-	 JgQwp1rcFLaV2NfzA0A0GJbDm3oKgZBVez9rYy2C+cZfXR9jJDfExXvnpr5gj94zYW
-	 LeQT5WKQ5ey37Susq+2n1nQJJnK9XHriSUgFhKaJ9/nfYAXR2ZHrm9g4XXGlHS0dCx
-	 Uvba/Zhoa1xBC5cuDB4iU7IsUCkFLl/Yjoit65of1Bvc7E1/95XWdPEbbWf6bYdAkd
-	 nH60Oj9LVrESg==
-Subject: Re: [PATCH net-next v2 8/8] net: xilinx: tsn: deliver endpoint RX
- frames to DSA user ports
+	b=UnzYYeUbgihD3TMsAW7kknmPUrcQGcrqv7SX+Z7gyYGkFaAL57sOg1E+1c3Ihz9EZ
+	 Uf/AuIq3bDiAQKP7wI5urYLIRsa9a9CZLt3SUD7/UDf5uU232HBFwBw9ODG+nfXJ6f
+	 m0ry6Fl5vXwfwB2x2D8D6NLOnuuo9MXfrcH9O5QWcsgVDvSEdWA7WItFGla5jKfMci
+	 npzSnfv7jYUPEGSyZBjPpZMeC0ZEqNwnvRf9QWcGHnY+ZVvlE5rBw+t4YvBsxYg4sw
+	 usOFc8/KSbI1JNIJ5Qdgh0UbSGBtcAUY9PL9oCm3DH16Odsu/5Sn+X4bJUIDL/YWpI
+	 0G/lEGbaAiQ9Q==
+Subject: Re: [PATCH net repost 2/2] selftests/tc-testing: add codel/fq_codel
+ interval boundary cases
 From: netdev-bot+sashiko@kernel.org
-To: srinivas.neeli@amd.com
-Cc: nagadheeraj.rottela@amd.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, richardcochran@gmail.com,
- michal.simek@amd.com, bigeasy@linutronix.de, clrkwllms@kernel.org,
- rostedt@goodmis.org, netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rt-devel@lists.linux.dev, neelisrinivas18@gmail.com, git@amd.com
-Date: Sat, 12 Sep 2026 20:36:17 +0000
-Message-ID: <178924537752.3125.4000398250445793561@kernel.org>
-In-Reply-To: <20260909-patches_v2_external-v2-8-3a40babaff4c@amd.com>
-References: <20260909-patches_v2_external-v2-8-3a40babaff4c@amd.com>
+To: jhs@mojatatu.com
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ victor@mojatatu.com, johannes@sipsolutions.net,
+ linux-wireless@vger.kernel.org, shuah@kernel.org, vega@nebusec.ai
+Date: Sat, 12 Sep 2026 20:36:21 +0000
+Message-ID: <178924538183.3125.10111240291445801017@kernel.org>
+In-Reply-To: <QDISC-1L5H.v1.20260912080102@mojatatu.com.2>
+References: <QDISC-1L5H.v1.20260912080102@mojatatu.com.2>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -51,111 +48,188 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Critical: 0 · High: 0 · Medium: 2 · Low: 0
 
-- [Medium] The new RX metadata attach in ep_dma_rx_cb()
-  (drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c:303-307) is gated on…
+- [Medium] None of the eight added tdc cases exercise the code the
+  previous patch ("net/sched: codel: bound the dropping loop per dequeue…
+- [Medium] The subject ("add codel/fq_codel interval boundary cases"),
+  the body ("the 1024us boundary is accepted") and the case names…
 
 --
 
-net: xilinx: tsn: deliver endpoint RX frames to DSA user ports
+selftests/tc-testing: add codel/fq_codel interval boundary cases
 
-This patch allocates one METADATA_HW_PORT_MUX metadata_dst per MAC port at
-probe time and attaches the matching entry to each RX frame based on its
-TUSER port_id, so that DSA can route frames to the swpN user netdevs. The
-entries are freed with dst_release() on probe failure and at remove.
+This adds eight tdc cases (codel 6e44/a8c3/a695/9793 and fq_codel
+1b4d/3540/49c5/3e0f) that create a codel or fq_codel qdisc with small
+interval and target values and match the rendered qdisc dump line.  The
+stated purpose is to lock the small-interval uAPI after the preceding
+dropping-loop bound patch.
 
-> diff --git a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
-> index 9e9a45169681..db7da26521d0 100644
-> --- a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
-> +++ b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ep.c
+No Link: tags are present in the commit header.
 
-[ ... ]
-
-> @@ -292,6 +301,10 @@ static void ep_dma_rx_cb(void *data, const struct dmaengine_result *result)
->  	}
->  
->  	skb_put(skb, rx_len);
-> +	if (netdev_uses_dsa(ndev)) {
-> +		dst_hold(&ep->port_md[port_id]->dst);
-> +		skb_dst_set(skb, &ep->port_md[port_id]->dst);
-> +	}
+> diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/codel.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/codel.json
+> index 6d515d0e5ed69..a894e6f0e2677 100644
+> --- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/codel.json
+> +++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/codel.json
+> @@ -213,5 +213,77 @@
+>          "matchPattern": "qdisc codel 1: root refcnt [0-9]+ limit 1p target 5ms interval 100ms",
+>          "matchCount": "1",
+>          "teardown": ["$TC qdisc del dev $DEV1 handle 1: root"]
+> +    },
+> +    {
+> +        "id": "6e44",
+> +        "name": "Create CODEL with 1us interval, accepted (sub-tick, uAPI locked)",
+> +        "category": [
+> +            "qdisc",
+> +            "codel"
+> +        ],
+> +        "plugins": {
+> +            "requires": "nsPlugin"
+> +        },
+> +        "setup": [],
+> +        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root codel interval 1us",
+> +        "expExitCode": "0",
+> +        "verifyCmd": "$TC qdisc show dev $DUMMY",
+> +        "matchPattern": "qdisc codel 1: root refcnt [0-9]+ limit 1000p target 5ms interval 0us",
+> +        "matchCount": "1",
+> +        "teardown": ["$TC qdisc del dev $DUMMY handle 1: root"]
+> +    },
 
 [Severity: Medium]
+Do any of the eight added cases actually exercise the code the previous
+patch changed?  Each one has an empty setup, a bare tc qdisc add as
+cmdUnderTest, and a plain tc qdisc show (no -s, no traffic, no dequeue) as
+verifyCmd.
 
-Can this branch ever be taken with the current tree?  netdev_uses_dsa()
-requires a DSA switch to have claimed this netdev as its conduit:
+Neither codel_change() in net/sched/sch_codel.c nor fq_codel_change() gained
+any validation in the previous patch, which touches only include/net/codel.h
+and include/net/codel_impl.h.  So the acceptance of interval 1us/3us/1024us
+and target 1us, and the dumped values interval 0us/2us/1.02ms and target 0us,
+look identical on an unpatched kernel.
 
-include/net/dsa.h:netdev_uses_dsa() {
-	return dev->dsa_ptr && dev->dsa_ptr->rcv;
-}
+Would these cases stay green if the max_t(u32, 1, ...) clamp in
+codel_control_law() or the CODEL_MAX_DROPS_PER_DEQUEUE bound in
+codel_dequeue() were reverted?  Similarly, would 9793 and 3e0f ("target not
+in control law") keep passing if target were wrongly folded into
+codel_control_law()?
 
-drivers/net/ethernet/xilinx/tsn/ contains only Kconfig, Makefile,
-xilinx_tsn.h, xilinx_tsn_ep.c and xilinx_tsn_main.c, and xilinx_tsn_main.c
-registers only the wrapper and endpoint platform drivers:
+The changelog says:
 
-static struct platform_driver * const tsn_drivers[] = {
-	&tsn_driver,
-	&xlnx_tsn_ep_driver,
-};
+  "These cases do not test the dropping-loop bound itself: tdc cannot
+   observe per-dequeue drop counts."
 
-There is no Xilinx/xlnx TSN switch driver under drivers/net/dsa/ and no
-"xlnx,tsn-switch" compatible anywhere in the tree, so nothing sets
-dev->dsa_ptr for this netdev.  The Kconfig help text points at an
-out-of-tree component:
+Is that framing accurate for the harness as a whole?  codel.json case deb1,
+in this same file, already drives traffic via scapyPlugin:
 
-	  and the endpoint MAC that connects the IP to the host CPU. The
-	  three-port switch is supported by the companion DSA driver.
+        "plugins": {
+            "requires": ["nsPlugin", "scapyPlugin"]
+        },
+        "scapy": [
+            {
+                "iface": "$DEV0",
+                "count": 10,
+                ...
 
-The commit message states as fact:
+and infra/qdiscs.json case c797 configures exactly the degenerate
+configuration and asserts exact counters:
 
-    Frames from MAC1 and MAC2 now reach the correct user netdev, which
-    completes the conduit data path.
+        "$TC qdisc add dev $DUMMY parent 1:2 handle 10: fq_codel target 1 interval 1 flows 1",
+        ...
+        "verifyCmd": "$TC -s -j qdisc show dev $DUMMY",
+        "matchJSON": [ ... "packets": 3, "drops": 1 ... ]
 
-Since the switch-side DSA driver is not part of this submission, is that
-result reachable today?  Would it make sense to either submit the DSA
-switch driver in the same series or state the dependency in the commit
-message, so the port_id 1/2 -> swp1/swp2 contract can be reviewed against
-its consumer?
-
->  	skb->dev = ndev;
->  	skb->protocol = eth_type_trans(skb, ndev);
->  	skb->ip_summed = CHECKSUM_NONE;
+Per-dequeue granularity is indeed not observable, but aggregate drop counts
+under traffic appear to be.  Could the changelog say that a dynamic case was
+not written, rather than that tdc cannot express one?
 
 [ ... ]
 
-> @@ -854,6 +867,37 @@ static int ep_count_dma_queues(struct device *dev, u32 *out_tx, u32 *out_rx,
-> +static int ep_alloc_port_md(struct xlnx_tsn_ep *ep)
-> +{
-> +	int i;
-> +
-> +	for (i = TSN_TUSER_PORT_MAC1; i <= TSN_TUSER_PORT_MAC2; i++) {
-> +		struct metadata_dst *md;
-> +
-> +		md = metadata_dst_alloc(0, METADATA_HW_PORT_MUX, GFP_KERNEL);
+> +    {
+> +        "id": "a695",
+> +        "name": "Create CODEL with 1024us interval boundary accepted",
+> +        "category": [
+> +            "qdisc",
+> +            "codel"
+> +        ],
+> +        "plugins": {
+> +            "requires": "nsPlugin"
+> +        },
+> +        "setup": [],
+> +        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root codel interval 1024us",
+> +        "expExitCode": "0",
+> +        "verifyCmd": "$TC qdisc show dev $DUMMY",
+> +        "matchPattern": "qdisc codel 1: root refcnt [0-9]+ limit 1000p target 5ms interval 1.02ms",
+> +        "matchCount": "1",
+> +        "teardown": ["$TC qdisc del dev $DUMMY handle 1: root"]
+> +    },
 
-Related to the above: these two metadata_dst objects are allocated
-unconditionally in xlnx_tsn_ep_probe() and kept for the device lifetime,
-including on CONFIG_NET_DSA=n builds where netdev_uses_dsa() folds to a
-constant false and the attach site in ep_dma_rx_cb() compiles away.  Should
-the allocation be tied to the conduit actually being used, or is holding
-them unconditionally intended?
+[Severity: Medium]
+Which boundary is 1024us?  The subject says "interval boundary cases", the
+body says "the 1024us boundary is accepted", and this case (plus fq_codel
+49c5) is named "1024us interval boundary accepted", but I cannot find a
+1024us threshold in codel.
 
-> +		if (!md) {
-> +			ep_free_port_md(ep);
-> +			return -ENOMEM;
-> +		}
-> +		md->u.port_info.port_id = i;
-> +		ep->port_md[i] = md;
-> +	}
-> +
-> +	return 0;
-> +}
+include/net/codel.h has:
+
+  /* CoDel uses a 1024 nsec clock, encoded in u32
+   * This gives a range of 2199 seconds, because of signed compares
+   */
+  #define CODEL_SHIFT 10
+
+The 1024 there is nanoseconds per tick, not microseconds.  Is this a ns/us
+mix-up?  1024us just converts to 1000 ticks and renders as 1.02ms; there is
+no clamp or validation at that value in codel.h, codel_impl.h, sch_codel.c or
+sch_fq_codel.c.
+
+The granularity boundary in the uAPI conversion looks like it sits at 2us:
+
+  net/sched/sch_codel.c:codel_change() {
+      u32 interval = nla_get_u32(tb[TCA_CODEL_INTERVAL]);
+
+      WRITE_ONCE(q->params.interval,
+                 ((u64)interval * NSEC_PER_USEC) >> CODEL_SHIFT);
+  }
+
+giving 1us -> 0 ticks, 2us -> 1 tick, 3us -> 2 ticks.  The added cases cover
+1us and 3us and skip 2us, which is the value used in the previous patch's own
+reproducer ("codel interval 2us target 1ms").  Could a case at 2us be added
+and the 1024us wording in the subject, body and case names be corrected?
+
+> diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq_codel.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq_codel.json
+> index 4ce62b857fd7a..de6a1b8d954ae 100644
+> --- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq_codel.json
+> +++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq_codel.json
+> @@ -316,5 +316,77 @@
+
+[ ... ]
+
+> +    {
+> +        "id": "49c5",
+> +        "name": "Create FQ_CODEL with 1024us interval boundary accepted",
+> +        "category": [
+> +            "qdisc",
+> +            "fq_codel"
+> +        ],
+> +        "plugins": {
+> +            "requires": "nsPlugin"
+> +        },
+> +        "setup": [],
+> +        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root fq_codel interval 1024us",
+> +        "expExitCode": "0",
+> +        "verifyCmd": "$TC qdisc show dev $DUMMY",
+> +        "matchPattern": "qdisc fq_codel 1: root refcnt [0-9]+ limit 10240p flows 1024 quantum [0-9]+ target 5ms interval 1.02ms memory_limit 32Mb ecn drop_batch 64",
+> +        "matchCount": "1",
+> +        "teardown": ["$TC qdisc del dev $DUMMY handle 1: root"]
+> +    },
+
+The same two questions apply to the fq_codel cases 1b4d/3540/49c5/3e0f: they
+are config-only adds plus a show, and 49c5 carries the same 1024us boundary
+naming.
 
 [ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909-patches_v2_external-v2-0-3a40babaff4c%40amd.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-1L5H.v1.20260912080102%40mojatatu.com
