@@ -1,167 +1,158 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373352D5C83;
-	Sat, 12 Sep 2026 01:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1FB130E0F2;
+	Sat, 12 Sep 2026 01:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789176001; cv=none; b=bVI6SOfYZj9TS3S9gXMTIcNf6OsSj3JHVv2Onkl+e9ifbZdfYzJfoQn4n9U6bYZiyFk7Szu+Bc0Myi1+vqetMGtVAq+8Jvp0ac83TYrVXW5GIKSV2DA4as7av8rWmucrTRDOBCZ5RnoTlQ0RKW51C5B5KGZ8nPBfuvlfzLI+1jo=
+	t=1789176277; cv=none; b=GbZUyXR7B7xchE6pNUcm2ZWHWWAx8mwG61kzfv0meTPlBc0gJt+Nn4PHgc+30Ouw6GhKXyTjbHuxDrfRaonViZEFGRhg8xq818R5Sdwusdy5VFDy5hjsqf43VXTPRyIJnXDfvEnAjHHBuDH0aQpmk0qgcOfu9j+mAem0kFfKAic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789176001; c=relaxed/simple;
-	bh=ephaR4bIgMA26WYDb3Sngj9TzLFSaWEQcVUN0gYI1T8=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UhskJCdcKmDmwEVJkQk//GuJQtU+Y9iMRXZG6+mr2ybIwFqUTVB35iDYMAWiKO2hXbf6Zr+Q+ybXmrPOZSEfUJsHR6QjP0IiN2xmnvlFvcQA0HlR98tGqSHUNw9S0dT5+61IFVZ3r4DEePc79WIVeevxxSwJ1kw26bQxpeTqwwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D0dwHTeN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789176277; c=relaxed/simple;
+	bh=LGd6dC0onm1ajNOz0Cb9Sk/OoQsDF8Ak9Js6QeKb3MQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LJN/oQagl7ACsFlQko8tAtbvhdWHeiiNyuuiXCB7i1et7XOBqvzMyn+whKd+hBGuy4Cv7J//mcST69F8Asix1Y6vtRr/MmuKiE184E9D39UssX+BbYoOJjTNNLubTRREW5eqcVM1ZCQVhHN9Wlzf3uA2uFXHsWWRuxYu715Nu+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oginf3Tq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D0dwHTeN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC9891F00893;
-	Sat, 12 Sep 2026 01:19:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oginf3Tq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C6F31F00893;
+	Sat, 12 Sep 2026 01:24:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789175999;
-	bh=yFUCTXzxiNJFA6+r12NyFlxWdjRr1Bs0V9mLuAgIuZo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=D0dwHTeNAv3xoE2i0lgjWvq2oLsG1ePDTwnQVt/9Umlj9o8dutf4ZTIoZI1VQyCxq
-	 C5xtZEDqy+92JSq++jKq6iMl6iarKqyJjPPiBw+JEirntl5rm7eMBnwGoOPgc6qW/Q
-	 J2waXkDOzuaCQSWD60YGzSYU6uq4QT9qvkwnITuZskNSkYaqLmP8wDaC1Bt6r+Ssqf
-	 YlY5vEtRVHUo4OsTSceZeqWGD9IBV3kf5Y3D7q7QI4qPfOOouami7Al9ahom+F9nIL
-	 AclKv2fvgFHTktE3FlrQ2dpCCtiZCdHXnQxJOSj24wBwMN1aBzY+WPThM4DkRBL2uR
-	 RvZcAMBqvJqkQ==
-Subject:
- Re: [PATCH net-next 2/2] ipv4: igmp: convert ip_mc_msfget() to sockopt_t
-From: netdev-bot+sashiko@kernel.org
-To: leitao@debian.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, kuniyu@google.com, willemb@google.com,
- dsahern@kernel.org, idosch@nvidia.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, david.laight.linux@gmail.com,
- kernel-team@meta.com
-Date: Sat, 12 Sep 2026 01:19:58 +0000
-Message-ID: <178917599835.219967.6363929586904032206@kernel.org>
-In-Reply-To: <20260910-getsockopt_phase6-v1-2-e681e102d5b8@debian.org>
-References: <20260910-getsockopt_phase6-v1-2-e681e102d5b8@debian.org>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1789176275;
+	bh=atCJ+9fOMZNoJYAqBKF0xAZjFgYfz6uFc9U9AXB0XEM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=oginf3TqeM7uCTnaSK2SuDV+DseeP0B+iIawaCsqfcOcAEPw2/T8BBJDHEWf0Mati
+	 mPhpcn0XpCJi8wE/4/udMj2SARyDzkmA9AYn0l0wTxxAQfANYVpFnMXh/iznjjcdFw
+	 wnxVbH3bd/pttFp+27YjeW4LlOpBwhpT/LXOvPFVUQIb0k5OxXYCks7+0dVz9aaFbv
+	 8pdyk/77wDjhk3s9UQH5StrqOgjAffRsyWSTq62xHsouY5JEA1eUNRmg5ygfdk5kKE
+	 nzbELUoF/3YwotA7INyEkPByUamJTwudlxPxHqbj87t17xO8HUiqKxv8hWlq/OpSLU
+	 RQHWGTYsWknAg==
+Date: Fri, 11 Sep 2026 18:24:33 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>, Sabrina Dubroca
+ <sd@queasysnail.net>, Bobby Eshleman <bobbyeshleman@meta.com>, Boris
+ Pismenny <borisp@nvidia.com>, Carolina Jubran <cjubran@nvidia.com>, Cosmin
+ Ratiu <cratiu@nvidia.com>, Daniel Zahka <daniel.zahka@gmail.com>, Doruk Tan
+ Ozturk <doruk@0sec.ai>, Dragos Tatulea <dtatulea@nvidia.com>, Gal Pressman
+ <gal@nvidia.com>, Jianbo Liu <jianbol@nvidia.com>, Kees Cook
+ <kees@kernel.org>, Leon Romanovsky <leon@kernel.org>, open list
+ <linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+ <linux-rdma@vger.kernel.org>, Mark Bloch <mbloch@nvidia.com>, Petr Machata
+ <petrm@nvidia.com>, Raed Salem <raeds@nvidia.com>, Rahul Rameshbabu
+ <rrameshbabu@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan
+ <shuah@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, Simon Horman
+ <horms@kernel.org>, Willem de Bruijn <willemb@google.com>, Willem de Bruijn
+ <willemdebruijn.kernel@gmail.com>
+Subject: Re: [PATCH net-next V4 14/14] selftests: drv-net: Add PSP HW GRO
+ conformance tests
+Message-ID: <20260911182433.74d3f73c@kernel.org>
+In-Reply-To: <20260908065244.3799142-15-tariqt@nvidia.com>
+References: <20260908065244.3799142-1-tariqt@nvidia.com>
+	<20260908065244.3799142-15-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+On Tue, 8 Sep 2026 09:52:44 +0300 Tariq Toukan wrote:
+> From: Cosmin Ratiu <cratiu@nvidia.com>
+> 
+> Add PSP conformance tests using the same gro helper binary as other gro
+> tests , but in --psp mode. SPIs are procured by psp_gro.py from a real
+> PSP device and handed off to the gro sender & receiver. The sender
+> crafts and encrypts packets in software, the receiver relies fully on
+> the HW to decrypt, decapsulate and do HW GRO.
+> 
+> Because the NIC decrypts and decapsulates before the frames reach the
+> receiver AF_PACKET tap, the gro receiver sees the plain frames and the
+> assertions remain exactly the same as other gro tests.
+> 
+> So these tests verify, at length, that the device does PSP HW-GRO the
+> same way as plain TCP.
+> 
+> Additional PSP-specific tests are defined to check that GRO doesn't
+> merge packets across PSP versions, SPIs, encryption-status, etc.
+> 
+> Some gro tests are not included because they don't work:
+> - ip_csum: the checksum is recomputed by psp_dev_rcv().
+> - tcp_csum: packets are marked with CHECKSUM_UNNECESSARY.
+> - ip_frag4/ip_frag6: PSP is incompatible with IP fragmentation.
+> - IPv6 extension header tests: PSP doesn't deal with IPv6 ext headers.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Daniel commented on the csum tests already, it'd also be good to
+understand what the problem with frag tests is. Presumably they
+get passed thru still encrypted? Or dropped and counted as errors?
 
-- [Medium] In do_ip_getsockopt() (net/ipv4/ip_sockglue.c, case
-  IP_MSFILTER), the output length is now written back to userspace…
-
---
-
-ipv4: igmp: convert ip_mc_msfget() to sockopt_t
-
-This converts ip_mc_msfget() from the sockptr_t optval/optlen pair to a
-sockopt_t built at the do_ip_getsockopt() call site, and replaces the
-optval copies with sequential copy_to_iter() calls after growing the
-output iterator with sockopt_expand_out().
-
-> diff --git a/net/ipv4/igmp.c b/net/ipv4/igmp.c
-> index d56355aca7977..144fca158adcb 100644
-> --- a/net/ipv4/igmp.c
-> +++ b/net/ipv4/igmp.c
-
-[ ... ]
-
-> @@ -2755,14 +2755,19 @@ int ip_mc_msfget(struct sock *sk, struct ip_msfilter *msf,
->  	len = flex_array_size(psl, sl_addr, copycount);
->  	msf->imsf_numsrc = count;
->  	msf_size = IP_MSFILTER_SIZE(copycount);
-> -	if (copy_to_sockptr(optlen, &msf_size, sizeof(int)) ||
-> -	    copy_to_sockptr(optval, msf, IP_MSFILTER_SIZE(0))) {
+> diff --git a/tools/testing/selftests/drivers/net/hw/Makefile b/tools/testing/selftests/drivers/net/hw/Makefile
+> index 6105be8e590f..daa7e52f236e 100644
+> --- a/tools/testing/selftests/drivers/net/hw/Makefile
+> +++ b/tools/testing/selftests/drivers/net/hw/Makefile
+> @@ -13,6 +13,20 @@ else
+>  $(warning excluding iouring tests, liburing not installed or too old)
+>  endif
+>  
+> +# psp_gro.py uses the gro binary in PSP mode, which requires OpenSSL.
+> +PKG_CONFIG ?= pkg-config
+> +HAVE_OPENSSL := $(shell echo 'int main(void) { return 0; }' | \
+> +		  $(CC) -x c - -include openssl/evp.h \
+> +		  $(shell $(PKG_CONFIG) --cflags --libs libcrypto 2>/dev/null \
+> +			  || echo -lcrypto) \
+> +		  -o /dev/null >/dev/null 2>&1 && echo 1)
 > +
-> +	/* The source list is sized by the imsf_numsrc the caller left in
-> +	 * optval, not by optlen, which only has to cover the fixed part.
-> +	 */
-> +	err = sockopt_expand_out(opt, msf_size);
-> +	if (err)
-> +		return err;
-> +
-> +	opt->optlen = msf_size;
-> +	if (copy_to_iter(msf, IP_MSFILTER_SIZE(0), &opt->iter_out) !=
-> +	    IP_MSFILTER_SIZE(0))
->  		return -EFAULT;
-> -	}
-> -	if (len &&
-> -	    copy_to_sockptr_offset(optval,
-> -				   offsetof(struct ip_msfilter, imsf_slist_flex),
-> -				   psl->sl_addr, len))
-> +	if (len && copy_to_iter(psl->sl_addr, len, &opt->iter_out) != len)
->  		return -EFAULT;
->  	return 0;
->  done:
+> +ifeq ($(HAVE_OPENSSL),1)
+> +COND_PROGS += psp_gro.py
+> +else
+> +$(warning excluding PSP GRO tests, libcrypto not installed)
+> +endif
 
-> diff --git a/net/ipv4/ip_sockglue.c b/net/ipv4/ip_sockglue.c
-> index a55ef327ec932..c58e565f2a5aa 100644
-> --- a/net/ipv4/ip_sockglue.c
-> +++ b/net/ipv4/ip_sockglue.c
+Looks like slop. Why do this? Just run the test and see if it works.
+Don't hide the python tests because build was lacking. We explicitly
+want to see all tests run and fail if something is missing in the build
+setup in NIPA.
 
-[ ... ]
+If you really want you can "probe" or display the support in some --help
+message from the binary and check at runtime. 
 
-> @@ -1715,7 +1717,13 @@ int do_ip_getsockopt(struct sock *sk, int level, int optname,
->  			err = -EFAULT;
->  			goto out;
->  		}
-> -		err = ip_mc_msfget(sk, &msf, optval, optlen);
-> +		err = sockptr_to_sockopt(&opt, optval, optlen, &kvec);
-> +		if (err)
-> +			goto out;
-> +
-> +		err = ip_mc_msfget(sk, &msf, &opt);
-> +		if (copy_to_sockptr(optlen, &opt.optlen, sizeof(int)))
-> +			err = -EFAULT;
->  		goto out;
+>  TEST_GEN_FILES := \
+>  	$(COND_GEN_FILES) \
+>  # end of TEST_GEN_FILES
+> @@ -40,6 +54,7 @@ TEST_PROGS = \
+>  	nk_qlease.py \
+>  	ntuple.py \
+>  	pp_alloc_fail.py \
+> +	$(COND_PROGS) \
+>  	rss_api.py \
+>  	rss_ctx.py \
+>  	rss_drv.py \
+> @@ -64,6 +79,8 @@ TEST_FILES := \
+>  
+>  TEST_INCLUDES := \
+>  	$(wildcard lib/py/*.py ../lib/py/*.py) \
+> +	../gro_lib.py \
+> +	../psp_lib.py \
 
-[Severity: Medium]
-Should this write-back be guarded by if (!err)?
+ugh, just move the test down to the drv-net dir, and Xfail for
+netdevsim. Both PSP and GRO live in ../ better to keep this test
+there as well.
 
-Before this patch the *optlen store lived inside ip_mc_msfget() and only
-ran once the lookup had succeeded:
+> +# Tests for both IP versions, a subset of gro tests. Missing:
+> +# - tcp_csum: PSP packets are validated by HW (with the ICV) and marked with
+> +# CHECKSUM_UNNECESSARY.
+> +_COMMON = ["data_same", "data_lrg_sml", "data_sml_lrg", "data_lrg_1byte",
+> +           "data_burst",
+> +           "ack",
+> +           "flags_psh", "flags_syn", "flags_rst", "flags_urg", "flags_cwr",
+> +           "tcp_seq", "tcp_ts", "tcp_opt",
+> +           "ip_ecn", "ip_tos",
+> +           "large_max", "large_rem",
 
-	msf_size = IP_MSFILTER_SIZE(copycount);
-	if (copy_to_sockptr(optlen, &msf_size, sizeof(int)) ||
-	    copy_to_sockptr(optval, msf, IP_MSFILTER_SIZE(0))) {
-		return -EFAULT;
-	}
+Really not great that we have to duplicate all the cases under psp.
+Narcisa is adding BIG TCP cases for instance, how are we
+going to keep this in sync :S
 
-All of the ip_mc_msfget() failure returns left the user's optlen word
-untouched: !ipv4_is_multicast(addr) returning -EINVAL, !in_dev returning
--ENODEV, and the !pmc "must have a prior join" case falling through to
-done: with err = -EADDRNOTAVAIL.
-
-Now do_ip_getsockopt() writes opt.optlen back on every return from
-ip_mc_msfget(), including those three error paths and the new -EINVAL
-from sockopt_expand_out(), since opt->optlen is only assigned on the
-success path in ip_mc_msfget(). Is that change of behaviour on failure
-intended?
-
-There is a second effect from the missing guard: if the optlen pointer is
-readable but not writable, copy_to_sockptr() fails and err is replaced
-with -EFAULT, so -EINVAL, -ENODEV and -EADDRNOTAVAIL are no longer
-distinguishable by userspace. The earlier copy_from_sockptr(&len, optlen,
-...) and the copy_from_sockptr() inside sockptr_to_sockopt() both succeed
-on a read-only mapping, so this state is reachable.
-
-Would something like this preserve the old semantics?
-
-	err = ip_mc_msfget(sk, &msf, &opt);
-	if (!err && copy_to_sockptr(optlen, &opt.optlen, sizeof(int)))
-		err = -EFAULT;
-
-The commit message describes the change as a conversion, with "the bytes
-land where they did", and does not mention that the optlen store moved to
-the caller and now also runs when ip_mc_msfget() fails. Could that be
-called out explicitly?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260910-getsockopt_phase6-v1-0-e681e102d5b8%40debian.org
