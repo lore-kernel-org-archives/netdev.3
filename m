@@ -1,183 +1,145 @@
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+Received: from mail-oo2-f8.google.com (mail-oo2-f8.google.com [74.125.231.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C8C5475F
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 23:30:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A751E36657B
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 23:39:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789255851; cv=none; b=ByudaYNZqs+QmR5Q2rXnCnLHw8UzT5eorptYpL3mTK7XNffCLAaVaDMiSKd/As2VmmEATPT2ISjFo7xEaio7SXGywyXefjupw0r4ACt7T21KaSj2vZnChxD2ExVswiEXDcjlsGMRm3W1uxU3125oQNQNNbp/8wghUmEJtpjXLgQ=
+	t=1789256367; cv=none; b=kXAHbL0I5ES5MwKnJWX9r8C5dQboGc5QMmGs2PGGk+cEXH84WdFe4tSUiyiMFxnIVUT02NxXqa8BqEHoLPBn1ONR4y6UgvNp6O33j8q83x6ityT4VCIbU6a7viOiwjvcQyAeGrIVNPz3/8qd3f2OduAYJrSoRBuZpvma1KWru2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789255851; c=relaxed/simple;
-	bh=x7XgwhllO+Yaj8edIxptVdDS+j5+ZIMHQQHWcmsrUqM=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=I1TF9hSzelHReT7gDFWRHybQbjmWRSljdNtXBdpuCDuqUcEEAO/RkUuvYevr+dO+QsNJkbmCDm+xImCSFVSHsvKuvO59wdnXgq80YgiwBnUJmkT18hqfvK/kxfqd6RneUUKFxZ58EDixlx05zfw0/iDlwJE+ZgucbquKgBsuEzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NL9zQaun; arc=none smtp.client-ip=209.85.222.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NL9zQaun"
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93a082c014aso163525585a.0
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 16:30:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789255849; x=1789860649; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=sNXgE6yZ4P36J72fkqfyLoJm305tAM6674hfFa0y2so=;
-        b=NL9zQauntn8RuRTsopjiY35d8mH6ajfygiXiL7fXwz+k20aUK0conULRJbENUxeiTe
-         h3K6sbpUsNiKxx8vatqqge29GG8D9wd3IDi07SOp9yIZZd+d1tMU34FJtAu6LcpEevhR
-         8Hl+eGdeGaeeeMTUzscvkftBKpHIoHHiNNaHsrqk+qR77AYGFTSXkpD2VMlS5bnn0Aj5
-         kA0rq/bO+MN/Kr75lB1iCCGL1hWpRU8M3QlMqzW0cSQ7OTK+oHZHxeDxhDVorFu5Nwuf
-         lJSLTPjaP0DHarABpR+ES8quyBfCiCANH/zbZ6iidAQVZCuTco0wTin+QpsPgoMXxeMf
-         239g==
+	s=arc-20240116; t=1789256367; c=relaxed/simple;
+	bh=CJOvd6ShywdZs1rx7fjJCsC/4XAK4z3X2gQXF3/nugw=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=B+G86rV7omU3lUx8OjPgjxsPmjwqcK9gDgdrZoGZHUdS0jDzghLZB1qcWvtvh2gH0HSP3HjKI6VvIGjQUb6EZKT9JPksw2jypJsD+PEjI8fNO3HYKlc2SAfpD2WFzUPxseFa9KSJSLNXP/m+bJAH0BYhOrWT4Ij/Kqp+CZbZ28A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo2-f8.google.com with SMTP id 006d021491bc7-6b1b1ca0f3aso308141eaf.0
+        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 16:39:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789255849; x=1789860649;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
+        d=1e100.net; s=20251104; t=1789256364; x=1789861164;
+        h=content-type:to:from:subject:message-id:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=sNXgE6yZ4P36J72fkqfyLoJm305tAM6674hfFa0y2so=;
-        b=pe7F+DEHtqz9h5rSUKFDw98EhxOyEw1v+LaVN2vSQYRQQ7Xeh2qXRuS62ERdvW5SH3
-         QOvArmuMOmsqGj95kxfFjTMXspGgoK31e1bR9rVcgxuocd0MAQCo5agqZcYfpEqwYyfo
-         yg42QFgTZHJsnMalIh5IdxEcV9fqbcSrU3nEwXTjPU/dStJCpyPBxqY66DV4DppvIm50
-         UpyhPh2AYeyRTJq6Xtpi/JUvwFJbSSrlyYW0QUU49vgdMxMs74kXuMpn93fKYWfWox7H
-         CmYo9JhFsiJN0zwp0NUB7nIZqyXgoosLOI08Z1E3DZmxjKOV2UiWCZzOiuBf6E006EaE
-         Q3hw==
-X-Forwarded-Encrypted: i=1; AKwUvByDAOxGxwQ7tITeNrxe/qEkXkwCPp5Mj1EOAFzrdJ6ZNu7xXZn8NaoOkUclLxGPH7YUKNxYe24=@vger.kernel.org
-X-Gm-Message-State: AFuF++ldi9Y2BtnlBA6o4Azj82+m87SgTlqo3FZ0H55YoXW9wlE0VBNw
-	jt/9qQOUBlUd8l7TtvaTZwRu7wRWTUr7IkicvELw4551JI8LtPwZEzsM52WjGxU/dHI/VwPy2lZ
-	IWwY7Vm7/PVZb2g==
-X-Received: from qknvq26.prod.google.com ([2002:a05:620a:559a:b0:939:e3ee:c681])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:488d:b0:939:72cb:baf3 with SMTP id af79cd13be357-93a187ba1bbmr21111785a.42.1789255848817;
- Sat, 12 Sep 2026 16:30:48 -0700 (PDT)
-Date: Sat, 12 Sep 2026 23:30:48 +0000
+        bh=X+4nm1uFj1dV7vSKZCHtdIxVm+oQk/J5Z2TW7/T4cvs=;
+        b=U6rs7nVG3f6WAS8JdiLU1GSjU5GULTYa1Q/tqmE9Rj3JvfwErbUeLAV+5uOckKnCt+
+         Trb1T0On7QmXDYNL4jGUS8oEKSpgEW+Ae67pJ2jAIuq8iujjEFfuomagYpBkyLc936DI
+         RRqxlOzFSI8CTTvpHZ1/56Ii6oE3gYhZQEO+V9eHNic1rrdgbr/LnOXMnAMo/pX1vzFU
+         J6ITpWGX+OlCwZ2ZHnl+PUwpBz/z9gzJnz/JkLjRXxHtnOqCGmYAqt/HrvI11QbtmLJu
+         KtSz+DTxNFup7CYhixGNEIiwXtW0Q+5SdHDVB3TMuYG462Fmfbts02EdQXxXmKSDzLaM
+         n4FA==
+X-Forwarded-Encrypted: i=1; AKwUvBynOIP/Ry6ML1kLHkGJRZLBJ/Ap8BP66wzlBVj8fXYr/IqtQQmRCig73UkWke5sX9ZLHUNuaOo=@vger.kernel.org
+X-Gm-Message-State: AFuF++llQLgy6n69AdiTlmcVhg19bYOzjWsOM1pqU4MZepOdbjQPjhSh
+	Jhn7ESDROnp6nKwNmlq2KmShnIwApgZgtJvHanr+4S8zLi6rL/N31MhqM/eyVoimHmE9gYIf/UX
+	b6oBDbsVAT1pyShYcB2IvKhYg/AoLJHGQ04HYi70qtz1yBg2lkGWKhmR2g4k=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.1007.g17ff1f9808-goog
-Message-ID: <20260912233048.3977192-1-edumazet@google.com>
-Subject: [PATCH v2 net] pppoatm: ensure a writable skb header and linear data
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, Mitchell Blank Jr <mitch@sfgoth.com>, Chas Williams <3chas3@gmail.com>, 
-	Qingfang Deng <qingfang.deng@linux.dev>
+MIME-Version: 1.0
+X-Received: by 2002:a05:6820:16aa:b0:6c1:e01b:3b1e with SMTP id
+ 006d021491bc7-6c1e01b48b3mr4716143eaf.48.1789256364568; Sat, 12 Sep 2026
+ 16:39:24 -0700 (PDT)
+Date: Sat, 12 Sep 2026 16:39:24 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6aa5e2ac.6e6c5f9e.28f11f.0052.GAE@google.com>
+Subject: [syzbot] [net?] WARNING in tcf_ct_flow_table_process_conn
+From: syzbot <syzbot+6cc37aba98dac721c415@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	jhs@mojatatu.com, jiri@resnulli.us, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 
-In pppoatm_send(), LLC encapsulation checks whether there is sufficient
-headroom for the 4-byte LLC header, but does not ensure that the skb header
-is writable.
+Hello,
 
-Normal transmit packets passing through ppp_start_xmit() have their header
-unshared via skb_cow_head(). However, packets can also reach pppoatm_send()
-via PPP channel bridging (PPPIOCBRIDGECHAN) without going through
-ppp_start_xmit().
+syzbot found the following issue on:
 
-Use skb_cow_head() to ensure both sufficient headroom and a writable
-header before pushing the LLC header.
+HEAD commit:    5225b8eec4c9 mailmap: update entry for Jens Axboe
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=165795f9580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=5e4e3a0e188a497e
+dashboard link: https://syzkaller.appspot.com/bug?extid=6cc37aba98dac721c415
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
 
-While at it:
-- Call pskb_may_pull(skb, 1) before inspecting skb->data[0] to prevent
-  out-of-bounds reads on zero-length or non-linear frames (e.g. from
-  bridging).
-- Defer SC_COMP_PROT protocol compression until after pppoatm_may_send()
-  succeeds. This eliminates the temporary skb allocation on admission failure
-  and completely removes the fragile "undo" heuristic at the nospace label,
-  avoiding any risk of reading uninitialized headroom or performing an
-  unbalanced skb_push().
+Unfortunately, I don't have any reproducer for this issue yet.
 
-Fixes: 4cf476ced45d ("ppp: add PPPIOCBRIDGECHAN and PPPIOCUNBRIDGECHAN ioctls")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/8ec9ac0f583a/disk-5225b8ee.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/ba864b419b40/vmlinux-5225b8ee.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/ddacae1aa6db/bzImage-5225b8ee.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+6cc37aba98dac721c415@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+1
+WARNING: net/sched/act_ct.c:437 at tcf_ct_flow_table_add net/sched/act_ct.c:437 [inline], CPU#0: ksoftirqd/0/15
+WARNING: net/sched/act_ct.c:437 at tcf_ct_flow_table_process_conn+0x449/0x7c0 net/sched/act_ct.c:513, CPU#0: ksoftirqd/0/15
+Modules linked in:
+CPU: 0 UID: 0 PID: 15 Comm: ksoftirqd/0 Tainted: G             L      syzkaller #0 PREEMPT(full) 
+Tainted: [L]=SOFTLOCKUP
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
+RIP: 0010:tcf_ct_flow_table_add net/sched/act_ct.c:437 [inline]
+RIP: 0010:tcf_ct_flow_table_process_conn+0x449/0x7c0 net/sched/act_ct.c:513
+Code: 85 81 02 00 00 41 0f b7 2f 31 ff 89 ee e8 6f b1 e9 f7 85 ed 0f 84 7c 01 00 00 e8 22 ad e9 f7 e9 e0 01 00 00 e8 18 ad e9 f7 90 <0f> 0b 90 e9 b2 01 00 00 e8 0a ad e9 f7 4d 89 f7 40 84 ed 74 27 e8
+RSP: 0018:ffffc900001471d8 EFLAGS: 00010246
+RAX: ffffffff89de1d98 RBX: ffff8880774aa000 RCX: ffff88801e299f40
+RDX: 8000000000000100 RSI: 0000000000000100 RDI: 0000000000000000
+RBP: 0000000000000000 R08: 0000000000000100 R09: 1ffff1100ee95418
+R10: dffffc0000000000 R11: ffffed100ee95419 R12: dffffc0000000000
+R13: 1ffff1100ee9541e R14: ffff8880774aa0c0 R15: 0000000000000001
+FS:  0000000000000000(0000) GS:ffff888124cd2000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f40fd23ffd0 CR3: 0000000028424000 CR4: 00000000003526f0
+DR0: ffffffffffffffff DR1: 00000000000001f8 DR2: 0000000000000083
+DR3: ffffffffefffff15 DR6: 00000000ffff0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ tcf_ct_act+0x2a75/0x4050 net/sched/act_ct.c:1123
+ tc_act include/net/tc_wrapper.h:131 [inline]
+ tcf_action_exec+0x185/0x8d0 net/sched/act_api.c:1162
+ tcf_exts_exec include/net/pkt_cls.h:361 [inline]
+ basic_classify+0x1b2/0x2d0 net/sched/cls_basic.c:54
+ tc_classify include/net/tc_wrapper.h:198 [inline]
+ __tcf_classify net/sched/cls_api.c:1779 [inline]
+ tcf_classify+0x43d/0x1160 net/sched/cls_api.c:1875
+ tc_run+0x42d/0x750 net/core/dev.c:4463
+ sch_handle_ingress net/core/dev.c:4538 [inline]
+ __netif_receive_skb_core+0x1443/0x30c0 net/core/dev.c:6115
+ __netif_receive_skb_one_core net/core/dev.c:6262 [inline]
+ __netif_receive_skb net/core/dev.c:6377 [inline]
+ process_backlog+0x727/0x18b0 net/core/dev.c:6728
+ __napi_poll+0xaa/0x330 net/core/dev.c:7787
+ napi_poll net/core/dev.c:7850 [inline]
+ net_rx_action+0x61d/0xf50 net/core/dev.c:8007
+ handle_softirqs+0x226/0x860 kernel/softirq.c:645
+ run_ksoftirqd+0x36/0x60 kernel/softirq.c:1099
+ smpboot_thread_fn+0x565/0xa70 kernel/smpboot.c:160
+ kthread+0x38b/0x480 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+
+
 ---
-Cc: Mitchell Blank Jr <mitch@sfgoth.com>
-Cc: Chas Williams <3chas3@gmail.com>
-Cc: Qingfang Deng <qingfang.deng@linux.dev>
----
-v2: addressed Sashiko AI review
-v1: https://lore.kernel.org/netdev/20260908090519.339696-1-edumazet@google.com/
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
- net/atm/pppoatm.c | 42 +++++++++++++++++-------------------------
- 1 file changed, 17 insertions(+), 25 deletions(-)
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-diff --git a/net/atm/pppoatm.c b/net/atm/pppoatm.c
-index 6da52d12df68e493b03f57edc46c3b5255956893..5214786e61d11aa52cf11c95c139c3a6ee471fbd 100644
---- a/net/atm/pppoatm.c
-+++ b/net/atm/pppoatm.c
-@@ -292,10 +292,13 @@ static int pppoatm_send(struct ppp_channel *chan, struct sk_buff *skb)
- 	struct atm_vcc *vcc;
- 	int ret;
- 
-+	if (!pskb_may_pull(skb, 1)) {
-+		kfree_skb(skb);
-+		return DROP_PACKET;
-+	}
-+
- 	ATM_SKB(skb)->vcc = pvcc->atmvcc;
- 	pr_debug("(skb=0x%p, vcc=0x%p)\n", skb, pvcc->atmvcc);
--	if (skb->data[0] == '\0' && (pvcc->flags & SC_COMP_PROT))
--		(void) skb_pull(skb, 1);
- 
- 	vcc = ATM_SKB(skb)->vcc;
- 	bh_lock_sock(sk_atm(vcc));
-@@ -317,23 +320,13 @@ static int pppoatm_send(struct ppp_channel *chan, struct sk_buff *skb)
- 
- 	switch (pvcc->encaps) {		/* LLC encapsulation needed */
- 	case e_llc:
--		if (skb_headroom(skb) < LLC_LEN) {
--			struct sk_buff *n;
--			n = skb_realloc_headroom(skb, LLC_LEN);
--			if (n != NULL &&
--			    !pppoatm_may_send(pvcc, n->truesize)) {
--				kfree_skb(n);
--				goto nospace;
--			}
--			consume_skb(skb);
--			skb = n;
--			if (skb == NULL) {
--				bh_unlock_sock(sk_atm(vcc));
--				return DROP_PACKET;
--			}
--		} else if (!pppoatm_may_send(pvcc, skb->truesize))
-+		if (skb_cow_head(skb, LLC_LEN)) {
-+			bh_unlock_sock(sk_atm(vcc));
-+			kfree_skb(skb);
-+			return DROP_PACKET;
-+		}
-+		if (!pppoatm_may_send(pvcc, skb->truesize))
- 			goto nospace;
--		memcpy(skb_push(skb, LLC_LEN), pppllc, LLC_LEN);
- 		break;
- 	case e_vc:
- 		if (!pppoatm_may_send(pvcc, skb->truesize))
-@@ -346,6 +339,12 @@ static int pppoatm_send(struct ppp_channel *chan, struct sk_buff *skb)
- 		return 1;
- 	}
- 
-+	if (skb->data[0] == '\0' && (pvcc->flags & SC_COMP_PROT))
-+		skb_pull(skb, 1);
-+
-+	if (pvcc->encaps == e_llc)
-+		memcpy(skb_push(skb, LLC_LEN), pppllc, LLC_LEN);
-+
- 	atm_account_tx(vcc, skb);
- 	pr_debug("atm_skb(%p)->vcc(%p)->dev(%p)\n",
- 		 skb, ATM_SKB(skb)->vcc, ATM_SKB(skb)->vcc->dev);
-@@ -355,13 +354,6 @@ static int pppoatm_send(struct ppp_channel *chan, struct sk_buff *skb)
- 	return ret;
- nospace:
- 	bh_unlock_sock(sk_atm(vcc));
--	/*
--	 * We don't have space to send this SKB now, but we might have
--	 * already applied SC_COMP_PROT compression, so may need to undo
--	 */
--	if ((pvcc->flags & SC_COMP_PROT) && skb_headroom(skb) > 0 &&
--	    skb->data[-1] == '\0')
--		(void) skb_push(skb, 1);
- 	return 0;
- }
- 
--- 
-2.55.0.1007.g17ff1f9808-goog
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
