@@ -1,151 +1,201 @@
-Received: from mail-oo2-f43.google.com (mail-oo2-f43.google.com [74.125.231.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E6933E345
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 03:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1888D15A85A;
+	Sat, 12 Sep 2026 03:50:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789183925; cv=none; b=c6wXyXM3fnE7r7RtXmU4aPel8FmGzPVcff5hRqwliWg4Vld/ya2/aby1L99STRkS+wfsAUGbej0JmVwCIpMq5SKj6K2ueFMJfxKVJZZEm+oqrLltd5AboRvY+d9ydcw4mT/WOcE84TGfuy5Axis7uaRR6dumyKvVwMX6+vaCOkQ=
+	t=1789185030; cv=none; b=oYi2alAi7Sfl2KRBOpJm0dvb/fP8d/4cS6WHNSRoVoc8fDHmIuJMvDvUU6ch6q4+huggw1wyM5ima1sfycs9icQf3c2OhaxeaiOuVZfx764v7lTvACr2dqtiFsXc1XFqGaBnIdHL2X7i/SperGBtrYc5GLLBivp8psYxsxR2npQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789183925; c=relaxed/simple;
-	bh=kAi997qdy2ovmm3AfFVJSykrYNXUxKxyQ2JZeYlp77k=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=gudqGnzxZaGyXzklo5YLfOHsH8ABkCrNPI6WUXATTzPHeb7pEd67MKwDaUD/WbGFc6NztHBqZLtGIf4JwefGPDofO2rjgJmx0Dvd8qieyQ4e0goP5sw7DbholYmjhZ5rk9BLyj6wvj5kS/CHSe1RSVErchHXkItTmb7O8/aB45Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KEtOtDdq; arc=none smtp.client-ip=74.125.231.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789185030; c=relaxed/simple;
+	bh=lgtTQkGxJIb1ad5eu9R1vRp2m+E7TN9AWWjcITDVdmo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rvtY243OambCuugJJvTn3+zXSEB4DQt9goUFOnPvKVFiYWCBasQCW3Aexn8DXxbq9YGaf2cv5TQV7SoAd2Elu16ZsQ9kwXUYLTNhjwYE+Vi7XGuphkbB28PKCSdgtQ8tOGLtTl3KsWX0D51pCBAsR/6E7TyXyg07X5r4EHPWMnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kbCqemTj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KEtOtDdq"
-Received: by mail-oo2-f43.google.com with SMTP id 46e09a7af769-7fccd4c3f36so511954a34.3
-        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 20:32:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789183923; x=1789788723; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=kAi997qdy2ovmm3AfFVJSykrYNXUxKxyQ2JZeYlp77k=;
-        b=KEtOtDdqtPxO+NB5mn9hqI+StiWNtUuHPhRdPsDIeQzkIO48DbF7cp0EObvQudZO1K
-         ULco0kA8rrZG+5xFs/wgUc4W/DYz/7T02F4V0+dCvAiyHSeQtOCObTThN4w1q1sG6qMd
-         0OnG+O0UcxaDrfVAkSk5KfC/34uWUyQXJGwJTQZqYQ7DVSronymiqO6zzPsMPfjRNNs+
-         7ukikb864uQVzZED5/6CZzloFLVycqu44qzI4Bq2n1NGK3YcaSxZA7YBg2/y5Owfe/93
-         pjLsbDrYIM0YE8PmHMRyJJiUQZLB0SIY3mHHxzuPe0a8Ck0wW+q35UmAv6TMnDJO7mr+
-         K8wQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789183923; x=1789788723;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kAi997qdy2ovmm3AfFVJSykrYNXUxKxyQ2JZeYlp77k=;
-        b=Rmq1rfdfS6cFd+12O4uBG1bUqUue1UU2hyEOog5f/ReZdhXil5aeOOSKfURTyBkbIg
-         KqS0vMj2hx63EQs+FS3y4C/3H98qk7QB57wnk/3payGlYE7np9Ko3JcieH+t6SHHQZ1n
-         XfM4e87igXGJmXK1M/YajCoDweA3DQr/nH8NAEe4cuy/npbwVr5MkrR4Zelov8hflV4n
-         4SGO71ZHDiYxvCU/3/Wcs7lXJYrca3A1R4v8CAqwTAv7NAGeSHKYCB9xf5rokPDYK7/t
-         /284ONbxYUjfkLSEZgqzsFbBqtTFE5vU5oRI7irNh5gpJvxgWhtRq0w/bzXik6kt2w3U
-         oI8g==
-X-Gm-Message-State: AFuF++l/th+LkW+IozYSCpEcq5ZntHGWFPIoNDkenB6KG3ee+5Qll+TN
-	QMhGXjPDhn0qFn1lC/3ImOKhv5pm/Q/eMgD1iLl42UkScVvCuqiuQCOvh1MVcA==
-X-Gm-Gg: AYBFou1FeLjHspoh6UjHiHBiSO2NVF+nSgsAEtJqS+FZwJQ9kzkKm/KyTYydU19HNVo
-	WExHXNkb62CJs1FBus13cJqQrQqdKDtDFxWCsvbLa3BDweXmeb2Km72BewDxqMFUWtiMD3W2W9k
-	ow4z4ht5dReUwsRa6+EkEgi6u/rKF5PtplGEeY5c/XbA5iIFaZlxojhjPPUMS4XxYJLf6MM6Pn1
-	FFP/iBHUYbkUHEzJNmoR4l4mEyBaF4MDiWwL+Y9rMwnG807k4QZd9wtpjK9GsxMYPwOqxRbEI8v
-	A8Fvl8J082Z4lCi8KB3oWra8SpyAHjRTLc431XO1OeMkpmMvrilbBjDvzrYHcSy0wSyGKrcRsRG
-	R/tN9ufigH/PTxwzk6CmhEebapbUKeFFhfeb9RxHN6ukGf3aNupca/h0r22JGGJIV7QYD2tB80E
-	abGqkVFyE7iBAvxu9uI47TW7gfTkW5b8JSJd+kDRXAs9RuX+mcGnx05f3IOcnq9hzjSL4EPqECp
-	1inAmeY191XGukllKkOMu7Fk/Dzcz/trI2DHuNVemE4MbzRt/DtzjbGshHI0WajmdNnWb6f0MIU
-X-Received: by 2002:a05:6820:811:b0:6b6:1868:9811 with SMTP id 006d021491bc7-6c0bc3ce018mr8649547eaf.21.1789183922687;
-        Fri, 11 Sep 2026 20:32:02 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:4e::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6c09690af1dsm4358827eaf.1.2026.09.11.20.32.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Sep 2026 20:32:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kbCqemTj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ABEE1F000FF;
+	Sat, 12 Sep 2026 03:50:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789185028;
+	bh=B3lVT+6DEejdhrMrylgnkxm6O45JqE8Xw4Fynn+zjLo=;
+	h=From:To:Cc:Subject:Date;
+	b=kbCqemTjDoMgTI35/SPYhfHUw4BUjhdVld0yaB/QYbBAczs4QlbjSaYggbgLhXEVQ
+	 HvdK+JohvmgH2lDpT1ibB58tIts8tjB3d9ZqFowDQolBVNb4tz8J9LUqUQRL+97YrI
+	 dk9PKz6x4MwQJaM4/MtmDFWYGL+KCP6qTCAGHcD4A5rMaqywifeRut6bqveastyTiN
+	 QoP65jKJMfpAPbD3IQu/+Ik2Hyoppg7V4+ppR0MePAC0Ir3zfvue91DzxanAvzA7jC
+	 dUpE7zMS5rPzT29DapjTuvJI6EBcmDa8ta3nMhi7nMfVKShBIQG5v00moRR33NgGJE
+	 ONXeQGbxeoNkQ==
+From: Allison Henderson <achender@kernel.org>
+To: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	kuba@kernel.org,
+	horms@kernel.org
+Cc: achender@kernel.org,
+	nicoyip.dev@gmail.com
+Subject: [PATCH net-next v2 0/9] net/rds: make connection lifetime reference-counted
+Date: Fri, 11 Sep 2026 20:50:18 -0700
+Message-Id: <20260912035027.27447-1-achender@kernel.org>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 11 Sep 2026 20:32:00 -0700
-Message-Id: <DLD0RM0A2YPJ.1HFYZFHZPR2WI@gmail.com>
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "Jakub Sitnicki" <jakub@cloudflare.com>
-Cc: <netdev@vger.kernel.org>, "Alexei Starovoitov" <ast@kernel.org>, "Jakub
- Kicinski" <kuba@kernel.org>, "Kuniyuki Iwashima" <kuniyu@google.com>,
- "Paolo Abeni" <pabeni@redhat.com>, "Stanislav Fomichev" <sdf@fomichev.me>,
- <bpf@vger.kernel.org>, <kernel-team@cloudflare.com>, "Daniel Borkmann"
- <daniel@iogearbox.net>, "John Fastabend" <john.fastabend@gmail.com>,
- "Andrii Nakryiko" <andrii@kernel.org>, "Eduard Zingerman"
- <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "Martin
- KaFai Lau" <martin.lau@linux.dev>, "Song Liu" <song@kernel.org>, "Yonghong
- Song" <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>, "Emil
- Tsalapatis" <emil@etsalapatis.com>, "David S. Miller"
- <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Simon Horman"
- <horms@kernel.org>, "Jesper Dangaard Brouer" <hawk@kernel.org>, "Willem de
- Bruijn" <willemdebruijn.kernel@gmail.com>, "Florian Westphal"
- <fw@strlen.de>, "Jack Wang" <163wangjack@gmail.com>
-Subject: Re: [PATCH net-next v2 00/14] skb extension for BPF metadata
-X-Mailer: aerc
-References: <20260910-bpf-meta-inside-skb-ext-v2-0-0b21e42180b0@cloudflare.com> <DLBRCN9O0MAE.9NCB79Y636SS@gmail.com> <874ifw2faz.fsf@cloudflare.com>
-In-Reply-To: <874ifw2faz.fsf@cloudflare.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri Sep 11, 2026 at 4:33 AM PDT, Jakub Sitnicki wrote:
-> On Thu, Sep 10, 2026 at 08:56 AM -07, Alexei Starovoitov wrote:
->> On Thu Sep 10, 2026 at 7:02 AM PDT, Jakub Sitnicki wrote:
->>>
->>> That said, as things stand we have already established in v1 [3] that f=
-or
->>> our existing use case - attaching metadata to <1% of skbs - the
->>
->> so you'll be using this bpf_skb_ext only on <1% of skb-s ?
->> How about we add a bit in skb 'special_cleanup' or something.
->> If set it will trigger a new tracepoint during kfree_skb/consume_skb.=20
->> Then use bpf_rhashtable, populate when necessary, set bit,
->> attach to that new tracepoint and delete from rhash where key=3D=3Dskb.
->> bpf_rhash is specifically optimized for 8-byte keys.
->> I suspect it would be faster than this approach.
->>
->> Overall this approach is fine from bpf perspective, but if it can be
->> done with 1 bit + tracepoint approach that would be better.
->
-> Thanks for taking a look.
->
-> Yes, our existing use case attaches metadata to only <1% of skbs.
-> Even if we implemented all other use cases we have in mind, we would
-> still only go up to ~5% of skbs by my best estimates.
->
-> So the gated-tracepoint, if we can call it that, makes much sense.
-> Plus the idea of having a separate RHASH for each user is very
-> appealing. No coordination between users needed, just like for BPF local
-> storage.
->
-> I did some digging what it would take to make the gated-tracepoint idea
-> wholesome:
->
-> 1. kfree_skb/consume_skb cover only the normal free path. We would also
-> need to hook up to GRO merge/recycle and TCP coallesce/collapse. IOW
-> everywhere where we call skb_ext_reset/put today.
->
-> 2. cloning - we would have to hook up to __copy_skb_header, so where we
-> call __skb_ext_copy. Plus some handling of fast clones would be needed -
-> perhaps a way to resolve &skb to its fclone twin address?
->
-> I think it deserves at least a prototype before we make a call.
+Hi all,
 
-code is free. Pls produce patches and benchmark them.
+This is v2 of the connection-lifetime set (v1 at [1]), following
+"net/rds: own the fastpath locks across connection teardown", which is
+in net-next.  It is targeted at net-next: although the series fixes
+real use-after-frees (one syzbot report and one report from Chengfeng
+Ye below), it does so by reworking connection lifetime rather than
+patching the individual crash sites, and that rework is too invasive
+for net.
 
-> Code-wise I'm thinking it might be easiest to take advantage of the fact
-> that skb_ext already hook ups to all the right places where we
-> free/clone skbs and add the new tracepoints there.
+rds_conn_destroy() frees the connection, its paths and its workqueues
+on the spot, relying on the documented assumption that "no one else is
+referencing the connection".  That assumption stopped being true a
+long time ago: connections are destroyed on netns teardown and on a
+protocol-version mismatch as well as on rmmod, while pointers to them
+still live in socket rs_conn caches, congestion-map conn lists, CM
+callbacks and workers, and - for as long as an application leaves data
+unread - in every rds_incoming sitting on a receive queue.  No single
+Fixes: commit covers the rot, so the series carries Reported-by tags
+where there are concrete reports instead.
 
-fair enough.
+  Patch 1 (new) guards the five work-arming sites that never tested
+  rds_destroy_pending(): two IB completion paths, the IB recv refill,
+  the TCP accept kick and the multipath reconnect in sendmsg.
 
-> If we did it like that, we could then just gate on a bit from
-> skb->active_extensions, and just handle activating the bpf_skb_ext in a
-> special way, meaning it wouldn't result in allocating the skb_ext slab.
->
-> Let me give it a try and get back to you.
+  Patch 2 gives the connection its own destroy-in-progress marker so
+  that the predicate also covers the one single-connection destroy.
+  Based on UEK commits:
+     e2f5005adf63 net/rds: Add krefs to struct rds_connection
+     https://github.com/oracle/linux-uek/commit/e2f5005adf63
 
-Thanks!
+     6c53ef92f46e net/rds: Merge uses of conn->c_destroy_in_prog & RDS_DESTROY_PENDING
+     https://github.com/oracle/linux-uek/commit/6c53ef92f46e
+
+  Patch 3 splits rds_conn_destroy() into a synchronous quiesce and a
+  kref-governed free.
+  Based on UEK commits:
+     2c8569e4c880 ("net/rds: Add krefs to struct rds_connection").
+     https://github.com/oracle/linux-uek/commit/2c8569e4c880
+
+  Patch 4 makes each transport's exit path wait for its connections to
+  actually be freed before the module goes away.  The wait is
+  unbounded and warns every ten seconds: a connection reference can be
+  held for an application-controlled time (unread data), so a timeout
+  would only move the use-after-free from freed memory to unloaded
+  module text.  rmmod blocking while data is queued and unread is the
+  historical RDS contract.  For IB the wait re-sweeps the nodev list,
+  since device connections migrate to it asynchronously.
+  Based on UEK commits:
+     ece4b4e39afa ("net/rds: wait_event_timeout until zero connections during rmmod")
+     https://github.com/oracle/linux-uek/commit/ece4b4e39afa
+
+     905ec90e6166 ("net/rds: Each RDS transport should keep its own connection count")
+     https://github.com/oracle/linux-uek/commit/905ec90e6166
+
+  Patch 5 (new) unlinks each transport node before its destroy, so a
+  free deferred past the teardown loop cannot write into the loop's
+  stack-local list head.
+
+  Patch 6 hands out real references everywhere a connection pointer
+  previously escaped bare, RCU-annotates parent->c_passive, refuses to
+  revive a passive connection whose destroy has begun, and serializes
+  the SIOCRDSSETTOS check with the rs_conn cache.
+  Based on UEK commits:
+     2c8569e4c880 ("net/rds: Add krefs to struct rds_connection")
+     https://github.com/oracle/linux-uek/commit/2c8569e4c880
+
+     0e9e3a72b7f7 ("net/rds: rds_sendmsg must use rs_conn only when not being destroyed").
+     https://github.com/oracle/linux-uek/commit/0e9e3a72b7f7
+
+  Patch 7 (new) pins the connection across the RDMA-CM event handler
+  and rejects a connect request for a connection whose destroy has
+  already quiesced it.
+
+  Patch 8 drops the now-unused global rds_conn_count.
+  Based on UEK commits:
+     905ec90e6166 ("net/rds: Each RDS transport should keep its own connection count").
+     https://github.com/oracle/linux-uek/commit/905ec90e6166
+
+  Patch 9 makes struct rds_incoming hold a reference on i_conn, the
+  fix for the KASAN use-after-free Chengfeng Ye reported [2].
+  Based on UEK commits:
+      99b9a3715419 ("net/rds: fix crash by expanding kref coverage to rds_incoming.i_conn").
+      https://github.com/oracle/linux-uek/commit/99b9a3715419
+
+Patches 3, 6, 4 and 9 are ports of the connection kref work Sharath
+Srinivasan did for Oracle UEK, adapted to the upstream code.
+
+The series has been validated with the RDS selftests over loopback-TCP
+and RXE-RDMA, plus churn tests that delete network namespaces and
+unload the modules under live rds-stress traffic.
+
+Changes since v1 [1]:
+ - New patch 1: guard the five work-arming sites that never tested
+   rds_destroy_pending(); patch 2's changelog and comments narrowed
+   to what it actually newly covers.
+ - Patch 4 moved ahead of the reference holders, so no bisect point
+   has references without the unload wait; wait made unbounded with a
+   periodic warning instead of a 10 s timeout; IB exit re-sweeps the
+   nodev list for connections that detach from their device late.
+ - New patch 5: transport nodes unlinked before destroy (stack list
+   head use-after-free from a deferred conn_free).
+ - Patch 6: c_passive RCU-annotated; a destroyed passive child is
+   refused by __rds_conn_create() and clears the parent's pointer
+   itself; SIOCRDSSETTOS uses rs_lock; lookup comment reworded;
+   explicit not-for-stable note.
+ - New patch 7: reference across the CM event handler, and a
+   destroy-pending re-check in rds_ib_cm_handle_connect().
+ - Patch 9: changelog states what a lingering inc keeps alive and
+   that it blocks module unload.
+ - Changelog corrections throughout (netns teardown paths named as the
+   non-rmmod destroyers, stale rds_conn_path_destroy() reference).
+
+[1] https://lore.kernel.org/netdev/20260904070248.160384-1-achender@kernel.org/
+[2] https://lore.kernel.org/netdev/20260720184955.3008978-1-nicoyip.dev@gmail.com/
+
+Allison
+
+
+Allison Henderson (5):
+  net/rds: guard every work-requeueing site with rds_destroy_pending()
+  net/rds: make rds_destroy_pending() cover single-connection destroy
+  net/rds: unlink transport nodes before a possibly deferred connection
+    free
+  net/rds: pin the connection across RDMA-CM event handling
+  net/rds: drop rds_conn_count in favor of t_conn_count
+
+Sharath Srinivasan (4):
+  net/rds: split connection destroy into quiesce and kref-governed free
+  net/rds: wait for connections to be freed on transport unload
+  net/rds: hold connection references in lookup, sockets and c_passive
+  net/rds: hold a connection reference from struct rds_incoming
+
+ net/rds/af_rds.c         |  20 ++-
+ net/rds/connection.c     | 274 +++++++++++++++++++++++++++++++++++----
+ net/rds/ib.c             |  21 ++-
+ net/rds/ib_cm.c          |  19 ++-
+ net/rds/ib_rdma.c        |  12 +-
+ net/rds/ib_recv.c        |   6 +-
+ net/rds/ib_send.c        |  18 ++-
+ net/rds/loop.c           |  39 ++++--
+ net/rds/message.c        |  16 ++-
+ net/rds/rdma_transport.c |  16 ++-
+ net/rds/rds.h            |  40 +++++-
+ net/rds/recv.c           |  21 ++-
+ net/rds/send.c           |  56 ++++++--
+ net/rds/tcp.c            |  29 ++++-
+ net/rds/tcp_listen.c     |  15 ++-
+ 15 files changed, 527 insertions(+), 75 deletions(-)
+
+-- 
+2.25.1
 
