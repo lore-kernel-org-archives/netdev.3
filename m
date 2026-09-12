@@ -1,85 +1,48 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out28-101.mail.aliyun.com (out28-101.mail.aliyun.com [115.124.28.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2030B47D922
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 13:23:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2353A47ECC8;
+	Sat, 12 Sep 2026 13:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789219382; cv=none; b=Qu4Th3tqLSpQkwBhYAuLm4j1+M3mHm4aaIDrywSQcB+s8hpSqx1U9GiPU/rWq0Jl0DMmL/AOaSfnYSHSkmHyB69iUFCjx4WXGiLy5Omx99AbOK7M+sMZJDjHev7Lm+ycYHrLaqxavPf6UnPLXWb6iY9DMLw4eSbhALnK8fxaxN4=
+	t=1789219476; cv=none; b=OWHykf5cq9dcftKQySKQn30GEE+BUVEVb8BBrCyA5DOs5FBzPVRFlWU5paFPq6NBeryhtAzPhJA87covIhClKVJPtPIJL18IOdZ2iBlal8w5qJtT/S9mBpYNMGZFmMsAA5H29J6bdbQSiRChmYJN9LCVflsPEXqfFGKWfoG5sGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789219382; c=relaxed/simple;
-	bh=kRrS3tvJDYV+8wkX/YT9yRW+k98iVnivMItfFpaVjPE=;
+	s=arc-20240116; t=1789219476; c=relaxed/simple;
+	bh=cx8ElelaTV7eZyiBsfE1V8uwUvvjA5+KksKIAI5ELz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eSec6WwHQWmHDuUkRpTYZGTeLjOms7bZ5Ysdd2+sh+X06UAKosVqybVxEbZrHCoO7EnJZ9LdtFQsccTprpyDOJLpUPsZEVbW++a1TPMOwKnqEpYEWWM5KSNALtWGFmj1yLNjVhBfRU9dsnA67CfMyeNzcYZtTFzGwezhZ0oEZUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=S8e9ahZM; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	 MIME-Version; b=nfuGAn09OFuJ01MEybOPLeiY4Y9TTq1Sc0OW+mVLccXkfYM48Ds6iQkQNcLgDcCnk1I7aj1oDtHWlZmHo7tSJ60Sg3VDCrvhtGQ11+9LvTmIqEBwYKIkQOs6IaqcdWfOomLsCZHTrz6Ty0xR5cFJcY56/ui2TAeINxlkW8MAlow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com; spf=pass smtp.mailfrom=xiaopeng.com; dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b=mOLGufma; arc=none smtp.client-ip=115.124.28.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="S8e9ahZM"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-38e42560ebcso1866233a91.1
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 06:23:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1789219380; x=1789824180; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=wAtjDa3kisizFhZiZYbc7YLNcOhXt5GzOAFc4BOPpDE=;
-        b=S8e9ahZMuDdH03qtKEjj1mL585jcNllG+Gopl/TqTTBNxgfWmgaOPUz72ZcC6IFYAX
-         8zwPnyzu4Zwg5hvSsXjdwRmqyBbCuvljhUYtt7ZNmyj8s+HUo7YXc4XFMT+q0JKeXRw2
-         YDMFWW57bMD1amy9wC5MqQ8dScDyuXLMnweaV/VrYR205UQCfiXOgoj5gDtXt1RzUBAs
-         vFaNPMWBe0nuIgHB438O1uztmfhcLT0oYoY4Irz+l1mzuEIcxIGUU1zAee9kNwpmuDtB
-         b+1a6x1wgSi9U/aH8GuB6HR61g3QzOET1berVev9P270R5s+lKs1mBvMpKZUmRiYyvRy
-         7w7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789219380; x=1789824180;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wAtjDa3kisizFhZiZYbc7YLNcOhXt5GzOAFc4BOPpDE=;
-        b=VpLSb/sjMkzoXqxjGS0nRa36JcwS6h+FgoJPqXCSKZhgAqHbM+ktKi+e+IfXQgJErD
-         7FRIIkXXqtucOM1fY7jvo+JUQCC5U27wKm5Vav9DhNEBHUBGasKq7qw/mWoBfh2IFvb/
-         G6u9HTS4c32eRIRxSdW8Q+eLqKRdPItsj4Qa+PnjCpAWDZlfBcbVFoaxthYdIG/pnH/x
-         bCDSAWdro5G8sSZ+q6ZAEyNRz1U+4q9FiOtV49XlxnIjnzKGebAEQcHQ8GriJqWoBxyI
-         AJoE9Q7A39Q8Ovk/jqp2qk3Lqy9ZN+ifdRLb20ncWCl2J3opF1YDSkXacQ+z1130QpMU
-         FtsQ==
-X-Gm-Message-State: AFuF++nlrQzJRVzmoT7MUsVb20pvEAgxjgEMmRWeJYxYGmSzH+CbOtpX
-	oGm/c4xjpJ/i+OLc1zSb0eEiESt9fA7vEUgfl5grfsLryq4x8SQY3xdxaYggS3lNXp0jeSAyyPV
-	r5mjiv38IEu8=
-X-Gm-Gg: AYBFou0R2vEO9JEKUy4HX+Br993SXE5EP0KGvXmxR9c6np8O6mZUcXqGtT1Rokt6hQh
-	XWNLS08r+xXMJ573Wpg5jrffIVpDggclQEgKt0iGxPbGs8WVn93DhG+I8wArFl9w05t3QWoQqMX
-	RkqXIcR9P2PVwDZEvBAPvXv7gbTxsa3ITiq0KFaTKq/dWPKWyu4sjVYZ82VJ+M0zXceYlzCTI5z
-	dbl7LS0ri5FmQbbdzoOiiB8RQKSXklovBr9v4qtXBt27sCZDtGCwGYgIDgjeY5HMHK8/Ywmr+pC
-	OQ7WSgJbqq8PumI2d2yAOmZX4srz5ahePN9mOv/J1eSGGTjUpVmbTC1TbkZ8PD0hZXfdAw5q8Nj
-	5QJmUDpwnnL2IJk+vpkDu6oMLweZg4iFQfmccaArQdIbhuCGRmjeccbVu97Pro4cMsphxVOlOUC
-	Dx88AeOOaFlvpIJN3xwVQmsUOnq2QjduZAmWNGg2PLlOc1RbKZQmoGSYmoqa47c3Cr59Y+6XIRb
-	ILqoC6xqpmmJTgM1A==
-X-Received: by 2002:a17:90a:710:b0:39d:c3bb:98e7 with SMTP id 98e67ed59e1d1-39dc3bba118mr1914059a91.6.1789219380143;
-        Sat, 12 Sep 2026 06:23:00 -0700 (PDT)
-Received: from Roxy.sysu.edu.cn ([2602:feda:30:ae86:295:dff:fe84:68f4])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33ba4b1f409sm15957666eec.0.2026.09.12.06.22.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Sep 2026 06:22:59 -0700 (PDT)
-From: Zhiling Zou <zhilinz@nebusec.ai>
-To: netdev@vger.kernel.org,
-	dev@openvswitch.org
-Cc: aconole@redhat.com,
-	echaudro@redhat.com,
-	i.maximets@ovn.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	pshelar@nicira.com,
-	tgraf@suug.ch,
-	joestringer@nicira.com,
-	vega@nebusec.ai,
-	zhilinz@nebusec.ai
-Subject: [PATCH net 1/1] openvswitch: avoid reallocating confirmed conntrack labels
-Date: Sat, 12 Sep 2026 21:22:43 +0800
-Message-ID: <372fbb062b40ae6723684f55484be86ff0064f8e.1789218015.git.zhilinz@nebusec.ai>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1789218015.git.zhilinz@nebusec.ai>
-References: <cover.1789218015.git.zhilinz@nebusec.ai>
+	dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b="mOLGufma"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=xiaopeng.com; s=default;
+	t=1789219465; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=jzV7XDeWKgThRsxfS2R0FUhAhuKHogRQYt9imK9hL9Q=;
+	b=mOLGufmaDSZrZoCh7fIN7ahAsfNUbL8hR2At35w6rONAphkUk45wBLSN6mu/tpYsl32TSSusIKpNvQb8I9R/B6GMocx5sI14nHKkhz/o1ICELrUKd1P5JJjlgE5e9t7T2opf2i8i8bHKv0rVHVanjhADrU3yEfX/5kpUXUD+/94=
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07535123|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.0104515-0.012407-0.977142;FP=17212780250025952569|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037017159;MF=liuc63@xiaopeng.com;NM=1;PH=DS;RN=11;RT=11;SR=0;TI=SMTPD_---.jC..l8z_1789219136;
+Received: from localhost(mailfrom:liuc63@xiaopeng.com fp:SMTPD_---.jC..l8z_1789219136 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Sat, 12 Sep 2026 21:18:59 +0800
+From: Liu Chao <liuc63@xiaopeng.com>
+To: David Heidelberg <david@ixit.cz>
+Cc: Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	oe-linux-nfc@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Liu Chao <liuc63@xiaopeng.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net 1/2] nfc: digital: reserve proper headroom for chaining_skb
+Date: Sat, 12 Sep 2026 21:18:51 +0800
+Message-ID: <20260912131852.1651462-2-liuc63@xiaopeng.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260912131852.1651462-1-liuc63@xiaopeng.com>
+References: <20260912131852.1651462-1-liuc63@xiaopeng.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -88,37 +51,64 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ovs_ct_get_conn_labels() adds the labels extension when a conntrack
-entry does not have one.  Confirmed conntracks can be read locklessly,
-so adding an extension may reallocate and free the extension block
-while another CPU accesses it.
+digital_recv_dep_data_gather() allocates chaining_skb with
+nfc_alloc_recv_skb(), which only reserves 1 byte of headroom.
+Once the chained payload is fully gathered, it is passed to
+digital_tg_send_dep_res() or digital_in_send_dep_req(), both of
+which push a 3-byte DEP header plus up to 2 bytes of SoD, needing
+at least 5 bytes of headroom.
 
-Only add the extension for unconfirmed conntracks.  A confirmed
-conntrack without labels now fails the caller's label operation instead
-of reallocating its extension storage.
+skb_push() unconditionally calls skb_under_panic() when headroom is
+insufficient, so this is a guaranteed kernel BUG.  A remote NFC peer
+can trigger it in target mode by sending MI-flagged DEP_REQ fragments
+followed by an ACK with matching PNI, or in initiator mode via the
+symmetric chaining ACK path.  Normal DEP frames use digital_skb_alloc()
+which gets headroom from ddev->tx_headroom, so the bug only manifests
+through the chaining_skb path.
 
-Fixes: c2ac66735870 ("openvswitch: Allow matching on conntrack label")
+The skb_copy_expand() reallocation in the same function preserves the
+original 1-byte headroom and does not add tailroom for the CRC or DID
+byte appended by the send path.
+
+Switch to digital_skb_alloc() which reserves the same headroom and
+tailroom that every other send buffer in this file uses, and pass
+ddev->tx_headroom and ddev->tx_tailroom to skb_copy_expand().
+
+Fixes: c12715ab3f01 ("NFC: digital: Add NFC-DEP Receive Chaining Support")
 Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: LLM
-Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+Signed-off-by: Liu Chao <liuc63@xiaopeng.com>
 ---
- net/openvswitch/conntrack.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/nfc/digital_dep.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
-index 27115967e5d93..0f433688e17b9 100644
---- a/net/openvswitch/conntrack.c
-+++ b/net/openvswitch/conntrack.c
-@@ -366,7 +366,7 @@ static struct nf_conn_labels *ovs_ct_get_conn_labels(struct nf_conn *ct)
- 	struct nf_conn_labels *cl;
+diff --git a/net/nfc/digital_dep.c b/net/nfc/digital_dep.c
+index 3982fa084..6d8e662a3 100644
+--- a/net/nfc/digital_dep.c
++++ b/net/nfc/digital_dep.c
+@@ -240,8 +240,8 @@ digital_recv_dep_data_gather(struct nfc_digital_dev *ddev, u8 pfb,
  
- 	cl = nf_ct_labels_find(ct);
--	if (!cl) {
-+	if (!cl && !nf_ct_is_confirmed(ct)) {
- 		nf_ct_labels_ext_add(ct);
- 		cl = nf_ct_labels_find(ct);
- 	}
+ 	if (DIGITAL_NFC_DEP_MI_BIT_SET(pfb) && (!ddev->chaining_skb)) {
+ 		ddev->chaining_skb =
+-			nfc_alloc_recv_skb(8 * ddev->local_payload_max,
+-					   GFP_KERNEL);
++			digital_skb_alloc(ddev,
++					  8 * ddev->local_payload_max);
+ 		if (!ddev->chaining_skb) {
+ 			rc = -ENOMEM;
+ 			goto error;
+@@ -251,9 +251,9 @@ digital_recv_dep_data_gather(struct nfc_digital_dev *ddev, u8 pfb,
+ 	if (ddev->chaining_skb) {
+ 		if (resp->len > skb_tailroom(ddev->chaining_skb)) {
+ 			new_skb = skb_copy_expand(ddev->chaining_skb,
+-						  skb_headroom(
+-							  ddev->chaining_skb),
+-						  8 * ddev->local_payload_max,
++						  ddev->tx_headroom,
++						  8 * ddev->local_payload_max +
++							  ddev->tx_tailroom,
+ 						  GFP_KERNEL);
+ 			if (!new_skb) {
+ 				rc = -ENOMEM;
 -- 
-2.43.0
+2.50.1
 
