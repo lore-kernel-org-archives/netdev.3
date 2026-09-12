@@ -1,41 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2901447A0A9;
-	Sat, 12 Sep 2026 20:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A553EE1D3;
+	Sat, 12 Sep 2026 20:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789244397; cv=none; b=GtH9eMulqT0BS3pM6POV9CxGs0kxK2WMKLmmuF+j4G1JUU1DuK33mqKA/aGQ9FHVDeRTkj4Vhlf1D5OAC7Z6Ontjt3M4n9H17h9nCbcCNCsJ/V3f5wtMJSnfqSClLng/N1P5MXFXj/AhfGb9o9e9YS6lMpxbm+wAxPsSVJOqy7k=
+	t=1789244398; cv=none; b=JiALWvcOxZPf23VlWbetPcYHqkXYVc93ebbp3be2BXbMLIXHvcHY8GZqJ+SSVhmdCYhcvxiozAQBeIRKEaJXwlanp8SDgbg5dZ+Uyr4Q7/r/kRbjCUJ3+rKeOjm6j2k6kLC8yyNdW4u6PPnXFiuWRalujA+IXXKR+9qcC7Zs7bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789244397; c=relaxed/simple;
-	bh=0gDanJxUvbp6KtFtK1YykqVXD888cVUBvBT7MTWFrl8=;
+	s=arc-20240116; t=1789244398; c=relaxed/simple;
+	bh=lv/jpcJ6DsW9I8+7JbGiL49q9M7awXgVVdjsGq62h/M=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Igm4c7INoTXsvPJWSXav+PtThpf6XNyJ7IALczHP1Ms4zGm2fKbsLj6h6v/WTxTJwNWnSigRT4s6sMv8h2dpe9RFKpOuOtFA6Laq6HfNQORwzKQXKUjzz13q4+a4irmkhsHqhsKAA47bm8oD99ZP4Rv9F8+EWyUwJABDUfL2n+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jpuOjEhW; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=BlSSHLP/qyvCXHHLCImvaxZO5bjofBhQJFarx/IIHjj1FtwErpOLFkhXhBDWpRv/jrUFKcoQ7iGqnWjOy35RqdOa541/rCwingzjmlWHdiiY5wvgtvGGzFj4tZWtoZ5aeR7vA6D8FMw8vN1wmOoW6/2VDK1gL8kULi46u4Dte8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A+phOwnc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jpuOjEhW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 718E71F000FF;
-	Sat, 12 Sep 2026 20:19:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A+phOwnc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F231F00898;
+	Sat, 12 Sep 2026 20:19:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789244395;
-	bh=A2igHhAP4WaDZcRmTt1O0ng9ZDmSGqneKUhMa+hojZ0=;
+	s=k20260515; t=1789244396;
+	bh=TKn7ufIecsVfsKJQvgtNcaPc53cLfzzq8ZatQMvV6BA=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=jpuOjEhWMakyzNwsFh8EXDMeHR5MBVL3BfAX1MJFDB4SnSAGdNWglh/aUpveR9pdZ
-	 hEjS5EZO5CoYMFysk2mm0VzwUisVNr9Q0l64ZWz9XgOJnXKXysYwTXbQSHPBcNBnbz
-	 zSthtYytqlarBw2VA5xsjbPqDRRYTeZUgfI8oHCb2h3sUMJsR1KEhxNfG8BPhl5ljN
-	 OfdGK56k0by8P6mGDUlLrW6YSIv7UyYtiOAf5SkEy6b/Jpw3QVaG/3mibQUErghJo1
-	 D1PSCXMSkNALkWLfBwc0tFD5DWO/LKBT3MKVGN2FBp2LqfsUeN2gl16TEARjSgt1Im
-	 o6OykpVpFklig==
-Subject: Re: [PATCH net-next v3 6/8] r8152: add TGPHY access support
+	b=A+phOwncjRVZ4Dj8NIrjhZdjnBnZ4TDVUD4QtCTp6fcvoQ6TeUlWhlItbNqPmiurI
+	 Mxgjq0FfiJDCVHq7SUoouVvUeHXcZf0eh1MRrT9diG85833s8MwTXf/Axy2YiORlDB
+	 XpztD5/5Niar2ZZzGGpP+0wkqLulAwT2TtCzC05rIW3rUF9HM7ZUFaZzRnB5424p5k
+	 3ADTv3lCzBHHnbA5TJVfbx6EUCL5LVharP2r8G+UgRicDrY2HqRHarLtGrtyUoA8ZJ
+	 zB2UvP41A7jgG9Duu1PJlmTIBFMXA1drMzu30dIstxJ5Sb/NLVNmlhVX8tU55rRJZZ
+	 tV2/3ZY2dmRKQ==
+Subject: Re: [PATCH net-next v3 7/8] r8152: support rtl_fc_pause_pkt_en()
 From: netdev-bot+sashiko@kernel.org
 To: hsu.chih.kai@realtek.com
 Cc: davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
  nic_swsd@realtek.com, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
  edumazet@google.com, bjorn@mork.no, pabeni@redhat.com, andrew+netdev@lunn.ch
-Date: Sat, 12 Sep 2026 20:19:54 +0000
-Message-ID: <178924439400.3125.6156948273116550773@kernel.org>
-In-Reply-To: <20260908075634.23740-7-nic_swsd@realtek.com>
-References: <20260908075634.23740-7-nic_swsd@realtek.com>
+Date: Sat, 12 Sep 2026 20:19:55 +0000
+Message-ID: <178924439522.3125.10329416653763304539@kernel.org>
+In-Reply-To: <20260908075634.23740-8-nic_swsd@realtek.com>
+References: <20260908075634.23740-8-nic_swsd@realtek.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -46,217 +46,223 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Medium] r8157_phy_read() (drivers/net/usb/r8152.c:2086) and
-  r8157_phy_write() (:2095) discard rtl_tgphy_access()'s return value.
-- [Medium] wait_tgphy_cmd_ready() (drivers/net/usb/r8152.c:2045) makes
-  its loop-exit decision on the value returned by ocp_read_word(), which…
+- [Medium] Commit message mischaracterizes the change as an extraction
+  and omits the new register programming it introduces.
 
 --
 
-r8152: add TGPHY access support
+r8152: support rtl_fc_pause_pkt_en()
 
-This adds a TGPHY register access path for RTL8157/RTL8159 using
-USB_TGPHY_CMD/ADDR/DATA, so PHY registers can be reached without
-reprogramming the PLA OCP base. It also introduces phy_read/phy_write
-function pointers in struct rtl_ops so each chip gets the right access
-method, with ocp_reg_read()/ocp_reg_write() becoming thin dispatchers.
-
-A couple of questions about error propagation in the new path below.
+This moves the flow control programming out of r8156b_init() into a new
+helper rtl_fc_pause_pkt_en(), and calls it from r8156_init(), r8156b_init()
+and rtl8157_enable(). The helper switches on tp->version and, for RTL8157
+and RTL8159, programs a new pause limit register based on the link speed.
 
 > diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-> index 06fad895fce09..1fcb1cc5b4a18 100644
+> index 1fcb1cc5b4a18..2b0972b967385 100644
 > --- a/drivers/net/usb/r8152.c
 > +++ b/drivers/net/usb/r8152.c
-
-[ ... ]
-
-> @@ -959,6 +966,8 @@ struct r8152 {
->  		void (*hw_phy_cfg)(struct r8152 *tp);
->  		void (*autosuspend_en)(struct r8152 *tp, bool enable);
->  		void (*change_mtu)(struct r8152 *tp);
-> +		u16 (*phy_read)(struct r8152 *tp, u16 addr);
-> +		void (*phy_write)(struct r8152 *tp, u16 addr, u16 data);
->  	} rtl_ops;
-
-[ ... ]
-
-> @@ -1687,6 +1696,16 @@ static void ocp_reg_write(struct r8152 *tp, u16 addr, u16 data)
->  	ocp_write_word(tp, MCU_TYPE_PLA, ocp_index, data);
+> @@ -89,6 +89,7 @@
+>  #define PLA_MTPS		0xe615
+>  #define PLA_TXFIFO_CTRL		0xe618
+>  #define PLA_TXFIFO_FULL		0xe61a
+> +#define PLA_PAUSE_LIMIT         0xe61e
+>  #define PLA_RSTTALLY		0xe800
+>  #define PLA_CR			0xe813
+>  #define PLA_CRWECR		0xe81c
+> @@ -301,6 +302,10 @@
+>  #define MTPS_JUMBO		(12 * 1024 / 64)
+>  #define MTPS_DEFAULT		(6 * 1024 / 64)
+>  
+> +/* PLA_PAUSE_LIMIT */
+> +#define PAUSE_LIMIT_EN		BIT(3)
+> +#define PAUSE_LIMIT_MASK	0xf0
+> +
+>  /* PLA_RSTTALLY */
+>  #define TALLY_RESET		0x0001
+>  
+> @@ -6088,6 +6093,93 @@ static void r8152b_enter_oob(struct r8152 *tp)
+>  			   RCR_APM | RCR_AM | RCR_AB);
 >  }
 >  
-> +static u16 ocp_reg_read(struct r8152 *tp, u16 addr)
+> +static void rtl_fc_pause_pkt_en(struct r8152 *tp, u16 speed)
 > +{
-> +	return tp->rtl_ops.phy_read(tp, addr);
-> +}
+> +	int log2_ratio, ratio;
+> +	u16 num_pause_pkts;
+> +	u32 ocp_data;
 > +
-> +static void ocp_reg_write(struct r8152 *tp, u16 addr, u16 data)
-> +{
-> +	tp->rtl_ops.phy_write(tp, addr, data);
+> +	switch (tp->version) {
+> +	case RTL_VER_10:
+> +	case RTL_VER_11:
+> +		ocp_write_word(tp, MCU_TYPE_USB, USB_FC_TIMER,
+> +			       CTRL_TIMER_EN | (1000 / 8));
+> +
+> +		ocp_word_set_bits(tp, MCU_TYPE_USB, USB_FW_CTRL,
+> +				  FLOW_CTRL_PATCH_OPT);
+> +
+> +		ocp_word_set_bits(tp, MCU_TYPE_USB, USB_FW_TASK, FC_PATCH_TASK);
+> +		break;
+> +	case RTL_VER_12:
+> +	case RTL_VER_13:
+> +	case RTL_VER_15:
+> +		ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_RCR, SLOT_EN);
+> +
+> +		ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_CPCR, FLOW_CTRL_EN);
+> +
+> +		/* enable fc timer and set timer to 600 ms. */
+> +		ocp_write_word(tp, MCU_TYPE_USB, USB_FC_TIMER,
+> +			       CTRL_TIMER_EN | (600 / 8));
+> +
+> +		ocp_data = ocp_read_word(tp, MCU_TYPE_PLA, PLA_POL_GPIO_CTRL);
+> +		if (!(ocp_data & DACK_DET_EN))
+> +			ocp_word_set_bits(tp, MCU_TYPE_USB, USB_FW_CTRL,
+> +					  FLOW_CTRL_PATCH_2);
+> +
+> +		ocp_word_set_bits(tp, MCU_TYPE_USB, USB_FW_TASK, FC_PATCH_TASK);
+> +		break;
+> +	case RTL_VER_16:
+> +	case RTL_VER_17_QFN68:
+> +	case RTL_VER_17_QFN100:
+> +		ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_RCR, SLOT_EN);
+> +
+> +		num_pause_pkts = 0xa;
+> +		ratio = 10000;
+> +
+> +		if (!(speed & LINK_STATUS)) {
+> +			dev_dbg(&tp->intf->dev, "No link\n");
+> +			goto no_link;
+> +		} else if (speed & _10bps) {
+> +			ratio /= 10;
+> +		} else if (speed & _100bps) {
+> +			ratio /= 100;
+> +		} else if (speed & _1000bps) {
+> +			ratio /= 1000;
+> +		} else if (speed & _2500bps) {
+> +			ratio /= 2500;
+> +		} else if (speed & _5000bps) {
+> +			ratio /= 5000;
+> +		} else if (speed & _10000bps) {
+> +			ratio /= 10000;
+> +		} else {
+> +			dev_err(&tp->intf->dev, "Unknown link speed\n");
+> +			goto no_link;
+> +		}
+> +
+> +		log2_ratio = ilog2(ratio);
+> +		num_pause_pkts -= log2_ratio;
+> +
+> +		/* Round up if ratio is more than halfway to the next power of 2.
+> +		 * Floating-point is avoided by rewriting
+> +		 * ratio > 1.5 * 2^log2_ratio as
+> +		 * 2 * ratio > 3 * 2^log2_ratio
+> +		 */
+> +		if (2 * ratio > 3 * (1 << log2_ratio))
+> +			num_pause_pkts--;
+> +
+> +no_link:
+> +		ocp_word_w0w1(tp, MCU_TYPE_PLA, PLA_PAUSE_LIMIT,
+> +			      PAUSE_LIMIT_MASK | PAUSE_LIMIT_EN,
+> +			      num_pause_pkts << 4);
+> +
+> +		ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_PAUSE_LIMIT,
+> +				  PAUSE_LIMIT_EN);
+> +		break;
+> +	default:
+> +		break;
+> +	}
 > +}
 > +
 
-[ ... ]
+[Severity: Medium]
+Is the changelog description of "Extract it as rtl_fc_pause_pkt_en()"
+accurate for the RTL_VER_10/RTL_VER_11 and RTL_VER_16/RTL_VER_17 arms of
+rtl_fc_pause_pkt_en()?  The three arms are not the same sequence that was
+inline in r8156b_init().
 
-> @@ -2023,6 +2042,61 @@ static int r8152_mdio_test_and_clr_bit(struct r8152 *tp, u16 addr, u16 clear)
->  	return data & clear;
->  }
+For RTL_VER_10/RTL_VER_11 the helper programs:
+
+	ocp_write_word(tp, MCU_TYPE_USB, USB_FC_TIMER,
+		       CTRL_TIMER_EN | (1000 / 8));
+	ocp_word_set_bits(tp, MCU_TYPE_USB, USB_FW_CTRL,
+			  FLOW_CTRL_PATCH_OPT);
+	ocp_word_set_bits(tp, MCU_TYPE_USB, USB_FW_TASK, FC_PATCH_TASK);
+
+At the series baseline the flow control block in r8156_init() was gated as:
+
+	if (tp->version >= RTL_VER_12 && tp->version <= RTL_VER_15) {
+		ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_RCR, SLOT_EN);
+		ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_CPCR, FLOW_CTRL_EN);
+		...
+	}
+
+so RTL_VER_10/RTL_VER_11 received no flow control programming, and
+FLOW_CTRL_PATCH_OPT was only set from the RTL8153B firmware path.  Could
+the changelog say why RTL8156A now gets a 1000 ms timer plus
+FLOW_CTRL_PATCH_OPT, while RTL8156B keeps the 600 ms timer,
+FLOW_CTRL_PATCH_2 and PLA_CPCR FLOW_CTRL_EN?
+
+For RTL_VER_16/RTL_VER_17_QFN68/RTL_VER_17_QFN100 the helper adds a new
+register, PLA_PAUSE_LIMIT (0xe61e), the new PAUSE_LIMIT_EN/PAUSE_LIMIT_MASK
+bits, and a link-speed dependent pause packet count, but it sets neither
+PLA_CPCR FLOW_CTRL_EN nor USB_FC_TIMER even though the changelog says the
+flow control patch was "missing for ... RTL8157/8159".  None of the new
+register or the pause budget calculation is described in the changelog.
+
+Could the changelog describe the observed malfunction, the link speeds and
+traffic conditions it was seen under, and what was tested, so the behaviour
+change on already supported RTL8156A hardware and the new pause limit
+programming can be judged?
+
+>  static int r8153_pre_firmware_1(struct r8152 *tp)
+>  {
+>  	int i;
+> @@ -6619,6 +6711,8 @@ static int rtl8157_enable(struct r8152 *tp)
+>  	r8153_set_rx_early_size(tp);
 >  
-> +static int wait_tgphy_cmd_ready(struct r8152 *tp)
-> +{
-> +	u16 ocp_data;
+>  	speed = rtl8152_get_speed(tp);
+> +	rtl_fc_pause_pkt_en(tp, speed);
 > +
-> +	return poll_timeout_us(ocp_data = ocp_read_word(tp, MCU_TYPE_USB,
-> +							USB_TGPHY_CMD),
-> +			       !(ocp_data & TGPHY_CMD_BUSY), 2000, 20000,
-> +			       false);
-> +}
-
-[Severity: Medium]
-
-wait_tgphy_cmd_ready() makes its loop-exit decision purely on the value
-returned by ocp_read_word(), which is indeterminate if the underlying
-transfer never happens:
-
-  ocp_read_word() {
-	u32 data;
-	__le32 tmp;
-	...
-	generic_ocp_read(tp, index, sizeof(tmp), &tmp, type | byen);
-	data = __le32_to_cpu(tmp);
-	...
-  }
-
-generic_ocp_read() starts with:
-
-	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
-		return -ENODEV;
-
-so tmp is left untouched and the u16 handed to the poll loop is stale
-stack content.  If bit 0 happens to be set, does this helper then sleep
-for its whole 20 ms budget instead of returning right away?
-
-The USB-error case looks deterministic rather than random, since
-get_registers() does:
-
-	if (ret < 0)
-		memset(data, 0xff, size);
-
-USB_TGPHY_CMD then reads back as 0xffff, TGPHY_CMD_BUSY always appears
-asserted, and every TGPHY access consumes the full timeout.
-
-Since every PHY register access on RTL8157/RTL8159 now funnels through
-rtl_tgphy_access() (one wait per write, two per read), would a device
-marked inaccessible mid-sequence make r8157_hw_phy_cfg()/hw_phy_work, the
-up/down paths and the mdio ioctl sleep 20-40 ms per register while holding
-tp->control?  Would an is-accessible check in the helper be preferable to
-polling a value that may never have been read?
-
+>  	rtl_set_ifg(tp, speed);
+>  
+>  	return rtl_enable(tp);
+> @@ -8751,6 +8845,8 @@ static void r8156_init(struct r8152 *tp)
+>  
+>  	usb_enable_lpm(tp->udev);
+>  
+> +	rtl_fc_pause_pkt_en(tp, 0);
 > +
-> +static int rtl_tgphy_access(struct r8152 *tp, u16 addr, u16 *data, bool write)
-> +{
-> +	u16 cmd = 0;
-> +	int ret;
-> +
-> +	ret = wait_tgphy_cmd_ready(tp);
-> +	if (ret < 0)
-> +		goto out;
-> +
-> +	if (write) {
-> +		cmd |= TGPHY_CMD_WR;
-> +		ocp_write_word(tp, MCU_TYPE_USB, USB_TGPHY_DATA, *data);
-> +	}
-> +
-> +	ocp_write_word(tp, MCU_TYPE_USB, USB_TGPHY_ADDR, addr);
-> +
-> +	cmd |= TGPHY_CMD_BUSY;
-> +	ocp_write_word(tp, MCU_TYPE_USB, USB_TGPHY_CMD, cmd);
-> +
-> +	if (!write) {
-> +		ret = wait_tgphy_cmd_ready(tp);
-> +		if (ret < 0)
-> +			goto out;
-> +
-> +		*data = ocp_read_word(tp, MCU_TYPE_USB, USB_TGPHY_DATA);
-> +	}
-> +
-> +out:
-> +	return ret;
-> +}
-> +
-> +static u16 r8157_phy_read(struct r8152 *tp, u16 addr)
-> +{
-> +	u16 data = 0;
-> +
-> +	rtl_tgphy_access(tp, addr, &data, false);
-> +
-> +	return data;
-> +}
-> +
-> +static void r8157_phy_write(struct r8152 *tp, u16 addr, u16 data)
-> +{
-> +	rtl_tgphy_access(tp, addr, &data, true);
-> +}
-
-[Severity: Medium]
-
-Both wrappers discard rtl_tgphy_access()'s status.  On a
-wait_tgphy_cmd_ready() timeout, r8157_phy_read() returns the
-pre-initialised 0, which is indistinguishable from real register content.
-
-Can that fabricated 0 get written back to the PHY?  ocp_reg_read() now
-dispatches to r8157_phy_read() for RTL8157/RTL8159, and the
-read-modify-write helpers use it directly:
-
-  ocp_reg_w0w1() {
-	u16 data;
-
-	data = ocp_reg_read(tp, addr);
-	data = (data & ~clear) | set;
-	ocp_reg_write(tp, addr, data);
-  }
-
-so a timed-out read makes the driver write (0 & ~clear) | set, dropping
-every other bit of the MII/PHY register (advertisement, EEE, PLL/ALDPS).
-r8152_mdio_set_bit(), r8152_mdio_test_and_clr_bit() and sram_write_w0w1()
-have the same shape.
-
-For the write direction, a first-wait timeout jumps to out before any of
-the ADDR/DATA/CMD writes are issued, so the PHY write is dropped
-entirely.  With the void signature there is no way for the caller to
-notice, and no dev_err()/dev_warn() is emitted, so should this at least
-be logged?
-
-Note that the existing global mitigation does not cover a plain BUSY
-timeout: rtl_set_inaccessible() is only reached when a USB control
-transfer fails in r8152_control_msg(), so here the control transfers
-succeed and generic_ocp_write() still pushes the clobbered value to the
-chip.
-
-The sibling ADV interface in the same file returns int for exactly this
-reason:
-
-  static int ocp_adv_read(struct r8152 *tp, u16 cmd, u16 addr, u32 *data)
-  ...
-  static int rtl_bmu_w0w1(struct r8152 *tp, u16 addr, u32 clear, u32 set)
-  {
-	ret = rtl_bmu_read(tp, addr, &bmu);
-	if (ret < 0)
-		goto out;
-	...
-  }
-
-and wait_tgphy_cmd_ready() duplicates wait_cmd_ready() almost verbatim.
-Would it make sense for the new phy_read/phy_write ops in struct rtl_ops
-to carry a status back, or to reuse the existing wait_cmd_ready() helper,
-so the TGPHY timeout can stop the read-modify-write sequence instead of
-being swallowed?
+>  	r8156_mac_clk_spd(tp, true);
+>  
 
 [ ... ]
+
+> @@ -8852,20 +8947,7 @@ static void r8156b_init(struct r8152 *tp)
+>  
+>  	usb_enable_lpm(tp->udev);
+>  
+> -	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_RCR, SLOT_EN);
+> -
+> -	ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_CPCR, FLOW_CTRL_EN);
+> -
+> -	/* enable fc timer and set timer to 600 ms. */
+> -	ocp_write_word(tp, MCU_TYPE_USB, USB_FC_TIMER,
+> -		       CTRL_TIMER_EN | (600 / 8));
+> -
+> -	ocp_data = ocp_read_word(tp, MCU_TYPE_PLA, PLA_POL_GPIO_CTRL);
+> -	if (!(ocp_data & DACK_DET_EN))
+> -		ocp_word_set_bits(tp, MCU_TYPE_USB, USB_FW_CTRL,
+> -				  FLOW_CTRL_PATCH_2);
+> -
+> -	ocp_word_set_bits(tp, MCU_TYPE_USB, USB_FW_TASK, FC_PATCH_TASK);
+> +	rtl_fc_pause_pkt_en(tp, 0);
+>  
+>  	r8156_mac_clk_spd(tp, true);
+>
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260908075634.23740-1-nic_swsd%40realtek.com
