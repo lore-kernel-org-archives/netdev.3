@@ -1,54 +1,54 @@
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com [209.85.219.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5711EED8
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 14:48:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E2E3806DD
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 15:09:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789224532; cv=none; b=MbfMInVedERqyWrlrX9IF0dW20/7AVceBpU1SoZax/PoRrUZds7ia1+aannD5U4flLr/TzRwIyxwqWnzYXjK7WZucH0ZcsiOXyzegVVgXbXYMZSwiwGRUbgaTmcM1iIm+o+7f7LrQprVBrEJxTB8UxxHHvHhCAKs8nByQuXsAA4=
+	t=1789225802; cv=none; b=fne5YDWqzh2qqlZxAXMN1GxvoFTsy9zac3TjAKM7YRP6ijmA5yr5adKuZcFI5e9oKcOhKR84DaL5YOlUPgpdT26T6s6RgTSR2LqOOWE1T+jWgb1Ox2oPB9YoNort9rqywA/Hp0xj0KHiz1ezAUU6/dYEOT8WJ6NbG2I+Ja4jpaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789224532; c=relaxed/simple;
-	bh=c9c5nbx6QkMCv0r3S19yDKG5is0wWwd9bxsvIlf048o=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=C24/5oAKZIpdYITQOV0R9HjKdRxQ2c8npuIDnUemEMypvcI5QxHD7XYerXz8vLXPdMwkf2TzreknzaHejYGeXpWLwnL/qg+alOxLdQ3QUB3AZ5d0SiMAl7hqFVVffOSVT59ROTQyEef3qiZtQFpKZ5dNHj/MjRg2H9pl062b6hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FJ6kB9LT; arc=none smtp.client-ip=209.85.160.199
+	s=arc-20240116; t=1789225802; c=relaxed/simple;
+	bh=nEIhvLIeQdKDqp11Vvu5m3Qncb4cZzSRWijvMYlM9vY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Etyuo+oZSm/zVFZplmrg52zXVZ6UQe8wWmu3Yiom4Kn5OVras7QpydNCQi9v11v6DhCEhuwYTGyQGO3C7waN9DS+8Bi9H2MPQ22Np/HM7I3qzsxrKVuol6bttcpqWoqPFSUCwdedgz9P0pAGnYvGGrZwEhWwbLc75kYm0tgZXNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iKNj0OUr; arc=none smtp.client-ip=209.85.219.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FJ6kB9LT"
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-530e89b584cso10697021cf.3
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 07:48:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iKNj0OUr"
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-9107002647aso23216706d6.1
+        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 08:09:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789224530; x=1789829330; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789225790; x=1789830590; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:mime-version:date:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=V68nnfetgPV0z4oofellYAvD3CZanEe6c9ajxPnNXNw=;
-        b=FJ6kB9LTOOQdrvMZo2mRETjY6ny4cqPCIfLVdqvJBGm6OkRRgwif9xq6JkKBrJObJW
-         jW+MTkK0WcYpBJDMcGSthWY/qpQ3XUgWO3e+aonExsK0w62oE2xfOmuklszmnaq2hvc8
-         6bp019a3wIuG78sC5fw+1yf+zwc+/ewj4FhZBMOOwCEwyYkn8v7crrtL0f3LsUwPFz+h
-         VfO5TvQq0BalOz9GsHkye5L3/9ODs11ViCS3c2Bd/YaNFuRQsBM8qT0Mbknjmip2+mm1
-         XO1v4PkrwKq1aW1vpN15eqoNSetUt7RN2lQacPHi626/fCiAHwbC6MJjI0jtPi7c2sFR
-         /BzA==
+        bh=C0Xs0ULGAE2RUY+sJfAb4lB+vvI2J2fwmL5A5iJNoOs=;
+        b=iKNj0OUr0ORphThUkGevFL3XKIh56IPGAUqZiU/PWpi84E58RxcJx3eGAEqDj+FQa6
+         i1TnEgcczMZk9VDH9ZVgzyZJPt+YVbW/0Uc7/9Ix8raUc5pEH6qa/RoxkggtO7Ag9Tce
+         mdFKOD0KkU4zZI7YnmtaHkz0TorDmjCyebSj89fWQu4uZD4MOjERxoYFD8re33MVTyFF
+         ryGyj/VxeKb7z4crXIqKITT+R4WqZ8i1OROkT1Wdz3ZNTwpAaIjqDA9oKRSEAAo4Fmgb
+         NsRMBU7DttX+dQRb9ztpB48XbSzVPlAV8kj6Bpj3oxmuY31zlxZ9AWck89eS53OboMQE
+         +9Dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789224530; x=1789829330;
+        d=1e100.net; s=20251104; t=1789225790; x=1789830590;
         h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=V68nnfetgPV0z4oofellYAvD3CZanEe6c9ajxPnNXNw=;
-        b=JeG5f/8jzH7PTuirwLTBtJ0v5sB6cPr+XAG7rYUoACMR+chL3ImQRC/7/GrSnNFQki
-         WfMol2fZ3uougGx1/WadFqN574ZJYnHbsWsmSkkgFNF+BAMV3Nl1FxeVw1Uv4yOe6kjH
-         ikBr4mlbOVuf7r9jv2LbugE07MOLBfdFCJ1zIqLgSJCw1pfEcVAbOQPmMUL3TIytEcRK
-         xQ5vZ8onWoVAJOMr7WpBqhop8TkkcyAUmeAfW2OZbEyZZT++gKOQMkIBhsTU8kzzViIV
-         LX6KOhfCcdIINdo0YhFsdCFVBnrR2FzSgYwnGGa+hf2ZK5BQO0NJOalHJmfekflRC6IM
-         l9gg==
-X-Forwarded-Encrypted: i=1; AKwUvBwaR13XdDTk0uw1XPHMZzQ3P+FIsdCe2zwpc1khzQa8DezFmSLyQuFRwUxe5ml82K8Ib7q8hZw=@vger.kernel.org
-X-Gm-Message-State: AFuF++m+ix09uU7qhkCSaeQs3l8nIqLGW5S1iHlUa6mMTxWPaPuBE882
-	Dz5QC2pVFPKfswZneOG23mANPtJQN1xDCZeQ2BCq8wL4aScWkivkdMWlia4QJZp2oP9PFtFMV9b
-	lbfFhJSFmQKVgWw==
-X-Received: from qtbx12.prod.google.com ([2002:a05:622b:14c:b0:530:d5f8:4d68])
+        bh=C0Xs0ULGAE2RUY+sJfAb4lB+vvI2J2fwmL5A5iJNoOs=;
+        b=ZSAz16JC1UHI9KVNXIqCiAK+UevML5bRFqnpLRx6okLG6/gvgPX1yHnQGg42bIi0dW
+         +kO6EILJbcjzo/yGF/cffFW1sX4hs4+VaOEHlmgbRKLh2QpkbYkZC7zBbW0GxNdtrrcX
+         HBeQOrdmL8GSkw555WHydmyouJia3bXbmLDjQax9mevrVeirXk2+3JVHGywcJgohaDq1
+         kH0pTze8wL+wmclcz5e2XgJGK4j8Vv+gz1UHKhjToftQJZ7fIMaLNiggh2CMgNm2b6IZ
+         nWCO2vczU7HzanIDLn8rc197QiMUIK5EdDH2vxCKVtPpwgoSa2i+FeG2OjfDWGytNi2n
+         d8Dg==
+X-Forwarded-Encrypted: i=1; AKwUvBxzZoUFZ5mz5jczxcdjkqbDh9NeKGIBeYDv6FqRi4Tx7zp/GHr4kAcDpeJNpIqznxWK046k1Io=@vger.kernel.org
+X-Gm-Message-State: AFuF++mt1DpeEXFH8OcdSMt19PSu4FxASQD/lU0bVFZNQeBWsp5h3/c0
+	Mq9lsZanzbbYg8K2aRFnbqPvR/LcazjQSxqBCuTJQpLHxprTGtxE599kADA0vytoALd/OOFYjY4
+	c6FJrRjNwSwuVfA==
+X-Received: from qvul18.prod.google.com ([2002:ad4:4532:0:b0:912:305:a044])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:1ba1:b0:530:b2e1:2f3b with SMTP id d75a77b69052e-530e81f8c8cmr41077591cf.50.1789224529480;
- Sat, 12 Sep 2026 07:48:49 -0700 (PDT)
-Date: Sat, 12 Sep 2026 14:48:48 +0000
+ 2002:a05:6214:4e1a:b0:912:12cf:f6b7 with SMTP id 6a1803df08f44-91212cffab1mr108209926d6.7.1789225789644;
+ Sat, 12 Sep 2026 08:09:49 -0700 (PDT)
+Date: Sat, 12 Sep 2026 15:09:41 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,97 +56,71 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.55.0.1007.g17ff1f9808-goog
-Message-ID: <20260912144848.3448026-1-edumazet@google.com>
-Subject: [PATCH net] tcp: do not let tcp_rmem be set below 4096
+Message-ID: <20260912150944.3470971-1-edumazet@google.com>
+Subject: [PATCH net 0/3] ip_gre: fix header lengths and validation on changelink
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+Cc: Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
+	Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
 	Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-We can hit a division by zero crash in tcp_rcvbuf_grow()
-and tcp_rcv_space_adjust():
+Three fixes in the IPv4 GRE/ERSPAN changelink path, found while preparing
+an RCU conversion of the IPv4 tunnel configuration. They all come from
+the same place: ipgre_changelink() and erspan_changelink() mutate the
+live device as they go, without keeping tunnel->hlen,
+dev->needed_headroom and dev->mtu in sync.
 
-divide error: 0000 [#1] PREEMPT SMP
-RIP: 0010:tcp_rcvbuf_grow+0x187/0x450 net/ipv4/tcp_input.c:939
-...
-grow = div_u64(((u64)rcvwin << 1) * (newval - oldval), oldval);
+Patch 1 makes the netlink parsers all-or-nothing. They write into the
+live tunnel before all attributes have been validated, so a rejected
+request leaves it half updated; in the worst case dev->type is left at
+ARPHRD_NONE and the interface is broken for good.
 
-The division uses oldval = tp->rcvq_space.space as divisor.
-When tp->rcvq_space.space is zero, this leads to a divide-by-zero
-exception.
+Patch 2 stops maintaining the device lengths as a difference.
+ipgre_link_update() adjusts them by a delta computed from tun_hlen only,
+while ip_tunnel_bind_dev() assigns the same fields from tunnel->hlen.
+Two writers, two models, and a delta that ignores the encapsulation, is
+applied on top of the absolute assignment when the link changes too, and
+is computed from a length ip_tunnel_encap_setup() may have published for
+a request that then failed. tunnel->hlen is now recomputed from tun_hlen
+and encap_hlen, and ip_tunnel_bind_dev() becomes the only writer of the
+device lengths. Not a memory safety issue: ip_tunnel_xmit() computes its
+own headroom for the encapsulation, only the advertised MTU is wrong.
 
-tp->rcvq_space.space is initialized in tcp_init_buffer_space():
-    tp->rcvq_space.space = min3(tp->rcv_ssthresh, tp->rcv_wnd,
-                                (u32)TCP_INIT_CWND * tp->advmss);
+Patch 3 gives ERSPAN the same treatment, where it does crash:
+erspan_xmit() reserves dev->needed_headroom with skb_cow_head() and then
+pushes a header sized from the current version, so going from version 0
+to version 2 adds 20 bytes and can reach skb_under_panic().
 
-If tcp_rmem[1] is configured to very small values (such as 1),
-sk->sk_rcvbuf is initialized to 1. Then tcp_full_space(sk), which
-computes (sk->sk_rcvbuf * scaling_ratio) >> 8, truncates to 0.
-This sets tp->window_clamp = 0, tp->rcv_ssthresh = 0, and
-tp->rcvq_space.space = 0. Later, when data arrives and DRS is invoked,
-tcp_rcvbuf_grow() divides by oldval == 0.
+Notes for reviewers, because not all bugs are fixed.
 
-Back in 2015, commit b1cb59cf2efe ("net: sysctl_net_core: check SNDBUF
-and RCVBUF for min length") ensured that net.core.rmem_default and
-net.core.rmem_max cannot be set below SOCK_MIN_RCVBUF. Similarly,
-SO_RCVBUF setsockopt enforces max_t(int, val * 2, SOCK_MIN_RCVBUF).
+When the header length really changes, dev->mtu
+is now recomputed by ip_tunnel_bind_dev() instead of being shifted by
+the difference, as ip_tunnel_update() already does for a link or fwmark
+change; a MTU configured by the user still survives a request that does
+not change the header length.
 
-However, net.ipv4.tcp_rmem still had .extra1 = SYSCTL_ONE, allowing
-arbitrarily small values.
+And the changelink paths still commit into the live tunnel step by step.
+A rejected request is therefore not a no-op, and since the xmit path is
+lockless, a concurrent erspan_xmit() can briefly see a new erspan_ver
+while dev->needed_headroom still describes the old one. Both are
+pre-existing. These patches shrink the second one from permanent to the
+duration of a single changelink, since erspan_changelink() does not
+refresh the lengths at all today, but closing it means publishing a whole
+new configuration atomically. That needs a larger rework and will come
+with the ip_tunnel RCU conversion in net-next.
 
-Because SOCK_MIN_RCVBUF depends on sizeof(struct sk_buff) and cacheline
-alignment, its value varies across architectures and configuration options.
-Using a fixed constant of 4096 ensures a predictable, architecture-
-independent lower bound that is safely above SOCK_MIN_RCVBUF everywhere
-and matches the documented 4K default.
+Eric Dumazet (3):
+  ip_gre: validate netlink attributes before changing the tunnel
+  ip_gre: compute tunnel lengths absolutely instead of by delta
+  ip_gre: recompute erspan header lengths after a change
 
-Fix this by setting tcp_rmem.extra1 to 4096 and updating the documentation.
+ include/net/ip_tunnels.h |   1 +
+ net/ipv4/ip_gre.c        | 146 +++++++++++++++++++++++++++------------
+ net/ipv4/ip_tunnel.c     |  16 +++++
+ 3 files changed, 120 insertions(+), 43 deletions(-)
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- Documentation/networking/ip-sysctl.rst | 2 ++
- net/ipv4/sysctl_net_ipv4.c             | 4 +++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
-index b05829e44d8fcb5efe1a0e27569a5ffa37915e49..f7af0286341c9b20047f4719d4c5b81d3a12a107 100644
---- a/Documentation/networking/ip-sysctl.rst
-+++ b/Documentation/networking/ip-sysctl.rst
-@@ -874,6 +874,8 @@ tcp_rmem - vector of 3 INTEGERs: min, default, max
- 	case this value is ignored.
- 	Default: between 131072 and 32MB, depending on RAM size.
- 
-+	Each of the three values cannot be set below 4096.
-+
- tcp_sack - BOOLEAN
- 	Enable select acknowledgments (SACKS).
- 
-diff --git a/net/ipv4/sysctl_net_ipv4.c b/net/ipv4/sysctl_net_ipv4.c
-index 2f0363bca2a88d68276670cfce6fb04398f82bc5..e3760daa347064cf455d1e6e9bbee390dab930d9 100644
---- a/net/ipv4/sysctl_net_ipv4.c
-+++ b/net/ipv4/sysctl_net_ipv4.c
-@@ -51,6 +51,8 @@ static int tcp_ecn_mode_max = 5;
- static u32 icmp_errors_extension_mask_all =
- 	GENMASK_U8(ICMP_ERR_EXT_COUNT - 1, 0);
- 
-+static int tcp_min_rcvbuf = 4096;
-+
- /* obsolete */
- static int sysctl_tcp_low_latency __read_mostly;
- 
-@@ -1462,7 +1464,7 @@ static const struct ctl_table ipv4_net_table[] = {
- 		.maxlen		= sizeof(init_net.ipv4.sysctl_tcp_rmem),
- 		.mode		= 0644,
- 		.proc_handler	= proc_dointvec_minmax,
--		.extra1		= SYSCTL_ONE,
-+		.extra1		= &tcp_min_rcvbuf,
- 	},
- 	{
- 		.procname	= "tcp_comp_sack_delay_ns",
 -- 
 2.55.0.1007.g17ff1f9808-goog
 
