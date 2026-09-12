@@ -1,153 +1,188 @@
-Received: from mail-oi2-f0.google.com (mail-oi2-f0.google.com [74.125.231.192])
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 877E22773E4
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 00:57:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.192
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98C6EED8
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 00:57:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789174650; cv=none; b=cRVuBw5qySgM60B5vJMsoiDWqgwyfBkm8IGVu3gtCH5bKWetFCqddGKRbMGFaQN57ehmpu4TZIvOj6sWHPoGfjOsYiXwx+Sis7qA1fib4HhASL7Yyu6TlxBbJXnsAuGxb2r+/w6y81PRWiwa/s2BhIhds18Wktpd1PEkgN8totA=
+	t=1789174672; cv=none; b=I3FSgs9FiEfrvDFrCkGCEtqAIpdJsOxi8/yiZYCAioZZUT2ogI940STwpEwoyxzV/bB8KS/42yTmpNu5vDgjsvLZft4FPfZPnEk+P/ZbEpOS09KHi47tLruPTqWBWxG7MK39AeuufM1mur3bu7QgQ6y+q/lU1zbwjFV0qrnZw4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789174650; c=relaxed/simple;
-	bh=sfdKITiTTBp/5SdN9B+NauWhSGiWmQ+MMSMPzMhDZMg=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Zg7Y8Mphh3UZkWPhrqz5Q4pkzUR9CnOv7P8tzdN1eL+WNUNhh3N3w4B+v1lnIFwIQs4vaavEG4WqB/Y5tizkCdpijtpmKYKxeUfVkjmYSgQo4wXVG6Zw5u4sWGyAn2wSfD5ga6LrrNoOvcYttL294VFnt8aAlPAJLCCeIyvQ4yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.192
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi2-f0.google.com with SMTP id 5614622812f47-4a4492f5cd1so280008b6e.1
-        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 17:57:28 -0700 (PDT)
+	s=arc-20240116; t=1789174672; c=relaxed/simple;
+	bh=p/lArYGCARLOYaeiP+4ojxjY6aOQJHb2+meYXe+Lycc=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=jzuYsnTMe8DKpo6jfsg91XRWtck3AYfCs1XvyVVNZPErAhMsJ6zlRn6SlDZ2B6Hsf1EnAfpwJgzwbeMVh42FKqgq/X56IviyJzyrovAsUlUWGAAjUuSqM6RzgrLWX/HDI0ADJuuuHwwFsEXa9QUWSqYg8DRq3VbiMsij8iRwZqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SgXmZKHg; arc=none smtp.client-ip=209.85.128.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SgXmZKHg"
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-855c26cf490so10304577b3.0
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 17:57:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789174670; x=1789779470; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=VEQ6r4QC5yC/0yfiNcwhkgXgfvSaDU8vXXWFX/rDRgU=;
+        b=SgXmZKHgAM9C6IgcYFysJ7QWIRaSF530K85YQ087psYIXFqsAoy4+LqemRhWCL7DKT
+         iRBGDGkkNB7isG+OOO3cLtTUJuzjGbd8UGOhDIu3VrkSfsGkhg4MgnX3LG6q4asmHR5I
+         2jOE6Ul2bvFrZI7oSReV+ktyhqBCiULKRyvZTOBd4mA0gay7KTxedaThXwjVV9hLGJrw
+         crvE32UzeSuXJ+WR1MktTiaqxik4oZ+SkSUNJL18BC41zqpjunucieneLVvbR21lobIh
+         a6GVMfZv1ugQRpEU/RwOx71RsdTgTyUQOMIDQy4NMwcZ9dPkkOyhdEfjuaV7gO50/JpG
+         u52w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789174647; x=1789779447;
-        h=content-type:to:from:subject:message-id:date:mime-version
+        d=1e100.net; s=20251104; t=1789174670; x=1789779470;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Y2buhqL3+jbmYjdf40xuvgASTB4Cv1cwvnYxQ4HuR5c=;
-        b=pnOQbkkFo8UFaB7lpfpYvAdOg4PODkqeuSCqEv6K52cnBJituopq/UDcXJ4uDHtCWG
-         imDlE32Or+H3YYfJqrLriEaFGK+1MhdkiUzUe4DjM9zgzWmp4vg8j18dwhzeqMtmRdzN
-         U+uf4HhkjBSpMPVSxpYPbu838E/PnbFfue7Ev0ERhIFAtanLdU6g/VZGfemY4NcAN2da
-         2bZeGlyreUJH3C6HZ/Cn1Grc8FDpfcwR+/Pcf6aZ21gbjKHGTzlVhpeZmv6cC27Zil1F
-         pi/IJpdrEC3DDALx0gRSwV5esdpRGTyajczYS80YfY6YbgJuKLKEjcW+2lxSr0SYyoMj
-         jSVg==
-X-Forwarded-Encrypted: i=1; AKwUvBwrXcwVB+JtetuZKHZdFJv3zXU+HCp3bzv98lX6KgJq5PmWphNrYOsx031DymCNioMWD78bRvo=@vger.kernel.org
-X-Gm-Message-State: AFuF++leKdtS7tS4YET9fd7zdNqLK8BcR58XvcFNIkpiBBgOLr1DW5xz
-	gTX/ZfgCVnirs3fsQCEMoFRDo629QuRhjuG9LkyCf6+0jtQfRlxU1oEWJUQSTaleqfvXD8wA3Q3
-	nJ86pqBijLEl0wrOeH4ySnvnud7Ji0MfMlCmC2u/wgwoii3eInbzW6IQnm6c=
+        bh=VEQ6r4QC5yC/0yfiNcwhkgXgfvSaDU8vXXWFX/rDRgU=;
+        b=KYYSzjzpCociQdt/hvx9VByprh01fwAJnQozSDu/bB7Lq6uHLlOgr4jsakUCEAA1OF
+         aUi/volK41nRc0v7g1VPmMmaKGPpxTc9hK8KqvGqUjLRp3tf51TkbQgmZbmQivkTvvzL
+         2+HPhK5qm7oO+zqzHbbj1QmmV/3+rXODp1CtO5+iLvDbk82Z30JJh0YKakK2KTEmRyQT
+         nT+zLAQrHxUNtf5sanCPWeCCDG32dRraiSpjt8HW+vjXwAEPhJkMgcL+SwbETkImHeWe
+         EMQ3RdU6poxtOi6hkM009/sYlJ7iUnC3+k//2m+NRtPtrB0MvE6EI2HrjUE4PyjNvRet
+         EzvA==
+X-Gm-Message-State: AFuF++kRS1czMWXOAxuFwpv7s92ptjDl4yQxmpZvhOT/Ndwmp3JDH8Xe
+	6vtDgrExYdAqHAKia9VqzA9j7wiMJszTa8QV5DmJ5iIx0LQiM+OEA3M8
+X-Gm-Gg: AYBFou1FOH0HQYcyh/gLooote5tZtYEUfU4y+uIz4EhpDJ7s3F920U/qTUjqUKmn/WR
+	THN+sXBYC8y1/dHeCIqjzBsEZCQbHdM9cBchlIkfDpHO6iP0YNxZEMe/FcH5m0zMa2pJ19mSERf
+	UPR6l47BaYMQwiYR3mTuMCc38O9gCiYUwlFb/zID4JQNJi40ptwcVHVHBYGzsakswssT0Wd0+sq
+	xzwUpSJcn2TrA0tRG9xEZzM5X6WoyESNG0E/2w1QTt50gpOuuR0tQaxccWMSe8+ypvddtTAKLdA
+	2oNXj3kk0SyajIJCnZiStsojzLP7mpmMMVKQEEOTtpKwmwbHjP04iBDqLMgl2wPiLueLIPZ/ZE5
+	3SbdpBOZJc0uW9YQ8Sq0cc4oa/yV7+EAB3noOlEJshkWfBCJ3yboKo4chWTm4ntyeNX0bWIozMT
+	Iz2Ru/75sW+ruuXRLBn7/BqZ/4Nwe3MesGp1iBBpgY3weSKZsl8VXncKUcD+qm8Sxx/xnzBmFq6
+	rqvWoPKWlfdqll7T2iCHhlIHAjMudo/gauPTpUXU3bqkm6rKAax
+X-Received: by 2002:a05:690c:dc4:b0:884:a163:8992 with SMTP id 00721157ae682-884b3f503admr27160217b3.54.1789174669850;
+        Fri, 11 Sep 2026 17:57:49 -0700 (PDT)
+Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-884878dd12csm16748527b3.28.2026.09.11.17.57.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Sep 2026 17:57:49 -0700 (PDT)
+Date: Fri, 11 Sep 2026 20:57:48 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: netdev-bot+sashiko@kernel.org, 
+ willemdebruijn.kernel@gmail.com
+Cc: netdev@vger.kernel.org, 
+ davem@davemloft.net, 
+ kuba@kernel.org, 
+ edumazet@google.com, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ andrew+netdev@lunn.ch, 
+ willemb@google.com
+Message-ID: <willemdebruijn.kernel.342ae29687e94@gmail.com>
+In-Reply-To: <178914679956.219967.16464715915916154727@kernel.org>
+References: <20260910171131.2532487-8-willemdebruijn.kernel@gmail.com>
+ <178914679956.219967.16464715915916154727@kernel.org>
+Subject: Re: [PATCH net-next v9 7/7] selftests: drv-net: extend so_txtime with
+ hw offload
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:16ac:b0:6b3:5229:fcd7 with SMTP id
- 006d021491bc7-6c24ceaaed3mr634429eaf.16.1789174647429; Fri, 11 Sep 2026
- 17:57:27 -0700 (PDT)
-Date: Fri, 11 Sep 2026 17:57:27 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6aa4a377.f81106d8.2ab401.0024.GAE@google.com>
-Subject: [syzbot] [netfilter?] WARNING: suspicious RCU usage in expect_iter_name
-From: syzbot <syzbot+4bd730aede2791e40bdf@syzkaller.appspotmail.com>
-To: coreteam@netfilter.org, davem@davemloft.net, edumazet@google.com, 
-	fw@strlen.de, horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, pabeni@redhat.com, 
-	pablo@netfilter.org, phil@nwl.cc, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+netdev-bot+sashiko@ wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider:
+> =
 
-syzbot found the following issue on:
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 0
+> =
 
-HEAD commit:    15071f2a1263 Merge branch 'bpf-tcp-fix-bpf_sock_destroy-on..
-git tree:       bpf
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=127ca1f9580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5e4e3a0e188a497e
-dashboard link: https://syzkaller.appspot.com/bug?extid=4bd730aede2791e40bdf
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17caf749580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=115c9f9e580000
+> - [Medium] The new `beyond_hw_horizon` variant hard-codes a 70ms txtime=
+,
+>   but `_dev_setup_pacing_offload()`=E2=80=A6
+> =
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/e4f2d0fa738f/disk-15071f2a.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/508ad5098ef2/vmlinux-15071f2a.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/c3f06d5bc6b9/bzImage-15071f2a.xz
+> --
+> =
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+4bd730aede2791e40bdf@syzkaller.appspotmail.com
+> selftests: drv-net: extend so_txtime with hw offload
+> =
 
-=============================
-WARNING: suspicious RCU usage
-syzkaller #0 Not tainted
------------------------------
-net/netfilter/nf_conntrack_netlink.c:3393 suspicious rcu_dereference_check() usage!
+> Adds two hardware pacing offload variants of the so_txtime driver test,=
+ one
+> on fq with an offload_horizon and one on pfifo_fast, plus a new
+> beyond_hw_horizon testcase with a 70ms txtime. Also raises the receive
+> timeout and switches the final empty-queue check to MSG_DONTWAIT.
+> =
 
-other info that might help us debug this:
+> > diff --git a/tools/testing/selftests/drivers/net/so_txtime.py b/tools=
+/testing/selftests/drivers/net/so_txtime.py
+> > index a097fae0b335a..66a87205e02db 100755
+> > --- a/tools/testing/selftests/drivers/net/so_txtime.py
+> > +++ b/tools/testing/selftests/drivers/net/so_txtime.py
+> =
+
+> [ ... ]
+> =
+
+> =
+
+> [Severity: Medium]
+> Is the beyond_hw_horizon expectation guaranteed on all devices that pas=
+s the
+> capability gate in _dev_setup_pacing_offload()?
+> =
+
+> That helper only checks a lower bound on the device horizon:
+> =
+
+>     horizon =3D _HW_OFFLOAD_HORIZON_MS * 1000_000
+>     if link['max-pacing-offload-horizon'] < horizon:
+>         raise KsftSkipEx('pacing offload max horizon too small')
+> =
+
+> so a device advertising, say, 100ms or more is accepted. In
+> test_so_txtime_pfifofast_mono_hw() the root qdisc is pfifo_fast, so the=
+re is
+> no qdisc offload_horizon gate and the immediate-send decision is left t=
+o the
+> driver's own horizon check, for example in idpf_tx_splitq_set_txtime():=
+
+> =
+
+>     /* beyond offload horizon? set overflow bit only */
+>     if (ts > now + horizon) {
+>             tx_params->offload.desc_ts[2] =3D
+>                     IDPF_TXD_FLOW_SCH_HORIZON_OVERFLOW_M;
+> =
+
+> On a device whose reported max-pacing-offload-horizon covers 70ms, the =
+packet
+> is paced in hardware, arrives on time, the receiver exits 0, and with
+> expect_fail set by:
+> =
+
+>     expect_pass =3D args_tx !=3D "a,70"
+> =
+
+> cmd.process() in tools/testing/selftests/net/lib/py/utils.py turns that=
+ into
+> a failure:
+> =
+
+>     elif self.proc.returncode =3D=3D 0 and expect_fail:
+>         raise CmdExitZeroFailure("Command succeeded (expected fail)", s=
+elf)
+> =
+
+> The timing_sensitive escape only clears expect_fail under
+> KSFT_MACHINE_SLOW, so on a normal machine the failure is unconditional.=
 
 
-rcu_scheduler_active = 2, debug_locks = 1
-locks held by syz-executor381/5628: 2, last CPU#1:
- #0: ffffffff9aee42a0 (nfnl_subsys_ctnetlink_exp){+.+.}-{4:4}, at: nfnl_lock net/netfilter/nfnetlink.c:96 [inline]
- #0: ffffffff9aee42a0 (nfnl_subsys_ctnetlink_exp){+.+.}-{4:4}, at: nfnetlink_rcv_msg+0xa69/0x12b0 net/netfilter/nfnetlink.c:293
- #1: ffffffff8ea74d58 (nf_conntrack_expect_lock){+...}-{3:3}, at: spin_lock_bh include/linux/spinlock.h:353 [inline]
- #1: ffffffff8ea74d58 (nf_conntrack_expect_lock){+...}-{3:3}, at: nf_ct_expect_iterate_net+0x38/0x180 net/netfilter/nf_conntrack_expect.c:623
+This is a good point.
 
-stack backtrace:
-CPU: 1 UID: 0 PID: 5628 Comm: syz-executor381 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- lockdep_rcu_suspicious+0x140/0x1d0 kernel/locking/lockdep.c:6972
- expect_iter_name+0xfb/0x100 net/netfilter/nf_conntrack_netlink.c:3393
- nf_ct_expect_iterate_net+0xf2/0x180 net/netfilter/nf_conntrack_expect.c:633
- ctnetlink_del_expect+0x45d/0x640 net/netfilter/nf_conntrack_netlink.c:3455
- nfnetlink_rcv_msg+0xcc2/0x12b0 net/netfilter/nfnetlink.c:300
- netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
- nfnetlink_rcv+0x2b9/0x28c0 net/netfilter/nfnetlink.c:667
- netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
- netlink_unicast+0x7bd/0x940 net/netlink/af_netlink.c:1345
- netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
- sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
- __sock_sendmsg net/socket.c:815 [inline]
- ____sys_sendmsg+0x54e/0x850 net/socket.c:2713
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2767
- __sys_sendmsg net/socket.c:2799 [inline]
- __do_sys_sendmsg net/socket.c:2804 [inline]
- __se_sys_sendmsg net/socket.c:2802 [inline]
- __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2802
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fb7651a5649
-Code: c0 79 93 eb d5 48 8d 7c 1d 00 eb 99 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 d8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffc2a17f2a8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fb7651a5649
-RDX: 0000000020000080 RSI: 0000200000000300 RDI: 0000000000000004
-RBP: 0000000000000000 R08: 0000000000000006 R09: 0000000000000006
-R10: 0000000000000006 R11: 0000000000000246 R12: 0000000000000000
-R13: 431bde82d7b634db R14: 00007fb765238c40 R15: 0000000000000002
- </TASK>
+With the replacement of configurable limit dev->pacing_offload_horizon
+by boolean dev->pacing_offload, the horizon is now always the
+max_pacing_offload_horizon.
 
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+The test fails, but perhaps for the wrong reason. Will take a look.
+I have to take back my "all false positives", though this is fairly
+small. =
