@@ -1,115 +1,106 @@
-Received: from out28-99.mail.aliyun.com (out28-99.mail.aliyun.com [115.124.28.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-43.mta0.migadu.com [91.218.175.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B0A2C15A9;
-	Sat, 12 Sep 2026 13:24:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED09B278156
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 13:39:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789219480; cv=none; b=R+jMeCJGWjzdHRRAGyg0vFk4qOqLTtHbnOH7tDoElWvSb2hcCY79RxnoVR0yYtCncflAONbTt6Nui0W1W8MMisVmzbj/M4Bv1sNdS0vheZf+5pbBDavCTEIK2xDwSo5UBQj9fwrX1WYYwZv88Q9b0kPMBEnbqCXpbebY4V8tFbw=
+	t=1789220385; cv=none; b=Ys6zAmFogqivRbu38oT3LhJRanERLC4PmATv1P/BDzdonZxVvOxg6DgnwxO4rPV/FhzsCqGNAILQWQGg6dNQfGtZ+kq91XKMvB6Rb0Yar3rQ/7e482YnLnu3W7/Ajp1nhNnOzMlO8Ag9Kxmbq6Gzfoo9aK6UkhjDYdY7Yfn08U8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789219480; c=relaxed/simple;
-	bh=EeRUEGaUI/l+gIttlzTmjXNyzT67+Kcox7nrq949sM8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQaGhw7AGv8jLV2sQuXsE+ledAJ5T3RqsBMZin4WRIK9PCjm7N91p8EyRRxKsFH/127BDCLeyjgKchMv7Gpi47dTNLl2PVC41X3DQ5BDDCZREwrRA7EKQNoFwZEvIYYEz8//XkiZAwYLHCBW3AHWuuV60+ixNs5ahUxi17CxHBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com; spf=pass smtp.mailfrom=xiaopeng.com; dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b=bl6elPa7; arc=none smtp.client-ip=115.124.28.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
+	s=arc-20240116; t=1789220385; c=relaxed/simple;
+	bh=Z0wkZMgUuryJXwEU2UXNLzI9px7nThxGSXCtQFdQV1E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FfMDK1EM5KkaztoNlSEkiXrQqJ0NzuwlcgQcxilBKgCmxpCS5bV79uQ9MV6NyAz+vNyqekdW6m9AcYpWSXLo8dlojqFI7uVn4ofG07/6li9dCPZmca7X7w862rF27mogiLtPMmRCToQzIs3WTfH+iGsY91LYTcQ+DzNlsXvYGjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=n2n+2HJC; arc=none smtp.client-ip=91.218.175.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b="bl6elPa7"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xiaopeng.com; s=default;
-	t=1789219467; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=e42qm3Szy1dc4vy+qruNQCu8MyY8IeIWrKOr0rQ95CQ=;
-	b=bl6elPa7Fj0xmBc48cmCC12BWBB+0bEIqHvlx37SvT3XRpZC203mrVHrQsqaVBnw0gbKBJoW5tKnwb8f6J98so2G4y9JdkjRjy1V9yy4TfVRgIdd89qInwgoEadQ1kczVgLVqszLGLHwDxnAqC7UrKws+Xuei4Jv8RF3CV5c2gA=
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.08329333|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00867436-0.00152383-0.989802;FP=10302340803894709571|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037032089;MF=liuc63@xiaopeng.com;NM=1;PH=DS;RN=11;RT=11;SR=0;TI=SMTPD_---.jC..lBP_1789219139;
-Received: from localhost(mailfrom:liuc63@xiaopeng.com fp:SMTPD_---.jC..lBP_1789219139 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Sat, 12 Sep 2026 21:19:01 +0800
-From: Liu Chao <liuc63@xiaopeng.com>
-To: David Heidelberg <david@ixit.cz>
-Cc: Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	oe-linux-nfc@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Liu Chao <liuc63@xiaopeng.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net 2/2] nfc: digital: check resp length in digital_tg_send_atr_res_complete()
-Date: Sat, 12 Sep 2026 21:18:52 +0800
-Message-ID: <20260912131852.1651462-3-liuc63@xiaopeng.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260912131852.1651462-1-liuc63@xiaopeng.com>
-References: <20260912131852.1651462-1-liuc63@xiaopeng.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="n2n+2HJC"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=Z0wkZMgUuryJXwEU2UXNLzI9px7nThxGSXCtQFdQV1E=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789220377; v=1; x=1789825177;
+ b=n2n+2HJCrITPfd1xniEEts+cfciXBMFLPi6jhZwGBmFjZVpRUn2ZJas68Q/BO2/W5EqQDuyJ
+ 3z9AVJSPS4RqQtfwxxIWMSYVlErBYEV5tbNrfjjCp6KdOt7mXhLUAxhJ5l2fVvA0NH8JlTaY5ZB
+ 7/VsTwVrjFkFpC0UhRY9Ftnk=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 5d04fd228bda98b6;
+	Sat, 12 Sep 2026 13:39:27 +0000
+X-Mizu-Trace-ID: 5d04fd228bda98b6
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <d9cb00fe-85fe-466f-b6ee-c5694d134ed4@linux.dev>
+Date: Sat, 12 Sep 2026 21:39:22 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: skbuff: do not leave stale header offsets after
+ pskb_carve()
+To: Eric Dumazet <edumazet@google.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com,
+ syzbot+586af68eb819833c2d91@syzkaller.appspotmail.com,
+ Allison Henderson <achender@kernel.org>, rds-devel@oss.oracle.com,
+ "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+References: <20260911114922.621937-1-edumazet@google.com>
+ <a53a81cd-88b6-4db2-a0e6-ee3dccfeef42@linux.dev>
+ <CANn89iJw5P-wARumRgxdPaHXBJ3qF0zu6FNaNOFKonyww9AJpg@mail.gmail.com>
+From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+In-Reply-To: <CANn89iJw5P-wARumRgxdPaHXBJ3qF0zu6FNaNOFKonyww9AJpg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-digital_tg_send_atr_res_complete() reads resp->data[0] and
-resp->data[offset] (offset 2 or 3) without checking resp->len.
-The resp skb comes from the remote NFC peer, which controls its
-length.  A short frame causes reads past the end of the received
-data.
+在 2026/9/12 16:57, Eric Dumazet 写道:
+> On Fri, Sep 11, 2026 at 11:38 PM luoxuanqiang <xuanqiang.luo@linux.dev> wrote:
+>>
+>> 在 2026/9/11 19:49, Eric Dumazet 写道:
+>>> pskb_carve_inside_header() and pskb_carve_inside_nonlinear() remove
+>>> the first bytes of a packet and reallocate skb->head.
+>>>
+>>> All the headers that were present before the operation are gone,
+>>> but both functions call skb_headers_offset_update(skb, 0), which
+>>> is a no-op : skb->mac_header, skb->network_header,
+>>> skb->transport_header and skb->csum_start are left with their old
+>>> values, now pointing into the freshly allocated (and possibly much
+>>> smaller) skb->head.
+>>>
+>>> For pskb_carve_inside_nonlinear() the result is a zombie skb with
+>>> an empty linear part (skb->data == skb_tail_pointer(skb),
+>>> skb_headlen(skb) == 0) but skb_mac_header_was_set() still true and
+>>> skb->mac_header pointing far beyond skb_end_pointer(skb).
+>>>
+>> Could you please clarify how the MAC pointer ends up beyond
+>> skb_end_pointer() here? The carve helpers allocate based on the old
+>> skb_end_offset(), and kmalloc_reserve() adds room for skb_shared_info,
+>> so the new capacity shouldn't be smaller.
+>>
+>> The dump shows mac=234 and end=384. I understand how the stale offset
+>> causes skb_pull() on an empty linear area and triggers the BUG, but I
+>> don't see how it ends up beyond the new end. Am I missing another
+>> condition?
+> 
+> skb_headers_offset_update(skb, 0) is a no-op, so mac=234, net=248,
+> trans=288 and csum_start=288 survive and now describe bytes that are not
+> there anymore. skb_mac_header_was_set() still returns true, so drop_monitor
+> does skb_pull(skb, 234) on an empty linear part and hits the BUG in
+> __skb_pull().
+> 
+> pskb_carve_inside_header() has the same issue, the remaining linear data is
+> shifted by off bytes while the offsets are left untouched.
+> 
+Thanks for the explanation. The fix itself looks correct to me, and I
+understand why the stale MAC offset causes the BUG.
 
-The downstream handlers (digital_tg_recv_psl_req, digital_tg_recv_dep_req)
-each have their own length checks, so the consequence is a misdirected
-dispatch on stale data rather than memory corruption.  Add the missing
-check as hardening.
+Could I check my understanding of "far beyond skb_end_pointer()"?
+The dump shows headroom=0 and headlen=0, so head=data=tail. With
+end-tail=384 and mac=234, the MAC pointer is head+234, still before
+end at head+384. For this nonlinear skb, did you mean beyond
+skb_tail_pointer() rather than skb_end_pointer()?
 
-Fixes: 1c7a4c24fbfd ("NFC Digital: Add target NFC-DEP support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Liu Chao <liuc63@xiaopeng.com>
----
- net/nfc/digital_dep.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
-
-diff --git a/net/nfc/digital_dep.c b/net/nfc/digital_dep.c
-index 6d8e662a3..5093b7b81 100644
---- a/net/nfc/digital_dep.c
-+++ b/net/nfc/digital_dep.c
-@@ -1467,16 +1467,19 @@ static void digital_tg_recv_psl_req(struct nfc_digital_dev *ddev, void *arg,
- static void digital_tg_send_atr_res_complete(struct nfc_digital_dev *ddev,
- 					     void *arg, struct sk_buff *resp)
- {
--	int offset;
-+	unsigned int offset;
- 
- 	if (IS_ERR(resp)) {
- 		digital_poll_next_tech(ddev);
- 		return;
- 	}
- 
--	offset = 2;
--	if (resp->data[0] == DIGITAL_NFC_DEP_NFCA_SOD_SB)
--		offset++;
-+	if (!resp->len)
-+		goto bad_frame;
-+
-+	offset = (resp->data[0] == DIGITAL_NFC_DEP_NFCA_SOD_SB) ? 3 : 2;
-+	if (resp->len <= offset)
-+		goto bad_frame;
- 
- 	ddev->atn_count = 0;
- 
-@@ -1484,6 +1487,12 @@ static void digital_tg_send_atr_res_complete(struct nfc_digital_dev *ddev,
- 		digital_tg_recv_psl_req(ddev, arg, resp);
- 	else
- 		digital_tg_recv_dep_req(ddev, arg, resp);
-+
-+	return;
-+
-+bad_frame:
-+	kfree_skb(resp);
-+	digital_poll_next_tech(ddev);
- }
- 
- static int digital_tg_send_atr_res(struct nfc_digital_dev *ddev,
--- 
-2.50.1
-
+Thanks,
+Xuanqiang
