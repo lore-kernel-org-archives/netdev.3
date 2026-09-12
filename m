@@ -1,173 +1,188 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9BF3C584E
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 21:17:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147E03515CB
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 21:36:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789247838; cv=none; b=kpsMpl9kc2ILKuh69N3dfSbDzQ6lNXTRxy3JlMovPPXgeAxVBFFCR9wccuk7u/IaI2SWk9h6sznYF+ct21fBqhcbmwPb/SSqSbL3yU11FhjAEm/KFJTQWasEZfv1+lXc09t8BN543giHXJWUlT2ACfYWSH3qBgQdIHVbkwzO9xY=
+	t=1789248975; cv=none; b=e0A26zsVn8npZ031sVkNIva7cGcBiWs8OwKUK9WU6BSToNuu+gkPFi0n5JreMIGj8JowdV1dMR5Z6IQOA8/LCXLeyqgHA/Sw8d3j5mOHqK0wpGyzOWdxR8uYT5gfOInVlaUWi3hzCM4RdaO/nqhUewPVn0KgTD8tDBDFKrD8BUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789247838; c=relaxed/simple;
-	bh=LepYv14wccf0AuC0QMqyI7J+GISB3wJsJT6g7U3+gk8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=rUMPJewWgnxwR1H8rBCWH09xTvGrbNRaUEHienztd99VcOiBqPJyAjvY3bVt1t80rqjfwGm5fzIuV+3UlcAFvIFZNBa1SLJF4F0Z4lgIYtLOA5Nk2jNGe0+xbbzLtJatCxDzIzfjvt0xEzAJIISUbDRosVpOKceuYWJx+lwzhOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=WKr5pMx4; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=CFhh6zou; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1789248975; c=relaxed/simple;
+	bh=t3Z5cYxxBEPQ64epRTp9x58qAFYm5G8zgWcwPt6GQcw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kbTLfFSrqTnkCnyPTuoCVypBGA6rZwEFagscbJaQ+sjePPtXn7sfr7R6WdJQiBHiCJPuMyG2tF2rV8xgcYMbJm6ec/xy2FU0xnPrfzMQRVyAwBNgMJSutrTk8+iGSr1jsS2atCLGVCI3eK+PlwlF8DzbhDMCSrYkw5HTCkFzJnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=w+oXppiy; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="WKr5pMx4";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="CFhh6zou"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68CI4cfP060289
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 21:17:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=uLLbPlKs0eaia0hhi+j+T5
-	BP0erZ1UFOrHpPsEsvnYA=; b=WKr5pMx4oqJuMQzKdl3Zf58VxP5VlSkg03WAHw
-	rFNpxNzm0F+9V9qV6DXDAcR0sR9abAowCmU6P06/4Ls/SiCM19PBn/ihv5Tfr7BV
-	c3b29C96z+F6KRz71br4npGvg6rteaR9Ohxsob0+aN2gjXURYmG42L/RBiNhqckj
-	+WDN2As+lsn9DQJ7zd1037WVqKzldhR6R0NrmGy5/0aAeItrZ9NzS2F6S+fYG6cX
-	kJ3J5ZDLoPx1XYpZ/rkvKOiAoQxZ1SzSGrrYcg0QfForuYD3XpGiDql09GRPX94J
-	9qErcCESUerW7yeA/13/qxmQar964MC8BMpMhDqaqRJa5Zyw==
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gmy9dhxeb-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 21:17:13 +0000 (GMT)
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-9103f4ddce5so24427106d6.3
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 14:17:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1789247827; x=1789852627; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=uLLbPlKs0eaia0hhi+j+T5BP0erZ1UFOrHpPsEsvnYA=;
-        b=CFhh6zouLrt6AaPy2CZCI2hNpsQVl1j5bOeQrK3N3e+TC5YQurbPTWNAGDVAMQYWyG
-         mPThcGCyoiONDxadE3o7mJ/zY3CgnkZtPQxaqzSfTJqrdC8+LzASYvh06aBzPWXzqIJq
-         oepgvHJPq3IBNW+J2kFrvq9O28FKUycEfUlAF64dHNWF2jWX+KnsbuLY4HZLcQXlO9/C
-         /YrYHqN5hhJZ0y26pJ2y+1C3rbKVoqDcRsFLLI8rqr3rE8volFiGWcbcp8tgmOPycOtC
-         foCdejO7xgQXMXpzAi2KqYMiddwBRbqmEYKAPE5TrnPY8MHJjItvFmwsLZXt7N66+rxY
-         RrOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789247827; x=1789852627;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=uLLbPlKs0eaia0hhi+j+T5BP0erZ1UFOrHpPsEsvnYA=;
-        b=ikOC8o5yTjUK7PeZkg/FF61/MOmrGVWNnlO6IyU0aNqpbyDLO0+GwKGRHj9ZjM1czm
-         LZ8bznzfCUbXzP2DPH/mfVh28XN1xav9p+Xm9qIZNvxLpa1rKqY0g9q25+zAJb2gCIE3
-         j18DKqSMlAnN9ov8t0xIGzY4V0lMxH45e9IBxbw5zQ/D6nh2u7e/nl2Zb+PYZCc86B6B
-         CA8ugpClOnewKDbvn/4pZBTR/b7nJSdLc1EODbvXT3ZfRb1OMsuTaJw68V3CIfX88PN0
-         T3jlNY4UKWigkPMUB6zIJ/wkkcpku+b/ItTTn28mMWiGgd3TAGzoZZ8cCmut7/7ebSe9
-         S0Ng==
-X-Gm-Message-State: AFuF++khJuvLCkjhUlsIqMQGPmxl7Z17VsCGmXiqEGELMFYpaGkBT9Tq
-	v0oJluctH6IqeLwCnKDw/WTj+T6DasWrNUaggA9+5A/s994CIMvmULA99Pj57S301yd0Z775m93
-	IrdD5m9Xd34+whC5C3lXSCRan98FcXN6VzrYp2FQRkl0DwZIZhaXPWnNekG0=
-X-Gm-Gg: AYBFou3PXgh33bEdO8W/CVLn5Nvj9c92DdpyRXS0y9m4yLl/mCRFoHrW0s2WQo0IxTn
-	xX4ExmWOIsfO13AOrkav5tYz3Z98MBQYfqnEk3L4OW1Z4buMyvjvvUStkYdPR455Tt/rPS6+CNO
-	jzAMTuSUBrhmWLSCPr+fZE2SOUDrjWX5/RFtCU35la7FuxqpRbBzWjQPHUuXaHk4dosltJjujea
-	5g04btEpellS4VWLQrgGez44MF76mxda+VG3EXV7OWiu14pq2igiIHkBpcLCu7BulFsAn1FuptZ
-	gvezu3VAMjaLR6gt0r0dJrJRUjfVshAcsg/kZGdvXzQ82XsHD/AG3+4FohUzymEF6CTrmGq/5R7
-	qVAeIumylgN2paw==
-X-Received: by 2002:a05:620a:298a:b0:93a:824:ac8d with SMTP id af79cd13be357-93a0824ae72mr586288085a.27.1789247827497;
-        Sat, 12 Sep 2026 14:17:07 -0700 (PDT)
-X-Received: by 2002:a05:620a:298a:b0:93a:824:ac8d with SMTP id af79cd13be357-93a0824ae72mr586281685a.27.1789247826890;
-        Sat, 12 Sep 2026 14:17:06 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d26c2985dsm454971865e9.6.2026.09.12.14.17.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Sep 2026 14:17:05 -0700 (PDT)
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Date: Sat, 12 Sep 2026 23:16:24 +0200
-Subject: [PATCH net] net: stmmac: report phc_index as -1 when no PTP clock
- is registered
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="w+oXppiy"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 789911A030B;
+	Sat, 12 Sep 2026 21:36:04 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E44CE60580;
+	Sat, 12 Sep 2026 21:36:03 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C302611C7AFB3;
+	Sat, 12 Sep 2026 23:35:49 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789248958; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=N/CbiDPrUOsN+7DAN3mxpptlWvTyBYiJ+JQCnLs+z18=;
+	b=w+oXppiydFxBpp5BUd31WCr9pmxENm2EDF8f4NAQ9wHCCHuLUp9Bp4s0RTmbvquk0fVqGd
+	RKl4I2hzWD+RAkVx4kbw+bZOlAWjOqqbKy9B/Ln7uPyWMYy//XqoN2NgDTTqCj0grpaBPm
+	1o0pvbduZkdmAKCDvnhjKV8ZtGoEYGtgJsOf5PsH/+/WQEOYvW55k0q+SYmhi/8vJm5qOG
+	VQp5zw7iXmh7gGc3TUPVuYs1AuWRM3ILC+DGQkw8j6pBcB0dqmWLmFHTFzSZH/5syzeq8Z
+	JZKHe0RTg8AcD3SHzk9ei3k/LjlgbhxwDROAY1HpTJh81ElS0y14qC8uZObtug==
+Message-ID: <7d72b99f-ca65-4ad4-954c-b3f9d07de523@bootlin.com>
+Date: Sat, 12 Sep 2026 23:35:48 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v6] net: stmmac: remove software VLAN tag stripping
+To: peilinhe2020@163.com, he.peilin@zte.com.cn
+Cc: alexandre.torgue@foss.st.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, jiang.kun2@zte.com.cn, kuba@kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com, mcoquelin.stm32@gmail.com,
+ netdev@vger.kernel.org, pabeni@redhat.com, vbridgers2013@gmail.com,
+ xu.xin16@zte.com.cn
+References: <202609040845307827XHaxAT2PmgJc9jjPqfAP@zte.com.cn>
+ <20260911141126.10592-1-peilinhe2020@163.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260911141126.10592-1-peilinhe2020@163.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260912-stmmac-fix-phc_index-v1-1-26e1ead25324@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqAMBDEviJ7dqHtQdGviIiuo+7BKq2IUPy7x
- WMgSaKIoIjUFokCbo16+Ay2LEi20a9gnTOTM64yjXUcr30fhRd9+NxkUD/jYYtpsY0ITF1RTs+
- ALPzbjjwu6t/3A40yBohrAAAA
-X-Change-ID: 20260912-stmmac-fix-phc_index-1ebf19cce076
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Gal Pressman <gal@nvidia.com>,
-        Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-        Carolina Jubran <cjubran@nvidia.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Proofpoint-GUID: -Rst_0CY_nbMStnUeMXFv3FqqMkHqQ5J
-X-Proofpoint-ORIG-GUID: -Rst_0CY_nbMStnUeMXFv3FqqMkHqQ5J
-X-Authority-Analysis: v=2.4 cv=NelzRGD4 c=1 sm=1 tr=0 ts=6aa5c159 cx=c_pps
- a=UgVkIMxJMSkC9lv97toC5g==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
- a=EUspDBNiAAAA:8 a=N7w_mUtDbW-LDaCnSHMA:9 a=QEXdDO2ut3YA:10
- a=1HOtulTD9v-eNWfpl4qZ:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTEyMDMxMCBTYWx0ZWRfXxJnVk3vstkS3
- b4Tdpwzd6Xh5v2zdT8JClRE6fWlvkrNRiRobzXht2TyqUiL8xq9270n6qMeZ9VtJqCgUvx0rzE4
- bor5f0mE/vgRvea1wHx7bK+0D41scA4=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTEyMDMxMCBTYWx0ZWRfX341M7Oa0Hj1C
- WiE5pMnSGvGumVLmi4ar9j0RadRu/KoawL/Nj1SPxoAMWWKtT0flSzWo7eNU8s4BvvnHuL/VSBe
- D7anRzsDJV4mUyQEpzYsRcvoCJD2jLKkdOMW3sBlAb7T7QDS8hWWONW+pe/MVcVLr57L2bytyh1
- i9LGu1tjegp/VLuHlx//fVTTenerc6UWKCyr87fOOj3vns+jQfLdu39PyTE/OqI0/0Jg/DFVngS
- vvWDRJuyUZbSuQM35A5o6g9YOh0C2trKVOBiXpuXTf3O15/tDZwiXq+wehNIzh8fkkDyG9Mly1b
- Jxhfj/D8tWBoDifIuxx3Babqwr9JW/QxFq26ZFbPiej0gAoXGX6/nKF/a3ZI2JJVFZPawt2qS31
- E1Izz/r8TU2o4UG32oh88AnZZbOeBmKo5Zfy3ilb2+p1QhXJPi+XTfa++0nd5UG64fZUlndDXwc
- S6BqnsLJmgue7KOVc1w==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-12_06,2026-09-11_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0 impostorscore=0 priorityscore=1501 clxscore=1015
- spamscore=0 malwarescore=0 suspectscore=0 lowpriorityscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609120310
+X-Last-TLS-Session-Version: TLSv1.3
 
-When hardware timestamping is supported but no PTP clock has been
-registered yet (e.g. while the interface is down), stmmac_get_ts_info()
-currently reports phc_index as 0. Zero is a valid PHC index and would
-make userspace resolve the wrong clock; the absence of a clock should
-be reported as -1, matching ethtool_init_tsinfo() and
-ethtool_op_get_ts_info().
+Hi,
 
-Report -1 when no PTP clock is available.
+On 9/11/26 16:11, peilinhe2020@163.com wrote:
+> From: Peilin He <he.peilin@zte.com.cn>
 
-Fixes: 9364fa7fcf12 ("net: stmmac: Remove setting of RX software timestamp")
-Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Eaxh patch should be an independent thread, not a reply to the previous
+one.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-index 154cc0c7623d..eced707131cd 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-@@ -1017,7 +1017,7 @@ static int stmmac_get_ts_info(struct net_device *dev,
- 		if (priv->ptp_clock)
- 			info->phc_index = ptp_clock_index(priv->ptp_clock);
- 		else
--			info->phc_index = 0;
-+			info->phc_index = -1;
+> 
+> The software VLAN stripping logic in stmmac_rx_vlan() was originally
+> introduced in 2014 by commit b93819854d6e ("stmmac: Add vlan rx for
+> better GRO performance.") as a workaround to improve GRO performance,
+> since at that time GRO could not handle frames with VLAN tags. However,
+> this limitation was resolved in 2015 by commit 66e5133f19e9 ("vlan: Add
+> GRO support for non hardware accelerated vlan"), which added GRO support
+> for non-hardware-accelerated VLAN frames. Keeping a software fallback
+> path for VLAN stripping is no longer necessary and only adds complexity.
+> 
+> Fixes: b93819854d6e ("stmmac: Add vlan rx for better GRO performance.")
+> Signed-off-by: Peilin He <he.peilin@zte.com.cn>
+> Reviewed-by: xu xin <xu.xin16@zte.com.cn>
+> Reviewed-by: Jiang Kun <jiang.kun2@zte.com.cn>
+
+So this patch breaks all the stmmac selftests on some dwmac1000, e.g. on
+dwmac-meson8b  :
+
+# ethtool -t eth0
+
+[trimming the output to tests that don't report -95, i.e. -EOPNOTSUPP]
+
+The test result is FAIL
+The test extra info:
+ 1. MAC Loopback                 -110
+ 2. MMC Counters                 -110
+ 3. EEE                          -110
+ 4. Hash Filter MC               -110
+ 8. Flow Control                 -110
+28. Jumbo Frame                  -110
+
+However I'd say this patch is still correct, what seems to be happening is :
+
+As now we don't have the NETIF_F_HW_VLAN_[C|S]TAG_RX flags set anymore, the
+platforms that don't support VLAN offloads end-up skipping this check in
+stmmac_phylink_setup() :
+
+         if (!(priv->plat->flags & STMMAC_FLAG_RX_CLK_RUNS_IN_LPI) &&                  
+             !(priv->dev->features & NETIF_F_VLAN_FEATURES))                           
+                 config->eee_rx_clk_stop_enable = true;    
  
- 		info->tx_types = (1 << HWTSTAMP_TX_OFF) | (1 << HWTSTAMP_TX_ON);
- 
+So if we enter LPI during the selfests, PHY stops rxc, and notoriously on
+stmmac if you don't have RXC, half the features don't work, and especially
+the DMA RX path.
 
+This is confirmed by running :
+
+# ethtool --set-eee eth0 eee off
+# ethtool -t eth0
+The test result is PASS
+The test extra info:
+ 1. MAC Loopback                 0
+ 2. MMC Counters                 0
+ 4. Hash Filter MC               0
+ 8. Flow Control                 0
+28. Jumbo Frame                  0
+
+
+A solution is to block RXC from being disabled in the selftests.
+
+Can you add the following patch to your series, as patch number 1 so
+that ethtool selftests still work during bisect ? I've tested it on
+the board who'se selftest failed with this patch and it works :)
+
+Thanks,
+
+Maxime
+
+--------------------8x------------------------------------------
+
+From 9e4bea5f2292521997ef6b3814b586a9623993aa Mon Sep 17 00:00:00 2001
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Date: Sat, 12 Sep 2026 23:15:03 +0200
+Subject: [PATCH] net: stmmac: selftests: Prevent RXC from being disabled in
+ LPI
+
+RXC is critical to the RX path and some register banks in stmmac, so
+it is blocked from being disabled in LPI when we know we're going
+to need that clock.
+
+During selftests, we're in MAC loopback so the PHY may enter LPI and
+stop its RXC. This will prevent the RX path from properly receiving
+the looped-back packets, hence failing the selftests.
+
+As the NETIF_F_VLAN_FEATURES may be empty on some platforms once the
+software vlan stripping is removed, the phylink config attribute
+'eee_rx_clk_stop_enable' may no longer be inconditionnally set to
+true, hence allowing RXC to be disabled during LPI on platforms
+that don't have any VLAN features.
+
+Fixes: 091810dbded9 ("net: stmmac: Introduce selftests support")
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
-base-commit: 78445023439506ebd83b86d40b1e428a3b309d4a
-change-id: 20260912-stmmac-fix-phc_index-1ebf19cce076
+ drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Best regards,
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+index cd7dc99095a0..982c711a9700 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+@@ -2044,12 +2044,14 @@ void stmmac_selftest_run(struct net_device *dev,
+ 		return;
+ 	}
+ 
++	phylink_rx_clk_stop_block(priv->phylink);
+ 	for (i = 0; i < count; i++) {
+ 		ret = stmmac_selftests[i].fn(priv);
+ 		if (ret && (ret != -EOPNOTSUPP))
+ 			etest->flags |= ETH_TEST_FL_FAILED;
+ 		buf[i] = ret;
+ 	}
++	phylink_rx_clk_stop_unblock(priv->phylink);
+ 
+ 	stmmac_set_mac_loopback(priv, priv->ioaddr, false);
+ }
 -- 
-Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+2.55.0
+
 
