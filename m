@@ -1,43 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28543AC00
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 00:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1F84BEE3E;
+	Sat, 12 Sep 2026 00:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789171593; cv=none; b=DfpN2oYjJmn1xs4EfYsuFNrICXeDpnxZuW/zTe/fQeP24lKLWI5CWSxUbvxq6VdlMfb0q7p3umYA5BX4u4Za0sqzi6NmlFHP0E8TqDziGe1DGFWcYbV7Nroi6K3xtls9xyChpYH/q2T6BqXURCf6w65rkO2+shgTlnI0LJQ3NQA=
+	t=1789171595; cv=none; b=DPLczFEd+PA6iekTPuRPFay/cO4K4dyxqYy8/DJUZhDZbBImlAJfqIkeOY57UQM1XtpHB7AN/XunI+dXND0/ODLDiU1ThqCVkihKzcVu5ss4+TCiAMrxhvnW4zXRKF5Exw3daewKIIyaQl6v5M5nZkFZNn41gaQmrGxr8l1s4vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789171593; c=relaxed/simple;
-	bh=PzPzAYnFIyb1RpC3fFdHUBIUW34685ubm82agoPJHBM=;
+	s=arc-20240116; t=1789171595; c=relaxed/simple;
+	bh=keZxP/D8IgJJnR6TnRD7lh5vqhLtmRamurmBz4YQccs=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qzDlJOYnWf/PyYGLDtUQhGKF6IA0mS2C6nOUPQcqTdg93OVlQg3xyiUhYGxoEJb9suM6VoLvcbHSkOktGoBKLzWU/DBy4sFmAdZXAqC1MdoZBiSP1ErxHP4r8z3rzvdOujLhvZhQGyc22XsCbATnlfXYGhlPzKldiTQEipybRS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WTxGK2yj; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=JC0p6+bm6FtNU/AR7bKgnPFDsjeETX5uHaQw6grY+pUanbD/bY4WJ6+ReQu2VUs8TxBxciQ+RPT3+0077V/ejEoK65citiT0JCto+IuuhcOj+EYI36a1WikZYhKuT+2ndHY/7dcgUMXKy9btsWTV1so4DzJAXUW1urneoJljqgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N6ujCH0m; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WTxGK2yj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A332C1F00893;
-	Sat, 12 Sep 2026 00:06:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N6ujCH0m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02661F000FF;
+	Sat, 12 Sep 2026 00:06:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789171591;
-	bh=lxOehLNxF4tlyLyLQCgqOYqfV3EqWhPuIVTXdkGG4gY=;
+	s=k20260515; t=1789171593;
+	bh=dPrvIZhhQ5aXmo6tNNfKlwb6lA0WtD1EQiIp+7CTDO8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=WTxGK2yjJPkp7v3hoam+kMczpPEuI9S9QSrtKLmok4sy4FrVvZBV2mD6ZqHg4B/+K
-	 1LEk+v/nhNJJNyu4UcFW7Dqk9/dwe160Dz3dwWAGP19jgUu5MLaQGnmswbSr9Op151
-	 3PP6zPkxKXYNffsaV30ywG08hzqanTlB7Z062AJfXZvj/UmblDa5jAyf5dOLnla/LA
-	 f9aJy+Yx2IxM2kRzsfcu6OkRQHoWObPq8hvxy3YcXJYqV12RPB2lO6tswA/t8i75bn
-	 xYEamReWEyFseWx2ceBYGOuyWwQx/+RG0/HxRthR6GtbojQ4Z5zQGLUr1nUro69ghk
-	 BXRTHFSyear2Q==
-Subject: Re: [PATCH net-next v7] net: airoha: add LRO offload support
+	b=N6ujCH0mVo8k8B6NUPwD0CGn8JIavVj8t2G8hhV0d3KSVGpSeIb17jUaJtDPL1z6k
+	 14s2UzGEU5NS5wEeKMsM8ozqCiJ/cCc9sYZo6p7/gaZkLk969F0ONISPqU0/7PvQ97
+	 XzU+7Keyoogp5avmU5KAvKAVix0uNvXGj9QFKeYmbJyOu7y7U6peIrQx67AWbBKl8t
+	 iKJrve1+gljP73VlQxsm7oZaFTxv5Zwafz38T1t8EPVIYC3SKwOSBB2tmFA7MFT5E+
+	 clEAzrL9ENQduEMBnRuiCRInQd0y22tePw+QJLXCxlFPlULVhKltG4ttTORS5HN5/0
+	 6k/g3zRHxTmkg==
+Subject:
+ Re: [PATCH net-next v2 1/4] netconsole: add a per-target message rate limit
 From: netdev-bot+sashiko@kernel.org
-To: lorenzo@kernel.org
+To: leitao@debian.org
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, aleksander.lobakin@intel.com,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- netdev@vger.kernel.org, madhur.agrawal@airoha.com, horms@kernel.org
-Date: Sat, 12 Sep 2026 00:06:30 +0000
-Message-ID: <178917159014.219967.5680210222972540082@kernel.org>
-In-Reply-To: <20260909-airoha-eth-lro-v7-1-e6317be79067@kernel.org>
-References: <20260909-airoha-eth-lro-v7-1-e6317be79067@kernel.org>
-X-sashiko-severity: Medium
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
+ skhan@linuxfoundation.org, shuah@kernel.org, rdunlap@infradead.org,
+ paulmck@kernel.org, gustavold@gmail.com, asantostc@gmail.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ kernel-team@meta.com
+Date: Sat, 12 Sep 2026 00:06:32 +0000
+Message-ID: <178917159246.219967.9750702498539140287@kernel.org>
+In-Reply-To: <20260910-netcons_ratelimit-v2-1-ebf0dd91e26e@debian.org>
+References: <20260910-netcons_ratelimit-v2-1-ebf0dd91e26e@debian.org>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,241 +54,160 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
-- [Medium] In airoha_qdma_init_rx_queue() the page_pool order, buffer
-  size and the hardware scatter-gather setting for RX rings 24-31 are…
-- [Medium] The per-QDMA CDM LRO engine is armed from paths that do not
-  require the netdev to be running, and there is no unconditional disarm…
+- [High] The oops_in_progress bypass in netconsole_ratelimited()
+  (drivers/net/netconsole.c:299-306) does not deliver the guarantee its…
+- [Low] In netconsole_write() (drivers/net/netconsole.c:2518-2534) the
+  rate-limit token is consumed by netconsole_ratelimited() ->…
 
 --
 
-net: airoha: add LRO offload support
+netconsole: add a per-target message rate limit
 
-This adds LRO offload to airoha_eth using the eight hardware LRO queues
-mapped to RX rings 24-31, bumps the page_pool order for those rings and
-disables hardware scatter-gather on them, and sets GSO metadata plus
-CHECKSUM_PARTIAL on aggregated skbs. NETIF_F_LRO is exposed in
-hw_features and re-evaluated when the QDMA user count changes.
+This adds a struct ratelimit_state token bucket to each netconsole target
+and consults it once per message in netconsole_write(). The bucket is
+initialised with a zero interval (unlimited) and the check is skipped while
+oops_in_progress is set.
 
-A couple of questions below about the unconditional buffer sizing and
-about the lifetime of the CDM LRO enable bits.
-
-> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
-> index 64619e9a704dd..21ac80bdd084a 100644
-> --- a/drivers/net/ethernet/airoha/airoha_eth.c
-> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
+> diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+> index b358e5c367351..13292c3f818e9 100644
+> --- a/drivers/net/netconsole.c
+> +++ b/drivers/net/netconsole.c
 
 [ ... ]
 
-> @@ -800,12 +1027,10 @@ static int airoha_qdma_rx_napi_poll(struct napi_struct *napi, int budget)
->  static int airoha_qdma_init_rx_queue(struct airoha_queue *q,
->  				     struct airoha_qdma *qdma, int ndesc)
->  {
-> -	const struct page_pool_params pp_params = {
-> -		.order = 0,
-> +	struct page_pool_params pp_params = {
->  		.pool_size = 256,
->  		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
->  		.dma_dir = DMA_FROM_DEVICE,
-> -		.max_len = PAGE_SIZE,
->  		.nid = NUMA_NO_NODE,
->  		.dev = qdma->eth->dev,
->  		.napi = &q->napi,
-> @@ -813,9 +1038,10 @@ static int airoha_qdma_init_rx_queue(struct airoha_queue *q,
->  	struct airoha_eth *eth = qdma->eth;
->  	int qid = q - &qdma->q_rx[0], thr;
->  	dma_addr_t dma_addr;
-> +	bool lro_q;
->  
-> -	q->buf_size = PAGE_SIZE / 2;
->  	q->qdma = qdma;
-> +	lro_q = airoha_qdma_is_lro_queue(q);
->  
->  	q->entry = devm_kzalloc(eth->dev, ndesc * sizeof(*q->entry),
->  				GFP_KERNEL);
-> @@ -827,6 +1053,9 @@ static int airoha_qdma_init_rx_queue(struct airoha_queue *q,
->  	if (!q->desc)
->  		return -ENOMEM;
->  
-> +	pp_params.order = lro_q ? AIROHA_LRO_PAGE_ORDER : 0;
-> +	pp_params.max_len = PAGE_SIZE << pp_params.order;
-> +
->  	q->page_pool = page_pool_create(&pp_params);
->  	if (IS_ERR(q->page_pool)) {
->  		int err = PTR_ERR(q->page_pool);
-> @@ -835,6 +1064,7 @@ static int airoha_qdma_init_rx_queue(struct airoha_queue *q,
->  		return err;
->  	}
->  
-> +	q->buf_size = lro_q ? pp_params.max_len : pp_params.max_len / 2;
->  	q->ndesc = ndesc;
->  	netif_napi_add(eth->napi_dev, &q->napi, airoha_qdma_rx_napi_poll);
->  
-> @@ -848,7 +1078,12 @@ static int airoha_qdma_init_rx_queue(struct airoha_queue *q,
->  			FIELD_PREP(RX_RING_THR_MASK, thr));
->  	airoha_qdma_rmw(qdma, REG_RX_DMA_IDX(qid), RX_RING_DMA_IDX_MASK,
->  			FIELD_PREP(RX_RING_DMA_IDX_MASK, q->head));
-> -	airoha_qdma_set(qdma, REG_RX_SCATTER_CFG(qid), RX_RING_SG_EN_MASK);
-> +	if (lro_q)
-> +		airoha_qdma_clear(qdma, REG_RX_SCATTER_CFG(qid),
-> +				  RX_RING_SG_EN_MASK);
-> +	else
-> +		airoha_qdma_set(qdma, REG_RX_SCATTER_CFG(qid),
-> +				RX_RING_SG_EN_MASK);
-
-[Severity: Medium]
-Is the order-2 sizing meant to be paid even when LRO is never enabled?
-
-airoha_qdma_is_lro_queue() is a pure function of the ring index
-(AIROHA_RXQ_LRO_EN_MASK & BIT(qid)), so it does not depend on
-NETIF_F_LRO at all:
-
-	return !!(AIROHA_RXQ_LRO_EN_MASK & BIT(qid));
-
-airoha_qdma_init_rx() initializes every ring in RX_DONE_INT_MASK, which
-expands to 0xffffffff, so rings 24-31 of both eth->qdma[0] and
-eth->qdma[1] are always live. For those rings this hunk gives
-pp_params.order = get_order(SZ_16K) (2 with 4 KiB pages),
-pp_params.max_len = 16384 and q->buf_size = 16384.
-
-Since q->buf_size equals max_len, page_pool_alloc_frag_netmem() no
-longer sub-allocates (it only splits when the request is smaller than
-max_size), so airoha_qdma_fill_rx_queue() consumes one whole order-2
-compound page per descriptor:
-
-	page = page_pool_dev_alloc_frag(q->page_pool, &offset,
-					q->buf_size);
-
-That moves the per-ring in-flight RX memory from roughly 31 x 2 KiB to
-31 x 16 KiB, i.e. about +4 MiB per QDMA block.
-
-Meanwhile NETIF_F_LRO is only added to netdev->hw_features:
-
-	netdev->hw_features = AIROHA_HW_FEATURES | NETIF_F_LRO;
-	netdev->features |= AIROHA_HW_FEATURES;
-
-so LRO is off at probe, and airoha_dev_fix_features() strips
-NETIF_F_LRO whenever qdma->users > 1. On a board with two GDM devices
-sharing one QDMA the feature can never be turned on, yet those rings
-still hold 16 KiB buffers with RX_RING_SG_EN_MASK cleared, and the
-pools are never re-created when LRO is toggled.
-
-With scatter-gather cleared on those rings there is also no fragment
-fallback, and refill runs from NAPI with GFP_ATOMIC | __GFP_NOWARN.
-Could order-2 atomic allocation failures under fragmentation simply
-starve rings 24-31 here?
-
-Would it be possible to key the order, buf_size and SG setting on
-whether LRO is actually enabled, rather than on the ring index?
-
-[ ... ]
-
-> @@ -1954,6 +2235,10 @@ static int airoha_dev_stop(struct net_device *netdev)
->  		airoha_set_gdm_port_fwd_cfg(dev->eth,
->  					    REG_GDM_FWD_CFG(port->id),
->  					    FE_PSE_PORT_DROP);
-> +
-> +	if (netdev->features & NETIF_F_LRO)
-> +		airoha_dev_lro_disable(dev);
-> +
->  	return 0;
+> @@ -282,6 +285,26 @@ static void dynamic_netconsole_mutex_unlock(void)
+>  	mutex_unlock(&dynamic_netconsole_mutex);
 >  }
-
-[ ... ]
-
-> @@ -2136,8 +2424,14 @@ static void airoha_dev_set_qdma(struct airoha_gdm_dev *dev)
->  			airoha_qdma_rr(qdma, REG_CNTR_VAL((i << 1) + 1));
->  	}
 >  
-> -	if (cur_qdma)
-> +	if (cur_qdma) {
-> +		cur_qdma->users--;
->  		netif_tx_wake_all_queues(netdev);
-> +	}
-> +
-> +	airoha_update_netdev_features(dev);
-> +	if (netdev->features & NETIF_F_LRO)
-> +		airoha_dev_lro_enable(dev);
->  }
-
-[ ... ]
-
-> +static int airoha_dev_set_features(struct net_device *netdev,
-> +				   netdev_features_t features)
+> +static void netconsole_ratelimit_init(struct netconsole_target *nt)
 > +{
-> +	struct airoha_gdm_dev *dev = netdev_priv(netdev);
+> +	ratelimit_state_init(&nt->ratelimit, 0, DEFAULT_RATELIMIT_BURST);
+> +	/* The flag keeps ___ratelimit() from reporting the suppressed count
+> +	 * itself, which would printk() from inside the console being
+> +	 * serviced. Nothing calls ratelimit_state_exit(), so the count is
+> +	 * never reported on release either.
+> +	 */
+> +	ratelimit_set_flags(&nt->ratelimit, RATELIMIT_MSG_ON_RELEASE);
+> +}
 > +
-> +	if (features & NETIF_F_LRO)
-> +		airoha_dev_lro_enable(dev);
-> +	else
-> +		airoha_dev_lro_disable(dev);
+> +static bool netconsole_ratelimited(struct netconsole_target *nt)
+> +{
+> +	/* A limit meant for steady-state logging must not eat a crash dump. */
+> +	if (oops_in_progress)
+> +		return false;
 > +
-> +	return 0;
+> +	return !__ratelimit(&nt->ratelimit);
 > +}
 
-[Severity: Medium]
-Should the LRO arming in airoha_dev_set_features() and at the tail of
-airoha_dev_set_qdma() be gated on netif_running()?
+[Severity: High]
+Does the oops_in_progress test in netconsole_ratelimited() actually cover
+oops and BUG() output on netconsole?  The changelog says:
 
-__netdev_update_features() dispatches ndo_set_features regardless of
-the running state, so "ethtool -K ethX lro on" on an administratively
-down interface reaches airoha_dev_lro_enable(), which programs
-REG_CDM_LRO_LIMIT, REG_CDM_LRO_AGE_TIME, the REG_CDM_LRO_RXQ mapping
-and REG_CDM_LRO_EN for that QDMA block.
+    Skip the bucket while oops_in_progress is set, so a limit configured
+    for steady-state logging never truncates an oops, BUG() or panic().
 
-The only automatic disarm is in airoha_dev_stop():
+and the documentation patch later in the series repeats it ("Crash output
+bypasses the bucket. While an oops, BUG() or panic() is in progress every
+message is sent").
 
-	if (netdev->features & NETIF_F_LRO)
-		airoha_dev_lro_disable(dev);
+Both consoles are registered with CON_NBCON_ATOMIC_UNSAFE:
 
-which is only reached for a device that was successfully opened, so
-nothing clears REG_CDM_LRO_EN for hardware armed while the device was
-down.
+drivers/net/netconsole.c
+    static struct console netconsole = {
+        .name = "netcon",
+        .flags = CON_ENABLED | CON_NBCON | CON_NBCON_ATOMIC_UNSAFE,
 
-The same applies to airoha_dev_set_qdma(): airoha_update_netdev_features()
-runs first, so a device whose wanted NETIF_F_LRO had been masked by
-qdma->users > 1 regains the bit and then gets the destination QDMA
-armed even while it is down.
+and console_is_usable() refuses such a write_atomic() callback unless
+unsafe takeovers are allowed:
 
-Neither airoha_qdma_cleanup() nor airoha_hw_cleanup() clears the LRO
-enable bits or the queue mapping before RX DMA is stopped and the rings
-and page pools are destroyed, so the CDM aggregation engine is left
-enabled with a stale queue mapping after teardown. Would an
-unconditional airoha_fe_lro_disable() on the QDMA cleanup path be
-appropriate?
+include/linux/console.h:console_is_usable() {
+    ...
+            if ((flags & CON_NBCON_ATOMIC_UNSAFE) && !nbcon_allow_unsafe_takeover())
+                    return false;
+    ...
+}
 
-This is also inconsistent with the surrounding convention in the same
-file: airoha_enable_qos_for_gdm34() and airoha_disable_qos_for_gdm34()
-both gate their REG_GDM_FWD_CFG writes on netif_running(netdev).
+kernel/printk/nbcon.c
+    bool nbcon_allow_unsafe_takeover(void)
+    {
+            return panic_on_this_cpu() && panic_nbcon_allow_unsafe_takeover;
+    }
 
-> diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
-> index 527e3833e36b1..286f73e2e1e09 100644
-> --- a/drivers/net/ethernet/airoha/airoha_eth.h
-> +++ b/drivers/net/ethernet/airoha/airoha_eth.h
-> @@ -46,6 +46,18 @@
->  	 (_n) == 15 ? 128 :		\
->  	 (_n) ==  0 ? 1024 : 32)
+So during a non-panic oops the atomic flush skips netconsole entirely.  In
+the emergency context that oops_enter() establishes, only nbcon_atomic is
+selected, not nbcon_offload:
+
+kernel/printk/internal.h:printk_get_console_flush_type() {
+    ...
+    case NBCON_PRIO_EMERGENCY:
+            if (have_nbcon_console && !have_boot_console)
+                    ft->nbcon_atomic = true;
+    ...
+}
+
+which means the netconsole kthread is not woken while the backtrace is
+being emitted.  The wake happens later, from
+nbcon_cpu_emergency_exit() -> nbcon_kthreads_wake(), reached via
+oops_exit(), and on x86 oops_end() runs bust_spinlocks(0) (which drops
+oops_in_progress back to 0) before oops_exit().
+
+Doesn't that mean every record of an oops or BUG() backtrace reaches
+netconsole_write() with oops_in_progress == 0 and is charged against the
+bucket?  With the configfs interval knob from the following patch set to a
+nonzero value, a backtrace is many more records than
+DEFAULT_RATELIMIT_BURST (10), so would it be silently truncated?  panic()
+looks protected because it does bust_spinlocks(1) before the panic-CPU
+unsafe atomic flush, but oops/BUG do not appear to be.
+
+Would keying the bypass off the nbcon record/context priority, or the nbcon
+emergency nesting count, work better here than the global oops_in_progress
+flag?
+
+[ ... ]
+
+> @@ -2482,6 +2515,9 @@ static void netconsole_write(struct nbcon_write_context *wctxt, bool extended)
+>  		    !netif_running(nt->np.dev))
+>  			continue;
 >  
-> +#define AIROHA_LRO_PAGE_ORDER		get_order(SZ_16K)
-> +#define AIROHA_MAX_NUM_LRO_QUEUES	8
-> +#define AIROHA_RXQ_LRO_EN_MASK		GENMASK(31, 24)
-
-[ ... ]
-
-> +static inline bool airoha_qdma_is_lro_queue(struct airoha_queue *q)
-> +{
-> +	struct airoha_qdma *qdma = q->qdma;
-> +	int qid = q - &qdma->q_rx[0];
+> +		if (netconsole_ratelimited(nt))
+> +			continue;
 > +
-> +	/* EN7581 SoC supports at most 8 LRO rx queues */
-> +	BUILD_BUG_ON(hweight32(AIROHA_RXQ_LRO_EN_MASK) >
-> +		     AIROHA_MAX_NUM_LRO_QUEUES);
-> +
-> +	return !!(AIROHA_RXQ_LRO_EN_MASK & BIT(qid));
-> +}
+>  		/* If nbcon_enter_unsafe() fails, just return given netconsole
+>  		 * lost the ownership, and iterating over the targets will not
+>  		 * be able to re-acquire.
 
-[ ... ]
+[Severity: Low]
+This isn't much of a bug, but is the token spent a bit early here?
+netconsole_ratelimited() -> __ratelimit() decrements rs->rs_n_left:
+
+lib/ratelimit.c:___ratelimit() {
+    ...
+	if (atomic_read(&rs->rs_n_left) > 0 && atomic_dec_return(&rs->rs_n_left) >= 0)
+		ret = 1;
+    ...
+}
+
+and only afterwards does netconsole_write() check ownership:
+
+drivers/net/netconsole.c:netconsole_write() {
+    ...
+	if (!nbcon_enter_unsafe(wctxt))
+		return;
+    ...
+}
+
+If nbcon_enter_unsafe() returns false the message is never transmitted, yet
+the token is gone and there is no way to give it back.  The return value of
+nbcon_exit_unsafe() is also ignored, so a further loop iteration can spend
+another target's token before lost ownership is noticed.
+
+In practice this only shows up on the panic-CPU unsafe takeover path, since
+console_is_usable() rejects netconsole's write_atomic() for every other
+context, and there the re-emitted record hits the oops_in_progress bypass
+anyway.  Would consuming the token only after the write context is acquired
+(or only on a successful send) be cleaner?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909-airoha-eth-lro-v7-1-e6317be79067%40kernel.org
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260910-netcons_ratelimit-v2-0-ebf0dd91e26e%40debian.org
