@@ -1,192 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo2-f6.google.com (mail-oo2-f6.google.com [74.125.231.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB3A7416870
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 09:36:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9EA936A36A
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 09:57:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789205773; cv=none; b=MxbbSkXKoZXFAeSDxc83CuVTQnJZRg4eAmM1FkUwJtI/60W7y/wDzjOM0y3kj+rvxlRRjuwp/ojUP37Hmmzrq03Wg1kP+51VtW3PsmBLXb2LVE6VxB1BxSzwDurgPDx6IZeyjxUIR4O72UomDYIHd5iPbx8ah0XdBeHyobLBRiE=
+	t=1789207051; cv=none; b=ExzN6uzuDUsLAXm05yiIP10svR7tfwmb1AtSVbXvVUaq19AYobkWhh+nOZ5JCajf0f/uLYBRN+23aVDEkY0Pl4QBrU2GhDohm8vqMZFasS8vYTx0/qRz9s0G1Ii0jd7ZBX9WGNKUEliDst/2QYQxI8r8UlhQmUmR4HoItCCfIIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789205773; c=relaxed/simple;
-	bh=5PP8v4e2du4jh4kzrNUVVWrWELbxgQwsg4sJKZimPh4=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=etID5ikkBNOvMSBIEvp4Xl7MdPPxruG22z91Kbu2hxiqTQ7JbZUMJO5ZVIaoQh7I14SKlh4BbZBVM0v56JKG8Mxerd7cWnLzXTp2CjNxQ2P8VO6kdECFIvIrLWXcJbfmprYJDXpGp/j5c37J1REo7TZS+nCAGJL+wfAfXHGnU+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lRM605ro; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lRM605ro"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 169D61F000FF;
-	Sat, 12 Sep 2026 09:36:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789205767;
-	bh=K4VBslU50Db8yLz4VgYqKBKLwKUHuhdN+m9L2JFZUT4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lRM605rooaXUHtr/Z4ppO3h+ebI51gvG0eDQ2GXmaT0uCZ5ZUQ+wRkS/idCfPy6j0
-	 vb3N6WDk6LEQAJy5yDjDyDjcRgv2Q0bcFBD6vEH+7IeSCQnIed4XPctxjcgfxf+D/i
-	 Ijj8FDkpkPUEeB2Ebfm6r6qamckXfJl+u2sfOuJSxI7EVpQCtAm/EckONanFtoc0uR
-	 ZywuSSyKXYlJ6fJqNJWXVWoK6fhIs8LsMgKEPdhyOqhIuKL+iReppnsiUQm2lxHKfc
-	 jeg0jhMiDfwc1bKtTDpPn8B+VmvHYMUJ37lEwkBBN/6xAuaVuKc+LzA2tm13mcHGkR
-	 KujB91SKrsroA==
-Subject: Re: [PATCH net 2/5] idpf: disable PTM on probe failure and on remove
-From: netdev-bot+sashiko@kernel.org
-To: anthony.l.nguyen@intel.com
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
- ae878000@gmail.com, mhun512@gmail.com, joshua.a.hay@intel.com,
- sridhar.samudrala@intel.com, milena.olech@intel.com,
- vadim.fedorenko@linux.dev, willemb@google.com, jacob.e.keller@intel.com,
- przemyslaw.kitszel@intel.com, jbrandeb@kernel.org, alexander.nowlin@intel.com
-Date: Sat, 12 Sep 2026 09:36:05 +0000
-Message-ID: <178920576561.219967.8682374011760278855@kernel.org>
-In-Reply-To: <20260908214502.528440-3-anthony.l.nguyen@intel.com>
-References: <20260908214502.528440-3-anthony.l.nguyen@intel.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1789207051; c=relaxed/simple;
+	bh=NcL2t4U0J67ladaMFpTFwW8J5ilpYMEUMS0EnRZHJH8=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=iIx8g2U2WtHHBETRomenAhxfqR19uz0DNbFsaWi1MQikXOYuS9SMmTfiMun13YPgYAbXOMf87aBsDVYYRsEZ13RIOvKwZL0PW0g2rhJ7cT15s6ldZydDpMYl3qXWoBfhvNj5Qb89BArqt/K18pMYftTUXvZo7Pld6Q28htJUD/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo2-f6.google.com with SMTP id 006d021491bc7-6aafac56856so658802eaf.1
+        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 02:57:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789207048; x=1789811848;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fr7k9fPnPXJBD2pXtyqUMHoj0Mm8KCdYxV9N6i9J7sQ=;
+        b=WKcoby0YYERo8gUl/UFwrhrH0D+L0AvHh755/kuFRfL9RODc+rGQjFHz8XSkSRwYFe
+         rw5VqC+14OZ68uE+Hx4aOVCNgnBaZQvvA32OTuxtcvg3Wa0nlHHoiuqZLOnU0qVYgdFO
+         B7VlZaYnz0xOeTefh2aw62lKt2K0KhnO/6BLe9MiZEwcG3TFNYbiamSVN36wh9OIFJ1/
+         5IPpQZUfTOuPCW+vV2ZddXhPIipQuN2LLhPzERF9UUnDo1j85ZyZrpols7Ouam3WABAj
+         M65wq6COYg67b5LOzz3GJPDF3rNFATwl14QPu/nn+BwAgBwW+XCjaBHmxOf4wnd4kV0Y
+         9qxA==
+X-Forwarded-Encrypted: i=1; AKwUvBzwePjxQj4XQOiZDHm1gX3q5cdXqTGb1zRNOJQUGX3hRm8r4fyqeRAqamm51tfAhZy4vP8mOio=@vger.kernel.org
+X-Gm-Message-State: AFuF++kz/uzTmN3G5XYkGDs2gX+Mqc9Rp2ZRrKNVyezf0dvPUMpU2zPT
+	CnV6bwsZOuoNGXFTKXLPApGI62OkT5xkBsMoRoIhxLTa9f7p/00xcxTP6xDT/rtdArwKTqnwLB2
+	aUbpsy8vG6PDai8asQ4Qo9wqpV1I6NEj4HuKTegzCQvxzfF0G6XkKX1XwYMQ=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Received: by 2002:a05:6820:5615:b0:6b1:61b8:7ed5 with SMTP id
+ 006d021491bc7-6c0b9e5071bmr7319025eaf.1.1789207048508; Sat, 12 Sep 2026
+ 02:57:28 -0700 (PDT)
+Date: Sat, 12 Sep 2026 02:57:28 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6aa52208.f81106d8.2ab401.002a.GAE@google.com>
+Subject: [syzbot] [wireless?] INFO: task hung in ieee80211_register_hw (8)
+From: syzbot <syzbot+c92af8613ad38696ff09@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+Hello,
 
-Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
+syzbot found the following issue on:
 
-- [Medium] Incomplete unwind: the new `pcie_ptm_enabled(pdev)` guard in
-  `idpf_decfg_device()`…
+HEAD commit:    6f157f39d181 Merge branch 'remove-comma-after-sentinel-ent..
+git tree:       net-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=104ae601580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=ba53f227359c9d59
+dashboard link: https://syzkaller.appspot.com/bug?extid=c92af8613ad38696ff09
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=101bf105580000
 
-Pre-existing issues:
-- [Medium] Unserialized read-modify-write on shared upstream PTM state:
-  `idpf_decfg_device()` (idpf_main.c:111-112) now calls…
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/f30b26c34a47/disk-6f157f39.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/46a0f6146076/vmlinux-6f157f39.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/5b4fc3fe5ab8/bzImage-6f157f39.xz
 
---
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+c92af8613ad38696ff09@syzkaller.appspotmail.com
 
-idpf: disable PTM on probe failure and on remove
+INFO: task syz-executor:5765 blocked for more than 158 seconds.
+      Not tainted syzkaller #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:syz-executor    state:D stack:22416 pid:5765  tgid:5765  ppid:5759   task_flags:0x400140 flags:0x00080000
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5520 [inline]
+ __schedule+0x17db/0x58f0 kernel/sched/core.c:7270
+ __schedule_loop kernel/sched/core.c:7347 [inline]
+ schedule+0x164/0x2b0 kernel/sched/core.c:7362
+ schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7419
+ __mutex_lock_common kernel/locking/mutex.c:726 [inline]
+ __mutex_lock+0x7c1/0x1550 kernel/locking/mutex.c:821
+ ieee80211_register_hw+0x3881/0x4a50 net/mac80211/main.c:1560
+ mac80211_hwsim_new_radio+0x3258/0x56b0 drivers/net/wireless/virtual/mac80211_hwsim_main.c:6138
+ hwsim_new_radio_nl+0xd8b/0xf90 drivers/net/wireless/virtual/mac80211_hwsim_main.c:6957
+ genl_family_rcv_msg_doit+0x233/0x340 net/netlink/genetlink.c:1114
+ genl_family_rcv_msg net/netlink/genetlink.c:1194 [inline]
+ genl_rcv_msg+0x614/0x7a0 net/netlink/genetlink.c:1209
 
-idpf_probe() enables PCIe PTM but never disables it, so the PTM enable
-counts of the device and of its upstream path stay elevated after probe
-failure or removal.  This adds a pci_disable_ptm() call to
-idpf_decfg_device(), guarded by pcie_ptm_enabled() so that a failed
-pci_enable_ptm() does not drive the count negative.
 
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
-> index 9840580fbe51..129bccaa6baa 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf_main.c
-> +++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
-> @@ -106,6 +106,11 @@ static int idpf_dev_init(struct idpf_adapter *adapter,
->   */
->  static void idpf_decfg_device(struct idpf_adapter *adapter)
->  {
-> +	struct pci_dev *pdev = adapter->pdev;
-> +
-> +	if (pcie_ptm_enabled(pdev))
-> +		pci_disable_ptm(pdev);
-> +
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-[Severity: Medium]
-Does the pcie_ptm_enabled() guard skip the disable in exactly the case
-the commit message describes as broken?
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-pcie_ptm_enabled() only looks at this device's own count:
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-    static inline bool pcie_ptm_enabled(struct pci_dev *dev)
-    {
-        return dev && atomic_read(&dev->ptm_enable_cnt) > 0;
-    }
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
-But pci_enable_ptm() in drivers/pci/pcie/ptm.c enables the upstream path
-first, and only then tries the local device:
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
-    parent = pci_upstream_ptm(dev);
-    if (!parent)
-            return -EINVAL;
-    /* Enable PTM for the parent */
-    rc = pci_enable_ptm(parent);
-    if (rc)
-            return rc;
-    ...
-    if (atomic_inc_return(&dev->ptm_enable_cnt) > 1)
-            return 0;
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
 
-    rc = __pci_enable_ptm(dev);
-    if (rc) {
-            atomic_dec(&dev->ptm_enable_cnt);
-            return rc;
-    }
-
-So when __pci_enable_ptm(dev) fails, the local count returns to zero but
-the parents that were just enabled and refcounted are never unwound.
-__pci_enable_ptm() fails locally for a device with no PTM capability, and
-for an endpoint that is not a PTM requester:
-
-    if (!ptm)
-            return -EINVAL;
-    ...
-    case PCI_EXP_TYPE_ENDPOINT:
-    case PCI_EXP_TYPE_LEG_END:
-            if (!dev->ptm_requester)
-                    return -EINVAL;
-
-idpf_cfg_device() discards that error and continues probing:
-
-    err = pci_enable_ptm(pdev);
-    if (err)
-            pci_dbg(pdev, "PCIe PTM is not supported by PCIe bus/controller\n");
-
-In that state pdev->ptm_enable_cnt is 0 while each upstream PTM device
-sits at +1, pcie_ptm_enabled(pdev) is false, and idpf_decfg_device() does
-nothing on probe failure or on remove.
-
-Doesn't that leave the upstream enable counts and PTM Control bits
-elevated with no bound driver, which is what the changelog says this fixes
-("the PTM enable counts of this device and of its upstream path stay
-elevated with no bound driver")?  Every bind/unbind cycle of such a
-function, for example an idpf VF under a PTM-capable upstream port, would
-add another leaked upstream reference, and a sibling endpoint's later
-pci_disable_ptm() can then never bring the shared parent back to zero.
-
-Calling pci_disable_ptm() unconditionally is not the answer either, for
-the reason given in the changelog.  Would it make sense to record whether
-pci_enable_ptm() succeeded in idpf_cfg_device() and key the unwind off
-that instead, or to have the PCI core unwind the parent enables on local
-failure?
-
-[Severity: Medium]
-This is a pre-existing issue in the PCI core and was not introduced by
-this patch, but this is the first place idpf reaches it, so noting it
-here.
-
-pci_disable_ptm() recurses over bridges shared with sibling endpoints,
-and the counter transition and the config-space write are separate steps
-with no common lock:
-
-    if (atomic_dec_and_test(&dev->ptm_enable_cnt))
-            __pci_disable_ptm(dev);
-
-    parent = pci_upstream_ptm(dev);
-    if (parent)
-            pci_disable_ptm(parent);
-
-pci_enable_ptm() is symmetric:
-
-    if (atomic_inc_return(&dev->ptm_enable_cnt) > 1)
-            return 0;
-
-    rc = __pci_enable_ptm(dev);
-
-Can a remove running idpf_decfg_device() (shared parent 1 -> 0, then the
-disable write) interleave with an asynchronous probe of a sibling under
-the same upstream port (0 -> 1, then the enable write)?  If the sibling's
-enable write lands before the remover's disable write, the shared parent
-ends up PTM-disabled in hardware while ptm_enable_cnt is 1, and the
-sibling would then gate on pcie_ptm_enabled() in idpf_ptp and offer
-getcrosststamp over a PTM path that is off.
-
-The window is narrow and confined to driver bind/unbind, and every
-pci_disable_ptm() caller in the tree has the same exposure, so this looks
-like something for the PCI core rather than this patch.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260908214502.528440-1-anthony.l.nguyen%40intel.com
+If you want to undo deduplication, reply with:
+#syz undup
