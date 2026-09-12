@@ -1,41 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A553EE1D3;
-	Sat, 12 Sep 2026 20:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848B948F853;
+	Sat, 12 Sep 2026 20:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789244398; cv=none; b=JiALWvcOxZPf23VlWbetPcYHqkXYVc93ebbp3be2BXbMLIXHvcHY8GZqJ+SSVhmdCYhcvxiozAQBeIRKEaJXwlanp8SDgbg5dZ+Uyr4Q7/r/kRbjCUJ3+rKeOjm6j2k6kLC8yyNdW4u6PPnXFiuWRalujA+IXXKR+9qcC7Zs7bs=
+	t=1789244399; cv=none; b=iT8gQZn+VN0VoyPqLq6ig1O4NwiejmBpiVYXxCMCQy1Pj2ok1Lak73ZcVuIIjLBYse/c+5R5qNAbUmr5qIKVMbstfhjhLxoI6m3/RSAPkVWCPEJa43DDsfxT9Z4Piu/cOciQMPGQoazwGkRzy7nRWRembUF60uYvaPLDBSiZECo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789244398; c=relaxed/simple;
-	bh=lv/jpcJ6DsW9I8+7JbGiL49q9M7awXgVVdjsGq62h/M=;
+	s=arc-20240116; t=1789244399; c=relaxed/simple;
+	bh=yxm4SQ1hnZzoglclt7fQTPb/ydslXyQJ9FgJaESRypg=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BlSSHLP/qyvCXHHLCImvaxZO5bjofBhQJFarx/IIHjj1FtwErpOLFkhXhBDWpRv/jrUFKcoQ7iGqnWjOy35RqdOa541/rCwingzjmlWHdiiY5wvgtvGGzFj4tZWtoZ5aeR7vA6D8FMw8vN1wmOoW6/2VDK1gL8kULi46u4Dte8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A+phOwnc; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=CMhKjFaZzCh8q/yPbarL9I2wnF3kX9/VPRjgN9jyuhjJbihLhUJ46j3UOu92WXAweJu2Gjl7IGDueA9C9nRcfVyo9j3AmPyPQMxzYEDY5XU4rTLxYzhMObhd2w/FKXJRpw0bZvb7QoiwaHudoxlDWu4WrldGvEohE86Lwx4MPRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hfseLKbg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A+phOwnc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F231F00898;
-	Sat, 12 Sep 2026 20:19:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hfseLKbg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D471A1F00899;
+	Sat, 12 Sep 2026 20:19:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789244396;
-	bh=TKn7ufIecsVfsKJQvgtNcaPc53cLfzzq8ZatQMvV6BA=;
+	s=k20260515; t=1789244397;
+	bh=LYwa8sDjoeC4azKo5/ddtMABm0Ruj4IzgEzdF26VlHc=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=A+phOwncjRVZ4Dj8NIrjhZdjnBnZ4TDVUD4QtCTp6fcvoQ6TeUlWhlItbNqPmiurI
-	 Mxgjq0FfiJDCVHq7SUoouVvUeHXcZf0eh1MRrT9diG85833s8MwTXf/Axy2YiORlDB
-	 XpztD5/5Niar2ZZzGGpP+0wkqLulAwT2TtCzC05rIW3rUF9HM7ZUFaZzRnB5424p5k
-	 3ADTv3lCzBHHnbA5TJVfbx6EUCL5LVharP2r8G+UgRicDrY2HqRHarLtGrtyUoA8ZJ
-	 zB2UvP41A7jgG9Duu1PJlmTIBFMXA1drMzu30dIstxJ5Sb/NLVNmlhVX8tU55rRJZZ
-	 tV2/3ZY2dmRKQ==
-Subject: Re: [PATCH net-next v3 7/8] r8152: support rtl_fc_pause_pkt_en()
+	b=hfseLKbgZxrIaY+211DxXl09t+Bt+SAsEZnol/IunaMom4Dn6BkUFtXSU1e9oIwnd
+	 Ubp18aBBPYJTQyjcgBZUCH8yqpfAFz5UL6l0oUUSIzVUojAXep3Jur86cSFKTiv56A
+	 zykMZoSE3iQPNokm9WMC2+ykGIuL+M0/K5zAdMeY/ArnymHYMw7iLJNSJzbaEaXEfp
+	 7MYV9ZyDfnh7i0XMo23ix1dj9nLjLpCmpHzN9dVHBd7/jBiEhF042eCq2xEM3xugP6
+	 liRbXpIejJyV902ScWpbZ7jYv24gozgwTABN1gggiydI0WXyfJjlJ8kf1ArhGgL+Bs
+	 CYjSefaRIpwqw==
+Subject:
+ Re: [PATCH net-next v3 8/8] r8152: support UPS for RTL8157 and RTL8159
 From: netdev-bot+sashiko@kernel.org
 To: hsu.chih.kai@realtek.com
 Cc: davem@davemloft.net, kuba@kernel.org, netdev@vger.kernel.org,
  nic_swsd@realtek.com, linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
  edumazet@google.com, bjorn@mork.no, pabeni@redhat.com, andrew+netdev@lunn.ch
-Date: Sat, 12 Sep 2026 20:19:55 +0000
-Message-ID: <178924439522.3125.10329416653763304539@kernel.org>
-In-Reply-To: <20260908075634.23740-8-nic_swsd@realtek.com>
-References: <20260908075634.23740-8-nic_swsd@realtek.com>
+Date: Sat, 12 Sep 2026 20:19:56 +0000
+Message-ID: <178924439640.3125.13644220695109747344@kernel.org>
+In-Reply-To: <20260908075634.23740-9-nic_swsd@realtek.com>
+References: <20260908075634.23740-9-nic_swsd@realtek.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -51,217 +52,206 @@ issue(s) to consider:
 
 Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Medium] Commit message mischaracterizes the change as an extraction
-  and omits the new register programming it introduces.
+- [Medium] Incomplete version dispatch: the four new switch statements
+  added by this patch enumerate only RTL_VER_16 and RTL_VER_17_QFN68 and…
 
 --
 
-r8152: support rtl_fc_pause_pkt_en()
+r8152: support UPS for RTL8157 and RTL8159
 
-This moves the flow control programming out of r8156b_init() into a new
-helper rtl_fc_pause_pkt_en(), and calls it from r8156_init(), r8156b_init()
-and rtl8157_enable(). The helper switches on tp->version and, for RTL8157
-and RTL8159, programs a new pause limit register based on the link speed.
+This adds r8157_ups_en() for the RTL8157/RTL8159 UPS enable sequence,
+extends r8156_ups_flags() with per-speed EEE flags and 5G/10G speed
+encodings, and switches r8157_init()/r8159_init() over to the new
+enable helper.
 
 > diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-> index 1fcb1cc5b4a18..2b0972b967385 100644
+> index 2b0972b967385..cc18b1c5a17c3 100644
 > --- a/drivers/net/usb/r8152.c
 > +++ b/drivers/net/usb/r8152.c
-> @@ -89,6 +89,7 @@
->  #define PLA_MTPS		0xe615
->  #define PLA_TXFIFO_CTRL		0xe618
->  #define PLA_TXFIFO_FULL		0xe61a
-> +#define PLA_PAUSE_LIMIT         0xe61e
->  #define PLA_RSTTALLY		0xe800
->  #define PLA_CR			0xe813
->  #define PLA_CRWECR		0xe81c
-> @@ -301,6 +302,10 @@
->  #define MTPS_JUMBO		(12 * 1024 / 64)
->  #define MTPS_DEFAULT		(6 * 1024 / 64)
+
+[ ... ]
+
+> @@ -4178,8 +4184,27 @@ static void r8156_ups_flags(struct r8152 *tp)
+>  	if (tp->ups_info.aldps)
+>  		ups_flags |= UPS_FLAGS_EN_ALDPS;
 >  
-> +/* PLA_PAUSE_LIMIT */
-> +#define PAUSE_LIMIT_EN		BIT(3)
-> +#define PAUSE_LIMIT_MASK	0xf0
-> +
->  /* PLA_RSTTALLY */
->  #define TALLY_RESET		0x0001
->  
-> @@ -6088,6 +6093,93 @@ static void r8152b_enter_oob(struct r8152 *tp)
->  			   RCR_APM | RCR_AM | RCR_AB);
->  }
->  
-> +static void rtl_fc_pause_pkt_en(struct r8152 *tp, u16 speed)
-> +{
-> +	int log2_ratio, ratio;
-> +	u16 num_pause_pkts;
-> +	u32 ocp_data;
-> +
-> +	switch (tp->version) {
-> +	case RTL_VER_10:
-> +	case RTL_VER_11:
-> +		ocp_write_word(tp, MCU_TYPE_USB, USB_FC_TIMER,
-> +			       CTRL_TIMER_EN | (1000 / 8));
-> +
-> +		ocp_word_set_bits(tp, MCU_TYPE_USB, USB_FW_CTRL,
-> +				  FLOW_CTRL_PATCH_OPT);
-> +
-> +		ocp_word_set_bits(tp, MCU_TYPE_USB, USB_FW_TASK, FC_PATCH_TASK);
-> +		break;
-> +	case RTL_VER_12:
-> +	case RTL_VER_13:
-> +	case RTL_VER_15:
-> +		ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_RCR, SLOT_EN);
-> +
-> +		ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_CPCR, FLOW_CTRL_EN);
-> +
-> +		/* enable fc timer and set timer to 600 ms. */
-> +		ocp_write_word(tp, MCU_TYPE_USB, USB_FC_TIMER,
-> +			       CTRL_TIMER_EN | (600 / 8));
-> +
-> +		ocp_data = ocp_read_word(tp, MCU_TYPE_PLA, PLA_POL_GPIO_CTRL);
-> +		if (!(ocp_data & DACK_DET_EN))
-> +			ocp_word_set_bits(tp, MCU_TYPE_USB, USB_FW_CTRL,
-> +					  FLOW_CTRL_PATCH_2);
-> +
-> +		ocp_word_set_bits(tp, MCU_TYPE_USB, USB_FW_TASK, FC_PATCH_TASK);
-> +		break;
-> +	case RTL_VER_16:
-> +	case RTL_VER_17_QFN68:
-> +	case RTL_VER_17_QFN100:
-> +		ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_RCR, SLOT_EN);
-> +
-> +		num_pause_pkts = 0xa;
-> +		ratio = 10000;
-> +
-> +		if (!(speed & LINK_STATUS)) {
-> +			dev_dbg(&tp->intf->dev, "No link\n");
-> +			goto no_link;
-> +		} else if (speed & _10bps) {
-> +			ratio /= 10;
-> +		} else if (speed & _100bps) {
-> +			ratio /= 100;
-> +		} else if (speed & _1000bps) {
-> +			ratio /= 1000;
-> +		} else if (speed & _2500bps) {
-> +			ratio /= 2500;
-> +		} else if (speed & _5000bps) {
-> +			ratio /= 5000;
-> +		} else if (speed & _10000bps) {
-> +			ratio /= 10000;
-> +		} else {
-> +			dev_err(&tp->intf->dev, "Unknown link speed\n");
-> +			goto no_link;
-> +		}
-> +
-> +		log2_ratio = ilog2(ratio);
-> +		num_pause_pkts -= log2_ratio;
-> +
-> +		/* Round up if ratio is more than halfway to the next power of 2.
-> +		 * Floating-point is avoided by rewriting
-> +		 * ratio > 1.5 * 2^log2_ratio as
-> +		 * 2 * ratio > 3 * 2^log2_ratio
-> +		 */
-> +		if (2 * ratio > 3 * (1 << log2_ratio))
-> +			num_pause_pkts--;
-> +
-> +no_link:
-> +		ocp_word_w0w1(tp, MCU_TYPE_PLA, PLA_PAUSE_LIMIT,
-> +			      PAUSE_LIMIT_MASK | PAUSE_LIMIT_EN,
-> +			      num_pause_pkts << 4);
-> +
-> +		ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_PAUSE_LIMIT,
-> +				  PAUSE_LIMIT_EN);
-> +		break;
-> +	default:
-> +		break;
-> +	}
-> +}
-> +
+> -	if (tp->ups_info.eee)
+> -		ups_flags |= UPS_FLAGS_EN_EEE;
+> +	if (tp->ups_info.eee) {
+> +		switch (tp->version) {
+> +		case RTL_VER_17_QFN68:
+> +			if (tp->eee_adv & MDIO_EEE_10GT)
+> +				ups_flags |= UPS_FLAGS_EN_10G_EEE;
+> +			fallthrough;
+> +		case RTL_VER_16:
 
 [Severity: Medium]
-Is the changelog description of "Extract it as rtl_fc_pause_pkt_en()"
-accurate for the RTL_VER_10/RTL_VER_11 and RTL_VER_16/RTL_VER_17 arms of
-rtl_fc_pause_pkt_en()?  The three arms are not the same sequence that was
-inline in r8156b_init().
 
-For RTL_VER_10/RTL_VER_11 the helper programs:
+Should RTL_VER_17_QFN100 be listed here as well?
 
-	ocp_write_word(tp, MCU_TYPE_USB, USB_FC_TIMER,
-		       CTRL_TIMER_EN | (1000 / 8));
-	ocp_word_set_bits(tp, MCU_TYPE_USB, USB_FW_CTRL,
-			  FLOW_CTRL_PATCH_OPT);
-	ocp_word_set_bits(tp, MCU_TYPE_USB, USB_FW_TASK, FC_PATCH_TASK);
+In rtl_ops_init() the two RTL8159 packages share one identical block:
 
-At the series baseline the flow control block in r8156_init() was gated as:
-
-	if (tp->version >= RTL_VER_12 && tp->version <= RTL_VER_15) {
-		ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_RCR, SLOT_EN);
-		ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_CPCR, FLOW_CTRL_EN);
+	case RTL_VER_17_QFN68:
+	case RTL_VER_17_QFN100:
+		tp->eee_en		= true;
+		tp->eee_adv		= MDIO_EEE_100TX | MDIO_EEE_1000T | MDIO_EEE_10GT;
+		tp->eee_adv2		= MDIO_EEE_2_5GT | MDIO_EEE_5GT;
+		ops->init		= r8159_init;
 		...
-	}
+		ops->hw_phy_cfg		= r8159_hw_phy_cfg;
+		ops->autosuspend_en	= rtl8157_runtime_enable;
 
-so RTL_VER_10/RTL_VER_11 received no flow control programming, and
-FLOW_CTRL_PATCH_OPT was only set from the RTL8153B firmware path.  Could
-the changelog say why RTL8156A now gets a 1000 ms timer plus
-FLOW_CTRL_PATCH_OPT, while RTL8156B keeps the 600 ms timer,
-FLOW_CTRL_PATCH_2 and PLA_CPCR FLOW_CTRL_EN?
+So QFN100 advertises the same 100M through 10G EEE capabilities, but with
+only RTL_VER_17_QFN68 matched above it takes the default arm and gets the
+old UPS_FLAGS_EN_EEE encoding that this patch replaces for this chip
+generation.
 
-For RTL_VER_16/RTL_VER_17_QFN68/RTL_VER_17_QFN100 the helper adds a new
-register, PLA_PAUSE_LIMIT (0xe61e), the new PAUSE_LIMIT_EN/PAUSE_LIMIT_MASK
-bits, and a link-speed dependent pause packet count, but it sets neither
-PLA_CPCR FLOW_CTRL_EN nor USB_FC_TIMER even though the changelog says the
-flow control patch was "missing for ... RTL8157/8159".  None of the new
-register or the pause budget calculation is described in the changelog.
+> +			if (tp->eee_adv & MDIO_EEE_100TX)
+> +				ups_flags |= UPS_FLAGS_EN_100M_EEE;
+> +			if (tp->eee_adv & MDIO_EEE_1000T)
+> +				ups_flags |= UPS_FLAGS_EN_1000M_EEE;
+> +			if (tp->eee_adv2 & MDIO_EEE_2_5GT)
+> +				ups_flags |= UPS_FLAGS_EN_2500M_EEE;
+> +			if (tp->eee_adv2 & MDIO_EEE_5GT)
+> +				ups_flags |= UPS_FLAGS_EN_5000M_EEE;
+> +			break;
+> +		default:
+> +			ups_flags |= UPS_FLAGS_EN_EEE;
+> +			break;
+> +		}
+> +	}
+>  
+>  	if (tp->ups_info.flow_control)
+>  		ups_flags |= UPS_FLAGS_EN_FLOW_CTR;
+> @@ -4230,20 +4255,33 @@ static void r8156_ups_flags(struct r8152 *tp)
+>  	case NWAY_2500M_FULL:
+>  		ups_flags |= ups_flags_speed(9);
+>  		break;
+> +	case NWAY_5000M_FULL:
+> +		ups_flags |= ups_flags_speed(10);
+> +		break;
+> +	case NWAY_10000M_FULL:
+> +		ups_flags |= ups_flags_speed(11);
+> +		break;
+>  	default:
+>  		break;
+>  	}
+>  
+> -	switch (tp->ups_info.lite_mode) {
+> -	case 1:
+> -		ups_flags |= 0 << 5;
+> -		break;
+> -	case 2:
+> -		ups_flags |= 2 << 5;
+> +	switch (tp->version) {
+> +	case RTL_VER_16:
+> +	case RTL_VER_17_QFN68:
+>  		break;
+> -	case 0:
+>  	default:
+> -		ups_flags |= 1 << 5;
 
-Could the changelog describe the observed malfunction, the link speeds and
-traffic conditions it was seen under, and what was tested, so the behaviour
-change on already supported RTL8156A hardware and the new pause limit
-programming can be judged?
+[Severity: Medium]
 
->  static int r8153_pre_firmware_1(struct r8152 *tp)
->  {
->  	int i;
-> @@ -6619,6 +6711,8 @@ static int rtl8157_enable(struct r8152 *tp)
->  	r8153_set_rx_early_size(tp);
->  
->  	speed = rtl8152_get_speed(tp);
-> +	rtl_fc_pause_pkt_en(tp, speed);
-> +
->  	rtl_set_ifg(tp, speed);
->  
->  	return rtl_enable(tp);
-> @@ -8751,6 +8845,8 @@ static void r8156_init(struct r8152 *tp)
->  
->  	usb_enable_lpm(tp->udev);
->  
-> +	rtl_fc_pause_pkt_en(tp, 0);
-> +
->  	r8156_mac_clk_spd(tp, true);
+Same question for the lite_mode suppression: RTL_VER_17_QFN100 is not
+listed, so it still gets the bit 5/6 lite_mode field that this hunk treats
+as not applicable to this generation.
+
+> +		switch (tp->ups_info.lite_mode) {
+> +		case 1:
+> +			ups_flags |= 0 << 5;
+> +			break;
+> +		case 2:
+> +			ups_flags |= 2 << 5;
+> +			break;
+> +		case 0:
+> +		default:
+> +			ups_flags |= 1 << 5;
+> +			break;
+> +		}
+>  		break;
+>  	}
 >  
 
 [ ... ]
 
-> @@ -8852,20 +8947,7 @@ static void r8156b_init(struct r8152 *tp)
+> @@ -4573,9 +4640,28 @@ static void rtl8157_runtime_enable(struct r8152 *tp, bool enable)
+>  		r8153b_u1u2en(tp, false);
+>  		r8157_u2p3en(tp, false);
+>  		rtl_runtime_suspend_enable(tp, true);
+> +
+> +		switch (tp->version) {
+> +		case RTL_VER_16:
+> +		case RTL_VER_17_QFN68:
+> +			r8157_ups_en(tp, true);
+> +			break;
+> +		default:
+> +			break;
+> +		}
+
+[Severity: Medium]
+
+Does this leave RTL_VER_17_QFN100 without UPS entirely?
+
+rtl_ops_init() assigns ops->autosuspend_en = rtl8157_runtime_enable for
+both RTL_VER_17_QFN68 and RTL_VER_17_QFN100, and __rtl_get_pkg_det()
+results of 0x18/0x1a select RTL_VER_17_QFN100. On runtime suspend the
+chain is:
+
+	rtl8152_runtime_suspend()
+	  -> tp->rtl_ops.autosuspend_en(tp, true)
+	     == rtl8157_runtime_enable(tp, true)
+	        -> switch (tp->version) ... default: break;
+
+so r8157_ups_en() is never reached for that package, while the commit
+message says "support UPS for RTL8157 and RTL8159".
+
+>  	} else {
+>  		r8153_queue_wake(tp, false);
+>  		rtl_runtime_suspend_enable(tp, false);
+> +
+> +		switch (tp->version) {
+> +		case RTL_VER_16:
+> +		case RTL_VER_17_QFN68:
+> +			r8157_ups_en(tp, false);
+> +			break;
+> +		default:
+> +			break;
+> +		}
+
+[Severity: Medium]
+
+Mirror of the above on the resume path.
+
+Note that r8159_init(), shared by both RTL8159 packages, was converted in
+this same patch:
+
+	r8157_power_cut_en(tp, false);
+	r8157_ups_en(tp, false);
+
+so the QFN100 path does get the new disable call at probe/init time, but
+never the enable/disable dispatch during runtime suspend and resume.
+
+There is a QFN68-only quirk elsewhere in r8159_init() ("Enable u2phy
+backup restore patch"), so a package-specific restriction is plausible.
+Should case RTL_VER_17_QFN100 be added to all four new switches, or should
+the commit message be scoped to the QFN68 package with a note on the
+hardware difference?
+
+>  		r8157_u2p3en(tp, true);
+>  		if (tp->udev->speed >= USB_SPEED_SUPER)
+>  			r8153b_u1u2en(tp, true);
+
+[ ... ]
+
+> @@ -9130,7 +9216,7 @@ static void r8159_init(struct r8152 *tp)
+>  	ocp_write_word(tp, MCU_TYPE_USB, USB_U1U2_TIMER, 500);
 >  
->  	usb_enable_lpm(tp->udev);
->  
-> -	ocp_word_clr_bits(tp, MCU_TYPE_PLA, PLA_RCR, SLOT_EN);
-> -
-> -	ocp_word_set_bits(tp, MCU_TYPE_PLA, PLA_CPCR, FLOW_CTRL_EN);
-> -
-> -	/* enable fc timer and set timer to 600 ms. */
-> -	ocp_write_word(tp, MCU_TYPE_USB, USB_FC_TIMER,
-> -		       CTRL_TIMER_EN | (600 / 8));
-> -
-> -	ocp_data = ocp_read_word(tp, MCU_TYPE_PLA, PLA_POL_GPIO_CTRL);
-> -	if (!(ocp_data & DACK_DET_EN))
-> -		ocp_word_set_bits(tp, MCU_TYPE_USB, USB_FW_CTRL,
-> -				  FLOW_CTRL_PATCH_2);
-> -
-> -	ocp_word_set_bits(tp, MCU_TYPE_USB, USB_FW_TASK, FC_PATCH_TASK);
-> +	rtl_fc_pause_pkt_en(tp, 0);
->  
->  	r8156_mac_clk_spd(tp, true);
+>  	r8157_power_cut_en(tp, false);
+> -	r8156_ups_en(tp, false);
+> +	r8157_ups_en(tp, false);
+>  	r8153_queue_wake(tp, false);
+>  	rtl_runtime_suspend_enable(tp, false);
 >
 
 -- 
