@@ -1,324 +1,150 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE7F345749
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 16:53:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789232015; cv=none; b=D93cE+jGUUsZI8zfe4IxnYYQ2lToEjvl7ACzptprBjt9Ozq7Astt641Kub9QllbGDV8pX42T+CBylaH5ObS9fBDFjUuZ2JdQyRyoniWUZRT3WpwRsx69D79NYdpNYOJta5dGI6ACT2HTMsvxCFjPSr8nN7LHtRsNYtM8YoHXPao=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789232015; c=relaxed/simple;
-	bh=CyZ+wRTv1vIAKrqoIFsovZCTxpZs1MpCacIyScmvP4g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e+kil2o2gCQippC8AbupUEV4/lEUuPq6ElcVFWw7VoFkF5goBFOO6SL+O3ESyAo8w3gKAfWqjnUmrz/NnjEwmaLRj4YJ7Q5udKok67N9CD50nhQPGzbEFnExppv49r6qbD/qeWg/VHKwx7C+nd2PR9Q14aJhCgjshPeszGnhurY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=kAHfo1hJ; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658D74BEE43
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 17:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.140
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789234530; cv=pass; b=CjouA/mcULAHXNgCrZdv8+5a0ZKURszDyWvOoxVzU51+YzAovUmaoet+fzJ3bVBCbr4b5bxhw/raL6TcQVd9bZEs2BzO2Zgbe2MSY5NAhwFzkMnLy1jK1bo2ZovhUhcIsBP1uQ4VJuCp6o/QyhDuW6mo3VTuRqEglgxYVlSufGg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789234530; c=relaxed/simple;
+	bh=MG/oMutIsKGUZqj5v7QgFG2V0GauV5NB34SQJzSYO0c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PgwZzEOhrGve7h8JjavSWmSRMiIlc2elVWv/8W8mOmk6vYJE9Tt1EOGEioR4Cb6quKGqr+ktkhyGUvbchRny0vM7VdH5+HEP3L2YDUqH2qaG9RHohm0yAGnLGjWcMKVDHSyH30X2gFAGAfI24Y+crOrI6JQGluyeU/unKXFm4gA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SXUv1d5Z; arc=pass smtp.client-ip=74.125.230.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="kAHfo1hJ"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccd66bb5so519376a91.0
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 09:53:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SXUv1d5Z"
+Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-9106feddbdfso12302216d6.0
+        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 10:35:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789234528; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LpFsu9r9lu19OZN13VwRNV9y08wQCSLyHjByCuuIyXnvdEZ/U3izw1bQwzhJ4shI+d
+         Jzd/9zc48+iBTC1zBo6xrnbL/EMr/b8GUiRVlhqyR05ITubdLLU/wD7NfhaNE8+DrMp3
+         FocrIn7+Byp2tMskRGsAI6wAxdYguWRC6hzP2AsJ7646/zNFHQd2rVWpfn0NSGRXqc6Z
+         SeFq5eZiOaCnzRJCFvq/2u+b/hFjcHh7FQfu7WdGbQpy+afXMCb7VXg7b5ZDh32IwdM6
+         uneuoWAmZzBgxxKHkUtrm6lgTuKt5TpSE2P7KhGXbJQ2dIGA54vviGiFVVn3cIv6tSzP
+         stcg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=MG/oMutIsKGUZqj5v7QgFG2V0GauV5NB34SQJzSYO0c=;
+        fh=kTbgB25+oHCMfX5Puy1pC268Nol9gPiO327ZqPD58ww=;
+        b=LsbcCzjBEThGrQ4hZev6zewSlo2UIiDz5ucSDy6ECiFTwlW4WQQ3uwT25hMJnwOSht
+         HHiC585zK4aY3p9/vSVwkvLC/Cotl+s9U2x4OGxBY0jyCV6Lv8RPbkSTmVNjml3QO45h
+         6y1WZrtceNTcVFgHiKJtKobE78S2/q2dxxxxNWMBmyTTVQNjtu0ZKzSe6EgNBTPkYMXm
+         LNZGmAYdIU7a0QddPyoTSLYqSPmJp7cchdZ/kyLM57kaL+lBSTwtaHpYh6BmWFdX76rq
+         4lzR7MRuWKEk5iX5dMKkO7utZkfH8j0u68IJTJ+cybvgxshWu2E1PLpw7kA+Sxg97swv
+         KZYw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1789232012; x=1789836812; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KmnVyR1UBi6OqqthmqlN2O4hpIy7YDRf9qXHJ0j6VeU=;
-        b=kAHfo1hJ3pfwyyLLftdPS6ssWElRaew7Q+FQsfaVKTUZioE6Bs2g7eoKqvSPAXI5dm
-         D6Aiih2ViIWdAf3VEiQKSa5pwBPLTGnYgWHfd+btiWCPXA6RBi4sygp3eeYMHu4Innc5
-         ByyH+zOXd9rySEraT+bc+N0rYAwyJILcWxbcEo99Pg1rHNvo9SjqcfiT6bC7KsSHQhWQ
-         CeDAkrUyHsQT7oFspaiDd0LcMkuOJpY1930xvL/pidroYYKW3U8QT0GD7DSmWBHku7cF
-         g8rEWaIFElz7WYL08o2wHcw7irPPyJDE6Lyumfk3riWqYBYq2Nq2Tgr+YHb3D2oUc+tJ
-         RMRA==
+        d=gmail.com; s=20251104; t=1789234528; x=1789839328; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=MG/oMutIsKGUZqj5v7QgFG2V0GauV5NB34SQJzSYO0c=;
+        b=SXUv1d5ZusVbW6QMcQKAkJOafOuzAnGNaJTQE6I0n/3bZMidqHQPsUe7ezSYFvW5eR
+         84P/Llv56IOl6B3OWHc9j9IntGx+ZJHGFyI6ANX6b055aX0YD9agYfz17+yFqUIKboAM
+         t/V3BjQqU5C0VMj51Tx8kJGQpxfKlQvNtc1Nj5nfSzy2OHCMEKcSRLzMjxkYmezJ50K0
+         NDrGQc9R+et6wU/9u3iSVefBBbJJUvqo+DX/A2CMY7XNNBPR8nao+11MuM8Ckn8PkiQP
+         6OVnoQaP9vnIpYJUZ18pBbqwFqSGwMhua2TSadaykkpIslutQrmGMRsM99tIt1E8VSZb
+         QuZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789232012; x=1789836812;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KmnVyR1UBi6OqqthmqlN2O4hpIy7YDRf9qXHJ0j6VeU=;
-        b=WZR5ZI7oOizFrXo1lfNPSVqzEy1O+PZkGrn5gkUK1fK3cM7EmddROJe4gA7KeoFlny
-         rVYTE7rjiGgtSv1fPhDJXudKCPCUxWM7865OJZaro4+QLtA6twQ6NvQ9PZvNwqUxnHyM
-         ccEQkN0+85ku7OzpR7P4ErEwcgrByYjuaD8Yw1iXuchHQw0CU9jvBOvINR+qG74fH5bU
-         8BMMz0jpf7jfgooLSOsbBacciYHTvqdyzPSzKzvlU+S2DucYZFnql5ykl5Er/y9AUs7p
-         9AuFKUwPCvnH4LFC5zjm2uW0xMY+JU1XwsWnE274WBSyWorTSX9gknE2byIIti+/5OXr
-         lvXA==
-X-Gm-Message-State: AFuF++nVANPLSRiLEomD5KLKKAWvV0nL2Ombl5TbQhnwuOsNxRe7Erq0
-	IarI2JKaWb9JGXrFC2HPVWaKW5uuy256isjGZBXuw2MJjGq7sYVFMEa2rh10rMC4vSMPX1rHVIA
-	AuOIDUw==
-X-Gm-Gg: AYBFou19bzTjRuaxnlmtbLjDsiBRmxLtEPe5pMcT02apB4AHBJWwjnTUKIJBsuyC6v7
-	CJFi2TVLeBu8YZ5BFIXgU9oKRv4vNc04/L8Mfa6loVJWLtCjUBjnrWDuBoh87IICvipwNebG3a2
-	0VzCrR/LQ+hfSrK8pv3k+fr/j2kLHcuQSmTznOH33FUawFUiTAT5BTA+3au/PYivsCzOWfRPhLi
-	3k6YPomfqKcj2Wetx6++71irOnoJ00HUbk1pMPUARjgTN+ZvnU2BBdUx5M/GVj11AkWCnv/rnZs
-	TUm4Fgfa4pKYok6DfYoYd24VlD4q0VyNr71/ntWm6UWahntNWeOyMgRb4srgMtrMIU5/gH78H3s
-	6k/mv9Bzl2lEZ/lbZl9/25GKiQh7+tiWirxYd2y3YNtR1ypFnkMu4G2Qwz2BBwNgQb6CIWgjqiO
-	MgecICU4kL2fen273FIfpXyoOEdKyc+Lz4wX9adeoDk+1+00ArmcsUEmAb00OyEw5JWtViFTeA5
-	eEIeBndTzQEGMUNLb1ux/6Uug0dYA==
-X-Received: by 2002:a17:90b:57c6:b0:381:a766:efc9 with SMTP id 98e67ed59e1d1-39dbbeb57a5mr6717852a91.7.1789232011503;
-        Sat, 12 Sep 2026 09:53:31 -0700 (PDT)
-Received: from b6ad5085b32f.. ([122.51.212.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d99531b21sm10907424a91.13.2026.09.12.09.53.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Sep 2026 09:53:30 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
-To: netdev@vger.kernel.org
-Cc: Zihan Xi <zihanx@nebusec.ai>,
-	linux-kernel@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	stable@vger.kernel.org,
-	Vega <vega@nebusec.ai>,
-	Luxing Yin <root@tr0jan.top>
-Subject: [PATCH net v9 1/1] llc: fix listener child socket leak on non-SABME frames
-Date: Sat, 12 Sep 2026 16:53:05 +0000
-Message-ID: <5d2eb4eae5248b37f14ae713a9c0ad1c6f1fedd3.1789216793.git.zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1789216793.git.zihanx@nebusec.ai>
-References: <cover.1789216793.git.zihanx@nebusec.ai>
+        d=1e100.net; s=20251104; t=1789234528; x=1789839328;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MG/oMutIsKGUZqj5v7QgFG2V0GauV5NB34SQJzSYO0c=;
+        b=DCWZynH0Xk5Y6ABfsM+ePQwxo+RH9sNOk+4yDe+7riVPfbXa9mEfn1I3e4ZQjswhBb
+         m1xjJWGHBhVuod2XNINjPL5Dv95fTB3ZJLXr4HuRlspizwe9X2JI3MVL8TEvHdPF8Oai
+         yJCdUDoSwzDsKjsHhfXdQsoZ8V7y1NAj3JN3kMU4Q43MfOa2sUP1hIhZLRtw4VSFd1eE
+         yxlFh+RdQTIwOINj37hi2AzNXyIhUS/XCaGWZ5t8jnr5uDexy33lrpOi0kLI8Ncxn9ch
+         ucPFbv9K+ci0C8mBmK8iN+rG+8J9zKT3rcNGeun8rlGm9xcwkDZZA/b8hiOJzz/LEiWp
+         o5pg==
+X-Forwarded-Encrypted: i=1; AKwUvBzFc31v2W7qoBN7WsRTIqXWVjX+pCII7z5qtN3ZGLo4q3Y0z0m4MHXcfxT4OIXIQe6i76440EM=@vger.kernel.org
+X-Gm-Message-State: AFuF++mXtcFaARoL68lgguQODm1rbLaXoi0b9WW3Z1QeZ3H5qzrV7ywv
+	plB6usPqLGMUY2DLp90lm4eZ0NQW2qDz9cF1JT9Ke1HlTwMwGle5s87PX7sc7tkri6MOIHHZaRz
+	qgEx6eZharxDxVmr6n5vj09iprOuYg1s=
+X-Gm-Gg: AYBFou2ez2b9OPNvLJ/9JLYMv/QWLjcGapHmjZI8uIi1KBVc2mgwJmN+gCkRWO9JnP8
+	X4/v7pjZdmnBm/oX6BcKUYfP7u1OxTJSEKYANe83IjIvY13OOR9eefLHCJ+OnJ8SZgS4ZjsHmPo
+	WcosIcSZ6M9VeJaBPsptRLwDDPujPAero8bptIOliK45Thfnx3KFQmGwvo/DtBWh/TxtVxoLILz
+	cOhjPaHOZ095A4LhJBLp5jy3V54Fci8mMvJFGMcR220G5MfyU+SwrhChiOQm/xmf0NJ32WcNSdc
+	vjoAZuC/XI6JenUI2rcE+QsrhpUieGaQJpTbLaHTM6efXxI/WfPoBRFCLuekz4OvsUXA1E6QKFG
+	mbyiRr9q1BvxXGg==
+X-Received: by 2002:a05:6214:328c:b0:910:4402:f410 with SMTP id
+ 6a1803df08f44-91212091c4bmr186100076d6.13.1789234528323; Sat, 12 Sep 2026
+ 10:35:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260908-ynl-robustness-v1-0-f255214c0f30@gmail.com> <20260910192314.209ecb01@kernel.org>
+In-Reply-To: <20260910192314.209ecb01@kernel.org>
+From: tmbates12 <tmbates12@gmail.com>
+Date: Sat, 12 Sep 2026 13:35:16 -0400
+X-Gm-Features: AcwNN1VO8FHui11gOOlIP1du45BV5WIWfuLdWO8vIfsBmwBzL9VU8kIrvC85IlM
+Message-ID: <CAC4WM+zvK1zFuPfS5WnzuDR3b_DRX==x_S=Gg7LSLgZb9=33Ng@mail.gmail.com>
+Subject: Re: [PATCH net-next 0/4] netlink: fix ynl spec tooling robustness bugs
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Donald Hunter <donald.hunter@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jiri Pirko <jiri@resnulli.us>, Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-llc_conn_handler() creates a child socket for every frame that matches
-a listening PF_LLC socket. llc_create_incoming_sock() publishes the
-child in the SAP tables and takes a device reference before the frame
-is known to be a passive-open request.
+On Thu, 10 Sep 2026 22:23:14 -0700 Jakub Kicinski wrote:
+> Why are you doing this? What's your intended use?
+> YNL extensions for classic families are unlikely to be accepted.
+> It's definitely not a goal for us to backfill all the ancient baggage.
 
-A listener-directed non-SABME frame does not queue an LLC_CONN_PRIM
-indication, so accept() cannot return the child and closing the listener
-does not reclaim it.
-Repeating such frames, for example DISC commands with distinct source
-addresses, can leak struct sock objects and device references and
-eventually exhaust memory.
+As part of work I've been doing on switchdev based ethernet switches
+for configuration and state monitoring, I'd like to avoid having to rely
+on shelling out to iproute2 to query bridge VLAN devices.
+Parsing its output is fine as it can emit structured JSON
+output, but as bridge(8) always resolves the ifindex to its interface
+name, additional lookups are required in order to find the ifindex.
 
-Create an incoming child only for a SABME command. Answer DISC commands
-and other P=1 commands with a DM response addressed to the source address
-decoded from the packet, because a listener has no peer in llc->daddr.
-Drop other non-SABME frames. Do not dispatch non-SABME frames through the
-listening socket's ADM state machine; its catch-all would move the listener
-to LLC_CONN_OUT_OF_SVC.
+Is a bridge VLAN spec something you would consider at all, or should
+I drop the idea before writing it up?
 
-The existing SABME child lifecycle is unchanged; this patch addresses
-only the non-SABME path.
+> So you know that the Fixes tags are pointless and yet you add them?
+> Please, if it's not a bug that needs to go to LTS it should not have
+> a Fixes tag :/
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: LLM
-Co-developed-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
----
-changes in v9:
-  - Simplify the fix to cover only the non-SABME listener leak:
-    create children only for SABME, answer DISC and P=1 commands with
-    a DM response addressed to the source address decoded from the packet,
-    and drop all other non-SABME frames without running the listener state
-    machine.
-  - Remove the incoming_state / workqueue / child-list lifecycle rewrite.
-  - Keep the existing SABME child lifecycle unchanged.
-  - Leave accept-queue accounting and llc_ui_accept() unchanged; related
-    feedback is outside this non-SABME-only fix.
-  - Treat unbounded SABME child allocation as a separate issue; v9 does not
-    claim to fix SABME flooding.
-  - Explicitly document the disposition of the three earlier review points:
-    v9 does not change accept-queue accounting or llc_ui_accept(), and does
-    not address unbounded SABME child allocation.
-  - v8 Link: https://lore.kernel.org/all/abc8b115321dbd417b8491d9e51f1988998ff50e.1788707641.git.zihanx@nebusec.ai/
-changes in v8:
-  - Reject a connection indication whose skb->sk is the listener itself
-    so accept() cannot lock_sock_nested() the socket it already holds,
-    and drop the extra QUEUED reference only when it was taken.
-  - Drop the extra QUEUED hold from the incoming_children close walk,
-    matching the receive-queue walk.
-  - Do not run the connection state machine on a released incoming child
-    from the listener backlog; leftover in-service child frames run on
-    that child under its lock.
-  - Limit out-of-service tests on the receive path to incoming children
-    and to a looked-up child already marked out of service. SAP unhash
-    is RCU, so drop that later lookup instead of indexing the state
-    table with state 0. This is not a generic llc_conn_service bounds
-    check.
-  - Do not nested-lock a QUEUED child on itself in llc_backlog_rcv().
-  - Sort the new locals in llc_release_incoming_children() reverse
-    xmas tree.
-  - Describe the original /proc/net/llc/socket leak evidence as the
-    wc -l count (0 then 100 leftover entries). No raw proc table from
-    that run was kept.
-  - Decode the remaining OOM frames against a rebuilt 6.12.74 vmlinux;
-    leftover lockdep, sanitizer, and do_pte_missing frames still show
-    original offsets.
-  - Keep this as the listener child leak and lifecycle fix only. The
-    listen(2) accept-queue bound raised against v7 is independent of the
-    leak and is not included here.
-  - v7 Link: https://lore.kernel.org/all/cover.1788414881.git.zihanx@nebusec.ai/
-changes in v7:
-  - Drop the companion LLC_CONN_OUT_OF_SVC bounds patch due to overlap with
-    Kees Cook's net-next series:
-    https://lore.kernel.org/all/20260901210300.i.590-kees@kernel.org/
-  - That series also covers the connect(2) +1 return and rejecting
-    out-of-service states before table lookup, as raised in review of
-    v6 2/2:
-    https://lore.kernel.org/all/20260902010052.2297527-1-kuba@kernel.org/
-  - Keep only the listener child leak fix for net.
-  - Fix reverse-xmas-tree local ordering in llc_conn_handler() and
-    llc_incoming_sock_work(), align the atomic_cmpxchg() continuation,
-    and add matching braces on the backlog retry if/else.
-  - Release a PENDING child when llc_conn_handler() sees a redirected
-    packet for a TCP_LISTEN socket that is already SOCK_DEAD, instead of
-    dropping the packet and leaving that cleanup only to close().
-  - Keep the init_net CAP_NET_RAW/CAP_NET_ADMIN reproducer; PF_LLC is
-    rejected outside init_net, so unshare -Urn cannot express this path.
-  - Spell out that the crash PoC is DISC-only, include poc-sabme.c for
-    the accept and close paths, and restore the full OOM panic so the
-    leftover /proc/net/llc/socket leak is described next to that log.
-  - Do not tear down an already pending child when a redirected frame
-    fails sk_add_backlog(); drop that frame only.
-  - Track incoming children on the listener and release leftover PENDING
-    sockets from that list on close(), instead of relying only on
-    sk_receive_queue, backlog drain, or a later SOCK_DEAD packet.
-  - Stop taking the listener lock in llc_incoming_sock_work(); the child
-    already holds the listener, and teardown no longer interleaves with
-    llc_ui_release()'s llc_sk_free().
-  - Hold a child socket reference on handshake skbs with
-    skb_set_owner_sk_safe(), so kfree_skb() cannot race asynchronous
-    teardown through sock_rfree().
-  - Finish sock_orphan() and the device put in llc_incoming_sock_work()
-    before llc_sk_free(), so those steps do not run after its sock_put().
-  - Keep the v1 lore Link on its own line, before the numbered-patch
-    diffstat.
-  - Include the original leak-only leftover /proc/net/llc/socket count
-    next to the later panic_on_oom log.
-  - v6 Link: https://lore.kernel.org/all/cover.1787752861.git.zihanx@nebusec.ai/
-changes in v6:
-  - Hold a reference for children queued for accept() and release it when they
-    are dequeued, while retaining SAP publication so tuple lookup still finds
-    a pending child before the passive open completes.
-  - Make direct receive, backlog, accept-queue, and listener-close cleanup
-    symmetric, with bottom-half-disabled child locking in process context.
-  - Keep the LLC_CONN_OUT_OF_SVC lower-bound check in its separate patch and
-    use the ADM state boundary consistently.
-  - v5 Link: https://lore.kernel.org/all/20260822082354.3109-1-zihanx@nebusec.ai/
-changes in v5:
-  - Make listener child cleanup unconditional so queued children are also
-    released if the socket leaves TCP_LISTEN before close.
-  - Serialize process-context child cleanup and backlog dispatch with bottom
-    halves disabled, avoiding child-lock acquisition races with LLC receive
-    and timer paths.
-  - Drop packets redirected through a pending child after its listener is no
-    longer listening, and release children left out of service instead of
-    dispatching them.
-  - Split the LLC_CONN_OUT_OF_SVC lower-bound check into a separate patch.
-  - v4 Link: https://lore.kernel.org/all/20260814185843.4748-1-zihanx@nebusec.ai/
-changes in v4:
-  - Create a passive-open child only for SABME and generate listener-side DM
-    replies directly for non-SABME commands.
-  - Use an atomic incoming-child lifecycle and serialize pending-child lookup,
-    backlog processing, rollback, and listener close with the child lock.
-  - Keep immediate SAP publication for passive-open tuple matching, but release
-    unaccepted children on direct and backlog failures and on listener close.
-  - Defer final incoming-child cleanup to workqueue context so timer
-    synchronization does not run in the receive softirq path.
-  - Add an LLC state lower-bound check before state-table dispatch.
-  - v3 Link: https://lore.kernel.org/all/20260805175945.10698-1-zihanx@nebusec.ai/
-changes in v3:
-  - Drop the unused llc_conn_handler() local rc variable reported in review.
-  - Rebase the numbered patch and cover onto commit
-    ede76849012e45ffb2193ad110b42027eec02c5c.
-  - v2 Link: https://lore.kernel.org/all/cover.1785386749.git.zihanx@nebusec.ai/
-changes in v2:
-  - Rework the fix to preserve the existing passive-open tuple matching
-    semantics instead of deferring child publication until LLC_CONN_PRIM.
-  - Track listener-created children pending publication to accept(), and roll
-    them back on every earlier failure or drop path.
-  - Cover the original non-SABME leak and SABME paths which fail before
-    LLC_CONN_PRIM, including backlog enqueue and backlog drop failures.
-  - Correct Fixes to 1da177e4c3f4 ("Linux-2.6.12-rc2") based on the
-    earliest commit that introduced the child publication behavior.
-  - Clarify panic_on_oom crash evidence and packetdrill selection.
-  - v1 Link: https://lore.kernel.org/all/cover.1784725007.git.zihanx@nebusec.ai/
+Understood, I will drop the Fixes: tags.
 
- net/llc/llc_conn.c | 53 ++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 49 insertions(+), 4 deletions(-)
+I will be dropping patches 2/4 and 3/4 based on your comments on each.
+I'll drop 4/4 as well, since I'm not planning to submit the OVS spec
+work it would need to go with.
 
-diff --git a/net/llc/llc_conn.c b/net/llc/llc_conn.c
-index 260460d50f54c..4c2ca6b842516 100644
---- a/net/llc/llc_conn.c
-+++ b/net/llc/llc_conn.c
-@@ -771,6 +771,36 @@ static struct sock *llc_create_incoming_sock(struct sock *sk,
- 	return newsk;
- }
- 
-+/**
-+ *	llc_listener_send_dm - DM reply from a listening socket
-+ *	@sap: SAP of the listener
-+ *	@skb: received command
-+ *	@saddr: source address decoded from @skb
-+ *	@f_bit: final bit for the DM response
-+ *
-+ *	ADM would answer DISC and P=1 commands with DM, but a listener has no
-+ *	peer in llc->daddr. Build the reply from the incoming frame instead.
-+ */
-+static void llc_listener_send_dm(struct llc_sap *sap, struct sk_buff *skb,
-+				 const struct llc_addr *saddr, u8 f_bit)
-+{
-+	struct sk_buff *nskb;
-+	int rc;
-+
-+	nskb = llc_alloc_frame(NULL, skb->dev, LLC_PDU_TYPE_U, 0);
-+	if (!nskb)
-+		return;
-+
-+	llc_pdu_header_init(nskb, LLC_PDU_TYPE_U, sap->laddr.lsap,
-+			    saddr->lsap, LLC_PDU_RSP);
-+	llc_pdu_init_as_dm_rsp(nskb, f_bit);
-+	rc = llc_mac_hdr_init(nskb, skb->dev->dev_addr, saddr->mac);
-+	if (unlikely(rc))
-+		kfree_skb(nskb);
-+	else
-+		dev_queue_xmit(nskb);
-+}
-+
- void llc_conn_handler(struct llc_sap *sap, struct sk_buff *skb)
- {
- 	struct llc_addr saddr, daddr;
-@@ -795,11 +825,26 @@ void llc_conn_handler(struct llc_sap *sap, struct sk_buff *skb)
- 	 * in the newly created struct sock private area. -acme
- 	 */
- 	if (unlikely(sk->sk_state == TCP_LISTEN)) {
--		struct sock *newsk = llc_create_incoming_sock(sk, skb->dev,
--							      &saddr, &daddr);
--		if (!newsk)
-+		struct sock *newsk;
-+
-+		if (!llc_conn_ev_rx_sabme_cmd_pbit_set_x(sk, skb)) {
-+			newsk = llc_create_incoming_sock(sk, skb->dev, &saddr,
-+							 &daddr);
-+			if (!newsk)
-+				goto drop_unlock;
-+			skb_set_owner_r(skb, newsk);
-+		} else {
-+			/* Not a passive-open request. */
-+			if (!llc_conn_ev_rx_disc_cmd_pbit_set_x(sk, skb)) {
-+				u8 f_bit;
-+
-+				llc_pdu_decode_pf_bit(skb, &f_bit);
-+				llc_listener_send_dm(sap, skb, &saddr, f_bit);
-+			} else if (!llc_conn_ev_rx_xxx_cmd_pbit_set_1(sk, skb)) {
-+				llc_listener_send_dm(sap, skb, &saddr, 1);
-+			}
- 			goto drop_unlock;
--		skb_set_owner_r(skb, newsk);
-+		}
- 	} else {
- 		/*
- 		 * Can't be skb_set_owner_r, this will be done at the
--- 
-2.43.0
 
+On Thu, Sep 10, 2026 at 10:23=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> w=
+rote:
+>
+> On Tue, 08 Sep 2026 19:45:06 -0400 Taylor Bates wrote:
+> > This series is intended to address several robustness bugs found in the=
+ ynl
+> > tooling and the netlink-raw YAML specification.
+> >
+> > These issues were found while writing a netlink-raw spec for the Bridge
+> > VLAN family. However each stands independently of that work, and fixes
+> > bugs in the parser that can be reproduced against the existing spec
+> > definitions.
+>
+> Why are you doing this? What's your intended use?
+> YNL extensions for classic families are unlikely to be accepted.
+> It's definitely not a goal for us to backfill all the ancient baggage.
+>
+> > The patches in this series carry Fixes tags, but are all in developer
+> > tooling and have no effect on the running kernel. That is why they have
+> > been targeted at net-next rather than net.
+>
+> So you know that the Fixes tags are pointless and yet you add them?
+> Please, if it's not a bug that needs to go to LTS it should not have
+> a Fixes tag :/
