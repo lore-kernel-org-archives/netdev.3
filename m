@@ -1,65 +1,65 @@
-Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
+Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5269E2AD03
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 00:46:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A3D2D8382
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 00:47:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789173977; cv=none; b=G20ZoR9BRCkIRYKtal8ZLe0GjmGX1+9Ppuvu2ddZ1fbkwATSF2pdygpmxoLwZP2ILHhMEPzfabPnGu7ZOjUjOAgnGtLwNN+C46SZU9nONCxBMiJidqnC0OOrWHjaCbCVfPn8Kqc/pEirQm85kfyAXmQFbFBTSlatmWOz6qsR1SA=
+	t=1789174047; cv=none; b=lPUWEuMxM4ow7eU01ATnX8BQl1nIcwlEG6OUrSaPRVyYXX1RJvcCAMO7UI0rCpAYa8/Jm5VnHN8y0iJ6pefWy2j0CrEfrDgo+VOT1P1Tqu2bdlooFs03RpJwI7L+d14+R+Ex3D730Z2HCddngb+TvgKKlYsS/sTcyNYSc0Y24w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789173977; c=relaxed/simple;
-	bh=iL+C2LsXy0Wgf2fim9VT4dWmhAZjrz1sVNILciJDR1g=;
+	s=arc-20240116; t=1789174047; c=relaxed/simple;
+	bh=FkqF8+3mlOmFgqiaG2d7mzyf1qhDRjd/zP+PjjeuGJU=;
 	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=Ut1ikLiAHiP+CxcxRodlhqyjc6kKfHFc3RXaaVJqfsm4kxJ8p/fKAjqAuQMFC/1uLuHDbKEByEozt9eQMa9EMhgHibgkLRzYlGbBLHowQUz+iwYs3XeK4NI+MF6hvVIFReybbMIhrdcSxh0Dsbe+6I68L4qqK3bU+d/bY5WnMxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NBUCjWRe; arc=none smtp.client-ip=74.125.224.48
+	 MIME-Version:Content-Type; b=rKSm1GWB/3qcc2GtmDS4bP2bA3kHAjY/f51e2TeuDatJh8wYkACe8gaM+DqkY6/xBqN0Q3fSsM0cS9kOmDr8qQjvLIit52gMtLjWGXg5C5lEyhxJVTvXhfpkwG8WrK32qgiE8T/oKg200oH289HH40bKyUukfxbdpLJhWdNFr10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f2newKzE; arc=none smtp.client-ip=74.125.224.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NBUCjWRe"
-Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-67124ad7615so1642824d50.0
-        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 17:46:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f2newKzE"
+Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-66bd7857841so1580804d50.3
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 17:47:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789173975; x=1789778775; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789174045; x=1789778845; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=qpY2ifiVCFCG4RgGzpRbm8TVOV7urSCRJ4S4xxBSmR0=;
-        b=NBUCjWReBqnKTrM5AtU3VJmcAoEr3Zk6+KXT0IRSKyxtdtGAkW6Ws8aSWf090NZOJ2
-         I/GYPpVQRJYRnn4nQBKFZmYzoomdWuAi4+8SGs/ted95fXGlhDt2sX3keQ6BT1wEDEY2
-         OVTTIdCL6NOseQ+I5y0pn7Uqn1Oa0xffRIXHIxdrz3/tBGwM5op6i8anzpN+ImuY/5s5
-         eXDRXoXtS0hVfYVVu0PWDOjWPwI3FuM9calB6FzDuHiGWUkXOxoj2iY1MJkkKA/5Hv5K
-         914Y4dVcxZ+i7+nYPqIK23wu8E+q00VNmuwoUnkcNl0yZzrvSYmbNk2ybMy6YcKGtAvU
-         O6cg==
+        bh=j918tPOZgQD0Pi8ul4Un21B2wbrIXAt3S8K708xHj9I=;
+        b=f2newKzE2ou5J037b6JO+wo+X9BRYaLP0wyCPGeVFOeF5lasO6r+TgS7Q5NyLNCi8j
+         wPlW08LWS4fosR0GzTUBfhOcUp8HAskQP7R9H49M2Co++U8A/ANHnr/aT2iAW5CS5HEX
+         BFfp/Augl+fS5GDWFJb8/2N9PcnTb9Ul+M7wRhHEnWe9yeVsc4BGsa9c6j+3lTZdJQwn
+         buxxAYLhC8KyuCbI2ZuDuQumWOjfBkflSNqxiYGS7v7iqaV1MxyT8FSkeKTfu6pBF8Mc
+         NUNvVJpmZ9hUdJV5NfunSnuh/c+mQr346PVWyAHirU80U0OM2GHgd0I95C3QsmHSPvGa
+         2bUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789173975; x=1789778775;
+        d=1e100.net; s=20251104; t=1789174045; x=1789778845;
         h=content-transfer-encoding:content-type:mime-version:subject
          :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=qpY2ifiVCFCG4RgGzpRbm8TVOV7urSCRJ4S4xxBSmR0=;
-        b=DXjwhM1GPwtNCERqjQ9OmcIPjpKb5y/emO4XQEeuL1M+NCxTiPlsA7sGWiYQa9fM43
-         3qjEgArA7fTFqjiIqR+IRqgp3hzH6Nd76VWo6Hn/Grm1f5G4IImWL4xPwu7SDkPAFRfb
-         IXJY9M7elcm+xk3k1zOgr/8fFFudYG44o0NkloZ5l1aroTyHOTDADgdsHhdY3LmLkG26
-         v46JwBOKDHPUUxk+OuacMDZuiavf6zl1UlyLWA/hDL2pNxvEzXtE+o7g2QgFQcnwkePn
-         uyAZ2fayoAzW5xBBKFJfjTxqor0mPztfxlPdeaMRNDKMwB6Bl+GJF4cO4UJb1/cQ2HmT
-         QDhA==
-X-Gm-Message-State: AFuF++k0ytOueUNHGAzxzUGf2C0Pm8a28zRrB8omQpJvmm2r/8CUYhSV
-	cOEOjqXEOeovAEekitF0YVUkoLc7phwnNhwjqd1rMfVNYBWxezWY7HDk
-X-Gm-Gg: AYBFou2rXFKP3ibl8B689M3FsruAYvvXZLRfhUwJiNrnLUQ/P5+YycWb038xdBixOfr
-	o7/o5ZfjhNLKl6/B26n35kmQbKItf60oesgjumXV9kpuv7GERwbbp+msNRRczn1aUHBWQHdrvRC
-	7T/0pPYwqnZYDaQ7WuP4D01fXTIYTpisVgUFfyZYT17pHTKkM3VeheQehZ9jHgPqHx0qz4zPzNs
-	l57pajV/8jcmP12tDoJLez9DAsGsVrwoqolSB6ygJst3SmHAiwqAsiQuqrFnjtCUzqWobLWsHkU
-	ulcWk55Gi2EL1eu8rmn8180LX8TQqk50ulSuXOt+OBrGDbwG1zKmVESy98Dm+IZENkadfuLcPIT
-	rhcozOp7Ak4/RRURoG0MUwPEgODzZq/UIaE3r3KBc0Sn/S7vt9dJr24Z+bKX+Ey01OjJ0VlPmyc
-	GuNXH9l44bEzsupH8OIpSXp8V+mf5vb5mV0vzldDz3b+CEMbMN4bhRxgGvijikNEldk8tbVpyRK
-	1tVnvMg7roPqtEiSjlyKXTYS/LJQHWTA49C9uoxIzMuljG9ZS5I
-X-Received: by 2002:a05:690e:4395:b0:66f:9e32:100c with SMTP id 956f58d0204a3-6712455c322mr1822320d50.14.1789173975137;
-        Fri, 11 Sep 2026 17:46:15 -0700 (PDT)
+        bh=j918tPOZgQD0Pi8ul4Un21B2wbrIXAt3S8K708xHj9I=;
+        b=TVs4sboEKOvW2FS4kymBMCxyzU27PmwAxEQT4Z3jFUfblcWTgGyzmYIQsU3y1V/ziz
+         jqLfXHge6WzJs6j6xbOb9m47RoUFcXW7OoNhgF7AH6Zkd2DzY0SrNMRg5KcfEm0YgISC
+         EnlQTcnWP3LiJQGYvpq2AWHZy278k8gf5DELfTrwnionfA5i3amyMR07diicgtfsbdO3
+         iKZIde90EcYBiUFFrTFpMoOgV8QsI8on7yoDEdfiVXMky/SumriFvIFnjjkMw4SHsBoo
+         KzEtmvvSswBW8ll64FNEGY+UsTwCCcEl1yHnTQZ2MNEZUTlKahx37e7T/tJ2LT1epPxz
+         Ee8A==
+X-Gm-Message-State: AFuF++m50SF3cnj6x+VICkfXKC+esKPmq6bMBoF7r7XwC/vnOFGyRGN+
+	NU78GGXr46z5sAZ4wSucUDsXYefLhWtrR199SE+gCTKXv7dLBcBnx3Bk0/WnLA==
+X-Gm-Gg: AYBFou2G+EUghv3mz4CYb/bCwaAMcm+WpjFgUXEQGhIFQcvFRa1AnEe23hoGUMFpQGb
+	jEqLTXGE2X2zfYXuZpSyqIdqM4iQ1bqp6nXIaT7Jvn+aoV3I32PwnDR2n+0cK9IyszRgTl6fCEd
+	HOneKTh4+8LM7FWju1L3hTYe0DirQKu7HObUwaDjz1zRJVlZ5gq0uaAGW/uO3k6kwm9+RUSJ67/
+	Vf63Z8VzLD8q8WDgJjJGKC8+e/fBpyK7MfuIXMMST6CkFoWnSW9teHPNV76PZjH/oJnPh1YXN7m
+	p/PjYz9Bx37BnmuQqranAneFim7cLH/SjeDaATvRRxfZr2wKd3Hol+EtmcFbihb+EYQLom4BKnq
+	FzTCqrg38n5aztN8iIDAFHIeGhT6hbxgEwx32iEx1XxHCvIU5b2WjmKM0lH4bF8UELZIXyHZ37Z
+	edyiZo5fN2uG3/xJ0Ien6wvSClMNZ9Y1Zh9BSfK+bVx8056FrHikzenQWvy0o8MYhVYeebuY/Dt
+	ZC5X0lxaZZ/P+eeqpjzLBNoAYBxVuNlljHL5xtMyxs4FcTwRn3qSobRCdP6JRQ=
+X-Received: by 2002:a05:690e:4403:b0:66e:582e:f6a1 with SMTP id 956f58d0204a3-671245bc484mr1520468d50.30.1789174044658;
+        Fri, 11 Sep 2026 17:47:24 -0700 (PDT)
 Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67125e78338sm1718565d50.16.2026.09.11.17.46.14
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67125b8bf2asm1747833d50.1.2026.09.11.17.47.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Sep 2026 17:46:14 -0700 (PDT)
-Date: Fri, 11 Sep 2026 20:46:14 -0400
+        Fri, 11 Sep 2026 17:47:24 -0700 (PDT)
+Date: Fri, 11 Sep 2026 20:47:23 -0400
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 To: netdev-bot+sashiko@kernel.org, 
  willemdebruijn.kernel@gmail.com
@@ -71,11 +71,12 @@ Cc: netdev@vger.kernel.org,
  horms@kernel.org, 
  andrew+netdev@lunn.ch, 
  willemb@google.com
-Message-ID: <willemdebruijn.kernel.2c67480e5739@gmail.com>
-In-Reply-To: <178914679743.219967.4781990764758262872@kernel.org>
-References: <20260910171131.2532487-5-willemdebruijn.kernel@gmail.com>
- <178914679743.219967.4781990764758262872@kernel.org>
-Subject: Re: [PATCH net-next v9 4/7] idpf: support pacing offload
+Message-ID: <willemdebruijn.kernel.2e348176f4860@gmail.com>
+In-Reply-To: <178914679853.219967.10930030898097751336@kernel.org>
+References: <20260910171131.2532487-7-willemdebruijn.kernel@gmail.com>
+ <178914679853.219967.10930030898097751336@kernel.org>
+Subject: Re: [PATCH net-next v9 6/7] selftests: drv-net: in so_txtime tell
+ apart sw from hw pacing
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,138 +88,113 @@ Content-Type: text/plain;
 Content-Transfer-Encoding: quoted-printable
 
 netdev-bot+sashiko@ wrote:
-> Thank you for your contribution! Sashiko AI review found 4 potential
+> Thank you for your contribution! Sashiko AI review found 1 potential
 > issue(s) to consider:
 > =
 
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 1 =C2=B7 Low: 2
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 0
 > =
 
-> - [High] idpf advertises a non-zero netdev->max_pacing_offload_horizon
->   (and therefore programs absolute CLOCK_TAI departure times into the=E2=
-=80=A6
-> - [Medium] The EDT horizon advertised to the networking core is taken
->   verbatim from firmware and only bounds-checked against U32_MAX, while=
-=E2=80=A6
-> - [Low] idpf_vport_set_pacing_offload() writes
->   netdev->max_pacing_offload_horizon (idpf_lib.c:832) from the=E2=80=A6=
-
-> - [Low] In idpf_send_get_edt_caps_msg() the firmware-supplied granulari=
-ty
->   is a u64 (gran_ns =3D le64_to_cpu(caps.tstamp_granularity_ns)) but is=
-=E2=80=A6
+> - [Medium] `-H` is documented in usage() as 'verify hardware offload
+>   (tx)' and the commit message claims it tells software apart from=E2=80=
+=A6
 > =
 
 > --
 > =
 
-> idpf: support pacing offload
+> selftests: drv-net: in so_txtime tell apart sw from hw pacing
 > =
 
-> This adds EDT (earliest departure time) support to idpf: EDT capabiliti=
-es
-> are negotiated over virtchnl, the negotiated horizon is published as
-> netdev->max_pacing_offload_horizon, and skb->tstamp is programmed into =
-the
-> 23-bit timestamp field of the flow scheduling Tx descriptor.
+> This adds a '-H' flag to so_txtime.c that enables SO_TIMESTAMPING with
+> SOF_TIMESTAMPING_TX_SOFTWARE, and flags an error if the software transm=
+it
+> timestamp is more than cfg_variance_us after the send start time.  It a=
+lso
+> extends the errqueue polling deadline by cfg_variance_us and sorts the
+> getopt string and usage text alphabetically.
 > =
 
-> A few questions below on the capability gating and on the horizon
-> encoding.
+> > diff --git a/tools/testing/selftests/drivers/net/so_txtime.c b/tools/=
+testing/selftests/drivers/net/so_txtime.c
+> > index f6f3253ed1748..9ebe9f91227c7 100644
+> > --- a/tools/testing/selftests/drivers/net/so_txtime.c
+> > +++ b/tools/testing/selftests/drivers/net/so_txtime.c
 > =
 
-> > diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net=
-/ethernet/intel/idpf/idpf_lib.c
-> > index 827c795afcb62..cd1b173e3b276 100644
-> > --- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-> > +++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-> > @@ -817,6 +817,21 @@ static void idpf_attach_and_open(struct idpf_ada=
-pter *adapter)
-> >  	}
+> [ ... ]
+> =
+
+> > @@ -191,12 +193,32 @@ static int do_recv_errqueue_txtime(struct sock_=
+extended_err *err,
+> >  	return 1;
 > >  }
 > >  =
 
-> > +static void idpf_vport_set_pacing_offload(struct idpf_vport *vport,
-> > +					  struct net_device *netdev)
+> > -static int do_recv_errqueue(int fdt)
+> > +static int do_recv_errqueue_timestamping(struct scm_timestamping *ts=
+s)
 > > +{
-> > +	struct idpf_adapter *adapter =3D vport->adapter;
-> > +	u32 max_horizon =3D 0;
+> > +	int64_t ts;
 > > +
-> > +	if (adapter->edt_caps.time_horizon_ns &&
-> > +	    idpf_is_queue_model_split(vport->dflt_qv_rsrc.txq_model) &&
-> > +	    !idpf_is_cap_ena(adapter, IDPF_OTHER_CAPS,
-> > +			     VIRTCHNL2_CAP_SPLITQ_QSCHED))
-> > +		max_horizon =3D adapter->edt_caps.time_horizon_ns;
+> > +	ts =3D tss->ts[0].tv_sec * 1000ULL * 1000 * 1000;
+> > +	ts +=3D tss->ts[0].tv_nsec;
+> > +	ts -=3D glob_tstart_real;
+> > +	ts /=3D 1000;
 > > +
+> > +	if (ts > cfg_variance_us) {
+> > +		fprintf(stderr, "sw delay %" PRId64 "us exceeds bounds\n", ts);
+> > +		if (!cfg_machine_slow)
+> > +			errors++;
+> > +	}
+> > +
+> > +	return 1;
+> > +}
 > =
-
-> [Severity: High]
-> The commit message says:
-> =
-
->     Negotiate the feature with the device using virtchnl. Support is
->     conditional on
->     ...
->     - PTP to ensure the NIC clock is synced to CLOCK_TAI.
-
-This is the only [High] in the series.
-
-The issue is that PTP support is expected, but this is not an explicit
-condition checked before advertising EDT.
-
-Previous versions of the commit message explicitly stated that
-preconditions are not always explicitly verified (also: split-queue,
-flow-based scheduling, firmware advertises EDT):
-
-  "Do not explicitly check all preconditions. Trust the firmware to
-   only advertise EDT when all are met."
-
-The patch now verifies these three other preconditions, so I dropped
-that statement from the commit message (on flagging by another bot).
-
-Only now it flags that one condition is still not checked.
-If I have to respin, I'll add back a comment.
- =
 
 > [Severity: Medium]
-> Can the advertised horizon exceed what the descriptor can encode?  The
-> hardware field is 23 bits of granularity units:
 > =
 
-> 	drivers/net/ethernet/intel/idpf/idpf_lan_txrx.h:
-> 		/* [23:23] Horizon Overflow bit, [22:0] timestamp */
-> 		u8 ts[3];
+> Can this check actually tell software pacing apart from hardware pacing=
+ for
+> every workload the next patch runs with '-H'?
 
-In practice this is not a concern with this hardware. The driver
-does not check every condition of a potential faulty or malicious
-firmware.
+Key here is "for every workload".
+
+Yes, passing -H is superfluous for the non-paced tests.
+
+No, that is not worth complicating the test to add a branch.
  =
 
-> [Severity: Low]
-> Does this validate a different value than the one it then uses?  gran_n=
-s is
-> a u64, but is_power_of_2() takes unsigned long:
+> The only positive criterion here is that the software transmit timestam=
+p
+> lands within cfg_variance_us (8000 us) of glob_tstart_real.  For a requ=
+est
+> with no delay or a negative delay there is no pacing interval to observ=
+e at
+> all.  do_send_one() does not even attach SCM_TXTIME when delay_us is
+> negative:
 > =
 
-> 	include/linux/log2.h:
-> 	static __always_inline __attribute__((const))
-> 	bool is_power_of_2(unsigned long n)
-> 	{
-> 		return n - 1 < (n ^ (n - 1));
-> 	}
+> 	if (ts->delay_us >=3D 0) {
+> 		...
+> 		tdeliver =3D glob_tstart + ts->delay_us * 1000;
+> 		...
+> 		cm->cmsg_type =3D SCM_TXTIME;
 > =
 
-> IDPF has no "depends on 64BIT" in its Kconfig, so on 32-bit builds the
-> upper 32 bits are dropped for the check while ilog2(gran_ns) takes the
-> __ilog2_u64 path on the full value.  A response of 0x100000001 truncate=
-s to
-> 1, passes the check, and yields tstamp_granularity_pow2 =3D 32, which i=
-s
-> copied into idpf_tx_queue.ts_gran_pow2 and used as the shift in
-> idpf_tx_splitq_set_txtime().  The same truncation rejects a legitimate
-> granularity of 2^32 on 32-bit.  Would testing the u64 directly, e.g.
-> gran_ns & (gran_ns - 1), plus an upper bound, be better here?
+> So for the 'a,-1' and 'a,0' variants that the follow-up patch passes '-=
+H'
+> to, ts comes out near 0 and the ts > cfg_variance_us test can never fir=
+e,
+> whether the transmit was hardware paced, software paced, or not paced a=
+t
+> all.  Would it make sense to skip or reject '-H' when the requested del=
+ay
+> is not positive, so those variants do not report a pass without having
+> verified anything?
+> =
 
-Low severity, but good idea if respinning.
- =
+> For the 10 ms variants there are only 2 ms between the requested delay =
+and
 
