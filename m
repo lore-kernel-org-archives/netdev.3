@@ -1,63 +1,68 @@
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com [209.85.219.72])
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E2E3806DD
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 15:09:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF523F4831
+	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 15:09:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789225802; cv=none; b=fne5YDWqzh2qqlZxAXMN1GxvoFTsy9zac3TjAKM7YRP6ijmA5yr5adKuZcFI5e9oKcOhKR84DaL5YOlUPgpdT26T6s6RgTSR2LqOOWE1T+jWgb1Ox2oPB9YoNort9rqywA/Hp0xj0KHiz1ezAUU6/dYEOT8WJ6NbG2I+Ja4jpaU=
+	t=1789225801; cv=none; b=hxdW/CCCozgHvtm+QJ4BJZEz5RcPq3EwW1rtjMOJJhktlFv6WrG1Bnzk1HbIpXOMej+AjZZDbpx34OzhcgMpvly+M3KjhzDR8gHhhwHPEoDQGsL/mV1OUbkF15O/QIGjxh3oKA0rQlmbXRCuZnLYlkzAWIReBS+hKKBoUnMmb8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789225802; c=relaxed/simple;
-	bh=nEIhvLIeQdKDqp11Vvu5m3Qncb4cZzSRWijvMYlM9vY=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Etyuo+oZSm/zVFZplmrg52zXVZ6UQe8wWmu3Yiom4Kn5OVras7QpydNCQi9v11v6DhCEhuwYTGyQGO3C7waN9DS+8Bi9H2MPQ22Np/HM7I3qzsxrKVuol6bttcpqWoqPFSUCwdedgz9P0pAGnYvGGrZwEhWwbLc75kYm0tgZXNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iKNj0OUr; arc=none smtp.client-ip=209.85.219.72
+	s=arc-20240116; t=1789225801; c=relaxed/simple;
+	bh=iVXpiG22XISSJCkVw23mgMfoBClDjhTGkhe5FMVNikw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=n0icBJxSuOb7YESnmOfbCt6tSQhnxcLAWsxZYUkhjRm5b10eZnU/TqmMNVNmpXsCgosFAqWZ9MX6MwORWCte+XYdVhTzfuv9/CgyojD1vABysyyBdD6FvG50Js0EQ4zDbfCPQKyvqzc82iCkLy3AfmC4Nb46ZMrj8l+04/7GvuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SVJYuopf; arc=none smtp.client-ip=209.85.222.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iKNj0OUr"
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-9107002647aso23216706d6.1
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 08:09:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SVJYuopf"
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93a05d645acso108787385a.2
+        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 08:09:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789225790; x=1789830590; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=C0Xs0ULGAE2RUY+sJfAb4lB+vvI2J2fwmL5A5iJNoOs=;
-        b=iKNj0OUr0ORphThUkGevFL3XKIh56IPGAUqZiU/PWpi84E58RxcJx3eGAEqDj+FQa6
-         i1TnEgcczMZk9VDH9ZVgzyZJPt+YVbW/0Uc7/9Ix8raUc5pEH6qa/RoxkggtO7Ag9Tce
-         mdFKOD0KkU4zZI7YnmtaHkz0TorDmjCyebSj89fWQu4uZD4MOjERxoYFD8re33MVTyFF
-         ryGyj/VxeKb7z4crXIqKITT+R4WqZ8i1OROkT1Wdz3ZNTwpAaIjqDA9oKRSEAAo4Fmgb
-         NsRMBU7DttX+dQRb9ztpB48XbSzVPlAV8kj6Bpj3oxmuY31zlxZ9AWck89eS53OboMQE
-         +9Dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789225790; x=1789830590;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1789225791; x=1789830591; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=C0Xs0ULGAE2RUY+sJfAb4lB+vvI2J2fwmL5A5iJNoOs=;
-        b=ZSAz16JC1UHI9KVNXIqCiAK+UevML5bRFqnpLRx6okLG6/gvgPX1yHnQGg42bIi0dW
-         +kO6EILJbcjzo/yGF/cffFW1sX4hs4+VaOEHlmgbRKLh2QpkbYkZC7zBbW0GxNdtrrcX
-         HBeQOrdmL8GSkw555WHydmyouJia3bXbmLDjQax9mevrVeirXk2+3JVHGywcJgohaDq1
-         kH0pTze8wL+wmclcz5e2XgJGK4j8Vv+gz1UHKhjToftQJZ7fIMaLNiggh2CMgNm2b6IZ
-         nWCO2vczU7HzanIDLn8rc197QiMUIK5EdDH2vxCKVtPpwgoSa2i+FeG2OjfDWGytNi2n
-         d8Dg==
-X-Forwarded-Encrypted: i=1; AKwUvBxzZoUFZ5mz5jczxcdjkqbDh9NeKGIBeYDv6FqRi4Tx7zp/GHr4kAcDpeJNpIqznxWK046k1Io=@vger.kernel.org
-X-Gm-Message-State: AFuF++mt1DpeEXFH8OcdSMt19PSu4FxASQD/lU0bVFZNQeBWsp5h3/c0
-	Mq9lsZanzbbYg8K2aRFnbqPvR/LcazjQSxqBCuTJQpLHxprTGtxE599kADA0vytoALd/OOFYjY4
-	c6FJrRjNwSwuVfA==
-X-Received: from qvul18.prod.google.com ([2002:ad4:4532:0:b0:912:305:a044])
+        bh=NdcZ9Ym38TpT+aIRVhZ4u7RPhebC+0/lYyLX2oKzLys=;
+        b=SVJYuopfHyzBk7ORyAAyFH5OIu++qW4ITUoPkTO/LZW1HEPwT2gQin7BE8E6CXiz6X
+         HpqUEY1y5RWtzDXjEpzqUJXk+UxocXAd0KSzXBZ/lEroiPt7kNO0Xn9xP4dn4z7cwltx
+         HFTC5IC9rav+8bvAfTuj1n0IXtTgTfiT2FWx3FVJbdQoHilblPeecGkqjYqwCkWTlPAs
+         7dUSllLV+hc6hE3lCgujnUwj7bClKMJK82X4Ktv00/nKN1+gC3Yu21ZfrWYnuS284VMm
+         PEf6flKbtHlgx9gF/P3AHSdgMM+DNo4qM2bvtzByOH55lDljJKQphq1yTWFyAEB+g6aI
+         /lTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789225791; x=1789830591;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=NdcZ9Ym38TpT+aIRVhZ4u7RPhebC+0/lYyLX2oKzLys=;
+        b=a/joaoMv9zeQ3+hRqX481aKvEeO4X3XAlPrkAVNUwFoLj5LFyC4AyE1JHJUQajLLfP
+         fmDyO4fMTdFil+00zijk2rkfHABjka4ONbngTTR+enzJzO/XkiRxpXiczdD4nLk/827K
+         AxC+US8+prVYonBid4CmqyQPsbPrYp921tp+pIxvArzSiUHsoXodCuAAnQEWba2AegJg
+         XTFLC67VZ89+QZ5UkSCGsAl7gK5P6eKpWW90zVJPUbKSGTLzPBVhEnyBQIzVgiI5ZYBc
+         OETRBOjNuD6VfNaYd6oCV17DZuYkZn92UW3X9iVMX7sWblj5kotx+AcPWYyDNnrdYUye
+         mbjQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzVJ97D/PdaxNGRo6IKPz67LQx+pvk+vg60eCw1UemH8upJni0nCHgeBHT9o27B2hoYzqDs7NY=@vger.kernel.org
+X-Gm-Message-State: AFuF++lsIhJvQcm1mzyMJ7wDnTHqDCRE9p6MdkvLm2M0r89ocIoEkREF
+	fCzfcCGZLgrmV8nPkVpBzIuFWVRtDAQpJh9Jh4qkBwgXABUmi4Za11iLWeTam45Rc5AWIPNaTzm
+	31Jhipe4KuWOEQQ==
+X-Received: from qkbi6.prod.google.com ([2002:a05:620a:5206:b0:93a:f30:25a2])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6214:4e1a:b0:912:12cf:f6b7 with SMTP id 6a1803df08f44-91212cffab1mr108209926d6.7.1789225789644;
- Sat, 12 Sep 2026 08:09:49 -0700 (PDT)
-Date: Sat, 12 Sep 2026 15:09:41 +0000
+ 2002:a05:620a:a18b:20b0:939:fa1e:d6fe with SMTP id af79cd13be357-939fa1ee2a1mr727571085a.25.1789225791082;
+ Sat, 12 Sep 2026 08:09:51 -0700 (PDT)
+Date: Sat, 12 Sep 2026 15:09:42 +0000
+In-Reply-To: <20260912150944.3470971-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260912150944.3470971-1-edumazet@google.com>
 X-Mailer: git-send-email 2.55.0.1007.g17ff1f9808-goog
-Message-ID: <20260912150944.3470971-1-edumazet@google.com>
-Subject: [PATCH net 0/3] ip_gre: fix header lengths and validation on changelink
+Message-ID: <20260912150944.3470971-2-edumazet@google.com>
+Subject: [PATCH net 1/3] ip_gre: validate netlink attributes before changing
+ the tunnel
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -66,61 +71,126 @@ Cc: Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
 	Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Three fixes in the IPv4 GRE/ERSPAN changelink path, found while preparing
-an RCU conversion of the IPv4 tunnel configuration. They all come from
-the same place: ipgre_changelink() and erspan_changelink() mutate the
-live device as they go, without keeping tunnel->hlen,
-dev->needed_headroom and dev->mtu in sync.
+ipgre_netlink_parms() and erspan_netlink_parms() write into the live
+tunnel before all attributes have been validated, so a rejected
+changelink leaves it half updated.
 
-Patch 1 makes the netlink parsers all-or-nothing. They write into the
-live tunnel before all attributes have been validated, so a rejected
-request leaves it half updated; in the worst case dev->type is left at
-ARPHRD_NONE and the interface is broken for good.
+A request carrying IFLA_GRE_COLLECT_METADATA and an invalid
+IFLA_GRE_IGNORE_DF returns -EINVAL, but dev->type has already become
+ARPHRD_NONE, breaking the interface for good.
 
-Patch 2 stops maintaining the device lengths as a difference.
-ipgre_link_update() adjusts them by a delta computed from tun_hlen only,
-while ip_tunnel_bind_dev() assigns the same fields from tunnel->hlen.
-Two writers, two models, and a delta that ignores the encapsulation, is
-applied on top of the absolute assignment when the link changes too, and
-is computed from a length ip_tunnel_encap_setup() may have published for
-a request that then failed. tunnel->hlen is now recomputed from tun_hlen
-and encap_hlen, and ip_tunnel_bind_dev() becomes the only writer of the
-device lengths. Not a memory safety issue: ip_tunnel_xmit() computes its
-own headroom for the encapsulation, only the advertised MTU is wrong.
+Parse the ERSPAN attributes into local variables and commit them only
+once everything is validated, hence erspan_netlink_parms() now calls
+ipgre_netlink_parms() last. Same reason for moving
+IFLA_GRE_COLLECT_METADATA after the IFLA_GRE_IGNORE_DF validation.
 
-Patch 3 gives ERSPAN the same treatment, where it does crash:
-erspan_xmit() reserves dev->needed_headroom with skb_cow_head() and then
-pushes a header sized from the current version, so going from version 0
-to version 2 adds 20 bytes and can reach skb_under_panic().
+Only the parsers become all-or-nothing: ip_tunnel_encap_setup() still
+runs before them, ip_tunnel_changelink() after them.
 
-Notes for reviewers, because not all bugs are fixed.
+Fixes: e271c7b4420d ("gre: do not keep the GRE header around in collect medata mode")
+Fixes: 84e54fe0a5ea ("gre: introduce native tunnel support for ERSPAN")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ net/ipv4/ip_gre.c | 52 +++++++++++++++++++++++++++++------------------
+ 1 file changed, 32 insertions(+), 20 deletions(-)
 
-When the header length really changes, dev->mtu
-is now recomputed by ip_tunnel_bind_dev() instead of being shifted by
-the difference, as ip_tunnel_update() already does for a link or fwmark
-change; a MTU configured by the user still survives a request that does
-not change the header length.
-
-And the changelink paths still commit into the live tunnel step by step.
-A rejected request is therefore not a no-op, and since the xmit path is
-lockless, a concurrent erspan_xmit() can briefly see a new erspan_ver
-while dev->needed_headroom still describes the old one. Both are
-pre-existing. These patches shrink the second one from permanent to the
-duration of a single changelink, since erspan_changelink() does not
-refresh the lengths at all today, but closing it means publishing a whole
-new configuration atomically. That needs a larger rework and will come
-with the ip_tunnel RCU conversion in net-next.
-
-Eric Dumazet (3):
-  ip_gre: validate netlink attributes before changing the tunnel
-  ip_gre: compute tunnel lengths absolutely instead of by delta
-  ip_gre: recompute erspan header lengths after a change
-
- include/net/ip_tunnels.h |   1 +
- net/ipv4/ip_gre.c        | 146 +++++++++++++++++++++++++++------------
- net/ipv4/ip_tunnel.c     |  16 +++++
- 3 files changed, 120 insertions(+), 43 deletions(-)
-
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index 82309efd417e0f1f6554e7028be8e05d769e932d..40b922362a7ca4e8ee0c3ee6c0af8d4a9fdc42d3 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -1233,12 +1233,6 @@ static int ipgre_netlink_parms(struct net_device *dev,
+ 		parms->iph.frag_off = htons(IP_DF);
+ 	}
+ 
+-	if (data[IFLA_GRE_COLLECT_METADATA]) {
+-		t->collect_md = true;
+-		if (dev->type == ARPHRD_IPGRE)
+-			dev->type = ARPHRD_NONE;
+-	}
+-
+ 	if (data[IFLA_GRE_IGNORE_DF]) {
+ 		if (nla_get_u8(data[IFLA_GRE_IGNORE_DF])
+ 		  && (parms->iph.frag_off & htons(IP_DF)))
+@@ -1246,6 +1240,13 @@ static int ipgre_netlink_parms(struct net_device *dev,
+ 		t->ignore_df = !!nla_get_u8(data[IFLA_GRE_IGNORE_DF]);
+ 	}
+ 
++	/* All attributes have been validated, we can change @dev and @t. */
++	if (data[IFLA_GRE_COLLECT_METADATA]) {
++		t->collect_md = true;
++		if (dev->type == ARPHRD_IPGRE)
++			dev->type = ARPHRD_NONE;
++	}
++
+ 	if (data[IFLA_GRE_FWMARK])
+ 		*fwmark = nla_get_u32(data[IFLA_GRE_FWMARK]);
+ 
+@@ -1259,40 +1260,51 @@ static int erspan_netlink_parms(struct net_device *dev,
+ 				__u32 *fwmark)
+ {
+ 	struct ip_tunnel *t = netdev_priv(dev);
++	u8 erspan_ver = t->erspan_ver;
++	u32 index = t->index;
++	u16 hwid = t->hwid;
++	u8 dir = t->dir;
+ 	int err;
+ 
+-	err = ipgre_netlink_parms(dev, data, tb, parms, fwmark);
+-	if (err)
+-		return err;
+ 	if (!data)
+-		return 0;
++		return ipgre_netlink_parms(dev, data, tb, parms, fwmark);
+ 
+ 	if (data[IFLA_GRE_ERSPAN_VER]) {
+-		t->erspan_ver = nla_get_u8(data[IFLA_GRE_ERSPAN_VER]);
++		erspan_ver = nla_get_u8(data[IFLA_GRE_ERSPAN_VER]);
+ 
+-		if (t->erspan_ver > 2)
++		if (erspan_ver > 2)
+ 			return -EINVAL;
+ 	}
+ 
+-	if (t->erspan_ver == 1) {
++	if (erspan_ver == 1) {
+ 		if (data[IFLA_GRE_ERSPAN_INDEX]) {
+-			t->index = nla_get_u32(data[IFLA_GRE_ERSPAN_INDEX]);
+-			if (t->index & ~INDEX_MASK)
++			index = nla_get_u32(data[IFLA_GRE_ERSPAN_INDEX]);
++			if (index & ~INDEX_MASK)
+ 				return -EINVAL;
+ 		}
+-	} else if (t->erspan_ver == 2) {
++	} else if (erspan_ver == 2) {
+ 		if (data[IFLA_GRE_ERSPAN_DIR]) {
+-			t->dir = nla_get_u8(data[IFLA_GRE_ERSPAN_DIR]);
+-			if (t->dir & ~(DIR_MASK >> DIR_OFFSET))
++			dir = nla_get_u8(data[IFLA_GRE_ERSPAN_DIR]);
++			if (dir & ~(DIR_MASK >> DIR_OFFSET))
+ 				return -EINVAL;
+ 		}
+ 		if (data[IFLA_GRE_ERSPAN_HWID]) {
+-			t->hwid = nla_get_u16(data[IFLA_GRE_ERSPAN_HWID]);
+-			if (t->hwid & ~(HWID_MASK >> HWID_OFFSET))
++			hwid = nla_get_u16(data[IFLA_GRE_ERSPAN_HWID]);
++			if (hwid & ~(HWID_MASK >> HWID_OFFSET))
+ 				return -EINVAL;
+ 		}
+ 	}
+ 
++	err = ipgre_netlink_parms(dev, data, tb, parms, fwmark);
++	if (err)
++		return err;
++
++	/* All attributes have been validated, we can change @t. */
++	t->erspan_ver = erspan_ver;
++	t->index = index;
++	t->hwid = hwid;
++	t->dir = dir;
++
+ 	return 0;
+ }
+ 
 -- 
 2.55.0.1007.g17ff1f9808-goog
 
