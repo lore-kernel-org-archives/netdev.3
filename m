@@ -1,985 +1,384 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004E13F9F26;
-	Sun, 13 Sep 2026 19:57:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9573F9A1E
+	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 20:00:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789329433; cv=none; b=FgyjIMVyW9MnVsgnctW/BMt6K95cUPA/zYa203KbGvqpmp/2a3zN7Uf4+kfW9y4VfksNO3sP12O+8JdUQPX4n+T9EeoZuqALSC58TlL7SX1/TdtJ2wstRGBN1/fOMm3Ryi/rKwzXCYuUl+aGkWmANjHceROOSxLe8MfVEF9FSIg=
+	t=1789329609; cv=none; b=bbEpO9Ns6m+MBjqqsoENgIIbn7b8jHo5w0KMJ1ih/tibRYBKyFbmHieTyWaouFreaImfDRGEFAEffZE4DJ1eEiQ/dcLZH6+/qsnN/JPZt/W6H2TAxZP/ijnWylIiLpj+yjlEt/uR8HPq/xG+7zD4qbYjNUYTauTNvmwrincO9EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789329433; c=relaxed/simple;
-	bh=Uk1mmoFU1zofLKy0RUbxwye1iO+ngs3IfVOOrWxA+04=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pHmcS3hblcQrSFitZiVTwu0I4tPA/22ne+Dsy2NDmMyFDD2J4ngND2xGBdsft6FRvJCPGLmUMyy+QB2haaeY+D3ZMIYkx0Aaxp9YLPFNsdHH72To3ZG/SwB+uA+Mm6JBqO/rGU8IEU5vcZp1+GrJ7781kJAL/cRCcARZDALopI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R21rmSnb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789329609; c=relaxed/simple;
+	bh=O/RJ8UxkScn5Ml5bOIB2svVD3wv6ppSYKTuQhbT7DX8=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=mVKEqnObouAMsMtmYq0tP5g8xirHOr+rLxOElig8nebZz2n4NnNh4CGxhwmW67HiZ7CrzomX5dvlaVnUUN7Vs/7I9Nr2BgMAX9H9umwaR9V1YC5XO4+Vl1cDX9ILm9LFDkccodUIk4zPU/ph9G2C8Tgc4kXH/WiXM63PaTT4kaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fUsaUlqD; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R21rmSnb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81D81F000FF;
-	Sun, 13 Sep 2026 19:57:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789329430;
-	bh=5mBIyLGxT6rSP6IwF3+0+A2RkLXT/lEoLb6udrTGapc=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=R21rmSnbhu5289xM5m3jn+/2zVRC8iF2/eR6e/CHNZWuVGQdP9xH9i3C+Ebff8l+/
-	 5CicCfJ1oZdSuhIvzw7nvHd8DBw0KpYw5oBun92+KT7e2bewy8VUk0ZsGb2N0Wsura
-	 0S0Z2iNNde0iKcGBdN85gHWFt2PLFxZN2KsUSWfFTiHXP6V1hvs0StAZFjO1guaWH4
-	 OmHC5lpMM8wG/QAfzXy+VmrHvUDAf7tIqKvcm91cS3hdKq7jYBBhqjavJXX15Lhs45
-	 c0BerxAgqA3WyXbx6r0VsrcSMuROOq6mSut6NN+IHEkIxWYeKttcZk59YaFDquOGrv
-	 Vd7D+YKhOsq2g==
-From: Linus Walleij <linusw@kernel.org>
-Date: Sun, 13 Sep 2026 21:56:45 +0200
-Subject: [PATCH net-next v13 4/4] net: dsa: ks8995: Delete surplus driver
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fUsaUlqD"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912e64ccso9754485e9.0
+        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 13:00:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789329606; x=1789934406; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:subject:from:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=5BCd/4qm1fpv7p66782CgOKQ0MpRiFbIMJ5Q1aBJGws=;
+        b=fUsaUlqD6ZMIQ18gzQ9a2nH2S5GbYEHN008mbW5CmOqRu+kLMG2xs9Yn3MIwzdH5gc
+         nBLk99NemqahGqW9LV9XE/qK4OIC9fGroshaY65NlYBDTgrUIEHWIYLSzzfKrCaVvM2T
+         RHX97xINgK2BNrvetfreul+WxaVLTcV+u5fIjnTkSdNobWNCds4gFD96d7Pl8iTNWSX6
+         oRN0h+EG3Ny0PRoTHz6+n4G7ogXNLndwYA23aAVn30vo8N6IT6Y3YRGZfWxJRbmC6Mkv
+         sQRgLRxa78xvh465+IxP+8qIfPoSFRKCOY3DKglaVJjZ0Y6qW58Vs/1hLcrAHVWlZgHn
+         Z3eQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789329606; x=1789934406;
+        h=content-transfer-encoding:content-type:subject:from:cc:to
+         :content-language:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5BCd/4qm1fpv7p66782CgOKQ0MpRiFbIMJ5Q1aBJGws=;
+        b=SmHX+G2uVwhh6sRaUNw07cexLSTh4IeDAi5E4rFHSk9NoWcGziO8rqtPnVvF7ZY5as
+         RYyRO5ymDh9hSY0y8I16WQU+Z9BMeQxrGuPtQQ3ng+tc4PaWfHx0SC/Ks9D0Km2YRHNG
+         56oGyyTwYZexwJfI/x0yO4z+4JfLp73qzoAk8Bw0pmT8YMWqBQ04nHEluJc6bIsyYvJr
+         Kar3j2CP6HVkKr/vDn7m4gCHeM3iOWdf9LFHZHPFIGWW3BGMbYZasmMMytWx97WhnSGz
+         wbTAFYx4U0j5vLXUeSQOMUJ3Lf2E97ZAzZntL6JQjyT3WrZzv5FBRS/j8tmP6oMMhBQD
+         utBQ==
+X-Gm-Message-State: AFuF++l9VSegnHu7dUPmcb+nXpu5b+zLe4AoJIawsqhF1so/8Q24i8T5
+	NNN7uJlXKWFyA0eHKhl9CKeX3AAP+JObGS5cQ8o/seWFs5mGE8UCM8FW
+X-Gm-Gg: AYBFou1/OrZln7RpXRkskYhBqSA+3h2EbuzmEPRdLLD6M9/iWmPJa6Scuj4+KS2h9K0
+	SyILKT6Vc8i0vSgdrrfbtG69WEWMwpa0xcgdtmBfVxBi2eSKAcp3xfhvuEA1kdZWkvI//cozIzU
+	m0fZk00Vg7XgZfTGRVpzPoKfrrewu6b5PkCeZR9AwJ1gYoDEKS4MzXg5gFeh1D3OJ+EC68DFluP
+	xygYCc6b22bVmEruvgJ8t79NGBQNk4yJtJRh9lHvV439KWIGyIAUwdFUsoaAKqYctpNZ1JM9Pvq
+	hZ7Chn0AeBppYPIwtofuTfUf6H/3iBijkCfq5jEXNiFz3OiriinXxOxF9hZIZBIFl6wOh8C557T
+	dqYBJXUTE4i5k4TAidHlRi4B8t6mYsZtH0hRbsRuZCZHsHQBWNkqYGkXLusfPoOHGekugtbOo5w
+	tz4HIIwhz2XGtIhmXY+I1c6ATPHDZi9YGiHQ8/IXDUleZLvcoqueKVHyjvt/kNN5aSQmV4EKGcU
+	ZD8ud5XPttPOO+/j6YIjHqxvj6TEvIDbzsBDwva4XoZejVGUrlV1TrLclJHHm8nyIjQQz51jZ6J
+	2vJVvozm5iwjUrJ3mW0pb1hbIidIArLx
+X-Received: by 2002:a05:600c:4f8e:b0:49d:17d4:aff2 with SMTP id 5b1f17b1804b1-49e619a1c3bmr314991135e9.1.1789329605508;
+        Sun, 13 Sep 2026 13:00:05 -0700 (PDT)
+Received: from ?IPV6:2003:ea:8f4f:7700:985e:3d25:6999:4ab9? (p200300ea8f4f7700985e3d2569994ab9.dip0.t-ipconnect.de. [2003:ea:8f4f:7700:985e:3d25:6999:4ab9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e60acff8bsm260001815e9.9.2026.09.13.13.00.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 13 Sep 2026 13:00:05 -0700 (PDT)
+Message-ID: <9bf96f6b-2d08-402a-af5b-cc6b33fc6d26@gmail.com>
+Date: Sun, 13 Sep 2026 22:00:03 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Andrew Lunn <andrew@lunn.ch>,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ David Miller <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Subject: [PATCH RESUBMIT net-next] net: phy: factor out legacy PHY fixup
+ support and make it always built-in
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260913-ks8995-to-ksz8-v13-4-327b16d309eb@kernel.org>
-References: <20260913-ks8995-to-ksz8-v13-0-327b16d309eb@kernel.org>
-In-Reply-To: <20260913-ks8995-to-ksz8-v13-0-327b16d309eb@kernel.org>
-To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>, 
- Simon Horman <horms@kernel.org>, Russell King <linux@armlinux.org.uk>, 
- Nicolai Buchwitz <nb@tipi-net.de>
-Cc: netdev@vger.kernel.org, Woojung Huh <Woojung.Huh@microchip.com>, 
- devicetree@vger.kernel.org, Linus Walleij <linusw@kernel.org>
-X-Mailer: b4 0.16.0
 
-The Microchip KSZ driver now handles the KS(Z)8995XA. The old
-driver identified the shared 0x95/0x0 ID as KS8995MA, but this ID
-cannot distinguish MA from XA. No KS8995MA users are known, and
-KS8995E has no documented SPI management interface. Neither variant
-has been verified with the replacement driver.
+PHY fixup registration is used from platform code in init phase only.
+Let's move the PHY fixup code from the modular part of phylib to the
+always built-in part of phylib. This allows to annotate the fixup
+registration as __init. No caller uses the return code of PHY fixup
+registration, therefore change related functions to return void.
 
-The two in-tree device trees using the "micrel,ks8995" compatible:
+phy_needs_fixup() and phy_scan_fixups() wouldn't have to be moved to
+the built-in part of phylib. But doing so allows to fully factor out
+legacy fixup support into its own source code file, and make struct
+phy_fixup and phy_fixup_list strictly private to phy_fixup.c.
 
- arch/arm/boot/dts/intel/ixp/intel-ixp42x-linksys-wrv54g.dts
- arch/arm/boot/dts/intel/ixp/intel-ixp42x-actiontec-mi424wr.dtsi
+phy_scan_fixups() is used after init phase only, then phy_fixup_list
+is read-only. So we don't need the mutex when accessing the list.
+Also when registering PHY fixups the mutex isn't needed, because
+fixup registration is done sequentially from platform init code.
+Actually there is only one platform with more than one fixup.
 
-both use KS8995XA hardware and continue to be supported by the
-replacement driver without regressions.
+In addition this change lays the foundation for enabling modular
+phylib on platforms where the fixup just sets a flag.
 
-Delete the old driver, but leave a stub behind in Kconfig so new
-users will be automatically phased over to the new symbol when
-migrating their configs.
-
-The old driver supports platform data (board file) instantiation,
-but nothing in the kernel tree makes use of this legacy mechanism so
-it is fine to delete.
-
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 ---
- drivers/net/dsa/Kconfig  |  10 +-
- drivers/net/dsa/Makefile |   1 -
- drivers/net/dsa/ks8995.c | 857 -----------------------------------------------
- 3 files changed, 6 insertions(+), 862 deletions(-)
+This is a resubmit from Jan 2026. The change depends on removal of the
+dnet driver, and at that time the dnet driver had just been removed,
+with a certain risk that this removal has to be reverted.
+---
+ drivers/net/phy/Makefile          |  2 +-
+ drivers/net/phy/phy_device.c      | 90 ----------------------------
+ drivers/net/phy/phy_fixup.c       | 99 +++++++++++++++++++++++++++++++
+ drivers/net/phy/phylib-internal.h |  1 +
+ include/linux/phy.h               |  8 +--
+ 5 files changed, 105 insertions(+), 95 deletions(-)
+ create mode 100644 drivers/net/phy/phy_fixup.c
 
-diff --git a/drivers/net/dsa/Kconfig b/drivers/net/dsa/Kconfig
-index e3d88f41fecf..fe8cd5338fda 100644
---- a/drivers/net/dsa/Kconfig
-+++ b/drivers/net/dsa/Kconfig
-@@ -112,11 +112,13 @@ config NET_DSA_RZN1_A5PSW
- config NET_DSA_KS8995
- 	tristate "Micrel KS8995 family 5-ports 10/100 Ethernet switches"
- 	depends on SPI
--	depends on NET_DSA_MICROCHIP_KSZ_SPI = n
--	select NET_DSA_TAG_NONE
-+	select NET_DSA_MICROCHIP_KSZ_COMMON
-+	select NET_DSA_MICROCHIP_KSZ_SPI
- 	help
--	  This driver supports the Micrel KS8995 family of 10/100 Mbit ethernet
--	  switches, managed over SPI.
-+	  This is a transitional option for users who had NET_DSA_KS8995
-+	  enabled. It automatically enables the new NET_DSA_MICROCHIP_KSZ_SPI
-+	  driver which supersedes it. This option will be removed in a future
-+	  kernel release.
+diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
+index e23df5e836e..4674eaf243e 100644
+--- a/drivers/net/phy/Makefile
++++ b/drivers/net/phy/Makefile
+@@ -8,7 +8,7 @@ libphy-y			:= phy.o phy-c45.o phy-core.o phy_device.o \
  
- config NET_DSA_SMSC_LAN9303
- 	tristate
-diff --git a/drivers/net/dsa/Makefile b/drivers/net/dsa/Makefile
-index df849cd0e640..7e637d56b35c 100644
---- a/drivers/net/dsa/Makefile
-+++ b/drivers/net/dsa/Makefile
-@@ -2,7 +2,6 @@
- obj-$(CONFIG_NET_DSA_BCM_SF2)	+= bcm-sf2.o
- bcm-sf2-objs			:= bcm_sf2.o bcm_sf2_cfp.o
- obj-$(CONFIG_NET_DSA_LOOP)	+= dsa_loop.o
--obj-$(CONFIG_NET_DSA_KS8995) 	+= ks8995.o
- obj-$(CONFIG_NET_DSA_MT7530)	+= mt7530.o
- obj-$(CONFIG_NET_DSA_MT7530_MDIO) += mt7530-mdio.o
- obj-$(CONFIG_NET_DSA_MT7530_MMIO) += mt7530-mmio.o
-diff --git a/drivers/net/dsa/ks8995.c b/drivers/net/dsa/ks8995.c
-deleted file mode 100644
-index 77d8b842693c..000000000000
---- a/drivers/net/dsa/ks8995.c
-+++ /dev/null
-@@ -1,857 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--/*
-- * SPI driver for Micrel/Kendin KS8995M and KSZ8864RMN ethernet switches
-- *
-- * Copyright (C) 2008 Gabor Juhos <juhosg at openwrt.org>
-- * Copyright (C) 2025 Linus Walleij <linus.walleij@linaro.org>
-- *
-- * This file was based on: drivers/spi/at25.c
-- *     Copyright (C) 2006 David Brownell
+ ifdef CONFIG_PHYLIB
+ # built-in whenever PHYLIB is built-in or module
+-obj-y				+= stubs.o
++obj-y				+= stubs.o phy_fixup.o
+ endif
+ 
+ libphy-$(CONFIG_SWPHY)		+= swphy.o
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 94b2e85e00a..27c0cb13860 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -49,14 +49,6 @@ MODULE_DESCRIPTION("PHY library");
+ MODULE_AUTHOR("Andy Fleming");
+ MODULE_LICENSE("GPL");
+ 
+-struct phy_fixup {
+-	struct list_head list;
+-	char bus_id[MII_BUS_ID_SIZE + 3];
+-	u32 phy_uid;
+-	u32 phy_uid_mask;
+-	int (*run)(struct phy_device *phydev);
+-};
+-
+ static struct phy_driver genphy_c45_driver = {
+ 	.phy_id         = 0xffffffff,
+ 	.phy_id_mask    = 0xffffffff,
+@@ -237,9 +229,6 @@ static void phy_mdio_device_remove(struct mdio_device *mdiodev)
+ 
+ static struct phy_driver genphy_driver;
+ 
+-static LIST_HEAD(phy_fixup_list);
+-static DEFINE_MUTEX(phy_fixup_lock);
+-
+ static bool phy_drv_wol_enabled(struct phy_device *phydev)
+ {
+ 	struct ethtool_wolinfo wol = { .cmd = ETHTOOL_GWOL };
+@@ -427,85 +416,6 @@ static __maybe_unused int mdio_bus_phy_resume(struct device *dev)
+ static SIMPLE_DEV_PM_OPS(mdio_bus_phy_pm_ops, mdio_bus_phy_suspend,
+ 			 mdio_bus_phy_resume);
+ 
+-/**
+- * phy_register_fixup - creates a new phy_fixup and adds it to the list
+- * @bus_id: A string which matches phydev->mdio.dev.bus_id (or NULL)
+- * @phy_uid: Used to match against phydev->phy_id (the UID of the PHY)
+- * @phy_uid_mask: Applied to phydev->phy_id and fixup->phy_uid before
+- *	comparison (or 0 to disable id-based matching)
+- * @run: The actual code to be run when a matching PHY is found
 - */
--
--#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
--
--#include <linux/bits.h>
--#include <linux/if_bridge.h>
--#include <linux/if_vlan.h>
--#include <linux/types.h>
--#include <linux/kernel.h>
--#include <linux/module.h>
--#include <linux/delay.h>
--#include <linux/device.h>
--#include <linux/gpio/consumer.h>
--#include <linux/of.h>
--#include <linux/spi/spi.h>
--#include <net/dsa.h>
--
--#define DRV_VERSION		"0.1.1"
--#define DRV_DESC		"Micrel KS8995 Ethernet switch SPI driver"
--
--/* ------------------------------------------------------------------------ */
--
--#define KS8995_REG_ID0		0x00    /* Chip ID0 */
--#define KS8995_REG_ID1		0x01    /* Chip ID1 */
--
--#define KS8995_REG_GC0		0x02    /* Global Control 0 */
--
--#define KS8995_GC0_P5_PHY	BIT(3)	/* Port 5 PHY enabled */
--
--#define KS8995_REG_GC1		0x03    /* Global Control 1 */
--#define KS8995_REG_GC2		0x04    /* Global Control 2 */
--
--#define KS8995_GC2_HUGE		BIT(2)	/* Huge packet support */
--#define KS8995_GC2_LEGAL	BIT(1)	/* Legal size override */
--
--#define KS8995_REG_GC3		0x05    /* Global Control 3 */
--#define KS8995_REG_GC4		0x06    /* Global Control 4 */
--
--#define KS8995_GC4_10BT		BIT(4)	/* Force switch to 10Mbit */
--#define KS8995_GC4_MII_FLOW	BIT(5)	/* MII full-duplex flow control enable */
--#define KS8995_GC4_MII_HD	BIT(6)	/* MII half-duplex mode enable */
--
--#define KS8995_REG_GC5		0x07    /* Global Control 5 */
--#define KS8995_REG_GC6		0x08    /* Global Control 6 */
--#define KS8995_REG_GC7		0x09    /* Global Control 7 */
--#define KS8995_REG_GC8		0x0a    /* Global Control 8 */
--#define KS8995_REG_GC9		0x0b    /* Global Control 9 */
--
--#define KS8995_GC9_SPECIAL	BIT(0)	/* Special tagging mode (DSA) */
--
--/* In DSA the ports 1-4 are numbered 0-3 and the CPU port is port 4 */
--#define KS8995_REG_PC(p, r)	(0x10 + (0x10 * (p)) + (r)) /* Port Control */
--#define KS8995_REG_PS(p, r)	(0x1e + (0x10 * (p)) + (r)) /* Port Status */
--
--#define KS8995_REG_PC0		0x00    /* Port Control 0 */
--#define KS8995_REG_PC1		0x01    /* Port Control 1 */
--#define KS8995_REG_PC2		0x02    /* Port Control 2 */
--#define KS8995_REG_PC3		0x03    /* Port Control 3 */
--#define KS8995_REG_PC4		0x04    /* Port Control 4 */
--#define KS8995_REG_PC5		0x05    /* Port Control 5 */
--#define KS8995_REG_PC6		0x06    /* Port Control 6 */
--#define KS8995_REG_PC7		0x07    /* Port Control 7 */
--#define KS8995_REG_PC8		0x08    /* Port Control 8 */
--#define KS8995_REG_PC9		0x09    /* Port Control 9 */
--#define KS8995_REG_PC10		0x0a    /* Port Control 10 */
--#define KS8995_REG_PC11		0x0b    /* Port Control 11 */
--#define KS8995_REG_PC12		0x0c    /* Port Control 12 */
--#define KS8995_REG_PC13		0x0d    /* Port Control 13 */
--
--#define KS8995_PC0_TAG_INS	BIT(2)	/* Enable tag insertion on port */
--#define KS8995_PC0_TAG_REM	BIT(1)	/* Enable tag removal on port */
--#define KS8995_PC0_PRIO_EN	BIT(0)	/* Enable priority handling */
--
--#define KS8995_PC2_TXEN		BIT(2)	/* Enable TX on port */
--#define KS8995_PC2_RXEN		BIT(1)	/* Enable RX on port */
--#define KS8995_PC2_LEARN_DIS	BIT(0)	/* Disable learning on port */
--
--#define KS8995_PC13_TXDIS	BIT(6)	/* Disable transmitter */
--#define KS8995_PC13_PWDN	BIT(3)	/* Power down */
--
--#define KS8995_REG_TPC0		0x60    /* TOS Priority Control 0 */
--#define KS8995_REG_TPC1		0x61    /* TOS Priority Control 1 */
--#define KS8995_REG_TPC2		0x62    /* TOS Priority Control 2 */
--#define KS8995_REG_TPC3		0x63    /* TOS Priority Control 3 */
--#define KS8995_REG_TPC4		0x64    /* TOS Priority Control 4 */
--#define KS8995_REG_TPC5		0x65    /* TOS Priority Control 5 */
--#define KS8995_REG_TPC6		0x66    /* TOS Priority Control 6 */
--#define KS8995_REG_TPC7		0x67    /* TOS Priority Control 7 */
--
--#define KS8995_REG_MAC0		0x68    /* MAC address 0 */
--#define KS8995_REG_MAC1		0x69    /* MAC address 1 */
--#define KS8995_REG_MAC2		0x6a    /* MAC address 2 */
--#define KS8995_REG_MAC3		0x6b    /* MAC address 3 */
--#define KS8995_REG_MAC4		0x6c    /* MAC address 4 */
--#define KS8995_REG_MAC5		0x6d    /* MAC address 5 */
--
--#define KS8995_REG_IAC0		0x6e    /* Indirect Access Control 0 */
--#define KS8995_REG_IAC1		0x6f    /* Indirect Access Control 0 */
--#define KS8995_REG_IAD7		0x70    /* Indirect Access Data 7 */
--#define KS8995_REG_IAD6		0x71    /* Indirect Access Data 6 */
--#define KS8995_REG_IAD5		0x72    /* Indirect Access Data 5 */
--#define KS8995_REG_IAD4		0x73    /* Indirect Access Data 4 */
--#define KS8995_REG_IAD3		0x74    /* Indirect Access Data 3 */
--#define KS8995_REG_IAD2		0x75    /* Indirect Access Data 2 */
--#define KS8995_REG_IAD1		0x76    /* Indirect Access Data 1 */
--#define KS8995_REG_IAD0		0x77    /* Indirect Access Data 0 */
--
--#define KSZ8864_REG_ID1		0xfe	/* Chip ID in bit 7 */
--
--#define KS8995_REGS_SIZE	0x80
--#define KSZ8864_REGS_SIZE	0x100
--#define KSZ8795_REGS_SIZE	0x100
--
--#define ID1_CHIPID_M		0xf
--#define ID1_CHIPID_S		4
--#define ID1_REVISION_M		0x7
--#define ID1_REVISION_S		1
--#define ID1_START_SW		1	/* start the switch */
--
--#define FAMILY_KS8995		0x95
--#define FAMILY_KSZ8795		0x87
--#define CHIPID_M		0
--#define KS8995_CHIP_ID		0x00
--#define KSZ8864_CHIP_ID		0x01
--#define KSZ8795_CHIP_ID		0x09
--
--#define KS8995_CMD_WRITE	0x02U
--#define KS8995_CMD_READ		0x03U
--
--#define KS8995_CPU_PORT		4
--#define KS8995_NUM_PORTS	5 /* 5 ports including the CPU port */
--#define KS8995_RESET_DELAY	10 /* usec */
--
--enum ks8995_chip_variant {
--	ks8995,
--	ksz8864,
--	ksz8795,
--	max_variant
--};
--
--struct ks8995_chip_params {
--	char *name;
--	int family_id;
--	int chip_id;
--	int regs_size;
--	int addr_width;
--	int addr_shift;
--};
--
--static const struct ks8995_chip_params ks8995_chip[] = {
--	[ks8995] = {
--		.name = "KS8995MA",
--		.family_id = FAMILY_KS8995,
--		.chip_id = KS8995_CHIP_ID,
--		.regs_size = KS8995_REGS_SIZE,
--		.addr_width = 8,
--		.addr_shift = 0,
--	},
--	[ksz8864] = {
--		.name = "KSZ8864RMN",
--		.family_id = FAMILY_KS8995,
--		.chip_id = KSZ8864_CHIP_ID,
--		.regs_size = KSZ8864_REGS_SIZE,
--		.addr_width = 8,
--		.addr_shift = 0,
--	},
--	[ksz8795] = {
--		.name = "KSZ8795CLX",
--		.family_id = FAMILY_KSZ8795,
--		.chip_id = KSZ8795_CHIP_ID,
--		.regs_size = KSZ8795_REGS_SIZE,
--		.addr_width = 12,
--		.addr_shift = 1,
--	},
--};
--
--struct ks8995_switch {
--	struct spi_device	*spi;
--	struct device		*dev;
--	struct dsa_switch	*ds;
--	struct mutex		lock;
--	struct gpio_desc	*reset_gpio;
--	struct bin_attribute	regs_attr;
--	const struct ks8995_chip_params	*chip;
--	int			revision_id;
--	unsigned int max_mtu[KS8995_NUM_PORTS];
--};
--
--static const struct spi_device_id ks8995_id[] = {
--	{"ks8995", ks8995},
--	{"ksz8864", ksz8864},
--	{"ksz8795", ksz8795},
--	{ }
--};
--MODULE_DEVICE_TABLE(spi, ks8995_id);
--
--static const struct of_device_id ks8995_spi_of_match[] = {
--	{ .compatible = "micrel,ks8995" },
--	{ .compatible = "micrel,ksz8864" },
--	{ .compatible = "micrel,ksz8795" },
--	{ },
--};
--MODULE_DEVICE_TABLE(of, ks8995_spi_of_match);
--
--static inline u8 get_chip_id(u8 val)
+-static int phy_register_fixup(const char *bus_id, u32 phy_uid, u32 phy_uid_mask,
+-			      int (*run)(struct phy_device *))
 -{
--	return (val >> ID1_CHIPID_S) & ID1_CHIPID_M;
--}
+-	struct phy_fixup *fixup = kzalloc_obj(*fixup);
 -
--static inline u8 get_chip_rev(u8 val)
--{
--	return (val >> ID1_REVISION_S) & ID1_REVISION_M;
--}
--
--/* create_spi_cmd - create a chip specific SPI command header
-- * @ks: pointer to switch instance
-- * @cmd: SPI command for switch
-- * @address: register address for command
-- *
-- * Different chip families use different bit pattern to address the switches
-- * registers:
-- *
-- * KS8995: 8bit command + 8bit address
-- * KSZ8795: 3bit command + 12bit address + 1bit TR (?)
-- */
--static inline __be16 create_spi_cmd(struct ks8995_switch *ks, int cmd,
--				    unsigned address)
--{
--	u16 result = cmd;
--
--	/* make room for address (incl. address shift) */
--	result <<= ks->chip->addr_width + ks->chip->addr_shift;
--	/* add address */
--	result |= address << ks->chip->addr_shift;
--	/* SPI protocol needs big endian */
--	return cpu_to_be16(result);
--}
--/* ------------------------------------------------------------------------ */
--static int ks8995_read(struct ks8995_switch *ks, char *buf,
--		 unsigned offset, size_t count)
--{
--	__be16 cmd;
--	struct spi_transfer t[2];
--	struct spi_message m;
--	int err;
--
--	cmd = create_spi_cmd(ks, KS8995_CMD_READ, offset);
--	spi_message_init(&m);
--
--	memset(&t, 0, sizeof(t));
--
--	t[0].tx_buf = &cmd;
--	t[0].len = sizeof(cmd);
--	spi_message_add_tail(&t[0], &m);
--
--	t[1].rx_buf = buf;
--	t[1].len = count;
--	spi_message_add_tail(&t[1], &m);
--
--	mutex_lock(&ks->lock);
--	err = spi_sync(ks->spi, &m);
--	mutex_unlock(&ks->lock);
--
--	return err ? err : count;
--}
--
--static int ks8995_write(struct ks8995_switch *ks, char *buf,
--		 unsigned offset, size_t count)
--{
--	__be16 cmd;
--	struct spi_transfer t[2];
--	struct spi_message m;
--	int err;
--
--	cmd = create_spi_cmd(ks, KS8995_CMD_WRITE, offset);
--	spi_message_init(&m);
--
--	memset(&t, 0, sizeof(t));
--
--	t[0].tx_buf = &cmd;
--	t[0].len = sizeof(cmd);
--	spi_message_add_tail(&t[0], &m);
--
--	t[1].tx_buf = buf;
--	t[1].len = count;
--	spi_message_add_tail(&t[1], &m);
--
--	mutex_lock(&ks->lock);
--	err = spi_sync(ks->spi, &m);
--	mutex_unlock(&ks->lock);
--
--	return err ? err : count;
--}
--
--static inline int ks8995_read_reg(struct ks8995_switch *ks, u8 addr, u8 *buf)
--{
--	return ks8995_read(ks, buf, addr, 1) != 1;
--}
--
--static inline int ks8995_write_reg(struct ks8995_switch *ks, u8 addr, u8 val)
--{
--	char buf = val;
--
--	return ks8995_write(ks, &buf, addr, 1) != 1;
--}
--
--/* ------------------------------------------------------------------------ */
--
--static int ks8995_stop(struct ks8995_switch *ks)
--{
--	return ks8995_write_reg(ks, KS8995_REG_ID1, 0);
--}
--
--static int ks8995_start(struct ks8995_switch *ks)
--{
--	return ks8995_write_reg(ks, KS8995_REG_ID1, 1);
--}
--
--static int ks8995_reset(struct ks8995_switch *ks)
--{
--	int err;
--
--	err = ks8995_stop(ks);
--	if (err)
--		return err;
--
--	udelay(KS8995_RESET_DELAY);
--
--	return ks8995_start(ks);
--}
--
--/* ks8995_get_revision - get chip revision
-- * @ks: pointer to switch instance
-- *
-- * Verify chip family and id and get chip revision.
-- */
--static int ks8995_get_revision(struct ks8995_switch *ks)
--{
--	int err;
--	u8 id0, id1, ksz8864_id;
--
--	/* read family id */
--	err = ks8995_read_reg(ks, KS8995_REG_ID0, &id0);
--	if (err) {
--		err = -EIO;
--		goto err_out;
--	}
--
--	/* verify family id */
--	if (id0 != ks->chip->family_id) {
--		dev_err(&ks->spi->dev, "chip family id mismatch: expected 0x%02x but 0x%02x read\n",
--			ks->chip->family_id, id0);
--		err = -ENODEV;
--		goto err_out;
--	}
--
--	switch (ks->chip->family_id) {
--	case FAMILY_KS8995:
--		/* try reading chip id at CHIP ID1 */
--		err = ks8995_read_reg(ks, KS8995_REG_ID1, &id1);
--		if (err) {
--			err = -EIO;
--			goto err_out;
--		}
--
--		/* verify chip id */
--		if ((get_chip_id(id1) == CHIPID_M) &&
--		    (get_chip_id(id1) == ks->chip->chip_id)) {
--			/* KS8995MA */
--			ks->revision_id = get_chip_rev(id1);
--		} else if (get_chip_id(id1) != CHIPID_M) {
--			/* KSZ8864RMN */
--			err = ks8995_read_reg(ks, KS8995_REG_ID1, &ksz8864_id);
--			if (err) {
--				err = -EIO;
--				goto err_out;
--			}
--
--			if ((ksz8864_id & 0x80) &&
--			    (ks->chip->chip_id == KSZ8864_CHIP_ID)) {
--				ks->revision_id = get_chip_rev(id1);
--			}
--
--		} else {
--			dev_err(&ks->spi->dev, "unsupported chip id for KS8995 family: 0x%02x\n",
--				id1);
--			err = -ENODEV;
--		}
--		break;
--	case FAMILY_KSZ8795:
--		/* try reading chip id at CHIP ID1 */
--		err = ks8995_read_reg(ks, KS8995_REG_ID1, &id1);
--		if (err) {
--			err = -EIO;
--			goto err_out;
--		}
--
--		if (get_chip_id(id1) == ks->chip->chip_id) {
--			ks->revision_id = get_chip_rev(id1);
--		} else {
--			dev_err(&ks->spi->dev, "unsupported chip id for KSZ8795 family: 0x%02x\n",
--				id1);
--			err = -ENODEV;
--		}
--		break;
--	default:
--		dev_err(&ks->spi->dev, "unsupported family id: 0x%02x\n", id0);
--		err = -ENODEV;
--		break;
--	}
--err_out:
--	return err;
--}
--
--static int ks8995_check_config(struct ks8995_switch *ks)
--{
--	int ret;
--	u8 val;
--
--	ret = ks8995_read_reg(ks, KS8995_REG_GC0, &val);
--	if (ret) {
--		dev_err(ks->dev, "failed to read KS8995_REG_GC0\n");
--		return ret;
--	}
--
--	dev_dbg(ks->dev, "port 5 PHY %senabled\n",
--		(val & KS8995_GC0_P5_PHY) ? "" : "not ");
--
--	val |= KS8995_GC0_P5_PHY;
--	ret = ks8995_write_reg(ks, KS8995_REG_GC0, val);
--	if (ret)
--		dev_err(ks->dev, "failed to set KS8995_REG_GC0\n");
--
--	dev_dbg(ks->dev, "set KS8995_REG_GC0 to 0x%02x\n", val);
--
--	return 0;
--}
--
--static void
--ks8995_mac_config(struct phylink_config *config, unsigned int mode,
--		  const struct phylink_link_state *state)
--{
--}
--
--static void
--ks8995_mac_link_up(struct phylink_config *config, struct phy_device *phydev,
--		   unsigned int mode, phy_interface_t interface,
--		   int speed, int duplex, bool tx_pause, bool rx_pause)
--{
--	struct dsa_port *dp = dsa_phylink_to_port(config);
--	struct ks8995_switch *ks = dp->ds->priv;
--	int port = dp->index;
--	int ret;
--	u8 val;
--
--	/* Allow forcing the mode on the fixed CPU port, no autonegotiation.
--	 * We assume autonegotiation works on the PHY-facing ports.
--	 */
--	if (port != KS8995_CPU_PORT)
--		return;
--
--	dev_dbg(ks->dev, "MAC link up on CPU port (%d)\n", port);
--
--	ret = ks8995_read_reg(ks, KS8995_REG_GC4, &val);
--	if (ret) {
--		dev_err(ks->dev, "failed to read KS8995_REG_GC4\n");
--		return;
--	}
--
--	/* Conjure port config */
--	switch (speed) {
--	case SPEED_10:
--		dev_dbg(ks->dev, "set switch MII to 100Mbit mode\n");
--		val |= KS8995_GC4_10BT;
--		break;
--	case SPEED_100:
--	default:
--		dev_dbg(ks->dev, "set switch MII to 100Mbit mode\n");
--		val &= ~KS8995_GC4_10BT;
--		break;
--	}
--
--	if (duplex == DUPLEX_HALF) {
--		dev_dbg(ks->dev, "set switch MII to half duplex\n");
--		val |= KS8995_GC4_MII_HD;
--	} else {
--		dev_dbg(ks->dev, "set switch MII to full duplex\n");
--		val &= ~KS8995_GC4_MII_HD;
--	}
--
--	dev_dbg(ks->dev, "set KS8995_REG_GC4 to %02x\n", val);
--
--	/* Enable the CPU port */
--	ret = ks8995_write_reg(ks, KS8995_REG_GC4, val);
--	if (ret)
--		dev_err(ks->dev, "failed to set KS8995_REG_GC4\n");
--}
--
--static void
--ks8995_mac_link_down(struct phylink_config *config, unsigned int mode,
--		     phy_interface_t interface)
--{
--	struct dsa_port *dp = dsa_phylink_to_port(config);
--	struct ks8995_switch *ks = dp->ds->priv;
--	int port = dp->index;
--
--	if (port != KS8995_CPU_PORT)
--		return;
--
--	dev_dbg(ks->dev, "MAC link down on CPU port (%d)\n", port);
--
--	/* Disable the CPU port */
--}
--
--static const struct phylink_mac_ops ks8995_phylink_mac_ops = {
--	.mac_config = ks8995_mac_config,
--	.mac_link_up = ks8995_mac_link_up,
--	.mac_link_down = ks8995_mac_link_down,
--};
--
--static enum
--dsa_tag_protocol ks8995_get_tag_protocol(struct dsa_switch *ds,
--					 int port,
--					 enum dsa_tag_protocol mp)
--{
--	/* This switch actually uses the 6 byte KS8995 protocol */
--	return DSA_TAG_PROTO_NONE;
--}
--
--static int ks8995_setup(struct dsa_switch *ds)
--{
--	return 0;
--}
--
--static int ks8995_port_enable(struct dsa_switch *ds, int port,
--			      struct phy_device *phy)
--{
--	struct ks8995_switch *ks = ds->priv;
--
--	dev_dbg(ks->dev, "enable port %d\n", port);
--
--	return 0;
--}
--
--static void ks8995_port_disable(struct dsa_switch *ds, int port)
--{
--	struct ks8995_switch *ks = ds->priv;
--
--	dev_dbg(ks->dev, "disable port %d\n", port);
--}
--
--static int ks8995_port_pre_bridge_flags(struct dsa_switch *ds, int port,
--					struct switchdev_brport_flags flags,
--					struct netlink_ext_ack *extack)
--{
--	/* We support enabling/disabling learning */
--	if (flags.mask & ~(BR_LEARNING))
--		return -EINVAL;
--
--	return 0;
--}
--
--static int ks8995_port_bridge_flags(struct dsa_switch *ds, int port,
--				    struct switchdev_brport_flags flags,
--				    struct netlink_ext_ack *extack)
--{
--	struct ks8995_switch *ks = ds->priv;
--	int ret;
--	u8 val;
--
--	if (flags.mask & BR_LEARNING) {
--		ret = ks8995_read_reg(ks, KS8995_REG_PC(port, KS8995_REG_PC2), &val);
--		if (ret) {
--			dev_err(ks->dev, "failed to read KS8995_REG_PC2 on port %d\n", port);
--			return ret;
--		}
--
--		if (flags.val & BR_LEARNING)
--			val &= ~KS8995_PC2_LEARN_DIS;
--		else
--			val |= KS8995_PC2_LEARN_DIS;
--
--		ret = ks8995_write_reg(ks, KS8995_REG_PC(port, KS8995_REG_PC2), val);
--		if (ret) {
--			dev_err(ks->dev, "failed to write KS8995_REG_PC2 on port %d\n", port);
--			return ret;
--		}
--	}
--
--	return 0;
--}
--
--static void ks8995_port_stp_state_set(struct dsa_switch *ds, int port, u8 state)
--{
--	struct ks8995_switch *ks = ds->priv;
--	int ret;
--	u8 val;
--
--	ret = ks8995_read_reg(ks, KS8995_REG_PC(port, KS8995_REG_PC2), &val);
--	if (ret) {
--		dev_err(ks->dev, "failed to read KS8995_REG_PC2 on port %d\n", port);
--		return;
--	}
--
--	/* Set the bits for the different STP states in accordance with
--	 * the datasheet, pages 36-37 "Spanning tree support".
--	 */
--	switch (state) {
--	case BR_STATE_DISABLED:
--	case BR_STATE_BLOCKING:
--	case BR_STATE_LISTENING:
--		val &= ~KS8995_PC2_TXEN;
--		val &= ~KS8995_PC2_RXEN;
--		val |= KS8995_PC2_LEARN_DIS;
--		break;
--	case BR_STATE_LEARNING:
--		val &= ~KS8995_PC2_TXEN;
--		val &= ~KS8995_PC2_RXEN;
--		val &= ~KS8995_PC2_LEARN_DIS;
--		break;
--	case BR_STATE_FORWARDING:
--		val |= KS8995_PC2_TXEN;
--		val |= KS8995_PC2_RXEN;
--		val &= ~KS8995_PC2_LEARN_DIS;
--		break;
--	default:
--		dev_err(ks->dev, "unknown bridge state requested\n");
--		return;
--	}
--
--	ret = ks8995_write_reg(ks, KS8995_REG_PC(port, KS8995_REG_PC2), val);
--	if (ret) {
--		dev_err(ks->dev, "failed to write KS8995_REG_PC2 on port %d\n", port);
--		return;
--	}
--
--	dev_dbg(ks->dev, "set KS8995_REG_PC2 for port %d to %02x\n", port, val);
--}
--
--static void ks8995_phylink_get_caps(struct dsa_switch *dsa, int port,
--				    struct phylink_config *config)
--{
--	unsigned long *interfaces = config->supported_interfaces;
--
--	if (port == KS8995_CPU_PORT)
--		__set_bit(PHY_INTERFACE_MODE_MII, interfaces);
--
--	if (port <= 3) {
--		/* Internal PHYs */
--		__set_bit(PHY_INTERFACE_MODE_INTERNAL, interfaces);
--		/* phylib default */
--		__set_bit(PHY_INTERFACE_MODE_MII, interfaces);
--	}
--
--	config->mac_capabilities = MAC_SYM_PAUSE | MAC_10 | MAC_100;
--}
--
--/* Huge packet support up to 1916 byte packages "inclusive"
-- * which means that tags are included. If the bit is not set
-- * it is 1536 bytes "inclusive". We present the length without
-- * tags or ethernet headers. The setting affects all ports.
-- */
--static int ks8995_change_mtu(struct dsa_switch *ds, int port, int new_mtu)
--{
--	struct ks8995_switch *ks = ds->priv;
--	unsigned int max_mtu;
--	int ret;
--	u8 val;
--	int i;
--
--	ks->max_mtu[port] = new_mtu;
--
--	/* Roof out the MTU for the entire switch to the greatest
--	 * common denominator: the biggest set for any one port will
--	 * be the biggest MTU for the switch.
--	 */
--	max_mtu = ETH_DATA_LEN;
--	for (i = 0; i < KS8995_NUM_PORTS; i++) {
--		if (ks->max_mtu[i] > max_mtu)
--			max_mtu = ks->max_mtu[i];
--	}
--
--	/* Translate to layer 2 size.
--	 * Add ethernet and (possible) VLAN headers, and checksum to the size.
--	 * For ETH_DATA_LEN (1500 bytes) this will add up to 1522 bytes.
--	 */
--	max_mtu += VLAN_ETH_HLEN;
--	max_mtu += ETH_FCS_LEN;
--
--	ret = ks8995_read_reg(ks, KS8995_REG_GC2, &val);
--	if (ret) {
--		dev_err(ks->dev, "failed to read KS8995_REG_GC2\n");
--		return ret;
--	}
--
--	if (max_mtu <= 1522) {
--		val &= ~KS8995_GC2_HUGE;
--		val &= ~KS8995_GC2_LEGAL;
--	} else if (max_mtu > 1522 && max_mtu <= 1536) {
--		/* This accepts packets up to 1536 bytes */
--		val &= ~KS8995_GC2_HUGE;
--		val |= KS8995_GC2_LEGAL;
--	} else {
--		/* This accepts packets up to 1916 bytes */
--		val |= KS8995_GC2_HUGE;
--		val |= KS8995_GC2_LEGAL;
--	}
--
--	dev_dbg(ks->dev, "new max MTU %d bytes (inclusive)\n", max_mtu);
--
--	ret = ks8995_write_reg(ks, KS8995_REG_GC2, val);
--	if (ret)
--		dev_err(ks->dev, "failed to set KS8995_REG_GC2\n");
--
--	return ret;
--}
--
--static int ks8995_get_max_mtu(struct dsa_switch *ds, int port)
--{
--	return 1916 - ETH_HLEN - ETH_FCS_LEN;
--}
--
--static const struct dsa_switch_ops ks8995_ds_ops = {
--	.get_tag_protocol = ks8995_get_tag_protocol,
--	.setup = ks8995_setup,
--	.port_pre_bridge_flags = ks8995_port_pre_bridge_flags,
--	.port_bridge_flags = ks8995_port_bridge_flags,
--	.port_enable = ks8995_port_enable,
--	.port_disable = ks8995_port_disable,
--	.port_stp_state_set = ks8995_port_stp_state_set,
--	.port_change_mtu = ks8995_change_mtu,
--	.port_max_mtu = ks8995_get_max_mtu,
--	.phylink_get_caps = ks8995_phylink_get_caps,
--};
--
--/* ------------------------------------------------------------------------ */
--static int ks8995_probe(struct spi_device *spi)
--{
--	struct ks8995_switch *ks;
--	int err;
--	int variant = spi_get_device_id(spi)->driver_data;
--
--	if (variant >= max_variant) {
--		dev_err(&spi->dev, "bad chip variant %d\n", variant);
--		return -ENODEV;
--	}
--
--	ks = devm_kzalloc(&spi->dev, sizeof(*ks), GFP_KERNEL);
--	if (!ks)
+-	if (!fixup)
 -		return -ENOMEM;
 -
--	mutex_init(&ks->lock);
--	ks->spi = spi;
--	ks->dev = &spi->dev;
--	ks->chip = &ks8995_chip[variant];
+-	if (bus_id)
+-		strscpy(fixup->bus_id, bus_id, sizeof(fixup->bus_id));
+-	fixup->phy_uid = phy_uid;
+-	fixup->phy_uid_mask = phy_uid_mask;
+-	fixup->run = run;
 -
--	ks->reset_gpio = devm_gpiod_get_optional(&spi->dev, "reset",
--						 GPIOD_OUT_HIGH);
--	err = PTR_ERR_OR_ZERO(ks->reset_gpio);
--	if (err) {
--		dev_err(&spi->dev,
--			"failed to get reset gpio: %d\n", err);
--		return err;
--	}
--
--	err = gpiod_set_consumer_name(ks->reset_gpio, "switch-reset");
--	if (err)
--		return err;
--
--	if (ks->reset_gpio) {
--		/*
--		 * If a reset line was obtained, wait for 100us after
--		 * de-asserting RESET before accessing any registers, see
--		 * the KS8995MA datasheet, page 44.
--		 */
--		gpiod_set_value_cansleep(ks->reset_gpio, 0);
--		udelay(100);
--	}
--
--	spi_set_drvdata(spi, ks);
--
--	spi->mode = SPI_MODE_0;
--	spi->bits_per_word = 8;
--	err = spi_setup(spi);
--	if (err) {
--		dev_err(&spi->dev, "spi_setup failed, err=%d\n", err);
--		return err;
--	}
--
--	err = ks8995_get_revision(ks);
--	if (err)
--		return err;
--
--	err = ks8995_reset(ks);
--	if (err)
--		return err;
--
--	dev_info(&spi->dev, "%s device found, Chip ID:%x, Revision:%x\n",
--		 ks->chip->name, ks->chip->chip_id, ks->revision_id);
--
--	err = ks8995_check_config(ks);
--	if (err)
--		return err;
--
--	ks->ds = devm_kzalloc(&spi->dev, sizeof(*ks->ds), GFP_KERNEL);
--	if (!ks->ds)
--		return -ENOMEM;
--
--	ks->ds->dev = &spi->dev;
--	ks->ds->num_ports = KS8995_NUM_PORTS;
--	ks->ds->ops = &ks8995_ds_ops;
--	ks->ds->phylink_mac_ops = &ks8995_phylink_mac_ops;
--	ks->ds->priv = ks;
--
--	err = dsa_register_switch(ks->ds);
--	if (err)
--		return dev_err_probe(&spi->dev, err,
--				     "unable to register DSA switch\n");
+-	mutex_lock(&phy_fixup_lock);
+-	list_add_tail(&fixup->list, &phy_fixup_list);
+-	mutex_unlock(&phy_fixup_lock);
 -
 -	return 0;
 -}
 -
--static void ks8995_remove(struct spi_device *spi)
+-/* Registers a fixup to be run on any PHY with the UID in phy_uid */
+-int phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
+-			       int (*run)(struct phy_device *))
 -{
--	struct ks8995_switch *ks = spi_get_drvdata(spi);
+-	return phy_register_fixup(NULL, phy_uid, phy_uid_mask, run);
+-}
+-EXPORT_SYMBOL(phy_register_fixup_for_uid);
 -
--	dsa_unregister_switch(ks->ds);
--	/* assert reset */
--	gpiod_set_value_cansleep(ks->reset_gpio, 1);
+-/* Registers a fixup to be run on the PHY with id string bus_id */
+-int phy_register_fixup_for_id(const char *bus_id,
+-			      int (*run)(struct phy_device *))
+-{
+-	return phy_register_fixup(bus_id, 0, 0, run);
+-}
+-EXPORT_SYMBOL(phy_register_fixup_for_id);
+-
+-static bool phy_needs_fixup(struct phy_device *phydev, struct phy_fixup *fixup)
+-{
+-	if (!strcmp(fixup->bus_id, phydev_name(phydev)))
+-		return true;
+-
+-	if (fixup->phy_uid_mask &&
+-	    phy_id_compare(phydev->phy_id, fixup->phy_uid, fixup->phy_uid_mask))
+-		return true;
+-
+-	return false;
 -}
 -
--/* ------------------------------------------------------------------------ */
--static struct spi_driver ks8995_driver = {
--	.driver = {
--		.name	    = "spi-ks8995",
--		.of_match_table = ks8995_spi_of_match,
--	},
--	.probe	  = ks8995_probe,
--	.remove	  = ks8995_remove,
--	.id_table = ks8995_id,
--};
+-/* Runs any matching fixups for this phydev */
+-static int phy_scan_fixups(struct phy_device *phydev)
+-{
+-	struct phy_fixup *fixup;
 -
--module_spi_driver(ks8995_driver);
+-	mutex_lock(&phy_fixup_lock);
+-	list_for_each_entry(fixup, &phy_fixup_list, list) {
+-		if (phy_needs_fixup(phydev, fixup)) {
+-			int err = fixup->run(phydev);
 -
--MODULE_DESCRIPTION(DRV_DESC);
--MODULE_VERSION(DRV_VERSION);
--MODULE_AUTHOR("Gabor Juhos <juhosg at openwrt.org>");
--MODULE_LICENSE("GPL v2");
-
+-			if (err < 0) {
+-				mutex_unlock(&phy_fixup_lock);
+-				return err;
+-			}
+-			phydev->has_fixups = true;
+-		}
+-	}
+-	mutex_unlock(&phy_fixup_lock);
+-
+-	return 0;
+-}
+-
+ /**
+  * genphy_match_phy_device - match a PHY device with a PHY driver
+  * @phydev: target phy_device struct
+diff --git a/drivers/net/phy/phy_fixup.c b/drivers/net/phy/phy_fixup.c
+new file mode 100644
+index 00000000000..f49fc4cefe8
+--- /dev/null
++++ b/drivers/net/phy/phy_fixup.c
+@@ -0,0 +1,99 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * PHY fixup support
++ */
++
++#include <linux/list.h>
++#include <linux/phy.h>
++#include <linux/slab.h>
++#include <linux/string.h>
++
++#include "phylib-internal.h"
++
++static struct list_head phy_fixup_list __ro_after_init =
++	LIST_HEAD_INIT(phy_fixup_list);
++
++struct phy_fixup {
++	struct list_head list;
++	char bus_id[MII_BUS_ID_SIZE + 3];
++	u32 phy_uid;
++	u32 phy_uid_mask;
++	int (*run)(struct phy_device *phydev);
++};
++
++/**
++ * phy_register_fixup - creates a new phy_fixup and adds it to the list
++ * @bus_id: A string which matches phydev->mdio.dev.bus_id (or PHY_ANY_ID)
++ * @phy_uid: Used to match against phydev->phy_id (the UID of the PHY)
++ *	It can also be PHY_ANY_UID
++ * @phy_uid_mask: Applied to phydev->phy_id and fixup->phy_uid before
++ *	comparison
++ * @run: The actual code to be run when a matching PHY is found
++ */
++static void __init phy_register_fixup(const char *bus_id, u32 phy_uid,
++				      u32 phy_uid_mask,
++				      int (*run)(struct phy_device *))
++{
++	struct phy_fixup *fixup = kzalloc_obj(*fixup);
++
++	if (!fixup)
++		return;
++
++	if (bus_id)
++		strscpy(fixup->bus_id, bus_id);
++	fixup->phy_uid = phy_uid;
++	fixup->phy_uid_mask = phy_uid_mask;
++	fixup->run = run;
++
++	list_add_tail(&fixup->list, &phy_fixup_list);
++}
++
++/* Registers a fixup to be run on any PHY with the UID in phy_uid */
++void __init phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
++				       int (*run)(struct phy_device *))
++{
++	phy_register_fixup(NULL, phy_uid, phy_uid_mask, run);
++}
++
++/* Registers a fixup to be run on the PHY with id string bus_id */
++void __init phy_register_fixup_for_id(const char *bus_id,
++				      int (*run)(struct phy_device *))
++{
++	phy_register_fixup(bus_id, 0, 0, run);
++}
++
++static bool phy_needs_fixup(struct phy_device *phydev, struct phy_fixup *fixup)
++{
++	if (!strcmp(fixup->bus_id, phydev_name(phydev)))
++		return true;
++
++	if (fixup->phy_uid_mask &&
++	    phy_id_compare(phydev->phy_id, fixup->phy_uid, fixup->phy_uid_mask))
++		return true;
++
++	return false;
++}
++
++/**
++ * phy_scan_fixups - runs any matching fixups for this phydev
++ * @phydev: the phydev to search and run fixups for
++ * Returns: 0 or an errno
++ */
++int phy_scan_fixups(struct phy_device *phydev)
++{
++	struct phy_fixup *fixup;
++
++	list_for_each_entry(fixup, &phy_fixup_list, list) {
++		if (phy_needs_fixup(phydev, fixup)) {
++			int err = fixup->run(phydev);
++
++			if (err < 0)
++				return err;
++
++			phydev->has_fixups = true;
++		}
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(phy_scan_fixups);
+diff --git a/drivers/net/phy/phylib-internal.h b/drivers/net/phy/phylib-internal.h
+index 664ed7faa51..38ee294f3c9 100644
+--- a/drivers/net/phy/phylib-internal.h
++++ b/drivers/net/phy/phylib-internal.h
+@@ -23,6 +23,7 @@ void of_set_phy_eee_broken(struct phy_device *phydev);
+ void of_set_phy_timing_role(struct phy_device *phydev);
+ int phy_speed_down_core(struct phy_device *phydev);
+ void phy_check_downshift(struct phy_device *phydev);
++int phy_scan_fixups(struct phy_device *phydev);
+ 
+ int mdiobus_register_device(struct mdio_device *mdiodev);
+ int mdiobus_unregister_device(struct mdio_device *mdiodev);
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 5f8d65868e0..f799b3684cd 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -2422,10 +2422,10 @@ int phy_get_mac_termination(struct phy_device *phydev, struct device *dev,
+ void phy_resolve_pause(unsigned long *local_adv, unsigned long *partner_adv,
+ 		       bool *tx_pause, bool *rx_pause);
+ 
+-int phy_register_fixup_for_id(const char *bus_id,
+-			      int (*run)(struct phy_device *));
+-int phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
+-			       int (*run)(struct phy_device *));
++void __init phy_register_fixup_for_id(const char *bus_id,
++				      int (*run)(struct phy_device *));
++void __init phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
++				       int (*run)(struct phy_device *));
+ 
+ int phy_eee_tx_clock_stop_capable(struct phy_device *phydev);
+ int phy_eee_rx_clock_stop(struct phy_device *phydev, bool clk_stop_enable);
 -- 
 2.55.0
 
