@@ -1,197 +1,144 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363A638B140
-	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 04:14:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789272887; cv=pass; b=XUBx1m167w5OT3484CDAYcAAlMTBnc3mAbTQ+bZCllGBDd3n1pl/AZOnzOEOqDxM8SOLLuvCzAboSTS5UzA9e7BFkghTHLvEpUl0fhZIbYOfIDwqkiSiASNBib/RuuLLHeoEiiVvtQPRk1KL4uQhiBDC1ioVvp/kDizX7NTUj1Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789272887; c=relaxed/simple;
-	bh=aUDsLpihMC8AfClUqBSsvhaMDZoSQupSjow+fr1hzKo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=E1XsZ9sXQgaaNhLxkIUniG69VWluTk18ROO/SAnYbkOdFVxeAmgrV6d/5InYWi2cZyHScgfbvx41GyuVCrLwB5ErUagEvTAl8AryKpDrrUGDfP5GTg3zONI3fHlSCOU2+FpjhXpBA2J1leUGf/7oxc7UlUQy7CivHO/ODNId7WE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=voufvrI+; arc=pass smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83339363C6A
+	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 04:42:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.198
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789274558; cv=none; b=QHi4uqrL9J5tvOa/o3hyLJJPkNLsydEfZr/al9/zoR6nSJ+BINGFDO2OiDjxcvEX3+qLmaRVjOjSRlKcMmRSGqbhuonIV2B1dvQLvkEOr8Tp+WquJiGsChy1wPfshzctifqQGLI1V6MlT3z7xB18upTmKJvvSVjgRh9Buq/q9QU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789274558; c=relaxed/simple;
+	bh=3tI5HXN5sQjU+9xL52vBRW7azoV7w1XlKKo+f86JnbU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=IJIgfq8qnAHXokGi0+VtVX8UWzkGoJuETsSo+D2RbRXWU9Cc8B1Z2ZmG0giyvY9bBeGBcmIVGsVZbuAQWnODinqBwQuTtXLRAD4lDSQP/HR2e8poBUzujegLSKgXqBbWrgOClIrFwABscyduyVIaQvxu4RxOAZHAJ9HV1sr69Ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UTcPU875; arc=none smtp.client-ip=209.85.160.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="voufvrI+"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-530fa1d2b31so1767431cf.2
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 21:14:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789272884; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RAaCGg5xgOz8UxZ6tgoacbEUuPqtf+NRV7IxgWRbMh8i74r/vNwm6gL9jRTHkv2Lv2
-         bdZU0qmn7qNqZXJQJpm8Q+1BlJxuHVBQAYGi8PQJpn9mzosXBS3XnHmt4jGNp5kahsNw
-         sB5DuytDh9qKk/YZjpdFpNMYomwswPF2Xu31zmBDAm2cAwTOJZm2Sa8FGuTNM35bEyF7
-         dEPMOMU3munKjWe3f7sEBAKXZqzeBf5BcxBBdW9nNakonM28klxTQRE7I8gmRLbROeI2
-         QcJoY3QD+lqimQ3qIcgeRSdrAyR9h+us3PHlSpe7K8tU4nSvCP+ZpfeQwVYtlXomzw90
-         yhfg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=TcgeooS9DqrC6P6k5y+0MJSSvjSsZ9UJn7nTw2UMf70=;
-        fh=4oynwKDSL3TYcX8AUL4r3aRaHBhTGVaXORboWk4N/y0=;
-        b=KZFbeSicleAcLc3kN8dUWeibwkT//adwmDgjd+D/7axoM2wY1v+88tv3489t8GFljI
-         HCNbsmp64eLYuFO4hvXh2aJobmV/agFt+bg0ac6nWB0gfE6yzZE856JQorpWOuLtdVcJ
-         11gSrX6Yj5xlPJ4LDtvOf22SIn5fUwGVYdr+ekGvaSVFC+NUWTiSovOZVGoY7ucPSHzo
-         YP+/3J98a8UTcmy2GGmu3o8RngXEKX82bkTckX/xIB0gFHC6KcCfaaJfXQcO7vLwSVBl
-         l/oMmrmkdUIpBpeFN5GLz8FtIyRzKgwf1tBZaVw4PHo20Iz4LrMaLm4EHRCiQjoLxm0S
-         AVsg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UTcPU875"
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-52fc0097865so62220511cf.2
+        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 21:42:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789272884; x=1789877684; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=TcgeooS9DqrC6P6k5y+0MJSSvjSsZ9UJn7nTw2UMf70=;
-        b=voufvrI+89AadJazLpr4G5STlaOcrkQahPegXTxwZuOg3nFgGcGAiPKd1TBVV2pivV
-         H4dir0HznEqFzaQbquXsHfq+kr+toRDjp48qPUC9jNzKLLkUq21i5a1mB6ThpsrJJ/nQ
-         giqg80fw47pk8Tb9AglJ9wQ8kMiDAfsChXcRevp5j0M1vKCSSC/JK1+a0teFXUcuCMPw
-         Ryqxqen0r8NB5JTUQdrxLNi/GyjgzeHjJ5yKrcDcjFjhz07JiFqO0xDCewbZftNErdhX
-         gfF9fphezkVNzYo3fUnjzDsplHkejNcZyeQtQpI3ucYYmvqyx2odaFP0DxQpIb2fXy4W
-         HuGQ==
+        d=google.com; s=20251104; t=1789274555; x=1789879355; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3dFfX9ybNbrViB+vpg9SB5CjzFois/63//qb+LkBGOI=;
+        b=UTcPU8754Cd0jY73jA/MxlXf3znr3cVOvv8nhQlywfTWTJvh92J6Xkq/CPJ2QfrtyW
+         0wOeRdE+SqZRjHWKC6//PvgWOc5ymC28HYmj0BpyCLVd0ll+E2E/CfdCYKBp3wgjvzQ0
+         Nfg6RLtQWZFXw5S7VDlQ4YxlGwGCKnAVq/ZORmU8bX+2p3dFg/BchE4KuDjfBpJNKLLs
+         Ycp17wKFK9yITOz/Ar4Xyb37vtyiRnFZrnFezwcmlFB9IhGojVOtie324YPEsCp3YFcF
+         SdN6un9HmeLiQ+Z1Ligk78q007w3bdS4yBVCYFU+BOlTF2Xgf1T9Xf/2pM5EM3xGvbSr
+         UP3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789272884; x=1789877684;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1789274555; x=1789879355;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=TcgeooS9DqrC6P6k5y+0MJSSvjSsZ9UJn7nTw2UMf70=;
-        b=TbFJvB26jNJ5MqZFw7LlZKstYiUdpRuOAco20iHNuQzFxJsiSUZ6KsXKxM2CHtKd0e
-         hpB16qoyUDiEq9CaAkfn+NJK0XI2900PTBpLYSNW356yfVOlB5UEAqQMdLF0udpvRtjx
-         vj0CKNLpzv7ca1yH4PqtEitYbQ3g8Q2V1lEXgbcJWU6rG1J8K4k4ZUzzScu71zdbySGs
-         9vgxpPlIZG78frbGBQEGaYjyPWLsO4vetByAw3m2v6PVAGp9pMkrJHnVLbAlTplcRJro
-         lNTGMtaZ/eYEcka5MAuaPM+ipw9kMzQY31PUE7oUKmBLJj8aLcwQ1YFiw74hzzFdA24C
-         7ZXA==
-X-Forwarded-Encrypted: i=1; AKwUvBxDMHHGX75mDe9q+xFzBqTpuEQTxDVCNx2T2Tykx413WNqVP2zCJOaIyayRJTUjhodVQYJr4xc=@vger.kernel.org
-X-Gm-Message-State: AFuF++nwEV2YsZtZVvDd//pEIcOHaUJe5zsyUiWZxOHfhd2hyGt3TfQx
-	d5LQLpWYgMblWLuhlvADQORUEQ1MDnWiBO22ef3JKiFo9fx0+nndxRi9bO64LWFB+d2C8Ynv7lW
-	Yj+hidWXW4ESUpSNeWSF3THRFf4rLpANXOVFA15eW
-X-Gm-Gg: AYBFou2MXisnLKgLMlva2A6Sc/HnAw3rQITiXHImH/xdDyBFO1X8N6qvHUaSLB5LiN+
-	chD4nWwE6hQdolXLdvwZumCec6dnJfGbPGoUx3qPOmDTnjwCJITyYUzanhofU1Hs1xFFObeItqI
-	aaX2K9JrbnErlpiUKSR/7nN/LD3NnlVWNPKyUO91w3UsEInhz2W6x4Gxm/n28vJBA4kI9UFxFoq
-	3gzYF7p8TC8dBYEgz1pVNGcqEduHZeITAaQW50FCv0CKTw7iZJYjaW/XTWBIcKzHS4NB0mXWnfl
-	SKizKHwG+o1yTpjuQgBwQF/hSvitjluLYP80kes9qIUmKfbfDt/opEOk1VmafFiIGZVUg5elFmR
-	pyUh5cXwAr6JmsCJ+HDhivCgsQyO9UUKLTalUXyl9z+srTQ+MPQmYcIL6iS62qJxpqgY=
-X-Received: by 2002:a05:622a:1816:b0:530:f986:7d36 with SMTP id
- d75a77b69052e-530f9867fbfmr22653761cf.32.1789272883445; Sat, 12 Sep 2026
- 21:14:43 -0700 (PDT)
+        bh=3dFfX9ybNbrViB+vpg9SB5CjzFois/63//qb+LkBGOI=;
+        b=FmT8U7YEUbRyeYqtJsesZv9mL94LE+LUPGZBMn39TrJ0l5fU9lk4VPiDCJLchbGnLW
+         EaHKojUWLngkUtj0fcDjN90TA5QetQLz/zJjCtiBdGHK2AqpOy8X/Jm/xnhr8M9yhv/g
+         umALud9bN/ObTKUzd/45cEPes1lu9idKZ2gu2MvlRie/ZKeUabl67fek+Y1BJGTmwpHu
+         6hyKlRxw3tY35Fhm5ltLU63Bk/188jCHb2zN7Q8j447ca/G6iY5sOxDm7jRA5k55Bfrw
+         fJrf7PrxLmmSQ7gbVRPityUzFMrAFfXL5HJ923CdRXZ30KdkbgxGfK8xTILc/kZsoCi6
+         ohzw==
+X-Forwarded-Encrypted: i=1; AKwUvByI4DBvkaP2wImr7d/70hwfmEp/qIyD28GDnJ7BQ+DYs6bahpRx3ETw8TwI+hSxxtJwcD8JuEs=@vger.kernel.org
+X-Gm-Message-State: AFuF++nuxIQRPqX6VZ/up86AlB/Y5G1X+9l4QPtJ4RcdR4nSKDEruMrH
+	dbVW/NK5txhniQG35CQzQ7s1H6CS08/EAUqIEPrT+TWd0+z4uGE2eLmMkwxqqrKNnfbIhmWx93v
+	3gpaP0y/IFfw4cg==
+X-Received: from qtbkg23.prod.google.com ([2002:a05:622a:7617:b0:530:e326:b9da])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:622a:410e:b0:530:fdd1:ae45 with SMTP id d75a77b69052e-530fdd1b17emr4271891cf.54.1789274555142;
+ Sat, 12 Sep 2026 21:42:35 -0700 (PDT)
+Date: Sun, 13 Sep 2026 04:42:33 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260908060410.3982-1-nashuiliang@gmail.com> <20260908133636.2ea807d9@kernel.org>
- <CACueBy4BvJ6E0RuUDsQmwPq_zt9Xh6T19DOAkA5MW-uU1yNpKQ@mail.gmail.com>
-In-Reply-To: <CACueBy4BvJ6E0RuUDsQmwPq_zt9Xh6T19DOAkA5MW-uU1yNpKQ@mail.gmail.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.1007.g17ff1f9808-goog
+Message-ID: <20260913044233.193927-1-edumazet@google.com>
+Subject: [PATCH net] tipc: reject invalid and unexpected GRP_ACK_MSG to
+ prevent bc_ackers underflow
 From: Eric Dumazet <edumazet@google.com>
-Date: Sat, 12 Sep 2026 21:14:32 -0700
-X-Gm-Features: AcwNN1V8Rwz7o8JbHZS1bOyPmJgc_MK8ZwrxVjNAkOVMHCJsis9H7ZgXQppIETY
-Message-ID: <CANn89iKYQMPm_LyYY4v48QmoFc0MwkkKQwggd_BLGDJL78=8qA@mail.gmail.com>
-Subject: Re: [PATCH net-next v9] net: reduce RFS/ARFS flow updates by checking
- LLC affinity
-To: chuang <nashuiliang@gmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>, 
-	Stanislav Fomichev <sdf.kernel@gmail.com>, Hangbin Liu <liuhangbin@gmail.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, Neal Cardwell <ncardwell@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, James Burton <jamesburton@meta.com>, stable@vger.kernel.org, 
+	Oleh Konko <security@1seal.org>, Tung Nguyen <tung.quang.nguyen@est.tech>, 
+	Jon Maloy <jmaloy@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Sep 12, 2026 at 8:50=E2=80=AFPM chuang <nashuiliang@gmail.com> wrot=
-e:
->
-> Hi, let me restructure the issues.
->
-> > 1) Also not sure why you're trying to touch RFS, the change only helps
-> aRFS and you could avoid bulk of the refactoring issues.
->
-> The scenario is similar to the one described in "[RFC] problems with
-> RFS on bRPC applications"[1].
->
-> I attempted to enable ARFS on a Mellanox CX-6 NIC. While it performs
-> well for simple workloads, performance degrades significantly when
-> running a bRPC[2]  workload on a 2-node NUMA machine. After tracing, I
-> identified patterns that ARFS/RFS fails to handle efficiently:
->
-> - Multiple threads use epoll to read from the same socket, causing
-> frequent flow updates in sock_flow_table.
-> - Threads reading from the socket migrate frequently between CPUs.
->
-> I tested a PoC version using a bRPC service, utilizing funccount [3]
-> to monitor execution frequency and perf top to observe hotspots:
->
-> Before Patch
->
-> The mlx5e_rx_flow_steer frequency is over 380k/s, and queued_spin_lock
-> is a major hotspot (6.30% in perf top). The application also suffers
-> from a noticeable drop.
->
-> FUNC                                     COUNT
-> mlx5e_rx_flow_steer              387594
->
-> FUNC                                     COUNT
-> mlx5e_rx_flow_steer              390142
->
-> FUNC                                     COUNT
-> mlx5e_rx_flow_steer              386694
->
-> FUNC                                     COUNT
-> mlx5e_rx_flow_steer              389094
->
-> # perf top hotspot:
-> queued_spin_lock                         6.30%
->
-> After Patch
->
-> The ARFS update frequency is significantly reduced. queued_spin_lock
-> is no longer a hotspot in perf top, and the application's overall
-> performance has improved.
->
-> FUNC                                     COUNT
-> mlx5e_rx_flow_steer                      43
->
-> FUNC                                     COUNT
-> mlx5e_rx_flow_steer                        9
->
-> FUNC                                     COUNT
-> mlx5e_rx_flow_steer                    207
->
-> FUNC                                     COUNT
-> mlx5e_rx_flow_steer                      26
->
-> > 2) You put a very fast path function out-of-line, why ?
->
-> The reason is that tun uses sock_rps_record_flow_hash(). When I moved
-> all rps_record_sock_flow and rps_record_cond modifications into
-> include/net/rps.h, it triggered the following compilation errors due
-> to symbol visibility:
->
-> ERROR: modpost: "cpus_share_cache" [drivers/net/tun.ko] undefined!
-> ERROR: modpost: "cpus_share_cache" [net/sctp/sctp.ko] undefined!
-> make[2]: *** [scripts/Makefile.modpost:147: Module.symvers] Error 1
->
-> This arises because the patch uses cpus_share_cache() to limit the
-> RFS/ARFS update frequency at the LLC level. To keep this in the fast
-> path, I could move cpus_share_cache() to
-> include/linux/sched/topology.h.
+Commit 48a5fe38772b ("tipc: fix bc_ackers underflow on duplicate
+GRP_ACK_MSG") rejected duplicate/stale ACKs in tipc_group_proto_rcv()
+by returning early when less_eq(acked, m->bc_acked).
 
-Hmmm
+However, that check remains incomplete in two ways:
 
-If the LLC affinity check is performed in set_rps_cpu() inside
-net/core/dev.c before triggering ndo_rx_flow_steer:
+1. When grp->bc_ackers is zero (e.g. on a quiet group, when replicast
+   ACKs were not requested, or after all expected members have already
+   acknowledged), an unexpected GRP_ACK_MSG with acked > m->bc_acked
+   passes less_eq() and unconditionally decrements grp->bc_ackers.
+   Because bc_ackers is a u16, this wraps to 65535, causing
+   tipc_group_bc_cong() to permanently report congestion and blocking
+   all future group broadcasts on the socket.
 
-net/core/dev.c is built-in, so it can call cpus_share_cache() directly
-without any module export issues.
+2. During an active broadcast round (grp->bc_ackers > 0), the sender
+   transmits packet S and advances grp->bc_snd_nxt to S + 1. Receivers
+   increment their expected counter to S + 1 upon consuming packet S,
+   so the only valid ACK value for the current round is strictly
+   acked == grp->bc_snd_nxt.
 
-sock_rps_record_flow() and sock_rps_record_flow_hash() in
-include/net/rps.h remain 100% inline, retaining the zero-cost static
-key NOP in the TCP/socket fast path.
+   However, tipc_group_update_bc_members() initializes each member's
+   m->bc_acked to prev = grp->bc_snd_nxt - 1 (S - 1 before increment).
+   This leaves a 2-sequence gap (S - 1 to S + 1) in sequence space.
+   An incoming ACK is therefore neither rejected as duplicate nor
+   prevented from decrementing grp->bc_ackers if an unexpected or stale
+   value (such as S) is received. A member sending acked = S followed
+   by acked = S + 1 could decrement grp->bc_ackers twice in the same
+   round, prematurely clearing bc_ackers or underflowing it.
 
-No exports, no refactoring of tun.ko or sctp.ko, and no fast-path degradati=
-on.
+Fix this by:
+- Dropping GRP_ACK_MSG immediately if grp->bc_ackers is zero.
+- Requiring acked == grp->bc_snd_nxt and rejecting duplicates where
+  m->bc_acked == acked. Because replicast broadcast rounds are strictly
+  sequential, only grp->bc_snd_nxt can be acknowledged, and each member
+  can acknowledge at most once per round.
+
+Note that a related pre-existing issue in tipc_group_delete_member()
+(where grp->bc_ackers decrementing to zero upon member departure does
+not restore *grp->open or trigger a socket wakeup) will be addressed
+in a separate patch.
+
+Fixes: 48a5fe38772b ("tipc: fix bc_ackers underflow on duplicate GRP_ACK_MSG")
+Fixes: 2f487712b893 ("tipc: guarantee that group broadcast doesn't bypass group unicast")
+Reported-by: James Burton <jamesburton@meta.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+Cc: Oleh Konko <security@1seal.org>
+Cc: Tung Nguyen <tung.quang.nguyen@est.tech>
+Cc: Jon Maloy <jmaloy@redhat.com>
+---
+ net/tipc/group.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/net/tipc/group.c b/net/tipc/group.c
+index 14e6732624e28edc20ff80163787bca3018cb2dd..74f6d3dac0784d5a54db3e2202ead3878d8df9e2 100644
+--- a/net/tipc/group.c
++++ b/net/tipc/group.c
+@@ -797,10 +797,10 @@ void tipc_group_proto_rcv(struct tipc_group *grp, bool *usr_wakeup,
+ 		tipc_group_open(m, usr_wakeup);
+ 		return;
+ 	case GRP_ACK_MSG:
+-		if (!m)
++		if (!m || !grp->bc_ackers)
+ 			return;
+ 		acked = msg_grp_bc_acked(hdr);
+-		if (less_eq(acked, m->bc_acked))
++		if (acked != grp->bc_snd_nxt || m->bc_acked == acked)
+ 			return;
+ 		m->bc_acked = acked;
+ 		if (--grp->bc_ackers)
+-- 
+2.55.0.1007.g17ff1f9808-goog
+
