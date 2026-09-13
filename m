@@ -1,138 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20DC7369204;
-	Sun, 13 Sep 2026 16:05:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 140B42F8E98
+	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 17:00:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789315558; cv=none; b=FHjChH2c+WiVEVA/CAqrTqI5rWAfp1x/c+G2u2l6ux7iPs/Y5yQahv2w4/bpCSgoWqIocNg5d4AroLqfhToRLsvr5/v04rUL3i0+KYGp88CjkT92cN5LeOmkdmeAg8WUSTXnEfxjo/1JyjRVvgr6WQI7UxFxtcYJItoue208SPY=
+	t=1789318826; cv=none; b=rkmh96oousWMALCxRXjpL88GNBNSpHYLq6MY/+KjB1hUAxaUk0et9KhhFApbvlbUv/Sx1m7cRE4/+8nSUZc6ZdScVK9HnoeJRchdMSsgfVK0Twf/AjlJ74wJBqJdF8pBKGxKWtHY72nOwJSK+1eOHejKz2oKT6EE3DA8dPqBsm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789315558; c=relaxed/simple;
-	bh=9MnzZ5c/GPTeMPuSywpbP4+Si4gXx+i7tnpD+xDMoRU=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=Y0Q879Oqja3WIMnJD7Pod8/KGMLElGEwrz3prarsO6KOjH4mtqVrp0mlGA5pfwNMgnfWDVUoXiI4ydm1s34JK5e5GRK5c+ShaBtN0OMjDmU1+CjcckdUpWXIw2KpO4rzf6Vz/ClShEehjqLyQ7Ee+8LqESyrRBcRhv+xin0U/0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TFyF4wg8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789318826; c=relaxed/simple;
+	bh=Qij5oXZ+lK/gLxu+gpobAPxEs95iLxbZt6BrkiZVH5M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XPFmI7YG8xGMEfhUyFyfy3QrAl5xoxkC8ZAIlfBkp8uHabMvHGxQBX3xs/CGNEyzx8saxQ8LQ1YzqJeXc5ybAYfYvIX2UFtuSZidCC6iGroN+Ucvp74X4jEeAx9m4gkOkd0SDHtDNaEreWDNcGn6C9lSMezBSaq/9Ywd+r+1X4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tinyisr.com; spf=pass smtp.mailfrom=tinyisr.com; dkim=pass (2048-bit key) header.d=tinyisr.com header.i=@tinyisr.com header.b=XtaXCeL+; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=uu4b0KtL; arc=none smtp.client-ip=34.202.193.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tinyisr.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tinyisr.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TFyF4wg8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B3A1F00898;
-	Sun, 13 Sep 2026 16:05:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789315555;
-	bh=5YCpCgr7wN6BRngUrHQuusuhHt9EZlKC0MCMR65I/Wk=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=TFyF4wg8t1JVUlkOZtO5/xJjB6918d1JKyW0zLDhhrHy8L5A7spT7wKHu/A8D+pKa
-	 Oexy/7syyAHdliF2NYFzCFyozozVipJuqGnBXq0RNF0UHOZWT+dMAm/16U1r0gxoaX
-	 wQgJGyp2oyX6uB99O5OLlrnWUMWaEhGA1pOnjvQxxS+dEFr7LRfICNYnpCrCx7G0Mx
-	 f4RWRrRtyxljJROYOcZIGErq0NWCHzt8BwfR6eKStKZMhzL3ajP6av2VCTjYq0toBe
-	 Pxj8nzZVFeiaVf3SR2kNWUR8ruuMm5Z6i4eZlx/2ep9lxni+oF6Xfv7BQv/W1qmOVx
-	 UYJBojTjgRcLw==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 83650F40066;
-	Sun, 13 Sep 2026 12:05:54 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Sun, 13 Sep 2026 12:05:54 -0400
-X-ME-Sender: <xms:4smmal1B8TFbjoWMJrfJ5FhRf8BSKoXx-jo-mnyHgeLV6pZ86fhsJQ>
-    <xme:4smmam42vccNsHlMdMphoub0O9Mt6SBLGSdJAqR0B7Q4mBQmIfZ4aR1zcpnD4pZeQ
-    aCW82fJ6xaX4NSHKVHSiyP6kCrHz9au6jfWs54SSNnyB4IPTF6K1zrZ>
-X-ME-Proxy-Cause: dmFkZTEuqnInwcZIkp3LZsOKtysl7pel0EoEBfW5y/sKAQwXh8kf6FPGOaVTkGtuxdR5/h
-    ZGAYoQdVo1yKWRzC8fkocQNj1y2i9F/PUs93rVn5UsXeFWGMglFjiCNx7lEm5RdcmEceY/
-    U2En6IgIKw6P+/TAqV7JGISUxgDWrjNyemNEFnokNDHC34LKB7sUZquBqOU1uQk9jU04I2
-    D8wgimrXmhbhirlb4990OPurrA7zdrV9t2Yu4XohTmGeP9loP5fgWa9G7IG1wkLC0thrnU
-    caz3D2RzkyB4bstm/zqDyEodkkbYPjxEw7m/xFpknoRehRrC66QFtPGZs7PWi3iPO2JuO8
-    3bqDcl/niTrOt9fypPTFRg1DNqvnrj6NZQiMp4GgrStpzxyuMAqTXE62NkzpzaPtetoEAu
-    bTG7grwrfh5iemoTClsDhnUo/ThXRqJ4ZD65LnkjscpP8QDEdn3x14DICEmcMGurUhvvGo
-    xESXAocLzoLXRw5cMyLG2o3CY+he8QNkzMMZD4elgLM8ORKR0A5a8ZAvwYVwjNi3MEnjV6
-    3AoGONWflhPGf90eVn4obalU+CoS89vKt00uTnHRL1iUrZGgHqFxG3wPeD7pWy+n5w4fhP
-    JiGOv897ElJBvTxs2rkXZRVYOUvF3J4qRQa8Aouti1l5T4TsnGqgXcBDjbNQ
-X-ME-Proxy: <xmx:4smmatYUSxOOxVRfDNKBwj3YJk6lBCqmROiE-DepGz1EAqhRtlI5xA>
-    <xmx:4smmal9gpqdvZVSLreJsYibhKRSeJYBA-skBXLO7wRavRIxd3xAmDQ>
-    <xmx:4smmavP4ilzY9sverMsE3g46lL6oi4GbHaAsXjBnO-LESvhQu68CrA>
-    <xmx:4smmaiEj2adrdRz-E8fKny65h2Wol5BH1ClFKZw8aEB0nkiliF-hOQ>
-    <xmx:4smmatyoCFcbCvS-JOQ4RN43Qu6tQZJ-mo5jSLKe4ZBhXTE-MKpGGd1H>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 5A64A780070; Sun, 13 Sep 2026 12:05:54 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=tinyisr.com header.i=@tinyisr.com header.b="XtaXCeL+";
+	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="uu4b0KtL"
+DKIM-Signature: a=rsa-sha256; b=XtaXCeL+g+bCgFbDanjoTouxcoFDQ2fQ97zvZ1ztCfHMn/He4n9kfXQkfsiGoTydzIZtNcEpkZ6Yy/xHo6HeogVAQtdgOSl72qFkuU0qByt4/EMT0CXrfSkDaTyWe2oMSvcIXWqTNxqJ4OsbKLUqtClCwE+A0evYlkRdW+bmTgdXsVg6f0chU+J9euuQf1NMr54hYmWhWzaP02q5ghtLzsB/1eT2537jl9qPnU0FUaC9Lo6RWVgrgG8IaZNri1m8clrQyyCsdl3YfkR7XxR/C+OM2YPofzK2EP7n4pn0rRMEYeTD1C3bAri1VPR99UQSQLAzPgSwnlXWvaqenOz1ig==; s=purelymail1; d=tinyisr.com; v=1; bh=Qij5oXZ+lK/gLxu+gpobAPxEs95iLxbZt6BrkiZVH5M=; h=Received:Date:From:To:Subject;
+DKIM-Signature: a=rsa-sha256; b=uu4b0KtLaNp9b6huvwB2TyI/7l79OQ7uc8J9IajwCk6PviW8HcgiPzRCVCWYWJ20bLZi8t+4T7jjvMl3EGlpVZGckYk9BX5aXNU1JKTWRkB4OIbnOaaIyYUb04v9uTo2p/7CJTGrZEOUUaloYbUPIvswJuWW82It2e7102JemxuEed7bel6AYaNKD4TsR6RbrtxxOVQOQxJV9b1u/oFeUKHyuNJErjqvpKSAvuov3DxKoBQrV6lcK3Hf0F2YVKlfwoX1oaa+w2bTGfbb/jsmxAi0DWEXCpRNt/VsHDOnD6gFgNcI8Jh7WDzb7SX1EYQUVG0Zj9+Y8cbp6O807vNjOw==; s=purelymail1; d=purelymail.com; v=1; bh=Qij5oXZ+lK/gLxu+gpobAPxEs95iLxbZt6BrkiZVH5M=; h=Feedback-ID:Received:Date:From:To:Subject;
+Feedback-ID: 99681:12517:null:purelymail
+X-Pm-Original-To: netdev@vger.kernel.org
+Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id -734614607;
+          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+          Sun, 13 Sep 2026 17:00:21 +0000 (UTC)
+Date: Sun, 13 Sep 2026 19:59:22 +0300
+From: Joris Vaisvila <joey@tinyisr.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, horms@kernel.org, pabeni@redhat.com, 
+	kuba@kernel.org, edumazet@google.com, davem@davemloft.net, olteanv@gmail.com, 
+	andrew@lunn.ch
+Subject: Re: [PATCH net-next v1 5/6] net: dsa: tag: mt7628: add VLAN
+ awareness support
+Message-ID: <aqbUU9n7sLI7jKX3@archlinux>
+References: <20260906171625.533915-6-joey@tinyisr.com>
+ <178899944890.219967.14085595993296385536@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AAPZyXKTxCYB
-Date: Sun, 13 Sep 2026 12:05:30 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: linux-nfs@vger.kernel.org, "Sagi Grimberg" <sagi@grimberg.me>
-Cc: keyrings@vger.kernel.org, kernel-tls-handshake@lists.linux.dev,
- netdev@vger.kernel.org, "Trond Myklebust" <trondmy@kernel.org>,
- "Anna Schumaker" <anna@kernel.org>, "Christoph Hellwig" <hch@lst.de>,
- "Hannes Reinecke" <hare@suse.de>, "David Howells" <dhowells@redhat.com>,
- "Jarkko Sakkinen" <jarkko@kernel.org>
-Message-Id: <8ddb29a7-28e7-4c90-8d6c-5ab2976fa53a@app.fastmail.com>
-In-Reply-To: <20260602154740.49861-1-cel@kernel.org>
-References: <20260602154740.49861-1-cel@kernel.org>
-Subject: Re: [RFC] NFS: named client identities for mTLS mounts and a per-namespace
- .nfs keyring
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <178899944890.219967.14085595993296385536@kernel.org>
+X-MIME-Autoconverted: from 8bit to quoted-printable by Purelymail
 
+On Thu, Sep 10, 2026 at 12:17:28AM +0000, netdev-bot+sashiko@kernel.org wro=
+te:
+> Thank you for your contribution! Sashiko AI review found 5 potential
+> issue(s) to consider:
+>=20
+> Critical: 0 =C2=B7 High: 3 =C2=B7 Medium: 2 =C2=B7 Low: 0
+>=20
+> - [High] mt7628_tag_xmit() (net/dsa/tag_mt7628.c:49-58) overwrites the
+>   two bytes at dsa_etype_header_pos_tx(skb) (skb->data + 2*ETH_ALEN)=E2=
+=80=A6
+> - [High] For a port under a VLAN-aware (filtering) bridge,
+>   mt7628_tag_xmit() only takes the new "modify TPID in place" path when=
+=E2=80=A6
+> - [High] mt7628_tag_xmit() (net/dsa/tag_mt7628.c:49-50) passes the result
+>   of dsa_port_bridge_dev_get(dp) straight into br_vlan_enabled(), which=
+=E2=80=A6
+> - [Medium] Both new code paths hardcode ETH_P_8021Q.
+> - [Medium] mt7628_tag_rcv() (net/dsa/tag_mt7628.c:115-116) re-inserts the
+>   switch-inserted VLAN tag as a hwaccel tag for every non-tag_8021q VID,=
+=E2=80=A6
+>=20
+> [...]
 
-
-On Tue, Jun 2, 2026, at 11:47 AM, Chuck Lever wrote:
-
-> Userspace front end
-> ===================
->
-> With the keyring in place the front end is straightforward and follows
-> the nvme-cli / cifscreds pattern.
->
-> A new nfs-utils tool -- working name nfstlskey, fitting the nfsidmap /
-> nfsconf family -- manages x.509 client identities:
->
->     nfstlskey add  <identity> --cert cert.pem --key key.pem
->     nfstlskey list
->     nfstlskey remove <identity>
->
-> The add subcommand reads the PEM cert and key, converts each to DER,
-> and creates two "user" keys on the netns .nfs keyring ("user" because
-> tlshd consumes raw DER via keyctl_read_alloc()), with possessor-only
-> read. Description convention:
->
->     nfs:x509:<identity>:cert
->     nfs:x509:<identity>:privkey
->
-> The mount command names the identity:
->
->     mount -o xprtsec=mtls,tls_identity=<identity> server:/export /mnt
->
-> mount.nfs runs in the caller's namespace, searches the .nfs keyring for
-> the two descriptions, and passes the existing cert_serial= and
-> privkey_serial= options to the kernel. tls_identity= is purely a
-> userspace convenience that resolves a name to the serials the kernel
-> already accepts; the raw serial options remain as a documented escape
-> hatch. Both get documented in nfs(5), with a new nfstlskey(8) page.
->
-> tlshd changes are minimal: confirm the per-handshake link of the passed
-> keyring happens before the cert and privkey serials are read, and
-> retire the now-unnecessary .nfs entry in the keyrings= startup path.
-
-I've created an nfstlskey tool and pushed it to the nfs-mtls-identity
-branch of https://github.com/oracle/ktls-utils/ . It compiles, but I
-haven't otherwise tested it. There is a nfstlskey(8) man page.
-
-There is a change to tlshd so that the handshake children processes
-pick up the .nfs keyring instead of picking .nfs up at tlshd start-up
-time. This avoids the ordering problem of starting tlshd before the
-NFS client module is loaded.
-
-I'm hoping this new tool can be used with current kernels, though
-all of this is missing proper namespace support at the moment, so
-it should work in the init net-ns only. Kernel patches for namespace
-support are in the works.
-
-Please kick the tires. Is this the kind of administrative UX you
-expect?
-
-
--- 
-Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
+Hi, thank you for the review. I was able to reproduce some of these
+bugs. I will investigate the remaining ones and submit a fixed patchset.
+Thanks,
+Joris
