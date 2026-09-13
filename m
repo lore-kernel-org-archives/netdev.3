@@ -1,166 +1,256 @@
-Received: from mail-pj1-f68.google.com (mail-pj1-f68.google.com [209.85.216.68])
+Received: from mail-ej2-f6.google.com (mail-ej2-f6.google.com [74.125.228.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A87372B57
-	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 18:04:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.68
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789322676; cv=none; b=l8Bu1eG5eg6D+JukwQ+CRsRPGbyTymPUHQlkSel4t76wruyzR2CGVBZDbJ1Sm9gZNLA/QqDqR6TOQ3uH6s3+3uNvi3sKatFMfgLpzjmW4hd5nNsusKMsA21eFSvgO0zDwGbKsPb9qrXHUdsB2aE7MrJJ7mKmORIfU8jtZ0iljeI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789322676; c=relaxed/simple;
-	bh=iBDKlpYSrIxEWTDJyy0WenSs+m6BqLBO4IH5of9UG88=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OnGx9DdtOGKcC5YpYFxM63IwWTS9Y1FHnxDRJPkyXzB9vbp9LiQMgYtHSXNuvbRjkbgqmiJaUE+p/70LdBaP+CEpO/SH24cU0Slxx/OrhocPpc9i8csksou7FZoluuHAdrD0opvd1bNiKKKPAmVhdevPSCRti5+xT/f3Bxw0IO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZIPmr0v1; arc=none smtp.client-ip=209.85.216.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D968737EFE5
+	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 18:05:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.134
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789322732; cv=pass; b=nD24u4R1/gnV5NeO6tEIEPDoyxFiB5mgzV+kFWKDnQt1ER2sETVAyWpUANnCWxRBdxqTOG/3RfhVXLVqYiAFt/W6Hch+OvidfBbn+mhj5IB/HGOL0p0oOXSpPKfVcbCjAxKEPrWC7oOGxR5XutFhiWPCbdA8vQHspu4Y2Y31Fuk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789322732; c=relaxed/simple;
+	bh=KOtTHl2ZUyPFirhy28Jx459Kdjt3u5AIiEGb5zEvRoU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kw0b+9Z4gc4+U5e/0D+oizXvb5Ly31YHKYuy0bhjlBzhpVs9WT8B3Tkn3E/WrUgG8ftohUQdYJDJDfRspPSKvtt3Wv4KUeHKqDos4HcftlKd7iqNNRZjgSYgfQtqWOHsk/2LaJZjkWYiUYJ1geIHvZbNLcnB2wpOtZnAUH5BYmE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rwVKQ+0F; arc=pass smtp.client-ip=74.125.228.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZIPmr0v1"
-Received: by mail-pj1-f68.google.com with SMTP id 98e67ed59e1d1-398b1e63c49so3012433a91.0
-        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 11:04:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rwVKQ+0F"
+Received: by mail-ej2-f6.google.com with SMTP id a640c23a62f3a-c29440ee0e7so103543266b.0
+        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 11:05:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789322729; cv=none;
+        d=google.com; s=arc-20260327;
+        b=RHFZImx+/G+Kkd/LMEOkFwrKPDpKwBRObKODMJhUJlkBWyrTPaTRdYyD/z3HPpwpol
+         TC+bPZIoxv7pW8nBkNcl+xh63Cyn62gCabAk5xr2mYDQF5DWd1lWuUR6SvZpdET2YWwr
+         QhEfz4QtSd9+qmgyrcIXP/ATxV8jvR7f05OHplrRJo8wMnU3i05XTseXlIEdkKiZjI+6
+         IE9Zdd/N1Yf/01nYTwFp3r+NN3V9oHLIKe90SfNa3wIgU5t4CNbO2KhA1fQwcTUlzU3b
+         wRWfFtT3im/MNJHwTWMb/CaOD0m4tFXJCh4RcN3y0bvZd7UgleLKLDL912ETcbF0GtFd
+         PAtg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=voliItkzs3OtrnJtmbhCv1xhQ+FU+qBLL3OO/h9nssc=;
+        fh=dtfP9gia/awPvHkzQK3F9EV7GWi5NI3QZvVlnmGQtoo=;
+        b=V7FuQ+U2V6N5uwfOFoxa8fJcoAhYCeHxNbyh47vC/RqNrfj1aY5uzEqapUXKEWs2bS
+         B1KG1VjnYrZ7bfXXDU/ZTP/Rem5CXN2f3l2z4h6PiFoWTqmBXp6osu/l6rgHxywvCw83
+         3xyjSa6g9S9KCCZpD3g2SKDikO2Tt0rq6V0Ianz2UCl0AI6BATyQw4UEqkp6xIJBBSpq
+         eHgWeH9yrsotCGN6hFEhn5CJptY0HNPyVycTu5Vtsd4H+fyE2RXR/NlYLuvasVoCY4a5
+         rI2Lu3Ck5GZqt2Ruma3iCgojHgA0mYrFVMTA/qp8Pz46q81rFnGSiNv+3iDYGeSeXwD9
+         IU/A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789322672; x=1789927472; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ByuJG/ToMKb3/GEaCPutmgXOi2odRqpn7f8I+oxWvKM=;
-        b=ZIPmr0v12bDZGxvas6JF8G0TK6XpkcthUihy/OYHMmv6LKwnqbzqSZnn3aC2xwOMTZ
-         D2BUDxemW0taAdwxUDlTOMLvsfJu5ASd8Dm68a88TYAIHu4rSeY8eB6sajJrbZ/xp+uX
-         MbhSY2iZ6rPfp4YayuRmG2wBW0H2QXbd5AUKvIKERDdi3IenaPJkxIzyAjXjqAa+ZC2R
-         uP3YGOWz0BCLCJcOo8DcYzkzogk8D93lw8pFkS+L08Hm2ZUwM2kCFWN0l9rby8kOWRgH
-         5T62SUHxU5jF8vk49OwiBZATsarIZOlMYB8FysqtgEoiySvVntCZGTHA1OI6LM5bdqH7
-         T35g==
+        d=gmail.com; s=20251104; t=1789322729; x=1789927529; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=voliItkzs3OtrnJtmbhCv1xhQ+FU+qBLL3OO/h9nssc=;
+        b=rwVKQ+0F0DdS0df6dM9p9aohkCPIkNm5KD8cfoEBV5HG31OdXaJdHGRjPDhoMG/9GI
+         Q4QJUVHKeDKIAyd5OyiLkJgwMcJQQA9GNDV3CspsvaQHkM5+m/Xs72qPIu76ShzPo/0C
+         j9xDT8YE2wprh2jeCzlljoQMhV5UwS4COYu86vzAJV+q3x9gTtnIwMgY6ocG6fnHDhtQ
+         Mn/YbWF7jGWtpu1uONLNihvsU662fdj/ocsHTQH8pcvNMvuE+vfQLADoQ70O1gsyRnVJ
+         Pn5LRObB1lX2uW0AUN3xyV6znLe/QuoikZoBspl+zmH75ltPt/pkT7WmH7k9w6lRwphq
+         zt8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789322672; x=1789927472;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ByuJG/ToMKb3/GEaCPutmgXOi2odRqpn7f8I+oxWvKM=;
-        b=MTmc+km7PapAsNGarpEZb6jA1ePKPegFripw3gAXYZZ2VOHvH+GTYaUlHdtCcpdjeg
-         s3kTuZKpxINxnUZdr7h8C2IfUQvUKsvg1Ma1eEt/w+hUXJfJG9+Wrlz1hAWvXcSAtj1M
-         ugynMZ9NY8xKftRCN0offFl+izfqgMkIOEZrTTkHZ7I8fKMOTOH2wwuCT6tdud3ZRMPs
-         Mk4q6BY9q0Ze7O0XXWpr/k/uWSpVNZsgxj5Vl4YYrtXWq/H3cnejWAGVaoy1iP7gfe84
-         MVdtpDiCmtvrKi43twCamq4n/R5bi7N34ZEtKM61Rf/3GjFRNtAvt1IMgyzI0vhF+vdG
-         IS+Q==
-X-Forwarded-Encrypted: i=1; AKwUvBzc5AjbN8Pbo3RGph+7iiTMnSyA5+5SwVlmSTqgBhMNS0zvoJ0McAKVTzf0RjvHC4pwYyx+geU=@vger.kernel.org
-X-Gm-Message-State: AFuF++ll8fWMe8POLzwXgORDErTped8S3puUo/JzvEl4L9M+WI6q50Sl
-	o3EizZbPO/blwUAXA7VcitKH5YJnwCGSWobDcHgnh1JsqSn4vqxanLk=
-X-Gm-Gg: AYBFou1q2MOBP0s3/9QkvUdfxPeL1Ab8xdwOR9Le0G+mvMW3JeKo7XZ2s3sd8QgqkU3
-	iyapXu3Zrwq6U2GO+neQR8/T1CadTrsnHNPn07tcCGBpQKqXGRo19rqx/nwTDj9GhaLDO9EVYq6
-	CyHdGKZS5CBIvPvL1cdrXt7/iz2xE8Jj+fMJMnkafH/gAsdem2wMCijsO4QWtrIgjv2d1ONu2wU
-	xe71iXKmyCHBiJvXn41ycVxXOlJJ+3WcfU7U9X+A5AcW8njhGCn9dzO+Jz9HZsTLORIB64QAKtk
-	LDkw4BGDm/8FHRpBBzfnX9tswf5erqeTkmsXpJxqKnP+VLuaWnLujt1olt20F0orS8Mod1fwqtJ
-	WK8yS1VUg6m1B/xJRDpif3S9XvHSnOw5yaTwFwXweztuouiVr4jzYlCw26Be4aVNjURSlcQ5qt/
-	rTjJJqzhf2A13oVSVqfZjCxWhcP8JmwhHHHIUhrZxaD3BhbDmHL3AGc4ZTmAkwMRww51uM8U8nP
-	o8G1ZLMIGlIN1c=
-X-Received: by 2002:a17:90b:57cb:b0:395:c3f7:2895 with SMTP id 98e67ed59e1d1-39dd5478bd5mr3476877a91.7.1789322672116;
-        Sun, 13 Sep 2026 11:04:32 -0700 (PDT)
-Received: from murali-Aspire-A515-58PT.. ([2a09:bac5:3b24:1a8c::2a5:ff])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14365b348cbsm20636958c88.3.2026.09.13.11.04.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Sep 2026 11:04:31 -0700 (PDT)
-From: Murali Krishna <muralikrishna2444b@gmail.com>
-To: mani@kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Murali Krishna <muralikrishna2444b@gmail.com>
-Subject: [PATCH 1/1] net: qrtr: fix coding style issues flagged by checkpatch
-Date: Sun, 13 Sep 2026 23:33:42 +0530
-Message-ID: <20260913180342.8948-2-muralikrishna2444b@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260913180342.8948-1-muralikrishna2444b@gmail.com>
-References: <20260913180342.8948-1-muralikrishna2444b@gmail.com>
+        d=1e100.net; s=20251104; t=1789322729; x=1789927529;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=voliItkzs3OtrnJtmbhCv1xhQ+FU+qBLL3OO/h9nssc=;
+        b=FhZOzd06+ddFy7Sictd0Z7dOfV4b4BnkEM0s1i3SqyOEiGP95W9AcmnhTVZ+S8d6fS
+         m8N1ncqbxmsDCHBMTSZDILS8p6kLbeXz33rTy/FecKTZSEN47Gsmq9zC01ekx9bkO0mN
+         PRGje/8AUqNysUqcu+DHUG2y0turbVelRB6JAQ1S+GsPJ81Ydh83cvtgkeFq2n0U/5GB
+         3g5pcS54fSSyRdNLDKrz5SSTsQq36OAwIPnuybo0TCt1njcABGSO5xiIAe07KjqME+j6
+         YsZ4Tjxk4+ZVOCz+UWB3IXUr4zaHRS1YEGMjF4xPmyflmSI1IvHyUOYaqoGbnezNlAR4
+         XQHw==
+X-Forwarded-Encrypted: i=1; AKwUvByHHwEGj45h78BwAXngOWTzoqcKwPTjvS1f6eqbB45QqTjuQ8LkIWnR0/AQINdcqfhmVCylYsE=@vger.kernel.org
+X-Gm-Message-State: AFuF++llL33t7ZAmDNfYXBA9IVjrS+u+byAT+jlnn2iemftQwjacdjp5
+	pM4GYpCJMYrxiGpKefcplndHQ+7O711ZeAbSClS4lmj53XdFWc8CdUcBbU6hGwR+SaQadKodET+
+	XgvA4oPbDZLp2QZk8BGdYYy69k1ukC7I=
+X-Gm-Gg: AYBFou1Us7pvrhdqaCVgfqQheWdXCaA2YZ1dUg0c9YswZTeXKDoCNkKNfj5Tp3xtNbm
+	fbuJqzHukhxcGa8txu9ojwB2wWpoWWZ0rjf6U/44Q/9rEjFPwpOCYTtfiWBnZXQrzO2nMCScSAo
+	2EP2uWA1dLGgEzgTkDae3+t5cFbh78vYP1avWI66Qwcv7cZnHHX66eUHP5+4j4B2aCo3GXRRDdc
+	oiuaCduqvJWzkAi86cMiN0Qn1CSyyuhQ9oio5gQb2s/3os1JcY2lMhAUnjK2ux7zVeJadh4/+V3
+	GA89n/J1kbdv04mNCP2sPHIpPevcd4isEGSmeMBcGnOS7nnC1fxQTXJEow==
+X-Received: by 2002:a17:907:d109:b0:c29:3e59:fd03 with SMTP id
+ a640c23a62f3a-c2966732c9cmr1353966666b.18.1789322728959; Sun, 13 Sep 2026
+ 11:05:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260907153713.2572547-11-coiaprant@gmail.com> <20260912201332.127297-1-kuba@kernel.org>
+In-Reply-To: <20260912201332.127297-1-kuba@kernel.org>
+From: Coia Prant <coiaprant@gmail.com>
+Date: Mon, 14 Sep 2026 02:05:16 +0800
+X-Gm-Features: AcwNN1XgxVngHvtMFNhv7y3qMtC3nxI3TV6XULwbytRJ0h4SCX-LBQfd6V3fGRY
+Message-ID: <CALj3r0jBCoX=GRTrshY7QJO3Vykrbx+1NgE=zOV3S+WLLBNM2w@mail.gmail.com>
+Subject: Re: [PATCH net-next v4 09/10] arm64: dts: rockchip:
+ rk3568-photonicat: enable SGMII LAN port
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	heiko@sntech.de, vkoul@kernel.org, maxime.chevallier@bootlin.com, 
+	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, 
+	prabhakar.mahadev-lad.rj@bp.renesas.com, romain.gantois@bootlin.com, 
+	hkallweit1@gmail.com, neil.armstrong@linaro.org, linux@armlinux.org.uk, 
+	shawn.lin@rock-chips.com, david@ixit.cz, netdev@vger.kernel.org, 
+	linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-phy@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-renesas-soc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Fix several coding style issues in the QRTR subsystem detected by
-checkpatch --strict:
+Jakub Kicinski <kuba@kernel.org> =E4=BA=8E2026=E5=B9=B49=E6=9C=8813=E6=97=
+=A5=E5=91=A8=E6=97=A5 04:13=E5=86=99=E9=81=93=EF=BC=9A
+> > @@ -242,6 +243,7 @@ &combphy1 {
+> >
+> >  &combphy2 {
+> >       status =3D "okay";
+> > +     rockchip,sgmii-mac-sel =3D <0>;
+> >  };
+>
+> [Severity: Low]
+> The changelog says:
+>
+>   "Enable combphy2 with rockchip,sgmii-mac-sel =3D <0> to route the SGMII
+>    interface to GMAC0."
+>
+> Is that description accurate?  In the baseline the node already reads:
+>
+>   &combphy2 {
+>           status =3D "okay";
+>   };
+>
+> so the only new thing here is the rockchip,sgmii-mac-sel property.  Could
+> the wording be adjusted to say the property is added to an already enable=
+d
+> combphy2?
 
-- af_qrtr.c: fix missing space in pointer cast, "(u8*)" should be
-  "(u8 *)" (ERROR)
-- af_qrtr.c: move trailing "*/" to a separate line in two multi-line
-  block comments to match kernel comment style (WARNING)
-- af_qrtr.c: add missing parameter names to the enqueue_fn function
-  pointer declaration in qrtr_sendmsg() (WARNING)
-- ns.c: remove unnecessary return statement at end of void function
-  service_announce_del() (WARNING)
+You're right. combphy2 is already status =3D "okay" in the baseline; this
+patch only adds the rockchip,sgmii-mac-sel property to it. I'll fix the
+wording to say the property is added to an already-enabled combphy2.
 
-No functional change.
+> [Severity: Low]
+> This isn't a bug, but the new properties do not follow the ordering used =
+by
+> the rest of this file, where properties come roughly alphabetically and
+> status is last.  Here rockchip,sgmii-mac-sel lands after status, in &gmac=
+0
+> below pcs-handle comes before managed, and in the new &xpcs override stat=
+us
+> is first with phys/phy-names after it.  Compare the existing &gmac1
+> override, which ends with status =3D "okay";.  Could these be reordered?
 
-Signed-off-by: Murali Krishna <muralikrishna2444b@gmail.com>
----
- net/qrtr/af_qrtr.c | 12 +++++++-----
- net/qrtr/ns.c      |  2 --
- 2 files changed, 7 insertions(+), 7 deletions(-)
+I'll reorder the properties to follow the file's convention (roughly
+alphabetical, with status last)
 
-diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
-index 78347c937..3f4e56a39 100644
---- a/net/qrtr/af_qrtr.c
-+++ b/net/qrtr/af_qrtr.c
-@@ -393,7 +393,8 @@ static int qrtr_node_enqueue(struct qrtr_node *node, struct sk_buff *skb,
- 		mutex_unlock(&node->ep_lock);
- 	}
- 	/* Need to ensure that a subsequent message carries the otherwise lost
--	 * confirm_rx flag if we dropped this one */
-+	 * confirm_rx flag if we dropped this one
-+	 */
- 	if (rc && confirm_rx)
- 		qrtr_tx_flow_failed(node, to->sq_node, to->sq_port);
- 
-@@ -471,7 +472,7 @@ int qrtr_endpoint_post(struct qrtr_endpoint *ep, const void *data, size_t len)
- 	cb = (struct qrtr_cb *)skb->cb;
- 
- 	/* Version field in v1 is little endian, so this works for both cases */
--	ver = *(u8*)data;
-+	ver = *(u8 *)data;
- 
- 	switch (ver) {
- 	case QRTR_PROTO_VER_1:
-@@ -769,7 +770,8 @@ static void qrtr_port_remove(struct qrtr_sock *ipc)
- 	xa_erase(&qrtr_ports, port);
- 
- 	/* Ensure that if qrtr_port_lookup() did enter the RCU read section we
--	 * wait for it to up increment the refcount */
-+	 * wait for it to up increment the refcount
-+	 */
- 	synchronize_rcu();
- 
- 	__sock_put(&ipc->sk);
-@@ -957,8 +959,8 @@ static int qrtr_bcast_enqueue(struct qrtr_node *node, struct sk_buff *skb,
- static int qrtr_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
- {
- 	DECLARE_SOCKADDR(struct sockaddr_qrtr *, addr, msg->msg_name);
--	int (*enqueue_fn)(struct qrtr_node *, struct sk_buff *, int,
--			  struct sockaddr_qrtr *, struct sockaddr_qrtr *);
-+	int (*enqueue_fn)(struct qrtr_node *node, struct sk_buff *skb, int type,
-+			  struct sockaddr_qrtr *from, struct sockaddr_qrtr *to);
- 	__le32 qrtr_type = cpu_to_le32(QRTR_TYPE_DATA);
- 	struct qrtr_sock *ipc = qrtr_sk(sock->sk);
- 	struct sock *sk = sock->sk;
-diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
-index bcb090ee7..aaf77c7f5 100644
---- a/net/qrtr/ns.c
-+++ b/net/qrtr/ns.c
-@@ -179,8 +179,6 @@ static void service_announce_del(struct sockaddr_qrtr *dest,
- 	ret = kernel_sendmsg(qrtr_ns.sock, &msg, &iv, 1, sizeof(pkt));
- 	if (ret < 0 && ret != -ENODEV)
- 		pr_err("failed to announce del service\n");
--
--	return;
- }
- 
- static void lookup_notify(struct sockaddr_qrtr *to, struct qrtr_server *srv,
--- 
-2.43.0
+> > @@ -350,6 +391,25 @@ rgmii_phy: ethernet-phy@3 {
+> >               reset-gpios =3D <&gpio4 RK_PC0 GPIO_ACTIVE_LOW>;
+> >               rx-internal-delay-ps =3D <1500>;
+> >               tx-internal-delay-ps =3D <1500>;
+> > +
+> > +             leds {
+> > +                     #address-cells =3D <1>;
+> > +                     #size-cells =3D <0>;
+> > +
+> > +                     led@1 {
+> > +                             reg =3D <1>;
+> > +                             color =3D <LED_COLOR_ID_AMBER>;
+> > +                             function =3D LED_FUNCTION_WAN;
+> > +                             default-state =3D "keep";
+> > +                     };
+> > +
+> > +                     led@2 {
+> > +                             reg =3D <2>;
+> > +                             color =3D <LED_COLOR_ID_GREEN>;
+> > +                             function =3D LED_FUNCTION_WAN;
+> > +                             default-state =3D "keep";
+> > +                     };
+> > +             };
+> >       };
+> >  };
+>
+> [Severity: Low]
+> This hunk describes the LEDs of the pre-existing RGMII WAN PHY on &mdio1,
+> which is already functional and unaffected by the SGMII enablement.  The
+> changelog justifies it only with:
+>
+>   "Also add LED configuration for the existing RGMII PHY on mdio1 for
+>    consistency."
+>
+> Would it be preferable to split this into its own patch, so this commit
+> contains only the SGMII LAN port enablement?
 
+The LED configuration for both PHYs is kept in this patch because the
+two PHYs are the same Motorcomm family wired identically on this board,
+and describing them together keeps the two mdio nodes consistent. The
+change is purely descriptive and does not affect the SGMII enablement.
+
+That said, if you prefer it split out, I can move the mdio1 LED
+description into a separate patch in v4.
+
+> > @@ -586,3 +646,13 @@ &xin32k {
+> >       pinctrl-names =3D "default";
+> >       pinctrl-0 =3D <&clk32k_out1>;
+> >  };
+> > +
+> > +&xpcs {
+> > +     status =3D "okay";
+> > +     phys =3D <&combphy2 PHY_TYPE_SGMII>;
+> > +     phy-names =3D "serdes";
+> > +};
+>
+> [Severity: Medium]
+> Should phys/phy-names live in rk3568.dtsi rather than in each board file?
+>
+> The binding lists them as required properties of the XPCS node:
+>
+>   Documentation/devicetree/bindings/net/pcs/rockchip-dwxpcs.yaml
+>   required:
+>     - compatible
+>     - reg
+>     - "#address-cells"
+>     - "#size-cells"
+>     - clocks
+>     - clock-names
+>     - phys
+>     - phy-names
+>     - power-domains
+>
+> but the SoC node in arch/arm64/boot/dts/rockchip/rk3568.dtsi has neither:
+>
+>   xpcs: pcs@fda00000 {
+>           compatible =3D "rockchip,rk3568-xpcs";
+>           #address-cells =3D <1>;
+>           #size-cells =3D <0>;
+>           reg =3D <0x0 0xfda00000 0x0 0x200000>;
+>           clocks =3D <&cru PCLK_XPCS>, <&cru CLK_XPCS_EEE>;
+>           clock-names =3D "csr", "eee";
+>           power-domains =3D <&power RK3568_PD_PIPE>;
+>           status =3D "disabled";
+>
+> Does this mean every rk3568 dtb reports pcs@fda00000 as missing the requi=
+red
+> phys and phy-names under make CHECK_DTBS=3Dy, including boards that do no=
+t
+> enable the XPCS?
+>
+> The XPCS to combphy2 connection is internal to the SoC, so each board tha=
+t
+> enables it will have to repeat the same phandle, as this patch does.  Cou=
+ld
+> phys =3D <&combphy2 PHY_TYPE_SGMII>; and phy-names =3D "serdes"; be moved=
+ into
+> the dtsi node instead?
+
+As replied in the earlier patch, the SerDes connection is board-specific
+(some boards use combphy1 for SGMII, others use combphy2), so it cannot
+be moved into rk3568.dtsi.
+
+Best,
+Coia
