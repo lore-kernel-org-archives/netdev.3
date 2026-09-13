@@ -1,78 +1,77 @@
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176A82FF672
-	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 20:41:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FE9280CD5
+	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 20:45:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789332079; cv=none; b=lCzQZPlXNBfSaX56V6XvWZvkFP0plt0AGrMWwvCLLpWoCN32Re1W0JTygbDM+l3mDVVsQ8surOFR/xX8eQ7AoDSUCJLB5B0q44FtzLVTKM2FaZGKf0Q6jy3mv+0pLRVWdwJIVKDSg3t4koCBV4V5iF0QSs0wJdD3Zf6o2StzfFo=
+	t=1789332351; cv=none; b=c/m2BFsbrUFOh7NQF7/nO2Xysk2i0V2nYRj/cjkyPx2CTQwzYxJ7GBMz5kLZzyX7oZ39Sq26Qgm2NU8x2gfEexmIkOAsVvcd+UlqNYDCvyp2dcTbo+tE+Wx9o3Vq4gdQw/BCDKUEqrUDVK6tvoeOpoiplVF8fssQM3hZXeO9c50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789332079; c=relaxed/simple;
-	bh=iKlS5rdEb+K1g+xyBv39aa4hkcRyjb3P19zjf0ocvlw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D9tldEWRxyYaJdZzwEd5TKy5AqWweJqt3nyocBBTTwa1JuyEm8Pt9ighc8h9cx7aSQqWXZDv29W79hc4zdy/pR9Bz/8LK/9WNisc3f4A+S/bMw5v2dypqphLOzd0F71FwTcClwjyxYwjY0wTqaTyNJFZ9XrtHM+V4A2YnYhvCZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cLtbhiYk; arc=none smtp.client-ip=209.85.219.48
+	s=arc-20240116; t=1789332351; c=relaxed/simple;
+	bh=xTPqnZu8meQr9zKYn6kU+Sjy+hM+55XIhd9WW3MwX/4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FKd0nVzugIWYHA/D+uoJ+YhNhPC8ieK737PBztp58SA1ys8VsVouKhhIdqMCJSQv3JQDe9HCNoFreQT3HfD7qR1709VftMsgJKZOdeIaVjUbwrnONwq09XsOIfHEclzHclrFqvtTxhKq8VmEngCKq8pi95p35+VAHl3A2V3uxLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pw94bZRs; arc=none smtp.client-ip=74.125.230.205
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cLtbhiYk"
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-90cc64570deso28866376d6.0
-        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 13:41:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pw94bZRs"
+Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-93a0fd41a7bso108163885a.1
+        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 13:45:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789332077; x=1789936877; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789332349; x=1789937149; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+CNpe8/W4LNtmYoGjyzLBCqquLi4Tz0KDmEKn8Ugoaw=;
-        b=cLtbhiYky5zh7WwC0yVMxqQNxjTTDzjQ29CCFR+XunrI4kO+UVXvOeMH/+460FF9SC
-         snuckyNZ8fWInezdOOQ/GUuvY0YxQ2e3G0ra24V4cmYtBExAi40D9/yPkrPZ+UjWJQW1
-         dXb7clrR92Zt8m40rIitfW3r9hH1zNH6QPAOM1pmHy8dCKu7oDBprXSfgaDtWn74ijQy
-         Vuh7xnpCCSUH8DN4R/p/TuqVlzY6ZImf87tksin0i+SapHU5UaOJpp7YX6I7Mvji9WOJ
-         C0Owjuul95OoWSLL5WZVWK1/6FfJcg+9xrEHTADlFrles/l0ZhP32dOyV8sWwc26fOuY
-         xnDg==
+        bh=gIBMkVsQnc+d88IgxQtwbE3hp2eO368yzTFTV3ZCKw0=;
+        b=pw94bZRs7MrpTRj5z9x8HjDKgq3ot412SACs5tnRdfms+dzJxAnPWXzhyZhGHzdML7
+         Qtd5q2dqE1V0Tt8EUFw/rvzxgUVL9Ch7jaPwcPV8LZmXWU8xyYzrcu8tTFCVOJMgHUyt
+         aarW44CmHuQ744N3I4bzJTOHhdhN6oaG6dQwjHw8NVfQdLwEx/1e78jAVpwe1vcv1001
+         LiGqwj2VJSloFLMuyx2qAWtYVDZiblgF7B+fXX15s41XYoSnNL2jMcP4zxXotcB2P9ov
+         i7fn6i1QqUmWomPo8l/3UvQis1VlVUwZmGAZoN/lHklpzGVtum/4ugacnmDnY520R5oX
+         0dhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789332077; x=1789936877;
+        d=1e100.net; s=20251104; t=1789332349; x=1789937149;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=+CNpe8/W4LNtmYoGjyzLBCqquLi4Tz0KDmEKn8Ugoaw=;
-        b=Zk6vkaFOWAPSDpukBrclgA4yKJhIdWgtlClL1A4IHfvn4G5EiBNvHIQ/4GD1Z3M2Kt
-         A10QvbJY7Mtp59Cuy4foIE8pWXfq4F5z/p8wvgEhkdpDHIcTiBssoEatffEPUpyPspKT
-         T7GSoLkkmrTV/oPRdBw2NZsJQBxDLxEYZQ0TRC17XyXCdP88eIPvJgseqV7vwC4mDAB7
-         7R3NfDejNZ84Vt3zdS/8b1AicZZgL/sX6VGQG9xDz43za83NT77Ahk/sv2kjKe90b4XA
-         hi45XZDcX2yQMcX/JpxBPAjJ9ypXODeXLdeKCJwoGJxql2IR/ahGYZdl2kCtYyj2lzWu
-         +JPQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx5Yi8etjgdwUf4NXckiPXCMhEKX/Uc601fhJBBDjGyxXAQSSVg6anJnw74iX+lbrTXq0dXg10=@vger.kernel.org
-X-Gm-Message-State: AFuF++l6IQE8dY7yhh7tJKMO/dvWDclHbZaqhngMbBkQixWzw9Dpctu2
-	xAQZhXWrDt1B4d1OTTmMsr3gZXAShZIjw0PFJNG1xlyao6MMtKMQSPc=
-X-Gm-Gg: AYBFou2mZyAkLyWDNiOJOQ80+6IidjdB2TxzMugZ58NdAsOmDbGzXcnlrB+Rjc3lMSO
-	ijroftdi/GhSyt6VzIbYKke8n8qPQ9dfnhGeN3B6ZpiMi8FXY163wsjVBM9Smzek/FDZs/9dQGf
-	h5RMAH52Zmw+NXN1v1yOjuDjKxicEOgIrY8aEpT09xtcDx+HEqU/Tn4d9I3vTMCRQe6fxK0rSxb
-	esx+N1k/OSEsYHLM5/C+BB8s7fkvcaDeKQqxjxFdhI0quPBIxwpAGw3AMIr/XA2IVNuFS0hRATL
-	lfQakjoRP63Mo89VGLHzMVBNPf1+wH9zEiPedofGUBwSV0utwHEHpcA5V5W+++r+lc+QGaAcwBg
-	H/y78TOelN5My54pVSIAsEuyIklLFAOUt8JdfMQQquGouoMA5pD2Qvaxk9M4Gcl723i4G8PdE3Z
-	FPdDvnNKhtGYPX92btguXFpKmJ2eW0PFSNg2axXUohMRYizOnkMfhJ3JLVNZnOYeNH2rpI8s4mZ
-	VF87RZlRo8zs28T5o+tkpNMgf2bAkqHT2ISsednqalGCqfEWcAhiYTqdNI5u17vkaUyBInwiJd2
-	OJCTV50ENhcZIIaQMwzOosvCnyHmDtXp2G4=
-X-Received: by 2002:ad4:5c85:0:b0:910:3923:cc6d with SMTP id 6a1803df08f44-91226bba65cmr48657356d6.22.1789332076955;
-        Sun, 13 Sep 2026 13:41:16 -0700 (PDT)
+        bh=gIBMkVsQnc+d88IgxQtwbE3hp2eO368yzTFTV3ZCKw0=;
+        b=cX2mbWKGn9BZIYXyQ7/oe6KqJwo7U7x1cVRpnRhkTAVtwsy4CNCxwZ3s3K/6WTzFRy
+         a7mnVgVXwwAdMrca+R3+eSLTf8JpOFVMnE2zGs/eRy9B5NnoHmkMNjkcmbYl/QeKm3/z
+         5HghlbnZuk8GeXmo1vtcCpdEeo9Ff8XBvev3XOBC+jhVAiVH8UdUEFsPzN8zzDKmtwsg
+         /8gu2nzDOdcxd8LBD+KM7J/PGUUzs7JNp42XbcNVsSfQK9/MHJXcZvJInTIcKGz2Ci0M
+         HIIbMDVgyTYYNzmn8DUM3KQLEt6uuCt0yxb0+p/r/IzdycFCE9JxmB5bkZYi/Vus0Bkf
+         Y/sQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwDAFZd1QZg1TxbYNKGx7AYRmb/EKfLTC9Q5yhedvIhSSvglY1nrzwIYipN6Gj8rQf7qcxhxmA=@vger.kernel.org
+X-Gm-Message-State: AFuF++mIJXnx5QHAMzde0yJi0ikGEyJ7LHO8xCvdIwe7DPfK0oCzR85p
+	ADr9ipsJ6wxlxCBbrAeUrAXrb0w0hgYoLDBOiznIoct1wDntG/DW5BQ=
+X-Gm-Gg: AYBFou2jUHD9jMTdbaAEjcSy7zpjLYM2yVa3R9B1mHcwGFkS6pDgdq4pM6yCoPoNfR6
+	N+RStFOVBpiloR6o6NiX/2zfzZvEgORVCWinPKFrOTmmOKlq7hvNwRihRLPMZiZMsKIxROUK1wH
+	ayb9chASMk4j3JAuaA1Cjf5sFLIu/0qCwqMwk/Jy5Of5h2dvtycZIhBknqYUdXVMDlvyUcXvTOQ
+	aezp5d5BgrihGJ3B9bAC3igHKz9yFbjj/OiDrOj6d0YbvWn+uqubRGO9+KKVOz3fZz1Q/RCEZ3A
+	GLXzhGBcWS1Ke8H8EG8U4pmRhmLuoFTLkXugV+6l6ubbi6tKIJ9SbePImcpPOiqY8QvCZmSSuxF
+	Mu9hhRoek3/v/iTvSfKiuzDURAMmQ089ot8XnMqWU724j2a9XUsh1Hc84oBIZErvanr6L4iCxlx
+	1weMWghw08s7mF5kDU8HO3xNgskBx73GmxtV7plHoFmQ9B43PllCeHj96DRO/JU/bJ+0ifY0BBg
+	T3XJfhW28F0qHPz96cBDeOR0YVpH/tX2Q3hjWKlVNt9b0Bz8MmwHUhEGqWT09K7s/u8ZQC1QCjD
+	5E4zJI+jSzOxpZ3Zb5M4n3li14alzm8jdA==
+X-Received: by 2002:a05:620a:288a:b0:939:ede4:a499 with SMTP id af79cd13be357-93a035f328dmr1218686885a.5.1789332349032;
+        Sun, 13 Sep 2026 13:45:49 -0700 (PDT)
 Received: from localhost.localdomain ([104.39.73.78])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9120f478bf1sm78134706d6.25.2026.09.13.13.41.14
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-939e7f19291sm837711585a.10.2026.09.13.13.45.46
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 13 Sep 2026 13:41:15 -0700 (PDT)
+        Sun, 13 Sep 2026 13:45:48 -0700 (PDT)
 From: Myeonghun Pak <mhun512@gmail.com>
-To: Dominik Brodowski <linux@dominikbrodowski.net>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+To: GR-Linux-NIC-Dev@marvell.com
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Simon Horman <horms@kernel.org>,
-	Myeonghun Pak <mhun512@gmail.com>,
-	Ijae Kim <ae878000@gmail.com>
-Subject: [PATCH net-next v3] net: 8390: pcnet_cs: release PCMCIA window on setup_shmem_window() error
-Date: Sun, 13 Sep 2026 16:41:04 -0400
-Message-ID: <20260913204104.53408-1-mhun512@gmail.com>
+	ae878000@gmail.com,
+	horms@kernel.org
+Subject: [PATCH net v2] net/qla3xxx: disable the PCI device on remove
+Date: Sun, 13 Sep 2026 16:45:34 -0400
+Message-ID: <20260913204534.53825-1-mhun512@gmail.com>
 X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -82,88 +81,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-setup_shmem_window() acquires a PCMCIA memory window using
-pcmcia_request_window(). If pcmcia_map_mem_page() or the subsequent
-ioremap() fails, the function returns without releasing the requested
-window.
+ql3xxx_probe() enables the PCI device and balances that reference on
+probe failure. However, ql3xxx_remove() releases the mappings and PCI
+regions without disabling the device, leaving the enable reference
+held after unbind.
 
-pcnet_config() treats shared-memory setup failure as non-fatal and falls
-back to setup_dma_config(). Probe can therefore continue while socket
-window 3 and its reserved iomem range remain unnecessarily held for the
-rest of the bound lifetime of the device. pcmcia_disable_device()
-eventually releases the window during teardown.
-
-Route error paths after a successful request through a new release label
-that calls pcmcia_release_window(). Fold the existing buffer-verification
-cleanup into the same path, keeping iounmap() before the window release
-when a mapping exists. Leave the request failure path unchanged.
+Add pci_disable_device() at the end of ql3xxx_remove() to balance the
+successful probe's pci_enable_device() call. Keep the existing manual
+cleanup and probe error handling unchanged.
 
 This issue was identified during our ongoing static-analysis research while
 reviewing kernel code.
 
-Assisted-by: OpenAI:GPT-5.6
+Fixes: 5a4faa873782 ("[PATCH] qla3xxx NIC driver")
 Co-developed-by: Ijae Kim <ae878000@gmail.com>
 Signed-off-by: Ijae Kim <ae878000@gmail.com>
 Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
 ---
-Changes in v3:
-- Drop Fixes and stable Cc as suggested by Simon Horman.
-- Add Simon Horman's Reviewed-by tag.
+v2:
+  - Add pci_disable_device() to ql3xxx_remove() instead of converting
+    to pcim_enable_device(), as suggested by Simon Horman.
+v1: https://lore.kernel.org/netdev/20260911033219.34566-1-mhun512@gmail.com/
 
-Link: https://lore.kernel.org/netdev/20260910231400.31919-1-mhun512@gmail.com/
+ drivers/net/ethernet/qlogic/qla3xxx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Changes in v2:
-- Clarify that the window remains reserved only until device teardown.
-- Make the DMA fallback and continued probe description conditional.
-- Avoid claiming that every request failure leaves no resource held.
-- Restore the surrounding indentation for the new goto statements.
-
-Link: https://lore.kernel.org/netdev/20260731161740.44955-1-mhun512@gmail.com/
----
- drivers/net/ethernet/8390/pcnet_cs.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/8390/pcnet_cs.c b/drivers/net/ethernet/8390/pcnet_cs.c
-index 19f9c5db3..0cf3c0f3c 100644
---- a/drivers/net/ethernet/8390/pcnet_cs.c
-+++ b/drivers/net/ethernet/8390/pcnet_cs.c
-@@ -1434,14 +1434,14 @@ static int setup_shmem_window(struct pcmcia_device *link, int start_pg,
-     offset -= offset % window_size;
-     ret = pcmcia_map_mem_page(link, link->resource[3], offset);
-     if (ret)
--	    goto failed;
-+	    goto release;
- 
-     /* Try scribbling on the buffer */
-     info->base = ioremap(link->resource[3]->start,
- 			resource_size(link->resource[3]));
-     if (unlikely(!info->base)) {
- 	    ret = -ENOMEM;
--	    goto failed;
-+	    goto release;
-     }
- 
-     for (i = 0; i < (TX_PAGES<<8); i += 2)
-@@ -1452,9 +1452,8 @@ static int setup_shmem_window(struct pcmcia_device *link, int start_pg,
-     pcnet_reset_8390(dev);
-     if (i != (TX_PAGES<<8)) {
- 	iounmap(info->base);
--	pcmcia_release_window(link, link->resource[3]);
- 	info->base = NULL;
--	goto failed;
-+	goto release;
-     }
- 
-     ei_status.mem = info->base + offset;
-@@ -1475,6 +1474,8 @@ static int setup_shmem_window(struct pcmcia_device *link, int start_pg,
-     info->flags |= USE_SHMEM;
-     return 0;
- 
-+release:
-+	pcmcia_release_window(link, link->resource[3]);
- failed:
-     return 1;
+diff --git a/drivers/net/ethernet/qlogic/qla3xxx.c b/drivers/net/ethernet/qlogic/qla3xxx.c
+--- a/drivers/net/ethernet/qlogic/qla3xxx.c
++++ b/drivers/net/ethernet/qlogic/qla3xxx.c
+@@ -3916,6 +3916,7 @@ static void ql3xxx_remove(struct pci_dev *pdev)
+ 	iounmap(qdev->mem_map_registers);
+ 	pci_release_regions(pdev);
+ 	free_netdev(ndev);
++	pci_disable_device(pdev);
  }
+ 
+ static struct pci_driver ql3xxx_driver = {
 -- 
-2.47.1
+2.53.0
