@@ -1,79 +1,138 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81F137105A;
-	Sun, 13 Sep 2026 15:59:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20DC7369204;
+	Sun, 13 Sep 2026 16:05:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789315196; cv=none; b=RP74hXKZ0LM4Zrfp/LX7VP9jvIVEprQhRAabVgBjkcQhLeH4ZujYz/Jibm1FLyMhKhvCknOOEwijX2TxhS6RKP0hHnQmdg3/e9GR4acCRxTQd+8dXielLAYOg3iSLUNuZjR9dZFmRjYx6JMLd0Apwso7Kv6QH0TjrSeFiHuBZJE=
+	t=1789315558; cv=none; b=FHjChH2c+WiVEVA/CAqrTqI5rWAfp1x/c+G2u2l6ux7iPs/Y5yQahv2w4/bpCSgoWqIocNg5d4AroLqfhToRLsvr5/v04rUL3i0+KYGp88CjkT92cN5LeOmkdmeAg8WUSTXnEfxjo/1JyjRVvgr6WQI7UxFxtcYJItoue208SPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789315196; c=relaxed/simple;
-	bh=h6P7nPO/wXAjCOk4ZHQz+sxZSuy/hMR6p/qSRpoiCjA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EpSo5Btz3Tl9uDtWjxm8+OxZqelf8ZndPDOjupY9fQ5nQk9X2/G9hnz1pbs8LOE8aeIkFdplaRG38/8XMWCrTxKGAwI0jKoi+mEA3Z8kBrm/MnOgoDe217ZXRHjSyW9ds+72zhBXsn3xphXL8rZiXVRQwGaKABOFQTQU+rEmR2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=nEX82nJk; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1789315558; c=relaxed/simple;
+	bh=9MnzZ5c/GPTeMPuSywpbP4+Si4gXx+i7tnpD+xDMoRU=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=Y0Q879Oqja3WIMnJD7Pod8/KGMLElGEwrz3prarsO6KOjH4mtqVrp0mlGA5pfwNMgnfWDVUoXiI4ydm1s34JK5e5GRK5c+ShaBtN0OMjDmU1+CjcckdUpWXIw2KpO4rzf6Vz/ClShEehjqLyQ7Ee+8LqESyrRBcRhv+xin0U/0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TFyF4wg8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="nEX82nJk"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 7570D14C2D6;
-	Sun, 13 Sep 2026 17:59:48 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1789315191;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZY8O0nRi5GbS1NOYeVTB4YwNIhP2oo4hHI/CPzZ7h6g=;
-	b=nEX82nJktLeVDlkL0kQvbeI9yswaKfI8poSuYRkXLkTjjMXUzh2kjmd8sbzR7/mu3DnwG2
-	QCF4J3qC8Xk+0skVyuHHgL6DTH1pL1x8PjX3bvshdmxFvKfm6WpKKNR1CWoz+z01ue9/+l
-	1J+MroCxNMU1o6lR8ZZE+K5AwZQgwMVIxTOVeodm9E1Kfi5clFPcFdqQmxyPvF7OCMWKfj
-	AbO+1Dcwta3k9M4dggtTvI2J0YD+hOJOiEGUNpjSzrjJxx4ecJNl5ho3FAbwmgFvd95JXs
-	1NNRYKDc8Gu6nZEcD2PqcKe7b3cFYz55DfoOAps6V0CYa40E7rHSdSiUPPGAZA==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 963ab251;
-	Sun, 13 Sep 2026 15:59:46 +0000 (UTC)
-Date: Mon, 14 Sep 2026 00:59:31 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Ze Tan <tanze@kylinos.cn>
-Cc: ericvh@kernel.org, lucho@ionkov.net, linux_oss@crudebyte.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	v9fs@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/3] net/9p: safely abort fd RPCs on fatal signals
-Message-ID: <aqbIY53PWehECvuQ@codewreck.org>
-References: <cover.1784186316.git.tanze@kylinos.cn>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TFyF4wg8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B3A1F00898;
+	Sun, 13 Sep 2026 16:05:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789315555;
+	bh=5YCpCgr7wN6BRngUrHQuusuhHt9EZlKC0MCMR65I/Wk=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=TFyF4wg8t1JVUlkOZtO5/xJjB6918d1JKyW0zLDhhrHy8L5A7spT7wKHu/A8D+pKa
+	 Oexy/7syyAHdliF2NYFzCFyozozVipJuqGnBXq0RNF0UHOZWT+dMAm/16U1r0gxoaX
+	 wQgJGyp2oyX6uB99O5OLlrnWUMWaEhGA1pOnjvQxxS+dEFr7LRfICNYnpCrCx7G0Mx
+	 f4RWRrRtyxljJROYOcZIGErq0NWCHzt8BwfR6eKStKZMhzL3ajP6av2VCTjYq0toBe
+	 Pxj8nzZVFeiaVf3SR2kNWUR8ruuMm5Z6i4eZlx/2ep9lxni+oF6Xfv7BQv/W1qmOVx
+	 UYJBojTjgRcLw==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 83650F40066;
+	Sun, 13 Sep 2026 12:05:54 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Sun, 13 Sep 2026 12:05:54 -0400
+X-ME-Sender: <xms:4smmal1B8TFbjoWMJrfJ5FhRf8BSKoXx-jo-mnyHgeLV6pZ86fhsJQ>
+    <xme:4smmam42vccNsHlMdMphoub0O9Mt6SBLGSdJAqR0B7Q4mBQmIfZ4aR1zcpnD4pZeQ
+    aCW82fJ6xaX4NSHKVHSiyP6kCrHz9au6jfWs54SSNnyB4IPTF6K1zrZ>
+X-ME-Proxy-Cause: dmFkZTEuqnInwcZIkp3LZsOKtysl7pel0EoEBfW5y/sKAQwXh8kf6FPGOaVTkGtuxdR5/h
+    ZGAYoQdVo1yKWRzC8fkocQNj1y2i9F/PUs93rVn5UsXeFWGMglFjiCNx7lEm5RdcmEceY/
+    U2En6IgIKw6P+/TAqV7JGISUxgDWrjNyemNEFnokNDHC34LKB7sUZquBqOU1uQk9jU04I2
+    D8wgimrXmhbhirlb4990OPurrA7zdrV9t2Yu4XohTmGeP9loP5fgWa9G7IG1wkLC0thrnU
+    caz3D2RzkyB4bstm/zqDyEodkkbYPjxEw7m/xFpknoRehRrC66QFtPGZs7PWi3iPO2JuO8
+    3bqDcl/niTrOt9fypPTFRg1DNqvnrj6NZQiMp4GgrStpzxyuMAqTXE62NkzpzaPtetoEAu
+    bTG7grwrfh5iemoTClsDhnUo/ThXRqJ4ZD65LnkjscpP8QDEdn3x14DICEmcMGurUhvvGo
+    xESXAocLzoLXRw5cMyLG2o3CY+he8QNkzMMZD4elgLM8ORKR0A5a8ZAvwYVwjNi3MEnjV6
+    3AoGONWflhPGf90eVn4obalU+CoS89vKt00uTnHRL1iUrZGgHqFxG3wPeD7pWy+n5w4fhP
+    JiGOv897ElJBvTxs2rkXZRVYOUvF3J4qRQa8Aouti1l5T4TsnGqgXcBDjbNQ
+X-ME-Proxy: <xmx:4smmatYUSxOOxVRfDNKBwj3YJk6lBCqmROiE-DepGz1EAqhRtlI5xA>
+    <xmx:4smmal9gpqdvZVSLreJsYibhKRSeJYBA-skBXLO7wRavRIxd3xAmDQ>
+    <xmx:4smmavP4ilzY9sverMsE3g46lL6oi4GbHaAsXjBnO-LESvhQu68CrA>
+    <xmx:4smmaiEj2adrdRz-E8fKny65h2Wol5BH1ClFKZw8aEB0nkiliF-hOQ>
+    <xmx:4smmatyoCFcbCvS-JOQ4RN43Qu6tQZJ-mo5jSLKe4ZBhXTE-MKpGGd1H>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 5A64A780070; Sun, 13 Sep 2026 12:05:54 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <cover.1784186316.git.tanze@kylinos.cn>
+X-ThreadId: AAPZyXKTxCYB
+Date: Sun, 13 Sep 2026 12:05:30 -0400
+From: "Chuck Lever" <cel@kernel.org>
+To: linux-nfs@vger.kernel.org, "Sagi Grimberg" <sagi@grimberg.me>
+Cc: keyrings@vger.kernel.org, kernel-tls-handshake@lists.linux.dev,
+ netdev@vger.kernel.org, "Trond Myklebust" <trondmy@kernel.org>,
+ "Anna Schumaker" <anna@kernel.org>, "Christoph Hellwig" <hch@lst.de>,
+ "Hannes Reinecke" <hare@suse.de>, "David Howells" <dhowells@redhat.com>,
+ "Jarkko Sakkinen" <jarkko@kernel.org>
+Message-Id: <8ddb29a7-28e7-4c90-8d6c-5ab2976fa53a@app.fastmail.com>
+In-Reply-To: <20260602154740.49861-1-cel@kernel.org>
+References: <20260602154740.49861-1-cel@kernel.org>
+Subject: Re: [RFC] NFS: named client identities for mTLS mounts and a per-namespace
+ .nfs keyring
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Ze Tan wrote on Thu, Jul 16, 2026 at 03:30:48PM +0800:
-> This series fixes a hung task reported by Syzkaller when a thread blocked
-> in a 9p fd RPC receives a fatal signal while another thread in the same
-> group is waiting in coredump_wait(). The interrupted RPC currently enters
-> the TFLUSH path and can wait indefinitely if the 9p server is no longer
-> responding, preventing the thread from exiting and the coredump from
-> completing.
 
-Thanks for the patches and sorry for lack of reply
 
-I'm sorry but I'm cutting this out for the forseeable future:
-You can't just abort a request you sent without flushing, for example
-if a mkdir() call is interrupted it should be failed and the next
-mkdir() must succeed (if it wasn't raced) but with an aborted request
-you could have the directory be created in the back of the aborted
-request.
+On Tue, Jun 2, 2026, at 11:47 AM, Chuck Lever wrote:
 
-I actually had a branch with 'async flush' a few years back but there
-were subtle regressions and I never had to look further into it, and I
-have even less time now, so I'm sorry but unless you're very convincing
-I won't take these (other maintainers may have different opinions if you
-can get any of them to look, that won't be my problem then)
+> Userspace front end
+> ===================
+>
+> With the keyring in place the front end is straightforward and follows
+> the nvme-cli / cifscreds pattern.
+>
+> A new nfs-utils tool -- working name nfstlskey, fitting the nfsidmap /
+> nfsconf family -- manages x.509 client identities:
+>
+>     nfstlskey add  <identity> --cert cert.pem --key key.pem
+>     nfstlskey list
+>     nfstlskey remove <identity>
+>
+> The add subcommand reads the PEM cert and key, converts each to DER,
+> and creates two "user" keys on the netns .nfs keyring ("user" because
+> tlshd consumes raw DER via keyctl_read_alloc()), with possessor-only
+> read. Description convention:
+>
+>     nfs:x509:<identity>:cert
+>     nfs:x509:<identity>:privkey
+>
+> The mount command names the identity:
+>
+>     mount -o xprtsec=mtls,tls_identity=<identity> server:/export /mnt
+>
+> mount.nfs runs in the caller's namespace, searches the .nfs keyring for
+> the two descriptions, and passes the existing cert_serial= and
+> privkey_serial= options to the kernel. tls_identity= is purely a
+> userspace convenience that resolves a name to the serials the kernel
+> already accepts; the raw serial options remain as a documented escape
+> hatch. Both get documented in nfs(5), with a new nfstlskey(8) page.
+>
+> tlshd changes are minimal: confirm the per-handshake link of the passed
+> keyring happens before the cert and privkey serials are read, and
+> retire the now-unnecessary .nfs entry in the keyrings= startup path.
+
+I've created an nfstlskey tool and pushed it to the nfs-mtls-identity
+branch of https://github.com/oracle/ktls-utils/ . It compiles, but I
+haven't otherwise tested it. There is a nfstlskey(8) man page.
+
+There is a change to tlshd so that the handshake children processes
+pick up the .nfs keyring instead of picking .nfs up at tlshd start-up
+time. This avoids the ordering problem of starting tlshd before the
+NFS client module is loaded.
+
+I'm hoping this new tool can be used with current kernels, though
+all of this is missing proper namespace support at the moment, so
+it should work in the init net-ns only. Kernel patches for namespace
+support are in the works.
+
+Please kick the tires. Is this the kind of administrative UX you
+expect?
+
+
 -- 
-Dominique Martinet | Asmadeus
+Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
