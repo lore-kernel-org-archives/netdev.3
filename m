@@ -1,82 +1,82 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97AC3E3D8F
-	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 23:49:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 612421A6816
+	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 23:59:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.181
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789343396; cv=pass; b=GhYCDsFyg0rzHNagWmF2qTrojw/gB9w5urhdSB8RfN4SX3qVgAw5jEboqqnI9JPKvLlciXisp7XvRX8OW9kRFq37cUvMtGAc55Kdz0/S5yK7Qrs8bB33YZmjrNBg1H4dIFfX9gSQj1/H5jfTFNsr7HeuHyKHQFPe2Ot3gcWtu4U=
+	t=1789343941; cv=pass; b=QSaQyp6Ulvt8W4uxcj3WUgr75qF4HuNnpa09PNoL8dLCMRDG+pZD/XV/ziGa3On8CUkS6bO0rEaVLxQzrlvQaXjt/inhJ76OMOQm4Oz/1dc18Q1Z1+K3ZV3bLxDQskz5vDpk88bmAMp/SDd4C6KTdge2XRxbwlgUPQTWReEGv7Q=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789343396; c=relaxed/simple;
-	bh=nqjN80FjEjrlkTYMgptyycliSQKyF0sQn4cL1l1/qQ0=;
+	s=arc-20240116; t=1789343941; c=relaxed/simple;
+	bh=YEV36a1/dmLBbcJxEhStmZVvh/RjCYygvgq4nB8g75g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=O1YoLN4rcgWgKN+agKvy383Cj0uICSkOtXl6awvdC8osaX8ji4MePudCpMKAEW06YkhPinJ11xMdWbDtaabeKIQWTxVomkjaMdrS1oPTLUqhfT1CHR+25OtKHzHUUL5z4F2DaYO1aWlOPJYRGicX22WxTGoIsmHQnNoLR6wDwUo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mcRAer1S; arc=pass smtp.client-ip=209.85.160.176
+	 To:Cc:Content-Type; b=i+4aRAtcIAliWzCqQOHJ9PKxzH1tfeguWC32cS4msIxSR+yY07FNBUKhN3ORyiU+NX8ZgMD6WddUp4WT28QbWfIANKFnxN1fceLwUx0jpJBBXlOOBqj2p82aqsGEJPestMZ/F+Q/Msmbix6KbLA7+sHHY7Gl1x5W60Wf3xuaeVY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BkefwH1h; arc=pass smtp.client-ip=209.85.160.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mcRAer1S"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-52fa9c055b5so43652231cf.1
-        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 16:49:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789343391; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BkefwH1h"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-530fa1d2b31so6943951cf.2
+        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 16:59:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789343939; cv=none;
         d=google.com; s=arc-20260327;
-        b=ZcfAfggTR5uvezQPPfbjyKtH4sfoIXywCCB7eN4yKNAIawq7XUJ0twAzUQUOnqcpee
-         hu9GewyAPtPqCDb7vgDjALE0dI9d2S/C+UwmYylU2JVE1a0LK1LgsYsEtu5rEB032J8m
-         Q0CkYpoFc//7cpp5AafDVnrPZBXUm0/7M87W0cdgDKdqg0sXA6YCA509ef0RpZtZyHfE
-         iEYm2phe6u1stI2GNnsgIljJvAQ98zUuANwISsloGVJnvK/pNOq8mYgGtEy5udbiPsdR
-         eIYMJruaeZdYWB4xPkVKfnequsAqrkbQyhWjtUl5W3llVrP8A6OIifjerStdIGj8Do5T
-         i1Kw==
+        b=MX/I954qPjA/9GFrxprblbq4Dpr/uc7NPtOf4YZ3MKPuTgSQpg1wmFYKO9/QOhWkPN
+         pEGHR0cLeBrxxFI+QvTcZsiaAvonWNovYWstx0ZY9p5CxU9AjoW9WgNqRlHFOTP7LMZl
+         Bl1+Q/DpRTlhkUD6WCwgN/LTSA3OZBMluHvW2sOhhMyAKSP6Rp956CAM1+ad2I4vjAlG
+         ZmYSlOikWcqm92Zp1JB8LTPaCsJxc9AtDphX6fAqmIYUVyBKqEpgsz3JlRU+CCruOWGz
+         09PxHgHoevJNwGWFpobAZXJRIuTFthEZXwra7GuxifuVPvHNViqv0nLp3ML699Bwa8qk
+         8ANg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=+X3bSblbUC62598m6PGy4H4uB3nFwVKze0HCK3UE6bc=;
-        fh=vauqkY5KTYAYYivM2/cAkm9abNNgGSttTYb9KcWH5ac=;
-        b=QdZtQm0KxQbtefuxwkgd409qEvhboClo/pq0O4Ac4X81OZyj6lVvCJLbnLWEgzey4c
-         uVEkeLgEg2Wh7v4EGwb6QNfO5AvzepqGXkjk3HRTrXFx4b6plzmGmhzfnYxoJVwM0dkS
-         e870S/kf7v/RmNlO5DZyIEEQwkiNXEe92+BE13uBqU6Jf+ORE3u36BP1H0pBwRKXG4TO
-         rp4yCb4DNk1wPKeZ/d//b27m9VHkE38glT7syjdtdvV57BwTSZTypIU6Hwb22NEKixf4
-         XVl5qc9i7wGv1ZY7LVzEKYwHl0/ZVEsOHKA36zk0bT1fEsijwZX0nSnEEnzcGu7ERwLD
-         D9yw==;
+        bh=Dhh7eh78JXhKvG7tglGxyB9G1j4KiAZp+u2eEmQ/ies=;
+        fh=LJikBT2fjxFikA/EUjstPYSBz5j9gXldIgZjYQ6PYbY=;
+        b=pMLt03TOXdnPiSqcRdnrpXusb7A4QW44q1GyktFEIxcBisWFdrxBj3laEsrdzJ69mr
+         GYIikmV/6Fuh1XiYV0AWTG3UkgXK0GfBlWxGPmossPKr/sxK9Bvbc7b6+2J2XLU52ubY
+         IdrfLKtXN3/+dVpBqDHh7yLqdbZKDuqSFK41P1E2qjpIbOBJ7tEkIaU4itO4ZAf1dXqh
+         DK7FQkw8VrOqV9JtDvc2i02YFxMmen9MH8oP9SZVMtaGDPTK12A3HEtGC7+vb8ezrP8k
+         oukcU+Vpeaz4IFU8ZupgjLLZOm2W/1JGDCLSHz0v1rYFu8+6/SA/bmrkZo7acvT2mPbC
+         lamQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789343391; x=1789948191; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789343939; x=1789948739; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=+X3bSblbUC62598m6PGy4H4uB3nFwVKze0HCK3UE6bc=;
-        b=mcRAer1SISOOwKP0pdSDttT/RPJYnGigzvDFOfxx1TdbwT95zEC7h7fp7+Xbr6kq+6
-         ktXJViWhKc2I9Fb3uLSlPvvmKyF6brG80TMvOuGyNE9ykd60KaN/88zZOLu0VSa/nZM7
-         gA34zGeXadcQy48FC/a+mAUI06KicadhNuAKMM8pLnYi2PGGsevYj/gpkI1D5AduHn88
-         GUJhpXEnltP9MUcIKnPB44QGjud8loAUkUFLhAqxKdsicEYZwEyG+5rEbQPXoIahTc6m
-         P2uGhlegoYFGhpqxCFc2FqH3NPqI6ohOd9eTaPoF/hT++lC06lKkUg9BpO6vwa/sFLBR
-         zH5g==
+        bh=Dhh7eh78JXhKvG7tglGxyB9G1j4KiAZp+u2eEmQ/ies=;
+        b=BkefwH1hIqmjL+o8GhIqfUXIfdS79zmdLMaNbr3AlThM39iuH46aCUzyp7GATj+9gL
+         rOzl0MfKrBZGncjk3KwWsGm3ybf2VtEkA0wwE9eKm9E7xxvF1GYaYJNAwiK5daqkBvsf
+         hzGbIuTlwF7V3kL7Ah0VxURY/4zLHLHBJSK6S7nDq7Gb1OcpP0TVIeSlhgmrwIoHiIAm
+         fwcfobor/b/09TwXIKXJsUgzzdNikUCHl6+uexlmcoFBXzI8QDVe7t+myvnu1ozvQmqL
+         3rLX/blzbL8S9vUYckwanUTeVapoO2c8kUgIXHbmfE2yOAWe8Fwrrg0lH2ptfU/F5ih5
+         VQSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789343391; x=1789948191;
+        d=1e100.net; s=20251104; t=1789343939; x=1789948739;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=+X3bSblbUC62598m6PGy4H4uB3nFwVKze0HCK3UE6bc=;
-        b=mQDs7m88psag51wesmY5yDHNZPutZz/V6Y71/6gUYUBTlgaUR/TvojKAgDUOFGldSG
-         rb1aZRbhBXyq7WGOx2mWPCMvtoHgBdLULMZxBkz3kBaCHup+jQ3EoBsJ2uUJHRQV3B4E
-         Fs588V9g+CM9foZ7wpPOPXIAd6jgiZBj0Q5IcmEDhidD0PKQmJ/97S1fPRhuNeTlK0lQ
-         MHsFMv22Gvu3T9QboKdOZnee6MgoJMCISBneeNV1MAa8e9JfYyQJvu5k/RgS5ICe8U8A
-         IQSJDCsHPScBV6tuoBf/ljZ+2+OsfoHp9KhszB+o/w72w3yE4t9SEUBBoLD7AvcO8gUL
-         hR8g==
-X-Forwarded-Encrypted: i=1; AKwUvBz2v0CMaq2ckteKkYPEsya62GO0gA7gdq6Cjp8pvetcWzP0dH/X1CrPA2vN9A8VIIIVtKSjkZs=@vger.kernel.org
-X-Gm-Message-State: AFuF++kZWWjyB5N8qiFgvT4BAqiL4otv+gzB1SlU09wS7FHxJCik8IMB
-	nxYJGHl3RI9dirle05ro7UIBQBPdVk6Wu8D7fFkxwhU0LyaHXH3SZ04wV5bRjHeFQ/VcOf2PSEN
-	eJ4p8JH9Cli/LSQl/cFpCfkvwTuoSwmN//4Cn2zFX
-X-Gm-Gg: AYBFou2NJrtkY8rrZkmrzKWaVI3CjN8M65+CAaQ2nzKiqSZbU3XSo7PRllQ3Dwv3fP/
-	xsPBsQSjGfgS6VhltKFqwjumIgCzyHH1suCP6p0gLmILRDGgmaLAu/jLFuLkWQwKKBgqXj6e3Ul
-	Du9Zmcs9Y04P7g1Q8xP8SgsG8TUfPSyB3ZmI5I80N1XbdDn58+fC2rMQJNYXSk372GU3ZNT/Y5n
-	uLmgec4twW3uTwjRXDxBecTsM7+oVpE9ACtTYupy/Jjn2Wosb+tUNgs8ATK0HP04/ubmj5aWehh
-	ocyjpIPLypjr+j3esHvSzeicYt/IukdtkutHqb1qmQtqsng86R7ngwCBftJkj2tGKM48uKwjvNA
-	BVy1c7UkvpQu+zXsSE/imEdCCPuRiJJS5F1Zq9epK6LR7P9EVXDk+fH2Rc9mwaaNYEjw=
-X-Received: by 2002:ac8:5a94:0:b0:530:fa1b:1281 with SMTP id
- d75a77b69052e-530fb6aac99mr46284331cf.38.1789343390390; Sun, 13 Sep 2026
- 16:49:50 -0700 (PDT)
+        bh=Dhh7eh78JXhKvG7tglGxyB9G1j4KiAZp+u2eEmQ/ies=;
+        b=LOcC57tFWw2mxVC5uvnW821gk/C8TdOtZVa+yty0TBhDyYRJjT/RF1J4VTFE2JOB/U
+         GahAYDRPW31gPHbpkT1NGM9UUtF2+jfH5ZpylzmXY2LzNa1mJh/dgGyEZSPbkBAJOvZm
+         gE/CdoH60LJ7phZiVFzjoZE/5eSxncMz7ZpfFGKG3h2ylhd6x4V+hRMGS6yJdQMSIraE
+         AhiNpzSIh9e8CuqWwNK7hgQW3NhhYSYOFoXfmbcAAAOLd8vSJw2CozS/pUGATCB+kriv
+         mGUNOH388YdaoYDIfwudvT6EnMzTx0NoWmu4JupYwc+3w8BZ32M/5RtWQtlnxILBK5AN
+         WKpg==
+X-Forwarded-Encrypted: i=1; AKwUvBx1DEGUTGMtmI8++vCTXNC0WW3PkS++QXZGKN1R84W7uJl56Zu25igVEzUw44qt7b90mGOgn40=@vger.kernel.org
+X-Gm-Message-State: AFuF++mF0w41p2C4BQCeLoWjM7rNJi/8T0Dzu2uDRnqWdRNnuTg7N+II
+	PRAWNkAv6GbNm8+nfqJpyIXwLjOMnXi8lskCrZYwgwYiD9co4rMOAeHXbw3dq/LjvKEZsWbyyB+
+	ceakqRYRdP8sqJVIS3o+qYj7Xh5WXJKrZTdJ3m68b
+X-Gm-Gg: AYBFou3epv5gmWg+Me4bvF3lGBIhjzjOjXpGCixjPFOttcME5M6Xr4hUW0ZWmQDQwpP
+	eM/BgQs9cTlTI9GSIH2Qx5m+FjJfoJs0EdHM3ZQ+QPGvvfEN/hBiQZvRte5pa/TYrCBzlQqBrQp
+	mw3ubyGtPyH+T12h8E5Qu/FBxpcT1snt8oK9/RH57j96JKDUEsonfnqUFREBsgnly/cMe5AcpZp
+	ZWa7vsQv1M0YW4k6a05ZGQsvb0aJH/+aeg6t/u3bFnyd6O3PUhMtmFS+LG0zGKbB+/3aP0U0wfM
+	rpYQdVK97s6HXIwpnIW+fBfXGHEa2ZpeCjVxGgiRseXx5gaOAWx70d/eE6uzpfxjaBUSUGgkmNO
+	c5Gi+tz+jLWmRzP3OKWsB0riPvIa48xVJFaS72ztw32uBwJ/7FY0ga6ErjY1GfRANRo0=
+X-Received: by 2002:a05:622a:14cb:b0:530:e7aa:ef4e with SMTP id
+ d75a77b69052e-5310cf4c994mr4211621cf.16.1789343938551; Sun, 13 Sep 2026
+ 16:58:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,11 +84,12 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20260912233048.3977192-1-edumazet@google.com> <178934237420.22033.12474248772012953233@kernel.org>
-In-Reply-To: <178934237420.22033.12474248772012953233@kernel.org>
+ <CANn89iJGzZY3HYpUjZxJFPgWOUs7RJDJnACTBwcGhjcb7AvyAQ@mail.gmail.com>
+In-Reply-To: <CANn89iJGzZY3HYpUjZxJFPgWOUs7RJDJnACTBwcGhjcb7AvyAQ@mail.gmail.com>
 From: Eric Dumazet <edumazet@google.com>
-Date: Sun, 13 Sep 2026 16:49:38 -0700
-X-Gm-Features: AcwNN1XD3kcoEqOhhLa3T2-HcYX1WsPGNmTxGa1qG44NImu6xdI8sbDbGXnXxaI
-Message-ID: <CANn89iJGzZY3HYpUjZxJFPgWOUs7RJDJnACTBwcGhjcb7AvyAQ@mail.gmail.com>
+Date: Sun, 13 Sep 2026 16:58:47 -0700
+X-Gm-Features: AcwNN1XAI91JYeabbiejo72XCydJWA3bOtlYuHf1Z9ZGi-lf7744WvTrW5YOWEM
+Message-ID: <CANn89i+62D2BTLWHZHPzM6N8ALwr9mGoZiK0YxGXs29Mar01eA@mail.gmail.com>
 Subject: Re: [PATCH v2 net] pppoatm: ensure a writable skb header and linear data
 To: netdev-bot+sashiko@kernel.org
 Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
@@ -97,174 +98,69 @@ Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Sep 13, 2026 at 4:32=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
-te:
+On Sun, Sep 13, 2026 at 4:49=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
+wrote:
 >
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider:
->
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 0 (1)
->
-> - [High] pppoatm_send() does not make the frame linear, although the
->   commit subject claims to "ensure a writable skb header and linear=E2=80=
-=A6
->
-> Pre-existing issues:
-> - [Low] net/atm/pppoatm.c never initialises pvcc->chan.hdrlen although
->   the channel requires LLC_LEN (4) bytes of headroom for e_llc=E2=80=A6
->
-> --
->
-> pppoatm: ensure a writable skb header and linear data
->
-> pppoatm_send() now uses skb_cow_head() to get a writable header with room
-> for the LLC header, adds a pskb_may_pull(skb, 1) before looking at
-> skb->data[0], and defers the SC_COMP_PROT pull plus the LLC push until
-> after pppoatm_may_send() has succeeded, dropping the old "undo" heuristic=
-.
->
-> A couple of questions about the linearity claim and about the channel
-> headroom hint.
->
-> > diff --git a/net/atm/pppoatm.c b/net/atm/pppoatm.c
-> > index 6da52d12df68e..5214786e61d11 100644
-> > --- a/net/atm/pppoatm.c
-> > +++ b/net/atm/pppoatm.c
-> > @@ -292,10 +292,13 @@ static int pppoatm_send(struct ppp_channel *chan,=
- struct sk_buff *skb)
-> >       struct atm_vcc *vcc;
-> >       int ret;
+> On Sun, Sep 13, 2026 at 4:32=E2=80=AFPM <netdev-bot+sashiko@kernel.org> w=
+rote:
 > >
-> > +     if (!pskb_may_pull(skb, 1)) {
-> > +             kfree_skb(skb);
-> > +             return DROP_PACKET;
-> > +     }
-> > +
->
-> [Severity: High]
-> The subject says "linear data" and the changelog says this pull is there
-> "to prevent out-of-bounds reads on zero-length or non-linear frames
-> (e.g. from bridging)", but does this pull actually make the frame linear?
-> pskb_may_pull(skb, 1) only guarantees the single byte read as
-> skb->data[0]; skb_cow_head() -> __skb_cow() -> pskb_expand_head()
-> unshares and grows the head but leaves the paged fragments in place.
->
-
-
-Linear' as in : make sure the first byte is in skb->head, before
-reading skb->data[0]
-
-> So a frame with skb->len > skb_headlen(skb) still reaches the device
-> send op further down this function:
->
->         ret =3D ATM_SKB(skb)->vcc->send(ATM_SKB(skb)->vcc, skb)
->             ? DROP_PACKET : 1;
->
-> vcc->send is the device op (net/atm/raw.c does
-> vcc->send =3D vcc->dev->ops->send), and nothing under drivers/atm/
-> references nr_frags, skb_headlen or skb_linearize. For example
-> solos-pci psend() takes pktlen =3D skb->len and fpga_tx() then does:
-
-I would argue this is a different bug.
-
->
->         memcpy_toio(TX_BUF(card, port), skb->data, skb->len);
->
-> or, in the DMA case:
->
->         dma_map_single(..., data, skb->len, DMA_TO_DEVICE);
->
-> For a paged skb, can this read past the end of the linear head buffer
-> and put unrelated heap bytes on the wire (and map a length larger than
-> the mapped object)?
->
-> The bridging path the changelog cites is the one that can deliver such a
-> frame: ppp_input() calls ppp_channel_bridge_input() before any
-> normalization, and the bridge hands the received skb to the peer channel
-> verbatim:
->
-> drivers/net/ppp/ppp_generic.c:ppp_channel_bridge_input() {
->         ...
->         skb_scrub_packet(skb, !net_eq(pch->chan_net, pchb->chan_net));
->         if (!pchb->chan->ops->start_xmit(pchb->chan, skb))
->         ...
-> }
->
-> The source channels do not linearize either (pppoe_rcv() only does
-> pskb_may_pull(skb, sizeof(struct pppoe_hdr)) before ppp_input(), and
-> l2tp_ppp.c is similar), while the normal ppp_start_xmit() path is linear
-> because the ppp netdev has no SG offload. Would skb_linearize() (or
-> pskb_may_pull(skb, skb->len)) here be the intended fix, or should the
-> subject and changelog be reworded so that backporters do not conclude
-> non-linear bridged frames are now handled?
->
-> > @@ -317,23 +320,13 @@ static int pppoatm_send(struct ppp_channel *chan,=
- struct sk_buff *skb)
+> > Thank you for your contribution! Sashiko AI review found 1 potential
+> > issue(s) to consider:
 > >
-> >       switch (pvcc->encaps) {         /* LLC encapsulation needed */
-> >       case e_llc:
-> > -             if (skb_headroom(skb) < LLC_LEN) {
-> > -                     struct sk_buff *n;
-> > -                     n =3D skb_realloc_headroom(skb, LLC_LEN);
-> > -                     if (n !=3D NULL &&
-> > -                         !pppoatm_may_send(pvcc, n->truesize)) {
-> > -                             kfree_skb(n);
-> > -                             goto nospace;
-> > -                     }
-> > -                     consume_skb(skb);
-> > -                     skb =3D n;
-> > -                     if (skb =3D=3D NULL) {
-> > -                             bh_unlock_sock(sk_atm(vcc));
-> > -                             return DROP_PACKET;
-> > -                     }
-> > -             } else if (!pppoatm_may_send(pvcc, skb->truesize))
-> > +             if (skb_cow_head(skb, LLC_LEN)) {
-> > +                     bh_unlock_sock(sk_atm(vcc));
-> > +                     kfree_skb(skb);
-> > +                     return DROP_PACKET;
-> > +             }
-> > +             if (!pppoatm_may_send(pvcc, skb->truesize))
-> >                       goto nospace;
-> > -             memcpy(skb_push(skb, LLC_LEN), pppllc, LLC_LEN);
-> >               break;
->
-> [Severity: Low]
-> This isn't a bug introduced by this patch, since the previous code did th=
+> > Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 0 (1)
+> >
+> > - [High] pppoatm_send() does not make the frame linear, although the
+> >   commit subject claims to "ensure a writable skb header and linear=E2=
+=80=A6
+> >
+> > Pre-existing issues:
+> > - [Low] net/atm/pppoatm.c never initialises pvcc->chan.hdrlen although
+> >   the channel requires LLC_LEN (4) bytes of headroom for e_llc=E2=80=A6
+> >
+> > --
+> >
+> > pppoatm: ensure a writable skb header and linear data
+> >
+> > pppoatm_send() now uses skb_cow_head() to get a writable header with ro=
+om
+> > for the LLC header, adds a pskb_may_pull(skb, 1) before looking at
+> > skb->data[0], and defers the SC_COMP_PROT pull plus the LLC push until
+> > after pppoatm_may_send() has succeeded, dropping the old "undo" heurist=
+ic.
+> >
+> > A couple of questions about the linearity claim and about the channel
+> > headroom hint.
+> >
+> > > diff --git a/net/atm/pppoatm.c b/net/atm/pppoatm.c
+> > > index 6da52d12df68e..5214786e61d11 100644
+> > > --- a/net/atm/pppoatm.c
+> > > +++ b/net/atm/pppoatm.c
+> > > @@ -292,10 +292,13 @@ static int pppoatm_send(struct ppp_channel *cha=
+n, struct sk_buff *skb)
+> > >       struct atm_vcc *vcc;
+> > >       int ret;
+> > >
+> > > +     if (!pskb_may_pull(skb, 1)) {
+> > > +             kfree_skb(skb);
+> > > +             return DROP_PACKET;
+> > > +     }
+> > > +
+> >
+> > [Severity: High]
+> > The subject says "linear data" and the changelog says this pull is ther=
 e
-> same reallocation via skb_realloc_headroom() and dropped on failure, but
-> would it be worth setting pvcc->chan.hdrlen while touching this?
+> > "to prevent out-of-bounds reads on zero-length or non-linear frames
+> > (e.g. from bridging)", but does this pull actually make the frame linea=
+r?
+> > pskb_may_pull(skb, 1) only guarantees the single byte read as
+> > skb->data[0]; skb_cow_head() -> __skb_cow() -> pskb_expand_head()
+> > unshares and grows the head but leaves the paged fragments in place.
+> >
 >
-> pppoatm_assign_vcc() sets chan.private, chan.ops and chan.mtu, and even
-> subtracts LLC_LEN from the MTU, but leaves chan.hdrlen at 0 (pvcc is
-> kzalloc'ed):
 >
->         pvcc->chan.private =3D pvcc;
->         pvcc->chan.ops =3D &pppoatm_ops;
->         pvcc->chan.mtu =3D atmvcc->qos.txtp.max_sdu - PPP_HDRLEN -
->             (be.encaps =3D=3D e_vc ? 0 : LLC_LEN);
->
-> include/linux/ppp_channel.h documents the field as:
->
->         int             hdrlen;         /* amount of headroom channel nee=
-ds */
->
-> and ppp_generic honours it, e.g. in ppp_write():
->
->         skb =3D alloc_skb(count + pf->hdrlen, GFP_KERNEL);
->         if (!skb)
->                 goto out;
->         skb_reserve(skb, pf->hdrlen);
->
-> With hdrlen left at 0, frames written directly to the channel fd and
-> multilink fragments arrive with no headroom, so the new
-> skb_cow_head(skb, LLC_LEN) has to run a full pskb_expand_head() with
-> GFP_ATOMIC inside the bh_lock_sock() section for every such frame, and
-> drops the packet if that allocation fails. Setting
-> pvcc->chan.hdrlen =3D LLC_LEN for the non-e_vc encapsulations would make
-> the common case a no-op.
->
-> [ ... ]
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20260912233048.3977192-1-edumazet%40google.com
+> Linear' as in : make sure the first byte is in skb->head, before
+> reading skb->data[0]
+
+I guess I need to invent a new term : 1-byte-linear
+
+Perhaps this will please/silence our AI friends.
