@@ -1,142 +1,150 @@
-Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
+Received: from mail-qk2-f6.google.com (mail-qk2-f6.google.com [74.125.230.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83BD3E0C73
-	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 10:42:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C59A3E9286
+	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 11:36:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789296177; cv=none; b=D+e3Gh0F35zJKAbVR0uhLVXGBj13AWbotNFi3g7GgDvlsjfZBaGjAvxtnKCoZLskzGehZay2eoEyTExFojTSRcUNBjQNEsaoXu01NdSdzZpVzV+4avJz+fWhdvVKqxp2rkXPXpg0pyhcl3n90kminLiOPppJn3I5NkPU0QpYTBU=
+	t=1789299395; cv=none; b=RtSXKq4sL9yLgogH9tCUM7kRRItQ6ce0p6D8ImWZNVfczFIul9O+hZKIWkrQH2O76F5IxahIV3Yp2Y6NHrSyRqVuRejLY8rLzXduWWgWc+fxCWFm7VDMiEC1TMYusJDSzeQuvU7T4HK8Pqbvt9+vcV6lzBkVjMnoDJq7QNtKHDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789296177; c=relaxed/simple;
-	bh=lGehwXEZtaMbMKO1wW9AcdFWi7zSdBA53XIp6hr2YUA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Voi0YjL47Wnbl8psmuLEyc1v3lXfEqGIKcCNcG9aldpNH3ydYXl1zBHbIllWMLjAWhiN9HnCzsLCsd9N76KEof7Hb1WuMMf69ZcSskiqS6ZPURV/0Ec8rZBBmoQdis9UAjWzVjQ8CZ9dwhubQhqoOP6zhwDLZM1HecRV/QOAUjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de; spf=pass smtp.mailfrom=bairaktaris.de; dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b=V7OmJA65; arc=none smtp.client-ip=74.125.228.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
+	s=arc-20240116; t=1789299395; c=relaxed/simple;
+	bh=s+yn8heHjHJXCmboNyulsK9UYhxqQFZnQizWHkohj2A=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=fPJne9vA2qRSoJp9Xg5d/bnPeUlUblBMRZRbpjSxzTRSwGFiEhoLHEK/r9vahF2l7axe9GYfueVqXktDEAYigIQ6PeuPqXav+JQ9gkNQFpdzFOoXbr1fIYCnnbrIpF1IWCae5xrSsILepHd69h+xcqqRJOwMxyBrHn/Pfy3secc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oO/l8DKO; arc=none smtp.client-ip=74.125.230.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b="V7OmJA65"
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c2940ef15d3so163788166b.2
-        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 03:42:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oO/l8DKO"
+Received: by mail-qk2-f6.google.com with SMTP id d75a77b69052e-52fa263dd47so14876101cf.0
+        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 04:36:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bairaktaris.de; s=google; t=1789296174; x=1789900974; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7Had5sqsucFv7bjWsA15L5n3iBC86r5TDHnTj1IfvOg=;
-        b=V7OmJA65N4WoqL5fDkzqKn66IkHweoi+1vJPhOHVPAI+5ufxI/3zDIATp0hwwaGnfH
-         agQwaDUWclunTmC2fDWbImhTZTfGXMbsfdU9nnpvtw+NrxGzDXFUIrYyfS1le2h4nftJ
-         ZCSY6eJ3s+EVu9VKpTdCEXoYcFBwOuv6WBOtD0PBSRNpBob+OVpcfnyIhro+G3Lkl1R4
-         niZ0WrG0Xcx/qi7y93V7gB0Fv3dwSbW+5cbciza0LEAZBMOgMHYHL66flpVS9lYUwrBR
-         xGqnKxylnUt9D7155W3Q9RIY8wS0V91dFHxsC3wXSHUiflHLTB97zZVwwRpF4NjInxui
-         1fyQ==
+        d=gmail.com; s=20251104; t=1789299388; x=1789904188; darn=vger.kernel.org;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+K4Q6mA0B7cFhrdQfvjltB31JYYm86Jr0HYn9YoOBBs=;
+        b=oO/l8DKOsVxS7iqPW4uDO9YQXdWgeTtBVa9d98gxPlbHFWpDq5ylvtO2huG7oQME2Y
+         zKLHvBSYAS8BW4FPSB0EXIPFrO5iHXZXzAZzliYtpcDDPr6fN0CO9Y983ZgHAHoz66Ed
+         1BzNHmoWbMm7fZOy5woPvt9GVrsQWuoayXQRuE/IwDFAhzOwG0gl8MEfEHlQRt1Zjsx3
+         dNBSsIN9KTqFd9/266G9Fr2zvurXArTjb0Rweh8Mdn6gWrbXw5OC43gyuu0YJKS9x3EA
+         spIfxR36PbKDJlrUw0lnrXkhmt41M9CHTro8YK5n4zNj6jpcGKuCWVgzJEkbMEZISoGS
+         J/Kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789296174; x=1789900974;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7Had5sqsucFv7bjWsA15L5n3iBC86r5TDHnTj1IfvOg=;
-        b=pWbikl9cuIZiTUH9cZHY0f2muWPFVkVg+lLxcOkcnk/m/8SzIIYxaiNlIYxmFi5cav
-         PHnL58KR0HOli4+JgZBTCzYVRy+F2tT95hHHI7VVNkvEfIxWMX09OUlHFU5Q1VtOOUez
-         WHZ6jQzKv+G+j2CcWa0ettDWglFimu5SNiN64QXrpiIGrWvx4xgSAqfuKr5R7vVolEW4
-         vCdO9rkNPR48B4ltERkKz1907JAMXTsoDLWrQ1wH2nMvBg2ax5U87mgqZrh4zIk3yAUg
-         9cq7xiGrathh6uVyZUnrPlsZKiusZTybHfGRFEtfEGTq6mmNwrt2g4icB2VR5mIoBnY3
-         1mGA==
-X-Forwarded-Encrypted: i=1; AKwUvBxnsqFiTcz5IA487rmcOU//v3IDLc6/rWfzJCATxdXagJ8Io4LmB5rQnzVq8barJn1YW5+7LGI=@vger.kernel.org
-X-Gm-Message-State: AFuF++ltAl+1vfGnbWh7lqXmjtzFQMlMm0QP0uqwOlSAAYYOSPDyiY46
-	f3WOoR0s6dA7is9hox442l1MuBFZmV+taHQylKSUlwBJgVSSNX/xtBn0qOE8MYy3uQ==
-X-Gm-Gg: AYBFou3qFVbFRpNY5l5uRLBgHKkTrmnlUp7sAF5Exs9bTg42fqEWWMxZGu3pQlXRCor
-	HOa018HcwHO6mejCZ6Ce5eli3Qgod2s33+ZDuOksREWGUnsfnGZxpQISYGXccwLvWQvJ9fHrOxd
-	7R/UW2KH99CGoMrBVOPHn018rGleSXt9UZkUi+DfsipUq0+Qy7mD6r1n9WpImLWFfTp8YEFdnOk
-	9y+RMwYqMjIVpa6mcr3L7cXD0ZR1STfYnhN/RsCl74fW+rqG+Zv1CWEW9CfE4YmZUhj8ZYm9w9v
-	t/8d3qxjsbMEuxP++LY2TG0nUhzn5SLqK/8+m+bDhJwB7BJElT0E3W1+o7c5//OLWT+pSrKiwfF
-	5m0CagACF4Ykw4PdAfN+iECWwAzh0WDq8FnfW5qSydYQPPW4l8tj/trva49MRSZ3V7ikTjNwHWk
-	VYWDhPBosOTHMjbybs34nGQpKYZNHeW1+Y6MwD7yfT69gAYbRB6XC/rOpSFtFTo8ZoCJW0ATBsA
-	SbenNbCYvTxZRshICaRiT7//i8kSXD/XIAAtEwc6UdigZHVEOjyifHVc198+t0GkRztQzhmctVp
-	x+cjLZug1L6ki9nG2sxkUBjxGpIUw8sbYWJYxyDcYxJPnN37ETrzExGxRSEzRAEbX+UZhFJ1q5D
-	lZAWLmdlhmbijsNZx3qzOYNGU4ctFlt6FGvTs98uCLE87Js6OWKU8oWhGNkiIdpZlhjvRolSTna
-	SXQVMKRHonvwlV//hBv8FUJIjnIzLSe8Nmvw==
-X-Received: by 2002:a17:907:3e07:b0:c25:2d27:5652 with SMTP id a640c23a62f3a-c2966694b2emr1062643666b.11.1789296174284;
-        Sun, 13 Sep 2026 03:42:54 -0700 (PDT)
-Received: from Desktop (p54aff833.dip0.t-ipconnect.de. [84.175.248.51])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c296605b438sm278678266b.26.2026.09.13.03.42.53
+        d=1e100.net; s=20251104; t=1789299388; x=1789904188;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+K4Q6mA0B7cFhrdQfvjltB31JYYm86Jr0HYn9YoOBBs=;
+        b=jTwHmmS/Ni8UqElshEvXrfj8tFCsWjpfHbfkB9vmax6qrs3TVIQrMdPiQAcc1+dQeZ
+         Z4EQHYXdxy0uF2sYMkuT2ZokkDSqIXFFtuYTjSveNjTNUOd4tQM1bCLAQFf1hegbD3ep
+         u2R1yHusuXygRPmW09zMKyS/VAcWwHMjPFIdUCEjOrKDoG9UYA5WuzVtXAEMC50rJRpN
+         vAhhX1ChPcKY6Pcx/KzNQ9QYbBEpJLj0jDO+tAcb8md6sOgiDLMAmEsNoZSKxKQ/5nv1
+         LCMW3Djmyg33E7s+rt08IgMz06xhOnvsTyqaon2DpaQXb3vHWI598NLKc0o65mH5Aj4/
+         qllQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxVEqo/1uAepyG6wN4W3o+4DcEyXECxg0ETABAxhcOBYiXXDZdbkJCgnza8IXpF7Z7nslEMxT4=@vger.kernel.org
+X-Gm-Message-State: AFuF++nD6SaxN/0t68UbQoeX1Y5UhgAmDGzleJ9QWIvp6h2Ik95Ty6+0
+	eyw+tA94E5aJfXqKjjn2l48qSQXiSBjpjQvFEHoJNShC+3HrIAuDyh7BHjXq8pZ0og6cqg==
+X-Gm-Gg: AYBFou2aPO6WQSlTZZN9z9dV47wJBtEd4mEmwxGCyFf9A0fE1yno46XAJ2A6jS1F+EO
+	122LSWGwyDS2ojPGV9NfZpIcnZbcqnHhqCc9ZKpKJAfR6+uI+XN0UisW3M6fRjQrxy4W1hp6RMP
+	+lPeRmdI/cZ2hWbjKj6YjpyITS2ykkasSdbElzBGGi5lYsnGEbVFdqcJQoyED9qDesHXryWxGJw
+	sxnAa8v0WTIxyHeB732qf20ep5Cr0pmV7LCryadU9my+Gv7e1y1ILlW9SA0cMJPJbtQkhmM0fav
+	+2CghVf/O0p2s5vgGEEkwVvgCK9SqgFq1H2eYt10wSaZpqKubWvDwLzzD7HQNOabrjRg4/f3Nd5
+	qp7N2EO9tcvPL9+I10lHHz+FRI487wcIaTem/cXuO0Egzvje8rxnN1Ts/xE6xNuLrr4fbuI1Ggo
+	A6d6HDGCBZFJMuYL8rQREI8MjwjI/qFCd4etv9nSU+zt6jip7dfgvb2E5hkIfXuiGXP1jdROMbW
+	ycGCuDqM/oYbnRT4vRopGkvKwE=
+X-Received: by 2002:ac8:5996:0:b0:530:b2e4:d59d with SMTP id d75a77b69052e-530e820b6cemr86862271cf.56.1789299388158;
+        Sun, 13 Sep 2026 04:36:28 -0700 (PDT)
+Received: from hhost (awork062063.netvigator.com. [203.198.28.63])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-530ca4b9c54sm68504331cf.20.2026.09.13.04.36.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Sep 2026 03:42:53 -0700 (PDT)
-From: Julius Bairaktaris <julius@bairaktaris.de>
-To: netfilter-devel@vger.kernel.org
-Cc: pablo@netfilter.org,
-	fw@strlen.de,
-	phil@nwl.cc,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	wenxu@ucloud.cn,
-	saeedm@nvidia.com,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com
-Subject: [PATCH nf v2 2/2] netfilter: flowtable: advertise the vlan match in used_keys
-Date: Sun, 13 Sep 2026 12:42:51 +0200
-Message-ID: <20260913104251.648421-3-julius@bairaktaris.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260913104251.648421-1-julius@bairaktaris.de>
-References: <20260906141947.480524-1-julius@bairaktaris.de>
- <20260913104251.648421-1-julius@bairaktaris.de>
+        Sun, 13 Sep 2026 04:36:26 -0700 (PDT)
+Date: Sun, 13 Sep 2026 19:36:15 +0800
+From: Xingyuan Mo <hdthky0@gmail.com>
+To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: "open list:SCTP PROTOCOL" <linux-sctp@vger.kernel.org>,
+	"open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
+	Xingyuan Mo <hdthky0@gmail.com>
+Subject: [PATCH] sctp: reject forged cookie peer_addr with unknown address
+ family
+Message-ID: <20260913113522.2674588-1-hdthky0@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email 2.43.0
 
-nf_flow_rule_match() fills the vlan and cvlan keys and sets their
-dissector offsets, but leaves their bits clear in used_keys.
-flow_rule_match_key() reads used_keys, so no driver sees the vlan
-match.
+When cookie authentication is disabled, COOKIE-ECHO peer_addr is
+attacker-controlled. An invalid sa_family made sctp_get_af_specific()
+return NULL and crash in sctp_transport_init() on
+af_specific->sockaddr_len. Reject non-INET/INET6 families in
+sctp_unpack_cookie(), and also bail in sctp_transport_new() if
+af_specific is missing.
 
-mlx5e consumes flowtable rules through mlx5e_rep_setup_ft_cb() and
-__parse_cls_flower(). With the vlan key undeclared and a filter device
-that is not a vlan device, the parser sets cvlan_tag in the match
-criteria with a zero value, an untagged-only match that the tagged
-frames of the flow never hit.
+  BUG: KASAN: null-ptr-deref in sctp_transport_new+0xa7/0x350
+  Read of size 4 at addr 00000000000000b4 by task poc/682
+  Call Trace:
+   <IRQ>
+   sctp_transport_new+0xa7/0x350
+   sctp_assoc_add_peer+0x153/0x850
+   sctp_process_init+0xf9/0x1180
+   sctp_sf_do_5_1D_ce+0x464/0xbc0
+   sctp_do_sm+0x114/0x2990
+   sctp_endpoint_bh_rcv+0x280/0x430
+   sctp_inq_push+0xdd/0x100
+   sctp_rcv+0x17f5/0x1ae0
+   sctp4_rcv+0x2b/0x40
+   ip_protocol_deliver_rcu+0x25b/0x270
+   ip_local_deliver+0xd1/0xe0
+   </IRQ>
+  Kernel panic - not syncing: Fatal exception in interrupt
 
-Set the bits where the keys are filled.
-
-Fixes: 3e1b0c168f6c ("netfilter: flowtable: add vlan match offload support")
-Assisted-by: Claude:claude-fable-5-1
-Signed-off-by: Julius Bairaktaris <julius@bairaktaris.de>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Assisted-by: opencode:deepseek-v4
+Signed-off-by: Xingyuan Mo <hdthky0@gmail.com>
 ---
- net/netfilter/nf_flow_table_offload.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/sctp/sm_make_chunk.c | 4 ++++
+ net/sctp/transport.c     | 3 +++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/net/netfilter/nf_flow_table_offload.c b/net/netfilter/nf_flow_table_offload.c
-index 19adc6c7725f..c50bbb1411d5 100644
---- a/net/netfilter/nf_flow_table_offload.c
-+++ b/net/netfilter/nf_flow_table_offload.c
-@@ -126,6 +126,7 @@ static int nf_flow_rule_match(struct nf_flow_match *match,
- 		nf_flow_rule_vlan_match(&key->vlan, &mask->vlan,
- 					tuple->encap[0].id,
- 					tuple->encap[0].proto);
-+		match->dissector.used_keys |= BIT_ULL(FLOW_DISSECTOR_KEY_VLAN);
- 		vlan_encap = true;
- 	}
+diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+index 84a4c97d0f75..7c8fe4b38cd1 100644
+--- a/net/sctp/sm_make_chunk.c
++++ b/net/sctp/sm_make_chunk.c
+@@ -1855,6 +1855,10 @@ struct sctp_association *sctp_unpack_cookie(
+ 	if (!sctp_auth_verify_cookie_params(ep, bear_cookie))
+ 		goto malformed;
  
-@@ -137,12 +138,16 @@ static int nf_flow_rule_match(struct nf_flow_match *match,
- 			nf_flow_rule_vlan_match(&key->cvlan, &mask->cvlan,
- 						tuple->encap[1].id,
- 						tuple->encap[1].proto);
-+			match->dissector.used_keys |=
-+				BIT_ULL(FLOW_DISSECTOR_KEY_CVLAN);
- 		} else if (tuple->in_vlan_ingress & BIT(0)) {
- 			NF_FLOW_DISSECTOR(match, FLOW_DISSECTOR_KEY_VLAN,
- 					  vlan);
- 			nf_flow_rule_vlan_match(&key->vlan, &mask->vlan,
- 						tuple->encap[1].id,
- 						tuple->encap[1].proto);
-+			match->dissector.used_keys |=
-+				BIT_ULL(FLOW_DISSECTOR_KEY_VLAN);
- 		}
- 	}
++	if (bear_cookie->peer_addr.sa.sa_family != AF_INET &&
++	    bear_cookie->peer_addr.sa.sa_family != AF_INET6)
++		goto malformed;
++
+ 	/* Populate the association from the cookie.  */
+ 	memcpy(&retval->c, bear_cookie, sizeof(*bear_cookie));
  
+diff --git a/net/sctp/transport.c b/net/sctp/transport.c
+index 6ea55b9fbde4..cd1a604d6f8e 100644
+--- a/net/sctp/transport.c
++++ b/net/sctp/transport.c
+@@ -92,6 +92,9 @@ struct sctp_transport *sctp_transport_new(struct net *net,
+ {
+ 	struct sctp_transport *transport;
+ 
++	if (!sctp_get_af_specific(addr->sa.sa_family))
++		return NULL;
++
+ 	transport = kzalloc_obj(*transport, gfp);
+ 	if (!transport)
+ 		return NULL;
 -- 
-2.53.0
+2.43.0
 
