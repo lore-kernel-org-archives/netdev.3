@@ -1,341 +1,155 @@
-Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010063.outbound.protection.outlook.com [52.101.46.63])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BA136E494
-	for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 23:51:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.140
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789257093; cv=none; b=KVqJ4lVLoEHXfjwA2KvlR84PBL49GBdAP0xk7Yo+Bfb8uU3rtrrBHKXu/yp2iHndWFZkHNNrF/DG4Kh0Z8tz5zoE/VB4D410154FR76q9sqE8vmyd1YUL51ENBMqevoTS9vsTBFL/SSBdq8RDs/UiF73ggaY91iNqgyaRJHGP/k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789257093; c=relaxed/simple;
-	bh=fD9xegSujnsT4NKnlfjWBz0getfDwxDziPE/OzXLPzU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Jt9TyfmCYTlIhHqN+sYZj9rZm+jfVRFhZnKdQBNGsKegHnHW2bEhbj6gcuhf1K/l77WSeJJlWvj6mRhrQ4faiIPemrX2qbjJZw5mYfeIyaa6oh9Jy8xAx6J4PoCH1w0Siut/6h6YP4YZ8n3/ippYP4rRNnnmHfSGRWykUnDcBoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o3VAHv82; arc=none smtp.client-ip=74.125.230.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4673175A68
+	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 00:35:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.63
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789259715; cv=fail; b=dywEg8SCIg1R0YRA2pdTtpVPe+5SOmpyDoNaLiQuf9BzouS5Y1g2UXqTEG7odNufsieGlSZy0bWq/yb6eogKCLIzoACfpGiPkfWJ9jgaYzDUfXULtOxzswilbLdpWspWoeZmb29Hn9KKTXRPtbof3/VdheMuDL5DTf7zkEiVFRQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789259715; c=relaxed/simple;
+	bh=bbBUgVy8BTO46FzwBRX5dx4fVOIjjwv3kQ5Gr8GzEZc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 Content-Type:MIME-Version; b=oe1fyOMWhYoAi/POZU/0DoJsgejKCtO6OHHj3ucTcwaej/eMQXmWJOzekniRsNf6IQYTPmtpb3Tl0azvtbSkn7viYDxXRzbToAIwWQ+pEbsBrJmCAQaECyoGijojEyKCRM92UmHfxlZV0ezWm8T0nI3Fh2d9YgDjNDQ0aKMf1HA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=XWMxj/8l; arc=fail smtp.client-ip=52.101.46.63
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o3VAHv82"
-Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-90cdfcbe20aso11652176d6.2
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 16:51:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789257090; x=1789861890; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=P9J6NG/MV7DU9c7t3z7uXv1DPj7gHWd/klA6eHMwHZo=;
-        b=o3VAHv82RPTcsoGv+o/rwriT8Rva/nR2SAw4/upykMRGJPLF9EX7VKV/34/zJx6MzR
-         u64cxRQM0MnVQZ0T5ACzOHRHPFQsfI9N6SOUj8jAn4Z1K7rxwqxF9OxHkERVcaXSzZaP
-         jVOuM1pirXlmy+FE8ao4pcHQEeCyvrgfKOfMe/vtHRCbbpRooqUtEeRHBgpA9r7VQ+QP
-         bwNqeQ1Er574ASxtAhyQ057IKCzUZm94Qmx8IleLYt6x94VG68ARPib4uo/jEIiKfUZ+
-         J5FzBs09TxNcnWAxZ9k9Q8Cu68x6aBnbXUYrp9jzWgjpYZOR4pdZlccQg56l5KBG1fAF
-         vuEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789257090; x=1789861890;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=P9J6NG/MV7DU9c7t3z7uXv1DPj7gHWd/klA6eHMwHZo=;
-        b=GiVRnkIvrZFcVMyh5o3gTl5HyLDb18DFaOv6Oxy/Cr/+j2uOakhroEkcit6pWpbu08
-         XJBB3ZR+EUsuUauQS7ANWUEX877qXeHtj1b5oTWGmnDHTvKTCN+vqoLnF7FSvGa/P55s
-         sFMJp8ssM9fHCBKx0cIU9JYsfRRfsWVMxkNCy9QZaqvIUgwR3G9+TLlDoFhq2SaPJ2HT
-         DSA0B5KZuL0n23wQQy5NBp2kLA63XDed4TUgDQoSgKkcxbllwO7q45WPYDXiZ+M+PW8s
-         7BazpVWU79bX91c9XU6avTf3XrpnU7jVfquKPVbg7jJqjhfGyQykFna6LU0stXfRsqsi
-         nNHQ==
-X-Gm-Message-State: AFuF++lsXdfQ8p73kPuJ8oM+EaFSwB+FF6B1mfbufpIh+Gl4oB65GdNu
-	cKWcyMLGxcFpvqkMsHUqZVmGaggteO2mZ1DGJneZlI+uDaW3klirl9Sl8Dkl4w==
-X-Gm-Gg: AYBFou3MQtTXtNl9nnDPMqRM6Ss3AANkWyHBy8jc1nwyucH1xDV97BGstB+msjB9Rhz
-	FZjNKf1BM9R/cjYYuerRaNajT5BTWPQBIQ7anIASkAZ/1ly1Plf94pwDCHEL429aHiYuup76I9Q
-	BAWcMYcN3+X5mFEdQNUbTMRg2+gRsRX3HA8DUZHEzS6kutAQJcvX011a1YMLOB45w29otvd8x/e
-	VrL8TcpPm1VbNLk/zbgIdxbT7EOxTflNHxcfQy/ne/FjQIbjjXTyYxhlxa+fHKVlAvZKWekRGtQ
-	V/r8rjtE0w3oLpo5xsUEys4FQPWqTQTbOqwDFCyHpYTF+Ayso1ecD4nLe1/hPWpHMkvdmJVgUXF
-	fJVLGW/8DDLLgBpFth3N5Wuj+78pRBzt8IXN/Bcu8vRbK4ATwWyXQY2ygh+frTvvJeZOarbAEbv
-	KRg5S5vD5Zdu1crL17qbTVNH/jhE7Py11hHnE2vqCPdMk5eShBm5j3SRpaEK4rvdh79FjkU/e3q
-	wrz29Sr6OSHIdneyQm7vEOYuRzz3CVkeFeHMTXo5Q7ukKxzcylfqrgx1nFQ5jOagmFav6mFKDug
-	tNhP9FL9vol6zNfe9NNSlIYW+S4SefXE3UXn1h+P3bEZYk9bXUj8obv+pIc=
-X-Received: by 2002:a05:622a:64a:b0:530:4310:53a3 with SMTP id d75a77b69052e-530e81d49c7mr71418151cf.48.1789257090557;
-        Sat, 12 Sep 2026 16:51:30 -0700 (PDT)
-Received: from ryzen.lan ([2601:644:8000:7a86::e34])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-530cd3ab1d1sm54050791cf.17.2026.09.12.16.51.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Sep 2026 16:51:29 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net-next] net: phy: marvell: wake the system only from the WoL event
-Date: Sat, 12 Sep 2026 16:51:25 -0700
-Message-ID: <20260912235125.151370-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="XWMxj/8l"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rre1Dtfj00kv+QnNRzG+YAliX/nH6gFSNHP+WtIFLdFNkL4GU+tEgfxEnOEs65G+5cSjkeuJAndccOrqbfJLZ+ZHKE52JiGHjaFmBEyOeq/HQXCCouAp7Zom90Fr/bdFu7eCjqFu3YEaT2Cka6vcAvl5CwzZMHX098crWFbemAlcmLRjC3XeZveVil+JPs7aB2K1qz1loh2e/49wwRlTBKwjpuWpOlt0HoQoaL5ySMJ6CfcnfGWsSViQkqeURtC/Z3RGwySPx+B9gQGYKA1m1JQ3Yy+CLalOF2U1ckrOALsAk43skraxRy/xC+CiKC2UpgBk2Nhhst5ZqSO6PBW8cw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lvKFgnbZ1Pan5IfnGT/pzImZU8EFTGmhkNdZuZYCTfY=;
+ b=MOpklORoVvOz4xr+3fXwVohLuRKH72nZUGhQAIV99tvIdznxlkpa8gfhloZQmTn9BH7RUUFxPqnQ+p8Q/E8M2xq986XnzkbBmyc1taN+9cujaA563KID79Sm+jWVeFqVirFC5OL3dKYYLIXgnyAIpw7uzchIVcG0rlxx2VYs0/7YjAzaDfBAJg6SpjO/5X9Y7D1OiiNClyRTHg758lsfUjzWb4h9Xczha98Lzxx9Y7jUcFXMTJq0+0bE6MnJvHFMJMdQun5K1xWRnTdQKLqbIEUtazAM4oR6k5KiRSTc1eOU0pcSAehsMrrh7WYqeUK1DKRNF1KhvCmdFWMT1YWEww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lvKFgnbZ1Pan5IfnGT/pzImZU8EFTGmhkNdZuZYCTfY=;
+ b=XWMxj/8lz749goZSBVD2klwa/ha+rZZejkek6VEYiTFhYcWGgqtd8v/lvOyERrDEDe+aXSc5j+2y19+BlQxa516iF2020Ydsdbuu9y25uED4edqAoKpCXRTqnQz/KNUNEFYcfOr7CzJGOkz/8tcVPezQby1ERHDrMDveBBwWFJftcNdeUUiCepjuMyY9MiUo8cghZqv0FoPXEUJkSJWeFJUN0Zqn6h0F3nM6m4pXK9soKYqQ4mkIqppp25Qc8ptO73GjkipDYu7aX4VDT9hdJ6p3Y2FZkDL2oi9zTXL8qjl0kmJFzCBRM2wi2ArRnAuoOn+j5mqj3krMSdyX0T03Lw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA1PR12MB9490.namprd12.prod.outlook.com (2603:10b6:806:45b::21)
+ by DS0PR12MB8814.namprd12.prod.outlook.com (2603:10b6:8:14e::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.7; Sun, 13 Sep
+ 2026 00:35:06 +0000
+Received: from SA1PR12MB9490.namprd12.prod.outlook.com
+ ([fe80::7092:45bd:c4f7:e583]) by SA1PR12MB9490.namprd12.prod.outlook.com
+ ([fe80::7092:45bd:c4f7:e583%3]) with mapi id 15.21.0406.007; Sun, 13 Sep 2026
+ 00:35:06 +0000
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,  Andrew Lunn
+ <andrew+netdev@lunn.ch>,  "David S. Miller" <davem@davemloft.net>,  Eric
+ Dumazet <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo
+ Abeni <pabeni@redhat.com>,  Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+  Alexandre Torgue <alexandre.torgue@foss.st.com>,  Gal Pressman
+ <gal@nvidia.com>,  Carolina Jubran <cjubran@nvidia.com>,
+  netdev@vger.kernel.org,  linux-stm32@st-md-mailman.stormreply.com,
+  linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net] net: stmmac: report phc_index as -1 when no PTP
+ clock is registered
+In-Reply-To: <6ef48513-6302-44a1-833d-613f2b8a9e21@bootlin.com> (Maxime
+	Chevallier's message of "Sat, 12 Sep 2026 23:39:02 +0200")
+References: <20260912-stmmac-fix-phc_index-v1-1-26e1ead25324@oss.qualcomm.com>
+	<6ef48513-6302-44a1-833d-613f2b8a9e21@bootlin.com>
+User-Agent: mu4e 1.14.2; emacs 30.2
+Date: Sat, 12 Sep 2026 17:35:03 -0700
+Message-ID: <87v78avvig.fsf@nvidia.com>
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR13CA0187.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c3::12) To SA1PR12MB9490.namprd12.prod.outlook.com
+ (2603:10b6:806:45b::21)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR12MB9490:EE_|DS0PR12MB8814:EE_
+X-MS-Office365-Filtering-Correlation-Id: ee825c42-92e1-442e-43f9-08df112edb9b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|23010399003|22082099003|18002099003|56012099006|11063799006|4143699003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	9YKu2dKBQa8jylUcmMypyiXn6rEsbyG2PIAsKqjqHPPTjrRHEEM7gNdkKT+huEofrRaO8JXH4n/a9Npv8bXx3AceeooNxsnIlz5Ragaz2dZgDze4lQ40sNTvDc9RjvQ+58hpwxfjhEzUc5kE08z3rC+KGaBmDDsMRo37xHP2txoNctVh0ChovVmKW5fOFJebFBwUGN9jUARmys4i7JzYdgHEL42Gaksm/TKNhDDh4wXe0XiTZ0Usot1elFKTc0QqDpBPhQjepHMh3pDZI4Qy5q9KsBO03kmOBwIvQpXOGGYJoElRtUr971H6kNhh8FOKUQdwV7iUKmwVO8ETi1VqjxrcyY1t+xBO6MkyNu0gmVK/cFgr+zHUCVDxGmEFTRdZegO/6xaoQdrhh4oBFrwQ0QDwPuDNQzmelHw/kaMWUwtxlp8mkDhW+rAS5xQXtInd99enNoo3SJyfXNFQM9XmphYwQ+DioHv98UWtvYPta6Z3Y9lIAcRj2Rg2AVe7TPlrY7QPuBA8kj5gkeD+ovutJuFDsNT0e5GDRoMK18N2WbjqiMPd5Xy57FqXoC41JekoRdCaHVwBPpDB5HO153fsdUZDC1aJCExXSog/nWaml6tu90xNsdGI8U/cw+exDqVUmfCJaNK1IMPwh/MXl97w3x6jxwjlqAZARFsWaJetv0s=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB9490.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(23010399003)(22082099003)(18002099003)(56012099006)(11063799006)(4143699003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?3Y35yznVTWKuMP7dCeFW75bAfXPDGz4cUDV6C8I7tIB5L3xNYCew29Z7CR0m?=
+ =?us-ascii?Q?UY4n3bJ+vOOm31Pue3QhL88TdM/xXH/wfXsoGaSOdpJ5DeiHq2nfXbBdH/4u?=
+ =?us-ascii?Q?7MGxtB8z7cZ9g9TKAfWOlT4KhIrItRSG+s/uKyhx4DEMXaeve5VOorxrIy0k?=
+ =?us-ascii?Q?+lNVirTTwKkTN9rTJgJFtD47jBrw7lB5CsJYftvNj1u5Jz+0WD8bv+E73Zeu?=
+ =?us-ascii?Q?JZR29BUoz5rcpfDAb/46iWyPQ8LlkQvrUfeMHDJKUR4skXJFftbmPv48/Kwp?=
+ =?us-ascii?Q?scRN8aDdsJLZSJ/I6aOkH8dmYB1bZeRWWtiAvwopSzbVn0zBMHQ33TdwkSa4?=
+ =?us-ascii?Q?wTDh03/QSJbdKhdHnTnfIQhY3OSH6cRD4DBCWfujU/U3wyO8TGoygk977xrG?=
+ =?us-ascii?Q?qvOqyt+m2dHqFhFY8EJy61mmbKDPcxaLjhNdBneLEwYGzXU7ZU/bNRFu7lhg?=
+ =?us-ascii?Q?DRGl2XQSSIrVAFiKLPnS9IBOwICmZKvY/YVTuivFkss1co023iSNwmVSrw+V?=
+ =?us-ascii?Q?MDShgMemb2Z8NjXWJzkMm5xM1PX7No8uLltrgSfWxnR/LQl0zK26v+ZMJaCm?=
+ =?us-ascii?Q?nOM8uCRR8oPPyejcw5oYN3Q6h3ZXlMjiGYl1cZY/78CyhpItESxm0h93KdB1?=
+ =?us-ascii?Q?mRtkA7TO3AjWQGHWORkiGZwADX1BscdxZ9zlrDIAtvYVMXUZ8pvTqFaT8J7H?=
+ =?us-ascii?Q?hWh8x+qeoupXMwypMrC5SO4xPKhdl/X2cMq/GKNfaWASxmKBv8K8371GY8lh?=
+ =?us-ascii?Q?PlO13Gujnlo9jeEjOGW8ifbJGjmvXesqWCBThavrGVRzIW98+kejqrs0CRTP?=
+ =?us-ascii?Q?oiEVHjPKSlti3DviwQ1wUFqmvS5GSsk07zjiB9tLqDAykOx37aBARIYo7Tgh?=
+ =?us-ascii?Q?uBspYsRJSojFzr5V5ydwyMhxx0A1HHcKCuG/eavOKDt/2esRwrO3ODD3xrO7?=
+ =?us-ascii?Q?pP1ji4/5x/fKV7bz49lmeA7dlT6l7am95VxON6aAjTtt9L8KJRB/nQahOOAi?=
+ =?us-ascii?Q?l5J6aVuUyDS9U0nxm8uOmnd9tSNJZqcocMMf2M8EfBZGSbUm4FYfUx1fW/Iv?=
+ =?us-ascii?Q?txE7WSQzpqajaN45Tjw+3LBX2KzevzBT/Zsc1Ifc4Iwoccc0HVzw6oHgl9zC?=
+ =?us-ascii?Q?MaWpWk2gJE5qS/6S23yHaEXwjpt/j1OZfa0l+w1Fxc/zNZFXW2676v+4l8Ln?=
+ =?us-ascii?Q?cEXxm0w8CH/sSy78eGf6wIs2jPHw0IDjpSo5wm66qXyCPd+m/o3ZUkovDD18?=
+ =?us-ascii?Q?Nev8awemRCVBAJOVcAQJ6MoQrztI+KivuGaz1dsbDbrSPpRYpEzYFdNKybvq?=
+ =?us-ascii?Q?Tq1ZkSBpG2j8NUrwtk1NH8KAHLayuoUpNTIyVC4DDGV5CO5a6O3TO2RNwHRD?=
+ =?us-ascii?Q?lkNvWHQduiV3+uB56ha8iFdWd2Q0uyTmiWSqpDIWDm5PlCacuylgPiNaz53I?=
+ =?us-ascii?Q?CXlPZRveZa8SHW7W74BjsPHpz4BdWX4ryVBeqVTPq6nBefsh1qYE05PCp6ue?=
+ =?us-ascii?Q?anz5jK+xVruWJgM+kHuFL/Wn/DABSSR2lxv2bkq6LeTthRV54mZQng3SYSyt?=
+ =?us-ascii?Q?fHryDuNu/4qd0kfTfeCdFxNb6fQt30Y6yKFm3Sb+6pySw88VfZxMvzRF1L7U?=
+ =?us-ascii?Q?VVFYDZGeRUQgqyib8fDS6l4Rgn6A1C2IRVHovcYQrAvS7nmoOV4M7TdG2Cvt?=
+ =?us-ascii?Q?8SxiidaU4L0hlNEFjPipuOAmdF0RAPhZ7ZflG6kAvzv5eXPxjIpi97nl9Tqi?=
+ =?us-ascii?Q?55mPokWwBa+LZ9bRDZvr4HS3QUWG8nE=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ee825c42-92e1-442e-43f9-08df112edb9b
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB9490.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Sep 2026 00:35:06.1804
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 57nMEXsJgpSB8ulEInDgfMyF6SGCvFLE/u/eWvpc6grUoi8OAcfgc/sGTuc52KxuQ7TuV9EvrDn1OnDjKLl0lA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8814
 
-Enable waking the system from a WoL event on the 88E1318S/88E1510.
+On Sat, 12 Sep, 2026 23:39:02 +0200 Maxime Chevallier <maxime.chevallier@bootlin.com> wrote:
+> Hi Lorenzo,
+>
+> On 9/12/26 23:16, Lorenzo Bianconi wrote:
+>> When hardware timestamping is supported but no PTP clock has been
+>> registered yet (e.g. while the interface is down), stmmac_get_ts_info()
+>> currently reports phc_index as 0. Zero is a valid PHC index and would
+>> make userspace resolve the wrong clock; the absence of a clock should
+>> be reported as -1, matching ethtool_init_tsinfo() and
+>> ethtool_op_get_ts_info().
+>> 
+>> Report -1 when no PTP clock is available.
+>> 
+>> Fixes: 9364fa7fcf12 ("net: stmmac: Remove setting of RX software timestamp")
+>> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+>
+> Ah nice, I've briefly saw that just yesterday but haven't started digging,
+> thanks for fixing this :)
+>
+> Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-When WoL is enabled, m88e1318_set_wol() now calls enable_irq_wake()
-on the PHY's IRQ and marks the MDIO device as a wakeup source so the
-underlying GPIO interrupt raises the system from suspend, and reverses
-both on disable.
+Thanks for the change. Good catch.
 
-With WoL active the PHY must stay powered to detect a magic packet,
-but without masking, phy_suspend() would leave every interrupt
-enabled, so a link status change or any other PHY event would assert
-INTn and spuriously wake the system. Set PHY_ALWAYS_CALL_SUSPEND on
-the 88E1318S/88E1510 drivers so that phy_suspend() still calls their
-suspend callbacks with WoL enabled, and have those callbacks keep the
-PHY awake while writing the interrupt enable register (CSIER/IMASK)
-down to only the WoL event bit.
+Reviewed-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-marvell_config_intr() rewrites the whole CSIER register with
-MII_M1011_IMASK_INIT on resume, clearing the WoL enable bit. Re-arm
-WOL_EIE in the resume callbacks so the WoL interrupt stays active for
-the next sleep cycle.
-
-Assisted-by: LLM
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- drivers/net/phy/marvell.c | 145 ++++++++++++++++++++++++++++++++++++--
- 1 file changed, 138 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
-index f71cffa88406..70aaa09f2047 100644
---- a/drivers/net/phy/marvell.c
-+++ b/drivers/net/phy/marvell.c
-@@ -30,6 +30,8 @@
- #include <linux/ethtool_netlink.h>
- #include <linux/phy.h>
- #include <linux/phy_port.h>
-+#include <linux/pm_wakeirq.h>
-+#include <linux/property.h>
- #include <linux/marvell_phy.h>
- #include <linux/bitfield.h>
- #include <linux/of.h>
-@@ -1902,6 +1904,61 @@ static int marvell_resume(struct phy_device *phydev)
- 	return err;
- }
- 
-+/* marvell_wol_suspend_intrs
-+ *
-+ * With WoL enabled the PHY has to stay powered to keep detecting a WoL
-+ * packet, so instead of entering low power mode, mask all interrupt
-+ * sources except the WoL event. On the 88E1318S/88E1510 the interrupt
-+ * mask (MII_M1011_IMASK) is the same register as the Copper Specific
-+ * Interrupt Enable Register (MII_88E1318S_PHY_CSIER), so writing only
-+ * the WoL event enable bit unmask just that event.
-+ */
-+static int marvell_wol_suspend_intrs(struct phy_device *phydev)
-+{
-+	int oldpage, ret;
-+
-+	oldpage = phy_save_page(phydev);
-+	if (oldpage < 0)
-+		return oldpage;
-+
-+	ret = marvell_write_page(phydev, MII_MARVELL_COPPER_PAGE);
-+	if (ret < 0)
-+		goto out;
-+
-+	ret = __phy_write(phydev, MII_88E1318S_PHY_CSIER,
-+			  MII_88E1318S_PHY_CSIER_WOL_EIE);
-+out:
-+	return phy_restore_page(phydev, oldpage, ret);
-+}
-+
-+/* marvell_wol_resume_intrs
-+ *
-+ * marvell_config_intr() rewrites the whole MII_M1011_IMASK register
-+ * (which is MII_88E1318S_PHY_CSIER) with MII_M1011_IMASK_INIT on
-+ * resume, clearing the WoL event interrupt enable bit. Re-arm it if
-+ * WoL is still enabled so a later WoL event keeps waking the system.
-+ */
-+static int marvell_wol_resume_intrs(struct phy_device *phydev)
-+{
-+	int oldpage, ret;
-+
-+	if (!phydev->wol_enabled)
-+		return 0;
-+
-+	oldpage = phy_save_page(phydev);
-+	if (oldpage < 0)
-+		return oldpage;
-+
-+	ret = marvell_write_page(phydev, MII_MARVELL_COPPER_PAGE);
-+	if (ret < 0)
-+		goto out;
-+
-+	ret = __phy_set_bits(phydev, MII_88E1318S_PHY_CSIER,
-+			     MII_88E1318S_PHY_CSIER_WOL_EIE);
-+out:
-+	return phy_restore_page(phydev, oldpage, ret);
-+}
-+
- /* m88e1510_resume
-  *
-  * The 88e1510 PHY has an erratum where the phy downshift counter is not cleared
-@@ -1934,9 +1991,25 @@ static int m88e1510_resume(struct phy_device *phydev)
- 
- 		/* downshift enabled, with previous counter value */
- 		err = m88e1011_set_downshift(phydev, cnt);
-+		if (err < 0)
-+			return err;
- 	}
- 
--	return err;
-+	return marvell_wol_resume_intrs(phydev);
-+}
-+
-+/* m88e1510_suspend
-+ *
-+ * If WoL is enabled the PHY receiver has to keep running to detect a
-+ * magic packet, so keep it awake and unmask only the WoL event at the
-+ * PHY. Otherwise suspend both the fiber and copper interfaces as usual.
-+ */
-+static int m88e1510_suspend(struct phy_device *phydev)
-+{
-+	if (phydev->wol_enabled)
-+		return marvell_wol_suspend_intrs(phydev);
-+
-+	return marvell_suspend(phydev);
- }
- 
- static int marvell_aneg_done(struct phy_device *phydev)
-@@ -1969,8 +2042,12 @@ static void m88e1318_get_wol(struct phy_device *phydev,
- static int m88e1318_set_wol(struct phy_device *phydev,
- 			    struct ethtool_wolinfo *wol)
- {
-+	struct device *dev = &phydev->mdio.dev;
-+	bool wol_enable;
- 	int err = 0, oldpage;
- 
-+	wol_enable = !!(wol->wolopts & (WAKE_MAGIC | WAKE_PHY));
-+
- 	oldpage = phy_save_page(phydev);
- 	if (oldpage < 0)
- 		goto error;
-@@ -2075,7 +2152,49 @@ static int m88e1318_set_wol(struct phy_device *phydev,
- 	}
- 
- error:
--	return phy_restore_page(phydev, oldpage, err);
-+	err = phy_restore_page(phydev, oldpage, err);
-+	if (err < 0)
-+		return err;
-+
-+	if (device_can_wakeup(dev) && wol_enable != device_may_wakeup(dev)) {
-+		err = device_set_wakeup_enable(dev, wol_enable);
-+		if (err < 0) {
-+			/* Roll back the PHY WoL config if the PM state update failed */
-+			struct ethtool_wolinfo wol_off = { .wolopts = 0 };
-+			int rollback_err = m88e1318_set_wol(phydev, &wol_off);
-+
-+			if (rollback_err < 0)
-+				phydev_err(phydev,
-+					   "Failed to disable WoL after wakeup enable error %d\n",
-+					   rollback_err);
-+		}
-+	}
-+
-+	return err;
-+}
-+
-+/* m88e1318_suspend
-+ *
-+ * If WoL is enabled keep the PHY awake so it can detect a magic packet
-+ * while the system is asleep, unmasking only the WoL event at the PHY.
-+ * Otherwise suspend the PHY normally.
-+ */
-+static int m88e1318_suspend(struct phy_device *phydev)
-+{
-+	if (phydev->wol_enabled)
-+		return marvell_wol_suspend_intrs(phydev);
-+
-+	return genphy_suspend(phydev);
-+}
-+
-+static int m88e1318_resume(struct phy_device *phydev)
-+{
-+	int err = genphy_resume(phydev);
-+
-+	if (err < 0)
-+		return err;
-+
-+	return marvell_wol_resume_intrs(phydev);
- }
- 
- static int marvell_get_sset_count(struct phy_device *phydev)
-@@ -3587,14 +3706,25 @@ static int m88e1318_led_hw_control_get(struct phy_device *phydev, u8 index,
- 
- static int marvell_probe(struct phy_device *phydev)
- {
-+	struct device *dev = &phydev->mdio.dev;
- 	struct marvell_priv *priv;
- 
--	priv = devm_kzalloc(&phydev->mdio.dev, sizeof(*priv), GFP_KERNEL);
-+	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
- 		return -ENOMEM;
- 
- 	phydev->priv = priv;
- 
-+	if (device_property_present(dev, "wakeup-source") &&
-+	    phy_interrupt_is_valid(phydev)) {
-+		int ret = devm_pm_set_wake_irq(dev, phydev->irq);
-+
-+		if (ret)
-+			return ret;
-+
-+		device_set_wakeup_capable(dev, true);
-+	}
-+
- 	return marvell_hwmon_probe(phydev);
- }
- 
-@@ -3813,6 +3943,7 @@ static struct phy_driver marvell_drivers[] = {
- 		.phy_id_mask = MARVELL_PHY_ID_MASK,
- 		.name = "Marvell 88E1318S",
- 		/* PHY_GBIT_FEATURES */
-+		.flags = PHY_ALWAYS_CALL_SUSPEND,
- 		.probe = marvell_probe,
- 		.config_init = m88e1318_config_init,
- 		.config_aneg = m88e1318_config_aneg,
-@@ -3821,8 +3952,8 @@ static struct phy_driver marvell_drivers[] = {
- 		.handle_interrupt = marvell_handle_interrupt,
- 		.get_wol = m88e1318_get_wol,
- 		.set_wol = m88e1318_set_wol,
--		.resume = genphy_resume,
--		.suspend = genphy_suspend,
-+		.resume = m88e1318_resume,
-+		.suspend = m88e1318_suspend,
- 		.read_page = marvell_read_page,
- 		.write_page = marvell_write_page,
- 		.get_sset_count = marvell_get_sset_count,
-@@ -3920,7 +4051,7 @@ static struct phy_driver marvell_drivers[] = {
- 		.name = "Marvell 88E1510",
- 		.driver_data = DEF_MARVELL_HWMON_OPS(m88e1510_hwmon_ops),
- 		.features = PHY_GBIT_FIBRE_FEATURES,
--		.flags = PHY_POLL_CABLE_TEST,
-+		.flags = PHY_POLL_CABLE_TEST | PHY_ALWAYS_CALL_SUSPEND,
- 		.probe = marvell_probe,
- 		.config_init = m88e1510_config_init,
- 		.config_aneg = m88e1510_config_aneg,
-@@ -3930,7 +4061,7 @@ static struct phy_driver marvell_drivers[] = {
- 		.get_wol = m88e1318_get_wol,
- 		.set_wol = m88e1318_set_wol,
- 		.resume = m88e1510_resume,
--		.suspend = marvell_suspend,
-+		.suspend = m88e1510_suspend,
- 		.read_page = marvell_read_page,
- 		.write_page = marvell_write_page,
- 		.get_sset_count = marvell_get_sset_count,
--- 
-2.55.0
-
+>
+> Maxime
