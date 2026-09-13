@@ -1,199 +1,115 @@
-Received: from mail-oo2-f11.google.com (mail-oo2-f11.google.com [74.125.231.139])
+Received: from mail-lr2-f12.google.com (mail-lr2-f12.google.com [74.125.230.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EAE935F5F8
-	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 02:47:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989CE32A3DA
+	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 03:32:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789267659; cv=none; b=iKot3u8PbF4Ce1UG36W0JO59CrcTo7b6Dku+E9fJNL8g9Dx+Bq4MLk4NZ9gFAf05WVHwSm/bxz+V75DchiOfhR6R6MyTyNGfZKeI6oOagvSnDLFZIAfPuq10ahoSHfxFQNGS1AqKVWSs6LE2gXoSglDuaYNiqmEXBINeBmBLhTM=
+	t=1789270358; cv=none; b=jCt00HfBImrUQAbxdOK9Eg+vr885hpy+DhkZYC5UHXreBHbmBP8bZSKlBc6/ORn5jYa/n+sRvc2fLriUKE2cWsurkszjfQuC1Bz8OPrkxUnPrrcHXxijmlm+FAOZ0UbdYBJrj5MO4OSxO/+4XkVnI9ZVYbwDsbZeZ2EFq49nrn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789267659; c=relaxed/simple;
-	bh=x3HkxTQhZql3jqj4yHPnz2Mrhm/CGIn5dMsk9yXg8Js=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=InKPsDPIXUJyI254HaHbnPYtKyEvdkrIa5SKky5a6+42dlIH5hR4+wKwPn4m5qTb8c59UwcPgFYRdmXPGHpH7XM/O9xOLeGipc384fcqZVg/jMif1Lxm4eev8Y+yJsKvbBhCTGGcgUy07AmXoPBFoMBVbrL3J1kFwC+G2zBR5rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo2-f11.google.com with SMTP id 46e09a7af769-8069d92e182so185778a34.0
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 19:47:38 -0700 (PDT)
+	s=arc-20240116; t=1789270358; c=relaxed/simple;
+	bh=qynwl3yegS3zN7wkeohcoAEZv4LlKGQdHuntDJ7koXk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=r99he832gbXlN3L/lSVRn9oYk6xdNHxf2BJ20W/ntkESHiACLkMNo+9HaS2f+B67IvfgYmj98k01lseQWsyMveJd1LKG4sNNBhqGzZ7ncP4OeghrA4upc1rtqg+VjEIVRt+q7Q8i6VeUykj/Mk+pvM2zBYdSWZLjfBQq6U30y4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K+xqe64m; arc=none smtp.client-ip=74.125.230.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K+xqe64m"
+Received: by mail-lr2-f12.google.com with SMTP id 38308e7fff4ca-3a49bc59559so5175541fa.2
+        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 20:32:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789270354; x=1789875154; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xjaL8mti/vahJlLkdMnZQO8Ei/dHHViRxDz/+EAVwR4=;
+        b=K+xqe64mRgpbpxbwP50a8Gjn9ttToXXtZlpjd0dHUzX4hfIf/lDYCkhhnDVPXq+KFz
+         7o2+pmeKCd6hsbS6GHLrWGhySFNxYgHXhSnTV9gCb9VuOx8dJRt3kjBzxZ6hoZrhPZMB
+         OYNsqyK6F0BuX9KM4MXBJwwWCW1/i30zypBbJ4QHrvg8yhrrEGZPF7LrhFMuAzAr0sAK
+         1H/WPP6HZYHQa2lchsZB/laJsrthtdbJT7hu6AbhkNiLbHWFsk8e2D9vAh3x2Nv3qsKR
+         zkS5AnByw75wLEg4xhoZ6b3VFRowNutb6Ws6/gTFXgLvoS8TjyXskItoEAi5XlCRhVnm
+         bUgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789267657; x=1789872457;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bvFXA7ZMQ0Qs9h5Sn4zOQqZDFnGcVyURyKazgFI6Ib8=;
-        b=XqdxmrrW82PkjehZa2hdyqPWq8SUxNK8RW6G78kl5nfQJYVk8CcofLS/sVZ0f+M1i9
-         AQcxPrHGAqM+MSga7ziLKaYpvoZShRe46hOeCoOB5Ru5viWQ54G9pDYM73KfHPIe+L0f
-         dnF26AJ/BeukIFeArg/G2c3IVm8SjCpNUvujYDYt/VZmeUfd24Y4YzzWTcf0+m1hSpnq
-         a0/uhJdbjTMkVeR0dZeCTRMOxXlxa1pr1zznhE1ifCo1UatCzLNn+93tRMoFLKEJ3kbk
-         CoYlrQbRMrkvxCX104toNDmgx6eOc8zxglBNeRJ2QZJyv6WC3Nw1V0iWd20ItcIkJkrM
-         RDIQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxN0e6OeJhijt6RS8ZdNkgdd86BH2xQPANcXJMF/5AuYnV6JVJf5H8iHIpyz713SHVj3rPPGO4=@vger.kernel.org
-X-Gm-Message-State: AFuF++lAIpD3jYK1i6RJicZHwKjfdx02YDoaOEpENXjfR+XbtBQ/2vx0
-	XS4ZmTy6Gm1RU0Jrvu7eIkeMpF2voFO4ObjHmtTK705bpKWHT6IhVAy396XpvS6iVyV7WNDu+X1
-	o8U3/V6Xrw744DTNQfIJMzctcV5XhMTOMrnOz6ap+QYhzD36jgS+LvyxATJw=
+        d=1e100.net; s=20251104; t=1789270354; x=1789875154;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xjaL8mti/vahJlLkdMnZQO8Ei/dHHViRxDz/+EAVwR4=;
+        b=WHopy29v0YshbHz1iMEWW6SPtI3IXW5QaegGmRd+ZguTLmN+3s+87BsAJpTLVLFxYk
+         cm/Hg1pq8m8aLXj9+d0/UyW2YfKwIRJoH6KohUg88140ND71fWeC0sLh76xZkHBtZluo
+         CyduViVFZ+zhQVndz18juQaSxlP1JC5pbp+Q7v+PddueHuritPO44lAo1OyawuFK+44/
+         w0VubUbwl8GfTmWBGa89Sa5dxOPJJV+LjUjlTvf6u55ehzAZlKnmHEevostaSTez9ZwU
+         T6GV02j03W0bURcweJVfEiGjOQE8xP5o6w/wC5ZvBMScNdvljtn84zvZ1TwOzVq7xVT2
+         uuqg==
+X-Gm-Message-State: AFuF++ns/wi312Yzv+xwAtKZC51uKLP/HdY5CRizXx9Nm08KfGYj7f19
+	X9gm7uXcZKZsVuiSiCHL61dwWw1IIvD/mrQfUfadzGcUz9vlxj7iMiJY
+X-Gm-Gg: AYBFou082gevUed5PeQTi4NvLEyphFJRlBe9q/F6ga5V3WLVgpWgEFW0tNa4Ci7jatA
+	Yqij8R5GEoKglopVEggyBw8OClaLRsFR7wxLhS3MBD7aBbeknYU7T+TeLNU10vmILk/QL7v+/up
+	bSOn+xj2zat12Y4nUZXHlSqfmkULeNGgxxqNjMMuSbVhOWAxj/23l2zwgGsLWol9tmcTQ1/5+F0
+	kbKAds2rbbi7AyMcNX1LoUruk0EXEtDwyktZTSN5nPGnlC0LjvG2AAP+1PiMDxrcn2d63a7oOHj
+	52hg21rDZjs2YCGJfrrsLGTQf16giEYwp2cHT17FfaZsssQbE+QYnMCrYojQhz3r2M9wzOcN5Ir
+	JiKSWxH82oT+3oO7Vv9Wzo1Fck3xUg+aKZWbcbqQkbt9MMVesEeuJ6BTpQJ+PuSWFAiUQQHsLLQ
+	qWr39cHQkHUuJ2/oxGfZ/Jo0I0GEGoNsUJjp0599o/BpUn4VYjmaTPzrndslaj5sIqcWjUs/KKl
+	ep1B1mwsdcoAdSiCMcbJ2ZUBDG+llNv6KtDZ2bfEMP0
+X-Received: by 2002:a05:651c:144c:b0:3a5:ba1e:8b05 with SMTP id 38308e7fff4ca-3a5ba1e8dfamr2827451fa.1.1789270354310;
+        Sat, 12 Sep 2026 20:32:34 -0700 (PDT)
+Received: from dau-home-pc.. ([95.139.134.117])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a5a33a1cd1sm17024041fa.42.2026.09.12.20.32.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 12 Sep 2026 20:32:33 -0700 (PDT)
+From: Anton Danilov <littlesmilingcloud@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next 03/11] selftests: net: add a test for the tunnel RX drop reasons
+Date: Sun, 13 Sep 2026 06:31:51 +0300
+Message-ID: <20260913033213.873609-1-littlesmilingcloud@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260902184549.63f37d04@kernel.org>
+References: <20260831215137.549324-1-littlesmilingcloud@gmail.com> <20260831215137.549324-4-littlesmilingcloud@gmail.com> <20260902184549.63f37d04@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:169e:b0:6aa:da04:b56f with SMTP id
- 006d021491bc7-6c24c6ca779mr2331851eaf.3.1789267657282; Sat, 12 Sep 2026
- 19:47:37 -0700 (PDT)
-Date: Sat, 12 Sep 2026 19:47:37 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6aa60ec9.f81106d8.2ab401.0032.GAE@google.com>
-Subject: [syzbot] [batman?] WARNING in batadv_iv_ogm_process_per_outif
-From: syzbot <syzbot+a079f084653164a652d1@syzkaller.appspotmail.com>
-To: antonio@mandelbit.com, b.a.t.m.a.n@lists.open-mesh.org, 
-	linux-kernel@vger.kernel.org, marek.lindner@mailbox.org, 
-	netdev@vger.kernel.org, sven@narfation.org, sw@simonwunderlich.de, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+On Wed, 2 Sep 2026 18:45:49 -0700 Jakub Kicinski wrote:
+> Completely unclear to me what the value of the tests you're adding is.
+> Please look judiciously at the generated code
 
-syzbot found the following issue on:
+Dropped all three selftest patches in v2.
 
-HEAD commit:    50d05c7c76c9 Merge tag 'landlock-7.3-rc3' of git://git.ker..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=170ef749580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5e4e3a0e188a497e
-dashboard link: https://syzkaller.appspot.com/bug?extid=a079f084653164a652d1
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-userspace arch: i386
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=108ef749580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16b696f9580000
+What they did: bring up two namespaces joined by veth, build a tunnel
+pair that disagrees in one specific way, send traffic and read the
+reason back from the skb:kfree_skb tracepoint.  It is how I check that
+each path I convert reports what its commit message claims, and it is
+what caught six paths in an earlier revision of this series that still
+freed the skb with SKB_NOT_DROPPED_YET.  That value is in writing the
+series, though, and does not by itself justify 346 lines in
+selftests/net.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/daf497619736/disk-50d05c7c.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/748fbd82f647/vmlinux-50d05c7c.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/e61c59099d07/bzImage-50d05c7c.xz
+If such a test is wanted at all, I would rather come back to it
+separately, once the conversion has landed, and in a smaller form:
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+a079f084653164a652d1@syzkaller.appspotmail.com
+ - perf record -e skb:kfree_skb and perf script, the way
+   openvswitch.sh already does it, instead of driving a trace instance
+   by hand;
+ - only the cases that are not evident from reading the code: a peer
+   that reboots and restarts its sequence number, two ends configured
+   with different options, plus a control case where nothing is
+   dropped;
+ - every case tied to the function the drop has to come from, so that
+   the same reason reported by unrelated code cannot make it pass.
 
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000206 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-------------[ cut here ]------------
-!orig_ifinfo
-WARNING: net/batman-adv/bat_iv_ogm.c:1413 at batadv_iv_ogm_update_seqnos net/batman-adv/bat_iv_ogm.c:1413 [inline], CPU#1: syz.1.17/5794
-WARNING: net/batman-adv/bat_iv_ogm.c:1413 at batadv_iv_ogm_process_per_outif+0x1fe4/0x25c0 net/batman-adv/bat_iv_ogm.c:1550, CPU#1: syz.1.17/5794
-Modules linked in:
-CPU: 1 UID: 0 PID: 5794 Comm: syz.1.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-RIP: 0010:batadv_iv_ogm_update_seqnos net/batman-adv/bat_iv_ogm.c:1413 [inline]
-RIP: 0010:batadv_iv_ogm_process_per_outif+0x1fe4/0x25c0 net/batman-adv/bat_iv_ogm.c:1550
-Code: ff ff e8 af ad 1c f6 49 bc 00 00 00 00 00 fc ff df e9 80 f4 ff ff e8 9b ad 1c f6 90 0f 0b 90 e9 47 e1 ff ff e8 8d ad 1c f6 90 <0f> 0b 90 48 8b bc 24 80 00 00 00 e8 6c df ff ff 48 c7 44 24 50 00
-RSP: 0018:ffffc900030e7280 EFLAGS: 00010293
-RAX: ffffffff8bab1d03 RBX: ffff888078df0a00 RCX: ffff88802efc3e80
-RDX: 0000000000000000 RSI: ffffffff8e475f59 RDI: ffffffff8c6d9a80
-RBP: ffffc900030e7410 R08: ffffffff907a2b7f R09: 1ffffffff20f456f
-R10: dffffc0000000000 R11: fffffbfff20f4570 R12: dffffc0000000000
-R13: 0000000002020000 R14: ffff88802bce4000 R15: ffff888078df0a00
-FS:  0000000000000000(0000) GS:ffff888124dd2000(0063) knlGS:000000005807c480
-CS:  0010 DS: 002b ES: 002b CR0: 0000000080050033
-CR2: 00000000f7153200 CR3: 000000007a636000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- batadv_iv_ogm_process net/batman-adv/bat_iv_ogm.c:1866 [inline]
- batadv_iv_ogm_receive+0xc13/0x1740 net/batman-adv/bat_iv_ogm.c:1974
- batadv_batman_skb_recv+0x4b6/0x870 net/batman-adv/main.c:529
- __netif_receive_skb_one_core net/core/dev.c:6264 [inline]
- __netif_receive_skb net/core/dev.c:6377 [inline]
- netif_receive_skb_internal net/core/dev.c:6463 [inline]
- netif_receive_skb+0x4af/0xbf0 net/core/dev.c:6522
- tun_rx_batched+0x1de/0x790 drivers/net/tun.c:1571
- tun_get_user+0x2be0/0x44d0 drivers/net/tun.c:2045
- tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:2091
- new_sync_write fs/read_write.c:595 [inline]
- vfs_write+0x612/0xba0 fs/read_write.c:687
- ksys_write+0x150/0x270 fs/read_write.c:739
- do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:79 [inline]
- __do_fast_syscall_32+0x27a/0x6a0 arch/x86/entry/syscall_32.c:291
- do_fast_syscall_32+0x33/0x70 arch/x86/entry/syscall_32.c:316
- entry_SYSENTER_compat_after_hwframe+0x84/0x8e
-RIP: 0023:0xf7f480ec
-Code: 90 85 d2 74 0a 89 ce 81 e6 ff 0f 00 00 89 32 85 c0 74 05 c1 e9 0c 89 08 31 c0 5e 5d c3 90 0f 1f 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 58 b8
-RSP: 002b:00000000f752fa5c EFLAGS: 00000206 ORIG_RAX: 0000000000000004
-RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 0000000080000800
-RDX: 0000000000000026 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000206 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-----------------
-Code disassembly (best guess):
-   0:	90                   	nop
-   1:	85 d2                	test   %edx,%edx
-   3:	74 0a                	je     0xf
-   5:	89 ce                	mov    %ecx,%esi
-   7:	81 e6 ff 0f 00 00    	and    $0xfff,%esi
-   d:	89 32                	mov    %esi,(%rdx)
-   f:	85 c0                	test   %eax,%eax
-  11:	74 05                	je     0x18
-  13:	c1 e9 0c             	shr    $0xc,%ecx
-  16:	89 08                	mov    %ecx,(%rax)
-  18:	31 c0                	xor    %eax,%eax
-  1a:	5e                   	pop    %rsi
-  1b:	5d                   	pop    %rbp
-  1c:	c3                   	ret
-  1d:	90                   	nop
-  1e:	0f 1f 00             	nopl   (%rax)
-  21:	51                   	push   %rcx
-  22:	52                   	push   %rdx
-  23:	55                   	push   %rbp
-  24:	89 e5                	mov    %esp,%ebp
-  26:	0f 34                	sysenter
-  28:	cd 80                	int    $0x80
-* 2a:	5d                   	pop    %rbp <-- trapping instruction
-  2b:	5a                   	pop    %rdx
-  2c:	59                   	pop    %rcx
-  2d:	c3                   	ret
-  2e:	90                   	nop
-  2f:	90                   	nop
-  30:	90                   	nop
-  31:	90                   	nop
-  32:	90                   	nop
-  33:	90                   	nop
-  34:	90                   	nop
-  35:	90                   	nop
-  36:	90                   	nop
-  37:	90                   	nop
-  38:	90                   	nop
-  39:	90                   	nop
-  3a:	90                   	nop
-  3b:	90                   	nop
-  3c:	90                   	nop
-  3d:	90                   	nop
-  3e:	58                   	pop    %rax
-  3f:	b8                   	.byte 0xb8
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+Is that worth having, or do you consider drop reason coverage out of
+scope for selftests/net?
