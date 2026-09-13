@@ -1,119 +1,111 @@
-Received: from out28-219.mail.aliyun.com (out28-219.mail.aliyun.com [115.124.28.219])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F293E1683;
-	Sun, 13 Sep 2026 10:18:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D0539DBF5;
+	Sun, 13 Sep 2026 10:28:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789294724; cv=none; b=moaz8a+WTVBMCvwl8d0FELM+bLXRPEa2mtxk2rt8cYSD8Y98JuB1BiA1A4bD2ZY+rLGAb4YgJv9fxHgRsO5GfceNX1RvjXS2Artc2aezrBcYRx0hfO6udZ2bas8VbpZoAapIIgt8hryd3lCC7jSXGd14MDyT14PoaBs4znA8QcQ=
+	t=1789295307; cv=none; b=mTypRJZTYF7CDgZsWJe6TwGae6YuA+rfLj9mdIhoe+HsOnUIvVXL4TQT3eh70YB939qf9RIe1z1EM6fDElN8odDr0TEIvS2NQ3IA3/8/0MyBJVj6cpjxlW0zcrjh4gY2Cqsv/HDHf6OHbnnOiNpRu6y/AHqEwUeWGvPlbaSx4zA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789294724; c=relaxed/simple;
-	bh=r4wVVkuqRlfIfMfUPDikHgAKFLkUDgQoiT6wrAjRufk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UNHs5yeizt8cJ/KcKz8Te3ubLksQoHYPQkl155CmWZl+dZujSGaN1BzvvrELVhWTwmXepZSRNYceFHxWmlg1D7skd/gPCWwRGrPY8VxOtsrvqOgvBfDKjT3I2wnZmwzhjdDcWRp1oJ27aENBZWiE6WiIXQxDK7BvGlxDPhmkGKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com; spf=pass smtp.mailfrom=xiaopeng.com; dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b=F1QP8EfZ; arc=none smtp.client-ip=115.124.28.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
+	s=arc-20240116; t=1789295307; c=relaxed/simple;
+	bh=w7DxQbYHB4Ks41r9Cozp+WMw8cRef5vIhf8mK7mh86E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=uNy9ZM7HD1JQUXh5/DAtBHfwdxQVmXP+2qLjBRx/QsTNec9iOKSfwTPMCuxQ4dyQb4arD3s8RmLEA+1aHTWOFKTMKEm7Xx0UW/G0y4LI4zuf70LZyUy+DlmRUg8m9LdH5CYprAs4o+yjMVb8vI9vO56Cvk/+6nF2w7bg0pWPZYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uP6UQOMO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b="F1QP8EfZ"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xiaopeng.com; s=default;
-	t=1789294712; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=+26ooWuhqZZHzVkkLL0D9UrBlJ22BeeP2IpYkHGQ+/s=;
-	b=F1QP8EfZD4Oy4RtfXlWsPkGmH6O7omqfqPbHLre9nZ3Kdh9vzuTMd2nEzfYPu80Y7gc5s/3WZNV0W6dMn8VWHSHaLzvmhezhllWit+95NrZ5AyKv6CjQsUAeCvt93WZLdVt2DO3nNCMvxBBNyMisYXkzws4feBvXFQ4yGWrzKYU=
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07882031|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.00494777-0.000972548-0.99408;FP=16767890541788292742|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037022039;MF=liuc63@xiaopeng.com;NM=1;PH=DS;RN=13;RT=13;SR=0;TI=SMTPD_---.jCTU3wv_1789294389;
-Received: from localhost(mailfrom:liuc63@xiaopeng.com fp:SMTPD_---.jCTU3wv_1789294389 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Sun, 13 Sep 2026 18:13:10 +0800
-From: Liu Chao <liuc63@xiaopeng.com>
-To: David Heidelberg <david@ixit.cz>
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	Ilan Elias <ilane@ti.com>,
-	"John W . Linville" <linville@tuxdriver.com>,
-	oe-linux-nfc@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Liu Chao <liuc63@xiaopeng.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] nfc: nci: avoid unbounded skb allocation when max_pkt_payload_len is zero
-Date: Sun, 13 Sep 2026 18:13:09 +0800
-Message-ID: <20260913101309.891633-1-liuc63@xiaopeng.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uP6UQOMO"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7EC8AC2BCF6;
+	Sun, 13 Sep 2026 10:28:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1789295304;
+	bh=w7DxQbYHB4Ks41r9Cozp+WMw8cRef5vIhf8mK7mh86E=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=uP6UQOMORbhp15K49pTGDe5oL+OE7WiDjSltBYlzaUaS5bMN38UFFYtwNGIXUKFar
+	 MdODW2Cvoa0ZAzeDA/+OucBX5/FmNdcd4ATli86OK2zxp2gtapkueB5WTEcA6umbRa
+	 Dx6WFsgXXXgFFhakulLmbG84dX3R0i3Lda0rqxH5k/n61FlXZiJiEL+3gSyDxi/d8a
+	 MOL2IDgd3+6JgmCdLW0pHtjqPBEkTZ00gw7qUYN8fI7qXnU5xTjlfl22ikUuYhzGNh
+	 hEg1ar0y99ylWVZsG17puCD6mJv0EBB9mjEc7g2t/WZBibKkMaiCM4G3mM0bKYnl5F
+	 HVy35ZypRUGnA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B1FFC88E5A;
+	Sun, 13 Sep 2026 10:28:24 +0000 (UTC)
+From: Mark Amirkan via B4 Relay <devnull+markdamirkan.gmail.com@kernel.org>
+Date: Sun, 13 Sep 2026 10:28:08 +0000
+Subject: [PATCH net] net/packet: clear RX owner on VNET header error
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260913-b4-send-packet-vnet-v1-1-5545ffb528ae@gmail.com>
+X-B4-Tracking: v=1; b=H4sIALh6pmoC/yWMwQqDMBBEf0Xm3AWNQbG/UnpI4tpuC6lkVQriv
+ 3fbXgbeMPN2KBdhxbnaUXgTlVc2aE4V0j3kG5OMxnC16+qhaSl6Us4jzSE9eaEtW7Qu+n7ofOj
+ TBHvOhSd5/6wX2ADXf6lrfHBavj4cxwegs1g/fAAAAA==
+X-Change-ID: 20260913-b4-send-packet-vnet-32b47964a7cf
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ netdev@vger.kernel.org
+Cc: Paolo Abeni <pabeni@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, linux-kernel@vger.kernel.org, 
+ Jakub Kicinski <kuba@kernel.org>, Jon Rosen <jrosen@cisco.com>, 
+ Simon Horman <horms@kernel.org>, Eric Dumazet <edumazet@google.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789295303; l=1552;
+ i=markdamirkan@gmail.com; s=pscsi-20260818; h=from:subject:message-id;
+ bh=SpkUVWFs7UgiCwTRaWHfiD7eoNnej/IW1o2498FsgqQ=;
+ b=PFXW4r/vjPDIxLlvD/wYPWPn7lQoJpU/6skFOK8D3zB9pvEu4uwHHa2q741VwUVdX3bjXuOuk
+ FkLst3L+WbXCxAtAJx+ywUIIDKrdiyCjqbOFv6anzkZVNinY1hr8JZb
+X-Developer-Key: i=markdamirkan@gmail.com; a=ed25519;
+ pk=/wb49ibt4gZFDncmhFQBYtjPvzT1tfJtvK4Mqt1P2Wc=
+X-Endpoint-Received: by B4 Relay for markdamirkan@gmail.com/pscsi-20260818
+ with auth_id=961
+X-Original-From: Mark Amirkan <markdamirkan@gmail.com>
+Reply-To: markdamirkan@gmail.com
 
-nci_queue_tx_data_frags() uses conn_info->max_pkt_payload_len as the
-fragment size.  When that value is zero, frag_len is always zero and
-total_len never decreases.  The loop then allocates skbs without bound:
-none of them are freed inside the loop, they accumulate on frags_q, and
-there is no cond_resched() in the loop body.  A single sendmsg() can
-therefore consume all allocatable memory, and on CONFIG_PREEMPT_NONE it
-occupies the CPU long enough to trip the softlockup watchdog:
+From: Mark Amirkan <markdamirkan@gmail.com>
 
-  watchdog: BUG: soft lockup - CPU#3 stuck for 26s! [kworker/3:1:57]
-  Workqueue: events rawsock_tx_work [nfc]
-  Call Trace:
-   nci_send_data+0x1ca/0x6b0 [nci]
-   nci_transceive+0xbb/0x170 [nci]
-   rawsock_tx_work+0xb5/0x1a0 [nfc]
+Commit 61fad6816fc1 ("net/packet: tpacket_rcv: avoid a producer race
+condition") added rx_owner_map and made tpacket_rcv() claim a V1 or V2
+ring slot before converting the virtio-net header.  If the conversion
+fails, the drop path leaves the slot claimed.
 
-max_pkt_payload_len is taken verbatim from controller-supplied fields,
-with no check for zero:
+With a one-frame TPACKET_V2 ring, an unsupported UDP GSO packet leaves
+the only slot unavailable, so the ring also drops the next valid packet.
 
-  ntf.c: conn_info->max_pkt_payload_len = ntf.max_data_pkt_payload_size;
-  rsp.c: conn_info->max_pkt_payload_len = rsp->max_ctrl_pkt_payload_len;
+Clear the ownership bit on this error path.  TPACKET_V3 already clears
+its block state here.
 
-Reject the zero value in the fragmentation path rather than at the
-assignment sites.  nci_queue_tx_data_frags() is the only place that
-loops, and nci_send_data() takes the non-fragmenting branch only for
-skb->len <= max_pkt_payload_len, which for a zero limit means empty
-skbs alone.  Validating on assignment would not be sufficient either,
-because nci_rf_disc_rsp_packet() allocates ndev->rf_conn_info with
-devm_kzalloc(), so max_pkt_payload_len is already zero before any
-notification arrives.
-
-No legitimate configuration is known to be affected.  Where the NCI
-spec does mandate a zero Max Data Packet Payload Size -- the NFCEE
-Direct RF Interface -- nci_rf_intf_activated_ntf_packet() takes the
-"goto listen" shortcut, bypassing the assignment entirely.
-
-Reproduced with CONFIG_NFC_VIRTUAL_NCI by injecting an
-RF_INTF_ACTIVATED_NTF with max_data_pkt_payload_size set to 0 and then
-sending a data frame on an AF_NFC SEQPACKET socket.
-
-Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
+Fixes: 61fad6816fc1 ("net/packet: tpacket_rcv: avoid a producer race condition")
 Cc: stable@vger.kernel.org
-Signed-off-by: Liu Chao <liuc63@xiaopeng.com>
+Assisted-by: Symbolic
+Signed-off-by: Mark Amirkan <markdamirkan@gmail.com>
 ---
- net/nfc/nci/data.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/packet/af_packet.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/nfc/nci/data.c b/net/nfc/nci/data.c
-index 4253edea5..b549cef7d 100644
---- a/net/nfc/nci/data.c
-+++ b/net/nfc/nci/data.c
-@@ -114,6 +114,11 @@ static int nci_queue_tx_data_frags(struct nci_dev *ndev,
- 		goto exit;
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 76bde7906d..50cae32ae2 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2384,7 +2384,9 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	    virtio_net_hdr_from_skb(skb, h.raw + macoff -
+ 				    sizeof(struct virtio_net_hdr),
+ 				    vio_le(), true, 0)) {
+-		if (po->tp_version == TPACKET_V3)
++		if (po->tp_version <= TPACKET_V2)
++			__clear_bit(slot_id, po->rx_ring.rx_owner_map);
++		else
+ 			prb_clear_blk_fill_status(&po->rx_ring);
+ 		goto drop_n_account;
  	}
- 
-+	if (!conn_info->max_pkt_payload_len) {
-+		rc = -EPROTO;
-+		goto exit;
-+	}
-+
- 	__skb_queue_head_init(&frags_q);
- 
- 	while (total_len) {
 
+---
 base-commit: e6b6078ea1731b05b3b552497b3bce4bf8b014ae
--- 
-2.50.1
+change-id: 20260913-b4-send-packet-vnet-32b47964a7cf
+
+Best regards,
+--  
+Mark Amirkan <markdamirkan@gmail.com>
+
 
