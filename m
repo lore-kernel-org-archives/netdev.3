@@ -1,155 +1,97 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010063.outbound.protection.outlook.com [52.101.46.63])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4673175A68
-	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 00:35:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.63
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789259715; cv=fail; b=dywEg8SCIg1R0YRA2pdTtpVPe+5SOmpyDoNaLiQuf9BzouS5Y1g2UXqTEG7odNufsieGlSZy0bWq/yb6eogKCLIzoACfpGiPkfWJ9jgaYzDUfXULtOxzswilbLdpWspWoeZmb29Hn9KKTXRPtbof3/VdheMuDL5DTf7zkEiVFRQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789259715; c=relaxed/simple;
-	bh=bbBUgVy8BTO46FzwBRX5dx4fVOIjjwv3kQ5Gr8GzEZc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 Content-Type:MIME-Version; b=oe1fyOMWhYoAi/POZU/0DoJsgejKCtO6OHHj3ucTcwaej/eMQXmWJOzekniRsNf6IQYTPmtpb3Tl0azvtbSkn7viYDxXRzbToAIwWQ+pEbsBrJmCAQaECyoGijojEyKCRM92UmHfxlZV0ezWm8T0nI3Fh2d9YgDjNDQ0aKMf1HA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=XWMxj/8l; arc=fail smtp.client-ip=52.101.46.63
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8E62D7398;
+	Sun, 13 Sep 2026 01:06:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789261577; cv=none; b=Xm6EZz8cCG1VgV1bOgom927QcJnDa5fxT3pk/svHsA9e5Nu2FOq4bOjjIJq15aZqFQZGOXwNDID6Wun7Qgb7vCcApzZW1ToOEKTcloAXLKCzPh8SZby8RahTadhAGX8hCkUYJK/he20vAw52lfiyQTpxk0HnO32ehfvthEIix5g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789261577; c=relaxed/simple;
+	bh=tTnXx9x4oCktbdNyEAPt+I+sif3L5I2MaDmFMg7d+ds=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gxHxTmqPxs8Uz/2B7m/0YLsbjPARlgnfODezQIJdVmHVpY8LHMcU8J0vyPXt6FdhLf+lyNuTQZivQpMwsNkw7mT4iFv7O6KSnMoS09yKWdQIL/pN0g88c8X8/sm9NNBoS0+5qwK1sISTj4xW0eO8Cn69Csf9f0gzn+K836Qmzos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZSQVM3Hf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="XWMxj/8l"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rre1Dtfj00kv+QnNRzG+YAliX/nH6gFSNHP+WtIFLdFNkL4GU+tEgfxEnOEs65G+5cSjkeuJAndccOrqbfJLZ+ZHKE52JiGHjaFmBEyOeq/HQXCCouAp7Zom90Fr/bdFu7eCjqFu3YEaT2Cka6vcAvl5CwzZMHX098crWFbemAlcmLRjC3XeZveVil+JPs7aB2K1qz1loh2e/49wwRlTBKwjpuWpOlt0HoQoaL5ySMJ6CfcnfGWsSViQkqeURtC/Z3RGwySPx+B9gQGYKA1m1JQ3Yy+CLalOF2U1ckrOALsAk43skraxRy/xC+CiKC2UpgBk2Nhhst5ZqSO6PBW8cw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lvKFgnbZ1Pan5IfnGT/pzImZU8EFTGmhkNdZuZYCTfY=;
- b=MOpklORoVvOz4xr+3fXwVohLuRKH72nZUGhQAIV99tvIdznxlkpa8gfhloZQmTn9BH7RUUFxPqnQ+p8Q/E8M2xq986XnzkbBmyc1taN+9cujaA563KID79Sm+jWVeFqVirFC5OL3dKYYLIXgnyAIpw7uzchIVcG0rlxx2VYs0/7YjAzaDfBAJg6SpjO/5X9Y7D1OiiNClyRTHg758lsfUjzWb4h9Xczha98Lzxx9Y7jUcFXMTJq0+0bE6MnJvHFMJMdQun5K1xWRnTdQKLqbIEUtazAM4oR6k5KiRSTc1eOU0pcSAehsMrrh7WYqeUK1DKRNF1KhvCmdFWMT1YWEww==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lvKFgnbZ1Pan5IfnGT/pzImZU8EFTGmhkNdZuZYCTfY=;
- b=XWMxj/8lz749goZSBVD2klwa/ha+rZZejkek6VEYiTFhYcWGgqtd8v/lvOyERrDEDe+aXSc5j+2y19+BlQxa516iF2020Ydsdbuu9y25uED4edqAoKpCXRTqnQz/KNUNEFYcfOr7CzJGOkz/8tcVPezQby1ERHDrMDveBBwWFJftcNdeUUiCepjuMyY9MiUo8cghZqv0FoPXEUJkSJWeFJUN0Zqn6h0F3nM6m4pXK9soKYqQ4mkIqppp25Qc8ptO73GjkipDYu7aX4VDT9hdJ6p3Y2FZkDL2oi9zTXL8qjl0kmJFzCBRM2wi2ArRnAuoOn+j5mqj3krMSdyX0T03Lw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA1PR12MB9490.namprd12.prod.outlook.com (2603:10b6:806:45b::21)
- by DS0PR12MB8814.namprd12.prod.outlook.com (2603:10b6:8:14e::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.7; Sun, 13 Sep
- 2026 00:35:06 +0000
-Received: from SA1PR12MB9490.namprd12.prod.outlook.com
- ([fe80::7092:45bd:c4f7:e583]) by SA1PR12MB9490.namprd12.prod.outlook.com
- ([fe80::7092:45bd:c4f7:e583%3]) with mapi id 15.21.0406.007; Sun, 13 Sep 2026
- 00:35:06 +0000
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,  Andrew Lunn
- <andrew+netdev@lunn.ch>,  "David S. Miller" <davem@davemloft.net>,  Eric
- Dumazet <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo
- Abeni <pabeni@redhat.com>,  Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-  Alexandre Torgue <alexandre.torgue@foss.st.com>,  Gal Pressman
- <gal@nvidia.com>,  Carolina Jubran <cjubran@nvidia.com>,
-  netdev@vger.kernel.org,  linux-stm32@st-md-mailman.stormreply.com,
-  linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH net] net: stmmac: report phc_index as -1 when no PTP
- clock is registered
-In-Reply-To: <6ef48513-6302-44a1-833d-613f2b8a9e21@bootlin.com> (Maxime
-	Chevallier's message of "Sat, 12 Sep 2026 23:39:02 +0200")
-References: <20260912-stmmac-fix-phc_index-v1-1-26e1ead25324@oss.qualcomm.com>
-	<6ef48513-6302-44a1-833d-613f2b8a9e21@bootlin.com>
-User-Agent: mu4e 1.14.2; emacs 30.2
-Date: Sat, 12 Sep 2026 17:35:03 -0700
-Message-ID: <87v78avvig.fsf@nvidia.com>
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR13CA0187.namprd13.prod.outlook.com
- (2603:10b6:a03:2c3::12) To SA1PR12MB9490.namprd12.prod.outlook.com
- (2603:10b6:806:45b::21)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZSQVM3Hf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 368E11F000FF;
+	Sun, 13 Sep 2026 01:06:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789261575;
+	bh=wwoZKwd5H0soJUzCSdneGmKjoKT/hRGAyY4xXK6dSwY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ZSQVM3Hfjxpuy21gGDin0P4ldfUTKTUqwFYE7slbAL2/6svB118QDMQHsZyE21pfs
+	 bYgjiKl4rd5L38ZxIsh2IrJXL1+y4Ho/douls+tMXMo9dKsIIlaQED1iQ6LF5OQ7/S
+	 RlqzuvN9FnFzeuEO3Nzmcet4BwERCsMl2fthfu60QPyjdH5VHPdg6XWLIl9zc2wS9U
+	 r1z1mLKOgNgeuAqgTDq/zZXAhnMheQXMGlIK7qRVspPCoY21b2aH+wyX1TTxoIQIYJ
+	 2f2hZsNWDu/6dlekkiv4XnZQty0u+gziWJ18+AhxYZIuUcU2YTk19inGU4uiV79gE3
+	 iU11PxeQ06naQ==
+Message-ID: <962171df-34e5-4c98-bd09-8cc7f8caf3bd@kernel.org>
+Date: Sat, 12 Sep 2026 19:06:14 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR12MB9490:EE_|DS0PR12MB8814:EE_
-X-MS-Office365-Filtering-Correlation-Id: ee825c42-92e1-442e-43f9-08df112edb9b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|23010399003|22082099003|18002099003|56012099006|11063799006|4143699003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	9YKu2dKBQa8jylUcmMypyiXn6rEsbyG2PIAsKqjqHPPTjrRHEEM7gNdkKT+huEofrRaO8JXH4n/a9Npv8bXx3AceeooNxsnIlz5Ragaz2dZgDze4lQ40sNTvDc9RjvQ+58hpwxfjhEzUc5kE08z3rC+KGaBmDDsMRo37xHP2txoNctVh0ChovVmKW5fOFJebFBwUGN9jUARmys4i7JzYdgHEL42Gaksm/TKNhDDh4wXe0XiTZ0Usot1elFKTc0QqDpBPhQjepHMh3pDZI4Qy5q9KsBO03kmOBwIvQpXOGGYJoElRtUr971H6kNhh8FOKUQdwV7iUKmwVO8ETi1VqjxrcyY1t+xBO6MkyNu0gmVK/cFgr+zHUCVDxGmEFTRdZegO/6xaoQdrhh4oBFrwQ0QDwPuDNQzmelHw/kaMWUwtxlp8mkDhW+rAS5xQXtInd99enNoo3SJyfXNFQM9XmphYwQ+DioHv98UWtvYPta6Z3Y9lIAcRj2Rg2AVe7TPlrY7QPuBA8kj5gkeD+ovutJuFDsNT0e5GDRoMK18N2WbjqiMPd5Xy57FqXoC41JekoRdCaHVwBPpDB5HO153fsdUZDC1aJCExXSog/nWaml6tu90xNsdGI8U/cw+exDqVUmfCJaNK1IMPwh/MXl97w3x6jxwjlqAZARFsWaJetv0s=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB9490.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(23010399003)(22082099003)(18002099003)(56012099006)(11063799006)(4143699003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?3Y35yznVTWKuMP7dCeFW75bAfXPDGz4cUDV6C8I7tIB5L3xNYCew29Z7CR0m?=
- =?us-ascii?Q?UY4n3bJ+vOOm31Pue3QhL88TdM/xXH/wfXsoGaSOdpJ5DeiHq2nfXbBdH/4u?=
- =?us-ascii?Q?7MGxtB8z7cZ9g9TKAfWOlT4KhIrItRSG+s/uKyhx4DEMXaeve5VOorxrIy0k?=
- =?us-ascii?Q?+lNVirTTwKkTN9rTJgJFtD47jBrw7lB5CsJYftvNj1u5Jz+0WD8bv+E73Zeu?=
- =?us-ascii?Q?JZR29BUoz5rcpfDAb/46iWyPQ8LlkQvrUfeMHDJKUR4skXJFftbmPv48/Kwp?=
- =?us-ascii?Q?scRN8aDdsJLZSJ/I6aOkH8dmYB1bZeRWWtiAvwopSzbVn0zBMHQ33TdwkSa4?=
- =?us-ascii?Q?wTDh03/QSJbdKhdHnTnfIQhY3OSH6cRD4DBCWfujU/U3wyO8TGoygk977xrG?=
- =?us-ascii?Q?qvOqyt+m2dHqFhFY8EJy61mmbKDPcxaLjhNdBneLEwYGzXU7ZU/bNRFu7lhg?=
- =?us-ascii?Q?DRGl2XQSSIrVAFiKLPnS9IBOwICmZKvY/YVTuivFkss1co023iSNwmVSrw+V?=
- =?us-ascii?Q?MDShgMemb2Z8NjXWJzkMm5xM1PX7No8uLltrgSfWxnR/LQl0zK26v+ZMJaCm?=
- =?us-ascii?Q?nOM8uCRR8oPPyejcw5oYN3Q6h3ZXlMjiGYl1cZY/78CyhpItESxm0h93KdB1?=
- =?us-ascii?Q?mRtkA7TO3AjWQGHWORkiGZwADX1BscdxZ9zlrDIAtvYVMXUZ8pvTqFaT8J7H?=
- =?us-ascii?Q?hWh8x+qeoupXMwypMrC5SO4xPKhdl/X2cMq/GKNfaWASxmKBv8K8371GY8lh?=
- =?us-ascii?Q?PlO13Gujnlo9jeEjOGW8ifbJGjmvXesqWCBThavrGVRzIW98+kejqrs0CRTP?=
- =?us-ascii?Q?oiEVHjPKSlti3DviwQ1wUFqmvS5GSsk07zjiB9tLqDAykOx37aBARIYo7Tgh?=
- =?us-ascii?Q?uBspYsRJSojFzr5V5ydwyMhxx0A1HHcKCuG/eavOKDt/2esRwrO3ODD3xrO7?=
- =?us-ascii?Q?pP1ji4/5x/fKV7bz49lmeA7dlT6l7am95VxON6aAjTtt9L8KJRB/nQahOOAi?=
- =?us-ascii?Q?l5J6aVuUyDS9U0nxm8uOmnd9tSNJZqcocMMf2M8EfBZGSbUm4FYfUx1fW/Iv?=
- =?us-ascii?Q?txE7WSQzpqajaN45Tjw+3LBX2KzevzBT/Zsc1Ifc4Iwoccc0HVzw6oHgl9zC?=
- =?us-ascii?Q?MaWpWk2gJE5qS/6S23yHaEXwjpt/j1OZfa0l+w1Fxc/zNZFXW2676v+4l8Ln?=
- =?us-ascii?Q?cEXxm0w8CH/sSy78eGf6wIs2jPHw0IDjpSo5wm66qXyCPd+m/o3ZUkovDD18?=
- =?us-ascii?Q?Nev8awemRCVBAJOVcAQJ6MoQrztI+KivuGaz1dsbDbrSPpRYpEzYFdNKybvq?=
- =?us-ascii?Q?Tq1ZkSBpG2j8NUrwtk1NH8KAHLayuoUpNTIyVC4DDGV5CO5a6O3TO2RNwHRD?=
- =?us-ascii?Q?lkNvWHQduiV3+uB56ha8iFdWd2Q0uyTmiWSqpDIWDm5PlCacuylgPiNaz53I?=
- =?us-ascii?Q?CXlPZRveZa8SHW7W74BjsPHpz4BdWX4ryVBeqVTPq6nBefsh1qYE05PCp6ue?=
- =?us-ascii?Q?anz5jK+xVruWJgM+kHuFL/Wn/DABSSR2lxv2bkq6LeTthRV54mZQng3SYSyt?=
- =?us-ascii?Q?fHryDuNu/4qd0kfTfeCdFxNb6fQt30Y6yKFm3Sb+6pySw88VfZxMvzRF1L7U?=
- =?us-ascii?Q?VVFYDZGeRUQgqyib8fDS6l4Rgn6A1C2IRVHovcYQrAvS7nmoOV4M7TdG2Cvt?=
- =?us-ascii?Q?8SxiidaU4L0hlNEFjPipuOAmdF0RAPhZ7ZflG6kAvzv5eXPxjIpi97nl9Tqi?=
- =?us-ascii?Q?55mPokWwBa+LZ9bRDZvr4HS3QUWG8nE=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ee825c42-92e1-442e-43f9-08df112edb9b
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB9490.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Sep 2026 00:35:06.1804
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 57nMEXsJgpSB8ulEInDgfMyF6SGCvFLE/u/eWvpc6grUoi8OAcfgc/sGTuc52KxuQ7TuV9EvrDn1OnDjKLl0lA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8814
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: fib_rules: add FRA_GOTO and FRA_L3MDEV to
+ fib_rule_nlmsg_size()
+Content-Language: en-US
+To: Linkui Xiao <xiaolinkui@126.com>, idosch@nvidia.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ tgraf@suug.ch
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Linkui Xiao <xiaolinkui@kylinos.cn>
+References: <20260911071241.2701784-1-xiaolinkui@126.com>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20260911071241.2701784-1-xiaolinkui@126.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, 12 Sep, 2026 23:39:02 +0200 Maxime Chevallier <maxime.chevallier@bootlin.com> wrote:
-> Hi Lorenzo,
->
-> On 9/12/26 23:16, Lorenzo Bianconi wrote:
->> When hardware timestamping is supported but no PTP clock has been
->> registered yet (e.g. while the interface is down), stmmac_get_ts_info()
->> currently reports phc_index as 0. Zero is a valid PHC index and would
->> make userspace resolve the wrong clock; the absence of a clock should
->> be reported as -1, matching ethtool_init_tsinfo() and
->> ethtool_op_get_ts_info().
->> 
->> Report -1 when no PTP clock is available.
->> 
->> Fixes: 9364fa7fcf12 ("net: stmmac: Remove setting of RX software timestamp")
->> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
->
-> Ah nice, I've briefly saw that just yesterday but haven't started digging,
-> thanks for fixing this :)
->
-> Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+On 9/11/26 2:12 AM, Linkui Xiao wrote:
+> From: Linkui Xiao <xiaolinkui@kylinos.cn>
+> 
+> fib_nl_fill_rule() emits FRA_GOTO and FRA_L3MDEV, but
+> fib_rule_nlmsg_size() reserves room for neither. Its only caller,
+> notify_rule_change(), allocates the notification skb with that size and
+> treats a failure as a bug:
+> 
+> 	/* -EMSGSIZE implies BUG in fib_rule_nlmsg_size() */
 
-Thanks for the change. Good catch.
+not really going to fail since the size has so many attributes that are
+not applicable to this rule.
 
-Reviewed-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+> 
+> A rule that has both a goto target and l3mdev set needs 16 more bytes
+> than are reserved. nlmsg_new() rounds the allocation up through
+> SKB_DATA_ALIGN(), so the slack hides the mistake most of the time and
+> the bug stays latent, but the accounting is wrong and the notification
+> can still fail with -EMSGSIZE.
+> 
+> Reserve the two missing attributes, keeping the order used by
+> fib_nl_fill_rule().
+> 
+> Fixes: 0947c9fe56d9 ("[NET] fib_rules: goto rule action")
+> Fixes: 96c63fa7393d ("net: Add l3mdev rule")
+> Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+> ---
+>  net/core/fib_rules.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/net/core/fib_rules.c b/net/core/fib_rules.c
+> index 7df216c17c67..5e84bc740191 100644
+> --- a/net/core/fib_rules.c
+> +++ b/net/core/fib_rules.c
+> @@ -1133,7 +1133,9 @@ static inline size_t fib_rule_nlmsg_size(struct fib_rules_ops *ops,
+>  			 + nla_total_size(4) /* FRA_SUPPRESS_IFGROUP */
+>  			 + nla_total_size(4) /* FRA_FWMARK */
+>  			 + nla_total_size(4) /* FRA_FWMASK */
+> +			 + nla_total_size(4) /* FRA_GOTO */
+>  			 + nla_total_size_64bit(8) /* FRA_TUN_ID */
+> +			 + nla_total_size(1) /* FRA_L3MDEV */
+>  			 + nla_total_size(sizeof(struct fib_kuid_range))
+>  			 + nla_total_size(1) /* FRA_PROTOCOL */
+>  			 + nla_total_size(1) /* FRA_IP_PROTO */
 
->
-> Maxime
+
