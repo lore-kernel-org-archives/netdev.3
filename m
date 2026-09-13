@@ -1,122 +1,84 @@
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355F2348C4B
-	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 12:32:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F063EC808;
+	Sun, 13 Sep 2026 12:52:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789302749; cv=none; b=udjIWb5SXEwVRoiuhYB8O8ehETBv4cECexSIXE8VzoKgDSCyf2DnHuS4UkbEZqvbNk3pA8+r5f0yi/b77M4kvIzILu/LMcynjtsTgMTWnPIFEWP5AaGmZjmMfldlSFAR+h+u1+WbF/NJ0jJNgvoA2KSN/YRDEE8LMTEzNAtyie8=
+	t=1789303936; cv=none; b=LQFDvfst6gVVYYi50OYf3Zf+zR7VriIkydiYLGhyX1FszMwh1PlP+uhPXOlGPEBgBSy2oQqgLi9CBpcoZYMNrFT6B87FuUGgaZQn5PUjNjVWTChNYy5xLbIfHS+Lz665ZNe16NUyWhwYVbYgy8w3rrtrI02I1xuwljR80098R4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789302749; c=relaxed/simple;
-	bh=F1I1jQs6I1fHODPkYWl+RNriAp+rNE7pnEcpuM1KUKw=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=nn4lQ9jDbYeXftXi3DlmL1Yg8mdLJQgCDsiOkfoJxVsXGJtIGbGBDPKcEgiDeT0eUvH9vtIPXb0vFUR9AHApQucZ+i80GEcrbyAZ9DfrslZpofuBAEZuY0OlKJNyZ1PV/lTGo9JFw4SOtT3FN8+kgHou+xe0tGUAfH7B6S/xhes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IxmANlX9; arc=none smtp.client-ip=209.85.160.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1789303936; c=relaxed/simple;
+	bh=zTrMYEyhJA/x8TVISCU2RJz0BNZolnqJexKazjTnCm4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=X7/cjVc/0Y98e6uZ+SO1fH1h6CZpiMHlasn/PIi5++kAFYVy/FMBeQjJnJhirIl0alkprB1Xai7sW/FE0huYbNvf5dsvngIEv+MZtVSb9xFnDs0dwdOw8TtcBH8QGqUts/yh//ZwnuCUzv2omGS/iH03XQf/egqXzHWA2xH6GHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=giHyvauA; arc=none smtp.client-ip=101.71.155.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IxmANlX9"
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-52ffe24490bso59127181cf.1
-        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 05:32:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789302747; x=1789907547; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=qopGVev17jhOE3UkvSEyivlw7RORgzCSVyu66c3s7LU=;
-        b=IxmANlX9L0I5An2HUGtFdrwW8hcP9oZ8HORBkA2tbU5B7ajnA4Oqb+YnWMfjD+dcYF
-         RYXzQc0O7uq0ipvDRTJad2dJ642twMkFc+4GagvmJJEfyql4IuUEmyoxvND3wGS/IA9v
-         RZeTyniNTGigJbau0ubdKi261cG8n0dqtUr3OngOdOjwHsdm5IHXRbxYJzV4GDVidMzs
-         /AspK0RGm19UmJEw0NvBjmwkJEMPfAPyTtvpgcP5F5cKWkO7QnB5h5EUFhwWTB+/dKzX
-         Y8Lr1koFfZnthQp8xgTx9abz/t3Boy8zlhnh1PmhQyJrtqFEB8SW2M/tYUyZQbmCbCoJ
-         GpyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789302747; x=1789907547;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qopGVev17jhOE3UkvSEyivlw7RORgzCSVyu66c3s7LU=;
-        b=sJzO0eXTuzqF4fhAHPXmGTythIZ11OjbIw5a/Xzm9WJzhF9zy4G6qjbWOJUvcfKaXM
-         vU9UnFXdDOfQyQL9pJ5Ix4rLnJRKHmPk3KOI3vfN8fxug/FFR7xHU5vWL+LXN7jWz4dM
-         FuZmvycPVKEtG7Ml0luxAX8FXXWjYSaBnlAQ/FvbDAy1LNSEVy2RYG/K+R3k/1f/iObp
-         eDYgwxQJiKu1uRYG+3EpFv/91z7jMROI7VH4AcSbXaFCAHDkYqyKvb40meLv/L2UEpLe
-         /6C4nVnkE7EFUP7bimjy5L7WMOyvoTmLF/vWbWUPCEGACul9oA/fSredXlDTjIRqCjvA
-         IBHw==
-X-Forwarded-Encrypted: i=1; AKwUvBzAolzWZIpBxW99BNEIEBDTucxa10iGvsw01A7g7Dkc3WEpHiyQJGTko8mRTncY2guDyPUpLKM=@vger.kernel.org
-X-Gm-Message-State: AFuF++k285v0QmFqEWx/khQ7y/KZO4yvXQngtmWr0ogMspS3X0cnrbGK
-	G0gCViPCnv5G6ugC+0MWnUzCTwsvpHPNBrNe/9xKq0zZGHByrnHGpLV23eo52FWhoIqSw9O5Tpr
-	jwv1v2P6pHQMmfQ==
-X-Received: from qtqf2.prod.google.com ([2002:ac8:4982:0:b0:530:a841:5d04])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:1e05:b0:530:b2e4:d5a1 with SMTP id d75a77b69052e-530e8326c56mr119770311cf.60.1789302746920;
- Sun, 13 Sep 2026 05:32:26 -0700 (PDT)
-Date: Sun, 13 Sep 2026 12:32:24 +0000
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="giHyvauA"
+Received: from seu.edu.cn (unknown [58.241.16.34])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 4d907a3ef;
+	Sun, 13 Sep 2026 20:52:08 +0800 (GMT+08:00)
+From: Slavin Liu <bolin.liu@seu.edu.cn>
+To: sgoutham@marvell.com,
+	rkannoth@marvell.com,
+	gakula@marvell.com,
+	sbhatta@marvell.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bolin.liu@seu.edu.cn
+Subject: [PATCH net] octeontx2-af: validate MCS blocks before initialization
+Date: Sun, 13 Sep 2026 20:52:06 +0800
+Message-Id: <20260913125206.109985-1-bolin.liu@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.1007.g17ff1f9808-goog
-Message-ID: <20260913123224.762935-1-edumazet@google.com>
-Subject: [PATCH net-next] tcp: make smp_rmb() conditional in tcp_poll()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0aa09ad3351303a1kunm5ba25e222511c1
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaQx1NVh8eSEtDQ0NLGBlOGlYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0
+	NVSktLVUtZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=giHyvauAkWWATeXfmVWDhDLAp5Nf1JNvrq/b/RaYnS/q7/D0ki9FQq1tKvzUsdCWgTAitN8QJtgp+8/40w2kLITww5f4obvkOEeBd10UCQVPVEKPvosxvNnEKGBCKr64ZZkKnsN4lBoTMvb9gM+E3Tpab3cC40XfckXRPwG9SvA=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=w4kZNmtGRQiUHJIIzrnO4tSSYdp/yOdZIDfvPa1VCSQ=;
+	h=date:mime-version:subject:message-id:from;
 
-Commit a4d258036ed9 ("tcp: Fix race in tcp_poll") added smp_rmb() in
-tcp_poll() and smp_wmb() in tcp_reset() (now tcp_done_with_error())
-to ensure that if tcp_poll() observed socket closure, it would also
-observe sk->sk_err.
+The MCS count is a maximum successful ID plus one, not proof of a
+dense device set. Validate the complete range before programming any
+block, so a failed lower-ID probe cannot cause a NULL dereference.
 
-Currently, tcp_poll() unconditionally executes smp_rmb() at the end
-of every invocation, which on weakly-ordered architectures such as ARM64
-emits a memory barrier instruction (dmb ishld) on the poll fast path,
-even for healthy, active sockets.
+Detected by static analysis and reviewed with AI-assisted source auditing.
 
-However, tcp_poll() only needs this barrier if socket closure has been
-observed, to ensure that the error code set by tcp_done_with_error()
-before socket closure is visible before returning EPOLLERR.
-
-Move smp_rmb() inside the conditional block handling socket closure
-(shutdown == SHUTDOWN_MASK || state == TCP_CLOSE). For healthy
-connected sockets in epoll, tcp_poll() avoids the barrier entirely.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+Fixes: 080bbd19c9dd ("octeontx2-af: cn10k: mcs: Add mailboxes for port related operations")
+Assisted-by: LLM
+Signed-off-by: Slavin Liu <bolin.liu@seu.edu.cn>
 ---
- net/ipv4/tcp.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 562752352afe4d7ab864c00b8562c8b8489a76f9..3ac4856852794736c5d49f042ecd08e4246bdd6d 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -578,8 +578,13 @@ __poll_t tcp_poll(struct file *file, struct socket *sock, poll_table *wait)
- 	 * blocking on fresh not-connected or disconnected socket. --ANK
- 	 */
- 	shutdown = READ_ONCE(sk->sk_shutdown);
--	if (shutdown == SHUTDOWN_MASK || state == TCP_CLOSE)
-+	if (shutdown == SHUTDOWN_MASK || state == TCP_CLOSE) {
- 		mask |= EPOLLHUP;
-+		/* Coupled with smp_wmb() in tcp_done_with_error() to ensure
-+		 * sk->sk_err is visible if socket closure was observed.
-+		 */
-+		smp_rmb();
-+	}
- 	if (shutdown & RCV_SHUTDOWN)
- 		mask |= EPOLLIN | EPOLLRDNORM | EPOLLRDHUP;
- 
-@@ -626,8 +631,6 @@ __poll_t tcp_poll(struct file *file, struct socket *sock, poll_table *wait)
- 		 */
- 		mask |= EPOLLOUT | EPOLLWRNORM;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c b/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
+index fce22e314cac..0ee2d0d698e5 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
+@@ -889,6 +889,11 @@ int rvu_mcs_init(struct rvu *rvu)
+ 		rvu_mcs_set_lmac_bmap(rvu);
  	}
--	/* This barrier is coupled with smp_wmb() in tcp_done_with_error() */
--	smp_rmb();
- 	if (READ_ONCE(sk->sk_err) ||
- 	    !skb_queue_empty_lockless(&sk->sk_error_queue))
- 		mask |= EPOLLERR;
--- 
-2.55.0.1007.g17ff1f9808-goog
-
+ 
++	for (mcs_id = 0; mcs_id < rvu->mcs_blk_cnt; mcs_id++) {
++		if (!mcs_get_pdata(mcs_id))
++			return -ENODEV;
++	}
++
+ 	/* Install default tcam bypass entry and set port to operational mode */
+ 	for (mcs_id = 0; mcs_id < rvu->mcs_blk_cnt; mcs_id++) {
+ 		mcs = mcs_get_pdata(mcs_id);
