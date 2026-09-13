@@ -1,80 +1,81 @@
-Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190773ACA5C;
-	Sun, 13 Sep 2026 12:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
+Received: from outbound.baidu.com (mx22.baidu.com [220.181.50.185])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id B2D1337FF6D;
+	Sun, 13 Sep 2026 12:59:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.181.50.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789303944; cv=none; b=mkDXT+5qIuyQ82R26A7QBNgRCf1J1EoCUmAgCEfy9OsFOSVPqke89IymcWgoTnv6Rb+FpYXILwOAzEbtEgsDNBkfYCCKc9LrtHY/ptluxS8L11VU471aThEOYaqP7ztuLgkcxJax3fu+Xzu8oYCjBHXyrrEKQvp38W2d0K3j3Qg=
+	t=1789304371; cv=none; b=RXi63+Wge97UZraO5J1YNe3JziBKkuL92vTAttGkU+2mX1OqMdcAFgaer284BBifhJDe5/TLcTXRQckVWo9kUQ8noR01wevk0ainrr9/UcUQoLOxpgAudS+BWEWqNuF6s7B+7fbmS80cJGV1+sZNZ5YKwL85ElfAkykNyzSY380=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789303944; c=relaxed/simple;
-	bh=o5oApsx/rdBFHW2i4W9ApDOHk5V0yHbQGMXXG9KPGvA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SN8qM+SJe/0tNnoiOJouQjMkvlB6fnikvh8JtES2/YYSnh1dpS4mdWJWoNYo0CN7yCehJJyhVg8ECA7auPClsjC8lmE53EB0uv/Gy737MelXNjBUuf6cx3/dOI+qX8yj0kM4yU7n5dPfr6jfaXeEEsOESrQ5Dz6y8P1aeRUTWzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=SvSx3eZ9; arc=none smtp.client-ip=45.254.49.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1789304371; c=relaxed/simple;
+	bh=zDlw6V0PtRlhjN26GnafC+FxR1y6BBk8TOEVrB57KCA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BcrhEKvPRed76vfGyqptWUTPDkmj/GgpKzBR5Z9LzgHFH/3EHh3IwNqj1PchYizmt0yBg0XFsPOTJx5sGZoutl6ySzoGs6uxo6tEZVc0B/HHyQal5o0eGIfrp4HKI0R0lKHvb1JeWjx969m5qGzJExSvpK/3o9YjNTv9ni4qgq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b=GCeMUhNC; arc=none smtp.client-ip=220.181.50.185
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="SvSx3eZ9"
-Received: from seu.edu.cn (unknown [58.241.16.34])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 4d907a3f1;
-	Sun, 13 Sep 2026 20:52:14 +0800 (GMT+08:00)
-From: Slavin Liu <bolin.liu@seu.edu.cn>
-To: sgoutham@marvell.com,
-	rkannoth@marvell.com,
-	gakula@marvell.com,
-	sbhatta@marvell.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bolin.liu@seu.edu.cn
-Subject: [PATCH net] octeontx2-af: skip absent MCS blocks in PTP configuration
-Date: Sun, 13 Sep 2026 20:52:12 +0800
-Message-Id: <20260913125212.110005-1-bolin.liu@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=baidu.com header.i=@baidu.com header.b="GCeMUhNC"
+X-MD-Sfrom: lirongqing@baidu.com
+X-MD-SrcIP: 172.31.50.47
+From: lirongqing <lirongqing@baidu.com>
+To: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Jiri Pirko
+	<jiri@resnulli.us>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: Li RongQing <lirongqing@baidu.com>, <stable@vger.kernel.org>
+Subject: [PATCH] bonding: alb: Fix overflow in TLB gap calculation
+Date: Sun, 13 Sep 2026 20:58:59 +0800
+Message-ID: <20260913125859.2349-1-lirongqing@baidu.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0aa09ad34e1303a1kunmddc12c282511d4
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaS0kaVkxLGB1MHU9KGhpIGVYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0
-	NVSktLVUtZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=SvSx3eZ9XAPTlfV6xVdj1s2CB71IIl9sEjpUEL6GTyLtCaAugaCoJmXCQv6lakB+8kk2LvufOfW89iA2iwrR9EREmDBn1RQye68sberrMd7Y1rn6vtKERJ4D+5OFxmbakU0fGpCN3ChDCvQSAYylgiaQtrWhRpB9WjUhNHbUhT0=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=MPOpKAV3OBLDwzkI77dQ9BHdlH69etdDfGQUc0oQJUc=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain
+X-ClientProxiedBy: bjkjy-exc7.internal.baidu.com (172.31.50.51) To
+ bjkjy-exc3.internal.baidu.com (172.31.50.47)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
+	s=selector1; t=1789304354;
+	bh=gnJR7tPojdxPKnkvCbICGOEhsQF4X44trF83MxAXOLg=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
+	b=GCeMUhNCdZUlN0ITkEAePmjBUy6il0IL04Y76Ck2UkBL17AA309TEk0u1k2fPSY+q
+	 J7PdUHjPTKaNYjyGZyGhBUCtOJpw8SEW5ebhi37LF5zocLesmhz4dbGNWFvCtdbzGH
+	 gEbJF42TAOtVkcrpQhumygdeICDDlFmBQ+EBt/yfM+jL9udLnMNc5ifsZwTGfFWs+4
+	 JkEEv17xMerNqUv53wg8fHvAZyzR3E3H6/380snfj/sXR0gMfa8sbZ0s9+8GQUmkTs
+	 XBxM5VtXLq194Gux1FoDptbfNdIjMqv+urTTn3sBj3Ijc2O2hrjMfSLKQkaA1T27PR
+	 EYsPg2NZm7izw==
 
-A successfully probed RPM does not imply a matching MCS block.
-Check the independent MCS lookup before accessing PEX registers.
+From: Li RongQing <lirongqing@baidu.com>
 
-Detected by static analysis and reviewed with AI-assisted source auditing.
+compute_gap() shifts 32-bit values before converting them to s64,
+which can overflow for high speed network devices. The overflowed
+value is then incorrectly used in the TLB load balancing calculation.
 
-Fixes: 65cdc2b637a5 ("octeontx2-af: mcs: Config parser to skip 8B header")
-Assisted-by: LLM
-Signed-off-by: Slavin Liu <bolin.liu@seu.edu.cn>
+Convert the operands to s64 before shifting so the arithmetic is done
+in 64-bit width.
+
+Fixes: 097811bb48c7 ("bonding: optimize tlb_get_least_loaded_slave")
+Cc: stable@vger.kernel.org
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/bonding/bond_alb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c b/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
-index fce22e314cac..5e24d43d5fc7 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
-@@ -50,6 +50,8 @@ void rvu_mcs_ptp_cfg(struct rvu *rvu, u8 rpm_id, u8 lmac_id, bool ena)
- 	/* CNF10K-B */
- 	if (rvu->mcs_blk_cnt > 1) {
- 		mcs = mcs_get_pdata(rpm_id);
-+		if (!mcs)
-+			return;
- 		cfg = mcs_reg_read(mcs, MCSX_PEX_RX_SLAVE_PEX_CONFIGURATION);
- 		if (ena)
- 			cfg |= BIT_ULL(lmac_id);
+diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
+index 43ac8e2..b520040 100644
+--- a/drivers/net/bonding/bond_alb.c
++++ b/drivers/net/bonding/bond_alb.c
+@@ -160,8 +160,8 @@ static void tlb_deinitialize(struct bonding *bond)
+ 
+ static long long compute_gap(struct slave *slave)
+ {
+-	return (s64) (slave->speed << 20) - /* Convert to Megabit per sec */
+-	       (s64) (SLAVE_TLB_INFO(slave).load << 3); /* Bytes to bits */
++	return ((s64)slave->speed << 20) - /* Convert to Megabit per sec */
++	       ((s64)SLAVE_TLB_INFO(slave).load << 3); /* Bytes to bits */
+ }
+ 
+ static struct slave *tlb_get_least_loaded_slave(struct bonding *bond)
+-- 
+2.9.4
+
