@@ -1,82 +1,130 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A814A3246ED;
-	Sun, 13 Sep 2026 22:13:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781BC2D0C94
+	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 22:16:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789337634; cv=none; b=W0w+hNauukVJgt+nui12wbRf2ISIyNuxmHZy79C+qEi6CjzXUM8SRPE8nC/ilMnOuoR4O+Pa1Po44iRZJnbAnqTNCeOFarN2XW70Gq7LtQi4OuW9yoypxyiDgS6eNKgiIm3wDctThxnPV1cE45WhRtLzKr1ro/SMRGHy/vO7mQw=
+	t=1789337807; cv=none; b=rFq9YzvCGYrKwyy4F28VafVu9mOv5R7FLsQApChbKxu56AN/O5wHxMscITYL8RmAMTSZ1vCDdSNLrQAZ7799LyhvCE77vcCvUcHkUiC1czWUW2SZQUKWeDZMjbZhPeA7cYmtE6vJkrJlFPY9+iPyJq+mCj9825tGKJO9sYZhJmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789337634; c=relaxed/simple;
-	bh=XLKPiu0LjX4Rn4hnXEeRyCvJpv/nG5FQrd6Mv64g9wc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c0ixSbmh5cFJRXiRJHm0xbew3QGOc56Kxr75ZgrHbvgf+QFifrYXPl5uZ5FWR0h47422rw+7hPVityPZD0Wdc6edoEbiukf+8k3/0pBZFXVI4/IUYusbLuzLIyZkF/RyMD4l3+EJmsSEZ1mB2TOhTgZfM193cs6VimpA0qWTvaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=j0bwlEXe; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1789337807; c=relaxed/simple;
+	bh=12saGpQCsyPvcyoHas0G7a63bhlRxUB1+FfgpNhnIjc=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=DJoArGw04Z/eZny8joU1mFCSLmQIlM5fil5RG7K4wviaPXUv2oqkocDyGYoFeP3L1S19iO+dTtGCKEWY7Z2mK90feuUmQEMoTmg1T9x3/QaxIRRVN6EByGV1NPxRSHuuIehfu+soOqKkrfXD8vDIe8HjzUVrsjDGQxlwr0nHSCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RbZlQCv/; arc=none smtp.client-ip=74.125.224.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="j0bwlEXe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1789337630;
-	bh=9Qq4YgpOqFzsu9JyjEWX74jLdnvCcAI0LlXyTxBRWYs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=j0bwlEXex8n13VdPB7bklUo4uu0GNc+AjQC0YPlhbT9n6K8c9JV+sYKK9hqoFspaJ
-	 b9M1L8xdvcneAVJ0JLygZOhmKUAag1MCbZtin9BaF1JRThqikre78aK1jmiE0Tohrl
-	 qhanJZ176FoSirYD0CNesFgzfTibdHgZepHOltUsfMqlTuOUdKGjuhRa1SYUKRCcHx
-	 oP1CrFftVvzGQ2p+nd5/dwY3HQU9+563Ma+YHXPNIMBYBsn6eQSXrJq3a6vR2fLvwH
-	 +11AHAKZOySJIXRd/f+LKPosnPeTjgFiZo+OBNVAxv6OusUECOTNgbROd8lavuDWoX
-	 GK4MQbynPu0QA==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 6E7C16005B;
-	Mon, 14 Sep 2026 00:13:50 +0200 (CEST)
-Date: Mon, 14 Sep 2026 00:13:47 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Hauke Mehrtens <hauke@hauke-m.de>
-Cc: stable@vger.kernel.org,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	netfilter-devel@vger.kernel.org
-Subject: Re: network flow offloading broken in 6.18.45+
-Message-ID: <aqcgG0y-nYz4DWz3@chamomile>
-References: <7dfa42f6-64c1-4084-bfea-d57500c245cf@hauke-m.de>
- <aqcfvRE3aHoAx8s7@chamomile>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RbZlQCv/"
+Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66e4ab19125so1219940d50.2
+        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 15:16:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789337804; x=1789942604; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=KwJQ6M25sDzikcUA36ZvZh5n4DhA78o4GRWDhlmgmoc=;
+        b=RbZlQCv/e41tUD02a3AzvcXzRB5AcOHgbw96AaKkkrRupwNvwAE18SU76Y2vnGPquz
+         xAeqUEiw4Upo5O2ekz8uc4jFYTNwAagz8582DzY2hXmOkUiNrASBeJCOUEaFVHREEpXQ
+         z1SjMqy1+25rsuGtk3Qft0jcFgutQntSdcm5nG9xOvwTcSpDWPYtDtvKe8ofc6np4djJ
+         NAByFOBEUkLmXmGanCWpRNABT1UDwvpCll61/reC5wPviICZ2zFcEn20q3aMCus/XKqg
+         t90jJPAPniyBI4SN9d49KPIPfRgwvmBLS70SMXRdzA+V1qYX//Ya9DdAZpeHOWvW3s5O
+         YWsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789337804; x=1789942604;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KwJQ6M25sDzikcUA36ZvZh5n4DhA78o4GRWDhlmgmoc=;
+        b=HdaxbKJwqLsmjG5Xf3KNr2bNmUAB1tTUF5NdxCKbodL4BfCOY654u7WMTGP30mS7y+
+         JiqaWh95jcnTDiagnkuyCTRh7KH0TwSYWBI/lDNFEg+9ugKKnkAXi0MyEhDlN2QM5ujO
+         qz66CxEYVQRwbqPlBGn5mXHK4yQEXuhEH/mAdqhbZi5lxbW+NNKjcjOFoJhD98rIOE6+
+         4xR7RyGbWe9+apfvbFRNQH5SWRCr9asrx6bE+16F5WI1tFN4Ah4K7HK31AdoqMEpXgv8
+         HgnGQx6z9UqkdNT0bZmvvAVCeTZ9FVW+t0Zjr0G5H+tnHTaWHTLJRaNytTH7ZPHenpkx
+         QpDA==
+X-Forwarded-Encrypted: i=1; AKwUvBy9encoCVVeHVAzLQsFhNcE2mkFVYdX0TELoSe4WRREZkbciw2uVZXdhuy/CVn+ufK+Fpdd9bc=@vger.kernel.org
+X-Gm-Message-State: AFuF++nB1lNFqgLQyLBAsz3/ZQxWNL/uQhIg4+Xmf1jidFGojBchdLK+
+	mrFPeaYToWhe1v2McgHDWZLt2VkpSHjuTJ+034/RFU0nD+NvRrYuvMj1
+X-Gm-Gg: AYBFou1N4z5uL52IN0G8aWgPKbB8lgtLVaXlAAGSd55wGHfn/FHjBf4Vk7nJtauPms5
+	vGpUxrjTxBBR8LHFIz30DTt+ONvruJqbxXcv6WErCmL04sPRgV/sMi1GeWMVS//7kZ810FmAH/5
+	zLQ1aZva3Gf1JvmLahnN2TMxKeFtgzDFPN6P8+QOBpNzTIIOEY2yswR6ZyOnXTCx+GRbQOmrgJx
+	Ojegjmuw9NNNW1dNu3lwKXGPPjBo3JEVJN/FOUGIAxKpNcA0JboeF6YvZJjNohgqxYzyfoSveMZ
+	km6BPeNG/SYC1pXne+MNyML/6zxWSj6t5Wfc/IElH7aYDjzxpc+JWzXS5agWan1XaD6cIz0lKDK
+	WrfgxJ7gxonKxRzKrPDwDF69zNxOjkpq2Y3Z7Apcx/8SQPeHivKpzh0aFLSmohtIeLlSeHd5WPa
+	0R75i2d1DsCeJi6iPejj+58c26YaDxlTFfzO0Xe/hL6TzEZWSYSQ8w3dYARCQ5Zf7KOBH/Fk9Vx
+	WCUCnGA5LNxjB7Cw/ZU/YVuhOT8jCHMqh0zi4VNPeRhbrZspt0A
+X-Received: by 2002:a05:690e:1509:b0:66f:bc5b:1d33 with SMTP id 956f58d0204a3-671245110d7mr4867599d50.9.1789337804364;
+        Sun, 13 Sep 2026 15:16:44 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67125db3459sm3754086d50.6.2026.09.13.15.16.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 13 Sep 2026 15:16:42 -0700 (PDT)
+Date: Sun, 13 Sep 2026 18:16:42 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Mark Amirkan via B4 Relay <devnull+markdamirkan.gmail.com@kernel.org>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Chetan Loke <loke.chetan@gmail.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>
+Message-ID: <willemdebruijn.kernel.1288a752aca73@gmail.com>
+In-Reply-To: <20260913-b4-send-packet-private-v1-1-925eab2cd388@gmail.com>
+References: <20260913-b4-send-packet-private-v1-1-925eab2cd388@gmail.com>
+Subject: Re: [PATCH net] net/packet: avoid truncating TPACKET_V3 private size
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aqcfvRE3aHoAx8s7@chamomile>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 14, 2026 at 12:12:16AM +0200, Pablo Neira Ayuso wrote:
-> Hi Hauke,
+Mark Amirkan via B4 Relay wrote:
+> From: Mark Amirkan <markdamirkan@gmail.com>
 > 
-> On Wed, Sep 09, 2026 at 06:29:50PM +0200, Hauke Mehrtens wrote:
-> > Hi,
-> > 
-> > flow offloading is currently broken in Linux 6.18.45.
-> > 
-> > Since the backport of commit b5964aac51e0 ("netfilter: flowtable:
-> > consolidate xmit path") to Linux 6.18.45. This is happening in a router with
-> > traffic from wifi to the Ethernet device when mac80211 returns -EOPNOTSUPP.
-> > 
-> > Upstream fixed it in 871df5007eda ("netfilter: flowtable: bail out if
-> > forward path cannot be discovered") by not offloading the flow at all.
-> > backporting this change looks more complicated.
-> > 
-> > This cam up in a discussion in an OpenWrt PR:
-> > https://github.com/openwrt/openwrt/pull/24800
-> > 
-> > An LLM suggested this change: https://github.com/openwrt/openwrt/pull/24800/changes/394d741e6e76ecd172dbbf1d9ba171e378211734
+> tpacket_req3.tp_sizeof_priv is an unsigned int, and packet_set_ring()
+> validates the full value against the block size.  init_prb_bdqc() then
+> stores it in the unsigned short blk_sizeof_priv field.
 > 
-> Patch went away.
+> Commit 2b6867c2ce76 ("net/packet: fix overflow in check for priv area
+> size") fixed the validation arithmetic, but an accepted value above
+> USHRT_MAX still narrows when it is stored.
 > 
-> > It seams to work, but I do not understand this part of the code god enough
-> > to judge if this is correct.
+> For a 131072-byte block, tp_sizeof_priv=65536 is valid.  The narrowing
+> makes offset_to_first_pkt 48 instead of 65584, so packet records can be
+> placed in the private area that userspace asked the kernel to preserve.
 > 
-> Could you attach the patch to this email for review?
+> blk_sizeof_priv is internal state, so widen it to hold the validated
+> UAPI value.
+> 
+> Fixes: f6fb8f100b80 ("af-packet: TPACKET_V3 flexible buffer implementation.")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Symbolic
+> Signed-off-by: Mark Amirkan <markdamirkan@gmail.com>
 
-I've found it :)
+Reviewed-by: Willem de Bruijn <willemb@google.com>
 
-https://github.com/openwrt/openwrt/commit/d2b53b8043e17087b877bfc2335cbba87dffb4e0
+> ---
+>  net/packet/internal.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/packet/internal.h b/net/packet/internal.h
+> index b76e645cd7..f5c8cd0eed 100644
+> --- a/net/packet/internal.h
+> +++ b/net/packet/internal.h
+> @@ -21,7 +21,7 @@ struct tpacket_kbdq_core {
+>  	unsigned int	hdrlen;
+>  	unsigned char	reset_pending_on_curr_blk;
+>  	unsigned short	kactive_blk_num;
+> -	unsigned short	blk_sizeof_priv;
+> +	unsigned int	blk_sizeof_priv;
+
+This could be moved to avoid growing the struct. There is a 4B hole
+further down. But it's no big deal for this struct.
