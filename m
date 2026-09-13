@@ -1,99 +1,47 @@
-Received: from mail-pj2-f5.google.com (mail-pj2-f5.google.com [74.125.227.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B3A3FCB11
-	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 19:01:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCC13F823C;
+	Sun, 13 Sep 2026 19:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789326076; cv=none; b=ZnA/LgDG1eg6DBHqGN6pLzJfcT4C+TNfq+wAekAAd2mwFcapTsMEXu7o7cRtXxA3iF/lVYjrxGdLQwC+1KQlAoKaQFEQ0Np8wWUbnLwWRXCG0OyEhbbF1qFxoOrHjYPu22NBl/t6eQvRU4o7r4veAb8/Y7wUTSnK2IJvycRYwmI=
+	t=1789326079; cv=none; b=pwD7CHFpMdgcRYUwvJKGNxeo+Rab1Ls7S1A6/v+5OTii0ZwM77dPDiz6emHupd+Ytk0g54omJ2VnXklatIs37bp51UavJk1vs3C1SHyAdzhMawYebxcGkn9dbBW4hF7xuDw2fAcLs42KO9UUCUiJrkYoHT2ik1B8PEqi325eIwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789326076; c=relaxed/simple;
-	bh=RGeiUbt1ILnRnxxwfPtaUyN72PdSbFuLoFXljuwFvyQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B9i+g9eKRC+QWwEq4mj+bJnjHU10rKKmEF6+VtS1N4a4ddD+L2OyWsf0ynY/fAxP1N5BM48mqy8L9SG9WkIoZzv4aYJ4u817dtiRA3EKxgH7e7RhG19h7zap45YlRw/hWvyKIhIgOUWgbP/xFcjwhmqRQJF377UhKhuwNiwhWss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rdvuoUsn; arc=none smtp.client-ip=74.125.227.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789326079; c=relaxed/simple;
+	bh=QUnmUulMgvP/tp9AGmw/PsOAgiMrxivKYmc0QrQNelo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k00qPfDcRRT9LYvdC5AEz6tlwN0sdrECaWAZmKHKn02P6i0vjNO0pKgsQAdqPHgpaTVHc1XASDUzpVrJeZwt9cC8Aku5M2ZTmLmZpdvCxBIVT4YbMs6JlpbC8VpyB9a4leIDbetPWq4MciOLQWZ98PKvOY7AiS8gzTDRkBDI838=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=WHvOU3hr; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rdvuoUsn"
-Received: by mail-pj2-f5.google.com with SMTP id d9443c01a7336-2d942de6574so15901825ad.0
-        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 12:01:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789326072; x=1789930872; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=IUBpSQaA91JU4u4hSD0CHnRFwoDOkNzew04B1AEq+dc=;
-        b=rdvuoUsnUw3igx7ZbMagUUA9L33bfl7eM56BNx2tnreQbYbT3XZy8glHxpR5NfKH22
-         no09nUPoAx2OvveW79xdpwDfYR+05riW5YoWm71XTLFHLuYhKIP8U7SIfdi6K/C1m21s
-         djc2dtoJT8fC1ty8KqmJkHfa/QVS0clzyuPyLqbVbhH/e32LKK+I9bfulBOCjlCGwr4y
-         kj2LBGl9NTBqwFPwKbDB2I4DHD0guy59gFt/v6ph56GeV4yNWAshH9CVh22auotuk4oy
-         musnjj8cfO3GCzMS3n9ivfZbJSJqQLHsvtHP5sthKshndLP1ju+Dgcw4zNUr3trxtB1s
-         r/Lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789326072; x=1789930872;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IUBpSQaA91JU4u4hSD0CHnRFwoDOkNzew04B1AEq+dc=;
-        b=LySA5mfMCHgXWMLc2fsi0fMXDe3o407aYzFYnDDo4wxVefRmDntjsrFrNPauXGGaet
-         oO58pPh75dDMGEe8amnuVmoUOjUxvlGgJ62FU5g12dillGBgqpEbVDGYCWSUkvBHBOE2
-         9sptyLwDRaMZn2qOgLA4KhM636yuo0Am2b6aU2npTDHToIOSBUtQqTZgKoIM9AjfZe9h
-         WPPuJn7NLvCxrW0sQwfeWFv4c/3VTW6i1DvLXO2vfNLfkaz4Z2knmyQ4asDBCwwkPYGA
-         Qe1uRIZLnhHojogQJIcqD1GXNaXC2CglQUplzGZTPk58E0AdaVaXSlP12YWagRj+d3sT
-         tQ3A==
-X-Forwarded-Encrypted: i=1; AKwUvByhcYc1Z8N5pqmZcuuS46ImBuUiBERHTixxhZn3ynrCqEuqrfxhbsTcwnAllliaRiJqEkon+Hk=@vger.kernel.org
-X-Gm-Message-State: AFuF++l/Viot4OgeFRme9T7m9mCuOdowD7/aHRSNcDZYrPwXtukYirvx
-	L0Bnb6fRtFMvFJdleH+2IpL1oNuG68sRl8u95zF3fDAvPZQ37Ys4/jwW
-X-Gm-Gg: AYBFou1vWJCo0hncvDarVBWJ39GN7N2giRFhYbSsHSanfC2eqxvD+RGWB0EmXqjT+jQ
-	BK8JyysBdNawgHQqtsjRRLUdTYjyoVbwVIFNYRU2HK811gmJAkD46OEJXtoGcjiIg959bYebTAd
-	1if7aptaFMOSfjlE1U/FFj1zHqO4cKeMAqyXC7xikzQthiaAhAiZGOdJnQmtYc9cVsWMM5G5Bmx
-	LQYmlO+kW+xR42ycWyEngBQQKYJeVaR3Sq1G6BB6rdXFvBETgo/vL3Lkwae9Tuh9cWLOtlDYuTe
-	sGhxSO4sqOkwH/LCWIp0FXXNp3r+7GZE3Xrssi6lbgh5bExarqY/J8yhEtYrbTKDr9rNl6dDTmy
-	16yapbROTHySk31njGb9snFJ2MHRBh0khHaEHy2pyCzBYpVk66zyRt//jc0mBDvICeGcRke6SEZ
-	3U1yE8UJHtnVwQGu1dANf10IKAyAEHjgpqZJhK/CDqbQnapPQ6KcNalurmuzKmmTHKrCMiKQ==
-X-Received: by 2002:a17:903:298f:b0:2d9:43f5:b462 with SMTP id d9443c01a7336-2dd2a1ce8d4mr275603645ad.5.1789326072035;
-        Sun, 13 Sep 2026 12:01:12 -0700 (PDT)
-Received: from server.lan ([168.138.199.194])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd2cca6b7bsm36808655ad.3.2026.09.13.12.01.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Sep 2026 12:01:11 -0700 (PDT)
-From: Coia Prant <coiaprant@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Vinod Koul <vkoul@kernel.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Coia Prant <coiaprant@gmail.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	David Heidelberg <david@ixit.cz>,
-	netdev@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="WHvOU3hr"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1BB74A379F;
+	Sun, 13 Sep 2026 21:00:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1789326058; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=2H00QShfUp2kkrqvRZQGdNd/XvBzWDqU07m+hMGre3I=;
+	b=WHvOU3hr4CrokQkF0vVVq7xeZMvACMbVFnwqtZdDQrso5hjnSDWCHQuhgZUsQ/oIF4ANen
+	WAlds1KrrgzNi5opMawTtWywcCi/J8tRhT70Kf9Ua4ptw4G/3noOQ+EDyCHgDqYsoaP5+k
+	xRSQawKSgYxiL7y9LrlU6pH5wwvlzWsBZcwRFYtAWSHqT8IqAU3pfnfWPQXcy+QNy/aI4z
+	halA+Wmzlq0IO9vPSuMZN2D8J2cFPOaS8ZpnkP3qiEN+b2WzRPDuan6pe7Lil6vvdFBiv4
+	GonfcXXHvEEQLOX+0BfVJFPf6FXx9HJHso1WL0M/FtpWTer2DXXD8n6pfQBd/Q==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: netdev@vger.kernel.org
+Cc: opendmb@gmail.com,
+	florian.fainelli@broadcom.com,
+	justin.chen@broadcom.com,
+	bcm-kernel-feedback-list@broadcom.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
 	linux-kernel@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-renesas-soc@vger.kernel.org
-Subject: [PATCH net-next v5 10/11] arm64: dts: rockchip: rk3568-photonicat: enable SGMII LAN port
-Date: Mon, 14 Sep 2026 02:58:45 +0800
-Message-ID: <20260913185849.907479-11-coiaprant@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260913185849.907479-1-coiaprant@gmail.com>
-References: <20260913185849.907479-1-coiaprant@gmail.com>
+	Nicolai Buchwitz <nb@tipi-net.de>
+Subject: [PATCH net] net: bcmgenet: restore the hardware filters on open
+Date: Sun, 13 Sep 2026 21:00:52 +0200
+Message-ID: <20260913190052.939955-1-nb@tipi-net.de>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -101,144 +49,82 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-The Ariaboard Photonicat has a Motorcomm YT8521SC Gigabit Ethernet PHY
-connected to GMAC0 via XPCS SGMII.  Enable the necessary nodes to make
-this port functional.
+bcmgenet_hfb_init() runs INIT_LIST_HEAD() on priv->rxnfc_list, which drops
+every rule off the list, and bcmgenet_open() calls it on each ifup. Every
+rule the user configured is silently lost:
 
-Add rockchip,sgmii-mac-sel = <0> to the already enabled combphy2,
-to route the SGMII interface to GMAC0.
+  # ethtool -N eth0 flow-type ether dst $MAC action 0
+  Added rule with ID 0
+  # ethtool -n eth0 | grep -c Filter:
+  1
+  # ip link set eth0 down && ip link set eth0 up
+  # ethtool -n eth0 | grep -c Filter:
+  0
 
-Enable the xpcs node and its port 0 sub-node, referencing combphy2
-as the SerDes PHY.
+Initialise the lists once at probe and restore the rules on open, as
+bcmgenet_resume() already does.
 
-Add the mdio0 node with the YT8521SC PHY at address 3, including its
-reset GPIO and LED configuration.  Also add LED configuration for the
-existing RGMII PHY on mdio1 for consistency.
-
-Signed-off-by: Coia Prant <coiaprant@gmail.com>
+Fixes: 3e370952287c ("net: bcmgenet: add support for ethtool rxnfc flows")
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
- .../boot/dts/rockchip/rk3568-photonicat.dts   | 74 ++++++++++++++++++-
- 1 file changed, 72 insertions(+), 2 deletions(-)
+ .../net/ethernet/broadcom/genet/bcmgenet.c    | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-photonicat.dts b/arch/arm64/boot/dts/rockchip/rk3568-photonicat.dts
-index 58c1052ba8ef3..fdaa4a2a4328b 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-photonicat.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-photonicat.dts
-@@ -3,6 +3,7 @@
- /dts-v1/;
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index a2305e6428d1..b916080f4ff1 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -749,8 +749,17 @@ static void bcmgenet_hfb_init(struct bcmgenet_priv *priv)
+ 		INIT_LIST_HEAD(&priv->rxnfc_rules[i].list);
+ 		priv->rxnfc_rules[i].state = BCMGENET_RXNFC_STATE_UNUSED;
+ 	}
++}
++
++static void bcmgenet_hfb_restore(struct bcmgenet_priv *priv)
++{
++	struct bcmgenet_rxnfc_rule *rule;
  
- #include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/leds/common.h>
- #include <dt-bindings/pinctrl/rockchip.h>
- #include <dt-bindings/soc/rockchip,vop2.h>
- #include "rk3568.dtsi"
-@@ -241,6 +242,7 @@ &combphy1 {
- };
+ 	bcmgenet_hfb_clear(priv);
++
++	list_for_each_entry(rule, &priv->rxnfc_list, list)
++		if (rule->state != BCMGENET_RXNFC_STATE_UNUSED)
++			bcmgenet_hfb_create_rxnfc_filter(priv, rule);
+ }
  
- &combphy2 {
-+	rockchip,sgmii-mac-sel = <0>;
- 	status = "okay";
- };
+ static int bcmgenet_begin(struct net_device *dev)
+@@ -3376,8 +3385,8 @@ static int bcmgenet_open(struct net_device *dev)
  
-@@ -260,9 +262,18 @@ &cpu3 {
- 	cpu-supply = <&vdd_cpu>;
- };
+ 	bcmgenet_set_hw_addr(priv, dev->dev_addr);
  
--/* Motorcomm YT8521SC LAN port (require SGMII) */
-+/* Motorcomm YT8521SC LAN port */
- &gmac0 {
--	status = "disabled";
-+	assigned-clocks = <&cru SCLK_GMAC0_RX_TX>;
-+	assigned-clock-parents = <&clk_gmac0_xpcs_mii>;
-+	managed = "in-band-status";
-+	pcs-handle = <&xpcs_mii0>;
-+	phy-handle = <&sgmii_phy>;
-+	phy-mode = "sgmii";
-+	phy-supply = <&vcc_3v3>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&gmac0_miim>;
-+	status = "okay";
- };
+-	/* HFB init */
+-	bcmgenet_hfb_init(priv);
++	/* Restore the filters, the MAC was reset above */
++	bcmgenet_hfb_restore(priv);
  
- /* Motorcomm YT8521SC WAN port */
-@@ -341,6 +352,36 @@ &i2s0_8ch {
- 	status = "okay";
- };
+ 	/* Reinitialize TDMA and RDMA and SW housekeeping */
+ 	ret = bcmgenet_init_dma(priv, true);
+@@ -4075,6 +4084,7 @@ static int bcmgenet_probe(struct platform_device *pdev)
  
-+&mdio0 {
-+	sgmii_phy: ethernet-phy@3 {
-+		compatible = "ethernet-phy-ieee802.3-c22";
-+		reg = <0x3>;
-+		max-speed = <1000>;
-+		reset-assert-us = <20000>;
-+		reset-deassert-us = <100000>;
-+		reset-gpios = <&gpio3 RK_PC6 GPIO_ACTIVE_LOW>;
-+
-+		leds {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			led@1 {
-+				reg = <1>;
-+				color = <LED_COLOR_ID_AMBER>;
-+				function = LED_FUNCTION_LAN;
-+				default-state = "keep";
-+			};
-+
-+			led@2 {
-+				reg = <2>;
-+				color = <LED_COLOR_ID_GREEN>;
-+				function = LED_FUNCTION_LAN;
-+				default-state = "keep";
-+			};
-+		};
-+	};
-+};
-+
- &mdio1 {
- 	rgmii_phy: ethernet-phy@3 {
- 		compatible = "ethernet-phy-ieee802.3-c22";
-@@ -350,6 +391,25 @@ rgmii_phy: ethernet-phy@3 {
- 		reset-gpios = <&gpio4 RK_PC0 GPIO_ACTIVE_LOW>;
- 		rx-internal-delay-ps = <1500>;
- 		tx-internal-delay-ps = <1500>;
-+
-+		leds {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			led@1 {
-+				reg = <1>;
-+				color = <LED_COLOR_ID_AMBER>;
-+				function = LED_FUNCTION_WAN;
-+				default-state = "keep";
-+			};
-+
-+			led@2 {
-+				reg = <2>;
-+				color = <LED_COLOR_ID_GREEN>;
-+				function = LED_FUNCTION_WAN;
-+				default-state = "keep";
-+			};
-+		};
- 	};
- };
+ 	/* Mii wait queue */
+ 	init_waitqueue_head(&priv->wq);
++	bcmgenet_hfb_init(priv);
+ 	INIT_WORK(&priv->bcmgenet_irq_work, bcmgenet_irq_task);
  
-@@ -586,3 +646,13 @@ &xin32k {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&clk32k_out1>;
- };
-+
-+&xpcs {
-+	phys = <&combphy2 PHY_TYPE_SGMII>;
-+	phy-names = "serdes";
-+	status = "okay";
-+};
-+
-+&xpcs_mii0 {
-+	status = "okay";
-+};
+ 	priv->clk_wol = devm_clk_get_optional(&priv->pdev->dev, "enet-wol");
+@@ -4272,10 +4282,7 @@ static int bcmgenet_resume(struct device *d)
+ 	bcmgenet_set_hw_addr(priv, dev->dev_addr);
+ 
+ 	/* Restore hardware filters */
+-	bcmgenet_hfb_clear(priv);
+-	list_for_each_entry(rule, &priv->rxnfc_list, list)
+-		if (rule->state != BCMGENET_RXNFC_STATE_UNUSED)
+-			bcmgenet_hfb_create_rxnfc_filter(priv, rule);
++	bcmgenet_hfb_restore(priv);
+ 
+ 	/* Reinitialize TDMA and RDMA and SW housekeeping */
+ 	ret = bcmgenet_init_dma(priv, false);
 -- 
-2.47.3
+2.53.0
 
