@@ -1,144 +1,436 @@
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com [209.85.160.198])
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83339363C6A
-	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 04:42:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC02126BE1
+	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 05:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789274558; cv=none; b=QHi4uqrL9J5tvOa/o3hyLJJPkNLsydEfZr/al9/zoR6nSJ+BINGFDO2OiDjxcvEX3+qLmaRVjOjSRlKcMmRSGqbhuonIV2B1dvQLvkEOr8Tp+WquJiGsChy1wPfshzctifqQGLI1V6MlT3z7xB18upTmKJvvSVjgRh9Buq/q9QU=
+	t=1789277074; cv=none; b=Pf6a6dYxaoOKmxHG/cEwV2g3dklp1otgO0+2GL9wYg38VGqiNwWuIuQloR/GgE6XuSsYlEOtN2yHW8xjVvBjd7DKAKBfs7Ea/xw5pPZ9lsY7N5PJHaF6+eDoalkTXBw88KTyFri04FKNw6SWIWhUyPMkLcZX+M7r9MAWJrgAXyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789274558; c=relaxed/simple;
-	bh=3tI5HXN5sQjU+9xL52vBRW7azoV7w1XlKKo+f86JnbU=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=IJIgfq8qnAHXokGi0+VtVX8UWzkGoJuETsSo+D2RbRXWU9Cc8B1Z2ZmG0giyvY9bBeGBcmIVGsVZbuAQWnODinqBwQuTtXLRAD4lDSQP/HR2e8poBUzujegLSKgXqBbWrgOClIrFwABscyduyVIaQvxu4RxOAZHAJ9HV1sr69Ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UTcPU875; arc=none smtp.client-ip=209.85.160.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1789277074; c=relaxed/simple;
+	bh=zzlPDkUCMFTJdedEFyJ7g0I40hgNp/W+Q8hIHxHvx3I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J00CP7zBXEYttWKYoXAhM4BUw0PMjFdqNeYS03+fHMUjlkZHyiQL3pSd1EPDsg8M52xc2AFnr4hc/r+KfwdLNnOCqMGFB3bQnbHcz0Q4z+QlmIlImdxiTCUeU9cLfIj8rx6KYydwdmAbdr3m5K91yXYNAHuu9sphaFVQGcSYDyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=crpSABb1; arc=none smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UTcPU875"
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-52fc0097865so62220511cf.2
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 21:42:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="crpSABb1"
+Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc4c08393dfso639223a12.3
+        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 22:24:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789274555; x=1789879355; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3dFfX9ybNbrViB+vpg9SB5CjzFois/63//qb+LkBGOI=;
-        b=UTcPU8754Cd0jY73jA/MxlXf3znr3cVOvv8nhQlywfTWTJvh92J6Xkq/CPJ2QfrtyW
-         0wOeRdE+SqZRjHWKC6//PvgWOc5ymC28HYmj0BpyCLVd0ll+E2E/CfdCYKBp3wgjvzQ0
-         Nfg6RLtQWZFXw5S7VDlQ4YxlGwGCKnAVq/ZORmU8bX+2p3dFg/BchE4KuDjfBpJNKLLs
-         Ycp17wKFK9yITOz/Ar4Xyb37vtyiRnFZrnFezwcmlFB9IhGojVOtie324YPEsCp3YFcF
-         SdN6un9HmeLiQ+Z1Ligk78q007w3bdS4yBVCYFU+BOlTF2Xgf1T9Xf/2pM5EM3xGvbSr
-         UP3g==
+        d=gmail.com; s=20251104; t=1789277072; x=1789881872; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wRaaF2+a0SEGTgyDKzcfGwSIlQd4vJWD2aCT4bXgVM8=;
+        b=crpSABb1zJ1ODXxBlS2u69sOQvJet7A4GJrOo4lbft6vk1Rn1xtaB6eCmvNpX16jP3
+         ZIHDOr5N8gj618FYBqkm/veEIkrlZ57sYXTgjgExJBJJ4UQiceVoRAV7kNwOblDXnkhs
+         LyySl0pj9ZKk4wjXzxvvjjfDvOsjWVQFIM9Q2AiJCLEShrGrXB+udcJnQpqdx4A9MoQf
+         u2O0c45CHD7qRkx2oJPWA2k0GSr23jmLDQVmjOIK0p/G0SODaWGCA63IRdyIzmqsJ3eB
+         BaStuwFa+cGbqeREleSekaHxrD1I5UReGQeAj4j/lX4+rwiUsFQzI5d4o5x2PoliDltz
+         oQtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789274555; x=1789879355;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3dFfX9ybNbrViB+vpg9SB5CjzFois/63//qb+LkBGOI=;
-        b=FmT8U7YEUbRyeYqtJsesZv9mL94LE+LUPGZBMn39TrJ0l5fU9lk4VPiDCJLchbGnLW
-         EaHKojUWLngkUtj0fcDjN90TA5QetQLz/zJjCtiBdGHK2AqpOy8X/Jm/xnhr8M9yhv/g
-         umALud9bN/ObTKUzd/45cEPes1lu9idKZ2gu2MvlRie/ZKeUabl67fek+Y1BJGTmwpHu
-         6hyKlRxw3tY35Fhm5ltLU63Bk/188jCHb2zN7Q8j447ca/G6iY5sOxDm7jRA5k55Bfrw
-         fJrf7PrxLmmSQ7gbVRPityUzFMrAFfXL5HJ923CdRXZ30KdkbgxGfK8xTILc/kZsoCi6
-         ohzw==
-X-Forwarded-Encrypted: i=1; AKwUvByI4DBvkaP2wImr7d/70hwfmEp/qIyD28GDnJ7BQ+DYs6bahpRx3ETw8TwI+hSxxtJwcD8JuEs=@vger.kernel.org
-X-Gm-Message-State: AFuF++nuxIQRPqX6VZ/up86AlB/Y5G1X+9l4QPtJ4RcdR4nSKDEruMrH
-	dbVW/NK5txhniQG35CQzQ7s1H6CS08/EAUqIEPrT+TWd0+z4uGE2eLmMkwxqqrKNnfbIhmWx93v
-	3gpaP0y/IFfw4cg==
-X-Received: from qtbkg23.prod.google.com ([2002:a05:622a:7617:b0:530:e326:b9da])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:410e:b0:530:fdd1:ae45 with SMTP id d75a77b69052e-530fdd1b17emr4271891cf.54.1789274555142;
- Sat, 12 Sep 2026 21:42:35 -0700 (PDT)
-Date: Sun, 13 Sep 2026 04:42:33 +0000
+        d=1e100.net; s=20251104; t=1789277072; x=1789881872;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=wRaaF2+a0SEGTgyDKzcfGwSIlQd4vJWD2aCT4bXgVM8=;
+        b=OrYE70kS0XcRdpzZqzqA/flvy+D1h/Ba02XewyR3itNLaapnJ7VNxfpkdSUwpPal8H
+         GdtzUzBOfOlNec4lqpZ7TL8WX3W9utKDY1cJKNNRxqe+NoUL3zvFcaFuTZQsr0TmFq9G
+         XP/nwNG3tAtk2kadNxxaBzdSeiHWgMD0eBiPkiGrinrURguRUd9Bf+mFUAd179Pe5M2O
+         r0pxyNoLgeSUwW9xhYjDG+ojRKnJ8EMVBgmKsG7gWnqPbyU/1tMJhzvESn+eaBe2hCSo
+         /HD4/rS0Y8a5hkE3gZZQ1Ht4gCsoeron0ELfbL3N1MkDb34FqSei9EWQclvKuy/XpTUN
+         wOXQ==
+X-Gm-Message-State: AFuF++mXpsrf5+/9K8+/a5zF0+MKJZgRbz4rs6Rezyz+TCOIrkW+GYB2
+	kBEFC3KgXRty3Ufj/hi5DSZuiHl4CxY8y4pFLYfKWTojAVpYkkyhzluCC1GABRDf
+X-Gm-Gg: AYBFou2SH0zJUyi5j5KtNhdAWZqIDfj950QdkiE7cVxz7zYm0qY22Pb0xvMSpChXMpS
+	OHPIBiJV5xrJjiTVsezPcWbOdd3Thr2XtoolR1prHVVHfVzJvVLQ5UoIi6Pl6GxzMU99gT4aBnd
+	JPcO7L1Kh9yBLT8JYTwYaICdjq3OXypAdZl6QLSQG0o2zeNSUdhz/k+26+GLAydz3lZzIjImkwJ
+	ZNbBJDejaqxcbpcBjUv21KQoBsIb7A6e4ZA265hFN/1+Ehlru5PJamdn3STRM9E+NGKbE0B7B87
+	sF0Sl6nuNyuDlF8XpBrwgvrsi3/OLP/BD16dy4Fcf3CfwSM0zdVYRo6ds2qCrAZX9hPi+e3MpYb
+	eXT0eUmjsEyJGavbTlssW+hzgX9dBFL7Pb/laHmZX6zYwO4g/L3tl+z/KG3g95nyRGBPqQFawIv
+	sjhpUoM9WOv+JFxO294x5MO/Gs9t5b/EKrRL5tDfBsD4J6EoqDgE3+4OzH+9ZhWfGS5FHELMOvr
+	R1Vf8yM6kwe9OCRdyxUPLEjTKYOJyOyHEne
+X-Received: by 2002:a05:6a20:918b:b0:3d0:6c90:5a33 with SMTP id adf61e73a8af0-3db0e0a9eafmr10888478637.4.1789277072295;
+        Sat, 12 Sep 2026 22:24:32 -0700 (PDT)
+Received: from narcisav-mac.thefacebook.com ([2620:10d:c090:400::5:e7c6])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33ba4efc398sm20503239eec.19.2026.09.12.22.24.30
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 12 Sep 2026 22:24:32 -0700 (PDT)
+From: Narcisa Vasile <narcisav.kernel@gmail.com>
+To: netdev@vger.kernel.org,
+	kuba@kernel.org,
+	daniel.zahka@gmail.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	shuah@kernel.org,
+	horms@kernel.org,
+	willemb@google.com,
+	petrm@nvidia.com,
+	anubhavsinggh@google.com,
+	richardbgobert@gmail.com
+Cc: linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	narcisav.kernel@gmail.com
+Subject: [PATCH net-next v3] selftests: drv-net: add BIG TCP test cases
+Date: Sat, 12 Sep 2026 22:24:19 -0700
+Message-ID: <20260913052419.77910-1-narcisav.kernel@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.1007.g17ff1f9808-goog
-Message-ID: <20260913044233.193927-1-edumazet@google.com>
-Subject: [PATCH net] tipc: reject invalid and unexpected GRP_ACK_MSG to
- prevent bc_ackers underflow
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, James Burton <jamesburton@meta.com>, stable@vger.kernel.org, 
-	Oleh Konko <security@1seal.org>, Tung Nguyen <tung.quang.nguyen@est.tech>, 
-	Jon Maloy <jmaloy@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Commit 48a5fe38772b ("tipc: fix bc_ackers underflow on duplicate
-GRP_ACK_MSG") rejected duplicate/stale ACKs in tipc_group_proto_rcv()
-by returning early when less_eq(acked, m->bc_acked).
+Add four new test cases that validate coalescing
+under increased size limits (BIG TCP):
 
-However, that check remains incomplete in two ways:
+big_tcp_data_same
+  - validates that equal-sized segments coalesce past
+   the legacy IP_MAXPACKET limit.
+big_tcp_data_lrg_sml
+  - validates that a smaller final segment coalesces into the
+    previous chain of large-sized segments while crossing the
+    IP_MAXPACKET limit.
+big_tcp_tcp_seq
+  - validates that a packet with a wrong sequence number doesn't
+    coalesce. The test uses a sequence number for which the low 16 bits
+    correspond to the correct sequence number to validate against
+    truncation bugs, since total aggregate length crosses over the
+    legacy size limit for BIG TCP.
+big_tcp_large_max
+  - validates that coalescing stops at the configured BIG TCP limit.
 
-1. When grp->bc_ackers is zero (e.g. on a quiet group, when replicast
-   ACKs were not requested, or after all expected members have already
-   acknowledged), an unexpected GRP_ACK_MSG with acked > m->bc_acked
-   passes less_eq() and unconditionally decrements grp->bc_ackers.
-   Because bc_ackers is a u16, this wraps to 65535, causing
-   tipc_group_bc_cong() to permanently report congestion and blocking
-   all future group broadcasts on the socket.
+Use a gro_flush_timeout value 2x higher for the BIG TCP test cases
+to prevent under-coalescing.
 
-2. During an active broadcast round (grp->bc_ackers > 0), the sender
-   transmits packet S and advances grp->bc_snd_nxt to S + 1. Receivers
-   increment their expected counter to S + 1 upon consuming packet S,
-   so the only valid ACK value for the current round is strictly
-   acked == grp->bc_snd_nxt.
-
-   However, tipc_group_update_bc_members() initializes each member's
-   m->bc_acked to prev = grp->bc_snd_nxt - 1 (S - 1 before increment).
-   This leaves a 2-sequence gap (S - 1 to S + 1) in sequence space.
-   An incoming ACK is therefore neither rejected as duplicate nor
-   prevented from decrementing grp->bc_ackers if an unexpected or stale
-   value (such as S) is received. A member sending acked = S followed
-   by acked = S + 1 could decrement grp->bc_ackers twice in the same
-   round, prematurely clearing bc_ackers or underflowing it.
-
-Fix this by:
-- Dropping GRP_ACK_MSG immediately if grp->bc_ackers is zero.
-- Requiring acked == grp->bc_snd_nxt and rejecting duplicates where
-  m->bc_acked == acked. Because replicast broadcast rounds are strictly
-  sequential, only grp->bc_snd_nxt can be acknowledged, and each member
-  can acknowledge at most once per round.
-
-Note that a related pre-existing issue in tipc_group_delete_member()
-(where grp->bc_ackers decrementing to zero upon member departure does
-not restore *grp->open or trigger a socket wakeup) will be addressed
-in a separate patch.
-
-Fixes: 48a5fe38772b ("tipc: fix bc_ackers underflow on duplicate GRP_ACK_MSG")
-Fixes: 2f487712b893 ("tipc: guarantee that group broadcast doesn't bypass group unicast")
-Reported-by: James Burton <jamesburton@meta.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Narcisa Vasile <narcisav.kernel@gmail.com>
 ---
-Cc: Oleh Konko <security@1seal.org>
-Cc: Tung Nguyen <tung.quang.nguyen@est.tech>
-Cc: Jon Maloy <jmaloy@redhat.com>
----
- net/tipc/group.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+v3:
+ - set gro_flush_timeout to twice the regular value for big tcp
+   test cases
+ - ignore under-coalescing failures for big tcp tests when KSFT_MACHINE_SLOW is set
+v2: https://lore.kernel.org/netdev/20260912050327.20616-1-narcisav.kernel@gmail.com/
+ - increase gro_flush_timeout to 15x the regular value for the new tests
+v1: https://lore.kernel.org/netdev/20260911050659.13367-1-narcisav.kernel@gmail.com/
 
-diff --git a/net/tipc/group.c b/net/tipc/group.c
-index 14e6732624e28edc20ff80163787bca3018cb2dd..74f6d3dac0784d5a54db3e2202ead3878d8df9e2 100644
---- a/net/tipc/group.c
-+++ b/net/tipc/group.c
-@@ -797,10 +797,10 @@ void tipc_group_proto_rcv(struct tipc_group *grp, bool *usr_wakeup,
- 		tipc_group_open(m, usr_wakeup);
- 		return;
- 	case GRP_ACK_MSG:
--		if (!m)
-+		if (!m || !grp->bc_ackers)
- 			return;
- 		acked = msg_grp_bc_acked(hdr);
--		if (less_eq(acked, m->bc_acked))
-+		if (acked != grp->bc_snd_nxt || m->bc_acked == acked)
- 			return;
- 		m->bc_acked = acked;
- 		if (--grp->bc_ackers)
+ .../testing/selftests/drivers/net/gro_lib.py  |  59 +++++++-
+ tools/testing/selftests/net/lib/gro.c         | 133 +++++++++++++++++-
+ 2 files changed, 187 insertions(+), 5 deletions(-)
+
+diff --git a/tools/testing/selftests/drivers/net/gro_lib.py b/tools/testing/selftests/drivers/net/gro_lib.py
+index b7ac0660adc0..abecf60baa53 100644
+--- a/tools/testing/selftests/drivers/net/gro_lib.py
++++ b/tools/testing/selftests/drivers/net/gro_lib.py
+@@ -40,13 +40,17 @@ Test cases:
+   - ip_v6ext_diff: (IPv6) IPv6 ext header with different payload doesn't coalesce
+   - large_max: Packets exceeding GRO_MAX_SIZE don't coalesce
+   - large_rem: Large packet remainder handling
++  - big_tcp_data_same: Same size packets coalesce past IP_MAXPACKET
++  - big_tcp_data_lrg_sml: Smaller last packet coalesces past IP_MAXPACKET
++  - big_tcp_tcp_seq: Packets with 16-bit truncated seqno don't coalesce
++  - big_tcp_large_max: Packets exceeding the BIG TCP limit don't coalesce
+ """
+ 
+ import glob
+ import os
+ import re
+-from lib.py import ksft_run, ksft_exit, ksft_pr
+-from lib.py import NetDrvEpEnv, KsftFailEx, KsftXfailEx
++from lib.py import ksft_run, ksft_exit, ksft_pr, ksft_eq
++from lib.py import NetDrvEpEnv, KsftFailEx, KsftSkipEx, KsftXfailEx
+ from lib.py import NetdevFamily, EthtoolFamily
+ from lib.py import bkg, cmd, ctl_file_write, defer, ethtool, ip
+ from lib.py import ksft_variants, KsftNamedVariant
+@@ -55,6 +59,8 @@ from lib.py import ksft_variants, KsftNamedVariant
+ # gro.c uses hardcoded DPORT=8000
+ GRO_DPORT = 8000
+ 
++BIG_TCP_GRO_MAX_SIZE = 128000
++
+ 
+ def _resolve_dmac(cfg, ipver):
+     """
+@@ -91,6 +97,34 @@ def _set_mtu_restore(dev, mtu, host):
+         defer(ip, f"link set dev {dev['ifname']} mtu {dev['mtu']}", host=host)
+ 
+ 
++def _set_gro_size_restore(cfg, size):
++    """
++    Set the local device's GRO size limits, then confirm they stuck.
++    """
++
++    _set_mtu_restore(cfg.dev, 4096, None)
++    _set_mtu_restore(cfg.remote_dev, 4096, cfg.remote)
++
++    if "gro_max_size" not in cfg.dev or "gro_ipv4_max_size" not in cfg.dev:
++        raise KsftSkipEx("iproute2 does not report the GRO size limits")
++
++    if (cfg.dev["gro_max_size"] == size and
++            cfg.dev["gro_ipv4_max_size"] == size):
++        return
++
++    old = (f"gro_max_size {cfg.dev['gro_max_size']} "
++           f"gro_ipv4_max_size {cfg.dev['gro_ipv4_max_size']}")
++    new = f"gro_max_size {size} gro_ipv4_max_size {size}"
++
++    ip(f"link set dev {cfg.ifname} {new}")
++    defer(ip, f"link set dev {cfg.ifname} {old}")
++
++    dev = ip("-d link show dev " + cfg.ifname, json=True)[0]
++    ksft_eq(dev["gro_max_size"], size, comment="gro_max_size not applied")
++    ksft_eq(dev["gro_ipv4_max_size"], size,
++            comment="gro_ipv4_max_size not applied")
++
++
+ def _set_ethtool_feat(dev, current, feats, host=None):
+     s2n = {True: "on", False: "off"}
+ 
+@@ -239,7 +273,11 @@ def _setup(cfg, mode, test_name):
+         flush_path = f"/sys/class/net/{cfg.ifname}/gro_flush_timeout"
+         irq_path = f"/sys/class/net/{cfg.ifname}/napi_defer_hard_irqs"
+ 
+-        ctl_file_write(flush_path, "200000")
++        # "big_tcp_*" tests need a longer timeout, use 2x the regular timeout
++        if test_name.startswith("big_tcp_"):
++            ctl_file_write(flush_path, "400000")
++        else:
++            ctl_file_write(flush_path, "200000")
+         ctl_file_write(irq_path, "10")
+ 
+         _set_ethtool_feat(cfg.ifname, cfg.feat,
+@@ -289,6 +327,9 @@ def _setup(cfg, mode, test_name):
+     except KsftXfailEx:
+         pass
+ 
++    if test_name.startswith("big_tcp_"):
++        _set_gro_size_restore(cfg, BIG_TCP_GRO_MAX_SIZE)
++
+ 
+ def _gro_variants():
+     """Generator that yields all combinations of protocol and test types."""
+@@ -304,6 +345,11 @@ def _gro_variants():
+         "large_max", "large_rem",
+     ]
+ 
++    big_tcp_tests = [
++        "big_tcp_data_same", "big_tcp_data_lrg_sml",
++        "big_tcp_tcp_seq", "big_tcp_large_max",
++    ]
++
+     # Tests specific to IPv4
+     ipv4_tests = [
+         "ip_csum",
+@@ -322,6 +368,10 @@ def _gro_variants():
+         for test_name in common_tests:
+             yield protocol, test_name
+ 
++        if protocol in ["ipv4", "ipv6"]:
++            for test_name in big_tcp_tests:
++                yield protocol, test_name
++
+         if protocol in ["ipv4", "ipip"]:
+             for test_name in ipv4_tests:
+                 yield protocol, test_name
+@@ -358,7 +408,8 @@ def run_test(cfg, mode, protocol, test_name):
+         if rx_proc.ret == 42:
+             raise KsftFailEx(f"GRO over-coalesced in {protocol}/{test_name}")
+ 
+-        if test_name.startswith("large_") and os.environ.get("KSFT_MACHINE_SLOW"):
++        if (test_name.startswith(("large_", "big_tcp_")) and
++                os.environ.get("KSFT_MACHINE_SLOW")):
+             ksft_pr(f"Ignoring {protocol}/{test_name} failure due to slow environment")
+             return
+ 
+diff --git a/tools/testing/selftests/net/lib/gro.c b/tools/testing/selftests/net/lib/gro.c
+index 7a333155de1a..70b0deb3c11f 100644
+--- a/tools/testing/selftests/net/lib/gro.c
++++ b/tools/testing/selftests/net/lib/gro.c
+@@ -46,6 +46,12 @@
+  *   - large_max: exceeding max size
+  *   - large_rem: remainder handling
+  *
++ * big_tcp_*:
++ *   - big_tcp_data_same:    equal segments coalescing past IP_MAXPACKET
++ *   - big_tcp_data_lrg_sml: a smaller final segment carrying it over
++ *   - big_tcp_tcp_seq:      16-bit truncated sequence number must not coalesce
++ *   - big_tcp_large_max:    coalescing stops at the configured limit
++ *
+  * single, capacity:
+  *  Boring cases used to test coalescing machinery itself and stats
+  *  more than protocol behavior.
+@@ -110,6 +116,16 @@
+ 
+ #define EXIT_OVER_COALESCE	42
+ 
++/* Must match BIG_TCP_GRO_MAX_SIZE in gro_lib.py. */
++#define BIG_TCP_GRO_MAX_SIZE	128000
++
++#define BIG_TCP_RECV_BUF_LEN \
++	(BIG_TCP_GRO_MAX_SIZE + MAX_MSS + L2_HLEN_MAX)
++#define BIG_TCP_MIN_MSS		(ASSUMED_MTU - (MAX_HDR_LEN - ETH_HLEN))
++#define BIG_TCP_MAX_FILL_CNT \
++	((int)((BIG_TCP_GRO_MAX_SIZE - 1 - (MAX_HDR_LEN - ETH_HLEN)) / \
++	       BIG_TCP_MIN_MSS))
++
+ #define ipv6_optlen(p)  (((p)->hdrlen+1) << 3) /* calculate IPv6 extension header len */
+ #define BUILD_BUG_ON(condition) ((void)sizeof(char[1 - 2*!!(condition)]))
+ 
+@@ -166,6 +182,27 @@ static int num_large_pkt(void)
+ 	return max_payload() / calc_mss();
+ }
+ 
++/* How many maximum sized segments fit under the configured limit. */
++static int big_tcp_large_cnt(void)
++{
++	return (BIG_TCP_GRO_MAX_SIZE - 1 - (total_hdr_len - ETH_HLEN)) /
++	       calc_mss();
++}
++
++/* How many calc_mss() sized segments are needed to satisfy the
++ * following condition:
++ * pkt_count * calc_mss() < IP_MAXPACKET < (pkt_count + 1) * calc_mss()
++ */
++static int big_tcp_fill_cnt(void)
++{
++	return IP_MAXPACKET / calc_mss();
++}
++
++static int big_tcp_fill_len(void)
++{
++	return big_tcp_fill_cnt() * calc_mss();
++}
++
+ static void vlog(const char *fmt, ...)
+ {
+ 	va_list args;
+@@ -560,6 +597,61 @@ static void send_data_pkts(int fd, struct sockaddr_ll *daddr,
+ 	write_packet(fd, buf, total_hdr_len + payload_len2, daddr);
+ }
+ 
++/* Send num_pkt segments of pkt_len bytes, then one of remainder len. */
++static void send_big_tcp(int fd, struct sockaddr_ll *daddr, int pkt_len,
++			 int num_pkt, int remainder)
++{
++	static char pkts[BIG_TCP_MAX_FILL_CNT][MAX_HDR_LEN + MAX_MSS];
++	static char last[MAX_HDR_LEN + MAX_MSS];
++	const int filled = num_pkt * pkt_len;
++	int i;
++
++	if (num_pkt > BIG_TCP_MAX_FILL_CNT)
++		error(1, 0, "need %d packets, array holds %d",
++		      num_pkt, BIG_TCP_MAX_FILL_CNT);
++
++	for (i = 0; i < num_pkt; i++)
++		create_packet(pkts[i], i * pkt_len, 0, pkt_len, 0);
++	create_packet(last, filled, 0, remainder, 0);
++
++	for (i = 0; i < num_pkt; i++)
++		write_packet(fd, pkts[i], total_hdr_len + pkt_len, daddr);
++	write_packet(fd, last, total_hdr_len + remainder, daddr);
++}
++
++/* In BIG TCP configuration, the total aggregate length can
++ * be greater than the legacy IP_MAXPACKET. Since the aggregate
++ * length is used in calculating the sequence numbers,
++ * send a packet with a sequence number that differs by IP_MAXPACKET + 1,
++ * to test against truncation bugs.
++ */
++static void send_big_tcp_bad_seq(int fd, struct sockaddr_ll *daddr)
++{
++	static char pkts[BIG_TCP_MAX_FILL_CNT][MAX_HDR_LEN + MAX_MSS];
++	const int num_pkt = big_tcp_fill_cnt() + 1;
++	static char last[MAX_HDR_LEN + MAX_MSS];
++	const int pkt_len = calc_mss();
++	int bad_seq;
++	int filled;
++	int i;
++
++	filled = num_pkt * pkt_len;
++	/* Low 16 bits match with the correct incoming sequence number. */
++	bad_seq = filled - (IP_MAXPACKET + 1);
++
++	if (num_pkt > BIG_TCP_MAX_FILL_CNT)
++		error(1, 0, "need %d packets, array holds %d",
++		      num_pkt, BIG_TCP_MAX_FILL_CNT);
++
++	for (i = 0; i < num_pkt; i++)
++		create_packet(pkts[i], i * pkt_len, 0, pkt_len, 0);
++	create_packet(last, bad_seq, 0, pkt_len, 0);
++
++	for (i = 0; i < num_pkt; i++)
++		write_packet(fd, pkts[i], total_hdr_len + pkt_len, daddr);
++	write_packet(fd, last, total_hdr_len + pkt_len, daddr);
++}
++
+ /* If incoming segments make tracked segment length exceed
+  * legal IP datagram length, do not coalesce
+  */
+@@ -1161,7 +1253,7 @@ static void recv_error(int fd, int rcv_errno)
+ static void check_recv_pkts(int fd, int *correct_payload,
+ 			    int correct_num_pkts)
+ {
+-	static char buffer[IP_MAXPACKET + L2_HLEN_MAX + 1];
++	static char buffer[BIG_TCP_RECV_BUF_LEN];
+ 	int nhoff = ETH_HLEN + (pppoe ? PPPOE_SES_HLEN : 0);
+ 	struct iphdr *iph = (struct iphdr *)(buffer + nhoff);
+ 	struct ipv6hdr *ip6h = (struct ipv6hdr *)(buffer + nhoff);
+@@ -1541,6 +1633,25 @@ static void gro_sender(void)
+ 		send_large(txfd, &daddr, remainder + 1);
+ 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
+ 
++	/* big tcp sub-tests */
++	} else if (strcmp(testname, "big_tcp_data_same") == 0) {
++		send_big_tcp(txfd, &daddr, calc_mss(), big_tcp_fill_cnt(),
++			     calc_mss());
++		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
++	} else if (strcmp(testname, "big_tcp_data_lrg_sml") == 0) {
++		int remainder = calc_mss() / 2;
++
++		send_big_tcp(txfd, &daddr, calc_mss(), big_tcp_fill_cnt(),
++			     remainder);
++		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
++	} else if (strcmp(testname, "big_tcp_tcp_seq") == 0) {
++		send_big_tcp_bad_seq(txfd, &daddr);
++		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
++	} else if (strcmp(testname, "big_tcp_large_max") == 0) {
++		send_big_tcp(txfd, &daddr, calc_mss(), big_tcp_large_cnt(),
++			     calc_mss());
++		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
++
+ 	/* machinery sub-tests */
+ 	} else if (strcmp(testname, "single") == 0) {
+ 		static char buf[MAX_HDR_LEN + PAYLOAD_LEN];
+@@ -1768,6 +1879,26 @@ static void gro_receiver(void)
+ 		printf("last segment sent individually: ");
+ 		check_recv_pkts(rxfd, correct_payload, 3);
+ 
++	/* big tcp sub-tests */
++	} else if (strcmp(testname, "big_tcp_data_same") == 0) {
++		correct_payload[0] = big_tcp_fill_len() + calc_mss();
++		printf("data packets of same size past IP_MAXPACKET: ");
++		check_recv_pkts(rxfd, correct_payload, 1);
++	} else if (strcmp(testname, "big_tcp_data_lrg_sml") == 0) {
++		correct_payload[0] = big_tcp_fill_len() + calc_mss() / 2;
++		printf("smaller last packet past IP_MAXPACKET: ");
++		check_recv_pkts(rxfd, correct_payload, 1);
++	} else if (strcmp(testname, "big_tcp_tcp_seq") == 0) {
++		correct_payload[0] = (big_tcp_fill_cnt() + 1) * calc_mss();
++		correct_payload[1] = calc_mss();
++		printf("aliased seq past IP_MAXPACKET doesn't coalesce: ");
++		check_recv_pkts(rxfd, correct_payload, 2);
++	} else if (strcmp(testname, "big_tcp_large_max") == 0) {
++		correct_payload[0] = big_tcp_large_cnt() * calc_mss();
++		correct_payload[1] = calc_mss();
++		printf("shouldn't coalesce past gro_max_size: ");
++		check_recv_pkts(rxfd, correct_payload, 2);
++
+ 	/* machinery sub-tests */
+ 	} else if (strcmp(testname, "single") == 0) {
+ 		printf("single data packet: ");
 -- 
-2.55.0.1007.g17ff1f9808-goog
+2.53.0-Meta
 
