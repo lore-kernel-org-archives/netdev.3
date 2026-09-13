@@ -1,63 +1,63 @@
-Received: from mail-lr2-f12.google.com (mail-lr2-f12.google.com [74.125.230.76])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989CE32A3DA
-	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 03:32:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF82283FDC
+	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 03:32:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789270358; cv=none; b=jCt00HfBImrUQAbxdOK9Eg+vr885hpy+DhkZYC5UHXreBHbmBP8bZSKlBc6/ORn5jYa/n+sRvc2fLriUKE2cWsurkszjfQuC1Bz8OPrkxUnPrrcHXxijmlm+FAOZ0UbdYBJrj5MO4OSxO/+4XkVnI9ZVYbwDsbZeZ2EFq49nrn0=
+	t=1789270365; cv=none; b=llAJTriVr/anfiJN7OZFlCXdpwBvfnbuj84Spl0Ch9O5SMv7uMESWORr62NeadmXQqTZPZQqNNAalt3CiqIXC831jScT7D/WZ9k8dAWMVl3W8ruTLYWPLU3qKU+bIe6JXQAsDwGTBzmT5NtHHpOc6O1wX6UdkSJyTh19EGYXsYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789270358; c=relaxed/simple;
-	bh=qynwl3yegS3zN7wkeohcoAEZv4LlKGQdHuntDJ7koXk=;
+	s=arc-20240116; t=1789270365; c=relaxed/simple;
+	bh=kCvbVwZC83we+errokyP7K643YD3vh2QxPQNw/0AuPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r99he832gbXlN3L/lSVRn9oYk6xdNHxf2BJ20W/ntkESHiACLkMNo+9HaS2f+B67IvfgYmj98k01lseQWsyMveJd1LKG4sNNBhqGzZ7ncP4OeghrA4upc1rtqg+VjEIVRt+q7Q8i6VeUykj/Mk+pvM2zBYdSWZLjfBQq6U30y4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K+xqe64m; arc=none smtp.client-ip=74.125.230.76
+	 MIME-Version; b=sO2J4y9hUY+GVl87hsKxcU6NanoGVZQ38Ebwix+/Hi2SO86OSj7YomwOmIfu4rme1sL1uYMXJ2rZIooHbnAfZtzEwdgoevMova5pt04nUUB80RgTx2RP7Vd1GjEM0BnMZpQgzFlEPL0UNH8bRukwxHaOrhWjHWzsZyfkjDUM0Jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YxzJVUzP; arc=none smtp.client-ip=209.85.208.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K+xqe64m"
-Received: by mail-lr2-f12.google.com with SMTP id 38308e7fff4ca-3a49bc59559so5175541fa.2
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 20:32:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YxzJVUzP"
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-3a49d2b18d5so16620751fa.3
+        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 20:32:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789270354; x=1789875154; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789270362; x=1789875162; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=xjaL8mti/vahJlLkdMnZQO8Ei/dHHViRxDz/+EAVwR4=;
-        b=K+xqe64mRgpbpxbwP50a8Gjn9ttToXXtZlpjd0dHUzX4hfIf/lDYCkhhnDVPXq+KFz
-         7o2+pmeKCd6hsbS6GHLrWGhySFNxYgHXhSnTV9gCb9VuOx8dJRt3kjBzxZ6hoZrhPZMB
-         OYNsqyK6F0BuX9KM4MXBJwwWCW1/i30zypBbJ4QHrvg8yhrrEGZPF7LrhFMuAzAr0sAK
-         1H/WPP6HZYHQa2lchsZB/laJsrthtdbJT7hu6AbhkNiLbHWFsk8e2D9vAh3x2Nv3qsKR
-         zkS5AnByw75wLEg4xhoZ6b3VFRowNutb6Ws6/gTFXgLvoS8TjyXskItoEAi5XlCRhVnm
-         bUgg==
+        bh=zMZTr/1imyQVYMPCbe2CDQylZItl7GAC+PPMeDYEaLA=;
+        b=YxzJVUzPcOQO3IPLgJihQI2ShRUZ9nIZriqRkItz3cW5PrtidhOdIP1UI3ICDRwuz0
+         RfWHzWKQtASqBjKJ+9OEHRBdEeOu6Q08YPpfMfaV8VoJBTylgqTK6ZrEZv5ml22ELsO9
+         SkSNooaMJPzSdOmtSOg25zOWT9/l1JziyaAVkHsoTguN42t2zJbCHBeJqGxDpkAcfs2I
+         jriUsr+BNIVeoZVDdElg+RghWAcImwCbBtVi0ZZVlipZXogecGtPvRJAbnTPQMBGYFXk
+         tYX3hg0vYQn28RSUInppjeoadW7q37kxAwcbNoW9PNOzOAX0LLDEvN+QMzDVOSUtAy2d
+         BYgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789270354; x=1789875154;
+        d=1e100.net; s=20251104; t=1789270362; x=1789875162;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=xjaL8mti/vahJlLkdMnZQO8Ei/dHHViRxDz/+EAVwR4=;
-        b=WHopy29v0YshbHz1iMEWW6SPtI3IXW5QaegGmRd+ZguTLmN+3s+87BsAJpTLVLFxYk
-         cm/Hg1pq8m8aLXj9+d0/UyW2YfKwIRJoH6KohUg88140ND71fWeC0sLh76xZkHBtZluo
-         CyduViVFZ+zhQVndz18juQaSxlP1JC5pbp+Q7v+PddueHuritPO44lAo1OyawuFK+44/
-         w0VubUbwl8GfTmWBGa89Sa5dxOPJJV+LjUjlTvf6u55ehzAZlKnmHEevostaSTez9ZwU
-         T6GV02j03W0bURcweJVfEiGjOQE8xP5o6w/wC5ZvBMScNdvljtn84zvZ1TwOzVq7xVT2
-         uuqg==
-X-Gm-Message-State: AFuF++ns/wi312Yzv+xwAtKZC51uKLP/HdY5CRizXx9Nm08KfGYj7f19
-	X9gm7uXcZKZsVuiSiCHL61dwWw1IIvD/mrQfUfadzGcUz9vlxj7iMiJY
-X-Gm-Gg: AYBFou082gevUed5PeQTi4NvLEyphFJRlBe9q/F6ga5V3WLVgpWgEFW0tNa4Ci7jatA
-	Yqij8R5GEoKglopVEggyBw8OClaLRsFR7wxLhS3MBD7aBbeknYU7T+TeLNU10vmILk/QL7v+/up
-	bSOn+xj2zat12Y4nUZXHlSqfmkULeNGgxxqNjMMuSbVhOWAxj/23l2zwgGsLWol9tmcTQ1/5+F0
-	kbKAds2rbbi7AyMcNX1LoUruk0EXEtDwyktZTSN5nPGnlC0LjvG2AAP+1PiMDxrcn2d63a7oOHj
-	52hg21rDZjs2YCGJfrrsLGTQf16giEYwp2cHT17FfaZsssQbE+QYnMCrYojQhz3r2M9wzOcN5Ir
-	JiKSWxH82oT+3oO7Vv9Wzo1Fck3xUg+aKZWbcbqQkbt9MMVesEeuJ6BTpQJ+PuSWFAiUQQHsLLQ
-	qWr39cHQkHUuJ2/oxGfZ/Jo0I0GEGoNsUJjp0599o/BpUn4VYjmaTPzrndslaj5sIqcWjUs/KKl
-	ep1B1mwsdcoAdSiCMcbJ2ZUBDG+llNv6KtDZ2bfEMP0
-X-Received: by 2002:a05:651c:144c:b0:3a5:ba1e:8b05 with SMTP id 38308e7fff4ca-3a5ba1e8dfamr2827451fa.1.1789270354310;
-        Sat, 12 Sep 2026 20:32:34 -0700 (PDT)
+        bh=zMZTr/1imyQVYMPCbe2CDQylZItl7GAC+PPMeDYEaLA=;
+        b=VnvPI3dmK/paXN/+qo72MlhSNV/98Yf9VUX0t7iTahXRFeiGqMs1FzXmHoVRHTvYPh
+         +hIRWwhUWrgnFOAdWjADkrNX2SrrrQGLOszAqlLYI7xyD4oEsNolStt3eVZknWCXWW1E
+         71N3a3vTgwkvWOZ5C5ELD6tvnqrcHZdpIyMUjD4QhD5TH38cIK1Lr6Pwa8OOmRtiKNas
+         b8FJWlcoN9UqzAkK4qMhY/L8XoFIOkpc+qP8yHgpMCr3Bel17rnsloRftyw2zAT/jW5F
+         pB+yKU1x6LkZqQFkIFn0XhRk0z27hO3V2l/J2IWwtQhoNYp6yRthL8q3RVmjxWBVLlmh
+         wAsw==
+X-Gm-Message-State: AFuF++nztMeYCix6fgX8hPjCtTOH1CuoO6AuLUaN06taK0uLJtMgz+Lr
+	+KpZqo7pazZl1GqIebw4mJ1DP7TJWroNdjnHdD4xaQlxg9bagSUlVcky
+X-Gm-Gg: AYBFou3RJONKakCwln8UX/mLsOLJG+txUVlemC3mjx5/F13KyAJUCQdHXaq2R04R14x
+	40AUtAmOAKCc+r/ExhvRbWMDpKrwC6PPfj7MThMq2cHF9T7aWVWxdSrv5MuDHc+UDhHQy1On9VM
+	eeBIyyYnVA/Vnvf2ZSNG/hiIXxLN2P/rq4nVKv6HmWvpxeq8bFzqkVl33oQX1mP8+PWst8jpz25
+	5euOJ+iuuFFc9rqnQX51OArKH/q9xI634yrXwDE0jLTt6bQlwTabE6C89sysRvOdAEy0RjyYY9+
+	U/IEhALNatp1KhJzvBxFZtowAhOdVh9H+lTeY/r2dugCUIP8oYG4/RgTwvdTbwJB0B9S50WrWy6
+	uOKmlQd1sdfAg7X8ffqUJ2xlANTMuAPL5zC1QeCo8MXe66EZY2DZErFoy135n/Lvmri23HO/9QD
+	eYrtbXUJocuQqXOnoD+aYJ45TSSpqH/yWqov6C8s6nlDLDxY01K0MGuTgYANe0XDO8G8eUrvzEA
+	2g35nUilg//EA7HdpLVG2lTbpqpI7/d7cxQwThieu4A
+X-Received: by 2002:a05:651c:19a0:b0:3a4:d4de:bad0 with SMTP id 38308e7fff4ca-3a5a5022d47mr13760621fa.19.1789270361516;
+        Sat, 12 Sep 2026 20:32:41 -0700 (PDT)
 Received: from dau-home-pc.. ([95.139.134.117])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a5a33a1cd1sm17024041fa.42.2026.09.12.20.32.31
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a5a33a1cd1sm17024041fa.42.2026.09.12.20.32.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Sep 2026 20:32:33 -0700 (PDT)
+        Sat, 12 Sep 2026 20:32:39 -0700 (PDT)
 From: Anton Danilov <littlesmilingcloud@gmail.com>
 To: Jakub Kicinski <kuba@kernel.org>
 Cc: netdev@vger.kernel.org,
@@ -69,12 +69,12 @@ Cc: netdev@vger.kernel.org,
 	Shuah Khan <shuah@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next 03/11] selftests: net: add a test for the tunnel RX drop reasons
-Date: Sun, 13 Sep 2026 06:31:51 +0300
-Message-ID: <20260913033213.873609-1-littlesmilingcloud@gmail.com>
+Subject: Re: [PATCH net-next 01/11] ip_tunnel: add drop reasons to the generic RX path
+Date: Sun, 13 Sep 2026 06:31:52 +0300
+Message-ID: <20260913033213.873609-2-littlesmilingcloud@gmail.com>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260902184549.63f37d04@kernel.org>
-References: <20260831215137.549324-1-littlesmilingcloud@gmail.com> <20260831215137.549324-4-littlesmilingcloud@gmail.com> <20260902184549.63f37d04@kernel.org>
+In-Reply-To: <20260902184718.64ddca2d@kernel.org>
+References: <20260831215137.549324-1-littlesmilingcloud@gmail.com> <20260831215137.549324-2-littlesmilingcloud@gmail.com> <20260902184718.64ddca2d@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,33 +83,24 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Wed, 2 Sep 2026 18:45:49 -0700 Jakub Kicinski wrote:
-> Completely unclear to me what the value of the tests you're adding is.
-> Please look judiciously at the generated code
+On Wed, 2 Sep 2026 18:47:18 -0700 Jakub Kicinski wrote:
+> > +	SKB_DROP_REASON_IP_TUNNEL_CFG_OPTS_MISMATCH,  
+> 
+> This name is way too long, maybe
+> 
+> 	SKB_DROP_REASON_TNL_CFG_MISMATCH,
+> 
+> or
+> 
+> 	SKB_DROP_REASON_TNL_OPT_MISMATCH,
 
-Dropped all three selftest patches in v2.
+It was the longest name in the whole list, so fair enough.
 
-What they did: bring up two namespaces joined by veth, build a tunnel
-pair that disagrees in one specific way, send traffic and read the
-reason back from the skb:kfree_skb tracepoint.  It is how I check that
-each path I convert reports what its commit message claims, and it is
-what caught six paths in an earlier revision of this series that still
-freed the skb with SKB_NOT_DROPPED_YET.  That value is in writing the
-series, though, and does not by itself justify 346 lines in
-selftests/net.
+Took TNL_OPT_MISMATCH in v2: what gets compared is the options the
+packet carries against the ones the tunnel is configured for, not the
+configuration as a whole.
 
-If such a test is wanted at all, I would rather come back to it
-separately, once the conversion has landed, and in a smaller form:
-
- - perf record -e skb:kfree_skb and perf script, the way
-   openvswitch.sh already does it, instead of driving a trace instance
-   by hand;
- - only the cases that are not evident from reading the code: a peer
-   that reboots and restarts its sequence number, two ends configured
-   with different options, plus a control case where nothing is
-   dropped;
- - every case tied to the function the drop has to come from, so that
-   the same reason reported by unrelated code cannot make it pass.
-
-Is that worth having, or do you consider drop reason coverage out of
-scope for selftests/net?
+I also renamed the two other reasons this series adds for the generic
+paths, IP_TUNNEL_OLD_SEQ and IP_TUNNEL_ENCAP, to TNL_OLD_SEQ and
+TNL_ENCAP, so that the three do not end up split over two prefixes.
+The GRE specific ones keep the GRE_ prefix, next to the VXLAN_ ones.
