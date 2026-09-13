@@ -1,81 +1,75 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC02126BE1
-	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 05:24:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273493C1D71
+	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 06:41:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789277074; cv=none; b=Pf6a6dYxaoOKmxHG/cEwV2g3dklp1otgO0+2GL9wYg38VGqiNwWuIuQloR/GgE6XuSsYlEOtN2yHW8xjVvBjd7DKAKBfs7Ea/xw5pPZ9lsY7N5PJHaF6+eDoalkTXBw88KTyFri04FKNw6SWIWhUyPMkLcZX+M7r9MAWJrgAXyI=
+	t=1789281684; cv=none; b=dNWLHhV4V9NO0dQpasAjev+CGq62u2VOJYiXU66s6K4TTFQnU/z52derWCzep2eWbneemLdGIj9qz0+XqhaP+3ADm0qCDlCGmJd8of6x+/qt2cDYNtZub+TvdZYrgfwCsdTMfS90K9hyahb/oDfuuWX+7bx/M4hOXJwUo9uX/uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789277074; c=relaxed/simple;
-	bh=zzlPDkUCMFTJdedEFyJ7g0I40hgNp/W+Q8hIHxHvx3I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J00CP7zBXEYttWKYoXAhM4BUw0PMjFdqNeYS03+fHMUjlkZHyiQL3pSd1EPDsg8M52xc2AFnr4hc/r+KfwdLNnOCqMGFB3bQnbHcz0Q4z+QlmIlImdxiTCUeU9cLfIj8rx6KYydwdmAbdr3m5K91yXYNAHuu9sphaFVQGcSYDyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=crpSABb1; arc=none smtp.client-ip=74.125.228.12
+	s=arc-20240116; t=1789281684; c=relaxed/simple;
+	bh=2isl3eP2I9Ofhmo1cfW/hgvgC4igkB3in+RmAUkHUsE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZEGcPEpvfJjWZDWF/S8wBJO4eu2o4LzAnEpMnFgKcY60+3u4tJVFxxt3GMluScbfTuMaULVCwCff6DdRPIZH3kvKAseOo3ERgSFGbc29g18V1D035llQ3aBdtUQDC5qAT0QHO886s2NDUYE0OLqSsVJzt4wZlChlou3KSQxfHEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GR+H538B; arc=none smtp.client-ip=74.125.228.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="crpSABb1"
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc4c08393dfso639223a12.3
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 22:24:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GR+H538B"
+Received: by mail-pz2-f42.google.com with SMTP id d2e1a72fcca58-86e6d007703so70731b3a.0
+        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 23:41:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789277072; x=1789881872; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789281680; x=1789886480; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wRaaF2+a0SEGTgyDKzcfGwSIlQd4vJWD2aCT4bXgVM8=;
-        b=crpSABb1zJ1ODXxBlS2u69sOQvJet7A4GJrOo4lbft6vk1Rn1xtaB6eCmvNpX16jP3
-         ZIHDOr5N8gj618FYBqkm/veEIkrlZ57sYXTgjgExJBJJ4UQiceVoRAV7kNwOblDXnkhs
-         LyySl0pj9ZKk4wjXzxvvjjfDvOsjWVQFIM9Q2AiJCLEShrGrXB+udcJnQpqdx4A9MoQf
-         u2O0c45CHD7qRkx2oJPWA2k0GSr23jmLDQVmjOIK0p/G0SODaWGCA63IRdyIzmqsJ3eB
-         BaStuwFa+cGbqeREleSekaHxrD1I5UReGQeAj4j/lX4+rwiUsFQzI5d4o5x2PoliDltz
-         oQtA==
+        bh=R0suMaCXibllLZ+k/N5xA3Vj2voIiuPLg/g+cL0xmFY=;
+        b=GR+H538BqwCfDO9qfWSW9TT/DOPKVAuZCJxBbctQclKCVpLHjf00j9F2/7mK6OmMM8
+         pm4ALT18Tsw0yQYamL7WDuWFUN3Z0U820MUW0ACvHktbisRU1RlmkUJV+FJ5Ya9clnRJ
+         X0zEVT/MvBCEXKj2lQULcDZa1g5u4wPLK9Rwh4BfbKFqixODgP3KJwaafvuR7qdnUYsl
+         e5EtlsUsRlBvBOJllbrLUEjX2WwqTZAuMWaiUe+FGwx3lZo9wSpONKOvRbiTcrpsueuP
+         ck4oN4EDhTWboH8HU0JAup7oIlqvTOT0GqPzatqkQ/qtk0Vp7GPDLafbCJvhdeJRA18U
+         rRcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789277072; x=1789881872;
+        d=1e100.net; s=20251104; t=1789281680; x=1789886480;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=wRaaF2+a0SEGTgyDKzcfGwSIlQd4vJWD2aCT4bXgVM8=;
-        b=OrYE70kS0XcRdpzZqzqA/flvy+D1h/Ba02XewyR3itNLaapnJ7VNxfpkdSUwpPal8H
-         GdtzUzBOfOlNec4lqpZ7TL8WX3W9utKDY1cJKNNRxqe+NoUL3zvFcaFuTZQsr0TmFq9G
-         XP/nwNG3tAtk2kadNxxaBzdSeiHWgMD0eBiPkiGrinrURguRUd9Bf+mFUAd179Pe5M2O
-         r0pxyNoLgeSUwW9xhYjDG+ojRKnJ8EMVBgmKsG7gWnqPbyU/1tMJhzvESn+eaBe2hCSo
-         /HD4/rS0Y8a5hkE3gZZQ1Ht4gCsoeron0ELfbL3N1MkDb34FqSei9EWQclvKuy/XpTUN
-         wOXQ==
-X-Gm-Message-State: AFuF++mXpsrf5+/9K8+/a5zF0+MKJZgRbz4rs6Rezyz+TCOIrkW+GYB2
-	kBEFC3KgXRty3Ufj/hi5DSZuiHl4CxY8y4pFLYfKWTojAVpYkkyhzluCC1GABRDf
-X-Gm-Gg: AYBFou2SH0zJUyi5j5KtNhdAWZqIDfj950QdkiE7cVxz7zYm0qY22Pb0xvMSpChXMpS
-	OHPIBiJV5xrJjiTVsezPcWbOdd3Thr2XtoolR1prHVVHfVzJvVLQ5UoIi6Pl6GxzMU99gT4aBnd
-	JPcO7L1Kh9yBLT8JYTwYaICdjq3OXypAdZl6QLSQG0o2zeNSUdhz/k+26+GLAydz3lZzIjImkwJ
-	ZNbBJDejaqxcbpcBjUv21KQoBsIb7A6e4ZA265hFN/1+Ehlru5PJamdn3STRM9E+NGKbE0B7B87
-	sF0Sl6nuNyuDlF8XpBrwgvrsi3/OLP/BD16dy4Fcf3CfwSM0zdVYRo6ds2qCrAZX9hPi+e3MpYb
-	eXT0eUmjsEyJGavbTlssW+hzgX9dBFL7Pb/laHmZX6zYwO4g/L3tl+z/KG3g95nyRGBPqQFawIv
-	sjhpUoM9WOv+JFxO294x5MO/Gs9t5b/EKrRL5tDfBsD4J6EoqDgE3+4OzH+9ZhWfGS5FHELMOvr
-	R1Vf8yM6kwe9OCRdyxUPLEjTKYOJyOyHEne
-X-Received: by 2002:a05:6a20:918b:b0:3d0:6c90:5a33 with SMTP id adf61e73a8af0-3db0e0a9eafmr10888478637.4.1789277072295;
-        Sat, 12 Sep 2026 22:24:32 -0700 (PDT)
-Received: from narcisav-mac.thefacebook.com ([2620:10d:c090:400::5:e7c6])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33ba4efc398sm20503239eec.19.2026.09.12.22.24.30
+        bh=R0suMaCXibllLZ+k/N5xA3Vj2voIiuPLg/g+cL0xmFY=;
+        b=m8oXtMYH4iSGEhngPeJ0ADHGrPiKf7Pq7SSdwTIb2mbg1qnhqKj7rzovVK3RKhUPhS
+         J8A7weYZ48FcPM9hPNb2ep96tJufvoqFX7rMFAh9RzQyjV8sV+p/R6inGXxRAhkdaK+9
+         oFnVETLEzVU9Ky75a9N54QVI3pOf4JwvzjoeFhPblH+LyXqsz+IfPXrhFZx14V3NlWja
+         Mz+u/ZO6b8kOr8VXhuo+tpKQL6YP10UZAU20iyAshyooVZhu0FwH4KjC/b6Vlk7pYyvm
+         3RMNg/JUxeSEQupkiPfEtwDaVkEc7JlAkI32uu0Nnwa62/LVytCuuhlRB1smw/ES67AJ
+         ICbA==
+X-Gm-Message-State: AFuF++naxyx/tfDgECHdeGMZovi0P9/j2jeB6eY2pe95p9Z7F8D/AMtF
+	EsVXfBAlvORlWJCAlYCmffCNSbyD/CqyTqq/43VMbI4+OCTsjSaRNHz1EKQBDTuJLQ==
+X-Gm-Gg: AYBFou1khV2GugK1BD9L2YX8OZg+cQDjzqFhslyDiyFCkNkBIMj8rVRLO0VtCT4g8Ns
+	W0z7p38mep4mP+9N9xoV89fwgmIZw/r1EPqnD3xOErH75ueVaDk6ioyiO087ixwoEmKzJjXqA3G
+	JReZXnHMgDWflm+ssBhBLkHuoCJYwp36kZ0lCML2TVbHQ4xTa6h8FRtCHNUI1zj9cjDETO53V8P
+	L95H7MB5zMcDG5MMKOK70XQpXFM8XU9s5QEgCCY8t/YEDCwak0yIWibdEVIxfTI9BWqu4fvSmPO
+	JDS/XHT/iZkq8lCxd1yWMA8DL5XPABcZDk7osR/qIv0fsGq2jgetAZeEjy1i5ClmMluVWBU5xNx
+	t5yrdPzc85MYW6XcJ4eYzTawEjnSmEhQCgPn1AkeNKAnRYG70k1cet44OhiGZBo6rZFL4L2PDs6
+	nSpBk1oO9/nFMBSgeWWBJ9YULLQV5/maFZKAeb6hwRTH6QHSBbuy7fN0hUjss7bTh19YELD+Sxd
+	mAVcoqPlOCFNJ9qLI7MDqyZ7d1J
+X-Received: by 2002:a05:6a00:13a5:b0:857:72f8:dc94 with SMTP id d2e1a72fcca58-86ccb545129mr9955871b3a.21.1789281680275;
+        Sat, 12 Sep 2026 23:41:20 -0700 (PDT)
+Received: from localhost.localdomain ([218.212.26.103])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86b2a5c052csm2989783b3a.58.2026.09.12.23.41.17
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 12 Sep 2026 22:24:32 -0700 (PDT)
-From: Narcisa Vasile <narcisav.kernel@gmail.com>
-To: netdev@vger.kernel.org,
-	kuba@kernel.org,
-	daniel.zahka@gmail.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	shuah@kernel.org,
-	horms@kernel.org,
-	willemb@google.com,
-	petrm@nvidia.com,
-	anubhavsinggh@google.com,
-	richardbgobert@gmail.com
-Cc: linux-kselftest@vger.kernel.org,
+        Sat, 12 Sep 2026 23:41:19 -0700 (PDT)
+From: Yige Jiang <yigejiang86@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Masahisa Kojima <kojima.masahisa@socionext.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	linux-kernel@vger.kernel.org,
-	narcisav.kernel@gmail.com
-Subject: [PATCH net-next v3] selftests: drv-net: add BIG TCP test cases
-Date: Sat, 12 Sep 2026 22:24:19 -0700
-Message-ID: <20260913052419.77910-1-narcisav.kernel@gmail.com>
+	Yige Jiang <yigejiang86@gmail.com>
+Subject: [PATCH net-next] net: netsec: fix device_node reference leak on phy_np
+Date: Sun, 13 Sep 2026 14:41:02 +0800
+Message-ID: <20260913064102.37452-1-yigejiang86@gmail.com>
 X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -85,352 +79,63 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add four new test cases that validate coalescing
-under increased size limits (BIG TCP):
+netsec_of_probe() takes a reference on the PHY device_node with
+of_parse_phandle() and stores it in priv->phy_np, but the driver never
+drops it.  One device_node reference is leaked per probe, on the success
+path as well as on every error path reached after netsec_of_probe().
 
-big_tcp_data_same
-  - validates that equal-sized segments coalesce past
-   the legacy IP_MAXPACKET limit.
-big_tcp_data_lrg_sml
-  - validates that a smaller final segment coalesces into the
-    previous chain of large-sized segments while crossing the
-    IP_MAXPACKET limit.
-big_tcp_tcp_seq
-  - validates that a packet with a wrong sequence number doesn't
-    coalesce. The test uses a sequence number for which the low 16 bits
-    correspond to the correct sequence number to validate against
-    truncation bugs, since total aggregate length crosses over the
-    legacy size limit for BIG TCP.
-big_tcp_large_max
-  - validates that coalescing stops at the configured BIG TCP limit.
+Neither consumer takes ownership.  of_mdio_parse_addr() is a static
+inline taking a const struct device_node * that only reads the "reg"
+property.  of_phy_connect() borrows as well: of_phy_get_and_connect() in
+drivers/net/mdio/of_mdio.c brackets its own call with of_node_get() at
+:364 and of_node_put() at :373, which would be a double put if
+of_phy_connect() consumed the reference.
 
-Use a gro_flush_timeout value 2x higher for the BIG TCP test cases
-to prevent under-coalescing.
+The node is still in use at netsec_netdev_open() time, where it is
+passed to of_phy_connect(), so it has device lifetime.  Release it at
+the probe error label, which every failure path after the acquire
+funnels through, and in netsec_remove().  Both releases precede
+free_netdev(), since priv is netdev_priv(ndev).  The ACPI probe path
+leaves priv->phy_np NULL and of_node_put(NULL) is a no-op.
 
-Signed-off-by: Narcisa Vasile <narcisav.kernel@gmail.com>
+There is no end-user visible symptom on currently supported platforms:
+a device_node is only freed once OF_DYNAMIC is enabled and the node has
+been detached, so on a static device tree the imbalance is inert.  It is
+observable as a refcount that grows across bind/unbind cycles, and would
+matter under device tree overlays.
+
+Found by static analysis of reference acquire/release pairing rather
+than from a runtime report.  No reproducer was produced and the change
+has not been runtime tested; it is compile-tested only (arm64,
+CONFIG_SNI_NETSEC=m via COMPILE_TEST).
+
+Fixes: 533dd11a12f6 ("net: socionext: Add Synquacer NetSec driver")
+Assisted-by: LLM
+Signed-off-by: Yige Jiang <yigejiang86@gmail.com>
 ---
-v3:
- - set gro_flush_timeout to twice the regular value for big tcp
-   test cases
- - ignore under-coalescing failures for big tcp tests when KSFT_MACHINE_SLOW is set
-v2: https://lore.kernel.org/netdev/20260912050327.20616-1-narcisav.kernel@gmail.com/
- - increase gro_flush_timeout to 15x the regular value for the new tests
-v1: https://lore.kernel.org/netdev/20260911050659.13367-1-narcisav.kernel@gmail.com/
+ drivers/net/ethernet/socionext/netsec.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
- .../testing/selftests/drivers/net/gro_lib.py  |  59 +++++++-
- tools/testing/selftests/net/lib/gro.c         | 133 +++++++++++++++++-
- 2 files changed, 187 insertions(+), 5 deletions(-)
-
-diff --git a/tools/testing/selftests/drivers/net/gro_lib.py b/tools/testing/selftests/drivers/net/gro_lib.py
-index b7ac0660adc0..abecf60baa53 100644
---- a/tools/testing/selftests/drivers/net/gro_lib.py
-+++ b/tools/testing/selftests/drivers/net/gro_lib.py
-@@ -40,13 +40,17 @@ Test cases:
-   - ip_v6ext_diff: (IPv6) IPv6 ext header with different payload doesn't coalesce
-   - large_max: Packets exceeding GRO_MAX_SIZE don't coalesce
-   - large_rem: Large packet remainder handling
-+  - big_tcp_data_same: Same size packets coalesce past IP_MAXPACKET
-+  - big_tcp_data_lrg_sml: Smaller last packet coalesces past IP_MAXPACKET
-+  - big_tcp_tcp_seq: Packets with 16-bit truncated seqno don't coalesce
-+  - big_tcp_large_max: Packets exceeding the BIG TCP limit don't coalesce
- """
+diff --git a/drivers/net/ethernet/socionext/netsec.c b/drivers/net/ethernet/socionext/netsec.c
+index d14a6584473c8..79a0a324c921d 100644
+--- a/drivers/net/ethernet/socionext/netsec.c
++++ b/drivers/net/ethernet/socionext/netsec.c
+@@ -2149,6 +2149,7 @@ static int netsec_probe(struct platform_device *pdev)
+ 	pm_runtime_put_sync(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ free_ndev:
++	of_node_put(priv->phy_np);
+ 	free_netdev(ndev);
+ 	dev_err(&pdev->dev, "init failed\n");
  
- import glob
- import os
- import re
--from lib.py import ksft_run, ksft_exit, ksft_pr
--from lib.py import NetDrvEpEnv, KsftFailEx, KsftXfailEx
-+from lib.py import ksft_run, ksft_exit, ksft_pr, ksft_eq
-+from lib.py import NetDrvEpEnv, KsftFailEx, KsftSkipEx, KsftXfailEx
- from lib.py import NetdevFamily, EthtoolFamily
- from lib.py import bkg, cmd, ctl_file_write, defer, ethtool, ip
- from lib.py import ksft_variants, KsftNamedVariant
-@@ -55,6 +59,8 @@ from lib.py import ksft_variants, KsftNamedVariant
- # gro.c uses hardcoded DPORT=8000
- GRO_DPORT = 8000
+@@ -2166,6 +2167,7 @@ static void netsec_remove(struct platform_device *pdev)
+ 	netif_napi_del(&priv->napi);
  
-+BIG_TCP_GRO_MAX_SIZE = 128000
-+
- 
- def _resolve_dmac(cfg, ipver):
-     """
-@@ -91,6 +97,34 @@ def _set_mtu_restore(dev, mtu, host):
-         defer(ip, f"link set dev {dev['ifname']} mtu {dev['mtu']}", host=host)
- 
- 
-+def _set_gro_size_restore(cfg, size):
-+    """
-+    Set the local device's GRO size limits, then confirm they stuck.
-+    """
-+
-+    _set_mtu_restore(cfg.dev, 4096, None)
-+    _set_mtu_restore(cfg.remote_dev, 4096, cfg.remote)
-+
-+    if "gro_max_size" not in cfg.dev or "gro_ipv4_max_size" not in cfg.dev:
-+        raise KsftSkipEx("iproute2 does not report the GRO size limits")
-+
-+    if (cfg.dev["gro_max_size"] == size and
-+            cfg.dev["gro_ipv4_max_size"] == size):
-+        return
-+
-+    old = (f"gro_max_size {cfg.dev['gro_max_size']} "
-+           f"gro_ipv4_max_size {cfg.dev['gro_ipv4_max_size']}")
-+    new = f"gro_max_size {size} gro_ipv4_max_size {size}"
-+
-+    ip(f"link set dev {cfg.ifname} {new}")
-+    defer(ip, f"link set dev {cfg.ifname} {old}")
-+
-+    dev = ip("-d link show dev " + cfg.ifname, json=True)[0]
-+    ksft_eq(dev["gro_max_size"], size, comment="gro_max_size not applied")
-+    ksft_eq(dev["gro_ipv4_max_size"], size,
-+            comment="gro_ipv4_max_size not applied")
-+
-+
- def _set_ethtool_feat(dev, current, feats, host=None):
-     s2n = {True: "on", False: "off"}
- 
-@@ -239,7 +273,11 @@ def _setup(cfg, mode, test_name):
-         flush_path = f"/sys/class/net/{cfg.ifname}/gro_flush_timeout"
-         irq_path = f"/sys/class/net/{cfg.ifname}/napi_defer_hard_irqs"
- 
--        ctl_file_write(flush_path, "200000")
-+        # "big_tcp_*" tests need a longer timeout, use 2x the regular timeout
-+        if test_name.startswith("big_tcp_"):
-+            ctl_file_write(flush_path, "400000")
-+        else:
-+            ctl_file_write(flush_path, "200000")
-         ctl_file_write(irq_path, "10")
- 
-         _set_ethtool_feat(cfg.ifname, cfg.feat,
-@@ -289,6 +327,9 @@ def _setup(cfg, mode, test_name):
-     except KsftXfailEx:
-         pass
- 
-+    if test_name.startswith("big_tcp_"):
-+        _set_gro_size_restore(cfg, BIG_TCP_GRO_MAX_SIZE)
-+
- 
- def _gro_variants():
-     """Generator that yields all combinations of protocol and test types."""
-@@ -304,6 +345,11 @@ def _gro_variants():
-         "large_max", "large_rem",
-     ]
- 
-+    big_tcp_tests = [
-+        "big_tcp_data_same", "big_tcp_data_lrg_sml",
-+        "big_tcp_tcp_seq", "big_tcp_large_max",
-+    ]
-+
-     # Tests specific to IPv4
-     ipv4_tests = [
-         "ip_csum",
-@@ -322,6 +368,10 @@ def _gro_variants():
-         for test_name in common_tests:
-             yield protocol, test_name
- 
-+        if protocol in ["ipv4", "ipv6"]:
-+            for test_name in big_tcp_tests:
-+                yield protocol, test_name
-+
-         if protocol in ["ipv4", "ipip"]:
-             for test_name in ipv4_tests:
-                 yield protocol, test_name
-@@ -358,7 +408,8 @@ def run_test(cfg, mode, protocol, test_name):
-         if rx_proc.ret == 42:
-             raise KsftFailEx(f"GRO over-coalesced in {protocol}/{test_name}")
- 
--        if test_name.startswith("large_") and os.environ.get("KSFT_MACHINE_SLOW"):
-+        if (test_name.startswith(("large_", "big_tcp_")) and
-+                os.environ.get("KSFT_MACHINE_SLOW")):
-             ksft_pr(f"Ignoring {protocol}/{test_name} failure due to slow environment")
-             return
- 
-diff --git a/tools/testing/selftests/net/lib/gro.c b/tools/testing/selftests/net/lib/gro.c
-index 7a333155de1a..70b0deb3c11f 100644
---- a/tools/testing/selftests/net/lib/gro.c
-+++ b/tools/testing/selftests/net/lib/gro.c
-@@ -46,6 +46,12 @@
-  *   - large_max: exceeding max size
-  *   - large_rem: remainder handling
-  *
-+ * big_tcp_*:
-+ *   - big_tcp_data_same:    equal segments coalescing past IP_MAXPACKET
-+ *   - big_tcp_data_lrg_sml: a smaller final segment carrying it over
-+ *   - big_tcp_tcp_seq:      16-bit truncated sequence number must not coalesce
-+ *   - big_tcp_large_max:    coalescing stops at the configured limit
-+ *
-  * single, capacity:
-  *  Boring cases used to test coalescing machinery itself and stats
-  *  more than protocol behavior.
-@@ -110,6 +116,16 @@
- 
- #define EXIT_OVER_COALESCE	42
- 
-+/* Must match BIG_TCP_GRO_MAX_SIZE in gro_lib.py. */
-+#define BIG_TCP_GRO_MAX_SIZE	128000
-+
-+#define BIG_TCP_RECV_BUF_LEN \
-+	(BIG_TCP_GRO_MAX_SIZE + MAX_MSS + L2_HLEN_MAX)
-+#define BIG_TCP_MIN_MSS		(ASSUMED_MTU - (MAX_HDR_LEN - ETH_HLEN))
-+#define BIG_TCP_MAX_FILL_CNT \
-+	((int)((BIG_TCP_GRO_MAX_SIZE - 1 - (MAX_HDR_LEN - ETH_HLEN)) / \
-+	       BIG_TCP_MIN_MSS))
-+
- #define ipv6_optlen(p)  (((p)->hdrlen+1) << 3) /* calculate IPv6 extension header len */
- #define BUILD_BUG_ON(condition) ((void)sizeof(char[1 - 2*!!(condition)]))
- 
-@@ -166,6 +182,27 @@ static int num_large_pkt(void)
- 	return max_payload() / calc_mss();
+ 	pm_runtime_disable(&pdev->dev);
++	of_node_put(priv->phy_np);
+ 	free_netdev(priv->ndev);
  }
  
-+/* How many maximum sized segments fit under the configured limit. */
-+static int big_tcp_large_cnt(void)
-+{
-+	return (BIG_TCP_GRO_MAX_SIZE - 1 - (total_hdr_len - ETH_HLEN)) /
-+	       calc_mss();
-+}
-+
-+/* How many calc_mss() sized segments are needed to satisfy the
-+ * following condition:
-+ * pkt_count * calc_mss() < IP_MAXPACKET < (pkt_count + 1) * calc_mss()
-+ */
-+static int big_tcp_fill_cnt(void)
-+{
-+	return IP_MAXPACKET / calc_mss();
-+}
-+
-+static int big_tcp_fill_len(void)
-+{
-+	return big_tcp_fill_cnt() * calc_mss();
-+}
-+
- static void vlog(const char *fmt, ...)
- {
- 	va_list args;
-@@ -560,6 +597,61 @@ static void send_data_pkts(int fd, struct sockaddr_ll *daddr,
- 	write_packet(fd, buf, total_hdr_len + payload_len2, daddr);
- }
- 
-+/* Send num_pkt segments of pkt_len bytes, then one of remainder len. */
-+static void send_big_tcp(int fd, struct sockaddr_ll *daddr, int pkt_len,
-+			 int num_pkt, int remainder)
-+{
-+	static char pkts[BIG_TCP_MAX_FILL_CNT][MAX_HDR_LEN + MAX_MSS];
-+	static char last[MAX_HDR_LEN + MAX_MSS];
-+	const int filled = num_pkt * pkt_len;
-+	int i;
-+
-+	if (num_pkt > BIG_TCP_MAX_FILL_CNT)
-+		error(1, 0, "need %d packets, array holds %d",
-+		      num_pkt, BIG_TCP_MAX_FILL_CNT);
-+
-+	for (i = 0; i < num_pkt; i++)
-+		create_packet(pkts[i], i * pkt_len, 0, pkt_len, 0);
-+	create_packet(last, filled, 0, remainder, 0);
-+
-+	for (i = 0; i < num_pkt; i++)
-+		write_packet(fd, pkts[i], total_hdr_len + pkt_len, daddr);
-+	write_packet(fd, last, total_hdr_len + remainder, daddr);
-+}
-+
-+/* In BIG TCP configuration, the total aggregate length can
-+ * be greater than the legacy IP_MAXPACKET. Since the aggregate
-+ * length is used in calculating the sequence numbers,
-+ * send a packet with a sequence number that differs by IP_MAXPACKET + 1,
-+ * to test against truncation bugs.
-+ */
-+static void send_big_tcp_bad_seq(int fd, struct sockaddr_ll *daddr)
-+{
-+	static char pkts[BIG_TCP_MAX_FILL_CNT][MAX_HDR_LEN + MAX_MSS];
-+	const int num_pkt = big_tcp_fill_cnt() + 1;
-+	static char last[MAX_HDR_LEN + MAX_MSS];
-+	const int pkt_len = calc_mss();
-+	int bad_seq;
-+	int filled;
-+	int i;
-+
-+	filled = num_pkt * pkt_len;
-+	/* Low 16 bits match with the correct incoming sequence number. */
-+	bad_seq = filled - (IP_MAXPACKET + 1);
-+
-+	if (num_pkt > BIG_TCP_MAX_FILL_CNT)
-+		error(1, 0, "need %d packets, array holds %d",
-+		      num_pkt, BIG_TCP_MAX_FILL_CNT);
-+
-+	for (i = 0; i < num_pkt; i++)
-+		create_packet(pkts[i], i * pkt_len, 0, pkt_len, 0);
-+	create_packet(last, bad_seq, 0, pkt_len, 0);
-+
-+	for (i = 0; i < num_pkt; i++)
-+		write_packet(fd, pkts[i], total_hdr_len + pkt_len, daddr);
-+	write_packet(fd, last, total_hdr_len + pkt_len, daddr);
-+}
-+
- /* If incoming segments make tracked segment length exceed
-  * legal IP datagram length, do not coalesce
-  */
-@@ -1161,7 +1253,7 @@ static void recv_error(int fd, int rcv_errno)
- static void check_recv_pkts(int fd, int *correct_payload,
- 			    int correct_num_pkts)
- {
--	static char buffer[IP_MAXPACKET + L2_HLEN_MAX + 1];
-+	static char buffer[BIG_TCP_RECV_BUF_LEN];
- 	int nhoff = ETH_HLEN + (pppoe ? PPPOE_SES_HLEN : 0);
- 	struct iphdr *iph = (struct iphdr *)(buffer + nhoff);
- 	struct ipv6hdr *ip6h = (struct ipv6hdr *)(buffer + nhoff);
-@@ -1541,6 +1633,25 @@ static void gro_sender(void)
- 		send_large(txfd, &daddr, remainder + 1);
- 		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
- 
-+	/* big tcp sub-tests */
-+	} else if (strcmp(testname, "big_tcp_data_same") == 0) {
-+		send_big_tcp(txfd, &daddr, calc_mss(), big_tcp_fill_cnt(),
-+			     calc_mss());
-+		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
-+	} else if (strcmp(testname, "big_tcp_data_lrg_sml") == 0) {
-+		int remainder = calc_mss() / 2;
-+
-+		send_big_tcp(txfd, &daddr, calc_mss(), big_tcp_fill_cnt(),
-+			     remainder);
-+		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
-+	} else if (strcmp(testname, "big_tcp_tcp_seq") == 0) {
-+		send_big_tcp_bad_seq(txfd, &daddr);
-+		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
-+	} else if (strcmp(testname, "big_tcp_large_max") == 0) {
-+		send_big_tcp(txfd, &daddr, calc_mss(), big_tcp_large_cnt(),
-+			     calc_mss());
-+		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
-+
- 	/* machinery sub-tests */
- 	} else if (strcmp(testname, "single") == 0) {
- 		static char buf[MAX_HDR_LEN + PAYLOAD_LEN];
-@@ -1768,6 +1879,26 @@ static void gro_receiver(void)
- 		printf("last segment sent individually: ");
- 		check_recv_pkts(rxfd, correct_payload, 3);
- 
-+	/* big tcp sub-tests */
-+	} else if (strcmp(testname, "big_tcp_data_same") == 0) {
-+		correct_payload[0] = big_tcp_fill_len() + calc_mss();
-+		printf("data packets of same size past IP_MAXPACKET: ");
-+		check_recv_pkts(rxfd, correct_payload, 1);
-+	} else if (strcmp(testname, "big_tcp_data_lrg_sml") == 0) {
-+		correct_payload[0] = big_tcp_fill_len() + calc_mss() / 2;
-+		printf("smaller last packet past IP_MAXPACKET: ");
-+		check_recv_pkts(rxfd, correct_payload, 1);
-+	} else if (strcmp(testname, "big_tcp_tcp_seq") == 0) {
-+		correct_payload[0] = (big_tcp_fill_cnt() + 1) * calc_mss();
-+		correct_payload[1] = calc_mss();
-+		printf("aliased seq past IP_MAXPACKET doesn't coalesce: ");
-+		check_recv_pkts(rxfd, correct_payload, 2);
-+	} else if (strcmp(testname, "big_tcp_large_max") == 0) {
-+		correct_payload[0] = big_tcp_large_cnt() * calc_mss();
-+		correct_payload[1] = calc_mss();
-+		printf("shouldn't coalesce past gro_max_size: ");
-+		check_recv_pkts(rxfd, correct_payload, 2);
-+
- 	/* machinery sub-tests */
- 	} else if (strcmp(testname, "single") == 0) {
- 		printf("single data packet: ");
 -- 
-2.53.0-Meta
+2.50.1 (Apple Git-155)
 
