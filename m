@@ -1,172 +1,134 @@
-Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D8A386C0A
-	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 17:16:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85BD9366048;
+	Sun, 13 Sep 2026 17:47:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789319791; cv=none; b=bd48jSvNOuGS4zNzaY61M9ijI5RkZg156bUKUMntx1tM+NRZksj+1xGr1Fq5rG83ke0McqpAZMrCjfV0KiCypXTJUmheBDxtAIdGyq0uV3sWsloTtsi0Q2OSh7pNOi+JWnj0zPWgK/R6IB8a6RTaU1n9wnwmHy+oJJ+xU2ZRF3Q=
+	t=1789321635; cv=none; b=b8lBmZtijo0KkDSCZke5klNhquVJ3O2FFpbVhRWzNcKWCga9C9kYkcCmdE2UQRY67Q5GP7vjzRGBO3Nb03a8RsrUyZLrNloThGdkZxZKmLtr+QHGR3dKW/OuI5DCf6QXX/pTWgxCDiTchQL+EsJfFgmv8neMS4Myrh5CUPdIu7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789319791; c=relaxed/simple;
-	bh=oEcgvmIyfYBLevyhw2K4Zwm3fUR/mdJbCzW0J0IO+e0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qKoueOkuqspwXlKMfiHooWoGBFtt6Fx7Frm7yjYabGThn2FKPYHVbqyJo+M0KplYI5xJleRHv0eIHf4wCFGWXg/2llG/jlSO82fCxYRz0E6Ig2r5Is4Ezac7AJbiFul78s81+KFnvqLm6DDBCWqjVGVHEOEe60kJ+FY90ZSPAF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QoDboo+5; arc=none smtp.client-ip=74.125.224.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789321635; c=relaxed/simple;
+	bh=bZ3cbZcKzka8OzsUYfvOtU7Gwk+7yvshVdUbjo3IBOA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gZERO+nrMAzkacmA+BPi0cslspNA8mtcZowGxsTHwoD9/Uaut0dtILQKsygNZhWZbw0C69Y+L9QIn4CRxaoJhMzeQYj0b9Ii4BbTqf3+jZYq+a4DjMFkbt3B3xyXdY1Ffj5s6FnGXIOUUbuTBkOhjiFEjbeTaBbXREK2TJq4VnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LCMUyw2A; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QoDboo+5"
-Received: by mail-yx2-f12.google.com with SMTP id 00721157ae682-8659af7454eso8790607b3.1
-        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 10:16:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789319787; x=1789924587; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Nm14xqAcjp/Z6XZ00s6jk3HYTG3m5Se93UscFbQ0Cj0=;
-        b=QoDboo+5LAC84Ww5saQwQ2DL6XH043BO7qB8Vr6NOYiHqT0T4FQwQx+E1lPWKglMt8
-         a218Gr6FsUtVYA7X7H3O37G0flb3sEypI1fVxl+P0VJu7Eh91ON4CfI6uVO1KMOxikwP
-         7pBXo7Y6JOhZeBwrXay0CrIyfELzlBT803qYVaa6Hm4rOMDZ0KRY6oQ85vmi9a+f3WuM
-         v+GRgdKNRbe2oPKradHO9Glr4pUZst09Epk7drVGIqpj0SuyWbroiP7LnCcx55bFJ70f
-         wF0AWumtCk3WvL4tGVJ3WzLeHBEkNiZ/D26OxB/+DrXCOd7RapiX/pZdXBHXkpH2h76W
-         jHXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789319787; x=1789924587;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Nm14xqAcjp/Z6XZ00s6jk3HYTG3m5Se93UscFbQ0Cj0=;
-        b=nDh6hpjx1iSiWck4fdX/HZv4Yn8JLT2+MBOrdf0UtRw+C0SGA+aqrgzPvU/7KED2zs
-         TL+fNNL1pzRol9H6p525PJot7DiM7Si25q/GPlQVIGSFzJAE0GHMJl2mr3bdiPwBxgT6
-         f0MYjvWR2KQwWuGCeiD0wUypif1zecfhJzsmrOhhJRRJspjhwOBQlgYdzhkreMelnvFN
-         hBgHsd7gL9w9mBmeVVH7NLSLgBlILSerao/M9oFfMUXiwOcAOO2g2dI/RAWFJDH9Jc6+
-         R0sgPmLQqm5pAYXY75qHHkV8e7tZNVUuC5OWOIetHvifOcJcvFTDUuGOyo218cnVja6D
-         tNtw==
-X-Forwarded-Encrypted: i=1; AKwUvBw1Q7WQSm8W4iDyPCmOvct8rsdqvLAX/sF3NdwI3XTQIFeVH+bcFG5xGzGZW8nAziO/mKMEr1I=@vger.kernel.org
-X-Gm-Message-State: AFuF++l4NGluCHlly88BXrFzgXH9bGgJZ3xjOgOp+nbSkJcfkDID+jjd
-	NnmwG+FCoUTFnVVEhrCRv6JTfEhjF/SuWRH7XJzYAZ+80vpiD6J7qIyd
-X-Gm-Gg: AYBFou2ngP+hzz2agWF7i2z1+0aRtmgSBbd7x2JyTOWiknvO2mkrlZjqrz+qDUYQ0iF
-	S47C+b4CPVr80EM6diAnynvT3V6mmgkou+6N2QovUOBP39TarKrbiTnollYZCMAMlkue4Y/RUOZ
-	z2oujKRULGef0Lq6JtvQtW3aAAPlHEv/xSMi6l67FQFOWYBLje9PM/hQWAxVnUseB/NA40oySMg
-	KnQwvp2niE5elaF+Fwx9B+cLnf3XWbPBjmk3CCkngEbe5y6PEgZ4RaydKL1xmvRwsnyvrRCHuPo
-	vDOAMqb/RXnuz36jqBTOMe3nh3AAyFwHFyt+oGQPrfiYV8N8gCIlt09a83MuyZCDapWW32XC1EI
-	WlXj2LAbQ1Fgk+1PqdRjqxecHz8AjSgJa9GYbCb9/RiWJkwioFfsB+ITMFc8i5LmzHTSRJhTq0n
-	dzkxKXitFkNFG1f4naX8EMYCkyf9nRLasDKrD6IXiIjlMBpwhohaG3vvnqmX8TVdtR0Z9WKOd6
-X-Received: by 2002:a05:690c:6b01:b0:873:5c0f:28c with SMTP id 00721157ae682-887ae01b17cmr16218647b3.54.1789319786757;
-        Sun, 13 Sep 2026 10:16:26 -0700 (PDT)
-Received: from devobuntu.lan ([2600:6c5c:6b00:316::23])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8847db4476bsm29210607b3.5.2026.09.13.10.16.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Sep 2026 10:16:26 -0700 (PDT)
-From: Matt Vollrath <tactii@gmail.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	Matt Vollrath <tactii@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH iwl-net v2 2/2] e1000e: fix ps_pages DMA map error sentinel
-Date: Sun, 13 Sep 2026 13:15:55 -0400
-Message-ID: <20260913171555.89537-3-tactii@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260913171555.89537-1-tactii@gmail.com>
-References: <20260913171555.89537-1-tactii@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LCMUyw2A"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 611C61F000FF;
+	Sun, 13 Sep 2026 17:47:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789321633;
+	bh=A2lVv0GUlGMVjlMaL7oDZcT85SbrHukw05wksytmVWk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=LCMUyw2Amx5KwfrsNaZBD0Xo5hQCD1beua/43mJngL+Oy+oIUycaVT/BUBu3QQCOR
+	 zBCJOnZZp7ahHbU3f9Yj5Gsaqg9cd2xlFUTES1s2IPhI086qlt9dfYrID/gi66yC3H
+	 8nccufY5NsNw9N9KrIrFUm3jUqIjD3Yppo9JfD9Elkq6zW14iS/qmjkSzfLY8P/Hmy
+	 o9FxWkh/t2NXJs/KclpeSRz7n0p7ad4k3qL6PPud/nUg8zKBSq/Yeo7MMseq5ZYodw
+	 7fsA2/vQOjMxNbKI5qYeDfqQBI6UXwwV8V3U70xhAEG184wbwJavqmRVAhVFnKvDlK
+	 SBqlQXV+R+7kQ==
+Message-ID: <c5b348cc-bf4c-4015-ab52-d842485a438d@kernel.org>
+Date: Sun, 13 Sep 2026 19:47:08 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net] mptcp: return sk_wait_data() errors from recvmsg()
+Content-Language: fr
+To: markdamirkan@gmail.com, Mat Martineau <martineau@kernel.org>,
+ mptcp@lists.linux.dev
+Cc: Jakub Kicinski <kuba@kernel.org>, Geliang Tang <geliang@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Simon Horman <horms@kernel.org>,
+ linux-kernel@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>
+References: <20260913-b4-send-mptcp-recv-error-v1-1-4eaa3684a8b8@gmail.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20260913-b4-send-mptcp-recv-error-v1-1-4eaa3684a8b8@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-While allocating packet-split buffer pages, a failed DMA mapping would
-leave DMA_MAPPING_ERROR in the ps_page->dma field.
+Hi Mark,
 
-This would have two consequences:
-* The next attempt to allocate that buffer would write DMA_MAPPING_ERROR
-  to h/w if all pages are allocated. If the h/w uses that buffer and is
-  handling a frame large enough to touch the affected page, it would
-  cause a DMA fault and be dropped. The driver would then call
-  dma_unmap_page() on DMA_MAPPING_ERROR and unknowingly send the
-  uninitialized page up the stack as part of the frame payload.
-* On ring teardown, dma_unmap_page() would be called on
-  DMA_MAPPING_ERROR.
+On 13/09/2026 12:30, Mark Amirkan via B4 Relay wrote:
+> From: Mark Amirkan <markdamirkan@gmail.com>
+> 
+> Commit 581302298524 ("mptcp: error out earlier on disconnect") made
+> mptcp_recvmsg() stop when sk_wait_data() returns an error.  The error is
+> stored in err, but the function then jumps to a path which returns
+> copied.  When no data was copied, recvmsg() therefore returns zero and
+> reports a false EOF.
+> 
+> Store the result in copied, which is the value returned by the function.
+> This also keeps the usual partial-read result when data was copied before
+> the error.
 
-This condition is only reachable when MTU > 1500 and PAGE_SIZE <= 16K.
+Good catch! Indeed, it looks like it is a typo and "copied" was supposed
+to be assigned.
 
-Fix this by setting ps_page->dma = 0 upon mapping failure and separately
-testing ->page and ->dma during allocation and teardown.
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-The rewrite of the ps_pages section of e1000_clean_rx_ring was necessary
-to recognize the case of an allocated page without a valid DMA mapping.
-It also fixes a separate bug which would potentially leak pages on ring
-teardown. The cleaner stops cleaning pages when h/w reported that it did
-not write to a page in the sequence, leaving the following pages
-allocated and mapped. The teardown would then break early and leak the
-unused mapped pages. If the ring is re-constructed by down/up with
-similar configuration, it would reclaim those lost pages. This would
-only affect configurations with rx_ps_pages >= 2 (MTU > PAGE_SIZE) and
-the same condition of MTU > 1500 and PAGE_SIZE <= 16K.
+@Net maintainers: can you please apply it directly in the net tree? (if
+no issues are spot by Clashiko) No need to take a detour via the MPTCP
+tree for this fix.
 
-Signed-off-by: Matt Vollrath <tactii@gmail.com>
-Assisted-by: Claude:claude-5-fable
-Fixes: bc7f75fa9788 ("[E1000E]: New pci-express e1000 driver (currently for ICH9 devices only)")
-Cc: stable@vger.kernel.org
----
-v2:
-* Reword last paragraph of description.
----
- drivers/net/ethernet/intel/e1000e/netdev.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+> A recvmsg() blocked in one thread reproduces the issue when another
+> thread disconnects the same MPTCP socket with connect(AF_UNSPEC).
+> Before this change recvmsg() returns zero; afterwards it returns -EPIPE.
 
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index 26f45ee8c7e7..063fc8cd2673 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -759,12 +759,15 @@ static void e1000_alloc_rx_buffers_ps(struct e1000_ring *rx_ring,
- 					adapter->alloc_rx_buff_failed++;
- 					goto no_buffers;
- 				}
-+			}
-+			if (!ps_page->dma) {
- 				ps_page->dma = dma_map_page(&pdev->dev,
- 							    ps_page->page,
- 							    0, PAGE_SIZE,
- 							    DMA_FROM_DEVICE);
- 				if (dma_mapping_error(&pdev->dev,
- 						      ps_page->dma)) {
-+					ps_page->dma = 0;
- 					dev_err(&adapter->pdev->dev,
- 						"Rx DMA page map failed\n");
- 					adapter->rx_dma_failed++;
-@@ -1722,13 +1725,15 @@ static void e1000_clean_rx_ring(struct e1000_ring *rx_ring)
- 
- 		for (j = 0; j < PS_PAGE_BUFFERS; j++) {
- 			ps_page = &buffer_info->ps_pages[j];
--			if (!ps_page->page)
--				break;
--			dma_unmap_page(&pdev->dev, ps_page->dma, PAGE_SIZE,
--				       DMA_FROM_DEVICE);
--			ps_page->dma = 0;
--			put_page(ps_page->page);
--			ps_page->page = NULL;
-+			if (ps_page->dma) {
-+				dma_unmap_page(&pdev->dev, ps_page->dma,
-+					       PAGE_SIZE, DMA_FROM_DEVICE);
-+				ps_page->dma = 0;
-+			}
-+			if (ps_page->page) {
-+				put_page(ps_page->page);
-+				ps_page->page = NULL;
-+			}
- 		}
- 	}
- 
+I see that our test suite currently doesn't exercise this error path. By
+chance, do you have a reproducer to avoid similar regressions later on?
+Ideally, one using Packetdrill, the MPTCP fork in this case [1].
+
+[1] https://github.com/multipath-tcp/packetdrill
+
+Cheers,
+Matt
 -- 
-2.43.0
+Sponsored by the NGI0 Core fund.
 
