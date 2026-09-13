@@ -1,169 +1,202 @@
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0226F296BD3
-	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 23:08:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.204
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789340894; cv=pass; b=diyfXik8VbABwfmgOvZau/CiwDWe2nmv9cfJxbHtG9vYCbs2nNfAN1PXj3RX5fI5ixD+FuwP3RiFun3VEgFDWNjVIOtHVmBQr/oh3V+xlJKY8iwbjzMTUMgBZayNXx4RZq96LigFboOH9Xnu5LRQ0s9pje8J7NOdXw8QyrNkMfA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789340894; c=relaxed/simple;
-	bh=DXes9xsnyMTyzixU1rmSeIaBDLxOPxqOwPIfYET+/jA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cE/1ZUrv1IThZsA1/gKOL4rW0S2SV7w7nfuf9XzHs/DEfenfpqGrsgvjKAiShkyroM6UfUFpTsJec0cHgnedRrBi5AkwFU7Smk89Gs4d9shvZ8tiglKU7N2RWlHrepiW0S8PDfHwRYrr/0q1qfRJ8IhRM9zgKpITf/NtBWSynrQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Hn5toEpe; arc=pass smtp.client-ip=74.125.230.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C306334C39
+	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 23:32:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789342376; cv=none; b=ZNezu6tFUcPc5HCpE/RJLQet6jOFqWendnIxXCY63gmAZlyBfo2rm8cW8K+axAz9KQmyesKQcSTYf1poEtXXEk+MjJbUZto7Yx9Xh8zSpNDmXXhRyBJi2QFQHLO5gCpuhW6OuBCaEcOptWZOLbpSyQBVGUOTLgd1NEpqfZr0HxE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789342376; c=relaxed/simple;
+	bh=+RhrkwA9SvjlL/qkgM54FFpL3XaKOfHyLAPjmc6RTG0=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=OkWSm8ZR/rBez7bgbKHB6xrcPYwzxB7cqxYTIdrr+tmAsaE6WH70uKI93MXZ6S7Iis2f0VaYwjGdd4/pv6rJU0UwhR9PQIgO13pvxdPOjcS+zIyJNvoZIbkwO01VUr+68WUtUeunpdEokkCgqcA8yVF2k6lpKE73kzqx8XpC1YM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PB9MhBJ6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Hn5toEpe"
-Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-530c602630bso16281491cf.3
-        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 16:08:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789340892; cv=none;
-        d=google.com; s=arc-20260327;
-        b=bhCZVW9VN66OD9qVUAY8QconITP8qovHK0ZZYrX182mJHfr+ShvbW9BCrO9Z1E6Uph
-         N65B/k/Ux9/Tto4BqYWO+znv2cCYWoPhQ29UejA4TFbopgV+omupwP/cOktKxO8CE3Z2
-         7Ue7TFKquFqGlEpNWBayReztyiyQ17YiWR96yVvHhmq6JKFwXJztX09AA8/l4bjoDcYi
-         18JL0KwwIUHPfQSxeSac8iHMYXcFMPHEtrUgW4hn0lQ3QZfCfShhpVWjH5eQEs/tD2VA
-         LRDn1iHrsKDr3qQmWpTl4dgPgqhrZAFdQAbb15etKwsPqJGQyU5Sa6UjZxhvuxMRf4pf
-         cREw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xRbG0DVQ5VHY3qqALlMkPrYtIobPfZTAAIFgs1QLm4A=;
-        fh=5tT0lJBhwy12Clq8HwSmHBj+grk73lJwqjU3wWYk1Ss=;
-        b=Xg3tYYaUWoGYt1TTVhqoVNT0snBhBNvD+foXEU10zz8LnZxvYjDlV4btX5v+2MQRG0
-         LQ2MQHiga/HQX/sZJFdj6EAHwJHofGYwz9Mj40udohL/HlMGdcvPqh0jSSYU8k8QPDGZ
-         FwselL8vRdawtSaqrsn8Kqv8x10BnYS2p32E7sZkn7aUtVB4/NmgxP2AuSIXEkljRCdX
-         +JMJfnThW3o/MP+l5OJp71vFUfx+ZqIlRai6FKWgGBfxP82ly27xIdegRCxIqV2+Qj37
-         ptsBwbg/hSiQGx3iPVUtpnvARB0ihVfkOooE5WII3Pl6XYEGev+PjBVaxZep6lRxMO6/
-         zPGg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789340892; x=1789945692; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xRbG0DVQ5VHY3qqALlMkPrYtIobPfZTAAIFgs1QLm4A=;
-        b=Hn5toEpeGOh2oMptvnwj1kHad8duX7cPO3qapr2BUXzDQHXVeQLTmh1ePl60IcNJmI
-         HRGPeHzYYIvlM8PxAkyAUROlq88FqZcpdWu+6vs2xojdeAS7dPFArBOwzBRjolze6b7b
-         qewT+Ixx4cwK1+4CbT7iWxRBkvIhGlyiJrT/dTck2Qu2ew55i4W6Q7ssYHXXY8JxOjMu
-         uIyjzb6RSajpfqpGiWr5Sb8guOcK/bbbOPSMd7FytKru3HHUoXLrBDnPXXytQE40KAl4
-         bRoohPtYfPFOKsuSuIBS5gBnI4kyvqBLyNSrOLGITdViYTtE9QLtiq5QK/B4VN4nmgbL
-         MlZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789340892; x=1789945692;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xRbG0DVQ5VHY3qqALlMkPrYtIobPfZTAAIFgs1QLm4A=;
-        b=O+ygIFYchaEj4LQ4kIIHvk8lORXsHj2ORbOmTN1fhkl1+EmHtJI3sXmwGnLZGuhL2h
-         AGZplT5w2y77t2q71u2ue1Sl/owuMpLO94434X8Av8t5WJ33wl4lZ+wdEnwGT3J54j3L
-         7UF9pLEY+SRyOdJiDEWA/d8WzQF+DTA1f0kVmJodIifJZ4l93S6nBkXOTyzDXfpBC0kx
-         JHZzW1zfZkRH6xyNI5/jSPnWy1yeGKbmKwfHQpZGFwdgYnsNh9+JIiBibsUPWEiesB5E
-         fjDqE7vtBcRpvb6rR7bEN2bxkhco/RgKv7KPE+yYfiFTdVlDBmVhoSg/7ZgSVx5KKR0/
-         IOiw==
-X-Forwarded-Encrypted: i=1; AKwUvBwA7tnlY3aDQK7oRaYjkH8TqT+dTKPJ8k9agp328FPtr56zIfdHZ6TnJy83NJZZr0Zare0i2Pg=@vger.kernel.org
-X-Gm-Message-State: AFuF++lipKHpUJb8nMz+JC9zxmBR4qUYKHvMJK7h3X98w/GocpaE+wY2
-	pkq9h6qSd0G2ecq1qt0G7xsxu2pPuXfB8Xyj4q9yvKupJc6wvW6LDdgAtOKRrz0CH6cyrS+hKI6
-	qqEmdtj0xamqLzrK/EBI4WS4nePiTSQhdzFp+BvCO
-X-Gm-Gg: AYBFou29Hu8idQT/9zaQvhfHi4447C2qR6NTVDdHexR8bYeOYr6CGJ6d6UKfLMaOVrM
-	6COYRxxQMj1CPdeFUcKwqzf6OiR9GDgEtSVR6Mp0gr3bBZh7bkmK12i61SlLSuPtKt9u2zBr48n
-	vH9D1hITEGUPkwnS4h2MOudzNy8fxUwscf23rJsAiJ9HIMKqlXNDKNZPBucKusf0LpOIlLhi0nS
-	MQAVU0khnSQrWiHq9XfwdNMHlyMqlBw+qXE1SlY1zijqJBWdsnzJNp2Km2uP89TryeDIIUIVb4z
-	fpbXiPKa2Tfp4m9TlG7/7dKFb2lIG5z9byYgCiyXuN9YPM3XiW+sCovdvsb4Qy2umFTL55wRXAt
-	OE5kObtG9noztD+6OKS13dlc4NzMoyMjC0MpXLFM4NXpWLnaE5uuCERHh4I0e4Z6s7hQ=
-X-Received: by 2002:a05:622a:1904:b0:530:b2e4:d5a1 with SMTP id
- d75a77b69052e-5310d08ebd9mr1666031cf.60.1789340891034; Sun, 13 Sep 2026
- 16:08:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PB9MhBJ6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A00581F000FF;
+	Sun, 13 Sep 2026 23:32:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789342375;
+	bh=hrMHvaHbz/HvkHKSKgRBpKKMUD0lMaEjny6uZVNAA9Y=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=PB9MhBJ6tT4fWcCjSf7mTHYxec2ZuWuVaTHmNsup4tvmB3dNUUzNAtJfNc4w2yWEf
+	 ZpbP/FJJYAfX5TBD69w+ScXIvVqdJooOiJM9uFsWdf15CPQdt67dCAemoIxND59+a6
+	 nUWW/zlS0a7C3TPYGMTxZfzqw7gTzVnNovT+UauQnXsLlAmyZlhCpGTor3uLVfRbzB
+	 azLRyICPeHkz4Cp/aX9xbxodyWgse6ryeJoZ2deJMp3K7LDXTSMvxxf/iHg+HaFaez
+	 DkUcCcVeSUoJe/ctAAegrzqkqGBsOoaHX1RN5a2aNbGK4M/sARDsvrCftKldjwBzCH
+	 a7XeWsgajIfUA==
+Subject:
+ Re: [PATCH v2 net] pppoatm: ensure a writable skb header and linear data
+From: netdev-bot+sashiko@kernel.org
+To: edumazet@google.com
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com, mitch@sfgoth.com,
+ 3chas3@gmail.com, qingfang.deng@linux.dev
+Date: Sun, 13 Sep 2026 23:32:54 +0000
+Message-ID: <178934237420.22033.12474248772012953233@kernel.org>
+In-Reply-To: <20260912233048.3977192-1-edumazet@google.com>
+References: <20260912233048.3977192-1-edumazet@google.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1789302084.git.zihanx@nebusec.ai> <a4f108b00c7d3c0997bfcee84a9e7e481c07ad5b.1789302084.git.zihanx@nebusec.ai>
- <willemdebruijn.kernel.57ad3a4d0955@gmail.com>
-In-Reply-To: <willemdebruijn.kernel.57ad3a4d0955@gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Sun, 13 Sep 2026 16:08:00 -0700
-X-Gm-Features: AcwNN1XPieBwHmTcaQqSQYQyOFNrmOUAYYi4uLA-4au3SSGhTImp2iLuqjRICx4
-Message-ID: <CANn89i+QqU5sw=WPrcki8W=-HoyNLpHGj2C568VHDU1CyZgodQ@mail.gmail.com>
-Subject: Re: [PATCH net 1/1] net: gso: limit recursive IP-in-IP segmentation
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Zihan Xi <zihanx@nebusec.ai>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	dsahern@kernel.org, idosch@nvidia.com, willemb@google.com, kuniyu@google.com, 
-	kees@kernel.org, richardbgobert@gmail.com, jiayuan.chen@linux.dev, 
-	stable@vger.kernel.org, Vega <vega@nebusec.ai>, Luxing Yin <root@tr0jan.top>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, Sep 13, 2026 at 3:46=E2=80=AFPM Willem de Bruijn
-<willemdebruijn.kernel@gmail.com> wrote:
->
-> Zihan Xi wrote:
-> > IPIP GSO/TSO support makes IP-in-IP GSO dispatch re-enter
-> > inet_gso_segment() or ipv6_gso_segment() for every nested IP header. Th=
-e
-> > only state that tracks this nesting is encap_level, which records heade=
-r
-> > bytes and has no recursion bound. A sufficiently deep chain can consume=
- the
-> > kernel stack before a transport GSO callback is reached.
-> >
-> > The unbounded callback nesting was introduced when inet_gso_segment() w=
-as
-> > made stackable by "ipv4: gso: make inet_gso_segment() stackable". GRE G=
-SO
-> > support predated that change, and IP-in-IP GSO/TSO support later made t=
-he
-> > affected path reachable.
-> >
-> > Track the number of IP GSO callbacks in skb_gso_cb and reject the 15th
-> > callback entry. Thus 14 callback entries are allowed to complete;
-> > GSO_RECURSION_LIMIT is the rejection threshold, not the number of
-> > successful callbacks. Initialize the counter for each top-level GSO
-> > operation and check it in both IPv4 and IPv6 handlers so mixed IP-in-IP
-> > nesting is bounded.
-> >
-> > Fixes: 3347c9602955 ("ipv4: gso: make inet_gso_segment() stackable")
-> > Cc: stable@vger.kernel.org
-> > Reported-by: Vega <vega@nebusec.ai>
-> > Assisted-by: LLM
-> > Co-developed-by: Luxing Yin <root@tr0jan.top>
-> > Signed-off-by: Luxing Yin <root@tr0jan.top>
-> > Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
-> > ---
-> >  include/net/gso.h      | 9 +++++++++
-> >  net/core/gso.c         | 1 +
-> >  net/ipv4/af_inet.c     | 3 +++
-> >  net/ipv6/ip6_offload.c | 3 +++
-> >  4 files changed, 16 insertions(+)
-> >
-> > diff --git a/include/net/gso.h b/include/net/gso.h
-> > index 29975440cad5..2665acbb9205 100644
-> > --- a/include/net/gso.h
-> > +++ b/include/net/gso.h
-> > @@ -19,10 +19,19 @@ struct skb_gso_cb {
-> >       int     encap_level;
-> >       __wsum  csum;
-> >       __u16   csum_start;
-> > +     /* Number of GSO callbacks this packet already went through. */
-> > +     u8      recursion_counter;
-> >  };
-> >  #define SKB_GSO_CB_OFFSET    32
-> >  #define SKB_GSO_CB(skb) ((struct skb_gso_cb *)((skb)->cb + SKB_GSO_CB_=
-OFFSET))
-> >
-> > +#define GSO_RECURSION_LIMIT  15      /* First callback depth to reject=
-. */
-> > +static inline int gso_recursion_inc_test(struct sk_buff *skb)
->
-> What is 15 based on? Is that where in your test stack overflow occurs?
->
-> A realistic practical limit would likely already be smaller.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-An alternative would be to limit total header sizes (nhoff) to 256 bytes or=
- so.
+Critical: 0 · High: 1 · Medium: 0 · Low: 0 (1)
+
+- [High] pppoatm_send() does not make the frame linear, although the
+  commit subject claims to "ensure a writable skb header and linear…
+
+Pre-existing issues:
+- [Low] net/atm/pppoatm.c never initialises pvcc->chan.hdrlen although
+  the channel requires LLC_LEN (4) bytes of headroom for e_llc…
+
+--
+
+pppoatm: ensure a writable skb header and linear data
+
+pppoatm_send() now uses skb_cow_head() to get a writable header with room
+for the LLC header, adds a pskb_may_pull(skb, 1) before looking at
+skb->data[0], and defers the SC_COMP_PROT pull plus the LLC push until
+after pppoatm_may_send() has succeeded, dropping the old "undo" heuristic.
+
+A couple of questions about the linearity claim and about the channel
+headroom hint.
+
+> diff --git a/net/atm/pppoatm.c b/net/atm/pppoatm.c
+> index 6da52d12df68e..5214786e61d11 100644
+> --- a/net/atm/pppoatm.c
+> +++ b/net/atm/pppoatm.c
+> @@ -292,10 +292,13 @@ static int pppoatm_send(struct ppp_channel *chan, struct sk_buff *skb)
+>  	struct atm_vcc *vcc;
+>  	int ret;
+>  
+> +	if (!pskb_may_pull(skb, 1)) {
+> +		kfree_skb(skb);
+> +		return DROP_PACKET;
+> +	}
+> +
+
+[Severity: High]
+The subject says "linear data" and the changelog says this pull is there
+"to prevent out-of-bounds reads on zero-length or non-linear frames
+(e.g. from bridging)", but does this pull actually make the frame linear?
+pskb_may_pull(skb, 1) only guarantees the single byte read as
+skb->data[0]; skb_cow_head() -> __skb_cow() -> pskb_expand_head()
+unshares and grows the head but leaves the paged fragments in place.
+
+So a frame with skb->len > skb_headlen(skb) still reaches the device
+send op further down this function:
+
+	ret = ATM_SKB(skb)->vcc->send(ATM_SKB(skb)->vcc, skb)
+	    ? DROP_PACKET : 1;
+
+vcc->send is the device op (net/atm/raw.c does
+vcc->send = vcc->dev->ops->send), and nothing under drivers/atm/
+references nr_frags, skb_headlen or skb_linearize. For example
+solos-pci psend() takes pktlen = skb->len and fpga_tx() then does:
+
+	memcpy_toio(TX_BUF(card, port), skb->data, skb->len);
+
+or, in the DMA case:
+
+	dma_map_single(..., data, skb->len, DMA_TO_DEVICE);
+
+For a paged skb, can this read past the end of the linear head buffer
+and put unrelated heap bytes on the wire (and map a length larger than
+the mapped object)?
+
+The bridging path the changelog cites is the one that can deliver such a
+frame: ppp_input() calls ppp_channel_bridge_input() before any
+normalization, and the bridge hands the received skb to the peer channel
+verbatim:
+
+drivers/net/ppp/ppp_generic.c:ppp_channel_bridge_input() {
+	...
+	skb_scrub_packet(skb, !net_eq(pch->chan_net, pchb->chan_net));
+	if (!pchb->chan->ops->start_xmit(pchb->chan, skb))
+	...
+}
+
+The source channels do not linearize either (pppoe_rcv() only does
+pskb_may_pull(skb, sizeof(struct pppoe_hdr)) before ppp_input(), and
+l2tp_ppp.c is similar), while the normal ppp_start_xmit() path is linear
+because the ppp netdev has no SG offload. Would skb_linearize() (or
+pskb_may_pull(skb, skb->len)) here be the intended fix, or should the
+subject and changelog be reworded so that backporters do not conclude
+non-linear bridged frames are now handled?
+
+> @@ -317,23 +320,13 @@ static int pppoatm_send(struct ppp_channel *chan, struct sk_buff *skb)
+>  
+>  	switch (pvcc->encaps) {		/* LLC encapsulation needed */
+>  	case e_llc:
+> -		if (skb_headroom(skb) < LLC_LEN) {
+> -			struct sk_buff *n;
+> -			n = skb_realloc_headroom(skb, LLC_LEN);
+> -			if (n != NULL &&
+> -			    !pppoatm_may_send(pvcc, n->truesize)) {
+> -				kfree_skb(n);
+> -				goto nospace;
+> -			}
+> -			consume_skb(skb);
+> -			skb = n;
+> -			if (skb == NULL) {
+> -				bh_unlock_sock(sk_atm(vcc));
+> -				return DROP_PACKET;
+> -			}
+> -		} else if (!pppoatm_may_send(pvcc, skb->truesize))
+> +		if (skb_cow_head(skb, LLC_LEN)) {
+> +			bh_unlock_sock(sk_atm(vcc));
+> +			kfree_skb(skb);
+> +			return DROP_PACKET;
+> +		}
+> +		if (!pppoatm_may_send(pvcc, skb->truesize))
+>  			goto nospace;
+> -		memcpy(skb_push(skb, LLC_LEN), pppllc, LLC_LEN);
+>  		break;
+
+[Severity: Low]
+This isn't a bug introduced by this patch, since the previous code did the
+same reallocation via skb_realloc_headroom() and dropped on failure, but
+would it be worth setting pvcc->chan.hdrlen while touching this?
+
+pppoatm_assign_vcc() sets chan.private, chan.ops and chan.mtu, and even
+subtracts LLC_LEN from the MTU, but leaves chan.hdrlen at 0 (pvcc is
+kzalloc'ed):
+
+	pvcc->chan.private = pvcc;
+	pvcc->chan.ops = &pppoatm_ops;
+	pvcc->chan.mtu = atmvcc->qos.txtp.max_sdu - PPP_HDRLEN -
+	    (be.encaps == e_vc ? 0 : LLC_LEN);
+
+include/linux/ppp_channel.h documents the field as:
+
+	int		hdrlen;		/* amount of headroom channel needs */
+
+and ppp_generic honours it, e.g. in ppp_write():
+
+	skb = alloc_skb(count + pf->hdrlen, GFP_KERNEL);
+	if (!skb)
+		goto out;
+	skb_reserve(skb, pf->hdrlen);
+
+With hdrlen left at 0, frames written directly to the channel fd and
+multilink fragments arrive with no headroom, so the new
+skb_cow_head(skb, LLC_LEN) has to run a full pskb_expand_head() with
+GFP_ATOMIC inside the bh_lock_sock() section for every such frame, and
+drops the packet if that allocation fails. Setting
+pvcc->chan.hdrlen = LLC_LEN for the non-e_vc encapsulations would make
+the common case a no-op.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260912233048.3977192-1-edumazet%40google.com
