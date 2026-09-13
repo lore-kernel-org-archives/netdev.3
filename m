@@ -1,261 +1,593 @@
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00AB13CB548
-	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 12:19:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3BB138B7D1
+	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 12:29:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789301960; cv=none; b=DDlxeO3bixzTijGAXLhG9DIRtLuhrh1oB/mdGAlU53zOuZO1hY2SK0y6k7Ib6pzlL0018luTrT6A1pwD27vxbsk8S8Bhx7V77F519TR+ZgLVeGHglKauuzt59ijK+DMneLfK8gjAsvg5haAwgdKSZgY6id7KClWfsrEzY6syavE=
+	t=1789302569; cv=none; b=F2530tq6OYvEXX47OY+7RfEojkpDxVWT5F47oBjGXK/KgC5wudV7IjCcLSZIXD5E8n1vr5if0k5qB03lAvA+A0pW2tuqt8dFvf77eAU7Ll9p7yyjz384ZYCbb57iKYvEq7GW0/UaO92i+y1yi2TYxdydnYCL1UzPmKepiB1++lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789301960; c=relaxed/simple;
-	bh=sSR6Vyh+nxnd03+vCWI09lOpb+G3BwthTFIyLv/Q4I8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=PJE8UvvvFzhEE4gJsBlXesIvof7Z1Y4Rj7Ou4+DkOn2RHAbFK9/Fki3hPQSftaWoKrpV1M54aHlqeo2Z/i/FtG9QEiA3SY56fPZk70Ix8jxoaQHhEG1akejmI3sQU+JVHFwt6hkh9aTRegNTXn49w3920pJGYTSwK2Q49obCcSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=NSdPyPUK; arc=none smtp.client-ip=74.125.230.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1789302569; c=relaxed/simple;
+	bh=dtColQ6xcMXO4logDq8zc5aPqUludyyojnRXOSBbTaQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ig5W05dzHWfr6XrjHKtUgFBsuexU4IOh553pZW6npV/hrDqJvGShEtvZQlWtrMYVkmcf7+FgGzGDrrbu5+SJtNLrEfxdieGqfLOzfBgKwlvqZaMxy3DigbZmNP4bdnxH+lIPqvPMSDTdd6J9yKYZY5RMZkbE2SmQQiEgoueXnWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=CWhe4EEe; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=VeRLd999; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="NSdPyPUK"
-Received: by mail-qk2-f12.google.com with SMTP id af79cd13be357-93a222edc62so7014285a.0
-        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 05:19:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="CWhe4EEe";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="VeRLd999"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68DAUiZb1690749
+	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 12:29:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=YcmOpwt92HDUENUGVh2+egoobFb0eJL0TcD
+	jFi3bpMU=; b=CWhe4EEegVUcauLjgbK3tSGXxHSSxbEKyPM0HEFi4fdk0fJsEV7
+	yln1VSpbQovb9iCHIkN4/eFJEqkl6Ix+ay/eWESkQHTPmLdUyOox1v3iRYnjIQ6c
+	v54IlQTqcLQ0JIgtaba+cHn8OGAe7PKtmai0RORxRMLl1dFMlLMnCOttqazIRK36
+	GXJq5/s5dYWjNGrvHKA0I+IyC0FgqtXAIsYKBNYKO6po3SANFZIYwTy7TUNqzQez
+	vzUHPFzYBZ7bXc2kJlwCxTyUO684eiu0fu8yfJNKd90kGY6+RHa1rTxHnkx8gQVQ
+	sdSaKU3YcDkcSo3agMbMyipVliihBzfJ5qw==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gmy9cb783-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 12:29:26 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93a00c70d28so202707385a.0
+        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 05:29:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1789301958; x=1789906758; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=+GpzslklB0pVWyYTdVsp+3/DknIsG3Ufx16e03zY+aY=;
-        b=NSdPyPUKljlU9eTHcdDTTj0/jlEXjXVZvY+QkJ1OaWOzDZaP2n8b8Ip353am+hdSoj
-         nl/pAI1nGw5yaLJeRPM/i6R5iaVg92Vt0t3iDJEIYiL7PAnmNDRKkz0yuQUFHsAagm73
-         1PXGbFwrpTQWCopGXAzH0l/R1vjRlg9f68iQRDZ9EN7/7PJyxCCdK/6CvQg2bS62LF0V
-         kEWuU99lo4jVwlgzKt00bKBfNuQtOetOZrCSvqOjGxUXiOAr5l18b92/G/DElVO/4qDX
-         Njo8/q/AKvn6OVmVm6EAzNMU43LIa3eiTMGwKQZs2mMB/G/gS4XEjx7NWuytVf0bsE/M
-         cSog==
+        d=oss.qualcomm.com; s=google; t=1789302566; x=1789907366; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=YcmOpwt92HDUENUGVh2+egoobFb0eJL0TcDjFi3bpMU=;
+        b=VeRLd999yRohO3NUhbT8cwzvTw5rfsyzXMHJ++7hyEakr10NFhobi6lp2ZPZHD0zUw
+         mZzhE7n/4fXjCtuPuOSs+7XE1En/+lWRlCbZ865WEBE9apgrfMYaDCjnOWkKf4/gCCws
+         hkDYuBghvC84/9QcXsAuNEfSqlazf0QPbuQnHJFQ+4Jze9YHTf9IfFZBOjnLaErBLMf5
+         6hy7laZU6bhiBDfjPUqD+AMI4j+/VsfkagfS86mjYyW6HHsbw8Kfds9h/hXxS/AzCAuu
+         aa+xWGfX4kjHVEO0dYl1/RElyiJgS1lMphfUHrcbJ2iA7jMmbpGU8/X+z7PJSWLRDmcL
+         H4Uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789301958; x=1789906758;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=+GpzslklB0pVWyYTdVsp+3/DknIsG3Ufx16e03zY+aY=;
-        b=mQc2/elFYR6+a9ba24CytFug9xtWTuPgqMPgiHoFuXpScNLdT0vblkc7NbqvWMC6k2
-         Rcky9ExdNR/SVXZPdWe8gWxyysiHm8M3igUk3QgX0G9Syx6TAbyTwo+KEJOa0UWjWfyY
-         lqIwCiNI/cukdNB78kHY3pp7GmxdpxW+zOjF0FmVn8pyPCjydjJUZ/FiHaB8s8xv68vJ
-         zeGq6AkgwBn0ZfQ4t8a0RSki5WiPExrFOwp/HjWUnFtOPhsBWSDl+a5ejC9LQMwD8oOY
-         pF3F2wqZNR6ybIguAEObRntpRw3ztG8NpQWRHo8WtV1nTXV8ja1A3Vc8E3vBw+oGs65F
-         TzTg==
-X-Forwarded-Encrypted: i=1; AKwUvBxCllnLZt3QvJfFCS2nxSKfSI/aa4SFTekdrfepz/t2hHxt7kvtwCyIhjZspgLZFqfaO5Epav0=@vger.kernel.org
-X-Gm-Message-State: AFuF++kiRq8rzYoyV0g2fIUrcBYJtB7IytJpyYTIJNZARvw0nyuEXF5C
-	dDkedbKJ0wQi5yk5orLzpK9ib2zmm/kMynJGg8JcGqQKBBOd5dEoJP5wz2KLRDm4Nys=
-X-Gm-Gg: AYBFou3mi76FjSFf6axD9Heb4XPc8BKrG1HR0rIhu3n7T0d3edr4bYdaeNf4dHhQH2f
-	Ucvf4IZRfS3ajqXRxyklUb8qXUe3Tp2DR/SKKcUCzl7cfFJO1W6l0vev1ysqAl316vxRlDBZ42N
-	TKv+9x3JpQwt9lzEyzcAEPwtOcyqq/NRnIQ5t66u4+Wem7GzQvMvApo9kNSLu2UCjllGcqQP6QR
-	gvrqdFp0wTx9Ho8cPFbpENbME3Pbr3ujikqAC67DHpyLRxw4c+ijntMOuNdgFBtR4iZEW9Et3Y0
-	zzIBknR6PAM6sEGoss0x+CRIat/a7mlSUTY4UHCAWCggzD90WW3GnxBHA1JbUHqPURjI0g/2Evl
-	fcWRnO9UUoztaWJ8RjKsrJ085ckKTTdHH46OY8nbWGgVjvQKfAoNesDnhLrHHrq2y+rpbQXS15d
-	fUzPgWtMnlbzKenKlcrVuvLSJvMXwiKCoac37AXJFA7QfxWkZFV6ky44RBsbAqIRvMbop+T78=
-X-Received: by 2002:a05:620a:6cc4:b0:939:c3e6:86d6 with SMTP id af79cd13be357-939ea2bff16mr1780801385a.48.1789301957825;
-        Sun, 13 Sep 2026 05:19:17 -0700 (PDT)
-Received: from [127.0.1.1] ([2a09:bac6:7971:31eb::4f9:58])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-939e811cffdsm723852285a.46.2026.09.13.05.19.14
+        d=1e100.net; s=20251104; t=1789302566; x=1789907366;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=YcmOpwt92HDUENUGVh2+egoobFb0eJL0TcDjFi3bpMU=;
+        b=qmgeWTowaAtF7Cjw6RQDTCXIF20lZXZl22fEUR7e900YgjociCfiZEP5W+AZuA1SMt
+         NZXtgof5YCvnbE2/auxa52kPOZhp5I3IRmrioL603GmZPbRWcdNrD6ENEcjDSYyDC/e4
+         oTE/UkxqPOlXkltLW56xGpF6D8g/CxTZBJpLdTJg07ekgDX03XO8Sg5tsnJNwVcznSFg
+         iw9Ye+DCDXga/DbCEfE+De8SRBGnQT4aKXWv2zLtnrPFzx4DGRAic0RqMXFBsGWwYKHG
+         U+BcfAD+2Zn8NDxsWbBA5mGud3SfZaG/Ovn5SccW/cU9JqyxQw8pTYSo1FRX/WAxDFel
+         nXaA==
+X-Forwarded-Encrypted: i=1; AKwUvBzM3jdbNMRMBuYN6wHHQRc/aZv2h3a4FKpsz2ycDal+Uzgl3buMUL93J5aXwlO3CZdiiwS1VVg=@vger.kernel.org
+X-Gm-Message-State: AFuF++nRkJjVBmITzsioDIn+TtRR45A8qTTh/dr6Oh2KHaGX4EyuEwQz
+	PtCn0f9uGDMJpbF2mleIPoMfsLnYY21miTIrUaah3zOvyHByFXw5PXClwJqISStUCFDRrpF8GHS
+	YNunlpzHirdTNd8Z61apefrtaspYb3NwejNXy5ORl3b/aprMbJ63bVbuaaKE=
+X-Gm-Gg: AYBFou3xf74+nR2FPxUcPZJHar6Sd7ZavstSdlzaRKc/+IeWRCY+/cz9xUaCXcVJkTY
+	M2N665uoarZpJqHUEpKvyxnLtf2eVUl3IB2tLgiW3C0METu/B1Xt0j8vpzDM2DBumzJBHIgB2RQ
+	47mPvKFvs+LtrC0VOOW15gHeSxO9f75SDbgzojuv9xrWZQAIeVx6IFbmkuCLrd10MAz4qHVbbfV
+	B8SU7QcfYv1BSdhcx2ijecMopXabtTn0mEFp9p4G2iFOI/XCK0yAopRZI1shSoBDQPqXM8Q3uxp
+	fuX3NXRq5WfdIFiPz3hQeqnMbvbyuXoKrYbyYIPJ90tT7w6XbdXU7+1qfvRd9r5Zg6fhedxjpSp
+	+VpOx+7YTtHUORso=
+X-Received: by 2002:a05:620a:2844:b0:937:6de8:b40 with SMTP id af79cd13be357-939ea0a01e0mr1662741585a.15.1789302565645;
+        Sun, 13 Sep 2026 05:29:25 -0700 (PDT)
+X-Received: by 2002:a05:620a:2844:b0:937:6de8:b40 with SMTP id af79cd13be357-939ea0a01e0mr1662702785a.15.1789302560406;
+        Sun, 13 Sep 2026 05:29:20 -0700 (PDT)
+Received: from quoll ([178.197.219.214])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e6ca584f8sm129106545e9.6.2026.09.13.05.29.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Sep 2026 05:19:17 -0700 (PDT)
-From: Chris J Arges <carges@cloudflare.com>
-Date: Sun, 13 Sep 2026 07:19:08 -0500
-Subject: [PATCH net v2] wireguard: wait for per-peer crypto during removal
+        Sun, 13 Sep 2026 05:29:19 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+To: Rob Clark <robin.clark@oss.qualcomm.com>,
+        Dmitry Baryshkov <lumag@kernel.org>,
+        Abhinav Kumar <abhinav.kumar@linux.dev>,
+        Jessica Zhang <jesszhan0024@gmail.com>, Sean Paul <sean@poorly.run>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Justin Chen <justin.chen@broadcom.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Hans Ulli Kroll <ulli.kroll@googlemail.com>,
+        Linus Walleij <linusw@kernel.org>,
+        =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <clement.leger@bootlin.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>, Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+        Jeff Johnson <jjohnson@kernel.org>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Yongxing Mou <yongxing.mou@oss.qualcomm.com>,
+        Robert Foss <rfoss@kernel.org>, Abel Vesa <abelvesa@kernel.org>,
+        "G. Jaya Kumaran" <vineetha.g.jaya.kumaran@intel.com>,
+        Claudiu Manoil <claudiu.manoil@nxp.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Alex Elder <elder@kernel.org>,
+        Siddharth Vadapalli <s-vadapalli@ti.com>,
+        Roger Quadros <rogerq@kernel.org>, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        bcm-kernel-feedback-list@broadcom.com, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-renesas-soc@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, ath10k@lists.infradead.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: [PATCH net-next] dt-bindings: net: Use consistent indentation in the example
+Date: Sun, 13 Sep 2026 14:29:11 +0200
+Message-ID: <20260913122910.99457-3-krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=17121; i=krzysztof.kozlowski@oss.qualcomm.com;
+ h=from:subject; bh=dtColQ6xcMXO4logDq8zc5aPqUludyyojnRXOSBbTaQ=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBqppcWSq0kjQmYfZa6fZ5vwkyF5njnBIT8C5pD8
+ 8gkY80ed1uJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaqaXFgAKCRDBN2bmhouD
+ 1y6+D/9fxWEV0Eru/pm/ICe5eFyffWQa9aVLd+zvNsvwUcex8IPCalnvut3zudNHHVDMm4OhwCz
+ OM1F4ZRsQRLttw08aeGTbIhLz3t9qbyY1TXQxbz91koe3LC6UbkZbxwYi22lrcSkXaPWXthcmCs
+ 9LqDz68uBAAhcG3QJ/70SEKYOrX1k9oIAflxARlegdBvtnsEvrGuYnNOuefEIkaRASZgioJma6T
+ Oy5/VVtGjXvEVKOCrYwxoPVKEdh3YYXmHyUbWt/GLkcH/5ESvb8n5jGaFP1R4pKezneTJvkXwb7
+ pQQfomdaNj9qYmP8oPlsXoaqAAUkX7mkZRt2JESoOfqeK+0YBesDBk3QkvRJZQectVfPMNffvsx
+ RmTGLPNzVuGAbbTrkeBhNqUfsPKwkOxBEVfit/XXk6P0DJcs/8ewZL/6rpzcBSkNS6OeYVInevA
+ 3EWv0EDRw3GOU5+LBFS+nIJe3o78uL7A24ng1nD5ejjjATHjzUHWIbsg+hH30NNJM0gJFbRlJim
+ sjs7vuoGTC1nCNdRLe0Yu0C1LVpdCH69Ft+CwB4/FETgJxqzPRqlMZKcJOpuEpPhjtl0a8fRb76
+ hAFCz3GxcOIE3lcaHKTx6TSUfIAb3WmT8bwuCUHt+NcJdUkscmIz0sovM/J/5Dpz93RrXhnAZnY U5F8Ff2dpmT+T3A==
+X-Developer-Key: i=krzysztof.kozlowski@oss.qualcomm.com; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260913-fix-wg-peer-removal-v2-1-0cade985245a@cloudflare.com>
-X-B4-Tracking: v=1; b=H4sIALuUpmoC/22NzQ6CMBCEX4Xs2TXd4k/w5HsYDqVdpAYoaaFqC
- O9uQY8eZ/LNfDME9pYDXLIZPEcbrOtTkLsMdKP6O6M1KYMU8iQKQVjbFz7vODB79Ny5qFo85LX
- OC2FETgRpOXhO2PZ6g55HKL9lmKoH63H9W7HGhtH59+aOtME/jfyriYSEZyWoEPVRm4quunWTq
- Vvlea9dB+WyLB8gX7jJ0gAAAA==
-X-Change-ID: 20260901-fix-wg-peer-removal-43fc390d0311
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: wireguard@lists.zx2c4.com, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, kernel-team@cloudflare.com, 
- Chris J Arges <carges@cloudflare.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openssh-sha256; t=1789301951; l=6772;
- i=carges@cloudflare.com; h=from:subject:message-id;
- bh=sSR6Vyh+nxnd03+vCWI09lOpb+G3BwthTFIyLv/Q4I8=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgaxY1IIT5oTohBZJmhnVgJo2HsM7Sv
- 9I0LdJCgpeGX6gAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QMSxQ1nmKbDBAMNq6D5B6PGnLJ2lrD+9lnFAtOS1bJq274mAcUH1SHHe1z/u1REI1cGduj/fdWJ
- +cAliKfksggY=
-X-Developer-Key: i=carges@cloudflare.com; a=openssh;
- fpr=SHA256:Cun99EBiH0EV7wvmfTBF9eDrld2NJx+aD4ScWZ45Q5M
+X-Authority-Analysis: v=2.4 cv=e+mT2qp/ c=1 sm=1 tr=0 ts=6aa69726 cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=+bKQE0WJfmhK2875HamI0Q==:17
+ a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22 a=EUspDBNiAAAA:8
+ a=xF3cmUhYqvfMUIrrNTsA:9 a=NFOGd7dJGGMPyQGDc5-O:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTEzMDE3OCBTYWx0ZWRfX836Y5kgE39VQ
+ ONHVhwHIWuqk1qEtbQc4nAWgQ4/JBbB/S8FOykF/6eTtZVAn+LSqm5dMu+1qwIwHexKLi+9tdTK
+ aDNMqMLQU1MG+aa7KXvNOurguw2y8Ik=
+X-Proofpoint-ORIG-GUID: 5LazsJ7-P87rQNTyLnMzE0k5QYoFQT8n
+X-Proofpoint-GUID: 5LazsJ7-P87rQNTyLnMzE0k5QYoFQT8n
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTEzMDE3OCBTYWx0ZWRfX4lnrS66LSx1D
+ lEC2ljQiRC3VUbN63MBNobEguFD3LUDtSfqlbrLXv6UcBMz5WVi2nVMmbGGDiYmCBS+p/y3WQxb
+ TWxo9u2/GrEFeq3N/zm8Fg6iLA8TIf0R8PpCG7bebmjjb7tdXm9BVChXhR+dzXbU9kzafYXAwgY
+ DCh2bOLhXgpA22TJN4lbwLZDtaCPFne5SMihz52hK4Qj3cGBSKEUSyQXTblEEhhk1FkF3zTu5o9
+ QvkBNyTrC5v4MPA+BdMTYImVToaLFRXmeXYqpsDvahumLWw/ACL+ud4g/4Qc+PmlPIvEGRs11Ml
+ Lz9fuMDwe5IOqWidR7pOCGZxtO8bOfBGJBwHjd7D9V9KcFI1E6kGxMSlI/yggZ0TG27db7+aqSO
+ gd9RsTEswNMT5LlrOcGJ4pBDVMrs3redu+FVaU6GSI2cMSeN+Um4k8QOudoKJeJxqrgNhazTwmR
+ B7uoZ/H0f+Wr3Ap5ziA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-13_04,2026-09-11_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 clxscore=1015 phishscore=0 impostorscore=0 spamscore=0
+ suspectscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609130178
 
-Calling peer_remove_after_dead() currently flushes device-wide packet
-crypto and handshake workqueues while holding RTNL. This is problematic as
-unrelated peers can continue adding work to those queues, blocking other
-tasks that want to take the RTNL lock.
+Correct indentation in the examples to consistent 2- or 4-spaces
+indentation to fix dt-check-style warnings ("example 0
+[indent-consistent] indent mismatch ...").  Preferred is 4-spaces, but
+re-indenting entire example just for that is too much churn.
 
-Instead, this patch tracks pending crypto handoffs for each peer using a
-counter. After marking the peer dead, synchronize_net() prevents new
-submissions. Next, wait for pending crypto workers to schedule TX work and
-for RX NAPI to drain the peer's RX queue. Then flush only the peer's TX
-packet and handshake work.
-
-This scopes teardown synchronization to the removed peer and prevents
-unrelated peers from extending the RTNL hold time.
-
-Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
-Signed-off-by: Chris J Arges <carges@cloudflare.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 ---
-Changes in v2:
-- wait for RX packets to drain from peer’s NAPI queue
-- Link to v1: https://patch.msgid.link/20260902-fix-wg-peer-removal-v1-1-7a0190f5cdb1@cloudflare.com
+ .../bindings/net/brcm,asp-v2.0.yaml           |  2 +-
+ .../bindings/net/cortina,gemini-ethernet.yaml | 52 ++++++--------
+ .../bindings/net/dsa/renesas,rzn1-a5psw.yaml  |  4 +-
+ .../bindings/net/intel,dwmac-plat.yaml        |  6 +-
+ .../devicetree/bindings/net/mdio-gpio.yaml    | 16 ++---
+ .../bindings/net/mscc,vsc7514-switch.yaml     |  8 +--
+ .../devicetree/bindings/net/qcom,ipa.yaml     | 10 +--
+ .../bindings/net/realtek,rtl82xx.yaml         |  6 +-
+ .../bindings/net/socionext,uniphier-ave4.yaml | 32 ++++-----
+ .../bindings/net/ti,cpsw-switch.yaml          | 70 +++++++++----------
+ .../bindings/net/wireless/mediatek,mt76.yaml  | 32 ++++-----
+ .../bindings/net/wireless/qcom,ath10k.yaml    |  2 +-
+ 12 files changed, 114 insertions(+), 126 deletions(-)
 
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>
-To: "David S. Miller" <davem@davemloft.net>
-To: Eric Dumazet <edumazet@google.com>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: wireguard@lists.zx2c4.com
-Cc: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
----
- drivers/net/wireguard/peer.c     | 30 ++++++++++++++++--------------
- drivers/net/wireguard/peer.h     |  1 +
- drivers/net/wireguard/queueing.h |  4 ++++
- drivers/net/wireguard/receive.c  |  4 +++-
- 4 files changed, 24 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/net/wireguard/peer.c b/drivers/net/wireguard/peer.c
-index 1cb502a932e0..34842b33b28a 100644
---- a/drivers/net/wireguard/peer.c
-+++ b/drivers/net/wireguard/peer.c
-@@ -14,6 +14,7 @@
- #include <linux/lockdep.h>
- #include <linux/rcupdate.h>
- #include <linux/list.h>
-+#include <linux/wait_bit.h>
+diff --git a/Documentation/devicetree/bindings/net/brcm,asp-v2.0.yaml b/Documentation/devicetree/bindings/net/brcm,asp-v2.0.yaml
+index a3db6d594c8c..7fcc564e820c 100644
+--- a/Documentation/devicetree/bindings/net/brcm,asp-v2.0.yaml
++++ b/Documentation/devicetree/bindings/net/brcm,asp-v2.0.yaml
+@@ -123,7 +123,7 @@ examples:
+             phy0: ethernet-phy@1 {
+                 reg = <1>;
+             };
+-       };
++        };
  
- static struct kmem_cache *peer_cache;
- static atomic64_t peer_counter = ATOMIC64_INIT(0);
-@@ -49,6 +50,8 @@ struct wg_peer *wg_peer_create(struct wg_device *wg,
- 	INIT_WORK(&peer->transmit_packet_work, wg_packet_tx_worker);
- 	wg_prev_queue_init(&peer->tx_queue);
- 	wg_prev_queue_init(&peer->rx_queue);
-+	/* Keep this above zero until teardown prevents new packet handoffs. */
-+	atomic_set(&peer->packet_crypt_pending, 1);
- 	rwlock_init(&peer->endpoint_lock);
- 	kref_init(&peer->refcount);
- 	skb_queue_head_init(&peer->staged_packet_queue);
-@@ -105,28 +108,27 @@ static void peer_remove_after_dead(struct wg_peer *peer)
- 	 */
- 	wg_timers_stop(peer);
+         mdio@ce14 {
+             compatible = "brcm,asp-v2.1-mdio";
+diff --git a/Documentation/devicetree/bindings/net/cortina,gemini-ethernet.yaml b/Documentation/devicetree/bindings/net/cortina,gemini-ethernet.yaml
+index f0b5bea2458d..da9bc170cd54 100644
+--- a/Documentation/devicetree/bindings/net/cortina,gemini-ethernet.yaml
++++ b/Documentation/devicetree/bindings/net/cortina,gemini-ethernet.yaml
+@@ -87,18 +87,6 @@ examples:
+     #include <dt-bindings/interrupt-controller/irq.h>
+     #include <dt-bindings/clock/cortina,gemini-clock.h>
+     #include <dt-bindings/reset/cortina,gemini-reset.h>
+-    mdio0: mdio {
+-      #address-cells = <1>;
+-      #size-cells = <0>;
+-      phy0: ethernet-phy@1 {
+-        reg = <1>;
+-        device_type = "ethernet-phy";
+-      };
+-      phy1: ethernet-phy@3 {
+-        reg = <3>;
+-        device_type = "ethernet-phy";
+-      };
+-    };
  
--	/* The transition between packet encryption/decryption queues isn't
--	 * guarded by is_dead, but each reference's life is strictly bounded by
--	 * two generations: once for parallel crypto and once for serial
--	 * ingestion, so we can simply flush twice, and be sure that we no
--	 * longer have references inside these queues.
-+	/* Lookup removal and is_dead prevent new packets from entering the
-+	 * parallel crypto queues after synchronize_net() waits for pre-existing
-+	 * submission paths. Drop the initial count and wait for existing TX
-+	 * packets to schedule their serial work and RX packets to leave rx_queue.
- 	 */
-+	atomic_dec(&peer->packet_crypt_pending);
-+	wait_var_event(&peer->packet_crypt_pending,
-+		       !atomic_read_acquire(&peer->packet_crypt_pending));
-+
-+	flush_work(&peer->transmit_packet_work);
+     ethernet@60000000 {
+         compatible = "cortina,gemini-ethernet";
+@@ -110,28 +98,28 @@ examples:
+         ranges;
  
--	/* a) For encrypt/decrypt. */
--	flush_workqueue(peer->device->packet_crypt_wq);
--	/* b.1) For send (but not receive, since that's napi). */
--	flush_workqueue(peer->device->packet_crypt_wq);
--	/* b.2.1) For receive (but not send, since that's wq). */
- 	napi_disable(&peer->napi);
--	/* b.2.1) It's now safe to remove the napi struct, which must be done
-+	/* It's now safe to remove the napi struct, which must be done
- 	 * here from process context.
- 	 */
- 	netif_napi_del(&peer->napi);
+         gmac0: ethernet-port@0 {
+-                compatible = "cortina,gemini-ethernet-port";
+-                reg = <0x60008000 0x2000>, /* Port 0 DMA/TOE */
+-                      <0x6000a000 0x2000>; /* Port 0 GMAC */
+-                interrupt-parent = <&intcon>;
+-                interrupts = <1 IRQ_TYPE_LEVEL_HIGH>;
+-                resets = <&syscon GEMINI_RESET_GMAC0>;
+-                clocks = <&syscon GEMINI_CLK_GATE_GMAC0>;
+-                clock-names = "PCLK";
+-                phy-mode = "rgmii";
+-                phy-handle = <&phy0>;
++            compatible = "cortina,gemini-ethernet-port";
++            reg = <0x60008000 0x2000>, /* Port 0 DMA/TOE */
++                  <0x6000a000 0x2000>; /* Port 0 GMAC */
++            interrupt-parent = <&intcon>;
++            interrupts = <1 IRQ_TYPE_LEVEL_HIGH>;
++            resets = <&syscon GEMINI_RESET_GMAC0>;
++            clocks = <&syscon GEMINI_CLK_GATE_GMAC0>;
++            clock-names = "PCLK";
++            phy-mode = "rgmii";
++            phy-handle = <&phy0>;
+         };
  
--	/* Ensure any workstructs we own (like transmit_handshake_work or
--	 * clear_peer_work) no longer are in use.
-+	/* clear_peer_work was flushed by wg_timers_stop(). Ensure the remaining
-+	 * peer-owned handshake work is no longer in use.
- 	 */
--	flush_workqueue(peer->device->handshake_send_wq);
-+	flush_work(&peer->transmit_handshake_work);
+         gmac1: ethernet-port@1 {
+-                compatible = "cortina,gemini-ethernet-port";
+-                reg = <0x6000c000 0x2000>, /* Port 1 DMA/TOE */
+-                      <0x6000e000 0x2000>; /* Port 1 GMAC */
+-                interrupt-parent = <&intcon>;
+-                interrupts = <2 IRQ_TYPE_LEVEL_HIGH>;
+-                resets = <&syscon GEMINI_RESET_GMAC1>;
+-                clocks = <&syscon GEMINI_CLK_GATE_GMAC1>;
+-                clock-names = "PCLK";
+-                phy-mode = "rgmii";
+-                phy-handle = <&phy1>;
++            compatible = "cortina,gemini-ethernet-port";
++            reg = <0x6000c000 0x2000>, /* Port 1 DMA/TOE */
++                  <0x6000e000 0x2000>; /* Port 1 GMAC */
++            interrupt-parent = <&intcon>;
++            interrupts = <2 IRQ_TYPE_LEVEL_HIGH>;
++            resets = <&syscon GEMINI_RESET_GMAC1>;
++            clocks = <&syscon GEMINI_CLK_GATE_GMAC1>;
++            clock-names = "PCLK";
++            phy-mode = "rgmii";
++            phy-handle = <&phy1>;
+         };
+     };
+diff --git a/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml b/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml
+index ea285ef3e64f..fab6aa6237e9 100644
+--- a/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml
++++ b/Documentation/devicetree/bindings/net/dsa/renesas,rzn1-a5psw.yaml
+@@ -127,8 +127,8 @@ examples:
+                 phy-mode = "internal";
  
- 	/* After the above flushes, a peer might still be active in a few
- 	 * different contexts: 1) from xmit(), before hitting is_dead and
-diff --git a/drivers/net/wireguard/peer.h b/drivers/net/wireguard/peer.h
-index 718fb42bdac7..64412c67f413 100644
---- a/drivers/net/wireguard/peer.h
-+++ b/drivers/net/wireguard/peer.h
-@@ -37,6 +37,7 @@ struct endpoint {
- struct wg_peer {
- 	struct wg_device *device;
- 	struct prev_queue tx_queue, rx_queue;
-+	atomic_t packet_crypt_pending;
- 	struct sk_buff_head staged_packet_queue;
- 	int serial_work_cpu;
- 	bool is_dead;
-diff --git a/drivers/net/wireguard/queueing.h b/drivers/net/wireguard/queueing.h
-index 79b6d70de236..5ce57565c8ff 100644
---- a/drivers/net/wireguard/queueing.h
-+++ b/drivers/net/wireguard/queueing.h
-@@ -11,6 +11,7 @@
- #include <linux/skbuff.h>
- #include <linux/ip.h>
- #include <linux/ipv6.h>
-+#include <linux/wait_bit.h>
- #include <net/ip_tunnels.h>
+                 fixed-link {
+-                  speed = <1000>;
+-                  full-duplex;
++                    speed = <1000>;
++                    full-duplex;
+                 };
+             };
+         };
+diff --git a/Documentation/devicetree/bindings/net/intel,dwmac-plat.yaml b/Documentation/devicetree/bindings/net/intel,dwmac-plat.yaml
+index 62c1da36a2b5..d1522216d32b 100644
+--- a/Documentation/devicetree/bindings/net/intel,dwmac-plat.yaml
++++ b/Documentation/devicetree/bindings/net/intel,dwmac-plat.yaml
+@@ -91,9 +91,9 @@ examples:
+         snps,tx-queues-to-use = <2>;
+         snps,tx-sched-wrr;
+         queue0 {
+-           snps,weight = <0x10>;
+-           snps,dcb-algorithm;
+-           snps,priority = <0x0>;
++            snps,weight = <0x10>;
++            snps,dcb-algorithm;
++            snps,priority = <0x0>;
+         };
  
- struct wg_device;
-@@ -161,6 +162,7 @@ static inline int wg_queue_enqueue_per_device_and_peer(
- 	 */
- 	if (unlikely(!wg_prev_queue_enqueue(peer_queue, skb)))
- 		return -ENOSPC;
-+	atomic_inc(&PACKET_PEER(skb)->packet_crypt_pending);
+         queue1 {
+diff --git a/Documentation/devicetree/bindings/net/mdio-gpio.yaml b/Documentation/devicetree/bindings/net/mdio-gpio.yaml
+index eb4171a1940e..36e51aaae9c0 100644
+--- a/Documentation/devicetree/bindings/net/mdio-gpio.yaml
++++ b/Documentation/devicetree/bindings/net/mdio-gpio.yaml
+@@ -45,13 +45,13 @@ examples:
+     };
  
- 	/* Then we queue it up in the device queue, which consumes the
- 	 * packet as soon as it can.
-@@ -182,6 +184,8 @@ static inline void wg_queue_enqueue_per_peer_tx(struct sk_buff *skb, enum packet
- 	atomic_set_release(&PACKET_CB(skb)->state, state);
- 	queue_work_on(wg_cpumask_choose_online(&peer->serial_work_cpu, peer->internal_id),
- 		      peer->device->packet_crypt_wq, &peer->transmit_packet_work);
-+	if (atomic_dec_and_test(&peer->packet_crypt_pending))
-+		wake_up_var(&peer->packet_crypt_pending);
- 	wg_peer_put(peer);
- }
+     mdio0: mdio {
+-      compatible = "virtual,mdio-gpio";
+-      #address-cells = <1>;
+-      #size-cells = <0>;
+-      gpios = <&qe_pio_a 11>,
+-              <&qe_pio_c 6>;
+-      ethphy0: ethernet-phy@0 {
+-        reg = <0>;
+-      };
++        compatible = "virtual,mdio-gpio";
++        #address-cells = <1>;
++        #size-cells = <0>;
++        gpios = <&qe_pio_a 11>,
++                <&qe_pio_c 6>;
++        ethphy0: ethernet-phy@0 {
++            reg = <0>;
++        };
+     };
+ ...
+diff --git a/Documentation/devicetree/bindings/net/mscc,vsc7514-switch.yaml b/Documentation/devicetree/bindings/net/mscc,vsc7514-switch.yaml
+index 86a9c3fc76c8..d825130b54b4 100644
+--- a/Documentation/devicetree/bindings/net/mscc,vsc7514-switch.yaml
++++ b/Documentation/devicetree/bindings/net/mscc,vsc7514-switch.yaml
+@@ -197,10 +197,10 @@ examples:
+             <0x71040000 0x10000>,
+             <0x71050000 0x10000>,
+             <0x71060000 0x10000>;
+-            reg-names = "sys", "rew", "qs", "ptp", "port0", "port1",
+-            "port2", "port3", "port4", "port5", "port6",
+-            "port7", "port8", "port9", "port10", "qsys",
+-            "ana", "s0", "s1", "s2";
++      reg-names = "sys", "rew", "qs", "ptp", "port0", "port1",
++                  "port2", "port3", "port4", "port5", "port6",
++                  "port7", "port8", "port9", "port10", "qsys",
++                  "ana", "s0", "s1", "s2";
  
-diff --git a/drivers/net/wireguard/receive.c b/drivers/net/wireguard/receive.c
-index 824bbefce61c..bb35e3205491 100644
---- a/drivers/net/wireguard/receive.c
-+++ b/drivers/net/wireguard/receive.c
-@@ -476,9 +476,11 @@ int wg_packet_rx_poll(struct napi_struct *napi, int budget)
+       ethernet-ports {
+         #address-cells = <1>;
+diff --git a/Documentation/devicetree/bindings/net/qcom,ipa.yaml b/Documentation/devicetree/bindings/net/qcom,ipa.yaml
+index 68ec76fe4473..38e3830512fe 100644
+--- a/Documentation/devicetree/bindings/net/qcom,ipa.yaml
++++ b/Documentation/devicetree/bindings/net/qcom,ipa.yaml
+@@ -246,14 +246,14 @@ examples:
+         qcom,remote-pid = <5>;
  
- next:
- 		wg_noise_keypair_put(keypair, false);
--		wg_peer_put(peer);
- 		if (unlikely(free))
- 			dev_kfree_skb(skb);
-+		if (atomic_dec_and_test(&peer->packet_crypt_pending))
-+			wake_up_var(&peer->packet_crypt_pending);
-+		wg_peer_put(peer);
+         ipa_smp2p_out: ipa-ap-to-modem {
+-                qcom,entry-name = "ipa";
+-                #qcom,smem-state-cells = <1>;
++            qcom,entry-name = "ipa";
++            #qcom,smem-state-cells = <1>;
+         };
  
- 		if (++work_done >= budget)
- 			break;
-
----
-base-commit: 70f3995830d3f1e79faa14eb0605914f778feca9
-change-id: 20260901-fix-wg-peer-removal-43fc390d0311
-
-Best regards,
---  
-Chris J Arges <carges@cloudflare.com>
+         ipa_smp2p_in: ipa-modem-to-ap {
+-                qcom,entry-name = "ipa";
+-                interrupt-controller;
+-                #interrupt-cells = <2>;
++            qcom,entry-name = "ipa";
++            interrupt-controller;
++            #interrupt-cells = <2>;
+         };
+     };
+ 
+diff --git a/Documentation/devicetree/bindings/net/realtek,rtl82xx.yaml b/Documentation/devicetree/bindings/net/realtek,rtl82xx.yaml
+index 45033c31a2d5..07b39ef1fc62 100644
+--- a/Documentation/devicetree/bindings/net/realtek,rtl82xx.yaml
++++ b/Documentation/devicetree/bindings/net/realtek,rtl82xx.yaml
+@@ -91,8 +91,8 @@ examples:
+         #size-cells = <0>;
+ 
+         ethphy1: ethernet-phy@1 {
+-                reg = <1>;
+-                realtek,clkout-disable;
+-                realtek,aldps-enable;
++            reg = <1>;
++            realtek,clkout-disable;
++            realtek,aldps-enable;
+         };
+     };
+diff --git a/Documentation/devicetree/bindings/net/socionext,uniphier-ave4.yaml b/Documentation/devicetree/bindings/net/socionext,uniphier-ave4.yaml
+index 4eb63b303cff..8c8622160abb 100644
+--- a/Documentation/devicetree/bindings/net/socionext,uniphier-ave4.yaml
++++ b/Documentation/devicetree/bindings/net/socionext,uniphier-ave4.yaml
+@@ -121,22 +121,22 @@ examples:
+   - |
+     ether: ethernet@65000000 {
+         compatible = "socionext,uniphier-ld20-ave4";
+-                reg = <0x65000000 0x8500>;
+-                interrupts = <0 66 4>;
+-                phy-mode = "rgmii";
+-                phy-handle = <&ethphy>;
+-                clock-names = "ether";
+-                clocks = <&sys_clk 6>;
+-                reset-names = "ether";
+-                resets = <&sys_rst 6>;
+-                socionext,syscon-phy-mode = <&soc_glue 0>;
++        reg = <0x65000000 0x8500>;
++        interrupts = <0 66 4>;
++        phy-mode = "rgmii";
++        phy-handle = <&ethphy>;
++        clock-names = "ether";
++        clocks = <&sys_clk 6>;
++        reset-names = "ether";
++        resets = <&sys_rst 6>;
++        socionext,syscon-phy-mode = <&soc_glue 0>;
+ 
+-                mdio {
+-                        #address-cells = <1>;
+-                        #size-cells = <0>;
++        mdio {
++            #address-cells = <1>;
++            #size-cells = <0>;
+ 
+-                        ethphy: ethernet-phy@1 {
+-                                reg = <1>;
+-                        };
+-                };
++            ethphy: ethernet-phy@1 {
++                reg = <1>;
++            };
+         };
++    };
+diff --git a/Documentation/devicetree/bindings/net/ti,cpsw-switch.yaml b/Documentation/devicetree/bindings/net/ti,cpsw-switch.yaml
+index 8b5da602a2e8..4d24dadfaa5d 100644
+--- a/Documentation/devicetree/bindings/net/ti,cpsw-switch.yaml
++++ b/Documentation/devicetree/bindings/net/ti,cpsw-switch.yaml
+@@ -192,50 +192,50 @@ examples:
+         interrupt-names = "rx_thresh", "rx", "tx", "misc";
+ 
+         ethernet-ports {
+-                #address-cells = <1>;
+-                #size-cells = <0>;
++            #address-cells = <1>;
++            #size-cells = <0>;
+ 
+-                cpsw_port1: port@1 {
+-                        reg = <1>;
+-                        label = "port1";
+-                        mac-address = [ 00 00 00 00 00 00 ];
+-                        phys = <&phy_gmii_sel 1>;
+-                        phy-handle = <&ethphy0_sw>;
+-                        phy-mode = "rgmii";
+-                        ti,dual-emac-pvid = <1>;
+-                };
++            cpsw_port1: port@1 {
++                reg = <1>;
++                label = "port1";
++                mac-address = [ 00 00 00 00 00 00 ];
++                phys = <&phy_gmii_sel 1>;
++                phy-handle = <&ethphy0_sw>;
++                phy-mode = "rgmii";
++                ti,dual-emac-pvid = <1>;
++            };
+ 
+-                cpsw_port2: port@2 {
+-                        reg = <2>;
+-                        label = "wan";
+-                        mac-address = [ 00 00 00 00 00 00 ];
+-                        phys = <&phy_gmii_sel 2>;
+-                        phy-handle = <&ethphy1_sw>;
+-                        phy-mode = "rgmii";
+-                        ti,dual-emac-pvid = <2>;
+-                };
++            cpsw_port2: port@2 {
++                reg = <2>;
++                label = "wan";
++                mac-address = [ 00 00 00 00 00 00 ];
++                phys = <&phy_gmii_sel 2>;
++                phy-handle = <&ethphy1_sw>;
++                phy-mode = "rgmii";
++                ti,dual-emac-pvid = <2>;
++            };
+         };
+ 
+         davinci_mdio_sw: mdio@1000 {
+-                compatible = "ti,cpsw-mdio","ti,davinci_mdio";
+-                reg = <0x1000 0x100>;
+-                clocks = <&gmac_clkctrl DRA7_GMAC_GMAC_CLKCTRL 0>;
+-                clock-names = "fck";
+-                #address-cells = <1>;
+-                #size-cells = <0>;
+-                bus_freq = <1000000>;
++            compatible = "ti,cpsw-mdio","ti,davinci_mdio";
++            reg = <0x1000 0x100>;
++            clocks = <&gmac_clkctrl DRA7_GMAC_GMAC_CLKCTRL 0>;
++            clock-names = "fck";
++            #address-cells = <1>;
++            #size-cells = <0>;
++            bus_freq = <1000000>;
+ 
+-                ethphy0_sw: ethernet-phy@0 {
+-                        reg = <0>;
+-                };
++            ethphy0_sw: ethernet-phy@0 {
++                reg = <0>;
++            };
+ 
+-                ethphy1_sw: ethernet-phy@1 {
+-                        reg = <1>;
+-                };
++            ethphy1_sw: ethernet-phy@1 {
++                reg = <1>;
++            };
+         };
+ 
+         cpts {
+-                clocks = <&gmac_clkctrl DRA7_GMAC_GMAC_CLKCTRL 25>;
+-                clock-names = "cpts";
++            clocks = <&gmac_clkctrl DRA7_GMAC_GMAC_CLKCTRL 25>;
++            clock-names = "cpts";
+         };
+     };
+diff --git a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+index ae6b97cdc44b..bf4116b057d2 100644
+--- a/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/mediatek,mt76.yaml
+@@ -325,22 +325,22 @@ examples:
+           r0 {
+             regdomain = "FCC";
+             txpower-5g {
+-               b0 {
+-                   channels = <36 48>;
+-                   rates-ofdm = /bits/ 8 <23 23 23 23 23 23 23 23>;
+-                   rates-mcs = /bits/ 8 <1 23 23 23 23 23 23 23 23 23 23>,
+-                               /bits/ 8 <3 22 22 22 22 22 22 22 22 22 22>;
+-                   rates-ru = /bits/ 8 <3 22 22 22 22 22 22 22 22 22 22 22 22>,
+-                              /bits/ 8 <4 20 20 20 20 20 20 20 20 20 20 20 20>;
+-               };
+-               b1 {
+-                   channels = <100 181>;
+-                   rates-ofdm = /bits/ 8 <14 14 14 14 14 14 14 14>;
+-                   rates-mcs = /bits/ 8  <4 14 14 14 14 14 14 14 14 14 14>;
+-                   txs-delta = <12 9 6>;
+-                   rates-ru = /bits/ 8  <7 14 14 14 14 14 14 14 14 14 14 14 14>;
+-               };
+-             };
++              b0 {
++                channels = <36 48>;
++                rates-ofdm = /bits/ 8 <23 23 23 23 23 23 23 23>;
++                rates-mcs = /bits/ 8 <1 23 23 23 23 23 23 23 23 23 23>,
++                            /bits/ 8 <3 22 22 22 22 22 22 22 22 22 22>;
++                rates-ru = /bits/ 8 <3 22 22 22 22 22 22 22 22 22 22 22 22>,
++                           /bits/ 8 <4 20 20 20 20 20 20 20 20 20 20 20 20>;
++              };
++              b1 {
++                channels = <100 181>;
++                rates-ofdm = /bits/ 8 <14 14 14 14 14 14 14 14>;
++                rates-mcs = /bits/ 8  <4 14 14 14 14 14 14 14 14 14 14>;
++                txs-delta = <12 9 6>;
++                rates-ru = /bits/ 8  <7 14 14 14 14 14 14 14 14 14 14 14 14>;
++              };
++            };
+           };
+         };
+       };
+diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml
+index e667d78b3ab3..a52cb8a0d409 100644
+--- a/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml
++++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath10k.yaml
+@@ -408,4 +408,4 @@ examples:
+                           "msi15",
+                           "legacy";
+         ieee80211-freq-limit = <5470000 5875000>;
+-      };
++    };
+-- 
+2.53.0
 
