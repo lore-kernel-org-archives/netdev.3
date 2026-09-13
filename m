@@ -1,141 +1,244 @@
-Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273493C1D71
-	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 06:41:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE0B3A963B
+	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 06:56:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789281684; cv=none; b=dNWLHhV4V9NO0dQpasAjev+CGq62u2VOJYiXU66s6K4TTFQnU/z52derWCzep2eWbneemLdGIj9qz0+XqhaP+3ADm0qCDlCGmJd8of6x+/qt2cDYNtZub+TvdZYrgfwCsdTMfS90K9hyahb/oDfuuWX+7bx/M4hOXJwUo9uX/uE=
+	t=1789282616; cv=none; b=pJBQUioTjxZFIcGEg0FhLHgN/Ucl3iUYYBIp8O6UKD8U9CHHHAVerDv5WfD6UX591OSAHfvUZAUjBk6dhGibgYB2UdJulm0t4hchgxIR8QoQQtqXWPXhLWeeDEO2Tc7zPeBLMN56c3qh3oRgc9xLUhpxPTe+KIlCi8z1XomX2Jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789281684; c=relaxed/simple;
-	bh=2isl3eP2I9Ofhmo1cfW/hgvgC4igkB3in+RmAUkHUsE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZEGcPEpvfJjWZDWF/S8wBJO4eu2o4LzAnEpMnFgKcY60+3u4tJVFxxt3GMluScbfTuMaULVCwCff6DdRPIZH3kvKAseOo3ERgSFGbc29g18V1D035llQ3aBdtUQDC5qAT0QHO886s2NDUYE0OLqSsVJzt4wZlChlou3KSQxfHEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GR+H538B; arc=none smtp.client-ip=74.125.228.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789282616; c=relaxed/simple;
+	bh=oiS2jewzdPKj/6jIPFXw8M3ztv49TOAXErEPpum1RF4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nll1ZBMY1Y2EbwYUtCuCbHAc3RaK5RTR0uvay8e5sLTV26k5cCP8RhLNRQQ2tKX4buUH4w6x/rI3Frkgs//FTjDNj+V0rqJN4huQk5S3R51/ZDYfSoQo9tiZa7sgIazx+CBuL9a0VIR3Lf7dCoh5U5NDtJ7pLNOn8mthJbkSS4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=B2kHd5kI; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GR+H538B"
-Received: by mail-pz2-f42.google.com with SMTP id d2e1a72fcca58-86e6d007703so70731b3a.0
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 23:41:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789281680; x=1789886480; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=R0suMaCXibllLZ+k/N5xA3Vj2voIiuPLg/g+cL0xmFY=;
-        b=GR+H538BqwCfDO9qfWSW9TT/DOPKVAuZCJxBbctQclKCVpLHjf00j9F2/7mK6OmMM8
-         pm4ALT18Tsw0yQYamL7WDuWFUN3Z0U820MUW0ACvHktbisRU1RlmkUJV+FJ5Ya9clnRJ
-         X0zEVT/MvBCEXKj2lQULcDZa1g5u4wPLK9Rwh4BfbKFqixODgP3KJwaafvuR7qdnUYsl
-         e5EtlsUsRlBvBOJllbrLUEjX2WwqTZAuMWaiUe+FGwx3lZo9wSpONKOvRbiTcrpsueuP
-         ck4oN4EDhTWboH8HU0JAup7oIlqvTOT0GqPzatqkQ/qtk0Vp7GPDLafbCJvhdeJRA18U
-         rRcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789281680; x=1789886480;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=R0suMaCXibllLZ+k/N5xA3Vj2voIiuPLg/g+cL0xmFY=;
-        b=m8oXtMYH4iSGEhngPeJ0ADHGrPiKf7Pq7SSdwTIb2mbg1qnhqKj7rzovVK3RKhUPhS
-         J8A7weYZ48FcPM9hPNb2ep96tJufvoqFX7rMFAh9RzQyjV8sV+p/R6inGXxRAhkdaK+9
-         oFnVETLEzVU9Ky75a9N54QVI3pOf4JwvzjoeFhPblH+LyXqsz+IfPXrhFZx14V3NlWja
-         Mz+u/ZO6b8kOr8VXhuo+tpKQL6YP10UZAU20iyAshyooVZhu0FwH4KjC/b6Vlk7pYyvm
-         3RMNg/JUxeSEQupkiPfEtwDaVkEc7JlAkI32uu0Nnwa62/LVytCuuhlRB1smw/ES67AJ
-         ICbA==
-X-Gm-Message-State: AFuF++naxyx/tfDgECHdeGMZovi0P9/j2jeB6eY2pe95p9Z7F8D/AMtF
-	EsVXfBAlvORlWJCAlYCmffCNSbyD/CqyTqq/43VMbI4+OCTsjSaRNHz1EKQBDTuJLQ==
-X-Gm-Gg: AYBFou1khV2GugK1BD9L2YX8OZg+cQDjzqFhslyDiyFCkNkBIMj8rVRLO0VtCT4g8Ns
-	W0z7p38mep4mP+9N9xoV89fwgmIZw/r1EPqnD3xOErH75ueVaDk6ioyiO087ixwoEmKzJjXqA3G
-	JReZXnHMgDWflm+ssBhBLkHuoCJYwp36kZ0lCML2TVbHQ4xTa6h8FRtCHNUI1zj9cjDETO53V8P
-	L95H7MB5zMcDG5MMKOK70XQpXFM8XU9s5QEgCCY8t/YEDCwak0yIWibdEVIxfTI9BWqu4fvSmPO
-	JDS/XHT/iZkq8lCxd1yWMA8DL5XPABcZDk7osR/qIv0fsGq2jgetAZeEjy1i5ClmMluVWBU5xNx
-	t5yrdPzc85MYW6XcJ4eYzTawEjnSmEhQCgPn1AkeNKAnRYG70k1cet44OhiGZBo6rZFL4L2PDs6
-	nSpBk1oO9/nFMBSgeWWBJ9YULLQV5/maFZKAeb6hwRTH6QHSBbuy7fN0hUjss7bTh19YELD+Sxd
-	mAVcoqPlOCFNJ9qLI7MDqyZ7d1J
-X-Received: by 2002:a05:6a00:13a5:b0:857:72f8:dc94 with SMTP id d2e1a72fcca58-86ccb545129mr9955871b3a.21.1789281680275;
-        Sat, 12 Sep 2026 23:41:20 -0700 (PDT)
-Received: from localhost.localdomain ([218.212.26.103])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86b2a5c052csm2989783b3a.58.2026.09.12.23.41.17
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 12 Sep 2026 23:41:19 -0700 (PDT)
-From: Yige Jiang <yigejiang86@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Masahisa Kojima <kojima.masahisa@socionext.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	Yige Jiang <yigejiang86@gmail.com>
-Subject: [PATCH net-next] net: netsec: fix device_node reference leak on phy_np
-Date: Sun, 13 Sep 2026 14:41:02 +0800
-Message-ID: <20260913064102.37452-1-yigejiang86@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="B2kHd5kI"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 3CF784E4049A;
+	Sun, 13 Sep 2026 06:56:48 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E903E60435;
+	Sun, 13 Sep 2026 06:56:47 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E880111C7AFCC;
+	Sun, 13 Sep 2026 08:56:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789282607; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=b5I9g1zp8n9vjy1Bhi+svCxeKGvGM7VWX/Ux3SZ9tqg=;
+	b=B2kHd5kIir+SEiNt/X3A1dJcazq2E7eNDtCsdzU/tbzBmjH2LdyQMWm6bDIZ8UCiDAMNVe
+	yPzmShRxrPFt7P84VPBPoyT8HZKWM49K9cFSy1b09CkkpluFc0Km6os9bmTs1f5BS00/wt
+	nsPAvHl8udEtbyIwY9RBfYR80/iGx+WULPNQRMjAnYVbz8BXfSDog98ar92dwnENQEgH7J
+	Y5RsKScJyoSvHHgwdxGyrvjZ3/yRzonRyM0whyDojsHAMNQJQ/jE78RyyNgVgQp2YGeft6
+	w2IvKd2SIF8LZUXtz/Y/xjraxufQy+TWCpjyaKFxVRbpbXI+fh7MkF1U/58shA==
+Message-ID: <9c483965-beee-4fd6-adad-5ff1c9eae163@bootlin.com>
+Date: Sun, 13 Sep 2026 08:56:41 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net: phy: marvell: wake the system only from the
+ WoL event
+To: Rosen Penev <rosenp@gmail.com>, netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ open list <linux-kernel@vger.kernel.org>
+References: <20260912235125.151370-1-rosenp@gmail.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260912235125.151370-1-rosenp@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-netsec_of_probe() takes a reference on the PHY device_node with
-of_parse_phandle() and stores it in priv->phy_np, but the driver never
-drops it.  One device_node reference is leaked per probe, on the success
-path as well as on every error path reached after netsec_of_probe().
+Hi Rosen,
 
-Neither consumer takes ownership.  of_mdio_parse_addr() is a static
-inline taking a const struct device_node * that only reads the "reg"
-property.  of_phy_connect() borrows as well: of_phy_get_and_connect() in
-drivers/net/mdio/of_mdio.c brackets its own call with of_node_get() at
-:364 and of_node_put() at :373, which would be a double put if
-of_phy_connect() consumed the reference.
+On 9/13/26 01:51, Rosen Penev wrote:
+> Enable waking the system from a WoL event on the 88E1318S/88E1510.
+> 
+> When WoL is enabled, m88e1318_set_wol() now calls enable_irq_wake()
+> on the PHY's IRQ and marks the MDIO device as a wakeup source so the
+> underlying GPIO interrupt raises the system from suspend, and reverses
+> both on disable.
+> 
+> With WoL active the PHY must stay powered to detect a magic packet,
+> but without masking, phy_suspend() would leave every interrupt
+> enabled, so a link status change or any other PHY event would assert
+> INTn and spuriously wake the system. Set PHY_ALWAYS_CALL_SUSPEND on
+> the 88E1318S/88E1510 drivers so that phy_suspend() still calls their
+> suspend callbacks with WoL enabled, and have those callbacks keep the
+> PHY awake while writing the interrupt enable register (CSIER/IMASK)
+> down to only the WoL event bit.
+> 
+> marvell_config_intr() rewrites the whole CSIER register with
+> MII_M1011_IMASK_INIT on resume, clearing the WoL enable bit. Re-arm
+> WOL_EIE in the resume callbacks so the WoL interrupt stays active for
+> the next sleep cycle.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> ---
+>  drivers/net/phy/marvell.c | 145 ++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 138 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
+> index f71cffa88406..70aaa09f2047 100644
+> --- a/drivers/net/phy/marvell.c
+> +++ b/drivers/net/phy/marvell.c
+> @@ -30,6 +30,8 @@
+>  #include <linux/ethtool_netlink.h>
+>  #include <linux/phy.h>
+>  #include <linux/phy_port.h>
+> +#include <linux/pm_wakeirq.h>
+> +#include <linux/property.h>
+>  #include <linux/marvell_phy.h>
+>  #include <linux/bitfield.h>
+>  #include <linux/of.h>
+> @@ -1902,6 +1904,61 @@ static int marvell_resume(struct phy_device *phydev)
+>  	return err;
+>  }
+>  
+> +/* marvell_wol_suspend_intrs
+> + *
+> + * With WoL enabled the PHY has to stay powered to keep detecting a WoL
+> + * packet, so instead of entering low power mode, mask all interrupt
+> + * sources except the WoL event. On the 88E1318S/88E1510 the interrupt
+> + * mask (MII_M1011_IMASK) is the same register as the Copper Specific
+> + * Interrupt Enable Register (MII_88E1318S_PHY_CSIER), so writing only
+> + * the WoL event enable bit unmask just that event.
+> + */
 
-The node is still in use at netsec_netdev_open() time, where it is
-passed to of_phy_connect(), so it has device lifetime.  Release it at
-the probe error label, which every failure path after the acquire
-funnels through, and in netsec_remove().  Both releases precede
-free_netdev(), since priv is netdev_priv(ndev).  The ACPI probe path
-leaves priv->phy_np NULL and of_node_put(NULL) is a no-op.
+Please tone down the verbosity of the LLM used, this explanation is
+repeated in lots of introduced comments. The code is explicit enough
+TBH, I don't think these comments add much value.
 
-There is no end-user visible symptom on currently supported platforms:
-a device_node is only freed once OF_DYNAMIC is enabled and the node has
-been detached, so on a static device tree the imbalance is inert.  It is
-observable as a refcount that grows across bind/unbind cycles, and would
-matter under device tree overlays.
+Same goes on all function docs added in this patch :/
 
-Found by static analysis of reference acquire/release pairing rather
-than from a runtime report.  No reproducer was produced and the change
-has not been runtime tested; it is compile-tested only (arm64,
-CONFIG_SNI_NETSEC=m via COMPILE_TEST).
+> +static int marvell_wol_suspend_intrs(struct phy_device *phydev)
+> +{
+> +	int oldpage, ret;
+> +
+> +	oldpage = phy_save_page(phydev);
+> +	if (oldpage < 0)
+> +		return oldpage;
+> +
+> +	ret = marvell_write_page(phydev, MII_MARVELL_COPPER_PAGE);
+> +	if (ret < 0)
+> +		goto out;
+> +
+> +	ret = __phy_write(phydev, MII_88E1318S_PHY_CSIER,
+> +			  MII_88E1318S_PHY_CSIER_WOL_EIE);
+> +out:
+> +	return phy_restore_page(phydev, oldpage, ret);
+> +}
+> +
+> +/* marvell_wol_resume_intrs
+> + *
+> + * marvell_config_intr() rewrites the whole MII_M1011_IMASK register
+> + * (which is MII_88E1318S_PHY_CSIER) with MII_M1011_IMASK_INIT on
+> + * resume, clearing the WoL event interrupt enable bit. Re-arm it if
+> + * WoL is still enabled so a later WoL event keeps waking the system.
+> + */
+> +static int marvell_wol_resume_intrs(struct phy_device *phydev)
+> +{
+> +	int oldpage, ret;
+> +
+> +	if (!phydev->wol_enabled)
+> +		return 0;
+> +
+> +	oldpage = phy_save_page(phydev);
+> +	if (oldpage < 0)
+> +		return oldpage;
+> +
+> +	ret = marvell_write_page(phydev, MII_MARVELL_COPPER_PAGE);
+> +	if (ret < 0)
+> +		goto out;
+> +
+> +	ret = __phy_set_bits(phydev, MII_88E1318S_PHY_CSIER,
+> +			     MII_88E1318S_PHY_CSIER_WOL_EIE);
+> +out:
+> +	return phy_restore_page(phydev, oldpage, ret);
+> +}
+> +
+>  /* m88e1510_resume
+>   *
+>   * The 88e1510 PHY has an erratum where the phy downshift counter is not cleared
+> @@ -1934,9 +1991,25 @@ static int m88e1510_resume(struct phy_device *phydev)
+>  
+>  		/* downshift enabled, with previous counter value */
+>  		err = m88e1011_set_downshift(phydev, cnt);
+> +		if (err < 0)
+> +			return err;
+>  	}
+>  
+> -	return err;
+> +	return marvell_wol_resume_intrs(phydev);
+> +}
+> +
+> +/* m88e1510_suspend
+> + *
+> + * If WoL is enabled the PHY receiver has to keep running to detect a
+> + * magic packet, so keep it awake and unmask only the WoL event at the
+> + * PHY. Otherwise suspend both the fiber and copper interfaces as usual.
+> + */
+> +static int m88e1510_suspend(struct phy_device *phydev)
+> +{
+> +	if (phydev->wol_enabled)
+> +		return marvell_wol_suspend_intrs(phydev);
+> +
+> +	return marvell_suspend(phydev);
+>  }
+>  
+>  static int marvell_aneg_done(struct phy_device *phydev)
+> @@ -1969,8 +2042,12 @@ static void m88e1318_get_wol(struct phy_device *phydev,
+>  static int m88e1318_set_wol(struct phy_device *phydev,
+>  			    struct ethtool_wolinfo *wol)
+>  {
+> +	struct device *dev = &phydev->mdio.dev;
+> +	bool wol_enable;
+>  	int err = 0, oldpage;
+>  
+> +	wol_enable = !!(wol->wolopts & (WAKE_MAGIC | WAKE_PHY));
+> +
+>  	oldpage = phy_save_page(phydev);
+>  	if (oldpage < 0)
+>  		goto error;
+> @@ -2075,7 +2152,49 @@ static int m88e1318_set_wol(struct phy_device *phydev,
+>  	}
+>  
+>  error:
+> -	return phy_restore_page(phydev, oldpage, err);
+> +	err = phy_restore_page(phydev, oldpage, err);
+> +	if (err < 0)
+> +		return err;
+> +
+> +	if (device_can_wakeup(dev) && wol_enable != device_may_wakeup(dev)) {
+> +		err = device_set_wakeup_enable(dev, wol_enable);
+> +		if (err < 0) {
+> +			/* Roll back the PHY WoL config if the PM state update failed */
+> +			struct ethtool_wolinfo wol_off = { .wolopts = 0 };
+> +			int rollback_err = m88e1318_set_wol(phydev, &wol_off);
+> +
+> +			if (rollback_err < 0)
+> +				phydev_err(phydev,
+> +					   "Failed to disable WoL after wakeup enable error %d\n",
+> +					   rollback_err);
+> +		}
+> +	}
 
-Fixes: 533dd11a12f6 ("net: socionext: Add Synquacer NetSec driver")
-Assisted-by: LLM
-Signed-off-by: Yige Jiang <yigejiang86@gmail.com>
----
- drivers/net/ethernet/socionext/netsec.c | 2 ++
- 1 file changed, 2 insertions(+)
+It's unusual to recurse for error handling. If you need to run some
+parts of this WoL config logic to disable WoL, put that logic in a separate
+helper.
 
-diff --git a/drivers/net/ethernet/socionext/netsec.c b/drivers/net/ethernet/socionext/netsec.c
-index d14a6584473c8..79a0a324c921d 100644
---- a/drivers/net/ethernet/socionext/netsec.c
-+++ b/drivers/net/ethernet/socionext/netsec.c
-@@ -2149,6 +2149,7 @@ static int netsec_probe(struct platform_device *pdev)
- 	pm_runtime_put_sync(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- free_ndev:
-+	of_node_put(priv->phy_np);
- 	free_netdev(ndev);
- 	dev_err(&pdev->dev, "init failed\n");
- 
-@@ -2166,6 +2167,7 @@ static void netsec_remove(struct platform_device *pdev)
- 	netif_napi_del(&priv->napi);
- 
- 	pm_runtime_disable(&pdev->dev);
-+	of_node_put(priv->phy_np);
- 	free_netdev(priv->ndev);
- }
- 
--- 
-2.50.1 (Apple Git-155)
+And this can be split into a dedicated patch, as this doesn't seem to be
+related to the issue at stake here ?
+
+Maxime
 
