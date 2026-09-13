@@ -1,63 +1,63 @@
-Received: from mail-lr2-f12.google.com (mail-lr2-f12.google.com [74.125.230.76])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84912385D79
-	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 03:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BB538B7D4
+	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 03:50:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789271405; cv=none; b=pEc0AAhycX48U1u4Nuwdhpm43iuBI3Xshv/K10m/mIUscTv/DFyJFkUqP32yYBSweC0x9eJ2azTcvMxeL7XOaG+MUjg9oK0RDOhk0sZJIjihOMvndjpAAuQVCc7sfSNoa9XFjn8B2x888cwWV1kojQ/bo3xmIaY56sSfh5SQ/uI=
+	t=1789271407; cv=none; b=lM7b0KvXv1ICT/TQoMjGVztmmh915tNGPF6HIUBEwpaRG13fXe3Hl1NBMjBLLZyzo6BS1p7KbStL3qLGyCPWoLGUsWfw/yvH0lWQoPP9WT9gSyENr0J0xTiTeFPyMQxY7jltGvNcAjmKpqkjcOBre84UVWF8TDtfcJA1Ok9RP3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789271405; c=relaxed/simple;
-	bh=o48wrWvjoIliI06ZgFy+hiyAVOP8nZdeFGGfqhQTNCw=;
+	s=arc-20240116; t=1789271407; c=relaxed/simple;
+	bh=ICJykrUcFsTqZGtDXT59rk7AoFn2/RNxlEqe44411RI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OcHQuJ4f5r/2gni+x2KQxWfbfaNba5h9pW2L2mYgPi37E+65FYjGUnlrbzL8U220VnU/JIMQv3U5xgClUTbOT/DcRwJTuA5Ai/7XkthzFJntA22rSQGxHXDRGGweOsXWS+zGefwfD3JuaVqJadvAgsa5EmlCbLD9MTcu0JqYRr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bcNHpHtq; arc=none smtp.client-ip=74.125.230.76
+	 MIME-Version; b=czbAWclMHuh/MDgircPJ/c9Yxg2wq07a5vQuRiwu0pdazSHJzrazn65yW/yDL9EBXrEntxG9SOsPTGz5tiIl1kyq+VuTM0KlUeansbwWgNYCOH3b5MoyzXWk89Cg3HjxfEMYny7CzoDleR8qkSEZVuSrgCiI3WGSrfSNRf2WfZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b9oOAW/Z; arc=none smtp.client-ip=209.85.208.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bcNHpHtq"
-Received: by mail-lr2-f12.google.com with SMTP id 38308e7fff4ca-3a2ff16dd47so6481761fa.3
-        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 20:50:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b9oOAW/Z"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-3a33307ecd9so22362791fa.2
+        for <netdev@vger.kernel.org>; Sat, 12 Sep 2026 20:50:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789271400; x=1789876200; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789271404; x=1789876204; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=unzmUg06rWGBT2CRAbdUbshSQgFHbsBrT0vOi+rL7PM=;
-        b=bcNHpHtqIBFY+JEfrqPVpPdQdKESsbsRs+EVNR7zKJ3+ihPYuMZ2OzG+9TpG4V66c/
-         LIH5nErmecw8FR3s0lNE17gFinLshTkx/W+psYj6/ILnMXtccOf1llnQsQ4bjHWRkWt2
-         BYiKMLFSk+J6vpOnZd5glpFJ/8AI8GLZDC2rFS+iMIRl/nETsAIg6LBWSiB2VKE4yRo2
-         CnE1FECu+Uup17In88/txbvausTWbu0Hgwxd/YFvzRdvf1MuJZGB5ZSwhBMzU995gzCd
-         MV076IFe3mFmg3Vnz1jElwF2p0QtVy4yYUGDq6IjtBRG/P+2/myD43GD20SMoR5E6pU/
-         heCA==
+        bh=txCUeYmpqirgtdt/tYCNBsfM5AynCHOCui/THIn7RvE=;
+        b=b9oOAW/ZCxWvvWGIi9KJFmhsVlL5/SIBdYOnnU16Z634ajs/edEG+LIpYXDsszYgti
+         ofiucIM90bLI3XtysUkKGHRaMR/2K2vFymCV8VXJU5+KRZYO+Gt4UISHGTiz7oZb6VAw
+         qvXS4jU86OPbjA3HUY/k4yiozzQY9sM4DFwaUvlvpBsTYtKmV31MxW4n13JD71DUpz5V
+         6VMtKHauozzVNlV0btrX7uh8Ym/zeS9b3i0TFCWgj8u0mQB9k5Xd1aa1lQzMrfGc8aKl
+         kHwdD318tL8rJo/fuRJO9zLQJQyQF83kPOxs4cHyf1G31j00M+7IV5VGW+zHrrc5eebo
+         uWtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789271400; x=1789876200;
+        d=1e100.net; s=20251104; t=1789271404; x=1789876204;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=unzmUg06rWGBT2CRAbdUbshSQgFHbsBrT0vOi+rL7PM=;
-        b=erUXhBHF8sHUdAAnL7IofY4c2WSxk9ceLneyg+5IqL526O5/Vf/9drTqZRFguQGMWL
-         quW/XA3vI+c6fr3NkDGw4Fb4Zl7+FeW5ZQU8eKaLVXBPHc1xNb0dXy6zrsCE7nW0MZI7
-         vQlt4YWjW3SZX9TouhgVBH4wAAFSV2LPOBg81wLl6/zhc3XD7xJI84Ax+8Otb4Mu5j2x
-         QPzumi2m5cRgjM77n8hnOxh7dmU8+fnPpNyCeMwYxm4sbwfIpLTj8tk/UBmFfxJuSB4q
-         uEDE7IiCYu6inC1bot6d9YRI+p5OSTp595iluY3jzDf6smaLFZgSnDDJJuHWfrLspD9u
-         Nrqg==
-X-Gm-Message-State: AFuF++kAZB/8y7uUJZ7EsSdFPK+/bvOp2RJV+MUjyjZc4G7KB/BKmGRz
-	oJMVrfItpYimL7VDxFZIYAf4BfwmUbVVi6AvFE72lwnE5xWJhxhJ3N1lXJDm4RTkZ+0=
-X-Gm-Gg: AYBFou333BqdDTXEZCn6Vk7zRZtdLL+z33KCIaozSStUgFmuww01EMbDCCfZy4b9jbT
-	DGl9/sqoTvVwPMrB3AJkBSEA3ieKuAlh5+1e/d+adIgmAsqtXmddS/uJ7Ti/EtKdBUut7l0OAfQ
-	r3xYiPXRSEL6N6MMtMWKdNNkvU1fO4l0nAYJjy6aFLxvlhPAzB8elvNjpzC0pwjp0DRyPJg/wn5
-	u54HymB7/PFysk14lQ0xC57AXM93EHAGcoH/lWK4EuL9a/I124xq+ooYBnog4HX7FG/ei13T2zb
-	xdwoNgyqlzwiNOPitJIHmDPoGIETKABcuopsr7S1Euy7vOon/hlxyhARzlPIjXXI1tgO49bgqDf
-	MGAnwmdIuuk/L48W9/MzKR9REswsH2f0NOMIIppYynAO4eX3eGRHwUtRtD4N9S1MSPTHdz+Q+oI
-	cEanQVTJ2tFxPtzgN/v7tfx52ainHhMcJPcKC/KX7NriUxLRwe2mbtaWlvMlZK/XpVPz6hE4L1Z
-	Spe919ui5bqwnUVhPAo53dUASkD+0Vd77/c12d4HhKM
-X-Received: by 2002:a2e:9a15:0:b0:3a3:74b9:8a7a with SMTP id 38308e7fff4ca-3a5b382d744mr6509791fa.19.1789271400106;
-        Sat, 12 Sep 2026 20:50:00 -0700 (PDT)
+        bh=txCUeYmpqirgtdt/tYCNBsfM5AynCHOCui/THIn7RvE=;
+        b=d9GwmQiWkw18m74sQ1zIKZziD8bTLA5RbMKDq08DvB0iIc7A5b/4cu6+t/w97ApjDX
+         CaQV28ZkoxNmiFkJ7THLBAoxRWSf+nRKABiUeS3eGhwDyrb4md4sHwhl4fUhgVqUG05g
+         MvyctGB249a7g1z6nNfLtPnTKOT6Fps0baP4qz++IVbuiCC90c3+8a+muIc0rz5vzLLN
+         KkjvDbkGbDxZu3JiT9WgxOF0BfTc37mXwdvxc/WkHHWj64JeNfb94fPJVWst3+T2xyIm
+         6zq10HZ3Uk17aZPGsUnv0eKx/ZMEGYrW6nWffT31GNvZhIKylgIn+K4etEK9XJi+lCE4
+         UUfg==
+X-Gm-Message-State: AFuF++nSJb9nQuHZSZAjHJ87Ozz0X6dxFQ47sJvLEJ6EkdqnrCIuSlu2
+	PVafl5LjnXmiYD/PizjQ/pGfnfXvL4z1hPSo2a7I3NYC4uJJaF1DgHa8+QhKh5OGVCE=
+X-Gm-Gg: AYBFou20zA7X/TwEpPcYyX+yjA0hD+NXAZq51xaOnFWSVP9Iw16ZKW7iqln6eFDrcTa
+	cls6B3iwDjaTXifA37s6aWaOdRh5R5WPOcUvxQw+nqkt5RchzVT4FX9Jk+B3GnBrc9LWZaEpkYi
+	lEKDsAxnf/i+NQNdMbZiibtlyNSPp07aziuog7/riffDJQwdDwVg0N7Yvz4WPkUYwWCeNJKqN7f
+	QfsOR5DFEDGsSjza5mDolymYNHUPqfR4ydbqZ0V5oLkf9TfHo0nITwmpy65wW4RNFno9qlE/x2T
+	sgTABrUiyqK75STpu6USOlOnpeqekmO1eke+mNbrr7tMnaqV/FBUCadsf5nLBboc8b7ilrMUwyL
+	GjzLTCOlcR8nZVEuQb5Z0fbvpIDsQgXwry7d5fLB+oy2bb1bzH2ZVMf9+G4HnhP5Ms0/mnxivPa
+	vEUz2NC+nq87rmsvbLiuItjdbzL81KaQnWsqfjvN3bIw88HhCIUxwn2Up3fmT56JCSub0tbQt0P
+	xHbBKkj6EZapadv4fDWHHYgaZjePXweg3A2JVLa8tUp
+X-Received: by 2002:a05:651c:31c6:b0:3a3:4c63:771c with SMTP id 38308e7fff4ca-3a5a5208f2dmr11451881fa.12.1789271403456;
+        Sat, 12 Sep 2026 20:50:03 -0700 (PDT)
 Received: from dau-home-pc.. ([95.139.134.117])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a5a332737dsm17277051fa.22.2026.09.12.20.49.57
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a5a332737dsm17277051fa.22.2026.09.12.20.50.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Sep 2026 20:49:59 -0700 (PDT)
+        Sat, 12 Sep 2026 20:50:02 -0700 (PDT)
 From: Anton Danilov <littlesmilingcloud@gmail.com>
 To: netdev@vger.kernel.org
 Cc: "David S . Miller" <davem@davemloft.net>,
@@ -68,9 +68,9 @@ Cc: "David S . Miller" <davem@davemloft.net>,
 	Simon Horman <horms@kernel.org>,
 	Ido Schimmel <idosch@nvidia.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 2/8] ip6_tunnel: add drop reasons to the generic RX path
-Date: Sun, 13 Sep 2026 06:49:31 +0300
-Message-ID: <20260913034937.875068-3-littlesmilingcloud@gmail.com>
+Subject: [PATCH net-next v2 4/8] ip_gre: add drop reasons to the RX path
+Date: Sun, 13 Sep 2026 06:49:33 +0300
+Message-ID: <20260913034937.875068-5-littlesmilingcloud@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260913034937.875068-1-littlesmilingcloud@gmail.com>
 References: <20260913034937.875068-1-littlesmilingcloud@gmail.com>
@@ -82,101 +82,181 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-__ip6_tnl_rcv() mirrors its IPv4 counterpart: five distinct failures
-share a single plain kfree_skb().  Reuse the drop reasons introduced
-for ip_tunnel_rcv() and the ones the length helpers already return.
+A packet that reaches gre_rcv() and does not belong to any tunnel is
+dropped, after an ICMP port unreachable is sent back, with a plain
+kfree_skb().  This is the GRE counterpart of a UDP packet hitting no
+socket, and by far the most common way a GRE packet is dropped on
+receive, yet nothing tells it apart from a malformed one.
 
-Note that skb_vlan_inet_prepare() returns an enum skb_drop_reason that
-was simply discarded, and that pskb_may_pull_reason() has been
-available all along.
+Add SKB_DROP_REASON_GRE_TUNNEL_NOT_FOUND for it, in the spirit of the
+existing SKB_DROP_REASON_VXLAN_VNI_NOT_FOUND, and report it from
+erspan_rcv() and __ipgre_rcv() through a new output parameter, so that a
+failed lookup is not reported the same way as a header that could not be
+pulled or as a metadata allocation failure.
 
-__ip6_tnl_rcv() is reached through ip6_tnl_rcv() from both ip6_tunnel
-(ip4ip6, ip6ip6) and ip6_gre (ip6gre, ip6gretap, erspan).  As on the
-IPv4 side, only ip6_gre sets the checksum and sequence number bits, so
-the option mismatch and the old sequence reasons are reachable through
-it alone.
+The header pull failures reuse SKB_DROP_REASON_HDR_TRUNC and the
+metadata allocation failures reuse SKB_DROP_REASON_NOMEM.
 
 Assisted-by: Claude-Code:claude-opus-5
 Signed-off-by: Anton Danilov <littlesmilingcloud@gmail.com>
 ---
- net/ipv6/ip6_tunnel.c | 23 +++++++++++++++++------
- 1 file changed, 17 insertions(+), 6 deletions(-)
+ include/net/dropreason-core.h |  6 ++++++
+ net/ipv4/ip_gre.c             | 37 +++++++++++++++++++++++------------
+ 2 files changed, 30 insertions(+), 13 deletions(-)
 
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index d5ff50a2ac01..458ce328311b 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -813,6 +813,7 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
- 						struct sk_buff *skb),
- 			 bool log_ecn_err)
- {
-+	enum skb_drop_reason reason = SKB_DROP_REASON_NOT_SPECIFIED;
- 	const struct ipv6hdr *ipv6h;
- 	int nh, err;
+diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
+index 6ae7a604722d..fa8bd552122f 100644
+--- a/include/net/dropreason-core.h
++++ b/include/net/dropreason-core.h
+@@ -133,6 +133,7 @@
+ 	FN(TNL_OLD_SEQ)			\
+ 	FN(GRE_INVALID_HDR)		\
+ 	FN(GRE_CSUM)			\
++	FN(GRE_TUNNEL_NOT_FOUND)	\
+ 	FNe(MAX)
  
-@@ -820,15 +821,22 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
- 	    test_bit(IP_TUNNEL_CSUM_BIT, tpi->flags)) {
- 		DEV_STATS_INC(tunnel->dev, rx_crc_errors);
- 		DEV_STATS_INC(tunnel->dev, rx_errors);
-+		reason = SKB_DROP_REASON_TNL_OPT_MISMATCH;
- 		goto drop;
- 	}
- 
- 	if (test_bit(IP_TUNNEL_SEQ_BIT, tunnel->parms.i_flags)) {
--		if (!test_bit(IP_TUNNEL_SEQ_BIT, tpi->flags) ||
--		    (tunnel->i_seqno &&
--		     (s32)(ntohl(tpi->seq) - tunnel->i_seqno) < 0)) {
-+		if (!test_bit(IP_TUNNEL_SEQ_BIT, tpi->flags)) {
- 			DEV_STATS_INC(tunnel->dev, rx_fifo_errors);
- 			DEV_STATS_INC(tunnel->dev, rx_errors);
-+			reason = SKB_DROP_REASON_TNL_OPT_MISMATCH;
-+			goto drop;
-+		}
-+		if (tunnel->i_seqno &&
-+		    (s32)(ntohl(tpi->seq) - tunnel->i_seqno) < 0) {
-+			DEV_STATS_INC(tunnel->dev, rx_fifo_errors);
-+			DEV_STATS_INC(tunnel->dev, rx_errors);
-+			reason = SKB_DROP_REASON_TNL_OLD_SEQ;
- 			goto drop;
- 		}
- 		tunnel->i_seqno = ntohl(tpi->seq) + 1;
-@@ -838,7 +846,8 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
- 
- 	/* Warning: All skb pointers will be invalidated! */
- 	if (tunnel->dev->type == ARPHRD_ETHER) {
--		if (!pskb_may_pull(skb, ETH_HLEN)) {
-+		reason = pskb_may_pull_reason(skb, ETH_HLEN);
-+		if (reason) {
- 			DEV_STATS_INC(tunnel->dev, rx_length_errors);
- 			DEV_STATS_INC(tunnel->dev, rx_errors);
- 			goto drop;
-@@ -859,7 +868,8 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
- 
- 	skb_reset_network_header(skb);
- 
--	if (skb_vlan_inet_prepare(skb, true)) {
-+	reason = skb_vlan_inet_prepare(skb, true);
-+	if (reason) {
- 		DEV_STATS_INC(tunnel->dev, rx_length_errors);
- 		DEV_STATS_INC(tunnel->dev, rx_errors);
- 		goto drop;
-@@ -881,6 +891,7 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
- 		if (err > 1) {
- 			DEV_STATS_INC(tunnel->dev, rx_frame_errors);
- 			DEV_STATS_INC(tunnel->dev, rx_errors);
-+			reason = SKB_DROP_REASON_IP_TUNNEL_ECN;
- 			goto drop;
- 		}
- 	}
-@@ -898,7 +909,7 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
- drop:
- 	if (tun_dst)
- 		dst_release((struct dst_entry *)tun_dst);
--	kfree_skb(skb);
-+	kfree_skb_reason(skb, reason);
- 	return 0;
+ /**
+@@ -637,6 +638,11 @@ enum skb_drop_reason {
+ 	SKB_DROP_REASON_GRE_INVALID_HDR,
+ 	/** @SKB_DROP_REASON_GRE_CSUM: GRE checksum error */
+ 	SKB_DROP_REASON_GRE_CSUM,
++	/**
++	 * @SKB_DROP_REASON_GRE_TUNNEL_NOT_FOUND: no GRE tunnel found for the
++	 * endpoints and the key the packet carries.
++	 */
++	SKB_DROP_REASON_GRE_TUNNEL_NOT_FOUND,
+ 	/**
+ 	 * @SKB_DROP_REASON_MAX: the maximum of core drop reasons, which
+ 	 * shouldn't be used as a real 'reason' - only for tracing code gen
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index 1894c5746a73..4d9bb6d186ae 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -265,7 +265,7 @@ static bool is_erspan_type1(int gre_hdr_len)
  }
  
+ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
+-		      int gre_hdr_len)
++		      int gre_hdr_len, enum skb_drop_reason *reason)
+ {
+ 	struct net *net = dev_net(skb->dev);
+ 	struct metadata_dst *tun_dst = NULL;
+@@ -289,8 +289,10 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
+ 					  iph->saddr, iph->daddr, 0);
+ 	} else {
+ 		if (unlikely(!pskb_may_pull(skb,
+-					    gre_hdr_len + sizeof(*ershdr))))
++					    gre_hdr_len + sizeof(*ershdr)))) {
++			*reason = SKB_DROP_REASON_HDR_TRUNC;
+ 			return PACKET_REJECT;
++		}
+ 
+ 		ershdr = (struct erspan_base_hdr *)(skb->data + gre_hdr_len);
+ 		ver = ershdr->ver;
+@@ -306,8 +308,10 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
+ 		else
+ 			len = gre_hdr_len + erspan_hdr_len(ver);
+ 
+-		if (unlikely(!pskb_may_pull(skb, len)))
++		if (unlikely(!pskb_may_pull(skb, len))) {
++			*reason = SKB_DROP_REASON_HDR_TRUNC;
+ 			return PACKET_REJECT;
++		}
+ 
+ 		if (__iptunnel_pull_header(skb,
+ 					   len,
+@@ -327,8 +331,10 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
+ 
+ 			tun_dst = ip_tun_rx_dst(skb, flags,
+ 						tun_id, sizeof(*md));
+-			if (!tun_dst)
++			if (!tun_dst) {
++				*reason = SKB_DROP_REASON_NOMEM;
+ 				return PACKET_REJECT;
++			}
+ 
+ 			/* MUST set options_len before referencing options */
+ 			info = &tun_dst->u.tun_info;
+@@ -356,15 +362,17 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
+ 		ip_tunnel_rcv(tunnel, skb, tpi, tun_dst, log_ecn_error);
+ 		return PACKET_RCVD;
+ 	}
++	*reason = SKB_DROP_REASON_GRE_TUNNEL_NOT_FOUND;
+ 	return PACKET_REJECT;
+ 
+ drop:
+-	kfree_skb(skb);
++	kfree_skb_reason(skb, SKB_DROP_REASON_HDR_TRUNC);
+ 	return PACKET_RCVD;
+ }
+ 
+ static int __ipgre_rcv(struct sk_buff *skb, const struct tnl_ptk_info *tpi,
+-		       struct ip_tunnel_net *itn, int hdr_len, bool raw_proto)
++		       struct ip_tunnel_net *itn, int hdr_len, bool raw_proto,
++		       enum skb_drop_reason *reason)
+ {
+ 	struct metadata_dst *tun_dst = NULL;
+ 	const struct iphdr *iph;
+@@ -400,22 +408,25 @@ static int __ipgre_rcv(struct sk_buff *skb, const struct tnl_ptk_info *tpi,
+ 
+ 			tun_id = key32_to_tunnel_id(tpi->key);
+ 			tun_dst = ip_tun_rx_dst(skb, flags, tun_id, 0);
+-			if (!tun_dst)
++			if (!tun_dst) {
++				*reason = SKB_DROP_REASON_NOMEM;
+ 				return PACKET_REJECT;
++			}
+ 		}
+ 
+ 		ip_tunnel_rcv(tunnel, skb, tpi, tun_dst, log_ecn_error);
+ 		return PACKET_RCVD;
+ 	}
++	*reason = SKB_DROP_REASON_GRE_TUNNEL_NOT_FOUND;
+ 	return PACKET_NEXT;
+ 
+ drop:
+-	kfree_skb(skb);
++	kfree_skb_reason(skb, SKB_DROP_REASON_HDR_TRUNC);
+ 	return PACKET_RCVD;
+ }
+ 
+ static int ipgre_rcv(struct sk_buff *skb, const struct tnl_ptk_info *tpi,
+-		     int hdr_len)
++		     int hdr_len, enum skb_drop_reason *reason)
+ {
+ 	struct net *net = dev_net(skb->dev);
+ 	struct ip_tunnel_net *itn;
+@@ -426,13 +437,13 @@ static int ipgre_rcv(struct sk_buff *skb, const struct tnl_ptk_info *tpi,
+ 	else
+ 		itn = net_generic(net, ipgre_net_id);
+ 
+-	res = __ipgre_rcv(skb, tpi, itn, hdr_len, false);
++	res = __ipgre_rcv(skb, tpi, itn, hdr_len, false, reason);
+ 	if (res == PACKET_NEXT && tpi->proto == htons(ETH_P_TEB)) {
+ 		/* ipgre tunnels in collect metadata mode should receive
+ 		 * also ETH_P_TEB traffic.
+ 		 */
+ 		itn = net_generic(net, ipgre_net_id);
+-		res = __ipgre_rcv(skb, tpi, itn, hdr_len, true);
++		res = __ipgre_rcv(skb, tpi, itn, hdr_len, true, reason);
+ 	}
+ 	return res;
+ }
+@@ -457,12 +468,12 @@ static int gre_rcv(struct sk_buff *skb)
+ 
+ 	if (unlikely(tpi.proto == htons(ETH_P_ERSPAN) ||
+ 		     tpi.proto == htons(ETH_P_ERSPAN2))) {
+-		if (erspan_rcv(skb, &tpi, hdr_len) == PACKET_RCVD)
++		if (erspan_rcv(skb, &tpi, hdr_len, &reason) == PACKET_RCVD)
+ 			return 0;
+ 		goto out;
+ 	}
+ 
+-	if (ipgre_rcv(skb, &tpi, hdr_len) == PACKET_RCVD)
++	if (ipgre_rcv(skb, &tpi, hdr_len, &reason) == PACKET_RCVD)
+ 		return 0;
+ 
+ out:
 -- 
 2.47.3
 
