@@ -1,372 +1,335 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDCC039CD11
-	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 13:05:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7C539EF2E;
+	Sun, 13 Sep 2026 13:35:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789304732; cv=none; b=imDJrLkIZrTQSFfQQAy9AkUepDMFXqD76KbOxuw3gtuVl8mgPv6JnLnEtPIY6iFPbRLenMZuzp4xgBVyeLb+KAZG5PRCdoWwSVKisKKgiH15aJeAKOLPo9nnyo8H/UC21rbzv0BPvwBMatK1rnYZpO8Qu7WoSoj1e9e28KRydo8=
+	t=1789306514; cv=none; b=aqwu7l8l7SCO8Pj+iIj6pkKuG5vTGKmCfl5fTNXtHaWQMql4wO0ugwPCLpOCLsKNI2sIJZ7Hr2b+zWTxLuY0KHupeZjB19STgo2OpPpkfldw3byGRX9tRq8+x54QW/gfGuB+xiGNXOgc4FUSoO4vcYcpv5CIouSLsiFs7IqMnXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789304732; c=relaxed/simple;
-	bh=y3XytUCzFPOzJmOW3qwO5ptWzQIM9alzkawtzNUIezE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X1hFgd0uaXMLNtyNNhGSSljjlQ+An3YJGGtFJaLb27KtUkl7QYab0zbhiZM/AHwvUFhKX9uEOvqeVKQikTPJ+XXUYv0Xg7SfXfgCKoDGWk97ouW+SeTCF4cpwWL6/0HUfIFGFiC8W/Kg5qglSsBTuP4fVwxZkqI9OQBQScIS3d4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=oz3CoE1E; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Ge25AXjc; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1789306514; c=relaxed/simple;
+	bh=e1VqNaJQQzXuX31LPyCwW0BJrNErjjSE7U/lc6o02y8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IQ8QXMMoNH6B66AlQn45a9z0RQCGC0l/z7NgFXosx2Cq1n3YRAZj5JOkk+GnwsiasbM/BIhw6oMf4DL8Z65GOeBRDTwl3+ORsmHte0HC/aHxwagI2kWHJWVd2yvIOTZdGLrKTpZwaEwqprU30MAU9H6mioc33ro5Cl+yNCF96AQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=FOJT8Km0; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="oz3CoE1E";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Ge25AXjc"
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68DATv8B2052422
-	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 13:05:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=JELls357oROzry/uaF5NiB3H
-	IAkTSZxgZJvFFmqQnWk=; b=oz3CoE1EymzymXg0gk2BuuNfRruq2znV3UzWzZVd
-	QcWJE3ZWvx7sb5vw/S9LmyhETpx3MQJivH8fMuQpONyN+7MhDp+bnQ56OdMNT3HR
-	5YTYAmlqm0mZGxxrJUaIxeOvdMGHX6DWADjLAo1gd5cAfcqO0/cOQ+QVRXtPKKTQ
-	Zk9Z209tvVy1xtqfMwIzR81DwGu4WVAXbijuMYiAC86Wx5DMHAyrlfHRA7ISt6uB
-	9S0dle2tBkw3cCIl+GQtfDJDdRu2PyU3NtQFihI1+1wuBZte+LqKBPn2Fel36s7U
-	rZleCMQk1oDTsc45JiT+vPonPrcauqXcJhraf/8L5p33HA==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gmy9dk9bc-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 13:05:29 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-9394ad7f64aso394530185a.3
-        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 06:05:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1789304728; x=1789909528; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=JELls357oROzry/uaF5NiB3HIAkTSZxgZJvFFmqQnWk=;
-        b=Ge25AXjc4WqEF2MgSAitQyf7fB62Ilu6n+JkYQ0kFxPtC+qbJ0bC8mn4LEAdwq/Pfc
-         X39LWjVqPg19SbejtVYBtDnzpUWIjn7saTfHrPY3GKlWe7CEE3VAzoO8g5SMh5ej3svt
-         ajdFyZWPVISqRm5vSuPY0h0loELTwTNGMSKZfvdC5Yv82JvWRk60s0jCuqcVXSrWiPaI
-         nY/EgLFKfQsPTQS/2TOoepEu/War+hBWKrSMvv/Q079HfwB2U44Bu/MIk/26YlilLp4s
-         /ImOzyQ2KErtKp+Ofock+TEeIZaiWKH2mi+2ew/RMll169zJL2q4cPGUrSwfDWisatkF
-         NaQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789304728; x=1789909528;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JELls357oROzry/uaF5NiB3HIAkTSZxgZJvFFmqQnWk=;
-        b=ZYU7susd3uyFF1hAEGizjJd3Eqj0Tvcw2BOQXBOH6tCmWgnnOloDL3bXE9UENZ/D1g
-         6sb4G0PD7P/SX1fgU0f+tQIS6sQlABBeH+oMumadeS1OMZD09z4Om6UxQtr2FOCnG4iD
-         6eZWBowKO8xRTnYp9U8MePW2jb1OkKNrqYvhAnei0VFm3AcwHMuA0hIlYu3UMz1qIE95
-         FxbXXAu0aUu7snzrcFhmNsVuRvfvTDbw5SwoplDUwL31ON9jWFJIW3WX1ltlecoLFhal
-         5cM+xg5YgJYzaZ2yr9hMHWdkMY42DZc7qjNn9l0zR8bVofz7ZYn8gpXBX7/Yw4777NAK
-         UU5g==
-X-Forwarded-Encrypted: i=1; AKwUvBwcnnpj8pcL8nO+DwX8l8kQPdP0QzMsspWcwyulRtOpWgviKJ6150UZdF/6FMSHSrzd3h9/n2g=@vger.kernel.org
-X-Gm-Message-State: AFuF++ljCyL+K96UPP2hSl09hUHoZr+ilwm7SEXgoW47svB0v1QU7FHh
-	UaFVrVWZ5icv3dAYU0PY+uuvlvqXhTaHkxVBKj7yM7u9n4/7ct91abfRWUNPWNQdGfWuh1mSMjW
-	7aznNVkxcFBiXRTNxX1feQAwBnk/WoBYd7fblBNs4uXNKEaUlZINVYs5YVdE=
-X-Gm-Gg: AYBFou24pt1BPdaZnYYi9q6IsQ+CYi9g0ab/FRg6itSL8j9V45I533lWUpXvYp5o1QF
-	lRq5YtsuGWAYTZOOgJYgIexpNMl5jq85U2QkFTT9+UOq6Pq87z33eRodhP+6xaP0qF85MqxmeZ6
-	EoRDmzWPezzmIOggYAdcjqpvwz2lQ4050H9MsQxgFZjP9pXKuI3enYIpfEL/XzG5KFmv2AS7J2G
-	246amnT4Wbc1u5PVhSmycbLBBGSK8nqRQVHhOTwZhYrMvCZdlJIJwRAKFrg8CcgvnYxxIJFeH4N
-	cEc3bCImuOtxzP2qhRhiTQ8A4gG8i8zMcVmSu3pcyXT3+CY1Hp6ZX7C2oeMGLhpKqa9DQNmup4q
-	MgVm53XxmikieCw==
-X-Received: by 2002:a05:620a:459f:b0:939:feaa:949c with SMTP id af79cd13be357-939feaa986emr1225216385a.36.1789304728311;
-        Sun, 13 Sep 2026 06:05:28 -0700 (PDT)
-X-Received: by 2002:a05:620a:459f:b0:939:feaa:949c with SMTP id af79cd13be357-939feaa986emr1225204485a.36.1789304727663;
-        Sun, 13 Sep 2026 06:05:27 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486eb34f1f7sm19426713f8f.24.2026.09.13.06.05.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Sep 2026 06:05:25 -0700 (PDT)
-Date: Sun, 13 Sep 2026 15:05:24 +0200
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: bpf@vger.kernel.org, syzbot+237bbeed8dfe0699b7f5@syzkaller.appspotmail.com,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Stanislav Fomichev <sdf@fomichev.me>, Simon Horman <horms@kernel.org>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Eduard Zingerman <eddyz87@gmail.com>,
-        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-        Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
-        Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
-        Emil Tsalapatis <emil@etsalapatis.com>,
-        Ihor Solodrai <ihor.solodrai@linux.dev>, Shuah Khan <shuah@kernel.org>,
-        Kuniyuki Iwashima <kuniyu@google.com>,
-        Hangbin Liu <liuhangbin@gmail.com>,
-        Martin Karsten <mkarsten@uwaterloo.ca>,
-        Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
-        Eelco Chaudron <echaudro@redhat.com>, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH bpf v3 1/2] bpf, veth: xdp: fix page_pool page leak on
- skb-backed XDP
-Message-ID: <aqaflCbYxNRe-13p@lore-desk>
-References: <20260911135711.109338-1-jiayuan.chen@linux.dev>
- <20260911135711.109338-2-jiayuan.chen@linux.dev>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="FOJT8Km0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
+	Content-Type; bh=wY5Nz9XEGslGUcH04yT6JyKjGbyw8os8u8f4LLuB7CI=;
+	b=FOJT8Km0f+O34m9o29Qk4tpgLLazC9rp5IUvWt3JvjMrjK+o6cns9NABWmO4lD
+	Jh0EonvXSrxukEyv92lEvrnX7sacBJf0U37hHqGHfa7QUcbr8CTE29becR/a8wch
+	2FWBpZN07bkVnkOPZAzAme3QyU44M+4bPxdokHLg/fxDQ=
+Received: from 4CV529F122.company.local (unknown [])
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wBH+xUzpqZq8u2xAQ--.25040S2;
+	Sun, 13 Sep 2026 21:33:53 +0800 (CST)
+From: Ding Hui <dinghui1111@163.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: alexandre.torgue@foss.st.com,
+	andrew+netdev@lunn.ch,
+	andrew@lunn.ch,
+	davem@davemloft.net,
+	dinghui1111@163.com,
+	dinghui@lixiang.com,
+	edumazet@google.com,
+	kuba@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	liuxuanjun@lixiang.com,
+	maxime.chevallier@bootlin.com,
+	mcoquelin.stm32@gmail.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	xiasanbo@lixiang.com,
+	yangchen11@lixiang.com
+Subject: Re:Re: [PATCH net-next v2] net: stmmac: fix error path cleanup in DMA descriptor ring allocation
+Date: Sun, 13 Sep 2026 21:33:39 +0800
+Message-Id: <20260913133339.1607659-1-dinghui1111@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <178891488143.219967.12581003227734181738@kernel.org>
+References: <178891488143.219967.12581003227734181738@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="IhgM8RfCWRss2EoK"
-Content-Disposition: inline
-In-Reply-To: <20260911135711.109338-2-jiayuan.chen@linux.dev>
-X-Proofpoint-GUID: 14pYfljhQTZfpRYU4MTP1K5-xmWaL4v6
-X-Proofpoint-ORIG-GUID: 14pYfljhQTZfpRYU4MTP1K5-xmWaL4v6
-X-Authority-Analysis: v=2.4 cv=NelzRGD4 c=1 sm=1 tr=0 ts=6aa69f99 cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22 a=edf1wS77AAAA:8
- a=hSkVLCK3AAAA:8 a=LSqRACfL7P9x1fQBVswA:9 a=CjuIK1q_8ugA:10
- a=MsDrpbGXjJa3Vg-UeTYA:9 a=bTQJ7kPSJx9SKPbeHEYW:22 a=DcSpbTIhAlouE1Uv7lRv:22
- a=cQPPKAXgyycSBL8etih5:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTEzMDE4NyBTYWx0ZWRfX0AZX5TlB4qe7
- /izkVFYYyINnLp8pv++p8CgHHH4zgv7//EaEU8wLEMsicTtafcby0+gT/RH21Z+uiGFJZnEB2j0
- 7w6xy6OSWhW2dUdBBchQ8fVMicgcGA8=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTEzMDE4NyBTYWx0ZWRfX9htRRn+qV43b
- m+lmsvi30l8P6s+zsrRDCgMjzAiO1lKmRuwkLm00199EzVF+1e+0D2tdwLON9ZPwrRMri1lDp0z
- MzB/z62rM9Kuip3Ot/WnwkYxkjIDercPJFnVwZyA1dHMEYSv18cCLiBUYSOfCbI3QEfS7sHcFCn
- zc7eZIZxJ9GVVgmmjsypeHKUFvfezekGNg2EwdtGukHpRkh9qgwLmxXey/KfBFi0y00u4mBJaK6
- +TMRxGf1jrFoDm1CP+4q01X5JyW5Xu8M/dLa9BxbQfv6Tjv6xdtHXXtvU7j7CbDOmaCpv/wAFgP
- 9hdZVT/Kv7QM4OvYJKgoyS3+LHEfMaHsQlnesxLpHbbtOx0gYsxoKyn97JYODCgUGDjQrTRHWLQ
- i9QArt+VPxzJ4IBvBkOIrsAXuucE1VYKNdvs2TPpEjhI0ENwl6NdCIn3FfFwzpyrVFihTVpSQnK
- 2ZBi85XNi5W0kswrJUA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-13_04,2026-09-11_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0 impostorscore=0 priorityscore=1501 clxscore=1015
- spamscore=0 malwarescore=0 suspectscore=0 lowpriorityscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609130187
+Content-Type: text/plain; charset=y
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wBH+xUzpqZq8u2xAQ--.25040S2
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjTRfR6wUUUUU
+X-CM-SenderInfo: pglqwx1xlriiqr6rljoofrz/xtbC8wH9KmqmpkHtYgAA3B
 
---IhgM8RfCWRss2EoK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+At 2026-09-09 08:48:01, netdev-bot+sashiko@kernel.org wrote:
+>Thank you for your contribution! Sashiko AI review found 2 potential
+>issue(s) to consider:
+>
+>Critical: 0 · High: 1 (1) · Medium: 0 (1) · Low: 1
+>
+>- [High] The newly added NULL guards encode the contract 'NULL == not
+>  allocated', but the free helpers never establish it:…
+>- [Low] Missing `Fixes:` tag (and no stable routing) on a patch that
+>  fixes a user-visible NULL-pointer dereference.
+>
+>Pre-existing issues:
+>- [High] This problem wasn't introduced by this patch, but the patch
+>  makes it deterministic: `stmmac_enable_rx_queue()`…
+>- [Medium] This problem wasn't introduced by this patch, but the sibling
+>  error path in `alloc_dma_desc_resources()` (stmmac_main.c:2445-2457)…
+>
+>--
+>
+>net: stmmac: fix error path cleanup in DMA descriptor ring allocation
+>
+>This makes __alloc_dma_rx_desc_resources() and
+>__alloc_dma_tx_desc_resources() unwind their own partial allocations on
+>failure, and adds NULL checks in the buffer free helpers so they can be
+>called on partially-initialized queues.
+>
+>A few questions below about the new error paths and the surrounding
+>callers.
+>
+>[Severity: Low]
+>The commit message describes three concrete NULL dereferences that are
+>reachable today, when a kzalloc_objs() inside
+>__alloc_dma_rx_desc_resources() / __alloc_dma_tx_desc_resources() fails
+>and the err_dma: labels in alloc_dma_rx_desc_resources() /
+>alloc_dma_tx_desc_resources() run the bulk free helpers over every
+>queue.
+>
+>Should this carry a Fixes: tag so it can be routed to the stable trees?
+>Without one it is hard for a backporter to tell how far back the
+>dereference exists.
+>
+This patch targets net-next rather than net, as the issue only triggers
+under memory allocation failure during initialization when there is memory
+allocation pressure. A Fixes: tag is intentionally omitted to avoid
+triggering unwanted stable backports.
 
-> bpf_xdp_shrink_data() frees a released frag via __xdp_return() using
-> xdp->rxq->mem.type, but that type is wrong for skb-backed XDP: the skb is
-> cow'd into page_pool memory while the rxq still says MEM_TYPE_PAGE_SHARED,
-> so the page_pool page is freed with page_frag_free() and we hit
-> "Bad page state ... page_pool leak".
->=20
-> Both generic XDP and veth are affected. A non-linear skb is cow'd into
-> page_pool memory (skb_cow_data_for_xdp() -> skb_pp_cow_data() for generic
-> XDP, veth_convert_skb_to_xdp_buff() for veth), so its frags become
-> page_pool pages while the rxq keeps MEM_TYPE_PAGE_SHARED.
->=20
-> We can't just fix rxq->mem.type in place:
-> - generic XDP: xdp->rxq is dev->_rx[queue].xdp_rxq (see
->   bpf_prog_run_generic_xdp()), a shared rxq that other CPUs may access in
->   parallel, so we must not write to it.
-> - veth: rq->xdp_rxq.mem is shared per-queue state that veth resets on XDP
->   teardown, and with GRO that reset runs without stopping in-flight NAPI,
->   so a type stashed there can be clobbered under a packet still in flight.
->=20
-> Adding a check in __xdp_return() or bpf_xdp_shrink_data() itself is not an
-> option either: without recording it somewhere, both can only guess the
-> frag's memory type, which quickly gets confusing.
->=20
-> So record it in the xdp_buff. A dedicated mem_type field (mirroring
-> xdp_frame->mem_type) would read more naturally, but it grows xdp_buff, and
-> struct xdp_page_head embeds two of them, which shifts the layout the
-> xdp_do_redirect live-frames selftest hard-codes (MAX_PKT_SIZE). So use a
-> flag bit: add XDP_FLAGS_FRAGS_PAGE_POOL, the two skb-cow sites set it, and
-> bpf_xdp_shrink_data() frees the frag to the page_pool when it is set,
-> otherwise it keeps falling back to xdp->rxq->mem.type unchanged.
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> index 07a6fab6460ed..8d03eb7904ef1 100644
+>> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>
+>[ ... ]
+>
+>> @@ -1761,6 +1761,10 @@ static void dma_free_rx_skbufs(struct stmmac_priv *priv,
+>>  	struct stmmac_rx_queue *rx_q = &dma_conf->rx_queue[queue];
+>>  	int i;
+>>  
+>> +	/* buf_pool may not be allocated if alloc failed early */
+>> +	if (!rx_q->buf_pool)
+>> +		return;
+>> +
+>>  	for (i = 0; i < dma_conf->dma_rx_size; i++)
+>>  		stmmac_free_rx_buffer(priv, rx_q, i);
+>>  }
+>
+>[Severity: High]
+>These new guards assume "NULL means not allocated", but do the free
+>helpers ever establish that? __free_dma_rx_desc_resources() releases
+>everything without clearing the fields:
+>
+>	dma_free_coherent(priv->device, size, addr, rx_q->dma_rx_phy);
+>
+>	if (xdp_rxq_info_is_reg(&rx_q->xdp_rxq))
+>		xdp_rxq_info_unreg(&rx_q->xdp_rxq);
+>
+>	kfree(rx_q->buf_pool);
+>	if (rx_q->page_pool)
+>		page_pool_destroy(rx_q->page_pool);
+>
+>__free_dma_tx_desc_resources() does the same for tx_skbuff_dma,
+>tx_skbuff and the coherent TX ring.
+>
+>That matters because these helpers also run on the long-lived
+>priv->dma_conf, and it is re-used for the next allocation:
+>
+>  stmmac_xdp_set_prog()
+>    stmmac_xdp_release()
+>      free_dma_desc_resources(priv, &priv->dma_conf)   /* pointers stay set */
+>    stmmac_xdp_open()
+>      alloc_dma_desc_resources(priv, &priv->dma_conf)
+>
+>Unlike stmmac_open(), which works on a freshly kzalloc'ed dma_conf,
+>nothing zeroes priv->dma_conf here. So if any per-queue allocation fails
+>mid-way (for example page_pool_create() for queue 1, which is the one
+>early return this patch leaves as-is), alloc_dma_rx_desc_resources()
+>jumps to err_dma: and free_dma_rx_desc_resources() loops over all queues
+>0..rx_queues_to_use-1:
+>
+>	for (queue = 0; queue < rx_count; queue++)
+>		__free_dma_rx_desc_resources(priv, dma_conf, queue);
+>
+>The queues that were not touched in this pass still hold the pointers
+>freed by the preceding release. Since those pointers are freed but not
+>NULL, does the new guard fire at all for them?
+>
+>Following that path through, stmmac_free_rx_buffer() would read
+>buf->page out of the freed buf_pool object and pass it to
+>page_pool_put_full_page() on an already-destroyed pool, then
+>dma_free_coherent() runs a second time on the released coherent memory,
+>kfree(rx_q->buf_pool) becomes a slab double free, and
+>page_pool_destroy(rx_q->page_pool) is called on a freed pool. Can that
+>corrupt the slab and DMA state?
+>
+>The TX side looks symmetric via the new "if (!tx_q->tx_skbuff_dma)
+>return;" guard and the tx_skbuff/xdpf tests added in
+>stmmac_free_tx_buffer().
+>
+>Would it make sense for __free_dma_rx_desc_resources() and
+>__free_dma_tx_desc_resources() to NULL the fields they free, so the new
+>guards actually hold?
+>
+It's right. Currently __free_dma_rx_desc_resources() and
+__free_dma_tx_desc_resources() free the resources without NULLing the
+pointers. Since priv->dma_conf is reused across xdp open/release cycles,
+stale pointers could defeat the new NULL guards. I'll add NULL
+assignments after each free in __free_dma_rx_desc_resources() and
+__free_dma_tx_desc_resources() in v3.
 
-I have not looked into the details yet, but I am wondering if it is possible
-to just move xdp_mem_info type (or ever the full xdp_mem_info) in xdp_buff =
-and
-remove it from xdp_rxq_info struct. What do you think?
+>[ ... ]
+>
+>> @@ -2296,10 +2312,27 @@ static int __alloc_dma_rx_desc_resources(struct stmmac_priv *priv,
+>>  	ret = xdp_rxq_info_reg(&rx_q->xdp_rxq, priv->dev, queue, napi_id);
+>>  	if (ret) {
+>>  		netdev_err(priv->dev, "Failed to register xdp rxq info\n");
+>> -		return -EINVAL;
+>> +		goto err_free_dma;
+>>  	}
+>>  
+>>  	return 0;
+>> +
+>> +err_free_dma:
+>> +	if (priv->extend_desc)
+>> +		dma_free_coherent(priv->device, size, rx_q->dma_erx,
+>> +				  rx_q->dma_rx_phy);
+>> +	else
+>> +		dma_free_coherent(priv->device, size, rx_q->dma_rx,
+>> +				  rx_q->dma_rx_phy);
+>> +	rx_q->dma_erx = NULL;
+>> +	rx_q->dma_rx = NULL;
+>> +err_free_buf_pool:
+>> +	kfree(rx_q->buf_pool);
+>> +	rx_q->buf_pool = NULL;
+>> +err_destroy_pool:
+>> +	page_pool_destroy(rx_q->page_pool);
+>> +	rx_q->page_pool = NULL;
+>> +	return ret;
+>>  }
+>
+>[Severity: High]
+>This isn't a bug introduced by this patch, but does the patch turn it
+>into a deterministic NULL dereference?
+>
+>stmmac_enable_rx_queue() and stmmac_enable_tx_queue() return void and
+>simply drop the allocation error:
+>
+>	ret = __alloc_dma_rx_desc_resources(priv, &priv->dma_conf, queue);
+>	if (ret) {
+>		netdev_err(priv->dev, "Failed to alloc RX desc.\n");
+>		return;
+>	}
+>
+>After the new labels above, the failed queue is left with
+>rx_q->buf_pool == NULL, rx_q->page_pool == NULL and
+>rx_q->dma_rx/dma_erx == NULL (tx_skbuff and tx_skbuff_dma on the TX
+>side).
+>
+>The caller in stmmac_xdp.c continues regardless:
+>
+>	stmmac_enable_rx_queue(priv, queue);
+>	stmmac_enable_tx_queue(priv, queue);
+>	napi_enable(&ch->rxtx_napi);
+>
+>	err = stmmac_xsk_wakeup(priv->dev, queue, XDP_WAKEUP_RX);
+>
+>and stmmac_xsk_wakeup() reaches __napi_schedule(&ch->rxtx_napi). Its
+>only precondition is:
+>
+>	if (!rx_q->xsk_pool && !tx_q->xsk_pool)
+>		return -EINVAL;
+>
+>which does not help here, because dma_free_tx_skbufs() only clears
+>tx_q->xsk_pool when xsk_frames_done is non-zero.
+>
+>Does the scheduled poll then dereference rx_q->buf_pool[entry] and
+>tx_q->tx_skbuff_dma[entry] in softirq context on a queue whose arrays
+>were just set to NULL? Should the enable helpers propagate the error and
+>skip the napi_enable()/wakeup instead?
+>
+>[ ... ]
+>
+>> @@ -2369,6 +2402,14 @@ static int __alloc_dma_tx_desc_resources(struct stmmac_priv *priv,
+>>  		tx_q->dma_tx = addr;
+>>  
+>>  	return 0;
+>> +
+>> +err_free_skbuff:
+>> +	kfree(tx_q->tx_skbuff);
+>> +	tx_q->tx_skbuff = NULL;
+>> +err_free_skbuff_dma:
+>> +	kfree(tx_q->tx_skbuff_dma);
+>> +	tx_q->tx_skbuff_dma = NULL;
+>> +	return -ENOMEM;
+>>  }
+>>  
+>>  static int alloc_dma_tx_desc_resources(struct stmmac_priv *priv,
+>
+>[Severity: Medium]
+>This is a pre-existing issue, but the sibling function in the same
+>family still does not follow the rule the commit message states, namely
+>"making each allocation function responsible for undoing its own
+>allocations on error".
+>
+>alloc_dma_desc_resources() allocates RX first and returns the TX error
+>directly:
+>
+>	int ret = alloc_dma_rx_desc_resources(priv, dma_conf);
+>
+>	if (ret)
+>		return ret;
+>
+>	ret = alloc_dma_tx_desc_resources(priv, dma_conf);
+>
+>	return ret;
+>
+>On TX failure only free_dma_tx_desc_resources() has run (inside
+>alloc_dma_tx_desc_resources()), so every rx_q->page_pool,
+>rx_q->buf_pool and coherent RX ring is still allocated. The caller then
+>takes the alloc_error: path:
+>
+>init_error:
+>	free_dma_desc_resources(priv, dma_conf);
+>alloc_error:
+>	kfree(dma_conf);
+>	return ERR_PTR(ret);
+>
+>which only kfree()s dma_conf and drops the only pointers to those RX
+>resources; free_dma_desc_resources() is reached only via init_error:.
+>
+>Does this leak the RX page pools, the buf_pool arrays and the
+>dma_alloc_coherent RX rings when a TX allocation fails during ifup or an
+>MTU change? stmmac_xdp_open() has the same shape, except the resources
+>stay reachable through priv->dma_conf, which feeds into the stale
+>pointer question above.
+>
+>Would adding a free_dma_rx_desc_resources() call to
+>alloc_dma_desc_resources() on the TX failure path fit the pattern this
+>patch establishes?
 
->=20
-> The flag describes the buff, so the buff <-> frame conversions have to ke=
-ep
-> it consistent:
-> - buff -> frame: xdp_update_frame_from_buff() copies xdp->flags into the
->   frame. veth XDP_TX/XDP_REDIRECT hand the frame to the peer, and cpumap
->   and devmap run a second program on it, so the peer would inherit a stale
->   tag; strip it, an xdp_frame describes its memory with ::mem_type.
-> - frame -> buff: xdp_convert_frame_to_buff() rebuilds a buff, and veth and
->   devmap then run a program whose rxq says MEM_TYPE_PAGE_SHARED even for a
->   page_pool frame (only cpumap copies mem_type into the rxq). A shrink
->   there leaks the same way (this predates the series: bpf_xdp_adjust_tail=
-()
->   frees frags by rxq->mem.type), so re-derive the flag from the frame's
->   ::mem_type.
->=20
-> Fixes: e6d5dbdd20aa ("xdp: add multi-buff support for xdp running in gene=
-ric mode")
-> Fixes: 0ebab78cbcbf ("net: veth: add page_pool for page recycling")
-> Fixes: bf25146a5595 ("bpf: add frags support to the bpf_xdp_adjust_tail()=
- API")
-> Reported-by: syzbot+237bbeed8dfe0699b7f5@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3D237bbeed8dfe0699b7f5
-> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-> ---
->  drivers/net/veth.c |  6 ++++++
->  include/net/xdp.h  | 30 +++++++++++++++++++++++++++++-
->  net/core/dev.c     |  6 ++++++
->  net/core/filter.c  |  7 +++++++
->  4 files changed, 48 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-> index 6ed3ee81153fb..a3fdf1959b76c 100644
-> --- a/drivers/net/veth.c
-> +++ b/drivers/net/veth.c
-> @@ -775,6 +775,12 @@ static int veth_convert_skb_to_xdp_buff(struct veth_=
-rq *rq,
->  	if (skb_shinfo(skb)->nr_frags) {
->  		skb_shinfo(skb)->xdp_frags_size =3D skb->data_len;
->  		xdp_buff_set_frags_flag(xdp);
-> +		/*
-> +		 * A nonlinear skb was cow'd into rq->page_pool above, so the
-> +		 * frags must be freed to that pool, not via the rxq's
-> +		 * MEM_TYPE_PAGE_SHARED.
-> +		 */
-> +		xdp_buff_set_frag_pp(xdp);
+The above two suggestions are valid. The error handling in
+stmmac_enable_rx_queue()/stmmac_enable_tx_queue() (returning void and
+dropping allocation errors) and the RX resource leak in
+alloc_dma_desc_resources() on TX failure are real pre-existing issues.
+However, they are beyond the scope of this patch, which focuses on
+making the per-queue allocation functions clean up their own partial
+allocations. I plan to address them in follow-up patches.
 
-Even if it is not a real problem at the moment, I still think we should
-set it not just if we have a non-liner skb, but for all skb returned by
-skb_pp_cow_data().
+Thanks,
+Ding Hui
 
->  	} else {
->  		xdp_buff_clear_frags_flag(xdp);
->  	}
-> diff --git a/include/net/xdp.h b/include/net/xdp.h
-> index aa742f413c358..8fd4139e9cbd3 100644
-> --- a/include/net/xdp.h
-> +++ b/include/net/xdp.h
-> @@ -81,6 +81,14 @@ enum xdp_buff_flags {
->  	 * XDP program is not attached.
->  	 */
->  	XDP_FLAGS_FRAGS_UNREADABLE	=3D BIT(2),
-> +	/*
-> +	 * frags are page_pool memory even though rxq->mem.type is not: a
-> +	 * skb-backed XDP buff (generic XDP, veth) is cow'd into a page_pool.
-> +	 * xdp_buff only: an xdp_frame describes its memory with ::mem_type, so
-> +	 * this is stripped in xdp_update_frame_from_buff() and re-derived from
-> +	 * ::mem_type in xdp_convert_frame_to_buff().
-> +	 */
-> +	XDP_FLAGS_FRAGS_PAGE_POOL	=3D BIT(3),
->  };
-> =20
->  struct xdp_buff {
-> @@ -131,6 +139,16 @@ static __always_inline void xdp_buff_set_frag_unread=
-able(struct xdp_buff *xdp)
->  	xdp->flags |=3D XDP_FLAGS_FRAGS_UNREADABLE;
->  }
-> =20
-> +static __always_inline void xdp_buff_set_frag_pp(struct xdp_buff *xdp)
-> +{
-> +	xdp->flags |=3D XDP_FLAGS_FRAGS_PAGE_POOL;
-> +}
-> +
-> +static __always_inline bool xdp_buff_is_frag_pp(const struct xdp_buff *x=
-dp)
-> +{
-> +	return !!(xdp->flags & XDP_FLAGS_FRAGS_PAGE_POOL);
-> +}
-> +
->  static __always_inline u32 xdp_buff_get_skb_flags(const struct xdp_buff =
-*xdp)
->  {
->  	return xdp->flags;
-> @@ -394,6 +412,15 @@ void xdp_convert_frame_to_buff(const struct xdp_fram=
-e *frame,
->  	xdp->data_meta =3D frame->data - frame->metasize;
->  	xdp->frame_sz =3D frame->frame_sz;
->  	xdp->flags =3D frame->flags;
-> +	/*
-> +	 * frame->flags never carries XDP_FLAGS_FRAGS_PAGE_POOL (it is stripped
-> +	 * in xdp_update_frame_from_buff()); re-derive it from the frame's own
-> +	 * memory type. veth and devmap rebuild a buff here and run a program
-> +	 * whose rxq says MEM_TYPE_PAGE_SHARED, so without this a shrink would
-> +	 * free a page_pool frag through page_frag_free().
-> +	 */
-> +	if (frame->mem_type =3D=3D MEM_TYPE_PAGE_POOL)
-> +		xdp_buff_set_frag_pp(xdp);
->  }
-> =20
->  static inline
-> @@ -420,7 +447,8 @@ int xdp_update_frame_from_buff(const struct xdp_buff =
-*xdp,
->  	xdp_frame->headroom =3D headroom - sizeof(*xdp_frame);
->  	xdp_frame->metasize =3D metasize;
->  	xdp_frame->frame_sz =3D xdp->frame_sz;
-> -	xdp_frame->flags =3D xdp->flags;
-> +	/* XDP_FLAGS_FRAGS_PAGE_POOL is xdp_buff only, don't carry it over */
-> +	xdp_frame->flags =3D xdp->flags & ~XDP_FLAGS_FRAGS_PAGE_POOL;
-
-IIUC this is only necessary for the veth case, right? If so, I would sugges=
-t to
-move it in veth driver (or to have a helper function called just in veth).
-
-Regards,
-Lorenzo
-
-> =20
->  	return 0;
->  }
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index 290e0f099e6bf..94268f4d3c5f7 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -5532,6 +5532,12 @@ u32 bpf_prog_run_generic_xdp(struct sk_buff *skb, =
-struct xdp_buff *xdp,
->  	if (skb_is_nonlinear(skb)) {
->  		skb_shinfo(skb)->xdp_frags_size =3D skb->data_len;
->  		xdp_buff_set_frags_flag(xdp);
-> +		/*
-> +		 * A nonlinear skb was cow'd into page_pool memory by
-> +		 * skb_cow_data_for_xdp() before we got here, so the frags must
-> +		 * be freed to that pool, not via the rxq's MEM_TYPE_PAGE_SHARED.
-> +		 */
-> +		xdp_buff_set_frag_pp(xdp);
->  	} else {
->  		xdp_buff_clear_frags_flag(xdp);
->  	}
-> diff --git a/net/core/filter.c b/net/core/filter.c
-> index 61940e7535523..d34ba56d79d8f 100644
-> --- a/net/core/filter.c
-> +++ b/net/core/filter.c
-> @@ -4378,6 +4378,13 @@ static bool bpf_xdp_shrink_data(struct xdp_buff *x=
-dp, skb_frag_t *frag,
->  	if (mem_type =3D=3D MEM_TYPE_XSK_BUFF_POOL) {
->  		netmem =3D 0;
->  		zc_frag =3D bpf_xdp_shrink_data_zc(xdp, shrink, tail, release);
-> +	} else if (xdp_buff_is_frag_pp(xdp)) {
-> +		/*
-> +		 * Skb-backed XDP (generic XDP, veth) cow's the frags into a
-> +		 * page_pool while the rxq stays MEM_TYPE_PAGE_SHARED, so free
-> +		 * the frag to the pool, not via page_frag_free().
-> +		 */
-> +		mem_type =3D MEM_TYPE_PAGE_POOL;
->  	}
-> =20
->  	if (release) {
-> --=20
-> 2.43.0
->=20
-
---IhgM8RfCWRss2EoK
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaqaflAAKCRA6cBh0uS2t
-rHNBAPkBHi09tn1jQ/byaHiBeGbsxzmeuu/TzTI7dk6V/wHKxQEA67Ovgsf+Cg4A
-oXBSPVc4vic9RMJpfzh6FXJYmpdXSwk=
-=NGTU
------END PGP SIGNATURE-----
-
---IhgM8RfCWRss2EoK--
