@@ -1,78 +1,50 @@
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FE9280CD5
-	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 20:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951332D9EE4;
+	Sun, 13 Sep 2026 20:55:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789332351; cv=none; b=c/m2BFsbrUFOh7NQF7/nO2Xysk2i0V2nYRj/cjkyPx2CTQwzYxJ7GBMz5kLZzyX7oZ39Sq26Qgm2NU8x2gfEexmIkOAsVvcd+UlqNYDCvyp2dcTbo+tE+Wx9o3Vq4gdQw/BCDKUEqrUDVK6tvoeOpoiplVF8fssQM3hZXeO9c50=
+	t=1789332905; cv=none; b=FwOs4+x41oth/19RdQ0oNyYa29EgU28Y7BAV60eE/NuijuYtzccqaIkZiZrn99EXCkzwOWGlftAn52IpeaN6QRGMMCr5ybz2UwWroEeKTgennAtI99FAgAnhUhBvV+eZzBarO25Qjs8TreGoJhb0kfL9lhC7gTIXrbJwekhnTpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789332351; c=relaxed/simple;
-	bh=xTPqnZu8meQr9zKYn6kU+Sjy+hM+55XIhd9WW3MwX/4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FKd0nVzugIWYHA/D+uoJ+YhNhPC8ieK737PBztp58SA1ys8VsVouKhhIdqMCJSQv3JQDe9HCNoFreQT3HfD7qR1709VftMsgJKZOdeIaVjUbwrnONwq09XsOIfHEclzHclrFqvtTxhKq8VmEngCKq8pi95p35+VAHl3A2V3uxLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pw94bZRs; arc=none smtp.client-ip=74.125.230.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789332905; c=relaxed/simple;
+	bh=/iddznms36HXZFJtrYFUiurnQN5RhT5DXJT9ufNZjvc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Ci5Beo9dAxGZajwWDZO83w4AMcCS3MV3/+iPysIuLXeZEcs21TJLQEh8SAxfo/9NoQKEXBaQ1vwtakmw3Bze8Awxrh/I/fhC7xSpXPODL2VYhVZ8znNUY7q76aCTUgqTM+moRPbMCyukNaeSMLUxDyURqVexmY6DfAtO+7EwBo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=ty6LNAct; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pw94bZRs"
-Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-93a0fd41a7bso108163885a.1
-        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 13:45:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789332349; x=1789937149; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=gIBMkVsQnc+d88IgxQtwbE3hp2eO368yzTFTV3ZCKw0=;
-        b=pw94bZRs7MrpTRj5z9x8HjDKgq3ot412SACs5tnRdfms+dzJxAnPWXzhyZhGHzdML7
-         Qtd5q2dqE1V0Tt8EUFw/rvzxgUVL9Ch7jaPwcPV8LZmXWU8xyYzrcu8tTFCVOJMgHUyt
-         aarW44CmHuQ744N3I4bzJTOHhdhN6oaG6dQwjHw8NVfQdLwEx/1e78jAVpwe1vcv1001
-         LiGqwj2VJSloFLMuyx2qAWtYVDZiblgF7B+fXX15s41XYoSnNL2jMcP4zxXotcB2P9ov
-         i7fn6i1QqUmWomPo8l/3UvQis1VlVUwZmGAZoN/lHklpzGVtum/4ugacnmDnY520R5oX
-         0dhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789332349; x=1789937149;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gIBMkVsQnc+d88IgxQtwbE3hp2eO368yzTFTV3ZCKw0=;
-        b=cX2mbWKGn9BZIYXyQ7/oe6KqJwo7U7x1cVRpnRhkTAVtwsy4CNCxwZ3s3K/6WTzFRy
-         a7mnVgVXwwAdMrca+R3+eSLTf8JpOFVMnE2zGs/eRy9B5NnoHmkMNjkcmbYl/QeKm3/z
-         5HghlbnZuk8GeXmo1vtcCpdEeo9Ff8XBvev3XOBC+jhVAiVH8UdUEFsPzN8zzDKmtwsg
-         /8gu2nzDOdcxd8LBD+KM7J/PGUUzs7JNp42XbcNVsSfQK9/MHJXcZvJInTIcKGz2Ci0M
-         HIIbMDVgyTYYNzmn8DUM3KQLEt6uuCt0yxb0+p/r/IzdycFCE9JxmB5bkZYi/Vus0Bkf
-         Y/sQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwDAFZd1QZg1TxbYNKGx7AYRmb/EKfLTC9Q5yhedvIhSSvglY1nrzwIYipN6Gj8rQf7qcxhxmA=@vger.kernel.org
-X-Gm-Message-State: AFuF++mIJXnx5QHAMzde0yJi0ikGEyJ7LHO8xCvdIwe7DPfK0oCzR85p
-	ADr9ipsJ6wxlxCBbrAeUrAXrb0w0hgYoLDBOiznIoct1wDntG/DW5BQ=
-X-Gm-Gg: AYBFou2jUHD9jMTdbaAEjcSy7zpjLYM2yVa3R9B1mHcwGFkS6pDgdq4pM6yCoPoNfR6
-	N+RStFOVBpiloR6o6NiX/2zfzZvEgORVCWinPKFrOTmmOKlq7hvNwRihRLPMZiZMsKIxROUK1wH
-	ayb9chASMk4j3JAuaA1Cjf5sFLIu/0qCwqMwk/Jy5Of5h2dvtycZIhBknqYUdXVMDlvyUcXvTOQ
-	aezp5d5BgrihGJ3B9bAC3igHKz9yFbjj/OiDrOj6d0YbvWn+uqubRGO9+KKVOz3fZz1Q/RCEZ3A
-	GLXzhGBcWS1Ke8H8EG8U4pmRhmLuoFTLkXugV+6l6ubbi6tKIJ9SbePImcpPOiqY8QvCZmSSuxF
-	Mu9hhRoek3/v/iTvSfKiuzDURAMmQ089ot8XnMqWU724j2a9XUsh1Hc84oBIZErvanr6L4iCxlx
-	1weMWghw08s7mF5kDU8HO3xNgskBx73GmxtV7plHoFmQ9B43PllCeHj96DRO/JU/bJ+0ifY0BBg
-	T3XJfhW28F0qHPz96cBDeOR0YVpH/tX2Q3hjWKlVNt9b0Bz8MmwHUhEGqWT09K7s/u8ZQC1QCjD
-	5E4zJI+jSzOxpZ3Zb5M4n3li14alzm8jdA==
-X-Received: by 2002:a05:620a:288a:b0:939:ede4:a499 with SMTP id af79cd13be357-93a035f328dmr1218686885a.5.1789332349032;
-        Sun, 13 Sep 2026 13:45:49 -0700 (PDT)
-Received: from localhost.localdomain ([104.39.73.78])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-939e7f19291sm837711585a.10.2026.09.13.13.45.46
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 13 Sep 2026 13:45:48 -0700 (PDT)
-From: Myeonghun Pak <mhun512@gmail.com>
-To: GR-Linux-NIC-Dev@marvell.com
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="ty6LNAct"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1789332901;
+	bh=VX6sBGK9R16yzx8cRdhS460qkBIHmEnXCCfYC4NPIqE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ty6LNActpCUCVgJIu5UmdaMFaWKN/AteHLNIknZaOur8ebUT8HD4bVI7/KmqvYvfj
+	 6ItXgkFs0jqTu1zoxm4J7icgw0m0IU9xmouioXenkruYBH9LSQejHydCQORvf7dfO1
+	 fDFG02uixC2hKe6Q5S6/45NZTNYcyY2dXP1zwMBkLlE01kmAUvfv2nX9nIxogHuHJ/
+	 iJVpGH4xhWXRzLP5w+FERBnVCHuZa5gmRcNBuHnyMFGeKWb4+81Dg/OEfeE8S93Ysy
+	 S+GT1EgwfSYU184lwf3z01rE2vI8gYlyLDigbX/gOJD7B+xbhNSMQJKAbKUh8tTKNE
+	 gmvx82xOTMgQA==
+Received: from localhost.localdomain (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with ESMTPSA id 04F496005C;
+	Sun, 13 Sep 2026 22:55:00 +0200 (CEST)
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: davem@davemloft.net,
+	netdev@vger.kernel.org,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ae878000@gmail.com,
-	horms@kernel.org
-Subject: [PATCH net v2] net/qla3xxx: disable the PCI device on remove
-Date: Sun, 13 Sep 2026 16:45:34 -0400
-Message-ID: <20260913204534.53825-1-mhun512@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	edumazet@google.com,
+	horms@kernel.org,
+	fw@strlen.de,
+	ja@ssi.bg
+Subject: [PATCH net 4/4] netfilter: flowtable: hold reference on ct until flow is released
+Date: Sun, 13 Sep 2026 22:54:47 +0200
+Message-ID: <20260913205447.1889203-5-pablo@netfilter.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260913205447.1889203-1-pablo@netfilter.org>
+References: <20260913205447.1889203-1-pablo@netfilter.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,41 +53,57 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ql3xxx_probe() enables the PCI device and balances that reference on
-probe failure. However, ql3xxx_remove() releases the mappings and PCI
-regions without disabling the device, leaving the enable reference
-held after unbind.
+nf_ct_put() releases the ct->ext area inmediately, the rcu typesafe
+semantics also allow to refer to the wrong conntrack from the flowtable
+datapath. Hold reference on ct until flow is released after rcu grace
+period.
 
-Add pci_disable_device() at the end of ql3xxx_remove() to balance the
-successful probe's pci_enable_device() call. Keep the existing manual
-cleanup and probe error handling unchanged.
+Add rcu_barrier() on module exit path, to ensure pending flow entries
+are release before module goes away.
 
-This issue was identified during our ongoing static-analysis research while
-reviewing kernel code.
-
-Fixes: 5a4faa873782 ("[PATCH] qla3xxx NIC driver")
-Co-developed-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+Fixes: 0ff90b6c2034 ("netfilter: nf_flow_offload: fix use-after-free and a resource leak")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 ---
-v2:
-  - Add pci_disable_device() to ql3xxx_remove() instead of converting
-    to pcim_enable_device(), as suggested by Simon Horman.
-v1: https://lore.kernel.org/netdev/20260911033219.34566-1-mhun512@gmail.com/
+ net/netfilter/nf_flow_table_core.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
- drivers/net/ethernet/qlogic/qla3xxx.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/ethernet/qlogic/qla3xxx.c b/drivers/net/ethernet/qlogic/qla3xxx.c
---- a/drivers/net/ethernet/qlogic/qla3xxx.c
-+++ b/drivers/net/ethernet/qlogic/qla3xxx.c
-@@ -3916,6 +3916,7 @@ static void ql3xxx_remove(struct pci_dev *pdev)
- 	iounmap(qdev->mem_map_registers);
- 	pci_release_regions(pdev);
- 	free_netdev(ndev);
-+	pci_disable_device(pdev);
+diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
+index 03241d4bfd5e..934c6151f558 100644
+--- a/net/netfilter/nf_flow_table_core.c
++++ b/net/netfilter/nf_flow_table_core.c
+@@ -258,6 +258,14 @@ static void flow_offload_route_release(struct flow_offload *flow)
+ 	nft_flow_dst_release(flow, FLOW_OFFLOAD_DIR_REPLY);
  }
  
- static struct pci_driver ql3xxx_driver = {
++static void flow_offload_free_rcu(struct rcu_head *rcu_head)
++{
++	struct flow_offload *flow = container_of(rcu_head, struct flow_offload, rcu_head);
++
++	nf_ct_put(flow->ct);
++	kfree(flow);
++}
++
+ void flow_offload_free(struct flow_offload *flow)
+ {
+ 	switch (flow->type) {
+@@ -267,8 +275,7 @@ void flow_offload_free(struct flow_offload *flow)
+ 	default:
+ 		break;
+ 	}
+-	nf_ct_put(flow->ct);
+-	kfree_rcu(flow, rcu_head);
++	call_rcu(&flow->rcu_head, flow_offload_free_rcu);
+ }
+ EXPORT_SYMBOL_GPL(flow_offload_free);
+ 
+@@ -854,6 +861,7 @@ static int __init nf_flow_table_module_init(void)
+ 
+ static void __exit nf_flow_table_module_exit(void)
+ {
++	rcu_barrier();
+ 	nf_flow_table_offload_exit();
+ 	unregister_pernet_subsys(&nf_flow_table_net_ops);
+ 	kmem_cache_destroy(flow_offload_cachep);
 -- 
-2.53.0
+2.47.3
+
