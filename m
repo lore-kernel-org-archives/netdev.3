@@ -1,89 +1,46 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08C83939C1
-	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 14:12:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5202A344DB5
+	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 14:19:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789308758; cv=none; b=bYmBYRHHpfk7FnFj7HfOyIzwqq6d7PkPsVWo3XxwSnevmnNEs8SFAEF2R39NuSjDWjl++xoM8URQCu6uyTM3nevEZXog/39+abhmti4tcqgnsE/kGCspFjppnacCAvsWj1Ma9BPT8sTQEUjEhoifB/KMbQ/VwMkyyJ2uv2DSpgQ=
+	t=1789309183; cv=none; b=ghK8jP7DG5/29L32B/OUK9wYdh9PurJq4WKf7P5f6ly3/OXAULPEZf/4V1MQ0azeU1bemP81wTXh9VxbXlDCtLZuz+jnHtT6HbsnobZlCp7ldk9QATpP5Rpq5rafiM9wvlzRoBnZ4TgL9DejZo7z6EtLoh6XiJYiAqAxX2NXEIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789308758; c=relaxed/simple;
-	bh=OWAWubmf4ss7J8Yo4qOqfqNHNCDMJhQKtVRn6E/gf2s=;
+	s=arc-20240116; t=1789309183; c=relaxed/simple;
+	bh=uZGZOsjvdweVs+Djsjfm+M5sjEv3PWASN94cGllY3Yw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u4b0nC93eAiLgmPortE9DF+iigktPoMhcHXBka3ODd5qFteID4EABbG1Cjz3UGzcuVVVjtm8oLJq+U2PyBD2dgbVlzN0Z5YyT28RmBHloyLTJmbkbQOiObquXoqpKXBuiyOlnA85tSUtSHgdrBeh7ch/G6JSfMh9QIeyl8x4Rzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=sq44tiTC; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	 MIME-Version; b=OjlRVd2aF1vvH17GcNhLlP9ri+BKrAVwQxZWedgJlWwDYRLTs3/SnO0snG4y4X4PEzNjP8MsAK0K1hkWKMRCfd6pzrCWZ9TKTrHswJiItfzOyoZRDbq9i4o0SNeaQesHgigH0BqgNPMYY7zwc6A0ydM+uVFamPQVCnbQU2phKNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gU5OZv/X; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="sq44tiTC"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-398a5aad413so2414116a91.3
-        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 07:12:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1789308756; x=1789913556; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0wihnFaWb5iWKnqc8laOseCAwwlwT+036etp63VgAL8=;
-        b=sq44tiTCI0EUo5x/dVF1TYevwolBzRo3VRJXwY42GcdaAoARQN6AhT5YINRaiHnB2A
-         YPl4JQhNqXFr/P3MXWvhCwX0IswBVVqLGQ+y6Ig4UWKU29sLAUGv4ovLmiJ1QwGkRR/S
-         j8VRqlkNy0mSDYn6vZw2mJfiXnN2md/7EDt7jmFig6u5nqJvgUhpzASUSIRvJGiWmNA/
-         glI3UCcHqUnkm0vL6VRGkUC6kRFkIX2gEPJOlRsfuYgo2vpjhpOK3ubCO1ycpB7gE+0+
-         fFyXbA7udDZiL9Mziea/KCpi1qRlhgDn9rIq5kbP+dqCq0hzLtK9U2rNvNcwNGdX9gGA
-         t3Lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789308756; x=1789913556;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0wihnFaWb5iWKnqc8laOseCAwwlwT+036etp63VgAL8=;
-        b=dU63xxT4RVRNoqz54yIh+SomfN7+AlWxlAc8DB1OvlT2qsFcC6Xs9AS3B7CDn1VQlO
-         V0kQhziuL+yu1avEYZDbFdCkB5JUNLPlh/Ct+sJk1+GJGrHOHNpU5R3jb7HORU+RYpsf
-         ub/0Wge0bkue2UEbNQLf8k0lBoHXBENse7seTYSQHFkbjLWZ8iSmUahdfO/TPos8rrS7
-         4sPoa+n3pDxm+6/SwfOaNdIMFEXBsV8aBZvWJ7Ftize4+swwOm7u616kxgIpMAAzm1Gb
-         RpEcrWSRBhVq5jEhsh/Hhq1FF7IRAcF+17uXlmXQXGNRqQsjGGNrPHLe6mbCvoASGlo2
-         pM7A==
-X-Gm-Message-State: AFuF++lBjKmshRAZG10idfS966gmdcZfawKzH1s3l9SU+6qaZ7QW4lVo
-	7cGDvE4AOxHs7RutTq0ZJ4JeKULnTdO6wJFabUsjwtgTnr4Scp9qCRiiA0ppqO40kZwizGOljv2
-	2n0IFmleV
-X-Gm-Gg: AYBFou0T4FZ54+TQJuc56qsXdnfiWIjqD+jesefSqtLu2m8k9EkDTRcXRnquWl5Xu14
-	jm1SdXAxP1So1Kgefb5LlFbdKCKSWhyptNYcKnJmbPHLoYdSLU3WtHlzXRP7KmHtQTlB/qgAuXV
-	+Ldf7p06sEPDf0cfgSRFNlTgfxmqnkUaIoFlNGW/suIxnZkH9WU672i/YpJ2YyrUyE2EbUDfMFR
-	JZhC4CLnAMvRIBkXgaNvZD3E7zRwStgxTEG9T/agZlWJCOgTU+SGn8CjUVn3+wtp6cPWUKV1ees
-	87Ssqzd8d4PgRSASRXI3a0IOFxtJD6JE5RjeWpFyMg9uwkqBrfBMdBAQzQtwaqlnSb7v+hdqT0N
-	9sGBTZNx/nUts2NHSkPLgyUXYAziStcY2sPk+LLwlrTVkhgulokawR8Wl76Ak74W0++E6thBvN2
-	+ZSym94dvdN87alBtrFVij2EzFf6lG+CZI/5dFDzxH06cUFi/A2as01AC6T+9TTiePtZroo4Jc/
-	2IJmUiX41hwje0xrOpDYDZ1IrqlaA==
-X-Received: by 2002:a17:90b:39a7:b0:398:9bd1:3214 with SMTP id 98e67ed59e1d1-39d9c223eb3mr22110578a91.21.1789308755971;
-        Sun, 13 Sep 2026 07:12:35 -0700 (PDT)
-Received: from b6ad5085b32f.. ([122.51.212.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d95752809sm15481457a91.13.2026.09.13.07.12.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Sep 2026 07:12:35 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
-To: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	zihanx@nebusec.ai,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	dsahern@kernel.org,
-	idosch@nvidia.com,
-	willemb@google.com,
-	kuniyu@google.com,
-	kees@kernel.org,
-	richardbgobert@gmail.com,
-	jiayuan.chen@linux.dev,
-	stable@vger.kernel.org,
-	Vega <vega@nebusec.ai>,
-	Luxing Yin <root@tr0jan.top>
-Subject: [PATCH net 1/1] net: gso: limit recursive IP-in-IP segmentation
-Date: Sun, 13 Sep 2026 14:12:12 +0000
-Message-ID: <a4f108b00c7d3c0997bfcee84a9e7e481c07ad5b.1789302084.git.zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1789302084.git.zihanx@nebusec.ai>
-References: <cover.1789302084.git.zihanx@nebusec.ai>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gU5OZv/X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 447041F000FF;
+	Sun, 13 Sep 2026 14:19:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789309181;
+	bh=A26g259BDrlJHZC7IRx34CchJ/YSK3vSxI7SlfEslyo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=gU5OZv/XdNsmCidptMff2vSq77GUciYmNyI/S8Fdk3S3YqBgzKVD3O4S9Ca4xhDJc
+	 L+xNY+vIhVOc8inYBD8CJ11JZtvmTHjJtVSJK5ukFlw3uPHg1a6DgvfuhZ+qkU3DpQ
+	 a1/BzdTFW5Jw8fua0mxvpkSGk+ALMY4MgQLshT1wAMZ1R5Pk/0gleIMLnhG11KgK7v
+	 ChAVd+BFen9ObWOLu6ntCwZR17RIPT5VAnqK2Qzj9/zcXpv5n6laXb6qfvOTYD3vri
+	 OiXgkiTDk5AvrfY4oHesF28hZ0y8ODolyd84+vqRSivkDKx+oSleYnHNevxJJo6oea
+	 TFudzyyMU/XSg==
+From: Simon Horman <horms@kernel.org>
+To: dima.ruinskiy@intel.com
+Cc: Simon Horman <horms@kernel.org>,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com,
+	allen.lan@intel.com,
+	acelan.kao@canonical.com,
+	kuba@kernel.org
+Subject: Re: [PATCH iwl-next v4] igc: Support ACPI-based MAC passthrough
+Date: Sun, 13 Sep 2026 15:19:31 +0100
+Message-ID: <20260913141931.205787-1-horms@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260910193824.3257378-1-dima.ruinskiy@intel.com>
+References: <20260910193824.3257378-1-dima.ruinskiy@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -92,102 +49,66 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-IPIP GSO/TSO support makes IP-in-IP GSO dispatch re-enter
-inet_gso_segment() or ipv6_gso_segment() for every nested IP header. The
-only state that tracks this nesting is encap_level, which records header
-bytes and has no recursion bound. A sufficiently deep chain can consume the
-kernel stack before a transport GSO callback is reached.
-
-The unbounded callback nesting was introduced when inet_gso_segment() was
-made stackable by "ipv4: gso: make inet_gso_segment() stackable". GRE GSO
-support predated that change, and IP-in-IP GSO/TSO support later made the
-affected path reachable.
-
-Track the number of IP GSO callbacks in skb_gso_cb and reject the 15th
-callback entry. Thus 14 callback entries are allowed to complete;
-GSO_RECURSION_LIMIT is the rejection threshold, not the number of
-successful callbacks. Initialize the counter for each top-level GSO
-operation and check it in both IPv4 and IPv6 handlers so mixed IP-in-IP
-nesting is bounded.
-
-Fixes: 3347c9602955 ("ipv4: gso: make inet_gso_segment() stackable")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: LLM
-Co-developed-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev/#/patchset/20260910193824.3257378-1-dima.ruinskiy@intel.com?part=1
 ---
- include/net/gso.h      | 9 +++++++++
- net/core/gso.c         | 1 +
- net/ipv4/af_inet.c     | 3 +++
- net/ipv6/ip6_offload.c | 3 +++
- 4 files changed, 16 insertions(+)
+igc: Support ACPI-based MAC passthrough
 
-diff --git a/include/net/gso.h b/include/net/gso.h
-index 29975440cad5..2665acbb9205 100644
---- a/include/net/gso.h
-+++ b/include/net/gso.h
-@@ -19,10 +19,19 @@ struct skb_gso_cb {
- 	int	encap_level;
- 	__wsum	csum;
- 	__u16	csum_start;
-+	/* Number of GSO callbacks this packet already went through. */
-+	u8	recursion_counter;
- };
- #define SKB_GSO_CB_OFFSET	32
- #define SKB_GSO_CB(skb) ((struct skb_gso_cb *)((skb)->cb + SKB_GSO_CB_OFFSET))
- 
-+#define GSO_RECURSION_LIMIT	15	/* First callback depth to reject. */
-+static inline int gso_recursion_inc_test(struct sk_buff *skb)
-+{
-+	return ++SKB_GSO_CB(skb)->recursion_counter ==
-+	       GSO_RECURSION_LIMIT;
-+}
-+
- static inline int skb_tnl_header_len(const struct sk_buff *inner_skb)
- {
- 	return (skb_mac_header(inner_skb) - inner_skb->head) -
-diff --git a/net/core/gso.c b/net/core/gso.c
-index bcd156372f4d..e96ef6350064 100644
---- a/net/core/gso.c
-+++ b/net/core/gso.c
-@@ -117,6 +117,7 @@ struct sk_buff *__skb_gso_segment(struct sk_buff *skb,
- 
- 	SKB_GSO_CB(skb)->mac_offset = skb_headroom(skb);
- 	SKB_GSO_CB(skb)->encap_level = 0;
-+	SKB_GSO_CB(skb)->recursion_counter = 0;
- 
- 	skb_reset_mac_header(skb);
- 	skb_reset_mac_len(skb);
-diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-index 32d006c1a8ee..2bd88ba05eb9 100644
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -1374,6 +1374,9 @@ struct sk_buff *inet_gso_segment(struct sk_buff *skb,
- 	int ihl;
- 	int id;
- 
-+	if (unlikely(gso_recursion_inc_test(skb)))
-+		goto out;
-+
- 	skb_reset_network_header(skb);
- 	nhoff = skb_network_header(skb) - skb_mac_header(skb);
- 	if (unlikely(!pskb_may_pull(skb, sizeof(*iph))))
-diff --git a/net/ipv6/ip6_offload.c b/net/ipv6/ip6_offload.c
-index 78f50c93c536..391527a1a47b 100644
---- a/net/ipv6/ip6_offload.c
-+++ b/net/ipv6/ip6_offload.c
-@@ -103,6 +103,9 @@ static struct sk_buff *ipv6_gso_segment(struct sk_buff *skb,
- 	int nhoff;
- 	bool gso_partial;
- 
-+	if (unlikely(gso_recursion_inc_test(skb)))
-+		goto out;
-+
- 	skb_reset_network_header(skb);
- 	nhoff = skb_network_header(skb) - skb_mac_header(skb);
- 	if (unlikely(!pskb_may_pull(skb, sizeof(*ipv6h))))
--- 
-2.43.0
+This commit implements support for seamlessly passing through a system MAC
+address provided in the ACPI table to an I225/I226 network controller
+attached via a Thunderbolt dock.
 
+> diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+> index 1fb5f3cbe93c5..abffd385f3e8c 100644
+> --- a/drivers/net/ethernet/intel/igc/igc_main.c
+> +++ b/drivers/net/ethernet/intel/igc/igc_main.c
+[ ... ]
+> @@ -7106,6 +7108,58 @@ static enum hrtimer_restart igc_qbv_scheduling_timer(struct hrtimer *timer)
+>  	return HRTIMER_NORESTART;
+>  }
+>  
+> +static bool igc_get_acpi_mac_passthru(u8 *mac)
+> +{
+[ ... ]
+> +	acpi_status status;
+> +	u8 buf[ETH_ALEN];
+
+[Severity: High]
+Does this array lack a 16-bit alignment guarantee? 
+
+Because it is declared as a simple byte array on the stack, the compiler is
+free to place it at an odd memory address.
+
+> +	int i;
+> +
+> +	if (!IS_ENABLED(CONFIG_ACPI))
+> +		return false;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(sources) && !mac_found; i++) {
+[ ... ]
+> +		if (hex2bin(buf, obj->string.pointer + 9, ETH_ALEN) ||
+> +		    !is_valid_ether_addr(buf))
+> +			goto free_obj;
+> +
+> +		ether_addr_copy(mac, buf);
+
+[Severity: High]
+Can passing this buffer to is_valid_ether_addr() and ether_addr_copy() cause
+an alignment trap on architectures that strictly enforce memory alignment?
+
+Both of these helpers cast the pointer to a u16 pointer to perform 16-bit
+memory operations when CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS is not set. 
+If buf ends up placed at an odd address, this could cause a kernel panic.
+
+Could this be avoided by defining buf as a u16 array or by adding an explicit
+__aligned(2) attribute?
+
+> +		mac_found = true;
+> +free_obj:
+> +		ACPI_FREE(obj);
+> +	}
+> +
+> +	return mac_found;
+> +}
+> +
