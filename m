@@ -1,47 +1,99 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCC13F823C;
-	Sun, 13 Sep 2026 19:01:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC11C3FBEC1
+	for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 19:01:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789326079; cv=none; b=pwD7CHFpMdgcRYUwvJKGNxeo+Rab1Ls7S1A6/v+5OTii0ZwM77dPDiz6emHupd+Ytk0g54omJ2VnXklatIs37bp51UavJk1vs3C1SHyAdzhMawYebxcGkn9dbBW4hF7xuDw2fAcLs42KO9UUCUiJrkYoHT2ik1B8PEqi325eIwA=
+	t=1789326084; cv=none; b=a3ORq/YyhhxBGBQR/0sVKRtjVw2fJIvB2ttz9E+VWb7poWwJsDcWfoN+Bk2VR74YQHjlOI6o5WtlX4rVTXMbiK8yZb8q3pMGfAlGt1qNdk7lTTvz9o8SJnNqDJxOiOb8Xa5bQCI6lN/pLoQGtypiXo2u8V3ogBGgvnOGPLbiKGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789326079; c=relaxed/simple;
-	bh=QUnmUulMgvP/tp9AGmw/PsOAgiMrxivKYmc0QrQNelo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k00qPfDcRRT9LYvdC5AEz6tlwN0sdrECaWAZmKHKn02P6i0vjNO0pKgsQAdqPHgpaTVHc1XASDUzpVrJeZwt9cC8Aku5M2ZTmLmZpdvCxBIVT4YbMs6JlpbC8VpyB9a4leIDbetPWq4MciOLQWZ98PKvOY7AiS8gzTDRkBDI838=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=WHvOU3hr; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1789326084; c=relaxed/simple;
+	bh=nHafMZ2XTe7EQPlPZqClpxTD8fS1jL3tscvPWXqEAxY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QNxpANa5LAUmUw+z1YowcPujPVvnPFJZWrzeeGEDXI2poOzepiQ8o11miXJygiXwlN0Jp0a4SL8s20sCIeXxskjTAhOa0Zmb1W4m7b02uT0PFwwVWCmAhexcLwYAqkyhDOklxxk+vEk7R31g0dVSfXhRmITXE9uC09rl3ni3yOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rPyZu+/k; arc=none smtp.client-ip=74.125.227.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="WHvOU3hr"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1BB74A379F;
-	Sun, 13 Sep 2026 21:00:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1789326058; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=2H00QShfUp2kkrqvRZQGdNd/XvBzWDqU07m+hMGre3I=;
-	b=WHvOU3hr4CrokQkF0vVVq7xeZMvACMbVFnwqtZdDQrso5hjnSDWCHQuhgZUsQ/oIF4ANen
-	WAlds1KrrgzNi5opMawTtWywcCi/J8tRhT70Kf9Ua4ptw4G/3noOQ+EDyCHgDqYsoaP5+k
-	xRSQawKSgYxiL7y9LrlU6pH5wwvlzWsBZcwRFYtAWSHqT8IqAU3pfnfWPQXcy+QNy/aI4z
-	halA+Wmzlq0IO9vPSuMZN2D8J2cFPOaS8ZpnkP3qiEN+b2WzRPDuan6pe7Lil6vvdFBiv4
-	GonfcXXHvEEQLOX+0BfVJFPf6FXx9HJHso1WL0M/FtpWTer2DXXD8n6pfQBd/Q==
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: netdev@vger.kernel.org
-Cc: opendmb@gmail.com,
-	florian.fainelli@broadcom.com,
-	justin.chen@broadcom.com,
-	bcm-kernel-feedback-list@broadcom.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rPyZu+/k"
+Received: by mail-pj2-f1.google.com with SMTP id d9443c01a7336-2dae660f31bso18548555ad.1
+        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 12:01:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789326080; x=1789930880; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zQ2IdKH/7qjrKGR31C/pLtiJWP+p6fNr1pFwJZ+2Nhc=;
+        b=rPyZu+/kk2XMIIwSsUHuuioNHncKg4sF3/zzv33gi8dnPxp8fWVYCSi2gBVXJVBgko
+         /ypDWFofgTUWY/9kn2bd8zZgB71+XtJNCEaeGRV9f56V44iJ05a0Eu6Xfliac6x+oYYP
+         EIY1w8vphq4EhGpJKFL7r2ibARmdGCJsx5sFe/6o35RGr737S7ryvLZ+or+6tDJ5Asxs
+         5jWzfTW103Q0wsqAfVi7TkaQwn83RgW787/de450zR2IANPJgNElSuxa3/8HCSySYHXG
+         dLEGmYX2MJfzXfrD2icalr7g2Kfi1bclX0AY16FGNJKwyddvYO6v/2XjkR5ceXrS+kNR
+         Yn7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789326080; x=1789930880;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=zQ2IdKH/7qjrKGR31C/pLtiJWP+p6fNr1pFwJZ+2Nhc=;
+        b=U9SfU9OIB/K9iPakRKlqGvexDk9cBGj2QJCKzME6iHrPKX4nEU0uhnpH3AExy/wU9e
+         mPwkzQThX20xEEzg53P1wfpSw5b1FrxCzDw0gvtlVpl7OHeV6OCdDAELQKifghp6wtO1
+         +gJ7FTmt4ECALVWA5Ap4xaajTCxJ9LBTbm9IOnVOHUVIbLInRWpLvYMc0br0A/t8P15Y
+         3OIdhDAcn/POem6mRlhrtUp1laEJk/PJcSpQQFvJqk9HE4j7eoZEE9hHs8oPCkztISUn
+         ptPW5WiZ+DLT9N1LG8mAE56ym6gzMV1B2SI75qzYZ/vzXJkeNY/Utm6fhv2h2zky68h+
+         Q3jQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxJsSWlA+7U7MgY1s4NjR5qRRXNgIcQxmYGcC64NB1kKfCRaEGfWg/uM67MEpSSq3Xg7CrrZzM=@vger.kernel.org
+X-Gm-Message-State: AFuF++nFKZUpbJj4U2aJvtR5On3hl8dcHhWDgc06LTgr4CU5737UFV2N
+	Nd7daNJw0KVgqvBhK9PgQc/LdWetwqKLV+22Y1a+WbirlcEqqwuim+rs
+X-Gm-Gg: AYBFou2+T9Z1s18xTo9zabSUvZAActL33csls52qgTKVN090wsFrSyw/yn6W+5rLK84
+	+6cIhBoXezAe48hdqz/ytTXXpYH6NjL/IBPiIT/+D4RpuNnaGcGn72VY7O7Xs3I1uGjFZZsp9le
+	RxKRqy6DBV7XBVQjUzcDymU4aRO0t7FgSWPOhfp3gzh+v6RyAAPPn9aUqa9xMdxJnYSOoy5IlmX
+	Bes9bX9Ts/UOQ9kCEWhAhdRYY4CLFdT6Qhg4SuPj8fhEloKor3g0d/T0ysNui1c5peb+jBaXAbe
+	9t6DwRUySVeNRSL9LpPO+03WH7d1ppIlllJyzUoM3ERifT0mevBaINUmcBnHKkpBdUu5UTAXlmZ
+	j/QI2V4Iyp3cmTjtSlrfZ//HQfT2tzjrCY/9wo8CAF2N07zK1Z2UnSpnxBPq9GrRw8UvpsuxfZv
+	DAH42rnDO23t3DgI9G1v+4siKzdpseMLP6WMeHCHNNYfsdpWUlpiHgT0siJ3ikxvMZlkbu9Q==
+X-Received: by 2002:a17:903:1a2e:b0:2d8:d4cc:be63 with SMTP id d9443c01a7336-2dd2a35aa1cmr275548375ad.16.1789326080540;
+        Sun, 13 Sep 2026 12:01:20 -0700 (PDT)
+Received: from server.lan ([168.138.199.194])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd2cca6b7bsm36808655ad.3.2026.09.13.12.01.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 13 Sep 2026 12:01:19 -0700 (PDT)
+From: Coia Prant <coiaprant@gmail.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Vinod Koul <vkoul@kernel.org>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Coia Prant <coiaprant@gmail.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	David Heidelberg <david@ixit.cz>,
+	netdev@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH net] net: bcmgenet: restore the hardware filters on open
-Date: Sun, 13 Sep 2026 21:00:52 +0200
-Message-ID: <20260913190052.939955-1-nb@tipi-net.de>
-X-Mailer: git-send-email 2.53.0
+	linux-phy@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-renesas-soc@vger.kernel.org
+Subject: [PATCH net-next v5 11/11] MAINTAINERS: add entry for Rockchip XPCS driver
+Date: Mon, 14 Sep 2026 02:58:46 +0800
+Message-ID: <20260913185849.907479-12-coiaprant@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260913185849.907479-1-coiaprant@gmail.com>
+References: <20260913185849.907479-1-coiaprant@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,82 +101,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-bcmgenet_hfb_init() runs INIT_LIST_HEAD() on priv->rxnfc_list, which drops
-every rule off the list, and bcmgenet_open() calls it on each ifup. Every
-rule the user configured is silently lost:
+Add a MAINTAINERS entry for the Rockchip RK3568 XPCS platform driver
+and its device tree binding.
 
-  # ethtool -N eth0 flow-type ether dst $MAC action 0
-  Added rule with ID 0
-  # ethtool -n eth0 | grep -c Filter:
-  1
-  # ip link set eth0 down && ip link set eth0 up
-  # ethtool -n eth0 | grep -c Filter:
-  0
+Include the relevant mailing lists (netdev and linux-rockchip) so that
+future patches are properly distributed.
 
-Initialise the lists once at probe and restore the rules on open, as
-bcmgenet_resume() already does.
-
-Fixes: 3e370952287c ("net: bcmgenet: add support for ethtool rxnfc flows")
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+Signed-off-by: Coia Prant <coiaprant@gmail.com>
 ---
- .../net/ethernet/broadcom/genet/bcmgenet.c    | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ MAINTAINERS | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index a2305e6428d1..b916080f4ff1 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -749,8 +749,17 @@ static void bcmgenet_hfb_init(struct bcmgenet_priv *priv)
- 		INIT_LIST_HEAD(&priv->rxnfc_rules[i].list);
- 		priv->rxnfc_rules[i].state = BCMGENET_RXNFC_STATE_UNUSED;
- 	}
-+}
+diff --git a/MAINTAINERS b/MAINTAINERS
+index c2414447892c2..960a53afa8357 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -23739,6 +23739,15 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/sound/rockchip,rk3576-sai.yaml
+ F:	sound/soc/rockchip/rockchip_sai.*
+ 
++ROCKCHIP XPCS DRIVER
++M:	Coia Prant <coiaprant@gmail.com>
++L:	netdev@vger.kernel.org
++L:	linux-rockchip@lists.infradead.org
++S:	Maintained
++F:	Documentation/devicetree/bindings/net/pcs/rockchip,rk3568-xpcs.yaml
++F:	drivers/net/pcs/pcs-xpcs-rk.c
++F:	include/linux/pcs/pcs-xpcs-rk.h
 +
-+static void bcmgenet_hfb_restore(struct bcmgenet_priv *priv)
-+{
-+	struct bcmgenet_rxnfc_rule *rule;
- 
- 	bcmgenet_hfb_clear(priv);
-+
-+	list_for_each_entry(rule, &priv->rxnfc_list, list)
-+		if (rule->state != BCMGENET_RXNFC_STATE_UNUSED)
-+			bcmgenet_hfb_create_rxnfc_filter(priv, rule);
- }
- 
- static int bcmgenet_begin(struct net_device *dev)
-@@ -3376,8 +3385,8 @@ static int bcmgenet_open(struct net_device *dev)
- 
- 	bcmgenet_set_hw_addr(priv, dev->dev_addr);
- 
--	/* HFB init */
--	bcmgenet_hfb_init(priv);
-+	/* Restore the filters, the MAC was reset above */
-+	bcmgenet_hfb_restore(priv);
- 
- 	/* Reinitialize TDMA and RDMA and SW housekeeping */
- 	ret = bcmgenet_init_dma(priv, true);
-@@ -4075,6 +4084,7 @@ static int bcmgenet_probe(struct platform_device *pdev)
- 
- 	/* Mii wait queue */
- 	init_waitqueue_head(&priv->wq);
-+	bcmgenet_hfb_init(priv);
- 	INIT_WORK(&priv->bcmgenet_irq_work, bcmgenet_irq_task);
- 
- 	priv->clk_wol = devm_clk_get_optional(&priv->pdev->dev, "enet-wol");
-@@ -4272,10 +4282,7 @@ static int bcmgenet_resume(struct device *d)
- 	bcmgenet_set_hw_addr(priv, dev->dev_addr);
- 
- 	/* Restore hardware filters */
--	bcmgenet_hfb_clear(priv);
--	list_for_each_entry(rule, &priv->rxnfc_list, list)
--		if (rule->state != BCMGENET_RXNFC_STATE_UNUSED)
--			bcmgenet_hfb_create_rxnfc_filter(priv, rule);
-+	bcmgenet_hfb_restore(priv);
- 
- 	/* Reinitialize TDMA and RDMA and SW housekeeping */
- 	ret = bcmgenet_init_dma(priv, false);
+ ROCKER DRIVER
+ M:	Jiri Pirko <jiri@resnulli.us>
+ L:	netdev@vger.kernel.org
 -- 
-2.53.0
+2.47.3
 
