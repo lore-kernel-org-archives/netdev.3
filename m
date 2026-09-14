@@ -1,42 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AAB5345EAF;
-	Mon, 14 Sep 2026 04:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4C8377A86;
+	Mon, 14 Sep 2026 04:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789360642; cv=none; b=a+yvEZId3mL7KONP7ddSvSB2ZREkGAsjdGLJYgIIZUSdPRAh24cjMXGtywY/M6eimC/esjHYfmNouIEor58FauYg+s6/wPRrhNqvNZR47D2ZLz3t6TLgzuK4AXpXZHAzldafnLIbkEqAvHayoEvmeGGGkeKPfmF1aLjFSmHkI7E=
+	t=1789360643; cv=none; b=YgmxwJ8+SSRo3TfUm08fyFj7WErZQjD16jM+YvfEF4AMG7cgTe+osO9emJhu9mn9OrVpdwtjZy9UUPEOv4E1iCTIWZlrHgCxn15eTgfKoaUYj6gk7FVGaM0qkIGr0iy1AtD5PstQ384L2hKOb8nPsILxpt1JtYoJgv4kC3lBZn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789360642; c=relaxed/simple;
-	bh=oVjoYYJsh9sx9UnRVBAfZUCV4JwzYvz3yzh3tHthHzw=;
+	s=arc-20240116; t=1789360643; c=relaxed/simple;
+	bh=vO2ZQzXEQJv33bbCB0CcbG/Xr5QuZmBi3QXnaDGrMQ8=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NrkRYB+LXvK79M6ubAdaO65HO9H0JpoolHPSJ/XQZvmW6G1kLMdBA61Y4Fp93w2tuDw5YNvF93GvpEbU/2ofiK4+vJVucFMFmP1J/NNJfORQajmiYNYBT0VV/1HhkWKbW22mERG38eYgHJrdSRbVwib72Db4gjQ5LpsRGBqhM0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j58BwwL1; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=tlh54i935DPUi2RZonPQhMzWnrNaQZDg6lpFkLB3m1zUq7FdTFE/Cuks0mMSCBP4rHIcnTQZRfrki4OWV7jvVLu2tr4A5oaiwJRfpTgekGGhNvQkdWnmpEQD3Pwlhe4VICqSCnD8K2st90z66pXhpVrm+wXyUwyozAwRQgSpT98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RA0LJtqM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j58BwwL1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFCD1F00893;
-	Mon, 14 Sep 2026 04:37:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RA0LJtqM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E609E1F000FF;
+	Mon, 14 Sep 2026 04:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789360641;
-	bh=5JhhalYJ1APUkHgDah6mzfzadR+6ZgC1IsHJCZafa7s=;
+	s=k20260515; t=1789360642;
+	bh=ivB792KgKrRrGp84nJMZ8beKDCmerzkzKUNmH6fi0EY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=j58BwwL1U83+KV9bNFghotM5yK6KJVCxJ7aQ7AMD3RHXdyZFtpt3JWTU0cEcqGJlH
-	 RJ9j7udzk7L2oducZ4Ruv6gL8Dh7qFRT09mgl9LImnj153sFaltr0YYfeN+8tz3UwL
-	 COXBxYi8aHcvlbMz8Q6YiWEhzDMbIPMPV2gJcn43DF6eMSFsdhNbiUmLFjnZhOqmBJ
-	 5fChGd7jplmrzNo6c1dJn3x1tE/xufjlC+lZrqKXeIY5SgMWzh++J+dZCY5UkFDasV
-	 7Z9WBk+xMc2yI66YacXkAFZeDPyEe1mYsJRgUK7yut5Lu+HlOgLXJwCthQUPCR1ZN9
-	 uei/2PwLAhwBg==
-Subject:
- Re: [PATCH net-next v2 3/8] gre: make gre_parse_header() report a drop reason
+	b=RA0LJtqMQO3+1zxJancsAhlJ8o6MGwboM3fb2zCz1ofZH5e8NdRCX+f48VyivrtF9
+	 +RpAraSSpUoQffjY1TcKzJXwufOiAWEFz2ofIRz2PRhtxy4fK+ru1EenSXpmJwM4ua
+	 +Iz7GFt5aUKpP9W1fb2TW1jeM3WWQKih70qPbmTw5Upwg+/sxUApfqBobgVnAgE33J
+	 USgH+cf/KYTprxC2X0RjSMJnQok1eOQoCoUbV0FBYrVpTn30vK72t0IGIfheEtRYQ1
+	 TrmKVPu3gQbExezCRJrLNGMN38tV1L+C6vg5H2T9k5kJaqDulBm550zl3QUHGCfxZh
+	 zTAcnD4r8chPA==
+Subject: Re: [PATCH net-next v2 4/8] ip_gre: add drop reasons to the RX path
 From: netdev-bot+sashiko@kernel.org
 To: littlesmilingcloud@gmail.com
 Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org, horms@kernel.org,
  idosch@nvidia.com, linux-kernel@vger.kernel.org
-Date: Mon, 14 Sep 2026 04:37:20 +0000
-Message-ID: <178936064042.22033.10502810106599240452@kernel.org>
-In-Reply-To: <20260913034937.875068-4-littlesmilingcloud@gmail.com>
-References: <20260913034937.875068-4-littlesmilingcloud@gmail.com>
+Date: Mon, 14 Sep 2026 04:37:21 +0000
+Message-ID: <178936064149.22033.6297126483259038338@kernel.org>
+In-Reply-To: <20260913034937.875068-5-littlesmilingcloud@gmail.com>
+References: <20260913034937.875068-5-littlesmilingcloud@gmail.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,102 +49,146 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 0 · Low: 1
+Critical: 0 · High: 0 · Medium: 0 · Low: 1 (1)
 
-- [Low] The new interface comment added above gre_parse_header()
-  (net/ipv4/gre_demux.c:65-68) states that a NULL @reason means "the…
+- [Low] Claim: labelling GRE RX pull failures SKB_DROP_REASON_HDR_TRUNC
+  misattributes allocation failures, both for the two new `if…
+
+Pre-existing issues:
+- [Low] Claim: the new family-agnostic
+  SKB_DROP_REASON_GRE_TUNNEL_NOT_FOUND is wired up only in…
 
 --
 
-gre: make gre_parse_header() report a drop reason
+ip_gre: add drop reasons to the RX path
 
-This replaces the unused csum_err output parameter of gre_parse_header()
-with an enum skb_drop_reason pointer, adds SKB_DROP_REASON_GRE_INVALID_HDR
-and SKB_DROP_REASON_GRE_CSUM, and converts the ip_gre, ip6_gre and
-gre_demux receive paths to kfree_skb_reason().
+This adds SKB_DROP_REASON_GRE_TUNNEL_NOT_FOUND and threads a drop reason
+output parameter through erspan_rcv(), __ipgre_rcv() and ipgre_rcv() so
+that gre_rcv() can pass a specific reason to kfree_skb_reason().  Header
+pull failures are reported as SKB_DROP_REASON_HDR_TRUNC and metadata dst
+allocation failures as SKB_DROP_REASON_NOMEM.
 
-No Link: tags were present in the commit header.
+A couple of small questions below, both about the reason values rather
+than the plumbing.
 
-One question below about the documented meaning of a NULL reason.
+> diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
+> index 6ae7a604722d3..fa8bd552122ff 100644
+> --- a/include/net/dropreason-core.h
+> +++ b/include/net/dropreason-core.h
 
-> A NULL reason keeps the meaning a NULL csum_err had: the caller is not
-> interested in it and the checksum must not be verified.  This matters
-> for the ICMP error handlers, which only get a part of the original
-> packet and must not drop it when the checksum does not validate.
+[ ... ]
+
+> @@ -637,6 +638,11 @@ enum skb_drop_reason {
+>  	SKB_DROP_REASON_GRE_INVALID_HDR,
+>  	/** @SKB_DROP_REASON_GRE_CSUM: GRE checksum error */
+>  	SKB_DROP_REASON_GRE_CSUM,
+> +	/**
+> +	 * @SKB_DROP_REASON_GRE_TUNNEL_NOT_FOUND: no GRE tunnel found for the
+> +	 * endpoints and the key the packet carries.
+> +	 */
+> +	SKB_DROP_REASON_GRE_TUNNEL_NOT_FOUND,
 
 [Severity: Low]
-Is the phrase "the checksum must not be verified" accurate here?  With a
-NULL reason the checksum is still computed, and on the success path the
-skb checksum state is still modified; only the reporting of a failure is
-skipped.  Would "a checksum failure must not be reported" describe what
-the code does?
 
-The same wording is added to the kerneldoc-style comment below, see the
-inline note.
+This isn't an issue introduced by this patch, but the new reason is
+documented in family-neutral wording ("no GRE tunnel found for the
+endpoints and the key") while only net/ipv4/ip_gre.c sets it in this
+commit.  Until the IPv6 side is converted, a GRE-over-IPv6 packet with no
+matching tunnel still takes:
 
-> diff --git a/net/ipv4/gre_demux.c b/net/ipv4/gre_demux.c
-> index 96fd7dc6d82dd..efd5f60a9c591 100644
-> --- a/net/ipv4/gre_demux.c
-> +++ b/net/ipv4/gre_demux.c
-> @@ -58,26 +58,43 @@ EXPORT_SYMBOL_GPL(gre_del_protocol);
+net/ipv6/ip6_gre.c:gre_rcv() -> ip6gre_rcv() -> kfree_skb_reason(skb,
+SKB_DROP_REASON_NOT_SPECIFIED)
+
+so ip6gre, ip6gretap and ERSPAN-over-IPv6 lookup failures are still
+indistinguishable from unspecified drops.
+
+For the record, this is closed later in the same series: the following
+patch, "ip6_gre: add drop reasons to the RX path", converts
+__ip6gre_rcv()/ip6gre_rcv() and ip6erspan_rcv() to the same output
+parameter scheme and ends both lookup-failure paths with
+*reason = SKB_DROP_REASON_GRE_TUNNEL_NOT_FOUND.  Would it be worth
+mentioning in this changelog that the IPv6 counterpart follows, so the
+intermediate state is not read as a scope gap?
+
+> diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+> index 1894c5746a737..4d9bb6d186ae5 100644
+> --- a/net/ipv4/ip_gre.c
+> +++ b/net/ipv4/ip_gre.c
+
+[ ... ]
+
+> @@ -356,15 +362,17 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
+>  		ip_tunnel_rcv(tunnel, skb, tpi, tun_dst, log_ecn_error);
+>  		return PACKET_RCVD;
+>  	}
+> +	*reason = SKB_DROP_REASON_GRE_TUNNEL_NOT_FOUND;
+>  	return PACKET_REJECT;
 >  
->  /* Fills in tpi and returns header length to be pulled.
->   * Note that caller must use pskb_may_pull() before pulling GRE header.
-> + *
-> + * @reason is only written when the header is rejected, so the caller has
-> + * to initialise it before the call.
-> + *
-> + * A NULL @reason means that the caller is not interested in the drop
-> + * reason, and also that the checksum must not be verified.  This is what
-> + * the ICMP error handlers need, as they only get a part of the original
-> + * packet.
->   */
->  int gre_parse_header(struct sk_buff *skb, struct tnl_ptk_info *tpi,
-> -		     bool *csum_err, __be16 proto, int nhs)
-> +		     enum skb_drop_reason *reason, __be16 proto, int nhs)
->  {
+>  drop:
+> -	kfree_skb(skb);
+> +	kfree_skb_reason(skb, SKB_DROP_REASON_HDR_TRUNC);
+>  	return PACKET_RCVD;
+>  }
 
 [Severity: Low]
-Does the new comment match the implementation for the NULL @reason case?
-gre_parse_header() is exported, so a future caller may rely on this
-contract, but the GRE_CSUM block below still calls
-skb_checksum_simple_validate() unconditionally and, when it succeeds,
-skb_checksum_try_convert() updates ip_summed/csum_valid on the skb:
 
-net/ipv4/gre_demux.c:gre_parse_header() {
-	...
-	if (greh->flags & GRE_CSUM) {
-		if (!skb_checksum_simple_validate(skb)) {
-			skb_checksum_try_convert(skb, IPPROTO_GRE,
-						 null_compute_pseudo);
-		} else if (reason) {
+The only way to reach this drop label in erspan_rcv() is the
+__iptunnel_pull_header() failure, and that helper does not only fail on
+truncation:
+
+include/net/ip_tunnels.h:iptunnel_pull_offloads() {
+	if (skb_is_gso(skb)) {
+		int err;
+
+		err = skb_unclone(skb, GFP_ATOMIC);
+		if (unlikely(err))
+			return err;
 	...
 }
 
-Only the error return is gated on @reason.  The two NULL callers,
-ipgre_err() in net/ipv4/ip_gre.c and ip6gre_err() in net/ipv6/ip6_gre.c:
+So for a cloned GSO skb under memory pressure the drop is an allocation
+failure but gets reported as SKB_DROP_REASON_HDR_TRUNC.  The commit
+message says "The header pull failures reuse SKB_DROP_REASON_HDR_TRUNC",
+which covers the pskb_may_pull() cases well, but does it also intend to
+cover the skb_unclone() case?
 
-	if (gre_parse_header(skb, &tpi, NULL, htons(ETH_P_IP),
-			     iph->ihl * 4) < 0)
-		return;
+Note the errno cannot be used to tell the two apart, since
+__iptunnel_pull_header() returns -ENOMEM for every failure mode, and
+there is precedent for the coarse label in the other direction:
+vxlan_rcv() tags every __iptunnel_pull_header() failure, truncation
+included, as SKB_DROP_REASON_NOMEM.  The two new
+*reason = SKB_DROP_REASON_HDR_TRUNC assignments on the pskb_may_pull()
+branches above match the HDR_TRUNC kernel-doc exactly, so this question
+is only about the drop label.
 
-still have the checksum of their partial packet computed and the csum
-state touched.  This is the same behaviour as the pre-patch csum_err ==
-NULL case, so nothing changes at runtime; would it be worth wording the
-comment as "a checksum error is not reported" instead of "the checksum
-must not be verified"?
-
-> @@ -87,8 +104,8 @@ int gre_parse_header(struct sk_buff *skb, struct tnl_ptk_info *tpi,
->  		if (!skb_checksum_simple_validate(skb)) {
->  			skb_checksum_try_convert(skb, IPPROTO_GRE,
->  						 null_compute_pseudo);
-> -		} else if (csum_err) {
-> -			*csum_err = true;
-> +		} else if (reason) {
-> +			*reason = SKB_DROP_REASON_GRE_CSUM;
->  			return -EINVAL;
+> @@ -400,22 +408,25 @@ static int __ipgre_rcv(struct sk_buff *skb, const struct tnl_ptk_info *tpi,
+>  
+>  			tun_id = key32_to_tunnel_id(tpi->key);
+>  			tun_dst = ip_tun_rx_dst(skb, flags, tun_id, 0);
+> -			if (!tun_dst)
+> +			if (!tun_dst) {
+> +				*reason = SKB_DROP_REASON_NOMEM;
+>  				return PACKET_REJECT;
+> +			}
 >  		}
 >  
+>  		ip_tunnel_rcv(tunnel, skb, tpi, tun_dst, log_ecn_error);
+>  		return PACKET_RCVD;
+>  	}
+> +	*reason = SKB_DROP_REASON_GRE_TUNNEL_NOT_FOUND;
+>  	return PACKET_NEXT;
+>  
+>  drop:
+> -	kfree_skb(skb);
+> +	kfree_skb_reason(skb, SKB_DROP_REASON_HDR_TRUNC);
+>  	return PACKET_RCVD;
+>  }
+
+The same question applies here: this drop label is reached only from
+__iptunnel_pull_header(skb, hdr_len, tpi->proto, raw_proto, false) < 0,
+so the skb_unclone(GFP_ATOMIC) failure inside iptunnel_pull_offloads() is
+also reported as SKB_DROP_REASON_HDR_TRUNC on the main IPv4 GRE receive
+path.
 
 [ ... ]
 
