@@ -1,163 +1,65 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64ADD48CD4F;
-	Mon, 14 Sep 2026 17:20:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6766233F58B
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 17:21:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789406429; cv=none; b=K+rHaeGeewgD7SMCX4+stxK6AtLzGcb5Jo41u8baCDdNhbgfZlQbUcu5kaZ613PLlR8ZkieUfpThXpjNBBke2ZTepGK8RTyU63wZFdqJKXn1eLMMVWL5ZvdqkqL6ALN4JTIugUosqvYteDpIg91GytLCq9IlA2MPC+hTkv8FFzg=
+	t=1789406470; cv=none; b=tiOew201pejnQBPbNDUzp/J6fEvMqsj3tNh3xnmGwTIgR2k7r9e/qh2AYPhwKkeWedFgNAVKbI/ybJ+FONh80lawrepJypnnz/8Ew/NhTDfImlGVqCZNVjoPnWq4APZTrRGLo+d+UazVFjT3+LwKusuT+GLXFgAO8q7s54/c2EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789406429; c=relaxed/simple;
-	bh=5nzw9uzObyDsq9yJ4Z7C0pJdSZ8HKRz4pWorgXDpW/A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=O4m8QzmbLTHJUJtO5pa7HSeW+kTouFHcYrE5f6SEQaRE8Z8LKnBF6tI/PE2qsUM6cdWVzxkVhbxazs6ZdC9m3POodXkU1uAv21G6TRvKg+hM5j5QMDZx7bpC/f3Ujt8Y41KhttjOF6sPah7TpF/0L+g4esFZBv0aUOt63jrHi2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=OpsBZS61; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1789406470; c=relaxed/simple;
+	bh=JsU17Dj6KOJtke4K8xCarl6MCp1n+IG115vNSUn/wts=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cuHVWV5zhtIi+8OF63gDztAk8V84NP8mcKMNMtNs763Y0NAApdizDTaZYA6AamdsORCR5/d4FaAjsm5x5cw4YluuLveFV5Ql/1J0iw6IEyv26nQlR1+9hhVRGi1ZZWAJD4YmTcdfa5nSHXm+9LY7Q9rvovBnJfvCaSFSBjGrzSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LYk4haTR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="OpsBZS61"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=L/2mUsKjcaJbKckiFuEIeCMG6ptMUuWX6YPpy3IoNEs=; b=OpsBZS61aw1SaUDg1JECT10lRR
-	7wjk8hOeJnrPD+ZvOy7EXBIZE/iyXuK9Kx1gHRShkHOg/mIkkXl0hS2jPJIDTnLfqBDAgOZVQT9BG
-	93kYvhSCLxLz5pagot2GizELuh3MTt6MUtfRn+MbsSnAqqKGdwsEMMIwEmxTqthfla4lH/4hScEX8
-	Ps+XUXY1RLW098CyZEuMsGB0KvmlTMuqsmOJIWlee4zu82AiCgAy9/HySu891fhLd72/uBWE7f8ic
-	speuhGdMDRsTen5IHsaNmiYF6zYJ7bnWbrgchGBZyZyc8a6zx2Iv6lUz6yLxjC0eMQxZKnQ595SB+
-	87pjLtGQ==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x6ALw-00000004NCH-0U2g;
-	Mon, 14 Sep 2026 17:20:24 +0000
-Message-ID: <63af51ab-8adc-474b-b59e-fe6ba8a7033f@infradead.org>
-Date: Mon, 14 Sep 2026 10:20:23 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LYk4haTR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D07D91F000FF;
+	Mon, 14 Sep 2026 17:21:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789406469;
+	bh=BvrlFkCkOhXibiEwYGcrb8JFDiRKbu0Rr/a/Eme3EV0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=LYk4haTRFOmW+syEMnAFAnicuDWSo1P2Owst4OMf2U94IBFGENX3MA2NY99stjSOg
+	 hQ+wmVBNeyh/YMCKhJTR2TLro+JbZM/jZr8G7AiiD20cl09quK70KxzculjJnIEzHz
+	 9Sb9FdxM1+HHfj/A8avcoFit8T0TbE1416UolJkNgiOZIbRX3k28K48n+4NcZmTmKE
+	 Om5k816qlrdLgxtk+lf990E90Q+KzUbm2YE1FbikgSrrO/yp//xVY80y2Y56ea8F5x
+	 7UhVc1PfmcDfgu/PkMfdpuRFr13rb0m6Hmo3yKkh9Fy9h2JVrOwO19tv6mBE7II267
+	 WMpJjC3pAq1ag==
+Date: Mon, 14 Sep 2026 10:21:08 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Quentin Armitage <quentin@armitage.org.uk>
+Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+ netdev@vger.kernel.org
+Subject: Re: net: parsing IFLA_INET_CONF broken since 7.1 if NLA_F_NESTED
+ not set
+Message-ID: <20260914102108.788e700f@kernel.org>
+In-Reply-To: <49f5ad9f2a4c1f2178f64383b4f05c21106fce7b.camel@armitage.org.uk>
+References: <49f5ad9f2a4c1f2178f64383b4f05c21106fce7b.camel@armitage.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs: kdoc: fix struct_group_tagged() parsing regression
-To: Omokefe Emmanuel Onanaroghene <emmaonana18@gmail.com>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, intel-wired-lan@lists.osuosl.org
-Cc: corbet@lwn.net, skhan@linuxfoundation.org, mchehab@kernel.org,
- aleksander.lobakin@intel.com, aleksandr.loktionov@intel.com,
- tudor.ambarus@linaro.org, bvanassche@acm.org
-References: <20260914155127.21515-1-emmaonana18@gmail.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20260914155127.21515-1-emmaonana18@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-
-
-On 9/14/26 8:51 AM, Omokefe Emmanuel Onanaroghene wrote:
-> kernel-doc reports struct_group_tagged() members as excess because
-> the macro transformation rewrites it to an anonymous struct and drops their
-> member names.
+On Mon, 14 Sep 2026 15:21:59 +0100 Quentin Armitage wrote:
+> Commit fa8fca88714c - "ipv4: validate IPV4_DEVCONF attributes properly" changed
+> inet_validate_link_af() to call nla_parse_nested() rather than
+> nla_for_each_nested() for IFLA_INET_CONF. A side effect of this change is that
+> the code now checks that NLA_F_NESTED is set for IFLA_INET_CONF, and rejects the
+> message if it is not, whereas previously there was no check for NLA_F_NESTED
+> being set.
 > 
-> Keep the tag and member name when transforming struct_group_tagged(). The
-> nested members are then recorded as names such as fast.order; accept the
-> existing unqualified @order documentation tag during validation.
+> The consequence of this is that code which worked prior to Linux 7.1, albeit
+> erroneously not setting NLA_F_NESTED now fails.
 > 
-> Add a regression test based on struct page_pool_params.
-> 
-> Reported-by: Randy Dunlap <rdunlap@infradead.org>
-> Link: https://lore.kernel.org/all/0cf8ea5f-418f-45f0-907c-3d1ed4f03e9f@infradead.org/
-> Fixes: 2f07ddbd5793 ("docs: xforms_lists: better evaluate struct_group macros")
-> Signed-off-by: Omokefe Emmanuel Onanaroghene <emmaonana18@gmail.com>
+> In order to maintain backward compatibility, rather than calling
+> nla_parse_nested(), nla_parse_nested_deprecated() should be called, as it is
+> earlier in the function.
 
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-
-Thanks.
-
-> ---
->  tools/lib/python/kdoc/kdoc_parser.py  |  4 ++-
->  tools/lib/python/kdoc/xforms_lists.py |  2 +-
->  tools/unittests/test_kdoc_parser.py   | 37 +++++++++++++++++++++++++++
->  3 files changed, 41 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/lib/python/kdoc/kdoc_parser.py b/tools/lib/python/kdoc/kdoc_parser.py
-> index d9ad1ddc87dd..ced09504f3d7 100644
-> --- a/tools/lib/python/kdoc/kdoc_parser.py
-> +++ b/tools/lib/python/kdoc/kdoc_parser.py
-> @@ -635,7 +635,9 @@ class KernelDoc:
->                  continue
->              if param_name.startswith("{unnamed_"):
->                  continue
-> -            if param_name in self.entry.parameterlist:
-> +            if param_name in self.entry.parameterlist or \
-> +               any(actual.endswith('.' + param_name)
-> +                   for actual in self.entry.parameterlist):
->                  continue
->  
->              hint = self.get_suggestions_hint(param_name, self.entry.parameterlist)
-> diff --git a/tools/lib/python/kdoc/xforms_lists.py b/tools/lib/python/kdoc/xforms_lists.py
-> index e3dda2fe8a53..9e8b3a6b1da1 100644
-> --- a/tools/lib/python/kdoc/xforms_lists.py
-> +++ b/tools/lib/python/kdoc/xforms_lists.py
-> @@ -60,7 +60,7 @@ class CTransforms:
->          #
->          (CMatch("struct_group"), r"struct { \2+ };"),
->          (CMatch("struct_group_attr"), r"struct { \3+ };"),
-> -        (CMatch("struct_group_tagged"), r"struct { \3+ };"),
-> +        (CMatch("struct_group_tagged"), r"struct \1 { \3+ } \2;"),
->          (CMatch("__struct_group"), r"struct { \4+ };"),
->      ]
->  
-> diff --git a/tools/unittests/test_kdoc_parser.py b/tools/unittests/test_kdoc_parser.py
-> index c4a76ed13dbc..1a8287e99f2e 100755
-> --- a/tools/unittests/test_kdoc_parser.py
-> +++ b/tools/unittests/test_kdoc_parser.py
-> @@ -418,6 +418,43 @@ class TestSelfValidate(GenerateKdocItem):
->          """
->          self.run_test(self.SOURCE, [self.DEFAULT.copy()], self.EXPORTS)
->  
-> +
-> +class TestStructGroupTagged(GenerateKdocItem):
-> +    def test_nested_struct_group_tagged_members(self):
-> +        source = """
-> +            /**
-> +             * struct page_pool_params - page pool parameters
-> +             * @fast: Fast path parameters.
-> +             * @order: Order of pages.
-> +             * @pool_size: Number of pages.
-> +             * @slow: Slow path parameters.
-> +             * @netdev: Net device pointer.
-> +             * @queue_idx: Queue index.
-> +             * @flags: Flags.
-> +             */
-> +            struct page_pool_params {
-> +                struct_group_tagged(page_pool_params_fast, fast,
-> +                                    unsigned int order;
-> +                                    unsigned int pool_size;
-> +                );
-> +                struct_group_tagged(page_pool_params_slow, slow,
-> +                                    struct net_device *netdev;
-> +                                    unsigned int queue_idx;
-> +                                    unsigned int flags;
-> +                );
-> +            };
-> +        """
-> +
-> +        kernel_doc = KernelDoc(self.config, "test.c", self.xforms)
-> +        patcher = patch('builtins.open', new_callable=mock_open,
-> +                        read_data=dedent(source))
-> +        with patcher:
-> +            _, entries = kernel_doc.parse_kdoc()
-> +
-> +        self.assertEqual(len(entries), 1)
-> +        self.assertEqual(entries[0].warnings, [])
-> +
-> +
->  #
->  # Class and logic to create dynamic tests from YAML
->  #
-
--- 
-~Randy
+Please explain how you discovered the problem.
+Is there some open source or closed source SW you're aware of which
+breaks?
