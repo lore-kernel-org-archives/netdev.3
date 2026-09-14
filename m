@@ -1,223 +1,200 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f40.google.com (mail-pz2-f40.google.com [74.125.228.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60733DA7D4;
-	Mon, 14 Sep 2026 13:37:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0184F470E81
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 13:38:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.40
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789393036; cv=none; b=bE8LDjUzCMDmTG5sZyrgu9q1QKnhNYqEBQvnkVChMN2OASs75S1PsWqyvZUwgN6EDhp2W4V2aNAaMZfb7DXjmNGnuEGbfIz9VWKggGezbqaGlDqQp7M30E43XAwi5aRYD5YQJxPDLkfzFhJcLSOEDYlLweM/gG4uTkeU7GZHFUE=
+	t=1789393129; cv=none; b=KJVpA0pDFgXW9rQfGRrh+/6QlF1W16ZJ8gMYY2b1MdOlYpkoSlaYZ8DBOq6n9oaxTA/5/eQ4HoIo0k+eXoK0+8IHVVQ1a8F5PmxN1KbNRrFBtKn5W2xqywkGpHEkdpKHqPeVw2Ug+L6LWOy7f0jO5tDtHA7WbU3mIG1VTMxH0qQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789393036; c=relaxed/simple;
-	bh=Rrqk5haBY4tWRAomo0OZxzkC1GZJtdylA/WhZozTuaM=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pjNwapB0JPQ/OMaxahQkqzP1wT36q1kVPnJSuceYsDCnYdTzZ+K+tCTTWbYGDuSaNgy/UwPLF2B/tNQq/oK1Pv07NMDb7AZK3jUBpmIRTp/pHQ34lg6tLyYU9MvSyYUV4gQsscyxg0RLmlLegVVCepizRrVtKVVAHTbFj2bpAVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OyM6KLqA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789393129; c=relaxed/simple;
+	bh=G5Q4YusG7EhC2+49TlZOe2QDcwWJ1o9+e8sn8lUHz8s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DW6x1KFcJ7VXXu0Codd4H3WCppBvXGI5TZXqms7X6DX1Ue4SUlZ04a9xiFgtL9yR+mZnk1CElBan72337vy+ePZbNIYkmRPTXzoWpAsqlGJID1nFKhwObMwTjP4onV8J8sIHCwRBajEQpj+5OQXE1JggDOA1foT5ttLX+MEhcTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nwA3Lq0U; arc=none smtp.client-ip=74.125.228.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OyM6KLqA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79561F000FF;
-	Mon, 14 Sep 2026 13:37:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789393034;
-	bh=h6WkNjbtd4spIdcWaRB3Goha7mgelfWeHhKPKmKGcS0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=OyM6KLqAcYypQJODs0sQBC2Fwyixw9dLO1DScwgSy0OCA1T/MSU9s3Jm0G8HDWYZF
-	 +pfHO4svw6gZCbWy7IiBW6+QyBxAZ+D4mhLyItgKeS/Cj/wdaCwWFH5Cgk/jMSrdy5
-	 wm5r+j6KlL1olt+GFZVd4aC62yoQw2aT/FiqANGBz7SYUgXpk1IzJqa1HaFiDPk0if
-	 OcLO1Bb+dkmZpEjoZJjeXiXNtVb5GHQN4fJKgMnc9v7+L+oBL1otIDhtbELZvrHThm
-	 27Xhu+E7hR0UdwwDs9Z0Ggcg/s2EHJJp6R9iH4F7Qn07/5Iao6T3R+kSCfUbelVMW3
-	 ptyMz9iBhzptw==
-Subject:
- Re: [PATCH net] octeontx2-af: validate MCS blocks before initialization
-From: netdev-bot+sashiko@kernel.org
-To: bolin.liu@seu.edu.cn
-Cc: sgoutham@marvell.com, rkannoth@marvell.com, gakula@marvell.com,
- sbhatta@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 14 Sep 2026 13:37:13 +0000
-Message-ID: <178939303324.22033.8880641797671106965@kernel.org>
-In-Reply-To: <20260913125206.109985-1-bolin.liu@seu.edu.cn>
-References: <20260913125206.109985-1-bolin.liu@seu.edu.cn>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nwA3Lq0U"
+Received: by mail-pz2-f40.google.com with SMTP id 41be03b00d2f7-cc1ab16a9b0so167338a12.1
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 06:38:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789393127; x=1789997927; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OM4WJQT7eiPiAF6TZgW9/Yhz6QCgt3cljrFGTLgDTGs=;
+        b=nwA3Lq0U4Mgd8/xczWKN4pbtIz1N3ZbjIo4FdXFoMquzJLSGSB4bKOeFe/DAFiCp66
+         ZhJswuo5U9oBy58VYzqA8FOTYRI1qJ4pct5aUNSt0w7NxYwPRBpBAJDx0mMwezbpp661
+         iON2PuMCfagaY/AkOmO4e9l5XKQsy+LfwOyWkIDxoc/ekm4a5phfF7/+MTO2VV3RW/Q1
+         4/pY19ZzXPXHbq8mOGe0JAYliP3VHrCA6tocg3EZIEHC8qGuDHQrDqgbbDXqKmEStpS/
+         URxGpq/MVYKOsL2245r/cK03r4dWqJH4/a2G1QKzUUFATK2q/DKbLbEidV1d0Vwhji3H
+         rVMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789393127; x=1789997927;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=OM4WJQT7eiPiAF6TZgW9/Yhz6QCgt3cljrFGTLgDTGs=;
+        b=kgznwK7JtEY+NI5patrPJyhgTIGJIj+r9TzrEpPKPRWm7PpJYJf3e9g0dmnJQkR6du
+         ES+mBEJ2/Itm4fpqPK42q/0W011qI3XGc11w94d3jMoPHfGQT4j9WD9N2/je6NYOWa2v
+         M5m4jUeoe8oke8mQTs461GWvvQTeJLMt7IDOs0d35jtFG7ae2/K6jnWj47RQnVJB/4Rt
+         VlUpPB9wU3n0xeE8FN5qSXAaRI5VckFV8megfRXZHjaN37brObIUbseXhd3TB7FMnBoh
+         Sj5HyxipDrtRo2ickUqzfyqTIERio7nMu/oa+tdCtqjmVK0scCGo5IgHLTIx8Zgh5mII
+         qfXg==
+X-Gm-Message-State: AFuF++mu+4QG/ybPKgjUYnO74HQqI1JYVUSEfCsSTuiXXgqM9fm/N3Bt
+	pU2pjI9QgxlWxKZM9jcPL1u1gRc2Rcmi9686hk6JoldS2/a6QP+MkOfL
+X-Gm-Gg: AYBFou053IPT1nqnrh0N0bDrdpzQIbCh4COJPsiCTM4NTsWs+Nf/EjRXV5n+ozVB47J
+	O476RdU/NYrJ2cnFHd4EmIb3qsh0AG4Kw/QkST1p+ByK7K0wXWT90DhnhM/OQN0u1DKtT+nKGDt
+	dY2P5Y2eF5RGGQ6LYlbt93m2PyMqi8PAhFcFkMxPwEMLPfF2U02zZqQM6OJBqQkv+OtBwiUZAiY
+	mXD/TOz4A8cI0CnbRprc2ChInObSZ3ulFr5AwNCXTZ3s6ldH+EyB4la2V7MWJayTSxjfXZC/cF5
+	3qBiW2aSjtynZHG3jZq/MX9OX55C789vqoJ3s0oxNEgZl6SUdNv5ePHz1S2zmlee4gkRtp0qcjn
+	qq8amusdgNw5a0YlZ1GLuqSMTSvbmdxx1EI6XyqxrW2/v3FCMW7uTZdodRFSnjdfP8ex2VjdG8q
+	ZZ/DwtTPQ4JO48eb4LiMuJEgcXH6khX9vtpJJtHng7JDsRmToaYKE7HJGdka1cQlCGQYu5w6srh
+	/8eUyPw34UbSoS8x2ozu6KFPr1FUH0H7MnL8T3igDP+stqX6VY47XRSY3OMG1ahNQ==
+X-Received: by 2002:a17:90b:3e4f:b0:396:a47f:d38f with SMTP id 98e67ed59e1d1-39dec0bbc54mr3706908a91.3.1789393127161;
+        Mon, 14 Sep 2026 06:38:47 -0700 (PDT)
+Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14365bb6ba0sm24565602c88.15.2026.09.14.06.38.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Sep 2026 06:38:46 -0700 (PDT)
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+To: Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chengfeng Ye <nicoyip.dev@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH ipsec v2] xfrm: fix races in device state cleanup
+Date: Mon, 14 Sep 2026 21:35:40 +0800
+Message-ID: <20260914133540.3666907-1-nicoyip.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
+The deferred-device pass in xfrm_dev_state_flush() finds states under
+xfrm_state_dev_gc_lock, but drops the lock before calling
+xfrm_dev_state_free() because the driver callback may sleep. The device
+GC list does not hold an xfrm_state reference, so the state GC worker can
+destroy the same state concurrently.
 
-Critical: 0 · High: 2 (1) · Medium: 0 · Low: 0
+The race can proceed as follows:
 
-- [High] The new `return -ENODEV` in rvu_mcs_init()
-  (mcs_rvu_if.c:892-896) aborts before mcs->rvu, mcs->pf, mcs->vf are…
-- [High] The patch introduces a Time-Of-Check to Time-Of-Use (TOCTOU)
-  race by locklessly pre-checking mcs devices before a subsequent…
+  CPU 0                               CPU 1
+  find x on the device GC list
+  drop xfrm_state_dev_gc_lock
+                                      xfrm_state_gc_destroy(x)
+                                        xfrm_dev_state_free(x)
+                                        xfrm_state_free(x)
+  xfrm_dev_state_free(x)
 
-Pre-existing issues:
-- [High] mcs_remove() (mcs.c:1609-1620) never unlinks the block from the
-  global list: it calls mcs_set_external_bypass(), free_irq(),…
+Both paths can invoke the driver callback and drop the device reference.
+CPU 0 can also access the xfrm_state after CPU 1 has freed it.
 
---
+KASAN reported:
 
-octeontx2-af: validate MCS blocks before initialization
+  BUG: KASAN: slab-use-after-free in xfrm_dev_state_free+0x24c/0x2a0
+  Read of size 8 at addr ffff88810bbaa960 by task poc/102
 
-This adds a pre-pass in rvu_mcs_init() that walks every MCS block id in
-[0, rvu->mcs_blk_cnt) and returns -ENODEV if mcs_get_pdata() returns NULL
-for any of them, before the loop that programs the blocks.
+  Call Trace:
+   xfrm_dev_state_free+0x24c/0x2a0
+   xfrm_dev_state_flush+0x353/0x400
+   xfrm_dev_event+0x26d/0x3a0
+   notifier_call_chain+0xc0/0x280
+   __dev_notify_flags+0x169/0x250
+   netif_change_flags+0xe7/0x160
+   dev_change_flags+0x96/0x220
+   devinet_ioctl+0x7f4/0x1880
 
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c b/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
-> index fce22e314cac0..0ee2d0d698e5c 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
-> @@ -889,6 +889,11 @@ int rvu_mcs_init(struct rvu *rvu)
->  		rvu_mcs_set_lmac_bmap(rvu);
->  	}
->  
-> +	for (mcs_id = 0; mcs_id < rvu->mcs_blk_cnt; mcs_id++) {
-> +		if (!mcs_get_pdata(mcs_id))
-> +			return -ENODEV;
-> +	}
+  Freed by task 57:
+   kmem_cache_free+0xcb/0x3d0
+   xfrm_state_gc_task+0x4a8/0x650
+   process_one_work+0x63a/0x1070
 
-[Severity: High]
-The check and the use are two independent walks of the same
-unsynchronized list, so what does the pre-pass actually buy us?
+A third xfrm_dev_state_free() caller in xfrm_state_find() can also race
+with the deferred pass. Both callers can sample the same device before
+either clears xso->dev, then invoke the callback and netdev_put() twice.
+Since hlist_del() leaves the node poisoned rather than unhashed, they can
+also unlink the device GC node twice.
 
-mcs_get_pdata() in mcs.c walks the file-global mcs_list with a plain
-list_for_each_entry() and no lock or RCU, and mcs_probe() links onto
-that list with a bare list_add(). Nothing in rvu_mcs_init() pins the
-blocks between the new validation loop and the programming loop below
-it, which re-fetches the pointer:
+Acquire a state reference while the deferred pass still holds
+xfrm_state_dev_gc_lock. If the reference count is already zero, leave
+destruction to the state GC worker. Also claim device cleanup under the
+same lock by clearing xso->dev and unlinking the node with
+hlist_del_init(). Only the caller that claims the device invokes the
+callback and drops the device reference. The deferred pass releases its
+temporary state reference after cleanup.
 
-	mcs = mcs_get_pdata(mcs_id);
-	mcs_install_flowid_bypass_entry(mcs);
+Fixes: 07b87f9eea0c ("xfrm: Fix unregister netdevice hang on hardware offload.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+---
 
-So the new loop only establishes that every id in [0, mcs_blk_cnt) was
-resolvable at the moment it ran. If an MCS PCI function goes away in
-the window - "echo <mcs-bdf> > /sys/bus/pci/drivers/mcs/unbind" while
-AF probe is in progress - the second mcs_get_pdata() for that id can
-still hand back NULL and mcs_install_flowid_bypass_entry(mcs) will
-dereference it immediately, which is exactly the crash the commit
-message says it prevents. The rest of the loop body (mcs->hw->lmac_cnt,
-mcs->rvu, mcs->dev in the devm_kcalloc() calls) has the same problem.
+Changes in v2:
+- Replace the global mutex with a temporary state reference acquired
+  while walking the device GC list.
+- Claim device cleanup under xfrm_state_dev_gc_lock so concurrent
+  callers cannot run the callback or netdev_put() twice.
+- Use hlist_del_init() to leave the device GC node unhashed.
+- Cover the xfrm_state_find() cleanup path identified during review.
 
-Folding the NULL test into the existing programming loop, so the
-pointer that is checked is the pointer that is used, would at least
-remove the second lookup and is a strictly smaller change. That still
-leaves the underlying question of how mcs_list is meant to be
-serialized against driver unbind - is there an intended lock or
-refcount here, or is the assumption that rvu_mcs_init() cannot run
-concurrently with mcs_remove() at all? If it is the latter, please
-spell that assumption out, because the pre-pass reads as if it were
-defending against exactly that race.
+v1: https://lore.kernel.org/netdev/20260730103543.2077749-1-nicoyip.dev@gmail.com/
 
-While you are in here: rvu_mcs_set_lmac_bmap() above the new loop
-already does mcs_get_pdata(0) and dereferences mcs->hw->lmac_cnt with
-no check, so on the CN10K-B (mcs_blk_cnt == 1) path a missing block
-faults before the new validation is ever reached. Should the check
-move ahead of that call instead?
+ net/xfrm/xfrm_state.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-[Severity: High]
-Does this early return leave the already-probed MCS blocks with live
-interrupts pointing at uninitialized AF state?
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 36a4f6793ede..282d09d0c247 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -780,17 +780,20 @@ EXPORT_SYMBOL_GPL(xfrm_dev_state_delete);
+ void xfrm_dev_state_free(struct xfrm_state *x)
+ {
+ 	struct xfrm_dev_offload *xso = &x->xso;
+-	struct net_device *dev = READ_ONCE(xso->dev);
++	struct net_device *dev;
+ 
++	spin_lock_bh(&xfrm_state_dev_gc_lock);
++	dev = READ_ONCE(xso->dev);
+ 	if (dev && dev->xfrmdev_ops) {
+-		spin_lock_bh(&xfrm_state_dev_gc_lock);
++		WRITE_ONCE(xso->dev, NULL);
+ 		if (!hlist_unhashed(&x->dev_gclist))
+-			hlist_del(&x->dev_gclist);
+-		spin_unlock_bh(&xfrm_state_dev_gc_lock);
++			hlist_del_init(&x->dev_gclist);
++	}
++	spin_unlock_bh(&xfrm_state_dev_gc_lock);
+ 
++	if (dev && dev->xfrmdev_ops) {
+ 		if (dev->xfrmdev_ops->xdo_dev_state_free)
+ 			dev->xfrmdev_ops->xdo_dev_state_free(dev, x);
+-		WRITE_ONCE(xso->dev, NULL);
+ 		xso->type = XFRM_DEV_OFFLOAD_UNSPECIFIED;
+ 		netdev_put(dev, &xso->dev_tracker);
+ 	}
+@@ -1005,9 +1008,10 @@ int xfrm_dev_state_flush(struct net *net, struct net_device *dev, bool task_vali
+ 	hlist_for_each_entry_safe(x, tmp, &xfrm_state_dev_gc_list, dev_gclist) {
+ 		xso = &x->xso;
+ 
+-		if (xso->dev == dev) {
++		if (xso->dev == dev && xfrm_state_hold_rcu(x)) {
+ 			spin_unlock_bh(&xfrm_state_dev_gc_lock);
+ 			xfrm_dev_state_free(x);
++			xfrm_state_put(x);
+ 			spin_lock_bh(&xfrm_state_dev_gc_lock);
+ 			goto restart_gc;
+ 		}
 
-The new return happens before the second loop assigns mcs->rvu, mcs->pf
-and mcs->vf, and before INIT_LIST_HEAD(&rvu->mcs_intrq_head), INIT_WORK()
-and alloc_workqueue("mcs_intr_wq") run.
-
-Meanwhile every block that did probe already armed its interrupts in its
-own probe, mcs_probe() -> mcs_register_interrupts(), which does
-request_irq(..., mcs_ip_intr_handler, 0, "MCS_IP", mcs) and writes
-MCSX_IP_INT_ENA_W1S / MCSX_CPM_RX_SLAVE_RX_INT_ENB, and only then does
-list_add(&mcs->mcs_list, &mcs_list).
-
-So after the -ENODEV, an MCS CPM interrupt would run:
-
-mcs_ip_intr_handler()
-  mcs_rx_misc_intr_handler()
-    mcs_add_intr_wq_entry()
-
-and mcs_add_intr_wq_entry() has no NULL guard:
-
-	struct rvu *rvu = mcs->rvu;
-	...
-		pfvf = &mcs->pf[rvu_get_pf(rvu->pdev, pcifunc)];
-	...
-	list_add_tail(&qentry->node, &rvu->mcs_intrq_head);
-	queue_work(rvu->mcs_intr_wq, &rvu->mcs_intr_work);
-
-mcs->rvu is still NULL here since struct mcs is devm_kzalloc()'ed and
-mcs->rvu is only set in the loop below the new check.
-
-On the AF side, rvu_setup_hw_resources() does:
-
-	err = rvu_mcs_init(rvu);
-	if (err) {
-		dev_err(rvu->dev, "%s: Failed to initialize mcs\n", __func__);
-		goto nix_err;
-	}
-
-The nix_err path never calls rvu_mcs_exit(), and mcs_driver stays bound to
-the MCS PCI functions, so nothing disables the interrupt enables that were
-just programmed. Links and RX were already enabled by cgx_start_linkup()
-earlier in rvu_setup_hw_resources(), and the surviving blocks are not in
-external bypass, so received traffic carrying a SecTAG can still raise
-MCS_CPM_RX_INT_SECTAG_V_EQ1.
-
-The commit message says "so a failed lower-ID probe cannot cause a NULL
-dereference". In that exact configuration, does the dereference just move
-from probe time to interrupt time rather than going away? Would it make
-sense to also guard mcs_add_intr_wq_entry() on !mcs->rvu / !mcs->pf, or to
-disarm the probed blocks before returning?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but is a non-NULL result from
-mcs_get_pdata() actually proof that the block is live?
-
-mcs_remove() does not unlink the block from the global list:
-
-	static void mcs_remove(struct pci_dev *pdev)
-	{
-		struct mcs *mcs = pci_get_drvdata(pdev);
-
-		/* Set MCS to external bypass */
-		mcs_set_external_bypass(mcs, true);
-		free_irq(pci_irq_vector(pdev, mcs->hw->ip_vec), mcs);
-		pci_free_irq_vectors(pdev);
-		pci_release_regions(pdev);
-		pci_disable_device(pdev);
-		pci_set_drvdata(pdev, NULL);
-	}
-
-There is no list_del(&mcs->mcs_list) matching the list_add(&mcs->mcs_list,
-&mcs_list) in mcs_probe(). Both mcs and mcs->hw are devm_kzalloc()'ed on
-the MCS PCI device, so devres frees them right after mcs_remove() returns
-and a freed node stays linked in mcs_list. cgx_remove() does the
-list_del(&cgx->cgx_list) that mcs_remove() omits.
-
-mcs_get_pdata() then hands out that dangling pointer:
-
-	list_for_each_entry(mcs_dev, &mcs_list, mcs_list) {
-		if (mcs_dev->mcs_id == mcs_id)
-			return mcs_dev;
-	}
-	return NULL;
-
-So after "echo <mcs-bdf> > /sys/bus/pci/drivers/mcs/unbind", does the new
-check distinguish "never probed" from "probed then freed"? The following
-programming loop would then touch mcs->hw->lmac_cnt and mcs->dev on freed
-memory, and the mailbox handlers that only validate
-req->mcs_id < rvu->mcs_blk_cnt before touching mcs->hw, mcs->mcs_ops,
-mcs->tx_sa_active and mutex_lock(&mcs->stats_lock) would do the same, with
-MMIO going through a released pcim_iomap() mapping.
-
->  	/* Install default tcam bypass entry and set port to operational mode */
->  	for (mcs_id = 0; mcs_id < rvu->mcs_blk_cnt; mcs_id++) {
->  		mcs = mcs_get_pdata(mcs_id);
-
+base-commit: e6b6078ea1731b05b3b552497b3bce4bf8b014ae
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260913125206.109985-1-bolin.liu%40seu.edu.cn
+2.43.0
+
