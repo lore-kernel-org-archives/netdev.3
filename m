@@ -1,233 +1,176 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6751E471402;
-	Mon, 14 Sep 2026 14:12:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789395179; cv=none; b=ioCmW7lfU1v7SsJQZ96GnPXiDSjwfmjmeOUrIg7j7smBfEN4CGMlJtnAX9RU84G2EdG7PPKFElo34SEppuRKvZ0gJDEgseIPGIukpXEXV79rkOSRP+q7S1TQorZClGJkoEW9osRtfJZj0aFlHl9AKaXl2Trj0tP+veG+BwtlSeQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789395179; c=relaxed/simple;
-	bh=UrSK293fwFDujTjwSVBaMN8gvwemeZczHJsVM1ZYPy4=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=rbD2+gmOMB8ZRXpi1f29z3LPW/ZZIVPLojJ1mN8smOEGPNlk9YWyMpC2NfHYUEztAoBSplTztoxtwEU9pNwsNZkw+f1FIJ+pM/ZKaMbQ+wPfvWo28jx3aa37LaYhieh0vNsWOBiPMHE0IeTC/vYfFM6oFqBjE5BcPOoG3fy4RQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=IOuRaT6F; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17EB47DD48
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 14:13:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789395224; cv=pass; b=A7NTATvQZnXhgbWr/u6Mm05lscDhUuByIGt8uzeKetsCi6dE9HoJRMio+kkNOs2BqctV9XoYbAhwgDxs1APMcHPE63JzqgHdt4n90zlegs0eWVuaiPHZmiVFCnSCAvE+/3mKPr/oyozoNI/Y7NmPVcQDFC8UW/zNIzHqQ1jJmJI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789395224; c=relaxed/simple;
+	bh=MC56LfzMCt6fRP9BGhVtIAMB79iWC8di+yYNzRqau0k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=peTvaSQYKe2EFlWUYadOPFV4Oe/Pybr5FtMrk+EFXE6l6+oejTSteiKCBljL4IVqN0MHaSOXeMybCXf5V55T2dK3mXvzUTCUE7Hl/pJg7hHlDy55kWR0laVf4Hii8tvi/HNomrAxaZzuSP+DdPSQEyEjBL3SYLNFhbnnPFUJGrc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SXte80Yd; arc=pass smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="IOuRaT6F"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 061B6A02A9;
-	Mon, 14 Sep 2026 16:12:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1789395169; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=e/IgfF6yLLH39AK6wZv/vjP09JtDv7w42jijGVHpL4Q=;
-	b=IOuRaT6FYPV67HJjNwppyiP3wSSn3Nd0cDIAp5I/lNPktMXSdC+245Q5/+pTRl9VZf3zJJ
-	g4egBGOV8UYLFcX2M362LKDpKUZyjTkidCLrBPNAvb6jrSEY7sCy1LpSmmKYE0D75Escom
-	ztso4/8VDlJd5GQ0jNH5yjFH0aomlwLa4z/46spqfCb2Y3ucLG3rmT6AiRpEDzR1q7UFfC
-	dvgyrBaN0t9ppQY2AHsoA9p73SRUbWNpW8BII2Y91QKFQEg5WVwiEonIL+m0ItCbGdv7Bz
-	22hgDH1hhKFbrQuFGYa2rPTGMWTKk0o/b0TCfCwHFx0Ce67+8gHpBVh1tT2mcg==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SXte80Yd"
+Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469e2254dso254675b3a.1
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 07:13:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789395222; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LpCzp++3DKwjej8D53qRNz/G6AC7qwDLSUNvEBY0d+F2zAC3Ydw7rhZSA0kWuk2t6j
+         wAZWIbgnw+pbIujLL/Jtc00vhetV6QThUxB2N1gXJ9UAZf8FcUYoGHd61JlUWN7dJFVt
+         lNhtZnT//tfi1i7Z3DjapS3AJsw+5dDMgENwJiuCfZ/LBAkDw90a9aILusq3ySU5WABo
+         48nxapivRxi0rOqsW5XtPgQ/uyQWn4OEiTYpfdl5Dnd/c9sxgYUF1P0YcDc3m2vxS0/1
+         AaOLcskIOoHE4aTl+8APZmC8omjy5JBduS0q7WurnczPYBYzZ7RLVEExW4OXBDmY6fz9
+         gRSQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=RiYN36uVRN3S+33iMVULloRHEVKnum5eOFw9VkWTBRk=;
+        fh=AHMQGqa4UsrMZs3IWT94hrt1QPLYRG6gzCtCjfJFwZg=;
+        b=QxQauaBrShMpfo+9yP1d4aMZJh3mrUbM+b3GoNDI0JspJA6AZRvi0Gn8rIQssVl1vX
+         y4VdNYjemm3Y3RKbi7TXh9L7zIepuuaetfq7nGNPuUtiGrkFM6GkbD1nUICYcrP7awdH
+         iaxe0KhEgxWIkbQmsvkMRPFKs13Q8M1bXEgGrqEJrivKIaRkT/WdbQraa9zfY7OFlkbO
+         ybtzAaMsMr9cBVZ1ClkQpCVkSeoKSJJMCIvqfytGcXXWD5uMDo3+4TR70YIRC+Z7rJ5q
+         atQ3GTFc8tBAwfYl2leNxl7y6eG5TSW0EuaPXzHEozNalpgpkAZnMxS5piNXrrUm68J6
+         3TLA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789395222; x=1790000022; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=RiYN36uVRN3S+33iMVULloRHEVKnum5eOFw9VkWTBRk=;
+        b=SXte80YdEHZ3OPCjGDoakf31K+yp+wdg+qCiVQ7q90Mm+AtReQYjnYrlHgrI9tN/QZ
+         FRkAU0om1GMBDJAbnIyqHZl+UU5vnWPvTBxIQRDg4FukHTw5mDhsalRkMoUsl06kLQ2p
+         a6PpAGaID7QBtNJa+3cJ2Snj0Fxa0h4NsX5rWHORNN32u0bx9OcYfQkC6z54XQz3q640
+         v1mgXr/7NJv2aPH9uP87sXOhkG9LrCzOcxQiBsJ1AsZMfPmdiyWOKDBFgEjlBmvz+8b6
+         DbDh4labc9HBfqG3/baHbBInsZNFFTDkPV8xXSYowhaG4NL7eWIxZ3NiKqpLbttToUD9
+         z3fQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789395222; x=1790000022;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RiYN36uVRN3S+33iMVULloRHEVKnum5eOFw9VkWTBRk=;
+        b=SXOgeT+5QgPKEUzVqVAD85knz1qOzsLBaE9ptu+wK2rbfkmReIEINaOB/mjbH4J65U
+         jLgq27sY94w0uGbXEN6qmsz2QPEuJdv9s8JQUM3VJC6nGSok+uNR1QLy2USL3/W4NAJ8
+         T5VYDKSryI+bFsNzHDPnsueVyMk79Ihgvd2N6gl/nPmtCANbOPoLvxx9peIP/E3HWvYM
+         ozcIiBMNOWoJd2VVZgwS9O/OJHM6X4zOG4+w/VsAVP/yNwj7Be9+3jzMHXkoJX+Czmlm
+         pMlBxS1413kboRccnZFB08seaHrSO5XuzuYIOmWRgnZGc25y+kAVEyxFG/3Z5t2f8XpT
+         QV5Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzVdTM6Xz6+33A7ybohq5eKjYCldUVKqmG3u2mpchbCVzckNjvFLPv7Po7/1txXqTCT81iYnpU=@vger.kernel.org
+X-Gm-Message-State: AFuF++lKjRhwqJTUDtmPbpq1DIEuZG//UQ/l0FxgedXH/hCoVlouIbek
+	/LYmUzqIzYVk6bAmLAjVPZ5ieGZej459ytpF2Gw62S3kfdShQhZ5WHhRES0HyoBEqJayh41frfj
+	HJFhhVFWSHpibJhsvg0Qa3dm/qMtWjlU=
+X-Gm-Gg: AYBFou3ejhi+qUwEhdE0DBEgpf6UY3nKlQq3RA3BsU8x+2YPk0e8PLPnhjaoJK3JTL/
+	5GiDrZHUO3b6qe3nqynEwoF3hzk6SGO5ZuGvHVococp+gnjnkUvv9FHCJNm9sG3faoi8xRfUpRY
+	nLZ0fyG7UCTOYTtRXnL5CRdgo6JEJ8UU+oo+sh/3d0juPUIpW1Qexmwp1oyORxWj7fD+s6pTOug
+	i3lJWa6iHxR8EIVSIhCGaLa3clykcEcKjuDvH5LCfnIcAAbuIzE4LKDWIVcrYnFF8fDw2NRtp96
+	TRTZdZa5J4WPB0y1BQoyp/yiH2vvXwIhd8Si/yVNruDz6FUDtN+RqXzdgGPZ/1spwIcIevA365f
+	fxBBG5jIfv5BI4bed7LYLCq306pZzxX1+m5m8jfH0FERnunG3GWPMvA==
+X-Received: by 2002:a05:6a00:98e:b0:869:4ab2:8e with SMTP id
+ d2e1a72fcca58-86f93cc125emr3520459b3a.7.1789395222076; Mon, 14 Sep 2026
+ 07:13:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 14 Sep 2026 16:12:46 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Birger Koblitz <mail@birger-koblitz.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Russell King
- <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit
- <hkallweit1@gmail.com>, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jianhui Xu <neuromoments@gmail.com>
-Subject: Re: [PATCH net-next v11 06/15] ax88179_178a: Add HW support for
- AX179A-based chips
-In-Reply-To: <20260914-ax88179a-v11-6-5ea7a925ba6d@birger-koblitz.de>
-References: <20260914-ax88179a-v11-0-5ea7a925ba6d@birger-koblitz.de>
- <20260914-ax88179a-v11-6-5ea7a925ba6d@birger-koblitz.de>
-Message-ID: <18c931ca985a82a044c9269743fb4fb7@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20260911090039.75646-1-juny24602@gmail.com>
+In-Reply-To: <20260911090039.75646-1-juny24602@gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Mon, 14 Sep 2026 10:13:30 -0400
+X-Gm-Features: AcwNN1Vj8GzyWsGKCy4gSL-vBNjPpWPKXvnEtKLMrlOakSBuY2Unq606Yu3xBrE
+Message-ID: <CADvbK_f=S-2waid_92PbOCh-LWjU5oiZT+__xWfttVeTHEPQTg@mail.gmail.com>
+Subject: Re: [PATCH net v2] sctp: keep the association alive across the
+ sendmsg connect wait
+To: Jun Yang <juny24602@gmail.com>
+Cc: linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
+	marcelo.leitner@gmail.com, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	Jun Yang <junvyyang@tencent.com>, stable@vger.kernel.org, 
+	TencentOS Corvus AI <corvus@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Birger
-
-On 14.9.2026 14:46, Birger Koblitz wrote:
-> This adds bindings and HW support for AX179A-based USB-Ethernet
-> controllers. The AX179A-family of chips consists of the
-> AX88279 (2.5GBit PHY)
-> AX88179A/B (1GBit PHY, B variant has wider temperature range)
-> AX772D/E (100Mbit PHY)
-> 
-> The controllers all have the same vendor and device ID
-> (0x0b95, 0x1790) and are distinguished by their BCD device versions,
-> which are
-> 2.00 AX88179A/B
-> 3.00 AX88772D/E
-> 4.00 AX88279
-> 
-> For all chips, the driver calls the same ax88179a_bind() function
-> and the chips are then distinguished by the chip version and
-> BCD device ID. The AX179A-based chips all provide both a CDC-NCM
-> compatible USB interface, and a proprietary vendor interface. By 
-> default,
-> the proprietary vendor interface is not active and Linux will load the
-> CDC-NCM driver to support the devices. If the ax88179_178a module is
-> configured by the OS to have precedence over CDC-NCM, then this driver
-> will switch the device to use the vendor interface, and the device will
-> be controlled by the ax88179_178a driver when the device is probed 
-> again
-> after an automatic reset by the device.
-> 
-> Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+On Fri, Sep 11, 2026 at 5:00=E2=80=AFAM Jun Yang <juny24602@gmail.com> wrot=
+e:
+>
+> From: Jun Yang <junvyyang@tencent.com>
+>
+> sctp_wait_for_connect() drops the socket lock while it sleeps.  An
+> out-of-the-blue ABORT can then be processed from the socket backlog and
+> unlink the association.  If a concurrent shutdown(fd, SHUT_RD)
+> sets RCV_SHUTDOWN, the waiter breaks with err =3D=3D 0.  Its final put ca=
+n
+> then free the association.  sctp_sendmsg_to_asoc() consequently continues
+> with a dangling pointer.
+>
+> An earlier version moved the asoc->base.dead check ahead of the
+> RCV_SHUTDOWN break in sctp_wait_for_connect().  That changes behavior for
+> the connect() caller of the shared wait helper and reportedly breaks SCTP
+> selftests.
+>
+> Keep the change local to the vulnerable sendmsg caller instead.  Hold an
+> extra association reference across sctp_wait_for_connect(), sample
+> base.dead while the socket lock is still held, and only then drop the ext=
+ra
+> reference.  Reject either a wait error or a dead association with the
+> existing -ESRCH result.  The extra reference prevents the waiter's
+> final put from freeing the object before the check, while the socket lock
+> prevents a new teardown between the check and the following send path.
+>
+> Fixes: 668c9beb9020 ("sctp: implement assign_number for sctp_stream_inter=
+leave")
+> Cc: stable@vger.kernel.org
+> Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+> Assisted-by: tencentos-corvus-ai:hy4-preview
+> Signed-off-by: Jun Yang <junvyyang@tencent.com>
 > ---
-
-> [...]
-
-> diff --git a/drivers/net/usb/ax88179_178a.c 
-> b/drivers/net/usb/ax88179_178a.c
-> index 
-> 6aa35c8eb594fda38f7680f8801f0d82090c1efd..33be9ef73e73dd550402692e96605d22c481c7ec 
-> 100644
-> --- a/drivers/net/usb/ax88179_178a.c
-> +++ b/drivers/net/usb/ax88179_178a.c
-> @@ -1270,6 +1270,18 @@ static const struct driver_info 
-> at_umc2000sp_info = {
-> 
->  static const struct usb_device_id products[] = {
->  {
-> +	/* ASIX AX88179A USB 3.2 1000Mbit Ethernet */
-> +	USB_DEVICE_VER(0x0b95, 0x1790, 0, 0x0200),
-
-USB_DEVICE_VER(0x0b95, 0x1790, 0x0200, 0x0200),
-
-Otherwise it would select the wrong callback the existing AX88179 
-(0x0100)?
-
-> +	.driver_info = (unsigned long)&ax88179a_info,
-> +}, {
-> +	/* ASIX AX88772D USB 2.0 100Mbit Ethernet */
-> +	USB_DEVICE_VER(0x0b95, 0x1790, 0x0300, 0x0300),
-> +	.driver_info = (unsigned long)&ax88772d_info,
-> +}, {
-> +	/* ASIX AX88279 USB 3.2 2500Mbit Ethernet */
-> +	USB_DEVICE_VER(0x0b95, 0x1790, 0, 0x0400),
-
-USB_DEVICE_VER(0x0b95, 0x1790, 0x0400, 0x0400),
-
-Same as with AX88179 above.
-
-> [...]
-
-> diff --git a/drivers/net/usb/ax88179a_devices.c 
-> b/drivers/net/usb/ax88179a_devices.c
-> new file mode 100644
-> index 
-> 0000000000000000000000000000000000000000..21ca71cba52ca84883a05d8be869115395c82af1
-> --- /dev/null
-> +++ b/drivers/net/usb/ax88179a_devices.c
-
-> [...]
-
-> +static const struct net_device_ops ax88179a_netdev_ops = {
-> +	.ndo_open		= usbnet_open,
-> +	.ndo_stop		= usbnet_stop,
-> +	.ndo_start_xmit		= usbnet_start_xmit,
-> +	.ndo_tx_timeout		= usbnet_tx_timeout,
-> +	.ndo_get_stats64	= dev_get_tstats64,
-> +	.ndo_change_mtu		= ax88179_change_mtu,
-> +	.ndo_set_mac_address	= ax88179_set_mac_addr,
-> +	.ndo_validate_addr	= eth_validate_addr,
-> +	.ndo_eth_ioctl		= usbnet_mii_ioctl,
-
-dev->mii.mdio_read is never initialized for ax88179a, so 
-dev->mii.mdio_read()
-through usbnet_mii_ioctl() is a NULL function pointer.
-
-Something like:
-
-   static int ax88179a_mii_ioctl(...)
-   {
-   	struct ax88179_data *data = netdev2data(net);
-   	return phylink_mii_ioctl(data->phylink, ifr, cmd);
-   }
-
-> [...]
-
-> +static int ax88179a_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
-> +{
-
-> [...]
-
+> v2:
+> - Leave sctp_wait_for_connect() unchanged to preserve connect() semantics=
+.
+> - Hold and validate the association in the sendmsg-only caller.
+> - Run the in-tree SCTP VRF selftest and the original reproducer.
+>
+>  net/sctp/socket.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+> index c7b9e325e..09fd6b951 100644
+> --- a/net/sctp/socket.c
+> +++ b/net/sctp/socket.c
+> @@ -1842,9 +1842,14 @@ static int sctp_sendmsg_to_asoc(struct sctp_associ=
+ation *asoc,
+>                         goto err;
+>
+>                 if (asoc->ep->intl_enable) {
+> +                       bool dead;
 > +
-> +		if (pkt_desc & AX179A_RX_PD_VLAN) {
-> +			vlan_tag = pkt_desc >> AX179A_RX_PD_VLAN_SHIFT;
-> +			__vlan_hwaccel_put_tag(ax_skb, htons(ETH_P_8021Q),
-> +					       vlan_tag & VLAN_VID_MASK);
+>                         timeo =3D sock_sndtimeo(sk, 0);
+> +                       sctp_association_hold(asoc);
+>                         err =3D sctp_wait_for_connect(asoc, &timeo);
+> -                       if (err) {
+> +                       dead =3D asoc->base.dead;
+> +                       sctp_association_put(asoc);
+> +                       if (err || dead) {
+>                                 err =3D -ESRCH;
+>                                 goto err;
+>                         }
+Adding another asoc hold doesn't look nice. Could you try fixing it by
+adding sk->sk_shutdown & RCV_SHUTDOWN to this error check, like:
 
-Drop the mask and pass the complete vlan_tag, so priority is preserved?
+                        err =3D sctp_wait_for_connect(asoc, &timeo);
+                        if (err || sk->sk_shutdown & RCV_SHUTDOWN) {
+                                err =3D -ESRCH;
+                                goto err;
+                        }
 
-> +		}
-> +
-> +		usbnet_skb_return(dev, ax_skb);
-> +		skb_pull(skb, pkt_len_plus_padd);
-> +
-> +		/* Next RX Packet Header */
-> +		pkt_desc_ptr++;
-> +	}
-> +
-> +	return 1;
-> +
-> +err:
-> +	return 0;
-> +}
-> +
-> +static struct sk_buff *ax88179a_tx_fixup(struct usbnet *dev, struct 
-> sk_buff *skb, gfp_t flags)
-> +{
-> +	u64 tx_desc = skb->len & AX179A_TX_DESC_LEN_MASK;
-> +	int frame_size = dev->maxpacket;
-> +	struct sk_buff *ax_skb;
-> +	u64 *tx_desc_ptr;
-> +	int padding_size;
-> +	int headroom;
-> +	int tailroom;
-> +	u16 tci = 0;
-> +
-> +	/* TSO MSS */
-> +	tx_desc |= ((u64)(skb_shinfo(skb)->gso_size & 
-> AX179A_TX_DESC_MSS_MASK)) <<
-> +		   AX179A_TX_DESC_MSS_SHIFT;
-> +
-> +	headroom = (skb->len + sizeof(tx_desc)) % 8;
-> +	padding_size = headroom ? 8 - headroom : 0;
-> +
-> +	if (((skb->len + sizeof(tx_desc) + padding_size) % frame_size) == 0) 
-> {
-> +		padding_size += 8;
-> +		tx_desc |= AX179A_TX_DESC_DROP_PADD;
-> +	}
-> +
-> +	if ((dev->net->features & NETIF_F_HW_VLAN_CTAG_TX) && 
-> (vlan_get_tag(skb, &tci) >= 0)) {
-> +		tx_desc |= AX179A_TX_DESC_VLAN;
-> +		tx_desc |= ((u64)tci & AX179A_TX_DESC_VLAN_MASK) << 
-> AX179A_TX_DESC_VLAN_SHIFT;
-> +	}
-> +
-> +	if (!dev->can_dma_sg && (dev->net->features & NETIF_F_SG) && 
-> skb_linearize(skb))
-> +		return NULL;
-
-Call dev_kfree_skb_any() before returning, so the skb can't leak when 
-skb_linearize() fails.
-
-> [...]
-
-Thanks
-Nicolai
+Thanks.
