@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38A7379988;
-	Mon, 14 Sep 2026 04:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91DF35E93B;
+	Mon, 14 Sep 2026 04:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789360651; cv=none; b=aYUqWz0VfgdHLwjQLqixMcNePGDhiruQqrFIQm7X6VR7PI3sVlcBrLESMMDWEaeSPwgDu9RBPXJ+Vlvu4yQlE9MW7PC+oaca8Jlmbzdvl/STWLKhvzEPzqae43tbGwi40unBeCBaIViPWY+ugW9834ASocfGrwHeeRC86Pj/KXA=
+	t=1789360829; cv=none; b=lEPvmTheFvYzYea8qbtnCnLKVklCfZSMKp5lSPxbdSGoBHHkjDYDEcyMo/lHS66SMQEuKzdX03P8bJLMoZk334Y26Ukuj5/AwWe5IxXW/he/rUhJsFdgG1jmgusk4TeZYMBf1Ik73qBIwNwX6CWClflG6pEDPNluwSsp57s7gN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789360651; c=relaxed/simple;
-	bh=1S1c7k9jdFng2gUXqSjYctee/PPMJZh1e/w6JtiudHg=;
+	s=arc-20240116; t=1789360829; c=relaxed/simple;
+	bh=Y82kSJ098fXQWOwBdDrAUJmCV8kyPqaLqBXI9WjFeTM=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YiewU66/hKDnufBb80xA1A7qXqHi0PgR2irFsNXTzrsy8N3klm24wcu6oxjZB68Z5shwcIMg60kTqQKNOVjRpibd5X3UDIUZIc6mz8uoqPQvRCt/3l2mTiAKVt9mZj26mwe6urYy3VIHHIcJaqpOVIeGmhMkcQFGSPpnRdGOU5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=en3S4/j6; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=cIIYpwNEGfjdDMWaQYnaJnu65xlUinmeIjWgepvFOp0e1zKIq/LxL9wIHunEaSPIlLYAip8Pk6d96/Gk/tpCDHuUP9NbOHuZWzKhditcbzbyJWaJ1W7YxYC8ER16yRpVekYMtK71p/w0ivPIUEnCsGRVDQ2fud3ZtEKopJJg9Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ek5y+Z3k; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="en3S4/j6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EAB1F00893;
-	Mon, 14 Sep 2026 04:37:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ek5y+Z3k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D294E1F000FF;
+	Mon, 14 Sep 2026 04:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789360643;
-	bh=s+jHF0Px0qUjsp5DlyJ1OnYlin096ANFKx24PDmbnHI=;
+	s=k20260515; t=1789360827;
+	bh=jG0B12XgCRxXgcOPPpKSxX/lA7abyk4jEZxMska5KdQ=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=en3S4/j6DASSNA/LviMSFaPdyPhXMzqfH739Q8Aaj/29D9Pe+NP4dvGFB7Dzn0lSB
-	 0l6ylCXG32tHTTQSPAW/ZQg06TA/tMUYhqVCzmnLvqQUpFbTdiB1Xv0/8qyR7mscaq
-	 1zmZlbHXAbc+9KLzhaz0wVYHE/RUAJwh75Zo4lyt2Dtg3QuttBBorH+vr99rALEwJF
-	 FD7fBJIVqQm/NVwn1DCLJGDhx5XCYzIc64UMfiPRjigHsRmodI0N5PU/dICLq37zNM
-	 ojWC1i8xpSFqKChfY27aoXPbwalI1NcmBEmiHe1ZRiDr1xIMT9H7CQS09HNslSnXbd
-	 0K83qkq/wHW/w==
+	b=ek5y+Z3kbOMZuyIDwDAN3nflZzHVXsiy/iLLhqjSDndXW7xUXIFHkPF8qxC9lm2oM
+	 ltrWEx2lc7o8C1l60tZa/Ok6nQIAWjPd7JsyUgdmO7pP8IxscwHkgGly4n9REGeCxW
+	 uzPgscujhJBa+v4UX+bmAonYah7JvcoUFP1Jd6mUf1SKV88Xq9CPSfWqXv+cBqIYzR
+	 r6ktI/rOGIbvMk6q/nyAxeV0+fzC/TIOXuAG6Az1WG1vK/2ZIAqboRG3ycHntBH0Hh
+	 NXdw88xcmT5CF3iv7fyyhOgej2Zm4yEVR7ZQnku8r/pbs7SsriOC6YyBz0l+ZApduT
+	 tnZiC9iZUc16w==
 Subject:
- Re: [PATCH net-next v2 8/8] ip6_tunnel: add drop reasons to the transmit path
+ Re: [PATCH net] dm9000: free the wake IRQ before releasing board resources
 From: netdev-bot+sashiko@kernel.org
-To: littlesmilingcloud@gmail.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org, horms@kernel.org,
- idosch@nvidia.com, linux-kernel@vger.kernel.org
-Date: Mon, 14 Sep 2026 04:37:22 +0000
-Message-ID: <178936064264.22033.5452553187769525789@kernel.org>
-In-Reply-To: <20260913034937.875068-9-littlesmilingcloud@gmail.com>
-References: <20260913034937.875068-9-littlesmilingcloud@gmail.com>
+To: mhun512@gmail.com
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, ben-linux@fluff.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, ae878000@gmail.com
+Date: Mon, 14 Sep 2026 04:40:26 +0000
+Message-ID: <178936082640.22033.13106626657282829765@kernel.org>
+In-Reply-To: <20260913035557.19347-1-mhun512@gmail.com>
+References: <20260913035557.19347-1-mhun512@gmail.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,142 +50,211 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
+Critical: 0 · High: 1 (1) · Medium: 1 (1) · Low: 0
 
-- [High] ipxip6_tnl_xmit() clobbers the drop reason produced by
-  ip6_tnl_xmit() on every failure.
-- [Low] In the NBMA branch of ip6_tnl_xmit() the IPv4-payload case labels
-  a missing rtable as SKB_DROP_REASON_IP_OUTNOROUTES…
+- [High] The shared wake IRQ handler is live before its MMIO mappings
+  exist, and the patch's new free_irq() makes that window…
+- [Medium] dm9000_release_board() now frees the wake IRQ action
+  (drivers/net/ethernet/davicom/dm9000.c:806-807) but nothing ever…
+
+Pre-existing issues:
+- [High] This problem wasn't introduced by this patch, but dm9000_probe()
+  ignores register_netdev() failure: at…
+- [Medium] This problem wasn't introduced by this patch, but
+  dm9000_probe() treats an -EPROBE_DEFER result for the optional wake…
 
 --
 
-ip6_tunnel: add drop reasons to the transmit path
+dm9000: free the wake IRQ before releasing board resources
 
-This converts the IPv6 tunnel transmit path to report SKB drop reasons,
-giving ip6_tnl_xmit() a new output parameter that is threaded through
-ipxip6_tnl_xmit(), __gre6_xmit() and the ip6gre_xmit_*() helpers, and
-switching the two tx_err paths from kfree_skb() to kfree_skb_reason().
+The patch adds a wake_irq_requested bit to struct board_info so that a
+successful request_irq() for the optional wake interrupt is tracked
+separately from wake_supported, and frees that IRQ from
+dm9000_release_board() before the register windows are unmapped.  This
+covers both the probe unwind path and driver removal.
 
-A couple of questions about the reason values below.
-
-> diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-> index 458ce328311b4..d804c67c4be3b 100644
-> --- a/net/ipv6/ip6_tunnel.c
-> +++ b/net/ipv6/ip6_tunnel.c
-> @@ -1097,6 +1097,7 @@ EXPORT_SYMBOL_GPL(ip6_tnl_xmit_ctl);
->   *   @encap_limit: encapsulation limit
->   *   @pmtu: Path MTU is stored if packet is too big
->   *   @proto: next header value
-> + *   @reason: drop reason, only written when the packet is dropped
->   *
->   * Description:
->   *   Build new header and do some sanity checks on the packet before sending
+> diff --git a/drivers/net/ethernet/davicom/dm9000.c b/drivers/net/ethernet/davicom/dm9000.c
+> index b87eaf0c250ce..c8ff07fe31a5b 100644
+> --- a/drivers/net/ethernet/davicom/dm9000.c
+> +++ b/drivers/net/ethernet/davicom/dm9000.c
 
 [ ... ]
 
-> @@ -1162,8 +1167,10 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
->  		} else if (payload_protocol == htons(ETH_P_IP)) {
->  			const struct rtable *rt = skb_rtable(skb);
+> @@ -802,6 +803,9 @@ dm9000_poll_work(struct work_struct *w)
+>  static void
+>  dm9000_release_board(struct platform_device *pdev, struct board_info *db)
+>  {
+> +	if (db->wake_irq_requested)
+> +		free_irq(db->irq_wake, db->ndev);
+> +
+>  	/* unmap our resources */
 >  
-> -			if (!rt)
-> +			if (!rt) {
-> +				*reason = SKB_DROP_REASON_IP_OUTNOROUTES;
->  				goto tx_err_link_failure;
-> +			}
-
-[Severity: Low]
-Should this be SKB_DROP_REASON_NO_TX_TARGET instead?
-
-No route lookup has happened yet at this point in the NBMA branch of
-ip6_tnl_xmit().  skb_rtable() is just dst_rtable(skb_dst(skb)), so !rt is the
-same "the skb carries no dst" condition that the sibling IPv6-payload branch a
-few lines above labels NO_TX_TARGET:
-
-			if (!skb_dst(skb)) {
-				*reason = SKB_DROP_REASON_NO_TX_TARGET;
-				goto tx_err_link_failure;
-			}
-
-dropreason-core.h documents IP_OUTNOROUTES as "route lookup failed" and
-NO_TX_TARGET as "no target found for xmit", and ip_tunnel_xmit() in
-net/ipv4/ip_tunnel.c uses NO_TX_TARGET for the analogous NBMA missing-dst
-case:
-
-		if (!skb_dst(skb)) {
-			DEV_STATS_INC(dev, tx_fifo_errors);
-			reason = SKB_DROP_REASON_NO_TX_TARGET;
-			goto tx_error;
-		}
-
-As written, IP_OUTNOROUTES now covers two different conditions inside
-ip6_tnl_xmit(), since it is also used for the genuine ip6_route_output() and
-xfrm_lookup() failures further down.
-
-[ ... ]
-
-> @@ -1408,13 +1435,15 @@ ipxip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev,
->  	fl6.flowi6_uid = sock_net_uid(dev_net(dev), NULL);
->  	dsfield = INET_ECN_encapsulate(dsfield, orig_dsfield);
->  
-> -	if (iptunnel_handle_offloads(skb, SKB_GSO_IPXIP6))
-> +	if (iptunnel_handle_offloads(skb, SKB_GSO_IPXIP6)) {
-> +		*reason = SKB_DROP_REASON_NOMEM;
->  		return -1;
-> +	}
->  
->  	skb_set_inner_ipproto(skb, protocol);
->  
->  	err = ip6_tnl_xmit(skb, dev, dsfield, &fl6, encap_limit, &mtu,
-> -			   protocol);
-> +			   protocol, reason);
->  	if (err != 0) {
->  		/* XXX: send ICMP error even if DF is not set. */
->  		if (err == -EMSGSIZE)
-> @@ -1429,6 +1458,7 @@ ipxip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev,
->  			default:
->  				break;
->  			}
-> +		*reason = SKB_DROP_REASON_PKT_TOO_BIG;
->  		return -1;
->  	}
+>  	iounmap(db->io_addr);
 
 [Severity: High]
-Does this overwrite the reason that ip6_tnl_xmit() just stored?
+Can this free_irq() call dm9000_wol_interrupt() while db->io_addr and
+db->io_data are still NULL?
 
-The if (err == -EMSGSIZE) body is only the ICMP-emitting switch, so the
-*reason = SKB_DROP_REASON_PKT_TOO_BIG assignment runs for every non-zero err,
-not just for -EMSGSIZE.
+In dm9000_probe() the wake IRQ is requested well before the register
+windows are mapped:
 
-ip6_tnl_xmit() sets a distinct reason on each of its failure paths
-(NO_TX_TARGET, NEIGH_CREATEFAIL, IP_OUTNOROUTES, DEV_READY, RECURSION_LIMIT,
-NOMEM, TNL_ENCAP), and all of them are replaced here before
-ip6_tnl_start_xmit() consumes the value:
+	ret = request_irq(db->irq_wake, dm9000_wol_interrupt,
+			  IRQF_SHARED, dev_name(db->dev), ndev);
+	...
+	db->addr_req = request_mem_region(...);
+	db->io_addr = ioremap(db->addr_res->start, iosize);
+	...
+	db->io_data = ioremap(db->data_res->start, iosize);
 
-  ip6_tnl_start_xmit()
-    ret = ipxip6_tnl_xmit(skb, dev, ipproto, &reason);
-      err = ip6_tnl_xmit(..., reason);   /* sets IP_OUTNOROUTES */
-      *reason = SKB_DROP_REASON_PKT_TOO_BIG;
-    tx_err:
-      kfree_skb_reason(skb, reason);     /* reports PKT_TOO_BIG */
+db comes from netdev_priv() of a freshly alloc_etherdev()'d device, so
+both __iomem pointers are NULL at request time, and the handler starts
+with MMIO access:
 
-So an ip6ip6/ipip6/mplsip6 tunnel with an unreachable remote, an allocation
-failure in skb_cow_head(), a local routing loop (tdev == dev) or an
-ip6_tnl_xmit_ctl() refusal all end up reported as PKT_TOO_BIG.
+dm9000_wol_interrupt() {
+	nsr = ior(db, DM9000_NSR);
+	wcr = ior(db, DM9000_WCR);
 
-For the one case where the assignment would be correct, -EMSGSIZE,
-ip6_tnl_xmit() has already stored PKT_TOO_BIG, so the statement looks
-redundant there.
+ior() {
+	writeb(reg, db->io_addr);
+	return readb(db->io_data);
+}
 
-This also disagrees with the kernel-doc added in the same patch,
-"@reason: drop reason, only written when the packet is dropped", which makes
-the callee the owner of the value, and with the ip6_gre callers
-(__gre6_xmit(), ip6gre_xmit_ipv4(), ip6gre_xmit_ipv6(),
-ip6erspan_tunnel_xmit()) which propagate the callee's reason untouched.
+With CONFIG_DEBUG_SHIRQ, __free_irq() calls the handler once after
+unregistering a shared action:
 
-Would moving the assignment inside the err == -EMSGSIZE block, or dropping
-it entirely, be what was intended here?
+kernel/irq/manage.c:__free_irq() {
+	if (action->flags & IRQF_SHARED) {
+		local_irq_save(flags);
+		action->handler(irq, dev_id);
+		local_irq_restore(flags);
+	}
 
-[ ... ]
+So every probe failure that reaches the out: label before or between the
+two ioremap() calls (addr_req == NULL, io_addr == NULL, data_req == NULL,
+io_data == NULL) now runs dm9000_wol_interrupt() -> ior() ->
+writeb(reg, NULL) from the new cleanup.
+
+Independently of the debug config, since the action is IRQF_SHARED, can
+the line be asserted by a co-owner (or by a DM9000 whose NSR_WAKEST is
+already latched across a warm reboot) during the sleeping
+request_mem_region()/ioremap() calls, with the same result?  The same
+window also lets the handler's index/data two-cycle register protocol
+interleave with the unlocked ior()/iow() sequences in dm9000_reset(), the
+VID/PID retry loop and the EEPROM reads, since dm9000_probe() never takes
+db->lock.
+
+Would it be preferable to move the request_irq() and the
+irq_set_irq_wake() capability test to after the register windows are
+mapped, dm9000_set_io() has run and the chip has been reset?  That
+ordering also makes the unwind natural and removes the need for the new
+wake_irq_requested bit in the shared cleanup helper.
+
+[Severity: Medium]
+Does this teardown leak the interrupt wake reference taken by
+dm9000_set_wol()?
+
+When userspace enables WAKE_MAGIC, the reference is taken here:
+
+dm9000_set_wol() {
+	if (dm->wake_state != opts) {
+		/* change in wol state, update IRQ state */
+
+		if (!dm->wake_state)
+			irq_set_irq_wake(dm->irq_wake, 1);
+		else if (dm->wake_state && !opts)
+			irq_set_irq_wake(dm->irq_wake, 0);
+	}
+
+That is the only place the reference is dropped, and only on a
+wake_state 1 -> 0 transition driven by ethtool.  dm9000_stop(),
+dm9000_shutdown(), dm9000_release_board() and dm9000_drv_remove() do not
+clear db->wake_state and do not call irq_set_irq_wake(db->irq_wake, 0).
+
+desc->wake_depth and IRQD_WAKEUP_STATE are maintained only by
+irq_set_irq_wake(), and __free_irq() does not touch them, so after
+	ethtool -s ethX wol g
+	echo ... > unbind   (or rmmod)
+the descriptor keeps wake_depth > 0 and IRQD_WAKEUP_STATE set with no
+handler attached.  Because the line was requested IRQF_SHARED, a co-owner
+that later does its own enable/disable pair only brings wake_depth back
+to 1, so set_irq_wake_real(irq, 0) is never reached and the co-owner can
+no longer turn the wake source off.
+
+Should the new cleanup drop that reference, for example
+irq_set_irq_wake(db->irq_wake, 0) when db->wake_state is set, before the
+free_irq()?
+
+> @@ -1519,6 +1523,7 @@ dm9000_probe(struct platform_device *pdev)
+>  		if (ret) {
+>  			dev_err(db->dev, "cannot get wakeup irq (%d)\n", ret);
+>  		} else {
+> +			db->wake_irq_requested = 1;
+>  
+>  			/* test to see if irq is really wakeup capable */
+>  			ret = irq_set_irq_wake(db->irq_wake, 1);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but since the patch extends the
+out: unwind in dm9000_probe(), is the registration failure path reaching it
+at all?  Near the end of dm9000_probe():
+
+	platform_set_drvdata(pdev, ndev);
+	ret = register_netdev(ndev);
+
+	if (ret == 0) {
+		...
+	}
+	return 0;
+
+The return value is only used to gate the success printk and then 0 is
+returned unconditionally, so a failed register_netdev() reports probe
+success.  The driver core records a successful bind, the out: unwind that
+now calls free_irq()/dm9000_release_board() is never taken, and the board
+keeps its mapped registers plus the newly tracked wake IRQ attached to an
+unregistered net_device.
+
+Removal then calls unregister_netdev() on that device:
+
+net/core/dev.c:unregister_netdevice_many_notify() {
+		if (dev->reg_state == NETREG_UNINITIALIZED) {
+			...
+			WARN_ON(1);
+			list_del(&dev->unreg_list);
+			continue;
+		}
+		dev->dismantle = true;
+		BUG_ON(dev->reg_state != NETREG_REGISTERED);
+
+In the common case register_netdevice() has rolled back to
+NETREG_UNINITIALIZED and this is the WARN_ON(1).  If registration instead
+failed via the NETDEV_REGISTER notifier path, which internally
+unregisters the device and clears needs_free_netdev, reg_state is no
+longer NETREG_UNINITIALIZED and the later unregister_netdev() reaches the
+BUG_ON(dev->reg_state != NETREG_REGISTERED).
+
+Would "if (ret) goto out;" be the intended control flow here?
+
+[Severity: Medium]
+This is a pre-existing issue and not introduced by this patch, but a few
+lines above this hunk dm9000_probe() folds -EPROBE_DEFER into "the
+optional interrupt is absent":
+
+	db->irq_wake = platform_get_irq_optional(pdev, 1);
+	if (db->irq_wake >= 0) {
+
+platform_get_irq_optional() forwards to platform_get_irq_affinity(),
+which explicitly propagates the deferral:
+
+drivers/base/platform.c:platform_get_irq_affinity() {
+		ret = of_irq_get(to_of_node(fwnode), num);
+		if (ret > 0 || ret == -EPROBE_DEFER)
+			goto out;
+
+So when the second interrupt is described in DT but its irqchip has not
+probed yet, probe silently continues and returns success, wake_supported
+stays 0, and ethtool set_wol returns -EOPNOTSUPP for the lifetime of the
+binding with no retry.  Should -EPROBE_DEFER be propagated out of
+dm9000_probe() instead?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260913034937.875068-1-littlesmilingcloud%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260913035557.19347-1-mhun512%40gmail.com
