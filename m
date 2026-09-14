@@ -1,169 +1,233 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B487747887F;
-	Mon, 14 Sep 2026 14:09:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6751E471402;
+	Mon, 14 Sep 2026 14:12:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789394990; cv=none; b=gYkwJmxpE21oXJMXUachFRRhj8hoWSZEKUryoG0Mr78Wjv2t+OJvty3xijGAJsS6WUi8o8V+Cd/Vem39OhJlpq4I/XIx3ZKShwesK3C+fX6pn/dzOeX7AwKmgRh5W7beghZYGUDQB8vC/xTmvP+8t4WeFcTbFaJozegb0AGuLkQ=
+	t=1789395179; cv=none; b=ioCmW7lfU1v7SsJQZ96GnPXiDSjwfmjmeOUrIg7j7smBfEN4CGMlJtnAX9RU84G2EdG7PPKFElo34SEppuRKvZ0gJDEgseIPGIukpXEXV79rkOSRP+q7S1TQorZClGJkoEW9osRtfJZj0aFlHl9AKaXl2Trj0tP+veG+BwtlSeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789394990; c=relaxed/simple;
-	bh=kXyZcf9mVRUP9nMLt2/MVgHhc0OPsuWGYpRhhFqEPKc=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WKjubpvKEufWgv2hmuQI2sUc2vjVOzoS/eO4gkUTentCdXrGpAdfDW/uX4BU3dYwoRajDsY8tSUShISGDhUfJTCg9qmY1yMjjOPzFxEcpPoBqXKTMsb/Ul7yIllyaT5IN7o7u60t3W2j3TLRyfpKEIRUnFQq2UnPO9MYWivC9B4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=yLA8gBwI; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1789395179; c=relaxed/simple;
+	bh=UrSK293fwFDujTjwSVBaMN8gvwemeZczHJsVM1ZYPy4=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=rbD2+gmOMB8ZRXpi1f29z3LPW/ZZIVPLojJ1mN8smOEGPNlk9YWyMpC2NfHYUEztAoBSplTztoxtwEU9pNwsNZkw+f1FIJ+pM/ZKaMbQ+wPfvWo28jx3aa37LaYhieh0vNsWOBiPMHE0IeTC/vYfFM6oFqBjE5BcPOoG3fy4RQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=IOuRaT6F; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="yLA8gBwI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1789394988; x=1820930988;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=kXyZcf9mVRUP9nMLt2/MVgHhc0OPsuWGYpRhhFqEPKc=;
-  b=yLA8gBwI7TujHyIAtGwTFaXHDmuJO5ynF0hbGw/uThoi13bENbP4t+XC
-   BrCzyAEbC8zDPEJgsuxCvMojqxH3wNYWwHzvISl6wyFQNBr9TeYf2cXvF
-   8QrLQimP4JDATU0JWlfXj0k1XfQ2lGfInD88/gBF/E+TKoCdNNJJHrO4G
-   xFVTcvnR1qapO69WX/FK6bpLgbz7UbnBB37ipupwnT9SqtDNAn/y7zDuF
-   +wfOJ16+JGgt7kuh7lsKQNpLxGtCKcQLOWaU24EYhZduJyLTuQ0y900w6
-   dcIFfmkn330wEQjocqbFeCqGMeYt1s+WzRsacg1W0XHM5gCSWw3JSXfka
-   Q==;
-X-CSE-ConnectionGUID: rVLQJSZ6ShGlku+t+zZqfg==
-X-CSE-MsgGUID: +9pA80GKSjCe+q/7ZmKqbQ==
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="62642258"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 14 Sep 2026 07:09:41 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Mon, 14 Sep 2026 07:09:40 -0700
-Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Mon, 14 Sep 2026 07:09:36 -0700
-Date: Mon, 14 Sep 2026 16:09:36 +0200
-From: Daniel Machon <daniel.machon@microchip.com>
-To: <netdev-bot+sashiko@kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <horatiu.vultur@microchip.com>,
-	<steen.hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>,
-	<ast@kernel.org>, <daniel@iogearbox.net>, <hawk@kernel.org>,
-	<john.fastabend@gmail.com>, <sdf@fomichev.me>, <herve.codina@bootlin.com>,
-	<arnd@arndb.de>, <gregkh@linuxfoundation.org>, <mohsin.bashr@gmail.com>,
-	<richardcochran@gmail.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH net-next v6 08/14] net: lan966x: clear FDMA interrupt
- stickies after switch reset
-Message-ID: <20260914140936.kqsqxbovxvsihv42@DEN-DL-M70577>
-References: <20260909-lan966x-pci-fdma-v6-8-6f48dab9d671@microchip.com>
- <178904554399.219967.11177166628090236711@kernel.org>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="IOuRaT6F"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 061B6A02A9;
+	Mon, 14 Sep 2026 16:12:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1789395169; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=e/IgfF6yLLH39AK6wZv/vjP09JtDv7w42jijGVHpL4Q=;
+	b=IOuRaT6FYPV67HJjNwppyiP3wSSn3Nd0cDIAp5I/lNPktMXSdC+245Q5/+pTRl9VZf3zJJ
+	g4egBGOV8UYLFcX2M362LKDpKUZyjTkidCLrBPNAvb6jrSEY7sCy1LpSmmKYE0D75Escom
+	ztso4/8VDlJd5GQ0jNH5yjFH0aomlwLa4z/46spqfCb2Y3ucLG3rmT6AiRpEDzR1q7UFfC
+	dvgyrBaN0t9ppQY2AHsoA9p73SRUbWNpW8BII2Y91QKFQEg5WVwiEonIL+m0ItCbGdv7Bz
+	22hgDH1hhKFbrQuFGYa2rPTGMWTKk0o/b0TCfCwHFx0Ce67+8gHpBVh1tT2mcg==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <178904554399.219967.11177166628090236711@kernel.org>
+Date: Mon, 14 Sep 2026 16:12:46 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Birger Koblitz <mail@birger-koblitz.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Russell King
+ <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit
+ <hkallweit1@gmail.com>, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Jianhui Xu <neuromoments@gmail.com>
+Subject: Re: [PATCH net-next v11 06/15] ax88179_178a: Add HW support for
+ AX179A-based chips
+In-Reply-To: <20260914-ax88179a-v11-6-5ea7a925ba6d@birger-koblitz.de>
+References: <20260914-ax88179a-v11-0-5ea7a925ba6d@birger-koblitz.de>
+ <20260914-ax88179a-v11-6-5ea7a925ba6d@birger-koblitz.de>
+Message-ID: <18c931ca985a82a044c9269743fb4fb7@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider:
-> 
-> Critical: 0 · High: 0 · Medium: 0 · Low: 1
-> 
-> - [Low] Commit-message/comment vs. reachability at this revision: the
->   added FDMA sticky clear in lan966x_reset_switch()…
-> 
-> --
-> 
-> net: lan966x: clear FDMA interrupt stickies after switch reset
-> 
-> The patch acks FDMA_ERRORS, FDMA_INTR_ERR and FDMA_INTR_DB right after
-> reset_control_reset() in lan966x_reset_switch(), so that spurious sticky
-> bits latched by the GCB soft reset in PCI mode do not make the FDMA IRQ
-> handler fire as soon as the IRQ is requested. The clear is unconditional and
-> is described as a no-op on the platform path.
-> 
-> > diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-> > index 6e6c08bb8eea..11094a381ec2 100644
-> > --- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-> > +++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-> > @@ -1067,6 +1067,15 @@ static int lan966x_reset_switch(struct lan966x *lan966x)
-> >
-> >       reset_control_reset(switch_reset);
-> >
-> > +     /* When in PCI mode, the GCB soft reset issued by the reset
-> > +      * controller can latch spurious bits in the FDMA error stickies.
-> > +      * Clear them before request_irq hooks up the FDMA IRQ line,
-> > +      * otherwise the handler fires immediately on probe.
-> > +      */
-> > +     lan_wr(lan_rd(lan966x, FDMA_ERRORS), lan966x, FDMA_ERRORS);
-> > +     lan_wr(lan_rd(lan966x, FDMA_INTR_ERR), lan966x, FDMA_INTR_ERR);
-> > +     lan_wr(lan_rd(lan966x, FDMA_INTR_DB), lan966x, FDMA_INTR_DB);
-> 
-> [Severity: Low]
-> This isn't a bug in the register writes themselves, but is the failure
-> described in the changelog reachable at this point in the series?
+Hi Birger
 
-No, but this is a preparation patch that makes sure that once the FDMA support
-lands, in a later patch, the failure is not introduced.
+On 14.9.2026 14:46, Birger Koblitz wrote:
+> This adds bindings and HW support for AX179A-based USB-Ethernet
+> controllers. The AX179A-family of chips consists of the
+> AX88279 (2.5GBit PHY)
+> AX88179A/B (1GBit PHY, B variant has wider temperature range)
+> AX772D/E (100Mbit PHY)
+> 
+> The controllers all have the same vendor and device ID
+> (0x0b95, 0x1790) and are distinguished by their BCD device versions,
+> which are
+> 2.00 AX88179A/B
+> 3.00 AX88772D/E
+> 4.00 AX88279
+> 
+> For all chips, the driver calls the same ax88179a_bind() function
+> and the chips are then distinguished by the chip version and
+> BCD device ID. The AX179A-based chips all provide both a CDC-NCM
+> compatible USB interface, and a proprietary vendor interface. By 
+> default,
+> the proprietary vendor interface is not active and Linux will load the
+> CDC-NCM driver to support the devices. If the ax88179_178a module is
+> configured by the OS to have precedence over CDC-NCM, then this driver
+> will switch the device to use the vendor interface, and the device will
+> be controlled by the ax88179_178a driver when the device is probed 
+> again
+> after an automatic reset by the device.
+> 
+> Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> ---
 
-> 
-> The commit message says the latched bits "sit in FDMA_INTR_ERR until the FDMA
-> IRQ is requested later in probe, at which point the handler fires immediately
-> and WARNs". In lan966x_probe() the FDMA handler is only installed when a named
-> "fdma" interrupt exists:
-> 
->         lan966x->fdma_irq = platform_get_irq_byname(pdev, "fdma");
->         if (lan966x->fdma_irq > 0) {
->                 err = devm_request_irq(&pdev->dev, lan966x->fdma_irq,
->                                        lan966x_fdma_irq_handler, 0,
->                                        "fdma irq", lan966x);
->                 ...
->                 lan966x->fdma = true;
->         }
-> 
-> At this commit the PCI overlay in drivers/misc/lan966x_pci.dtso does not
-> describe that interrupt:
-> 
->         interrupts = <12 IRQ_TYPE_LEVEL_HIGH>,
->                      <9 IRQ_TYPE_LEVEL_HIGH>;
->         interrupt-names = "xtr", "ana";
-> 
-> so platform_get_irq_byname(pdev, "fdma") fails and lan966x_fdma_irq_handler()
-> is never requested on the PCI path.
-> 
-> The overlay also disagrees with the positional list in
-> Documentation/devicetree/bindings/net/microchip,lan966x-switch.yaml, where the
-> second entry is reserved for "fdma":
-> 
->         interrupt-names:
->           minItems: 1
->           items:
->             - const: xtr
->             - const: fdma
->             - const: ana
-> 
-> Both points are resolved later in the same series by "misc: lan966x-pci: dts:
-> add fdma interrupt to overlay", which switches the overlay to
-> interrupts <12>,<14>,<9> and interrupt-names = "xtr", "fdma", "ana", so this is
-> only an observation about the ordering of the changelog against the code state
-> here rather than an actionable defect.
-> 
-> Would it help to mention in the commit message that the WARN only becomes
-> reachable once the overlay gains the "fdma" interrupt?
+> [...]
 
-The changelog already scopes itself with "When in PCI mode".
+> diff --git a/drivers/net/usb/ax88179_178a.c 
+> b/drivers/net/usb/ax88179_178a.c
+> index 
+> 6aa35c8eb594fda38f7680f8801f0d82090c1efd..33be9ef73e73dd550402692e96605d22c481c7ec 
+> 100644
+> --- a/drivers/net/usb/ax88179_178a.c
+> +++ b/drivers/net/usb/ax88179_178a.c
+> @@ -1270,6 +1270,18 @@ static const struct driver_info 
+> at_umc2000sp_info = {
+> 
+>  static const struct usb_device_id products[] = {
+>  {
+> +	/* ASIX AX88179A USB 3.2 1000Mbit Ethernet */
+> +	USB_DEVICE_VER(0x0b95, 0x1790, 0, 0x0200),
 
-> 
-> >       /* Don't reinitialize the switch core, if it is already initialized. In
-> >        * case it is initialized twice, some pointers inside the queue system
-> >        * in HW will get corrupted and then after a while the queue system gets
-> 
-> --
-> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909-lan966x-pci-fdma-v6-0-6f48dab9d671%40microchip.com
+USB_DEVICE_VER(0x0b95, 0x1790, 0x0200, 0x0200),
+
+Otherwise it would select the wrong callback the existing AX88179 
+(0x0100)?
+
+> +	.driver_info = (unsigned long)&ax88179a_info,
+> +}, {
+> +	/* ASIX AX88772D USB 2.0 100Mbit Ethernet */
+> +	USB_DEVICE_VER(0x0b95, 0x1790, 0x0300, 0x0300),
+> +	.driver_info = (unsigned long)&ax88772d_info,
+> +}, {
+> +	/* ASIX AX88279 USB 3.2 2500Mbit Ethernet */
+> +	USB_DEVICE_VER(0x0b95, 0x1790, 0, 0x0400),
+
+USB_DEVICE_VER(0x0b95, 0x1790, 0x0400, 0x0400),
+
+Same as with AX88179 above.
+
+> [...]
+
+> diff --git a/drivers/net/usb/ax88179a_devices.c 
+> b/drivers/net/usb/ax88179a_devices.c
+> new file mode 100644
+> index 
+> 0000000000000000000000000000000000000000..21ca71cba52ca84883a05d8be869115395c82af1
+> --- /dev/null
+> +++ b/drivers/net/usb/ax88179a_devices.c
+
+> [...]
+
+> +static const struct net_device_ops ax88179a_netdev_ops = {
+> +	.ndo_open		= usbnet_open,
+> +	.ndo_stop		= usbnet_stop,
+> +	.ndo_start_xmit		= usbnet_start_xmit,
+> +	.ndo_tx_timeout		= usbnet_tx_timeout,
+> +	.ndo_get_stats64	= dev_get_tstats64,
+> +	.ndo_change_mtu		= ax88179_change_mtu,
+> +	.ndo_set_mac_address	= ax88179_set_mac_addr,
+> +	.ndo_validate_addr	= eth_validate_addr,
+> +	.ndo_eth_ioctl		= usbnet_mii_ioctl,
+
+dev->mii.mdio_read is never initialized for ax88179a, so 
+dev->mii.mdio_read()
+through usbnet_mii_ioctl() is a NULL function pointer.
+
+Something like:
+
+   static int ax88179a_mii_ioctl(...)
+   {
+   	struct ax88179_data *data = netdev2data(net);
+   	return phylink_mii_ioctl(data->phylink, ifr, cmd);
+   }
+
+> [...]
+
+> +static int ax88179a_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+> +{
+
+> [...]
+
+> +
+> +		if (pkt_desc & AX179A_RX_PD_VLAN) {
+> +			vlan_tag = pkt_desc >> AX179A_RX_PD_VLAN_SHIFT;
+> +			__vlan_hwaccel_put_tag(ax_skb, htons(ETH_P_8021Q),
+> +					       vlan_tag & VLAN_VID_MASK);
+
+Drop the mask and pass the complete vlan_tag, so priority is preserved?
+
+> +		}
+> +
+> +		usbnet_skb_return(dev, ax_skb);
+> +		skb_pull(skb, pkt_len_plus_padd);
+> +
+> +		/* Next RX Packet Header */
+> +		pkt_desc_ptr++;
+> +	}
+> +
+> +	return 1;
+> +
+> +err:
+> +	return 0;
+> +}
+> +
+> +static struct sk_buff *ax88179a_tx_fixup(struct usbnet *dev, struct 
+> sk_buff *skb, gfp_t flags)
+> +{
+> +	u64 tx_desc = skb->len & AX179A_TX_DESC_LEN_MASK;
+> +	int frame_size = dev->maxpacket;
+> +	struct sk_buff *ax_skb;
+> +	u64 *tx_desc_ptr;
+> +	int padding_size;
+> +	int headroom;
+> +	int tailroom;
+> +	u16 tci = 0;
+> +
+> +	/* TSO MSS */
+> +	tx_desc |= ((u64)(skb_shinfo(skb)->gso_size & 
+> AX179A_TX_DESC_MSS_MASK)) <<
+> +		   AX179A_TX_DESC_MSS_SHIFT;
+> +
+> +	headroom = (skb->len + sizeof(tx_desc)) % 8;
+> +	padding_size = headroom ? 8 - headroom : 0;
+> +
+> +	if (((skb->len + sizeof(tx_desc) + padding_size) % frame_size) == 0) 
+> {
+> +		padding_size += 8;
+> +		tx_desc |= AX179A_TX_DESC_DROP_PADD;
+> +	}
+> +
+> +	if ((dev->net->features & NETIF_F_HW_VLAN_CTAG_TX) && 
+> (vlan_get_tag(skb, &tci) >= 0)) {
+> +		tx_desc |= AX179A_TX_DESC_VLAN;
+> +		tx_desc |= ((u64)tci & AX179A_TX_DESC_VLAN_MASK) << 
+> AX179A_TX_DESC_VLAN_SHIFT;
+> +	}
+> +
+> +	if (!dev->can_dma_sg && (dev->net->features & NETIF_F_SG) && 
+> skb_linearize(skb))
+> +		return NULL;
+
+Call dev_kfree_skb_any() before returning, so the skb can't leak when 
+skb_linearize() fails.
+
+> [...]
+
+Thanks
+Nicolai
