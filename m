@@ -1,116 +1,211 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792023C1D71;
-	Mon, 14 Sep 2026 11:20:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B8E44605E
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 11:23:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789384847; cv=none; b=po7FJw0xBbst4cJoyuXfDaOI0HJFpknHwfpQadt2BPJGLmzNglm3h9n8l95pU6I5c5voyfM5aqIlC+VkDG64sys4cs4g9G+DsmjbUnkZaVPpzaGugfkGTl7FIn+sFFgd+r1EP83jjQZyw6fJgXSc5UxctZ8E0ULEAWHMnL6UWUY=
+	t=1789385022; cv=none; b=Ve7yik0Gq6A/y6nVodm8zc/b6/xHf9aFePhNV3r+d1LPNcex+5xMOQZYwikrZRtY/xbET/TxEX2xpNCo2on20U638PbZKF2dwVHWaDn2ctVO4R5BoSGDElmitY0py6NJrWE9IT56HnlgC1RhUzGWKOMAyTQy0ZkneGDW8LHhc/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789384847; c=relaxed/simple;
-	bh=BK2gSje8Ntak1aO0ck7/sISfvUuuJTb9T2py0KTIaxE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QZfnk84SqIcPwHeMVTRoU0Va/03V+SMc0YFmeWNnDHJOf+IPVhv03+ROkl/GM/DPpSK0ptibxsZGQzwGAbTQCBI7m4/Oa0hVXrJu10tICYouPz2TVkcxbDEOeDD6OuUP8ZFQ7ilanzX7GyfX855JnA3rIdDB5DQ/qs10SPQkSt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=none smtp.helo=mx0b-0016f401.pphosted.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=hZ/psEfE; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mx0b-0016f401.pphosted.com
+	s=arc-20240116; t=1789385022; c=relaxed/simple;
+	bh=TK2cRi4Qw+UhPK9QoB6niFeTwi3yGvQHJHbQPYWSBkw=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iqxjxaT8zwoF9pTrzKdxQAHv/ZG9i3JERC1pxohJqgax0/bhXPgGVWtBKapKvrIcBE0xCs25lSlPw5o5VtZuirU9toriBynMwcGtipR5/PsbU2sCOoGNlnf7OId3lYS1SIXR3NgzaPQp0KNT0/byrHEVsVOrGRS+Qn52NUk68T0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=ptV7sQBs; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="hZ/psEfE"
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68E9nBH9271386;
-	Mon, 14 Sep 2026 04:20:33 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=ut7yXY0OU9Y/iDyP7tdE1eJ
-	sQ1JlnvjIivyLM+I0fho=; b=hZ/psEfE5GtUPAjLm/GLDjjb8Tf4l+tNKBOj/MF
-	m1eULLKZpabyuLo6flpSMQSClQRGdjHeoOEklWtHBaciAqTkKcH2jZKz+PkIfWsF
-	ehTI+zr0WMPBTEFUgGadStxhquDCauc4rwDXCJjiPXc+b+0coPLsSUHR/XUw9RBf
-	GGMKMLQBsGj0dYZDY5bJan4/iJFic9jp1Gk70lx4THYy+DJzPz3TLKkSnTk1dbpu
-	JNnHuvFYk8sqkvAJw5inWlx9p3/c5st9AA7ZK5jCCMjxybGGQj90xPPBqQ5Qg+Hq
-	934DQC+fUz5lrbI5hu+EbgYIebchqFW7IXO/h/LOj5ghiVw==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4gpdm1ge22-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 14 Sep 2026 04:20:33 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 14 Sep 2026 04:20:33 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Mon, 14 Sep 2026 04:20:33 -0700
-Received: from c1illp-saixps-016.eng.marvell.com (c1illp-saixps-016.eng.marvell.com [10.205.40.247])
-	by maili.marvell.com (Postfix) with ESMTP id F41F13F70A3;
-	Mon, 14 Sep 2026 04:20:29 -0700 (PDT)
-From: Elad Nachman <enachman@marvell.com>
-To: <enachman@marvell.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <yevhen.orlov@plvision.eu>, <taras.chornyi@plvision.eu>,
-        <oleksandr.mazur@plvision.eu>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC: Dan Carpenter <error27@gmail.com>
-Subject: [PATCH] net: prestera: return error on hash table init failure
-Date: Mon, 14 Sep 2026 14:20:26 +0300
-Message-ID: <20260914112026.2822222-1-enachman@marvell.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="ptV7sQBs"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id A681020758;
+	Mon, 14 Sep 2026 13:23:35 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 9nu7SWvYf7Xy; Mon, 14 Sep 2026 13:23:34 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id D692520754;
+	Mon, 14 Sep 2026 13:23:34 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com D692520754
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1789385014;
+	bh=wmW4DFy0DvYGUe06ij/9kgUhx+OSXYUWY9cOivkkpm0=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=ptV7sQBsRiOS/VJea7paPn/WYlx4ghb9+bIZidaQm7uuqcA1C8k/fthtEFBsxpdrW
+	 RRBzQHkowXErELtf+2Yj+d9VwM0KlaSq//2m+TuFbi1esUp2ocRg2u24T2PNrSdsyr
+	 d/yw5TPPERb0oJ3XtB/s6pA4noJ/fU9yQPFC4IC3ZUhumD/IN32eZxsMAklWEzr6u1
+	 eZnUB3FjLJhRdCH/ThZW9ZiqBbbjidnNQ9zuqrZDTrwijBtFoLK2P/G1LHHu00Yb0s
+	 u0BTbfa83lK4Cjoumqslp3PEgZr+2Zv3hEnM6xaXWifAbak+9iB/QJ2K/mkxztWtVs
+	 RwFELFSs5+Yrg==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 14 Sep
+ 2026 13:23:34 +0200
+Received: (nullmailer pid 1958502 invoked by uid 1000);
+	Mon, 14 Sep 2026 11:23:33 -0000
+Date: Mon, 14 Sep 2026 13:23:33 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: <davem@davemloft.net>, <herbert@gondor.apana.org.au>,
+	<netdev@vger.kernel.org>, Chengfeng Ye <nicoyip.dev@gmail.com>
+Subject: Re: [PATCH 02/12] xfrm: serialize state GC with device state flush
+Message-ID: <aqfZNeR58HLm2x1o@secunet.com>
+References: <20260907093020.2228346-3-steffen.klassert@secunet.com>
+ <20260908224854.1591115-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE0MDE2MSBTYWx0ZWRfX5YEoBD+uCJkR
- En9Ucm93P205YjB5vGussKG+LzrqzKEHdW2kUsrOLgkXo/55N1dsaR1jXX34tFg9M5/eTfBQYDt
- W0tGP5HXl3NUGPKoxV/tKA/wfB4U+oXDsuqtG1MheCMLuFurr/bAeEkWv5O2Ho1Ot97xFM20Ehi
- YjOHSfS0ywtJzl1adkH98zRQfYJtEDu+sJRLijcXIgByK/940bqvSiCZTlFxk8OJWnIaXwoJgBz
- VgYckfX3rspVZMlyDyFiUxIO4Piixq3bYpjBXpn21WWkl/y7O8/uWakvB6guA60tON+jeRpQCj/
- hFzeOtpN5Yk5xMBL+6Htiz14Dn4biHtUo+WWNKuNCyeScZPRNl2jSsVBu8dniAcMGvzRCx/wHmG
- Nz2qCTjQ1evNLp6MqlgmZRnYkMb+Vk2pn891T7f5KLiDBKG0vFQYZ44Cp0m20u8zTzjRnl0nUUI
- rDjGCaw28ywfJQ9Xg+Q==
-X-Proofpoint-ORIG-GUID: Q5XdNFhkz1jW-SGRF7zjlw6qUUE0GbU7
-X-Authority-Analysis: v=2.4 cv=G8WJgNk5 c=1 sm=1 tr=0 ts=6aa7d881 cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=QXcCYyLzdtTjyudCfB6f:22 a=VwQbUJbxAAAA:8 a=M5GUcnROAAAA:8 a=pGLkceISAAAA:8
- a=-CJc6eoNAwWmckaBU6oA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-GUID: Q5XdNFhkz1jW-SGRF7zjlw6qUUE0GbU7
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE0MDE2MSBTYWx0ZWRfX4VuyPXb8dnh5
- DZc5K8bWfDyDKRTeKfRAsK1ST4Ty47OhsxCx51bzd1R9GY6tow73eaUIGAUY0a5FIWZBb9d6/Dx
- TEHosDcNf8JJLjojteUp7/+q24/jUoc=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-14_03,2026-09-13_01,2025-10-01_01
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260908224854.1591115-1-kuba@kernel.org>
+X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-From: Elad Nachman <enachman@marvell.com>
+Ccing Author of the patch.
 
-prestera_router_hw_init() calls rhashtable_destroy() on error but then
-still returns success. This causes prestera_router_init() to continue
-without error, going through line 1623, and call
-prestera_router_hw_fini(sw), which will cause dereferencing of freed memory
-'sw->router->nexthop_group_ht.tbl' at line 1560.
+On Tue, Sep 08, 2026 at 03:48:54PM -0700, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> xfrm: serialize state GC with device state flush
+> 
+> This adds a global mutex, xfrm_state_gc_mutex, taken by the state GC worker
+> around xfrm_state_gc_destroy() and by the deferred-device pass of
+> xfrm_dev_state_flush(), so the two paths no longer run xfrm_dev_state_free()
+> on the same state concurrently.  The KASAN slab-use-after-free reported in
+> xfrm_dev_state_free() from xfrm_dev_state_flush() is addressed by that
+> serialization.
+> 
+> > diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+> > index 36a4f6793edef..de097bba803b7 100644
+> > --- a/net/xfrm/xfrm_state.c
+> > +++ b/net/xfrm/xfrm_state.c
+> > @@ -226,6 +226,7 @@ static struct xfrm_state_afinfo __rcu *xfrm_state_afinfo[NPROTO];
+> >  
+> >  static DEFINE_SPINLOCK(xfrm_state_gc_lock);
+> >  static DEFINE_SPINLOCK(xfrm_state_dev_gc_lock);
+> > +static DEFINE_MUTEX(xfrm_state_gc_mutex);
+> >  
+> >  int __xfrm_state_delete(struct xfrm_state *x);
+> >  
+> > @@ -632,8 +633,10 @@ static void xfrm_state_gc_task(struct work_struct *work)
+> >  
+> >  	synchronize_rcu();
+> >  
+> > +	mutex_lock(&xfrm_state_gc_mutex);
+> >  	hlist_for_each_entry_safe(x, tmp, &gc_list, gclist)
+> >  		xfrm_state_gc_destroy(x);
+> > +	mutex_unlock(&xfrm_state_gc_mutex);
+> >  }
+> >  
+> >  static enum hrtimer_restart xfrm_timer_handler(struct hrtimer *me)
+> > @@ -1000,6 +1003,7 @@ int xfrm_dev_state_flush(struct net *net, struct net_device *dev, bool task_vali
+> >  out:
+> >  	spin_unlock_bh(&net->xfrm.xfrm_state_lock);
+> >  
+> > +	mutex_lock(&xfrm_state_gc_mutex);
+> >  	spin_lock_bh(&xfrm_state_dev_gc_lock);
+> >  restart_gc:
+> >  	hlist_for_each_entry_safe(x, tmp, &xfrm_state_dev_gc_list, dev_gclist) {
+> 
+> [Severity: High]
+> Is the new mutex enough to cover every xfrm_dev_state_free() caller?  There
+> is a third caller in the acquire path in xfrm_state_find() that takes
+> neither the new mutex nor RTNL:
+> 
+> net/xfrm/xfrm_state.c:xfrm_state_find() {
+> 	...
+> #ifdef CONFIG_XFRM_OFFLOAD
+> 		struct xfrm_dev_offload *xso = &x->xso;
+> 
+> 		if (xso->type == XFRM_DEV_OFFLOAD_PACKET) {
+> 			xfrm_dev_state_delete(x);
+> 			xfrm_dev_state_free(x);
+> 		}
+> #endif
+> 	...
+> }
+> 
+> That code runs inside the rcu_read_lock() taken earlier in
+> xfrm_state_find() (it uses xfrm_state_hold_rcu() on the found state), so it
+> cannot take a sleeping mutex even if one were added there.
 
-Fixes: 0a23ae237171 ("net: marvell: prestera: Add router nexthops ABI")
-Reported-by: Dan Carpenter <error27@gmail.com>
-Link: https://lore.kernel.org/kernel-janitors/aqT9h61WBcslE0gJ@stanley.mountain
-Signed-off-by: Elad Nachman <enachman@marvell.com>
----
- drivers/net/ethernet/marvell/prestera/prestera_router_hw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+That just pointed me to the xfrm_dev_state_free callback of the bonding driver,
+it uses a mutex. But this is a different issue.
 
-diff --git a/drivers/net/ethernet/marvell/prestera/prestera_router_hw.c b/drivers/net/ethernet/marvell/prestera/prestera_router_hw.c
-index ccf6cf98920f..4785fcb62735 100644
---- a/drivers/net/ethernet/marvell/prestera/prestera_router_hw.c
-+++ b/drivers/net/ethernet/marvell/prestera/prestera_router_hw.c
-@@ -93,7 +93,7 @@ int prestera_router_hw_init(struct prestera_switch *sw)
- err_nexthop_grp_ht_init:
- 	rhashtable_destroy(&sw->router->nh_neigh_ht);
- err_nh_neigh_ht_init:
--	return 0;
-+	return err;
- }
- 
- void prestera_router_hw_fini(struct prestera_switch *sw)
--- 
-2.25.1
+> 
+> xfrm_dev_state_delete() publishes x on the global, reference-less device GC
+> list while xso->dev is still set:
+> 
+> net/xfrm/xfrm_state.c:xfrm_dev_state_delete() {
+> 	if (dev) {
+> 		dev->xfrmdev_ops->xdo_dev_state_delete(dev, x);
+> 		spin_lock_bh(&xfrm_state_dev_gc_lock);
+> 		hlist_add_head(&x->dev_gclist, &xfrm_state_dev_gc_list);
+> 		spin_unlock_bh(&xfrm_state_dev_gc_lock);
+> 	}
+> }
+> 
+> so the deferred pass added here, which matches only on xso->dev == dev, can
+> pick up the same state and call xfrm_dev_state_free() on it in parallel:
+> 
+>   CPU 0 (xfrm_state_find(), packet offload, km_query() failed)
+>   xfrm_dev_state_delete(x)		/* x now on xfrm_state_dev_gc_list */
+>   xfrm_dev_state_free(x)
+>     dev = READ_ONCE(xso->dev)		/* non-NULL */
+> 
+>   CPU 1 (xfrm_dev_event() -> xfrm_dev_state_flush(), same dev)
+>   mutex_lock(&xfrm_state_gc_mutex)
+>   finds x, xso->dev == dev
+>   spin_unlock_bh(&xfrm_state_dev_gc_lock)
+>   xfrm_dev_state_free(x)
+>     dev = READ_ONCE(xso->dev)		/* also non-NULL */
+> 
+> Can both CPUs then run the driver callback and the device put twice?
+> 
+> net/xfrm/xfrm_state.c:xfrm_dev_state_free() {
+> 	if (dev && dev->xfrmdev_ops) {
+> 		spin_lock_bh(&xfrm_state_dev_gc_lock);
+> 		if (!hlist_unhashed(&x->dev_gclist))
+> 			hlist_del(&x->dev_gclist);
+> 		spin_unlock_bh(&xfrm_state_dev_gc_lock);
+> 
+> 		if (dev->xfrmdev_ops->xdo_dev_state_free)
+> 			dev->xfrmdev_ops->xdo_dev_state_free(dev, x);
+> 		WRITE_ONCE(xso->dev, NULL);
+> 		xso->type = XFRM_DEV_OFFLOAD_UNSPECIFIED;
+> 		netdev_put(dev, &xso->dev_tracker);
+> 	}
+> }
+> 
+> The hlist_unhashed() test only guards the list removal, not
+> xdo_dev_state_free() or netdev_put(), and dev is sampled before the
+> spinlock, so a double driver teardown and a net_device refcount underflow
+> look possible.
+> 
+> Also, since hlist_del() is used rather than hlist_del_init(), does the
+> second caller see the poisoned pprev as still hashed and call __hlist_del()
+> again, writing through LIST_POISON2?
+> 
+> This is the same failure mode the commit message describes:
+> 
+>   "Both paths can invoke the driver callback and drop the device reference."
+> 
+> Would addressing the root cause the commit message names -- "The device GC
+> list does not hold an xfrm_state reference" -- be a better fit, either by
+> taking an xfrm_state reference for the device GC list, or by making the
+> release in xfrm_dev_state_free() idempotent (test-and-clear of xso->dev plus
+> hlist_del_init() under xfrm_state_dev_gc_lock)?  That would also cover the
+> xfrm_state_find() caller, which cannot participate in a mutex-based scheme.
 
+This approach can indeed not solve the problem completely. I tend to
+revert this one in favor of a fix with the above approach. This is
+the destruction path, so a refcount would probably not harm too
+much.
+
+Chengfeng, can you have a look at this?
