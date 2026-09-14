@@ -1,326 +1,203 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568D0358369;
-	Mon, 14 Sep 2026 05:26:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E6237F73E
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 05:42:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789363600; cv=none; b=sMHGJ71HBlImGL94qXbX1i1cH/aPmLQ8JkZJY1Of09bjv0FY3lIu7mUi9Kp0p0kG00ruN1busIrx4YrQyR06esGiZ9yg8uO6U8jOK2XALYIBfpPCZ3s8+2qDI+o+pGkq6Ik/RtaVoBDc5csWp7xbGJZfj+wZGiBRxfpsek7HOEU=
+	t=1789364546; cv=none; b=GYz1VwzbHOXdy/Hy4i5LM4hShKF7+BJMEzOSizqQQOn49ZRJqFjX6NapbvDkAP+683ZJhWq+DQd8VzwvVKFhr1RdSFZw2USgb3nr9TO5Sh8fFdnidGXgZMrd/9E6PbUqm9ogs02AW/Q7cXcrViDO2+Gntkt8kwpA3W/U1ssQZKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789363600; c=relaxed/simple;
-	bh=ap5GeeQ6pIcbH7SaZSFKXsaOUZB5OzY5Y7N0dw3EnIc=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=eFLW3qQ3FL249tGC5J6vyPmDcgqjWU2t0EmXqViZL2zWT+IiFKxqDp8C3Jbt+B6krQ1D6/wdRj7O3Plp34kLzFXkz5AbcRwaFsigrpapw5ruwGUqWiuS30pDwAn+4AVlZuffCRAZ5N+4T/xFUU9LDMS97sZ2d5kUPRc1KQjHeic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j9+gaqeK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789364546; c=relaxed/simple;
+	bh=z0glGIuBNzWKc1iOxR6Z9tZnSi8z1/HHqKj6IpKEYaw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KHavldLF63E4eB2621YEWSlzIf9u0qP/couMELzn3YrMbVtaeB2ryNCRWt3jo56bHdY3cYmv+iiYLRLKiz8S08p5YEaJfzhN0J9ZZaHBOHqyrUa0bWYhLGqagastS23PtqmwAQjsB1BU1s5YhfqKpaoF7N+yunFeWIhP9/DHqYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=aCW9FG2z; arc=none smtp.client-ip=44.202.169.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j9+gaqeK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A2CC1F000FF;
-	Mon, 14 Sep 2026 05:26:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789363598;
-	bh=phukx6WsNWBEsgKo8B6xdi7L3MqgYMUEnITAIfa3Wb4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=j9+gaqeKY2cojwureojrXiBVqunb/Zt2ht88pimKhVhI840B4N0fe896Pb7injtEl
-	 X+7iSgQLMEoV89gatvAWnJS+bxRkX2WUUywRieI5sjjdfg99PNwR2m1J+nNvumCCnR
-	 HT+wov7+axAAJn90hZbzzw7nKHANY3ps5uq03QU03DByhxHFhE+U/HeqE3XmCQdjkD
-	 yrogp+iBMaWeoAvKW3XlzZ08peYnjnpcEm9wi0NCrWReltNKVKgWNV77y1krx8UW0F
-	 u6zs8rAPZe5Xc5IhrK8XxlKIw1xSM9Ik+ghoEP5XfySsyNJmiDxIdfkHdMhRMI7NNe
-	 KuBKE2z+AEIaA==
-Subject: Re: [PATCH net-next v3] selftests: drv-net: add BIG TCP test cases
-From: netdev-bot+sashiko@kernel.org
-To: narcisav.kernel@gmail.com
-Cc: netdev@vger.kernel.org, kuba@kernel.org, daniel.zahka@gmail.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, shuah@kernel.org, horms@kernel.org, willemb@google.com,
- petrm@nvidia.com, anubhavsinggh@google.com, richardbgobert@gmail.com,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 14 Sep 2026 05:26:37 +0000
-Message-ID: <178936359771.22033.17578992147371005884@kernel.org>
-In-Reply-To: <20260913052419.77910-1-narcisav.kernel@gmail.com>
-References: <20260913052419.77910-1-narcisav.kernel@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="aCW9FG2z"
+Received: from eig-obgw-6002b.ext.cloudfilter.net ([10.0.30.203])
+	by cmsmtp with ESMTPS
+	id 5qMuxFob6uFzg5zSMxW2tG; Mon, 14 Sep 2026 05:42:18 +0000
+Received: from gator4166.hostgator.com ([108.167.190.91])
+	by cmsmtp with ESMTPS
+	id 5zSLxc6m9gxfo5zSLxX6eD; Mon, 14 Sep 2026 05:42:17 +0000
+X-Authority-Analysis: v=2.4 cv=B7G50PtM c=1 sm=1 tr=0 ts=6aa78939
+ a=vY9Mjuda9oMEc2E4Cx1x2A==:117 a=vY9Mjuda9oMEc2E4Cx1x2A==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=7T7KSl7uo7wA:10 a=VwQbUJbxAAAA:8
+ a=pGLkceISAAAA:8 a=VSUqd2-QvgQJ3Wj9IooA:9 a=QEXdDO2ut3YA:10
+ a=2aFnImwKRvkU0tJ3nQRT:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:
+	List-Archive; bh=trdCXU9qDUDUsWDOAU5LiSOzE7DFuDct3tTNYESdXB4=; b=aCW9FG2z4NvY
+	R+nSOTVpW0hgplIMbpZNslfcnaB1wjw53rmzTolwUsIKsFpZRXcw84YTAmrVfVxkqdEiMs57LTLLo
+	zIVc4oC/pZV7HUQpElXIoYmxLZywaoUN/0uarr6jFxcOftl/Nr35cvxsYPG11iXeMjWXZF3l6oMi6
+	rjq5UUysXqCYjcF6lgz3d2EnpV0Nl4mUfQLY466Gn9tqYe8v+EALk9qYPR2bxecAo9s9vl5fWDwhP
+	v98C3DhiEoNLu8oVJsHb0p2ZXCqdWE/pedfP/wBXS/OxZJL2BnhAzquY+ww/OMc40BdecTfAbc5Nq
+	XiJp7BQiPwYQX781mJQp7Q==;
+Received: from flh4-125-195-69-90.tky.mesh.ad.jp ([125.195.69.90]:57896 helo=[10.203.100.11])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.100)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1x5zSJ-00000003koE-3C5B;
+	Mon, 14 Sep 2026 00:42:15 -0500
+Message-ID: <fc4e5815-56da-40df-b3f5-dbf6e0470b1b@embeddedor.com>
+Date: Mon, 14 Sep 2026 14:42:06 +0900
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] net: ip_tunnel: initialize `options_len` before
+ referencing options
+To: Gris Ge <cnfourt@gmail.com>, David Ahern <dsahern@kernel.org>,
+ Ido Schimmel <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: stable@vger.kernel.org, Simon Horman <horms@kernel.org>,
+ Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Cosmin Ratiu <cratiu@nvidia.com>, Gal Pressman <gal@nvidia.com>,
+ Tariq Toukan <tariqt@nvidia.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+References: <20260913090851.468216-1-cnfourt@gmail.com>
+Content-Language: en-US
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <20260913090851.468216-1-cnfourt@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 125.195.69.90
+X-Source-L: No
+X-Exim-ID: 1x5zSJ-00000003koE-3C5B
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: flh4-125-195-69-90.tky.mesh.ad.jp ([10.203.100.11]) [125.195.69.90]:57896
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 3
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfPcfqw2kPo6yZytbqQ6wZmZd1VCu4ZDEb43qk1Lk1SzsG3hyazOdlXgHiS5NLJpHmm543dQdZonTS013svKMCApTsUNBEiKihEnH8EfTQlbhJbJmgZdy
+ FLnjvsEo+Q2iH3XlcNQhs8kHTV6WVc6f2oppWyZ3kcSwQMnW3Yok4O2SYp9IAgQzXK1x9PRxEX7UKXndynU8jviQdvfjx4aSm4c=
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 1 (1) · Low: 1
 
-- [Medium] The four new `big_tcp_*` variants are yielded by
-  `_gro_variants()` in tools/testing/selftests/drivers/net/gro_lib.py…
-- [Low] The patch changes the failure-tolerance policy in `run_test()`
-  from `test_name.startswith("large_")` to…
+On 9/13/26 18:08, Gris Ge wrote:
+> The following command triggers a kernel panic:
+> 
+>    ip link add d0 type dummy; ip link set d0 up
+>    ip route add 10.30.0.0/16 \
+>      encap ip id 300 geneve_opts 4660:66:11223344 dev d0
+> 
+>    memcpy: detected buffer overflow: 4 byte write of buffer size 0
+>    kernel BUG at lib/string_helpers.c:1044!
+>    ...
+>    ip_tun_parse_opts.part.0.cold+0x10/0x10
+>    ip_tun_build_state+0x116/0x2a0
+> 
+> On kernels built with GCC 15+ and `CONFIG_FORTIFY_SOURCE`, the fortified
+> `memcpy()` got 0 sized destination with request of 4 bytes length:
+> 
+>    static int ip_tun_parse_opts_geneve(...)
+>    {
+>        ...
+>        attr = tb[LWTUNNEL_IP_OPT_GENEVE_DATA];
+>        data_len = nla_len(attr); /* == 4 */
+> 
+>        struct geneve_opt *opt = ip_tunnel_info_opts(info) + opts_len;
+>        memcpy(opt->opt_data, nla_data(attr), data_len);
+>        /*     ^^^^^^^^^^^^^ 0 since options_len is assigned afterwards */
+> 
+> Fixed by initializing the counter before the options are referenced.
+> Matching what `tunnel_key_opts_set()` already does.
+> 
+> Fixes: bb5e62f2d547 ("net: Add options as a flexible array to struct ip_tunnel_info")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gris Ge <cnfourt@gmail.com>
 
-Pre-existing issues:
-- [Medium] `check_recv_pkts()` (tools/testing/selftests/net/lib/gro.c)
-  reads `correct_payload[num_pkt]` once per received non-FIN frame with…
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 
---
+Thanks
+-Gustavo
 
-selftests: drv-net: add BIG TCP test cases
-
-This adds four new GRO selftest cases (big_tcp_data_same,
-big_tcp_data_lrg_sml, big_tcp_tcp_seq, big_tcp_large_max) that exercise
-coalescing past the legacy IP_MAXPACKET limit by raising the device
-gro_max_size/gro_ipv4_max_size to 128000.  It also doubles
-gro_flush_timeout for those cases and extends the KSFT_MACHINE_SLOW
-failure tolerance to them.
-
-A few questions below.
-
-> diff --git a/tools/testing/selftests/drivers/net/gro_lib.py b/tools/testing/selftests/drivers/net/gro_lib.py
-> index b7ac0660adc01..abecf60baa537 100644
-> --- a/tools/testing/selftests/drivers/net/gro_lib.py
-> +++ b/tools/testing/selftests/drivers/net/gro_lib.py
-
-[ ... ]
-
-> @@ -91,6 +97,34 @@ def _set_mtu_restore(dev, mtu, host):
->          defer(ip, f"link set dev {dev['ifname']} mtu {dev['mtu']}", host=host)
->  
->  
-> +def _set_gro_size_restore(cfg, size):
-> +    """
-> +    Set the local device's GRO size limits, then confirm they stuck.
-> +    """
+> ---
+> v2:
+>    - pass opt_len into ip_tun_set_opts() and initialize options_len there,
+>      matching tunnel_key_opts_set(), as suggested by Eric Dumazet.
+> v1: https://lore.kernel.org/netdev/20260912055304.1415016-1-cnfourt@gmail.com/
+> 
+>   net/ipv4/ip_tunnel_core.c | 16 +++++++++++-----
+>   1 file changed, 11 insertions(+), 5 deletions(-)
+> 
+> diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
+> index 5168d546ea2f..bab42b9e277f 100644
+> --- a/net/ipv4/ip_tunnel_core.c
+> +++ b/net/ipv4/ip_tunnel_core.c
+> @@ -680,8 +680,14 @@ static int ip_tun_get_optlen(struct nlattr *attr,
+>   }
+> 
+>   static int ip_tun_set_opts(struct nlattr *attr, struct ip_tunnel_info *info,
+> -			   struct netlink_ext_ack *extack)
+> +			   int opts_len, struct netlink_ext_ack *extack)
+>   {
+> +	/* `options_len` is the __counted_by() annotation of the `options`
+> +	 * flexible array, it must be initialized before parsing writes
+> +	 * into it.
+> +	 */
+> +	info->options_len = opts_len;
 > +
-> +    _set_mtu_restore(cfg.dev, 4096, None)
-> +    _set_mtu_restore(cfg.remote_dev, 4096, cfg.remote)
-> +
-> +    if "gro_max_size" not in cfg.dev or "gro_ipv4_max_size" not in cfg.dev:
-> +        raise KsftSkipEx("iproute2 does not report the GRO size limits")
-> +
-> +    if (cfg.dev["gro_max_size"] == size and
-> +            cfg.dev["gro_ipv4_max_size"] == size):
-> +        return
-> +
-> +    old = (f"gro_max_size {cfg.dev['gro_max_size']} "
-> +           f"gro_ipv4_max_size {cfg.dev['gro_ipv4_max_size']}")
-> +    new = f"gro_max_size {size} gro_ipv4_max_size {size}"
-> +
-> +    ip(f"link set dev {cfg.ifname} {new}")
-> +    defer(ip, f"link set dev {cfg.ifname} {old}")
+>   	return ip_tun_parse_opts(attr, info, extack);
+>   }
+> 
+> @@ -712,7 +718,8 @@ static int ip_tun_build_state(struct net *net, struct nlattr *attr,
+> 
+>   	tun_info = lwt_tun_info(new_state);
+> 
+> -	err = ip_tun_set_opts(tb[LWTUNNEL_IP_OPTS], tun_info, extack);
+> +	err = ip_tun_set_opts(tb[LWTUNNEL_IP_OPTS], tun_info, opt_len,
+> +			      extack);
+>   	if (err < 0) {
+>   		lwtstate_free(new_state);
+>   		return err;
+> @@ -753,7 +760,6 @@ static int ip_tun_build_state(struct net *net, struct nlattr *attr,
+>   	}
+> 
+>   	tun_info->mode = IP_TUNNEL_INFO_TX;
+> -	tun_info->options_len = opt_len;
+> 
+>   	*ts = new_state;
+> 
+> @@ -1006,7 +1012,8 @@ static int ip6_tun_build_state(struct net *net, struct nlattr *attr,
+> 
+>   	tun_info = lwt_tun_info(new_state);
+> 
+> -	err = ip_tun_set_opts(tb[LWTUNNEL_IP6_OPTS], tun_info, extack);
+> +	err = ip_tun_set_opts(tb[LWTUNNEL_IP6_OPTS], tun_info, opt_len,
+> +			      extack);
+>   	if (err < 0) {
+>   		lwtstate_free(new_state);
+>   		return err;
+> @@ -1040,7 +1047,6 @@ static int ip6_tun_build_state(struct net *net, struct nlattr *attr,
+>   	}
+> 
+>   	tun_info->mode = IP_TUNNEL_INFO_TX | IP_TUNNEL_INFO_IPV6;
+> -	tun_info->options_len = opt_len;
+> 
+>   	*ts = new_state;
+> 
+> --
+> 2.55.0
+> 
 
-[ ... ]
-
-> @@ -239,7 +273,11 @@ def _setup(cfg, mode, test_name):
->          flush_path = f"/sys/class/net/{cfg.ifname}/gro_flush_timeout"
->          irq_path = f"/sys/class/net/{cfg.ifname}/napi_defer_hard_irqs"
->  
-> -        ctl_file_write(flush_path, "200000")
-> +        # "big_tcp_*" tests need a longer timeout, use 2x the regular timeout
-> +        if test_name.startswith("big_tcp_"):
-> +            ctl_file_write(flush_path, "400000")
-> +        else:
-> +            ctl_file_write(flush_path, "200000")
->          ctl_file_write(irq_path, "10")
-
-[ ... ]
-
-> @@ -322,6 +368,10 @@ def _gro_variants():
->          for test_name in common_tests:
->              yield protocol, test_name
->  
-> +        if protocol in ["ipv4", "ipv6"]:
-> +            for test_name in big_tcp_tests:
-> +                yield protocol, test_name
-> +
-
-[Severity: Medium]
-Should the new variants be restricted to the software GRO mode here?
-
-_gro_variants() has no notion of the coalescing mode, so the four
-big_tcp_* cases are also instantiated by gro_hw.py (gro_main(__file__,
-"hw")) and gro_lro.py (gro_main(__file__, "lro")).
-
-The expectations for those cases come only from the netdev software GRO
-tunable.  _set_gro_size_restore() writes gro_max_size /
-gro_ipv4_max_size, and the only consumer of that value in the stack is
-skb_gro_receive() in net/core/gro.c:
-
-	if (unlikely(p->len + len >= netif_get_gro_max_size(p->dev, p) ||
-		     NAPI_GRO_CB(skb)->flush))
-		return -E2BIG;
-
-git grep gro_max_size drivers/net/ returns nothing, and
-netif_set_gro_max_size() / netif_set_gro_ipv4_max_size() in net/core/dev.h
-only WRITE_ONCE the netdev fields without notifying the driver.
-
-So with rx-gro-hw or LRO enabled the hardware coalescer keeps to its own
-(commonly 64 KB) limit and cannot produce the >65535 byte aggregate that
-big_tcp_data_same and friends expect, and big_tcp_large_max cannot stop
-at big_tcp_large_cnt() * calc_mss().  In that case check_recv_pkts()
-fails with "incorrect number of packets" or "incorrect packet geometry".
-
-Note also that the compensating gro_flush_timeout bump added above only
-happens inside the "if mode == \"sw\":" branch of _setup(), which suggests
-these cases were designed for software GRO only.
-
->          if protocol in ["ipv4", "ipip"]:
->              for test_name in ipv4_tests:
->                  yield protocol, test_name
-> @@ -358,7 +408,8 @@ def run_test(cfg, mode, protocol, test_name):
->          if rx_proc.ret == 42:
->              raise KsftFailEx(f"GRO over-coalesced in {protocol}/{test_name}")
->  
-> -        if test_name.startswith("large_") and os.environ.get("KSFT_MACHINE_SLOW"):
-> +        if (test_name.startswith(("large_", "big_tcp_")) and
-> +                os.environ.get("KSFT_MACHINE_SLOW")):
->              ksft_pr(f"Ignoring {protocol}/{test_name} failure due to slow environment")
->              return
-
-[Severity: Low]
-Could the commit message mention this policy change too?
-
-The changelog only says:
-
-  "Use a gro_flush_timeout value 2x higher for the BIG TCP test cases
-   to prevent under-coalescing."
-
-but run_test() now also returns success for any non-over-coalescing
-failure of the four new cases whenever KSFT_MACHINE_SLOW is set.  That is
-described only in the v3 notes below the "---" marker, which are dropped
-when the patch is applied, so git history would not record that the new
-cases are advisory on slow machines.
-
-> diff --git a/tools/testing/selftests/net/lib/gro.c b/tools/testing/selftests/net/lib/gro.c
-> index 7a333155de1ab..70b0deb3c11fa 100644
-> --- a/tools/testing/selftests/net/lib/gro.c
-> +++ b/tools/testing/selftests/net/lib/gro.c
-
-[ ... ]
-
-> @@ -166,6 +182,27 @@ static int num_large_pkt(void)
->  	return max_payload() / calc_mss();
->  }
->  
-> +/* How many maximum sized segments fit under the configured limit. */
-> +static int big_tcp_large_cnt(void)
-> +{
-> +	return (BIG_TCP_GRO_MAX_SIZE - 1 - (total_hdr_len - ETH_HLEN)) /
-> +	       calc_mss();
-> +}
-> +
-> +/* How many calc_mss() sized segments are needed to satisfy the
-> + * following condition:
-> + * pkt_count * calc_mss() < IP_MAXPACKET < (pkt_count + 1) * calc_mss()
-> + */
-> +static int big_tcp_fill_cnt(void)
-> +{
-> +	return IP_MAXPACKET / calc_mss();
-> +}
-
-[ ... ]
-
-> @@ -1161,7 +1253,7 @@ static void recv_error(int fd, int rcv_errno)
->  static void check_recv_pkts(int fd, int *correct_payload,
->  			    int correct_num_pkts)
->  {
-> -	static char buffer[IP_MAXPACKET + L2_HLEN_MAX + 1];
-> +	static char buffer[BIG_TCP_RECV_BUF_LEN];
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but do the new cases make it
-easy to read past the end of correct_payload[]?
-
-check_recv_pkts() indexes the expectation array once per received
-non-FIN frame with no bound on num_pkt:
-
-tools/testing/selftests/net/lib/gro.c:check_recv_pkts() {
-	while (1) {
-		...
-		vlog("%d ", data_len);
-		if (data_len != correct_payload[num_pkt]) {
-			vlog("[!=%d]", correct_payload[num_pkt]);
-			bad_packet = true;
-		}
-		bytes_received += data_len;
-		num_pkt++;
-	}
-}
-
-while gro_receiver() supplies:
-
-	static int correct_payload[NUM_PACKETS];
-
-with NUM_PACKETS defined as 4.
-
-For IPv4 at the MTU 4096 that _set_gro_size_restore() configures,
-calc_mss() is 4056 and big_tcp_fill_cnt() is 16, so big_tcp_data_same,
-big_tcp_data_lrg_sml and big_tcp_tcp_seq put 17 data segments on the wire
-while passing correct_num_pkts of 1 or 2, and big_tcp_large_max sends
-big_tcp_large_cnt() + 1 = 32 segments while passing 2.
-
-Whenever GRO under-coalesces - which the 6 retries, the doubled
-gro_flush_timeout and the KSFT_MACHINE_SLOW tolerance in gro_lib.py all
-anticipate, and which is unavoidable in the hw/lro modes where
-gro_max_size has no effect - the loop runs 17 or 32 times and reads
-correct_payload[4] through correct_payload[31].
-
-Would it make sense to bound the loop with something like
-
-	if (num_pkt >= correct_num_pkts)
-		break;
-
-or to size correct_payload[] for the worst case (BIG_TCP_MAX_FILL_CNT + 1)?
-
->  	int nhoff = ETH_HLEN + (pppoe ? PPPOE_SES_HLEN : 0);
->  	struct iphdr *iph = (struct iphdr *)(buffer + nhoff);
->  	struct ipv6hdr *ip6h = (struct ipv6hdr *)(buffer + nhoff);
-
-[ ... ]
-
-> @@ -1541,6 +1633,25 @@ static void gro_sender(void)
->  		send_large(txfd, &daddr, remainder + 1);
->  		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
->  
-> +	/* big tcp sub-tests */
-> +	} else if (strcmp(testname, "big_tcp_data_same") == 0) {
-> +		send_big_tcp(txfd, &daddr, calc_mss(), big_tcp_fill_cnt(),
-> +			     calc_mss());
-> +		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
-
-[ ... ]
-
-> +	} else if (strcmp(testname, "big_tcp_large_max") == 0) {
-> +		send_big_tcp(txfd, &daddr, calc_mss(), big_tcp_large_cnt(),
-> +			     calc_mss());
-> +		write_packet(txfd, fin_pkt, total_hdr_len, &daddr);
-> +
-
-[ ... ]
-
-> @@ -1768,6 +1879,26 @@ static void gro_receiver(void)
->  		printf("last segment sent individually: ");
->  		check_recv_pkts(rxfd, correct_payload, 3);
->  
-> +	/* big tcp sub-tests */
-> +	} else if (strcmp(testname, "big_tcp_data_same") == 0) {
-> +		correct_payload[0] = big_tcp_fill_len() + calc_mss();
-> +		printf("data packets of same size past IP_MAXPACKET: ");
-> +		check_recv_pkts(rxfd, correct_payload, 1);
-> +	} else if (strcmp(testname, "big_tcp_data_lrg_sml") == 0) {
-> +		correct_payload[0] = big_tcp_fill_len() + calc_mss() / 2;
-> +		printf("smaller last packet past IP_MAXPACKET: ");
-> +		check_recv_pkts(rxfd, correct_payload, 1);
-> +	} else if (strcmp(testname, "big_tcp_tcp_seq") == 0) {
-> +		correct_payload[0] = (big_tcp_fill_cnt() + 1) * calc_mss();
-> +		correct_payload[1] = calc_mss();
-> +		printf("aliased seq past IP_MAXPACKET doesn't coalesce: ");
-> +		check_recv_pkts(rxfd, correct_payload, 2);
-> +	} else if (strcmp(testname, "big_tcp_large_max") == 0) {
-> +		correct_payload[0] = big_tcp_large_cnt() * calc_mss();
-> +		correct_payload[1] = calc_mss();
-> +		printf("shouldn't coalesce past gro_max_size: ");
-> +		check_recv_pkts(rxfd, correct_payload, 2);
-> +
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260913052419.77910-1-narcisav.kernel%40gmail.com
