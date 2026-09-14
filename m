@@ -1,153 +1,191 @@
-Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.164])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C069842F70D
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 23:05:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789427160; cv=none; b=KjO5iGowhNLG0eQLKvzGWE3K5lc1sVY3ez6b8/IBeqMUIWqSPRdOJCamKun6N27F6m1rIoHq1D4MgGkO1paxSS8mO/Xred5dh+WTUNNYdJVzP0SKctwfY6e4aSbAyFwDcvKjHz49Dof28UR+2BACe4Lx59c10bi44kXumeKOP1k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789427160; c=relaxed/simple;
-	bh=l/yDWv7wY0mDpsM/Wa7OyOraYCMVN9hfaEseIjJ+Jj8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=th2BMYcJe3bl0JQxZC19zmsyvd0g6+6oH3MaR0bKwHab3BEEzeAk/2W+sIqsyyLz0RMNq4PuD/1PKrAc6UPZuaqBRO0QqPX8RVYRC1Wq8jlYaND7jS9Sw0eVmsqgvOC7l3XQdmCtKABZlS2sYKHFavDSlKp8JLk5YLuKjRe78Zc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=Niyz/7cQ; arc=none smtp.client-ip=171.64.64.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3B83A9639;
+	Mon, 14 Sep 2026 23:05:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.154.164
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789427161; cv=fail; b=l8/j38FrqtJHdCPBrQhE+bnJLe1IYGBmAA9O6Y+poVBnoTOOebmsruIaVxM3dDFiXqNCpXKfQ9MtVWGxFHKNV7OfMcdQuQtpl/RLiEr9hCfFmisgvDmh+8NTBTzpmDSWBoP5Ktc3KS4kE9giAvrsBH6GZkPkWFcF497DJcwX+OQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789427161; c=relaxed/simple;
+	bh=IbIAevLmgpwgQlvCljyaZOhUiBVwVFl0TILNweDCxbE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=htwZeg/0bUYncGK32zm+WNlxDBf4QoUJiRyinY9pbV+iuNDc012PIKOMyRU1PnCN+AL+0K9gOKx3z5r06xSljrbm1Cy2+5TFkg8+fy2LIog8bRy8NAh1aSERzpGFSZYz36pTW2ufHeEXAyWsR2TC937oco5vkP6tJ5FicTjxmjo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sitime.com; spf=pass smtp.mailfrom=sitime.com; dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.b=liXpwO7B; dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.b=zjz4OhUd; arc=fail smtp.client-ip=67.231.154.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sitime.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sitime.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="Niyz/7cQ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=4w6RQ5eFE0PM60EbSYzSzDxcHf4q5Io32QmXXY8NWBc=; t=1789427158; x=1790291158; 
-	b=Niyz/7cQnBcOgFe0sjj+5VsZpGyRqlcb4+Tj+BjWV/VxcdRp172/vo1j09LEsAluB9wPhcF9OhS
-	uX1nMCEe1Llb1kCbaw13PimD66wIz5n2Mtyib00KwQbxMvNwu2Lc1CdsizYnRpo1RqLBL0R7emL6H
-	oj3lkcg1lkCoJUJAnPT2ZbsaYQ1flhOsqInAiCYTiHADmsr7HkPGLZPb7koOQh7ctrHKAfSbFUSiO
-	ReTufaf2XuYJv+0ANxDiqk9aYQNxDUIPhK4w+7U+Y5mi6WVbNqB2H5u3+4VfmJWqWj82n1pHn6M67
-	ZLOSHMGyOMaOVg+dZabsunTq3L9dxN1JlwCw==;
-Received: from ouster448.stanford.edu ([172.24.72.71]:60752 helo=cs.stanford.edu)
-	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ouster@cs.stanford.edu>)
-	id 1x6FkL-0007WN-8b; Mon, 14 Sep 2026 16:05:58 -0700
-From: John Ousterhout <ouster@cs.stanford.edu>
-To: netdev@vger.kernel.org
-Cc: pabeni@redhat.com,
-	edumazet@google.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	skhan@linuxfoundation.org,
-	bagasdotme@gmail.com,
-	linux-doc@vger.kernel.org,
-	corbet@lwn.net,
-	John Ousterhout <ouster@cs.stanford.edu>
-Subject: [PATCH net-next v11 15/15] net: homa: create Makefile and Kconfig
-Date: Mon, 14 Sep 2026 16:05:15 -0700
-Message-ID: <20260914230517.1190-16-ouster@cs.stanford.edu>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260914230517.1190-1-ouster@cs.stanford.edu>
-References: <20260914230517.1190-1-ouster@cs.stanford.edu>
+	dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.b="liXpwO7B";
+	dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.b="zjz4OhUd"
+Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
+	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 031851C6257;
+	Mon, 14 Sep 2026 23:00:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sitime.com;
+ h=cc:cc:content-transfer-encoding:content-transfer-encoding:content-type:content-type:date:date:from:from:in-reply-to:in-reply-to:message-id:message-id:mime-version:mime-version:references:references:subject:subject:to:to;
+ s=mail; bh=nWGPdbyJr76o7WFn3S+RW2abYlTblrtiAOFT7X9Cx4w=;
+ b=liXpwO7BBOecMLxDp8S4IUTcy4IT6sqbn0FoYFnT3OnWhUIjUtPXtoMvJ0/iscv2vX6qz3Qoy7tefSTSOKQzvNv/snZdD0R0KJfgHBNFjSJ1zV1Qxu8ZJwLlUUJjKrHp10YJ68x2Ad2RcVymGmk0PefiWpt1vokH4KY0TiEuvaaa0QOetcVcbjA9nqo4HvY8kil3C1ocBgdpWDVSB2cO7VIZl7lANgOIcie5yk+Si4j1G03lviYtAph7W3ehs0vJlva71bGqITV0HXVpwC9uuw7lAcayXVXZvLMXth57caMfW6Y8Rb9+WNFGIjd9pfmkve3NC+yn1eIHEyauqlTiBw==
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11021086.outbound.protection.outlook.com [52.101.52.86])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id C1631940095;
+	Mon, 14 Sep 2026 23:00:40 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RQoFflPTB2odh5jTJZdmpkPLZquhmZha0ISRR2uKjEWUqcj3aspQ2wArBGPj4kahYceJ7KZL62bJwdBfHmjgMVnlWygrzEE4N04JxRWUsoCPKp0XrgfIP+xPu8dIF25svY3HvSDCwPVDn6wCVYQgM3OVEGmDi/pa952utUaCb5/Wdp6Vo2wbFHt1EjiGQrU8P1QoGl1wGIxPS5dAD+fJu2kaY1m1PJ/1RD/t4CiYAat9Fmm5fRaZO0EpAQGkbgrwUjLKwM/yBdIvcZQ0UHidmyVo6N/KfCwcX2iOJ5NVnoCabjDYFBMKnX21iyzRHU4pU04sWHBW8DWSog6yUD+/Uw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nWGPdbyJr76o7WFn3S+RW2abYlTblrtiAOFT7X9Cx4w=;
+ b=JnKMZjQRYTJpFwHMqhS0eSv/pj6F0CYu4nsweUgCXWuBNMnyZDaHjYKlZX/TynYrDsZF4jen1ErhDWfbzyr79Ktnf44yu4oFYSbCTNyztZD5JWBPzYmacLcCxyeg/0xflTm9k59Rv5X5m3HX9LHm36ESJ07UAsj1Fgsjs4W/Y+Utxb73Gcj0/VkjUfMCmwgm7ABKRxoGD1+O58+5r7/KrAaLndVILkYABJFbHOfSVOlu5uv+ZQIzr5EVXtJ8iYRN6StJnIqJMPcPDEu7ArxdDfdFimhKHpk97/FJACMrxGjg5iu9dT3KJvUg2dmmMiYwMHK56h4YrJ04qIs+frUlew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=sitime.com; dmarc=pass action=none header.from=sitime.com;
+ dkim=pass header.d=sitime.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=Sitime.onmicrosoft.com; s=selector1-Sitime-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nWGPdbyJr76o7WFn3S+RW2abYlTblrtiAOFT7X9Cx4w=;
+ b=zjz4OhUdtoO5YK0RiZ6S6aeLSUszjc7e6TwPbLEMqYGAC+UGLvGyM0axvC6Gj1gjf06yElAGd4sJv6DTDqyEalCPJdHvmNKTIC4agvKicxTKyDmqmSfztRVw8LxzV8O6WGOHIWujIzP6cJ+IK1qIkr/GwLCKq1SmhAj1jefiksW30kLY+vsGQRvkKVV1r7XigZRPcxf7OMIVCVrYExRYkomYqpEubetBu3KIfhnuw76T4JqALMDDz8a7lOJHkcVZ1yR/kd/L9NlC9hLN88Qk6inE6wqN1w06VpoZ6ddpD/cj6WbUlxPL2KZPCvhjY0DNCNgs+jJjpE/+3tFHdwyBeg==
+Received: from LVWPR20MB994915.namprd20.prod.outlook.com
+ (2603:10b6:408:3bf::16) by MW6PR20MB6839.namprd20.prod.outlook.com
+ (2603:10b6:303:23e::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.11; Mon, 14 Sep
+ 2026 23:00:35 +0000
+Received: from LVWPR20MB994915.namprd20.prod.outlook.com
+ ([fe80::9551:3864:128b:8c01]) by LVWPR20MB994915.namprd20.prod.outlook.com
+ ([fe80::9551:3864:128b:8c01%4]) with mapi id 15.21.0406.007; Mon, 14 Sep 2026
+ 23:00:34 +0000
+From: Ali Rouhi <arouhi@sitime.com>
+To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC: Ali Rouhi <arouhi@sitime.com>, "jiri@resnulli.us" <jiri@resnulli.us>,
+	"vadim.fedorenko@linux.dev" <vadim.fedorenko@linux.dev>,
+	"arkadiusz.kubalewski@intel.com" <arkadiusz.kubalewski@intel.com>,
+	"ivecera@redhat.com" <ivecera@redhat.com>, "robh@kernel.org"
+	<robh@kernel.org>, "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+	"conor+dt@kernel.org" <conor+dt@kernel.org>, "cjubran@nvidia.com"
+	<cjubran@nvidia.com>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"Oleg.Zadorozhnyi@devoxsoftware.com" <Oleg.Zadorozhnyi@devoxsoftware.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next v8 02/15] dt-bindings: dpll: add SiTime SiT95316
+ clock generator
+Thread-Topic: [PATCH net-next v8 02/15] dt-bindings: dpll: add SiTime SiT95316
+ clock generator
+Thread-Index: AQHdOyOuGzNhwr/bM0uX+E4HTMfYqbbEqX6AgAoZ3AA=
+Date: Mon, 14 Sep 2026 23:00:34 +0000
+Message-ID: <20260914230034.63861-1-arouhi@sitime.com>
+References: <178887151142.219967.9831378889406001382@kernel.org>
+In-Reply-To: <178887151142.219967.9831378889406001382@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=sitime.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: LVWPR20MB994915:EE_|MW6PR20MB6839:EE_
+x-ms-office365-filtering-correlation-id: 48e2a41e-c15c-4062-3ca0-08df12b3fc32
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|38070700021|10067099003|56012099006|3023799007|18002099003|22082099003;
+x-microsoft-antispam-message-info:
+ kXOndVIYIRHEtFG1n1XatM3ppF28Xq6xmGNWgyl3g2UBRBlQT6PciTSIS+CPjIlLm7DR0J46KhD/iOUALT+33kNRiWW3xWkYL9K0MXGhUz7+4E8nox+n+LonCMTZair/BX4c0H+FOW1YcS0tLKruqNCs6cTdjngSnabuh+fZBLbCMLpmz7Qv89UEmD8zP+skSgyBYNvF1wXzkx1EQBHgzYOyS0lxqnkcT/9nEOt2s4ou4Rb3WZ/X4WXDkMXs0SLWe7S90vn/nsuN/w6wL8zcgVPj4FrKGgXJQuPwTD1bd2hASQajIvo6TRqNzfoeOA/WpARC3voXzxyrEglAtXOpx3gh82C2kqV8UZzGQtE2ZZUG4fBe8Zht75E0h6UTYO/3v85cjOytNvlX0vZAaZtNI04TDPfZWBON3Umo3cP6v2g6ZqnrDoqvuEITMvtCf8SUvQaCh3Mkqfu0Am4cpu14LNKMQHWdjkKtJFjn1jkrn3gpbBL9twLrGpF34B/OLoi4K/StOxzKVf2Fi76CvDh6REBtruiSACMzZb6L/xPrhR+0voJ+vj3naXqfQSNp7f/D/4PLWKn8SlVUKGDKu/ZUc2ubkSficMPiX3IejAFn6bQEszo4KTDiNNgKB0XI/QnXxtfI9DniBBIxZ7L0n8Q6Ivynf2i8Ym0t9A+c0cWz/g1PtHdS+ytkJ+JlyTHxbN70fPuRXoWTwNmkA2SCeMII+e5r/kvC/j/STc3BkXlIZpI=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LVWPR20MB994915.namprd20.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(38070700021)(10067099003)(56012099006)(3023799007)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?m5E0UH1H+vGCzcxamw+ADD4yhVQL5Ubh+dEhha6ExvFFRnXnLCJHrAXGwA?=
+ =?iso-8859-1?Q?ElMJn2qihEiIQIOllrdSA2b6mtqkU54HfcWfxaXRm9YtIH0hKOqBiUGx8G?=
+ =?iso-8859-1?Q?K+kwxKZ86Hee4vf3KiPdEBwYdTTDvaNnxxE254Jn9J9/+yj9kTAUhIbuDw?=
+ =?iso-8859-1?Q?yjGko5YL1oaaCi2RQsRvmY/d72UKocG9Cx0tkqYS/MR1eb3M9GQC5tPWcS?=
+ =?iso-8859-1?Q?MMoHYkjUJYB4zNY8+oVlBc56K/CP0Z7AoUpqF/LE2anH0ihCVuFinHG+cK?=
+ =?iso-8859-1?Q?/ErC0YAFwrgxixpJlk3zLyA8Z5EAaiimbln54CJP3hNx8hb5TKdGrtMqsw?=
+ =?iso-8859-1?Q?ZzTnRgNE2PYLKMYNHzFg4/lKd2BFcG1CoGe4cOrkVR37BA++Cs+QfNIU62?=
+ =?iso-8859-1?Q?SZ6ygU8AMY0Fh8JKazN5Q3588oR8AVDTax7JaBDnxF/qNShvJlVFIQU1vr?=
+ =?iso-8859-1?Q?gHLKf59iye0m3xJSiddFabCQULnGLzRuaZYZbKamKVJn5M2DVLkttM6Ckt?=
+ =?iso-8859-1?Q?U8RBvFx5nRMgRiHMeq5z9sm+Rffurq3hl/XSMXsxROoUe1n7UYpCNNihtF?=
+ =?iso-8859-1?Q?fzE0v0PN7l2ZfQtHJRngf5s2hUbDbOrqmwHy5+Ru4dSKQdFpB9Tfd4FJds?=
+ =?iso-8859-1?Q?dEPCedOJWcHJxFfvBvM3QVQO1bxvStnggxXQ9vahidCr4mP8t8TY8D6X96?=
+ =?iso-8859-1?Q?KoNR7/CkLNx1woppitlXz+vWjti5SI1Ci/1Div+XqQgQZl4YUX8+DEuqBc?=
+ =?iso-8859-1?Q?xOw4gaFpNg1wM8tl6azm8Wr4dwMwW6+lQ1dwhRkvlSuWSczfGKihbMVW3r?=
+ =?iso-8859-1?Q?Q4j063ycO7Nudig5kx+ej7EpooDcmw40OtcQSpcGX29GnG14PgQmcW061H?=
+ =?iso-8859-1?Q?JTSnN5wO9phEFkmh/XRBgbOnitsiuSixqYyu4jQkQfmQiyysUi/lBK47Rj?=
+ =?iso-8859-1?Q?fnsrQRluEyzfbQOY7RMWXuzwrc8csfKS3pJNL2QizsLwgKBz8VAQls7hrx?=
+ =?iso-8859-1?Q?yVAUzQgKG3zpxmuK6TXA2GAmBNbsl1zvfyK4tQSZyO/1FAOJ2yoTKFVYWa?=
+ =?iso-8859-1?Q?OzclahMG2GzvSsPK05VRHL1aiapfyG3d9eDF7NtQZVOwhX/8bYPJckLDg6?=
+ =?iso-8859-1?Q?u/Qi1pJMSYRxcaSmu3YVongpR07JTr7cd1EjarFaNRWQKUENKaqnHE88gg?=
+ =?iso-8859-1?Q?n/W0COePtfjqXEFjZ3YUEE0x6E/NtFDUNjcGoz0DEmadwppQz+SdLpIfOD?=
+ =?iso-8859-1?Q?MgUL6OhgTXhrCpUdDqwOR3v7SPgchbPTnAyd/XslLrNDYtq5+1VTbFJpTW?=
+ =?iso-8859-1?Q?QaST3j9ExkwNVnEd3rued98J6GZcbXhNWqUxIj92oOXGyKKnKs3AL01icJ?=
+ =?iso-8859-1?Q?vX2oCOFtDHYJ993V6/SZXnd2OzG6ufBYabUDjmb14AnPWHHeiMvJXZptH1?=
+ =?iso-8859-1?Q?CP2QIht0GZtRhz6yYss97PWzex6rcEViffU1Y7hIN8qRibsUTJxbNSX3aX?=
+ =?iso-8859-1?Q?2tOCKTxnsArC4AG0lo5lzWhHBgmc3y6ATMMx/qfvZ/BOKM/lxmGOghwnBj?=
+ =?iso-8859-1?Q?hqxFOqSvTSDw1hE1jopTDAwhYxlhmc0udPiqzP7YXnzdk3zx+Ir3knNoqN?=
+ =?iso-8859-1?Q?XYUpWq7vLOP3VNmHIm9C8l5fCAQPs9cqdgSLppZjBfbg4FRSk8BWM70W7y?=
+ =?iso-8859-1?Q?bBeWFFGcs5ci8P6rW0Cz7ykLWIBOpBBhF9ttbUftsTCjNPcZT3Xh78Xmnm?=
+ =?iso-8859-1?Q?hDsEgTIchk8/Zg06fk7/R9VhVLFbzInLUHf4W0DHa9HoAm?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -101.0
-X-Scan-Signature: 1a99e790efc5595ebc7b409aae77a077
+X-Exchange-RoutingPolicyChecked:
+	qV8wqHqPtWDK0u17dRUPTpboYjJvYFGVV7DBBJu+4/CaaUjkjinsnI+dwkMxWsdp3eF7iV4amkurhQMN/5jeqOucz2PoOXRmleWUa/I/JE+2cmtvKv421gBdvMuUUj8N4sfy/KKQfJ2S7l3lqYNG7gDQ/vaW4OCLrvzvCmBF/0HigmkdH3Po6k7tqzGCbDyJOqKoXTEojeuzmTiup+otMO29K3zwVjNJPI5bs50dftrODz0RMJCDv/Q7lgSHxwSQCi1UfLWacEQe3uoNyabXZ6jlhr+hF1t0FN4P/lp0SCryY5HauzZFcpuY9WXByrvzQp3FXXUNLwzR1E+/qDdqfw==
+X-OriginatorOrg: sitime.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: LVWPR20MB994915.namprd20.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 48e2a41e-c15c-4062-3ca0-08df12b3fc32
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Sep 2026 23:00:34.9029
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 8fb55916-cf10-4b0d-96f4-cf3952657263
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Wjl+EPNpHAJWZQn+DvL8Phc7PfRc13yHHXpR91Apd0Cl01UiaXzi1kxMrnTrAgq7oQYYZk1lB7uiIxulA9UKHA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR20MB6839
+X-MDID: 1789426841-l5USAGoGVk_z
+X-PPE-STACK: {"stack":"us1"}
+X-MDID-O:
+ us1;at1;1789426841;l5USAGoGVk_z;<arouhi@sitime.com>;ee4c095510f4a2bc549243be2f087a38
+X-PPE-TRUSTED: V=1;DIR=OUT;
 
-Before this commit the Homa code is "inert": it won't be compiled
-in kernel builds. This commit adds Homa's Makefile and Kconfig, and
-also links Homa into net/Makefile and net/Kconfig, so that Homa
-will be built during kernel builds if enabled (it is disabled by
-default).
-
-Signed-off-by: John Ousterhout <ouster@cs.stanford.edu>
----
- net/Kconfig       |  1 +
- net/Makefile      |  1 +
- net/homa/Kconfig  | 20 ++++++++++++++++++++
- net/homa/Makefile | 16 ++++++++++++++++
- 4 files changed, 38 insertions(+)
- create mode 100644 net/homa/Kconfig
- create mode 100644 net/homa/Makefile
-
-diff --git a/net/Kconfig b/net/Kconfig
-index e38477393551..6780fee341a0 100644
---- a/net/Kconfig
-+++ b/net/Kconfig
-@@ -252,6 +252,7 @@ source "net/bridge/netfilter/Kconfig"
- endif # if NETFILTER
- 
- source "net/sctp/Kconfig"
-+source "net/homa/Kconfig"
- source "net/rds/Kconfig"
- source "net/tipc/Kconfig"
- source "net/atm/Kconfig"
-diff --git a/net/Makefile b/net/Makefile
-index 5b2dd7f07a85..f9a3c966a83b 100644
---- a/net/Makefile
-+++ b/net/Makefile
-@@ -40,6 +40,7 @@ ifneq ($(CONFIG_VLAN_8021Q),)
- obj-y				+= 8021q/
- endif
- obj-$(CONFIG_IP_SCTP)		+= sctp/
-+obj-$(CONFIG_HOMA)		+= homa/
- obj-$(CONFIG_RDS)		+= rds/
- obj-$(CONFIG_WIRELESS)		+= wireless/
- obj-$(CONFIG_MAC80211)		+= mac80211/
-diff --git a/net/homa/Kconfig b/net/homa/Kconfig
-new file mode 100644
-index 000000000000..a420ea18b6c1
---- /dev/null
-+++ b/net/homa/Kconfig
-@@ -0,0 +1,20 @@
-+# SPDX-License-Identifier: BSD-2-Clause OR GPL-2.0+
-+#
-+# Homa transport protocol
-+#
-+
-+config HOMA
-+	tristate "The Homa transport protocol"
-+	depends on IPV6
-+
-+	help
-+	  Homa is a network transport protocol for communication within
-+	  a datacenter. It provides significantly lower latency than TCP,
-+	  particularly for workloads containing a mixture of large and small
-+	  messages operating at high network utilization. At present, Homa
-+	  has been only partially upstreamed; this version provides bare-bones
-+	  functionality but is not performant. For more information see the
-+	  homa(7) man page or checkout the Homa Wiki at
-+	  https://homa-transport.atlassian.net/wiki/spaces/HOMA/overview.
-+
-+	  If unsure, say N.
-diff --git a/net/homa/Makefile b/net/homa/Makefile
-new file mode 100644
-index 000000000000..b36e7fca19b5
---- /dev/null
-+++ b/net/homa/Makefile
-@@ -0,0 +1,16 @@
-+# SPDX-License-Identifier: BSD-2-Clause OR GPL-2.0+
-+#
-+# Makefile for the Linux implementation of the Homa transport protocol.
-+
-+obj-$(CONFIG_HOMA) += homa.o
-+homa-y:=        homa_incoming.o \
-+		homa_interest.o \
-+		homa_outgoing.o \
-+		homa_peer.o \
-+		homa_plumbing.o \
-+		homa_pool.o \
-+		homa_rpc.o \
-+		homa_sock.o \
-+		homa_timer.o \
-+		homa_tx_pool.o \
-+		homa_utils.o
--- 
-2.43.0
-
+Reply inline.=0A=
+=0A=
+> Is the statement that "every valid value exceeds the 32 bits '-hz' allows=
+"=0A=
+> correct?  A "-hz" property can carry 64-bit values, so the stated reason =
+for=0A=
+> dropping the unit suffix does not seem to hold. [...] could the property =
+be=0A=
+> named sitime,pll-fvco-hz while keeping=0A=
+> $ref: /schemas/types.yaml#/definitions/uint64-array [...]=0A=
+=0A=
+The description's 32-bit rationale was wrong and is corrected in v9.=0A=
+The rename itself, however, does not pass dt_binding_check.=0A=
+=0A=
+dtschema types unit-suffix properties centrally: property-units.yaml maps t=
+he=0A=
+"-hz" suffix to uint32-matrix (only "opp-hz" is defined as 64-bit), and the=
+=0A=
+meta-schema rejects a type $ref on any property matching a unit-suffix patt=
+ern=0A=
+("Standard unit suffix properties don't need a type $ref").  So=0A=
+"sitime,pll-fvco-hz" with an explicit uint64-array $ref fails validation, a=
+nd=0A=
+without the $ref the values are typed as 32-bit cells, which cannot carry a=
+=0A=
+VCO frequency (4.9-7.8 GHz).  Verified with dt-doc-validate (dtschema 2026.=
+6):=0A=
+the renamed property produces exactly those two errors.=0A=
+=0A=
+The examples cited work because they are not new vendor properties:=0A=
+"supported-frequencies-hz" is typed 64-bit by the dpll-pin.yaml schema itse=
+lf=0A=
+and "opp-hz" by property-units.yaml.  A new vendor property has no such hoo=
+k,=0A=
+so the name stays suffix-less with the explicit uint64-array $ref, and the =
+v9=0A=
+description now states this real constraint instead of the 32-bit claim.=0A=
