@@ -1,170 +1,129 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F82E41DEF4
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 09:58:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789379926; cv=pass; b=fxb9SPUxKGVTDHPXSVXWIQmdnHpmfuubJKiFKhNcHnTCIxRn5yhmUy1OL4BSixrDk+nndalSQsP29gZOGD9E75FOVSbT/xKTP8o5nShEDVfwFSd+g6mOylN7LMJWY9cC0U79s08YsQMxKzUSmKka6ZxlHqguD6iI1b5Cmg0wduQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789379926; c=relaxed/simple;
-	bh=ekZMqPqix1SfSP0Jg3oOTYIzLY1yHdpuXfG/BQXJszg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YhxFMg8X+ly20sNDMOLaOYtrfvJPBoE3VCAZuKl5S8vH2CCboguAllMNa6AprXK30lXCH+f1EchszZVdcTmOHP9sfc0KG+oBs4gSqIWxYAzMTs9ZeT6JUPPAqX2FcWDW32c1EdK8XgmZ4SSu4awF9BjzbkNKIBLKdub2IYdVLT8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=fOqlnwcA; arc=pass smtp.client-ip=74.125.228.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436A041D22C;
+	Mon, 14 Sep 2026 10:06:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789380408; cv=none; b=GHLUlf4IPIhW4Tj3Zuh1FJIyBgU9vlO5sFX6HHvR+Cr/I8CJh3rdM0Spl1qrS3wQnqVyOeiX6XwG57YdTlp99V8O9h6S0p75vNniXG8DNIpSBF+8DpSgYr7Ko6/II+4kcAY+EHMydvAg2uMO1BnBIcPXOId9iuoTdwA5SqcGmj0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789380408; c=relaxed/simple;
+	bh=Sbe+vc+aVmleVZcpQVtskvA2EDy/QtkUtj4dZJ+rO2E=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=H4ofuDHx6r+kM9B3kCMtFnHnz8ekJ6Eui5nGohf6F7xZ6aUPl34gdkDZyqmNPjwREqvkjSbJCubtnS4kIqe7P/gGpf+TXHfpUJpUlLIcEdEb1jDraff8FTgG7MWsqe8OBqnxzo+osiqp3gYgr4CiEDCINFRREME0uC6veL2K5i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lkf7PEf6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="fOqlnwcA"
-Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469a34907so1614284b3a.1
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 02:58:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789379924; cv=none;
-        d=google.com; s=arc-20260327;
-        b=A7drcONQ3frTUI/KkliV2A9gMv4OkK3E56iJxHLd65ZR/1Qfry/c0j/9aa0OnW/MWb
-         CWCJEvFuI24Vm9BD5rJQSDEeH+CNUp/ldHLZH9AMmXhsiJZibO3SvE82gPALOAtne6Wc
-         inoyfizEWXm1b0rrdAw7tEGlgmxxKk+/at96qx6ppbpwNGbbh2UPTqN4bdF7b5HHlR2A
-         mdwHnK4TxNQvo8InfEozBSTwT6EBUVQ3DI8BoG4KpabMNGbjVwgr2EwiYVZIIhSom9Oa
-         nJVi/gZduAuH+nGhN2F8/uuuAY6NT3Eui3hsLz+hbZGZGndS0jrhkkis/lQJpXw9ss5/
-         YzOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=BUfuwTxWoTd9y0Vz5pkLwXMFS5QksVwR4BkTSHrTGWs=;
-        fh=4kV6CtTEL24+0sDCgpZbDUgZbxTipZsdP1DV10uyfeo=;
-        b=V0UGGPXCBCpQ4gEG8sB7bJcOxjS0NMzNszDZEhTtiopzlNdVBhXV/bffQ6H4SC4Rcr
-         3Ea85D0uk21zrJBgDG5JvPNmFUYzdKCf+B5hWvD4BTuAQxRTq7hyNkT+wfFrmL6bE7rd
-         wfvDpxxdb9SqOcqU7teNqIQGjvegOR+9UWrzMd0MFDJL5wzt/CEnW9i7mGWA0ZBSyWGe
-         /TKL8oTY36cqgjSsbw/qan0QtiaMVtYe5VRO/CN1LE9Pv5pjn5mndOYic1sBLAaV0xa4
-         3RhQrnKJv/htweVqSuPLFcZJyVZTS7eLwF0l0xr+0QWAp1b3+rofsIwbTxs80Y9rXEUE
-         X4xQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1789379924; x=1789984724; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=BUfuwTxWoTd9y0Vz5pkLwXMFS5QksVwR4BkTSHrTGWs=;
-        b=fOqlnwcADDqMlbQQYzNj+1S4I93vphCKDJkd5RG3EstL6/VcFbWd+3b7TGYiYSvKrR
-         ag7WcZ6g8IkDs0AEqLjBtQzzoh9tIUgOQczP49+RTeBouQf5+xhDYaNHUCX1/d2/rKrI
-         kcaMH9c1oZ1ejOYJ0sWnwpifzVnt/6HiE3aHw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789379924; x=1789984724;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BUfuwTxWoTd9y0Vz5pkLwXMFS5QksVwR4BkTSHrTGWs=;
-        b=i5cPCC7drdi8uP39dSOsqTPncXvDMvsLVYwAVGeFdTSSgvO/wJ57ZByeauzL9AdhPD
-         HxHru1mi1ceIrqFM4d3KAj4FrOmZf6DryWOhTq+TKFz6xD5Rj5Zf/SnWeHumc3vyQlzp
-         B1Mj3QuONiehuCkHHKUGLERkKjqtAaAZDxADsJYeltBaQ8CAmyYP1RoJtkCyBVWPTO0D
-         9gCMtM+M43K4Gacytx4D3vyGAr1OZFcqixVNaRotSgRf4KW5uOag4WJJSKjOzSdJu0gY
-         QH38Q8EptRba3ku0Dmr2pdRFu5Gwp9pzFxnHkO85h5t9zdl5C6QVVmCAxzeDxv1lKlxH
-         ZB7g==
-X-Forwarded-Encrypted: i=1; AKwUvByOy16KvAMX5TkX4SSK8eC5SLjK9XjDE8sdoxM0dDTSB9J4ENWfZuGy9XMjChLjOKw62E2q7wU=@vger.kernel.org
-X-Gm-Message-State: AFuF++n8x4gX/oBmMhPiBF8Jx/flpH4OCXfDM9h6yNSHlPlaFkZyr6ze
-	z0lgSoaJlwQyTjjdIIQ8W7ODsnJFstnSZuSO8CLb1uTrMliKzkZfImxxlw0uN7eL5zLkl1b8zHQ
-	zqE6k24wlQUaMrgKSqq2Oe0dPs9PAOCIqkZG8DIhd
-X-Gm-Gg: AYBFou3oQCFEBjnIPPr0r+Q+YQmhC+gFgnfVG9BGgKfzBuQNsKPaNpLWSim0fdoB32f
-	xckiMS3EMbbNJDSVgA7xSymsUhKMdUye+CZJ4GuPT8aALk+/6TGAY1iwiMHuSywBenaFBjGEcL3
-	n2A1EOg0AiHHFELjltoCvr1K4Ydc+Hw7TVkGnY11uOEh11Dia6aIX/l4Vte998X+AvW+ymaAw4D
-	XqvC3ryL0UGlP0j8r8/Jg+cOPuvjX8vd6NPls4La+i+qIwNZFJIKRLQDc7rB+E7d0l0cTY5GILf
-	J1DqjJ598v6q/81kv9Qhx40g9lhDamOKShj5+4Qd6tSMshHEw/P2jbK+WgM6ytv6/yXeb2mfUpd
-	MQP2aMVtdYnjo9T0tEEbOZy5MT4alpYr5yA==
-X-Received: by 2002:a05:6a00:94d3:b0:857:7337:5db8 with SMTP id
- d2e1a72fcca58-86f85ae8211mr3629691b3a.22.1789379923820; Mon, 14 Sep 2026
- 02:58:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lkf7PEf6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE811F00893;
+	Mon, 14 Sep 2026 10:06:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789380406;
+	bh=6U66J0vgegkdBYEEUGB5I7wbrHnMwmHGP29FOANs9S0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=lkf7PEf6aiWH2jIeNt/fM8hnpg+mwi5Vemp0FenyA51saZsnLz37Y6tqWEanoouZf
+	 ydlEtXoGu0VvcLM6Sehy1cjPaLFvWKH5MRybWBN1AQaOp4aJtt6b0bO1d04sxeRgDM
+	 ZC1Mxvf7PBoTuUMXpFpaEGaIyGIWcGWXrGMCZO5XP5iPqnZ79EiMc5Md2qyhrr6+zB
+	 9I9Bt2f4OM6sFdvqrDre/RLALqCjnOOuCa6kZW1qG3CIy0joKYRfUZf0CPfPoucf5e
+	 XvYnzSvBSuMEs7EJ7QTGDhHYATwpjaIB5v0wSqgodcJQos2kBaUwByWj5uLhyj3ExF
+	 bzFTyN+vkYSzA==
+Message-ID: <095b530aa856a81d8576d235d28dcbc3e25841b2.camel@kernel.org>
+Subject: Re: [PATCH bpf 1/2] bpf: drop duplicate check_app_limited in
+ tcp_bpf_push
+From: Geliang Tang <geliang@kernel.org>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>, John Fastabend	
+ <john.fastabend@gmail.com>, Jakub Sitnicki <jakub@cloudflare.com>, Eric
+ Dumazet	 <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>,
+ Kuniyuki Iwashima	 <kuniyu@google.com>, "David S. Miller"
+ <davem@davemloft.net>, Jakub Kicinski	 <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman	 <horms@kernel.org>, Sabrina Dubroca
+ <sd@queasysnail.net>, David Howells	 <dhowells@redhat.com>, Matthieu Baerts
+ <matttbe@kernel.org>, Mat Martineau	 <martineau@kernel.org>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, mptcp@lists.linux.dev
+Date: Mon, 14 Sep 2026 18:06:38 +0800
+In-Reply-To: <da26d2f3-7283-4e9f-85b4-6c12b9beda99@linux.dev>
+References: <cover.1789368148.git.tanggeliang@kylinos.cn>
+	 <f12f1d886c8ff2b6f6e48f797ccc861037eda685.1789368148.git.tanggeliang@kylinos.cn>
+	 <da26d2f3-7283-4e9f-85b4-6c12b9beda99@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.56.2-9 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260914065123.4109709-2-bestswngs@gmail.com>
-In-Reply-To: <20260914065123.4109709-2-bestswngs@gmail.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Mon, 14 Sep 2026 05:58:32 -0400
-X-Gm-Features: AcwNN1U_PEiBsILbnOHs9gCzos_UIObxVxzcwVGwW6bTJBXfjAYney-md8aD38E
-Message-ID: <CAM0EoM=7jH_OqmbERPVNrFg7Q079g2f1oWOKiO4nRLA3Zxcm3A@mail.gmail.com>
-Subject: Re: [PATCH net] net/sched: reject IDR error pointers when deleting actions
-To: Weiming Shi <bestswngs@gmail.com>
-Cc: Jiri Pirko <jiri@resnulli.us>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Vlad Buslov <vladbu@mellanox.com>, Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, 
-	Xiang Mei <xmei5@asu.edu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 14, 2026 at 2:51=E2=80=AFAM Weiming Shi <bestswngs@gmail.com> w=
-rote:
->
-> tcf_action_delete() drops the reference held by its lookup before calling
-> tcf_idr_delete_index() with the saved action index.  An unlocked
-> classifier can remove that action and reserve the same IDR slot with
-> ERR_PTR(-EBUSY) in between.
->
-> tcf_idr_delete_index() only checks the lookup result for NULL.  It
-> therefore treats the reservation as a tc_action and dereferences
-> tcfa_bindcnt.  A hardware execution breakpoint was used to schedule the
-> interleaving without changing the kernel source.  KASAN reported this
-> decoded trace:
->
->   BUG: KASAN: null-ptr-deref in tca_action_gd+0x5b9/0x1010
->   Read of size 4 at addr 0000000000000010 by task poc/150
->   Oops: general protection fault, probably for non-canonical address 0xdf=
-fffc0000000002
->   RIP: tca_action_gd+0x5c0/0x1010:
->     arch_atomic_read at arch/x86/include/asm/atomic.h:23
->     raw_atomic_read at include/linux/atomic/atomic-arch-fallback.h:457
->     atomic_read at include/linux/atomic/atomic-instrumented.h:33
->     tcf_idr_delete_index at net/sched/act_api.c:766
->     tcf_action_delete at net/sched/act_api.c:1859
->     tcf_del_notify at net/sched/act_api.c:2014
->     tca_action_gd at net/sched/act_api.c:2064
->   R13: 0000000000000010 R15: fffffffffffffff0
->   Kernel panic - not syncing: Fatal exception
->
-> R15 contains ERR_PTR(-EBUSY), and adding the tcfa_bindcnt offset produces
-> the address in R13.  With the guard applied, the same reproducer returned
-> -ENOENT without a KASAN report or panic.  Treat error pointers as absent
-> and return -ENOENT.
->
+Hi Jiayuan,
 
-We test all submissions to tc. Can you provide a tdc test or reproducer (Po=
-C)?
-Please remember tto do his for any future submissions. If the
-information is sensitive, please send it to me privately.
+On Mon, 2026-09-14 at 16:24 +0800, Jiayuan Chen wrote:
+> 
+> On 9/14/26 3:14 PM, Geliang Tang wrote:
+> > From: Geliang Tang <tanggeliang@kylinos.cn>
+> > 
+> > When the sendpage->MSG_SPLICE_PAGES migration series replaced
+> > do_tcp_sendpages() with direct tcp_sendmsg_locked() calls, callers
+> > that
+> > had used do_tcp_sendpages() kept an explicit
+> > tcp_rate_check_app_limited(sk)
+> > that was originally needed to cover do_tcp_sendpages() (which did
+> > not call
+> > tcp_rate_check_app_limited()). After the inlining,
+> > tcp_sendmsg_locked()
+> > always provides the check, and the outer call became redundant.
+> > 
+> > The site changed here, tcp_bpf_push(), is a MSG_SPLICE_PAGES loop
+> > that
+> > holds the socket lock and only iterates when size > 0;
+> > tcp_sendmsg_locked()
+> > is invoked on every iteration with state identical to what the
+> > outer call
+> > sees, so dropping the outer call is safe and behavior-preserving.
+> > 
+> > A potential benefit of this change is that it facilitates future
+> > reuse of
+> > tcp_bpf_push() for sockmap support in protocols beyond TCP, such as
+> > MPTCP.
+> > Since tcp_rate_check_app_limited() is TCP-specific while
+> > sendmsg_locked()
+> > is a generic interface in struct proto_ops, this change allows us
+> > to switch
+> > to different protocols via sk->sk_socket->ops->sendmsg_locked()
+> > without
+> > carrying protocol-specific assumptions.
+> > 
+> > Fixes: ebf2e8860eea ("tcp_bpf: Inline do_tcp_sendpages as it's now
+> > a wrapper around tcp_sendmsg")
+> 
+> 
+> Same as the tls one: this looks like a cleanup to me. Is there a real
+> regression that affects kernel or user behavior?
+> 
+> Do we really need a Fixes tag?
 
-cheer,
-jamal
+Thanks for the review. I fully agree - I'll drop the "Fixes" tags and
+update the commit logs in v2.
 
+Thanks,
+-Geliang
 
-> Fixes: 0190c1d452a9 ("net: sched: atomically check-allocate action")
-> Cc: stable@vger.kernel.org
-> Reported-by: Xiang Mei <xmei5@asu.edu>
-> Assisted-by: LLM
-> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-> ---
->  net/sched/act_api.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/net/sched/act_api.c b/net/sched/act_api.c
-> index 19501dc99..eabe612b7 100644
-> --- a/net/sched/act_api.c
-> +++ b/net/sched/act_api.c
-> @@ -758,7 +758,7 @@ static int tcf_idr_delete_index(struct tcf_idrinfo *i=
-drinfo, u32 index)
->
->         mutex_lock(&idrinfo->lock);
->         p =3D idr_find(&idrinfo->action_idr, index);
-> -       if (!p) {
-> +       if (IS_ERR_OR_NULL(p)) {
->                 mutex_unlock(&idrinfo->lock);
->                 return -ENOENT;
->         }
->
-> base-commit: e6b6078ea1731b05b3b552497b3bce4bf8b014ae
-> --
-> 2.55.0
->
+> 
+> 
+> > Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+> > ---
+> >   net/ipv4/tcp_bpf.c | 1 -
+> >   1 file changed, 1 deletion(-)
+> > 
+> > diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+> > index 2e234d155b5e..d5fcf3ce4861 100644
+> > --- a/net/ipv4/tcp_bpf.c
+> > +++ b/net/ipv4/tcp_bpf.c
+> > @@ -108,7 +108,6 @@ static int tcp_bpf_push(struct sock *sk, struct
+> > sk_msg *msg, u32 apply_bytes,
+> >   		off  = sge->offset;
+> >   		page = sg_page(sge);
+> >   
+> > -		tcp_rate_check_app_limited(sk);
+> >   retry:
+> >   		msghdr.msg_flags = flags | MSG_SPLICE_PAGES;
+> >   		has_tx_ulp = tls_sw_has_ctx_tx(sk);
