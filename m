@@ -1,76 +1,76 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F236147253A
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 21:10:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373354A3878
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 21:10:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789420219; cv=none; b=MjmL5aZoa22y+CPJYVVSGqH3ZgkojTaCRwNxYDW/uBUzWjRepU89o0ljjLInWglhOt3pJuOmNan/xAdY7yUEzT6/keBimhmrIRY2J+XgOCWVD9hp1RJgRUaws8mUlgkIg1236sKxaCIls5r2+J7zf8PbSrtV3GhmHhkQT/zQWFY=
+	t=1789420229; cv=none; b=ivrFbyChrjDiXmAa1rL1cIyscu3KrmcopElWPCY00bx+vvppNixGWo3eqgntS8LgdpovzYj9ysQl4OquIESlVmuTOzGQUXqN8u08YWzE69bhFZydf0DXRwz+jdaHl7A+6REJUQmlZiVZDIG7pawaliirm9bRdB8pHxew4qUNF2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789420219; c=relaxed/simple;
-	bh=Kzm80LA/YaAXbwYvhrH2H0W43zczWduK9yCDz13qf3o=;
+	s=arc-20240116; t=1789420229; c=relaxed/simple;
+	bh=uBrAsYKarHZMCA7ScLrpFmTtUT29hgghtg56Mj7UQRs=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q+7J2nLna2SFWwJHGKXK25EKJP7NKA0oliRYNZGI4aFfuOlUoZFd9qddpnIBuf4WVBw872JuBcxozVLnl7uHbFE2czKIAUg6x5mwG2A+YI3aBJee6O0dwHVTUspI7W6LR9fB+KgIXrE0/k03BGqoQ9s/Cfu9BfByvj2OnFDuOSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pz5oOeEa; arc=none smtp.client-ip=74.125.227.140
+	 MIME-Version:Content-Type; b=vGswG5XW6n015oYjzuBHk5D+Gx1oFsBnjLi+Xbob7K6mXM5DLS0vb2LsLuBW1AuCIq9lh+zwQXOM+OGsys3dmyQpfCwpiWBhmehcCCOI35Tqqa9ic8+kHIvCpQ810nTgSBV2XBSxi4e92LeQLQ1R6fFsWhhAd+B2P2Fxb4wMS+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MRDCsjgu; arc=none smtp.client-ip=74.125.227.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pz5oOeEa"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccafb752so2585124a91.0
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 14:10:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MRDCsjgu"
+Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2d91c22d27dso13340255ad.1
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 14:10:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789420213; x=1790025013; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789420221; x=1790025021; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:user-agent
          :references:in-reply-to:message-id:date:cc:to:from:subject:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=ZHRD7vWiExXe59NWa93Ol+zrY+TaGYSNUGLpr0eYc68=;
-        b=pz5oOeEaXqvXmdtBM0Cyju485fszD2iMQwuE3n6+Q1eDmMy5lYAfafvsZ+gzdfFb7k
-         9gYubNGkrI3HjsA1mmMfz71l6wIQ84eDGhisLuBJ5sJI16Zr2vd3NmWLKV6QleE7k/B7
-         t8Irq5mwSoUoji9aPhONTUjcG7CrrdotNdRNY60P9PYVK0Or3lYvVAUjqFsWiiJ3PZ/8
-         BgPFxS+QIUSpSk1m+QcpxeLP1q9vgJZgi9IE3uxaCZClJdkpGqqwdo89n41Gjd8SM5Ql
-         xyQloMJEFoChUJr1DfXxCQ3J7pySIM5oD6FM3IqyP84VxcX5/GvTHYpnkqHDzkfS6r8G
-         S8fA==
+        bh=ny0Tfsv1w1nNPjvLY5c+bzcixMiVw0xrhcNyoWMoRMI=;
+        b=MRDCsjguKV5/m030upbGfult/P19g3En8M6mplyLv1oJ7hDIotIsq7h/0l3BHwG2/f
+         p8T6kQc5sQIiTZt6u+1D7QOAZVn1bihR294QjkJR30le3r4m1iM7JSSatOakZPLrXbRv
+         jPFgkcTkaZC0OB8eVyz2dRMJVN9jEELO4Ptyls9L/XC6tFdGJSRjKkDGxF6GWEr/zp+U
+         nRuriX5+dIDNb/mm2lERfbr4ZO5+8cnLhFy9n604xZQUIJwWMuAD1SRhJ53MQFO05oJk
+         Wqh0Bvpv4HKA7A8loSBm+LjB52k8t9hlZ+aRUt+EIesPBiNf2qD7sHaKnzNVMK1EdWqs
+         8h1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789420213; x=1790025013;
+        d=1e100.net; s=20260707; t=1789420221; x=1790025021;
         h=content-transfer-encoding:content-type:mime-version:user-agent
          :references:in-reply-to:message-id:date:cc:to:from:subject:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ZHRD7vWiExXe59NWa93Ol+zrY+TaGYSNUGLpr0eYc68=;
-        b=HVmF13wqveAV81vgiK4Uk1wnnUYHsoMow2ngdH5DeanPeGTTUWKW3l0gEDqQTvXrex
-         sG2Pg5x5svzZ1MvCIbE/CFU/pi2oG/INYEgZAnaA+Qy3tglU5RygS7Lz4h15uTQ0J7wn
-         idhGtOLD2pvYbV6WE01J3UbJ5YwlhQH7YVH07OzTdkgHPb6sAvV+oj08IE6IormoUt6O
-         X5vCSp7cwI+pNbLblec5VToTzlP91nVoRmeYcM01zWlsj7euSm1WXsO2QRym88uOHNgK
-         vCv/YaxR26ijvEv6e6Lto//5ELQNmc9B1DwIO7vtza6lgI5OPNqzKMhI5ew7DHpSWBKx
-         hFXw==
-X-Gm-Message-State: AFuF++mnOofvtdPzh8Pzf0tzNclK/lsBWZH990NJK3xC/kh1i/zym15Y
-	29c9RauejkTLbJzsMPJr4TI8MrHNEKG0GrSzfMIdAv3PRfruz8O5cfdC
-X-Gm-Gg: AYBFou0YZOH7RtlEuznxVkksh5TvW1+h2JoXm+YTynNJR8FgI2jGg0ubMm9y1NLLUGJ
-	I5K7l97gPCLpKdNYiyWGB2lrGSvQUKY3Ewa53he14WvtZWbNeD/D4T+vy3S6sFHKGeH8gjWRZWH
-	yLBJ6kUzIJUFgbO3nh1BMY7c2nBwJJnCIuGQoHM+VVXXMzfx8UP0Ey4crzrwFH+OCUhOAZG3mu+
-	DXxSV0RR/zjglzT6RuqdCnzmkXzos3d2Is+bESdFeqUh0zDFpOlxbPR5xcN57movf7i6gewpLkC
-	zzLLjRH0fxXUZf05h+9BYVgbn2GOAt06dUwRuXUK41ye4BixXomx346BWgGqRLrpVs0QnNrV/e1
-	iNOsGpeSvQUbxoyv0kYIIKgw4PdEjpawh+Kdd9kUw9c6HuS5LqR1EtR++6NJBxrujNnOrgeAKPV
-	Hzx4oFCB//0QkZ1w3+opJgSTVbV2jm7q1Tr1HIjQ1tWowqPh6xLti7fp5cLW4vh3YibvstnbpTG
-	9pdddnKZNaIJaNxD3SDi4YG2lrSxN4MgEhg0w2JgB6sHYfGUA7nHl8gUQBRT3Dm5YaB9631qXZ/
-	j4ZAugy90f4SH0dHnXo=
-X-Received: by 2002:a17:90b:39cc:b0:39d:e54c:8658 with SMTP id 98e67ed59e1d1-39debf547abmr9816650a91.5.1789420212948;
-        Mon, 14 Sep 2026 14:10:12 -0700 (PDT)
+        bh=ny0Tfsv1w1nNPjvLY5c+bzcixMiVw0xrhcNyoWMoRMI=;
+        b=xgmM9nM53t9SJrdFcZLsHvS61hN7lao+SexJy4GZcF32EvaPxLv/jdqqlxbVgIn3/9
+         p9o8NL4duTaIBDk3BF7D6aXuayoi0hmwbX9sD25ZKVM4AEMoU6pjxFj9bQ1UcmnmSu3G
+         AHJL6NhKGL/zu/G8/drw/aBHqEkXZ63KbEIFZ6xgG73NGurR+1WjkYY+kuyBB6M4MakJ
+         ESNu0WRL9NWAnfTmLrizTSTnalNJvijV0dm8QFDpVinC+LuiJelPIVW+kW7GcczQxgXF
+         eyvABBFLxF5iTc6UYWsnqiXwG4nw4oz7yrMHZ7cPWNc5M/XrLUbOTRd+dABHyNJXMBf2
+         zZKA==
+X-Gm-Message-State: AFuF++ljq2EbhVgznUzffB3cZCX9vxqiqmJoDdRFgutta++ceozYmaHU
+	NHlK+SqU9rYv95FRHfDE9N7bXAKaNmiDlsUN1W2EkgFOLLkkPK9V9eCkD1MWSg==
+X-Gm-Gg: AYBFou3IU73g4AuhMPSm6yQknpUrGp9lC27cKJe5LAV4Wtafia85JSP9i8MV9FsWKRo
+	KkrEp0Xt0AoP03tm9myK5EGsNjCaKkdp3Kd1vt0PVbFcgpZ6Uc/wtJtSJk7CGitoJgqJxArMmNR
+	MnesY8FVbfo9R7oE0F+9c5judHm1EfB9MHOELHHzXnwzXrt/QWsUcCPa6JzXBNPsv7Ls6UwqA5C
+	7v21dGak5GB528i6EOOI9xOgbjVTZysx1yoUzJ+C0nlC3wowJiVsAibQl35oLxx1MfqgLmsY4ej
+	OgSBOk6KujDjfS3tm2wFFmFf0EjI+eiy03icOfVEQo4FoubauQba/8kqoCM5vC+jo9BsuanTekP
+	N1k1iO/QzT81LnJL9dQVfrhLtKioaEpOqaB7i7Y2XTfMgQA+GazpKsZ3PQXOMSc2mydIY5ev5tT
+	FNta1f++oiuWRKfbBPu9qhumdhh1+iyhnFRxZb7zmA/PusSYNpcTb8jF+KoD8IJrNcH2/3Ce7g3
+	llnu5F/WB17MxCRtEJDc6oMaCoW22X/qL2ikXmdR2BU+ih8qx6KVJ85G762PeUKLbRTjSTeFcfg
+	kgqXQVJ9EobVO9h5Hxw=
+X-Received: by 2002:a17:903:fa4:b0:2dc:fcfc:bdeb with SMTP id d9443c01a7336-2dd6c7e2368mr100832835ad.22.1789420220581;
+        Mon, 14 Sep 2026 14:10:20 -0700 (PDT)
 Received: from ahduyck-xeon-server.home.arpa ([2605:59c8:829:4c00:d680:cb2f:f831:8497])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39dfdd6a3e3sm1147589a91.13.2026.09.14.14.10.12
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd2cff6e80sm54893905ad.78.2026.09.14.14.10.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 14:10:12 -0700 (PDT)
-Subject: [net PATCH v2 3/6] eth: fbnic: use the Rx queue napi pointer to find
- the napi vector
+        Mon, 14 Sep 2026 14:10:20 -0700 (PDT)
+Subject: [net PATCH v2 4/6] eth: fbnic: reset num_napi when the napi vectors
+ are freed
 From: Alexander Duyck <alexander.duyck@gmail.com>
 To: netdev@vger.kernel.org
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
  kernel-team@meta.com, Simon Horman <horms@kernel.org>
-Date: Mon, 14 Sep 2026 14:10:11 -0700
+Date: Mon, 14 Sep 2026 14:10:18 -0700
 Message-ID: 
- <178942021136.7700.4391219358260544104.stgit@ahduyck-xeon-server.home.arpa>
+ <178942021809.7700.10804028989308077839.stgit@ahduyck-xeon-server.home.arpa>
 In-Reply-To: 
  <178941996343.7700.9376081102002673062.stgit@ahduyck-xeon-server.home.arpa>
 References: 
@@ -87,104 +87,92 @@ Content-Transfer-Encoding: 7bit
 
 From: Alexander Duyck <alexanderduyck@fb.com>
 
-The queue management ndos pick the napi vector for an Rx queue with:
-	nv = fbn->napi[idx % fbn->num_napi];
+fbn->num_napi is the count of live napi vectors, each of which owns an
+IRQ.  The PM path had freed them without clearing the count.
+fbnic_pm_suspend() tears the datapath down via ndo_stop() and frees the
+IRQs, but leaves netif_running() true so resume knows to re-open.  Resume
+rebuilds the datapath in __fbnic_pm_resume() and fbnic_reset_queues() sets
+num_napi and __fbnic_open() re-allocates the vectors.
 
-The issue is this is only correct in the cases where there are no
-standalone Tx vectors. In those cases we were allocating the Tx vectors
-first and then the Rx so the queues would be pointing to Tx NAPI vectors
-instead of the Rx ones.
+When the datapath is torn down but never rebuilt, num_napi is left
+pointing at freed vectors under 2 different scenarios:
+ - a PCIe error recovery that fails (fbnic_err_slot_reset() ->
+   __fbnic_pm_resume() returns an error -> PCI_ERS_RESULT_DISCONNECT), so
+   .resume never runs; or
+ - an __fbnic_open() that fails partway on resume and unwinds, freeing
+   the vectors after fbnic_reset_queues() has already set num_napi.
 
-The mapping the ndos want is already recorded.  fbnic_set_netif_napi()
-publishes it with netif_queue_set_napi(), which stores the napi pointer
-in netdev_rx_queue.napi, and fbnic_reset_netif_napi() clears it again.
-Both run under the netdev instance lock that the queue management ndos
-also hold, so the pointer can be read directly.
+The netdev is then running with num_napi > 0 but napi[] freed, and the
+eventual remove/unbind close re-enters fbnic_down() -> fbnic_dbg_down()
+and dereferences the freed vectors:
+  BUG: kernel NULL pointer dereference, address: 0000000000000210
+  RIP: fbnic_dbg_down+0x28
 
-Use it and drop the divide.  The pointer is NULL exactly while the
-datapath is down, so fbnic_queue_mem_alloc() can reject that case rather
-than reaching into freed state: netdev_rx_queue_restart() calls it
-before it tests netif_running(), and fbnic_pm_suspend() leaves
-netif_running() true across a PCIe recovery that never completes, so a
-queue restart can arrive after fbnic_stop() has freed the rings and the
-vectors.  fbnic_stop() clears the association in
-fbnic_reset_netif_queues() before fbnic_free_napi_vectors(), so the
-NULL is always published first.  fbnic_queue_start() and
-fbnic_queue_stop() need no check of their own, as
-netdev_rx_queue_reconfig() only reaches them once fbnic_queue_mem_alloc()
-has succeeded under the same instance lock.
+Clear num_napi when the vectors are freed: in the suspend teardown (a
+good resume re-establishes it before __fbnic_open()) and on the resume
+open failure.  A redundant ndo_stop() then walks an empty napi[].  The
+normal ndo_stop() down/up cycle is untouched and keeps num_napi for the
+next ndo_open().
 
-Fixes: da43127a8edc ("eth: fbnic: support queue ops / zero-copy Rx")
+Fixes: bc6107771bb4 ("eth: fbnic: Allocate a netdevice and napi vectors with queues")
 Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_txrx.c |   26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/meta/fbnic/fbnic_pci.c |   18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-index 81a30e2d449b..e93174fc1239 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-@@ -7,6 +7,7 @@
- #include <linux/iopoll.h>
- #include <linux/pci.h>
- #include <net/netdev_queues.h>
-+#include <net/netdev_rx_queue.h>
- #include <net/page_pool/helpers.h>
- #include <net/tcp.h>
- #include <net/xdp.h>
-@@ -2829,6 +2830,17 @@ void fbnic_napi_depletion_check(struct net_device *netdev)
- 	fbnic_wrfl(fbd);
- }
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+index 8b9bc9e8ea56..c6698e3002a1 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+@@ -434,6 +434,7 @@ static int fbnic_pm_suspend(struct device *dev)
+ {
+ 	struct fbnic_dev *fbd = dev_get_drvdata(dev);
+ 	struct net_device *netdev = fbd->netdev;
++	struct fbnic_net *fbn;
  
-+/* Returns the napi vector servicing an Rx queue, or NULL if the datapath
-+ * is torn down.  The association is published by fbnic_set_netif_napi()
-+ * and cleared by fbnic_reset_netif_napi(), both under the instance lock.
-+ */
-+static struct fbnic_napi_vector *fbnic_rxq_nv(struct net_device *dev, int idx)
-+{
-+	struct napi_struct *napi = __netif_get_rx_queue(dev, idx)->napi;
+ 	if (fbnic_init_failure(fbd))
+ 		goto null_uc_addr;
+@@ -441,11 +442,16 @@ static int fbnic_pm_suspend(struct device *dev)
+ 	rtnl_lock();
+ 	netdev_lock(netdev);
+ 
++	fbn = netdev_priv(netdev);
 +
-+	return napi ? container_of(napi, struct fbnic_napi_vector, napi) : NULL;
-+}
+ 	netif_device_detach(netdev);
+ 
+ 	if (netif_running(netdev))
+ 		netdev->netdev_ops->ndo_stop(netdev);
+ 
++	/* The IRQs are about to be freed, so drop the napi vector count */
++	fbn->num_napi = 0;
 +
- static int fbnic_queue_mem_alloc(struct net_device *dev,
- 				 struct netdev_queue_config *qcfg,
- 				 void *qmem, int idx)
-@@ -2841,8 +2853,16 @@ static int fbnic_queue_mem_alloc(struct net_device *dev,
- 	if (!netif_running(dev))
- 		return fbnic_alloc_qt_page_pools(fbn, qt, idx);
+ 	netdev_unlock(netdev);
+ 	rtnl_unlock();
  
-+	/* A failed PCIe recovery or resume can leave the datapath torn down
-+	 * while netif_running() is still true.  This ndo runs before
-+	 * netdev_rx_queue_restart() checks netif_running(), so bail out
-+	 * rather than touching rings and vectors that are already freed.
-+	 */
-+	nv = fbnic_rxq_nv(dev, idx);
-+	if (!nv)
-+		return -ENETDOWN;
+@@ -508,16 +514,20 @@ static int __fbnic_pm_resume(struct device *dev)
+ 	if (fbnic_init_failure(fbd))
+ 		return 0;
+ 
++	rtnl_lock();
++	netdev_lock(netdev);
 +
- 	real = container_of(fbn->rx[idx], struct fbnic_q_triad, cmpl);
--	nv = fbn->napi[idx % fbn->num_napi];
+ 	fbn = netdev_priv(netdev);
  
- 	fbnic_ring_init(&qt->sub0, real->sub0.doorbell, real->sub0.q_idx,
- 			real->sub0.flags);
-@@ -2893,7 +2913,7 @@ static int fbnic_queue_start(struct net_device *dev,
- 	struct fbnic_q_triad *real;
+ 	/* Reset the queues if needed */
+ 	fbnic_reset_queues(fbn, fbn->num_tx_queues, fbn->num_rx_queues);
  
- 	real = container_of(fbn->rx[idx], struct fbnic_q_triad, cmpl);
--	nv = fbn->napi[idx % fbn->num_napi];
-+	nv = fbnic_rxq_nv(dev, idx);
+-	rtnl_lock();
+-	netdev_lock(netdev);
+-
+-	if (netif_running(netdev))
++	if (netif_running(netdev)) {
+ 		err = __fbnic_open(fbn);
++		/* On failure the vectors are freed, so drop the count */
++		if (err)
++			fbn->num_napi = 0;
++	}
  
- 	fbnic_aggregate_ring_bdq_counters(fbn, &real->sub0);
- 	fbnic_aggregate_ring_bdq_counters(fbn, &real->sub1);
-@@ -2915,7 +2935,7 @@ static int fbnic_queue_stop(struct net_device *dev, void *qmem, int idx)
- 	int err;
- 
- 	real = container_of(fbn->rx[idx], struct fbnic_q_triad, cmpl);
--	nv = fbn->napi[idx % fbn->num_napi];
-+	nv = fbnic_rxq_nv(dev, idx);
- 	fbnic_dbg_nv_exit(nv);
- 
- 	napi_disable_locked(&nv->napi);
+ 	netdev_unlock(netdev);
+ 	rtnl_unlock();
 
 
