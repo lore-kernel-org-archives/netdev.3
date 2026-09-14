@@ -1,326 +1,149 @@
-Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
+Received: from mail-wm2-f0.google.com (mail-wm2-f0.google.com [74.125.225.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E8441A57D
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 21:42:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4875439354
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 21:44:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789422159; cv=none; b=n+PLwhMbm+m28UfImgNIM5kDuBOSp8FV/b2WhvaH4cH9fSZkkuCr8FxyIjoZvn5iciOO2iEGm8DJf7FEE3+oSmcvKEx7AvewH1rxKFm8CeKhae979S59OX5RXjEuw8uldIFb6NNqPrehqaDTCig7ZQ7ZUa/kGqGpjnjkcr0urDw=
+	t=1789422294; cv=none; b=FxxzFbc4uh8ngTLuXfJe10VTAmycKXn6HkbS7qKCRtqfzfjHpj556Es8rmBE/YeHbNzANpfKHUhP3Apy8Yc7hyoMrS9jtJC0gMoUpiyRVh55xPhrk4t8+5e15iDTliN15w4bnRTh+zy4jItEfrmfFEhXZzjho+HBDxQdGcaz8Fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789422159; c=relaxed/simple;
-	bh=1EbnlpS7o9WVD21F6X+KOYpuw28dShJoet6T/qTr4g8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=STsxy0XHyBMxju5Ur01hWiCW7/p5LXIGGjDVSgpr4F0qlmu54F94upwFXriHw+Ad6IR9beRBvtVnjT5PP17a2AFyb1fACieCv5w3dxS6vd7FongRhpqhz8cEYyyWhTmtHnUuUF52iG5Jt+2mPL69BQhC6caI0WSvNZNNunjrYzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IPIhZd0x; arc=none smtp.client-ip=74.125.224.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1789422294; c=relaxed/simple;
+	bh=jj7tySioSR8Ku9oTtm142cyvZWn1Zo3/dc/BMfq7jNg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ET9t7c0voXKKGwDPu5/kli4VRQAqKhnEdQuawpIhhRMQo9TQOMpcwCLgImk4g/P2/BY1PcefNmhvGA1oD0v0iyEFQRd7X9JnN9aNVMhiY+ffdfVI3P8SKi1Sy8DnjBMURVLTyRNdhf77bqvY8MJCFDzWgfo2ljjIG5yk1Vowym4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IPIhZd0x"
-Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-66fca0709caso3680439d50.1
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 14:42:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789422156; x=1790026956; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=On2HQKwvLLaaGQi+LXd6sRuY9/yCDYxoT8ZhUifrzNc=;
-        b=IPIhZd0xjR4Te4ubP+UQlvZOz13Y56BtamCzvZ/J4GaTpoyEqu49qwgBcrjqCUd2BD
-         ROEvi9KmlJt1hU8Tys1aOT9SIRXMA6FK7hj2RqsnbbEjtVMdnxN3tyv5pPqk4df6maG1
-         whSb/ACNsmT4MM/AwkXQNdJ4qgyKJexOW32GO1Ygs5ioSX3SIQJ6Z0n14RLDjFuLcpHf
-         OBfvzrTHwuLTLVWN8k524nJNh81v0F9G9D+6YveD84mvJ4uBBeogvgjJBt9RCsCB7XUG
-         LOkuhGuURYW7c5IHvF0e6kfkvA8cvITb2SFH3eB/zJcN6Hz6CkemKZ/mRuKjJ20U7qFU
-         wsZQ==
+Received: by mail-wm2-f0.google.com with SMTP id 5b1f17b1804b1-49ced856e8dso16091105e9.0
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 14:44:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789422156; x=1790026956;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=On2HQKwvLLaaGQi+LXd6sRuY9/yCDYxoT8ZhUifrzNc=;
-        b=DU4o0evVNw100e6LCes+K4G5/8xFXAM2vggPGa4Cz1Lvg7nGM4BZv+qS5BMbzSzJSn
-         zjj54ikM/CcF9Chehe0F0C+iUvqzevoqTQAbp/sWnWZHyilnxbPJKuxrpfToinkmqp//
-         MTlySMZRiwsjWwF9ECjrZo/TRcqJOJ1uJumjhXFXLltw7d9C9BPvNAVnh9OhedHajr1l
-         IjwdTNEc1PXUZMli1bBvDuWY9ll/Ku/bu78JQQvCmmnB+okGoYgNORQnt/Og3ZD7bjVL
-         q6r7e98rpf/72LlzVb0q525bCnPPNg7ukZNkf95vw2dxD6xmXbCezpLNXZdynDhfYyvd
-         FRhA==
-X-Gm-Message-State: AFuF++kXlsvLlBLnR9wwWP52+W3koDmimFuPjzMl+QhYmZDZlUWjoDjB
-	9HW51X3mdkIh0EDW0GbgPhaOcQKYBe59MTfV401Qhpkzx9A8oAqgcqtwSIxqaQ==
-X-Gm-Gg: AYBFou2MYv+1byVBXUqeUcwKDXrMNZtwMJuxi5veQ5BvxdN6tAFm6QLc3tp07Xd/sIH
-	SDz474InMDNQXF2D3WcqOkQAbh2yaSAQqiUdUGuZXafeTXMnh267A+eauvQ6l2vCtpB5ksnm2Vq
-	WmMCLKUUgvuja9/6I5pgMmEFl/lcG4zsPAiXqVPzvVcT2EociqfErqyI3LEDzaoZEpW3+pgVQuL
-	z+dr58kXphd5IK9Xch6GSjScQ2P9/gpb0nej09gQgj8XEUlPhK4I1sokB4RIHAVc19wYB2ZoxdK
-	GB6QswZoHe7NVlamX3UUJlghtB02ONRirjjSoQLL1vK+7F/cboFUTMzjCg1Po4LKOlMxc1xooN7
-	Z9XuEZtVbTh/c5D1v66azZY1KsaCcvhI2T4vFq9HYi+zRp8xsfUQ/QnRNpuRC7AznWBjOo70Cm8
-	l0gQZ1j0ZvuQbppE6+2xFFAkOHwYHsfLbOfV3kKxiX8Vyxb2eWP25Utz2C2IK8+XQUJhas3l1uc
-	sDN8BI72OkK0gKP4zd517yKNRxeGSz9D3YPLHSg/jHhex8tf5EAm/zIXryl/cEMToHfCxCSmiM=
-X-Received: by 2002:a05:690e:d0a:b0:66c:effb:3706 with SMTP id 956f58d0204a3-6714dff575cmr1246776d50.38.1789422156342;
-        Mon, 14 Sep 2026 14:42:36 -0700 (PDT)
-Received: from willemb.c.googlers.com.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-88486086224sm41718997b3.10.2026.09.14.14.42.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 14:42:35 -0700 (PDT)
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	andrew+netdev@lunn.ch,
-	Willem de Bruijn <willemb@google.com>,
-	Katherine Leaver <kleaver@janestreet.com>,
-	Bjoern Doebel <doebel@amazon.de>,
-	stable@vger.kernel.org
-Subject: [PATCH net 2/2] packet: use ubuf_info completion for TX_RING packets
-Date: Mon, 14 Sep 2026 17:37:43 -0400
-Message-ID: <20260914214229.1674102-3-willemdebruijn.kernel@gmail.com>
-X-Mailer: git-send-email 2.55.0.1032.g73a4cd73de-goog
-In-Reply-To: <20260914214229.1674102-1-willemdebruijn.kernel@gmail.com>
-References: <20260914214229.1674102-1-willemdebruijn.kernel@gmail.com>
+        d=1e100.net; s=20260707; t=1789422291; x=1790027091;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3kow1pwp3tGgUJHH/7cadVBA2cQHHUCYstxSQHCM4S4=;
+        b=Rd+n+0Oyfh4hWZYRhsOD5qJl5Wqx9bJhLFfOegI527ljz6aT9GBzsJhOgt4scNnYn1
+         cCyJOG7OAatFFvf4dIl/5I0HSE7S88CvGdmvcaidX378Bcb+izFlItGm6R6LuxKqBsu0
+         d157oEShhwDi4LVkfre2G4wJkBvCVJYOhrXoGsSLKDrv7XRdwJagk8ksTt3wCNW7wEpb
+         vn97dBpt4HqkvBd7ngaQMyXoif4F+RaG+7zvggrjDkb/hfVg2WxMA1koz/j1arTTLOIh
+         BWwjZYdnTdyhyhq4gYf1TGcEFeNmaPVminr1APPXgenAeYfMckhx24RHAZT7rMqBTR5Q
+         yj7w==
+X-Forwarded-Encrypted: i=1; AKwUvBzZcQB5SnQWYI3lSD7q5LWbaiaAbfYj7R+/W51buojbE2nqveTdwa3tvWbo0oj6eYYV9zWJfnQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++k5PaXYuM66C+0AukmiedqlHFvqo2gHCiKc60X1Hh5UYT4NUIsx
+	C3IMIDBIOxPfYWEtmgjC4xTB4i12qN0ekk4nwcuLpE5A6Ly8fE+ZIo21
+X-Gm-Gg: AYBFou1jqZuTS9CwOU+BIYGp0qHEz7X9ZS/5wX0CguwdpyI9TGpfdlJzBC/o4Hi3DLT
+	e55JmYtuvaie3jdt+UH/9n33jBtbbOg4ywQAWc94z1DpKKAYc/oinU8ph3f4uPeJZzrkgz3aCd4
+	ziwAX+bkjl2ARlYR9alSomLB+8HDaRzs8fp8hULDVQeC+fNcOV7jI4ZDBOQZU2C5gj2W7w9+dK0
+	jknz4RcqjJurzTCZOpDxlSze1WEMYtYMtxFZQ8r0G13ZAONckM9UXo0xKGdyONC+2TdsBgwxg5w
+	rAboid50sakpNV/u0irwy92/U/XKugIcS2mkadVniMXzFRTQ927fKcEhJS3FbnQflX+fT7+9j7e
+	+awEFh/KuCITL9HZJmVJJH1uuYSS0h/ko6+7d+PX+hV3XjH8gJ73DQXVronx7kLwhtaAQpJbO+Y
+	EYomlN2LfFwxntKPb4doBY+xGePHMsNYVKREOTJ49dWKSEfWAnEbM2Ewi0cIxSfxr7oAhuhhPwu
+	s02oyRS6LiN8QXSjjD8VxTpmaUpAzA0/lT0lQllebFZW+4=
+X-Received: by 2002:a05:600c:698e:b0:499:a277:e8b5 with SMTP id 5b1f17b1804b1-49e7a638778mr109227285e9.3.1789422290602;
+        Mon, 14 Sep 2026 14:44:50 -0700 (PDT)
+Received: from [192.168.88.241] (37-48-53-4.nat.epc.tmcz.cz. [37.48.53.4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e7eed9d00sm7615235e9.0.2026.09.14.14.44.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Sep 2026 14:44:50 -0700 (PDT)
+Message-ID: <2afb49a0-3eb9-4ec9-ae6c-05491ed55949@ovn.org>
+Date: Mon, 14 Sep 2026 23:44:49 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/1] openvswitch: avoid reallocating confirmed
+ conntrack labels
+To: Zhiling Zou <zhilinz@nebusec.ai>, netdev@vger.kernel.org,
+ dev@openvswitch.org
+Cc: aconole@redhat.com, echaudro@redhat.com, i.maximets@ovn.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org, vega@nebusec.ai
+References: <cover.1789218015.git.zhilinz@nebusec.ai>
+ <372fbb062b40ae6723684f55484be86ff0064f8e.1789218015.git.zhilinz@nebusec.ai>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <372fbb062b40ae6723684f55484be86ff0064f8e.1789218015.git.zhilinz@nebusec.ai>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Willem de Bruijn <willemb@google.com>
+On 9/12/26 3:22 PM, Zhiling Zou wrote:
+> ovs_ct_get_conn_labels() adds the labels extension when a conntrack
+> entry does not have one.  Confirmed conntracks can be read locklessly,
+> so adding an extension may reallocate and free the extension block
+> while another CPU accesses it.
+> 
+> Only add the extension for unconfirmed conntracks.  A confirmed
+> conntrack without labels now fails the caller's label operation instead
+> of reallocating its extension storage.
+> 
+> Fixes: c2ac66735870 ("openvswitch: Allow matching on conntrack label")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Assisted-by: LLM
+> Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
+> ---
+>  net/openvswitch/conntrack.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
+> index 27115967e5d93..0f433688e17b9 100644
+> --- a/net/openvswitch/conntrack.c
+> +++ b/net/openvswitch/conntrack.c
+> @@ -366,7 +366,7 @@ static struct nf_conn_labels *ovs_ct_get_conn_labels(struct nf_conn *ct)
+>  	struct nf_conn_labels *cl;
+>  
+>  	cl = nf_ct_labels_find(ct);
+> -	if (!cl) {
+> +	if (!cl && !nf_ct_is_confirmed(ct)) {
+>  		nf_ct_labels_ext_add(ct);
+>  		cl = nf_ct_labels_find(ct);
+>  	}
 
-tpacket_snd sends skbs with frags pointing into its ring slots. Slots
-are released when skb->destructor is called.
-
-A call to skb_orphan calls skb->destructor before the skb is freed.
-This can cause the slot to be reused while still linked into the skb.
-
-Switch to standard zerocopy completion (ubuf_info) so the slot is only
-released once all references to the payload are freed or copied.
-Restore skb->destructor to standard sock_wfree.
-
-To prevent userspace from aliasing in-flight state on shared ring
-slots, allocate tpacket_uarg per packet, rather than per slot. This
-adds a small allocation to the transmit path. Use standard kmalloc to
-allow backporting to stable kernels.
-
-The uarg holds an sk_wmem_alloc reference, rather than an sk_refcnt
-reference. packet_free_tx_ring waits on sk_wmem_alloc before freeing
-the ring pages.
-
-As a result a slot is released when its payload is copied, which can
-be before transmission (e.g., in skb_orphan_frags_rx). Any slot
-timestamp then reflects the time of copy, rather than of transmit
-(or skb_orphan).
-
-Revert the now unused previous skb_zcopy_.._nouarg infra.
-
-Reported-by: Katherine Leaver <kleaver@janestreet.com>
-Reported-by: Bjoern Doebel <doebel@amazon.de>
-Closes: https://lore.kernel.org/netdev/20260909085542.3370986-1-doebel@amazon.de/
-Fixes: 5cd8d46ea156 ("packet: copy user buffers before orphan or clone")
-Cc: stable@vger.kernel.org
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-
----
-
-This is a complex patch for stable. I have tried a variety of
-alternatives for stable, including a two-step with deferral of this
-full fix to net-next. But all have worse caveats or side effects:
-
-- disable tpacket_snd zerocopy:
-  performance regression also on paths that do not call skb_orphan
-
-- detect tpacket skb in skb_orphan and set po->tx_copy that
-  disables tpacket_snd zerocopy:
-  - does not fix the first skb/slot
-  - hot path function now needs to check skb_shinfo(skb) field
-
-- insert skb_orphan_frags in skb_orphan:
-  - hot path function now needs to check skb_shinfo(skb) field
-  - needs extra code for virtio-net and cxgb4, which link the frags
-    into descriptors before calling skb_orphan.
-
-- insert skb_orphan_frags at all relevant callers of skb_orphan:
-  10+ sites across drivers and qdiscs
-
----
-
- include/linux/skbuff.h | 19 +---------
- net/packet/af_packet.c | 82 ++++++++++++++++++++++++++++--------------
- 2 files changed, 56 insertions(+), 45 deletions(-)
-
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index 421f6fc45451..b14d6be7370b 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -1834,22 +1834,6 @@ static inline void skb_zcopy_set(struct sk_buff *skb, struct ubuf_info *uarg,
- 	}
- }
- 
--static inline void skb_zcopy_set_nouarg(struct sk_buff *skb, void *val)
--{
--	skb_shinfo(skb)->destructor_arg = (void *)((uintptr_t) val | 0x1UL);
--	skb_shinfo(skb)->flags |= SKBFL_ZEROCOPY_FRAG;
--}
--
--static inline bool skb_zcopy_is_nouarg(struct sk_buff *skb)
--{
--	return (uintptr_t) skb_shinfo(skb)->destructor_arg & 0x1UL;
--}
--
--static inline void *skb_zcopy_get_nouarg(struct sk_buff *skb)
--{
--	return (void *)((uintptr_t) skb_shinfo(skb)->destructor_arg & ~0x1UL);
--}
--
- static inline void net_zcopy_put(struct ubuf_info *uarg)
- {
- 	if (uarg)
-@@ -1872,8 +1856,7 @@ static inline void skb_zcopy_clear(struct sk_buff *skb, bool zerocopy_success)
- 	struct ubuf_info *uarg = skb_zcopy(skb);
- 
- 	if (uarg) {
--		if (!skb_zcopy_is_nouarg(skb))
--			uarg->ops->complete(skb, uarg, zerocopy_success);
-+		uarg->ops->complete(skb, uarg, zerocopy_success);
- 
- 		skb_shinfo(skb)->flags &= ~SKBFL_ALL_ZEROCOPY;
- 	}
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 76bde7906d49..41fc053075da 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -2528,26 +2528,6 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
- 	goto drop_n_restore;
- }
- 
--static void tpacket_destruct_skb(struct sk_buff *skb)
--{
--	struct packet_sock *po = pkt_sk(skb->sk);
--
--	if (likely(po->tx_ring.pg_vec)) {
--		void *ph;
--		__u32 ts;
--
--		ph = skb_zcopy_get_nouarg(skb);
--
--		ts = __packet_set_timestamp(po, ph, skb);
--		__packet_set_status(po, ph, TP_STATUS_AVAILABLE | ts);
--
--		packet_dec_pending(&po->tx_ring);
--		complete(&po->skb_completion);
--	}
--
--	sock_wfree(skb);
--}
--
- static int __packet_snd_vnet_parse(struct virtio_net_hdr *vnet_hdr, size_t len)
- {
- 	if ((vnet_hdr->flags & VIRTIO_NET_HDR_F_NEEDS_CSUM) &&
-@@ -2587,27 +2567,57 @@ static int packet_snd_vnet_parse(struct msghdr *msg, size_t *len,
- 	return 0;
- }
- 
-+struct tpacket_uarg {
-+	struct ubuf_info	ubuf;
-+	struct packet_sock	*po;
-+	void			*ph;
-+};
-+
-+static void tpacket_ubuf_complete(struct sk_buff *skb, struct ubuf_info *uarg,
-+				  bool success)
-+{
-+	struct tpacket_uarg *tu = container_of(uarg, struct tpacket_uarg, ubuf);
-+	struct packet_sock *po = tu->po;
-+	void *ph = tu->ph;
-+	__u32 ts = 0;
-+
-+	if (!refcount_dec_and_test(&uarg->refcnt))
-+		return;
-+
-+	if (likely(READ_ONCE(po->tx_ring.pg_vec))) {
-+		if (likely(skb))
-+			ts = __packet_set_timestamp(po, ph, skb);
-+		__packet_set_status(po, ph, TP_STATUS_AVAILABLE | ts);
-+
-+		packet_dec_pending(&po->tx_ring);
-+		complete(&po->skb_completion);
-+	}
-+
-+	kfree(tu);
-+	sk_free(&po->sk);
-+}
-+
-+static const struct ubuf_info_ops tpacket_ubuf_ops = {
-+	.complete = tpacket_ubuf_complete,
-+};
-+
- static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
--		void *frame, struct net_device *dev, void *data, int tp_len,
-+		struct net_device *dev, void *data, int tp_len,
- 		__be16 proto, unsigned char *addr, int hlen, int copylen,
- 		int hard_header_len,
- 		const struct sockcm_cookie *sockc)
- {
--	union tpacket_uhdr ph;
- 	int to_write, offset, len, nr_frags, len_max;
- 	struct socket *sock = po->sk.sk_socket;
- 	struct page *page;
- 	int err;
- 
--	ph.raw = frame;
--
- 	skb->protocol = proto;
- 	skb->dev = dev;
- 	skb->priority = sockc->priority;
- 	skb->mark = sockc->mark;
- 	skb_set_delivery_type_by_clockid(skb, sockc->transmit_time, po->sk.sk_clockid);
- 	skb_setup_tx_timestamp(skb, sockc);
--	skb_zcopy_set_nouarg(skb, ph.raw);
- 
- 	skb_reserve(skb, hlen);
- 	skb_reset_network_header(skb);
-@@ -2747,6 +2757,7 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 	struct virtio_net_hdr vnet_hdr;
- 	bool has_vnet_hdr = false;
- 	struct sockcm_cookie sockc;
-+	struct tpacket_uarg *uarg;
- 	__be16 proto;
- 	int err, reserve = 0;
- 	void *ph;
-@@ -2874,7 +2885,7 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 				err = len_sum;
- 			goto out_status;
- 		}
--		tp_len = tpacket_fill_skb(po, skb, ph, dev, data, tp_len, proto,
-+		tp_len = tpacket_fill_skb(po, skb, dev, data, tp_len, proto,
- 					  addr, hlen, copylen, hard_header_len,
- 					  &sockc);
- 		if (likely(tp_len >= 0) &&
-@@ -2906,7 +2917,24 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 			virtio_net_hdr_set_proto(skb, &vnet_hdr);
- 		}
- 
--		skb->destructor = tpacket_destruct_skb;
-+		uarg = kmalloc(sizeof(*uarg), GFP_KERNEL);
-+		if (unlikely(!uarg)) {
-+			if (likely(len_sum > 0))
-+				err = len_sum;
-+			else
-+				err = -ENOMEM;
-+			goto out_status;
-+		}
-+		uarg->po = po;
-+		uarg->ph = ph;
-+		uarg->ubuf.ops = &tpacket_ubuf_ops;
-+		uarg->ubuf.flags = SKBFL_ZEROCOPY_FRAG;
-+		refcount_set(&uarg->ubuf.refcnt, 1);
-+
-+		/* Hold a sk_wmem_alloc reference until completion */
-+		refcount_inc(&po->sk.sk_wmem_alloc);
-+		skb_zcopy_init(skb, &uarg->ubuf);
-+
- 		__packet_set_status(po, ph, TP_STATUS_SENDING);
- 		packet_inc_pending(&po->tx_ring);
- 
--- 
-2.55.0.1032.g73a4cd73de-goog
-
+Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
