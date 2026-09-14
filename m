@@ -1,108 +1,69 @@
-Received: from mta0.migadu.com (out-5.mta0.migadu.com [91.218.175.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B85340B11C
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 08:24:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDCAF3F8257;
+	Mon, 14 Sep 2026 08:30:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789374273; cv=none; b=KbFx+vsc0ckbzS48KpCiLoV8/3MvutsnjyDyq7fh5TB373sv5qmF/rurKcvEunzJTyGAmQ8VQnfURjAE7kIPv99kuvrQ0f30ImO+XGHuMdrweY/g6zGF1mrAups0rElfi/q/DhD1LjO/uGLz9Megx80irSE/8lTJskFjpkiHYvs=
+	t=1789374659; cv=none; b=JsnhKfsKifP+ez5S3ER7PuVf9MbTn7zLDFxf3u4z1/5Vo1GVgqnXjAhbB5Eu7abMwDAHmx8m8EVvg9niTT1xAx2gshHwmKsD7XszTmHwncF5JjA8Ep2LBXegbjOZlZXkHK/lcDNIY9EWov9sieM00Ee++DmVo4b+tzmaLZd2lOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789374273; c=relaxed/simple;
-	bh=2CejH3qnQToq8Lckt6cRiGOTw0v5Aus/f1gzF5KY5j0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R2vV6ul5oJ/DQiAOYe0pKYxIrw4L+9enHxeOLY8kqzSwEVDB4qsDAHQOybGh+BxoUIk6NuvztRm89eA0nI3cSQf36hZAmkasZoZp0tZmfLG6Eaup00j8qvgaE3HrqDQMnFFGtdqc3ipuADj9UEsXXGdJMLyCMY1eMmNGg1KTbP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=NwuSyX6z; arc=none smtp.client-ip=91.218.175.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1789374659; c=relaxed/simple;
+	bh=jPWIkYLvL3CPASC+m6PbmIW37aCIkbWkYoBLvhavZ3Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VbtuCvRRwHJ1sMQzJo6xqvuwrjeflmTbZgDt2FF6DvNFUR5kul6xIODt9n+LL6BfoXentK9eDSkBaNXEGfgdNbnMUjv0EJdB6VaLQ++cvaIOwj64nSPdL+ZA2B7du174SWj3IXV8yaCTvz3GiXktqQ93Z3lSaqzMTET2Vj+RqQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W8r+8lXZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="NwuSyX6z"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=2CejH3qnQToq8Lckt6cRiGOTw0v5Aus/f1gzF5KY5j0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789374269; v=1; x=1789979069;
- b=NwuSyX6zOkYl0/CMIDei0mL+vctK4IjBPo3H74nhkCeijXXLNd0CntAz0XSQoS5cBOhxoiPo
- 2HHjUZ/ci+usTjfnTvutqaWycEUdBLuNWwWaKh8DQEGyYPSyS37/xuRFbb1XP0JCc3TMe1bKAGD
- YEyDvmp9pZea8uavhrLB0kMc=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id faa09a68a2868c7b;
-	Mon, 14 Sep 2026 08:24:29 +0000
-X-Mizu-Trace-ID: faa09a68a2868c7b
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <da26d2f3-7283-4e9f-85b4-6c12b9beda99@linux.dev>
-Date: Mon, 14 Sep 2026 16:24:22 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W8r+8lXZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06F6B1F000FF;
+	Mon, 14 Sep 2026 08:30:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789374658;
+	bh=6ibHar/AX28bkkoClufcFVZ+t/sQVv+pp5sGp/+SErU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=W8r+8lXZZ3xW2+zjal8D15frgt1TGkG41Fbtl3qTID46a1iLFLhqKDkmNVWBsfUiw
+	 sonR5wJYEuRP0w3yqxMC8rXRegkBNZtfGtOye+wiDq4WOnjwt+7Tkk1YF1k9CUtDTa
+	 QXQocPQu9fM21N9hQoL7AhImwPR1W1dqoB8WmOt5IYAAGe7d4C9IIsL4gQdHAX2S6X
+	 3ICn2kHqKC/Mm4BTxv4bCsL3zSsdW2+3danOj6WcpiijviXhSTij9Yr5oGfN3afJ2O
+	 9Dg/d4om250OTEuG83m2s+5YYs+5OXQORqpaxXhToGrVy2tNjOjNyCP61T6MjTO6uT
+	 iy4uwSzOxyjsQ==
+Date: Mon, 14 Sep 2026 09:30:53 +0100
+From: Simon Horman <horms@kernel.org>
+To: Myeonghun Pak <mhun512@gmail.com>
+Cc: Jiawen Wu <jiawenwu@trustnetic.com>,
+	Mengyuan Lou <mengyuanlou@net-swift.com>, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, linux@armlinux.org.uk, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ae878000@gmail.com
+Subject: Re: [PATCH net] net: txgbe: free the fixed-rate clock on cleanup
+Message-ID: <20260914083053.GM48209@horms.kernel.org>
+References: <20260911155318.88857-1-mhun512@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf 1/2] bpf: drop duplicate check_app_limited in
- tcp_bpf_push
-To: Geliang Tang <geliang@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Jakub Sitnicki <jakub@cloudflare.com>, Eric Dumazet <edumazet@google.com>,
- Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Sabrina Dubroca <sd@queasysnail.net>, David Howells <dhowells@redhat.com>,
- Matthieu Baerts <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>
-Cc: Geliang Tang <tanggeliang@kylinos.cn>, netdev@vger.kernel.org,
- bpf@vger.kernel.org, mptcp@lists.linux.dev
-References: <cover.1789368148.git.tanggeliang@kylinos.cn>
- <f12f1d886c8ff2b6f6e48f797ccc861037eda685.1789368148.git.tanggeliang@kylinos.cn>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <f12f1d886c8ff2b6f6e48f797ccc861037eda685.1789368148.git.tanggeliang@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260911155318.88857-1-mhun512@gmail.com>
 
+On Fri, Sep 11, 2026 at 11:53:18AM -0400, Myeonghun Pak wrote:
+> The fixed-rate clock is registered with clk_register_fixed_rate(), but
+> its error and removal paths use clk_unregister(). That unregisters the
+> clock without freeing the fixed-rate provider allocation.
+> 
+> Use clk_unregister_fixed_rate() on lookup creation failure, later PHY
+> initialization failure and removal to release the provider allocation as
+> well. Keep the existing clock registration and lookup cleanup ordering.
+> 
+> This issue was identified during our ongoing static-analysis research while
+> reviewing kernel code.
+> 
+> Fixes: b63f20485e43 ("net: txgbe: Register fixed rate clock")
+> Assisted-by: OpenAI:GPT-5.6
+> Co-developed-by: Ijae Kim <ae878000@gmail.com>
+> Signed-off-by: Ijae Kim <ae878000@gmail.com>
+> Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
 
-On 9/14/26 3:14 PM, Geliang Tang wrote:
-> From: Geliang Tang <tanggeliang@kylinos.cn>
->
-> When the sendpage->MSG_SPLICE_PAGES migration series replaced
-> do_tcp_sendpages() with direct tcp_sendmsg_locked() calls, callers that
-> had used do_tcp_sendpages() kept an explicit tcp_rate_check_app_limited(sk)
-> that was originally needed to cover do_tcp_sendpages() (which did not call
-> tcp_rate_check_app_limited()). After the inlining, tcp_sendmsg_locked()
-> always provides the check, and the outer call became redundant.
->
-> The site changed here, tcp_bpf_push(), is a MSG_SPLICE_PAGES loop that
-> holds the socket lock and only iterates when size > 0; tcp_sendmsg_locked()
-> is invoked on every iteration with state identical to what the outer call
-> sees, so dropping the outer call is safe and behavior-preserving.
->
-> A potential benefit of this change is that it facilitates future reuse of
-> tcp_bpf_push() for sockmap support in protocols beyond TCP, such as MPTCP.
-> Since tcp_rate_check_app_limited() is TCP-specific while sendmsg_locked()
-> is a generic interface in struct proto_ops, this change allows us to switch
-> to different protocols via sk->sk_socket->ops->sendmsg_locked() without
-> carrying protocol-specific assumptions.
->
-> Fixes: ebf2e8860eea ("tcp_bpf: Inline do_tcp_sendpages as it's now a wrapper around tcp_sendmsg")
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-
-Same as the tls one: this looks like a cleanup to me. Is there a real 
-regression that affects kernel or user behavior?
-
-Do we really need a Fixes tag?
-
-
-> Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-> ---
->   net/ipv4/tcp_bpf.c | 1 -
->   1 file changed, 1 deletion(-)
->
-> diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-> index 2e234d155b5e..d5fcf3ce4861 100644
-> --- a/net/ipv4/tcp_bpf.c
-> +++ b/net/ipv4/tcp_bpf.c
-> @@ -108,7 +108,6 @@ static int tcp_bpf_push(struct sock *sk, struct sk_msg *msg, u32 apply_bytes,
->   		off  = sge->offset;
->   		page = sg_page(sge);
->   
-> -		tcp_rate_check_app_limited(sk);
->   retry:
->   		msghdr.msg_flags = flags | MSG_SPLICE_PAGES;
->   		has_tx_ulp = tls_sw_has_ctx_tx(sk);
