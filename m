@@ -1,184 +1,105 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D361C4854E2
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 15:57:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3ADC36A369
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 16:04:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789401433; cv=none; b=mjpWL5q+yKaAanBi0igf77kpwUnK4iSoFjVYHnR0SptF7BVX2UlW9siG0q7pX280AGGtAxNqUn7tZSUJkRos3E4VGarE1hIR14x3KacNWz4xqJybyS93qtI5yw/igprmiJ5cok32IMf0ev7PBMbyStCWExpUgfuBLpLX87mbrp8=
+	t=1789401895; cv=none; b=W89dkm2VIGb3d0JL1RsvloI6jEnu0HhT7m96ZWRbHvE/hNQd4i/2VKKz03U8OZMu9KFXd+B9lqcewk1ykwR8LqLYydVaClRuhXwuusC2DU5odX5K4vLHUIkf1e/2QejPSy66ZrtR3eMnchpSOwaKF2fWcZGpyovyB9TtCenzbiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789401433; c=relaxed/simple;
-	bh=ywhjiYa8sz83VLckyrtdhzFmvCtPRCP4Hc4K0b9W5kM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jqNxy7jAII4zdNv875YSsHrkS5EN2bBxGuwy5GNIM9Rbm0fN/r1iXpXdgB6KA2iqZR5VZKC1HkZXJ6Jv5pzWJPSIqDLgzoCOuNcQ2/Kay+cxkQbJyCfuitq6pHbzmeQjbeDymdVcZNt4kZDiq0G1ynKbgVQ37y6zrRUjhtA87mI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y1omn6uf; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789401895; c=relaxed/simple;
+	bh=Sgn87V/ffdQ0Mw2u0QtttnnD5720T1tTrgEBiXpaGcA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Pe+wtmXu4uh0NMBiuSi1g+ykc6jk+vpwRQeL93u4hsKApG7RBnHeLsnhspnOuKD3sBnZa+a+tvTZs+8udmH27bc9ONEQoLknFSY9hIvPaXseM77ot+PKEmygTnoEGOx/9OlMp3O9f8wnfGN7vmCyiQmwrBHpv4L3qNvvRVlde1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=XzkbyW0i; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y1omn6uf"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b0dd3e1d0so847065e9.0
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 08:57:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="XzkbyW0i"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e7cd09b36so341745e9.0
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 09:04:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789401429; x=1790006229; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Tamt12O2uhKCFMMbIkEpJmlX30Wke4onDdSC/Kq2BvI=;
-        b=Y1omn6ufOmc6TMlYctDhWyQL4V0fiPDtr4OPJz12u7h/dqorDa4z0/3veP3eVU+E2l
-         lIHxTkyebhYrUB6SZfe5djhUOU/jPXiaGCj2GS8S6MffLUAKLRcQOYaoIxW2XuL9VqJd
-         8xsXLe2klBnrDsYI4/BMvqAiPpTUJsE/gDefPij0GFMVkoqPqZ7+ps9uIg5TwvwkkGWU
-         IiEmgzMJicqztKRML7fhbY6MLrBO+shWdig93H2IUoZEEsokg9LdeUYCmUdW1CXyZALa
-         4HMEgoUsKRTMUQJSs8EEvf8dUJgrx/bFhtUz/0TLRMvDjNp2N05rIj1i1BB8JL4KtL5Y
-         wFnw==
+        d=6wind.com; s=google; t=1789401891; x=1790006691; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :content-language:from:references:cc:to:subject:reply-to:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=c2e/oQkBlRuHGocwCZrcUxkwTAc0GxvFf1MGdOjknyk=;
+        b=XzkbyW0iKKz9d9PcJHOTcSIob/MlbyKvGe+ZoDPvMtkwwmacU2JdDY9recjcpaOQ7h
+         5pu6SGEDKVamOzoyR+0xkW8N66anfEntWbVcxiYwkM8tyJf36EwXrnJ+fqg3j1IlWu5T
+         hHSyEymKM7mtizy6MSXOoBchAloasbUMrncWHzaxx5cz/+EAzDz6CHJwS9VmgKdcmKAO
+         uLEqCPdAUabWxhA8fZ0JP3PxaN4Nll/7kth5HYohg+oVIlEeJ5UsmpuIWQ9sGXC3xIkL
+         0dRzB1nPv4OX5eRhHsWkLbmh8YEryB41Yweu4EbesKuEwR60pHr2R9Og9BDskNmB7si3
+         jAVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789401429; x=1790006229;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Tamt12O2uhKCFMMbIkEpJmlX30Wke4onDdSC/Kq2BvI=;
-        b=SudoMKduifj63m8H1op5F6Ktno3VSSDjZdXm3DKlZSNDaYhsHStfeNlWQ3cSiRwiaH
-         /fiRtZCM1G4cFicY1kFUwUtoqup0RkqvJ4mVNW/waDrx8b+fe+MsCreSHx/2j1ylj3+c
-         kHdPo7cwNikzhewSNJH4/sXaqeDhBFXc5qvrKu31brwI7EWBF6NYTXmr/7WxQLDhX0aI
-         crsfIbj5K/I2WH1EdCH2gSy5mosArxv26aah+Cs/rpMbkk7tuYGoEu6fmujKRzwnCMdL
-         jFle8w4nCTa8Zfy4/MTLsCiagmlbMnL1YdYTpNNN8CfWQgHnrbQROBSto1/ESn0pnO4G
-         ybaQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxtiE/jtZfSB1esAulpgTATTjw8E4SMpoAYMsOJun7IRNHqQ8DBRYoXVJpo2kbKXu46RSMPsR4=@vger.kernel.org
-X-Gm-Message-State: AFuF++mOJlV6Z1b1XtFKpS7IY7wOsF3Ij3s1cSFOnFbttlypXwcv5+zo
-	JrRWieSsgaD9PZ4Lz6/PX0nhAUZKiylrfPcYiVJEaBLxLJQZT5sFSypz
-X-Gm-Gg: AYBFou0FXvaeRVuyiAUT/epN4K//Zrdf1Ek0RQByQ2kX3JxA13ZpeT0s6oWwMv9QwFj
-	erYNneHJNVbNresT0WsWUTUgKh8Ui6kpU3t02nolR98O1qfX8/+lPG4hsunkuXQdyPWpcuxiWRh
-	d6WiX0GJI2U8DefP83A3j41fvfrbZX7VIqIq4KYvr9TGVSH7tePOomI163dQ+B3zSycBNJMWExm
-	yMWQdftm0rldekomC6m/6tivc9S8qnOBBjn72weLYQ+7bcuHyiP8EqO5RHdt5y79sow9hkxOeus
-	JG1YJP6dFlkuySh8vaItsI+e1geeDqDkEJPXTv4stE8ORyAzQqNcxSnQq+z2gZvvLNkLWbMpbKQ
-	ZLoMXywd4zent3G4UgVHXHh1G/OZCNG0BC2Ljpb5o5+Gu7X8Tlz2a2BuKl6Y5miIufAe7yko28w
-	9zZTv9xVa3mDAm2ML5sNwsKZQZyuEhq/4jlSDxjRyRW+1E2nJ9RrG1stOBvYN4WkjfTGLulkI5n
-	2NmfbOuZO0h6TAG1vVq
-X-Received: by 2002:a05:600c:19c8:b0:49c:f9b8:bae0 with SMTP id 5b1f17b1804b1-49e7a68a919mr41608245e9.2.1789401428854;
-        Mon, 14 Sep 2026 08:57:08 -0700 (PDT)
-Received: from Nuel20.localdomain ([105.113.61.233])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e7d6aa69csm787275e9.11.2026.09.14.08.57.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 08:57:08 -0700 (PDT)
-From: Omokefe Emmanuel Onanaroghene <emmaonana18@gmail.com>
-To: linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org
-Cc: corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	rdunlap@infradead.org,
-	mchehab@kernel.org,
-	aleksander.lobakin@intel.com,
-	aleksandr.loktionov@intel.com,
-	tudor.ambarus@linaro.org,
-	emmaonana18@gmail.com,
-	bvanassche@acm.org
-Subject: [PATCH] docs: kdoc: fix struct_group_tagged() parsing regression
-Date: Mon, 14 Sep 2026 16:51:27 +0100
-Message-ID: <20260914155127.21515-1-emmaonana18@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20251104; t=1789401891; x=1790006691;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :content-language:from:references:cc:to:subject:reply-to:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=c2e/oQkBlRuHGocwCZrcUxkwTAc0GxvFf1MGdOjknyk=;
+        b=B9eWoQ9sBbqqu5CVMktA2kX5Ff+5O5qT53uicQV8FsD7QlEycNjLs9UOu0o6cVDAwW
+         ALkS8667LzcIx63/tOIKrhci6+vqaz0ijEVihkrKYkcf0BnS0G8F5K/Qw8JU4IWy6RTy
+         2VjFhnolF6EbtVXgcMB7y8VhKJ+XaSPCWl6bqaYxDkfT1zITOJJixQDYzr8uVIOB4hec
+         wGDhwvAzyC7XVgtGe2rEanYNmvmb76fMIDlsCaUiIXcgPjs0NhDvv7lotyxKKP6yVzWl
+         1ltkfmUnn5medZwfLXGyIrTzpxVGcBLJDPjg76oKNnXCEjKu4PV1Bjx1Gt04IByaQj5h
+         tjJg==
+X-Forwarded-Encrypted: i=1; AKwUvBx0d/TrQg1SmxD+vTNKeJK1MB3821GshY4daR0A7Bbr0btSPt8Xk0srA5y/hlhX71n4YnpH/AA=@vger.kernel.org
+X-Gm-Message-State: AFuF++n/lSnKzXadyW8gI2/Zsq4WxTSj5g7q1HiThCe3ZusXadsiywjP
+	MnBIJ/1Q8PJ3HgcaNIFK2MNPzhIlU8D7B92Jz74SWxG1LCWHW7FyO/UwDwJreI4KYEY=
+X-Gm-Gg: AYBFou1jxRSajQqt9njORRmjerxpSXzsFYEzZFP046SprFi3Okrj6dY0cbWNOHAsknb
+	9ETdAEmy0l3Y7TkROzD2jqos1bPdfanrzu24mD9Di8p+St6K4JUsg283t/gitqtPHz8k4Rud3vN
+	knA1/v63TGXI10Ko7ivjl+dkw1/trC8qdrJlSQjp16hZA021EMdcBo92wfgsm8AEOgp4LfAc8lP
+	IF7xxM0001/pB2oJVP30Y+Bd7KcDUn8q4s7dE01mDBcp+T1XMGLXK3SYtXvNaTIaXGHJjuVC9po
+	Pta9HAL0ymGI1yh2B8VmQkv4XRX9IM8u6pasiJ6PS/ZKreRMlV/0SAyg7+lVOih1DkgMIIOgoxn
+	YCfy2q92CAhXMFmhYPyPwjhUFtsj2zlstAYqVIe68KggTJW8HVFHR1ehwZExUiF6IOHp1Ay+w4B
+	H5qAba4pYdQuByC49xcuGPZFxFXclLrmnswyZwLJbjGDtS5FiYxJccv9pBsljbywPdjlA0jt4aZ
+	Qq0doukvzx5mhRTs+KYRec5WUVZ1p12q9gj9UM4FCU+xHUFM0gl
+X-Received: by 2002:a05:600c:19cf:b0:49d:1da4:511b with SMTP id 5b1f17b1804b1-49e7a6859e1mr35897685e9.1.1789401891025;
+        Mon, 14 Sep 2026 09:04:51 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:ab7:2110:6a1d:efff:fe52:1959? ([2a01:e0a:ab7:2110:6a1d:efff:fe52:1959])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486eb35bed0sm28874405f8f.32.2026.09.14.09.04.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Sep 2026 09:04:50 -0700 (PDT)
+Message-ID: <29afa1c3-b1db-4e98-9640-104251cdfa2e@6wind.com>
+Date: Mon, 14 Sep 2026 18:04:49 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Reply-To: nicolas.dichtel@6wind.com
+Subject: Re: [PATCH net-next v5 4/4] selftests: net: test AF_PACKET multicast
+ dumps
+To: Yuyang Huang <sigefriedhyy@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
+ Donald Hunter <donald.hunter@gmail.com>, Eric Dumazet <edumazet@google.com>,
+ Ido Schimmel <idosch@nvidia.com>, Jacob Keller <jacob.e.keller@intel.com>,
+ Jakub Kicinski <kuba@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Nikolaos Gkarlis <nickgarlis@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
+ Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>,
+ Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf.kernel@gmail.com>,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20260914014539.5015-1-sigefriedhyy@gmail.com>
+ <20260914014539.5015-5-sigefriedhyy@gmail.com>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Content-Language: en-US
+Organization: 6WIND
+In-Reply-To: <20260914014539.5015-5-sigefriedhyy@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-kernel-doc reports struct_group_tagged() members as excess because
-the macro transformation rewrites it to an anonymous struct and drops their
-member names.
-
-Keep the tag and member name when transforming struct_group_tagged(). The
-nested members are then recorded as names such as fast.order; accept the
-existing unqualified @order documentation tag during validation.
-
-Add a regression test based on struct page_pool_params.
-
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://lore.kernel.org/all/0cf8ea5f-418f-45f0-907c-3d1ed4f03e9f@infradead.org/
-Fixes: 2f07ddbd5793 ("docs: xforms_lists: better evaluate struct_group macros")
-Signed-off-by: Omokefe Emmanuel Onanaroghene <emmaonana18@gmail.com>
----
- tools/lib/python/kdoc/kdoc_parser.py  |  4 ++-
- tools/lib/python/kdoc/xforms_lists.py |  2 +-
- tools/unittests/test_kdoc_parser.py   | 37 +++++++++++++++++++++++++++
- 3 files changed, 41 insertions(+), 2 deletions(-)
-
-diff --git a/tools/lib/python/kdoc/kdoc_parser.py b/tools/lib/python/kdoc/kdoc_parser.py
-index d9ad1ddc87dd..ced09504f3d7 100644
---- a/tools/lib/python/kdoc/kdoc_parser.py
-+++ b/tools/lib/python/kdoc/kdoc_parser.py
-@@ -635,7 +635,9 @@ class KernelDoc:
-                 continue
-             if param_name.startswith("{unnamed_"):
-                 continue
--            if param_name in self.entry.parameterlist:
-+            if param_name in self.entry.parameterlist or \
-+               any(actual.endswith('.' + param_name)
-+                   for actual in self.entry.parameterlist):
-                 continue
- 
-             hint = self.get_suggestions_hint(param_name, self.entry.parameterlist)
-diff --git a/tools/lib/python/kdoc/xforms_lists.py b/tools/lib/python/kdoc/xforms_lists.py
-index e3dda2fe8a53..9e8b3a6b1da1 100644
---- a/tools/lib/python/kdoc/xforms_lists.py
-+++ b/tools/lib/python/kdoc/xforms_lists.py
-@@ -60,7 +60,7 @@ class CTransforms:
-         #
-         (CMatch("struct_group"), r"struct { \2+ };"),
-         (CMatch("struct_group_attr"), r"struct { \3+ };"),
--        (CMatch("struct_group_tagged"), r"struct { \3+ };"),
-+        (CMatch("struct_group_tagged"), r"struct \1 { \3+ } \2;"),
-         (CMatch("__struct_group"), r"struct { \4+ };"),
-     ]
- 
-diff --git a/tools/unittests/test_kdoc_parser.py b/tools/unittests/test_kdoc_parser.py
-index c4a76ed13dbc..1a8287e99f2e 100755
---- a/tools/unittests/test_kdoc_parser.py
-+++ b/tools/unittests/test_kdoc_parser.py
-@@ -418,6 +418,43 @@ class TestSelfValidate(GenerateKdocItem):
-         """
-         self.run_test(self.SOURCE, [self.DEFAULT.copy()], self.EXPORTS)
- 
-+
-+class TestStructGroupTagged(GenerateKdocItem):
-+    def test_nested_struct_group_tagged_members(self):
-+        source = """
-+            /**
-+             * struct page_pool_params - page pool parameters
-+             * @fast: Fast path parameters.
-+             * @order: Order of pages.
-+             * @pool_size: Number of pages.
-+             * @slow: Slow path parameters.
-+             * @netdev: Net device pointer.
-+             * @queue_idx: Queue index.
-+             * @flags: Flags.
-+             */
-+            struct page_pool_params {
-+                struct_group_tagged(page_pool_params_fast, fast,
-+                                    unsigned int order;
-+                                    unsigned int pool_size;
-+                );
-+                struct_group_tagged(page_pool_params_slow, slow,
-+                                    struct net_device *netdev;
-+                                    unsigned int queue_idx;
-+                                    unsigned int flags;
-+                );
-+            };
-+        """
-+
-+        kernel_doc = KernelDoc(self.config, "test.c", self.xforms)
-+        patcher = patch('builtins.open', new_callable=mock_open,
-+                        read_data=dedent(source))
-+        with patcher:
-+            _, entries = kernel_doc.parse_kdoc()
-+
-+        self.assertEqual(len(entries), 1)
-+        self.assertEqual(entries[0].warnings, [])
-+
-+
- #
- # Class and logic to create dynamic tests from YAML
- #
--- 
-2.43.0
-
+Le 14/09/2026 à 03:45, Yuyang Huang a écrit :
+> Dump the link-layer multicast addresses of a dummy device and verify
+> that ifa_index restricts the dump to that device, that the all-hosts
+> address joined on link up is listed without IFA_F_GLOBAL, that an
+> address added with SIOCADDMULTI is listed with IFA_F_GLOBAL and
+> IFA_MC_USERS, and that IFA_TARGET_NETNSID dumps another netns. Skip
+> when the kernel does not support AF_PACKET dumps.
+> 
+> Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
+Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
