@@ -1,134 +1,179 @@
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F382199EAD;
-	Mon, 14 Sep 2026 20:17:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789417076; cv=none; b=RIp/SeDz8EI9bIAffufRO6evgFKa6PY+5XJYWFT8JblOCvwdClwR9j81WRZeZ4pzXmT7qi0qpTLynGR46nbFXkn1jbubZy7ZVsGHliNSErUknLMmB4JyaVXCRFdBIZB7dJYEMEgftluSya7//kSu1T8KsowmXSh2gG8rFFsRQ+k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789417076; c=relaxed/simple;
-	bh=ZNspXXoo+dfPTFPPQyXEBwDtTzS6AnZNJIycwnLE6zk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D8vvZsxsxnM8LKxu6IJcM1GbYjaVJf3DBcskltP8C/PDdLcgJnI99Te/KdiPkmZUgQpN1miiX3+nIsUYR0BCNeJyP6aifZelpQ3i1yDN9FKUWL2rgzkZfdc37oNnOCm8o9xsT06kRK2jlCbVxHLb5m+yytSnoTxAnnIoUbJaAUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; dkim=pass (2048-bit key) header.d=molgen.mpg.de header.i=@molgen.mpg.de header.b=Onun/M5C; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6835A360EF2
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 20:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789417297; cv=pass; b=KEV4nEthKD6HppondODAmEshNJ+SDZQzTUf+IDZ59cA4uWBQRSZPJmmLOXHtWHV+rcpSZuDzU3dmwsQqbGK04rV4540Nh6HjWwXK2i8sPY94JOFZtLW9Cnjba/trr1AxhgMATXg8SYeyzzXi1MYSIdnKFo8mhk//Ad9azhDRrN8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789417297; c=relaxed/simple;
+	bh=MDyoROjaxtyy3kt1wLEk22lLIUHmORSnmJ1iUH6bkUE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=S0tVvu+67JX8Io7zZz4GWfqz3YGRmtwWAiCr+fBBALODnP4eP8LfgfdTfjOr/fa3fVLak7ma3psg6aMH1K3R74yKhucDqm1TkIy17badAOZJEIocxJYz3GjRr/NkPF8rtNy1YqwuRbUvTEpCzH94vUa98wR2Pyx23NBs7LYIzgw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kzCBiyAv; arc=pass smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=molgen.mpg.de header.i=@molgen.mpg.de header.b="Onun/M5C"
-Received: from [192.168.0.150] (ip5f5af454.dynamic.kabel-deutschland.de [95.90.244.84])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 423EB4C2C37D66;
-	Mon, 14 Sep 2026 22:08:23 +0200 (CEST)
-Message-ID: <00e575df-526a-4e1f-87b1-a084ace25f96@molgen.mpg.de>
-Date: Mon, 14 Sep 2026 22:08:17 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kzCBiyAv"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-530de0bab75so28683561cf.3
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 13:21:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789417295; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qokUuG/xT/UzRCnTNT3/8K4noh/D35QGKXOM0Z3SgMWC3HBDYPUFvtfb+HwxRYOxFa
+         kmQRm1z8DfhZlkfZ1n9tLHAN8FmqjhkzP6FgdQ8myEG1bpBiFmN0n0DE2+11esrMVNjN
+         FuKmXp20tL414ch2y3qfCrES/vJHhxP34tRRXjkCjAkMyyykwp0Y54XVJZzfWpwnFdaH
+         QxYLjonIFgl1cecsI62I0iBvMJwyIC5F/pwEUx+ACw5/gDnwIeNKThkLE7EGWR8Fb6ro
+         5XsKHoVJTvL1Z5SqSPKu5VOjbQK/e/fzUA0dZMcmskKhjaZGpiibJF/0VSfmCWG2gLoh
+         zRDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vB4z5ld/pqswcEJ5booeeR+UrUp3UtJZoZTxdNkowH4=;
+        fh=2NEJTM7n8fjtidopeTXiTh56V12WkRGOAQ54WM1Bp+Q=;
+        b=PsTGLwkp6IKiMC5JJ/cCv/U4tVgQX41iQDxD9gbFgLp8KqJclXn8wRGNRheqOVp5Nj
+         zF8xG1ncLWC0+DYYily5KMzBvk3dPDQA9hZVkGqrvsMMD7Xc506oeejQ2ifKViawuib+
+         K7UKvKGqWI9iu8M9CYZgjWch/muAlPbIGqlybanZ8b7u8pVn8HwLp8x4oMuzw6O3v8+s
+         ldJzbQLM2+3wLjdI/4fLHgKC3Bygw8a6BmNH6sb6pPCOhokObBZmtrWRR1qixItXYQ7S
+         NucU3Mt4cnsxNcMAXASNRm1XWFhaz1Bv0UMVqMwVwszMfUCBpAPaxIEd9W+99/k2Yh+/
+         C5uQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789417295; x=1790022095; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=vB4z5ld/pqswcEJ5booeeR+UrUp3UtJZoZTxdNkowH4=;
+        b=kzCBiyAvIknmqnPn20uUsa1lhbPWZ/rVFTCB48A2bA/PGjVd06fXdC6TCRJS3rIJPB
+         PgJOOdKal7Nx4eLDDLbbUk6qWKs9s3rnpWqoIakReWbtLuj2fknLhvKLdr9tZYpz0ek9
+         DQPzfoxV1Eo64mLfJGh/iFkG02Baw32TpNMeZO2Dexpb9yvHTGaS/qoo9t7K1nfTd991
+         fZ6XU762ZBaCcPKqh+49ahudFTH26cukAZ/qSxMhreBcLJXVInVTOR99GBwnhxnTAEDA
+         XFrlf4xmDpuxiPQQ/gPeLAYcqewaarHbCkoaV49VGLYpUqZXhXWmqaIvbgdub+myheDV
+         riHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789417295; x=1790022095;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vB4z5ld/pqswcEJ5booeeR+UrUp3UtJZoZTxdNkowH4=;
+        b=LoVeZ5dX/CJn9YDyBfq3uy5aEH0zp97wT4J+mVvUecFs+VBv+I5Jkj5dleC+0Yo8yv
+         hostQV3zPpKmlMBpSUBokj+0oCfJOs687NuMQVjToh6zoYZnhTyhlzOIhO/lzHdfXGl8
+         u1toDkzqMn5itRyRwZsvM+cpkxIUduNrQnQ7ost1VJkyNnAkqeWr0Xo1lvNJEwkPqaeV
+         t48yqSMiMMLc3Z/RM990N9DMhLUFDyohtaRyi0EX8uBOYoy6Q/iQPZYbji4qwG3BhWDe
+         SZesV7N15VE6cG0ZJphdcLIO7zE3TGpR0r0o6oiLuJYXOq6CoA1xLV0o3Nl4m6Tmrwkp
+         aM/A==
+X-Forwarded-Encrypted: i=1; AKwUvBwiJc9wxXwcJw5pcSX4dBh7N7Y6Zqx+qLWOzGk2sj7AVZtVUZByqNz7SX0dM2PmMvTNqniZQKE=@vger.kernel.org
+X-Gm-Message-State: AFuF++klav6eQMK8E9wfnZzrdSWj6sHHdjLtfOuVCEWI4KlNstZ2cdl0
+	bupqcEpg+mrO8cVRX7daD3Di7+7vUOrdJlu4KnGVuRO63lcQd9vnufDLx5QrO4FDQyF380+PPHU
+	w30Rn7bnrBSYCNh3c4yczah1qJfasdo2FBbdO00m7
+X-Gm-Gg: AYBFou1k7QFiiwvtvSjIMwS6gPyNKlDuaVzymK+4Xo7d2YebeH9yqjyulsXajvwnv3Z
+	5G7SlonJ4kL1beHM+n5AbJA2ZtFURD/Sz6z9jxs3sOpW1bwHVQOU1gagcRgXMzeq1jY14KVos2i
+	kniHcpXjOpOGkj/Wl00oSRTMzGtePdJRIlSTzsBCMCe0NsYzB7f5HXume/0pSE1JwYNNyhRHEmE
+	7RSSTqs7ZXDPqo8/WlP71EnY+0E4e69PEda/L8/7/5uuMMGumqVplqJL//wZc8GFNHwHlUvNOaF
+	DwHoOPu7mmsLwpxOd+kkfSRHaMm8XNevypctq5iQ1mEsP8HXHd1dw/eILt2kqxi+rbDYKvSDbzP
+	MxfPS5sjMXh5vQM86kuFJJUw6gfM8uc6S6VTRtitrAHAUdtaVISB9llEmqpgZMelcXQ317H2Ul/
+	ZVn6/+Jqbz7gcgSNRr4nEMRA==
+X-Received: by 2002:ac8:5e4a:0:b0:52f:ade5:cf07 with SMTP id
+ d75a77b69052e-5310d026154mr60992771cf.34.1789417294469; Mon, 14 Sep 2026
+ 13:21:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] e1000e: roll back registered MSI-X IRQs on failure
-To: Runyu Xiao <runyu.xiao@seu.edu.cn>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, jianhao.xu@seu.edu.cn
-References: <20260914142014.428184-1-runyu.xiao@seu.edu.cn>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20260914142014.428184-1-runyu.xiao@seu.edu.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=molgen.mpg.de; s=20260906; 
-	t=1789416503; 
-	h=from:from:subject:date:message-id:mime-version:content-type:content-transfer-encoding; 
-	bh=17omEsBkSdIGbP1denohxoZc3O5NXS7kzLEED9AccTg=; 
-	b=Onun/M5C3PXaFeWCaUYqBNJSGYuKCUsKfuSN8hRv3Cm+FjW+t9SeOYKrY0fiaGjmya/w78QMcFQh
-	eTMZshh55uLQj9SiheBSpi4MurNPb3hYfCJYFUPy8FPxdvsLcACQ8Er1Cf6XU2AooIOYIpIdXUVHLQ
-	yL3WfsTKCC5k/K6WWteEmAHsezm2Hp/HGas5Uvzef4nYWajBNDus1Q6UW/Dova5Ynq/2MItPbLrsT3
-	Fiw6JceKiKY9ztRSasI+DstXyKzvBdliep4I0+n6LfK6kvO1lpqRuZOdijNIJbFTsjkAlHOwF/YDX4
-	Vw1NgYEd4oY3gnvj9E4sU8ZQhExbEUKg==
+References: <20260911073758.2714564-1-xiaolinkui@126.com> <CAAVpQUAUAgAVutpQgMu4LjG1KOpm9Du0Kw1kbp2vHtHqQ5USZw@mail.gmail.com>
+ <CANn89iJTMxWERqz1tdxuQ2jW6Rr7xN_ceh_yejtrBTPwN_YEeg@mail.gmail.com>
+In-Reply-To: <CANn89iJTMxWERqz1tdxuQ2jW6Rr7xN_ceh_yejtrBTPwN_YEeg@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 14 Sep 2026 13:21:22 -0700
+X-Gm-Features: AcwNN1VHGOuXR92ZZx6YdPTmJhhi5lWBngDT8spr92jnLRYRfzCHvAqmKTmPEXE
+Message-ID: <CANn89iJfphTDBFKdNkgmBHDybc8wV2EGSJoiHvzR0ht4V2bMAA@mail.gmail.com>
+Subject: Re: [PATCH] ipv4: fib: annotate data-race around nh->nh_saddr
+To: Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>
+Cc: Linkui Xiao <xiaolinkui@126.com>, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, idosch@nvidia.com, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Linkui Xiao <xiaolinkui@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Dear Runyu,
+On Mon, Sep 14, 2026 at 12:57=E2=80=AFPM Eric Dumazet <edumazet@google.com>=
+ wrote:
+>
+> On Mon, Sep 14, 2026 at 12:51=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google=
+.com> wrote:
+> >
+> > On Fri, Sep 11, 2026 at 12:38=E2=80=AFAM Linkui Xiao <xiaolinkui@126.co=
+m> wrote:
+> > >
+> > > From: Linkui Xiao <xiaolinkui@kylinos.cn>
+> > >
+> > > fib_select_multipath() compares nexthop_nh->nh_saddr against the flow
+> > > source address with no lock held, while fib_info_update_nhc_saddr()
+> > > stores a new value from another CPU as soon as the preferred source
+> > > address of the egress device changes.
+> > >
+> > > Commit 195374d89368 ("ipv4: fib: annotate races around nh->nh_saddr_g=
+enid
+> > > and nh->nh_saddr") added WRITE_ONCE() on the store side and READ_ONCE=
+()
+> > > in fib_result_prefsrc() after syzbot reported
+> > >
+> > >         BUG: KCSAN: data-race in fib_select_path / fib_select_path
+> > >
+> > > but it only covered that reader. fib_select_multipath(), reached from
+> > > fib_select_path(), is a second lockless reader of nh->nh_saddr and wa=
+s
+> > > left bare.
+> >
+> > 32607a332cfe added the reader after 195374d89368.
+> >
+>
+> Indeed, please put in V2:
+>
+> Fixes: 32607a332cfe ("ipv4: prefer multipath nexthop that matches
+> source address")
 
+Adding Willem
 
-Thank you for your patch.
+It seems that this code also lacks a check against genid?
 
-Am 14.09.26 um 16:20 schrieb Runyu Xiao:
-> e1000_request_msix() requests the RX, TX, and other-cause interrupt
-> handlers sequentially. If a later request_irq() fails, the function
-> returns without releasing handlers that were registered earlier. The
-> caller then disables MSI-X and falls back to MSI or legacy interrupts,
-> leaving those handlers registered against disabled MSI-X vectors.
-> 
-> Free all handlers registered before the failing request in reverse order
-> before returning the error. The failed vector is not freed, and the
-> existing fallback path can then disable MSI-X without retaining stale
-> handlers.
-> 
-> A QEMU e1000e test with deterministic failure injection at the third
-> request_irq() reproduced a residual IRQ entry and warning on the
-> unfixed kernel. The fixed kernel reached the same fallback without the
-> residual entry. The injection is deliberate and does not claim that a
-> third request_irq() failure occurs spontaneously during normal operation.
+diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+index 50e96f86ca59ab164f764f5d2185d158c14a4a6a..5a8bbcb65daaada1c3ae96339ca=
+bc2e801653dac
+100644
+--- a/net/ipv4/fib_semantics.c
++++ b/net/ipv4/fib_semantics.c
+@@ -2185,6 +2185,7 @@ void fib_select_multipath(struct fib_result
+*res, int hash,
+        bool use_neigh;
+        int score =3D -1;
+        __be32 saddr;
++       int genid;
 
-Could you please amend the commit message, and give more information how 
-to reproduce this exactly, and get the warning?
+        if (unlikely(res->fi->nh)) {
+                nexthop_path_fib_result(res, hash);
+@@ -2193,6 +2194,7 @@ void fib_select_multipath(struct fib_result
+*res, int hash,
 
-> Fixes: 4662e82b2cb4 ("e1000e: add support for new 82574L part")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM Codex
+        use_neigh =3D READ_ONCE(net->ipv4.sysctl_fib_multipath_use_neigh);
+        saddr =3D fl4 ? fl4->saddr : 0;
++       genid =3D saddr ? atomic_read(&net->ipv4.dev_addr_genid) : 0;
 
-Please add the version.
+        change_nexthops(fi) {
+                int nh_upper_bound, nh_score =3D 0;
+@@ -2205,7 +2207,9 @@ void fib_select_multipath(struct fib_result
+*res, int hash,
+                    (use_neigh && !fib_good_nh(nexthop_nh)))
+                        continue;
 
-> Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
-> ---
->   drivers/net/ethernet/intel/e1000e/netdev.c | 9 +++++++--
->   1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-> index 844f31ab37ad4..f55aec340342b 100644
-> --- a/drivers/net/ethernet/intel/e1000e/netdev.c
-> +++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-> @@ -2139,7 +2139,7 @@ static int e1000_request_msix(struct e1000_adapter *adapter)
->   			  e1000_intr_msix_tx, 0, adapter->tx_ring->name,
->   			  netdev);
->   	if (err)
-> -		return err;
-> +		goto err_irq;
->   	adapter->tx_ring->itr_register = adapter->hw.hw_addr +
->   	    E1000_EITR_82574(vector);
->   	adapter->tx_ring->itr_val = adapter->itr;
-> @@ -2148,11 +2148,16 @@ static int e1000_request_msix(struct e1000_adapter *adapter)
->   	err = request_irq(adapter->msix_entries[vector].vector,
->   			  e1000_msix_other, 0, netdev->name, netdev);
->   	if (err)
-> -		return err;
-> +		goto err_irq;
->   
->   	e1000_configure_msix(adapter);
->   
->   	return 0;
-> +
-> +err_irq:
-> +	while (vector)
-> +		free_irq(adapter->msix_entries[--vector].vector, netdev);
-> +	return err;
->   }
->   
->   /**
-
-The diff looks good.
-
-
-Kind regards,
-
-Paul
+-               if (saddr && nexthop_nh->nh_saddr =3D=3D saddr)
++               if (saddr &&
++                   READ_ONCE(nexthop_nh->nh_saddr_genid) =3D=3D genid &&
++                   READ_ONCE(nexthop_nh->nh_saddr) =3D=3D saddr)
+                        nh_score +=3D 2;
+                if (hash <=3D nh_upper_bound)
+                        nh_score++;
