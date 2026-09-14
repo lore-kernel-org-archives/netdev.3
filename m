@@ -1,215 +1,191 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98803C3BFE
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 10:53:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450583C1D75;
+	Mon, 14 Sep 2026 11:07:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789383190; cv=none; b=klYZQ0zt2/XOVd4mGG5rntcOi5aFTstRHv7upKdSexGWrZleBgijN21XEwwbY8C4x7TGtu5O0/H81SHzP8vaJzebOT+guGuhyVNOXou6ni3BK04BcD5b56OgdtHL8ur84RJrtzt3xWnxch93zs8jHOtEHM7TvPYlEZCuqjdfOFg=
+	t=1789384036; cv=none; b=DVeeA7V/tTBpFg8rDXVjlXee8oYa0X0uE+FAhXVD8XTPOqPVtunFoSGkfPosnDN3ErPNrEzZL74UZ5kgvP4mKrLcYQTOV94QuMo5OSTtEPGVPhAkYF+kHBXhVoFWXpa6fAI9GZKMi+6IxG0d6dlL7FjB/VZQDcLkWqsEjuceHcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789383190; c=relaxed/simple;
-	bh=xNpAS9Rpk+qkC+vD1efyUXqAhDVvsbN0fuxWBkjXkwg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A3r4Of7og4XWZwWTvkpcj0SeFEwU6mDUKs7XrrUEeBhNU4yrVOKqCwvmJd2XRIldKKrS4ZXz9ebYi64tgfkQCHB8+xa/poj0Bb0CgQNosRIJJauMuYtgSDA8IRHTus1FHAdan7wgzRPI3An1kYizHGf9XUu8Uhwm7tbXWy+6GVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=OSYv3Aif; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	s=arc-20240116; t=1789384036; c=relaxed/simple;
+	bh=QyQQznyqdr9N2F5vfmqWsVg9Ud/6jPRp/sn41MuoRCA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=SCnIYepcE9vBri3qf1UMP8HySIcN3YXW4uTwKhL+auntPkX2ySf5XWioLynNx9zf3KWfqjcSqMFtmtubp4eGeaH/sSdfNT1GfAfkxDxKWdlIDgPLrI+ybwLYlDv1w1IPQqkdHgklnRszVSuhWWLW5ExnI6ipXbJpI4/C+9ZAmQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W1q3dkk5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="OSYv3Aif"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-49cd77e0f95so22669575e9.3
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 03:53:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1789383187; x=1789987987; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bLTGCdFRaoDG+p/o/JaHo94biFFLMcmmpOqWjVY8H28=;
-        b=OSYv3AifKLuOyjrla7b93dCaoqPKc54M8SUbI8cdiD1vGDScjgBeacfc/dDRAzcMKY
-         1rpg3hwCwpX3uCtxy9nSzpvf0SVbA6dAHzetNL81OhuJSxs6ZhyWjH6TwGKJGkOUsS4A
-         jCBU/L7B9Y384FcTC4jbCaoGjTIzbyMTAMqC2sqlW9lCY0gBJ6QzqWPOdrHA+BHeryW/
-         6MOAa4yTvDp04Vebf/eQR+VqMuvyFiUbNBGEfK3p4X1H4bJMyzBO9Xl6UH60e73txLzZ
-         D9TQMmVhJ1M/5nOe+vUrQOWAJfLu5eVkUz1d8h/vBXg2CBxsvg3DQ1Ox3I07ySZgyqWb
-         ohdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789383187; x=1789987987;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bLTGCdFRaoDG+p/o/JaHo94biFFLMcmmpOqWjVY8H28=;
-        b=WbCFsBD/8/u4Yfd8U+28c4MulQRx9SJ3s8pTFRXMHj7CtY6mMsTFiDqmijsvaGlY+N
-         7hQCsNeYhLL5ewvPiuHRpy01Jq5vv0YToxEtKY0sYrq+WWCNpNkS7EWrMTTzW9T9ORjM
-         wAfSWFUGhTzFZGZ2V/T9ND5SVpdpbNnwNgMNQRIXqQVQ0P9WVnbf0/Te2MRieVvOUfSX
-         nYGJfJlx5GVJehD2khJ+5Soc1+uKnRfmw1rkIxg5o69ip1fSRYFnzmSwTspxjd4k54Ez
-         LE/UhQFdKs86Dxrh6sJmdWvdGqJUBXTBnD8m4Bfra0dWwRVth0znKmcnIJ1F2zKu+ajy
-         eKMA==
-X-Gm-Message-State: AFuF++mGDyxf7xwPloWAoGeb+/MSHlvnXPGCwxtu+rQi2XxDnEkuiITT
-	AbePISu8TJn+2jPRYfqnzrfuImjgbyRlvXR7mz0YPw0zSqdonMAgoefxOchg742AW0fGQY2ibvm
-	eF9/27c0=
-X-Gm-Gg: AYBFou0kBV9/7s/iHMoA3mosB8GPqyyA3vv6VVmj4guuhjewtCrgsFHFil6gdJo8/23
-	owzTDMv2oMSaSpbqEXhd/zIIotvWnQ4Wm1TdL2NLuMn4LqLV0x8jUWW9aRUw4RBI7aHnFaNNHvw
-	oNjwVwVaacWsnnOhGni+Foa8UZC1T5ekFK0yDFoC3tarEUZF22wf6Xv7LFoaJPEaHdHPR+JXUes
-	wH74jXu/UrnZv4zwiCQ8y2p0LgszGHt82uBdoBfM2Fr2m1MXuoMbBHk4lrvBpP0QMkpCzh07cb5
-	GhW3KlySRDCfF7vT+QFEjwUeoPmqxYKpQgWKfltyHFwvLg7r8Yyci+3Rexq84mlb92ZwpfxVNjN
-	rD+HwZOm7XnyB84MBYU9hgL39EERw3/FV2kQGmBZxFywjya7555zya9FeB9xbEsB5H8U/nBzIiq
-	bfVwyexc9FuHAfj1Lr9yvgSmWGXqvlBZOczSRqTrtKMFrtLdkXk8HbsXOCywKpNlTTPSvhwb16A
-	bwu5rdjXaflab3LQ5/dWA==
-X-Received: by 2002:a05:600c:34d0:b0:49d:1f10:8b9f with SMTP id 5b1f17b1804b1-49e7a63a711mr24550035e9.7.1789383186324;
-        Mon, 14 Sep 2026 03:53:06 -0700 (PDT)
-Received: from localhost (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-49db038401fsm471937885e9.13.2026.09.14.03.53.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 03:53:05 -0700 (PDT)
-From: Nikolay Aleksandrov <razor@blackwall.org>
-To: netdev@vger.kernel.org
-Cc: idosch@nvidia.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	vivien.didelot@gmail.com,
-	petrm@mellanox.com,
-	jiri@resnulli.us,
-	bridge@lists.linux.dev,
-	Nikolay Aleksandrov <razor@blackwall.org>
-Subject: [PATCH net v2] net: bridge: vlan: fix bugs caused by switchdev deletion errors
-Date: Mon, 14 Sep 2026 13:52:58 +0300
-Message-ID: <20260914105258.3436918-1-razor@blackwall.org>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W1q3dkk5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4436E1F000FF;
+	Mon, 14 Sep 2026 11:07:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789384034;
+	bh=4iapnKpInECdM67FSHL9LJQaxyD1KztvcDWIMOqapn0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=W1q3dkk5NEeZ2WsfFIaHjDQQxfBSFkfh+114qmfDj4KuVB2JbUv58FthRHm7MaHip
+	 jBGRdFvic4KbMgP2CW7yQDhOK4EFVF+TbWZKXZw5oDpARygRSc7riHnJZ4DL2RNbjI
+	 OhZX1XB5FFDfZ3+THC0lfEVZdddYbsTrBGp/sLaUrOeoTWQv3aJPXQx+oevsyAQ252
+	 goicy4jUf1xrYnZVH/wK4mwDQXafWi911WbE2rJ+iHRxdYi4FlIAMlHp8kxp3SnInm
+	 7g4LkHiWndfT/MxPq2hd+qgc9u+k16M7Z3mbt/ik5iF9S5j4iGXFtJdlfMalzmToTD
+	 Xvq171vOSVDDw==
+From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: alexanderduyck@fb.com, kuba@kernel.org, kernel-team@meta.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, daniel@iogearbox.net,
+ mike.marciniszyn@gmail.com, mohsin.bashr@gmail.com, sdf@fomichev.me,
+ bobbyeshleman@meta.com, daskald@meta.com, bestswngs@gmail.com,
+ maxime.chevallier@bootlin.com, jacob.e.keller@intel.com,
+ leitao@debian.org, cuitao@kylinos.cn, asml.silence@gmail.com,
+ dw@davidwei.uk
+Subject: Re: [PATCH net-next v2 4/5] fbnic: Support larger memory-provider
+ RX pages
+In-Reply-To: <178915061000.219967.7726187707862333281@kernel.org>
+References: <20260910180908.1506533-5-bjorn@kernel.org>
+ <178915061000.219967.7726187707862333281@kernel.org>
+Date: Mon, 14 Sep 2026 13:07:11 +0200
+Message-ID: <87ik48nlb4.fsf@all.your.base.are.belong.to.us>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Allowing switchdev to prevent vlan deletion and error out in __vlan_del
-could cause multiple different issues - inconsistent state, memory leaks
-when flushing, NULL pointer dereference on bridge error when flushing.
-It doesn't make sense to allow it to stop __vlan_del, so log the error
-and continue with software vlan deletion. This is also consistent with
-8021q behaviour.
+netdev-bot+sashiko@kernel.org writes:
 
-Suggested-by: Ido Schimmel <idosch@nvidia.com>
-Fixes: bf361ad38165 ("net: bridge: check __vlan_vid_del for error")
-Fixes: 5454f5c28eca ("net: bridge: vlan: check for errors from __vlan_del in __vlan_flush")
-Fixes: 2594e9064a57 ("bridge: vlan: add per-vlan struct and move to rhashtables")
-Fixes: 9c86ce2c1ae3 ("net: bridge: Notify about bridge VLANs")
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
----
-v2: this is a new patch, don't fail vlan deletion as suggested by Ido
-v1: https://lore.kernel.org/netdev/20260911100645.1360386-1-razor@blackwall.org/
+>> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/=
+ethernet/meta/fbnic/fbnic_txrx.c
+>> index 28b962307c080..5e22905a63739 100644
+>> --- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+>> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+>
+> [ ... ]
+>
+>> @@ -1599,6 +1603,8 @@ fbnic_alloc_qt_page_pools(struct fbnic_net *fbn, s=
+truct fbnic_q_triad *qt,
+>>=20=20
+>>  	qt->sub0.page_pool =3D pp;
+>>  	if (netif_rxq_has_unreadable_mp(fbn->netdev, rxq_idx)) {
+>> +		pp_params.order =3D get_order(rx_page_size);
+>> +		pp_params.max_len =3D rx_page_size;
+>>  		pp_params.flags |=3D PP_FLAG_ALLOW_UNREADABLE_NETMEM;
+>>  		pp_params.dma_dir =3D DMA_FROM_DEVICE;
+>>=20=20
+>>  		pp =3D page_pool_create(&pp_params);
+>>  		if (IS_ERR(pp))
+>>  			goto err_destroy_sub0;
+>
+> [Severity: High]
+> This isn't a bug introduced by this patch, but the patch widens the set of
+> inputs that can make this page_pool_create() fail, so it seems worth
+> mentioning.
+>
+> At the err_destroy_sub0 label, pp has already been reassigned to the
+> ERR_PTR returned by the second page_pool_create():
+>
+> 	err_destroy_sub0:
+> 		page_pool_destroy(pp);
+> 		return PTR_ERR(pp);
+>
+> page_pool_destroy() only short-circuits on NULL:
+>
+> 	net/core/page_pool.c:page_pool_destroy() {
+> 		if (!pool)
+> 			return;
+>
+> 		if (!page_pool_put(pool))
+> 			return;
+> 		...
+> 	}
+>
+> and page_pool_put() then does refcount_dec_and_test(&pool->user_cnt) on
+> the error pointer. Should the label destroy qt->sub0.page_pool instead,
+> and save the error value before overwriting pp?
 
- to Sashiko (from local clone check):
- [Severity: Critical]
- Could this introduce a regression where net/bridge/br_vlan.c:__vlan_del()
- leaves stale VLAN membership in hardware after tearing down the software
- VLAN?
+Yup. I'll send out a separate fix for this.
 
- For the port branch, __vlan_vid_del() has already converted -EOPNOTSUPP to
- success.  An error reaching this warning is therefore a substantive offload
- deletion failure.
+>> @@ -2028,15 +2034,18 @@ static int fbnic_alloc_tx_qt_resources(struct fb=
+nic_net *fbn,
+>>=20=20
+>>  static int fbnic_alloc_rx_qt_resources(struct fbnic_net *fbn,
+>>  				       struct fbnic_napi_vector *nv,
+>> -				       struct fbnic_q_triad *qt)
+>> +				       struct fbnic_q_triad *qt,
+>> +				       u32 rx_page_size)
+>>  {
+>>  	struct device *dev =3D fbn->netdev->dev.parent;
+>>  	int err;
+>>=20=20
+>> -	err =3D fbnic_alloc_qt_page_pools(fbn, qt, qt->cmpl.q_idx);
+>> +	err =3D fbnic_alloc_qt_page_pools(fbn, qt, qt->cmpl.q_idx, rx_page_siz=
+e);
+>>  	if (err)
+>>  		return err;
+>>=20=20
+>> +	fbnic_bdq_set_page_size(&qt->sub1, rx_page_size);
+>> +
+>
+> [Severity: High]
+> Can the BDQ geometry here end up describing a page pool that was never
+> enlarged?
+>
+> fbnic_bdq_set_page_size(&qt->sub1, rx_page_size) runs unconditionally,
+> but fbnic_alloc_qt_page_pools() only raises order/max_len when
+> netif_rxq_has_unreadable_mp() is true; otherwise sub1 just takes another
+> reference on sub0's order-0, PAGE_SIZE pool. The two predicates are not
+> the same:
+>
+> 	net/core/netdev_rx_queue.c:netif_rxq_has_unreadable_mp() {
+> 		if (rxq_idx < dev->real_num_rx_queues)
+> 			return __netif_get_rx_queue(dev, rxq_idx)->mp_params.mp_ops;
+> 		return false;
+> 	}
+>
+> 	net/core/netdev_config.c:__netdev_queue_config() {
+> 		mpp =3D &__netif_get_rx_queue(dev, rxq_idx)->mp_params;
+> 		if (mpp->rx_page_size)
+> 			qcfg->rx_page_size =3D mpp->rx_page_size;
+> 	}
+>
+> The config renderer applies the memory provider's rx_page_size with no
+> real_num_rx_queues bound check, while netif_rxq_has_unreadable_mp()
+> silently reports false above real_num_rx_queues.
+>
+> When they disagree, does the device get descriptors past the end of the
+> mapping? fbnic_bd_prep() posts fbnic_bd_page_count() descriptors from a
+> single allocation:
+>
+> 	__le64 *bdq_desc =3D &bdq->desc[id * fbnic_bd_page_count(bdq)];
+> 	dma_addr_t dma =3D page_pool_get_dma_addr_netmem(netmem);
+> 	u64 bd, i =3D fbnic_bd_page_count(bdq);
+>
+> and on the completion side fbnic_rcd_bd_page_offset() decodes offsets up
+> to rx_page_size - 1, which fbnic_add_rx_frag() then feeds to
+> page_pool_dma_sync_netmem_for_cpu() and xdp_buff_add_frag() as payload
+> inside what is really a PAGE_SIZE buffer.
+>
+> A path that seems to reach this: fbnic only sets real_num_rx_queues in
+> fbnic_set_netif_queues() at open, so after probe it equals
+> FBNIC_MAX_RXQS from alloc_etherdev_mq(). A devmem/io_uring bind with
+> rx-page-size=3D8K against a high queue index is accepted then, "ip link s=
+et
+> up" shrinks real_num_rx_queues (netif_set_real_num_rx_queues() has no
+> memory-provider check), and a later "ethtool -L combined 32" makes
+> fbnic_alloc_nv_resources() allocate that queue while
+> netif_rxq_has_unreadable_mp() returns false but qcfg.rx_page_size is
+> still 8192.
+>
+> Before this patch bd_page_shift was always derived from PAGE_SIZE and so
+> always matched the order-0 pool. Would it make sense to either derive the
+> BDQ page size from the pool that was actually created, or reject
+> rx_page_size !=3D PAGE_SIZE when no large-order pool was allocated?
 
- Nik: No, a driver should not block VLAN deletion and this behaviour is in
-      line with 8021q. Also blocking it could leave incosistent state. It
-      is best to print a warning and allow software vlan deletion to
-      proceed.
+Hmm, yes, it seems like this is a valid bug, when fbnic's real queue
+counts and private counts disagree! I fixed the root cause by keeping
+the real queue count synchronized. I'll send this one out separately.
 
- net/bridge/br_vlan.c | 31 ++++++++++++++-----------------
- 1 file changed, 14 insertions(+), 17 deletions(-)
 
-diff --git a/net/bridge/br_vlan.c b/net/bridge/br_vlan.c
-index 1e0e436629ec..92b3cb621a26 100644
---- a/net/bridge/br_vlan.c
-+++ b/net/bridge/br_vlan.c
-@@ -387,12 +387,12 @@ static int __vlan_add(struct net_bridge_vlan *v, u16 flags,
- 	goto out;
- }
- 
--static int __vlan_del(struct net_bridge_vlan *v)
-+static void __vlan_del(struct net_bridge_vlan *v)
- {
- 	struct net_bridge_vlan *masterv = v;
- 	struct net_bridge_vlan_group *vg;
- 	struct net_bridge_port *p = NULL;
--	int err = 0;
-+	int err;
- 
- 	if (br_vlan_is_master(v)) {
- 		vg = br_vlan_group(v->br);
-@@ -406,12 +406,16 @@ static int __vlan_del(struct net_bridge_vlan *v)
- 	if (p) {
- 		err = __vlan_vid_del(p->dev, p->br, v);
- 		if (err)
--			goto out;
-+			br_warn(p->br,
-+				"port %u(%s) failed to delete vlan %u from switchdev: %pe\n",
-+				(unsigned int)p->port_no, p->dev->name,
-+				v->vid, ERR_PTR(err));
- 	} else {
- 		err = br_switchdev_port_vlan_del(v->br->dev, v->vid);
- 		if (err && err != -EOPNOTSUPP)
--			goto out;
--		err = 0;
-+			br_warn(v->br,
-+				"failed to delete bridge vlan %u from switchdev: %pe\n",
-+				v->vid, ERR_PTR(err));
- 	}
- 
- 	if (br_vlan_should_use(v)) {
-@@ -431,8 +435,6 @@ static int __vlan_del(struct net_bridge_vlan *v)
- 	}
- 
- 	br_vlan_put_master(masterv);
--out:
--	return err;
- }
- 
- static void __vlan_group_free(struct net_bridge_vlan_group *vg)
-@@ -449,7 +451,6 @@ static void __vlan_flush(const struct net_bridge *br,
- {
- 	struct net_bridge_vlan *vlan, *tmp;
- 	u16 v_start = 0, v_end = 0;
--	int err;
- 
- 	__vlan_delete_pvid(vg, vg->pvid);
- 	list_for_each_entry_safe(vlan, tmp, &vg->vlan_list, vlist) {
-@@ -463,13 +464,7 @@ static void __vlan_flush(const struct net_bridge *br,
- 		}
- 		v_end = vlan->vid;
- 
--		err = __vlan_del(vlan);
--		if (err) {
--			br_err(br,
--			       "port %u(%s) failed to delete vlan %d: %pe\n",
--			       (unsigned int) p->port_no, p->dev->name,
--			       vlan->vid, ERR_PTR(err));
--		}
-+		__vlan_del(vlan);
- 	}
- 
- 	/* notify about the last/whole vlan range */
-@@ -837,8 +832,9 @@ int br_vlan_delete(struct net_bridge *br, u16 vid)
- 	br_fdb_delete_by_port(br, NULL, vid, 0);
- 
- 	vlan_tunnel_info_del(vg, v);
-+	__vlan_del(v);
- 
--	return __vlan_del(v);
-+	return 0;
- }
- 
- void br_vlan_flush(struct net_bridge *br)
-@@ -1368,8 +1364,9 @@ int nbp_vlan_delete(struct net_bridge_port *port, u16 vid)
- 		return -ENOENT;
- 	br_fdb_find_delete_local(port->br, port, port->dev->dev_addr, vid);
- 	br_fdb_delete_by_port(port->br, port, vid, 0);
-+	__vlan_del(v);
- 
--	return __vlan_del(v);
-+	return 0;
- }
- 
- void nbp_vlan_flush(struct net_bridge_port *port)
--- 
-2.47.3
-
+Bj=C3=B6rn
