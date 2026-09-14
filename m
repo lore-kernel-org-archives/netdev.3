@@ -1,168 +1,196 @@
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11021122.outbound.protection.outlook.com [52.101.125.122])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE7D38F92A
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 08:48:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789375713; cv=none; b=Dj1+yKT/7HFu4L6kloVfpX0IVTFhbKk1WHA6J01RBGndqwfM4JrpTH/soFnmdh2lBO2NVs9wE4+iHW6VtZLkd0+aY/waEWDfMYYTUi8Aedo5qIQ39iwVq+/mwAt+0avYcfmQ+GFkvvlKkiNsSAFXuWxKxMz8nz9gjV2oBJs7suU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789375713; c=relaxed/simple;
-	bh=R0P/c38iIYnBempsh/B5wBuzkZjvXciuyexnFDMRjPA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K2PZ2pe/C2lqaIjlMkkBdPx8NNblxGIOI5pmgEa3DHQ4mWxdmC/a5cOR82GBHtKIHfCCrkM0F3Qu611t9/C7XniVM8c+rldpFluzgX/Gb1R73EwK0cWWxaOOQsMLJcVn7YSeqcf30XrqCFBwUPF+FOlD76g5Ee6r8+aa2PtnjGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=KZKeXM8L; arc=none smtp.client-ip=74.125.225.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC8138B143;
+	Mon, 14 Sep 2026 08:48:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.122
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789375729; cv=fail; b=ROAdYNyuOlZEyheN6XHR2uEl0QIB+puTfminkhum3eysdfBdZ4KnTsF2ZMShWwqqaGk5QfnTBfE4KJ2bwrMEAaltZsBM+vwpYYkkVsQ30y3EowTmjp02Wo0WQm3F291H3UsjDI4se3A9RV/2P5xNVb49KEWLOX3QzCzfTuLw7ms=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789375729; c=relaxed/simple;
+	bh=PP/4L0sR/E5xjO0czPRqFDx4uW8GTNuBZf0KbkPYy9A=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=WAYIY9cw7HpGPS9v85C8h3uKw6L10krvyPJOwaKvRwqLafsNg5XXB5ZeI3NCmhUHELuSUER/+0uomLyePEDJZat91yv8HR7sN/18GltFh/BhsNvItM4NDGqxH6w7j7GVfg0IvluEY/jfg5zJSw4IAylI5VWlJMX3blKaxvF/A5w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=QUfndHON; arc=fail smtp.client-ip=52.101.125.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="KZKeXM8L"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f6350f89so780636f8f.3
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 01:48:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1789375710; x=1789980510; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0kvizxDrpk0j6xDj6aqJhobOa++7+JeUcG4npstg5E8=;
-        b=KZKeXM8LcUp5K9+4DuPysBsci5VmQYi0iEfPg2+Jgm+n5r40Rv5zZbHnGDXVgk6LV5
-         j6JQ6ra7NHEL2OMqwvkV9lMaW89WoN6mRWmbFx3vSTEJYL5dqsBr5hErHPgZAxq7+L8a
-         q5x4l+ADOYlPbYXnP5JoYeMnlbrhjQb6tJDuNvEERuzT7OOIdt474xdW1HabpF/bdqYM
-         y5d8BvR2SgioWykSJQM8w/xMqMnx5V6gSn9shrZrkUTOQ2mxUCPTer7+weK/o6z2H1NF
-         OtquY4I8kvqMzMGz1HHIl9o+Ch2LXW8yg1Qv5vTWEIUE0QTHk0sJ/zUBD6i8TPy80Bxs
-         l2GA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789375710; x=1789980510;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0kvizxDrpk0j6xDj6aqJhobOa++7+JeUcG4npstg5E8=;
-        b=r9hXT2d3r9ZMvdtUuEBPtzhrls2P8u8Jg9dxqBfXEcszQiuidDQVqO3Gh7zDWa/Z+U
-         M2IfQS9ojMSCohYmPTuxACr4L2rwru6HTSi9iUZyota7D6m2Vu3lx5KACGoRqbQFzc2U
-         I09uM/6gEBfpSbWNlQdW+UC1sUqz5QguWVCDiYzo6u1mL/RTTWmLfhkaowGKQjO0U8sn
-         Cz9uvfdJ32BNqDTvYQAilcjZSoj3OwZ00LvigR3op2So/93Xe4gy9rYHFiUT1D5Pj2YQ
-         A2u1ga4wjE09lR+hqxJTmC8EseH5mVJj3t7rSpDUcGLmWDxwd+ih4YfmpQYj5QU23DdF
-         erqA==
-X-Forwarded-Encrypted: i=1; AKwUvBzV0ZRzVrR087DKvZMWWFfKuH9IvP5xUdoTZOjh5IoTMNd4BYLtwumZI76zNCp+fHMEJkMDZrY=@vger.kernel.org
-X-Gm-Message-State: AFuF++lc8K/zv7eF0TBR+hIj3R7/vxbbmky29dFyeN5njxMy+LlwGRa+
-	BtwxJuZ7Sr1fy1O1CmvUqPyohO1jw8Z54CtjJ5FWKOZMgpW59O2rAk+rZZCZwxhOqr0=
-X-Gm-Gg: AYBFou0XOaKewEr6S73KtU8SQzkT7VKDtP5OTQ5OGxVmuUbXbQUWqX9JuooKSw9J0Zz
-	dcu54Wzvy6EhSEzEupusnRyYyMwANas+RGhMfGhk5X7TitrXEzxrljpYSYIFXeJV+gWN18WAM2o
-	QNc6ZwmUh9kdbDKXpfSjGUG5Znh/2ESVlvW7GyUzivmKQjtRe7+9UxrK5kc2uPREosG5jtCUXyX
-	uO4XU0SCB9p7dqXAhKrX1dtcwSI173kPtGZaxV377Ia8FOJ+jVomeWjKU8wO2n1qFKSU1kmk1h4
-	cI9zFDWXZsW7U/0ufc6uMskfdPsj45izhxunB6dlLG+zV8vYcvi9Km1vMuud4UI4cEyCg1fGiju
-	Q8qJfZG2rAv7hMg2oy0Fs/Sce5Xuqe9yXT0ntG9FwgYsBGikV6hUB5ypokjgxSUgDdeOfnHRnrr
-	2Aprzgy2uhNCq64+4jzLooCBSJZ9X0SBOpw3J5HeHY/pyvf8rUIqtQmRodM4ol1rUs2WdoX4Kl2
-	1cSg5L28UzVUqTs8EBMvdxaOLxyNQ==
-X-Received: by 2002:a05:6000:41eb:b0:484:42d5:e6d5 with SMTP id ffacd0b85a97d-48702a9a973mr1744558f8f.11.1789375710548;
-        Mon, 14 Sep 2026 01:48:30 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486eb33fd3bsm25823507f8f.19.2026.09.14.01.48.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Sep 2026 01:48:30 -0700 (PDT)
-Message-ID: <2ce01033-a121-4d50-b629-f35e789a4743@blackwall.org>
-Date: Mon, 14 Sep 2026 11:48:28 +0300
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="QUfndHON"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZLs3LCepfNd+mQLMSjSgBKxjnQgxHVtngrKL0Cgqi9J5EMDIzbvNZ4d5CxXmZR5T6mkL0icVKb5Ktbi+FKQ6j/CE5cd4sBthlnPpHgufT0CatPk/z2Uj9RTSVKo/6C64zu8eXbIP/Vhgnk0KwOfG0se9ip77mDWC96B3sR02wc0lzkod2LZLBiB/OypQUtyx2uIVVszLdntkwqSCT2Khg+hARf/Es9/LcezdapHIHTdOghFokWIV40tkgOukyNlQlgFdbzkAfHwY5yc6gH3/UCPPhEpV/CnEQdRUN4heA7noSF43nmFfUx2CrSxzhCU9brhLR86iCTjRSh8bpbSQ3A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6DNvdNPvtknE9V6rYazd7e9AkbVCZ1dHQ5VaS70f3BE=;
+ b=XyBfHBvHRhEtLNmFEeJFGPLtwUgtmZPhwrfT5KtciNu4pT2+LQVvgiHc16mPIE7vj8Jc5+bpQDHgUfahUIXHrLQ7CWgQs4KCzdGuZjdTCwFOEDMmjktiep+t8aU32lOuyayvcdaMnyTD+T4xst16HPfJWUDXNvp4KCf40BO7IPNadRJz18OVN0+QUrIC1k5AEIRDxCWeM7n8vT4GL9RlqUCd9sj0PgJ0msNPf/3Zw0Vhi2Lx1ZykV2XqS+D7Hhcxt1wb3Eyvk4KdiAMHkML5ibfkPZ6USZsG3VYkfF5fRZ5ajU0ux72EvI+IXBApPwOOdBCGrcEGmpj1thExjS98BA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6DNvdNPvtknE9V6rYazd7e9AkbVCZ1dHQ5VaS70f3BE=;
+ b=QUfndHONZVG8QchMW39NYgevqM2PEpsyJUyzPVAsUJK+8ANJd2dEisP63q3oq9Y+kBpvkekPzGwnFQQSlPwUtKMML1MSfSgCPqKD8Z8XbZE9a6c3vMyBtuMAVgV5TqVgaNO2lyUTDhXstOWgP04RSlz+KnVsET56jZAzfj9Xyu0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:325::11)
+ by TY7P286MB7153.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:326::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Mon, 14 Sep
+ 2026 08:48:41 +0000
+Received: from TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::cce5:2aa8:53f9:dba9]) by TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::cce5:2aa8:53f9:dba9%5]) with mapi id 15.21.0406.007; Mon, 14 Sep 2026
+ 08:48:40 +0000
+From: Koichiro Den <den@valinux.co.jp>
+To: Jon Mason <jdmason@kudzu.us>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Allen Hubbe <allenbh@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: ntb@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v4 00/10] net: ntb_netdev: Preserve checksum offload across NTB
+Date: Mon, 14 Sep 2026 17:48:28 +0900
+Message-ID: <20260914084838.2158249-1-den@valinux.co.jp>
+X-Mailer: git-send-email 2.51.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TY6P286CA0040.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:3b7::9) To TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:325::11)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 2/2] net: bridge: fail link info that does not
- fit the IFLA_AF_SPEC nest
-Content-Language: en-US, bg
-To: Artem Lytkin <iprintercanon@gmail.com>, netdev@vger.kernel.org
-Cc: bridge@lists.linux.dev, idosch@nvidia.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- andrew+netdev@lunn.ch, kuniyu@google.com, michael.chan@broadcom.com,
- pavan.chebbi@broadcom.com, ajit.khaparde@broadcom.com,
- sriharsha.basavapatna@broadcom.com, anthony.l.nguyen@intel.com,
- przemyslaw.kitszel@intel.com, intel-wired-lan@lists.osuosl.org,
- saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com,
- oss-drivers@corigine.com, wintera@linux.ibm.com, aswin@linux.ibm.com,
- linux-s390@vger.kernel.org
-References: <20260912135022.1701-1-iprintercanon@gmail.com>
- <20260912135022.1701-3-iprintercanon@gmail.com>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20260912135022.1701-3-iprintercanon@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY7P286MB6866:EE_|TY7P286MB7153:EE_
+X-MS-Office365-Filtering-Correlation-Id: ef22edf5-f5a2-4206-3522-08df123cf99c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|10070799003|23010399003|1800799024|366016|6133799003|10067099003|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	vyGm4bbBDcfVGqkAGxf/qb19BSVQgrfSNGeGElWSTqb9sBI+U2SvvlmdvhPm9qfhbTgM/XYElWgbMcEHwX055CmdW5NjH35hfUdMl9cCovoqxDNlSDoZ6oEExb4XiN7sLTJrAOgs2Wv2Ll41/vGahHFSEjmYw3H30JAM8rKzer0ihWEB8qcWRkZQtcUIQ87yxJFwXUsFVLdX/+aLdnz5cDC5mKbUQTCf0T0SpsR0me6rVrPBkNmjI7bf5VXAe6jiGhJiyxQWz7E98h0Sbnfy8sjzMK8NkDuYypmUqLQ3Wf8LifieRzzBUkmvedNQIWMxLUY/YmTDVy9wSb7psd4M6Zpm8js21ePgsF5V8NzHNxgVBJsDIsTpanc2QHEszcsmUI7SH/IMAGAqfKkP1SPis+8ruCJmXq0qaznGUGg2kWwd1bPFILdorrQBVP/QcH/f+gLFf1g5eW9sTHFbgWcgqkKUN3rJP4OuGCtIppp2JXVWToaBjj/IQAfa/7R9KxZQ5bFZ7uJOA6Wu8HOK3cblqaExGEkbwYY829QGTpcjOW+aDJbC9yQoJC5PqD3tx8h5lxj4DaRtDu1e7ZH9q/dW8vewdQ17v3U/txr79OIAX+JA9hVZwE4j2QDDv188a7jT
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(23010399003)(1800799024)(366016)(6133799003)(10067099003)(56012099006)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?X7GSLIIMDez0p5pINku2RJs+YiPGBydGiqdIon54c9v79i5wfynJBcvldrm4?=
+ =?us-ascii?Q?FSICavkeWlmaS1hWdf7eVtOWpGQk2WSeI906wSSX/l+m5PDa3jBWAuymQzE3?=
+ =?us-ascii?Q?S95YRmmjt5HLQHqjLYEZONbix8+D7Mkwc3rZdLUOyMdWOqnGXe204Pcjo9SF?=
+ =?us-ascii?Q?h48G8t4AVUG5T6logk+Ar6K22SrankDPfcNeFbDrzWFNSMjpYAm+DjXq+KNm?=
+ =?us-ascii?Q?okPY5jv0zlKsd1UqZ2m3wmumZ7fiHFPQBF+XRW5yCi9mW9vCaPfPsHRExwbZ?=
+ =?us-ascii?Q?Iuu2n0mzdT9XCJcqrAhW71GWJCIChr0uoZE6yXWyHV1C2QEjlNeiqyjDpxhk?=
+ =?us-ascii?Q?EQOkPmgpfQXDUETtAM54eGPBy0fSjWcifWnHdpqqS5c95LECRyrBIB5Akds6?=
+ =?us-ascii?Q?/GuwGk2FXKpAn/old77aBjWXK64w9wRLGpiac8AEvwqz2yk+QUZO2yTqvstx?=
+ =?us-ascii?Q?BdIeD3bY/0Y3HNEb77NnjBKfeATUMogCGmC0OkxEH8KScdY418dRnVOWDWYo?=
+ =?us-ascii?Q?f7/U3CmEUuquZ/qvqMyVZ7piknMdJEMXv1hxxCOUXOCpWHAoPkLYKH9jjqPy?=
+ =?us-ascii?Q?ucga+YdAiLbmB13Fs1xe9Jpf8vEVfg/OEM/6D4T5YRXQ27DBjMiyw17mNRho?=
+ =?us-ascii?Q?RMh0o7M5OBAuzEhMYh8I6KJej6eRFX+TJ2QB9BpeRi8JSyurdlgGj5HVrMRm?=
+ =?us-ascii?Q?GU8sxg9/S/S3i9gOoXFV68czyXeE/gicfQpVBP5QPPt7relbXJh7Rx2F5N3m?=
+ =?us-ascii?Q?Id/wg20BRKuFiB1T8JWarnkbPIGK98FmR8Ab34FcMa+qVTYROl98HXqdbhOg?=
+ =?us-ascii?Q?SGZB6giRqcJezi4HLZOQkA5T9LeAe6JVf8n/0I8Oy5d8GbtKPQ8v/NU+1aI4?=
+ =?us-ascii?Q?a5UfgsznAbEpDY/Cpjq7TpbaI25zOZstLHq9RnIzE9PM0OKZHKyoGU8Qhhcl?=
+ =?us-ascii?Q?aWPYF8ZR0H+x5fhvoirrOQNS3i4QSTpJHpucDbivE5LMIBm52ffS5BNDih7M?=
+ =?us-ascii?Q?BN6XxgJjrzzSa0g7ZkTKs9zuhlUfkLll20GGdAYeCjvt1PfQYGGSDK//BTJ/?=
+ =?us-ascii?Q?rDLv2FAXu/U/r0uL1MzBCIg3xNDhDS+hqTWSGevV6G/GE2xS99/bgQKYgPoZ?=
+ =?us-ascii?Q?uT/gXnHwqyifp/mEUoXJ48iEVc4T1Gb5t9UTi8z3zwMXL8UfG6lAAgS10o3l?=
+ =?us-ascii?Q?adw8gIhj60drWEL5KOWQreCA+bHRqqIlvZEBnceDlcJRaxOebU+HrPTUp+u0?=
+ =?us-ascii?Q?NG8nJpbCoiENdRknw+focNJfYOyUv/76yTJr+s+5GFG39J8+XCdeiDFqVPg9?=
+ =?us-ascii?Q?HjQbErFB0CcEQk21hMfmQ8nPIXrLXwvr+uv6TmXxKmNcCG3pI0QvS7kDjF0G?=
+ =?us-ascii?Q?a5gqCvN2H2yuyvQ1LTHTKwdwgOdCEB9Hc/evgYIGdgWvJ4Dp2eZQOhT49ydg?=
+ =?us-ascii?Q?YJ1KyMDO46psYLHDIwiLOq2tlf8sdPqCZKu3sI9uUO8RoRMshyqi0o2c2JOD?=
+ =?us-ascii?Q?WWKkpJRzq6/smPicI4O6/S9x8feK6c2WWk/n1Ac3Zaa6Atdg1aQb2lJ7BUim?=
+ =?us-ascii?Q?djRTPyIkoPN6C/EQry6+T+1K1Xym9IurvmfnAWYfo3rVfNsAjSkwlHGFpBlH?=
+ =?us-ascii?Q?PBGfoE/fd2x7Vf3cn3HZjX9eoa0qiuZcXSFT4wk/L6roJ2B6rDk9bflAzLht?=
+ =?us-ascii?Q?GSPHOwf2ZtVAD8aNrv/01itcxEzuRrjS+0N8Jz8odmyQHX36II29MlbWzJUk?=
+ =?us-ascii?Q?F0QHMDXF5Qn/fMA+TIgCqbU2UMNBQF5nLdv7oSu4O+WeYnLU3P6z?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef22edf5-f5a2-4206-3522-08df123cf99c
+X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 08:48:40.7709
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2jgj2xEm6PSFJpI5/cBpBmDhNn376Db5aEp54I03Fy4PWL7lVfU/taIczshz36rU8zdmxUjrARysoVCeedW34Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY7P286MB7153
 
-On 12/09/2026 16:50, Artem Lytkin wrote:
-> br_fill_ifinfo() puts all of a port's VLAN, tunnel and MST entries into
-> one nest, and nla_len is a u16, so a large enough port produces a nest
-> whose length wraps and userspace reads garbage.
-> 
-> Cancel the message and return -E2BIG with an extack pointing at
-> RTM_GETVLAN instead. The dump retries the port with an empty skb and
-> the error goes to userspace; notifications reach rtnl_set_sk_err() and
-> listeners resync. Not -EMSGSIZE, since no bigger buffer would help.
-> 
-> Assisted-by: Claude:claude-opus-5
-> Signed-off-by: Artem Lytkin <iprintercanon@gmail.com>
-> ---
->   net/bridge/br_netlink.c | 13 ++++++++++---
->   1 file changed, 10 insertions(+), 3 deletions(-)
-> 
+Hi,
 
-This patch seems incomplete, it doesn't fix the same problem for MST and CFM.
-They both can use the same helper - nla_nest_end_safe().
-More below...
+ntb_netdev may be used on embedded systems, where CPU resources are
+often limited. L4 checksum calculation can therefore become a bottleneck
+even when traffic stays within a trusted PCIe fabric.
 
-> diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
-> index 855a46aec3a89..53676df9e4d11 100644
-> --- a/net/bridge/br_netlink.c
-> +++ b/net/bridge/br_netlink.c
-> @@ -459,7 +459,7 @@ static int br_fill_ifinfo(struct sk_buff *skb,
->   			  const struct net_bridge_port *port,
->   			  u32 pid, u32 seq, int event, unsigned int flags,
->   			  u32 filter_mask, const struct net_device *dev,
-> -			  bool getlink)
-> +			  bool getlink, struct netlink_ext_ack *extack)
->   {
->   	u8 operstate = netif_running(dev) ? READ_ONCE(dev->operstate) :
->   					    IF_OPER_DOWN;
-> @@ -613,6 +613,12 @@ static int br_fill_ifinfo(struct sk_buff *skb,
->   
->   done:
->   	if (af) {
-> +		if (skb_tail_pointer(skb) - (unsigned char *)af > U16_MAX) {
+This series carries CHECKSUM_PARTIAL across NTB in an ntb_netdev header.
+A per-payload metadata bit in ntb_transport marks its presence. Receive
+support is exchanged at QP link-up through scratchpads. Peers without
+capability exchange continue to use software checksumming. The feature
+remains disabled by default and must be enabled explicitly on trusted
+links. RX checksum offload settings stay unchanged while the interface
+is up.
 
-here you can use nla_nest_end_safe()
+Best regards,
+Koichiro
+---
+Changes in v4:
+  - Move offload metadata into an ntb_netdev header (Jakub)
+  - Add an RX entry completion ordering fix (Sashiko)
+  - Learn checksum support from link events, not RX callbacks, and keep
+    it per QP (Sashiko)
+    https://lore.kernel.org/r/xsaocp32a6siggahziu4jqbwgmdasmp6v64pd5aujfkoxhiqws@n5luestlntzc/
+  - Advertise receive support only with RXCSUM enabled. Drop
+    partial-checksum frames when it is disabled (Sashiko)
+  - Keep local QP link requests separate from peer readiness
+  - Reject short RX frames before parsing them
+  - Factor out RX packet and byte accounting
+  - Add a transport API to exchange client capabilities at QP link-up
+  - Keep NETIF_F_RXCSUM unchanged while the interface is up
 
-> +			NL_SET_ERR_MSG_MOD(extack,
-> +					   "VLAN information does not fit in one message, use RTM_GETVLAN");
-> +			nlmsg_cancel(skb, nlh);
-> +			return -E2BIG;
-> +		}
->   		if (nlmsg_get_pos(skb) - (void *)af > nla_attr_size(0))
+Changes in v3:
+  - Rebase after the related ntb_netdev fixes landed in net-next
+  - Avoid counting RX checksum failures as both errors and drops (Jakub)
+  - Reject csum_start below ETH_HLEN on RX and fall back to software on
+    TX (Jakub)
+  - Use READ_ONCE() for hdr->ver and hdr->len (Sashiko)
 
-while here you can just change this to if !nla_len(af) nla_nest_cancel()
+Changes in v2:
+  - Reset peer checksum capability on every link event (Sashiko)
+  - Add prerequisite fixes for RX ordering and shared field endianness
+    (Sashiko)
 
-Also add a common label and goto it from all errors e.g:
-nla_nest_too_large:
-   	nlmsg_cancel(skb, nlh);
-   	return -E2BIG;
->   			nla_nest_end(skb, af);
->   		else
-> @@ -654,7 +660,8 @@ void br_info_notify(int event, const struct net_bridge *br,
->   	if (skb == NULL)
->   		goto errout;
->   
-> -	err = br_fill_ifinfo(skb, port, 0, 0, event, 0, filter, dev, false);
-> +	err = br_fill_ifinfo(skb, port, 0, 0, event, 0, filter, dev, false,
-> +			     NULL);
->   	if (err < 0) {
->   		/* -EMSGSIZE implies BUG in br_nlmsg_size() */
->   		WARN_ON(err == -EMSGSIZE);
-> @@ -693,7 +700,7 @@ int br_getlink(struct sk_buff *skb, u32 pid, u32 seq,
->   		return 0;
->   
->   	return br_fill_ifinfo(skb, port, pid, seq, RTM_NEWLINK, nlflags,
-> -			      filter_mask, dev, true);
-> +			      filter_mask, dev, true, extack);
->   }
->   
->   static int br_vlan_info(struct net_bridge *br, struct net_bridge_port *p,
+v3: https://lore.kernel.org/r/20260904052134.2970111-1-den@valinux.co.jp/
+v2: https://lore.kernel.org/r/20260817064916.13278-1-den@valinux.co.jp/
+v1: https://lore.kernel.org/r/20260814032913.3558500-1-den@valinux.co.jp/
+
+
+Koichiro Den (10):
+  NTB: ntb_transport: Order RX descriptor reads after completion
+  NTB: ntb_transport: Use little-endian shared fields
+  NTB: ntb_transport: Order RX entry completion
+  NTB: ntb_transport: Keep local QP link requests separate
+  NTB: ntb_transport: Exchange client capabilities at link-up
+  NTB: ntb_transport: Add per-payload client metadata
+  net: ntb_netdev: Reject short RX frames
+  net: ntb_netdev: Factor out RX statistics update
+  net: ntb_netdev: Introduce an optional packet header, ntb_netdev_hdr
+  net: ntb_netdev: Preserve CHECKSUM_PARTIAL across NTB
+
+ drivers/net/ntb_netdev.c      | 191 ++++++++++++++++++++++++++++------
+ drivers/ntb/ntb_transport.c   | 177 +++++++++++++++++++++++--------
+ include/linux/ntb_transport.h |  12 ++-
+ 3 files changed, 303 insertions(+), 77 deletions(-)
+
+
+base-commit: 879e280b8486d4612ad1aa050d6fada2dd80cf1c
+prerequisite-patch-id: 0000000000000000000000000000000000000000
+-- 
+2.51.0
 
