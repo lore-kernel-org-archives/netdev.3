@@ -1,96 +1,92 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B7445D5CC;
-	Mon, 14 Sep 2026 12:36:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D471B471256;
+	Mon, 14 Sep 2026 12:37:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789389382; cv=none; b=fpg0PHJxq4C/SO0SWwPr2G3JeX9kFFHpbnl9AiM3I1rzO+/iWMs8y1pWn00tlCoZjsLM/2o8mYXS9AJLeIO3qpv++dAA6jiG6Yvmmw9jRG9bUqG0tRCgm0HLTleXU6/R4ApN8UWkOLPaUBjLKwES2LQ8tZQbK1GvlseU6gcN4js=
+	t=1789389465; cv=none; b=eBXPKEk7oXN2Q14q0C10/h5O6rjkjtTzTbD8eELTyg73pAJfsUvsn+8poHvUOwixFC/r0in/kkhps55+rtEXXOaZB4/pgJxOFjwejJC3n0lFUiWklWOCdl4ychzbde8Zgk7wtcxF9aaCl1VrOXUMI11lDdntMk9wqMboraGXnC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789389382; c=relaxed/simple;
-	bh=UJ2r+DIdSWg4RDwYkHkxMWw4tiGTfXUq6IKdgvtGVmM=;
+	s=arc-20240116; t=1789389465; c=relaxed/simple;
+	bh=unHGFqFI3Vc6Ehw1zKTLVRWLmr5GW/DE/rxNl5THv4g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V7XIUeDZqXnMkP6BbNSHL5rK+wrUb8/WpFC2lJh6oulNgTNQnA13PG84nxeGmj1byH0okTYlpVWEr69HyWda7gjXuOxKzetaev+rUlX0iw8YzaESCX543R8qGrblTjihx3BG+AuzrJ2bKBjrYVg4DNYY1xeMHmLCKKKM+3KlLmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=Tq8ZuVN3; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=HSdhLRW96KgZ49qB0SgPQPmIcFyvzwmR3so5R/oSW2MnsdFjVaXBXK0+7yxYmY0ss33LuRPJKFqpDSPERCltUt4szfERvNmlHp1yDtoxy0okeQimjkeiXFdDZCF3bqJUB1guboEtiQqtcTJCUTfdgx0BXgwrJ0sKo6vfHRtMUIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=sBroTqwr; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="Tq8ZuVN3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1789389378;
-	bh=NP+qx6KPd2izD8GZkscicDmC9TOW22fQf6ELEFHElZo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Tq8ZuVN3iZkAfg3dOEdfoRL+QtFHyJLGJZp/2y+u+jIk8HyNzCujdqS+PxG30U7jD
-	 TFQBCNlcFWq5/QALnLSjnB3cnrxn2Gqb72rEJ+/2nOBfu7/d00tODb1jzso0eGoevJ
-	 G9W4Fri8sl6qFYDgFmwBIMJnJPRi78Mr7I0Rzs2VDRzI2kK+91sAShyH6SI1geF+mF
-	 VeyIcIz1F+eNEf56PcPkHYXEz+3D1IPraw/MRNus7Gsn1aeNoX+XRxEHLgPAO/HMPX
-	 TRKon8vWMUW3T69vXK8WJXdAkwnaBgcHWRhYCSBa/0S2bye4+hvo6botT30i73woIq
-	 UnjpNrGz2pDNA==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id CE6D260055;
-	Mon, 14 Sep 2026 14:36:18 +0200 (CEST)
-Date: Mon, 14 Sep 2026 14:36:16 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Hauke Mehrtens <hauke@hauke-m.de>
-Cc: stable@vger.kernel.org,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	netfilter-devel@vger.kernel.org
-Subject: Re: network flow offloading broken in 6.18.45+
-Message-ID: <aqfqQPP2Y7iG3kM_@chamomile>
-References: <7dfa42f6-64c1-4084-bfea-d57500c245cf@hauke-m.de>
- <aqcfvRE3aHoAx8s7@chamomile>
- <aqcgG0y-nYz4DWz3@chamomile>
- <aqfofgtUfyXlfHLr@chamomile>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="sBroTqwr"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=EQvmED0XLnRiwVr+hqQN5dNbbcwXDcg5FEOEt6uQaAU=; b=sBroTqwr4aHv8+LplZswgoX3aU
+	0Ss5buFm1c3RrFWkMwVnYWKyRfaZhFX1ouyFnw2t0qDn5TNJ/XxoYHHJkXeDuw+IV28RTbuxXnr9m
+	v34tXwpKoqoTtxi/+HLGgoIdg5KRyVRQe0kKD/j2eyyWE4sLTs1mwCheiF4c6/TS1vYE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x65w8-00550T-FI; Mon, 14 Sep 2026 14:37:28 +0200
+Date: Mon, 14 Sep 2026 14:37:28 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Ahmed Naseef <naseefkm@gmail.com>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>, Qingfang Deng <dqfext@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	SkyLake Huang <SkyLake.Huang@mediatek.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mediatek@lists.infradead.org
+Subject: Re: [PATCH net] net: phy: mediatek: do not report link and per-speed
+ LED rules together
+Message-ID: <06b12441-4018-46ab-87a8-668078bcd9f7@lunn.ch>
+References: <20260912134306.3544329-1-naseefkm@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aqfofgtUfyXlfHLr@chamomile>
+In-Reply-To: <20260912134306.3544329-1-naseefkm@gmail.com>
 
-On Mon, Sep 14, 2026 at 02:28:49PM +0200, Pablo Neira Ayuso wrote:
-> Hi,
+On Sat, Sep 12, 2026 at 05:43:06PM +0400, Ahmed Naseef wrote:
+> mtk_phy_led_hw_ctrl_get() reports TRIGGER_NETDEV_LINK whenever any of the
+> speed bits in on_set is on, and in addition reports every individual
+> TRIGGER_NETDEV_LINK_* bit that is set. The netdev trigger refuses that
+> combination: netdev_led_attr_store() rejects TRIGGER_NETDEV_LINK together
+> with any per-speed rule, and it validates the whole resulting mode rather
+> than just the bit being written. Once the hardware has any link bit
+> programmed, every write to the trigger attributes of that LED therefore
+> fails with -EINVAL and the LED can no longer be configured.
 > 
-> On Mon, Sep 14, 2026 at 12:13:50AM +0200, Pablo Neira Ayuso wrote:
-> > On Mon, Sep 14, 2026 at 12:12:16AM +0200, Pablo Neira Ayuso wrote:
-> > > Hi Hauke,
-> > > 
-> > > On Wed, Sep 09, 2026 at 06:29:50PM +0200, Hauke Mehrtens wrote:
-> > > > Hi,
-> > > > 
-> > > > flow offloading is currently broken in Linux 6.18.45.
-> > > > 
-> > > > Since the backport of commit b5964aac51e0 ("netfilter: flowtable:
-> > > > consolidate xmit path") to Linux 6.18.45. This is happening in a router with
-> > > > traffic from wifi to the Ethernet device when mac80211 returns -EOPNOTSUPP.
-> > > > 
-> > > > Upstream fixed it in 871df5007eda ("netfilter: flowtable: bail out if
-> > > > forward path cannot be discovered") by not offloading the flow at all.
-> > > > backporting this change looks more complicated.
-> > > > 
-> > > > This cam up in a discussion in an OpenWrt PR:
-> > > > https://github.com/openwrt/openwrt/pull/24800
-> > > > 
-> > > > An LLM suggested this change: https://github.com/openwrt/openwrt/pull/24800/changes/394d741e6e76ecd172dbbf1d9ba171e378211734
-> > > 
-> > > Patch went away.
-> > > 
-> > > > It seams to work, but I do not understand this part of the code god enough
-> > > > to judge if this is correct.
-> > > 
-> > > Could you attach the patch to this email for review?
-> > 
-> > I've found it :)
-> > 
-> > https://github.com/openwrt/openwrt/commit/d2b53b8043e17087b877bfc2335cbba87dffb4e0
+> The rules are also fed back into the hardware: the trigger stores what is
+> read back, and a later write of device_name programs it again, expanding
+> TRIGGER_NETDEV_LINK to every speed in on_set. An LED configured for a
+> single speed is thereby silently widened to "on at any link speed".
 > 
-> I've proposed the following fix:
+> Both are easy to see on the EcoNet EN7528, whose four PHYs share one LED
+> block. The first LED programs the block correctly, the second reads those
+> rules back and rewrites them widened, and the remaining two then read the
+> widened value, so an LED configured for "link_10 link_100" ends up lit on a
+> 1000 Mbps link.
 > 
-> https://lore.kernel.org/netfilter-devel/20260914122456.1963453-1-pablo@netfilter.org/
+> on_set holds every speed the LED can indicate and is exactly what
+> mtk_phy_led_hw_ctrl_set() programs for TRIGGER_NETDEV_LINK, so report the
+> speed independent rule only when all of them are on, and the individual
+> speeds otherwise. The mapping is then the inverse of the one used when
+> programming the LED and round trips without changing the register.
+> 
+> Fixes: c66937b0f8db ("net: phy: mediatek-ge-soc: support PHY LEDs")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ahmed Naseef <naseefkm@gmail.com>
 
-Actually, this v2 should work:
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-https://lore.kernel.org/netfilter-devel/20260914123334.1964397-1-pablo@netfilter.org/
+    Andrew
