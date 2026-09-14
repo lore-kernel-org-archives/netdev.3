@@ -1,71 +1,65 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CDC41BA77;
-	Mon, 14 Sep 2026 09:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF633F7ABC;
+	Mon, 14 Sep 2026 09:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789377282; cv=none; b=NEWyuPgEklWGC2ySaX7KCqy0STVij45aEyjql3pNZIuJWDq7+FqMbuBy9IHLxTDI6BjhurXgGODxDkD1UOEX8w645x0ca+AwM7F66QLbvYxqfMWc+lZ0X2aykb5l4XBC1r4nHY3Wb5Q4gZGzjETxWpZ+e44wxGNy35IXKYayMXU=
+	t=1789377294; cv=none; b=dIBVzRALgr7/O8CBT1bArxlfSCMWGzeV9GokpgZHwTyfTr2yBxyfvjLqXYw+ayx0iPYSq5PmAGiKZAcCRX5jBegRsTKDKwzIoWuacq1cCwr2B8tqZZOEGzU5EytqZK+o+t8P8Vk4n57LWk3+uf2LhzvUEWHDvj6+vC2JX6+P6a4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789377282; c=relaxed/simple;
-	bh=PhakHlGjaVQGTEFzESiU+KVATNhiNdZ8nkBv9rrMXV4=;
+	s=arc-20240116; t=1789377294; c=relaxed/simple;
+	bh=NyNkhKSWWyQK1aJbTK1W8C3zHQRHZ2UtAvj2nwEN9Gc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UfcCweM/aIFlAW36u4gg2EFMgv1kGNZsHtVymJeYv6EmvcNwf/baVIZOMXjQr1gMqE1of/+hBcQggVqsk9gF3cXtXeVOkWMpuhWNz3lSQTNjPI1VgY5ntxbwpwuHnB+6Dng90EXcNJu4+6Pru+T5Nzxz02mXNU9KrS4AXWk1UHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P3oLFUPq; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=KNiP4JFpWnHJokWrZvEBv+8zfF/F0qZYLklLccP+c9PzblWfW+dmHW3iKW/vt/ho6sXbvDX7Y+pysYLp2LQhYC/1axLYtFr02brZP/WCvyd+UnT6y+a/RkhmP+uVlkatXgT4OrH8tUDngTsLeKNtnJkhv9dysptY8XRre3chqIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QB5vB63x; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P3oLFUPq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3110F1F0089B;
-	Mon, 14 Sep 2026 09:14:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QB5vB63x"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F161F000FF;
+	Mon, 14 Sep 2026 09:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789377280;
-	bh=bg0XSpRqtkXAb1dpOB08jYY4v5A/1Q5EDf2qQrxc/JA=;
+	s=k20260515; t=1789377293;
+	bh=xtmKyn3NtpgCppoFcCU4yQt0ArbHBrXV8z0icOwmUJs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=P3oLFUPqmj91t0/zRAHyzYparU02eB5mPQzscMbJlnQ17I/6E9AUvSYjouizAajGf
-	 I9kTUdNaTwsT1Vehpas/3hMv9Tm78Jst6QsPEHK9OT/ZHc1hWerCXP+adJovCCJr9+
-	 EwYpx8mT4FhniIsfUoTausqKcMTRW6wYKregPbdT8hkIDpAQ6uhYilJt6xbyjgPUSU
-	 TjnzGRkvyllOBRz3pghW8kSy5A/NpUbWRIrWs46O/btV87HtG7XZ5iLAQOnooWuTis
-	 8msYJDAOt/U296sGrHADNDOkvSYwnq1piDqb54lgOYJKvRnCW5EVnX6UoXN/W/kYJJ
-	 IJCDMrBBVHAPA==
-Date: Mon, 14 Sep 2026 10:14:35 +0100
+	b=QB5vB63xxqbjDVXTJbNtzJTCKNVA1utACRdnMVxDXdL6WtpouXc0u1NLU3x5b30kr
+	 DA18sVYujCGaLjurdwwhfGutonXFH4r5OrWXG4FUyR16dJWZF1Xc8kSbaxGeE4NGDm
+	 MEx9mFEMwcOxxmt6m5w+zFNMQuelBCpAaBEQOGXBNUiOt0wofYUwRiVO+lGw0RE5LD
+	 E833aE36hwkrySCJVweFJwqjGIJwkCNoNUuotU89ykL68bEf2ZE5yZ0F6ioODnULRu
+	 0qwmu4681dmlpgmp6Q/ZEaIuDcki1VeES5qwjqMR+7gbSUR1AysPu/fGOqwjDPA9pY
+	 3ANj61ZA1TlZA==
+Date: Mon, 14 Sep 2026 10:14:48 +0100
 From: Simon Horman <horms@kernel.org>
 To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org, jiri@resnulli.us,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, vtlam@google.com, stable@vger.kernel.org,
-	victor@mojatatu.com, hybris@mojatatu.ai, sashiko-bot@kernel.org
-Subject: Re: [PATCH net 1/2] net/sched: hhf: cap hh_flows_limit at change time
-Message-ID: <20260914091435.GN48209@horms.kernel.org>
+Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
+	Victor Nogueira <victor@mojatatu.com>, hybris <hybris@mojatatu.ai>
+Subject: Re: [PATCH net 2/2] selftests/tc-testing: add hhf hh_limit cap tests
+Message-ID: <20260914091448.GO48209@horms.kernel.org>
 References: <QDISC-B855.v1.20260911153152@mojatatu.com>
- <178924538361.3125.3706649335976216385@kernel.org>
- <CAM0EoMkMCM92WBrt7v+2Ov2xSGGAqen-YTZj4irJzNcArrQjDA@mail.gmail.com>
+ <QDISC-B855.v1.20260911153152@mojatatu.com.2>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAM0EoMkMCM92WBrt7v+2Ov2xSGGAqen-YTZj4irJzNcArrQjDA@mail.gmail.com>
+In-Reply-To: <QDISC-B855.v1.20260911153152@mojatatu.com.2>
 
-On Sun, Sep 13, 2026 at 06:34:15AM -0400, Jamal Hadi Salim wrote:
-> On Sat, Sep 12, 2026 at 4:36 PM <netdev-bot+sashiko@kernel.org> wrote:
-> >
-> > Thank you for your contribution! Sashiko AI review found 1 potential
-> > issue(s) to consider:
-> >
-> > Critical: 0 · High: 0 · Medium: 1 · Low: 0
-> >
-> > - [Medium] net/sched/sch_hhf.c: the new `[TCA_HHF_HH_FLOWS_LIMIT] =
-> >   NLA_POLICY_MAX(NLA_U32, 2 * HH_FLOWS_CNT)` policy entry (line 530) is…
-> >
+On Sat, Sep 12, 2026 at 02:09:20PM -0400, Jamal Hadi Salim wrote:
+> Cover the new TCA_HHF_HH_FLOWS_LIMIT bound: values above 2*HH_FLOWS_CNT
+> (4294967295, 65536, 2049) are rejected with the configured limit left
+> untouched on both the change and the add path, the boundary value 2048 is
+> accepted (installed at 100 first so the boundary change is load-bearing),
+> and an add-time hh_limit 500 is preserved instead of being clobbered by
+> the default.
 > 
-> These findings by sashiko-nipa are accurate but as in the previous
-> codel thread they concern changelog and selftest-robustness nits.
-> IOW, there is _no code defect_. The -ERANGE behavior change on add
-> path and the changelog overstatement are worth a one-line fix if/when
-> the thread is re-rev'd, but IMO are not a revision blocker
+> Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+> Tested-by: hybris <hybris@mojatatu.ai>
+> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 
 Reviewed-by: Simon Horman <horms@kernel.org>
 
