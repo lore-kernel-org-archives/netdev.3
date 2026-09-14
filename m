@@ -1,200 +1,141 @@
-Received: from mail-pz2-f40.google.com (mail-pz2-f40.google.com [74.125.228.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0184F470E81
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 13:38:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.40
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F278470EA7
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 13:44:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789393129; cv=none; b=KJVpA0pDFgXW9rQfGRrh+/6QlF1W16ZJ8gMYY2b1MdOlYpkoSlaYZ8DBOq6n9oaxTA/5/eQ4HoIo0k+eXoK0+8IHVVQ1a8F5PmxN1KbNRrFBtKn5W2xqywkGpHEkdpKHqPeVw2Ug+L6LWOy7f0jO5tDtHA7WbU3mIG1VTMxH0qQ=
+	t=1789393469; cv=none; b=gW5S1LEQUyRMTERXT07f9VkINiCh7JL01rVVGwQMBj8CK0kn2yeT9a1JIBDSvtnDrd+ukCoUagEoOjPFVCxRxThX6TMi8YlcDqgfzg1DZWFgZWQDvp10Xij36G+bLT31IYa7+Vo3h3ZljLhVtYhn9s5SzPA5DHf3nwqLzk+nHDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789393129; c=relaxed/simple;
-	bh=G5Q4YusG7EhC2+49TlZOe2QDcwWJ1o9+e8sn8lUHz8s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DW6x1KFcJ7VXXu0Codd4H3WCppBvXGI5TZXqms7X6DX1Ue4SUlZ04a9xiFgtL9yR+mZnk1CElBan72337vy+ePZbNIYkmRPTXzoWpAsqlGJID1nFKhwObMwTjP4onV8J8sIHCwRBajEQpj+5OQXE1JggDOA1foT5ttLX+MEhcTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nwA3Lq0U; arc=none smtp.client-ip=74.125.228.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789393469; c=relaxed/simple;
+	bh=0iMtyUqd3qePGX0foMGvwlEfIHFwid3TU59h38RyA0M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YYRYAVfZSkeM6QdR1WGa8ZEC9fgYVJuMM7HBmCZLgiBCZlme1KOHFCrj/2kaZh/3NHIDetVKinuUmgql/nnDnYrTYWbXdn/h+u3RCS37U3O0HmYpKjMb7nYXRkZRfjT8yZET1JY4W0uVRn6x3PxFhrKfsa2/bvgJ9X43NCmP7Qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J9kkwdfB; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KwH+6iNY; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nwA3Lq0U"
-Received: by mail-pz2-f40.google.com with SMTP id 41be03b00d2f7-cc1ab16a9b0so167338a12.1
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 06:38:47 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J9kkwdfB";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KwH+6iNY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789393467;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0wErMsFym7CzSTi2r09E/qapmW2jeznE/5reFNjfhCM=;
+	b=J9kkwdfBEJlTC4N/deyDkg/G6X57HIVH0BNYZwuHU8qgx+q4gydEatFoaUuSHk/7uv5bA1
+	W4Qyvgl+DDRy+qKPCcslhiq3LuqlPO3BUl3lTkPqTp9qL3w0vnU7DsKuQ9qv0dNyvNR5Xi
+	p9o05gFnxonWDqLyvOaP66cEt/PY0NE=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-606-R-MYtMDGOfaNVqOaMURMFg-1; Mon, 14 Sep 2026 09:44:25 -0400
+X-MC-Unique: R-MYtMDGOfaNVqOaMURMFg-1
+X-Mimecast-MFC-AGG-ID: R-MYtMDGOfaNVqOaMURMFg_1789393464
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-530256c61b4so69774401cf.3
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 06:44:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789393127; x=1789997927; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=OM4WJQT7eiPiAF6TZgW9/Yhz6QCgt3cljrFGTLgDTGs=;
-        b=nwA3Lq0U4Mgd8/xczWKN4pbtIz1N3ZbjIo4FdXFoMquzJLSGSB4bKOeFe/DAFiCp66
-         ZhJswuo5U9oBy58VYzqA8FOTYRI1qJ4pct5aUNSt0w7NxYwPRBpBAJDx0mMwezbpp661
-         iON2PuMCfagaY/AkOmO4e9l5XKQsy+LfwOyWkIDxoc/ekm4a5phfF7/+MTO2VV3RW/Q1
-         4/pY19ZzXPXHbq8mOGe0JAYliP3VHrCA6tocg3EZIEHC8qGuDHQrDqgbbDXqKmEStpS/
-         URxGpq/MVYKOsL2245r/cK03r4dWqJH4/a2G1QKzUUFATK2q/DKbLbEidV1d0Vwhji3H
-         rVMA==
+        d=redhat.com; s=google; t=1789393464; x=1789998264; darn=vger.kernel.org;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=0wErMsFym7CzSTi2r09E/qapmW2jeznE/5reFNjfhCM=;
+        b=KwH+6iNYAoHdlx4EFtHQNjJWw+3RjIpHP/uZHKE0t9cKc9P46KReWho7kuibHgO2hY
+         XuZnXZBkP69liEpvRRAOJu7tXPMmX7trSdaucF0iD/H8RQnSXoR8AXbsv5vxaJHAJwSF
+         fLoYiHOaa8Pyu97ehElXBCZEiuENG8Xza/b4vZ/tyrhoJWNYjr4dJ3wkqvoJLJvytXgT
+         yV7WCJjRD2ZC3pnp1w5qBL9xVdWH9bCNyHFOiHWt9BS46YMpFQBkfwCL69RRKiQd4c8b
+         zJ47iW76Hcex7MQ43Mj+BU+080alwlxKJmN+yi4LNLlNYk/KmjBcMzAUAMxz7IIGWR0Q
+         ps5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789393127; x=1789997927;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=OM4WJQT7eiPiAF6TZgW9/Yhz6QCgt3cljrFGTLgDTGs=;
-        b=kgznwK7JtEY+NI5patrPJyhgTIGJIj+r9TzrEpPKPRWm7PpJYJf3e9g0dmnJQkR6du
-         ES+mBEJ2/Itm4fpqPK42q/0W011qI3XGc11w94d3jMoPHfGQT4j9WD9N2/je6NYOWa2v
-         M5m4jUeoe8oke8mQTs461GWvvQTeJLMt7IDOs0d35jtFG7ae2/K6jnWj47RQnVJB/4Rt
-         VlUpPB9wU3n0xeE8FN5qSXAaRI5VckFV8megfRXZHjaN37brObIUbseXhd3TB7FMnBoh
-         Sj5HyxipDrtRo2ickUqzfyqTIERio7nMu/oa+tdCtqjmVK0scCGo5IgHLTIx8Zgh5mII
-         qfXg==
-X-Gm-Message-State: AFuF++mu+4QG/ybPKgjUYnO74HQqI1JYVUSEfCsSTuiXXgqM9fm/N3Bt
-	pU2pjI9QgxlWxKZM9jcPL1u1gRc2Rcmi9686hk6JoldS2/a6QP+MkOfL
-X-Gm-Gg: AYBFou053IPT1nqnrh0N0bDrdpzQIbCh4COJPsiCTM4NTsWs+Nf/EjRXV5n+ozVB47J
-	O476RdU/NYrJ2cnFHd4EmIb3qsh0AG4Kw/QkST1p+ByK7K0wXWT90DhnhM/OQN0u1DKtT+nKGDt
-	dY2P5Y2eF5RGGQ6LYlbt93m2PyMqi8PAhFcFkMxPwEMLPfF2U02zZqQM6OJBqQkv+OtBwiUZAiY
-	mXD/TOz4A8cI0CnbRprc2ChInObSZ3ulFr5AwNCXTZ3s6ldH+EyB4la2V7MWJayTSxjfXZC/cF5
-	3qBiW2aSjtynZHG3jZq/MX9OX55C789vqoJ3s0oxNEgZl6SUdNv5ePHz1S2zmlee4gkRtp0qcjn
-	qq8amusdgNw5a0YlZ1GLuqSMTSvbmdxx1EI6XyqxrW2/v3FCMW7uTZdodRFSnjdfP8ex2VjdG8q
-	ZZ/DwtTPQ4JO48eb4LiMuJEgcXH6khX9vtpJJtHng7JDsRmToaYKE7HJGdka1cQlCGQYu5w6srh
-	/8eUyPw34UbSoS8x2ozu6KFPr1FUH0H7MnL8T3igDP+stqX6VY47XRSY3OMG1ahNQ==
-X-Received: by 2002:a17:90b:3e4f:b0:396:a47f:d38f with SMTP id 98e67ed59e1d1-39dec0bbc54mr3706908a91.3.1789393127161;
-        Mon, 14 Sep 2026 06:38:47 -0700 (PDT)
-Received: from localhost.localdomain (45.78.65.84.16clouds.com. [45.78.65.84])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14365bb6ba0sm24565602c88.15.2026.09.14.06.38.44
+        d=1e100.net; s=20251104; t=1789393464; x=1789998264;
+        h=user-agent:in-reply-to:content-disposition:content-type
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0wErMsFym7CzSTi2r09E/qapmW2jeznE/5reFNjfhCM=;
+        b=sRLbFI+oX4/T7Nvz69HuDUyAwANhefB0kGg1FNrsOXDanAhLdIzhCBERB2RjlnCGy6
+         8Mtsla0JFX8drV0Zpf7wn1alt29KJdNXbh7Hx9Hu8BlofbEVoCyiGn3iGAocCdCqR0rv
+         0FIN+HDiEWaDqU/G2ld4AtzhKFi/cpDhSC7G4GVM+powA1+vwZGSq7vOrn/2bt+X+ypk
+         e/ts4ARa/v+k+jq3ELmicSvKi+MXgSxQmBpAbUlcD1CJ9/HCJGyN9vdmokHomQnJmOag
+         t6Cuwmaxb/YKclYPbnlRgorHonAyvW2vKFhY1xXw+8kuqIcge5+1T+/X/3z1+YasjjJw
+         lHiw==
+X-Forwarded-Encrypted: i=1; AKwUvBy8AiaTue8/Aqt0OBSOAzEfSeSt6d7/eMvmvgTOBsjvdkAVtT0lvEi7VxphfgefDm5CMyVoAKc=@vger.kernel.org
+X-Gm-Message-State: AFuF++nGor7k2BabOi8sUtEMxCOOJC8RaDWpeqTisjLSVj9UkkJuSt/r
+	Mb6mnRER4wGer8jSBTvfl4eXtvvLKqQeoB07nFGKvyV2ZPnXAjcGXeWiZDJVRaFBpZ+SlNNwPsi
+	9vPnxgCVvd1q1TIcgR51CZvaH195WHYu2UIdEItyEvjCsdE2Aus+Uv3GeOQ==
+X-Gm-Gg: AYBFou3/TeG20+1uhLsrnlsFrzK8hU7TsTYhJsEm5D1m8/oIU+71zIRo71l5r1GStiY
+	TM+NCPWozvnbU/xaHUsa1abNufhfLmBJSkTsumZaOcefEYrg7ph+TEvtVANjzhZo2+sq+t7vuFv
+	Km/bUB9UzZPo00EbupJagwJpOZ7oq3myXd2BPea+YBxjQ92hmHE/qttB8jvS6cp3n5cR7c0rIfI
+	pR83nEtZjisGhj1q23AU3LbmS4zw3nbNUdkQzsngdoOE9cYi8N/r0feWZwRCCs1zcsfK1DfHXxE
+	mBW5MZQlILjzpha6udNrF0IFwlMyjagLieKFDLLU0L9XrKK20sS2kPbw9QSTKOjKsaKaorqjcmP
+	KsEyqYCu+bhf/JKN2czLZ8GJdGYZEjCqffxs=
+X-Received: by 2002:a05:622a:1905:b0:530:b2e4:d59d with SMTP id d75a77b69052e-5310d071f0cmr35836341cf.56.1789393464253;
+        Mon, 14 Sep 2026 06:44:24 -0700 (PDT)
+X-Received: by 2002:a05:622a:1905:b0:530:b2e4:d59d with SMTP id d75a77b69052e-5310d071f0cmr35835751cf.56.1789393463669;
+        Mon, 14 Sep 2026 06:44:23 -0700 (PDT)
+Received: from redhat.com (c-73-183-53-213.hsd1.pa.comcast.net. [73.183.53.213])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-530ca309989sm100594471cf.4.2026.09.14.06.44.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 06:38:46 -0700 (PDT)
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
-To: Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chengfeng Ye <nicoyip.dev@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH ipsec v2] xfrm: fix races in device state cleanup
-Date: Mon, 14 Sep 2026 21:35:40 +0800
-Message-ID: <20260914133540.3666907-1-nicoyip.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Mon, 14 Sep 2026 06:44:22 -0700 (PDT)
+Date: Mon, 14 Sep 2026 09:44:20 -0400
+From: Brian Masney <bmasney@redhat.com>
+To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Chun-Jie Chen <chun-jie.chen@mediatek.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Edward-JW Yang <edward-jw.yang@mediatek.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Chen-Yu Tsai <wenst@chromium.org>, kernel@collabora.com,
+	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Irving-CH Lin <irving-ch.lin@mediatek.com>
+Subject: Re: [PATCH v4 00/24] MT8189: Add support for system and base clock
+ controllers
+Message-ID: <aqf6NH-xrMtCQppv@redhat.com>
+References: <20260729-mt8189-clocks-system-base-v4-0-e356b813a64c@collabora.com>
+ <amuWdRD-TBQtFT_4@redhat.com>
+ <1f6bdf69-c3fe-4e1d-8ff8-0e36d9f4e063@collabora.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1f6bdf69-c3fe-4e1d-8ff8-0e36d9f4e063@collabora.com>
+User-Agent: Mutt/2.4.0 (2026-06-19)
 
-The deferred-device pass in xfrm_dev_state_flush() finds states under
-xfrm_state_dev_gc_lock, but drops the lock before calling
-xfrm_dev_state_free() because the driver callback may sleep. The device
-GC list does not hold an xfrm_state reference, so the state GC worker can
-destroy the same state concurrently.
+Hi Angelo,
 
-The race can proceed as follows:
+On Fri, Jul 31, 2026 at 12:04:49PM +0200, AngeloGioacchino Del Regno wrote:
+> On 7/30/26 20:22, Brian Masney wrote:
+> > Should there be a new MAINTAINERS entry added? There's currently 221
+> > files under drivers/clk/mediatek/ and there's currently only one
+> > mediatek maintainer entry:
+> > 
+> >      MEDIATEK MT6735 CLOCK & RESET DRIVERS.
+> > 
+> > Is there anyone from mediatek (or elsewhere) that could act as a clk
+> > subsystem maintainer similar to what the other SoC vendors do? Help with
+> > reviews, send in pulls, etc?
+> > 
+> 
+> I may be able to step in, but I have to check if it's feasible, time-wise, on
+> my side.
+> 
+> Though, that won't happen until mid-September... because, well, I'm about to go
+> on holiday (in a few days from now).
 
-  CPU 0                               CPU 1
-  find x on the device GC list
-  drop xfrm_state_dev_gc_lock
-                                      xfrm_state_gc_destroy(x)
-                                        xfrm_dev_state_free(x)
-                                        xfrm_state_free(x)
-  xfrm_dev_state_free(x)
+I'm checking in to see if you would be willing to be clk submaintainer
+for the MediaTek clk drivers?
 
-Both paths can invoke the driver callback and drop the device reference.
-CPU 0 can also access the xfrm_state after CPU 1 has freed it.
-
-KASAN reported:
-
-  BUG: KASAN: slab-use-after-free in xfrm_dev_state_free+0x24c/0x2a0
-  Read of size 8 at addr ffff88810bbaa960 by task poc/102
-
-  Call Trace:
-   xfrm_dev_state_free+0x24c/0x2a0
-   xfrm_dev_state_flush+0x353/0x400
-   xfrm_dev_event+0x26d/0x3a0
-   notifier_call_chain+0xc0/0x280
-   __dev_notify_flags+0x169/0x250
-   netif_change_flags+0xe7/0x160
-   dev_change_flags+0x96/0x220
-   devinet_ioctl+0x7f4/0x1880
-
-  Freed by task 57:
-   kmem_cache_free+0xcb/0x3d0
-   xfrm_state_gc_task+0x4a8/0x650
-   process_one_work+0x63a/0x1070
-
-A third xfrm_dev_state_free() caller in xfrm_state_find() can also race
-with the deferred pass. Both callers can sample the same device before
-either clears xso->dev, then invoke the callback and netdev_put() twice.
-Since hlist_del() leaves the node poisoned rather than unhashed, they can
-also unlink the device GC node twice.
-
-Acquire a state reference while the deferred pass still holds
-xfrm_state_dev_gc_lock. If the reference count is already zero, leave
-destruction to the state GC worker. Also claim device cleanup under the
-same lock by clearing xso->dev and unlinking the node with
-hlist_del_init(). Only the caller that claims the device invokes the
-callback and drops the device reference. The deferred pass releases its
-temporary state reference after cleanup.
-
-Fixes: 07b87f9eea0c ("xfrm: Fix unregister netdevice hang on hardware offload.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
----
-
-Changes in v2:
-- Replace the global mutex with a temporary state reference acquired
-  while walking the device GC list.
-- Claim device cleanup under xfrm_state_dev_gc_lock so concurrent
-  callers cannot run the callback or netdev_put() twice.
-- Use hlist_del_init() to leave the device GC node unhashed.
-- Cover the xfrm_state_find() cleanup path identified during review.
-
-v1: https://lore.kernel.org/netdev/20260730103543.2077749-1-nicoyip.dev@gmail.com/
-
- net/xfrm/xfrm_state.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
-
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 36a4f6793ede..282d09d0c247 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -780,17 +780,20 @@ EXPORT_SYMBOL_GPL(xfrm_dev_state_delete);
- void xfrm_dev_state_free(struct xfrm_state *x)
- {
- 	struct xfrm_dev_offload *xso = &x->xso;
--	struct net_device *dev = READ_ONCE(xso->dev);
-+	struct net_device *dev;
- 
-+	spin_lock_bh(&xfrm_state_dev_gc_lock);
-+	dev = READ_ONCE(xso->dev);
- 	if (dev && dev->xfrmdev_ops) {
--		spin_lock_bh(&xfrm_state_dev_gc_lock);
-+		WRITE_ONCE(xso->dev, NULL);
- 		if (!hlist_unhashed(&x->dev_gclist))
--			hlist_del(&x->dev_gclist);
--		spin_unlock_bh(&xfrm_state_dev_gc_lock);
-+			hlist_del_init(&x->dev_gclist);
-+	}
-+	spin_unlock_bh(&xfrm_state_dev_gc_lock);
- 
-+	if (dev && dev->xfrmdev_ops) {
- 		if (dev->xfrmdev_ops->xdo_dev_state_free)
- 			dev->xfrmdev_ops->xdo_dev_state_free(dev, x);
--		WRITE_ONCE(xso->dev, NULL);
- 		xso->type = XFRM_DEV_OFFLOAD_UNSPECIFIED;
- 		netdev_put(dev, &xso->dev_tracker);
- 	}
-@@ -1005,9 +1008,10 @@ int xfrm_dev_state_flush(struct net *net, struct net_device *dev, bool task_vali
- 	hlist_for_each_entry_safe(x, tmp, &xfrm_state_dev_gc_list, dev_gclist) {
- 		xso = &x->xso;
- 
--		if (xso->dev == dev) {
-+		if (xso->dev == dev && xfrm_state_hold_rcu(x)) {
- 			spin_unlock_bh(&xfrm_state_dev_gc_lock);
- 			xfrm_dev_state_free(x);
-+			xfrm_state_put(x);
- 			spin_lock_bh(&xfrm_state_dev_gc_lock);
- 			goto restart_gc;
- 		}
-
-base-commit: e6b6078ea1731b05b3b552497b3bce4bf8b014ae
--- 
-2.43.0
+Brian
 
