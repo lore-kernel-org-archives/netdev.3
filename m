@@ -1,76 +1,83 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-ed2-f9.google.com (mail-ed2-f9.google.com [74.125.228.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86F23B05AF
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 07:24:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56FB93B38AA
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 07:25:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789370652; cv=none; b=FLLBdCZaItfRAhHaZiBFvTMsWDuShGT6Fq2ZUXYAlnKys8tWY0gtRa+bYNVJ0UG4fcbW9E78UpbWt4TNJ2ha4hWFXEV3f7FklFhGUrIQ7DhkbL5/wya1z9rA9rQyTePoeSSKfnO0k5/0cwTxMib8gExTNOZZeMdMR68rEQRS7v4=
+	t=1789370747; cv=none; b=YaRU/w6sK0GtJ2YPEplam1RZYIRB6qYWZBZbs2zaxyq+4C0d0l14JoSsbfwnUXiCAepnpTEz+oxnPb0lRzxgmoQz7p8exfv2He5KDTtP7m5Jr5imw10hFF3tpRFXjeuk/AuVGx1fKp+gdON1AZtxeTJcdnz3KxY9lLS4cwExpZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789370652; c=relaxed/simple;
-	bh=SS1ZM6np+G358NneV4rAvq3tFZOwv5s0KtkiHwfNVsI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GL5CksIWNjEtaxGzchSgmr97hq2PkShT0QMV2sDmwWEQFSouL3g9fKvbxK/SAOyt/ZDGqKJIB/bx2F1Vw0+zyhkBm4VKGsHmS3f+Gz8VjY7aAt1ojkDmH1dO5vzA4ggAV7fE6AuUTyz2yxC1mR8p/Dvrfva5y65dk36KB/QrVuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gJcUpq7y; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789370747; c=relaxed/simple;
+	bh=PbFleIiEMM4EcOk80K3i/aLj+DU6YW6VYPFpTkRWFdw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Kcss2T1mtJboS0QUWx8vF28pOD7S2vu8suFQaePaeueHlwMbX0hF4kTsQ0KQ+MZEYqO73YjfzHnUjs+VAta75wB2z7UaWanW6E4gfY8IqxTgaS7JHBFc7A7WrSxSdj9DsWLGLCWQQtHP5apZW4V++Mb9BMG2Ma4QJZTXgL9/f/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de; spf=pass smtp.mailfrom=bairaktaris.de; dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b=HrlhERzv; arc=none smtp.client-ip=74.125.228.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gJcUpq7y"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4998b5a63e2so32120305e9.1
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 00:24:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b="HrlhERzv"
+Received: by mail-ed2-f9.google.com with SMTP id 4fb4d7f45d1cf-6a99cd510ecso1549121a12.1
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 00:25:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789370649; x=1789975449; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3TyhN7mBsHX4emCP/4vVQ2eujyFH0u498W1mC0U6mLI=;
-        b=gJcUpq7yV5fbowRp1yXdel521ehPUfI9OaI8SpaN/AiMxt6Z+o0guwniewoomExrPG
-         cmOuSRCHahyYb7R5I7yfQwI3yqIoMCXochbf1Zbkt9Br7F5X8hFrIFd/jCS37jBWJjUl
-         MdvFoulDLhZoUtxTNmyKj2hnH9zEOiGBZG8I967kr1TM8LCqYhvxie/YQgu5fY/8xKn/
-         tCVnSgFVyDuV7yqWmJI93dIGBK8D9ImVtTfzPBLLXX/cWy4eDfnbzUDhDyj2f7UUOvgI
-         c3KYlro3VIB7/2gCSNerDc/cAOp/dv4sLGpVzbL/amDhyu+6IPBVW6l64twmQVAXd/wm
-         GRqA==
+        d=bairaktaris.de; s=google; t=1789370744; x=1789975544; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qJ86Zw0v4ma0tFKlF0YzcCNn6ZjfpJhPEM6cbbu9cJI=;
+        b=HrlhERzv16GJowlpSwSwRzhGC4CyVKDxIMOr2L4ClQFpqohN1SIx6aU15FdTk2OUSM
+         qTz03o+CtiNcmGRxpRMhnAP3AKJkFsnfBV8hGW2GOYJoJWKb0ffy0Vojq8fvuRvHCZJf
+         VLJG4oy5gx6QQ+btAbIUouO7D1KdDipmaEsWoqPRz54U9g0n4a/zab87zK3a6SClar4p
+         NWnKyF7g3Eab1tgpbburmMCq2/D3vun8WziluNIJ5rTZ0uOsAgWVLpN1QJc1ke2hcKZp
+         3Y5KNam31omL9YHakilPEOwug7ys1+Ro7velGPt4SdQZnWrY2T75ERqyRqJ5Uh5Ot5aF
+         69dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789370649; x=1789975449;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3TyhN7mBsHX4emCP/4vVQ2eujyFH0u498W1mC0U6mLI=;
-        b=Ub15ZXpoz4is1S7uD4krZxXK08kBO5adX5uA3znJzb26C8QYqGpbLS9EgGtQyxJyDM
-         waSUWowvTnFrNfR0BB29/C3hvt0rUCLHHSNox1ztAl6/FBfDQE4MosOcLgNWC/lYiwmR
-         VFeMuJZR3NXiYOMeUYi4tczFW86eGjFZ3fyZ4p+2y8/KQPRdJPgIYKTgN1pGyepztuP5
-         /a1eD00bkxUND0jsffFD9p/1hwlbM33PhRrDktqFPv8lj/GgNj8BdSKUzSr+pZPql3MG
-         g3nJ8LPXoZFRMi1orZpammVTU0w5kEfiWYNNnMFrVKdgT7Ewx8eyf0Ms0C6AB4S3AS4t
-         xWYg==
-X-Forwarded-Encrypted: i=1; AKwUvBwmK+yTkZiLzY4zuMACn5lrir7kuyK90P9a4HXAAnPDgRn8dy37RTFtzyVzi80QY0jvoufLCSg=@vger.kernel.org
-X-Gm-Message-State: AFuF++l6eoHfdiqT3aYKocpoGnrg6qCpNcmULqbHExprqwvamSebF+/f
-	pzMHJFYKkz4Pb67YV8GPSWBDCBNbbKlzwX5N/R0yaIAOFVshIE90xqbS
-X-Gm-Gg: AYBFou3lcSqCa+ZG9dSKUCrE76SbtXfRUovS0MEobzs9Of0Cu7bnSkcRJniXwwb3tnU
-	J9soSWBwBGvEK+xjDSkNmlR0bBemrfSQpuy7IeAMENwlZ25W/j9ZN2JN6PN56xFiERunwqKGC4k
-	gUrZJnbLKdw/DvdJ9VHK2ak9Ps4hzYuqbFlNzfuhvGJl9JNvY3wRQTfMRrr0tVQpEnhQjfecrY8
-	ylxJNnJQg7EtbrUYgh+KmE60q/EK5jTrF/XsdorS8vhlwLJDO8xnuYrZrpaoe8BjxyBf0kAY6As
-	fhb7CDL1ipLWTF5R2V3ES8uYTwBJlAs0gW6FS7VNbH7MgI5rHu9ybCfId92ErMZt2v1ItxOmw6l
-	EXB/jatj2gLfmZgJ+AEoo50nVtXSOcduZhLhuv15w/4JL0zrH0NxzfhjwQEbxedb58ncjv0dnc6
-	JwOiKnuYZPxaj0ocLYQc1guk1mpDHE8B8jQWe6p79HCBhvCRhZONnY3gtJbqYEZ/bbRaY2IGS2F
-	thde1THtg2eyuKZ7H9o/c41Z1k65AKnaznwEJk5BQINWvo5FlI=
-X-Received: by 2002:a05:600c:8706:b0:49c:fc6c:be15 with SMTP id 5b1f17b1804b1-49e7a68b749mr14649275e9.27.1789370648582;
-        Mon, 14 Sep 2026 00:24:08 -0700 (PDT)
-Received: from fedora-tap.advaoptical.com ([82.166.23.19])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e6499d57bsm439605585e9.3.2026.09.14.00.24.07
+        d=1e100.net; s=20251104; t=1789370744; x=1789975544;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=qJ86Zw0v4ma0tFKlF0YzcCNn6ZjfpJhPEM6cbbu9cJI=;
+        b=ZXIV5wG5FJm0N0ctpkfw83f/ZC0o+KRtLc6G9yS1ZQNselV+h2wOOsSISFFraYNLTR
+         A4HZ298NzFN8/u5BUkKas0rC2kzz22/7MpJA/dehNSLUEdNdePBsls4mDaA4Q3ee7EVI
+         n8WQKrlHXNFuKubjP5El5Pbn1aVuegglKIWYWW3Y+8p2ZZ1DAUILHX9E9lSbo9lIqrWZ
+         E5gF2xH7+fNsf+2o5OasxjvR1K1joNanFN65NCiY0w1LaJPq1C9P0ExgBELJO1q+CPxN
+         dc2nk2SDGoJi6ZNG0iZ8cB8Vx/Nz8bNGm0k7gYdHulGQpUlSRNrjTEjpvMTUoizqvnxi
+         tPew==
+X-Forwarded-Encrypted: i=1; AKwUvBx6yKJi2cS3YN4Fj3OcgvyL6uV2cTmyGBn8xUuDgKiwQggyz5aM2CaJFFRiD+t7vkG65ToFi10=@vger.kernel.org
+X-Gm-Message-State: AFuF++lieo8QWlRsn+5QCaBjewBdgFNABgpTE2TT7g07klCpBFwmnaOv
+	n2z684ofpgVKAFjudqYauRVdNJSlXcmQzj8pCggrjWTmUvkINZFWMMxBmdcQ7sT85g==
+X-Gm-Gg: AYBFou25RO703lwjkb1PQyxt+IJuasPq6NQwWHnGr7awDYgN6+yMDHCNyi2rzFafv6K
+	WRbqFdUvxft4rxGget/w7dClIzhVKqljb4XiK7Y1Bw8j0EQytpOrr/sP+U6mc+McCYR3yS9EEUh
+	EmMje9rQncFd/YimXcR7di3phpu8jbulDRHNEGTIyqXfv5TXqHAEvk1OjpbKk5KRggn9lEvqLoj
+	MCJK84x2wztgrDRVLzmtzBZJS0Hts8FDupLVuaC4gYLa7DYC7ORI181k4A/bos5uSdVK3BWZrfz
+	9Bt81os5MTk/zujfeTRyDgeJeJ9CBulLYq5uxVCpyLOzf2YacLav3sY+7au9eZYaQLFsmeMO44q
+	6vruL2XlXVRb2vH5JOImPbwvzivtYe9tkTc4jrOmo2Zi7Axf7pgTK5DhcBVjXhbQ/POvcYgjhD0
+	M9KwRt5bBFchN5aiDwKbmwP2OJcOfv2e3e64n+YuW2CP/M/vlhMyCHBQAj4BEUlv9XBESVVgykA
+	Oz3yRbT9bOObwMrvYXo9fd5y9ejG49Mxq4uEereA37wFUOGg9dEmb5AloxGyXa+NwknE9csjoVk
+	W9PCuqOO41JHNIDZg4bFEQlFjJG0DjIo7vqpYg84irQUjlht+ynCL+2xcFdyiTQDnGlMyqkTqL1
+	l5CRowtpNkbygFbFEqpigN6rkATaiMyK+XbEG7WOQWJfYsAIeduHz2cy+JlzSxFAdF3dctSf2An
+	onbxusGJjV
+X-Received: by 2002:a05:6402:4149:b0:6a5:d8eb:da01 with SMTP id 4fb4d7f45d1cf-6a9f61583a0mr1933700a12.0.1789370744430;
+        Mon, 14 Sep 2026 00:25:44 -0700 (PDT)
+Received: from Desktop.fritz.box ([185.152.145.208])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2965c4e8a1sm382835666b.6.2026.09.14.00.25.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 00:24:07 -0700 (PDT)
-From: Sagi Maimon <maimon.sagi@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org
-Cc: Richard Cochran <richardcochran@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Sagi Maimon <maimon.sagi@gmail.com>
-Subject: Re: [PATCH net-next v13 2/2] ptp: ocp: add TAP CPLD firmware upload for ADVA TimeCard X1
-Date: Mon, 14 Sep 2026 10:24:06 +0300
-Message-ID: <20260914072406.12970-1-maimon.sagi@gmail.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20260911165105.4235aa04@kernel.org>
-References: <20260911165105.4235aa04@kernel.org>
+        Mon, 14 Sep 2026 00:25:43 -0700 (PDT)
+From: Julius Bairaktaris <julius@bairaktaris.de>
+To: netfilter-devel@vger.kernel.org
+Cc: pablo@netfilter.org,
+	fw@strlen.de,
+	kadlec@netfilter.org,
+	phil@nwl.cc,
+	horms@kernel.org,
+	davem@davemloft.net,
+	razor@blackwall.org,
+	ericwouds@gmail.com,
+	dqfext@gmail.com,
+	netdev@vger.kernel.org,
+	coreteam@netfilter.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH nf-next v5 0/3] flow offload teardown when layer 2 roaming
+Date: Mon, 14 Sep 2026 09:25:38 +0200
+Message-ID: <20260914072541.897040-1-julius@bairaktaris.de>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,40 +86,70 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Fri, 11 Sep 2026 16:51:05 -0700 Jakub Kicinski wrote:
-> Why add another FW flashing interface when the device already supports
-> devlink flash? You can use component names to disambiguate which FW we
-> are targeting.
+A direct xmit flow keeps the bridge port and destination address that the
+fdb resolved when the flow was created. When the host moves to another
+port of the bridge, for example a station roaming to another access
+point, the bridge moves the fdb entry and the flow keeps forwarding to the
+old port. Every packet the sender keeps transmitting refreshes the flow,
+so it does not age out, and a hardware offloaded flow never sees a packet
+on the software path where the stale port could be corrected.
 
-You are right, and it is done that way in v14: the firmware-upload node
-is gone and the CPLD is a devlink flash component instead.
+The bridge notifies SWITCHDEV_FDB_DEL_TO_DEVICE for the old port before it
+moves the entry. Patch 2 tears down the matching direct xmit flows on that
+notification. Patch 1 stores the bridge vid in the tuple so the vid of the
+deleted entry can be compared. Patch 3 adds a selftest.
 
-  devlink dev flash pci/0000:02:00.0 file cpld.bin \
-      component fw.cpld
+Tested on an ipq807x router (OpenWrt, fw4 flowtable with the offload flag)
+with a station roaming between the two radios of one bridge during a
+download: without the patches the download stalls for as long as the
+station stays on the other radio and resumes only after it roams back,
+with them it continues through the roam, three runs each. A host moving
+from a switch port with a hardware offloaded flow to a radio gets the flow
+torn down and re-offloaded towards the radio.
 
-->info_get() reports fw.cpld as a running version with
-DEVLINK_INFO_VERSION_TYPE_COMPONENT, carrying the USERCODE of the image
-currently in the part; that is also what makes the core accept the
-component name.  The fixed cpld.id keeps reporting the IDCODE, and no
-component still means the card flash, exactly as before.
+Changes in v5:
+- Rebase onto nf-next; the forward path resolution now lives in
+  nf_flow_table_path.c and the tuple has no hw_ifidx.
+- Store the bridge port in the tuple and match on it: the out interface
+  is the lowest device of the path and differs from the port when the
+  port is a vlan device.
+- Add a helper for the per-tuple match.
+- Drop the WARN_ON on allocation failure; the flow then ages out as
+  before, the same way dsa_user_fdb_event() drops the hardware fdb
+  update when its work item cannot be allocated.
+- Skip local fdb entries, kick the gc once per flowtable.
+- Hold the device with netdev_hold()/netdev_put() and a tracker.
+- Add a selftest that roams a host between two bridge ports, plain and
+  vlan, mid-transfer.
 
-It removed more machinery than it added: the driver side is ~50 lines
-smaller than the firmware-upload version.  The fw_upload_ops callbacks,
-the adva-cpld.N node, the FW_LOADER/FW_UPLOAD selects and the
-cancellation state machine that went with them are all gone - and with
-them a race where a cancel arriving after one upload had finished could
-abort the next one.
+Changes in v4:
+- Removed patch "don't follow fastpath when marked teardown".
+- Use a work queue to process the event.
 
-The one thing that changes for userspace is that the image now has to be
-reachable by request_firmware() rather than streamed into sysfs, which is
-fine here.
+Changes in v3:
+- static nf_flow_table_switchdev_nb.
 
-Tested on the card: a full erase/program/refresh cycle of a 6526-page
-image through that command, the CPLD reporting done afterwards and still
-done across a reboot.  A .jed container and an unknown component name are
-both rejected before anything touches the part.
+Changes in v2:
+- Unchanged, only tags RFC net-next to PATCH nf-next.
 
-v14 posted at: https://lore.kernel.org/netdev/20260914071531.11640-1-maimon.sagi@gmail.com/T/#u
+v4: https://lore.kernel.org/netfilter-devel/20250925182623.114045-1-ericwouds@gmail.com/
 
-Thanks for the review,
-Sagi
+Eric Woudstra (2):
+  netfilter: flow: Add bridge_vid member
+  netfilter: flowtable: teardown direct xmit flows when the fdb entry
+    moves
+
+Julius Bairaktaris (1):
+  selftests: netfilter: nft_flowtable.sh: roam a host between two bridge
+    ports
+
+ include/net/netfilter/nf_flow_table.h         |   4 +
+ net/netfilter/nf_flow_table_core.c            | 109 ++++++++++++++
+ net/netfilter/nf_flow_table_path.c            |   9 ++
+ tools/testing/selftests/net/netfilter/config  |   1 +
+ .../selftests/net/netfilter/nft_flowtable.sh  | 140 ++++++++++++++++++
+ 5 files changed, 263 insertions(+)
+
+-- 
+2.53.0
+
