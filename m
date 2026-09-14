@@ -1,172 +1,221 @@
-Received: from mail-wm2-f9.google.com (mail-wm2-f9.google.com [74.125.225.137])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3110C381B1A
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 21:16:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0198414DFA
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 21:19:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789420573; cv=none; b=fztVotpqBgExqF2geu+oqzg/47/9NRsZ5JXb9SIVRptdd1FQCDmpLSyLMc97UIDgl91OYEn0d5iNorixbmKZrO30ujG23RZH1EYncIOdmBJ/YXBGeCrzeZcaiznWP5DVoojZ8Ynj4nALEWFW7TodA45pHyUTUrHzyJAjf4hv0BA=
+	t=1789420775; cv=none; b=en0dxVhmVU7zzNVbZib1OUmaY861HkIeUpXrI8BuR/zV24IVtv6UkvdwV8/+edwBXZMzWMB9TxvKbmWef/hh63Ej3KCb1Zk/1cZLbaGZ6VNOVAXGuIbISdFmHMRVcKuVRJrM8qEe27R4cp+I2gLEL3cirrZhC//UqjnIBF//000=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789420573; c=relaxed/simple;
-	bh=pRD7Z+wpknyhKIuXnCEHF98EZOGtUnAzkUsXHVDoKNM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d/x5aZS4qMlfRzw6UENrMAHy2IDzQhAPnLbWa3bkxo5JDvF3w1GFAll+9/wTISuXMhMJunAVhPJT9jagaHzOWNMnBSuacPHy8ZxmshkvecxcJv3BhsS6tMkUmunT3R8yPg0bM5GHQYJYloZB+e0acWp8pkI1K/GpocI0obohUz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm2-f9.google.com with SMTP id 5b1f17b1804b1-49e6bd65693so13155705e9.0
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 14:16:12 -0700 (PDT)
+	s=arc-20240116; t=1789420775; c=relaxed/simple;
+	bh=6S82DVredtucyesmlNsD6LttbkPj4FqwkwqGgMhpDdI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fiPwq1b2RP6eXisT/TQTyNK9D+vORciKmhtMPGH49VOv08/Em5YuEauWt/ZY5G//fqXBPtwjJ8pfsG4K1vKvIkTbPgJcB/QuNsHeWWwUG1HXmqRrKGcqZi5xY+zsADurzG5DyhGXqp50cISaQcModpsJ+0faKL283G0qyKQVuIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=Gvd+4FWZ; arc=none smtp.client-ip=185.125.188.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="Gvd+4FWZ"
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 118163F332
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 21:19:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20251003; t=1789420763;
+	bh=e9c5Lc0MvQFExiINqSmAM4SmgxHPisXxegde3km6nbg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
+	b=Gvd+4FWZhoaTqwQHlJasm/ni3IUcSaWOReFynxKr/nZ9U3/WQQO6J4FfzxzQOiivY
+	 DaKbCJYY2SlCkyzLYqLxJWQNph9h9D8OHsVwdGAS1MlUgjaaa22a0OCSQdwvoTPWCR
+	 WKVVLK2mo+AREliG+DzSIt/WGZ5d7k2c3H37ui3RLQzV1DknqjhMJjQ3g8gnmsDFuG
+	 A/zV6B8+GwNaMOg/cGJgY/hMmOi7AB6qQzMcXHxI+6zsAuYKOe3Y9CkkNddL9lWb5m
+	 13+OXr8Usfpe2llZobfzIGmPbkPA8+Oz6F5bbh//5xAZao4FgwLiaeqWPTK8ODxiI5
+	 GtYsoQvGv/CvTnTLlBhLSEQdqdKOswbbRMJAO8ARHat2/UjryltDOIOQkL8+sKJRDc
+	 VITfGGsPNS9YYqEvOKFqnBjfrD8hgtDI0Sn5jWIKr/2nNd4jgN0jbyH48uOCjMywjc
+	 eI9U3m84uQ+W5ZdhQIm9LJEXPwcPCiH2KbU7RwuDuOnamN8BzKgOKPN4FusYzEUJDY
+	 OUnavKkh+3L8aZFcd6eC68jfPqnpU3FTWXSEUcDoMSP1JV2S0k1fPaedkIgalbuBI5
+	 kFbeSBuDUqLd9gHGdsypWbNiQJpQYXxgqUiDKunAodfL0NJNH7xOaxzmj+yXAzO2QT
+	 SH1NGGhA7jN5j4w6BosHAjSM=
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49e73cb6c87so2179505e9.0
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 14:19:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789420570; x=1790025370;
-        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1789420762; x=1790025562;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=6dMtwf3aknp/Biu8uAp4SRqlY9VPC/Qd7gqEXyJcSVQ=;
-        b=qRjQJPAjas0hDEP5ygWPtTfhiFLjEXUnjXucTFwjkXy8rYGXH/JlbmNrSv5qwcOv//
-         i5Dya76ZkkWrzJFU81urpqVQHKFUnoQW/FffC3BF3qZKsS6gueMs0zUg5Bdm+UiKevoI
-         g/e2clmz08ms+tV/ZfCAp3YfktHrBa8J3v4p0IcCRuSNYx9HhqQdgwq/LzR7A5RX8kXf
-         t11nEi0CpPsXNwRHN2oz/Yrftr6e2UJbt5oBmaJpWf1OviDpBehG0TWZsjhsmmeOwUqB
-         HhE9lQYrUbyeeyoVtAXAmWxbL0xrruEvGO9l3uDdJs7UPq7xWXn6ox1XP6HqB01NGRmv
-         IJew==
-X-Forwarded-Encrypted: i=1; AKwUvBy2TPZTFWmamAhGMYHJWc1MsnuWigr3B+FGxne2u54qZrd0OhROxtWt4yznDCp0dDJ8VEiLw3Q=@vger.kernel.org
-X-Gm-Message-State: AFuF++lbjlnjbFl/ZYXwLpnNOGVKAIdh6P2lGzieTSjyhRQ3GrdZwmKA
-	05eCxonnkB/D11W4hVE92EN0i0ONLmTYBd9xsw/DvAdkVb5TTk221N6d
-X-Gm-Gg: AYBFou2X3kpdOHJHEC8W5eW8XuzOSxQOtMq6RGtNcmwOR/JEUk8FYOnPev/SF5K/crX
-	uPyN6n+K99OE9n+wyS8s/PRE5ic8MNGURIVrVDOcU8bI8RlEYECsi4sQgITyVOEOorWipYEYUGa
-	45A61/Z6n0hHkxzBZ9oQD7mo/cW9f+X4b6/RX6/74rTYxS1wISQHV7ZxkijQ5YWv7ohCJ9eL891
-	IVyc/AwmgdHJ5bs1Mi5J9ymUZf5/aH96x1yDTPw7oFzBl3kej2OHwU4zOFMZJ3AAFgA1qGv6qMN
-	nErtpI5vIznHAUgU9Iba9uJ2+0SxExtkejG0cQLGdj+KciMf8JrOYqNWAtf7AbHSRjbK5lMva/j
-	QWAVSObzwmLcqGwcINO2YIh3lks7gPNvX/4CjlB8F82y1abfZJs/rvA1ko2CorQh8qpj7jJ+5Sj
-	fXdZ9MAlWI393VGHn/z4nTeVUcCHprMJlOMSNEb0gSHR8Mhkk7R0Na6Twha5gkeTKwM1xroOa47
-	nZC8iljpUfGHgTX1/LuNY22drbL9Wt+qSVC
-X-Received: by 2002:a05:600c:8b65:b0:49c:fed6:cd3f with SMTP id 5b1f17b1804b1-49e7a677411mr59224165e9.23.1789420570313;
-        Mon, 14 Sep 2026 14:16:10 -0700 (PDT)
-Received: from [192.168.88.241] (37-48-53-4.nat.epc.tmcz.cz. [37.48.53.4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e7d284a7bsm54326565e9.3.2026.09.14.14.16.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Sep 2026 14:16:09 -0700 (PDT)
-Message-ID: <bceb850c-dfbd-4fbd-af85-e764bdacb6aa@ovn.org>
-Date: Mon, 14 Sep 2026 23:16:08 +0200
+        bh=e9c5Lc0MvQFExiINqSmAM4SmgxHPisXxegde3km6nbg=;
+        b=v8Z/5l2eLcjBBs+8UNiVd+2yjYvKAcmmEp8/RUbd79pfPvABLYT+zk7MrSxAErkrbE
+         9RzamKhEWWtvIrxhCF6UN886todWyzBYDyCUd4sIcoiuM2Vv4DQmOh0zcGXBvFpoyMzm
+         KnTlSBFDQUS+gqOJuYbpvhEF6EuiaGYKZ5XovTxgfiM/vFnAT9nY2Bn9q9XH5UEhakqD
+         INfMbs71i5HbdnTyE8KmlJMxjnBguINKtDqXhrODI/JOgJyiNnGeGzHn4PvwFzE+Ge6b
+         nhyB7vyYzsfo1UhOYSXREz/e+J9TQhG/1O7K51WjY8F8se5hjfW8WffdoY5/Xnnmquxf
+         mOjw==
+X-Gm-Message-State: AFuF++ni/0JD4iFc20PfG6aeNfpNgqIH0O/8fGkjYCrmHI34Szhhrl4m
+	ZjsoNav1GI5VbmVPs0Mefr3N7iqzmo8x/c5CZ36gqOmmWi+03i1G1nL6hDosU7im45IxNdy/c44
+	GyHvaOJG6nMkjtv6ZV23DRuIwmuvnScHWd0zKdWUqSN06Ya3RSLMkbFSad/Mmwnpxccqkf3CM2h
+	QblqxiQw9m
+X-Gm-Gg: AYBFou236/HZ5xcploubK/riSJd5E4wfLfomA6qwRmlYnazVzJo6/+LAi+JKHHEsB1I
+	WkFVrkahTteaTvgOfWiXnwnbvkBQ0ledxzMLKQIkf80OvPcAvZWOSas4GK4BRmLFj3RRsP4eDYo
+	mWIqPFGNsrA87qjK7O6XS54YxueMHzrt1LYOCERmPb4NL+pmbwbxwQsBKfehy+2VwwXJA1nfEuL
+	b0aDrt6pYscugx5caklewTEiQI4tRdm06FsTKYmClpazvbAcN5XVDifcoE+ENKqcdZ+HAMCYCGq
+	JmQrIFbZb82ZcH6y4c8B6jCDfNiBxPO5rCv1W93uj8tb2JVc0atFrbLXXK/LMkhv7BeaPp4EqWL
+	dUxEWaRz7EvpErdnIraNS8aZSuMIn0ER3/YYcELhmIb9SfQcdRw1X
+X-Received: by 2002:a05:600c:35cb:b0:49e:479b:c13b with SMTP id 5b1f17b1804b1-49e7a66b723mr56977185e9.1.1789420762628;
+        Mon, 14 Sep 2026 14:19:22 -0700 (PDT)
+X-Received: by 2002:a05:600c:35cb:b0:49e:479b:c13b with SMTP id 5b1f17b1804b1-49e7a66b723mr56976975e9.1.1789420762316;
+        Mon, 14 Sep 2026 14:19:22 -0700 (PDT)
+Received: from localhost (host-79-46-33-118.retail.telecomitalia.it. [79.46.33.118])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e7d2bb40asm10871855e9.3.2026.09.14.14.19.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Sep 2026 14:19:21 -0700 (PDT)
+From: Edoardo Canepa <edoardo.canepa@canonical.com>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Xu Du <xudu@redhat.com>,
+	Po-Hsu Lin <po-hsu.lin@canonical.com>,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v2] selftests/net: run tun tests in a dedicated network namespace
+Date: Mon, 14 Sep 2026 23:19:20 +0200
+Message-ID: <20260914211921.3786609-1-edoardo.canepa@canonical.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] openvswitch: raise internal port TSO limit
-To: Wang Zhan <wang.zhan@smartx.com>, netdev@vger.kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, keyong.sun@smartx.com,
- Ilya Maximets <i.maximets@ovn.org>, Aaron Conole <aconole@redhat.com>,
- Eelco Chaudron <echaudro@redhat.com>, ovs dev <dev@openvswitch.org>
-References: <20260910131635.780802-1-wang.zhan@smartx.com>
-Content-Language: en-US
-From: Ilya Maximets <i.maximets@ovn.org>
-Autocrypt: addr=i.maximets@ovn.org; keydata=
- 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
-In-Reply-To: <20260910131635.780802-1-wang.zhan@smartx.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/10/26 3:16 PM, Wang Zhan wrote:
-> Set the internal port TSO limit to GSO_MAX_SIZE (512 KB), as for
-> loopback and veth. This allows the admin/user to set a GSO limit up to
-> this value, to use BIG TCP for traffic routed through the internal port.
-> 
-> Only the capability limit changes: the IPv4 and IPv6 GSO and GRO limits
-> remain at 64 KiB until changed by the administrator.
-> 
-> Validation used a same-host test with a temporary OVS bridge, a veth pair,
-> and a network namespace:
-> 
->   TCP client -> OVS internal -> OVS bridge -> veth -> TCP server
-> 
-> The veth endpoints were BIG TCP capable throughout the test, and only the
-> OVS internal port limits changed between 64 KiB and 524280 bytes. A single
-> iperf3 3.19 TCP flow, run separately over IPv4 and IPv6 with six
-> alternating runs per state (`-t 15 -O 5`, fixed CPU affinity and port
-> tuple), increased throughput by 18.1% for IPv4 and 34.7% for IPv6:
-> 
->   protocol  BIG TCP off  BIG TCP on   CV off / on
->   TCP/IPv4  65.567 Gbps  77.420 Gbps  1.12% / 0.37%
->   TCP/IPv6  55.355 Gbps  74.568 Gbps  1.20% / 0.68%
-> 
-> Assisted-by: LLM
+The tun_vnet_udptnl fixture creates a fresh tap device and installs an
+IPv6 outer neighbor entry as NUD_PERMANENT before sending packets.  On
+systems where systemd-udevd is running and a systemd .link file sets
 
-This looks a bit strange.
+    MACAddressPolicy=persistent
 
-> Signed-off-by: Wang Zhan <wang.zhan@smartx.com>
-> ---
->  net/openvswitch/vport-internal_dev.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/net/openvswitch/vport-internal_dev.c b/net/openvswitch/vport-internal_dev.c
-> index 125d310871e93..73f5184afba42 100644
-> --- a/net/openvswitch/vport-internal_dev.c
-> +++ b/net/openvswitch/vport-internal_dev.c
-> @@ -116,6 +116,7 @@ static void do_setup(struct net_device *netdev)
->  	netdev->hw_enc_features = netdev->features;
->  	netdev->features |= NETIF_F_HW_VLAN_CTAG_TX | NETIF_F_HW_VLAN_STAG_TX;
->  	netdev->hw_features = netdev->features;
+(the default shipped by systemd in 99-default.link, so this is what
+most systemd-based hosts inherit), systemd-udevd's net_setup_link
+builtin asynchronously sends an RTM_SETLINK to reassign the freshly
+created tap device's MAC to a machine-persistent value.  When that
+netlink message races the test's ip_neigh_add() call, the address
+change kicks the following path:
 
-Please, add an empty line here, it looks awkward to glue the call
-to the feature flags block.
+    do_setlink
+    -> netif_set_mac_address
+       -> call_netdevice_notifiers_info
+          -> ndisc_netdev_event
+             -> neigh_changeaddr
+                -> neigh_flush_dev(tbl, dev, /* skip_perm = */ false)
 
-> +	netif_set_tso_max_size(netdev, GSO_MAX_SIZE);
->  
->  	eth_hw_addr_random(netdev);
->  }
-Otherwise, looks fine to me.  There is no reason to block BIG TCP
-packets on the internal port when they can enter the datapath from
-a veth.  And I don't see why BIG TCP wouldn't work in OVS at the
-moment.  The packets will be segmented before sending to userspace
-or ports that do not support BIG TCP and all the functions that
-check the packet length supposed to use gso_size and not the raw
-length.
+which flushes every neighbor entry on the interface, including the one
+the test just installed as NUD_PERMANENT.  The subsequent packet
+therefore hits __neigh_create(), triggers NDISC, and times out with:
 
-But, please, CC all the maintainers while sending patches.
+  tun.c:947:send_gso_packet:Expected ret (0) == variant->data_size (1423)
+  tun.c:948:send_gso_packet:Expected r_num_mss (0) == variant->r_num_mss (2)
 
-Best regards, Ilya Maximets.
+The failure is non-deterministic and can affect both directions.  Both
+recv_gso_packet and send_gso_packet variants can hit it; the failure
+reproduces on a plain systemd-based VM with no containers, and is
+triggered whenever the udev worker's RTM_SETLINK lands after the test
+has installed its neighbor entry.
+
+Fix by calling unshare(CLONE_NEWNET) from both fixture setups.  The
+harness runs each test in its own forked process, so every test gets a
+private network namespace that is torn down with it, and all tap and
+geneve devices are created in a namespace that systemd-udevd (running
+in the init netns) does not watch, so its RTM_SETLINK never fires
+against them.
+
+Creating a network namespace needs CAP_SYS_ADMIN in the current user
+namespace and CONFIG_NET_NS=y, neither of which the tests required
+before.  Where they are unavailable the unshare() is reported with
+SKIP() rather than aborting, so the binary still emits a full TAP
+stream and a runner can tell "network namespaces unavailable" apart
+from a real tun/tap regression.
+
+Verified on a plain systemd-based VM running the affected kernel, with
+the tap and geneve devices removed between iterations so that each one
+starts from a clean state.  1000 repeated invocations of
+
+  tun -r tun_vnet_udptnl.4in6_nogsosz_1byte.recv_gso_packet
+
+produce 266 failures without the fix and zero failures with it, and a
+full run of the test binary fails in 20 out of 20 attempts without the
+fix and in zero out of 20 with it.
+
+Note that without the fix a failure is not self-contained: the fixture
+setup aborts before FIXTURE_TEARDOWN runs, so the tap and geneve
+devices are left behind in the init netns and every later run fails
+right away in geneve_create().  Running in a private namespace also
+removes that, since the namespace is torn down with the test process.
+
+Reported-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
+Closes: https://bugs.launchpad.net/bugs/2158217
+Fixes: 24e59f26eef2 ("selftest: tun: Add helpers for GSO over UDP tunnel")
+Assisted-by: Claude:claude-opus-5
+Signed-off-by: Edoardo Canepa <edoardo.canepa@canonical.com>
+---
+v2:
+  - Add the unshare(CLONE_NEWNET) to FIXTURE_SETUP(tun) and
+    FIXTURE_SETUP(tun_vnet_udptnl) instead of replacing
+    TEST_HARNESS_MAIN with a hand-written main(), as suggested by
+    Jakub.
+  - Report an unshare() failure with SKIP() instead of aborting the
+    binary before the harness starts, so the TAP stream stays complete
+    and a runner can tell "no network namespaces" apart from a real
+    tun/tap regression (raised by Sashiko).
+  - Mention the new CAP_SYS_ADMIN / CONFIG_NET_NS prerequisite in the
+    commit message (raised by Sashiko).
+  - Use the Assisted-by: format documented in
+    Documentation/process/coding-assistants.rst.
+  - Redo the measurements in the commit message.  The v1 numbers were
+    taken without cleaning up the tap and geneve devices that a failed
+    run leaves behind, which made runs after the first failure fail in
+    geneve_create() rather than on the race being fixed here.
+v1: https://lore.kernel.org/netdev/20260905085318.3416670-1-edoardo.canepa@canonical.com/
+ tools/testing/selftests/net/tun.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/tools/testing/selftests/net/tun.c b/tools/testing/selftests/net/tun.c
+index abe488bac50b..6db21dad0efe 100644
+--- a/tools/testing/selftests/net/tun.c
++++ b/tools/testing/selftests/net/tun.c
+@@ -4,6 +4,7 @@
+ 
+ #include <errno.h>
+ #include <fcntl.h>
++#include <sched.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+@@ -488,6 +489,10 @@ FIXTURE(tun)
+ 
+ FIXTURE_SETUP(tun)
+ {
++	if (unshare(CLONE_NEWNET))
++		SKIP(return, "Cannot create network namespace: %s",
++		     strerror(errno));
++
+ 	memset(self->ifname, 0, sizeof(self->ifname));
+ 
+ 	self->fd = tun_alloc(self->ifname);
+@@ -732,6 +737,10 @@ FIXTURE_SETUP(tun_vnet_udptnl)
+ 	struct sockaddr_storage ssa, dsa;
+ 	void *sip, *dip, *smac, *dmac;
+ 
++	if (unshare(CLONE_NEWNET))
++		SKIP(return, "Cannot create network namespace: %s",
++		     strerror(errno));
++
+ 	flags = (variant->is_tap ? IFF_TAP : IFF_TUN) | IFF_VNET_HDR |
+ 		IFF_MULTI_QUEUE | IFF_NO_PI;
+ 	features = TUN_F_CSUM | TUN_F_UDP_TUNNEL_GSO |
+-- 
+2.53.0
+
