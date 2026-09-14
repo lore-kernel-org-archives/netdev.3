@@ -1,107 +1,115 @@
-Received: from mta0.migadu.com (out-76.mta0.migadu.com [91.218.175.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502DC3019C8
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 03:00:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771D92D8DC4;
+	Mon, 14 Sep 2026 03:05:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789354834; cv=none; b=dakakV1gIsyoRmj23YIUD2Zz/NtkXrAbXJDbQ8aC3LcaJ7ipfjroeM706KDkXrQ0UkHk9kCdAyf6XsGsh88LWJGOneOn7O0ynJvH3piO5/MUkIjBgWwA5Z5YiUlpubEf1kXthHfZpMgCNe45f0B9Qv0sLox3iNwMshNxp7gWhnY=
+	t=1789355124; cv=none; b=nfkkqTVpIOS2Zrz5PD4r52ziqMibghDzCE2qSKsQRmkFJc0ERxuyLfDTtJlPGsLgFxtyQhcxu8eHVlRG1/EYM1Hpn3geDBD121NO+BkooUNhYAfCGsIhFgd+AWOk/0hslvsLkTpnDxv0ltAAZNVi75f4WNeTQ4FipePJmXW7QmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789354834; c=relaxed/simple;
-	bh=38utzkszNAIbnFH8LOYtxKvWmuM2m8bbkylT9qzwrcA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ghQuYp2cqV3G8G8k+uh1QqqWRC/TOnqLtnw+CDZ+/1iZyFhfUii6MjdeZeohOQBx8Ry/Il3XXJoFeVv93nHuSrlVZiBp/J4qHfkolGxX48X30pZFcax3t3Tv63D2DyV4UFM5lPGdHVrQGv3ZLG8IqBfcvMt0N3aum1T/1qxTGLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=EzYO7CAN; arc=none smtp.client-ip=91.218.175.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1789355124; c=relaxed/simple;
+	bh=TYZ6Qrn+yCC44PN+vNUht3tOMu0avO4/eAXCZGS6uqY=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WvnOkp3HLd7XLGOrHBDuXTtd+O5vH0g/lj18xBT2EduzRu+/r1A8MVVpHCkOeiT7Jd14/JnkAH3nMPGQ+RWkpzH/+RdUaKVgtX1/teJ0hN/TxgczZ986FZW4ZbhljQvt63SpbYuAQIXsT1d+ceZkwlrvBmHlfhEhki/hU8ge0lQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=hbn6XJQm; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="EzYO7CAN"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=38utzkszNAIbnFH8LOYtxKvWmuM2m8bbkylT9qzwrcA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789354830; v=1; x=1789959630;
- b=EzYO7CANUBUUn6xZSahP37q7gZNQICRx5OkyPBCBNY3kwHK/Z093dtD8cNZOw1ls2xShyWge
- UE32N9OjdBUmuaWuIRn5DPTvmXq1nkstmXssycT6fRGvfOBsDbUXA2+kHp1zzwpjSyvazlJx36D
- LKXb2sh89AQtFV3DM2DUzQUY=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id d8104f31d56843eb;
-	Mon, 14 Sep 2026 03:00:30 +0000
-X-Mizu-Trace-ID: d8104f31d56843eb
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 14 Sep 2026 11:00:27 +0800
-From: Chenguang Zhao <chenguang.zhao@linux.dev>
-To: Mark Amirkan <markdamirkan@gmail.com>
-Cc: Bryan Whitehead <bryan.whitehead@microchip.com>,
-	UNGLinuxDriver@microchip.com, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Raju Lakkaraju <Raju.Lakkaraju@microchip.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] net: lan743x: fix RX checksum use-after-free
-Message-ID: <20260914030027.GA92852@pc>
-References: <20260913-b4-send-lan743x-uaf-v1-1-73d563d08ba9@gmail.com>
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="hbn6XJQm"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68E335t83686445;
+	Sun, 13 Sep 2026 20:05:02 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=XkuO7G4VfPHhKUr33CjXc3Avn
+	860LNSramqQW62iq10=; b=hbn6XJQm5Pz9iD4IhFGiycE2SCTGiOHoS+93NDYvZ
+	bMhEQtiNa1hCrkQJks5VnMEzNsTbUU2nHuOYMWp68sAD9o3NzKEfIP4agtPcYA7Y
+	b4/TpxCMsLOU0XvfMVlfRlx5KuBtc4cPmSFZMcYrYMj2X9Uwe+MCO+BrqNOOrbTn
+	QwXUG91jYT8cmQvNDJ1PcPljzDquktVpjO2TRAflw0diLwOz8eQkwrj9aBazVuqK
+	RKo/YzMEfiAC+o0Ks5jWsIYhMqEAYnFn+Qhw1hJxMsigwyduuwEUD9VaQhLr0ASv
+	9mrms3qGgeGay1E/MdWQn1d8AvF+H7a3W5qZrnl+cKNYQ==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4gp7vyg2p6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 13 Sep 2026 20:05:02 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Sun, 13 Sep 2026 20:05:00 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Sun, 13 Sep 2026 20:05:00 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id 038C53F706F;
+	Sun, 13 Sep 2026 20:04:56 -0700 (PDT)
+Date: Mon, 14 Sep 2026 08:34:50 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: Slavin Liu <bolin.liu@seu.edu.cn>
+CC: <sgoutham@marvell.com>, <gakula@marvell.com>, <sbhatta@marvell.com>,
+        <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] octeontx2-af: skip absent MCS blocks in PTP
+ configuration
+Message-ID: <aqdkUkM13I_0VSrK@rkannoth-OptiPlex-7090>
+References: <20260913125212.110005-1-bolin.liu@seu.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20260913-b4-send-lan743x-uaf-v1-1-73d563d08ba9@gmail.com>
+In-Reply-To: <20260913125212.110005-1-bolin.liu@seu.edu.cn>
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE0MDA0MCBTYWx0ZWRfXznLJD7J3z37E
+ /gs9MN4tcNkQiHiBgPZH/2X9txzv+Gi9X1T+OaI7okgwIttqJooIAPkmpNiQqVdy2mnIPq0jQ3/
+ Vj5+XNvBL2NJRdJjqm1P/GNFYpsVg5Q=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE0MDA0MCBTYWx0ZWRfX4yoTsh+WKqdj
+ +Ond3anwsNih9/ZVHWPG+ZkXL+mOOwKPbVWk/n8MIPg+opzkpnLndhxSLfANtXf2/vt8RvwdRAo
+ QgFNP1PcGpF+TJxoYL8MUdEJxMYfX97CKo2WrtWMZC9fVRsgggkNfuhSxT1+ynfhgrV7WSB66rj
+ Zpo0NEuamg0OaCSRyXzpdxL9ZW04bGngKuSHxuA/41Thqcn8xEuRPAHx8zSFNiv2oaROHTIicUW
+ TD4AQ8uMxKqwYqbQOXG4cZYbNcAY16zZUJL7fOI6M2UAEnk0vpFdVgS2Rt9yvGSws+W4s9JkH9j
+ nKh7V2v+vcrvhcz9PnzqGMWrPNi7bhh/fNT1C6Ik2uPYIREHfWVqnOBnYnEe9tqlta16KpwWZz+
+ g+lpYl00U83PIUlylVbzEuWCqNC1bwDfsGXZBVT0kDYJ6/RftbrS7kQ94ztJOTwEcIPYsVJiIQm
+ iC4WcpsR5FkiyA1WtUA==
+X-Authority-Analysis: v=2.4 cv=a/ulZkSF c=1 sm=1 tr=0 ts=6aa7645e cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8
+ a=mGoJRa1uc5saEmWCy-4A:9 a=CjuIK1q_8ugA:10 a=OBjm3rFKGHvpk9ecZwUJ:22
+ a=4Pbm1F1Cy1QVNLGpYn_S:22
+X-Proofpoint-GUID: R3ePHcqIHKO-AUZ8fRj9DxYEVg3Cq8Bb
+X-Proofpoint-ORIG-GUID: R3ePHcqIHKO-AUZ8fRj9DxYEVg3Cq8Bb
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-14_01,2026-09-13_01,2025-10-01_01
 
-On Sun, Sep 13, 2026 at 05:14:09PM -0700, Mark Amirkan wrote:
-> lan743x_rx_process_buffer() adds each non-first receive buffer to the
-> head skb's frag_list.  On the last descriptor, lan743x_rx_trim_skb()
-> linearizes the head and frees the fragment skb metadata.
-> 
-> The checksum-success path then writes ip_summed through the local skb
-> pointer, which still points to the final fragment.  This causes a
-> use-after-free write when a packet spans more than one receive buffer.
-> 
-> Set ip_summed on the surviving head skb instead.  Multi-buffer receive
-> can occur after a live MTU increase because existing ring entries keep
-> their old buffer size until they are replenished.
-> 
-> A KUnit test invoking lan743x_rx_process_buffer() with a two-buffer
-> packet produced a one-byte KASAN use-after-free write before this change.
-> The same test passed after the change.  The driver object also builds
-> with W=1.  This was not tested on physical LAN743x hardware.
-> 
-> Fixes: cd6910501cfd ("net: lan743x: Add support for Rx IP & TCP checksum offload")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM Symbolic
-> Signed-off-by: Mark Amirkan <markdamirkan@gmail.com>
+On 2026-09-13 at 18:22:12, Slavin Liu (bolin.liu@seu.edu.cn) wrote:
+> A successfully probed RPM does not imply a matching MCS block.
+> Check the independent MCS lookup before accessing PEX registers.
+>
+> Detected by static analysis and reviewed with AI-assisted source auditing.
+>
+> Fixes: 65cdc2b637a5 ("octeontx2-af: mcs: Config parser to skip 8B header")
+> Assisted-by: LLM
+> Signed-off-by: Slavin Liu <bolin.liu@seu.edu.cn>
 > ---
->  drivers/net/ethernet/microchip/lan743x_main.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
-> index 24ae56a3c9ed7..82d3ec20ba259 100644
-> --- a/drivers/net/ethernet/microchip/lan743x_main.c
-> +++ b/drivers/net/ethernet/microchip/lan743x_main.c
-> @@ -2604,7 +2604,7 @@ static int lan743x_rx_process_buffer(struct lan743x_rx *rx)
->  							rx->adapter->netdev);
->  		if (rx->adapter->netdev->features & NETIF_F_RXCSUM) {
->  			if (!is_ice && !is_tce && !is_icsm)
-> -				skb->ip_summed = CHECKSUM_UNNECESSARY;
-> +				rx->skb_head->ip_summed = CHECKSUM_UNNECESSARY;
->  		}
->  		netdev_dbg(netdev, "sending %d byte frame to OS",
->  			   rx->skb_head->len);
-> 
-> ---
-> base-commit: e6b6078ea1731b05b3b552497b3bce4bf8b014ae
-> change-id: 20260913-b4-send-lan743x-uaf-9d770ad5c929
-> 
-> Best regards,
-> --  
-> Mark Amirkan <markdamirkan@gmail.com>
-> 
-Reviewed-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+>  drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c b/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
+> index fce22e314cac..5e24d43d5fc7 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
+> @@ -50,6 +50,8 @@ void rvu_mcs_ptp_cfg(struct rvu *rvu, u8 rpm_id, u8 lmac_id, bool ena)
+>  	/* CNF10K-B */
+>  	if (rvu->mcs_blk_cnt > 1) {
+>  		mcs = mcs_get_pdata(rpm_id);
+> +		if (!mcs)
+> +			return;
+>  		cfg = mcs_reg_read(mcs, MCSX_PEX_RX_SLAVE_PEX_CONFIGURATION);
+>  		if (ena)
+>  			cfg |= BIT_ULL(lmac_id);
 
-Chenguang
-Thanks
+Reviewed-by: Ratheesh Kannoth <rkannoth@marvell.com>
