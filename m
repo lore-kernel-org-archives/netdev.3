@@ -1,335 +1,183 @@
-Received: from mail-ed2-f10.google.com (mail-ed2-f10.google.com [74.125.228.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6CC3AE198
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 07:25:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7113EC829
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 07:41:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789370752; cv=none; b=hg8iaUplBNW6laCQ6LRNKLLp5sePbkI7djRtkERlCybFjuKOx9tSSzQOiMPlB332lcGtOcjfUj7qKMp92XZv9Xy3TnbOJ6cDixhRUplyhZfaONyPUATA1TW8jx4PT2xFzasmtCPoN44VMOBFZ2K+zJ1gmFkkbkPNha/32mzJv98=
+	t=1789371686; cv=none; b=Wh48MUwCNcpEICIMZiHdvP3r5nHiBWZO/N3KzU6afzxSosHQBVHp8hP8opDdph4mIl2ELIq6tk1RDL5y4NNauoiouFy6JRu1OJSS0dagN4YAPhzHsdOWc+N/Y7YRoUVWJoEwKX+M+D9QW0VR5KHC/5sNV1QwauYJlZSfzUlrSr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789370752; c=relaxed/simple;
-	bh=kcwq5jHdZeuG41N7rWWFHxJH5chucBn8To4fJjolDnU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qoibqHKpwl0rWSQ/HffNR8DGp7kmAIBpNsy0TXgDU8fX9qdtwd2uyfqQ0OD9shZiyfw1EYw5h/Sku4c6RmBbm5cdi5PX2KDfAAc0tWmoIClHeoHNFN+uTMjYWcJoUJ6e5DEl5+uf2vKjjDz1sR46AliTKmiqr7FX7wEJpKWXvjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de; spf=pass smtp.mailfrom=bairaktaris.de; dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b=T3uslyHt; arc=none smtp.client-ip=74.125.228.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
+	s=arc-20240116; t=1789371686; c=relaxed/simple;
+	bh=u7kRmIpSqzj+KSXk3RS4cDon/AOzeRRS/sEoZvHnGvo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=cJNK/O4/Des23jr8Mr0O7d1gP9ax7aYUYg2yJ1OSkf1RKkhinSZLPJwSEVAvMVfhbWzuSrM/3PGDbBnvv5bmoW+rwVuPPLkSxx2P90GMybv0RgPK90j5brk/6Kgp/Wugsd6OJO88CoVSeZkZo+guVA85rZGOdJ1DR5OdljTHL+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=IR/lnCNb; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ASwKX/4m; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b="T3uslyHt"
-Received: by mail-ed2-f10.google.com with SMTP id 4fb4d7f45d1cf-6a6713aec3bso1996461a12.1
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 00:25:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="IR/lnCNb";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ASwKX/4m"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68E5ikap3901085
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 07:41:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=AkCHfC41wPyIPhNPVFyOA6
+	2GFwV2gjFvUh4M3ly7uws=; b=IR/lnCNb+Z5gL/js+SLokR57BNDv2zkYuxQCro
+	K1zGpAsoxG891Kd5fODtxDP761szeAz33WfQHhkZdpk/9G0ti5wMGPPIiDiJENpu
+	OqjG1gL0pozmJ6Mrl3pJx5BMMYWePjXlN3wi46O5ke3hX/TMiYM+pPkLAG65eNuM
+	t55lxTz/zEKgUOzAFoh+XTMZ+5NtuuXt22zzcxD3Jfu4pKEql0qfiWUXemzkSS4o
+	T8di/A5GL6bV/oVx7QkTiA4wWTb7kCuD+e0LkFf9AP4ijO91uLV8SIxo2hzH8nwP
+	T9nAYjuLSaUTevTwW7yriTDdhnp4CUE1fX4LvVxjSBrSMEIQ==
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com [209.85.219.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gmy9d5hsu-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 07:41:24 +0000 (GMT)
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-9104eedb5b0so61553266d6.0
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 00:41:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bairaktaris.de; s=google; t=1789370746; x=1789975546; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Ceo0ED4s78P+Qpn8F5qpHashyiiY84+5gnXgT5bbA0k=;
-        b=T3uslyHt3XUUtpNtAyXaMybiwoa1hxwKIahH7GoIv6dQD55C9rcFGHOsqvRAIoIQcr
-         RLkKuD8j3HA/VmXHlCdZVvbLvpwi6R2guR/vwOIBrrgX6pqNChoGoQWUQ/yPwIPg5rx0
-         YLpITx0VL6pAKhXL1LDLkAY28RpB1zvLnDoZo4vdqd6huxLcFkh/PawjmpO2DDPVCDKV
-         cyUH2gbfPpXkz46M6oJgxBvNwCARMjPB0CPFtYM71ebUhCqYJeclNmQ/lVuTwUeJjjHM
-         IvEczwQJwLXXvfYBfRjTDrD+vMjqMuwBW1iqxwSy/WTP8BzJ34AZxUc1a3qHhQnLqg2Z
-         ggVA==
+        d=oss.qualcomm.com; s=google; t=1789371683; x=1789976483; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=AkCHfC41wPyIPhNPVFyOA62GFwV2gjFvUh4M3ly7uws=;
+        b=ASwKX/4m9KZYj+S7nxuwixsvhArgUZSTDZbGsKij4Z8xdDZWhz1a5C9L7WFVzEVtl6
+         lRXtJqwqNMX7Y04PfZ4hG2jAHo5OLh7B2s57Y+N/o0nKEOz53lf/b2M15QM/gBFvyPry
+         efxZXPNoWjCvG13Z1uPbLdZJKzKn7OIWjM1upJ698wPg5XpSk5Zfp6oaKOZlbLUQUnZo
+         RqIo6zflWXKiI9MLHX/7cow2ncxggoAnGobcfrZLFxNmwupq/6y91C/m02HvT1KTUPiI
+         OXgoC8GKiz/xVEe7Wq6GnW5RIYQMZ5lw12PrXCDooZtTuo55lxm1sit65k40fPNjslyK
+         JnBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789370746; x=1789975546;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Ceo0ED4s78P+Qpn8F5qpHashyiiY84+5gnXgT5bbA0k=;
-        b=plsRU/WxUn5sLFuXcS8rwT/+bgstN8Vv8JP/JXENun6Kz05ccfJLmyFZlegrSrlA+7
-         Es71TYl61zdgtHrkJTLDGnl5VF6zNORqZI9clEQFfuBf518QQG7V9s4wkBQRAatL85lc
-         5GHgZ5b+JGaZ2iKDpRhXuX1P1tF6fru+G7RT8Azw6tzLL/h/IAAmVizvZaBp8cDbtfvn
-         YyAFN3GreT/QgW56Htr1hRZS4oQM2clIyzVK9RWxSD2NmeptCruo/agzGBQw6LRvLKOV
-         0MKWsVxp3BSRWPPFDj2DhMf4lhjMsBmSghl4dlpyOfHdcNU0Oj/JS09RESMNWp+CkNXh
-         hZ8g==
-X-Forwarded-Encrypted: i=1; AKwUvBzVxRejukn763aFK6CikXJhA5p8kNEaZN9WGjMaLAx5OwUYaC15zVSd9K9VvHIUPM3ri4nh4QU=@vger.kernel.org
-X-Gm-Message-State: AFuF++nBxRwC8zWKGE3UHV9r9XUnGVJnL5FhIozezlvMZqek6hvxkZpQ
-	EL2aWbx4hzFHbiefqyh2kjaQZ0ofMUGyyW0G7swHcAKim38at9uyfuLXSYVZR4Lf1g==
-X-Gm-Gg: AYBFou32UuYMBEaY7HurIE2FaHwzYCJAFAP3dSIYujgYhaZ3jXGiIUNwXvgP2L9R9u8
-	9NVsGASwbFQjkDyxUFt/QZvyftvGfSLFtLIAwJUp++V+8gA35bhJINb7MbwE238zxRNCVaqtuiv
-	GxwZdA0tyTqrYOfMFLUsYf2j6/KgrssgNj1bJQ4u3G92/3n/ZpU/Jd4T2o6q/R7o1F6Mkm8fS/B
-	WCL96fsxjV3WiGdnFfxWmXMVEy0koFih62WMTotqqxnFWVXyu5jioTEVaE567RdkATJh/cBGjAF
-	DEIPGCIf6Hcj0TW4HyKMsk+prlhg25DR6sBhQ1O9Ia1flE4PLr2hFJg/bIjFY64yLQdxj/lDDIr
-	n8yDZuCpSUCTAyJn9PRUqLdWGQ2mJwDQB18b296pYcWexpa4qPfv+wkSxa8HuD+ePDS686VdoBQ
-	bjYNwio3v5aI/u2a3KLmCmWiHedCvFt2bYjkw2IIm84yq9f+4mFvahaZGLRm7H4s5rQ5THDgu0A
-	+Gd4Pzhks/RcnxYMf+0dAezPsSw2tOkvCsFrJhg7DoAlcM8Bt4kT3IfkoY85PHCIVG0hN4vMmdv
-	SjSquQdlGpGTLb5R3URr1chu2BNys4mnfWnDOg43/vNC+VEwy52AZNcZ1P2K659yNG0oz16ZbUr
-	OPA496BRqE+tjounI92XzRZXhJFN5qOL+Z8jL8DVdP4fKQPUoc2GsA5c7MNHt0Yz35gsLdu4wD6
-	t5ygzzvuvl
-X-Received: by 2002:a17:907:7b85:b0:c28:fb3f:fe20 with SMTP id a640c23a62f3a-c29b86f99d5mr89355866b.30.1789370746064;
-        Mon, 14 Sep 2026 00:25:46 -0700 (PDT)
-Received: from Desktop.fritz.box ([185.152.145.208])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2965c4e8a1sm382835666b.6.2026.09.14.00.25.45
+        d=1e100.net; s=20251104; t=1789371683; x=1789976483;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=AkCHfC41wPyIPhNPVFyOA62GFwV2gjFvUh4M3ly7uws=;
+        b=N0FL3chXSp0umJ3KGcDLVt8bU5qJ9uvVFiw/pajcoYVz8l3cwRUBr2SCDfjcDf1tQ/
+         CpBvNGZlJAW+NYaldEDPZZQBQbUhL/h9YXpS2NmNrrbjdiVOSQSg1jKkyuwFV6ovAM4N
+         KRB0cHKj16p8WZ1CFkcE2gKTsr7r/uY1HtnAgqmjrXcCk66+qXsJrOcq7V2OusBqThg1
+         VHFoxbSh45o5UvP0X8eVSYF9WoA9+qNwHBd6yCuFh30syWwW3q65zkWuWByfFBZ+GQcu
+         69SfmbanpiKrjg5jKxGdZ3v4LFCJI+BAdM4RUF1pB/UkiJirEAMHOsrG7DI8xIsa1Y2S
+         RFzQ==
+X-Gm-Message-State: AFuF++ndYSSgyL+u4u6/gsnEdgw/4Irh8LbhYDhYFjfE5ziAwdq1d6Om
+	FY2U7hfWrOSOOAQ0bLSlqEcHHie6Xt6gPcq8kxrBTPH778nXxRHpenluu0IfvXGzLJMUaiHoc2d
+	cH9y2+0+SbTIqRzLGYHaYFWOS25OAfEhd2RIA5QN3b9oMiGziunW7VWVBjco=
+X-Gm-Gg: AYBFou0Ao8CNdheDXo90Eaw9sDRvJd9rTUfGzWISFDUzwcRj363ruKgol8WMxlveX8G
+	1DErLi1wnX6PHIo2DHXn4zmKProfkl3G1q5KVgAqQT5b+305N1/uWVhtwPGQDjwXub45QItSAC1
+	qpGsN7lBVNZf/aP1CBf0ToFqmC2oFTlGld9tfdUq8GiMen1tB+ytHC5kHSwn0wsrq7TKMSEq7L0
+	+TFeodRtWWtwAzyvTx3Ki5w+wv5ABp69bpDqUZMT+ji5GAZA1SrGcpNPnNbbP3fZlVKy12Vqgvl
+	vA5BoEF+QjiblEtkUzeLj1f8YRYnsF3lUkPSH0xTXuyhYa+2crmTzgBQd/AvfWqw+Z4pL7NLMze
+	nKlf3v67WAxF81Q==
+X-Received: by 2002:a05:620a:4885:b0:93a:14c:32ad with SMTP id af79cd13be357-93a29460140mr213423285a.0.1789371683496;
+        Mon, 14 Sep 2026 00:41:23 -0700 (PDT)
+X-Received: by 2002:a05:620a:4885:b0:93a:14c:32ad with SMTP id af79cd13be357-93a29460140mr213420085a.0.1789371683026;
+        Mon, 14 Sep 2026 00:41:23 -0700 (PDT)
+Received: from localhost ([188.216.77.92])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486eb33ebe4sm21213536f8f.14.2026.09.14.00.41.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 00:25:45 -0700 (PDT)
-From: Julius Bairaktaris <julius@bairaktaris.de>
-To: netfilter-devel@vger.kernel.org
-Cc: pablo@netfilter.org,
-	fw@strlen.de,
-	kadlec@netfilter.org,
-	phil@nwl.cc,
-	horms@kernel.org,
-	davem@davemloft.net,
-	razor@blackwall.org,
-	ericwouds@gmail.com,
-	dqfext@gmail.com,
-	netdev@vger.kernel.org,
-	coreteam@netfilter.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH nf-next v5 2/3] netfilter: flowtable: teardown direct xmit flows when the fdb entry moves
-Date: Mon, 14 Sep 2026 09:25:40 +0200
-Message-ID: <20260914072541.897040-3-julius@bairaktaris.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260914072541.897040-1-julius@bairaktaris.de>
-References: <20260914072541.897040-1-julius@bairaktaris.de>
+        Mon, 14 Sep 2026 00:41:22 -0700 (PDT)
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Date: Mon, 14 Sep 2026 09:41:07 +0200
+Subject: [PATCH net v2] net: stmmac: do not overwrite phc_index when no PTP
+ clock is registered
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260914-stmmac-fix-phc_index-v2-1-bf3d90373fe4@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/31NSw6CMBC9ipm1Q5hRMbjyHoaYWgZpYlvsIMEQ7
+ m7DAdy85P0XUElOFC67BZJMTl0MmfB+B7Y34Sno2syBS67Kmhh19N5Y7NyMQ2/vLrQyI8mjo9p
+ aKc8V5OqQJAe22RsEGaHJYu90jOm7XU20Wf9XJ0JCroTEtHw68PEaVYv3x7xs9L7IAM26rj9ES
+ SjbxAAAAA==
+X-Change-ID: 20260912-stmmac-fix-phc_index-1ebf19cce076
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Gal Pressman <gal@nvidia.com>,
+        Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+        Carolina Jubran <cjubran@nvidia.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE0MDEwOCBTYWx0ZWRfX7N2UgVVxc3zR
+ HhVodeiiSdtS2YqQXKIECYbdtdiQVrG1y3d5KuzTyi5OA5jlZmfXLEUJAkgPoRMBd+J1wRmhLSD
+ w13JzC4DBGDa9LOsQ+YSkfdj+H3YE4M=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE0MDEwOCBTYWx0ZWRfXzq3fHrOCmgNF
+ i9nfGsRCa37fGQh3mECcjsnUagPKMQ0FxLt+Kdc1s2veZZoQ5iP7CYD0Rm3BwQC8zTG28W9RIrE
+ DEshSAlIw+93jBe81X6Gr4HFbSwxMqCwSj1s+GdEpOtL2wZ0A+KAdidvO2ohJL8re9vHwqBMQF4
+ 4V0GyGKOBHe42zqiazzi14WUKBiEyB2514YufuOHoHQjc2T8zWwzgT3ZWCZPu2LTSP2hjar82vK
+ o+x9HwqjlnZgpseLGCc+n2Kzo1r93zQzJBpsBczghJhkMG4wWlXBFbXJFZhHgMXg2LwYkgQEhTL
+ MVM4vg7D6UB8GKFTQPrRxvSZJqMTUf2YgGywWgvBjmqyExohNFYXZ6e+078JI3a5ELepLcLdSXg
+ HLPS0kMZn1UtY1Lmx7vA+V9EXzLq+YGy1iGH81EUrD9SNzrSObesTd8XuUNSqZwg+sxs8o4YiiE
+ LTA6bVmaPL1LoC6CroQ==
+X-Authority-Analysis: v=2.4 cv=IOSXmQvG c=1 sm=1 tr=0 ts=6aa7a524 cx=c_pps
+ a=oc9J++0uMp73DTRD5QyR2A==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=P-IC7800AAAA:8 a=Ikd4Dj_1AAAA:8
+ a=8J_TXdTtfbox2WkpGzYA:9 a=QEXdDO2ut3YA:10 a=iYH6xdkBrDN1Jqds4HTS:22
+ a=d3PnA9EDa4IxuAV0gXij:22
+X-Proofpoint-ORIG-GUID: gkxdDwv8s8JM7luo6w-GBlF24MnYB__I
+X-Proofpoint-GUID: gkxdDwv8s8JM7luo6w-GBlF24MnYB__I
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-14_02,2026-09-13_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 malwarescore=0 phishscore=0 adultscore=0 suspectscore=0
+ priorityscore=1501 lowpriorityscore=0 impostorscore=0 clxscore=1015
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2609140108
 
-From: Eric Woudstra <ericwouds@gmail.com>
+stmmac_get_ts_info() reports phc_index as 0 when hardware timestamping
+is supported but no PTP clock has been registered yet (e.g. while the
+interface is down). Zero is a valid PHC index and would make userspace
+resolve the wrong clock; the absence of a clock should be reported as
+-1.
 
-A direct xmit flow stores the bridge port and the destination address that
-the bridge fdb resolved when the flow was created. When the host moves to
-another port of the same bridge, for example a station roaming to another
-access point, the bridge updates its fdb entry and the flow keeps sending
-to the old port. Packets from the other end keep hitting the flow and
-refresh it, so it does not expire while the sender retransmits. A hardware
-offloaded flow behaves the same, and none of its packets reaches the
-software path.
+The ethtool core already initializes phc_index to -1 before invoking
+the get_ts_info callback (ethtool_init_tsinfo()), so just drop the
+erroneous assignment.
 
-Before the bridge moves an fdb entry to another port it notifies
-SWITCHDEV_FDB_DEL_TO_DEVICE for the old port. Tear down every direct xmit
-flow whose bridge port, vid and destination address match on that
-notification. The bridge port is stored in the tuple for this: the out
-interface is the lowest device of the path and differs from the port when
-the port is a vlan device. The notifier runs in atomic context, so the
-flows are walked from a workqueue.
-
-The same notification is sent when an entry ages out or is flushed; a flow
-torn down that way is offloaded again once the bridge relearns the host.
-When the work item cannot be allocated the flow ages out as before, the
-same as dsa_user_fdb_event() drops the hardware fdb update in that case.
-
-Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
-Co-developed-by: Julius Bairaktaris <julius@bairaktaris.de>
-Signed-off-by: Julius Bairaktaris <julius@bairaktaris.de>
-Assisted-by: LLM
+Fixes: 9364fa7fcf12 ("net: stmmac: Remove setting of RX software timestamp")
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 ---
- include/net/netfilter/nf_flow_table.h |   2 +
- net/netfilter/nf_flow_table_core.c    | 108 ++++++++++++++++++++++++++
- net/netfilter/nf_flow_table_path.c    |   6 ++
- 3 files changed, 116 insertions(+)
+Changes in v2:
+- Drop phc_index assignment to -1
+- Link to v1: https://lore.kernel.org/r/20260912-stmmac-fix-phc_index-v1-1-26e1ead25324@oss.qualcomm.com
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/include/net/netfilter/nf_flow_table.h b/include/net/netfilter/nf_flow_table.h
-index cadd5f82be8e..412044dd3a83 100644
---- a/include/net/netfilter/nf_flow_table.h
-+++ b/include/net/netfilter/nf_flow_table.h
-@@ -164,6 +164,7 @@ struct flow_offload_tuple {
- 		};
- 		struct {
- 			u32		ifidx;
-+			u32		bridge_ifidx;
- 			u16		bridge_vid;
- 			u8		h_source[ETH_ALEN];
- 			u8		h_dest[ETH_ALEN];
-@@ -233,6 +234,7 @@ struct nf_flow_route {
- 		struct {
- 			u32			ifindex;
- 			u32			hw_ifindex;
-+			u32			bridge_ifindex;
- 			u16			bridge_vid;
- 			u8			h_source[ETH_ALEN];
- 			u8			h_dest[ETH_ALEN];
-diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
-index b308fb627640..e6e55a1cadaf 100644
---- a/net/netfilter/nf_flow_table_core.c
-+++ b/net/netfilter/nf_flow_table_core.c
-@@ -4,7 +4,9 @@
- #include <linux/module.h>
- #include <linux/netfilter.h>
- #include <linux/rhashtable.h>
-+#include <linux/etherdevice.h>
- #include <linux/netdevice.h>
-+#include <net/switchdev.h>
- #include <net/ip.h>
- #include <net/ip6_route.h>
- #include <net/netfilter/nf_tables.h>
-@@ -139,6 +141,8 @@ static int flow_offload_fill_route(struct flow_offload *flow,
- 		memcpy(flow_tuple->out.h_source, route->tuple[dir].out.h_source,
- 		       ETH_ALEN);
- 		flow_tuple->out.ifidx = route->tuple[dir].out.ifindex;
-+		flow_tuple->out.bridge_ifidx =
-+			route->tuple[dir].out.bridge_ifindex;
- 		flow_tuple->out.bridge_vid = route->tuple[dir].out.bridge_vid;
- 		break;
- 	case FLOW_OFFLOAD_XMIT_XFRM:
-@@ -761,6 +765,94 @@ void nf_flow_table_cleanup(struct net_device *dev)
- }
- EXPORT_SYMBOL_GPL(nf_flow_table_cleanup);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+index 154cc0c7623d..1be5310ca766 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+@@ -1016,8 +1016,6 @@ static int stmmac_get_ts_info(struct net_device *dev,
  
-+static struct workqueue_struct *nf_flow_fdb_del_wq;
-+
-+struct nf_flow_fdb_del_work {
-+	struct work_struct	work;
-+	struct net_device	*dev;
-+	netdevice_tracker	dev_tracker;
-+	u16			vid;
-+	u8			addr[ETH_ALEN];
-+	bool			found;
-+};
-+
-+static bool nf_flow_tuple_fdb_match(const struct flow_offload_tuple *tuple,
-+				    const struct nf_flow_fdb_del_work *fw)
-+{
-+	return tuple->xmit_type == FLOW_OFFLOAD_XMIT_DIRECT &&
-+	       tuple->out.bridge_ifidx == fw->dev->ifindex &&
-+	       tuple->out.bridge_vid == fw->vid &&
-+	       ether_addr_equal(tuple->out.h_dest, fw->addr);
-+}
-+
-+static void nf_flow_table_do_fdb_del(struct nf_flowtable *flow_table,
-+				     struct flow_offload *flow, void *data)
-+{
-+	struct nf_flow_fdb_del_work *fw = data;
-+
-+	if (nf_flow_tuple_fdb_match(&flow->tuplehash[0].tuple, fw) ||
-+	    nf_flow_tuple_fdb_match(&flow->tuplehash[1].tuple, fw)) {
-+		flow_offload_teardown(flow);
-+		fw->found = true;
-+	}
-+}
-+
-+static void nf_flow_table_fdb_del_work(struct work_struct *work)
-+{
-+	struct nf_flow_fdb_del_work *fw;
-+	struct nf_flowtable *flowtable;
-+
-+	fw = container_of(work, struct nf_flow_fdb_del_work, work);
-+
-+	mutex_lock(&flowtable_lock);
-+	list_for_each_entry(flowtable, &flowtables, list) {
-+		if (!net_eq(read_pnet(&flowtable->net), dev_net(fw->dev)))
-+			continue;
-+
-+		fw->found = false;
-+		nf_flow_table_iterate(flowtable, nf_flow_table_do_fdb_del, fw);
-+		if (fw->found)
-+			mod_delayed_work(system_power_efficient_wq,
-+					 &flowtable->gc_work, 0);
-+	}
-+	mutex_unlock(&flowtable_lock);
-+
-+	netdev_put(fw->dev, &fw->dev_tracker);
-+	kfree(fw);
-+}
-+
-+/* The bridge notifies the old port before it moves an fdb entry. Flows
-+ * sending directly to that port are torn down. Skipping the teardown on
-+ * allocation failure leaves the flow to age out, the same as a missed fdb
-+ * update does for a switchdev driver.
-+ */
-+static int nf_flow_table_switchdev_event(struct notifier_block *nb,
-+					 unsigned long event, void *ptr)
-+{
-+	struct switchdev_notifier_fdb_info *fdb_info = ptr;
-+	struct nf_flow_fdb_del_work *fw;
-+
-+	if (event != SWITCHDEV_FDB_DEL_TO_DEVICE || fdb_info->is_local)
-+		return NOTIFY_DONE;
-+
-+	fw = kzalloc_obj(*fw, GFP_ATOMIC);
-+	if (!fw)
-+		return NOTIFY_DONE;
-+
-+	INIT_WORK(&fw->work, nf_flow_table_fdb_del_work);
-+	fw->dev = fdb_info->info.dev;
-+	netdev_hold(fw->dev, &fw->dev_tracker, GFP_ATOMIC);
-+	fw->vid = fdb_info->vid;
-+	ether_addr_copy(fw->addr, fdb_info->addr);
-+	queue_work(nf_flow_fdb_del_wq, &fw->work);
-+
-+	return NOTIFY_DONE;
-+}
-+
-+static struct notifier_block nf_flow_table_switchdev_nb = {
-+	.notifier_call = nf_flow_table_switchdev_event,
-+};
-+
- void nf_flow_table_free(struct nf_flowtable *flow_table)
- {
- 	mutex_lock(&flowtable_lock);
-@@ -838,6 +930,16 @@ static int __init nf_flow_table_module_init(void)
- 	if (ret)
- 		goto out_offload;
+ 		if (priv->ptp_clock)
+ 			info->phc_index = ptp_clock_index(priv->ptp_clock);
+-		else
+-			info->phc_index = 0;
  
-+	nf_flow_fdb_del_wq = alloc_workqueue("nf_flow_fdb_del", WQ_UNBOUND, 0);
-+	if (!nf_flow_fdb_del_wq) {
-+		ret = -ENOMEM;
-+		goto out_wq;
-+	}
-+
-+	ret = register_switchdev_notifier(&nf_flow_table_switchdev_nb);
-+	if (ret)
-+		goto out_switchdev;
-+
- 	ret = nf_flow_register_bpf();
- 	if (ret)
- 		goto out_bpf;
-@@ -845,6 +947,10 @@ static int __init nf_flow_table_module_init(void)
- 	return 0;
+ 		info->tx_types = (1 << HWTSTAMP_TX_OFF) | (1 << HWTSTAMP_TX_ON);
  
- out_bpf:
-+	unregister_switchdev_notifier(&nf_flow_table_switchdev_nb);
-+out_switchdev:
-+	destroy_workqueue(nf_flow_fdb_del_wq);
-+out_wq:
- 	nf_flow_table_offload_exit();
- out_offload:
- 	unregister_pernet_subsys(&nf_flow_table_net_ops);
-@@ -855,6 +961,8 @@ static int __init nf_flow_table_module_init(void)
- 
- static void __exit nf_flow_table_module_exit(void)
- {
-+	unregister_switchdev_notifier(&nf_flow_table_switchdev_nb);
-+	destroy_workqueue(nf_flow_fdb_del_wq);
- 	nf_flow_table_offload_exit();
- 	unregister_pernet_subsys(&nf_flow_table_net_ops);
- 	kmem_cache_destroy(flow_offload_cachep);
-diff --git a/net/netfilter/nf_flow_table_path.c b/net/netfilter/nf_flow_table_path.c
-index 53629e9b2273..231eeef50f73 100644
---- a/net/netfilter/nf_flow_table_path.c
-+++ b/net/netfilter/nf_flow_table_path.c
-@@ -88,6 +88,7 @@ struct nft_forward_info {
- 		__be16	proto;
- 	} encap[NF_FLOW_TABLE_ENCAP_MAX];
- 	u8 num_encaps;
-+	u32 bridge_ifidx;
- 	u16 bridge_vid;
- 	struct flow_offload_tunnel tun;
- 	struct dst_entry *tun_dst;
-@@ -181,6 +182,10 @@ static int nft_dev_path_info(struct net_device_path_stack *stack,
- 			case DEV_PATH_BR_VLAN_KEEP:
- 				break;
- 			}
-+			/* dev_fill_forward_path() adds the bridge port after
-+			 * the bridge.
-+			 */
-+			info->bridge_ifidx = stack->path[i + 1].dev->ifindex;
- 			info->bridge_vid = path->bridge.vlan_id;
- 			info->xmit_type = FLOW_OFFLOAD_XMIT_DIRECT;
- 			break;
-@@ -259,6 +264,7 @@ static int nft_dev_forward_path(const struct nft_pktinfo *pkt,
- 	if (info.xmit_type == FLOW_OFFLOAD_XMIT_DIRECT) {
- 		memcpy(route->tuple[dir].out.h_source, info.h_source, ETH_ALEN);
- 		memcpy(route->tuple[dir].out.h_dest, info.h_dest, ETH_ALEN);
-+		route->tuple[dir].out.bridge_ifindex = info.bridge_ifidx;
- 		route->tuple[dir].out.bridge_vid = info.bridge_vid;
- 		route->tuple[dir].xmit_type = info.xmit_type;
- 	}
+
+---
+base-commit: 78445023439506ebd83b86d40b1e428a3b309d4a
+change-id: 20260912-stmmac-fix-phc_index-1ebf19cce076
+
+Best regards,
 -- 
-2.53.0
+Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 
