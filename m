@@ -1,38 +1,38 @@
 Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FED41C2FB
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 23:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D92A42E422
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 23:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789427647; cv=none; b=eePKXRKymTH2i5fqYk2hDkJ9LLHim/hRNfF30BV4n8CckHLBZ2JWWJyZugWGF7mAivgKWTgu+D9P8YwFtsmguv64pjXSi2RF/ksn75RTlAWlO1quG6ianIlGGFA74VkdPTDjAls50BBsHJy93pYprmw2WI3ibVQj4f1Zd0n+i38=
+	t=1789427652; cv=none; b=EQp/OsL2Ed82vodjTAGlnuUvLYRpewt2FsoG9mZkTaPYTj33npKU+9fxdKuDwzRsHZ+qd1aUxuXj2Pql5i59oeX4o8XAFpTAD3bgjYwxvrH3v9S313rGeEiIUVK8zVF4xyUavABtx50O+ON3a+Ab9MSLxjgc0/qe37G65Y7ziaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789427647; c=relaxed/simple;
-	bh=IUYqUFTr8sxQiGE124PaJo3i+TtowJjWB7UWwA+bZYo=;
+	s=arc-20240116; t=1789427652; c=relaxed/simple;
+	bh=FNmZqnZZL1wcbL+4DFr1hinh2JwBmZvLBSvzeRpeBYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AYmkx9oxHkfDZcywWr3fJk1yauXna9nwwkqZFV/Es1Ael1Nk3rqtjOOX0LvVZ0v5bEq5TS2/siqYoZxAdivsxPI+BI8MtWELuDeU3IRPOgv89ojrrA3NTSSqY7D4rArIBEgPqLEzZgUZCKWqiG5D2qa0FFhFZO4xo1acEwj8OsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=mc/9kuNC; arc=none smtp.client-ip=171.64.64.25
+	 MIME-Version; b=g21VpTZ1GljZjAzHNWRNbEbfV+zaepoOppFwUUFIcYYlBTZro24Ik6YnB1/yaeWS54uaTQ9d4mpukFBnGNFO/etFtIz58OI5OQzMCbvD359AmYVf5gp4czP3rl30lkdWRTXWShVthIi1PPzZFTmPC/9Ilf973EnDz2BjXlf7rLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=NrmUtpXR; arc=none smtp.client-ip=171.64.64.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="mc/9kuNC"
+	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="NrmUtpXR"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=WuY9sRpdwdmJT4FjtjhXZcS/K+Tuuf7t9g5t0UG5340=; t=1789427643; x=1790291643; 
-	b=mc/9kuNCT8fb5QBWr4QQJr6xK3mR2IBE2fKRjzTHGqY81v6FvSuI8e3mArGaxNQY8dUH6tf0Vms
-	+09/Q3kL/urxk3hO/I4i5ah61eHMruOs45ncm6etynodsl+859E3yXUEKIlY1E/RVSeny+71nSScB
-	dyvEtu/Z6IO90oX6Lejg4dKeBfxZf7+sSEtmELAWNdvLPPnMe9ijO09SL5zKiLu599Bi/7HarC/+O
-	0tF3Lba3dhFPrCG7xPmhDMU+f6a1BmqBRolK+7rHuHUzrbHf+e88WtCUUQAAx4pCqeHT8r8UHG9WQ
-	aYJerMxc6OVly63k6ckzHtcURlnK+ZUjXCFw==;
+	bh=5jN+CUiV85XSy5l+qbUwpPO9tMMciH7HPlJmKhgcTbA=; t=1789427649; x=1790291649; 
+	b=NrmUtpXRthYoXgVrI9TZRpkRAiXTtBXSFoE54TJyltCAnrvE1OeUY1ECOwu1dJ6ZgsprceK72Hv
+	Tc4qBuG6urH0DbpOgdb0yxmwUKWtOSs4R/Z3Y5OYRYcQ6WuXzVSuG+YsbqKSF5JEL0lqnFhln0M6I
+	kemIqmcUJcWxs4tIrSdMiNBuY3GzY3Hu9j9YoQMfIadbvjQ6Xo39oFPn/HUWu8QDttx+RbCayDMw0
+	KRa6SkGvGKVgc+tE+6mFYanh0qn3SShYd4MU85K8yuwjnEkEXaZ3Sn0yD6LlT4zbxNwHEiFy+4N2f
+	XqwBZunKVl3ngjDu64o0Y6s0HgbjcTZcoRPQ==;
 Received: from ouster448.stanford.edu ([172.24.72.71]:60752 helo=cs.stanford.edu)
 	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ouster@cs.stanford.edu>)
-	id 1x6Fjp-0007WN-6r; Mon, 14 Sep 2026 16:05:26 -0700
+	id 1x6Fjs-0007WN-DN; Mon, 14 Sep 2026 16:05:30 -0700
 From: John Ousterhout <ouster@cs.stanford.edu>
 To: netdev@vger.kernel.org
 Cc: pabeni@redhat.com,
@@ -44,9 +44,9 @@ Cc: pabeni@redhat.com,
 	linux-doc@vger.kernel.org,
 	corbet@lwn.net,
 	John Ousterhout <ouster@cs.stanford.edu>
-Subject: [PATCH net-next v11 01/15] net: homa: define user-visible API for Homa
-Date: Mon, 14 Sep 2026 16:05:01 -0700
-Message-ID: <20260914230517.1190-2-ouster@cs.stanford.edu>
+Subject: [PATCH net-next v11 03/15] net: homa: create homa_impl.h
+Date: Mon, 14 Sep 2026 16:05:03 -0700
+Message-ID: <20260914230517.1190-4-ouster@cs.stanford.edu>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260914230517.1190-1-ouster@cs.stanford.edu>
 References: <20260914230517.1190-1-ouster@cs.stanford.edu>
@@ -57,377 +57,619 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -101.0
-X-Scan-Signature: 05490b4d060761943944367086c22eb4
+X-Spam-Score: -96.8
+X-Scan-Signature: b613ce83982973846f7cf29c2b2fae6d
 
-Note: for man pages, see the Homa Wiki at:
-https://homa-transport.atlassian.net/wiki/spaces/HOMA/overview
+This header file defines "struct homa", which contains overall information
+about the Homa transport, "struct homa_net", which defines overall Homa
+that is specific to a particular network namesapce, plus various odds and
+ends that are used throughout the Homa implementation.
 
 Signed-off-by: John Ousterhout <ouster@cs.stanford.edu>
 
 ---
 Changes for v20:
-* Fix bug in ioctl number reservation in ioctl_number.rst (negative range).
-* Ensure that homa_info has the same size on 32- and 64-bit machines.
-
+* Separate routing information (flows and dst_entry's) from the homa_peer
+  struct: there can be multiple routes to a single peer.
+* Don't hold locks while transmitting packets.
+* Make handling of dead RPCs more robust: it's now OK to continue
+  manipulating dead RPCs as if they were still alive, except for code
+  that could potentially make a dead RPC visible again. This eliminates
+  many (fragile) error checks.
+* Refactor outbound message management:
+  * Outbound message data is now buffered in kernel pages that are
+    independent of skbs; skbs are then created "just in time" that
+    share access to those pages.
+  * This eliminates the need for Homa to retain references to skb's
+    after they have been passed to ip*xmit.
 Changes for v19:
-* Change ioctl numbers to use numbers not currently in use.
+* Add support for ARM64 clock
 
 Changes for v18:
-* Fix types to conform to Linux standards (e.g. __u64 instead of size_t)
+* Change API for homa_set_doff slightly
 
 Changes for v16:
-* Implement HOMAIOCINFO ioctl.
+* Remove various fields and functions:
+  * net field in struct homa_net
+  * bytes_left, next_sibling, and last_sibling fields in struct homa_skb_info
+  * is_homa_pkt()
+  * homa_from_skb()
+  * homa_net_from_skb()
+  * homa_usecs_to_cycles()
+* Rename homa_net_from_net to homa_net
+* Use consume_skb and kfree_skb_reason instead of kfree_skb
 
-Changes for v14:
-* Add "WITH Linux-syscall-note" SPDX license note
+Changes for v12:
+* Use tsc_khz instead of cpu_khz
+* Make is_homa_pkt work properly with IPv6 (it only worked for IPv4)
 
 Changes for v11:
-* Add explicit padding to struct homa_recvmsg_args to fix problems compiling
-  on 32-bit machines.
+* Move link_mbps variable from struct homa_pacer back to struct homa.
+
+Changes for v10:
+* Eliminate __context__ definition
+* Replace __u16 with u16, __u8 with u8, etc.
+* Refactor resend mechanism
 
 Changes for v9:
-* Eliminate use of _Static_assert
-* Remove declarations related to now-defunct homa_api.c
+* Move information from sync.txt into comments in homa_impl.h
+* Add limits on number of active peer structs
+* Introduce homa_net objects; there is now a single global struct homa
+  shared by all network namespaces, with one homa_net per network namespace
+  with netns-specific information.
+* Introduce homa_clock as an abstraction layer for the fine-grain clock.
+* Various name improvements (e.g. use "alloc" instead of "new" for functions
+  that allocate memory)
+* Eliminate sizeof32 definition
+
+Changes for v8:
+* Pull out pacer-related fields into separate struct homa_pacer in homa_pacer.h
 
 Changes for v7:
-* Add HOMA_SENDMSG_NONBLOCKING flag for sendmsg
-* API changes for new mechanism for waiting for incoming messages
-* Add setsockopt SO_HOMA_SERVER (enable incoming requests)
+* Make Homa a per-net subsystem
+* Track tx buffer memory usage
+* Refactor waiting mechanism for incoming packets: simplify wait
+  criteria and use standard Linux mechanisms for waiting
+* Remove "lock_slow" functions, which don't add functionality in this
+  patch series
+* Rename homa_rpc_free to homa_rpc_end
+* Add homa_make_header_avl function
 * Use u64 and __u64 properly
 ---
- .../userspace-api/ioctl/ioctl-number.rst      |   1 +
- MAINTAINERS                                   |   7 +
- include/uapi/linux/homa.h                     | 290 ++++++++++++++++++
- 3 files changed, 298 insertions(+)
- create mode 100644 include/uapi/linux/homa.h
+ net/homa/homa_impl.h | 524 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 524 insertions(+)
+ create mode 100644 net/homa/homa_impl.h
 
-diff --git a/Documentation/userspace-api/ioctl/ioctl-number.rst b/Documentation/userspace-api/ioctl/ioctl-number.rst
-index 2fc53093752d..c6cb82ff627e 100644
---- a/Documentation/userspace-api/ioctl/ioctl-number.rst
-+++ b/Documentation/userspace-api/ioctl/ioctl-number.rst
-@@ -255,6 +255,7 @@ Code  Seq#    Include File                                             Comments
-                                                                        <mailto:zapman@interlan.net>
- 'h'   00-1F  linux/hpet.h                                              conflict!
- 'h'   80-8F  fs/hfsplus/ioctl.c
-+'h'   90-9F  uapi/linux/homa.h
- 'i'   00-3F  linux/i2o-dev.h                                           conflict!
- 'i'   0B-1F  linux/ipmi.h                                              conflict!
- 'i'   80-8F  linux/i8k.h
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0e04d92d1b09..56e7651d0171 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11938,6 +11938,13 @@ F:	lib/test_hmm*
- F:	mm/hmm*
- F:	tools/testing/selftests/mm/*hmm*
- 
-+HOMA TRANSPORT PROTOCOL
-+M:	John Ousterhout <ouster@cs.stanford.edu>
-+S:	Maintained
-+W:	https://homa-transport.atlassian.net/wiki/spaces/HOMA
-+F:	include/uapi/linux/homa.h
-+F:	net/homa/
-+
- HONEYWELL ABP2030PA PRESSURE SENSOR SERIES IIO DRIVER
- M:	Petre Rodan <petre.rodan@subdimension.ro>
- L:	linux-iio@vger.kernel.org
-diff --git a/include/uapi/linux/homa.h b/include/uapi/linux/homa.h
+diff --git a/net/homa/homa_impl.h b/net/homa/homa_impl.h
 new file mode 100644
-index 000000000000..deeca70f944a
+index 000000000000..d365748dc5ba
 --- /dev/null
-+++ b/include/uapi/linux/homa.h
-@@ -0,0 +1,290 @@
-+/* SPDX-License-Identifier: BSD-2-Clause OR GPL-2.0+ WITH Linux-syscall-note */
++++ b/net/homa/homa_impl.h
+@@ -0,0 +1,524 @@
++/* SPDX-License-Identifier: BSD-2-Clause OR GPL-2.0+ */
 +
-+/* This file defines the kernel call interface for the Homa
-+ * transport protocol.
++/* This file contains definitions that are shared across the files
++ * that implement Homa for Linux.
 + */
 +
-+#ifndef _UAPI_LINUX_HOMA_H
-+#define _UAPI_LINUX_HOMA_H
++#ifndef _HOMA_IMPL_H
++#define _HOMA_IMPL_H
 +
-+#include <linux/in.h>
-+#include <linux/in6.h>
++#include <linux/bug.h>
++
++#include <linux/audit.h>
++#include <linux/icmp.h>
++#include <linux/init.h>
++#include <linux/list.h>
++#include <linux/module.h>
++#include <linux/kernel.h>
++#include <linux/kthread.h>
++#include <linux/completion.h>
++#include <linux/proc_fs.h>
++#include <linux/sched/signal.h>
++#include <linux/skbuff.h>
 +#include <linux/socket.h>
-+#include <linux/types.h>
++#include <linux/vmalloc.h>
++#include <net/icmp.h>
++#include <net/ip.h>
++#include <net/netns/generic.h>
++#include <net/protocol.h>
++#include <net/inet_common.h>
++#include <net/gro.h>
++#include <net/rps.h>
 +
-+/* IANA-assigned Internet Protocol number for Homa. */
-+#define IPPROTO_HOMA 146
++#include <linux/homa.h>
++#include "homa_wire.h"
 +
-+/**
-+ * define HOMA_MAX_MESSAGE_LENGTH - Maximum bytes of payload in a Homa
-+ * request or response message.
-+ */
-+#define HOMA_MAX_MESSAGE_LENGTH 1000000
-+
-+/**
-+ * define HOMA_BPAGE_SIZE - Number of bytes in pages used for receive
-+ * buffers. Must be power of two.
-+ */
-+#define HOMA_BPAGE_SIZE (1 << HOMA_BPAGE_SHIFT)
-+#define HOMA_BPAGE_SHIFT 16
-+
-+/**
-+ * define HOMA_MAX_BPAGES - The largest number of bpages that will be required
-+ * to store an incoming message.
-+ */
-+#define HOMA_MAX_BPAGES ((HOMA_MAX_MESSAGE_LENGTH + HOMA_BPAGE_SIZE - 1) >> \
-+		HOMA_BPAGE_SHIFT)
++/* Forward declarations. */
++struct homa;
++struct homa_peer;
++struct homa_rpc;
++struct homa_route;
++struct homa_sock;
 +
 +/**
-+ * define HOMA_MIN_DEFAULT_PORT - The 16 bit port space is divided into
-+ * two nonoverlapping regions. Ports 1-32767 are reserved exclusively
-+ * for well-defined server ports. The remaining ports are used for client
-+ * ports; these are allocated automatically by Homa. Port 0 is reserved.
++ * union sockaddr_in_union - Holds either an IPv4 or IPv6 address (smaller
++ * and easier to use than sockaddr_storage).
 + */
-+#define HOMA_MIN_DEFAULT_PORT 0x8000
++union sockaddr_in_union {
++	/** @sa: Used to access as a generic sockaddr. */
++	struct sockaddr sa;
 +
-+/**
-+ * struct homa_sendmsg_args - Provides information needed by Homa's
-+ * sendmsg; passed to sendmsg using the msg_control field.
-+ */
-+struct homa_sendmsg_args {
-+	/**
-+	 * @id: (in/out) An initial value of 0 means a new request is
-+	 * being sent; nonzero means the message is a reply to the given
-+	 * id. If the message is a request, then the value is modified to
-+	 * hold the id of the new RPC.
-+	 */
-+	__u64 id;
++	/** @in4: Used to access as IPv4 socket. */
++	struct sockaddr_in in4;
 +
-+	/**
-+	 * @completion_cookie: (in) Used only for request messages; will be
-+	 * returned by recvmsg when the RPC completes. Typically used to
-+	 * locate app-specific info about the RPC.
-+	 */
-+	__u64 completion_cookie;
-+
-+	/**
-+	 * @flags: (in) OR-ed combination of bits that control the operation.
-+	 * See below for values.
-+	 */
-+	__u32 flags;
-+
-+	/** @reserved: Not currently used, must be 0. */
-+	__u32 reserved;
-+};
-+
-+/* Flag bits for homa_sendmsg_args.flags (see man page for documentation):
-+ */
-+#define HOMA_SENDMSG_PRIVATE       0x01
-+#define HOMA_SENDMSG_VALID_FLAGS   0x01
-+
-+/**
-+ * struct homa_recvmsg_args - Provides information needed by Homa's
-+ * recvmsg; passed to recvmsg using the msg_control field.
-+ */
-+struct homa_recvmsg_args {
-+	/**
-+	 * @id: (in/out) Initial value is 0 to wait for any shared RPC;
-+	 * nonzero means wait for that specific (private) RPC. Returns
-+	 * the id of the RPC received.
-+	 */
-+	__u64 id;
-+
-+	/**
-+	 * @completion_cookie: (out) If the incoming message is a response,
-+	 * this will return the completion cookie specified when the
-+	 * request was sent. For requests this will always be zero.
-+	 */
-+	__u64 completion_cookie;
-+
-+	/**
-+	 * @num_bpages: (in/out) Number of valid entries in @bpage_offsets.
-+	 * Passes in bpages from previous messages that can now be
-+	 * recycled; returns bpages from the new message.
-+	 */
-+	__u32 num_bpages;
-+
-+	/** @reserved: Not currently used, must be 0. */
-+	__u32 reserved;
-+
-+	/**
-+	 * @bpage_offsets: (in/out) Each entry is an offset into the buffer
-+	 * region for the socket pool. When returned from recvmsg, the
-+	 * offsets indicate where fragments of the new message are stored. All
-+	 * entries but the last refer to full buffer pages (HOMA_BPAGE_SIZE
-+	 * bytes) and are bpage-aligned. The last entry may refer to a bpage
-+	 * fragment and is not necessarily aligned. The application now owns
-+	 * these bpages and must eventually return them to Homa, using
-+	 * bpage_offsets in a future recvmsg invocation.
-+	 */
-+	__u32 bpage_offsets[HOMA_MAX_BPAGES];
-+};
-+
-+/** define SO_HOMA_RCVBUF: setsockopt option for specifying buffer region. */
-+#define SO_HOMA_RCVBUF 10
-+
-+/**
-+ * define SO_HOMA_SERVER: setsockopt option for specifying whether a
-+ * socket will act as server.
-+ */
-+#define SO_HOMA_SERVER 11
-+
-+/** struct homa_rcvbuf_args - setsockopt argument for SO_HOMA_RCVBUF. */
-+struct homa_rcvbuf_args {
-+	/** @start: Address of first byte of buffer region in user space. */
-+	__u64 start;
-+
-+	/** @length: Total number of bytes available at @start. */
-+	__u64 length;
++	/** @in6: Used to access as IPv6 socket.  */
++	struct sockaddr_in6 in6;
 +};
 +
 +/**
-+ * struct homa_rpc_info - Used by HOMAIOCINFO to return information about
-+ * a specific RPC.
++ * struct homa - Stores overall information about the Homa transport, which
++ * is shared across all Homa sockets and all network namespaces.
 + */
-+struct homa_rpc_info {
++struct homa {
 +	/**
-+	 * @id: Identifier for the RPC, unique among all RPCs sent by the
-+	 * client node. If the low-order bit is 1, this node is the server
-+	 * for the RPC; 0 means we are the client.
++	 * @next_outgoing_id: Id to use for next outgoing RPC request.
++	 * This is always even: it's used only to generate client-side ids.
++	 * Accessed without locks. Note: RPC ids are unique within a
++	 * single client machine.
 +	 */
-+	__u64 id;
-+
-+	/** @peer: Address of the peer socket for this RPC. */
-+	union {
-+		struct __kernel_sockaddr_storage storage;
-+		struct sockaddr_in in4;
-+		struct sockaddr_in6 in6;
-+	} peer;
++	atomic64_t next_outgoing_id;
 +
 +	/**
-+	 * @completion_cookie: For client-side RPCs this gives the completion
-+	 * cookie specified when the RPC was initiated. For server-side RPCs
-+	 * this is zero.
++	 * @peertab: Info about all the other hosts we have communicated with;
++	 * includes peers from all network namespaces.
 +	 */
-+	__u64 completion_cookie;
++	struct homa_peertab *peertab;
 +
 +	/**
-+	 * @tx_length: Length of the outgoing message in bytes, or -1 if
-+	 * the sendmsg hasn't yet been called.
++	 * @socktab: Information about all open sockets. Dynamically
++	 * allocated; must be kfreed.
 +	 */
-+	__s32 tx_length;
++	struct homa_socktab *socktab;
 +
 +	/**
-+	 * @tx_sent: Number of bytes of the outgoing message that have been
-+	 * transmitted at least once.
++	 * @tx_pools: One tx_page_pool for each NUMA node on the machine.
++	 * If there are no cores for a node, then its value is NULL.
 +	 */
-+	__u32 tx_sent;
++	struct homa_tx_pool *tx_pools[MAX_NUMNODES];
++
++	/** @max_numa: Highest NUMA node id in use by any core. */
++	int max_numa;
 +
 +	/**
-+	 * @tx_granted: Number of bytes of the outgoing message that the
-+	 * receiver has authorized us to transmit (includes unscheduled
-+	 * bytes).
++	 * @tx_page_frees_per_sec: Rate at which to return pages from
++	 * homa_tx_page_pools back to Linux. This is the total rate across
++	 * all pools. Set externally via sysctl.
 +	 */
-+	__u32 tx_granted;
-+
-+	/** @reserved: Reserved for future use. */
-+	__u32 reserved;
++	int tx_page_frees_per_sec;
 +
 +	/**
-+	 * @rx_length: Length of the incoming message, in bytes. -1 means
-+	 * the length is not yet known (this is a client-side RPC and
-+	 * no packets have been received).
++	 * @tx_pages_to_free: Space in which to collect pages that are
++	 * about to be released. Dynamically allocated.
 +	 */
-+	__s32 rx_length;
++	struct page **tx_pages_to_free;
 +
 +	/**
-+	 * @rx_remaining: Number of bytes in the incoming message that have
-+	 * not yet been received.
++	 * @tx_pages_to_free_slots: Maximum number of pages that can be
++	 * stored in tx_pages_to_free;
 +	 */
-+	__u32 rx_remaining;
++	int tx_pages_to_free_slots;
 +
 +	/**
-+	 * @rx_gaps: The number of gaps in the incoming message. A gap is
-+	 * a range of bytes that have not been received yet, but bytes after
-+	 * the gap have been received.
++	 * @tx_page_free_time: homa_clock() time when the next tx
++	 * page should be freed. Could be in the past.
 +	 */
-+	__u32 rx_gaps;
++	u64 tx_page_free_time;
 +
 +	/**
-+	 * @rx_gap_bytes: The total number of bytes in gaps in the incoming
-+	 * message.
++	 * @tx_page_pool_min_kb: A floor on the amount of space for Homa to
++	 * retain in a pool, specified in Kbytes. Set externally via
++	 * sysctl.
 +	 */
-+	__u32 rx_gap_bytes;
++	int tx_page_pool_min_kb;
 +
 +	/**
-+	 * @rx_granted: The number of bytes in the message that the sender
-+	 * is authorized to transmit (includes unscheduled bytes).
++	 * @link_mbps: The raw bandwidth of the network uplink, in
++	 * units of 1e06 bits per second.  Set externally via sysctl.
 +	 */
-+	__u32 rx_granted;
++	int link_mbps;
 +
 +	/**
-+	 * @flags: Various single-bit values associated with the RPC:
-+	 * HOMA_RPC_BUF_STALL:  The incoming message is currently stalled
-+	 *                      because there is insufficient receiver buffer
-+	 *                      space.
-+	 * HOMA_RPC_PRIVATE:    The RPC has been created as "private"; set
-+	 *                      only on the client side.
-+	 * HOMA_RPC_RX_READY:   The incoming message is complete and has
-+	 *                      been queued waiting for a thread to call
-+	 *                      recvmsg.
-+	 * HOMA_RPC_RX_COPY:    There are packets that have been received,
-+	 *                      whose data has not yet been copied from
-+	 *                      packet buffers to user space.
++	 * @resend_ticks: When an RPC's @silent_ticks reaches this value,
++	 * start sending RESEND requests.
 +	 */
-+	__u16 flags;
-+#define HOMA_RPC_BUF_STALL    1
-+#define HOMA_RPC_PRIVATE      2
-+#define HOMA_RPC_RX_READY     4
-+#define HOMA_RPC_RX_COPY      8
++	int resend_ticks;
++
++	/**
++	 * @resend_interval: minimum number of homa timer ticks between
++	 * RESENDs for the same RPC.
++	 */
++	int resend_interval;
++
++	/**
++	 * @timeout_ticks: abort an RPC if its silent_ticks reaches this value.
++	 */
++	int timeout_ticks;
++
++	/**
++	 * @timeout_resends: Assume that a server is dead if it has not
++	 * responded after this many RESENDs have been sent to it.
++	 */
++	int timeout_resends;
++
++	/**
++	 * @request_ack_ticks: How many timer ticks we'll wait for the
++	 * client to ack an RPC before explicitly requesting an ack.
++	 * Set externally via sysctl.
++	 */
++	int request_ack_ticks;
++
++	/**
++	 * @dead_frags_limit: If hsk->dead_frags is less than this number
++	 * for a socket, then Homa reaps RPCs in a way that minimizes impact
++	 * on performance but may permit dead RPCs to accumulate. If
++	 * dead_frags exceeds this value, then Homa switches to a more
++	 * aggressive approach to reaping RPCs. Set externally via sysctl.
++	 */
++	int dead_frags_limit;
++
++	/**
++	 * @max_dead_frags: The largest value of hsk->dead_frags that has
++	 * existed so far for any socket.  Readable via sysctl, and may be
++	 * reset via sysctl to begin recalculating.
++	 */
++	int max_dead_frags;
++
++	/**
++	 * @max_gso_size: Maximum number of bytes that will be included
++	 * in a single output packet that Homa passes to Linux. Can be set
++	 * externally via sysctl to lower the limit already enforced by Linux.
++	 */
++	int max_gso_size;
++
++	/**
++	 * @wmem_max: Limit on the value of sk_sndbuf for any socket. Set
++	 * externally via sysctl.
++	 */
++	int wmem_max;
++
++	/**
++	 * @timer_ticks: number of times that homa_timer has been invoked
++	 * (may wraparound, which is safe).
++	 */
++	u32 timer_ticks;
++
++	/**
++	 * @bpage_lease_usecs: how long a core can own a bpage (microseconds)
++	 * before its ownership can be revoked to reclaim the page.
++	 */
++	int bpage_lease_usecs;
++
++	/**
++	 * @bpage_lease_cycles: same as bpage_lease_usecs except in
++	 * homa_clock() units.
++	 */
++	int bpage_lease_cycles;
++
++	/**
++	 * @next_id: Set via sysctl; causes next_outgoing_id to be set to
++	 * this value; always reads as zero. Typically used while debugging to
++	 * ensure that different nodes use different ranges of ids.
++	 */
++	int next_id;
++
++	/**
++	 * @destroyed: True means that this structure is being destroyed
++	 * so everyone should clean up.
++	 */
++	bool destroyed;
++
 +};
 +
 +/**
-+ * struct homa_info - In/out argument passed to HOMAIOCINFO. Fields labeled
-+ * as "in" must be set by the application; other fields are returned to the
-+ * application from the kernel.
++ * struct homa_net - Contains Homa information that is specific to a
++ * particular network namespace.
 + */
-+struct homa_info {
-+	/**
-+	 * @rpc_info: (in) Address of memory region in which to store
-+	 * information about individual RPCs. Actual type is
-+	 * "struct homa_rpc_info *".
-+	 */
-+	__u64 rpc_info;
++struct homa_net {
++	/** @homa: Global Homa information. */
++	struct homa *homa;
 +
 +	/**
-+	 * @rpc_info_length: (in) Number of bytes of storage available at
-+	 * rpc_info.
++	 * @prev_default_port: The most recent port number assigned from
++	 * the range of default ports.
 +	 */
-+	__u64 rpc_info_length;
++	u16 prev_default_port;
 +
 +	/**
-+	 * @bpool_avail_bytes: Number of bytes in the buffer pool for incoming
-+	 * messages that is currently available for new messages.
++	 * @num_routes: The total number of struct homa_peers that exist
++	 * for this namespace. Managed by homa_peer.c under the peertab lock.
 +	 */
-+	__u64 bpool_avail_bytes;
-+
-+	/** @port: Port number handled by this socket. */
-+	__u32 port;
-+
-+	/**
-+	 * @num_rpcs: Total number of active RPCs (both server and client) for
-+	 * this socket. The number stored at @rpc_info will be less than this
-+	 * if @rpc_info_length is too small.
-+	 */
-+	__u32 num_rpcs;
-+
-+	/**
-+	 * @error_msg: Provides additional information about the last error
-+	 * returned by a Homa-related kernel call such as sendmsg, recvmsg,
-+	 * or ioctl. Not updated for some obvious return values such as EINTR
-+	 * or EWOULDBLOCK.
-+	 */
-+#define HOMA_ERROR_MSG_SIZE 104
-+	char error_msg[HOMA_ERROR_MSG_SIZE];
++	int num_routes;
 +};
 +
-+/* I/O control calls on Homa sockets.*/
-+#define HOMAIOCINFO  _IOWR('h', 0x90, struct homa_info)
++/**
++ * struct homa_skb_info - Additional information needed by Homa for each
++ * outbound DATA packet. Space is allocated for this at the very end of the
++ * linear part of the skb.
++ */
++struct homa_skb_info {
++	/**
++	 * @data_bytes: total bytes of message data across all of the
++	 * segments in this packet.
++	 */
++	int data_bytes;
 +
-+#endif /* _UAPI_LINUX_HOMA_H */
++	/**
++	 * @dont_defer: True means that homa_qdisc_enqueue should pass this
++	 * packet along without considering NIC congestion. This flag is set
++	 * by the pacer when it retransmits packets after deferral.
++	 */
++	bool dont_defer;
++};
++
++/**
++ * homa_get_skb_info() - Return the address of Homa's private information
++ * for an sk_buff.
++ * @skb:     Socket buffer whose info is needed.
++ * Return: address of Homa's private information for @skb.
++ */
++static inline struct homa_skb_info *homa_get_skb_info(struct sk_buff *skb)
++{
++	return (struct homa_skb_info *)(skb_end_pointer(skb)) - 1;
++}
++
++/**
++ * homa_set_doff() - Fills in the doff TCP header field for a packet.
++ * @skb:   Packet whose doff field is to be set.
++ * @size:  Size of the "header" in bytes (must be a multiple of 4). This is
++ *         needed for two reasons. First, for TSO to work it must indicate
++ *         the number of bytes that should be replicated in each segment.
++ *         The bytes after this will be distributed among segments. Second,
++ *         for TCP hijacking to work it must have a valid value (20 is a
++ *         good choice if the packet isn't a TSO frame).
++ */
++static inline void homa_set_doff(struct sk_buff *skb, int size)
++{
++	tcp_hdr(skb)->doff = size >> 2;
++}
++
++/** skb_is_ipv6() - Return true if the packet is encapsulated with IPv6,
++ *  false otherwise (presumably it's IPv4).
++ */
++static inline bool skb_is_ipv6(const struct sk_buff *skb)
++{
++	return ipv6_hdr(skb)->version == 6;
++}
++
++/**
++ * ipv6_to_ipv4() - Given an IPv6 address produced by ipv4_to_ipv6, return
++ * the original IPv4 address (in network byte order).
++ * @ip6:  IPv6 address; assumed to be a mapped IPv4 address.
++ * Return: IPv4 address stored in @ip6.
++ */
++static inline __be32 ipv6_to_ipv4(const struct in6_addr ip6)
++{
++	return ip6.in6_u.u6_addr32[3];
++}
++
++/**
++ * canonical_ipv6_addr() - Convert a socket address to the "standard"
++ * form used in Homa, which is always an IPv6 address; if the original address
++ * was IPv4, convert it to an IPv4-mapped IPv6 address.
++ * @addr:   Address to canonicalize (if NULL, "any" is returned).
++ * Return: IPv6 address corresponding to @addr.
++ */
++static inline struct in6_addr canonical_ipv6_addr(const union sockaddr_in_union
++						  *addr)
++{
++	struct in6_addr mapped;
++
++	if (addr) {
++		if (addr->sa.sa_family == AF_INET6)
++			return addr->in6.sin6_addr;
++		ipv6_addr_set_v4mapped(addr->in4.sin_addr.s_addr, &mapped);
++		return mapped;
++	}
++	return in6addr_any;
++}
++
++/**
++ * skb_canonical_ipv6_saddr() - Given a packet buffer, return its source
++ * address in the "standard" form used in Homa, which is always an IPv6
++ * address; if the original address was IPv4, convert it to an IPv4-mapped
++ * IPv6 address.
++ * @skb:   The source address will be extracted from this packet buffer.
++ * Return: IPv6 address for @skb's source machine.
++ */
++static inline struct in6_addr skb_canonical_ipv6_saddr(struct sk_buff *skb)
++{
++	struct in6_addr mapped;
++
++	if (skb_is_ipv6(skb))
++		return ipv6_hdr(skb)->saddr;
++	ipv6_addr_set_v4mapped(ip_hdr(skb)->saddr, &mapped);
++	return mapped;
++}
++
++/**
++ * homa_make_header_avl() - Invokes pskb_may_pull to make sure that all the
++ * Homa header information for a packet is in the linear part of the skb
++ * where it can be addressed using skb_transport_header.
++ * @skb:     Packet for which header is needed.
++ * Return:   The result of pskb_may_pull (true for success)
++ */
++static inline bool homa_make_header_avl(struct sk_buff *skb)
++{
++	int pull_length;
++
++	pull_length = skb_transport_header(skb) - skb->data + HOMA_MAX_HEADER;
++	if (pull_length > skb->len)
++		pull_length = skb->len;
++	return pskb_may_pull(skb, pull_length);
++}
++
++extern unsigned int homa_net_id;
++
++/**
++ * homa_net() - Return the struct homa_net associated with a particular
++ * struct net.
++ * @net:     Get the Homa data for this net namespace.
++ * Return:   see above.
++ */
++static inline struct homa_net *homa_net(struct net *net)
++{
++	return (struct homa_net *)net_generic(net, homa_net_id);
++}
++
++/**
++ * homa_clock() - Return a fine-grain clock value that is monotonic and
++ * consistent across cores.
++ * Return: see above.
++ */
++static inline u64 homa_clock(void)
++{
++	/* This function exists to make it easy to switch time sources
++	 * if/when new or better sources become available.
++	 */
++	return ktime_get_ns();
++}
++
++/**
++ * homa_clock_khz() - Return the frequency of the values returned by
++ * homa_clock, in units of KHz.
++ * Return: see above.
++ */
++static inline u64 homa_clock_khz(void)
++{
++	return 1000000;
++}
++
++/**
++ * homa_ns_to_cycles() - Convert from units of nanoseconds to units of
++ * homa_clock().
++ * @ns:      A time measurement in nanoseconds
++ * Return:   The time in homa_clock() units corresponding to @ns.
++ */
++static inline u64 homa_ns_to_cycles(u64 ns)
++{
++	u64 tmp;
++
++	tmp = ns * homa_clock_khz();
++	do_div(tmp, 1000000);
++	return tmp;
++}
++
++/* Homa Locking Strategy:
++ *
++ * (Note: this documentation is referenced in several other places in the
++ * Homa code)
++ *
++ * In the Linux TCP/IP stack the primary locking mechanism is a sleep-lock
++ * per socket. However, per-socket locks aren't adequate for Homa, because
++ * sockets are "larger" in Homa. In TCP, a socket corresponds to a single
++ * connection between two peers; an application can have hundreds or
++ * thousands of sockets open at once, so per-socket locks leave lots of
++ * opportunities for concurrency. With Homa, a single socket can be used for
++ * communicating with any number of peers, so there will typically be just
++ * one socket per thread. As a result, a single Homa socket must support many
++ * concurrent RPCs efficiently, and a per-socket lock would create a bottleneck
++ * (Homa tried this approach initially).
++ *
++ * Thus, the primary locks used in Homa spinlocks at RPC granularity. This
++ * allows operations on different RPCs for the same socket to proceed
++ * concurrently. Homa also has socket locks (which are spinlocks different
++ * from the official socket sleep-locks) but these are used much less
++ * frequently than RPC locks.
++ *
++ * Lock Ordering:
++ *
++ * There are several other locks in Homa besides RPC locks, all of which
++ * are spinlocks. When multiple locks are held, they must be acquired in a
++ * consistent order in order to prevent deadlock. Here are the rules for Homa:
++ * 1. Except for RPC locks, socket locks, and the grant lock, all locks
++ *    should be considered "leaf" locks: don't acquire other locks while
++ *    holding them.
++ * 2. The lock order is:
++ *    * Grant lock
++ *    * RPC lock
++ *    * Socket lock
++ *    * Other lock
++ *
++ * It may seem surprising that RPC locks are acquired *before* socket locks,
++ * but this is essential for high performance. Homa has been designed so that
++ * many common operations (such as processing input packets) can be performed
++ * while holding only an RPC lock; this allows operations on different RPCs
++ * to proceed in parallel. Only a few operations, such as handing off an
++ * incoming message to a waiting thread, require the socket lock. If socket
++ * locks had to be acquired first, any operation that might eventually need
++ * the socket lock would have to acquire it before the RPC lock, which would
++ * severely restrict concurrency.
++ *
++ * Socket Shutdown:
++ *
++ * It is possible for socket shutdown to begin while operations are underway
++ * that hold RPC locks but not the socket lock. For example, a new RPC
++ * creation might be underway when a socket is shut down. The RPC creation
++ * will eventually acquire the socket lock and add the new RPC to those
++ * for the socket; it would be very bad if this were to happen after
++ * homa_sock_shutdown thinks it has deleted all RPCs for the socket.
++ * In general, any operation that acquires a socket lock must check
++ * hsk->shutdown after acquiring the lock and abort if hsk->shutdown is set.
++ *
++ * Spinlock Implications:
++ *
++ * Homa uses spinlocks exclusively; this is needed because locks typically
++ * need to be acquired at atomic level, such as in SoftIRQ code.
++ *
++ * Operations that can block, such as memory allocation and copying data
++ * to/from user space, are not permitted while holding spinlocks (spinlocks
++ * disable interrupts, so the holder must not block. This results in awkward
++ * code in several places to move restricted operations outside locked
++ * regions. Such code typically looks like this:
++ *   - Acquire a reference on an object such as an RPC, in order to prevent
++ *     the object from being deleted.
++ *   - Release the object's lock.
++ *   - Perform the restricted operation.
++ *   - Re-acquire the lock.
++ *   - Release the reference.
++ * It is possible that the object may have been modified by some other party
++ * while it was unlocked, so additional checks may be needed after reacquiring
++ * the lock. As one example, an RPC may have been terminated, in which case
++ * any operation in progress on that RPC should be aborted after reacquiring
++ * the lock.
++ *
++ * Lists of RPCs:
++ *
++ * There are a few places where Homa needs to process all of the RPCs
++ * associated with a socket, such as the timer. Such code must first lock
++ * the socket (to protect access to the link pointers) then lock
++ * individual RPCs on the list. However, this violates the rules for locking
++ * order. It isn't safe to unlock the socket before locking the individual RPCs,
++ * because RPCs could be deleted and their memory recycled between the unlock
++ * of the socket lock and the lock of the RPC; this could result in corruption.
++ * Homa uses two different approaches to handle this situation:
++ * 1. Use ``homa_protect_rpcs`` to prevent RPC reaping for a socket. RPCs can
++ *    still be terminated, but their memory won't go away until
++ *    homa_unprotect_rpcs is invoked. This allows the socket lock to be
++ *    released before acquiring RPC locks; after acquiring each RPC lock,
++ *    the RPC must be checked to see if it has been terminated; if so, skip it.
++ * 2. Use ``spin_trylock_bh`` to acquire the RPC lock while still holding the
++ *    socket lock. If this fails, then release the socket lock and retry
++ *    both the socket lock and the RPC lock. Of course, the state of both
++ *    socket and RPC could change before the locks are finally acquired.
++ *
++ * Locks and Packet Transmission:
++ *
++ * Homa must not hold locks while transmitting packets (e.g. by calling
++ * ip_queue_xmit or ip6_xmit). This is because homa_qdisc could be invoked
++ * during the transmission process, and it may need to acquire locks under
++ * some conditions (such as an RPC lock). Homa_qdisc is invoked with the
++ * qdisc lock held, so invoking ip*xmit with a lock held can result in
++ * AB-BA deadlocks.
++ */
++
++#endif /* _HOMA_IMPL_H */
 -- 
 2.43.0
 
