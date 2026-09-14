@@ -1,227 +1,151 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4300141B8C6
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 21:55:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789422932; cv=none; b=Twvr2/vKirAAlO848TxnkUpahXjptw2lo53V6nI3I2PBns5bm0XLTKT32t+kokWxrBLZJ/CTN22jSpwofL09ajlWMxCrmIh3rK4Tk4WH3+xTaUlOPfVGCEdVi306XSUgFA4pZGUg9GhzWfUJMST0Q9x4JIPzK17VmUpZ2lvbHYM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789422932; c=relaxed/simple;
-	bh=ZW24AzKibRmsChTIZFpOqpEWa8pPmQADDutsZs1I8K8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=AIZ9eeKLFklNWdiiiVx3fiMZanNThPfC7GuMOq0JM+pF6XpW/rr/R7HOLQV40Vlw/cy+spRUQA22+vXQHHdNJxB8KLP31+KgYEGicpkf/4Xhn1fv3igfrPbMHPzfasCovZQZ3Zvim51GuK7JQOTywmU6TrRBLNeXHrFrOtIHkrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=N/h/zzjJ; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D2A6340281
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 21:58:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789423097; cv=pass; b=joFD2Zv/0dDPdOf0ggUbA0Puy+10EIoxGx2UhaXgee1aqRjO4fOkWTV/5z9gnOIDeMfDuEkA9qThra/iiFwlXmtxg22BVm9Sc9Gdk94Zm7FL6q1syxHLtfLHPV0BeiH/p+LF5luZQfTYpEwp+MNRpY3Q0NXSjWc1PIyqId2Dv50=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789423097; c=relaxed/simple;
+	bh=2oucmxVLZzpsHl2bsclPjBym6RGzyC0ruoTEA/sa9F0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JzrfmOzr3OREFrsKU3A1Emg7EdHYXc4OXxGI1QDW2UwR7YK9q0l8q6zhBbiWEcs72uJQHFkhjekmFXNTwM+alk7nTJaQtZ9P8UGDmg59mKy7rh9MovzFsK7RLSrJ4SV4inflAQ9pFCMPsr7hkHblGiiMEX0vbkR1v7kAMSDjuss=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZORgcYuL; arc=pass smtp.client-ip=74.125.228.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="N/h/zzjJ"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-869d181419bso3580426b3a.2
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 14:55:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZORgcYuL"
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a613a6bcd8so624a12.0
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 14:58:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789423093; cv=none;
+        d=google.com; s=arc-20260327;
+        b=OH2DAo7ylYF6tzrkF6cmUQ4XhkR10I7HpyPcpJxK8Rl21/ouLlxlj9K2SS1Kwnqels
+         66mtm1cDewEmfxZtHQsls9l3Na7ZHAr8GTSV0rbLcNof6JBS2ikklZA4KQsDiutPBc0i
+         LZURd1eofi8I1fVbjS8lCZzoSwhQAS0dwNmq1/Eb67mVGzMEUAbWttyp3elIA4co7bT6
+         MqUKXWJOwPq2/rkhAvH6K99YZkTZtd/Quj9lf8gT3W9OZlfFpg6GxuCjbTloP95FJ8cX
+         BjKqHFYO2trUCDTZRJeXWsCWngUybziU9qPRlwNqo+eSuDl/NHjM8AGTqAz9KU7QmaXI
+         oFxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GBcZvsPwFZfbhRFR+qKliCsigQ1sOEsYBMsUSsjWMHo=;
+        fh=jvNLtrBCCzuJ8z3sPmd5VEUHlzTO9IU6T5DMEjOkDXI=;
+        b=ZWz3BOU53ty2w4dnBjVDC4lLYaSfJcYTUZPbzIP+giA0hw7IOeqBHOLxBDatwYuEit
+         NnzuIM66v1I4rOLla+CwU3WVqRlvFxks+d9aCcXMlcqQuvJdPMeSfDmmvO0l9fEo/wtc
+         7YAI6Ysxjxwt9wqbWs6+ec7v32aNI4HILhMCx1MXuiSTqeb4wpt3JJQpip8G2YnmTtKq
+         joxetdyaLm2xnjoW49ysu2S/DlnUMRor+GcCzEBZb40Vs3ouo+aEMrc7CoJdt/yvM0bR
+         2w4SIktRuXC3h7nXdypZSGHfCGde/U+jfjq3D3sx5a4YRFCuKTXjZjGFs/G3f58xfEq6
+         CFAQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1789422929; x=1790027729; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=T/TGZ0NqpBEB9GgHRd+TQ3uXQZZ6N+mNyW4FV6tZL6I=;
-        b=N/h/zzjJjRH0m+Oyfcj/xy5x9EtK3sUMWeVZlp5JgAojOOX004qchGrl2hB9yCEskF
-         tJwf1R/NCSK9yAI+K4nYw3dVIudOhV5g9aeBCPASqZMgy1vJLiDiW+YYsKYeHQjUiEXX
-         WJkoogutrbWSr3WelghTNQVTyoAK3SKRNPxhi5Uio4LpT8Dxv4zgHCcndxHMTeO4QquC
-         +8Q9wHh2fHVVe/OlrMsy/QZgMofWG4QakSORIU+KfqEm/XBgAJXKDjAILL3xnGwgyzWA
-         HzcYWoFoQ7Gks2H3rtkZ11YwZFRn1Vik6Af976XabKK3BSRh+7MQRaMqMl8vCAInNMf+
-         iDMA==
+        d=google.com; s=20251104; t=1789423093; x=1790027893; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=GBcZvsPwFZfbhRFR+qKliCsigQ1sOEsYBMsUSsjWMHo=;
+        b=ZORgcYuLNvNKXCEhnZfOKd6D7GpPOg5whryg4OtY/+RutO2b+NQGqoq+atw+x9mRi1
+         ZaViyaw1WRZpjPBNUturDGpRZ9RJKDySZwN/kKx2RgKj6JtqbKSpAKEzyhRG52RZJUqy
+         6zIC7oKd0HUlXkX5gzbpiosGpXZ2pjivGmoHfENg13FVIgJHd/Z5i4epnf/xQ4zXSi+r
+         5V+OUW5Rp1q2lh9+6Lp8WI2lwE6TP1FuygGY3RCbd+ePZwjdiV/1RuBzsnybTOhJOmmV
+         y/yTxyEGi0ZF2adtrie/UuKHCfQkbwA5B+YSRm8lUx9tEUKm2HdcfyIM6k5syHCzefpR
+         9GMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789422929; x=1790027729;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1789423093; x=1790027893;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=T/TGZ0NqpBEB9GgHRd+TQ3uXQZZ6N+mNyW4FV6tZL6I=;
-        b=Y6rBc8k7G6t/UDDqC+heL9zMBmpi/0OfXTAX7NN/fgOfih+a4vmsyMDWXYUO7Tkky+
-         f7IPq6x9xBtDLPDp/sNPpwoC9aIpoQ93YQrr1osTpKQDRw362KwbKyIbd4eT8l5Cw/ie
-         5CZqbAlzGCCnsy05Wu/V0VmNBXu287txFHSZUnJ0tJIoUitw5d7Rs3De9V4lLyrES4qZ
-         Ogn6M46b8nIgYfm/wn22tmwrV+qIz8trfgK93DtsSH0i94nQt+gsnrQR9gXvVfGS42ku
-         zRKbsX086JMsE8uT+Jyq96Cd23fpI0vaRFLKFaucFHWQP0Fx/Xo5pZzF4Y8pnyJg+V7y
-         zKTA==
-X-Forwarded-Encrypted: i=1; AKwUvBzcTvGxCd/bfcHWNzDpfihHih7g9ki7C0lhBN3irjWwu6k7CiCm81aYLeOTsNU2b5b0iDpJ/jI=@vger.kernel.org
-X-Gm-Message-State: AFuF++nP5gIfG4l+fHsqAailzLNWzASU6XoPJtpsykkhYgJvCSrSOn3E
-	VGb7XTRJkxEWAFsbAA9JeiwvN6QexAihS0/pujgG5jbfC0ymNm307i3vQ2pyfTjb8BDhPq8pCEQ
-	Q/fJ7clE=
-X-Gm-Gg: AYBFou0TKbYTy5UcnskgI31GE6gKtZmj7JMCsD/EeUcj8iazgAcNSEFri7BbnH8aM9Z
-	+ofsadtdHnl1N3cMR3SFRzYjRmmzxlN4AdMeYuBkFZv9PRWk1c/yZf5vKZLqu/I70aegUj6Camf
-	ee1iehWG7v1di/QE2gvQ3ob7notHCTRYgNuN6asxrF4l+nPh2Vg13+ea5OQgJLwVtDlJ7ngnpSK
-	/ndJW0x6bH/PWdheO8aknO9pHR3Nd2Rwzvdg9jl+v5WYL9QL2hTHwdQBd2hfzT6L7ODTulnzfSG
-	ebOXG5Uu2LsuHz3+AYRFmx7ckwfAkdodTORXkKw2VjYDSkth2HFesQzpCFfBgIK28yS/vVG0ZCV
-	f7ud+CB4qnb7xrd4ZdDKQBMxC1AXnjGNviRhPEMmu/Wr1/t5rL4iJjWw+rQra5QDJ3bczgJnQeI
-	IAFR7lM4yuPVv9XdmvKFUz/JHO7E9owZibCpuelfYZDI5Zy80dTNsFm03uitI+X7iTwpdOSjzGB
-	WPmkKdHMU8w90ebrKBQAWRjebQN
-X-Received: by 2002:a05:6a00:2403:b0:864:cbc5:b8c1 with SMTP id d2e1a72fcca58-86f83344128mr8757554b3a.2.1789422929402;
-        Mon, 14 Sep 2026 14:55:29 -0700 (PDT)
-Received: from localhost (107-190-31-17.cpe.teksavvy.com. [107.190.31.17])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86b29dc09d4sm5106016b3a.47.2026.09.14.14.55.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Sep 2026 14:55:27 -0700 (PDT)
+        bh=GBcZvsPwFZfbhRFR+qKliCsigQ1sOEsYBMsUSsjWMHo=;
+        b=uWBFzIOgvno2ruKqP7AFE/kH3GcH5OknN6z28/MXOVrMIGj0tHnVdySVY7Vl3aoTgT
+         UqrtSmjtI1q/hO2gGWVCAPj8akRBtqF58MWONAdcoSsDMrSh2BnZPG5MY1DaVhGw5+Db
+         qZOBDW+5Mw3w3+XfOv4mGXwu/OWi5d7EQhEhzSZsV+VV8YgJr/W14VdtJGziLQuzFv3v
+         cM1ij8vn/XOD5yjYrR9gHgOyvFMmToxKgJX944JiDl+VtwXbB4H1CnUBDH1If0yBsKDk
+         p1TXrCo5anD3wTIXdjpG2X9UKSzrxP1Lh8OHaBRj32YcgEO/NH1wPfOE6oeoDvt4ygoq
+         fGMw==
+X-Gm-Message-State: AFuF++m28RIhb4dYGEPzYBId9qPJgJvxKvyS9c8P+FzCiL8jnLwCbEgs
+	hDcXxMLC0wPDrzHEcxqHTNaXx/O+M4TJ6aiFjQKRkJKCtOhonuyQqo9MSX50VQUgRj6ks1fjYwq
+	Fb0pvUQKnRnCxYwQnOT0NKuBsywv0hNWXmW0eyle1
+X-Gm-Gg: AYBFou2+EJiHlHhA5urz7/gwAhZIx6MzJlWnZE8EDdbvrT3sXgaWBdB2OjaNhzfTVFV
+	7kUP/EMcmNR+YwIBoKdDojPRzbOXsVRciitvFHL9vziDqRq/ZERcLXo5ncD8UgWPz3srFqanSBH
+	B9sGw/eQuDhaYVkO8G9KtlqB4VXLJfAjK0+RQWuvTY4+unv7pyeM2Mc+506fwwEOerSqfllQM6s
+	GTMAdWZOFOjT1HO8NSuUJYBDN1R6Yeq1VsUIigoc8XrCOzE7vK+JvhweMkiyKVsE2RODN4JTTIM
+	GUL/jLhDzAei4hV3eD0Kn8DwD3KyOB+EhB/SMVVXbEaGjZMhFZrZQ8vopZQdPWZwoBTpMXARV7J
+	ZdoAZQgzAjzY=
+X-Received: by 2002:aa7:c38f:0:b0:6a7:453c:a166 with SMTP id
+ 4fb4d7f45d1cf-6aa0749c8f5mr8562a12.1.1789423092200; Mon, 14 Sep 2026 14:58:12
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260911154555.739041-1-sdf@fomichev.me> <20260911154555.739041-4-sdf@fomichev.me>
+In-Reply-To: <20260911154555.739041-4-sdf@fomichev.me>
+From: Mina Almasry <almasrymina@google.com>
+Date: Mon, 14 Sep 2026 14:58:00 -0700
+X-Gm-Features: AcwNN1U59Zp0E6Rk1J11A4UKHaujiQuHE68JQWx3v-cvFCDxZxawq-kyicBT7r0
+Message-ID: <CAHS8izOSaXtZy98UB2ye4-+59JujNb+SyBp+EO=YjnDvYLr85A@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 3/3] net: devmem: batch net_iov allocations
+ into the page_pool cache
+To: Stanislav Fomichev <sdf.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, sdf@fomichev.me, 
+	bobbyeshleman@meta.com, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 14 Sep 2026 21:55:26 +0000
-Message-Id: <DLFDHJU82VG2.PNNHZELXE80C@etsalapatis.com>
-From: "Emil Tsalapatis" <emil@etsalapatis.com>
-To: "Shihuang Liu" <shlomojune6@gmail.com>, <netdev@vger.kernel.org>
-Cc: <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <ast@kernel.org>,
- <daniel@iogearbox.net>, <andrii@kernel.org>, <eddyz87@gmail.com>,
- <memxor@gmail.com>, <martin.lau@linux.dev>, <song@kernel.org>,
- <yonghong.song@linux.dev>, <jolsa@kernel.org>, <emil@etsalapatis.com>,
- <ihor.solodrai@linux.dev>, <john.fastabend@gmail.com>, <sdf@fomichev.me>,
- <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
- <pabeni@redhat.com>, <horms@kernel.org>, <akpm@linux-foundation.org>,
- <leon.hwang@linux.dev>, <yatsenko@meta.com>, <kpsingh@kernel.org>,
- <dmitry.baryshkov@oss.qualcomm.com>, <jordan@jrife.io>,
- <nhudson@akamai.com>, <avinash.duduskar@gmail.com>, <rongtao@cestc.cn>,
- <joe@wand.net.nz>
-Subject: Re: [PATCH bpf v2 1/2] bpf: reject incompatible socket assignments
-X-Mailer: aerc 0.21.0
-References: <20260911172313.64009-1-shlomojune6@gmail.com>
-In-Reply-To: <20260911172313.64009-1-shlomojune6@gmail.com>
 
-On Fri Sep 11, 2026 at 5:23 PM UTC, Shihuang Liu wrote:
-> bpf_sk_assign() permits TC ingress programs to associate an IPv6 packet
-> with an AF_INET socket. The receive path can then interpret IPv6 skb
-> control data as IPv4 metadata. When IP_RETOPTS is enabled, this can cause
-> __ip_options_echo() to copy beyond its stack buffer.
+On Fri, Sep 11, 2026 at 8:46=E2=80=AFAM Stanislav Fomichev <sdf.kernel@gmai=
+l.com> wrote:
 >
-> Reject incompatible packet and socket families in bpf_sk_assign() and
-> bpf_sk_assign_tcp_reqsk(). Continue to allow IPv4 packets to use
-> dual-stack AF_INET6 sockets.
+> Rename net_devmem_alloc_dmabuf() into net_devmem_alloc_dmabuf_bulk() and
+> make it refill page pool with up to PP_ALLOC_CACHE_REFILL NIOVs,
+> similar to io_pp_zc_alloc_netmems(). That should amortize recently
+> introduced freelist_lock.
 >
-> Check request sockets against rsk_ops->family, since their sk_family is
-> inherited from the listener and sk_ipv6only is not initialized.
->
-> Fixes: cf7fbe660f2d ("bpf: Add socket assign support")
-> Assisted-by: LLM
-> Signed-off-by: Shihuang Liu <shlomojune6@gmail.com>
+> Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
 > ---
-> Changes since v1:
-> - Move family validation out of the IPv6 receive fast path and into
->   bpf_sk_assign() and bpf_sk_assign_tcp_reqsk().
-> - Preserve IPv4 assignments to dual-stack AF_INET6 sockets.
-> - Check request sockets using rsk_ops->family.
-> - Split the fix into two patches and target the BPF fixes tree.
+>  net/core/devmem.c | 59 +++++++++++++++++++++++++++++------------------
+>  net/core/devmem.h |  8 -------
+>  2 files changed, 37 insertions(+), 30 deletions(-)
 >
-> v1:
-> https://lore.kernel.org/netdev/20260823101809.26802-1-shlomojune6@gmail.c=
-om/
->
->  include/uapi/linux/bpf.h       |  4 ++++
->  net/core/filter.c              | 31 +++++++++++++++++++++++++++++++
->  tools/include/uapi/linux/bpf.h |  4 ++++
->  3 files changed, 39 insertions(+)
->
-> diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-> index 732b35cc08d1c..5d8f5e2c8db38 100644
-> --- a/include/uapi/linux/bpf.h
-> +++ b/include/uapi/linux/bpf.h
-> @@ -4568,6 +4568,10 @@ union bpf_attr {
->   *		**-EOPNOTSUPP** if the operation is not supported, for example
->   *		a call from outside of TC ingress.
->   *
-> + *		**-EAFNOSUPPORT** if the socket family is not compatible with
-> + *		the network layer of the packet, for example an **AF_INET**
-> + *		socket and an IPv6 packet.
-> + *
->   * long bpf_sk_assign(struct bpf_sk_lookup *ctx, struct bpf_sock *sk, u6=
-4 flags)
->   *	Description
->   *		Helper is overloaded depending on BPF program type. This
-> diff --git a/net/core/filter.c b/net/core/filter.c
-> index 61940e7535523..e9cc76b775c0c 100644
-> --- a/net/core/filter.c
-> +++ b/net/core/filter.c
-> @@ -3491,6 +3491,32 @@ static int bpf_skb_proto_xlat(struct sk_buff *skb,=
- __be16 to_proto)
->  	return -ENOTSUPP;
+> diff --git a/net/core/devmem.c b/net/core/devmem.c
+> index 7949f8425bcd..a0dcc896dd12 100644
+> --- a/net/core/devmem.c
+> +++ b/net/core/devmem.c
+> @@ -58,25 +58,25 @@ void __net_devmem_dmabuf_binding_free(struct work_str=
+uct *wq)
+>         kfree(binding);
 >  }
-> =20
-> +static bool bpf_sk_assign_family_ok(const struct sk_buff *skb,
-> +				    const struct sock *sk)
-
-This should also be used in bpf_skb_adjust_room that can also change the
-address family of the skb after it has been checked against that of the sk.
-
-> +{
-> +	unsigned short family;
-> +
-> +	switch (skb->protocol) {
-> +	case htons(ETH_P_IP):
-> +		family =3D AF_INET;
-> +		break;
-> +	case htons(ETH_P_IPV6):
-> +		family =3D AF_INET6;
-> +		break;
-
-What about VLAN?
-
-pw-bot: cr
-
-> +	default:
-> +		return true;
-> +	}
-> +
-> +	/* Requests inherit the listener family, but have family-specific ops. =
-*/
-> +	if (sk->sk_state =3D=3D TCP_NEW_SYN_RECV)
-> +		return inet_reqsk(sk)->rsk_ops->family =3D=3D family;
-> +
-> +	return sk->sk_family =3D=3D family ||
-> +	       (family =3D=3D AF_INET &&
-> +		sk->sk_family =3D=3D AF_INET6 &&
-> +		!ipv6_only_sock(sk));
-> +}
-> +
->  BPF_CALL_3(bpf_skb_change_proto, struct sk_buff *, skb, __be16, proto,
->  	   u64, flags)
+>
+> -struct net_iov *
+> -net_devmem_alloc_dmabuf(struct net_devmem_dmabuf_binding *binding)
+> +static unsigned int
+> +net_devmem_alloc_dmabuf_bulk(struct net_devmem_dmabuf_binding *binding,
+> +                            netmem_ref *netmems, unsigned int count)
 >  {
-> @@ -7989,6 +8015,8 @@ BPF_CALL_3(bpf_sk_assign, struct sk_buff *, skb, st=
-ruct sock *, sk, u64, flags)
->  		return -ENETUNREACH;
->  	if (sk_unhashed(sk))
->  		return -EOPNOTSUPP;
-> +	if (!bpf_sk_assign_family_ok(skb, sk))
-> +		return -EAFNOSUPPORT;
->  	if (sk_is_refcounted(sk) &&
->  	    unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
->  		return -ENOENT;
-> @@ -12526,6 +12554,9 @@ __bpf_kfunc int bpf_sk_assign_tcp_reqsk(struct __=
-sk_buff *s, struct sock *sk,
->  	if (net !=3D sock_net(sk))
->  		return -ENETUNREACH;
-> =20
-> +	if (!bpf_sk_assign_family_ok(skb, sk))
-> +		return -EAFNOSUPPORT;
+> -       struct net_iov *niov;
+> +       unsigned int i;
 > +
->  	switch (skb->protocol) {
->  	case htons(ETH_P_IP):
->  		ops =3D &tcp_request_sock_ops;
-> diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bp=
-f.h
-> index 732b35cc08d1c..5d8f5e2c8db38 100644
-> --- a/tools/include/uapi/linux/bpf.h
-> +++ b/tools/include/uapi/linux/bpf.h
-> @@ -4568,6 +4568,10 @@ union bpf_attr {
->   *		**-EOPNOTSUPP** if the operation is not supported, for example
->   *		a call from outside of TC ingress.
->   *
-> + *		**-EAFNOSUPPORT** if the socket family is not compatible with
-> + *		the network layer of the packet, for example an **AF_INET**
-> + *		socket and an IPv6 packet.
-> + *
->   * long bpf_sk_assign(struct bpf_sk_lookup *ctx, struct bpf_sock *sk, u6=
-4 flags)
->   *	Description
->   *		Helper is overloaded depending on BPF program type. This
+>         spin_lock_bh(&binding->freelist_lock);
+> -       if (unlikely(!binding->free_count)) {
+> -               spin_unlock_bh(&binding->freelist_lock);
+> -               return NULL;
+> +
+> +       count =3D min_t(size_t, count, binding->free_count);
+> +       for (i =3D 0; i < count; i++) {
+> +               struct net_iov *niov =3D binding->freelist[--binding->fre=
+e_count];
+> +
+> +               binding->freelist[binding->free_count] =3D NULL;
 
+Nulling is probably unnecessary?
+
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+
+
+--=20
+Thanks,
+Mina
