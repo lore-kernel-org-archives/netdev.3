@@ -1,115 +1,139 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-231.mta0.migadu.com [91.218.175.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771D92D8DC4;
-	Mon, 14 Sep 2026 03:05:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA51332EC1
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 03:09:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789355124; cv=none; b=nfkkqTVpIOS2Zrz5PD4r52ziqMibghDzCE2qSKsQRmkFJc0ERxuyLfDTtJlPGsLgFxtyQhcxu8eHVlRG1/EYM1Hpn3geDBD121NO+BkooUNhYAfCGsIhFgd+AWOk/0hslvsLkTpnDxv0ltAAZNVi75f4WNeTQ4FipePJmXW7QmA=
+	t=1789355399; cv=none; b=HtGjWDfGqSoRdQvL2mF8PAJLayxDyjS/ge4/BsgBjFzGxsX2/E8L0xGCUuXeCXCb/RebiypS9DnEsa4zJX6YBrFHKPL+ipTLD+6ghWHoy3hWJFpqoW5qI0Z98IyK44rLpqodInebi301VWZKEHEJMgrjDPl3AQPxW1sBuahI5o0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789355124; c=relaxed/simple;
-	bh=TYZ6Qrn+yCC44PN+vNUht3tOMu0avO4/eAXCZGS6uqY=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WvnOkp3HLd7XLGOrHBDuXTtd+O5vH0g/lj18xBT2EduzRu+/r1A8MVVpHCkOeiT7Jd14/JnkAH3nMPGQ+RWkpzH/+RdUaKVgtX1/teJ0hN/TxgczZ986FZW4ZbhljQvt63SpbYuAQIXsT1d+ceZkwlrvBmHlfhEhki/hU8ge0lQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=hbn6XJQm; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1789355399; c=relaxed/simple;
+	bh=x/tlIljtHGaFtS3P5GHlgvAiIORLGAfsGhOXJcwnhL0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=AsivZDFQBC7fvyeSoX5zU1jDfgRVLiMYaFmDGyof/sN226SlzWWZEpaO9IAGBuFoKF5VAXyBpX6UES1MmVsWw68v8Cxf9oadL3fSd3qt6SMxXjTgwFCZ8qz4GXhvdGAMqL/VNXCNZvNxo+7Us2t3+V3hZ7HW/mQvnNgNiUK6dXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jXTseMJL; arc=none smtp.client-ip=91.218.175.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="hbn6XJQm"
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68E335t83686445;
-	Sun, 13 Sep 2026 20:05:02 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=XkuO7G4VfPHhKUr33CjXc3Avn
-	860LNSramqQW62iq10=; b=hbn6XJQm5Pz9iD4IhFGiycE2SCTGiOHoS+93NDYvZ
-	bMhEQtiNa1hCrkQJks5VnMEzNsTbUU2nHuOYMWp68sAD9o3NzKEfIP4agtPcYA7Y
-	b4/TpxCMsLOU0XvfMVlfRlx5KuBtc4cPmSFZMcYrYMj2X9Uwe+MCO+BrqNOOrbTn
-	QwXUG91jYT8cmQvNDJ1PcPljzDquktVpjO2TRAflw0diLwOz8eQkwrj9aBazVuqK
-	RKo/YzMEfiAC+o0Ks5jWsIYhMqEAYnFn+Qhw1hJxMsigwyduuwEUD9VaQhLr0ASv
-	9mrms3qGgeGay1E/MdWQn1d8AvF+H7a3W5qZrnl+cKNYQ==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4gp7vyg2p6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 13 Sep 2026 20:05:02 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Sun, 13 Sep 2026 20:05:00 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Sun, 13 Sep 2026 20:05:00 -0700
-Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with SMTP id 038C53F706F;
-	Sun, 13 Sep 2026 20:04:56 -0700 (PDT)
-Date: Mon, 14 Sep 2026 08:34:50 +0530
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: Slavin Liu <bolin.liu@seu.edu.cn>
-CC: <sgoutham@marvell.com>, <gakula@marvell.com>, <sbhatta@marvell.com>,
-        <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] octeontx2-af: skip absent MCS blocks in PTP
- configuration
-Message-ID: <aqdkUkM13I_0VSrK@rkannoth-OptiPlex-7090>
-References: <20260913125212.110005-1-bolin.liu@seu.edu.cn>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jXTseMJL"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=x/tlIljtHGaFtS3P5GHlgvAiIORLGAfsGhOXJcwnhL0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789355391; v=1; x=1789960191;
+ b=jXTseMJLVp8W4g1LiZKvA19lpBMXNr6h0PgyKXgwInP9AuOm7b5plYTQEvqxeF4+ej5tBjF8
+ yDiELf82g7Vunw13F9YjLO9oTX1H22bCtHDTG5uHhJniP3o0EtwKk74BQ+PLYRSAmJDTTcMJ9Sw
+ aVap5p64XoEv8lzNKsB3/kmc=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id febf35c63c55aa0e;
+	Mon, 14 Sep 2026 03:09:51 +0000
+X-Mizu-Trace-ID: febf35c63c55aa0e
+X-Migadu-Flow: FLOW_OUT
+From: Hangbin Liu <hangbin.liu@linux.dev>
+Date: Mon, 14 Sep 2026 11:09:35 +0800
+Subject: [PATCH net v4] bonding: fix slave_cnt leak on XDP error paths
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260913125212.110005-1-bolin.liu@seu.edu.cn>
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE0MDA0MCBTYWx0ZWRfXznLJD7J3z37E
- /gs9MN4tcNkQiHiBgPZH/2X9txzv+Gi9X1T+OaI7okgwIttqJooIAPkmpNiQqVdy2mnIPq0jQ3/
- Vj5+XNvBL2NJRdJjqm1P/GNFYpsVg5Q=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE0MDA0MCBTYWx0ZWRfX4yoTsh+WKqdj
- +Ond3anwsNih9/ZVHWPG+ZkXL+mOOwKPbVWk/n8MIPg+opzkpnLndhxSLfANtXf2/vt8RvwdRAo
- QgFNP1PcGpF+TJxoYL8MUdEJxMYfX97CKo2WrtWMZC9fVRsgggkNfuhSxT1+ynfhgrV7WSB66rj
- Zpo0NEuamg0OaCSRyXzpdxL9ZW04bGngKuSHxuA/41Thqcn8xEuRPAHx8zSFNiv2oaROHTIicUW
- TD4AQ8uMxKqwYqbQOXG4cZYbNcAY16zZUJL7fOI6M2UAEnk0vpFdVgS2Rt9yvGSws+W4s9JkH9j
- nKh7V2v+vcrvhcz9PnzqGMWrPNi7bhh/fNT1C6Ik2uPYIREHfWVqnOBnYnEe9tqlta16KpwWZz+
- g+lpYl00U83PIUlylVbzEuWCqNC1bwDfsGXZBVT0kDYJ6/RftbrS7kQ94ztJOTwEcIPYsVJiIQm
- iC4WcpsR5FkiyA1WtUA==
-X-Authority-Analysis: v=2.4 cv=a/ulZkSF c=1 sm=1 tr=0 ts=6aa7645e cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8
- a=mGoJRa1uc5saEmWCy-4A:9 a=CjuIK1q_8ugA:10 a=OBjm3rFKGHvpk9ecZwUJ:22
- a=4Pbm1F1Cy1QVNLGpYn_S:22
-X-Proofpoint-GUID: R3ePHcqIHKO-AUZ8fRj9DxYEVg3Cq8Bb
-X-Proofpoint-ORIG-GUID: R3ePHcqIHKO-AUZ8fRj9DxYEVg3Cq8Bb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-14_01,2026-09-13_01,2025-10-01_01
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260914-bond_slave_cnt-v4-1-d14864a39e60@kylinos.cn>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2XPQQrDIBAF0KsU17UYTaLpqvcoJagZG2nQokEaQ
+ u5ecZU2yz/D+8OsKEKwENH1tKIAyUbrXQ71+YT0KN0TsB1yRpTQlgjCsfJu6OMkE/TazVgI4EI
+ 3hkjVoYzeAYz9lMI7cjCjRx6ONs4+LOVIqsqq9HWE/velCleYtdA1ytSyNeb2WibrfLxoV7oS3
+ Xt28DR7QoFyRmotWXvwbO8P/ySWfcMHwxTThmr147dt+wIcKFkAMgEAAA==
+X-Change-ID: 20260807-bond_slave_cnt-88e78c5f0ab9
+To: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Daniel Borkmann <daniel@iogearbox.net>, Jussi Maki <joamaki@gmail.com>, 
+ Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
+X-Mailer: b4 0.14.3
 
-On 2026-09-13 at 18:22:12, Slavin Liu (bolin.liu@seu.edu.cn) wrote:
-> A successfully probed RPM does not imply a matching MCS block.
-> Check the independent MCS lookup before accessing PEX registers.
->
-> Detected by static analysis and reviewed with AI-assisted source auditing.
->
-> Fixes: 65cdc2b637a5 ("octeontx2-af: mcs: Config parser to skip 8B header")
-> Assisted-by: LLM
-> Signed-off-by: Slavin Liu <bolin.liu@seu.edu.cn>
-> ---
->  drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c b/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
-> index fce22e314cac..5e24d43d5fc7 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
-> @@ -50,6 +50,8 @@ void rvu_mcs_ptp_cfg(struct rvu *rvu, u8 rpm_id, u8 lmac_id, bool ena)
->  	/* CNF10K-B */
->  	if (rvu->mcs_blk_cnt > 1) {
->  		mcs = mcs_get_pdata(rpm_id);
-> +		if (!mcs)
-> +			return;
->  		cfg = mcs_reg_read(mcs, MCSX_PEX_RX_SLAVE_PEX_CONFIGURATION);
->  		if (ena)
->  			cfg |= BIT_ULL(lmac_id);
+From: Hangbin Liu <liuhangbin@kylinos.cn>
 
-Reviewed-by: Ratheesh Kannoth <rkannoth@marvell.com>
+When bond_enslave() succeeds up to the XDP setup stage, slave_cnt is
+already incremented. If XDP setup subsequently fails, the error paths
+jump directly to err_sysfs_del, bypassing the slave_cnt decrement.
+
+This causes slave_cnt to drift upward on each failed enslaving attempt,
+which would lead to unbalanced traffic distribution with round-robin
+mode.
+
+Add an error out to make sure slave_cnt gets decreased correctly.
+
+Fixes: 9e2ee5c7e7c3 ("net, bonding: Add XDP support to the bonding driver")
+Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+---
+Changes in v4:
+- Revert to v1 version as the bond_select_active_slave() just under
+  slave_cnt increase also calls bond_update_slave_arr() (sashiko)
+- re-run all bonding selftests with debug kernel, all passed.
+- Link to v3: https://lore.kernel.org/r/20260907-bond_slave_cnt-v3-1-57df3b3cf2cb@kylinos.cn
+
+Changes in v3:
+- move the slave_cnt increasement before bond_update_slave_arr() (selftest)
+- run all bonding selftests on debug kernel to make sure no regression (Jakub)
+- Link to v2: https://lore.kernel.org/r/20260903-bond_slave_cnt-v2-1-02e27304ca36@kylinos.cn
+
+Changes in v2:
+- move the slave_cnt increasement after XDP setup (Nikolay Aleksandrov)
+- balance-xor mode is not affected, not mention it (Nikolay Aleksandrov)
+- Link to v1: https://lore.kernel.org/r/20260902-bond_slave_cnt-v1-1-36e95bf4a6ff@kylinos.cn
+---
+ drivers/net/bonding/bond_main.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index a9bff7663eec..577d85c83804 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -2305,7 +2305,7 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+ 			SLAVE_NL_ERR(bond_dev, slave_dev, extack,
+ 				     "Slave does not support XDP");
+ 			res = -EOPNOTSUPP;
+-			goto err_sysfs_del;
++			goto err_slave_cnt;
+ 		}
+ 	} else if (bond->xdp_prog) {
+ 		struct netdev_bpf xdp = {
+@@ -2319,14 +2319,14 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+ 			SLAVE_NL_ERR(bond_dev, slave_dev, extack,
+ 				     "Slave has XDP program loaded, please unload before enslaving");
+ 			res = -EOPNOTSUPP;
+-			goto err_sysfs_del;
++			goto err_slave_cnt;
+ 		}
+ 
+ 		res = dev_xdp_propagate(slave_dev, &xdp);
+ 		if (res < 0) {
+ 			/* ndo_bpf() sets extack error message */
+ 			slave_dbg(bond_dev, slave_dev, "Error %d calling ndo_bpf\n", res);
+-			goto err_sysfs_del;
++			goto err_slave_cnt;
+ 		}
+ 		if (bond->xdp_prog)
+ 			bpf_prog_inc(bond->xdp_prog);
+@@ -2348,6 +2348,9 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+ 	return 0;
+ 
+ /* Undo stages on error */
++err_slave_cnt:
++	WRITE_ONCE(bond->slave_cnt, bond->slave_cnt - 1);
++
+ err_sysfs_del:
+ 	bond_sysfs_slave_del(new_slave);
+ 
+
+---
+base-commit: e6b6078ea1731b05b3b552497b3bce4bf8b014ae
+change-id: 20260807-bond_slave_cnt-88e78c5f0ab9
+
+Best regards,
+-- 
+Hangbin Liu <liuhangbin@kylinos.cn>
+
