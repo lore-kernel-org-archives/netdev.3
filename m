@@ -1,160 +1,133 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012001.outbound.protection.outlook.com [52.101.53.1])
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B953F787E
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 07:52:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.1
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789372359; cv=fail; b=Z4SCZFIBTIYF4PBhdoR5RDcqYvatRPuYIxH+B3Eb3qA5BPj/PiJPlv8rWApNjl3KvVBQNYC3vDu1Jv9xgoTaVEN/vl5srii+2WBdSBcvILovfbkiCn+CoAB7nAj1+7HGLZNHsck2tUxx8v0s2/1gba3dFdNP6wP6veMId+FsVN4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789372359; c=relaxed/simple;
-	bh=4g2iz68wu3/PQcBARlKZo0HZ1BElbocBHScZVdGFETA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=IqAi1wmnpYttet+r1mAh1Tspa+pdKXtb8Rpc1qeWzJsgSE3EC22eY4/C+WxEOf3hnmlXA5vySv9noROwE+JvawATVUqt1vVZA1+bqqdJMDtScebmBRMMHA4yjF/U2efY6ICfMkwwMnb4u6mBzhhxMdkidR3v679a9NjTY1X3c7E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=fOyqn6Br; arc=fail smtp.client-ip=52.101.53.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D96440DB4C;
+	Mon, 14 Sep 2026 07:53:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789372428; cv=none; b=Lm8R8flfyhchOAqh2IKyFmDgwhWb7Ecssx1X/15ml/uVm7I0jrNQUuxoWY5EuwO+1RFZOo4pPgwvtBgu927N48WFujmuozsCli9OttNimePsPkzPIlQly9IQmYwIGy0NOWDSUfLJnuOGUR7CsJL1O+jKtZ3s+JVOAMhc22gSsqU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789372428; c=relaxed/simple;
+	bh=kg+6z2L4qgl/us9tyFA+l+eOSXaMsZZ0vLNuqGBmtcI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=A0GVCB6K+Nxwc4ObtOoFhpgOcs4NmdzFYMDLQN63W8neG1hViclMlbbfcsWgbi5Bxaf2SVyYG6x/CvSKEXBnGxicf+vU/6oTVBv4SuuZCY6Yi/5lEeX3+h5BMtIMkO3a5MLcfXbsq3Fgc9h8TiySFgEuB9q5Dp/eMc6MI8hx7nY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=lgHPtrU4; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="fOyqn6Br"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UYNPqq/7fmyHmpE2qzfo2sSTYrUIC+L/fmeOI8qz0mbYGt3kGi7ft8/q4h7MjNINhuK/cpHlaQ06uTw2OaxMMOcNnzS2bH2PB8Wmfkt1k3czPfHtJjZF8PJ+ipKyrw4uBZCakqNu78F3t4A2ZpreEFq2sZMWqYClDVEKzlo43siHms+/13N8SDJQ2qWJYcxI1RgbwDg+t6/+MV54FdVvZLNHj090hXFh61VNOJzC0YFHM+fpNS7B0M2rIO2CJl/BWmPsBo0JbVdu50wdFJYxjqnUjMMOxWCh4V4eVWVzuu/Kn5AnAoonSi2Ob6oLd6eeZt+FNjo1s6T3oAQOSrBZQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Itcd1ZGEonJjNg/fPCWO7nbsBqFJkRDAVDktNAw5wPg=;
- b=vRa4W77fH81Su/VXCsCD9Br/kUBNCIUEYKkQwW4yZhMob3dpC5+WJIUknGu7DvtyrH5tCkfop13gAg/IUJaqmfdAbo5EHSORm1Ghv5uneJT2T7LfJ8PZEIajn1mZDt1KQCm/F6XYO0uuLj7uWJFrSksRdwXvMRb+O92vlw1Q5m7VpypZJ8p3zpW7L0HvgGa9spzcDtZuy+hw7A6yYeZlzNL9KZiMvTrsl57H7zJgsURE8UMZqKJvEs0GX6dq0+Ml4H/hB+8x7Wlt1uKg2shzI+uHmIh2ymPdurvDhnI/7LVvYAHTiQWll+/hitpMepHVQNEvSYldm/fOolu73swX1Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Itcd1ZGEonJjNg/fPCWO7nbsBqFJkRDAVDktNAw5wPg=;
- b=fOyqn6BrOfpHkW8+NtbjA/z1P1Uy3oM+WGvI4+fH1hdGN7LRzwI9CzsstVJH7zOagDcgYXTAn/WKdetJEGqnDtZ5PvDr8s8zhshEDaIh0IJ2lmCaVTx8HIpGjfBaUEwdHfrDHlw0iBUqBEqrTq7T71hy/raWNqqST67lK5zTMaJVgygQFQf+RmYCELrq8HCrkzNmwB6ikAV2tnFB6PPYd2bIyY7HMGVy7hoAunhPVdQIocEb33QxKF9ZVqjbgrJnksGL8CHVf3/3/TlwpWWrjyw3yAU9FARQ7Zix5D8j2cMJOOeqySymbZ5ZmKKshj3FcWaAdeO8u/GaIzxKH5SdTg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM4PR12MB5248.namprd12.prod.outlook.com (2603:10b6:5:39c::15)
- by SJ5PPFDDE56F72B.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::9a5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Mon, 14 Sep
- 2026 07:52:33 +0000
-Received: from DM4PR12MB5248.namprd12.prod.outlook.com
- ([fe80::92d8:797b:4db0:d385]) by DM4PR12MB5248.namprd12.prod.outlook.com
- ([fe80::92d8:797b:4db0:d385%5]) with mapi id 15.21.0406.007; Mon, 14 Sep 2026
- 07:52:33 +0000
-Message-ID: <f174540f-683e-4f76-9eca-8016166d30c8@nvidia.com>
-Date: Mon, 14 Sep 2026 10:52:27 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] net: stmmac: do not overwrite phc_index when no
- PTP clock is registered
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Rahul Rameshbabu <rrameshbabu@nvidia.com>,
- Carolina Jubran <cjubran@nvidia.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
-References: <20260914-stmmac-fix-phc_index-v2-1-bf3d90373fe4@oss.qualcomm.com>
-From: Gal Pressman <gal@nvidia.com>
-Content-Language: en-US
-In-Reply-To: <20260914-stmmac-fix-phc_index-v2-1-bf3d90373fe4@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR2P281CA0093.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9b::18) To DM4PR12MB5248.namprd12.prod.outlook.com
- (2603:10b6:5:39c::15)
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="lgHPtrU4"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=yetRmu8Nq+SVA2kUQpvWQa5VQdeyUTIcpepav4RrN3w=; b=lgHPtrU4gS4r0h3sE/abRjqQmH
+	Ae9yPzWIyNb/G9OdWb6EmQaYX2bPuxD7Kt4lpPiighpLlaP6XCFDxImAXidl7+IYyw6tpdP7Z24VM
+	Im5slqu2jrKj3uTOOF96IYCx7L0GAR+XYrLVHwy0q1VviRz9k+YkIhntMrjM+HaG7wDzdYmNk/7J1
+	1OHm9D3Pd1x38iC1tx5LvSBzgJdsKkMzPbCVftKQC2ntTganZwTSl6LlzKCj3r+3ez6wZ3nKIiLs6
+	1eOQpAqG/p5U6l7qTxra2sS177u82WPjZvfSJ5dCfMd/i4ZCISJXxSR4QbeDUy6zJALor30/z3TRA
+	m9wlogFA==;
+Received: from sslproxy08.your-server.de ([78.47.166.52])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1x61VQ-0000Za-0o;
+	Mon, 14 Sep 2026 09:53:36 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy08.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1x61V4-0009Ro-1r;
+	Mon, 14 Sep 2026 09:53:14 +0200
+Message-ID: <c07b76b3-a02f-4d0b-91cb-ba1787b3837b@iogearbox.net>
+Date: Mon, 14 Sep 2026 09:53:35 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5248:EE_|SJ5PPFDDE56F72B:EE_
-X-MS-Office365-Filtering-Correlation-Id: 267a8426-401b-460c-cd80-08df12352253
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|23010399003|1800799024|921020|11063799006|56012099006|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	SUO653KpC6d5/uTyH0EbTx4/WVDnAba7AJn/9B8I4sgHLsSmEhcVllDZgV1ogPY94qLEUcdG1XyuKKA5Q1bOzRw5zRTKEWGs/v0rHZrFoqgmcNtyWoCHKB4nj0+8L/nBkLAfFhM8mUgD5BIibriv/ZqVG08RLir7OdN/apqkza8G1Q1tsABYyv5PYG7svth3zSpXARX7Hk9SqmikhefEA7KRGmnoBfC3f7RWUTYdHBB8TZk9XvYKdQbJu3iV8GKd8/FrL346s7swE/hS+gut6/tQU2t6I44RFckTj5jCs8mxaH6tkXvQWeg7h41tFKepu+9EHIyGJMUcpX41delJ3JnbcvU8+/Tu/vqDZlAINEld1ywzCb4+g5xsbAceQVZYc0x14abTrLRZ5mk5XyVRdl+o/y726IHWhyGYs21mwwMAqDGR35ZF/L+APKUnrqp2lrkUi29qxX/+ydSghWcxFcGGq49qQZRfoVr2MmKqjjNjeVXT9o3lvzoqpWa6L7OpBl60BYi0AKySTsDGU9kCGCiE0GcQNmqV6tNJfKNeDBQxRxmLpgXlbnTZXXBfemSxxFYAASTi6Ps8IJ74eAFXU0II69cJdhzsUWikgUTZDraXPK0pSCr3Q8L1XN6Nd9DVq7KOgzgSeieoIFxz1RgKkvarWzo69QQY7H7g3F4VpRknswDHrKEI5/OEeW92FzUT2TP2G3dvkR1QNYC/gvx2wQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5248.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(23010399003)(1800799024)(921020)(11063799006)(56012099006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WFg5ODZ1L3ZPNmFqTGpBYzJNLzBVbk9sT0hkZ3F2dUxYZzFIS3FFVHFLalF0?=
- =?utf-8?B?UWUwY0cvNUNCR2hpN2xPUXRKVC9lWTNwc25KVnNJWWFYSmwwOUFzWDd0Vi9U?=
- =?utf-8?B?WE9VQXRvVGpZNnV2MEoyditWVGtKMWlZTnJORHYzU3QwMk1CNFNNZVZvUDdC?=
- =?utf-8?B?NHdSS0M3ODg3N2NWbmprVGxnbUJraExScU5Qa2lIWWQyLzZieGsyQVlBZGhZ?=
- =?utf-8?B?SnMvK2ppWkF2MHp0cldaR0R0VVdNY1RUdi84SzQxbXBWOGRhNGNKTkg2K0w4?=
- =?utf-8?B?cmhBR04rTUZxUlJsOWdJUVgyR2hMQ2RkeEtVV0VqYXozYmlRemQxbHYrVkxk?=
- =?utf-8?B?QW10eUF4Sks0dk1vaHJmdThVZGVwSEpOTzdvOThaSFBkckxyOEt6K09ERG5L?=
- =?utf-8?B?TDBaRXZKcEkyTzRiaGhvcHpsdjd4eWhwSzY1dk10UWZEZEhBcTVDVFJkY1Zt?=
- =?utf-8?B?ZWFNZHA1TzVVSU8xeDh2eG1jWE16TXZpK2pubVJieFNreE9xc2dDQ3JNeVJ3?=
- =?utf-8?B?NWNZQ3lsV2FhWmxHNk9NN01iVTQ0MEdKUDVxQzA1RVJaS1VZL2t1ZXh6Rmsr?=
- =?utf-8?B?bHJVem1Fb2lnNHNsVDZ2WmMzeXUyL1dWbHlUWWdTVW83RG0xakxBenlnY0kr?=
- =?utf-8?B?ZEIxakk3Q3lzdHJKVU5GV1F5YStGTVdYVWNxNE9yblhiRk9oWkxYUVVhWjM4?=
- =?utf-8?B?TnVscTBKRnZHN2UwNll2QnhQVGhXclRieHI2a3NwNzJ6aFJwVmhWcmRDZGNB?=
- =?utf-8?B?MW9saVdTRlk2NUMwNkd6WjJnTlRJTEJpQ2ZoQkNaa29pVFhEQXVmbCtydmxU?=
- =?utf-8?B?SGZjbzdGNTRrd3dXTkJheVNlckhNSjNTcmoyajI0RGhnRHYrRERNTEZMUW84?=
- =?utf-8?B?YU1Hem83UG9BT0NIa2RVU0dOZVpqUHNWZEpRbDk0L0h2Y3FFMWNpdTZiUytV?=
- =?utf-8?B?RzR0TXRMSm1KcTlxT2pXRnozeVhCTlcwejU0NnRHVDVwWmNQSHc1bHpCMTd5?=
- =?utf-8?B?MTlURzAvV3BFZUllaHJwd3FaSFlqYzN5K0N2U1FwdjdxTVl1YndIclUySGNR?=
- =?utf-8?B?T1E0NHFSay8vVDNIMUVuaXNJUUwwU01qMGg4T3FCWit1dnMwcnpkVWFhTnNY?=
- =?utf-8?B?cDh0OXJubDNoMDB2THpVdU1LVkprVlJkclpLaGhOdkxIQUhTWXVWejB6UDRt?=
- =?utf-8?B?amVBMFhMTkhPcGtTdUpXSDNmaWxXekM0MU1CeEpaN3p4SHN6cE9ubGtKOGcr?=
- =?utf-8?B?SzFLbFg0NXFjTk55WlV3V0E4ZTN0NjZ4ajlscGNSWXdrYVU2YUZHSFlVL0kw?=
- =?utf-8?B?c3hKQjZhMjB6NS9FQkl4cTNkcXhDcDdpU01GSFZvdXV4dlA2Ym5pb1gyVkd1?=
- =?utf-8?B?WTVJZ1RNT1I0bG00dHNlNVRpZmsvQnlES0s2cmZmcXhzazJ5Sk1iZ1pYZjJK?=
- =?utf-8?B?d1B1cFFodjhaSTJzQUJhaTVycm9SQ25sQWhIWVBrcFVrWTZKSEhaVHFkWUl2?=
- =?utf-8?B?Vy9weE5WMjFhLzZzNzZKUEVCQjMybGRhM0JuVG9KZG1iVnBBTUMyYkZvTVov?=
- =?utf-8?B?UjFFY3ppa0l6QlI0dy8yVkZuRWRkZnVhV3Fma1JQU283c3VPN2ZTaWFDZzBj?=
- =?utf-8?B?Q3BZUDB0U3lXUjN1VE1JMzRIUzlNeWtERlB2bXVYQ3ovZkJ6R09Yd2g5Z09H?=
- =?utf-8?B?VmVLZFQ3WUZKcTFpQkdXLzhMbDZvZklJMm8vRVVCUEZpQXJHMkFIV2NMblJT?=
- =?utf-8?B?R3Z4WVB4a2dEazh4TFl5VFZLTDZKYXFBZjZYcGJrdXdvNG9WNktNK0JsY292?=
- =?utf-8?B?dm5RRW5XUHdoaEhNQjlnYUorbkZpS2dEd1llKzZDWjdFWUxnWThQeXRDaGVE?=
- =?utf-8?B?NlZsZUt1WW5YczhZaE5hMmhaTDJoWXZtZ080Wng5emR3RVBuNDRzVWRzRmhS?=
- =?utf-8?B?MkI3Rnc5YVRxYldrRStqcGJ0cHAybVpCNDRzNzI4R0lZcWUwcUVnUmR0RmVZ?=
- =?utf-8?B?Q1VFUU9vOVpkRnprVG1XaDNMaDJCUkdndWNaWWRheDhLOU80RTdENjNlak5l?=
- =?utf-8?B?OWljTStLcDZIN1Bpc0t5MlJaWDJEUGdiZEFPcU4rQWxzZjJscnJJc3dvbUc4?=
- =?utf-8?B?U0xJeDJHM0lRK0FpUG5JN0FyMU11RG1IOVpUNmMzYWxMTFd3N2VmVkFuSytQ?=
- =?utf-8?B?RWdTQ1NJOUFqb3pSOWQ2dmdRYUlib0VPQlVyK0J3YlB3ekorOTl0SWlodkg4?=
- =?utf-8?B?TTRrZS9CRGdacDluT054Y3R6ZG01aTlQMjduc05EZTd4TGtiTU9pVnp2RFVG?=
- =?utf-8?Q?f9vtgumsTL3GtCV0kd?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 267a8426-401b-460c-cd80-08df12352253
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5248.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 07:52:33.0564
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XPvpUKie5H1zmJwDO+nfpLUY7AqJQylRIu7uM/yqRG15wLkFGjuAeGrQ7cxeMV9Q
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPFDDE56F72B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 04/10] netlink: specs: rt-link: fix netkit-policy
+ names
+To: Jakub Kicinski <kuba@kernel.org>, =?UTF-8?B?QXNiasO4cm4gU2xvdGggVMO4bm5l?=
+ =?UTF-8?Q?sen?= <ast@fiberby.net>
+Cc: netdev@vger.kernel.org, Donald Hunter <donald.hunter@gmail.com>,
+ Danielle Ratson <danieller@nvidia.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ linux-kernel@vger.kernel.org, Nikolay Aleksandrov <razor@blackwall.org>
+References: <20260911214148.1184806-1-ast@fiberby.net>
+ <20260911214148.1184806-5-ast@fiberby.net>
+ <20260911152629.490a47c7@kernel.org> <20260911173649.49474ab5@kernel.org>
+Content-Language: en-US
+From: Daniel Borkmann <daniel@iogearbox.net>
+Autocrypt: addr=daniel@iogearbox.net; keydata=
+ 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
+In-Reply-To: <20260911173649.49474ab5@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28123/Mon Sep 14 08:24:19 2026)
 
-On 14/09/2026 10:41, Lorenzo Bianconi wrote:
-> stmmac_get_ts_info() reports phc_index as 0 when hardware timestamping
-> is supported but no PTP clock has been registered yet (e.g. while the
-> interface is down). Zero is a valid PHC index and would make userspace
-> resolve the wrong clock; the absence of a clock should be reported as
-> -1.
+On 9/12/26 2:36 AM, Jakub Kicinski wrote:
+> On Fri, 11 Sep 2026 15:26:29 -0700 Jakub Kicinski wrote:
+>> On Fri, 11 Sep 2026 21:41:30 +0000 Asbjørn Sloth Tønnesen wrote:
+>>> Correct the names of these `enum netkit_action` constants:
+>>>
+>>> - NETKIT_PASS is 0, so "pass", not "forward".
+>>> - NETKIT_DROP is 2, so "drop", not "blackhole".
+>>>
+>>> Note, the other enum members are not used in netlink, and
+>>> are not allowed by netkit_check_policy().
+>>
+>> Looks right tho may be intentional, so the other option would be to add
+>> #define aliases for the spec names.
 > 
-> The ethtool core already initializes phc_index to -1 before invoking
-> the get_ts_info callback (ethtool_init_tsinfo()), so just drop the
-> erroneous assignment.
-> 
-> Fixes: 9364fa7fcf12 ("net: stmmac: Remove setting of RX software timestamp")
-> Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-> Reviewed-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-> ---
-> Changes in v2:
-> - Drop phc_index assignment to -1
-> - Link to v1: https://lore.kernel.org/r/20260912-stmmac-fix-phc_index-v1-1-26e1ead25324@oss.qualcomm.com
-Thanks Lorenzo!
-Reviewed-by: Gal Pressman <gal@nvidia.com>
+> Ah, looks like some of the selftests use "forward" by name
+> You'll have to fix those
+
+And this renaming is also just bikeshedding. Its fine as is and
+I don't see a reason this must change. Its not mandatory that this
+must be exactly named pass/drop just because the internally used
+enums (implementation detail) are such.
