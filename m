@@ -1,221 +1,196 @@
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazolkn19013072.outbound.protection.outlook.com [52.103.46.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0198414DFA
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 21:19:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789420775; cv=none; b=en0dxVhmVU7zzNVbZib1OUmaY861HkIeUpXrI8BuR/zV24IVtv6UkvdwV8/+edwBXZMzWMB9TxvKbmWef/hh63Ej3KCb1Zk/1cZLbaGZ6VNOVAXGuIbISdFmHMRVcKuVRJrM8qEe27R4cp+I2gLEL3cirrZhC//UqjnIBF//000=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789420775; c=relaxed/simple;
-	bh=6S82DVredtucyesmlNsD6LttbkPj4FqwkwqGgMhpDdI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fiPwq1b2RP6eXisT/TQTyNK9D+vORciKmhtMPGH49VOv08/Em5YuEauWt/ZY5G//fqXBPtwjJ8pfsG4K1vKvIkTbPgJcB/QuNsHeWWwUG1HXmqRrKGcqZi5xY+zsADurzG5DyhGXqp50cISaQcModpsJ+0faKL283G0qyKQVuIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=Gvd+4FWZ; arc=none smtp.client-ip=185.125.188.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EB1340281;
+	Mon, 14 Sep 2026 21:23:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.46.72
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789421033; cv=fail; b=ftBXUCNZ2zR8xmIhbBKbvQK9VV8PmN5LExV+nMSMUjO4FPJ8WDU1m6jOUz9XjW+dEsucOpoudDpCilSNvoBUsagIWwOr2GOO6gVvs+maH/t3Thye03Ca+VX51ExuTM93gg30wOIhPtkTzEBdVIdFddUQbcAGeUGBfYMMZ7cmbJY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789421033; c=relaxed/simple;
+	bh=JqUCUC8aQgHQV0AKPUH7zpQ88HIikDgHozj4gyl1ZVE=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=UqY9OzmVlkEd81lMIF+AoVb3G4glSV934W9YaBZ9PUQHIA5X62JQbDWPO1lS0km2z33GMO3mRd1DvTWfR7fOXnV356fVKlicI5Yc//IH4ADc29YSyrM7EJ01AkCmjvwIvOxqeQj/TY9iFotOXK45nHMPubK8ukfCHL0GqnEaGKM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk; spf=pass smtp.mailfrom=hotmail.co.uk; dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b=W0SAP96u; arc=fail smtp.client-ip=52.103.46.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="Gvd+4FWZ"
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 118163F332
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 21:19:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20251003; t=1789420763;
-	bh=e9c5Lc0MvQFExiINqSmAM4SmgxHPisXxegde3km6nbg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
-	b=Gvd+4FWZhoaTqwQHlJasm/ni3IUcSaWOReFynxKr/nZ9U3/WQQO6J4FfzxzQOiivY
-	 DaKbCJYY2SlCkyzLYqLxJWQNph9h9D8OHsVwdGAS1MlUgjaaa22a0OCSQdwvoTPWCR
-	 WKVVLK2mo+AREliG+DzSIt/WGZ5d7k2c3H37ui3RLQzV1DknqjhMJjQ3g8gnmsDFuG
-	 A/zV6B8+GwNaMOg/cGJgY/hMmOi7AB6qQzMcXHxI+6zsAuYKOe3Y9CkkNddL9lWb5m
-	 13+OXr8Usfpe2llZobfzIGmPbkPA8+Oz6F5bbh//5xAZao4FgwLiaeqWPTK8ODxiI5
-	 GtYsoQvGv/CvTnTLlBhLSEQdqdKOswbbRMJAO8ARHat2/UjryltDOIOQkL8+sKJRDc
-	 VITfGGsPNS9YYqEvOKFqnBjfrD8hgtDI0Sn5jWIKr/2nNd4jgN0jbyH48uOCjMywjc
-	 eI9U3m84uQ+W5ZdhQIm9LJEXPwcPCiH2KbU7RwuDuOnamN8BzKgOKPN4FusYzEUJDY
-	 OUnavKkh+3L8aZFcd6eC68jfPqnpU3FTWXSEUcDoMSP1JV2S0k1fPaedkIgalbuBI5
-	 kFbeSBuDUqLd9gHGdsypWbNiQJpQYXxgqUiDKunAodfL0NJNH7xOaxzmj+yXAzO2QT
-	 SH1NGGhA7jN5j4w6BosHAjSM=
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49e73cb6c87so2179505e9.0
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 14:19:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789420762; x=1790025562;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=e9c5Lc0MvQFExiINqSmAM4SmgxHPisXxegde3km6nbg=;
-        b=v8Z/5l2eLcjBBs+8UNiVd+2yjYvKAcmmEp8/RUbd79pfPvABLYT+zk7MrSxAErkrbE
-         9RzamKhEWWtvIrxhCF6UN886todWyzBYDyCUd4sIcoiuM2Vv4DQmOh0zcGXBvFpoyMzm
-         KnTlSBFDQUS+gqOJuYbpvhEF6EuiaGYKZ5XovTxgfiM/vFnAT9nY2Bn9q9XH5UEhakqD
-         INfMbs71i5HbdnTyE8KmlJMxjnBguINKtDqXhrODI/JOgJyiNnGeGzHn4PvwFzE+Ge6b
-         nhyB7vyYzsfo1UhOYSXREz/e+J9TQhG/1O7K51WjY8F8se5hjfW8WffdoY5/Xnnmquxf
-         mOjw==
-X-Gm-Message-State: AFuF++ni/0JD4iFc20PfG6aeNfpNgqIH0O/8fGkjYCrmHI34Szhhrl4m
-	ZjsoNav1GI5VbmVPs0Mefr3N7iqzmo8x/c5CZ36gqOmmWi+03i1G1nL6hDosU7im45IxNdy/c44
-	GyHvaOJG6nMkjtv6ZV23DRuIwmuvnScHWd0zKdWUqSN06Ya3RSLMkbFSad/Mmwnpxccqkf3CM2h
-	QblqxiQw9m
-X-Gm-Gg: AYBFou236/HZ5xcploubK/riSJd5E4wfLfomA6qwRmlYnazVzJo6/+LAi+JKHHEsB1I
-	WkFVrkahTteaTvgOfWiXnwnbvkBQ0ledxzMLKQIkf80OvPcAvZWOSas4GK4BRmLFj3RRsP4eDYo
-	mWIqPFGNsrA87qjK7O6XS54YxueMHzrt1LYOCERmPb4NL+pmbwbxwQsBKfehy+2VwwXJA1nfEuL
-	b0aDrt6pYscugx5caklewTEiQI4tRdm06FsTKYmClpazvbAcN5XVDifcoE+ENKqcdZ+HAMCYCGq
-	JmQrIFbZb82ZcH6y4c8B6jCDfNiBxPO5rCv1W93uj8tb2JVc0atFrbLXXK/LMkhv7BeaPp4EqWL
-	dUxEWaRz7EvpErdnIraNS8aZSuMIn0ER3/YYcELhmIb9SfQcdRw1X
-X-Received: by 2002:a05:600c:35cb:b0:49e:479b:c13b with SMTP id 5b1f17b1804b1-49e7a66b723mr56977185e9.1.1789420762628;
-        Mon, 14 Sep 2026 14:19:22 -0700 (PDT)
-X-Received: by 2002:a05:600c:35cb:b0:49e:479b:c13b with SMTP id 5b1f17b1804b1-49e7a66b723mr56976975e9.1.1789420762316;
-        Mon, 14 Sep 2026 14:19:22 -0700 (PDT)
-Received: from localhost (host-79-46-33-118.retail.telecomitalia.it. [79.46.33.118])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e7d2bb40asm10871855e9.3.2026.09.14.14.19.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 14:19:21 -0700 (PDT)
-From: Edoardo Canepa <edoardo.canepa@canonical.com>
-To: netdev@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b="W0SAP96u"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dJgErdCmndWrYOtGI3JPxXIyUqbr/7DxV39IA61WM2ICTovg26WUWr/LKVJSxzl5niXdKgElxwh3Gffh9NmcE16dzTY0xkGCb2uaMWPeTUDEUN7CywZNQqme4WJhnO1KJesCfEYnnB2PcZ4XQz4UmESuX4EjBz3klf9NsbREP6bjM6E6FZS7yR2rDOqhKaEtxA8KdEu++JwiN8dZgtDi6zL/l/mVUHza7Yjzgb7JGMXWx2E4MJrlHS6YWjuXJMX7qTrlXa0ubIQGSzsvBOVPLOQrQCuD+lCTQrQIFmMRLvzPJ+wKHSWusYsUXx+rpnOJ/gb7LHv8PrV+EvKxBrWXOw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wyi2BzvhmOlCqydFNPat8tB45Jj/2DtY6YvCyluD9vQ=;
+ b=iJm7+LLQY1nF8jdgyGeIrOj6yCCHYhMdiZ+4EByWi4QN09trbYV+c9oBF/MteRimqmjtCZTfk1IkMV8iS3Lo2VTcogn9OPFK0nSAGLUtchVraLciW9JNxsgiWpa7fH8Lai3tW2X8070cZy5E2QhZjXhQNQlZ2VXrj6vlNwhdwkxbJsNw+ZeEXPptoq7aR5asMpSxbkhZrL0gdk6k6IIb7arKuYn4xiIC+6x4dFwnr342PysxY6dtWoZIiT6mqlgfxIZFG85ogm832tal375vzE5pFzQs58TLMQQOiVjC9rPwGF2eWF6aF3cUi/uLHIAXkoMg0I+a6f7Y5PwF03Xlog==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.CO.UK;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wyi2BzvhmOlCqydFNPat8tB45Jj/2DtY6YvCyluD9vQ=;
+ b=W0SAP96us5e2Ksg114EnY+7Fn6ESvQ2g8nnksMmob8mVlwmKgOwX65P4XFq1xhrn3VbiskzpLyIf/hdtCpJvh4qAIBzTb3lw+BOMoPSfw8MY0woKLb1q01MT4lsUe/yfF8VPsqEkXvtmCmLwRDK1+JNi2Q/c8jwYxNVw2ZW/nXJK0WCfrbqk9aUiW96UH5cGgo+Bl0omGsBj/4IC6W/qTul6sFkDFtOmnV7oNxuz8STEvYsbLZgwJTi6hoCTZKMrM813ew2oKQqkm/5YsrjaliALABr6s/3AJFyLGCQ38H8G2xVMbY0hcTUT4mJqfE3f9id/KGqKMov9W3Vex6BX7g==
+Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:344::22)
+ by GV1P251MB1145.EURP251.PROD.OUTLOOK.COM (2603:10a6:150:284::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Mon, 14 Sep
+ 2026 21:23:47 +0000
+Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+ ([fe80::2952:d4d0:4ba:8352]) by AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+ ([fe80::2952:d4d0:4ba:8352%3]) with mapi id 15.21.0406.007; Mon, 14 Sep 2026
+ 21:23:47 +0000
+From: Aamir Ahmed <elb12345@hotmail.co.uk>
+To: Andrew Lunn <andrew+netdev@lunn.ch>
 Cc: "David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Xu Du <xudu@redhat.com>,
-	Po-Hsu Lin <po-hsu.lin@canonical.com>,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2] selftests/net: run tun tests in a dedicated network namespace
-Date: Mon, 14 Sep 2026 23:19:20 +0200
-Message-ID: <20260914211921.3786609-1-edoardo.canepa@canonical.com>
-X-Mailer: git-send-email 2.53.0
+	Lucas Stach <dev@lynxeye.de>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Aamir Ahmed <elb12345@hotmail.co.uk>
+Subject: [PATCH net-next v2] net: usb: asix: reject a truncated Data header in rx_fixup
+Date: Mon, 14 Sep 2026 22:23:45 +0100
+Message-ID:
+ <AS8P251MB000193C798F98A11C73C3E9DC8BB2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.53.0.windows.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: LO4P265CA0234.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:315::11) To AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:20b:344::22)
+X-Microsoft-Original-Message-ID:
+ <20260914212345.119840-1-elb12345@hotmail.co.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8P251MB0001:EE_|GV1P251MB1145:EE_
+X-MS-Office365-Filtering-Correlation-Id: aa28d2b0-8785-4c35-011d-08df12a67680
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|5062599005|12121999013|5072599009|15080799012|25010399006|4140399003|23021999003|19110799012|8060799015|55001999006|24021099003|41001999006|25031999004|37011999003|440099028|4302099013|3412199025|26104999009|1602099012|40105399003|2607281247196008|10035399007|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?+XaoofOy8P/QmWi8SSDI3bh+63ULSoMMfgbB9gLihscb+HYXiwCOIAE0g+lk?=
+ =?us-ascii?Q?Y9RVISTEVARAt09dpkbBrgDYMg5EM5a90Fo3Pa2dDWXzg+DVAOLCnQqHWWmw?=
+ =?us-ascii?Q?RHzOI6IPlFRXTnHHRE+Tq6RPAW22OmSs9kTVoiX1Lqt36pYi5s6kgAsw3jo9?=
+ =?us-ascii?Q?qhcZUrzfpdUXAQAr8pwxZrDjEIc6bn4uWlybFZknoWWG/Cjdkkv5d21bB+E0?=
+ =?us-ascii?Q?gXmjPJJspCkNYjEOa7nga5K0NLOC9Lt2O/WpnCfXflOX/VDtFZi3l0y11RPu?=
+ =?us-ascii?Q?/S15KtBwZXYafkz/ih+gDm9Thp9wMKDWBNqRS5jDzz7C04c/YaGyHxRh9gdx?=
+ =?us-ascii?Q?9EN6IBhFDc2EnJKrVhjnIgDqTXwSkweHl5O9E1l7+PjMCbuSroyCVAH3RCGJ?=
+ =?us-ascii?Q?Kf5b0C6ZAahvgvcxQeBv8YOSElOe64Vx2aAUbC3QWCsxEFHNO+3aeeJcq+4O?=
+ =?us-ascii?Q?OzqL8J3M6Arvikw+EhEMnMifpyTJcUKQrkiB5WbNMz+k6IWfofzj0sc/s53E?=
+ =?us-ascii?Q?pVSK11vrCykAQVWlYncDur+VCkugQEnwMjFHGURaCaIjShKNbR0iXgxD/dT3?=
+ =?us-ascii?Q?mG9sZIcgvloARjW8l1oMJcXe6pXmh+ffVzTO9dszXKhx0Bjbd575p1P2o9qz?=
+ =?us-ascii?Q?4x1mwX+hOI0KxJutPB+2veN8s7WJXVUH2VAvQ8B6FTGpz/3uuCyRzvrai3S/?=
+ =?us-ascii?Q?H/fEHdqe9QD3cpN5g4DCTS84yYizoYNXPRcQ+BhbqKPsjveYycjDAwhBREeG?=
+ =?us-ascii?Q?GBooDyZEQhEuIeuTEWcLOWsdjE2Ol7UVcvXjJS4A+A4nVN+gLIXN/dl9H+tz?=
+ =?us-ascii?Q?OQ1sOqzAmLnl9HJBxBkoI28pbjMeSQzzihZrIC8ljVZrzy5r/8HM9Oc3Kbcm?=
+ =?us-ascii?Q?HH9UhCoT9jlNHt+ZpsrWFemj/n95wMSq8KQict5aHGgvb70SvTo8YFCOSWXN?=
+ =?us-ascii?Q?T8M/uby3OFOXrUHtFYtILFX14I8nrM8Jdlb+6CL3sOBfN2IevIEfe4xa5oT1?=
+ =?us-ascii?Q?8VDE/frpgkIGmeZxIiox85UQBsbMgBp5so32D7eB931EJ8xbMmM/NtQrJCgu?=
+ =?us-ascii?Q?zQsr1BMovRv91nk2jWlbiJ1sZdWB7ASo998ilLmGDnWooFaAdRQfLQPbg/7m?=
+ =?us-ascii?Q?RXRj8NYxXGomciv3AhIyIxCcRBjZkIcKb6WC7F0ss0pWkEORZtWOxJSp+shG?=
+ =?us-ascii?Q?zQFSrD6lWkOqNavEQoBwkMXhTiKQyXtuN2qUiQ=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?7HfcdTe871Ow2TwkDeWRcvfOAijNhZKTIwMjxYh1RIfG8gFXSVWfeMhZwhBF?=
+ =?us-ascii?Q?wIiJ7g1M9g21Qd92MgW2qiji5/NFNHvBp96UZeVW8eJPHMV3lIqstUS7vJfR?=
+ =?us-ascii?Q?3d0qVrgXozbtQS84maT+oVgiKl/ZHd5DfyF0rbcNIIrAvDScuODYZ7prqMhL?=
+ =?us-ascii?Q?ioHvD1fWylJIODxYOf2zZmbBUlwsUstqk43Q7zzRarcGUtx7xJGzxmIPgLKR?=
+ =?us-ascii?Q?07nHzCqTHLJY6xMQW0DVvqIPvGGApGeFt1Pzn7+4HTV3DcEOxAgRzOI6g3Yi?=
+ =?us-ascii?Q?sqXXP5asluB8mCcE904sGY2Jz2ObYhby4a69fP2bGrfYO4L2iO0Henzd1OgQ?=
+ =?us-ascii?Q?UQadYC54bVOCyWUB2wkGi+DzvZsdZizQx/vemfZi7DevJX6iduXhud0CSArT?=
+ =?us-ascii?Q?4cLxpwlYKB2e4tbU+q4pBmCkiaBVA1vZF0WRnhlL9QQUDOLuu6IIEskp1StY?=
+ =?us-ascii?Q?TY+He0uQqyToYV7cX4b+Irj+ctTbq97l5gt5OJCIAuW4pykqBRdy+xeC6Izg?=
+ =?us-ascii?Q?tBn3SV5pTqdK7iMZs094Y22a26fmTBvRgekHn3oIS+bADVMBDOh3nCIamUQu?=
+ =?us-ascii?Q?T3lq9p0qBpQAAj5qx4ywlSvyOmZe29gARp7H3xi1RMqbgV1+aMstVNWb2fIX?=
+ =?us-ascii?Q?UhL0TR2QkJgoeGJe7GP4J3xpaRW4Vdbtxx9P420Ub6bKhG61uGLZw0KKrHpV?=
+ =?us-ascii?Q?Zm4hHZ30hgu0D10abmY02O+B7JTbAbs/L8hyU7pR90un8lBQfzJDcrUzhF9F?=
+ =?us-ascii?Q?a7SHA+ZvW1mEfRs6A3uIgj7b0H+XBy4Yfg+nOSO6VB8TPfevO4MkGEscz2xU?=
+ =?us-ascii?Q?L8yJfk+dHcGEo0nm4rdfhShf8cu9VNxQNjhdwIE+RWQz5Mpy3i53IRl3uJQI?=
+ =?us-ascii?Q?7P1U46n4RPCZb/X5jgLxNr3bX9hN+/33+8RybxktRzQ0Ha/ZJlyZiuqhHh+b?=
+ =?us-ascii?Q?pPdw+ZP2nxu39nsO1AGBD8kfVLR6jQPqSvmCViEaK3xjhuSdUNNCarB/Yq/r?=
+ =?us-ascii?Q?PqKVITB4jMj2yPkE/zR21Zk/SMnbHVeleF0xFNkwSqS/XP6cbANLWlr5AUzr?=
+ =?us-ascii?Q?IU3abI/OMvCimvHiTInt6ZGn4yJwimvDnudu4G3tdZ+qPPlGHFo6n7R6fdJS?=
+ =?us-ascii?Q?osyLH80Cg8lg36hvNVbzY5ope5f8N5AJ9ico77kmtlhmQe9pa3hOBmJNvIvP?=
+ =?us-ascii?Q?4H/c6HjPu2+DsC5C3OzpwuS1YOO7kxYg0YE5VKJBqNdr9ChT6Ndm0NakKq+6?=
+ =?us-ascii?Q?P7TZISjUU08sZNALQQic17bi6A2QCQGPtcUewXGZSOb1df63a1htmSiTyPam?=
+ =?us-ascii?Q?rYEhNza3eoSTAhfQUuO0cbaNghTGoYYwVDCZP8XnSgxVuWHaiABgau+u0/F2?=
+ =?us-ascii?Q?jswNCsi9r1VDkC18elLYtq+ZFqIwF9CvnawoS+d9McvriNZdNszu5RvV0QY9?=
+ =?us-ascii?Q?hrBvm7ZO8vlK8o0QoovlxzLMoV7fBBwG?=
+X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: aa28d2b0-8785-4c35-011d-08df12a67680
+X-MS-Exchange-CrossTenant-AuthSource: AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 21:23:47.6989
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1P251MB1145
 
-The tun_vnet_udptnl fixture creates a fresh tap device and installs an
-IPv6 outer neighbor entry as NUD_PERMANENT before sending packets.  On
-systems where systemd-udevd is running and a systemd .link file sets
+asix_rx_fixup_internal() runs its parsing loop while two bytes remain,
+but the branch that starts a new frame reads a four-byte Data header.
+Only a two-byte tail is special-cased, via split_head, so a three-byte
+tail reaches that read and leaves offset at skb->len + 1. The clamp
+below it then takes the unsigned difference skb->len - offset, which
+wraps, so copy_length becomes the full length the device asked for:
+skb_put_data() copies from one byte past the received data and
+usbnet_skb_return() passes the frame to the stack, before the trailing
+skb->len != offset check can report it.
 
-    MACAddressPolicy=persistent
+Reject a Data header that does not fit and reset the parser state, as
+the other malformed-header paths do.
 
-(the default shipped by systemd in 99-default.link, so this is what
-most systemd-based hosts inherit), systemd-udevd's net_setup_link
-builtin asynchronously sends an RTM_SETLINK to reassign the freshly
-created tap device's MAC to a machine-persistent value.  When that
-netlink message races the test's ip_neigh_add() call, the address
-change kicks the following path:
+Only a device emitting an odd skb->len can get there - every asix
+rx_urb_size is even and offset always advances by an even number of
+bytes - so this is net-next material rather than a stable backport.
 
-    do_setlink
-    -> netif_set_mac_address
-       -> call_netdevice_notifiers_info
-          -> ndisc_netdev_event
-             -> neigh_changeaddr
-                -> neigh_flush_dev(tbl, dev, /* skip_perm = */ false)
-
-which flushes every neighbor entry on the interface, including the one
-the test just installed as NUD_PERMANENT.  The subsequent packet
-therefore hits __neigh_create(), triggers NDISC, and times out with:
-
-  tun.c:947:send_gso_packet:Expected ret (0) == variant->data_size (1423)
-  tun.c:948:send_gso_packet:Expected r_num_mss (0) == variant->r_num_mss (2)
-
-The failure is non-deterministic and can affect both directions.  Both
-recv_gso_packet and send_gso_packet variants can hit it; the failure
-reproduces on a plain systemd-based VM with no containers, and is
-triggered whenever the udev worker's RTM_SETLINK lands after the test
-has installed its neighbor entry.
-
-Fix by calling unshare(CLONE_NEWNET) from both fixture setups.  The
-harness runs each test in its own forked process, so every test gets a
-private network namespace that is torn down with it, and all tap and
-geneve devices are created in a namespace that systemd-udevd (running
-in the init netns) does not watch, so its RTM_SETLINK never fires
-against them.
-
-Creating a network namespace needs CAP_SYS_ADMIN in the current user
-namespace and CONFIG_NET_NS=y, neither of which the tests required
-before.  Where they are unavailable the unshare() is reported with
-SKIP() rather than aborting, so the binary still emits a full TAP
-stream and a runner can tell "network namespaces unavailable" apart
-from a real tun/tap regression.
-
-Verified on a plain systemd-based VM running the affected kernel, with
-the tap and geneve devices removed between iterations so that each one
-starts from a clean state.  1000 repeated invocations of
-
-  tun -r tun_vnet_udptnl.4in6_nogsosz_1byte.recv_gso_packet
-
-produce 266 failures without the fix and zero failures with it, and a
-full run of the test binary fails in 20 out of 20 attempts without the
-fix and in zero out of 20 with it.
-
-Note that without the fix a failure is not self-contained: the fixture
-setup aborts before FIXTURE_TEARDOWN runs, so the tap and geneve
-devices are left behind in the init netns and every later run fails
-right away in geneve_create().  Running in a private namespace also
-removes that, since the namespace is torn down with the test process.
-
-Reported-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
-Closes: https://bugs.launchpad.net/bugs/2158217
-Fixes: 24e59f26eef2 ("selftest: tun: Add helpers for GSO over UDP tunnel")
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Edoardo Canepa <edoardo.canepa@canonical.com>
+Fixes: 8b5b6f5413e9 ("net: asix: handle packets crossing URB boundaries")
+Assisted-by: LLM
+Signed-off-by: Aamir Ahmed <elb12345@hotmail.co.uk>
 ---
 v2:
-  - Add the unshare(CLONE_NEWNET) to FIXTURE_SETUP(tun) and
-    FIXTURE_SETUP(tun_vnet_udptnl) instead of replacing
-    TEST_HARNESS_MAIN with a hand-written main(), as suggested by
-    Jakub.
-  - Report an unshare() failure with SKIP() instead of aborting the
-    binary before the harness starts, so the TAP stream stays complete
-    and a runner can tell "no network namespaces" apart from a real
-    tun/tap regression (raised by Sashiko).
-  - Mention the new CAP_SYS_ADMIN / CONFIG_NET_NS prerequisite in the
-    commit message (raised by Sashiko).
-  - Use the Assisted-by: format documented in
-    Documentation/process/coding-assistants.rst.
-  - Redo the measurements in the commit message.  The v1 numbers were
-    taken without cleaning up the tap and geneve devices that a failed
-    run leaves behind, which made runs after the first failure fail in
-    geneve_create() rather than on the race being fixed here.
-v1: https://lore.kernel.org/netdev/20260905085318.3416670-1-edoardo.canepa@canonical.com/
- tools/testing/selftests/net/tun.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+  - guard the header read inside the loop, not the pre-loop predicate
+  - rewrite the changelog around the unsigned underflow
+  - target net-next, drop Cc: stable, repoint Fixes at 8b5b6f5413e9
+  - add Assisted-by: LLM
+v1: https://lore.kernel.org/netdev/AS8P251MB00014BB4591CE6011152DB4FC8B22@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM/
 
-diff --git a/tools/testing/selftests/net/tun.c b/tools/testing/selftests/net/tun.c
-index abe488bac50b..6db21dad0efe 100644
---- a/tools/testing/selftests/net/tun.c
-+++ b/tools/testing/selftests/net/tun.c
-@@ -4,6 +4,7 @@
- 
- #include <errno.h>
- #include <fcntl.h>
-+#include <sched.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
-@@ -488,6 +489,10 @@ FIXTURE(tun)
- 
- FIXTURE_SETUP(tun)
- {
-+	if (unshare(CLONE_NEWNET))
-+		SKIP(return, "Cannot create network namespace: %s",
-+		     strerror(errno));
+Built with W=1 (asix_common.o) on x86_64; no warnings. I have no asix
+hardware, so this is not runtime-tested.
+
+ drivers/net/usb/asix_common.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/net/usb/asix_common.c b/drivers/net/usb/asix_common.c
+index 4f03f4e57655..8c5f863efe7d 100644
+--- a/drivers/net/usb/asix_common.c
++++ b/drivers/net/usb/asix_common.c
+@@ -179,6 +179,13 @@ int asix_rx_fixup_internal(struct usbnet *dev, struct sk_buff *skb,
+ 				rx->split_head = false;
+ 				offset += sizeof(u16);
+ 			} else {
++				if (offset + sizeof(u32) > skb->len) {
++					netdev_err(dev->net, "asix_rx_fixup() Short Data header, offset %d, len %d\n",
++						   offset, skb->len);
++					reset_asix_rx_fixup_info(rx);
++					return 0;
++				}
 +
- 	memset(self->ifname, 0, sizeof(self->ifname));
- 
- 	self->fd = tun_alloc(self->ifname);
-@@ -732,6 +737,10 @@ FIXTURE_SETUP(tun_vnet_udptnl)
- 	struct sockaddr_storage ssa, dsa;
- 	void *sip, *dip, *smac, *dmac;
- 
-+	if (unshare(CLONE_NEWNET))
-+		SKIP(return, "Cannot create network namespace: %s",
-+		     strerror(errno));
-+
- 	flags = (variant->is_tap ? IFF_TAP : IFF_TUN) | IFF_VNET_HDR |
- 		IFF_MULTI_QUEUE | IFF_NO_PI;
- 	features = TUN_F_CSUM | TUN_F_UDP_TUNNEL_GSO |
+ 				rx->header = get_unaligned_le32(skb->data +
+ 								offset);
+ 				offset += sizeof(u32);
+
+base-commit: c297ed90fbba72d32b7759aae362b36d15b2db1f
 -- 
-2.53.0
+2.43.0
 
