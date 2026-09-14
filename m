@@ -1,191 +1,243 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450583C1D75;
-	Mon, 14 Sep 2026 11:07:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CADCB3B05AC;
+	Mon, 14 Sep 2026 11:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789384036; cv=none; b=DVeeA7V/tTBpFg8rDXVjlXee8oYa0X0uE+FAhXVD8XTPOqPVtunFoSGkfPosnDN3ErPNrEzZL74UZ5kgvP4mKrLcYQTOV94QuMo5OSTtEPGVPhAkYF+kHBXhVoFWXpa6fAI9GZKMi+6IxG0d6dlL7FjB/VZQDcLkWqsEjuceHcs=
+	t=1789384126; cv=none; b=uKCdGxhL9czAyWso/0SJY1Y8SW2h4dDrumONt0BvyEfUtPeN0ZZ3lwKqE2jCrKxiasA3rFZyfQeGMDPVd20VCK17MHqlS8q4oBPt00kG/EMAdg9Az1fGpxsOnZ6EPmEDH++7SoDPvx55j+6ww2ePbsu0ukv2y3+fjU8ObArLSo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789384036; c=relaxed/simple;
-	bh=QyQQznyqdr9N2F5vfmqWsVg9Ud/6jPRp/sn41MuoRCA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=SCnIYepcE9vBri3qf1UMP8HySIcN3YXW4uTwKhL+auntPkX2ySf5XWioLynNx9zf3KWfqjcSqMFtmtubp4eGeaH/sSdfNT1GfAfkxDxKWdlIDgPLrI+ybwLYlDv1w1IPQqkdHgklnRszVSuhWWLW5ExnI6ipXbJpI4/C+9ZAmQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W1q3dkk5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789384126; c=relaxed/simple;
+	bh=e2GBgFGC4Z8fuwShT8cfZGck5rtcRrwp9c0nNK396nA=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=tK3HISuw6L1QwwyZ+ZBBRNACC0FnOcnbPFJ5iknktNBEMreqsIPqaKyFFuqoxy6YMWfXO+XPdol2Wrx5o+/H7NVdJFOJqNCSCBBzSF2qpApw838WDr1or8XaGogOteWlKOwQNc1fGxFMyReOS57nbNBk8bTnbLj+L5JE83dI+oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KCoKhohe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W1q3dkk5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4436E1F000FF;
-	Mon, 14 Sep 2026 11:07:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KCoKhohe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6002D1F000FF;
+	Mon, 14 Sep 2026 11:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789384034;
-	bh=4iapnKpInECdM67FSHL9LJQaxyD1KztvcDWIMOqapn0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=W1q3dkk5NEeZ2WsfFIaHjDQQxfBSFkfh+114qmfDj4KuVB2JbUv58FthRHm7MaHip
-	 jBGRdFvic4KbMgP2CW7yQDhOK4EFVF+TbWZKXZw5oDpARygRSc7riHnJZ4DL2RNbjI
-	 OhZX1XB5FFDfZ3+THC0lfEVZdddYbsTrBGp/sLaUrOeoTWQv3aJPXQx+oevsyAQ252
-	 goicy4jUf1xrYnZVH/wK4mwDQXafWi911WbE2rJ+iHRxdYi4FlIAMlHp8kxp3SnInm
-	 7g4LkHiWndfT/MxPq2hd+qgc9u+k16M7Z3mbt/ik5iF9S5j4iGXFtJdlfMalzmToTD
-	 Xvq171vOSVDDw==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: alexanderduyck@fb.com, kuba@kernel.org, kernel-team@meta.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, daniel@iogearbox.net,
- mike.marciniszyn@gmail.com, mohsin.bashr@gmail.com, sdf@fomichev.me,
- bobbyeshleman@meta.com, daskald@meta.com, bestswngs@gmail.com,
- maxime.chevallier@bootlin.com, jacob.e.keller@intel.com,
- leitao@debian.org, cuitao@kylinos.cn, asml.silence@gmail.com,
- dw@davidwei.uk
-Subject: Re: [PATCH net-next v2 4/5] fbnic: Support larger memory-provider
- RX pages
-In-Reply-To: <178915061000.219967.7726187707862333281@kernel.org>
-References: <20260910180908.1506533-5-bjorn@kernel.org>
- <178915061000.219967.7726187707862333281@kernel.org>
-Date: Mon, 14 Sep 2026 13:07:11 +0200
-Message-ID: <87ik48nlb4.fsf@all.your.base.are.belong.to.us>
+	s=k20260515; t=1789384116;
+	bh=A05JHSfMHgGRLetcooxsD01qb3+vTPfHuve5cO2TZLk=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=KCoKhohetNSeLytWbRALrVEIoRDwaWNOOzgN67BFgniHHBR2CL3kCQkMNvyx9ZyOd
+	 BjuL5KI9p1Ile75x7yai1yqitRFQ4YqPEI7emm0Tv4AQgsosbkjrjMSFc6L7d+DAFD
+	 L520OBXbopvC7FhZMZEdGQZbnUUmG2tAb2TPWpMpGi2RdKvs/YbFAPJ0UU97FjB0Xh
+	 7ydb12eUiJhCuS8YLITXvNbPt7iP80clZoidYKdf3i+oDaDzZDQxBeYooHYaiUi9CI
+	 VhD8svlE9MhYXzxalmIW8IrREuQCRF4FywdR9ofDzsZFD1fIVmwziJQiK2rQFsfsaV
+	 7HdD0Gn27EG0Q==
+Subject: Re: [PATCH net] nfc: nci: avoid unbounded skb allocation when
+ max_pkt_payload_len is zero
+From: netdev-bot+sashiko@kernel.org
+To: liuc63@xiaopeng.com
+Cc: david@ixit.cz, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, ilane@ti.com, linville@tuxdriver.com,
+ oe-linux-nfc@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Mon, 14 Sep 2026 11:08:34 +0000
+Message-ID: <178938411495.22033.4311942083485691702@kernel.org>
+In-Reply-To: <20260913101309.891633-1-liuc63@xiaopeng.com>
+References: <20260913101309.891633-1-liuc63@xiaopeng.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-netdev-bot+sashiko@kernel.org writes:
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
->> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/=
-ethernet/meta/fbnic/fbnic_txrx.c
->> index 28b962307c080..5e22905a63739 100644
->> --- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
->> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
->
-> [ ... ]
->
->> @@ -1599,6 +1603,8 @@ fbnic_alloc_qt_page_pools(struct fbnic_net *fbn, s=
-truct fbnic_q_triad *qt,
->>=20=20
->>  	qt->sub0.page_pool =3D pp;
->>  	if (netif_rxq_has_unreadable_mp(fbn->netdev, rxq_idx)) {
->> +		pp_params.order =3D get_order(rx_page_size);
->> +		pp_params.max_len =3D rx_page_size;
->>  		pp_params.flags |=3D PP_FLAG_ALLOW_UNREADABLE_NETMEM;
->>  		pp_params.dma_dir =3D DMA_FROM_DEVICE;
->>=20=20
->>  		pp =3D page_pool_create(&pp_params);
->>  		if (IS_ERR(pp))
->>  			goto err_destroy_sub0;
->
-> [Severity: High]
-> This isn't a bug introduced by this patch, but the patch widens the set of
-> inputs that can make this page_pool_create() fail, so it seems worth
-> mentioning.
->
-> At the err_destroy_sub0 label, pp has already been reassigned to the
-> ERR_PTR returned by the second page_pool_create():
->
-> 	err_destroy_sub0:
-> 		page_pool_destroy(pp);
-> 		return PTR_ERR(pp);
->
-> page_pool_destroy() only short-circuits on NULL:
->
-> 	net/core/page_pool.c:page_pool_destroy() {
-> 		if (!pool)
-> 			return;
->
-> 		if (!page_pool_put(pool))
-> 			return;
-> 		...
-> 	}
->
-> and page_pool_put() then does refcount_dec_and_test(&pool->user_cnt) on
-> the error pointer. Should the label destroy qt->sub0.page_pool instead,
-> and save the error value before overwriting pp?
+Critical: 0 · High: 2 (1) · Medium: 0 · Low: 0
 
-Yup. I'll send out a separate fix for this.
+- [High] Incomplete fix: a controller-supplied
+  `conn_info->max_pkt_payload_len` of 0 (or 1) is still consumed…
+- [High] TOCTOU: the new guard reads `conn_info->max_pkt_payload_len`
+  once (net/nfc/nci/data.c:117) but the fragmentation loop re-reads the…
 
->> @@ -2028,15 +2034,18 @@ static int fbnic_alloc_tx_qt_resources(struct fb=
-nic_net *fbn,
->>=20=20
->>  static int fbnic_alloc_rx_qt_resources(struct fbnic_net *fbn,
->>  				       struct fbnic_napi_vector *nv,
->> -				       struct fbnic_q_triad *qt)
->> +				       struct fbnic_q_triad *qt,
->> +				       u32 rx_page_size)
->>  {
->>  	struct device *dev =3D fbn->netdev->dev.parent;
->>  	int err;
->>=20=20
->> -	err =3D fbnic_alloc_qt_page_pools(fbn, qt, qt->cmpl.q_idx);
->> +	err =3D fbnic_alloc_qt_page_pools(fbn, qt, qt->cmpl.q_idx, rx_page_siz=
-e);
->>  	if (err)
->>  		return err;
->>=20=20
->> +	fbnic_bdq_set_page_size(&qt->sub1, rx_page_size);
->> +
->
-> [Severity: High]
-> Can the BDQ geometry here end up describing a page pool that was never
-> enlarged?
->
-> fbnic_bdq_set_page_size(&qt->sub1, rx_page_size) runs unconditionally,
-> but fbnic_alloc_qt_page_pools() only raises order/max_len when
-> netif_rxq_has_unreadable_mp() is true; otherwise sub1 just takes another
-> reference on sub0's order-0, PAGE_SIZE pool. The two predicates are not
-> the same:
->
-> 	net/core/netdev_rx_queue.c:netif_rxq_has_unreadable_mp() {
-> 		if (rxq_idx < dev->real_num_rx_queues)
-> 			return __netif_get_rx_queue(dev, rxq_idx)->mp_params.mp_ops;
-> 		return false;
-> 	}
->
-> 	net/core/netdev_config.c:__netdev_queue_config() {
-> 		mpp =3D &__netif_get_rx_queue(dev, rxq_idx)->mp_params;
-> 		if (mpp->rx_page_size)
-> 			qcfg->rx_page_size =3D mpp->rx_page_size;
-> 	}
->
-> The config renderer applies the memory provider's rx_page_size with no
-> real_num_rx_queues bound check, while netif_rxq_has_unreadable_mp()
-> silently reports false above real_num_rx_queues.
->
-> When they disagree, does the device get descriptors past the end of the
-> mapping? fbnic_bd_prep() posts fbnic_bd_page_count() descriptors from a
-> single allocation:
->
-> 	__le64 *bdq_desc =3D &bdq->desc[id * fbnic_bd_page_count(bdq)];
-> 	dma_addr_t dma =3D page_pool_get_dma_addr_netmem(netmem);
-> 	u64 bd, i =3D fbnic_bd_page_count(bdq);
->
-> and on the completion side fbnic_rcd_bd_page_offset() decodes offsets up
-> to rx_page_size - 1, which fbnic_add_rx_frag() then feeds to
-> page_pool_dma_sync_netmem_for_cpu() and xdp_buff_add_frag() as payload
-> inside what is really a PAGE_SIZE buffer.
->
-> A path that seems to reach this: fbnic only sets real_num_rx_queues in
-> fbnic_set_netif_queues() at open, so after probe it equals
-> FBNIC_MAX_RXQS from alloc_etherdev_mq(). A devmem/io_uring bind with
-> rx-page-size=3D8K against a high queue index is accepted then, "ip link s=
-et
-> up" shrinks real_num_rx_queues (netif_set_real_num_rx_queues() has no
-> memory-provider check), and a later "ethtool -L combined 32" makes
-> fbnic_alloc_nv_resources() allocate that queue while
-> netif_rxq_has_unreadable_mp() returns false but qcfg.rx_page_size is
-> still 8192.
->
-> Before this patch bd_page_shift was always derived from PAGE_SIZE and so
-> always matched the order-0 pool. Would it make sense to either derive the
-> BDQ page size from the pool that was actually created, or reject
-> rx_page_size !=3D PAGE_SIZE when no large-order pool was allocated?
+Pre-existing issues:
+- [High] Use-after-free of `struct nci_conn_info`:
+  `nci_get_conn_info_by_conn_id()` (net/nfc/nci/core.c:43-54) walks…
 
-Hmm, yes, it seems like this is a valid bug, when fbnic's real queue
-counts and private counts disagree! I fixed the root cause by keeping
-the real queue count synchronized. I'll send this one out separately.
+--
 
+nfc: nci: avoid unbounded skb allocation when max_pkt_payload_len is zero
 
-Bj=C3=B6rn
+This adds a check in nci_queue_tx_data_frags() that rejects a
+conn_info->max_pkt_payload_len of zero with -EPROTO, so the fragmentation
+loop cannot spin forever allocating skbs.  The commit message explains why
+the check was placed in the fragmentation path instead of at the two
+assignment sites in ntf.c and rsp.c.
+
+A few questions below about the placement of the check and about how the
+field is read.
+
+> diff --git a/net/nfc/nci/data.c b/net/nfc/nci/data.c
+> index 4253edea5c8db..b549cef7dc2e4 100644
+> --- a/net/nfc/nci/data.c
+> +++ b/net/nfc/nci/data.c
+> @@ -114,6 +114,11 @@ static int nci_queue_tx_data_frags(struct nci_dev *ndev,
+>  		goto exit;
+>  	}
+>  
+> +	if (!conn_info->max_pkt_payload_len) {
+> +		rc = -EPROTO;
+> +		goto exit;
+> +	}
+> +
+
+[Severity: High]
+The commit message says:
+
+  "nci_queue_tx_data_frags() is the only place that loops"
+
+Is that accurate?  nci_hci_send_data() in net/nfc/nci/hci.c also loops over
+the same field, and it runs before nci_send_data() gets a chance to reject
+anything:
+
+net/nfc/nci/hci.c:nci_hci_send_data() {
+	skb = nci_skb_alloc(ndev, conn_info->max_pkt_payload_len +
+			    NCI_DATA_HDR_SIZE, GFP_ATOMIC);
+	...
+	skb_reserve(skb, NCI_DATA_HDR_SIZE + 2);
+	*(u8 *)skb_push(skb, 1) = data_type;
+
+	do {
+		/* If last packet add NCI_HFP_NO_CHAINING */
+		if (i + conn_info->max_pkt_payload_len -
+		    (skb->len + 1) >= data_len) {
+			cb |= NCI_HFP_NO_CHAINING;
+			len = data_len - i;
+		} else {
+			len = conn_info->max_pkt_payload_len - skb->len - 1;
+		}
+
+		*(u8 *)skb_push(skb, 1) = cb;
+
+		if (len > 0)
+			skb_put_data(skb, data + i, len);
+
+		r = nci_send_data(ndev, conn_info->conn_id, skb);
+	...
+}
+
+skb->len is unsigned int, so i + max_pkt_payload_len - (skb->len + 1) is
+evaluated unsigned.  With max_pkt_payload_len == 0, i == 0 and skb->len == 1
+that is 0 - 2 == 0xfffffffe, which is >= any realistic data_len, so the
+"last packet" branch is always taken and len becomes the whole payload.  The
+same underflow happens for max_pkt_payload_len == 1.
+
+The skb was only sized for 0 + NCI_DATA_HDR_SIZE plus tx_headroom/tx_tailroom,
+so the usable tailroom is just the kmalloc/SKB_DATA_ALIGN slack.  Can
+skb_put_data() then run past skb->end and hit skb_over_panic() -> BUG()
+before the new check in nci_queue_tx_data_frags() is ever consulted?
+
+The value fed into that arithmetic is stored verbatim in
+nci_core_conn_create_rsp_packet():
+
+net/nfc/nci/rsp.c:nci_core_conn_create_rsp_packet() {
+	...
+	if (ndev->cur_params.id == ndev->hci_dev->nfcee_id)
+		ndev->hci_dev->conn_info = conn_info;
+
+	conn_info->conn_id = rsp->conn_id;
+	conn_info->max_pkt_payload_len = rsp->max_ctrl_pkt_payload_len;
+	...
+}
+
+and the payload length on the other side is user controlled:
+nfc_genl_se_io() takes NFC_ATTR_SE_APDU as NLA_BINARY with no maximum, and
+st_nci_se_io() -> nci_hci_send_event() -> nci_hci_send_data() carries it
+straight into the loop above.  nci_hci_cmd_received() also calls
+nci_hci_send_data() directly from the rx work.
+
+Would it make more sense to validate at the assignment sites
+(nci_core_conn_create_rsp_packet() and nci_rf_intf_activated_ntf_packet()),
+or to additionally fix the arithmetic in nci_hci_send_data()?  A plain
+!= 0 test would still leave the max_pkt_payload_len == 1 underflow in place.
+
+[Severity: High]
+The new check reads conn_info->max_pkt_payload_len once, but the loop below
+re-reads the same field on every iteration:
+
+net/nfc/nci/data.c:nci_queue_tx_data_frags() {
+	...
+	while (total_len) {
+		frag_len =
+			min_t(int, total_len, conn_info->max_pkt_payload_len);
+	...
+}
+
+The field is a plain __u8 with no READ_ONCE/WRITE_ONCE, no atomic and no
+lock, and it is written from the rx workqueue with controller-supplied data
+in nci_rf_intf_activated_ntf_packet() and nci_core_conn_create_rsp_packet().
+
+The reader side is rawsock_tx_work -> nfc_data_exchange() -> nci_transceive()
+-> nci_send_data() -> nci_queue_tx_data_frags(); the only lock it holds is
+device_lock(&dev->dev), plus ndev->tx_q.lock after the loop.  The writer side
+is nci_rx_work() -> nci_ntf_packet()/nci_rsp_packet() -> the assignments, and
+neither takes device_lock.
+
+CPU0 (rawsock_tx_work)                        CPU1 (nci_rx_work)
+conn_info = nci_get_conn_info_by_conn_id()
+if (!conn_info->max_pkt_payload_len)  /* nonzero, passes */
+frag_len = min_t(int, total_len,
+		 conn_info->max_pkt_payload_len);
+                                              conn_info->max_pkt_payload_len = 0;
+/* next iteration */
+frag_len = 0 -> total_len never decreases
+
+Can the store land between the check and a later re-read, leaving the loop in
+exactly the unbounded nci_skb_alloc(GFP_ATOMIC) state the commit describes?
+
+Would snapshotting the field into a local, e.g.
+
+	u8 max_len = READ_ONCE(conn_info->max_pkt_payload_len);
+
+and using that for both the validation and the min_t() close the window?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but the conn_info pointer that the
+new check dereferences has no lifetime guarantee.
+nci_get_conn_info_by_conn_id() walks the list with no lock, no RCU and no
+lockdep assertion:
+
+net/nfc/nci/core.c:nci_get_conn_info_by_conn_id() {
+	list_for_each_entry(conn_info, &ndev->conn_info_list, list) {
+		if (conn_info->conn_id == conn_id)
+			return conn_info;
+	}
+
+	return NULL;
+}
+
+while the rx work frees the same object immediately, with no grace period:
+
+net/nfc/nci/rsp.c:nci_core_conn_close_rsp_packet() {
+	if (status == NCI_STATUS_OK) {
+		conn_info = nci_get_conn_info_by_conn_id(ndev,
+							 ndev->cur_conn_id);
+		if (conn_info) {
+			list_del(&conn_info->list);
+			if (conn_info == ndev->rf_conn_info)
+				ndev->rf_conn_info = NULL;
+			devm_kfree(&ndev->nfc_dev->dev, conn_info->dest_params);
+			devm_kfree(&ndev->nfc_dev->dev, conn_info);
+		}
+	}
+	...
+}
+
+nci_rsp_packet() dispatches CORE_CONN_CLOSE_RSP without checking that a
+matching command was outstanding, and the tx path holds only
+device_lock(&dev->dev), which the rx worker never takes.  Can an unsolicited
+CORE_CONN_CLOSE_RSP with status OK for ndev->cur_conn_id free the conn_info
+while nci_queue_tx_data_frags() is still reading
+conn_info->max_pkt_payload_len, both in the new check and in the min_t() in
+the loop?  The list walk itself can also follow a freed node's linkage.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260913101309.891633-1-liuc63%40xiaopeng.com
