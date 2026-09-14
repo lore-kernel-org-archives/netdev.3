@@ -1,139 +1,162 @@
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1106D4A21
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 01:14:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B483209F43;
+	Mon, 14 Sep 2026 01:31:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.169.211.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789348477; cv=none; b=N7rYSo1WmQdueFWMm5x4B+ZeusgCoufjzd4k1dH8xFd2Fi20r26I92zo74KpgYQeu8d2xE3I0R1qqXEsQd6CaJKxDqH9XQiYpTusDvTWJvq+v0epXF7Qu5LNZxV8uOL0Up82aaxaR65Uz/8LOYqDqk0TzJps8WGq+LJwkRq2V2s=
+	t=1789349508; cv=none; b=H+SNsPHLg+rp9VU/LtlWIg9Ryg21rMZ4WbvEpGpLTSRjgXlKar3dGzjNQ6DXpnqeDxkgUPNzBIvL0UtRKjWZ3jhjnnZ7v/fN08nIy1jsUe2A/yZsQmfhKHau7P2E3hWsqOrO//cu3TmQjdJBiMLz/fxhCUTxfuk2AHQMYEiilCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789348477; c=relaxed/simple;
-	bh=qS5tzCk95IUvdSOMslCewBdNnYXZRkDwJxePIoCWP2A=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=oe4P7jew1xrlcVd4dzF/PrU8wsugqCooQapxuYfFqpGSPy88g6cMjFt2+CJ85oGo/OdfBCO1hrsgZX6jj2CRIRbwFyVnTq8Cvs2YqTgEKuwJopHINAsu0J01Zd+2S6YdOuHYoU7nWuTHlbdkGUA9MOjzikQGgvj7fBYQhuoThlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=StA415l7; arc=none smtp.client-ip=209.85.215.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="StA415l7"
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cc1b6f65dacso2427701a12.1
-        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 18:14:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789348475; x=1789953275; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tS/UwjALOXwC7MstWGjfEOa5jKvlKeTb9f/fFchu1KE=;
-        b=StA415l7vCIVGnhwIVNacD+R5uRw5RRUUW0RU2Asmq6uUa7zXufrZGLXEb62jm+F7z
-         9YOhrYd5+aIgodTL1C5M9owEhLFA1ekp3rgiu5N4PrHG5S8vw2AHl5ZVx756M9y/KGUc
-         oz45lQwri3zarCM82R4/S8Z1qxBFEIxeBJiY3zexuB2LZecBBnGWAZoGokAra+6GbV/8
-         EgcpH2ABvw5P7kGnqPy1IotOloeBe6Kd+OVKXle8vL1QHfl9Z5j6NogieEZkOaag99B0
-         L+cE4BeWlqPjFhCg/0URUdkmHCh36m4zJ2Cp2yZ+yh/FhvsueREjf+I0r5o1eNsLfUG9
-         uv4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789348475; x=1789953275;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tS/UwjALOXwC7MstWGjfEOa5jKvlKeTb9f/fFchu1KE=;
-        b=B8q/aHXVNLfgXPNVBVO0lHY559O8102cKiJClg4f5y1jVS263WTPKPA3z+j84RZhUs
-         LjUl5ZLGBAKnqAIHWlawDgF33opOJKDqCg7zIVcNcqrrw8IHJAiLxvm+jEtBy+Z5jCEg
-         3MpJ64Wg+J/EpbwnQoczU2veyAVWBArUlv4JYhrm7CaeTs9BEFCb1GV3DxeJG5R1SkLK
-         bUQqhioKqpQEdv0Tk8RC1Nh12g917DjiyfpXtkeEQo3Si+71LVg2Z9DJYBILzjdUywHV
-         PlOtVJQ32jWrCuFBr2U7chJgY1+Y2Eh2njdm0XsTKwp/4ST107d5V+TmeQVjIrSeaMFV
-         RTxg==
-X-Forwarded-Encrypted: i=1; AKwUvBxyqEO4MYb1LyaU3R9MbTRgLMtAiF0NVNjGf4g/NQ9yXhMo3rD+tPjn8OwBJ53LDOzdSyGkTeg=@vger.kernel.org
-X-Gm-Message-State: AFuF++mmUE6uUF+J/S/oyKxx1q4i5o7YeaFuM6eVmjz+pTAkGzjzKJ1i
-	ynTp0uSsu/BE221oONNWZQjKMvIMy5Gi0xrf9QHh/s4n+A+uuSkzAeCDd0sVqcwlQ2Rg+4Ct5F9
-	pmDm9Sw==
-X-Received: from pgp1-n1.prod.google.com ([2002:a05:6a02:62c1:10b0:cc4:b09f:9441])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:939f:b0:3d2:89db:1688
- with SMTP id adf61e73a8af0-3db40422631mr435020637.2.1789348475117; Sun, 13
- Sep 2026 18:14:35 -0700 (PDT)
-Date: Mon, 14 Sep 2026 01:14:01 +0000
+	s=arc-20240116; t=1789349508; c=relaxed/simple;
+	bh=E0aep8HBXW8cl1fp89k4p7f6SKVYtvIUk8Flj86kDoE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qPYQRNhQgysxcnR1lADZ7urCV54+g7gp6Ul9/7+OW8Bt2qwLGIJsgIBMrPoGgSCcAESQnfPqdhP9pJMA3/B/IacZMXB9C9V8dz/vTOKGDl08NSKllgt3G26EAUZ6us1I/zShn7UaqyzCWYY2mzz9CTeDqSACm+quZUG6OWTGt08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com; spf=pass smtp.mailfrom=mucse.com; arc=none smtp.client-ip=18.169.211.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
+X-QQ-mid: esmtpsz10t1789349427t50064802
+X-QQ-Originating-IP: pDXu7/7UhCvwxMkPZqC1VwGIxIFA1y0TKfCzmNh/u48=
+Received: from nic-Precision-5820-Tower ( [203.174.112.180])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 14 Sep 2026 09:30:24 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 13930663857834570154
+EX-QQ-RecipientCnt: 11
+From: Dong Yibo <dong100@mucse.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	vadim.fedorenko@linux.dev,
+	u.kleine-koenig@baylibre.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	dong100@mucse.com,
+	yaojun@mucse.com
+Subject: [PATCH net-next v12 0/5] net: rnpgbe: Add TX/RX and link status support
+Date: Mon, 14 Sep 2026 09:30:19 +0800
+Message-ID: <64BE41C2D2C0836A+20260914013019.2262317-1-dong100@mucse.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.1007.g17ff1f9808-goog
-Message-ID: <20260914011420.115556-1-kuniyu@google.com>
-Subject: [PATCH v1 net] tcp: Don't call skb_clone_and_charge_r() for close()d
- listener in tcp_v6_do_rcv().
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Neal Cardwell <ncardwell@google.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
-	Taras Madan <tarasmadan@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:mucse.com:qybglogicsvrgz:qybglogicsvrgz3a-1
+X-QQ-XMAILINFO: ODrcV9y+CMiQB+wpSrAELauEjOo+Kcqya5lT77/gibKZzbwujTUSVHEY
+	uYzUQH3rwFYgYYzLw6CwE/S86kqO+/yDtX38oF7qY+SgKnwKgYGo9Y/YE0AXedRkwA7rJ0p
+	zB8WjudEVlbfXNbUDTu+ivQXfyD7hySme6/iqRHtQbJpCQV4aRbowRj44LDZXqMrvroeac3
+	x5x1/TTIvFYEf5/gjdABhEc3+j3CO0k5eyv357fwG277X9TiFr4CEwx3Yfl36FGLqMSghMI
+	BU54jTwc/fxeZzpksev6afUGybIyJ0t4GxJzTpDzfoomg88pKtI23YUKbyQWYVJl6ysT7Th
+	0Ry50QReV8eqA32uYsxlx6B/ZnupdUJSPfiyTktk7GIJ2CINXTW5BjEaNTvL28etQEbTFmr
+	MacGvh1cQDazDH2gcLUXgNHySvU4tJLTlx/o4V97z+QKEGeekdr0H1KxrDVgPvNzTPo7UBJ
+	wg/RoQhkVpJsdnFZKEf9eyRqTLUtURQGm8ow0TRlP3FG8wQJkMp+zjmUB0su+GgmKo8MHJg
+	i/7JjTSs1zV1EPTEyr/14cbxrjj8ClLHut31sEwsxp5mbm7vcWGmc7flSSr+vZ7fMs+DZZz
+	+btDfZpwAkpu+CMBynANOyMGjUqAvfghLL94zGULuJ0MyjaMzLdy1DeQqp1zV2Co438zXad
+	Bc6skd1KMqVpO+ZqYb+KDLl2c7S0Q2JhnFeTo84WbddsEnB8cvgHB6RSToIvd+/sbL6qfdF
+	7lYCfdaPiOpGI00WW9kmFhtQJBFrdsI3w8xdYBGJas5QyuZTz1U4Y2Q2WxaK/M52rWRcyng
+	C+QY5tegdwltpI71KCtGC2rp2F9RK5sS1U4uL3iWpWsrGC8lxsA+xIaloTQRuOfy1wQa/b+
+	nPEKShD5BfaK2VqchjZ8/FoxRzw8pd563f4LqJJAfh6XWbfeKXt0hGS667NBEHU+aPNBOgF
+	MGoc+ByQ8hSMMYS2nHy2NrivXFaHu5IlHr8uLITL6VfzHXu6E1Oe8SkpLd8DWYXihYPXqgV
+	xOEzJ/L0xEng1IDmqJkzWMEsscgMnZx5iDqd7E8zPaDu1o9vpwVlGo3F7+UtE=
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+X-QQ-RECHKSPAM: 0
 
-tcp_v6_do_rcv() no longer calls skb_clone_and_charge_r() for
-TCP_LISTEN since commit 073d89808c06 ("net: fix data-races around
-sk->sk_forward_alloc").
+Hi maintainers,
 
-However, there is still a small race window between tcp_v6_rcv()
-and tcp_v6_do_rcv(), where concurrent close() changes TCP_LISTEN
-to TCP_CLOSE, causing skb_clone_and_charge_r() to be called
-locklessly and resulting in the splat below. [0]
+This patch series adds the packet transmission, reception, and link status
+management features to the RNPGBE driver, building upon the previously
+introduced mailbox communication and basic driver infrastructure.
 
-Let's avoid calling skb_clone_and_charge_r() for TCP_CLOSE as well.
+The series introduces:
+- MSI-X interrupt handling with NAPI support
+- TX path with scatter-gather DMA and completion handling
+- RX path with page pool buffer management
+- unicast/multicast filter.
+- Firmware link-event processing and carrier management
 
-This is fine for non-listeners because tcp_rcv_state_process()
-drops skb for TCP_CLOSE and opt_skb was freed immediately anyway.
+These changes enable the RNPGBE driver to support basic TX/RX
+network operations.
 
-[0]:
-sk->sk_forward_alloc
-WARNING: net/ipv4/af_inet.c:162 at inet_sock_destruct+0x64d/0x810 net/ipv4/af_inet.c:162, CPU#1: ksoftirqd/1/28
-Modules linked in:
-CPU: 1 UID: 0 PID: 28 Comm: ksoftirqd/1 Not tainted 7.2.0 #17 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
-RIP: 0010:inet_sock_destruct+0x64d/0x810 net/ipv4/af_inet.c:162
-Code: 3d 49 ff e9 06 fd ff ff e8 d0 5b 83 f8 90 0f 0b 90 e9 35 fe ff ff e8 c2 5b 83 f8 90 0f 0b 90 e9 c5 fe ff ff e8 b4 5b 83 f8 90 <0f> 0b 90 e9 04 ff ff ff e8 a6 5b 83 f8 90 0f 0b 90 e9 65 fe ff ff
-RSP: 0018:ffffc90000677bb8 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff8880117bde80 RCX: ffffffff8957eb41
-RDX: ffff88801dad5d00 RSI: ffffffff8957ec3c RDI: 0000000000000005
-RBP: 00000000fffff000 R08: ffffffff8957eb41 R09: 00000000fffff000
-R10: 0000000000000005 R11: 0000000000000000 R12: dffffc0000000000
-R13: ffff8880117bdf10 R14: ffffffff81c08eb7 R15: 0000000000000003
-FS:  0000000000000000(0000) GS:ffff8880d7ae5000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f93a1021138 CR3: 00000000207a9000 CR4: 0000000000350ef0
-Call Trace:
- <TASK>
- __sk_destruct+0x82/0xae0 net/core/sock.c:2356
- rcu_do_batch kernel/rcu/tree.c:2645 [inline]
- rcu_core+0x59c/0x1100 kernel/rcu/tree.c:2897
- handle_softirqs+0x1e4/0x9b0 kernel/softirq.c:622
- run_ksoftirqd kernel/softirq.c:1076 [inline]
- run_ksoftirqd+0x38/0x60 kernel/softirq.c:1068
- smpboot_thread_fn+0x458/0xc80 kernel/smpboot.c:160
- kthread+0x396/0x4a0 kernel/kthread.c:436
- ret_from_fork+0x8e0/0xe40 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
-Reported-by: Taras Madan <tarasmadan@google.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- net/ipv6/tcp_ipv6.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Changelog:
+v11 -> v12:
+1. resend with correct In-Reply-To thread.
 
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index df9c29eb5c1f..7fa4ed2fd4f1 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -1604,7 +1604,8 @@ int tcp_v6_do_rcv(struct sock *sk, struct sk_buff *skb)
- 	   by tcp. Feel free to propose better solution.
- 					       --ANK (980728)
- 	 */
--	if (np->rxopt.all && sk->sk_state != TCP_LISTEN)
-+	if (np->rxopt.all &&
-+	    !((1 << sk->sk_state) & (TCPF_LISTEN | TCPF_CLOSE)))
- 		opt_skb = skb_clone_and_charge_r(skb, sk);
- 
- 	if (sk->sk_state == TCP_ESTABLISHED) { /* Fast path */
+v10 -> v11:
+[patch 1/5]:
+1. Drop MSI and single-vector MSI-X support. Require at least two MSI-X
+   vectors, reserving vector 0 for mailbox events and using the remaining
+   vectors for the data path. (Jakub Kicinski)
+2. Prevent NAPI from re-enabling queue interrupts after the device is down.
+3. Set the real Tx/Rx queue counts before registering the netdev.
+4. Preserve the configured Tx/Rx queue counts when tearing down q_vectors.
+[patch 2/5]:
+1. Treat a Tx DMA timeout as a terminal AXI fault for the current driver
+   instance, and document why Tx cleanup ignores the repeated idle-wait error
+   after the fault is recorded.
+2. Free q_vectors after an RCU grace period, matching the RCU-protected
+   statistics collection path.
+[patch 3/5]:
+1. Arm Rx allocation retry timers only after NAPI has been enabled.
+2. Mask queue interrupts again after disabling NAPI and calling
+   synchronize_net(), preventing a completed poll from re-enabling them
+   during device shutdown.
+3. Clarify the hardware guarantee for the first RX descriptor length.
+[patch 4/5]:
+1. Advertise unicast address filtering support to the networking core.
+2. Program receive filters under the netdev address lock before enabling Rx,
+   and clarify the hardware multicast hash calculation.
+3. Clear the RAR valid bit before changing an address, and set it only after
+   the complete new address has been written.
+[patch 5/5]:
+1. Quiesce Tx DMA before notifying firmware that the port is down.
+2. Remove the stale mailbox-event boolean return value and document why a
+   failed mailbox read is not retried as transient lock contention.
+3. Document the firmware link-event retry rate and mailbox ACK protocol.
+
+Links:
+v1:  https://lore.kernel.org/netdev/20260325091204.94015-1-dong100@mucse.com/
+v2:  https://lore.kernel.org/netdev/20260403025713.527841-1-dong100@mucse.com/
+v3:  https://lore.kernel.org/netdev/20260507081539.171844-1-dong100@mucse.com/
+v4:  https://lore.kernel.org/netdev/20260526033539.164061-1-dong100@mucse.com/
+v5:  https://lore.kernel.org/netdev/20260528023150.239532-1-dong100@mucse.com/
+v6:  https://lore.kernel.org/netdev/20260604112750.769215-1-dong100@mucse.com/
+v7:  https://lore.kernel.org/netdev/20260611100036.36370-1-dong100@mucse.com/
+v8:  https://lore.kernel.org/netdev/20260731120322.895955-1-dong100@mucse.com/
+v9:  https://lore.kernel.org/netdev/20260814111317.1741087-1-dong100@mucse.com/
+v10: https://lore.kernel.org/netdev/F44E6669E6C9E7C4+20260831073608.401988-2-dong100@mucse.com/
+v11: https://lore.kernel.org/netdev/745DADAC2A5786BD+20260911112416.2142101-1-dong100@mucse.com/
+
+---
+
+Dong Yibo (5):
+  net: rnpgbe: Add interrupt handling
+  net: rnpgbe: Add basic TX packet transmission support
+  net: rnpgbe: Add RX packet reception support
+  net: rnpgbe: Add receive mode support
+  net: rnpgbe: Add link status handling support
+
+ drivers/net/ethernet/mucse/Kconfig            |    1 +
+ drivers/net/ethernet/mucse/rnpgbe/Makefile    |    3 +-
+ drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h    |  201 +-
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_chip.c   |  118 +-
+ drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h |   43 +
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_lib.c    | 2248 +++++++++++++++++
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_lib.h    |   84 +
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_main.c   |  158 +-
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c    |   32 +-
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx.h    |    1 +
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c |  235 ++
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h |   43 +
+ 12 files changed, 3138 insertions(+), 29 deletions(-)
+ create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
+ create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.h
+
 -- 
-2.55.0.1007.g17ff1f9808-goog
+2.50.1
 
