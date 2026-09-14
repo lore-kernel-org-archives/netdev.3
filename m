@@ -1,196 +1,195 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazolkn19013072.outbound.protection.outlook.com [52.103.46.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EB1340281;
-	Mon, 14 Sep 2026 21:23:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.46.72
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789421033; cv=fail; b=ftBXUCNZ2zR8xmIhbBKbvQK9VV8PmN5LExV+nMSMUjO4FPJ8WDU1m6jOUz9XjW+dEsucOpoudDpCilSNvoBUsagIWwOr2GOO6gVvs+maH/t3Thye03Ca+VX51ExuTM93gg30wOIhPtkTzEBdVIdFddUQbcAGeUGBfYMMZ7cmbJY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789421033; c=relaxed/simple;
-	bh=JqUCUC8aQgHQV0AKPUH7zpQ88HIikDgHozj4gyl1ZVE=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=UqY9OzmVlkEd81lMIF+AoVb3G4glSV934W9YaBZ9PUQHIA5X62JQbDWPO1lS0km2z33GMO3mRd1DvTWfR7fOXnV356fVKlicI5Yc//IH4ADc29YSyrM7EJ01AkCmjvwIvOxqeQj/TY9iFotOXK45nHMPubK8ukfCHL0GqnEaGKM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk; spf=pass smtp.mailfrom=hotmail.co.uk; dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b=W0SAP96u; arc=fail smtp.client-ip=52.103.46.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.co.uk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B56C3876A7
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 21:24:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789421055; cv=none; b=t/oTKP2TK5BwdF4F9B/91zKHloKrWTCAwbG7vT6FHMbdF+WPnqaWqP0djOKRk9OkhSWMn4pCG951cfqfz5L4/E1GQjttVkIiUzAxEHwKOVG+Lr2aOtT/Mp/8vOnNjefBdoOjoUra0iiRki/EzHJNtKFaHehQayLS8qN0rFDBbzE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789421055; c=relaxed/simple;
+	bh=lbLxqTslHY5Xz5ryYX0WcyX1dKos3wDAdzbFLDTheuk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UBtd7LfqQt/X5avzQgcgyeumgdHWVzR9FkAZC/nWfSuEWzb1dAIMUqbhb9febL4MtNKT1xHMwWCuKT7e44bsPhewByerehMv8mhsQZqn1wBvOw5nqNE3A1IAnxAd8Ydd9bWhjRy+e6TIxh/QTAZwEA8Ki4C+00pKligBA484Wzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O1L1fAt5; arc=none smtp.client-ip=74.125.228.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b="W0SAP96u"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dJgErdCmndWrYOtGI3JPxXIyUqbr/7DxV39IA61WM2ICTovg26WUWr/LKVJSxzl5niXdKgElxwh3Gffh9NmcE16dzTY0xkGCb2uaMWPeTUDEUN7CywZNQqme4WJhnO1KJesCfEYnnB2PcZ4XQz4UmESuX4EjBz3klf9NsbREP6bjM6E6FZS7yR2rDOqhKaEtxA8KdEu++JwiN8dZgtDi6zL/l/mVUHza7Yjzgb7JGMXWx2E4MJrlHS6YWjuXJMX7qTrlXa0ubIQGSzsvBOVPLOQrQCuD+lCTQrQIFmMRLvzPJ+wKHSWusYsUXx+rpnOJ/gb7LHv8PrV+EvKxBrWXOw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wyi2BzvhmOlCqydFNPat8tB45Jj/2DtY6YvCyluD9vQ=;
- b=iJm7+LLQY1nF8jdgyGeIrOj6yCCHYhMdiZ+4EByWi4QN09trbYV+c9oBF/MteRimqmjtCZTfk1IkMV8iS3Lo2VTcogn9OPFK0nSAGLUtchVraLciW9JNxsgiWpa7fH8Lai3tW2X8070cZy5E2QhZjXhQNQlZ2VXrj6vlNwhdwkxbJsNw+ZeEXPptoq7aR5asMpSxbkhZrL0gdk6k6IIb7arKuYn4xiIC+6x4dFwnr342PysxY6dtWoZIiT6mqlgfxIZFG85ogm832tal375vzE5pFzQs58TLMQQOiVjC9rPwGF2eWF6aF3cUi/uLHIAXkoMg0I+a6f7Y5PwF03Xlog==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.CO.UK;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wyi2BzvhmOlCqydFNPat8tB45Jj/2DtY6YvCyluD9vQ=;
- b=W0SAP96us5e2Ksg114EnY+7Fn6ESvQ2g8nnksMmob8mVlwmKgOwX65P4XFq1xhrn3VbiskzpLyIf/hdtCpJvh4qAIBzTb3lw+BOMoPSfw8MY0woKLb1q01MT4lsUe/yfF8VPsqEkXvtmCmLwRDK1+JNi2Q/c8jwYxNVw2ZW/nXJK0WCfrbqk9aUiW96UH5cGgo+Bl0omGsBj/4IC6W/qTul6sFkDFtOmnV7oNxuz8STEvYsbLZgwJTi6hoCTZKMrM813ew2oKQqkm/5YsrjaliALABr6s/3AJFyLGCQ38H8G2xVMbY0hcTUT4mJqfE3f9id/KGqKMov9W3Vex6BX7g==
-Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:344::22)
- by GV1P251MB1145.EURP251.PROD.OUTLOOK.COM (2603:10a6:150:284::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Mon, 14 Sep
- 2026 21:23:47 +0000
-Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- ([fe80::2952:d4d0:4ba:8352]) by AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- ([fe80::2952:d4d0:4ba:8352%3]) with mapi id 15.21.0406.007; Mon, 14 Sep 2026
- 21:23:47 +0000
-From: Aamir Ahmed <elb12345@hotmail.co.uk>
-To: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: "David S. Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O1L1fAt5"
+Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-85469e25400so2001189b3a.0
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 14:24:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789421052; x=1790025852; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=91Cem4/G9gFH2+/WU26dVxIdOZc4tVrgEbxFE9sY/B4=;
+        b=O1L1fAt5i6hBbvwSfXmdt10LPQQUDLuDDm9x6347mz7Kxw1SufI29LuguQdG043puT
+         vM3NlFxyWmzmvjVkYn0Q3Fc0AsiAaxxP6uSFJhmwl+RuTyJF7+pItZUak6a9Dl4RNhva
+         oUWXupM8o7iCVSGGgsR+wC/ct/k2pVAWZifuSbfZN7qEHWyYKbPcFKIyJOie76i/wj5+
+         K2RCtKVokfecpfTyOShkMQkAPT2rGjTBSHbiPaWxRDIanUiIhn0xs+rIG3Y+6cseDKFo
+         Iiayi1zjFQZBpcd3PhPvBP5y5I42ilr0C2x78NaGuVPaMexCj8MAU9ozfGZzZ/DhJHCG
+         O9Bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789421052; x=1790025852;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=91Cem4/G9gFH2+/WU26dVxIdOZc4tVrgEbxFE9sY/B4=;
+        b=a1aWx6Uh+x3O0Qc3V30YeewrIz6PAP+7ldH2EvLPhBK1FKmyAoNA5HoHXa/Dx15jTV
+         fJ5MP574O3nqemH3/ESR+WYkoMqpGEK1sBDsJCoihy6gHjMP+OHW2Fe/DyuBImCFopGS
+         /c2I3nwGZgeD/pMWlMYoSSuz2VbHoW1pOvYsjQQJ4sk2EjfJq80LhMjkUCa06gCEhruj
+         1E6dn0OB5QUu7Qzx+f/T7ID6KTN6YiAU7szhsO1T6a9WodGHemit9B31WDgFwWWhfes7
+         UaJiIi9AEF72GvEIGkw1fUvNaJ5RTIXW2aVRd/iiirAcMl0ilzNNbgF39S+8QDCIundR
+         8V7A==
+X-Gm-Message-State: AFuF++mn/ztKG31j4q3IDPrKwc7PBJromsogQOducNRek3FUvQR031D2
+	5ihAfxtpDsr9yvGucgu9EOuiGlbdUvgdvhWz/zF4nYj1za0Nluz51juQbpi15A==
+X-Gm-Gg: AYBFou0ijD+dkzLk+bxhUPLEtziG3sorhV+O4NDw1L5WNg9Z8CVF0pwQ5OBjl0Wb8SB
+	eFebgUzem8pfliv+uZ5vrKjqFxIAnpBSmv28XQ5FlqpygIMY8X9OyxqJDa1ACqlN0OoyrC3RuZ4
+	oWIJo2LA7QsI4FbSLDcBgzoQ+9sw6wdULlpu5Efh8gIstvYJpQWBOdMVfJZo9CcFAhiMvay+QVk
+	5DzxBZEXLERt57PeO9FgS+SdqTct+44cX5H27fe/+fdwfzEGAJ8R3mfxRKO3uNthDgAPbmF8QUu
+	bEVY3SRbNy9vvFrQUZmqUZ9R/5SFB2zE7iNyzjAnr3D310+FFv2mxGNDqgqY19GkaFS6z0U/Q2T
+	cn+uTbl/vBq73dplqSx6tmL8dLFZUNFroVt961NBPQsLCD5a5E/kh14pPLmz06mKhQkc7wklE0s
+	rtjMwp3DHWaHWpZ9i+sYy8kYppdvOYffk9xsXvWPlrK1DFPjHqIA+VwOj0/dFDllsB4wyy8gyEv
+	6dO7tQ4fDK29dVIgLzvoF2wb8xIeQ8WZ40RggtFEU26qMiu52QX0PaQz8FEInfk1WMbqLjiAtI5
+	8DFQGZ8J77/30mujWEwBOMXKDfpSnaUYVUPlPcFqtZWQvAe3OqwbFTRrMvM=
+X-Received: by 2002:a05:6a00:1828:b0:84e:2382:f4f0 with SMTP id d2e1a72fcca58-86f83152fcdmr9002280b3a.4.1789421051724;
+        Mon, 14 Sep 2026 14:24:11 -0700 (PDT)
+Received: from ryzen.lan ([2601:644:8000:7a86::e34])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86b287c1b25sm5400379b3a.20.2026.09.14.14.24.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Sep 2026 14:24:11 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Lucas Stach <dev@lynxeye.de>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Aamir Ahmed <elb12345@hotmail.co.uk>
-Subject: [PATCH net-next v2] net: usb: asix: reject a truncated Data header in rx_fixup
-Date: Mon, 14 Sep 2026 22:23:45 +0100
-Message-ID:
- <AS8P251MB000193C798F98A11C73C3E9DC8BB2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
-X-Mailer: git-send-email 2.53.0.windows.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: LO4P265CA0234.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:315::11) To AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- (2603:10a6:20b:344::22)
-X-Microsoft-Original-Message-ID:
- <20260914212345.119840-1-elb12345@hotmail.co.uk>
+	Michael Stapelberg <michael@stapelberg.de>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCHv2 net] net: phy: marvell: undo WoL setup when Wake-on-LAN is disabled
+Date: Mon, 14 Sep 2026 14:24:09 -0700
+Message-ID: <20260914212409.74539-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8P251MB0001:EE_|GV1P251MB1145:EE_
-X-MS-Office365-Filtering-Correlation-Id: aa28d2b0-8785-4c35-011d-08df12a67680
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|5062599005|12121999013|5072599009|15080799012|25010399006|4140399003|23021999003|19110799012|8060799015|55001999006|24021099003|41001999006|25031999004|37011999003|440099028|4302099013|3412199025|26104999009|1602099012|40105399003|2607281247196008|10035399007|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?+XaoofOy8P/QmWi8SSDI3bh+63ULSoMMfgbB9gLihscb+HYXiwCOIAE0g+lk?=
- =?us-ascii?Q?Y9RVISTEVARAt09dpkbBrgDYMg5EM5a90Fo3Pa2dDWXzg+DVAOLCnQqHWWmw?=
- =?us-ascii?Q?RHzOI6IPlFRXTnHHRE+Tq6RPAW22OmSs9kTVoiX1Lqt36pYi5s6kgAsw3jo9?=
- =?us-ascii?Q?qhcZUrzfpdUXAQAr8pwxZrDjEIc6bn4uWlybFZknoWWG/Cjdkkv5d21bB+E0?=
- =?us-ascii?Q?gXmjPJJspCkNYjEOa7nga5K0NLOC9Lt2O/WpnCfXflOX/VDtFZi3l0y11RPu?=
- =?us-ascii?Q?/S15KtBwZXYafkz/ih+gDm9Thp9wMKDWBNqRS5jDzz7C04c/YaGyHxRh9gdx?=
- =?us-ascii?Q?9EN6IBhFDc2EnJKrVhjnIgDqTXwSkweHl5O9E1l7+PjMCbuSroyCVAH3RCGJ?=
- =?us-ascii?Q?Kf5b0C6ZAahvgvcxQeBv8YOSElOe64Vx2aAUbC3QWCsxEFHNO+3aeeJcq+4O?=
- =?us-ascii?Q?OzqL8J3M6Arvikw+EhEMnMifpyTJcUKQrkiB5WbNMz+k6IWfofzj0sc/s53E?=
- =?us-ascii?Q?pVSK11vrCykAQVWlYncDur+VCkugQEnwMjFHGURaCaIjShKNbR0iXgxD/dT3?=
- =?us-ascii?Q?mG9sZIcgvloARjW8l1oMJcXe6pXmh+ffVzTO9dszXKhx0Bjbd575p1P2o9qz?=
- =?us-ascii?Q?4x1mwX+hOI0KxJutPB+2veN8s7WJXVUH2VAvQ8B6FTGpz/3uuCyRzvrai3S/?=
- =?us-ascii?Q?H/fEHdqe9QD3cpN5g4DCTS84yYizoYNXPRcQ+BhbqKPsjveYycjDAwhBREeG?=
- =?us-ascii?Q?GBooDyZEQhEuIeuTEWcLOWsdjE2Ol7UVcvXjJS4A+A4nVN+gLIXN/dl9H+tz?=
- =?us-ascii?Q?OQ1sOqzAmLnl9HJBxBkoI28pbjMeSQzzihZrIC8ljVZrzy5r/8HM9Oc3Kbcm?=
- =?us-ascii?Q?HH9UhCoT9jlNHt+ZpsrWFemj/n95wMSq8KQict5aHGgvb70SvTo8YFCOSWXN?=
- =?us-ascii?Q?T8M/uby3OFOXrUHtFYtILFX14I8nrM8Jdlb+6CL3sOBfN2IevIEfe4xa5oT1?=
- =?us-ascii?Q?8VDE/frpgkIGmeZxIiox85UQBsbMgBp5so32D7eB931EJ8xbMmM/NtQrJCgu?=
- =?us-ascii?Q?zQsr1BMovRv91nk2jWlbiJ1sZdWB7ASo998ilLmGDnWooFaAdRQfLQPbg/7m?=
- =?us-ascii?Q?RXRj8NYxXGomciv3AhIyIxCcRBjZkIcKb6WC7F0ss0pWkEORZtWOxJSp+shG?=
- =?us-ascii?Q?zQFSrD6lWkOqNavEQoBwkMXhTiKQyXtuN2qUiQ=3D=3D?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?7HfcdTe871Ow2TwkDeWRcvfOAijNhZKTIwMjxYh1RIfG8gFXSVWfeMhZwhBF?=
- =?us-ascii?Q?wIiJ7g1M9g21Qd92MgW2qiji5/NFNHvBp96UZeVW8eJPHMV3lIqstUS7vJfR?=
- =?us-ascii?Q?3d0qVrgXozbtQS84maT+oVgiKl/ZHd5DfyF0rbcNIIrAvDScuODYZ7prqMhL?=
- =?us-ascii?Q?ioHvD1fWylJIODxYOf2zZmbBUlwsUstqk43Q7zzRarcGUtx7xJGzxmIPgLKR?=
- =?us-ascii?Q?07nHzCqTHLJY6xMQW0DVvqIPvGGApGeFt1Pzn7+4HTV3DcEOxAgRzOI6g3Yi?=
- =?us-ascii?Q?sqXXP5asluB8mCcE904sGY2Jz2ObYhby4a69fP2bGrfYO4L2iO0Henzd1OgQ?=
- =?us-ascii?Q?UQadYC54bVOCyWUB2wkGi+DzvZsdZizQx/vemfZi7DevJX6iduXhud0CSArT?=
- =?us-ascii?Q?4cLxpwlYKB2e4tbU+q4pBmCkiaBVA1vZF0WRnhlL9QQUDOLuu6IIEskp1StY?=
- =?us-ascii?Q?TY+He0uQqyToYV7cX4b+Irj+ctTbq97l5gt5OJCIAuW4pykqBRdy+xeC6Izg?=
- =?us-ascii?Q?tBn3SV5pTqdK7iMZs094Y22a26fmTBvRgekHn3oIS+bADVMBDOh3nCIamUQu?=
- =?us-ascii?Q?T3lq9p0qBpQAAj5qx4ywlSvyOmZe29gARp7H3xi1RMqbgV1+aMstVNWb2fIX?=
- =?us-ascii?Q?UhL0TR2QkJgoeGJe7GP4J3xpaRW4Vdbtxx9P420Ub6bKhG61uGLZw0KKrHpV?=
- =?us-ascii?Q?Zm4hHZ30hgu0D10abmY02O+B7JTbAbs/L8hyU7pR90un8lBQfzJDcrUzhF9F?=
- =?us-ascii?Q?a7SHA+ZvW1mEfRs6A3uIgj7b0H+XBy4Yfg+nOSO6VB8TPfevO4MkGEscz2xU?=
- =?us-ascii?Q?L8yJfk+dHcGEo0nm4rdfhShf8cu9VNxQNjhdwIE+RWQz5Mpy3i53IRl3uJQI?=
- =?us-ascii?Q?7P1U46n4RPCZb/X5jgLxNr3bX9hN+/33+8RybxktRzQ0Ha/ZJlyZiuqhHh+b?=
- =?us-ascii?Q?pPdw+ZP2nxu39nsO1AGBD8kfVLR6jQPqSvmCViEaK3xjhuSdUNNCarB/Yq/r?=
- =?us-ascii?Q?PqKVITB4jMj2yPkE/zR21Zk/SMnbHVeleF0xFNkwSqS/XP6cbANLWlr5AUzr?=
- =?us-ascii?Q?IU3abI/OMvCimvHiTInt6ZGn4yJwimvDnudu4G3tdZ+qPPlGHFo6n7R6fdJS?=
- =?us-ascii?Q?osyLH80Cg8lg36hvNVbzY5ope5f8N5AJ9ico77kmtlhmQe9pa3hOBmJNvIvP?=
- =?us-ascii?Q?4H/c6HjPu2+DsC5C3OzpwuS1YOO7kxYg0YE5VKJBqNdr9ChT6Ndm0NakKq+6?=
- =?us-ascii?Q?P7TZISjUU08sZNALQQic17bi6A2QCQGPtcUewXGZSOb1df63a1htmSiTyPam?=
- =?us-ascii?Q?rYEhNza3eoSTAhfQUuO0cbaNghTGoYYwVDCZP8XnSgxVuWHaiABgau+u0/F2?=
- =?us-ascii?Q?jswNCsi9r1VDkC18elLYtq+ZFqIwF9CvnawoS+d9McvriNZdNszu5RvV0QY9?=
- =?us-ascii?Q?hrBvm7ZO8vlK8o0QoovlxzLMoV7fBBwG?=
-X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: aa28d2b0-8785-4c35-011d-08df12a67680
-X-MS-Exchange-CrossTenant-AuthSource: AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 21:23:47.6989
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1P251MB1145
+Content-Transfer-Encoding: 8bit
 
-asix_rx_fixup_internal() runs its parsing loop while two bytes remain,
-but the branch that starts a new frame reads a four-byte Data header.
-Only a two-byte tail is special-cased, via split_head, so a three-byte
-tail reaches that read and leaves offset at skb->len + 1. The clamp
-below it then takes the unsigned difference skb->len - offset, which
-wraps, so copy_length becomes the full length the device asked for:
-skb_put_data() copies from one byte past the received data and
-usbnet_skb_return() passes the frame to the stack, before the trailing
-skb->len != offset check can report it.
+Fully disabling Wake-on-LAN on the 88E1318S/88E1510 used to leave
+the WoL interrupt enable bit (CSIER.WOL_EIE) set and LED[2]
+configured as the INTn pin. A magic packet arriving after "wol d"
+would still assert INTn, and a later "wol g" re-enabled WoL from a
+dirty register state.
 
-Reject a Data header that does not fit and reset the parser state, as
-the other malformed-header paths do.
+Fully disabling WoL clears CSIER.WOL_EIE on the copper page. The
+LED[2]/INTn pin mux is disposed of only when this driver forced it to
+the INTn function: the INTn enable and polarity bits read at arming
+time are saved, and restored once all WoL options are cleared, so PHYs
+serving the MAC interrupt, strap configs, or marvell,reg-init values
+are never touched. The FORCE_INT bit is not set while disposing of the
+pin: it holds the interrupt line asserted and turns the shared PHY
+interrupt into a "nobody cared" IRQ storm when the PHY interrupt is in
+use.
 
-Only a device emitting an odd skb->len can get there - every asix
-rx_urb_size is even and offset always advances by an even number of
-bytes - so this is net-next material rather than a stable backport.
-
-Fixes: 8b5b6f5413e9 ("net: asix: handle packets crossing URB boundaries")
+Fixes: 3871c3876f80 ("mv643xx_eth with 88E1318S: support Wake on LAN")
 Assisted-by: LLM
-Signed-off-by: Aamir Ahmed <elb12345@hotmail.co.uk>
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
 ---
-v2:
-  - guard the header read inside the loop, not the pre-loop predicate
-  - rewrite the changelog around the unsigned underflow
-  - target net-next, drop Cc: stable, repoint Fixes at 8b5b6f5413e9
-  - add Assisted-by: LLM
-v1: https://lore.kernel.org/netdev/AS8P251MB00014BB4591CE6011152DB4FC8B22@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM/
+ v2: move to net with Fixes. Address phy_interrupt_is_valid issue.
+ drivers/net/phy/marvell.c | 54 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 54 insertions(+)
 
-Built with W=1 (asix_common.o) on x86_64; no warnings. I have no asix
-hardware, so this is not runtime-tested.
-
- drivers/net/usb/asix_common.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/net/usb/asix_common.c b/drivers/net/usb/asix_common.c
-index 4f03f4e57655..8c5f863efe7d 100644
---- a/drivers/net/usb/asix_common.c
-+++ b/drivers/net/usb/asix_common.c
-@@ -179,6 +179,13 @@ int asix_rx_fixup_internal(struct usbnet *dev, struct sk_buff *skb,
- 				rx->split_head = false;
- 				offset += sizeof(u16);
- 			} else {
-+				if (offset + sizeof(u32) > skb->len) {
-+					netdev_err(dev->net, "asix_rx_fixup() Short Data header, offset %d, len %d\n",
-+						   offset, skb->len);
-+					reset_asix_rx_fixup_info(rx);
-+					return 0;
-+				}
+diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
+index f71cffa88406..64862f12eb42 100644
+--- a/drivers/net/phy/marvell.c
++++ b/drivers/net/phy/marvell.c
+@@ -354,6 +354,8 @@ struct marvell_priv {
+ 	u32 step;
+ 	s8 pair;
+ 	u8 vct_phase;
++	u16 wol_led_tcr;
++	bool wol_led_armed;
+ };
+ 
+ static int marvell_read_page(struct phy_device *phydev)
+@@ -1969,6 +1971,7 @@ static void m88e1318_get_wol(struct phy_device *phydev,
+ static int m88e1318_set_wol(struct phy_device *phydev,
+ 			    struct ethtool_wolinfo *wol)
+ {
++	struct marvell_priv *priv = phydev->priv;
+ 	int err = 0, oldpage;
+ 
+ 	oldpage = phy_save_page(phydev);
+@@ -2000,6 +2003,22 @@ static int m88e1318_set_wol(struct phy_device *phydev,
+ 		if (err < 0)
+ 			goto error;
+ 
++		/* Remember the LED[2]/INTn mux before forcing the pin to
++		 * INTn, so it can be restored when WoL is disabled again.
++		 * Only save it once, or a re-enable would overwrite the
++		 * value read before WoL was first armed.
++		 */
++		if (!priv->wol_led_armed) {
++			err = __phy_read(phydev, MII_88E1318S_PHY_LED_TCR);
++			if (err < 0)
++				goto error;
 +
- 				rx->header = get_unaligned_le32(skb->data +
- 								offset);
- 				offset += sizeof(u32);
-
-base-commit: c297ed90fbba72d32b7759aae362b36d15b2db1f
++			priv->wol_led_tcr = err &
++				(MII_88E1318S_PHY_LED_TCR_INTn_ENABLE |
++				 MII_88E1318S_PHY_LED_TCR_INT_ACTIVE_LOW);
++			priv->wol_led_armed = true;
++		}
++
+ 		/* Setup LED[2] as interrupt pin (active low) */
+ 		err = __phy_modify(phydev, MII_88E1318S_PHY_LED_TCR,
+ 				   MII_88E1318S_PHY_LED_TCR_FORCE_INT,
+@@ -2074,6 +2093,41 @@ static int m88e1318_set_wol(struct phy_device *phydev,
+ 			goto error;
+ 	}
+ 
++	if (!(wol->wolopts & (WAKE_MAGIC | WAKE_PHY))) {
++		/* Fully disabled: undo the WoL interrupt setup done above,
++		 * so a later re-enable starts from a clean state. The
++		 * LED[2]/INTn pin mux is only touched when it was forced
++		 * to INTn here, and is restored to the value read at
++		 * arming time; PHYs serving the MAC interrupt, straps, or
++		 * marvell,reg-init values are left alone.
++		 */
++		err = marvell_write_page(phydev, MII_MARVELL_COPPER_PAGE);
++		if (err < 0)
++			goto error;
++
++		err = __phy_clear_bits(phydev, MII_88E1318S_PHY_CSIER,
++				       MII_88E1318S_PHY_CSIER_WOL_EIE);
++		if (err < 0)
++			goto error;
++
++		if (!priv->wol_led_armed)
++			goto error;
++
++		err = marvell_write_page(phydev, MII_MARVELL_LED_PAGE);
++		if (err < 0)
++			goto error;
++
++		err = __phy_modify(phydev, MII_88E1318S_PHY_LED_TCR,
++				   MII_88E1318S_PHY_LED_TCR_FORCE_INT |
++				   MII_88E1318S_PHY_LED_TCR_INTn_ENABLE |
++				   MII_88E1318S_PHY_LED_TCR_INT_ACTIVE_LOW,
++				   priv->wol_led_tcr);
++		if (err < 0)
++			goto error;
++
++		priv->wol_led_armed = false;
++	}
++
+ error:
+ 	return phy_restore_page(phydev, oldpage, err);
+ }
 -- 
-2.43.0
+2.55.0
 
