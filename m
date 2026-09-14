@@ -1,72 +1,90 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E9145D1BA;
-	Mon, 14 Sep 2026 12:22:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE60F45DF68;
+	Mon, 14 Sep 2026 12:28:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789388540; cv=none; b=RgoU3iUZ+PICPQsIt7RZnKwMCcAJCuzR3nHxLHz5r8TzUBk1eBn+1JDrl9VgLG4wt49QQaS7y2rkvFr9a+0kxLh6sRKyPnzMoC38pQNV4AGmkl//pa1tKet4qST/1B8I1cSD7CUmRBVbVFFBTwwAqFvwTyxGA1hfNaSgr7ZKcV4=
+	t=1789388933; cv=none; b=P3ET0lN+qkgZvZZLhLqv/ME2IH8JeOBrDoncqvyeFds9GNA1w8GM+mTrY3nVRZGBJjX/A9sKs4JeE8ooBs+LGHX8azPPikyeUCyS/8m1XSQirkHzeVPnB/bXDnAcVb02XGN8yzXzYItQAX1+I3KGnkjwXTlCyYBAtuqG+omg1Fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789388540; c=relaxed/simple;
-	bh=qPdShSfgkq+3KTJ7gNXeOatTyXVm7bxrm6oXcd5oiMk=;
+	s=arc-20240116; t=1789388933; c=relaxed/simple;
+	bh=88gjqkU5xAcXF48o6O1dmyPVBsMwJ9OhfUENJXfo0d4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=df7w1ROwOz9R2AHwK1mTB8By/J4MLbUgNrmfPjyCXkEBi8ukvcv/Sx+JBIchHMwjTZUPXhxXFdgk80VzCh27kLI1Y/Qiv5RMtIOT6QSm5+3rT1H/zR8b+Ih9m0Y9v6ja1pBlBAGNNdiDew3cnVWgxkaFX5v3f3vxkF+zintndWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=UXDy1+D1; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=JxkkEaoPchzXb4DoiUVByQzINR2JKHNu3zNWU6c7fgh3PWrnC9hb5RpMYI7OtA5M/rNHqJW7axSM4HhGWWYLUAv/O+opHWJrrAvJdwlzoowr39BZ6527Ee0SCdOa07SlG8GVcU17yrqdbmVerBQGEjsHqtXPWWW5xaheDyt9/bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=Tv0/W2bo; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="UXDy1+D1"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=ghvLGta+3GTM+e87e0RgPt/+FFq592HJXi13+wuZtOM=; b=UXDy1+D1znG15l59XpNgmbZIrg
-	8etl6+dPClUOleXk06VEnIjerZ1lm4C3le8B4kmxdEmrp2501IMrvumh7vLudf9N/G+1A5luBrjVk
-	EHpDtxBzH0tkelYH3V5479kHFBTccg24r2uSCeTUE1FVGMh4BNbtQIvJp1nF+1fyrLUU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x65hE-0054oF-3Q; Mon, 14 Sep 2026 14:22:04 +0200
-Date: Mon, 14 Sep 2026 14:22:04 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: phy: Fix device_set_wakeup_enable()
- reference in kernel-doc
-Message-ID: <491b39c3-e6d0-44a3-8ba9-516fbe9919c0@lunn.ch>
-References: <20260911204201.95270-1-kmehltretter@gmail.com>
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="Tv0/W2bo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1789388928;
+	bh=ZcTvJohNr77d40JF4EM+rf0NaLP39PMwUENUc5J5E30=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Tv0/W2boC7DCz5e03hPfHDNKJyIIDcX4ZUZx//g4I07paFLPdKz1pXA/TH171esk4
+	 IsIP1avG57Wep1131WSxMBSkJ0IkScW5Wu6U8NUhBObIaEowLIfebJI6JzhkVeahd3
+	 F5rpyQmpCqOHJImRkKfv53jv/Y6J06DPDOXPt5xlwmvGaglGs34W0eix8Py/ZvUmjZ
+	 KodqVPJ9pXaSttDU0hZ4Ip4gwq92Dcv8F+DoFm+5ciBBR7ihJ5yoDyJCWaaoShs8Rl
+	 +GyY9MqEJARI2wWVowtXa1efJdf7P+Usj1pmIWeLEQLzVa/WG1HjyQ95RTzApRO6OD
+	 RWUZIWlTQl2Eg==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 779B760055;
+	Mon, 14 Sep 2026 14:28:48 +0200 (CEST)
+Date: Mon, 14 Sep 2026 14:28:46 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Hauke Mehrtens <hauke@hauke-m.de>
+Cc: stable@vger.kernel.org,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	netfilter-devel@vger.kernel.org
+Subject: Re: network flow offloading broken in 6.18.45+
+Message-ID: <aqfofgtUfyXlfHLr@chamomile>
+References: <7dfa42f6-64c1-4084-bfea-d57500c245cf@hauke-m.de>
+ <aqcfvRE3aHoAx8s7@chamomile>
+ <aqcgG0y-nYz4DWz3@chamomile>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260911204201.95270-1-kmehltretter@gmail.com>
+In-Reply-To: <aqcgG0y-nYz4DWz3@chamomile>
 
-On Fri, Sep 11, 2026 at 10:42:01PM +0200, Karl Mehltretter wrote:
-> The phy_may_wakeup() documentation refers to
-> device_set_wakeup_enabled(), but the function is named
-> device_set_wakeup_enable(). Correct the reference.
+Hi,
+
+On Mon, Sep 14, 2026 at 12:13:50AM +0200, Pablo Neira Ayuso wrote:
+> On Mon, Sep 14, 2026 at 12:12:16AM +0200, Pablo Neira Ayuso wrote:
+> > Hi Hauke,
+> > 
+> > On Wed, Sep 09, 2026 at 06:29:50PM +0200, Hauke Mehrtens wrote:
+> > > Hi,
+> > > 
+> > > flow offloading is currently broken in Linux 6.18.45.
+> > > 
+> > > Since the backport of commit b5964aac51e0 ("netfilter: flowtable:
+> > > consolidate xmit path") to Linux 6.18.45. This is happening in a router with
+> > > traffic from wifi to the Ethernet device when mac80211 returns -EOPNOTSUPP.
+> > > 
+> > > Upstream fixed it in 871df5007eda ("netfilter: flowtable: bail out if
+> > > forward path cannot be discovered") by not offloading the flow at all.
+> > > backporting this change looks more complicated.
+> > > 
+> > > This cam up in a discussion in an OpenWrt PR:
+> > > https://github.com/openwrt/openwrt/pull/24800
+> > > 
+> > > An LLM suggested this change: https://github.com/openwrt/openwrt/pull/24800/changes/394d741e6e76ecd172dbbf1d9ba171e378211734
+> > 
+> > Patch went away.
+> > 
+> > > It seams to work, but I do not understand this part of the code god enough
+> > > to judge if this is correct.
+> > 
+> > Could you attach the patch to this email for review?
 > 
-> The typo was introduced by commit b344bfacf1de ("net: phy: add
-> phy_may_wakeup()").
+> I've found it :)
 > 
-> Assisted-by: LLM
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+> https://github.com/openwrt/openwrt/commit/d2b53b8043e17087b877bfc2335cbba87dffb4e0
 
-Please could you add a Fixes: tag and target net. Developers often
-work on dead stable kernels, before rebasing to net-next for merging,
-so fixing documentation in stable can be useful.
+I've proposed the following fix:
 
-    Andrew
-
----
-pw-bot: cr
+https://lore.kernel.org/netfilter-devel/20260914122456.1963453-1-pablo@netfilter.org/
