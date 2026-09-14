@@ -1,112 +1,111 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1ED41DE0B
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 09:25:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7D1435EF0;
+	Mon, 14 Sep 2026 09:27:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789377915; cv=none; b=mRr8jpN+MhqhSAGlpm6k+32Yq2+ANa+6iPIGa8Okl/r3ZVlKT5Ad46f9K6QCuXCUxq+WjPwfKRQaNv89+Pg3TRmg6SxD9YuwAHZCYlDoaKcBdwUYjj4vZf/5dfsvjpJrMD3r+StDyypdC5QAMggmfxADV28pebG0WyJrfSOKf48=
+	t=1789378062; cv=none; b=PC4hIYKGomHDCMOazWQasRTBvOH0MBdaPwnM4Y+VxA9ybckXzUYerJGCQr+BzMic1oqzW+O9LZlEARjQvOEvYotCvQIKi3XwVsndRAn67XpHZ4W5mY8TbE1G1lhfk2e6oJJs6dKQUdMlDjvj2mToJML3wokQaC0lEAcSBANzuj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789377915; c=relaxed/simple;
-	bh=EGfkMx2MHC2LIJYqkAeWh0BuOhDzLRR4nnmCfyc7MZ0=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NTOm7XjrD1LB4pgC/9QypRcoV2nqBvj38sgtSXPixf8ptvAMV8R3s7bP8G6YlDfg/URLV9APHzDOA+La7bmQ2nZ8cuRWJ6d6uxiD5PHmetSqZrpbTKvBIaO15GJF7x8w60xiRkXvDXAcSP6crpHkad1A/TDgGpAMwae/lDf9abk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=RZL1rP0T; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1789378062; c=relaxed/simple;
+	bh=uyXY0JhqdY04u4gvXcwlNliDhIT7V48/3Ky+SA0t1gU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cKRK38ef7w3KxhlQqbIhzwz5s9206ajgBzCph8VfnzCzGlHrBggrvQCdkc/AaRr1VWt9xFcxytU4ATjc7q3ZhS2xTcaMe6KYwfgcVVHiiBt/RTnqgM42R8O2vT1a3SnRrp+diM+D7V4ew5ZqfCQZ081T7pSqgNMZIa4VEyRDfAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=CTYtwTSb; arc=none smtp.client-ip=117.135.210.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="RZL1rP0T"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 1CC72201CC;
-	Mon, 14 Sep 2026 11:25:10 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 7hct50Xtkjiq; Mon, 14 Sep 2026 11:25:09 +0200 (CEST)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 8906C20190;
-	Mon, 14 Sep 2026 11:25:09 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 8906C20190
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1789377909;
-	bh=TmdOUPYF7G2kVT7b5Rqd6x0sd37rhfvgF2CxWOaoZ6U=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=RZL1rP0T01G6YLFB0wBNJ6SkJQqBkcIjR3MfEJiSZuo0+FO9v9lQhu4zhjwBtN1Qy
-	 nVauXOExGBj/1tCGQRIMZTO2WeRaW80AxJ+Z2rXZL0NhmqVaoJ6UcfaY9ORRz8PsTQ
-	 sFUpSNlM9Zc+JNlY/kr8p+BR6hJ30Yt15VweP0nnl3UWUt/A8gG7x+AN6yKH1dXwJi
-	 7DiW3lrUNJHBFomKR6ID8BeOI6oLipzpgfp8jQYQJdW/PgHcaITOGha6yWn0CAr7eJ
-	 ueGLLOcbPSHdQ8I5p7A5JAkwqNxEHP7egKlY07YbRIv4fIjW9NjvTyz+HCsdQ8DVUa
-	 6UDUQaaq+sk9A==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 14 Sep
- 2026 11:25:08 +0200
-Received: (nullmailer pid 1858111 invoked by uid 1000);
-	Mon, 14 Sep 2026 09:25:07 -0000
-Date: Mon, 14 Sep 2026 11:25:07 +0200
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: <davem@davemloft.net>, <herbert@gondor.apana.org.au>,
-	<netdev@vger.kernel.org>, Zhiling Zou <zhilinz@nebusec.ai>
-Subject: Re: [PATCH 05/12] ipv6: xfrm: use full sockets in local error paths
-Message-ID: <aqe9c7yHBpypRX50@secunet.com>
-References: <20260907093020.2228346-6-steffen.klassert@secunet.com>
- <20260908224856.1591189-1-kuba@kernel.org>
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="CTYtwTSb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=V4
+	0l4BEPJi0x3bSRqBmren6BviAFly+T5dJ5Wff1QSU=; b=CTYtwTSb/XrkAUZ6sT
+	2oi6wGcZyRf7o/jJbigd/pfNqv5wATq2VvLjnL0XS1Oo7ZMXogW7ROfSp1Zw6Jb5
+	M5vSFSE0AAANSuoHnLG4BjIcJHBFSX/BD1yhF4TnRm9TGXRaN89JhM3c9/C66GCF
+	Ix+Xs5VuHqKTk7vxEmBPyTm08=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCkvCgD337LEvadqgTuQFw--.32944S2;
+	Mon, 14 Sep 2026 17:26:28 +0800 (CST)
+From: Linkui Xiao <xiaolinkui@126.com>
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Linkui Xiao <xiaolinkui@kylinos.cn>
+Subject: [PATCH] ixgbe: do not busy wait in ixgbe_devlink_reload_empr_finish()
+Date: Mon, 14 Sep 2026 17:26:26 +0800
+Message-Id: <20260914092626.263886-1-xiaolinkui@126.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260908224856.1591189-1-kuba@kernel.org>
-X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
- (10.32.0.171)
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PCkvCgD337LEvadqgTuQFw--.32944S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7trW7AryUuw13JF1rAr1fWFg_yoW8tFWrpF
+	WUWasayw17Xr4Fg340vayUuF9xX3WagrW5GFyfK3y5C3Wktw1DKF1rtFyaqrWUArZ5Wr4I
+	qr1Y9rZ5Aan8Cw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07ULFxUUUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlAQl+2qnvcRXfwAA3S
 
-Ccing Author of the patch.
+From: Linkui Xiao <xiaolinkui@kylinos.cn>
 
-On Tue, Sep 08, 2026 at 03:48:56PM -0700, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> ipv6: xfrm: use full sockets in local error paths
-> 
-> xfrm6_local_rxpmtu() and xfrm6_local_error() used skb->sk directly and cast
-> it to a full inet/IPv6 socket, which is wrong when a SYN-ACK skb is owned by
-> a TCP_NEW_SYN_RECV request_sock.  Both callbacks now resolve the owner with
-> skb_to_full_sk() and return early when there is no full socket attached.
-> 
-> > diff --git a/net/ipv6/xfrm6_output.c b/net/ipv6/xfrm6_output.c
-> > index 512bdaf136997..44b221a09a0c8 100644
-> > --- a/net/ipv6/xfrm6_output.c
-> > +++ b/net/ipv6/xfrm6_output.c
-> 
-> [ ... ]
-> 
-> > @@ -31,7 +34,10 @@ void xfrm6_local_error(struct sk_buff *skb, u32 mtu)
-> >  {
-> >  	struct flowi6 fl6;
-> >  	const struct ipv6hdr *hdr;
-> > -	struct sock *sk = skb->sk;
-> > +	struct sock *sk = skb_to_full_sk(skb);
-> > +
-> > +	if (!sk)
-> > +		return;
-> 
-> [Severity: High]
-> Should the IPv4 sibling of this same afinfo->local_error hook get the same
-> treatment?  xfrm4_local_error() in net/ipv4/xfrm4_output.c still hands the
-> raw skb->sk to inet_sk():
-> 
-> net/ipv4/xfrm4_output.c:xfrm4_local_error() {
-> 	hdr = skb->encapsulation ? inner_ip_hdr(skb) : ip_hdr(skb);
-> 	ip_local_error(skb->sk, EMSGSIZE, hdr->daddr,
-> 		       inet_sk(skb->sk)->inet_dport, mtu);
-> }
+ixgbe_devlink_reload_empr_finish() is the .reload_up devlink operation,
+so it always runs in process context with the devlink instance lock held.
+Its polling loop delays with mdelay(500), i.e. it busy waits for half a
+second per iteration and, because the loop bound is 20 iterations, for up
+to ten seconds with preemption and interrupts to the timer subsystem
+effectively blocked on that CPU. That is long enough to trip the soft
+lockup detector and to stall RCU grace periods, and it keeps a CPU fully
+occupied while the firmware performs the EMP reset.
 
-There are still direct references of skb->sk that might need to
-be moved to skb_to_full_sk in the codebase. The patch fixed what
-described in the commit message and did not introduce a regression.
+Use msleep() instead, the loop does not need to be atomic and nothing in
+it holds a spinlock.
+
+While at it, rename IXGBE_DEVLINK_RELOAD_TIMEOUT_SEC to
+IXGBE_DEVLINK_RELOAD_TIMEOUT_TICS: the value counts 0.5 s tics, as the
+comment right above it already explains, so the _SEC suffix is
+misleading.
+
+Fixes: c9e563cae19e ("ixgbe: add support for devlink reload")
+Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+---
+ drivers/net/ethernet/intel/ixgbe/devlink/devlink.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
+index cf8908b82f8a..7ce0a0cbf9d2 100644
+--- a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
++++ b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
+@@ -430,7 +430,7 @@ static int ixgbe_devlink_reload_empr_start(struct devlink *devlink,
+ }
+ 
+ /*Wait for 10 sec with 0.5 sec tic. EMPR takes no less than half of a sec */
+-#define IXGBE_DEVLINK_RELOAD_TIMEOUT_SEC	20
++#define IXGBE_DEVLINK_RELOAD_TIMEOUT_TICS	20
+ 
+ /**
+  * ixgbe_devlink_reload_empr_finish - finishes EMP reset
+@@ -460,11 +460,11 @@ static int ixgbe_devlink_reload_empr_finish(struct devlink *devlink,
+ 		 * may be not cleared yet, so begin the loop with the delay
+ 		 * in order to not check the not updated register.
+ 		 */
+-		mdelay(500);
++		msleep(500);
+ 
+ 		fwsm = IXGBE_READ_REG(hw, IXGBE_FWSM(hw));
+ 
+-		if (i++ >= IXGBE_DEVLINK_RELOAD_TIMEOUT_SEC)
++		if (i++ >= IXGBE_DEVLINK_RELOAD_TIMEOUT_TICS)
+ 			return -ETIME;
+ 
+ 	} while (!(fwsm & IXGBE_FWSM_FW_VAL_BIT));
+-- 
+2.25.1
+
