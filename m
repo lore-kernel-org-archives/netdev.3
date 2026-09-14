@@ -1,173 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569263AFB06;
-	Mon, 14 Sep 2026 07:21:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A373B14BB
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 07:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789370477; cv=none; b=DH0C0nwMGkNE58iS5nS/3gKo4dCy4+60NN+riz/xanO+iw0NHxSVJGwa6ifO66jSZBEcIAUWlLwp4cDIgbx30viwTaZriufB8h9KG4njO1Pgto69f4rp+8w4e1vtNump38dPaECrYsOKvyeBoKXBiDk+EGKB++yA7cSdX34nhZE=
+	t=1789370499; cv=none; b=QYctlG4sCF00x7MLZbmTgQOD/un8bQj1demtWIBVzzjKf/3e9l7OvzCY9WQT6B5FELeP6CnkKiyWd1ZW9vrBQBwNqAmRbmFswvSeHIqH1I7MFQ2fDA6DeShHkPFJj0608ofcaNPMD+j+LfOvXk8jNcW4P0vJZSqEbYm3CWrA+ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789370477; c=relaxed/simple;
-	bh=YJ6g7kurmpyeZnwP2rn3WDXK74YKb8W78izUn13Iruw=;
+	s=arc-20240116; t=1789370499; c=relaxed/simple;
+	bh=0h2uF/vIp2VmCWjVzoJJTlLYWilhxHc8CwsVmC+yTKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fnuz/Pv52CdhsQsqZKdz8U8dwtzPGMs+Fdi2QivpXg+OkWf3CZHg1Hk6C0gGf+To4qNTFlweA3ccUwPL0aBknky1g+sQjNw/XKL+NKNA+z/G/G0KrZcz6AWrR58rEQk9h9W+a6VvuEA59uoQGhZNID4/ZEIfmrsougdacNmQWGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bmhj2c55; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=RFZ3uh3Lq7BafKv55a9fB+zmTKj2RWv/zfaC+IKgU7GOHGeDi1sxAYOGy/Lj7YpsIbEgSfp5Jfq+MDAqPVW42oWCaa/TL/aN+QEzkRmOFoxkP5kDp5TXVF5pe1GGkxf/tkoWbRts1lTj4vh4HlsCAKLsGzmxpLgQNLnq8LQ/t6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GoSj4MYQ; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bmhj2c55"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 724061F000FF;
-	Mon, 14 Sep 2026 07:21:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789370468;
-	bh=q8pHCJRKSkoWRdI92fOmPH+dnDohq3/AXLMmnH/vqlI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Bmhj2c55zIDuV03l4BNvWZc+J7+O09OcBh3YB7eHwVDL+Nc3xi1oyZ/vLlS/87cEF
-	 mJJOs7p4AdvWW6JEXkHVwGoj8SGv9PDBl2Td3hSGBmr0P+M6hz/8QUYQEGRTpyyyM5
-	 ebDAL4y4LzfonIS0kNsYVgxRK+BjKVNsFQZZA4dW8uyauyHJQ0axfYqKiSC7nYphKu
-	 EsWtGoAXyhe5fkEAcMgZJrBK8WUu7ye35GcmU1YoGyqLlWl8/I6qhRt+V03koP6U9q
-	 md3b4nViwXoh9yBmRfiVViDfJ8itJj106lr2c0j7aIBMR2l6jS6/tBkY0cf/14ybwY
-	 TyloupSvVlhdQ==
-From: Simon Horman <horms@kernel.org>
-To: han.junyang@zte.com.cn
-Cc: Simon Horman <horms@kernel.org>,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	ran.ming@zte.com.cn,
-	han.chengfei@zte.com.cn,
-	zhang.yanze@zte.com.cn
-Subject: =?UTF-8?q?Re=3A=20=5BPATCH=20net-next=20v2=203/3=5D=20dinghai=3A=20add=20async=20event=20queue=20for=20firmware=C2=A0notifications?=
-Date: Mon, 14 Sep 2026 08:20:51 +0100
-Message-ID: <20260914072101.233003-1-horms@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260911120507276-LIb4JGajTovY-mjFYhKq@zte.com.cn>
-References: <20260911120507276-LIb4JGajTovY-mjFYhKq@zte.com.cn>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GoSj4MYQ"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e7acdc816so748965e9.1
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 00:21:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789370493; x=1789975293; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Acfwk7tNHvsTx4xeegJLr3fmwza1/9++uyWzEXfIn6k=;
+        b=GoSj4MYQlYKdWE7SeLKiuZh5jqPIPNlfH7LVcxWqOJNwvNod+yunMGttOQrzZuoMfd
+         1AKUmOxfszPz1HEbRqHNfZ/X0qCoqJbhPuF657dE6LHX5jDd87a3qu9en0s3cXDk2g3j
+         2+dS+u9BoKVkmCalC2XhpK7A9wRodOAL8pc2sVWMiTd24pSvIUIEyhoE65/o+bnlurZB
+         6tojsLBwtKNmeJkar0ucpdBrF8DmV3B8z+uz66eL7nOneoyXkXVaacmUozn9L3tQXhIv
+         7g/oJEkjUA9wl4Av2ZFDGnsEVWLTPzKZy3zdWsoXEwRkcFjANZmxPIK0Os4iBZUmHdsj
+         Z0KQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789370493; x=1789975293;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Acfwk7tNHvsTx4xeegJLr3fmwza1/9++uyWzEXfIn6k=;
+        b=ZtpNo1s0ClR9S2JMXS0UNZBYJewoCZUxtbsOtFhg1AGNIlOUQE7K5YwSn00+5usLF6
+         gmr2HA5Ac0f+FwNqYUwTgnBUDZV8iu3WZwy/uGpCSDq6Z9cdoaSeTTlbAVi9ZIJrSvUA
+         RmIxFG6S47dj/Ln4zWq6fhMCPo/sY2oJIDZynYpAvfei7YZx4VyWF/juYBqMZAMSSBjN
+         7G/nlJBAeb2EZYkcBeHxdxO5Vm2Ygal408NtJhhOfOtpI13Q8OQJ68vmd+cyOUMZKzaK
+         inDF1ZfwCvTXAhnr5DucwUmjn5cYHyqqdH7eFfdksQBdtMVCxT31EwhKnSNupMlZCI2M
+         YbWQ==
+X-Gm-Message-State: AFuF++lCqHaiWXH75wUXEr/JBjTx0m3vzC/jzuO63S3RxC4pl3Njnq6/
+	Uj+szJDh8EkKIpXRg1l7XE6WXn32ZjBTCGyo0M78zzaLyPQvB6WGIPxxV7Tx12/r
+X-Gm-Gg: AYBFou20ENuZs49daebFoD5Wf+W8JiQZYopipiAd54Ud2/Sar0HoZlHkhmW+YdU3LO+
+	l9hHeFLrY3Ma0hewFW6lLtwgL+9e8092u93CkGw02e2wpAEfMG6WcLWvNN6WUq+hNhqevBENopP
+	WXTXOhJ0E+rvflcAK6Gx0KuI1q3CmqPnkc73aTwhfzpVmKLUhtzpIB0s+MC+OWD/KZju3djTMSX
+	sLIArxqGpQacik/inNAFL00FJSk0HpwYtZVih/Resut60SshKowfzaIJmpptQLOr6f1kgpcOeaE
+	PnEpkLX5A+yRjgv3QkfApVxPfrmHlgTdyFwMO/3yGCbWMU3emK+XvUk8fifrnH8vNk3NeEAllvR
+	zKx6+NoJfArwt/lcqZjdv8UkseO0SIFcowx1/+/gCDFkDnGp+d04VEAouetwQCO6oxjCtd4ZizA
+	LPbYYUg6ZOUhLk07yMF+uOjuYixVymvInFc915pAXeGWVlu7WzVE5NvAwE3IKpbAGrU+jc+8DN/
+	YJ4DLqyrxiDQOVc+EDsNcAfNVtOFuqfS9vZHyeO
+X-Received: by 2002:a05:600c:3e1b:b0:49e:6836:5386 with SMTP id 5b1f17b1804b1-49e7a5fb97emr14001605e9.0.1789370492805;
+        Mon, 14 Sep 2026 00:21:32 -0700 (PDT)
+Received: from fedora-tap.advaoptical.com ([82.166.23.19])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d26be3e35sm369476585e9.2.2026.09.14.00.21.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Sep 2026 00:21:32 -0700 (PDT)
+From: Sagi Maimon <maimon.sagi@gmail.com>
+To: netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Sagi Maimon <maimon.sagi@gmail.com>
+Subject: Re: [PATCH net-next v14 0/4] ptp: ocp: add TAP CPLD support for ADVA TimeCard X1
+Date: Mon, 14 Sep 2026 10:21:30 +0300
+Message-ID: <20260914072130.12579-1-maimon.sagi@gmail.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20260914071555.11684-1-maimon.sagi@gmail.com>
+References: <20260914071555.11684-1-maimon.sagi@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev/#/patchset/20260911115929435mXJzcTF08xlUAdjnT8qqm@zte.com.cn?part=3
----
-dinghai: add async event queue for firmware notifications
+Sorry for the noise - this is an accidental duplicate send, 24 seconds
+after the original.  Please use the first posting:
 
-This commit adds an event queue table and an async event queue for firmware
-notifications. The queue claims an MSI-X vector from the async pool and maps
-firmware events to notifier chains.
+https://lore.kernel.org/netdev/20260914071531.11640-1-maimon.sagi@gmail.com/T/#u
 
-> diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.c b/drivers/net/ethernet/zte/dinghai/en_pf.c
-> --- a/drivers/net/ethernet/zte/dinghai/en_pf.c
-> +++ b/drivers/net/ethernet/zte/dinghai/en_pf.c
-[ ... ]
-> @@ -612,12 +612,26 @@ static int zxdh_pf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
->  		goto err_irq_table;
->  	}
->  
-> +	ret = zxdh_pf_eq_table_init(zxdh_dev);
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "zxdh_pf_eq_table_init failed: %d\n", ret);
-> +		goto err_eq_table;
-> +	}
-> +
-> +	ret = zxdh_pf_eq_table_create(zxdh_dev);
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "zxdh_pf_eq_table_create failed: %d\n", ret);
-> +		goto err_eq_table;
-> +	}
-> +
->  	devlink_register(devlink);
->  
->  	return 0;
->  
-> +err_eq_table:
-> +	zxdh_pf_eq_table_destroy(zxdh_dev);
->  err_irq_table:
-> -	kvfree(zxdh_dev->irq_table.priv);
-> +	zxdh_pf_irq_table_destroy(zxdh_dev);
->  err_cfg_init:
->  	zxdh_pf_pci_close(zxdh_dev);
+The two are identical; only this copy should be dropped.
 
-[Severity: Medium]
-Does this error path leak the modern configuration MMIO mappings?
+pw-bot: superseded
 
-The zxdh_pf_modern_cfg_init() function successfully maps several capabilities.
-If a subsequent step fails (such as zxdh_pf_eq_table_init() or other device
-initialization checks), the code jumps to err_eq_table and falls through to
-err_cfg_init. However, this label only calls zxdh_pf_pci_close() and misses
-a call to zxdh_pf_modern_cfg_uninit(), leaving the memory mapped.
-
->  err_pci_init:
-[ ... ]
-> diff --git a/drivers/net/ethernet/zte/dinghai/zxdh_eq.c b/drivers/net/ethernet/zte/dinghai/zxdh_eq.c
-> --- /dev/null
-> +++ b/drivers/net/ethernet/zte/dinghai/zxdh_eq.c
-[ ... ]
-> +static u16 zxdh_eq_event_id_get(struct zxdh_core_dev *zxdh_dev)
-> +{
-> +	struct zxdh_pf_dev *pf_dev = zxdh_dev->priv;
-> +	void __iomem *subchan;
-> +
-> +	subchan = pf_dev->pci_ioremap_addr[0] + ZXDH_BAR_MSG_SUBCHAN_RECV;
-> +
-> +	return ioread32(subchan) >> 16;
-> +}
-
-[Severity: High]
-Is there a risk of an out-of-bounds MMIO read here?
-
-The device blindly maps BAR 0 based on pci_resource_len() during
-zxdh_pf_pci_init(). If the hardware or an emulated environment exposes a
-truncated BAR 0 length that is smaller than 0x2804 bytes, reading from
-ZXDH_BAR_MSG_SUBCHAN_RECV (offset 0x2800) could exceed the mapped boundaries
-and cause a page fault or oops.
-
-[ ... ]
-> +int zxdh_pf_eq_table_create(struct zxdh_core_dev *zxdh_dev)
-> +{
-> +	struct zxdh_pf_eq_table *pf_eq_table = zxdh_dev->eq_table.priv;
-> +	struct zxdh_eq_table *table = &zxdh_dev->eq_table;
-> +	struct zxdh_eq_async *eq = &pf_eq_table->riscv_eq;
-> +	int err;
-> +
-> +	mutex_lock(&table->lock);
-> +
-> +	eq->priv = zxdh_dev;
-> +	eq->irq = zxdh_pf_async_irq_request(zxdh_dev);
-> +	if (IS_ERR(eq->irq)) {
-> +		err = PTR_ERR(eq->irq);
-> +		goto unlock;
-> +	}
-
-[Severity: High]
-Could this lead to an invalid pointer dereference on the cleanup path?
-
-If zxdh_pf_async_irq_request() fails (e.g., due to memory exhaustion), it
-returns an error pointer like ERR_PTR(-ENOMEM). This error pointer is
-assigned to eq->irq but is not cleared to NULL before jumping to unlock.
-
-When the error propagates, zxdh_pf_probe() jumps to the err_eq_table label
-and calls zxdh_pf_eq_table_destroy().
-
-Because eq->irq contains an error pointer, the cleanup check in
-zxdh_pf_eq_table_destroy():
-
-    if (eq->irq) {
-        zxdh_irq_detach_nb(eq->irq, &eq->irq_nb);
-        ...
-
-will evaluate to true, and zxdh_irq_detach_nb() will attempt to dereference
-the error pointer, causing a kernel panic.
-
-> +
-> +	eq->irq_nb.notifier_call = zxdh_eq_async_riscv_int;
-> +	err = zxdh_irq_attach_nb(eq->irq, &eq->irq_nb);
-[ ... ]
+Thanks,
+Sagi
