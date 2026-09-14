@@ -1,147 +1,139 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D7F41168C
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 08:55:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFF53F6606;
+	Mon, 14 Sep 2026 08:59:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789376113; cv=none; b=b2X7kIKPJoyaviw9ahKlW6gfwEDrJJDxOD0vPWFLUmVuDyQzQDJP300bNLwT2D7+BCqqVbvFCAioVcu2sXq3fz3jHS9aVlZHtZbCVtgx+2tPdgzw+iUM3RNYpPYQDAdZbwlT0DK9jN5lOPSaywdJr75rFdyZ/A8qr6/NEIgJHhw=
+	t=1789376347; cv=none; b=fCdQYR+8EASimJM7OC2h4P0O8Wc6NnkqDua0qV0QIJ46PwcppNm2bRTHuH5f1QmNugv7jTRwNOWjfnO5QFOvmCmU0YKnfIDW1WZCH2NX9CSmDgA2k+A6003b9QXtGUqwcYgI3Zz3OeFaXBdvrVLnHNa4U5zDqjiiOBBhWaXnLBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789376113; c=relaxed/simple;
-	bh=IJyCKllunMMUhHfcw5OmNX0Wc6uDfl1qnkLw0LwVxg8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J7SzKpfkFHmrcCIz8ylDU8uSg+ITBjzzTLURTuyaW/sbcc8bddR3ZmwenVJYr5HT/mkHVriErIHkrR4E5Sz5GWLa7GEyYhy60oy0zqXoqoRoCj7PikCnpHTdnjpE6kAb4GFGHXsh5C/4caPnzjS8RG0Uu6F9OKwJTVbUrznFMX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hIE+KBPP; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789376347; c=relaxed/simple;
+	bh=ZKR3YL7DOGMM33HkTzgkuXuovQncJmpU/sGGmUwK81Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AKPKvz43UkLgNO61GAtf9LA8z132unciLIXP7Unnugb7m7eeuj4QXmqc9gykFo8pN6MXkgex6GGiN8FQckbMm5TRgYJ5kSVC/1nzch+DLmHeMyj2zxFtBIRnPd8KiMY5nLhBvMhjMa2x7Q2qaQvXEGXJj4PLjr635HLV9iFDERo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=S3JmjT5N; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hIE+KBPP"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c20ce3c118aso352495066b.0
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 01:55:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789376103; x=1789980903; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kSgf3ABCS/HTHGlHUul3ahtWnU5PdY9A7nkvg16f/yg=;
-        b=hIE+KBPPhdEtOZDttXXUbe02zyH5ZknVMZevD7PD21w6gKD3wXKg+iG1MnRP15I2np
-         XFA2lReGJyUBMeNUvQYiCV8v4grojvR7s4FodM5DYC0IAf2STFj+c1fEztUZW72OwQJh
-         VZ6ib/7nOWupEZlVdyHkOtPT+z5BAjvHlsnuUgCVJBPbJP8jGjB3MGIQ0H5kxCwrmvS8
-         La5JT+A7PrcnZillujtbpzEvV+VqJNTRxikd8AciOUDQ4spYGFZpYnmMd2cesMpgXssb
-         2dYEoDVpwsbW9e0MWa4G8tSsTErPbbLy+YxPrWij3x5jEvuztC01V7Lv+9Q0AUPAjMW5
-         2CzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789376103; x=1789980903;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kSgf3ABCS/HTHGlHUul3ahtWnU5PdY9A7nkvg16f/yg=;
-        b=S+UbYsYiktFZ5DOocLtMWS0Q35fL6RTQflrZMK5FSmC60l3ZuNR5FKKBOVxBE4uakB
-         VZMgCg9g9I/2Mf8KAM9TWjrbNpAUEtGRRv8aR7FMlz2ZYVjtj8epyaFBY3+6jgVyZwBe
-         bOTfhl0pg7YriytdbNyKUXyTEbOP75IidATcXOEmsRIiNY3CfqAMz5xuQ9Upx+D14Pyl
-         4Do87qnAkjxvtjs3/j6Z9Zc1zdcy84cntvSsac6220hydxSUrkSdbqzc/dVjD9MUiwAD
-         LfLEweJAXymbOjBjaiO3ymDZTmd7wUxoj9RtBZPlEOZr6dvdpT4wiEfTsuqSp6ZLj5Ka
-         dukg==
-X-Forwarded-Encrypted: i=1; AKwUvBxnzK7lIzLmPKggrqL/C6bR2Wlb+5jAtub5qR6wFeHQji2fTet3lY5Quc5RPJZHbozBf3cPbvQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++n2sACdM2LCDzFYrPFXiXtAFBoHSb0Mf8l8gaBCyodNqookYHSM
-	cESNGSseIhYroVPU8sm8bKbXy8gFtJuKjmiZU2SpBHvP77gLAcv2BVKL
-X-Gm-Gg: AYBFou1Aqf1QtmGseb+IP+0USgSv2ivQPvvacFH5vRW1b50RbfSj/h/PY0osh/iwGzA
-	68I6wcfJzsL3WnveoSv0OnROuycEkxwhcHM7PKo6J3OoJUt0TVOxzx+EdhNs19HsMEO59tUhqy2
-	Bj8LdWcy2iV1H30BllKvKhnyKU2dax28TboWybrJ0YkicrQCUHxTbvaA6IhFacGErPF7kIPXXdK
-	JcYgXr35pjBPEMHKpDC90WQ/sQknCrnHhdtYDLa6nLVhJ1DEErY56q1mKi9GA3koJunO62Hv2g+
-	9mhNNgbfd4mwFglZi9n285GXdP/ypGtwyfpQoGwFbkbYZUZcEXX0a0e3F5/fYkr+GT88ujAUlVC
-	P2jk8x/dweEQfmpmgHFQi3czYRPGMfsTnf12VtYtse+CCA+C5Mx67dzcNNsQLN869wbkgLkpnYD
-	3YsvSrna7gqSLsgHZIpy7xcea7YFC09ayTG6O9S5EPR8bCOWzq29mpha7yhkTOV8oijxu+RveXl
-	An/U5U6YUUE1Z9sauTPzfuPj0BNK0gPA22LlRg7+uQre+MUWl1qrDqXiMaVZOiRExbd
-X-Received: by 2002:a17:907:970c:b0:c25:5a26:3787 with SMTP id a640c23a62f3a-c29a42f1e2dmr277217366b.8.1789376102419;
-        Mon, 14 Sep 2026 01:55:02 -0700 (PDT)
-Received: from BERSOARE-M-K4D5.cisco.com ([2603:5004:20a0:100c:4701:1ac4:1c21:4a1])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c29ad3e033asm101378466b.47.2026.09.14.01.55.00
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 14 Sep 2026 01:55:01 -0700 (PDT)
-From: Bernardo Soares <bsoares.it@gmail.com>
-X-Google-Original-From: Bernardo Soares <bersoare@isovalent.com>
-To: Mark Bloch <mbloch@nvidia.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>,
-	netdev@vger.kernel.org,
-	saeedm@nvidia.com,
-	Vlad Buslov <vladbu@nvidia.com>,
-	Bernardo Soares <bersoare@isovalent.com>
-Subject: [PATCH net v2 3/3] net/mlx5: Bridge, don't fail unlink of untracked/unsupported peer ports
-Date: Mon, 14 Sep 2026 09:54:30 +0100
-Message-ID: <20260914085430.18694-4-bersoare@isovalent.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260914085430.18694-1-bersoare@isovalent.com>
-References: <dd3247a9-14d5-4866-a20e-b31d414ec1a1@nvidia.com>
- <20260914085430.18694-1-bersoare@isovalent.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="S3JmjT5N"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68E61d4W1220073;
+	Mon, 14 Sep 2026 08:58:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=aE4dvM
+	a+pgFR08pTQqS/RYVptiyrSgj2EERRyfiKGvg=; b=S3JmjT5NDrTSGI8TRmjlVO
+	f3ydBjaPYj7XBxa/CzNYfVHd6loxEh410Mi2tShzUyJ95eWAVOIeFJyPWxbk7Nf4
+	TYN3eXnPi3SgCIdz0q6SW4jZASWrDJdz9CH4vJk2GyxshlPAsK20rxKe+ipEaHmU
+	1es7frHhEalnkgApwCJRv1Br3vTcfRSDqRXEVgMCvBEnZyhH184xNrGKI0OTtmgE
+	HLhuqr5hHd6ylh735oqIWRe8NtASkpx5egUDhWzTf2rANW+94ALWw68gRjfWSW7Y
+	wglNOEbcOOYP9EzBi3vQGvR9ctDoxqZ8Gl20ZlzR8T/vXpx28K+z3SV6oUP6GYFA
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmxf4r6x6-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 14 Sep 2026 08:58:47 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68E5o9Kv1775175;
+	Mon, 14 Sep 2026 08:58:46 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gnhevw2y2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 14 Sep 2026 08:58:46 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68E8wiIA30933374
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 14 Sep 2026 08:58:44 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A0B2120040;
+	Mon, 14 Sep 2026 08:58:44 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3885E2004B;
+	Mon, 14 Sep 2026 08:58:44 +0000 (GMT)
+Received: from [9.224.77.173] (unknown [9.224.77.173])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 14 Sep 2026 08:58:44 +0000 (GMT)
+Message-ID: <28c6b0e5-eff3-4556-802d-be6ed3f16615@linux.ibm.com>
+Date: Mon, 14 Sep 2026 10:58:43 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net RESEND] net/mlx5: Use unique names for software
+ steering caches
+To: Leon Romanovsky <leon@kernel.org>, Jakub Kicinski <kuba@kernel.org>
+Cc: Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
+        Paolo Abeni <pabeni@redhat.com>, Alex Vesker <valex@nvidia.com>,
+        Gal Pressman <gal@nvidia.com>,
+        Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+        Kees Cook
+ <kees@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Yevgeny Kliteynik <kliteyn@nvidia.com>
+References: <20260730210200.2590115-1-tariqt@nvidia.com>
+ <20260803182614.23f26c91@kernel.org> <20260804080455.GB326170@unreal>
+ <20260804145756.331951b7@kernel.org> <20260806111739.GF23431@unreal>
+Content-Language: en-US
+From: Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <20260806111739.GF23431@unreal>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: 6z6PFjUIU08umo8wYdOkU-brpLRUJTT6
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE0MDEyMSBTYWx0ZWRfX0MgKatl/gdlL
+ NEB80UX1ne+/lllmiMm+HreI4VvlAiHs4oTYPe5krrEdoX8WbgBkqGeVoaElHaRS6r7hKmZYJeK
+ 8xTxSvIeVA0tSeBMUjYELIJ06bXa0mU=
+X-Authority-Analysis: v=2.4 cv=cvgOAF4i c=1 sm=1 tr=0 ts=6aa7b748 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=1Diy75IYRmTSxbJiyC4A:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: hdYAq1H2Qstr8mQixZrYsGG0FkWKm-8t
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE0MDEyMSBTYWx0ZWRfX+pgIVr6PBaJC
+ 5+mUidS7qJLX6x3IC5Cml79bbK/ONHAoRUh2vP8oHmA/ImdjqvLC635PO5RAXFuC8ncTDBvK/I/
+ tQDI/erZmtaz2fHfaJN/kudTYdcYpH/0xPl3ZNJbxQhD2vZ3ZWorcZyGck2wlNBqPieh43FRZic
+ InY5OXMRBoFlxblPwZ6B/Yr/5odhnLM3x9UPKCRDC/X7KcxXWaMKsbLpKxAEO0eO6vvr/kjq9g9
+ 3Vx0zE/ox1ELxuYcQijPi3hw3Vhgm7Xq/LovuWWE1h9iUjkJ/qtPsy/WuofRNdB3jtP0iGCwtlB
+ 3G4zrqNf/roay59QkeLLndUG/OpIBPLmDhWj6LclnRwIA4+jP/BYk/mGqlsxOmTBFtBPGoF1LIl
+ sa5X0yRNmvJORbhXctJYxCfnXjPGtgj4ILFLuDqmIb06thfZfYt4TrXZmCQkfx8sm+9gkwovnBy
+ 3Rzg0wkVCGyVV23rGiQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-14_02,2026-09-13_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 lowpriorityscore=0 clxscore=1011 priorityscore=1501
+ suspectscore=0 bulkscore=0 impostorscore=0 phishscore=0 spamscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2609140121
 
-mlx5_esw_bridge_vport_unlink() returns -EINVAL when the port isn't
-tracked by this instance's br_offloads, which is reachable in two
-legitimate cases: a replayed/duplicate NETDEV_CHANGEUPPER unlink for a
-port already cleaned up, or a peer-port unlink for a vport whose link
-was never created because peer_link() skipped it. Return 0 instead in
-both cases, and give mlx5_esw_bridge_vport_peer_unlink() the same
-merged_eswitch capability guard peer_link() already has.
-
-This also matters beyond the -EINVAL itself:
-mlx5_esw_bridge_switchdev_port_event() runs on the per-netns
-netdev_chain, and notifier_from_errno(-EINVAL) sets NOTIFY_STOP_MASK,
-which call_netdevice_notifiers_info() checks to skip the global chain
-entirely - so the old -EINVAL silently dropped the event for every
-other listener on the system, including a sibling PF's own
-bridge-offload instance, even though none of it was visible to user
-space since __netdev_upper_dev_unlink() discards the return value.
-
-Fixes: c358ea1741bc ("net/mlx5: Bridge, allow merged eswitch connectivity")
-Signed-off-by: Bernardo Soares <bersoare@isovalent.com>
----
-v2: new patch, addresses review comment on v1 asking whether the peer
-    unlink path also needed changes. mlx5_esw_bridge_vport_peer_unlink()
-    now mirrors mlx5_esw_bridge_vport_peer_link()'s merged_eswitch
-    capability guard, and mlx5_esw_bridge_vport_unlink() treats an
-    already-absent/untracked port as a no-op (return 0) instead of
-    -EINVAL, which is reachable on a replayed or duplicate
-    NETDEV_CHANGEUPPER unlink and was found while auditing the same
-    code for the ownership-check gap raised on v1.
----
-
- drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c
-index ac90ccda1272..b4cf3c5ac0dd 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c
-@@ -1649,10 +1649,8 @@ int mlx5_esw_bridge_vport_unlink(struct net_device *br_netdev, u16 vport_num,
- 	int err;
- 
- 	port = mlx5_esw_bridge_port_lookup(vport_num, esw_owner_vhca_id, br_offloads);
--	if (!port) {
--		NL_SET_ERR_MSG_MOD(extack, "Port is not attached to any bridge");
--		return -EINVAL;
--	}
-+	if (!port)
-+		return 0;
- 	if (port->bridge->ifindex != br_netdev->ifindex) {
- 		NL_SET_ERR_MSG_MOD(extack, "Port is attached to another bridge");
- 		return -EINVAL;
-@@ -1682,6 +1680,9 @@ int mlx5_esw_bridge_vport_peer_unlink(struct net_device *br_netdev, u16 vport_nu
- 				      struct mlx5_esw_bridge_offloads *br_offloads,
- 				      struct netlink_ext_ack *extack)
- {
-+	if (!MLX5_CAP_ESW(br_offloads->esw->dev, merged_eswitch))
-+		return 0;
-+
- 	return mlx5_esw_bridge_vport_unlink(br_netdev, vport_num, esw_owner_vhca_id, br_offloads,
- 					    extack);
- }
--- 
-2.43.0
-
+Am 06.08.26 um 13:17 schrieb Leon Romanovsky:
+> On Tue, Aug 04, 2026 at 02:57:56PM -0700, Jakub Kicinski wrote:
+>> On Tue, 4 Aug 2026 11:04:55 +0300 Leon Romanovsky wrote:
+>>> On Mon, Aug 03, 2026 at 06:26:14PM -0700, Jakub Kicinski wrote:
+>>>> On Fri, 31 Jul 2026 00:02:00 +0300 Tariq Toukan wrote:
+>>>>> Prefix each cache name with the device name to make it unique.
+>>>>
+>>>> Why do we need a per-device kmem_cache?
+>>>> Isn't the right fix to make this driver-level state?
+>>>
+>>> This kmem_cache is required only for software managed steering mode, which is
+>>> configured per device by mlx5_fs_mode_set(). In general, resources
+>>> should be allocated only when they are actually needed.
+>>
+>> Of course you have to wrap the init in a lock and count users.
+>> Trivial stuff.
+> 
+> I don't see why we should abandon the simple, architecturally
+> correct approach of allocating and managing resources where they
+> belong in favor of a more complex global scheme involving locking
+> and reference counting.
+> 
+Any updates on this?
