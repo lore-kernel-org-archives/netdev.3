@@ -1,52 +1,86 @@
-Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E6237F73E
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 05:42:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0BC37F01B
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 05:54:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789364546; cv=none; b=GYz1VwzbHOXdy/Hy4i5LM4hShKF7+BJMEzOSizqQQOn49ZRJqFjX6NapbvDkAP+683ZJhWq+DQd8VzwvVKFhr1RdSFZw2USgb3nr9TO5Sh8fFdnidGXgZMrd/9E6PbUqm9ogs02AW/Q7cXcrViDO2+Gntkt8kwpA3W/U1ssQZKA=
+	t=1789365287; cv=none; b=EmiET25Ykn9UfXnSuC52JhVTzU/WCv0lU9xDG4ZGOPd/SATAKrmGfBpGelp3ZQsyxy9EOrgd0+JQC0JrLUWfMY8KE23xUE2mo2PbHxvGqQvLo6Q+LprAC26h3eW25R3EBO1PlyLHNO6CfcRNWCv+4752wAzt4VhmyfMG/C9otuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789364546; c=relaxed/simple;
-	bh=z0glGIuBNzWKc1iOxR6Z9tZnSi8z1/HHqKj6IpKEYaw=;
+	s=arc-20240116; t=1789365287; c=relaxed/simple;
+	bh=hev/gaIcNmVVQdTqrnIpXpJ3bvgyjIUCvBYSMoksKQw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KHavldLF63E4eB2621YEWSlzIf9u0qP/couMELzn3YrMbVtaeB2ryNCRWt3jo56bHdY3cYmv+iiYLRLKiz8S08p5YEaJfzhN0J9ZZaHBOHqyrUa0bWYhLGqagastS23PtqmwAQjsB1BU1s5YhfqKpaoF7N+yunFeWIhP9/DHqYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=aCW9FG2z; arc=none smtp.client-ip=44.202.169.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
+	 In-Reply-To:Content-Type; b=tDBQk53cj80D5GMRbZbRLj3bDbBvVQfDmQTnctQT2LZONPESiK41qyDrOZl51u+9OVSqfgQDapRckorRFWGei07j1qi8hsx6NAkEf4mdWUXQOw7st0AMLYr7mxzfiZPTmyyp59Ar0yDS67ihTTg3zovB0DDNv0EO/6sCjQJTAJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jOYvHKgU; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=D/Gfdp+5; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="aCW9FG2z"
-Received: from eig-obgw-6002b.ext.cloudfilter.net ([10.0.30.203])
-	by cmsmtp with ESMTPS
-	id 5qMuxFob6uFzg5zSMxW2tG; Mon, 14 Sep 2026 05:42:18 +0000
-Received: from gator4166.hostgator.com ([108.167.190.91])
-	by cmsmtp with ESMTPS
-	id 5zSLxc6m9gxfo5zSLxX6eD; Mon, 14 Sep 2026 05:42:17 +0000
-X-Authority-Analysis: v=2.4 cv=B7G50PtM c=1 sm=1 tr=0 ts=6aa78939
- a=vY9Mjuda9oMEc2E4Cx1x2A==:117 a=vY9Mjuda9oMEc2E4Cx1x2A==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=7T7KSl7uo7wA:10 a=VwQbUJbxAAAA:8
- a=pGLkceISAAAA:8 a=VSUqd2-QvgQJ3Wj9IooA:9 a=QEXdDO2ut3YA:10
- a=2aFnImwKRvkU0tJ3nQRT:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:
-	List-Archive; bh=trdCXU9qDUDUsWDOAU5LiSOzE7DFuDct3tTNYESdXB4=; b=aCW9FG2z4NvY
-	R+nSOTVpW0hgplIMbpZNslfcnaB1wjw53rmzTolwUsIKsFpZRXcw84YTAmrVfVxkqdEiMs57LTLLo
-	zIVc4oC/pZV7HUQpElXIoYmxLZywaoUN/0uarr6jFxcOftl/Nr35cvxsYPG11iXeMjWXZF3l6oMi6
-	rjq5UUysXqCYjcF6lgz3d2EnpV0Nl4mUfQLY466Gn9tqYe8v+EALk9qYPR2bxecAo9s9vl5fWDwhP
-	v98C3DhiEoNLu8oVJsHb0p2ZXCqdWE/pedfP/wBXS/OxZJL2BnhAzquY+ww/OMc40BdecTfAbc5Nq
-	XiJp7BQiPwYQX781mJQp7Q==;
-Received: from flh4-125-195-69-90.tky.mesh.ad.jp ([125.195.69.90]:57896 helo=[10.203.100.11])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.100)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1x5zSJ-00000003koE-3C5B;
-	Mon, 14 Sep 2026 00:42:15 -0500
-Message-ID: <fc4e5815-56da-40df-b3f5-dbf6e0470b1b@embeddedor.com>
-Date: Mon, 14 Sep 2026 14:42:06 +0900
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jOYvHKgU";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="D/Gfdp+5"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68E5jSrP237673
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 05:54:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	IkBzPASuS/MD3LwoWVXItQXmkZXEaLorVetDamfkIag=; b=jOYvHKgUPRonVH/i
+	sZHT0MPD6VhSq1JYRMcCdgUN1DKZmt0fhMD/KqVwNMxEX6cw1rcV7uVg9ZofoNsy
+	6X/zJr0bjW0/AEGLSoD0s+0/m4tVbKNZdT46vVgZlEUKiUMpgBFwX8CXwYUPMkmZ
+	7frFVSObd+o0Z74bz/UO3zmgiiPXUMa0nYZbzz2cNxURzqPLiCEQ77kyUDJ5sooO
+	tfI2pxNlEvFgYWD6ZByQrAcCytcb38xm/DkIofUYarX7hKm07W6VGM+QT24Q1EuA
+	EOEA70uCw39zndJDp8CpR//yFQ6/Hc5Ek1AaeB2hXKfWR86zVECk+TQTfUgL0vby
+	omn9Uw==
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gmy9dn869-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 05:54:39 +0000 (GMT)
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-854f274dd69so3461043b3a.1
+        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 22:54:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1789365278; x=1789970078; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IkBzPASuS/MD3LwoWVXItQXmkZXEaLorVetDamfkIag=;
+        b=D/Gfdp+5/WXbzJdonIyiTjTboA7WRirWu/H3DXiEOv3LeGVii5td86z2pVmHNohODn
+         iPBWQcxvO5oALD8/2Xebk5w46x+ewevr8rMUb9wNtRQd4xWwFxMaCndO2aEE13sg8d7b
+         GieeNyNgqGwTxokg2ZHmWqDiX2Y86K6/8TsxIhLvmYExWaSCFYvVdQyKVU48GukkcYFA
+         NSefcTlaCqL1NLnzE9yP0y4wmKHn6W1iddXYhg4CsUMFIqo9um1K/5+T42aW6Ra9rp88
+         DqWJViHKWDd/kes+8cYB8lptS000PfWb6IqQRVu51r2KIXja2bdfRYHH0zyXZ7Qnh8t8
+         XDYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789365278; x=1789970078;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=IkBzPASuS/MD3LwoWVXItQXmkZXEaLorVetDamfkIag=;
+        b=oXCtFmjavD/OHahx00djx8R+eHHQb6CFmdxF6X+NchJ8glr5BPJpvlp0z6Q1mGnKhT
+         YMHGEnQbVcGVNQuJHh6UhdwxAtDKR/z52IWXnAkxi9CH9EDYIqXt0NHQBZkTComMYYDM
+         tLVQo1YyD8Dq0l8w5V7b8BatuNFL7g/y8q3rA8gnsQpa9TUNBMt92dqY68G48vwA8cai
+         A1cnS48OFesk7bOfMlWjQFxiEuUv6OxIwHVkQzJ6XFFzAwIWi8IsJqzfdh+dks9ufcDl
+         i9gwSFkHiEYfdA9yXhOXLOjm92mimDb2mtYeE1MQiXp9ZU7mIIyPjAigNBK8F9tNZygg
+         FdAA==
+X-Gm-Message-State: AFuF++nqGVR+oXHty8zP3fPEv2F+Z47eSN7QepEKX7O4diGavvIgXbRS
+	9dXAcK+SYww5ZQa0OMjbxZ1IQQ+Zq/W56P0E0KcmXKvcdMjDKPgVfG1ZyL9H5wC8YD+lxj8v57a
+	txh4+R4+hGAjhFBSfZqkF6V6v/oCg/BuEGmfhHTEWjd5XBcVMrvbY0KQ4q/FHi9mCGK9rsw==
+X-Gm-Gg: AYBFou3+aXBBUSq+tD0QnHR8j/a7OmL32D/E2XumjZEWyNQK2HjmmFQoJLzO4XTPB5g
+	r5dY+pn9qgweChy3iUmARq1T/cWHTi04voWKAEjO6d+kLaFWWOTMaFtBST/Ui9bjbOWkYCKOOxv
+	vAn/hagu75OjwgqzfMmZggMO+ujkeSycPrOm+3IyWRP6HN4xb0XbPuYGgXWm0YObaUNbRsGJeQh
+	1fgz6Hu+WoMcQQ6PJW9xkUgmi+GHmhCU99NjGZ5XbgT4VTPwF+1eKe1hjPd2sYZwxEn2ulTp2Ip
+	zhqLtF1OY/H6a8N9hGHPQTYn/cT6CkSD0kXqPoe2GuiDwaI0e9LArDsiTmrWrf71qUWHF6F4iOq
+	ed9iMK9+osDzMQudy9MCxxyOSV9IVET8us84WU+Hki6/r7NPc65DtnYeVXmHaDPB1CA==
+X-Received: by 2002:a05:6a00:950b:b0:869:8620:26d2 with SMTP id d2e1a72fcca58-86f82f51c34mr2620075b3a.1.1789365278279;
+        Sun, 13 Sep 2026 22:54:38 -0700 (PDT)
+X-Received: by 2002:a05:6a00:950b:b0:869:8620:26d2 with SMTP id d2e1a72fcca58-86f82f51c34mr2620038b3a.1.1789365277762;
+        Sun, 13 Sep 2026 22:54:37 -0700 (PDT)
+Received: from [10.133.33.206] (tpe-colo-wan-fw-bordernet.qualcomm.com. [103.229.16.4])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86b2a3bc011sm3957346b3a.57.2026.09.13.22.54.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 13 Sep 2026 22:54:37 -0700 (PDT)
+Message-ID: <76f93dfb-b5c0-45af-8358-8ddb7f2f560c@oss.qualcomm.com>
+Date: Mon, 14 Sep 2026 13:54:34 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,150 +88,79 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] net: ip_tunnel: initialize `options_len` before
- referencing options
-To: Gris Ge <cnfourt@gmail.com>, David Ahern <dsahern@kernel.org>,
- Ido Schimmel <idosch@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: stable@vger.kernel.org, Simon Horman <horms@kernel.org>,
- Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Cosmin Ratiu <cratiu@nvidia.com>, Gal Pressman <gal@nvidia.com>,
- Tariq Toukan <tariqt@nvidia.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-References: <20260913090851.468216-1-cnfourt@gmail.com>
+Subject: Re: PPE driver: are qdisc or flowtable offloads planned?
+To: Julius Bairaktaris <julius@bairaktaris.de>
+Cc: netdev@vger.kernel.org, robimarko@gmail.com
+References: <CAC1t37+=keDdX7=G+zyPhBx2LgRNEuoB2tonHF5itrN+Lyx2+g@mail.gmail.com>
 Content-Language: en-US
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <20260913090851.468216-1-cnfourt@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 125.195.69.90
-X-Source-L: No
-X-Exim-ID: 1x5zSJ-00000003koE-3C5B
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: flh4-125-195-69-90.tky.mesh.ad.jp ([10.203.100.11]) [125.195.69.90]:57896
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 3
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfPcfqw2kPo6yZytbqQ6wZmZd1VCu4ZDEb43qk1Lk1SzsG3hyazOdlXgHiS5NLJpHmm543dQdZonTS013svKMCApTsUNBEiKihEnH8EfTQlbhJbJmgZdy
- FLnjvsEo+Q2iH3XlcNQhs8kHTV6WVc6f2oppWyZ3kcSwQMnW3Yok4O2SYp9IAgQzXK1x9PRxEX7UKXndynU8jviQdvfjx4aSm4c=
+From: Jie Luo <jie.luo@oss.qualcomm.com>
+In-Reply-To: <CAC1t37+=keDdX7=G+zyPhBx2LgRNEuoB2tonHF5itrN+Lyx2+g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: n6BNSoIld278ynnc48yZ0pGr3q0opMyO
+X-Proofpoint-ORIG-GUID: n6BNSoIld278ynnc48yZ0pGr3q0opMyO
+X-Authority-Analysis: v=2.4 cv=NelzRGD4 c=1 sm=1 tr=0 ts=6aa78c1f cx=c_pps
+ a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=nuhDOHQX5FNHPW3J6Bj6AA==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
+ a=NEAV23lmAAAA:8 a=-f1nm1HtdSCZhZjsSm8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=zc0IvFSfCIW2DFIPzwfm:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE0MDA4MSBTYWx0ZWRfX29rDUWDtcyLz
+ j00i0Hn43+RsPt4bHasfhirAQCXAoMLtwdu4YVPPnv2RvWn6p70dwscT9TlIpMCW77vQ9dCweFE
+ yn3pMDW6+xTSJZvk3PwuwvW4w+buFk4=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE0MDA4MSBTYWx0ZWRfX7exGqvq8LxSo
+ Q8eIEgzs4lgNIAQbWnSUiUoTWRZPdzA5i0GYtB9PUPSTqCUUBkfMHq+HWZEwHNaVMra2NqjJQlO
+ 3kUPjxUvrGLrkGKGx7lylaGzl/Q4SJQDwFkFh94IxboPNEYbWsP87uc8GqO6vLzJ0vdugeG30NG
+ auQOHv/mNNLv7kCApcl0TsYcm76TLgqHGqIpLMdA/a4DB0OF3FivfRJmuedU8EsAxBhPZ8WNYrA
+ dR+rS5QkAGOksi7RNBUk+d7tp3XWsMfyEmJxiTpcZiczesUO0pOfI/OIyKrcYEv66rgCmgWVR2r
+ sEL4eIRvjeItgsbHDziXQmWUvCKGVefrrP4OCpr2Rd0YuL7W6UbYvA2misD31C0lb6pvUVbyCwb
+ PMyBJ3EVBJfFObWQDUD2y2xHhyI9G5hmLYicz0bd4Smhm+okCBwVj3Y3qkHUmrux+ZQR88Mh514
+ uy70nmE/jpXOnnpcamQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-14_02,2026-09-13_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 adultscore=0 impostorscore=0 priorityscore=1501 clxscore=1015
+ spamscore=0 malwarescore=0 suspectscore=0 lowpriorityscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609140081
 
 
 
-On 9/13/26 18:08, Gris Ge wrote:
-> The following command triggers a kernel panic:
+On 9/10/2026 6:11 AM, Julius Bairaktaris wrote:
+> Hi Jie,
 > 
->    ip link add d0 type dummy; ip link set d0 up
->    ip route add 10.30.0.0/16 \
->      encap ip id 300 geneve_opts 4660:66:11223344 dev d0
+> I am building a PPE flow-offload driver for IPQ8074 in OpenWrt
+> (https://github.com/openwrt/openwrt/pull/24806/) with a DSA switch driver,
+> PPE flow tables, port shapers and queue classifiers.
 > 
->    memcpy: detected buffer overflow: 4 byte write of buffer size 0
->    kernel BUG at lib/string_helpers.c:1044!
->    ...
->    ip_tun_parse_opts.part.0.cold+0x10/0x10
->    ip_tun_build_state+0x116/0x2a0
+> It needs two kernel patches that have no in-tree user, so they are stuck:
 > 
-> On kernels built with GCC 15+ and `CONFIG_FORTIFY_SOURCE`, the fortified
-> `memcpy()` got 0 sized destination with request of 4 bytes length:
+> "net/sched: sch_tbf: carry the queue limit into the offload" adds q->limit
+> to the tbf offload params, so a driver knows how deep the queue behind the
+> shaper may get. Not posted yet.
 > 
->    static int ip_tun_parse_opts_geneve(...)
->    {
->        ...
->        attr = tb[LWTUNNEL_IP_OPT_GENEVE_DATA];
->        data_len = nla_len(attr); /* == 4 */
+> "net: dsa: offer a flowtable to the switch before the conduit" offers
+> TC_SETUP_FT to the switch first, so a switch that owns its own flow engine
+> is offered the flowtable instead of the conduit netdev. Posted and rejected
+> for not having an in-tree user.
 > 
->        struct geneve_opt *opt = ip_tunnel_info_opts(info) + opts_len;
->        memcpy(opt->opt_data, nla_data(attr), data_len);
->        /*     ^^^^^^^^^^^^^ 0 since options_len is assigned afterwards */
+> Is a tc/qdisc or flowtable offload planned for the upstream PPE driver, and
+> on what timescale? If yes it would be wonderful if we could align, so the
+> two patches could go in with it.
 > 
-> Fixed by initializing the counter before the options are referenced.
-> Matching what `tunnel_key_opts_set()` already does.
+> I read the three-part plan (PPE init, phylink, EDMA + netdev) but did not find
+> an answer to my question.
 > 
-> Fixes: bb5e62f2d547 ("net: Add options as a flexible array to struct ip_tunnel_info")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gris Ge <cnfourt@gmail.com>
+> Julius
 
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Hi Julius,
 
-Thanks
--Gustavo
+The PPE functions you mentioned are advanced/enhanced features of the
+IPQ PPE. Support for them will be added once the three components
+mentioned above (PPE init, PHYLINK, and EDMA + netdev) are accepted
+upstream. These enhanced features aren't available internally within
+Qualcomm yet either — we'll discuss this internally and work on adding
+them.
 
-> ---
-> v2:
->    - pass opt_len into ip_tun_set_opts() and initialize options_len there,
->      matching tunnel_key_opts_set(), as suggested by Eric Dumazet.
-> v1: https://lore.kernel.org/netdev/20260912055304.1415016-1-cnfourt@gmail.com/
-> 
->   net/ipv4/ip_tunnel_core.c | 16 +++++++++++-----
->   1 file changed, 11 insertions(+), 5 deletions(-)
-> 
-> diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
-> index 5168d546ea2f..bab42b9e277f 100644
-> --- a/net/ipv4/ip_tunnel_core.c
-> +++ b/net/ipv4/ip_tunnel_core.c
-> @@ -680,8 +680,14 @@ static int ip_tun_get_optlen(struct nlattr *attr,
->   }
-> 
->   static int ip_tun_set_opts(struct nlattr *attr, struct ip_tunnel_info *info,
-> -			   struct netlink_ext_ack *extack)
-> +			   int opts_len, struct netlink_ext_ack *extack)
->   {
-> +	/* `options_len` is the __counted_by() annotation of the `options`
-> +	 * flexible array, it must be initialized before parsing writes
-> +	 * into it.
-> +	 */
-> +	info->options_len = opts_len;
-> +
->   	return ip_tun_parse_opts(attr, info, extack);
->   }
-> 
-> @@ -712,7 +718,8 @@ static int ip_tun_build_state(struct net *net, struct nlattr *attr,
-> 
->   	tun_info = lwt_tun_info(new_state);
-> 
-> -	err = ip_tun_set_opts(tb[LWTUNNEL_IP_OPTS], tun_info, extack);
-> +	err = ip_tun_set_opts(tb[LWTUNNEL_IP_OPTS], tun_info, opt_len,
-> +			      extack);
->   	if (err < 0) {
->   		lwtstate_free(new_state);
->   		return err;
-> @@ -753,7 +760,6 @@ static int ip_tun_build_state(struct net *net, struct nlattr *attr,
->   	}
-> 
->   	tun_info->mode = IP_TUNNEL_INFO_TX;
-> -	tun_info->options_len = opt_len;
-> 
->   	*ts = new_state;
-> 
-> @@ -1006,7 +1012,8 @@ static int ip6_tun_build_state(struct net *net, struct nlattr *attr,
-> 
->   	tun_info = lwt_tun_info(new_state);
-> 
-> -	err = ip_tun_set_opts(tb[LWTUNNEL_IP6_OPTS], tun_info, extack);
-> +	err = ip_tun_set_opts(tb[LWTUNNEL_IP6_OPTS], tun_info, opt_len,
-> +			      extack);
->   	if (err < 0) {
->   		lwtstate_free(new_state);
->   		return err;
-> @@ -1040,7 +1047,6 @@ static int ip6_tun_build_state(struct net *net, struct nlattr *attr,
->   	}
-> 
->   	tun_info->mode = IP_TUNNEL_INFO_TX | IP_TUNNEL_INFO_IPV6;
-> -	tun_info->options_len = opt_len;
-> 
->   	*ts = new_state;
-> 
-> --
-> 2.55.0
-> 
-
+Thanks.
