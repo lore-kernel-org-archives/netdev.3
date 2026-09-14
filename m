@@ -1,182 +1,262 @@
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1FC49EC4D
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 20:24:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5175A46D573;
+	Mon, 14 Sep 2026 20:24:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789417479; cv=none; b=UHcAt0mQPElDdvNyLu44PEBZq1sTvnKRMCn/nY46rGcidFY/MAYF2Q4DG5IkxBMGQ0xghFj+hHnwRpGMsTspDg6Qj1zJqv9IRkknR36YkMz/qfSAyiTsZoaQydO4R/hR3YdkPgc4w1jhPnHB+eQCAR1nA7ODDIns5QlbKNSJuI4=
+	t=1789417481; cv=none; b=bP2Z7oYTcVmY1xGLwFJr1f/M7SRksT4YLmKOUPGxh8CzyPjabmja41aQyah+pPP3lvVaEnmNcnG2XdnnNHhlyLzgY5LFi7stPx2iR8//1ECfCTPwgc1bhufMONTvfoebTWKv4UgNElF8gB6vGwvZ0AGCL9/7hEpbgHIZEHS5SR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789417479; c=relaxed/simple;
-	bh=x+jz7UKcqq0rDrzoYYBYh3A5KCcmjzm/9GvSwZsW/zE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EfN23ASj2STE7bIA4EA9oWMl793AC3fMFtwG3rYoxfs6QytCLato59rszF6C16qKq4p2FBQZbsHXpHiWHZzDGugPitQA2gMuxxUmSc/yWjbbFJWsL8ategdJZf4chNT59AI5iZq/gwunzNFcISDBxKRTjq0cEcAoR9IsTJm9tQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=BkXgEy3d; arc=none smtp.client-ip=74.125.225.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
+	s=arc-20240116; t=1789417481; c=relaxed/simple;
+	bh=i9ZUDU2F2FGWMeO9GW8ycRXVCKukXCPguAW6h5niXkE=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=qz+oSwNF/AnmbEltmE4UlQtc2bV5AabQ0EwZk8SYoaDd4R7iTvPIu/dzu3MB9QaJTqc/XxWZwi3N+M35gSqjK+dzs70KkjKtIV0Wi2hHbC7o724NbN5j0nQwsfnB8z+AP+Xj7Q/9b6Jn0wv88KGRamoSoYQ9IpWlukaAsN2AL5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a3ZZ+FSy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="BkXgEy3d"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-4843c3ea1f6so1109694f8f.0
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 13:24:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1789417470; x=1790022270; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=szNLjYOWpVIGeVzTm6wu2jNgdA0Q8lKnYCuvZd0lPlE=;
-        b=BkXgEy3deTn5FchhgyrNMfNOPPOLEQdxlXU4rt01af/u5VGJYHwUQ7lSVmztHlY1dl
-         1ebwYqYoAvWimTJw4al3OC6PUZ4dH4tVj/l1aLwbDTQjAHzfw1A/ObJrvAOK1gRKg2ED
-         w3lRhFbaDH2DFWn4jsIah7VG7IHEafN9ZsgIE3zySBHfMAzLJ1dNKD7UiAiLpLd1GCM3
-         Bs3rl8L3RTLy2zOzKkTlZLKPBrTr7IxoYpnTt0Wx3Uz+W+flgwci+IKGExCW7awVkIx9
-         hYqG+B7TtmCmhsvfUBuwzAhIENDUYIjacoqqsFWNSyH6C1Bn+qF1TjxbIeuev/0S6F7R
-         FlrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789417470; x=1790022270;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=szNLjYOWpVIGeVzTm6wu2jNgdA0Q8lKnYCuvZd0lPlE=;
-        b=fI/xw0XguSy+KFcECTQ1IuyOg6DtQSKdsenD4/Wbzt1fpSiw0481XFUzYCbc9EjqSk
-         HeJffTGqbkYBbV3o21speyLBcgf9Vr+fw9wslLvaO7FKv4sJ6rAgBooSkbvJKi0AbL3e
-         r4adknPag9oZvUtWR2v25hUZbvMG9NYeLU0VrBmxiVtCLIJANioXdYX2w1VeUY01uqFx
-         5icAX3Z6I+vepxrkSNnZ+sc+KliYZpBXKqTKZVFRzTCSS5Vi9qgwc3JF+Ru1mEE+07hc
-         btkQo5jsLvws6hJCmhriCzO0yrCOcGYe5AuccGVeSgc7L+/r+NHqc5QsHlnzyVlIw+rH
-         bSPw==
-X-Gm-Message-State: AFuF++kCFbEltT1CwT8/plD1HdVjza7Q8A1rN6m9IbYBADA2oYFxDThj
-	s7i5eXIL5jY/+dwbbWOv6jVoD771DqpBOfCVsAZ7IVbtgStSTCFEAtPl9s7KquqImDEbw4pTjjm
-	v19RhNWl5SqjkQ4k=
-X-Gm-Gg: AYBFou1j/1G5B3VdYC1M4V1oRWZmLJCxtyi0LY5O1rUpNZgbJ9ZsbIxT788jrXdDmN3
-	7LTn9CckVLOxTOyl9AXW3pZfU9fQEgyOqyd9Yv6ccfpR+bZuvkkorl1iI9TmOowBpc5So7jRwz6
-	KIMRGsIz3RNZ/g3tYkM58y4myGgWzxmM43GTlMTKuWOdbGHhJlejffKZeHPEHc4JCMB7XGTeHOE
-	QybJ1cGKUfj8S38ciU4ebbn0qld+fwyqb0qmUhFnXh1HIOgdcANPRPAIKFRd7DXGbmN7guuDG+t
-	DNtywMtowOTL2FrtF3Za++ljE6fcfsTOUYaVqxIxiBY0MNeYv2+POPSLKk+oqmpQRAvkIJceCf9
-	dOQmx39w0UqliOEJC4hYuj5VsOAwCmvpoCnXBgEjlFc65qbvH8jubp7XAazgSYEYSN/ftyV/ZgP
-	rZdBktRIlGiNbui3k3q+wDkmbEOlPgKgUhLmmolAE/dAZlru5CKA==
-X-Received: by 2002:a05:6000:4282:b0:485:95b7:fe8 with SMTP id ffacd0b85a97d-48702b1665bmr5620151f8f.25.1789417469778;
-        Mon, 14 Sep 2026 13:24:29 -0700 (PDT)
-Received: from remote-01 ([84.17.55.229])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486eb34fdd2sm29328458f8f.28.2026.09.14.13.24.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 13:24:29 -0700 (PDT)
-From: Aleksei Sviridkin <f@lex.la>
-To: netdev@vger.kernel.org
-Cc: chester.a.unal@arinc9.com,
-	daniel@makrotopia.org,
-	andrew@lunn.ch,
-	olteanv@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Aleksei Sviridkin <f@lex.la>
-Subject: [PATCH net 2/2] net: dsa: mt7530: unregister the switch before freeing its MDIO IRQs
-Date: Mon, 14 Sep 2026 23:24:21 +0300
-Message-ID: <20260914202421.2737079-3-f@lex.la>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260914202421.2737079-1-f@lex.la>
-References: <20260914202421.2737079-1-f@lex.la>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a3ZZ+FSy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F881F000FF;
+	Mon, 14 Sep 2026 20:24:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789417476;
+	bh=w7u0klR/IYUoGVOagYiSZ6HuUkgEjMwxzSC/jxfPsQg=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=a3ZZ+FSyFcr4SLQqyug8gOzfrkQByO+wC7LUaFlE64JBvjeqHk170lvQkBTR+Fqci
+	 m7PXm5OX8yCqHyCxCkO5gVaspHgasepSHjUbGzs/vNCXvdZjPKiEufKqzTBSoNhdTd
+	 Kizf80RvRTTw+PMZbu9uIOBJV/+jjkH9GqaK0xi3Do1IuJ/MymwXv9h+ZFbHdhT0tV
+	 lQc8FfQyYD2yxFgcxhDWnBb8VQdeN9uuYmCRi97+rSC8oiesh6yTnziNmhtVegZx4m
+	 267+LpqHhdeZqq9dMFoahSzZuD+CDpKvKZmOMTIOlESmletw9JZG6Y//+WqkWmrMAN
+	 PAP+F5yHSFTsA==
+Subject: Re: [PATCH net-next v5 01/11] net: stmmac: move XPCS lifetime
+ management to platform drivers
+From: netdev-bot+sashiko@kernel.org
+To: coiaprant@gmail.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, heiko@sntech.de, vkoul@kernel.org,
+ maxime.chevallier@bootlin.com, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, prabhakar.mahadev-lad.rj@bp.renesas.com,
+ romain.gantois@bootlin.com, hkallweit1@gmail.com, neil.armstrong@linaro.org,
+ linux@armlinux.org.uk, shawn.lin@rock-chips.com, david@ixit.cz,
+ netdev@vger.kernel.org, linux-rockchip@lists.infradead.org,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, linux-renesas-soc@vger.kernel.org
+Date: Mon, 14 Sep 2026 20:24:35 +0000
+Message-ID: <178941747507.22033.8211069120708719813@kernel.org>
+In-Reply-To: <20260913185849.907479-2-coiaprant@gmail.com>
+References: <20260913185849.907479-2-coiaprant@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-mt7530_remove_common() disposes the per-PHY interrupt mappings first and
-unregisters the switch second, but phylib only frees those interrupts
-inside dsa_unregister_switch(). Unbinding the driver therefore frees
-descriptors that are still in use, and the switch's own regmap-irq thread
-takes a nested interrupt on one that is already gone.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider:
 
-Fixes: ba751e28d442 ("net: dsa: mt7530: add interrupt support")
-Signed-off-by: Aleksei Sviridkin <f@lex.la>
-Assisted-by: LLM
----
-Found on a Netcraze NC-1012 (MT7981B + MT7531, 6.18.44) directly behind the
-regulator fix in patch 1: with that one applied the unbind stops faulting in
-mt7530_remove() and reaches the teardown, where the kernel says what is wrong
-in words before it dies.
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
 
-  # echo mdio-bus:1f > /sys/bus/mdio_bus/drivers/mt7530-mdio/unbind
-  remove_proc_entry: removing non-empty directory 'irq/81', leaking at least
-    'mt7530-0:02'
-  WARNING: CPU: 0 PID: 4629 at remove_proc_entry+0x1d0/0x1f0
-  ...
-   mt7530_remove_common+0x1c/0x30
-   mt7530_remove+0x24/0x90
-   mdio_remove+0x20/0x40
-   unbind_store+0xac/0xb0
+- [Medium] Commit message mischaracterizes the removal of the generic
+  XPCS creation as removing dead code.
+- [Medium] DT binding vs implementation mismatch: after this patch
+  nothing in the stmmac core reads the generic 'pcs-handle' property,…
+- [Low] The commit message describes two defects, one framed as "more
+  critically" (the common code overwriting priv->hw->xpcs after a…
 
-  Unable to handle kernel read from unreadable memory at virtual address
-    00000000000000ac
-  pc : handle_nested_irq+0x28/0x168
-  Kernel panic - not syncing: Oops: Fatal exception
+--
 
-The WARN comes from unregister_irq_proc() under irq_free_descs(), fired for a
-mapping that a PHY still holds. The captured record shows one, for
-mt7530-0:02, and already carries the W taint bit, so at least one earlier WARN
-fell outside the ramoops window. 294 ms later the switch's own regmap-irq
-thread - PID 627, Comm irq/53-mt7530 - takes a nested interrupt for a mapping
-that is already gone: irq_find_mapping() returns 0, irq_to_desc() returns NULL
-and handle_nested_irq() locks desc->lock without checking, which is the read
-at +0xac in the trace. Both timestamps are from the same ramoops record.
+net: stmmac: move XPCS lifetime management to platform drivers
 
-Reach is wider than the board that found it. mt7530_remove_common() is called
-from both front ends - mt7530-mdio.c and mt7530-mmio.c - so it covers the MMIO
-parts as well, which have no regulators at all and never meet the defect patch
-1 fixes.
+The generic XPCS creation in stmmac_pcs_setup() (pcs-handle lookup and
+mdio_bus_data->pcs_mask based xpcs_create_mdiodev()) is removed, leaving
+only the plat->pcs_init() / plat->pcs_exit() dispatch. The Intel mGbE glue
+grows its own pcs_init()/pcs_exit() that create and destroy the XPCS, and
+the renesas-gbeth, rzn1 and socfpga pcs_exit() callbacks now clear
+priv->hw->phylink_pcs after destroying the PCS.
 
-What decides whether a given switch is hit is not the irq_domain but whether
-the PHY interrupts are mapped on it. Either mt7530_setup_mdio_irq() created
-those mappings, which it only does when the devicetree has no mdio node under
-the switch, or OF created them from per-PHY interrupts properties when it has
-one. A switch with an irq_domain and neither is left alone: irq_find_mapping()
-returns 0 for every port and irq_dispose_mapping(0) returns at once. The
-teardown is guarded on the domain alone, so it walks that loop either way.
+A few questions on the commit message and on the removal of the generic
+path.
 
-Tested on the board above, with both patches applied. Two unbind/bind cycles
-back to back: each unbind removed mdio-bus:1f from the driver directory and
-took lan1-lan4 with it, each bind brought them back, and the two cabled ports
-relinked at 1Gbps/full. uptime went from 167 to 183 across both cycles without
-resetting, and
-pstore gained no new record. dmesg carries one unrelated WARN, from
-sysfs_remove_link() under dsa_user_destroy() - a separate DSA
-teardown-ordering defect, handled on its own - and it fired once, on the first
-unbind, not on the second.
+>     First, if a device tree specifies a "pcs-handle" but no select_pcs()
+>     callback is provided by the platform driver, the created XPCS is never
+>     used. The phylink framework requires select_pcs() to actually return
+>     the PCS to the core, so the pcs-handle property becomes effectively
+>     useless without the matching callback.
 
-Not tested: any MMIO part - there is no MT7988, EN7581, AN7583 or EN7528
-hardware here. The object file was checked instead:
-after the change mt7530_remove_common() calls dsa_unregister_switch() first
-and only then tests priv->irq_domain and calls mt7530_free_mdio_irq().
-Built with W=1, no warnings; checkpatch --strict clean.
+[Severity: Medium]
+Is "the created XPCS is never used" accurate?  An XPCS stored in
+priv->hw->xpcs has two consumers that do not go through select_pcs().
 
- drivers/net/dsa/mt7530.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+stmmac_phylink_setup() in stmmac_main.c uses it to widen the phylink
+interface sets:
 
-diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index 3e61eb3c2b1e..90fd04665ebf 100644
---- a/drivers/net/dsa/mt7530.c
-+++ b/drivers/net/dsa/mt7530.c
-@@ -3593,11 +3593,11 @@ EXPORT_SYMBOL_GPL(mt7530_probe_common);
- void
- mt7530_remove_common(struct mt7530_priv *priv)
- {
-+	dsa_unregister_switch(priv->ds);
-+
- 	if (priv->irq_domain)
- 		mt7530_free_mdio_irq(priv);
- 
--	dsa_unregister_switch(priv->ds);
--
- 	mutex_destroy(&priv->reg_mutex);
- }
- EXPORT_SYMBOL_GPL(mt7530_remove_common);
+	/* If we have an xpcs, it defines which PHY interfaces are supported. */
+	if (priv->hw->xpcs)
+		pcs = xpcs_to_phylink_pcs(priv->hw->xpcs);
+	else
+		pcs = priv->hw->phylink_pcs;
+
+	if (pcs)
+		phy_interface_or(config->supported_interfaces, ...
+
+and stmmac_init_phy() uses it to decide whether to attach a PHY at all:
+
+	if (priv->hw->xpcs &&
+	    xpcs_get_an_mode(priv->hw->xpcs, mode) == DW_AN_C73)
+		return 0;
+
+So for a dwmac instance with a pcs-handle but no plat->pcs_init, does this
+change narrow config->supported_interfaces (and config->lpi_interfaces) and
+alter the PHY-attach decision, rather than just dropping something unused?
+Would it be worth spelling that behavioural change out in the commit
+message?
+
+>     Second, and more critically, when a platform driver sets pcs_init()
+>     and creates an XPCS inside that callback, the common code afterwards
+>     still runs unconditionally and overwrites priv->hw->xpcs with the
+>     local xpcs variable, which stays NULL. The platform driver has no way
+>     to prevent this override because the common code runs after the
+>     platform-specific initialization.
+
+[Severity: Low]
+This isn't a bug, but could this paragraph say that no in-tree platform is
+affected today?
+
+All three pre-existing pcs_init() implementations store their PCS in
+priv->hw->phylink_pcs, not priv->hw->xpcs:
+
+  renesas_gmac_pcs_init()  -> priv->hw->phylink_pcs = miic_create(...)
+  rzn1_dwmac_pcs_init()    -> priv->hw->phylink_pcs = miic_create(...)
+  socfpga_dwmac_pcs_init() -> priv->hw->phylink_pcs = pcs
+
+so the old "priv->hw->xpcs = xpcs;" on the pcs_init branch overwrote NULL
+with NULL.  intel_mgbe_pcs_init() added here is the first in-tree pcs_init()
+that stores an XPCS, which makes this a refactor that removes a latent trap
+rather than a fix for observable breakage.
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
+> index f5f9fa67ecd77..4308dccbf2570 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
+> @@ -603,13 +603,47 @@ static void common_default_data(struct plat_stmmacenet_data *plat)
+>  	plat->mdio_bus_data->needs_reset = true;
+>  }
+>  
+> +static int intel_mgbe_pcs_init(struct stmmac_priv *priv)
+> +{
+> +	struct fwnode_handle *devnode, *pcsnode;
+> +	struct dw_xpcs *xpcs;
+> +	int addr;
+> +
+> +	devnode = dev_fwnode(priv->device);
+> +
+> +	if (fwnode_property_present(devnode, "pcs-handle")) {
+> +		pcsnode = fwnode_find_reference(devnode, "pcs-handle", 0);
+> +		xpcs = xpcs_create_fwnode(pcsnode);
+> +		fwnode_handle_put(pcsnode);
+> +	} else {
+> +		addr = ffs(priv->plat->mdio_bus_data->pcs_mask) - 1;
+> +		xpcs = xpcs_create_mdiodev(priv->mii, addr);
+> +	}
+> +
+> +	if (IS_ERR(xpcs))
+> +		return PTR_ERR(xpcs);
+> +
+> +	xpcs_config_eee_mult_fact(xpcs, priv->plat->mult_fact_100ns);
+> +
+> +	priv->hw->xpcs = xpcs;
+> +	return 0;
+> +}
+> +
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
+> index afe98ff5bdcb0..7396b68899c66 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
+> @@ -426,35 +426,14 @@ int stmmac_mdio_reset(struct mii_bus *bus)
+>  int stmmac_pcs_setup(struct net_device *ndev)
+>  {
+>  	struct stmmac_priv *priv = netdev_priv(ndev);
+> -	struct fwnode_handle *devnode, *pcsnode;
+> -	struct dw_xpcs *xpcs = NULL;
+> -	int addr, ret;
+> -
+> -	devnode = dev_fwnode(priv->device);
+> -
+> -	if (priv->plat->pcs_init) {
+> -		ret = priv->plat->pcs_init(priv);
+> -	} else if (fwnode_property_present(devnode, "pcs-handle")) {
+> -		pcsnode = fwnode_find_reference(devnode, "pcs-handle", 0);
+> -		xpcs = xpcs_create_fwnode(pcsnode);
+> -		fwnode_handle_put(pcsnode);
+> -		ret = PTR_ERR_OR_ZERO(xpcs);
+> -	} else if (priv->plat->mdio_bus_data &&
+> -		   priv->plat->mdio_bus_data->pcs_mask) {
+> -		addr = ffs(priv->plat->mdio_bus_data->pcs_mask) - 1;
+> -		xpcs = xpcs_create_mdiodev(priv->mii, addr);
+> -		ret = PTR_ERR_OR_ZERO(xpcs);
+> -	} else {
+> +	int ret;
+> +
+> +	if (!priv->plat->pcs_init)
+>  		return 0;
+> -	}
+>  
+> +	ret = priv->plat->pcs_init(priv);
+>  	if (ret)
+> -		return dev_err_probe(priv->device, ret, "No xPCS found\n");
+> -
+> -	if (xpcs)
+> -		xpcs_config_eee_mult_fact(xpcs, priv->plat->mult_fact_100ns);
+> -
+> -	priv->hw->xpcs = xpcs;
+> +		return dev_err_probe(priv->device, ret, "Failed to initialize PCS\n");
+>  
+>  	return 0;
+>  }
+
+[Severity: Medium]
+After this change, does anything in the stmmac core still read the generic
+"pcs-handle" property?
+
+The property is still documented generically in
+Documentation/devicetree/bindings/net/ethernet-controller.yaml:
+
+  pcs-handle:
+    $ref: /schemas/types.yaml#/definitions/phandle-array
+    items:
+      maxItems: 1
+    description:
+      Specifies a reference to a node representing a PCS PHY device on a MDIO
+      bus to link with an external PHY (phy-handle) if exists.
+
+and snps,dwmac.yaml $refs ethernet-controller.yaml and ends with
+"additionalProperties: true", so pcs-handle stays schema-valid on every
+dwmac node regardless of which glue is bound.
+
+On a glue that does not set plat->pcs_init, stmmac_pcs_setup() now returns 0
+without looking at the property, priv->hw->xpcs stays NULL, and nothing is
+logged - whereas the removed code would at least fail probe with
+"No xPCS found" for a bad phandle.  Should the binding be updated to say
+pcs-handle is only honoured by specific glue drivers, or should the core
+keep a generic path (or emit a warning) so the two agree?
+
+The same question applies to struct stmmac_mdio_bus_data.pcs_mask.
+stmmac_mdio_register() still treats it as "a PCS lives at these MDIO
+addresses" and masks them out of the bus scan:
+
+	new_bus->phy_mask = mdio_bus_data->phy_mask | mdio_bus_data->pcs_mask;
+
+but no core code creates a PCS for those addresses any more, only
+dwmac-intel's private intel_mgbe_pcs_init().  Does a glue that sets
+pcs_mask without pcs_init now end up with that address neither scanned as a
+PHY nor instantiated as a PCS?
+
 -- 
-2.53.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260913185849.907479-1-coiaprant%40gmail.com
