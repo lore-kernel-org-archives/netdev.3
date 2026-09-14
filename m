@@ -1,115 +1,89 @@
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1A543CE6D
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 10:41:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.205
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789382477; cv=pass; b=jeRoCs9+FOldK0or+tQ6JKoJdYw0V81gOwNvkZYsShu9hGTjchKeGNbEthK9wkUUNdtIoA8pm4r8w8h0l3mIcB/fWfL4azLLNIgzcKMuZMSJRxwI84rQ/OLDCHACfexOA9jc2kRuZjl1AtgN+mlJRxEWcVXtGk37xFMYrcBhhzo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789382477; c=relaxed/simple;
-	bh=iJOn1fIiQ2XA2NbGR5R+22xMoshBHH07wVpWChHZaPA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IgtyixRrG+JNd3PdOJ/4AfnJke0NmjMmp3teq2Z5axox2MqtbNS6mztPgR5/pIruwQFd4EtBSuVLzKbOctnW4nsqtTeqVtFisNI9rH1McssCSc45teynmUJYlyuPKuA0UvuEoGcZ6lTp7HI9RSNyUw1QdtrEdiSKLZdBe8EncYE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KWD+j5yY; arc=pass smtp.client-ip=74.125.230.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48BCA43CE56;
+	Mon, 14 Sep 2026 10:41:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789382505; cv=none; b=lIHEDaN9mZCYmpEqBWs5EYIwvO/LZEXx9rojMq2BI8LhnlJaSKae019A20KVaRkspb12/pn5gBBFhbF0cw4ftAskCFw/o6kIZ9u2SC+I0Aa6Wtzf1fvUukD+d2Rwru6tgNU0OJJ/F3hsL7JR2lwDeJL3NT7HPrzQapf+fUxfRIk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789382505; c=relaxed/simple;
+	bh=jYWGwTVscQZvyzMPLUqiRtuzbXNvSQSgHl1LKzIA2SU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E8VBQIQJ+lUUfasGGofk4hPMSt3aeFws3PSfC6BCwV+9MPDcuKRbZJsTWg/mhBuOCVi+zUOK4HoA3vv21CZypHGZaQM0ZtbNk6/CPeTL+3aDSLaUZonqRJPU6J0MudoFHJ5CY2wzcsq2+kfcfCbC0/wPzpz7A/k6+k93/kVw1IA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I5vbpmut; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KWD+j5yY"
-Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-5309ce58730so34104971cf.2
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 03:41:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789382473; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Ex6DuBeQKwwZ0m0lhivrBSeJwt1s11lPR/3frYHFdWz5vgGThAdYotXmQpyKRSpl8v
-         B9h3WtFNI7GAp4yvdw4NaU9LXYJJUWUo/JDCfDTbHvLkfDYcFMV6eGRaeGOQho3cwNb7
-         DwRPZB+sPLm3F76piCj5X4pci7RF4IulSoaQKFaL7AwMg3vbPolcKgkPYSh8kBN1ktQv
-         NzeJHCBsR2o280PCiANr/Z8UjQQVue+0SOS7juxwAaUW5x2QAWm6GcD+AOUdCCf/s6CS
-         ddYyThcblhMHEqGy0BFkQlnNC5TT3J6GgZYT6tO77IwgX1dmf+4GeKH3YI/pcKO6rtFC
-         7vlw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=iJOn1fIiQ2XA2NbGR5R+22xMoshBHH07wVpWChHZaPA=;
-        fh=TNaQnSWvLJYyhfcolyackkM9JEtfVingXGW7C6BzIxc=;
-        b=sVlY7sXSUIsw++aE3eqom80hYiOYpTtuPdFAQlU6T6RSJa1T4GkakmIycc62DsYhD2
-         coQpIRDNnFJGTQ6wsvbfO5rD6FnEuWFslL2ekmVdTaIB55+2+vk01aboTbjgTWaObOIK
-         Nxt8Boc8PHVlkGEZH1dze5/4d53qyHDoC0IQts75q+I+NPJGftbal3i3U+Cbj6/9/tjO
-         x2pNxPpCDCQqnDZwtQHFHzG5zYNS9xrvluluzC5lcOe/uxfluFCQ5UbNJQ54X/09nVoU
-         V9O353bf1hIq1FOYr8vzYCu4gbCrSrjIUkSc0rDcENb+WLzjv2ZPUP67Ixs3zlziyeF4
-         Q+cw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789382473; x=1789987273; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=iJOn1fIiQ2XA2NbGR5R+22xMoshBHH07wVpWChHZaPA=;
-        b=KWD+j5yYSlLTfjh6B32lfapLcW1WLl5eR5RwpQSd4k5gd6M8a9mAfJOwod+FqhvzLE
-         4JRVDnX11YIfdW54L+ZvOzyTlFJZOF7lpzKghB0Dpg78uoExI8Wv+srv3K0qNM/53Riu
-         gmqooEuphLPD7EDxlqGoXGuEIeD+1VJD07FMbHnxvUhcSbKNzvP92rjO9wMz7DYssNza
-         Du7+KelOOY8XnZIUlaTkdJ1AKH6Mne7SJN9ExlzSa+1mHAUTxyT7GcJj+zL3elIqkEc6
-         z/B4NHeFrtV0mCGr4kXhHcxllc/nmB39LFYp8lIhWuMf1IZRqmMKc1N0JqtvRbCHOeHI
-         DD2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789382473; x=1789987273;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=iJOn1fIiQ2XA2NbGR5R+22xMoshBHH07wVpWChHZaPA=;
-        b=eA3nZi8LUIHlcd/aA2gvSe3E/nfOy13u/Hoy8WiKtTCK6zvOiliTNkMuGt25PKjshp
-         MJim8//AL+meI09t+maPAHRFongd6ZJlSDq2REy/qLv6GXCtONuo+Eb8fBoeboGoaD0t
-         qed1IYaG/LnnF80oA+CKm6wkOFpTOOhWP6nlWv6ZSP+aghBIAc0UvJvo2tiRY4NzDYAW
-         7KmDe6AScKtqSYBlMaV0IVcXzB/+OW0fJZVUt9vp+oidyAtMvAlTKs39Xw/jK91YnnOh
-         FZgtTCZrlRfkJQRXwp27CDmQnmrE1nCqdwy8HMFrw1h5Nuxuxv3mvCmntTc0S4leFifU
-         lzQg==
-X-Gm-Message-State: AFuF++lPcuWrDk69oK4btdPD0UvOoKb2eR1HFWYKPgHRsmF2+Uie9Hf1
-	Rr0BcaSGtPmc+dbW2sNszAKPFLAZjo0BfmyEUFAjvRY++8WCBbwVi8A/lalMtEEpK8yJJG3keAE
-	uK5v90+kSz+cV4lYzGmU0+UTKwdV8zSKjCDrOxZ4U
-X-Gm-Gg: AYBFou2YvD1XrLKxczyqdMlzWkGKYgn6p6VrtSxliVlUvD1EwQbbuATJRhnU18FURJZ
-	C6TtHMxtwKLO2l3QXHzyhLSSUNk66BbYG2kQAQ4gr3EYjl/bbZ4l2u+juDR/yBluX/hq0iLHtlV
-	qnhY61hM7y7BTcBh6QiJtD4l1GDV2ZIrBXwepCI85y+zVHi4G+wG9MMj1gsrhlfosSB2/1Z2y0h
-	3wsJUQZbXbfOQh8yd0x5d/HLWw1qoCFcpSgZQG/BF2aSF4rUtvogHsrgCbo9xlHmM/d2Stthr0E
-	1FyS0LlXoT4W82pVDTH5t+5Q2QlAE7x/lFgulecq41OVS5MgjYy44FT2oz+blhH73Z3X+oW8qRZ
-	x8BEnmKZc2dcvt26M/XGGmhXuVxrNsW1Xo/F0J96f/DJ0BBo9WfzTxPCrZTYkY3kdvmw=
-X-Received: by 2002:ac8:570d:0:b0:530:db17:b1b1 with SMTP id
- d75a77b69052e-5310cf168e7mr26629401cf.8.1789382472521; Mon, 14 Sep 2026
- 03:41:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I5vbpmut"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8EE1F000FF;
+	Mon, 14 Sep 2026 10:41:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789382503;
+	bh=vCB1+7kd7R3XSELn154UQxv9Ow8oYfIsCZUacOtnP6I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=I5vbpmut6D4nQ8oi2upxqf2xiafQq5AKENR6AHlImlsbxzyWj5Trtl9Fd10fvu+bX
+	 7bJyebWzGZajALd8RTNStsBkM5o868PlQxO1sgnw3nbiOaob9CtqU8LlbUjOdtHVCO
+	 rOBrdmXFhSFIJWdEjp0889WJI2briKYSlG+CI93o9Ze6onN/mCLXyc8gE2awPa4W5E
+	 oc8YzL7VIF1JTKxsYBic0v8/SV0+XaL/llukS338IU7JM8BVG1R12itQL6hJ5Za5B3
+	 pJdKhFrJw5ZpEhcivXLj9teltGnpQ1OkLX6uUaeLLmHV5Kbi4jq4QiR8eY5JtH7VpO
+	 kMLdNpcN9Z+BA==
+Date: Mon, 14 Sep 2026 11:41:39 +0100
+From: Simon Horman <horms@kernel.org>
+To: Yige Jiang <yigejiang86@gmail.com>
+Cc: netdev@vger.kernel.org, Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Masahisa Kojima <kojima.masahisa@socionext.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: netsec: fix device_node reference leak on
+ phy_np
+Message-ID: <20260914104139.GR48209@horms.kernel.org>
+References: <20260913064102.37452-1-yigejiang86@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260914090408.1435080-1-inbal.lipshtat@mail.huji.ac.il> <20260914090408.1435080-3-inbal.lipshtat@mail.huji.ac.il>
-In-Reply-To: <20260914090408.1435080-3-inbal.lipshtat@mail.huji.ac.il>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 14 Sep 2026 03:41:01 -0700
-X-Gm-Features: AcwNN1V9iDmM7PzpMeqDOMBzojVOrcgi4pfkAfg8icBKj7kbHhaBUk5wYJMY8oU
-Message-ID: <CANn89iLQdNwzFw9UXNmTiGQ1ge_etUJWz2npXk32Hg2CA+zgyA@mail.gmail.com>
-Subject: Re: [PATCH net v3 2/2] selftests: net: packetdrill: test exclusion of
- old ACK from TCP fast path
-To: Inbal Schussheim <inbal.lipshtat@mail.huji.ac.il>
-Cc: netdev@vger.kernel.org, ncardwell@google.com, kuniyu@google.com, 
-	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	shuah@kernel.org, linux-kselftest@vger.kernel.org, amit.klein@mail.huji.ac.il
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260913064102.37452-1-yigejiang86@gmail.com>
 
-On Mon, Sep 14, 2026 at 2:04=E2=80=AFAM Inbal Schussheim
-<inbal.lipshtat@mail.huji.ac.il> wrote:
->
-> Add a packetdrill test for an in-sequence data segment carrying an
-> excessively old ACK.
->
-> Verify that the segment falls through from the TCP fast path to the slow
-> path, where the existing ACK validation rejects it and sends a challenge
-> ACK. The payload is not accepted and RCV.NXT remains unchanged.
->
-> Based on the reproducer from Commit 3d501dd326fb
-> ("tcp: do not accept ACK of bytes we never sent").
->
-> Signed-off-by: Inbal Schussheim <inbal.lipshtat@mail.huji.ac.il>
+On Sun, Sep 13, 2026 at 02:41:02PM +0800, Yige Jiang wrote:
+> netsec_of_probe() takes a reference on the PHY device_node with
+> of_parse_phandle() and stores it in priv->phy_np, but the driver never
+> drops it.  One device_node reference is leaked per probe, on the success
+> path as well as on every error path reached after netsec_of_probe().
+> 
+> Neither consumer takes ownership.  of_mdio_parse_addr() is a static
+> inline taking a const struct device_node * that only reads the "reg"
+> property.  of_phy_connect() borrows as well: of_phy_get_and_connect() in
+> drivers/net/mdio/of_mdio.c brackets its own call with of_node_get() at
+> :364 and of_node_put() at :373, which would be a double put if
+> of_phy_connect() consumed the reference.
+> 
+> The node is still in use at netsec_netdev_open() time, where it is
+> passed to of_phy_connect(), so it has device lifetime.  Release it at
+> the probe error label, which every failure path after the acquire
+> funnels through, and in netsec_remove().  Both releases precede
+> free_netdev(), since priv is netdev_priv(ndev).  The ACPI probe path
+> leaves priv->phy_np NULL and of_node_put(NULL) is a no-op.
+> 
+> There is no end-user visible symptom on currently supported platforms:
+> a device_node is only freed once OF_DYNAMIC is enabled and the node has
+> been detached, so on a static device tree the imbalance is inert.  It is
+> observable as a refcount that grows across bind/unbind cycles, and would
+> matter under device tree overlays.
+> 
+> Found by static analysis of reference acquire/release pairing rather
+> than from a runtime report.  No reproducer was produced and the change
+> has not been runtime tested; it is compile-tested only (arm64,
+> CONFIG_SNI_NETSEC=m via COMPILE_TEST).
+> 
+> Fixes: 533dd11a12f6 ("net: socionext: Add Synquacer NetSec driver")
+> Assisted-by: LLM
+> Signed-off-by: Yige Jiang <yigejiang86@gmail.com>
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+
