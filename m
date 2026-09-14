@@ -1,74 +1,163 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA255494A18;
-	Mon, 14 Sep 2026 17:18:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64ADD48CD4F;
+	Mon, 14 Sep 2026 17:20:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789406303; cv=none; b=Pa2h3Mji4ObRhKM1y3L1m2/LSMeZUWG1Ol5EDztcKuoJY2Tq4ZPz+bxS2AnYGEgATS7sClm1B3WpNy2p+EslkF7/Q8aqGDLiPxXThV8dU8+YaXkYqK/FzV7CLtQGnss3q4gpufCu4pDCD28KxKol9J5SqVkaqUbcP2H/Jb6mL/Q=
+	t=1789406429; cv=none; b=K+rHaeGeewgD7SMCX4+stxK6AtLzGcb5Jo41u8baCDdNhbgfZlQbUcu5kaZ613PLlR8ZkieUfpThXpjNBBke2ZTepGK8RTyU63wZFdqJKXn1eLMMVWL5ZvdqkqL6ALN4JTIugUosqvYteDpIg91GytLCq9IlA2MPC+hTkv8FFzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789406303; c=relaxed/simple;
-	bh=WPwatUneO7ZNR813f5MdX96lQBjrtNi2JogQX8K8uiU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FEISsb2SryGFCWADKDRR1qg1C+hXmd2EAjy7tOLubNFNHPGUxT+PYQnuMiDmtz1eKXPnZzvnSmc1HvC7udcuD2nggldqXw6IHQp9JbIouGDhVAqJNj10XfN2TPfq0JuTrxSYuB8QrI1Y9URbuCcNCIabnEPEA8ifI+IBLEREZyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=0g1HkNo6; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1789406429; c=relaxed/simple;
+	bh=5nzw9uzObyDsq9yJ4Z7C0pJdSZ8HKRz4pWorgXDpW/A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=O4m8QzmbLTHJUJtO5pa7HSeW+kTouFHcYrE5f6SEQaRE8Z8LKnBF6tI/PE2qsUM6cdWVzxkVhbxazs6ZdC9m3POodXkU1uAv21G6TRvKg+hM5j5QMDZx7bpC/f3Ujt8Y41KhttjOF6sPah7TpF/0L+g4esFZBv0aUOt63jrHi2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=OpsBZS61; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0g1HkNo6"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=kEKC+YPHKBUVIIQahdqo/X9v1kaMleI8WaJBL2KlmVI=; b=0g1HkNo6Vn0TwYaVRDoEtH51Ck
-	7P7g00p79cTD2uraave6EwIioJKX0uHvZo/uCPOELLbgp8z/Lo0TtXBnXmom02ugt0XWpjFQVlXCq
-	Q4vdnwxDdqhw8AozKaORjeV+ggtgvRjkrJT8vT6lvlKEw0jBMfyvL5v1Wb9s9TovbMaQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x6AJl-0057Oa-NH; Mon, 14 Sep 2026 19:18:09 +0200
-Date: Mon, 14 Sep 2026 19:18:09 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: javen <javen_xu@realsil.com.cn>
-Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	freddy_gu@realsil.com.cn, nb@tipi-net.de,
-	maxime.chevallier@bootlin.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, daniel@makrotopia.org,
-	vladimir.oltean@nxp.com
-Subject: Re: [PATCH net-next v2] net: phy: realtek: improve firmware write
- speed
-Message-ID: <a96dce5c-745d-47dc-a89b-c0b5b6d20806@lunn.ch>
-References: <20260911094527.1928-1-javen_xu@realsil.com.cn>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="OpsBZS61"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=L/2mUsKjcaJbKckiFuEIeCMG6ptMUuWX6YPpy3IoNEs=; b=OpsBZS61aw1SaUDg1JECT10lRR
+	7wjk8hOeJnrPD+ZvOy7EXBIZE/iyXuK9Kx1gHRShkHOg/mIkkXl0hS2jPJIDTnLfqBDAgOZVQT9BG
+	93kYvhSCLxLz5pagot2GizELuh3MTt6MUtfRn+MbsSnAqqKGdwsEMMIwEmxTqthfla4lH/4hScEX8
+	Ps+XUXY1RLW098CyZEuMsGB0KvmlTMuqsmOJIWlee4zu82AiCgAy9/HySu891fhLd72/uBWE7f8ic
+	speuhGdMDRsTen5IHsaNmiYF6zYJ7bnWbrgchGBZyZyc8a6zx2Iv6lUz6yLxjC0eMQxZKnQ595SB+
+	87pjLtGQ==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x6ALw-00000004NCH-0U2g;
+	Mon, 14 Sep 2026 17:20:24 +0000
+Message-ID: <63af51ab-8adc-474b-b59e-fe6ba8a7033f@infradead.org>
+Date: Mon, 14 Sep 2026 10:20:23 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260911094527.1928-1-javen_xu@realsil.com.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs: kdoc: fix struct_group_tagged() parsing regression
+To: Omokefe Emmanuel Onanaroghene <emmaonana18@gmail.com>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, intel-wired-lan@lists.osuosl.org
+Cc: corbet@lwn.net, skhan@linuxfoundation.org, mchehab@kernel.org,
+ aleksander.lobakin@intel.com, aleksandr.loktionov@intel.com,
+ tudor.ambarus@linaro.org, bvanassche@acm.org
+References: <20260914155127.21515-1-emmaonana18@gmail.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20260914155127.21515-1-emmaonana18@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 11, 2026 at 05:45:27PM +0800, javen wrote:
-> From: Javen Xu <javen_xu@realsil.com.cn>
+
+
+On 9/14/26 8:51 AM, Omokefe Emmanuel Onanaroghene wrote:
+> kernel-doc reports struct_group_tagged() members as excess because
+> the macro transformation rewrites it to an anonymous struct and drops their
+> member names.
 > 
-> Firmware execution routine unconditionally uses phy_modify_mmd() for
-> all OP_WRITE entries which introduces an unnecessary read transaction
-> when updating an entire 16-bit register. So we optimize this by
-> checking bitmask boundaries. Use phy_write_mmd() directly to speed up
-> firmware loading process.
+> Keep the tag and member name when transforming struct_group_tagged(). The
+> nested members are then recorded as names such as fast.order; accept the
+> existing unqualified @order documentation tag during validation.
 > 
-> Benchmark number from tracing MDC/MDIO hardware transactions during
-> firmware loading process:
->  - Unpatched: about 28,000 MDIO transactions
->  - Patched: about 9,600 MDIO transactions
-> This results in an approx 65% reduction in MDIO traffic.
+> Add a regression test based on struct page_pool_params.
 > 
-> Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
+> Reported-by: Randy Dunlap <rdunlap@infradead.org>
+> Link: https://lore.kernel.org/all/0cf8ea5f-418f-45f0-907c-3d1ed4f03e9f@infradead.org/
+> Fixes: 2f07ddbd5793 ("docs: xforms_lists: better evaluate struct_group macros")
+> Signed-off-by: Omokefe Emmanuel Onanaroghene <emmaonana18@gmail.com>
 
-Thanks for the numbers.
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Thanks.
 
-    Andrew
+> ---
+>  tools/lib/python/kdoc/kdoc_parser.py  |  4 ++-
+>  tools/lib/python/kdoc/xforms_lists.py |  2 +-
+>  tools/unittests/test_kdoc_parser.py   | 37 +++++++++++++++++++++++++++
+>  3 files changed, 41 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tools/lib/python/kdoc/kdoc_parser.py b/tools/lib/python/kdoc/kdoc_parser.py
+> index d9ad1ddc87dd..ced09504f3d7 100644
+> --- a/tools/lib/python/kdoc/kdoc_parser.py
+> +++ b/tools/lib/python/kdoc/kdoc_parser.py
+> @@ -635,7 +635,9 @@ class KernelDoc:
+>                  continue
+>              if param_name.startswith("{unnamed_"):
+>                  continue
+> -            if param_name in self.entry.parameterlist:
+> +            if param_name in self.entry.parameterlist or \
+> +               any(actual.endswith('.' + param_name)
+> +                   for actual in self.entry.parameterlist):
+>                  continue
+>  
+>              hint = self.get_suggestions_hint(param_name, self.entry.parameterlist)
+> diff --git a/tools/lib/python/kdoc/xforms_lists.py b/tools/lib/python/kdoc/xforms_lists.py
+> index e3dda2fe8a53..9e8b3a6b1da1 100644
+> --- a/tools/lib/python/kdoc/xforms_lists.py
+> +++ b/tools/lib/python/kdoc/xforms_lists.py
+> @@ -60,7 +60,7 @@ class CTransforms:
+>          #
+>          (CMatch("struct_group"), r"struct { \2+ };"),
+>          (CMatch("struct_group_attr"), r"struct { \3+ };"),
+> -        (CMatch("struct_group_tagged"), r"struct { \3+ };"),
+> +        (CMatch("struct_group_tagged"), r"struct \1 { \3+ } \2;"),
+>          (CMatch("__struct_group"), r"struct { \4+ };"),
+>      ]
+>  
+> diff --git a/tools/unittests/test_kdoc_parser.py b/tools/unittests/test_kdoc_parser.py
+> index c4a76ed13dbc..1a8287e99f2e 100755
+> --- a/tools/unittests/test_kdoc_parser.py
+> +++ b/tools/unittests/test_kdoc_parser.py
+> @@ -418,6 +418,43 @@ class TestSelfValidate(GenerateKdocItem):
+>          """
+>          self.run_test(self.SOURCE, [self.DEFAULT.copy()], self.EXPORTS)
+>  
+> +
+> +class TestStructGroupTagged(GenerateKdocItem):
+> +    def test_nested_struct_group_tagged_members(self):
+> +        source = """
+> +            /**
+> +             * struct page_pool_params - page pool parameters
+> +             * @fast: Fast path parameters.
+> +             * @order: Order of pages.
+> +             * @pool_size: Number of pages.
+> +             * @slow: Slow path parameters.
+> +             * @netdev: Net device pointer.
+> +             * @queue_idx: Queue index.
+> +             * @flags: Flags.
+> +             */
+> +            struct page_pool_params {
+> +                struct_group_tagged(page_pool_params_fast, fast,
+> +                                    unsigned int order;
+> +                                    unsigned int pool_size;
+> +                );
+> +                struct_group_tagged(page_pool_params_slow, slow,
+> +                                    struct net_device *netdev;
+> +                                    unsigned int queue_idx;
+> +                                    unsigned int flags;
+> +                );
+> +            };
+> +        """
+> +
+> +        kernel_doc = KernelDoc(self.config, "test.c", self.xforms)
+> +        patcher = patch('builtins.open', new_callable=mock_open,
+> +                        read_data=dedent(source))
+> +        with patcher:
+> +            _, entries = kernel_doc.parse_kdoc()
+> +
+> +        self.assertEqual(len(entries), 1)
+> +        self.assertEqual(entries[0].warnings, [])
+> +
+> +
+>  #
+>  # Class and logic to create dynamic tests from YAML
+>  #
+
+-- 
+~Randy
