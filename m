@@ -1,180 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ADB746AA6B;
-	Mon, 14 Sep 2026 13:46:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCE9473C64
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 13:46:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789393599; cv=none; b=P7nI3Zkm4qVuLb+dkWDLN/FyDXZGXsh9g3qqqWLL6xyqX0nEeKpDbk6yBEUt2m1NL7lK96q6pU0nV9j7lHTGAGsmozhosby52o1zI+wvnSxTmdE8lINBATr4B+/xVfNCvBSM7kKbbwaqo/GatRBMdGdkOswjr7to+xLT5UAyUv8=
+	t=1789393607; cv=none; b=ujP3krhTn/cWtkFBHkJdOgx+YH6otduWX+ac0qhlnDHt6wJ4T4HvLewlQXKVMUelyxWyv5f3surGSsSWS2xKxN9ARuF0L2lIMdbjNHohcVCU4PBMmViXod5+OF/sydUFryZg3OEpMfp027fH/swd0HCB5BeqiOih5P6jUs4IUOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789393599; c=relaxed/simple;
-	bh=PbdDulgkkeutLNW3WmWamZnrYOF/90WHsagdDvZnF3Y=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=K7k7JHMOZt23VbgxA5Py+iJz6m5WabuwKcTa1cdDcgLwBtpNPAp5XfLZxL5ygRKltx3pDyB4cZ1kz/Gb5q2VBHxbU+LW0YVgeE2YkRaOI+e7kXqTLMtRbLW7j8Vik+JMF8XlrgMRbH4cOj6r+TdXhpPoPvfyynI+vIsh+/OGKR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HXWK0kaQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789393607; c=relaxed/simple;
+	bh=OueWNPJAtMeRT9tAOf/SNItTLh11VOYa++V5fUJ5R6s=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FpBL7hObq9ARkU7q2EjjU3E0eOa0zcGS/KUWmeejvxDvi5XCPW61xnGEBGgcXUc/VaFtfqZNNcgztjFd3us6bC/M5i1BPwccP9KqEjDIDaV+zBb3fhusRHEBprvR9zLznnwOf4yjP1A7mTxNnetzIYoO/ZQuEz2gmGWOQYuefWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jJRVg2Cg; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HXWK0kaQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE53C1F000FF;
-	Mon, 14 Sep 2026 13:46:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789393597;
-	bh=5VMNtDtZgp/c9lPoLttNZ4KFHnQQw5DPKP4g5shhlks=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=HXWK0kaQ179L1QHF2sJctda8b/ay2inGLa+JI8qoHc5/Kn2A12QbFahX8SSShERZJ
-	 NFcMatHQpSC1J5G9pSAKV515Yh3nlFlrMc5GTZe8N5318oEBKc1+CwbMDjKFMH80J9
-	 Ed4IKwqckU63125ONoipVg9pIZuQDNBuCcx/MHMULPlSzgGg/uh38jGXwzEiOf/1qa
-	 U1qxIQ3ZGTHrrZNWlR9drj8VSlvtL4WJUip+cWzjAt6cm/FZrGG/GecDzLQ+tiLwvU
-	 xcXye20IFMDnAPLzRwI47kJynTKBwYVT8D2FiaJHDX97Fp6Pm8kGINX+QlJgzne6eP
-	 Q0cUNR+prRVgw==
-Subject:
- Re: [PATCH net] octeontx2-af: skip absent MCS blocks in PTP configuration
-From: netdev-bot+sashiko@kernel.org
-To: bolin.liu@seu.edu.cn
-Cc: sgoutham@marvell.com, rkannoth@marvell.com, gakula@marvell.com,
- sbhatta@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 14 Sep 2026 13:46:36 +0000
-Message-ID: <178939359634.22033.5655691023198601345@kernel.org>
-In-Reply-To: <20260913125212.110005-1-bolin.liu@seu.edu.cn>
-References: <20260913125212.110005-1-bolin.liu@seu.edu.cn>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jJRVg2Cg"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-49e6e69d528so20800005e9.2
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 06:46:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789393603; x=1789998403; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=OueWNPJAtMeRT9tAOf/SNItTLh11VOYa++V5fUJ5R6s=;
+        b=jJRVg2Cg1fsmWKJRE5y3raHgfN8pVTy/bO/2m4Cxmi7Y6uapPXXuHsFV2kgtomwn4m
+         NAI49d0O29uUU20ixokvS0FvjevtBuQOQEMcR5Stnl44n4OfXReIlcCbG8n+auOxJ6qR
+         pVBF0OqFZNISyKtxkTagZKRIbDROkoYBYpSFbLCa/W7kra2NWNjnlP+fGOX8ttbA6HvI
+         Pj326GzEwK+NiwzYZA+C7SKsGOamjUkjYAyDccqS2DnlqlHuv0OcEhHCuqYEH0OAc6WV
+         300/ULeGk2f/5Uc+ygj6OrYOT/bDvVk1/UMbVovFJ3vUTkUBmgu2+85FYq7b9/kwJMBN
+         2IYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789393603; x=1789998403;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OueWNPJAtMeRT9tAOf/SNItTLh11VOYa++V5fUJ5R6s=;
+        b=dt7kpi4aSwwb09xJ7SMJtuj0QAF4Yc0VBxUNO34mK3uAXUz5hUuLDqfxfY7/4AY+lG
+         fIwVHaUMBfCkJHGNjDlGXxoyl5+b2eIXXuw6ujBdluQSPF6KUH+yo929qzNBQbXF3GTy
+         ZVrgxRcW0I0chmck725N5besc3ZqkhmDY9oaMDMZUftuJUp0NRi6qkE41jqauF+yHR0U
+         SkUaWXDnhpzxTuE0hLfGpb8b2GaN/3yhJtdejLmhxmGgiqCISUPcBcq6BQyd7sK6jfMB
+         LFvedlv++fuAn0i8z28Zyd90eMTfxlBIrW+dchQFd6axfp7m/HSbSbD0x5Ae8MOn02Y2
+         Yc6Q==
+X-Forwarded-Encrypted: i=1; AKwUvBwVGNeEgCL7MVCtbB8D3UlMwmZcJfpHvza75PMSjILpWi2wvX6ncgM7N8mM5Cd5HUMc8u/gKEI=@vger.kernel.org
+X-Gm-Message-State: AFuF++mE5dP7XcUPMDK5lGllHzzZV6M1oqDFPmPRbjPZjmma3EpmNuZ3
+	3rH9YewQ0b4LwIEz8om7vIhZisaBrklZWtYtqRqKOHLyOKFCdhHebYdo
+X-Gm-Gg: AYBFou2smZSa20reW3rtRtszQFNevwb27YyRxC4nv4DaTfvvnWFfpWBQmMiKo59ovUC
+	z7/4sxYzZcfAvsSKLIuxW3SXDL49kN5YD7+vhJeQ7tmIlOb5xXQqiMtvCjp92kF5QUqb7V6Fpqh
+	sHSeNnZxVMtn5xeoxbYL5uBW+elE3FWZjRPbMyVgMDgvqWsez+u8+KeyOUsqOpjATx4cfqQilzQ
+	3KyFg6VUXJEcNBavLo1VwURSkJPvvs7KnkIO+0jgQXJwYjmS4vDpyaLtzqHMHQJb2VVPZ9SN9Pg
+	M7h6vkEeHdob9p06J/EQu3F6FDse/J38PjJhEVOa2SGYl7GARccEC+B5TtrMQGMEAS71Px0xSLJ
+	IxeSSK3P/BOotmdGVLzjIy26HJlbikhcP9KlBGQyDaHcZh2gzz1yPYTbdovAx17YHshfpV/xXsV
+	smIOGdVi51+p4LPh0QJKsPnSsmttC6Xd9mveaIuU+xT5uM4s/UQEb+VtjPjLNHbMZAKQrOHR97C
+	mr4NkTf49sBjNFDvYqNdcoBHVjDCG8VbY4/
+X-Received: by 2002:a05:600c:4e41:b0:49c:eb16:9fd with SMTP id 5b1f17b1804b1-49e7a65cec4mr34147585e9.3.1789393603344;
+        Mon, 14 Sep 2026 06:46:43 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e7d2af31dsm1341885e9.4.2026.09.14.06.46.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Sep 2026 06:46:42 -0700 (PDT)
+Date: Mon, 14 Sep 2026 14:46:41 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Kuniyuki Iwashima
+ <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>, David Ahern
+ <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH net-next v2 0/2] net: a sockopt_t quirk for the options
+ that write past optlen
+Message-ID: <20260914144641.68edc88f@pumpkin>
+In-Reply-To: <20260914-getsockopt_phase6-v2-0-e48befc9602e@debian.org>
+References: <20260914-getsockopt_phase6-v2-0-e48befc9602e@debian.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+On Mon, 14 Sep 2026 05:20:06 -0700
+Breno Leitao <leitao@debian.org> wrote:
 
-Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0
+...
+> and ipv6 comes next, and TCP_AO_GET_KEYS has the same shape.
 
-- [Medium] The CNF10K-B branch of rvu_mcs_ptp_cfg() uses the CGX/RPM
-  index directly as the MCS block id: rvu_cgx_ptp_rx_cfg() obtains…
+That is the sockopt I couldn't remember last time.
 
-Pre-existing issues:
-- [High] mcs_get_pdata() walks the file-global mcs_list with no lock, no
-  RCU and no reference counting, while mcs_probe() inserts entries with…
+It is really horrid and shouldn't have been allowed.
 
---
-
-octeontx2-af: skip absent MCS blocks in PTP configuration
-
-The patch adds a NULL check on the result of mcs_get_pdata(rpm_id) in the
-CNF10K-B branch of rvu_mcs_ptp_cfg(), returning early instead of
-dereferencing the pointer when no MCS block matches the RPM id.
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c b/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
-> index fce22e314cac0..5e24d43d5fc79 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
-> @@ -50,6 +50,8 @@ void rvu_mcs_ptp_cfg(struct rvu *rvu, u8 rpm_id, u8 lmac_id, bool ena)
->  	/* CNF10K-B */
->  	if (rvu->mcs_blk_cnt > 1) {
->  		mcs = mcs_get_pdata(rpm_id);
-> +		if (!mcs)
-> +			return;
-
-[Severity: Medium]
-Is a failed lookup here really an "absent MCS block", or is it an id
-namespace mismatch?  The value passed in as rpm_id is a CGX/RPM index,
-taken from rvu_cgx_ptp_rx_cfg() in rvu_cgx.c:
-
-	rvu_get_cgx_lmac_id(rvu->pf2cgxlmac_map[pf], &cgx_id, &lmac_id);
-	...
-	/* Inform MCS about 8B RX header */
-	rvu_mcs_ptp_cfg(rvu, cgx_id, lmac_id, enable);
-
-but mcs_get_pdata() matches that value against mcs->mcs_id with no
-translation:
-
-	list_for_each_entry(mcs_dev, &mcs_list, mcs_list) {
-		if (mcs_dev->mcs_id == mcs_id)
-			return mcs_dev;
-	}
-	return NULL;
-
-and mcs_id comes from an unrelated namespace, the MCS PCI BAR, in
-mcs_probe():
-
-	mcs->mcs_id = (pci_resource_start(pdev, PCI_CFG_REG_BAR_NUM) >> 24)
-			& MCS_ID_MASK;
-
-The only in-tree description of this relationship is in
-rvu_mcs_flr_handler() in the same file, and it says the mapping is not the
-identity:
-
-	/* CNF10K-B mcs0-6 are mapped to RPM2-8*/
-	if (rvu->mcs_blk_cnt > 1) {
-		for (mcs_id = 0; mcs_id < rvu->mcs_blk_cnt; mcs_id++) {
-
-If that comment is accurate, don't the low and mid rpm_ids resolve to the
-wrong MCS instance and set or clear BIT_ULL(lmac_id) in another port's
-MCSX_PEX_RX_SLAVE_PEX_CONFIGURATION, changing the 8B parser skip for a port
-owned by a different PF?  And don't the highest rpm_ids find no block at
-all, so that the new early return silently skips the configuration that
-65cdc2b637a5 was added to perform?
-
-Either way, does this change lock in the assumption that a lookup miss is
-legitimate rather than fixing the key used for the lookup?  If the comment
-in rvu_mcs_flr_handler() is stale, could it be corrected in the same patch,
-since the code and the comment can't both be right?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does the NULL test cover the
-case that matters here?  mcs_get_pdata() walks the file-global mcs_list with
-no lock, no RCU and no reference count, mcs_probe() inserts with a bare
-list_add():
-
-	list_add(&mcs->mcs_list, &mcs_list);
-	mutex_init(&mcs->stats_lock);
-
-and mcs_remove() never performs the matching list_del():
-
-static void mcs_remove(struct pci_dev *pdev)
-{
-	struct mcs *mcs = pci_get_drvdata(pdev);
-
-	/* Set MCS to external bypass */
-	mcs_set_external_bypass(mcs, true);
-	free_irq(pci_irq_vector(pdev, mcs->hw->ip_vec), mcs);
-	pci_free_irq_vectors(pdev);
-	pci_release_regions(pdev);
-	pci_disable_device(pdev);
-	pci_set_drvdata(pdev, NULL);
-}
-
-struct mcs and mcs->hw are devm_kzalloc()'d on the MCS pci_dev and
-mcs->reg_base comes from pcim_iomap(), so after an unbind through
-/sys/bus/pci/drivers/mcs/unbind or a PCI hot-remove the object is freed and
-the BAR is unmapped while the node stays linked on mcs_list, and
-rvu->mcs_blk_cnt stays stale.
-
-Doesn't mcs_get_pdata() then return a dangling but non-NULL pointer that
-passes the new check, leaving mcs_reg_read() and mcs_reg_write() to
-dereference freed memory and issue readq()/writeq() against an unmapped
-BAR?
-
-The path is reachable from a PF mailbox message:
-
-rvu_mbox_handler_cgx_ptp_rx_enable() -> rvu_cgx_ptp_rx_cfg() ->
-rvu_mcs_ptp_cfg() -> mcs_get_pdata()
-
-The same applies to the mcs_get_pdata(0) in the CN10KB branch below, to the
-mcs mailbox handlers and to the debugfs stats files.  Would this be better
-addressed with a list_del() in mcs_remove() plus a lock or RCU held across
-the lookup and the register access, rather than a NULL test after an
-unlocked lookup?  mcs_remove() also skips mutex_destroy(&mcs->stats_lock).
-
->  		cfg = mcs_reg_read(mcs, MCSX_PEX_RX_SLAVE_PEX_CONFIGURATION);
->  		if (ena)
->  			cfg |= BIT_ULL(lmac_id);
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260913125212.110005-1-bolin.liu%40seu.edu.cn
+David
