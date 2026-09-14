@@ -1,64 +1,64 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9283ACA64
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 07:15:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7672A3AFB06
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 07:15:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789370142; cv=none; b=BsB42/CyV4hehfrKCjIxEIAXxrOJxUmVPgLa4RNg0KjQYZ4dMdgJTItbYK4WokjIprBaCd0XRAxLkXMxqSnYqkZIzH6Ucc3og5EcbA2csQ1fchS4ei6iQFHJ9tV/WlldN63ZzPYDeGmyTakM2aHLD+tY4QsYtQmO5huijiKg61c=
+	t=1789370145; cv=none; b=eYd+ZpcX18412Ai1FLOa7XK86W1Yr0W+4/Pgc9wSrQsjBwsmLGOsWOT20puxALTz11NM58rs+ysS3zRiXkpaCGd1K0kZ+smiQ9LIoiMWwp4fPYxJHiENtDjxNaVIMWWBaxDLyANjoqcZ9FbX0yPUQ78X4rARxpNaEo8qu/VBGCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789370142; c=relaxed/simple;
-	bh=Z2lb95NyFj5VMsmWjYdqmvMmkWFzhfs0R05riKxv8DI=;
+	s=arc-20240116; t=1789370145; c=relaxed/simple;
+	bh=jSJaAsJ9GUyAudepjyD7M4Zr0u8277gmamjboG8joAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qtNJeCVU844AX/AEKClSqMzlkfIPHSk3Yk8gPg3PX7WNWDmjdNWjrPnpEXGnF2DDNLbnbk51UJi1avPkTBIfENVVA0/owCUWt8O7SEOtrcp/g04TV+M0aoW0q/aTZu2LaBSq/DnLUp1SN0XPCIb66ioXkPlcnX6S9fltraQO6SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eho/KnpQ; arc=none smtp.client-ip=209.85.221.51
+	 MIME-Version; b=mw17NK/fLTEFs+5cZQQUYXEZLvrsxZQmiMBPVoOQ6ofZTYNi+IWTMaBfe0ZLVK8imPKlsWfiZgIJ56EriBP8m8V6zycfah9OHJuTZVmvHtyEYOENPSLtOHhkJyNyatCv7FSzu69B9LDf0YLfbq08z+YGZxJ1UU6mlLcGsfbmlBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z4c8A6cg; arc=none smtp.client-ip=74.125.225.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eho/KnpQ"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-485850cbac3so1491470f8f.3
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 00:15:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z4c8A6cg"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-48434392b02so1375178f8f.3
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 00:15:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789370139; x=1789974939; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789370142; x=1789974942; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=CYDvBl7Hf5spaenerJy9kw2Xhfgsi5OoXNIquuHbSV8=;
-        b=eho/KnpQZE3yB4bnYaY5/s2r3ETWOcLDS2adZ7o4nWh/tRc+IzN3ru9ZNOGqQttN0/
-         qTYfv0wsYpwmK7nNV79YdZPdZcpFoIl0G9QKscysTcrqfG10w2Ui3InGr/pd2DtQ/mFE
-         JJA8mTVBf+KH9W0tJhqnfxBhHpsh9PGT+R7XVhW6Bmz1BE7dPw3Q1s3GtXjI4DQPNZ97
-         zzDOzFRGsLSEXzRY0tzIBcvkQQLy5eLmFNeNaCkb5UddIMoO3O+R6tDaasMfNE2l9+P3
-         bTJkY+xZyKUACCe7XG+Rdvv6Mb9UWYfoW6lw1AlKWLtLhh4yPUW7EFDtA4YcBiXcPnCJ
-         b3qw==
+        bh=CK5GX+kDbjRMghqOTfEiEdFRpT8/kc5WErzxR+yMM5U=;
+        b=Z4c8A6cg8kdb54lm2Jv2uiCZYemrhUNORG/U6kCq3AFENw/pUTxti6K40o8o8z6HvV
+         1vhfb82RLpLJoL8AjtVDl3LbmbVO43ZaWA5PBXmVsXtQV4rcSbFAapAMF+Y3pSw0zT+F
+         fffToe2zywkiutCt20RNFDVv5GT6IZTcjOk4evWAeomTvnO1YR/7X/xUVX7X5oorEW4w
+         HlOoDi8FLStsbSdvqZlLXsqnDojbdLaizQOij2PXBrZMxgsyR7oamh853Ay/o5Pd/W2T
+         6jmHZWKz26DuO+jUxKmQsIdm2wLQgSHzIiprmhvpX72/SDh0tuf40So6mbo+50X9ryrg
+         S1AQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789370139; x=1789974939;
+        d=1e100.net; s=20251104; t=1789370142; x=1789974942;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CYDvBl7Hf5spaenerJy9kw2Xhfgsi5OoXNIquuHbSV8=;
-        b=mnB9w3loC43W+f3CeEqhQNt+QUgCP7Ttfra/z9sXNXk1aLENQJQBVBp+4NC50lUhlw
-         JzzpGLsP+ob8xsbJPbBIAG0nHm47YmZQ/Jt25yOrQSoSc3HBYvRYmbBZvFX/PzkHNOFj
-         xl8pbtjW2QlhATe50xdba1zq26OHkzlSKaNTAD9T40LxXc1r2b1lhwhvpoP+ufNXcD8N
-         aupnVAbelsq9mgLuYjz9nP9VWhOsqorS7hBDBC3cuCrXY07lDCFw/5O5yxpR+VifnWAe
-         dRt4MYgaROfgTRFbCd0brB4enJmmTXARVQQFF0UKQUHN6ho9KvJ7eYRHi+Zr+6w2K/qb
-         QXvg==
-X-Forwarded-Encrypted: i=1; AKwUvByOOMv9EX2IQ2m4+rKXeRQMdEUyLU43KHQB50kUrgQGkQSdqQ0rqu2gke4M00F4ncy1uXrPIsE=@vger.kernel.org
-X-Gm-Message-State: AFuF++lRr267VtOFXPjOdgoTJKxliC2hY9P7x2FhpEfWAEhVbv20jcCg
-	ZUAiiU9SJ+DeqPYkfwp1ex3P5Xq1o7wz5GTPSevNJVZtM82z2TPrpD84
-X-Gm-Gg: AYBFou1ZW4pNkc3T1bZ5p6qDrppEhke9QlGaAAj9K3kRc5RjgIATwgSKRMcEzkNoPhQ
-	5SfXvjt15NQPYVTIinNCNqJmM8oVC5CpfiMhuAGFqFqpj9SXR2KLs4Gg9AWBKADV58EB/oK2h/X
-	Q3BhVGCNN/1geAyAnJdrXK6yGpKXtFeOBv1Z+++3KXyne7Kg7ViTqS9NhHZyRpk4Il359Py5kG0
-	7CMQGvUu/lN7/FcDja+1CCrRoUM1p2QVzVP3tMxqZmWeVckSz0z30JO/xX31sdIkBpdfOlTftpH
-	wHFEGXl2NYfO2/2P/yGDslSX7yFTaywijXolNPF2OF/J8ZI8Ps+gJE4V4tsyWrSnnax6M2RM+MG
-	MHBUf7ArzL+5PwkvrNko9ecqQRp51gGGJ9cTFkbihL8tE8ts34NVMix3Ht0UqRx8+TKaEwwTJnr
-	HscTzoeq2YdJ6ETAzdFDoDJaeFmD7aCxdpHMSXVn6f9SyJSZok0OhWvNm3KWgD/LYIvUmcLJjCT
-	2m2d0xkZE8aV5Yqoe43CSIfpvkt6VOG0hNb1pU9
-X-Received: by 2002:a05:600c:a00d:b0:49c:fc6e:a3dc with SMTP id 5b1f17b1804b1-49e7a678d2amr12314265e9.27.1789370138746;
-        Mon, 14 Sep 2026 00:15:38 -0700 (PDT)
+        bh=CK5GX+kDbjRMghqOTfEiEdFRpT8/kc5WErzxR+yMM5U=;
+        b=TA88zlPh+1gOmVDRH53DPhPLq3rhNVx9JJhb8KKgG42vRwGOqN62sxafZYg/KssbFv
+         hsibF6wMM/VZU0N5yfuufbdFEAStJlvNNE6eAiUfJltnJ3s73nkrkN550FwP7EYyooWi
+         c6DuSy7H//fFJQMsBaVt6iYxoCwpm9UoH9WZoevJdHD1a8TT73rZuE9gfVfr3v8SMT3H
+         B6AtkF+TBTUd+IfOJFu8y3dkewsXUTlZdotFAIogrgHmsQ/Fl0+fr1+dKbc6wokKw2Qe
+         9rvb5i353BVSAQ0DdpKDUvxPWrVk4rbeTURQ0dF1Al9rOP2kXPRuVlsx7DqiWpDEP+u6
+         8Ymw==
+X-Forwarded-Encrypted: i=1; AKwUvBzlevMOWbVyeCsGMCq4+S1/DG5oZx6cAw/+uRu2s1wAt1Xd1mIFxefvpABc6mtayOCpoe4NJ5o=@vger.kernel.org
+X-Gm-Message-State: AFuF++kkEHB8n5JD6DE0KR4NXp+hcGWJyZpLfYVdCPItQOdyotgZHtxG
+	vQTyWQi4reZ1IRN/LeJ1H9Y0HrY2t3ERat6CgV1LJNIN9/3c73EH+YGB
+X-Gm-Gg: AYBFou0qRA9PwleWNrHfQfErSa4M6EXhL7l8AGcs5BYXj87Qvm+h5eJVmWfXFmphrGY
+	IEpAJbp5m26Ev7+xhrIbknUIb31Z1L7t8q30Pe7ydP6XdBQhE+UASJTdyEpRgV5t4QpNPwMTt0y
+	euP7b4wvtWmfpyRGxDjqvRH6MSeOXPEA7fKg9JXKzU3/gDF5/2RxVuuubzy7PiEu0lWh8a7Q3Iq
+	OudQRmd045b/Xu0eUciU4db4kpQxbdENHbRMFpoTySgAkmJF2jRZvTOPoNpdEIlAWHgDsHYDj2s
+	dqYQZMycE62WnSrcCd2dm5W+ia6tf1+2KFKqMWLI0rXoH7ZXhW4r4ysTj/kWtm+UdZWf5AtEMqS
+	YVKirkQwPgcpS7U20uUcCVokMWmImu6bjXU4DL5ruCTg2TASveUwOKKUkPIFFdUIAfBfaiLYLP4
+	8HCLRtem/k+qQ+DBOM1zuf/qr1CgatCr9mXuMblyD7XbyNnog4fVbjv6bBO+rlMwR6/4skHzkse
+	0wLtTNmB1bMr9atA9HK3eKoIEcIM2MmasqM5Air
+X-Received: by 2002:a05:6000:71e:b0:484:3310:c4fc with SMTP id ffacd0b85a97d-48702b2dd2bmr2636915f8f.23.1789370141587;
+        Mon, 14 Sep 2026 00:15:41 -0700 (PDT)
 Received: from fedora-tap.advaoptical.com ([82.166.23.19])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486eb34e4b5sm24472558f8f.22.2026.09.14.00.15.35
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486eb34e4b5sm24472558f8f.22.2026.09.14.00.15.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 00:15:37 -0700 (PDT)
+        Mon, 14 Sep 2026 00:15:40 -0700 (PDT)
 From: Sagi Maimon <maimon.sagi@gmail.com>
 To: Richard Cochran <richardcochran@gmail.com>,
 	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
@@ -77,9 +77,9 @@ To: Richard Cochran <richardcochran@gmail.com>,
 Cc: linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Sagi Maimon <maimon.sagi@gmail.com>
-Subject: [PATCH net-next v14 1/4] ptp: ocp: unregister devlink before detach on probe error
-Date: Mon, 14 Sep 2026 10:15:28 +0300
-Message-ID: <20260914071531.11640-2-maimon.sagi@gmail.com>
+Subject: [PATCH net-next v14 2/4] ptp: ocp: fix dpll cleanup on probe error
+Date: Mon, 14 Sep 2026 10:15:29 +0300
+Message-ID: <20260914071531.11640-3-maimon.sagi@gmail.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20260914071531.11640-1-maimon.sagi@gmail.com>
 References: <20260914071531.11640-1-maimon.sagi@gmail.com>
@@ -91,49 +91,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-devlink_register() runs before the dpll setup in ptp_ocp_probe(), but the
-failure paths after it went straight to ptp_ocp_detach() and then
-devlink_free(), which opens with ASSERT_DEVLINK_NOT_REGISTERED(devlink).
-Any dpll failure during probe therefore freed a devlink instance that was
-still registered.
+Two problems on the dpll error paths in ptp_ocp_probe().
 
-Route those paths through a new out_devlink label that unregisters first,
-matching the order ptp_ocp_remove() already uses.
+dpll_device_register() takes a second reference and stores bp as the
+registration private data, and only dpll_device_unregister() drops it.
+out_dpll dropped bp->tracker but never unregistered, so a dpll_pin_get()
+or dpll_pin_register() failure left the device registered and visible to
+userspace with a priv pointer into the storage devlink_free() releases a
+few lines later, as well as leaking the registration object.
+
+A failing dpll_device_register() jumped to the same label as the failing
+dpll_device_get(), so the reference taken by dpll_device_get() was never
+dropped either.  Give that case its own label.
 
 Fixes: 09eeb3aecc6c ("ptp_ocp: implement DPLL ops")
 Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
 ---
- drivers/ptp/ptp_ocp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/ptp/ptp_ocp.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index 3d26ec1f7b9e..401b04f12d2b 100644
+index 401b04f12d2b..f4299878c27c 100644
 --- a/drivers/ptp/ptp_ocp.c
 +++ b/drivers/ptp/ptp_ocp.c
-@@ -5119,12 +5119,12 @@ ptp_ocp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	if (IS_ERR(bp->dpll)) {
- 		err = PTR_ERR(bp->dpll);
- 		dev_err(&pdev->dev, "dpll_device_alloc failed\n");
--		goto out;
-+		goto out_devlink;
- 	}
+@@ -5124,7 +5124,7 @@ ptp_ocp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
  
  	err = dpll_device_register(bp->dpll, DPLL_TYPE_PPS, &dpll_ops, bp);
  	if (err)
--		goto out;
-+		goto out_devlink;
+-		goto out_devlink;
++		goto out_dpll_put;
  
  	for (i = 0; i < OCP_SMA_NUM; i++) {
  		bp->sma[i].dpll_pin = dpll_pin_get(clkid, i, THIS_MODULE,
-@@ -5151,6 +5151,8 @@ ptp_ocp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+@@ -5150,6 +5150,12 @@ ptp_ocp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		dpll_pin_unregister(bp->dpll, bp->sma[i].dpll_pin, &dpll_pins_ops, &bp->sma[i]);
  		dpll_pin_put(bp->sma[i].dpll_pin, &bp->sma[i].tracker);
  	}
++	/* dpll_device_register() takes a second reference and stores bp; only
++	 * dpll_device_unregister() drops it.  Without this the device stays
++	 * visible with a priv pointer into storage devlink_free() will release.
++	 */
++	dpll_device_unregister(bp->dpll, &dpll_ops, bp);
++out_dpll_put:
  	dpll_device_put(bp->dpll, &bp->tracker);
-+out_devlink:
-+	devlink_unregister(devlink);
- out:
- 	ptp_ocp_detach(bp);
- out_disable:
+ out_devlink:
+ 	devlink_unregister(devlink);
 -- 
 2.47.0
 
