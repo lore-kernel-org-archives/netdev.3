@@ -1,362 +1,221 @@
-Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF43347BA7
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 12:46:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789389988; cv=pass; b=bnl5iH74xIw3m9Vcvo71YTz/cOZJRupEFs1BSCzkK1eU98F7J6d/vn8XAJsa67ojsN54ZgTIYsW9lhZO+5IA6ZCZVpTXm/JwhD72EC/p6VPD7vAQDA41DkW6zlzoINb/NDQS7NfcwKxmQrnPvMfqubY4HA34x2zhfrtDOsYqc4A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789389988; c=relaxed/simple;
-	bh=N2qIBtM0sLdCexpfaGcv2GMkHMJU1opKnFxcrbr/QEo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HONWXQ/HTuDMe9fQFBjbAClihJcLjr06X/nDs7p9XzNyJUsR+wYuVrojfGE5u31FJSf+JpJj0UUOsAlRPgnjgx9fPwhTEPB0a8wX7m+cyZxT28D0bhvEOyU3Rqc7/bELsfRbdD8BT1zg+UnBkoR4od58Sopa0R3rG9kr42IxSGo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xh3raajf; arc=pass smtp.client-ip=74.125.224.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD9A266581;
+	Mon, 14 Sep 2026 12:46:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789389995; cv=none; b=aMlVN4lNpLl9NVpEOnxOVuGyE1cUMCjtnaP7qBDTqWBzLljDNeEDJq/EqoW6vGee5J2HpQapx0hg4N5lxTUuJLpZjbLVMNN4gnOeNd3pPeJ/NO5r/7b3vq2ZSqF3vv2wowuB6i5182LrzuG0o10tWQDa+sn7fJTEuX2bo/qk434=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789389995; c=relaxed/simple;
+	bh=fyoBHyldUl/aiDrbepeWEfSOf8JY1LCIEYcucIQKdZw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=O5OIZPm4hgHD6m613L+806bG4GcdhH7b4MSvs/YoDZuOJDkrGfeJ6Cbk1H52Gg8jMEC0GgrCwOaqxFf5hQxXh388SWzccU5jSI4W2OuvOPhMOAM9BVYa+8V47yd5er6JPUo+/s9jKM1oFwm8Y+mNAEmuq4NNcBHCeumS/D0xfhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=iL3TJ46e; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=NH5eGq0q; arc=none smtp.client-ip=23.88.97.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xh3raajf"
-Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-671061b015eso3106763d50.1
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 05:46:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789389985; cv=none;
-        d=google.com; s=arc-20260327;
-        b=gERTRbZDEN3OrilV++CbvLynE0b3w47zfp/uri+PAbUo2WnbSEfQijNmZPdZoQZLAm
-         3Dac3oP5m7N3GIQeVJvGBiqAk23puShYQWRV5xu5tYtZBdprvfFiGaOfgfrpaSmBwDOh
-         CZ/aB3FThXvHcD3UigOJlUPbZEnfs4c+3CoSfx0Y1g+nMVr1PKaAkZnNWpqq5Ve2NWHQ
-         Qt8ZCal+/rY2+Rq20i2dsgW07csv9ddQqMBoXEt8cO2Xx6sydp+iA0Osqg5zv2P6IuQ3
-         x8pNwJXFbTqkj1K2GiP//Dt0aLNUM0PBjFU4lXcpXwKLwUEm7Gi9wpwwafl/Je+OxedK
-         zWYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Xn/KS/zlvPaKN+PIUz9BQzL20m3x8DXtvbHxQt6hAHg=;
-        fh=N4AWlQg+e1hqCukLtVQIqx+bw3MfARQkN8Y1AbNlOIM=;
-        b=XMny5OfGC+orGRUkACTHTP8ImKmN7iPp1e6tp/GrDT7hUnZNMd1oeRtv+mKNUkab5c
-         QN+HaQI+vK7o0ZhBNx1hFiuLCjCO0b89Fj+5c2PmtHsRnmBSxDbyti+EXsWfxHONKrKx
-         KDVheHjiQqqYR+wEqY6DlpFVaGFGeJjstQeyeOCtyvNoDhti7/2NwFuyT7PPUiiLnSSM
-         +fto3U98z3qgJnApUYSaJSkdp1f43kFSFogpNJPy6cmpro60b0kilYsHD9AlTIiWQtWJ
-         DOxf1bQE8kdY1aYhPe0xVOQn0RlUhE2+6ppYZZHtpn5ZSEU9yAP50LxpXE+GLoEqunu/
-         myAg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789389985; x=1789994785; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Xn/KS/zlvPaKN+PIUz9BQzL20m3x8DXtvbHxQt6hAHg=;
-        b=Xh3raajf9bjc2+DeRM9u9FvRyXSMZqoCbe8ASitzWQaU65NcX5H6qA65lfRhyXyEv5
-         stEswQGj7963sHjK0Rn8vZyrF0VQCzZAhGG27XW+8DBPjfWlu3V0m/NjnXcjAWLiZWjS
-         i3RdpuyLeuJPw3PzvY7SumFKqHL8xcO1arTt9Xn1LdhLdStSAMNPUg6nTUUctRrALy17
-         Fum5fyuYchXbUPx4E7xrNqNjRVBbw8OJnhTcAWSN00HfgZyxzjJ6cpVyLtmCzZwLus3J
-         lgoFy4seJ+3ktqtd2g+1rSL6t/petglHC58+RfcXiAznIFuhkYKmiM0N/xaXfp6wYLSA
-         XDcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789389985; x=1789994785;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Xn/KS/zlvPaKN+PIUz9BQzL20m3x8DXtvbHxQt6hAHg=;
-        b=Gk8IBEpQYTrf+PW13YC8Go+mbKHlWHXoLTSwjdn5RYSkO+s9UnBeEplIy+3+RR5QT5
-         261PeQIH0C1y9HBEoq0pQY06+Qn2KD1Hh77HrUoI6Zv34sHTOC1WqECZi+Ht1YAakWQu
-         iT4KJMw2TM41n0fuq1Mn49BKobCJdsyFGmiS5OjLPYLUDQoJWQtU5PIcA8n79MCxQkeQ
-         clVoa3wYI9Ody3QRhz0jON/NMzmqTUCTRn1Vh3jWqmPXB36FAuJnvDZLQzjJzYrwjiD4
-         bn/Qng3q9VInmH7DryiTRelaRdNorK7Q9t2ynusvPt6Q0sbfrAGuYDjBF4j05QnRC8bC
-         gkkA==
-X-Forwarded-Encrypted: i=1; AKwUvBxEja5sCsDj1MhKWu/sWAGufnJ82Xd/hmXeuwXNnXoxYz3qlgPbeSZs9KkD0egWx4XYf7Zupzc=@vger.kernel.org
-X-Gm-Message-State: AFuF++lKUuY4cpKT0xGwYpHVDxxvaJkt7Fb15MZTU3jIiYYu6LXUHczQ
-	rT+JSJmZpPvUuyXEGeBTbA71cBMtV7y7vmCUuQCkBHBWJFM/uwQVi5ov3ouw/0NdYm7kF/6uoaJ
-	BXZGNyFBC+gUbhdBhRsml8VQnN5HzQ6c=
-X-Gm-Gg: AYBFou1ReD5yU6WInIuy2nxW45gqot7eih+3uWqxsCAHCt1lvVvgP3B/5neM6rRXapc
-	prbPPStRlvppz6wJsQ7+XCLqWwZ/mz6MBtaYCb2mhgPVAT0n1QI/uAe0EIHkYuo/5qCq+KlTbZJ
-	FZhmNG46/xYLxE6FmOXHgPkgtEad9ld9o1qSaztxjfEnEctEHVFRw6MDdK/4TdSp4Up03FGj0Vy
-	SSY7WG6wjM5FGQfw+7gG1Pna3wjDq+zgjt817FkImlS7o4s6UBiKNR4qqcPYkfeJxQHjsc1wyhs
-	Y3sFaP4mCtbhJe+YYP0JatZoZ5Pgcx/AjRdGYAOQLFIJ1Yoxzv3I+qoPQQ==
-X-Received: by 2002:a05:690e:4553:10b0:66f:d560:32f1 with SMTP id
- 956f58d0204a3-6714dff5f14mr316516d50.39.1789389984952; Mon, 14 Sep 2026
- 05:46:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="iL3TJ46e";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="NH5eGq0q"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1789389991;
+	bh=fyoBHyldUl/aiDrbepeWEfSOf8JY1LCIEYcucIQKdZw=;
+	h=From:Subject:Date:To:Cc:From;
+	b=iL3TJ46e2mz9yxw7e1wy50uFO0OEGymN+ygICdL5wyGZ4U/rK07MY2dsU2OS8lryS
+	 miow1WD/XhhhBXWKw+fq6wOqfyZpZLvUFmi3M8iHrxPE298Fiu7dN28l3efNK/OSsW
+	 ASk4M6SUH22tmVD3nqHwfmT3isgVzViEkNJaknxtRgBEt756LRtNmUCWYLqQBULAEt
+	 vxtPy37UBSS4HkaDNkzfKrKoIL4TBZbTzHcsU7UGj/6LDlv5CNeXzAj3HtoWO9Jrzf
+	 WUXwvhhop/KAi0ieSXxnx9ES9zpuJcWIcmIDHO8mu8M6+wguti5y0e1PhK4H2wwNUk
+	 E7/xJvznkAZQw==
+Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
+	id 2C3133F6E4; Mon, 14 Sep 2026 12:46:31 +0000 (UTC)
+X-Spam-Level: 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1789389989;
+	bh=fyoBHyldUl/aiDrbepeWEfSOf8JY1LCIEYcucIQKdZw=;
+	h=From:Subject:Date:To:Cc:From;
+	b=NH5eGq0q0lXsLT8chqjflKzerSGyT7tQXnK0uK6cPOG17nCzTQmtQlnm83/4v6VUk
+	 mAJB3tF8epiLnK9bvwrHx/YdmIHZBylOrVn4bX4UcCv1TFnWpu0FdSjaWcus2FLPkm
+	 fCan8lMv4NSIcFha4SVNvmca8j4pzbmM8zSjBxIcWG68KsIorlUpFfa6XPlrxYVmmu
+	 LsixN7TTa6ioEYaPJWCLS/GrFDlqrqUB0flLykCv3VGJxMICiXRyLnHqPgu2Vk/FIS
+	 QrBTLtwQ/A29dUzKzqxLN4mNpVFLmhWUU37ItoRmQMA1mNI+ckfjik/6e9Ivz0/ZoR
+	 gzBoaFdi0d9Bw==
+Received: from DELLLaptop.net (unknown [IPv6:2409:8a62:2532:dca0:14f4:3e22:1e7c:23c2])
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 7A1B73F6BD;
+	Mon, 14 Sep 2026 12:46:25 +0000 (UTC)
+From: Birger Koblitz <mail@birger-koblitz.de>
+Subject: [PATCH net-next v11 00/15] ax88179_178a: Add support for
+ AX88179A-based chips
+Date: Mon, 14 Sep 2026 14:46:09 +0200
+Message-Id: <20260914-ax88179a-v11-0-5ea7a925ba6d@birger-koblitz.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260910130140.910-1-yogeshgaur.83@gmail.com> <46807790-6f07-4f0a-b50b-375cc1c9b061@gmail.com>
- <CAG6enPy441a-cyzsP2_WoQ1+4rj6gikWzOrNmX6yXx1mOo-M1Q@mail.gmail.com> <dc33c0ec-ae64-464f-b656-8c55bb17cacd@gmail.com>
-In-Reply-To: <dc33c0ec-ae64-464f-b656-8c55bb17cacd@gmail.com>
-From: Yogesh Gaur <yogeshgaur.83@gmail.com>
-Date: Mon, 14 Sep 2026 18:16:12 +0530
-X-Gm-Features: AcwNN1WAJeFjJDU3SPSjkU4yg6mUFLVqkF6KsPpGrqF-BmrTNBaXZbEBF_oOnwk
-Message-ID: <CAG6enPzTYjcaV1Y1FECzZ0GGmxC4-YfYwojVOAS2OCgEYcAH3Q@mail.gmail.com>
-Subject: Re: [PATCH net v2] r8169: don't enable chip LTR when the platform has
- not enabled LTR
-To: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: nic_swsd@realtek.com, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Javen Xu <javen_xu@realsil.com.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJLsp2oC/3XRzU7DMAwH8FdBORNk5zuceA/EIW2cLQJ1qK2qw
+ bR3x+tlmUSOiaNf7L8vYqG50iJeny5ipq0u9TTxAfH5SYzHNB1I1swXQoFy4DTIdA4BfUwyYQ6
+ xkEKvQfDz75lKPe/Wu5holROdV/HBlWNd1tP8s3+y4V7fOQ945zaUIFG7YHNx3qJ9G+p8oFl+n
+ oavuv6+ZNqxTbVAaADFAASAQnlQhK4H6AZQpgE0A0POZEoEG4LuAaYBdDuCYUCNBYvHAXNWPcD
+ egQCqASwDeRw41mTSmE0PcC3gGsAxUDJ5g8ZhpG4GvgGwWermbx0kpzVGHFHFHhAa4CGDcAOIA
+ yyKyKhuB/EOxIcMIgOBXPYeIalEPQChFdo98kC8SEsOaEzeRfiPuF6vfy7vyxT+AgAA
+X-Change-ID: 20260630-ax88179a-a1d89fe21730
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>
+Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Birger Koblitz <mail@birger-koblitz.de>, 
+ Jianhui Xu <neuromoments@gmail.com>
+X-Mailer: b4 0.14.2
 
-On Fri, Sep 11, 2026 at 6:44=E2=80=AFPM Heiner Kallweit <hkallweit1@gmail.c=
-om> wrote:
->
-> On 11.09.2026 15:00, Yogesh Gaur wrote:
-> > On Fri, Sep 11, 2026 at 1:03=E2=80=AFAM Heiner Kallweit <hkallweit1@gma=
-il.com> wrote:
-> >>
-> >> On 10.09.2026 15:01, Yogesh Gaur wrote:
-> >>> rtl_enable_ltr() programs the MAC to generate LTR messages - ALDPS_LT=
-R_EN,
-> >>>
-> >>
-> >> Empty lines, mail formatting issue?
-> > Yes, I would correct it in v3.
-> >
-> >>
-> >>> LTR_SNOOP_EN, LTR_OBFF_LOCK_EN, plus LINK_SPEED_CHANGE_EN on
-> >>>
-> >>> RTL8125/RTL8126/RTL8127 - and rtl_hw_aspm_clkreq_enable() calls it on
-> >>>
-> >>> every ASPM enable, then goes on to let the chip trigger L1.2.
-> >>>
-> >>>
-> >>>
-> >>> The only gate is tp->aspm_manageable, which records that the OS is al=
-lowed
-> >>>
-> >>> to control ASPM. It says nothing about LTR. LTR is a separate PCIe
-> >>>
-> >>> capability that only works if every device on the path to the root po=
-rt
-> >>>
-> >>> supports it. The PCI core works that out in pci_configure_ltr() and
-> >>>
-> >>> records the result in pci_dev->ltr_path; per PCIe r6.0 sec 7.5.3.16 a
-> >>>
-> >>> function must not issue LTR messages while LTR Mechanism Enable is cl=
-ear.
-> >>>
-> >>>
-> >>>
-> >>> So on a platform whose hierarchy has no LTR path, the driver tells th=
-e
-> >>>
-> >>> chip to start sending LTR messages nothing will honour, and ties ALDP=
-S -
-> >>>
-> >>> the PHY's link-down power saving - to them. A report against RTL8125B
-> >>>
-> >>> (rev 05, firmware rtl8125b-2_0.0.2) in a mini PC shows the effect: 29=
-1
-> >>
-> >> Did you verify that this is caused by LTR messages, and not by any oth=
-er
-> >> root cause?
-> >>
-> >>>
-> >>> link down/up transitions in one eight-hour boot, with repeated downsh=
-ifts
-> >>>
-> >>> to 100Mbps, against four transitions at boot and then a stable link o=
-n
-> >>>
-> >>> the kernel before the LTR change.
-> >>>
-> >>>
-> >>>
-> >>> Gate the chip's LTR programming on pci_dev->ltr_path. That field live=
-s
-> >>>
-> >>> inside CONFIG_PCIEASPM, and without ASPM support there is nothing her=
-e to
-> >>>
-> >>> enable LTR for, so compile the function out in that configuration.
-> >>>
-> >>>
-> >>>
-> >>> Note this does change CONFIG_PCIEASPM=3Dn builds, which used to progr=
-am
-> >>>
-> >>> chip LTR unconditionally: pci_disable_link_state() is a stub that ret=
-urns
-> >>>
-> >>> success there, so tp->aspm_manageable ends up set. The PCI core does =
-not
-> >>>
-> >>> configure LTR in that configuration either.
-> >>>
-> >>>
-> >>>
-> >>> Fixes: 9ab94a32af70 ("r8169: enable LTR support")
-> >>>
-> >>> Closes: https://bugzilla.redhat.com/show_bug.cgi?id=3D2529752
-> >>
-> >> Did you verify that your patch fixes the reported issue? Or do you
-> >> just assume this? Because in the bug comment history I don't see
-> >> a statement that issue has been resolved.
-> > I don't have a board with me, hence have not verified it. I did a
-> > compile check only.
->
-> If it's not verified that your patch fixes the reported issue, better
-> remove the Closes line.
->
-Sure, would remove it in v4.
+This adds support for the current generation of ASIX network adapter chips,
+which are based on the AX88179A. This includes the AX88179A/B (1GBit-PHY),
+AX88772D/E (100MBit) and AX88279 (2.5GBit).
 
-Thanks.
+The AX179A-based chips all provide both a CDC-NCM compatible USB interface,
+and a proprietary vendor interface with more features. By default, the
+proprietary vendor interface is not active and Linux will load the CDC-NCM
+driver to support the devices. If the ax88179_178a module is configured by
+the OS to have precedence over CDC-NCM, then this driver will switch the
+device to use the vendor interface, and the device will be controlled by
+the ax88179_178a driver when the device is probed again after an automatic
+reset of the device bringing up the vendor interface.
 
-> >>
-> >>> Assisted-by: LLM
-> >>>
-> >>> Signed-off-by: Yogesh Gaur <yogeshgaur.83@gmail.com>
-> >>>
-> >>> ---
-> >>>
-> >>> v2:
-> >>>
-> >>>  - Gate on pci_dev->ltr_path instead of reading PCI_EXP_DEVCTL2 direc=
-tly,
-> >>>
-> >>>    and compile rtl_enable_ltr() out for CONFIG_PCIEASPM=3Dn, where th=
-at
-> >>>
-> >>>    field does not exist and there is nothing to enable LTR for.
-> >>>
-> >>>    Suggested by Heiner Kallweit.
-> >>>
-> >>>  - Commit message notes the resulting change for CONFIG_PCIEASPM=3Dn =
-builds.
-> >>>
-> >>>  - No change to the RTL8125 register programming itself.
-> >>>
-> >>>
-> >>>
-> >>> v1: https://lore.kernel.org/all/20260909110554.1977-1-yogeshgaur.83@g=
-mail.com/
-> >>>
-> >>>
-> >>>
-> >>>  drivers/net/ethernet/realtek/r8169_main.c | 13 +++++++++++++
-> >>>
-> >>>  1 file changed, 13 insertions(+)
-> >>>
-> >>>
-> >>>
-> >>> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/=
-ethernet/realtek/r8169_main.c
-> >>>
-> >>> index ec4fc21fa21f..05f7a44aff01 100644
-> >>>
-> >>> --- a/drivers/net/ethernet/realtek/r8169_main.c
-> >>>
-> >>> +++ b/drivers/net/ethernet/realtek/r8169_main.c
-> >>>
-> >>> @@ -3035,8 +3035,16 @@ static void rtl_disable_exit_l1(struct rtl8169=
-_private *tp)
-> >>>
-> >>>       }
-> >>>
-> >>>  }
-> >>>
-> >>>
-> >>>
-> >>> +#ifdef CONFIG_PCIEASPM
-> >>>
-> >>>  static void rtl_enable_ltr(struct rtl8169_private *tp)
-> >>>
-> >>>  {
-> >>>
-> >>> +     /* The chip must not issue LTR messages unless LTR is enabled o=
-n the
-> >>>
-> >>> +      * whole path up to the root port. pci_configure_ltr() works th=
-at out
-> >>>
-> >>> +      * and records the result in pci_dev->ltr_path.
-> >>>
-> >>> +      */
-> >>>
-> >>> +     if (!tp->pci_dev->ltr_path)
-> >>
-> >> Simpler would be:
-> >> if (!IS_ENABLED(CONFIG_PCIEASPM) || !tp->pci_dev->ltr_path)
-> >>
-> > I tried that and it does not build, because ltr_path itself is declared
-> > inside the #ifdef:
-> >
-> >   include/linux/pci.h:443
-> >     #ifdef CONFIG_PCIEASPM
-> >             struct pcie_link_state  *link_state;
-> >             unsigned int    aspm_l0s_support:1;
-> >             unsigned int    aspm_l1_support:1;
-> >             unsigned int    ltr_path:1;
-> >     #endif
-> >
-> > IS_ENABLED() is a C expression, so the member reference still has to
-> > compile even when the left operand is 0:
-> >
-> >   drivers/net/ethernet/realtek/r8169_main.c: In function 'rtl_enable_lt=
-r':
-> >   error: 'struct pci_dev' has no member named 'ltr_path'
-> >        if (!IS_ENABLED(CONFIG_PCIEASPM) || !tp->pci_dev->ltr_path)
-> >
-> Right, ofc ..
->
-> >> Then you don't need the stub function.
-> >>
-> > You are right that the stub function should go, though. v3 drops it and
-> > keeps a single rtl_enable_ltr() with the guard inline:
-> >
-> >         static void rtl_enable_ltr(struct rtl8169_private *tp)
-> >         {
-> >                 /* comment */
-> >         #ifdef CONFIG_PCIEASPM
-> >                 if (!tp->pci_dev->ltr_path)
-> >                         return;
-> >         #else
-> >                 return;
-> >         #endif
->
-> LGTM
->
-> >>>
-> >>> +             return;
-> >>>
-> >>> +
-> >>>
-> >>>       switch (tp->mac_version) {
-> >>>
-> >>>       case RTL_GIGA_MAC_VER_80:
-> >>>
-> >>>               r8168_mac_ocp_write(tp, 0xcdd0, 0x9003);
-> >>>
-> >>> @@ -3120,6 +3128,11 @@ static void rtl_enable_ltr(struct rtl8169_priv=
-ate *tp)
-> >>>
-> >>>       /* chip can trigger LTR */
-> >>>
-> >>>       r8168_mac_ocp_modify(tp, LTR_OBFF_LOCK, 0x0003, LTR_OBFF_LOCK_E=
-N);
-> >>>
-> >>>  }
-> >>>
-> >>> +#else
-> >>>
-> >>> +static void rtl_enable_ltr(struct rtl8169_private *tp)
-> >>>
-> >>> +{
-> >>>
-> >>> +}
-> >>>
-> >>> +#endif
-> >>>
-> >>>
-> >>>
-> >>>  static void rtl_hw_aspm_clkreq_enable(struct rtl8169_private *tp, bo=
-ol enable)
-> >>>
-> >>>  {
-> >>>
-> >>
->
+The following hardware was tested:
+Delock 66046 2.5GBit adapter (AX88279, FW: 1.2.0.0)
+TP-Link UE306 1GBit adapter (AX88179B, FW: 1.3.0.0)
+Renkforce RF-4708614 1GBit adapter (AX88179A, FW: 1.0.4.0)
+UGREEN CR110 100MBit adapter (AX88722E, FW: 1.3.0.0)
+
+The driver supports the following features
+- EEE
+- TCP segmentation offload
+- VLAN filtering/tagging offload 
+  (NETIF_F_HW_VLAN_CTAG_FILTER, NETIF_F_HW_VLAN_CTAG_RX/TX)
+- RX/TX checksum offload
+- FC/Pause configuration
+- EEPROM read access
+
+The code is based on the ASIX 4.1.0 out-of-tree driver published under
+the GPL,, the aqc111 driver which provides support for the AX88279A,
+and some tracing of USB-transfers of the Windows-driver.
+
+Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
+Tested-by: Jianhui Xu <neuromoments@gmail.com>
+---
+Changes in v11:
+- Fix sparse warnings
+- Link to v10: https://lore.kernel.org/r/20260904-ax88179a-v10-0-b5e60eca7690@birger-koblitz.de
+
+Changes in v10:
+- Fix missing variable declaration in ax88179a_status()
+- Add reviewed-bys
+- Link to v9: https://lore.kernel.org/r/20260902-ax88179a-v9-0-8e6d7710a2ae@birger-koblitz.de
+
+Changes in v9:
+- Fix ax88179a_status() to not call carrier-related netif or usbnet methods
+- Use genphy_read_mmd_c45() and genphy_write_mmd_c45()
+- Link to v8: https://lore.kernel.org/r/20260831-ax88179a-v8-0-de905f2ee426@birger-koblitz.de
+
+Changes in v8:
+- Fix resume sequence as Suggested-by: Jianhui Xu <neuromoments@gmail.com>
+- Add handling of PHYs with broken forced mode in phylib to handle AX88279 PHY
+- Multple formatting fixes
+- Fix transiently unused functions ax88179a_mac_disable_tx_lpi() and
+  ax88179a_mac_enable_tx_lpi()
+- Removed unnecessary checks for dev initialized
+- Link to v7: https://lore.kernel.org/r/20260810-ax88179a-v7-0-da633191c129@birger-koblitz.de
+
+Changes in v7:
+- Add phylink_mac_interrupt() function to phylink and stop
+  polling the PHY to prevent a race condition between the controller
+  and phylink when configuring a new link.
+- Fix typo in ax88179_read_cmd Reported-by: Jianhui Xu <neuromoments@gmail.com>
+- Return -EOPNOTSUPP in asix_ax88279_config_aneg when autoneg is being disabled
+- Link to v6: https://lore.kernel.org/r/20260806-ax88179a-v6-0-fde7414619e6@birger-koblitz.de
+
+Changes in v6:
+- Use genphy_read_status() in asix_ax88279_read_status()
+- Use SGMII and 2500BaseX interfaces for PHY
+- Fix speed determination of MAC/PHY link
+- Fix bulk transfer configuration to use enums for bulk configuration types
+- Link to v5: https://lore.kernel.org/r/20260802-ax88179a-v5-0-dcb9fea4acd4@birger-koblitz.de
+
+Changes in v5:
+- Fixed read_status() and config_aneg() in PHY driver
+- Introduced netdev2data() as convenience function
+- netdev_info instances and debugging relicts removed
+- Several instances of badly written/formatted code that was copy and pasted from
+  the original driver corrected
+- select PHYLINK added to Kconfig when phylib dependency added
+- PHYLINK selects PHYLIB, so not needed to specify separately
+- Link to v4: https://lore.kernel.org/r/20260731-ax88179a-v4-0-2cf1f71b1dd2@birger-koblitz.de
+
+Changes in v4:
+- Split driver into library part and part2 for AX88179 and AX88179A-based
+  controllers
+- Driver renamed ax88179
+- Improved phylink use: use phylink standard functions for speed and EEE-settings,
+  correct MAC capabilities, removed ax88179_status() irq-urb callback
+- Fixes in PHY driver for AX88179A integrated PHYs
+- Link to v3: https://lore.kernel.org/r/20260724-ax88179a-v3-0-bdde4f905883@birger-koblitz.de
+
+Changes in v3:
+- Add PHY drivers for the PHYs of the AX88179A-based controllers
+- Use phylink for the AX88179A-based chips
+- Link to v2: https://lore.kernel.org/r/20260708-ax88179a-v2-0-0800fedb2e16@birger-koblitz.de
+
+Changes in v2:
+- Correctly use net-next prefix
+- Fix compilation issue in HW support patch
+- Split MMD support patch into patches for EEE/new chip support
+- Do not use ADVERTISE_RESV but private flag definition
+- Fix pause configuration to keep track of settings when autoneg disabled
+- Fix issue with unitialized variable reported by kernel test robot <lkp@intel.com>
+- Avoid white-space changes
+
+- Link to v1: https://lore.kernel.org/r/20260701-ax88179a-v1-0-13685df67515@birger-koblitz.de
+
+---
+Birger Koblitz (15):
+      phylink: Add phylink_mac_interrupt
+      phylib: Add support for PHYs with broken forced mode
+      ax88179_178a: Fix endianness of pause watermark register
+      ax88179_178a: Split driver into library and device specific code
+      ax88179_178a: Add netdev2data() convenience function
+      ax88179_178a: Add HW support for AX179A-based chips
+      ax88179_178a: Add EEE configuration support for AX88179A MACs
+      ax88179_178a: Add EEE configuration support for AX88179A PHYs
+      ax88179_178a: Add VLAN offload support for AX88179A
+      ax88179_178a: Add AX179A/AX279 multicast configuration
+      ax88179_178a: Add Suspend/resume support for AX88179A/772D/279
+      ax88179_178a: Add ethtool get_drvinfo
+      ax88179_178a: Update driver name and information
+      ax88179_178a: Add support for AX88179A/772D/279 EEPROM access
+      ax88796b: Add support for AX88772D, AX88179A and AX88279
+
+ MAINTAINERS                        |    6 +
+ drivers/net/phy/ax88796b.c         |  161 +++++
+ drivers/net/phy/phy.c              |    4 +
+ drivers/net/phy/phylink.c          |   16 +
+ drivers/net/usb/Kconfig            |   10 +-
+ drivers/net/usb/Makefile           |    3 +-
+ drivers/net/usb/ax88179_178a.c     |  664 ++------------------
+ drivers/net/usb/ax88179_lib.c      |  506 +++++++++++++++
+ drivers/net/usb/ax88179_lib.h      |  358 +++++++++++
+ drivers/net/usb/ax88179a_devices.c | 1213 ++++++++++++++++++++++++++++++++++++
+ include/linux/phy.h                |    1 +
+ include/linux/phylink.h            |    1 +
+ 12 files changed, 2319 insertions(+), 624 deletions(-)
+---
+base-commit: 1bb784eb6e38fd73143f021608e4ef3095d0c0d7
+change-id: 20260630-ax88179a-a1d89fe21730
+
+Best regards,
+-- 
+Birger Koblitz <mail@birger-koblitz.de>
+
