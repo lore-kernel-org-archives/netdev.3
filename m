@@ -1,343 +1,157 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5FA46EF90
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 13:09:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE4047987A;
+	Mon, 14 Sep 2026 13:12:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789391382; cv=none; b=Z+ocXDGivXH4FZ5Gg3TUc4X9c1BbYeMtm4yU/BtmEXtMbx8wlkkbF4LrGzRT8RCRAEajweCT+QytkpACFt0KLtnIP80DPTnMwqWFiGIa8mZeSlrjBlXK/2VdgZWtiG8e6UmZBqAYiYMH8FrFZ02/+OFD1jFkIvXdHwyF8CnpUl8=
+	t=1789391542; cv=none; b=Ui1N0YyNv4uF6WvjCEqpG6yt+u++AwpPYrCtWFglFjZLQ7a4ltC+fHBCG7I7cVDJu8O8xqD2fcPd9+kt5aGFjziNTnrt7RESp2fT9QWea3lNGgHg33/SSsbGUF4ni6FPibKSuRUgUZ/4hyAoaKlrdMPi6fxddvObZiqwDExPokk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789391382; c=relaxed/simple;
-	bh=K7NzQZF8k2EX5z1yRQsQ0MW/2CyWxyNl/b58em0+70o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m5QFbYb3hHXa/OsIT/JPeuuTosPo8pa2hn/SHuGKq0I8134AqHUp5wbJWefr0gt/6yoK4rwXFsigCiBuvox3tEOF5pQNWG7YgdbaGssGeDH17mkGvxUnxkR6jyjE3U1YQ6217/wUWnQsyEAHwUFJK++kQ19Eo36UjKRE4sT82OM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=c6uWv12K; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1789391542; c=relaxed/simple;
+	bh=oxbFhAvr6JSfGzP5RlSIkIiQp3K9ZHr1MCwoENtbehI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KjUSpIa9tuRdTlomwu0+/ciIg7mEovaqliNBvl4xU8gfZLUTZa0UJ8wC/8V6PF4WBRPRn7PpelZiqjjAAuxphqmkZtyl8Ds5v5w6kj7+JSupXOgIl4PnwqddUWfMVDGIFuVp7SgKw5ws8qtG/eCsG9/cM4nU2nSM/91cbxdYILY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mPBSdDIB; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="c6uWv12K"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-39b9184fa80so2028471a91.2
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 06:09:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1789391379; x=1789996179; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=mfUjM+PYTr4356Xaoi7C8Eq7NyO1PouppXVS3eSNKcE=;
-        b=c6uWv12K5Yd9Xgy6kGyAm5n6KFAk1ZI/sdhvpVFg7Q9sq3Zcmg89Q56vY0CFwF9YZQ
-         eFaWCqD6nEFruEDGN3pCz9oUjkO3UBY0CnWvhUZDOqfqoynYkj38gZqtseiax05zNYOP
-         P4cW00yJ9+ksTRXOS6WhQm2f6bb34qoKsixRwgJYvNpoDmk2ZO00eFq8zv+uiGmfDMGW
-         3frohVErMUCC3v91ZhMx+f22gHO8s8MVA9ZmOzAh4+XcKAwgj9Df1ByQAOTqixNhckfm
-         sNsnX8zmnJWud0AJcp63f02p89tZrCqDmuQo3Vsve+UwsowtaSnH7lfd8HVCydMM0peK
-         GLiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789391379; x=1789996179;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=mfUjM+PYTr4356Xaoi7C8Eq7NyO1PouppXVS3eSNKcE=;
-        b=imGYexhpNoF7QAmv3jQAgxKPEESvixWiuf46wnPOR/E6cAtSz6EiSFi/9V7nH8viuJ
-         YJ8jap1nosMgXpWjWnPb5eI+wLEI0yETruam0po9SLABW+/y/UeP6011JeVbbuhNV8+4
-         mNRV2VlJsSLQms1bLym2XaVkS7Dajxt9CIZoMMj8M0QN2tZK4oA3/jKsvb8pO6mf5FIM
-         56fMav3l7nCLHb4LQym7jMAlO0nbH8LkQ3GDRHjCLojn7yA1dwY/JrUWZ4E3t11AgOlN
-         mzoVdHw66IOz1v2oQd80gD9VEHqoyYFvaH+EKmSg01VzeVCob1e5r50IKt16VSQAyqMt
-         4jHQ==
-X-Forwarded-Encrypted: i=1; AKwUvBymiqkzsjzbfKL6eUNdAWSI1q0DBbDq7s9Rb6sGD6R8WPchSN3ceK37GGKzZ3XmLcIPp0qPHXQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++ncPjRBBxX+Vgah4kUJNmuQcGd97ZyWert7VRmXOR4XLx+QC3BK
-	mqjitG5IKp8pn/MTWJzGwKGI+x8yl8oliCZLbRJynqDO78TKAdx1dyENLRnF10vY7Isg
-X-Gm-Gg: AYBFou1noICpUqhjI+6+uW8HNGZZUdkcQQM5cyUSp2FTp3RQRHlThkAQ0Kf/Ent7oDM
-	qfCxDF39Ioh6oWwuNSqBXs1pQvrxij05qnVMgLORj1mj1lLWuVe1oaOJDu1XqfuowiFoQJJcaWu
-	qL/0ohk41UsYDkvx7CYumar9MEz0SNHcxQq1WdQkU90cWDDXkoVVPZfprIDtQ2VHpz9SUtGlU4m
-	0lHLygs/BeQ/1lN9qpsLLsfLZq99RpwGa3pN6pR8trCAW6mf3ncGoSEQNIu1cyJtXNLWn7yTfGT
-	zmN9r7YtxIiHNM2DAwBtgbcJlwq21UNsGh363qo7mlGIsR2YWyfC4S/czZxFPqTT6mWcdAgT1Oy
-	XA5v4gBYcDp6jM6RwCd96Gl+rVYS2AJccq+Et5lXhV5MvOV1lUrJKcq+7TmeXdSduhM9NVO2sNw
-	c7spoUmGzCTen/SwFrnxEwIo7GiPkg0+3DmZ+bwsOc7p3Np/+Jis23jVnVgCW3jRqBy8Ira2SqA
-	oJMJul2vydoWPv9MPkqYgn3x8g13sWMzHnqQcjF
-X-Received: by 2002:a17:90b:3c0c:b0:39d:f317:44cd with SMTP id 98e67ed59e1d1-39df3174fcemr3305326a91.14.1789391379318;
-        Mon, 14 Sep 2026 06:09:39 -0700 (PDT)
-Received: from b6ad5085b32f.. ([122.51.212.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d98e5c630sm23116689a91.6.2026.09.14.06.09.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 06:09:38 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
-To: dhowells@redhat.com,
-	marc.dionne@auristor.com
-Cc: zihanx@nebusec.ai,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-afs@lists.infradead.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Vega <vega@nebusec.ai>,
-	Luxing Yin <root@tr0jan.top>
-Subject: [PATCH net v5 1/1] rxrpc: fix encap_rcv skb accounting exhaustion
-Date: Mon, 14 Sep 2026 13:09:12 +0000
-Message-ID: <d38b683f6d583cbbc23ee149b50b15b6e4efc567.1789273347.git.zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1789273347.git.zihanx@nebusec.ai>
-References: <cover.1789273347.git.zihanx@nebusec.ai>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mPBSdDIB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789391540; x=1820927540;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=oxbFhAvr6JSfGzP5RlSIkIiQp3K9ZHr1MCwoENtbehI=;
+  b=mPBSdDIBFWF1SQT+VjfdPVHFSXjrs7TKpab9zSYV7DhyBmM5w2Wtw6dT
+   2UdNib5PFjRQAqsRcOUDE6NqsX2fRRFY0MLLyxux6YJcK+unCC+TiRpRH
+   KJJeP9f+9LUl5XOMJwM7jw+z3GjaqNOFj02qCz9k2s6OxBf4EvlTfxzVU
+   xBV3vN9GM1pNC0ceeooFCvEi8XIEr+dMfxe0ZGDngzkq/3xvIKuAPZVs5
+   SCnZLeB98dvGp4R4Tjw3aW7f4HuPmGltyqJ0jpnTWB/rwEHUpxgG9XqvL
+   wG6fSP48xcL+vUtzzOTCc/jPZ30gOLRacuwX9Ck0ZkN3t56sL0k7Bb0wr
+   A==;
+X-CSE-ConnectionGUID: CpZ6BkesRhyQu0FT0WTvAg==
+X-CSE-MsgGUID: znMlWhcfQgyVx4W/Jmnmqw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11904"; a="112511240"
+X-IronPort-AV: E=Sophos;i="6.27,102,1787036400"; 
+   d="scan'208";a="112511240"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2026 06:12:19 -0700
+X-CSE-ConnectionGUID: K5cBbZILTeK5caqNakas1g==
+X-CSE-MsgGUID: YqxQpIzbRh2TnzGxHNT0cQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,102,1787036400"; 
+   d="scan'208";a="270832192"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa006.jf.intel.com with ESMTP; 14 Sep 2026 06:12:15 -0700
+Received: by black.igk.intel.com (Postfix, from userid 1008)
+	id 5371A99; Mon, 14 Sep 2026 15:12:14 +0200 (CEST)
+Date: Mon, 14 Sep 2026 15:12:14 +0200
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Subasri S <subasris1210@gmail.com>
+Cc: Peter Chen <peter.chen@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Duncan Sands <duncan.sands@free.fr>,
+	Chas Williams <3chas3@gmail.com>,
+	Minas Harutyunyan <hminas@synopsys.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	linux-usb@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] usb: typec: Use %pe to print error pointers
+Message-ID: <aqfyrs6Hdjc_ywZG@black.igk.intel.com>
+References: <20260801-usb-ptr_err_patchset-v2-0-1698e298c1e3@gmail.com>
+ <20260801-usb-ptr_err_patchset-v2-3-1698e298c1e3@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260801-usb-ptr_err_patchset-v2-3-1698e298c1e3@gmail.com>
 
-rxrpc_encap_rcv() moves encapsulated UDP packets onto the local
-RxRPC queue without preserving UDP receive-buffer accounting. A
-local AF_RXRPC service such as the AFS callback listener can then
-be flooded until that queue grows without bound.
+On Sat, Aug 01, 2026 at 05:59:52PM +0530, Subasri S wrote:
+> Use the %pe format specifier instead of %ld with PTR_ERR() for printing
+> error pointers in various typec drivers. This prints symbolic
+> error names (e.g.-ENOMEM) instead of errno numbers (e.g. -12),
+> making error logs more readable.
+> 
+> Fix coccinelle reported warning:
+> WARNING: Consider using %pe to print PTR_ERR()
+> 
+> Compile tested only.
+> 
+> Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+> Signed-off-by: Subasri S <subasris1210@gmail.com>
 
-Reaccount each encapsulated skb against the UDP socket before
-queueing it and drop packets once sk_rcvbuf is exhausted. Orphan
-PACKET skbs when the I/O thread dequeues them so UDP ownership
-does not follow those packets onto call or connection queues.
-Error-queue skbs keep their destructor. Clear sk_user_data under
-RCU and release the socket only after the local queues are purged.
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-The kernel UDP tunnel never sized sk_rcvbuf, so it would stay at
-sysctl_rmem_default (about 208KiB). That is smaller than one advertised
-RxRPC receive window of ordinary DATA, so a compliant peer filling
-rxrpc_rx_window_size packets could be dropped with no
-EXCEEDS_WINDOW ACK. Set sk_rcvbuf from one ordinary-DATA window:
-rxrpc_rx_window_size * SKB_TRUESIZE(RXRPC_JUMBO(1)) * 2, plus 25%
-for ACKs, extra calls and ICMP, clamped to [sysctl_rmem_default,
-sysctl_rmem_max]. The * 2 covers typical 2-4KiB incoming UDP skb
-truesize. Do not size from rxrpc_rx_mtu (jumbo 46). DATA admission
-leaves one ordinary packet of rmem so ICMP/error-queue skbs can
-still be queued while a DATA flood is at the cap.
+> ---
+>  drivers/usb/typec/mux/pi3usb30532.c | 6 ++----
+>  drivers/usb/typec/tcpm/tcpm.c       | 2 +-
+>  drivers/usb/typec/wusb3801.c        | 4 ++--
+>  3 files changed, 5 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/usb/typec/mux/pi3usb30532.c b/drivers/usb/typec/mux/pi3usb30532.c
+> index 985683fe49e9..b32f4c433de9 100644
+> --- a/drivers/usb/typec/mux/pi3usb30532.c
+> +++ b/drivers/usb/typec/mux/pi3usb30532.c
+> @@ -139,8 +139,7 @@ static int pi3usb30532_probe(struct i2c_client *client)
+>  
+>  	pi->sw = typec_switch_register(dev, &sw_desc);
+>  	if (IS_ERR(pi->sw)) {
+> -		dev_err(dev, "Error registering typec switch: %ld\n",
+> -			PTR_ERR(pi->sw));
+> +		dev_err(dev, "Error registering typec switch: %pe\n", pi->sw);
+>  		return PTR_ERR(pi->sw);
+>  	}
+>  
+> @@ -151,8 +150,7 @@ static int pi3usb30532_probe(struct i2c_client *client)
+>  	pi->mux = typec_mux_register(dev, &mux_desc);
+>  	if (IS_ERR(pi->mux)) {
+>  		typec_switch_unregister(pi->sw);
+> -		dev_err(dev, "Error registering typec mux: %ld\n",
+> -			PTR_ERR(pi->mux));
+> +		dev_err(dev, "Error registering typec mux: %pe\n", pi->mux);
+>  		return PTR_ERR(pi->mux);
+>  	}
+>  
+> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+> index 89eec20a2064..ad10470ea73b 100644
+> --- a/drivers/usb/typec/tcpm/tcpm.c
+> +++ b/drivers/usb/typec/tcpm/tcpm.c
+> @@ -4796,7 +4796,7 @@ static void tcpm_typec_connect(struct tcpm_port *port)
+>  			port->partner_desc.accessory = TYPEC_ACCESSORY_NONE;
+>  		partner = typec_register_partner(port->typec_port, &port->partner_desc);
+>  		if (IS_ERR(partner)) {
+> -			dev_err(port->dev, "Failed to register partner (%ld)\n", PTR_ERR(partner));
+> +			dev_err(port->dev, "Failed to register partner (%pe)\n", partner);
+>  			return;
+>  		}
+>  
+> diff --git a/drivers/usb/typec/wusb3801.c b/drivers/usb/typec/wusb3801.c
+> index 6062875fb04a..86d13ab41670 100644
+> --- a/drivers/usb/typec/wusb3801.c
+> +++ b/drivers/usb/typec/wusb3801.c
+> @@ -277,8 +277,8 @@ static void wusb3801_hw_update(struct wusb3801 *wusb3801)
+>  		if (partner_type != WUSB3801_STAT_PARTNER_STANDBY) {
+>  			wusb3801->partner = typec_register_partner(port, &desc);
+>  			if (IS_ERR(wusb3801->partner))
+> -				dev_err(dev, "Failed to register partner: %ld\n",
+> -					PTR_ERR(wusb3801->partner));
+> +				dev_err(dev, "Failed to register partner: %pe\n",
+> +					wusb3801->partner);
+>  		}
+>  
+>  		data_role = pwr_role == TYPEC_SOURCE ? TYPEC_HOST : TYPEC_DEVICE;
+> 
+> -- 
+> 2.43.0
 
-Dropped packets increment UDP_MIB_RCVBUFERRORS and UDP_MIB_INERRORS
-and use SKB_DROP_REASON_SOCKET_RCVBUFF. Clear skb->dev and drop the
-dst, matching the ordinary UDP enqueue path.
-
-sk_forward_alloc is not atomic. UDP serialises it with
-sk->sk_receive_queue.lock; take that lock around the charge in
-rxrpc_encap_rcv() and around skb_orphan() in the I/O thread. The
-I/O thread uses spin_lock_bh() so a concurrent BH encap_rcv()
-cannot update the same counter. The skbs stay on the RxRPC local
-queue, not the UDP receive queue.
-
-Fixes: 446b3e14525b ("rxrpc: Move packet reception processing into I/O thread")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: LLM
-Co-developed-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
----
-changes in v5:
-  - size the tunnel sk_rcvbuf to one advertised window of ordinary
-    DATA (RXRPC_JUMBO(1)), doubled for typical 2-4KiB skb truesize,
-    plus 25% for ACKs/ICMP, capped by sysctl_rmem_max
-  - leave ICMP/error-queue headroom in the DATA rmem check
-  - count UDP RCVBUFERRORS/INERRORS and drop with
-    SKB_DROP_REASON_SOCKET_RCVBUFF
-  - drop the dst instead of skb_dst_force(); keep skb->dev = NULL
-  - refresh the cover crash log from the latest unfixed net/main
-    run; record the panic as a sender-path OOM, not an I/O-thread
-    allocation
-  - v4 Link: https://lore.kernel.org/all/cover.1788878590.git.zihanx@nebusec.ai/
-changes in v4:
-  - serialise UDP rmem charge/uncharge with sk->sk_receive_queue.lock
-  - use spin_lock() in encap_rcv() (BH) and spin_lock_bh() around
-    skb_orphan() in the I/O thread
-  - do not enqueue encapsulated skbs on the UDP receive queue
-  - orphan only PACKET skbs charged in encap_rcv(); leave error-queue
-    skb ownership alone
-  - restore the unprivileged namespace reproducer and document the
-    AFS callback listener
-  - clarify in the cover that the recorded panic is a downstream OOM
-    after extra I/O-thread contention, not the unprivileged flood
-    alone
-  - include the full OOM Mem-Info in the cover crash log
-  - v3 Link: https://lore.kernel.org/all/cover.1788539302.git.zihanx@nebusec.ai/
-changes in v3:
-  - orphan the skb when the I/O thread dequeues it from the local
-    queue so UDP rmem ownership does not follow packets onto
-    call/conn queues
-  - mention both io_thread.c and local_object.c in the cover opening
-  - distinguish the unprivileged flood from extra steps used to
-    record the panic
-  - attribute the OOM to skbuff growth rather than incoming-call
-    setup
-  - describe the recorded panic as a downstream OOM after I/O-thread
-    contention, not as an allocation at the encap_rcv enqueue site
-  - v2 Link: https://lore.kernel.org/all/cover.1785339953.git.zihanx@nebusec.ai/
-changes in v2:
-  - switch the drop path from atomic_inc(&udp_sk->sk_drops) to
-    sk_drops_inc(udp_sk)
-  - retarget Fixes to 446b3e14525b, the first boundary where encap_rcv
-    queued the skb onto local->rx_queue for later I/O-thread consumption
-  - rebase onto current net/main
-  - refresh the cover crash log from an unfixed 7.3.0-rc1+ net/main run
-    and include the decoded stack
-  - explain in the cover why packetdrill was not used
-  - document the actual flood command in the cover
-  - v1 Link: https://lore.kernel.org/all/cover.1784742007.git.zihanx@nebusec.ai/
-
- net/rxrpc/io_thread.c    | 61 ++++++++++++++++++++++++++++++++++++++--
- net/rxrpc/local_object.c | 15 ++++++++--
- 2 files changed, 72 insertions(+), 4 deletions(-)
-
-diff --git a/net/rxrpc/io_thread.c b/net/rxrpc/io_thread.c
-index dc5184a2fa9d1..c77241b12f597 100644
---- a/net/rxrpc/io_thread.c
-+++ b/net/rxrpc/io_thread.c
-@@ -7,12 +7,48 @@
- 
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
-+#include <net/udp.h>
-+
- #include "ar-internal.h"
- 
- static int rxrpc_input_packet_on_conn(struct rxrpc_connection *conn,
- 				      struct sockaddr_rxrpc *peer_srx,
- 				      struct sk_buff *skb);
- 
-+/*
-+ * Drop UDP rmem ownership for packets charged in encap_rcv().
-+ * sk_forward_alloc is serialised by sk_receive_queue.lock.
-+ */
-+static void rxrpc_skb_orphan_udp(struct sk_buff *skb)
-+{
-+	struct sock *sk = skb->sk;
-+
-+	if (!sk)
-+		return;
-+
-+	spin_lock_bh(&sk->sk_receive_queue.lock);
-+	skb_orphan(skb);
-+	spin_unlock_bh(&sk->sk_receive_queue.lock);
-+}
-+
-+static void rxrpc_encap_rcv_drop(struct sock *udp_sk, struct sk_buff *skb)
-+{
-+	struct net *net = sock_net(udp_sk);
-+
-+	sk_drops_inc(udp_sk);
-+#if IS_ENABLED(CONFIG_IPV6)
-+	if (skb->protocol == htons(ETH_P_IPV6)) {
-+		__UDP6_INC_STATS(net, UDP_MIB_RCVBUFERRORS);
-+		__UDP6_INC_STATS(net, UDP_MIB_INERRORS);
-+	} else
-+#endif
-+	{
-+		__UDP_INC_STATS(net, UDP_MIB_RCVBUFERRORS);
-+		__UDP_INC_STATS(net, UDP_MIB_INERRORS);
-+	}
-+	sk_skb_reason_drop(udp_sk, skb, SKB_DROP_REASON_SOCKET_RCVBUFF);
-+}
-+
- /*
-  * handle data received on the local endpoint
-  * - may be called in interrupt context
-@@ -28,6 +64,8 @@ int rxrpc_encap_rcv(struct sock *udp_sk, struct sk_buff *skb)
- 	struct sk_buff_head *rx_queue;
- 	struct rxrpc_local *local = rcu_dereference_sk_user_data(udp_sk);
- 	struct task_struct *io_thread;
-+	unsigned int headroom;
-+	unsigned int rcvbuf;
- 
- 	if (unlikely(!local)) {
- 		kfree_skb(skb);
-@@ -41,8 +79,6 @@ int rxrpc_encap_rcv(struct sock *udp_sk, struct sk_buff *skb)
- 	if (skb->tstamp == 0)
- 		skb->tstamp = ktime_get_real();
- 
--	skb->mark = RXRPC_SKB_MARK_PACKET;
--	rxrpc_new_skb(skb, rxrpc_skb_new_encap_rcv);
- 	rx_queue = &local->rx_queue;
- #ifdef CONFIG_AF_RXRPC_INJECT_RX_DELAY
- 	if (rxrpc_inject_rx_delay ||
-@@ -52,6 +88,24 @@ int rxrpc_encap_rcv(struct sock *udp_sk, struct sk_buff *skb)
- 	}
- #endif
- 
-+	rcvbuf = READ_ONCE(udp_sk->sk_rcvbuf);
-+	headroom = SKB_TRUESIZE(RXRPC_JUMBO(1)) * 2;
-+	spin_lock(&udp_sk->sk_receive_queue.lock);
-+	if ((unsigned int)atomic_read(&udp_sk->sk_rmem_alloc) +
-+	    skb->truesize + headroom >= rcvbuf ||
-+	    !sk_rmem_schedule(udp_sk, skb, skb->truesize)) {
-+		spin_unlock(&udp_sk->sk_receive_queue.lock);
-+		rxrpc_encap_rcv_drop(udp_sk, skb);
-+		return 0;
-+	}
-+
-+	skb->dev = NULL;
-+	skb_set_owner_r(skb, udp_sk);
-+	spin_unlock(&udp_sk->sk_receive_queue.lock);
-+	skb_dst_drop(skb);
-+
-+	skb->mark = RXRPC_SKB_MARK_PACKET;
-+	rxrpc_new_skb(skb, rxrpc_skb_new_encap_rcv);
- 	skb_queue_tail(rx_queue, skb);
- 	wake_up_process(io_thread);
- 	return 0;
-@@ -471,6 +525,9 @@ int rxrpc_io_thread(void *data)
- 		/* Distribute packets and errors. */
- 		while ((skb = __skb_dequeue(&rx_queue))) {
- 			struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
-+
-+			if (skb->mark == RXRPC_SKB_MARK_PACKET)
-+				rxrpc_skb_orphan_udp(skb);
- 			switch (skb->mark) {
- 			case RXRPC_SKB_MARK_PACKET:
- 				skb->priority = 0;
-diff --git a/net/rxrpc/local_object.c b/net/rxrpc/local_object.c
-index 169f9dfdaa77f..2f93891e841ab 100644
---- a/net/rxrpc/local_object.c
-+++ b/net/rxrpc/local_object.c
-@@ -166,6 +166,7 @@ static int rxrpc_open_socket(struct rxrpc_local *local, struct net *net)
- 	struct udp_port_cfg udp_conf = {0};
- 	struct task_struct *io_thread;
- 	struct sock *usk;
-+	u32 rcvbuf;
- 	int ret;
- 
- 	_enter("%p{%d,%d}",
-@@ -198,6 +199,12 @@ static int rxrpc_open_socket(struct rxrpc_local *local, struct net *net)
- 
- 	/* set the socket up */
- 	usk = local->socket->sk;
-+	/* One advertised ordinary-DATA window, not jumbo-max. */
-+	rcvbuf = rxrpc_rx_window_size * SKB_TRUESIZE(RXRPC_JUMBO(1)) * 2;
-+	rcvbuf += rcvbuf / 4;
-+	rcvbuf = clamp(rcvbuf, READ_ONCE(sysctl_rmem_default),
-+		       READ_ONCE(sysctl_rmem_max));
-+	WRITE_ONCE(usk->sk_rcvbuf, rcvbuf);
- 	usk->sk_error_report = rxrpc_error_report;
- 
- 	switch (srx->transport.family) {
-@@ -437,8 +444,8 @@ void rxrpc_destroy_local(struct rxrpc_local *local)
- 	if (socket) {
- 		local->socket = NULL;
- 		kernel_sock_shutdown(socket, SHUT_RDWR);
--		socket->sk->sk_user_data = NULL;
--		sock_release(socket);
-+		rcu_assign_sk_user_data(socket->sk, NULL);
-+		synchronize_rcu();
- 	}
- 
- 	/* At this point, there should be no more packets coming in to the
-@@ -448,6 +455,10 @@ void rxrpc_destroy_local(struct rxrpc_local *local)
- 	rxrpc_purge_queue(&local->rx_delay_queue);
- #endif
- 	rxrpc_purge_queue(&local->rx_queue);
-+
-+	if (socket)
-+		sock_release(socket);
-+
- 	rxrpc_purge_client_connections(local);
- 	page_frag_cache_drain(&local->tx_alloc);
- }
 -- 
-2.43.0
-
+heikki
