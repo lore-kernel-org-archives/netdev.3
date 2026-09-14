@@ -1,184 +1,223 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A1A41D648;
-	Mon, 14 Sep 2026 09:33:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789378387; cv=none; b=dDffKkPisBcsgOd5uok72rla+BENIZjGwYVRtAvf9nTUWrjJTHjR8NMLlUi8p+P0A3FgGdE5QprY0j54pS0xAAV7vrhpSzsVxpiWOiQgqmghYifHAGE6TighQ1VsahiMv03bzb0tJih4bAZp3ZQ4HyxZ3jFsjL/M6iAe2g4/ruQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789378387; c=relaxed/simple;
-	bh=Rns9Q4qLtxlw6IyA5BLhL4Pqqdje+UUjfQyTd+lbEuc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ylcvmy7kjzE00YfVQ7yqwK+J4L0P4vnNDxJVdoUtmmpf1Wy+53hdACe6I7fLZDGpo2r36mc+0KcI4kEXEXQywzDfyI6UZy0oQ4aYwpfmttBirKr2ffrxg0oTNyQEg17SOKChlLmgf04518R54HqgFgO6Avd0NH/HBNAZkk5n3xE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cqyci8CU; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20046423EB4;
+	Mon, 14 Sep 2026 09:38:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789378742; cv=fail; b=PsX+sE6it5yMTTjSEbNeuDgKgf9ijWTtFVxkpA0B645datSBDEoGPk9AXfuFh5n67TNnS0nnIJgBnOo8r2vhesSPJBxKUkbY2nI6kNPwGqaNHKpsNQVxbjFIk6cPMPbZggTM9eJuwQdjAV6imfAO7SN52oOCOi6RBfnwbYag4O4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789378742; c=relaxed/simple;
+	bh=NqaFDU8S8z1VyACCBaus6TI349lDg2Kg/VmwGXDgRJQ=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=kaXDCrmH+BKdX9Z9tnMKmsyduGYxdYriKqtRLpgpz2zwqHSkd0IuSCBV1YpnICuZLjnEYsPq7GAMbQoOXB+V1wHyNCAYY9CrvXaOztsAVHyULPZtI0W5gBT3IrJcxZYp00d5K1Q9DBBchCnNgxqqbG1gJTCTbbGUSiUiwtO+8Dk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RSvr2RGU; arc=fail smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cqyci8CU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 692FD1F00893;
-	Mon, 14 Sep 2026 09:33:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789378385;
-	bh=TF8vWdHT/xzToLwETV42FttPVsuKKNCeUrPRhSDWsyk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cqyci8CULMLK5znEv17PEAp1/k+q2BZIachlXSX4MAJIur5gdxyJpr9iZTcPmarw1
-	 udrtyEXOfU3jnqGH9gn3/FEcgbXAmW37oY0S91OZZmtwu/0IEbZiRmm4YMKc9CFgjs
-	 AVg7pAppOCUNzV1QITn1ejrkrVtZq7Wjgv8oTqgh/oIRJTsHIOLYAFDL2bF1dSWN/h
-	 i7iTbvvfX4VhxkSnKVBjvl4IoGQiD5pquf5juSYLpa0ac1pj/5VrzV+n9eztmd0kWg
-	 wZStrzX++2+c+NJrErDiuOCJWiDF2fskFA+YTdpX1MIP7gcvG9/P8beC4k8Yorw73G
-	 /mnGqYlLgJncw==
-Date: Mon, 14 Sep 2026 10:33:01 +0100
-From: Simon Horman <horms@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: esteuwu@proton.me, elder@kernel.org, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, xlie7669@gmail.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
-Subject: Re: [PATCH] net: ipa: Add IPA_MEM_STATS_DROP_MODEM memory region
-Message-ID: <20260914093301.GP48209@horms.kernel.org>
-References: <20260909-ipa-modem-drop-v1-1-0c9664f09c4a@proton.me>
- <178900975328.219967.188619870211891152@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RSvr2RGU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789378740; x=1820914740;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=NqaFDU8S8z1VyACCBaus6TI349lDg2Kg/VmwGXDgRJQ=;
+  b=RSvr2RGU081RPXigCrgThpN5LcrpGRFCfpwFRJrt95meFpnRpKMfCcFI
+   lZTVnAydPXKfbGcj7hFDAb5jUh+bgW60EnK85tcwEZN9W4Nxb+FlTGtQD
+   K0WG3vpgX2LPfpB2p60xEZnoJCkRKnPNbxGZ7VX+KecDwauPCVfkiLBWw
+   rCnT7w3L90jUbGZ91h2g6B3g/HWtCefmHXz2L1EsgWBO6n0QJ83PzcCH+
+   nauS7Djiz7LUXEmPKOwpGvNikGrwbZycu0F3NBMHy4rdTIqYwv43llMXR
+   952/VStVXEynbZhdQ50xzY3xyETI7fgBa55XIPNaRXFr8xoYHOwmTGVVV
+   w==;
+X-CSE-ConnectionGUID: FvVWNKpNR3mDxnpF0Hk6DA==
+X-CSE-MsgGUID: XooItt3URgawkzUkHRYEJQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11904"; a="89663943"
+X-IronPort-AV: E=Sophos;i="6.27,102,1787036400"; 
+   d="scan'208";a="89663943"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2026 02:38:59 -0700
+X-CSE-ConnectionGUID: 1zRrCjCqSLi7bJ3nZyzIhA==
+X-CSE-MsgGUID: lRDBvQBcQim23Ed0PlSQFA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,102,1787036400"; 
+   d="scan'208";a="310864736"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2026 02:38:59 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Mon, 14 Sep 2026 02:38:58 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Mon, 14 Sep 2026 02:38:58 -0700
+Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.25) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Mon, 14 Sep 2026 02:38:57 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yyvmjfD+zrxbz6fxqBhip9QimW4gys5kFXa/jSkYxoHOuMVGswmx4fCrX6QUttiNUAjrWZDjlXTZm/zRSKJMkiQM0zdKUMDh6U94+/qZtQJh16SOEYXHyBmSN+NzckV0y9ENasuiS1EnTqGtdbpofyLJfPWqpEU3h6pdK+iFJ/LR6i/sNK7LVrk5WyE+p7D4K6/LdSEnGHctNBVHN4J4LK5JjXzQGsdJBQR5+xOT5qatg1jdEcKlHCdMZ6YFjYmSpOoP3XR4tUSexDdXow2c9N6pEXHlV1C8c2MyJUOrHwxI6H7jf4q58Pks+FLEYAO6iEJBoE73/ET4Q/lYTXZ4cA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HZti4DxdMRNWsVimcZznkN1SpjtMmQJtRlX5iwlwP+o=;
+ b=A4UH6tZahhozCk3mtRUgcad4PkodC5qqp6NWqKhN5SeTq4dzvimkQJN/4+vw4+cJsn29B6kxL+B+3/2YfnWsrRi/hvhWhMesb8u/2RPbuigfLoHMFIjwJJ95jPLJ8DaFoHdT+CzPV0GuhFKIdCCZRVeKAwVDz1GJkCbC8eBBVbBSFqt8ZYmFDOxzcMUydge0WE1658c0zZQklTYvX1dY8Yz7GuF4OUdqPIyxr3i9UX+t2jWaJj6CUs4w37F48JQfVm2q4HS/6gWvlOKGcIJ0CtnJIF+nKEPkwzTr15wpJs6TjuBDf1hTULSi8dvr+CdNwhvSM/42JgJVcim8vLiQIw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from LV3PR11MB8508.namprd11.prod.outlook.com (2603:10b6:408:1b4::8)
+ by PH7PR11MB6331.namprd11.prod.outlook.com (2603:10b6:510:1fd::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Mon, 14 Sep
+ 2026 09:38:55 +0000
+Received: from LV3PR11MB8508.namprd11.prod.outlook.com
+ ([fe80::a1e8:1786:e5d1:8e51]) by LV3PR11MB8508.namprd11.prod.outlook.com
+ ([fe80::a1e8:1786:e5d1:8e51%5]) with mapi id 15.21.0406.007; Mon, 14 Sep 2026
+ 09:38:55 +0000
+Message-ID: <ef57af47-4e98-4912-8d64-7d8ff5a0e456@intel.com>
+Date: Mon, 14 Sep 2026 11:41:11 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ixgbe: do not busy wait in
+ ixgbe_devlink_reload_empr_finish()
+To: Linkui Xiao <xiaolinkui@126.com>, <anthony.l.nguyen@intel.com>,
+	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>
+CC: <intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Linkui Xiao <xiaolinkui@kylinos.cn>
+References: <20260914092626.263886-1-xiaolinkui@126.com>
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Content-Language: en-US
+In-Reply-To: <20260914092626.263886-1-xiaolinkui@126.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VI5PEPF0000091D.AUTP296.PROD.OUTLOOK.COM
+ (2603:10a6:808:1::92d) To LV3PR11MB8508.namprd11.prod.outlook.com
+ (2603:10b6:408:1b4::8)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <178900975328.219967.188619870211891152@kernel.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR11MB8508:EE_|PH7PR11MB6331:EE_
+X-MS-Office365-Filtering-Correlation-Id: 81a2f7eb-15d9-4055-183a-08df1243fe41
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|1800799024|366016|7416014|376014|22082099003|18002099003|11063799006|5023799004|56012099006|10067099003;
+X-Microsoft-Antispam-Message-Info: h1LDC7dW+o6qV7b9rxorODeEhNwNfcwGkGaY7RbTVzSWihRTActmJMmbMVVzw53hpRcSP+Ue+vN5yfgNFCMLHjKANTImwsK1nnU4TXNj6VA6RA17Co/qBirmkUVjaQy7SU5Eqz3nXcYkSztW1H9xD663fgcmtnfkgB0T/Eb0dbxnAVwS3p5ZnmDElqK3lV0q2JY1dFeJmOg/kDKSmPPn9p8OiNmTnItOQKZ/zwBwRXJBsVuMdiEfk9apQIT4sG+/dzi+zG3URzTaQFidFTlw7X4CiRMA+/AMlV7ckQNCjD3NKDl7lQmwUHcyYbAdL34XHnx8VvopBhsIXXQ2ng/CJRVcZB51D9zoSMyrpwEZUWcoG/hgxLf3HCowyMYz41F+55jNDBQ6PKohn2I1mNeqToUPa3qN2SfwP/5NnI/HdVIB+COf33K1cEnTrWiOJquDRqnkQ18cFK+s/NqpS+J7ugtuwjIcfh77FcFy8pgeskzl9HxttYvcVvRXo8nZlLbdcf48UETvYr/DY2mwVkMyqQOjHG/C7K8Nsfm7tIk1ZhixKbSSI1GDk54H8x55ZFDjIoTh4a/shApTGVLZChHpM2uacZbhk/CehdTdeG8QToGNVaoErB/9JhoTqHHr16Po0Kc6sC5Z8SY4XVU4YAhp9C6DNN3EVev/xSjnoi4QaUQ=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8508.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(366016)(7416014)(376014)(22082099003)(18002099003)(11063799006)(5023799004)(56012099006)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?blN4Z2VqcUdzYnlqaW1sWDBwUzBBV3hLd2NOMGNkSStOakVMa1liWkZteFpa?=
+ =?utf-8?B?dzZ4VWxBR2wrazk0K1krZGp6QndBK2dyZHMwK0hicVBYMW15Y3cyWlcvc08w?=
+ =?utf-8?B?WGRhVVhZd2lnSlozOS8rY05EeGNNeTB1NHhpZEc3dHpMOE5WQnFmMjBGbnVv?=
+ =?utf-8?B?R3lRNS94d2IzTkZmNkl4M2Q3R2J6QTBEVFVKcFJVc2ZrNmd6Q2JaeEVMTnJG?=
+ =?utf-8?B?Tnk5MTBPaU5FbnlNNFYzUXNQaWVNVVBUVDhFbXphem8rdXh0dm5XOEt3WWxq?=
+ =?utf-8?B?a2NYSTJPeWlnams3QlYyRW1kQ0UvRklBZTJOamg5U0Y0Um5KNFpBa3pkNGF3?=
+ =?utf-8?B?UTIyVzgyV09WbEhxTDEyTjY3Zi9FYnFYRUg2bE5WdVNtemI2YU55MTRYWnBE?=
+ =?utf-8?B?ZG13SlN2MWZ6aC9SaW1SRmNPMmNuMzRjd3N5NWpaTzM0VWZzcC8xR2psNysr?=
+ =?utf-8?B?MmI1cHUrdnNIbWZ6RDQ3bDluOUZGMTg3aEtMVjRWSXV3dnJaUE0zY2F6S3Y3?=
+ =?utf-8?B?aDcyZjZQNGpJbnRNZURGejc5TmNsUFo0SWhkVkVZSkpMNzBQQlpQUDJtZU1N?=
+ =?utf-8?B?d0xSQllzKzhjOHRtNWYxQlBjOExMZVVuQnJPTkQ2NzBtdlFid3ZVdDREK1pW?=
+ =?utf-8?B?UmxieXlsN2FNZzRqckxuS0ExZlZQdWIwRmtnYnFZUFlGTE14d3MrT1NrRkVN?=
+ =?utf-8?B?cnhvNVF2Y20zeFY3Q2xJVzlkQkg4eG8zRU1SUU9BODdmRmY0bldONTFxNXN6?=
+ =?utf-8?B?RlJzQTRKeWMwWGplYklsd3NJMTcvL002VU5TZExZclgyOURBdm4vUXg1ajBX?=
+ =?utf-8?B?SzdYSDUxWklmMGt6TVEwejVIbmxoL25zVEFFaUJHdk5sOGNvekNVb05TRHlt?=
+ =?utf-8?B?L2JIMldhdFhNTlVCOXN1S1lEb2VtajFZcUtEbDI1eW0xd2Vtb2Q4ZURQSkpq?=
+ =?utf-8?B?aUxkQlBUaWFodjh6QUhMV2tCNm1hakxCUVhkMHg2enNiVHZxOENNUVlHZllo?=
+ =?utf-8?B?ai9iWW93dXdzZGFNNVJlRkdtNDVEZlF0NDFlZGNRZlNnbXhqV2EwWm1wTDNM?=
+ =?utf-8?B?YTRReStiNUM2bUFad1U1UXljRVlTeTRKMStTM3hubTVvdlFlaDBoRllhR0Z4?=
+ =?utf-8?B?b0VhVGpIcmZ5RDhRd2JGN0NSUS9NWmRWSmRxMExtSWJiYmd6cnlHZXQwNWlt?=
+ =?utf-8?B?bklvWHdYaWUvalpvL1NaZVN5NHUrbE5Ya0VSNVFqNVk1TGNRc3MxdVk4RTRo?=
+ =?utf-8?B?KzFqRFVvNVdXMlIyRzk5ZjBNYzFIOWVGWnRQOG8rM0l2ZUZSQkQvOFZESXhN?=
+ =?utf-8?B?SnJPWkVISDh2UUN3b2FhVDgrczZ5cWkvdEkyU1VYVnNnTjQ5Y1UzMG5zak5v?=
+ =?utf-8?B?ZXczd3Axa29BK0xOZDNNQnJNZGVFWXBGZm54Qm1MalByZnBwUHFGbzNjVkJl?=
+ =?utf-8?B?ZHBVQTlNUkFPOWhwczRPVWRrZjZxbWx5VXZybkZHMnBQWFB5UnArb0dZVk1Z?=
+ =?utf-8?B?ZEZxamdWeTBHcnhRbXNqamZ3eWRPMmVnT1Y4VUx2TmU1SHJYTVo0TG1JeVFo?=
+ =?utf-8?B?NTAvL1ZHdVdUZkFGc2JtY0JYQldmOFgwbzhHMXpuR3JML0YvNllXUlBSQWhP?=
+ =?utf-8?B?Tk5zMlIrYUc3UVhZZ1AxYkRqbHJXc25jN00wRGZaeVRTRWpleXd4a1lNMTJI?=
+ =?utf-8?B?MG5FN2Izekk5ZkJrNGZwVDlGb1pRelJYOTFHcjBncWYvUzVtSlorQjNVclcz?=
+ =?utf-8?B?RTF2RGZ2ZzZXcW4yOE5NZHNQNzFkYjhtb281Y2lVbDRMOE44Qk9scFJ5MG1T?=
+ =?utf-8?B?RmltTVJEUWlEMU1pcDhYT2JlUmFMRzYvRFhGdEczOGpwUGVMQXZTcXM0bEMy?=
+ =?utf-8?B?WHRLY29GOUpwM2Q2Z2lYVjV1SVhpZWJobU9yaEpwOFZ5U0taaUgyb00yeEZn?=
+ =?utf-8?B?eXpJR2dPYXYxeE9TT2ErK3BWd2ZYQkNYdERleUJpczk5NmFaTVRLdDVDMEZE?=
+ =?utf-8?B?SVF3ZDI5T1owaTJDTWJBak9vek4vdWtvTWRtbmdnWGE1TG4zUGZrTEtoeUM2?=
+ =?utf-8?B?YUM2L0RkRi9FaEM5T3EwSk1lZUpGbUI2dGdaUEtmZnpQdGRSTjFEYVhQTmIx?=
+ =?utf-8?B?d25iU2Q0Y053SUtlQ3JiWWVHb2hRNG5oU0QvY3pLeGkzQVJocVFINlo3UU9M?=
+ =?utf-8?B?eDV2TWhyZ1lXV3ZoWE1DVmtFR2Zmd3QxUWlQT3Z6TTNlWXY5V1RaaTR3NEJN?=
+ =?utf-8?B?clNYRFJteUluSjd3emVCaXhmMy9VZWYzMk9xK2FUZjBkeTlmQTZ4ek5ZNWYv?=
+ =?utf-8?B?RmR0TU9FcTF1VTA4NXhYNy94blUwSUduQldkVTIyRHZncUIyR2dab3A5TW1U?=
+ =?utf-8?Q?Ccwlmiwdtq/5L0U8=3D?=
+X-Exchange-RoutingPolicyChecked: dP1OOjsPrOC7NLO7v+VY+DnD3nkJAzwAc81e36j2DHzijgll4NrJiv4ZM0jPLEk9FlgT60iL7mrCKQuemDYSySd4j9958Fm0dQdlUK90Jk5sZwZXxvjLkLRCiV9n7G/uR3vW5xbGfxrF90Rw8R0v8IHo+s3VM3omSdRKnVgJkmHyw93ajO6ktr96sefbJyUwg/hIM9u3IkZGTh61EwKGGinAHHEG7z5+wlD1tiP2IfWUdzLgzUTq2D5G3arzsLedmVm6mldANywzbfapapYidCwCGgWnTeWWg8rU2IJfteawIO7TNG0hwluOPMDSQ8w/E8MiqVHr1ioVptF+wyoB7w==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81a2f7eb-15d9-4055-183a-08df1243fe41
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8508.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 09:38:55.1325
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bTPxf8oS9vWxMX9sWycs/z6juLm3Dk1OuWaBucZebZImqQ6TBPA/eJskktL9eNS8KQDoTAPDmX8yVwbKN6mevhUSRg4rrWTz0DkMRUrzM30=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6331
+X-OriginatorOrg: intel.com
 
-On Thu, Sep 10, 2026 at 03:09:13AM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider:
+On 9/14/26 11:26, Linkui Xiao wrote:
+> From: Linkui Xiao <xiaolinkui@kylinos.cn>
 > 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 1
+> ixgbe_devlink_reload_empr_finish() is the .reload_up devlink operation,
+> so it always runs in process context with the devlink instance lock held.
+> Its polling loop delays with mdelay(500), i.e. it busy waits for half a
+> second per iteration and, because the loop bound is 20 iterations, for up
+> to ten seconds with preemption and interrupts to the timer subsystem
+> effectively blocked on that CPU. That is long enough to trip the soft
+> lockup detector and to stall RCU grace periods, and it keeps a CPU fully
+> occupied while the firmware performs the EMP reset.
 > 
-> - [Medium] The newly declared region id `IPA_MEM_MODEM_STATS_DROP` has no
->   producer and no consumer, so the patch is functionally inert and…
-> - [Low] Commit-message / code identifier mismatch plus stale peer
->   documentation for the new drop-statistics region.
+> Use msleep() instead, the loop does not need to be atomic and nothing in
+> it holds a spinlock.
+> 
+> While at it, rename IXGBE_DEVLINK_RELOAD_TIMEOUT_SEC to
+> IXGBE_DEVLINK_RELOAD_TIMEOUT_TICS: the value counts 0.5 s tics, as the
+> comment right above it already explains, so the _SEC suffix is
+> misleading.
+> 
+> Fixes: c9e563cae19e ("ixgbe: add support for devlink reload")
+> Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
 
-Hi Esteban,
+thank you,
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 
-I'd appreciate it if you could comment on the AI-generated
-review posted by netdev-bot+sashiko. This is now an expected
-part of the Netdev development process [1].
+> ---
+>   drivers/net/ethernet/intel/ixgbe/devlink/devlink.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
+> index cf8908b82f8a..7ce0a0cbf9d2 100644
+> --- a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
+> +++ b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
+> @@ -430,7 +430,7 @@ static int ixgbe_devlink_reload_empr_start(struct devlink *devlink,
+>   }
+>   
+>   /*Wait for 10 sec with 0.5 sec tic. EMPR takes no less than half of a sec */
+> -#define IXGBE_DEVLINK_RELOAD_TIMEOUT_SEC	20
+> +#define IXGBE_DEVLINK_RELOAD_TIMEOUT_TICS	20
+>   
+>   /**
+>    * ixgbe_devlink_reload_empr_finish - finishes EMP reset
+> @@ -460,11 +460,11 @@ static int ixgbe_devlink_reload_empr_finish(struct devlink *devlink,
+>   		 * may be not cleared yet, so begin the loop with the delay
+>   		 * in order to not check the not updated register.
+>   		 */
+> -		mdelay(500);
+> +		msleep(500);
+>   
+>   		fwsm = IXGBE_READ_REG(hw, IXGBE_FWSM(hw));
+>   
+> -		if (i++ >= IXGBE_DEVLINK_RELOAD_TIMEOUT_SEC)
+> +		if (i++ >= IXGBE_DEVLINK_RELOAD_TIMEOUT_TICS)
+>   			return -ETIME;
+>   
+>   	} while (!(fwsm & IXGBE_FWSM_FW_VAL_BIT));
 
-Thanks!
-
-[1] https://docs.kernel.org/process/maintainer-netdev.html#review-timelines
-
-> 
-> --
-> 
-> net: ipa: Add IPA_MEM_STATS_DROP_MODEM memory region
-> 
-> This adds a new ipa_mem_id enumerator for the modem-side drop statistics
-> region and allows it in ipa_mem_id_valid() only for IPA v5.0 and later.
-> No platform data file or driver code path references the new region.
-> 
-> Link: https://github.com/LineageOS/android_kernel_qcom_sm8450-modules/commit/fc71d0972a2453cc29f873d723a355a902c6d69c
-> 
-> > diff --git a/drivers/net/ipa/ipa_mem.c b/drivers/net/ipa/ipa_mem.c
-> > index 078d32a18dbf..3000aaa24530 100644
-> > --- a/drivers/net/ipa/ipa_mem.c
-> > +++ b/drivers/net/ipa/ipa_mem.c
-> > @@ -166,6 +166,7 @@ static bool ipa_mem_id_valid(struct ipa *ipa, enum ipa_mem_id mem_id)
-> >  			return false;
-> >  		break;
-> >  
-> > +	case IPA_MEM_MODEM_STATS_DROP:
-> >  	case IPA_MEM_AP_V4_FILTER:
-> >  	case IPA_MEM_AP_V6_FILTER:
-> >  		if (version < IPA_VERSION_5_0)
-> 
-> [Severity: Medium]
-> Can this new case ever be taken?  ipa_mem_id_valid() is only consulted for
-> ids that already appear in a struct ipa_mem_data.local[] array, and a grep
-> of the tree at this commit shows IPA_MEM_MODEM_STATS_DROP only in
-> ipa_mem.h (the declaration) and here.
-> 
-> The v5.0+ data files that the version >= IPA_VERSION_5_0 gate could apply
-> to all define just the one drop-stats region:
-> 
-> drivers/net/ipa/data/ipa_data-v5.0.c
-> drivers/net/ipa/data/ipa_data-v5.2.c
-> drivers/net/ipa/data/ipa_data-v5.5.c
-> 	.id		= IPA_MEM_STATS_DROP,
-> 
-> and the only consumer of drop-stats memory still looks up the old id:
-> 
-> drivers/net/ipa/ipa_qmi.c:init_modem_driver_req() {
-> 	...
-> 	/* If the DROP stats region is defined, include it */
-> 	mem = ipa_mem_find(ipa, IPA_MEM_STATS_DROP);
-> 	if (mem && mem->size) {
-> 		req.hw_stats_drop_base_addr_valid = 1;
-> 	...
-> }
-> 
-> The commit message says the region "is used in IPA v5.0 and higher", but
-> with no producer and no consumer the change has no runtime effect.  Would it
-> make sense to land the data-file entry and the QMI consumer in the same
-> series?
-> 
-> There also seems to be a layout prerequisite that isn't mentioned.  In
-> ipa_data-v5.0.c, IPA_MEM_STATS_DROP is at offset 0x3870 with size 0x0020
-> (ending at 0x3890), and IPA_MEM_MODEM starts at 0x3898 with canary_count 2,
-> so its two canaries occupy 0x3890-0x3898:
-> 
-> 	{
-> 		.id		= IPA_MEM_STATS_DROP,
-> 		.offset		= 0x3870,
-> 		.size		= 0x0020,
-> 		.canary_count	= 0,
-> 	},
-> 	{
-> 		.id		= IPA_MEM_MODEM,
-> 		.offset		= 0x3898,
-> 		.size		= 0x0d48,
-> 		.canary_count	= 2,
-> 	},
-> 
-> Doesn't adding a second drop-stats region require shifting IPA_MEM_MODEM and
-> everything after it?
-> 
-> > diff --git a/drivers/net/ipa/ipa_mem.h b/drivers/net/ipa/ipa_mem.h
-> > index b25babade787..56703bada07c 100644
-> > --- a/drivers/net/ipa/ipa_mem.h
-> > +++ b/drivers/net/ipa/ipa_mem.h
-> > @@ -68,6 +68,7 @@ enum ipa_mem_id {
-> >  	IPA_MEM_STATS_QUOTA_AP,		/* 0 canaries, optional (IPA v4.0+) */
-> >  	IPA_MEM_STATS_TETHERING,	/* 0 canaries, optional (IPA v4.0+) */
-> >  	IPA_MEM_STATS_DROP,		/* 0 canaries, optional (IPA v4.0+) */
-> > +	IPA_MEM_MODEM_STATS_DROP,	/* 0 canaries, optional (IPA v5.0+) */
-> 
-> [Severity: Low]
-> The subject and the body both name IPA_MEM_STATS_DROP_MODEM, but the
-> enumerator added here is IPA_MEM_MODEM_STATS_DROP, and a grep of the tree at
-> this commit finds no occurrence of IPA_MEM_STATS_DROP_MODEM at all.  Could
-> the changelog and the code be made to agree?
-> 
-> The neighbouring statistics regions put the owner last:
-> 
-> 	IPA_MEM_STATS_QUOTA_MODEM,	/* 2/4 canaries (IPA v4.0+) */
-> 	IPA_MEM_STATS_QUOTA_AP,		/* 0 canaries, optional (IPA v4.0+) */
-> 
-> Would IPA_MEM_STATS_DROP_MODEM (as the subject says) fit that convention
-> better than IPA_MEM_MODEM_STATS_DROP?
-> 
-> Also, the comment on the existing IPA_MEM_STATS_DROP still reads "0
-> canaries, optional (IPA v4.0+)" with no hint that it becomes the AP-side
-> region once the modem-side one exists on v5.0+.  Could that comment be
-> updated so a config author can tell which region to use for AP drop
-> statistics?
-> 
-> One more thing on the changelog: the paragraph explaining the split ("From
-> IPA v5.0 onwards, two memory regions for drop stats exist: one for the AP
-> (that is, the driver) and one for the modem (Q6).") sits below the ---
-> cut line, so it is not part of the recorded commit message.  Was that
-> intended to be above the cut line?
-> 
-> -- 
-> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909-ipa-modem-drop-v1-1-0c9664f09c4a%40proton.me
