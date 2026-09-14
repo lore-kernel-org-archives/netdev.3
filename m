@@ -1,135 +1,80 @@
-Received: from mail-pj2-f2.google.com (mail-pj2-f2.google.com [74.125.227.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399A23BE14D
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 19:37:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF574399DD
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 19:41:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789414664; cv=none; b=jpgzZwn1rkXqtP+OUY8N9xJ/xCEOs6lRGZeBxdOZY0l6vY6oRdsHvYesjxGGH6XsRQdKVJdmfmgcs03vAY5JErEMBatokYcHAiIbR8vsRCvvNIHcsZgObDHby4iOl2SvCwz5jBZ49YwwsZ9AzORzch6TYaXvYQalM8wz3u1XL9k=
+	t=1789414874; cv=none; b=WJB1Xgjh79aOlzvtg9HaVlb+y9WsjT/LjqaAgxe/8FPxwirc2oXpRX0xjzEQa885mc9STOz7Tn6Q3l4qJLZ943rQI1tpn2fQMq1h9FRwIcYrrjjhgMjI1iORuXjpXX2zaCzxK183QIBPe+YD6cnzvh2qTR9Rhe9kAVRJNweXhm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789414664; c=relaxed/simple;
-	bh=mNCwouhEN17Ia0dJNDPGIKLEvTsNZIAvbPqxXsUkGLI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s3lPp7vNXlE0FdZ8caas2NovdMZKfrarLj/BBaatKPGVGhR1Al0AqOubfUTZXA7LhnuYbFRa78ZMfeHi3rDnz0susY550qTqfLiGnzZeGpzG6MDSu71nRDNGHLBoejcKkBQ/44Y5a0TvvEZq2WtEoGsZzQJmb1wSq/nXSCv/R6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rggD72kC; arc=none smtp.client-ip=74.125.227.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789414874; c=relaxed/simple;
+	bh=A74VplKNwB5PjUwnChmGzzeZc8btqiUZLhz1Q7rzKz8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=eAuTnawsQG/XC+PHG7IPhKmNl9juP31exLI993xcZ3lPhfCVK7iYqQ1gsKLMXrTBT2gDvezok4MpBjQP6VIv1kwILu+ceaIPn0q9b8BgRhzyCviOeeDFlu8HVuAc1IPqpMAL0kVyWQ9LEHuhtiW+zfqUbfQ0HmvtjqICOuZqFTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fg3iXwg4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rggD72kC"
-Received: by mail-pj2-f2.google.com with SMTP id d9443c01a7336-2ccc2e84048so16514055ad.1
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 12:37:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789414662; x=1790019462; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=EuYJrEjbVWQ9XMhAMaw1RSdGZ7efm/cFkVNyEiVrURw=;
-        b=rggD72kCkYVJPPWRGPD4cM9CxByr6KT/cytOBS9D8QFMEUueEiC8biGMLnnhynEKIE
-         yv20cabhoiLGGQb4OtU5GRHFoNzRA40NmPrGC2Qfk7zujFeUyK9dExGBtlzXr3mj+oDF
-         Veh4UQ/AIPlz5q2+PbexSWLmeUlE7OeWQpby8BKz0V+3zzEvtUBv503PuzSSHBTGmb5V
-         4G/10Rt3A0TyLrlWNNkGutEVyLbsNM0CQSR05mZu2qZ+IRXTc9OKZnhWQtKdPLWfborQ
-         LC1MbM/LqP6NaovDecuXmkoNsiIAn9zoZKl6twStZPmR9RRjNZtwq4RKZ+o9jNB2WdXR
-         Ha9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789414662; x=1790019462;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EuYJrEjbVWQ9XMhAMaw1RSdGZ7efm/cFkVNyEiVrURw=;
-        b=1VjyBDiNjCusLTbFVQ15TUE89Ku7wHbrEEmKyyyX/yse9ELT/g8Lem4Ga/7whjg5bY
-         ZEEWd7mnXOuBYrXe3UhS+uu/+i1/sXbSfQtcvYVRuHhDV4KHjyV6qkAbO47ak+BDdaaL
-         zKcbTzAti09B6g3cSNoy9gIBfXv0xosa+JoWGV+dohyHHgPmhGSxElPKs+v0GPRgKCSq
-         t42Ewk0mIlgIohyhlSTa5pxZeaKdpY2oH/OKAP+BN/0dW1u6ISiOniKL3tcYE8hd6khS
-         FMqeaKSY8c33aSFx6mtTh/bEEaXZTy2nx/kD4+yhpmlCNLUazCz6YoHRmhwgJGRFWtCz
-         aD0w==
-X-Gm-Message-State: AFuF++mGpoL3MFtWPn3Ykb/UVFFfGvfI+WhjQOZGGDCw1TKOjgqJC0He
-	kCu4elWUgNxGGtigZpHDjn1JOvS6W57Cm2jgPyuA0a5k0fF96ftEsLjI5S4rR706
-X-Gm-Gg: AYBFou3yRn7EDriOh6zjYSnQAA31Cw1/X5drhrAo8wP5hocVby7MwqItq2NkehMBc2q
-	GyzLTFSl1OSKFCOkDAAmKuFQajkHPs27cxrCEP5GO+rmY0fk2tMrIYPxuHdQgrXOzS8gWOnwrw6
-	EjuALUvHoiggk88Xemt3PMQQnfRIKidb4hGHqpXs5Ese4uX5Ghmw9fjbKcEwRcVP3cYf3oJn81D
-	nnML+Jr7Zc/TvTdWtKlsS7rZ6WpJvLhYpw1ZWFBN65+gOFyh6zFuOplweK73u748iJufLkcC3sQ
-	xqtXaXGXjjIteWYTk2Y9g3/x7Prs1G/Nwz3d8HAWHnuOGaLKfw+Tc2geccJuQc4M3AzfnqtZK0R
-	RM0DjyyWKmelra+DAsNlBOxc4/Imw/OrEwA8fKWx92XIkUr8oCtUWtAUHIj2KLOWPL09ZV5iMyK
-	B30fwP8iHCcd/navwe+yhfPgiHJTG/Zkg7jnTh5cuh07umHb2QDwkaaB+Xk4alHs5n
-X-Received: by 2002:a17:903:3585:b0:2d5:2f49:b3f4 with SMTP id d9443c01a7336-2dd6c5bdd34mr93003365ad.2.1789414661060;
-        Mon, 14 Sep 2026 12:37:41 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:5a::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd3f0faed5sm47949435ad.10.2026.09.14.12.37.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 12:37:40 -0700 (PDT)
-Date: Mon, 14 Sep 2026 12:37:35 -0700
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, sdf@fomichev.me, bobbyeshleman@meta.com, 
-	almasrymina@google.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/3] net: devmem: embed net_iov_area in
- binding
-Message-ID: <aqhMeY0r7ye0kuAw@devvm7509.cco0.facebook.com>
-References: <20260911154555.739041-1-sdf@fomichev.me>
- <20260911154555.739041-3-sdf@fomichev.me>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fg3iXwg4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7061F000FF;
+	Mon, 14 Sep 2026 19:41:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789414870;
+	bh=3L4DjPfVjH7DnXsu0nfKjPS3l32zzJnypAp1/A2fkwM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=fg3iXwg4ZU6m2XqMmcfChbe78CctWi59l+qmA7anI0z2dTWNcsgvy9t+qw2emWgHS
+	 DlMTdJNOxX5lNzyuLF82r6Wax0HS8OgetRouiMLbMtfF7ESLlOXEcy9cohffT+OQ9B
+	 a1CHOUvRDo0bRne7ItZrZe8RlOrnbK7tIbbH8dKZ0pQ5Jvv4vWfh2Pp3WkJmPYQByH
+	 S2sP490PDK11FehxLkKHRans0Q03VI5+cJDi+pmZyzsSsfXl3/iuvwYrblk6Rs+ZZB
+	 S/wPFNawvkFX6+AirkqdWVBDKFKTAKrrXRsBOyEOLq3wa8gGGHJXOCuoPfsMSqG8DB
+	 MG/mf7qfHvtHg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568E13924FD4;
+	Mon, 14 Sep 2026 19:40:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260911154555.739041-3-sdf@fomichev.me>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH ethtool 0/3] ethtool: fbnic: Fix register dump parser
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178941480513.1189361.3629799487219008069.git-patchwork-notify@kernel.org>
+Date: Mon, 14 Sep 2026 19:40:05 +0000
+References: <20260902230739.2241212-1-mohsin.bashr@gmail.com>
+In-Reply-To: <20260902230739.2241212-1-mohsin.bashr@gmail.com>
+To: Mohsin Bashir <mohsin.bashr@gmail.com>
+Cc: mkubecek@suse.cz, netdev@vger.kernel.org, kuba@kernel.org
 
-On 09/11, Stanislav Fomichev wrote:
-> After replacing the gen_pool with a binding-level freelist, devmem no
-> longer needs a separate chunk owner object. There is only one
-> net_iov_area for the binding, so store it directly in struct
-> net_devmem_dmabuf_binding.
-> 
-> Derive the binding from net_iov_owner() with container_of(), matching the
-> pattern used by io_uring zcrx. This removes the leftover
-> dmabuf_genpool_chunk_owner wrapper and its allocation/free path.
-> 
-> Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
-> ---
->  net/core/devmem.c | 41 ++++++++++-------------------------------
->  net/core/devmem.h | 26 +++++++-------------------
->  2 files changed, 17 insertions(+), 50 deletions(-)
-> 
-> diff --git a/net/core/devmem.c b/net/core/devmem.c
-> index 4883eb7f3a95..7949f8425bcd 100644
-> --- a/net/core/devmem.c
-> +++ b/net/core/devmem.c
-> @@ -29,15 +29,6 @@ static DEFINE_XARRAY_FLAGS(net_devmem_dmabuf_bindings, XA_FLAGS_ALLOC1);
->  
->  static const struct memory_provider_ops dmabuf_devmem_ops;
->  
-> -static void
-> -net_devmem_dmabuf_free_chunk_owner(struct dmabuf_genpool_chunk_owner *owner)
-> -{
-> -	if (owner) {
-> -		kvfree(owner->area.niovs);
-> -		kfree(owner);
-> -	}
-> -}
-> -
->  static void net_devmem_dmabuf_binding_release(struct percpu_ref *ref)
->  {
->  	struct net_devmem_dmabuf_binding *binding =
-> @@ -55,7 +46,7 @@ void __net_devmem_dmabuf_binding_free(struct work_struct *wq)
->  	     "can't destroy dmabuf binding. total=%zu, free=%zu",
->  	     binding->total_niovs, binding->free_count);
->  
-> -	net_devmem_dmabuf_free_chunk_owner(binding->chunk_owner);
-> +	kvfree(binding->area.niovs);
->  	dma_buf_unmap_attachment_unlocked(binding->attachment, binding->sgt,
->  					  binding->direction);
->  	dma_buf_detach(binding->dmabuf, binding->attachment);
-> @@ -271,23 +262,14 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *vdev,
->  	}
->  	binding->total_niovs = total_niovs;
->  
-> -	owner = kzalloc_node(sizeof(*owner), GFP_KERNEL,
-> -			     dev_to_node(&dev->dev));
+Hello:
 
-There is a leftover owner var, the build fails, will repost later this week
-(to give some time to review for whoever is interested).
+This series was applied to ethtool/ethtool.git (master)
+by Michal Kubecek <mkubecek@suse.cz>:
+
+On Wed,  2 Sep 2026 16:07:36 -0700 you wrote:
+> From: Mohsin Bashir <hmohsin@meta.com>
+> 
+> The fbnic register-dump parser is out-of-sync with the dump layout in various
+> places. As a result the values of some of the CSRs are displayed using the
+> name and bitfield definition of a neighboring CSRs.
+> 
+> This series fixes the affected CSR definitions so that each value is
+> associated with the correct register and its fields have correct masks.
+> 
+> [...]
+
+Here is the summary with links:
+  - [ethtool,1/3] ethtool: fbnic: fix off-by-one shift in reg dump parser
+    https://git.kernel.org/pub/scm/network/ethtool/ethtool.git/commit/?id=fb8062c3a35a
+  - [ethtool,2/3] ethtool: fbnic: Fix various TX and RX CSR fields decoding
+    https://git.kernel.org/pub/scm/network/ethtool/ethtool.git/commit/?id=db38bb13b152
+  - [ethtool,3/3] ethtool: fbnic: Fix register dump names and bit labels
+    https://git.kernel.org/pub/scm/network/ethtool/ethtool.git/commit/?id=6b7b16e90fbb
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
