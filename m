@@ -1,146 +1,178 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011034.outbound.protection.outlook.com [52.101.57.34])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF831415F23
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 10:16:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.34
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789380970; cv=fail; b=SJBQ1559IGk17apjUmiDebl4PhVsPfzJeBIfFrqqhhh3oMxAXAGoDEtCWrzALrN3LX5C/EbqZYcpEthh5dT11gLObFIc1+Iv3Yv2nD4U9CccVp6p1DIxuiatfs1nf2P6e7Nd+UyIYSwxsxFUPVCrGlx5P4TOJJrEH3TAKLOEAGI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789380970; c=relaxed/simple;
-	bh=3teawMNX9gjKVCo+Qnr1OVA1TE9YYckectP8zq4vByA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=gffaMVGQYEaWi3KUTBiK9BvlgIESoFXH84SUNKpaDpwyHPZbstYGWSSZV+aIb4pb0JuZ0Mg+yRrP19Ex+hZ601nPoWx5ye1NyTlcECoxFMDJ2/3he2+5gi2aLVBPNj4/2ys1m+n6Rmf0jDcsHgh2OG+Vwaqbx7KjbLan1IZ+EgY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Rqk32g4X; arc=fail smtp.client-ip=52.101.57.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE60E42DA4D
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 10:22:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789381356; cv=none; b=io0d5yK6dAHoQ4OgL29A22V2zFTZOt7AnL4qk6V5E7sGpUGEdOLUDGzMQa/zn/E59PQG8ziq4uvR6dC2o7GxIIw+kNKHAtaqxNKh6GI9SI/xYOXFvtkXy0hP03hNZ2lIOvakgpRBWJkveCBGmPc0H9Yy6RGNlZNKEd7Acb8fDlM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789381356; c=relaxed/simple;
+	bh=ucT8MZPWGwtNZivg3T+VOLW5OccinRlZ71vcwaQQE1E=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XqeUgeeS2Q+qxWyh9GYqRYP78OeoLL4H99YXMfYul+pd72bhWigDlHKsu2LMfEjfBv+NArnXB4f0IGeku3CTH5+3NNKfY4fakByZwdX7RZjkzQTPH+W59KPRuNO8kOTldv4yRuQ985OombDorlh04877iYByfn7LxdUlEVYoBXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=o5lPWVXR; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Rqk32g4X"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vxyYdXfEY3fD2u5qRd/mia0IwVH+U6xQatQU+IidyuPPvjq3z0mQ/tIOpNv0XJgeG93kSAHmQ7CPx0oy+OIBRCzibVB+AVYtgS12JaF84mUQzz4jdE7cvgOv1rXvEtVagVBdcyabiDxz3pJXAfW1LuEgkor7MTKmTwNpze/CEMJAG0QIwyQatuWXrAraq9qsFAYxfmFLSIYciJh0dAeUNvlJDCtM+c7J8u5v7QzRb1wXTIZV4lkO/IsK1LXRUK+FbGu7tBQ18TQxzbGYSouSMj7eokdVBIb4o+tdruSgTkzv8C1exMEbN1PKAs1nBO+YGBVauyN1PUHb8bBw8QC/cw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZOvaVA0WZpPwu0qnypA3I4lLagSXlHVYBt7v/b6xF2A=;
- b=J2+9WOHaXIWx8RLN4iQuR3wSSMOyLOUI0PVPiKQ6AWwYH+Uw8Yj1fgIFjtpgBRbIVQmuMJbaw+G+KMPElGrBtlYTzwz+CalxsPyNziLymHKFdxOxWGwnKIwYZL1KssYs8CIXCu93KzvYmRpCFviPOvWogVGqh/ACmiQBQ2AuT6fmsLPRN7My6uk+ZxXL4sgb7v3N/BhuNKToD1sXyX0PBIHpWqHqjSAZbi0YhTkZQWHpWK9WV6GDnCJ4I6Rl38Heb87HvxMbA0mDMz74+XbNamxEQ6yz+7ZlHyuWB5LCRWYS5iu8zoKCGda9+4PMIwFgkrNZhMoTlMBkhkvTCfBeVA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZOvaVA0WZpPwu0qnypA3I4lLagSXlHVYBt7v/b6xF2A=;
- b=Rqk32g4X0ybuo8Q0OptofULgulqagJgz1/6YifWKL25Ei8DikmyrS9uBQBBAlagDUzxkyueOBfDrVXrJ99KrMloqDy/NhxaRz7cUyfT82QU1glyZp/clE15t9hIjD2urdcCvQkcRE79GCU4LDjgc0Mm1gmFVochBDlhjIQZDW+L+f/ltzwNy6NE83OAs4cQk1fITBrRIxv/CPuqSadULDrkMI76iG5iIaXMqVaIkHnv9dz2al41HqaEMNup+CwRYZRUKM7cCcAqEli6Jlak2/QuTiisPUZDWs2wkJD0Xt9cR0JiIrJ4p7OMU9PHPDTkuackWj4KKSeXX/lAR6nESBw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by MW4PR12MB7482.namprd12.prod.outlook.com (2603:10b6:303:212::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Mon, 14 Sep
- 2026 10:16:03 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0406.007; Mon, 14 Sep 2026
- 10:16:03 +0000
-Date: Mon, 14 Sep 2026 13:15:54 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	David Ahern <dsahern@kernel.org>, Simon Horman <horms@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH v3 net-next 0/7] ip_tunnel: Support per-netns device
- unregistration.
-Message-ID: <20260914101554.GA245219@shredder>
-References: <20260912230043.2586313-1-kuniyu@google.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260912230043.2586313-1-kuniyu@google.com>
-X-ClientProxiedBy: FR4P281CA0134.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:b9::8) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="o5lPWVXR"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 7356F206BC;
+	Mon, 14 Sep 2026 12:22:31 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id LgL0chXIu42W; Mon, 14 Sep 2026 12:22:30 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id A8BDD20758;
+	Mon, 14 Sep 2026 12:22:30 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com A8BDD20758
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1789381350;
+	bh=/SRQLjgEvkL1A23FxKYxFLKGyd3OR6ak2Hvzr793798=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=o5lPWVXRfcjtDfY/3Onqzp80clj5ySWeI5bU78mJETNncm8i0jLzgqF60CDYuXQTV
+	 T2y0OdpHyXiMiQ5sK3SViqW4pn6ojd2Un3tW/SmuuVO/yEwKvWNGMDLJHwUS2r0Bwl
+	 qzspPNV8rY4goD6XxsBwP54V9TEBEQntvHc4gq6ecOy3AVxFJxbIGlsK5xk6BHxXQG
+	 RqEQYcDkhMAfPETQmR++9qShv5tXPjog/5bA0B9NxS+rBotMTSP9eHwflf9x9F5mz4
+	 9RqiOhJfkjB7gyIHVLpfi6CydpGti4dMLgm2EyPgcc/FPBEbwAku79GIJ/9DjhXcD5
+	 gHnT+VxQI2b+g==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 14 Sep
+ 2026 12:22:30 +0200
+Received: (nullmailer pid 1906231 invoked by uid 1000);
+	Mon, 14 Sep 2026 10:22:29 -0000
+Date: Mon, 14 Sep 2026 12:22:29 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: <davem@davemloft.net>, <herbert@gondor.apana.org.au>,
+	<netdev@vger.kernel.org>, Wyatt Feng <wf.kernel.dev@gmail.com>
+Subject: Re: [PATCH 12/12] net: xfrm: reject unrepresentable espintcp
+ transport headers
+Message-ID: <aqfK5ap1hORomJmY@secunet.com>
+References: <20260907093020.2228346-13-steffen.klassert@secunet.com>
+ <20260908224902.1591378-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|MW4PR12MB7482:EE_
-X-MS-Office365-Filtering-Correlation-Id: 73502b3f-5ce3-4fd4-7e02-08df12492ec4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|1800799024|376014|366016|18002099003|22082099003|10067099003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	olXsHnLOS0l+I9VMVtLc7/CPKnG6XxGzDk3fxgh2NeZ5y6akFXTYVS/eVmeoBNMtAVhQlwbw5NrewLGgbBBCNd8qpkBvodxEeT2qpnV7NiPXhjMslgc0qKcC7Wk3oRhfrYk/nh02b1mHvNGMZr1AsVLTFejoO7CuAe2Ga0F+cMj2wBduDFOYBhBrE7hZxcesioCrnTkiPGgku8mnjcrfS8KWBMl3O8hTRuEVfCcK8x5yRevM46E4RxaSxbRaWcr1g0IN6WYLlc0xym5Jek5oFJhF3Wabi4RlsslBTUX4McNpQaS9kMbbRN06vPKXt26uWMTAwoRH7fKqMxcO6lpAMgeqlyPhhxi1B6ctpUMxOPTsT2TUMk0SRhHR+0grT6JI8c25aEq2Hn5j2BFSRYPA1ZMwWNjAuubWglLnX5zVvcrspxK5VHFzf9a08bk1+7vVbxvhU+UP879EhlOraW6Eef7GFO47DkokZI4zr/UKJpi1DqP1pbMX5C1RTo+iyjzUHvG814uuzbNj+DvHs9wRPJXXGH901pdjNWfWMDfYfXvEpGKegEnc9swUS+dmP91lLtm7evOCt7OOD2Dnqt6KS09Syoh1FlfdNfoY/0J6xcMhsuN2kFDcy9iCbITYRUiLeLz+oxUMYWt5+2tbhmnRwhb6u1FqhJyhyCuR3lwZZlE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(1800799024)(376014)(366016)(18002099003)(22082099003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Dv8HYIlVtOXPkgGJbZELupEWbysEjeWADc/00Q53I+ZcqQv7D2yv90GF8o0o?=
- =?us-ascii?Q?H8AWohpTFZRYSi37DY6QThq/3CjqsEV4eJoOlkeMI8Xd/I1SJaBD46JJrBme?=
- =?us-ascii?Q?9J6+wl0Ub+WxQ1JfLItO6K50ua5zLV8aJ884JMXgk3EgAzXQdhcfhcn+INDo?=
- =?us-ascii?Q?XL09M/G6FzwiqAxNfyd9q2aMBY7r72+fuBh28AFEi099YKvBmxvpdnfQVu4Y?=
- =?us-ascii?Q?BpFmg8FiVGreEyp9UPoJw6iKwsojG+K4x0TUVvSTU5EQYaif7cH6qDKuy7d7?=
- =?us-ascii?Q?wJeNLDSYZUShetAEPzeypQ+aMiW5y1DWa1ywemRLnAD6/2E7/l0C4CLCZhPO?=
- =?us-ascii?Q?C/zD6MhtFOigcKU2scHhtWSTy592cO62VIqhDNlnIjwttSfuMvt+CPEgjqA0?=
- =?us-ascii?Q?RlLiIiQ5TTnRst3pz0OR8O0zmeI5I/RI+3CLcmeh1czsxxcXnP1Fz9+EV6h8?=
- =?us-ascii?Q?NgbgaIJvtJ+g51wYuXkcITYGlP63Q4JmRsnFSoQYqylzZ6xehAdTqmD7/yEg?=
- =?us-ascii?Q?4NMyvbvQr4QKPEiiYMKyIZUABrT/tj2rC40OhGuPL9CvXelmjPfGVLriuvsy?=
- =?us-ascii?Q?9xSP6rj4ljmFMy1Y00V3z5ojWEaSR6iAWadNfoOGE6xFuWAZrccETjwuSB7f?=
- =?us-ascii?Q?dVpNk/6004O96QsytIa2yLzzp7OGP0dHOEgyIG1kmD3EKvwZ8WaYOg1IXvIt?=
- =?us-ascii?Q?L0p0DdFZpvPQyQH5xrDWdfhM31VEbT+1aebCJHJoPIApvN9UH/H+O8rC6kID?=
- =?us-ascii?Q?+RDft6LODPE4GmnU8eH75vNKR6J22dW2bz7Ksa89LsMBZmNI45VBS1FKmmWE?=
- =?us-ascii?Q?7uFB/uJUQf2/lzOFAYUcQg8tuvQ61nkQj+8XqHvl1asXCjNdVYLQoJY1YMrX?=
- =?us-ascii?Q?W+dh9sb5xtMiCGNleFsZAug/1BsxrBZKCkl13IQOE4DOYM1cD3GjqNE0yljI?=
- =?us-ascii?Q?XNENhEowwnk04VvL8MR13nu5EkfjOVkHkh9asC6h+Y8XhhlWLMp233gUfJfJ?=
- =?us-ascii?Q?INTzC6MY2aa37PlaqImqtggby31PknexWx9IoG7VkHqF1WmS5tcwoHt1/DhE?=
- =?us-ascii?Q?HB2oYyCvPY2PlA0eV46rCtDXi2Q0p/hD0zSkeY8csr2INASYvXGlX4K8x5YR?=
- =?us-ascii?Q?t0BQkFOKv8VM6KAb0b+DptbkED4VvMeiOTPI43EK287UfAQLaaQ+3k+8jk8a?=
- =?us-ascii?Q?0OZ477/epLcORiryX73t6Jqe1hJN1YIQWGJwrzkVcN5eyzpcKcaxoKsiVE5K?=
- =?us-ascii?Q?5uNlkxWGZQhCdQO79B8zsEy4U61x0aoWoG77lWM+M2EkrlQHY8LjcsyfLPa9?=
- =?us-ascii?Q?ure1WkpHHHn4S47UCqJAROoenNZa1jbLbRY8KeKaTUWLa/Fbsb9TLVmGpMa3?=
- =?us-ascii?Q?bzRSHu/GsYb5hrJicqGSD5pb7HqQ0mHMl9k8egldvReZKkl1/SUxqhXBgQRO?=
- =?us-ascii?Q?l0noVG4YJzrLFstxZllPVj6FrpzJrDtsoRLJd/LnEplAd6tGr0uuy81rQJtv?=
- =?us-ascii?Q?YUFtyfMGMIyBnBI8uRVthO+eLAzIiTwB2I9CylYBvi3Idkui9pTGb5wq/cCf?=
- =?us-ascii?Q?/05YPvDwqmbJu5ZJAnXnHCRUTsPopPJKKO4DrsRozDsqJi2/LeZkdUnIrv1A?=
- =?us-ascii?Q?hYD3IZYS1xKSBdxWRroVACrdXUMZbcH5f1TmpZ4KcMDzWud4dldf06STg66o?=
- =?us-ascii?Q?oZwZ0hY5k0B7bvTWJxefpT4TOTOU+xSfcg2nhfY7GL3nBw5+?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 73502b3f-5ce3-4fd4-7e02-08df12492ec4
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 10:16:03.7968
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sbkylSZjkY65Ewo3liFAfb8X/E+noxwK4n1KZ07i3BpvQU7lST1ME5ynq02XmjM8Sx3E/AXMQ4mdFkY2U0bShg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7482
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260908224902.1591378-1-kuba@kernel.org>
+X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-On Sat, Sep 12, 2026 at 11:00:26PM +0000, Kuniyuki Iwashima wrote:
-> Patch 1 - 3 are prep patches to unlink ip_tunnel device from
-> the hash table in ip_tunnel_dellink() only.
-> 
-> Patch 4 removes ip_tunnel_del() from ip_tunnel_uninit() to
-> ip_tunnel_dellink().
-> 
-> Patch 5 & 6 adds mutex to protect the per-netns hash table.
-> 
-> Patch 7 uses unregister_netdevice_queue_net() to support
-> cross-netns device unregistration.
+Ccing Author of the patch.
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-
+On Tue, Sep 08, 2026 at 03:49:02PM -0700, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> net: xfrm: reject unrepresentable espintcp transport headers
 > 
+> handle_esp() in net/xfrm/espintcp.c switches from the plain transport
+> header reset to skb_reset_transport_header_careful(), and drops the skb
+> with LINUX_MIB_XFRMINERROR when the offset does not fit in
+> skb->transport_header.
 > 
-> Changes:
->   v3:
->     * Patch 7
->       * Check check_net(t->net) in ip_tunnel_ctl().
+> > diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
+> > index 674aedc5af5a2..3e72b9f067b9b 100644
+> > --- a/net/xfrm/espintcp.c
+> > +++ b/net/xfrm/espintcp.c
+> > @@ -30,7 +30,11 @@ static void handle_esp(struct sk_buff *skb, struct sock *sk)
+> >  {
+> >  	struct tcp_skb_cb *tcp_cb = (struct tcp_skb_cb *)skb->cb;
+> >  
+> > -	skb_reset_transport_header(skb);
+> > +	if (!skb_reset_transport_header_careful(skb)) {
+> > +		XFRM_INC_STATS(sock_net(sk), LINUX_MIB_XFRMINERROR);
+> > +		kfree_skb(skb);
+> > +		return;
+> > +	}
+> 
+> [Severity: High]
+> Is this gate placed early enough to cover the pulls that the ESP input
+> path performs on the same skb afterwards?
+> 
+> skb_reset_transport_header_careful() in include/linux/skbuff.h only
+> rejects offsets that are already unrepresentable:
+> 
+> 	long offset = skb->data - skb->head;
+> 
+> 	if (unlikely(offset != (typeof(skb->transport_header))offset))
+> 		return false;
+> 
+> 	if (unlikely(offset == (typeof(skb->transport_header))~0U))
+> 		return false;
+> 
+> so any offset up to 65534 is accepted here with no margin left.
+> 
+> handle_esp() then calls xfrm4_rcv_encap()/xfrm6_rcv_encap(), and the
+> chain xfrm_input() -> esp_input() -> esp_input_done2() pulls the ESP
+> header and IV off the very same skb and resets the transport header with
+> the unhardened helpers, in net/ipv4/esp4.c:
+> 
+> 	skb_pull_rcsum(skb, hlen);
+> 	if (x->props.mode == XFRM_MODE_TUNNEL ||
+> 	    x->props.mode == XFRM_MODE_IPTFS)
+> 		skb_reset_transport_header(skb);
+> 	else
+> 		skb_set_transport_header(skb, -ihl);
+> 
+> with hlen = sizeof(struct ip_esp_hdr) + crypto_aead_ivsize(aead).
+> esp6_input_done2() in net/ipv6/esp6.c has the same shape for the
+> AF_INET6 branch of handle_esp().
+> 
+> For an skb whose head offset lands in the window [65536 - hlen, 65534],
+> the new check passes but the offset after skb_pull_rcsum() no longer
+> fits, so doesn't the truncation the changelog wants to eliminate simply
+> move downstream, now on a partially decrypted packet instead of a clean
+> drop?
+> 
+> Can such near-limit offsets be reached in practice?  espintcp_rcv() does:
+> 
+> 	/* remove header, leave non-ESP marker/SPI */
+> 	if (!pskb_pull(skb, rxm->offset + 2)) {
+> 
+> which makes skb->data - skb->head equal to the initial payload offset
+> plus rxm->offset + 2, and rxm->offset is bounded only by the size of one
+> coalesced TCP receive-queue skb.  If offsets at or above 65535 are
+> reachable (which is the premise of this patch), offsets a few bytes below
+> 65536 look equally reachable, and the peer selects them at byte
+> granularity through the 16-bit espintcp length prefix.
+> 
+> For ESP transport mode there also seems to be a second-order effect.  With
+> k = (offset + hlen) - 65536 and k >= ihl, esp_input_done2() leaves
+> transport_header at (k - ihl), i.e. wrapped, and
+> xfrm4_transport_input()/xfrm6_transport_input() in net/xfrm/xfrm_input.c
+> consume it directly:
+> 
+> 	int ihl = skb->data - skb_transport_header(skb);
+> 
+> 	if (skb->transport_header != skb->network_header) {
+> 		memmove(skb_transport_header(skb),
+> 			skb_network_header(skb), ihl);
+> 		...
+> 	skb_reset_transport_header(skb);
+> 
+> Can ihl here become roughly 64 KiB and turn that memmove() into a copy
+> that runs past the packet data into the trailing skb_shared_info?  With
+> AES-CBC (ivsize 16, hlen 24) k can be 20..23, which is >= a 20-byte ihl.
+> 
+> Would it make sense either to give the espintcp check a margin covering
+> the largest downstream ESP header plus IV pull (or avoid the large linear
+> pull in espintcp_rcv() altogether), or to convert the esp4/esp6 and
+> xfrm_input transport-mode reset sites to the careful helpers as well?
+> 
+> Conversely, if offsets in that window cannot occur, what makes the check
+> added here reachable at all?
 
-Thanks!
+The patch did not add a regression, but the question if that
+can be triggered at all is valid.
+
+Wyatt can you explain how you tiggered this bug?
