@@ -1,23 +1,22 @@
-Received: from out28-124.mail.aliyun.com (out28-124.mail.aliyun.com [115.124.28.124])
+Received: from out28-197.mail.aliyun.com (out28-197.mail.aliyun.com [115.124.28.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E325457E6A;
-	Mon, 14 Sep 2026 12:34:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8FFD45563F;
+	Mon, 14 Sep 2026 12:34:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789389288; cv=none; b=NX33A8LYlcEHRj+03l1xa7kUWlwt127mORQrqmi2zAfTUfdNCo+fx8Am4LF5YkgxJAvuPnRPlg2x8uaxb1Xt4yNXlEWjaTIneD+2mV+yUjUldx74dEAt6jpApj6qvmW0JM399kwtXTAnqy1dF5Io7FFaRD/ioRvrS4x62Ltcf8w=
+	t=1789389289; cv=none; b=nW8VSD4zL1MqbcfFWEDsfrUxMeG/mKkMVh/g7YMyvD+jE8Dkjmn69B0gAmzspaUZ2M09d58/exyqOj2UXJHW88n4zObm70IUcpdQwz7gjN7ja4Pr9zH5Iwnx7Gv/C6SVtP+1UJUjPM1YPzthjiKvzhFAnFu/ru5heAnxpcQ/l0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789389288; c=relaxed/simple;
-	bh=sRYKHtGV2b6oK3dlNP3Vw/FQQlQXpabK0aCeSSQz+/Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j4ilUIQG9TImN1ytVO8Q9ry2VLVpETUG/X+lq80pw4npKruZKYD69AGWHh0AsRPwf/AQEjMflUoQKqGB68/SOfGfizWGjfneZ0Ti6fdIBV4dHhut90tCj+M58f9W+RaSeld7uoGU1xaX96JP+m9gHErVhCQzSwfPgw3sy4iAz1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.124
+	s=arc-20240116; t=1789389289; c=relaxed/simple;
+	bh=wUxTwPV/q5HFzrtXZSmB/2tc2uuxNGFRVxCUkI7izJI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uxSxYeOeQ8VoarKaa+LYk9vX/UUtB2dTZ+V3L5TZCL8sG0QQHqi2KVNQ7v3SndyZO3YLcrnMz8AuPtGM0TdFhctJ6UFAQHJkaCFoO3xvfUgPWQ6pZ0Ffe1lT8BKN2xTNFwIMZYmsp5T9mGSaFYMhNt4JjYbRaJ9ZfgnZ/F6aVdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06750221|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0331837-0.00316563-0.963651;FP=17173941139267919538|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037028158;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.jDG7RBC_1789389273;
-Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.jDG7RBC_1789389273 cluster:ay29)
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06752732|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.141809-0.0120438-0.846147;FP=16605258358115026434|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033022149254;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.jDG7R9s_1789389272;
+Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.jDG7R9s_1789389272 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Mon, 14 Sep 2026 20:34:34 +0800
+          Mon, 14 Sep 2026 20:34:33 +0800
 From: "illusion.wang" <illusion.wang@nebula-matrix.com>
 To: dimon.zhao@nebula-matrix.com,
 	illusion.wang@nebula-matrix.com,
@@ -37,350 +36,283 @@ Cc: andrew+netdev@lunn.ch,
 	skhan@linuxfoundation.org,
 	hkallweit1@gmail.com,
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v28 net-next 01/10] net/nebula-matrix: add minimum nbl build framework
-Date: Mon, 14 Sep 2026 20:34:15 +0800
-Message-ID: <20260914123429.56596-2-illusion.wang@nebula-matrix.com>
+Subject: [PATCH v28 net-next 00/10] nbl driver for Nebulamatrix NICs
+Date: Mon, 14 Sep 2026 20:34:14 +0800
+Message-ID: <20260914123429.56596-1-illusion.wang@nebula-matrix.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260914123429.56596-1-illusion.wang@nebula-matrix.com>
-References: <20260914123429.56596-1-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: illusion wang <illusion.wang@nebula-matrix.com>
 
-This patch adds the minimum build infrastructure:
-1. Add Kconfig, Makefile and MAINTAINERS entries;
-2. Add corresponding driver documentation;
-3. Add PCI driver skeleton with empty stubs for nbl driver.
+This patch series represents the first phase. We plan to integrate it in
+two phases: the first phase covers mailbox and chip configuration,
+while the second phase involves net dev configuration.
+Together, they will provide basic PF-based Ethernet port transmission and
+reception capabilities.
 
-Note: the documentation describes the final full driver features;
-implementation will be added in subsequent patches of this series.
+After that, we will consider other features, such as ethtool support,
+flow management, adminq messaging, VF support, debugfs support, etc.
 
-Signed-off-by: illusion wang <illusion.wang@nebula-matrix.com>
----
- .../device_drivers/ethernet/index.rst         |   1 +
- .../ethernet/nebula-matrix/nbl.rst            |  28 +++++
- MAINTAINERS                                   |  10 ++
- drivers/net/ethernet/Kconfig                  |   1 +
- drivers/net/ethernet/Makefile                 |   1 +
- drivers/net/ethernet/nebula-matrix/Kconfig    |  32 ++++++
- drivers/net/ethernet/nebula-matrix/Makefile   |   6 ++
- .../net/ethernet/nebula-matrix/nbl/Makefile   |   6 ++
- .../net/ethernet/nebula-matrix/nbl/nbl_core.h |  13 +++
- .../nbl/nbl_include/nbl_include.h             |  14 +++
- .../net/ethernet/nebula-matrix/nbl/nbl_main.c | 100 ++++++++++++++++++
- 11 files changed, 212 insertions(+)
+To ensure compatibility, our architecture is divided into the following
+layers:
+
+1. Dev Layer (Device Layer)
+The top-level business logic layer where all operations are
+device-centric. Every operation is performed relative to the device
+context. The intergration of base functions encompasses:
+management(ctrl only for leonis pf0), network(net_dev,this time not
+contained),common.
+
+2. Dispatch Layer
+The distribution from services to specific data operations is mainly
+divided into two types: direct pass-through and handling by the
+management PF. It shields the upper layer from the differences in
+specific underlying locations.
+It describes the processing locations and paths of the services.
+
+3. Resource Layer
+Handles tasks dispatched from Dispatch Layer. These tasks fall into two
+categories:
+3.1 Hardware control
+The Resource Layer further invokes the HW Layer when hardware access is
+needed, as only the HW Layer has OS-level privileges.
+3.2 Software resource management
+Operations like packet statistics collection that don't require hardware
+access.
+
+4. HW Layer (Hardware Layer)
+Serves the Resource Layer by interacting with different hardware
+chipsets.Writes to hardware registers to drive the hardware based on
+Resource Layer directives.
+
+5. Channel Layer
+
+Handle communication between PF0(has ctrl func) and other PF,and provide
+basic interaction channels.
+
+6. Common Layer
+Provides fundamental services
+
+changes v27->v28
+Link to v27:https://lore.kernel.org/netdev/20260907123848.30256-1-illusion.wang@nebula-matrix.com/
+1.AI review issues
+
+changes v26->v27
+Link to v26:https://lore.kernel.org/netdev/20260831021408.2325-1-illusion.wang@nebula-matrix.com/
+1.AI review issues
+
+changes v25->v26
+Link to v25:https://lore.kernel.org/netdev/20260819001117.46785-1-illusion.wang@nebula-matrix.com/
+1.AI review issues
+
+changes v24->v25
+Link to v24:https://lore.kernel.org/netdev/20260807044422.2356-1-illusion.wang@nebula-matrix.com/
+1.AI review issues
+
+2.Issues found by Jakub
+changes v23->v24
+Link to v23:https://lore.kernel.org/netdev/20260731094242.2655-1-illusion.wang@nebula-matrix.com/
+1.AI review issues
+2.Issues found by Jakub
+
+changes v22->v23
+Link to v22:https://lore.kernel.org/netdev/20260723040110.91410-1-illusion.wang@nebula-matrix.com/
+AI review issues
+
+chages v21->v22
+Link to v21:https://lore.kernel.org/netdev/20260708064742.35391-1-illusion.wang@nebula-matrix.com/
+AI review issues
+
+changes v20->v21
+Link to v20:https://lore.kernel.org/netdev/20260630010718.4346-1-illusion.wang@nebula-matrix.com/
+I have dropped the old Patch 2 titled "add our driver architecture"
+Add new Patch 2 "add core driver architecture and HW layer initialization".
+Split original patch8 into three separate patches as suggested
+
+changes v19->v20
+Link to v19:https://lore.kernel.org/netdev/20260617044702.2439-1-illusion.wang@nebula-matrix.com/
+Starting from V20, I have dropped the old Patch 3 titled "P4
+configuration invoked during chip initialization". This functionality
+will be reimplemented in next phase using the request_firmware() API
+with an external firmware blob.
+changes v18->v19
+Link to v18:https://lore.kernel.org/netdev/20260611044916.2383-1-illusion.wang@nebula-matrix.com/
+changes v17->v18
+Link to v17:https://lore.kernel.org/netdev/20260601093149.25905-1-illusion.wang@nebula-matrix.com/
+changes v16->v17
+Link to v16:https://lore.kernel.org/netdev/20260526035453.2359-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v15->v16
+Link to v15:https://lore.kernel.org/netdev/20260520032950.4874-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v14->v15
+Link to v14:https://lore.kernel.org/netdev/20260513011649.4404-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v13->v14
+Link to v13:https://lore.kernel.org/netdev/20260428114910.2616-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v12->v13
+Link to v12:https://lore.kernel.org/netdev/20260415033608.2438-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v11->v12
+Link to v11:https://lore.kernel.org/netdev/20260408093739.56001-1-illusion.wang@nebula-matrix.com/
+AI review issues
+changes v10->v11
+Link to v10:https://lore.kernel.org/netdev/20260401022318.28550-1-illusion.wang@nebula-matrix.com/
+1.Issues found by Mohsin
+2.AI review issues
+changes v9->v10
+Link to v9:https://lore.kernel.org/netdev/20260325040048.2313-1-illusion.wang@nebula-matrix.com/
+1.Issues found by Jakub
+2.AI review issue
+changes v8->v9
+Link to v8:https://lore.kernel.org/netdev/20260317034533.5600-1-illusion.wang@nebula-matrix.com/
+1.Issues found by Jakub
+2.AI review issue
+Changes v7→v8
+Link to v7:https://lore.kernel.org/netdev/20260310120959.22015-1-illusion.wang@nebula-matrix.com/
+1.Issues found by Paolo
+Changes v6->v7
+Link to v6:https://lore.kernel.org/netdev/20260306033451.5196-1-illusion.wang@nebula-matrix.com/
+1.Issue found by Jakub
+2.AI review issue
+Changes v5->v6
+Link to V5:https://lore.kernel.org/netdev/20260226073840.3222-1-illusion.wang@nebula-matrix.com/
+1.put all standard linux includes files the .c file which needs it & others
+--Andrew
+2.AI review issue
+Changes v4->v5
+Link to V4:https://lore.kernel.org/netdev/20260206021608.85381-1-illusion.wang@nebula-matrix.com/
+1.change nbl_core to nbl & change ** pointers to *pointers & others
+--Andrew
+2.AI review issue
+Changes v3->v4
+Link to v3: https://lore.kernel.org/netdev/20260123011804.31263-1-illusion.wang@nebula-matrix.com
+1.cut down to part of a mini driver(mailbox and chip init)
+--Jakub Kicinski Simon Horman(some sort of staged approached)
+2.modify issues found by ai.
+3. Reverse Christmas tree/nbl_err/devm_kfree/remove some macros/
+void type to real type/others
+--Andrew Lunn
+4.change deprecated pci_enable_msix_range to pci_alloc_irq_vectors
+5.delete service layer
+6.the style of kconfig---Randy Dunlap
+7.add to Documentation/networking/device_drivers/ethernet/index.rst
+--Simon Horman
+Changes v2 →v3
+Link to v2: https://lore.kernel.org/netdev/20260109100146.63569-1-illusion.wang@nebula-matrix.com/
+1.cut down to a mini driver:
+    delete vf support
+    use promisc mode to cut down flow management
+    drop patch15 in v2
+    delete adminq msg
+    delete abnormal handling
+    delete some unimportant interfaces
+2.modify issues found by ai review
+Changes v1->v2
+Link to v1: https://lore.kernel.org/netdev/20251223035113.31122-1-illusion.wang@nebula-matrix.com/
+1.Format Issues and Compilation Issues
+- Paolo Abeni
+2.add sysfs patch and drop coexisting patch
+- Andrew Lunn
+3.delete some unimportant ndo operations
+4.add machine generated headers patch
+5.Modify the issues found in patch1-2 and apply the same fixes to other
+patches
+6.modify issues found by nipa
+
+illusion wang (10):
+  net/nebula-matrix: add minimum nbl build framework
+  net/nebula-matrix: add core driver architecture and HW layer
+    initialization
+  net/nebula-matrix: add channel layer
+  net/nebula-matrix: add common resource implementation
+  net/nebula-matrix: add intr resource implementation
+  net/nebula-matrix: add chip-wide hardware init/deinit implementation
+  net/nebula-matrix: dispatch: add control-level routing core
+    infrastructure
+  net/nebula-matrix: dispatch: implement channel RPC framework and
+    serialize hardware ops
+  net/nebula-matrix: add common/ctrl dev init/remove operation
+  net/nebula-matrix: add common dev start/stop operation
+
+ .../device_drivers/ethernet/index.rst         |    1 +
+ .../ethernet/nebula-matrix/nbl.rst            |   28 +
+ MAINTAINERS                                   |   10 +
+ drivers/net/ethernet/Kconfig                  |    1 +
+ drivers/net/ethernet/Makefile                 |    1 +
+ drivers/net/ethernet/nebula-matrix/Kconfig    |   32 +
+ drivers/net/ethernet/nebula-matrix/Makefile   |    6 +
+ .../net/ethernet/nebula-matrix/nbl/Makefile   |   15 +
+ .../nbl/nbl_channel/nbl_channel.c             | 1331 +++++++++++++++++
+ .../nbl/nbl_channel/nbl_channel.h             |  171 +++
+ .../nebula-matrix/nbl/nbl_common/nbl_common.c |  231 +++
+ .../nebula-matrix/nbl/nbl_common/nbl_common.h |   32 +
+ .../net/ethernet/nebula-matrix/nbl/nbl_core.h |   45 +
+ .../nebula-matrix/nbl/nbl_core/nbl_dev.c      |  571 +++++++
+ .../nebula-matrix/nbl/nbl_core/nbl_dev.h      |   55 +
+ .../nebula-matrix/nbl/nbl_core/nbl_dispatch.c |  695 +++++++++
+ .../nebula-matrix/nbl/nbl_core/nbl_dispatch.h |   25 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_chip.c       |   32 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_chip.h       |   12 +
+ .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c  | 1172 +++++++++++++++
+ .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h  |  334 +++++
+ .../nbl_hw_leonis/nbl_resource_leonis.c       |  365 +++++
+ .../nbl_hw_leonis/nbl_resource_leonis.h       |   12 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h     |   75 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_interrupt.c  |  591 ++++++++
+ .../nebula-matrix/nbl/nbl_hw/nbl_interrupt.h  |   21 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_resource.c   |  152 ++
+ .../nebula-matrix/nbl/nbl_hw/nbl_resource.h   |  110 ++
+ .../nbl/nbl_include/nbl_def_channel.h         |  183 +++
+ .../nbl/nbl_include/nbl_def_common.h          |   69 +
+ .../nbl/nbl_include/nbl_def_dev.h             |   16 +
+ .../nbl/nbl_include/nbl_def_dispatch.h        |   56 +
+ .../nbl/nbl_include/nbl_def_hw.h              |   82 +
+ .../nbl/nbl_include/nbl_def_resource.h        |   38 +
+ .../nbl/nbl_include/nbl_include.h             |   54 +
+ .../net/ethernet/nebula-matrix/nbl/nbl_main.c |  243 +++
+ 36 files changed, 6867 insertions(+)
  create mode 100644 Documentation/networking/device_drivers/ethernet/nebula-matrix/nbl.rst
  create mode 100644 drivers/net/ethernet/nebula-matrix/Kconfig
  create mode 100644 drivers/net/ethernet/nebula-matrix/Makefile
  create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/Makefile
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.h
  create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_chip.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_chip.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_resource.h
  create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
  create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
 
-diff --git a/Documentation/networking/device_drivers/ethernet/index.rst b/Documentation/networking/device_drivers/ethernet/index.rst
-index d9980c84487a..403ae9c2b06a 100644
---- a/Documentation/networking/device_drivers/ethernet/index.rst
-+++ b/Documentation/networking/device_drivers/ethernet/index.rst
-@@ -48,6 +48,7 @@ Contents:
-    meta/fbnic
-    microsoft/netvsc
-    mucse/rnpgbe
-+   nebula-matrix/nbl
-    netronome/nfp
-    pensando/ionic
-    pensando/ionic_rdma
-diff --git a/Documentation/networking/device_drivers/ethernet/nebula-matrix/nbl.rst b/Documentation/networking/device_drivers/ethernet/nebula-matrix/nbl.rst
-new file mode 100644
-index 000000000000..5540291cf376
---- /dev/null
-+++ b/Documentation/networking/device_drivers/ethernet/nebula-matrix/nbl.rst
-@@ -0,0 +1,28 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+================================================================
-+Linux Base Driver for Nebula-matrix m18110-NIC/m18000-NIC family
-+================================================================
-+
-+Overview:
-+=========
-+The m18110-NIC/m18000-NIC (marketed as SNIC s1000) is a series
-+of network interface cards for the Data Center Area.
-+
-+This driver provides the core infrastructure for m18110/m18000-NIC
-+devices, including:
-+
-+- PCI device enumeration and resource (BAR) management
-+- Firmware command interface via PF mailbox
-+- Channel-based communication between driver and firmware
-+- Device initialization and teardown
-+
-+Support
-+=======
-+
-+For more information about m18110-NIC/m18000-NIC, please visit the following URL:
-+https://www.nebula-matrix.com/snic_s1000_en
-+
-+If an issue is identified with the released source code on the supported kernel
-+with a supported adapter, email the specific information related to the issue to
-+open@nebula-matrix.com.
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 460cb7268845..ab55ba0da0a2 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -18654,6 +18654,16 @@ F:	Documentation/devicetree/bindings/hwmon/nuvoton,nct7363.yaml
- F:	Documentation/hwmon/nct7363.rst
- F:	drivers/hwmon/nct7363.c
- 
-+NEBULA-MATRIX ETHERNET DRIVER (nebula-matrix)
-+M:	Illusion Wang <illusion.wang@nebula-matrix.com>
-+M:	Dimon Zhao <dimon.zhao@nebula-matrix.com>
-+M:	Alvin Wang <alvin.wang@nebula-matrix.com>
-+M:	Sam Chen <sam.chen@nebula-matrix.com>
-+L:	netdev@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/networking/device_drivers/ethernet/nebula-matrix/
-+F:	drivers/net/ethernet/nebula-matrix/
-+
- NETCONSOLE
- M:	Breno Leitao <leitao@debian.org>
- S:	Maintained
-diff --git a/drivers/net/ethernet/Kconfig b/drivers/net/ethernet/Kconfig
-index 8581ccba1505..c2b0161d0bec 100644
---- a/drivers/net/ethernet/Kconfig
-+++ b/drivers/net/ethernet/Kconfig
-@@ -130,6 +130,7 @@ config FEALNX
- 
- source "drivers/net/ethernet/ni/Kconfig"
- source "drivers/net/ethernet/natsemi/Kconfig"
-+source "drivers/net/ethernet/nebula-matrix/Kconfig"
- source "drivers/net/ethernet/netronome/Kconfig"
- source "drivers/net/ethernet/8390/Kconfig"
- source "drivers/net/ethernet/nvidia/Kconfig"
-diff --git a/drivers/net/ethernet/Makefile b/drivers/net/ethernet/Makefile
-index 2b1153d35b52..a306dae23bcb 100644
---- a/drivers/net/ethernet/Makefile
-+++ b/drivers/net/ethernet/Makefile
-@@ -67,6 +67,7 @@ obj-$(CONFIG_NET_VENDOR_MUCSE) += mucse/
- obj-$(CONFIG_NET_VENDOR_MYRI) += myricom/
- obj-$(CONFIG_FEALNX) += fealnx.o
- obj-$(CONFIG_NET_VENDOR_NATSEMI) += natsemi/
-+obj-$(CONFIG_NET_VENDOR_NEBULA_MATRIX) += nebula-matrix/
- obj-$(CONFIG_NET_VENDOR_NETRONOME) += netronome/
- obj-$(CONFIG_NET_VENDOR_NI) += ni/
- obj-$(CONFIG_NET_VENDOR_NVIDIA) += nvidia/
-diff --git a/drivers/net/ethernet/nebula-matrix/Kconfig b/drivers/net/ethernet/nebula-matrix/Kconfig
-new file mode 100644
-index 000000000000..dd0e91d14131
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/Kconfig
-@@ -0,0 +1,32 @@
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Nebula-matrix network device configuration
-+#
-+
-+config NET_VENDOR_NEBULA_MATRIX
-+	bool "Nebula-matrix devices"
-+	default y
-+	help
-+	  If you have a network (Ethernet) card belonging to this class, say Y.
-+	  Note that the answer to this question doesn't directly affect the
-+	  kernel: saying N will just cause the configurator to skip all
-+	  the questions about Nebula-matrix cards. If you say Y, you will be asked
-+	  for your specific card in the following questions.
-+
-+if NET_VENDOR_NEBULA_MATRIX
-+
-+config NBL
-+	tristate "Nebula-matrix Ethernet Controller m18110/m18000 support"
-+	depends on PCI && (64BIT || COMPILE_TEST) && !CPU_BIG_ENDIAN
-+	help
-+	  This driver provides the core infrastructure for Nebula-matrix
-+	  Ethernet Controller m18110/m18000 Family of devices, including
-+	  PCI enumeration, firmware mailbox and channel communication.
-+
-+	  More specific information on configuring the driver is in
-+	  <file:Documentation/networking/device_drivers/ethernet/nebula-matrix/nbl.rst>.
-+
-+	  To compile this driver as a module, choose M here. The module
-+	  will be called nbl.
-+
-+endif # NET_VENDOR_NEBULA_MATRIX
-diff --git a/drivers/net/ethernet/nebula-matrix/Makefile b/drivers/net/ethernet/nebula-matrix/Makefile
-new file mode 100644
-index 000000000000..42cdf2db8f0c
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/Makefile
-@@ -0,0 +1,6 @@
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Makefile for the Nebula-matrix network device drivers.
-+#
-+
-+obj-$(CONFIG_NBL) += nbl/
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/Makefile b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-new file mode 100644
-index 000000000000..6c14d1071c0c
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-@@ -0,0 +1,6 @@
-+# SPDX-License-Identifier: GPL-2.0
-+# Copyright (c) 2026 Nebula Matrix Limited.
-+
-+obj-$(CONFIG_NBL) := nbl.o
-+
-+nbl-objs +=	nbl_main.o
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-new file mode 100644
-index 000000000000..a3d63c698aea
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-@@ -0,0 +1,13 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (c) 2026 Nebula Matrix Limited.
-+ */
-+
-+#ifndef _NBL_CORE_H_
-+#define _NBL_CORE_H_
-+
-+enum {
-+	NBL_CAP_HAS_NET_BIT,
-+};
-+
-+#endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
-new file mode 100644
-index 000000000000..16b10bcf1d36
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (c) 2026 Nebula Matrix Limited.
-+ */
-+
-+#ifndef _NBL_INCLUDE_H_
-+#define _NBL_INCLUDE_H_
-+
-+#include <linux/types.h>
-+
-+/*  ------  Basic definitions  -------  */
-+#define NBL_DRIVER_NAME					"nbl"
-+
-+#endif
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-new file mode 100644
-index 000000000000..199626159a4c
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-@@ -0,0 +1,100 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2026 Nebula Matrix Limited.
-+ */
-+
-+#include <linux/device.h>
-+#include <linux/pci.h>
-+#include <linux/module.h>
-+#include <linux/bits.h>
-+#include "nbl_include/nbl_include.h"
-+#include "nbl_core.h"
-+
-+static int nbl_probe(struct pci_dev *pdev,
-+		     const struct pci_device_id *id)
-+{
-+	return -ENODEV;
-+}
-+
-+static void nbl_remove(struct pci_dev *pdev)
-+{
-+}
-+
-+/*
-+ * PCI Device IDs for Leonis/NBL Network Controllers
-+ *
-+ * Vendor ID: 0x1F0F
-+ * SNIC v3r1 product Device IDs range: 0x3403-0x3412
-+ */
-+#define NBL_VENDOR_ID				0x1F0F
-+
-+#define NBL_DEVICE_ID_M18110			0x3403
-+#define NBL_DEVICE_ID_M18110_LX			0x3404
-+#define NBL_DEVICE_ID_M18110_BASE_T		0x3405
-+#define NBL_DEVICE_ID_M18110_LX_BASE_T		0x3406
-+#define NBL_DEVICE_ID_M18110_OCP		0x3407
-+#define NBL_DEVICE_ID_M18110_LX_OCP		0x3408
-+#define NBL_DEVICE_ID_M18110_BASE_T_OCP		0x3409
-+#define NBL_DEVICE_ID_M18110_LX_BASE_T_OCP	0x340a
-+#define NBL_DEVICE_ID_M18000			0x340b
-+#define NBL_DEVICE_ID_M18000_LX			0x340c
-+#define NBL_DEVICE_ID_M18000_BASE_T		0x340d
-+#define NBL_DEVICE_ID_M18000_LX_BASE_T		0x340e
-+#define NBL_DEVICE_ID_M18000_OCP		0x340f
-+#define NBL_DEVICE_ID_M18000_LX_OCP		0x3410
-+#define NBL_DEVICE_ID_M18000_BASE_T_OCP		0x3411
-+#define NBL_DEVICE_ID_M18000_LX_BASE_T_OCP	0x3412
-+
-+/* All below IDs belong to Leonis ASIC family, different form-factor variants,
-+ * share the same hardware initialization flow without differentiated ops.
-+ */
-+static const struct pci_device_id nbl_id_table[] = {
-+	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110),
-+	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) },
-+	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110_LX),
-+	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) },
-+	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110_BASE_T),
-+	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) },
-+	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110_LX_BASE_T),
-+	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) },
-+	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110_OCP),
-+	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) },
-+	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110_LX_OCP),
-+	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) },
-+	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110_BASE_T_OCP),
-+	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) },
-+	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110_LX_BASE_T_OCP),
-+	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) },
-+	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000),
-+	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) },
-+	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000_LX),
-+	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) },
-+	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000_BASE_T),
-+	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) },
-+	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000_LX_BASE_T),
-+	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) },
-+	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000_OCP),
-+	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) },
-+	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000_LX_OCP),
-+	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) },
-+	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000_BASE_T_OCP),
-+	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) },
-+	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000_LX_BASE_T_OCP),
-+	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) },
-+	/* required as sentinel */
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(pci, nbl_id_table);
-+
-+static struct pci_driver nbl_driver = {
-+	.name = NBL_DRIVER_NAME,
-+	.id_table = nbl_id_table,
-+	.probe = nbl_probe,
-+	.remove = nbl_remove,
-+};
-+
-+module_pci_driver(nbl_driver);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("Nebula Matrix Network Driver");
-+MODULE_AUTHOR("Illusion Wang <illusion.wang@nebula-matrix.com>");
 -- 
 2.47.3
 
