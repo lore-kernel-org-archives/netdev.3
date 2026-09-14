@@ -1,130 +1,126 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150F3489878
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 15:15:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FF649E5F4;
+	Mon, 14 Sep 2026 15:21:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789398911; cv=none; b=oOSI+5r7FR5BnXD0P9JFZjYsEMYX3JUPsHriViQP9t31jbaxB6GixhjxnZY6X6hrCeNEKcWdPCCVKIXZVTz/l/nGLyv3rqG8rx6AzIZtBUo4H0beDgWmTYIhD+M/bqZ7OhmoJ4qWbZOtGCQ5xQoKg0l5Dt1LnX0VKTjrQeOfmZY=
+	t=1789399269; cv=none; b=kihvcIFKgmMVFxFz5pa4Z3AinaPEJFt3WPNtdVe5SmfD9ETMC9vRjAIx1K7LMAf+nSL0S+RQBvXzxcwSy7uAvnnwuRCCt3StGobZyvvxgN0YhwWXf1l4eOqY0FZ8NTNGh8oqoJCrUzZuRTqIjjm43A5JQpD6xAEPVJqGlgWuDro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789398911; c=relaxed/simple;
-	bh=hNd6bIyFAvlFxc6hjuFcDqVwVqg86Zvx1YHzqvt4tLo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cRIMdyytLpGaVv7am/N3S3IjnWMC4ZSNTntwncN1dVtxKtH8thqYJI9Z+vDLtzXVquIxFaFfU7UdAZTYS9bUd1OPkTo37hQ71Wj6RumQIJZR81rKzS+Sl77qtfhpajHEbSMGXOCMwfTelrJFeyMowLjjHFEbseMP5pKNBZ2Aylw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=b3Y2vwTh; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789399269; c=relaxed/simple;
+	bh=JDQnKeBhyelMOHap5q0SRgGeEMA2zjD6piPqsVucWnY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=oYbyObPytQtZGbOS6IGNRA3w7kOcnB11JwdA05C1LZCfKT5xjGzqL+ngXMUCeRpRBklihpphnkREPHhDTKCYgqW7WkJORLW1bSjCiWVw0C5d+SpBTECXKuKXNjzjWJOjaCYrB9jZZlz4DORZsCDWAFWCXQ+wOl9wyqe+H5tNxzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IlPgOMpa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="b3Y2vwTh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789398907;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HHCKmh+GTex17viqHU7+p3b1kZPrhM46bDIsKbGkEho=;
-	b=b3Y2vwThe0upFFpUJjaQjAoRQuVq3ud72GBBRUm/RCBiBrw7UR3Y7zI1iKnUR3I8+i+rFH
-	2/7Zkj2wIbX3sG++z6SJIDZHDbcYqys18eZZNMUe1N4nz8oR+ixOChIh+9vQvNzDbGOJDD
-	pGAxRdk5EUcGl/VVYJ0goKsc+JebDUo=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-219-FM2AOCG5NnyFscYW_fIqdw-1; Mon,
- 14 Sep 2026 11:15:00 -0400
-X-MC-Unique: FM2AOCG5NnyFscYW_fIqdw-1
-X-Mimecast-MFC-AGG-ID: FM2AOCG5NnyFscYW_fIqdw_1789398899
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A95BB189F3B1;
-	Mon, 14 Sep 2026 15:14:58 +0000 (UTC)
-Received: from warthog.com (unknown [10.44.32.54])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E826D3003EF9;
-	Mon, 14 Sep 2026 15:14:54 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: netdev@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Seungwon Bae <qotmddnjs@ajou.ac.kr>,
-	stable@vger.kernel.org
-Subject: [PATCH net v10 14/14] rxrpc: fix use-after-free in rxrpc_poke_conn()
-Date: Mon, 14 Sep 2026 16:13:38 +0100
-Message-ID: <20260914151340.3227501-15-dhowells@redhat.com>
-In-Reply-To: <20260914151340.3227501-1-dhowells@redhat.com>
-References: <20260914151340.3227501-1-dhowells@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IlPgOMpa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF851F000FF;
+	Mon, 14 Sep 2026 15:21:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789399266;
+	bh=mf+XES2ZUk7yeQaTog3nz8x6PuFt1EviOHy7iRinyEs=;
+	h=From:Subject:Date:To:Cc;
+	b=IlPgOMpai6S4JRH0s6RSmwPSYBGkT6FBrgzlNmWB3vPxVK2hfJmFrBpMRNnEJwQkl
+	 bh5hAsg82bqwe3rJ/ZDQp2Bb1X5QKO8kWZMfdYtQ1Oqv65p93n1XcvrURg9JyXA6Jt
+	 288ZQdGFNOnfEOJoHeXwh8UfG/faHJWh6i+BhJShlVyL4EPqcmCj5a3VmIHBR0PBpA
+	 MuLx76ibx9MXnrSZ+CPEw27oLLNfgHVNgGjED3OC5f+bNMkDtDfRk8UkZ5K37pHtvu
+	 xnTk9wc01S2TItv2J/csozpTL5NMSFIwWBK8uU8d4UNH0b7i+fkeKh/QDA+kiGCiCg
+	 D3uBVF8saOdxw==
+From: Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH v2 0/5] nfsd/sunrpc: allow userland to handle rpcbind
+ registration
+Date: Mon, 14 Sep 2026 11:20:37 -0400
+Message-Id: <20260914-nfsd-norpcb-v2-0-38263c6f59b2@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/1XMQQ7CIBCF4as0sxYDFIm66j1MFwWGlmigGQzRN
+ NxdbNy4/F/yvg0yUsAM124DwhJySLGFPHRglynOyIJrDZJLzS+8Z9Fnx2Ki1RomhXV28lJpY6A
+ 9VkIfXrt2G1svIT8TvXe8iO/6cwT/c4pgnBnlTuIsne6VHe5IER/HRDOMtdYPJqLbv6cAAAA=
+X-Change-ID: 20260903-nfsd-norpcb-21cdcaf246bb
+To: Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+ Chuck Lever <cel@kernel.org>, NeilBrown <neil@brown.name>, 
+ Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
+ Tom Talpey <tom@talpey.com>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Donald Hunter <donald.hunter@gmail.com>, Shuah Khan <shuah@kernel.org>
+Cc: linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ Jeff Layton <jlayton@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2406; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=JDQnKeBhyelMOHap5q0SRgGeEMA2zjD6piPqsVucWnY=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBqqBDbwrwKCmwNluYpKyelofIU6b0VSze5pATBz
+ 5HXg3Hj2zKJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaqgQ2wAKCRAADmhBGVaC
+ FSKQD/9LaHQSBmyve0uP3m9n7m9hebi0xu1/RXiYG9P5LHJTcZUQA3VZKdB3TOmPIR7kQzNBv68
+ wm6y5CtWCVDF+iLNUp88YTyXfdXBMXqcSBXW4CNT6NZAO4TrzADOYCRPgs14EVpL6AB8QUfGTXZ
+ iKQCJwoUDBxru0vacyBskYuLebL7H1Lrt11NCPn5zsfFW2n0mPEF/eB6r3/uSEADQxEety8F8wJ
+ 6cz35D3uqHHy8a3pyUqVtuSdybeIgwlVZz0z+Tyooh+eMtM4chLPaMI+osKgL5lZdTeKqBd2oNj
+ O+5V54KaJoat9uCkYFa78XmnC/IPngcEMJDu67RrBpgeVcoWPdTRATRNQHQw2O1h0+Un/l8QxxK
+ Tmh2mqCDyRj93B/tRJWOe/gQo0bBkmAWjJ7r9YWdvBvASzjK8dZB0E17tfw0RraGDN5vYLEi5Um
+ +YN+rOMMKQUDLDnrWjG7p6jxTwbiAQ347+KxUn5ica3RrJ1CPhMyS4wSt+jcr6CCMOTt/kob+m7
+ n7tfW0Y2F9Ft4kMBqJ6Dx2m8KVjS+Sp4jlFIpM2u3pgn+xRVAmJA7pK+E0O+NooxNbiXnIToO+r
+ MjYkueBHyaqa9UccOBbbhqbZw+ZXCCEqmEbCYjVa+is07pbb38ENCq8v9Oj47pHn/yvS/8XaFnf
+ Ge+TrbbuAFxGwiQ==
+X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
+ fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
 
-From: Seungwon Bae <qotmddnjs@ajou.ac.kr>
+While working on the recent hardening patches for the nfsd listener
+netlink interface, Chuck mentioned that we could allow userland to
+handle rpcbind registation itself.
 
-rxrpc_poke_conn() takes a reference on the connection with no liveness
-check, unlike its sibling rxrpc_queue_conn() which gates on
-atomic_read(&conn->active) >= 0.  The per-connection timer is armed with
-no reference held for it, and rxrpc_put_connection() cancels it with a
-non-synchronous timer_delete() only after the refcount reaches 0.
-refcount_t saturates rather than resurrecting, so the connection can be
-kfree()d while still linked in local->conn_attend_q (nothing in teardown
-unlinks attend_link).  The rxrpc I/O thread then performs a UAF write
-(list_del_init) plus UAF reads and indirect calls through conn->security.
+This adds such a mechanism to the netlink listener set interface. The
+main idea is to add a new optional flag to the netlink downcall that
+tells the kernel to skip rpcbind registration altogether for the nfsd
+listeners.
 
-Reproduced on a KASAN + PREEMPT kernel: 56 "refcount_t: addition on 0"
-saturations at load, escalating to
+Note that NLM registration is not affected and is still handled by the
+kernel.  Handling that is trickier since it can be started by the
+client.
 
-  BUG: KASAN: slab-use-after-free in rxrpc_io_thread   Write of size 8
+Patches to nfsdctl will follow.
 
-AF_RXRPC socket creation (rxrpc_create) has no capability check, so this
-is reachable by an unprivileged user.
-
-Guard rxrpc_poke_conn() with the same liveness/refcount check the sibling
-rxrpc_queue_conn() uses before taking the poke reference, so a connection
-past its last-active point is not poked/requeued after teardown began.
-
-Verified before/after on KASAN+PREEMPT at equal timer volume: 56
-saturations + 15 KASAN reports unpatched vs 0 and 0 patched.
-
-Fixes: f2cce89a074e ("rxrpc: Implement a mechanism to send an event notification to a connection")
-Signed-off-by: Seungwon Bae <qotmddnjs@ajou.ac.kr>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Eric Dumazet <edumazet@google.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@vger.kernel.org
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
 ---
- net/rxrpc/conn_object.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Changes in v2:
+- Refuse the legacy portlist add-fd write against a userspace-rpcbind
+  serv. nfsd_create_serv() cannot flip ownership back for an existing
+  serv, svc_addsock() expects svc_register() to register the listener,
+  and there is no way to tell the rpcbind owner about it.
+- selftests: require NFSv3 in the reply and skip where NFSv4 is not
+  built, rather than passing when neither is present.
+- selftests: cover the portlist refusal.
+- Link to v1: https://lore.kernel.org/r/20260910-nfsd-norpcb-v1-0-b4d5182d634c@kernel.org
 
-diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
-index 0ece717db0f8..1be50e0c9cee 100644
---- a/net/rxrpc/conn_object.c
-+++ b/net/rxrpc/conn_object.c
-@@ -34,7 +34,10 @@ void rxrpc_poke_conn(struct rxrpc_connection *conn, enum rxrpc_conn_trace why)
- 	spin_lock_irq(&local->lock);
- 	busy = !list_empty(&conn->attend_link);
- 	if (!busy) {
--		rxrpc_get_connection(conn, why);
-+		if (!rxrpc_get_connection_maybe(conn, why)) {
-+			spin_unlock_irq(&local->lock);
-+			return;
-+		}
- 		list_add_tail(&conn->attend_link, &local->conn_attend_q);
- 	}
- 	spin_unlock_irq(&local->lock);
+---
+Jeff Layton (5):
+      SUNRPC: allow a service to opt out of rpcbind registration
+      NFSD: add a userspace-rpcbind flag to listener_set
+      NFSD: honour the userspace-rpcbind flag in listener_set
+      NFSD: report registerable programs in the listener_set reply
+      selftests/nfsd: exercise the userspace-rpcbind listener_set flag
+
+ Documentation/netlink/specs/nfsd.yaml              |  55 +++-
+ fs/nfsd/netlink.c                                  |   5 +-
+ fs/nfsd/nfsctl.c                                   | 169 +++++++++-
+ fs/nfsd/nfsd.h                                     |   4 +-
+ fs/nfsd/nfssvc.c                                   |  67 ++--
+ include/linux/sunrpc/svc.h                         |   2 +
+ include/uapi/linux/nfsd_netlink.h                  |  20 ++
+ net/sunrpc/svc.c                                   |   5 +
+ net/sunrpc/svc_xprt.c                              |   2 +-
+ .../testing/selftests/nfsd/nfsd_netlink_listener.c | 361 ++++++++++++++++++++-
+ 10 files changed, 655 insertions(+), 35 deletions(-)
+---
+base-commit: 4d46e877c21d07ddcad03da7f3b05ad2cc22b5b3
+change-id: 20260903-nfsd-norpcb-21cdcaf246bb
+
+Best regards,
+-- 
+Jeff Layton <jlayton@kernel.org>
 
