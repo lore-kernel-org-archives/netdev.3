@@ -1,93 +1,39 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EAE52EEE9E
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 01:46:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCE02931E5
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 02:05:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789350373; cv=none; b=jg6n9LTNcFC45jA+G3Gvj3wkJFxF6WiEjSe4yXRlTm1l+DqOJjPNXIIUt6xhEP4rU29cICUFs6vYsbLtu321CMdZw6Ur1p7z1h9ETkjqJTlWLoEjFDmJNVPRrOXKWr2CEqy1rYBuGHYV5jDf4jCk7z1M0DDROHMhcSky03/L1TQ=
+	t=1789351539; cv=none; b=tXEgzw7joWIfssQv/4nJT38bevVipu4qNa8y7o75DTVcc5tgeqKNufuVJLDlVYHszemNwdKlOGq0fpqxBaO0o7KBkod7Z/jgstOSxgfc8mvCcFCsai7+M0t66s6q+e2IuHOkpQHv/lKMxxoCJx7wgQXd5lEuPJSXYpnfUPC30Fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789350373; c=relaxed/simple;
-	bh=EsT+PBPEd9+QfxQSnu5BDxW9hMrBz9PT5H0Z8BMmhSg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tvPcVu5FoZeVJZMR1jkAlqBDSbhmjrJx2jH0mAtNZC6YmNsdttQ2/Zp9GzzKJ/a4Dw3pQ38Or+WABn4VRGDOD9T/+7mPhEu9WUyjCGxzev/4MOnFGoc+M+I5lv15GAoAMdByhkAqIenzE7LBPXjPT6Ec+D+MQ/Uvx1+NQZ1uvms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MqUVBmRi; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789351539; c=relaxed/simple;
+	bh=/LE5jF2r02bpkxzVRGUTY3nAt8cKCTNvKjL8aboN3eQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rtlsZPRGSSWO5fKY1SI0GVnybDZ7JsSqYCyKXHuzUi/F4BPNCxcRUnrAjHIII6qGix+NnYFjdjW5QonTkj44FmNlYrXR5PvRmnaX52fMtF095mNEayW49im5TC3iuNQ7rpCpmp93xDIR4Aj9nJ7eOwLMv103cGnnGUYAs73tlt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=MBuS+yV5; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MqUVBmRi"
-Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d747ee1f38so17351545ad.2
-        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 18:46:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789350371; x=1789955171; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Iog9u3kWQAxr12SZF5gI4RQKtYZ4RbwMVa3tg5U3XlE=;
-        b=MqUVBmRiFM9k/unPPQzVguf558ycBf5ZPymyuKaJnnld2Utona4gE2v002YkkQmezF
-         A5zfpJo1jlC6FNbZ9q81AQ8oqvIpU1WZXZmIjFUKyFIV8kt+92Sb/sZSWnO4Cy9c2XY+
-         +vutF2+CaZTrr3lQnX5vbWQ1q0+qnyYH9w/AQWDouNe+qVkvyqf7VGA7mnHzhn7Zuqvl
-         rWslY0i3tICVFEoEaYHgj5KJxllUS7CkO8ZX9EOdy69PzHkT6EoAXCn8AxVru0hDGS5D
-         lI+2FvI2NTXONZh0x871VPid6d2tIPB/oIgmjMw2H5LiC4Z2DpKUkK8bc8VRWilfpLSf
-         q0iA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789350371; x=1789955171;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:sender:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Iog9u3kWQAxr12SZF5gI4RQKtYZ4RbwMVa3tg5U3XlE=;
-        b=gNNGDd0to/zHBlJsvYsSO+xg8gPpbwGa27TwYGMfJ9WtxtoP931gZB6C5RpwcRpKht
-         mj2FR8c0DPD2sfdQaoHfhXjfU9UruagSme6BLW+3j/JMbUy61iBy9HOt/UxyqUeAmYr5
-         HgFwxHtgeHzxfbz0BjABBj+V7F+41LC/tbYMHwADS5ml5v5N+6tQhOFwvDboZEGV/mQZ
-         9ZwwGkcQnvJOpy/CV/54P5u9bG29EkgVsqAtKoHjk1TEEWv8bKcQ/rXQyp5t08zpmMcA
-         ErmyNwN39cL9fq9Cs4Adpv9iXspRGoB0YMYrbaxPdRtX3BCCsKNf6LmoVC2W5DUrEt0Q
-         /vlA==
-X-Forwarded-Encrypted: i=1; AKwUvBy9qVb9XMA4yKRhkmp7xIaVzN5sfzQncgHsFtBfkkmQvtQEnEinnw6WRkJiXmdHlpVOtQAzUaU=@vger.kernel.org
-X-Gm-Message-State: AFuF++n57l2I4dwa99bgQfH4WoBPpJa+Pe1YoCZ6tDgk3p/Ot+agcVkF
-	gW8T4ycutXs/JaK/R9/QFOUhe+i6hhBItjOJinfCZfIH2HPjxie/kXy4
-X-Gm-Gg: AYBFou0GLS338sD0LS/ITPJZLaxTCn4iFS18yvXMCwzzeuuHd8+XqzxFHfg2kpj322E
-	H2Z00pDXTfDI/VC9jQ/hFrf3tPCCOTjUXPI1X2IdjhJ6h+pGgvzyHG+pOsUCZb97j0xfO3GO62v
-	dqDlMxQKKZSAqhuxtsN60+S017q1KHvtqtx3Hee6tyllSm0oo+NEbT8M4PfIzalQETtZ+arGK6t
-	qZc6cOneRDxkUcsrXzYkC6rLtpm9RWOQxGVqjFvRtdjsiug6uHyVg6U/eydXoMDiBo/vT5BQyMH
-	tlobFEiYsUBR76Ug3tRbSos5E6pliJUesCPzB4pMB7AZo4f4hM9AQPccCYXnakA6iQbMaXVWzp8
-	JilucMuR2sTwvvHmFH/wROxtr6xYtVdNKZtta+zDXVQhHFlXtWe4TLLS4+m5L5w7ddu8uowtW+l
-	b3jyVE883uBHM3sZczqqFDk6by1W8TO700opg8WzO49LS/UyYSDpFx4Gku/pcUvf55bXFzSMwwc
-	tfEpY2SGMFvIAx+SxkleaCvjQlhIGvQ3XD1MpUDvxgXzXg=
-X-Received: by 2002:a17:90b:440b:b0:39d:e784:3e1c with SMTP id 98e67ed59e1d1-39dec0f7193mr1056503a91.19.1789350370733;
-        Sun, 13 Sep 2026 18:46:10 -0700 (PDT)
-Received: from m-upc-A520M-HDV.lan ([2400:2410:3f60:500:fd07:4a24:951e:c85])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d951d1056sm17513403a91.7.2026.09.13.18.46.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 13 Sep 2026 18:46:10 -0700 (PDT)
-Sender: Yuyang Huang <uyoko90@gmail.com>
-From: Yuyang Huang <sigefriedhyy@gmail.com>
-To: Yuyang Huang <sigefriedhyy@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	Nikolaos Gkarlis <nickgarlis@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Shuah Khan <shuah@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Stanislav Fomichev <sdf.kernel@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next v5 4/4] selftests: net: test AF_PACKET multicast dumps
-Date: Mon, 14 Sep 2026 10:45:39 +0900
-Message-ID: <20260914014539.5015-5-sigefriedhyy@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260914014539.5015-1-sigefriedhyy@gmail.com>
-References: <20260914014539.5015-1-sigefriedhyy@gmail.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="MBuS+yV5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=gm
+	4UEbJL7c4FpXcZT/wxShBDR95QwMOXa24Ywqb42kI=; b=MBuS+yV57OMgyukbbj
+	7E9gREnVMH0BLp3xxJcD6pGvi6aV5xZyL3t1ROVrIMtK99Z0bI4jkBUrHRFy9+ab
+	CpHV4D2nPinXIERwpwfniOBpjHkN0x1kpWs8bJLvPdsjDIB49B/mpLvnODR9f+G1
+	ac2zNJxWnwl6SgxcF+RnyGU0E=
+Received: from LAPTOP-BJS5C4G0 (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDnP15jVqdqU0AHAg--.17708S2;
+	Mon, 14 Sep 2026 10:05:24 +0800 (CST)
+From: Heyang Tan <thy15333007817@163.com>
+To: netdev@vger.kernel.org
+Cc: sgoutham@marvell.com,
+	rkannoth@marvell.com,
+	gakula@marvell.com,
+	sbhatta@marvell.com
+Subject: [PATCH v4] octeontx2-af: use seq_file for rsrc_alloc debugfs
+Date: Mon, 14 Sep 2026 10:05:21 +0800
+Message-ID: <20260914020521.146-1-thy15333007817@163.com>
+X-Mailer: git-send-email 2.51.0.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -95,128 +41,182 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDnP15jVqdqU0AHAg--.17708S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWF47Jr43JF4fGw18GryUJrb_yoWrtF18pa
+	1Yyry0kr4qqF18J3WDKa1UJFWrWan0qFW0grWku348u3ZYkF4Sqr1ak3y29a1rK3yvyr9I
+	qa98trZ7C3WjyrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UQXoxUUUUU=
+X-CM-SenderInfo: 5wk1ikatttiiixyrlqqrwthudrp/xtbC-gcz3GqnVmdOdwAA3T
 
-Dump the link-layer multicast addresses of a dummy device and verify
-that ifa_index restricts the dump to that device, that the all-hosts
-address joined on link up is listed without IFA_F_GLOBAL, that an
-address added with SIOCADDMULTI is listed with IFA_F_GLOBAL and
-IFA_MC_USERS, and that IFA_TARGET_NETNSID dumps another netns. Skip
-when the kernel does not support AF_PACKET dumps.
+The rsrc_alloc debugfs reader writes rows directly to userspace without
+respecting the caller's read count. It also uses the current row length as
+the userspace stride, which can corrupt output when rows have different
+widths.
 
-Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
+Use seq_file to handle userspace buffer sizes, offsets, and partial reads,
+and write output columns directly to the seq_file buffer.
+
+Fixes: 23205e6d06d4 ("octeontx2-af: Dump current resource provisioning status")
+Assisted-by: LLM Codex
+Signed-off-by: Heyang Tan <thy15333007817@163.com>
 ---
- tools/testing/selftests/net/rtnetlink.py | 75 +++++++++++++++++++++++-
- 1 file changed, 72 insertions(+), 3 deletions(-)
+Changes in v4:
+- Repost the minimal v2 fix as requested.
+- Drop the additional formatter cleanup from v3.
 
-diff --git a/tools/testing/selftests/net/rtnetlink.py b/tools/testing/selftests/net/rtnetlink.py
-index 5cc3ebdcf08d..d69d375a2def 100755
---- a/tools/testing/selftests/net/rtnetlink.py
-+++ b/tools/testing/selftests/net/rtnetlink.py
-@@ -1,17 +1,21 @@
- #!/usr/bin/env python3
- # SPDX-License-Identifier: GPL-2.0
+Link: https://lore.kernel.org/netdev/20260906141129.1730-1-thy15333007817@163.com/
+---
+ .../marvell/octeontx2/af/rvu_debugfs.c        | 104 ++++++------------
+ 1 file changed, 33 insertions(+), 71 deletions(-)
+
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
+index 22ee99676879..fcbf4ba0e10a 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
+@@ -714,110 +714,72 @@ static int get_max_column_width(struct rvu *rvu)
+ }
  
-+import errno
- import socket
- import struct
- import time
- from lib.py import bkg, ip, ksft_exit, ksft_run, ksft_eq, ksft_ge, ksft_true, KsftSkipEx
--from lib.py import ksft_not_in, ksft_not_none
--from lib.py import CmdExitFailure, NetNS, NetNSEnter, RtnlAddrFamily, RtnlRouteFamily
-+from lib.py import ksft_in, ksft_not_in, ksft_not_none
-+from lib.py import CmdExitFailure, NetNS, NetNSEnter, NlError, RtnlAddrFamily, RtnlRouteFamily
- from lib.py import defer
+ /* Dumps current provisioning status of all RVU block LFs */
+-static ssize_t rvu_dbg_rsrc_attach_status(struct file *filp,
+-					  char __user *buffer,
+-					  size_t count, loff_t *ppos)
++static int rvu_dbg_rsrc_attach_status(struct seq_file *filp, void *unused)
+ {
+-	int index, off = 0, flag = 0, len = 0, i = 0;
+-	struct rvu *rvu = filp->private_data;
+-	int bytes_not_copied = 0;
++	int index, pf, vf, pcifunc;
++	struct rvu *rvu = filp->private;
+ 	struct rvu_block block;
+-	int pf, vf, pcifunc;
+-	int buf_size = 2048;
+ 	int lf_str_size;
+ 	char *lfs;
+-	char *buf;
+-
+-	/* don't allow partial reads */
+-	if (*ppos != 0)
+-		return 0;
+-
+-	buf = kzalloc(buf_size, GFP_KERNEL);
+-	if (!buf)
+-		return -ENOMEM;
  
- IPV4_ALL_HOSTS_MULTICAST = b'\xe0\x00\x00\x01'
- IPV4_TEST_MULTICAST = b'\xef\x01\x01\x01'
- IPV6_TEST_MULTICAST = bytes.fromhex('ff020000000000000000000000000123')
-+ETH_ALL_HOSTS_MULTICAST = bytes.fromhex('01005e000001')
-+ETH_TEST_MULTICAST_STR = '01:00:5e:01:01:01'
-+ETH_TEST_MULTICAST = bytes.fromhex(ETH_TEST_MULTICAST_STR.replace(':', ''))
+-	/* Get the maximum width of a column */
+ 	lf_str_size = get_max_column_width(rvu);
++	if (lf_str_size < 0)
++		return lf_str_size;
  
+ 	lfs = kzalloc(lf_str_size, GFP_KERNEL);
+-	if (!lfs) {
+-		kfree(buf);
++	if (!lfs)
+ 		return -ENOMEM;
+-	}
+-	off +=	scnprintf(&buf[off], buf_size - 1 - off, "%-*s", lf_str_size,
+-			  "pcifunc");
+-	for (index = 0; index < BLK_COUNT; index++)
+-		if (strlen(rvu->hw->block[index].name)) {
+-			off += scnprintf(&buf[off], buf_size - 1 - off,
+-					 "%-*s", lf_str_size,
+-					 rvu->hw->block[index].name);
+-		}
  
- def _users_for(rtnl: RtnlAddrFamily, family: int, grp: bytes, ifindex: int):
-@@ -105,6 +109,70 @@ def dump_mcaddr6_check() -> None:
-                 s2.close()
+-	off += scnprintf(&buf[off], buf_size - 1 - off, "\n");
+-	bytes_not_copied = copy_to_user(buffer + (i * off), buf, off);
+-	if (bytes_not_copied)
+-		goto out;
++	seq_printf(filp, "%-*s", lf_str_size, "pcifunc");
++	for (index = 0; index < BLK_COUNT; index++)
++		if (strlen(rvu->hw->block[index].name))
++			seq_printf(filp, "%-*s", lf_str_size,
++				   rvu->hw->block[index].name);
  
+-	i++;
+-	*ppos += off;
++	seq_putc(filp, '\n');
+ 	for (pf = 0; pf < rvu->hw->total_pfs; pf++) {
+ 		for (vf = 0; vf <= rvu->hw->total_vfs; vf++) {
+-			off = 0;
+-			flag = 0;
+ 			pcifunc = rvu_make_pcifunc(rvu->pdev, pf, vf);
+ 			if (!pcifunc)
+ 				continue;
  
-+def dump_mcaddr_l2_check() -> None:
-+    """
-+    Verify link-layer multicast addresses in an AF_PACKET RTM_GETMULTICAST
-+    dump: the ifa-index filter, mc-users, the global flag and
-+    target-netnsid.
-+    """
+-			if (vf) {
++			for (index = 0; index < BLK_COUNT; index++) {
++				block = rvu->hw->block[index];
++				if (!strlen(block.name))
++					continue;
++				lfs[0] = '\0';
++				get_lf_str_list(&block, pcifunc, lfs);
++				if (strlen(lfs))
++					break;
++			}
++			if (index == BLK_COUNT)
++				continue;
 +
-+    with NetNS() as ns, NetNSEnter(str(ns)):
-+        for ifname in ("dummy1", "dummy2"):
-+            ip(f"link add name {ifname} type dummy")
-+            ip(f"link set {ifname} up")
-+        dev_idx = socket.if_nametoindex("dummy1")
-+        ip(f"maddr add {ETH_TEST_MULTICAST_STR} dev dummy1")
-+
-+        rtnl = RtnlAddrFamily()
-+        defer(rtnl.close)
-+        try:
-+            addresses = rtnl.getmulticast(
-+                {"ifa-family": socket.AF_PACKET, "ifa-index": dev_idx},
-+                dump=True)
-+        except NlError as e:
-+            if e.error == errno.EOPNOTSUPP:
-+                raise KsftSkipEx(
-+                    "kernel does not support AF_PACKET multicast dump")
-+            raise
-+
-+        # dummy2 has entries as well, only dummy1 may be listed
-+        ksft_eq({addr['ifa-index'] for addr in addresses}, {dev_idx},
-+                "AF_PACKET multicast dump ignored ifa-index filter")
-+
-+        entries = {addr['multicast']: addr for addr in addresses}
-+
-+        # Bringing an Ethernet device up joins 224.0.0.1, which maps
-+        # to 01:00:5e:00:00:01 in the device multicast list.
-+        all_hosts = entries.get(ETH_ALL_HOSTS_MULTICAST)
-+        ksft_not_none(all_hosts,
-+                      "dummy1 does not have the all-hosts link-layer address")
-+        if all_hosts is not None:
-+            ksft_not_in('global', all_hosts['flags'],
-+                        "protocol entry is global")
-+
-+        static = entries.get(ETH_TEST_MULTICAST)
-+        ksft_not_none(static, "dummy1 does not have the SIOCADDMULTI address")
-+        if static is not None:
-+            ksft_eq(static['mc-users'], 1,
-+                    "unexpected mc-users for the SIOCADDMULTI address")
-+            ksft_in('global', static['flags'],
-+                    "SIOCADDMULTI entry is not global")
-+
-+        # target-netnsid dumps another netns, ifa-index is relative to it
-+        with NetNS() as peer:
-+            ip(f"netns set {peer} 5")
-+            ip("link add name dummy3 type dummy", ns=peer)
-+            ip("link set dummy3 up", ns=peer)
-+            peer_idx = ip("link show dummy3", json=True, ns=peer)[0]['ifindex']
-+
-+            addresses = rtnl.getmulticast(
-+                {"ifa-family": socket.AF_PACKET, "target-netnsid": 5,
-+                 "ifa-index": peer_idx}, dump=True)
-+            ksft_eq({(addr['ifa-index'], addr['target-netnsid'])
-+                     for addr in addresses}, {(peer_idx, 5)},
-+                    "target-netnsid did not dump the peer netns")
-+
-+
- def ipv4_devconf_notify() -> None:
-     """
-     Configure an interface and set ipv4-devconf values through netlink
-@@ -315,7 +383,8 @@ def ipv6_route_del_reason_absent() -> None:
++			if (vf)
+ 				sprintf(lfs, "PF%d:VF%d", pf, vf - 1);
+-				off = scnprintf(&buf[off],
+-						buf_size - 1 - off,
+-						"%-*s", lf_str_size, lfs);
+-			} else {
++			else
+ 				sprintf(lfs, "PF%d", pf);
+-				off = scnprintf(&buf[off],
+-						buf_size - 1 - off,
+-						"%-*s", lf_str_size, lfs);
+-			}
++			seq_printf(filp, "%-*s", lf_str_size, lfs);
  
+ 			for (index = 0; index < BLK_COUNT; index++) {
+ 				block = rvu->hw->block[index];
+ 				if (!strlen(block.name))
+ 					continue;
+-				len = 0;
+-				lfs[len] = '\0';
+-				get_lf_str_list(&block, pcifunc, lfs);
+-				if (strlen(lfs))
+-					flag = 1;
  
- def main() -> None:
--    ksft_run([dump_mcaddr_check, dump_mcaddr6_check, ipv4_devconf_notify,
-+    ksft_run([dump_mcaddr_check, dump_mcaddr6_check, dump_mcaddr_l2_check,
-+              ipv4_devconf_notify,
-               ipv6_route_del_reason_expired,
-               ipv6_route_del_reason_ra_withdrawn,
-               ipv6_route_del_reason_absent])
+-				off += scnprintf(&buf[off], buf_size - 1 - off,
+-						 "%-*s", lf_str_size, lfs);
+-			}
+-			if (flag) {
+-				off +=	scnprintf(&buf[off],
+-						  buf_size - 1 - off, "\n");
+-				bytes_not_copied = copy_to_user(buffer +
+-								(i * off),
+-								buf, off);
+-				if (bytes_not_copied)
+-					goto out;
+-
+-				i++;
+-				*ppos += off;
++				lfs[0] = '\0';
++				get_lf_str_list(&block, pcifunc, lfs);
++				seq_printf(filp, "%-*s", lf_str_size, lfs);
+ 			}
++			seq_putc(filp, '\n');
+ 		}
+ 	}
+ 
+-out:
+ 	kfree(lfs);
+-	kfree(buf);
+-	if (bytes_not_copied)
+-		return -EFAULT;
+ 
+-	return *ppos;
++	return 0;
+ }
+ 
+-RVU_DEBUG_FOPS(rsrc_status, rsrc_attach_status, NULL);
++RVU_DEBUG_SEQ_FOPS(rsrc_status, rsrc_attach_status, NULL);
+ 
+ static int rvu_dbg_rvu_pf_cgx_map_display(struct seq_file *filp, void *unused)
+ {
 -- 
-2.43.0
+2.34.1
 
