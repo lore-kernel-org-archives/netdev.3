@@ -1,210 +1,316 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52DB937A848;
-	Mon, 14 Sep 2026 18:35:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789410904; cv=none; b=YBvkjuu2V74FE5E5tGGIJFFa+o9e53jQ6lseCKm3KayZJodCc/NhvLRlbebxdveY9C+LFkuVXo7x4+5UdHJPM8IXOjNIp4j2IeeiNN7DfhXKxZp2jxPmvQCJEDC5dyNjNAjjVOYq1XsHQeLQjp+NrJaCkCAgMhhC+K+J+C6R4xg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789410904; c=relaxed/simple;
-	bh=2DWjr6tfneSycRcLITs7xeFzwLWXpQLQrPpHQRvNPXs=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QQdejJNJ0z0z7R6U4zCiVby10y4Jd4ayaWIS9pVnOuy6MP8E5Wv9jrtuyADRuZt3Zr0LsrTYBe7PW0HoM3g8beRpyB9QlT32ZTxw/KCF+kJkh2eHkasp6Z2ILpHEEjavr0GWs7BZn6AVQ/BIYnff75EPfUCJhwcxBw5xPq5kcSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BtcCjaBh; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35C025B2F4
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 18:45:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789411533; cv=pass; b=fDFPEs/tNvJcP+0E1Ok3FqDPTF93PzJG02BGNNLKjjVSfiYzneAdM++mSIoVNVJsrS3+WdI4YNKQ+PN7j3Pc2koDyex6fk06RJA8edvTKiR0y/cBOU37hjBFGCLiloW7/Eq1/8cQ5QJGcsWFQgOH7jINgvZYHrdIuCkQT4Kfbjs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789411533; c=relaxed/simple;
+	bh=SOaoH7wdfHga3kmm2KklRs8RybjgZlJTIv6zPmNSO9k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EoWTBOQpXCPtrRQ0gjEMMYTduJGGJh9F9tunvznNPCny7opi/XYeu8uVxJpN1iesSZ6/D+sOYZjl/5NuYh9tEYKOh9/3Z8LCyb5E1GKahWGHh8yTlAOAps+N4Og5m43ADZ7//oDJnxQ6LQSzoXUDCkdd9Km0O3lVX0Fnn9oKDcg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jdvwhteg; arc=pass smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BtcCjaBh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7C321F00893;
-	Mon, 14 Sep 2026 18:34:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789410899;
-	bh=wJxDxY9HWSSHy0WuS/Cypa1Lkj/6kf8RiQsbB8ldFW0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=BtcCjaBhvvNpCho11De7PyZK3RQgVjpHqyCqB8JQfhTlSlUWgDvQ76F9hU+PtOg+4
-	 fZMeF77wz4E6oXlhbDrsdUBJghxPpL4v42Tjes6Ds1F9HQBiVq6c1liGBh/zkoa7Tp
-	 3NqWiMnHvtupX1If/TK06C4IsEqrTK/WGUp9hqZOty9WUUwBuYrMGJERLNw07mtKYu
-	 Hno4pnhfnIRnjX/DhjaoJeeXe9Igp5zMHhiZIKhqhwad4IR4dVWio4FpfvyvZWMWTP
-	 yM7HxbKwJZGN4kSvFonsdkjsmI0bvW+iDlDtb6KPI0RSAU5cMePWjznwOL3ZI0a5f9
-	 ogBieMvA3Vtmg==
-Subject: Re: [PATCH net-next v15 6/6] net: dsa: mxl862xx: document devlink
- flash and info support
-From: netdev-bot+sashiko@kernel.org
-To: daniel@makrotopia.org
-Cc: jiri@resnulli.us, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
- skhan@linuxfoundation.org, rdunlap@infradead.org, gregkh@linuxfoundation.org,
- rafael@kernel.org, dakr@kernel.org, andrew@lunn.ch, olteanv@gmail.com,
- netdev@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, driver-core@lists.linux.dev
-Date: Mon, 14 Sep 2026 18:34:58 +0000
-Message-ID: <178941089843.22033.11660782467868066665@kernel.org>
-In-Reply-To: =?utf-8?q?=3Cc0d50bd459b97f4f5efd8a4fc09ab4f9ee4d605a=2E1789175?=
- =?utf-8?q?618=2Egit=2Edaniel=40makrotopia=2Eorg=3E?=
-References: =?utf-8?q?=3Cc0d50bd459b97f4f5efd8a4fc09ab4f9ee4d605a=2E17891756?=
- =?utf-8?q?18=2Egit=2Edaniel=40makrotopia=2Eorg=3E?=
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jdvwhteg"
+Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469e25400so1884903b3a.0
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 11:45:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789411527; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fxRTMXLGim+emgSU9meQxHE/JX5+jn5ehZ0YI9fWqs+SkAVoMvm8TBQ72EdoRCWVS1
+         3q57NHTyzQy93nU7rdTQajIhev8o5XUCwjQwJVxQX6CfbvEz7i+FbcvpbqufIbPv+9fP
+         kHA0Q5388iQrnWnJhei1gTxdksFASRy0VUaSQFLcpbNmfQGaUoob/EnhMtPtt7VXYXI2
+         6V9dR88+oLo57sRQ8vpuczMfDsBI6grxTqgQTEgqXVAOZEwKvm3CYOT5ug+OlweTFZGJ
+         4W4P+6go6k5JUMRgOOeURsrqivbpfop/ZOZBtcxrotz7XQY02Tq6XH6n8xeWw3TGo+eE
+         yybQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=32SMw+83rZgkWkErpxP8QdaEA2gM9ZInRO85Uqktxr0=;
+        fh=43KkE9mRZRBpQGYnP/NX7/2x7wYSJcwqpAc4FKUW29M=;
+        b=fCSl1m+LpCmeSqDYSZr76HOfYP0fE4sNkuCKkSRAKwbSRo/l21DyICzMBHA9Xp6nS/
+         ITd96kYHhrc+hhb/vsqjMAy6BZn1Ex9MLnaQv0xlN9YL2Th1Wa6Xecl7SFAMgaQPb0Tz
+         /rUoTB3bmcOQzhDPFpT10gYGDqXCEInmuEqLTm9MXEeG+i8buAxa685vZikLb1HExwfC
+         XdEIkETAbfCLJUJCB/71g72xVB7Cit0qhc5RlSv5MvNm6JqD9dJRAwVcE12vD7kGhq3K
+         /TWQ/fuprrN7/2voejnXmyuPhHRu9Aswpsy5iqIuIBhOmhWVsy9+aVnX9OLw7mECCSwr
+         e/Aw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789411527; x=1790016327; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=32SMw+83rZgkWkErpxP8QdaEA2gM9ZInRO85Uqktxr0=;
+        b=jdvwhtegZ5I4p5oGF4Ft2oW35QwTm8tX32nCVfwAYbEWv4rokCAgBFFrYfF0XlTPts
+         JFmSHlRdF+fpSo4Fwql8nLmUKCTdLgbZeUPzVoIARHYcX0qGjLyCVRHOz2giUfYTF2dP
+         AUiKUIQRhQoDFYM+IJ0uwTPMFuZ6NzudrHViurVAkLH5ksBkW5J766bO9ZzKc/15uf5t
+         0sXi9h/lGcgZMHXdlBRz4a6dtAHP2vlIr/FPeMS5VtePMbG128UJxy59XWJv12SP2BV4
+         ig7tbstObEzrDMapVmNJKhaRRJ4/rPSa5KXHhNdpMA1eq7Y1yK47PhF2ABuFgW8Ec9JM
+         SyGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789411527; x=1790016327;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=32SMw+83rZgkWkErpxP8QdaEA2gM9ZInRO85Uqktxr0=;
+        b=DIQtPsgvfcoQ6oP0qHTaREytT/w282DVnfYvSj6lleRqJU0nxA4XUsdHoXZhPFVJ2y
+         bJHX9rHfElOVr5nuypiWRZokk9Cg9L8UyvQJ7+Cve+uHdXrurmtOHGFp1kh9D7fS0wOF
+         I+V3zuf3TGCMwOdPx3d6nlMooAP9Fqh5W2VV6LPv5N7VCepWrsiIOY4pDfVCBl4XC2DY
+         RRav35eZ3TAYxTZLGk3bEPaYMAfjLg5A8/7a3xJHZtuJ467gfn9lbVGX40AlBiHSUPGA
+         ueox2E9X97ru5iTwF/0buhzvl5ese3dPOSoGETo58skh5IH9G05Dv1ykv6Q99dYu2D5f
+         vSJQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxng0HCq8+i+H8cPju1nLcTZeF+KAUT08ww8WlI8iHd81dibtdkMFR9OpCdvX4Vh+ICE0qHr6g=@vger.kernel.org
+X-Gm-Message-State: AFuF++lJFUcFC5L5f55F1erUywzQ/bmNjLvhkulI+ygxyKqn0P2ZfTwi
+	1PpI/EWudci1sbWe2KBixE41nj054fHLR7gOk/l/hoQwIF7CfhCtT+S2dRpSIn4+7xF+1DQvc+s
+	d9Ywe8vxngXKOs57Lv6LJW3tz61e4YAw=
+X-Gm-Gg: AYBFou3q6bMVa7YWlDJ+rk15S5c3QeWjxLkgDU+h2ktAEOMe9AQURQdyP/vxTdZX7dj
+	141ZMx10fH7JQGo6z6/Necnx0c23Ionl6mOGTQH/+UJ6veP/1xi66cnk+3mjLHXp5+q3l+14AM+
+	SI9DVDTQZoO2+jeKjO0TClZADMDvQwYjiInftWR701KO1kYvD/isG3uf0EHJL9z3R/5mVQUkpBy
+	xw8GGpoA2oYcNOHIsou/Qj3r2nf/NCqIZzmtCIXSEFAcsYljbJaoX/iP1hvqDoT6BxjF1Kx82UW
+	Je0Kt1pIehU7hBg7ZjmY1jolTdKJgJlKkdDYjqQBNntV/lySyGsCiiOM5LaEDaHygUt2jnIZfrD
+	8c4mYWwLcR/+niuVl3Ycq0GrvectkKjn4WT6gWBAKiS7tBfPsCtSo/A==
+X-Received: by 2002:a05:6a00:368b:b0:84e:e741:174f with SMTP id
+ d2e1a72fcca58-86f83e3afdbmr8307833b3a.7.1789411527238; Mon, 14 Sep 2026
+ 11:45:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260913113522.2674588-1-hdthky0@gmail.com> <178938799829.22033.13386158820091728844@kernel.org>
+In-Reply-To: <178938799829.22033.13386158820091728844@kernel.org>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Mon, 14 Sep 2026 14:45:15 -0400
+X-Gm-Features: AcwNN1UoClxoGetwJ1AafGRvEazsIKxBVsqIWr5gxkX6ipl4l4fqy9ZTB8Hq45A
+Message-ID: <CADvbK_f_im2JK5__BU+QHS1gyQ51QVRAD=8ov4rjVQmS1oNn5Q@mail.gmail.com>
+Subject: Re: [PATCH] sctp: reject forged cookie peer_addr with unknown address family
+To: netdev-bot+sashiko@kernel.org
+Cc: hdthky0@gmail.com, marcelo.leitner@gmail.com, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	linux-sctp@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider:
+On Mon, Sep 14, 2026 at 8:13=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
+te:
+>
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider:
+>
+> Critical: 0 =C2=B7 High: 1 (1) =C2=B7 Medium: 0 =C2=B7 Low: 0
+>
+> - [High] Incomplete fix: sctp_unpack_cookie()
+>   (net/sctp/sm_make_chunk.c:1858-1860) only checks that the forged=E2=80=
+=A6
+>
+> Pre-existing issues:
+> - [High] This problem wasn't introduced by this patch, but the patch
+>   establishes the NULL-check contract for sctp_get_af_specific() at one=
+=E2=80=A6
+>
+> --
+>
+> sctp: reject forged cookie peer_addr with unknown address family
+>
+> This adds a family whitelist for the COOKIE-ECHO cookie peer_addr in
+> sctp_unpack_cookie(), and makes sctp_transport_new() bail out when
+> sctp_get_af_specific() has no implementation for the requested family.
+> Both changes target the null dereference seen from sctp_transport_init().
+>
+> > diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+> > index 84a4c97d0f755..7c8fe4b38cd1c 100644
+> > --- a/net/sctp/sm_make_chunk.c
+> > +++ b/net/sctp/sm_make_chunk.c
+> > @@ -1855,6 +1855,10 @@ struct sctp_association *sctp_unpack_cookie(
+> >       if (!sctp_auth_verify_cookie_params(ep, bear_cookie))
+> >               goto malformed;
+> >
+> > +     if (bear_cookie->peer_addr.sa.sa_family !=3D AF_INET &&
+> > +         bear_cookie->peer_addr.sa.sa_family !=3D AF_INET6)
+> > +             goto malformed;
+> > +
+>
+> [Severity: High]
+> Does this check still leave the mismatched-family case open?  It only ask=
+s
+> whether sa_family is one of AF_INET or AF_INET6, it never relates that fa=
+mily
+> to the family of the endpoint that received the packet.
+>
+> On a PF_INET listener with cookie authentication disabled the cookie cont=
+ents
+> are attacker supplied, so sa_family can be AF_INET6.  The new guard in
+> sctp_transport_new() passes as well, since sctp_get_af_specific(AF_INET6)=
+ is
+> non-NULL on CONFIG_IPV6 kernels, and the transport ends up with
+> af_specific =3D sctp_af_inet6.
+>
+> sctp_assoc_add_peer() then routes that transport using the IPv4 socket:
+>
+> net/sctp/associola.c:sctp_assoc_add_peer() {
+>         sp =3D sctp_sk(asoc->base.sk);
+>         ...
+>         /* Initialize the pmtu of the transport. */
+>         sctp_transport_route(peer, NULL, sp);
+> }
+>
+> sctp_transport_route() calls af->get_dst(), which is sctp_v6_get_dst() he=
+re:
+>
+> net/sctp/ipv6.c:sctp_v6_get_dst() {
+>         struct ipv6_pinfo *np =3D inet6_sk(sk);
+>         ...
+>         final_p =3D fl6_update_dst(fl6, rcu_dereference(np->opt), &final)=
+;
+> }
+>
+> inet6_sk() returns inet_sk(sk)->pinet6, which is only populated by
+> inet6_create(), so np is NULL for an AF_INET socket and np->opt is
+> dereferenced with no guard.
+>
+> Isn't that the same remotely triggered null dereference in softirq contex=
+t
+> that this patch is meant to close, only at a different offset?
+>
+> For comparison, sctp_process_param() already refuses IPv6 addresses on
+> sockets that are not PF_INET6:
+>
+>         case SCTP_PARAM_IPV6_ADDRESS:
+>                 if (PF_INET6 !=3D asoc->base.sk->sk_family)
+>                         break;
+>
+> Would it make more sense to validate the cookie family against the receiv=
+ing
+> socket family, or against SCTP_INPUT_CB(skb)->af->sa_family, rather than
+> accepting AF_INET6 unconditionally?
+>
+I think you can try fixing it with af->addr_valid() in
+sctp_unpack_cookie(), like:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+        paddr =3D &bear_cookie->peer_addr;
+        af =3D sctp_get_af_specific(paddr->sa.sa_family);
+        if (!af || !af->addr_valid(paddr, sctp_sk(ep->base.sk), NULL))
+                goto malformed;
 
-- [Medium] Documentation vs implementation mismatch on the `fw` info
-  version.
-- [Low] The Flash update section says "All ports of the switch are closed
-  for the duration of the update and the driver reprobes the switch…
-- [Low] Every `rescue_failed` cause is reported by
-  mxl862xx_devlink_flash_update() (mxl862xx-fw.c:998-1001) with the…
+You may also need to add an inet.sk.sk_family check in
+sctp_v6_addr_valid():
 
---
+diff --git a/net/sctp/ipv6.c b/net/sctp/ipv6.c
+index ef26878f1282..12e429b3e2d1 100644
+--- a/net/sctp/ipv6.c
++++ b/net/sctp/ipv6.c
+@@ -734,6 +734,9 @@ static int sctp_v6_addr_valid(union sctp_addr *addr,
+ {
+        int ret =3D ipv6_addr_type(&addr->v6.sin6_addr);
 
-net: dsa: mxl862xx: document devlink flash and info support
++       if (sp && sp->inet.sk.sk_family !=3D PF_INET6)
++               return 0;
++
 
-This adds Documentation/networking/devlink/mxl862xx.rst describing the
-devlink info versions and the flash update behaviour of the mxl862xx
-driver, links it from the devlink index and adds the file to the driver's
-MAINTAINERS entry.
+> >       /* Populate the association from the cookie.  */
+> >       memcpy(&retval->c, bear_cookie, sizeof(*bear_cookie));
+> >
+> > diff --git a/net/sctp/transport.c b/net/sctp/transport.c
+> > index 6ea55b9fbde45..cd1a604d6f8e3 100644
+> > --- a/net/sctp/transport.c
+> > +++ b/net/sctp/transport.c
+> > @@ -92,6 +92,9 @@ struct sctp_transport *sctp_transport_new(struct net =
+*net,
+> >  {
+> >       struct sctp_transport *transport;
+> >
+> > +     if (!sctp_get_af_specific(addr->sa.sa_family))
+> > +             return NULL;
+> > +
+>
+> [Severity: High]
+> This isn't a bug introduced by this patch, but the same
+> sctp_get_af_specific() result is used unchecked a little further along th=
+e
+> same COOKIE-ECHO path, in sctp_process_init():
+>
+> net/sctp/sm_make_chunk.c:sctp_process_init() {
+>         sctp_walk_params(param, peer_init) {
+>                 if (!src_match &&
+>                     (param.p->type =3D=3D SCTP_PARAM_IPV4_ADDRESS ||
+>                      param.p->type =3D=3D SCTP_PARAM_IPV6_ADDRESS)) {
+>                         af =3D sctp_get_af_specific(param_type2af(param.p=
+->type));
+>                         if (!af->from_addr_param(&addr, param.addr,
+>                                                  chunk->sctp_hdr->source,=
+ 0))
+>                                 continue;
+>         ...
+> }
 
-A few questions below about places where the new document and the driver
-code seem to describe different behaviour.
+This looks like a legit one. Please add !af to this check in
+sctp_process_init().
 
-> diff --git a/Documentation/networking/devlink/mxl862xx.rst b/Documentation/networking/devlink/mxl862xx.rst
-> new file mode 100644
-> index 0000000000000..7cbd538a5f3db
-> --- /dev/null
-> +++ b/Documentation/networking/devlink/mxl862xx.rst
-> @@ -0,0 +1,81 @@
+Also, in sctp_process_param(), af->addr_valid() is needed, since we only
+want unicast addresses to be added. As addr_valid() now checks sk_family
+and ipv6_only_sock, we can simplify it to:
 
-[ ... ]
+        switch (param.p->type) {
+        case SCTP_PARAM_IPV6_ADDRESS:
+        case SCTP_PARAM_IPV4_ADDRESS:
+                af =3D sctp_get_af_specific(param_type2af(param.p->type));
+                if (!af->from_addr_param(&addr, param.addr,
+htons(asoc->peer.port), 0))
+                        break;
+                if (!af->addr_valid(&addr, sctp_sk(ep->base.sk), NULL))
+                        break;
 
-> +   * - ``fw``
-> +     - running, stored
-> +     - 1.0.70
-> +     - Version of the firmware running on the switch, reported as both
-> +       running and stored since the switch boots it from its own flash.
-> +       It is omitted while no firmware version is known: after a failed
-> +       flash, and in MCUboot rescue mode while an interrupted download
-> +       is still being recovered in the background. Once the loader is
-> +       ready to accept a new image the version appears as "0.0.0",
-> +       which no released firmware reports, so version-comparing tools
-> +       offer any available release as an upgrade. Use ``devlink dev
-> +       flash`` to tell a recovering switch from a ready one, see below;
-> +       a missing version on its own does not say why.
+Thanks.
 
-[Severity: Medium]
-Does the "omitted ... after a failed flash" wording hold for a flash that
-was started from rescue mode?
-
-mxl862xx_devlink_info_get() returns early on the rescue path and publishes
-the cached version without the all-zero test that guards the normal path:
-
-	if (READ_ONCE(priv->rescue_mode)) {
-		if (!READ_ONCE(priv->rescue_ready))
-			return 0;
-
-		snprintf(buf, sizeof(buf), "%u.%u.%u",
-			 priv->fw_version.major, priv->fw_version.minor,
-			 priv->fw_version.revision);
-		ret = devlink_info_version_running_put(req,
-				DEVLINK_INFO_VERSION_GENERIC_FW, buf);
-
-On failure mxl862xx_devlink_flash_update() zeroes the cache but only the
-success path clears rescue_mode:
-
-	if (ret) {
-		memset(&priv->fw_version, 0, sizeof(priv->fw_version));
-		priv->asic_id = 0;
-		priv->asic_rev = 0;
-	}
-
-so rescue_mode and rescue_ready both stay set and devlink dev info keeps
-reporting fw running/stored "0.0.0" - which this document defines as "the
-loader is ready to accept a new image" - while the loader was actually
-left mid transfer by the no_end path and devlink dev flash answers -EBUSY
-("device is reinitializing, retry later") because skip_teardown is set.
-
-Normally this window lasts until the deferred reprobe fires, but if
-device_schedule_reprobe() fails with -ENOMEM nothing else re-classifies
-the switch, so it persists. Should either the rescue branch also suppress
-an all-zero version, or the document describe this case?
-
-> +
-> +Flash update
-> +============
-> +
-> +The ``mxl862xx`` driver implements support for ``devlink dev flash``.
-> +The signed firmware image is transferred to the switch over the same
-> +MDIO bus which is also used to manage the switch, then verified and
-> +installed by the MCUboot bootloader running on the switch. All ports
-> +of the switch are closed for the duration of the update and the driver
-> +reprobes the switch after it has rebooted into the new firmware. A
-> +complete flash and reprobe cycle takes about one minute.
-
-[Severity: Low]
-This isn't a bug, but "closed for the duration of the update" reads as if
-the pre-flash administrative state comes back once the cycle completes.
-
-mxl862xx_devlink_flash_update() closes and detaches the user ports and
-closes the conduit:
-
-	dsa_switch_for_each_user_port(dp, ds) {
-		if (dp->user) {
-			dev_close(dp->user);
-			netif_device_detach(dp->user);
-		}
-	}
-	dsa_switch_for_each_cpu_port(dp, ds)
-		dev_close(dp->conduit);
-
-and the rest of the function never records the previous state nor reopens
-anything before scheduling the reprobe, so the interfaces come back
-registered but down and userspace has to bring them up again. The commit
-message of "net: dsa: mxl862xx: add devlink flash_update and info_get"
-does say this ("The closed user ports and conduit are not returned to
-their pre-flash administrative state across the reprobe; userspace brings
-them back up"). Could that sentence be mentioned here as well?
-
-[ ... ]
-
-> +If the driver gives up on the recovery, ``devlink dev flash`` returns
-> +``-EIO`` and says so in its extack message. The switch then needs a
-> +power cycle, a driver rebind, or both: the driver only re-examines the
-> +switch when it binds, so on a board where the switch can be power
-> +cycled on its own, unbind and rebind the driver afterwards to have the
-> +recovered switch recognised.
-
-[Severity: Low]
-This paragraph and the extack text in the driver seem to disagree about
-the remedy.
-
-mxl862xx_devlink_flash_update() always advises a power cycle:
-
-	if (READ_ONCE(priv->rescue_failed)) {
-		NL_SET_ERR_MSG_MOD(extack,
-				   "download recovery failed, power cycle the switch");
-		return -EIO;
-	}
-
-but mxl862xx_rescue_heal_work_fn() sets rescue_failed for two different
-situations. One is a drain error, where a power cycle is the right advice.
-The other is a successful drain whose hand-off failed:
-
-	if (device_schedule_reprobe(dev, MXL862XX_FW_REPROBE_DELAY_MS))
-		WRITE_ONCE(priv->rescue_failed, true);
-
-In that second case the loader is already sitting at a clean READY and
-only the driver needs to re-examine it, yet flashing stays refused with
--EIO for the lifetime of the binding and a power cycle alone does not
-clear the flag. Would it make sense for the extack to mention the rebind
-too, so it matches what this document says?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1789175618.git.daniel%40makrotopia.org
+>
+> The five other sctp_get_af_specific() callers in sm_make_chunk.c,
+> bind_addr.c and input.c all test the result for NULL first.
+>
+> On a CONFIG_IPV6=3Dn build sctp_get_af_specific(AF_INET6) is permanently =
+NULL,
+> and sctp_verify_param() accepts SCTP_PARAM_IPV6_ADDRESS with a bare break=
+, so
+> an attacker supplied IPv6 address parameter reaches af->from_addr_param w=
+ith
+> af =3D=3D NULL.
+>
+> That block only runs when src_match is 0, and sctp_sf_do_5_1D_ce() is the=
+ one
+> sctp_process_init() caller that does not pass sctp_source(chunk) as peer_=
+addr:
+>
+> net/sctp/sm_statefuns.c:sctp_sf_do_5_1D_ce() {
+>         if (!sctp_process_init(new_asoc, chunk,
+>                                &chunk->subh.cookie_hdr->c.peer_addr,
+>                                peer_init, GFP_ATOMIC))
+>         ...
+> }
+>
+> So src_match stays 0 whenever the COOKIE-ECHO source address differs from=
+ the
+> cookie peer_addr, which is attacker chosen with cookie authentication
+> disabled, and also reachable with cookie authentication enabled by replay=
+ing a
+> legitimately obtained cookie from another source address while keeping th=
+e
+> same source port.
+>
+> Since this is the same failure mode the patch hardens in sctp_transport_n=
+ew(),
+> would it be worth adding the missing !af check in sctp_process_init() in =
+the
+> same series?
+>
+> >       transport =3D kzalloc_obj(*transport, gfp);
+> >       if (!transport)
+> >               return NULL;
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/20260913113522.2674588-1-hdthky0%40gmail.com
