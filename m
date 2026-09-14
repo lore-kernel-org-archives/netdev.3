@@ -1,38 +1,81 @@
-Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lr2-f10.google.com (mail-lr2-f10.google.com [74.125.230.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337FB368D66;
-	Mon, 14 Sep 2026 07:56:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E6D3E8685
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 07:56:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789372585; cv=none; b=njyP4W3EykttAdGkFyd1h36Hq7Mnb8iGFxmeUvU55Qjvbz9ACVKyajREMnCLeNJJENIb0Hk6W0coJ3vISOsvSnKgxiE7DkzAaJzF5cQL7nF+0lhwQmJ58jeq3117DIlP2xWlt5VII4ydvoR/H/AsGnLBVA6cOnKOgjCodDM/+Rs=
+	t=1789372601; cv=none; b=oRis5+8shfvj/xOsw9IglxoVgocXS0ZtpFkaG7u2aWFlpuNfwFAkz1DITtBLHAUm4znquKZ/O79XiEggi/IjGqFSGVbunjgeDlpk0We1HmzINySxebFyaHChWE/SC4Ppwm6UVz6ZC2lMNHg4Bsir+gweOBArO0nI4LmXHoHjpHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789372585; c=relaxed/simple;
-	bh=m6KeYkp/2qyk9kllJdtAY8e4X2o8u/ogoxZk79ngweY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Isj711f6weXr+j0ZDVC6XvQDH+LqUA/l1S//2rSWn8Tfg9a4PqMTGWs2fZQWiUhl4B2z78i1nwaGXnduBNKMplPk0is2qLpOcKGZkNKUwb2rgH00O0JDleLSLdU6NQBca9xLAUsfwKw77300fb2HkJGe4Xax7S0MdV1aOXskPBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=FFC9RJne; arc=none smtp.client-ip=101.71.155.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1789372601; c=relaxed/simple;
+	bh=YA/Zt5Rp3A+cv1udmI30pynM10rZrp/ZOB5JXnp18OI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SSNUQqd4adx4dYes4sTdLd7EAs7gYWubw7DRcsoHFxQPGLHzYS2xA2tNBpGgDib2X+vfhFCfG4MVetvv6TZyxEiM45i32CiDH4JDiXQgt2NVx7Uu75PtKn07B2rduhCGDnoZX2GIubrNT70lvsmhtGpTdMXxQcXXSpF24msvQGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=tNLIjZOA; arc=none smtp.client-ip=74.125.230.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="FFC9RJne"
-Received: from PC-202605011814.localdomain (unknown [223.112.146.162])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 4da815583;
-	Mon, 14 Sep 2026 15:56:10 +0800 (GMT+08:00)
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-To: davem@davemloft.net
-Cc: edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	den@openvz.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="tNLIjZOA"
+Received: by mail-lr2-f10.google.com with SMTP id 38308e7fff4ca-3a34f24f409so16219471fa.1
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 00:56:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789372598; x=1789977398; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4SXkJ61xh36bbhjQO3MwznVY3pjw6v2KKNzzDKE9IK4=;
+        b=tNLIjZOAhhx7LnwZ8WXXw8zGUA4ITwBbS3XntzmrTulikKKtWFCi+kqbxz4jdNheFI
+         8o72cSVGde9gDYASAGIpjf1sI5M3ekiM+OPohDYo7YQOYbBwd+rxmtYetld4XK1nt9lZ
+         d50lUH3FuYtWHNyauwYcF2405D0Ukq/3ltGetcjt5bqscDcMnkwkumwhHe+RzSeOgLC6
+         CnjqKPL3Byvh3wD24Wqu4KzKhEK7ms6oPGMJ4aBdSQYvLcQ40GucAgkFq5HIvMSqSIuA
+         bsvSHaxB+BWe20Wde8EG3veecIDUvcvSLzDKDEHmYYDXDjPQ4KAUNcWzAF8j/Hxt53dy
+         /GSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789372598; x=1789977398;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4SXkJ61xh36bbhjQO3MwznVY3pjw6v2KKNzzDKE9IK4=;
+        b=IqdjDkoN4x1uy1nEBGV08kF7qyk5h2krx3gyygZEZinu/Gruey+rPd635wsyNDWAFt
+         WAXDUL8qLh00+SRgk11lR3rZjnp16rP2uHpq3D+YXCgtzN5+5Z1XqReJptzN8TqcqMPp
+         NHRkT1jkuKBoKVrz/dqfssHVl5xppcgbF0Z0W4gfb8lZVyltzbOcguqmICtNOagPZ5Xs
+         Y0MqKf88g3gDKGetxcQVJ5HvaHHaSKVyZDZInKGzlad0jfFyiNvpYV3oU5GTcRIOdVeD
+         bbA56kbP73gxXwcSK+FChlG8WOhM8l4oDrK3BcI12v+nDm+qCwEmcgx1SCiy19tQVHZr
+         kIeg==
+X-Forwarded-Encrypted: i=1; AKwUvBxhsKLSRATq9qInEW0YChjUfnS0ehyvbobiiWr6lQVcVhJN6y0vyWskCG3fGkYev84r9V1gcxs=@vger.kernel.org
+X-Gm-Message-State: AFuF++nIwDbl623maR3PzA0y/B24/IPzz+FVnM0PzVx7JR9AbIDSLwEy
+	rtVqE1CWiUsRgyCpKwLwajgwuBjORfUlixh7j+1CO8B9FWzYGM17m4g/
+X-Gm-Gg: AYBFou3vQtXSL9aiJDW49iN56NW8VgnCsfZDbgDhpkryhGzoFVdEsgT4oriBZWHsUje
+	coIglz5brGdq5inzdpTiERGh5eD3hA9ZFMDaQfbXlcmNvwS6kh6quIPxr+mrnr2gMjQzwVQ8K4s
+	kXNsZXGzsQM3lMHlnmiYh2EtncpgPN9vXvNbsjt5FsqExWKhmbMkd9ymVMKlH6QE9I1Ajx8ur++
+	Rhqoip3DTV7NnlNUL5B5Pru9wl41KTIZBnx+iqm3uUCON+7AjbDkSayvz7Iocf1D8HEAgtB2BNb
+	peP7Lm5PU3azWqfAwzA2gaIR+ntC357UhfA3fXPTWiwW3vdYslvkCm/PO/A+iJd7/fGtUOJ2sia
+	kqnBmSlrW8AKYXWtbFV3mryxHeHOkbT2x5K/oRQ804jXaG7csL1dug719MAMcOvBUzOa6nVA1Lk
+	R2YfKt4tINGGTCmb5vIC12ZSQPm0muHjkzfXBMXaHCL1/n+G99JHURDt/hPraRUZzi7IBNyOoB3
+	APs15ynDI/oXBaefaf1MzxzXQ/g
+X-Received: by 2002:a05:6512:1241:b0:5b4:ac27:6bb0 with SMTP id 2adb3069b0e04-5b8ae6b89famr713138e87.25.1789372597734;
+        Mon, 14 Sep 2026 00:56:37 -0700 (PDT)
+Received: from localhost.localdomain ([78.40.184.2])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b8a047113esm2231327e87.55.2026.09.14.00.56.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Sep 2026 00:56:37 -0700 (PDT)
+From: Roman Demidov <roman.demidov.nn@gmail.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Roman Demidov <roman.demidov.nn@gmail.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	ceph-devel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	runyu.xiao@seu.edu.cn
-Subject: [PATCH net] net: neighbour: Serialize proxy timer teardown
-Date: Mon, 14 Sep 2026 15:56:04 +0800
-Message-Id: <20260914075604.120183-1-runyu.xiao@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+Subject: [PATCH 5.10] libceph: Reject monmaps advertising zero monitors
+Date: Mon, 14 Sep 2026 10:56:19 +0300
+Message-ID: <20260914075620.11202-1-roman.demidov.nn@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -40,97 +83,52 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0aa09eea9bbf03a1kunm9151719e282acb
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkaSEkZVk4eSk1OHkoZSUxKTVYeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVUpLSE
-	pPSExVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=FFC9RJneWQ9aTDio8XR53ctdVNFehevkrHcIPUCPFHZ/eIJLUhzIdoQZl7tMl2+TeWMs/XP/gEy5lpuMeZp2pVurR1QYN7lvsJRw2C9jy/4WSGeo6TTGU+RYkl7h/bVwWKdfG43gu9XyKIzerGnKkerYFYsUX9aXObKfkJSGewU=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=m6qSJMOGZomrlhHkDs2SzUtJH/3UxLmtfyenGSbF3Gk=;
-	h=date:mime-version:subject:message-id:from;
 
-__neigh_ifdown() purges device-specific entries and then checks
-whether the shared proxy queue is empty before deleting proxy_timer. A
-concurrent ARP or NDISC request can enqueue a delayed proxy response
-between the check and timer_delete_sync(). The timer deletion can then
-leave the new skb queued without a timer to process it.
+From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
 
-Serialize proxy queue insertion and timer rearming with the purge, empty
-check, and timer deletion. The timer callback does not take the new lock,
-so timer_delete_sync() can still wait for an in-flight callback. Keep
-timer_delete_sync() rather than timer_shutdown_sync(), since the timer is
-reused after per-device and carrier teardown.
+commit 40480eee361ed9676b3f844d532ac28b47251634 upstream.
 
-A controlled QEMU test with explicit 5 ms schedule injection reproduced
-the orphaned queue state on the unfixed kernel and did not reproduce it
-with this change. Natural-load runs reached both paths but did not
-trigger the narrow race.
+A message of type CEPH_MSG_MON_MAP contains a monmap that is sent from a
+monitor to the client. This monmap contains information about the
+existing monitors in the cluster. Currently, a monmap indicating that
+there are zero monitors in the cluster is treated as valid. However, it
+is impossible to have zero monitors in the cluster and still receive a
+valid monmap from a monitor. Therefore, such a monmap must be corrupted
+and should be treated as invalid. Furthermore, a monmap with a monitor
+count of zero can subsequently crash the client when attempting to open
+a session with a monitor in __open_session(). This happens because the
+"BUG_ON(monc->monmap->num_mon < 1)" assertion in pick_new_mon() is
+triggered.
 
-Fixes: 66ba215cb513 ("neigh: fix possible DoS due to net iface start/stop loop")
-Assisted-by: LLM Codex
-Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+This patch extends a check in ceph_monmap_decode() to also reject
+arriving mon_maps with num_mon == 0 rather than only with
+num_mon > CEPH_MAX_MON.
+
+[ idryomov: drop "log output for unusual values of num_mon" part ]
+
+Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Roman Demidov <roman.demidov.nn@gmail.com>
 ---
- include/net/neighbour.h | 2 ++
- net/core/neighbour.c    | 6 ++++++
- 2 files changed, 8 insertions(+)
+Backport fix for CVE-2026-68155
 
-diff --git a/include/net/neighbour.h b/include/net/neighbour.h
-index 8860cc2175fc1..15107c00b4df4 100644
---- a/include/net/neighbour.h
-+++ b/include/net/neighbour.h
-@@ -239,6 +239,8 @@ struct neigh_table {
- 	struct list_head	gc_list;
- 	struct list_head	managed_list;
- 	spinlock_t		lock;
-+	/* Serializes proxy timer rearming with teardown. */
-+	spinlock_t		proxy_timer_lock;
- 	unsigned long		last_rand;
- 	struct neigh_statistics	__percpu *stats;
- 	struct neigh_hash_table __rcu *nht;
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 1349c0eedb642..1ea794a541efb 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -471,10 +471,13 @@ static int __neigh_ifdown(struct neigh_table *tbl, struct net_device *dev,
- 	spin_unlock_bh(&tbl->lock);
+ net/ceph/mon_client.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/ceph/mon_client.c b/net/ceph/mon_client.c
+index e1f01aef263e..fac52fe7a587 100644
+--- a/net/ceph/mon_client.c
++++ b/net/ceph/mon_client.c
+@@ -59,7 +59,7 @@ static struct ceph_monmap *ceph_monmap_decode(void *p, void *end)
  
- 	pneigh_ifdown(tbl, dev, skip_perm);
-+	/* The callback does not take this lock, so sync deletion can wait for it. */
-+	spin_lock_bh(&tbl->proxy_timer_lock);
- 	pneigh_queue_purge(&tbl->proxy_queue, dev ? dev_net(dev) : NULL,
- 			   tbl->family);
- 	if (skb_queue_empty_lockless(&tbl->proxy_queue))
- 		timer_delete_sync(&tbl->proxy_timer);
-+	spin_unlock_bh(&tbl->proxy_timer_lock);
- 	return 0;
- }
+ 	num_mon = ceph_decode_32(&p);
  
-@@ -1729,6 +1732,7 @@ void pneigh_enqueue(struct neigh_table *tbl, struct neigh_parms *p,
- 	NEIGH_CB(skb)->sched_next = sched_next;
- 	NEIGH_CB(skb)->flags |= LOCALLY_ENQUEUED;
- 
-+	spin_lock_bh(&tbl->proxy_timer_lock);
- 	spin_lock(&tbl->proxy_queue.lock);
- 	if (timer_delete(&tbl->proxy_timer)) {
- 		if (time_before(tbl->proxy_timer.expires, sched_next))
-@@ -1740,6 +1744,7 @@ void pneigh_enqueue(struct neigh_table *tbl, struct neigh_parms *p,
- 	p->qlen++;
- 	mod_timer(&tbl->proxy_timer, sched_next);
- 	spin_unlock(&tbl->proxy_queue.lock);
-+	spin_unlock_bh(&tbl->proxy_timer_lock);
- }
- EXPORT_SYMBOL(pneigh_enqueue);
- 
-@@ -1858,6 +1863,7 @@ void neigh_table_init(int index, struct neigh_table *tbl)
- 		WARN_ON(tbl->entry_size % NEIGH_PRIV_ALIGN);
- 
- 	spin_lock_init(&tbl->lock);
-+	spin_lock_init(&tbl->proxy_timer_lock);
- 	mutex_init(&tbl->phash_lock);
- 
- 	INIT_DEFERRABLE_WORK(&tbl->gc_work, neigh_periodic_work);
+-	if (num_mon > CEPH_MAX_MON)
++	if (num_mon == 0 || num_mon > CEPH_MAX_MON)
+ 		goto bad;
+ 	m = kmalloc(struct_size(m, mon_inst, num_mon), GFP_NOFS);
+ 	if (m == NULL)
 -- 
-2.34.1
+2.53.0
 
