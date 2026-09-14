@@ -1,140 +1,182 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11020111.outbound.protection.outlook.com [52.101.84.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42D640F75D
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 09:04:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789376687; cv=none; b=NUir/riveKOVRZP8jjkF2mU96R437BO8zcNcIUNYbMhdfZL0HfHwQ4XB4Nn78EwWioxUzNaGW4A64O2SD3U+TwLFzWbfFDVEE0DaXHW6QNYE/EJIc24jdCui84lRFZFGp6ZSpsbL3JHq05mMZqSVHHw/XqF7tJB1acAofwKnnOE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789376687; c=relaxed/simple;
-	bh=+kYxVA269QSdSI76NmqygD6fADEqBxPvmi9m4oziKys=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M8VRDRK5zOLjCLrXOl/eDxpJvd8v/oM6NtvnDr47oylAYlwwbi2QaXqHFVP0mEcBsmFAkNjjONvkgSo8j+BqYx2k6Hl2U8hMgfifTOn8wWES97djizVvnYF7C8ptTEU6BpfKbTqwtw80HZlS6kh8oRx3PW58WogIy4OAOEKfkBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mail.huji.ac.il; spf=pass smtp.mailfrom=mail.huji.ac.il; dkim=pass (1024-bit key) header.d=mail.huji.ac.il header.i=@mail.huji.ac.il header.b=Ripl6QQ0; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mail.huji.ac.il
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.huji.ac.il
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D1D418A28;
+	Mon, 14 Sep 2026 09:09:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.111
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789376985; cv=fail; b=cXy3+X0op2s+vPF+dnhelF9h8SErbmsXthZOtj993ijLs7tW/o7M+AM8f9dtYMxARx2kcfrD3fvDT7qq+Oo+y1Dqq+rY1zLkSFBFnNn3OS6aWlbTZdAwRWt/JNjbPGw7ASzsLP8tXCJXeg7KxsOOkiiI6VDjXZimiHyqr7RbiuY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789376985; c=relaxed/simple;
+	bh=7g91hpexYY8p3HOXvm0qQ7jCeIyztxC3EHHATB77uys=;
+	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=cMIyk5L675uhzvWZ/u56Hyjo0AbIO6qA85/ofnOmd5toYVH5302V06cAd9g4FMQfdEveWRT/UiSWLddWpezn5n6c5qjJ9Lr3H91mrdfpY0x/2wks32T/1pRnfNezmPAunEmppUNB5HVZ9cY0oGbdas40MfPNEp3CyQ8nbAFTCig=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=v2Iio+bu; arc=fail smtp.client-ip=52.101.84.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mail.huji.ac.il header.i=@mail.huji.ac.il header.b="Ripl6QQ0"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49d1ddd5d0aso1164515e9.3
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 02:04:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mail.huji.ac.il; s=mailhuji; t=1789376683; x=1789981483; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Y+ZxnVustyskk4m7lWyI5feD0wenHef7tflNZipPiYY=;
-        b=Ripl6QQ0Sik6oYv1nmEbYYPKNfMpBX9ERpUx6wufuyqnNbq2deDPbublQ2lOD+XLAa
-         z20wlCIBgJ6zWqXkI+DbsT94ifp9McCAE6aZyqbJj18T6li+d/+mtEToPZmf7QcGCGVn
-         d3ptdD9zLHXQKoIA8H8twND0/k0elmxBIsX2k=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789376683; x=1789981483;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Y+ZxnVustyskk4m7lWyI5feD0wenHef7tflNZipPiYY=;
-        b=ids8KQpsLCv2G25z9LABOf6Cl3UW19oJaA8MZrRCU5kIVDCT2R3q4OG+MbFrCZBDQ7
-         1AEFrleAwI7P6MVtGaC2j5/mz13pAd2tN8OuAyU9IHrUTBZvr31+4uBpiIJ/D5nyRFT0
-         hVamsDp5AyeXb0pw6jyIcHM+liYSw/cIhBJkKliUYHU8q5+IzPuAVUw6gCk1rn3zH6Zz
-         MzmZ0Luh29ehYgdXVX+zbNIMS9sMpswrq00SeQ1HHXStmQlIjO2JXgTcg0O+xM8bPqJB
-         g4PiEY0w7TbroXieYzN2vd2fZJEYN2rwHP3yqMJIWH+ZtwQJRPxRZSaZ5/keDUjQUoab
-         uw5Q==
-X-Gm-Message-State: AFuF++nNXdKwrT1/UEtFePysqIdMLX6JxoWTP/Y9RgkuOPQjBu79AgC+
-	0jO2yyYWvVaZZW3UoGgd0xC64YILfPcX63o2iUyyhc4Y1On+sEvH7qugpehHne8OxS1vvWIZe1w
-	tqNGH1guyJ3hkwd7fzZmMpxJASmYAxWimlt2bJTP8mpR9bJDp/gpXn8iDiJRaVLLUXPh+hYq0VB
-	+Cs51u2rdPG2miP7hhtF3CZuOScT59SRk2f2DQ9ue9yQMb4wGxiboxUn2mMg==
-X-Gm-Gg: AYBFou1kN3qWEtcH1v41D4++mp6wvTSPmrvwguvHY71Vr9vOznOx76kCzd9K/kFx4eP
-	Ho+0ImXo+a0kFCNIXHFzmK9DWQ0KI7taSPWWS35A0uNUAlN0gELt/Z9ocL00XzZKfj++AP/fCeG
-	7W95oovYdLyOG7i66C+Zi2CIUC4Jv5V+Guzu2fxMIvHWStnfy4ThgakbnBKPbYq4Jxl2S1ZOHz5
-	SeDqRrXwKf6Z9V+TzlNmOiEflMx2SApdfFZUARO4L0YRbHni8vCgEp/30mgIMM9an8o+9qli7jp
-	wuB3Ma1/IX2UcFuaY/3UlahY7kgIQrAXB2GpepFELTTIB5xf+v54aXUa3oo01hwYCLcaliEmPeE
-	eP0zPatekVwAsPn/tKKoaPNbQpQ5vdoIc1e7zJygBmNuqghw5l8XfRRC7PvgiX+nwAE97uaik0o
-	8QLYHq5sGS0HIzVr75FXNbjHg55qTQmOZo/7nBh0w81HPD24oPQcG9B5NCTTKSc+7iX81q3bIwG
-	WZTVYOgsbtA32DtI40qlW/ynF9/mI0zMPj1
-X-Received: by 2002:a05:600c:4683:b0:49b:9241:7ff0 with SMTP id 5b1f17b1804b1-49e7a5ed9a7mr15588095e9.0.1789376682771;
-        Mon, 14 Sep 2026 02:04:42 -0700 (PDT)
-Received: from inbal-OptiPlex-Micro-7020.tailf3f5b8.ts.net ([2a06:c701:c272:d400::7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e6a06cfb8sm227502585e9.5.2026.09.14.02.04.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 02:04:42 -0700 (PDT)
-From: Inbal Schussheim <inbal.lipshtat@mail.huji.ac.il>
-To: netdev@vger.kernel.org
-Cc: edumazet@google.com,
-	ncardwell@google.com,
-	kuniyu@google.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	amit.klein@mail.huji.ac.il,
-	Inbal Schussheim <inbal.lipshtat@mail.huji.ac.il>
-Subject: [PATCH net v3 2/2] selftests: net: packetdrill: test exclusion of old ACK from TCP fast path
-Date: Mon, 14 Sep 2026 12:04:08 +0300
-Message-ID: <20260914090408.1435080-3-inbal.lipshtat@mail.huji.ac.il>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260914090408.1435080-1-inbal.lipshtat@mail.huji.ac.il>
-References: <20260914090408.1435080-1-inbal.lipshtat@mail.huji.ac.il>
+	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="v2Iio+bu"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MsY6c1M3Vj5HfuKwxAfZroO12VvTAl8/mk0W6kTLC1E5bM7nfnMnJyRJ8igswdPtvhW9Iot/mqhq1Yt0eIoIOdoLdMoJoAbk7Dn7E3SEDtpyzJX8NtTmiNSLrokv2PRfuZtzRWpACSkzqb5Xrpd4KDJu5sbmhBx3uBOx+Jq1SZkgf7H/h+Hu7EBmwred0A/TuVuCZ2DoPGMB/MVQ3ggWfCXopIVU9m2xr39YYLVqATJIOeMh7agzM4KO8dclclotqBK6AmgavqTmI1XEyxJ6t4ZRa9V3P4I2TmMWBWGGhX2MqSM9gMPt3Ti2nuC9a4CNuM+MUw6lLQ+Buto1Csd52g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AjBbYrREW9PrsATP8b1WZ3ZEp8OSqeUVYJXR5ChDgsQ=;
+ b=Ij3XzaBComYEcj3YKicda5URWvpyoPFLW8A3HC+0CAowLOqoI320DqsIxZoe9vHVd8VqlixiW6Y+NF7UszBuCIMlA9QDVXZ+XmnpQr3RaiU5SI5SzMlnH5PQMUlV1+zqGc3fPUOQM+b/3U4zCB/0C9xwlWM1HTEiU2k/Ec10pHuT/VUFoYwYoQCYfZlQP98Az+CpFv1uwYqBx09HO5wFh/SnyI5oY44ooBd3g8EOGosdPuRvgYpoiJgO8xtV+RBcVEghA0ELvsqDV8bVuK550MkfhJLf3zlI/pQnGdJ99NaXhdJOKewi129ocq4PgS+tYBIzVcOJEw/+ISzuyjx9Dg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AjBbYrREW9PrsATP8b1WZ3ZEp8OSqeUVYJXR5ChDgsQ=;
+ b=v2Iio+buqwLgeEGuXbMdhAmyyK4wGRkX7wxP7Rtx8L5W1yDVUjDTUbYwraDLL1afJwi0B5kSgyr2i1rjzJVmzmzpjdYHgnYy9vrNfeSWsgKg4mGxNkC9Bc18nqfsifD4EzrxJfuSqFe3TrmRwi60z7Y5Q8t4Ifl7GvwmNeHhTNCvlpOXTgYpzmoI9j/SmSyub6AMOXvvytt1FC7R7NgCKS4qwr/pDnxONQZSAketF2tLWABRVdrqF52fpagAeSFCBC+wu/hRzjzmoo3H/DCA5KUwO2D4i4Dnoj4ysQgCyZU5/FINZa/fgIhMB65tIcwix3JIVkIXUI36dQHUCsotvw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12) by GVXPR08MB11716.eurprd08.prod.outlook.com
+ (2603:10a6:150:316::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.7; Mon, 14 Sep
+ 2026 09:09:37 +0000
+Received: from VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8]) by VI0PR08MB10656.eurprd08.prod.outlook.com
+ ([fe80::4e37:b189:ddcd:3dd8%7]) with mapi id 15.21.0428.004; Mon, 14 Sep 2026
+ 09:09:37 +0000
+Message-ID: <ea805767-9e3f-455a-a4d6-828063aaf2f4@virtuozzo.com>
+Date: Mon, 14 Sep 2026 12:09:35 +0300
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 0/5] vhost/vsock: add support for VHOST_RESET_OWNER and
+ CPR migration
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ virtualization@lists.linux.dev, netdev@vger.kernel.org, sgarzare@redhat.com,
+ stefanha@redhat.com, dongli.zhang@oracle.com, maciej.szmigiero@oracle.com,
+ bchaney@akamai.com, mark.kanda@oracle.com, ptikhomirov@virtuozzo.com,
+ den@openvz.org
+References: <20260724114542.734623-1-andrey.drobyshev@virtuozzo.com>
+ <20260730194858-mutt-send-email-mst@kernel.org>
+ <f8646e25-7e81-4f19-aecc-a040caac1103@virtuozzo.com>
+Content-Language: en-US
+In-Reply-To: <f8646e25-7e81-4f19-aecc-a040caac1103@virtuozzo.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR2P281CA0088.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:9b::13) To VI0PR08MB10656.eurprd08.prod.outlook.com
+ (2603:10a6:800:20a::12)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI0PR08MB10656:EE_|GVXPR08MB11716:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4285dd62-d162-43fe-b717-08df123fe67b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|23010399003|1800799024|56012099006|4143699003|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	5vZmZ+nxFc0/w4pkobR4eQKBsP6JTYx1bICloLA+njwD0iWla1GmWawiDZcvxgUqqLlLPKXZqBwdJiE4G5r2ud+mqhoj6obnEYZTyK9Ly3+8Kx3s1yvanItpdB1Zn8cFmcUYRhnCqJfIHgX8mWjaC9Peza+AAIliDVT55j4UILZxx7+UafjLHi05EpTavKOTlM1Vhci7bf0vLpilV6dlJoAtMotBWqGy2nWX1zLam9K+q0C0YeRZV1u/SVXc45amz+vIOapaSf786QF+KFcMQsWnsT3lc2Mbu7OqWE2CH/vpGpuLYKRDsfRo4WSRZHbGBGTipfUaegv/KFndICzYafemZEbo7dFyGu1+tO7CWRWjNn2hWO7GGMCLXE0c0DA/xX2RoxMHZDnb6e3Q13534hU9MUE95BL9QolkPfQl4esJBQRJrGcM4x706tLMNWMhJ32xSUCSGFHGj3FRX3c3rrmVWQcJ+341fa/DuzUMnjhkiU6N+EmA+TuP+UokpvpNylnxvVnyy3wlRW77ThJXHowvuFDY7tKCcL3xGGYHVkxrrLS23uPM7WyN2q9HFEKMEG6q3+irg/wkz61ikG/9QhbXU0B1DCZDWHLzyEXFpS+v0pXqr7XWE6EAXRxn3VeoOjMWVvscPYwhLaMx/yvdx/u3BZYwS2aS/7OJqGKr2WA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR08MB10656.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(23010399003)(1800799024)(56012099006)(4143699003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dzRyQUlXZUkza2hXRFhZMGdvYVQvSlhXcFJOSTRHQnRUMjMrSC9BTGdXQUd5?=
+ =?utf-8?B?N3dvaWphQmpTeHBVOE4xMVU4dU5GUjI1V05SNlZXK3dGRmRwYXI5Smt5U2dT?=
+ =?utf-8?B?UzZFYys1M3ZpY2VIRDFqcWJOdzhlb3NuY1I5NjNqRlFRaEJhK3I1bnFZMi9v?=
+ =?utf-8?B?U2Z3d3RkWGtKdXE2QkV3RFhMbEhLT3NCN3R3cGpYNlFaSUVCK1FTc0NRRGtt?=
+ =?utf-8?B?VjZrelF5b3RhNjg2TnRGQitITjZQKzRUejFJWGV2ZnlQRFZtWTArRk95MXZK?=
+ =?utf-8?B?dE55OTBjcE9zaXFMb1hXS0lQOElPSHRJd0pjaTlyS1BpRWFRYldGbEMwTlhL?=
+ =?utf-8?B?VzVVTk1wWlRpTnk5QUp5d0RUNXQ2SmMrY0NFZDl3VFBkR2NRZmRIbVNZMGd2?=
+ =?utf-8?B?enpzTDdtc3B3QWpPbEhnNmlyRFlNRTJPMk9tcU5Kb082Z0NqaGdKZFNjZE9V?=
+ =?utf-8?B?OW1GTVBTVlQrQ3BMQW42SUM5d3Z3RmlPMDVMb3FJZyt4R2Z1VzJwcnVRd2Yz?=
+ =?utf-8?B?b3RoWklKVjRsbENmbERIMFNoWkh6eHZYQzQ2NDJ4YXA2eHRra3pXak1LMDZU?=
+ =?utf-8?B?NjUvL250Q05sWUJJWEltZEVkMVNvVVRWVTFWcXBZUVpRejIwQ1d6bHZ6V3Vu?=
+ =?utf-8?B?KzBqTytLdklGaS9VSmZ4ZkdZL3VSaFlqZXRhZ3BuYVNJeW9PdXZrU1l2QlFl?=
+ =?utf-8?B?UDVLOWhSSUZIT2tHOGlrUDVkNWYzZ3BYNVJSOU1NL0UxSm1oMEhhMDVXRWxP?=
+ =?utf-8?B?ZTVXMnM4ckkySWozcmI0b1JBbXhleU5oa3libXZaSWh2dm43RGRjUHJUckUz?=
+ =?utf-8?B?Yncrd01yZGw0TkR6WGdQRkZaUkswYjFaYmtpK2JremZ5WHFTRTZYYkorVVZT?=
+ =?utf-8?B?bHlJeHVKMm9YSm5VQ3NhN1V4S1cvZGQzNE81anJuVW53dTA4Um0vdnVmQ1dN?=
+ =?utf-8?B?LzBJT1VPUnNBRGVYZHIycW5XM0RQaXNDRU9wZFZEaGErOTZXY1Fwd3cxUmhP?=
+ =?utf-8?B?MWYyUStTc2J5Q0IxWkVwL0o1MDJ3TkE3Q3pIVXBFbjg3dDhyRVZlaDZJSkFr?=
+ =?utf-8?B?ak9iZVQ2VEFRQWFRak5tdnc2ZlIwcEZCMWFaaUtsWjVIcnFEV1VrMkNIR1M0?=
+ =?utf-8?B?eWwvMXJaalRlY3grck5uU3VwR09YNUF0ck9yYVQzOEdaMzdUTDVkdGFnM0pn?=
+ =?utf-8?B?Qkp3ckw4czcrNXBGOWY5RGVWZ1hleXdlV01PSFpycEFHbVlRWk5UM3hkbml4?=
+ =?utf-8?B?WmY5bnV3c2J6cm83alR4QlFCa2hBT280STlPTGpmekI5cy9NK29qN21ONm5j?=
+ =?utf-8?B?NWgyb3I5MFNRRVNTRklhdTNTQThIQVZaTnpBYnc0R0J0YlR5SWt1MUlUYmpK?=
+ =?utf-8?B?dHVEUkpYTGVyQlU0Y1FZZTJoSFNaQlJJMGVCeXdFWGZvR3YxYmpmdEJLVzFt?=
+ =?utf-8?B?UXVZVzdzRUhwOHptc0RTNjZnd1Rpc3VoRHlZRU9Dd3dhSEx1WVJFKytHT2Vt?=
+ =?utf-8?B?OVlqeWNiVmhtY2s4TTRLdGNHbFd0M2Zmb2V2d0gyRHh6NlRGT2RvM05ySHNT?=
+ =?utf-8?B?b3I4UGhTZ3JjZ0NCbElqRFN0NzhlMmhiSzZXWG4vY3hVaGpFa1VRRGVFalFU?=
+ =?utf-8?B?eEZYWXQrWk5lV3JOODdDdHAyV1BYeEpTaFJLQ0xQU0s3Q0trenQ3QkdBR1NM?=
+ =?utf-8?B?Rlp0WGlwUUVVWFZUbWhjd3JDeTJ5ZURiZnZIUnQ0bkFvZ3dJN0xCak9TWEtO?=
+ =?utf-8?B?bmpPamZiNDczeVk0eU42WEcvRW5DTUFya3VNbnhmbVpCalh1YkxWa2ZHUjBE?=
+ =?utf-8?B?SHVEWjMrQ2N0TVFjOHRwTldybmFSYy9VS1ptQ3dxZWdoUUp5aUEvN0JNaTha?=
+ =?utf-8?B?WmRRTVJtMmFuOXVpNGYyM0VRMGNwb3N5a0VoY3FqNFhxTktuSEY0akN3YTd3?=
+ =?utf-8?B?OS9sbE5hV0FXTFpyeUluZ2ZUNGViL0dCNUhGdVI5Q0tlUzlTeHIxbTN5SW0v?=
+ =?utf-8?B?a3NYN0E5WUNwWmVHLzhwd05WbHc4Y3VFRUJsS3ZPaklvVTZUSmlXQlpZNWZZ?=
+ =?utf-8?B?NVExeVp0QUtScktsaXJScndBY0IwNnFaajVmZW5tZTlaeTZkT3FaQUZFV1ZO?=
+ =?utf-8?B?QVN1UUFpWmpEU1lQd2RrS3B1TEJNVGVhZVFSOHFDTTY3TnUvTHlQYkhxdGJE?=
+ =?utf-8?B?dHNxZnpkdXNmeDRvS2pLUkNsSEtwOVN0bkxFMDZTQU84Vjl6KzUreEY3TEZv?=
+ =?utf-8?B?UHl5NmZFRDFsQksvQzJvd1FtVkJLMUpNclRzM0VkYmwzV2htT3Ywc3J4Q0Fi?=
+ =?utf-8?B?bjZVVUVYeUlOQVI0THpMblJGeG9mK2RWczVWUGlsK2VIb0p1OWo0dnovWHNv?=
+ =?utf-8?Q?x4ob2+LHlFsb2ric=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4285dd62-d162-43fe-b717-08df123fe67b
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10656.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 09:09:37.0232
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FJrLB2tBFxO6yCI2T8ZMKCVMgHQrcl4a+sEro2wZrKeC2V6SuyP8Vam5k5aCDYuohvYa/cocVqCVOMUYj4NMUQpyIKorrfMCPm0Mvfp2Glc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR08MB11716
 
-Add a packetdrill test for an in-sequence data segment carrying an
-excessively old ACK.
+On 7/31/26 11:31 AM, Andrey Drobyshev wrote:
+> On 7/31/26 2:49 AM, Michael S. Tsirkin wrote:
+>> On Fri, Jul 24, 2026 at 02:45:37PM +0300, Andrey Drobyshev wrote:
+>>> v5 -> v6:
+>>>
+>>>   * Patch 4:
+>>>     - make sync+flush conditional by adding a bool 'sync' param to the
+>>>       chain, as suggested by Michael:
+>>>         vhost_dev_reset_owner()
+>>>           vhost_dev_cleanup()
+>>>             vhost_workers_free()
+>>>
+>>>     - reword commit message and comment;
+>>>     - drop Fixes;
+>>>
+>>>   * Patch 5:
+>>>     - add 'sync' param to vhost_dev_reset_owner() call.
+>>>
+>>> v5: https://lore.kernel.org/virtualization/20260720102241.371610-1-andrey.drobyshev@virtuozzo.com
+>>
+>> does not apply for me is this for net next?
+>> in that case
+>>
+>> Acked-by: Michael S. Tsirkin <mst@redhat.com>
+>>
+> 
+> The series is based on tag v7.2-rc1.  However I think the reason it
+> doesn't apply is you already have v5 of this series queued in
+> mst/linux-next, commits ddb0918e36c4^..ad5b642c84d0, with your S-o-b.
+> 
+> So you might roll it back and take v6 instead (only commits 4 and 5
+> differ), or leave v5 in the tree, or I can send you v5->v6 difference
+> separately.  Whichever you prefer.
 
-Verify that the segment falls through from the TCP fast path to the slow
-path, where the existing ACK validation rejects it and sends a challenge
-ACK. The payload is not accepted and RCV.NXT remains unchanged.
+Friendly ping.
 
-Based on the reproducer from Commit 3d501dd326fb
-("tcp: do not accept ACK of bytes we never sent").
+I noticed that these patches were queued in your linux-next tree, but
+got dropped afterwards and never made it to your last PR (used to be
+ddb0918e36c4^..ad5b642c84d0).  To be clear: the series targets your
+vhost tree, not net-next tree.  Since it applies cleanly on your current
+vhost branch - please let me know if it's ready or there's smth else
+that should be fixed.
 
-Signed-off-by: Inbal Schussheim <inbal.lipshtat@mail.huji.ac.il>
----
- .../tcp_rfc5961_reject-old-ack.pkt            | 29 +++++++++++++++++++
- 1 file changed, 29 insertions(+)
- create mode 100644 tools/testing/selftests/net/packetdrill/tcp_rfc5961_reject-old-ack.pkt
-
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_rfc5961_reject-old-ack.pkt b/tools/testing/selftests/net/packetdrill/tcp_rfc5961_reject-old-ack.pkt
-new file mode 100644
-index 000000000000..32dd9de1d366
---- /dev/null
-+++ b/tools/testing/selftests/net/packetdrill/tcp_rfc5961_reject-old-ack.pkt
-@@ -0,0 +1,29 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+`./defaults.sh
-+sysctl -q net.ipv4.tcp_invalid_ratelimit=0
-+`
-+
-+// Test rejection of data segments carrying excessively old ACKs
-+
-+0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-++0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-++0 bind(3, ..., ...) = 0
-++0 listen(3, 1024) = 0
-+
-+// ---------------- Handshake ------------------- //
-++0 < S 0:0(0) win 65535
-++0 > S. 0:0(0) ack 1 <...>
-++0 < . 1:1(0) ack 1 win 65535
-++0 accept(3, ..., ...) = 4
-+
-+// Populate receive memory so the following segment can use
-+// header prediction.
-++0 < P. 1:501(500) ack 1 win 65535
-++0 > . 1:1(0) ack 501
-+
-+// Send an in-sequence data segment carrying an excessively old ACK.
-++0 < P. 501:1501(1000) ack 2794967397 win 65535
-+
-+// Challenge ACK; RCV.NXT must remain 501.
-++0 > . 1:1(0) ack 501
--- 
-2.43.0
-
+Thanks,
+Andrey
