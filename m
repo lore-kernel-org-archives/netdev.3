@@ -1,316 +1,252 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+Received: from mail-oo2-f43.google.com (mail-oo2-f43.google.com [74.125.231.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35C025B2F4
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 18:45:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6934037D10E
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 18:49:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.171
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789411533; cv=pass; b=fDFPEs/tNvJcP+0E1Ok3FqDPTF93PzJG02BGNNLKjjVSfiYzneAdM++mSIoVNVJsrS3+WdI4YNKQ+PN7j3Pc2koDyex6fk06RJA8edvTKiR0y/cBOU37hjBFGCLiloW7/Eq1/8cQ5QJGcsWFQgOH7jINgvZYHrdIuCkQT4Kfbjs=
+	t=1789411752; cv=pass; b=uSGQdxdLNpRL6cZ/JD7Ny2xGsfqg6ezgOefn1O3rIU4/sjWwmlQJ2pMeYGWDVa7RMatmzFucb330kH4LXCY7y/7rdhV0AMJjiZU4X4c/x2XJlCRjo7NnB0XH1yloUOWSqy3y6z2+J7j+VRe4UBVsymUrGp6pPm+MtbI+Q/2hMw0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789411533; c=relaxed/simple;
-	bh=SOaoH7wdfHga3kmm2KklRs8RybjgZlJTIv6zPmNSO9k=;
+	s=arc-20240116; t=1789411752; c=relaxed/simple;
+	bh=I5y/x3zg8Ny/i9s4perD0XJoBAOwFnm4Qoo1X9dewqs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EoWTBOQpXCPtrRQ0gjEMMYTduJGGJh9F9tunvznNPCny7opi/XYeu8uVxJpN1iesSZ6/D+sOYZjl/5NuYh9tEYKOh9/3Z8LCyb5E1GKahWGHh8yTlAOAps+N4Og5m43ADZ7//oDJnxQ6LQSzoXUDCkdd9Km0O3lVX0Fnn9oKDcg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jdvwhteg; arc=pass smtp.client-ip=74.125.228.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=SMEFduSPIJjqNXd3sNVJmuRTHAuqBUvckqy/2powAz+G+Ds7X4JUxnaJSgFiGooIY9bpJxqNN2cqCa+i5NwwGLDjsHOyKXOmj+BkMRTDLtTAaSNQo1E+Kye/0qc4EHeK8pyZSbhlI/Uso+Ovpb7FSetIWLb69up0+wOAhoAVEHA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PdFt8hUH; arc=pass smtp.client-ip=74.125.231.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jdvwhteg"
-Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469e25400so1884903b3a.0
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 11:45:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789411527; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PdFt8hUH"
+Received: by mail-oo2-f43.google.com with SMTP id 46e09a7af769-7fccd4c3f36so2172837a34.3
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 11:49:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789411746; cv=none;
         d=google.com; s=arc-20260327;
-        b=fxRTMXLGim+emgSU9meQxHE/JX5+jn5ehZ0YI9fWqs+SkAVoMvm8TBQ72EdoRCWVS1
-         3q57NHTyzQy93nU7rdTQajIhev8o5XUCwjQwJVxQX6CfbvEz7i+FbcvpbqufIbPv+9fP
-         kHA0Q5388iQrnWnJhei1gTxdksFASRy0VUaSQFLcpbNmfQGaUoob/EnhMtPtt7VXYXI2
-         6V9dR88+oLo57sRQ8vpuczMfDsBI6grxTqgQTEgqXVAOZEwKvm3CYOT5ug+OlweTFZGJ
-         4W4P+6go6k5JUMRgOOeURsrqivbpfop/ZOZBtcxrotz7XQY02Tq6XH6n8xeWw3TGo+eE
-         yybQ==
+        b=LP0GgNaLQYx9cw3Qot35EN/stmaYHEOhfCOIK0dUzPtMEWrHTMWzmTmT83cN2V0bOf
+         2XDc/UmDXnhSznn3df4NX7X88p8kYiUz9PYUcCGJt763sqEBxOinrtxdpmBOzsUV3WNG
+         laxY6yQHtVpa/NGFM+pcIPNRDN9JDQbazjk+kuehUJtdQwARWL2W/BVhPLE98MgYgmEI
+         UxgWDfHop6iaXJ8GBm1ajzZsvgm6iU3Ve7EzjcrFE0sQ0I5c5HIa19mh0sp8+K3tJQLY
+         wmTexTqOVbsMV3ZtxfFry6GHuXeQuO8o319iP05jb8bFMrka6IceFKjQnEBwmrytYmGr
+         bgmA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=32SMw+83rZgkWkErpxP8QdaEA2gM9ZInRO85Uqktxr0=;
-        fh=43KkE9mRZRBpQGYnP/NX7/2x7wYSJcwqpAc4FKUW29M=;
-        b=fCSl1m+LpCmeSqDYSZr76HOfYP0fE4sNkuCKkSRAKwbSRo/l21DyICzMBHA9Xp6nS/
-         ITd96kYHhrc+hhb/vsqjMAy6BZn1Ex9MLnaQv0xlN9YL2Th1Wa6Xecl7SFAMgaQPb0Tz
-         /rUoTB3bmcOQzhDPFpT10gYGDqXCEInmuEqLTm9MXEeG+i8buAxa685vZikLb1HExwfC
-         XdEIkETAbfCLJUJCB/71g72xVB7Cit0qhc5RlSv5MvNm6JqD9dJRAwVcE12vD7kGhq3K
-         /TWQ/fuprrN7/2voejnXmyuPhHRu9Aswpsy5iqIuIBhOmhWVsy9+aVnX9OLw7mECCSwr
-         e/Aw==;
+        bh=3fgjYAnCNIvmMVVgUnMQbGXatUXySQpQ8c1S2uxWfzQ=;
+        fh=jqz8VYI+L44m4auVtSrXTXO/m6Tc8PLEkg7eQ2ry/uE=;
+        b=oziCPNVK6DZW0/cbddYX4z3uLI7AFNZZIzFBkpJw5RIaePine+p8OcFE7IItioY7OZ
+         desjy0kEGAwbOquAmYml9i6TjfKH0Mf+QOY36VkYHRW9OmKG0lVDW/S5Bv0gZTYTrDGf
+         cmmcDyxrSH+7fOI2rIVE6pkOpaGbU3gTKDtGYYEZlmN7qXnAnjfJlxFX9jqmTwAvxv/U
+         zhg4bPos7kKePluuaJNFSv+WNaJHJOsUKuZ92Hry1ca6bT/jDmdi3xCRX7zhJmTQcqmK
+         I4c7J86OlWo3wdwdKF4odgxMsYD4VQg59wWc0StV7DJC4YzDJoFSstMEbV2X1RN7o4kR
+         9YGQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789411527; x=1790016327; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789411746; x=1790016546; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=32SMw+83rZgkWkErpxP8QdaEA2gM9ZInRO85Uqktxr0=;
-        b=jdvwhtegZ5I4p5oGF4Ft2oW35QwTm8tX32nCVfwAYbEWv4rokCAgBFFrYfF0XlTPts
-         JFmSHlRdF+fpSo4Fwql8nLmUKCTdLgbZeUPzVoIARHYcX0qGjLyCVRHOz2giUfYTF2dP
-         AUiKUIQRhQoDFYM+IJ0uwTPMFuZ6NzudrHViurVAkLH5ksBkW5J766bO9ZzKc/15uf5t
-         0sXi9h/lGcgZMHXdlBRz4a6dtAHP2vlIr/FPeMS5VtePMbG128UJxy59XWJv12SP2BV4
-         ig7tbstObEzrDMapVmNJKhaRRJ4/rPSa5KXHhNdpMA1eq7Y1yK47PhF2ABuFgW8Ec9JM
-         SyGQ==
+        bh=3fgjYAnCNIvmMVVgUnMQbGXatUXySQpQ8c1S2uxWfzQ=;
+        b=PdFt8hUHcg7GKQj3LULup8a6WiywKqQkxA7PtGCfal9Gi0kRFAR9Dy7AXyZL7ySwNK
+         TwgRf+OCGvCoxqugWXGS4CccgmPWyqNov3KQUlALBRhPiKDvIq6Hrcaf5D1gdjELNpVv
+         a5YntiVOMu+f6TzicspYuJzm6gXmJ4Bi6Mn3ryqVuIsytyNsbpq/NXe1NyvEefkyQKdN
+         g6iXC+gbqhyF486lE+sDIy0fo9gDt5mo4AtgJfcBEg5hqV5TdstGPSOeFHG+Ev/s1ZEU
+         iTycbim51eQdBzZwIE4gr5ZvQqDP4trNSzcXQAy42My6yfPDPDxLQEx/+OXbJQ0bPg2u
+         iDag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789411527; x=1790016327;
+        d=1e100.net; s=20251104; t=1789411746; x=1790016546;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=32SMw+83rZgkWkErpxP8QdaEA2gM9ZInRO85Uqktxr0=;
-        b=DIQtPsgvfcoQ6oP0qHTaREytT/w282DVnfYvSj6lleRqJU0nxA4XUsdHoXZhPFVJ2y
-         bJHX9rHfElOVr5nuypiWRZokk9Cg9L8UyvQJ7+Cve+uHdXrurmtOHGFp1kh9D7fS0wOF
-         I+V3zuf3TGCMwOdPx3d6nlMooAP9Fqh5W2VV6LPv5N7VCepWrsiIOY4pDfVCBl4XC2DY
-         RRav35eZ3TAYxTZLGk3bEPaYMAfjLg5A8/7a3xJHZtuJ467gfn9lbVGX40AlBiHSUPGA
-         ueox2E9X97ru5iTwF/0buhzvl5ese3dPOSoGETo58skh5IH9G05Dv1ykv6Q99dYu2D5f
-         vSJQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxng0HCq8+i+H8cPju1nLcTZeF+KAUT08ww8WlI8iHd81dibtdkMFR9OpCdvX4Vh+ICE0qHr6g=@vger.kernel.org
-X-Gm-Message-State: AFuF++lJFUcFC5L5f55F1erUywzQ/bmNjLvhkulI+ygxyKqn0P2ZfTwi
-	1PpI/EWudci1sbWe2KBixE41nj054fHLR7gOk/l/hoQwIF7CfhCtT+S2dRpSIn4+7xF+1DQvc+s
-	d9Ywe8vxngXKOs57Lv6LJW3tz61e4YAw=
-X-Gm-Gg: AYBFou3q6bMVa7YWlDJ+rk15S5c3QeWjxLkgDU+h2ktAEOMe9AQURQdyP/vxTdZX7dj
-	141ZMx10fH7JQGo6z6/Necnx0c23Ionl6mOGTQH/+UJ6veP/1xi66cnk+3mjLHXp5+q3l+14AM+
-	SI9DVDTQZoO2+jeKjO0TClZADMDvQwYjiInftWR701KO1kYvD/isG3uf0EHJL9z3R/5mVQUkpBy
-	xw8GGpoA2oYcNOHIsou/Qj3r2nf/NCqIZzmtCIXSEFAcsYljbJaoX/iP1hvqDoT6BxjF1Kx82UW
-	Je0Kt1pIehU7hBg7ZjmY1jolTdKJgJlKkdDYjqQBNntV/lySyGsCiiOM5LaEDaHygUt2jnIZfrD
-	8c4mYWwLcR/+niuVl3Ycq0GrvectkKjn4WT6gWBAKiS7tBfPsCtSo/A==
-X-Received: by 2002:a05:6a00:368b:b0:84e:e741:174f with SMTP id
- d2e1a72fcca58-86f83e3afdbmr8307833b3a.7.1789411527238; Mon, 14 Sep 2026
- 11:45:27 -0700 (PDT)
+        bh=3fgjYAnCNIvmMVVgUnMQbGXatUXySQpQ8c1S2uxWfzQ=;
+        b=JvWBno0EPHLcG3ugOz8Rz8DLiXW60PWQbd965vwmiLw7+9uSPeAi4LxshpB1Jlz0Yf
+         1bfhwrBX7HH19UmKoYEfIa3/K+TIcQMv1iZRBALvXUp2yoK7QZKjnYKXvk0Y/+lmOqIY
+         vL0Dluk2OHzwoHoWIDv6WVwF5IItPmh8rMc8pl1Kvo9sE3bOX4bxVNYfcxwjZ9VFOdlR
+         qyb4RGiLx9tpwvOfOtyYSh8PgM+0qUVbQXzEpLLZyWSjNgHOuHY0MfVx0dS4GlLogEQd
+         INtG3cJz8plkAhzSqwwBXysNk0NE/QerGvnv6Mo9uaGXalCHMdNWTIXWtf8roo4keASW
+         fy7w==
+X-Forwarded-Encrypted: i=1; AKwUvBxsHsMzim66v4pwihyz2uTrQoNHUtycaGry2I38tT/S9c/whUW6DTUxVYZ20ovjFbzPXiezAgo=@vger.kernel.org
+X-Gm-Message-State: AFuF++komEVZ1GhCYK+VGJ6KwnSKQMech+5GVbSoNHxOgrLXC+8eihnE
+	/J3VkVDisBewYZN67l1CftgxRbpEEMu1MHsvhLB8hltOl1RKjjJ3H/oQm/oIAe7tq3Cba5Fvn2I
+	aqad3FSQrfWEEcfZZ4nDMlM49TD3PJbVX7eLvJEr7
+X-Gm-Gg: AYBFou2/mGGMcClV0vJhRQ3QJKMwOlz+YraD+c8/FeUNMjtQ4AGJnApoJsP8SSjK30d
+	KGusg9AByKSmQXIf8GIQoVqzJtk5g4YTCB4e+n4XAlJrNKDI/61iU9CCQspoJ84cgbEr1GkyRet
+	xnUXe4xQzfZwF4KWxxBNufQ6B6BsIiVhQvWF48+tzUhsRJMApM89+rPnB4W2Bdi51DIqnd8JZ4T
+	L2WU0Dh8IUCxaNqsgp0qc+8zPARxb2327WT2Lj6/c7uM5Ox1CkXvpr7fbghI7R2HyroVHfqpQWn
+	hZRulFUc8Pj8Cj0FRCfTU9q/oSqcNRxvHCrqEis6PExMifGn/6hdQrAGR5UHSC0kHpJN3ATIbM+
+	UmLuJmigFe/h98P0DnRFQXo1a/RtXT1Zplr0J1M5fpyrSCbVUtp9HbO/FaGN/tB0JQ3/pp7t9dE
+	o8kM+vBYMgpCTP11p3smG7MryTlw==
+X-Received: by 2002:a05:6830:6d23:b0:805:7395:3db4 with SMTP id
+ 46e09a7af769-8089974bc35mr4950561a34.12.1789411745697; Mon, 14 Sep 2026
+ 11:49:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260913113522.2674588-1-hdthky0@gmail.com> <178938799829.22033.13386158820091728844@kernel.org>
-In-Reply-To: <178938799829.22033.13386158820091728844@kernel.org>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Mon, 14 Sep 2026 14:45:15 -0400
-X-Gm-Features: AcwNN1UoClxoGetwJ1AafGRvEazsIKxBVsqIWr5gxkX6ipl4l4fqy9ZTB8Hq45A
-Message-ID: <CADvbK_f_im2JK5__BU+QHS1gyQ51QVRAD=8ov4rjVQmS1oNn5Q@mail.gmail.com>
-Subject: Re: [PATCH] sctp: reject forged cookie peer_addr with unknown address family
-To: netdev-bot+sashiko@kernel.org
-Cc: hdthky0@gmail.com, marcelo.leitner@gmail.com, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	linux-sctp@vger.kernel.org, netdev@vger.kernel.org
+References: <bd87fb25-b125-42b6-b70f-5bc5a9b6bcbd@I-love.SAKURA.ne.jp>
+ <39ed6ba0-bef0-4710-9790-ab13092521b1@I-love.SAKURA.ne.jp>
+ <591e7555-a399-4753-becb-b00df2df660d@I-love.SAKURA.ne.jp>
+ <56c707e7-1fb0-43ec-b8fb-cf6f451e513e@I-love.SAKURA.ne.jp>
+ <271af679-34c1-4f7e-875c-4761c22595eb@I-love.SAKURA.ne.jp>
+ <d0d5bb33-c9fb-4442-9015-7999f91b4e29@I-love.SAKURA.ne.jp> <CANn89i+-pNgDa1TEs3TYCoeHhf6_eeLuQ7jhpzDZvEXc+3WkcA@mail.gmail.com>
+In-Reply-To: <CANn89i+-pNgDa1TEs3TYCoeHhf6_eeLuQ7jhpzDZvEXc+3WkcA@mail.gmail.com>
+From: Aleksandr Nogikh <nogikh@google.com>
+Date: Mon, 14 Sep 2026 20:48:52 +0200
+X-Gm-Features: AcwNN1Ui9KNy01_dk8NiW12z7_kNg-gLkKZZ3QyPz320ynOwp--FSDRYt7i5O4g
+Message-ID: <CANp29Y7hm+ehJ4+whyBtRtDMUcGXH=ee6aCrFMAMWL9k-G8ZJg@mail.gmail.com>
+Subject: Re: [PATCH v3] net: track raw dev_put()/dev_hold() usage under CONFIG_NET_DEV_REFCNT_TRACKER=y
+To: Eric Dumazet <edumazet@google.com>
+Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>, Dmitry Vyukov <dvyukov@google.com>, 
+	Network Development <netdev@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 14, 2026 at 8:13=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
-te:
+On Mon, Sep 14, 2026 at 1:44=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
+wrote:
 >
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider:
->
-> Critical: 0 =C2=B7 High: 1 (1) =C2=B7 Medium: 0 =C2=B7 Low: 0
->
-> - [High] Incomplete fix: sctp_unpack_cookie()
->   (net/sctp/sm_make_chunk.c:1858-1860) only checks that the forged=E2=80=
-=A6
->
-> Pre-existing issues:
-> - [High] This problem wasn't introduced by this patch, but the patch
->   establishes the NULL-check contract for sctp_get_af_specific() at one=
-=E2=80=A6
->
-> --
->
-> sctp: reject forged cookie peer_addr with unknown address family
->
-> This adds a family whitelist for the COOKIE-ECHO cookie peer_addr in
-> sctp_unpack_cookie(), and makes sctp_transport_new() bail out when
-> sctp_get_af_specific() has no implementation for the requested family.
-> Both changes target the null dereference seen from sctp_transport_init().
->
-> > diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
-> > index 84a4c97d0f755..7c8fe4b38cd1c 100644
-> > --- a/net/sctp/sm_make_chunk.c
-> > +++ b/net/sctp/sm_make_chunk.c
-> > @@ -1855,6 +1855,10 @@ struct sctp_association *sctp_unpack_cookie(
-> >       if (!sctp_auth_verify_cookie_params(ep, bear_cookie))
-> >               goto malformed;
+> On Mon, Sep 14, 2026 at 3:24=E2=80=AFAM Tetsuo Handa
+> <penguin-kernel@i-love.sakura.ne.jp> wrote:
 > >
-> > +     if (bear_cookie->peer_addr.sa.sa_family !=3D AF_INET &&
-> > +         bear_cookie->peer_addr.sa.sa_family !=3D AF_INET6)
-> > +             goto malformed;
-> > +
->
-> [Severity: High]
-> Does this check still leave the mismatched-family case open?  It only ask=
-s
-> whether sa_family is one of AF_INET or AF_INET6, it never relates that fa=
-mily
-> to the family of the endpoint that received the packet.
->
-> On a PF_INET listener with cookie authentication disabled the cookie cont=
-ents
-> are attacker supplied, so sa_family can be AF_INET6.  The new guard in
-> sctp_transport_new() passes as well, since sctp_get_af_specific(AF_INET6)=
- is
-> non-NULL on CONFIG_IPV6 kernels, and the transport ends up with
-> af_specific =3D sctp_af_inet6.
->
-> sctp_assoc_add_peer() then routes that transport using the IPv4 socket:
->
-> net/sctp/associola.c:sctp_assoc_add_peer() {
->         sp =3D sctp_sk(asoc->base.sk);
->         ...
->         /* Initialize the pmtu of the transport. */
->         sctp_transport_route(peer, NULL, sp);
-> }
->
-> sctp_transport_route() calls af->get_dst(), which is sctp_v6_get_dst() he=
-re:
->
-> net/sctp/ipv6.c:sctp_v6_get_dst() {
->         struct ipv6_pinfo *np =3D inet6_sk(sk);
->         ...
->         final_p =3D fl6_update_dst(fl6, rcu_dereference(np->opt), &final)=
-;
-> }
->
-> inet6_sk() returns inet_sk(sk)->pinet6, which is only populated by
-> inet6_create(), so np is NULL for an AF_INET socket and np->opt is
-> dereferenced with no guard.
->
-> Isn't that the same remotely triggered null dereference in softirq contex=
-t
-> that this patch is meant to close, only at a different offset?
->
-> For comparison, sctp_process_param() already refuses IPv6 addresses on
-> sockets that are not PF_INET6:
->
->         case SCTP_PARAM_IPV6_ADDRESS:
->                 if (PF_INET6 !=3D asoc->base.sk->sk_family)
->                         break;
->
-> Would it make more sense to validate the cookie family against the receiv=
-ing
-> socket family, or against SCTP_INPUT_CB(skb)->af->sa_family, rather than
-> accepting AF_INET6 unconditionally?
->
-I think you can try fixing it with af->addr_valid() in
-sctp_unpack_cookie(), like:
-
-        paddr =3D &bear_cookie->peer_addr;
-        af =3D sctp_get_af_specific(paddr->sa.sa_family);
-        if (!af || !af->addr_valid(paddr, sctp_sk(ep->base.sk), NULL))
-                goto malformed;
-
-You may also need to add an inet.sk.sk_family check in
-sctp_v6_addr_valid():
-
-diff --git a/net/sctp/ipv6.c b/net/sctp/ipv6.c
-index ef26878f1282..12e429b3e2d1 100644
---- a/net/sctp/ipv6.c
-+++ b/net/sctp/ipv6.c
-@@ -734,6 +734,9 @@ static int sctp_v6_addr_valid(union sctp_addr *addr,
- {
-        int ret =3D ipv6_addr_type(&addr->v6.sin6_addr);
-
-+       if (sp && sp->inet.sk.sk_family !=3D PF_INET6)
-+               return 0;
-+
-
-> >       /* Populate the association from the cookie.  */
-> >       memcpy(&retval->c, bear_cookie, sizeof(*bear_cookie));
+> > On 2026/08/29 23:58, Tetsuo Handa wrote:> syzbot is still reporting
+> > >
+> > >   unregister_netdevice: waiting for DEV to become free
+> > >
+> > > problems. There is netdevice_tracker which helps identifying culprit
+> > (...snipped...)
+> > > ---
+> > > To: Eric
+> > >   Please see off-list mail <e2f7c53b-fe15-4047-8149-145c91de297f@I-lo=
+ve.SAKURA.ne.jp> .
+> > >
+> > > Changes in v3:
+> > >   - Repost as v3, as sashiko's review comments at
+> > >     https://sashiko.dev/#/patchset/56c707e7-1fb0-43ec-b8fb-cf6f451e51=
+3e@I-love.SAKURA.ne.jp
+> > >     was addressed. I assume that no more technical problem remains, a=
+nd only how to split
+> > >     this patch into several patches for getting approval from relevan=
+t subsystems remains.
+> > >
 > >
-> > diff --git a/net/sctp/transport.c b/net/sctp/transport.c
-> > index 6ea55b9fbde45..cd1a604d6f8e3 100644
-> > --- a/net/sctp/transport.c
-> > +++ b/net/sctp/transport.c
-> > @@ -92,6 +92,9 @@ struct sctp_transport *sctp_transport_new(struct net =
-*net,
-> >  {
-> >       struct sctp_transport *transport;
-> >
-> > +     if (!sctp_get_af_specific(addr->sa.sa_family))
-> > +             return NULL;
-> > +
+> > Sashiko did not find problems with this version
+> > ( https://sashiko.dev/#/patchset/271af679-34c1-4f7e-875c-4761c22595eb@I=
+-love.SAKURA.ne.jp ) .
+> > Any questions?
 >
-> [Severity: High]
-> This isn't a bug introduced by this patch, but the same
-> sctp_get_af_specific() result is used unchecked a little further along th=
-e
-> same COOKIE-ECHO path, in sctp_process_init():
+> I am adding Dmitry and Aleksandr to Cc, because I think the best answer
+> to your problem is not a netdev one. More on this below.
 >
-> net/sctp/sm_make_chunk.c:sctp_process_init() {
->         sctp_walk_params(param, peer_init) {
->                 if (!src_match &&
->                     (param.p->type =3D=3D SCTP_PARAM_IPV4_ADDRESS ||
->                      param.p->type =3D=3D SCTP_PARAM_IPV6_ADDRESS)) {
->                         af =3D sctp_get_af_specific(param_type2af(param.p=
-->type));
->                         if (!af->from_addr_param(&addr, param.addr,
->                                                  chunk->sctp_hdr->source,=
- 0))
->                                 continue;
->         ...
-> }
+> First, sorry for letting this series sit for three rounds. You are one
+> of the very few people actually chasing the "unregister_netdevice:
+> waiting for %s to become free" reports, that work is not fun, and
+> silence is not the answer you deserved.
+>
+> Let me also say clearly that I do not think the approach is bogus. Once
+> a reference is taken without a tracker, there is no slot to store a
+> cookie in, so counting +1/-1 per unique stack and looking at the balance
+> is essentially the only thing one can do. And 10 bugs fixed is more
+> evidence than most debug facilities come with.
+>
+> My problem is the cost/benefit for mainline. This adds a field to
+> struct net_device and code to __dev_hold()/__dev_put(), which are inline
+> and expanded in thousands of places, in order to produce information
+> that is strictly weaker than what ref_tracker already gives us (a stack
+> balance cannot tell which hold was not released when the same call site
+> does both). It is a workaround for an incomplete migration, and we would
+> be carrying it forever. Even with a perfect implementation I would be
+> lukewarm, and I would rather tell you that now than stay silent again.
+>
+> But you should not have to wait for netdev consensus to get the data you
+> need, so:
+>
+> Could syzbot run a dedicated instance on a branch carrying this patch?
+>
+> There is precedent: KMSAN lived out of tree for years with its own
+> syzbot instance, and that is exactly how it accumulated the evidence
+> that got it merged. Your real requirement, as I understand it, is not
+> "this must be in net-next", it is "the mechanism must be present in a
+> tree that syzbot builds", because the remaining bugs have no reproducer
+> and #syz test is therefore unavailable. A dedicated instance on, say,
+> linux-next plus your patch would give you continuous coverage on exactly
+> the bugs you cannot reproduce, immediately, and without anyone having to
+> agree first.
 
-This looks like a legit one. Please add !af to this check in
-sctp_process_init().
+Normally, syzbot fuzzes kernel changes across different environments
+(qemu, various gce machines) and architectures (amd64, arm64, riscv),
+but adding just one dedicated instance, which would get much less
+compute than the rest of the syzbot fleet, IMO offers very little
+benefit over just casually running syzkaller locally.
 
-Also, in sctp_process_param(), af->addr_valid() is needed, since we only
-want unicast addresses to be added. As addr_valid() now checks sk_family
-and ipv6_only_sock, we can simplify it to:
+How to organize this is also an interesting question. Applying the
+patch on the syzbot side would make syzbot show non-existent commit
+hashes in the reports. If there's to be a separate branch/tree that we
+would fuzz, it really must not lag too far behind linux-next/torvalds
+- the community is very annoyed by outdated reports.
 
-        switch (param.p->type) {
-        case SCTP_PARAM_IPV6_ADDRESS:
-        case SCTP_PARAM_IPV4_ADDRESS:
-                af =3D sctp_get_af_specific(param_type2af(param.p->type));
-                if (!af->from_addr_param(&addr, param.addr,
-htons(asoc->peer.port), 0))
-                        break;
-                if (!af->addr_valid(&addr, sctp_sk(ep->base.sk), NULL))
-                        break;
+Speaking of the absence of reproducers, I think we should start by
+cleaning up the existing open bug:
+https://syzkaller.appspot.com/bug?extid=3De2af46126e0644cbebdd
 
-Thanks.
+Currently, it is an umbrella for many different crashes accumulated
+over many months. It also has some reproducers; some were even found
+recently. If we keep closing this bug after fixing the root causes
+found by the open reproducers, syzbot will keep on discovering and
+reporting new ones even without an extra debugging patch.
+
+A small related question: should we report it per-device type, like
+`unregister_netdevice: waiting for netdevsimNUM to become free`, or
+would that only create duplicates, and it's better to keep everything
+in one bucket?
 
 >
-> The five other sctp_get_af_specific() callers in sm_make_chunk.c,
-> bind_addr.c and input.c all test the result for NULL first.
+> It is not free for you: you would own the branch and the rebases. But it
+> also turns the discussion around. If the instance produces a stream of
+> diagnosed imbalances over a few months, the case for upstreaming becomes
+> an empirical one rather than a design argument, and I would find it much
+> harder to object to.
 >
-> On a CONFIG_IPV6=3Dn build sctp_get_af_specific(AF_INET6) is permanently =
-NULL,
-> and sctp_verify_param() accepts SCTP_PARAM_IPV6_ADDRESS with a bare break=
-, so
-> an attacker supplied IPv6 address parameter reaches af->from_addr_param w=
-ith
-> af =3D=3D NULL.
+> Dmitry, Aleksandr, does that sound feasible?
+
+Tetsuo, based on historical experience, how many issues do you expect
+to detect this way?
+
+I can imagine setting this up as a short-term experiment, but I still
+wonder about the benefits of having it specifically on the syzbot
+infrastructure.
+
 >
-> That block only runs when src_match is 0, and sctp_sf_do_5_1D_ce() is the=
- one
-> sctp_process_init() caller that does not pass sctp_source(chunk) as peer_=
-addr:
+> If you would rather still pursue mainline inclusion, here is what I
+> would need, roughly in order of importance:
 >
-> net/sctp/sm_statefuns.c:sctp_sf_do_5_1D_ce() {
->         if (!sctp_process_init(new_asoc, chunk,
->                                &chunk->subh.cookie_hdr->c.peer_addr,
->                                peer_init, GFP_ATOMIC))
->         ...
-> }
+> 1) The per-call list walk has to go. Today every __dev_hold() /
+>    __dev_put() walks a per-device list doing memcmp() of up to 160 bytes
+>    per node. With a few thousand distinct traces on a device, that is
+>    hundreds of KB of memory traffic per refcount operation, and it gets
+>    worse precisely on the devices you are investigating. I suspect it
+>    costs much more than the stack_trace_save() itself. stack_depot_save()
+>    gives you a handle, and a small hash of { handle -> atomic count }
+>    makes this O(1), removes the 6 MiB static array, the global raw
+>    spinlock, the sticky "exhausted" flag and the dedup pass at dump time.
+>    Ideally this lives in lib/ref_tracker.c as a "count only" mode, so
+>    other ref_tracker users benefit and net/core/dev.c gains a few lines.
+
+FWIW there were any stack traces in the reports at all, syzbot's AI
+repro generation (which we are piloting now) would already be able to
+kick in and generate reproducers even if syzkaller fails.
+
 >
-> So src_match stays 0 whenever the COOKIE-ECHO source address differs from=
- the
-> cookie peer_addr, which is attacker chosen with cookie authentication
-> disabled, and also reachable with cookie authentication enabled by replay=
-ing a
-> legitimately obtained cookie from another source address while keeping th=
-e
-> same source port.
->
-> Since this is the same failure mode the patch hardens in sctp_transport_n=
-ew(),
-> would it be worth adding the missing !af check in sctp_process_init() in =
-the
-> same series?
->
-> >       transport =3D kzalloc_obj(*transport, gfp);
-> >       if (!transport)
-> >               return NULL;
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20260913113522.2674588-1-hdthky0%40gmail.com
+> 2) Do not overload CONFIG_NET_DEV_REFCNT_TRACKER. People enable it today
+>    expecting the cost of one stackdepot entry per tracked reference. A
+>    separate option (default n, depends on DEBUG_KERNEL), ideally behind a
+>    static key, lets them opt in knowingly. Some numbers on the slowdown
+>    would help too.
+
+Upstreaming it under some separate option would be the best approach
+for syzbot - we could then just enable it on all our instances.
+
+< ... >
+
+--=20
+Aleksandr
