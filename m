@@ -1,87 +1,223 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4322476CED;
-	Mon, 14 Sep 2026 13:15:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60733DA7D4;
+	Mon, 14 Sep 2026 13:37:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789391713; cv=none; b=QJOHeUy4cqsv0VRYmhqVti9tehFXCfgigTc71X5dRI1OP1+sJIXL8cZQItl5H4pmlh5iGSL1JvZhCJzVjlJMyv3VHiU/z1t7PLGVfxyFCWbMwRpyvya4BKP4XZ+PZgjk36FLRy6GfTeYc83wNIJLRfbt6OvPMvL0xmjo5bt6ssY=
+	t=1789393036; cv=none; b=bE8LDjUzCMDmTG5sZyrgu9q1QKnhNYqEBQvnkVChMN2OASs75S1PsWqyvZUwgN6EDhp2W4V2aNAaMZfb7DXjmNGnuEGbfIz9VWKggGezbqaGlDqQp7M30E43XAwi5aRYD5YQJxPDLkfzFhJcLSOEDYlLweM/gG4uTkeU7GZHFUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789391713; c=relaxed/simple;
-	bh=PF9u7DYv9qFIslukP9LwzISVHtIb3gYuRnqxZlxFypM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=XUfvhzKXUIP0RIBGFEkAUoHC66j/j5lVeXk/7C3MasUv01n806jmcoGEHmX9aSYYafBlmyxXTQ21Kp77Rf83iqU+a+3187D+oOVB+fR02qWyA1lFif6+MVvAFA1RWZ+2BDaR8TNAaxjGR1dHEq+n/C8dwPCra/6n1HHeEHrdNWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SxKPjlum; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1789393036; c=relaxed/simple;
+	bh=Rrqk5haBY4tWRAomo0OZxzkC1GZJtdylA/WhZozTuaM=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=pjNwapB0JPQ/OMaxahQkqzP1wT36q1kVPnJSuceYsDCnYdTzZ+K+tCTTWbYGDuSaNgy/UwPLF2B/tNQq/oK1Pv07NMDb7AZK3jUBpmIRTp/pHQ34lg6tLyYU9MvSyYUV4gQsscyxg0RLmlLegVVCepizRrVtKVVAHTbFj2bpAVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OyM6KLqA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SxKPjlum"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id DA236C6220A;
-	Mon, 14 Sep 2026 13:15:52 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9AC9960323;
-	Mon, 14 Sep 2026 13:15:09 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C548511C7AFC3;
-	Mon, 14 Sep 2026 15:14:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789391704; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=PF9u7DYv9qFIslukP9LwzISVHtIb3gYuRnqxZlxFypM=;
-	b=SxKPjlumrmLPx8G3OPdJHMCjg0uhorZ9JkemWkvjRbh/+4NYUgGLeeGxaJXWTAgXjj381l
-	wN98FXQvXyHgS7I7CXFu4LgpgQBVEJ0ksOP37XPWW+oSLq4bP1+qGzbM1kAnIiY5cvjoy/
-	4Psslo9bZ/mXq6obNaRJfY3P/dV6SuZmcRHDMcCaKajDrJR7gqLOpYFK5ifAg9dNSgGusi
-	E8BAgOXPKZjkdkyTFgyZQ6745i8p5rXVMscORBPbJEQlatC9lO3IJsKryQ87Lv/VPNBOrQ
-	svYncYsx6cis7MVfbq/gwgmw83VWLwBsbIlA5Jb8Vdv5IJKAD/YmVbqnn54eAQ==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Jacky Huang <ychuang3@nuvoton.com>
-Cc: Shan-Chun Hung <schung@nuvoton.com>,  Michael Turquette
- <mturquette@baylibre.com>,  Stephen Boyd <sboyd@kernel.org>,  Brian Masney
- <bmasney@redhat.com>,  Richard Cochran <richardcochran@gmail.com>,  Arnd
- Bergmann <arnd@arndb.de>,  Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>,  Steam Lin <STLin2@winbond.com>,
-  linux-arm-kernel@lists.infradead.org,  linux-clk@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  netdev@vger.kernel.org,
-  stable@vger.kernel.org
-Subject: Re: [PATCH] clk: nuvoton: ma35d1: Use clk_hw pointers as mux parents
-In-Reply-To: <20260813-perso-ma35d1-upstream-clk-v1-1-e78e5e6172ea@bootlin.com>
-	(Miquel Raynal's message of "Thu, 13 Aug 2026 09:28:10 +0200")
-References: <20260813-perso-ma35d1-upstream-clk-v1-1-e78e5e6172ea@bootlin.com>
-User-Agent: mu4e 1.12.12; emacs 30.2
-Date: Mon, 14 Sep 2026 15:14:59 +0200
-Message-ID: <87o6e0nfe4.fsf@bootlin.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OyM6KLqA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79561F000FF;
+	Mon, 14 Sep 2026 13:37:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789393034;
+	bh=h6WkNjbtd4spIdcWaRB3Goha7mgelfWeHhKPKmKGcS0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=OyM6KLqAcYypQJODs0sQBC2Fwyixw9dLO1DScwgSy0OCA1T/MSU9s3Jm0G8HDWYZF
+	 +pfHO4svw6gZCbWy7IiBW6+QyBxAZ+D4mhLyItgKeS/Cj/wdaCwWFH5Cgk/jMSrdy5
+	 wm5r+j6KlL1olt+GFZVd4aC62yoQw2aT/FiqANGBz7SYUgXpk1IzJqa1HaFiDPk0if
+	 OcLO1Bb+dkmZpEjoZJjeXiXNtVb5GHQN4fJKgMnc9v7+L+oBL1otIDhtbELZvrHThm
+	 27Xhu+E7hR0UdwwDs9Z0Ggcg/s2EHJJp6R9iH4F7Qn07/5Iao6T3R+kSCfUbelVMW3
+	 ptyMz9iBhzptw==
+Subject:
+ Re: [PATCH net] octeontx2-af: validate MCS blocks before initialization
+From: netdev-bot+sashiko@kernel.org
+To: bolin.liu@seu.edu.cn
+Cc: sgoutham@marvell.com, rkannoth@marvell.com, gakula@marvell.com,
+ sbhatta@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 14 Sep 2026 13:37:13 +0000
+Message-ID: <178939303324.22033.8880641797671106965@kernel.org>
+In-Reply-To: <20260913125206.109985-1-bolin.liu@seu.edu.cn>
+References: <20260913125206.109985-1-bolin.liu@seu.edu.cn>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hello,
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
-On 13/08/2026 at 09:28:10 +02, Miquel Raynal <miquel.raynal@bootlin.com> wr=
-ote:
+Critical: 0 · High: 2 (1) · Medium: 0 · Low: 0
 
-> The MA35D1 clock provider registers its muxes with parent data
-> structures filling .fw_name. This is not the ideal approach since that
-> would require a massive amount of internal clock names declaration in
-> the DT. Since the DT does not play the game of exposing all these names,
-> none of the parent lookups performed when instantiating the muxes
-> succeed. As a result, these muxes get registered as root clocks, leading
-> to a sadly flat clock tree and no frequency assigned to most of the
-> peripheral clocks:
+- [High] The new `return -ENODEV` in rvu_mcs_init()
+  (mcs_rvu_if.c:892-896) aborts before mcs->rvu, mcs->pf, mcs->vf are…
+- [High] The patch introduces a Time-Of-Check to Time-Of-Use (TOCTOU)
+  race by locklessly pre-checking mcs devices before a subsequent…
 
-Jacky, this is an actual fix which is a month old now, the SPI
-controller (and maybe other blocks as well) does not work without this
-patch. Would you mind giving this a bit of feedback?
+Pre-existing issues:
+- [High] mcs_remove() (mcs.c:1609-1620) never unlinks the block from the
+  global list: it calls mcs_set_external_bypass(), free_irq(),…
 
-> Fixes: f50a000b4219 ("clk: nuvoton: Use clk_parent_data instead of string=
- for parent clock")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+--
 
-Thanks,
-Miqu=C3=A8l
+octeontx2-af: validate MCS blocks before initialization
+
+This adds a pre-pass in rvu_mcs_init() that walks every MCS block id in
+[0, rvu->mcs_blk_cnt) and returns -ENODEV if mcs_get_pdata() returns NULL
+for any of them, before the loop that programs the blocks.
+
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c b/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
+> index fce22e314cac0..0ee2d0d698e5c 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
+> @@ -889,6 +889,11 @@ int rvu_mcs_init(struct rvu *rvu)
+>  		rvu_mcs_set_lmac_bmap(rvu);
+>  	}
+>  
+> +	for (mcs_id = 0; mcs_id < rvu->mcs_blk_cnt; mcs_id++) {
+> +		if (!mcs_get_pdata(mcs_id))
+> +			return -ENODEV;
+> +	}
+
+[Severity: High]
+The check and the use are two independent walks of the same
+unsynchronized list, so what does the pre-pass actually buy us?
+
+mcs_get_pdata() in mcs.c walks the file-global mcs_list with a plain
+list_for_each_entry() and no lock or RCU, and mcs_probe() links onto
+that list with a bare list_add(). Nothing in rvu_mcs_init() pins the
+blocks between the new validation loop and the programming loop below
+it, which re-fetches the pointer:
+
+	mcs = mcs_get_pdata(mcs_id);
+	mcs_install_flowid_bypass_entry(mcs);
+
+So the new loop only establishes that every id in [0, mcs_blk_cnt) was
+resolvable at the moment it ran. If an MCS PCI function goes away in
+the window - "echo <mcs-bdf> > /sys/bus/pci/drivers/mcs/unbind" while
+AF probe is in progress - the second mcs_get_pdata() for that id can
+still hand back NULL and mcs_install_flowid_bypass_entry(mcs) will
+dereference it immediately, which is exactly the crash the commit
+message says it prevents. The rest of the loop body (mcs->hw->lmac_cnt,
+mcs->rvu, mcs->dev in the devm_kcalloc() calls) has the same problem.
+
+Folding the NULL test into the existing programming loop, so the
+pointer that is checked is the pointer that is used, would at least
+remove the second lookup and is a strictly smaller change. That still
+leaves the underlying question of how mcs_list is meant to be
+serialized against driver unbind - is there an intended lock or
+refcount here, or is the assumption that rvu_mcs_init() cannot run
+concurrently with mcs_remove() at all? If it is the latter, please
+spell that assumption out, because the pre-pass reads as if it were
+defending against exactly that race.
+
+While you are in here: rvu_mcs_set_lmac_bmap() above the new loop
+already does mcs_get_pdata(0) and dereferences mcs->hw->lmac_cnt with
+no check, so on the CN10K-B (mcs_blk_cnt == 1) path a missing block
+faults before the new validation is ever reached. Should the check
+move ahead of that call instead?
+
+[Severity: High]
+Does this early return leave the already-probed MCS blocks with live
+interrupts pointing at uninitialized AF state?
+
+The new return happens before the second loop assigns mcs->rvu, mcs->pf
+and mcs->vf, and before INIT_LIST_HEAD(&rvu->mcs_intrq_head), INIT_WORK()
+and alloc_workqueue("mcs_intr_wq") run.
+
+Meanwhile every block that did probe already armed its interrupts in its
+own probe, mcs_probe() -> mcs_register_interrupts(), which does
+request_irq(..., mcs_ip_intr_handler, 0, "MCS_IP", mcs) and writes
+MCSX_IP_INT_ENA_W1S / MCSX_CPM_RX_SLAVE_RX_INT_ENB, and only then does
+list_add(&mcs->mcs_list, &mcs_list).
+
+So after the -ENODEV, an MCS CPM interrupt would run:
+
+mcs_ip_intr_handler()
+  mcs_rx_misc_intr_handler()
+    mcs_add_intr_wq_entry()
+
+and mcs_add_intr_wq_entry() has no NULL guard:
+
+	struct rvu *rvu = mcs->rvu;
+	...
+		pfvf = &mcs->pf[rvu_get_pf(rvu->pdev, pcifunc)];
+	...
+	list_add_tail(&qentry->node, &rvu->mcs_intrq_head);
+	queue_work(rvu->mcs_intr_wq, &rvu->mcs_intr_work);
+
+mcs->rvu is still NULL here since struct mcs is devm_kzalloc()'ed and
+mcs->rvu is only set in the loop below the new check.
+
+On the AF side, rvu_setup_hw_resources() does:
+
+	err = rvu_mcs_init(rvu);
+	if (err) {
+		dev_err(rvu->dev, "%s: Failed to initialize mcs\n", __func__);
+		goto nix_err;
+	}
+
+The nix_err path never calls rvu_mcs_exit(), and mcs_driver stays bound to
+the MCS PCI functions, so nothing disables the interrupt enables that were
+just programmed. Links and RX were already enabled by cgx_start_linkup()
+earlier in rvu_setup_hw_resources(), and the surviving blocks are not in
+external bypass, so received traffic carrying a SecTAG can still raise
+MCS_CPM_RX_INT_SECTAG_V_EQ1.
+
+The commit message says "so a failed lower-ID probe cannot cause a NULL
+dereference". In that exact configuration, does the dereference just move
+from probe time to interrupt time rather than going away? Would it make
+sense to also guard mcs_add_intr_wq_entry() on !mcs->rvu / !mcs->pf, or to
+disarm the probed blocks before returning?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but is a non-NULL result from
+mcs_get_pdata() actually proof that the block is live?
+
+mcs_remove() does not unlink the block from the global list:
+
+	static void mcs_remove(struct pci_dev *pdev)
+	{
+		struct mcs *mcs = pci_get_drvdata(pdev);
+
+		/* Set MCS to external bypass */
+		mcs_set_external_bypass(mcs, true);
+		free_irq(pci_irq_vector(pdev, mcs->hw->ip_vec), mcs);
+		pci_free_irq_vectors(pdev);
+		pci_release_regions(pdev);
+		pci_disable_device(pdev);
+		pci_set_drvdata(pdev, NULL);
+	}
+
+There is no list_del(&mcs->mcs_list) matching the list_add(&mcs->mcs_list,
+&mcs_list) in mcs_probe(). Both mcs and mcs->hw are devm_kzalloc()'ed on
+the MCS PCI device, so devres frees them right after mcs_remove() returns
+and a freed node stays linked in mcs_list. cgx_remove() does the
+list_del(&cgx->cgx_list) that mcs_remove() omits.
+
+mcs_get_pdata() then hands out that dangling pointer:
+
+	list_for_each_entry(mcs_dev, &mcs_list, mcs_list) {
+		if (mcs_dev->mcs_id == mcs_id)
+			return mcs_dev;
+	}
+	return NULL;
+
+So after "echo <mcs-bdf> > /sys/bus/pci/drivers/mcs/unbind", does the new
+check distinguish "never probed" from "probed then freed"? The following
+programming loop would then touch mcs->hw->lmac_cnt and mcs->dev on freed
+memory, and the mailbox handlers that only validate
+req->mcs_id < rvu->mcs_blk_cnt before touching mcs->hw, mcs->mcs_ops,
+mcs->tx_sa_active and mutex_lock(&mcs->stats_lock) would do the same, with
+MMIO going through a released pcim_iomap() mapping.
+
+>  	/* Install default tcam bypass entry and set port to operational mode */
+>  	for (mcs_id = 0; mcs_id < rvu->mcs_blk_cnt; mcs_id++) {
+>  		mcs = mcs_get_pdata(mcs_id);
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260913125206.109985-1-bolin.liu%40seu.edu.cn
