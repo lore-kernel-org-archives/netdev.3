@@ -1,137 +1,72 @@
-Received: from mail-oi2-f11.google.com (mail-oi2-f11.google.com [74.125.231.203])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABEB449B11
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 12:21:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.203
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E9145D1BA;
+	Mon, 14 Sep 2026 12:22:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789388499; cv=none; b=etxLo5+4bLhez8jX6JwEph8eqp7FfybaH8XlbEeTT29VLhp6eyNV/fmzpJjg5xIdGxo2i6/9dZV6zqmN0f1X3e9yNwIbJhm1EL1ZOm34iBmR2Hs81Jd93+J00cz9+Y9cdbWEmGDmO1zb38gy/iqk2WoFmQWTeqUUNKg7JyUufrQ=
+	t=1789388540; cv=none; b=RgoU3iUZ+PICPQsIt7RZnKwMCcAJCuzR3nHxLHz5r8TzUBk1eBn+1JDrl9VgLG4wt49QQaS7y2rkvFr9a+0kxLh6sRKyPnzMoC38pQNV4AGmkl//pa1tKet4qST/1B8I1cSD7CUmRBVbVFFBTwwAqFvwTyxGA1hfNaSgr7ZKcV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789388499; c=relaxed/simple;
-	bh=Kmt3U6aCnvm8ODcbXPvtiqO1+mZ/LdmjAd6NR877ObQ=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=GSrhyroS/3n5gL2nerEXzatk0JKcKYYbbT7F051zn8z5z9IHe9CZRn1iStWa4qNcCXVBa/uU62wwCQtaIf6oJnZE0uNiu+gQVR2rv4OjxLqOzEqIFntURRHG5nmZJBuMhq7ARGDd+1+L11NzDMYojNMmSZD/oas4F4/5n5dtab0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.203
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi2-f11.google.com with SMTP id 5614622812f47-4c6545d0f93so365409b6e.0
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 05:21:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789388496; x=1789993296;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=e7UDkI1nI2STLL0UfF59SCQqQeL0tsVPdReWpwLzv/Q=;
-        b=UyRTLOufC+SQgqxmx8xpAW8ulXPe824juwkjci6qnJ2rWBoJKq/swxIrXVl+7M8amB
-         H5ERcQkBHq9gXQoQOsCJy8mwltIogYCysUFwV2OQYq2U+E/zEx7XYJpPw2e9MKM9CSvi
-         3c4SPHuzdCV+qF53phjUu7cOQQUZsiujrh1I/bGCGLaovQi8E/jj0M0BNpGqQ2DzAmM/
-         dPT8yTEt0j2i5mrUCjmDBfP2d9dcIiJYbji/7GEm10YUXVV87djQt1mug456CMX6EgYe
-         /X/ApQpEQVy2mb3R5xtvps7vt5AHLtcLJhegZHGAPC/DN6lOp0eZc8080sVFrUugm/A3
-         waSg==
-X-Forwarded-Encrypted: i=1; AKwUvByQSxKW29TAfCJVaG1KbCLG8MEIAM4sML63xbOIpUtJ9OE1QPLgcTfEnYtnQDp4SdsdjjtO2zs=@vger.kernel.org
-X-Gm-Message-State: AFuF++nvJnM8pV1/oFVuMecZQOYqxRYJAbn1472up4Yncbral3CJ6hg1
-	0UBYFVguKrGLD4w0CJ7+EYhnoT9hHpmKs/eoQmct545S34JlFyfw63yr7x/fdj/AQ1jbex3aNpR
-	WzSg3pkolYnf0XSgJsdg7vEF12ZTdc3+xp8QCFY2opjsIwc0PG5TVAn1PiL0=
+	s=arc-20240116; t=1789388540; c=relaxed/simple;
+	bh=qPdShSfgkq+3KTJ7gNXeOatTyXVm7bxrm6oXcd5oiMk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=df7w1ROwOz9R2AHwK1mTB8By/J4MLbUgNrmfPjyCXkEBi8ukvcv/Sx+JBIchHMwjTZUPXhxXFdgk80VzCh27kLI1Y/Qiv5RMtIOT6QSm5+3rT1H/zR8b+Ih9m0Y9v6ja1pBlBAGNNdiDew3cnVWgxkaFX5v3f3vxkF+zintndWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=UXDy1+D1; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="UXDy1+D1"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=ghvLGta+3GTM+e87e0RgPt/+FFq592HJXi13+wuZtOM=; b=UXDy1+D1znG15l59XpNgmbZIrg
+	8etl6+dPClUOleXk06VEnIjerZ1lm4C3le8B4kmxdEmrp2501IMrvumh7vLudf9N/G+1A5luBrjVk
+	EHpDtxBzH0tkelYH3V5479kHFBTccg24r2uSCeTUE1FVGMh4BNbtQIvJp1nF+1fyrLUU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x65hE-0054oF-3Q; Mon, 14 Sep 2026 14:22:04 +0200
+Date: Mon, 14 Sep 2026 14:22:04 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: phy: Fix device_set_wakeup_enable()
+ reference in kernel-doc
+Message-ID: <491b39c3-e6d0-44a3-8ba9-516fbe9919c0@lunn.ch>
+References: <20260911204201.95270-1-kmehltretter@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:bc8:b0:4b3:1e40:640b with SMTP id
- 5614622812f47-4c7b34d5ff9mr1493286b6e.6.1789388496650; Mon, 14 Sep 2026
- 05:21:36 -0700 (PDT)
-Date: Mon, 14 Sep 2026 05:21:36 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6aa7e6d0.4c28b7d0.c1bba.001c.GAE@google.com>
-Subject: [syzbot] [x25?] BUG: sleeping function called from invalid context in x25_kill_by_neigh
-From: syzbot <syzbot+9faa82ae2e94c5c7d2ef@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-x25@vger.kernel.org, 
-	ms@dev.tdt.de, netdev@vger.kernel.org, pabeni@redhat.com, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260911204201.95270-1-kmehltretter@gmail.com>
 
-Hello,
+On Fri, Sep 11, 2026 at 10:42:01PM +0200, Karl Mehltretter wrote:
+> The phy_may_wakeup() documentation refers to
+> device_set_wakeup_enabled(), but the function is named
+> device_set_wakeup_enable(). Correct the reference.
+> 
+> The typo was introduced by commit b344bfacf1de ("net: phy: add
+> phy_may_wakeup()").
+> 
+> Assisted-by: LLM
+> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
 
-syzbot found the following issue on:
+Please could you add a Fixes: tag and target net. Developers often
+work on dead stable kernels, before rebasing to net-next for merging,
+so fixing documentation in stable can be useful.
 
-HEAD commit:    50d05c7c76c9 Merge tag 'landlock-7.3-rc3' of git://git.ker..
-git tree:       upstream
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=14abb749580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=b454dc6b1b7acd30
-dashboard link: https://syzkaller.appspot.com/bug?extid=9faa82ae2e94c5c7d2ef
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12445ef9580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16445ef9580000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/7171282977df/disk-50d05c7c.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/eb180d9b54d5/vmlinux-50d05c7c.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/ff1f279b8f9e/bzImage-50d05c7c.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+9faa82ae2e94c5c7d2ef@syzkaller.appspotmail.com
-
-BUG: sleeping function called from invalid context at net/core/sock.c:3832
-in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 29, name: ktimers/1
-preempt_count: 0, expected: 0
-RCU nest depth: 2, expected: 0
-locks held by ktimers/1/29: 4, last CPU#1:
- #0: ffffffff8e0594c0 (local_bh){.+.+}-{1:3}, at: __local_bh_disable_ip+0x3d/0x420 kernel/softirq.c:186
- #1: ffffffff8e1c3c40 (rcu_read_lock){....}-{1:3}, at: __local_bh_disable_ip+0x3d/0x420 kernel/softirq.c:186
- #2: ffffffff8e1c3c40 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:309 [inline]
- #2: ffffffff8e1c3c40 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:849 [inline]
- #2: ffffffff8e1c3c40 (rcu_read_lock){....}-{1:3}, at: netif_receive_skb_core+0x33/0x2b0 net/core/dev.c:6288
- #3: ffff888038d40358 (sk_lock-AF_X25){+.+.}-{0:0}, at: lock_sock include/net/sock.h:1713 [inline]
- #3: ffff888038d40358 (sk_lock-AF_X25){+.+.}-{0:0}, at: x25_kill_by_neigh+0x134/0x2a0 net/x25/af_x25.c:1778
-CPU: 1 UID: 0 PID: 29 Comm: ktimers/1 Not tainted syzkaller #0 PREEMPT_{RT,(full)} 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- __might_resched+0x31b/0x470 kernel/sched/core.c:9256
- lock_sock_nested+0x56/0x130 net/core/sock.c:3832
- lock_sock include/net/sock.h:1713 [inline]
- x25_kill_by_neigh+0x134/0x2a0 net/x25/af_x25.c:1778
- x25_lapb_receive_frame+0x1b0/0xfb0 net/x25/x25_dev.c:138
- __netif_receive_skb_one_core net/core/dev.c:6264 [inline]
- netif_receive_skb_core+0x2a6/0x2b0 net/core/dev.c:6289
- lapbeth_napi_poll+0x45/0x90 drivers/net/wan/lapbether.c:100
- __napi_poll+0xae/0x550 net/core/dev.c:7787
- napi_poll net/core/dev.c:7850 [inline]
- net_rx_action+0x621/0xd70 net/core/dev.c:8007
- handle_softirqs+0x1da/0x6d0 kernel/softirq.c:645
- __do_softirq kernel/softirq.c:679 [inline]
- run_ktimerd+0x6a/0x100 kernel/softirq.c:1174
- smpboot_thread_fn+0x565/0xa70 kernel/smpboot.c:160
- kthread+0x38b/0x470 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
+    Andrew
 
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+pw-bot: cr
