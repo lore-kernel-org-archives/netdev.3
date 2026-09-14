@@ -1,393 +1,108 @@
-Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11020129.outbound.protection.outlook.com [52.101.228.129])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-203.mta0.migadu.com [91.218.175.203])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33FE941CB39;
-	Mon, 14 Sep 2026 08:48:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.129
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789375740; cv=fail; b=XFcp47fSt76bmku9gWaYD/GV1vQErb/18wDnVpiLTYEuJU6jB+HlOEAlE+TWFwtOabP6E5Q5/rYHU400Bb7u3C97JroGFWf6uDP78NA/W+NKBmz33L4cEOw+1/f42XUDHtIvkNALsaKUa6efmZJysyYMSqsx//8mOZqoXvlmygU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789375740; c=relaxed/simple;
-	bh=YkY0srYcp59bnppwGfL9A8b6JRrnWxEUr9bdnmI8y60=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=TUf5bzM5BdzpJ2gNaLQdiBIotuyeKeuaOOF7WwSKBalxSWHQLQ9PwEk/fJrJUcv/VNgVyoX5mfSTTtdLvZQOHXgPikutvdeBghfPl2wSrwF5RydhlZNmd0uLvftScBFPQUgR34TOhzI3Gt2X2KRkTb4SLpaDFtV4X0aF11KkmVA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=X+XOzwEP; arc=fail smtp.client-ip=52.101.228.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F3140F8F8
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 08:53:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.203
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789376002; cv=none; b=UjqIt9drUpKaYIagWZ3mxPOb/Zvw+aPFhIFdXM6gcNx+Wl7Mknk7tkyNoU2MWw3hQgVYhICvzwV7Btjdygvvnt3a7xs1k8pUxGHTELOWFx44P7WQcT//84kg6IYw07PyDOvhlpFDJ2ld4xq1JzgC1JvlXcOUEt1a4JwwOq58nH8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789376002; c=relaxed/simple;
+	bh=0eptoBPKzw2P39r0drFGgeobsP4rL9/tCMFwKo5AcVM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DfU/O/Tou+ZEsJMSxKwULByJjgNDZAlCwmL3L0pgUrdh6ndI4of+5mRQcfcd8gwUjCmzcvvaz5hRXPuCQbRpzF6YsnYO0iKnPMOYo4hzvsFoYLgWyxoTh9Yhepk1QA0E/t02/kfUE+bCwfb6WItUOtR3k6YF9tDHhaiWg0atiA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=lnuPqPec; arc=none smtp.client-ip=91.218.175.203
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="X+XOzwEP"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZMl6HB7HoRZTtYvB/PQq+PhJNI+j03h8zLfVtNxoKj/jIe3+eS9jf2pxBF66nhQ/41m6HPtu3HYDkB9CT6Rg92SuITH6Kj+S94dbjnETP6gKjmrACNXdrVD6znUPVjGYY2ph3KDHuxTGzgLLF3LwiijxHphExq8yjHjrcSFz2Mrb6IbzRwuUQfr1C8rpZ1hb0mquiMdwOF2/A/Av0aGLrDMK1DfU/V7EQ+WiBv+LcKn0NsgOyq2M6JXi+lvlrP7M8AFRYqGMCgxGQzHBeWt1MZ/S1rp3XzjWcI9wMvTrYUUFSSSfmAvErbBtMPdx7OoxlZgqPPLoY1N+VebC1B47mw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=G6j3CPzGkE30anSD7SwfsUj4ESx+O95eIBF+5SAoDaU=;
- b=xFGIXZSEIt0rcL0aM5rp563DFCtGqwAce4dC4wLkSYh3B5VTOvK3dzZiRRxsjwyWGRnmFCYdkGRRqIKxFcLZX6QKWhYLS6jMyXBmDo9dRqAJcScq3b1QAH+TRex0hy0978YWPq40adCGv6cvomcsawyfcMm49BFbkGaXQXc7SAqzA93wvkFUBWzlos76KPPxQIjJVZEdBrzyYihAQiMjQFkmNdrx3Peb8UEQ0xX2G/99ZYvLTyR20FrEQXv9HH4YghyqlQda3VkqZC5s9/nUEeId2xKqsbQWICU94weeHUG2ilFg+EarzYkmFMFzs+3sP1PSS1ldz99j8jIlx/QsBA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
- header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=G6j3CPzGkE30anSD7SwfsUj4ESx+O95eIBF+5SAoDaU=;
- b=X+XOzwEPtpJYGrCOFVvpYjsy3xQ0o/Bmh1+UfXB2N/eEDLKMB/1cz3asgolYSilkyOr4tx1z7cvZuJrtxk5+V/4sgB7CgZcy/VX3agKCtT3BSJKg+J+k+LkcKNcIPOZazWjUYCFF4idLUQNQeNg8h6LZXYBuJVkhbc9HSaQK6EI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=valinux.co.jp;
-Received: from TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:325::11)
- by TYTP286MB4022.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:188::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Mon, 14 Sep
- 2026 08:48:51 +0000
-Received: from TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
- ([fe80::cce5:2aa8:53f9:dba9]) by TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
- ([fe80::cce5:2aa8:53f9:dba9%5]) with mapi id 15.21.0406.007; Mon, 14 Sep 2026
- 08:48:51 +0000
-From: Koichiro Den <den@valinux.co.jp>
-To: Jon Mason <jdmason@kudzu.us>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Allen Hubbe <allenbh@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: ntb@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v4 10/10] net: ntb_netdev: Preserve CHECKSUM_PARTIAL across NTB
-Date: Mon, 14 Sep 2026 17:48:38 +0900
-Message-ID: <20260914084838.2158249-11-den@valinux.co.jp>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260914084838.2158249-1-den@valinux.co.jp>
-References: <20260914084838.2158249-1-den@valinux.co.jp>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TYCP286CA0294.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:3c8::6) To TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:325::11)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="lnuPqPec"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=0eptoBPKzw2P39r0drFGgeobsP4rL9/tCMFwKo5AcVM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789375990; v=1; x=1789980790;
+ b=lnuPqPecl1vPHtS6CsEPgFSyTZVlxE0aWxxp8XX0Tm7kxy6pUEtUWk7QjrNlIwrd3LZqih0S
+ rEk30Dn4mGxzAtVXWCxgUSA1sIaS/3mLjdGrvkDWBN5CcTiivtD2clSzBW8qDleIeLHoJT+SA5P
+ IOWY2XcL+cQLncVge9j7JpKo=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id c9665cda3aeefa43;
+	Mon, 14 Sep 2026 08:53:10 +0000
+X-Mizu-Trace-ID: c9665cda3aeefa43
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <afba7d6a-a1b9-4c55-b3b0-3f034e92a4c3@linux.dev>
+Date: Mon, 14 Sep 2026 16:53:00 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY7P286MB6866:EE_|TYTP286MB4022:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8d32fb6f-f512-4922-9408-08df123d0023
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|10070799003|23010399003|1800799024|366016|3023799007|10067099003|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	53/EryD23DqDNXtAGdsLBLNtyi2qzcu0AuODDyVbyBj/IGWGWJRs/QoMsve0/9S+l9hJJDA9KWlnZ+G8zDHqZCH5yQIVKnFXzveHXkoTmNDfbOLMyxUNofpjKkXa7gnduaJUFRiDJZjtze4ESZdb8xKXKo2E0Xt4aDyA+GdKZQwH+M9XvpUIJN2iJ1G/JgqHQdPAYBokzkypB3DnuIXa3U7TE33233UvOgRJzHJNIJsrNtBiK2wqFG+jhJV08c1/olDEJ/D6G1SO8kmCZO/FiLJyJR3F4EPFLz+gjdFsY+2KdQ9vIaF7//O0IU4CBlpl6juU1/w0S7pnIsLfDPe+vueEbhmaR7dMfGy2f1JjOqoJat6Ghn3CoI97Ud5PUC1I4i79ae9TZNt9WjijdWRtlTHs4uGVM5clvtKrZJ3xsuaeR2QZAvuAZfqL8qtYVjez/eO97J+s0fVSd6p9o2mV7iC1VbndNZ3bo8PoMbcFpRbm1xCNPOwuEg3pOzJC8shc46D8SzhJeo7Xa/mV2MP9fOysC9Do87Oj38eD+mLNxSMGVcS7/Cbv+W4wFJ8JAMpaYJ+Uw/rYnzeWmg1K+qBTItBWpIBorKCcOE1+9/diSAxb6sx1riYgtH02PCgHt4eyCxsLe5CaVnMbJFVBjzuqw7LPGFfS0YQxxDeX/lh6zPw=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(10070799003)(23010399003)(1800799024)(366016)(3023799007)(10067099003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?YjwiTdaXkOPYuVTVUff31+/+Jh5PY8E3KrGN1JR0rFGKAXJjMr1r9gDDhC+Q?=
- =?us-ascii?Q?niW4+kZz0tunu8Zxl7/OcTYblTZ/JqWboKZRZTPJ7t9eUvOKOmXg67qMox7p?=
- =?us-ascii?Q?Zr4wXqqWsgHF1Zm/0ihmcVXsG7/iuZg6UQcWzqLuTIDlVY7P0/9FkDv/Wimw?=
- =?us-ascii?Q?9MgrS2Q4m619lIs4RKEPSpohMH7uh6IPlvCYtPlOKhBaff6LWslSSf0ngWXz?=
- =?us-ascii?Q?++726g33X18oxuR9EatPK81jcFmrjOPU1kSyC7+NVprcRikzPb8T+x+u08gM?=
- =?us-ascii?Q?6KkBpElViXbjZ4ucD0XG+2+nXA0AT5kNjbAbmqt4emJcKG/ypouktGHdaQ7l?=
- =?us-ascii?Q?HgxlK0Fkm/AFjGqwPji0bSKRwdWzx66Z147mHuavsaughI7gPrfhSHACBETW?=
- =?us-ascii?Q?d2Qm/6LYfNncmCyfajEAgXNn55ilUL90ubLDzK+Cpsgn5Vn3S8JWyYrsw3kl?=
- =?us-ascii?Q?paKM7k0jLcolGibVCMebYfS54ZzEe+DP8dvzWc4bHaJETU2BXaxrl43FE98D?=
- =?us-ascii?Q?aQPV+rzPbeSlml+ycop0Rxt/8znMBkjfVTmq+VCzyvS/Ze2gNUIZtg2x/uUy?=
- =?us-ascii?Q?OyGSbbXqA2vFxxCIweHDQmZPDZISc3BEX7at+sR7sn0ej6DiGwPrCKvCjCkD?=
- =?us-ascii?Q?qQaAdrjQUJ9BdWfVPoc0+1jCljjZg+D1QUbZ2mD5+cXbgPI9FuScDFJaOpnQ?=
- =?us-ascii?Q?FRDnGZUyyB/zdYJJT7ymBW6r+TejIbJ8rcakhWpWk0dkQVjJQarGxzbXYDtO?=
- =?us-ascii?Q?DFYFn3cHzbAx5b/WZiFL0933TFBaP/iQi18KMghyGd+0uaqyCI+0/T5qD6LW?=
- =?us-ascii?Q?XLY+EnVupRq/2TNrmrmEpQg6S3+jx88K9y44bN2NFtVhH7x5y/bEE38jeu/X?=
- =?us-ascii?Q?nTTeaiv8YVn4Ib9MWn9FBX/DzHOHy6EivbGzXEU/ZHApdjJXSe+ahnU3ihE+?=
- =?us-ascii?Q?U2p42I0+93s4gq8V7XDvnTWGemIHDXoIABY4aCV9ujUoOQYjYkETxKYd8gWu?=
- =?us-ascii?Q?E64OZK3wXA4quacRQd5+tlnANdyNnKcrfjAqO9PMRJLEYmYslcvVLrRzBNk/?=
- =?us-ascii?Q?RbxWGB+8utYsPgav2K0hPypfZ5uWFQC0ohG65YoA4HXZ8gHDtavz9jBQH0xw?=
- =?us-ascii?Q?o4CCbuHBj/B+nmLt0jpfgACsPBbTqyIiK9KoIDpo23QqrZLlyhz8OGEhTknk?=
- =?us-ascii?Q?lt3m2pAzlnFbe4ywHk/3u0/HihRJ3SonXvQs6hMIYQBKwVuru2glNihNVsDx?=
- =?us-ascii?Q?Qsg++l/MSED2VR9RJzzrd6ypSI/zNO+kdS6xx4Nlpfj8mbVwAboFeQLeZbMK?=
- =?us-ascii?Q?3ObiLgkoZL0vdYGraJ19QpsdjL6C0GujE2kYC5zQopjpc0rmukQvn8v2f7Yf?=
- =?us-ascii?Q?xe9bKHGj4YVdsldn+x2UQ+HeB8PwN+aH1GJGL3bP1Mo0jQjUbKrfSZkLnqJd?=
- =?us-ascii?Q?CxaJYMauiXuFsoz1iszmyBXUhFE0/uK7e2bJBcqlRQzl5LLoqFkJZBMqzprG?=
- =?us-ascii?Q?BZItP5U3dTLez5hsVejkIIgK2jbdqlvsxuLrKG1ZEt4NUapLUYxQtj+7RJMB?=
- =?us-ascii?Q?LXda2grIXFO0qtBSB2wqnUsZU61rHfT+JImvsuMzcr/Uq3sVRQZ9oVkBManG?=
- =?us-ascii?Q?n0lh92qz2eOMd9XUm+ctucrxjtrwBdjDO3Q/2nX0XDasRzjpmatbqBCYSpJE?=
- =?us-ascii?Q?r5D7NKccgM0IvT78IYtPV0k5+TvHCNG7aVpZFa6JxbbuKjJecU4j4OkBDPYj?=
- =?us-ascii?Q?cZOlsmSE5/HPpcDCYSDxUWj1ThBnySi+upUVN0G8wa850NRPQ8Te?=
-X-OriginatorOrg: valinux.co.jp
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8d32fb6f-f512-4922-9408-08df123d0023
-X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB6866.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 08:48:51.5761
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4AR2FppQdYqgvQ6Sen2D/mK+8OVMGSk2DllaEJxyp/ikcgHAMm0wTuDbdEZS/XDJi0XccKwP4cONh/8Y4zLKOA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYTP286MB4022
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 net] tcp: Don't call skb_clone_and_charge_r() for
+ close()d listener in tcp_v6_do_rcv().
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>,
+ netdev@vger.kernel.org, Taras Madan <tarasmadan@google.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Neal Cardwell <ncardwell@google.com>
+References: <20260914011420.115556-1-kuniyu@google.com>
+From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+In-Reply-To: <20260914011420.115556-1-kuniyu@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Calculating L4 checksums can limit ntb_netdev throughput especially on
-embedded systems, where CPU resources are often limited. On a trusted PCIe
-fabric, we can skip that work.
+在 2026/9/14 09:14, Kuniyuki Iwashima 写道:
+> tcp_v6_do_rcv() no longer calls skb_clone_and_charge_r() for
+> TCP_LISTEN since commit 073d89808c06 ("net: fix data-races around
+> sk->sk_forward_alloc").
+> 
+> However, there is still a small race window between tcp_v6_rcv()
+> and tcp_v6_do_rcv(), where concurrent close() changes TCP_LISTEN
+> to TCP_CLOSE, causing skb_clone_and_charge_r() to be called
+> locklessly and resulting in the splat below. [0]
+> 
+> Let's avoid calling skb_clone_and_charge_r() for TCP_CLOSE as well.
+> 
+> This is fine for non-listeners because tcp_rcv_state_process()
+> drops skb for TCP_CLOSE and opt_skb was freed immediately anyway.
+> 
+> [0]:
+> sk->sk_forward_alloc
+> WARNING: net/ipv4/af_inet.c:162 at inet_sock_destruct+0x64d/0x810 net/ipv4/af_inet.c:162, CPU#1: ksoftirqd/1/28
+> Modules linked in:
+> CPU: 1 UID: 0 PID: 28 Comm: ksoftirqd/1 Not tainted 7.2.0 #17 PREEMPT(full)
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
+> RIP: 0010:inet_sock_destruct+0x64d/0x810 net/ipv4/af_inet.c:162
+> Code: 3d 49 ff e9 06 fd ff ff e8 d0 5b 83 f8 90 0f 0b 90 e9 35 fe ff ff e8 c2 5b 83 f8 90 0f 0b 90 e9 c5 fe ff ff e8 b4 5b 83 f8 90 <0f> 0b 90 e9 04 ff ff ff e8 a6 5b 83 f8 90 0f 0b 90 e9 65 fe ff ff
+> RSP: 0018:ffffc90000677bb8 EFLAGS: 00010246
+> RAX: 0000000000000000 RBX: ffff8880117bde80 RCX: ffffffff8957eb41
+> RDX: ffff88801dad5d00 RSI: ffffffff8957ec3c RDI: 0000000000000005
+> RBP: 00000000fffff000 R08: ffffffff8957eb41 R09: 00000000fffff000
+> R10: 0000000000000005 R11: 0000000000000000 R12: dffffc0000000000
+> R13: ffff8880117bdf10 R14: ffffffff81c08eb7 R15: 0000000000000003
+> FS:  0000000000000000(0000) GS:ffff8880d7ae5000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00007f93a1021138 CR3: 00000000207a9000 CR4: 0000000000350ef0
+> Call Trace:
+>   <TASK>
+>   __sk_destruct+0x82/0xae0 net/core/sock.c:2356
+>   rcu_do_batch kernel/rcu/tree.c:2645 [inline]
+>   rcu_core+0x59c/0x1100 kernel/rcu/tree.c:2897
+>   handle_softirqs+0x1e4/0x9b0 kernel/softirq.c:622
+>   run_ksoftirqd kernel/softirq.c:1076 [inline]
+>   run_ksoftirqd+0x38/0x60 kernel/softirq.c:1068
+>   smpboot_thread_fn+0x458/0xc80 kernel/smpboot.c:160
+>   kthread+0x396/0x4a0 kernel/kthread.c:436
+>   ret_from_fork+0x8e0/0xe40 arch/x86/kernel/process.c:158
+>   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+>   </TASK>
+> 
+> Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
+> Reported-by: Taras Madan <tarasmadan@google.com>
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 
-Use the optional ntb_netdev header to carry CHECKSUM_PARTIAL with its
-csum_start and csum_offset.
+Reviewed-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-Exchange receive support at QP link-up and fall back to software if the
-peer does not advertise it. This preserves netdev checksum semantics and
-interoperability with existing transport version 4 peers.
-
-Keep NETIF_F_RXCSUM unchanged while the interface is up so peers can
-rely on the negotiated receive support. Drop partial-checksum frames
-when it is disabled.
-
-Leave the TX and RX checksum features disabled by default. Users can
-just enable them explicitly for links they trust for lower CPU usage
-and/or higher throughput.
-
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
----
-Changes in v4:
-  - Move offload metadata into an ntb_netdev header (Jakub)
-  - Exchange receive support at QP link-up, not on RX (Sashiko)
-  - Keep peer checksum state per QP (Sashiko)
-  - Advertise receive support only with RXCSUM enabled. Drop
-    partial-checksum frames when it is disabled (Sashiko)
-  - Keep RXCSUM unchanged while the interface is up
-
- drivers/net/ntb_netdev.c | 100 ++++++++++++++++++++++++++++++++++++---
- 1 file changed, 93 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/net/ntb_netdev.c b/drivers/net/ntb_netdev.c
-index 67cfe0f1a49a..d889c8538be0 100644
---- a/drivers/net/ntb_netdev.c
-+++ b/drivers/net/ntb_netdev.c
-@@ -4,6 +4,7 @@
-  */
- #include <linux/etherdevice.h>
- #include <linux/ethtool.h>
-+#include <linux/if_vlan.h>
- #include <linux/module.h>
- #include <linux/pci.h>
- #include <linux/ntb.h>
-@@ -29,12 +30,19 @@ static unsigned int tx_stop = 5;
- #define NTB_NETDEV_MAX_QUEUES		64
- #define NTB_NETDEV_DEFAULT_QUEUES	1
- 
-+#define NTB_NETDEV_CAP_CSUM		BIT(0)
-+
- /* An ntb_netdev_hdr precedes the packet. */
- #define NTB_NETDEV_META_HDR		BIT(0)
- 
-+#define NTB_NETDEV_HDR_F_CSUM		BIT(0)
-+
- struct ntb_netdev_hdr {
- 	__le16 len;		/* Header length in bytes, a multiple of 2. */
- 	__le16 flags;
-+	/* From the packet start, excluding this header. */
-+	__le16 csum_start;
-+	__le16 csum_offset;
- };
- 
- struct ntb_netdev;
-@@ -44,6 +52,7 @@ struct ntb_netdev_queue {
- 	struct ntb_transport_qp *qp;
- 	struct timer_list tx_timer;
- 	u16 qid;
-+	bool peer_csum;
- };
- 
- struct ntb_netdev {
-@@ -117,6 +126,7 @@ static void ntb_netdev_event_handler(void *data, int link_is_up, u32 peer_caps)
- 	struct net_device *ndev;
- 
- 	ndev = dev->ndev;
-+	WRITE_ONCE(q->peer_csum, link_is_up && (peer_caps & NTB_NETDEV_CAP_CSUM));
- 
- 	netdev_dbg(ndev, "Event %x, Link %x, qp %u\n", link_is_up,
- 		   ntb_transport_link_query(q->qp), q->qid);
-@@ -189,16 +199,29 @@ static void ntb_netdev_rx_handler(struct ntb_transport_qp *qp, void *qp_data,
- 
- 	skb_put(skb, len + hdr_len);
- 	if (hdr) {
-+		u16 offset = le16_to_cpu(hdr->csum_offset);
-+		u16 start = le16_to_cpu(hdr->csum_start);
- 		u16 flags = le16_to_cpu(hdr->flags);
- 
- 		skb_pull(skb, hdr_len);
--		if (flags)
-+		if (flags & ~NTB_NETDEV_HDR_F_CSUM)
- 			goto rx_drop;
-+
-+		if (flags & NTB_NETDEV_HDR_F_CSUM) {
-+			if (!(ndev->features & NETIF_F_RXCSUM)) {
-+				ntb_netdev_rx_stats_add(ndev, len);
-+				DEV_STATS_INC(ndev, rx_dropped);
-+				goto rx_free;
-+			}
-+
-+			if (start < ETH_HLEN ||
-+			    !skb_partial_csum_set(skb, start, offset))
-+				goto rx_drop;
-+		}
- 	}
- 
- 	ntb_netdev_rx_stats_add(ndev, len);
- 	skb->protocol = eth_type_trans(skb, ndev);
--	skb->ip_summed = CHECKSUM_NONE;
- 	skb_record_rx_queue(skb, q->qid);
- 
- 	netif_rx(skb);
-@@ -216,6 +239,7 @@ static void ntb_netdev_rx_handler(struct ntb_transport_qp *qp, void *qp_data,
- 
- rx_drop:
- 	DEV_STATS_INC(ndev, rx_errors);
-+rx_free:
- 	dev_kfree_skb_any(skb);
- 	skb = new_skb;
- 	goto enqueue_again;
-@@ -316,6 +340,8 @@ static netdev_tx_t ntb_netdev_start_xmit(struct sk_buff *skb,
- 	struct ntb_netdev *dev = netdev_priv(ndev);
- 	u16 qid = skb_get_queue_mapping(skb);
- 	struct ntb_netdev_queue *q;
-+	unsigned int hdr_len = 0;
-+	unsigned int meta = 0;
- 	int rc;
- 
- 	q = &dev->queues[qid];
-@@ -323,7 +349,29 @@ static netdev_tx_t ntb_netdev_start_xmit(struct sk_buff *skb,
- 	if (unlikely(ntb_netdev_maybe_stop_tx(ndev, q, tx_stop)))
- 		return NETDEV_TX_BUSY;
- 
--	rc = ntb_transport_tx_enqueue(q->qp, skb, skb->data, skb->len, 0);
-+	if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+		if (READ_ONCE(q->peer_csum)) {
-+			struct ntb_netdev_hdr hdr = {
-+				.len = cpu_to_le16(sizeof(hdr)),
-+				.flags = cpu_to_le16(NTB_NETDEV_HDR_F_CSUM),
-+			};
-+
-+			if (skb_cow_head(skb, sizeof(hdr)))
-+				goto drop;
-+
-+			hdr.csum_start = cpu_to_le16(skb_checksum_start_offset(skb));
-+			hdr.csum_offset = cpu_to_le16(skb->csum_offset);
-+			hdr_len = sizeof(hdr);
-+			/* Keep skb->len unchanged for retries and byte accounting. */
-+			memcpy(skb->data - hdr_len, &hdr, hdr_len);
-+			meta = NTB_NETDEV_META_HDR;
-+		} else if (skb_checksum_help(skb)) {
-+			goto drop;
-+		}
-+	}
-+
-+	rc = ntb_transport_tx_enqueue(q->qp, skb, skb->data - hdr_len,
-+				      skb->len + hdr_len, meta);
- 	if (rc) {
- 		if (rc == -EAGAIN || rc == -EBUSY) {
- 			netif_stop_subqueue(ndev, q->qid);
-@@ -346,6 +394,28 @@ static netdev_tx_t ntb_netdev_start_xmit(struct sk_buff *skb,
- 	return NETDEV_TX_OK;
- }
- 
-+static netdev_features_t ntb_netdev_features_check(struct sk_buff *skb,
-+						   struct net_device *ndev,
-+						   netdev_features_t features)
-+{
-+	if (skb->ip_summed == CHECKSUM_PARTIAL &&
-+	    skb_checksum_start_offset(skb) < ETH_HLEN)
-+		features &= ~NETIF_F_CSUM_MASK;
-+
-+	return vlan_features_check(skb, features);
-+}
-+
-+static netdev_features_t ntb_netdev_fix_features(struct net_device *ndev,
-+						 netdev_features_t features)
-+{
-+	/* RX checksum support is exchanged at link-up. */
-+	if (netif_running(ndev))
-+		features = (features & ~NETIF_F_RXCSUM) |
-+			   (ndev->features & NETIF_F_RXCSUM);
-+
-+	return features;
-+}
-+
- static void ntb_netdev_tx_timer(struct timer_list *t)
- {
- 	struct ntb_netdev_queue *q = timer_container_of(q, t, tx_timer);
-@@ -369,6 +439,16 @@ static void ntb_netdev_tx_timer(struct timer_list *t)
- 	}
- }
- 
-+static void ntb_netdev_link_up(struct ntb_netdev_queue *q)
-+{
-+	u32 caps = 0;
-+
-+	WRITE_ONCE(q->peer_csum, false);
-+	if (q->ntdev->ndev->features & NETIF_F_RXCSUM)
-+		caps = NTB_NETDEV_CAP_CSUM;
-+	ntb_transport_link_up(q->qp, caps);
-+}
-+
- static int ntb_netdev_open(struct net_device *ndev)
- {
- 	struct ntb_netdev *dev = netdev_priv(ndev);
-@@ -391,7 +471,7 @@ static int ntb_netdev_open(struct net_device *ndev)
- 	netif_tx_stop_all_queues(ndev);
- 
- 	for (q = 0; q < dev->num_queues; q++)
--		ntb_transport_link_up(dev->queues[q].qp, 0);
-+		ntb_netdev_link_up(&dev->queues[q]);
- 
- 	return 0;
- 
-@@ -420,6 +500,9 @@ static int ntb_netdev_close(struct net_device *ndev)
- 		timer_delete_sync(&queue->tx_timer);
- 	}
- 
-+	/* Apply RX checksum changes deferred while the interface was up. */
-+	netdev_update_features(ndev);
-+
- 	return 0;
- }
- 
-@@ -475,7 +558,7 @@ static int ntb_netdev_change_mtu(struct net_device *ndev, int new_mtu)
- 	WRITE_ONCE(ndev->mtu, new_mtu);
- 
- 	for (q = 0; q < dev->num_queues; q++)
--		ntb_transport_link_up(dev->queues[q].qp, 0);
-+		ntb_netdev_link_up(&dev->queues[q]);
- 
- 	return 0;
- 
-@@ -496,6 +579,8 @@ static const struct net_device_ops ntb_netdev_ops = {
- 	.ndo_open = ntb_netdev_open,
- 	.ndo_stop = ntb_netdev_close,
- 	.ndo_start_xmit = ntb_netdev_start_xmit,
-+	.ndo_features_check = ntb_netdev_features_check,
-+	.ndo_fix_features = ntb_netdev_fix_features,
- 	.ndo_change_mtu = ntb_netdev_change_mtu,
- 	.ndo_set_mac_address = eth_mac_addr,
- };
-@@ -583,7 +668,7 @@ static int ntb_inc_channels(struct net_device *ndev,
- 
- 	if (running)
- 		for (q = old; q < new; q++)
--			ntb_transport_link_up(dev->queues[q].qp, 0);
-+			ntb_netdev_link_up(&dev->queues[q]);
- 
- 	return 0;
- 
-@@ -716,7 +801,8 @@ static int ntb_netdev_probe(struct device *client_dev)
- 
- 	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
- 
--	ndev->hw_features = ndev->features;
-+	/* Checksum bypass assumes a trusted NTB link, so keep it opt-in. */
-+	ndev->hw_features = ndev->features | NETIF_F_HW_CSUM | NETIF_F_RXCSUM;
- 	ndev->watchdog_timeo = msecs_to_jiffies(NTB_TX_TIMEOUT_MS);
- 
- 	eth_random_addr(ndev->perm_addr);
--- 
-2.51.0
+Thanks,
 
