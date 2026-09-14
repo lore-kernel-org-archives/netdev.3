@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4C8377A86;
-	Mon, 14 Sep 2026 04:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38A7379988;
+	Mon, 14 Sep 2026 04:37:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789360643; cv=none; b=YgmxwJ8+SSRo3TfUm08fyFj7WErZQjD16jM+YvfEF4AMG7cgTe+osO9emJhu9mn9OrVpdwtjZy9UUPEOv4E1iCTIWZlrHgCxn15eTgfKoaUYj6gk7FVGaM0qkIGr0iy1AtD5PstQ384L2hKOb8nPsILxpt1JtYoJgv4kC3lBZn4=
+	t=1789360651; cv=none; b=aYUqWz0VfgdHLwjQLqixMcNePGDhiruQqrFIQm7X6VR7PI3sVlcBrLESMMDWEaeSPwgDu9RBPXJ+Vlvu4yQlE9MW7PC+oaca8Jlmbzdvl/STWLKhvzEPzqae43tbGwi40unBeCBaIViPWY+ugW9834ASocfGrwHeeRC86Pj/KXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789360643; c=relaxed/simple;
-	bh=vO2ZQzXEQJv33bbCB0CcbG/Xr5QuZmBi3QXnaDGrMQ8=;
+	s=arc-20240116; t=1789360651; c=relaxed/simple;
+	bh=1S1c7k9jdFng2gUXqSjYctee/PPMJZh1e/w6JtiudHg=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tlh54i935DPUi2RZonPQhMzWnrNaQZDg6lpFkLB3m1zUq7FdTFE/Cuks0mMSCBP4rHIcnTQZRfrki4OWV7jvVLu2tr4A5oaiwJRfpTgekGGhNvQkdWnmpEQD3Pwlhe4VICqSCnD8K2st90z66pXhpVrm+wXyUwyozAwRQgSpT98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RA0LJtqM; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=YiewU66/hKDnufBb80xA1A7qXqHi0PgR2irFsNXTzrsy8N3klm24wcu6oxjZB68Z5shwcIMg60kTqQKNOVjRpibd5X3UDIUZIc6mz8uoqPQvRCt/3l2mTiAKVt9mZj26mwe6urYy3VIHHIcJaqpOVIeGmhMkcQFGSPpnRdGOU5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=en3S4/j6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RA0LJtqM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E609E1F000FF;
-	Mon, 14 Sep 2026 04:37:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="en3S4/j6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EAB1F00893;
+	Mon, 14 Sep 2026 04:37:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789360642;
-	bh=ivB792KgKrRrGp84nJMZ8beKDCmerzkzKUNmH6fi0EY=;
+	s=k20260515; t=1789360643;
+	bh=s+jHF0Px0qUjsp5DlyJ1OnYlin096ANFKx24PDmbnHI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RA0LJtqMQO3+1zxJancsAhlJ8o6MGwboM3fb2zCz1ofZH5e8NdRCX+f48VyivrtF9
-	 +RpAraSSpUoQffjY1TcKzJXwufOiAWEFz2ofIRz2PRhtxy4fK+ru1EenSXpmJwM4ua
-	 +Iz7GFt5aUKpP9W1fb2TW1jeM3WWQKih70qPbmTw5Upwg+/sxUApfqBobgVnAgE33J
-	 USgH+cf/KYTprxC2X0RjSMJnQok1eOQoCoUbV0FBYrVpTn30vK72t0IGIfheEtRYQ1
-	 TrmKVPu3gQbExezCRJrLNGMN38tV1L+C6vg5H2T9k5kJaqDulBm550zl3QUHGCfxZh
-	 zTAcnD4r8chPA==
-Subject: Re: [PATCH net-next v2 4/8] ip_gre: add drop reasons to the RX path
+	b=en3S4/j6DASSNA/LviMSFaPdyPhXMzqfH739Q8Aaj/29D9Pe+NP4dvGFB7Dzn0lSB
+	 0l6ylCXG32tHTTQSPAW/ZQg06TA/tMUYhqVCzmnLvqQUpFbTdiB1Xv0/8qyR7mscaq
+	 1zmZlbHXAbc+9KLzhaz0wVYHE/RUAJwh75Zo4lyt2Dtg3QuttBBorH+vr99rALEwJF
+	 FD7fBJIVqQm/NVwn1DCLJGDhx5XCYzIc64UMfiPRjigHsRmodI0N5PU/dICLq37zNM
+	 ojWC1i8xpSFqKChfY27aoXPbwalI1NcmBEmiHe1ZRiDr1xIMT9H7CQS09HNslSnXbd
+	 0K83qkq/wHW/w==
+Subject:
+ Re: [PATCH net-next v2 8/8] ip6_tunnel: add drop reasons to the transmit path
 From: netdev-bot+sashiko@kernel.org
 To: littlesmilingcloud@gmail.com
 Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org, horms@kernel.org,
  idosch@nvidia.com, linux-kernel@vger.kernel.org
-Date: Mon, 14 Sep 2026 04:37:21 +0000
-Message-ID: <178936064149.22033.6297126483259038338@kernel.org>
-In-Reply-To: <20260913034937.875068-5-littlesmilingcloud@gmail.com>
-References: <20260913034937.875068-5-littlesmilingcloud@gmail.com>
-X-sashiko-severity: Low
+Date: Mon, 14 Sep 2026 04:37:22 +0000
+Message-ID: <178936064264.22033.5452553187769525789@kernel.org>
+In-Reply-To: <20260913034937.875068-9-littlesmilingcloud@gmail.com>
+References: <20260913034937.875068-9-littlesmilingcloud@gmail.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -46,149 +47,143 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 0 · Low: 1 (1)
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
-- [Low] Claim: labelling GRE RX pull failures SKB_DROP_REASON_HDR_TRUNC
-  misattributes allocation failures, both for the two new `if…
-
-Pre-existing issues:
-- [Low] Claim: the new family-agnostic
-  SKB_DROP_REASON_GRE_TUNNEL_NOT_FOUND is wired up only in…
+- [High] ipxip6_tnl_xmit() clobbers the drop reason produced by
+  ip6_tnl_xmit() on every failure.
+- [Low] In the NBMA branch of ip6_tnl_xmit() the IPv4-payload case labels
+  a missing rtable as SKB_DROP_REASON_IP_OUTNOROUTES…
 
 --
 
-ip_gre: add drop reasons to the RX path
+ip6_tunnel: add drop reasons to the transmit path
 
-This adds SKB_DROP_REASON_GRE_TUNNEL_NOT_FOUND and threads a drop reason
-output parameter through erspan_rcv(), __ipgre_rcv() and ipgre_rcv() so
-that gre_rcv() can pass a specific reason to kfree_skb_reason().  Header
-pull failures are reported as SKB_DROP_REASON_HDR_TRUNC and metadata dst
-allocation failures as SKB_DROP_REASON_NOMEM.
+This converts the IPv6 tunnel transmit path to report SKB drop reasons,
+giving ip6_tnl_xmit() a new output parameter that is threaded through
+ipxip6_tnl_xmit(), __gre6_xmit() and the ip6gre_xmit_*() helpers, and
+switching the two tx_err paths from kfree_skb() to kfree_skb_reason().
 
-A couple of small questions below, both about the reason values rather
-than the plumbing.
+A couple of questions about the reason values below.
 
-> diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
-> index 6ae7a604722d3..fa8bd552122ff 100644
-> --- a/include/net/dropreason-core.h
-> +++ b/include/net/dropreason-core.h
-
-[ ... ]
-
-> @@ -637,6 +638,11 @@ enum skb_drop_reason {
->  	SKB_DROP_REASON_GRE_INVALID_HDR,
->  	/** @SKB_DROP_REASON_GRE_CSUM: GRE checksum error */
->  	SKB_DROP_REASON_GRE_CSUM,
-> +	/**
-> +	 * @SKB_DROP_REASON_GRE_TUNNEL_NOT_FOUND: no GRE tunnel found for the
-> +	 * endpoints and the key the packet carries.
-> +	 */
-> +	SKB_DROP_REASON_GRE_TUNNEL_NOT_FOUND,
-
-[Severity: Low]
-
-This isn't an issue introduced by this patch, but the new reason is
-documented in family-neutral wording ("no GRE tunnel found for the
-endpoints and the key") while only net/ipv4/ip_gre.c sets it in this
-commit.  Until the IPv6 side is converted, a GRE-over-IPv6 packet with no
-matching tunnel still takes:
-
-net/ipv6/ip6_gre.c:gre_rcv() -> ip6gre_rcv() -> kfree_skb_reason(skb,
-SKB_DROP_REASON_NOT_SPECIFIED)
-
-so ip6gre, ip6gretap and ERSPAN-over-IPv6 lookup failures are still
-indistinguishable from unspecified drops.
-
-For the record, this is closed later in the same series: the following
-patch, "ip6_gre: add drop reasons to the RX path", converts
-__ip6gre_rcv()/ip6gre_rcv() and ip6erspan_rcv() to the same output
-parameter scheme and ends both lookup-failure paths with
-*reason = SKB_DROP_REASON_GRE_TUNNEL_NOT_FOUND.  Would it be worth
-mentioning in this changelog that the IPv6 counterpart follows, so the
-intermediate state is not read as a scope gap?
-
-> diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-> index 1894c5746a737..4d9bb6d186ae5 100644
-> --- a/net/ipv4/ip_gre.c
-> +++ b/net/ipv4/ip_gre.c
+> diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+> index 458ce328311b4..d804c67c4be3b 100644
+> --- a/net/ipv6/ip6_tunnel.c
+> +++ b/net/ipv6/ip6_tunnel.c
+> @@ -1097,6 +1097,7 @@ EXPORT_SYMBOL_GPL(ip6_tnl_xmit_ctl);
+>   *   @encap_limit: encapsulation limit
+>   *   @pmtu: Path MTU is stored if packet is too big
+>   *   @proto: next header value
+> + *   @reason: drop reason, only written when the packet is dropped
+>   *
+>   * Description:
+>   *   Build new header and do some sanity checks on the packet before sending
 
 [ ... ]
 
-> @@ -356,15 +362,17 @@ static int erspan_rcv(struct sk_buff *skb, struct tnl_ptk_info *tpi,
->  		ip_tunnel_rcv(tunnel, skb, tpi, tun_dst, log_ecn_error);
->  		return PACKET_RCVD;
->  	}
-> +	*reason = SKB_DROP_REASON_GRE_TUNNEL_NOT_FOUND;
->  	return PACKET_REJECT;
+> @@ -1162,8 +1167,10 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
+>  		} else if (payload_protocol == htons(ETH_P_IP)) {
+>  			const struct rtable *rt = skb_rtable(skb);
 >  
->  drop:
-> -	kfree_skb(skb);
-> +	kfree_skb_reason(skb, SKB_DROP_REASON_HDR_TRUNC);
->  	return PACKET_RCVD;
->  }
-
-[Severity: Low]
-
-The only way to reach this drop label in erspan_rcv() is the
-__iptunnel_pull_header() failure, and that helper does not only fail on
-truncation:
-
-include/net/ip_tunnels.h:iptunnel_pull_offloads() {
-	if (skb_is_gso(skb)) {
-		int err;
-
-		err = skb_unclone(skb, GFP_ATOMIC);
-		if (unlikely(err))
-			return err;
-	...
-}
-
-So for a cloned GSO skb under memory pressure the drop is an allocation
-failure but gets reported as SKB_DROP_REASON_HDR_TRUNC.  The commit
-message says "The header pull failures reuse SKB_DROP_REASON_HDR_TRUNC",
-which covers the pskb_may_pull() cases well, but does it also intend to
-cover the skb_unclone() case?
-
-Note the errno cannot be used to tell the two apart, since
-__iptunnel_pull_header() returns -ENOMEM for every failure mode, and
-there is precedent for the coarse label in the other direction:
-vxlan_rcv() tags every __iptunnel_pull_header() failure, truncation
-included, as SKB_DROP_REASON_NOMEM.  The two new
-*reason = SKB_DROP_REASON_HDR_TRUNC assignments on the pskb_may_pull()
-branches above match the HDR_TRUNC kernel-doc exactly, so this question
-is only about the drop label.
-
-> @@ -400,22 +408,25 @@ static int __ipgre_rcv(struct sk_buff *skb, const struct tnl_ptk_info *tpi,
->  
->  			tun_id = key32_to_tunnel_id(tpi->key);
->  			tun_dst = ip_tun_rx_dst(skb, flags, tun_id, 0);
-> -			if (!tun_dst)
-> +			if (!tun_dst) {
-> +				*reason = SKB_DROP_REASON_NOMEM;
->  				return PACKET_REJECT;
+> -			if (!rt)
+> +			if (!rt) {
+> +				*reason = SKB_DROP_REASON_IP_OUTNOROUTES;
+>  				goto tx_err_link_failure;
 > +			}
->  		}
->  
->  		ip_tunnel_rcv(tunnel, skb, tpi, tun_dst, log_ecn_error);
->  		return PACKET_RCVD;
->  	}
-> +	*reason = SKB_DROP_REASON_GRE_TUNNEL_NOT_FOUND;
->  	return PACKET_NEXT;
->  
->  drop:
-> -	kfree_skb(skb);
-> +	kfree_skb_reason(skb, SKB_DROP_REASON_HDR_TRUNC);
->  	return PACKET_RCVD;
->  }
 
-The same question applies here: this drop label is reached only from
-__iptunnel_pull_header(skb, hdr_len, tpi->proto, raw_proto, false) < 0,
-so the skb_unclone(GFP_ATOMIC) failure inside iptunnel_pull_offloads() is
-also reported as SKB_DROP_REASON_HDR_TRUNC on the main IPv4 GRE receive
-path.
+[Severity: Low]
+Should this be SKB_DROP_REASON_NO_TX_TARGET instead?
+
+No route lookup has happened yet at this point in the NBMA branch of
+ip6_tnl_xmit().  skb_rtable() is just dst_rtable(skb_dst(skb)), so !rt is the
+same "the skb carries no dst" condition that the sibling IPv6-payload branch a
+few lines above labels NO_TX_TARGET:
+
+			if (!skb_dst(skb)) {
+				*reason = SKB_DROP_REASON_NO_TX_TARGET;
+				goto tx_err_link_failure;
+			}
+
+dropreason-core.h documents IP_OUTNOROUTES as "route lookup failed" and
+NO_TX_TARGET as "no target found for xmit", and ip_tunnel_xmit() in
+net/ipv4/ip_tunnel.c uses NO_TX_TARGET for the analogous NBMA missing-dst
+case:
+
+		if (!skb_dst(skb)) {
+			DEV_STATS_INC(dev, tx_fifo_errors);
+			reason = SKB_DROP_REASON_NO_TX_TARGET;
+			goto tx_error;
+		}
+
+As written, IP_OUTNOROUTES now covers two different conditions inside
+ip6_tnl_xmit(), since it is also used for the genuine ip6_route_output() and
+xfrm_lookup() failures further down.
+
+[ ... ]
+
+> @@ -1408,13 +1435,15 @@ ipxip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev,
+>  	fl6.flowi6_uid = sock_net_uid(dev_net(dev), NULL);
+>  	dsfield = INET_ECN_encapsulate(dsfield, orig_dsfield);
+>  
+> -	if (iptunnel_handle_offloads(skb, SKB_GSO_IPXIP6))
+> +	if (iptunnel_handle_offloads(skb, SKB_GSO_IPXIP6)) {
+> +		*reason = SKB_DROP_REASON_NOMEM;
+>  		return -1;
+> +	}
+>  
+>  	skb_set_inner_ipproto(skb, protocol);
+>  
+>  	err = ip6_tnl_xmit(skb, dev, dsfield, &fl6, encap_limit, &mtu,
+> -			   protocol);
+> +			   protocol, reason);
+>  	if (err != 0) {
+>  		/* XXX: send ICMP error even if DF is not set. */
+>  		if (err == -EMSGSIZE)
+> @@ -1429,6 +1458,7 @@ ipxip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev,
+>  			default:
+>  				break;
+>  			}
+> +		*reason = SKB_DROP_REASON_PKT_TOO_BIG;
+>  		return -1;
+>  	}
+
+[Severity: High]
+Does this overwrite the reason that ip6_tnl_xmit() just stored?
+
+The if (err == -EMSGSIZE) body is only the ICMP-emitting switch, so the
+*reason = SKB_DROP_REASON_PKT_TOO_BIG assignment runs for every non-zero err,
+not just for -EMSGSIZE.
+
+ip6_tnl_xmit() sets a distinct reason on each of its failure paths
+(NO_TX_TARGET, NEIGH_CREATEFAIL, IP_OUTNOROUTES, DEV_READY, RECURSION_LIMIT,
+NOMEM, TNL_ENCAP), and all of them are replaced here before
+ip6_tnl_start_xmit() consumes the value:
+
+  ip6_tnl_start_xmit()
+    ret = ipxip6_tnl_xmit(skb, dev, ipproto, &reason);
+      err = ip6_tnl_xmit(..., reason);   /* sets IP_OUTNOROUTES */
+      *reason = SKB_DROP_REASON_PKT_TOO_BIG;
+    tx_err:
+      kfree_skb_reason(skb, reason);     /* reports PKT_TOO_BIG */
+
+So an ip6ip6/ipip6/mplsip6 tunnel with an unreachable remote, an allocation
+failure in skb_cow_head(), a local routing loop (tdev == dev) or an
+ip6_tnl_xmit_ctl() refusal all end up reported as PKT_TOO_BIG.
+
+For the one case where the assignment would be correct, -EMSGSIZE,
+ip6_tnl_xmit() has already stored PKT_TOO_BIG, so the statement looks
+redundant there.
+
+This also disagrees with the kernel-doc added in the same patch,
+"@reason: drop reason, only written when the packet is dropped", which makes
+the callee the owner of the value, and with the ip6_gre callers
+(__gre6_xmit(), ip6gre_xmit_ipv4(), ip6gre_xmit_ipv6(),
+ip6erspan_tunnel_xmit()) which propagate the callee's reason untouched.
+
+Would moving the assignment inside the err == -EMSGSIZE block, or dropping
+it entirely, be what was intended here?
 
 [ ... ]
 
