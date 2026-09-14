@@ -1,141 +1,157 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010024.outbound.protection.outlook.com [52.101.61.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A2C3D16E9
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 06:16:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.24
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789366564; cv=fail; b=oj4OJUj9qEE63egASTr8xbuvA0W4z0nu/jzUoNvMyGSnndwg8oigKyXeuWZZIYnecogktjhSaVFL5sN6aZjQ00otsxN+lUW85aV83uZ8c3ibpfCm9JM1yF8oy4dANEQr7ZyYmAJ7Dn1T8XiK91cfLUjaDysEaTAzvoYRSY308+U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789366564; c=relaxed/simple;
-	bh=rA+PyGV/ZKVhguAFA3pQVGSvG31cZGpCstejK1ePCqY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=MHgycdBecvSO5dWuWK1oR5PcZAPR+TT6Iitmy+SMnHZeHZWvzhEpwGXUJXz8BkrG2vQXmLFPtbdxj3I0HynsxEzm/kMkQ8RmMdoSoRmg8vUgC3RcoJaE7dySBl1hzOfpRK3Gf6B5+LJZf4z94BUdOOhVTaqcIL/4iNaX0LLdgG8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=B/cIIPgJ; arc=fail smtp.client-ip=52.101.61.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514F93BA237;
+	Mon, 14 Sep 2026 06:22:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789366937; cv=none; b=bBgxRssk1IToyQXp92FYA0kR/aQ/Q4qgAaKjHZpI49gk9mQ+Mncxycf9ProZUbfMn4fXVpfSdK6qzYHexeCTR/kB/sEMYZxBh2zQHyCZr2q04MmM0Euca4iUJ/BpEdKexMsK/2P6JW1tTnLld9aTfCokISGPEYTjQR3QeYKuurg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789366937; c=relaxed/simple;
+	bh=pXII4JGlqjaRQl+sSKIwkXgER4sHxEtbUGWxUtd/yU4=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Z7j9tiQk3Khs0Hs6UtpydvbxsUNA1v0VtXvEwQzLWWr/7r6nwwh9H/AEl/daEFU8rgWm50GiJrZ2bevdwvEOaNvdxg3SwoOGTjYcqixnB8lVHiCIDd51kovPWBt0jXBl1A07q+syOdnrfR9hH7WdWTEL2e7Y8QX490iUUom5U5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=o45KzPNI; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=xo7U/N2V; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=MQTEma4u; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hVta1DEZ; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="B/cIIPgJ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=j4L++5RU9iOXKR4MpxJL1kKQ/BhZ/IQ8eC2VzsKJEy3kKidh5WLXdCS1d7XB894sFZAn8y3qKx7pSeyBiYtw/u4taxcO8DNad3GbNIIe6/uyEjvURX63e/CvWxkrAHwz4spcZymaLvNCBx3bIrPwdMDHV+OFczDtIY0WFYawes1Tkdx4fwuGJSUx3TkmocZWBm9tkDcxyRYHd05tesAyJLSWtR/73//qRTrP+1nvHqlqzgit/l5bZU/31yyRcb438LtiwOZzWSzgVEpbu85DtU2FyyCoVsTOFqqOZ4JAVoIeHEsogV4TbnIl2UrZWGksbfv6Wuuwqmkq1DUxgQBgwA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=e43Bjdlsr2iSmKqzJi0ByvqzpzO3OPvcLouQ9LNrgXc=;
- b=k+xgSL1YNeFEuJuDQbq8oWbYbnY2cZxuMnZvOOyinISRjwsbqX7TGfJaiklahRGZp/NlVqVO2pz93y8UXB47qPgGEs4Cq7s56sZju59yX7gAdep+YiiLlTNdv0O/znaiVylF9EP8EbH3agjxGAa7lkoYbGqGVfDcj90OTQANbMJcth9wSmbsiiqcA2M4epUW7Jw1roJs2m8VK0Rf61RahKlIVjsGmebYsV9c3qehIsAQ0xoI+nywK49tU2Y50EltI7bi+I4yr2gpp1FNyLz7aoSmWesiivbcG6BlrpJF/t+qmG2q1q3uaTqHW7wcz8rjBRPE2AjYT41AriHoRPK2CA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=e43Bjdlsr2iSmKqzJi0ByvqzpzO3OPvcLouQ9LNrgXc=;
- b=B/cIIPgJCYvFpDtMFyAqChlAPhW7gl4CfHvFZ36s34w76gG/eBYuDpslKP39/pP/8OP9LiqYIa+46ctWcX4fhQE3rrP82y5NIGfaiOq2PrnhBgnrIvUQh0eHA4o6LtLbz23gFG1L3LNAImPVN9GvnVjNOdwbLpxO4+XMZnlrrNgvFdXcpB3ZmDk9S68tJjAsqZKvUnrTMM6HqE4/Hx03+iZCK7lQZKNkmxYtgH2ys3w3tEaO1kc0A6n1mIBV+JnaBGLePjyDuSCot9Riis+CbMlULx2+nFKBF9G0Wmn6gFSVlnXgYwO7tox5Q87wAZfPkG/UUZlW+L5oRKzUZ7PVAQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by PH7PR12MB5593.namprd12.prod.outlook.com (2603:10b6:510:133::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Mon, 14 Sep
- 2026 06:15:59 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0406.007; Mon, 14 Sep 2026
- 06:15:59 +0000
-Date: Mon, 14 Sep 2026 09:15:48 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	tobias@waldekranz.com, bridge@lists.linux.dev
-Subject: Re: [PATCH net] net: bridge: mst: move switchdev call outside rcu
-Message-ID: <20260914061548.GA132848@shredder>
-References: <20260911105021.1385934-1-razor@blackwall.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260911105021.1385934-1-razor@blackwall.org>
-X-ClientProxiedBy: FR5P281CA0005.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f2::18) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="o45KzPNI";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="xo7U/N2V";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="MQTEma4u";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hVta1DEZ"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 141DC1F7CC;
+	Mon, 14 Sep 2026 06:22:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1789366930; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BtalXNOyJJgm2Apl7LzQtj+X8azbLpNMHHmOet77qrk=;
+	b=o45KzPNI7mB5TQa7etadrNVtYUqnwO9xUha3PGego+QDOTI+XXLcWOEvnCJbADU/zftYEm
+	p0+v0ubbM4Jxb/13qGhEioXPXvKFVHny4wglPxnnA/gcM8klf2vCTy/UtuhAkDbG8601RB
+	0y485+cFlLOccRhZAV1FuKtQsdgddKo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1789366930;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BtalXNOyJJgm2Apl7LzQtj+X8azbLpNMHHmOet77qrk=;
+	b=xo7U/N2VU3Dg9tDJ9axyUuMJJF9gr8mqxh1HBTzmN47Au/0AAYbepOLcg5I1uGlGImcCyp
+	d0SPPoY2P5uxWXAw==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1789366926; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BtalXNOyJJgm2Apl7LzQtj+X8azbLpNMHHmOet77qrk=;
+	b=MQTEma4uDMXg5RUJmfHLfo+9qAYkCu7zeM4h/Jup/Rug2qJW6ozAcDp+ZN08hcFsSxjDGe
+	r38yheertbdY1I/wJexC24IQPzVFQwF1M1iXJEFz1oLawJg7wbODw6glJK/d6hFVZuF+aA
+	NrTSM9mWV6zyg2aMYPvV5UzbM/xzoM0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1789366926;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BtalXNOyJJgm2Apl7LzQtj+X8azbLpNMHHmOet77qrk=;
+	b=hVta1DEZ5DtkP/j+ntDriha9uN707rY0bpW2WoQr8c8NBoIiLjmR4VxSXWmZ84G7Q+fwSK
+	6at574Z4+JMv5rCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AE32813515;
+	Mon, 14 Sep 2026 06:22:05 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ezUcKY2Sp2qCBwAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Mon, 14 Sep 2026 06:22:05 +0000
+Date: Mon, 14 Sep 2026 08:22:05 +0200
+Message-ID: <87mrtkpd2q.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: Takashi Iwai <tiwai@suse.de>,
+	Chris Lew <christopher.lew@oss.qualcomm.com>,
+	Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>,
+	Pranav Mahesh Phansalkar <pranav.phansalkar@oss.qualcomm.com>,
+	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	regressions@lists.linux.dev
+Subject: Re: [REGRESSION] ath12k suspend/resume breakage on 7.3-rc2
+In-Reply-To: <2741f995-dca0-4645-848c-34752d62574f@leemhuis.info>
+References: <87a4plsg4w.wl-tiwai@suse.de>
+	<878q55sfxo.wl-tiwai@suse.de>
+	<2741f995-dca0-4645-848c-34752d62574f@leemhuis.info>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|PH7PR12MB5593:EE_
-X-MS-Office365-Filtering-Correlation-Id: 147786ed-f9c4-4f40-a159-08df1227a4d3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|23010399003|1800799024|5023799004|11063799006|56012099006|10067099003|22082099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	kK/GKluN5DcKSZMJJep3QVV9U2UO/T99WvE56syB28hOBh4RWO21EUMIFsj+Dg0uuhfSdUVg5+y8KJgxjKA9TyQ4V++kD2sJocnpH1IvrZX5LqT+pqtbTCgB2G7gw3qZ2gK5hSSHOrEJbpPK5a5DocpO69c0zVg19OcEgZQMCuwjS/RJ+E3BhdytWF63ouOa682/8gdjFrZdPTJzn8fNmZkfpqPkVHRN7HIX0BLe+3TXIPNlL2m2YHvJIQeG623UF83p7SMlfdKjFBj5wlbCKf4BC+CEJn8atikeUDpyheugIJSOvHiyY6McN1Kf5WWgFyKpHeyrPqbIBFuXarYxoP7kV/Qf9mMfo3+bPKG0Mk8GSjzHTVpFO2ujotaHYEgy5JC40uog4wlQRcIvfxe8dqsGTvGydgwGdVNwAjiBiPrW+sAMnMNQ2HyUiLZtnxA6er7vCWcABNvpa0itpme8GavTQglegI6GSOlpLjBIQPMW7e6svnZhyKklbTxKIHDmpNR3Nm8i4hyQapl6jOeGlJZT7G7JFummvHIagpLWMtUHDh6ZpfcGnld2wFYlXn6X92v9napVMhycGDV/Q4bUXWJU8XQFHfuacDYfJF0IxRTpTNWa/dVkDmWvlWteJOWMzDUwqZ/aEY3hkApuGkwC2ZlAXT6XIGcuoNKFvQYY1p0=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(5023799004)(11063799006)(56012099006)(10067099003)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?8MCFzd51no/52FyQtOZlq1MAfKB9fkzmgUAb7HWcyIHUJW90SGp1/weaKejx?=
- =?us-ascii?Q?3KJbclBOQpfltNquvvd/0/VxvKD3qxOxvED6rDA8uxr/swNqRocHGaBcbJaD?=
- =?us-ascii?Q?4ssZ3TYyxxjdngTOCBza6mLShJaLzDwXOtVml1rDlpdKQzeR5qzPlGsTwyCA?=
- =?us-ascii?Q?ffZkRkUDeeln5v+8rjA4Ho2WON44ejJ2RQb7GuAN4ASK0oXaDkRGHYraJ89g?=
- =?us-ascii?Q?jgD/M3vrya9l4rFMKhBqn2A+4vQngOWnLjtU4KUrX/sCA1RufhSiiKV0NaKO?=
- =?us-ascii?Q?LaSkoLy3GY49ULODg0mmz1fpD0ydm56QZswPqDK2bpaUTHk/k+O7UxMC4cIY?=
- =?us-ascii?Q?22RLiJCXKU67FrEGe+jqWK9777pYdHDoUpIKiqkq2/D/v4A57WO+iWY7ILQX?=
- =?us-ascii?Q?RJDkWnLNHvxtFUuJ5Lhgsfc85NLkO5Fe5HNrRkDG/tfPz8L5fsKfI04CCGM9?=
- =?us-ascii?Q?yaceynpV0o+U4YdWzdcGR997YpWPX7nwszM+uRqhllg/qV+MZb3whnzp3ONv?=
- =?us-ascii?Q?vyEV7c5riQktA5gyXiOuwgSjJJoHDsfDXa/8Lc1k88QQiJ+0kMV/DdHzxLbg?=
- =?us-ascii?Q?J9OlVrFJF2siL0Bt3d/O0u96BSZemX3seDyNQw5/2dYCKQNBhJMnt++vqxM3?=
- =?us-ascii?Q?3KxriurovSn0ERLGLEoEa0pJqyV9GvwEA0M1JBSWEe744+1CdW6V45xwb4B7?=
- =?us-ascii?Q?agQk4cM65K4PX/PpIfTjRMr3WNE6KdHU/dwIR8ER8zYNo2bQM7NVFJi6SsmC?=
- =?us-ascii?Q?g+eDMdhSx29Mj3B66V78QSyVrHCS/Yo8N06rb4fN3zNJOhJNGFfiLo0oJJum?=
- =?us-ascii?Q?5ZibrrPx9KJTxezJ+MCBmOmPNv6HKq0MxLXd/oQnBbivhThwsD8nQvJzV8d5?=
- =?us-ascii?Q?bEDO5iSvncHer3gfjS4Er576EskYJWnLnk8I69/es1/A/OFC2RSniROuUMvn?=
- =?us-ascii?Q?FW2ktWPBQpFtWz+RSctyuPVfDyqUqxRmCh9QcxAHhUWHczQ3c3DrHNhmfmeA?=
- =?us-ascii?Q?cuIFAbocB+R4N0r8edBZi6K7Va9DzUcyzcnaCjvru2Dbw5pmspmUGTWm1wtb?=
- =?us-ascii?Q?LD/1yiFHitCRli9yTgu9lrbax8F7URjX5/tskxnqc062cBMqLSooNuc7ByL1?=
- =?us-ascii?Q?u5fn44wcjZExXZmUMnjac6QD1QijsU3RpKagFHwfR19MHiB03p/dNSQF53le?=
- =?us-ascii?Q?+NM/J6MELqrsIdQjx/OabuU/P2jn1S9lU8TekNWuEZtsK5NhigGfHtyv5zNW?=
- =?us-ascii?Q?KjfO3Hedz8dBEFpfzNTvC0Z9hUH+rpjwp4W33mVX263mU2S3OoBQjgkaNRee?=
- =?us-ascii?Q?ydm74tcCPmCsN813mo6o0b3Jf1swUlM417jIl8dq3ZhGQiBU80Z/lUdGd88G?=
- =?us-ascii?Q?1/WiscdyV8YR2d03bzwTaq1Be4Cdm9fCECB+WNeHTQd7hLQOoYEmEbIE3GsB?=
- =?us-ascii?Q?YcsQ6yFn2E6Zgfdy19fWsPZnw4o28a1Mg+u64cdkAArGtizhloPLv92rzpRL?=
- =?us-ascii?Q?vEaCxR87jQk7fLpRMfdVIS1eU6naoS4QFlikNnRhpEibm+x07hSI4LIKIlwQ?=
- =?us-ascii?Q?CHU/LpULNPwVe55OQEoXuofZTulZbdrdjS3JsbLafABMBiWbfZC2CJfKRsus?=
- =?us-ascii?Q?fS+MntDs/LLs+dmomgXpyyNclP2BirLc585da0x1zcVN7rImzjuEuaBG9err?=
- =?us-ascii?Q?FHv6b/jxzGBMlj8ZJnbv8co8nDZSVDvxzf6Ioks8zhl3u7p4?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 147786ed-f9c4-4f40-a159-08df1227a4d3
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 06:15:59.1059
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: CnaKCAqGfeoQuL+F4NOF0r2vCJKrwn4+6U5+2xwmd3gmEVhlPp6TM7b9rCuZFIAPB1VhlyuLJlKsvgq+Pfr3dA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5593
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Score: -3.30
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.993];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
+X-Spam-Flag: NO
 
-On Fri, Sep 11, 2026 at 01:50:21PM +0300, Nikolay Aleksandrov wrote:
-> This is a follow-up of one of sashiko's pre-existing bug reports.
-> br_mst_set_state() calls switchdev_port_attr_set() for nonzero MSTIs
-> while holding rcu_read_lock() which invokes the blocking switchdev
-> notifier chain and may sleep. Nonzero MSTI changes come from netlink
-> with rtnl held. Move the switchdev call before entering the rcu section and
-> assert that rtnl is held.
+On Sun, 13 Sep 2026 11:03:57 +0200,
+Thorsten Leemhuis wrote:
 > 
-> The call cannot be deferred because netlink needs its error and extack.
-> Also DSA reads the old bridge MST state during the callback and checks it.
-> A deferred callback will be late and will see the updated state.
+> On 9/13/26 10:39, Takashi Iwai wrote:
+> > On Sun, 13 Sep 2026 10:35:27 +0200,
+> > Takashi Iwai wrote:
+> >>
+> >> on 7.3-rc2, the suspend/resume of ath12k WiFi on Lenovo Thinkpad T14s
+> >> Gen6 AMD model is broken.  Upon suspend, the network isn't recovered,
+> >> and the desktop got eventually frozen.
+> >>
+> >> The git bisect pointed to the commit
+> >> 544d85de4dc22c01badfd8cefa59829ce35c4858
+> >>     net: qrtr: Send HELLO message on endpoint register
+> >>
+> >> and reverting this fixed the problem.
+> >>
+> >> Below is the (stripped) dmesg output after the resume showing the
+> >> problem.
+> >>
+> >> As far as I understand, the problem seems to be the change of the code
+> >> flow: ath12k uses mhi_power_down_keep_dev() during suspend, so the
+> >> qcom_mhi_qrtr_remove() and *_probe() won't be called.  This makes the
+> >> driver endlessly waiting for the HELLO handshake upon resume with the
+> >> commit above.
+> > 
+> > ... and below is a quick fix I tested.  It seems working so far.
+> Not my area of expertise, as you know, but have you see this fix for the
+> culprit? Or is your problem a different one?
 > 
-> Fixes: 7ae9147f4312 ("net: bridge: mst: Notify switchdev drivers of MST state changes")
+> net: qrtr: resend HELLO on MHI resume
+> https://lore.kernel.org/all/20260909055846.16539-1-daniel@quora.org/
 
-Nit: blaming 3a7c1661ae13 ("net: bridge: mst: fix vlan use-after-free")
-would be more accurate, but in practice it doesn't matter since this
-commit blamed ec7328b59176 that is present in the same release as
-7ae9147f4312.
+Yes, this patch works, too!  So scratch mine.
 
-> Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+thanks,
+
+Takashi
