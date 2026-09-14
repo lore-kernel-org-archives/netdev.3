@@ -1,153 +1,184 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241673EFFA8
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 08:03:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3253E8342
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 08:07:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789372985; cv=none; b=clrQ0HtIuMuftBibeVYBgvuHjQhmKsDNwEAViskWa0UHnbrFBoeYo/BwiJHVpYfQLHfX/DuFt3ej7FNBI9ERgQz6Y3UDNQuuJu33AAB9iiYFjsr5A82viVj4CBfA+VrxnJTe5tU7iU//l+9WoEseGyF30ajSnrrxhrVphhFu3fY=
+	t=1789373224; cv=none; b=HRCL5ddWlzOYm37uygr3L9hgsJ8b9mkY3ELPBMfBovVEDsdxDOyHoBsG0Vn40Y1eQLPKjNHBBXeJVJor7uoO5M1McdXI6hBlmtJ/fyshpbuPF0U+I4VJdHolwinyeykvRUXQKmv56orj5QSd18P1fP/QLC/trY3mXjcgZeFkiZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789372985; c=relaxed/simple;
-	bh=50eSPHox2Zsfj7F9UKH3Tuowfr6Y0XyNXGmvAoGBepI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JErgQME2k+i9ib9POWGqoB1w1WAbXDkeb8HC5XeYxMOHni5IZMp+tiwdDVpBNTrs2y8to+Ku8P0V6gHx0LQuxDjq22U3pUqHV5yKrlBh1lVEpohB2dxsSzWGjuj1UQ+xpiucOpznIGMlZ/Wq1RBxQkiMLWpZoT712kRmiUyHaew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mlLkcFNf; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789373224; c=relaxed/simple;
+	bh=0rpz5RcfyLg/UdQ9j0n/J8aYvsCqteq/E6T+2rgP4EI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=Hq+GjgNWbI4NgDTmDoK9kmBtlYNOd9ekLC+U5vKKnjpEHDhDg0dTtqKpP8ZVRjS5aDJP1OC9RvLeY4b0DVJHqB+Q1XZhn3lo6sDG6au+BEWu4LjEnhvJ+YYkgnMytpK+0TenTRbUH073K6xifZy+INvAwXxUXtxZCwfjsmhqYN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=nHvPkgvw; arc=none smtp.client-ip=74.125.230.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mlLkcFNf"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e79a408deso1904115e9.2
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 01:03:03 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="nHvPkgvw"
+Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-90cdfc6db0bso24663756d6.3
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 01:07:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789372982; x=1789977782; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=nFvY4nvrp8jk1FFzx/RVet+XhGQRlYHVzbRdGgTlNOU=;
-        b=mlLkcFNf3YzGcBxUFp3/WbWyXNtIgfmGgEKKAveM/br/e15J1ZMXSRR0hdXUjLA/5s
-         wchZlHEvHlgJn5m9e+OHFeA8aBfFgFb1V8nCA6h4ve8xLEyhi66IMrItUUdGO32nU9VE
-         aUNGu8fTMSQ5LEII8Wp0eIRh6/xqy7ZVmYgCyRWirfYz1aV2lq8ekr8d6FlqyHfuQHq5
-         LzelKDWb+uoAlFYAMU1TKPtLsBEyv/XXe1jCiE/bPXzsUgZ78DqLzBQzxzJnmhBu0uNN
-         PX50Qjq+6k5n6I0mbU2zZYftFwrukqO6mZDhi+2ZJzI+UGDX2TOiVFd4izONLR2wDnG0
-         hWXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789372982; x=1789977782;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=mojatatu.com; s=google; t=1789373221; x=1789978021; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=nFvY4nvrp8jk1FFzx/RVet+XhGQRlYHVzbRdGgTlNOU=;
-        b=JvdlYU/B36cpihoh+gq3JdZv0KukcJ6i6ECX7ksPb8PQY0aEZdFo1QwKeN90eUqLDo
-         i6+GoAiylHW2iFoDIJS32zmfPz/oNq8dgIU2HA/nZCBm066goq4c5fFuSd7SJIaqpGSn
-         COGN+6rtCauMni/BONH+o3bqptEFB5xF9H2fWmYVAsGzGxbKXhlq6uTTqt7VPwFiw6aA
-         +Ybr1n8J6RAK36A3R5LFQOKk+q2fF/CBn7OnvQc4BODcQaaX+lGCRp9o+fdfkcq14dva
-         LhzNU570Dw1Q6Xkj9dYrp+2lUnPN+HyXFRWjMRghtDpZ07bdO5aHq3TY42ivp6zxO9ru
-         IZeQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx7fXODplmvuNgCRgEiOjYXlJG4iA666XbmCjzBmyHvXj2jUfSq7GHXReAzvrWPjVjPDvUdH80=@vger.kernel.org
-X-Gm-Message-State: AFuF++nGVYO6n/kXw9Jtx7FbAM5VsX+G7l77G4l+kkw/ojOU7LPQyWjA
-	eHJFXab1twA+a7HDa4hv3bN0THRqD+fp7akUJL3WtMBqsrBOaIvL6rup
-X-Gm-Gg: AYBFou1w5ZvvwznIyF8vNm1jE0wXv1ANd6M6Rw5pQDgcPU60S50gZaWsqRxaWOLC7kj
-	Yk1X2enymddWe6KHqe4+BsYDSfZKIkDnLx4PEIL5R8mwXl256URVYmqvpx+OmXcQLYZCVGna1WM
-	DmoF1dNqr52DS1iXFnRvdAgR77cWjKvEM1uZDz95LQXDriEqgbXS1LbJsqYEC88T3IdFtGFpHt8
-	DZIx3u+D6HJ/aNv1mAxf08N4nfuvkz1JyszrXA6tRvP+MtvpYHilq7z7CLKWNC67wzW+Z77QwRt
-	FO5n6sXeV4kLqvGgocIaDtbm3OnhqqN8e5hAGmSOziNyam/cBm9G+uMqozoSrns89/EMzdoEf3t
-	aL8Sv6VhP2KR9ofLmgvA6Sc0sUjCK3vzZAAs8razzVc9Ja8FrSnI9EBse36yPIHDno9A7rAfmvK
-	5qWKu1nDEpz4//aYZQrILnAbfQBgPfQFlQBf2qBSseFgxvBdChuyKTp/pSNfKJJ68O/iu4/sefI
-	7kZOkK7JXU2nlx11obltiWEN9YCAqj39+rZ
-X-Received: by 2002:a05:600c:4e89:b0:49d:7f5:4cdd with SMTP id 5b1f17b1804b1-49e7a68d80emr14744645e9.27.1789372981897;
-        Mon, 14 Sep 2026 01:03:01 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e71861d71sm172806235e9.11.2026.09.14.01.03.01
+        bh=7pT3kEPEgpbWBj+9NNyMg+ukyMM8ao5jiiq0DN4Mn8A=;
+        b=nHvPkgvwrtg/l3l6ShWepyXGQ6YfbIJp4dhIHLL2SvZ8ZKxfTBGmrpId9NDQSSJ0v1
+         Zv8eOSra/j0lpOS0PRINQs4b8E9wZAm1B7Dq+kFidJNNdNpYuCBiOck3oN7BC4UAflUi
+         KUseDPT8LQbl8QUs0IVjNqibXsycNqRAYt87Q=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789373221; x=1789978021;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=7pT3kEPEgpbWBj+9NNyMg+ukyMM8ao5jiiq0DN4Mn8A=;
+        b=QXsJ1eggPRmZ41h9SwWMcD6KXt6a94vWF2EWiDvEdPSArp09D58KRBD8J4oECzDWuJ
+         QYmDI1AFqw9SPMaG4T+qTgh8pfjg10HBOBX6BfrAp7zvbc1UDleNBynGVAuFhyHVZH8n
+         F1gufEGeyzSQ3K0JPhKQ5pfFwl7B5l3oxvGkZUAa6nnZBVRNEVNt+2g93fWkDv6ybDox
+         Tv3wY8sUzLh28dXhHIge3OlqjfVxSkSE2EbiK2CWa6SfRA9Ecav5hM85Yk6kuKm0hSIt
+         L4hgsWC1/L5FL/crAvStXq/5l/OOm9rkDHHfeggdkUKqloSzLT9hI8Vs21a8nBTDPq4X
+         dqtg==
+X-Gm-Message-State: AFuF++mSHsNYWIxxrPQh6NFs+Z4xNtFDtzoY/0mESJXuiji3fc0qT5qx
+	Gvc7h5eHvxMAhiLE41GebUwDh52HfuamrIf+UghRVdNSmDsOjEfdOSnZq5Z/CXbC1hzWxeQvXmb
+	eJcE+1g==
+X-Gm-Gg: AYBFou3JzxS63O81E/+Ty/0SmuXNsSEMf/VW7rv9WDupJ8m7wYldqfRtNCbCNjJRliM
+	BL4g3KHKlTEaMXi2ig2Jif5TheY89Tk6ZkqtyqHsHPtnEP+VjxKxM0Awc4kqzdbMWhkFfII6ijA
+	Q0AkNo6g4LmSaaaFVI1s2rhiSKeN96Bm2HDLojelRIP1o4uRga6ykiI+RuHMrhjwpMch2GB9y0z
+	bR7LnrHyxneb9BvT4amrhIjX9lRPQ9smpQKXCzIW+SJhNdSCYFDzTMfiVVyZcoo4LycfB0YGLLZ
+	r6W1BhZza1KH18IMJlZRx5U+7EAPjvPmLeU3r0C3gnLDpUPlF9MvhZxUvAMIUIQM+uZKykAN/Xw
+	/OmROWMNaLSbO8J5ns6ZudxNv468oFdZZ3NIVKKkos2xCcNyhhy0lRdp/YC1YbVsy+WsfO2iYH4
+	vEDbOw74gqSeb5rGvwp8lK4sFLXAF6qQoiedWl9+2qOy6MHE11sDNywvIvtmyzXabeVMXsASd9c
+	TC8NXyUf1IsCQBF4LNZGMi0cB2xNKchcBGO/G3wPySReztOaCzxqk/fVf3i3Aecsz2pTHTbqT3P
+	HKjifyO3AcDzEcaxUR6+JSM=
+X-Received: by 2002:a05:6214:1945:b0:910:34c8:ac46 with SMTP id 6a1803df08f44-9122e657768mr23016236d6.25.1789373221522;
+        Mon, 14 Sep 2026 01:07:01 -0700 (PDT)
+Received: from majuu.waya (pool-174-112-106-84.cpe.net.cable.rogers.com. [174.112.106.84])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9120f4d51ffsm90187336d6.45.2026.09.14.01.06.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 01:03:01 -0700 (PDT)
-Date: Mon, 14 Sep 2026 09:03:00 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Zihan Xi <zihanx@nebusec.ai>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org,
- idosch@nvidia.com, willemb@google.com, kuniyu@google.com, kees@kernel.org,
- richardbgobert@gmail.com, jiayuan.chen@linux.dev, stable@vger.kernel.org,
- Vega <vega@nebusec.ai>, Luxing Yin <root@tr0jan.top>
-Subject: Re: [PATCH net 1/1] net: gso: limit recursive IP-in-IP segmentation
-Message-ID: <20260914090300.6ad169c0@pumpkin>
-In-Reply-To: <willemdebruijn.kernel.57ad3a4d0955@gmail.com>
-References: <cover.1789302084.git.zihanx@nebusec.ai>
-	<a4f108b00c7d3c0997bfcee84a9e7e481c07ad5b.1789302084.git.zihanx@nebusec.ai>
-	<willemdebruijn.kernel.57ad3a4d0955@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        Mon, 14 Sep 2026 01:07:01 -0700 (PDT)
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+To: netdev@vger.kernel.org
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Sashiko <sashiko-bot@kernel.org>,
+	hybris <hybris@mojatatu.ai>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2 1/2] net/sched: sch_hfsc: bound the classify inner-filter walk with a drift budget
+Date: Mon, 14 Sep 2026 04:06:55 -0400
+Message-Id: <QDISC-CTUU.v2.20260913192614@mojatatu.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sun, 13 Sep 2026 18:46:53 -0400
-Willem de Bruijn <willemdebruijn.kernel@gmail.com> wrote:
+hfsc_classify() applies the "filter may only point downwards" level
+check only when the filter result carries no bound class. A filter
+created with a flowid gets res.class set once at bind time, so the
+check never runs for it during classification. hfsc_adjust_levels() can
+later raise a class's level without revalidating existing bindings,
+leaving two binds that were each legal at bind time pointing at each
+other; the classify walk then bounces between two interior classes
+forever with the qdisc lock held and BH disabled — a soft lockup from a
+single packet.
 
-> Zihan Xi wrote:
-> > IPIP GSO/TSO support makes IP-in-IP GSO dispatch re-enter
-> > inet_gso_segment() or ipv6_gso_segment() for every nested IP header. The
-> > only state that tracks this nesting is encap_level, which records header
-> > bytes and has no recursion bound. A sufficiently deep chain can consume the
-> > kernel stack before a transport GSO callback is reached.
-> > 
-> > The unbounded callback nesting was introduced when inet_gso_segment() was
-> > made stackable by "ipv4: gso: make inet_gso_segment() stackable". GRE GSO
-> > support predated that change, and IP-in-IP GSO/TSO support later made the
-> > affected path reachable.
-> > 
-> > Track the number of IP GSO callbacks in skb_gso_cb and reject the 15th
-> > callback entry. Thus 14 callback entries are allowed to complete;
-> > GSO_RECURSION_LIMIT is the rejection threshold, not the number of
-> > successful callbacks. Initialize the counter for each top-level GSO
-> > operation and check it in both IPv4 and IPv6 handlers so mixed IP-in-IP
-> > nesting is bounded.
-> > 
-> > Fixes: 3347c9602955 ("ipv4: gso: make inet_gso_segment() stackable")
-> > Cc: stable@vger.kernel.org
-> > Reported-by: Vega <vega@nebusec.ai>
-> > Assisted-by: LLM
-> > Co-developed-by: Luxing Yin <root@tr0jan.top>
-> > Signed-off-by: Luxing Yin <root@tr0jan.top>
-> > Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
-> > ---
-> >  include/net/gso.h      | 9 +++++++++
-> >  net/core/gso.c         | 1 +
-> >  net/ipv4/af_inet.c     | 3 +++
-> >  net/ipv6/ip6_offload.c | 3 +++
-> >  4 files changed, 16 insertions(+)
-> > 
-> > diff --git a/include/net/gso.h b/include/net/gso.h
-> > index 29975440cad5..2665acbb9205 100644
-> > --- a/include/net/gso.h
-> > +++ b/include/net/gso.h
-> > @@ -19,10 +19,19 @@ struct skb_gso_cb {
-> >  	int	encap_level;
-> >  	__wsum	csum;
-> >  	__u16	csum_start;
-> > +	/* Number of GSO callbacks this packet already went through. */
-> > +	u8	recursion_counter;
-> >  };
-> >  #define SKB_GSO_CB_OFFSET	32
-> >  #define SKB_GSO_CB(skb) ((struct skb_gso_cb *)((skb)->cb + SKB_GSO_CB_OFFSET))
-> >  
-> > +#define GSO_RECURSION_LIMIT	15	/* First callback depth to reject. */
-> > +static inline int gso_recursion_inc_test(struct sk_buff *skb)  
-> 
-> What is 15 based on? Is that where in your test stack overflow occurs?
-> 
-> A realistic practical limit would likely already be smaller.
-> 
+Bound the traversal, mirroring HTB: count only the non-descending hops,
+which a legitimate walked tree can only take by level drift after bind
+time; anything beyond a small budget is a cycle.
+Drop the packet with a rate-limited warning when the budget is
+exhausted. Descending hops never consume budget, so legitimately deep
+trees are unaffected, and a terminating lateral chain (the level-drift
+false-positive family) still classifies normally.
 
-What is the recursion limit on sparc64?
-(The minimum stack frame is 176 bytes.)
+Conditions to recreate the bug:
+- CONFIG_NET_SCHED, CONFIG_NET_SCH_HFSC, CONFIG_NET_CLS_U32,
+  CONFIG_LOCKUP_DETECTOR.
+- Build a cycle with two legal-at-bind-time flowid binds and a level
+  drift: class X 1:1 (child of root) with leaf child 1:10; class Y 1:2
+  (sibling of X) with children 1:20 and 1:200; root u32 filter flowid
+  1:1; filter on X flowid 1:2 (legal when Y is a leaf); after Y's level
+  rises to 2, filter on Y flowid 1:1 (legal then). Send one packet (ping
+  on the device). Unfixed kernel: classify spins with the qdisc lock
+  held; with softlockup_panic=1 it panics.
+- Reachable from unprivileged user via unshare -Urn (CAP_NET_ADMIN).
 
-It would be more sensible to check the 'amount of stack remaining' than
-the number of levels of recursion.
-Even though that is still asking 'how long is a piece of string'.
+Fixes: a2f79227138c ("net_sched: sch_hfsc: fix classification loops")
+Reported-by: Sashiko (gemini + nipa) <sashiko-bot@kernel.org>
+Link: https://sashiko.dev/#/patchset/QDISC-CTUU.v1.20260908094501@mojatatu.com
+Cc: stable@vger.kernel.org
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Tested-by: hybris <hybris@mojatatu.ai>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+---
+v2 changes:
+   -  Replace the absolute hop bound (root->level) with a budget that
+      counts only non-descending hops, so a legal lateral level
+      chain still classifies. (Sashiko)
+   -  Reword the "strict descent" changelog claim (Sashiko).
 
-David
+ net/sched/sch_hfsc.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
+index e87f5021a199..b073efaf2bf5 100644
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -386,6 +386,12 @@ cftree_update(struct hfsc_class *cl)
+ #define	SM_MASK		((1ULL << SM_SHIFT) - 1)
+ #define	ISM_MASK	((1ULL << ISM_SHIFT) - 1)
+ 
++/*
++ * bound on consecutive non-descending (lateral / upward) hops in a
++ * classify walk, mirroring htb's TC_HTB_MAXDEPTH headroom
++ */
++#define	HFSC_CLASSIFY_MAX_DRIFT	8
++
+ static inline u64
+ seg_x2y(u64 x, u64 sm)
+ {
+@@ -1133,6 +1139,7 @@ hfsc_classify(struct sk_buff *skb, struct Qdisc *sch, int *qerr)
+ 	struct hfsc_class *head, *cl;
+ 	struct tcf_result res;
+ 	struct tcf_proto *tcf;
++	unsigned int drift;
+ 	int result;
+ 
+ 	if (TC_H_MAJ(skb->priority ^ sch->handle) == 0 &&
+@@ -1142,6 +1149,7 @@ hfsc_classify(struct sk_buff *skb, struct Qdisc *sch, int *qerr)
+ 
+ 	*qerr = NET_XMIT_SUCCESS | __NET_XMIT_BYPASS;
+ 	head = &q->root;
++	drift = HFSC_CLASSIFY_MAX_DRIFT;
+ 	tcf = rcu_dereference_bh(q->root.filter_list);
+ 	while (tcf && (result = tcf_classify_qdisc(skb, tcf, &res, false)) >= 0) {
+ #ifdef CONFIG_NET_CLS_ACT
+@@ -1167,6 +1175,16 @@ hfsc_classify(struct sk_buff *skb, struct Qdisc *sch, int *qerr)
+ 		if (cl->level == 0)
+ 			return cl; /* hit leaf class */
+ 
++		/*
++		 * flowid binds skip the level check above (res.class is set
++		 * at bind time and levels drift after), so a walk can follow
++		 * lateral hops without descending; bound them here.
++		 */
++		if (cl->level >= head->level && drift-- == 0) {
++			pr_warn_ratelimited("hfsc: classify loop detected, dropping packet\n");
++			return NULL;
++		}
++
+ 		/* apply inner filter chain */
+ 		tcf = rcu_dereference_bh(cl->filter_list);
+ 		head = cl;
+-- 
+2.43.0
+
