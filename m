@@ -1,144 +1,154 @@
-Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C140047604A
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 14:16:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789395416; cv=pass; b=oxM5ciJO2Mc5NvZpBfKMek0a4w1Tm966zdfnlbfVPhgtm2JVMxBpAwlUv5BI3CPXfqq6ClCmojLGGza4xT3tLwRuyvHiw6IkAGEbW+jCZ2xA39fjAcKQAXgffNLkjUfjSQRwe3QP8yeZMRzVBVP03uoLL7mXrW8wl6LRyKYdDIU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789395416; c=relaxed/simple;
-	bh=CpAMjQAXkhZAhSQaDcxi40ms3MRJ4Y0fZlOO6i/E3kU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LWlCXHCejSZCUGYUeeDxeKi4nVVcGlye1i3GLm8wZpoT8HEZjcDkLWAYqO38kukYj41K9FnnoBR4Jit8tNSBWNHm4kt21F8wpjU7yJnmNM2wi5EL6ez7siqCjl7a6SXtnQ+5hOmLAnAsrvKI/5/9JMR4aVJ8qHeKuuck1gycK5I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ETbXGnXc; arc=pass smtp.client-ip=74.125.224.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA63F443E4E;
+	Mon, 14 Sep 2026 14:17:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789395440; cv=none; b=t6FXAcvobNgg/rlErQHhyLUZl90pgVnJHQgI+HRrDJOI2uiBmiFbf49lNAzT5C8+dJph6/mSqFVLkQKPAy1TRT0/3LNseT9y4EXEaFg31a6gHn4wjAHSr6EiJpgsgZfy0mV80PUeeXanJuFNNQ5XEyQ9ytyFtvyV5AVVS5eXDbM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789395440; c=relaxed/simple;
+	bh=WwyemPfCGtGpaGhIaw8oeDMtCAwfUBPK7mE2W6HoOzA=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=THYgZdmmJVV8y3khWdVMJGhUUgsZog3hJ9nMVOkusJfhgD5xngy7IjRc4Kq1ifDEJ1qsdc6vqzCsGIneUQAwuIr9T+ORI9XQCDQilSIrTWYPL4dYEYPD7s07+jlR23ksbBNcvLlC1qAmDZcf//ANDykeG9Vowo4X+UVI5WhAAY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=EOMZj8c5; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ETbXGnXc"
-Received: by mail-yx2-f12.google.com with SMTP id 956f58d0204a3-66e4aa8d881so1608588d50.1
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 07:16:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789395413; cv=none;
-        d=google.com; s=arc-20260327;
-        b=A75QBq3m/G98sJq7W79tPRjGqtLYnCVbACYcVuarA1ClTqzvsoaeae8TiMnsO/0Bod
-         iDoJ0vwleuBHJbw9fiHVOY3ALpohgTFUXrgKJsTafVetjwv9yzytKHHisk55TM2Tjrw7
-         3BrN/7UmzBcn3gkTFyfTMCOLWii7CEuN4EpYXSPFwmlSMdwTDnPAkA2OFYlrD/vfSNut
-         meuTeJ7pbaVSBsGIcYJe2e/NgWEvulKOvsu05v073WT03fMV+E8m6zLCuStLRYorMi7b
-         CK4lGB8ALUUr/GlBxjMEaOPnG5n8QS0NaqDe5JPuMRU7W6HmTj3wTwZ8gH0xOC5eiBPy
-         H2YA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CpAMjQAXkhZAhSQaDcxi40ms3MRJ4Y0fZlOO6i/E3kU=;
-        fh=vhfz8kbh8E4HOUxSfkgLdMSuLadFMr+uwJQxgAs+7Ow=;
-        b=daXGlYHj0f4c4pjZSguDz9VA69e/wdpGLOTdklL4gb/m8V1+b/PrLN1TUxFY+Ta4rB
-         jdpfh/5qkw4ZCAWnQcqCxRxlo/rvHRNS2/5Bcj1NM61k0iJ/gTisGcpoCwBFPzjeYAuO
-         NGRg9EAkpMPAeoSkCGn+3PbcGzhrNpuWUyqIMYsWaqAkoQQe5ZHgdfMv0mYIxk2+wqTm
-         zRQ52w45Pyejps3XvbsiUIaaFa/SfVIgKolbQ9AzbThlySnyYtKwrI+fq41faoBINCAU
-         VedUyoRQb1nLy54sydc10CCbN3OL4xsrAH+rdVOMeXkqjhhzMBrYqlSKKPFBGw9bibS8
-         WMHw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789395413; x=1790000213; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CpAMjQAXkhZAhSQaDcxi40ms3MRJ4Y0fZlOO6i/E3kU=;
-        b=ETbXGnXcub177GSbAH6jQd0MIMb1fVUoC5tayZqtgYk03K7nsBK6ATfg5Xo/hSwXJU
-         h69np5KvZByeYOGuLPUQsnUrPq27zCad22NnmHtSeS2qNVSq9sqd5FVpfzrzkvUagTIz
-         TQJb99Lsj10BHIxnZBxjzM09tfVweQqPj2n/w9Sq0yEOdw6xURnRNws4vwcBTAxLfJUm
-         TZAvu7Fl4lHGxpAiAS1xrjtRWDyRoH1dhiJKCXHUXCwCAaOHYo2T7Abm4bI/kO8MG1Yt
-         AvFj0sXcjDlooulPyo1WhdJNoifnvj1x0Dh83iK58PA0uZIfp5Tr1yrWXNpu9aQMNUo+
-         2hsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789395413; x=1790000213;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CpAMjQAXkhZAhSQaDcxi40ms3MRJ4Y0fZlOO6i/E3kU=;
-        b=V7hm8dxMFGWCsg/lvz9izpuqskW2fzYql4EnCdo/JThU4BluGoAKZSzerdkLiERxAY
-         F4DZ4AZAM8JutwuqGeG5hS/G9fDwzR0rIJ4G3NF0G3ZTamhALsVN15yVhwOM4o872CLZ
-         xTdbyhZvZORLvF7ICggd1mryJdsHmpkFoVWdKOdFyKwcgYkbZwXXymLhCtGOudQ1s3hL
-         5LMz4R9Wxnb0Rhz5EJM2XmP/IwcauNLVnjsicMyTmPHkw2uPXzqrCNjHsZPTOQnsHWam
-         j9gDdGgHeJXFq8xqssuBsHJR7Ilzhboml/R9AXWKq0f+wd38IsQuS04FijETcbZpOlxU
-         yDnw==
-X-Forwarded-Encrypted: i=1; AKwUvBzi71QF29UF/u7xnYX8vzpjx0b5QFHhgnkDBWwCWld8ejidobAxF1iNLcpDw8gi4TSSjqGaZ3Q=@vger.kernel.org
-X-Gm-Message-State: AFuF++mXEOwvGki1jJilerlr3oEc8ydGbgZdtyUFRN/Fqr0+yQ8maUZv
-	iOyw3iqEcyz/BwjdHHudLSOCymdDUsvYj8euxzKaEGhlhzqw6XZGItK6PyCEJm8Yybqx9VMaZxB
-	0UZqASX6CLVKpjXrlADpLaFJ6UqiDEAA=
-X-Gm-Gg: AYBFou2Ubnyoe3Fs/gfNIFeA2ZrdhJnwY7/FZ8Zf55/k+CzG5mK3bIsB6EtcFOmcRA5
-	nCBf8a4UJBUmcfPBXIszhZvGGMWW0XsobukxyM+qrveFAyJLiq60i8e8DxjnKfNeOsRvbri5U/9
-	EPqOCUT1io+lgLjpw/PX6Tq36UywhKD4OpJPZoB9yArvbkGgG4av25WRMC0M0Gfig+YET2GAgwq
-	N1fpXsoBzNvqBjYs84frfq82A7nST9TaD02+AE4IvxKhBV0GPmuY8M1RdNeLbuH/Se4LkVuW8XJ
-	FKyogrING8h1DrT7mcSdWB5pp2EYxKZQhoiuwdfZlsAOlDERsiQQsQ0itg2o87Z+5rELzzr59Ob
-	myK9Ow3zHiijKtDaLn3XBhsfMbw5f+Nwz/ULE+tgdjHUjysOyy9Kc4jNPDzqdQx57zSDyKb8Vjn
-	ghV/Gg8vxUfd+Se1YfogWKLCELj/85fA==
-X-Received: by 2002:a05:690e:4190:b0:671:1a19:9d89 with SMTP id
- 956f58d0204a3-6714dfd2516mr664118d50.17.1789395413647; Mon, 14 Sep 2026
- 07:16:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="EOMZj8c5"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E0A01A02A9;
+	Mon, 14 Sep 2026 16:17:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1789395436; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=LV2rFuTqxnUvpT2kKgZ/ZRhHzzkTqV9h4yZ9JGUnT6w=;
+	b=EOMZj8c5UtgRvJy+/sEDZwAeK5OGNoYne0yZIcNvi7ZvnMeLwrFBjk4gtfpTcPxwH7GAwO
+	eEtkw9QWZQS3fIEW2B0+CpzoBwWN1ac2TLKrOW6bES/wVwmdNYI5bIKMM1CEo8hVXYzfce
+	q4V/i1zD6jZNO7Tpy/eXIqoNVm91RtSjeTIxI+Ml3g8t2jWy14REoGLY6A8T1BCzGQ51S7
+	K9aHbmMBaYfXUBRwc0hBJcH5DaKihoJiC9ocoiISkvjAuNOqUNOCeEJRhOknnaSAoexVqm
+	nB12Vr8k/uGS1/+TWBKPA0ITc9lBlbfDDvbRB/3eDn6uWkNRfchrE195KUONZA==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260911103511.171722-1-chrismelnu@gmail.com>
-In-Reply-To: <20260911103511.171722-1-chrismelnu@gmail.com>
-From: Jonas Gorski <jonas.gorski@gmail.com>
-Date: Mon, 14 Sep 2026 16:16:41 +0200
-X-Gm-Features: AcwNN1UkXKHgXuNmvAg9QFbsPvsNOPEuEr-x3_4WEtx0b2M_Yl9nWkPUROOSXi4
-Message-ID: <CAOiHx=mJZKk9dT93am0o58Th+yPo2aGj6T4aFWkyeQphPwu4YA@mail.gmail.com>
-Subject: Re: b53.rst: is the 5325/5365 "no tagging support" section still accurate?
-To: Christian Melendez <chrismelnu@gmail.com>
-Cc: =?UTF-8?B?w4FsdmFybyBGZXJuw6FuZGV6IFJvamFz?= <noltari@gmail.com>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, netdev@vger.kernel.org, 
-	linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Date: Mon, 14 Sep 2026 16:17:15 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Birger Koblitz <mail@birger-koblitz.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Russell King
+ <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit
+ <hkallweit1@gmail.com>, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Jianhui Xu <neuromoments@gmail.com>
+Subject: Re: [PATCH net-next v11 13/15] ax88179_178a: Update driver name and
+ information
+In-Reply-To: <20260914-ax88179a-v11-13-5ea7a925ba6d@birger-koblitz.de>
+References: <20260914-ax88179a-v11-0-5ea7a925ba6d@birger-koblitz.de>
+ <20260914-ax88179a-v11-13-5ea7a925ba6d@birger-koblitz.de>
+Message-ID: <d60ef2f11fa4806fe9ed449c927702c8@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Christian,
+On 14.9.2026 14:46, Birger Koblitz wrote:
+> Add additionally supported devices to Kconfig description, add
+> further requirements such as PHYLINK.
+> 
+> Update driver name in usb_driver and update MODULE_DESCRIPTION
+> to include the additionally supported chips.
+> 
+> Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> ---
+>  drivers/net/usb/Kconfig        | 10 +++++++---
+>  drivers/net/usb/Makefile       |  2 +-
+>  drivers/net/usb/ax88179_178a.c |  8 ++++----
+>  3 files changed, 12 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/net/usb/Kconfig b/drivers/net/usb/Kconfig
+> index 
+> 115990b0d9537aea2776544c9768b034f32aa7a4..4158455a2da76cd43a9a9d9d0e8c66028d57b095 
+> 100644
+> --- a/drivers/net/usb/Kconfig
+> +++ b/drivers/net/usb/Kconfig
+> @@ -195,11 +195,12 @@ config USB_NET_AX8817X
+>  	  This driver creates an interface named "ethX", where X depends on
+>  	  what other networking devices you have in use.
+> 
+> -config USB_NET_AX88179_178A
+> -	tristate "ASIX AX88179/178A USB 3.0/2.0 to Gigabit Ethernet"
+> +config USB_NET_AX88179
+> +	tristate "ASIX AX88179/179A/178A USB 3.0/2.0 to Gigabit Ethernet"
+>  	depends on USB_USBNET
+> -	select CRC32
+>  	select PHYLINK
+> +	select AX88796B_PHY
+> +	select CRC32
+>  	default y
+>  	help
+>  	  This option adds support for ASIX AX88179 based USB 3.0/2.0
+> @@ -207,6 +208,9 @@ config USB_NET_AX88179_178A
+> 
+>  	  This driver should work with at least the following devices:
+>  	    * ASIX AX88179
+> +	    * ASIX AX88179A/B
+> +	    * ASIX AX88279
+> +	    * ASIX AX88772D/E
+>  	    * ASIX AX88178A
+>  	    * Sitcomm LN-032
+> 
+> diff --git a/drivers/net/usb/Makefile b/drivers/net/usb/Makefile
+> index 
+> 2ecead0181eaf8d66fb6f5dbd6f2905b22b6eb57..4026f19ecb826a6465de38f1d9bb0e4c0af80421 
+> 100644
+> --- a/drivers/net/usb/Makefile
+> +++ b/drivers/net/usb/Makefile
+> @@ -12,7 +12,7 @@ obj-$(CONFIG_USB_HSO)		+= hso.o
+>  obj-$(CONFIG_USB_LAN78XX)	+= lan78xx.o
+>  obj-$(CONFIG_USB_NET_AX8817X)	+= asix.o
+>  asix-y := asix_devices.o asix_common.o ax88172a.o
+> -obj-$(CONFIG_USB_NET_AX88179_178A)      += ax88179.o
+> +obj-$(CONFIG_USB_NET_AX88179)      += ax88179.o
+>  ax88179-y := ax88179_178a.o ax88179a_devices.o ax88179_lib.o
+>  obj-$(CONFIG_USB_NET_CDCETHER)	+= cdc_ether.o
+>  obj-$(CONFIG_USB_NET_CDC_EEM)	+= cdc_eem.o
+> diff --git a/drivers/net/usb/ax88179_178a.c 
+> b/drivers/net/usb/ax88179_178a.c
+> index 
+> 44a768c5808ac1f7071e186d9c86cd6149601971..1d35ef90eceb77b27e8d96e64a008c63b40f4bd7 
+> 100644
+> --- a/drivers/net/usb/ax88179_178a.c
+> +++ b/drivers/net/usb/ax88179_178a.c
+> @@ -1341,8 +1341,8 @@ static const struct usb_device_id products[] = {
+>  };
+>  MODULE_DEVICE_TABLE(usb, products);
+> 
+> -static struct usb_driver ax88179_178a_driver = {
+> -	.name =		"ax88179_178a",
+> +static struct usb_driver ax88179_driver = {
+> +	.name =		"ax88179",
+>  	.id_table =	products,
+>  	.probe =	usbnet_probe,
+>  	.suspend =	ax88179_suspend_wrapper,
+> @@ -1353,7 +1353,7 @@ static struct usb_driver ax88179_178a_driver = {
+>  	.disable_hub_initiated_lpm = 1,
+>  };
+> 
+> -module_usb_driver(ax88179_178a_driver);
+> +module_usb_driver(ax88179_driver);
+> 
+> -MODULE_DESCRIPTION("ASIX AX88179/178A based USB 3.0/2.0 Gigabit 
+> Ethernet Devices");
+> +MODULE_DESCRIPTION("ASIX AX88179/179A/178A based USB 3.0/2.0 Gigabit 
+> Ethernet Devices");
+>  MODULE_LICENSE("GPL");
 
-On Fri, Sep 11, 2026 at 12:35=E2=80=AFPM Christian Melendez
-<chrismelnu@gmail.com> wrote:
->
-> Hi =C3=81lvaro,
->
-> Documentation/networking/dsa/b53.rst still lists 5325/5365 under
 
-Huh, I wasn't aware of its existence.
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-> "Configuration without tagging support", saying they "support a
-> different tag format that is not supported yet". But
-> b53_get_tag_protocol() assigns them DSA_TAG_PROTO_BRCM_LEGACY_FCS,
-> which seems to have an implementation in net/dsa/tag_brcm.c
-> (brcm_leg_fcs_tag_xmit). This looks like it's been true since
-> c3cf059a4d41.
->
-> Separately, ds->untag_bridge_pvid (b53_common.c) is only set when
-> tag_protocol =3D=3D DSA_TAG_PROTO_NONE -- which I guess no longer applies
-> to 5325/5365 -- so the VLAN workaround described right after
-> (removing the default VLAN 1) may not apply to them either anymore.
->
-> Is the doc just stale on both counts, or is there a reason 5325/5365
-> still belong in that section in practice? I don't have this hardware
-> to test against. Happy to send a fix once I know which parts still
-> hold.
-
-That documentation is indeed stale. The required tagging is now
-implemented, so VLAN 1 is now usable, so the switches should be usable
-as far as their limited feature set allows (e.g. you can't disable
-learning).
-
-Also the configuration examples look horribly outdated. I don't think
-neither creating the VLAN uppers for the conduit (eth0) nor adding ip
-configuration nor adding them to the bridge is needed, or even
-correct. You also don't need to up it anymore.
-
-Finally, I noticed this file is missing from MAINTAINERS (which is why
-I didn't know it exists), so if you do send a patch could you also add
-one adding it there?
-
-Best regards,
-Jonas
+Thanks,
+Nicolai
