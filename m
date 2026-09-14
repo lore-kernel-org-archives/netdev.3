@@ -1,83 +1,90 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40EC37B3FE;
-	Mon, 14 Sep 2026 05:01:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2624032B11C;
+	Mon, 14 Sep 2026 05:24:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789362074; cv=none; b=JeDEjENCtpr5Kjh/Oe1Hjw6g0LNTWnxSkTB13BidkM7NkvV6QISMITY1zrjZ/dEICpACCkwvDTgkRkNwC8IDStUkytP07+DtdnKf1sPepfer3pQrVmgC+W3tJEqwdCG35m4J57zhuAnNR9+biP6Olqwff3AcBlYvbOVvc1/L/j4=
+	t=1789363482; cv=none; b=HMWOMqLurt0aK+leupDJdDyuwWCLRCsuexVl2Xvpv56pSckYQZDHxJy8crE3bJ6VtxKUIKetGiQhShMUdKCaqr+hcATPalRMa6c0+9Ii4U5sMcoLejRX92JwN7Yoy/VuRR+wm8tt2O18d7wxYgCC9m/DErQ8QnhTnMpdbSyO0eU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789362074; c=relaxed/simple;
-	bh=ewZIE3ef2XnRz9+1nhTss0M1bLQ1L4PxJBQ+vmRBxE4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=kMoZ8q7jX+UMyfNXfGweuZiGJv1Hg5XD9G2X3Q0dr0lxPY+XH/0sHCPt6r5B/KNkyyrHrBcjGvDjdGPnIvAJKiEeysbw0TN2E6VJG4VeNavqkokVxFvaRUvyu0FFjTWSeATqkfUEek1dLyDXDl05U9zOpUAVfcIbCPXPZWizfP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UlToqecI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789363482; c=relaxed/simple;
+	bh=IzbMcXq77wl7SCNXE3d7CF2D1JQiUrOVEGdvlMtaGTQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Jdi1j5LIcsmzAPX5w7Bh0tv027zksvWlx/vWE3CNGPlpWklDiBdJNHfFors9UkyZhtmSTqom3PWPXuWQb+at+/nSrFiV/7JPR5xt845faSIiDRKVkpmL6VqS9JQM7yeMxeXyF167q4idZcGc/7EUl8EFu1BwxrTQ9QLdtr7dkBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=zAfPEA2A; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=1EPR5yxA; arc=none smtp.client-ip=23.88.97.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UlToqecI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE92B1F000FF;
-	Mon, 14 Sep 2026 05:01:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789362072;
-	bh=ub9JoCNGO52ku7WWQ5b06moZ+72/o9Aisxb6nxgD9y8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=UlToqecITGtto3XNZvWgs8wBYFTVAQgRhojo2B1KI57agIMJMchuFdvfvSnbzrVSB
-	 vlVyKVGdt2RvaznUMbx+svn+u7d2djLQJE+X/tTH+T4PWxmSxHoVmcLGYcNZE1Cz6F
-	 6EK1wznP13NZT8G8ph6qOJ3FNJzsrFhB5ZMKLsd1PC32ORz1qEiOpmN3HQgDNaqqOY
-	 Pr9m6fOfFl+piSyQb4CJwkJZU6Xszq2unDuQ5jrqaYiztcHXyrJgA6xW/9iAwu4VqA
-	 9ef50co/9vB0rghp6tCCHz7R4dKEX0oeAzLzfEk95CQJkT7Dr5OQYx9r2KkCBzyb6F
-	 pP8ulNPORbrPQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568F6380AA63;
-	Mon, 14 Sep 2026 05:00:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="zAfPEA2A";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="1EPR5yxA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1789362911;
+	bh=IzbMcXq77wl7SCNXE3d7CF2D1JQiUrOVEGdvlMtaGTQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=zAfPEA2AnKOKb5ZNIGNc3S3d1FpomTiGn5RredNPVq9VQxgo+4jSZb5b0oMUZ7Fi3
+	 YsRbYQgodevmxyRpfnKlIK0xhJqUvzyaKLmEtY9bUa1EoDm71kvzaYrdZd7I02U+fB
+	 XSYyjQJ3syRMrK6REvAxa5LBQR8BlQ5Ap9g1RULKbEazr10I3DzVZ5fFFQfFznfGhL
+	 eDLUxmtcDf0iDxfnIhbIsb9WDjCo3zgoDynoiqvCuScxJeUi3pHU5K7vEGHJScWxNm
+	 CnCMVAnlT2EPt2h6C4tKMyKnlGlmKrhNtsYlJHzUSy7LzhR0vAzReDpowUfWmEf3DK
+	 KY/cdyguVyxFg==
+Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
+	id 719713F693; Mon, 14 Sep 2026 05:15:11 +0000 (UTC)
+X-Spam-Level: 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
+	s=default; t=1789362910;
+	bh=IzbMcXq77wl7SCNXE3d7CF2D1JQiUrOVEGdvlMtaGTQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=1EPR5yxAuTEcDL3YokL0hDVvjjlRAJhV1gtVzk34cfSuH4l9Hm7FOfiTK7czMKSZa
+	 aDYOdBxs+jrfuTw7lpqMZREdJYXTaWzuHNdIf3clseF1OScbDmnZb5bVFzYoh0VfFv
+	 /UNb50ecwlo9JE9bVBtUtR2oZPlXvjcJKz4TfCi8itmT6Xdr/oP0RiqoRiKbFH42EV
+	 RKcMcOlNje1KGzcqpgADgvoSNfix5jqi376bjjCvw+8JXsUGREwmTYwutq86W6P4bo
+	 5YwHWDVhSKUFNehePzo9+UFGWrgJpjA6kwpY2S7dlhPktcrlNYKZBMN+mWfx9H5rtN
+	 GetkR2oA/SOJw==
+Received: from [192.168.2.233] (unknown [223.86.26.228])
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 579423F693;
+	Mon, 14 Sep 2026 05:15:03 +0000 (UTC)
+Message-ID: <2eddb9fe-22b3-4fe4-a2ab-e408e4a726e7@birger-koblitz.de>
+Date: Mon, 14 Sep 2026 07:14:46 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH bpf v3] bpf,
- sockmap: Fix self-redirect copied_seq double-counting
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178936200789.325205.10800114319681909179.git-patchwork-notify@kernel.org>
-Date: Mon, 14 Sep 2026 05:00:07 +0000
-References: 
- <1a8e797a1b26e2f695aaac22ac644c2862f63466.1788858299.git.tanggeliang@kylinos.cn>
-In-Reply-To: 
- <1a8e797a1b26e2f695aaac22ac644c2862f63466.1788858299.git.tanggeliang@kylinos.cn>
-To: Geliang Tang <geliang@kernel.org>
-Cc: john.fastabend@gmail.com, jakub@cloudflare.com, jiayuan.chen@linux.dev,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, daniel@iogearbox.net, tanggeliang@kylinos.cn,
- netdev@vger.kernel.org, bpf@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v10 06/15] ax88179_178a: Add HW support for
+ AX179A-based chips
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Jianhui Xu <neuromoments@gmail.com>
+References: <20260904-ax88179a-v10-0-b5e60eca7690@birger-koblitz.de>
+ <20260904-ax88179a-v10-6-b5e60eca7690@birger-koblitz.de>
+ <20260910170055.524e3c25@kernel.org>
+Content-Language: en-US
+From: Birger Koblitz <mail@birger-koblitz.de>
+In-Reply-To: <20260910170055.524e3c25@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hello:
+Thanks for checking the code, Jakub!
 
-This patch was applied to bpf/bpf.git (master)
-by Alexei Starovoitov <ast@kernel.org>:
-
-On Tue,  8 Sep 2026 17:08:32 +0800 you wrote:
-> From: Geliang Tang <tanggeliang@kylinos.cn>
+On 9/11/26 02:00, Jakub Kicinski wrote:
+> Sparse flags a number of warnings here:
 > 
-> When a BPF stream_verdict program redirects an skb back to the same
-> socket (self-redirect with BPF_F_INGRESS), sk_psock_verdict_apply()
-> calls tcp_eat_skb() which advances tcp_sk->copied_seq. However, the
-> skb is then delivered to the socket's psock ingress queue and later
-> read by tcp_bpf_recvmsg_parser(), which also advances copied_seq via
-> the copied_from_self accounting path. This double-counting causes
-> copied_seq to advance by 2x the actual data length, triggering:
-> 
-> [...]
+> drivers/net/usb/ax88179a_devices.c:509:37: warning: restricted __le16 degrades to integer
+> drivers/net/usb/ax88179a_devices.c:678:32: warning: incorrect type in argument 1 (different base types)
+> drivers/net/usb/ax88179a_devices.c:678:32:    expected restricted __le64 const [usertype] *p
+> drivers/net/usb/ax88179a_devices.c:678:32:    got unsigned long long [usertype] *
+> drivers/net/usb/ax88179a_devices.c:705:45: warning: incorrect type in argument 1 (different base types)
+> drivers/net/usb/ax88179a_devices.c:705:45:    expected restricted __le64 const [usertype] *p
+> drivers/net/usb/ax88179a_devices.c:705:45:    got unsigned long long [usertype] *[assigned] pkt_desc_ptr
+> drivers/net/usb/ax88179a_devices.c:801:22: warning: incorrect type in assignment (different base types)
+> drivers/net/usb/ax88179a_devices.c:801:22:    expected unsigned long long [usertype]
+> drivers/net/usb/ax88179a_devices.c:801:22:    got restricted __le64 [usertype]
+These are indeed actual bugs and I will fix them in the next version.
 
-Here is the summary with links:
-  - [bpf,v3] bpf, sockmap: Fix self-redirect copied_seq double-counting
-    https://git.kernel.org/bpf/bpf/c/490a83d6386e
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Birger
