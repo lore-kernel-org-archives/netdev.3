@@ -1,125 +1,115 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A4747ACCC;
-	Mon, 14 Sep 2026 14:17:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C271E48094D;
+	Mon, 14 Sep 2026 14:20:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789395472; cv=none; b=DSzyn57jFvCaS8d+4rMfCzlA+FRjhsSKOdaR9cSMFqq/Cb4A1hqwlJ87bEnDg0bKb5wq91WcwLsYrTbCsdk1Uoir38qAJujKSFSwTSGVYJcpE7ODZMcXZBk343UQHA7UeDJQEd2WRK9ov57nDabLwAjWVER+zUKbFrBOHXyOsrw=
+	t=1789395633; cv=none; b=UBIjZQxBaPyy6ZAqyAJJ/W6hSbvp+l6kyg97xoTjVeMr9E7vnFs00s3JqOtdEZVTyAyIK4lLBvhnmfocQesWYe9mgd3GFpEUOQ4yZFSE4KdpQn8NnMz7b4hgiaWQP68On8B0r3L7PqKrNAOokz66pgbd6/B1wUNA457OItSZOtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789395472; c=relaxed/simple;
-	bh=SDqAZti/BCotUVGV4wz0wJY55FTzMyO0+5R5FdBHTJA=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=tm2n6ZJQdYYRIBHOiYSut9VhlUUsbLjGLe7sOT8kyG+Qmoif3WgBq8Qk/NP0lGjsz/lqsFpq5Zdid4JSEmvKULTYCtOkH7xCE4u4vOcGLFhBJ4FNqWMbvV2DN6wKCZNK47nQ/OeGD88ha4fjbZzA5HXYqudJpauhIZZbwzU46NE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=2fotui9Y; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1789395633; c=relaxed/simple;
+	bh=TXDvnfLFt3w+9whXPS0AfAqfNDELa9LxkJaMrl4oISo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aZk5xlrPU+ZogQrqP61DwQXF/EB6eVeMjQ/tLToRmyzcIU4j97NhVZmZgZh37IyLjmwUeJNmUAOhsN9ufmsar67RTK6cmseTaAHTSBD0yvDnFz2m23timdPRlP1FFYOZM1LWu2fVry8mk0ocpjiBrkxDqE4q+uJ/wGi7C8eYDEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=ZvZQObku; arc=none smtp.client-ip=101.71.155.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="2fotui9Y"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 95983A91DB;
-	Mon, 14 Sep 2026 16:17:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1789395467; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=//gKRI6vJSt4tiZ77db84KWCpaV85uXVckkTDkSP5og=;
-	b=2fotui9Y6irYr6DzUhfTUYI2wQDd/7FxAw3DALcVwZsSXBF+kP9pbUDJHG09AH0RkOFbaw
-	D20Ljfmxmgfzm+qidEu20PpuixJeJWviA3/dBO4qdyJky67/I2a3SjUM0V+516cNZumNCz
-	9xvPoHtvfnf2E3Qur/mgSO3gvm26unWVu237iqsrZ3jPi/f0HmFsypg1Y2j1lfy0VdqCC4
-	Jzy2u0FT+qPFjKmGroVjkpW9xJrlBcLFhGh0pnNwYQRBYiwdC1/0hIC2oFksaQIf4HHxBi
-	U7PNpldO9zyCpK85FvgPc+6sjb2Vd/MZbqxFa6WG59kIZzWWvtokt2w1nOwVBw==
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="ZvZQObku"
+Received: from PC-202605011814.localdomain (unknown [222.191.246.242])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 4db486d8c;
+	Mon, 14 Sep 2026 22:20:20 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Runyu Xiao <runyu.xiao@seu.edu.cn>,
+	jianhao.xu@seu.edu.cn
+Subject: [PATCH net] e1000e: roll back registered MSI-X IRQs on failure
+Date: Mon, 14 Sep 2026 22:20:14 +0800
+Message-Id: <20260914142014.428184-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 14 Sep 2026 16:17:47 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Birger Koblitz <mail@birger-koblitz.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Russell King
- <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit
- <hkallweit1@gmail.com>, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jianhui Xu <neuromoments@gmail.com>
-Subject: Re: [PATCH net-next v11 08/15] ax88179_178a: Add EEE configuration
- support for AX88179A PHYs
-In-Reply-To: <20260914-ax88179a-v11-8-5ea7a925ba6d@birger-koblitz.de>
-References: <20260914-ax88179a-v11-0-5ea7a925ba6d@birger-koblitz.de>
- <20260914-ax88179a-v11-8-5ea7a925ba6d@birger-koblitz.de>
-Message-ID: <9217e516e7725ee9b5f982af380eae87@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0aa0a04a537203a1kunma732cb61298719
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDGEtIVktKQ0JLTxoaGU0dT1YeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVUpLSE
+	pPSExVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=ZvZQObkuF5ogSFfr3bGIqGhwnS3WAc0v6n4yw+yOhXZYNGxr037kXdzjGRaVMkHD3x5hnzIOOcBx9P3moXaPLpHuVPSE+U1mkRCe20Zh5pc+vhMuLgkogsNVQyMm1vy2MdfJuYxb+o1IkRzEvc8vQSJdz492g/8E5pjObAF/FiA=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=rs/ZLTNgkCNql9uBzxBgtNcF/3ONT5Z4V/ejoC9+NrE=;
+	h=date:mime-version:subject:message-id:from;
 
-On 14.9.2026 14:46, Birger Koblitz wrote:
-> Configure phylink to work with the PHYs in the AX88197A controllers
-> and provide ethtool get/set eee operations calling into phylink.
-> 
-> Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> ---
->  drivers/net/usb/ax88179a_devices.c | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
-> 
-> diff --git a/drivers/net/usb/ax88179a_devices.c 
-> b/drivers/net/usb/ax88179a_devices.c
-> index 
-> 80cabe3557cdef8267c365fccc0bc379936bb241..97aad545daee1dd1f5c4d63a1276523589c9617f 
-> 100644
-> --- a/drivers/net/usb/ax88179a_devices.c
-> +++ b/drivers/net/usb/ax88179a_devices.c
-> @@ -206,6 +206,20 @@ static int ax88179a_get_eeprom_len(struct 
-> net_device *net)
->  		return AX88179A_EEPROM_LEN;
->  }
-> 
-> +static int ax88179a_get_eee(struct net_device *net, struct 
-> ethtool_keee *edata)
-> +{
-> +	struct ax88179_data *ax179_data = netdev2data(net);
-> +
-> +	return phylink_ethtool_get_eee(ax179_data->phylink, edata);
-> +}
-> +
-> +static int ax88179a_set_eee(struct net_device *net, struct 
-> ethtool_keee *edata)
-> +{
-> +	struct ax88179_data *ax179_data = netdev2data(net);
-> +
-> +	return phylink_ethtool_set_eee(ax179_data->phylink, edata);
-> +}
-> +
->  static const struct ethtool_ops ax88179a_ethtool_ops = {
->  	.get_link		= ethtool_op_get_link,
->  	.get_msglevel		= usbnet_get_msglevel,
-> @@ -215,6 +229,8 @@ static const struct ethtool_ops 
-> ax88179a_ethtool_ops = {
->  	.get_eeprom_len		= ax88179a_get_eeprom_len,
->  	.get_eeprom		= ax88179_get_eeprom,
->  	.set_eeprom		= ax88179_set_eeprom,
-> +	.get_eee		= ax88179a_get_eee,
-> +	.set_eee		= ax88179a_set_eee,
->  	.nway_reset		= usbnet_nway_reset,
->  	.get_link_ksettings	= phy_ethtool_get_link_ksettings,
->  	.set_link_ksettings	= phy_ethtool_set_link_ksettings,
-> @@ -440,6 +456,10 @@ static int ax88179a_phylink_setup(struct usbnet 
-> *dev)
->  		phy_if_mode = PHY_INTERFACE_MODE_SGMII;
->  	}
-> 
-> +	memcpy(data->phylink_config.lpi_interfaces,
-> +	       data->phylink_config.supported_interfaces,
-> +	       sizeof(data->phylink_config.lpi_interfaces));
-> +
->  	phylink = phylink_create(&data->phylink_config, dev->net->dev.fwnode,
->  				 phy_if_mode, &ax88179a_phylink_mac_ops);
->  	if (IS_ERR(phylink))
+e1000_request_msix() requests the RX, TX, and other-cause interrupt
+handlers sequentially. If a later request_irq() fails, the function
+returns without releasing handlers that were registered earlier. The
+caller then disables MSI-X and falls back to MSI or legacy interrupts,
+leaving those handlers registered against disabled MSI-X vectors.
 
+Free all handlers registered before the failing request in reverse order
+before returning the error. The failed vector is not freed, and the
+existing fallback path can then disable MSI-X without retaining stale
+handlers.
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+A QEMU e1000e test with deterministic failure injection at the third
+request_irq() reproduced a residual IRQ entry and warning on the
+unfixed kernel. The fixed kernel reached the same fallback without the
+residual entry. The injection is deliberate and does not claim that a
+third request_irq() failure occurs spontaneously during normal operation.
 
-Thanks,
-Nicolai
+Fixes: 4662e82b2cb4 ("e1000e: add support for new 82574L part")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM Codex
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
+---
+ drivers/net/ethernet/intel/e1000e/netdev.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+index 844f31ab37ad4..f55aec340342b 100644
+--- a/drivers/net/ethernet/intel/e1000e/netdev.c
++++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+@@ -2139,7 +2139,7 @@ static int e1000_request_msix(struct e1000_adapter *adapter)
+ 			  e1000_intr_msix_tx, 0, adapter->tx_ring->name,
+ 			  netdev);
+ 	if (err)
+-		return err;
++		goto err_irq;
+ 	adapter->tx_ring->itr_register = adapter->hw.hw_addr +
+ 	    E1000_EITR_82574(vector);
+ 	adapter->tx_ring->itr_val = adapter->itr;
+@@ -2148,11 +2148,16 @@ static int e1000_request_msix(struct e1000_adapter *adapter)
+ 	err = request_irq(adapter->msix_entries[vector].vector,
+ 			  e1000_msix_other, 0, netdev->name, netdev);
+ 	if (err)
+-		return err;
++		goto err_irq;
+ 
+ 	e1000_configure_msix(adapter);
+ 
+ 	return 0;
++
++err_irq:
++	while (vector)
++		free_irq(adapter->msix_entries[--vector].vector, netdev);
++	return err;
+ }
+ 
+ /**
+-- 
+2.34.1
+
