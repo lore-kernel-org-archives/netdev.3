@@ -1,123 +1,104 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299C2331EC7;
-	Mon, 14 Sep 2026 08:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8149E3B0AE7
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 08:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789373236; cv=none; b=tqPps2Iv/4qUonVt+sDIc9FOHoCD7YMcv01PTKLF1ypfq23Usl0N4zxY1SCzXFqiqnRy9EWBy2LtnKFowBT5toh/v+mG7rz8yxSpy/gWo6vO7WWgadQmEasQdHGATrkPHdMh5BzT42GbVF4mPqh7W4VfgkHI+Ynszc7o0SNRZ2M=
+	t=1789374142; cv=none; b=Pi0Yjw8wK/uM169mtid6aBqGKj5p9OaOhwlFZcEf1yRc0jZRn146PY86SemlLzrc2+Cet2h4OL0+v7YMvQXwuNb8/VNp28NkWQULB9S+IqrL0UhPPNdXOo0aPkRyN5CBzH6awhUhQgxvOwJk0MOruQaz1s/RBrqlBx5/1pV7CCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789373236; c=relaxed/simple;
-	bh=gLguI1Dvj1p9Hs1Gtajg0sdQbCBo0v751JRhitynJ/0=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=iNToaLbPcdJQlqn9a3cLbsbKlwDQ5orKd8K15lQg9/gacU1AEsy0Hpo+DkKVdLVSeYLq+TgFMZlavDEYcMkoCqzAPUuUBUO6TmhsK1/7lfKV7fiQA1WxJQ4k9OMiB8HuhEiWlU3x4pCiUx+GvAhhRRQIKNjcuQHkuWHNPSqgpBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XUlLGMdJ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789374142; c=relaxed/simple;
+	bh=iS1uNkQXFgCX8PJRW9JhPNGs994LGJfKYd7zWtir2CU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bG0UPO1HeDOqkRIl7SsIoUZV/2oeyH3YkwOqXyAWweF4xaxEWhOxYKSBKfLFxyqdfZ9mg0rZDcPaEEXe5t5ml6W+p39cT+a4dE1eZTigRriMtrm2GQySz5OHlYz2UKqy+8REXZACqAt68o13Rm56dZ2hIpGo/zKFGGiIq/g8vS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dv/1P6Qe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XUlLGMdJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805B51F000FF;
-	Mon, 14 Sep 2026 08:07:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dv/1P6Qe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D24B1F00893;
+	Mon, 14 Sep 2026 08:22:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789373234;
-	bh=bUESejhHEH3ffsQbUQdnbBFslDvX6q6Ex6c04pHGd1I=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=XUlLGMdJqf8ThjYG5If3HiL3sunkq4qlh2J7gR0dY7dh8rfPxdOGWWnbIJinsy7NU
-	 IAMHyYW/Ff5If7Mbp7E3sC6AD6vggyIYVRh3PMQaLGM4Rsw2AH40pepP3Bq1hHG+tU
-	 uVSV6Yvg6YI8SaBJa+lL5kqiE149fCR7gAWPgYYtpj71WZzqUYMoijkFcl8Gr/nQ8A
-	 sIpPyzTEVOxtoPf4/gqJ+Aatct0Y/yA/e8TGLOenckNSL0yXcsP5AhTk44WRBT3l9c
-	 PDdEC5d/LNXifsmIOz+r8lLn7vj7pxhHddmFs21V7TxReqwLo1e7Ptk7wXnefhzjNP
-	 78TIXM6Sni8cQ==
-Content-Type: multipart/mixed; boundary="===============8455009711460534272=="
+	s=k20260515; t=1789374141;
+	bh=C0kiO3xDZtUMHsa0u9r1xvOw9nqhPki7GtqPDBl79Lw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dv/1P6QezOQMg2QtDjXtAAbTSyYFrXkQGxMpPRX7BZFHjx3b9xVo6OtougRRN3bjN
+	 hvYxnE9DqC7VNPjqQ3leWv8W9BDrYeUqBX+E1K4FIoJkHuaPRa75rKbKA9LWGKjJ9V
+	 suZjLiopsuNUudCNWx3W5TD1jWN/LCmvcHJOobzXuKj6i5cQiTCBQDboSpBmN1BFwJ
+	 X+C6xV8+yCSiq3NaQpweaC5JiNkpZQhtH2cuVUya9troUL3YA7Dg3Kpl1rp4eBElVI
+	 b2KFcFFdcu7g16/yw3lSEMu2+qz1We/KE8xHbRhvAdIi0yz8tqSXkuJSVWQprMir9o
+	 OrOzynMSMtmtA==
+Date: Mon, 14 Sep 2026 09:22:16 +0100
+From: Simon Horman <horms@kernel.org>
+To: Victor Nogueira <victor@mojatatu.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, jhs@mojatatu.com, jiri@resnulli.us,
+	vega@nebusec.ai, netdev@vger.kernel.org
+Subject: Re: [PATCH net] net/sched: Avoid quadratic handle scan in
+ qdisc_alloc_handle
+Message-ID: <20260914082216.GL48209@horms.kernel.org>
+References: <20260911133146.3440982-1-victor@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <f960ceb7616cb646c818809a3b5f7890d5c63573c6175f3b92f2fa19bfe54a2e@mail.kernel.org>
-In-Reply-To: <d98eef55bd417f7166a30a9998a3b34e7f0b229d.1789368148.git.tanggeliang@kylinos.cn>
-References: <d98eef55bd417f7166a30a9998a3b34e7f0b229d.1789368148.git.tanggeliang@kylinos.cn>
-Subject: Re: [PATCH net 2/2] tls: drop duplicate check_app_limited in tls_push_sg
-From: bot+bpf-ci@kernel.org
-To: geliang@kernel.org,john.fastabend@gmail.com,jakub@cloudflare.com,jiayuan.chen@linux.dev,edumazet@google.com,ncardwell@google.com,kuniyu@google.com,davem@davemloft.net,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,sd@queasysnail.net,dhowells@redhat.com,matttbe@kernel.org,martineau@kernel.org
-Cc: tanggeliang@kylinos.cn,netdev@vger.kernel.org,bpf@vger.kernel.org,mptcp@lists.linux.dev,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Mon, 14 Sep 2026 08:07:13 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260911133146.3440982-1-victor@mojatatu.com>
 
---===============8455009711460534272==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Fri, Sep 11, 2026 at 10:31:46AM -0300, Victor Nogueira wrote:
+> qdisc_alloc_handle scans for a free auto-handle by probing the
+> per-device qdisc hash one handle at a time. With the 16-bucket hash
+> populated by tens of thousands of qdiscs, the failing scan is O(N^2)
+> under rtnl_lock. Each failing add holds RTNL for 0.6-0.9 s on a
+> production kernel and about 1.7 s with KASAN and lock debugging, and it
+> can be repeated back to back, stalling network administration in every
+> namespace.
+> 
+> First try the handle after the rotating cursor with one qdisc_lookup,
+> as the first iteration of the current loop does; that handle is
+> normally free. Only when it is taken, build a bitmap of the occupied
+> auto-handle majors in one pass over the hash and pick the first free
+> major from the cursor. The scan is cyclic over all 0x7FFF majors
+> starting from the same autohandle + 1 position as the current loop, so
+> it returns the same handle for the same device state and fails only
+> when all 0x7FFF majors are taken.
+> 
+> The root qdisc is seeded separately because qdisc_hash_add skips
+> parent == TC_H_ROOT.
+> 
+> When the next handle is free, only the single qdisc_lookup of the
+> current loop's first iteration runs; when it is taken, one O(N) walk
+> follows.
+> 
+> Measured as tc wall time on a defconfig kernel in a 2-vCPU guest, with
+> an HTB root holding 32768 classes and all 32767 auto-handles in use (a
+> no-op tc command takes 5-6.5 ms):
+> 
+>                                     unpatched     patched
+>   failing add, space exhausted      613-749 ms    8-10 ms
+>   add after a mid-range delete      572-573 ms    9 ms
+> 
+> The failure path returns -ENOMEM (bitmap allocation) or -ENOSPC (space
+> exhausted) through a handle out-parameter instead of the overloaded 0
+> return. Since either error is now possible, the extack message changes
+> from "Maximum number of qdisc handles was exceeded" to "Failed to
+> allocate a qdisc handle".
+> 
+> This is a less intrusive fix meant for backporting; a cleaner approach that
+> uses a per-device IDA over all qdisc handles is planned for net-next.
+> 
+> Conditions to recreate the bug:
+>   - unshare -Urn (Level 2, namespace-local CAP_NET_ADMIN)
+>   - classful qdisc (e.g. HTB) with many classes
+>   - attach ~32767 auto-handle child qdiscs to fill the handle space
+>   - the final tc qdisc add with no explicit handle scans the full space
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reported-by: Vega <vega@nebusec.ai>
+> Co-developed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> Signed-off-by: Victor Nogueira <victor@mojatatu.com>
 
-> When the sendpage->MSG_SPLICE_PAGES migration series replaced
-> do_tcp_sendpages() with direct tcp_sendmsg_locked() calls, callers that
-> had used do_tcp_sendpages() kept an explicit tcp_rate_check_app_limited(sk)
-> that was originally needed to cover do_tcp_sendpages() (which did not call
-> tcp_rate_check_app_limited()). After the inlining, tcp_sendmsg_locked()
-> always provides the check, and the outer call became redundant.
->
-> Fixes: e117dcfd646e ("tls: Inline do_tcp_sendpages()")
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Does the Fixes: tag identify the correct commit? The changelog states the
-outer call "was originally needed to cover do_tcp_sendpages() (which did
-not call tcp_rate_check_app_limited())" and that it "became redundant"
-only "after the inlining". But e117dcfd646e did not introduce the
-redundancy.
-
-At e117dcfd646e's parent, do_tcp_sendpages() was already a thin wrapper
-that funnels into tcp_sendmsg_locked():
-
-  ssize_t do_tcp_sendpages(struct sock *sk, struct page *page, int offset,
-                           size_t size, int flags)
-  {
-          struct bio_vec bvec;
-          struct msghdr msg = { .msg_flags = flags | MSG_SPLICE_PAGES, };
-          bvec_set_page(&bvec, page, size, offset);
-          iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, size);
-          if (flags & MSG_SENDPAGE_NOTLAST)
-                  msg.msg_flags |= MSG_MORE;
-          return tcp_sendmsg_locked(sk, &msg, size);
-  }
-
-The conversion that made this true - and therefore the commit that made
-the tls_push_sg() call redundant - is c5c37af6ecad9 ("tcp: Convert
-do_tcp_sendpages() to use MSG_SPLICE_PAGES"), three commits earlier in
-the same series. Before c5c37af6ecad9, do_tcp_sendpages() open-coded the
-send loop and indeed had no rate check, and tcp_sendmsg_locked() already
-carried tcp_rate_check_app_limited() at that point. e117dcfd646e only
-replaced the wrapper call with its body; it left the
-tcp_rate_check_app_limited(sk) line untouched as diff context.
-
-If a Fixes: tag is kept, should it be:
-
-  Fixes: c5c37af6ecad9 ("tcp: Convert do_tcp_sendpages() to use MSG_SPLICE_PAGES")
-
-Both commits landed in the same merge window, so the practical backport
-range is unchanged.
-
-
-> so dropping the outer call is safe and behavior-preserving.
->
-> A potential benefit of this change is that it facilitates future reuse of
-> tls_push_sg() for KTLS support in protocols beyond TCP, such as MPTCP.
->
-> Fixes: e117dcfd646e ("tls: Inline do_tcp_sendpages()")
-
-Should this patch carry a Fixes: tag? The changelog describes the change
-as "safe and behavior-preserving" and motivates it as cleanup plus
-preparation for future MPTCP reuse. No user-visible bug, regression, crash
-or misbehaviour is described or fixed: the removed
-tcp_rate_check_app_limited(sk) is duplicated by the identical call inside
-tcp_sendmsg_locked(), so tp->app_limited ends up with the same value
-either way.
-
-A Fixes: tag on a no-op cleanup mainly serves to draw the patch into
-automated stable selection (AUTOSEL) for no benefit. Either drop the tag,
-or state concretely what observable behaviour was wrong before so the tag
-is justified.
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/34817950722
---===============8455009711460534272==--
