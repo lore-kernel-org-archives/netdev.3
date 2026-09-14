@@ -1,195 +1,215 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70EF3426D03;
-	Mon, 14 Sep 2026 10:44:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98803C3BFE
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 10:53:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789382701; cv=none; b=qa4+LKQjLMBFvBxw66FnseyPPS2xRLzR5FUeIXw7pgDwcYYJ7rCdifIY1To/X1plW0WcYEWzFyCMCfjc/ordE7wv+fgQT66zfKqDGCxk/+E6jR00ib/MNlm7bkTZiMXIXOwd+RJeFuLbvo3XzGG2pGjUeUhB+n2GMp43UJIQYec=
+	t=1789383190; cv=none; b=klYZQ0zt2/XOVd4mGG5rntcOi5aFTstRHv7upKdSexGWrZleBgijN21XEwwbY8C4x7TGtu5O0/H81SHzP8vaJzebOT+guGuhyVNOXou6ni3BK04BcD5b56OgdtHL8ur84RJrtzt3xWnxch93zs8jHOtEHM7TvPYlEZCuqjdfOFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789382701; c=relaxed/simple;
-	bh=xLHXZn3Puf64p2btSuTlnBlLyW9MWfIh73UeUba0Wus=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=WhuQOD6Fiw9qLp3xkY4AsnLbYLWlSSoKSG85vXhhXp/wjZRimT3Oi8aEXivT3YbkNr3KZs6wXq/HiZDm6r3fkE7JhEjfCAtYr9+tPq3TL+QCfjKwCxnnCDTIOCZmSwoKMztVdWtC3if9LeJ3zqR+Q1PFd9C/GJFK+HAXRmYbC0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N278Zs7h; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789383190; c=relaxed/simple;
+	bh=xNpAS9Rpk+qkC+vD1efyUXqAhDVvsbN0fuxWBkjXkwg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A3r4Of7og4XWZwWTvkpcj0SeFEwU6mDUKs7XrrUEeBhNU4yrVOKqCwvmJd2XRIldKKrS4ZXz9ebYi64tgfkQCHB8+xa/poj0Bb0CgQNosRIJJauMuYtgSDA8IRHTus1FHAdan7wgzRPI3An1kYizHGf9XUu8Uhwm7tbXWy+6GVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=OSYv3Aif; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N278Zs7h"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB9411F000FF;
-	Mon, 14 Sep 2026 10:44:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789382695;
-	bh=Zgkv+k4iBESbCVXAtCuYGBCd++Hb/fOZYZ+TTVD4Isk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=N278Zs7hhbk6XLPGmhx3Bv1jpvaeK0H2PRXXY0V8DvNiH2eXWlE3TUJ/gTxLVtBzx
-	 M+CP7h73E3tBpVshR0vxx4G3tGoY9Nzn/eobiETo2/Hb3KiJEDviQBEFs8ISVpN1ev
-	 GSBT0a/+4Kq0zujQAv5IlKUUqL8GkMMU4jmuad/8DPgvClRAIT9FzSSOK3H26apQ5Z
-	 CpAVSHSRqjd9tnxNusbF8k4p0ckHW3G+yFfN07cI7F7+Kc5jssaXYBMokVMYkq9HLk
-	 dcf2fugbT488NPqHIW1pSjbBYm6EWI1Iz9AvwQ9TJ3xLyhFCLuFGmQTz+DX+xe9xQs
-	 u7O6NpggZhPhQ==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: alexanderduyck@fb.com, kuba@kernel.org, kernel-team@meta.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, daniel@iogearbox.net,
- mike.marciniszyn@gmail.com, mohsin.bashr@gmail.com, sdf@fomichev.me,
- bobbyeshleman@meta.com, daskald@meta.com, bestswngs@gmail.com,
- maxime.chevallier@bootlin.com, jacob.e.keller@intel.com,
- leitao@debian.org, cuitao@kylinos.cn, asml.silence@gmail.com,
- dw@davidwei.uk
-Subject: Re: [PATCH net-next v2 3/5] net: Revalidate queue config for
- ringparam changes
-In-Reply-To: <178915060796.219967.9039776741140153103@kernel.org>
-References: <20260910180908.1506533-4-bjorn@kernel.org>
- <178915060796.219967.9039776741140153103@kernel.org>
-Date: Mon, 14 Sep 2026 12:44:51 +0200
-Message-ID: <87pkygnmcc.fsf@all.your.base.are.belong.to.us>
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="OSYv3Aif"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-49cd77e0f95so22669575e9.3
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 03:53:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1789383187; x=1789987987; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=bLTGCdFRaoDG+p/o/JaHo94biFFLMcmmpOqWjVY8H28=;
+        b=OSYv3AifKLuOyjrla7b93dCaoqPKc54M8SUbI8cdiD1vGDScjgBeacfc/dDRAzcMKY
+         1rpg3hwCwpX3uCtxy9nSzpvf0SVbA6dAHzetNL81OhuJSxs6ZhyWjH6TwGKJGkOUsS4A
+         jCBU/L7B9Y384FcTC4jbCaoGjTIzbyMTAMqC2sqlW9lCY0gBJ6QzqWPOdrHA+BHeryW/
+         6MOAa4yTvDp04Vebf/eQR+VqMuvyFiUbNBGEfK3p4X1H4bJMyzBO9Xl6UH60e73txLzZ
+         D9TQMmVhJ1M/5nOe+vUrQOWAJfLu5eVkUz1d8h/vBXg2CBxsvg3DQ1Ox3I07ySZgyqWb
+         ohdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789383187; x=1789987987;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=bLTGCdFRaoDG+p/o/JaHo94biFFLMcmmpOqWjVY8H28=;
+        b=WbCFsBD/8/u4Yfd8U+28c4MulQRx9SJ3s8pTFRXMHj7CtY6mMsTFiDqmijsvaGlY+N
+         7hQCsNeYhLL5ewvPiuHRpy01Jq5vv0YToxEtKY0sYrq+WWCNpNkS7EWrMTTzW9T9ORjM
+         wAfSWFUGhTzFZGZ2V/T9ND5SVpdpbNnwNgMNQRIXqQVQ0P9WVnbf0/Te2MRieVvOUfSX
+         nYGJfJlx5GVJehD2khJ+5Soc1+uKnRfmw1rkIxg5o69ip1fSRYFnzmSwTspxjd4k54Ez
+         LE/UhQFdKs86Dxrh6sJmdWvdGqJUBXTBnD8m4Bfra0dWwRVth0znKmcnIJ1F2zKu+ajy
+         eKMA==
+X-Gm-Message-State: AFuF++mGDyxf7xwPloWAoGeb+/MSHlvnXPGCwxtu+rQi2XxDnEkuiITT
+	AbePISu8TJn+2jPRYfqnzrfuImjgbyRlvXR7mz0YPw0zSqdonMAgoefxOchg742AW0fGQY2ibvm
+	eF9/27c0=
+X-Gm-Gg: AYBFou0kBV9/7s/iHMoA3mosB8GPqyyA3vv6VVmj4guuhjewtCrgsFHFil6gdJo8/23
+	owzTDMv2oMSaSpbqEXhd/zIIotvWnQ4Wm1TdL2NLuMn4LqLV0x8jUWW9aRUw4RBI7aHnFaNNHvw
+	oNjwVwVaacWsnnOhGni+Foa8UZC1T5ekFK0yDFoC3tarEUZF22wf6Xv7LFoaJPEaHdHPR+JXUes
+	wH74jXu/UrnZv4zwiCQ8y2p0LgszGHt82uBdoBfM2Fr2m1MXuoMbBHk4lrvBpP0QMkpCzh07cb5
+	GhW3KlySRDCfF7vT+QFEjwUeoPmqxYKpQgWKfltyHFwvLg7r8Yyci+3Rexq84mlb92ZwpfxVNjN
+	rD+HwZOm7XnyB84MBYU9hgL39EERw3/FV2kQGmBZxFywjya7555zya9FeB9xbEsB5H8U/nBzIiq
+	bfVwyexc9FuHAfj1Lr9yvgSmWGXqvlBZOczSRqTrtKMFrtLdkXk8HbsXOCywKpNlTTPSvhwb16A
+	bwu5rdjXaflab3LQ5/dWA==
+X-Received: by 2002:a05:600c:34d0:b0:49d:1f10:8b9f with SMTP id 5b1f17b1804b1-49e7a63a711mr24550035e9.7.1789383186324;
+        Mon, 14 Sep 2026 03:53:06 -0700 (PDT)
+Received: from localhost (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-49db038401fsm471937885e9.13.2026.09.14.03.53.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Sep 2026 03:53:05 -0700 (PDT)
+From: Nikolay Aleksandrov <razor@blackwall.org>
+To: netdev@vger.kernel.org
+Cc: idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	vivien.didelot@gmail.com,
+	petrm@mellanox.com,
+	jiri@resnulli.us,
+	bridge@lists.linux.dev,
+	Nikolay Aleksandrov <razor@blackwall.org>
+Subject: [PATCH net v2] net: bridge: vlan: fix bugs caused by switchdev deletion errors
+Date: Mon, 14 Sep 2026 13:52:58 +0300
+Message-ID: <20260914105258.3436918-1-razor@blackwall.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-netdev-bot+sashiko@kernel.org writes:
+Allowing switchdev to prevent vlan deletion and error out in __vlan_del
+could cause multiple different issues - inconsistent state, memory leaks
+when flushing, NULL pointer dereference on bridge error when flushing.
+It doesn't make sense to allow it to stop __vlan_del, so log the error
+and continue with software vlan deletion. This is also consistent with
+8021q behaviour.
 
->>     Memory-provider queue configuration is validated when the provider is
->>     bound. A later ethtool ring change may invalidate it because drivers
->>     can size queue memory from both ring depth and RX page size. For
->>     example, fbnic uses multiple PPQ entries for each RX page larger than
->>     PAGE_SIZE, which reduces the usable software ring depth.
-> [ ... ]
->>     Use the same transaction for ioctl and netlink. Drivers without
->>     ndo_validate_qcfg skip the new validation.
->
-> [Severity: Low]
-> The message reads as if it closes a live misconfiguration hole, but at th=
-is
-> commit no in-tree driver implements a ring-depth-aware ndo_validate_qcfg =
-and
-> no driver reads qcfg->rx_ring_size, so netdev_queue_config_revalidate()
-> cannot change any validation outcome yet.
->
-> The two current ndo_validate_qcfg implementations, bnxt_validate_qcfg() a=
-nd
-> mlx5e_queue_validate_qcfg(), only inspect qcfg->rx_page_size. The fbnic
-> consumer named in the message, fbnic_validate_qcfg() reading
-> qcfg->rx_jumbo_ring_size, arrives in the following patch of the series.
->
-> The last paragraph does disclose the limitation, so this is only about
-> framing: could the message state that this is core plumbing and that the
-> fbnic consumer lands in the next patch?
+Suggested-by: Ido Schimmel <idosch@nvidia.com>
+Fixes: bf361ad38165 ("net: bridge: check __vlan_vid_del for error")
+Fixes: 5454f5c28eca ("net: bridge: vlan: check for errors from __vlan_del in __vlan_flush")
+Fixes: 2594e9064a57 ("bridge: vlan: add per-vlan struct and move to rhashtables")
+Fixes: 9c86ce2c1ae3 ("net: bridge: Notify about bridge VLANs")
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+---
+v2: this is a new patch, don't fail vlan deletion as suggested by Ido
+v1: https://lore.kernel.org/netdev/20260911100645.1360386-1-razor@blackwall.org/
 
-Ok! I reworded the commit message to state that fbnic consumer followes
-the next patch.
+ to Sashiko (from local clone check):
+ [Severity: Critical]
+ Could this introduce a regression where net/bridge/br_vlan.c:__vlan_del()
+ leaves stale VLAN membership in hardware after tearing down the software
+ VLAN?
 
-...
+ For the port branch, __vlan_vid_del() has already converted -EOPNOTSUPP to
+ success.  An error reaching this warning is therefore a substantive offload
+ deletion failure.
 
->> diff --git a/net/core/netdev_config.c b/net/core/netdev_config.c
->> index b101341e32513..1975de42a60d9 100644
->> --- a/net/core/netdev_config.c
->> +++ b/net/core/netdev_config.c
->> @@ -50,6 +50,15 @@ static int netdev_nop_validate_qcfg(struct net_device=
- *dev,
->>  	return 0;
->>  }
->>=20=20
->> +static void netdev_qcfg_apply_dev(struct netdev_queue_config *qcfg,
->> +				  const struct netdev_config *cfg)
->> +{
->> +	/* Device config overrides callback-provided fallbacks. */
->> +	qcfg->rx_ring_size =3D cfg->rings.rx_pending;
->> +	qcfg->rx_mini_ring_size =3D cfg->rings.rx_mini_pending;
->> +	qcfg->rx_jumbo_ring_size =3D cfg->rings.rx_jumbo_pending;
->> +}
->> +
->
-> [Severity: Low]
-> Can these three assignments hand a rendered config full of zeroes to
-> ndo_validate_qcfg()?
+ Nik: No, a driver should not block VLAN deletion and this behaviour is in
+      line with 8021q. Also blocking it could leave incosistent state. It
+      is best to print a warning and allow software vlan deletion to
+      proceed.
 
-Yes, unless thte driver initializes the fields. Device-wide config is
-authoritative -- including zero! I've clarified the requirements in the
-docs for next version.
+ net/bridge/br_vlan.c | 31 ++++++++++++++-----------------
+ 1 file changed, 14 insertions(+), 17 deletions(-)
 
->> diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
->> index 4b0bc503f9307..1320289025b25 100644
->> --- a/net/ethtool/ioctl.c
->> +++ b/net/ethtool/ioctl.c
-> [ ... ]
->> @@ -2239,10 +2240,29 @@ static int ethtool_set_ringparam(struct net_devi=
-ce *dev, void __user *useraddr)
->>  	    ringparam.tx_pending > max.tx_max_pending)
->>  		return -EINVAL;
->>=20=20
->> +	ret =3D netdev_reconfig_start(dev);
->> +	if (ret)
->> +		return ret;
->> +
->> +	ethtool_ringparam_set_cfg(dev->cfg_pending, &ringparam);
->> +
->> +	ret =3D netdev_queue_config_revalidate(dev, NULL);
->> +	if (ret)
->> +		goto out_free_cfg;
->> +
->>  	ret =3D dev->ethtool_ops->set_ringparam(dev, &ringparam,
->>  					      &kernel_ringparam, NULL);
->> -	if (!ret)
->> -		ethtool_notify(dev, ETHTOOL_MSG_RINGS_NTF);
->> +	if (ret)
->> +		goto out_free_cfg;
->> +
->> +	/* The driver may adjust the accepted ring depths. */
->> +	ethtool_ringparam_set_cfg(dev->cfg_pending, &ringparam);
->> +	swap(dev->cfg, dev->cfg_pending);
->> +	ethtool_notify(dev, ETHTOOL_MSG_RINGS_NTF);
->
-> [Severity: Low]
-> Is the committed configuration guaranteed to be one that ndo_validate_qcf=
-g()
-> actually saw?
+diff --git a/net/bridge/br_vlan.c b/net/bridge/br_vlan.c
+index 1e0e436629ec..92b3cb621a26 100644
+--- a/net/bridge/br_vlan.c
++++ b/net/bridge/br_vlan.c
+@@ -387,12 +387,12 @@ static int __vlan_add(struct net_bridge_vlan *v, u16 flags,
+ 	goto out;
+ }
+ 
+-static int __vlan_del(struct net_bridge_vlan *v)
++static void __vlan_del(struct net_bridge_vlan *v)
+ {
+ 	struct net_bridge_vlan *masterv = v;
+ 	struct net_bridge_vlan_group *vg;
+ 	struct net_bridge_port *p = NULL;
+-	int err = 0;
++	int err;
+ 
+ 	if (br_vlan_is_master(v)) {
+ 		vg = br_vlan_group(v->br);
+@@ -406,12 +406,16 @@ static int __vlan_del(struct net_bridge_vlan *v)
+ 	if (p) {
+ 		err = __vlan_vid_del(p->dev, p->br, v);
+ 		if (err)
+-			goto out;
++			br_warn(p->br,
++				"port %u(%s) failed to delete vlan %u from switchdev: %pe\n",
++				(unsigned int)p->port_no, p->dev->name,
++				v->vid, ERR_PTR(err));
+ 	} else {
+ 		err = br_switchdev_port_vlan_del(v->br->dev, v->vid);
+ 		if (err && err != -EOPNOTSUPP)
+-			goto out;
+-		err = 0;
++			br_warn(v->br,
++				"failed to delete bridge vlan %u from switchdev: %pe\n",
++				v->vid, ERR_PTR(err));
+ 	}
+ 
+ 	if (br_vlan_should_use(v)) {
+@@ -431,8 +435,6 @@ static int __vlan_del(struct net_bridge_vlan *v)
+ 	}
+ 
+ 	br_vlan_put_master(masterv);
+-out:
+-	return err;
+ }
+ 
+ static void __vlan_group_free(struct net_bridge_vlan_group *vg)
+@@ -449,7 +451,6 @@ static void __vlan_flush(const struct net_bridge *br,
+ {
+ 	struct net_bridge_vlan *vlan, *tmp;
+ 	u16 v_start = 0, v_end = 0;
+-	int err;
+ 
+ 	__vlan_delete_pvid(vg, vg->pvid);
+ 	list_for_each_entry_safe(vlan, tmp, &vg->vlan_list, vlist) {
+@@ -463,13 +464,7 @@ static void __vlan_flush(const struct net_bridge *br,
+ 		}
+ 		v_end = vlan->vid;
+ 
+-		err = __vlan_del(vlan);
+-		if (err) {
+-			br_err(br,
+-			       "port %u(%s) failed to delete vlan %d: %pe\n",
+-			       (unsigned int) p->port_no, p->dev->name,
+-			       vlan->vid, ERR_PTR(err));
+-		}
++		__vlan_del(vlan);
+ 	}
+ 
+ 	/* notify about the last/whole vlan range */
+@@ -837,8 +832,9 @@ int br_vlan_delete(struct net_bridge *br, u16 vid)
+ 	br_fdb_delete_by_port(br, NULL, vid, 0);
+ 
+ 	vlan_tunnel_info_del(vg, v);
++	__vlan_del(v);
+ 
+-	return __vlan_del(v);
++	return 0;
+ }
+ 
+ void br_vlan_flush(struct net_bridge *br)
+@@ -1368,8 +1364,9 @@ int nbp_vlan_delete(struct net_bridge_port *port, u16 vid)
+ 		return -ENOENT;
+ 	br_fdb_find_delete_local(port->br, port, port->dev->dev_addr, vid);
+ 	br_fdb_delete_by_port(port->br, port, vid, 0);
++	__vlan_del(v);
+ 
+-	return __vlan_del(v);
++	return 0;
+ }
+ 
+ void nbp_vlan_flush(struct net_bridge_port *port)
+-- 
+2.47.3
 
-A driver implementing ndo_validate_qcfg must use the same normalization.
-I documented that requirement, fbnic uses the same rounding helper in
-both paths.
-
->> diff --git a/net/ethtool/rings.c b/net/ethtool/rings.c
->> index 9054c89c5d7bb..c04312fc0d061 100644
->> --- a/net/ethtool/rings.c
->> +++ b/net/ethtool/rings.c
-> [ ... ]
->> @@ -299,10 +300,20 @@ ethnl_set_rings(struct ethnl_req_info *req_info, s=
-truct genl_info *info)
->>=20=20
->>  	dev->cfg_pending->hds_config =3D kernel_ringparam.tcp_data_split;
->>  	dev->cfg_pending->hds_thresh =3D kernel_ringparam.hds_thresh;
->> +	ethtool_ringparam_set_cfg(dev->cfg_pending, &ringparam);
->> +
->> +	ret =3D netdev_queue_config_revalidate(dev, info->extack);
->> +	if (ret)
->> +		return ret;
->>=20=20
->>  	ret =3D dev->ethtool_ops->set_ringparam(dev, &ringparam,
->>  					      &kernel_ringparam, info->extack);
->> -	return ret < 0 ? ret : 1;
->> +	if (ret < 0)
->> +		return ret;
->> +
->> +	/* The driver may adjust the accepted ring depths. */
->> +	ethtool_ringparam_set_cfg(dev->cfg_pending, &ringparam);
->> +	return 1;
->>  }
->
-> [Severity: Low]
-> The comment says the driver may adjust the accepted ring depths, but does
-> this second copy store the depths the hardware ended up with, or just the
-> requested ones?
-
-It captures only adjustments that the driver reports through ringparam.
-I updated the comments and docs.
-
-
-Bj=C3=B6rn
