@@ -1,63 +1,63 @@
-Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
+Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D35C41167F
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 21:42:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E8441A57D
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 21:42:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789422157; cv=none; b=IqPXedKTfPlWMwP1IE8q/Co1+3StbpFZ1pg9eeOntzmSo5HNK4PhlZkoqb9yTCQqrDkasJj1hVJm1F/wo/HKhevPdu07ugvZmKy7ISnKpZqiBd2y5OYAZgJr/vAvsqkcyblqdiQswRfylYrZCpklvdxPyp3B/xxrL1GrPKgOmPQ=
+	t=1789422159; cv=none; b=n+PLwhMbm+m28UfImgNIM5kDuBOSp8FV/b2WhvaH4cH9fSZkkuCr8FxyIjoZvn5iciOO2iEGm8DJf7FEE3+oSmcvKEx7AvewH1rxKFm8CeKhae979S59OX5RXjEuw8uldIFb6NNqPrehqaDTCig7ZQ7ZUa/kGqGpjnjkcr0urDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789422157; c=relaxed/simple;
-	bh=zM/5sCogXE0YOG63To/lzdc1QqgX00LZ1grZde3zn50=;
+	s=arc-20240116; t=1789422159; c=relaxed/simple;
+	bh=1EbnlpS7o9WVD21F6X+KOYpuw28dShJoet6T/qTr4g8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CJOxZglF1WriG0CEkgS5cO5b2gOYx2eA5pr6Brvil9k8mq0/pMFjxwL1ClNF+htvQNi30lXao9JL2tC2Z9ozgMIQ5oxCS0K78LkQnWkNd4vhQF5CLzbOmMEbyx5l2TV7VDMA4A7N4Umwk9ODfVtE69djlErbQSM6LkmQfc76zHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QhAQMywD; arc=none smtp.client-ip=74.125.224.52
+	 MIME-Version; b=STsxy0XHyBMxju5Ur01hWiCW7/p5LXIGGjDVSgpr4F0qlmu54F94upwFXriHw+Ad6IR9beRBvtVnjT5PP17a2AFyb1fACieCv5w3dxS6vd7FongRhpqhz8cEYyyWhTmtHnUuUF52iG5Jt+2mPL69BQhC6caI0WSvNZNNunjrYzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IPIhZd0x; arc=none smtp.client-ip=74.125.224.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QhAQMywD"
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-66f8053e7afso2065355d50.0
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 14:42:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IPIhZd0x"
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-66fca0709caso3680439d50.1
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 14:42:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789422155; x=1790026955; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789422156; x=1790026956; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=1kaT/+Urj02Jq9w2IAQAcv6O5zq4BSwo1l2yqqveMaw=;
-        b=QhAQMywDQi51sykbmEvfyCqLzjt+stvxOtDdYwIeikf8RCfrtVZE/QZLGulXiYzhQs
-         DETYeV5X88nMUquvQ5W+haFstF7zs7mvBqgrk0Sm+FOPaWW6+EnZogZgkfH1gx99DXuv
-         4oRgFtQdK4j/KHp8M9KU4FMx1R/AWImGct13wCKvgH1mfGKMlSQKiC2h8oKtKNquueVU
-         228CYDQr6296dBw4GcDC5+qwT96SOHQoVDhUND8Ssh8PbKkDWnFSLWgNYcoy6fuGvZ6J
-         GgLC9FIlKGugxYLY2AYLP+nk4u+DxDHzEPkDWqv2P/ZmaXz9QRDRb59puw/vx2ji3csu
-         +VnQ==
+        bh=On2HQKwvLLaaGQi+LXd6sRuY9/yCDYxoT8ZhUifrzNc=;
+        b=IPIhZd0xjR4Te4ubP+UQlvZOz13Y56BtamCzvZ/J4GaTpoyEqu49qwgBcrjqCUd2BD
+         ROEvi9KmlJt1hU8Tys1aOT9SIRXMA6FK7hj2RqsnbbEjtVMdnxN3tyv5pPqk4df6maG1
+         whSb/ACNsmT4MM/AwkXQNdJ4qgyKJexOW32GO1Ygs5ioSX3SIQJ6Z0n14RLDjFuLcpHf
+         OBfvzrTHwuLTLVWN8k524nJNh81v0F9G9D+6YveD84mvJ4uBBeogvgjJBt9RCsCB7XUG
+         LOkuhGuURYW7c5IHvF0e6kfkvA8cvITb2SFH3eB/zJcN6Hz6CkemKZ/mRuKjJ20U7qFU
+         wsZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789422155; x=1790026955;
+        d=1e100.net; s=20260707; t=1789422156; x=1790026956;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1kaT/+Urj02Jq9w2IAQAcv6O5zq4BSwo1l2yqqveMaw=;
-        b=KQDZcWkWajOndM4V0acGQ/PmYMsuG/u55T6qiYj5fTMr32ZeK5u5Pg8sdXAxEts7hd
-         FE3+m5JM1NmWvgUfJsLE+1Rc4XKGxuDgCDoC4vfabf86NyMMJMdrp0+ssIrBKLztZOmR
-         Nk2451n+UUO0el3PxsyWodSkUIhlPQriIf42xKoIDwNq/6OdIcpan0QjwQs3woywZe2/
-         4E6AIkaDxtlNsuoA87Vh81ylfs1oz5BVQp8ZqjIBZEeCshs+ucU1xSaqkNFsyKEQVAzU
-         ehPD0g2hZSC+sH+autmYJsyrdnCyuVs81Ke6jjQN37ijNwOIQYLwJNgNjAzhPCPPXHes
-         C9Vw==
-X-Gm-Message-State: AFuF++lLXKzWHIOhadso1+8Aes/BInGHvXZJBqaoowMG8943Oe2bulPH
-	msEI4/cMyP0ywA8n13XjcSbGfWxl1ecrxNbWSzRmt9kiSOSKLD7XYegsO/lHFg==
-X-Gm-Gg: AYBFou1JQkTu7lur04gelheL//aOSFezwYTDkRRSYzxXpJLS7wenqac8ct5q5Tc79HE
-	DqKac0S9+C/4rQ79cKSZhMgzILsTGmKVg2Er+vfKrmcHq3LOx01YZIEjSqXmeSnVlRxGMkRjufq
-	eG6YEtRpFfGsQV0dBM18owN+zfUEBckV9QBq6em1Uxq/JS0WeCIV0IX+BIaGliVOBDJZI6B+yXF
-	7ehxZq8H7XdprAgIITFZk35aKfbLzuAECNi3k3UnvoFoRzwlBsXfPnqztisvmUXDBf3Q7Sn3aOx
-	F+1uVTuwTHWBaWf5Eq9vSeELp2TREuntJUoMYVQCsQ3GOG6frQoMlv3BJ/df60zDm5jrVBzvDB6
-	A9cdqzBa4JOLrHZqV7p4RORcI4MDih8oq3OdlqH2RTd0qopngETcKEqO3En/iT2afaGU817QiWG
-	bzrmix80evYtcfJ406n32c1h8T7tWJKWjV3GO2k74FaMJruam/N1MeUoJbdbAAdV6xN1vex2rW+
-	Ll12RFAvVAkG12EdjfY3iGUD/03AgXcDRBeeD8nWP33O1ns8d7G/VsndSnzvRk++xGP3RtYyvQ=
-X-Received: by 2002:a05:690e:4419:b0:66f:c1be:a645 with SMTP id 956f58d0204a3-6714e076e39mr862992d50.55.1789422155378;
-        Mon, 14 Sep 2026 14:42:35 -0700 (PDT)
+        bh=On2HQKwvLLaaGQi+LXd6sRuY9/yCDYxoT8ZhUifrzNc=;
+        b=DU4o0evVNw100e6LCes+K4G5/8xFXAM2vggPGa4Cz1Lvg7nGM4BZv+qS5BMbzSzJSn
+         zjj54ikM/CcF9Chehe0F0C+iUvqzevoqTQAbp/sWnWZHyilnxbPJKuxrpfToinkmqp//
+         MTlySMZRiwsjWwF9ECjrZo/TRcqJOJ1uJumjhXFXLltw7d9C9BPvNAVnh9OhedHajr1l
+         IjwdTNEc1PXUZMli1bBvDuWY9ll/Ku/bu78JQQvCmmnB+okGoYgNORQnt/Og3ZD7bjVL
+         q6r7e98rpf/72LlzVb0q525bCnPPNg7ukZNkf95vw2dxD6xmXbCezpLNXZdynDhfYyvd
+         FRhA==
+X-Gm-Message-State: AFuF++kXlsvLlBLnR9wwWP52+W3koDmimFuPjzMl+QhYmZDZlUWjoDjB
+	9HW51X3mdkIh0EDW0GbgPhaOcQKYBe59MTfV401Qhpkzx9A8oAqgcqtwSIxqaQ==
+X-Gm-Gg: AYBFou2MYv+1byVBXUqeUcwKDXrMNZtwMJuxi5veQ5BvxdN6tAFm6QLc3tp07Xd/sIH
+	SDz474InMDNQXF2D3WcqOkQAbh2yaSAQqiUdUGuZXafeTXMnh267A+eauvQ6l2vCtpB5ksnm2Vq
+	WmMCLKUUgvuja9/6I5pgMmEFl/lcG4zsPAiXqVPzvVcT2EociqfErqyI3LEDzaoZEpW3+pgVQuL
+	z+dr58kXphd5IK9Xch6GSjScQ2P9/gpb0nej09gQgj8XEUlPhK4I1sokB4RIHAVc19wYB2ZoxdK
+	GB6QswZoHe7NVlamX3UUJlghtB02ONRirjjSoQLL1vK+7F/cboFUTMzjCg1Po4LKOlMxc1xooN7
+	Z9XuEZtVbTh/c5D1v66azZY1KsaCcvhI2T4vFq9HYi+zRp8xsfUQ/QnRNpuRC7AznWBjOo70Cm8
+	l0gQZ1j0ZvuQbppE6+2xFFAkOHwYHsfLbOfV3kKxiX8Vyxb2eWP25Utz2C2IK8+XQUJhas3l1uc
+	sDN8BI72OkK0gKP4zd517yKNRxeGSz9D3YPLHSg/jHhex8tf5EAm/zIXryl/cEMToHfCxCSmiM=
+X-Received: by 2002:a05:690e:d0a:b0:66c:effb:3706 with SMTP id 956f58d0204a3-6714dff575cmr1246776d50.38.1789422156342;
+        Mon, 14 Sep 2026 14:42:36 -0700 (PDT)
 Received: from willemb.c.googlers.com.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-88486086224sm41718997b3.10.2026.09.14.14.42.34
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-88486086224sm41718997b3.10.2026.09.14.14.42.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 14:42:34 -0700 (PDT)
+        Mon, 14 Sep 2026 14:42:35 -0700 (PDT)
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -67,12 +67,12 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	andrew+netdev@lunn.ch,
 	Willem de Bruijn <willemb@google.com>,
-	stable@vger.kernel.org,
-	mst@redhat.com,
-	jasowangio@gmail.com
-Subject: [PATCH net 1/2] virtio_net: copy zerocopy frags in start_xmit without NAPI
-Date: Mon, 14 Sep 2026 17:37:42 -0400
-Message-ID: <20260914214229.1674102-2-willemdebruijn.kernel@gmail.com>
+	Katherine Leaver <kleaver@janestreet.com>,
+	Bjoern Doebel <doebel@amazon.de>,
+	stable@vger.kernel.org
+Subject: [PATCH net 2/2] packet: use ubuf_info completion for TX_RING packets
+Date: Mon, 14 Sep 2026 17:37:43 -0400
+Message-ID: <20260914214229.1674102-3-willemdebruijn.kernel@gmail.com>
 X-Mailer: git-send-email 2.55.0.1032.g73a4cd73de-goog
 In-Reply-To: <20260914214229.1674102-1-willemdebruijn.kernel@gmail.com>
 References: <20260914214229.1674102-1-willemdebruijn.kernel@gmail.com>
@@ -86,58 +86,240 @@ Content-Transfer-Encoding: 8bit
 
 From: Willem de Bruijn <willemb@google.com>
 
-Virtio-net without NAPI frees completed skbs lazily on the next
-start_xmit. Senders waiting for in-flight zerocopy buffers can
-deadlock if they cannot transmit more packets, as then no
-commpleted packets will be freed.
+tpacket_snd sends skbs with frags pointing into its ring slots. Slots
+are released when skb->destructor is called.
 
-When !use_napi, virtio-net already calls skb_orphan to avoid waiting
-up for transmitted skbs to be freed. For zerocopy packets that
-require deep copying on orphan (i.e. those that do not set
-SKBFL_DONT_ORPHAN, such as PACKET_TX_RING), call skb_orphan_frags
-before orphaning to release the buffers.
+A call to skb_orphan calls skb->destructor before the skb is freed.
+This can cause the slot to be reused while still linked into the skb.
 
-This fixes the tpacket_snd slot reuse bug on skb_orphan for
-virtio-net, and prevents PACKET_TX_RING from running out of slots.
+Switch to standard zerocopy completion (ubuf_info) so the slot is only
+released once all references to the payload are freed or copied.
+Restore skb->destructor to standard sock_wfree.
 
-This fix also touches vhost_net zerocopy packets, which also do not
-set SKBFL_DONT_ORPHAN. This is fine: vhost_net packets only encounter
-virtio-net in nested virtualization, and only if napi_tx is
-explicitly disabled (it has been default-enabled since Linux 4.12).
-In that rare case, copying the frags is desirable anyway to prevent
-holding guest descriptors pinned across unbounded intervals.
+To prevent userspace from aliasing in-flight state on shared ring
+slots, allocate tpacket_uarg per packet, rather than per slot. This
+adds a small allocation to the transmit path. Use standard kmalloc to
+allow backporting to stable kernels.
 
-This is a prerequisite for the next patch, which converts
-PACKET_TX_RING to standard zerocopy completion. Without this patch
-first, a bounded ring sender can stall indefinitely behind a
-virtio-net virtqueue that cannot reclaim.
+The uarg holds an sk_wmem_alloc reference, rather than an sk_refcnt
+reference. packet_free_tx_ring waits on sk_wmem_alloc before freeing
+the ring pages.
 
+As a result a slot is released when its payload is copied, which can
+be before transmission (e.g., in skb_orphan_frags_rx). Any slot
+timestamp then reflects the time of copy, rather than of transmit
+(or skb_orphan).
+
+Revert the now unused previous skb_zcopy_.._nouarg infra.
+
+Reported-by: Katherine Leaver <kleaver@janestreet.com>
+Reported-by: Bjoern Doebel <doebel@amazon.de>
+Closes: https://lore.kernel.org/netdev/20260909085542.3370986-1-doebel@amazon.de/
 Fixes: 5cd8d46ea156 ("packet: copy user buffers before orphan or clone")
 Cc: stable@vger.kernel.org
-Cc: mst@redhat.com
-Cc: jasowangio@gmail.com
 Signed-off-by: Willem de Bruijn <willemb@google.com>
----
- drivers/net/virtio_net.c | 7 +++++++
- 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index e34c52d059d3..1ce528c18f9e 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -3349,6 +3349,13 @@ static netdev_tx_t start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	else
- 		virtqueue_disable_cb(sq->vq);
+---
+
+This is a complex patch for stable. I have tried a variety of
+alternatives for stable, including a two-step with deferral of this
+full fix to net-next. But all have worse caveats or side effects:
+
+- disable tpacket_snd zerocopy:
+  performance regression also on paths that do not call skb_orphan
+
+- detect tpacket skb in skb_orphan and set po->tx_copy that
+  disables tpacket_snd zerocopy:
+  - does not fix the first skb/slot
+  - hot path function now needs to check skb_shinfo(skb) field
+
+- insert skb_orphan_frags in skb_orphan:
+  - hot path function now needs to check skb_shinfo(skb) field
+  - needs extra code for virtio-net and cxgb4, which link the frags
+    into descriptors before calling skb_orphan.
+
+- insert skb_orphan_frags at all relevant callers of skb_orphan:
+  10+ sites across drivers and qdiscs
+
+---
+
+ include/linux/skbuff.h | 19 +---------
+ net/packet/af_packet.c | 82 ++++++++++++++++++++++++++++--------------
+ 2 files changed, 56 insertions(+), 45 deletions(-)
+
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 421f6fc45451..b14d6be7370b 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -1834,22 +1834,6 @@ static inline void skb_zcopy_set(struct sk_buff *skb, struct ubuf_info *uarg,
+ 	}
+ }
  
-+	if (!use_napi &&
-+	    unlikely(skb_orphan_frags(skb, GFP_ATOMIC))) {
-+		DEV_STATS_INC(dev, tx_dropped);
-+		dev_kfree_skb_any(skb);
-+		return NETDEV_TX_OK;
+-static inline void skb_zcopy_set_nouarg(struct sk_buff *skb, void *val)
+-{
+-	skb_shinfo(skb)->destructor_arg = (void *)((uintptr_t) val | 0x1UL);
+-	skb_shinfo(skb)->flags |= SKBFL_ZEROCOPY_FRAG;
+-}
+-
+-static inline bool skb_zcopy_is_nouarg(struct sk_buff *skb)
+-{
+-	return (uintptr_t) skb_shinfo(skb)->destructor_arg & 0x1UL;
+-}
+-
+-static inline void *skb_zcopy_get_nouarg(struct sk_buff *skb)
+-{
+-	return (void *)((uintptr_t) skb_shinfo(skb)->destructor_arg & ~0x1UL);
+-}
+-
+ static inline void net_zcopy_put(struct ubuf_info *uarg)
+ {
+ 	if (uarg)
+@@ -1872,8 +1856,7 @@ static inline void skb_zcopy_clear(struct sk_buff *skb, bool zerocopy_success)
+ 	struct ubuf_info *uarg = skb_zcopy(skb);
+ 
+ 	if (uarg) {
+-		if (!skb_zcopy_is_nouarg(skb))
+-			uarg->ops->complete(skb, uarg, zerocopy_success);
++		uarg->ops->complete(skb, uarg, zerocopy_success);
+ 
+ 		skb_shinfo(skb)->flags &= ~SKBFL_ALL_ZEROCOPY;
+ 	}
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 76bde7906d49..41fc053075da 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2528,26 +2528,6 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	goto drop_n_restore;
+ }
+ 
+-static void tpacket_destruct_skb(struct sk_buff *skb)
+-{
+-	struct packet_sock *po = pkt_sk(skb->sk);
+-
+-	if (likely(po->tx_ring.pg_vec)) {
+-		void *ph;
+-		__u32 ts;
+-
+-		ph = skb_zcopy_get_nouarg(skb);
+-
+-		ts = __packet_set_timestamp(po, ph, skb);
+-		__packet_set_status(po, ph, TP_STATUS_AVAILABLE | ts);
+-
+-		packet_dec_pending(&po->tx_ring);
+-		complete(&po->skb_completion);
+-	}
+-
+-	sock_wfree(skb);
+-}
+-
+ static int __packet_snd_vnet_parse(struct virtio_net_hdr *vnet_hdr, size_t len)
+ {
+ 	if ((vnet_hdr->flags & VIRTIO_NET_HDR_F_NEEDS_CSUM) &&
+@@ -2587,27 +2567,57 @@ static int packet_snd_vnet_parse(struct msghdr *msg, size_t *len,
+ 	return 0;
+ }
+ 
++struct tpacket_uarg {
++	struct ubuf_info	ubuf;
++	struct packet_sock	*po;
++	void			*ph;
++};
++
++static void tpacket_ubuf_complete(struct sk_buff *skb, struct ubuf_info *uarg,
++				  bool success)
++{
++	struct tpacket_uarg *tu = container_of(uarg, struct tpacket_uarg, ubuf);
++	struct packet_sock *po = tu->po;
++	void *ph = tu->ph;
++	__u32 ts = 0;
++
++	if (!refcount_dec_and_test(&uarg->refcnt))
++		return;
++
++	if (likely(READ_ONCE(po->tx_ring.pg_vec))) {
++		if (likely(skb))
++			ts = __packet_set_timestamp(po, ph, skb);
++		__packet_set_status(po, ph, TP_STATUS_AVAILABLE | ts);
++
++		packet_dec_pending(&po->tx_ring);
++		complete(&po->skb_completion);
 +	}
 +
- 	/* timestamp packet in software */
- 	skb_tx_timestamp(skb);
++	kfree(tu);
++	sk_free(&po->sk);
++}
++
++static const struct ubuf_info_ops tpacket_ubuf_ops = {
++	.complete = tpacket_ubuf_complete,
++};
++
+ static int tpacket_fill_skb(struct packet_sock *po, struct sk_buff *skb,
+-		void *frame, struct net_device *dev, void *data, int tp_len,
++		struct net_device *dev, void *data, int tp_len,
+ 		__be16 proto, unsigned char *addr, int hlen, int copylen,
+ 		int hard_header_len,
+ 		const struct sockcm_cookie *sockc)
+ {
+-	union tpacket_uhdr ph;
+ 	int to_write, offset, len, nr_frags, len_max;
+ 	struct socket *sock = po->sk.sk_socket;
+ 	struct page *page;
+ 	int err;
+ 
+-	ph.raw = frame;
+-
+ 	skb->protocol = proto;
+ 	skb->dev = dev;
+ 	skb->priority = sockc->priority;
+ 	skb->mark = sockc->mark;
+ 	skb_set_delivery_type_by_clockid(skb, sockc->transmit_time, po->sk.sk_clockid);
+ 	skb_setup_tx_timestamp(skb, sockc);
+-	skb_zcopy_set_nouarg(skb, ph.raw);
+ 
+ 	skb_reserve(skb, hlen);
+ 	skb_reset_network_header(skb);
+@@ -2747,6 +2757,7 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 	struct virtio_net_hdr vnet_hdr;
+ 	bool has_vnet_hdr = false;
+ 	struct sockcm_cookie sockc;
++	struct tpacket_uarg *uarg;
+ 	__be16 proto;
+ 	int err, reserve = 0;
+ 	void *ph;
+@@ -2874,7 +2885,7 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 				err = len_sum;
+ 			goto out_status;
+ 		}
+-		tp_len = tpacket_fill_skb(po, skb, ph, dev, data, tp_len, proto,
++		tp_len = tpacket_fill_skb(po, skb, dev, data, tp_len, proto,
+ 					  addr, hlen, copylen, hard_header_len,
+ 					  &sockc);
+ 		if (likely(tp_len >= 0) &&
+@@ -2906,7 +2917,24 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 			virtio_net_hdr_set_proto(skb, &vnet_hdr);
+ 		}
+ 
+-		skb->destructor = tpacket_destruct_skb;
++		uarg = kmalloc(sizeof(*uarg), GFP_KERNEL);
++		if (unlikely(!uarg)) {
++			if (likely(len_sum > 0))
++				err = len_sum;
++			else
++				err = -ENOMEM;
++			goto out_status;
++		}
++		uarg->po = po;
++		uarg->ph = ph;
++		uarg->ubuf.ops = &tpacket_ubuf_ops;
++		uarg->ubuf.flags = SKBFL_ZEROCOPY_FRAG;
++		refcount_set(&uarg->ubuf.refcnt, 1);
++
++		/* Hold a sk_wmem_alloc reference until completion */
++		refcount_inc(&po->sk.sk_wmem_alloc);
++		skb_zcopy_init(skb, &uarg->ubuf);
++
+ 		__packet_set_status(po, ph, TP_STATUS_SENDING);
+ 		packet_inc_pending(&po->tx_ring);
  
 -- 
 2.55.0.1032.g73a4cd73de-goog
