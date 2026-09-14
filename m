@@ -1,157 +1,87 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE4047987A;
-	Mon, 14 Sep 2026 13:12:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4322476CED;
+	Mon, 14 Sep 2026 13:15:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789391542; cv=none; b=Ui1N0YyNv4uF6WvjCEqpG6yt+u++AwpPYrCtWFglFjZLQ7a4ltC+fHBCG7I7cVDJu8O8xqD2fcPd9+kt5aGFjziNTnrt7RESp2fT9QWea3lNGgHg33/SSsbGUF4ni6FPibKSuRUgUZ/4hyAoaKlrdMPi6fxddvObZiqwDExPokk=
+	t=1789391713; cv=none; b=QJOHeUy4cqsv0VRYmhqVti9tehFXCfgigTc71X5dRI1OP1+sJIXL8cZQItl5H4pmlh5iGSL1JvZhCJzVjlJMyv3VHiU/z1t7PLGVfxyFCWbMwRpyvya4BKP4XZ+PZgjk36FLRy6GfTeYc83wNIJLRfbt6OvPMvL0xmjo5bt6ssY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789391542; c=relaxed/simple;
-	bh=oxbFhAvr6JSfGzP5RlSIkIiQp3K9ZHr1MCwoENtbehI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KjUSpIa9tuRdTlomwu0+/ciIg7mEovaqliNBvl4xU8gfZLUTZa0UJ8wC/8V6PF4WBRPRn7PpelZiqjjAAuxphqmkZtyl8Ds5v5w6kj7+JSupXOgIl4PnwqddUWfMVDGIFuVp7SgKw5ws8qtG/eCsG9/cM4nU2nSM/91cbxdYILY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mPBSdDIB; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1789391713; c=relaxed/simple;
+	bh=PF9u7DYv9qFIslukP9LwzISVHtIb3gYuRnqxZlxFypM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=XUfvhzKXUIP0RIBGFEkAUoHC66j/j5lVeXk/7C3MasUv01n806jmcoGEHmX9aSYYafBlmyxXTQ21Kp77Rf83iqU+a+3187D+oOVB+fR02qWyA1lFif6+MVvAFA1RWZ+2BDaR8TNAaxjGR1dHEq+n/C8dwPCra/6n1HHeEHrdNWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SxKPjlum; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mPBSdDIB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789391540; x=1820927540;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=oxbFhAvr6JSfGzP5RlSIkIiQp3K9ZHr1MCwoENtbehI=;
-  b=mPBSdDIBFWF1SQT+VjfdPVHFSXjrs7TKpab9zSYV7DhyBmM5w2Wtw6dT
-   2UdNib5PFjRQAqsRcOUDE6NqsX2fRRFY0MLLyxux6YJcK+unCC+TiRpRH
-   KJJeP9f+9LUl5XOMJwM7jw+z3GjaqNOFj02qCz9k2s6OxBf4EvlTfxzVU
-   xBV3vN9GM1pNC0ceeooFCvEi8XIEr+dMfxe0ZGDngzkq/3xvIKuAPZVs5
-   SCnZLeB98dvGp4R4Tjw3aW7f4HuPmGltyqJ0jpnTWB/rwEHUpxgG9XqvL
-   wG6fSP48xcL+vUtzzOTCc/jPZ30gOLRacuwX9Ck0ZkN3t56sL0k7Bb0wr
-   A==;
-X-CSE-ConnectionGUID: CpZ6BkesRhyQu0FT0WTvAg==
-X-CSE-MsgGUID: znMlWhcfQgyVx4W/Jmnmqw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11904"; a="112511240"
-X-IronPort-AV: E=Sophos;i="6.27,102,1787036400"; 
-   d="scan'208";a="112511240"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2026 06:12:19 -0700
-X-CSE-ConnectionGUID: K5cBbZILTeK5caqNakas1g==
-X-CSE-MsgGUID: YqxQpIzbRh2TnzGxHNT0cQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,102,1787036400"; 
-   d="scan'208";a="270832192"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa006.jf.intel.com with ESMTP; 14 Sep 2026 06:12:15 -0700
-Received: by black.igk.intel.com (Postfix, from userid 1008)
-	id 5371A99; Mon, 14 Sep 2026 15:12:14 +0200 (CEST)
-Date: Mon, 14 Sep 2026 15:12:14 +0200
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Subasri S <subasris1210@gmail.com>
-Cc: Peter Chen <peter.chen@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Duncan Sands <duncan.sands@free.fr>,
-	Chas Williams <3chas3@gmail.com>,
-	Minas Harutyunyan <hminas@synopsys.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	linux-usb@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] usb: typec: Use %pe to print error pointers
-Message-ID: <aqfyrs6Hdjc_ywZG@black.igk.intel.com>
-References: <20260801-usb-ptr_err_patchset-v2-0-1698e298c1e3@gmail.com>
- <20260801-usb-ptr_err_patchset-v2-3-1698e298c1e3@gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SxKPjlum"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id DA236C6220A;
+	Mon, 14 Sep 2026 13:15:52 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9AC9960323;
+	Mon, 14 Sep 2026 13:15:09 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C548511C7AFC3;
+	Mon, 14 Sep 2026 15:14:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789391704; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=PF9u7DYv9qFIslukP9LwzISVHtIb3gYuRnqxZlxFypM=;
+	b=SxKPjlumrmLPx8G3OPdJHMCjg0uhorZ9JkemWkvjRbh/+4NYUgGLeeGxaJXWTAgXjj381l
+	wN98FXQvXyHgS7I7CXFu4LgpgQBVEJ0ksOP37XPWW+oSLq4bP1+qGzbM1kAnIiY5cvjoy/
+	4Psslo9bZ/mXq6obNaRJfY3P/dV6SuZmcRHDMcCaKajDrJR7gqLOpYFK5ifAg9dNSgGusi
+	E8BAgOXPKZjkdkyTFgyZQ6745i8p5rXVMscORBPbJEQlatC9lO3IJsKryQ87Lv/VPNBOrQ
+	svYncYsx6cis7MVfbq/gwgmw83VWLwBsbIlA5Jb8Vdv5IJKAD/YmVbqnn54eAQ==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Jacky Huang <ychuang3@nuvoton.com>
+Cc: Shan-Chun Hung <schung@nuvoton.com>,  Michael Turquette
+ <mturquette@baylibre.com>,  Stephen Boyd <sboyd@kernel.org>,  Brian Masney
+ <bmasney@redhat.com>,  Richard Cochran <richardcochran@gmail.com>,  Arnd
+ Bergmann <arnd@arndb.de>,  Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>,  Steam Lin <STLin2@winbond.com>,
+  linux-arm-kernel@lists.infradead.org,  linux-clk@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  netdev@vger.kernel.org,
+  stable@vger.kernel.org
+Subject: Re: [PATCH] clk: nuvoton: ma35d1: Use clk_hw pointers as mux parents
+In-Reply-To: <20260813-perso-ma35d1-upstream-clk-v1-1-e78e5e6172ea@bootlin.com>
+	(Miquel Raynal's message of "Thu, 13 Aug 2026 09:28:10 +0200")
+References: <20260813-perso-ma35d1-upstream-clk-v1-1-e78e5e6172ea@bootlin.com>
+User-Agent: mu4e 1.12.12; emacs 30.2
+Date: Mon, 14 Sep 2026 15:14:59 +0200
+Message-ID: <87o6e0nfe4.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260801-usb-ptr_err_patchset-v2-3-1698e298c1e3@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Sat, Aug 01, 2026 at 05:59:52PM +0530, Subasri S wrote:
-> Use the %pe format specifier instead of %ld with PTR_ERR() for printing
-> error pointers in various typec drivers. This prints symbolic
-> error names (e.g.-ENOMEM) instead of errno numbers (e.g. -12),
-> making error logs more readable.
-> 
-> Fix coccinelle reported warning:
-> WARNING: Consider using %pe to print PTR_ERR()
-> 
-> Compile tested only.
-> 
-> Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-> Signed-off-by: Subasri S <subasris1210@gmail.com>
+Hello,
 
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+On 13/08/2026 at 09:28:10 +02, Miquel Raynal <miquel.raynal@bootlin.com> wr=
+ote:
 
-> ---
->  drivers/usb/typec/mux/pi3usb30532.c | 6 ++----
->  drivers/usb/typec/tcpm/tcpm.c       | 2 +-
->  drivers/usb/typec/wusb3801.c        | 4 ++--
->  3 files changed, 5 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/usb/typec/mux/pi3usb30532.c b/drivers/usb/typec/mux/pi3usb30532.c
-> index 985683fe49e9..b32f4c433de9 100644
-> --- a/drivers/usb/typec/mux/pi3usb30532.c
-> +++ b/drivers/usb/typec/mux/pi3usb30532.c
-> @@ -139,8 +139,7 @@ static int pi3usb30532_probe(struct i2c_client *client)
->  
->  	pi->sw = typec_switch_register(dev, &sw_desc);
->  	if (IS_ERR(pi->sw)) {
-> -		dev_err(dev, "Error registering typec switch: %ld\n",
-> -			PTR_ERR(pi->sw));
-> +		dev_err(dev, "Error registering typec switch: %pe\n", pi->sw);
->  		return PTR_ERR(pi->sw);
->  	}
->  
-> @@ -151,8 +150,7 @@ static int pi3usb30532_probe(struct i2c_client *client)
->  	pi->mux = typec_mux_register(dev, &mux_desc);
->  	if (IS_ERR(pi->mux)) {
->  		typec_switch_unregister(pi->sw);
-> -		dev_err(dev, "Error registering typec mux: %ld\n",
-> -			PTR_ERR(pi->mux));
-> +		dev_err(dev, "Error registering typec mux: %pe\n", pi->mux);
->  		return PTR_ERR(pi->mux);
->  	}
->  
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index 89eec20a2064..ad10470ea73b 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -4796,7 +4796,7 @@ static void tcpm_typec_connect(struct tcpm_port *port)
->  			port->partner_desc.accessory = TYPEC_ACCESSORY_NONE;
->  		partner = typec_register_partner(port->typec_port, &port->partner_desc);
->  		if (IS_ERR(partner)) {
-> -			dev_err(port->dev, "Failed to register partner (%ld)\n", PTR_ERR(partner));
-> +			dev_err(port->dev, "Failed to register partner (%pe)\n", partner);
->  			return;
->  		}
->  
-> diff --git a/drivers/usb/typec/wusb3801.c b/drivers/usb/typec/wusb3801.c
-> index 6062875fb04a..86d13ab41670 100644
-> --- a/drivers/usb/typec/wusb3801.c
-> +++ b/drivers/usb/typec/wusb3801.c
-> @@ -277,8 +277,8 @@ static void wusb3801_hw_update(struct wusb3801 *wusb3801)
->  		if (partner_type != WUSB3801_STAT_PARTNER_STANDBY) {
->  			wusb3801->partner = typec_register_partner(port, &desc);
->  			if (IS_ERR(wusb3801->partner))
-> -				dev_err(dev, "Failed to register partner: %ld\n",
-> -					PTR_ERR(wusb3801->partner));
-> +				dev_err(dev, "Failed to register partner: %pe\n",
-> +					wusb3801->partner);
->  		}
->  
->  		data_role = pwr_role == TYPEC_SOURCE ? TYPEC_HOST : TYPEC_DEVICE;
-> 
-> -- 
-> 2.43.0
+> The MA35D1 clock provider registers its muxes with parent data
+> structures filling .fw_name. This is not the ideal approach since that
+> would require a massive amount of internal clock names declaration in
+> the DT. Since the DT does not play the game of exposing all these names,
+> none of the parent lookups performed when instantiating the muxes
+> succeed. As a result, these muxes get registered as root clocks, leading
+> to a sadly flat clock tree and no frequency assigned to most of the
+> peripheral clocks:
 
--- 
-heikki
+Jacky, this is an actual fix which is a month old now, the SPI
+controller (and maybe other blocks as well) does not work without this
+patch. Would you mind giving this a bit of feedback?
+
+> Fixes: f50a000b4219 ("clk: nuvoton: Use clk_parent_data instead of string=
+ for parent clock")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+
+Thanks,
+Miqu=C3=A8l
