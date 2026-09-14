@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A21F383C8F;
-	Mon, 14 Sep 2026 18:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E60C338838B;
+	Mon, 14 Sep 2026 18:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789410899; cv=none; b=XN6pWYzpVP9sJSmvCEOLuKAu8PuwBZV9NTGQZ7lCTAFvntC3+zu3IxSyx2lMOfiUp5ey/wQPB3TXRTZxGGfS7z68obRrT+A8haAa8Rl/q626RKMRHtEdDr2U0X2h3+RPQR7MJ6qH0Fq2JuIOz2I5ekxEVnUQyeSc99vECgotjOk=
+	t=1789410900; cv=none; b=Hdhjfx1lcE+EQTRXYvmwf0Srzl11LrbTi2PqoVwCFpRh2Q5+U1qSsrLGwSV8gE18SCXyQenbIchFUOgAabTjXhqn895Qv3K/66Wl5WEPVLYBstFm7sYakBJJYFHHg93pzAo6sKiiL2jU3iV/ciwss4OUIocYfASdhbMjJ9Q0qjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789410899; c=relaxed/simple;
-	bh=3lIXPtDUgBXRidsf49KK0oHbEjfSUCrSXk7ZgvF4kIY=;
+	s=arc-20240116; t=1789410900; c=relaxed/simple;
+	bh=zg2erTNsC6o9DHEtoYcqfu30vxBh5tez9HM84aQE3N4=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hbRF+M8dOndrxwZ0fahqmr79uBJKISOVk8yaDwdXxQ7AEz12WDVG7fZd2mCPTb8A+1Mu0ts69eCK+KlRaU0mrMF6QD5bJHDbmHkGGJqIPo0GGlG+mQSF5s3OHVKAa98Ey+tMsR39wvHjXeW62lCiAlIDbtuAuAsE8AWegA1KXIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VAxcNaWe; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=l+vS4TcKJXbOgVdsu0uxM+OzluZ+/7yVI3VBezMgUgnKYwQBzZLFbCXJ3gmDgmdQTh9lyZ++ROFzP0i7LpWqbo4JwJNSJ30ymfsqaOC2M6QjBq/eNTlqnJAIeaqU9pjKNCwj+gpyVXZXY5L3RH96rhYjKokOFAtk0+zi1+CZtHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P/MSDne8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VAxcNaWe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DCDA1F000FF;
-	Mon, 14 Sep 2026 18:34:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P/MSDne8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3CE11F00898;
+	Mon, 14 Sep 2026 18:34:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789410895;
-	bh=fT9VbBQtyj7Ran4uSvsCEacPj44k52lVpIGpJDb2jeU=;
+	s=k20260515; t=1789410896;
+	bh=IndS3m/ZBMWO5kigMQ1UJ2/+wByPnZUmX+G6fs5VcD4=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=VAxcNaWeNvyPyNFhW32Y/QqV11W5Hozjb9AglAQpjUZlbpiNlk+12giJGgg5cAXbi
-	 kXSJA4mFxCSuqJXRewPbJWdboSP7HErNKNH0vbzLXgzfQy7Njiy8cnkDxbPLOlslQ/
-	 JSdJA/R6i3zG4V91Y6QrNMpiTnNmO2xMCk0Xp/2AS792ROnRDhy4rX/MAdNeWvCbRQ
-	 idgSXeOed55SkafoM6pdMWwV6dJf8ib/QQ2zTnm899uL3Xvy7EQNNrArM1LNyT/YIX
-	 EmLq5Q6i40RphacFGnIHUtubqv601PMfeSe1yg1jO0zhGGMwli7ZWxVuzWLmu4MggM
-	 PCy6mpTtiuSQg==
-Subject:
- Re: [PATCH net-next v15 3/6] driver core: add device_schedule_reprobe()
+	b=P/MSDne8FvVVtjFWFwPTDD8KYW2vU8nKSO0JofzGUTl0KfhmeBJpASEc45IYiQdsd
+	 fkw8azGvYGR2R2NRNUtYGZ/yoPd3OTM9hXXPT4Rs3twCSfr2Hd5Bx8JQUSNn7VrWZs
+	 ZMWz8ZDYQzUpwsxgI9jZwrM/1GL9XNCF0SAB+KL75LO+kyVa2HXiMNR8uwQv4ehPYI
+	 w1jsu8Cqi8RZkAzt/83PDMPVEgO+2xAqWi/k77hIJ1ESSHQnkxsygLUfYEU0nx0K/i
+	 JfxlXCf8biR/LQTsRjR+aZg37kUjN70RqGY0cb0+LRx4JkrCLRg/tZbaczbcBuzXHC
+	 5oaqG1N+z8vvA==
+Subject: Re: [PATCH net-next v15 4/6] net: dsa: mxl862xx: add devlink
+ flash_update and info_get
 From: netdev-bot+sashiko@kernel.org
 To: daniel@makrotopia.org
 Cc: jiri@resnulli.us, davem@davemloft.net, edumazet@google.com,
@@ -36,11 +36,11 @@ Cc: jiri@resnulli.us, davem@davemloft.net, edumazet@google.com,
  rafael@kernel.org, dakr@kernel.org, andrew@lunn.ch, olteanv@gmail.com,
  netdev@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org, driver-core@lists.linux.dev
-Date: Mon, 14 Sep 2026 18:34:53 +0000
-Message-ID: <178941089370.22033.284426349094277915@kernel.org>
-In-Reply-To: =?utf-8?q?=3C9dc69bcb070cd955a831d709fe280f8d98f98a86=2E1789175?=
+Date: Mon, 14 Sep 2026 18:34:55 +0000
+Message-ID: <178941089525.22033.5761455207730360931@kernel.org>
+In-Reply-To: =?utf-8?q?=3C377a73c5ff437600212eb2323f13cea450cedc81=2E1789175?=
  =?utf-8?q?618=2Egit=2Edaniel=40makrotopia=2Eorg=3E?=
-References: =?utf-8?q?=3C9dc69bcb070cd955a831d709fe280f8d98f98a86=2E17891756?=
+References: =?utf-8?q?=3C377a73c5ff437600212eb2323f13cea450cedc81=2E17891756?=
  =?utf-8?q?18=2Egit=2Edaniel=40makrotopia=2Eorg=3E?=
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
@@ -52,411 +52,169 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 7 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 · Medium: 4 · Low: 2
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
-- [High] The '!defer_all_probes' test in device_reprobe_work_fn()
-  (drivers/base/dd.c:1473) does not serialize the deferred detach…
-- [Medium] The commit message justifies the new helper entirely with live
-  bugs in three named in-tree drivers (iwlwifi iwl_trans_reprobe_wk(),…
-- [Medium] device_schedule_reprobe() acquires device_lock(dev)
-  synchronously in the caller's context (drivers/base/dd.c:1539) to…
-- [Medium] device_schedule_reprobe() snapshots dev->parent and pins it
-  under the device lock (drivers/base/dd.c:1540-1550), relying on the…
-- [Medium] The deferred detach checks defer_all_probes only once
-  (drivers/base/dd.c:1473), but __device_release_driver() transiently…
-- [Low] device_schedule_reprobe() records the bound driver as a raw
-  pointer (rp->drv = dev->driver, drivers/base/dd.c:1551) and…
-- [Low] The kernel-doc states 'In particular a device left unbound by an
-  administrative unbind stays unbound', but device_reprobe_work_fn()…
+- [High] AB-BA deadlock between the devlink instance lock and the driver-
+  core device lock.
+- [Low] drivers/net/dsa/mxl862xx/Kconfig does not `select CRC32` although
+  the new mxl862xx-fw.c calls crc32_le() twice in…
 
 --
 
-driver core: add device_schedule_reprobe()
+net: dsa: mxl862xx: add devlink flash_update and info_get
 
-This adds a driver core helper that schedules a delayed detach and
-re-probe of a device on system_freezable_wq, recording the bound driver
-and parent under the device lock at scheduling time.  It also changes
-__device_release_driver() to report whether it was the caller that
-released the driver.
+This adds devlink dev info version reporting (asic.id, asic.rev and the
+running/stored firmware version) and devlink dev flash support for the
+MxL862xx switch, transferring a validated image over the SB PDI protocol
+after rebooting the switch into its MCUboot loader and then scheduling a
+deferred re-probe.
 
-A few questions below.
-
-The first one is about the commit message rather than the diff.
-
-[Severity: Medium]
-
-The message opens with three named in-tree drivers:
-
-  "Three in-tree drivers schedule a deferred re-probe of their own device
-   from a work item whose work function lives in module text: iwlwifi
-   [...] hci_h5 (h5_btrtl_resume(), ...) and btintel_pcie ..."
-
-and then concludes:
-
-  "Both classes disappear when the driver core owns the deferred work."
-
-None of the three drivers is converted here, and there is no Fixes: tag,
-so both bug classes remain live in the tree at this commit.  In
-drivers/bluetooth/hci_h5.c the reprobe worker still ends with
-
-    put_device(reprobe->dev);
-    kfree(reprobe);
-    module_put(THIS_MODULE);
-
-and btintel_pcie still calls device_reprobe() synchronously from its own
-reset work.
-
-Can the last two actually use the new helper as written?  h5_btrtl_resume()
-is reached from the serdev ->resume callback, which the PM core invokes
-with device_lock(dev) held (device_resume() in
-drivers/base/power/main.c), while device_schedule_reprobe() takes
-device_lock(dev) itself.  btintel_pcie needs the detach to have completed
-by the time its FLR path returns, which a fire-and-forget delayed work
-with no completion or result cannot express.
-
-Could the rationale be reworded to describe what this patch actually
-changes, or the conversions be included?
-
-Also, the actual user of the new export is not named anywhere above the
-line; it arrives later in the series as "net: dsa: mxl862xx: add devlink
-flash_update and info_get", so the no-in-tree-caller half of this is
-resolved there.  Only the overstated motivation is at issue here.
-
-> diff --git a/drivers/base/dd.c b/drivers/base/dd.c
-> index f6525a7ee8c54..aa1f278d0ee29 100644
-> --- a/drivers/base/dd.c
-> +++ b/drivers/base/dd.c
-> @@ -1315,7 +1315,7 @@ EXPORT_SYMBOL_GPL(driver_attach);
->   * __device_release_driver() must be called with @dev lock held.
->   * When called for a USB interface, @dev->parent lock must be held as well.
->   */
-> -static void __device_release_driver(struct device *dev, struct device *parent)
-> +static bool __device_release_driver(struct device *dev, struct device *parent)
->  {
->  	struct device_driver *drv;
->  
-> @@ -1336,7 +1336,7 @@ static void __device_release_driver(struct device *dev, struct device *parent)
->  			 */
->  			if (dev->driver != drv) {
->  				pm_runtime_put(dev);
-> -				return;
-> +				return false;
->  			}
->  		}
-
-[Severity: Medium]
-
-The loop this return sits in drops both locks and, on re-acquisition,
-only re-validates dev->driver:
-
-drivers/base/dd.c:__device_release_driver() {
-	while (device_links_busy(dev)) {
-		__device_driver_unlock(dev, parent);
-		device_links_unbind_consumers(dev);
-		__device_driver_lock(dev, parent);
-		if (dev->driver != drv) {
-			pm_runtime_put(dev);
-			return false;
-		}
-	}
-
-The new caller checks defer_all_probes exactly once, before entering
-here.  Can device_shutdown() take device_lock(parent)/device_lock(dev) in
-that unlocked window and run ->shutdown()?  ->shutdown() does not change
-dev->driver, so the release then resumes and calls device_remove(), i.e.
-->remove() against already-quiesced state.
-
-For the driver class the commit message names, "drivers which clear their
-drvdata in ->shutdown() so that a subsequent ->remove() becomes a no-op",
-that is the use-after-free of driver state the helper is introduced to
-prevent.
-
-The message describes this window as pre-existing and
-
-  "not made worse by this helper."
-
-Is that accurate?  Every pre-existing unbind path with this window needs
-an administrator action, whereas this helper turns an asynchronous
-in-kernel event (firmware crash recovery, a devlink flash) into an unbind
-that can coincide with an unattended reboot.  Would re-checking
-defer_all_probes after the device links loop re-acquires the locks close
-it?
+> diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-fw.c b/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
+> new file mode 100644
+> index 0000000000000..119792eb7bd58
+> --- /dev/null
+> +++ b/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
+> @@ -0,0 +1,648 @@
 
 [ ... ]
 
-> @@ -1436,3 +1439,122 @@ void driver_detach(const struct device_driver *drv)
->  		put_device(dev);
->  	}
->  }
+> +#include <linux/crc32.h>
+
+[ ... ]
+
+> +	if (size1) {
+> +		crc = ~crc32_le(~0U, payload, size1);
+> +		if (crc != le32_to_cpu(hdr->image_checksum_1)) {
+> +			dev_err(&priv->mdiodev->dev,
+> +				"flash: image 1 CRC mismatch (got %08x, expected %08x)\n",
+> +				crc, le32_to_cpu(hdr->image_checksum_1));
+> +			return -EINVAL;
+> +		}
+> +	}
 > +
-> +struct device_reprobe {
-> +	struct delayed_work work;
-> +	struct device *dev;
-> +	struct device *parent;
-> +	const struct device_driver *drv;
-> +	bool parent_lock;
-> +};
-> +
-> +static void device_reprobe_work_fn(struct work_struct *work)
+> +	if (size2) {
+> +		crc = ~crc32_le(~0U, payload + size1, size2);
+
+[Severity: Low]
+
+Should drivers/net/dsa/mxl862xx/Kconfig also select CRC32 for these two
+new crc32_le() users in mxl862xx_flash_validate()?
+
+The driver's Kconfig currently has:
+
+config NET_DSA_MXL862
+	tristate "MaxLinear MxL862xx"
+	depends on NET_DSA
+	select CRC16
+	select NET_DSA_TAG_MXL_862XX
+
+CRC16 is selected for the crc16() user in mxl862xx-host.c, but nothing
+selects CRC32. In lib/crc/Kconfig, CRC32 is a bare tristate with no prompt
+and no default:
+
+config CRC32
+	tristate
+	select BITREVERSE
+	help
+	  The CRC32 library functions.  Select this if your module uses any of
+	  the functions from <linux/crc32.h> or <linux/crc32c.h>.
+
+and lib/crc/Makefile builds crc32.o under obj-$(CONFIG_CRC32), so with
+CONFIG_CRC32=n (or CRC32=m while NET_DSA_MXL862=y) does this fail to link
+with an undefined crc32_le? The select is still missing at the end of the
+series.
+
+[ ... ]
+
+> +int mxl862xx_devlink_flash_update(struct dsa_switch *ds,
+> +				  struct devlink_flash_update_params *params,
+> +				  struct netlink_ext_ack *extack)
 > +{
-> +	struct device_reprobe *rp = container_of(work, struct device_reprobe,
-> +						 work.work);
-> +	struct device *parent = rp->parent;
-> +	struct device *dev = rp->dev;
-> +	bool detached = false;
-> +	int ret;
+
+[ ... ]
+
+> +	mutex_lock_nested(&priv->mdiodev->bus->mdio_lock, MDIO_MUTEX_NESTED);
+> +	priv->flash_owner = NULL;
+> +	priv->block_host = false;
+> +	priv->skip_teardown = true;
+> +	mutex_unlock(&priv->mdiodev->bus->mdio_lock);
 > +
-> +	/*
-> +	 * A device unregistered before the work runs may have outlived the
-> +	 * module providing its bus type, so dev->bus is not read until the
-> +	 * device is known to be live.
+> +	/* Reinitialise through a deferred re-probe: remove() runs with
+> +	 * skip_teardown set, then a fresh probe() starts against whatever
+> +	 * the switch now runs. The core skips the re-probe if the device
+> +	 * is unbound or shut down before it fires.
 > +	 */
-> +	if (rp->parent_lock)
-> +		device_lock(parent);
-> +	device_lock(dev);
-> +	/*
-> +	 * rp->drv is only ever compared, never dereferenced: the driver it
-> +	 * points to may have been unregistered and freed by now.
-> +	 * device_shutdown() blocks probing before its walk reaches @dev.
-> +	 */
-> +	if (!defer_all_probes && !dev->p->dead && dev->driver == rp->drv)
-> +		detached = __device_release_driver(dev, parent);
+> +	err = device_schedule_reprobe(ds->dev, MXL862XX_FW_REPROBE_DELAY_MS);
 
 [Severity: High]
 
-Is this plain read of defer_all_probes enough to order the deferred
-detach against device_shutdown()?  Nothing registers, cancels, flushes or
-waits for this delayed work, and device_shutdown() only does:
+Can this call deadlock against a concurrent unbind of the same mdio
+device?
 
-drivers/base/core.c:device_shutdown() {
-	wait_for_device_probe();
-	device_block_probing();
+.devlink_flash_update runs with the devlink instance lock held by the
+netlink core:
 
-wait_for_device_probe() waits on deferred_probe_work, probe_count and
-async probes, none of which covers this work item.  So:
+devlink_nl_pre_doit()
+  __devlink_nl_pre_doit()
+    devlink_get_from_attrs_lock()
+      devl_dev_lock(devlink, false)   /* devl_lock() only */
 
-CPU0 device_reprobe_work_fn()
-	device_lock(dev);
-	/* reads defer_all_probes == false */
+and device_schedule_reprobe() then takes device_lock() synchronously in
+that context:
 
-CPU1 device_shutdown()
-	wait_for_device_probe();	/* does not see this work */
-	device_block_probing();		/* defer_all_probes = true */
-	/* walk reaches dev, blocks on device_lock(dev) */
-
-CPU0 continues
-	__device_release_driver(dev, parent);	/* ->remove(), driver = NULL */
-	device_unlock(dev);
-
-CPU1 then finds dev->driver == NULL, so neither dev->bus->shutdown nor
-dev->driver->shutdown is invoked for this device, and CPU0's subsequent
-device_attach() returns -EPROBE_DEFER from really_probe() because
-defer_all_probes is now set, which the error filter below drops silently.
-
-Does that leave the device neither shut down nor bound, which is the
-class 2 behaviour the message says is closed:
-
-  "The detach half is skipped while probing is blocked, which
-   device_shutdown() does before its walk reaches any device. A re-probe
-   firing during shutdown therefore leaves the device bound, and its
-   ->shutdown() callback still runs."
-
-The freezable workqueue does not help on this path: kernel_restart() and
-kernel_power_off() reach device_shutdown() without freezing processes or
-workqueues, unlike dpm_prepare().
-
-> +	device_unlock(dev);
-> +	if (rp->parent_lock)
-> +		device_unlock(parent);
-> +
-> +	if (detached) {
-> +		/*
-> +		 * device_attach() must run with the parent locked on buses
-> +		 * that require it, mirroring bus_rescan_devices_helper().
-> +		 */
-> +		if (rp->parent_lock)
-> +			device_lock(parent);
-> +		ret = device_attach(dev);
-
-[Severity: Low]
-
-The kernel-doc below promises "In particular a device left unbound by an
-administrative unbind stays unbound", but the device and parent locks are
-dropped between the detach above and this device_attach().  Can an unbind
-landing in that gap be silently undone?
-
-drivers/base/bus.c:unbind_store() {
-	if (dev && dev->driver == drv) {
-		device_driver_detach(dev);
-		err = count;
-	}
-
-The dev->driver == drv test runs without the device lock, so if it passes
-just before the work detaches, device_driver_detach() ->
-device_release_driver_internal() finds dev->driver == NULL,
-__device_release_driver() returns false, unbind_store() still returns
-count, and this device_attach() re-binds the device.  In-kernel callers of
-device_release_driver() see the same no-op.
-
-The new __device_release_driver() return value covers the narrower race
-inside the device_links_busy() loop, where the competing unbinder did
-perform the release; it cannot detect an unbind that released nothing
-because the work got there first.
-
-> +		if (ret < 0 && ret != -EPROBE_DEFER)
-> +			dev_err_probe(dev, ret,
-> +				      "re-probe failed, device left unbound\n");
-> +		if (rp->parent_lock)
-> +			device_unlock(parent);
-> +	}
-> +
-> +	put_device(dev);
-> +	put_device(parent);
-> +	kfree(rp);
-> +}
-> +
-> +/**
-> + * device_schedule_reprobe - schedule a deferred detach and re-probe
-> + * @dev: device to detach and re-probe
-> + * @delay_ms: delay in milliseconds before the re-probe runs
-> + *
-> + * Schedule a detach and re-probe of @dev after @delay_ms milliseconds.
-> + * The re-probe is skipped if, by the time the scheduled work runs, the
-> + * device has been removed, probing has been blocked for a system
-> + * shutdown, or @dev is no longer bound to the driver that was bound at
-> + * scheduling time. In particular a device left unbound by an
-> + * administrative unbind stays unbound.
-> + *
-> + * The work function is built-in text, so the bound driver may call this
-> + * from its own code without holding a module reference. If the driver
-> + * module is unloaded before the work runs, driver unregistration unbinds
-> + * @dev first and the scheduled work does nothing.
-> + *
-
-[ ... ]
-
-> + * The work is freezable: a re-probe pending across system suspend runs
-> + * once the system has resumed.
-> + *
-> + * May only be called from process context, and not from @dev's own
-> + * ->probe(), which is called with the device lock held.
-> + *
-> + * Returns: 0 on success, -EINVAL if @dev is not a registered device
-> + * bound to a driver, -ENOMEM on allocation failure.
-> + */
-> +int device_schedule_reprobe(struct device *dev, unsigned int delay_ms)
-> +{
-> +	struct device_reprobe *rp;
-> +	struct device *parent;
-> +
-> +	rp = kzalloc_obj(*rp);
-> +	if (!rp)
-> +		return -ENOMEM;
-> +
-> +	/* device_del() drops @dev's own reference to the parent. */
-> +	device_lock(dev);
-
-[Severity: Medium]
-
-device_lock() is a plain mutex_lock(&dev->mutex) and is not recursive, so
-does this hang any caller that already holds @dev's lock, rather than
-just the ->probe() case the kernel-doc mentions?
-
-The PM core holds the device lock across the driver sleep callbacks:
-
-drivers/base/power/main.c:device_resume() {
-	device_lock(dev);
+drivers/base/dd.c:device_schedule_reprobe() {
 	...
-	error = dpm_run_callback(callback, dev, state, info);
-
-	device_unlock(dev);
+	device_lock(dev);
+	parent = dev->parent;
+	if (!dev->bus || !dev->p || dev->p->dead ||
+	    !device_is_registered(dev) || !dev->driver) {
+	...
 }
 
-The same applies to ->suspend, ->prepare and ->complete, and to ->remove
-via __device_release_driver() and ->shutdown via device_shutdown().
+So this path is devl_lock -> device_lock.
 
-One of the three call sites this helper is written to replace is exactly
-such a context: h5_btrtl_resume() is reached from h5_serdev_resume(), the
-serdev ->resume, and it defers device_reprobe() into its own work item
-because the device lock is held there.  Would moving the validation and
-snapshot into the work function, as those drivers do, avoid this?  If not,
-could the documented contract name the PM callbacks, ->remove() and
-->shutdown() as well?
+The opposite order exists in the unbind path, where the driver core holds
+device_lock across ->remove():
 
-> +	parent = dev->parent;
-> +	if (!dev->bus || !dev->p || dev->p->dead ||
-> +	    !device_is_registered(dev) || !dev->driver) {
-> +		device_unlock(dev);
-> +		kfree(rp);
-> +		return -EINVAL;
-> +	}
-> +
-> +	rp->dev = get_device(dev);
-> +	rp->parent = get_device(parent);
+device_release_driver_internal()   /* holds device_lock(&mdiodev->dev) */
+  mxl862xx_remove()
+    dsa_unregister_switch()
+      dsa_switch_teardown()
+        dsa_switch_devlink_unregister()
+          devlink_unregister()
+            devl_lock()
 
-[Severity: Medium]
+devlink itself documents the same order in net/devlink/devl_internal.h:
 
-The comment above says device_del() takes the device lock before dropping
-@dev's reference to the parent, but device_move() also reassigns
-dev->parent while holding only device_pm_lock():
-
-drivers/base/core.c:device_move() {
-	old_parent = dev->parent;
-	dev->parent = new_parent;
-	...
-	put_device(old_parent);
+static inline void devl_dev_lock(struct devlink *devlink, bool dev_lock)
+{
+	if (dev_lock && devlink->dev)
+		device_lock(devlink->dev);
+	devl_lock(devlink);
 }
 
-It never takes device_lock(dev), and the device stays registered and
-non-dead throughout, so all the checks just above pass.
+For DSA, devlink->dev is ds->dev, i.e. &mdiodev->dev, so both locks in
+the cycle are the same two objects. If a sysfs unbind or rmmod runs while
+devlink dev flash is in progress, does one thread end up holding
+device_lock and waiting on devl_lock while the flash thread holds
+devl_lock for the whole transfer and then waits on device_lock?
 
-Can that put_device(old_parent) free the parent between the read of
-dev->parent and this get_device(parent) when the child held the last
-reference, making the get_device() a kobject_get() on freed memory and
-the later device_lock()/device_unlock()/put_device() in
-device_reprobe_work_fn() operate on it too?
+Both are plain mutexes with no trylock or timeout here, and
+device_initialize() marks dev->mutex with lockdep_set_novalidate_class(),
+so would lockdep report this cycle at all?
 
-And even when the old parent survives, rp->parent is stale for the
-lifetime of the work, so the work pins and locks a device that is no
-longer dev->parent on buses that set need_parent_lock.
+Would scheduling the re-probe from a context that does not hold the
+devlink instance lock, or a variant of the helper that does not take
+device_lock in the caller's context, avoid the inversion?
 
-No in-tree caller combines the two today: the user added later in this
-series operates on an mdio_device, and the device_move() callers (ccw,
-dasd, rfcomm, pvrusb2, u_ether, hci_sysfs) do not use this helper.
-
-> +	rp->parent_lock = parent && dev->bus->need_parent_lock;
-> +	rp->drv = dev->driver;
-
-[Severity: Low]
-
-Since rp->drv is a raw pointer used only for address equality in the
-work, and the comment there accepts that it may point to freed module
-data, can address reuse make the comparison match a different driver?
-
-If the driver module is unloaded and another module is loaded during the
-caller-chosen delay, a new struct device_driver can land at the same
-address; if the pinned device is then bound to that driver (driver_override
-or a matching bus id), dev->driver == rp->drv passes and the work unbinds
-and re-probes a device the administrator deliberately bound elsewhere.
-
-That contradicts the kernel-doc statements that the work is skipped when
-@dev "is no longer bound to the driver that was bound at scheduling time"
-and that "a device left unbound by an administrative unbind stays
-unbound".  Would a generation counter, or additionally comparing the
-driver name, close it?
-
-> +	device_unlock(dev);
 > +
-> +	INIT_DELAYED_WORK(&rp->work, device_reprobe_work_fn);
-> +	queue_delayed_work(system_freezable_wq, &rp->work,
-> +			   msecs_to_jiffies(delay_ms));
-> +
-> +	return 0;
+> +	return ret ? ret : err;
 > +}
-> +EXPORT_SYMBOL_GPL(device_schedule_reprobe);
+
+Please double check this analysis, and thanks for your time reviewing it.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1789175618.git.daniel%40makrotopia.org
