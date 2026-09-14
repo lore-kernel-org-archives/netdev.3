@@ -1,139 +1,117 @@
-Received: from mta0.migadu.com (out-231.mta0.migadu.com [91.218.175.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA51332EC1
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 03:09:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341301A7264;
+	Mon, 14 Sep 2026 03:12:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789355399; cv=none; b=HtGjWDfGqSoRdQvL2mF8PAJLayxDyjS/ge4/BsgBjFzGxsX2/E8L0xGCUuXeCXCb/RebiypS9DnEsa4zJX6YBrFHKPL+ipTLD+6ghWHoy3hWJFpqoW5qI0Z98IyK44rLpqodInebi301VWZKEHEJMgrjDPl3AQPxW1sBuahI5o0=
+	t=1789355534; cv=none; b=U16ZqJR78d9PngBMCKM2qukPjEwGK7gnwA3KdAC5WuvFHmPsg1P9VPc6r+UrLtnntqn0Ks2E1J+XzIEqaTo4DIrQfssLZjBkeGVoA93RStWdpvWZiEs4FWu8YoWDaMJGzQsZ3+tWHcU8jYrsP8ttej257P1g9H18nZUQrs8o1AQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789355399; c=relaxed/simple;
-	bh=x/tlIljtHGaFtS3P5GHlgvAiIORLGAfsGhOXJcwnhL0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=AsivZDFQBC7fvyeSoX5zU1jDfgRVLiMYaFmDGyof/sN226SlzWWZEpaO9IAGBuFoKF5VAXyBpX6UES1MmVsWw68v8Cxf9oadL3fSd3qt6SMxXjTgwFCZ8qz4GXhvdGAMqL/VNXCNZvNxo+7Us2t3+V3hZ7HW/mQvnNgNiUK6dXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jXTseMJL; arc=none smtp.client-ip=91.218.175.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1789355534; c=relaxed/simple;
+	bh=HRUvBxom06p5oY1GjniaQ0fJInnnGvb3b+81UHY74j0=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fMaIBiqo5Pi7E/W1Oe/a5/LneFihfq8kIWmvATOK2Pqm7WURpKNCRZaHcPOzbl1fb1kKh5XAXR6b2pAE2reutEL8QR9pnImZ5fI5AWqF5NGf9lnxQNhgsm3OsPmoUrUbOXoVxbeP4Dci8gVitpmjsj83vt0Ht1/c3iRcN7XcgDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=KBHFigls; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jXTseMJL"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=x/tlIljtHGaFtS3P5GHlgvAiIORLGAfsGhOXJcwnhL0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789355391; v=1; x=1789960191;
- b=jXTseMJLVp8W4g1LiZKvA19lpBMXNr6h0PgyKXgwInP9AuOm7b5plYTQEvqxeF4+ej5tBjF8
- yDiELf82g7Vunw13F9YjLO9oTX1H22bCtHDTG5uHhJniP3o0EtwKk74BQ+PLYRSAmJDTTcMJ9Sw
- aVap5p64XoEv8lzNKsB3/kmc=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id febf35c63c55aa0e;
-	Mon, 14 Sep 2026 03:09:51 +0000
-X-Mizu-Trace-ID: febf35c63c55aa0e
-X-Migadu-Flow: FLOW_OUT
-From: Hangbin Liu <hangbin.liu@linux.dev>
-Date: Mon, 14 Sep 2026 11:09:35 +0800
-Subject: [PATCH net v4] bonding: fix slave_cnt leak on XDP error paths
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="KBHFigls"
+Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68E2eKo92115305;
+	Sun, 13 Sep 2026 20:12:00 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=Tfg2yuBKplhGObTTcLkBE8LVN
+	SXsAPk2h8cfT7qA+e4=; b=KBHFiglsSFpoXfN53WlH4BECvWciyl0/2x557mIqB
+	HLlpGYp+hgYVimndI4v3G/5t8AEKe/6JbCJMsEOGpWftfpakF+CTiWt+RCDYPQIQ
+	TyAxX/txuTuAE+BTKpyTQPKNgx48NCTid53IqnCyb59D4cEWzGYRkz6PEsMj+N6X
+	78fAY5ArHlzEnEvKJ+ITjzhFbFdjXepXg3YOLOmwnevUnTuGZx935sQ0FI/uqSlq
+	OcjfoWdQGDNtzGgqOzqkh8E0DlY3ZgriAprtr3P0yGvkxHody5xKpRnaTinccwIo
+	Dxvnghhjq+3x0M6W5sKh7JywVOJ2FrsKIBnwHlOD4T4ug==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4gnqg6secr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 13 Sep 2026 20:12:00 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Sun, 13 Sep 2026 20:11:59 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Sun, 13 Sep 2026 20:11:59 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id 8C5BE3F706F;
+	Sun, 13 Sep 2026 20:11:55 -0700 (PDT)
+Date: Mon, 14 Sep 2026 08:41:49 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: Slavin Liu <bolin.liu@seu.edu.cn>
+CC: <sgoutham@marvell.com>, <gakula@marvell.com>, <sbhatta@marvell.com>,
+        <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] octeontx2-af: validate MCS blocks before
+ initialization
+Message-ID: <aqdl9TJwfk7BrFOU@rkannoth-OptiPlex-7090>
+References: <20260913125206.109985-1-bolin.liu@seu.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260914-bond_slave_cnt-v4-1-d14864a39e60@kylinos.cn>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2XPQQrDIBAF0KsU17UYTaLpqvcoJagZG2nQokEaQ
- u5ecZU2yz/D+8OsKEKwENH1tKIAyUbrXQ71+YT0KN0TsB1yRpTQlgjCsfJu6OMkE/TazVgI4EI
- 3hkjVoYzeAYz9lMI7cjCjRx6ONs4+LOVIqsqq9HWE/velCleYtdA1ytSyNeb2WibrfLxoV7oS3
- Xt28DR7QoFyRmotWXvwbO8P/ySWfcMHwxTThmr147dt+wIcKFkAMgEAAA==
-X-Change-ID: 20260807-bond_slave_cnt-88e78c5f0ab9
-To: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Daniel Borkmann <daniel@iogearbox.net>, Jussi Maki <joamaki@gmail.com>, 
- Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
-X-Mailer: b4 0.14.3
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260913125206.109985-1-bolin.liu@seu.edu.cn>
+X-Authority-Analysis: v=2.4 cv=A9/5rKWG c=1 sm=1 tr=0 ts=6aa76600 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=qit2iCtTFQkLgVSMPQTB:22 a=ZEDPxXDkaXkqBP0yybcA:9
+ a=CjuIK1q_8ugA:10 a=4Pbm1F1Cy1QVNLGpYn_S:22
+X-Proofpoint-ORIG-GUID: wd0xU3CueG7-CsIppAFhwkrbEWBCUhyr
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE0MDA0MSBTYWx0ZWRfX93DifJsj7FJf
+ +t9K4E9G8dL001DoDfgHpGqlyOu4F1ZOzZTT/F7fwItDEGMFyU4vMJckuE2G6WCGmxyqu5Bb5db
+ T444B3T2mDaYjIV0uwQ9A1SWYysynl8=
+X-Proofpoint-GUID: wd0xU3CueG7-CsIppAFhwkrbEWBCUhyr
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE0MDA0MSBTYWx0ZWRfX0pJR1Rtffd7M
+ bBrjpy3nT5vhVb5kqD0Fy270zK46m3tELv05a4L3fuYIPky/eF77OBXhHrg/O23vNQlSRiRvVCB
+ j2xceBIUsSe7xI0EgcsmiJCA4mCbd4i8/EV3xyZ6WnU7b0GqLrXLh7dh7g2a9AdG+6iNM7ix2oA
+ gw3gc4JUst0HZSOL9wu2+HEFAN7zB0uHfagmSNroQU80ZKHyuvsDcjaa0yXfqlnToOZd3b6TL+Y
+ NqGO0l/jt9+sd2bqj4/3DnHRwWoXkbWSl9cctJHgiVbBPEe/9ETQG7Y0qTpOATQw4OqBosMYuqF
+ VVV9uV8qKX9XXD/DgZwo347ZpU9GUi1RU+dhKa6nc28+6ZHOTKZBTkanRZty5cq1w772LE4QfJr
+ FT6nnEh9k36Rt7fP1bDZHLD6aMmXHncT/gvVtNItng9bAXWkRZE68Wm7EUB4ngEjQ19pXqioboS
+ 8K4EFV8CIbTgFuqpx6Q==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-14_01,2026-09-13_01,2025-10-01_01
 
-From: Hangbin Liu <liuhangbin@kylinos.cn>
-
-When bond_enslave() succeeds up to the XDP setup stage, slave_cnt is
-already incremented. If XDP setup subsequently fails, the error paths
-jump directly to err_sysfs_del, bypassing the slave_cnt decrement.
-
-This causes slave_cnt to drift upward on each failed enslaving attempt,
-which would lead to unbalanced traffic distribution with round-robin
-mode.
-
-Add an error out to make sure slave_cnt gets decreased correctly.
-
-Fixes: 9e2ee5c7e7c3 ("net, bonding: Add XDP support to the bonding driver")
-Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
----
-Changes in v4:
-- Revert to v1 version as the bond_select_active_slave() just under
-  slave_cnt increase also calls bond_update_slave_arr() (sashiko)
-- re-run all bonding selftests with debug kernel, all passed.
-- Link to v3: https://lore.kernel.org/r/20260907-bond_slave_cnt-v3-1-57df3b3cf2cb@kylinos.cn
-
-Changes in v3:
-- move the slave_cnt increasement before bond_update_slave_arr() (selftest)
-- run all bonding selftests on debug kernel to make sure no regression (Jakub)
-- Link to v2: https://lore.kernel.org/r/20260903-bond_slave_cnt-v2-1-02e27304ca36@kylinos.cn
-
-Changes in v2:
-- move the slave_cnt increasement after XDP setup (Nikolay Aleksandrov)
-- balance-xor mode is not affected, not mention it (Nikolay Aleksandrov)
-- Link to v1: https://lore.kernel.org/r/20260902-bond_slave_cnt-v1-1-36e95bf4a6ff@kylinos.cn
----
- drivers/net/bonding/bond_main.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index a9bff7663eec..577d85c83804 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2305,7 +2305,7 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 			SLAVE_NL_ERR(bond_dev, slave_dev, extack,
- 				     "Slave does not support XDP");
- 			res = -EOPNOTSUPP;
--			goto err_sysfs_del;
-+			goto err_slave_cnt;
- 		}
- 	} else if (bond->xdp_prog) {
- 		struct netdev_bpf xdp = {
-@@ -2319,14 +2319,14 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 			SLAVE_NL_ERR(bond_dev, slave_dev, extack,
- 				     "Slave has XDP program loaded, please unload before enslaving");
- 			res = -EOPNOTSUPP;
--			goto err_sysfs_del;
-+			goto err_slave_cnt;
- 		}
- 
- 		res = dev_xdp_propagate(slave_dev, &xdp);
- 		if (res < 0) {
- 			/* ndo_bpf() sets extack error message */
- 			slave_dbg(bond_dev, slave_dev, "Error %d calling ndo_bpf\n", res);
--			goto err_sysfs_del;
-+			goto err_slave_cnt;
- 		}
- 		if (bond->xdp_prog)
- 			bpf_prog_inc(bond->xdp_prog);
-@@ -2348,6 +2348,9 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 	return 0;
- 
- /* Undo stages on error */
-+err_slave_cnt:
-+	WRITE_ONCE(bond->slave_cnt, bond->slave_cnt - 1);
-+
- err_sysfs_del:
- 	bond_sysfs_slave_del(new_slave);
- 
-
----
-base-commit: e6b6078ea1731b05b3b552497b3bce4bf8b014ae
-change-id: 20260807-bond_slave_cnt-88e78c5f0ab9
-
-Best regards,
--- 
-Hangbin Liu <liuhangbin@kylinos.cn>
-
+On 2026-09-13 at 18:22:06, Slavin Liu (bolin.liu@seu.edu.cn) wrote:
+> The MCS count is a maximum successful ID plus one, not proof of a
+> dense device set. Validate the complete range before programming any
+> block, so a failed lower-ID probe cannot cause a NULL dereference.
+>
+> Detected by static analysis and reviewed with AI-assisted source auditing.
+>
+> Fixes: 080bbd19c9dd ("octeontx2-af: cn10k: mcs: Add mailboxes for port related operations")
+> Assisted-by: LLM
+> Signed-off-by: Slavin Liu <bolin.liu@seu.edu.cn>
+> ---
+>  drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c b/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
+> index fce22e314cac..0ee2d0d698e5 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs_rvu_if.c
+> @@ -889,6 +889,11 @@ int rvu_mcs_init(struct rvu *rvu)
+>  		rvu_mcs_set_lmac_bmap(rvu);
+>  	}
+>
+> +	for (mcs_id = 0; mcs_id < rvu->mcs_blk_cnt; mcs_id++) {
+> +		if (!mcs_get_pdata(mcs_id))
+> +			return -ENODEV;
+> +	}
+Do we need to move this up to apply for cn10kb as well ?
+> +
+>  	/* Install default tcam bypass entry and set port to operational mode */
+>  	for (mcs_id = 0; mcs_id < rvu->mcs_blk_cnt; mcs_id++) {
+>  		mcs = mcs_get_pdata(mcs_id);
