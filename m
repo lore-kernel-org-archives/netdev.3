@@ -1,48 +1,44 @@
-Received: from mta0.migadu.com (out-130.mta0.migadu.com [91.218.175.130])
+Received: from mta0.migadu.com (out-146.mta0.migadu.com [91.218.175.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5582522A7F6
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 06:34:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197C82E7391
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 06:41:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789367677; cv=none; b=kkER3YpJLHS3xOHmhCmZkJjRBh0J1bPEjVTzYYJShgpMA7ZG6GBzwGdrOI4sq8xojTa9+/ZYJC7C5TgqPbPGp2JvOq+58XStC/5ljlHS2jg97I77PVj/sEU8OHAhkJhtLxmG6YvU638T8thh3hb55VgBViyQoMHlbNmGDofiWtM=
+	t=1789368098; cv=none; b=Sk1/mxLwY0pO65t0hJH9yUxyuzlSB4g5qdMuMbSAt8cdZr91b67o34jQB8iGDsOg/fZrQ7vESUY4bStEpXFKbCidjBDMGMmOYkmnTqe5v3E09zbKUnYmdiLu8t6e1udA9sXCYABrim/sI0HpPwvRohhflYIOgJViFpTld1jpUmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789367677; c=relaxed/simple;
-	bh=aNc2vIq5VHhrkQZVzL865jZWWie+LzfHllkVeQTfLPE=;
+	s=arc-20240116; t=1789368098; c=relaxed/simple;
+	bh=B7j3S9hz/Za2T3o/AkBrJDeuApRYDK6C55qvl/qBb/Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e25FCY9Zx1ajUzrYtthumjVeXcLXjm4l8ADH7qDDy/Igjtr4ofiL3rQRRcxq853res2ZUKLqofqKd4lq0Hx6ojzicQOn1YB+1PnoEd42p0oiER0k9YjVtIHuu+Q5+flRoInl1ljNLRY0A/CmJlmaMuoPesf1V69SahrPeQ62EeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=PQ0Ul0zs; arc=none smtp.client-ip=91.218.175.130
+	 Content-Type:Content-Disposition:In-Reply-To; b=gOA4bUCm7gW6cLbZ9qAOLslcUMMXbmiQVuA5/lYekB1lbZmJ1aq3vUGB45BjkPlFcbyQd2/e3G4LH3XGjWKpPK8tCUInWgBtUfnxjJ6S8x8U1f68KuiktJJWnEHUfFxYMalFJjj/eXyQPS9fyeOO9YuKDBtOMoWJcmdVpMkB/4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=pjQIz7FU; arc=none smtp.client-ip=91.218.175.146
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="PQ0Ul0zs"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="pjQIz7FU"
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=aNc2vIq5VHhrkQZVzL865jZWWie+LzfHllkVeQTfLPE=;
+DKIM-Signature: a=rsa-sha256; bh=B7j3S9hz/Za2T3o/AkBrJDeuApRYDK6C55qvl/qBb/Q=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789367673; v=1; x=1789972473;
- b=PQ0Ul0zs9XSfqDRkqnWXHN2OYGU+y/b0ehxe4qp6b37707AcLxk/TfXtdLLXeVIAFFPGNB7t
- ec280SEkJO/cfs63euukUTy8/JFd9YxnWld79c0mS78tEmAUndoYr9wM74Jk+HkzoyyFK1sb/+w
- TaLIMbzYN67mCHxNrykOAtVo=
+ t=1789368094; v=1; x=1789972894;
+ b=pjQIz7FUfkKvpME39tQtRSrCYvzHPuZE0CnkqmKQp2Xi+0XD1+dvo0FMGzmeLblm9XUuE/og
+ SUQBIp+jN2O44Uczi/unmghgeCpYnd4MzZ7LYxtLeANehsO1oI472qEelZ2RhTWHWcky/WUYoI/
+ Es5vul765bXSgvdVasQUBKFE=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id c8828078a668acb4;
-	Mon, 14 Sep 2026 06:34:33 +0000
-X-Mizu-Trace-ID: c8828078a668acb4
+Received: by mta10.migadu.com with ESMTPS id 6e1b387c25adcb8d;
+	Mon, 14 Sep 2026 06:41:24 +0000
+X-Mizu-Trace-ID: 6e1b387c25adcb8d
 X-Migadu-Flow: FLOW_OUT
-Date: Mon, 14 Sep 2026 14:34:21 +0800
+Date: Mon, 14 Sep 2026 14:41:06 +0800
 From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	David Ahern <dsahern@kernel.org>, Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	David Lebrun <david.lebrun@uclouvain.be>,
-	Stefano Salsano <stefano.salsano@uniroma2.it>
-Subject: Re: [PATCH net] seg6: set IPSKB_L3SLAVE from IP6SKB_L3SLAVE on IPIP
- decapsulation
-Message-ID: <aqeVbZJX1htjy6_x@fedora>
-References: <20260913194421.31-1-andrea.mayer@uniroma2.it>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+	donald.hunter@gmail.com
+Subject: Re: [PATCH net-next 1/2] netlink: specs: tcp_metrics: fix the
+ attribute length checks
+Message-ID: <aqeXAob9hyiXQvhs@fedora>
+References: <20260912234337.308298-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,57 +47,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260913194421.31-1-andrea.mayer@uniroma2.it>
+In-Reply-To: <20260912234337.308298-1-kuba@kernel.org>
 
-On Sun, Sep 13, 2026 at 09:44:21PM +0200, Andrea Mayer wrote:
-> When an SRv6 packet arrives on an interface enslaved to a VRF,
-> vrf_ip6_rcv() sets IP6SKB_L3SLAVE in IP6CB, but decap_and_validate()
-> has never set IPSKB_L3SLAVE in IPCB. The bit stayed clear in the
-> common case, and with CONFIG_IPV6_MIP6 the leftover frag_max_size of
-> a reassembled outer packet could even set it, with no VRF involved.
-> Commit 44930446dde4 ("ipv6: seg6: clear IPv4 control block on IPIP
-> decapsulation") then made the unreliable bit reliably clear.
+On Sat, Sep 12, 2026 at 04:43:36PM -0700, Jakub Kicinski wrote:
+> TCP_FASTOPEN_COOKIE_MAX is the longest cookie we accept, not the shortest
+> one. Cookies are even sized, from 4 bytes up, and the ones Linux itself
+> generates are 8 bytes, so a 16 byte minimum declares all but the longest
+> cookie invalid. The reference policy kept under #if 0 in tcp_metrics.c
+> spells it as a maximum, which is what .len means for NLA_BINARY.
 > 
-> The effect of the missing flag is visible with End.DX4 when a
-> delivery to a local address of the node reaches the socket lookup.
-> For example, a UDP socket bound to the enslaved ingress interface
-> does not receive any of the decapsulated packets, while an unbound
-> socket outside the VRF does.
-> This contradicts Documentation/networking/vrf.rst: by default the
-> scope of an unbound UDP or TCP socket is limited to the default VRF.
+> The IPv6 addresses err the other way. The policy uses
+> NLA_POLICY_EXACT_LEN() for both, so a request carrying a longer address is
+> rejected with -ERANGE, even though the spec advertises 16 bytes as a mere
+> minimum. Were the policy generated from this spec, as kernel-policy: global
+> promises, the check would turn into NLA_POLICY_MIN_LEN() and start
+> accepting over-long addresses, of which nla_get_in6_addr() would take the
+> first 16 bytes.
 > 
-> Set IPSKB_L3SLAVE for IPv4 in decap_and_validate(), which already does
-> the same for IPv6. The socket lookup then matches the decapsulated
-> packet like any other packet received on that enslaved interface. Such
-> a packet matches an unbound UDP or TCP socket only when
-> udp_l3mdev_accept or tcp_l3mdev_accept is set.
+> Nothing generated changes. fopen-cookie is reply-only so it never gets a
+> policy entry, and exact-len only feeds the policy (and the fixed size array
+> form, which needs a sub-type).
 > 
-> Fixes: 891ef8dd2a8d ("ipv6: sr: implement additional seg6local actions")
-> Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 > ---
->  net/ipv6/seg6_local.c | 3 +++
->  1 file changed, 3 insertions(+)
+>  Documentation/netlink/specs/tcp_metrics.yaml | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-> index 7b5212220185..d1070aec7b72 100644
-> --- a/net/ipv6/seg6_local.c
-> +++ b/net/ipv6/seg6_local.c
-> @@ -257,10 +257,13 @@ static bool decap_and_validate(struct sk_buff *skb, int proto)
->  		return false;
->  
->  	if (proto == IPPROTO_IPIP) {
-> +		bool l3slave = ipv6_l3mdev_skb(IP6CB(skb)->flags);
->  		int iif = IP6CB(skb)->iif;
->  
->  		memset(IPCB(skb), 0, sizeof(*IPCB(skb)));
->  		IPCB(skb)->iif = iif;
-> +		if (l3slave)
-> +			IPCB(skb)->flags |= IPSKB_L3SLAVE;
->  	} else if (proto == IPPROTO_IPV6) {
->  		bool l3slave = ipv6_l3mdev_skb(IP6CB(skb)->flags);
->  		int iif = IP6CB(skb)->iif;
+> diff --git a/Documentation/netlink/specs/tcp_metrics.yaml b/Documentation/netlink/specs/tcp_metrics.yaml
+> index 13144aeed31a..1d365908084d 100644
+> --- a/Documentation/netlink/specs/tcp_metrics.yaml
+> +++ b/Documentation/netlink/specs/tcp_metrics.yaml
+> @@ -32,7 +32,7 @@ kernel-policy: global
+>          name: addr-ipv6
+>          type: binary
+>          checks:
+> -          min-len: 16
+> +          exact-len: 16
+>          byte-order: big-endian
+>          display-hint: ipv6
+>        -
+> @@ -63,7 +63,7 @@ kernel-policy: global
+>          name: fopen-cookie
+>          type: binary
+>          checks:
+> -          min-len: tcp-fastopen-cookie-max
+> +          max-len: tcp-fastopen-cookie-max
+>        -
+>          name: saddr-ipv4
+>          type: u32
+> @@ -73,7 +73,7 @@ kernel-policy: global
+>          name: saddr-ipv6
+>          type: binary
+>          checks:
+> -          min-len: 16
+> +          exact-len: 16
+>          byte-order: big-endian
+>          display-hint: ipv6
+>        -
 > -- 
-> 2.43.0
+> 2.55.0
 > 
 
 Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
