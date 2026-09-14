@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C34E489FB1;
-	Mon, 14 Sep 2026 23:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED32438473;
+	Mon, 14 Sep 2026 23:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789427781; cv=none; b=X1w4Ky+jFvxYfUd7Du6iOuTA3iaJaYBMfjTPikidqOwCWZNB5swJoScUtkaOTFvgYiZHem71fqlJY5JOO/R/f/6+R3gHPih4H2I7XqnGwysFh9hJ8ETs1G4jbWRuLb7uiyFRoM8rXIDZQek7XvR8X/pBDbdlmAEtNd4prOWEPiw=
+	t=1789427794; cv=none; b=CoazFJgv1T2tF5pba25GSuo+XR4Ovcy1EnTIVQS80gY65x36iQi8bNTuHSikza5pSSydXKKK9Uq558R2dVG7vczRcRB75KEEDcl1ljQVqnOjwI2FZDa8arJSpfd/QM3YsxxnuYqxs7euVi+jb30gQaU6HxVrW6gJ1EX9OV83r0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789427781; c=relaxed/simple;
-	bh=KsiXni0ULLuZPGAIfzwgMroCG6WcN3/7pl+9N+1QcS0=;
+	s=arc-20240116; t=1789427794; c=relaxed/simple;
+	bh=a9OoLxlbgryrlLKAmEGZIJMmuk4Mh04+3SkjLyPClyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LOfZtYGNH8gG3W45LGB7cJHQQ8V5GCD3n7K2gIatnDhoWZP7Ykuy5iPIHeFBC9m06s0MLYlYXYw48kpNHgY6+vIl+3erOBoS3WMDG70CaKRf+cq8eOHZd9wmuRPkKpJDyF/d6X1K9aW9YwGXZcV0m4HAVVNCUHZJMGQhfrNtHH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IjjLwbvW; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=i1DsTFiJVlY7zS4sSOBrORFdAfR4zvZIANlwbcjquy/RcwEHKdDW0x+13OHiRs1pfdcYyapJ8OQjT0MpFyd7/neCmMts45ocm+FcmlOqwrKmie65miWV4uYTj5mFDp5EcoM7w5uh16gpg2BrX0vmBXCDIDNlKIw8kgN/92FFbBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z0MKwixY; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IjjLwbvW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA0C71F00893;
-	Mon, 14 Sep 2026 23:16:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z0MKwixY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 586901F000FF;
+	Mon, 14 Sep 2026 23:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789427773;
-	bh=Q2ZuQyJS79512rpBqQ9SQPYF74Va4OuO9/ElLmEy/yE=;
+	s=k20260515; t=1789427776;
+	bh=tIIjh/Uf6BNc6qFW23Fkd03LNzbGrXqGSgv6kpFBBBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IjjLwbvW6rSC5hKrhAdj9iumDgpEjVMROymLUr1lzIetsJj9+taPMyXnGD5TqIpwn
-	 dMbyEZp56zqryLlKoHGbvxEKG8WTMOTIiS4Nfh6QgRPWiyrJ+eP9lQe4uXamM/BuBZ
-	 m533BGE++thniLVOlWzrt5Rvv0xjT9ul0fKPMj1Ktq7Hg9IDzGFCKRtYpDIijqXvo3
-	 CH12XFwss2d+UvHzKmHwE3vJO52jpFYLSH2bTjUnfrhlPOSL8VzHXYpyUlaYV0Atgu
-	 hvqsGXR3CfTIqUaoFv9mLCmfWuAbV60PxFhLTWhaqmzDwJMn7kT+wk6KaPL5H5bXCk
-	 2PVb0FNFLg+tA==
+	b=Z0MKwixYFejC9aXB2ou9gDyVgw+IXUfla6yha+G1h+pdjyd9O2GMLR6rfbmVCIqRh
+	 qnCgaS96Y5zdrUGXyZHeCOvJUyELkRb+9fGwuS5j2u7zwvM0KNnIOldogKIDh75OXI
+	 UU1X49g4kycw28XdTtqVEurHf9Wwkc//rViLO6ZtoDml0qlU8ptCINWW4hrt54jJG2
+	 hAPr0WuTs5yk74shR3GBcrH+k1Xa8WmdEfWKZAyL5keV+wX4e0ljXisLoEP1cRbpgh
+	 4LO1uDw+LaWAO/9Fcz1VWy59hEVIdQMtiu7jS8LG28h+tTb8lnAcVAxnFEOPTpkgHm
+	 sgjmnSADR5CMg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: bartosz.golaszewski@oss.qualcomm.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -75,159 +75,91 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	sophgo@lists.linux.dev,
 	linux-riscv@lists.infradead.org,
 	bartosz.golaszewski@linaro.org
-Subject: Re: [PATCH net-next v14 06/10] net: stmmac: qcom-ethqos: update phy_mode to the resolved interface in mac_finish()
-Date: Mon, 14 Sep 2026 16:16:09 -0700
-Message-ID: <20260914231609.704288-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v14 07/10] net: stmmac: qcom-ethqos: fix SGMII loopback not set on resume after speed change
+Date: Mon, 14 Sep 2026 16:16:13 -0700
+Message-ID: <20260914231614.704318-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260908-qcom-sa8255p-emac-v14-6-ec212b747a7d@oss.qualcomm.com>
-References: <20260908-qcom-sa8255p-emac-v14-6-ec212b747a7d@oss.qualcomm.com>
+In-Reply-To: <20260908-qcom-sa8255p-emac-v14-7-ec212b747a7d@oss.qualcomm.com>
+References: <20260908-qcom-sa8255p-emac-v14-7-ec212b747a7d@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-net: stmmac: qcom-ethqos: update phy_mode to the resolved interface in mac_finish()
+net: stmmac: qcom-ethqos: fix SGMII loopback not set on resume after speed change
 
-This makes ethqos_mac_finish_serdes() store the interface that phylink
-resolved into ethqos->phy_mode, so that a later serdes_powerup() call
-programs the SerDes for the interface currently in use rather than the one
-read from the DT phy-mode property at probe.
+This extends the guard in qcom_ethqos_set_sgmii_loopback() so that the MAC
+wrapper TX-to-RX loopback is also armed when ethqos->phy_mode holds
+PHY_INTERFACE_MODE_SGMII, not only PHY_INTERFACE_MODE_2500BASEX. Without
+the loopback, dwmac4_dma_reset() polls an RX clock that never toggles and
+times out.
 
-A few questions below.
-
-[Severity: Low]
-The commit message says:
-
-  "The next serdes_powerup() call, on a subsequent link cycle, then
-  reinitialises the SerDes to the wrong mode."
-
-That describes a concrete hardware failure, but there is no Fixes: tag and
-no mention of affected platforms or kernels.
-
-Looking at the baseline, qcom_ethqos_serdes_powerup() does not read
-ethqos->phy_mode at all:
-
-  static int qcom_ethqos_serdes_powerup(struct net_device *ndev, void *priv)
-  {
-        struct qcom_ethqos *ethqos = priv;
-        int ret;
-
-        ret = phy_init(ethqos->serdes_phy);
-        if (ret)
-                return ret;
-
-        ret = phy_power_on(ethqos->serdes_phy);
-  ...
-
-The phy_set_mode_ext(..., ethqos->phy_mode) call that consumes the stale
-value is added by the preceding patch in this series, "net: stmmac:
-qcom-ethqos: set serdes mode before powerup" (7bf7d5daca55). So the
-condition being repaired here does not exist upstream, and a Fixes: tag
-would have to point at an unmerged in-series commit.
-
-Would it make more sense to fold this hunk into that patch, or reorder the
-two, and reword the message so it does not read as a fix for a shipping
-regression? As posted it is hard for a backporter to tell whether this is a
-stable candidate or preparation work.
+No Link: tags were present in the commit header.
 
 > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> index 47b70b5e706f2..fd7414a50eb4e 100644
+> index fd7414a50eb4e..e067ceee01621 100644
 > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
 > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> @@ -634,6 +634,12 @@ static int ethqos_mac_finish_serdes(struct net_device *ndev, void *priv,
->  
->  	qcom_ethqos_set_sgmii_loopback(ethqos, false);
->  
-> +	/* The interface mode is only known once phylink has resolved it and
-> +	 * may change at runtime, so keep it in sync for later
-> +	 * serdes_powerup()/serdes_powerdown() calls.
-> +	 */
+> @@ -190,7 +190,8 @@ static void
+>  qcom_ethqos_set_sgmii_loopback(struct qcom_ethqos *ethqos, bool enable)
+>  {
+>  	if (!ethqos->needs_sgmii_loopback ||
+> -	    ethqos->phy_mode != PHY_INTERFACE_MODE_2500BASEX)
+> +	    (ethqos->phy_mode != PHY_INTERFACE_MODE_2500BASEX &&
+> +	     ethqos->phy_mode != PHY_INTERFACE_MODE_SGMII))
+>  		return;
 
-[Severity: Low]
-This isn't a bug, but does qcom_ethqos_serdes_powerdown() really depend on
-this field?
+[Severity: Medium]
+Should this hunk be squashed into the preceding patch of the series, or at
+least carry a Fixes: tag naming it?
 
-  static void qcom_ethqos_serdes_powerdown(struct net_device *ndev, void *priv)
-  {
-        struct qcom_ethqos *ethqos = priv;
+The commit message says "mac_finish() now updates phy_mode to the
+runtime-resolved interface", which is the change made one patch earlier in
+this same series:
 
-        phy_power_off(ethqos->serdes_phy);
-        phy_exit(ethqos->serdes_phy);
-  }
+  f40e72d57bcb38 ("net: stmmac: qcom-ethqos: update phy_mode to the
+  resolved interface in mac_finish()")
 
-It takes no interface argument and never reads ethqos->phy_mode. The two
-readers of the field are qcom_ethqos_serdes_powerup() and
-qcom_ethqos_set_sgmii_loopback(); the latter is the one whose behaviour
-this assignment changes, and it is not mentioned in the comment.
+git blame at this commit shows the assignment in ethqos_mac_finish_serdes():
 
-> +	ethqos->phy_mode = interface;
+	ethqos->phy_mode = interface;
 
-[Severity: High]
-Can this break qcom_ethqos_set_sgmii_loopback() on sa8775p?
+came from f40e72d57bcb38. Before that, ethqos->phy_mode was written only
+once, in qcom_ethqos_probe() from the DT phy-mode property, so the
+2500BASEX-only guard could not go stale at runtime and the DMA reset
+timeout described here did not exist.
 
-That helper gates on phy_mode being exactly the DT interface:
+Does that leave f40e72d57bcb38 broken on its own, e.g. as a bisect point or
+a stable backport? On a needs_sgmii_loopback platform (emac_v4_0_0_data)
+with DT phy-mode "2500base-x" whose link resolves to 1G SGMII:
 
-  static void
-  qcom_ethqos_set_sgmii_loopback(struct qcom_ethqos *ethqos, bool enable)
-  {
-        if (!ethqos->needs_sgmii_loopback ||
-            ethqos->phy_mode != PHY_INTERFACE_MODE_2500BASEX)
-                return;
-  ...
-
-and it is called from ethqos_clks_config() with the clocks just enabled:
-
-  ethqos_clks_config()
-        /* Enable functional clock to prevent DMA reset to timeout due
-         * to lacking PHY clock after the hardware block has been power
-         * cycled. ...
-         */
-        qcom_ethqos_set_sgmii_loopback(ethqos, true);
-        ethqos_set_func_clk_en(ethqos);
-
-ethqos_clks_config() runs at probe and again on every resume through
-stmmac_bus_clks_config() -> plat_dat->clks_config(), i.e. before phylink
-has resolved anything for the new session, so it reads whatever the
-previous session left behind.
-
-emac_v4_0_0_data sets .needs_sgmii_loopback = true, so on a 2500base-x
-board that last linked at 1G SGMII:
-
-  ethqos_mac_finish_serdes()  -> ethqos->phy_mode = PHY_INTERFACE_MODE_SGMII
+  ethqos_mac_finish_serdes()      -> ethqos->phy_mode = PHY_INTERFACE_MODE_SGMII
   suspend / ifdown
-  resume -> ethqos_clks_config(true)
-         -> qcom_ethqos_set_sgmii_loopback(ethqos, true)   /* returns early */
-         -> DMA soft reset with no RX clock
+  resume / ifup
+  ethqos_clks_config(ethqos, true)
+    qcom_ethqos_set_sgmii_loopback(ethqos, true)
+      if (... ethqos->phy_mode != PHY_INTERFACE_MODE_2500BASEX)
+              return;                 /* loopback never enabled */
+  dwmac4_dma_reset()                  /* polls a non-toggling clock, times out */
 
-Does dwmac4_dma_reset() then time out and fail open()/resume?
+Also, the subject line reads as a standalone fix for a pre-existing
+problem, which hides the dependency on the previous patch. Would either
+squashing the guard change into f40e72d57bcb38, or adding
 
-The next patch in this series, "net: stmmac: qcom-ethqos: fix SGMII
-loopback not set on resume after speed change", describes the same symptom
-("any subsequent resume with a 1G SGMII link skips the loopback setup and
-the DMA reset hangs") and widens the guard to also accept SGMII. Could the
-guard change be squashed into this patch, or this patch ordered after it,
-so that a bisect landing here does not hang resume?
+  Fixes: f40e72d57bcb38 ("net: stmmac: qcom-ethqos: update phy_mode to the resolved interface in mac_finish()")
 
-Separately, even with the widened guard the workaround is keyed on
-{2500BASEX, SGMII} only, while phylink hands mac_finish() whatever the PHY
-reported:
+make the ordering requirement explicit?
 
-  drivers/net/phy/phylink.c:phylink_resolve()
-        ...
-        link_state.interface = pl->phy_state.interface;
-
-Would keeping the DT interface in its own field for the wrapper workaround,
-and using the resolved interface only for the SerDes mode, avoid coupling
-the two?
-
->  	if (interface == PHY_INTERFACE_MODE_SGMII ||
->  	    interface == PHY_INTERFACE_MODE_2500BASEX)
->  		ret = phy_set_mode_ext(ethqos->serdes_phy, PHY_MODE_ETHERNET,
-
-[ ... ]
+One more note on the commit message wording: the second paragraph reads
+"qcom_ethqos_set_sgmii_loopback() gates this on phy_mode being 2500BASEX.
+mac_finish() now updates phy_mode to the runtime-resolved interface, any
+subsequent resume with a 1G SGMII link skips the loopback setup" — the
+sentence joining is missing a connector such as "so that" or "and since",
+which makes the causal relationship hard to follow.
