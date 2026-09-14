@@ -1,151 +1,157 @@
-Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D2A6340281
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 21:58:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E20313267
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 22:19:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789423097; cv=pass; b=joFD2Zv/0dDPdOf0ggUbA0Puy+10EIoxGx2UhaXgee1aqRjO4fOkWTV/5z9gnOIDeMfDuEkA9qThra/iiFwlXmtxg22BVm9Sc9Gdk94Zm7FL6q1syxHLtfLHPV0BeiH/p+LF5luZQfTYpEwp+MNRpY3Q0NXSjWc1PIyqId2Dv50=
+	t=1789424367; cv=pass; b=qirWfJZUvdoVtrSeei/4Q+b22lQzoMa0nxJdGt+5+dLpw3U2C3jnIXNYE9tsXgA9lTrWh7PMojyCx6FrgbH0zJGc3yczAVKhbuEx0jBNTJf2VGD7HJehszOgRqIEcPVjcqFgqSObCRSGO79Spo6FiqDoXGHvgW3x2MLRu4+A5Es=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789423097; c=relaxed/simple;
-	bh=2oucmxVLZzpsHl2bsclPjBym6RGzyC0ruoTEA/sa9F0=;
+	s=arc-20240116; t=1789424367; c=relaxed/simple;
+	bh=wZ4qmPT0QMruFr9VXDHGmFjNNOoufqS/JOgpwyJQpCg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JzrfmOzr3OREFrsKU3A1Emg7EdHYXc4OXxGI1QDW2UwR7YK9q0l8q6zhBbiWEcs72uJQHFkhjekmFXNTwM+alk7nTJaQtZ9P8UGDmg59mKy7rh9MovzFsK7RLSrJ4SV4inflAQ9pFCMPsr7hkHblGiiMEX0vbkR1v7kAMSDjuss=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZORgcYuL; arc=pass smtp.client-ip=74.125.228.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=BckNL68fqwp6ANG4LCuBQobfXKcs/bsSaRZhFVwRpTg6H8E1Um1XbY3cWVjCo42vLSf/n9GptCRMUMSwUSzvZ/CIzP20PgsV/1w0654KCWyrWlbuJ3eSLsFfzvKQrTZ39JVisLWgV+SU/IdfIZPnFaDa9hN+meYatZQR3/cp+Ds=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mbsjgelm; arc=pass smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZORgcYuL"
-Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a613a6bcd8so624a12.0
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 14:58:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789423093; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mbsjgelm"
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6a9bd4db6ccso4775933a12.0
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 15:19:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789424365; cv=none;
         d=google.com; s=arc-20260327;
-        b=OH2DAo7ylYF6tzrkF6cmUQ4XhkR10I7HpyPcpJxK8Rl21/ouLlxlj9K2SS1Kwnqels
-         66mtm1cDewEmfxZtHQsls9l3Na7ZHAr8GTSV0rbLcNof6JBS2ikklZA4KQsDiutPBc0i
-         LZURd1eofi8I1fVbjS8lCZzoSwhQAS0dwNmq1/Eb67mVGzMEUAbWttyp3elIA4co7bT6
-         MqUKXWJOwPq2/rkhAvH6K99YZkTZtd/Quj9lf8gT3W9OZlfFpg6GxuCjbTloP95FJ8cX
-         BjKqHFYO2trUCDTZRJeXWsCWngUybziU9qPRlwNqo+eSuDl/NHjM8AGTqAz9KU7QmaXI
-         oFxw==
+        b=XgRQ+x281zLtc1VCDUjHK8k8pC3bCK40JRjENNLqZyMucnGtosL1kTzExx/sD8pz1u
+         uvcO4GD29MCDogEg+NVJiWowuygqEIA86cwcp/QjIe/DDNHQ3xJ/8JnWXRuRz4C4Oa7w
+         tvIgOQgQqG3gIBUCtNeKnucT0tNy/5QZShihEAKRTvX22uFlueNDq9yx4hJhUO1pw/gG
+         xQgu3l+XUKX/e7V2QLNgnsTTcx8YRurNB7WURFHmut+N17W3C+/gCy+pVtKSZcTTq/NI
+         bJA24ztCi86uClG596qyJeKXNfsD5CU/kgyScT/TFluo/OQWStYAHLyvWkAh65SG/Q6k
+         uDtw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=GBcZvsPwFZfbhRFR+qKliCsigQ1sOEsYBMsUSsjWMHo=;
-        fh=jvNLtrBCCzuJ8z3sPmd5VEUHlzTO9IU6T5DMEjOkDXI=;
-        b=ZWz3BOU53ty2w4dnBjVDC4lLYaSfJcYTUZPbzIP+giA0hw7IOeqBHOLxBDatwYuEit
-         NnzuIM66v1I4rOLla+CwU3WVqRlvFxks+d9aCcXMlcqQuvJdPMeSfDmmvO0l9fEo/wtc
-         7YAI6Ysxjxwt9wqbWs6+ec7v32aNI4HILhMCx1MXuiSTqeb4wpt3JJQpip8G2YnmTtKq
-         joxetdyaLm2xnjoW49ysu2S/DlnUMRor+GcCzEBZb40Vs3ouo+aEMrc7CoJdt/yvM0bR
-         2w4SIktRuXC3h7nXdypZSGHfCGde/U+jfjq3D3sx5a4YRFCuKTXjZjGFs/G3f58xfEq6
-         CFAQ==;
+        bh=eieWMJNDganQMnVOMWmefej0YEBfyVXPwdqVtASgytA=;
+        fh=bh8jZUeWv9ldE9z5SGjOPsE8QJ+bcwoEEHtgg2P+rWI=;
+        b=HVwZ45NEMmUJ6ZLe1lnMqZ7h9nCPqRzakmoPABaWOw+Ftnicmy7nC11mw42drB1bFc
+         duwBH0miC5nh8+loRg73e1eR0NCTQhDrvg9V2YgeH+NV72tuP2brFRY7c9N6UD7qn5I5
+         C/Wy46Im0UullnT1ff189JH8kJ385z0CpAoMGTM+J/AA2t3QIhY3HGHeztNB8CfdVTGg
+         Jsarx5QPsd7wV1DHtuaTmh/6bEzrEx5qjqoU89+sLp9AGXEMDELeBn3p8gQWB/M9aeXi
+         1SKqr74gNkw2HXLN8QwKOW9apZUrdTLlAaNK0oXTX5rSC/MTzI716AePZzS8twqgS8AJ
+         Fwjg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789423093; x=1790027893; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789424365; x=1790029165; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=GBcZvsPwFZfbhRFR+qKliCsigQ1sOEsYBMsUSsjWMHo=;
-        b=ZORgcYuLNvNKXCEhnZfOKd6D7GpPOg5whryg4OtY/+RutO2b+NQGqoq+atw+x9mRi1
-         ZaViyaw1WRZpjPBNUturDGpRZ9RJKDySZwN/kKx2RgKj6JtqbKSpAKEzyhRG52RZJUqy
-         6zIC7oKd0HUlXkX5gzbpiosGpXZ2pjivGmoHfENg13FVIgJHd/Z5i4epnf/xQ4zXSi+r
-         5V+OUW5Rp1q2lh9+6Lp8WI2lwE6TP1FuygGY3RCbd+ePZwjdiV/1RuBzsnybTOhJOmmV
-         y/yTxyEGi0ZF2adtrie/UuKHCfQkbwA5B+YSRm8lUx9tEUKm2HdcfyIM6k5syHCzefpR
-         9GMg==
+        bh=eieWMJNDganQMnVOMWmefej0YEBfyVXPwdqVtASgytA=;
+        b=mbsjgelm4uuUExOHxryg7XhRRUBno0nDXHe1tsdFFVA7xDzlo39pDnUx6Pd6zZqRqM
+         frxpUe47OgO/Erwrg+A7qbaltw3dYUn/bAtkU83+01YT+HjqP5HTYf/S3EsigCMQuzJh
+         PB1bA3V/Qxzos4VOK6DSkKKuzHGjZ7DgNJ1i2BH4mYK7l5OWsgv8VaaJrRPkxvxq1PrJ
+         mvsqpa3FdG2zAMiugrEN5Dh9X/6rZ82Lpa3kfj4exS34ZYr2rMYhcpV0pSv1s+JoEqg2
+         rU9Pd4I9tl/zu3C0cQV103x73LcSu0VDcYNM71g9gahAqOMSAAh/7q9aKt7nRxPdbBda
+         ciHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789423093; x=1790027893;
+        d=1e100.net; s=20260707; t=1789424365; x=1790029165;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GBcZvsPwFZfbhRFR+qKliCsigQ1sOEsYBMsUSsjWMHo=;
-        b=uWBFzIOgvno2ruKqP7AFE/kH3GcH5OknN6z28/MXOVrMIGj0tHnVdySVY7Vl3aoTgT
-         UqrtSmjtI1q/hO2gGWVCAPj8akRBtqF58MWONAdcoSsDMrSh2BnZPG5MY1DaVhGw5+Db
-         qZOBDW+5Mw3w3+XfOv4mGXwu/OWi5d7EQhEhzSZsV+VV8YgJr/W14VdtJGziLQuzFv3v
-         cM1ij8vn/XOD5yjYrR9gHgOyvFMmToxKgJX944JiDl+VtwXbB4H1CnUBDH1If0yBsKDk
-         p1TXrCo5anD3wTIXdjpG2X9UKSzrxP1Lh8OHaBRj32YcgEO/NH1wPfOE6oeoDvt4ygoq
-         fGMw==
-X-Gm-Message-State: AFuF++m28RIhb4dYGEPzYBId9qPJgJvxKvyS9c8P+FzCiL8jnLwCbEgs
-	hDcXxMLC0wPDrzHEcxqHTNaXx/O+M4TJ6aiFjQKRkJKCtOhonuyQqo9MSX50VQUgRj6ks1fjYwq
-	Fb0pvUQKnRnCxYwQnOT0NKuBsywv0hNWXmW0eyle1
-X-Gm-Gg: AYBFou2+EJiHlHhA5urz7/gwAhZIx6MzJlWnZE8EDdbvrT3sXgaWBdB2OjaNhzfTVFV
-	7kUP/EMcmNR+YwIBoKdDojPRzbOXsVRciitvFHL9vziDqRq/ZERcLXo5ncD8UgWPz3srFqanSBH
-	B9sGw/eQuDhaYVkO8G9KtlqB4VXLJfAjK0+RQWuvTY4+unv7pyeM2Mc+506fwwEOerSqfllQM6s
-	GTMAdWZOFOjT1HO8NSuUJYBDN1R6Yeq1VsUIigoc8XrCOzE7vK+JvhweMkiyKVsE2RODN4JTTIM
-	GUL/jLhDzAei4hV3eD0Kn8DwD3KyOB+EhB/SMVVXbEaGjZMhFZrZQ8vopZQdPWZwoBTpMXARV7J
-	ZdoAZQgzAjzY=
-X-Received: by 2002:aa7:c38f:0:b0:6a7:453c:a166 with SMTP id
- 4fb4d7f45d1cf-6aa0749c8f5mr8562a12.1.1789423092200; Mon, 14 Sep 2026 14:58:12
- -0700 (PDT)
+        bh=eieWMJNDganQMnVOMWmefej0YEBfyVXPwdqVtASgytA=;
+        b=uZWIxG9qSwR8ct+o1L9ZQZqkoaSD0wBZ0rs9wfUmYozXO+4h86zvdBcjfHDLngOzen
+         abcNOM9WPYyRxfPyW7WiJa6Zk5WV1rqD6EvFidI24qdcTjgw6lKFMj0iB4te6fiX3XHP
+         n7fStUv/zaezeF/+BoRXMebsWdosoAR8UDZrnxhLKXan+Pp2g0Nzh1CP518Qbt7TCLKu
+         1gg4uXNEP5EEMiH+UTsNfIrMFbSZcSLYVCxpd5E+F0dRCwm5uD4PE2LoMy+hKdjZ/aqw
+         O0agIbKnsk5YTU8PW/q5Ji0kffTewdq8b4ZvNfrP/TNACxSPdRV2zz8rfqwhwUznaP6I
+         +jYA==
+X-Forwarded-Encrypted: i=1; AKwUvByzamM7+uUfK8G+yLjlwrs015cbd0OdashbcJjknx7dYgFD8XtwdYOdXhRwRHyWVhWFyEZX36Q=@vger.kernel.org
+X-Gm-Message-State: AFuF++kkuGd6XHUCZCnuun3GRgP10TRSqu4yz1xVf1+W6QMJ8XBwneyN
+	EoKjL4Z6X5xaFzgGUFPwt1iOWDKCwhQy7RKOjZ8FC7etiTaORYjUw8Mx1FXefin7uzp+BLyc9kN
+	A0wwaW7KlmoYYHkKFT1BT7/PBUr6wkA==
+X-Gm-Gg: AYBFou3oWpceeiy5QlA8GxL/RpwlGjcbKXO6z2o/FAnDVEGz/QvXfOmrPV04oSTXPQF
+	Aem2f8yuNjYZuil6HKGlgbJ4sZmR20ByDF+yoGY+thKNnsDqtqnRtIWfGj91PLxQUvoP7D1XpE4
+	twnzk4Op32zbsmLdUOiTnX9CEnqDFJFpfroCynDhgk2XFI2EwoS7cV48zASXSzNQG3YLYmyMcDd
+	uEGa4jK5Go4Q/jB2BQMuLxUoARrBOVYth+PZudGqxqFsYj2fcwssKNsRzhxW0Wxo3wXnM3w1ScO
+	csUlIWsnj3tWicBs60q2KLBHe2os0YhF1XrHnDpuMcDSGIJhWRKT/Kg0CtRpW3DXHjWLN8sBSJF
+	BjyDAqiH3BTT5uHXkYk3AhmOwBOO9jraRoGsC7ti6NDpuwqTm58NrqbTmkqP/x/U2fRh+
+X-Received: by 2002:a05:6402:414e:b0:6a9:941e:ec76 with SMTP id
+ 4fb4d7f45d1cf-6a9f6219af1mr3022439a12.2.1789424364586; Mon, 14 Sep 2026
+ 15:19:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260911154555.739041-1-sdf@fomichev.me> <20260911154555.739041-4-sdf@fomichev.me>
-In-Reply-To: <20260911154555.739041-4-sdf@fomichev.me>
-From: Mina Almasry <almasrymina@google.com>
-Date: Mon, 14 Sep 2026 14:58:00 -0700
-X-Gm-Features: AcwNN1U59Zp0E6Rk1J11A4UKHaujiQuHE68JQWx3v-cvFCDxZxawq-kyicBT7r0
-Message-ID: <CAHS8izOSaXtZy98UB2ye4-+59JujNb+SyBp+EO=YjnDvYLr85A@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 3/3] net: devmem: batch net_iov allocations
- into the page_pool cache
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, sdf@fomichev.me, 
-	bobbyeshleman@meta.com, linux-kernel@vger.kernel.org
+References: <20260913012148.9800-1-mhun512@gmail.com> <2b1101ed-ee5c-4a44-bdaf-a789964dfd0b@lunn.ch>
+In-Reply-To: <2b1101ed-ee5c-4a44-bdaf-a789964dfd0b@lunn.ch>
+From: Myeonghun Pak <mhun512@gmail.com>
+Date: Mon, 14 Sep 2026 18:19:12 -0400
+X-Gm-Features: AcwNN1W__BdC7hnTIVKAFxapwBUaL0k1oK8CvdPcqRs25p2wVyVe5d8GRJnHUOM
+Message-ID: <CAGEsz8GUiXT18xzGGjzEvZEX+1axY7f3Fcj3mHk8UAJdEEzCJw@mail.gmail.com>
+Subject: Re: [PATCH] tg3: clean up PHYLIB resources on probe failure
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Pavan Chebbi <pavan.chebbi@broadcom.com>, Michael Chan <mchan@broadcom.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Ijae Kim <ae878000@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 11, 2026 at 8:46=E2=80=AFAM Stanislav Fomichev <sdf.kernel@gmai=
-l.com> wrote:
->
-> Rename net_devmem_alloc_dmabuf() into net_devmem_alloc_dmabuf_bulk() and
-> make it refill page pool with up to PP_ALLOC_CACHE_REFILL NIOVs,
-> similar to io_pp_zc_alloc_netmems(). That should amortize recently
-> introduced freelist_lock.
->
-> Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
-> ---
->  net/core/devmem.c | 59 +++++++++++++++++++++++++++++------------------
->  net/core/devmem.h |  8 -------
->  2 files changed, 37 insertions(+), 30 deletions(-)
->
-> diff --git a/net/core/devmem.c b/net/core/devmem.c
-> index 7949f8425bcd..a0dcc896dd12 100644
-> --- a/net/core/devmem.c
-> +++ b/net/core/devmem.c
-> @@ -58,25 +58,25 @@ void __net_devmem_dmabuf_binding_free(struct work_str=
-uct *wq)
->         kfree(binding);
->  }
->
-> -struct net_iov *
-> -net_devmem_alloc_dmabuf(struct net_devmem_dmabuf_binding *binding)
-> +static unsigned int
-> +net_devmem_alloc_dmabuf_bulk(struct net_devmem_dmabuf_binding *binding,
-> +                            netmem_ref *netmems, unsigned int count)
->  {
-> -       struct net_iov *niov;
-> +       unsigned int i;
-> +
->         spin_lock_bh(&binding->freelist_lock);
-> -       if (unlikely(!binding->free_count)) {
-> -               spin_unlock_bh(&binding->freelist_lock);
-> -               return NULL;
-> +
-> +       count =3D min_t(size_t, count, binding->free_count);
-> +       for (i =3D 0; i < count; i++) {
-> +               struct net_iov *niov =3D binding->freelist[--binding->fre=
-e_count];
-> +
-> +               binding->freelist[binding->free_count] =3D NULL;
+Hi Andrew,
 
-Nulling is probably unnecessary?
+I'll remove the redundant USE_PHYLIB check in v2, as both cleanup
+helpers already check their initialization flags.
 
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-
-
---=20
 Thanks,
-Mina
+Myeonghun
+
+2026=EB=85=84 9=EC=9B=94 14=EC=9D=BC (=EC=9B=94) =EC=98=A4=ED=9B=84 4:10, A=
+ndrew Lunn <andrew@lunn.ch>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
+>
+> On Sat, Sep 12, 2026 at 09:21:48PM -0400, Myeonghun Pak wrote:
+> > tg3_get_invariants() can register an MDIO bus and connect a PHY for
+> > USE_PHYLIB devices. If tg3_init_one() later fails, its common error pat=
+h
+> > releases the mappings and netdev without undoing those PHYLIB resources=
+.
+> >
+> > Disconnect the PHY and unregister the MDIO bus before the remaining
+> > teardown. The existing IS_CONNECTED and MDIOBUS_INITED flags make both
+> > helpers safe when initialization only completed partially.
+> >
+> > This issue was identified during our ongoing static-analysis research w=
+hile
+> > reviewing kernel code.
+> >
+> > Fixes: 158d7abdae85 ("tg3: Add mdio bus registration")
+> > Assisted-by: OpenAI:GPT-5.6
+> > Co-developed-by: Ijae Kim <ae878000@gmail.com>
+> > Signed-off-by: Ijae Kim <ae878000@gmail.com>
+> > Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+> > ---
+> >  drivers/net/ethernet/broadcom/tg3.c | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> >
+> > diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet=
+/broadcom/tg3.c
+> > index 73a4b569b..4662e0e92 100644
+> > --- a/drivers/net/ethernet/broadcom/tg3.c
+> > +++ b/drivers/net/ethernet/broadcom/tg3.c
+> > @@ -18047,6 +18047,11 @@ static int tg3_init_one(struct pci_dev *pdev,
+> >       return 0;
+> >
+> >  err_out_apeunmap:
+> > +     if (tg3_flag(tp, USE_PHYLIB)) {
+> > +             tg3_phy_fini(tp);
+> > +             tg3_mdio_fini(tp);
+> > +     }
+>
+> Looking at tg3_get_invariants(), tg3_mdio_init() is not conditional on
+> USE_PHYLIB.
+>
+>     Andrew
+>
+> ---
+> pw-bot: cr
