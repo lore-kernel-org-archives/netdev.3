@@ -1,142 +1,184 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA9E3FA5F0;
-	Mon, 14 Sep 2026 09:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A1A41D648;
+	Mon, 14 Sep 2026 09:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789378308; cv=none; b=chTsE3CNtu00Dh6l5sGeA3MXCedfbCh1/+h5MJ2lWXGCLHEuSwZ7sgBo6IIb9y7dhdRag593aqQ7dhKHfewJ98/i1bEx5L9juq3bhTKdFmdQQ1qMB2Lxx7SwcwQwoeS2s7hHXQReHhNJhe6CuuLWLgdF+/cuexL6HwMlhyCbEj0=
+	t=1789378387; cv=none; b=dDffKkPisBcsgOd5uok72rla+BENIZjGwYVRtAvf9nTUWrjJTHjR8NMLlUi8p+P0A3FgGdE5QprY0j54pS0xAAV7vrhpSzsVxpiWOiQgqmghYifHAGE6TighQ1VsahiMv03bzb0tJih4bAZp3ZQ4HyxZ3jFsjL/M6iAe2g4/ruQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789378308; c=relaxed/simple;
-	bh=I+EDhI0xwbt4BddInR4C7S/SKT6iIa7cwtAp86MIyw4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OcFtIa11fdWWriWK0fGhKjWGiWrXzkM6caVuehlC8kkBCXL/gFMHGeqPLdbkzqia0uI9/+NUS6galAXeoR/tP9ZUdowDShiknCBMqtaAMpWBEfh80JTSLPYafwRHXz+xkCey3PnVd8bguwjgd289Sn16rzBTVr4DFqkPlKoLHTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LVUSx8j0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789378387; c=relaxed/simple;
+	bh=Rns9Q4qLtxlw6IyA5BLhL4Pqqdje+UUjfQyTd+lbEuc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ylcvmy7kjzE00YfVQ7yqwK+J4L0P4vnNDxJVdoUtmmpf1Wy+53hdACe6I7fLZDGpo2r36mc+0KcI4kEXEXQywzDfyI6UZy0oQ4aYwpfmttBirKr2ffrxg0oTNyQEg17SOKChlLmgf04518R54HqgFgO6Avd0NH/HBNAZkk5n3xE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cqyci8CU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LVUSx8j0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1695C1F000FF;
-	Mon, 14 Sep 2026 09:31:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cqyci8CU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 692FD1F00893;
+	Mon, 14 Sep 2026 09:33:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789378306;
-	bh=HzuN3Sn26uY0pjBjYF8UUElxushwwDsrxBG7xQyIZIE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LVUSx8j02axuwju3CRgbHafB4XgvSkLnh2FnTn9YVZv/NDU4lGjYxEdFtiNkjiCwG
-	 uyGIdI0WjRgaTsE+9zBdc5iJN3lcqDWvFk8eRRcFLKnyIahHSr588D7SifKTKmlBVc
-	 BElbydzVSp1PO7Dqp3ihtYyuUbAt55W5bPi1OjEvPoR63ccewLl7C3kbEFCZ0uLkRy
-	 VtFoUZacHqMNmjsi0qs8RT0DU4MKFcq2lqe8PcsL9MEGbRp7FHnx52OTgbNsquyQBU
-	 A0B7TK9PLB4uIjr1PLcAaXYzIBcukiC6cm52nWAW9ML2lLI71BF61E4yluh7jtM2PJ
-	 YwJo0lPAZa9/Q==
-Message-ID: <41529444-b4e1-4c93-bb70-e7c6a015800e@kernel.org>
-Date: Mon, 14 Sep 2026 11:31:39 +0200
+	s=k20260515; t=1789378385;
+	bh=TF8vWdHT/xzToLwETV42FttPVsuKKNCeUrPRhSDWsyk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=cqyci8CULMLK5znEv17PEAp1/k+q2BZIachlXSX4MAJIur5gdxyJpr9iZTcPmarw1
+	 udrtyEXOfU3jnqGH9gn3/FEcgbXAmW37oY0S91OZZmtwu/0IEbZiRmm4YMKc9CFgjs
+	 AVg7pAppOCUNzV1QITn1ejrkrVtZq7Wjgv8oTqgh/oIRJTsHIOLYAFDL2bF1dSWN/h
+	 i7iTbvvfX4VhxkSnKVBjvl4IoGQiD5pquf5juSYLpa0ac1pj/5VrzV+n9eztmd0kWg
+	 wZStrzX++2+c+NJrErDiuOCJWiDF2fskFA+YTdpX1MIP7gcvG9/P8beC4k8Yorw73G
+	 /mnGqYlLgJncw==
+Date: Mon, 14 Sep 2026 10:33:01 +0100
+From: Simon Horman <horms@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: esteuwu@proton.me, elder@kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, xlie7669@gmail.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org
+Subject: Re: [PATCH] net: ipa: Add IPA_MEM_STATS_DROP_MODEM memory region
+Message-ID: <20260914093301.GP48209@horms.kernel.org>
+References: <20260909-ipa-modem-drop-v1-1-0c9664f09c4a@proton.me>
+ <178900975328.219967.188619870211891152@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH bpf 1/2] bpf: drop duplicate check_app_limited in
- tcp_bpf_push
-Content-Language: fr
-To: gang.yan@linux.dev, Jiayuan Chen <jiayuan.chen@linux.dev>,
- Geliang Tang <geliang@kernel.org>
-Cc: Geliang Tang <tanggeliang@kylinos.cn>, netdev@vger.kernel.org,
- bpf@vger.kernel.org, mptcp@lists.linux.dev,
- John Fastabend <john.fastabend@gmail.com>,
- Jakub Sitnicki <jakub@cloudflare.com>, Eric Dumazet <edumazet@google.com>,
- Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Sabrina Dubroca <sd@queasysnail.net>, David Howells <dhowells@redhat.com>,
- Mat Martineau <martineau@kernel.org>
-References: <cover.1789368148.git.tanggeliang@kylinos.cn>
- <f12f1d886c8ff2b6f6e48f797ccc861037eda685.1789368148.git.tanggeliang@kylinos.cn>
- <da26d2f3-7283-4e9f-85b4-6c12b9beda99@linux.dev>
- <0b7ac0ea84f0dea0092aa84d4aff3db0b6dc0f93@linux.dev>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <0b7ac0ea84f0dea0092aa84d4aff3db0b6dc0f93@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <178900975328.219967.188619870211891152@kernel.org>
 
-Hi Gang, Jiayuan, Geliang,
-
-On 14/09/2026 10:45, gang.yan@linux.dev wrote:
-> September 14, 2026 at 4:24 PM, "Jiayuan Chen" <jiayuan.chen@linux.dev mailto:jiayuan.chen@linux.dev?to=%22Jiayuan%20Chen%22%20%3Cjiayuan.chen%40linux.dev%3E > wrote:
+On Thu, Sep 10, 2026 at 03:09:13AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider:
 > 
->> Same as the tls one: this looks like a cleanup to me. Is there a real regression that affects kernel or user behavior?
->>
->> Do we really need a Fixes tag?
->>
-> Hi Jiayuan,
+> Critical: 0 · High: 0 · Medium: 1 · Low: 1
 > 
-> It's a part of the thread in [1], just kindly remind that there had some comments from Matt:
+> - [Medium] The newly declared region id `IPA_MEM_MODEM_STATS_DROP` has no
+>   producer and no consumer, so the patch is functionally inert and…
+> - [Low] Commit-message / code identifier mismatch plus stale peer
+>   documentation for the new drop-statistics region.
+
+Hi Esteban,
+
+I'd appreciate it if you could comment on the AI-generated
+review posted by netdev-bot+sashiko. This is now an expected
+part of the Netdev development process [1].
+
+Thanks!
+
+[1] https://docs.kernel.org/process/maintainer-netdev.html#review-timelines
+
 > 
-> '''
-> Also, should this be seen as a fix? From what I understand, some
-> behaviours have changed, and it is only recently that this call is no
-> longer needed.
-> '''
+> --
 > 
-> From my view, it seems like that there have some misses in the 'fixed' commit, so the fix tag
-> should be kept, right?
-
-When I first saw the modification, it fell like Geliang was fixing
-something, hence my question. It is indeed fixing something, but if it
-"just" avoids extra checks that are now useless, I agree that it doesn't
-need to carry the fixes tag. (Except if it creates a noticeable perf
-regression, but I don't think so here.)
-
-If the Fixes tag is removed, it is always good to mention this commit to
-help with the context (and just in case if this patch can help with the
-backports). And also good to mention c5c37af6ecad9 ("tcp: Convert
-do_tcp_sendpages() to use MSG_SPLICE_PAGES") in the commit message as well.
-
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
-
+> net: ipa: Add IPA_MEM_STATS_DROP_MODEM memory region
+> 
+> This adds a new ipa_mem_id enumerator for the modem-side drop statistics
+> region and allows it in ipa_mem_id_valid() only for IPA v5.0 and later.
+> No platform data file or driver code path references the new region.
+> 
+> Link: https://github.com/LineageOS/android_kernel_qcom_sm8450-modules/commit/fc71d0972a2453cc29f873d723a355a902c6d69c
+> 
+> > diff --git a/drivers/net/ipa/ipa_mem.c b/drivers/net/ipa/ipa_mem.c
+> > index 078d32a18dbf..3000aaa24530 100644
+> > --- a/drivers/net/ipa/ipa_mem.c
+> > +++ b/drivers/net/ipa/ipa_mem.c
+> > @@ -166,6 +166,7 @@ static bool ipa_mem_id_valid(struct ipa *ipa, enum ipa_mem_id mem_id)
+> >  			return false;
+> >  		break;
+> >  
+> > +	case IPA_MEM_MODEM_STATS_DROP:
+> >  	case IPA_MEM_AP_V4_FILTER:
+> >  	case IPA_MEM_AP_V6_FILTER:
+> >  		if (version < IPA_VERSION_5_0)
+> 
+> [Severity: Medium]
+> Can this new case ever be taken?  ipa_mem_id_valid() is only consulted for
+> ids that already appear in a struct ipa_mem_data.local[] array, and a grep
+> of the tree at this commit shows IPA_MEM_MODEM_STATS_DROP only in
+> ipa_mem.h (the declaration) and here.
+> 
+> The v5.0+ data files that the version >= IPA_VERSION_5_0 gate could apply
+> to all define just the one drop-stats region:
+> 
+> drivers/net/ipa/data/ipa_data-v5.0.c
+> drivers/net/ipa/data/ipa_data-v5.2.c
+> drivers/net/ipa/data/ipa_data-v5.5.c
+> 	.id		= IPA_MEM_STATS_DROP,
+> 
+> and the only consumer of drop-stats memory still looks up the old id:
+> 
+> drivers/net/ipa/ipa_qmi.c:init_modem_driver_req() {
+> 	...
+> 	/* If the DROP stats region is defined, include it */
+> 	mem = ipa_mem_find(ipa, IPA_MEM_STATS_DROP);
+> 	if (mem && mem->size) {
+> 		req.hw_stats_drop_base_addr_valid = 1;
+> 	...
+> }
+> 
+> The commit message says the region "is used in IPA v5.0 and higher", but
+> with no producer and no consumer the change has no runtime effect.  Would it
+> make sense to land the data-file entry and the QMI consumer in the same
+> series?
+> 
+> There also seems to be a layout prerequisite that isn't mentioned.  In
+> ipa_data-v5.0.c, IPA_MEM_STATS_DROP is at offset 0x3870 with size 0x0020
+> (ending at 0x3890), and IPA_MEM_MODEM starts at 0x3898 with canary_count 2,
+> so its two canaries occupy 0x3890-0x3898:
+> 
+> 	{
+> 		.id		= IPA_MEM_STATS_DROP,
+> 		.offset		= 0x3870,
+> 		.size		= 0x0020,
+> 		.canary_count	= 0,
+> 	},
+> 	{
+> 		.id		= IPA_MEM_MODEM,
+> 		.offset		= 0x3898,
+> 		.size		= 0x0d48,
+> 		.canary_count	= 2,
+> 	},
+> 
+> Doesn't adding a second drop-stats region require shifting IPA_MEM_MODEM and
+> everything after it?
+> 
+> > diff --git a/drivers/net/ipa/ipa_mem.h b/drivers/net/ipa/ipa_mem.h
+> > index b25babade787..56703bada07c 100644
+> > --- a/drivers/net/ipa/ipa_mem.h
+> > +++ b/drivers/net/ipa/ipa_mem.h
+> > @@ -68,6 +68,7 @@ enum ipa_mem_id {
+> >  	IPA_MEM_STATS_QUOTA_AP,		/* 0 canaries, optional (IPA v4.0+) */
+> >  	IPA_MEM_STATS_TETHERING,	/* 0 canaries, optional (IPA v4.0+) */
+> >  	IPA_MEM_STATS_DROP,		/* 0 canaries, optional (IPA v4.0+) */
+> > +	IPA_MEM_MODEM_STATS_DROP,	/* 0 canaries, optional (IPA v5.0+) */
+> 
+> [Severity: Low]
+> The subject and the body both name IPA_MEM_STATS_DROP_MODEM, but the
+> enumerator added here is IPA_MEM_MODEM_STATS_DROP, and a grep of the tree at
+> this commit finds no occurrence of IPA_MEM_STATS_DROP_MODEM at all.  Could
+> the changelog and the code be made to agree?
+> 
+> The neighbouring statistics regions put the owner last:
+> 
+> 	IPA_MEM_STATS_QUOTA_MODEM,	/* 2/4 canaries (IPA v4.0+) */
+> 	IPA_MEM_STATS_QUOTA_AP,		/* 0 canaries, optional (IPA v4.0+) */
+> 
+> Would IPA_MEM_STATS_DROP_MODEM (as the subject says) fit that convention
+> better than IPA_MEM_MODEM_STATS_DROP?
+> 
+> Also, the comment on the existing IPA_MEM_STATS_DROP still reads "0
+> canaries, optional (IPA v4.0+)" with no hint that it becomes the AP-side
+> region once the modem-side one exists on v5.0+.  Could that comment be
+> updated so a config author can tell which region to use for AP drop
+> statistics?
+> 
+> One more thing on the changelog: the paragraph explaining the split ("From
+> IPA v5.0 onwards, two memory regions for drop stats exist: one for the AP
+> (that is, the driver) and one for the modem (Q6).") sits below the ---
+> cut line, so it is not part of the recorded commit message.  Was that
+> intended to be above the cut line?
+> 
+> -- 
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909-ipa-modem-drop-v1-1-0c9664f09c4a%40proton.me
