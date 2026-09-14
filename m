@@ -1,227 +1,151 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C11D451071
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 12:01:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.141
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789387325; cv=pass; b=I8gNUdgDT1kram3hhsB1Ywdgvd0e/yni0NI5JdR8RZryJBcTWas+9ovlPvxFN29S1fvDSkKpvOjGEPjFSXvWI+tmnf+UmSlXaDXR7I8Du2fsV2/npZOu3PSjb/mIpdVxBHdrrwwQJtlbOZAK72iuPfyi88en4uWoozIPAteAUIM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789387325; c=relaxed/simple;
-	bh=WDEUVrdLkKvz95MFCadBRmBNiLDw6jCMZuJuM4hcvnI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kuC0wikp/j2gVKDVYGWGBeGJr4RKeclUBoCptSEwb+wyJlADXzBvBVPwQ2Yj8rLvXLuz4by8Cft8XsmqxsmCGL1go9vWMMQC/lfYH7wi/yijHXJA+edL1/tiG+kYkq0v7wBJaDSSHWV+nUtNe2I8c5yI41okDHUI20qqA2rNZZ4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WKhIs629; arc=pass smtp.client-ip=74.125.227.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD92E4499BA
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 12:02:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789387349; cv=none; b=ktHCsK7Jkw/yTMcOapNQ/X++jvyXXVhRI6DqeuA4JoMIa4W9OV0IoN9qZNMkW6jbxc7OV8iYkygqdFxjxyfkexqNKLDMsXFVcMWivqdoLTxu2EMwRorF0xvSuCFduZYQtEp4vW22fJpJwo3Vyh37ZynadmxX473TaXN7bKJMvm0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789387349; c=relaxed/simple;
+	bh=1vVk9up/G2ajHGDqr8u30o/Uk+mk5o7CJcF5GrrolKc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=DOGXoOHXZJ0w26eTmFSP/ncaCKdjWB5/mLrq9q4UZ5xqf3q2yHNSWm7Y0bHHHUyv2StGbr+wVlCzfod4RMSVZkFb/iVoSLCiBvLgkDcFveSWb3Nur1q4EWUNohhSdebdzyTfxNxzruG+vVDRYKU4KNk1Vpf12ln5z5X5JbYVeO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fcWDrjje; arc=none smtp.client-ip=209.85.222.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WKhIs629"
-Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-39b350c6920so1564751a91.1
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 05:01:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789387315; cv=none;
-        d=google.com; s=arc-20260327;
-        b=OL8nHolGrZd59GQWQ7Hd7jLTaPbqtXT4T44Jz0b7ujyhxB2GG8u8ps7yhr47y7N2EK
-         RUbLFHKJcwMpZ2V5SPzYjk9bALRVN2YG5cquVHuROhweKny5XwDZ5lshfIlElUzG6jxL
-         jzU/yFUn/HwtAWdHKoSFfG7tpH4uUZEZ0FZRhd3Vq8LNcAWUC+XJNT89S08mVFZAB7Ir
-         EjHjHcQDcxq8tSVREfq0774TqQhXcq7I9fB/NstSUryH1ALLrUTlFUwwvw0CpCWIEJyq
-         JvbkHO3ZbWyCd2E8DkjdkaX6FLUtgPoSOxTVK9X95sYlTotApT+eifKm0Iyr/rDYipyH
-         6uUQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+mS7vtDPxxU2homzDGl7yWJhS95lRXjFbALRbsqqxF0=;
-        fh=9N4iTpEtelHMyAkzF6C69JyUizWqhHL+Xp32KnaICVQ=;
-        b=cz0CR5vxKUj2hTIiqYYbfs4bQC7BA8Q6MjY66rW3JwT7cYmWVhTog8FCm+fGm3pdrQ
-         DBAUwIfNBPyxKPmRR5xIK0Mdz6u6gh7KHvINngJINIRLxQPLgCtd7lBzV91l1LKAhF5p
-         AULn7RiZJK5FQF5NpMR+JKMbtvV/XamKh+gTxMLXOoCuIlE0S30TMQjucR5Pm4ZoxUTb
-         2KE9sm+OvlkXiKu8tG9HLOlvrQxi3EWL4l2PHJDf/rqW3sY9vgT1STAdhSVDklwPmW1R
-         vBYugXKWv9PVBU7fPXnLMBNKLJM7wiBT4hrAe9sPekDyiBVBdNMMZH+obxt74TnKQMjG
-         p85Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fcWDrjje"
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-939f5f82829so232318485a.1
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 05:02:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789387315; x=1789992115; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+mS7vtDPxxU2homzDGl7yWJhS95lRXjFbALRbsqqxF0=;
-        b=WKhIs629A218GZQt3Hy92H/3HiwH8phVF8Icw9NquPk7R16RI7uKwI0BFWJEFu+7zQ
-         Aw4PJpGoSf4blMElVEicZIN8iSEZ5bsBRPV827d9ape48ebvTXVfkBPsMiQRuRNKzrFT
-         k2hnA25pjb2YWeQb9hdS0jJt8rvwDY4siVyAgMoBCFNFsHDR/vdeXq+BtnNUcnHHcAYw
-         BRXGd3mjqyXx23w7c4Rl8K+p84UU4drDsKAmUFrvyzNNwNumCjK/w50ima7TsCcPtdlD
-         an/mPKIQAJhOxkjmZBK2Nq1kU3FskeGrsA1smQbVyBYIF/9ylh/h6ay0G0nkVTcbO97r
-         1i5g==
+        d=gmail.com; s=20251104; t=1789387345; x=1789992145; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=92yvnPgPUDO5sDDMqgr5502oviz33EW1DDzzaNdq+gI=;
+        b=fcWDrjjeULGty3AVUl4tbuLbWKWXyym7xSf/hK3Ku6RwiznK/tLel/AZ79snHoMzwd
+         +YlIPyf3R4x0TUNkZq0TMJlVL06SNZRtf0PWElGHOooZ9mS08jfsHMqqB62uyW2IYRtN
+         YfaqiC385HP8fkQPTBWIBRmVYMcpt5im7gocxS296bjbJmBzg4H2SAKw0RFjPOPtbh5e
+         zqqtokKh2QuutD2iEuX6J8BQTGZ4GMeiLcyzUfy8pSFACInxf7Z6qnM6GWGgwRvtidQA
+         npY2ifiqMSNqnK3PeN3gPg2st5N/hfp5esjKHVD5sZYRePB/ujEh0BOVbWDVED4W4PKf
+         EgIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789387315; x=1789992115;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20251104; t=1789387345; x=1789992145;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=+mS7vtDPxxU2homzDGl7yWJhS95lRXjFbALRbsqqxF0=;
-        b=eK3K+kl9+o+IjZVCK91FH1tH8OHiAZgotSuVrxIwR7RucLakHOozfoe9fNVyga3u1o
-         Gtu9PXGCNr0oYtBaj0zkMREN8tA22Fl8Y/C+ss4p6X5721/DNsrqyn8leoLNj1Htx9z5
-         gZjn+iDVeptTTabvWC3lGxwdx2E2aeDe57b+DikBu8emNFRKLQhV5Eiz8ponV8ploskY
-         /YhykfbzWrkEq6dPhglR3aXAbd56HoLICrxd6UYkIkQNS2ZSKXuGRWfqhwf5FYYWOwnf
-         8j+H9v+sxAWbgAmqmWWhUToTa9180HyhwmRR2F8HYK75C7hSCkzt6QzqLDVMby5/jiLI
-         bkVA==
-X-Forwarded-Encrypted: i=1; AKwUvByPukfkJBkxm1ZROH3GInd8y6mZYikRAgXfVvQ9r0ezpW13/rOKMG7IXXWr77mgiE+mdov0ffU=@vger.kernel.org
-X-Gm-Message-State: AFuF++k8CrGA+oeVcq0j8/SoeBNN0mugxzzHvBdmsQwXm08jDd4FgggQ
-	aC44pikWYV9p8BbM3tL6Jdc1ORgcTbOkWB2K8Cb08aOo04Hb5yNIeYsWDmM/aYm5h01Cox0aOwm
-	U7dERP1vtn+jovFsGdGwM81GSmRzeeUY=
-X-Gm-Gg: AYBFou2Ua4ta01kRbMGMbSF8UIx3XoXWtKBjwuTyxuumLw913AIOFmgA2MxNDWHMWOJ
-	/wlXDNkTG3R4DCDRY7LNjmJjC4tQjzlYOiSNpz8G7zZNd/9ofBCrUED7Pc/8bBczF3FoASDtGfa
-	UV14+y7l+9th48wdyjEAv1rUQnqDxy1mHA15gPnv6I3++VW8tTQ0SsLZA9VTAfcO/t0xy15KB3k
-	0/MLGPw/XPh9owCJDkuD0BBWybRR1NHh8JZXF9zqX3suqc6PCpEcUrCOmFF0dP63USVFS0PdUBA
-	ych4lO+PnX1yypxrrBWFmdJQ425IolYeiaUYbYhzR1kXVPm3UjyFWhi0UOdJJg5OhPc=
-X-Received: by 2002:a17:90b:2249:b0:398:c3c9:d0ae with SMTP id
- 98e67ed59e1d1-39debdd2283mr4798231a91.0.1789387315260; Mon, 14 Sep 2026
- 05:01:55 -0700 (PDT)
+        bh=92yvnPgPUDO5sDDMqgr5502oviz33EW1DDzzaNdq+gI=;
+        b=RpwI2sjgkOUI+grO/89aXvIsdlsQ9QAKzfIUgg7TxT9OmVSIRHohn0a2YJlzzdv+iV
+         IJv/7ZcovjfTgDQhLqCvAbtJ9lebdEcOVRMrzYNU42foYCyuodrCKiDiQ7HekNCxKt5c
+         Uano0nc0yX4zleQckaL1X7Z72bXqyLI37B2az/AS6F9qaSBir61LVuBpo0Ow5skdUpoo
+         uz3ng7f0DCwZJiBEpeQbPKWWE5k3vWydiIocl6Ccnebt8GPMxfYmoTlS8FgxQ6ckNZ0x
+         5kpdHKgfIG6wnNps/S7zzi0bhI6xKOCNZ8LiMTsGu7Uvw4DitG+trVdjgQhFPuWxVZQZ
+         Z2vg==
+X-Gm-Message-State: AFuF++mswqqnJXiSAiFNXjWpdstNR7KRr2w7+494pIVl07Hgc6IYqwW9
+	ubwxK8nkAyKnu4xps+gwT+poJT/ehae0JObgl50JeZYYZ8HfebkdswVq
+X-Gm-Gg: AYBFou1Sh6Ztt5qSNkQfRw12on8H3bS8Sb3rJ1PD7bl/5GzsdHMvNPgE0XPM219MuY0
+	fkIwQDWxHS8TcD9RbaocXNClFaqYBmjQM5P1HVIXTrgy1VzA7o2kCdknbJqvaRZsNNB/gEXoCHa
+	9E1BTxNrl8j7N/9cJH6z0wcZ/JoWtZ4JpHY8LgWXS9Fop4T9HT875NJ6dEnorl5lzKOBE+gANLD
+	RYpAbMYnY4244nAlKdz3c5uPEHk4q26z2D7rxcrgepwHSPyzfzu7EZMvLblcD4Xj9FgM3NHYAn1
+	x8mmUHKDg/8ub66OyCuXuAlf4l4ZSpH0Mwkk1GufRVSUIgg3lhEZKMRs9+PtkeEVm5Ad9JYu7k6
+	ZvUlAgb/FLS7+RcRGISLqGrI0gMTgLqo66R97D2vYqfwzWmbS/B/P+LzUwRpfkmQHpmPANtTWhE
+	zcjtoXJRTOIet3U4yeDBZi+kFheO0ZHq+BIDAXxeZ7Prwb0snaJoEn9xHw4FaiDenf6BaApdBi6
+	gi6
+X-Received: by 2002:a05:620a:2954:b0:939:8d3e:2979 with SMTP id af79cd13be357-93a18796e7bmr659611285a.39.1789387345406;
+        Mon, 14 Sep 2026 05:02:25 -0700 (PDT)
+Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93a0cfa2299sm556890485a.18.2026.09.14.05.02.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Sep 2026 05:02:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260908060410.3982-1-nashuiliang@gmail.com> <20260908133636.2ea807d9@kernel.org>
- <CACueBy4BvJ6E0RuUDsQmwPq_zt9Xh6T19DOAkA5MW-uU1yNpKQ@mail.gmail.com> <CANn89iKYQMPm_LyYY4v48QmoFc0MwkkKQwggd_BLGDJL78=8qA@mail.gmail.com>
-In-Reply-To: <CANn89iKYQMPm_LyYY4v48QmoFc0MwkkKQwggd_BLGDJL78=8qA@mail.gmail.com>
-From: chuang <nashuiliang@gmail.com>
-Date: Mon, 14 Sep 2026 20:01:44 +0800
-X-Gm-Features: AcwNN1UkEpUCQ5OcMo1LKsk15DqENpfvJz-tmdqzx1eSl3HXKATXLGI1WggOLYk
-Message-ID: <CACueBy4u-2yHHysZvs_a=VQLe4PtY9-qjkdZ3gFn_eVKmyspOA@mail.gmail.com>
-Subject: Re: [PATCH net-next v9] net: reduce RFS/ARFS flow updates by checking
- LLC affinity
-To: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>, 
-	Stanislav Fomichev <sdf.kernel@gmail.com>, Hangbin Liu <liuhangbin@gmail.com>, 
-	Samiullah Khawaja <skhawaja@google.com>, Neal Cardwell <ncardwell@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 14 Sep 2026 08:02:23 -0400
+Message-Id: <DLF0VHGQ0BW3.V17URE6WVGN4@gmail.com>
+Subject: Re: [PATCH net-next 2/6] psp: don't report the main netdevice's
+ ifindex to associated namespaces
+From: "Daniel Zahka" <daniel.zahka@gmail.com>
+To: "Jakub Kicinski" <kuba@kernel.org>, <davem@davemloft.net>
+Cc: <netdev@vger.kernel.org>, <edumazet@google.com>, <pabeni@redhat.com>,
+ <andrew+netdev@lunn.ch>, <horms@kernel.org>, <daniel.zahka@gmail.com>,
+ <willemdebruijn.kernel@gmail.com>, <donald.hunter@gmail.com>,
+ <shuah@kernel.org>, <linux-kselftest@vger.kernel.org>
+X-Mailer: aerc 0.21.0-threadmapfix
+References: <20260912200426.121025-1-kuba@kernel.org>
+ <20260912200426.121025-3-kuba@kernel.org>
+In-Reply-To: <20260912200426.121025-3-kuba@kernel.org>
 
-On Sun, Sep 13, 2026 at 12:14=E2=80=AFPM Eric Dumazet <edumazet@google.com>=
- wrote:
+On Sat Sep 12, 2026 at 4:04 PM EDT, Jakub Kicinski wrote:
+> PSP device is visible in a netns if any of the devices (eg. netkit)
+> are associated with that PSP device. In the main netns we show
+> all the associated netdevs + their netns id. In the "container"
+> netns we show only the local devices. But we were listing the main
+> netdev in all cases, even though it's meaningless outside of
+> the main netns.
 >
-> On Sat, Sep 12, 2026 at 8:50=E2=80=AFPM chuang <nashuiliang@gmail.com> wr=
-ote:
-> >
-> > Hi, let me restructure the issues.
-> >
-> > > 1) Also not sure why you're trying to touch RFS, the change only help=
-s
-> > aRFS and you could avoid bulk of the refactoring issues.
-> >
-> > The scenario is similar to the one described in "[RFC] problems with
-> > RFS on bRPC applications"[1].
-> >
-> > I attempted to enable ARFS on a Mellanox CX-6 NIC. While it performs
-> > well for simple workloads, performance degrades significantly when
-> > running a bRPC[2]  workload on a 2-node NUMA machine. After tracing, I
-> > identified patterns that ARFS/RFS fails to handle efficiently:
-> >
-> > - Multiple threads use epoll to read from the same socket, causing
-> > frequent flow updates in sock_flow_table.
-> > - Threads reading from the socket migrate frequently between CPUs.
-> >
-> > I tested a PoC version using a bRPC service, utilizing funccount [3]
-> > to monitor execution frequency and perf top to observe hotspots:
-> >
-> > Before Patch
-> >
-> > The mlx5e_rx_flow_steer frequency is over 380k/s, and queued_spin_lock
-> > is a major hotspot (6.30% in perf top). The application also suffers
-> > from a noticeable drop.
-> >
-> > FUNC                                     COUNT
-> > mlx5e_rx_flow_steer              387594
-> >
-> > FUNC                                     COUNT
-> > mlx5e_rx_flow_steer              390142
-> >
-> > FUNC                                     COUNT
-> > mlx5e_rx_flow_steer              386694
-> >
-> > FUNC                                     COUNT
-> > mlx5e_rx_flow_steer              389094
-> >
-> > # perf top hotspot:
-> > queued_spin_lock                         6.30%
-> >
-> > After Patch
-> >
-> > The ARFS update frequency is significantly reduced. queued_spin_lock
-> > is no longer a hotspot in perf top, and the application's overall
-> > performance has improved.
-> >
-> > FUNC                                     COUNT
-> > mlx5e_rx_flow_steer                      43
-> >
-> > FUNC                                     COUNT
-> > mlx5e_rx_flow_steer                        9
-> >
-> > FUNC                                     COUNT
-> > mlx5e_rx_flow_steer                    207
-> >
-> > FUNC                                     COUNT
-> > mlx5e_rx_flow_steer                      26
-> >
-> > > 2) You put a very fast path function out-of-line, why ?
-> >
-> > The reason is that tun uses sock_rps_record_flow_hash(). When I moved
-> > all rps_record_sock_flow and rps_record_cond modifications into
-> > include/net/rps.h, it triggered the following compilation errors due
-> > to symbol visibility:
-> >
-> > ERROR: modpost: "cpus_share_cache" [drivers/net/tun.ko] undefined!
-> > ERROR: modpost: "cpus_share_cache" [net/sctp/sctp.ko] undefined!
-> > make[2]: *** [scripts/Makefile.modpost:147: Module.symvers] Error 1
-> >
-> > This arises because the patch uses cpus_share_cache() to limit the
-> > RFS/ARFS update frequency at the LLC level. To keep this in the fast
-> > path, I could move cpus_share_cache() to
-> > include/linux/sched/topology.h.
+> Report ifindex only in the main netdevice's namespace. Absence is
+> already unambiguous, the by-association flag is set exactly in the
+> messages which no longer carry the ifindex.
 >
-> Hmmm
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+>  Documentation/netlink/specs/psp.yaml | 2 ++
+>  net/psp/psp_nl.c                     | 7 +++++--
+>  2 files changed, 7 insertions(+), 2 deletions(-)
 >
-> If the LLC affinity check is performed in set_rps_cpu() inside
-> net/core/dev.c before triggering ndo_rx_flow_steer:
->
-> net/core/dev.c is built-in, so it can call cpus_share_cache() directly
-> without any module export issues.
->
-> sock_rps_record_flow() and sock_rps_record_flow_hash() in
-> include/net/rps.h remain 100% inline, retaining the zero-cost static
-> key NOP in the TCP/socket fast path.
->
-> No exports, no refactoring of tun.ko or sctp.ko, and no fast-path degrada=
-tion.
+> diff --git a/Documentation/netlink/specs/psp.yaml b/Documentation/netlink=
+/specs/psp.yaml
+> index e9c2ee7e28e0..f3266763c325 100644
+> --- a/Documentation/netlink/specs/psp.yaml
+> +++ b/Documentation/netlink/specs/psp.yaml
+> @@ -38,6 +38,8 @@ name: psp
+>          doc: |
+>            ifindex of the main netdevice linked to the PSP device,
+>            or the ifindex to associate with the PSP device.
+> +          Only reported to the network namespace the main netdevice
+> +          lives in, an ifindex has no meaning outside of it.
+>          type: u32
+>        -
+>          name: psp-versions-cap
+> diff --git a/net/psp/psp_nl.c b/net/psp/psp_nl.c
+> index f91665748dde..b57366b5e032 100644
+> --- a/net/psp/psp_nl.c
+> +++ b/net/psp/psp_nl.c
+> @@ -294,13 +294,16 @@ psp_nl_dev_fill(struct psp_dev *psd, struct sk_buff=
+ *rsp,
+>  		return -EMSGSIZE;
+> =20
+>  	if (nla_put_u32(rsp, PSP_A_DEV_ID, psd->id) ||
+> -	    nla_put_u32(rsp, PSP_A_DEV_IFINDEX, psd->main_netdev->ifindex) ||
+>  	    nla_put_u32(rsp, PSP_A_DEV_PSP_VERSIONS_CAP, psd->caps->versions) |=
+|
+>  	    nla_put_u32(rsp, PSP_A_DEV_PSP_VERSIONS_ENA, psd->config.versions))
+>  		goto err_cancel_msg;
+> =20
+>  	if (cur_net =3D=3D dev_net(psd->main_netdev)) {
+> -		/* Primary device - dump assoc list */
+> +		/* Primary device - report the netdev, dump assoc list. */
+> +		if (nla_put_u32(rsp, PSP_A_DEV_IFINDEX,
+> +				psd->main_netdev->ifindex))
+> +			goto err_cancel_msg;
+> +
+>  		err =3D psp_nl_fill_assoc_dev_list(psd, rsp, cur_net, NULL);
+>  		if (err)
+>  			goto err_cancel_msg;
 
-Great idea, this indeed minimizes the changes.
+As an aside, this got me looking at psp_nl_fill_assoc_dev_list() again.
+The PSP_A_ASSOC_DEV_INFO_NSID handling there looks a bit buggy. Caller
+sees -1 when the assoc dev is in their namespace, unless they are in the
+psp_dev's main_netdev's netns. In that case, a self referential nsid is
+allocated with peernet2id_alloc(). It probably would have made more
+sense to just only include PSP_A_ASSOC_DEV_INFO_NSID if !net_eq(cur_net,
+dev_net_ns). I don't suppose it makes any real bugs reachable.
 
-Although there is a slight semantic difference compared to
-net_hotdata.rps_sock_flow_table, meaning the CPU recorded in
-`sock_flow_table[flow_id].ent` might not perfectly align with the one
-used in `set_rps_cpu`. It is still the least intrusive approach.
-
-How about the following simple change?
-
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 3a0dd1f98084..7c513bf14221 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -5236,7 +5236,7 @@ static int get_rps_cpu(struct net_device *dev,
-struct sk_buff *skb,
-                 *     have been dequeued, thus preserving in order deliver=
-y.
-                 */
-                if (unlikely(tcpu !=3D next_cpu) &&
--                   (tcpu >=3D nr_cpu_ids || !cpu_online(tcpu) ||
-+                   (tcpu >=3D nr_cpu_ids || !cpu_online(tcpu) ||
-!rps_check_llc_affinity(tcpu, next_cpu) ||
-                     ((int)(READ_ONCE(per_cpu(softnet_data,
-tcpu).input_queue_head) -
-                      rflow->last_qtail)) >=3D 0)) {
-                        tcpu =3D next_cpu;
+Reviewed-by: Daniel Zahka <daniel.zahka@gmail.com>
