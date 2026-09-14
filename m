@@ -1,162 +1,161 @@
-Received: from mta0.migadu.com (out-147.mta0.migadu.com [91.218.175.147])
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D8D2744F
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 01:36:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2312AD2E
+	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 01:45:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789349765; cv=none; b=Ekqyt5v2EBCpdW47XZA0Bv1XZInh1PVXyE+eW0igDnjIjPP4nfIevWmRQFdEsMb3r18/Kqf3U8jleVGrxaKk8ugbgznyWiw1GWFfqFQ4XaRMVnjL835Su4Puc7IOTDjyLhtEd1w+bPblopsGf/kxAt5kRY65UyOUMb/zDYvf4JU=
+	t=1789350349; cv=none; b=uGrGUiprRpNS69kcGeSC0soXO0IPVPtMC6TJXWqWqHYOh1Yo4CvqaJyg38pQPI/akDTn0PoKhUnkNmLm24wJ4lgP/+5SZCxT4Th0ew31ZtabkrACDzDu57x0SGjDx5Sq+PTesdRohpDrIcQLOOIegEp9L3uyJvVcvcYkzG+R0+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789349765; c=relaxed/simple;
-	bh=jptbH70iXgdreHi9nRKzywgG6n8frLVlbAd3co9U8wY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rPhsJrY2u1SzuzbpZdv7uXjn+djkyxo//Di3gS2XCfuWRWwzvjquX1rknCgGm49cqWcqd65P0RE3GBLqPtuhJdbOFs57/wO+6w92tLoSq8hVtClIrLiPySBgQKoBpUi099h0vB01EawOg8M5SJ4uVnPQsYVsz52IX5LAImwrsqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=TnOapCAM; arc=none smtp.client-ip=91.218.175.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1789350349; c=relaxed/simple;
+	bh=7AN+51LlF3bcXtQGVd7Fj0d4POHYx2tj53sbahfN5Zg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n5wz4CXKKnhepge4dcMl6XBmOQb+3gSPwiK3zevPI+FyQHdPBpVHkC5Ji88mk1tnblkkD3Q1s/2Ikk546TMu0QYXQBxg7ZM4ZZVsEnLl2dhdWIpDbbvWAQbsLkVaJJ95+37JLwtYWRJOamXTnx1aG/a80+OJsRcWb6f0TLNUJac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h9Sb4On8; arc=none smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="TnOapCAM"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=jptbH70iXgdreHi9nRKzywgG6n8frLVlbAd3co9U8wY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789349760; v=1; x=1789954560;
- b=TnOapCAMj32zHMgzSDcpLEOmvtfn3vf1JtFG9g41KbTnYv0S/3El/MAbQHgI1t6Nmw8GEf8o
- RfNfl4OjYlCkaNhV3di+1rys3ajdLZiJ0Kh2u8cYTcl7hu/+4ZExfZy9J15nQGHruYq+jJG9txT
- Qbepl6gMd8mXiR3kHzay/C3E=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta10.migadu.com with ESMTPS id dc709e117764e5a2;
-	Mon, 14 Sep 2026 01:35:50 +0000
-X-Mizu-Trace-ID: dc709e117764e5a2
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 14 Sep 2026 09:35:37 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Gris Ge <cnfourt@gmail.com>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h9Sb4On8"
+Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cebcb8d7so276816a12.0
+        for <netdev@vger.kernel.org>; Sun, 13 Sep 2026 18:45:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789350348; x=1789955148; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CXkr0qtNX1TIaAFXwEelUT+kftOPKorlmCKYL/cX3dg=;
+        b=h9Sb4On8kImIecdYDc6kS/ZuIHFoK0/WDMyZxQ7hpg8xNdx9IJRpXBe3WizYM84Adp
+         xayfftTzOIfq4mjB2G8H39zocGiAF/4XmTQ6mTdXz1S3ukpJtPJErbt86xX8kxGnXwSE
+         HduGuHNZ1mHTmdxy0nAYEfMWmOF/s5ofW51hPLWQd44ZkXQqbRIz1ls29mSMv9HXz7kJ
+         Amh8Hf7eA3Xg7CvBqDivLkxH7jA3G1qev2dRKpf6Ck2Qt84KxE6VZerse7TSWsaT1Rxm
+         azE6aCPDMbHB52YNDcjliNr/sKVUXUhtLDYt9Ph3ffKpKVQ2BJ+Ujw09h6zdWEUKZqza
+         lTkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789350348; x=1789955148;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=CXkr0qtNX1TIaAFXwEelUT+kftOPKorlmCKYL/cX3dg=;
+        b=GrqDPulBvacIrNiI8NiPNvp8SnDDmM1VoMgkzg3bnrZ6b/CFjeoNb8ZykmPV4ccBIz
+         GeR11IBLiVd8wUap+LwgITVDXqO9/hvBQyjGwxLUpeawZrX5iMBzE7rixiH6R4lwmFHZ
+         RLGpc3FlBXNeJRxy75d4YquL86iuAgyPOk5FCsnU5pKE+VMiLfJjkHJxh9OqcvVWYQRt
+         Tuqz02mb4tr5OhycNhXem/0JKnI604StsxcL+jjamtddz9sxqD5mUIyutOdpEbK/yeGX
+         UyKjH/uf7V+1agNrrWnq1BBUT7+iQ5PfBIXSKHnzZ+TxZfQe+kVphPVWlg98aeTMtjP+
+         HOrA==
+X-Forwarded-Encrypted: i=1; AKwUvByTpakB7tQoc8qKtOAWq6ZLwft5joITU73xCtZzectZmzsTy/bj3giITKhgU1lTJQQoZBdktMo=@vger.kernel.org
+X-Gm-Message-State: AFuF++lFbdG2OnNT9F0qhirfvMqr96O+hcoPQe+uh6ar9cyY/U7MCtNh
+	rFfMT0AQ7RFdkzEpa3TPbzo5HG7MtK2VNzrZdyiAW6GPMZTZVnrzYAnZ
+X-Gm-Gg: AYBFou30FpTQRSnvib1HV2NIJZQPxWUCnItwEai2fhTokSJDrBdwuaqw5h7sSpBhlTa
+	O+KbGBHBmjqB9EMWUMLV6znk0dK8QpBup37jhPMDNhkzsNIs/EYdQnrfg1CgwGtx7p8CXCPmxj8
+	4NzTdHl0qae3+t3K1i/u4V38Hpy2KTBWryqORU8btRHp8TjovrQWCoDCGk4vh+eP1WxCJay6+HV
+	AQztDBLkMVCUHkbQhLP8SK1zt7yR54LDVj3gonVMZmHFcAucT02Bx1u9fYY2PFe+Qma15eT8sqg
+	nZUSKoT/sIHaDgT6rOqvSETECy9dtUj7zaXL9zVjc6118B/RHxZjis8my7J6XFEXreYRdFHEYdz
+	wW0sTY107ucmOqtEQcrJ7FObfA9ULLOfExHNpOrenuLqeLOTeMIwOPrHKwFUo2iShYy2ZxqLwuk
+	j71Nb2WlrAHQB2H3Rpq1Ql4psgjyNN41OkLCbnUXQyRmEyfDLNi1OAVBKIN7GiVi0BJDQ5RzUfb
+	s1zOTT68nR+pnhaqJTjDVBE6SfsapQyZHHflpZiBbbS5RY=
+X-Received: by 2002:a17:90b:4c0a:b0:398:ba46:1d9f with SMTP id 98e67ed59e1d1-39dec4e1a4emr501507a91.13.1789350347843;
+        Sun, 13 Sep 2026 18:45:47 -0700 (PDT)
+Received: from m-upc-A520M-HDV.lan ([2400:2410:3f60:500:fd07:4a24:951e:c85])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d951d1056sm17513403a91.7.2026.09.13.18.45.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 13 Sep 2026 18:45:47 -0700 (PDT)
+Sender: Yuyang Huang <uyoko90@gmail.com>
+From: Yuyang Huang <sigefriedhyy@gmail.com>
+To: Yuyang Huang <sigefriedhyy@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	stable@vger.kernel.org, Simon Horman <horms@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Cosmin Ratiu <cratiu@nvidia.com>, Gal Pressman <gal@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH net v2] net: ip_tunnel: initialize `options_len` before
- referencing options
-Message-ID: <aqdPaYCTbB6cjnQ3@fedora>
-References: <20260913090851.468216-1-cnfourt@gmail.com>
+	Ido Schimmel <idosch@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Nikolaos Gkarlis <nickgarlis@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Shuah Khan <shuah@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Stanislav Fomichev <sdf.kernel@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next v5 0/4] rtnetlink: dump link-layer multicast addresses
+Date: Mon, 14 Sep 2026 10:45:35 +0900
+Message-ID: <20260914014539.5015-1-sigefriedhyy@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260913090851.468216-1-cnfourt@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Sep 13, 2026 at 05:08:50PM +0800, Gris Ge wrote:
-> The following command triggers a kernel panic:
-> 
->   ip link add d0 type dummy; ip link set d0 up
->   ip route add 10.30.0.0/16 \
->     encap ip id 300 geneve_opts 4660:66:11223344 dev d0
-> 
->   memcpy: detected buffer overflow: 4 byte write of buffer size 0
->   kernel BUG at lib/string_helpers.c:1044!
->   ...
->   ip_tun_parse_opts.part.0.cold+0x10/0x10
->   ip_tun_build_state+0x116/0x2a0
-> 
-> On kernels built with GCC 15+ and `CONFIG_FORTIFY_SOURCE`, the fortified
-> `memcpy()` got 0 sized destination with request of 4 bytes length:
-> 
->   static int ip_tun_parse_opts_geneve(...)
->   {
->       ...
->       attr = tb[LWTUNNEL_IP_OPT_GENEVE_DATA];
->       data_len = nla_len(attr); /* == 4 */
-> 
->       struct geneve_opt *opt = ip_tunnel_info_opts(info) + opts_len;
->       memcpy(opt->opt_data, nla_data(attr), data_len);
->       /*     ^^^^^^^^^^^^^ 0 since options_len is assigned afterwards */
-> 
-> Fixed by initializing the counter before the options are referenced.
-> Matching what `tunnel_key_opts_set()` already does.
-> 
-> Fixes: bb5e62f2d547 ("net: Add options as a flexible array to struct ip_tunnel_info")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gris Ge <cnfourt@gmail.com>
-> ---
-> v2:
->   - pass opt_len into ip_tun_set_opts() and initialize options_len there,
->     matching tunnel_key_opts_set(), as suggested by Eric Dumazet.
-> v1: https://lore.kernel.org/netdev/20260912055304.1415016-1-cnfourt@gmail.com/
-> 
->  net/ipv4/ip_tunnel_core.c | 16 +++++++++++-----
->  1 file changed, 11 insertions(+), 5 deletions(-)
-> 
-> diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
-> index 5168d546ea2f..bab42b9e277f 100644
-> --- a/net/ipv4/ip_tunnel_core.c
-> +++ b/net/ipv4/ip_tunnel_core.c
-> @@ -680,8 +680,14 @@ static int ip_tun_get_optlen(struct nlattr *attr,
->  }
-> 
->  static int ip_tun_set_opts(struct nlattr *attr, struct ip_tunnel_info *info,
-> -			   struct netlink_ext_ack *extack)
-> +			   int opts_len, struct netlink_ext_ack *extack)
->  {
-> +	/* `options_len` is the __counted_by() annotation of the `options`
-> +	 * flexible array, it must be initialized before parsing writes
-> +	 * into it.
-> +	 */
-> +	info->options_len = opts_len;
-> +
->  	return ip_tun_parse_opts(attr, info, extack);
->  }
-> 
-> @@ -712,7 +718,8 @@ static int ip_tun_build_state(struct net *net, struct nlattr *attr,
-> 
->  	tun_info = lwt_tun_info(new_state);
-> 
-> -	err = ip_tun_set_opts(tb[LWTUNNEL_IP_OPTS], tun_info, extack);
-> +	err = ip_tun_set_opts(tb[LWTUNNEL_IP_OPTS], tun_info, opt_len,
-> +			      extack);
->  	if (err < 0) {
->  		lwtstate_free(new_state);
->  		return err;
-> @@ -753,7 +760,6 @@ static int ip_tun_build_state(struct net *net, struct nlattr *attr,
->  	}
-> 
->  	tun_info->mode = IP_TUNNEL_INFO_TX;
-> -	tun_info->options_len = opt_len;
-> 
->  	*ts = new_state;
-> 
-> @@ -1006,7 +1012,8 @@ static int ip6_tun_build_state(struct net *net, struct nlattr *attr,
-> 
->  	tun_info = lwt_tun_info(new_state);
-> 
-> -	err = ip_tun_set_opts(tb[LWTUNNEL_IP6_OPTS], tun_info, extack);
-> +	err = ip_tun_set_opts(tb[LWTUNNEL_IP6_OPTS], tun_info, opt_len,
-> +			      extack);
->  	if (err < 0) {
->  		lwtstate_free(new_state);
->  		return err;
-> @@ -1040,7 +1047,6 @@ static int ip6_tun_build_state(struct net *net, struct nlattr *attr,
->  	}
-> 
->  	tun_info->mode = IP_TUNNEL_INFO_TX | IP_TUNNEL_INFO_IPV6;
-> -	tun_info->options_len = opt_len;
-> 
->  	*ts = new_state;
-> 
-> --
-> 2.55.0
-> 
+"ip maddr show" prints three kinds of entries: link-layer, IPv4 and
+IPv6. The IPv4 and IPv6 ones can be read over netlink today: IPv6 has
+had RTM_GETMULTICAST for a long time and IPv4 got it in eb4e17a1d915
+("netlink: support dumping IPv4 multicast addresses"), with IFA_MC_USERS
+added later so the user count no longer has to come from procfs.
 
-Looks good to me.
+The link-layer list is the missing piece. dev->mc, the addresses
+programmed into the device filter, is only exported via
+/proc/net/dev_mcast, so iproute2 still carries a procfs parser just for
+that. This series closes the gap so that "ip maddr show" can be served
+from rtnetlink alone.
 
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Patch 1 fixes the type of target-netnsid in the rt-addr spec. Patch 2
+handles RTM_GETMULTICAST dumps with ifa_family set to AF_PACKET and
+walks dev->mc under netif_addr_lock_bh(), no RTNL. The reply reuses
+the ifaddrmsg format of the IPv4 and IPv6 dumps: IFA_MULTICAST carries
+the raw link-layer address, IFA_MC_USERS the reference count, and a new
+IFA_F_GLOBAL flag in IFA_FLAGS marks entries added explicitly, which is
+the "static" column /proc/net/dev_mcast has and "ip maddr" prints. A
+non-zero ifa_index limits the dump to one device and IFA_TARGET_NETNSID
+selects another netns, like the IPv4 and IPv6 dumps.
+
+Patch 3 updates the rt-addr spec and patch 4 adds a selftest that
+checks the filter, the user count, the global flag and target-netnsid.
+
+Nothing changes for other families. AF_PACKET dumps returned
+-EOPNOTSUPP before, so iproute2 can keep the procfs fallback for older
+kernels. I have the iproute2 side ready and will post it once this is
+in; with it, "ip maddr show" does not open /proc/net at all.
+
+Changes in v5:
+- Filter the target-netnsid selftest dump by ifa-index, a new netns
+  also contains the fallback tunnel devices
+
+Changes in v4:
+- Reset the resume offset when the device the dump stopped at is gone
+- Use a tracked netns reference (put_net_track)
+- Say ifa-family must be set in the spec doc, drop the AF_UNSPEC remark
+- Close the netlink socket and guard the checks in the selftest
+- Drop the Fixes tag
+
+Changes in v3:
+- Report the static bit as a new IFA_F_GLOBAL flag in IFA_FLAGS
+  instead of IFA_F_PERMANENT
+- Support IFA_TARGET_NETNSID and test it
+- Describe global_use accurately, it is also set by dev_mc_add_excl()
+- Fix the target-netnsid type in the rt-addr spec, as its own patch
+
+Changes in v2:
+- Always validate the request header, not only with strict checking
+- Use a single "with" statement in the selftest (ruff)
+
+Yuyang Huang (4):
+  netlink: specs: rt-addr: fix the type of target-netnsid
+  rtnetlink: add AF_PACKET multicast dumps
+  netlink: specs: rt-addr: document AF_PACKET multicast dumps
+  selftests: net: test AF_PACKET multicast dumps
+
+ Documentation/netlink/specs/rt-addr.yaml |  17 ++-
+ include/uapi/linux/if_addr.h             |   1 +
+ net/core/rtnetlink.c                     | 174 +++++++++++++++++++++++
+ tools/testing/selftests/net/rtnetlink.py |  75 +++++++++-
+ 4 files changed, 261 insertions(+), 6 deletions(-)
+
+-- 
+2.43.0
+
