@@ -1,101 +1,80 @@
-Received: from mail-ua2-f12.google.com (mail-ua2-f12.google.com [74.125.226.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF30F489FA4
-	for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 16:57:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.226.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365D63DBD41;
+	Mon, 14 Sep 2026 17:08:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789405053; cv=none; b=un8xjk0fmckCT1qOo1+/d0Y5lKUhbslq5XZSNwDg2UvmX1TLdkgQXJT1NhZN2Btojm8eiNgSf+k5MuBZsPkl5Qpo2qOe4o7NZDT29pf4zdEjL8hx5xYE0HN3BssNA1c/I70xjLul3FQlMFDVc56kAznzz7S3Z35gFSv4iyxMnXc=
+	t=1789405717; cv=none; b=WvS71arLoIxxezy68wG5ZeK8ASOnPdDDBfEXm0QmJcK+Pheo9scLyEDpukL/ub86B3wVwzGlyZAFIYlIozkbqT1TD3o4DAbptsOpAO8fMJWnVnuHkcck1sYtPhk/y0zcnCngomGALKBkNbyJjaBi83t8YJTmHNXntWtmmIYUDd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789405053; c=relaxed/simple;
-	bh=ushmip9d2SFG6bnjsZ8yz5Zdtn5SOGcJMUGcTuHYRJI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=M7Fr+K5zZAk0dWOrYEPwphhWtT/uUVsoVu/g1SjQDCpTk1u2qvyJNCc60Ng4JxtD/j+DeyIIo4YA5+fJcH34AnfcgCFFehCDklKMjYvnWkEeTnBv8foMCaVkcztUrVlsObl5/WgjZD/M8NM15DhNmu+ENio2k/8Ux858vpMWzlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.226.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua2-f12.google.com with SMTP id a1e0cc1a2514c-97e7c7bab8eso1080790241.0
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 09:57:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789405050; x=1790009850;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=UifqEQ+KQQAg0kseH9X1CMJd1CDr8OUeTRsEVk1uHRo=;
-        b=kyPhpoPSMM2gnQ4s3UhrfTLwn03ZpRxeJdKmWzI1VpA8Ta8k8Ed5hONwyrEZHMeN5a
-         zxxzLOhY5NQY4jAU+fRbx2VU6zhaguuuhvYbbdR4u4gPnie1Qmu7i3nVRjQlRKpzOAim
-         dUruLJbHIAo5h9rVDM4v/L40OoGLRZcx7Rlr2XPr2p4+fuM1w/NHBAN/vEGdFnoQsciS
-         M7jc+eGAfmgxlFusaH9M78ax1Zweh0L2J6jcWPrtdlChyc2jQHnEYAq0XLSOfNW9UMb+
-         otrKSrSDxlmzhkdaMi3NCdJEX+1Fh9LCwcDDgR4QexnD1w7150xxb3eMQK+D66iztf0C
-         /0fA==
-X-Forwarded-Encrypted: i=1; AKwUvBz8AA3Ygs6Iow9q2fIKDE9fZfVZc58X1u3uPa2OXiqyuzYIHvuKLaV9h4F3xJlqFbIYFyGGP28=@vger.kernel.org
-X-Gm-Message-State: AFuF++kpJLsIc9oD20FFfvgxX1R37mUe5zAav7kyka9M0GZDPzAK5Fma
-	W1d30zk7moWXBSHUbiR6w528E+mG+OgIDrNuhvll9N4gCYIothnPv3VUQmwRVQZH
-X-Gm-Gg: AYBFou10irc1zqy7a4y/UvhgJ2RLjlZEhpwTns9ksjqaAnbwG+/O1mcuQ2KSefN+ri9
-	dclloM/2o5la02a3HUUqagm9c0C4PjQiB2+OWv87RFoEMPmbI0DDQLyGat2bYVWNbvAmej64sXP
-	mtYG12AhFN1eIaeyPUjd7yU4IefXq7yd40rbDPIfiFNeyp4uA40SaGYhgg/WOkMuCNavNlXKfhR
-	6uaV4N6aCioHL+ZMoixQyp/TpMx3aIj+ZyQQA7hIscVTlqa1zzhsGGn5o9i8uWrtJZhreyEvTWY
-	4dVBMAS062GEAxlSOtSl1+WdB/EOeyqaxIBClftrAsf9ERrXDhwFkI+INl+JhvenSVVIQQ81SXq
-	n2gaPauBiZTWlP7ORcRwg67v3I0ShQ4IJq1n62YFb2o+ovZuqzKKb1qtue2cvNqihK+BmH5I/yx
-	2k5/6bDLtCAtVhNZhFEdzIrDXMEHKyOScyIW/mbeygXFeqSYJJV+8TxDqDXbOzVj4OrgFyhapSc
-	vkGz+628pI8I9TL293367FtqwiJfSC4ehB6rQ==
-X-Received: by 2002:a05:6102:94d:b0:79b:bd20:f311 with SMTP id ada2fe7eead31-79bbd20f31emr3381220137.1.1789405049749;
-        Mon, 14 Sep 2026 09:57:29 -0700 (PDT)
-Received: from mail-ua2-f12.google.com (mail-ua2-f12.google.com. [74.125.226.204])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-982d7a58331sm6225616241.9.2026.09.14.09.57.29
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Sep 2026 09:57:29 -0700 (PDT)
-Received: by mail-ua2-f12.google.com with SMTP id a1e0cc1a2514c-97eaa1155b1so1243555241.3
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 09:57:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwvmM/j0kacZ/+sAo1iyzo4ZER/AjlmmJsffmFXl2judBAoRJ5ouNhtpZIiPRDssLZN+r+b2qc=@vger.kernel.org
-X-Received: by 2002:a05:6102:148f:b0:79b:a93c:14a with SMTP id
- ada2fe7eead31-79ba93c04b6mr4018053137.8.1789405049110; Mon, 14 Sep 2026
- 09:57:29 -0700 (PDT)
+	s=arc-20240116; t=1789405717; c=relaxed/simple;
+	bh=nRqt152/JpqKXtofIaMoWz7ZTrjz0/OIzKUfXoPcREE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n9w82d5nj0KJLbQgEwoKEYIUffboCYxARmLkFK56Zce6VEPioBvhFvzvrt1Z7B7rf8kugRGqOxztbBqnEJUv2pJ7RL+EHKkbVQumPFVZYVzvOUyVrzH5SuztRGVJ112wkOZd8frOSwjONItSTTXxWdY4appb5mIVkf5YPWVJHYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=dTQumUwn; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="dTQumUwn"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=+oNmXB9c6p5BxQS/CIhFVNfDBYPpAbrReno9ZSRxJTY=; b=dTQumUwnChHIHUyWuBfPz89gFQ
+	WR9x3rgKusF1JvusNYkQm0l95mZIgkyLMo5oxG6p8V1b1SbMor4AKALBxRMe4Ha/l96UUecNLYvfM
+	qhM6LQmuurwjKpnHVna8qDslNts5OStm0Gpv2tpr5L0pu8DR/x1PD0kMmgV9VSpBYLeY=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x6AAL-0057JE-OW; Mon, 14 Sep 2026 19:08:25 +0200
+Date: Mon, 14 Sep 2026 19:08:25 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Kyle Hendry <khendry@reliablecontrols.com>
+Cc: =?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <clement.leger@bootlin.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] net: pcs: rzn1-miic: Verify port number from dtb
+Message-ID: <948a213d-df62-4e4d-87c5-a7f063938acd@lunn.ch>
+References: <20260902-rzn1-miic-fix-array-v3-0-3f7dccffaf5a@reliablecontrols.com>
+ <20260902-rzn1-miic-fix-array-v3-2-3f7dccffaf5a@reliablecontrols.com>
+ <81869e14-2dff-4bff-b2b4-07185c4e9086@lunn.ch>
+ <3b638508-6c03-47e5-80ef-49b05961c9cb@reliablecontrols.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260914-rzn1-miic-fix-array-v4-0-069112feec86@reliablecontrols.com>
- <20260914-rzn1-miic-fix-array-v4-1-069112feec86@reliablecontrols.com>
-In-Reply-To: <20260914-rzn1-miic-fix-array-v4-1-069112feec86@reliablecontrols.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 14 Sep 2026 18:57:17 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdVg02LSTMweWn4MN4qa5w8CyuVjynyGYH+HUxExSw6GSw@mail.gmail.com>
-X-Gm-Features: AcwNN1UCiZdEM7pRQ2nOAAFuR2AD8XncIqdUbLRRpmHPk43RN4HtjN0VXTDTOVg
-Message-ID: <CAMuHMdVg02LSTMweWn4MN4qa5w8CyuVjynyGYH+HUxExSw6GSw@mail.gmail.com>
-Subject: Re: [PATCH v4 1/2] net: pcs: rzn1-miic: Fix config array initialization
-To: khendry@reliablecontrols.com
-Cc: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>, 
-	Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-renesas-soc@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3b638508-6c03-47e5-80ef-49b05961c9cb@reliablecontrols.com>
 
-On Mon, 14 Sept 2026 at 18:41, Kyle Hendry via B4 Relay
-<devnull+khendry.reliablecontrols.com@kernel.org> wrote:
-> From: Kyle Hendry <khendry@reliablecontrols.com>
->
-> Fix memset parameters to initialize the entire DT value array
->
-> Fixes: f39e968dc168a7bd ("net: pcs: rzn1-miic: Move configuration data to SoC-specific struct")
-> Signed-off-by: Kyle Hendry <khendry@reliablecontrols.com>
+> > While reviewing this, i noticed:
+> > 
+> >                  /* Adjust for 0 based index */
+> >                  dt_val[port + !miic->of_data->miic_port_start] = conf;
+> > 
+> > Is the ! correct?
+> > 
+> >          Andrew
+> 
+> Yes, this is correct because dt_val[1] is where the port config entries
+> start.
+> 
+> Depending on the SoC, the port numbering might be 0 or 1 based, so this
+> prevents the input config entry at dt_val[0] from being overwritten. The
+> logic works out to the same as:
+> 
+> index = port + 1 - miic->of_data->miic_port_start
 
-My
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-is still valid.
+It is unusual to see a ! used like this in the middle of an
+addition. Sometimes the more verbose form is less likely to get
+questioned asked...
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+	   Andrew
