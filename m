@@ -1,47 +1,47 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C46247ACD5
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D9C3AAF76
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789461971; cv=none; b=qro0iAgw0FedSzxJO+0aUQGWkex7e4Ac33egWItWMIHCHHBNOqIkC5NdzAWhLT2MYosy2WS7Z27UNqQ70HuYKvXkshZUWlkGcjnT5SN5G0LEo6Y7AnIST7obrij7bMOZqdVxXlLWWOK6gHUKJAARzTPIDujLvBMxjZmHL5WbjcQ=
+	t=1789461983; cv=none; b=Jbd9Osj8QCC8YMqvi2oMT4RiC4NF7MjU4zI+ftQPx/ia011osmgaRP95mD460JvPIxPx4deiKdH9JUcRX1BBwQo2+eLzyCtGLtXqe8SaVpbjTP+x7mtfYf/XPzOWIvAd7q1DRTChf2L7N1Pw04snGsbYKwCSU7nQjwoeY0Pl0cI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789461971; c=relaxed/simple;
-	bh=2dN6oh6nKF6Gr8Z7w3UDR4LHS+XTmXfIU53NM90Szs0=;
+	s=arc-20240116; t=1789461983; c=relaxed/simple;
+	bh=b4pmwMSZ836NwtOHTVYidNjlkr6atKcQYwT8hD659ho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hsxfukQ7XssfNt776cf09CG/jVxXwPcHeM4oGCylpcS+3bhWByw84j5qtgRv/vSK7EbvrWdoqU2NGMCAJMrn0wJ3J8RUmRk2iUVLu9zXFEZXgOufl+7tb1LUZb3GPdznnAnGg/KEmC7+BQcvGMsRnU5oiLeyFUzzGH5pBGByph4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QGUoCMfZ; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=cTkRERmABV0noE27KRBw9tOBU2nCgg6B9FBYHwdt6QascyiIyAGKBDywekBY6noerbPEN2mqnJKIyelI33MuPVVvfRBQYZrt56ZfM1mvNAj51POA0wUQKBJJ42Hb++/z3tmGT8ypic7zvVNFr4XlS4D7G6mhF0RIaF1gSm0Kw/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eL5tJBVJ; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QGUoCMfZ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eL5tJBVJ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789461968;
+	s=mimecast20190719; t=1789461980;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FDnGZbqkncMKB6qRwoP+eV0k8A0GaDUj4RP4f6xTVsE=;
-	b=QGUoCMfZEWAG9duzDXFIhp7aK6kITF6UQumeOzZa6/XZpg2Cs1dqVKe6gjXx6RYjGHYFOM
-	adWQ9ZU89oH6k4T4EsuciHRYIrH7FpYqv00vUc+JPBBhAoEf4LVFM2Baqnd+nOcrBfG3Mu
-	jAHyVv4sS59KCabvyDm0LrHuwiQu2Gs=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+	bh=+QTrGAjnE0V//r4JrSXSGm3ZRQ6wgxOqWmOaBIZHAN4=;
+	b=eL5tJBVJRqo0k0+AqAXUzXNPxi1nT53Q3cC8IxiPdFUZa+mTfUy/ix+IrsPtVyvqBRalhm
+	OMDDapHD8eh3e/4n0asIvhVvgCiCZOcDL6kYy3PPlduqxisC4+0JVBVMrgbHcF15WX9dMb
+	RcF8aQI73MUq3NDl6ZDS1NdjyVY4k1o=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-497-Yx2eaM7vPMqrTqPevOxxyw-1; Tue,
- 15 Sep 2026 04:46:02 -0400
-X-MC-Unique: Yx2eaM7vPMqrTqPevOxxyw-1
-X-Mimecast-MFC-AGG-ID: Yx2eaM7vPMqrTqPevOxxyw_1789461959
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-691-j0e9A_w5MW2vkqYrdSRhQg-1; Tue,
+ 15 Sep 2026 04:46:17 -0400
+X-MC-Unique: j0e9A_w5MW2vkqYrdSRhQg-1
+X-Mimecast-MFC-AGG-ID: j0e9A_w5MW2vkqYrdSRhQg_1789461974
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8E1CE185FCDA;
-	Tue, 15 Sep 2026 08:45:58 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A4BA7180130E;
+	Tue, 15 Sep 2026 08:46:12 +0000 (UTC)
 Received: from gerbillo.redhat.com (unknown [10.44.48.83])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2AC0226D;
-	Tue, 15 Sep 2026 08:45:49 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7587E195604F;
+	Tue, 15 Sep 2026 08:46:03 +0000 (UTC)
 From: Paolo Abeni <pabeni@redhat.com>
 To: maxime.chevallier@bootlin.com
 Cc: andrew+netdev@lunn.ch,
@@ -71,11 +71,11 @@ Cc: andrew+netdev@lunn.ch,
 	linux-stm32@st-md-mailman.stormreply.com,
 	PKneuper@dspace.de,
 	david.laight.linux@gmail.com
-Subject: Re: [PATCH net v3 4/6] net: stmmac: selftests: Capture all packets for vlan checks
-Date: Tue, 15 Sep 2026 10:45:47 +0200
-Message-ID: <20260915084547.75267-1-pabeni@redhat.com>
-In-Reply-To: <20260911212028.1497613-5-maxime.chevallier@bootlin.com>
-References: <20260911212028.1497613-5-maxime.chevallier@bootlin.com>
+Subject: Re: [PATCH net v3 5/6] net: stmmac: size the RX buffers from the frame length, not the MTU
+Date: Tue, 15 Sep 2026 10:45:58 +0200
+Message-ID: <20260915084558.75283-1-pabeni@redhat.com>
+In-Reply-To: <20260911212028.1497613-6-maxime.chevallier@bootlin.com>
+References: <20260911212028.1497613-6-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,230 +83,208 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 Full review at: https://netdev-ai.bots.linux.dev/sashiko/
 ---
-net: stmmac: selftests: Capture all packets for vlan checks
+net: stmmac: size the RX buffers from the frame length, not the MTU
 
-The VLAN selftests use vlan_vid_add() without a VLAN netdev, so the test
-frame is marked PACKET_OTHERHOST and reaches the handler with a cleared
-skb->vlan_tci.  This patch reuses the DSA proxy mechanism to register an
-ETH_P_ALL handler for the three VLAN tests so validation sees the tag.
+The patch stops feeding the bare MTU into the RX buffer size selection and
+instead computes a frame length that includes the L2 header, two VLAN tags,
+the FCS and NET_IP_ALIGN.  stmmac_set_bfsize() is renamed to take a length
+and its boundary comparisons are switched from '>=' to '>'.
 
-A few questions about the new capture_all path below.
+A few questions below.
 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-> index 7f5837d1fed94..315c3cf82230e 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-> @@ -242,6 +242,7 @@ struct stmmac_test_priv {
->  	__be16 packet_type;
->  	int (*func)(struct sk_buff *skb, struct net_device *ndev,
->  		    struct packet_type *pt, struct net_device *orig_ndev);
-> +	bool capture_all;
->  	int double_vlan;
->  	int vlan_id;
->  	int ok;
-> @@ -344,7 +345,7 @@ static void stmmac_sft_add_pack(struct packet_type *pt)
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 62c3441911e71..29b970574a380 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -1536,17 +1536,17 @@ static unsigned int stmmac_rx_offset(struct stmmac_priv *priv)
+>  	return NET_SKB_PAD + NET_IP_ALIGN;
+>  }
+>  
+> -static int stmmac_set_bfsize(int mtu)
+> +static int stmmac_set_bfsize(int len)
 >  {
->  	struct stmmac_test_priv *tpriv = pt->af_packet_priv;
+>  	int ret;
 >  
-> -	if (netdev_uses_dsa(tpriv->pt.dev)) {
-> +	if (netdev_uses_dsa(tpriv->pt.dev) || tpriv->capture_all) {
->  		tpriv->packet_type = tpriv->pt.type;
->  		tpriv->func = tpriv->pt.func;
+> -	if (mtu >= BUF_SIZE_8KiB)
+> +	if (len > BUF_SIZE_8KiB)
+>  		ret = BUF_SIZE_16KiB;
+
+[Severity: High]
+This isn't a bug introduced by this patch, but the 16 KiB selection here is
+reachable in configurations whose descriptors cannot express a buffer that
+large, and this patch moves the threshold about 28 bytes of MTU lower.
+
+In chain mode mac->mode points at chain_mode_ops, which does not implement
+set_16kib_bfsize, so stmmac_do_callback() returns -EINVAL, bfsize is forced
+to 0 and stmmac_set_bfsize(len) runs unconditionally.  For enhanced
+descriptors the programmed buffer 1 is clamped:
+
+drivers/net/ethernet/stmicro/stmmac/enh_desc.c:enh_desc_init_rx_desc() {
+	bfsize1 = min(bfsize, BUF_SIZE_8KiB);
+	p->des1 |= cpu_to_le32(bfsize1 & ERDES1_BUFFER1_SIZE_MASK);
+}
+
+and for normal descriptors:
+
+drivers/net/ethernet/stmicro/stmmac/norm_desc.c:ndesc_init_rx_desc() {
+	bfsize1 = min(bfsize, BUF_SIZE_2KiB - 1);
+	p->des1 |= cpu_to_le32(bfsize1 & RDES1_BUFFER1_SIZE_MASK);
+}
+
+while the RX path still reports the software value for every non-last
+descriptor:
+
+drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:stmmac_rx_buf1_len() {
+	/* First descriptor, not last descriptor and not split header */
+	if (status & rx_not_ls)
+		return priv->dma_conf.dma_buf_sz;
+}
+
+That value then drives dma_sync_single_range_for_cpu() and
+skb_add_rx_frag().  Can this hand the stack more bytes than the engine
+wrote, padding the frame with recycled page pool contents?  Chain mode is
+reachable through the chain_mode module parameter and is forced for
+dwmac-sun8i, which uses normal descriptors.
+
+> -	else if (mtu >= BUF_SIZE_4KiB)
+> +	else if (len > BUF_SIZE_4KiB)
+>  		ret = BUF_SIZE_8KiB;
+> -	else if (mtu >= BUF_SIZE_2KiB)
+> +	else if (len > BUF_SIZE_2KiB)
+>  		ret = BUF_SIZE_4KiB;
+> -	else if (mtu > DEFAULT_BUFSIZE)
+> +	else if (len > DEFAULT_BUFSIZE)
+>  		ret = BUF_SIZE_2KiB;
+
+[Severity: High]
+This is a pre-existing issue and not something this patch introduces, but
+the new thresholds widen the MTU range in which it applies (the step up to
+BUF_SIZE_2KiB/BUF_SIZE_4KiB now happens roughly 28 bytes of MTU earlier).
+
+For normal descriptors in ring mode, a second data buffer is advertised
+whose bus address is never programmed:
+
+drivers/net/ethernet/stmicro/stmmac/descs_com.h:ndesc_rx_set_on_ring() {
+	if (bfsize >= BUF_SIZE_2KiB) {
+		int bfsize2;
+
+		bfsize2 = min(bfsize - BUF_SIZE_2KiB + 1, BUF_SIZE_2KiB - 1);
+		p->des1 |= cpu_to_le32(FIELD_PREP(RDES1_BUFFER2_SIZE_MASK,
+						  bfsize2));
+	}
+}
+
+RDES3 is only ever written through ring_mode.c init_desc3()/refill_desc3(),
+and the driver only calls those when dma_buf_sz equals BUF_SIZE_16KiB:
+
+drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:stmmac_init_rx_buffers() {
+	if (dma_conf->dma_buf_sz == BUF_SIZE_16KiB)
+		stmmac_init_desc3(priv, p);
+}
+
+Devices on ndesc_ops are capped at max_mtu = SKB_MAX_HEAD(NET_SKB_PAD +
+NET_IP_ALIGN), so they can only pick 2048 or 4096 and RDES3 stays 0 from
+dma_alloc_coherent().  Since the second-address-chained bit is not set in
+ring mode, does the RX DMA spill the part of the frame beyond the 2047-byte
+buffer 1 to bus address 0?  This is driven by an inbound frame on cores
+using normal descriptors (MAC100, or GMAC with plat->enh_desc == 0) with an
+MTU above ~2 KiB.
+
+>  	else
+>  		ret = DEFAULT_BUFSIZE;
 >  
->  		/* DSA conduit will report ETH_P_XDSA, so our packet handler
->  		 * won't match. Let's register a ETH_P_ALL match and filter
->  		 * manually in stmmac_sft_filter.
->  		 */
-
-[Severity: Low]
-This isn't a bug, but the comment now only describes one of the two reasons
-for taking this branch.  For the three VLAN tests pt.type is ETH_P_IP or
-ETH_P_8021Q, which would match at ptype_specific just fine, so the
-"DSA conduit will report ETH_P_XDSA" rationale does not apply there.
-
-Could the comment also mention the capture_all reason (the tap has to run
-at ptype_all so skb->vlan_tci is still populated), and could the new
-capture_all field get a one-line comment stating that it must be set before
-stmmac_sft_add_pack() is called?
-
->  		tpriv->pt.type = htons(ETH_P_ALL);
->  		tpriv->pt.func = stmmac_sft_filter;
->  		tpriv->pt.ignore_outgoing = true;
+> @@ -4063,7 +4063,7 @@ static struct stmmac_dma_conf *
+>  stmmac_setup_dma_desc(struct stmmac_priv *priv, unsigned int mtu)
+>  {
+>  	struct stmmac_dma_conf *dma_conf;
+> -	int bfsize, ret;
+> +	int bfsize, len, ret;
+>  	u8 chan;
+>  
+>  	dma_conf = kzalloc_obj(*dma_conf);
+> @@ -4073,13 +4073,15 @@ stmmac_setup_dma_desc(struct stmmac_priv *priv, unsigned int mtu)
+>  		return ERR_PTR(-ENOMEM);
 >  	}
-
-[Severity: Medium]
-With pt.type set to ETH_P_ALL on priv->dev, stmmac_test_vlan_validate() now
-sees every ingress frame, and it declares the test failed before it has
-established that the frame is a test frame:
-
-	if (tpriv->vlan_id) {
-		if (skb->vlan_proto != htons(proto))
-			goto out;
-		if (skb->vlan_tci != tpriv->vlan_id) {
-			/* Means filter did not work. */
-			tpriv->ok = false;
-			complete(&tpriv->comp);
-			goto out;
-		}
-	}
-
-	ehdr = (struct ethhdr *)skb_mac_header(skb);
-	if (!ether_addr_equal_unaligned(ehdr->h_dest, tpriv->packet->dst))
-		goto out;
-
-The h_dest and magic checks come after this.  Can any ordinary C-tagged
-IPv4 frame on the link (any VID other than 0x123, at least 33 bytes of
-linear data) now abort the VLAN Filter, Double VLAN Filter and VLAN Offload
-tests with a spurious failure for i == 0?  Before this patch the tag was
-cleared for such frames, so the vlan_proto check bailed out first.
-
-Would it make sense to move the vlan_tci comparison after the destination
-MAC and magic checks so only test frames can set the verdict?
+>  
+> -	/* Returns 0 or BUF_SIZE_16KiB if mtu > 8KiB and dwmac4 or ring mode */
+> -	bfsize = stmmac_set_16kib_bfsize(priv, mtu);
+> +	len = mtu + ETH_HLEN + 2 * VLAN_HLEN + ETH_FCS_LEN + NET_IP_ALIGN;
 
 [Severity: Low]
-This isn't a bug introduced by this patch, but the ETH_P_ALL tap widens the
-set of frames that reach the header parsing in stmmac_test_vlan_validate(),
-which derives offsets from the untrusted IPv4 ihl with only a fixed length
-check:
+Should NET_IP_ALIGN be part of this sum?  It is head room that lives
+outside the window described by dma_buf_sz, and it is already reserved
+separately:
 
-	if (skb_headlen(skb) < (STMMAC_TEST_PKT_SIZE - ETH_HLEN))
-		goto out;
+drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:__alloc_dma_rx_desc_resources() {
+	dma_buf_sz_pad = stmmac_rx_offset(priv) + dma_conf->dma_buf_sz +
+			 SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
 	...
-	uhdr = (struct udphdr *)((u8 *)ihdr + 4 * ihdr->ihl);
-	if (uhdr->dest != htons(tpriv->packet->dport))
-		goto out;
+	pp_params.offset = stmmac_rx_offset(priv);
+	pp_params.max_len = dma_conf->dma_buf_sz;
+}
 
-	shdr = (struct stmmachdr *)((u8 *)uhdr + sizeof(*uhdr));
+with stmmac_rx_offset() returning NET_SKB_PAD + NET_IP_ALIGN, and
+stmmac_init_rx_buffers() programming the descriptor at page dma address
+plus buf->page_offset == stmmac_rx_offset(priv).
 
-That check covers 33 bytes, which does not include the UDP header, the
-extra +4 double-VLAN offset, or an ihl larger than 5.  A frame with ihl = 15
-makes uhdr->dest be read well past the validated area (and past skb->len for
-a small frame).  The same arithmetic exists in
-stmmac_test_loopback_validate(), so this predates the patch, but would a
-pskb_may_pull() style length check based on the actual ihl be worth adding
-here?
+Counting it again inside len makes the selected buffer class, and therefore
+the page pool order, depend on the architecture for a 2-byte wide MTU
+window at each boundary.  For example MTU 4069/4070 with NET_IP_ALIGN == 2
+gives len 4097/4098 and selects BUF_SIZE_8KiB, whereas the same MTU on
+x86 (NET_IP_ALIGN == 0) selects BUF_SIZE_4KiB.
 
-> @@ -999,6 +1000,7 @@ static int __stmmac_test_vlanfilt(struct stmmac_priv *priv)
->  	tpriv->pt.dev = priv->dev;
->  	tpriv->pt.af_packet_priv = tpriv;
->  	tpriv->packet = &attr;
-> +	tpriv->capture_all = true;
+The commit message also lists "the NET_IP_ALIGN" alongside ETH_HLEN, the
+VLAN tags and the FCS as if it were part of the frame.  Would it be more
+accurate to describe it as head room, or drop the term?
 
-[Severity: Medium]
-This is a pre-existing issue, but the patch makes it observable.  The
-"Means filter did not work" path in stmmac_test_vlan_validate() reports
-failure through the same tpriv->ok = false state that a timeout produces,
-and the loop here treats that state as the expected outcome for i > 0:
-
-	wait_for_completion_timeout(&tpriv->comp, STMMAC_LB_TIMEOUT);
-	ret = tpriv->ok ? 0 : -ETIMEDOUT;
-	if (ret && !i) {
-		goto vlan_del;
-	} else if (!ret && i) {
-		ret = -EINVAL;
-		goto vlan_del;
-	} else {
-		ret = 0;
-	}
-
-So a frame admitted with a non-configured VID (0x124..0x126) is
-indistinguishable from a correctly dropped frame, and the test still passes
-even if the hardware admits every VID.  Before this patch the mismatch
-branch was unreachable because skb->vlan_tci was always cleared; now it is
-reachable but its verdict is discarded.  Could the return value of
-wait_for_completion_timeout() be checked, or a separate "packet was
-admitted" flag be used, so the two cases can be told apart?  The same
-pattern is in __stmmac_test_dvlanfilt().
-
-[Severity: Medium]
-Also pre-existing rather than introduced here: tpriv->ok, tpriv->comp and
-the on-stack attr are shared between the softirq validator and this loop
-with no serialization, and init_completion() is only called once, outside
-the loop.  With capture_all, an extra complete() is now reachable from the
-"filter did not work" path for any tagged frame with a different VID.
-
-Since complete() increments comp.done and wait_for_completion_timeout()
-consumes only one, does a surplus completion in one iteration make the next
-wait_for_completion_timeout() return immediately and take the verdict from a
-stale tpriv->ok?  Would a reinit_completion() at the top of each iteration
-help here?
-
-> @@ -1093,6 +1095,7 @@ static int __stmmac_test_dvlanfilt(struct stmmac_priv *priv)
->  	tpriv->pt.dev = priv->dev;
->  	tpriv->pt.af_packet_priv = tpriv;
->  	tpriv->packet = &attr;
-> +	tpriv->capture_all = true;
-
-[Severity: High]
-Does this actually fix the Double VLAN Filter test on the cores that can run
-it?  The test requires priv->dma_cap.vlhash, i.e. the xmac cores, where
-probe sets priv->hw->hw_vlan_en = true and stmmac_hw_setup() programs
-VLAN_TAG_STRIP_ALL together with VLAN_TAG_CTRL_EVLRXS, while
-vlan_vid_add(ETH_P_8021AD, ...) enables S-VLAN recognition.
-
-The MAC-stripped outer tag is then reported by vlan_rx_hw() in
-stmmac_vlan.c:
-
-	__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q), vid);
-
-which hardcodes ETH_P_8021Q, while the validator with double_vlan set wants
-ETH_P_8021AD:
-
-	proto = tpriv->double_vlan ? ETH_P_8021AD : ETH_P_8021Q;
-	...
-		if (skb->vlan_proto != htons(proto))
-			goto out;
-
-So the frame does reach the validator now, but the vlan_proto check takes
-"goto out" without calling complete(), and the test still returns -ETIMEDOUT
-for i == 0 on working hardware unless RX VLAN stripping is turned off.  Is
-the intent that vlan_rx_hw() report the real tag protocol, or that the
-validator accept ETH_P_8021Q for the stripped outer tag?
-
-> @@ -1371,6 +1374,7 @@ static int stmmac_test_vlanoff_common(struct stmmac_priv *priv, bool svlan)
->  	tpriv->pt.af_packet_priv = tpriv;
->  	tpriv->packet = &attr;
->  	tpriv->vlan_id = 0x123;
-> +	tpriv->capture_all = true;
->  	stmmac_sft_add_pack(&tpriv->pt);
+> +
+> +	/* Returns 0 or BUF_SIZE_16KiB if len > 8KiB and dwmac4 or ring mode */
+> +	bfsize = stmmac_set_16kib_bfsize(priv, len);
+>  	if (bfsize < 0)
+>  		bfsize = 0;
 >  
->  	ret = vlan_vid_add(priv->dev, htons(proto), tpriv->vlan_id);
+>  	if (bfsize < BUF_SIZE_16KiB)
+> -		bfsize = stmmac_set_bfsize(mtu);
+> +		bfsize = stmmac_set_bfsize(len);
 
-[Severity: High]
-Can this dereference a NULL pointer in softirq context?  attr is
-zero-initialized, so attr.dst is NULL, and the ETH_P_ALL handler is
-published by stmmac_sft_add_pack() before attr.dst is assigned:
+[Severity: Medium]
+The argument handed to the set_16kib_bfsize callback changes unit here from
+MTU to frame length, but neither the ops prototype nor the two
+implementations were updated.
 
-	tpriv->capture_all = true;
-	stmmac_sft_add_pack(&tpriv->pt);
+hwif.h still declares:
 
-	ret = vlan_vid_add(priv->dev, htons(proto), tpriv->vlan_id);
-	if (ret)
-		goto cleanup;
+	int (*set_16kib_bfsize)(int mtu);
 
-	attr.dst = priv->dev->dev_addr;
+dwmac4_descs.c:set_16kib_bfsize() keeps the inclusive test:
 
-vlan_vid_add() is not instantaneous here: it does
-pm_runtime_resume_and_get() and a register poll in vlan_write_filter().  A
-frame arriving in that window with vlan_proto ETH_P_8021Q and vlan_tci equal
-to the hard-coded 0x123 passes the tag checks and falls into:
+	if (unlikely(mtu >= BUF_SIZE_8KiB))
+		ret = BUF_SIZE_16KiB;
 
-	ehdr = (struct ethhdr *)skb_mac_header(skb);
-	if (!ether_addr_equal_unaligned(ehdr->h_dest, tpriv->packet->dst))
-		goto out;
+while ring_mode.c:set_16kib_bfsize() uses the other operator:
 
-which reads 6 bytes from address 0.  stmmac_test_loopback_validate() guards
-the same comparison with "if (dst)", so the pointer does not look like an
-invariant.  The same ordering exists in __stmmac_test_vlanfilt() and
-__stmmac_test_dvlanfilt(), where attr.dst is only set inside the loop.
-Would assigning attr.dst before stmmac_sft_add_pack(), or adding the NULL
-check to this validator, close that window?
+	if (unlikely(mtu > BUF_SIZE_8KiB))
+		ret = BUF_SIZE_16KiB;
+
+Since dwmac4/dwmac5 use dwmac4_ring_mode_ops, does the new comment "Returns
+0 or BUF_SIZE_16KiB if len > 8KiB" match what actually happens on those
+cores?  A len of exactly BUF_SIZE_8KiB (MTU 8160 with NET_IP_ALIGN == 2)
+fits an 8188-byte buffer and stmmac_set_bfsize() would return
+BUF_SIZE_8KiB, but the unchanged '>=' returns BUF_SIZE_16KiB and the
+'if (bfsize < BUF_SIZE_16KiB)' guard then skips the corrected helper, so
+dma_buf_sz becomes 16368 instead of 8188.  That roughly doubles the pages
+backing each RX buffer (order 2 to order 3) across the default
+dma_rx_size of 512.
+
+The commit message says the change lets us "use more consistent comparison
+operators in stmmac_set_bfsize" - should the two set_16kib_bfsize
+implementations and the 'mtu' parameter name be converted at the same time?
 -- 
 This is an AI-generated review.
 
