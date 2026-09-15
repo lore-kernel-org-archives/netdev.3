@@ -1,61 +1,63 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA27381E9A
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 09:42:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF18386C08
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 09:43:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789465374; cv=none; b=VSVBlHThX1eWZiwwuqDnSbcEK/w6q4C6HuZPYx1/h2Cl8IjTEE+8ra6KC3X4e8JoRFtR+YTss81Xtwh55c61Uv7UvMKyCoMFw3mDc6epCodB9eupV+8wBMpV6MMei3NnpqNYQyLOQJmFNyeHYglf+wV9zRDQOPzEL40PqtuPSYA=
+	t=1789465385; cv=none; b=Biu37FQj2MY3sHH9urkRGjo/lJ1LQ+tm8WoKPZer00vMcS3qKQBC8i9TStC4ajGOxT6FYlMZ+jZfzYdqKvgOInGsdTGFbck+IIgKBu03FhYrwFuAnsEXG4B6o3Q9b04UFYJ00gZWuLdclV54LYHb7czEmexINBK8YJsG6JlIc/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789465374; c=relaxed/simple;
-	bh=uCvoUHgJLkGvyYy/c5odfUayoHkL5waDu8y6yeP79iM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bnn9AJtdiZR+rCwTZN1NcFuh3q/JZR1XahqIGNsPAO7WooTyXJVn2SGwTz7CEYAfBomCJxsLj1wgFZuohZlJdZ7nEw4+mAqxi3ZNj56b+W6E+MDRrqj/Knr5Xdgk1ex+Ii4BJzhFPb1pzevZenDNX9kntmApXIKPU2GZ1IxP4H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cz3DpKtc; arc=none smtp.client-ip=74.125.227.141
+	s=arc-20240116; t=1789465385; c=relaxed/simple;
+	bh=DSm67Fef0PwVMY0lwmqgSFdetPGHsbit/KuByND9Tmw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=MrZSdZOSjDbWl+KNUfT/CJWpZh7SSzGs+qSBclbVL8+rxrUmf5HWTWhgfW7b3KM71YGFR29lJcW3FD8E6dxRRU84AmbArsQvNBrIppS31PO/4YFEo/m14ASEaOgreycPJjoy0NU1vCIlWylHNmbYOaIZrtzyMjlMijNvgXTmncg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GI8eZHYD; arc=none smtp.client-ip=74.125.227.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cz3DpKtc"
-Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-39b5b07ec78so49819a91.3
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 02:42:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GI8eZHYD"
+Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2db1ca06a25so490655ad.2
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 02:43:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789465371; x=1790070171; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FM6LpgS9VGFb0LQ0PAPpvOnM3tsCZP2CYIZnpcmqmZc=;
-        b=Cz3DpKtcY3o3gcd6pKt/5EJBSkb5nikXLeP0NjHJELl/dhrxYrO0Q/tS+6SxjX5gpw
-         lwK+PWPHf2kAHKg+x7VvUN7Ty3f1CEQoNPmUf8W4wNOhPcReDSkquB6IK9XczAdxmO1H
-         7rbRhKUsu5WI8dvqcC0KEI0S5tkGBATG11relaG02ZasA1vCOm1Xsnx97eOISvcCVVab
-         pNbW9XtWF69roObeAPWC4VYO50liZ20FpOrLctEm5NxvsP+0pCfFA4GsYESHWv6IMVgU
-         g4p4dZO7Hf4RypfPiVZ0l28OlUd7Hri5fINeF0S1ScJ9xdxIapTr559rSkX+QVMLkwm0
-         /mrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789465371; x=1790070171;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1789465379; x=1790070179; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=FM6LpgS9VGFb0LQ0PAPpvOnM3tsCZP2CYIZnpcmqmZc=;
-        b=2x0CAsgMGKLLay/SIcJLOdvqUGCnPk8HAdq1kBkvLbM4zGe4iwQdjzvMovnCLm9Ynk
-         DfxyDgqDuJGrb6bXpMdHeOQ1GiEcyMOf+JpVPE2H1+FeUmoPH1GG1VkCbUH2wGVUNnvv
-         9NrCJtx0lGCnqtvIhJY/UE2AIVy5f2/ANHpFDHGsXZyX3BwpuDtVQZ0MMEKmVYMpbIZn
-         7OmcJvTVzgu/XpGcUkchVDsbq11lRf9ZALi3i2/PnV5Zb+avbWaMJy6i8sS3APh0bzPu
-         0auqJFwZCEuqItvCafv5UHIEHlok3GCtl9QKHV0TBr6yLj4bqfdlH/ZnncumxKjidIAy
-         mPrw==
-X-Forwarded-Encrypted: i=1; AKwUvBw5qe/1J49+c/NmDb3+sIYK4rrEn/345d19fh4wsjv+gUqfpH/khCATIYc4boqU21gsaLrOW7Q=@vger.kernel.org
-X-Gm-Message-State: AFuF++lLAxDFVPcpByk9mO1yU81Kh1u9Nzxn6HKlRinYKJ45E48hb4xn
-	o62613EPGZhZD08ZcKR2wGbGq4uJcKc8oQF7ukn2yvAIhiJS2CYG6Puz
-X-Gm-Gg: AYBFou1dG8KK82oRtYq5ZEi3isa4L/DZNzZE0z3lrwmNq4L8o2BlKiCLVTXDGzcvkWB
-	P1wvINzKRda6cpnKh54NVntyevacK33us6FdepNfaCMm34MJFtGnV5GFYFIB/wczsHBj/6IjkXY
-	xG4nuWuQ+faqbD+sa4hIWLB41/odY6a1X50DIkKtgQZ5wjh01ppe2jvH5Ua6PyLn/AgS748iE3R
-	Wtp80QQA5y8ZrydkQG5O38oP8FUdNW2WA5LSQQ5sJhLiPG/IUHmkYMD/kCguOz8uMyCqv4vkP0e
-	kH9MBAC9CYu/J3PZTYDeH6zHTyAHHJAw/vLmoiQ4RVvhCIhrSSa/vuoxizxCXyxPpJIsdp1ispL
-	PUGpLBdBcUCm1OK9cf6KL7IAjFt612TY1CMPpOX/e4PcWb3PrB/RToWj36z2C598D+PAYMWEIOL
-	pPHjj6mua5q3lWviGesEZ1ya3Td2h9Ce3/ZYNDIstxWE4hd49K9qWv2hflYQYrC6k=
-X-Received: by 2002:a17:90b:3c4f:b0:39b:4877:ae90 with SMTP id 98e67ed59e1d1-39e110770f7mr236150a91.22.1789465371127;
-        Tue, 15 Sep 2026 02:42:51 -0700 (PDT)
+        bh=69mrxJexhH+mB0/KG77Jb3FUWESkIXl1gYvn5Rky+CA=;
+        b=GI8eZHYDA8tr6ZKf7vo/6vL2yl/VSbS98x3fvHXa0oiyucAXH2adJ0jcM85gSlU+QQ
+         BDSf6ajoKmgp4gmBETr2zw0CvPAlUNGpaCYXS9oA+ZBJ50JChUHGpxrJ0joC3NaIUrKQ
+         IvZJO2mXNPvlQ+EupXmUO+ldGvUxDCa98ch45KuO57WIZt3yqRXOgRPTCUIjP+rX6D0M
+         DMQu469klJGcSAyvWifHxFglHtGlZxS1trsK9zhptDGIXrzlsBykmrUVE+FY7yhfQIsr
+         DCZYnm+fw8Gp09gSkM8ad4C3aERvOwWQvusYNw8Gt3CrjWBduIc/JXVTrNRovYiZwRwY
+         5p3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789465379; x=1790070179;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=69mrxJexhH+mB0/KG77Jb3FUWESkIXl1gYvn5Rky+CA=;
+        b=0zKT0Nlbk3LtKNtQw6r3OoJZNpD3rbJR2F3KfR2fx/B6//2F3kCAqy6UfEJg/rRfXY
+         DI1pQXTVxDKRlVKW+TNQjXTdOKxqpSzWwF9WDQxVu/1sKb9+/wi438wqtBsRex80S4X2
+         Cg0Mp5AuJrrAy8siZVvS8IszbGyfDrVBrPWNAtjF6pLyk+t3kaaDAknBon3uFCO+NjDc
+         yisZI5zB3MOxElh0MWKu74xw7xGwBb69gDJsWpZXnRKZyPtr7LVDlk3svnUPkiv2+ZCv
+         lD41Gig1XgByKXnjDV2AtQwyGFKIt/q/VoPUIqyGyWVLtkhBm4vb9v7OgQ71s5eH4jma
+         0jQQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzpoCoyPt3WZMgWop3cRMsLYCCrvstTDjZrZD4+BjheYQsGmbuTEqQabC/npyaRP6z3R5nFw/k=@vger.kernel.org
+X-Gm-Message-State: AFuF++nDuiJdVmlIKGn6zpO1lrGyW6bnMVWWtUjfw2JdbDE08SNDO65G
+	KsfVCgjfteEnclN/aKhcyoT8rsRbfsdYnJTY2HjscR4uxPVlLg8Mol8a
+X-Gm-Gg: AYBFou1Tk41pzwsyrhkS4jIN0quZYHbfhWTxbginx7rQHYFmKC99eX+qZNQb0Uiq6Px
+	UGBzrs8C48cXQIPHqe/g72a1jWpSU8oKAU6C7TuxWKub/3IutUvdz5cQ386V1JMm7en6UWV4PN3
+	8Qfw1YxBz555Ww693ySu5/K/inZdkZ4eAY1PGFuzN1bmJNAtLx1Tlce+lzfFRzgo0tswDzLNSfL
+	Un1mahVpR64A0W5At6UpRp2TsplTV/LO5Wza2aERsmItafxx1N7XTmcsd1FlahdUOVTr9MSZ+ey
+	xGlSGipUBoMJRjRgvsiNFlnPSVcVKKOxiiqStP9tnwc5302ICO3HURstK/kzUWpe19coSTUXCOg
+	kECLxfYvJoWUS9emJzVAbD9FnNSuDQCckgx/d3Gb2QLp3KrPcEPdF4lrwZqzM+FngRtHjYPZm9e
+	9u47lrmZS8Pfwj+Cs5zy3sgJ9k+2qYTpAsMVVnliNSFbG5eepEaMYRoUEz8FXbMIw=
+X-Received: by 2002:a17:903:40c6:b0:2d0:cc92:f7a9 with SMTP id d9443c01a7336-2dd837a6aeemr5238465ad.4.1789465378664;
+        Tue, 15 Sep 2026 02:42:58 -0700 (PDT)
 Received: from jia ([188.253.12.32])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39dfdcb54d8sm4196291a91.6.2026.09.15.02.42.47
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd2cfbeca2sm63625345ad.45.2026.09.15.02.42.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 02:42:50 -0700 (PDT)
+        Tue, 15 Sep 2026 02:42:58 -0700 (PDT)
 From: physicalmtea@gmail.com
 To: mst@redhat.com
 Cc: jasowangio@gmail.com,
@@ -69,10 +71,12 @@ Cc: jasowangio@gmail.com,
 	kvm@vger.kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/2] vhost-scsi: preserve event ordering and fix fallback deadlock
-Date: Tue, 15 Sep 2026 17:42:42 +0800
-Message-Id: <20260915094244.7900-1-physicalmtea@gmail.com>
+Subject: [PATCH 1/2] vhost-scsi: preserve event ordering
+Date: Tue, 15 Sep 2026 17:42:43 +0800
+Message-Id: <20260915094244.7900-2-physicalmtea@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260915094244.7900-1-physicalmtea@gmail.com>
+References: <20260915094244.7900-1-physicalmtea@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,40 +87,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Jia Jia <physicalmtea@gmail.com>
 
-The vhost-scsi event list is populated with llist_add(), but completion
-walks the detached list without reversing it.
+vhost_scsi_send_evt() uses llist_add(), so pending events are LIFO.
+vhost_scsi_complete_events() walks the detached list directly.
+This can deliver a later hotplug or hotunplug event before an earlier
+one.
 
-Trigger: concurrent hotplug (ln -s). Each event is inserted at the
-head of the pending list. Multiple events must already be stacked on
-the llist before the vhost worker runs
-vhost_scsi_complete_events(false). The whole list is then detached
-and walked directly, so later-enqueued events are delivered to the
-guest first.
+Reverse the detached list before processing it.
+This keeps delivery in enqueue order.
 
-Queued hotplug and hotunplug events can therefore be delivered in
-reverse order.  Fix that ordering first, then fix the fallback path
-that can relock the event virtqueue mutex while already holding it.
+Fixes: a6c9af87363c ("tcm_vhost: Add hotplug/hotunplug support")
+Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+---
+ drivers/vhost/scsi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Patch 2 is based on patch 1 because both changes update the event
-completion path. The first patch is otherwise independent of the
-fallback deadlock.
+diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
+index 7a1f39a32..37f681aab 100644
+--- a/drivers/vhost/scsi.c
++++ b/drivers/vhost/scsi.c
+@@ -637,7 +637,7 @@ static void vhost_scsi_complete_events(struct vhost_scsi *vs, bool drop)
+ 	struct llist_node *llnode;
+ 
+ 	mutex_lock(&vq->mutex);
+-	llnode = llist_del_all(&vs->vs_event_list);
++	llnode = llist_reverse_order(llist_del_all(&vs->vs_event_list));
+ 	llist_for_each_entry_safe(evt, t, llnode, list) {
+ 		if (!drop)
+ 			vhost_scsi_do_evt_work(vs, evt);
+-- 
+2.34.1
 
-Sashiko AI flagged this while reviewing
-the vhost-scsi event queue fix.
-This is a pre-existing self-deadlock. It was reproduced in a
-follow-up test.
-
-Trigger: vq->worker == NULL. vhost_vq_work_queue() then returns false,
-and a subsequent vhost_scsi_do_plug() call deadlocks. I do not know what
-normal condition gets us here; the normal vhost-scsi worker detach/reset
-paths do not reach this code. The only reproduction I could come up with
-was killing the vhost-scsi worker. This still looks like a low-probability
-condition.
-
-Jia Jia (2):
-  vhost-scsi: preserve event ordering
-  vhost-scsi: do not relock event vq mutex on send_evt fallback
-
- drivers/vhost/scsi.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
 
