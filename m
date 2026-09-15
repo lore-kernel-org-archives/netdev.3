@@ -1,123 +1,196 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12443F4822
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 09:07:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789463235; cv=none; b=iWFNj7bmr1mdz5gUmwG78fP//N7utxQvJ55HRODX4O7Bz3Op03bDqWs8ZcZ64nx/YUzlFt0GWKMMZmKAdhYsePoq1f9ZpIBsAQkJc1O6JZq6mTgSwYWF3MEOhUDE2/A8ydD5UoJleg+bW5RjDPhWejM/WE50JCreZLkgDdCB7Gg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789463235; c=relaxed/simple;
-	bh=1Ixn6DEMoNiIF8ksLqNgYneCdY1heACPqrYYbDPSwQQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ujKUpgk8pS6TjEyH0yqYOW0PBKUjy5Kzwm5kReICesECcXWr0ZoNOWtnqM2hDXXlaPn627XqMNtTw2PS14y9C9h0KlJCrURXYPAk8Cb6BpMZ+YUqMRaZfkWrJbakuiMspz9Cp3NLHTNHdaF7Dr+/3V/y4vdrKUlpMEdTrVgHMG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=RxvZbHRQ; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F74A372B57
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 09:08:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.141
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789463290; cv=pass; b=FzZ3kKc/JerFZkViyRShZJYPEv9jDFWfi08esyM6Bq4/w94EnVFP+glN3iahCFMEf3cT4f4SJY2TmCZpXCf5ylRilG6er/oDb6FlLeYFHLAuUMRhCNgeLd19la2y+R+Ru7Na1mv4pScb8zmlGukqIUw2RcnYZt3BReKQ2lHUD+I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789463290; c=relaxed/simple;
+	bh=YhxPKw+0F370XaAgA0d55WGySacBzLz8rZGCOhUWrTQ=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=OVnRuRz0/N9wFK6MKGjebRZuFpzLJiGfW4MR4lqIU8I98Ww4plOEgHfZvBzawLlNMm61FW9tZr7KXulhElfTxxtIyh6Wds5MBG4vZOKAPqUu4DUUgtcDOAD39zW5bWiBERptscuwxhm2K92qMFvqrI8CPnfsWi54v1Qi9Fk99M4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YEvFEbcL; arc=pass smtp.client-ip=74.125.224.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="RxvZbHRQ"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49d1ca5b0d6so318905e9.0
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 02:07:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YEvFEbcL"
+Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66e4ab201ebso2541269d50.3
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 02:08:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789463287; cv=none;
+        d=google.com; s=arc-20260327;
+        b=dDA4bdA12B8C0sXSnHpfOOIf4fcTRYFMOi2i3AtALwTIEN5WJFahXX2wef8BDxJKn4
+         Z+gI+Q8i/3uQd1qNX95TYdS8JA4+TFZNvQbwRmQ0Q//VQCpPmFbFjs1GXhlQ7fRrkiCT
+         yt/hJ0UkIUf4BkByMN8zrBhV822UHcMFY4y3fwxcEmiOOcNWmAAq7AN5aukAP7n5TESQ
+         WbSrnCLz+UITMgWO1571N7PGKiF98kc6YYded2hcB4nwqrgF13Xd47QJqhWIgJ7ROPOa
+         ECLWr8ip1vVD0Ns9B0NptpmBv5lksMHSvi357j5RQINUEpHk1YRq+elzqWWzV6qHMU1p
+         iOZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=Gu8o41I2XXzRYGs0+w6OrfrzhP1q+smJSphMsWAZ4Fg=;
+        fh=GKJ6JCd4i2svkIYptaocrjxsZvydyGlQWPwlcJTz8Ww=;
+        b=MBL4eMT0DAXNV/sMALtW7Y7FxU9JHMKUifx3WV/HERYxdsVZRdC/sJ0wAT+HQf60EJ
+         mXCMFfs4LQ0mdyCRvLiDcMzLtjJsx1sTVnllc1pnzJ5X60MzqED/jX1OSm2OzoQOhc1F
+         5SgUikDsT95rZlq5sKamsKPQOLvY1/lw8kSel6KjmsAXyjoEEsTlvy4U9fKeQ9KIjopT
+         ic3IKCMcCaLKsOvO+wzahkUks50AeW1ngx8Kc7RV9ZfUAU/tcFedBrVV2NKSNNTWAa1v
+         SK1lwD+8oL2wtTs2QS30X9f1TQcXSykYxCjqXhGoxXPB8GRIkjmQ10ku0iZJcnNAOW1A
+         ROZg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1789463232; x=1790068032; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LPiyjPEsT7yswVRA3kLIcDCxs15ngyuM++pTranT+60=;
-        b=RxvZbHRQfqGWiQaBDv55RRzFv1kcq24tuMLQ6NlVJ/BBbfX3pnIrjP6z7O3zdWPO8K
-         U+zNXKGbPUSqQUtO0x/xULkOu6kDdRpZr5t8em0vseixJlART/y8vEwdQ561bsyEFHmT
-         d+u4dVCIJAV7Ggtn+Dux780UUvKvtuT48s7ha42UwP+K9wwRgf8I2N65baEic+LYY8AO
-         eNK1y6Yupik3OmlmS5Zm6vBi2JX8D1bPfesbpbZvJnFOeDv4aaURQhU3xuP+D8ldGRZl
-         dB4XCkuYCzcjZYjGuVF0AKdDbSojcskq7Vr7CsAz4JgCiewCdW6nA8Im3su0Ot8Q3PUL
-         YFLw==
+        d=gmail.com; s=20251104; t=1789463287; x=1790068087; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Gu8o41I2XXzRYGs0+w6OrfrzhP1q+smJSphMsWAZ4Fg=;
+        b=YEvFEbcLWIsnob2/9wr685FW1dGze+2VREXNlBQybzf36JsG1h4CDQfuXJh/JZP6gc
+         pyHdx/lB5lhPtBjkZp5IXHJq9+toAyxAaN9AvYBcJSKMqT7foJtb50nasP6/F4QV+LXf
+         8JPw70YWYxi+oGy8h5379uJHXVxyb8pOCrR3D9tveMfwy42ku62mubvkEuwUmRpzF132
+         SqVUg8/EvgMkAMjsr/5MRhUWRndKxHu8JVY/DflKnG6UrlIrf7JKSeNwBnyasmp1lzAv
+         HJGQQJWKrF9AotNosfq/AYmXsYmU9j255NNLaz4XdSPx0Ch5GD+TIpHHmZClblmOX6zc
+         L6PQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789463232; x=1790068032;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LPiyjPEsT7yswVRA3kLIcDCxs15ngyuM++pTranT+60=;
-        b=pTuMxfg8pYel98ov1mrlTV6C5BTuZr6lTCpM+6buvtjNRjBB+5Za6L0+01904A0pCi
-         CfLjKhHiGhdwg0Jl0O1u1+GILypxmdtC4V/nloBTqhRAOVo5+aQadclM2Sgy4bGXEC9p
-         bnKlWJD/skAvpvmNJbicmh/ZDAkb5A1xCWYkTiEG8mj5DEN6MlZRSk5qU3qkBYTeR11g
-         xdxPn0frhY3Uv1crkKWUp2j26xqzFD/PvL0Fo1rAaIgZ9fj2YoKeO8YCEAA89vTiXD7X
-         Z4IJ71sMrsq2y9SRF+BL0UpGRkU2kOGfND3dtBfoBzqNYj5kkwpnYZE4KGvP3y4Z1nO1
-         e2vg==
-X-Gm-Message-State: AFuF++mMTzRJLzoWWMdtfvcpOV6Jxf4ZN2F/wHJwrUEeBg24YA6yKvJA
-	qzEfRho963RVwKLr6+K0OxdeNdF3Uy6KGbztYx99GKCyE+NxqkV4l74wbYJW04Sq3N0=
-X-Gm-Gg: AYBFou0MdAlR0mXd8hJpv0VXHncRR5XHfwLz1eF7gvv+JiH4i0fZkikjBAABByHU+HI
-	4xRlD8pjIzv+sRK6vtYANBMfrce5eh7asiFB0lD46BzrxoAk8zHUiMTYdd+LH+uEJWDZZpRWbsa
-	rl1QxNC1f3k/i516NuN2VaQRbYvTF9yqP53hjC1uzR9t2/uMXLR1pwfR5NCm0+JIn8j6jLDSsM9
-	KeadUNgncIq7dQUvwMlhw2JeG4gYHt7kEEWRgGCSJVwhXfLbbD1aIv2WOqu3pt0Pc143WSkBG4f
-	kTZBgMujvRI2/ciCQ/yrzOKuQ3t0ZvTV6NvIQ8Z1hC6iI+pJ61AhydjHzn3kQ0wtos249f08iut
-	CJJeEOtXDU7zQscXUlWIOwsNQqKNsJq/D3Jc0fsDbJi4iA+L47IzYc+JBVzofCtQCWpWVO7zeNi
-	ajN9/6kbRWWymANVxBMWR1KYCXl/DZg1celIFDBfBNO+iOr4vps3asLx0xP03qGPXnb7+H577mw
-	r+RkJ6kph03t9lEMAWwjLfwbZ1DoA==
-X-Received: by 2002:a05:600c:c4a2:b0:49d:1842:f001 with SMTP id 5b1f17b1804b1-49e8224ff79mr4047255e9.14.1789463231501;
-        Tue, 15 Sep 2026 02:07:11 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e7d69f3c0sm53539705e9.6.2026.09.15.02.07.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Sep 2026 02:07:11 -0700 (PDT)
-Message-ID: <5720cac7-f478-40b3-b96b-d34db4d9e584@blackwall.org>
-Date: Tue, 15 Sep 2026 12:07:09 +0300
+        d=1e100.net; s=20260707; t=1789463287; x=1790068087;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Gu8o41I2XXzRYGs0+w6OrfrzhP1q+smJSphMsWAZ4Fg=;
+        b=T5/3u9cS0zi5HZAQOp4pM1PS5U3/EMDUhClBuaYsnrVlWVNVf6osut79bYhgUilRr0
+         bTmUrwS0VyFyUG6pE3EU1S/zhi6riHOt0RwH1ACxpLEUK4jH0ukQN891VtnR5J1mcJ/d
+         LzrBkKG8Oho7SiF9OK4v1lixdl/KPbdPomPoB27QCbKEPiiLpU6zjOTj+NbMJVXvMZPe
+         uF3Rzfaapgy50XjkYupoCJSBYiXR+3KGtydEoiJK/1N7yhNL6yq3iNfKYQ01tUBffKuT
+         UQ+8RpOGfHzppGdYAhHCpe7Mt496XhY7Kwia9B7qWjee8T4fq2iCDGhc0aCUCVu/+g+t
+         XFJQ==
+X-Gm-Message-State: AFuF++mnn5KF0Egdk9vNc/kRRNezCZvXXo8RFDvOA4YcNmY1nmBG+Acd
+	+6xQeAUIIr5HtIjJhKRDXi2iGt3Jbkr4pH9q8eQiJMnPdRI8ihCEy0NX7yDbblAcACV4Ovuzwm1
+	FGqc2XyZXpAR6voIabHfhl+HfYJjENyX3CqRqGgE=
+X-Gm-Gg: AYBFou1xHuj781SD+fjdr7HgKDEucnsOoYVemqazYTTSAC9Ae/HwvfZzqvi/Ln9C50S
+	HEYY+7NjVcY4itRSPmuXi2p99BjFGlqvJn93yEPjGsgjmdjM+YmAo9qSV18bJBV7C0wZcUBXF48
+	V1pYM0BDjjkkBc7jm6HCG5h64fbZ+57KDEO6qQTZlcuXf7NjV4uJSaJoteS2DeTLcKtKWTNMM4a
+	wreOtTKqDVwoizAcwgLUldwdqUENjnydnNcBakN9F5Rnn4Fd9TYehgN+ik4WRiUgH+bMSLtZvSC
+	KkHBa4M08mAV4C3KiW6TnhbYlAiO+oVMp+9gOaqsGmx22+JPNHxs1kI=
+X-Received: by 2002:a05:690e:e8e:b0:671:4b50:4628 with SMTP id
+ 956f58d0204a3-6714e1bbd88mr1691227d50.97.1789463286930; Tue, 15 Sep 2026
+ 02:08:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v4] bonding: fix slave_cnt leak on XDP error paths
-Content-Language: en-US, bg
-To: Hangbin Liu <hangbin.liu@linux.dev>, Jay Vosburgh <jv@jvosburgh.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Daniel Borkmann <daniel@iogearbox.net>, Jussi Maki <joamaki@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Hangbin Liu <liuhangbin@kylinos.cn>
-References: <20260914-bond_slave_cnt-v4-1-d14864a39e60@kylinos.cn>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20260914-bond_slave_cnt-v4-1-d14864a39e60@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Cyclinder Kuo <kuocyclinder@gmail.com>
+Date: Tue, 15 Sep 2026 17:07:55 +0800
+X-Gm-Features: AcwNN1WKYt_LA1WL9vjWYb6kVe2gAIA0jbDKfrsHzKDJpkWLSstkxuDMf5Ww6rU
+Message-ID: <CAL8qZ1bxzBXReej7M-20HkBwON9L6NZKZP96bs7s-e=j-_Gg8w@mail.gmail.com>
+Subject: Subject: TCP receive memory accounting before accept() with cgroup v2
+To: netdev@vger.kernel.org
+Cc: linux-mm@kvack.org, cgroups@vger.kernel.org, shakeel.butt@linux.dev, 
+	edumazet@google.com, roman.gushchin@linux.dev, kuniyu@google.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 14/09/2026 06:09, Hangbin Liu wrote:
-> From: Hangbin Liu <liuhangbin@kylinos.cn>
-> 
-> When bond_enslave() succeeds up to the XDP setup stage, slave_cnt is
-> already incremented. If XDP setup subsequently fails, the error paths
-> jump directly to err_sysfs_del, bypassing the slave_cnt decrement.
-> 
-> This causes slave_cnt to drift upward on each failed enslaving attempt,
-> which would lead to unbalanced traffic distribution with round-robin
-> mode.
-> 
-> Add an error out to make sure slave_cnt gets decreased correctly.
-> 
-> Fixes: 9e2ee5c7e7c3 ("net, bonding: Add XDP support to the bonding driver")
-> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
-> ---
-> Changes in v4:
-> - Revert to v1 version as the bond_select_active_slave() just under
->    slave_cnt increase also calls bond_update_slave_arr() (sashiko)
-> - re-run all bonding selftests with debug kernel, all passed.
-> - Link to v3: https://lore.kernel.org/r/20260907-bond_slave_cnt-v3-1-57df3b3cf2cb@kylinos.cn
-> 
-> Changes in v3:
-> - move the slave_cnt increasement before bond_update_slave_arr() (selftest)
-> - run all bonding selftests on debug kernel to make sure no regression (Jakub)
-> - Link to v2: https://lore.kernel.org/r/20260903-bond_slave_cnt-v2-1-02e27304ca36@kylinos.cn
-> 
-> Changes in v2:
-> - move the slave_cnt increasement after XDP setup (Nikolay Aleksandrov)
-> - balance-xor mode is not affected, not mention it (Nikolay Aleksandrov)
-> - Link to v1: https://lore.kernel.org/r/20260902-bond_slave_cnt-v1-1-36e95bf4a6ff@kylinos.cn
-> ---
->   drivers/net/bonding/bond_main.c | 9 ++++++---
->   1 file changed, 6 insertions(+), 3 deletions(-)
-> 
+Hi,
 
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+"Resending in plain text; the previous message was rejected by netdev
+because it contained an HTML part."
 
+While looking into whether Kubernetes can allow net.core.somaxconn
+by default on cgroup v2 nodes [1], I tested how receive memory is
+accounted for connections waiting in the accept queue.
+
+I understand that d752a4986532 ("net: memcg: late association of sock
+to memcg") deliberately moved memcg association to accept() time.
+The discussion also explicitly covered data queued before accept()
+and charging that memory when the socket is accepted [2].
+
+My question is about memory containment before that happens:
+if an application delays accept() indefinitely, how should the
+receive memory of those pending connections be constrained by the
+service's memcg?
+
+Test setup
+----------
+
+- Ubuntu 24.04, kernel 6.8.0-53-generic
+- Kubernetes v1.35.0, cgroup v2
+- Server container and Pod cgroups: memory.max = 512 MiB
+- Private network namespace, somaxconn = 65535
+- Server calls listen(65535), initially without calling accept()
+- Client runs on a different node
+
+The server container was privileged to set somaxconn in its own
+network namespace. The host's somaxconn remained unchanged.
+
+The client established 256 TCP connections, then sent 64 KiB on
+each connection, for a total of 16 MiB. The server subsequently
+accepted all 256 connections without reading any data.
+
+Results
+-------
+
+Phase                                     Pending accepts   Total TCP
+  Container           memcg
+                                               accepts
+Recv-Q       memory.current  sock
+Baseline                                 0
+0                 8.49 MiB             0
+Connected, no payload          256                        0
+     8.49 MiB             0
+Payload, before accept          256                        16 MiB
+  8.49 MiB             0
+After accept, no reads            0                            16 MiB
+      33.82 MiB          25 MiB
+
+I used ss in the server's network namespace to observe the pending
+accept count and the established sockets' receive queues. I also
+read memory.current and memory.stat in both the container and its
+parent Pod cgroup. Both reported sock=0 before accept(), and
+25 MiB after accept().
+
+The data was already queued on the server, but its receive memory
+was only charged to the server's memcg when accept() was called.
+
+I did not exceed memory.max or test memory exhaustion, so this
+does not demonstrate a node OOM or an absence of other network
+memory limits.
+
+Current implementation
+----------------------
+
+I also inspected upstream v7.2, although I have not repeated the
+runtime test on that kernel.
+
+sk_clone() still sets newsk->sk_memcg to NULL, with the comment
+"sk->sk_memcg will be populated at accept() time" [3].
+__inet_accept() then calls mem_cgroup_sk_alloc() and
+__sk_charge() [4].
+
+I also found the discussion explaining why simply inheriting the
+listener's sk_memcg is insufficient, particularly when a listener
+is created in the root cgroup and passed to a process in another
+cgroup [5].
+
+Questions
+---------
+
+Is the pre-accept accounting gap an intentional limitation of
+memcg socket accounting?
+
+Has temporarily charging pending connections to the listener's
+memcg, then reconciling ownership at accept(), been considered?
+I realize this would need to handle different listener/accepter
+cgroups and the root-cgroup listener case.
+
+If that is not a suitable approach, is there another mechanism
+that should bound this memory on a per-service or per-memcg basis?
+
+For the Kubernetes change, we are holding off on treating
+somaxconn as safe based solely on cgroup v2 until we understand
+this better. Pointers to previous discussions would be appreciated.
+
+[1] https://github.com/kubernetes/kubernetes/issues/134194
+[2] https://lore.kernel.org/all/20200222010456.40635-1-shakeelb@google.com/T/
+[3] https://github.com/torvalds/linux/blob/v7.2/net/core/sock.c#L2542-L2547
+[4] https://github.com/torvalds/linux/blob/v7.2/net/ipv4/af_inet.c#L761-L766
+[5] https://lore.kernel.org/all/CAAVpQUDUULCrcTP4AQ31B5bfo-+dtw3H8CQGq9_SQ7d28xXSvA@mail.gmail.com/
+
+Thanks,
+Qifeng Guo
