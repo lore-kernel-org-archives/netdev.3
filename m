@@ -1,127 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94AFC39E6EB;
-	Tue, 15 Sep 2026 11:58:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB423806CA
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 11:59:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789473521; cv=none; b=H9kp2IWTjM+vBiFS/+mSTtNmIpJPqBmvzWwwsLiOO7nsrH3RWokXdWvxoFR03KpWxGBQlPWAhiThD+NpRkDg7RB1sMio/pIIgJ55rAN9yUzVoX4yNGOl2RPIG7VFZy/rvcUhnU3up2yOy/6ggeEBrTupidA/Fowj/tv5cCYVpiM=
+	t=1789473593; cv=none; b=AUrBwlQdj/SK8++EIVqlDJrVV4a6u0p/Te2DvFetXfqf8ZSnSFuHS6g/TVpPoqzzflfWxbieuJQ5fLOdeMz3iJ+qj+O/Tv/xIRmvGK/eID9rolniC9vNH7W1hKuS8eBBOKIF3BF/oHbX8KQ14MMwNFYNcueLF1J7TnHtq8vO/sA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789473521; c=relaxed/simple;
-	bh=a6BeIQkyBXeFZQqSm2GDwlOuCTRWkkmfEGCNEf3KJ54=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hP2cgPLyDuaQtWIEsS7Oy8zIH2Qr+5A60S9SnjeK9V7/Zkzq7oVxPH1ewgJGq1ld24Ewa9XJhHjk2sm6FcM9TywwKt8ecX7rs2Ip98vPhMhbyaReHI4slB3mzs5hfaZBvZpSYNxRY71flkOVLKNgufZnO8G+Ml05cRTAgfvWhRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C/Fm9y/h; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789473593; c=relaxed/simple;
+	bh=TwEBITxsjqDNfr67b1FnkWbtZJvna7apEgcotdHSFX0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I+NvixwGkOKr+ZWV2G+PXcAdyYNJh3/Ov3DudlK0lvQVhkjadslfONvY7MQu6RwMeNFHM38+CbFT4pvQn7Ur6faA/z+t1CNxYCZxa0tNHu6ws+MCQ0Mx7rjGvLVjgFL6GsMJ0llkQt+heCjviQS4m0fr+NYn4gIWx+FGozcIj5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JaE9sCuq; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C/Fm9y/h"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7865D1F000FF;
-	Tue, 15 Sep 2026 11:58:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789473520;
-	bh=G81COMtQNhYX0zALp20voZ321dKl8PDyZRagFYkHh1s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=C/Fm9y/hK6rlSZdEGpKbT1jnv9paCGDvoSpb8618BD4yppO9A1nAYbp3VvMWM7br0
-	 b7ND7V1FJjbe05XBFNu6PyyR6AfCem1seXzqB1XuLnqqp5P2Q8nUJbdZHs9YQ9Wf1y
-	 C1DyeWSMoFUiH9ZDN8oiZ9VnKoAOB2zEEiDTCbnBw/eHUWFfvL7XwF0r7HiACNkceh
-	 ZTObiOIcF1/SjEmZOoifoOngOVts0tdfVHnKJifSpYqsaWG6YOc4ts+vDB8ULp7OVP
-	 Fz/LJIXyKA0NjBkGl5mJQx9LopYnq/xEGSjvn5DlerLiraJQZcw4pjvZIcKaLbr33A
-	 m6dqV8Srdaeaw==
-Date: Tue, 15 Sep 2026 14:58:36 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-Cc: davem@davemloft.net, gakula@marvell.com, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, sgoutham@marvell.com, andrew+netdev@lunn.ch,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Subject: Re: [PATCH v9 net] octeontx2-af: switch qmem from coherent DMA alloc
- to streaming DMA mapping
-Message-ID: <20260915115836.GN13683@unreal>
-References: <20260911022649.573300-1-rkannoth@marvell.com>
- <20260915081633.GH13683@unreal>
- <aqkGNiu_BWOkA0A9@rkannoth-OptiPlex-7090>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JaE9sCuq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789473591;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=owXpxkdaiz3FjoIP3af9pZnf5S2SeMbdOA3eIgSOhpI=;
+	b=JaE9sCuqgxKtHIUsdyuVuM8C3QbcXl7BECnvLdqfl8vCyb6B9h642t6Zq9Xy/Zc/j/OxLN
+	vAvY64IF3LZiGroVBNNsAoBdC64b8K5Mg9BhSJIfKdXvbeQ2OQe4mAXPXTk9DblrIZb5UL
+	U1ffkuxq9nrIkijvQA0t70wB2M62eY0=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-588-w7d3T18TPyOItpXF1_D_bA-1; Tue,
+ 15 Sep 2026 07:59:48 -0400
+X-MC-Unique: w7d3T18TPyOItpXF1_D_bA-1
+X-Mimecast-MFC-AGG-ID: w7d3T18TPyOItpXF1_D_bA_1789473586
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 586601944B32;
+	Tue, 15 Sep 2026 11:59:46 +0000 (UTC)
+Received: from fballuch-thinkpadx1carbongen13.redhat.corp (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6B59D1956045;
+	Tue, 15 Sep 2026 11:59:43 +0000 (UTC)
+From: Filip Balluch <fballuch@redhat.com>
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Filip Balluch <fballuch@redhat.com>
+Subject: [PATCH] i40e: fix freeing of TX rings on RX allocation failure
+Date: Tue, 15 Sep 2026 13:59:39 +0200
+Message-ID: <20260915115939.56716-1-fballuch@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aqkGNiu_BWOkA0A9@rkannoth-OptiPlex-7090>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Tue, Sep 15, 2026 at 02:17:50PM +0530, Ratheesh Kannoth wrote:
-> On 2026-09-15 at 13:46:33, Leon Romanovsky (leon@kernel.org) wrote:
-> > On Fri, Sep 11, 2026 at 07:56:49AM +0530, Ratheesh Kannoth wrote:
-> > > qmem_alloc() uses dma_alloc_attrs() with DMA_ATTR_FORCE_CONTIGUOUS, which
-> > > allocates CPU-cache-coherent DMA memory and, with CMA enabled, draws from
-> > > the CMA pool. qmem backs NIX/NPA queue contexts, admin queues, and LMTST
-> > > regions (including CN10K LMTST areas that span page boundaries), so
-> > > consumption grows with enabled interfaces and is hard to provision in CMA.
-> > >
-> > > Switch qmem to a streaming-DMA-style path: allocate memory with kmalloc(),
-> > > then map it for device access with dma_map_single(). Add
-> > > otx2_dma_alloc_coherent() and otx2_dma_free_coherent() helpers and wire
-> > > qmem_alloc()/qmem_free() through them instead of dma_alloc_attrs()/
-> > > dma_free_attrs().
-> > >
-> > > This works on Octeon because the octeontx2 driver is written for
-> > > DMA-coherent devices: Octeon platforms provide IO coherency (via SMMU), so
-> > > the driver already uses streaming DMA APIs for packet data while
-> > > deliberately skipping explicit CPU cache sync (DMA_ATTR_SKIP_CPU_SYNC).
-> > > The same IO coherency lets qmem use a streaming map of kmalloc-backed
-> > > memory instead of a dedicated coherent allocator or CMA reservation. That
-> > > is valid because the platform is DMA-coherent, not because omitting
-> > > dma_sync_* magically makes memory coherent.
-> > >
-> > > cc: Leon Romanovsky <leon@kernel.org>
-> > > Fixes: 73d33dbc0723 ("octeontx2-af: Use DMA_ATTR_FORCE_CONTIGUOUS attribute in DMA alloc")
-> >
-> > The code itself looks fine now, but the commit message does not explain
-> > why this patch is needed. It only describes what the patch does, which is
-> > unnecessary here since the change itself is straightforward.
-> >
-> > Also, no bug is described, so neither the Fixes tag nor the "net" target
-> > is appropriate for this patch.
-> >
-> 
-> Below commit message is Okay ?
+When ethtool -G is used to change ring buffer sizes while the interface is up, i40e_set_ringparam()
+allocates temporary TX and RX rings. If the RX ring allocation fails, the error path at the
+free_tx label incorrectly calls i40e_free_tx_resources(vsi->tx_rings[i]), freeing the live TX rings
+instead of the temporary tx_rings[i].
 
-How about a simpler message?
+Since the interface is still up, the next TX completion interrupt causes i40e_clean_tx_irq() to dereference
+the freed ring descriptors, resulting in a NULL pointer dereference in IRQ context and a kernel panic.
 
-octeontx2-af: Fix memory scaling limitation in SR-IOV mode
+This can be reproduced on systems with Intel X710 NICs under memory pressure, where
+the second port's DMA allocation fails after the first port succeeds.
 
-The original code used DMA_ATTR_FORCE_CONTIGUOUS, which could exhaust
-the CMA pool when a large number of VFs were requested.
+Fix by freeing the temporary tx_rings[i] in the error path instead of
+the live vsi->tx_rings[i].
 
-Fix this by switching to the DMA streaming API. This is equivalent on
-Octeon platforms, which provide full I/O coherency via the SMMU.
+Signed-off-by: Filip Balluch <fballuch@redhat.com>
+---
+ drivers/net/ethernet/intel/i40e/i40e_ethtool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
+index 3da9ec49cc74..6d2b076049f7 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
+@@ -2249,7 +2249,7 @@ static int i40e_set_ringparam(struct net_device *netdev,
+ 	if (tx_rings) {
+ 		for (i = 0; i < tx_alloc_queue_pairs; i++) {
+ 			if (i40e_active_tx_ring_index(vsi, i))
+-				i40e_free_tx_resources(vsi->tx_rings[i]);
++				i40e_free_tx_resources(&tx_rings[i]);
+ 		}
+ 		kfree(tx_rings);
+ 		tx_rings = NULL;
+-- 
+2.55.0
 
-> 
-> octeontx2-af: switch qmem from coherent DMA alloc to streaming DMA mapping
-> 
-> On platforms with CMA enabled, qmem_alloc() silently drains the CMA pool.
-> qmem_alloc() calls dma_alloc_attrs() with DMA_ATTR_FORCE_CONTIGUOUS, which
-> routes every allocation through the CMA allocator. qmem backs NIX/NPA queue
-> contexts, admin queues, and LMTST regions (including CN10K LMTST areas that
-> span page boundaries), so the total footprint scales with the number of
-> enabled interfaces and SR-IOV VFs. On systems with many active interfaces or
-> many VF counts, this exhausts the CMA pool and causes qmem_alloc() to fail
-> at interface bring-up or probe time
-> 
-> Octeon platforms provide full IO coherency via SMMU, so the driver already
-> uses streaming DMA APIs for packet data while deliberately skipping explicit
-> CPU cache sync (DMA_ATTR_SKIP_CPU_SYNC). The same IO coherency means qmem
-> does not need a dedicated coherent allocator or CMA reservation — a
-> streaming map of ordinary kmalloc-backed memory works correctly.
-> 
-> Fix this by switching qmem to a streaming-DMA path: allocate memory with
-> kzalloc(), then map it for device access with dma_map_single(). Add
-> otx2_dma_alloc_coherent() and otx2_dma_free_coherent() helpers and wire
-> qmem_alloc()/qmem_free() through them instead of dma_alloc_attrs()/
-> dma_free_attrs(). This is valid because the platform is DMA-coherent, not
-> because omitting dma_sync_* magically makes memory coherent.
-> 
-> Fixes: 73d33dbc0723 ("octeontx2-af: Use DMA_ATTR_FORCE_CONTIGUOUS attribute in DMA alloc")
-> Signed-off-by: Ratheesh Kannoth rkannoth@marvell.com
