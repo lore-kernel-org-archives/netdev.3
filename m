@@ -1,229 +1,187 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB403B059D
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D20359A70
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:17:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789460208; cv=none; b=WffrFKBbsk6gIvcL2UgdvTb7ofslbWODAQ0QL/qvj36gwSPUF1wwGP130+bO5YZwH7nvOrhGdNzqr4v3URidxrkwsiXOhkHn8ugfC9YlpwmNsBdsMbv2W4LopvvETG+eQLw5x49152b15Fm9gzkI//eLlemdxbGrqGIPgJBFEg8=
+	t=1789460252; cv=none; b=pCzmt2xmkeRpSEYy1QRS++CHcD6vvOCdN3XEtic5HvdwqB6WgR1tVZAQ5K8kYOn9DHIvqhjdm8oZefwkMo9EFFCq/YzW+gM1m2AU8Cm15fQudyC6PKtIDJYZSiG2E469DPFi65cPK11PL1zHaiVSqi6gg8KMaPJut0LJ/Ex+WhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789460208; c=relaxed/simple;
-	bh=eSAEogWzs5zUpk6kk6LnRXQCgm8s2AHDkEdyx64jo7o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E3ozznKDckGw4vPaI1BfHGzzvrbIF15byLRPmwrk7caxozWng1wjvlA53+mjkIaQ66PN6Uzr8q/x9m7UQdk03k+fi1n7AoZrxoQ/BfoV1rU231VhzoqCHezvDscxYOqbyCjJB5GWUWe0Bsi3kaFdlScXsZJTWuM2w92y7lV9Hrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QstV5gIR; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789460252; c=relaxed/simple;
+	bh=UaFjdMT3Hwdro+euYK9P31xkWRmOMucUzViMDFJbNqE=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=peDErdXHvaQvUlCVvNBx4YfIxQ1Y7cF4PUFWZFLk0C+0lA7YsU2HG3eaBQKBahKtzEjVg2xAKDbhmqsC3zoWgpMqsfPdAoCgMNOmCxF24+Ls7qPSqqogtCJBHzOpLVwZl8Q/HPAUIbFXxtlmVrZofKHxAMz1Zq3aZZKX6uLjulo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PnzHbKpK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QstV5gIR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789460206;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eSAEogWzs5zUpk6kk6LnRXQCgm8s2AHDkEdyx64jo7o=;
-	b=QstV5gIRh44CuBuXHsQcA1MUgqbmwYRSVs7nrW6o3js4RnoSscJf/hWnPtNph/rf0eTwip
-	5YQhpn3+GLeJ3osk+z7tfFS2mfoBFCliYsRRy1mBW97+nNs2VZ135ezbnwazWMVp5yuXBV
-	9zta/jV9iTPl5jRjmWX32X8TgDRXVwI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-632-4TVNOOonMpucPEx6upVL4Q-1; Tue,
- 15 Sep 2026 04:16:42 -0400
-X-MC-Unique: 4TVNOOonMpucPEx6upVL4Q-1
-X-Mimecast-MFC-AGG-ID: 4TVNOOonMpucPEx6upVL4Q_1789460200
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5412E1865FDD;
-	Tue, 15 Sep 2026 08:16:40 +0000 (UTC)
-Received: from fedora.redhat.corp (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 410D51955F78;
-	Tue, 15 Sep 2026 08:16:36 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: kuba@kernel.org
-Cc: aleksandr.loktionov@intel.com,
-	andrew+netdev@lunn.ch,
-	anthony.l.nguyen@intel.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
-	jacob.e.keller@intel.com,
-	jtornosm@redhat.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	przemyslaw.kitszel@intel.com,
-	rafal.romanowski@intel.com,
-	sdf@fomichev.me,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net 3/4] iavf: send MAC change request synchronously
-Date: Tue, 15 Sep 2026 10:16:34 +0200
-Message-ID: <20260915081634.14281-1-jtornosm@redhat.com>
-In-Reply-To: <20260824190149.2714547-1-kuba@kernel.org>
-References: <20260824190149.2714547-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PnzHbKpK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A0DC1F000FF;
+	Tue, 15 Sep 2026 08:17:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789460249;
+	bh=+FTS5q0WGW0L0f2iDM6eX4+p3Jn0+1p2xJAs5jFxk1o=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=PnzHbKpKaM2Tb61y4jAgnPxXnpNOmjap9dL1NZHUk+vpNjIiZxHYFcf3Ysbklnf45
+	 b8BRFJRjXAL2/ZWAmdrwWukjLeAHxuCUizcKdM8Px75r0UQQighpYO5QN93/1QG5r3
+	 0ctMXnyldoq6OtfoUIxiMbB7jLbbJTKvuBppL0JLr2RmK0gm9Hhu7Qrwu4zsCtG/R6
+	 cmS/Y41cVX8oPzYkW91ZCGL9JCNueqN9lOfqc/gGPtA26KblehKbkm/8YsaOHQIJXW
+	 aSH3KOVcQOdCyGrQi534EFOYkygnI78isLDeQs3FG4kcMmY77FIg9dEZV5zzpur2Kv
+	 hA5FY6a1E1yAw==
+Subject: Re: [PATCH net v2 1/2] net/sched: sch_hfsc: bound the classify
+ inner-filter walk with a drift budget
+From: netdev-bot+sashiko@kernel.org
+To: jhs@mojatatu.com
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ victor@mojatatu.com, sashiko-bot@kernel.org, hybris@mojatatu.ai
+Date: Tue, 15 Sep 2026 08:17:28 +0000
+Message-ID: <178946024860.22033.17011861551160960190@kernel.org>
+In-Reply-To: <QDISC-CTUU.v2.20260913192614@mojatatu.com>
+References: <QDISC-CTUU.v2.20260913192614@mojatatu.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-All the comments below fall into pre-existing issues, concerns already
-addressed in previous versions and comments, out-of-scope items, or extreme
-edge cases. No code changes are considered necessary for a new version.
-Details for each comment:
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-> [Severity: Low]
-> Is the "timeouts" part accurate? iavf_poll_virtchnl_response() returns
-> -EAGAIN on timeout, and iavf_set_mac() explicitly skips the rollback for
-> that value.
->
-> So on a timeout nothing is rolled back, which is the opposite of what the
-> changelog describes (and matches the in-code comment). Could the changelog
-> be adjusted to say send errors only?
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-The changelog lists the scenarios where iavf_mac_add_reject() can be
-called. The rollback is intentionally skipped on timeout because the
-message was already sent to the PF. The in-code comment explains this
-clearly. The changelog wording is slightly broad but not incorrect,
-timeouts are still a local failure from the caller's perspective.
+- [Medium] net/sched/sch_hfsc.c:hfsc_classify(): the new `drift` budget
+  is a *cumulative* per-packet allowance of 8 non-descending hops, not…
 
-> [Severity: Low]
-> Now that iavf_add_ether_addrs() reports -EBUSY, -ENOMEM and send failures,
-> should the watchdog side caller consume it too? iavf_process_aq_command()
-> still discards it and returns 0 unconditionally.
+--
 
-The watchdog path is fire-and-forget by design, it retries on the next
-cycle. Propagating errors there would require changing the watchdog state
-machine, which is out of scope for this fix. The return value is only
-meaningful for the new synchronous caller.
+net/sched: sch_hfsc: bound the classify inner-filter walk with a drift budget
 
-> [Severity: Medium]
-> iavf_mac_change_done() ignores v_op and looks only at filter state, while
-> iavf_poll_virtchnl_response() calls the predicate after every message it
-> processes.
->
-> Consider setting an address that already has a filter whose earlier add
-> succeeded. Can an unrelated message processed by the poll loop then make
-> this return true before the ADD_ETH_ADDR reply arrives?
+hfsc_classify() can loop forever between two interior classes when two
+flowid binds that were each legal at bind time become mutually pointing
+after hfsc_adjust_levels() raises a level. The patch adds a budget of
+non-descending hops to the classify walk and drops the packet with a
+rate-limited warning when the budget runs out.
 
-Same concern addressed in previous comments. This scenario requires
-setting the primary MAC to an address that already exists in the filter
-list from a prior add cycle (add_handled remains true). This is an
-unusual operation. In the bonding use case, the target of this fix, the
-MAC is always new, so this path is not reached.
+Link: https://sashiko.dev/#/patchset/QDISC-CTUU.v1.20260908094501@mojatatu.com
 
-Even in this rare case, the user can remove the existing filter and re-add
-it as primary, the new filter starts with add_handled = false and the
-normal path works correctly.
+> diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
+> index e87f5021a1995..b073efaf2bf5f 100644
+> --- a/net/sched/sch_hfsc.c
+> +++ b/net/sched/sch_hfsc.c
+> @@ -386,6 +386,12 @@ cftree_update(struct hfsc_class *cl)
+>  #define	SM_MASK		((1ULL << SM_SHIFT) - 1)
+>  #define	ISM_MASK	((1ULL << ISM_SHIFT) - 1)
+>  
+> +/*
+> + * bound on consecutive non-descending (lateral / upward) hops in a
+> + * classify walk, mirroring htb's TC_HTB_MAXDEPTH headroom
+> + */
+> +#define	HFSC_CLASSIFY_MAX_DRIFT	8
+> +
+>  static inline u64
+>  seg_x2y(u64 x, u64 sm)
+>  {
 
-> [Severity: Medium]
-> Only one batch is sent here. If the just requested primary address ends up
-> outside the first batch, can iavf_mac_change_done() ever become true? The
-> poll loop has no way to send the next batch, so this would burn the full
-> 2500 ms and return -EAGAIN.
+[ ... ]
 
-Already discussed with Przemek Kitszel in v7 review. The multi-batch
-scenario requires more than 200 pending MAC filters on a VF, which is
-extremely rare in practice. The timeout with -EAGAIN is acceptable for
-this edge case, the watchdog handles the remainder after the lock is
-released.
+> @@ -1142,6 +1149,7 @@ hfsc_classify(struct sk_buff *skb, struct Qdisc *sch, int *qerr)
+>  
+>  	*qerr = NET_XMIT_SUCCESS | __NET_XMIT_BYPASS;
+>  	head = &q->root;
+> +	drift = HFSC_CLASSIFY_MAX_DRIFT;
+>  	tcf = rcu_dereference_bh(q->root.filter_list);
+>  	while (tcf && (result = tcf_classify_qdisc(skb, tcf, &res, false)) >= 0) {
+>  #ifdef CONFIG_NET_CLS_ACT
+> @@ -1167,6 +1175,16 @@ hfsc_classify(struct sk_buff *skb, struct Qdisc *sch, int *qerr)
+>  		if (cl->level == 0)
+>  			return cl; /* hit leaf class */
+>  
+> +		/*
+> +		 * flowid binds skip the level check above (res.class is set
+> +		 * at bind time and levels drift after), so a walk can follow
+> +		 * lateral hops without descending; bound them here.
+> +		 */
+> +		if (cl->level >= head->level && drift-- == 0) {
+> +			pr_warn_ratelimited("hfsc: classify loop detected, dropping packet\n");
+> +			return NULL;
+> +		}
 
-> [Severity: High]
-> Can this rollback destroy filters that belong to a different, still
-> outstanding request?
->
-> iavf_mac_add_reject() walks the whole list. One way to reach it with
-> ret == -EBUSY is an ADD_ETH_ADDR batch the watchdog already sent and whose
-> reply has not been processed yet. Should the rollback be scoped to the
-> address that iavf_set_mac() itself queued?
+[Severity: Medium]
+Can this drop packets for an acyclic configuration?  drift is seeded once
+before the while loop in hfsc_classify() and the only mutation is the
+post-decrement above, so a descending hop never returns any budget.  That
+makes the budget cumulative over the whole walk rather than the bound on
+"consecutive non-descending (lateral / upward) hops" the macro comment
+describes, and rather than what the changelog says:
 
-Same concern addressed in previous comments. This scenario only occurs
-when setting the primary MAC to an address that already exists as a
-secondary in the filter list, an extremely rare configuration. Even if
-the watchdog later sends the MAC to the PF, it is harmless: the MAC is
-already configured on the PF, so the redundant ADD_ETH_ADDR has no
-adverse effect.
+  "Bound the traversal, mirroring HTB: count only the non-descending hops"
+  "a terminating lateral chain (the level-drift false-positive family)
+   still classifies normally"
 
-> [Severity: Medium]
-> Does the -EAGAIN assumption in the comment above ("the message was sent and
-> PF will eventually respond") hold when IAVF_FLAG_PF_COMMS_FAILED is set?
-> iavf_send_pf_msg() returns success without posting anything in that case.
+A terminating lateral chain longer than eight hops, or several shorter
+lateral segments separated by legal descents, would exhaust the budget.
+Such a chain is constructible with plain tc commands because bindings are
+only checked at bind time:
 
-The iavf_send_pf_msg() returning 0 when PF_COMMS_FAILED is set is a
-pre-existing design choice that affects all virtchnl callers, not just
-this path. The scenario requires the PF to be unresponsive
-(iavf_disable_vf() has run), the VF is non-functional at that point.
-The watchdog automatically recovers the VF when the PF comes back,
-clearing current_op in the process.
+net/sched/sch_hfsc.c:hfsc_bind_tcf() {
+	if (cl != NULL) {
+		if (p != NULL && p->level <= cl->level)
+			return 0;
 
-> [Severity: Medium]
-> Is this -EBUSY reachable as a hard failure from the new caller?
->
-> iavf_set_mac() runs with the netdev instance lock held, and the only
-> context that clears current_op is iavf_virtchnl_completion(). Can "ip link
-> set dev X address ..." or bond_enslave() now fail with -EBUSY whenever the
-> watchdog has a command in flight?
+and levels are raised afterwards with no revalidation:
 
-Same concern addressed in previous comments. Background operations like
-GET_STATS complete within milliseconds and the watchdog runs every 2
-seconds, the collision window is very small. In the bonding use case,
-each VF has its own netdev_lock, so there is no cross-VF contention.
+net/sched/sch_hfsc.c:hfsc_adjust_levels() {
+	do {
+		level = 0;
+		list_for_each_entry(p, &cl->children, siblings) {
+			if (p->level >= level)
+				level = p->level + 1;
+		}
+		WRITE_ONCE(cl->level, level);
+	} while ((cl = cl->cl_parent) != NULL);
 
-Fail-fast with -EBUSY is semantically correct and allows immediate
-userspace retry. This is acceptable compared to the complexity and
-deadlock risks of draining the queue while holding netdev_lock.
+So for sibling classes A1..A10, each with one leaf child, binding a filter
+on A_i with flowid A_{i+1} while A_{i+1} is still a leaf passes
+hfsc_bind_tcf(), and adding a child to A_{i+1} afterwards turns that hop
+lateral.  Would resetting drift back to HFSC_CLASSIFY_MAX_DRIFT on every
+descending hop match the documented intent?
 
-> [Severity: Medium]
-> Is this helper able to roll back a filter whose is_new_mac is already
-> cleared?
->
-> If iavf_set_mac_sync() fails locally before the batch is built (-EBUSY
-> or -ENOMEM), both branches in iavf_mac_add_reject() skip that entry.
-> Does the PF then end up with a primary MAC that differs from
-> netdev->dev_addr?
+Should this path use break instead of return NULL?  The two existing
+failure exits in the same loop break out to the default class:
 
-Continuation of the previous concern, same scenario requiring the primary
-MAC to already exist as a secondary filter. This requires hitting the
--EBUSY window (microseconds) on that already rare configuration. Even
-then, the state is recoverable on retry or VF reset.
+		if (!cl) {
+			cl = hfsc_find_class(res.classid, sch);
+			if (!cl)
+				break; /* filter selected invalid classid */
+			if (cl->level >= head->level)
+				break; /* filter may only point downwards */
+		}
 
-> [Severity: Medium]
-> The kernel-doc promises "or error code", but ret is only ever -EAGAIN or 0,
-> and the iavf_clean_arq_element() status is dropped here.
->
-> Should that be reported instead of spinning to the -EAGAIN timeout?
+	/* classification failed, try default class */
+	cl = hfsc_find_class(TC_H_MAKE(TC_H_MAJ(sch->handle),
+				       READ_ONCE(q->defcls)), sch);
 
-The function returns 0 on success or -EAGAIN on timeout. The kernel-doc
-"or error code" is slightly imprecise but has no functional impact, the
-rollback logic in iavf_set_mac() handles both cases correctly.
+With return NULL, a configured defcls leaf is skipped and hfsc_enqueue()
+does qdisc_qstats_drop(sch) plus __qdisc_drop(skb, to_free).
 
-> [Severity: High]
-> What happens to this loop if a VFR/EMPR lands while it is polling?
->
-> With the reset sentinels, 0xdeadbeef & 0x3FF is 751 and 0xffffffff & 0x3FF
-> is 1023, both well above hw->aq.num_arq_entries. Can this then "clean"
-> descriptors the hardware never produced and busy-spin on MMIO for the
-> remaining 2.5 s while holding the netdev instance lock?
+On the macro comment itself, is "mirroring htb's TC_HTB_MAXDEPTH headroom"
+accurate?  htb_classify() increments hops on every inner hop and HTB
+enforces a maximum depth of TC_HTB_MAXDEPTH structurally, so its bound
+cannot reject a legal walk.  HFSC caps neither class level nor hierarchy
+depth, so the value 8 has no equivalent backing here.  Could the comment
+and the changelog sentence "anything beyond a small budget is a cycle" be
+reworded to describe the heuristic that is actually implemented?
 
-The poll loop is bounded to 2.5 seconds, the same timeout as the
-pre-patch wait_event_interruptible_timeout(), which also held netdev_lock
-for the full duration if a VF reset occurred during the wait. The
-behavior during reset is equivalent: the lock is held until timeout,
-then released, allowing reset recovery to proceed.
+Also, the warning text asserts "classify loop detected" on a walk where no
+class has been revisited.  Would a message that reports the budget being
+exhausted be more accurate?
 
-The synchronous polling is a change in mechanism, not in behavior.
+>  		/* apply inner filter chain */
+>  		tcf = rcu_dereference_bh(cl->filter_list);
+>  		head = cl;
 
-> [Severity: Low]
-> Should this use event->buf_len rather than the hardcoded
-> IAVF_MAX_AQ_BUF_SIZE?
-
-The only caller allocates IAVF_MAX_AQ_BUF_SIZE, no issue today. A
-hypothetical future caller would need to match the allocation to the
-memset. Not a bug, just defensive coding for a reuse scenario that
-doesn't exist.
-
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-CTUU.v2.20260913192614%40mojatatu.com
