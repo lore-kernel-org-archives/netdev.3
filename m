@@ -1,57 +1,57 @@
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25334A2A57
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:28:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2907477E39
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:28:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789460889; cv=none; b=LG+Oj7tVOVbmuBgzpc1KD4n0CWbAjNK2kM1ep7lPZzdrkGz50kU/LEvoE8jN91f2D8XLHriJyK0LQJWO+RomysnPHWHkXncE50pY+0EX2ivJ6uffyIW94pnyw8Nxtn1v3RvPrzoYaQzUImPRUa5fx7p8eo4Bm6TNPMFHBPmehBU=
+	t=1789460897; cv=none; b=B4lAXzhwz1sppMeyJLHA3r5uERM+OMvZxRp09jGpqVBRRO3h4PF1oYQtMcdoNN41whgS/4oCi/pZ+erSg3W5o41/WmG+OA4cilTJC8Xcf4DETfi8w5L2iVbL6Xjr20ZXOyR4vfW1B2ph0d3zoMuorZZwIBlVxmJWqx1U52/DUug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789460889; c=relaxed/simple;
-	bh=7ISDVBxGmgeCdxhmRRdB69cX7Bxvnv7xpoH47YwrzBI=;
+	s=arc-20240116; t=1789460897; c=relaxed/simple;
+	bh=lI3TjsMof+VUseu3jlc4aD2v6CaqWDV2PaTkxHX+GRE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=PSJznQLtdMdn0qAAQYrrFZODafPQXoO72IkNGMVGv0mIyJbGEikzCSYWzzG49fkI8WQUk6dhscX4V2GRQe2eSWlzszGp1cuniZbdR31YVZlCAIY32FqJo6j7d7K0Df5zaXPo4Z6QQRQglBr0EOm5yMae7cQJOauQKqzLUJukI4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--morbo.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EOxZHs9Q; arc=none smtp.client-ip=209.85.210.199
+	 To:Cc:Content-Type; b=iUmnPCkn0hpMHojFw3trVshzjB2y0vzJsgSs2+nCUiT4NSOt/QhsJiOohEfrtZc9il71NQdPMSOIqdaNv6mLt0xP5rm4axd0di7JINLMwdkwN4IGvMHm3ZOgtH/kNuIb5JAsD5AqkzLceZhcBRHBSTErq9x08rHk5L7I7zV83Yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--morbo.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XnziF8H/; arc=none smtp.client-ip=209.85.222.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--morbo.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EOxZHs9Q"
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-86b3c58d686so8691618b3a.3
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 01:28:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XnziF8H/"
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-939f3426a7cso749361085a.0
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 01:28:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789460887; x=1790065687; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789460894; x=1790065694; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=Yp7aMeBt5kbv9wDm9MP1w/VhRzf84I2dhiWVAxjsG5I=;
-        b=EOxZHs9QoZA1DRdqpl4zd9RrlBd0oIi6KQ8U/RAfP9G09J6aBf3ydZUzXgWPrJFDDa
-         9z8YOnQwKS42tydJNZ7HrdfsvyJqCEudVgzJXM/N7ikFobQbb2FhkHzIm/n3u754TYux
-         VMjxpW5R2Z8VENAf8dO+mRBQiYv9Jt08X/QxM0ZcoD2oiyIXBBIHxyjIT5J1kw4wVMwF
-         mQtwfPRpqhhQs1piXe/QmfOl3lXl4a5m6/HwGn08t6V+xUYjzQSGt3Y5OvkAAIbSoyYP
-         TiaGeZlegJVPeCjPhEYlQx9m7pt/BvfDpwy1Oge6lZ2Q4af1K+J37X3A5Z8YI9UJ6fWo
-         IdQw==
+        bh=jD1fGYdmSfmtHfbCTu69NC0iIcRgu3QWne7aaYuG46g=;
+        b=XnziF8H/Y2qlztZIFjihMJb7yEMO+I3ILJ1qDEsdY+hNphLdkjm/bXDv1FD9mO1f3E
+         PpuNbaR1+RKQgxp5cUZNHk327EGqJcbAcz3XiqLnPJNA/85Wkb1afx/p1s0uYcx7vUmJ
+         hImXJFXYBN78GGlJxlHcAiYW0d03DWSv1NlXizOXbKgW2TS72ACzLHHp5tCZfdcXj+53
+         r4GUNwxjniqqrPx2gEYZXTzjcb+EXn4XkJKlT1SmB5FwEMuWFQK91ESgHxidO+VxUQMa
+         QYPBH1RgDj5mjoEQ/uJ0kN03UTWq1rBYLSHibdpBssgE/XFsCAvTaXU6DfrHIiH6LVZB
+         F0hA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789460887; x=1790065687;
+        d=1e100.net; s=20260707; t=1789460894; x=1790065694;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Yp7aMeBt5kbv9wDm9MP1w/VhRzf84I2dhiWVAxjsG5I=;
-        b=DWR9jU9dOJbqqfZwbOd1uNJBBaYlgIAHRUNSmbPQ/ikm1yFJrbJx9IBQX//aPKOwpj
-         I83VsXyTZiSKQ+pTIM+sSPuTU3kFmzBDYMYg5doLiieyKM8HuaiVNdakOd6r6r6e5sup
-         Mwc983w97LlVup6fdD/zz6gWcATP1hl1SEotGwpQlJ7JfMPbvYRCCSJjEKKiY6zk5AKw
-         CJyt3hnYne7A/itTyZxT/kO6jpszSJfksPAKecJ0CIQRp7Gsy9XwaELlsZktP6htVdYv
-         dm3Aci64IRRujqpRF182Fb0Hubk90HPJ2apwo1NOVogeWH6QumnReK866MeIkeWK3+be
-         MFOA==
-X-Forwarded-Encrypted: i=1; AKwUvBz0Fp721ep67a1sOtR0t5opqezGp3UpPDevzaEEwVig9HhVVRLPe3u2kvfYEEekSdstaXHdpoU=@vger.kernel.org
-X-Gm-Message-State: AFuF++nT61vbCzE83cc+MJe2InVhH4QsHSLFSGJaGKapyqLl6CO6pYDz
-	i24rv5ItQ/UqqNRPUEcMYBe4yqpggopP5U9Uo+svgSDoFAdA4j6kTqbkuq1He+p0mVPwZc1SpiD
-	8
-X-Received: from pltt2.prod.google.com ([2002:a17:902:d142:b0:2dd:5303:f006])
- (user=morbo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f64f:b0:2dd:278c:5eb
- with SMTP id d9443c01a7336-2dd83851f4amr602125ad.14.1789460417430; Tue, 15
- Sep 2026 01:20:17 -0700 (PDT)
-Date: Tue, 15 Sep 2026 08:18:43 +0000
+        bh=jD1fGYdmSfmtHfbCTu69NC0iIcRgu3QWne7aaYuG46g=;
+        b=Ee2sutSdvGvRMNCimyuYUp3lq/YIBwQ0eKodOIH0vYM8KRsb6GyuggGx8VIOxVAbgl
+         N66DaT4fqd/GsLQYt1sZEcBZf0DjUZbfFUlkbtHYU6AKSl7tcoqIAqYmBX3pSHiCUMGW
+         27HuHYNbT9OnCVFJjnhBAJFAAD/j1iMuuDnL3+3QVt0NEoolXb7iInUqW85vRvF2BVWv
+         aRt9RsJjeiUvYDwNV72moznygXiR1khl0obSAECGEdwWTuuKqf+C7iv4MWiG7ZIo6hF9
+         6Y9bHSk8vfBLvRbcrU3GSnJlUHgx01jpzk/23KFBzjgAELNlKXaytvUDKEoSAcwqNZYf
+         9KkQ==
+X-Forwarded-Encrypted: i=1; AKwUvByIWcZ6lguXnjSESXIHEoVYYM+G+PNSAGoSECQnw8Rf2lJRj0SFZXr7R2i5yH3iCOJ2HpUBcIM=@vger.kernel.org
+X-Gm-Message-State: AFuF++ndalfY7huMRAWAh+GlJLC9aY19zDycGYgryrBIB3jz9e2vqgIJ
+	GORchg1IEML/J+1jyHVpjo2wLi/2Tk4f4axr/Ln9s7+s4cs40U8J7WrXOwZSn1UmEdafgHJyLn9
+	E
+X-Received: from plbkq15.prod.google.com ([2002:a17:903:284f:b0:2dd:1c44:fe2])
+ (user=morbo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1a0c:b0:2d9:464f:d45f
+ with SMTP id d9443c01a7336-2dd6c5ba2f0mr129830935ad.5.1789460408347; Tue, 15
+ Sep 2026 01:20:08 -0700 (PDT)
+Date: Tue, 15 Sep 2026 08:18:33 +0000
 In-Reply-To: <20260915081910.4142719-1-morbo@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -61,8 +61,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260915081910.4142719-1-morbo@google.com>
 X-Mailer: git-send-email 2.55.0.1032.g73a4cd73de-goog
-Message-ID: <20260915081910.4142719-27-morbo@google.com>
-Subject: [PATCH 26/28] wifi: wil6210: Refactor resume_triggers2string() to use seq_buf
+Message-ID: <20260915081910.4142719-17-morbo@google.com>
+Subject: [PATCH 16/28] pinctrl: samsung: Use snprintf() to construct pin bank names
 From: Bill Wendling <morbo@google.com>
 To: linux-kernel@vger.kernel.org
 Cc: Bill Wendling <morbo@google.com>, codemender-patching+linux@google.com, 
@@ -123,16 +123,17 @@ Cc: Bill Wendling <morbo@google.com>, codemender-patching+linux@google.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-resume_triggers2string() builds a space-separated string of active resume
-trigger names using a series of conditional strlcat() calls.
+samsung_banks_node_get() constructs each pin bank node name by copying
+bank->name with strscpy() and appending the suffix with strlcat().
 
-In preparation for removing the deprecated strlcat() API[1], replace the
-strlcat() calls with struct seq_buf and seq_buf_puts().
+In preparation for removing the deprecated strlcat() API[1], format the
+node name in a single snprintf() call, which preserves the existing
+truncation check against sizeof(node_name).
 
 Link: https://github.com/KSPP/linux/issues/370 [1]
 Cc: codemender-patching+linux@google.com
-Assisted-by: CoPilot:1.0 [editor_update_file, make_kernel_build_single_file=
-]
+Assisted-by: Gemini:Pro [editor_update_file, make_kernel_build_single_file,=
+ checkpatch_run]
 Signed-off-by: Bill Wendling <morbo@google.com>
 ---
 Cc: Russell King <linux@armlinux.org.uk>
@@ -246,71 +247,26 @@ Cc: devel@lists.orangefs.org
 Cc: linux-hardening@vger.kernel.org
 Cc: linux-sound@vger.kernel.org
 ---
- drivers/net/wireless/ath/wil6210/wmi.c | 38 ++++++++++++++------------
- 1 file changed, 21 insertions(+), 17 deletions(-)
+ drivers/pinctrl/samsung/pinctrl-samsung.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/wil6210/wmi.c b/drivers/net/wireless/=
-ath/wil6210/wmi.c
-index 479b2418ca34..fcc9e9eb5732 100644
---- a/drivers/net/wireless/ath/wil6210/wmi.c
-+++ b/drivers/net/wireless/ath/wil6210/wmi.c
-@@ -7,6 +7,7 @@
- #include <linux/moduleparam.h>
- #include <linux/etherdevice.h>
- #include <linux/if_arp.h>
-+#include <linux/seq_buf.h>
+diff --git a/drivers/pinctrl/samsung/pinctrl-samsung.c b/drivers/pinctrl/sa=
+msung/pinctrl-samsung.c
+index 5ecc9ed4c44d..0d639eec689c 100644
+--- a/drivers/pinctrl/samsung/pinctrl-samsung.c
++++ b/drivers/pinctrl/samsung/pinctrl-samsung.c
+@@ -1155,8 +1155,7 @@ static void samsung_banks_node_get(struct device *dev=
+, struct samsung_pinctrl_dr
 =20
- #include "wil6210.h"
- #include "txrx.h"
-@@ -3162,27 +3163,30 @@ int wmi_suspend(struct wil6210_priv *wil)
-=20
- static void resume_triggers2string(u32 triggers, char *string, int str_siz=
-e)
- {
--	string[0] =3D '\0';
-+	struct seq_buf s;
-+
-+	seq_buf_init(&s, string, str_size);
-=20
- 	if (!triggers) {
--		strlcat(string, " UNKNOWN", str_size);
--		return;
-+		seq_buf_puts(&s, " UNKNOWN");
-+	} else {
-+		if (triggers & WMI_RESUME_TRIGGER_HOST)
-+			seq_buf_puts(&s, " HOST");
-+
-+		if (triggers & WMI_RESUME_TRIGGER_UCAST_RX)
-+			seq_buf_puts(&s, " UCAST_RX");
-+
-+		if (triggers & WMI_RESUME_TRIGGER_BCAST_RX)
-+			seq_buf_puts(&s, " BCAST_RX");
-+
-+		if (triggers & WMI_RESUME_TRIGGER_WMI_EVT)
-+			seq_buf_puts(&s, " WMI_EVT");
-+
-+		if (triggers & WMI_RESUME_TRIGGER_DISCONNECT)
-+			seq_buf_puts(&s, " DISCONNECT");
- 	}
-=20
--	if (triggers & WMI_RESUME_TRIGGER_HOST)
--		strlcat(string, " HOST", str_size);
--
--	if (triggers & WMI_RESUME_TRIGGER_UCAST_RX)
--		strlcat(string, " UCAST_RX", str_size);
--
--	if (triggers & WMI_RESUME_TRIGGER_BCAST_RX)
--		strlcat(string, " BCAST_RX", str_size);
--
--	if (triggers & WMI_RESUME_TRIGGER_WMI_EVT)
--		strlcat(string, " WMI_EVT", str_size);
--
--	if (triggers & WMI_RESUME_TRIGGER_DISCONNECT)
--		strlcat(string, " DISCONNECT", str_size);
-+	seq_buf_str(&s);
- }
-=20
- int wmi_resume(struct wil6210_priv *wil)
+ 	bank =3D d->pin_banks;
+ 	for (i =3D 0; i < d->nr_banks; ++i, ++bank) {
+-		strscpy(node_name, bank->name, sizeof(node_name));
+-		len =3D strlcat(node_name, suffix, sizeof(node_name));
++		len =3D snprintf(node_name, sizeof(node_name), "%s%s", bank->name, suffi=
+x);
+ 		if (len >=3D sizeof(node_name)) {
+ 			dev_err(dev, "Too long pin bank name '%s', ignoring\n",
+ 				bank->name);
 --=20
 2.55.0.1032.g73a4cd73de-goog
 
