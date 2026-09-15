@@ -1,126 +1,107 @@
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from va-2-115.ptr.blmpb.com (va-2-115.ptr.blmpb.com [209.127.231.115])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0177438423A;
-	Tue, 15 Sep 2026 07:15:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535EF31E84F
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 07:18:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.115
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789456549; cv=none; b=RZP52a40PDmZ7KyKyiF9wdwzn+yDkp49+xGUzosZHgp4otAG1VNKhe+0mPERA+XmWJP/14yUVdxE7A1lk/UXowePD9u6DWUII30pOIPY4XbTdDTZfWxUFm+5savBDG8YAXZ9dlOhuFdJIfFbiyIGi0MtAjqPCrfDyH6nRcZavRk=
+	t=1789456702; cv=none; b=keUxaldepylJaW50z5zlItGoYVhorMcp/dU4GIgFQUVYKANrttUn3z+qSZzUkmel6x64zuAJOjJrpnXMKLdMOr7wrJEtGnZSqIRvJv+K9C/AE3M3RvZ0y6UEJXo5GJa2NuGrmHolD5hsggZMzCUcUfoSRO7PvCov3vpKJPIRyxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789456549; c=relaxed/simple;
-	bh=dbDofAJzOD7kRcaOMCUP8xSI/nvZSHZ3HdUg41Vv+GQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gjXzaKzypHlVZxsZY7XPLSpA80NLga8fNXkO13oAWZlDpkDYMlwhFtOuQfg9S1W/nafWwLmMkopXU2HhWNyHmopi8FtxuMnMgcST315cXkQS6jsC77wFHR5SDFtRUEeFkrHvMh2cNFTunyKXHRuMzwHMS4GFXqZcRSSXHYnacMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=jbZUfewF; arc=none smtp.client-ip=220.197.31.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	s=arc-20240116; t=1789456702; c=relaxed/simple;
+	bh=WPjmzXV0oRUSu6jjE8ItS8IHx7MXiaHsntQbQfUvp0c=;
+	h=Date:Message-Id:Content-Type:From:Subject:To:Cc:Mime-Version; b=OluBkxN+Nf92hgiSFOAR/CT73zf/qp4iVlJphohK7sazRdlAmNBTPuWnL5uN2u64fxxUivPVwrkoxEH5tacUnBM1HO2dfnzK6qaZqbjhYN7rWzaeTmtaxbOg81FE1hmvMRMCvKjlLRYDLhOfcUeSZcfaieiwiB184R988zFDQsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=qp1lAlJ2; arc=none smtp.client-ip=209.127.231.115
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="jbZUfewF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Mz
-	w8wjlNPlBuD8FWvB+1DdecCrMSj+FthQONbcurIVE=; b=jbZUfewFMGt+X733RM
-	eo1SelXIZ4scom2ERX0LqtplBAgOEV8z1+jcvCXKoR4MhobcUj5+P7jofsSgBJ/d
-	NTznWVzEqJXkEpnXZnQFtSeQvWMA8nhz56l503IJf0qm7mkjOK3nF8l01eJSCedH
-	/DBJCth+dSNPKBNk8JWZkCSzM=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wDXF8J58KhqsRw2BQ--.17892S2;
-	Tue, 15 Sep 2026 15:15:07 +0800 (CST)
-From: Linkui Xiao <xiaolinkui@126.com>
-To: dsahern@kernel.org,
-	idosch@nvidia.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Linkui Xiao <xiaolinkui@kylinos.cn>
-Subject: [PATCH net v2] ipv4: fib: fix data-race and stale genid check around nh->nh_saddr
-Date: Tue, 15 Sep 2026 15:15:03 +0800
-Message-Id: <20260915071503.465875-1-xiaolinkui@126.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="qp1lAlJ2"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1789456689; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=rpZp6c+c9TilKHtms8cL/6N80wMrjmu+kVr2MiahNVk=;
+ b=qp1lAlJ2yMfphrakgB0MtW2rDtRWT8D3zNZtyrCLesUtRW1mTzwTfnM9noXhOE4zkzJDip
+ j/ubuZ3K7bsMCvYE4uJcuXqd3xwDGYHQ0XoQqLiPkIKHocFy4+NKaEkZOW7qVPSyd51OGP
+ j8JjW/H7W7Q3/HsRKwm3Zec/bbF5ZXUNocsp/liEgUdOSRtcSYIZcibItq/+hL7p1oYOQH
+ z9/IWdrxPpbJXDiM1zgvJKm5QEFyGDuZBaR8AUmykfTWR7zHmhzyRbAFzjQ6lVm9Xow7aD
+ x1u+fFz+NE9IpE4541NqVJrlGCt/ThE17cbwaNJkJq2FW1FK6q7qtVicxYNpvw==
+X-Original-From: Zhao Gongyi <zhaogongyi@bytedance.com>
+Content-Transfer-Encoding: 7bit
+Date: Tue, 15 Sep 2026 15:17:43 +0800
+Message-Id: <20260915071743.29394-1-zhaogongyi@bytedance.com>
+X-Lms-Return-Path: <lba+26aa8f12f+028877+vger.kernel.org+zhaogongyi@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+From: "Zhao Gongyi" <zhaogongyi@bytedance.com>
+Subject: [PATCH bpf] bpf, sockmap: reject max_entries > INT_MAX in sock_map_alloc
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+To: <bpf@vger.kernel.org>
+Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<john.fastabend@gmail.com>, <jakub@cloudflare.com>, 
+	<jiayuan.chen@linux.dev>, <edumazet@google.com>, <kuniyu@google.com>, 
+	<pabeni@redhat.com>, <willemb@google.com>, <davem@davemloft.net>, 
+	<kuba@kernel.org>, <horms@kernel.org>, 
+	"Zhao Gongyi" <zhaogongyi@BYTEDANCE.COM>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDXF8J58KhqsRw2BQ--.17892S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxWr4kCF45Kr1ftrykur48WFg_yoW5Xr1fpF
-	W8AasFq347Xay3AFs2qF47A3W8uw4Fya4F9ryIk390vwn8X343XFySg3sY9as8ZF4kXw43
-	AF4kWr1UArWq9aDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UpVb9UUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqRsf9Wqo8Hun6wAA3d
+Mime-Version: 1.0
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
+From: Zhao Gongyi <zhaogongyi@BYTEDANCE.COM>
 
-fib_select_multipath() compares nexthop_nh->nh_saddr against the flow
-source address with no lock held, while fib_info_update_nhc_saddr()
-stores a new value from another CPU as soon as the preferred source
-address of the egress device changes.
+sock_map_alloc() only rejects max_entries == 0 and never caps the upper
+bound.  sock_map_free() then walks the sks[] array with a signed int
+iterator:
 
-Commit 195374d89368 ("ipv4: fib: annotate races around nh->nh_saddr_genid
-and nh->nh_saddr") added WRITE_ONCE() on the store side and READ_ONCE()
-in fib_result_prefsrc() after syzbot reported
+	int i;
+	for (i = 0; i < stab->map.max_entries; i++)
+		struct sock **psk = &stab->sks[i];
 
-	BUG: KCSAN: data-race in fib_select_path / fib_select_path
+When a SOCKMAP is created with max_entries = 0xffffffff (UINT_MAX), the
+allocation of 32 GiB can succeed on large-memory hosts.  During free the
+counter reaches 0x80000000, wraps to INT_MIN, is sign-extended by movslq
+and turned into a ~16 GiB negative offset from stab->sks, pointing far
+below the allocation.  On a KASAN kernel the shadow check for that
+address hits an unmapped shadow page and oopses:
 
-but it only covered that reader. fib_select_multipath(), reached from
-fib_select_path(), is a second lockless reader of nh->nh_saddr and was
-left bare.
+  BUG: unable to handle page fault for address: fffff521b59c5a00
+  RIP: 0010:kasan_check_range+0x107/0x190
+  Call Trace:
+   sock_map_free+0x93/0x190
+   map_create+0x68d/0xb30
+   __sys_bpf+0x21e/0x2e70
 
-Moreover, nh_saddr is only meaningful when nh_saddr_genid matches
-dev_addr_genid, as established by 195374d89368. fib_select_multipath()
-skips that validation, so it can score a nexthop using a stale source
-address and skew the ECMP selection.
+Vmcore confirmed stab->map.max_entries == 0xffffffff, stab->sks ==
+0xffffc911ace2d000, and the faulting address sks + (s64)INT_MIN * 8
+exactly at 0xffffc90dace2d000.  The same Oops triggers on the normal
+close()/bpf_map_free_deferred() path whenever such a map is destroyed.
 
-Annotate both reads with READ_ONCE() and add the missing genid check,
-mirroring fib_result_prefsrc().
+sock_hash_alloc() already bounds its allocation (buckets_num >
+U32_MAX / sizeof(bucket)).  Reject max_entries > INT_MAX at creation
+time so the signed iterator in sock_map_free() never sees a value that
+would overflow.
 
-Fixes: 32607a332cfe ("ipv4: prefer multipath nexthop that matches source address")
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+Triggered by syzkaller and reproduced on both a 6.6-based KASAN kernel
+and the upstream v7.3-rc2 kernel.
+
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Signed-off-by: Zhao Gongyi <zhaogongyi@BYTEDANCE.COM>
 ---
-V1: https://lore.kernel.org/all/CANn89iJhFL2LNQCXTANQAx8B1GVdGTJgrDwPTZOjbH8k1ygtsg@mail.gmail.com/
+ net/core/sock_map.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-V2:
-- point Fixes: at 32607a332cfe, which introduced the bare reader
-- add the missing genid check as suggested by Eric Dumazet
-
- net/ipv4/fib_semantics.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
-index 7a362f2e2c2b..e2bfc11aea09 100644
---- a/net/ipv4/fib_semantics.c
-+++ b/net/ipv4/fib_semantics.c
-@@ -2184,6 +2184,7 @@ void fib_select_multipath(struct fib_result *res, int hash,
- 	bool use_neigh;
- 	int score = -1;
- 	__be32 saddr;
-+	int genid;
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index ca49bc7f8..38df84284 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -41,6 +41,7 @@ static struct bpf_map *sock_map_alloc(union bpf_attr *attr)
+ 	struct bpf_stab *stab;
  
- 	if (unlikely(res->fi->nh)) {
- 		nexthop_path_fib_result(res, hash);
-@@ -2192,6 +2193,7 @@ void fib_select_multipath(struct fib_result *res, int hash,
- 
- 	use_neigh = READ_ONCE(net->ipv4.sysctl_fib_multipath_use_neigh);
- 	saddr = fl4 ? fl4->saddr : 0;
-+	genid = saddr ? atomic_read(&net->ipv4.dev_addr_genid) : 0;
- 
- 	change_nexthops(fi) {
- 		int nh_upper_bound, nh_score = 0;
-@@ -2204,7 +2206,9 @@ void fib_select_multipath(struct fib_result *res, int hash,
- 		    (use_neigh && !fib_good_nh(nexthop_nh)))
- 			continue;
- 
--		if (saddr && nexthop_nh->nh_saddr == saddr)
-+		if (saddr &&
-+		    READ_ONCE(nexthop_nh->nh_saddr_genid) == genid &&
-+		    READ_ONCE(nexthop_nh->nh_saddr) == saddr)
- 			nh_score += 2;
- 		if (hash <= nh_upper_bound)
- 			nh_score++;
+ 	if (attr->max_entries == 0 ||
++	    attr->max_entries > INT_MAX ||
+ 	    attr->key_size    != 4 ||
+ 	    (attr->value_size != sizeof(u32) &&
+ 	     attr->value_size != sizeof(u64)) ||
 -- 
-2.25.1
-
+2.39.5 (Apple Git-154)
