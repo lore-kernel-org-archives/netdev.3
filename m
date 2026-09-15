@@ -1,68 +1,87 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B703B9935
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:12:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05DD3D47A1
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:13:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789459957; cv=none; b=EZfp1wPbKRfdJp7FmrFSkuEm9Oi949ZfCsE0aXQG8hGdkZoTsngdrU6xhd1xkj4K8rs6uZFPptEN/ACN2TZae3/QIiCL+FRow/2UpPj0UEW24L9VhLsXihJjU2CY2VPUzErcEzyIW7hTmUyL50NfOD5aBx7qNIS1eYGnafjDMWw=
+	t=1789460015; cv=none; b=jHz2jKFPj8j5isRDVRpIDO8yXLPb1hYpddOwkI9iDXDpNAS9MCmk7p2pZpjzc8Rm/ozOm7qjCdcKiw8vtAng4j+J2862Iy/2PR6GYZ4MuikUzFhHLNWF8uaQuMbkFIfYf3Y/f2bu1gQk1fZiKqnriHryjaD+hiR+QDykNVNSY/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789459957; c=relaxed/simple;
-	bh=BoO2FTAyTI6F4cYRTOhVtNgV5d2eTPvtAtnPei4RUAY=;
+	s=arc-20240116; t=1789460015; c=relaxed/simple;
+	bh=jiiyXOZojpsENCUnGFE76LMjg/PvEFnumM2R/jc4XRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SSEihSh7x7+aZutzHSKvj73VjwwHNgSJ1nqTzbmfV1n0QPH8/KTZN7vSriCOZgRVdw8BUkuymIDzvzP4Ka1y+MYPaLWZ8hpiVMMWRnYeqE/F/bEdsoNQnsRg2fkd85W5bXGsCx/Myda7vMHFupgCmgZS0BaKXBwrj3Ka1kNFJjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=e//bXBD0; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 MIME-Version:Content-Type; b=sioDrJeKX6ca8Tnu9h3M1kwUOrUMAXYI5oUa1Gk45qZwBRjAyXLJbpulb7/jYNN8OLPhuHESVTCF/s/KFhbxDzLm7i+rWDi/wvOBfG8cl2IAFCBd0ilCGOcej8P8FfmBqsmz40upO6irgjT10WvYyH8Z+AKH7jPAe63jc/VIFRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G6uYjRin; arc=none smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="e//bXBD0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789459953;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dZrMp1xXvVLE6vjhWMU4i0OTjJAbdj66RfQfoirCJwk=;
-	b=e//bXBD07UnrrEH2AyWbinrcyNUVh+/dkNMIzU7/R9Y6KrTeGeOUM5VyjqtNOt88Hxwdcw
-	fLox/B4UicRWefknR8CPXg9RgfM0FIpuGI/XaVNwtq8xY0DQqV1gwoznYLj3/sX6rX2lZl
-	VzlmQ2vpqgeXtEK0GpTxwWLjBBFI5cQ=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-507-FZ_pyM-EMO6Ap2b5wuM9bw-1; Tue,
- 15 Sep 2026 04:12:30 -0400
-X-MC-Unique: FZ_pyM-EMO6Ap2b5wuM9bw-1
-X-Mimecast-MFC-AGG-ID: FZ_pyM-EMO6Ap2b5wuM9bw_1789459948
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 05E2E1802578;
-	Tue, 15 Sep 2026 08:12:28 +0000 (UTC)
-Received: from fedora.redhat.corp (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id ABBC8756;
-	Tue, 15 Sep 2026 08:12:23 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: kuba@kernel.org
-Cc: aleksandr.loktionov@intel.com,
-	andrew+netdev@lunn.ch,
-	anthony.l.nguyen@intel.com,
-	davem@davemloft.net,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G6uYjRin"
+Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc4c08393dfso2058965a12.3
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 01:13:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789460013; x=1790064813; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=jiiyXOZojpsENCUnGFE76LMjg/PvEFnumM2R/jc4XRM=;
+        b=G6uYjRinJoNx6dg1TflCMLfa9/ljrnDgRD3QKHQb39O7TujgMUo+pF02nSqFVh0Gek
+         qmYpR2DchQi9NgwiWJ95+6YvTRBdqWCeXMqElkBAx4jtfV6cfKDWIMKYQ9v9lSFchXPr
+         fEjqUfgzHEb3VK1Ovv+YIy61kv4XvBJOj/gc6BkPBPmZJIIhVdCDPuMDilKjmWiDjQLO
+         wsG4wo6VvzThIC6tEJpceKCFejoB6aeOrpHLX2gLl2rKZv+uQAeIx6KjnK6Y7QcfDl2g
+         Bz0OMaR1TjgdYUo8/8PE0AclfoC5pFPCudrm/Z8y7+r2DwlEKyWAJUXn7pGerchTzVnF
+         c1ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789460013; x=1790064813;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jiiyXOZojpsENCUnGFE76LMjg/PvEFnumM2R/jc4XRM=;
+        b=1Q5Y7gwP1slhAquhXrd4W9iuaIY8PmtWfrNY8p5WfqtooeS5tPuhiS6APJE0C6BS/P
+         EXE+qpEnCiyH3ZzqS3U0vHycOP59lkCKwFEpjX/RREafNCCtucnJkixuyK8hwSHrHXsS
+         2l+kgqSAuib+CKWqbE41r8pTTwRVvKlhWUit2ONEL/e/0Ovp7pXij4uoGHW+d6IeDQuU
+         dCz6uSRDkYhPE7NWsDnG5ghYiKYIFp4VMHVv9Ob9S9kdk0t4Yn2FnI6gRbiKJZjlqFVe
+         6hl+tY9BFsuEarvaNPjPG3C4iiHEWjxGW6BH5wYR4bA4QI8c20mPhTSuyhCXKrPYhLsV
+         0PxQ==
+X-Forwarded-Encrypted: i=1; AKwUvByQUImPgGCEevoGo6NygLKaIOdnHxLzOV0thFssbrvWqJVCbo6T59GViJPX2k2XbbFupMyIZns=@vger.kernel.org
+X-Gm-Message-State: AFuF++m6a1kmyPAqK8c6sILTZk+46obTQwp74wxPq8dQj3tW55f+K1D0
+	m3yCvfc/JVb9LF0yK7DocDa1kH8pBzi9+wtN92O92Ls91pcdonufmz2e
+X-Gm-Gg: AYBFou3f1qJ6sYiqJdpTbVquxkIXkSLxQKznEsP2/frIBgrJUM1Z4Ivjmktsv4JJEeP
+	FqEGWbmfqw5sp1m8AHhDZXJ3a9mk5hQN4jtAr0XbA9qJDlv3M4ImgWhmaVZ3KOiraPJfXz5FWut
+	7ECqNu6hvSwotrWqRfkfkMu8raSBpQahM3WETmRJA89kIWfgk+jw5efpzrMrcHnAATpX6XlOA2n
+	uGYIjAaDtkmhw0o8oLP/pbMDn7zeaEy8QQom3lMEkuYcOk67lTZQn2p2hdOLpTeHFzVWvW5v9Py
+	cM6KVUhF3ZvfEDDekML/loopDfaj56O0MoGaXOKdmUmlHKNlPZGbUdly+u7C4GxVdSaJx295AVh
+	Wy1zvXuG2hdMvtA3x/j7CAUxb5euC8+OZBygWIAD2nJhPa9KOb5cN4frbYePjy1eG9ZKi7aK+RE
+	oSFvQzl44CycVqc6jCXtN3elnCrg3eGFg9RylAaIVzKVG7NKHF8RUvAKQ/HaHBpdj6GXl0vdQq0
+	jdSY3NNSremACXGBq6A7CDAscKUid8=
+X-Received: by 2002:a05:6a21:4cc6:b0:3da:bd6d:bef4 with SMTP id adf61e73a8af0-3db40622a50mr12913747637.13.1789460012618;
+        Tue, 15 Sep 2026 01:13:32 -0700 (PDT)
+Received: from localhost.localdomain ([103.120.31.178])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14365ba729dsm49686987c88.14.2026.09.15.01.13.26
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 15 Sep 2026 01:13:31 -0700 (PDT)
+From: Khawar Ahemad <ahemadkhawar123@gmail.com>
+To: maciej.fijalkowski@intel.com
+Cc: bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	magnus.karlsson@intel.com,
+	sdf@fomichev.me,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
 	edumazet@google.com,
 	horms@kernel.org,
-	jacob.e.keller@intel.com,
-	jtornosm@redhat.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	przemyslaw.kitszel@intel.com,
-	rafal.romanowski@intel.com,
-	sdf@fomichev.me,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net 1/4] iavf: return EBUSY if reset in progress or not ready during MAC change
-Date: Tue, 15 Sep 2026 10:12:19 +0200
-Message-ID: <20260915081222.13970-1-jtornosm@redhat.com>
-In-Reply-To: <20260824190145.2714480-1-kuba@kernel.org>
-References: <20260824190145.2714480-1-kuba@kernel.org>
+	syzbot+aa48b5fe7bfda62d1682@syzkaller.appspotmail.com,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 net] ipvlan: unregister upper devices outside pnodes_lock
+Date: Tue, 15 Sep 2026 13:43:22 +0530
+Message-ID: <20260915081322.7551-1-ahemadkhawar123@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260828164918.451364-1-maciej.fijalkowski@intel.com>
+References: <20260828164918.451364-1-maciej.fijalkowski@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,89 +90,19 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-All the comments below fall into pre-existing issues, concerns already
-addressed in previous versions and comments, out-of-scope items, or extreme
-edge cases. No code changes are considered necessary for a new version.
-Details for each comment:
+Hi Maciej,
 
-> [Severity: Low]
-> This paragraph describes a user-visible behaviour change caused by
-> ad7c7b2172c3, but there is no Fixes: tag on this commit.  Was that
-> intentional?
->
-> Worth noting that this commit does not actually remove the wait under the
-> netdev instance lock: after this patch iavf_set_mac() still calls
->
->     ret = wait_event_interruptible_timeout(adapter->vc_waitqueue,
->                            iavf_is_mac_set_handled(netdev, addr->sa_data),
->                            msecs_to_jiffies(2500));
->
-> so a Fixes: ad7c7b2172c3 here would arguably be misleading.  The later
-> patch in the same series, "iavf: send MAC change request synchronously",
-> does carry Fixes: ad7c7b2172c3 and cc: stable, which looks like the right
-> place for the provenance.  Is that the intended split?
+Thank you for letting me know, and for the fix — fixing it on the ipvlan
+side by releasing pnodes_lock before unregister_netdevice_many() is a
+cleaner solution since it removes the problematic lock ordering edge
+without touching the AF_XDP paths at all.
 
-Yes, that is the intended split. This patch is a preparatory improvement
-that adds a best-effort early bail-out, but it does not remove the wait
-under the netdev instance lock. Patch 3/4 ("iavf: send MAC change
-request synchronously") is the one that actually eliminates the
-problematic wait and carries the Fixes: ad7c7b2172c3 tag and cc: stable.
+Please consider my v6 patch withdrawn. I will not send further revisions.
 
-Adding Fixes: here would be misleading since this patch alone does not
-fix the problem — it only reduces the likelihood of hitting it.
+I am sorry for the noise caused by the multiple revisions during this
+process, and I appreciate both the feedback and the patience from you and
+the team.
 
-> [Severity: Low]
-> Is this check-then-act sequence racy against the reset scheduling path?
->
-> iavf_is_reset_in_progress() does plain reads of adapter->state and
-> adapter->flags:
->
->     static bool iavf_is_reset_in_progress(struct iavf_adapter *adapter)
->     {
->         if (adapter->state == __IAVF_RESETTING ||
->             adapter->flags & (IAVF_FLAG_RESET_PENDING |
->                       IAVF_FLAG_RESET_NEEDED))
->             return true;
->
->         return false;
->     }
->
-> IAVF_FLAG_RESET_NEEDED can be set from a context that does not hold the
-> netdev instance lock:
->
-> dev_watchdog()
->   netif_freeze_queues(dev);
->   dev->netdev_ops->ndo_tx_timeout(dev, i);    /* timer context */
->     iavf_tx_timeout()
->       iavf_schedule_reset(adapter, IAVF_FLAG_RESET_NEEDED)
->         adapter->flags |= flags;              /* non-atomic RMW */
->
-> net/sched/sch_generic.c only freezes the TX queues around ndo_tx_timeout(),
-> so there does not appear to be anything serializing that writer against
-> iavf_set_mac().  If the TX timeout fires just after the new test, does
-> iavf_set_mac() go on to the 2.5 s wait_event_interruptible_timeout() with
-> the netdev instance lock held anyway, i.e. exactly the case the check is
-> meant to reject?
->
-> The window is small and the fallback is the pre-patch behaviour (blocked
-> for up to 2.5 s, then -EAGAIN), so this looks like a best-effort guard
-> rather than a new failure mode.  Is that the intent, or should the state
-> and flags reads be done under the same serialization as the reset path
-> (and with READ_ONCE(), given the concurrent non-atomic |= on
-> adapter->flags)?
-
-Yes, this is a best-effort guard to inform the user as soon as possible
-instead of blocking with the netdev instance lock held. If a reset starts
-immediately after the check, the behavior falls back to the pre-patch
-code path: blocked for up to 2.5s, then -EAGAIN. No new failure mode is
-introduced.
-
-The flags/state access patterns (plain reads, non-atomic RMW on
-adapter->flags) are pre-existing throughout the iavf driver — the
-watchdog, tx_timeout, and adminq paths all use the same style.
-Introducing READ_ONCE / proper serialization here alone would be
-inconsistent and incomplete. That is a broader driver-wide cleanup,
-out of scope for this fix.
-
+Thanks again,
+Khawar
