@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711A23537CE;
-	Tue, 15 Sep 2026 22:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B0A4B2038;
+	Tue, 15 Sep 2026 22:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789513066; cv=none; b=hSHo3shBU5ynxK8WBM4JdXYYQZ48bGZ4ofy/R9IJBjrXrRtYsmVGU/xHYLogUQ4rMU93YAkC4pMjx6L2kV+FgRkcEs2GVlwFKTGFhVBEqK4fW7eME/q888IWu8nEKbzqEGGfUuQgCk7BCp7BRFjKELb8H6sdFuSHiZAv3fDacbo=
+	t=1789513067; cv=none; b=NpiOZfZZVtCZftAgOpY6DJKw3JjzbhBzlnf3w5pdvPSciJc4Fz8aOQYB4W02YSWb43+KaTQX9CUVanzLdcnSUSA1Z4c7AVTwDxLuHfgjX9s8q/uaBdTeqE9WvzelUfhU8bLj/ckpYaRf1P9Cqs9Yzf/CT3d8gM1enorzD5pXZFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789513066; c=relaxed/simple;
-	bh=40J3JuuggyXycxuu4XOC2srqPAHxluq5HBafWVrMUeA=;
+	s=arc-20240116; t=1789513067; c=relaxed/simple;
+	bh=BgvX9jrbueN5Rm/tJdbmgfwE8emytchohzujjQY0AhQ=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=B6/PVMuXrZGv58xGD/HyckuWQOFrWd9sIQ+NfTWbCk+1lKxBI1bwXvbY+xcxL9ZATQ/W+fDlQaePtbcHcwbd0faofgOnfXpHUbU3h7uAKzHb3nN3P9U+Rxet1j49U8q22mdxz9Y58u0ofTmRlPWf3TcKDIk2qeuoBJEMlK/xKWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R+dZitYk; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=ZEZlgd0fOLbUMk7hRlbIgOTssLNNJRnpuEQ8lfMVjuqpz1W6XOUOOlMz2R/LCBvhGO4XoreWOsufWd+bD7hi5J/3mUJ22zWQRHba15j8kH00dR3escz9nrxSQGyc3eEF7i1aOoOxN0zXt7zj7qS5ewRm1NdIOWF4+WZaKFVc9Qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S24GzRbT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R+dZitYk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D47821F0089A;
-	Tue, 15 Sep 2026 22:57:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S24GzRbT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2EF51F0089B;
+	Tue, 15 Sep 2026 22:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789513064;
-	bh=qedofXm9C6w9CwQAzJ5pVL+YdLbVAXTt8Ap9srmkuZU=;
+	s=k20260515; t=1789513065;
+	bh=0FAZDEJWUBcgNu/tPczl9wmWS8AZOsh/q/XmmRGLteo=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=R+dZitYk5q5a4ykKK6bzYXRTvDVqhRnlk4A+Co7psinRWA9jqV0oOq5zx45N2XRVs
-	 FfnkNiT8q1ilXfA1QsAUxwzkJrV95/Q0PFjVelqMEC0VbEdzyxSJNGdpBsgffgSnaY
-	 wc9mWRyz6Mbw1FDU+jI+9GHtjbq3y8fukaZN6w+jEX3V4gMiVjpC6Q7xrew7GB+BWW
-	 l7RVhZCXrQa88QPN3As/Y6b4UX0Ayk5lH+fTkurBHR2H5UwjlHsfFalNZ8YjyaFATN
-	 bKjUsLihM+kOn1L5qVP1i7oDrAlMH0+FeFIyic/An4qI2qk/ziGPzsyZOfc1vcVvRo
-	 Gsj608NyFMlVg==
-Subject: Re: [PATCH net v10 10/14] rxrpc: Fix RxGK key parser to check enctype
- is supported
+	b=S24GzRbToMjIREYN7CTuFayZ3MdlQGU1gjJGSyh5EooimK+kn8RtVxQgrlJc2Jfz1
+	 JF7RL7LZrfelEjr01cdVaR9HToX8quKqL35rXefUFLC6CePgsRmnUvJME/Vy1JdW1t
+	 4f7NRGgzgihqYYri2jAxzfipA0Xv3pWTEmY/5O8jvXuft/3/dfAv0w6iW+zsvmYb2L
+	 gxcy4dbL3p8rj7lPkIm2Ad4WtyZgykT0ojUGT/RiWQGshvvLgrfM74i+j60/7+koyp
+	 1qqplDBsLNgGqFm2DdEJfZSJWV6SOSdwGm2JdvKzP965pnNVeDDvQQTuf+ZGfJP+fK
+	 12HxHlC7m4bMQ==
+Subject: Re: [PATCH net v10 11/14] afs: Fix creation of RxGK CM channel token
+ to have right size
 From: netdev-bot+sashiko@kernel.org
 To: dhowells@redhat.com
 Cc: netdev@vger.kernel.org, marc.dionne@auristor.com, kuba@kernel.org,
  davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
  linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org
-Date: Tue, 15 Sep 2026 22:57:43 +0000
-Message-ID: <178951306345.22033.3166494756326322419@kernel.org>
-In-Reply-To: <20260914151340.3227501-11-dhowells@redhat.com>
-References: <20260914151340.3227501-11-dhowells@redhat.com>
+Date: Tue, 15 Sep 2026 22:57:44 +0000
+Message-ID: <178951306451.22033.10200734629950838825@kernel.org>
+In-Reply-To: <20260914151340.3227501-12-dhowells@redhat.com>
+References: <20260914151340.3227501-12-dhowells@redhat.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -52,114 +52,92 @@ issue(s) to consider:
 
 Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Medium] rxrpc_preparse_xdr_yfs_rxgk() charges the full token cost to
-  prep->quotalen at net/rxrpc/key.c:209 (`prep->quotalen += datalen +…
+- [Medium] Commit message gives a factually incorrect impact analysis for
+  the bug it fixes.
 
 --
 
-rxrpc: Fix RxGK key parser to check enctype is supported
+afs: Fix creation of RxGK CM channel token to have right size
 
-The RxGK key parser now looks up the userspace-supplied encryption type
-with crypto_krb5_find_enctype() and rejects the token if the enctype is
-unknown or if the supplied key length does not match the enctype.  The
-RxGK-specific token handling is also made conditional on CONFIG_RXGK.
+This adds the missing 4 bytes for the RXGK_Level field to the toksize
+calculation in afs_create_yfs_cm_token(), so that the size of the
+blob-to-be-encrypted matches the number of bytes actually written.  The size
+arithmetic installed by the patch looks right; the question below is only
+about the impact analysis in the commit message.
 
 Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824091645.415423-1-dhowells%40redhat.com
 
-> diff --git a/net/rxrpc/key.c b/net/rxrpc/key.c
-> index cbd26da449510..cdef609996d28 100644
-> --- a/net/rxrpc/key.c
-> +++ b/net/rxrpc/key.c
-
-[ ... ]
-
-> @@ -166,12 +167,14 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
->  				       size_t datalen,
->  				       const __be32 *xdr, unsigned int toklen)
->  {
-> +	const struct krb5_enctype *enc;
->  	struct rxrpc_key_token *token, **pptoken;
->  	time64_t expiry;
->  	size_t plen;
->  	const __be32 *ticket, *key;
->  	s64 tmp;
->  	size_t raw_keylen, raw_tktlen, keylen, tktlen;
-> +	int ret = -EKEYREJECTED;
->  
->  	_enter(",{%x,%x,%x,%x},%x",
->  	       ntohl(xdr[0]), ntohl(xdr[1]), ntohl(xdr[2]), ntohl(xdr[3]),
-
-[ ... ]
-
-> @@ -229,6 +232,17 @@ static int rxrpc_preparse_xdr_yfs_rxgk(struct key_preparsed_payload *prep,
->  	token->rxgk->key.data	= token->rxgk->_key;
->  	token->rxgk->ticket.len = raw_tktlen;
->  
-> +	/* Check the enctype is supported. */
-> +	enc = crypto_krb5_find_enctype(token->rxgk->enctype);
-> +	if (!enc) {
-> +		ret = -ENOPKG;
-> +		goto reject_token;
-> +	}
+> afs: Fix creation of RxGK CM channel token to have right size
+>
+> Fix afs_create_yfs_cm_token() so that it calculates the token size
+> correctly, remembering to add in the 4 bytes of the level.
+>
+> As it happens, this bug has no effect because crypto_krb5_how_much_buffer()
+> rounds encsize up to a multiple of the crypto block size (16 or 32) before
+> adding on the checksum size - and so there's actually 8 bytes of unused
+> space allocated within the blob-to-be-encrypted and 4 bytes of that gets
+> used.
 
 [Severity: Medium]
-Can this new -ENOPKG path leave prep->quotalen charged for memory that
-was freed?
+Is this description of the old behaviour accurate?  I can't find the
+rounding it refers to.  crypto_krb5_how_much_buffer() in
+crypto/krb5/krb5_api.c returns the sum with no block-size rounding:
 
-Earlier in rxrpc_preparse_xdr_yfs_rxgk() the whole token cost is added to
-the quota before any of these checks run:
+	case KRB5_ENCRYPT_MODE:
+		*_offset = krb5->conf_len;
+		return krb5->conf_len + data_size + krb5->cksum_len;
 
-	plen = sizeof(*token) + sizeof(*token->rxgk) + tktlen + keylen;
-	prep->quotalen += datalen + plen;
+and krb5_aead_encrypt() in crypto/krb5/rfc3961_simplified.c never pads
+either, placing the MIC immediately after the data:
 
-with tktlen bounded only by AFSTOKEN_GK_TOKEN_MAX (16384).  The
-reject_token label then does kfree(token->rxgk) and kfree(token) without
-subtracting that amount again.
+	secure_offset	= 0;
+	base_len	= krb5->conf_len + data_len;
+	pad_len		= 0;
+	secure_len	= base_len + pad_len;
+	cksum_offset	= secure_len;
 
-Every pre-existing reject path here returned -EKEYREJECTED, -EKEYEXPIRED
-or -ENOMEM, and rxrpc_preparse_xdr() turns those into an abort:
+So rather than 8 bytes of spare padding existing inside the blob, wasn't
+the effect that the last word written by afs_create_yfs_cm_token():
 
-		switch (ret2) {
-		case 0:
-			ret = 0;
-			break;
-		case -EPROTONOSUPPORT:
-			break;
-		case -ENOPKG:
-			if (ret != 0)
-				ret = -ENOPKG;
-			break;
-		default:
-			ret = ret2;
-			goto error;
-		}
+	*xdr++ = htonl(0);			/* token.identities[0].display.len */
 
--ENOPKG is the soft case: if another token in the same payload (for
-example an RXKAD token) parsed successfully, ret stays 0 and the key is
-still instantiated, so __key_instantiate_and_link() ->
-key_payload_reserve(key, prep->quotalen) commits the inflated value
-against the owner's key quota:
+landed exactly at cksum_offset, i.e. it was left outside the encrypted and
+authenticated region and then overwritten by the checksum, because toksize
+is also what gets handed to the encryption as data_len?
 
-security/keys/key.c:key_payload_reserve() {
-	...
-		if (delta > 0 &&
-		    (key->user->qnbytes + delta > maxbytes ||
-		     key->user->qnbytes + delta < key->user->qnbytes)) {
-			ret = -EDQUOT;
-	...
-}
+> diff --git a/fs/afs/cm_security.c b/fs/afs/cm_security.c
+> index 103168c70dd4d..5eeeef761cf31 100644
+> --- a/fs/afs/cm_security.c
+> +++ b/fs/afs/cm_security.c
+> @@ -235,7 +235,7 @@ static int afs_create_yfs_cm_token(struct sk_buff *challenge,
+>  	 *	struct RXGK_AuthName	identities<>;
+>  	 * };
+>  	 */
+> -	toksize = keysize + 8 + 4 + 4 + 8 + xdr_len_object(authsize);
+> +	toksize = keysize + 4 + 8 + 4 + 4 + 8 + xdr_len_object(authsize);
+>  
+>  	offset = 0;
+>  	encsize = crypto_krb5_how_much_buffer(token_krb5, KRB5_ENCRYPT_MODE, toksize, &offset);
 
-Since key_quota_maxbytes defaults to 20000 bytes, a single crafted
-add_key("rxrpc", "afs@...", ...) payload containing one valid RXKAD token
-plus an RxGK token with an unsupported enctype appears to be able to
-charge roughly 16KB that is not actually held, making later add_key()
-calls for that uid fail with -EDQUOT.
+Same toksize is passed as data_len further down in the same function:
 
-Would it be better to do the enctype lookup and key length check before
-the prep->quotalen += datalen + plen accounting, or to subtract
-datalen + plen on the -ENOPKG path?
+	sg_init_one(&sg, encbase, encsize);
+	ret = crypto_krb5_encrypt(token_krb5, aead, &sg, 1, encsize, offset, toksize, false);
 
-[ ... ]
+There's no out-of-bounds write in either case, since cksum_len is 12, 16 or
+24 for the supported enctypes, so the extra word stayed within the allocated
+blob.  The reason the truncation went unnoticed looks to be that the only
+consumer, rxgk_yfs_decode_ticket() in net/rxrpc/rxgk_app.c, only checks:
+
+	if (ticket_len < 10 * sizeof(__be32))
+		return rxrpc_abort_conn(conn, skb, RXGK_INCONSISTENCY, -EPROTO,
+					rxgk_abort_resp_short_yfs_tkt);
+
+and never parses the identities<> field at all.
+
+Given the Fixes: tag and the cc: to stable, would it be worth correcting the
+rationale so that backporters and anyone auditing stricter third-party token
+decoders get the right picture?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260914151340.3227501-1-dhowells%40redhat.com
