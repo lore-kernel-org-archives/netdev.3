@@ -1,288 +1,198 @@
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F390E488213
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:26:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789460799; cv=none; b=ZUPmpwWbRRVj1sjZf2n2F6rbhvCVx39z8XbUxTcmjrZ2GpGQVvNV8vKqX9FvIU59WAXR8e0XuDT72gVE2hNTm5XApaeR7BOpAzDCbNoJskjOq97Hn5fY9NyL8hz/kp3StDerwpjV43Fuz33dh9ylzZxFgJe+0nK2wbtKYy4j7v4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789460799; c=relaxed/simple;
-	bh=JbSID6fXeQe1AsKDTvJAsGmW8NhLrp6cj1GLFUVFC9I=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GYkXGfAwyYHAjh4kBcxnd4+gqeS88XEhURAQrcnAjcJXlCVZq0BfG90hu7hm9f6mZXuMqhoSy4Jg8E945vcCH5gga06w7JTxD5BJlRFxsvLZV11Ycmzo/HbFgeOLpgaqxhKKhyS50gE3p4TApKQLqTKt88B9aF+nxlIhZocJpxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--morbo.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VFhLIXL7; arc=none smtp.client-ip=209.85.222.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--morbo.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 907F6494819
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:26:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789460818; cv=pass; b=IJcF8iU9GielrhJPUeNfN9E4uLAYaCh28refj/y/O7JJNctTJntFHNHD1mpiAO+CuAHRbZOg8QQMNBVW6Fp2mOdz+y6YM7osqRHmNyp6DJ8V1Gj1zJWkafPL/leSIuo+FxN8T2SJFV0ZwH8lmAHk0oqOvyCplKarF2OTLLUNr+g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789460818; c=relaxed/simple;
+	bh=nPB8HKMrWHw3m7s8Z1NEO0K4n5NwCAXwyUr1xW5XU7o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HIOTmgHywz/z4zYF0LwJmKbbzc5qJzxqdj3D+lafUmw9SyHw56GU1gNwkm+fernWpf832rZZBVEsF4PC1Tezx4Dyd1ty3YmyyQVlDy1PghuQ9yknpoJjme54QUD8cZDXaRGYNPBNM3lvEkmEcH6lyUegJowX/cubr1YAqu7wLFY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=LGyD24N5; arc=pass smtp.client-ip=74.125.228.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VFhLIXL7"
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-939a6937513so656206485a.3
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 01:26:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="LGyD24N5"
+Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-85469a34907so2894100b3a.1
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 01:26:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789460816; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JHw9MctHM8Bow6oreaYVFW+j8q4gr8eGf5JbJIdJ/IW6Bjs+VU2Y6MfTCQHaHPhGKu
+         R6q2gN80q1FVunyNJu0Tp1Xw37/DtUV70zjF7vXaj7O5cXDgcrlaBJcDIFneU3eAhQ9t
+         IqtiQd2xzC9SYAiLRUMOG8ZZ9PLFm7sWgOwHvc8ExHWPUZv13seePWzl0nSeIRnX4gwM
+         9fuplYi4sfeA4FQw+gEWNLzmVNfEmUiDfEunmlZxRlxCDrDuqRJDjmb4r8XpGhIJoXQz
+         /bO0vwkW/mJ/6ttj345ArCUM/k7pglGCIGoKaD9cz4zQfQg3+Ayqsk03jNAJ/X/6uxSJ
+         8R5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=lnh5CgWNygQ5nJ5BcAug/UGA2XoqYnoWr3xk+1LgwT0=;
+        fh=jT3psFoMSyonBs6I8fnaGiSu7b8BGUH6IX9FtB8yy0U=;
+        b=RtTUOo+yCIEXUoByHW5+ih7/isiezltoVspiLLL7UxjNWn79RDqyp0+f4Q3wR7JOdX
+         xDOCK4U9s6yG8tv/UbXrzc1WEMt8DdeH28axIM+IidcZdY/wz/IJ6mC9YEwun9wTb2Vw
+         tBtiw6+urOAqMHNyyehBzoJZgdUJluweEfHcNMAzg7Qp0bLSGv1bQhnfAsiaMUDwCDUP
+         2/OzJGiwMKV4GsLrr8d5pkKet2sSxkZ9x6z9CS30np7Dz6buClsJcDBcDdS8wRzocTOZ
+         Xl9nW92LIwBHEUexX7NXae6MsZkKSp9Znn38kKy+bkjZ16HbV9AT9MKnuUT8cCCV40cB
+         8kgA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789460796; x=1790065596; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=6A34g5ncwO0UUCNmS7GYn32h6CG74u/Wx3k3q5PSbh8=;
-        b=VFhLIXL7TX0MEMn71U8mpzLJIwWkhTyTyiiuBYeAtXbXEhhuEe8T5ODWwap56EfX6D
-         E1gQpTWwnWv6mkvY/IumLMrl+WJ2ZvrQs9gC1WtKAuqw5Ftg0n7MPK562qLPrBW7lTSA
-         /R9M6AuM7h+y8SFW+Rrwh/I1cGjicJlkNhDWVhz/yt0kAQDRu0O/V50BEkR+d2tHImmY
-         trZB/O3EtZowkTjJRMnEtK0DxgAXqihgZxeXZCUq6ZT603Q0nxgS9GufAVYMQIpEMDf0
-         IWSrct8BI3IVAJP8cwe5RQL+HR+Q7cOv5X0msasb9yuBFtSIsCsCoJ1S+xQaQjOn4xbc
-         liYQ==
+        d=asu.edu; s=google; t=1789460816; x=1790065616; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=lnh5CgWNygQ5nJ5BcAug/UGA2XoqYnoWr3xk+1LgwT0=;
+        b=LGyD24N5l64zOz1F5J3fHUPcg+6M1qW99Yar6dgJRHRQ/M5ve/6QkiNuWBnYTnSdSA
+         x1neQC61BUcK87a1lGXNkl0PTLYYh9toSY5PlqsPORHkjXGAKPA3ku28hqt0jTpp7LUb
+         EWcW9Q3mpH7hWLZEMXYX8w/5JlVa0NfXXPoM1AUj80OaGhPOeDXwKnrnKIAy7YfjECEJ
+         5czUC3+GUo6x6S4bZDYuxTOOv2B4/f1g2bj7URhijvuJBAGHOPFHfE7q9B+E6aASuX5b
+         rTWpO119zUSVLFscBSRvBLPkLz1Yr6zmR1HZEAtsewQbZX+rtkbVtPvUNpx+hb7HGqvu
+         l4Tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789460796; x=1790065596;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
+        d=1e100.net; s=20260707; t=1789460816; x=1790065616;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=6A34g5ncwO0UUCNmS7GYn32h6CG74u/Wx3k3q5PSbh8=;
-        b=UHXiEltO1lPT/B94OxuJSJ51cn57EJlqa/fZ5yg+QFdQo86bLMEV7uJ48Hum8jiXg2
-         cBNjY3DiPLWAaH1/O0E9BkRHG4Z3yi97/djMSE7/gUTlywcjioE1KIUV5l+O08EFoxDK
-         vmOXUTbTyjkTGZhz/NvPimV68QSSc1uxtinqlVpPznIfwXCOliiGBpH43UsST84i0BFF
-         H84Wi61QItajpyxTAtnW3MBYEYXy8yL62kdP39pmgeQEUrqqguSukMzFdQy0Xo+rODHu
-         9gAmiuDSYen3a9/AyIsPC9aW0w5gKI4oJ/xhF9UHmvvDCebTS3xiT0iZsp/Ys88G0Db3
-         InEg==
-X-Forwarded-Encrypted: i=1; AKwUvBz914D9cmWn4pMaXqqqAAU2YeHvY2GH06KrM535ecOKuInAO3RDnSMjzyD2QUxt+00V3IoZQeU=@vger.kernel.org
-X-Gm-Message-State: AFuF++lCMKqto323YCzNJOnWc3QySec2g38qr36gj+44kIIbuKWShxy5
-	3FhNDuR2Q/LtWaxdHkjJZeeSbRxplFwrBQNVklLdwIt1F4akFAWDECZ/zAmWLrLGWZS9lYAP/ob
-	g
-X-Received: from plyw21.prod.google.com ([2002:a17:902:d715:b0:2db:8c06:4fa6])
- (user=morbo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f712:b0:2db:20fa:9443
- with SMTP id d9443c01a7336-2dd6c6db8c2mr126055895ad.13.1789460413607; Tue, 15
- Sep 2026 01:20:13 -0700 (PDT)
-Date: Tue, 15 Sep 2026 08:18:39 +0000
-In-Reply-To: <20260915081910.4142719-1-morbo@google.com>
+        bh=lnh5CgWNygQ5nJ5BcAug/UGA2XoqYnoWr3xk+1LgwT0=;
+        b=rIx8GR9kTLG/ztOAalWOKlTMre2R6qTGJ5Bqnt4B5wfyLfvAD/dQQUhasCnmjWpHDP
+         QAaZl73ERbMRXPTkaOmx5o14+7IE1avSmphRNjJP5H6aePlUQOr3d27qmzUKMsDnpyiT
+         NP43sB9gQYe48Cxob/Yga7hW6dNQXISraPVdIi3/WJARPOYRA5f0GVMyS+ISgnHwohi8
+         jgzwgeTnfxbTAOiS/XFmTjgg4oY7CHrpVnBzbigC/LUbFg3vdY4tBLgjPekwXwPK1uxJ
+         EnMClM0TVijLqR8XsAKk8672IRhnk2/nvCwS8z/uNJwMZLqXAFlmlnq8n7LXYGZ/7tNN
+         uaiQ==
+X-Gm-Message-State: AFuF++lAjfeJbQI7vdFZqnZvIzLDbNmRyxb2Wumddn5i3JIyl/8/2n5q
+	rPnuxncjh+cbWD7grET8HI0wQI6EljTo6Lf/ZiaL2NtG7WneeEq3gbYZcQFlhT8CrXiwea9VpZj
+	hODQIpu0j/TW6HjGf8qZ9gssngeympmLUES8sNNh+
+X-Gm-Gg: AYBFou32byaMbhVnllzos9Dsh3GB77V86WQGKavy4ntXbO4AwfYPBrhIK+7cOSYTKWh
+	C1ZepCU0Xg4yrS7gJLkzJC9lNwFXpnXpFrwH50KQb/rxCwdYUnCcdgfqsjDZoEAuI8hdpXayGaq
+	zSIRUipRiNpnYaH9TDBHPM+qCSV57RxQhD+XwDcZtMK4BV2xCt/QAyFBJ1B5Ow32UPMDHD2CNqF
+	P45HBkVO/1/RGGTEvg/SxiO5ch4V6EwjEOWefhFmX8xISGFu8CZ1Tr/PNBoY/0E9xu255oKshq2
+	ZAIPCAnfXPUYKaMpk1WJ32kfjvwECa0nPyq97wkc24htHz5PQqFy0dcYghezIvpM5MU9GrubftS
+	NVbSFTZmpxLlx7sv0xH4z4ZxL7l4eALUYFdduCDp19NTCNHdJQjKwlMmm
+X-Received: by 2002:a05:6a00:22d4:b0:857:7337:5db6 with SMTP id
+ d2e1a72fcca58-86f857f03e4mr11800026b3a.20.1789460815852; Tue, 15 Sep 2026
+ 01:26:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260915081910.4142719-1-morbo@google.com>
-X-Mailer: git-send-email 2.55.0.1032.g73a4cd73de-goog
-Message-ID: <20260915081910.4142719-23-morbo@google.com>
-Subject: [PATCH 22/28] media: si2165: Use snprintf() to format frontend name
-From: Bill Wendling <morbo@google.com>
-To: linux-kernel@vger.kernel.org
-Cc: Bill Wendling <morbo@google.com>, codemender-patching+linux@google.com, 
-	Russell King <linux@armlinux.org.uk>, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Helge Deller <deller@gmx.de>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Tony Luck <tony.luck@intel.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Matthew Brost <matthew.brost@intel.com>, 
-	"=?UTF-8?q?Thomas=20Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Matthias Schwarzott <zzam@gentoo.org>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Arend van Spriel <arend.vanspriel@broadcom.com>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Sylwester Nawrocki <s.nawrocki@samsung.com>, Peter Griffin <peter.griffin@linaro.org>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Linus Walleij <linusw@kernel.org>, 
-	Anil Gurumurthy <anil.gurumurthy@qlogic.com>, 
-	Sudarsana Kalluru <sudarsana.kalluru@qlogic.com>, "Martin K. Petersen" <mkp@kernel.org>, 
-	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
-	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, Kees Cook <kees@kernel.org>, 
-	Jiri Pirko <jiri@resnulli.us>, Simon Horman <horms@kernel.org>, Chuck Lever <cel@kernel.org>, 
-	Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
-	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Mike Rapoport (Microsoft)" <rppt@kernel.org>, 
-	Kanglong Wang <wangkanglong@loongson.cn>, Tiezhu Yang <yangtiezhu@loongson.cn>, 
-	Qiang Ma <maqianga@uniontech.com>, Randy Dunlap <rdunlap@infradead.org>, 
-	Pengpeng Hou <pengpeng@iscas.ac.cn>, Ard Biesheuvel <ardb@kernel.org>, Breno Leitao <leitao@debian.org>, 
-	Thorsten Blum <blum@kernel.org>, Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Lyude Paul <lyude@redhat.com>, 
-	Ashutosh Desai <ashutoshdesai993@gmail.com>, Imre Deak <imre.deak@intel.com>, 
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, Johan Hovold <johan@kernel.org>, 
-	Johannes Berg <johannes.berg@intel.com>, 
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
-	Alexander Stein <alexander.stein@ew.tq-group.com>, 
-	Cryolitia PukNgae <cryolitia@uniontech.com>, Jiaming Zhang <r772577952@gmail.com>, 
-	Will Porter <mrwillporter@gmail.com>, Cen Zhang <zzzccc427@gmail.com>, 
-	"=?UTF-8?q?C=C3=A1ssio=20Gabriel?=" <cassiogabrielcontato@gmail.com>, Rong Zhang <i@rong.moe>, 
-	Arun Raghavan <arunr@valvesoftware.com>, linux-arm-kernel@lists.infradead.org, 
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linux-edac@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
-	linux-input@vger.kernel.org, linux-media@vger.kernel.org, 
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev, 
-	brcm80211-dev-list.pdl@broadcom.com, devicetree@vger.kernel.org, 
-	linux-samsung-soc@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	devel@lists.orangefs.org, linux-hardening@vger.kernel.org, 
-	linux-sound@vger.kernel.org
+MIME-Version: 1.0
+References: <20260915082426.703892-1-xmei5@asu.edu>
+In-Reply-To: <20260915082426.703892-1-xmei5@asu.edu>
+From: Xiang Mei <xmei5@asu.edu>
+Date: Tue, 15 Sep 2026 01:26:44 -0700
+X-Gm-Features: AcwNN1VHk4qFiOTVVqpCxopv6W4c447U28-fnrK3q7ySLfaNNx1iHuyYYDxzrTc
+Message-ID: <CAPpSM+SviG8h4CYfjYf3FtowDcj8JE11ThBTip=+f690514uBw@mail.gmail.com>
+Subject: Re: [PATCH net] net: bcmgenet: restore the hardware filters on open
+To: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	jakub@cloudflare.com, Nicolai Buchwitz <nb@tipi-net.de>, 
+	Justin Chen <justin.chen@broadcom.com>, Florian Fainelli <florian.fainelli@broadcom.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-si2165_probe() constructs the frontend name by appending the chip name and
-supported delivery system suffixes (" DVB-T", " DVB-C") to
-state->fe.ops.info.name using multiple strlcat() calls.
+Please ignore this email. It's an email sent by mistake.
 
-In preparation for removing the deprecated strlcat() API[1], format the
-complete frontend name in a single snprintf() call.
+I got this patch for testing and wrongly sent it out. Sorry about that.
 
-Link: https://github.com/KSPP/linux/issues/370 [1]
-Cc: codemender-patching+linux@google.com
-Assisted-by: Developer:Gemini [editor_update_file, make_kernel_build_single=
-_file, shell_command_run]
-Signed-off-by: Bill Wendling <morbo@google.com>
----
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Huacai Chen <chenhuacai@kernel.org>
-Cc: WANG Xuerui <kernel@xen0n.name>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Thomas Gleixner <tglx@kernel.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: x86@kernel.org
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ian Abbott <abbotti@mev.co.uk>
-Cc: H Hartley Sweeten <hsweeten@visionengravers.com>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: "Thomas Hellstr=C3=B6m" <thomas.hellstrom@linux.intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Matthias Schwarzott <zzam@gentoo.org>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Saravana Kannan <saravanak@kernel.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Cc: Peter Griffin <peter.griffin@linaro.org>
-Cc: Alim Akhtar <alim.akhtar@samsung.com>
-Cc: Linus Walleij <linusw@kernel.org>
-Cc: Anil Gurumurthy <anil.gurumurthy@qlogic.com>
-Cc: Sudarsana Kalluru <sudarsana.kalluru@qlogic.com>
-Cc: "Martin K. Petersen" <mkp@kernel.org>
-Cc: Trond Myklebust <trondmy@kernel.org>
-Cc: Anna Schumaker <anna@kernel.org>
-Cc: Mike Marshall <hubcap@omnibond.com>
-Cc: Martin Brandenburg <martin@omnibond.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Jiri Pirko <jiri@resnulli.us>
-Cc: Simon Horman <horms@kernel.org>
-Cc: Chuck Lever <cel@kernel.org>
-Cc: Jeff Layton <jlayton@kernel.org>
-Cc: NeilBrown <neil@brown.name>
-Cc: Olga Kornievskaia <okorniev@redhat.com>
-Cc: Dai Ngo <Dai.Ngo@oracle.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Kanglong Wang <wangkanglong@loongson.cn>
-Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
-Cc: Qiang Ma <maqianga@uniontech.com>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Breno Leitao <leitao@debian.org>
-Cc: Thorsten Blum <blum@kernel.org>
-Cc: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Lyude Paul <lyude@redhat.com>
-Cc: Ashutosh Desai <ashutoshdesai993@gmail.com>
-Cc: Imre Deak <imre.deak@intel.com>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Johan Hovold <johan@kernel.org>
-Cc: Johannes Berg <johannes.berg@intel.com>
-Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Cryolitia PukNgae <cryolitia@uniontech.com>
-Cc: Jiaming Zhang <r772577952@gmail.com>
-Cc: Will Porter <mrwillporter@gmail.com>
-Cc: Cen Zhang <zzzccc427@gmail.com>
-Cc: "C=C3=A1ssio Gabriel" <cassiogabrielcontato@gmail.com>
-Cc: Rong Zhang <i@rong.moe>
-Cc: Arun Raghavan <arunr@valvesoftware.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: loongarch@lists.linux.dev
-Cc: linux-mips@vger.kernel.org
-Cc: linux-parisc@vger.kernel.org
-Cc: linux-edac@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: intel-xe@lists.freedesktop.org
-Cc: linux-input@vger.kernel.org
-Cc: linux-media@vger.kernel.org
-Cc: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Cc: brcm80211@lists.linux.dev
-Cc: brcm80211-dev-list.pdl@broadcom.com
-Cc: devicetree@vger.kernel.org
-Cc: linux-samsung-soc@vger.kernel.org
-Cc: linux-gpio@vger.kernel.org
-Cc: linux-scsi@vger.kernel.org
-Cc: linux-nfs@vger.kernel.org
-Cc: devel@lists.orangefs.org
-Cc: linux-hardening@vger.kernel.org
-Cc: linux-sound@vger.kernel.org
----
- drivers/media/dvb-frontends/si2165.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+Xiang
 
-diff --git a/drivers/media/dvb-frontends/si2165.c b/drivers/media/dvb-front=
-ends/si2165.c
-index f1241b63aa5c..bd15eb58fc84 100644
---- a/drivers/media/dvb-frontends/si2165.c
-+++ b/drivers/media/dvb-frontends/si2165.c
-@@ -1243,20 +1243,17 @@ static int si2165_probe(struct i2c_client *client)
- 		chip_name, rev_char, state->chip_type,
- 		state->chip_revcode);
-=20
--	strlcat(state->fe.ops.info.name, chip_name,
--		sizeof(state->fe.ops.info.name));
-+	snprintf(state->fe.ops.info.name, sizeof(state->fe.ops.info.name),
-+		 "Silicon Labs %s%s%s",
-+		 chip_name,
-+		 state->has_dvbt ? " DVB-T" : "",
-+		 state->has_dvbc ? " DVB-C" : "");
-=20
- 	n =3D 0;
--	if (state->has_dvbt) {
-+	if (state->has_dvbt)
- 		state->fe.ops.delsys[n++] =3D SYS_DVBT;
--		strlcat(state->fe.ops.info.name, " DVB-T",
--			sizeof(state->fe.ops.info.name));
--	}
--	if (state->has_dvbc) {
-+	if (state->has_dvbc)
- 		state->fe.ops.delsys[n++] =3D SYS_DVBC_ANNEX_A;
--		strlcat(state->fe.ops.info.name, " DVB-C",
--			sizeof(state->fe.ops.info.name));
--	}
-=20
- 	/* return fe pointer */
- 	*pdata->fe =3D &state->fe;
---=20
-2.55.0.1032.g73a4cd73de-goog
 
+On Tue, Sep 15, 2026 at 1:24=E2=80=AFAM Xiang Mei <xmei5@asu.edu> wrote:
+>
+> From: Nicolai Buchwitz <nb@tipi-net.de>
+>
+> bcmgenet_hfb_init() runs INIT_LIST_HEAD() on priv->rxnfc_list, which drop=
+s
+> every rule off the list, and bcmgenet_open() calls it on each ifup. Every
+> rule the user configured is silently lost:
+>
+>   # ethtool -N eth0 flow-type ether dst $MAC action 0
+>   Added rule with ID 0
+>   # ethtool -n eth0 | grep -c Filter:
+>   1
+>   # ip link set eth0 down && ip link set eth0 up
+>   # ethtool -n eth0 | grep -c Filter:
+>   0
+>
+> Initialise the lists once at probe and restore the rules on open, as
+> bcmgenet_resume() already does.
+>
+> Fixes: 3e370952287c ("net: bcmgenet: add support for ethtool rxnfc flows"=
+)
+> Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+> Reviewed-by: Justin Chen <justin.chen@broadcom.com>
+> Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+> Link: https://patch.msgid.link/20260913190052.939955-1-nb@tipi-net.de
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+>  .../net/ethernet/broadcom/genet/bcmgenet.c    | 19 +++++++++++++------
+>  1 file changed, 13 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net=
+/ethernet/broadcom/genet/bcmgenet.c
+> index a2305e6428d1..b916080f4ff1 100644
+> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> @@ -749,8 +749,17 @@ static void bcmgenet_hfb_init(struct bcmgenet_priv *=
+priv)
+>                 INIT_LIST_HEAD(&priv->rxnfc_rules[i].list);
+>                 priv->rxnfc_rules[i].state =3D BCMGENET_RXNFC_STATE_UNUSE=
+D;
+>         }
+> +}
+> +
+> +static void bcmgenet_hfb_restore(struct bcmgenet_priv *priv)
+> +{
+> +       struct bcmgenet_rxnfc_rule *rule;
+>
+>         bcmgenet_hfb_clear(priv);
+> +
+> +       list_for_each_entry(rule, &priv->rxnfc_list, list)
+> +               if (rule->state !=3D BCMGENET_RXNFC_STATE_UNUSED)
+> +                       bcmgenet_hfb_create_rxnfc_filter(priv, rule);
+>  }
+>
+>  static int bcmgenet_begin(struct net_device *dev)
+> @@ -3376,8 +3385,8 @@ static int bcmgenet_open(struct net_device *dev)
+>
+>         bcmgenet_set_hw_addr(priv, dev->dev_addr);
+>
+> -       /* HFB init */
+> -       bcmgenet_hfb_init(priv);
+> +       /* Restore the filters, the MAC was reset above */
+> +       bcmgenet_hfb_restore(priv);
+>
+>         /* Reinitialize TDMA and RDMA and SW housekeeping */
+>         ret =3D bcmgenet_init_dma(priv, true);
+> @@ -4075,6 +4084,7 @@ static int bcmgenet_probe(struct platform_device *p=
+dev)
+>
+>         /* Mii wait queue */
+>         init_waitqueue_head(&priv->wq);
+> +       bcmgenet_hfb_init(priv);
+>         INIT_WORK(&priv->bcmgenet_irq_work, bcmgenet_irq_task);
+>
+>         priv->clk_wol =3D devm_clk_get_optional(&priv->pdev->dev, "enet-w=
+ol");
+> @@ -4272,10 +4282,7 @@ static int bcmgenet_resume(struct device *d)
+>         bcmgenet_set_hw_addr(priv, dev->dev_addr);
+>
+>         /* Restore hardware filters */
+> -       bcmgenet_hfb_clear(priv);
+> -       list_for_each_entry(rule, &priv->rxnfc_list, list)
+> -               if (rule->state !=3D BCMGENET_RXNFC_STATE_UNUSED)
+> -                       bcmgenet_hfb_create_rxnfc_filter(priv, rule);
+> +       bcmgenet_hfb_restore(priv);
+>
+>         /* Reinitialize TDMA and RDMA and SW housekeeping */
+>         ret =3D bcmgenet_init_dma(priv, false);
+> --
+> 2.43.0
+>
