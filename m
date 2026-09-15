@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54828420898
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8BC7414A1E
 	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 16:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789488836; cv=none; b=hX0Pkf39IgsxxFLYEQwfQtEndHFh7c8rAmZ/SUOSPj1nwhmVpN48+ZC1jljhmx7XxqQqfAg0k1ip66gUfyYxPYENQrZdjQ3vKFB3x22ZKuGVONPft/zcRXjmONHXcwi5axRZ+AGdK4LNh3wkwDr2A+YR25dUyEVoWMgHdgGxLMk=
+	t=1789488836; cv=none; b=tr8wQm9xy8DNKohEAN5DXSJyyu6Q90PBfOmgf6XDMoD5bnf7HGVCr7oYSFZZ5LEhEyKU25DAYkZvox32yuR/lItgFSkKEtvglQQHVXbDQJlbGk+gMTjTEqDETALFBEpl/8NGCQGYJvRAU/2ojh5LUH3l/NNboPyr9GoJfqewTi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789488836; c=relaxed/simple;
-	bh=PXoPUWuNlQLeDqLvFH+yHHDsXFxTPs8G9bPTceX+FL4=;
+	bh=7cxNku7gTYI/Cv1fpALmMU6ii1JdOKHDwL2ikCoiy90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rFr8p9oP1Ty4IeB405DU9hVRfhVkDLUe95RwLr9pR6iDv/TtNkOMbuLZ0Nqofr3RHWOn8FWZFRJx337PCb0bRQiCJhWI+kjdYxXt+EDMwskcTTQDlDDXprBfhUgYFYs4RU6yyJC2pO/ZQbQUEY1pV0cpy6q1nMc6QQ/Es49O1YY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oQjA0M7q; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=PaivvUKeMy9U6HaJ6s5FVVoM4KT0fDrAVZTUDlxHTE5Hh2T2xubpgWHuXpsZD/bNrdqucWI8mPxGewzSQ7NZnNJ5t+NjXjRzkDuvRiF/SPSfBd31/y+LZr2M06s78zaGTlX8be3PBagbJPi2zQI4PVVo/4bbHEjsttDnV1s93PI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PfYYkbpS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oQjA0M7q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 794C21F0089D;
-	Tue, 15 Sep 2026 16:13:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PfYYkbpS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 650641F0089F;
+	Tue, 15 Sep 2026 16:13:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789488833;
-	bh=jBYf0bJzKqB2OLaqb6OTeWVSnJZdl7g8iQM3e46ZsGg=;
+	s=k20260515; t=1789488834;
+	bh=JG0vr5V8lGQTlAlBH3hwh0wWhgHI5smyVii0Yxj5/2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oQjA0M7q6XimbBJICJbpzusGwIkqVg1Gls/h4CTsHLY0QWubxsuYc9EEU5BP6JTte
-	 ZS9R5dNjdCpS3pIMOBsI4lkJKhjGlCCXRch05zA956dhxfwqwpjdzKnvVIO7+J+4Zj
-	 Frqbi+nuPSGZCIULK7cqu+103whRhd2c+FwSSvl69HQ3muu5CQsNX4dSld3dRiqLnn
-	 8Bm14vRb/Dgyp4rv84gyDC9Rvt6AFRrjz35oDminkkfeMjjqGM8eVlX0FJszyYwQUM
-	 4MifPOlrXh64kzyYgjISsI7FjE4tXkkeDw1HAiQv5B3gTOHQUe5Nxkoj+kRQPAkV4P
-	 vev2mnXoM2nhg==
+	b=PfYYkbpS++IhfzhT5vsD8gj+iiAKi556hhsgGIEydbOi9bpx5biPHqMos10Vwjyan
+	 LAbhVVCid9rArwUoWIVa/5gtOhTmk4I+XdCOa5vmatzT1e1uO3dPLZ3y5+m8olwMYM
+	 9KM7rLFeoft9frvPsM+Z4/z6vRKcwabRCaoNgBPOKc1xgOolVL42sOMVxYU5d+Gz+v
+	 MlIrH5gU+pIMW4unHfzV5U0OyAKp6NYinlpr3bGtk8S0lTrBCUX8u+P3QFXqzJrAh0
+	 iCisPDHBqmq+/cm29pm6N5lGI0V+eZBxFVuoNFFmB7tedB1NgNc9GRvk9IObqAl9fs
+	 rYQiarmf5pqVw==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -38,9 +38,9 @@ Cc: netdev@vger.kernel.org,
 	moshe@nvidia.com,
 	donald.hunter@gmail.com,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next v2 7/9] netlink: specs: devlink: describe the netns id in the parent-dev nest
-Date: Tue, 15 Sep 2026 09:13:39 -0700
-Message-ID: <20260915161341.1053476-8-kuba@kernel.org>
+Subject: [PATCH net-next v2 9/9] devlink: validate the port index in the rate set request
+Date: Tue, 15 Sep 2026 09:13:41 -0700
+Message-ID: <20260915161341.1053476-10-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260915161341.1053476-1-kuba@kernel.org>
 References: <20260915161341.1053476-1-kuba@kernel.org>
@@ -52,101 +52,57 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-devlink_nl_rate_parent_fill() emits DEVLINK_ATTR_PARENT_DEV via
-devlink_nl_put_nested_handle(), which adds DEVLINK_ATTR_NETNS_ID
-whenever the parent rate node lives on a devlink instance in another
-netns. Now that we defined dl-nested-devlink subset, which unlike
-dl-parent-dev includes netns-id, let's switch to it. The rate APIs
-input genuinely does not accept the netns-id, so we need to subset
-them to stick with dl-parent-dev.
+port-index is the only way rate-set can address a leaf (port) rate object,
+but it was never listed in the request, so the generated policy has no
+entry for it. The op declares .maxattr = DEVLINK_ATTR_PARENT_DEV, so the
+attribute still reaches info->attrs[], validated against a zeroed slot -
+NLA_UNSPEC, length 0 - which GENL_DONT_VALIDATE_STRICT accepts at any
+length.
+
+devlink_port_get_from_attrs() then runs nla_get_u32() on it. Handed a
+zero-length port-index the kernel reads the four bytes past the payload,
+which are the next attribute's header, and acts on the port index those
+spell out. Since we're reading a linear skb the OOB read is still
+within the same memory allocation, it's just garbage. We also do not
+echo the garbage back to the user so it's not an info leak either.
+Hence not treating this is a real bug fix.
+
+rate-new is left alone on purpose. It creates rate nodes, resolved by
+name through devlink_rate_node_get_from_attrs(), and never looks at
+port-index.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
-v2: include port-index in the subset attr list
+v2: new patch
 ---
- Documentation/netlink/specs/devlink.yaml | 41 ++++++++++++++++++++++--
- 1 file changed, 38 insertions(+), 3 deletions(-)
+ Documentation/netlink/specs/devlink.yaml | 1 +
+ net/devlink/netlink_gen.c                | 1 +
+ 2 files changed, 2 insertions(+)
 
 diff --git a/Documentation/netlink/specs/devlink.yaml b/Documentation/netlink/specs/devlink.yaml
-index 5c9c672497d4..5535247faf14 100644
+index 4fb64e71063d..1de0daa0f921 100644
 --- a/Documentation/netlink/specs/devlink.yaml
 +++ b/Documentation/netlink/specs/devlink.yaml
-@@ -912,7 +912,7 @@ doc: Partial family for Devlink.
-       -
-         name: parent-dev
-         type: nest
--        nested-attributes: dl-parent-dev
-+        nested-attributes: dl-nested-devlink
-         doc: |
-           Identifies the devlink instance which owns the parent rate node.
-           Used with rate-set and rate-new to parent a rate object to a node on
-@@ -1390,6 +1390,10 @@ doc: Partial family for Devlink.
-   -
-     name: dl-parent-dev
-     subset-of: devlink
-+    doc: |
-+      Devlink handle accepted as the parent-dev input; the netns id the
-+      kernel reports back is not accepted, the parent is always resolved
-+      in the caller's netns.
-     attributes:
-       -
-         name: bus-name
-@@ -1398,6 +1402,37 @@ doc: Partial family for Devlink.
-       -
-         name: index
- 
-+  -
-+    name: dl-rate-set
-+    subset-of: devlink
-+    doc: Attributes accepted by the rate-set and rate-new requests.
-+    attributes:
-+      -
-+        name: bus-name
-+      -
-+        name: dev-name
-+      -
-+        name: index
-+      -
-+        name: port-index
-+      -
-+        name: rate-node-name
-+      -
-+        name: rate-tx-share
-+      -
-+        name: rate-tx-max
-+      -
-+        name: rate-tx-priority
-+      -
-+        name: rate-tx-weight
-+      -
-+        name: rate-parent-node-name
-+      -
-+        name: rate-tc-bws
-+      -
-+        name: parent-dev
-+        nested-attributes: dl-parent-dev
-+
-   -
-     name: dl-nested-devlink
-     subset-of: devlink
-@@ -2387,7 +2422,7 @@ doc: Partial family for Devlink.
-     -
-       name: rate-set
-       doc: Set rate instances.
--      attribute-set: devlink
-+      attribute-set: dl-rate-set
-       dont-validate: [strict]
-       flags: [admin-perm]
-       do:
-@@ -2410,7 +2445,7 @@ doc: Partial family for Devlink.
-     -
-       name: rate-new
-       doc: Create rate instances.
--      attribute-set: devlink
-+      attribute-set: dl-rate-set
-       dont-validate: [strict]
-       flags: [admin-perm]
-       do:
+@@ -2447,6 +2447,7 @@ doc: Partial family for Devlink.
+             - bus-name
+             - dev-name
+             - index
++            - port-index
+             - rate-node-name
+             - rate-tx-share
+             - rate-tx-max
+diff --git a/net/devlink/netlink_gen.c b/net/devlink/netlink_gen.c
+index 43ef6864d462..9e1b4c081a7b 100644
+--- a/net/devlink/netlink_gen.c
++++ b/net/devlink/netlink_gen.c
+@@ -618,6 +618,7 @@ static const struct nla_policy devlink_rate_set_nl_policy[DEVLINK_ATTR_PARENT_DE
+ 	[DEVLINK_ATTR_BUS_NAME] = { .type = NLA_NUL_STRING, },
+ 	[DEVLINK_ATTR_DEV_NAME] = { .type = NLA_NUL_STRING, },
+ 	[DEVLINK_ATTR_INDEX] = NLA_POLICY_FULL_RANGE(NLA_UINT, &devlink_attr_index_range),
++	[DEVLINK_ATTR_PORT_INDEX] = { .type = NLA_U32, },
+ 	[DEVLINK_ATTR_RATE_NODE_NAME] = { .type = NLA_NUL_STRING, },
+ 	[DEVLINK_ATTR_RATE_TX_SHARE] = { .type = NLA_U64, },
+ 	[DEVLINK_ATTR_RATE_TX_MAX] = { .type = NLA_U64, },
 -- 
 2.55.0
 
