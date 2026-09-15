@@ -1,78 +1,101 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C433B058F;
-	Tue, 15 Sep 2026 12:57:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A03184524;
+	Tue, 15 Sep 2026 13:00:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789477024; cv=none; b=T+PjWAxBexyKzRgXmKVjcSpI+jfWocGkvZrLJQArZuwqfzbnQjCH53cuPeVQAoSwD89L/u8OaJ7UUt1+SnDgzrWP0iJ2l3QNyXWa3oc7fx2q5xYyPGszCO5qbaEaq6OdTHDHR/AaK+xVMg7udxS4iXEnfYdxWr2EgXxLWWPy1n8=
+	t=1789477223; cv=none; b=R3GoME0FgppMz3O965qIT8LLBc/5ftnFwuJ7qzYQUB/e/F4qreyNyvSJah4qVAbkMyT5tIYg2F4I3pJVMyTRzi1eHrgXkgmgva9sRYu+qUgTmRgvVWpDKBUb3WandLYwNJrnZRQOL/dXe79Viz+VeQmNKijTLccTDShYip/jUN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789477024; c=relaxed/simple;
-	bh=7wjl3beFE0ag4/GztOeAwhS16cGOkNFLpFICNCBKd7A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CrC1wGVXKKhmmrqqkovUe8+V5/bZ+eZ1uTnkVbpiJ+NUYy8hhxr6LP5B07bILbgiZS0jgJKh9oOpg8T4xoDoByaDUj0nJ/pT4Ds3VJj+9QmqxdPgfBEgsNC4TFbkoCcxzXyMYRqaZNTPUHAE/Ks45Tk1UAWmN7VkVIaHVhCcfFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=v4DFEoSt; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1789477223; c=relaxed/simple;
+	bh=XsWsPGuQxBgmDgDWkT+nmlfS6wXT6E4HKkgq+vWo7VM=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=XI86QvYRn4E4i1JvafSRohEZ/sPypDpp+FSE07Ov86mOg8fSxdS9XD0EgbOmnsT73AfYneiGu5MAEIs6A03pE5y2KApbWgEPTqMldcr2CdMMDUXC13fQLhpLPv6xI+4HUnMf5wSqwSWx1tlSJIjSRpQ9sdGunqq6NX5npWPNEj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=TRHiaEub; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="v4DFEoSt"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=fHpNrpkj3IYCmCFirrlWjA8a1KggVsWVioL+y5z+jJ0=; b=v4DFEoStxp8BZDDjsXDUtGjGxJ
-	5QDmagmBG7Qqp6QXUcR2T8KgB85ErH2ce4qLw6BYQepjk4Vg4Z4GzhrNJtp6FROIzlakjHw6wtaM9
-	u9JOmsv9HBtpu3e32AFWHDaghuTPoBAbSV2YP7JBfMJZ0sbPzOVdD1yeCgMLyhp/LSwk=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x6SiX-005HHX-2c; Tue, 15 Sep 2026 14:56:57 +0200
-Date: Tue, 15 Sep 2026 14:56:57 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Vasilij Strassheim <v.strassheim@linutronix.de>
-Cc: netdev-bot+sashiko@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, olteanv@gmail.com, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, linux@armlinux.org.uk, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	martin.kaistra@linutronix.de, b.spranger@linutronix.de
-Subject: Re: [PATCH net-next v2 4/4] net: dsa: soce: Add basic support for
- SoC-e switch IP cores
-Message-ID: <4dbeb7cd-d9b6-4e95-a586-800ea133c2a8@lunn.ch>
-References: <20260903-devel-vstrassheim-soce-dsa-ml-v2-4-fb0587cb466b@linutronix.de>
- <178895594761.219967.4769482322073838475@kernel.org>
- <c863e105257ae512d32e94b56ac081c41c4284f6.camel@linutronix.de>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="TRHiaEub"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 20E26C5CD49;
+	Tue, 15 Sep 2026 13:01:02 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8451C60498;
+	Tue, 15 Sep 2026 13:00:18 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4CB2711C7AF9D;
+	Tue, 15 Sep 2026 15:00:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789477213; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=3snnb/Y2y8ku4fecmXgJCGMJyog3YWcxnfWoyeQCnlU=;
+	b=TRHiaEubLE5oQobB1fmn+oYjmR1BkpQZqLjnBwaWlpotIe5gwLAV57O5QUx16xTPYRVh8G
+	Id6vudvenu3cT+5W4nCU2JemFRNRjlk3ZCWyR+qk/PdyWPpjJtWOtg41lcJw6fCb40Dbqn
+	mwPtLdfOPyrb6gPtL3bXVaABxLQYl08Np2kAi4e7pAbxvQ2FbEfErksHQoMoVVGW5KTJXD
+	XI7LU4vrnv+W/vcO5ZcCPM6RjKu/t/UA8Cbtf4PW9TLJx6MM+wwWYx80gyI7JmrNVfzvv/
+	cnf+XqeC9Qi2FbVUiGTUof/d4zgjkelydhYtROHTbZYpbDxGMFOLECMvau4KRA==
+Message-ID: <823f66b1-5a3c-4ca2-812a-de2c5281c49e@bootlin.com>
+Date: Tue, 15 Sep 2026 15:00:05 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c863e105257ae512d32e94b56ac081c41c4284f6.camel@linutronix.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6.1.y 4/4] ipv4: start using dst_dev_rcu()
+From: Miguel Gazquez <miguel.gazquez@bootlin.com>
+To: Greg KH <greg@kroah.com>
+Cc: stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Wei Wang <weiwan@google.com>,
+ Martin KaFai Lau <kafai@fb.com>, Hideaki YOSHIFUJI
+ <yoshfuji@linux-ipv6.org>, David Ahern <dsahern@kernel.org>,
+ Steffen Klassert <steffen.klassert@secunet.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ Pablo Neira Ayuso <pablo@netfilter.org>,
+ Jozsef Kadlecsik <kadlec@netfilter.org>, Florian Westphal <fw@strlen.de>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netfilter-devel@vger.kernel.org,
+ coreteam@netfilter.org
+References: <20260821-cve-2025-40074-6-1-v1-0-cad5cf499b76@bootlin.com>
+ <20260821-cve-2025-40074-6-1-v1-4-cad5cf499b76@bootlin.com>
+ <2026082454-jacket-gravity-6ddc@gregkh>
+ <2d335ef9-baeb-4672-bcb3-c00bd988c83a@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <2d335ef9-baeb-4672-bcb3-c00bd988c83a@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-> > After an unbind or rmmod, does the core keep inserting SDSA source-port
-> > tags into every frame delivered to the CPU port, with the tagger that
-> > would strip them gone?  As described in the commit message, the same bits
-> > also keep the user ports in CPU-directed operation:
-> > 
-> >     "Enabling this tagging feature of the switch, places all user ports
-> >     into CPU-directed operation"
-> > 
-> > so the switch would also stay locked out of normal port-to-port
-> > forwarding after the driver is removed.
+Hi.
+
+Le 31/08/2026 à 18:08, Miguel Gazquez a écrit :
+> Hi.
 > 
-> Yes, I had not considered this use case. The tagging state currently
-> remains enabled after unbind or shutdown. In v3, I will add a .teardown
-> callback that clears both SOCE_TAG_ALL_FRAMES_ENABLE and
-> SOCE_CUSTOM_RULES_TAGGING_ENABLE, returning the switch to an unmanaged
-> state.
+> Le 24/08/2026 à 15:47, Greg KH a écrit :
+>>
+>> We need a working 6.6.y version first, before we can take this one.
+> 
+> I sent the backport for the 6.6.y version
 
-I would say the AI is wrong here. If you put the switch into unmanaged
-mode, and don't have anything performing spanning tree, your network
-could experience a broadcast storm and stop working. The .teardown
-should disable all the ports, leaving the network in a safe
-configuration.
+The 6.6 backport were merged in 6.6.157. Would it be possible to merge 
+the 6.1 version ?
 
-	Andrew
+Thanks,
+Miguel Gazquez
+
+> 
+>>
+>> thanks,
+>>
+>> greg k-h
+> 
+> 
+> Thanks,
+> Miguel Gazquez
+
+-- 
+Miguel Gazquez, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
