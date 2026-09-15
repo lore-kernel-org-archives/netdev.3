@@ -1,242 +1,154 @@
-Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB66B480320
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 21:29:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC55E33939D
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 21:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789507774; cv=none; b=NqBNmUf2hSjDXh0LGx7+mrNSlPVGxtkHxp5GUecYJLlJugGLdD+e7gehAJRanekZ07K/R4ZVL2Jpc0CLhZv4qJySdfbysUdQ53iAj85etFXs/rYh4wKEZuUWxn9Gj2RP3aV1GLAiVUFvoD9FtgLZmyPMWD/hL7c8C3dpFlCLjLg=
+	t=1789507851; cv=none; b=sUSv+56GeiUzi9Vn0TKjdrZDKnrhIKDFqHllg2X0sTSC5vViBaKmqzFthuiIQqMOZmi1O7Dm4BT2TN6sDIdhnJX7S+Yx/oMfRW6izie+7MAprHyIg3Y7IGpx2kV+A/hr6XeA6ifu0x7fXVgwc8bJoQfIyhmT3dgUJIotqzVQhDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789507774; c=relaxed/simple;
-	bh=vVD4pS5qS6maXiv6EP3biLQD2gpeIwM0hPXlQBwWQUw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=S23w74RHRWnGMAp9jAtuf9RoKA8TrAIhTXgkR9XMewUJ9At/zR7wRV0K++8yrrplh79AQ7XwvAuyfTb7JusWqy8P1POK4xyOk5tXLzk4x+Mt4fYYaKB8kxoMX1/6itqoYyvKVOMaLo5cyn6PHgKyt1FzKKYG+gqA3hbTvmz7DsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jOdgYKo+; arc=none smtp.client-ip=74.125.227.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789507851; c=relaxed/simple;
+	bh=BM+ELWmqJQfhYhcWQ7buClZuQVBNII/Mqo/wTxK7yKY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BHls8EK3XciH8nqrgGCpGhUwtGfUAX6NEtQlk/5cGJaRrm+1PNmBW0Rz47xR9X6Zb/Z7SmAl9TzdRa45Cc7LUAQzhDsUbEcMNT3HaXjndqCKQRhWsYwXwxX/1kyCzf6DFmiCSbffwg56yrgpM1WUgfz6ecQzs+RNbvUGo8oeKMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=niwjGBi6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jOdgYKo+"
-Received: by mail-pj2-f1.google.com with SMTP id 98e67ed59e1d1-39e00a5b8e7so756768a91.0
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 14:29:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789507772; x=1790112572; darn=vger.kernel.org;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uAEOVcz8d/teGZZzHqLM89uMtEOQp+zIbDQel4kYlnE=;
-        b=jOdgYKo+KpR/pxdhSQn5P+9fhjxCEKs47ABBcKd8KI0gEMX3NbDDeUIuXDACJnCpfL
-         2EnuWaL+gsIxP5WWC0evf00ka6TOS30tm4fZlTGnDkNhlkWq5vDDhhV2AqSad8K1n3j7
-         xdwocfLNbHqbuM4W2LF9TQGGo84svW7jFPGJsSDkH2bpDxK5i26E7cUkmj04+fDwI1lt
-         e6VEw5sk9mKVShMP5bN/eDCGPQI9eUyrRS5plBdepmrUW2JMlNovhA/8dfeY95D3jqKQ
-         EhV9bgmhMX4QeixQqYwo3xCq/qKjneu51u0Sg5G7lfRU8dwtdn6wyC3dYqDK+ZZ3th8z
-         TyZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789507772; x=1790112572;
-        h=content-disposition:content-type:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uAEOVcz8d/teGZZzHqLM89uMtEOQp+zIbDQel4kYlnE=;
-        b=cm0LKmwj7/bSjrJZAbq8s9E7LfkLbOVF9gGdC8fiEQHB8WZVfDQFD9sA0S1+OZRghw
-         gZS8dF2j7mLM7zRyG9gAWYVfMh1vJcIxd/wVUZ7ukIygFLLuG4ds0LMeZSl27gR3N0U1
-         CfaVp+zXZwNifhncHC0PRLubNfNiI0RZ2XBkcYMBWS9FTqg8ibu0cVbElh2o68ypMRh9
-         T7EtYZK6oakaxDifTtM+BGoGuGyfheHNp7zz6DXOenIS4a8cnPbfJssdxqXLrFZ+3X8X
-         knS9hUfu+3VUhGMnvc/GKTZngiKdzdy4YCp14kqI9XzYD8MtMiuiKriUebj/KiWv2p7Y
-         phwg==
-X-Forwarded-Encrypted: i=1; AKwUvByHD6ekw3MuLVXcHZG0grt0I6KbiqyR2gOfeN50QBNgK0LjXm5ZYhKavPjUgjyZVmZ8ZX2Fvgg=@vger.kernel.org
-X-Gm-Message-State: AFuF++lVLlt/fXU2nDGOTv10ueUdfNRjj9/aH/+C7RGAkKEJsUPzfO3A
-	xHcQHqj0ZIHETlgkt1LUM0ZOiytoMVzxeHST0rbahbSRTvEBizRK2pip
-X-Gm-Gg: AYBFou2bBt7Bor6sfBi/ERhngoq7zrLzX3o6SIHfEmoceqOGScIE0GOz2tLKepPXSrD
-	Yag4gR0RCGVWPuza86KzktMrBhbUjdD8KxMbrWLqt7ELdBGAFbKvlQER5i37G6CvnVgIPkhdA6q
-	3znm1zN/OJ5Hx3rY5PpE9xIjWyAtaS7gE25VgG8gUmxR9Wf0crSEG9UtX+7jhnsKLQty//atDkJ
-	+AmnNPJlsqefvIhbnTqh978CMfygsdmACKXJDLuFMxejkMT58iPSgqLXPjacdgC+hBYbNtSYTbI
-	2M6jXEyccilgGy/X4IJGfK8DVhzGN2JdY3FFUAJTCdefaKJdwD4BZl2zYPJB5jkpZU0GxpzgiVf
-	O0H+UufdM0+vZqMNIlhbcDaKtEPBKVh1U/QsZPWN4yRApaBqadUyXuXKFbkjoV0uNkM2AuoWY+G
-	nS607AOkrtPMtpBw/K3VFtju+UkN0ZY08xzsChtPDL84opThMl/FSQznax2aIQyFFY3xdif0xu2
-	5027a7HPme/zsG7bX1bjxeIJRWptQxzDb1Gn3mRFQ==
-X-Received: by 2002:a17:90b:54cb:b0:37f:c22a:c188 with SMTP id 98e67ed59e1d1-39e1e25ac28mr416513a91.4.1789507772027;
-        Tue, 15 Sep 2026 14:29:32 -0700 (PDT)
-Received: from hhost (102.2.85.136.bc.googleusercontent.com. [136.85.2.102])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e1b6991c4sm658790a91.6.2026.09.15.14.29.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 14:29:31 -0700 (PDT)
-Date: Wed, 16 Sep 2026 05:29:26 +0800
-From: Xingyuan Mo <hdthky0@gmail.com>
-To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: "open list:SCTP PROTOCOL" <linux-sctp@vger.kernel.org>,
-	"open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
-	Xingyuan Mo <hdthky0@gmail.com>
-Subject: [PATCH v2] sctp: reject forged cookie peer_addr with unknown address
- family
-Message-ID: <20260915212917.3775248-1-hdthky0@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="niwjGBi6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 201271F000FF;
+	Tue, 15 Sep 2026 21:30:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789507849;
+	bh=LNLsOIZ7XNXZXt2qApOGXMJMWMauxBleg5lBqj9wRi4=;
+	h=From:To:Cc:Subject:Date;
+	b=niwjGBi6vyDD9cwr1OZwzggPsnW62jrauej+UqC/2CnrDvBa5fLcOSmZdLC8MyFJW
+	 m9b1rGsA4Fq/ZbE4QefBCgG0CQcG8xiDH85fiGPHTyZP7XMCMT9EclwYcHVY229nrK
+	 ifUHsRSHdCyWaRXJo8BYdy5ILiU6iSkyzZOijPx8LxbbPmONMxAFm/jpRoq4NZZWYH
+	 O0G1jVIiHBwHQCBtfBcuYKnfECvswMDFSGncQfZsK8dGlIkIq/NQarjxLYkXTxa/7w
+	 Ywb37vAt0Xl+hdZvPi2EEF2JC8voYLZkmb0QN/1/nTcV24r03nvy+tB97SffLnIeDN
+	 nqT53TGOAGIsA==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	vadim.fedorenko@linux.dev,
+	arkadiusz.kubalewski@intel.com,
+	jiri@resnulli.us,
+	ivecera@redhat.com,
+	milena.olech@intel.com,
+	przemyslaw.kitszel@intel.com
+Subject: [PATCH net] dpll: reject a reference sync pin which is not on the pin's dpll
+Date: Tue, 15 Sep 2026 14:30:47 -0700
+Message-ID: <20260915213047.1352286-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
 
-When cookie authentication is disabled, COOKIE-ECHO peer_addr is
-attacker-controlled. An invalid sa_family made sctp_get_af_specific()
-return NULL and crash in sctp_transport_init() on
-af_specific->sockaddr_len. Validate it with af->addr_valid() in
-sctp_unpack_cookie(), which also rejects a mismatched family, e.g.
-an AF_INET6 peer_addr on an IPv4 socket that would later crash in
-sctp_v6_get_dst() on inet6_sk(sk)->opt, and bail in
-sctp_transport_new() if af_specific is missing. Validate a copy of
-peer_addr, since addr_valid() rewrites a v4-mapped v6 address in
-place and the cookie still lives in the received skb, which is not
-guaranteed to be unshared.
+dpll_pin_ref_sync_state_set() resolves the partner's driver private data
+with dpll_pin_on_dpll_priv() and passes the result to ref_sync_get() and
+ref_sync_set() without looking at it. The helper returns NULL when the
+partner holds no ref on that dpll. Of the two drivers implementing the
+feature only zl3073x dereferences the pointer (sync_pin->id); ice ignores
+it, so ice cannot fault here.
 
-For that, sctp_v6_addr_valid() has to return 0 when it is called with
-a socket that is not PF_INET6, so that IPv6 addresses are never used
-on IPv4 sockets. As addr_valid() now also checks sk_family and
-ipv6_only_sock, simplify the address handling in sctp_process_param()
-with it, as it additionally filters out non-unicast addresses. As a
-side effect, a v4-mapped address in an IPv6 address parameter is now
-normalised to AF_INET before the transport is created, matching what
-the socket API paths already do.
+The NULL is a teardown race, not a steady state - zl3073x registers every
+input pin with every channel, so the partner is normally present on the
+dpll the base pin resolves to. zl3073x_dev_stop() unregisters pins one at
+a time, taking and dropping dpll_lock for each, and between the partner's
+turn and the base pin's the partner is out of that dpll's pin_refs while
+still registered with the channels not yet torn down, so
+dpll_pin_available() keeps passing. That path is not only driver removal:
+devlink reload and devlink dev flash both run zl3073x_dev_stop().
 
-Also add the missing !af check in sctp_process_init(), as
-sctp_get_af_specific(AF_INET6) returns NULL on CONFIG_IPV6=n builds.
+Reproduced by holding that state open with a mock dpll device, which is
+where the frame name comes from:
 
-  BUG: KASAN: null-ptr-deref in sctp_transport_new+0xa7/0x350
-  Read of size 4 at addr 00000000000000b4 by task poc/682
-  Call Trace:
-   <IRQ>
-   sctp_transport_new+0xa7/0x350
-   sctp_assoc_add_peer+0x153/0x850
-   sctp_process_init+0xf9/0x1180
-   sctp_sf_do_5_1D_ce+0x464/0xbc0
-   sctp_do_sm+0x114/0x2990
-   sctp_endpoint_bh_rcv+0x280/0x430
-   sctp_inq_push+0xdd/0x100
-   sctp_rcv+0x17f5/0x1ae0
-   sctp4_rcv+0x2b/0x40
-   ip_protocol_deliver_rcu+0x25b/0x270
-   ip_local_deliver+0xd1/0xe0
-   </IRQ>
-  Kernel panic - not syncing: Fatal exception in interrupt
+ BUG: kernel NULL pointer dereference, address: 0000000000000000
+ Oops: Oops: 0000 [#1] SMP NOPTI
+ RIP: 0010:mock_ref_sync_get+0x5/0x30
+ Call Trace:
+  <TASK>
+  dpll_pin_ref_sync_set+0x19f/0x4a0
+  dpll_nl_pin_set_doit+0x17d/0x840
+  genl_family_rcv_msg_doit+0xd6/0x130
+  genl_rcv_msg+0x181/0x2b0
+  netlink_rcv_skb+0x55/0x100
+  genl_rcv+0x23/0x30
+  netlink_unicast+0x24d/0x370
+  netlink_sendmsg+0x1e2/0x420
+  __sys_sendto+0x1db/0x1f0
+  __x64_sys_sendto+0x1f/0x30
+  do_syscall_64+0xe1/0x490
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Assisted-by: opencode:deepseek-v4
-Signed-off-by: Xingyuan Mo <hdthky0@gmail.com>
+Commit d2e914a4a0d0 ("dpll: fix NULL pointer dereference in
+dpll_msg_add_pin_ref_sync()") added the same guard to the read side, which
+the kernel walks into by itself because the delete notification is emitted
+from inside the unregister; the write side needs a pin-set to land in the
+window and was left alone. Test the priv rather than look up pin_refs
+directly, so that the two halves key off the same condition.
+
+Fixes: 58256a26bfb3 ("dpll: add reference sync get/set")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
+CC: vadim.fedorenko@linux.dev
+CC: arkadiusz.kubalewski@intel.com
+CC: jiri@resnulli.us
+CC: ivecera@redhat.com
+CC: milena.olech@intel.com
+CC: przemyslaw.kitszel@intel.com
+---
+ drivers/dpll/dpll_netlink.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-Changes since v1 [1]:
-- validate the forged cookie peer_addr with af->addr_valid() instead of
-  a family whitelist, and make sctp_v6_addr_valid() reject non-PF_INET6
-  sockets, so a forged AF_INET6 cookie can no longer crash an IPv4
-  socket in sctp_v6_get_dst() (found by Sashiko)
-- simplify sctp_process_param() address handling with addr_valid(), as
-  addr_valid() now also checks sk_family and ipv6_only_sock
-- add the missing !af check in sctp_process_init() for CONFIG_IPV6=n
-  builds (suggested by Xin Long)
-
-[1] https://lore.kernel.org/netdev/20260913113522.2674588-1-hdthky0@gmail.com/
-
- net/sctp/ipv6.c          |  3 +++
- net/sctp/sm_make_chunk.c | 25 +++++++++++++++++--------
- net/sctp/transport.c     |  3 +++
- 3 files changed, 23 insertions(+), 8 deletions(-)
-
-diff --git a/net/sctp/ipv6.c b/net/sctp/ipv6.c
-index ef26878f1282..c45ac15f3b79 100644
---- a/net/sctp/ipv6.c
-+++ b/net/sctp/ipv6.c
-@@ -734,6 +734,9 @@ static int sctp_v6_addr_valid(union sctp_addr *addr,
+diff --git a/drivers/dpll/dpll_netlink.c b/drivers/dpll/dpll_netlink.c
+index d4f133ac9fea..9a90733b2da3 100644
+--- a/drivers/dpll/dpll_netlink.c
++++ b/drivers/dpll/dpll_netlink.c
+@@ -1201,6 +1201,7 @@ dpll_pin_ref_sync_state_set(struct dpll_pin *pin, u32 ref_sync_pin_id,
+ 			    const enum dpll_pin_state state,
+ 			    struct netlink_ext_ack *extack)
  {
- 	int ret = ipv6_addr_type(&addr->v6.sin6_addr);
- 
-+	if (sp && sctp_opt2sk(sp)->sk_family != PF_INET6)
-+		return 0;
-+
- 	/* Support v4-mapped-v6 address. */
- 	if (ret == IPV6_ADDR_MAPPED) {
- 		/* Note: This routine is used in input, so v4-mapped-v6
-diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
-index 84a4c97d0f75..cfc4973f4d4a 100644
---- a/net/sctp/sm_make_chunk.c
-+++ b/net/sctp/sm_make_chunk.c
-@@ -1732,7 +1732,9 @@ struct sctp_association *sctp_unpack_cookie(
- 	struct sctp_cookie *bear_cookie;
- 	struct sctp_chunkhdr *ch;
- 	unsigned int len, chlen;
-+	union sctp_addr paddr;
- 	enum sctp_scope scope;
-+	struct sctp_af *af;
- 	ktime_t kt;
- 
- 	/* Header size is static data prior to the actual cookie, including
-@@ -1841,6 +1843,15 @@ struct sctp_association *sctp_unpack_cookie(
- 		goto fail;
++	void *pin_priv, *ref_sync_pin_priv;
+ 	const struct dpll_pin_ops *ops;
+ 	enum dpll_pin_state old_state;
+ 	struct dpll_pin *ref_sync_pin;
+@@ -1228,9 +1229,15 @@ dpll_pin_ref_sync_state_set(struct dpll_pin *pin, u32 ref_sync_pin_id,
+ 		return -EOPNOTSUPP;
  	}
+ 	dpll = ref->dpll;
+-	ret = ops->ref_sync_get(pin, dpll_pin_on_dpll_priv(dpll, pin),
+-				ref_sync_pin,
+-				dpll_pin_on_dpll_priv(dpll, ref_sync_pin),
++	pin_priv = dpll_pin_on_dpll_priv(dpll, pin);
++	ref_sync_pin_priv = dpll_pin_on_dpll_priv(dpll, ref_sync_pin);
++	/* Pin may have been unregistered from this dpll already */
++	if (!ref_sync_pin_priv) {
++		NL_SET_ERR_MSG(extack,
++			       "reference sync pin not registered with the dpll");
++		return -ENODEV;
++	}
++	ret = ops->ref_sync_get(pin, pin_priv, ref_sync_pin, ref_sync_pin_priv,
+ 				&old_state, extack);
+ 	if (ret) {
+ 		NL_SET_ERR_MSG(extack, "unable to get old reference sync state");
+@@ -1239,9 +1246,7 @@ dpll_pin_ref_sync_state_set(struct dpll_pin *pin, u32 ref_sync_pin_id,
+ 	if (state == old_state)
+ 		return 0;
  
-+	/* peer_addr is peer-controlled when cookie authentication is
-+	 * disabled.  Validate a copy, as addr_valid() may rewrite a
-+	 * v4-mapped address in place.
-+	 */
-+	paddr = bear_cookie->peer_addr;
-+	af = sctp_get_af_specific(paddr.sa.sa_family);
-+	if (!af || !af->addr_valid(&paddr, sctp_sk(ep->base.sk), NULL))
-+		goto malformed;
-+
- 	/* Make a new base association.  */
- 	scope = sctp_scope(sctp_source(chunk));
- 	retval = sctp_association_new(ep, ep->base.sk, scope, gfp);
-@@ -2381,6 +2392,8 @@ int sctp_process_init(struct sctp_association *asoc, struct sctp_chunk *chunk,
- 		    (param.p->type == SCTP_PARAM_IPV4_ADDRESS ||
- 		     param.p->type == SCTP_PARAM_IPV6_ADDRESS)) {
- 			af = sctp_get_af_specific(param_type2af(param.p->type));
-+			if (!af)
-+				continue;
- 			if (!af->from_addr_param(&addr, param.addr,
- 						 chunk->sctp_hdr->source, 0))
- 				continue;
-@@ -2554,18 +2567,14 @@ static int sctp_process_param(struct sctp_association *asoc,
- 	 */
- 	switch (param.p->type) {
- 	case SCTP_PARAM_IPV6_ADDRESS:
--		if (PF_INET6 != asoc->base.sk->sk_family)
--			break;
--		goto do_addr_param;
--
- 	case SCTP_PARAM_IPV4_ADDRESS:
--		/* v4 addresses are not allowed on v6-only socket */
--		if (ipv6_only_sock(asoc->base.sk))
--			break;
--do_addr_param:
- 		af = sctp_get_af_specific(param_type2af(param.p->type));
-+		if (!af)
-+			break;
- 		if (!af->from_addr_param(&addr, param.addr, htons(asoc->peer.port), 0))
- 			break;
-+		if (!af->addr_valid(&addr, sctp_sk(asoc->base.sk), NULL))
-+			break;
- 		scope = sctp_scope(peer_addr);
- 		if (sctp_in_scope(net, &addr, scope))
- 			if (!sctp_assoc_add_peer(asoc, &addr, gfp, SCTP_UNCONFIRMED))
-diff --git a/net/sctp/transport.c b/net/sctp/transport.c
-index 6ea55b9fbde4..cd1a604d6f8e 100644
---- a/net/sctp/transport.c
-+++ b/net/sctp/transport.c
-@@ -92,6 +92,9 @@ struct sctp_transport *sctp_transport_new(struct net *net,
- {
- 	struct sctp_transport *transport;
- 
-+	if (!sctp_get_af_specific(addr->sa.sa_family))
-+		return NULL;
-+
- 	transport = kzalloc_obj(*transport, gfp);
- 	if (!transport)
- 		return NULL;
+-	ret = ops->ref_sync_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
+-				ref_sync_pin,
+-				dpll_pin_on_dpll_priv(dpll, ref_sync_pin),
++	ret = ops->ref_sync_set(pin, pin_priv, ref_sync_pin, ref_sync_pin_priv,
+ 				state, extack);
+ 	if (ret) {
+ 		NL_SET_ERR_MSG_FMT(extack,
 -- 
-2.43.0
+2.55.0
 
