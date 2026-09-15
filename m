@@ -1,236 +1,149 @@
-Received: from mail-oi2-f13.google.com (mail-oi2-f13.google.com [74.125.231.205])
+Received: from mail-ua2-f12.google.com (mail-ua2-f12.google.com [74.125.226.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C464BE446
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 18:14:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7FB143F4D2
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 18:17:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.226.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789496096; cv=none; b=Qsbomb+O6aTcM0vHARMUDkagsEKmBrXeCrOCqv+U81GrQusbT+vN2d5Uc7i8yivLlmNmP9NTQWkPFueAveL0vIJLgFFYjQ0h8KVevAuJMzXl56MK/TGXA8qHKvhbTEVQADV41rQNtmsQ0e0De5GNt1cCWiNH6MYbWQ5Zjb3BK+c=
+	t=1789496236; cv=none; b=k1LIP6dY9myBMWOs9YrFgGH+H/V73Ct4kCIaHXeQI70aTXHL8OaCfXlrwrjkUFmpX2yqV++xKTpVBCYMje9EkNwiIwNpjFzghLHzDgKHpLqdrFzODXF8G++72NeL20RrAasFCq0yrm2s0wHCmnDL75P5cT4ZYWNgMOE9DUmrjb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789496096; c=relaxed/simple;
-	bh=Zqxttmoi5XngJammIPSIG6qDpq3OZ3kZrZhzLN5W27E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cgGM8cD7OeHZ7d+U3Ftj2yFxI2PDKQpE7s8AKYT+kDMC4oRqM95KW+uPB5WjNOJdpOqEZKVXq/FrqxWbPxmmah91jYqzEnsrKjRzEl2l/EGWMWPRPZGrY63EpdaTr8+eVDlUqjT/fN76uZGsVbZAlBzqi/W3lpBfNMu90MapK5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=abmd9RTM; arc=none smtp.client-ip=74.125.231.205
+	s=arc-20240116; t=1789496236; c=relaxed/simple;
+	bh=A7in0Alu7BM8kUxRkWxLv9TvBfe4QvgWoOD+yHVx2j4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CIeVoN3gK6LnB3IoUasECpL1zaXSAj4WUPoNblgr5jurItt4bIRNBy0vDIL2kZh6j9Xr702O1/xIBVtaWMMRNynUJQ9Fe2t41+9FicHBWvuYEo+kq7qL+AiysVCQYAl2/VcgvMIWxxXZR8R8esuDuAuFCPBNfgK0ZSA68iBBjEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g//yLgFJ; arc=none smtp.client-ip=74.125.226.204
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="abmd9RTM"
-Received: by mail-oi2-f13.google.com with SMTP id 5614622812f47-4c0776592e3so89092b6e.1
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 11:14:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g//yLgFJ"
+Received: by mail-ua2-f12.google.com with SMTP id a1e0cc1a2514c-982db8d3ab8so27051241.1
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 11:17:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789496092; x=1790100892; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=F+aeTxhSeWnPEIt7QVJiINGNEEjF9/lqEswuPk0DNjA=;
-        b=abmd9RTMWEHC4D1pnO27SnbXu1y/pm4qIDT0WA0sc99tY2QaXG3uYveQKYQ61uvPgK
-         F9y2zn7s+lKxQH6hF9aKGxtKyNRg1gfLk+mbjLmZCn4ttFjd4jmttZwT3Khhy4434JhE
-         b4ZlrsD05U9pLCuImu77A+Pjal2TCcMj5R84x/B/l8X24WtfKYx4gc0pTEtevr2t6edH
-         jtqPIQpLKL1fM879/+tjEuyv/sPqH21ULXSgklwKlnA5Qgh/EfThqOit6TivJwrBzMl3
-         z/ECNn9yCvcin6dxkq2dakQDKDnBdPvfGT0E9HaDO2ylfQKEGIRwrU6NTgKIOT5vp0ru
-         4K9w==
+        d=gmail.com; s=20251104; t=1789496232; x=1790101032; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lhABGOr78fp2q20gHs/L/QQ2y1BCAwuXhlRy5NO8sA0=;
+        b=g//yLgFJbe4+i6+NUjaUGafxtqFGMS47x7HDcC8tenhLuMMEtX44pOpIpENyfN56W+
+         JbQIB8oE8sW2RvlHam7BMD4bBTgl5sG4dfft6v1fSmIpOtjnbq08BaU2aWUGaG8+sGci
+         YMovr2qcVyvg0Dq1zf2VW/2Xbgg3RJLMGwUBy6qtZlApLFavfdutJE7D7NhwuJ7xda4d
+         1qP+uen6AICgUBX3eH/C6NTpnlwrUY51+V2GgySSWJ4vbnxDQ2AUv8TKD24OtM3NKLMn
+         PWgsN8gUQi5fEy8HnE/X1qW5Y7n8z/rpJEQYg/usO6Q5UJPQ9KGB3+wEMY9JYuXFg3gu
+         pCtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789496092; x=1790100892;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=F+aeTxhSeWnPEIt7QVJiINGNEEjF9/lqEswuPk0DNjA=;
-        b=PMq1UTuJaJG1JspcbTDs1hA0akHPieLU6wB8610WoXtypFnAfv+wNING4uLvYV05vM
-         XRG/+cHeqO/k54ldbUOGqfe5JDur4sJ68Vst2sjtFo87SEtyX4J/R+n4yW0eWQztZ6WI
-         pyH2Lgl/WHJVyuG7YvsKuPXHA7+e3jLWyc/dm+vdx5zWySgaqmu7eu00tXK1GVEI+Pnj
-         7uchBCxbtHdc5eftU+wnwKrZPgx+uVFHNTMs4gSs5uCa12HgxlRM7drfRn+pOimf6qZm
-         hIWsNb9EE3XzDyUdmMoA5dw2KUe/qzbASH0kyJNRJxqu3G0AyVTj7LMLwxF/V4+I+4DJ
-         MD7w==
-X-Forwarded-Encrypted: i=1; AKwUvBzSf0/HpSyYT8V2aLQzJoC9xT7BGQYXRXsfwMraWm1/x6uOQUdrPP/ZBA4IMqgw+ZcdFhvCq2g=@vger.kernel.org
-X-Gm-Message-State: AFuF++ldSoZ47tVPpbxk2EFiLE7l4TcOhKuPlwwnTwkL4fvlF/W1FSUz
-	2zP+01WyAzys0uQqfkkfHiujH8aIA3TmDRYMpWT1mnuUfoCfoGVbKX6E
-X-Gm-Gg: AYBFou34eShnNmGAeGhU7w72UIB6y3HSJtuUTZgcZCb+8tnw0gYtX94HXVXstuL217t
-	AnwAocFZl7u98akpjWk1ZGHig1tYsjZBeR5t/JV1ja7YI1+7v99aJMJSBDMyLmvAReTuOHS6TCB
-	mPcfQkwKEMfQxiq0E5X2eXihdMCeh1BC+jknUaAJGRBo76ick+6/XkMqM+eTH1swRy3B0Y6KzJi
-	qlPOXICaMRmXNDMG1udtYbsi0AI6Kpn9vPV39C1ZFye4xH35eGZfGDWAiLJ1Kz4VgDPHAdT2jbY
-	Dhvw2QTQSm4z1pICmeiShzz7YT3+TSKAX/7gz2InPKdqAijTH49kByscE8PgWIP3qOBkGwmfLa6
-	cm9eqhqHkoZ6YnFYPVOD6mN/aIdXebu3xxcgzaVpqJkxSwEuppm/OyUWVMkK3fMW3qichSof4NV
-	+vu7Yj3W8uw/qyu7pwhUpT/h0N4lLjY5RIQN9gDutDwB2vbbKzFB90u814W1V84mQp/D/Xs7cPC
-	DF3ZdZRBiEPpCI5MGG5y1icmxBD4M8=
-X-Received: by 2002:a05:6820:1c94:b0:6b7:8415:d780 with SMTP id 006d021491bc7-6c738db60e1mr1840407eaf.43.1789496091809;
-        Tue, 15 Sep 2026 11:14:51 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:70::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-80b049fb51asm115974a34.1.2026.09.15.11.14.49
+        d=1e100.net; s=20260707; t=1789496232; x=1790101032;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lhABGOr78fp2q20gHs/L/QQ2y1BCAwuXhlRy5NO8sA0=;
+        b=xVOqsPXNSlue1qyhdqi7GsGj2aXjG+9M9WN+X/jbnDDBwJPGulxYvTY1mCyc43/QY7
+         HAuLTvjiUC65BWelprcGGq45A0WL63RUrdrhwzQA8AZEiCmwKyS7sTZdslQD4Vv7Wi5V
+         sbNPtuvzakoSlpbVShFVEyZkmZjnRkTUjTY+xpzNgGquhVREdSQQwhsFzL1TEgrVAwZe
+         1/jDuhcijmRdYpijYNxeQ79r8fZyliPizS0KPNojGxALbgMjxjErujEipPj2vEJTn17e
+         dHhzyesGHWq2suCxmVmMhet26St1WLdL4eXnK5vM4DWvP25RkpG0x+YwALXJ+GKGpyEf
+         +3JA==
+X-Forwarded-Encrypted: i=1; AKwUvByEco/Yn90eVR3Zi/Dk7cRBnkdvuqHeJR3551Dg85ifuCvdsdz8QyqukyJJEtc7SSztBSgNBlI=@vger.kernel.org
+X-Gm-Message-State: AFuF++n7hWVmvXoW0/aByaTCsr2EMXI+gWFuN+UIegXJ/s8lN5AjDxMc
+	YoxhNZ4jSd6sDNZ+sAJWdunFs1GEBJFcgmRuGqAqn8pzWobk5aEd6yjc
+X-Gm-Gg: AYBFou2icuX/nKmewWXZ6f/fftVRshu/nYCJPrgM9A4o3sOv7BmMDvMR6nu3mXFM7tT
+	zSE5QXOVK/OHJRcSUie9pj2XePKbIMKJYz0NexlqH9wxtM5O9G4GWG/rrt9TMq+fE053oYh5C1M
+	AaZ/YaFodH9jaeExMYDTR0QARaoxXvzqKFXL76zAGnPdwEPBJOsTV9hVg6AW66MXPKv2/4KhReH
+	h4kUWpKYTlKviZ2eKHxS2HsQqaSNAWDvEI7eGzTc0mmlzSXry9NnAnafDUT4wk6PI9OKtQ8r/IH
+	77ajwX2kmCfcgLbgZsV6G9QipCXaEZR5DQa/4CZI6dpyeV8M84UaOG5/h3oKCY5dze+I9BIEicl
+	vxNqwN1I8WY1iqN6Kc8IWQhCMAFErbvoc1aYt6ul6WdDB6UjiOhCEF06gzWZ7zF6bU+QV+3F6+P
+	3AtGegf1SnRFbnDqZJ4VweOWYL1z44sVrA6wjjsaHv29kGkPEOw+RIDpRKMBUJmTLidOGGMnWFC
+	bTpW3MdBGIIMpuqtGbcM22oCee2whMLJlX0voqwQe/RY3Oims4wC1GdMZwT0nxntmlrzsnBmIz0
+	g1f/U6uTEqh993UutEuT7tmRgdOJhYFwNWtEPdo6A2aptzDO
+X-Received: by 2002:a05:6102:6a85:b0:79e:221f:704 with SMTP id ada2fe7eead31-79ed4c2905dmr5071549137.7.1789496232542;
+        Tue, 15 Sep 2026 11:17:12 -0700 (PDT)
+Received: from ryzen.lan ([2601:644:8000:7a86::e35])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9123be5fcfasm4717636d6.12.2026.09.15.11.17.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 11:14:51 -0700 (PDT)
-Date: Tue, 15 Sep 2026 11:14:47 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
+        Tue, 15 Sep 2026 11:17:12 -0700 (PDT)
+From: Rosen Penev <rosenp@gmail.com>
+To: dmaengine@vger.kernel.org
+Cc: Vinod Koul <vkoul@kernel.org>,
+	Frank Li <Frank.Li@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowangio@gmail.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Shuah Khan <shuah@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
-	virtualization@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	sargun@sargun.me, jlinbox@meta.com,
-	Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next 3/6] vsock/virtio: support guest device network
- namespace
-Message-ID: <aqmLFzcF3MmwRITz@devvm29614.prn0.facebook.com>
-References: <20260902-vsock-guest-ns-v1-0-9995383e9a8b@meta.com>
- <20260902-vsock-guest-ns-v1-3-9995383e9a8b@meta.com>
- <aqlkWGyoUYrgQUzz@sgarzare-redhat>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	linux-kernel@vger.kernel.org (open list),
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+	linux-sound@vger.kernel.org (open list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM...)
+Subject: [PATCH] dmaengine: bestcomm: Enable compile testing
+Date: Tue, 15 Sep 2026 11:17:09 -0700
+Message-ID: <20260915181709.11323-1-rosenp@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aqlkWGyoUYrgQUzz@sgarzare-redhat>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 15, 2026 at 05:47:02PM +0200, Stefano Garzarella wrote:
-> On Wed, Sep 02, 2026 at 04:00:49PM -0700, Bobby Eshleman wrote:
-> > From: Bobby Eshleman <bobbyeshleman@meta.com>
-> > 
-> > virtio-vsock did not have namespace support (the device was always
-> > accessible to any global namespace).
-> > 
-> > Make the virtio-vsock device assignable to a namespace and initialize it
-> > to init_net. Because virtio-vsock and init_net are both hardcoded to
-> > global mode, nothing changes until the assign ioctl is issued.
-> > 
-> > When the device's local-mode namespace is being destroyed, received
-> > packets are reset until new valid a namespace has been assigned and/or
-> > automatically returned to, and the next RX batch begins (in
-> > virtio_transport_rx_work). They are reset rather than dropped because
-> > vsock does not retransmit, so a silent drop would leave the host waiting
-> > for a timeout, and a connection request arriving in that window has no
-> > socket whose teardown would tell it otherwise. This requires making
-> > virtio_transport_reset_no_sock() available outside of the common code.
-> > 
-> > When a device is assigned to a namespace, every already established
-> > vsock socket that is no longer able to reach the device is forcibly
-> > reset. For that reason, adding new sockets to the connected table must
-> > be performed atomically with regards to namespace assignment. This
-> > ensures that when the socket is added to the connected table that it
-> > actually passes the new reachability conditions set by ns assignment. If
-> > it wins the race to the table and does NOT pass the reachability tests,
-> > then the reset sweep will correctly catch it. This is the purpose
-> > of the new helper 'vsock_maybe_set_connected()'.
-> > 
-> > Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
-> > ---
-> > include/linux/virtio_vsock.h            |  2 ++
-> > net/vmw_vsock/virtio_transport.c        | 28 ++++++++++++++++++++++------
-> > net/vmw_vsock/virtio_transport_common.c | 28 +++++++++++++++++++++-------
-> > 3 files changed, 45 insertions(+), 13 deletions(-)
-> > 
-> > diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
-> > index f91704731057..9c68ce1d7fb4 100644
-> > --- a/include/linux/virtio_vsock.h
-> > +++ b/include/linux/virtio_vsock.h
-> > @@ -286,6 +286,8 @@ void virtio_transport_inc_tx_pkt(struct virtio_vsock_sock *vvs, struct sk_buff *
-> > u32 virtio_transport_get_credit(struct virtio_vsock_sock *vvs, u32 wanted);
-> > void virtio_transport_put_credit(struct virtio_vsock_sock *vvs, u32 credit);
-> > void virtio_transport_deliver_tap_pkt(struct sk_buff *skb);
-> > +int virtio_transport_reset_no_sock(const struct virtio_transport *t,
-> > +				   struct sk_buff *skb, struct net *net);
-> > int virtio_transport_purge_skbs(void *vsk, struct sk_buff_head *list);
-> > int virtio_transport_read_skb(struct vsock_sock *vsk, skb_read_actor_t read_actor);
-> > int virtio_transport_notify_set_rcvlowat(struct vsock_sock *vsk, int val);
-> > diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
-> > index 4f9aa9c4c3aa..a453a4f828dc 100644
-> > --- a/net/vmw_vsock/virtio_transport.c
-> > +++ b/net/vmw_vsock/virtio_transport.c
-> > @@ -540,9 +540,14 @@ static bool virtio_transport_msgzerocopy_allow(void)
-> > 	return true;
-> > }
-> > 
-> > +static bool virtio_transport_netns_assign_allow(void)
-> > +{
-> > +	return true;
-> > +}
-> > +
-> > bool virtio_transport_stream_allow(struct vsock_sock *vsk, u32 cid, u32 port)
-> > {
-> > -	return vsock_net_mode_global(vsk);
-> > +	return vsock_g2h_net_reachable(sock_net(sk_vsock(vsk)));
-> > }
-> > 
-> > static bool virtio_transport_seqpacket_allow(struct vsock_sock *vsk,
-> > @@ -587,6 +592,7 @@ static struct virtio_transport virtio_transport = {
-> > 		.seqpacket_has_data       = virtio_transport_seqpacket_has_data,
-> > 
-> > 		.msgzerocopy_allow        = virtio_transport_msgzerocopy_allow,
-> > +		.netns_assign_allow       = virtio_transport_netns_assign_allow,
-> > 
-> > 		.notify_poll_in           = virtio_transport_notify_poll_in,
-> > 		.notify_poll_out          = virtio_transport_notify_poll_out,
-> > @@ -616,7 +622,7 @@ virtio_transport_seqpacket_allow(struct vsock_sock *vsk, u32 remote_cid)
-> > 	struct virtio_vsock *vsock;
-> > 	bool seqpacket_allow;
-> > 
-> > -	if (!vsock_net_mode_global(vsk))
-> > +	if (!vsock_g2h_net_reachable(sock_net(sk_vsock(vsk))))
-> > 		return false;
-> > 
-> > 	seqpacket_allow = false;
-> > @@ -634,6 +640,9 @@ static void virtio_transport_rx_work(struct work_struct *work)
-> > 	struct virtio_vsock *vsock =
-> > 		container_of(work, struct virtio_vsock, rx_work);
-> > 	struct virtqueue *vq;
-> > +	struct net *net;
-> > +
-> > +	net = vsock_g2h_net_get();
-> > 
-> > 	mutex_lock(&vsock->rx_lock);
-> > 
-> > @@ -682,10 +691,14 @@ static void virtio_transport_rx_work(struct work_struct *work)
-> > 
-> > 			virtio_transport_deliver_tap_pkt(skb);
-> > 
-> > -			/* Force virtio-transport into global mode since it
-> > -			 * does not yet support local-mode namespacing.
-> > -			 */
-> > -			virtio_transport_recv_pkt(&virtio_transport, skb, NULL);
-> > +			if (unlikely(!net)) {
-> > +				virtio_transport_reset_no_sock(
-> > +					&virtio_transport, skb, &init_net);
-> 
-> Why init_net?
+Allow the BestComm DMA engine to be selected for PowerPC
+compile-test builds.
 
-This parameter is actually unused by virtio_transport_reset_no_sock(),
-its call to virtio_transport_send_pkt(), and even the eventual call to
-virtio_transport_deliver_tap_pkt()... so maybe NULL w/ a comment would
-be better?
+The freescale ethernet and sound drivers now need a dependency on
+PPC_MPC52xx as they use headers/functions from that platform.
 
-> 
-> > +				kfree_skb(skb);
-> > +				continue;
-> > +			}
-> > +
-> > +			virtio_transport_recv_pkt(&virtio_transport, skb, net);
-> > 		}
-> > 	} while (!virtqueue_enable_cb(vq));
-> > 
-> > @@ -694,6 +707,9 @@ static void virtio_transport_rx_work(struct work_struct *work)
-> > 		virtio_vsock_rx_fill(vsock);
-> > out_nofill:
-> > 	mutex_unlock(&vsock->rx_lock);
-> > +
-> > +	if (net)
-> > +		put_net(net);
-> 
-> put_net() should handle NULL net, right?
+Assisted-by: LLM
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ drivers/dma/bestcomm/Kconfig           | 3 +--
+ drivers/net/ethernet/freescale/Kconfig | 2 +-
+ sound/soc/fsl/Kconfig                  | 2 +-
+ 3 files changed, 3 insertions(+), 4 deletions(-)
 
-It does, and somehow I forgot that.
+diff --git a/drivers/dma/bestcomm/Kconfig b/drivers/dma/bestcomm/Kconfig
+index 5dd437295964..153b5492c93c 100644
+--- a/drivers/dma/bestcomm/Kconfig
++++ b/drivers/dma/bestcomm/Kconfig
+@@ -5,7 +5,7 @@
+ 
+ config PPC_BESTCOMM
+ 	tristate "Bestcomm DMA engine support"
+-	depends on PPC_MPC52xx
++	depends on PPC_MPC52xx || (PPC && COMPILE_TEST)
+ 	default n
+ 	select PPC_LIB_RHEAP
+ 	help
+@@ -34,4 +34,3 @@ config PPC_BESTCOMM_GEN_BD
+ 	depends on PPC_BESTCOMM
+ 	help
+ 	  This option enables the support for the GenBD tasks.
+-
+diff --git a/drivers/net/ethernet/freescale/Kconfig b/drivers/net/ethernet/freescale/Kconfig
+index b34c0fcfddea..d81984fcec64 100644
+--- a/drivers/net/ethernet/freescale/Kconfig
++++ b/drivers/net/ethernet/freescale/Kconfig
+@@ -38,7 +38,7 @@ config FEC
+ 
+ config FEC_MPC52xx
+ 	tristate "FEC MPC52xx driver"
+-	depends on PPC_BESTCOMM
++	depends on PPC_BESTCOMM && PPC_MPC52xx
+ 	select CRC32
+ 	select PHYLIB
+ 	select PPC_BESTCOMM_FEC
+diff --git a/sound/soc/fsl/Kconfig b/sound/soc/fsl/Kconfig
+index 04940879dfd8..101bc952aa14 100644
+--- a/sound/soc/fsl/Kconfig
++++ b/sound/soc/fsl/Kconfig
+@@ -234,7 +234,7 @@ config SND_SOC_MPC5200_I2S
+ 
+ config SND_SOC_MPC5200_AC97
+ 	tristate "Freescale MPC5200 PSC in AC97 mode driver"
+-	depends on PPC_BESTCOMM
++	depends on PPC_BESTCOMM && PPC_MPC52xx
+ 	select SND_SOC_AC97_BUS
+ 	select SND_MPC52xx_DMA
+ 	select PPC_BESTCOMM_GEN_BD
+-- 
+2.55.0
 
-Thanks,
-Bobby
