@@ -1,142 +1,87 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36AC83D669C;
-	Tue, 15 Sep 2026 10:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063D1485515;
+	Tue, 15 Sep 2026 10:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789469356; cv=none; b=g8vF5+rZNc/VyBuv2nHfnMMW0nM7bL06qnJ9beA3B9eU/2TxOMm8aS4eOnB4ywhNka7JOxhdpxAPhG506hzAXn4ErvvKAO5nhjzg+gVlTbTYZCV4R2VTft9j7idf3E55RADnw1KKoT8gQp1ZiGkWEGDnU7eF2ofVsKRQxotwe14=
+	t=1789469370; cv=none; b=XoPigupy/Dek0JP5eGgXyr3LSsnh25EFiUHjwmZF9TfVFtmMU0xjYHtn4wEB3Dr3dDZPDBqciy8yDTv0cXPzWpyvc355a6qfMAhw42+ycMngp1NTmp0cPQABQ7yZvnA4igmYrILFfe+05xYkqvTZ07ClbvXkaf8TMEmIDWR0m6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789469356; c=relaxed/simple;
-	bh=h2nN3RPkDO5UWrQnE9qkYdoRNLD0iQwRQZrB/JqFy0M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WTuEzZkPC3bz12l34LbCewAijqzkkYETgX0sPhiNTZudQKw8Hu0qZG0p8itzHna8n/oy731SMxN2YKMuusn+lIJ7FpLMyskzeEgWt8xBTJEZl78KSmjw89OL8ibytc0psDfZ934kSTvnWk9keM7uZztENK07tC5I+XjFCTQuIlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256:X25519MLKEM768)
-	 (Exim 4.100)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1x6Qii-000000007Dm-46Qy;
-	Tue, 15 Sep 2026 10:49:01 +0000
-Date: Tue, 15 Sep 2026 11:48:53 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: Caleb James DeLisle <cjd@cjdns.fr>
-Cc: netdev@vger.kernel.org, dqfext@gmail.com, SkyLake.Huang@mediatek.com,
-	andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Matheus Sampaio Queiroga <srherobrine20@gmail.com>
-Subject: Re: [PATCH v4 net-next] net: phy: mediatek: support MT7530 PHYs on
- EN71221 MCM
-Message-ID: <aqkilcQAs-GERF3x@makrotopia.org>
-References: <20260915103550.79957-1-cjd@cjdns.fr>
+	s=arc-20240116; t=1789469370; c=relaxed/simple;
+	bh=XgVCsOLjmbFb2z4XbqmcewTUrS6jdn/31WWVeWefKY8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mFUnxGPpxgZvBdcdsg2UYjb6IiEE4zVI0EwsZICkDLSZZWH/eC9UJkOM0PEAYUyPk1T47SiFoa1UEezjEsodnP0BZUePhbuNEosjvnzyHRABn2a4Jk+Ar6Sry5BRBMoYrXIoPD5xGHzHw2xM2DOcf93cRwKIGlqbtQPAN4zosxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jfhVli0t; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jfhVli0t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE2C1F000FF;
+	Tue, 15 Sep 2026 10:49:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789469367;
+	bh=zkMb2nJe0pkNxSEqKgHEYDu+NLnR17wL19N3I18TO4U=;
+	h=From:To:Cc:Subject:Date;
+	b=jfhVli0tUePEjbc4nFkld3qWTUs4nbOpYwZAn5/TpnyR38oD/mWAEEEhk1HnPUxz4
+	 VkkHdNYEyYaRO41UFnUO24OmUgjAcEh1Bwvuc11Rst185wLDDv3KudmXUl6IG7aaYN
+	 bWV9tZOCM+KvIDDVSBJlulJfwt1PMZ9ia3K72PgsbW9oBqpfL93dnDztTd53Sp6vvf
+	 a8Yj+kqxV+F08UEySmbxq2RH+6fO5qPTbIF7erGNgX+m+7v2h2jXWuJIfbkj7ZVezd
+	 B97qOSLZDow8omDgZ4JroDAePaZ/uKXpO7yhQQZeb6sKu1MKSpI0ZsHLKwBFnmaL9j
+	 XqOhcV9+Z7Ieg==
+From: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>
+To: Alexander Duyck <alexanderduyck@fb.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	kernel-team@meta.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org
+Cc: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	Mina Almasry <almasrymina@google.com>,
+	linux-kernel@vger.kernel.org,
+	Sashiko <netdev-bot+sashiko@kernel.org>
+Subject: [PATCH net] eth: fbnic: Fix payload page pool error cleanup
+Date: Tue, 15 Sep 2026 12:49:15 +0200
+Message-ID: <20260915104917.3978113-1-bjorn@kernel.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260915103550.79957-1-cjd@cjdns.fr>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 15, 2026 at 10:35:50AM +0000, Caleb James DeLisle wrote:
-> The EcoNet EN751221 multi-chip module implementation of the MT7530
-> requires some additional configuration of the PHYs on startup.
-> The reason for this is not known, but it is possible that it has
-> to do with the fact that the EN751221 MCM implementation of the
-> MT7530 runs at an abnormal PLL frequency (362.5Mhz).
-> 
-> Detect whether the MT7530 PHY is attached to the MDIO bus of an
-> EcoNet EN751221 switch and if so, apply the necessary register
-> updates. Additionally, never attempt to configure an MT7530
-> identified PHY which does not have gigabit support because the same
-> ID is used for another (FE) PHY.
-> 
-> Co-developed-by: Matheus Sampaio Queiroga <srherobrine20@gmail.com>
-> Signed-off-by: Matheus Sampaio Queiroga <srherobrine20@gmail.com>
-> Signed-off-by: Caleb James DeLisle <cjd@cjdns.fr>
+The payload page pool pointer contains an error pointer when its
+allocation fails. The cleanup path passes that error pointer to
+page_pool_destroy() instead of destroying the header page pool. This
+can dereference the error pointer and leave the header page pool
+allocated.
 
-> [...]
-> +static bool en751221_is_mcm_phy(struct phy_device *phydev)
-> +{
-> +	struct device *parent = phydev->mdio.bus->parent;
-> +
-> +	return parent && parent->of_node &&
-> +	       of_device_is_compatible(parent->of_node, "econet,en751221");
+Destroy the header page pool instead.
 
-I thought you had found better options than using the parent of_node...?
+Fixes: 8a11010fdd96 ("eth: fbnic: allocate unreadable page pool for the payloads")
+Reported-by: Sashiko <netdev-bot+sashiko@kernel.org>
+Link: https://lore.kernel.org/netdev/178915061000.219967.7726187707862333281@kernel.org/
+Signed-off-by: Björn Töpel <bjorn@kernel.org>
+---
+ drivers/net/ethernet/meta/fbnic/fbnic_txrx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> +}
-> +
-> +/*
-> + * MTK_GPHY_ID_MT7530 ID is also used for an EcoNet SoC FE phy, but that PHY
-> + * does not advertise ESTATUS_1000_TFULL.
-> + */
-> +static int mt7530_phy_match(struct phy_device *phydev,
-> +			    const struct phy_driver *phydrv)
-> +{
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+index 401f8b8ae1ca..528d72071aff 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
+@@ -1599,7 +1599,7 @@ fbnic_alloc_qt_page_pools(struct fbnic_net *fbn, struct fbnic_q_triad *qt,
+ 	return 0;
+ 
+ err_destroy_sub0:
+-	page_pool_destroy(pp);
++	page_pool_destroy(qt->sub0.page_pool);
+ 	return PTR_ERR(pp);
+ }
+ 
 
-You miss the check for the PHY ID, see also below.
+base-commit: 18a6fe05fb6e18de29fa90d388bb34044114b3d8
+-- 
+2.55.0
 
-I'd suggest something like
-	int ret;
-
-	ret = genphy_match_phy_device(phydev, phydrv);
-	if (!ret)
-		return 0;
-
-> +	return (phy_read(phydev, MII_ESTATUS) & ESTATUS_1000_TFULL) != 0 &&
-
-The above should be helper function used by both .match_phy_device ops.
-
-> +		!en751221_is_mcm_phy(phydev);
-> +}
-> +
-> +static int en751221_phy_match(struct phy_device *phydev,
-> +			      const struct phy_driver *phydrv)
-> +{
-> +	return (phy_read(phydev, MII_ESTATUS) & ESTATUS_1000_TFULL) != 0 &&
-> +		en751221_is_mcm_phy(phydev);
-> +}
-> +
->  static int mt7531_phy_config_init(struct phy_device *phydev)
->  {
->  	mtk_gephy_config_init(phydev);
-> @@ -135,6 +195,23 @@ static struct phy_driver mtk_gephy_driver[] = {
->  		 */
->  		.config_intr	= genphy_no_config_intr,
->  		.handle_interrupt = genphy_handle_interrupt_no_ack,
-> +		.match_phy_device = mt7530_phy_match,
-> +		.suspend	= genphy_suspend,
-> +		.resume		= genphy_resume,
-> +		.read_page	= mtk_phy_read_page,
-> +		.write_page	= mtk_phy_write_page,
-> +	},
-> +	{
-> +		PHY_ID_MATCH_EXACT(MTK_GPHY_ID_MT7530),
-
-This assigns phy_id and phy_id_mask, which are used by
-genphy_match_phy_device(). However, you are setting a .match_phy_device
-op which doesn't call genphy_match_phy_device(), so this is ignored.
-
-> +		.name		= "EcoNet EN751221 MCM PHY",
-> +		.probe		= mt7530_phy_probe,
-> +		.config_init	= en751221_mcm_phy_config_init,
-> +		/* Interrupts are handled by the switch, not the PHY
-> +		 * itself.
-> +		 */
-> +		.config_intr	= genphy_no_config_intr,
-> +		.handle_interrupt = genphy_handle_interrupt_no_ack,
-> +		.match_phy_device = en751221_phy_match,
->  		.suspend	= genphy_suspend,
->  		.resume		= genphy_resume,
->  		.read_page	= mtk_phy_read_page,
-> -- 
-> 2.39.5
-> 
