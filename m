@@ -1,213 +1,149 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A4447F3BD
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 10:42:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0613248A8CD;
+	Tue, 15 Sep 2026 10:48:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789468926; cv=none; b=pCoaiI5PZvy4XY5SHQZ2tx3Lmlv3lh0j2WVLAfJpXDZg58l7l9i8PjrUgSOUWInskkQzoufpuXlsQ3XyaxzEJZOYeRc12umQOkz8gTuTv4dV1V1VbfqJwOdrylLYJyRnGNTgFLFPbXKlNuG17sTBtV5Z147xU5K9QD6Z1sHX5T4=
+	t=1789469290; cv=none; b=LtfqbDIaC057O9Y6Cion+3Rj5bTqZK3WAnRJFloGHEWcQPqjrquV8Basel2lex0Sy6tQmuznQFmdRiqeEq4z19TQWP2UFenaHwl5WT7dyiHpCZgSpRrJy/vFEM5oIn7JV7JfvJmRJTNbXoeM5mCyyG+SJ4xRiUYU04Jc9JbZAuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789468926; c=relaxed/simple;
-	bh=PjiVsf5uMkbDp66AlJHnffbUEZZ1EH/IIrYenWWjkEc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZJjl5/NHLaMcmECInb4aSk0EBd2bO8PiUj7NeTj32ZRsp9zk+wgDF+EW/jYT+gXYGIEE/nquQpAMcgLjKMKMAh/d+OCSH8Q33jrEMfsE+Cnub1M0yFZ/RZnbaeCxfxeIdJgFRy+BNqseY6ADynMDY362RwVa0lW9NvusnzUt7hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IiYok/zJ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789469290; c=relaxed/simple;
+	bh=Vus90CXeLcAYO7udHlHzInT4pR3rvrjiJTN4h0xfGLE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=fy0NxwIeq5Xxx8p7YP7F5WhVADa0gCdMfsZwhmqPqGhFvCyR7fvNf43xpiTYIOmCQ4kWEQ0pww+l5bxLL2gYiuMUFeilIRAvPYmMV/aGxiCXA0tD/hQX4fpMg3Zr+Mnrvm8u325D3hy5LLZIDe4sfqTMP4DspDogUTzSRi00rYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3PXlvpaC; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=i/LJxFaC; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IiYok/zJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789468922;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3PXlvpaC";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="i/LJxFaC"
+Message-ID: <3007fddf91fb4260538073482f5148ce8ac6a6ba.camel@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1789469285;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hQizjq4Fv6xotoUqHmRQLNrfXJfgBpEXbkCd1IuA4Bk=;
-	b=IiYok/zJafNmYmKNOHxq4MMZ5E643/NWz9j6OdFwtqnMohZG0yma74iesjULrq8lndl+JL
-	XNwMCE7qKDwkih0yb0AXTLK4C6bl25DOJpOpxlccleDhEYX/FyK8QpoNk2+/csDobFSo5C
-	S5ZeD+IO0L1m8jwNBpe42PPsVPG+PRY=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-447-qM3KhJf6MTulpLWTFi-Gsw-1; Tue,
- 15 Sep 2026 06:41:59 -0400
-X-MC-Unique: qM3KhJf6MTulpLWTFi-Gsw-1
-X-Mimecast-MFC-AGG-ID: qM3KhJf6MTulpLWTFi-Gsw_1789468917
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A62D5192DD6E;
-	Tue, 15 Sep 2026 10:41:56 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.48.83])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E61BA1800446;
-	Tue, 15 Sep 2026 10:41:50 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: mhun512@gmail.com
-Cc: qiang.zhao@nxp.com,
-	khc@pm.waw.pl,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	adiupina@astralinux.ru,
-	chleroy@kernel.org,
-	ae878000@gmail.com,
-	netdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v3 3/4] net: wan: hdlc: close active devices before protocol detach
-Date: Tue, 15 Sep 2026 12:41:44 +0200
-Message-ID: <20260915104144.122643-1-pabeni@redhat.com>
-In-Reply-To: <f5f0519e82a7b8bbf314dc137470f7cf931e320b.1788128904.git.mhun512@gmail.com>
-References: <f5f0519e82a7b8bbf314dc137470f7cf931e320b.1788128904.git.mhun512@gmail.com>
+	bh=Vus90CXeLcAYO7udHlHzInT4pR3rvrjiJTN4h0xfGLE=;
+	b=3PXlvpaCzY+PYNuGHv+bI0A/qtR8CpAOJjpoAKLVWn/+7kKUyxIsBAX6VDd/TFRIKplPvI
+	Ns/tDrgpMnCZuXLjYQwRRLhgsdA6090jIynN+wAeyagkOWjtpgBkY2uZB85TWW6H/3GrxE
+	HFJr5lZP+020NCkmxRjBd5WKHq53mdyw+wIDN/OWfQ1nU1uo7oCPTH6Ovg+HW8+h/Fkd07
+	P0C4pJaw/+bsprjfeU8VE8/vPhuUTlVGKBGWRQ4HbQc1QZZvLc574pTG6FwH5nzYUh/rpz
+	ukO0dYIecDfOOtPl/x+jwJsHPJG1TAlGGk8LP2bq0ONG/lM4BWVg7EPTWdR4YQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1789469285;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Vus90CXeLcAYO7udHlHzInT4pR3rvrjiJTN4h0xfGLE=;
+	b=i/LJxFaCWuZCHZjlL3t6t0cocUgo+ivDH+DptNRnRu50NTZdZS4k3ocmtt9P09G/Sar8Lf
+	hvZ2cDvTOSe4tSBQ==
+Subject: Re: [PATCH net-next v2 4/4] net: dsa: soce: Add basic support for
+ SoC-e switch IP cores
+From: Vasilij Strassheim <v.strassheim@linutronix.de>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+  Conor Dooley <conor+dt@kernel.org>, Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Russell King
+ <linux@armlinux.org.uk>,  devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,  Martin Kaistra
+ <martin.kaistra@linutronix.de>, Benedikt Spranger <b.spranger@linutronix.de>
+Date: Tue, 15 Sep 2026 12:48:03 +0200
+In-Reply-To: <b7fdbd43-d069-40e1-aff4-30197371739d@lunn.ch>
+References: 
+	<20260903-devel-vstrassheim-soce-dsa-ml-v2-0-fb0587cb466b@linutronix.de>
+	 <20260903-devel-vstrassheim-soce-dsa-ml-v2-4-fb0587cb466b@linutronix.de>
+	 <3c2c5b39-6a7d-4cb2-af1c-b5015b6bf1e8@lunn.ch>
+	 <db26d5c9262069a11e5cbe00e176b81e40baebeb.camel@linutronix.de>
+	 <5c955c96-7883-4e59-97ef-9fc3b63abf58@lunn.ch>
+	 <ab7e4eeed1b8296188355413cce1aa2b2aa5c670.camel@linutronix.de>
+	 <b7fdbd43-d069-40e1-aff4-30197371739d@lunn.ch>
+Organization: Linutronix GmbH
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/
----
-net: wan: hdlc: close active devices before protocol detach
+On Thu, 2026-09-10 at 14:18 +0200, Andrew Lunn wrote:
+> > ethernet-switch@xy {
+> > =C2=A0=C2=A0=C2=A0=C2=A0/* ... */
+> >=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0mdio_parent: mdio@204 {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0compatible =3D "soce,sw=
+ip-mdio-23-02";
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0reg =3D <0x204 0xc>, <0=
+x200 0x4>;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0reg-names =3D "data", "=
+control";
+> > =C2=A0=C2=A0=C2=A0=C2=A0};
+> >=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0mdio-mux@200 {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0compatible =3D "mdio-mu=
+x-mmioreg", "mdio-mux";
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0reg =3D <0x200 0x4>;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0mux-mask =3D <0x1f0000>=
+;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0mdio-parent-bus =3D <&m=
+dio_parent>;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0#address-cells =3D <1>;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0#size-cells =3D <0>;
+> >=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0mdio@0 {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0reg =3D <0>;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0/* PHYs connected to port 0 */
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0};
+> >=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0mdio@10000 {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0reg =3D <0x10000>;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0/* PHYs connected to port 1 */
+>=20
+> These comments are probably wrong, as i suggested in my previous
+> reply. There is no reason that port 0 PHY could not be on bus 10000.
+>=20
 
-This adds a dev_close() call to unregister_hdlc_device() so that an up
-HDLC device runs its ndo_stop and protocol close callbacks before
-detach_hdlc_protocol() clears IFF_UP via hdlc_setup_dev(). The
-detach-before-unregister order introduced by ff3516442768 is kept.
+That's right. I will remove the misleading comments.
 
-Link: https://lore.kernel.org/r/20260806020541.2011936-2-kuba@kernel.org
+> I've no idea if it will work, but maybe try:
+>=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0reg =3D <0x203 0x1>;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0mux-mask =3D <0x1f>;
+>=20
+> and then you get better bus numbers?
 
-> diff --git a/drivers/net/wan/hdlc.c b/drivers/net/wan/hdlc.c
-> index cbed10b1d862e..a38f90d3006ed 100644
-> --- a/drivers/net/wan/hdlc.c
-> +++ b/drivers/net/wan/hdlc.c
-> @@ -263,6 +263,7 @@ EXPORT_SYMBOL(alloc_hdlcdev);
->  void unregister_hdlc_device(struct net_device *dev)
->  {
->  	rtnl_lock();
-> +	dev_close(dev);
+Although mdio-mux-mmioreg might work, I have realized that it is not
+suitable here.
 
-[Severity: High]
-This isn't a bug introduced by this patch, but the new dev_close() makes
-the remove path call into ixp4xx_hss's ndo_stop, and hss_hdlc_close()
-sleeps inside a spin_lock_irqsave() section:
+According to the switch documentation, the bus selector occupies bits
+26:16 of the MDIO control register, while bit 0 is the transaction
+start/busy bit. A partial write might trigger an operation before the
+other fields have been updated.
 
-drivers/net/wan/ixp4xx_hss.c:hss_hdlc_close() {
-	spin_lock_irqsave(&npe_lock, flags);
-	ports_open--;
-	qmgr_disable_irq(port->rxq);
-	netif_stop_queue(dev);
-	napi_disable(&port->napi);
-	...
-	free_irq(...);
-	spin_unlock_irqrestore(&npe_lock, flags);
-}
+Also accessing this register without checking the controller state
+could interfere with an active or failed transaction and introduce
+races (as noted by Netdev-Sashiko).
 
-napi_disable() reaches napi_disable_locked(), which begins with
-might_sleep() and loops on usleep_range(20, 200); free_irq() also calls
-might_sleep() and takes desc->request_mutex.
+I will therefore add a dedicated MDIO mux driver. It will preserve the
+other register fields and reject bus changes while the controller is
+busy. Based on the current documentation, it will support selector
+values representable by bits 26:16. These values identify hardware MDIO
+interfaces, not switch ports.
 
-Can that produce a "sleeping function called from invalid context" splat
-here, and if the scheduler is actually entered, can the CPU leave npe_lock
-held while hss_hdlc_dcd_irq() -> hss_hdlc_set_carrier() spins on the same
-lock?
+So, in the next version, there will be a total of 3 new small drivers.
 
-The same path is already reachable via "ip link set hss0 down", but the
-commit message lists ixp4xx_hss among the audited-safe users:
+>=20
+> =C2=A0=C2=A0=C2=A0=C2=A0Andrew
 
-    Audit all current users: c101, n2, pc300too, pci200syn, wanxl,
-    ixp4xx_hss, fsl_qmc_hdlc and farsync unregister before releasing the
-    resources used by their close callbacks.
-
-Should the audit note this, given the remove path now runs
-hss_hdlc_close() where it previously did not?
-
->  	detach_hdlc_protocol(dev);
-
-[Severity: High]
-Does dev_close() close the window this relies on for the RX path?
-
-detach_hdlc_protocol() sets hdlc->proto = NULL and kfree()s hdlc->state
-while the netdev is still registered, so hdlc_rcv() can still be reached
-from NET_RX softirq for frames already queued on a per-CPU
-input_pkt_queue:
-
-drivers/net/wan/hdlc.c:hdlc_rcv() {
-	...
-	BUG_ON(!hdlc->proto->netif_rx);
-	return hdlc->proto->netif_rx(skb);
-}
-
-The only barrier that drops backlogged skbs for the device runs later,
-inside unregister_netdevice():
-
-net/core/dev.c:unregister_netdevice_many_notify() {
-	...
-	flush_all_backlogs();
-
-	synchronize_net();
-	...
-}
-
-__dev_close_many() does not touch the RX backlog, so a frame handed to
-netif_rx() before ndo_stop and still sitting in another CPU's queue can
-reach hdlc_rcv() after hdlc->proto became NULL. The
-"if (!(dev->priv_flags & IFF_WAN_HDLC))" test in hdlc_rcv() does not
-filter it out, since hdlc_setup_dev() re-sets priv_flags to
-IFF_WAN_HDLC.
-
-Can that hit the BUG_ON above, or use the freed hdlc->state inside
-fr_rx()/cisco_rx()/ppp_rx() if proto was already read?
-
-[Severity: Medium]
-This is a pre-existing issue and not introduced by this patch, but the
-return value of detach_hdlc_protocol() is dropped while
-unregister_netdevice() runs unconditionally.
-
-detach_hdlc_protocol() returns early when a NETDEV_PRE_TYPE_CHANGE
-notifier refuses the type change, skipping both release points:
-
-drivers/net/wan/hdlc.c:detach_hdlc_protocol() {
-	...
-		if (err) {
-			netdev_err(dev, "Refused to change device type\n");
-			return err;
-		}
-	...
-		module_put(hdlc->proto->module);
-	...
-	kfree(hdlc->state);
-	...
-}
-
-The refusal is reachable: hdlc_raw_eth's raw_eth_ioctl() calls
-ether_setup(), so dev->type becomes ARPHRD_ETHER and a VLAN can be
-stacked on it, after which
-
-net/8021q/vlan.c:vlan_device_event() {
-	case NETDEV_PRE_TYPE_CHANGE:
-		/* Forbid underlaying device to change its type. */
-		if (vlan_uses_dev(dev))
-			return NOTIFY_BAD;
-}
-
-returns NOTIFY_BAD. lapbether_device_event() refuses the same way.
-
-Does this leak the kmalloc'ed hdlc->state and the hdlc_raw_eth module
-reference, given every caller then calls free_netdev() and loses the only
-pointer to that state?
-
->  	unregister_netdevice(dev);
->  	rtnl_unlock();
--- 
-This is an AI-generated review.
+Thanks,
+Vasilij
 
