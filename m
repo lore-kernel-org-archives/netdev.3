@@ -1,194 +1,112 @@
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+Received: from mail-qk2-f4.google.com (mail-qk2-f4.google.com [74.125.230.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A420419FD2
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 03:32:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A60F40488C
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 03:36:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.196
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789443157; cv=pass; b=qctzB7XI/O3Cea9G/+l7sKBKcjeR5t4UdRQYKry43BBx5qPhBle19AEzxJuQPdaIBfrr7cabk9FFsu0tstoaWCxh1qTNUqPCFg4IpnC38akkz14Tu1iZv2sg77882AeNaCEC9xdq7ZhlAONkdxVgZ98MpJX7gy/GW8tZvF5EJQk=
+	t=1789443387; cv=pass; b=hh/PDlqYxK0cb5AWJQf5oGEGnHHV+AMfMiDXZAV9jIj1Yj8YNr6EIQtybhL2qP514PZIJnXhX4bjsi+CF6agcxVoXESz8BIA0C7HRSFAY6qFZsLEPsTkUihydpq0Ec2g4vbeCUDLPOiKUFT5M7K5rSuTZPMqv85mSRT8uHapha0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789443157; c=relaxed/simple;
-	bh=cNyUgiHAc1OpzVC4kIHbtZu2xQfpQFZZ2m7gUGOvwQA=;
+	s=arc-20240116; t=1789443387; c=relaxed/simple;
+	bh=hZYMHGu9n2q61eOftzQIb/1nkREIqMgUQN46A+rGY6E=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EeFIDMfplMssc84tGv7cjm/4dZXlL4yiTuPPhkO7Oqc+BBN7zm8kunsQ+Rmd+7SPE+4dfwg+NF+Cg1vyGLsaqAEq6cdYjxFoL0/4EHPLN9HKlWnjiOGBUPQS4HBvKK1qJdMjiLjRGolXve/6pb7LyRF91Em6txK1lm/PxAbZ6w0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sZY84jaQ; arc=pass smtp.client-ip=74.125.230.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=URVCP6oXMoAZqzDGKCsUOLBmdBpGj0ImJYc6xg0MhB0p5zfUTSHnYEPBfvdDpMg3j6bJx3gaq6eQIvErgE8zOZoCK05nSRrxG9hvnTEIh2JKngcNPB/0qIzJiUmMB61aebmJAje7dOE8evlfaJPtur5+XPxs1GDcktGPfsbaKNM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=njoDCbwt; arc=pass smtp.client-ip=74.125.230.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sZY84jaQ"
-Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-530301ff353so28363641cf.2
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 20:32:32 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789443150; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="njoDCbwt"
+Received: by mail-qk2-f4.google.com with SMTP id d75a77b69052e-530e4e8c32fso18223981cf.0
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 20:36:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789443385; cv=none;
         d=google.com; s=arc-20260327;
-        b=risLjOLpd9Wp1fFX5M6dJuPFn1M7eWjuZP4QbcFifKn9zBcZTf60W62nx5MGypZOAm
-         UZBPFvRbau3zLv39dlfGjJFAmMM+2zAtj5ptsbT69AlqKTfgXuT919r2qPCitE/KXvk4
-         +f6HUe3/srq8GluFgmaVhoWeU9yYcxyorGHIEvnvwN6zhg75TWhQo3Tvsc4AeuvNwXdL
-         OlmjNS1iwsxNwnltVICKhHmTpt8KF49LubZjJHRa+QQjaIHDImWEA2NC3ot23kRV8/2+
-         G8AYvpAsraFR6UWEp4vhsQqM71GNRYlcgOwmbOMiA9eV6UPtmZKBWQEzKDZBKrY3oRTh
-         Jygg==
+        b=hS7KmaXl32V0iIwlxNa/Xdclqv7Di3dXqcvBQrzQb9P29tuFW60MdJg89l+mce71Dz
+         QDtRnTEhEWYX2YOY0DxUYDr9u96KXR5G1t3uhm5cGy4CndV+Tw1dHG1Hc4rzj6ALduug
+         HyEiM0RzeijxGnyPPcMnc7mOb+6FaemMPSYbED8V2CvJQBrYsaeLxZbaNNChJUsm1V0N
+         OaTsq7KLCPtihrCsnhfwyNfQQv6xoHxh8u7mY29ExhNi5FUhAudJHdMPuamis8/qaCwi
+         H52VWBtJeZjT2kP3y2x1XDjJHGFYPnMamkOz32al/VdckmtBWwlNpaU6Z1tNvRhwLDNl
+         025g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=aWObjhMohUFlVKMQj21hIxDdB+FomHl/XtrzQrYZUHI=;
-        fh=7SxVEQrwGwh5wF7vINKo+ypDB3D75C0f3L95VvdEz/Y=;
-        b=i4V5icOhf34DHWbqIYDiOJkVeuCwWL1pUDz6f6Ki1IiDlNbfGYqBYXEiYV6s7u9f/o
-         Xu2AOcdpitOGF9J7oI3yjyWPvjpyJlJ06AwQ3TXYP1SCMySnEtnteY2wSwwN6pR5yVEI
-         YtZ7Zj0obdKzYCUp1gW/QY0ItXCLXQN1dNmYueWeZh1x0QZiiD9Iueermner9ufV+EUj
-         Xq2rlue+Y0DIj3oy6ObHt9fqWTWQE2rGTf9GZgnyOogEtnn+iX4+z1SXBBwEk/lQUmtB
-         /b50tgpbEAfFLw02MqQf6EXSpybhqtmPKLRCHnAKTqfOx5wTAA+LX7VvhjcX3APn5c3j
-         JrUA==;
+        bh=hZYMHGu9n2q61eOftzQIb/1nkREIqMgUQN46A+rGY6E=;
+        fh=D3Qeb0UqY3iI+WdUZGkpIAXRo7hQpDPckdl4MeU4ryI=;
+        b=bImog3N6TI+8464A++sf1ZNyhn3N21+rBUTbbF7m2iiJ3lx789q0S9JMr6PdQmrcK+
+         VPKk7Azo8qku6CW/UtStj3UkmvhTKnh9lUfKOH1oYJThdN3iVp7ZXCM38HAuG1F6XK42
+         KNYvt6ev0iisY/aFoWoDBOMTG1lRUqP/VuRzUPX0eAkWPNqYQOfkc/auSDtB3fnkAeLt
+         EUvUvE4tzsZh1kQWvT2Mm6+uTQiolPmGAKFxtWDroQ819rea0lfl5tfmvM0/6VpSjoGs
+         n5Fl6xaYWgyZaCKmaavNucQBMR9R3cCKLThiXjvsjMvVOBzuL7txe0De1OK/IQrohqSM
+         RxMg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789443150; x=1790047950; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789443385; x=1790048185; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=aWObjhMohUFlVKMQj21hIxDdB+FomHl/XtrzQrYZUHI=;
-        b=sZY84jaQWEEqduXPxmIE2bTrAubeL/Koh+dNtfx1jnADJQ646fyCbDZCt8TnhEm74K
-         uu+p5LqM8dU2TrUs1Abhv3LnUjLDIfnPPugQuYa2vyPkla+quogOJFA//L0qA3kTR1fJ
-         nAscOQpneOm7QeuewyUUaJlw78v6s+JLy/LFkPNH6LrR35ppYBl1WmxYrDZM0P716+J7
-         GkIY5OhJGRW+UQ+PGx40ziZKkWa2THDVo0wV+IEdLxz91JA4g+U6QB36YJeBP6pvB/Ze
-         McJa0g+8Rdj670/YeLKMkHWk1seYmYzilOud6t8OWLjJI57iXCLUy/YfZY3fHHyut9hZ
-         nIjQ==
+        bh=hZYMHGu9n2q61eOftzQIb/1nkREIqMgUQN46A+rGY6E=;
+        b=njoDCbwtKou8MdvFhjR14Z4/GuXV5OOn+4YpYUO8aj4dQvN20I8DJCLNNdWbNQ85Ay
+         rZXmZujSaM/Y7mkIEnoAw3Y1ZKip3ID2ZSFrzq9rskxTPGbJNFG/7Bkz9kqHUmfam30t
+         7ohKTgezY64IGiqvpZQ8nP+5IoHfcgSEWVuD5GyyGoVUOP/y4oKSva9zTZspvj0K1JWP
+         AzyBxgQULVnOSZAUAq/04Ui4zoj5I8qqEJqpQjSyiifwiiwkPjWuD/5ibRB57sTaVbla
+         EzJwwl2TwClsWAoomKzjyg1dieeE002NzaS16roRfyI9cm4NelUe+WRW+fnZCgjLIw0X
+         xSRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789443150; x=1790047950;
+        d=1e100.net; s=20260707; t=1789443385; x=1790048185;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=aWObjhMohUFlVKMQj21hIxDdB+FomHl/XtrzQrYZUHI=;
-        b=DMRv0aZ26I8zmnZsny5BRXQu8lD4RogGQWyvn2THRtlJbcoApiGZls7SdIcvhTKGmr
-         XE7vUQa3G0ZAUlp81GGlsbF3JjHTs82bL0HTg+thPDvhZxMtMkQDOeQMaQv5IzMpdHiZ
-         NSWcGImYUq8Fjowb9y4CC2TpZQ1wI+5sgFNG3Oi4THXcBn6VuVF7QOs13TCijPJbBYKc
-         3CbQsow2nLYzoAuV1vE3IgQjcRwAOSsfMMIR27rq+WSStCC8IZ4WhqpGI6vQRnNk45vo
-         v3erYF2eBFMiXYL7kIu8dg/X3JJPB5WW1dF7jyS9A4GxOxOn49tSZFdpOO4VDkd23aOL
-         N+7g==
-X-Gm-Message-State: AFuF++m7JTjA0xVVSfJScggglrI24WBG+F56cCUfxq5FSu8PmJpP/QRf
-	r6AcdKyQuxmveFtrrh+UWzUtaNDlzivqImgbFZgLws1fWPJqNa0tczGolQDfPNgrhkb/YIHM+tb
-	Nw5ViYZ+BYupa3pEc9g1Q+21iv2hPqy+PRk5CJAkH
-X-Gm-Gg: AYBFou2JCCNH99AUsbfU4PF8RWVSZMfR4iN+fNYF8V7zyTqrwXvxqq2dRRrsFPW7u/h
-	gim1r76VqCpewIi2qrFOYcQb2IfOAUKZwKQ36zDE/7ZqjM9dsl0IstA8jnoMBvEgiRZRI2uE0kf
-	5KvwUKLpd6MBRKp6JPD6BLfsG+cP4wNHVj8v5jJQmgnxBShM6MpCdmHkD0MdfzKimB+yd0VLrzz
-	V6Br13uEURfyLdQfMeKrip0audPya8uUuFKgZvU1neNMfE0hwT/qVIhGLoat8QTyFcmuYTEZ+qG
-	k0UoHUnx2YQnHoHB6chZxvCsBXt3dISvX36SjMgU2DmzI3jodlFfy+JXhTFkNkaLQlEmjNuBRnk
-	d6bbq9LQWBTMZ2+LzTh2OpQ346oCwle6QZd7t5EwGwlLb7pJNmzfp2zUPaGftPma4rQw=
-X-Received: by 2002:a05:622a:5a0f:b0:530:42e5:f3a2 with SMTP id
- d75a77b69052e-5310d03126emr77108521cf.43.1789443149347; Mon, 14 Sep 2026
- 20:32:29 -0700 (PDT)
+        bh=hZYMHGu9n2q61eOftzQIb/1nkREIqMgUQN46A+rGY6E=;
+        b=ujGiBbbJq85QvXN1NX4ciEJOk+wjn2tkqioKOJ3aD4NJWFaZVkmUdy2UUB0MoJNmvP
+         ayE2styE1xUvu6PWMXZ6r+ypccgUKirTGSpafpbAeN3HDpiyek/RI5nF3QFWUDRaeCD+
+         wsNzLaDtXM0v/Z0Byqy8YOJwD8XUG7j8OOzq9sSE/UtB8YGyC0HcCP9GtTZDcgGfZZbJ
+         7twl9Ytj0MO7N1UjnsXhaF08Ok5KA0DZKb/3l4F/KVlUuqwSmJeOpUx1EcDFMNrF1CN9
+         IO8KB9wCoHvmB/enUFXHUQ0rHHf4+UQoHesJA3JCZdSR0nljsdmA3yRjsDcZHIZCrCvy
+         U9mQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxlYAbRHIYNwpMH504ctVUcbVc7AwfYwBw5LQFY3JfxrTLos9CwIXDSJ7fk+P6BBFba2Nak6o0=@vger.kernel.org
+X-Gm-Message-State: AFuF++mL40It3dobQl9Ec3YTGtQP1lHrgkMCIwaCkGpX1xhgc7uxnnTd
+	W37dxxbtNIjMr21jWTsgjO6hpcgj/nNyTn1iw8BgoBV5ZXluyErFtilacTJi3teqiFSA3zo552J
+	8iCzyyjwbCZWCFsz0t/LdOoNXwYw5G4M=
+X-Gm-Gg: AYBFou3jfRbsbZPyqFwyTT3eTPj0hCJYPTAiK6VcJPiIpsjd0vX2K1kyqq0YjMU80NW
+	X+lXAZPR9bzs2BoLkMqvibkrqIq3grNj72/CU0n4JNiKqvKWm2cWHO6yaTa3GOxFV9p0rvZ0cDw
+	pcIT39AAeFMZbO+i0teCrbI5nz9hT+xsSCFuvGjDfO7C+xrfuzNGPbnDzzi5O2lAPjWyYFSfvAI
+	q9q0NpQqqlwI2ANTScHbVoSvb5Umtn0xQ9HKRIbr9UuN388rSWVn2PmyOQ8ZFfFp93hYZ+fdhZ6
+	uv3wS0h7p180Un5sp9EIOqoCK/mQb7H8C8IVOQdDw+ttFsFcYnk0nWgDGSTEn9TsMNkkUwUCrou
+	FRlBotN/iXvRJztQIwK3k9sCeiepdahvjyxpA6SLn
+X-Received: by 2002:a05:622a:d0:b0:530:e7aa:ef50 with SMTP id
+ d75a77b69052e-5310cf0df29mr78559941cf.4.1789443385492; Mon, 14 Sep 2026
+ 20:36:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1789284524.git.petalzu987@gmail.com> <619733e91a715790da8c4efd88f51897ff06e253.1789284524.git.petalzu987@gmail.com>
-In-Reply-To: <619733e91a715790da8c4efd88f51897ff06e253.1789284524.git.petalzu987@gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 14 Sep 2026 20:32:16 -0700
-X-Gm-Features: AcwNN1U7GCotunQsTYXYjB_YxjMuP5n5dmEUyI1TjjIDjqQV_GEfLMGHoJFfqMM
-Message-ID: <CANn89i+YZP4X6WWvGJ2EkV5RshSiT50A0pxZe4un6jB2YKah+A@mail.gmail.com>
-Subject: Re: [PATCH net 1/1] net: tcp: account zero-copy receive VMA memory
-To: Ren Wei <weir@nebusec.ai>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kuniyu@google.com, pabeni@redhat.com, 
-	willemb@google.com, davem@davemloft.net, kuba@kernel.org, horms@kernel.org, 
-	rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com, 
-	ncardwell@google.com, vega@nebusec.ai, petalzu987@gmail.com
+References: <20260915024551.196126-1-enelsonmoore@gmail.com>
+In-Reply-To: <20260915024551.196126-1-enelsonmoore@gmail.com>
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Date: Mon, 14 Sep 2026 20:36:14 -0700
+X-Gm-Features: AcwNN1WsoDxBDkSxIV_grc7mDaj8ge5NA65R7aljjtw8l1KlfRcbqBeeoekJG-M
+Message-ID: <CADkSEUgUuoy4Kh_dp-LJDfEp3+A=YaNDnqgROq25xJHRiAv7rA@mail.gmail.com>
+Subject: Re: [PATCH] net: tulip: winbond-840: remove never-true 486 CPU check
+To: Arend van Spriel <arend.vanspriel@broadcom.com>, 
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Jijie Shao <shaojijie@huawei.com>, 
+	Petr Machata <petrm@nvidia.com>, Jacob Keller <jacob.e.keller@intel.com>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>, 
+	netdev@vger.kernel.org, linux-parisc@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Michael Grzeschik <mgr@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 14, 2026 at 7:46=E2=80=AFPM Ren Wei <weir@nebusec.ai> wrote:
->
-> From: Zixuan Chai <petalzu987@gmail.com>
->
-> TCP_ZEROCOPY_RECEIVE installs page references in a user VMA and then
-> consumes the corresponding skb. The socket charge is released at that
-> point, so a process can retain an unbounded number of receive pages,
-> including page-table memory, by advancing through a large VMA.
->
-> Reserve the VMA size in TCP socket memory accounting while the mapping
-> exists. This charges the reservation to the socket memory cgroup and
-> TCP protocol budget, and releases it when the last VMA fragment is
-> unmapped. Keep the reservation across same-mm VMA splits and moves,
-> disallow expansion and fork inheritance, and reject inherited VMAs from
-> the zero-copy path. Use a strict accounting kind so ordinary receive-
-> buffer minimum allowances cannot bypass the reservation limit.
->
-> Fixes: 93ab6cc69162 ("tcp: implement mmap() for zero copy receive")
-> Cc: stable@vger.kernel.org
-> Reported-by: VEGA <vega@nebusec.ai>
-> Assisted-by: LLM
-> Signed-off-by: Zixuan Chai <petalzu987@gmail.com>
-> Signed-off-by: Ren Wei <weir@nebusec.ai>
-> ---
+On Mon, Sep 14, 2026 at 7:46=E2=80=AFPM Ethan Nelson-Moore
+<enelsonmoore@gmail.com> wrote:
+> The winbond-840 driver contains a check for boot_cpu_data.x86 <=3D 4.
+> This field encodes the x86 generation (3 =3D 386, 4 =3D 486, etc).
+> Therefore, since 486 support was removed from the kernel in commit
+> 8b793a92d862 ("x86/cpu: Remove M486/M486SX/ELAN support"), the
+> condition is always true. Remove the check.
 
-
-This is not a bug, and this patch would be a serious regression.
-
-NACK.
-
-1) There is no vulnerability here.
-vm_insert_pages() accounts every installed page in the RSS of the
-mapping process (insert_page_into_pte_locked() does
-inc_mm_counter(vma->vm_mm, mm_counter_file(folio))), and the page
-tables allocated for the mapping are GFP_KERNEL_ACCOUNT, as your own
-stack trace shows (pte_alloc_one).
-So the memory is accounted, it is attributed to the process holding
-it, and oom_badness() sees it. Your own log says so :
-[  701.147561][ T5539] poc invoked oom-killer: gfp_mask=3D0x440dc0
-The OOM killer was doing exactly the right thing, and was about to
-kill 'poc'. The kernel only "panics" because your reproducer does :
-    sysctl -w vm.panic_on_oom=3D2
-With panic_on_oom=3D2, any program doing malloc()+memset() in a loop is
-a "kernel vulnerability". Please do not send such reports.
-
-Releasing the socket charge once the skb is consumed is by design :
-ownership of the pages moves to user space, exactly like a recvmsg()
-copying into an anonymous buffer of the same size. Nothing is
-unbounded, this is bounded by the address space the process mapped
-and populated, and that memory is charged to it.
-
-The Fixes: tag and the stable Cc are therefore not appropriate.
-
-2) The patch itself is a much better DoS than the one it claims to
-fix.
-You are charging *address space* to tcp_memory_allocated at mmap()
-time. Address space is not memory.
-An unprivileged user can mmap() a few GB on a TCP socket, without
-allocating a single page, and push tcp_memory_allocated above
-tcp_mem[1]. The whole host then stays under TCP memory pressure for
-as long as the mapping exists : every socket on the machine starts
-shrinking its buffers and dropping packets. Repeat on a few sockets
-and you reach tcp_mem[2].
-
-3) It breaks the intended use of TCP_ZEROCOPY_RECEIVE.
-The expected model is to mmap() a large region once and slide a
-window through it for the lifetime of the flow. With your patch these
-mmap() calls fail with -ENOMEM, or start failing at random whenever
-the host happens to be under TCP memory pressure. This is an ABI
-break, and it is not covered by any test. tcp_mmap.c in
-tools/testing/selftests/net/ was neither updated nor, apparently,
-run.
-
-4) Implementation problems, in no particular order :
-- __sk_mem_raise_allocated() and __sk_mem_reduce_allocated() are
-  called from mmap(), munmap() and exit_mmap(), without the socket
-  lock. sk_forward_alloc is bypassed entirely, so the socket
-  accounting no longer describes the charge held on its behalf.
-- SK_MEM_RECV_ZEROCOPY 0x100 overloads a 'kind' argument that is a
-  small enum, used in the tracepoint, and forces a change of the
-  fall-through in a core function.
-- Adding a .close vm_op silently disables VMA merging, see
-  is_mergeable_vma().
-- VM_DONTCOPY and VM_DONTEXPAND are user visible behavior changes,
-  proposed here for stable kernels.
-- The reservation is never reduced on partial unmap : nr_pages is the
-  size of the original VMA and the refcount only tracks fragments.
-  Unmapping all but one page keeps the full charge forever, on a
-  socket that sock_hold() keeps alive long after close().
-- mmgrab() and sock_hold() are redundant. vma->vm_file already pins
-  the socket, and vma->vm_mm cannot go away under its own vma. Once
-  VM_DONTCOPY is set, the zc_vma->mm =3D=3D mm test is dead code.
-- kmalloc_obj() does not exist in any of the stable trees you are
-  Cc'ing.
+Oops, never true*. Should I send a v2, or will whoever merges this fix it?
