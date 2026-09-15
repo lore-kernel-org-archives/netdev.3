@@ -1,391 +1,301 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1174BD0F1;
-	Tue, 15 Sep 2026 16:58:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338373BBFD0
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 17:02:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789491515; cv=none; b=GtVtSPh1XFwbO7Ef7z+zSaRkRV2aPIgmAZS0ko3tZNsUtvdLOKjvpyV/dlSyqjh+Je9LNyoy480Vuc89F78LKUpuQSGChv6LVvYelvxSUEz6W9xjSjz9wDgPqUzWQnhywmVi4+TS4OGCaIWi3ZQgAipDcdsxjob5QQHZ6X+7OEQ=
+	t=1789491733; cv=none; b=qwbsgU+OuFFjfFLtcmfF2pQkAiiBaestJBCP6jjmIbRPgK/oPd8xP6eYzwmm6BNO7lsYqzA2JEo8bZ5iCU8l8imf1LeVZotvGJNbuvFZndyhkvtmb4thZ0lqLoEbbofVsUjFppD+vKv1ixMX2+z1WLR5w7WNt7q0x9KbqvHYoAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789491515; c=relaxed/simple;
-	bh=ZFJ4FIvGlBPWqrpHWIRu0z11kYO2hDsLf6Lh3mDHM8w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dGfINguqALD5KQ6JYqyGI/YNUv1SJ78onQOJW6eOfzpIt/y9S3J1EgYbXoEGbzT+6HF2zNWdgDIx6RcC+FydDEWrQ3tUCp3gqkRHp6aISZmrhTMcJfNWjbMufYWKPjsJmzaC+d92o7/+RNGJF51YcOaOVSGLhQ7A8tZRHIKY9LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I90ad8/W; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789491733; c=relaxed/simple;
+	bh=u4UFiko82A9oo6jDjjqR7lvD3n1v6npulk8uWYC3A9o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=htBrD8AXKiD7mC6dGxdm9/riWQPFX1LcouHHcGJ5zO5EimJljbYzNwj59ZhUsBVLV0JgsQYIcY4/klbt192YWxrSJweKzYFaJp3XHgp+E+0KgqRxBG+MHzdiDxJOUrHl8KOsrl+Q43q4hrvequHTTHNudiucOXL5Al2edBLpveM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FL6BZ37p; arc=none smtp.client-ip=74.125.227.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I90ad8/W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE6A1F00899;
-	Tue, 15 Sep 2026 16:58:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789491507;
-	bh=7pvwtcbJiVJTSoXq0mtTQ4KVaqoIA/SIQAPR+4GBHWs=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=I90ad8/WcpHCZqYhA/cUXLyh76jyqbN1Q7Q0XQxvK5Et5GpSqUsPW8Ltk3CyzFyrN
-	 99k7JRX0Lb/HKjazt4yWtSg8NGenj+z2RGXmOpvD9M+62Y95MN2uU8ADfWgNPl0C7O
-	 u/KAVRTmes0fNEHwLOv7EBVdEM7JW1YZ6nq9+U2muOu+bIw7N13/UZXzBeewiHW/Qn
-	 r8Tlrl+jGRe6rFj0QXqK5KQW6XPahHN7A30B/lteO+oyf3PL3fX1TusRnm4tjptJcV
-	 T9n2yCbYpEOEuVkbsk5Ct+zMGDvcpu0jE8Rp1ZXUNSz9pR8RXRMBMiBG2+nK9JVKi1
-	 uZ7YUHi2b1FtA==
-From: Jeff Layton <jlayton@kernel.org>
-Date: Tue, 15 Sep 2026 12:57:45 -0400
-Subject: [PATCH v3 4/5] NFSD: report registerable programs in the
- listener_set reply
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FL6BZ37p"
+Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2dd4b43b20bso23945ad.1
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 10:02:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789491730; x=1790096530; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=TCDRZ9weVwG1Wz3S9zGQh/wTKxjjL9VQFaV4nXxX7Mw=;
+        b=FL6BZ37popkupd+qSWbFcW0Y2TIWXGpD56kVYAxD1wYOxUJJPL8NyzQM4aPyKRK0Dt
+         ddxUWztMOWgY8bQvPfJWjza/EVFhfXI2sb1LRLoxq4gpdfg3ylarMKzcv5/1zxKZcgo6
+         xoA7L9pSsl00v2ILn7tdKpcFaQRZIXX6DnqUmxyjpSQJpyhd0wup/S20GA/9IeGYmuc0
+         Xa8HJ3nKGMpgpeVYEfJxLp/VuJqSyijKU6qXHhrVrviP/SDEmB8RQD/JHNs34xv2VhYO
+         vx6w98fO4jexhN0wcQOl9pFjaLZOAQNXOI1wIccSgi7rAhhys9o5/VKLTwClWQVZ9cit
+         6t5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789491730; x=1790096530;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=TCDRZ9weVwG1Wz3S9zGQh/wTKxjjL9VQFaV4nXxX7Mw=;
+        b=fbGLsfEHhk2PSrZ5gEKz1j5i0nUhRQvfHITuuug/QL+QvGHgaqKVuKdxoMhc4m3HIF
+         8UHTx40yMe0fG6BtRFQqmVn94O4rP198h3ikHXAioa4NdSCKRE+VZDk5/L5I1kHkwznv
+         Cpijln2jBpxrlEZPO0E9NvHvRD/yo4/92vXxKRiqdYqQNME++E2afBww7ICCmGg/nrPj
+         nWNTZot1ykjY742TEmoDnIdpkJeOSrb9bf+gCyRdUZwL6FOYhNHcNEo1dXII7bjvZCAg
+         HW6oWrGz97m9MDY/cDkO754+CuvIioIyq9FRiwuCaJSrXTkzn+lLzxrf4B26hJJWCh/m
+         3ljg==
+X-Forwarded-Encrypted: i=1; AKwUvBzNSWvFZNEVLPO9lhSEI5qFvADVgq6YUp9LnDLm20pZ2Kee3EUTthS55UYbyF9itOou3xa0epY=@vger.kernel.org
+X-Gm-Message-State: AFuF++mD3nvBwk4URn5fbkOSDcO1jbKJe2V/SLDSznjbfT+l2vL+fpXd
+	Xf69VkTHxUZti8fNrxqmys5UQ0IVgzZZevKd4mK2UH/J+88QBuFXfu6k
+X-Gm-Gg: AYBFou0vz6dFS5PMGnjntZzeetrDWZq0LdSTgZKHPChSGNmwSKiPd4K2/EdZWfZSFuG
+	g6hhTG1vqcu2ZjhsPs0zERMSTCvPA7l00gxemXUiWANsRBav9NfqtkSt4RBuRbgQQgqqLc5CVnw
+	L8Vkwe3AYw4YcSvFEOjSlhA7cqoVgtMzM0U0ioDMTGG/KY7pDs9GmnMBl1RsVWttR97wMJ+fUGS
+	UQDhPwnkydbRlGFasJQXQq7JPioc2voztsRThCz+J4KT4CMWOD/a4c3jTej13Vd//bJIiJRQz1z
+	6X0JPSmSs51rPyMM5le39MolaOUNGhjzFYwfQpiD0XLIgQFFw62HTTgM3AGKNaeGtNvotEMZ9Py
+	h+hS1DNJetSAlAfVaNFdw95J1PaREHBAeotpgXVMAkkTv9UT+y1Teg1IaEcLm0EHDA+kh7kx8gH
+	amPNIHzGfh5i/rFAydiMy4FbOo2v6k/UhZ4tuLUaIQxDh2Jc2iWM1Xf7QN/tg3qQqOdwkBZz/KP
+	JnEL6OKVrK70KJnvBh9BLqK2Yh/I7iU
+X-Received: by 2002:a17:902:c942:b0:2d8:df44:a5c2 with SMTP id d9443c01a7336-2dd8387cbdbmr33512745ad.20.1789491730384;
+        Tue, 15 Sep 2026 10:02:10 -0700 (PDT)
+Received: from 192.168.50.3 ([198.176.50.208])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd34c7f976sm68439925ad.81.2026.09.15.10.01.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Sep 2026 10:02:09 -0700 (PDT)
+From: Weiming Shi <bestswngs@gmail.com>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Peter Oskolkov <posk@google.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>
+Subject: [PATCH] bpf: clear stale IPv4 options after LWT encapsulation
+Date: Wed, 16 Sep 2026 01:01:48 +0800
+Message-ID: <20260915170147.3943392-2-bestswngs@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260915-nfsd-norpcb-v3-4-3c60d49ade02@kernel.org>
-References: <20260915-nfsd-norpcb-v3-0-3c60d49ade02@kernel.org>
-In-Reply-To: <20260915-nfsd-norpcb-v3-0-3c60d49ade02@kernel.org>
-To: Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
- Chuck Lever <cel@kernel.org>, NeilBrown <neil@brown.name>, 
- Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
- Tom Talpey <tom@talpey.com>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Donald Hunter <donald.hunter@gmail.com>, Shuah Khan <shuah@kernel.org>
-Cc: linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Jeff Layton <jlayton@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=10561; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=ZFJ4FIvGlBPWqrpHWIRu0z11kYO2hDsLf6Lh3mDHM8w=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBqqXkqvrZiCLj/vfU4YOwZINZRA/qBfEItD63zy
- TwXZ+epFVqJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaql5KgAKCRAADmhBGVaC
- FUtLEACioo2yImbWDawoQ3eV4Vuxhpd4fk+7gg2eZ5htwtg6Jtjii8tFxq5sbYVS+j4Yj3sm79w
- BUDXJ2NGAo8GBRjZO2OsydZ6CRkf7DWTvbd16NtNFZDYmbkwFxq/P8mXRXcrszNQpe7ycwcAdhy
- 8sxgUKEG+GbM039ngAqxuauiD8lbOz0Ik6pM6FtnBolk2kiyCIITHbOqN7i8BOciWUGCyLZNSBh
- Idk475LleijWOFpVtHrXt18MQq4EMOlkM2zsCE6WIvXG/ZNPJ6LnPuiOKbu4vXbQxqQTTaNrluj
- SdmonfvdfJbQ0fKTyRY8rNzSsyevBXzjo4YkmFhAEVXEvnByAK+Z9uxatH7Tc5AiXmwWq055Dkx
- 5nauWiXDrMIVu+bCfobnjsLCMUeNvwDit7okWRQAf0VCx/31c1MAVOf+nlrPc0G1OcSy9N1td7v
- d6Oj5qBd41EgX9o/0SFI/TG2G753SwIt/QUTFwe0LkuFuTDkZY0fFPvNvKjflbCRa1rL1C88kbP
- j4JARpRfzW2GtY0lZtCbaNSIhVfpXTbm8GPC/6i1OmDDtZ4DHdnmOtext3tAZgY6E6RM1jqllGd
- f28OBR0ZdSVz3c4PTucQ9obwtAq4sTq3keuZjKHoZlm4eWrBnYB1riq/4DFlCzqQ22r/M8Kz6NO
- 9wZnEusmVrm2ZuA==
-X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
- fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
+Content-Transfer-Encoding: 8bit
 
-A caller that owns rpcbind must know what to register. It cannot work
-that out for itself: nfsd_acl_version[] is built by CONFIG_NFSD_V2_ACL
-and CONFIG_NFSD_V3_ACL, and no netlink command reports what is in it.
+From: Xiang Mei <xmei5@asu.edu>
 
-Reply to a listener_set that carried userspace-rpcbind with the programs
-and versions that nfsd would have registered, plus the listeners to
-register them for. Send the reply only when the request asked for it, so
-an older caller still gets a bare ack.
+bpf_lwt_push_ip_encap() rebases the network header after prepending an IP
+header, but leaves IPCB(skb)->opt describing the inner IPv4 header.  An
+ingress LWT route can consequently make an ICMP error interpret an
+inner-header byte as an option length and copy 255 bytes into 40 bytes of
+stack storage.  The trace decoded with scripts/decode_stacktrace.sh is:
 
-nfsd_version_registerable() answers the same question for the reply and
-for nfsd_rpcbind_set(), so nfsd_acl_rpcbind_set() goes away. It needs no
-nfsacl-specific test: nfsd_acl_version[] has entries only at 2 and 3, so
-the NULL pg_vers[] check already rejects everything
-nfsd_support_acl_version() would have.
+  BUG: KASAN: stack-out-of-bounds in __ip_options_echo
+  Write of size 255
+  Call Trace:
+   <IRQ>
+   __asan_memcpy (mm/kasan/shadow.c:106)
+   __ip_options_echo (net/ipv4/ip_options.c:96)
+   __icmp_send (net/ipv4/icmp.c:949)
+   ip_forward (net/ipv4/ip_forward.c:176)
+   lwtunnel_input (net/core/lwtunnel.c:465)
+   ip_rcv (net/ipv4/ip_input.c:612)
+   __netif_receive_skb_one_core (net/core/dev.c:6264)
+   process_backlog (net/core/dev.c:6728)
+   __napi_poll (net/core/dev.c:7787)
+   net_rx_action (net/core/dev.c:8007)
+   handle_softirqs (kernel/softirq.c:645)
+   do_softirq.part.0 (kernel/softirq.c:546)
+   </IRQ>
+   <TASK>
+   __local_bh_enable_ip (kernel/softirq.c:473)
+   __dev_queue_xmit (net/core/dev.c:4961)
+   packet_sendmsg (net/packet/af_packet.c:3143)
+   __sys_sendto (net/socket.c:2281)
+   __x64_sys_sendto (net/socket.c:2288)
+   do_syscall_64 (arch/x86/entry/syscall_64.c:84)
+   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+   </TASK>
 
-Listeners are reported only for the TCP and UDP classes, which is what
-XPT_RPCB_UNREG marks. RDMA never reached rpcbind from the kernel either,
-so there is nothing for the owner to register on its behalf.
+A helper-only reset can be restored by bpf_prog_run_save_cb(), while a
+program without ctx->cb[] access can clone-redirect the skb before a
+return-only reset.  Track active LWT runs and their control-block family
+in the BPF network context.  Reset it immediately when the control block
+is not BPF scratch space, and after bpf_prog_run_save_cb() restores it.
+Preserve the state across nested runs and retain the ingress interface and
+L3-slave state when the protocol family changes.
 
-The reply is sized from its contents rather than GENLMSG_DEFAULT_SIZE,
-which listener_get uses and which overflows at ~27 listeners. The cost
-is a large contiguous skb: the addr nest carries a full
-sockaddr_storage, as listener_get's does, so a request at
-NFSD_NL_LISTENER_MAX needs ~148K and alloc_skb() lands on an order-6
-page allocation that can fail. Nothing rolls back on failure, matching
-the rest of the command, so the extack says the listeners are up and
-that a retry fetches the reply. Retrying is safe: a request that matches
-the running set recreates nothing.
-
+Fixes: 52f278774e79 ("bpf: implement BPF_LWT_ENCAP_IP mode in bpf_lwt_push_encap")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
 Assisted-by: LLM
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
 ---
- fs/nfsd/nfsctl.c | 146 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
- fs/nfsd/nfsd.h   |   2 +
- fs/nfsd/nfssvc.c |  52 ++++++++++++--------
- 3 files changed, 181 insertions(+), 19 deletions(-)
+ include/linux/filter.h | 10 ++++++
+ net/core/lwt_bpf.c     | 81 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 91 insertions(+)
 
-diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
-index 6e57e4d20e75..f32311f2d7cf 100644
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -2087,6 +2087,128 @@ static int nfsd_nl_validate_listeners(struct genl_info *info)
- 	return count;
- }
+diff --git a/include/linux/filter.h b/include/linux/filter.h
+index 39decde7fc730..0edd3e6ce563f 100644
+--- a/include/linux/filter.h
++++ b/include/linux/filter.h
+@@ -848,6 +848,15 @@ struct bpf_nh_params {
+ #define BPF_RI_F_CPU_MAP_INIT	BIT(2)
+ #define BPF_RI_F_DEV_MAP_INIT	BIT(3)
+ #define BPF_RI_F_XSK_MAP_INIT	BIT(4)
++#define BPF_RI_F_LWT_IP_ENCAP	BIT(5)
++#define BPF_RI_F_LWT_RUN	BIT(6)
++
++struct bpf_lwt_ip_encap_state {
++	int iif;
++	__be16 cb_proto;
++	bool l3slave;
++	bool cb_access;
++};
  
-+static size_t nfsd_nl_listener_set_msgsize(struct svc_serv *serv)
+ struct bpf_redirect_info {
+ 	u64 tgt_index;
+@@ -858,6 +867,7 @@ struct bpf_redirect_info {
+ 	enum bpf_map_type map_type;
+ 	struct bpf_nh_params nh;
+ 	u32 kern_flags;
++	struct bpf_lwt_ip_encap_state lwt_ip_encap;
+ };
+ 
+ struct bpf_net_context {
+diff --git a/net/core/lwt_bpf.c b/net/core/lwt_bpf.c
+index da49364ec63de..762d62c959f9f 100644
+--- a/net/core/lwt_bpf.c
++++ b/net/core/lwt_bpf.c
+@@ -36,19 +36,88 @@ static inline struct bpf_lwt *bpf_lwt_lwtunnel(struct lwtunnel_state *lwt)
+ #define NO_REDIRECT false
+ #define CAN_REDIRECT true
+ 
++static void bpf_lwt_reset_ip_cb(struct sk_buff *skb, __be16 orig_proto,
++				int iif, bool l3slave, bool use_new_proto)
 +{
-+	size_t size = GENL_HDRLEN +		    /* genlmsg_iput() */
-+		      nla_total_size(0);	    /* userspace-rpcbind */
-+	struct svc_xprt *xprt;
-+	unsigned int p;
++	__be16 cb_proto = orig_proto;
 +
-+	lockdep_assert_held(&nfsd_mutex);
++	if (use_new_proto)
++		cb_proto = skb->protocol;
 +
-+	for (p = 0; p < serv->sv_nprogs; p++)
-+		size += serv->sv_programs[p].pg_nvers *
-+			(nla_total_size(0) +		    /* rpcbind nest */
-+			 nla_total_size(sizeof(u32)) +	    /* program */
-+			 nla_total_size(sizeof(u32)) +	    /* version */
-+			 nla_total_size(sizeof(u32)));	    /* flags */
-+
-+	spin_lock_bh(&serv->sv_lock);
-+	list_for_each_entry(xprt, &serv->sv_permsocks, xpt_list) {
-+		if (!test_bit(XPT_RPCB_UNREG, &xprt->xpt_flags))
-+			continue;
-+		size += nla_total_size(0) +		    /* addr nest */
-+			nla_total_size(strlen(xprt->xpt_class->xcl_name) + 1) +
-+			nla_total_size(sizeof(struct sockaddr_storage));
++	if (cb_proto == htons(ETH_P_IP)) {
++		if (orig_proto == htons(ETH_P_IP)) {
++			memset(&IPCB(skb)->opt, 0, sizeof(IPCB(skb)->opt));
++		} else {
++			memset(IPCB(skb), 0, sizeof(*IPCB(skb)));
++			IPCB(skb)->iif = iif;
++			if (l3slave)
++				IPCB(skb)->flags |= IPSKB_L3SLAVE;
++		}
++	} else if (cb_proto == htons(ETH_P_IPV6)) {
++		memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
++		IP6CB(skb)->iif = iif;
++		IP6CB(skb)->nhoff = offsetof(struct ipv6hdr, nexthdr);
++		if (l3slave)
++			IP6CB(skb)->flags |= IP6SKB_L3SLAVE;
++	} else if (orig_proto == htons(ETH_P_IP)) {
++		memset(&IPCB(skb)->opt, 0, sizeof(IPCB(skb)->opt));
 +	}
-+	spin_unlock_bh(&serv->sv_lock);
-+
-+	return size;
 +}
 +
-+static struct sk_buff *
-+nfsd_nl_listener_set_msg(struct genl_info *info, struct net *net,
-+			 struct svc_serv *serv)
-+{
-+	struct svc_xprt *xprt;
-+	struct sk_buff *skb;
-+	unsigned int p, i;
-+	void *hdr;
-+	int err;
-+
-+	lockdep_assert_held(&nfsd_mutex);
-+
-+	skb = genlmsg_new(nfsd_nl_listener_set_msgsize(serv), GFP_KERNEL);
-+	if (!skb)
-+		return ERR_PTR(-ENOMEM);
-+
-+	hdr = genlmsg_iput(skb, info);
-+	if (!hdr) {
-+		err = -EMSGSIZE;
-+		goto err_free_msg;
+ static int run_lwt_bpf(struct sk_buff *skb, struct bpf_lwt_prog *lwt,
+ 		       struct dst_entry *dst, bool can_redirect)
+ {
+ 	struct bpf_net_context __bpf_net_ctx, *bpf_net_ctx;
++	struct bpf_lwt_ip_encap_state nested_lwt_ip_encap_state;
++	struct bpf_redirect_info *ri;
++	bool lwt_ip_encap, nested_lwt_ip_encap, nested_lwt_run;
++	__be16 orig_proto = skb->protocol;
++	bool l3slave = false;
++	int iif = 0;
+ 	int ret;
+ 
++	if (orig_proto == htons(ETH_P_IP)) {
++		iif = IPCB(skb)->iif;
++		l3slave = ipv4_l3mdev_skb(IPCB(skb)->flags);
++	} else if (orig_proto == htons(ETH_P_IPV6)) {
++		iif = IP6CB(skb)->iif;
++		l3slave = ipv6_l3mdev_skb(IP6CB(skb)->flags);
 +	}
 +
-+	if (nla_put_flag(skb, NFSD_A_SERVER_SOCK_USERSPACE_RPCBIND)) {
-+		err = -EMSGSIZE;
-+		goto err_free_msg;
-+	}
+ 	/* Disabling BH is needed to protect per-CPU bpf_redirect_info between
+ 	 * BPF prog and skb_do_redirect().
+ 	 */
+ 	local_bh_disable();
+ 	bpf_net_ctx = bpf_net_ctx_set(&__bpf_net_ctx);
++	ri = bpf_net_ctx_get_ri();
++	nested_lwt_run = ri->kern_flags & BPF_RI_F_LWT_RUN;
++	nested_lwt_ip_encap = ri->kern_flags & BPF_RI_F_LWT_IP_ENCAP;
++	if (nested_lwt_run)
++		nested_lwt_ip_encap_state = ri->lwt_ip_encap;
++	ri->kern_flags &= ~BPF_RI_F_LWT_IP_ENCAP;
++	ri->kern_flags |= BPF_RI_F_LWT_RUN;
++	ri->lwt_ip_encap.iif = iif;
++	ri->lwt_ip_encap.cb_proto = orig_proto;
++	ri->lwt_ip_encap.l3slave = l3slave;
++	ri->lwt_ip_encap.cb_access = lwt->prog->cb_access;
+ 	bpf_compute_data_pointers(skb);
+ 	ret = bpf_prog_run_save_cb(lwt->prog, skb);
++	lwt_ip_encap = ri->kern_flags & BPF_RI_F_LWT_IP_ENCAP;
++	ri->kern_flags &= ~BPF_RI_F_LWT_IP_ENCAP;
 +
-+	for (p = 0; p < serv->sv_nprogs; p++) {
-+		const struct svc_program *progp = &serv->sv_programs[p];
-+
-+		for (i = 0; i < progp->pg_nvers; i++) {
-+			struct nlattr *attr;
-+			u32 flags = 0;
-+
-+			if (!nfsd_version_registerable(net, progp, i))
-+				continue;
-+
-+			if (progp->pg_vers[i]->vs_need_cong_ctrl)
-+				flags |= NFSD_RPCBIND_FLAGS_NO_UDP;
-+
-+			attr = nla_nest_start(skb, NFSD_A_SERVER_SOCK_RPCBIND);
-+			if (!attr) {
-+				err = -EMSGSIZE;
-+				goto err_free_msg;
-+			}
-+			if (nla_put_u32(skb, NFSD_A_RPCBIND_PROGRAM,
-+					progp->pg_prog) ||
-+			    nla_put_u32(skb, NFSD_A_RPCBIND_VERSION, i) ||
-+			    (flags && nla_put_u32(skb, NFSD_A_RPCBIND_FLAGS,
-+						  flags))) {
-+				err = -EMSGSIZE;
-+				goto err_free_msg;
-+			}
-+			nla_nest_end(skb, attr);
-+		}
-+	}
-+
-+	spin_lock_bh(&serv->sv_lock);
-+	list_for_each_entry(xprt, &serv->sv_permsocks, xpt_list) {
-+		struct nlattr *attr;
-+
-+		if (!test_bit(XPT_RPCB_UNREG, &xprt->xpt_flags))
-+			continue;
-+
-+		attr = nla_nest_start(skb, NFSD_A_SERVER_SOCK_ADDR);
-+		if (!attr) {
-+			err = -EMSGSIZE;
-+			goto err_serv_unlock;
-+		}
-+
-+		if (nla_put_string(skb, NFSD_A_SOCK_TRANSPORT_NAME,
-+				   xprt->xpt_class->xcl_name) ||
-+		    nla_put(skb, NFSD_A_SOCK_ADDR,
-+			    sizeof(struct sockaddr_storage),
-+			    &xprt->xpt_local)) {
-+			err = -EMSGSIZE;
-+			goto err_serv_unlock;
-+		}
-+
-+		nla_nest_end(skb, attr);
-+	}
-+	spin_unlock_bh(&serv->sv_lock);
-+
-+	genlmsg_end(skb, hdr);
-+	return skb;
-+
-+err_serv_unlock:
-+	spin_unlock_bh(&serv->sv_lock);
-+err_free_msg:
-+	nlmsg_free(skb);
-+	return ERR_PTR(err);
-+}
-+
- /**
-  * nfsd_nl_listener_set_doit - set the nfs running sockets
-  * @skb: reply buffer
-@@ -2100,6 +2222,7 @@ int nfsd_nl_listener_set_doit(struct sk_buff *skb, struct genl_info *info)
- 	const struct nlattr *bad_attr = NULL;
- 	struct svc_xprt *xprt, *tmp;
- 	const char *bad_xprt = NULL;
-+	struct sk_buff *rskb = NULL;
- 	unsigned int rpcb_failures;
- 	const struct nlattr *attr;
- 	bool skipped_rpcb = false;
-@@ -2289,12 +2412,35 @@ int nfsd_nl_listener_set_doit(struct sk_buff *skb, struct genl_info *info)
- 			       "rpcbind did not answer, some listeners are not registered");
++	if (lwt_ip_encap && ri->lwt_ip_encap.cb_access)
++		bpf_lwt_reset_ip_cb(skb, ri->lwt_ip_encap.cb_proto,
++				    ri->lwt_ip_encap.iif,
++				    ri->lwt_ip_encap.l3slave,
++				    (ret == BPF_LWT_REROUTE &&
++				     lwt->prog->type != BPF_PROG_TYPE_LWT_OUT) ||
++				    (ret == BPF_REDIRECT && can_redirect));
++	if (nested_lwt_run)
++		ri->lwt_ip_encap = nested_lwt_ip_encap_state;
++	else
++		ri->kern_flags &= ~BPF_RI_F_LWT_RUN;
++	if (nested_lwt_ip_encap)
++		ri->kern_flags |= BPF_RI_F_LWT_IP_ENCAP;
+ 
+ 	switch (ret) {
+ 	case BPF_OK:
+@@ -604,6 +673,7 @@ static int handle_gso_encap(struct sk_buff *skb, bool ipv4, int encap_len)
+ 
+ int bpf_lwt_push_ip_encap(struct sk_buff *skb, void *hdr, u32 len, bool ingress)
+ {
++	struct bpf_redirect_info *ri;
+ 	bool is_udp_tunnel;
+ 	struct iphdr *iph;
+ 	bool ipv4;
+@@ -657,6 +727,7 @@ int bpf_lwt_push_ip_encap(struct sk_buff *skb, void *hdr, u32 len, bool ingress)
+ 	memcpy(skb_network_header(skb), hdr, len);
+ 	bpf_compute_data_pointers(skb);
+ 	skb_clear_hash(skb);
++	ri = bpf_net_ctx_get_ri();
+ 
+ 	if (ipv4) {
+ 		skb->protocol = htons(ETH_P_IP);
+@@ -669,6 +740,16 @@ int bpf_lwt_push_ip_encap(struct sk_buff *skb, void *hdr, u32 len, bool ingress)
+ 		skb->protocol = htons(ETH_P_IPV6);
  	}
  
-+	/*
-+	 * Build the reply before the serv can go away, and only on success.
-+	 * A caller that got an errno has nothing to register.
-+	 */
-+	if (!err && userspace_rpcbind) {
-+		rskb = nfsd_nl_listener_set_msg(info, net, serv);
-+		if (IS_ERR(rskb)) {
-+			err = PTR_ERR(rskb);
-+			rskb = NULL;
-+			/*
-+			 * The listeners are up and the errno alone reads as
-+			 * if nothing happened. Retrying is safe: a request
-+			 * that matches the running set recreates nothing.
-+			 */
-+			NL_SET_ERR_MSG(info->extack,
-+				       "listeners are up but the reply could not be built; retry to fetch it");
++	if (ri->kern_flags & BPF_RI_F_LWT_RUN) {
++		ri->kern_flags |= BPF_RI_F_LWT_IP_ENCAP;
++		if (!ri->lwt_ip_encap.cb_access) {
++			bpf_lwt_reset_ip_cb(skb, ri->lwt_ip_encap.cb_proto,
++					    ri->lwt_ip_encap.iif,
++					    ri->lwt_ip_encap.l3slave, true);
++			ri->lwt_ip_encap.cb_proto = skb->protocol;
 +		}
 +	}
 +
- 	if (!serv->sv_nrthreads && list_empty(&nn->nfsd_serv->sv_permsocks))
- 		nfsd_destroy_serv(net);
+ 	if (skb_is_gso(skb))
+ 		return handle_gso_encap(skb, ipv4, len);
  
- out_unlock_mtx:
- 	mutex_unlock(&nfsd_mutex);
- 
-+	/* rskb is only built once err is known to be zero. */
-+	if (rskb)
-+		return genlmsg_reply(rskb, info);
-+
- 	return err;
- }
- 
-diff --git a/fs/nfsd/nfsd.h b/fs/nfsd/nfsd.h
-index dcce45d58322..69e3e92b3ec1 100644
---- a/fs/nfsd/nfsd.h
-+++ b/fs/nfsd/nfsd.h
-@@ -117,6 +117,8 @@ extern const struct svc_version localio_version1;
- 
- enum vers_op {NFSD_SET, NFSD_CLEAR, NFSD_TEST, NFSD_AVAIL };
- int nfsd_vers(struct nfsd_net *nn, int vers, enum vers_op change);
-+bool nfsd_version_registerable(struct net *net,
-+			       const struct svc_program *progp, u32 version);
- int nfsd_minorversion(struct nfsd_net *nn, u32 minorversion, enum vers_op change);
- void nfsd_reset_versions(struct nfsd_net *nn);
- int nfsd_create_serv(struct net *net, bool no_rpcbind);
-diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
-index ef520d0562d6..cbc989238710 100644
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -41,11 +41,6 @@
- atomic_t			nfsd_th_cnt = ATOMIC_INIT(0);
- static int			nfsd(void *vrqstp);
- #if defined(CONFIG_NFSD_V2_ACL) || defined(CONFIG_NFSD_V3_ACL)
--static int			nfsd_acl_rpcbind_set(struct net *,
--						     const struct svc_program *,
--						     u32, int,
--						     unsigned short,
--						     unsigned short);
- static __be32			nfsd_acl_init_request(struct svc_rqst *,
- 						const struct svc_program *,
- 						struct svc_process_info *);
-@@ -127,7 +122,7 @@ struct svc_program		nfsd_programs[] = {
- 	.pg_class		= "nfsd",
- 	.pg_authenticate	= svc_set_client,
- 	.pg_init_request	= nfsd_acl_init_request,
--	.pg_rpcbind_set		= nfsd_acl_rpcbind_set,
-+	.pg_rpcbind_set		= nfsd_rpcbind_set,
- 	},
- #endif /* defined(CONFIG_NFSD_V2_ACL) || defined(CONFIG_NFSD_V3_ACL) */
- #if IS_ENABLED(CONFIG_NFS_LOCALIO)
-@@ -813,18 +808,6 @@ nfsd_support_acl_version(int vers)
- 	return false;
- }
- 
--static int
--nfsd_acl_rpcbind_set(struct net *net, const struct svc_program *progp,
--		     u32 version, int family, unsigned short proto,
--		     unsigned short port)
--{
--	if (!nfsd_support_acl_version(version) ||
--	    !nfsd_vers(net_generic(net, nfsd_net_id), version, NFSD_TEST))
--		return 0;
--	return svc_generic_rpcbind_set(net, progp, version, family,
--			proto, port);
--}
--
- static __be32
- nfsd_acl_init_request(struct svc_rqst *rqstp,
- 		      const struct svc_program *progp,
-@@ -859,12 +842,43 @@ nfsd_acl_init_request(struct svc_rqst *rqstp,
- }
- #endif
- 
-+/**
-+ * nfsd_version_registerable - would nfsd register [@progp, @version]?
-+ * @net: network namespace to query
-+ * @progp: RPC program to query
-+ * @version: RPC version to query
-+ *
-+ * Answers the question for a listener of any protocol. A caller that asks
-+ * about one listener must apply vs_need_cong_ctrl itself.
-+ *
-+ * Return: true when the version is a candidate for rpcbind registration.
-+ */
-+bool nfsd_version_registerable(struct net *net,
-+			       const struct svc_program *progp, u32 version)
-+{
-+	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
-+
-+	/*
-+	 * nfsd_acl_version[] is built by CONFIG_NFSD_V2_ACL and
-+	 * CONFIG_NFSD_V3_ACL, so a NULL entry already answers for nfsacl and
-+	 * nfsd_support_acl_version() would add nothing here.
-+	 */
-+	if (version >= progp->pg_nvers || !progp->pg_vers[version])
-+		return false;
-+
-+	/* nfslocalio is hidden and never reaches rpcbind. */
-+	if (progp->pg_vers[version]->vs_hidden)
-+		return false;
-+
-+	return nfsd_vers(nn, version, NFSD_TEST);
-+}
-+
- static int
- nfsd_rpcbind_set(struct net *net, const struct svc_program *progp,
- 		 u32 version, int family, unsigned short proto,
- 		 unsigned short port)
- {
--	if (!nfsd_vers(net_generic(net, nfsd_net_id), version, NFSD_TEST))
-+	if (!nfsd_version_registerable(net, progp, version))
- 		return 0;
- 	return svc_generic_rpcbind_set(net, progp, version, family,
- 			proto, port);
-
--- 
-2.55.0
-
