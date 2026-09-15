@@ -1,57 +1,57 @@
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB3E4A1E1B
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:27:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36684A262C
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:28:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789460873; cv=none; b=DtXAw8XkXmhnYv4RyidRTbHCM9rWldzXqs912LSSDjdtNdO4eofmca/A7cwwTNHatIeGvb7wi7lXE7ihMxncBu7Sc3Md+2QaWpl2p6As0X1ofx5MJi0/Ge1FbEXoNkJP6hSFzKPmR8buOD+evXXCWmupT9kMzxRLhXvWOjFNKWg=
+	t=1789460883; cv=none; b=Y6TuonbzKPIvefxEnGyDL5+ISgjhn2OtICxtiuURXQ4h2obWxOdvQjxSG/7TVJfb2ag95QQWUUKq2P8cQ5TfcCTbhc60c0koS+DtpJKB9wJ9CtU9yY4miYOrcRBs0disArPtAgrzHKvirYyJddWmEMH3uLz7C9K9e47IrcwosTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789460873; c=relaxed/simple;
-	bh=s/FLNJ19YZGvt5oZ8eTe1yZo+b1FTWb/0ix0hrTXlNc=;
+	s=arc-20240116; t=1789460883; c=relaxed/simple;
+	bh=Uf7uxHQ/vmaAoZCZZPN2XUoRZ9miHwSqTeOUYXKdUpY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HB6kYbF4taPQF3T61/BP0P3Eqh4Wj0Zw02QBaqWKjiar98W2x0mruH2cNyPoTCu8gFJtbZAP2OuMbMa8yOEg1uMgrIfMr+NYygJmytNM0guhFPA6FvJqrAMvfBw61RJUm/D9SsPbkJnFHXQ3BKq6fZu4Zi7aywQswOjbNwD7oTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--morbo.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EnVDF0x5; arc=none smtp.client-ip=209.85.167.198
+	 To:Cc:Content-Type; b=liBy+LB8w19/I1gyWuMdXm7S0zQQJJYgBKi0Wsy8lQQzy5jXKtQWhMuHWGPLtEdFTWMlCpOhJziQoN5nmJiwNK9jwpUTlTD2RnKsyuaYxmPDuNsiEyJm2Ne6rZ8NRvyG82Ja/209p6YMLBXK1ONe8n8Pny7VWuj39xaKXKGWD/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--morbo.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YGECgU6t; arc=none smtp.client-ip=209.85.219.69
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--morbo.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EnVDF0x5"
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4b98ca6c270so717743b6e.0
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 01:27:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YGECgU6t"
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-90e87478402so110184376d6.1
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 01:28:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789460871; x=1790065671; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789460881; x=1790065681; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=TmKdBXO38kbe6W228p+vBZ76A7D+nQJddOBfd0uRZ54=;
-        b=EnVDF0x5VS0PV8cfoU70Q1RkFxsvpYJriKG0t/BWnSzqRN0/PzUvMvTptB6L3uqp6x
-         FSaQvxqICXWSRm2NEoq2GkaVHkkt5fI95oUOcCisUv6KtebpKi9CPh2sHEOnJ38h2z6I
-         fNMoHFWUeYjMAvuGBE02+HB4sIGVYrM3Fgnpu0r1wZoaqN3c4LMvYoQe/TbL+iD0pF/d
-         y08DokhSO+3J/8BS4aQCoKYRbj1GmX6fKB2sykHZmXTOFzh2NZaxGjZs6uW3xLBJ1EJG
-         gND3nW+O5AcRNZ0QwL7yontmlbkQ7BktcGLML5LV3MVIf0w/sGD6a3nzAj7f2FCriEjl
-         WxSQ==
+        bh=LcsuffwFDxj4u6SThnIq1nFzZdsoWr9GB9tsbe2KVjo=;
+        b=YGECgU6tDeigSg00Ph48XuYmWUOnfwJd4SHJ4LGmCsm482hM1D8AYxtEO7nrlSz9fd
+         ygo5QhcAbRnN0OZeE0xZ2BP3rEqleeHxQwJITz4ZjQ007UDKKs3IefvCGkptBJXOcjKY
+         7TWX9Rkta1wkdVzT5DDjIQ02BhIl4wttu75T8aSuM8WVRXBjWtaogy9Huzb9X4LPFUm1
+         4AYMzKtphYl+9OsiS//3LS8apArWOt3oa/al8s6Nd4xdMMwGYj4EKrayl2ZAxOaY8lCr
+         VL7UTGmya7omSZrsO/7TMrIKBoOCizZb/4BIEIkg7AFzX0VMzLaX3MnV9I9tmXq97wXX
+         tyiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789460871; x=1790065671;
+        d=1e100.net; s=20260707; t=1789460881; x=1790065681;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=TmKdBXO38kbe6W228p+vBZ76A7D+nQJddOBfd0uRZ54=;
-        b=cVmSPSOvGAeSjJLIBjdMv7yhpPkIUPZB3CrtDN7C1kVOSK+LsMISiBroXfm4+6R37m
-         Fj/LbkpGhAVDL3qAM5lyLJDJWvgBmybXfFP1r3Hs99zUe3XoMH19QTR1CGcHzXPy9R5K
-         TzoccNONg2mQurhpZj/sQ1CL9mHSpbqPqEtJGnIAu+LReLXtJrdv4n+6Z1MX0wOmXJYZ
-         vkv4CHTpbsnutPqyqmEMCfEacWRecX6qrkM9dfZ+PTtdujt7Yac/euJUCWvmAwAuUU9f
-         oVKIemzyUuX1TstWnffpB+TbPwakrKa9MMYKdCl0UYk/AhlXyNqDVd6RjALm3aJswS2W
-         kbDA==
-X-Forwarded-Encrypted: i=1; AKwUvBzGEFxxlbJBJyhBFnbXkIDkieXVZ5hC6l0joH3ZA6XLMZvGRx64gakk2kmyF8x2rJaSV2j0hBs=@vger.kernel.org
-X-Gm-Message-State: AFuF++nHM8NWtfgRxbPkqNZ0JjZU8YobVUMQs0Dww9WUYuxc/PMR3V6w
-	eG3nNgSP2rgyXkPcB2QpQ4KErgI7T3JB7tESJEKTgf6IU9z/3FdvhYyjLXdIXh4mVaVgyMNH14f
-	2
-X-Received: from plw16.prod.google.com ([2002:a17:903:45d0:b0:2dd:203e:7d7f])
- (user=morbo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e544:b0:2d8:d4cf:fe49
- with SMTP id d9443c01a7336-2dd7654538dmr37587935ad.15.1789460410166; Tue, 15
- Sep 2026 01:20:10 -0700 (PDT)
-Date: Tue, 15 Sep 2026 08:18:35 +0000
+        bh=LcsuffwFDxj4u6SThnIq1nFzZdsoWr9GB9tsbe2KVjo=;
+        b=eCNg/XVyfHD3e07fN9SjYHGcUMRbr6T9kzxCQ4W/udwdk/CqsIO04nrBnlo8BsFF1R
+         dq/OQHKcV2hFKOurLMW3/qCsT60IB89FF2kiy/ClWqzOk4PjFXirX7oDGQh41zb0qZmo
+         /FqagyNUGj2NmbhJxsEVVwWFQDv/BLNyFo54OyhjpowqFiSQ/hCkjYPTZbWOfRmkeeaG
+         3G5+kF9Ovf/ebAtHQBis4xiKRBnrDmHHwVwM65ADDDV+7xSkt4RCBFu/QHGmIgSowKoZ
+         wqhelEhnhmthU3uqJzkjtMeQ3NoT4pzfKw9dmu6ZjEGQzOnnAU3KvXXZTS1/xNqVllz3
+         XXHQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx2iIHT4fSV08+EFkPdBG380QLSp9qM28xNHT7yTmYM6JNckzKXLrFJ6TqLDZRhOvvvrJsgtc8=@vger.kernel.org
+X-Gm-Message-State: AFuF++l0ZwKGNrim6kIseXgmgPhxypJ1Ta2meZBwvDEi6OdELU2vQYnA
+	6eETrTAOi011fzNR1QkfkEx/f1VquVIXdD7qd2q9w7CVERgBHBLchPsPTE9g68ZO1qyq52e0jT0
+	W
+X-Received: from plxm10.prod.google.com ([2002:a17:902:db0a:b0:2d9:7bf:6891])
+ (user=morbo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1b50:b0:2db:8ae7:a5d2
+ with SMTP id d9443c01a7336-2dd6c5f39camr129000865ad.9.1789460415373; Tue, 15
+ Sep 2026 01:20:15 -0700 (PDT)
+Date: Tue, 15 Sep 2026 08:18:41 +0000
 In-Reply-To: <20260915081910.4142719-1-morbo@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -61,14 +61,13 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260915081910.4142719-1-morbo@google.com>
 X-Mailer: git-send-email 2.55.0.1032.g73a4cd73de-goog
-Message-ID: <20260915081910.4142719-19-morbo@google.com>
-Subject: [PATCH 18/28] LoongArch: Refactor bootcmdline_init() to use seq_buf
- instead of strlcat()
+Message-ID: <20260915081910.4142719-25-morbo@google.com>
+Subject: [PATCH 24/28] EDAC/thunderx: Fix stale error context in thunderx_l2c_threaded_isr()
 From: Bill Wendling <morbo@google.com>
 To: linux-kernel@vger.kernel.org
-Cc: Bill Wendling <morbo@google.com>, codemender-patching+linux@google.com, 
-	Russell King <linux@armlinux.org.uk>, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+Cc: Bill Wendling <morbo@google.com>, Russell King <linux@armlinux.org.uk>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
 	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Helge Deller <deller@gmx.de>, 
 	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
@@ -124,17 +123,17 @@ Cc: Bill Wendling <morbo@google.com>, codemender-patching+linux@google.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-bootcmdline_init() uses multiple strlcat() calls to append
-init_command_line or CONFIG_CMDLINE to boot_command_line.
+thunderx_l2c_threaded_isr() computes "tail" and "ctx" once before entering
+the loop that drains the L2C error ring, and never updates them on
+subsequent iterations. When multiple errors are queued, every iteration
+reports the first ring entry rather than advancing through the ring,
+causing subsequent hardware errors in a batch to go unreported.
 
-In preparation for removing the deprecated strlcat() API[1], initialize a
-struct seq_buf with the existing contents of boot_command_line and use
-seq_buf_puts() to append the command line fragments.
+Recompute "tail" and "ctx" at the start of each loop iteration, matching
+the sibling thunderx_ocx_com_threaded_isr() and
+thunderx_ocx_lnk_threaded_isr() handlers.
 
-Link: https://github.com/KSPP/linux/issues/370 [1]
-Cc: codemender-patching+linux@google.com
-Assisted-by: CoPilot:1.0 [shell_command_run, editor_update_file, make_kerne=
-l_build_single_file]
+Fixes: 41003396f932 ("EDAC, thunderx: Add Cavium ThunderX EDAC driver")
 Signed-off-by: Bill Wendling <morbo@google.com>
 ---
 Cc: Russell King <linux@armlinux.org.uk>
@@ -248,77 +247,24 @@ Cc: devel@lists.orangefs.org
 Cc: linux-hardening@vger.kernel.org
 Cc: linux-sound@vger.kernel.org
 ---
- arch/loongarch/kernel/setup.c | 22 +++++++++++++++-------
- 1 file changed, 15 insertions(+), 7 deletions(-)
+ drivers/edac/thunderx_edac.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
-index 6fa4a22a58fd..826396f141b9 100644
---- a/arch/loongarch/kernel/setup.c
-+++ b/arch/loongarch/kernel/setup.c
-@@ -33,6 +33,7 @@
- #include <linux/of_address.h>
- #include <linux/suspend.h>
- #include <linux/swiotlb.h>
-+#include <linux/seq_buf.h>
+diff --git a/drivers/edac/thunderx_edac.c b/drivers/edac/thunderx_edac.c
+index 9c0a1e48f96f..e7c335ca0c36 100644
+--- a/drivers/edac/thunderx_edac.c
++++ b/drivers/edac/thunderx_edac.c
+@@ -1880,6 +1880,9 @@ static irqreturn_t thunderx_l2c_threaded_isr(int irq,=
+ void *irq_id)
 =20
- #include <asm/addrspace.h>
- #include <asm/alternative.h>
-@@ -305,6 +306,8 @@ static void __init fdt_setup(void)
-=20
- static void __init bootcmdline_init(char **cmdline_p)
- {
-+	struct seq_buf s;
+ 	while (CIRC_CNT(l2c->ring_head, l2c->ring_tail,
+ 			ARRAY_SIZE(l2c->err_ctx))) {
++		tail =3D ring_pos(l2c->ring_tail, ARRAY_SIZE(l2c->err_ctx));
++		ctx =3D &l2c->err_ctx[tail];
 +
- 	/*
- 	 * If CONFIG_CMDLINE_FORCE is enabled then initializing the command line
- 	 * is trivial - we simply use the built-in command line unconditionally &
-@@ -315,6 +318,11 @@ static void __init bootcmdline_init(char **cmdline_p)
- 		goto out;
- 	}
-=20
-+	/* Initialize seq_buf pointing to boot_command_line */
-+	s.buffer =3D boot_command_line;
-+	s.size =3D COMMAND_LINE_SIZE;
-+	s.len =3D strlen(boot_command_line);
-+
- #ifdef CONFIG_OF_FLATTREE
- 	/*
- 	 * If CONFIG_CMDLINE_BOOTLOADER is enabled and we are in FDT-based system=
-,
-@@ -323,11 +331,11 @@ static void __init bootcmdline_init(char **cmdline_p)
- 	 * to boot_command_line.
- 	 */
- 	if (initial_boot_params) {
--		if (boot_command_line[0])
--			strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
-+		if (s.len)
-+			seq_buf_puts(&s, " ");
-=20
--		if (!strstr(boot_command_line, init_command_line))
--			strlcat(boot_command_line, init_command_line, COMMAND_LINE_SIZE);
-+		if (!strstr(s.buffer, init_command_line))
-+			seq_buf_puts(&s, init_command_line);
-=20
- 		goto out;
- 	}
-@@ -338,14 +346,14 @@ static void __init bootcmdline_init(char **cmdline_p)
- 	 * CONFIG_CMDLINE_EXTEND is enabled.
- 	 */
- 	if (IS_ENABLED(CONFIG_CMDLINE_EXTEND) && CONFIG_CMDLINE[0]) {
--		strlcat(boot_command_line, " ", COMMAND_LINE_SIZE);
--		strlcat(boot_command_line, CONFIG_CMDLINE, COMMAND_LINE_SIZE);
-+		seq_buf_puts(&s, " ");
-+		seq_buf_puts(&s, CONFIG_CMDLINE);
- 	}
-=20
- 	/*
- 	 * Use built-in command line if the bootloader command line is empty.
- 	 */
--	if (IS_ENABLED(CONFIG_CMDLINE_BOOTLOADER) && !boot_command_line[0])
-+	if (IS_ENABLED(CONFIG_CMDLINE_BOOTLOADER) && !s.len)
- 		strscpy(boot_command_line, CONFIG_CMDLINE, COMMAND_LINE_SIZE);
-=20
- out:
+ 		snprintf(msg, L2C_MESSAGE_SIZE,
+ 			 "%s: %s: %016llx, %s: %016llx",
+ 			 l2c->edac_dev->ctl_name, reg_int_name, ctx->reg_int,
 --=20
 2.55.0.1032.g73a4cd73de-goog
 
