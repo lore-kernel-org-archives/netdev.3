@@ -1,73 +1,65 @@
-Received: from mta0.migadu.com (out-131.mta0.migadu.com [91.218.175.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3557E3368A5
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 01:27:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418364BEE58;
+	Tue, 15 Sep 2026 01:30:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789435677; cv=none; b=DgAfRAW/jv8umEL9iChkMN9ap5/tKrw/i825el6qLmG41I4pHEQohtTqVrRGIwxRmC48AZHd2nW/1bL+nAxTsNRgveh3Q0oYOgUxE1Szu+ALOBOqG+6njx9Xoc2SetkpSOcxPiNVkcMdQatWzfchKlViQRqd2FqFjyBkUCTAZ1s=
+	t=1789435831; cv=none; b=Y81PQZxJdCPMPTck9EU7z4Ik96rOF2JZrR8oWlClx7BEDaRAUZGFwuMbV60FuC9aRMHp/ZZwkcsOOPfY5GOQyOd/+eQ+/gIDCXry8kr1iGOTsibSVw5bBvYJShwNQ1O7PFc0K0JVIPfchhrUvmjZSXVSqudpZveP4UziuVpSfS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789435677; c=relaxed/simple;
-	bh=/UoPunvCEXG8tnFMxO/BnhHtSexaaG/QWzRat8cX3QI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=koQVg3Y+A1eaGY0Zw/tKAhSOsd390HRFazy1jMRBL7QAWWcXiO36mN8DA21D3qAQEIbJ90fNcECAzDBbPOI39toYhZfLLakHjFxuQBsgIyOzNGnyvBOhzZwR4T69u0soOoasUsO3yp5FZ2/eYbaNilZBuJhoPZ4yOjzfufjVyhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=bwUXhoMl; arc=none smtp.client-ip=91.218.175.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1789435831; c=relaxed/simple;
+	bh=4ooeXO5micOcfFMgkQaja78GEUbahBIBFjBU+V/knw0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H5rPltLl90qasB1uI2bxNt3Ae6sM7pFNIUcZRMqjo59JVrpkE1ogwaEWVslcBWmzuh+wdmFKk8Uioii1vq5YT1iBlTIceQNpkO+jzKfc2DCe2AKciFsyZ3SwS5PXTtvxWkrxHUibvlMsq/CG9it1RYCpWgbNoiyY5yN6sIXF4Ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=C4+IcYp5; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="bwUXhoMl"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=/UoPunvCEXG8tnFMxO/BnhHtSexaaG/QWzRat8cX3QI=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789435672; v=1; x=1790040472;
- b=bwUXhoMld7aFmIGH3LZIxizzWgF4NyhwuhCwS2QH+GHU7PsrxOVRjIJiDFXFP+lWIe02kGY5
- nN2WiWUQ2z47BryPH1YGVdukhMgoWzheXuk7eTsHVuQ5edbDcl+tla/JbmnG07WxNlXcC5+z2d8
- +kCWT5gKVcVHkRYICQLGX/bo=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 6f87dcdf948d143b;
-	Tue, 15 Sep 2026 01:27:42 +0000
-X-Mizu-Trace-ID: 6f87dcdf948d143b
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <eb2c9089-3633-40f6-b836-b81bb6c10d64@linux.dev>
-Date: Tue, 15 Sep 2026 09:27:35 +0800
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="C4+IcYp5"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=n2eViIN4CdrY8DfZkVZmrroRFxyLR9A2oDMQaX2oNio=; b=C4+IcYp51szJzg/ZWHQe755SAa
+	UKsJTryjGJ+6BhHTM/kE2Fh6WWuOVmUp5W50XWafKCMsgOjjVR9CFkloxs1O9afx+Y65xUCDlMdEz
+	Y4OpOKQdFr9i5y8mk3qZHSN03dTT+ZC8UmNa/ZWDrkMiYl3OmMyxafAyZYu3yWDZHwHw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x6I03-005AG1-Bm; Tue, 15 Sep 2026 03:30:19 +0200
+Date: Tue, 15 Sep 2026 03:30:19 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Aleksei Sviridkin <f@lex.la>
+Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, olteanv@gmail.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v7 2/2] net: phy: take the interrupt back from the
+ bus on detach
+Message-ID: <a2a2a8fb-97c3-498f-9bf4-e0c44be2eff6@lunn.ch>
+References: <20260909204306.2374562-1-f@lex.la>
+ <20260909204306.2374562-3-f@lex.la>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] ppp: ppp_synctty: Use common error handling code
- in ppp_sync_txmunge()
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: LKML <linux-kernel@vger.kernel.org>, Kees Cook <kees@kernel.org>,
- linux-ppp@vger.kernel.org, netdev@vger.kernel.org,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Jiri Slaby <jirislaby@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Tom Parkin <tparkin@katalix.com>
-References: <1d943bf2-d027-41aa-82db-b2f0807a5e7c@web.de>
- <09743e95-cb1b-4750-89bf-6a4a4d96ede0@web.de>
-From: Qingfang Deng <qingfang.deng@linux.dev>
-In-Reply-To: <09743e95-cb1b-4750-89bf-6a4a4d96ede0@web.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260909204306.2374562-3-f@lex.la>
 
-Hi,
+> A bus whose driver writes only phydev->irq and never the table is not
+> covered, because the table then holds PHY_POLL and there is nothing to
+> take back; lan78xx, smsc95xx and sxgbe are in that position today and
+> registering the interrupt with the bus is theirs to do.
 
-On 2026/9/8 15:48, Markus Elfring wrote:
->> Use an additional label so that a bit of exception handling can be better
->> reused at the end of this function implementation.
-> How do you think about to repeat the proposed source code transformation pattern
-> after an other contribution would be integrated?
-> [PATCH net] ppp_synctty: ensure a writeable skb header
-> https://lore.kernel.org/linux-ppp/20260908072135.877364-1-qingfang.deng@linux.dev/
->
-> Regards,
-> Markus
+Maybe i was not clear. I listed all the drivers i thought you needed
+to look at and patch, so that the bus is the source of truth. This is
+also what the AI was pointing out as a problem.
 
-This change is merged. You can now rebase and repost your patch.
+    Andrew
 
-Best regards,
-Qingfang
+---
+pw-bot: cr
+
