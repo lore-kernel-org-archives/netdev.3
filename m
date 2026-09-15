@@ -1,192 +1,212 @@
-Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5BC4AFE27
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 16:45:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789490717; cv=pass; b=jxebAmbB6NqKU2RRlyFzvqBQEY+MqqRaDHwgXKwGXuMzHFJEymWTNyAKYoEVXZAQ5uRcwV/3VXHcDk5o8yCH4zlKW6qXBxaO9tVfl3c6GyfoaaYYaCjcOy22Tt//F/2m40qw8Xxb19VuJo3GBdAlOMqrPBlXB2BjIpxfYpg3icc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789490717; c=relaxed/simple;
-	bh=9GwGGvfgvBSHcRik0ICfQ1lf/eR8Li3EDXS5Aa6fYyc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NFqFJUJxYOeEpmAMUzcFBpncy/coRS1wCVQogytFcVvDdUGG9Pb+ai22xbvmq6j41Molbgmvx3fN5JXJvFdbmGkZNsB6xYYCoTemvvullf1vXf2u1923g5r9QipMuzKcNydR0Ci1TtvfWo7fNA9yiJdcNWxm568JTIkUIzD/QUY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NWdbq7zW; arc=pass smtp.client-ip=74.125.228.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7B34B2CC5;
+	Tue, 15 Sep 2026 16:47:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789490862; cv=none; b=WXC5qmQRtQ6dR/RX9bJ8WTtuMxeWNCCBO/mNTzFnTdWjdDzJFYtNVGKLjEIs1/dEOF+myS56f4hbotmaKKSR09m8bW8vyf/NLthchFw4/7IRbtwgZz7bDillWPhcqmx567WohxmYdZmJ5GOhN5ZftC6tDJ+T5BIRPMPjmZp6V80=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789490862; c=relaxed/simple;
+	bh=0UbxSj3ntTXHh3sXNxhY/94cHXVP7FcpFpKeTKHqyU4=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=nhmZZ8MpqCfdXt0k9tau58oh9bYW5JAn8td1UWswTRnTlnAprik0Ywr2EM5qj+inTg7210Eyl7FL4Q5tCr8Bf+yom/6jKRflSl8HBQWpkYrPJGpFoG1PAxjKPIYpTi77cl+MhuuImm+v999JO0WisyZcdzxUi31g7/PKrxamJhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ifdMOliG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NWdbq7zW"
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254fa650c8so7873566b.0
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 09:45:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789490713; cv=none;
-        d=google.com; s=arc-20260327;
-        b=O+FuA+cZGaoEzU8aWyUpxI+R0qwLimQ18mzCxL/zMbvfqipl2HcwU2Xy1QJc0MTUpr
-         txntoLkwTSbqlbd6+GU6k5Vdbbks95dAd0EBaKLSOZNHEMN6SOe7C0hzvdhDQhzQzaVH
-         HInXvtwmIufY4aKNw8g4Zw0DrhSgiEJpZs3zvNSmgf8sqr591j0oPhHG2h/kyJ7BfoCk
-         oO/fn1dR6FDT0jJ44us10Dlpj0MuLL6Ap/f3OrLmiipG5yn4J/H4E0LKA7CIzbBUFdZp
-         yv+5KlDDKqBRKCQwJOFyPtPWOL0EjOKMzFchuyrfXqtgbhp3mfj/xXnqlWkMPYYsQ8t/
-         iXQg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=vcZ5cZp+MTIDohAvU1rokDSJo7Wxlod0GJ6VhSswrLI=;
-        fh=knzHDO0kj7eJaX4EGetmTgV9Ei6DOh+Wv85mCN3sFNk=;
-        b=NLSilZh5a6v1v3Bu0lCxwgX/cqCiGcXj4Z/a3+sRaogO8hvZCG+yuueLgor6fE7nC5
-         VvLbE4GWQLIi5V55VYFYaatY8G/58lLNLX7Bi+NlnbODxkde4SH8dpi7wWbzKuqqfPKC
-         2McuXZotwM1uHM9Y+rQtZFGGvarND9ttI8mp8zb74G7nt+HPCPMGVGfGW5trKh2Ahm3y
-         q87IGTAWgsCLMh38Zfct/OuxeNVcKa/O5274G5HfDz2t6se78yJ5AhoxJDqcDKvpY5e4
-         /tizeFg69LxRJx6XAPvxUFpkB+iCMa/gu/VRYKVrRERdYSmsaT+9jHkHHnlHsQV7DEKh
-         4fuA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789490713; x=1790095513; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=vcZ5cZp+MTIDohAvU1rokDSJo7Wxlod0GJ6VhSswrLI=;
-        b=NWdbq7zWlVt/zVbEe0MZAYwCGJspihb0GSaeHkvsFInx0ncVpk0aLQbQgxWkAJlrD7
-         yR2mwE/yH/9ATmf0FIPL2W2NDrt9jd5etw/+qi3qaJMVL3fIZTLdF+LwnWVn838Zg1Am
-         rPDvNvDdVAkYK1NYFiU1rkEqzXFJg5wLjIHNGK4c+nmveCD7K+nSd2pws03M0XMXZmMl
-         hRw+cptuUTGspkdaa4kLd0388NR4V+0TyzqfltGne7vRVqSIY6firDHXRzfB/tApUBRH
-         tA6s5zzTuwAt330VNxqaEzrNPcPTq1zD1znhJGOhr4/zk8eHKUwscT2ClHgJHXtZy1TU
-         jR0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789490713; x=1790095513;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vcZ5cZp+MTIDohAvU1rokDSJo7Wxlod0GJ6VhSswrLI=;
-        b=H+3bwFn6BLE/s3N0w45eBm1GkIAYQ7L8DdvQaY4GNJ3rwVXAKj4o7D0Zc2SFeINuX6
-         xT9ADbZGu+Pw63LOzLloKrO2Ls0kaxP4JdK6JIBnSWRgRTbVg4QI60PvOLQrBWJxOL7x
-         hPRJZvmD6cbnLdZovP/0nBOOWOdh05iRDp9qXwD4iWrTmhsqbqneR7/1LX3g/N7tmOKc
-         kQW2OzysQjCYGFfjIzacx7o/7e5fMDhwdhQvRdil+9x2voOYYO6aG3UcvcWgnn1s4VXD
-         NFyfwjki21KbidO51S9+P0Z1h/6nqPW5OpF8l0yp1izMq3iGFIo4jY7FRpB438GJGXsE
-         Em3A==
-X-Forwarded-Encrypted: i=1; AKwUvBy1VijVWqyIfX0oEl8uNTkSmK9AM1FpwKuO1yGnNf/57NMs1geb3YZLYn44EVgb/5tv5o6KmiE=@vger.kernel.org
-X-Gm-Message-State: AFuF++klZUpwH5clBz2Qd2EvmQtqBzwk7/2Q7hxfRd/ja+sGgM/qIf0N
-	S7AwOMQOE4iW0RUYkqOwmKCyCcj7voroMyUDf6PzJMpz/i1w8c4bhFQy0VSfgrAJZuWJSDeApU3
-	Lqc1aPPgSEIdgq/bUlqtpkxqrUNGnZMU=
-X-Gm-Gg: AYBFou0SAo7scT+Ln3n3Sm9HaI37xM6BfIbM95i8qjCBXmsmd1OKlcgXXPXGd5kR2VD
-	vH26NFXaxd9wLlapoYNKcDzFDJDub+Nd8jiNkxphgQr30HNDCpS4ck4F9ZRmIvpu6SrS+aKS9wN
-	wG5PDsaPqylkeOEvVh+ArVtNh0gFL45EQNI6NzL939aNwz5mnaXm2ZijwzRC2rnfxLcuU7uKrfa
-	2Ycmvh5KYs36PzbGGs+UYOIusDL4bKrbZ4WnBiVbvRBLnyrr8p+3NeEXV/K0Sp5fCuKD0blWGy0
-	Su/3NFTlvkU/gIzAfERlNN4+m2QAe9kok2zmkiIE8WmME7Z6MhK69F75x6JoV/avvGdmmnEoiMR
-	c2O9eFd2UtZTUAxMmNGWVlkoo06bOFZLPp1CDeXuzO4LPfAOuosD/EoOYJvsjhWruF3mlNUDnwG
-	Nx6++VpDL/nQ==
-X-Received: by 2002:a17:907:948c:b0:c24:adf4:5c73 with SMTP id
- a640c23a62f3a-c29d773fedcmr161284366b.1.1789490712483; Tue, 15 Sep 2026
- 09:45:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ifdMOliG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D381F00893;
+	Tue, 15 Sep 2026 16:47:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789490853;
+	bh=iKhgrbJhNzFogK77tQO9Djxtpxy8p5128nicHkebFuA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ifdMOliGN1F0YGOOIGe+jLmAKMwHORDAfi8FLeCHxYDWoj9Bpfo2XOhaPJYmfwFTV
+	 msddS7R7sjlUPVacpzkiKGcmCrY26aLr1c1Q6yVJmMAZrdmmbW2cyGetHX+EKyQ9mO
+	 WPBMVHDl6X9UOnl4lEXXlqS2F0e0a3DSTt37cE9eL9dE1STo7Xk54dtBGewI9X7tWE
+	 SQg85VhtAHLWFknUF3tqzu9uCXV+sFYOuYAR49EIRYhIc5yIm6jRTs69pdvRx3kcrb
+	 6J8oyTwR6ZcQv3ef5WvX9AEDG9kkpQfBwFHir/7e74PELfHBamRj9P7B5uT4fhCAjP
+	 XZTHLwm+t53RA==
+Subject: Re: [PATCH net-next v5 3/4] netlink: specs: rt-addr: document
+ AF_PACKET multicast dumps
+From: netdev-bot+sashiko@kernel.org
+To: sigefriedhyy@gmail.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, dsahern@kernel.org,
+ donald.hunter@gmail.com, edumazet@google.com, idosch@nvidia.com,
+ jacob.e.keller@intel.com, kuba@kernel.org, kuniyu@google.com,
+ nicolas.dichtel@6wind.com, nickgarlis@gmail.com, pabeni@redhat.com,
+ sd@queasysnail.net, shuah@kernel.org, horms@kernel.org, sdf.kernel@gmail.com,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ netdev@vger.kernel.org
+Date: Tue, 15 Sep 2026 16:47:31 +0000
+Message-ID: <178949085181.22033.17665408034284926571@kernel.org>
+In-Reply-To: <20260914014539.5015-4-sigefriedhyy@gmail.com>
+References: <20260914014539.5015-4-sigefriedhyy@gmail.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260914041221.1028092-1-zack.gomez@gmail.com> <aqeyvaw06I2883Fo@gmail.com>
-In-Reply-To: <aqeyvaw06I2883Fo@gmail.com>
-From: Zack Gomez <zack.gomez@gmail.com>
-Date: Tue, 15 Sep 2026 12:45:00 -0400
-X-Gm-Features: AcwNN1WDQXY_pMC5NqZrsA4SmeYj4x-kFu6e6I1hVD1u8f-sluStJigEyZ2240Q
-Message-ID: <CAErB-w3fmW4bQqRg7895dZ4ZRqkDJmfb7FSCLPvRCkwrhQzaqQ@mail.gmail.com>
-Subject: Re: [PATCH net] netpoll: bound the deferred transmit queue
-To: Breno Leitao <leitao@debian.org>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 14, 2026 at 01:47:39AM -0700, Breno Leitao wrote:
-> I have a patchset that does exactly that, which I wrote after
-> hitting a similar issue in production. Would you mind having a test?
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-Tested your v2 on 7.2.5 with stock netpoll (no cap), same host, NIC
-and reproducer as the commit message. Two writers offer 200k lines/s
-to /dev/kmsg. The slow-completion condition is the one from the
-original event: the sink only ever receives, so its MAC ages out of
-the switch's table, the switch floods each frame to every port and
-pauses this one. "paused" below is that state; "learned" is after a
-ping from the sink put the MAC back in the table. parked is the peak
-skb count in npinfo->txq, slab the peak growth in unreclaimable slab.
+Critical: 0 · High: 0 · Medium: 0 (1) · Low: 1 (1)
 
-bucket link sent parked slab backlog
-20k/s paused 8.3k/s 152k +116 MiB growing
-10k/s paused 8.6k/s 58k +27 MiB growing
-5k/s paused* 5.2k/s 1.1k 0 flat
-20k/s learned 20.1k/s 1.1k 0 flat
-unlimited learned 200k/s 3.0k 0 flat
+- [Low] The new `getmulticast` doc text (Documentation/netlink/specs/rt-
+  addr.yaml:173-179) documents only the ifa-family selector.
 
-* at 5k/s the flood is light enough that the switch never pauses
-the port.
+Pre-existing issues:
+- [Medium] Documentation/netlink/specs/rt-addr.yaml describes a `do`
+  (single-message get) variant of `getmulticast` (lines 182-193), and…
+- [Low] The patch adds `target-netnsid` to the shared `getmulticast`
+  reply attribute set (&mcaddr-attrs, Documentation/netlink/specs/rt-…
 
-Seems to work as advertised: with the link healthy the target sends
-exactly the configured rate and nothing is parked.
+--
 
-> I think the rate limiting should live on the netconsole side, not
-> netpoll.
+netlink: specs: rt-addr: document AF_PACKET multicast dumps
 
-I'd still argue the netpoll change is required: there should not be
-a path to OOMing the box. The rate limit is opt-in, and even once
-set it OOMs the same way if the limit is above what the link is
-draining at that moment, which above is 8k/s under the pause and
-200k/s without it. The two rows at 20k/s are the same configuration
-on a good day and a bad day.
+This adds the global address flag to the rt-addr spec, extends the
+getmulticast reply attribute list with flags and target-netnsid, and
+rewrites the operation doc to explain how ifa-family selects IPv4, IPv6
+or link-layer output.
 
-I read the two as solving different problems. Yours is consumer
-side: it limits how much damage one machine can do to a listener.
-The netpoll cap is producer side: it keeps the sender from damaging
-itself. Both seem worth having.
+> diff --git a/Documentation/netlink/specs/rt-addr.yaml b/Documentation/netlink/specs/rt-addr.yaml
+> index 17ead22034515..1a17e55d1cca0 100644
+> --- a/Documentation/netlink/specs/rt-addr.yaml
+> +++ b/Documentation/netlink/specs/rt-addr.yaml
 
-> If we do end up also rate limiting at the netpoll side, I'd like to
-> see a WARN_ON_ONCE() here, since it shouldn't be the main ratelimit
-> path, but rather something to flag that something is off.
+[ ... ]
 
-No strong opinion on that; I'll defer to the maintainers. The drop
-is counted either way: netconsole sees NET_XMIT_DROP in
-xmit_drop_count and exposes it as transmit_errors.
+> @@ -168,7 +170,13 @@ operations:
+>            attributes: *ifaddr-all
+>      -
+>        name: getmulticast
+> -      doc: Get / dump IPv4/IPv6 multicast addresses.
+> +      doc: |
+> +        Get / dump multicast addresses. ifa-family must select the address
+> +        family: AF_INET or AF_INET6 for the IP multicast groups joined on
+> +        a device, AF_PACKET for the link-layer multicast addresses in the
+> +        device filter. Link-layer entries added explicitly, e.g. with
+> +        SIOCADDMULTI or "bridge fdb add ... self", rather than by a
+> +        protocol join are reported with the global flag set.
 
-Zack
+[Severity: Low]
+This isn't a bug, but the new doc text describes only the ifa-family
+selector, while the AF_PACKET dump path added by the sibling commit
+"rtnetlink: add AF_PACKET multicast dumps" enforces two further
+request-side rules in rtnl_valid_dump_mcaddr_req():
 
+net/core/rtnetlink.c:rtnl_valid_dump_mcaddr_req() {
+	if (ifm->ifa_prefixlen || ifm->ifa_flags || ifm->ifa_scope) {
+		NL_SET_ERR_MSG(extack,
+			       "Invalid values in multicast dump header");
+		return -EINVAL;
+	}
+	...
+	filter->ifindex = ifm->ifa_index;
+}
 
+Should the doc mention that ifa_prefixlen, ifa_flags and ifa_scope must
+be zero for AF_PACKET, which is stricter than the AF_INET/AF_INET6
+behaviour of the same operation?
 
-On Mon, Sep 14, 2026 at 4:47=E2=80=AFAM Breno Leitao <leitao@debian.org> wr=
-ote:
->
-> On Mon, Sep 14, 2026 at 12:12:21AM -0400, Zack Gomez wrote:
-> > A producer that outruns that drain therefore grows the queue until the
-> > host is out of memory.
-> ...
-> > Observed with netconsole forwarding a GPU driver
-> > that logged one line at ~1e5/s after a firmware hang.
->
-> I know what you mean, I'm seeing the same issue on my side.
->
-> > Cap it at 1024 skbs and drop new skbs beyond that.
->
-> I don't think netpoll should be the one doing rate limiting here.
->
-> I think the rate limiting should live on the netconsole side, not
-> netpoll.
->
-> I have a patchset that does exactly that, which I wrote after
-> hitting a similar issue in production. Would you mind having a test?
->
-> https://lore.kernel.org/all/20260910-netcons_ratelimit-v2-0-ebf0dd91e26e@=
-debian.org/
->
-> > @@ -314,6 +322,10 @@ static netdev_tx_t __netpoll_send_skb(struct netpo=
-ll *np, struct sk_buff *skb)
-> >       }
-> >
-> >       if (!dev_xmit_complete(status)) {
-> > +             if (skb_queue_len(&npinfo->txq) >=3D NETPOLL_TXQ_MAX) {
-> > +                     dev_kfree_skb_irq(skb);
-> > +                     goto out;
->
-> If we do end up also rate limiting at the netpoll side, I'd like to
-> see a WARN_ON_ONCE() here, since it shouldn't be the main ratelimit
-> path, but rather something to flag that something is off.
->
-> --breno
+A caller reusing an ifaddrmsg from a getaddr reply, with a non-zero
+ifa_scope still in it, gets -EINVAL with nothing in the spec explaining
+why.
+
+Should the doc also mention that ifa-index restricts the dump to a single
+device, and that the reply then carries NLM_F_DUMP_FILTERED? Right now
+that filter is not discoverable from the spec.
+
+>        attribute-set: addr-attrs
+>        fixed-header: ifaddrmsg
+>        do:
+> @@ -181,10 +189,13 @@ operations:
+>              - multicast
+>              - mc-users
+>              - cacheinfo
+> +            - flags
+> +            - target-netnsid
+
+[Severity: Medium]
+This isn't a problem introduced by this patch, but since the patch
+extends this block it may be worth resolving here: the spec advertises a
+do (single-message get) variant of getmulticast, yet no family registers
+a doit handler for RTM_GETMULTICAST.
+
+net/ipv4/devinet.c:
+	{.owner = THIS_MODULE, .protocol = PF_INET, .msgtype = RTM_GETMULTICAST,
+	 .dumpit = inet_dump_ifmcaddr, .flags = RTNL_FLAG_DUMP_UNLOCKED},
+
+net/ipv6/addrconf.c:
+	{.owner = THIS_MODULE, .protocol = PF_INET6, .msgtype = RTM_GETMULTICAST,
+	 .dumpit = inet6_dump_ifmcaddr,
+	 .flags = RTNL_FLAG_DUMP_UNLOCKED},
+
+net/core/rtnetlink.c (the new AF_PACKET registration):
+	{.protocol = PF_PACKET, .msgtype = RTM_GETMULTICAST,
+	 .dumpit = rtnl_dump_mcaddr, .flags = RTNL_FLAG_DUMP_UNLOCKED},
+
+All three provide .dumpit only, and there is no PF_UNSPEC entry, so a
+non-dump request ends up here:
+
+net/core/rtnetlink.c:rtnetlink_rcv_msg() {
+	link = rtnl_get_link(family, type);
+	if (!link || !link->doit) {
+		family = PF_UNSPEC;
+		link = rtnl_get_link(PF_UNSPEC, type);
+		if (!link || !link->doit)
+			goto out_unlock;
+	}
+}
+
+and returns -EOPNOTSUPP. Would it make sense to drop the do: block
+instead of extending its reply list, so ynl-generated clients do not
+emit a single-object get that can never succeed?
+
+[Severity: Low]
+This is a pre-existing kernel-side gap rather than something this patch
+introduces, but target-netnsid is being added to the shared
+&mcaddr-attrs anchor used by all three families. The AF_PACKET and
+AF_INET6 emitters do put the attribute:
+
+net/core/rtnetlink.c:rtnl_fill_mcaddr() {
+	if ((netnsid >= 0 &&
+	     nla_put_s32(skb, IFA_TARGET_NETNSID, netnsid)) ||
+}
+
+net/ipv6/addrconf.c:inet6_fill_ifmcaddr() {
+	if (args->netnsid >= 0 &&
+	    nla_put_s32(skb, IFA_TARGET_NETNSID, args->netnsid)) {
+}
+
+The AF_INET emitter does not, even though inet_valid_dump_ifaddr_req()
+accepts IFA_TARGET_NETNSID and stores it in fillargs.netnsid:
+
+net/ipv4/igmp.c:inet_fill_ifmcaddr() {
+	if (nla_put_in_addr(skb, IFA_MULTICAST, im->multiaddr) < 0 ||
+	    nla_put_u32(skb, IFA_MC_USERS, READ_ONCE(im->users)) < 0 ||
+	    nla_put(skb, IFA_CACHEINFO, sizeof(ci), &ci) < 0) {
+}
+
+So an AF_INET multicast dump against another namespace never reports the
+netnsid that its AF_INET6 and AF_PACKET peers report. Would a one-line
+follow-up in inet_fill_ifmcaddr() be worth doing so the three families
+agree with what the spec now lists?
+
+>        dump:
+>          request:
+>            value: 58
+> -          attributes: []
+> +          attributes:
+> +            - target-netnsid
+>          reply:
+>            value: 58
+>            attributes: *mcaddr-attrs
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260914014539.5015-1-sigefriedhyy%40gmail.com
