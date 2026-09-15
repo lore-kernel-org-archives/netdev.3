@@ -1,102 +1,241 @@
-Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com [209.85.161.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E943A7D82;
-	Tue, 15 Sep 2026 14:42:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682C6496D42
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 14:50:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789483377; cv=none; b=YSuy4zEyhF5yF5PYlt5QV7HoNmCzA41z0wKeuhW8g1mTGlNpLBi/wzk8WYVIhgiD2gA/r23cwkd4wC8S9iUB4drVZHmsDnCRGaFtHImoGV9hnNSIo7a86Qe7O5CueFjER3K9jksEXeHdgH9Jaftwlvs0TMsuHt8SDfOedIxXQt0=
+	t=1789483860; cv=none; b=LRYk+aoE6jOKQFFe654t7X6QKTDDqJZp47FERe5L4lnYVaaPUOE5rWWx3itc8cdUC0AEeLEckytbpX6WSsWS4HGi4fXt56hvUZNut3c7xw+0kRiJ00QmByXOJ5IGhuCJmTKPYLGjcflR8JkBLrS7JXPyn9IiXOs9LfVkJaomNl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789483377; c=relaxed/simple;
-	bh=uqyxUbuFwn0w2qmd7JxPK3AxYfVfFejjie7DAbPSOeI=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=tArm3TC69AFhPDl0ztxYToOyym8zx1iQfVg+hFPa+9b7FplHNY49K4t9Y1zFvaEZNqk6HoFNgX1QGCtZE63r5WTRstNuERLSRKreDlzv+25s4ZJsHQ5PQoZI6fYD3n30dsi1RZv3NNbm8S+E6/w7BgY0J1OkiYAuHNBNX21F9dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=cIAwMP7g; arc=none smtp.client-ip=109.224.244.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="cIAwMP7g"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1789483370; x=1789742570;
-	bh=RTlHcToK2mFD9e+cRKukCJbYOXYr3KFuX1ExzHA1mMQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=cIAwMP7gFG4GJMmJZv0tK9N9Y1TtfDaIamDeRZpRMo5f2HkBDNHhHH/Il2cNVXKgJ
-	 AvApC6AzolIb8yNiomx2ypiNxeVT5giigMeyJ2HUC1RItY9tJnVyKn9JfmZSfW3YHA
-	 6PWemMNB+4XPPMDcc0aI+f/Z7/9kAlkUyI0Bwba/KFBmFtrs2G6KgURM02VQ1DPjuf
-	 Z46b1IO8K4gZpmZp0o2QXZlMdV+HQ+C2uRdIE2zaBW6HFTLaldBDBYUgQ73734GUCU
-	 JchsSL7X4kohOXikItw+7sxoT2fShyVlF90ZlTF79rInuuQKiwEFa5h+gDK3F45NvO
-	 JqqK0VwDKA8Lw==
-Date: Tue, 15 Sep 2026 14:42:44 +0000
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-From: Sagar Taunk <sagartaunk@proton.me>
-Cc: Sagar Taunk <sagartaunk@proton.me>
-Subject: [PATCH v3] rust: net: netlink: Migrate to zerocopy's IntoBytes
-Message-ID: <20260915144231.31932-1-sagartaunk@proton.me>
-Feedback-ID: 130121444:user:proton
-X-Pm-Message-ID: c3c111c2728c0801e02fc529e68195861deddbfa
+	s=arc-20240116; t=1789483860; c=relaxed/simple;
+	bh=mP63S2kSIDdQdSMZvjLxECnRPXQjALds9wMvo+cDuJ0=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=oGiztGLEDJZCFIcvYu66T2UdhLfCju+qWzhlq0E/4QhOF0DrjEjr45pqfUX2+PBd5cvZmJddPIyDSSFZQwPTd3U85oPgkJStUc6LY59Tvxo92oTKKVgg7ThRdg9mg8pl9TnNi63P6ivmQ5Z4dH38V1teLeh7B14PhM+nVdeFHC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-6b1b8b593a4so4877081eaf.2
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 07:50:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789483856; x=1790088656;
+        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=/JjqUbcpC8Uiq3Jgl8nzKIuk3KGjIIRFE3T7zA0MDfE=;
+        b=rsnVSExFq2X6Q+HnBQGrsIFAaWLBDmT+bwYkc4tGfgGLrB++aFt0Pn9jtmXMgTRtBn
+         U4DfgZm8xVq6WVVyvHtww9UVSu0zJ/XN0ThbJ+3CKoSgqIep4ZOfZK7Va70s2FWUUqzN
+         JBNP5fEs/GDhBXuA/HYkMaUDt1FrwTt1jcvHeTEehm9pnpk9hlIwqIk2INkYgi8AthFd
+         pk3NQD5VrH0vQyPK0o9Eft3F3nkMP9YM+ab16jx/sdkPBfw1dQ3yPP6z9GGJW6Ogg++Q
+         aF63M5PXflPBOmli/YpN+eM5eLXQ789Ex0u2sRHU/HZyellEGQa5aSVZnLB1ocexMvlm
+         5Wgw==
+X-Forwarded-Encrypted: i=1; AKwUvBx7bwKbPRAeBeNQfRGasI1AsxNQ83ggucLzrpdN5HACzviy+3GAEYGaWWK7BCuY91x0eudOmFA=@vger.kernel.org
+X-Gm-Message-State: AFuF++lyPs72xn0cAN/UAqwmd+IAK5N+E33YslnDeTb1AXjNXWkQQ2B9
+	KEycvgtFZ7mEuJL12qd1eofmHvNcYco0WRzOJXMI68clMhqi0QB0vghGLVRsJodLG5iBsjWJjRw
+	Z7f9Zd2jZIp1CWWaSrhkcTGesTYFEIvfVYXqTy5P1va4RmpoXmtsqv/0e/C8=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-Received: by 2002:a05:6820:4d01:b0:6b7:83d6:2935 with SMTP id
+ 006d021491bc7-6c739c763f3mr966337eaf.56.1789483856152; Tue, 15 Sep 2026
+ 07:50:56 -0700 (PDT)
+Date: Tue, 15 Sep 2026 07:50:56 -0700
+In-Reply-To: <20260915081023.7433-1-ahemadkhawar123@gmail.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6aa95b50.a211d2ce.1a5198.02ad.GAE@google.com>
+Subject: [syzbot ci] Re: xsk: Fix circular locking dependency between
+ &net->xdp.lock, &xs->mutex, and netdev_lock_ops
+From: syzbot ci <syzbot+ci38b383cd8e5a02dc@syzkaller.appspotmail.com>
+To: ahemadkhawar123@gmail.com, ast@kernel.org, bpf@vger.kernel.org, 
+	daniel@iogearbox.net, edumazet@google.com, hawk@kernel.org, horms@kernel.org, 
+	john.fastabend@gmail.com, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	maciej.fijalkowski@intel.com, magnus.karlsson@intel.com, 
+	netdev@vger.kernel.org, pabeni@redhat.com, sdf@fomichev.me, 
+	syzbot@syzkaller.appspotmail.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Replace the kernel's own `transmute::FromBytes` and `AsBytes` traits
-with their zerocopy equivalents. Specifically, this updates
-`GenlMsg::put` to rely on `IntoBytes` for converting attributes into
-byte slices.
+syzbot ci has tested the following series
 
-Also, add `Immutable` trait bound on `GenlMsg::put` as zerocopy
-splits the `no interior mutability` guarantee that `AsBytes` bundled
-together.
+[v6] xsk: Fix circular locking dependency between &net->xdp.lock, &xs->mutex, and netdev_lock_ops
+https://lore.kernel.org/all/20260915081023.7433-1-ahemadkhawar123@gmail.com
+* [PATCH bpf-next v6] xsk: Fix circular locking dependency between &net->xdp.lock, &xs->mutex, and netdev_lock_ops
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1241
-Signed-off-by: Sagar Taunk <sagartaunk@proton.me>
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
+and found the following issue:
+possible deadlock in xp_clear_dev
+
+Full report is available here:
+https://ci.syzbot.org/series/fd897794-4f0d-45f4-8e63-bcb526e0b175
+
+***
+
+possible deadlock in xp_clear_dev
+
+tree:      bpf-next
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/bpf/bpf-next.git
+base:      b0ca562e0d05cf7afedcfa71c9aed180b72bcc97
+arch:      amd64
+compiler:  Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+config:    https://ci.syzbot.org/builds/d5521b86-a0b8-4ffc-ada4-91f534b028bc/config
+syz repro: https://ci.syzbot.org/findings/6aa094b3-5f39-460c-b0f7-709bbf72644c/syz_repro
+
+netlink: 14 bytes leftover after parsing attributes in process `syz.1.18'.
+======================================================
+WARNING: possible circular locking dependency detected
+syzkaller #0 Not tainted
+------------------------------------------------------
+syz.1.18/5842 is trying to acquire lock:
+ffff8881793b4e70 (&dev_instance_lock_key#3){+.+.}-{4:4}, at: netdev_lock include/linux/netdevice.h:2861 [inline]
+ffff8881793b4e70 (&dev_instance_lock_key#3){+.+.}-{4:4}, at: netdev_lock_ops include/net/netdev_lock.h:42 [inline]
+ffff8881793b4e70 (&dev_instance_lock_key#3){+.+.}-{4:4}, at: xp_clear_dev+0x13b/0x340 net/xdp/xsk_buff_pool.c:297
+
+but task is already holding lock:
+ffff8881bd5ca6b8 (&xs->mutex){+.+.}-{4:4}, at: xsk_notifier+0xcd/0x230 net/xdp/xsk.c:2114
+
+which lock already depends on the new lock.
+
+
+the existing dependency chain (in reverse order) is:
+
+-> #1 (&xs->mutex){+.+.}-{4:4}:
+       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
+       __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
+       xsk_bind+0x297/0x13f0 net/xdp/xsk.c:1620
+       __sys_bind_socket net/socket.c:1945 [inline]
+       __sys_bind+0x2e3/0x410 net/socket.c:1976
+       __do_sys_bind net/socket.c:1981 [inline]
+       __se_sys_bind net/socket.c:1979 [inline]
+       __x64_sys_bind+0x7a/0x90 net/socket.c:1979
+       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+       do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #0 (&dev_instance_lock_key#3){+.+.}-{4:4}:
+       check_prev_add kernel/locking/lockdep.c:3181 [inline]
+       check_prevs_add kernel/locking/lockdep.c:3300 [inline]
+       validate_chain kernel/locking/lockdep.c:3924 [inline]
+       __lock_acquire+0x1520/0x2cf0 kernel/locking/lockdep.c:5253
+       lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5886
+       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
+       __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
+       netdev_lock include/linux/netdevice.h:2861 [inline]
+       netdev_lock_ops include/net/netdev_lock.h:42 [inline]
+       xp_clear_dev+0x13b/0x340 net/xdp/xsk_buff_pool.c:297
+       xsk_notifier+0x1a1/0x230 net/xdp/xsk.c:2123
+       notifier_call_chain+0x1a5/0x3d0 kernel/notifier.c:85
+       call_netdevice_notifiers_extack net/core/dev.c:2313 [inline]
+       call_netdevice_notifiers net/core/dev.c:2327 [inline]
+       unregister_netdevice_many_notify+0x17f9/0x2140 net/core/dev.c:12518
+       rtnl_delete_link net/core/rtnetlink.c:3652 [inline]
+       rtnl_dellink+0x5be/0x810 net/core/rtnetlink.c:3694
+       rtnetlink_rcv_msg+0x802/0xc00 net/core/rtnetlink.c:7132
+       netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
+       netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+       netlink_unicast+0x7bd/0x940 net/netlink/af_netlink.c:1345
+       netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
+       sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
+       __sock_sendmsg net/socket.c:815 [inline]
+       ____sys_sendmsg+0x54e/0x850 net/socket.c:2713
+       ___sys_sendmsg+0x2a5/0x360 net/socket.c:2767
+       __sys_sendmsg net/socket.c:2799 [inline]
+       __do_sys_sendmsg net/socket.c:2804 [inline]
+       __se_sys_sendmsg net/socket.c:2802 [inline]
+       __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2802
+       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+       do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+other info that might help us debug this:
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(&xs->mutex);
+                               lock(&dev_instance_lock_key#3);
+                               lock(&xs->mutex);
+  lock(&dev_instance_lock_key#3);
+
+ *** DEADLOCK ***
+
+locks held by syz.1.18/5842: 3, last CPU#0:
+ #0: ffffffff90036ac0 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock net/core/rtnetlink.c:80 [inline]
+ #0: ffffffff90036ac0 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_net_lock include/linux/rtnetlink.h:134 [inline]
+ #0: ffffffff90036ac0 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_dellink+0x41b/0x810 net/core/rtnetlink.c:3686
+ #1: ffff88810e3ac750 (&net->xdp.lock){+.+.}-{4:4}, at: xsk_notifier+0x89/0x230 net/xdp/xsk.c:2110
+ #2: ffff8881bd5ca6b8 (&xs->mutex){+.+.}-{4:4}, at: xsk_notifier+0xcd/0x230 net/xdp/xsk.c:2114
+
+stack backtrace:
+CPU: 0 UID: 0 PID: 5842 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ print_circular_bug+0x2e1/0x300 kernel/locking/lockdep.c:2059
+ check_noncircular+0x12e/0x150 kernel/locking/lockdep.c:2191
+ check_prev_add kernel/locking/lockdep.c:3181 [inline]
+ check_prevs_add kernel/locking/lockdep.c:3300 [inline]
+ validate_chain kernel/locking/lockdep.c:3924 [inline]
+ __lock_acquire+0x1520/0x2cf0 kernel/locking/lockdep.c:5253
+ lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5886
+ __mutex_lock_common kernel/locking/mutex.c:646 [inline]
+ __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
+ netdev_lock include/linux/netdevice.h:2861 [inline]
+ netdev_lock_ops include/net/netdev_lock.h:42 [inline]
+ xp_clear_dev+0x13b/0x340 net/xdp/xsk_buff_pool.c:297
+ xsk_notifier+0x1a1/0x230 net/xdp/xsk.c:2123
+ notifier_call_chain+0x1a5/0x3d0 kernel/notifier.c:85
+ call_netdevice_notifiers_extack net/core/dev.c:2313 [inline]
+ call_netdevice_notifiers net/core/dev.c:2327 [inline]
+ unregister_netdevice_many_notify+0x17f9/0x2140 net/core/dev.c:12518
+ rtnl_delete_link net/core/rtnetlink.c:3652 [inline]
+ rtnl_dellink+0x5be/0x810 net/core/rtnetlink.c:3694
+ rtnetlink_rcv_msg+0x802/0xc00 net/core/rtnetlink.c:7132
+ netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
+ netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+ netlink_unicast+0x7bd/0x940 net/netlink/af_netlink.c:1345
+ netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
+ sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
+ __sock_sendmsg net/socket.c:815 [inline]
+ ____sys_sendmsg+0x54e/0x850 net/socket.c:2713
+ ___sys_sendmsg+0x2a5/0x360 net/socket.c:2767
+ __sys_sendmsg net/socket.c:2799 [inline]
+ __do_sys_sendmsg net/socket.c:2804 [inline]
+ __se_sys_sendmsg net/socket.c:2802 [inline]
+ __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2802
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f47db99e159
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f47dc90c028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007f47dbc25fa0 RCX: 00007f47db99e159
+RDX: 0000000004048004 RSI: 00002000000001c0 RDI: 0000000000000005
+RBP: 00007f47dba3503b R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f47dbc26038 R14: 00007f47dbc25fa0 R15: 00007ffc72db97b8
+ </TASK>
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
 ---
-Changes Since V2: Follow vertical import style as told by Alexandre Courbot=
-.=20
-No functional changes.
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
- rust/kernel/net/netlink.rs | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+To test a fix for this bug, please reply with `#syz test`
+(on a separate line) and attach the patch to the email.
 
-diff --git a/rust/kernel/net/netlink.rs b/rust/kernel/net/netlink.rs
-index 22ef3dde36fa..a2f4bd171dcf 100644
---- a/rust/kernel/net/netlink.rs
-+++ b/rust/kernel/net/netlink.rs
-@@ -12,7 +12,6 @@
-     alloc::{self, AllocError},
-     error::to_result,
-     prelude::*,
--    transmute::AsBytes,
-     types::Opaque,
-     ThisModule,
- };
-@@ -22,6 +21,11 @@
-     ptr::NonNull, //
- };
-=20
-+use zerocopy::{
-+    Immutable,
-+    IntoBytes, //
-+};
-+
- /// The default netlink message size.
- pub const GENLMSG_DEFAULT_SIZE: usize =3D bindings::GENLMSG_DEFAULT_SIZE;
-=20
-@@ -84,7 +88,7 @@ impl GenlMsg {
-     #[inline]
-     fn put<T>(&mut self, attrtype: c_int, value: &T) -> Result
-     where
--        T: ?Sized + AsBytes,
-+        T: ?Sized + IntoBytes + Immutable,
-     {
-         let skb =3D self.skb.skb.as_ptr();
-         let len =3D size_of_val(value);
---=20
-2.55.0
-
-
+Notes:
+- The patch will be applied on top of the tested series (as an
+  incremental fix).
+- To test a new version of the whole series, please send it directly
+  to syzbot@lists.linux.dev.
+- Arguments like custom git repos and branches are not supported.
