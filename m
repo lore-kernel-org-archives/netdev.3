@@ -1,179 +1,151 @@
-Received: from mail-vs2-f41.google.com (mail-vs2-f41.google.com [74.125.227.41])
+Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4C53BA225
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 19:30:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8328448D0E
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 19:37:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.140
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789500654; cv=pass; b=czF4h8v3wiNTc/LohI/Eb5mvj/QII6T9GfZSCummzdrHmvpWjabiJXmLMW4i5dNHiSScrGn7YnLVjj4XCibPWeSFyXB+WFtoo9o5/occF3dQot6iJ6F/+0yB3SI5lK0/7WrK4JLunAnBNSFhLi0kIc8//me+UFThY4UOrgkxsT8=
+	t=1789501024; cv=pass; b=fEKtMJMNzrrhnqGY4IrKdpfMV4ultHT2Ko2/KaPSeZWyyYcS6y2/U/dy4spfpkSF5TW8B5TM6s0Lp4TzsTvO6GgZGWbuLdyCddmbroB4ZtlDK6C/mI4V6CBkE7le6M5o7Ti2TiqfCfI7V2fg57ulkuGiwIlxAYPVFjkrToUY+SA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789500654; c=relaxed/simple;
-	bh=RfxsKW+gWzHzPnl0VGV4sp1JrOew5XduTAso8G35GXs=;
+	s=arc-20240116; t=1789501024; c=relaxed/simple;
+	bh=Z2f4FQ8va33TGvYyGtCEXC3YdwZgKCv0QJI6Otw6I1U=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fJGnOWcB8jeLp9ANmHYhJXZXpnIY6Uh5UlSSn3UIQzL+AdnBqLcfrOs2zdCN5jT16F0SSW0DcOOkrK4NrXx9A/Wr1AR0PTssam8SwwEJtGpEaC/k2qpjHouRH162kNOSpB6s5DYYBqOmbRyghaTt0HZC+2iMAIPs+XM/g/eYS+8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mHQpOIQY; arc=pass smtp.client-ip=74.125.227.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=JLmG8qWttRLMnKItKgcRyJJD1Ec/4wF2Higl0JKsCcAOzfLGXHXmMarRfuUAm9NL3uc53G07XzXqFvs7NyAQFnf9p7E+Pu5qEhTbRs2CC82+Pan9P5L+rWquLcK6NtRsD7HDUuukbLz+XhyGBbeaCYGKM1Mls73XXFPbjcKkVOA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fKn2G4wd; arc=pass smtp.client-ip=74.125.224.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mHQpOIQY"
-Received: by mail-vs2-f41.google.com with SMTP id 71dfb90a1353d-5c7f7cc52efso57275e0c.3
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 12:30:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789500649; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fKn2G4wd"
+Received: by mail-yx2-f12.google.com with SMTP id 956f58d0204a3-66e4aae3147so157153d50.1
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 12:37:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789501021; cv=none;
         d=google.com; s=arc-20260327;
-        b=oB7Rkq1dPtVmjKN24Xq7tw3uNGaIy6WgGsFJcNddFsWYzYdICTwVa3SfT5eGtOpQYf
-         IaDIksVVEnOUPWMtmRA1vRyzTw4mwZuHoDL2Zej/iLLyDSudw86Kt4v3/bNZvCDbjtdO
-         paaMI2O8rXxntW5slRIoLhC1orO6JiU5/kr3wkCsLww1cm4b2E81D/Svbhp2GqE1aSdz
-         70ZVy5hbtykMbT8YZs45m02P/L6WJOm15bSQ7lnipsvcS6MEz+39IwQL+Mkv4s8wZi+2
-         xcPwi/RC7HL7b9sYzzubG8sMptKG3+d5OFVWYIC86Sh7VywRvNncUYc1zrK7COWMDrKH
-         7Dew==
+        b=ibJGdbyOjktAz+ZMC6PrkjegWNMM+lL+xREha3wWtAu+x2SAw6UlRDIVx/WcBk3geU
+         PEUhmeahXB9k0pIiZc0vCqcmtY4aEXTar7AeDcRyf9+P+GzSEA98oOUs9wPnZTbQ+vtR
+         1UrvNPHYjnzFZl3b1A6l+kpswhvU7F+S4mpGjb8DNMEo6vpJvKmujQXLJDozzLfHYKia
+         4B0DG0Fwhz3wAKV4Qy8i5jsv4syKecgaCqUKVPn/IAKc8ZBsWfnSah9UbUWlGXE52MqE
+         oC4ijThfrpVZtxW5D67CBlmZqI/mq/S9AaaMjI3XfVhUL9nhccJSR4DTF08bnvOpmAA9
+         52tA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=bRLtXj28C7ZetbPCXePmHpMel3/nm53ij0hFxwsbjIQ=;
-        fh=pNpmzpWQ6LrbS8uGd2YOZ2g0Ie7WI8Qi58JA5VfEH0Q=;
-        b=cGb1MWsfSNMT09tCryCAXJMI3oAa2ldRz7WQ934Eh96DI7xBZb6gq50lhutHZn4S33
-         18w0Dzx+AtCVhURksFAprEHIDC16AJSgZvYfvwXzBjujIZLV83vVa1KcBT6bdNq3Ozt4
-         u9kc708ycxNuhVIrHqV+g+0tL2TXJNJZvc9CnOZFo8K9zQM3kvIe5Jv8Qiq4vChGPP5j
-         V3cRcDxqOrbuD4ibR26/5Mp0RoClbIXMHQQ6Ay96zZsgbhj/ywsK2sL1CndG0QcToyMi
-         FDyQfajVaqMYdKs9j0OpPoJhOc6AUuH1/fpok5KhMMeHOH0InPTmqPyckta9oU7AqEge
-         nkYA==;
+        bh=NR8RlaqooEVk50qaakjuofXzFH4w/MxQZ1es9fZiI7M=;
+        fh=ROu4K7xw+jMQv9ccFUyy/M8H6lqwlY4aVC/VxutwaiM=;
+        b=CLRCEWRJsnHSryPk2EEVRsTBJJFpg2IpNj/dSgCVxhnz+evP0wpRbTUWj7jXaSP67t
+         dqVnCueWElTonEOF4lsi4DoGSWwOEIgJVtBXgnDx484YCibarHRvHrBeq+2Zt0UjdmuG
+         JG2HkkkPjdOWVlDhLMBrBye55rzxPxbls84OyMx+lwHBa5pWG7enDuMiG/klYF7jRO4x
+         Im+vO34tOrCxQUCtdJ4Z2ZpiNwXbrZ/aWRg5dP90PG72FOxD4R1UK2Z1ZLoOF0Kg/sFf
+         I/gdEOU2c/r+nMcew0dT9KRHC9vpwGQ/kt8YMe+rUvi8CLj4/U6bbx9f5jLspn27Qcbm
+         y2sg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789500649; x=1790105449; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789501021; x=1790105821; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=bRLtXj28C7ZetbPCXePmHpMel3/nm53ij0hFxwsbjIQ=;
-        b=mHQpOIQYcK/f3LO6suOWFn0Cy720wLrLpDZ76Y2mpOM3+C9DQTQajqMKss2+8vswyu
-         6kP5JbXC/uQnmjFeNyvbn7ykDMjEjp2433FP2tusVe+U1jFmELny3ub1VOqaeQk4+bmw
-         tGfgnCt0FH77KKNFK/CBvajJjeEiwDPenSWUOdNQWc6FxW5qw9OoucUz3vPurhja7+2W
-         SRX2li+U/pB+n68jTLoULDYN4LWrOMyMYUPvz3nmRdNTo7uPdox+mGt4Z2VuXMis+C7M
-         e3WQC4JCEtRXPwtZDWEutENmL8gBQ5snBkXOOLsO675Xs4UrytQv+QbVij8iLiq/Acss
-         xb9w==
+        bh=NR8RlaqooEVk50qaakjuofXzFH4w/MxQZ1es9fZiI7M=;
+        b=fKn2G4wd5oOdkktuabzRYBZDbglA+QrMTqjNscZoR/nO0hwyZDokFwRKLr1u5vEAVM
+         VwVyxJ8Nfp0fvRVjtlfaZ004r2sfDffWNvoYN/CKNnfmDW/k/o9ghDGLWCSo3+dz4dNQ
+         +vQ67dZdUwzvM38DEoliQNIgAFo+LMaN/wSCuUkzyEYdooAaFM41OaLlLmuNxXMQOZhY
+         W17DBNuA9wDVrcRW5RTXx0V/VAZaRiSmG3532wCjfFh1VUqU27Lw0HSIK0lOuDMX75Lw
+         5aMADngVIQA9WAZ7A7jY1zVQmpHSO8JatfArZUyh6FHgT12S0sAb0TK0iWuG68wuzczl
+         IVdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789500649; x=1790105449;
+        d=1e100.net; s=20260707; t=1789501021; x=1790105821;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=bRLtXj28C7ZetbPCXePmHpMel3/nm53ij0hFxwsbjIQ=;
-        b=YkYF4hv6q25DF6HUaREQ05iKy4435/nmHI017K7d29ZFd/NVZSX2BlpsYNq421q9TT
-         DAfBfFpVHCqm3TBvFZbGdsD6kvZ+gOA9w28b1OC2FOuIMa0zOImK9zSroGhpEQsa8kGR
-         FVw5jbNTSxwNQ+I4iRg0QASZk2miaal9cGrF/B5OGJq+TGWNdF6k/WueNijHDz/fy7y7
-         AX31z5dVT690Lua9bRU/afoUzSLodkrjo1eXh9dmzBlpYcpM9UtOukbT7doHpQDgjnfe
-         KOFhir67mPz8WMSNqNuFbXgXx8E9ispytXsOqePMm6DGOfwj2WMv+ZCoHobk2ryBoQqA
-         lNYA==
-X-Forwarded-Encrypted: i=1; AKwUvBw1IwA0f9EqJmCbJ6plZGbgkCWsKxRn9NAZjCj7d5xpJ5tDvI57AGlZQ7WTP0L2DrBn8gGul6k=@vger.kernel.org
-X-Gm-Message-State: AFuF++kQKZFvJrim4qz2lxJDLwJO36xeb44lqpaC5n/zoyITdZ1wOfVu
-	28OZfaEhIY/2m6JJ1iogmAfWyyojRh81v2GlM6hQks2WufdP4XUzqdl42u1Koa+5K5t4wfDBmQ8
-	lrYNpvQILLnes4Pqk2LprTYyffQQNEb4eIWrDSK4=
-X-Gm-Gg: AYBFou0RqKGFLD2lE2k9C0HFARywqCtkO5eDc99wr70Wg1mLStAOapdhm+2BTmit4ya
-	MujucqGr0HD/ydszTLdEjm6B+RUWGoHSz6dPCzfo9FEsqFVw+sf+qpQX5uoTClrbdIjANr8NNKx
-	Fs8Y0SyboVOwIm50kfxW8HN7m7c0Ap3MxGAnslI6j9zQhpy8SzbET0LGqM0v7UD0jN/Ft6GzeV5
-	GJxkK0e6ZT5Bu8HNK0KXEzO321FG3Wi3sh5FIJuBpDrIOpvPqnQI3fCx8LlGb2iRTs0dFjJr1D3
-	EjZo2Db1P7YAyPgMkEp+BdiawslqzsQKsy20dpBlMWQqk2m8yO93jHz3TvLDM0WsrzIRc+yrfS3
-	/bWlz0QOWRwABVlDVJwDOrMxy9u2VCtxxlMvAx7A1AxP+QgETwuUnAWdfE18HIX0=
-X-Received: by 2002:a05:6122:8d4:b0:5c8:3697:9289 with SMTP id
- 71dfb90a1353d-5c993b49b7cmr4231155e0c.8.1789500648289; Tue, 15 Sep 2026
- 12:30:48 -0700 (PDT)
+        bh=NR8RlaqooEVk50qaakjuofXzFH4w/MxQZ1es9fZiI7M=;
+        b=aDviPoUy1HulEDa4kGZ6TgmAmF74a+9r6PVPanPhyMX+8d1P4NN0g5zVllozFY4Y9x
+         OtOWDDu669TNxikI+1L5a2i1DQPcZb+uPQH2CrYrJ/A//ylmUUUIe6KhHCEETAREw04a
+         Fq8IIKavl0riNCVyWqBqoifoVN3V14jr6tciqOtial2SC2Zi0EY9ZzYTW1CTY3zaYJxg
+         DQPYW383jTOtrvVkxvbjjERJ+7Qph1HJ6eleBKH6WMixOuhVKgq9yf/vgK0S/OB2/Fb8
+         OBPmaFv66P2gBbqK1dNy02fDEi28hV/zuLZ6mySzEdCHwFpSCJ7/K1aYm+eWBDmhtGNh
+         9tbA==
+X-Forwarded-Encrypted: i=1; AKwUvBxQ2jassNInkXTmZoHILDAHgqW55qHTJpLlGcpYSo9mHoiuQ2wAqQc8xaSOuJ9DFKgt6A8C7jA=@vger.kernel.org
+X-Gm-Message-State: AFuF++kAduSaj3fCaqhNza6R8fFcDu4N4MPaxf0NkAPSSX3ScQ+c7yDq
+	ouh/ESGt743fkchKNaBILEgxurVqecyHQSbJytQ2FEs4xysdUl4Wo5fE+Q9508HTx+LdRYesxIc
+	cV28xJyhyAEghQhLHO3ftTJfy4XPH38Q=
+X-Gm-Gg: AYBFou2kCtXT9vn4wpkILE7Hm58HxSijnO9v+0ltPsUXGmZWFV5JbGwQLzMVDUaBx9N
+	mYdW3WSuiGLatLj6IhcvWwSMtJWozXosBxYlIG9Vj4KT/CCj5aeA5dakalERd01IZMUjUi1Ltqu
+	uoDj8PRWVxUmUtfR1H2acsWwbTTyLFsB4SiDQ7twOt7xDmpp0jkB5M4nBXebz5K1Fcs11IJcrZ6
+	4KvIXpI/NMzOr1dIHaw0jVDbPKS44qZxwS2sDKIJH6luBB59ucGXM40Tsjq0JqSEG/ULKxQ+Rzx
+	e3hpTNs0+AF91hu8SKNwr8qQPTsf9HC1TMUFPZ+TNsrGthpz5laEq7Wxfep7kQZKerubCFO/ikb
+	EKPoyViR0at3jQBnfy3J6ElTswxIpBb7EaSCiR+/BAg==
+X-Received: by 2002:a05:690e:1685:b0:671:158a:ef96 with SMTP id
+ 956f58d0204a3-6714dfc87fbmr3560203d50.11.1789501021567; Tue, 15 Sep 2026
+ 12:37:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260915081910.4142719-1-morbo@google.com> <20260915081910.4142719-22-morbo@google.com>
- <202609151147.C5B45CB@keescook>
-In-Reply-To: <202609151147.C5B45CB@keescook>
-From: Bill Wendling <morbo@google.com>
-Date: Tue, 15 Sep 2026 12:30:31 -0700
-X-Gm-Features: AcwNN1W7vYosDgc2DMy2_OinBNj1qeEQ35WOY6PL8-NHlzjaHMOKmE1leyIGWNs
-Message-ID: <CAGG=3QXYtmJqE5oy5ZD0-G0=GNxK71KKYurusNJvLQNqR-o6+A@mail.gmail.com>
-Subject: Re: [PATCH 21/28] NFS: nfsroot: Refactor root_nfs_cat() to use snprintf()
-To: Kees Cook <kees@kernel.org>
-Cc: nikitash.mariiaw@gmail.com, linux-kernel@vger.kernel.org, 
-	codemender-patching+linux@google.com, Russell King <linux@armlinux.org.uk>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Tony Luck <tony.luck@intel.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Matthew Brost <matthew.brost@intel.com>, 
-	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
-	Matthias Schwarzott <zzam@gentoo.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Arend van Spriel <arend.vanspriel@broadcom.com>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Sylwester Nawrocki <s.nawrocki@samsung.com>, Peter Griffin <peter.griffin@linaro.org>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Linus Walleij <linusw@kernel.org>, 
-	Anil Gurumurthy <anil.gurumurthy@qlogic.com>, 
-	Sudarsana Kalluru <sudarsana.kalluru@qlogic.com>, "Martin K. Petersen" <mkp@kernel.org>, 
-	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
-	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, Jiri Pirko <jiri@resnulli.us>, 
-	Simon Horman <horms@kernel.org>, Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
-	NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
-	Tom Talpey <tom@talpey.com>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Mike Rapoport (Microsoft)" <rppt@kernel.org>, 
-	Kanglong Wang <wangkanglong@loongson.cn>, Tiezhu Yang <yangtiezhu@loongson.cn>, 
-	Qiang Ma <maqianga@uniontech.com>, Randy Dunlap <rdunlap@infradead.org>, 
-	Pengpeng Hou <pengpeng@iscas.ac.cn>, Ard Biesheuvel <ardb@kernel.org>, Breno Leitao <leitao@debian.org>, 
-	Thorsten Blum <blum@kernel.org>, Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Lyude Paul <lyude@redhat.com>, 
-	Ashutosh Desai <ashutoshdesai993@gmail.com>, Imre Deak <imre.deak@intel.com>, 
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, Johan Hovold <johan@kernel.org>, 
-	Johannes Berg <johannes.berg@intel.com>, 
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
-	Alexander Stein <alexander.stein@ew.tq-group.com>, 
-	Cryolitia PukNgae <cryolitia@uniontech.com>, Jiaming Zhang <r772577952@gmail.com>, 
-	Will Porter <mrwillporter@gmail.com>, Cen Zhang <zzzccc427@gmail.com>, 
-	=?UTF-8?Q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>, 
-	Rong Zhang <i@rong.moe>, Arun Raghavan <arunr@valvesoftware.com>, 
-	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linux-edac@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	intel-xe@lists.freedesktop.org, linux-input@vger.kernel.org, 
-	linux-media@vger.kernel.org, intel-wired-lan@lists.osuosl.org, 
-	netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com, 
-	devicetree@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, linux-scsi@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, devel@lists.orangefs.org, 
-	linux-hardening@vger.kernel.org, linux-sound@vger.kernel.org
+References: <20260907172648.457103-1-luiz.dentz@gmail.com> <20260908135708.552fcead@kernel.org>
+ <a0e8bc1e-c237-41fb-b448-9594bd484cfe@sirena.org.uk> <CABBYNZKrSve8b=Acj2qu0YBuEZ9u9xHJe-ffRb+78x5KPY8Ntw@mail.gmail.com>
+ <d5676b70-f60b-4ce6-b6e6-de564d5c0a29@sirena.org.uk> <CABBYNZLKnQsypBR8Kbx4QFL9KfnVXRhO9_d5BHYQCabVZSY34g@mail.gmail.com>
+ <064ec40d-66bb-4f69-ae1c-65cfed3581b4@sirena.org.uk>
+In-Reply-To: <064ec40d-66bb-4f69-ae1c-65cfed3581b4@sirena.org.uk>
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Date: Tue, 15 Sep 2026 15:36:50 -0400
+X-Gm-Features: AcwNN1WZSrhgKQi-A-4IUp8r81RK4e1x4QppNN_W4nJerIvw3znNgB3XikJm0fQ
+Message-ID: <CABBYNZJWcrvkx=6DekHxZzcrGjHwiqmSuwXqzHNV1=7BctThGA@mail.gmail.com>
+Subject: Re: [GIT PULL] bluetooth 2026-09-07
+To: Mark Brown <broonie@kernel.org>
+Cc: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net, linux-bluetooth@vger.kernel.org, 
+	netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 15, 2026 at 11:52=E2=80=AFAM Kees Cook <kees@kernel.org> wrote:
->
-> On Tue, Sep 15, 2026 at 08:18:38AM +0000, Bill Wendling wrote:
-> >  fs/nfs/nfsroot.c | 11 +++++++----
-> >  1 file changed, 7 insertions(+), 4 deletions(-)
->
-> This collides with:
-> https://lore.kernel.org/all/27956255dde39f58d73a7b51cb53cbe3d7804f54.1786=
-411026.git.mariianikitash@google.com/
->
-> > +     ret =3D snprintf(dest + len, destlen - len, "%s%s",
-> > +                    (len && dest[len - 1] !=3D ',') ? "," : "", src);
->
-> I prefer Mariia's version because this inline ternary is difficult
-> to read.
->
-Agreed. I was trying to not stomp on her work. Please ignore this patch.
+Hi Mark,
 
--bw
-
-> I was expecting to land hers soon if the NFS folks don't pipe up. It is
-> one of the rare cases of still being open-coded, but the strlen() usage
-> was pre-existing to check for the trailing comma, so it's not a clean
-> seq_buf() conversion candidate...
+On Tue, Sep 15, 2026 at 3:24=E2=80=AFPM Mark Brown <broonie@kernel.org> wro=
+te:
 >
-> --
-> Kees Cook
+> On Tue, Sep 15, 2026 at 03:16:21PM -0400, Luiz Augusto von Dentz wrote:
+> > On Tue, Sep 15, 2026 at 2:26=E2=80=AFPM Mark Brown <broonie@kernel.org>=
+ wrote:
+>
+> > > Given the issues caused by the unusual workflow for the tree I do sen=
+d a
+> > > lot of reports of issues in bluetooth.
+>
+> > Are you referring to the unusual workflow where fixes are merged to
+> > bluetooth-next first, then to bluetooth (which changes its ID), and
+> > finally merge to net? Changing the order to have Bluetooth first and
+> > then bluetooth-next would require reworking the CI so it could
+> > determine that it is a fix and then use Bluetooth as a base just to
+> > avoid ID changes.
+>
+> Yes, the routine cherry picking is certainly part of it - it's not so
+> much the fact that things get moved between branches as the fact that
+> when you have the same commit is in multiple branches and then build on
+> top of one or both of them this creates extra conflicts, often harder to
+> understand, when the branches are merged.  The more normal thing would
+> be to apply once to the right place, or the standard fallback from that
+> would be to drop the commit from branch A at the time it is moved to
+> branch B.
+
+If I merge to bluetooth, then bluetooth-next won't contain the fixes
+meant for stable/rc, so I will need to merge them back to
+bluetooth-next immediately it order for our CI to stay current with
+the fixes.
+
+> You do seem to end up removing the cherry picked commits from their
+> original branches at some point as part of your workflow (since there
+> are hardly any duplicate bluetooth commits in mainline) so they do wind
+> up being moves AFAICT but the duplicates get left sitting there for
+> quite a while.
+
+Yep, once before sending the pull request for net-next, bluetooth-next
+is rebased on top of net-next which brings all the fixes already
+merged back to bluetooth-next. Git is absolutely fine with that, I
+don't think I ever run into a conflict doing this. Git detects the
+fixes already present in net-next as duplicates and eliminates them,
+so it really surprises me when you say you are finding conflicts, not
+just duplicates.
+
+--=20
+Luiz Augusto von Dentz
