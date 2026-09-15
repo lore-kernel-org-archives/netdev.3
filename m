@@ -1,205 +1,315 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70483436342;
-	Tue, 15 Sep 2026 11:52:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC2D49CF22;
+	Tue, 15 Sep 2026 11:54:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789473153; cv=none; b=d2wZEYpfSiBLd+maY16kWgCJ12v5kDhwIqy+X0fqKT9GF+0yXtgqBVr8KF57QxAZMD0RqvfOmTU0xnUzCqMhHakuzgX3rYyIcYpcIcHpUAmiJJsw4AzhKdU+gI1xfjcNMQ155NdtIp5Mwya88FijZysxjH5FLt3LMjrFaZPhYxU=
+	t=1789473276; cv=none; b=FByDz80d4lreTQLdVh8LYHCXdj9R/QbuPVvba550vBkjRELRHoRXPRcUQ+smBzbhVP0EBLL2g1NPIRCRAcIG/lq1SlwY0OznT4Y00oA6b1Y8u72SeiCLHFebh+/ibm5XY/1YiD9wOvgmov7fyL6A/ESW936jhOvWSbE2CcuAqEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789473153; c=relaxed/simple;
-	bh=irihH3k8tje5wXoR5LCU0SNaDBsYLoGNJdtzngcWtF4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=thKm69fCRiw9eCCzmKi0T1Gzsp8vMgqE8UfH9NRpulzokyaPzikwNnAIMdN8rUAAPGJW1wEwn+fF9l8qzaz+TkMwxvDk3GV5zaj5gLmUTfw7vCZLkzFC857ioyhynU7P8x1sR9aKRA4Htp9c3FVNwun0jU0gwLGIAqaoNoXJUAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=pyuN+Mni; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+	s=arc-20240116; t=1789473276; c=relaxed/simple;
+	bh=LpZCKakn0owOIPqmBPsKOp/5PsqTgMQcwmG+yd2qVzE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WS+/R/M8TbyILX/7pkM9q698gvdeOwA/d6lG9TxdZe9rHczygbhFxk2fM2p1XGP+UullqRWq6OjtUqLn2bAKr4PtjFiPru0255JWbkMIS/T+CdALMx+idtfDktIxQtXmu4K7BOzdgzEFnV/Mv1R3JUNiF/uRG3e5LSaxft/Eo1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pEv2juTy; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="pyuN+Mni"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 68FBq63V11488037, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1789473126; bh=irihH3k8tje5wXoR5LCU0SNaDBsYLoGNJdtzngcWtF4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=pyuN+MniedQuM2Xb2I00liWFOGUcs/uWCzrCEO6KclI08Z+gsE0ICfINIfMNQGoBf
-	 t9VRbfWRbxp2Vx/xXJuUnRVRX2gVe4k0QlcumFenG/Z05itb8JxbGRJFhoQxT1suO3
-	 xDkvqnQU+Pt/3XTeWOOaN+/6SBmFZmcxjc3nXehrvUqvdajgpbyzliDJwEe6eaQkKV
-	 aHkNUnXxNnmYjt+90j9pdzEwWdHgsXiS55WHVHpZQFslvSqUeWkdogWTf3uW9GTwI+
-	 lm2747PrteIS54J9kC2CxSg9Y5GIb4Ncj3YwUd4BZnz9lGCYN3YoHi4kaxbOFt8XU4
-	 4gW/q8V+wQfpA==
-Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 68FBq63V11488037
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 15 Sep 2026 19:52:06 +0800
-Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
- RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Tue, 15 Sep 2026 19:52:06 +0800
-Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
- RTKEXHMBS06.realtek.com.tw ([fe80::b3cc:c263:b82d:e87c%10]) with mapi id
- 15.02.2562.049; Tue, 15 Sep 2026 19:52:06 +0800
-From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
-To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>
-CC: "davem@davemloft.net" <davem@davemloft.net>, "kuba@kernel.org"
-	<kuba@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	nic_swsd <nic_swsd@realtek.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-usb@vger.kernel.org"
-	<linux-usb@vger.kernel.org>, "edumazet@google.com" <edumazet@google.com>,
-	"bjorn@mork.no" <bjorn@mork.no>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>
-Subject: RE: [PATCH net-next v3 6/8] r8152: add TGPHY access support
-Thread-Topic: [PATCH net-next v3 6/8] r8152: add TGPHY access support
-Thread-Index: AQHdP2eU/zzgqIY70kKtl5LiaxVpILbK4zkAgAStzzA=
-Date: Tue, 15 Sep 2026 11:52:06 +0000
-Message-ID: <7e8d5c7a50ed4ced8a804e865ee08bc7@realtek.com>
-References: <20260908075634.23740-7-nic_swsd@realtek.com>
- <178924439400.3125.6156948273116550773@kernel.org>
-In-Reply-To: <178924439400.3125.6156948273116550773@kernel.org>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pEv2juTy"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 12A431A07F5;
+	Tue, 15 Sep 2026 11:54:30 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D671C60498;
+	Tue, 15 Sep 2026 11:54:29 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6087C11C7AFEF;
+	Tue, 15 Sep 2026 13:54:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789473268; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=v9HVHg//bqRZX6HPZycNJoFtZb06mU6ET5+6+ELh3es=;
+	b=pEv2juTy10gwQZEcB8YU36BR8E4LT9C0GHJxFKbq7PJcG54dQ7cYwZ5uj3Yk+/BDTiebx1
+	b/SpbVLjASpJq4Pzhttfcb32yDDv6bt24WabGcx8JoJDsUzW65SE3uTA/DJJKoIo7vAw81
+	2jX9VOjekQdEbUGCn/h2TEgs3U2LG+dj/Yge6+lFj4cFvDLj0kFLvBX0V6Vz79+E5XGJRx
+	9+pp0uXGjXE3lhRWVA0wv1gtKdyxWZ5pUabnQ29gA2H/MxxLnaTn0TTXh+h/sx3l6juKzD
+	EYZJwyu0MY+hRQa8z5aC4dQOJQJfh98tXgndZa5sMNJbccwQq01iIvJPLgwcrQ==
+Message-ID: <30bf64df-5b96-40d8-b313-e680b5063ecb@bootlin.com>
+Date: Tue, 15 Sep 2026 13:54:13 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3 4/6] net: stmmac: selftests: Capture all packets
+ for vlan checks
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, linux@armlinux.org.uk, hkallweit1@gmail.com,
+ alexis.lothore@bootlin.com, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, kernel@esmil.dk, minda.chen@starfivetech.com,
+ neil.armstrong@linaro.org, khilman@baylibre.com, jbrunet@baylibre.com,
+ martin.blumenstingl@googlemail.com, jan.petrous@oss.nxp.com,
+ ovidiu.panait.rb@renesas.com, Jose.Abreu@synopsys.com, nb@tipi-net.de,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, PKneuper@dspace.de,
+ david.laight.linux@gmail.com
+References: <20260911212028.1497613-5-maxime.chevallier@bootlin.com>
+ <20260915084547.75267-1-pabeni@redhat.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260915084547.75267-1-pabeni@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-PiBUaGFuayB5b3UgZm9yIHlvdXIgY29udHJpYnV0aW9uISBTYXNoaWtvIEFJIHJldmlldyBmb3Vu
-ZCAyIHBvdGVudGlhbA0KPiBpc3N1ZShzKSB0byBjb25zaWRlcjoNCj4gDQo+IENyaXRpY2FsOiAw
-IMK3IEhpZ2g6IDAgwrcgTWVkaXVtOiAyIMK3IExvdzogMA0KPiANCj4gLSBbTWVkaXVtXSByODE1
-N19waHlfcmVhZCgpIChkcml2ZXJzL25ldC91c2IvcjgxNTIuYzoyMDg2KSBhbmQNCj4gICByODE1
-N19waHlfd3JpdGUoKSAoOjIwOTUpIGRpc2NhcmQgcnRsX3RncGh5X2FjY2VzcygpJ3MgcmV0dXJu
-IHZhbHVlLg0KPiAtIFtNZWRpdW1dIHdhaXRfdGdwaHlfY21kX3JlYWR5KCkgKGRyaXZlcnMvbmV0
-L3VzYi9yODE1Mi5jOjIwNDUpIG1ha2VzDQo+ICAgaXRzIGxvb3AtZXhpdCBkZWNpc2lvbiBvbiB0
-aGUgdmFsdWUgcmV0dXJuZWQgYnkgb2NwX3JlYWRfd29yZCgpLCB3aGljaOKApg0KPiANCj4gLS0N
-Cj4gDQo+IHI4MTUyOiBhZGQgVEdQSFkgYWNjZXNzIHN1cHBvcnQNCj4gDQo+IFRoaXMgYWRkcyBh
-IFRHUEhZIHJlZ2lzdGVyIGFjY2VzcyBwYXRoIGZvciBSVEw4MTU3L1JUTDgxNTkgdXNpbmcNCj4g
-VVNCX1RHUEhZX0NNRC9BRERSL0RBVEEsIHNvIFBIWSByZWdpc3RlcnMgY2FuIGJlIHJlYWNoZWQg
-d2l0aG91dA0KPiByZXByb2dyYW1taW5nIHRoZSBQTEEgT0NQIGJhc2UuIEl0IGFsc28gaW50cm9k
-dWNlcyBwaHlfcmVhZC9waHlfd3JpdGUNCj4gZnVuY3Rpb24gcG9pbnRlcnMgaW4gc3RydWN0IHJ0
-bF9vcHMgc28gZWFjaCBjaGlwIGdldHMgdGhlIHJpZ2h0IGFjY2VzcyBtZXRob2QsDQo+IHdpdGgg
-b2NwX3JlZ19yZWFkKCkvb2NwX3JlZ193cml0ZSgpIGJlY29taW5nIHRoaW4gZGlzcGF0Y2hlcnMu
-DQo+IA0KPiBBIGNvdXBsZSBvZiBxdWVzdGlvbnMgYWJvdXQgZXJyb3IgcHJvcGFnYXRpb24gaW4g
-dGhlIG5ldyBwYXRoIGJlbG93Lg0KPiANCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvdXNi
-L3I4MTUyLmMgYi9kcml2ZXJzL25ldC91c2IvcjgxNTIuYyBpbmRleA0KPiA+IDA2ZmFkODk1ZmNl
-MDkuLjFmY2IxY2M1YjRhMTggMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9uZXQvdXNiL3I4MTUy
-LmMNCj4gPiArKysgYi9kcml2ZXJzL25ldC91c2IvcjgxNTIuYw0KPiANCj4gWyAuLi4gXQ0KPiAN
-Cj4gPiBAQCAtOTU5LDYgKzk2Niw4IEBAIHN0cnVjdCByODE1MiB7DQo+ID4gICAgICAgICAgICAg
-ICB2b2lkICgqaHdfcGh5X2NmZykoc3RydWN0IHI4MTUyICp0cCk7DQo+ID4gICAgICAgICAgICAg
-ICB2b2lkICgqYXV0b3N1c3BlbmRfZW4pKHN0cnVjdCByODE1MiAqdHAsIGJvb2wgZW5hYmxlKTsN
-Cj4gPiAgICAgICAgICAgICAgIHZvaWQgKCpjaGFuZ2VfbXR1KShzdHJ1Y3QgcjgxNTIgKnRwKTsN
-Cj4gPiArICAgICAgICAgICAgIHUxNiAoKnBoeV9yZWFkKShzdHJ1Y3QgcjgxNTIgKnRwLCB1MTYg
-YWRkcik7DQo+ID4gKyAgICAgICAgICAgICB2b2lkICgqcGh5X3dyaXRlKShzdHJ1Y3QgcjgxNTIg
-KnRwLCB1MTYgYWRkciwgdTE2IGRhdGEpOw0KPiA+ICAgICAgIH0gcnRsX29wczsNCj4gDQo+IFsg
-Li4uIF0NCj4gDQo+ID4gQEAgLTE2ODcsNiArMTY5NiwxNiBAQCBzdGF0aWMgdm9pZCBvY3BfcmVn
-X3dyaXRlKHN0cnVjdCByODE1MiAqdHAsIHUxNg0KPiBhZGRyLCB1MTYgZGF0YSkNCj4gPiAgICAg
-ICBvY3Bfd3JpdGVfd29yZCh0cCwgTUNVX1RZUEVfUExBLCBvY3BfaW5kZXgsIGRhdGEpOyAgfQ0K
-PiA+DQo+ID4gK3N0YXRpYyB1MTYgb2NwX3JlZ19yZWFkKHN0cnVjdCByODE1MiAqdHAsIHUxNiBh
-ZGRyKSB7DQo+ID4gKyAgICAgcmV0dXJuIHRwLT5ydGxfb3BzLnBoeV9yZWFkKHRwLCBhZGRyKTsg
-fQ0KPiA+ICsNCj4gPiArc3RhdGljIHZvaWQgb2NwX3JlZ193cml0ZShzdHJ1Y3QgcjgxNTIgKnRw
-LCB1MTYgYWRkciwgdTE2IGRhdGEpIHsNCj4gPiArICAgICB0cC0+cnRsX29wcy5waHlfd3JpdGUo
-dHAsIGFkZHIsIGRhdGEpOyB9DQo+ID4gKw0KPiANCj4gWyAuLi4gXQ0KPiANCj4gPiBAQCAtMjAy
-Myw2ICsyMDQyLDYxIEBAIHN0YXRpYyBpbnQgcjgxNTJfbWRpb190ZXN0X2FuZF9jbHJfYml0KHN0
-cnVjdA0KPiByODE1MiAqdHAsIHUxNiBhZGRyLCB1MTYgY2xlYXIpDQo+ID4gICAgICAgcmV0dXJu
-IGRhdGEgJiBjbGVhcjsNCj4gPiAgfQ0KPiA+DQo+ID4gK3N0YXRpYyBpbnQgd2FpdF90Z3BoeV9j
-bWRfcmVhZHkoc3RydWN0IHI4MTUyICp0cCkgew0KPiA+ICsgICAgIHUxNiBvY3BfZGF0YTsNCj4g
-PiArDQo+ID4gKyAgICAgcmV0dXJuIHBvbGxfdGltZW91dF91cyhvY3BfZGF0YSA9IG9jcF9yZWFk
-X3dvcmQodHAsDQo+IE1DVV9UWVBFX1VTQiwNCj4gPiArDQo+IFVTQl9UR1BIWV9DTUQpLA0KPiA+
-ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgIShvY3BfZGF0YSAmIFRHUEhZX0NNRF9CVVNZ
-KSwgMjAwMCwNCj4gMjAwMDAsDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICBmYWxz
-ZSk7DQo+ID4gK30NCj4gDQo+IFtTZXZlcml0eTogTWVkaXVtXQ0KPiANCj4gd2FpdF90Z3BoeV9j
-bWRfcmVhZHkoKSBtYWtlcyBpdHMgbG9vcC1leGl0IGRlY2lzaW9uIHB1cmVseSBvbiB0aGUgdmFs
-dWUNCj4gcmV0dXJuZWQgYnkgb2NwX3JlYWRfd29yZCgpLCB3aGljaCBpcyBpbmRldGVybWluYXRl
-IGlmIHRoZSB1bmRlcmx5aW5nDQo+IHRyYW5zZmVyIG5ldmVyIGhhcHBlbnM6DQo+IA0KPiAgIG9j
-cF9yZWFkX3dvcmQoKSB7DQo+ICAgICAgICAgdTMyIGRhdGE7DQo+ICAgICAgICAgX19sZTMyIHRt
-cDsNCj4gICAgICAgICAuLi4NCj4gICAgICAgICBnZW5lcmljX29jcF9yZWFkKHRwLCBpbmRleCwg
-c2l6ZW9mKHRtcCksICZ0bXAsIHR5cGUgfCBieWVuKTsNCj4gICAgICAgICBkYXRhID0gX19sZTMy
-X3RvX2NwdSh0bXApOw0KPiAgICAgICAgIC4uLg0KPiAgIH0NCj4gDQo+IGdlbmVyaWNfb2NwX3Jl
-YWQoKSBzdGFydHMgd2l0aDoNCj4gDQo+ICAgICAgICAgaWYgKHRlc3RfYml0KFJUTDgxNTJfSU5B
-Q0NFU1NJQkxFLCAmdHAtPmZsYWdzKSkNCj4gICAgICAgICAgICAgICAgIHJldHVybiAtRU5PREVW
-Ow0KPiANCj4gc28gdG1wIGlzIGxlZnQgdW50b3VjaGVkIGFuZCB0aGUgdTE2IGhhbmRlZCB0byB0
-aGUgcG9sbCBsb29wIGlzIHN0YWxlIHN0YWNrDQo+IGNvbnRlbnQuICBJZiBiaXQgMCBoYXBwZW5z
-IHRvIGJlIHNldCwgZG9lcyB0aGlzIGhlbHBlciB0aGVuIHNsZWVwIGZvciBpdHMgd2hvbGUNCj4g
-MjAgbXMgYnVkZ2V0IGluc3RlYWQgb2YgcmV0dXJuaW5nIHJpZ2h0IGF3YXk/DQo+IA0KPiBUaGUg
-VVNCLWVycm9yIGNhc2UgbG9va3MgZGV0ZXJtaW5pc3RpYyByYXRoZXIgdGhhbiByYW5kb20sIHNp
-bmNlDQo+IGdldF9yZWdpc3RlcnMoKSBkb2VzOg0KPiANCj4gICAgICAgICBpZiAocmV0IDwgMCkN
-Cj4gICAgICAgICAgICAgICAgIG1lbXNldChkYXRhLCAweGZmLCBzaXplKTsNCj4gDQo+IFVTQl9U
-R1BIWV9DTUQgdGhlbiByZWFkcyBiYWNrIGFzIDB4ZmZmZiwgVEdQSFlfQ01EX0JVU1kgYWx3YXlz
-IGFwcGVhcnMNCj4gYXNzZXJ0ZWQsIGFuZCBldmVyeSBUR1BIWSBhY2Nlc3MgY29uc3VtZXMgdGhl
-IGZ1bGwgdGltZW91dC4NCj4gDQo+IFNpbmNlIGV2ZXJ5IFBIWSByZWdpc3RlciBhY2Nlc3Mgb24g
-UlRMODE1Ny9SVEw4MTU5IG5vdyBmdW5uZWxzIHRocm91Z2gNCj4gcnRsX3RncGh5X2FjY2Vzcygp
-IChvbmUgd2FpdCBwZXIgd3JpdGUsIHR3byBwZXIgcmVhZCksIHdvdWxkIGEgZGV2aWNlIG1hcmtl
-ZA0KPiBpbmFjY2Vzc2libGUgbWlkLXNlcXVlbmNlIG1ha2UgcjgxNTdfaHdfcGh5X2NmZygpL2h3
-X3BoeV93b3JrLCB0aGUNCj4gdXAvZG93biBwYXRocyBhbmQgdGhlIG1kaW8gaW9jdGwgc2xlZXAg
-MjAtNDAgbXMgcGVyIHJlZ2lzdGVyIHdoaWxlIGhvbGRpbmcNCj4gdHAtPmNvbnRyb2w/ICBXb3Vs
-ZCBhbiBpcy1hY2Nlc3NpYmxlIGNoZWNrIGluIHRoZSBoZWxwZXIgYmUgcHJlZmVyYWJsZQ0KPiB0
-cC0+dG8NCj4gcG9sbGluZyBhIHZhbHVlIHRoYXQgbWF5IG5ldmVyIGhhdmUgYmVlbiByZWFkPw0K
-DQpJIHdpbGwgY2hhbmdlIHRoZSBwb2xsIGNvbmRpdGlvbiB0byBicmVhayB3aGVuIHRoZSBkZXZp
-Y2UgaXMgaW5hY2Nlc3NpYmxlLg0KDQo+IA0KPiA+ICsNCj4gPiArc3RhdGljIGludCBydGxfdGdw
-aHlfYWNjZXNzKHN0cnVjdCByODE1MiAqdHAsIHUxNiBhZGRyLCB1MTYgKmRhdGEsDQo+ID4gK2Jv
-b2wgd3JpdGUpIHsNCj4gPiArICAgICB1MTYgY21kID0gMDsNCj4gPiArICAgICBpbnQgcmV0Ow0K
-PiA+ICsNCj4gPiArICAgICByZXQgPSB3YWl0X3RncGh5X2NtZF9yZWFkeSh0cCk7DQo+ID4gKyAg
-ICAgaWYgKHJldCA8IDApDQo+ID4gKyAgICAgICAgICAgICBnb3RvIG91dDsNCj4gPiArDQo+ID4g
-KyAgICAgaWYgKHdyaXRlKSB7DQo+ID4gKyAgICAgICAgICAgICBjbWQgfD0gVEdQSFlfQ01EX1dS
-Ow0KPiA+ICsgICAgICAgICAgICAgb2NwX3dyaXRlX3dvcmQodHAsIE1DVV9UWVBFX1VTQiwgVVNC
-X1RHUEhZX0RBVEEsDQo+ICpkYXRhKTsNCj4gPiArICAgICB9DQo+ID4gKw0KPiA+ICsgICAgIG9j
-cF93cml0ZV93b3JkKHRwLCBNQ1VfVFlQRV9VU0IsIFVTQl9UR1BIWV9BRERSLCBhZGRyKTsNCj4g
-PiArDQo+ID4gKyAgICAgY21kIHw9IFRHUEhZX0NNRF9CVVNZOw0KPiA+ICsgICAgIG9jcF93cml0
-ZV93b3JkKHRwLCBNQ1VfVFlQRV9VU0IsIFVTQl9UR1BIWV9DTUQsIGNtZCk7DQo+ID4gKw0KPiA+
-ICsgICAgIGlmICghd3JpdGUpIHsNCj4gPiArICAgICAgICAgICAgIHJldCA9IHdhaXRfdGdwaHlf
-Y21kX3JlYWR5KHRwKTsNCj4gPiArICAgICAgICAgICAgIGlmIChyZXQgPCAwKQ0KPiA+ICsgICAg
-ICAgICAgICAgICAgICAgICBnb3RvIG91dDsNCj4gPiArDQo+ID4gKyAgICAgICAgICAgICAqZGF0
-YSA9IG9jcF9yZWFkX3dvcmQodHAsIE1DVV9UWVBFX1VTQiwNCj4gVVNCX1RHUEhZX0RBVEEpOw0K
-PiA+ICsgICAgIH0NCj4gPiArDQo+ID4gK291dDoNCj4gPiArICAgICByZXR1cm4gcmV0Ow0KPiA+
-ICt9DQo+ID4gKw0KPiA+ICtzdGF0aWMgdTE2IHI4MTU3X3BoeV9yZWFkKHN0cnVjdCByODE1MiAq
-dHAsIHUxNiBhZGRyKSB7DQo+ID4gKyAgICAgdTE2IGRhdGEgPSAwOw0KPiA+ICsNCj4gPiArICAg
-ICBydGxfdGdwaHlfYWNjZXNzKHRwLCBhZGRyLCAmZGF0YSwgZmFsc2UpOw0KPiA+ICsNCj4gPiAr
-ICAgICByZXR1cm4gZGF0YTsNCj4gPiArfQ0KPiA+ICsNCj4gPiArc3RhdGljIHZvaWQgcjgxNTdf
-cGh5X3dyaXRlKHN0cnVjdCByODE1MiAqdHAsIHUxNiBhZGRyLCB1MTYgZGF0YSkgew0KPiA+ICsg
-ICAgIHJ0bF90Z3BoeV9hY2Nlc3ModHAsIGFkZHIsICZkYXRhLCB0cnVlKTsgfQ0KPiANCj4gW1Nl
-dmVyaXR5OiBNZWRpdW1dDQo+IA0KPiBCb3RoIHdyYXBwZXJzIGRpc2NhcmQgcnRsX3RncGh5X2Fj
-Y2VzcygpJ3Mgc3RhdHVzLiAgT24gYQ0KPiB3YWl0X3RncGh5X2NtZF9yZWFkeSgpIHRpbWVvdXQs
-IHI4MTU3X3BoeV9yZWFkKCkgcmV0dXJucyB0aGUgcHJlLWluaXRpYWxpc2VkDQo+IDAsIHdoaWNo
-IGlzIGluZGlzdGluZ3Vpc2hhYmxlIGZyb20gcmVhbCByZWdpc3RlciBjb250ZW50Lg0KPiANCj4g
-Q2FuIHRoYXQgZmFicmljYXRlZCAwIGdldCB3cml0dGVuIGJhY2sgdG8gdGhlIFBIWT8gIG9jcF9y
-ZWdfcmVhZCgpIG5vdw0KPiBkaXNwYXRjaGVzIHRvIHI4MTU3X3BoeV9yZWFkKCkgZm9yIFJUTDgx
-NTcvUlRMODE1OSwgYW5kIHRoZQ0KPiByZWFkLW1vZGlmeS13cml0ZSBoZWxwZXJzIHVzZSBpdCBk
-aXJlY3RseToNCj4gDQo+ICAgb2NwX3JlZ193MHcxKCkgew0KPiAgICAgICAgIHUxNiBkYXRhOw0K
-PiANCj4gICAgICAgICBkYXRhID0gb2NwX3JlZ19yZWFkKHRwLCBhZGRyKTsNCj4gICAgICAgICBk
-YXRhID0gKGRhdGEgJiB+Y2xlYXIpIHwgc2V0Ow0KPiAgICAgICAgIG9jcF9yZWdfd3JpdGUodHAs
-IGFkZHIsIGRhdGEpOw0KPiAgIH0NCj4gDQo+IHNvIGEgdGltZWQtb3V0IHJlYWQgbWFrZXMgdGhl
-IGRyaXZlciB3cml0ZSAoMCAmIH5jbGVhcikgfCBzZXQsIGRyb3BwaW5nIGV2ZXJ5DQo+IG90aGVy
-IGJpdCBvZiB0aGUgTUlJL1BIWSByZWdpc3RlciAoYWR2ZXJ0aXNlbWVudCwgRUVFLCBQTEwvQUxE
-UFMpLg0KPiByODE1Ml9tZGlvX3NldF9iaXQoKSwgcjgxNTJfbWRpb190ZXN0X2FuZF9jbHJfYml0
-KCkgYW5kIHNyYW1fd3JpdGVfdzB3MSgpDQo+IGhhdmUgdGhlIHNhbWUgc2hhcGUuDQo+IA0KPiBG
-b3IgdGhlIHdyaXRlIGRpcmVjdGlvbiwgYSBmaXJzdC13YWl0IHRpbWVvdXQganVtcHMgdG8gb3V0
-IGJlZm9yZSBhbnkgb2YgdGhlDQo+IEFERFIvREFUQS9DTUQgd3JpdGVzIGFyZSBpc3N1ZWQsIHNv
-IHRoZSBQSFkgd3JpdGUgaXMgZHJvcHBlZCBlbnRpcmVseS4NCj4gV2l0aCB0aGUgdm9pZCBzaWdu
-YXR1cmUgdGhlcmUgaXMgbm8gd2F5IGZvciB0aGUgY2FsbGVyIHRvIG5vdGljZSwgYW5kIG5vDQo+
-IGRldl9lcnIoKS9kZXZfd2FybigpIGlzIGVtaXR0ZWQsIHNvIHNob3VsZCB0aGlzIGF0IGxlYXN0
-IGJlIGxvZ2dlZD8NCj4gDQo+IE5vdGUgdGhhdCB0aGUgZXhpc3RpbmcgZ2xvYmFsIG1pdGlnYXRp
-b24gZG9lcyBub3QgY292ZXIgYSBwbGFpbiBCVVNZDQo+IHRpbWVvdXQ6IHJ0bF9zZXRfaW5hY2Nl
-c3NpYmxlKCkgaXMgb25seSByZWFjaGVkIHdoZW4gYSBVU0IgY29udHJvbCB0cmFuc2ZlciBmYWls
-cw0KPiBpbiByODE1Ml9jb250cm9sX21zZygpLCBzbyBoZXJlIHRoZSBjb250cm9sIHRyYW5zZmVy
-cyBzdWNjZWVkIGFuZA0KPiBnZW5lcmljX29jcF93cml0ZSgpIHN0aWxsIHB1c2hlcyB0aGUgY2xv
-YmJlcmVkIHZhbHVlIHRvIHRoZSBjaGlwLg0KPiANCj4gVGhlIHNpYmxpbmcgQURWIGludGVyZmFj
-ZSBpbiB0aGUgc2FtZSBmaWxlIHJldHVybnMgaW50IGZvciBleGFjdGx5IHRoaXMNCj4gcmVhc29u
-Og0KPiANCj4gICBzdGF0aWMgaW50IG9jcF9hZHZfcmVhZChzdHJ1Y3QgcjgxNTIgKnRwLCB1MTYg
-Y21kLCB1MTYgYWRkciwgdTMyICpkYXRhKQ0KPiAgIC4uLg0KPiAgIHN0YXRpYyBpbnQgcnRsX2Jt
-dV93MHcxKHN0cnVjdCByODE1MiAqdHAsIHUxNiBhZGRyLCB1MzIgY2xlYXIsIHUzMiBzZXQpDQo+
-ICAgew0KPiAgICAgICAgIHJldCA9IHJ0bF9ibXVfcmVhZCh0cCwgYWRkciwgJmJtdSk7DQo+ICAg
-ICAgICAgaWYgKHJldCA8IDApDQo+ICAgICAgICAgICAgICAgICBnb3RvIG91dDsNCj4gICAgICAg
-ICAuLi4NCj4gICB9DQo+IA0KPiBhbmQgd2FpdF90Z3BoeV9jbWRfcmVhZHkoKSBkdXBsaWNhdGVz
-IHdhaXRfY21kX3JlYWR5KCkgYWxtb3N0IHZlcmJhdGltLg0KPiBXb3VsZCBpdCBtYWtlIHNlbnNl
-IGZvciB0aGUgbmV3IHBoeV9yZWFkL3BoeV93cml0ZSBvcHMgaW4gc3RydWN0IHJ0bF9vcHMgdG8N
-Cj4gY2FycnkgYSBzdGF0dXMgYmFjaywgb3IgdG8gcmV1c2UgdGhlIGV4aXN0aW5nIHdhaXRfY21k
-X3JlYWR5KCkgaGVscGVyLCBzbyB0aGUNCj4gVEdQSFkgdGltZW91dCBjYW4gc3RvcCB0aGUgcmVh
-ZC1tb2RpZnktd3JpdGUgc2VxdWVuY2UgaW5zdGVhZCBvZiBiZWluZw0KPiBzd2FsbG93ZWQ/DQoN
-Clllcy4gSWYgdGhlIHJlYWQgb3BlcmF0aW9uIHRpbWVzIG91dCwgdGhlIGZvbGxvd2luZyB3cml0
-ZSBvcGVyYXRpb24gc2hvdWxkbid0IGJlIGV4ZWN1dGVkLg0KSSB3aWxsIGNoYW5nZSBpdCB0byBy
-ZWZsZWN0IHRoZSBlcnJvciBpbiB0aGUgbmV4dCB2ZXJzaW9uLg0KDQo+IA0KPiBbIC4uLiBdDQo+
-IA0KPiAtLQ0KPiBTYXNoaWtvIEFJIHJldmlldyDCtw0KPiBodHRwczovL25ldGRldi1haS5ib3Rz
-LmxpbnV4LmRldi9zYXNoaWtvLyMvcGF0Y2hzZXQvMjAyNjA5MDgwNzU2MzQuMjM3NDAtMQ0KPiAt
-bmljX3N3c2QlNDByZWFsdGVrLmNvbQ0KDQpCZXN0LA0KQ2hpaC1LYWkNCg==
+
+
+On 9/15/26 10:45, Paolo Abeni wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+> ---
+> net: stmmac: selftests: Capture all packets for vlan checks
+> 
+> The VLAN selftests use vlan_vid_add() without a VLAN netdev, so the test
+> frame is marked PACKET_OTHERHOST and reaches the handler with a cleared
+> skb->vlan_tci.  This patch reuses the DSA proxy mechanism to register an
+> ETH_P_ALL handler for the three VLAN tests so validation sees the tag.
+> 
+> A few questions about the new capture_all path below.
+> 
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+>> index 7f5837d1fed94..315c3cf82230e 100644
+>> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+>> @@ -242,6 +242,7 @@ struct stmmac_test_priv {
+>>  	__be16 packet_type;
+>>  	int (*func)(struct sk_buff *skb, struct net_device *ndev,
+>>  		    struct packet_type *pt, struct net_device *orig_ndev);
+>> +	bool capture_all;
+>>  	int double_vlan;
+>>  	int vlan_id;Hi,
+>>  	int ok;
+>> @@ -344,7 +345,7 @@ static void stmmac_sft_add_pack(struct packet_type *pt)
+>>  {
+>>  	struct stmmac_test_priv *tpriv = pt->af_packet_priv;
+>>  
+>> -	if (netdev_uses_dsa(tpriv->pt.dev)) {
+>> +	if (netdev_uses_dsa(tpriv->pt.dev) || tpriv->capture_all) {
+>>  		tpriv->packet_type = tpriv->pt.type;
+>>  		tpriv->func = tpriv->pt.func;
+>>  
+>>  		/* DSA conduit will report ETH_P_XDSA, so our packet handler
+>>  		 * won't match. Let's register a ETH_P_ALL match and filter
+>>  		 * manually in stmmac_sft_filter.
+>>  		 */
+> 
+> [Severity: Low]
+> This isn't a bug, but the comment now only describes one of the two reasons
+> for taking this branch.  For the three VLAN tests pt.type is ETH_P_IP or
+> ETH_P_8021Q, which would match at ptype_specific just fine, so the
+> "DSA conduit will report ETH_P_XDSA" rationale does not apply there.
+> 
+> Could the comment also mention the capture_all reason (the tap has to run
+> at ptype_all so skb->vlan_tci is still populated), and could the new
+> capture_all field get a one-line comment stating that it must be set before
+> stmmac_sft_add_pack() is called?
+> 
+>>  		tpriv->pt.type = htons(ETH_P_ALL);
+>>  		tpriv->pt.func = stmmac_sft_filter;
+>>  		tpriv->pt.ignore_outgoing = true;
+>>  	}
+> 
+> [Severity: Medium]
+> With pt.type set to ETH_P_ALL on priv->dev, stmmac_test_vlan_validate() now
+> sees every ingress frame, and it declares the test failed before it has
+> established that the frame is a test frame:
+> 
+> 	if (tpriv->vlan_id) {
+> 		if (skb->vlan_proto != htons(proto))
+> 			goto out;
+> 		if (skb->vlan_tci != tpriv->vlan_id) {
+> 			/* Means filter did not work. */
+> 			tpriv->ok = false;
+> 			complete(&tpriv->comp);
+> 			goto out;
+> 		}
+> 	}
+> 
+> 	ehdr = (struct ethhdr *)skb_mac_header(skb);
+> 	if (!ether_addr_equal_unaligned(ehdr->h_dest, tpriv->packet->dst))
+> 		goto out;
+> 
+> The h_dest and magic checks come after this.  Can any ordinary C-tagged
+> IPv4 frame on the link (any VID other than 0x123, at least 33 bytes of
+> linear data) now abort the VLAN Filter, Double VLAN Filter and VLAN Offload
+> tests with a spurious failure for i == 0?  Before this patch the tag was
+> cleared for such frames, so the vlan_proto check bailed out first.
+> 
+> Would it make sense to move the vlan_tci comparison after the destination
+> MAC and magic checks so only test frames can set the verdict?
+
+The ethtool selftests as they currently exists are very dependent on external
+factors :
+ - How was the link negociated (pause, eee)
+ - Incoming traffic
+
+So yes, ingress traffic may cause the selftest to fail :( I can move that check
+around though for V4 :)
+
+> 
+> [Severity: Low]
+> This isn't a bug introduced by this patch, but the ETH_P_ALL tap widens the
+> set of frames that reach the header parsing in stmmac_test_vlan_validate(),
+> which derives offsets from the untrusted IPv4 ihl with only a fixed length
+> check:
+> 
+> 	if (skb_headlen(skb) < (STMMAC_TEST_PKT_SIZE - ETH_HLEN))
+> 		goto out;
+> 	...
+> 	uhdr = (struct udphdr *)((u8 *)ihdr + 4 * ihdr->ihl);
+> 	if (uhdr->dest != htons(tpriv->packet->dport))
+> 		goto out;
+> 
+> 	shdr = (struct stmmachdr *)((u8 *)uhdr + sizeof(*uhdr));
+> 
+> That check covers 33 bytes, which does not include the UDP header, the
+> extra +4 double-VLAN offset, or an ihl larger than 5.  A frame with ihl = 15
+> makes uhdr->dest be read well past the validated area (and past skb->len for
+> a small frame).  The same arithmetic exists in
+> stmmac_test_loopback_validate(), so this predates the patch, but would a
+> pskb_may_pull() style length check based on the actual ihl be worth adding
+> here?
+> 
+>> @@ -999,6 +1000,7 @@ static int __stmmac_test_vlanfilt(struct stmmac_priv *priv)
+>>  	tpriv->pt.dev = priv->dev;
+>>  	tpriv->pt.af_packet_priv = tpriv;
+>>  	tpriv->packet = &attr;
+>> +	tpriv->capture_all = true;
+> 
+> [Severity: Medium]
+> This is a pre-existing issue, but the patch makes it observable.  The
+> "Means filter did not work" path in stmmac_test_vlan_validate() reports
+> failure through the same tpriv->ok = false state that a timeout produces,
+> and the loop here treats that state as the expected outcome for i > 0:
+> 
+> 	wait_for_completion_timeout(&tpriv->comp, STMMAC_LB_TIMEOUT);
+> 	ret = tpriv->ok ? 0 : -ETIMEDOUT;
+> 	if (ret && !i) {
+> 		goto vlan_del;
+> 	} else if (!ret && i) {
+> 		ret = -EINVAL;
+> 		goto vlan_del;
+> 	} else {
+> 		ret = 0;
+> 	}
+> 
+> So a frame admitted with a non-configured VID (0x124..0x126) is
+> indistinguishable from a correctly dropped frame, and the test still passes
+> even if the hardware admits every VID.  Before this patch the mismatch
+> branch was unreachable because skb->vlan_tci was always cleared; now it is
+> reachable but its verdict is discarded.  Could the return value of
+> wait_for_completion_timeout() be checked, or a separate "packet was
+> admitted" flag be used, so the two cases can be told apart?  The same
+> pattern is in __stmmac_test_dvlanfilt().
+> 
+> [Severity: Medium]
+> Also pre-existing rather than introduced here: tpriv->ok, tpriv->comp and
+> the on-stack attr are shared between the softirq validator and this loop
+> with no serialization, and init_completion() is only called once, outside
+> the loop.  With capture_all, an extra complete() is now reachable from the
+> "filter did not work" path for any tagged frame with a different VID.
+> 
+> Since complete() increments comp.done and wait_for_completion_timeout()
+> consumes only one, does a surplus completion in one iteration make the next
+> wait_for_completion_timeout() return immediately and take the verdict from a
+> stale tpriv->ok?  Would a reinit_completion() at the top of each iteration
+> help here?
+> 
+>> @@ -1093,6 +1095,7 @@ static int __stmmac_test_dvlanfilt(struct stmmac_priv *priv)
+>>  	tpriv->pt.dev = priv->dev;
+>>  	tpriv->pt.af_packet_priv = tpriv;
+>>  	tpriv->packet = &attr;
+>> +	tpriv->capture_all = true;
+> 
+> [Severity: High]
+> Does this actually fix the Double VLAN Filter test on the cores that can run
+> it?  The test requires priv->dma_cap.vlhash, i.e. the xmac cores, where
+> probe sets priv->hw->hw_vlan_en = true and stmmac_hw_setup() programs
+> VLAN_TAG_STRIP_ALL together with VLAN_TAG_CTRL_EVLRXS, while
+> vlan_vid_add(ETH_P_8021AD, ...) enables S-VLAN recognition.
+> 
+> The MAC-stripped outer tag is then reported by vlan_rx_hw() in
+> stmmac_vlan.c:
+> 
+> 	__vlan_hwaccel_put_tag(skb, htons(ETH_P_8021Q), vid);
+> 
+> which hardcodes ETH_P_8021Q, while the validator with double_vlan set wants
+> ETH_P_8021AD:
+> 
+> 	proto = tpriv->double_vlan ? ETH_P_8021AD : ETH_P_8021Q;
+> 	...
+> 		if (skb->vlan_proto != htons(proto))
+> 			goto out;
+> 
+> So the frame does reach the validator now, but the vlan_proto check takes
+> "goto out" without calling complete(), and the test still returns -ETIMEDOUT
+> for i == 0 on working hardware unless RX VLAN stripping is turned off.  Is
+> the intent that vlan_rx_hw() report the real tag protocol, or that the
+> validator accept ETH_P_8021Q for the stripped outer tag?
+
+Heh so since I sent this series, I've received more hardware, including
+an dwxgmac2 platform ( finally \o/ )
+
+And yeah this test fails on dwxgmac2 even with this patch :(
+
+I'll address that in V4
+
+
+> 
+>> @@ -1371,6 +1374,7 @@ static int stmmac_test_vlanoff_common(struct stmmac_priv *priv, bool svlan)
+>>  	tpriv->pt.af_packet_priv = tpriv;
+>>  	tpriv->packet = &attr;
+>>  	tpriv->vlan_id = 0x123;
+>> +	tpriv->capture_all = true;
+>>  	stmmac_sft_add_pack(&tpriv->pt);
+>>  
+>>  	ret = vlan_vid_add(priv->dev, htons(proto), tpriv->vlan_id);
+> 
+> [Severity: High]
+> Can this dereference a NULL pointer in softirq context?  attr is
+> zero-initialized, so attr.dst is NULL, and the ETH_P_ALL handler is
+> published by stmmac_sft_add_pack() before attr.dst is assigned:
+> 
+> 	tpriv->capture_all = true;
+> 	stmmac_sft_add_pack(&tpriv->pt);
+> 
+> 	ret = vlan_vid_add(priv->dev, htons(proto), tpriv->vlan_id);
+> 	if (ret)
+> 		goto cleanup;
+> 
+> 	attr.dst = priv->dev->dev_addr;
+> 
+> vlan_vid_add() is not instantaneous here: it does
+> pm_runtime_resume_and_get() and a register poll in vlan_write_filter().  A
+> frame arriving in that window with vlan_proto ETH_P_8021Q and vlan_tci equal
+> to the hard-coded 0x123 passes the tag checks and falls into:
+> 
+> 	ehdr = (struct ethhdr *)skb_mac_header(skb);
+> 	if (!ether_addr_equal_unaligned(ehdr->h_dest, tpriv->packet->dst))
+> 		goto out;
+> 
+> which reads 6 bytes from address 0.  stmmac_test_loopback_validate() guards
+> the same comparison with "if (dst)", so the pointer does not look like an
+> invariant.  The same ordering exists in __stmmac_test_vlanfilt() and
+> __stmmac_test_dvlanfilt(), where attr.dst is only set inside the loop.
+> Would assigning attr.dst before stmmac_sft_add_pack(), or adding the NULL
+> check to this validator, close that window?
+
+Good point, I'll send a V4 then,
+
+Maxime
+
