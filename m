@@ -1,181 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33354AA1C9;
-	Tue, 15 Sep 2026 11:37:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B644A2055;
+	Tue, 15 Sep 2026 11:38:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789472272; cv=none; b=Bmi1QF0kGmP9EWutiRQzW3rbXH0WkHqv4z0fW7v6QafB7vc3Q8ew9aq1DCz0hfqAkMBp+QOYw3S3Jv23pN0sVZNnLPk29TSwk2RMN51vZ1a4SDpHPQm96SV//xDM2k8AULAtQ53xJSIHRwdM4jH/biN0qDZb2rAQhA9V/ck8vkY=
+	t=1789472301; cv=none; b=B8BenyWeIhbAJa76sMmCbTThtZkKsMoctPJbiDM4Yjgg/suf1n3LSxINB9bRR/r96/FGojzSCdDzIF+OSDE7ZWLm+bvGxmc8fSbyPMJ5XmTXuaR74mZkWCE6a1xQUDEd6jll8mgksSRXJXsKgtuSRBvvphNoxXTaW/5kK03MIxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789472272; c=relaxed/simple;
-	bh=SzeXPqGJtllJZEGwqHGcwxzZWYTunmeJfrbckytXGkI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hAmzsmQHbiXSBSUSw4WoHKrV+SZJ/Tv1qNl6BFZpxOKMVuREZL0BU9W219DwbKcmjNFn4/yAOLd4FAS7M7vTeJ33mJZsSaqdtp4CFP2p8qd+iI5H5wd767bBpEomv6qRWhrqtJXDxQKqFepvelXGLbuoriS49Sc1DzQ+jMBtiLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nIsDG6ms; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789472301; c=relaxed/simple;
+	bh=SqvH0tJDQdTVUiUCxJIXBadJWn0V7juyud3AQtUOWG4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ssAIa8ObtRXAoRLmT+DXYuntlu+rsRL/6CyeVEssVWIiBluh27Ut8xKKhq7yaEKNRxvp7McKdxnucWgxHA+9WhZkrhiTBq4NDtGkUzjNsdwVJ1btrv0aLnbI0RiFQY/x0rNuSA7FqvyabJT3OHGvy/atp2FQ5kzgNMHvOuk/Rx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=M7TcZqTo; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nIsDG6ms"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDE2E1F00898;
-	Tue, 15 Sep 2026 11:37:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789472269;
-	bh=GNDTkXQI7mGdcVaT7SDrw9M8MIqod2XUSoHG2zw3J2w=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=nIsDG6msZxm9ifdIIaNBb4DSvDwZjxBexDpBy0k5+c0EEQRfRNHCnvgHTIY4Q0gZ4
-	 5Y4GAqy+82PffLbcvJlnpDdJKam2a1RZ/lmTtWzv5yc2Qa3CGs1EC2lgotUwdrCtPN
-	 R+e8tN55H2q/lzjefH/7MqxCwUMd/aRzXVOqaq/JIPnIQz/fh1lk4mDieRcetKm0Vz
-	 We6QD5SZZpeWs1skjtjC95uTXtri2f8p0027MOwC2PJ2AtBz1eyxEa8oFwDdJ/4IbQ
-	 1oi4l5RBwZ4QhEmCd9i4/Ab6QCou55Lo2D/xSrTRR5npBOhYvLPf8mp8Z+7okOyPo6
-	 hMky5BV0f8Xcg==
-From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 15 Sep 2026 13:31:36 +0200
-Subject: [PATCH RFC POC 50/50] Drivers: hv: mshv: stop putting descriptors
- back on failure
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="M7TcZqTo"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 68FBbsZN31482902, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1789472274; bh=SqvH0tJDQdTVUiUCxJIXBadJWn0V7juyud3AQtUOWG4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=M7TcZqTo5mhSMufrVxsA/CFyk7p+9IVQfCZidXVjiiggexiagaQYdCelByB8q468v
+	 BEu49fMW0Uchv1s58+neemoxC5d8J/wuswnj9qxa+BC4VZc2OmMwWeSwZA4zjHENNc
+	 wPHR9yo0PN5qcnhwnG6p+Ul117WeBqXSkKB4UI2ynIk+u6mcfEvpK+dlGlrONJsKMt
+	 rd5uT0MpXmwq+Vd6S5gApAtIjmjzwUhhdpS/4Bu4HvpaHNK9zlaKDnfNf3APxQt87p
+	 nevOo923xIausee2BDmLMAA8B3Jo7fuEQOBKpCwR9bGpC/uLQKcyCkWnJN8MxjSJl4
+	 ku9hZc+KPtmOA==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 68FBbsZN31482902
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 15 Sep 2026 19:37:54 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 15 Sep 2026 19:37:54 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::b3cc:c263:b82d:e87c%10]) with mapi id
+ 15.02.2562.049; Tue, 15 Sep 2026 19:37:54 +0800
+From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
+To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>
+CC: "davem@davemloft.net" <davem@davemloft.net>, "kuba@kernel.org"
+	<kuba@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	nic_swsd <nic_swsd@realtek.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-usb@vger.kernel.org"
+	<linux-usb@vger.kernel.org>, "edumazet@google.com" <edumazet@google.com>,
+	"bjorn@mork.no" <bjorn@mork.no>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>
+Subject: RE: [PATCH net-next v3 5/8] r8152: support rtl8157_unload and
+ rtl8157_change_mtu
+Thread-Topic: [PATCH net-next v3 5/8] r8152: support rtl8157_unload and
+ rtl8157_change_mtu
+Thread-Index: AQHdP2eVBL507uW8p0CTBFzMRScZAbbK4zcAgASpLgA=
+Date: Tue, 15 Sep 2026 11:37:53 +0000
+Message-ID: <8bac7d369ad24a85971ccb2ed94635bc@realtek.com>
+References: <20260908075634.23740-6-nic_swsd@realtek.com>
+ <178924439287.3125.1065367731882815038@kernel.org>
+In-Reply-To: <178924439287.3125.1065367731882815038@kernel.org>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260915-work-fd-reserve-unify-folded-v1-50-4d5217d6b246@kernel.org>
-References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
-In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jann Horn <jannh@google.com>, 
- Jan Kara <jack@suse.cz>, Ingo Molnar <mingo@redhat.com>, 
- Peter Zijlstra <peterz@infradead.org>, linux-fsdevel@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- Oleg Nesterov <oleg@redhat.com>, linux-alpha@vger.kernel.org, 
- linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
- linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
- linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
- linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
- linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
- linux-um@lists.infradead.org, Jens Axboe <axboe@kernel.dk>, 
- io-uring@vger.kernel.org, netdev@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, linux-gpio@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- bpf@vger.kernel.org, David Airlie <airlied@redhat.com>, 
- virtualization@lists.linux.dev, kvm@vger.kernel.org, 
- kexec@lists.infradead.org, linux-hyperv@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>
-X-Mailer: b4 0.17-dev-db0b7
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3018; i=brauner@kernel.org;
- h=from:subject:message-id; bh=SzeXPqGJtllJZEGwqHGcwxzZWYTunmeJfrbckytXGkI=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSt1KmPkjZIUeG9e+1R07epv8QvrSgMsrt/1D2tpUnF+
- Ty/n9jUjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIlo3mb4Hx4+8+W/E5svyCgt
- bpvwatmUgujlCXflfc2DLyvdmH/HYCPDH44Jiw0OZie7VZtm8ZzaXLrdzmx2uNpNg59n94iEL7/
- iyAIA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-Rely on the fd exit path machinery.
-
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- drivers/hv/mshv_root_main.c | 27 +++++++--------------------
- drivers/hv/mshv_vtl_main.c  | 20 +++++---------------
- 2 files changed, 12 insertions(+), 35 deletions(-)
-
-diff --git a/drivers/hv/mshv_root_main.c b/drivers/hv/mshv_root_main.c
-index cc2cfce2aefd..c95cee0bae85 100644
---- a/drivers/hv/mshv_root_main.c
-+++ b/drivers/hv/mshv_root_main.c
-@@ -1072,8 +1072,6 @@ mshv_partition_ioctl_create_vp(struct mshv_partition *partition,
- 	struct mshv_vp *vp;
- 	struct page *intercept_msg_page, *register_page, *ghcb_page;
- 	struct hv_stats_page *stats_pages[2];
--	struct file *file;
--	int fd;
- 	long ret;
- 
- 	if (copy_from_user(&args, arg, sizeof(args)))
-@@ -1148,19 +1146,14 @@ mshv_partition_ioctl_create_vp(struct mshv_partition *partition,
- 	if (ret)
- 		goto put_partition;
- 
--	fd = get_unused_fd_flags(O_RDWR | O_CLOEXEC);
--	if (fd < 0) {
--		ret = fd;
-+	FD_PREPARE(fdf, O_RDWR | O_CLOEXEC,
-+		   anon_inode_getfile("mshv_vp", &mshv_vp_fops, vp,
-+				      O_RDWR | O_CLOEXEC));
-+	if (IS_ERR(fdf)) {
-+		ret = PTR_ERR(fdf);
- 		goto remove_debugfs_vp;
- 	}
- 
--	file = anon_inode_getfile("mshv_vp", &mshv_vp_fops, vp,
--				  O_RDWR | O_CLOEXEC);
--	if (IS_ERR(file)) {
--		ret = PTR_ERR(file);
--		goto put_unused_vp_fd;
--	}
--
- 	/* already exclusive with the partition mutex for all ioctls */
- 	partition->pt_vp_count++;
- 	/*
-@@ -1171,17 +1164,11 @@ mshv_partition_ioctl_create_vp(struct mshv_partition *partition,
- 	 */
- 	smp_store_release(&partition->pt_vp_array[args.vp_index], vp);
- 
--	/*
--	 * fd_install() is the userspace-visibility commit point.  Must be the
--	 * last operation that can fail or be observed.
--	 */
--	fd_install(fd, file);
--	ret = fd;
-+	/* The syscall exit installs the file; nothing after this can fail. */
-+	ret = fd_prepare_fd(fdf);
- 
- 	goto out;
- 
--put_unused_vp_fd:
--	put_unused_fd(fd);
- remove_debugfs_vp:
- 	mshv_debugfs_vp_remove(vp);
- put_partition:
-diff --git a/drivers/hv/mshv_vtl_main.c b/drivers/hv/mshv_vtl_main.c
-index 6e3c11c68171..f14203d76da1 100644
---- a/drivers/hv/mshv_vtl_main.c
-+++ b/drivers/hv/mshv_vtl_main.c
-@@ -114,29 +114,19 @@ static long
- mshv_ioctl_create_vtl(void __user *user_arg, struct device *module_dev)
- {
- 	struct mshv_vtl *vtl;
--	struct file *file;
--	int fd;
- 
- 	vtl = kzalloc_obj(*vtl);
- 	if (!vtl)
- 		return -ENOMEM;
- 
--	fd = get_unused_fd_flags(O_CLOEXEC);
--	if (fd < 0) {
--		kfree(vtl);
--		return fd;
--	}
--	file = anon_inode_getfile("mshv_vtl", &mshv_vtl_fops,
--				  vtl, O_RDWR);
--	if (IS_ERR(file)) {
--		put_unused_fd(fd);
-+	FD_PREPARE(fdf, O_CLOEXEC,
-+		   anon_inode_getfile("mshv_vtl", &mshv_vtl_fops, vtl, O_RDWR));
-+	if (IS_ERR(fdf)) {
- 		kfree(vtl);
--		return PTR_ERR(file);
-+		return PTR_ERR(fdf);
- 	}
- 	vtl->module_dev = module_dev;
--	fd_install(fd, file);
--
--	return fd;
-+	return fd_prepare_fd(fdf);
- }
- 
- static long
-
--- 
-2.53.0
-
+PiBUaGFuayB5b3UgZm9yIHlvdXIgY29udHJpYnV0aW9uISBTYXNoaWtvIEFJIHJldmlldyBmb3Vu
+ZCAxIHBvdGVudGlhbA0KPiBpc3N1ZShzKSB0byBjb25zaWRlcjoNCj4gDQo+IENyaXRpY2FsOiAw
+IMK3IEhpZ2g6IDAgwrcgTWVkaXVtOiAwIMK3IExvdzogMQ0KPiANCj4gLSBbTG93XSBDb21taXQg
+bWVzc2FnZSB1bmRlcnN0YXRlcyB0aGUgaW1wYWN0IG9mIHRoZSBjaGFuZ2UgYW5kIGNhcnJpZXMN
+Cj4gICBubyBGaXhlczogdGFnLCBldmVuIHRob3VnaCBpdCBzaWxlbnRseSBhbHRlcnMgdGhlIHJl
+Z2lzdGVyIHByb2dyYW1taW5n4oCmDQo+IA0KPiAtLQ0KPiANCj4gcjgxNTI6IHN1cHBvcnQgcnRs
+ODE1N191bmxvYWQgYW5kIHJ0bDgxNTdfY2hhbmdlX210dQ0KPiANCj4gVGhpcyBhZGRzIHJ0bDgx
+NTdfdW5sb2FkKCkgYW5kIHJ0bDgxNTdfY2hhbmdlX210dSgpIGFuZCB3aXJlcyB0aGVtIGludG8g
+dGhlDQo+IFJUTF9WRVJfMTYgKFJUTDgxNTcpIGFuZCBSVExfVkVSXzE3IChSVEw4MTU5KSBvcCB0
+YWJsZXMsIHJlcGxhY2luZw0KPiBydGw4MTUzX3VubG9hZCgpIGFuZCBydGw4MTU2X2NoYW5nZV9t
+dHUoKS4gIFRoZSBpbnRlcnJ1cHQgbWl0aWdhdGlvbiBjbGVhcg0KPiBvZiBVU0IgcmVnaXN0ZXIg
+MHhjZjA0IGlzIG1vdmVkIG91dCBvZiBydGw4MTUzX3VubG9hZCgpIGludG8gdGhlIG5ldyBjYWxs
+YmFjay4NCj4gDQo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3VzYi9yODE1Mi5jIGIvZHJp
+dmVycy9uZXQvdXNiL3I4MTUyLmMgaW5kZXgNCj4gPiA2NzlhZWFkNzMxZjczLi4wNmZhZDg5NWZj
+ZTA5IDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvbmV0L3VzYi9yODE1Mi5jDQo+ID4gKysrIGIv
+ZHJpdmVycy9uZXQvdXNiL3I4MTUyLmMNCj4gPiBAQCAtNzAyNCw2ICs3MDI0LDI4IEBAIHN0YXRp
+YyB2b2lkIHJ0bDgxNTZfZG93bihzdHJ1Y3QgcjgxNTIgKnRwKQ0KPiA+ICAgICAgIHI4MTUzX2Fs
+ZHBzX2VuKHRwLCB0cnVlKTsNCj4gPiAgfQ0KPiA+DQo+ID4gK3N0YXRpYyB2b2lkIHJ0bDgxNTdf
+Y2hhbmdlX210dShzdHJ1Y3QgcjgxNTIgKnRwKSB7DQo+ID4gKyAgICAgdTMyIG1heF9wa3Rfc2l6
+ZSA9IG10dV90b19zaXplKHRwLT5uZXRkZXYtPm10dSk7DQo+ID4gKyAgICAgdTMyIG9jcF9kYXRh
+Ow0KPiA+ICsNCj4gPiArICAgICBvY3Bfd3JpdGVfd29yZCh0cCwgTUNVX1RZUEVfUExBLCBQTEFf
+Uk1TLCBtYXhfcGt0X3NpemUpOw0KPiA+ICsNCj4gPiArICAgICAvKiBVc2UgYXQgbGVhc3QgMTBL
+IGZvciBNVFBTICovDQo+ID4gKyAgICAgb2NwX2RhdGEgPSBtYXhfdCh1MzIsIG1heF9wa3Rfc2l6
+ZSwgMTAgKiAxMDI0KSAvIDY0Ow0KPiA+ICsNCj4gPiArICAgICAvKiAxNiAqIDEwMjQgLyA2NCA9
+IDB4MTAwLCBzbyB0aGUgbWF4IGlzIDB4ZmYgZm9yIDggYml0cyBkYXRhICovDQo+ID4gKyAgICAg
+b2NwX2RhdGEgPSBtaW5fdCh1MzIsIG9jcF9kYXRhLCAweGZmKTsNCj4gPiArDQo+ID4gKyAgICAg
+b2NwX3dyaXRlX2J5dGUodHAsIE1DVV9UWVBFX1BMQSwgUExBX01UUFMsIG9jcF9kYXRhKTsNCj4g
+PiArICAgICByODE1Nl9mY19wYXJhbWV0ZXIodHApOw0KPiANCj4gWyAuLi4gXQ0KPiANCj4gPiBA
+QCAtMTAxNzQsMTEgKzEwMTk2LDYgQEAgc3RhdGljIHZvaWQgcnRsODE1M191bmxvYWQoc3RydWN0
+IHI4MTUyICp0cCkNCj4gPiAgICAgICAgICAgICAgIHJldHVybjsNCj4gPg0KPiA+ICAgICAgIHI4
+MTUzX3Bvd2VyX2N1dF9lbih0cCwgZmFsc2UpOw0KPiA+IC0NCj4gPiAtICAgICBpZiAodHAtPnZl
+cnNpb24gPj0gUlRMX1ZFUl8xNikgew0KPiA+IC0gICAgICAgICAgICAgLyogRGlzYWJsZSBJbnRl
+cnJ1cHQgTWl0aWdhdGlvbiAqLw0KPiA+IC0gICAgICAgICAgICAgb2NwX2J5dGVfY2xyX2JpdHMo
+dHAsIE1DVV9UWVBFX1VTQiwgMHhjZjA0LCBCSVQoMCkgfCBCSVQoMSkNCj4gfCBCSVQoMikgfCBC
+SVQoNykpOw0KPiA+IC0gICAgIH0NCj4gPiAgfQ0KPiANCj4gWyAuLi4gXQ0KPiANCj4gPiArc3Rh
+dGljIHZvaWQgcnRsODE1N191bmxvYWQoc3RydWN0IHI4MTUyICp0cCkgew0KPiA+ICsgICAgIGlm
+ICh0ZXN0X2JpdChSVEw4MTUyX0lOQUNDRVNTSUJMRSwgJnRwLT5mbGFncykpDQo+ID4gKyAgICAg
+ICAgICAgICByZXR1cm47DQo+ID4gKw0KPiA+ICsgICAgIHI4MTU3X3Bvd2VyX2N1dF9lbih0cCwg
+ZmFsc2UpOw0KPiA+ICsgICAgIG9jcF9ieXRlX2Nscl9iaXRzKHRwLCBNQ1VfVFlQRV9VU0IsIDB4
+Y2YwNCwNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICBCSVQoMCkgfCBCSVQoMSkgfCBCSVQo
+MikgfCBCSVQoNykpOyB9DQo+IA0KPiBbU2V2ZXJpdHk6IExvd10NCj4gQ291bGQgdGhlIGNoYW5n
+ZWxvZyBzYXkgd2hhdCBtaXNiZWhhdmVzIHRvZGF5IG9uIHRoZXNlIGNoaXBzLCBhbmQgY2FycnkN
+Cj4gRml4ZXM6IHRhZ3M/ICBSVExfVkVSXzE2IGFuZCBSVExfVkVSXzE3IGFyZSBhbHJlYWR5IHN1
+cHBvcnRlZCBpbi10cmVlDQo+IChhZGRlZCBieSBmZDNjN2QwODBkZjUzMSBhbmQgYWQyYTU1YjYz
+YjQxYWYpLCBhbmQgYm90aCBhc3NpZ25lZA0KPiBvcHMtPnVubG9hZCA9IHJ0bDgxNTNfdW5sb2Fk
+IGFuZCBvcHMtPmNoYW5nZV9tdHUgPSBydGw4MTU2X2NoYW5nZV9tdHUsDQo+IG9wcy0+c28NCj4g
+dGhpcyBjaGFuZ2VzIHRoZSByZWdpc3RlciBwcm9ncmFtbWluZyBvZiBzaGlwcGVkIGhhcmR3YXJl
+IHJhdGhlciB0aGFuDQo+IGVuYWJsaW5nIHNvbWV0aGluZyBuZXcuDQo+IA0KPiBUaGUgY29tbWl0
+IG1lc3NhZ2Ugc2F5cyB0aGUgZGVkaWNhdGVkIHVubG9hZCBpcyBuZWVkZWQgInRvIGRpc2FibGUg
+aW50ZXJydXB0DQo+IG1pdGlnYXRpb24iLCBidXQgcnRsODE1M191bmxvYWQoKSBhbHJlYWR5IGRp
+ZCB0aGF0IGZvcg0KPiB0cC0+dmVyc2lvbiA+PSBSVExfVkVSXzE2Og0KPiANCj4gICAgICAgICBp
+ZiAodHAtPnZlcnNpb24gPj0gUlRMX1ZFUl8xNikgew0KPiAgICAgICAgICAgICAgICAgLyogRGlz
+YWJsZSBJbnRlcnJ1cHQgTWl0aWdhdGlvbiAqLw0KPiAgICAgICAgICAgICAgICAgb2NwX2J5dGVf
+Y2xyX2JpdHModHAsIE1DVV9UWVBFX1VTQiwgMHhjZjA0LCBCSVQoMCkgfA0KPiBCSVQoMSkgfCBC
+SVQoMikgfCBCSVQoNykpOw0KPiAgICAgICAgIH0NCj4gDQo+IHNvIHRoYXQgcGFydCBpcyBvbmx5
+IHJlbG9jYXRlZC4gIFRoZSBiZWhhdmlvdXIgdGhhdCBhY3R1YWxseSBjaGFuZ2VzIGlzIHRoZQ0K
+PiBwb3dlciBjdXQgZGlzYWJsZSBzZXF1ZW5jZToNCj4gDQo+IHI4MTUzX3Bvd2VyX2N1dF9lbih0
+cCwgZmFsc2UpOg0KPiAgICAgICAgIG9jcF93b3JkX2Nscl9iaXRzKHRwLCBNQ1VfVFlQRV9VU0Is
+IFVTQl9QT1dFUl9DVVQsIFBXUl9FTg0KPiB8IFBIQVNFMl9FTik7DQo+ICAgICAgICAgb2NwX3dv
+cmRfY2xyX2JpdHModHAsIE1DVV9UWVBFX1VTQiwgVVNCX01JU0NfMCwgUENVVF9TVEFUVVMpOw0K
+PiANCj4gcjgxNTdfcG93ZXJfY3V0X2VuKHRwLCBmYWxzZSk6DQo+ICAgICAgICAgb2NwX3dvcmRf
+Y2xyX2JpdHModHAsIE1DVV9UWVBFX1VTQiwgVVNCX1BPV0VSX0NVVCwgUFdSX0VOKTsNCj4gICAg
+ICAgICBvY3Bfd29yZF9jbHJfYml0cyh0cCwgTUNVX1RZUEVfVVNCLCBVU0JfTUlTQ18wLCBQQ1VU
+X1NUQVRVUyk7DQo+ICAgICAgICAgb2NwX2J5dGVfY2xyX2JpdHModHAsIE1DVV9UWVBFX1VTQiwg
+VVNCX01JU0NfMiwgQklUKDEpKTsNCj4gDQo+IFBIQVNFMl9FTiBpcyBub3cgbGVmdCBzZXQgb24g
+dGhlIHVubG9hZC9kaXNjb25uZWN0IHBhdGggZm9yIHRoZXNlIGNoaXBzLg0KPiBJcyB0aGF0IGlu
+dGVudGlvbmFsLCBhbmQgaXMgdGhlcmUgYW4gb2JzZXJ2YWJsZSBzeW1wdG9tIHdpdGggdGhlIG9s
+ZCBzZXF1ZW5jZT8NCg0KSXQncyBpbnRlbnRpb25hbC4gUlRMODE1NyBhbmQgUlRMODE1OSBoYXZl
+IGRpZmZlcmVudCBzZXF1ZW5jZXMgdG8gZGlzYWJsZSBwb3dlciBjdXQuDQoNCj4gDQo+IFNpbWls
+YXJseSwgcnRsODE1N19jaGFuZ2VfbXR1KCkgcmVwbGFjZXMgdGhlIGZpeGVkIE1UUFNfSlVNQk8g
+KDEyICogMTAyNCAvDQo+IDY0ID0gMHhjMCkgdGhhdCBydGw4MTU2X2NoYW5nZV9tdHUoKSBwcm9n
+cmFtbWVkIHdpdGggYW4gTVRVIGRlcml2ZWQgdmFsdWU6DQo+IGF0IHRoZSBkZWZhdWx0IDE1MDAg
+Ynl0ZSBNVFUsIG1heF90KHUzMiwgbXR1X3RvX3NpemUoMTUwMCksIDEwICogMTAyNCkgLyA2NA0K
+PiBnaXZlcyAweGEwLCBhbmQgaXQgc2F0dXJhdGVzIGF0IDB4ZmYgZm9yIGEgMTZLIE1UVS4gIEJv
+dGggcGF0aHMgYXJlIGxpdmUgYXQNCj4gcnVudGltZSwgdmlhIHJ0bDgxNTdfdXAoKSBvbiBldmVy
+eSBicmluZy11cCBhbmQgdmlhIHJ0bDgxNTJfY2hhbmdlX210dSgpIC0+DQo+IHRwLT5ydGxfb3Bz
+LmNoYW5nZV9tdHUoKSBvbiBldmVyeSBNVFUgY2hhbmdlLiAgV2hhdCBkb2VzIHRoZSBvbGQgTVRQ
+Uw0KPiB0cC0+dmFsdWUNCj4gYnJlYWsgb24gdGhlc2UgY2hpcHM/DQoNClJUTDgxNTcgYW5kIFJU
+TDgxNTkgc3VwcG9ydCBhIG5ldyBmb3JtdWxhIHRvIGNvbXB1dGUgUExBX01UUFMuDQoNCj4gDQo+
+IEFzIHdyaXR0ZW4gaXQgaXMgaGFyZCB0byB0ZWxsIHdoZXRoZXIgdGhpcyBpcyBuZXQtbmV4dCB0
+dW5pbmcgb3IgYSBmaXggZm9yIGEgdXNlcg0KPiB2aXNpYmxlIGRlZmVjdCBvbiByZWxlYXNlZCBr
+ZXJuZWxzLCBhbmQgdGhlcmUgaXMgbm90aGluZyBmb3Igc3RhYmxlIGJhY2twb3J0cyB0bw0KPiBr
+ZXkgb24uICBOb3RlIHRoYXQgdGhpcyB3b3JkaW5nIGlzIHVuY2hhbmdlZCBhdCB0aGUgZW5kIG9m
+IHRoZSBzZXJpZXMsIHNvIG5vDQo+IGxhdGVyIHBhdGNoIGFkZHMgdGhlIG1pc3NpbmcganVzdGlm
+aWNhdGlvbi4NCj4gDQo+IC0tDQo+IFNhc2hpa28gQUkgcmV2aWV3IMK3DQo+IGh0dHBzOi8vbmV0
+ZGV2LWFpLmJvdHMubGludXguZGV2L3Nhc2hpa28vIy9wYXRjaHNldC8yMDI2MDkwODA3NTYzNC4y
+Mzc0MC0xDQo+IC1uaWNfc3dzZCU0MHJlYWx0ZWsuY29tDQoNCkJlc3QsDQpDaGloLUthaQ0K
