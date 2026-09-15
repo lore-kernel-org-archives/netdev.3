@@ -1,82 +1,60 @@
-Received: from mail-ua2-f12.google.com (mail-ua2-f12.google.com [74.125.226.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7FB143F4D2
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 18:17:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.226.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805EA3D411D;
+	Tue, 15 Sep 2026 18:21:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789496236; cv=none; b=k1LIP6dY9myBMWOs9YrFgGH+H/V73Ct4kCIaHXeQI70aTXHL8OaCfXlrwrjkUFmpX2yqV++xKTpVBCYMje9EkNwiIwNpjFzghLHzDgKHpLqdrFzODXF8G++72NeL20RrAasFCq0yrm2s0wHCmnDL75P5cT4ZYWNgMOE9DUmrjb8=
+	t=1789496483; cv=none; b=GCXDYc0bOhkiuvlpbDkqL8UiZooJyOcjFZJSxIApva/cxGJRJzNMr6AYy6/5IstQYMyXqY7EfFZ3e5+fbKp3HdK5owJiE21gcqJXwhL15lQ4DU36vV8lwv23XlZGl/WK/v5YMm9kQ+nB5ddKSHVSxtiMSQ0ZyyKJEOd5Vc6k9UQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789496236; c=relaxed/simple;
-	bh=A7in0Alu7BM8kUxRkWxLv9TvBfe4QvgWoOD+yHVx2j4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CIeVoN3gK6LnB3IoUasECpL1zaXSAj4WUPoNblgr5jurItt4bIRNBy0vDIL2kZh6j9Xr702O1/xIBVtaWMMRNynUJQ9Fe2t41+9FicHBWvuYEo+kq7qL+AiysVCQYAl2/VcgvMIWxxXZR8R8esuDuAuFCPBNfgK0ZSA68iBBjEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g//yLgFJ; arc=none smtp.client-ip=74.125.226.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789496483; c=relaxed/simple;
+	bh=VEPKiJaR6yfaiZyD7Fq5ykuC9ZtROuv8ISrp/eFw3Yk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fKz1FJ1iZZhMX8dw7ZQ/YNLyLerqsj2cvZ4XeMUT6If7Ovb0Hf94RukIlEtUzucMsPqmzF7Bk91lW8gaTvFGkzqu3AeowlyPeCti1mh1x2kk49UWALJOEd0l+Cv2yqRazaPoOO0H7wo0u7T0jtLoSqjj4sx3QC7vX+BAq0P7SRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L6gEsnf2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g//yLgFJ"
-Received: by mail-ua2-f12.google.com with SMTP id a1e0cc1a2514c-982db8d3ab8so27051241.1
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 11:17:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789496232; x=1790101032; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lhABGOr78fp2q20gHs/L/QQ2y1BCAwuXhlRy5NO8sA0=;
-        b=g//yLgFJbe4+i6+NUjaUGafxtqFGMS47x7HDcC8tenhLuMMEtX44pOpIpENyfN56W+
-         JbQIB8oE8sW2RvlHam7BMD4bBTgl5sG4dfft6v1fSmIpOtjnbq08BaU2aWUGaG8+sGci
-         YMovr2qcVyvg0Dq1zf2VW/2Xbgg3RJLMGwUBy6qtZlApLFavfdutJE7D7NhwuJ7xda4d
-         1qP+uen6AICgUBX3eH/C6NTpnlwrUY51+V2GgySSWJ4vbnxDQ2AUv8TKD24OtM3NKLMn
-         PWgsN8gUQi5fEy8HnE/X1qW5Y7n8z/rpJEQYg/usO6Q5UJPQ9KGB3+wEMY9JYuXFg3gu
-         pCtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789496232; x=1790101032;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lhABGOr78fp2q20gHs/L/QQ2y1BCAwuXhlRy5NO8sA0=;
-        b=xVOqsPXNSlue1qyhdqi7GsGj2aXjG+9M9WN+X/jbnDDBwJPGulxYvTY1mCyc43/QY7
-         HAuLTvjiUC65BWelprcGGq45A0WL63RUrdrhwzQA8AZEiCmwKyS7sTZdslQD4Vv7Wi5V
-         sbNPtuvzakoSlpbVShFVEyZkmZjnRkTUjTY+xpzNgGquhVREdSQQwhsFzL1TEgrVAwZe
-         1/jDuhcijmRdYpijYNxeQ79r8fZyliPizS0KPNojGxALbgMjxjErujEipPj2vEJTn17e
-         dHhzyesGHWq2suCxmVmMhet26St1WLdL4eXnK5vM4DWvP25RkpG0x+YwALXJ+GKGpyEf
-         +3JA==
-X-Forwarded-Encrypted: i=1; AKwUvByEco/Yn90eVR3Zi/Dk7cRBnkdvuqHeJR3551Dg85ifuCvdsdz8QyqukyJJEtc7SSztBSgNBlI=@vger.kernel.org
-X-Gm-Message-State: AFuF++n7hWVmvXoW0/aByaTCsr2EMXI+gWFuN+UIegXJ/s8lN5AjDxMc
-	YoxhNZ4jSd6sDNZ+sAJWdunFs1GEBJFcgmRuGqAqn8pzWobk5aEd6yjc
-X-Gm-Gg: AYBFou2icuX/nKmewWXZ6f/fftVRshu/nYCJPrgM9A4o3sOv7BmMDvMR6nu3mXFM7tT
-	zSE5QXOVK/OHJRcSUie9pj2XePKbIMKJYz0NexlqH9wxtM5O9G4GWG/rrt9TMq+fE053oYh5C1M
-	AaZ/YaFodH9jaeExMYDTR0QARaoxXvzqKFXL76zAGnPdwEPBJOsTV9hVg6AW66MXPKv2/4KhReH
-	h4kUWpKYTlKviZ2eKHxS2HsQqaSNAWDvEI7eGzTc0mmlzSXry9NnAnafDUT4wk6PI9OKtQ8r/IH
-	77ajwX2kmCfcgLbgZsV6G9QipCXaEZR5DQa/4CZI6dpyeV8M84UaOG5/h3oKCY5dze+I9BIEicl
-	vxNqwN1I8WY1iqN6Kc8IWQhCMAFErbvoc1aYt6ul6WdDB6UjiOhCEF06gzWZ7zF6bU+QV+3F6+P
-	3AtGegf1SnRFbnDqZJ4VweOWYL1z44sVrA6wjjsaHv29kGkPEOw+RIDpRKMBUJmTLidOGGMnWFC
-	bTpW3MdBGIIMpuqtGbcM22oCee2whMLJlX0voqwQe/RY3Oims4wC1GdMZwT0nxntmlrzsnBmIz0
-	g1f/U6uTEqh993UutEuT7tmRgdOJhYFwNWtEPdo6A2aptzDO
-X-Received: by 2002:a05:6102:6a85:b0:79e:221f:704 with SMTP id ada2fe7eead31-79ed4c2905dmr5071549137.7.1789496232542;
-        Tue, 15 Sep 2026 11:17:12 -0700 (PDT)
-Received: from ryzen.lan ([2601:644:8000:7a86::e35])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9123be5fcfasm4717636d6.12.2026.09.15.11.17.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 11:17:12 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: dmaengine@vger.kernel.org
-Cc: Vinod Koul <vkoul@kernel.org>,
-	Frank Li <Frank.Li@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L6gEsnf2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFEA01F000FF;
+	Tue, 15 Sep 2026 18:21:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789496481;
+	bh=KIdGYMcq+dBeGCbsrx5rPMqcCMjSKW7LVZY+ETyow5E=;
+	h=From:To:Cc:Subject:Date;
+	b=L6gEsnf2QYLY9c+87eGsl9SPz1nxzikE10FVdyIC6b2zvorUTkDZCU4Vss94P9USF
+	 XHw2Y7mDsd//WkIOsBkQsEtWVe/t8eIoQS2u1lMx0ElMqXWBuhbJQILoLrOKsUwHb8
+	 1HJ0EpRnc0dGSxNDC9DBhJURzJ7brLBi13rckAh9AniasujBuEy+E3Oi32fEzqXpXP
+	 g7gULYko1Y41RaW8RMrnmIYobGzwACLIuUsf7hQoG3MfBavCfh2tR8zDaHAxOh3vvJ
+	 SPAqdrJY1mGJU2kX4ohQGcJcU1qA2na3FvWISelxED0bAD5IWv0IMjDx3MBJ0bFTad
+	 uxRWSXbvs/ayg==
+From: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>
+To: Alexander Duyck <alexanderduyck@fb.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	kernel-team@meta.com,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	linux-kernel@vger.kernel.org (open list),
-	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-	linux-sound@vger.kernel.org (open list:SOUND - SOC LAYER / DYNAMIC AUDIO POWER MANAGEM...)
-Subject: [PATCH] dmaengine: bestcomm: Enable compile testing
-Date: Tue, 15 Sep 2026 11:17:09 -0700
-Message-ID: <20260915181709.11323-1-rosenp@gmail.com>
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Daniel Borkmann <daniel@iogearbox.net>
+Cc: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	"Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>,
+	Mohsin Bashir <mohsin.bashr@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Bobby Eshleman <bobbyeshleman@meta.com>,
+	Dimitri Daskalakis <daskald@meta.com>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Breno Leitao <leitao@debian.org>,
+	Tao Cui <cuitao@kylinos.cn>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	David Wei <dw@davidwei.uk>
+Subject: [PATCH net-next v3 0/5] fbnic: Support larger RX pages
+Date: Tue, 15 Sep 2026 20:20:58 +0200
+Message-ID: <20260915182105.4162425-1-bjorn@kernel.org>
 X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -84,66 +62,95 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Allow the BestComm DMA engine to be selected for PowerPC
-compile-test builds.
+Hi!
 
-The freescale ethernet and sound drivers now need a dependency on
-PPC_MPC52xx as they use headers/functions from that platform.
+This series adds support for large io_uring zero-copy RX buffers to
+fbnic.
 
-Assisted-by: LLM
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- drivers/dma/bestcomm/Kconfig           | 3 +--
- drivers/net/ethernet/freescale/Kconfig | 2 +-
- sound/soc/fsl/Kconfig                  | 2 +-
- 3 files changed, 3 insertions(+), 4 deletions(-)
+fbnic hardware consumes receive memory in 4 KiB device pages, while
+io_uring may expose a larger software buffer, such as 256 KiB. Track
+the device-page geometry per BDQ, represent each large buffer with
+consecutive descriptors, and decode completions to the corresponding
+offset within the buffer. HPQ keeps its existing PAGE_SIZE geometry.
 
-diff --git a/drivers/dma/bestcomm/Kconfig b/drivers/dma/bestcomm/Kconfig
-index 5dd437295964..153b5492c93c 100644
---- a/drivers/dma/bestcomm/Kconfig
-+++ b/drivers/dma/bestcomm/Kconfig
-@@ -5,7 +5,7 @@
- 
- config PPC_BESTCOMM
- 	tristate "Bestcomm DMA engine support"
--	depends on PPC_MPC52xx
-+	depends on PPC_MPC52xx || (PPC && COMPILE_TEST)
- 	default n
- 	select PPC_LIB_RHEAP
- 	help
-@@ -34,4 +34,3 @@ config PPC_BESTCOMM_GEN_BD
- 	depends on PPC_BESTCOMM
- 	help
- 	  This option enables the support for the GenBD tasks.
--
-diff --git a/drivers/net/ethernet/freescale/Kconfig b/drivers/net/ethernet/freescale/Kconfig
-index b34c0fcfddea..d81984fcec64 100644
---- a/drivers/net/ethernet/freescale/Kconfig
-+++ b/drivers/net/ethernet/freescale/Kconfig
-@@ -38,7 +38,7 @@ config FEC
- 
- config FEC_MPC52xx
- 	tristate "FEC MPC52xx driver"
--	depends on PPC_BESTCOMM
-+	depends on PPC_BESTCOMM && PPC_MPC52xx
- 	select CRC32
- 	select PHYLIB
- 	select PPC_BESTCOMM_FEC
-diff --git a/sound/soc/fsl/Kconfig b/sound/soc/fsl/Kconfig
-index 04940879dfd8..101bc952aa14 100644
---- a/sound/soc/fsl/Kconfig
-+++ b/sound/soc/fsl/Kconfig
-@@ -234,7 +234,7 @@ config SND_SOC_MPC5200_I2S
- 
- config SND_SOC_MPC5200_AC97
- 	tristate "Freescale MPC5200 PSC in AC97 mode driver"
--	depends on PPC_BESTCOMM
-+	depends on PPC_BESTCOMM && PPC_MPC52xx
- 	select SND_SOC_AC97_BUS
- 	select SND_MPC52xx_DMA
- 	select PPC_BESTCOMM_GEN_BD
+Larger buffers also reduce pressure on the memory provider. One
+provider allocation supplies multiple 4 KiB device pages, so the same
+amount of receive memory needs fewer net_iov objects and fewer
+allocation, refill, and recycle operations. Hardware descriptor use
+remains unchanged.
+
+Ring depth and buffer size must be validated together. An ethtool ring
+change can otherwise make an active memory-provider configuration
+invalid. Store accepted ring depths in netdev_config, stage proposed
+values in cfg_pending, and validate the default and each RX queue
+before committing the change. Both netlink and ioctl use the same
+transaction helpers.
+
+The selftest requests a power-of-two buffer larger than twice the MTU,
+checks the reported buffer length, and verifies received data. It does
+not assume how packets are placed within the buffer.
+
+Sashiko found, as usual, a number of bugs. I've sent the relevant ones
+to net.
+
+Changes in v3
+=============
+
+- Carry Breno's Reviewed-by on the netdev_config helper patch.
+- Clarify that the fbnic ring-depth consumer follows the core patch.
+- Document initialization, override, normalization, and stored ring
+  depth semantics.
+- Drop the CQE placement assertion from the large-buffer test.
+- Reject a zero RX-jumbo depth before validating large RX pages.
+- Rebase on net-next.
+
+Changes in v2
+=============
+
+- Add generic netdev_config lifecycle helpers for the netlink and ioctl
+  paths.
+- Store ring parameters in netdev_config and revalidate RX queues before
+  committing a ring change.
+- Preserve the distinction between accepted and applied HDS state.
+- Track fbnic device-page geometry per BDQ.
+- Validate the fbnic RX page size, fragment count, and PPQ depth.
+- Add automated large-buffer test coverage.
+
+
+v2: https://lore.kernel.org/netdev/20260910180908.1506533-1-bjorn@kernel.org/
+v1: https://lore.kernel.org/netdev/20260522113225.241337-1-bjorn@kernel.org/
+
+Björn Töpel (4):
+  fbnic: Track BDQ device-page geometry per ring
+  net: Revalidate queue config for ringparam changes
+  fbnic: Support larger memory-provider RX pages
+  selftests: drv-net: Request larger zcrx buffers
+
+Jakub Kicinski (1):
+  net: Add netdev_config helpers
+
+ drivers/net/ethernet/meta/fbnic/fbnic_csr.h   |  34 +---
+ .../net/ethernet/meta/fbnic/fbnic_debugfs.c   |   5 +-
+ .../net/ethernet/meta/fbnic/fbnic_netdev.c    |   5 +
+ drivers/net/ethernet/meta/fbnic/fbnic_txrx.c  | 173 ++++++++++++++----
+ drivers/net/ethernet/meta/fbnic/fbnic_txrx.h  |   7 +
+ include/net/netdev_queues.h                   |  49 ++++-
+ net/core/dev.c                                |   7 +-
+ net/core/dev.h                                |   7 +
+ net/core/netdev_config.c                      |  75 +++++++-
+ net/ethtool/common.c                          |   9 +
+ net/ethtool/common.h                          |   2 +
+ net/ethtool/ioctl.c                           |  24 ++-
+ net/ethtool/netlink.c                         |  15 +-
+ net/ethtool/rings.c                           |  13 +-
+ .../selftests/drivers/net/hw/iou-zcrx.py      |   6 +-
+ 15 files changed, 345 insertions(+), 86 deletions(-)
+
+
+base-commit: b8e9e7d82e7eefd5d2d528469d94ec20e96b38c3
 -- 
 2.55.0
 
