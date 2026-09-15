@@ -1,92 +1,142 @@
-Received: from out28-73.mail.aliyun.com (out28-73.mail.aliyun.com [115.124.28.73])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13CCD3876A4;
-	Tue, 15 Sep 2026 08:18:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DC03B059D
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:19:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789460304; cv=none; b=LjcHTwkoazhaKZCZwFaKUzQz4QnuDBW/LrQkE/dJ6JRXXHOEkGfFrDgN1EsgvB1PywdYIDArE8Dp4lHQReUZGriLJetW3CAtRoirFB8hAoNJ/9hhHZgsBwSKs5KZa0WEF8/4pqLhsq+GtJ+LwmFePcyC9K/xSYNdSlzCr6zgrhk=
+	t=1789460376; cv=none; b=liAk8MFbfoFaNd31htaD755EwjkB0GT6vI6ZfnwEIFS280Pkc/BRdmseEmyRlX/2OHTkeo+qFit7m5msYwS2IUUvwb/mlTAgYB8jur3fgGQVVmAFUS5LekaK3o5PT45bAVMC7EWHF+XxEaPSuKaO7iBBsp2PHPp4dnP022I7Psg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789460304; c=relaxed/simple;
-	bh=ieoU48RBV77xjZtkHFGV0rx9vh33zE1V23UHbbNjHL4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WtwB6wvWAZNs5BRVGa9wGQ0ZA+MpYnC4/TNyhuO2bvsHBhbTDbEyJzBEdC3jTl4WiT6lX9LAaLAw5Jidjsb/lyK4br3wS0tAyyRdCzKAzqYjly8GAOSj4L6ieHUWHXZpA482Kk2IVnwp2SiW4eREJsMR4FaUdml8+v5QS6UDqGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.2097744|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.787375-0.000208565-0.212417;FP=3234824456992474950|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033068005250;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=14;RT=14;SR=0;TI=SMTPD_---.jE598-K_1789460288;
-Received: from 10.10.26.192(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jE598-K_1789460288 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Tue, 15 Sep 2026 16:18:10 +0800
-Message-ID: <1e795205-212a-4ad4-9ba5-b3d0c7fb2d62@motor-comm.com>
-Date: Tue, 15 Sep 2026 16:18:08 +0800
+	s=arc-20240116; t=1789460376; c=relaxed/simple;
+	bh=/TruTWV3DYPt48o1z88GEWqVQgGaU9IxfJFJc/yPRPk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DUL7qkhlEZxh5d2vxuv/vL7UW90pcJQ3WxMmsE1BZVKrA6vkzP8DTwpZwVwxq0OLBA8K8beh2nvmudqI74HJUidGq1skBYZwJwtstcVbyF1ZOH1X9aYoU8D9HGwTEmuMAIVfPm3gv8wasRkLAnsSRglsqeAc4fdAMR9TrRyZvd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GyuLWkTl; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GyuLWkTl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789460373;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ij4ME6Q9FkmtCpj45HdGF/u3p1gNwGldp70kJo3jax4=;
+	b=GyuLWkTlnMq0ipW2ZDnQh2xK0FB2tEdkkd4T1dsw/boPdtOwkB2t/KJY5tDvNzAQvK+MdA
+	hcmUDHfQuc1RBeYe7+cj1ngMDsX95PvKBk0WZP3KTSqH+w1AOPoEGrPteHC2Z9excIsjie
+	RHPLKRGBs8AV5XhuoOYxKJJMlagXu1I=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-28-cqSTrVxuMESq4wGII5S6lQ-1; Tue,
+ 15 Sep 2026 04:19:28 -0400
+X-MC-Unique: cqSTrVxuMESq4wGII5S6lQ-1
+X-Mimecast-MFC-AGG-ID: cqSTrVxuMESq4wGII5S6lQ_1789460366
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C7CCB1955EAA;
+	Tue, 15 Sep 2026 08:19:25 +0000 (UTC)
+Received: from fedora.redhat.corp (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AE5981800579;
+	Tue, 15 Sep 2026 08:19:21 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: kuba@kernel.org
+Cc: aleksandr.loktionov@intel.com,
+	andrew+netdev@lunn.ch,
+	anthony.l.nguyen@intel.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	jacob.e.keller@intel.com,
+	jtornosm@redhat.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	przemyslaw.kitszel@intel.com,
+	rafal.romanowski@intel.com,
+	sdf@fomichev.me,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net 4/4] ice: skip unnecessary VF reset when setting trust
+Date: Tue, 15 Sep 2026 10:19:20 +0200
+Message-ID: <20260915081920.14393-1-jtornosm@redhat.com>
+In-Reply-To: <20260824190150.2714587-1-kuba@kernel.org>
+References: <20260824190150.2714587-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v17 2/2] net: phy: Add driver for Motorcomm Quad
- 2.5GbE phy
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Frank.Sae@motor-comm.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
- jianmin.wang@motor-comm.com, jie.han@motor-comm.com
-References: <20260912065224.2723883-1-kyle.switch@motor-comm.com>
- <20260912065224.2723883-3-kyle.switch@motor-comm.com>
- <77c43c66-98f8-479e-a3ab-8717b8132be9@lunn.ch>
-Content-Language: en-US
-From: Kyle Switch <kyle.switch@motor-comm.com>
-In-Reply-To: <77c43c66-98f8-479e-a3ab-8717b8132be9@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
+All the comments below fall into pre-existing issues, concerns already
+addressed in previous versions and comments, out-of-scope items, or extreme
+edge cases. No code changes are considered necessary for a new version.
+Details for each comment:
 
-On 9/15/26 09:57, Andrew Lunn wrote:
->> +int genphy_c45_template_testmode(struct phy_device *phydev, int test_mode)
->> +{
->> +	int ctrl = 0;
->> +
->> +	switch (test_mode) {
->> +	case 0:
->> +		ctrl = MDIO_PMA_10GBT_TESTMODE_NORMAL;
->> +		break;
->> +
->> +	case 1:
->> +		ctrl = MDIO_PMA_10GBT_TESTMODE_1;
->> +		break;
->> +
->> +	case 2:
->> +		ctrl = MDIO_PMA_10GBT_TESTMODE_2;
->> +		break;
->> +
->> +	case 3:
->> +		ctrl = MDIO_PMA_10GBT_TESTMODE_3;
->> +		break;
->> +
->> +	case 4:
->> +		ctrl = MDIO_PMA_10GBT_TESTMODE_4;
->> +		break;
->> +
->> +	case 5:
->> +		ctrl = MDIO_PMA_10GBT_TESTMODE_5;
->> +		break;
->> +
->> +	case 6:
->> +		ctrl = MDIO_PMA_10GBT_TESTMODE_6;
->> +		break;
->> +
->> +	case 7:
->> +		ctrl = MDIO_PMA_10GBT_TESTMODE_7;
->> +		break;
->> +
->> +	default:
->> +		return -EINVAL;
->> +	}
-> You should be able to simplify this using FIELD_PREP().
-Ans: will be fixed in next patch.
+> [Severity: Low]
+> This isn't a bug, but doesn't ice_vf_lib.c already have a helper with
+> exactly these semantics?
 >
->      Andrew
+> drivers/net/ethernet/intel/ice/ice_vf_lib.c:
+> static void ice_vf_set_host_trust_cfg(struct ice_vf *vf)
+>
+> Would it be preferable to export that one rather than carry a second copy?
+
+ice_vf_set_host_trust_cfg() derives the capability bit from vf->trusted,
+which must already be set before calling it. ice_setup_vf_trust() takes
+the setting as an explicit parameter, matching the i40e helper and the
+call site where vf->trusted and the capability bit are set together.
+Different interfaces for different purposes. Not a functional issue.
+
+> [Severity: High]
+> Is this predicate complete with respect to everything trust gates in ice?
+> Besides LLDP filters and promiscuous mode, vf->trusted also gates the MAC
+> and VLAN filter quotas and the administratively assigned MAC.
+>
+> Do those hardware filters then stay programmed after the log prints "VF N is
+> now untrusted"?
+>
+> Can vf->num_mac therefore remain above ICE_MAX_MACADDR_PER_VF after trust is
+> revoked, so that later legitimate MAC adds from the now-untrusted VF are
+> rejected until some unrelated reset happens?
+
+Same concern addressed in previous comments for both i40e and ice.
+Over-limit filters configured while trusted remain after trust revocation,
+but this is acceptable because untrusted VFs can freely delete their own
+MAC and VLAN filters, there are no trust checks in the deletion path
+(ice_vc_handle_mac_addr_msg() only checks trust when set == true). The VF
+simply cannot add more over-limit filters.
+
+ice_vc_handle_mac_addr_msg() decrements vf->num_mac on delete, so the
+counter reflects actual state after deletions. The no-reset path is only
+reached for VFs with no LLDP or promiscuous mode, having excess
+MAC/VLAN filters in this state is extremely unlikely.
+
+> [Severity: High]
+> What happens to the negotiated VLAN V2 capabilities when trust changes
+> without a reset?  The advertised limit is derived from vf->trusted once,
+> at negotiation time, and then cached on the PF.
+>
+> If the VF negotiated VIRTCHNL_VF_OFFLOAD_VLAN_V2 while trusted, does the
+> else branch leave max_filters at VLAN_N_VID, allowing the now-untrusted VF
+> to keep programming VLAN filters well beyond ICE_MAX_VLAN_PER_VF?
+
+The VLAN_V2 caps cache invalidation is part of the reset/rebuild path
+by design (ice_vf_set_initialized()). This patch does not change that
+architecture, it only adds a conditional to skip the reset when no
+advanced features are configured. The cache behavior is inherited from
+the existing design and is beyond the scope of this fix.
+
+> [Severity: Medium]
+> This isn't a bug introduced by this patch, but while ice_set_vf_trust() is
+> being touched: the switchdev check earlier in this same function returns
+> without releasing the VF reference taken by ice_get_vf_by_id().
+>
+> Would it make sense to convert that return into "goto out_put_vf;" here?
+
+Pre-existing reference leak, not introduced by this patch.
+
