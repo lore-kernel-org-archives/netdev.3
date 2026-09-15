@@ -1,184 +1,244 @@
-Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D967B4A4EF4;
-	Tue, 15 Sep 2026 11:34:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.135.140.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17EB64C4F76;
+	Tue, 15 Sep 2026 11:34:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789472081; cv=none; b=GTu+5Ztk0l9sngC45DrcjIssnzNC9WIBArm7lHGmQ8TMyjHeM1o/u4aMbiyBfN9AOpf5fmiZUhPzlOmh206psr9gdcsV8mRlFxQmhV3hWowZwCMlFok42ePzCodXcuzoaR8vEP1768UceUBwQyM/3btMCAf9rRmXkbmF15zsT5I=
+	t=1789472090; cv=none; b=pWeB3nPdEpEyxX+wX8VI0eaN/70CO4wJ/SsJ68glcPe+TwkqyB5eW1/UJXopOOpFJZk+n3LGyxHO6O1tZvMe9OCNV6FlMxeqv3FUrhNfAr8yCY93hLwfMGT3S2VT23U3TJxn2Y8qxHDsF0iprub65hK4M2fkhV6a0MLrev/Z1rI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789472081; c=relaxed/simple;
-	bh=KEFJLqrtBvHSM2ilsL45KGdw1zstaQc9a0kjLjgKlMc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FQRFPcBcv6qW70hXElWK75KvEXaz/f3U7fOeo56jB27KnJO+qafqM8IzJE8JSL9GHCeDHoLClyv5H9EejdExLHN4Q2r4y49wmqvLf+JcGfPklNrJuTcjY4nctPECuP8arPJLIkNnwjWAs3jr5dypRaT72vCWto+oZtSk8R90Iv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=none smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=NzA30gmc; arc=none smtp.client-ip=5.135.140.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cjdns.fr
+	s=arc-20240116; t=1789472090; c=relaxed/simple;
+	bh=Uhm5pGuH1u5xvAiYltqyiEc1yitYtbQkVnEw911bZpc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=mL/cRSHSberk093ha/o/WeCnvcIQa947mGMITRqCGnLgCBaa/ndj09HnvsiHcSqZKNQSmnh3X7SK5paC4KGYziuc/V0au9pI0HaZUqoSy/htruUkRSkYrF4HelO8EQtKtKVkpbY3ceNkqTYLLuqWIBsnR2iHilVIBjuDCgMN6PY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Flsbpaaf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="NzA30gmc"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 28A1E47C4C0;
-	Tue, 15 Sep 2026 13:34:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
-	t=1789472076; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=l7PQHSfZ7VfYkxwlucQsKGORvPo8DgZN+X++W5AjwOw=;
-	b=NzA30gmcfn9DyIMEofrPStZ4vQAnQ6ekfv+r2Zp0ikLEAaf7vm0dJhvhzmZWVGWULBKKQI
-	s4oFOp19b+Rw0RFYYJ9uAtRTriZSPLPyyHjV3EMCcu7XWiY7B1fAjey3PrxmhcF6/bRV2E
-	0e33RYWg8ICuVpOYge1XWGSpa0e0XNpkvU5ST2K+iskzt24ysFFLVio+f+WHmPS76V941e
-	DZK+Fp/aDaKd2Li2LUdaZEJCPXrjESTpRnlDXCfYs4YkchjcMy6ejx+cyvJSeYDr+ekAxq
-	kKIc5xXbIb6zSx8WG/RORW9v/omD0SbDXWWINpMvll5eV9kfsDpWIKD6sSmcGA==
-From: Caleb James DeLisle <cjd@cjdns.fr>
-To: netdev@vger.kernel.org
-Cc: daniel@makrotopia.org,
-	dqfext@gmail.com,
-	SkyLake.Huang@mediatek.com,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Caleb James DeLisle <cjd@cjdns.fr>,
-	Matheus Sampaio Queiroga <srherobrine20@gmail.com>
-Subject: [PATCH v5 net-next] net: phy: mediatek: support MT7530 PHYs on EN71221 MCM
-Date: Tue, 15 Sep 2026 11:34:27 +0000
-Message-Id: <20260915113427.113296-1-cjd@cjdns.fr>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Flsbpaaf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A3EE1F0089A;
+	Tue, 15 Sep 2026 11:34:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789472087;
+	bh=hTcFPD5nJ4+2LMtt0zaRlcDz8pb9ncWK9jLD+CuAEYQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=FlsbpaafsIOIgMpG7HCaM1DGGB+32ZzKmdnN26bxlcjfIBYeSqjg7SV0fHdam08z6
+	 UPHMCKlmukOmWEHllUecx7o++e5Lh3XRpN7AoTUW08gMYmF+pJlT/fJIqly9PGTq+Q
+	 uS8J8PziF121Z3kDQMB072y+lW4FQwZm+xGXX0ts1HmNDiDLjcAfccLqn5D3mHANLN
+	 CqNXVBrP5dfz3b/gqBl92UwVJ+JI45K95UWmPc4kdiJc8xu1YSfVfi7VzrYDrKL8fJ
+	 epFtYGN9LUEdiCXHagpzqxt2EfM73ZpJkAjsDTURRWezAHawT/pR7B3JghREyKTwwX
+	 W4GQ4hx051nWA==
+From: Christian Brauner <brauner@kernel.org>
+Date: Tue, 15 Sep 2026 13:31:13 +0200
+Subject: [PATCH RFC POC 27/50] drm/amdkfd: stop collecting CRIU dma-buf
+ descriptors for a final install
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260915-work-fd-reserve-unify-folded-v1-27-4d5217d6b246@kernel.org>
+References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
+In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jann Horn <jannh@google.com>, 
+ Jan Kara <jack@suse.cz>, Ingo Molnar <mingo@redhat.com>, 
+ Peter Zijlstra <peterz@infradead.org>, linux-fsdevel@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ Oleg Nesterov <oleg@redhat.com>, linux-alpha@vger.kernel.org, 
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+ linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+ linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
+ linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
+ linux-um@lists.infradead.org, Jens Axboe <axboe@kernel.dk>, 
+ io-uring@vger.kernel.org, netdev@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, linux-gpio@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ bpf@vger.kernel.org, David Airlie <airlied@redhat.com>, 
+ virtualization@lists.linux.dev, kvm@vger.kernel.org, 
+ kexec@lists.infradead.org, linux-hyperv@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>
+X-Mailer: b4 0.17-dev-db0b7
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5171; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=Uhm5pGuH1u5xvAiYltqyiEc1yitYtbQkVnEw911bZpc=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSt1KnLvXpYsF3fqHGS4YdPk5Xs9qW0bU/n3sgcUJuWL
+ yu8Wl+zo5SFQYyLQVZMkcWh3SRcbjlPxWajTA2YOaxMIEMYuDgFYCLz5jIynODjjVis7j19ziS2
+ AGmxAyL/v9W4StwoyMiZ+y5dYVWsNSPDvtpDpbc/Xihcun6Paoagrpdv5G6xV3U64XVmjU+13Lp
+ ZAA==
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-The EcoNet EN751221 multi-chip module implementation of the MT7530
-requires some additional configuration of the PHYs on startup.
-The reason for this is not known, but it is possible that it has
-to do with the fact that the EN751221 MCM implementation of the
-MT7530 runs at an abnormal PLL frequency (362.5Mhz).
+Rely on the fd exit path machinery.
 
-Detect whether the MT7530 PHY is attached to the MDIO bus of an
-EcoNet EN751221 switch and if so, apply the necessary register
-updates. Additionally, never attempt to configure an MT7530
-identified PHY which does not have gigabit support because the same
-ID is used for another (FE) PHY.
-
-Co-developed-by: Matheus Sampaio Queiroga <srherobrine20@gmail.com>
-Signed-off-by: Matheus Sampaio Queiroga <srherobrine20@gmail.com>
-Signed-off-by: Caleb James DeLisle <cjd@cjdns.fr>
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/net/phy/mediatek/mtk-ge.c | 81 +++++++++++++++++++++++++++++++
- 1 file changed, 81 insertions(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 67 +++++++-------------------------
+ 1 file changed, 13 insertions(+), 54 deletions(-)
 
-diff --git a/drivers/net/phy/mediatek/mtk-ge.c b/drivers/net/phy/mediatek/mtk-ge.c
-index 96d8ac5154e5..eddb66218d7c 100644
---- a/drivers/net/phy/mediatek/mtk-ge.c
-+++ b/drivers/net/phy/mediatek/mtk-ge.c
-@@ -1,4 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0+
-+#include <linux/of.h>
- #include <linux/bitfield.h>
- #include <linux/module.h>
- #include <linux/phy.h>
-@@ -101,6 +102,69 @@ static int mt7530_phy_config_init(struct phy_device *phydev)
- 	return 0;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+index 7fcfc150a7fc..158abe7e3da6 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -1988,11 +1988,10 @@ static uint32_t get_process_num_bos(struct kfd_process *p)
+ 	return num_of_bos;
  }
  
-+/*
-+ * The EcoNet EN751221 "G" multi-chip module MT7530 requires additional PHY
-+ * configuration.
-+ */
-+static int en751221_mcm_phy_config_init(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	ret = genphy_soft_reset(phydev);
-+	if (ret)
-+		return ret;
-+
-+	ret = phy_write_paged(phydev, MTK_PHY_PAGE_EXTENDED_1,
-+			      MTK_PHY_AUX_CTRL_AND_STATUS, 0x3a04);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Clause 45 global/local data from mt7530GePhyCfgLoad(E3.0). */
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x0417, 0x7775);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x00a6, 0x0350);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x0012, 0xd210);
-+	if (ret < 0)
-+		return ret;
-+
-+	return mt7530_phy_config_init(phydev);
-+}
-+
-+static bool en751221_is_mcm_phy(struct phy_device *phydev)
-+{
-+	struct device *parent = phydev->mdio.bus->parent;
-+
-+	return parent && parent->of_node &&
-+	       of_device_is_compatible(parent->of_node, "econet,en751221");
-+}
-+
-+/*
-+ * MTK_GPHY_ID_MT7530 ID is also used for an EcoNet SoC FE phy, but that PHY
-+ * does not advertise ESTATUS_1000_TFULL.
-+ */
-+static bool mt7530_is_gphy(struct phy_device *phydev)
-+{
-+	return phydev->phy_id == MTK_GPHY_ID_MT7530 &&
-+	       (phy_read(phydev, MII_ESTATUS) & ESTATUS_1000_TFULL) != 0;
-+}
-+
-+static int mt7530_phy_match(struct phy_device *phydev,
-+			    const struct phy_driver *phydrv)
-+{
-+	return mt7530_is_gphy(phydev) && !en751221_is_mcm_phy(phydev);
-+}
-+
-+static int en751221_phy_match(struct phy_device *phydev,
-+			      const struct phy_driver *phydrv)
-+{
-+	return mt7530_is_gphy(phydev) && en751221_is_mcm_phy(phydev);
-+}
-+
- static int mt7531_phy_config_init(struct phy_device *phydev)
+-static int criu_get_prime_handle(struct kgd_mem *mem,
+-				 int flags, u32 *shared_fd,
+-				 struct file **file)
++static int criu_get_prime_handle(struct kgd_mem *mem, int flags, u32 *shared_fd)
  {
- 	mtk_gephy_config_init(phydev);
-@@ -135,6 +199,23 @@ static struct phy_driver mtk_gephy_driver[] = {
- 		 */
- 		.config_intr	= genphy_no_config_intr,
- 		.handle_interrupt = genphy_handle_interrupt_no_ack,
-+		.match_phy_device = mt7530_phy_match,
-+		.suspend	= genphy_suspend,
-+		.resume		= genphy_resume,
-+		.read_page	= mtk_phy_read_page,
-+		.write_page	= mtk_phy_write_page,
-+	},
-+	{
-+		PHY_ID_MATCH_EXACT(MTK_GPHY_ID_MT7530),
-+		.name		= "EcoNet EN751221 MCM PHY",
-+		.probe		= mt7530_phy_probe,
-+		.config_init	= en751221_mcm_phy_config_init,
-+		/* Interrupts are handled by the switch, not the PHY
-+		 * itself.
-+		 */
-+		.config_intr	= genphy_no_config_intr,
-+		.handle_interrupt = genphy_handle_interrupt_no_ack,
-+		.match_phy_device = en751221_phy_match,
- 		.suspend	= genphy_suspend,
- 		.resume		= genphy_resume,
- 		.read_page	= mtk_phy_read_page,
+ 	struct dma_buf *dmabuf;
++	const struct fd_slot *fd;
+ 	int ret;
+ 
+ 	ret = amdgpu_amdkfd_gpuvm_export_dmabuf(mem, &dmabuf);
+@@ -2001,38 +2000,17 @@ static int criu_get_prime_handle(struct kgd_mem *mem,
+ 		return ret;
+ 	}
+ 
+-	ret = get_unused_fd_flags(flags);
+-	if (ret < 0) {
++	fd = fd_prepare(flags);
++	if (IS_ERR(fd)) {
++		ret = PTR_ERR(fd);
+ 		pr_err("dmabuf create fd failed, ret:%d\n", ret);
+-		goto out_free_dmabuf;
++		dma_buf_put(dmabuf);
++		return ret;
+ 	}
+ 
+-	*shared_fd = ret;
+-	*file = dmabuf->file;
++	/* Installed or dropped with the ioctl's result, nothing to put back. */
++	*shared_fd = fd_stage(fd, dmabuf->file);
+ 	return 0;
+-
+-out_free_dmabuf:
+-	dma_buf_put(dmabuf);
+-	return ret;
+-}
+-
+-static void commit_files(struct file **files,
+-			 struct kfd_criu_bo_bucket *bo_buckets,
+-			 unsigned int count,
+-			 int err)
+-{
+-	while (count--) {
+-		struct file *file = files[count];
+-
+-		if (!file)
+-			continue;
+-		if (err) {
+-			fput(file);
+-			put_unused_fd(bo_buckets[count].dmabuf_fd);
+-		} else {
+-			fd_install(bo_buckets[count].dmabuf_fd, file);
+-		}
+-	}
+ }
+ 
+ static int criu_checkpoint_bos(struct kfd_process *p,
+@@ -2043,7 +2021,6 @@ static int criu_checkpoint_bos(struct kfd_process *p,
+ {
+ 	struct kfd_criu_bo_bucket *bo_buckets;
+ 	struct kfd_criu_bo_priv_data *bo_privs;
+-	struct file **files = NULL;
+ 	int ret = 0, pdd_index, bo_index = 0, id;
+ 	void *mem;
+ 
+@@ -2057,12 +2034,6 @@ static int criu_checkpoint_bos(struct kfd_process *p,
+ 		goto exit;
+ 	}
+ 
+-	files = kvcalloc(num_bos, sizeof(struct file *), GFP_KERNEL);
+-	if (!files) {
+-		ret = -ENOMEM;
+-		goto exit;
+-	}
+-
+ 	for (pdd_index = 0; pdd_index < p->n_pdds; pdd_index++) {
+ 		struct kfd_process_device *pdd = p->pdds[pdd_index];
+ 		struct amdgpu_bo *dumper_bo;
+@@ -2105,7 +2076,7 @@ static int criu_checkpoint_bos(struct kfd_process *p,
+ 				ret = criu_get_prime_handle(kgd_mem,
+ 						bo_bucket->alloc_flags &
+ 						KFD_IOC_ALLOC_MEM_FLAGS_WRITABLE ? DRM_RDWR : 0,
+-						&bo_bucket->dmabuf_fd, &files[bo_index]);
++						&bo_bucket->dmabuf_fd);
+ 				if (ret)
+ 					goto exit;
+ 			} else {
+@@ -2156,8 +2127,6 @@ static int criu_checkpoint_bos(struct kfd_process *p,
+ 	*priv_offset += num_bos * sizeof(*bo_privs);
+ 
+ exit:
+-	commit_files(files, bo_buckets, bo_index, ret);
+-	kvfree(files);
+ 	kvfree(bo_buckets);
+ 	kvfree(bo_privs);
+ 	return ret;
+@@ -2504,8 +2473,7 @@ static int criu_restore_memory_of_gpu(struct kfd_process_device *pdd,
+ 
+ static int criu_restore_bo(struct kfd_process *p,
+ 			   struct kfd_criu_bo_bucket *bo_bucket,
+-			   struct kfd_criu_bo_priv_data *bo_priv,
+-			   struct file **file)
++			   struct kfd_criu_bo_priv_data *bo_priv)
+ {
+ 	struct kfd_process_device *pdd;
+ 	struct kgd_mem *kgd_mem;
+@@ -2557,7 +2525,7 @@ static int criu_restore_bo(struct kfd_process *p,
+ 	if (bo_bucket->alloc_flags
+ 	    & (KFD_IOC_ALLOC_MEM_FLAGS_VRAM | KFD_IOC_ALLOC_MEM_FLAGS_GTT)) {
+ 		ret = criu_get_prime_handle(kgd_mem, DRM_RDWR,
+-					    &bo_bucket->dmabuf_fd, file);
++					    &bo_bucket->dmabuf_fd);
+ 		if (ret)
+ 			return ret;
+ 	} else {
+@@ -2574,7 +2542,6 @@ static int criu_restore_bos(struct kfd_process *p,
+ {
+ 	struct kfd_criu_bo_bucket *bo_buckets = NULL;
+ 	struct kfd_criu_bo_priv_data *bo_privs = NULL;
+-	struct file **files = NULL;
+ 	int ret = 0;
+ 	uint32_t i = 0;
+ 
+@@ -2588,12 +2555,6 @@ static int criu_restore_bos(struct kfd_process *p,
+ 	if (!bo_buckets)
+ 		return -ENOMEM;
+ 
+-	files = kvcalloc(args->num_bos, sizeof(struct file *), GFP_KERNEL);
+-	if (!files) {
+-		ret = -ENOMEM;
+-		goto exit;
+-	}
+-
+ 	ret = copy_from_user(bo_buckets, (void __user *)args->bos,
+ 			     args->num_bos * sizeof(*bo_buckets));
+ 	if (ret) {
+@@ -2619,7 +2580,7 @@ static int criu_restore_bos(struct kfd_process *p,
+ 
+ 	/* Create and map new BOs */
+ 	for (; i < args->num_bos; i++) {
+-		ret = criu_restore_bo(p, &bo_buckets[i], &bo_privs[i], &files[i]);
++		ret = criu_restore_bo(p, &bo_buckets[i], &bo_privs[i]);
+ 		if (ret) {
+ 			pr_debug("Failed to restore BO[%d] ret%d\n", i, ret);
+ 			goto exit;
+@@ -2634,8 +2595,6 @@ static int criu_restore_bos(struct kfd_process *p,
+ 		ret = -EFAULT;
+ 
+ exit:
+-	commit_files(files, bo_buckets, i, ret);
+-	kvfree(files);
+ 	kvfree(bo_buckets);
+ 	kvfree(bo_privs);
+ 	return ret;
+
 -- 
-2.39.5
+2.53.0
 
