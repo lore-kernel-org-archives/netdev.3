@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874633CEBBD;
-	Tue, 15 Sep 2026 01:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6D13CF1F8;
+	Tue, 15 Sep 2026 01:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789437282; cv=none; b=EUk97eE7MawmfJNzbmPIalPX5sxwyPOL3w0NR+JqNnAlg/JrlV9Al41VwhvFURjWLroYntyRFbuUxsgdts4v/Dlo1cVGVuFFHxaA5z9HyOaUjdOoZVUfpIoSzcFA57UXXW8uUOK3GjO+JCPls8H4/uO38m0FJ7yAS1Ann7i5hgI=
+	t=1789437283; cv=none; b=bd+UXDONvjsdXiBSqsNuBQNFaVRjlvcSgof1giLArvR2XgqeHrH1lImj2UObiwiy2IVj3tGdexcQzn9FLl4sSVKsX+TXAZ6iKdvpmk/Mdw0q/j9wy1IVWZ+VL6VINWhnWyu3/so1hvVD8i7tZLPMXxa9kAnwq7NOd3vVuU1bg1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789437282; c=relaxed/simple;
-	bh=Qibvi95+PwzOvCjoWi44y+G+FarDBYWp5YRXmGMbuYg=;
+	s=arc-20240116; t=1789437283; c=relaxed/simple;
+	bh=guq27DQV+XQhQpuU+aj1hUeDlwrh+ICG/zqLYQJ4RDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dlimQl+U6kkSwt5ugGFR8BJ/FotfQ78H9xmjPi5kxclmXcKvaVjXTfSkKsRBeGqLOQCOwX/oU1Lw6CP/Xr8o0DrTMRc7zL0bdEV4sz9R7ePVly5MUGz451Ys5+gXdRDiWbXHnQwyvBHmnB1bdW0iWG74oNOeWjYjWhPINJ3UGZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CxXq/M6V; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=V/W3wLJMb6p92mv57NLIcJSf16StAK2KzoJimJq7c+cJJQDgqFGbRFPD0zuODQuEWiB6cOwEfnSAdt0OI0o7MjytWTbCEEuzgKnt/+xvo/MqpIBLBTk+yy1M683RxhzghxQ40H5tsA8fOP1ueu7Z2Kl2bx06OPYuhrIzbcXDILA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IWt4bRW1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CxXq/M6V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B5A11F00898;
-	Tue, 15 Sep 2026 01:54:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IWt4bRW1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE3B61F000FF;
+	Tue, 15 Sep 2026 01:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789437280;
-	bh=0hlHASVWrq9suxSMkNM/88LmdQYWAgdKXXVTBGzMUZw=;
+	s=k20260515; t=1789437281;
+	bh=xUG5YGa0uHPBHARxLMNh6SWTGhBBRupwiEERjOmN+mU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=CxXq/M6Vo+2N2D53lazus/SxuQ5OMgUqrhIk9lhZDMm0UNqoPGmms0u6+0ZqiNXV7
-	 qNziKXRM9sg1bgMo+QRN4ZHyctuZbCZoNotzg+ZzE3Aie7R1PsM82Oqt3Vg7kYS6Fi
-	 qxJT12Z2DGfNoGbPwTtNMc2dxik9FmZKbNk4fCcXjq2v5e/iPvVGYzOtEALuEY72ap
-	 /XqI2u6XZ2C2xQMapKDRhSwfH+awcK76nzNQQeJ9gE8ykAgwh2g+HYIPgdvAZ7GAgA
-	 zCrOauGB6PACUijy2bOVqJ2DdCu1LZrebIWQeau1zlO/z6fZPrqc7k0hbOPYhNs0Et
-	 ZNMXEU2T40UmA==
+	b=IWt4bRW1K1bPhbykN/1TIJ0YbtuU9/jUhMOCTwLAqGffqYBJRV0UAEve4KcNYS8Qa
+	 LAkQXfgq51HWcdwwJIvoBUkh9upy2MIgp+vD+TSgYjKVU7Gh4qYbgcbYp01E6bb1lW
+	 Dlh5Sh0F04YGRxCgNymFyUspoXdBZ4EVXH6Pb5hv0GANYc/1/63eeuZVe2HKVlFtJ+
+	 rUySAub7WxUfSVz4iTs5rRFNJKX2kuhCjBfIc1McZHjJWvmwVKkFPsN8fINPXo/9dV
+	 hMJVqe8l7N8r/41xxLxAermMqTFznzo0Wc5kGzts5BQpcOdZv6vZskRXri+gXvbYfQ
+	 +H+hwDVLW/djA==
 From: Jakub Kicinski <kuba@kernel.org>
 To: niklas.soderlund+renesas@ragnatech.se
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -46,12 +46,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v4 05/10] net: ethernet: ravb: Propagate error from ptp_clock_register()
-Date: Mon, 14 Sep 2026 18:54:38 -0700
-Message-ID: <20260915015438.881190-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v4 06/10] net: ethernet: ravb: Replace gPTP flags with callbacks
+Date: Mon, 14 Sep 2026 18:54:40 -0700
+Message-ID: <20260915015440.881226-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260909173027.2201560-6-niklas.soderlund+renesas@ragnatech.se>
-References: <20260909173027.2201560-6-niklas.soderlund+renesas@ragnatech.se>
+In-Reply-To: <20260909173027.2201560-7-niklas.soderlund+renesas@ragnatech.se>
+References: <20260909173027.2201560-7-niklas.soderlund+renesas@ragnatech.se>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,373 +63,292 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-net: ethernet: ravb: Propagate error from ptp_clock_register()
+net: ethernet: ravb: Replace gPTP flags with callbacks
 
-ravb_ptp_init() is changed to return an int so that a failing
-ptp_clock_register() can be propagated to its callers.  Along with that,
-the cached priv->ptp.phc_index field is dropped and ravb_get_ts_info()
-now reads the index directly from priv->ptp.clock.
+This replaces the info->gptp and info->ccc_gac hardware feature flags with
+a new struct ravb_gptp_info callback table hanging off struct ravb_hw_info.
+Gen2 and RZ/V2M get ravb_gen2_ptp_info (dmac_start/dmac_stop), Gen3 and Gen4
+get ravb_gen3_ptp_info (ndev_open/ndev_close).
 
-Link: https://sashiko.dev/#/patchset/20260610102432.3538432-2-niklas.soderlund+renesas@ragnatech.se?part=1
+A few questions on the conversion below.
 
-[Severity: Medium]
-The changelog only mentions the error propagation:
+> net: ethernet: ravb: Replace gPTP flags with callbacks
+>
+> Prepare for adding Gen4 support which will add a third and new way to
+> interact with the gPTP clock by replacing the flags for Gen2 behavior
+> (info->gptp) and Gen3 behavior (info->ccc_gac) with callbacks.
 
-    If the PTP clock registration failed the error is silently ignored.
-    Before reworking all callers of ravb_ptp_init() handle and propagate the
-    error so it can be used.
+[Severity: Low]
+The message describes this as replacing flags with callbacks, but the patch
+also changes error semantics.  Before this change both call sites discarded
+the return value:
 
-But the diff also removes the substance of two recent stable-tagged fixes.
-git blame on the removed lines points at:
+	if (info->gptp)
+		ravb_ptp_init(ndev);        /* ravb_dmac_init() */
 
-  1f77af0aaf27 ("net: ravb: avoid dereferencing an invalid PTP clock")
-      Fixes: a0d2f20650e8, Cc: stable
-      -> added priv->ptp.phc_index so ravb_get_ts_info() would not have to
-         dereference the clock pointer at all
+	if (info->ccc_gac)
+		ravb_ptp_init(ndev);        /* ravb_open() */
 
-  1cb9663789c5 ("net: ravb: serialize PTP clock teardown")
-      Fixes: a0d2f20650e8, Cc: stable
-      -> added the READ_ONCE()/WRITE_ONCE()/xchg() annotations and required
-         detaching priv->ptp.clock before disabling the gPTP interrupts and
-         unregistering
+After this change the value is returned from ravb_dmac_init() and acted on
+in ravb_open() with a goto out_ptp_stop.  So a ptp_clock_register() failure
+in ravb_ptp_init() that previously only cost hardware timestamping now makes
+bringing the interface up fail on every generation.
 
-Both mechanisms are undone here.  The only rationale given is below the ---
-line ("Rework to remove the caching of phc_index added by LLM without
-access to hardware"), which is dropped when the patch is applied, so git
-history will not record that two stable fixes were reverted.
-
-Could the commit message say that these two fixes are being reverted and
-explain why the new form is safe?
+The only mention is the "Handle error from starting the PTP clock" note
+below the --- marker, which does not end up in git history.  Could the
+commit message say that error handling behaviour changes too?
 
 > diff --git a/drivers/net/ethernet/renesas/ravb.h b/drivers/net/ethernet/renesas/ravb.h
-> index aa45f5466001d..0c122a8158409 100644
+> index 0c122a8158409..6603f90b19e15 100644
 > --- a/drivers/net/ethernet/renesas/ravb.h
 > +++ b/drivers/net/ethernet/renesas/ravb.h
-> @@ -1028,7 +1028,6 @@ struct ravb_ptp_perout {
->  struct ravb_ptp {
->  	struct ptp_clock *clock;
->  	struct ptp_clock_info info;
-> -	int phc_index;
->  	u32 default_addend;
->  	u32 current_addend;
->  	int extts[N_EXT_TS];
-> @@ -1163,7 +1162,7 @@ void ravb_modify(struct net_device *ndev, enum ravb_reg reg, u32 clear,
->  int ravb_wait(struct net_device *ndev, enum ravb_reg reg, u32 mask, u32 value);
+> @@ -1034,6 +1034,27 @@ struct ravb_ptp {
+>  	struct ravb_ptp_perout perout[N_PER_OUT];
+>  };
 >  
->  void ravb_ptp_interrupt(struct net_device *ndev);
-> -void ravb_ptp_init(struct net_device *ndev);
-> +int ravb_ptp_init(struct net_device *ndev);
->  void ravb_ptp_stop(struct net_device *ndev);
->  
->  #endif	/* #ifndef __RAVB_H__ */
-> diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-> index e44d065f77cc8..5ba322593a014 100644
-> --- a/drivers/net/ethernet/renesas/ravb_main.c
-> +++ b/drivers/net/ethernet/renesas/ravb_main.c
-> @@ -1774,7 +1774,7 @@ static int ravb_get_ts_info(struct net_device *ndev,
->  	struct ravb_private *priv = netdev_priv(ndev);
->  	const struct ravb_hw_info *hw_info = priv->info;
->  
-> -	if (hw_info->gptp || hw_info->ccc_gac) {
-> +	if (priv->ptp.clock && (hw_info->gptp || hw_info->ccc_gac)) {
-
-[Severity: Medium]
-Does this change what ethtool -T reports for a closed interface?
-
-priv->ptp.clock is only non-NULL between ravb_ptp_init() (called from
-ravb_dmac_init() for gptp parts and from ravb_open() for ccc_gac parts) and
-ravb_ptp_stop(), so it is NULL whenever the interface is down.  It is also
-always NULL with CONFIG_PTP_1588_CLOCK=n, since ravb only depends on
-PTP_1588_CLOCK_OPTIONAL and the stub ptp_clock_register() returns NULL
-(IS_ERR() is false in that case).
-
-Previously the capability bits were reported unconditionally and only
-info->phc_index was -1.  Now the whole block is skipped, so
-so_timestamping, tx_types and rx_filters all come back empty, while
-ravb_hwtstamp_set() still accepts HWTSTAMP_TX_ON and
-HWTSTAMP_FILTER_PTP_V2_L2_EVENT and ravb_hwtstamp_get() still reports them:
-
-	priv->tstamp_tx_ctrl = tstamp_tx_ctrl;
-	priv->tstamp_rx_ctrl = tstamp_rx_ctrl;
-
-Should the capability bits stay gated on the hardware feature flags, with
-only phc_index depending on a registered clock?
-
-This behaviour is still present at the end of the series, where
-ravb_get_ts_info() gates everything on hw_info->ptp->clock_index(ndev) >= 0
-and ravb_gen2_ptp_clock_index() returns -ENODEV when priv->ptp.clock is
-NULL.
-
->  		info->so_timestamping =
->  			SOF_TIMESTAMPING_TX_SOFTWARE |
->  			SOF_TIMESTAMPING_TX_HARDWARE |
-> @@ -1785,7 +1785,7 @@ static int ravb_get_ts_info(struct net_device *ndev,
->  			(1 << HWTSTAMP_FILTER_NONE) |
->  			(1 << HWTSTAMP_FILTER_PTP_V2_L2_EVENT) |
->  			(1 << HWTSTAMP_FILTER_ALL);
-> -		info->phc_index = READ_ONCE(priv->ptp.phc_index);
-> +		info->phc_index = ptp_clock_index(priv->ptp.clock);
-
-[Severity: High]
-Can this dereference a freed struct ptp_clock?
-
-There are now two unsynchronized loads of priv->ptp.clock in
-ravb_get_ts_info(): the NULL test and the dereference inside
-ptp_clock_index(), which is just:
-
-drivers/ptp/ptp_clock.c:
-    int ptp_clock_index(struct ptp_clock *ptp)
-    {
-	    return ptp->index;
-    }
-
-ravb_get_ts_info() is not always called under rtnl.  __ethtool_get_ts_info()
-calls ops->get_ts_info(dev, info) with only rcu_read_lock() held, and it is
-reached from the setsockopt path:
-
-  sock_timestamping_bind_phc()
-    -> ethtool_get_phc_vclocks()
-      -> __ethtool_get_ts_info()
-        -> ravb_get_ts_info()
-
-So a plain user process with a socket bound to the interface can be inside
-the if () block while another CPU runs ip link set down:
-
-  ravb_close()/ravb_stop_dma()
-    -> ravb_ptp_stop()
-      -> ptp_clock_unregister()
-        -> put_device(&ptp->dev)
-          -> ptp_clock_release()   /* object freed here */
-
-rcu_read_lock() does not help, because ptp_clock_unregister() frees
-synchronously without a grace period.  If the compiler reloads the field
-between the test and the call, the same window yields a NULL dereference
-instead.
-
-The old code read a single cached int that had already been invalidated to
--1 before unregistering, which is what 1f77af0aaf27 ("net: ravb: avoid
-dereferencing an invalid PTP clock") was for.  The same two-load pattern
-appears at the end of the series in ravb_gen2_ptp_clock_index(), so it is
-not addressed later.
-
->  	}
->  
->  	return 0;
+> +/**
+> + * struct ravb_gptp_info - Platform specific gPTP behavior
+> + *
+> + * Each generation of RAVB have slightly different behaviors when interacting
+> + * with the gPTP clock. This struct provides the callbacks to be called at
+> + * critical points in the RAVB driver.
+> + *
+> + * @set_config_mode:	Enter config mode
+> + * @dmac_start:		Called when the DMAC starts
+> + * @dmac_stop:		Called when the DMAC stops
+> + * @ndev_open:		Called when the ndev is opened
+> + * @ndev_close:		Called when the ndev is closed
+> + */
+> +struct ravb_gptp_info {
+> +	int (*set_config_mode)(struct net_device *ndev);
+> +	int (*dmac_start)(struct net_device *ndev);
+> +	void (*dmac_stop)(struct net_device *ndev);
+> +	int (*ndev_open)(struct net_device *ndev);
+> +	void (*ndev_close)(struct net_device *ndev);
+> +};
+> +
 
 [ ... ]
 
-> diff --git a/drivers/net/ethernet/renesas/ravb_ptp.c b/drivers/net/ethernet/renesas/ravb_ptp.c
-> index f70b616ac847c..37161c0579ce7 100644
-> --- a/drivers/net/ethernet/renesas/ravb_ptp.c
-> +++ b/drivers/net/ethernet/renesas/ravb_ptp.c
-> @@ -313,11 +313,11 @@ void ravb_ptp_interrupt(struct net_device *ndev)
->  	ravb_write(ndev, ~(gis | GIS_RESERVED), GIS);
+> diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+> index 5ba322593a014..9e9b1c4fbe956 100644
+> --- a/drivers/net/ethernet/renesas/ravb_main.c
+> +++ b/drivers/net/ethernet/renesas/ravb_main.c
+> @@ -712,8 +712,8 @@ static int ravb_dmac_init(struct net_device *ndev)
+>  		return error;
+>  
+>  	/* Initialise PTP Clock driver */
+> -	if (info->gptp)
+> -		ravb_ptp_init(ndev);
+> +	if (info->ptp && info->ptp->dmac_start)
+> +		return info->ptp->dmac_start(ndev);
+>  
+>  	return 0;
 >  }
->  
-> -void ravb_ptp_init(struct net_device *ndev)
-> +int ravb_ptp_init(struct net_device *ndev)
->  {
->  	struct ravb_private *priv = netdev_priv(ndev);
-> -	struct ptp_clock *clock;
->  	unsigned long flags;
-> +	int ret = 0;
->  
->  	priv->ptp.info = ravb_ptp_info;
->  
-> @@ -338,15 +338,14 @@ void ravb_ptp_init(struct net_device *ndev)
->  	ravb_modify(ndev, GCCR, GCCR_TCSS, GCCR_TCSS_ADJGPTP);
->  	spin_unlock_irqrestore(&priv->lock, flags);
->  
-> -	clock = ptp_clock_register(&priv->ptp.info, &priv->pdev->dev);
-> -	if (IS_ERR(clock)) {
-> -		netdev_err(ndev, "failed to register PTP clock: %pe\n", clock);
-> -		clock = NULL;
-> +	priv->ptp.clock = ptp_clock_register(&priv->ptp.info, &priv->pdev->dev);
-> +	if (IS_ERR(priv->ptp.clock)) {
-> +		ret = PTR_ERR(priv->ptp.clock);
-> +		priv->ptp.clock = NULL;
-> +		ravb_ptp_stop(ndev);
->  	}
 
 [Severity: Medium]
-Is it safe to store the ERR_PTR into the shared field before normalizing it?
+Should ravb_dmac_init() unwind the DMAC start when dmac_start() fails?
 
-On failure, priv->ptp.clock briefly holds an error pointer such as
-(void *)-ENOMEM before the next statement sets it to NULL.  Neither
-consumer validates for error pointers: ravb_ptp_interrupt() passes the
-value straight to ptp_clock_event() after a NULL check only, and
-ravb_get_ts_info() calls ptp_clock_index() on it after a NULL check only.
+The new return is reached after the block already entered
+CCC_OPC_OPERATION and after info->dmac_init() allocated and armed the
+descriptor rings:
 
-The reader that can hit this window without rtnl is the one described
-above:
+	/* Setting the control will start the AVB-DMAC process. */
+	error = ravb_set_opmode(ndev, CCC_OPC_OPERATION);
+	if (error)
+		return error;
 
-  setsockopt(SO_TIMESTAMPING | SOF_TIMESTAMPING_BIND_PHC)
-    -> sock_timestamping_bind_phc()
-      -> ethtool_get_phc_vclocks()
-        -> __ethtool_get_ts_info()
-          -> ravb_get_ts_info()
-            -> ptp_clock_index(priv->ptp.clock)
-
-The baseline registered into a local, normalized IS_ERR() to NULL and only
-then published with WRITE_ONCE(), which 1f77af0aaf27 justified with
-"Registration failures can also leave an error pointer in
-priv->ptp.clock."  Would registering into a local and publishing only the
-normalized value keep that property?  The publish-then-normalize sequence
-is unchanged at the end of the series.
-
-[Severity: Low]
-At this commit the netdev_err() is gone but nothing consumes the new return
-value yet:
-
-drivers/net/ethernet/renesas/ravb_main.c:ravb_dmac_init() {
 	/* Initialise PTP Clock driver */
-	if (info->gptp)
-		ravb_ptp_init(ndev);
+	if (info->ptp && info->ptp->dmac_start)
+		return info->ptp->dmac_start(ndev);
 
-	return 0;
-}
+For Gen2 and RZ/V2M dmac_start is ravb_ptp_init(), which can fail on a
+plain software condition when ptp_clock_register() returns an ERR_PTR.
+Previously every ravb_dmac_init() failure returned with the block still in
+CONFIG mode, and its three callers were written for that.
 
-drivers/net/ethernet/renesas/ravb_main.c:ravb_open() {
-	/* Initialise PTP Clock driver */
-	if (info->ccc_gac)
-		ravb_ptp_init(ndev);
+ravb_tx_timeout_work() documents the old invariant explicitly:
 
-	/* PHY control start */
-	error = ravb_phy_start(ndev);
-	...
-}
+	error = ravb_dmac_init(ndev);
+	if (error) {
+		/* If ravb_dmac_init() fails, descriptors are freed. So, this
+		 * should return here to avoid re-enabling the TX and RX in
+		 * ravb_emac_init().
+		 */
+		netdev_err(ndev, "%s: ravb_dmac_init() failed, error %d\n",
+			   __func__, error);
+		goto out_unlock;
+	}
 
-So a ptp_clock_register() failure is more silent at this commit than
-before: no log message, no propagated error, and both callers continue as
-if PTP had been set up.  This is resolved later in the series by "net:
-ethernet: ravb: Replace gPTP flags with callbacks", where ravb_dmac_init()
-returns info->ptp->dmac_start(ndev) and ravb_open() jumps to out_ptp_stop
-on failure, so it may only be worth a note in the changelog that the
-diagnostic disappears for one commit.
+With the new failure mode the descriptors are armed and the DMAC is left in
+OPERATION mode, while ravb_emac_init() is skipped and the TX queues stay
+stopped.  ravb_set_ringparam() has the same shape and returns with
+netif_device_detach() still in effect.  In ravb_open() the error goes to
+out_set_reset, which skips ravb_stop_dma() entirely.
 
+Would it be simpler to start the gPTP clock before the switch to
+CCC_OPC_OPERATION, so a failure still leaves the block in CONFIG mode?
+
+> @@ -1124,8 +1124,8 @@ static int ravb_stop_dma(struct net_device *ndev)
+>  	}
 >  
-> -	WRITE_ONCE(priv->ptp.clock, clock);
-> -	if (clock)
-> -		WRITE_ONCE(priv->ptp.phc_index, ptp_clock_index(clock));
-> +	return ret;
->  }
+>  	/* Stop PTP Clock driver */
+> -	if (info->gptp)
+> -		ravb_ptp_stop(ndev);
+> +	if (info->ptp && info->ptp->dmac_stop)
+> +		info->ptp->dmac_stop(ndev);
 >  
->  static void ravb_ptp_disable(struct net_device *ndev)
-> @@ -369,14 +368,12 @@ static void ravb_ptp_sync_irqs(struct net_device *ndev)
->  void ravb_ptp_stop(struct net_device *ndev)
->  {
->  	struct ravb_private *priv = netdev_priv(ndev);
-> -	struct ptp_clock *clock;
-> -
-> -	WRITE_ONCE(priv->ptp.phc_index, -1);
-> -	clock = xchg(&priv->ptp.clock, NULL);
+>  	/* Stop AVB-DMAC process */
+>  	return ravb_set_opmode(ndev, CCC_OPC_CONFIG);
+
+[Severity: Critical]
+This dispatch is the only PTP teardown reachable from the
+ravb_open() error path, and .dmac_stop is NULL in
+ravb_gen3_ptp_info, so on Gen3 and Gen4 nothing is stopped here.
+
+The registration for those two generations happens in the new
+info->ptp->ndev_open() call in ravb_open(), which is ravb_ptp_init().
+If ravb_phy_start() fails right after it, control goes to
+out_ptp_stop, which calls ravb_stop_dma(), which reaches this hunk
+and finds no .dmac_stop callback. ravb_ptp_stop() is therefore never
+called, priv->ptp.clock stays populated, and the ptp_clock plus its
+chardev stay registered while ravb_open() goes on to put the block
+into CCC_OPC_RESET and runtime suspend the device. Before this
+series the label itself did the pairing unconditionally for both
+flags, so this path was covered.
+
+The part that worries me most is what happens afterwards. Since
+ndo_open failed the interface never came up, so ravb_close() is not
+called on unbind either: unregister_netdev() has nothing to stop and
+ravb_remove() proceeds to free_netdev(), freeing the ravb_private
+area. The leaked ptp_clock still holds priv->ptp.info, which points
+into that freed allocation, and it remains reachable from userspace
+through /dev/ptpN, so the adjfine/gettime/settime callbacks then run
+on freed memory (and would do ravb_read()/ravb_write() MMIO on a
+device in RESET even before the free). A userspace loop that keeps
+retrying open on a board where PHY connect fails also re-runs
+ravb_ptp_init() each time and overwrites priv->ptp.clock, leaking a
+registration per attempt.
+
+Where do you want the fix? Calling info->ptp->ndev_close() from the
+out_ptp_stop label looks like the smallest change and restores the
+old pairing, but having ravb_stop_dma() fall back to ndev_close when
+dmac_stop is absent would also work if you would rather keep the
+teardown in one place. If it ends up at the label, the label name
+finally matches what it does again.
+
+[ ... ]
+
+> @@ -1967,8 +1957,11 @@ static int ravb_open(struct net_device *ndev)
+>  	ravb_emac_init(ndev);
 >  
->  	ravb_ptp_disable(ndev);
->  	ravb_ptp_sync_irqs(ndev);
->  
-> -	if (clock)
-> -		ptp_clock_unregister(clock);
-> +	if (priv->ptp.clock) {
-> +		ptp_clock_unregister(priv->ptp.clock);
-> +		priv->ptp.clock = NULL;
+>  	/* Initialise PTP Clock driver */
+> -	if (info->ccc_gac)
+> -		ravb_ptp_init(ndev);
+> +	if (info->ptp && info->ptp->ndev_open) {
+> +		error = info->ptp->ndev_open(ndev);
+> +		if (error)
+> +			goto out_ptp_stop;
 > +	}
->  }
+>  
+>  	/* PHY control start */
+>  	error = ravb_phy_start(ndev);
 
 [Severity: High]
-Can ravb_ptp_interrupt() still see the clock while it is being freed?
+Can this leak the registered ptp_clock on Gen3 and Gen4 when
+ravb_phy_start() fails?
 
-The new order in ravb_ptp_stop() is GIC=0/GIS=0, synchronize_irq(),
-ptp_clock_unregister(), and only then the NULL store.  The pointer stays
-published to the hardirq handler, which still reads it locklessly, for the
-whole duration of the unregister:
+ndev_open is ravb_ptp_init() for ravb_gen3_ptp_info, so the clock is
+registered here.  If ravb_phy_start() then fails, for example when
+ravb_phy_init() cannot connect the PHY and returns -ENOENT, control reaches:
 
-drivers/net/ethernet/renesas/ravb_ptp.c:ravb_ptp_interrupt() {
-	struct ptp_clock *clock = READ_ONCE(priv->ptp.clock);
-	u32 gis = ravb_read(ndev, GIS);
-
-	gis &= ravb_read(ndev, GIC);
-	if ((gis & GIS_PTCF) && clock) {
-		...
-		ptp_clock_event(clock, &event);
-	}
+ravb_open() {
+	...
+out_ptp_stop:
+	ravb_stop_dma(ndev);
+out_set_reset:
+	ravb_set_opmode(ndev, CCC_OPC_RESET);
+out_rpm_put:
+	pm_runtime_put_autosuspend(dev);
 	...
 }
 
-The only remaining guard is GIC being zero, but GIC is not a write-once
-teardown latch.  The PTP core .enable callbacks re-arm it from /dev/ptpN
-ioctls:
+but ravb_stop_dma() only dispatches dmac_stop:
 
-drivers/net/ethernet/renesas/ravb_ptp.c:ravb_ptp_extts() {
-	if (!info->irq_en_dis)
-		ravb_modify(ndev, GIC, GIC_PTCE, on ? GIC_PTCE : 0);
-	else if (on)
-		ravb_write(ndev, GIE_PTCS, GIE);
-}
-
-Those run under priv->lock, which ravb_ptp_disable() does not take, and
-there is no teardown flag.  So a PTP_EXTTS_REQUEST or PTP_PEROUT_REQUEST
-landing after ravb_ptp_disable()/synchronize_irq() re-enables the gPTP
-interrupt, and a following interrupt sees gis & GIC non-zero and hands the
-clock that is being unregistered to ptp_clock_event(), which takes
-ptp->tsevqs_lock and walks ptp->tsevqs.  ptp_clock_unregister() drops the
-last device reference:
-
-drivers/ptp/ptp_clock.c:ptp_clock_unregister() {
-	...
-	/* The final put, normally here, will invoke ptp_clock_release(). */
-	put_device(&ptp->dev);
-}
-
-The xchg() that this hunk removes made the handler observe NULL before GIC
-was touched, which is what 1cb9663789c5 described: "Atomically detach it
-with xchg() before disabling PTP interrupts, then synchronize all IRQs ...
-before unregistering the detached clock."
-
-A secondary effect of the same window: the re-armed enable bit is never
-cleared again, so the gPTP capture/compare interrupt stays enabled with no
-registered clock and the GIS_PTMF branch keeps advancing
-priv->ptp.perout->target.
-
-Would keeping the detach-before-disable ordering, or adding explicit
-serialization against the .enable callbacks, close this?  This code is
-unchanged at the end of the series.
-
-[Severity: Medium]
-This one is not introduced by this patch but by the earlier series patch
-"net: ethernet: ravb: Simplify gPTP start and stop"; mentioning it here
-since it concerns the same teardown path.
-
-On gptp parts, ravb_stop_dma() tears down PTP before a step that can fail:
-
-drivers/net/ethernet/renesas/ravb_main.c:ravb_stop_dma() {
-	...
 	/* Stop PTP Clock driver */
-	if (info->gptp)
+	if (info->ptp && info->ptp->dmac_stop)
+		info->ptp->dmac_stop(ndev);
+
+and ravb_gen3_ptp_info leaves .dmac_stop NULL, so ravb_ptp_stop() never
+runs.  priv->ptp.clock stays set and the ptp_clock plus its chardev stay
+registered while the device is put into CCC_OPC_RESET and runtime
+suspended.
+
+Three follow-on effects:
+
+- userspace can still call the ptp_clock_info callbacks, which do
+  ravb_read()/ravb_write()/ravb_wait() MMIO on a device in RESET and
+  possibly clock gated.
+
+- each retried open re-runs ravb_ptp_init() and overwrites
+  priv->ptp.clock, leaking the previous registration.
+
+- ndo_stop never ran, so ravb_close() does not clean up either, and
+  ravb_remove() does unregister_netdev() followed by free_netdev() with
+  no ravb_ptp_stop() anywhere in ravb_main.c outside the two callback
+  tables.  The leaked ptp_clock keeps a priv->ptp.info pointer into the
+  freed netdev private area, reachable through /dev/ptpN.
+
+Gen2 and RZ/V2M are not affected since their teardown is dmac_stop, which
+ravb_stop_dma() does call.
+
+The label name out_ptp_stop is also now misleading for the Gen3/Gen4
+callback set, since nothing stops PTP there.  Would calling
+info->ptp->ndev_close() on this path, or wiring ndev_close into the error
+label, be the intent?
+
+For reference, the baseline before this series had the pairing at the
+label:
+
+	if (info->gptp || info->ccc_gac)
 		ravb_ptp_stop(ndev);
 
-	/* Stop AVB-DMAC process */
-	return ravb_set_opmode(ndev, CCC_OPC_CONFIG);
-}
+[ ... ]
 
-If that final opmode transition times out waiting for CSR_OPS, the tx
-timeout worker takes the "hardware is still operating" branch:
+> @@ -2678,12 +2691,24 @@ static const struct ravb_hw_info ravb_gen2_hw_info = {
+>  			  SKB_DATA_ALIGN(sizeof(struct skb_shared_info)),
+>  	.rx_desc_size = sizeof(struct ravb_ex_rx_desc),
+>  	.dbat_entry_num = 22,
+> +	.ptp = &ravb_gen2_ptp_info,
+>  	.aligned_tx = 1,
+> -	.gptp = 1,
+>  	.nc_queues = 1,
+>  	.magic_pkt = 1,
+>  };
+>  
+> +static int ravb_gen3_ptp_set_config_mode(struct net_device *ndev)
+> +{
+> +	/* Enable gPTP Clock and Select High-speed peripheral bus clock. */
+> +	return ravb_set_opmode(ndev, CCC_OPC_CONFIG | CCC_GAC | CCC_CSEL_HPB);
+> +}
+> +
+> +static const struct ravb_gptp_info ravb_gen3_ptp_info = {
+> +	.set_config_mode = ravb_gen3_ptp_set_config_mode,
+> +	.ndev_open = ravb_ptp_init,
+> +	.ndev_close = ravb_ptp_stop,
+> +};
 
-drivers/net/ethernet/renesas/ravb_main.c:ravb_tx_timeout_work() {
-	if (ravb_stop_dma(ndev)) {
-		/* ... this just re-enables the TX and RX and skip the following
-		 * re-initialization procedure. */
-		ravb_rcv_snd_enable(ndev);
-		goto out;
-	}
-	...
-out:
-	netif_tx_start_all_queues(ndev);
-}
+This is the table with no .dmac_stop referenced in the ravb_open() comment
+above, and it is shared by both ravb_gen3_hw_info and ravb_gen4_hw_info:
 
-That path skips ravb_dmac_init(), the only remaining caller of
-ravb_ptp_init() for these parts, so the interface resumes traffic with
-/dev/ptpN removed and GIC/GIS zeroed until the interface is taken down and
-up again.  Before the series, the timeout path re-ran ravb_ptp_init() at
-its common out: label.  Should the stop path leave PTP alone until the
-opmode change has succeeded, or should the recovery branch re-register the
-clock?
+> @@ -2733,7 +2758,7 @@ static const struct ravb_hw_info ravb_gen4_hw_info = {
+>  	.tx_counters = 1,
+>  	.multi_irqs = 1,
+>  	.irq_en_dis = 1,
+> -	.ccc_gac = 1,
+> +	.ptp = &ravb_gen3_ptp_info,
+>  	.nc_queues = 1,
+>  	.magic_pkt = 1,
+>  };
+
+[ ... ]
