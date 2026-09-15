@@ -1,230 +1,154 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA04416865
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 04:38:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789447120; cv=pass; b=EDkaGVC4zTUYOB1o1YBMtIr8knJk7If59pZAVghfBWscFpHTUX8QBWuG1gELnMHF8gVZDkzCAaVk9umu9IUzF8hFr3jOSZuSiUEMxlqW2jKe8gZ2URZgYn4T4ttG2mlBEuJav5/BRtWTcORKH1Uhyvg/tCDzx2tjp6cjjEED5cE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789447120; c=relaxed/simple;
-	bh=754RD20EUwPDktjEAbnVK3U6f50bDEtQHjripWS2SJs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=axV+yDs3AafZD6+JtzXi326qbjIvABgDG1SVyaTaJj5Qr3NkYEmZdXdmGFrKaoSz2AZv4NApvd0+nEO5Wji1z27L6cQxLRw+bPv72M6CThM/pmKwzEoJzXui48TJg8KJNCBklPXebyLcq7Zio/vhoyqk6elbXIkMDW1l9whuSlc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kEh/1y44; arc=pass smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68C03AA9E2
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 04:58:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789448315; cv=none; b=GFGk951YFKyzu5w7n8VDC/O2QSWPZQNRcnu1Jco8Hr2C/+c4/lV1kAtk/5zIhvQ1rOVffc7s0jEM2N8FHpEflyttiGq4BykkMmKZtn/Qvcb+6C4jalRgOdiDqoOScSputvkKhR6AG5vZUsMhSu3+DPm4nyxWD1smnChGMwR+1Ko=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789448315; c=relaxed/simple;
+	bh=C1fXXNHo8UXoCAzodDxhxcKZtEoK+gCFLSDL6HtXi+o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pudn30P6qU5yACT5PwGUMXVQxDfEfCIrUCSK73CIu2GjIEoJBOY6uCYIwFi9LAb6UNWlnY2ltuXR1rM6IhYA52vp1MW5+RP1fBgLiz5dPfY9jcnI9ovcoCyjWWp+W2WcIrkRpGQru+Oa92eedDCpkhymuLeDrvDIOLyQ5IcoWzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jclark.com; spf=pass smtp.mailfrom=jclark.com; dkim=pass (2048-bit key) header.d=jclark-com.20251104.gappssmtp.com header.i=@jclark-com.20251104.gappssmtp.com header.b=eIN8lMVM; arc=none smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jclark.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jclark.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kEh/1y44"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-39647184c73so478782a91.1
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 21:38:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789447116; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Td7q+K8Im33crXM+zsF44MEzJ1zKRZm1tAtlMxO7OmWn9dqJocmDnqfKlW5Yy97oOL
-         CLiKFyVNwoQQF6bVaPJIE7LvENeudePioqmi9woIp8P/bBK59h2nSZHCfVNGShWYWaRO
-         6lc4OrlabWuV2OFRuJ8U1Pexp+hjZgoxXVA6vHymLufLdAt2gv9elqSWeNf6rOmaPUJg
-         iTaNzsXVt37RbI1wLh00LwGh5RFeYa22gZdLgpiG53/MtP57AQxaWkD+0QmNBpWwR632
-         Ixm2KfK4pg0Ce0Gobx0WKKOfeLlnKuInTQbxMhx0DnNjdb9o9evM/mIPUOX+qR7xAq8q
-         E+Tg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=BMKFmF5KCHiIlxIMpy44JXswv+h3NvvDCY+aouRDvjM=;
-        fh=yO3HkAob2DQd3wesCFMBZ1GMGczKcalk1eJQzpivSZY=;
-        b=dZ3TOTyxzdT9Ka4p/1WakKbKgmehqZp5hZrY7IbkrpNvsvnYeWyooN/Tgk3xWcQQnr
-         TkRZxiTN91j5vSF2wDeT/A2i5yBIpz+FeS8soLrecpvI9UgIf5L62FP/jW39O7rWt+OM
-         JryJv5lBAsyf7C8s5nlZBBimeVnMEG0BHCEUdSQLQz9Z7TeB1c4W35hV1HEzlaUaLL0T
-         6F/0BDxyacT1XYQV523pZDefMF1Zwyi8p8uMqQ91lvulM0N/r/mBMl6Md19fPDiB8LtY
-         dLdAXyaXwK2J09kDi6ZRAKsr191udfJq7jfEUjFqa9gp/3tG145DCD5dBzgM2zvBN7he
-         sbXw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=jclark-com.20251104.gappssmtp.com header.i=@jclark-com.20251104.gappssmtp.com header.b="eIN8lMVM"
+Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469b355ffso1661982b3a.1
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 21:58:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789447116; x=1790051916; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=BMKFmF5KCHiIlxIMpy44JXswv+h3NvvDCY+aouRDvjM=;
-        b=kEh/1y44O7797HmcCJE4P0JqKjrqsUNSIHvfO7AdlthdwdU8BSlXsto2B5AUfYMqma
-         mMfXzNwtuR997C13u7RrLZ5Ll1Cuj2PG9razyAhnfwaSV4vJytgjdl07vT83OrNgFjUi
-         8YIM/3mPiqi+xhfLO6N0A+tQC9XhoNG9/Oe4c6O4YV/0Vl9O8omgLfNvLoBqfhiJS0p1
-         HEqLih0Qw8ZXh/jxn/KYAZFc7ovP++byK+xBDkEWfNgB1EYXDdISmBBWVzvbd7Rqspns
-         eq1GrzrCiRPmfNUkb0zc7v+7KunBLGHPazgbBbjLZ5eZXvzWkIGWeNhtBbp/QNNIfOrj
-         ypVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789447116; x=1790051916;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=jclark-com.20251104.gappssmtp.com; s=20251104; t=1789448313; x=1790053113; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=BMKFmF5KCHiIlxIMpy44JXswv+h3NvvDCY+aouRDvjM=;
-        b=ebRVXwNipTTXpFmvCp1KRBF3D9szJGY/lRdA148c+q+B9O9J81BnLvkO20acI4dnG3
-         ag3GFTlwGsfjqA9ngmfaYbCX5ZSjf7LNUpQqLdHFlc1m9sSnHMc2I939m+VAnEzijdOW
-         nXp3SKzPbGSLnXzCeouL/lq0WPL+FbL6Dq19Syl2f5JB12Pjf5dNfmUtL8NEuxHCoDG+
-         LdsibkPZfS3eNPxcSQmDvq4pi+rj9sPQOcGp07/ZlNkgmKtTOykA83/+i1xVuiHUS4ph
-         K+DC8G07UYCbd3BYoTOwBTmn3tyores78q6fJ3i5dskUnIgg0E+omAglTfdMieJnkhPp
-         3sYg==
-X-Forwarded-Encrypted: i=1; AKwUvBySZB+5LqFDfN8kvLmNUuczt4ARIJi2pz17BJ/8wWRizQb9zSn+/UKbLuT4CKMsYTvqFXtBOE0=@vger.kernel.org
-X-Gm-Message-State: AFuF++no1q8OgJ8H+6ba4zif955Sac4iz/vC087EQL+IANd8hJh8Kl7H
-	+Fk2fsD51nxXluFJVRcsG2ruKcXT7WoYU99DxNx+lqMrOECuYH1PbAlGjA5qzaLojQ7O//0CDLb
-	fh+FktWg+zspz8oruUgJUIbLqyDxN9o8ydzSU/oivxGW09gCqdzgX3WYgpvA=
-X-Gm-Gg: AYBFou15QnJE9UiLrJeAwwb6nihvm42+QKNOSjv5nhMsaECi0/tAjwvSojnBJeRD+Mu
-	sqZ57Pe6/Mskv54+kv0pKmveF1ZXt4DxUlec2tLNJv75CgiKen2O2FQxYXBXHm4xM031hCMIfph
-	AiuPvSniNbRMZK236v4U5ChiRWQ1Y1HA4dBMZI1nLUlhbZXD/YZr0ugg3CHZAbkLwsF25qe4aT2
-	HT3/YXXGvoK/hWzXlCVnzJapz3iqyVUVu55ob+oeWVcU9iRHHkM0DnBQlgBk9eEfXP48yug2il9
-	xqBAnFDrJpO/BoayKsWspFfMtvlbRGLNg9v9CTM8c360sQresGdKAwAg1OOZqdAxjCZ1jkxRvqp
-	4Yhkf1pGRDBONy9Z4d7owFF5pE6418Bl4p9NpZP1LKSzWzg0P9JsPIKymhS4529y7SkgE
-X-Received: by 2002:a17:90b:2e49:b0:39d:e7c7:8044 with SMTP id
- 98e67ed59e1d1-39dfe189a3bmr3550198a91.17.1789447115623; Mon, 14 Sep 2026
- 21:38:35 -0700 (PDT)
+        bh=DYkfKrdykGTTKNXpCcbgVoHk584EaRb8tbI837afgGA=;
+        b=eIN8lMVMRpGDi+0NxBXPGaI2D/sLJJvZYZaY451385xm8coxhQilRcVtZD/XTnM0U6
+         oHanIMKrEPIFaNjelDbompDAKw/i7ui+lb56xB5ge7u41t7oMHIOoxwU7m3uOOoYbNdZ
+         HogwphvEEUYxfY4g45/nBl8yzb2aT+4Nl/xw2j8seV2KWOjVY5mK++pq6lihpv+1pNm0
+         mLiwIYYxl1GET7BkWRBKSsvM3dmzdovb0dTIbbt5wnIPEUtO4SHiPkfGcXxbw37VgzFI
+         HOKBMucJH7kWd9BThAsPtKuG1RHpFpHWHQ/cNhYez3bpEYjUSDoD4gOVfEIJO633YSts
+         Gcwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789448313; x=1790053113;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=DYkfKrdykGTTKNXpCcbgVoHk584EaRb8tbI837afgGA=;
+        b=BLFZZtfq+Q8Q+yAZeAl0UJb8KF4kUWeB7rZmFx5ZnZjSQ5/KKmIzkzYpjFRWJ3AiFs
+         Q7gvLQXfQFZrf4hbUxuqPJ4bs3v2c/LyfsG8kt9ORiYynlUoPNWapeiYBMch2gzQRR3X
+         pJh8eLlY5HvV88oAvjw44hBv0RrO7FCghGqiocHmGCkN+fB3IA0LXGKHVd8f3BXETv5e
+         F+kscCUvvZYGjo5uBZO4XNQKuoPewSknV4I9niFsuOSX8uCge34DG3UvIx+teevmI2la
+         TBqc4pzLEEf62mNiYqB51naOW5EGf8Riu6O3enw1pfG4fiWue/wQDDbZIDFqfI0YJ2Ek
+         ytfA==
+X-Forwarded-Encrypted: i=1; AKwUvBwvTMcr6Nszog8ZulP69SFXDrTxV9kUEv0AwsylSJTx/2gLtraMwoHwkwNVmmFC4clZzTEHaKw=@vger.kernel.org
+X-Gm-Message-State: AFuF++kKXD83furBvPGJQ/H6eMThIfv9Bh2MliNRaZe27vN81Ubd919I
+	TdKHgR8ccTmn0FJg72mtDzmWmU8zoBnqTHhYLp41l3nH/jyQunKVP3ARXFWA3wZhZA==
+X-Gm-Gg: AYBFou1F+Jd3wbQYT5mKVut/rjftjdQFD91oM+Vl7DN9W360+Eu6lk7ddd2yoIWERQ/
+	+Lb5Ims7t1IBvTJaiTb4HeREZCvWCklaGSKcIy6zq9Uwkj08l0O7ReYvp+vdvK6/mYPSy4FwwjS
+	6zQutNDQcSy1+knOB/4xN08DfCPfbujm4p6V7xjYZ1DPohkGuNfNo47Z1TYL8j/wBPqBrelKC86
+	iQ2Zv0WfJS4LaDVK8K+ljHLiarYyZ2z+O0o3pCdNeJMkJl5kmzz+svEiv/4yKY2VRs8PmjihN1U
+	mfL3yNq1AA7EDodW3kTPAMKps+hfaXC3qrfwdnPpqdegubfiBn2XNe2KWZ/Xed9TztA1t8vewBf
+	PvZHmt0HtOZ2FdysAPKd/ILgd+b+Xj5UEpP2lDECltt9mSsYvVzr39Y5lB0Tb0sAGsGXsE3dkcD
+	n/9hwRfANUIq6hlnJ47mYz8cQkQDNIOIVRS69LLjK9OL5xjHxKl5roNlh9PRcAT24vJ1e/nfUSp
+	1mvtcqm
+X-Received: by 2002:a05:6a00:9087:b0:847:8449:2bb6 with SMTP id d2e1a72fcca58-86f82a5e981mr10610059b3a.4.1789448312906;
+        Mon, 14 Sep 2026 21:58:32 -0700 (PDT)
+Received: from mimolette.lan ([58.136.228.96])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc4c65b5f96sm5917398a12.32.2026.09.14.21.58.29
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 14 Sep 2026 21:58:32 -0700 (PDT)
+From: James Clark <jjc@jclark.com>
+To: =?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	netdev@vger.kernel.org
+Cc: Richard Cochran <richardcochran@gmail.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	Nicolai Buchwitz <nb@tipi-net.de>
+Subject: [PATCH net v3] net: macb: fix ordering around PTP timestamp read
+Date: Tue, 15 Sep 2026 11:58:17 +0700
+Message-ID: <20260915045823.76100-1-jjc@jclark.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260914011420.115556-1-kuniyu@google.com> <178943491051.22033.2295775938786012621@kernel.org>
-In-Reply-To: <178943491051.22033.2295775938786012621@kernel.org>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Mon, 14 Sep 2026 21:38:24 -0700
-X-Gm-Features: AcwNN1VHpfsfyFv1DP2jVX5HqQ_6qE0O5kwZzDWFd5ShsjI44XaZ-MA7Y9umAjs
-Message-ID: <CAAVpQUCZgovYb9pOPry+o-sjV2SKEDt8Yd-gfJvt1F+zNJkUVw@mail.gmail.com>
-Subject: Re: [PATCH v1 net] tcp: Don't call skb_clone_and_charge_r() for
- close()d listener in tcp_v6_do_rcv().
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, ncardwell@google.com, horms@kernel.org, kuni1840@gmail.com, 
-	netdev@vger.kernel.org, tarasmadan@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 14, 2026 at 6:15=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
-te:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider:
->
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 0
->
-> - [High] Incomplete fix / residual TOCTOU race in tcp_v6_do_rcv(): the
->   new guard is a state *blacklist* (`!((1 << sk->sk_state) &=E2=80=A6
->
-> --
->
-> tcp: Don't call skb_clone_and_charge_r() for close()d listener in tcp_v6_=
-do_rcv().
->
-> The patch extends the guard in tcp_v6_do_rcv() so that
-> skb_clone_and_charge_r() is skipped for TCP_CLOSE in addition to
-> TCP_LISTEN, closing the window where a concurrent close() turns a listene=
-r
-> into TCP_CLOSE while the lockless listener path is running.  The commit
-> message notes this is safe for non-listeners because tcp_rcv_state_proces=
-s()
-> drops the skb for TCP_CLOSE.
->
-> No Link: tags are present in the commit header.
->
-> > diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-> > index df9c29eb5c1f4..7fa4ed2fd4f16 100644
-> > --- a/net/ipv6/tcp_ipv6.c
-> > +++ b/net/ipv6/tcp_ipv6.c
-> > @@ -1604,7 +1604,8 @@ int tcp_v6_do_rcv(struct sock *sk, struct sk_buff=
- *skb)
-> >          by tcp. Feel free to propose better solution.
-> >                                              --ANK (980728)
-> >        */
-> > -     if (np->rxopt.all && sk->sk_state !=3D TCP_LISTEN)
-> > +     if (np->rxopt.all &&
-> > +         !((1 << sk->sk_state) & (TCPF_LISTEN | TCPF_CLOSE)))
-> >               opt_skb =3D skb_clone_and_charge_r(skb, sk);
->
-> [Severity: High]
-> Is TCP_CLOSE the only other state the lockless listener path can observe
-> here?
->
-> tcp_v6_rcv() calls tcp_v6_do_rcv() without taking the socket lock when it
-> samples TCP_LISTEN:
->
-> net/ipv6/tcp_ipv6.c:tcp_v6_rcv() {
->         ...
->         if (sk->sk_state =3D=3D TCP_LISTEN) {
->                 ret =3D tcp_v6_do_rcv(sk, skb);
->                 goto put_and_return;
->         }
->
->         sk_incoming_cpu_update(sk);
->
->         bh_lock_sock_nested(sk);
->         ...
-> }
->
-> Only a socket reference is held across that call, so nothing pins
-> sk->sk_state while tcp_v6_do_rcv() re-reads it.  Can user space move the
-> same socket further than TCP_CLOSE inside that window?  inet_shutdown() o=
-n
-> a listener falls through to sk->sk_prot->disconnect(), i.e. tcp_disconnec=
-t()
-> -> tcp_set_state(sk, TCP_CLOSE), and a following connect() on the still-o=
-pen
-> fd sets TCP_SYN_SENT.
+PTP_SYS_OFFSET_EXTENDED returns system timestamps that do not correctly
+bracket the PHC register read on MACB/GEM. On a Raspberry Pi 5, the
+returned interval can be as short as 37 ns, while an ordered register
+read takes approximately 1 us. This biases the midpoint used by phc2sys,
+causing CLOCK_REALTIME to run approximately 0.5 us ahead when synchronized
+to the PHC.
 
-This is yet another bug due to the buggy transition we forbade
-in 8cc3aef0cb19 but only in net-next.
+gem_tsu_get_time() reads the nanoseconds register using the driver's
+relaxed MMIO accessor. On weakly ordered systems, the subsequent system
+timestamp can be taken before the register read completes. The internal
+smp_rmb() in the pre-timestamp path also does not guarantee ordering
+against the subsequent MMIO read.
 
+Add rmb() before and after the bracketed nanoseconds read in both the
+normal and seconds rollover paths so the system timestamps bracket the
+PHC read. Adding the post-read barrier increases the minimum interval on
+the same Raspberry Pi 5 to approximately 1 us.
 
->
-> If TCP_SYN_SENT (or later TCP_ESTABLISHED) is what gets loaded at the new
-> check, the blacklist passes and skb_clone_and_charge_r() runs with no soc=
-ket
-> lock again:
->
-> include/net/sock.h:skb_clone_and_charge_r() {
->         skb =3D skb_clone(skb, sk_gfp_mask(sk, GFP_ATOMIC));
->         if (skb) {
->                 if (sk_rmem_schedule(sk, skb, skb->truesize)) {
->                         skb_set_owner_r(skb, sk);
->         ...
-> }
->
-> sk_rmem_schedule() and skb_set_owner_r() -> sk_mem_charge() ->
-> sk_forward_alloc_add() perform a non-atomic read-modify-write of
-> sk->sk_forward_alloc, which is the same accounting corruption behind the
-> inet_sock_destruct() "sk->sk_forward_alloc" warning quoted in the commit
-> message.
->
-> Would a positive condition be more robust than extending the blacklist,
-> for example bailing out of tcp_v6_do_rcv() when the lockless listener pat=
-h
-> observes sk->sk_state !=3D TCP_LISTEN?  That would also match the comment=
- at
-> the top of the function:
->
->         /* The socket must have it's spinlock held when we get
->          * here, unless it is a TCP_LISTEN socket.
->          ...
->          */
->
-> On the same window, does the TCP_ESTABLISHED fast path just below become
-> reachable without the lock as well?
->
->         if (sk->sk_state =3D=3D TCP_ESTABLISHED) { /* Fast path */
->                 struct dst_entry *dst;
->
->                 dst =3D rcu_dereference_protected(sk->sk_rx_dst,
->                                                 lockdep_sock_is_held(sk))=
-;
->
-> The lockdep_sock_is_held() assertion, the RCU_INIT_POINTER()/dst_release(=
-)
-> of sk->sk_rx_dst and tcp_rcv_established() all assume the socket lock is
-> held.
->
-> Should the state reads on this path also use READ_ONCE() (or
-> inet_sk_state_load()) instead of plain loads, given the socket lock is no=
-t
-> held?
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20260914011420.115556-1-kuniyu%40google.com
+Fixes: e51bb5c2784c ("net: macb: ptp: Switch to gettimex64() interface")
+Tested-by: Nicolai Buchwitz <nb@tipi-net.de> # Raspberry Pi CM5, min bracket 37 ns -> 981 ns
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Assisted-by: LLM
+Signed-off-by: James Clark <jjc@jclark.com>
+---
+Changes in v3:
+- Guard the barriers with if (sts), following Jakub's feedback.
+- Reduce the comments following Théo's feedback, and focus on relevant
+  point following Jakub's feedback.
+- Add Théo Lebrun's Reviewed-by from v2.
+- Add Assisted-by: LLM.
+
+v2: https://lore.kernel.org/netdev/20260910040658.18359-1-jjc@jclark.com/
+v1: https://lore.kernel.org/netdev/20260908053150.28694-1-jjc@jclark.com/
+
+Nicolai's testing and review covered v1; Théo's review covered v2.
+
+ drivers/net/ethernet/cadence/macb_ptp.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/net/ethernet/cadence/macb_ptp.c b/drivers/net/ethernet/cadence/macb_ptp.c
+index e5195d7da..a9ac09900 100644
+--- a/drivers/net/ethernet/cadence/macb_ptp.c
++++ b/drivers/net/ethernet/cadence/macb_ptp.c
+@@ -50,7 +50,12 @@ static int gem_tsu_get_time(struct ptp_clock_info *ptp, struct timespec64 *ts,
+ 
+ 	spin_lock_irqsave(&bp->tsu_clk_lock, flags);
+ 	ptp_read_system_prets(sts);
++	/* explicit barriers are needed because gem_readl() is relaxed */
++	if (sts)
++		rmb();
+ 	first = gem_readl(bp, TN);
++	if (sts)
++		rmb();
+ 	ptp_read_system_postts(sts);
+ 	secl = gem_readl(bp, TSL);
+ 	sech = gem_readl(bp, TSH);
+@@ -62,7 +67,11 @@ static int gem_tsu_get_time(struct ptp_clock_info *ptp, struct timespec64 *ts,
+ 		 * (assume all done within 1s)
+ 		 */
+ 		ptp_read_system_prets(sts);
++		if (sts)
++			rmb();
+ 		ts->tv_nsec = gem_readl(bp, TN);
++		if (sts)
++			rmb();
+ 		ptp_read_system_postts(sts);
+ 		secl = gem_readl(bp, TSL);
+ 		sech = gem_readl(bp, TSH);
