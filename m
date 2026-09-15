@@ -1,169 +1,224 @@
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98ACC361668;
-	Tue, 15 Sep 2026 08:06:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30466387590
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:10:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789459589; cv=none; b=uSpBO7mBSAXytdrNpHSe6AQCUG78lO/lWjR2MbH4GuEBdu/uC98l0Scm+sffUwgYHkQUTGU5/dGpoVnSPbZlPfRlP4H75bVRq28R8TpTYfVXlMk7dsnY8iYX57vPzTCiBcQG4Uw+LzctJsxS+Q2XVNbu/Iil1KoPW8Nlf9MS8SQ=
+	t=1789459836; cv=none; b=fOmbUI7I8YerX9XQ6NdVQHuSdBx3cGFIPCzV4jbYDiJNH3UmEXEQwClao3/OSpG5YMElgEg2nQTuKAhITjRp2D3TlPyvn7V90xoKLTmEMI1IaXMrBTHr2VcNTAPSeDw/pogB9QnCzBUtHt3xX4mymrtX65nRMP6bQBfaWNRZOG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789459589; c=relaxed/simple;
-	bh=0UtIK4EWaEM5NyLfWC9AQHfi3cx+W4riJmN7gPYqazU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=b5hHOjlNgyesIyTXu75punBs5AXB2SiVneHE2qqrgNCooMWZao3PHL+SkkVTDW4Sgs+PDPYxrzrNaVm3EAW1YNEeu7bRpXZStSBPXwAWPTbBTqmxS+Df3N6BMeIpri0xwXl7NRpzIZ9aaM/dqzcV4ig1BkjLJvaKR+naP9Y0NtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=g/xpKYEg; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
+	s=arc-20240116; t=1789459836; c=relaxed/simple;
+	bh=Fg/UOYCqOAErurKdRS1w3bl8OU8Z0eji77SSiyx26Zw=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=VNHGVb6qfNNnk6Nkt8ozx3JIJEN6jpoghbk3sdal+6RWUE0bG25bRNa7bligc+qOgMZHlxzuY7Jk6EK1N/JmhbdCrX0XWLEnc7lH97i3iZZWi0SgnW6k/Li2F6du1suiIqZpAhP0dVy4jkWtKCpEltxlMuUTwReZ7phQ3Nc2UEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WUKpu7hO; arc=none smtp.client-ip=74.125.227.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="g/xpKYEg"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 308F83EDE1;
-	Tue, 15 Sep 2026 08:06:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
-	s=gm1; t=1789459579;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zjp8PjXiAnLAmgWmDr7CM8wc83Z7ba0mT6o7NJd+Dv0=;
-	b=g/xpKYEgVTl9Y+YC+g6ZryBRi3HeskV5U7z+Gd/XqOsv7ra6nbKEcSo46YPzNvvgT+drJC
-	G/59HHj8u+mo9NcxDx/DDWi4xhQVTwORLcATwuoVXv6Z1J2knt53jea7od54PNLwsOH5bb
-	QYIGiTT0s0HJu3NkeKzB/MzG4/LNGFpiNi56NAZejgJoJrix40m/clbZfx1y/8PA2ANYM2
-	t4WjDGZZY3D3EcjZk/qLqwg8iWck/nvZUpRNKkv4C66kv0lo2pzKWRQMuaJNpex74ITpv0
-	zDsSroFjeTxOKph+W+xKJIwIj4BUhRdvakhqmKlAuv30MQa2U8eYS7C5Bif0rQ==
-From: Arthur Crepin Leblond <arthur@marmottus.net>
-Date: Tue, 15 Sep 2026 10:06:03 +0200
-Subject: [PATCH net-next v8 2/3] dt-bindings: net: wiznet,w5100: add link
- status interrupt
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WUKpu7hO"
+Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2d747ed1368so28793575ad.1
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 01:10:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789459834; x=1790064634; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=AwbPDrXYNDMt3RqOHL+ae9V5b1oGuxYSFTMBTjsuwrM=;
+        b=WUKpu7hOmIEVJ+uFO3AYSh461WZPfAe7qjEHv9n5xF/zevDjq9dLcp4ahYtaPGBKGb
+         B1iJj0WJIY01uKtcEYerdRjFm0QFk8hGc7I+mTfeqkjwXrM/RppOFj8yQi12I6kJbgHS
+         FS+TpylIM0Aih0+QxFVcfjimNWGHH+QXrzwejuBQ3oDMJ942oBRJ+cW9C4QL7W0/IUXI
+         WSVyqcGlO32m1amHPbZbRehbfTb8H60YXFrrC2/NUVhfzr37l/+64z/VnEUJM2fjvoPu
+         0SL6cFerO5V5i8p2DzUbMwZFyRGRmRI/DmDVYSf71URVOWJMwEMZ7BN2YfVTgNFSXFdo
+         StAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789459834; x=1790064634;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=AwbPDrXYNDMt3RqOHL+ae9V5b1oGuxYSFTMBTjsuwrM=;
+        b=D0BHzAPBKyvdUWN68wf9TPwGYgV+N6kY1Z2W2gU1rlM4kbtZ0dVEXtDVX9qkm3jvPJ
+         7qJlG/XzZ7hPg2qv+I1zBOvHUFlyEudVMO/IukhqfGzZpNFOKeVcq4AZ0gftfndCvWvw
+         HDEEE9hiI9brCspbnb5Ep1PbyCCHsFF+H3Ep7EypGGCzi1VVbPXRwCqcqfaV14J/AwTS
+         AadZOVYxFYc+NJz5jc62QOMkA8CzjnR3k/GbY3yTsnc5yfi9aB7/8B/ts+LHBz3SXlnd
+         vYuABhbPRt3ddRWcJLdIXeFsnDptwkQfTkwsVWiV9vS+bmzMLGBK0M+rK/TzyV+dOMyj
+         iJLQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxIXSWMr4Wk+rUSiKO6mIfZNEE49KCXk5q+zlxeIBxp465iR5FkTT+6jdckajAl/lULqhlXktM=@vger.kernel.org
+X-Gm-Message-State: AFuF++lgvQNRYVhjXthZOdex3rtxP61RTcgj4JFgmb5TczJmjmptMFGD
+	9GLlHxHQm1tX2EYQvV7qxnoWSnqkhbjF/0NQIgKKr2S/64471wJDzi+k
+X-Gm-Gg: AYBFou3UJd9uywJkUeD9tViCBKdkBJltTsWNDnthF8D34SVWsqb9AifIIle4asnPkix
+	ZRe8w5NQdn0Ptpvx04xdkJVLmX3rWGlFnv7nTQXIIv+uAI58yAwXxrVS22BKUfu9HKx9byX0++y
+	A0O6JJFeJkG2s/0/OgPxXa9F52AXtF0DvOnSAHyvKbV1PN+IuK7lqotfB5uCIqekaNvDLgghit8
+	y5/wCsrYaDQbVSqLaSdt3tOacq76wUbLffaZThuUxr0Q6ct0Z98g05PmbmV/50nzx7D4So6UW5s
+	bAh0uvlHvXAfgGXZ5yYtWUBGjTO8X/7e1e8v5M+DpcRbmKUGnsqOqQcHoCiRRxrWxar+CsUo1r3
+	P1i6y124Vd/oOkJ/h6TotE/x9Jc9cko1Mon5qkwe021YRG/xZJumxYlcATjwoAQtzYBviF6JEy8
+	DBXWR3V7xFYRNUrQbXj9iBDpFCGslwV/GPtOGnukRwfHviOVdMU9IKK8o69IoxWCyhLHKeuoQNX
+	4sqqemO0WGc2oGFUuvJp0wk/cSHWQ==
+X-Received: by 2002:a17:903:198d:b0:2db:2427:97d5 with SMTP id d9443c01a7336-2dd6c5bbbbamr132010185ad.4.1789459834271;
+        Tue, 15 Sep 2026 01:10:34 -0700 (PDT)
+Received: from localhost.localdomain ([103.120.31.178])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33ba4f5833fsm38624583eec.23.2026.09.15.01.10.27
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 15 Sep 2026 01:10:33 -0700 (PDT)
+From: Khawar Ahemad <ahemadkhawar123@gmail.com>
+To: bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	magnus.karlsson@intel.com,
+	maciej.fijalkowski@intel.com,
+	sdf@fomichev.me,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	horms@kernel.org,
+	syzbot+aa48b5fe7bfda62d1682@syzkaller.appspotmail.com
+Subject: [PATCH bpf-next v6] xsk: Fix circular locking dependency between &net->xdp.lock, &xs->mutex, and netdev_lock_ops
+Date: Tue, 15 Sep 2026 13:40:23 +0530
+Message-ID: <20260915081023.7433-1-ahemadkhawar123@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260915-wiznet-link-gpio-v8-2-d173622474cc@marmottus.net>
-References: <20260915-wiznet-link-gpio-v8-0-d173622474cc@marmottus.net>
-In-Reply-To: <20260915-wiznet-link-gpio-v8-0-d173622474cc@marmottus.net>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, netdev@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Arthur Crepin Leblond <arthur@marmottus.net>
-X-Mailer: b4 0.15.2
-X-GND-Sasl: arthur@marmottus.net
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: dmFkZTFAFqprjYmMpGKftCTkYlbk5kdK4l8Fitu7zs4+KBA0m8t3VRCs8xUf9+CZ5U3qNYjJxsUJwkHFm6CTcIxkrUixEh9MRSgg+b+3GEgRVe5rGxdkPxTUXurRaic+wE2+hLOnmGcr/adm+W6FlAeH+y8E/wnjtu9WluIC4LFUQWUCjN5rGuBUOIxMySz0myLCeSuyrzkg/LXvW4ECcruBfdzuWPCZwp6ZINeRnspLS9TpE5Yd/tynzLutmhfM0brccBXPAVxNesNx0XZY7/j/f+G1m4k5L9tNogzM4K5fCyjvtneZA9frkKyXLiznFGo2i+z3w4FUXo7q2gbFgrem5XnCi+9CkF8DkIA3TwdKC259mZjyvgtUJ8nlXrwETJlI4ErBnq3K503rAcYSfd4ldDha0bktGAjExBWdkB+tjVaVSbNm24ehAZiradpdQE8nR3kmMz76V9gmQLN+aolve/tzCDiklA1mTDt4XbJvPcNuXft6eN+FyHaiPVjuA0HoNp65evUFEBNiPv20q9jBKhGDA92aMTNwK0GdZC2zMBaigiWmR4YToMeUPx1P1QkCAia/IffwYK5C5idA5WwpmrNriQzavRlVxhnhWehWP3GkVxf40BS359FjgYUef6QO9js8ogeYuPb9ZZA6H4Z1FZD0h97q6a/iHukMEsAaXQF+aw
+Content-Transfer-Encoding: 8bit
 
-Add an optional link status interrupt which can be connected to the
-LINKLED pin on the device to detect link status changes. This second
-interrupt is only supported on wiznet,w5500.
+syzbot reported a circular locking dependency involving &net->xdp.lock,
+&port->pnodes_lock, netdev_lock_ops(), and &xs->mutex:
 
-Signed-off-by: Arthur Crepin Leblond <arthur@marmottus.net>
+-> #3 (&net->xdp.lock):
+       xsk_notifier+0x3d/0x2c0 net/xdp/xsk.c:2106
+       ipvlan_device_event+0x310/0x4e0 drivers/net/ipvlan/ipvlan_main.c:834
+       unregister_netdevice_many_notify+0x808/0x18b0 net/core/dev.c:12518
+
+-> #2 (&port->pnodes_lock):
+       ipvlan_device_event+0x85/0x4e0 drivers/net/ipvlan/ipvlan_main.c:795
+       notifier_call_chain+0xb5/0x410 kernel/notifier.c:85
+
+-> #1 (&dev_instance_lock_key / netdev_lock_ops):
+       netdev_lock_ops include/net/netdev_lock.h:42 [inline]
+       xsk_bind+0x331/0x11d0 net/xdp/xsk.c:1627
+
+-> #0 (&xs->mutex):
+       xsk_diag_fill net/xdp/xsk_diag.c:113 [inline]
+       xsk_diag_dump+0x2e0/0x4e0 net/xdp/xsk_diag.c:166
+
+The cycle exists through the following dependency chain:
+1. xsk_bind() acquired netdev_lock_ops() while holding &xs->mutex (#1).
+2. Device unregistration in ipvlan_device_event() acquired
+   &port->pnodes_lock (#2) and called xsk_notifier(), which acquired
+   &net->xdp.lock (#3).
+3. Both xsk_diag_dump() and xsk_notifier() acquire &xs->mutex while
+   holding &net->xdp.lock (#0).
+
+Break the circular dependency at its source in xsk_bind() by acquiring
+netdev_lock_ops() before &xs->mutex. To preserve the exact errno precedence
+(-EBUSY vs -ENODEV) without requiring the mutex to read sxdp_ifindex, we
+look up the net_device first. If the device exists, we lock netdev_lock_ops()
+and then &xs->mutex, evaluating the socket state safely. The cleanup path
+is adjusted to unlock in reverse order, ensuring device references are
+correctly maintained or dropped.
+
+This single lock reordering fully eliminates the &xs->mutex ->
+netdev_lock_ops() edge, resolving the 4-lock cycle without introducing
+concurrency regressions in the diagnostic dump or notifier paths.
+
+Fixes: 975b11ae9077 ("xsk: add socket allocate, create and bind")
+Reported-by: syzbot+aa48b5fe7bfda62d1682@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=aa48b5fe7bfda62d1682
+Signed-off-by: Khawar Ahemad <ahemadkhawar123@gmail.com>
 ---
-v8:
- - Remove Krzysztof Kozlowski reviewed-by tag after Sashiko review
-   changes
-  - Make the interrupts property conditional
+v5 -> v6:
+- Abandon the two-phase xsk_notifier() and xsk_diag_dump() decoupling from
+  v3-v5, which introduced a Use-After-Free during concurrent xsk_release(),
+  and an O(N^2) list traversal complexity in xsk_diag_dump().
+- Break the cycle at its root in xsk_bind() by acquiring netdev_lock_ops()
+  before &xs->mutex, fully removing the &xs->mutex -> netdev_lock_ops edge.
+- Look up the net_device before locking &xs->mutex to preserve the original
+  -EBUSY vs -ENODEV errno precedence without any behavioural change.
+- Link to v5: https://lore.kernel.org/bpf/20260902041257.58374-1-ahemadkhawar123@gmail.com/
 
-v7:
- - No changes
+v4 -> v5:
+- Rebase cleanly on latest bpf-next master.
+- Link to v4: https://lore.kernel.org/bpf/20260826174744.3394-1-ahemadkhawar123@gmail.com/
 
-v6:
- - Fix DT error: use minItems
- - Remove conditional properties
+v3 -> v4:
+- Rebase cleanly on latest bpf-next master to resolve merge conflict.
+- Update commit message to accurately describe the full 4-lock dependency
+  chain (&net->xdp.lock, &port->pnodes_lock, netdev_lock_ops, &xs->mutex).
+- Link to v3: https://lore.kernel.org/bpf/20260826173019.2917-1-ahemadkhawar123@gmail.com/
 
-v5:
- - Make the DT interrupts property dynamic from the compatible one
- - Fix DT bindings errors
+v2 -> v3:
+- Fix direct AB-BA lock inversion in xsk_notifier() by performing device
+  queue sweeps via xsk_get_pool_from_qid() outside &net->xdp.lock.
+- Eliminate &net->xdp.lock -> &xs->mutex in xsk_diag_dump() by taking a
+  temporary socket reference and releasing the lock before xsk_diag_fill().
+- Link to v2: https://lore.kernel.org/bpf/20260826162110.99879-1-ahemadkhawar123@gmail.com/
 
-v4:
- - Update interrupts in DT bindings
+v1 -> v2:
+- Avoid reordering locks in xsk_bind() to preserve errno precedence.
+- Link to v1: https://lore.kernel.org/bpf/20260825152152.86092-1-ahemadkhawar123@gmail.com/
 
-v3:
- - Fix DT binding errors
+ net/xdp/xsk.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-v2:
- - Convert device tree binding to YAML
----
- .../devicetree/bindings/net/wiznet,w5100.yaml      | 38 ++++++++++++++++++----
- 1 file changed, 31 insertions(+), 7 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/net/wiznet,w5100.yaml b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
-index 25098308eb6e..da03f4e07f29 100644
---- a/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
-+++ b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
-@@ -12,10 +12,6 @@ maintainers:
- description: |
-   This is a standalone 10/100 MBit Ethernet controller with SPI interface.
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index 7855ee09c4..0a4106e98b 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -1612,20 +1612,22 @@ static int xsk_bind(struct socket *sock, struct sockaddr_unsized *addr, int addr
+ 		return -EINVAL;
  
--allOf:
--  - $ref: /schemas/net/ethernet-controller.yaml#
--  - $ref: /schemas/spi/spi-peripheral-props.yaml#
--
- properties:
-   compatible:
-     enum:
-@@ -24,8 +20,11 @@ properties:
-       - wiznet,w5500
- 
-   interrupts:
--    maxItems: 1
--    description: Main interrupt (INT pin on the device).
-+    description:
-+      The main interrupt (INT pin) is mandatory on all devices. The w5500
-+      additionally supports an optional second interrupt for link status changes
-+      (LINKLED pin). If it is not specified, link state changes will not be
-+      reported.
- 
-   reg:
-     maxItems: 1
-@@ -42,6 +41,30 @@ required:
-   - reg
-   - interrupts
- 
-+allOf:
-+  - $ref: /schemas/net/ethernet-controller.yaml#
-+  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - wiznet,w5500
-+    then:
-+      properties:
-+        interrupts:
-+          minItems: 1
-+          items:
-+            - description: Main interrupt (INT pin on the device).
-+            - description:
-+                Optional interrupt for link status changes (LINKLED pin on
-+                w5500).
-+    else:
-+      properties:
-+        interrupts:
-+          maxItems: 1
-+          description: Main interrupt (INT pin on the device).
+ 	rtnl_lock();
 +
- unevaluatedProperties: false
++	dev = dev_get_by_index(sock_net(sk), sxdp->sxdp_ifindex);
++	if (dev)
++		netdev_lock_ops(dev);
++
+ 	mutex_lock(&xs->mutex);
+ 	if (xs->state != XSK_READY) {
+ 		err = -EBUSY;
+ 		goto out_release;
+ 	}
  
- examples:
-@@ -60,7 +83,8 @@ examples:
-             pinctrl-names = "default";
-             pinctrl-0 = <&eth1_pins>;
-             interrupt-parent = <&gpio>;
--            interrupts = <25 IRQ_TYPE_LEVEL_LOW>;
-+            interrupts = <25 IRQ_TYPE_LEVEL_LOW>,
-+                         <24 IRQ_TYPE_EDGE_BOTH>;
-             spi-max-frequency = <30000000>;
-             local-mac-address = [ a0 b0 c0 d0 e0 f0 ];
-         };
-
+-	dev = dev_get_by_index(sock_net(sk), sxdp->sxdp_ifindex);
+ 	if (!dev) {
+ 		err = -ENODEV;
+ 		goto out_release;
+ 	}
+ 
+-	netdev_lock_ops(dev);
+-
+ 	if (!xs->rx && !xs->tx) {
+ 		err = -EINVAL;
+ 		goto out_unlock;
+@@ -1762,18 +1764,20 @@ static int xsk_bind(struct socket *sock, struct sockaddr_unsized *addr, int addr
+ 	}
+ 
+ out_unlock:
+-	if (err) {
+-		dev_put(dev);
+-	} else {
++	if (!err) {
+ 		/* Matches smp_rmb() in bind() for shared umem
+ 		 * sockets, and xsk_is_bound().
+ 		 */
+ 		smp_wmb();
+ 		WRITE_ONCE(xs->state, XSK_BOUND);
+ 	}
+-	netdev_unlock_ops(dev);
+ out_release:
+ 	mutex_unlock(&xs->mutex);
++	if (dev) {
++		netdev_unlock_ops(dev);
++		if (err)
++			dev_put(dev);
++	}
+ 	rtnl_unlock();
+ 	return err;
+ }
 -- 
-2.55.0
+2.54.0 (Apple Git-157)
 
