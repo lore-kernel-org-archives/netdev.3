@@ -1,125 +1,219 @@
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.6])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEAB93D0932;
-	Tue, 15 Sep 2026 08:37:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCC13A4F47
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:38:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789461426; cv=none; b=U07OrQd+pWDqAzGfw2px4OA8iN8RPUc7XWzbjIsyR6ezsH3A2ONwQEb80LYcrsG8obOGqShVAGjUaQd7EPjbt1Eott1hXk9dSlyWc6c6omQLuOt20IYzkS7DdpuGUqgLnEx9YU9XlWtJKJVB22PtOGXCyqK0pKsI8TqSbRWiTE8=
+	t=1789461536; cv=none; b=TDNCE0vYJoWO7s6hzvYDJ0zZQKZDsGqmo9/lUMLYFehBMXFzmEpFpJqqYZAVjDG6FvMaKHq+rgQUXP6RX/Av3cPCy8Vtu3kYibRC8cuLKzZj9Dnu83XEq8+U8F2gwE7uKnldR1ylNDEQ6Vgy2noIHI1kTpMGMAQ7Zn6qKueAjWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789461426; c=relaxed/simple;
-	bh=WZW58imxrH+dL0ShUUgw2cmDpsNuhzONZ2dOXdQmIno=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=N00okd6oHKe7UxDldrbJzozIYl2aVD3KeNeQgW4Q3LoM9En+sJWY8o9CGjBoWRlrDFqCWydBPoEj/Mq68rf50/TuGQwoi90sR4fR3KefdL6jtXRKmGv/5p8H3q9YYEFmLnUj64Cu1D3q4hfOQjmn1pA4l2DytoAmxMgeD5autdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=JDmxVtrg; arc=none smtp.client-ip=220.197.31.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	s=arc-20240116; t=1789461536; c=relaxed/simple;
+	bh=PmAlNaVoW6WDiKOvty/3z/+Xv8BfHbEI30u3GF10bC8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=C0n/jfvXl/vq17yL/iEcIwHC+IZwEujDrGnGJFT4rMHKxDU//bWJpwAZD5AU/bgdLX6uD9R0cwM6jDvvxULs9yVZF2yHwRCcCupMQr8y7eLeF/HakY9th3NKOw1JvgeXnSsQr5R5OSxZU7FIm7LbzYzf/b+rq1Q1ijmBvpOeB1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=a+nte5ax; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="JDmxVtrg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=S4
-	qdnUSRXu9jp2j6e/xh0pE4PAJYYoTSoLGlLBucJUA=; b=JDmxVtrg6IVuJAAT74
-	zftsrXhgTNAPtfYyvMWB6VkSeSoK2VbKUyokz5SPs6nCQlwEyI6ENo8iBpXFi5uW
-	iJXBI2telQXprW7FFX5x/Xy6qmmzMFsmdKHxVeJJNS1+agnvlALjec9LmLBoWCLB
-	2UxCjn7ggfJm08FiuuHSZ+xj8=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp4 (Coremail) with SMTP id PykvCgCXdbmdA6lqQxoPHw--.53987S2;
-	Tue, 15 Sep 2026 16:36:46 +0800 (CST)
-From: Linkui Xiao <xiaolinkui@126.com>
-To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	intel-wired-lan@lists.osuosl.org
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a+nte5ax"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789461533;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4ehSxidN9kKTCmVpgH+gSlUIAf/GxkvQJrzHZAwyKwo=;
+	b=a+nte5ax8FPsj9czOR/q4XsuU1iTObWAIgqrC2EGcvCsO1NvQ0KRtMdXC9VP1XWKmptp60
+	Xu/yUmTsR4KaZVoNHWmiOQzXSk6J798c+tbeVze5fmBAZJf8BlpT9XnVIZzRtkKta3s4Ql
+	X5agh6aD6epSaYGhhqjiOo6oICTZNNU=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-616-UXMCkD7lPY-rjKgFJ8dg1g-1; Tue,
+ 15 Sep 2026 04:38:51 -0400
+X-MC-Unique: UXMCkD7lPY-rjKgFJ8dg1g-1
+X-Mimecast-MFC-AGG-ID: UXMCkD7lPY-rjKgFJ8dg1g_1789461529
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 388D11802159;
+	Tue, 15 Sep 2026 08:38:49 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.44.48.83])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 184E9180025F;
+	Tue, 15 Sep 2026 08:38:44 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: 5mghybrid@khu.ac.kr
 Cc: netdev@vger.kernel.org,
+	theo.lebrun@bootlin.com,
+	conor.dooley@microchip.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	richardcochran@gmail.com,
 	linux-kernel@vger.kernel.org
-Subject: Re: [Intel-wired-lan] [PATCH v2] i40e: add an error handling path in i40e_xsk_pool_enable()
-Date: Tue, 15 Sep 2026 16:36:43 +0800
-Message-Id: <20260915083643.506113-1-xiaolinkui@126.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260131055217.729048-1-lihaoxiang@isrc.iscas.ac.cn>
-References: <20260131055217.729048-1-lihaoxiang@isrc.iscas.ac.cn>
+Subject: Re: [PATCH net RESEND 1/2] net: macb: Preserve one-step mode on rejected timestamp requests
+Date: Tue, 15 Sep 2026 10:38:39 +0200
+Message-ID: <20260915083839.71546-1-pabeni@redhat.com>
+In-Reply-To: <178911388614.25348.8892025153904636456.macb-resend-1@khu.ac.kr>
+References: <178911388614.25348.8892025153904636456.macb-resend-1@khu.ac.kr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-CM-TRANSID:PykvCgCXdbmdA6lqQxoPHw--.53987S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7WryfKw4kCry5GFy7ZF47Jwb_yoW8Kry5pr
-	Wj9a4DCF48XrW7Ww4kJF48u3WrJw4aqa4UK3W3Can3urn0qF93JF4xtFWYg3ykZr4kJwsx
-	GF1DAwsxCFn8Jr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRFeHgUUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlB-sw2qpA5+xUwAA3Z
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Hi Haoxiang,=0D
-=0D
-The kernel test robot reported the following build error on your v2:=0D
-=0D
-  drivers/net/ethernet/intel/i40e/i40e_xsk.c:130:9: error: implicit declara=
-tion of function 'i40e_xsk_pool_disable'; did you mean 'i40e_xsk_pool_enabl=
-e'?=0D
-  drivers/net/ethernet/intel/i40e/i40e_xsk.c:141:12: error: conflicting typ=
-es for 'i40e_xsk_pool_disable'=0D
-=0D
-The root cause is that i40e_xsk_pool_disable() is defined after i40e_xsk_po=
-ol_enable() in i40e_xsk.c [citation:4]. When the error path in i40e_xsk_poo=
-l_enable() calls i40e_xsk_pool_disable(), the compiler has not yet seen its=
- prototype.=0D
-=0D
-One way to fix this without reordering functions is to unwind the two opera=
-tions that i40e_xsk_pool_enable() itself performed in the error path:=0D
-=0D
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_xsk.c b/drivers/net/ether=
-net/intel/i40e/i40e_xsk.c=0D
-index 9f47388eaba5..97d016be493d 100644=0D
---- a/drivers/net/ethernet/intel/i40e/i40e_xsk.c=0D
-+++ b/drivers/net/ethernet/intel/i40e/i40e_xsk.c=0D
-@@ -108,23 +108,31 @@ static int i40e_xsk_pool_enable(struct i40e_vsi *vsi,=
-=0D
-        if (if_running) {=0D
-                err =3D i40e_queue_pair_disable(vsi, qid);=0D
-                if (err)=0D
--                       return err;=0D
-+                       goto err_pool_unmap;=0D
-=0D
-                err =3D i40e_realloc_rx_xdp_bi(vsi->rx_rings[qid], true);=0D
-                if (err)=0D
--                       return err;=0D
-+                       goto err_pool_unmap;=0D
-=0D
-                err =3D i40e_queue_pair_enable(vsi, qid);=0D
-                if (err)=0D
--                       return err;=0D
-+                       goto err_realloc;=0D
-=0D
-                /* Kick start the NAPI context so that receiving will start=
- */=0D
-                err =3D i40e_xsk_wakeup(vsi->netdev, qid, XDP_WAKEUP_RX);=0D
-                if (err)=0D
--                       return err;=0D
-+                       goto err_realloc;=0D
-        }=0D
-=0D
-        return 0;=0D
-+=0D
-+err_realloc:=0D
-+       i40e_realloc_rx_xdp_bi(vsi->rx_rings[qid], false);=0D
-+err_pool_unmap:=0D
-+       clear_bit(qid, vsi->af_xdp_zc_qps);=0D
-+       xsk_pool_dma_unmap(pool, I40E_RX_DMA_ATTR);=0D
-+=0D
-+       return err;=0D
- }=0D
-=0D
-This mirrors the internal logic of i40e_xsk_pool_disable() [citation:12] =
-=E2=80=94 clear the zero-copy bit and DMA-unmap the pool =E2=80=94 without =
-calling a function defined later in the file. It also avoids the limbo-stat=
-e concern you mentioned in your v2 changelog, since it does not go through =
-the pool-association check in i40e_xsk_pool_disable().=0D
-=0D
-Alternatively, a forward declaration of i40e_xsk_pool_disable() at the top =
-of i40e_xsk.c would also resolve the build error.=0D
-=0D
-Best regards,=0D
-Linkui Xiao=0D
-=0D
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+---
+net: macb: Preserve one-step mode on rejected timestamp requests
+
+This moves the gem_ptp_set_one_step_sync() calls in gem_set_hwtst() out of
+the tx_type switch and down past the rx_filter validation, so a request
+rejected with -ERANGE no longer changes NCR.OSSMODE.  The cached
+bp->tstamp_config and the TXBDCTRL/RXBDCTRL programming are unchanged.
+
+> diff --git a/drivers/net/ethernet/cadence/macb_ptp.c b/drivers/net/ethernet/cadence/macb_ptp.c
+> index e5195d7dac1d5..51659bbdfac9a 100644
+> --- a/drivers/net/ethernet/cadence/macb_ptp.c
+> +++ b/drivers/net/ethernet/cadence/macb_ptp.c
+> @@ -418,11 +418,9 @@ int gem_set_hwtst(struct net_device *netdev,
+>  	case HWTSTAMP_TX_OFF:
+>  		break;
+>  	case HWTSTAMP_TX_ONESTEP_SYNC:
+> -		gem_ptp_set_one_step_sync(bp, 1);
+>  		tx_bd_control = TSTAMP_ALL_FRAMES;
+>  		break;
+>  	case HWTSTAMP_TX_ON:
+> -		gem_ptp_set_one_step_sync(bp, 0);
+>  		tx_bd_control = TSTAMP_ALL_FRAMES;
+>  		break;
+>  	default:
+> @@ -460,6 +458,11 @@ int gem_set_hwtst(struct net_device *netdev,
+>  		return -ERANGE;
+>  	}
+>  
+> +	if (tstamp_config->tx_type == HWTSTAMP_TX_ONESTEP_SYNC)
+> +		gem_ptp_set_one_step_sync(bp, 1);
+> +	else if (tstamp_config->tx_type == HWTSTAMP_TX_ON)
+> +		gem_ptp_set_one_step_sync(bp, 0);
+> +
+>  	bp->tstamp_config = *tstamp_config;
+
+[Severity: High]
+Does this leave the same hardware/cache divergence reachable for the
+HWTSTAMP_TX_OFF transition that the commit message sets out to remove?
+
+Neither arm of the new conditional runs for HWTSTAMP_TX_OFF, but the next
+statement caches the request unconditionally and the call after it programs
+TXBDCTRL = TSTAMP_DISABLED:
+
+	if (tstamp_config->tx_type == HWTSTAMP_TX_ONESTEP_SYNC)
+		gem_ptp_set_one_step_sync(bp, 1);
+	else if (tstamp_config->tx_type == HWTSTAMP_TX_ON)
+		gem_ptp_set_one_step_sync(bp, 0);
+
+	bp->tstamp_config = *tstamp_config;
+
+	if (gem_ptp_set_ts_mode(bp, tx_bd_control, rx_bd_control) != 0)
+
+So for the sequence
+
+  SIOCSHWTSTAMP{tx_type = HWTSTAMP_TX_ONESTEP_SYNC}   -> OSSMODE = 1
+  SIOCSHWTSTAMP{tx_type = HWTSTAMP_TX_OFF}            -> returns 0
+
+gem_get_hwtst() then reports HWTSTAMP_TX_OFF via
+
+	*tstamp_config = bp->tstamp_config;
+
+while gem_ptp_set_one_step_sync() in macb_ptp.c is the only writer of
+MACB_BIT(OSSMODE) in the driver, so One Step Synchro Mode stays enabled in
+NCR.  Does the MAC then keep rewriting the originTimestamp of transmitted
+PTP Sync frames?  The driver assumes it does elsewhere, since
+ptp_one_step_sync() in macb_main.c is used to suppress software FCS/CRC
+insertion for exactly those frames.
+
+Would an unconditional call be preferable to the two-arm conditional, for
+example:
+
+	gem_ptp_set_one_step_sync(bp,
+				  tstamp_config->tx_type == HWTSTAMP_TX_ONESTEP_SYNC);
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but while the call site is being
+moved, is the read-modify-write inside gem_ptp_set_one_step_sync()
+sufficiently serialized?
+
+	reg_val = macb_readl(bp, NCR);
+
+	if (enable)
+		macb_writel(bp, NCR, reg_val | MACB_BIT(OSSMODE));
+	else
+		macb_writel(bp, NCR, reg_val & ~MACB_BIT(OSSMODE));
+
+The SRTSM update in the rx_filter switch of gem_set_hwtst() does the same
+thing:
+
+		regval = macb_readl(bp, NCR);
+		macb_writel(bp, NCR, (regval | MACB_BIT(SRTSM)));
+
+Both run from process context with BHs enabled and without bp->lock, while
+other NCR updaters take bp->lock, for example macb_tx_restart() from
+NAPI/softirq context:
+
+	spin_lock(&bp->lock);
+	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
+	spin_unlock(&bp->lock);
+
+and macb_tx_lpi_set(), which asserts it:
+
+	lockdep_assert_held(&bp->lock);
+
+	ncr = macb_readl(bp, NCR);
+
+Can a concurrent locked writer's bit be lost if it lands between the
+macb_readl() and macb_writel() here?  In the worst case the stale write-back
+would drop MACB_BIT(RE) | MACB_BIT(TE) just restored by macb_mac_link_up(),
+leaving RX/TX disabled while the stack considers the link up; more commonly
+a TSTART or TXLPIEN update is lost.  The same unlocked pattern already
+exists in macb_mac_link_up() after it releases bp->lock and in the RXUBR
+errata path of macb_interrupt(), so this predates the patch, but would
+wrapping both NCR read-modify-writes in gem_set_hwtst() with
+spin_lock_irqsave(&bp->lock, ...) be the right direction?
+
+[Severity: Low]
+This is a pre-existing inconsistency rather than something this patch
+introduces, but since gem_set_hwtst() is being touched: gem_get_ts_info()
+in macb_main.c advertises only
+
+	info->rx_filters =
+		(1 << HWTSTAMP_FILTER_NONE) |
+		(1 << HWTSTAMP_FILTER_ALL);
+
+while the rx_filter switch in gem_set_hwtst() accepts the nine
+HWTSTAMP_FILTER_PTP_V2_* values and reports back a filter the ts_info
+bitmap says is unsupported:
+
+		rx_bd_control =  TSTAMP_ALL_PTP_FRAMES;
+		tstamp_config->rx_filter = HWTSTAMP_FILTER_PTP_V2_EVENT;
+
+Neither the legacy ioctl path via net_hwtstamp_validate() nor the ethtool
+netlink tsconfig path checks the request against the driver's advertised
+bitmap, so userspace can end up with an rx_filter value that is absent from
+the supported set.  Should HWTSTAMP_FILTER_PTP_V2_EVENT be added to
+info->rx_filters?
+
+For reference, the related concern about HWTSTAMP_FILTER_PTP_V1_L4_SYNC and
+HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ returning success while leaving
+rx_bd_control at TSTAMP_DISABLED is addressed later in this series by "net:
+macb: Use all-frame timestamping for PTPv1 RX filters", which folds both
+cases into the TSTAMP_ALL_FRAMES arm.
+-- 
+This is an AI-generated review.
 
