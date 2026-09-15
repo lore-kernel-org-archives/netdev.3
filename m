@@ -1,260 +1,204 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157F0184;
-	Tue, 15 Sep 2026 23:54:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789516477; cv=none; b=TmJ0/KYZvJSPtoEk0Um0s1ZlXKiBqTwzBM+Ppcqr4SOX6r9LlPMgogHJA44N9vo+5w8A7/7W3OmvNS+n4vqqNHC30V+Nu9t47H336oukAPwnF351uJ8vcmfhac5Ied9jkGbJnB7I78PAZJav6Jw3Jytfni2Q1GR2QbmJUumuubw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789516477; c=relaxed/simple;
-	bh=UmyZyDN1hmVNbueOVNGFZHqCXsRDIkRGlMQV+Pxjf6Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iMTQvtRSiOwO5p41xlN5oEUw4o+3Zg5h/nQRLIiOJUvDFciuHMCx1SwIacZ1/tTrFLUbaytQKyusqSp2HD8SwFOEx/8iSvfAbetUDibUnKVU+rDk4HwiWaC2qifR8omSaecp+VyKmKJJivjSJrUgLtipAgIDbdIWXvdNjn6YsAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P8kYLAvv; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D03526461F;
+	Tue, 15 Sep 2026 23:55:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.4
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789516532; cv=fail; b=I2lq1vHoQMwVC1D6rSeRI/BfUgGGXomOR2abwTX6/47z4U4au1o6lNA8MCMywuoUVwwhJrUOHN3X5Sgpbyry1gi8UtTQDKg7P+B513JbNf1JESgkEO8mFrkB/eaI/N68Gdfd7str6ohJqqOvdOCy6v6EKf1+zwOS0R+whsB8vhg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789516532; c=relaxed/simple;
+	bh=tkakpEnaftUJyVDt64/i+36yHusMP3Ln5yjlNZce1n4=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=hNewu8xLMTNbV2d8zpqkETVG6DM+fK8IzrwM3Ak4/Glpi6SzR/wrVwtiA7Ztqgrw1ktsIsEXW06nRZpns77dXsyUrGDbzaEwDWF4A2YgSva/Ul79fOhlA122IekVk0fiwEC4k8J7n6qsUvPXmNv6bqWtvjVKmsXWfEkJqEiP4Eg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A9HGT6jy; arc=fail smtp.client-ip=192.198.163.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P8kYLAvv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F201F000FF;
-	Tue, 15 Sep 2026 23:54:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789516475;
-	bh=AQwUZclXn1mJxCCej5Cf4+aasu5nZ+Nj3Ko2BeP4XWE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=P8kYLAvvdzMblcmk67qpBXvByqRuAQi0xcn0OzbhDmmhoVS9XYXDZxE/40O0fQ1Uy
-	 phG/2UVvUMpGNSDc+JlAwyJDSBZ+mS0s6MjN0Lxcd2PMb9GF9x4jA9QzLsmN3OOQKP
-	 pZ977b3mhfmgVuSFLjsr3LmjS3WXNb3R7mWHoNwidwgMFhek4v9QBZtpYXyPnBPFNX
-	 gmd4yvTnPa1q4hIathWF+QF3GE7wTuRa+foq+pHErF9CNTEdWRnhLyc693Kt2UB9zY
-	 uNE+tosj+Ql+CVsPRXpfzl6Eqys6LpOLUzlv56nipDzkgX+SZOTt9c97U6+7ynv+++
-	 NdmS8O5E1tlwQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: nshettyj@marvell.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	asekhar@marvell.com,
-	sgoutham@marvell.com,
-	rkannoth@marvell.com,
-	gakula@marvell.com,
-	sbhatta@marvell.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com
-Subject: Re: [PATCH net v2] octeontx2-af: Handle pool context address update in aura WRITE operation
-Date: Tue, 15 Sep 2026 16:54:34 -0700
-Message-ID: <20260915235434.1522983-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260910060032.1209179-1-nshettyj@marvell.com>
-References: <20260910060032.1209179-1-nshettyj@marvell.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A9HGT6jy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789516531; x=1821052531;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=tkakpEnaftUJyVDt64/i+36yHusMP3Ln5yjlNZce1n4=;
+  b=A9HGT6jyIy0GIkhwQE1lmYdQzwn1b9QrbgKcWRipCkZKNGAAXNMShZ7n
+   c+ssDnEOKZO5gsUkrLWXc4M63INYZomJ5aID7y1fXq6D/s2WWCtH1qW1P
+   BXK2Eyy45PN1NvdzwcbNEeqYC6J87om9/ckxRf3ZKNSQHdCDTHtkqGGic
+   H862OZc0v10r1akRUtz7AfPJ0FPWkQljjJ0dt6bDwjTmo0HJrCRJWgIjG
+   DwU7dGRVmB4X6rxTVtezRL6Z6c9Q0sVy56oV62aF+BtlQtKR8M/BEoCdo
+   HpFFZhwH1cnN1ZU6n3TTIzm+X0mMsWT8q+ODDIPwEVNUmDl9hc4qE/BWV
+   g==;
+X-CSE-ConnectionGUID: QF+DGhz4RtK6mj8/QtBtxg==
+X-CSE-MsgGUID: pMWrJWpwROGqTX5ZnuWIYQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="400667"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="400667"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa114.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 16:55:30 -0700
+X-CSE-ConnectionGUID: EHAu0B5KQ6iTiilz/RCYXA==
+X-CSE-MsgGUID: MsnGek1ySnCCTiiXFnynBw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="276689497"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 16:55:30 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 15 Sep 2026 16:55:29 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Tue, 15 Sep 2026 16:55:29 -0700
+Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.32) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 15 Sep 2026 16:55:28 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JHATYRXbfLOthXGCLlY0nuVO2K2fN79ZdNjb2YAWzAHBjBILQOLuxw3TDnJufpWvpokg9tyAOiOEsWmJGDA7IvLubXVODqP00I+Hwail5BDfptifiwBld1GBzlVO0GkyhegGY6EZDOiEuzT2uj+4yU8ZSbRSC76vhQsxpfvco6/pgsCZ8LWK4wUrPGl8mwvUgghREr4cuQjkAXqwC6t/NsWDkl4YteU1S3es6db2w5GP+NjYyIeoEeCVCpAFYdz0qKRJeFN25laRVA0RhvNqploZ1Chfu7h+WMhUQaZI4CsfLjLH0Mtr8qnKLI6+RVXwgrS79Q8HpM/b1/GpejIQZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KI2+ZlU9066dHulHWYt9XreHT9fXU0VelE83UTwFK2Y=;
+ b=UkagYv7CY9wUjNfopaw/N9Dd+vLZl+663+p9oAgaidjXuAnZsMbxxn3jcNgXsrqP8J4lib14se+Y8X0J3ldip+tSsjJO3nmJwrOrqHLYQJSEpVphbP8f8EaCnclEHz/GDJ4qHOADq1a+gYXfzxCHJme46d3vHbUcWaLn5uHgtp19gKLydcAGe0KPhEFCKfoTJLEFGn8qIYugb7LEr+3EZvq+1YTf8PAJx26Z48DfZnmd+WFebr3T5klK7AELfVwT6PjSWiy0x1cuL21IkC37TpwgpNtiBkLHlTgYuJ9kGC1rdWqAE7oqV9wq+i1ONm1LZhEx9vX4DjB3vztMvUDa6w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
+ by DS7PR11MB6062.namprd11.prod.outlook.com (2603:10b6:8:75::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Tue, 15 Sep
+ 2026 23:55:21 +0000
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58%6]) with mapi id 15.21.0406.007; Tue, 15 Sep 2026
+ 23:55:21 +0000
+Message-ID: <e942fc27-3179-42cc-83ca-d05393530136@intel.com>
+Date: Tue, 15 Sep 2026 16:55:19 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: prestera: return error on hash table init failure
+To: Elad Nachman <enachman@marvell.com>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <yevhen.orlov@plvision.eu>, <taras.chornyi@plvision.eu>,
+	<oleksandr.mazur@plvision.eu>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: Dan Carpenter <error27@gmail.com>
+References: <20260914112026.2822222-1-enachman@marvell.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
+Content-Language: en-US
+In-Reply-To: <20260914112026.2822222-1-enachman@marvell.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR02CA0007.namprd02.prod.outlook.com
+ (2603:10b6:303:16d::33) To DS0PR11MB7381.namprd11.prod.outlook.com
+ (2603:10b6:8:134::14)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|DS7PR11MB6062:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3881f393-a0c4-42fd-8f5d-08df1384cd65
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|23010399003|7416014|376014|10067099003|11063799006|56012099006|18002099003|22082099003|921020;
+X-Microsoft-Antispam-Message-Info: rmpUV9fyMyoxGN3vBeekTJmvS2B3AzLbH+l53frvdooJDauZEPaR2/AfcYZAkPlZcg/kcEbcM2AoaYpn5hYCp2lMpUZen87keUUPQYp9Nw0AgpCiYwuuSUvDl1l9nhp9DP10nHXTss+x17FCazWSlhXvnPDxNeq85ejyQ/s80hyovI+Wx+Em0TSeeUD/yNm3iaKqf5IDTj4r9ZP/J6/IM16+SmZIARvhp5drKW4h29SPkFp/FDZwrRPSgGr8VFxOl0xpR1zN+CRjKI1sB1YvvUfFT9pTLciwpxj7nqhlgcxNOcaeufjW99hDnHPMGKC3XuppySBopPcBas/50n4PihMTn4V2ASE1mTfLojPqI8lOJZx6CQhu6JZH5rM6pqaNGA0Metd7xxsnQO8MgyF6YaCdckgQzHcO2bbBg7A3nkLkzDAguCgKDj+rpFtBmp8Jsc2znv/nEPpJ0dINRE/TDjqNFlwLdHPdX8kqr1Uv7W5XmZ7ACO8uZngLGRO5EPAhQPyvcDGQaNUVwfIWJmrpIzRXDZjAAZ+TBCKGoBMnESjCdUsIro9QqRbDcb6o6SWoV0hObiRnyYKO3qxchSEDfhT9tTfqlMQFMJCQwdJxmvvVSsmQJvgwNSRX6ID76CoHxsLCugiJ0PrVK95jV/RL5h5l330Rb6X6pLvapNqMyL/D362Lk0VrSYRB/XvSuLf5eaSlPTjZFC12fifuad9Ylw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(7416014)(376014)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VGZlVWtOSVBVclJWTVJVNmxxWGd2YitSZUYwTzBldUF0VEplZElkeUUvWG9j?=
+ =?utf-8?B?VmwyeU5hb3Q0U3I0bFBsTkRUd01YV05wV3dZTE5GQStqc3BqcTNzMmY1ZjJQ?=
+ =?utf-8?B?Y2hndmhhNTVQN1BYTGhMMHdNOUtoakRhY204RnhnL3M5c1R2ejZHOU5mck1o?=
+ =?utf-8?B?WWhqblZYeDhLQmY1a3MzSzVXSE1aWlNacm15bXMwVnJyM3dKZ24vMEVUbmF5?=
+ =?utf-8?B?L1NCV2tQVjI3UU9JajJxMmJNbkx0WEdCdGQzeE10UnFPZ1NMSTRCeTVBd2ZE?=
+ =?utf-8?B?TVhMWnlOZFR4YnU5ZFdSMWpPM2hoK3lwR0tRbkxQb1N4S2VMZ0R4WFR6cmxE?=
+ =?utf-8?B?Yi9TUmRqN3Q0NkpMMkorQXZ5aytOclFNbVk0LzVnNWF3RHFiaVRpaXZwV0g2?=
+ =?utf-8?B?Q1M5STNpNFhRRkNab3BVamZqY29NNVJLTVZuU090ZDQ2a0FGQm9pYmdSZjZP?=
+ =?utf-8?B?WnM2a2JUWk9kUkh1Qm1XZ1pDSkJKSWJOWXZ6YmpaMkZMYzdmbWFXZzVjdlk5?=
+ =?utf-8?B?NWxUV0xOSUJ1ZUplazk1MXJ1UFZwRHdwVTlVVUJPbkpUMkVweVE0M2U4THJH?=
+ =?utf-8?B?emhuQVRhaUJWSDVGWTg2aHVEbStqM3d6L1YwUEVzRHoyLzVKaDBNNE00aUpV?=
+ =?utf-8?B?QUZ0ZXpySTIzbWdST04rNVdhS09NZ045TmdpOUFCZXdjSU9QWlFTYjd2WUI2?=
+ =?utf-8?B?QmFVVWlTeUZjeFRvVFlIMGZBd1V0RUZyVWt0Qlh5dDZvRjAwNjFxT29kb2l6?=
+ =?utf-8?B?anBTRm54USs5V1pQQkx5b2xiVGc4aGdUQTk5NlI1RWcxdExFQUdYeW0yQ1ZN?=
+ =?utf-8?B?clNsWUxvUnp3ZGZSY0dkZkpjL2crbFFRMmV1UXB3Q3c2NmFJd2ZTa3FuRUts?=
+ =?utf-8?B?bTZ0WUpwVjg4MjQycXo2QWpHcWtxaGpnYytXdWRBYkw2NGNXNjVSdWJGZ0dF?=
+ =?utf-8?B?V05WenhvQUREcU9DZUd4YlVoZUFqYmNKYXYvWU4vdzZCU0QzRlB0ejZ6aVM2?=
+ =?utf-8?B?UC9mK0JqZlFya0R2OTVzajE3NEVGY1diRTJMSXFWc1FvVVVxMWZzeU9CMmNs?=
+ =?utf-8?B?RVZpSXgrZExKaGY3bXROcVNQVFNUN0o3dFhVS0VCM2N2a2k1THpicjExSmZp?=
+ =?utf-8?B?aWg2V0VrVXZvM3dMSnVhR2JScm93NG82QlBRYW1oSlhTeThDc1ZJdGxuK1dF?=
+ =?utf-8?B?R1BvZmVBNnp3ZzNFOGYzMjRIR2svdnZ4bEEwazBjWDFGanpFbWc0Z2tEc2sx?=
+ =?utf-8?B?WHBVOEtrblZzSmRwYzFrUFc2eWpXbFBtMSs5TWovTjV3QzhHZXJQUVp6WE1P?=
+ =?utf-8?B?dzBQQzViVW14KzNidlhjS0U2NUcvU2hDKytnRGsxOGdoQmRGQkxGTjFsVmxk?=
+ =?utf-8?B?bWl4Tm9CRjhYSlBORCs1Mm5aMjFBRldId0xNdVF2cE10UnN6SWxweHJCNzZx?=
+ =?utf-8?B?OFc4YlU3MHNpaHR4R2QrTTRLdDZZd3ozTVJIZEdQVC82WkpYWThxZ0RXZWZY?=
+ =?utf-8?B?N0V1YU5TcEM2RGV0UzYwY2k4elZnYmRDZ2FLV2NWWEtpRmZDZmhJYzVCU2Vj?=
+ =?utf-8?B?WHZtRTVtRW05N2FQWnMxV3g5OTQrRjBEZ0RTU25qUkJzc3JVUFZoa24wRVBx?=
+ =?utf-8?B?NXNZVmZPYUR6Y3ZnQ3Z1UnpnaXNDZlBiZ1gzQ2FacncwNjFYb3ZaL3pWTmJV?=
+ =?utf-8?B?cHhHS0pobENCL1VTa3I1anpFOU9EcGlMVEhFS2g5U2E4ZCsxYnJkcEtvWkV1?=
+ =?utf-8?B?ZHdBTzJrTU16Z0l1bFdMVEZEOGtVR3VaMkhqMTVNVzJCZEhHL1VJZVpTMThO?=
+ =?utf-8?B?aWJwRWwyN0t1R1pxVUJ0R3BJc1c4T1RGME5Yazg5T0o3bVhKcG9Nb0NDSEp3?=
+ =?utf-8?B?R0FIbnlGL2RNOCtYL1MzZUNON25FNlRPNEk2ZEhHNGxJOEhVa25KSUdYV2lG?=
+ =?utf-8?B?b1dYSHh3Y1AyOGVRTzcwblZCb1hlN0tJbmpzSm5TejBOZFE3UDR0VHRuK0NQ?=
+ =?utf-8?B?ZlZuNFFpN2gybU1ZL29ISFlsSGNtQnIwSGF2N2RDSXIwV1hhVUtTaXFma3Q3?=
+ =?utf-8?B?WDBXNExxaForRjhXTXBFdFVPanoyZFdsemZqcHV5eklET3NDeDg2b2dwNWxk?=
+ =?utf-8?B?VTZqTSt4NzlwUDAxV0xZaWExdlMwcU51bGJnUzFaVy9CaXUxVHVocTBpOUFV?=
+ =?utf-8?B?QXpGaUFKdTlIOHNuQUFYSkZuUHc5WjQvYkwwNkFsSmRZL1k0cWdtUGFnR0Ra?=
+ =?utf-8?B?Z0pwN0s0cnJGQ05RUXNSbkozRVFNMFBCYlFZcE9MblIzMkdzSlpDbzFHcUFH?=
+ =?utf-8?B?S0pxYlhqei8xWGhrY1dUZzk0TS9OUjJjV1M3UzE3WVRwdzVmbmhlQT09?=
+X-Exchange-RoutingPolicyChecked: vAMR+r3p1J9XHKnd6tr2TPmEUlg7pXeQk+/U2HlHiwlj3XG61FQnPrOBjA4/FDhu5tsozUBLBUyi0ZtOOVk99m/kgW6bwOlnJQX9DOyGfokr66YWNR8BL+eLrqInQy8WxWFVfQxDFeJbBoiZzouXtOGt3WshMxaL16AyK/frn4yjNVWAv5IAwGvrrCcBkkiyRpTwTWEw5k7uxXyxWHkKh1pfZdA6JVYxiVpxAobrIFayXa+pSRcSavV0qF/7pb7hj6YLuR3I1jvX8Dqz+9XEpMuw3yrJtzeHRrGSRoDiM92aodArRskCTLSG5KTIkKpo3eXwGiQQbcJHLtAFlvB0DA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3881f393-a0c4-42fd-8f5d-08df1384cd65
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2026 23:55:21.4360
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VveZprl0luQNZ6VYDhMeWsK7ry3x/bxtTUFxepvvcUaZAU6kVOtdEEkNVW1NrJ8ckfBY1KxcvgZyTgcV6vpYWtNCZduQf9YMdngNfvgQ8IU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB6062
+X-OriginatorOrg: intel.com
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
----
-octeontx2-af: Handle pool context address update in aura WRITE operation
-
-This adds a helper npa_aura_translate_pool_addr() which checks pfvf->pool_ctx,
-bounds the caller supplied pool_id against pool_ctx->qsize and converts it to
-the pool context IOVA. The helper is used from both the NPA_AQ_INSTOP_INIT and
-the NPA_AQ_INSTOP_WRITE aura paths, with the WRITE path only translating when
-aura_mask.pool_addr selects the whole word.
-
-A few questions on the new code below.
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npa.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npa.c
-> index e2a33e46b48ad..775a3f0b88bd7 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npa.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npa.c
-
-[ ... ]
-
-> @@ -58,6 +59,19 @@ static int npa_aq_enqueue_wait(struct rvu *rvu, struct rvu_block *block,
->  	return 0;
+On 9/14/2026 4:20 AM, Elad Nachman wrote:
+> From: Elad Nachman <enachman@marvell.com>
+> 
+> prestera_router_hw_init() calls rhashtable_destroy() on error but then
+> still returns success. This causes prestera_router_init() to continue
+> without error, going through line 1623, and call
+> prestera_router_hw_fini(sw), which will cause dereferencing of freed memory
+> 'sw->router->nexthop_group_ht.tbl' at line 1560.
+> 
+> Fixes: 0a23ae237171 ("net: marvell: prestera: Add router nexthops ABI")
+> Reported-by: Dan Carpenter <error27@gmail.com>
+> Link: https://lore.kernel.org/kernel-janitors/aqT9h61WBcslE0gJ@stanley.mountain
+> Signed-off-by: Elad Nachman <enachman@marvell.com>
+> ---
+>  drivers/net/ethernet/marvell/prestera/prestera_router_hw.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/marvell/prestera/prestera_router_hw.c b/drivers/net/ethernet/marvell/prestera/prestera_router_hw.c
+> index ccf6cf98920f..4785fcb62735 100644
+> --- a/drivers/net/ethernet/marvell/prestera/prestera_router_hw.c
+> +++ b/drivers/net/ethernet/marvell/prestera/prestera_router_hw.c
+> @@ -93,7 +93,7 @@ int prestera_router_hw_init(struct prestera_switch *sw)
+>  err_nexthop_grp_ht_init:
+>  	rhashtable_destroy(&sw->router->nh_neigh_ht);
+>  err_nh_neigh_ht_init:
+> -	return 0;
+> +	return err;
 >  }
 >  
-> +static int npa_aura_translate_pool_addr(struct rvu_pfvf *pfvf, u64 *pool_addr)
-> +{
-> +	if (!pfvf->pool_ctx)
-> +		return NPA_AF_ERR_AQ_ENQUEUE;
-> +
-> +	if (*pool_addr >= pfvf->pool_ctx->qsize)
-> +		return NPA_AF_ERR_PARAM;
-> +
-> +	*pool_addr = pfvf->pool_ctx->iova +
-> +		     (*pool_addr * pfvf->pool_ctx->entry_sz);
-> +	return 0;
-> +}
 
-[Severity: High]
-This is a pre-existing lifetime problem rather than something this patch
-introduces, but the new helper adds another instance of it, so it seems worth
-raising.
+It looks like this snuck in because the original
+prestera_router_hw_init() implementation didn't have any failure path
+and always returned 0. Then commit 0a23ae237171 ("net: marvell:
+prestera: Add router nexthops ABI") added some errors with handling but
+did not report the error. Makes sense.
 
-Can pfvf->pool_ctx be freed between the NULL test and the reads of qsize,
-iova and entry_sz here?  npa_ctx_free() frees the object before clearing the
-pointer, and it takes neither block->aq->lock nor rvu->mbox_lock:
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 
-drivers/net/ethernet/marvell/octeontx2/af/rvu_npa.c:npa_ctx_free() {
-	...
-	qmem_free(rvu->dev, pfvf->pool_ctx);
-	pfvf->pool_ctx = NULL;
-	...
-}
+>  void prestera_router_hw_fini(struct prestera_switch *sw)
 
-That path runs on the FLR workqueue:
-
-rvu_flr_handler() -> __rvu_flr_handler() -> rvu_blklf_teardown(BLKADDR_NPA)
-	-> rvu_npa_lf_teardown() -> npa_ctx_free()
-
-__rvu_flr_handler() only holds rvu->flr_lock, and neither
-rvu_process_mbox_msg() nor rvu_npa_aq_enq_inst() takes that mutex, so an AQ
-enqueue arriving from the AFVF mailbox work item can run concurrently with
-teardown.  When the aura/pool bitmaps hold no enabled contexts,
-npa_lf_hwctx_disable() issues no AQ instruction and never acquires aq->lock,
-so there is no incidental serialization either.
-
-If that ordering is possible, the helper would read the devm-freed struct
-qmem and program a stale iova/entry_sz result as the aura's pool context
-pointer, which is then used by hardware as a DMA target.  Should the free
-path take aq->lock (or otherwise flush the mailbox work) before releasing
-pool_ctx?
-
-[Severity: High]
-This isn't introduced by this patch either - the same qsize-only check
-existed on the INIT path since 4a3581cd5995 - but the patch now extends it to
-the WRITE path, so a note on it:
-
-Is pool_ctx->qsize trustworthy as an upper bound here?
-rvu_mbox_handler_npa_lf_alloc() only rejects a zero nr_pools:
-
-	if (req->aura_sz > NPA_AURA_SZ_MAX ||
-	    req->aura_sz == NPA_AURA_SZ_0 || !req->nr_pools)
-		return NPA_AF_ERR_PARAM;
-	...
-	err = qmem_alloc(rvu->dev, &pfvf->pool_ctx, req->nr_pools, hwctx_size);
-
-and qmem_alloc() computes the allocation size in signed int arithmetic while
-storing the requested count verbatim:
-
-drivers/net/ethernet/marvell/octeontx2/af/common.h:qmem_alloc() {
-	...
-	qmem->alloc_sz = (qsize * entry_sz) + OTX2_ALIGN;
-	qmem->base = dma_alloc_attrs(dev, qmem->alloc_sz, &qmem->iova,
-				     GFP_KERNEL, DMA_ATTR_FORCE_CONTIGUOUS);
-	if (!qmem->base)
-		return -ENOMEM;
-
-	qmem->qsize = qsize;
-	...
-}
-
-With the usual 128 byte pool hwctx size and nr_pools = 0x2000000, does
-qsize * entry_sz wrap to 0 so that only OTX2_ALIGN bytes are allocated while
-qsize stays 33554432?  The multiplication in the helper is done in 64-bit and
-does not wrap, so an aura INIT or the newly added WRITE could then install a
-pool context pointer several GiB past the real allocation.  Would bounding
-nr_pools and using check_mul_overflow()/size_t arithmetic in qmem_alloc() be
-the right place to fix this, so that qsize can be relied on here?
-
-> @@ -116,6 +130,18 @@ int rvu_npa_aq_enq_inst(struct rvu *rvu, struct npa_aq_enq_req *req,
->  	case NPA_AQ_INSTOP_WRITE:
->  		/* Copy context and write mask */
->  		if (req->ctype == NPA_AQ_CTYPE_AURA) {
-> +			/* Translate pool_addr only on a full-word write,
-> +			 * partial masks aren't valid pool_id updates.
-> +			 */
-> +			if (req->aura_mask.pool_addr == U64_MAX) {
-> +				rc = npa_aura_translate_pool_addr(pfvf,
-> +								  &req->aura.pool_addr);
-> +				if (rc)
-> +					break;
-> +			} else if (req->aura_mask.pool_addr) {
-> +				rc = NPA_AF_ERR_PARAM;
-> +				break;
-> +			}
-
-[Severity: Low]
-This isn't a bug, but the new all-or-nothing rule for aura_mask.pool_addr
-isn't described anywhere an LF driver author would look.  mbox.h still says:
-
-	/* Mask data when op == WRITE (1=write, 0=don't write) */
-	union {
-		/* Valid when op == WRITE and ctype == AURA */
-		struct npa_aura_s aura_mask;
-
-so a partial pool_addr mask now returns NPA_AF_ERR_PARAM with no hint in the
-header.  Could the aura_mask comment in mbox.h mention that pool_addr must be
-masked either fully or not at all?
-
-Also, the comment above reads as if partial masks are just passed through
-without translation, while the code fails the whole request.  Would something
-like "reject partial pool_addr masks; only a full-word write carries a
-pool_id" match the code better?
-
->  			memcpy(mask, &req->aura_mask,
->  			       sizeof(struct npa_aura_s));
->  			memcpy(ctx, &req->aura, sizeof(struct npa_aura_s));
-
-[Severity: High]
-Are the values validated above the same values that end up in the AQ context?
-As far as I can tell req points directly into the requester's mailbox region,
-which stays writable by that PF/VF while the AF handler runs:
-
-drivers/net/ethernet/marvell/octeontx2/af/rvu.c:__rvu_mbox_handler() {
-	...
-	msg = mdev->mbase + offset;
-	...
-	err = rvu_process_mbox_msg(mbox, devid, msg);
-	...
-}
-
-drivers/net/ethernet/marvell/octeontx2/af/rvu.c:rvu_get_mbox_regions() {
-	...
-	mbox_addr[region] = ioremap_wc(bar4, MBOX_SIZE);
-	...
-}
-
-So the mask test and the translation are one set of reads/writes, and the two
-memcpys above are a second, independent read of the same shared buffer.  Can
-a requester post aura_mask.pool_addr = 0 (which passes the else-if arm with no
-translation) and then flip aura_mask.pool_addr to U64_MAX and aura.pool_addr
-to an arbitrary 64-bit value from another CPU before the AF reaches the
-memcpys?
-
-That would put a caller-chosen pool context pointer into the aura context,
-which is the case the patch is trying to prevent.  Would copying req->aura and
-req->aura_mask into the aq->lock protected ctx/mask buffers (or an on-stack
-struct npa_aura_s) first, and validating/translating that private copy, close
-the window?  The same shape applies to the INIT path below.
-
->  		} else {
->  			memcpy(mask, &req->pool_mask,
->  			       sizeof(struct npa_pool_s));
->  			memcpy(ctx, &req->pool, sizeof(struct npa_pool_s));
->  		}
->  		break;
-> @@ -127,13 +153,10 @@ int rvu_npa_aq_enq_inst(struct rvu *rvu, struct npa_aq_enq_req *req,
->  		break;
->  	case NPA_AQ_INSTOP_INIT:
->  		if (req->ctype == NPA_AQ_CTYPE_AURA) {
-> -			if (req->aura.pool_addr >= pfvf->pool_ctx->qsize) {
-> -				rc = NPA_AF_ERR_AQ_FULL;
-> +			rc = npa_aura_translate_pool_addr(pfvf,
-> +							  &req->aura.pool_addr);
-> +			if (rc)
->  				break;
-> -			}
-> -			/* Set pool's context address */
-> -			req->aura.pool_addr = pfvf->pool_ctx->iova +
-> -			(req->aura.pool_addr * pfvf->pool_ctx->entry_sz);
->  			memcpy(ctx, &req->aura, sizeof(struct npa_aura_s));
->  		} else { /* POOL's context */
->  			memcpy(ctx, &req->pool, sizeof(struct npa_pool_s));
--- 
-pw-bot: cr
