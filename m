@@ -1,44 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F823E0241;
-	Tue, 15 Sep 2026 16:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC43C3911A2;
+	Tue, 15 Sep 2026 16:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789489193; cv=none; b=NXrwgvG2aOjM3rAeYkYKbAootzkLEP0+5EC2HGh5HYLHczFiN5mIlx+bFTcq99tOjgNLoZOe8Kh2awaAfHiUOvtFiJ/RosI5vwbwBBxRhmTlyVW39j4qBtomB+EHCVXtkQwHlcaRjJPzBP5FEvDkWgFkEv9aFxPOLhZDV2xPDYM=
+	t=1789489460; cv=none; b=t1qQoSrcfCH2u97Mta/3iHzgYQtcvwDVqfUydYKiEP5mc7/wi0tmPW2vGQcWD6csWA4U7dNc05dDnQaaUxgEx0xugwzLEMPd57JXJj7/XUgMbXUViYsc6l2yR3BN38GVlmaw7yYVN9ng89xafc9YHyMy/D8HEZaSpk1mJmAYItw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789489193; c=relaxed/simple;
-	bh=LG3AHBUkxXta7iMioSPYx+Wv/dAvKJEcfQO1si2uq/Q=;
+	s=arc-20240116; t=1789489460; c=relaxed/simple;
+	bh=3XhvcrePAsjOkJbcs/niA+W2eQhZAo60bcemQHy+ulw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GSZICIrVS17tyvdnKezEVYyUWK83z+WbrULJd4fLboU3OkBBySYHbnzAGFIyWr55plTGQ5z4hsv0eDFit52I1ESdYGdELVt9rlO//Z0q5CPlg4DTiPBdFDiyh7oNiVTsrHUybGOp5NKPZnwJz6rCNqnN1hRAr9PQcahiUSCh/BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H+OT1S+b; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=kHJ8zWYO63GSx0bOYG5/A7JL+FGGNxuxGsGPmyeGufzncFofQYy2k6D++g90wENxanG5SH7SRMgKdMyOjpfSAVplGzf3cULpKgFN0eTQNmQSb0CDitCZAuooMImzasCqBfGf+GIcuiS/EBZGCeYwVeKtn4i1iw5XcoR3TATFRcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b8masCky; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H+OT1S+b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A72DF1F000FF;
-	Tue, 15 Sep 2026 16:19:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b8masCky"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F9211F000FF;
+	Tue, 15 Sep 2026 16:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789489192;
-	bh=0W9GkyoRNPxgn5jl7gLJyXFPHqbh2S8h7IAjHgNCKTE=;
+	s=k20260515; t=1789489459;
+	bh=3XhvcrePAsjOkJbcs/niA+W2eQhZAo60bcemQHy+ulw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=H+OT1S+bdVOlxckCBBL03yONmT5APZ/6oJFfFh6yW9aF3sOJBSsU7zDUGc23yUxog
-	 5oWsWSx60XxZok70tUGi0kzjkR03Lb+9KQd9YHoTc2z4PmmwoJxJQGpeasnbHohAXx
-	 3YzWOchNj6W2zCLC2nwJeOEgo3T2bv4roNFLyF62iJt9+gNsqsNud2R47dMYdKxOaf
-	 XP8XDLke65GaZLClw+s1cYjaawzDEL3qStu5wLiahZoM5VBsADvQH3HVyWAZqOuI2b
-	 2E8NaNGw5Xz1NKhBb89HjU0xAgTyBCogAuTAGkRMItHouGs0Jc29mPQnBu4L5WpYCX
-	 LuDA1w/qqHHTA==
-Date: Tue, 15 Sep 2026 09:19:51 -0700
+	b=b8masCkyOCB+7meRWmTmfetMyecmbtWBSMlufRsJWotqxG/oFO+GZzZpS8TcIqagx
+	 yyzUAwOaK6GaUwvwS7OzJUZEoB+IrAOK0jdVxnLpkmbwH1b2eNbM+UUBCP27F2GGbX
+	 RycTFXP4YNd6Eb+M+D6TZAEsjqZ46MYOzziD57/htzNd9v1xPIxdHb66NNcYwLPqXg
+	 r2KrOnTUbNIowdtt3hpaRAY0ldoyWrOKo7me34SRcT7pzH2QLs9ojK4oQW10qNUuBl
+	 o2ItfuQxnNut8Tg77MlKcw7KVO7ja0uwfpaw0OT9uw4aOCXrc8pXmJuCqfJyhAhF7Z
+	 3ppQNE5ePLKQw==
+Date: Tue, 15 Sep 2026 09:24:18 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- daniel.zahka@gmail.com, willemdebruijn.kernel@gmail.com,
- donald.hunter@gmail.com, shuah@kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next 6/6] selftests: drv-net: psp: check the PSP
- disassociation notifications
-Message-ID: <20260915091951.5b440d9c@kernel.org>
-In-Reply-To: <178945226574.22033.964225107132506366@kernel.org>
-References: <20260912200426.121025-7-kuba@kernel.org>
-	<178945226574.22033.964225107132506366@kernel.org>
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Cc: aleksandr.loktionov@intel.com, andrew+netdev@lunn.ch,
+ anthony.l.nguyen@intel.com, davem@davemloft.net, edumazet@google.com,
+ horms@kernel.org, jacob.e.keller@intel.com, netdev@vger.kernel.org,
+ pabeni@redhat.com, przemyslaw.kitszel@intel.com,
+ rafal.romanowski@intel.com, sdf@fomichev.me, stable@vger.kernel.org
+Subject: Re: [PATCH net 1/4] iavf: return EBUSY if reset in progress or not
+ ready during MAC change
+Message-ID: <20260915092418.0aafd079@kernel.org>
+In-Reply-To: <20260915081222.13970-1-jtornosm@redhat.com>
+References: <20260824190145.2714480-1-kuba@kernel.org>
+	<20260915081222.13970-1-jtornosm@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,18 +49,10 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 15 Sep 2026 06:04:25 +0000 netdev-bot+sashiko@kernel.org wrote:
-> [Severity: Medium]
-> 
-> Does this block actually check the property the commit message describes,
-> that "a namespace which still has another association is only told about
-> the change"?
-> 
-> _get_dev_ntf() returns as soon as it sees one message for the device, so
-> only the first guest notification is inspected.  If the kernel also sent a
-> dev-del-ntf to the guest here (i.e. still_visible in
-> psp_nl_notify_disassoc() were computed wrongly), nothing in this phase
-> would notice it.
+On Tue, 15 Sep 2026 10:12:19 +0200 Jose Ignacio Tornos Martinez wrote:
+> All the comments below fall into pre-existing issues, concerns already
+> addressed in previous versions and comments, out-of-scope items, or extreme
+> edge cases.
 
-shrug, we can write inf number of tests here
-I think it's good enough as is
+You're not fully fixing the issue, and sprinkle in EBUSY returns to user
+space instead of waiting. I'm afraid that below the bar.
