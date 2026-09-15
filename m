@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4823B47F9;
-	Tue, 15 Sep 2026 02:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C9D3CEBBD;
+	Tue, 15 Sep 2026 02:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789438276; cv=none; b=F8Tkx353Zr9aCLgDpZemxAPSe7NQzq/5wtSll7DwdFhZGrMbw5kjlyQU+PfXHnxDF6FspHYPv3f5Dq81z2zo5wGG7b0Xo4rLZ9y93V1IbMpaaN78k/lOG2pcVVOMlrTDzWFdv9Otwg8chLzeXs0uVcnDQzhlrW4LMnSdUZBJhO4=
+	t=1789438278; cv=none; b=BqBzMGut0uK2gWkV3OgJeMoQ1tKmUozl8mBlz+GuE11Vd8gHBu37aOrsjTVaMPSeU7HAPMhDZFpX2rT5LW+eVY8iQD/IjrL0rKxFk+OdyMh4G69VBf1mXjP8ZSPAVfaHhY/Rbe+e8y6w4Ua8hvqqmoto8Bz37cAzpBV/ruWE2Ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789438276; c=relaxed/simple;
-	bh=YhHQKPH26nJFuTrPS5P+swEIolxE0dngsOf8QiFa4Gk=;
+	s=arc-20240116; t=1789438278; c=relaxed/simple;
+	bh=N8N0SKdMrgOaYhGwu4u41DLLVvGDfwueA6SuLrV1jfs=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ibaPX7PXEyqU6SqsT/CtJwdYSuOJru+RlGJZWdMD8fmyvLOAdHin+Yg5Jfw+Eax39UtO7sav357gSZbYVxD4PLWXOUFArJmyTNTutU5pPTg/sza/o+KU5vTAxk1rbAKJDqAnNPu/SUieqcyWt+7mODzlmxdO6RkgGpF0LBdPpOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O27Gy+Rj; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=W4Cuct+EniHcXJyPhbYgLNtYmcEiAJWpajSYaA6pwKbdLB5odETuFvwikOliaS31iQn5OstUf3PwZVI/iHia6V6WyaZpmatvOrksvde297CX5SSdhCNWmye8BNAnD2GFFlGHWGe80EZVAPZNvlg0itZqz4O3BztETuQ4xHC/BJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dtAwHN9H; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O27Gy+Rj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEBAA1F000FF;
-	Tue, 15 Sep 2026 02:11:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dtAwHN9H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E6D1F000FF;
+	Tue, 15 Sep 2026 02:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789438275;
-	bh=xlk1XRCTICWATLfvf0LvgViORyT2d+O2KFYf4jvuo5c=;
+	s=k20260515; t=1789438277;
+	bh=oPPURAaLdMZZFUJHXFdnAHiF47kIBYfbwwPk9AMn/Uw=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=O27Gy+Rj4vsdJmbyEdYuCO3rOHWTvWA+50USgcaRtwF5M5O609simhts7+yyxYGfY
-	 J75KFC8/+KRtRF2r7QmrGbH9ZU8EB6eMnqTuLsy8QInBAwSNWnLukZjxNsGzWjX0QM
-	 2hM+fs/Y2TfTYgYQrxYnb+0iLUJn5U9Nr1e0ltZusnNbtl//6jfMYiATKDZQRUn069
-	 LjhmpMhvH8NjqCuCSoDjx+xthQ5EixMYPqsvDjx/3hH79yKDlT9I8s5RIwC4q8iOjU
-	 MIt8WSKgXT2xHwH6kRISEHzrJsLwnLT3tzEgDmiHjjZJFKFBJ4HiSd1iuTxSMUn5I6
-	 YK4mJTYF1YlJw==
+	b=dtAwHN9HQEOtG18BYLcDu+WVGwc6sHAg+XCck4V8EgHvugfIC5fDdT2XI9XWMMfNT
+	 2Bdx8W8tyMXRr7/OR9QkVqXyX1vNA2TZZwxHyiPUFOe0jJV8VPXK3RcEIDN08KtbyO
+	 JaV4qzfnvNCFP4n8ajM4eo18nvEI38UpT5sKB/OyYSRBfOS6wggEr+jqVR3IjJllI2
+	 +w3kV/PM98+KzmPLy77igpKb3+sOjiYKFk+FZ+aEgOe23bU/Gn6ODVQXrQuK+f5Xdn
+	 3CRuhLVmry2VTWx7yoMFkOWHewaGaKU6xggPCy36+ghJdDiFq6gV/1Ux+d1vIizKkU
+	 G24gYt2jeWcug==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0CAC3924FFE;
-	Tue, 15 Sep 2026 02:10:11 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56C173924FFE;
+	Tue, 15 Sep 2026 02:10:13 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v6] rust: net: phy: fix off-by-one bit positions in
- device
- status accessors
+Subject: Re: [PATCH net] seg6: set IPSKB_L3SLAVE from IP6SKB_L3SLAVE on IPIP
+ decapsulation
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178943821064.1315233.963613512821734944.git-patchwork-notify@kernel.org>
-Date: Tue, 15 Sep 2026 02:10:10 +0000
-References: <20260910055110.167110-1-springbreeze@stu.pku.edu.cn>
-In-Reply-To: <20260910055110.167110-1-springbreeze@stu.pku.edu.cn>
-To: Chunfeng Song <springbreeze@stu.pku.edu.cn>
-Cc: kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
- andrew@lunn.ch, hkallweit1@gmail.com, rmk+kernel@armlinux.org.uk,
- ojeda@kernel.org, boqun@kernel.org, gary@garyguo.net,
- fujita.tomonori@gmail.com, tmgross@umich.edu, stable@vger.kernel.org
+ <178943821188.1315233.6322722088221273157.git-patchwork-notify@kernel.org>
+Date: Tue, 15 Sep 2026 02:10:11 +0000
+References: <20260913194421.31-1-andrea.mayer@uniroma2.it>
+In-Reply-To: <20260913194421.31-1-andrea.mayer@uniroma2.it>
+To: Andrea Mayer <andrea.mayer@uniroma2.it>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, dsahern@kernel.org, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ david.lebrun@uclouvain.be, stefano.salsano@uniroma2.it
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu, 10 Sep 2026 05:51:10 +0000 you wrote:
-> The hand-written bitfield offsets in is_link_up(), is_autoneg_enabled()
-> and is_autoneg_completed() were correct when the abstraction was
-> merged: at that time autoneg, link, and autoneg_complete were at bits
-> 13, 14, and 15 of struct phy_device's first bitfield unit. Commit
-> 2796ff1e3dca ("net: phy: add flag is_genphy_driven to struct phy_device")
-> later inserted is_genphy_driven just before autoneg, shifting the three
-> fields up by one, so the accessors now read:
+On Sun, 13 Sep 2026 21:44:21 +0200 you wrote:
+> When an SRv6 packet arrives on an interface enslaved to a VRF,
+> vrf_ip6_rcv() sets IP6SKB_L3SLAVE in IP6CB, but decap_and_validate()
+> has never set IPSKB_L3SLAVE in IPCB. The bit stayed clear in the
+> common case, and with CONFIG_IPV6_MIP6 the leftover frag_max_size of
+> a reassembled outer packet could even set it, with no VRF involved.
+> Commit 44930446dde4 ("ipv6: seg6: clear IPv4 control block on IPIP
+> decapsulation") then made the unreliable bit reliably clear.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v6] rust: net: phy: fix off-by-one bit positions in device status accessors
-    https://git.kernel.org/netdev/net/c/6fb0a9d9071f
+  - [net] seg6: set IPSKB_L3SLAVE from IP6SKB_L3SLAVE on IPIP decapsulation
+    https://git.kernel.org/netdev/net/c/7616242a2b37
 
 You are awesome, thank you!
 -- 
