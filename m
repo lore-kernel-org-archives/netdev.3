@@ -1,220 +1,268 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6344CC262;
-	Tue, 15 Sep 2026 22:57:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E7735AC33;
+	Tue, 15 Sep 2026 23:00:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789513068; cv=none; b=G9EdKJuQyvBOR2IhuCpGl7cnQTP1SGDNzUuO76J0bw0u6rsROVr29QvffaSIo6EAKPMck71cQVo5PdwT5BNRrIBhZmSHooC0q0mHLbTR6MHPkxY9JnsPYtp6PBoQ3m/UKElXN5k+GkfgLhN7+cA1wMh6WeBw6RQPsLsDtDKebJY=
+	t=1789513231; cv=none; b=VvgvB2ZwQMVfQ3+/qPLME3AW6/hqep+bZ4zz4bTM59iEH/G5JuzSCD9uMKq9NKh1KgE2/46hJPWGXb55Uz0z5uv4RDZYMk+OnpPatTn59oytUtc7pjrOV6eR9A0UvwcCyd+imNa4n1wgAcdvBUiLubMXIAF+h9meKRfKrcb0+tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789513068; c=relaxed/simple;
-	bh=yhsNj6jWXACE+p3ihRz3xHZoHiKrSyiTkrV7NdIjveM=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=V2HHM/PyxReCuaDixlSDv7KCqNaZFjaYC4g4C1jDI1aGUo60zuk0bADaaNs/mzr5aYlwlYqhXNBuBCKQdVBGjn2I4wtxgqbnUUFGWHEi9M7uLhqQJ/B6w89vLL364o7JXAfvJIwiMmcKC51xU2IfSyVmDLAQRB/LsqXVZj1cD2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gwyZEvy/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789513231; c=relaxed/simple;
+	bh=JCha9pC7+QN3P1InVt0V+DvqihHeD2b5ZY69pk7Dhss=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=k4g4HPpPm4dyE2vgBm70kHAuRNkJuol3LK1VBwWPYdrxtmnQQAaivzvCGiEJxjvTwl4adBBD0G9o0t9e4bIPKpmrTjHW0Ido+75AXb34y9JoffGyJZCcNRJ/Ml1+sqyCkwbvBTbHjBh9DPpYqomPOWbQkgz+0ziujUgXvXh7HIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=Hbb17WbT; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gwyZEvy/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F17161F000FF;
-	Tue, 15 Sep 2026 22:57:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789513066;
-	bh=/moa0L7C2Qasuf13H754ngTSS1k8gdSY/BtIHUoI/fs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=gwyZEvy/ZtU4bqAfcFidU2UZduoX8Vz2zk+jBAtLBnFblCV89mqP+vbWk5wjlETzp
-	 la8H7sTYyfzVa6T5x7dKpUynjT/BJf7wX20YcWr1D675YWwlyQOgPWrqs2FLR8Av6S
-	 J+tNWLf9rUZwBW0L5JIVezPijqQXiPcELsxbX6BjiwxCuJSNhbRwFMuQsI7Tk9BOh4
-	 huUSR8Mp5qIp6TUKys9zqDNSIjzO7uAlFrAMNPXpR5sYYZTiAMuKkYXqGNL3wlBa6n
-	 OgVClvFTYoF4EnQBbo68kmLW1wa2JUNquQk5SSoGVT4073xCYDR0SzkupKYZkBRXYR
-	 eB8bBN8nTgdiQ==
-Subject: Re: [PATCH net v10 13/14] afs: Fix uncleared op->call pointer
-From: netdev-bot+sashiko@kernel.org
-To: dhowells@redhat.com
-Cc: netdev@vger.kernel.org, marc.dionne@auristor.com, kuba@kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org
-Date: Tue, 15 Sep 2026 22:57:45 +0000
-Message-ID: <178951306557.22033.18218417627125166965@kernel.org>
-In-Reply-To: <20260914151340.3227501-14-dhowells@redhat.com>
-References: <20260914151340.3227501-14-dhowells@redhat.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="Hbb17WbT"
+Received: from pps.filterd (m0528004.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68FMObFH1201369;
+	Tue, 15 Sep 2026 16:00:17 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	pps82601-s2048-2026-q3; bh=/7wMsNMTWbPyL3fPI/YPFAfXDR2ot92C5qcYW
+	PZkYss=; b=Hbb17WbT3V4Pe2BOC8mmzj+EiAcsGQOgjaWr/iMfIFAM2LlsmzxZG
+	4s3biLyY6hDjIjwKBkgZIYryQDhlxi2hCT+DxLjF6LDSqYlVmGP70e0i4lO6o4L/
+	mBw+6zy8kDdnDGt/E/hXaJopgEsJbOTnjqDOY+DnFE4GKeZXLGkkaA98Q+FRutLs
+	tQFYAcuOUykDmpLMLCJlzR6U0CaD5zM5NHm0d+c+tt1k3lrJ/16TtMN0ldk0945T
+	TMyCLMEkfd0lWwtsT1Q9iI17Z9oUaXId27kD1xA0zeoaIJhx+YoLU1Pyx/3m+3TJ
+	/MVWG2bnQf1gJqtGPcWe1SPjWiQxL1DjA==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4gqcw191ug-13
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Tue, 15 Sep 2026 16:00:17 -0700 (PDT)
+Received: from devgpu031.atn1.facebook.com (2620:10d:c0a8:1b::2d) by
+ mail.thefacebook.com (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.45; Tue, 15 Sep 2026 23:00:04 +0000
+From: Danielle Costantino <dcostantino@meta.com>
+To: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+        Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
+        Andrew Lunn
+	<andrew+netdev@lunn.ch>, <davem@davemloft.net>,
+        Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+	<pabeni@redhat.com>, Moshe Shemesh <moshe@nvidia.com>,
+        Eran Ben Elisha
+	<eranbe@nvidia.com>
+CC: <netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Danielle Costantino <dcostantino@meta.com>, <stable@vger.kernel.org>
+Subject: [PATCH net 1/2] net/mlx5: Bound the command interface drain so teardown cannot hang
+Date: Tue, 15 Sep 2026 15:59:39 -0700
+Message-ID: <20260915225941.554568-2-dcostantino@meta.com>
+In-Reply-To: <20260915225941.554568-1-dcostantino@meta.com>
+References: <20260915225941.554568-1-dcostantino@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE1MDMzNSBTYWx0ZWRfX8pnZbHowSVVG
+ WAZWapooM8nCwZZDe2XjR6oDL+wtTTEwkBq00vJ8h6c1ommKoO3cIHq6KhSbfNXf+mCb02+FXVg
+ SkHPbxQWuMBF4wfGjjVQUb6ckteKulc5phLiXvthueB7BzHHjZVC8Wqe/tDM4ORX0Rswm5T0LE/
+ JbpRjELggyNwtQYqyni+LUIEg/ykK+UoR6kMtBRr/pCg7r2Bm/vltCcVg6ZhC+7WizoEfiacYTr
+ dPljNM5hQOz9pslOJLB1EPQ1kyJL7cOGu0kqoEDXDmD0+nfz2rp9NDFtLUngPaDMwr4c/IT3jtp
+ sKbsWlvaLHrfYRd+7/xvTVD8HiJqdK5jEDAAcF8mLX22KDILyONr8GFgILRkyA1EKpemtL13Q58
+ c0xbnJIemGWq5FpuJc/pIaSGCUsDvEzRTVPk8MtHPOr1qZbT4EQd7aw+5KTGtE2x6Ks/yNZSZ/p
+ KC8hwfD2xoS2AuBIpFA==
+X-Proofpoint-ORIG-GUID: nF5gDvsELxuCNANJThDm-6OJkyJriOIT
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE1MDMzNSBTYWx0ZWRfX9dO3swmI9dl/
+ qUYhlu/tkHoWtZSpbDtRXuwW9gXU/ovNnLyMQQlNEqUXfqwxn/TdE+1u0qyP7478qVhIf9bPHUH
+ ycBVjfXRv3I4kiGNvw2VtC+PYR3033w=
+X-Authority-Analysis: v=2.4 cv=HKBWhYtv c=1 sm=1 tr=0 ts=6aa9ce01 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
+ a=GbPsI2Ihf5RTnMjR_gZv:22 a=VwQbUJbxAAAA:8 a=VabnemYjAAAA:8
+ a=FuP7fAYJB1pi65jk6foA:9 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-GUID: nF5gDvsELxuCNANJThDm-6OJkyJriOIT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-15_05,2026-09-15_02,2025-10-01_01
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+mlx5_cmd_allowed_opcode() and mlx5_cmd_change_mod() drain the command
+interface before updating a field that every in flight command reads, by
+taking every unit of cmd->vars.sem:
 
-Critical: 0 · High: 0 (2) · Medium: 1 · Low: 0
+	for (i = 0; i < cmd->vars.max_reg_cmds; i++)
+		down(&cmd->vars.sem);
+	down(&cmd->vars.pages_sem);
 
-- [Medium] The Fixes: tag is too narrow.
+Since commit 8e715cd613a1 ("net/mlx5: Set command entry semaphore up once
+got index free") a unit is handed back from cmd_ent_put(), under the
+refcount that reaches zero:
 
-Pre-existing issues:
-- [High] The asynchronous fileserver-rotation peer of the loop fixed here
-  does not handle the 'issue helper returned without creating a call'…
-- [High] An RPC that was never issued because of an allocation failure is
-  reported to userspace as a successful operation.
+	if (ent->idx >= 0) {
+		cmd_free_index(cmd, ent->idx);
+		up(ent->page_queue ? &cmd->vars.pages_sem : &cmd->vars.sem);
+	}
 
---
+A command that timed out never gets there.  mlx5_cmd_comp_handler(forced)
+deliberately keeps the entry and its index allocated because firmware may
+still complete the command, so the entry keeps a reference, the refcount
+never reaches zero, and the unit is never returned.  Before that change the
+up() ran unconditionally at the end of the completion loop and a timed out
+entry did give its unit back; only the index was withheld.
 
-afs: Fix uncleared op->call pointer
+So a single stalled command slot makes both functions block forever.
 
-This adds op->call = NULL after the afs_put_call() in
-afs_wait_for_operation(), so that a subsequent fileserver rotation
-iteration cannot observe a pointer to a call that has already been put.
+That is not a corner case, because destroy_async_eqs() calls both while
+tearing the device down:
 
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260907113743.1453210-1-dhowells%40redhat.com
+	mlx5_cmd_allowed_opcode(dev, MLX5_CMD_OP_DESTROY_EQ);
+	mlx5_cmd_use_polling(dev);		/* mlx5_cmd_change_mod() */
+	cleanup_async_eq(dev, &table->cmd_eq, "cmd");
+	mlx5_cmd_allowed_opcode(dev, CMD_ALLOWED_OPCODE_ALL);
 
-A couple of questions about the Fixes: tag and the changelog wording, and
-two observations about neighbouring paths that the new op->call = NULL
-interacts with.
+and that runs from mlx5_eq_table_destroy() <- mlx5_unload(), so a function
+with any stalled command cannot be removed:
 
-> Fixes: 6f2ff7e89bd0 ("afs: Don't put afs_call in afs_wait_for_call_to_complete()")
+  mlx5_cmd_allowed_opcode+0x70/0x188
+  destroy_async_eqs+0x168/0x440
+  mlx5_eq_table_destroy+0x29c/0x2e0
+  mlx5_unload+0xa8/0xe8
+  mlx5_uninit_one+0xa0/0x190
+  remove_one+0x80/0x100
+  pci_device_remove+0x9c/0x1c0
+  device_release_driver_internal+0x358/0x5a8
+  unbind_store+0x14c/0x188
 
-[Severity: Medium]
-Is this tag scoped correctly?  6f2ff7e89bd0 moved the afs_put_call() out of
-afs_wait_for_call_to_complete() and into afs_wait_for_operation(), but the
-stale op->call looks like it predates that move.
+The task stays in D state indefinitely and holds the devlink instance lock
+while it does, so concurrent devlink users pile up behind it.  Reboot does
+not recover it quickly either, since the same teardown runs on the way
+down.
 
-At 6f2ff7e89bd0^ the loop in afs_wait_for_operation() reads:
+Reproduced by swallowing firmware completions with a kprobe so that
+commands take the real -ETIMEDOUT path, then unbinding the function.  With
+20 of the 31 register slots stalled, inspecting the hung device shows
+cmd->vars.sem drained to 0 while cmd->vars.bitmask still reports 11 slots
+free: mlx5_cmd_allowed_opcode() took the 11 units that were available and
+then blocked on the 20 that are never coming back.
 
-	if (op->call)
-		op->error = afs_wait_for_call_to_complete(op->call, &op->ac);
+Bound the wait by the command timeout, which is the longest a command that
+is merely in flight can legitimately take, and update the field without a
+full drain if it expires.  Give the two callers a shared helper so the
+unwind releases exactly what was acquired.  Failing to drain is worth a
+warning but not a hang: the entries still holding units have already timed
+out, so they are the least likely to be disturbed by the update, and the
+alternative is an unrecoverable teardown.
 
-and the tail of afs_wait_for_call_to_complete() that the blamed commit
-removed was:
+mlx5_cmd_invoke() already bounds the same semaphore this way, see
+commit 485d65e13571 ("net/mlx5: Add a timeout to acquire the command
+queue semaphore").
 
-out:
-	_debug("call complete");
-	afs_put_call(call);
+Fixes: 8e715cd613a1 ("net/mlx5: Set command entry semaphore up once got index free")
+Cc: stable@vger.kernel.org
+Signed-off-by: Danielle Costantino <dcostantino@meta.com>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 77 +++++++++++++++----
+ 1 file changed, 61 insertions(+), 16 deletions(-)
 
-so the call was already freed with op->call left pointing at it, and
-git grep 'op->call =' at that revision finds only the assignment in
-afs_make_op_call().  Since the tag names a v6.7-era commit, would the
-older stable trees be skipped by the backport tooling while carrying the
-same stale pointer?
-
-> Fix uncleared op->call pointer in afs_wait_for_operation() lest server
-> rotation occur and try to reuse the call.
-
-Could the changelog say what the reuse actually is?  On a later rotation
-iteration where the issue helper bails out through afs_op_nomem() without
-assigning op->call, the stale pointer is handed to
-afs_wait_for_call_to_complete() and afs_put_call() a second time, i.e. a
-use-after-free of a freed afs_call rather than just a "reuse".
-
-> diff --git a/fs/afs/fs_operation.c b/fs/afs/fs_operation.c
-> index 20801b29521d1..94fa65548d712 100644
-> --- a/fs/afs/fs_operation.c
-> +++ b/fs/afs/fs_operation.c
-> @@ -297,6 +297,7 @@ void afs_wait_for_operation(struct afs_operation *op)
->  			op->call_error = op->call->error;
->  			op->call_responded = op->call->responded;
->  			afs_put_call(op->call);
-> +			op->call = NULL;
->  		}
->  	}
-
-[Severity: High]
-This is a pre-existing issue and not introduced by the patch, but with
-op->call now guaranteed to be NULL at the top of every iteration, what
-happens to an -ENOMEM from the issue helper?
-
-Each iteration of the loop starts by clearing the per-call state:
-
-		op->call_responded = false;
-		op->call_error = 0;
-		op->call_abort_code = 0;
-
-and the issue helpers bail out on allocation failure with:
-
-	call = afs_alloc_flat_call(op->net, &afs_RXFSFetchData, ...);
-	if (!call)
-		return afs_op_nomem(op);
-
-while afs_op_nomem() in fs/afs/internal.h only records:
-
-static inline void afs_op_nomem(struct afs_operation *op)
-{
-	op->cumul_error.error = -ENOMEM;
-}
-
-With op->call NULL the completion block above is skipped, so op->call_error
-stays 0 and AFS_OPERATION_STOP is not set.  afs_select_fileserver() then
-evaluates the previous "result":
-
-	int error = op->call_error, ...
-	switch (op->call_error) {
-	case 0:
-		...
-		error = afs_update_volume_state(op);
-		...
-		fallthrough;
-	default:
-		/* Success or local failure.  Stop. */
-		afs_op_set_error(op, error);
-
-and afs_op_set_error() assigns unconditionally:
-
-static inline int afs_op_set_error(struct afs_operation *op, int error)
-{
-	return op->cumul_error.error = error;
-}
-
-Does that erase the recorded -ENOMEM, so afs_wait_for_operation() takes the
-!afs_op_error(op) branch and runs op->ops->success(op) on an afs_status_cb
-that was never filled in?  For a store that reaches
-afs_store_data_success():
-
-	if (!afs_op_error(op)) {
-		afs_pages_written_back(vnode, op->store.pos, op->store.size);
-
-which would mark the pages written back and return success from write(2)
-although no FS.StoreData was ever sent.  For create/mkdir, would
-->success() and ->edit_dir() instantiate an inode and a directory entry
-from a zeroed status and fid?
-
-[Severity: High]
-This isn't a bug introduced by this patch either, but the asynchronous peer
-of this loop has no equivalent of the "no call was created" handling that
-the if (op->call) test provides here.
-
-In afs_issue_read() the async branch is:
-
-		if (!afs_select_fileserver(op)) {
-			afs_end_read(op);
-			return;
-		}
-
-		afs_issue_read_call(op);
-
-and afs_issue_read_call() returns void without inspecting op->call or
-op->cumul_error:
-
-static void afs_issue_read_call(struct afs_operation *op)
-{
-	op->call_responded = false;
-	op->call_error = 0;
-	op->call_abort_code = 0;
-	if (test_bit(AFS_SERVER_FL_IS_YFS, &op->server->flags))
-		yfs_fs_fetch_data(op);
-	else
-		afs_fs_fetch_data(op);
-}
-
-If afs_alloc_flat_call() fails in afs_fs_fetch_data()/yfs_fs_fetch_data(),
-afs_make_op_call() is never reached, so op->call stays NULL and no rxrpc
-call exists.  All the async completion work hangs off an existing call via
-afs_fetch_data_async_rx() -> afs_read_receive() -> afs_end_read() ->
-afs_fetch_data_notify() -> netfs_read_subreq_terminated().
-
-Does that leave the netfs_io_subrequest unterminated for readahead and iocb
-reads, with afs_put_operation() never called and the operation's
-key/volume/server_list references leaked?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260914151340.3227501-1-dhowells%40redhat.com
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+index 84583dc5eb1c0..571ed540957b1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+@@ -1656,36 +1656,81 @@ static void create_debugfs_files(struct mlx5_core_dev *dev)
+ 	debugfs_create_file("run", 0200, dbg->dbg_root, dev, &fops);
+ }
+ 
+-void mlx5_cmd_allowed_opcode(struct mlx5_core_dev *dev, u16 opcode)
++/* Drain the command interface so that cmd->allowed_opcode and cmd->mode can be
++ * updated without an in flight command straddling the change.  A command that
++ * timed out keeps its index, and with it its semaphore unit, until firmware
++ * completes it - which may never happen - so bound the wait by the command
++ * timeout instead of blocking forever.  Returns the number of cmd->vars.sem
++ * units taken, and reports separately whether the page queue unit was taken;
++ * both have to be handed back by cmd_sem_up_all().
++ */
++static int cmd_sem_down_all(struct mlx5_core_dev *dev, bool *pages_sem)
+ {
++	unsigned long end = jiffies + msecs_to_jiffies(mlx5_tout_ms(dev, CMD));
+ 	struct mlx5_cmd *cmd = &dev->cmd;
++	long left;
+ 	int i;
+ 
+-	for (i = 0; i < cmd->vars.max_reg_cmds; i++)
+-		down(&cmd->vars.sem);
+-	down(&cmd->vars.pages_sem);
++	for (i = 0; i < cmd->vars.max_reg_cmds; i++) {
++		left = end - jiffies;
++		if (left <= 0 || down_timeout(&cmd->vars.sem, left))
++			break;
++	}
+ 
+-	cmd->allowed_opcode = opcode;
++	left = end - jiffies;
++	*pages_sem = left > 0 && !down_timeout(&cmd->vars.pages_sem, left);
+ 
+-	up(&cmd->vars.pages_sem);
+-	for (i = 0; i < cmd->vars.max_reg_cmds; i++)
++	if (i < cmd->vars.max_reg_cmds)
++		mlx5_core_warn(dev, "command interface did not drain, %d of %d slots still busy\n",
++			       cmd->vars.max_reg_cmds - i, cmd->vars.max_reg_cmds);
++	if (!*pages_sem)
++		mlx5_core_warn(dev, "command interface did not drain, page queue slot still busy\n");
++
++	return i;
++}
++
++static void cmd_sem_up_all(struct mlx5_core_dev *dev, int nr, bool pages_sem)
++{
++	struct mlx5_cmd *cmd = &dev->cmd;
++
++	if (pages_sem)
++		up(&cmd->vars.pages_sem);
++	while (nr--)
+ 		up(&cmd->vars.sem);
+ }
+ 
+-static void mlx5_cmd_change_mod(struct mlx5_core_dev *dev, int mode)
++void mlx5_cmd_allowed_opcode(struct mlx5_core_dev *dev, u16 opcode)
+ {
+ 	struct mlx5_cmd *cmd = &dev->cmd;
+-	int i;
++	bool pages_sem;
++	int nr;
+ 
+-	for (i = 0; i < cmd->vars.max_reg_cmds; i++)
+-		down(&cmd->vars.sem);
+-	down(&cmd->vars.pages_sem);
++	nr = cmd_sem_down_all(dev, &pages_sem);
+ 
+-	cmd->mode = mode;
++	/* Narrowing the set is only safe once the interface has drained.
++	 * mlx5_cmd_comp_handler() reads !opcode_allowed() as "no real
++	 * firmware completion is expected" and releases the entry, so
++	 * narrowing while a command is still posted would hand its mailboxes
++	 * back to dev->cmd.pool with firmware still able to write them.
++	 * Widening back to CMD_ALLOWED_OPCODE_ALL is always safe.
++	 */
++	if (opcode == CMD_ALLOWED_OPCODE_ALL ||
++	    (nr == cmd->vars.max_reg_cmds && pages_sem))
++		cmd->allowed_opcode = opcode;
++	else
++		mlx5_core_warn(dev, "leaving command opcodes unrestricted, interface did not drain\n");
+ 
+-	up(&cmd->vars.pages_sem);
+-	for (i = 0; i < cmd->vars.max_reg_cmds; i++)
+-		up(&cmd->vars.sem);
++	cmd_sem_up_all(dev, nr, pages_sem);
++}
++
++static void mlx5_cmd_change_mod(struct mlx5_core_dev *dev, int mode)
++{
++	bool pages_sem;
++	int nr;
++
++	nr = cmd_sem_down_all(dev, &pages_sem);
++	dev->cmd.mode = mode;
++	cmd_sem_up_all(dev, nr, pages_sem);
+ }
+ 
+ static int cmd_comp_notifier(struct notifier_block *nb,
