@@ -1,356 +1,244 @@
-Received: from mail-oi2-f0.google.com (mail-oi2-f0.google.com [74.125.231.192])
+Received: from mail-pj2-f39.google.com (mail-pj2-f39.google.com [74.125.227.167])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996EC3F4118
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 21:33:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.192
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABFB436DA15
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 21:34:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.167
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789508027; cv=none; b=JqMs5L3ch1NU469jeWWg398wIKQZYuLxoYCG0ansCQtgm8cNWulwq8nbj4CK62eLzPVpVkeDzxc1CeTS6ePpl9jlDmouxS6UrqWl47xtc/DnxxyvzaISD7a+Fg8JeOpM+WdhrGk0pXZRThQ2WNaGZZ2FltpTgGUuh7BmbKzX0v4=
+	t=1789508051; cv=none; b=nzT1/aTuXzc4bBMNnMdV7BCPEa751zWk3H0BsVJG5XoZNHiruA4yaYrrb4q9Uh5zI6IHxgfJCGN7tI20aqjhlnzMUfTQaZi80Xl/EHN0kzD2Cjf10EyxFhGcQPHzAZt/AE588Ijr0A9Uo0mpX6bD1GkHbrMmMXKr0OHVx1/t3cE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789508027; c=relaxed/simple;
-	bh=rJy1/4VAIH6j4bH3PhEclO04Ip7pqku0TrNVjMjmLzs=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=lpIix+XHdDMDVTmkHPfh3yq86vlQQN5d9zwwCY2n8xzsHIFtT28DbUk8DbUvXdds9icMBMqBgyUAkZcn0IIJgTlL2Os8yHL54I2z7sX2C2Vs/Vfb3cD6/0nGDiytP3IePADL2Ue4/Kajj+71eMi4iq6f4t1hci2WgEqmYEP4e9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.192
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi2-f0.google.com with SMTP id 5614622812f47-4a4492f5cd1so825677b6e.1
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 14:33:44 -0700 (PDT)
+	s=arc-20240116; t=1789508051; c=relaxed/simple;
+	bh=DXxzztDVMtR0dQkLvBesvRVacygPwwtLpVdILBXYKSA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tX4sEq34rSNSduQ928vkjfV/mhORzRGW7wHmnFeiox0urd9p2IV2EZwmVmP8lpjdZuOdUG8bfipEW0jfDUdJ27w56oiKn6ltkahok73zQfM7hawdATeJHy6PNfWqznjrOFQAtOtADtO/YBOACsTn+WoHlqUzq42OnimXPoblaFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=eE0YGdjA; arc=none smtp.client-ip=74.125.227.167
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="eE0YGdjA"
+Received: by mail-pj2-f39.google.com with SMTP id d9443c01a7336-2d8fe517774so3276495ad.0
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 14:34:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1789508049; x=1790112849; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3MT/ryy+CZVZg0oLqRQ6Vnctpg9HDkGy+cOIDpZMnqQ=;
+        b=eE0YGdjAnHgBD+9v91NZ1Nscsrl55JOAYzDLRB+NU+KUF1XrGFvauS0bfAUo8yx4JK
+         RvF8qCKKA0eeA8KTOlyTNBFrgKulHiqge7P5ylWmjv3ejJ1zHwichDmsjgo1UcbeM+eq
+         y+OFP5gmDZIM4roOmkpsmn9Vv/QXoKuQqOKJEpi4ffa9xX4fQoZtW+QnO5RLZZL+SCux
+         gp9SGbp53/vRSCLW3azKJ3Q1QNzmtVFqEDIDLkftOZF8Y6KkAOaExbZO+Akx6cNgxpAi
+         wc1VT7a6V941qFxCFJHCNHqSnSCs0pAPlSZwbSY3KKed7Fm4O7CQtebyyyHy6mFOMnVo
+         FjZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789508023; x=1790112823;
-        h=content-transfer-encoding:content-type:to:from:subject:message-id
-         :date:mime-version:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2sS1ijsvVV0SDkEUN/Ki5tflNB8j3+HYujKSndllF1k=;
-        b=L3pOeTGtdGHUbWK6xfVtintRJtucmklNNlFYmM5ZdAZNPLrZhiOWbqgCsku5/mvCdE
-         fr0/V5oUlRVGmCKxdkz93wiwxahQ3yH/nT6QJ9VU90SoRo77eXKT0Ln+rH4wYC0T0s2D
-         hBJlTs+w9HS/zA9g5OOjS7VLT6r19ipLgT9N63LjuOflo8nMGE/W1jndZGCuIl6i2vD6
-         FuMeVQjuNouRjbArK8mMdRzSBZm6nh3ifP1Yc8i6Gbp4qmwd0/R80TuDSEzvdhzcnlix
-         MWzC7uHjHClHGr+v5+EFVKjQPRSIgJguG2uPXb69bmlHbmXYNCRYO/CJj3TN/0EHjIAI
-         gAGQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxVz+AcrJOx6Sijw7nVlEEyi2mMKzYvsmXWKZ5/vGmj+k1UvBFV7RkDGldO8GwXy8zpvjN5w3A=@vger.kernel.org
-X-Gm-Message-State: AFuF++kdIHLmk+j5AEHAWIw4NkK3U72u2QFjTkk8um2B1B7tHR4UtaBD
-	TY00m4S3DUgZT038d/LC84fMIWokrjtpG8PzzAQWrXh9oM+dWPOgrfDjiVbmRMchXx9G48qVg/y
-	y8lxl5gdKVAkjhXmICYvdQW48fOT1Tyk2J2svI71N4vEHV6JW0PROir4U+gw=
+        d=1e100.net; s=20260707; t=1789508049; x=1790112849;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3MT/ryy+CZVZg0oLqRQ6Vnctpg9HDkGy+cOIDpZMnqQ=;
+        b=qWfVZB/rrzwVmffVugz18nBZ9aMcYe/QE/JBASYGHm2IdAr62sqOb5wgT7u5HxW8GU
+         mr/EGGcNqiUXc9m9X80USGf8cryaxf1w56W39BUrcjMetatVAWM5g+5Xfq009Yp6fM4N
+         1p5qRnm6jPF3iHGnDDMIuBxYZL7ULvVmYiuOw7jTyZsHmre8vHr7FWzoGB3MOZr2VqLe
+         VohMqAqijt4vJ4K6RgAn1L1b481MEqBfWTwz2s36uJszJz6SvMzH5w06PtoGX3Jc+gw+
+         Rzum8ManxWkM6RBvqhmz4stmqyPEb7qeO9OviC7Ha++pvje+H/Hrt2Dieq5H+jSRHy99
+         GMmw==
+X-Gm-Message-State: AFuF++nTrBafKflKZm/47CwUt2mK5BmpjDv9O5qiMjEq3lClv9P1+wyq
+	Od63rNH9udnCn9pYt989GGwmNkIPW9RLv2hKVPeBd6GHne7wmf8k/lZLC7yS+0f9ZVBT6ylTKFz
+	GyjAwFiUzpw==
+X-Gm-Gg: AYBFou1jBl6i+/rI9RepaxyIB9liM1Zfj4UhAbXMX8A4H3eI5yhX5T9CT6JQt6epjxG
+	wlNMdAK89E7oaPg/1a/kyMGV3b2UqR5JBfSL7Ewkp0xIJEVSxv2WQm1oNvkzK/raLjDZvUeT1Fx
+	70a0IVaujldrMpqsmmaPPt8FAfpaaUnZ8oxUz8HGmYs65KtnSql4+oDco0PKi3hCloSeqZhQmbG
+	B/mfHPthnTLqHb6kRxLFjDInrq6Vwuqk9YHvbISpYIoqYJyE9SqdNysK8bQXpzMbvrZ1+CtvPYG
+	vsT4cFa4tM3Akh1747ZOLik+W3Yuk5SrAYQp4N90k8cmChknCvtyRqVNx+8J8TvvY42VCj2XuAb
+	IFBnIDehrrlxU+NrOgOqDjSLRXXCeCoDqguio+Eu18oF8v51y4VgoeH8gq/yMA81tMOypxiMrB9
+	cVmTXCOCcC1vkOhhov7o1JpuqKjFBkH6mdKqS5EhPJmpQY7E8kiC8knoaPJRqZjxEw1oHceUPpy
+	hdHK/t5tWSHIwsum4P/r1/tX8S/e1JCx+JMlRPx
+X-Received: by 2002:a17:903:8c3:b0:2d8:d4cc:be63 with SMTP id d9443c01a7336-2dd8e76d9f8mr2008845ad.16.1789508048656;
+        Tue, 15 Sep 2026 14:34:08 -0700 (PDT)
+Received: from phoenix.local (204-195-96-226.wavecable.com. [204.195.96.226])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd89f331b7sm1446115ad.82.2026.09.15.14.34.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Sep 2026 14:34:08 -0700 (PDT)
+Date: Tue, 15 Sep 2026 14:34:02 -0700
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: Prabhakar Pujeri <prabhakar.pujeri@dell.com>
+Cc: netdev@vger.kernel.org
+Subject: Re: [PATCH iproute2 v2] ss: drop the /proc parsers for packet and
+ netlink sockets
+Message-ID: <20260915143402.39daa335@phoenix.local>
+In-Reply-To: <20260902035633.1978-1-prabhakar.pujeri@dell.com>
+References: <20260902035633.1978-1-prabhakar.pujeri@dell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:1409:b0:4c3:ebb:6405 with SMTP id
- 5614622812f47-4ca4c282440mr226899b6e.32.1789508023539; Tue, 15 Sep 2026
- 14:33:43 -0700 (PDT)
-Date: Tue, 15 Sep 2026 14:33:43 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6aa9b9b7.f81106d8.2ab401.006f.GAE@google.com>
-Subject: [syzbot] [wireguard?] BUG: workqueue lockup in wg_packet_decrypt_worker
-From: syzbot <syzbot+d0d2f1a65f45b319d25d@syzkaller.appspotmail.com>
-To: Jason@zx2c4.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com, 
-	wireguard@lists.zx2c4.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello,
+On Wed,  2 Sep 2026 03:56:33 +0000
+Prabhakar Pujeri <prabhakar.pujeri@dell.com> wrote:
 
-syzbot found the following issue on:
+> packet_show() and netlink_show() fall back to parsing
+> /proc/net/packet and /proc/net/netlink only when the sock_diag
+> netlink dump fails.  That fallback exists for kernels without
+> sock_diag support and parses each record with sscanf() without
+> checking the conversion count, so truncated or malformed lines
+> leave fields used by filtering and printing uninitialized.
+> 
+> Remove both sscanf() based parsers instead of trying to validate
+> them; kernels new enough to matter answer the sock_diag request.
+> packet_show_line() and the PROC_NET_PACKET/PROC_NET_NETLINK hooks
+> have no other users.
+> 
+> Signed-off-by: Prabhakar Pujeri <prabhakar.pujeri@dell.com>
+> ---
 
-HEAD commit:    5445d6419962 arm64: Don't read GMID_EL1 when MTE is disable=
-d
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.g=
-it for-kernelci
-console output: https://syzkaller.appspot.com/x/log.txt?x=3D1114c2d1580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=3D56ed23170c168d4=
-c
-dashboard link: https://syzkaller.appspot.com/bug?extid=3Dd0d2f1a65f45b319d=
-25d
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-=
-1~exp1~20260613092250.77), Debian LLD 22.1.8
-userspace arch: arm64
+This makes sense and looks good to me, but AI review spotted some nits:
 
-Unfortunately, I don't have any reproducer for this issue yet.
+Subject: Re: [PATCH iproute2] ss: drop the /proc parsers for packet and netlink sockets
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/e8b70e3bd109/disk-=
-5445d641.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/e5227e56ac93/vmlinux-=
-5445d641.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/54905f78be59/Ima=
-ge-5445d641.gz.xz
+On Wed, Sep 2 2026, Prabhakar Pujeri wrote:
+> packet_show() and netlink_show() fall back to parsing
+> /proc/net/packet and /proc/net/netlink only when the sock_diag
+> netlink dump fails.  That fallback exists for kernels without
+> sock_diag support and parses each record with sscanf() without
+> checking the conversion count, so truncated or malformed lines
+> leave fields used by filtering and printing uninitialized.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit=
-:
-Reported-by: syzbot+d0d2f1a65f45b319d25d@syzkaller.appspotmail.com
+The direction is right and the diff is mostly mechanical, but the patch
+stops one hunk short: it removes the fallback without removing the code
+that exists only to *trigger* the fallback.  That leaves a real behaviour
+regression.  Details below, plus two pre-existing issues the removal
+makes user-visible.
 
-BUG: workqueue lockup - pool cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 stuck f=
-or 45s!
-Showing busy workqueues and worker pools:
-workqueue events: flags=3D0x100
-  pwq 2: cpus=3D0 node=3D0 flags=3D0x0 nice=3D0 active=3D6 refcnt=3D7
-    pending: vmstat_shepherd, 2*psi_avgs_work, 3*ovs_dp_masks_rebalance
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D18 refcnt=3D19
-    pending: 2*psi_avgs_work, 3*ovs_dp_masks_rebalance, xfrm_state_gc_task,=
- psi_avgs_work, delayed_vfree_work, 8*nsim_dev_hwstats_traffic_work, psi_av=
-gs_work, free_obj_work
-workqueue events_unbound: flags=3D0x2
-  pwq 8: cpus=3D0-1 flags=3D0x6 nice=3D0 active=3D20 refcnt=3D21
-    in-flight: 3055:cfg80211_wiphy_work for 75s cfg80211_wiphy_work ,54:nsi=
-m_dev_trap_report_work for 6s ,431:cfg80211_wiphy_work for 73s cfg80211_wip=
-hy_work ,348:cfg80211_wiphy_work for 91s cfg80211_wiphy_work ,1617:cfg80211=
-_wiphy_work for 76s cfg80211_wiphy_work ,12:cfg80211_wiphy_work for 93s cfg=
-80211_wiphy_work ,1777:nsim_dev_trap_report_work for 11s ,40:cfg80211_wiphy=
-_work for 92s cfg80211_wiphy_work ,3203:nsim_dev_trap_report_work for 1s
-    pending: nsim_dev_trap_report_work, toggle_allocation_gate, 2*nsim_dev_=
-trap_report_work, cfg80211_wiphy_work
-  pwq 8: cpus=3D0-1 flags=3D0x6 nice=3D0 active=3D7 refcnt=3D8
-    in-flight: 13:linkwatch_event for 95s ,3020:cfg80211_wiphy_work for 89s=
- cfg80211_wiphy_work ,3157:cfg80211_wiphy_work for 60s cfg80211_wiphy_work
-    pending: 2*nsim_dev_trap_report_work
-workqueue events_power_efficient: flags=3D0x82
-  pwq 8: cpus=3D0-1 flags=3D0x6 nice=3D0 active=3D6 refcnt=3D7
-    in-flight: 1756:neigh_periodic_work for 6s ,284:reg_check_chans_work fo=
-r 75s
-    pending: neigh_periodic_work, wg_ratelimiter_gc_entries, 2*neigh_manage=
-d_work
-  pwq 8: cpus=3D0-1 flags=3D0x6 nice=3D0 active=3D1 refcnt=3D2
-    pending: gc_worker
-workqueue events_dfl_long: flags=3D0x2
-  pwq 8: cpus=3D0-1 flags=3D0x6 nice=3D0 active=3D6 refcnt=3D7
-    pending: 6*defense_work_handler
-workqueue mm_percpu_wq: flags=3D0x108
-  pwq 2: cpus=3D0 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    pending: vmstat_update
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    pending: vmstat_update
-workqueue ipv6_addrconf: flags=3D0x6000a
-  pwq 8: cpus=3D0-1 flags=3D0x6 nice=3D0 active=3D1 refcnt=3D9
-    in-flight: 59:addrconf_verify_work for 78s
-    inactive: 5*addrconf_verify_work
-workqueue bat_events: flags=3D0x6000a
-  pwq 8: cpus=3D0-1 flags=3D0x6 nice=3D0 active=3D1 refcnt=3D45 MAYDAY
-    in-flight: 2855(RESCUER):batadv_tt_purge for 18s
-    inactive: batadv_tt_purge, batadv_mcast_mla_update, batadv_tt_purge, ba=
-tadv_dat_purge, batadv_bla_periodic_work, batadv_dat_purge, 2*batadv_bla_pe=
-riodic_work, batadv_dat_purge, batadv_mcast_mla_update, batadv_bla_periodic=
-_work, batadv_dat_purge, 2*batadv_mcast_mla_update, 2*batadv_iv_send_outsta=
-nding_bat_ogm_packet, batadv_purge_orig, 3*batadv_iv_send_outstanding_bat_o=
-gm_packet, 2*batadv_purge_orig, 5*batadv_iv_send_outstanding_bat_ogm_packet=
-, batadv_purge_orig, batadv_iv_send_outstanding_bat_ogm_packet, batadv_mcas=
-t_mla_update, 4*batadv_iv_send_outstanding_bat_ogm_packet, batadv_purge_ori=
-g, batadv_bla_periodic_work, batadv_dat_purge, 2*batadv_tt_purge
-workqueue wg-kex-wg0: flags=3D0x124
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    pending: wg_packet_handshake_receive_worker
-workqueue wg-kex-wg0: flags=3D0x6
-  pwq 8: cpus=3D0-1 flags=3D0x6 nice=3D0 active=3D1 refcnt=3D2
-    pending: wg_packet_handshake_send_worker
-workqueue wg-crypt-wg0: flags=3D0x128
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D2 refcnt=3D3
-    pending: wg_packet_encrypt_worker, wg_packet_tx_worker
-workqueue wg-kex-wg1: flags=3D0x124
-  pwq 2: cpus=3D0 node=3D0 flags=3D0x0 nice=3D0 active=3D2 refcnt=3D3
-    in-flight: 10:wg_packet_handshake_receive_worker for 46s
-    pending: wg_packet_handshake_receive_worker
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    pending: wg_packet_handshake_receive_worker
-workqueue wg-kex-wg1: flags=3D0x6
-  pwq 8: cpus=3D0-1 flags=3D0x6 nice=3D0 active=3D1 refcnt=3D2
-    pending: wg_packet_handshake_send_worker
-workqueue wg-crypt-wg1: flags=3D0x128
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D3 refcnt=3D4
-    pending: wg_packet_encrypt_worker, wg_packet_tx_worker, wg_packet_decry=
-pt_worker
-workqueue wg-kex-wg0: flags=3D0x6
-  pwq 8: cpus=3D0-1 flags=3D0x6 nice=3D0 active=3D1 refcnt=3D2
-    in-flight: 3495:wg_packet_handshake_send_worker for 4s
-workqueue wg-crypt-wg0: flags=3D0x128
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D2 refcnt=3D3
-    pending: wg_packet_tx_worker, wg_packet_encrypt_worker
-workqueue wg-kex-wg2: flags=3D0x124
-  pwq 2: cpus=3D0 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    in-flight: 4477:wg_packet_handshake_receive_worker for 12s
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    pending: wg_packet_handshake_receive_worker
-workqueue wg-kex-wg2: flags=3D0x6
-  pwq 8: cpus=3D0-1 flags=3D0x6 nice=3D0 active=3D2 refcnt=3D3
-    pending: 2*wg_packet_handshake_send_worker
-workqueue wg-crypt-wg2: flags=3D0x128
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D3 refcnt=3D4
-    pending: wg_packet_encrypt_worker, wg_packet_decrypt_worker, wg_packet_=
-tx_worker
-workqueue wg-crypt-wg1: flags=3D0x128
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D2 refcnt=3D3
-    pending: wg_packet_encrypt_worker, wg_packet_tx_worker
-workqueue wg-kex-wg2: flags=3D0x124
-  pwq 2: cpus=3D0 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    in-flight: 9:wg_packet_handshake_receive_worker for 20s
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    pending: wg_packet_handshake_receive_worker
-workqueue wg-crypt-wg2: flags=3D0x128
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D4 refcnt=3D5
-    in-flight: 4889:wg_packet_decrypt_worker for 45s
-    pending: wg_packet_tx_worker, wg_packet_encrypt_worker, wg_packet_decry=
-pt_worker
-workqueue hci0: flags=3D0x20012
-  pwq 9: cpus=3D0-1 node=3D0 flags=3D0x4 nice=3D-20 active=3D1 refcnt=3D4
-    in-flight: 4723:hci_cmd_sync_work for 84s
-workqueue wg-kex-wg0: flags=3D0x124
-  pwq 2: cpus=3D0 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    pending: wg_packet_handshake_receive_worker
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    pending: wg_packet_handshake_receive_worker
-workqueue wg-crypt-wg0: flags=3D0x128
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D3 refcnt=3D4
-    in-flight: 24:wg_packet_tx_worker for 45s
-    pending: wg_packet_encrypt_worker, wg_packet_tx_worker
-workqueue wg-kex-wg1: flags=3D0x124
-  pwq 2: cpus=3D0 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    in-flight: 4799:wg_packet_handshake_receive_worker for 17s
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    pending: wg_packet_handshake_receive_worker
-workqueue wg-crypt-wg1: flags=3D0x128
-  pwq 2: cpus=3D0 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    pending: wg_packet_encrypt_worker
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D3 refcnt=3D4
-    pending: wg_packet_encrypt_worker, wg_packet_tx_worker, wg_packet_decry=
-pt_worker
-workqueue wg-kex-wg2: flags=3D0x124
-  pwq 2: cpus=3D0 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    pending: wg_packet_handshake_receive_worker
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    pending: wg_packet_handshake_receive_worker
-workqueue wg-kex-wg2: flags=3D0x6
-  pwq 8: cpus=3D0-1 flags=3D0x6 nice=3D0 active=3D2 refcnt=3D3
-    pending: 2*wg_packet_handshake_send_worker
-workqueue wg-crypt-wg2: flags=3D0x128
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D3 refcnt=3D4
-    pending: wg_packet_decrypt_worker, wg_packet_encrypt_worker, wg_packet_=
-tx_worker
-workqueue hci3: flags=3D0x20012
-  pwq 9: cpus=3D0-1 node=3D0 flags=3D0x4 nice=3D-20 active=3D1 refcnt=3D4
-    in-flight: 4726:hci_cmd_sync_work for 78s
-workqueue wg-kex-wg0: flags=3D0x124
-  pwq 2: cpus=3D0 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    in-flight: 4840:wg_packet_handshake_receive_worker for 11s
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    pending: wg_packet_handshake_receive_worker
-workqueue wg-crypt-wg0: flags=3D0x128
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D2 refcnt=3D3
-    pending: wg_packet_tx_worker, wg_packet_encrypt_worker
-workqueue wg-kex-wg1: flags=3D0x124
-  pwq 2: cpus=3D0 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    in-flight: 4806:wg_packet_handshake_receive_worker for 19s
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    pending: wg_packet_handshake_receive_worker
-workqueue wg-crypt-wg1: flags=3D0x128
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D3 refcnt=3D4
-    pending: wg_packet_encrypt_worker, wg_packet_tx_worker, wg_packet_decry=
-pt_worker
-workqueue wg-kex-wg2: flags=3D0x124
-  pwq 2: cpus=3D0 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    in-flight: 4827:wg_packet_handshake_receive_worker for 6s
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    pending: wg_packet_handshake_receive_worker
-workqueue wg-kex-wg2: flags=3D0x6
-  pwq 8: cpus=3D0-1 flags=3D0x6 nice=3D0 active=3D1 refcnt=3D2
-    pending: wg_packet_handshake_send_worker
-workqueue wg-crypt-wg2: flags=3D0x128
-  pwq 2: cpus=3D0 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    pending: wg_packet_decrypt_worker
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D3 refcnt=3D4
-    pending: wg_packet_decrypt_worker, wg_packet_encrypt_worker, wg_packet_=
-tx_worker
-workqueue wg-kex-wg0: flags=3D0x124
-  pwq 2: cpus=3D0 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    pending: wg_packet_handshake_receive_worker
-workqueue wg-kex-wg0: flags=3D0x6
-  pwq 8: cpus=3D0-1 flags=3D0x6 nice=3D0 active=3D1 refcnt=3D2
-    pending: wg_packet_handshake_send_worker
-workqueue wg-crypt-wg0: flags=3D0x128
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D2 refcnt=3D3
-    pending: wg_packet_encrypt_worker, wg_packet_tx_worker
-workqueue wg-crypt-wg1: flags=3D0x128
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D3 refcnt=3D4
-    pending: wg_packet_encrypt_worker, wg_packet_tx_worker, wg_packet_decry=
-pt_worker
-workqueue wg-kex-wg2: flags=3D0x124
-  pwq 2: cpus=3D0 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    in-flight: 1159:wg_packet_handshake_receive_worker for 23s
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D1 refcnt=3D2
-    pending: wg_packet_handshake_receive_worker
-workqueue wg-crypt-wg2: flags=3D0x128
-  pwq 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 active=3D3 refcnt=3D4
-    pending: wg_packet_tx_worker, wg_packet_decrypt_worker, wg_packet_encry=
-pt_worker
-pool 2: cpus=3D0 node=3D0 flags=3D0x0 nice=3D0 hung=3D6s workers=3D10 idle:=
- 4820 4807
-pool 6: cpus=3D1 node=3D0 flags=3D0x0 nice=3D0 hung=3D45s workers=3D8 idle:=
- 5732 5459 26 4798 868 5730
-pool 8: cpus=3D0-1 flags=3D0x6 nice=3D0 hung=3D1s workers=3D17 manager: 652=
-9
-pool 9: cpus=3D0-1 node=3D0 flags=3D0x4 nice=3D-20 hung=3D0s workers=3D8 id=
-le: 4721 4713 4718 4717 50 4720
-Showing backtraces of busy workers in stalled worker pools:
-pool 6:
-task:kworker/1:4     state:R  running task     stack:0     pid:4889  tgid:4=
-889  ppid:2      task_flags:0x4208060 flags:0x00000010
-Workqueue: wg-crypt-wg2 wg_packet_decrypt_worker
-Call trace:
- __switch_to+0x2b4/0x6e4 arch/arm64/kernel/process.c:775 (T)
- context_switch kernel/sched/core.c:5520 [inline]
- __schedule+0x1370/0x2d80 kernel/sched/core.c:7270
- preempt_schedule_common+0xd4/0x190 kernel/sched/core.c:7449
- preempt_schedule kernel/sched/core.c:7473 [inline]
- class_preempt_destructor include/linux/preempt.h:500 [inline]
- try_to_wake_up+0x5f8/0xdc4 kernel/sched/core.c:4432
- wake_up_process+0x18/0x24 kernel/sched/core.c:4557
- process_one_work kernel/workqueue.c:3355 [inline]
- process_scheduled_works+0x744/0x1250 kernel/workqueue.c:3470
- worker_thread+0x798/0xbd0 kernel/workqueue.c:3551
- kthread+0x304/0x3d4 kernel/kthread.c:436
- ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:838
-pool 6:
-task:kworker/1:0     state:R  running task     stack:0     pid:24    tgid:2=
-4    ppid:2      task_flags:0x4208060 flags:0x00000010
-Workqueue: wg-crypt-wg0 wg_packet_tx_worker
-Call trace:
- __switch_to+0x2b4/0x6e4 arch/arm64/kernel/process.c:775 (T)
- context_switch kernel/sched/core.c:5520 [inline]
- __schedule+0x1370/0x2d80 kernel/sched/core.c:7270
- preempt_schedule_common+0xd4/0x190 kernel/sched/core.c:7449
- preempt_schedule+0x60/0x78 kernel/sched/core.c:7473
- __local_bh_enable_ip+0x20c/0x35c kernel/softirq.c:480
- local_bh_enable include/linux/bottom_half.h:33 [inline]
- rcu_read_unlock_bh include/linux/rcupdate.h:923 [inline]
- keep_key_fresh drivers/net/wireguard/send.c:135 [inline]
- wg_packet_create_data_done drivers/net/wireguard/send.c:259 [inline]
- wg_packet_tx_worker+0x520/0x75c drivers/net/wireguard/send.c:276
- process_one_work kernel/workqueue.c:3387 [inline]
- process_scheduled_works+0x91c/0x1250 kernel/workqueue.c:3470
- worker_thread+0x798/0xbd0 kernel/workqueue.c:3551
- kthread+0x304/0x3d4 kernel/kthread.c:436
- ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:838
+1. packet_show_sock() still bails out to a fallback that no longer exists
+---------------------------------------------------------------------
 
+misc/ss.c:4776
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+	/* use /proc/net/packet if all info are not available */
+	if (!tb[PACKET_DIAG_MEMINFO])
+		return -1;
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+This is the last remaining reference to /proc/net/packet in the tree, and
+it is not just a stale comment.  That `return -1` was the mechanism for
+requesting the fallback: it propagated up so packet_show() would retry
+via net_packet_open().  With the fallback gone, the -1 is returned from
+an rtnl_dump_filter() callback, which aborts the entire dump.
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+So on any kernel that answers the sock_diag request but omits
+PACKET_DIAG_MEMINFO for a socket, the old code printed that socket from
+/proc.  The new code silently truncates the listing at that socket:
+everything already dumped before it has been printed, that socket and
+every socket after it are dropped, and the exit status is still 0.  If
+the very first socket is the one missing MEMINFO, the output is empty.
+Before, missing MEMINFO degraded to a less detailed listing; now it
+degrades to silently incomplete output with no error.
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+Note MEMINFO is only requested because packet_show_netlink() sets
+PACKET_SHOW_MEMINFO unconditionally (misc/ss.c:4909) -- it is not
+something the user asked for, so aborting the dump over it is the wrong
+trade even ignoring the dead-fallback issue.
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+Suggested fix -- drop the check with the parser, and let the existing
+`if (tb[PACKET_DIAG_MEMINFO])` guard below at misc/ss.c:4786 do its job
+(it is already written to tolerate the attribute being absent):
 
-If you want to undo deduplication, reply with:
-#syz undup
+	-	/* use /proc/net/packet if all info are not available */
+	-	if (!tb[PACKET_DIAG_MEMINFO])
+	-		return -1;
+	-
+		stat.type   = r->pdiag_type;
+
+stat.rq simply stays 0 in that case, which is the same thing the netlink
+path already does for every other optional attribute.
+
+2. No diagnostic when sock_diag is unavailable
+----------------------------------------------
+
+packet_show() and netlink_show() now return the netlink result directly,
+and main() (misc/ss.c:6183-6186) ignores the return value:
+
+	if (current_filter.dbs & (1<<NETLINK_DB))
+		netlink_show(&current_filter);
+	if (current_filter.dbs & PACKET_DBM)
+		packet_show(&current_filter);
+
+On a kernel without CONFIG_PACKET_DIAG / CONFIG_NETLINK_DIAG (these are
+separate config symbols and are genuinely off in some minimal builds,
+independent of kernel age), `ss -0` and `ss -A netlink` now print a
+header and nothing else, exit 0, with no indication that anything
+failed.  The commit message argues such kernels do not matter, which is
+defensible for the fallback itself -- but silently succeeding is not the
+same as not supporting it.
+
+This is consistent with how vsock/tipc/xdp already behave, so I would not
+block on it.  Still, a one-line stderr hint when the dump fails would
+save users a lot of confusion, and it is cheap to add.
+
+3. packet_raw / packet_dgram filtering is now dead in all cases
+---------------------------------------------------------------
+
+To be clear up front: this patch did not introduce this bug.  But it
+removes the last environment in which the filter ever worked, so it is
+worth calling out in the commit message at minimum.
+
+The removed packet_show_line() carried the only type filtering that ever
+existed:
+
+> -	if (type == SOCK_RAW && !(f->dbs & (1<<PACKET_R_DB)))
+> -		return 0;
+> -	if (type == SOCK_DGRAM && !(f->dbs & (1<<PACKET_DG_DB)))
+> -		return 0;
+
+There is no equivalent in the netlink path.  packet_show_sock() reads the
+type at misc/ss.c:4780:
+
+	stat.type   = r->pdiag_type;
+
+but neither it nor packet_stats_print() ever tests f->dbs, and
+run_ssfilter() does not look at s->type.  Since the dispatcher gates on
+PACKET_DBM (misc/ss.c:6185), which is the OR of both bits, selecting
+either `packet_raw` or `packet_dgram` runs an unfiltered dump and
+displays all AF_PACKET sockets.
+
+Because packet_show() already preferred the netlink path before this
+patch, `ss --packet_raw` was already returning dgram sockets too on any
+kernel with packet_diag.  After this patch it is unconditional.  The
+option is still documented (man/man8/ss.8:411) and still accepted by
+filter_db_parse() (misc/ss.c:403-407), so users get a silently wrong
+answer rather than an error.
+
+The fix is a packet_type_skip() mirroring the existing unix_type_skip()
+(misc/ss.c:4443) and vsock_type_skip() (misc/ss.c:5237), called from
+packet_show_sock() once stat.type is populated.  That is arguably a
+separate patch -- but please either include it here or note the known
+gap in the commit message, so it is not mistaken for collateral damage
+from this removal.
+
+Minor notes
+-----------
+
+- unix_show() keeps its /proc fallback (misc/ss.c:4597).  If the argument
+  is "kernels new enough to matter answer sock_diag", it applies equally
+  to AF_UNIX.  Worth a sentence in the commit message on why packet and
+  netlink were chosen and unix left alone, so the asymmetry reads as
+  deliberate.
+
+- The PROC_NET_PACKET / PROC_NET_NETLINK env overrides went away with the
+  macros.  I grepped the tree: nothing in man/, README*, or testsuite/
+  references them, so there is no doc or test fallout.  Confirming for
+  the record, not asking for a change.
+
+- netlink_show_one()'s getenv("PROC_ROOT") at misc/ss.c:5127 is unrelated
+  (it resolves a peer PID's name from /proc/<pid>/stat) and correctly
+  left alone.
+
+- Builds clean -- no unused-function warnings.  packet_stats_print(),
+  netlink_show_one() and generic_record_read() all still have callers on
+  the netlink and tcp/udp/raw paths.
+
+I will send its suggested changes
