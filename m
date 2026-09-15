@@ -1,99 +1,95 @@
-Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3EEC48CD48
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 12:38:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742D04A33F1
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 12:38:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789475918; cv=none; b=qRRqLFmElnwHyZ2dSXxYnZeK+RvZASiIYGCjkU7GwVamr33xjWNxDlVnEbXiPwMOh89Wivunu4Ts450zKkTTV83y0b6H1WNPU1qg2DifQdJD5p/bbbPtWjFuNZODcnFY5dn/bnio9j61wGN99A3qK9RfE3XnmwOaSqxoGnYLSkw=
+	t=1789475918; cv=none; b=QVYhn/tfiGLzZgQaWeZzgpzTCIfU8vzfwChTLVlh/u9/jxhhZu05p2xtsLaU+yaP7YcALnwKjjmlo27Cf1eP4le6Gze69+qfrcie/nb9t1QjqzArGU9I2P1gWXdcmG81lyCNjzrvX6uIHuY8nrZkZzaOsC9gdK5on/Pu0djvP/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789475918; c=relaxed/simple;
-	bh=gWvVNB1m2Bm2R+CKFSLbBbPCu/GkRF+C5uYpyZkg/fA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oZBzEso7rbOVDhs3G06ReMDvQutAg+hH/MmQmhxLDzY7PqAjmKqHt0M+4SSgFUElo2/hv7cnbLhJO7HGTpWUw0HohTQ1DORHxyybSVWhCFDJwmOGUANsgEGUA/UJ3Gg/Bko+QNnl3RnsnyPQnC4e1Z3MHuh/pQFmnj8NoPId17g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rkC4FQOk; arc=none smtp.client-ip=74.125.227.129
+	bh=Lei5FINSaK2PDOhrLbT41jcGzSLCEcek469Li7qNqvo=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=aZt5SFtA4lbh0GAf4ytGne1ToLOEnkyjWfRVIg54kXfykb6/7WDqcoWHWqi7kJ898TPkIbh0imDArrdh66IAGOseIYyW5TuEdt8LFl8tSUYiCL3Jpk2onhN3cvq+0Ae5i6XBopaXorPnKnoflafNeYD7kDFeZVH/RI3htJLB4FI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pa5fhoaH; arc=none smtp.client-ip=74.125.225.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rkC4FQOk"
-Received: by mail-pj2-f1.google.com with SMTP id 98e67ed59e1d1-39ded0d7f52so1311873a91.0
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 05:38:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pa5fhoaH"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ccf3ca626so13477165e9.0
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 05:38:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20251104; t=1789475914; x=1790080714; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=qN2MkU81Lz1KMvwh0OIvKliZyK5cNgEHJk5t3+uaHA8=;
-        b=rkC4FQOkYSj8jAGGxlWPzH9zM826nS63hyhvDyC+r9+BhTNBnu3uu/2c5yBw34jV3u
-         WtHTBN7p4Zw2+jLlqqM1H94AeHS2XmDNX9hu0ktCYfyEBEKYHK2RaxN/WVcr89/6IY6x
-         Vfv/KJj5CRuSD9txVibIRQbsq3LL7tcNkGD40/ueQCU/DvucIhv1moC8VPBrILuFcrl6
-         21kMojQMye1zJyH4H4ucA2VwTTcCspMAHscPDxCS7oGRJl50ZzhWmaE/8pJ9vXfPOlEs
-         Ofxku7n1ShwQcO5do2cPycXOP5XN4EE/AQu10mpjmOzQmL8v0PNuZ2cvN59IFBW5rpoV
-         K4OQ==
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=5knOoD/sK89haaLcqy+OXDr2rWo4DpyZtJEWUgkJtfM=;
+        b=Pa5fhoaHB2pzOzjV9X0Tx9UfdjF8ko4An3OesMtlD9+JBPI+Bdy93qi2IVcwCVwVBV
+         NjNSGZyNsNM7q7XE+UjF2k5YKqoa5C28l6RpsdKw9EgLd+AIiA8PcwmyRIBLCgunTeQr
+         jYyWJGEy/Q4vpsgOv/gzVYDUA0VzdqmB9DTAhLfoY9FH+UgfdLngMQDIn0wwFZrT/LOD
+         CeV+LjceXyElzfPR3dHWQRczjwsMHyTgPzgbN8ywdxUW+SbihCHDG/p5H/bafZfBAoC/
+         rZoJ19gcgYMKG/2oInDvmScDInVFtDVNFd7jHh+a5wjW+djvDYdaG6Sotds790wWvTyK
+         C34Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20260707; t=1789475914; x=1790080714;
         h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=qN2MkU81Lz1KMvwh0OIvKliZyK5cNgEHJk5t3+uaHA8=;
-        b=luuGbO7XYiiCY42OWSm0YniukXqgZ3r5jJK67pTmPywjIOydfaCLMyJk8F/h4ZVDvL
-         PydU0bi9SXQThgKsLcSivIANMXTiOQ4bVvX2a0GhckvtIl82X7PSEdhrGzpbgRAJicsS
-         C9GiM4qb8HiIf39yIX7PggXTzpWZVtKF7TqhUr5tetbt1iTnMxfv7tzRIwOVrtoVe7E8
-         DmzxZCjxa9nTqtEd345YoZm6ONkYzUgOdnTBbSY+gFYGj9hFnWhs3vA4H0sBivUf/kSz
-         puI8QN1IvDjlcLkVxE8YSkIbzvqwuI7QKWeXydvMHKjuulg1tf0BUm1OAoBliY1NwbMK
-         /RmA==
-X-Forwarded-Encrypted: i=1; AKwUvBxHwFN9yflnCbDRn1317SH935K942piSkSUQqBaEyIJDb2kb2f706ODPJv839oxSLuQ5qR4kjw=@vger.kernel.org
-X-Gm-Message-State: AFuF++nVbA/7JqxbjyD7a0bx+eJEXX99HnqKUtburThy/5yjckIlKDyO
-	gsXWrX0jEfJj5YaBcVtmhZvVyxvDe+1l2IeZKkF8adsE3TS0pE+v5pCG
-X-Gm-Gg: AYBFou37cU/39ltyv3uqaWNPYh44E8rdPHSD8Da2aYa4qcJqqO9DMNi3xhpOwCJ5s8W
-	CyVzBOn0MYguc/Qu77KGwGaepSYBIZKgsrgTD1AF6kU7SujRRhuJVwY1e+V1jdZiP5/XfS0+iIG
-	QTdVD4ec8KzQSEG0AoMKWcEF/kalw4ux1OjYd7WuWdl9H21XQeMAwT7hh7mrVMiSsZ6GphFS1zh
-	m2nioJG40eQe1T92xYRf7jURd8d1+vdS11a1ogjl2+mvHL233GUAzZshImaB6k/bCTETHwanKce
-	Oy/VhJ4lgFKxZqN7A7bg5CgF/C+8OUdP+Ge1JXit3qOro5Li+KqUOaNUDCiSfEVnT0UQvDO9H2G
-	QNH5gdWoV+Ihbb7JDr5LbKW4KKD60My8ldxDwhcVWr5qc0cIOj+ks5W6c/0Sh4Jmnqh/YdlEH11
-	nKwKuIcTxq70KHc3dHeIzzdjvuHKdZUpCwcdD2SFFY0yfSRIiQ8ZFtmMkffkJEVxOW0uuuag==
-X-Received: by 2002:a17:90b:1811:b0:395:7fff:a08f with SMTP id 98e67ed59e1d1-39e106b649dmr1483983a91.0.1789475913321;
+         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=5knOoD/sK89haaLcqy+OXDr2rWo4DpyZtJEWUgkJtfM=;
+        b=UAc8rdnwAH9ZKF3WAWLgaOHhgdLG6sO+OaxKVzojWguxhXfybgK+u3QpUPd1NnJUev
+         hrHPNKNzhcfyUb14ZwwsD0rbycn8VETNjTyvenX/KkVuNdWrhpxn35BFJMVhsLbQFJyK
+         jbrUei1brSjTwPMU3EKrwtZwGcUQfZTZCh2ioF1B/60jl4LRQfeH3PGLlmaQ8AZ4dE2/
+         PbCJFlHYRJSPvfeens2LvGx6IlWj+uZjc+qxddTWNLy9fXd68gXLggnNN7Hr0Uc3qEU+
+         apFrwjqtwLIxEGXDrrEnl/j9gWGUOHjG+rn7BDmZy07N82ViUgmWsjtuKbFENwt8yCDC
+         T/rw==
+X-Forwarded-Encrypted: i=1; AKwUvBzfX+AOVf6mx9FArkO8gsR7HCkppleYv3zLf4Qz1D295DFhEPW0K17LAwBKIPrIUZCwcPjNk5M=@vger.kernel.org
+X-Gm-Message-State: AFuF++kwdEDeiuL4pPZsSP+eAa21/Oh7KUgWp5fZp6QmyTMkJ2n8CJhR
+	6EVurVwlI+hUjaL9DQqpCKDApOkR382h5D8KocUT65Pk38RGb5WfDmdZ
+X-Gm-Gg: AYBFou0sP39KWDc4pYNcwubNw9NJFtA3ovi9fA0fBABDQgbQTZ5ME38D1hnp8x3n1yY
+	HelcVVXAOLbjOYuOvSFA4d4Ba8f9bH5a46Gz5q+7Gri2gLrmHV/qzcHazkEXFGFj8W5EO5vZrD7
+	CQM6AuOG8JvkEzQxUw+rJEWSRaV5ac4HlxzUMKPaOFW2F/whWGMmL63VNiWQTTWWu7hQYvztXIJ
+	Qodm/KlAth5OYTD0qqYNlhoC7iXh7yrqpCr6nP9x1FSbbDYwW16TGZrAJATjyR0dAR9Ks3ewZOU
+	+b+8BSBheKiE4NjcfodePShbVrjGqP9/cJoM7M2AacvPNCA4BSbXBcLbfHsigUlb2m8oPFEfnma
+	B9ayClUCnc39kh3AdEP/sNjOObJQs2ADuZgAFFP3K+yae53ryGUqztT3EhphvHIRO55lZ+FtxAQ
+	DvS5t4u9CqUjiPLtdnV7c0L9IJyN2Rb0nIahkJWNuvTtpOHb1mu+UeWbXIcJWOFtVQ3ZASz7K30
+	qLro8mZ24Y/0BTdHuY+RJ23xyb2gUrcYnG0GrSHbl3OlWA+3L3ciY05yHOblEQV
+X-Received: by 2002:a05:600c:6212:b0:49c:fa20:cbfd with SMTP id 5b1f17b1804b1-49e7a66b636mr85533705e9.20.1789475913581;
         Tue, 15 Sep 2026 05:38:33 -0700 (PDT)
-Received: from server.lan ([168.138.199.194])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39dfdd28acbsm5307259a91.10.2026.09.15.05.38.24
+Received: from Ansuel-XPS24.localdomain (host-79-26-252-140.retail.telecomitalia.it. [79.26.252.140])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-49e7d6a8d5asm62958635e9.9.2026.09.15.05.38.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 05:38:32 -0700 (PDT)
-From: Coia Prant <coiaprant@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+        Tue, 15 Sep 2026 05:38:33 -0700 (PDT)
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Christian Marangi <ansuelsmth@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Vinod Koul <vkoul@kernel.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Romain Gantois <romain.gantois@bootlin.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"Chester A. Unal" <chester.a.unal@arinc9.com>,
+	Daniel Golle <daniel@makrotopia.org>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
-	Coia Prant <coiaprant@gmail.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
 	Russell King <linux@armlinux.org.uk>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	David Heidelberg <david@ixit.cz>,
-	netdev@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	devicetree@vger.kernel.org,
+	Simon Horman <horms@kernel.org>,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-renesas-soc@vger.kernel.org
-Subject: [PATCH net-next v6 01/11] net: stmmac: move XPCS lifetime management to platform drivers
-Date: Tue, 15 Sep 2026 20:37:50 +0800
-Message-ID: <20260915123802.1561724-2-coiaprant@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260915123802.1561724-1-coiaprant@gmail.com>
-References: <20260915123802.1561724-1-coiaprant@gmail.com>
+	linux-mediatek@lists.infradead.org,
+	netdev@vger.kernel.org,
+	mfd@lists.linux.dev,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v22 5/9] net: phy: Add Airoha AN8855 Internal Switch Gigabit PHY
+Date: Tue, 15 Sep 2026 14:38:02 +0200
+Message-ID: <20260915123812.14747-6-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260915123812.14747-1-ansuelsmth@gmail.com>
+References: <20260915123812.14747-1-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -102,239 +98,329 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The current XPCS creation logic in stmmac_pcs_setup() is problematic
-for several reasons.
+Add support for Airoha AN8855 Internal Switch Gigabit PHY.
 
-First, if a device tree specifies a "pcs-handle" but no select_pcs()
-callback is provided by the platform driver, the created XPCS is never
-used. The phylink framework requires select_pcs() to actually return
-the PCS to the core, so the pcs-handle property becomes effectively
-useless without the matching callback. This is confusing for developers
-who expect that specifying a pcs-handle in their device tree should be
-sufficient to enable the PCS.
+This is a simple PHY driver to configure and calibrate the PHY for the
+AN8855 Switch with the use of NVMEM cells.
 
-Second, and more critically, when a platform driver sets pcs_init()
-and creates an XPCS inside that callback, the common code afterwards
-still runs unconditionally and overwrites priv->hw->xpcs with the
-local xpcs variable, which stays NULL. The platform driver has no way
-to prevent this override because the common code runs after the
-platform-specific initialization.
-
-After commit 93f84152e4ae ("net: stmmac: clean up
-stmmac_mac_select_pcs()"), the common code no longer falls back to
-priv->hw->phylink_pcs if select_pcs() is not set. This change
-reinforces that each platform must manage its own PCS life cycle
-explicitly, but the XPCS creation code in stmmac_pcs_setup() was not
-updated to match this new expectation, leaving a gap where platform
-drivers have no clean way to take control of XPCS creation.
-
-Address all of these issues by simplifying the existing pcs_init() and
-pcs_exit() dispatch in stmmac_pcs_setup() and stmmac_pcs_clean(). The
-common stmmac_pcs_setup() now calls plat->pcs_init() if present, and
-stmmac_pcs_clean() calls plat->pcs_exit() if present, removing the
-confusing and error-prone XPCS creation logic from the common code.
-
-Platforms that do not need an XPCS simply leave the callbacks as NULL
-and no change in behavior occurs. Platforms that do need an XPCS can
-now create it with the exact configuration they require, including
-wrapping it with custom phylink_pcs_ops when necessary.
-
-The Intel mGbE glue is updated to create its XPCS inside its own
-pcs_init() implementation, and the renesas-gbeth, rzn1 and socfpga
-pcs_exit() callbacks now explicitly clear priv->hw->phylink_pcs after
-destroying the PCS to avoid dangling pointer references.
-
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Signed-off-by: Coia Prant <coiaprant@gmail.com>
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 ---
- .../net/ethernet/stmicro/stmmac/dwmac-intel.c | 44 +++++++++++++++++--
- .../stmicro/stmmac/dwmac-renesas-gbeth.c      |  7 ++-
- .../net/ethernet/stmicro/stmmac/dwmac-rzn1.c  |  7 ++-
- .../ethernet/stmicro/stmmac/dwmac-socfpga.c   |  7 ++-
- .../net/ethernet/stmicro/stmmac/stmmac_mdio.c | 39 +++-------------
- 5 files changed, 62 insertions(+), 42 deletions(-)
+ drivers/net/phy/Kconfig      |   6 +
+ drivers/net/phy/Makefile     |   1 +
+ drivers/net/phy/air_an8855.c | 275 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 282 insertions(+)
+ create mode 100644 drivers/net/phy/air_an8855.c
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
-index f5f9fa67ecd77..4308dccbf2570 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
-@@ -603,13 +603,47 @@ static void common_default_data(struct plat_stmmacenet_data *plat)
- 	plat->mdio_bus_data->needs_reset = true;
- }
+diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
+index d3835597e379..eca2ce135c86 100644
+--- a/drivers/net/phy/Kconfig
++++ b/drivers/net/phy/Kconfig
+@@ -96,6 +96,12 @@ config AIR_AN8801_PHY
+ 	help
+ 	  Currently supports the Airoha AN8801R PHY.
  
-+static int intel_mgbe_pcs_init(struct stmmac_priv *priv)
++config AIR_AN8855_PHY
++	tristate "Airoha AN8855 Internal Gigabit PHY"
++	depends on NVMEM || !NVMEM
++	help
++	  Currently supports the internal Airoha AN8855 Switch PHY.
++
+ config AIR_EN8811H_PHY
+ 	tristate "Airoha EN8811H 2.5 Gigabit PHY"
+ 	select AIR_NET_PHYLIB
+diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
+index 49575fa18522..b4222c4be4f5 100644
+--- a/drivers/net/phy/Makefile
++++ b/drivers/net/phy/Makefile
+@@ -31,6 +31,7 @@ obj-$(CONFIG_ADIN_PHY)		+= adin.o
+ obj-$(CONFIG_ADIN1100_PHY)	+= adin1100.o
+ obj-$(CONFIG_ADIN1140_PHY)	+= adin1140-phy.o
+ obj-$(CONFIG_AIR_AN8801_PHY)	+= air_an8801.o
++obj-$(CONFIG_AIR_AN8855_PHY)	+= air_an8855.o
+ obj-$(CONFIG_AIR_EN8811H_PHY)   += air_en8811h.o
+ obj-$(CONFIG_AIR_NET_PHYLIB)	+= air_phy_lib.o
+ obj-$(CONFIG_AMD_PHY)		+= amd.o
+diff --git a/drivers/net/phy/air_an8855.c b/drivers/net/phy/air_an8855.c
+new file mode 100644
+index 000000000000..bc22256fd5f9
+--- /dev/null
++++ b/drivers/net/phy/air_an8855.c
+@@ -0,0 +1,275 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright (C) 2024 Christian Marangi <ansuelsmth@gmail.com>
++ */
++
++#include <linux/bitfield.h>
++#include <linux/module.h>
++#include <linux/nvmem-consumer.h>
++#include <linux/of.h>
++#include <linux/phy.h>
++
++#define AN8855_PHY_SELECT_PAGE			0x1f
++#define   AN8855_PHY_PAGE			GENMASK(2, 0)
++#define   AN8855_PHY_PAGE_STANDARD		FIELD_PREP_CONST(AN8855_PHY_PAGE, 0x0)
++#define   AN8855_PHY_PAGE_EXTENDED_1		FIELD_PREP_CONST(AN8855_PHY_PAGE, 0x1)
++
++/* MII Registers Page 1 */
++#define AN8855_PHY_EXT_REG_14			0x14
++#define   AN8855_PHY_EN_DOWN_SHIFT		BIT(4)
++
++/* R50 Calibration regs in MDIO_MMD_VEND1 */
++#define AN8855_PHY_R50OHM_RSEL_TX_AB		0x174
++#define AN8855_PHY_R50OHM_RSEL_TX_A_EN		BIT(15)
++#define AN8855_PHY_R50OHM_RSEL_TX_A		GENMASK(14, 8)
++#define AN8855_PHY_R50OHM_RSEL_TX_B_EN		BIT(7)
++#define AN8855_PHY_R50OHM_RSEL_TX_B		GENMASK(6, 0)
++#define AN8855_PHY_R50OHM_RSEL_TX_CD		0x175
++#define AN8855_PHY_R50OHM_RSEL_TX_C_EN		BIT(15)
++#define AN8855_PHY_R50OHM_RSEL_TX_C		GENMASK(14, 8)
++#define AN8855_PHY_R50OHM_RSEL_TX_D_EN		BIT(7)
++#define AN8855_PHY_R50OHM_RSEL_TX_D		GENMASK(6, 0)
++
++#define AN8855_SWITCH_EFUSE_R50O		GENMASK(30, 24)
++
++/* PHY TX PAIR DELAY SELECT Register */
++#define AN8855_PHY_TX_PAIR_DLY_SEL_GBE		0x013
++#define   AN8855_PHY_CR_DA_TX_PAIR_DELAY_SEL_A_GBE GENMASK(14, 12)
++#define   AN8855_PHY_CR_DA_TX_PAIR_DELAY_SEL_B_GBE GENMASK(10, 8)
++#define   AN8855_PHY_CR_DA_TX_PAIR_DELAY_SEL_C_GBE GENMASK(6, 4)
++#define   AN8855_PHY_CR_DA_TX_PAIR_DELAY_SEL_D_GBE GENMASK(2, 0)
++/* PHY ADC Register */
++#define AN8855_PHY_RXADC_CTRL			0x0d8
++#define   AN8855_PHY_RG_AD_SAMPLE_PHSEL_A	BIT(12)
++#define   AN8855_PHY_RG_AD_SAMPLE_PHSEL_B	BIT(8)
++#define   AN8855_PHY_RG_AD_SAMPLE_PHSEL_C	BIT(4)
++#define   AN8855_PHY_RG_AD_SAMPLE_PHSEL_D	BIT(0)
++#define AN8855_PHY_RXADC_REV_0			0x0d9
++#define   AN8855_PHY_RG_AD_RESERVE0_A		GENMASK(15, 8)
++#define   AN8855_PHY_RG_AD_RESERVE0_B		GENMASK(7, 0)
++#define AN8855_PHY_RXADC_REV_1			0x0da
++#define   AN8855_PHY_RG_AD_RESERVE0_C		GENMASK(15, 8)
++#define   AN8855_PHY_RG_AD_RESERVE0_D		GENMASK(7, 0)
++
++#define AN8855_PHY_ID				0xc0ff0410
++
++struct air_an8855_priv {
++	bool needs_calibration;
++	u8 calibration_data[4];
++};
++
++static const u8 dsa_r50ohm_table[] = {
++	127, 127, 127, 127, 127, 127, 127, 127, 127, 127,
++	127, 127, 127, 127, 127, 127, 127, 126, 122, 117,
++	112, 109, 104, 101,  97,  94,  90,  88,  84,  80,
++	78,  74,  72,  68,  66,  64,  61,  58,  56,  53,
++	51,  48,  47,  44,  42,  40,  38,  36,  34,  32,
++	31,  28,  27,  24,  24,  22,  20,  18,  16,  16,
++	14,  12,  11,   9
++};
++
++static int an8855_get_r50ohm_val(struct device *dev, const char *calib_name,
++				 u8 *dest)
 +{
-+	struct fwnode_handle *devnode, *pcsnode;
-+	struct dw_xpcs *xpcs;
-+	int addr;
++	u32 shift_sel, val;
++	int ret;
++	int i;
 +
-+	devnode = dev_fwnode(priv->device);
++	ret = nvmem_cell_read_u32(dev, calib_name, &val);
++	if (ret)
++		return ret;
 +
-+	if (fwnode_property_present(devnode, "pcs-handle")) {
-+		pcsnode = fwnode_find_reference(devnode, "pcs-handle", 0);
-+		xpcs = xpcs_create_fwnode(pcsnode);
-+		fwnode_handle_put(pcsnode);
-+	} else {
-+		addr = ffs(priv->plat->mdio_bus_data->pcs_mask) - 1;
-+		xpcs = xpcs_create_mdiodev(priv->mii, addr);
-+	}
++	shift_sel = FIELD_GET(AN8855_SWITCH_EFUSE_R50O, val);
++	for (i = 0; i < ARRAY_SIZE(dsa_r50ohm_table); i++)
++		if (dsa_r50ohm_table[i] == shift_sel)
++			break;
 +
-+	if (IS_ERR(xpcs))
-+		return PTR_ERR(xpcs);
++	if (i < 8 || i >= ARRAY_SIZE(dsa_r50ohm_table))
++		*dest = dsa_r50ohm_table[25];
++	else
++		*dest = dsa_r50ohm_table[i - 8];
 +
-+	xpcs_config_eee_mult_fact(xpcs, priv->plat->mult_fact_100ns);
-+
-+	priv->hw->xpcs = xpcs;
 +	return 0;
 +}
 +
-+static void intel_mgbe_pcs_exit(struct stmmac_priv *priv)
++static int an8855_probe(struct phy_device *phydev)
 +{
-+	if (!priv->hw->xpcs)
-+		return;
++	struct device *dev = &phydev->mdio.dev;
++	struct air_an8855_priv *priv;
 +
-+	xpcs_destroy(priv->hw->xpcs);
-+	priv->hw->xpcs = NULL;
++	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++
++	priv->needs_calibration = of_property_present(dev->of_node,
++						      "nvmem-cells");
++
++	if (priv->needs_calibration) {
++		int ret;
++
++		ret = an8855_get_r50ohm_val(dev, "tx_a", &priv->calibration_data[0]);
++		if (ret)
++			return ret;
++
++		ret = an8855_get_r50ohm_val(dev, "tx_b", &priv->calibration_data[1]);
++		if (ret)
++			return ret;
++
++		ret = an8855_get_r50ohm_val(dev, "tx_c", &priv->calibration_data[2]);
++		if (ret)
++			return ret;
++
++		ret = an8855_get_r50ohm_val(dev, "tx_d", &priv->calibration_data[3]);
++		if (ret)
++			return ret;
++	}
++
++	phydev->priv = priv;
++
++	return 0;
 +}
 +
- static struct phylink_pcs *intel_mgbe_select_pcs(struct stmmac_priv *priv,
- 						 phy_interface_t interface)
- {
--	/* plat->mdio_bus_data->has_xpcs has been set true, so there
--	 * should always be an XPCS. The original code would always
--	 * return this if present.
--	 */
-+	if (!priv->hw->xpcs)
-+		return NULL;
++static int an8855_get_downshift(struct phy_device *phydev, u8 *data)
++{
++	int val;
 +
- 	return xpcs_to_phylink_pcs(priv->hw->xpcs);
- }
- 
-@@ -733,6 +767,8 @@ static int intel_mgbe_common_data(struct pci_dev *pdev,
- 	    plat->phy_interface == PHY_INTERFACE_MODE_1000BASEX) {
- 		plat->mdio_bus_data->pcs_mask = BIT_U32(INTEL_MGBE_XPCS_ADDR);
- 		plat->default_an_inband = true;
-+		plat->pcs_init = intel_mgbe_pcs_init;
-+		plat->pcs_exit = intel_mgbe_pcs_exit;
- 		plat->select_pcs = intel_mgbe_select_pcs;
- 	}
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-renesas-gbeth.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-renesas-gbeth.c
-index 19f34e18bfef2..9af32c26f9c14 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-renesas-gbeth.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-renesas-gbeth.c
-@@ -81,8 +81,11 @@ static int renesas_gmac_pcs_init(struct stmmac_priv *priv)
- 
- static void renesas_gmac_pcs_exit(struct stmmac_priv *priv)
- {
--	if (priv->hw->phylink_pcs)
--		miic_destroy(priv->hw->phylink_pcs);
-+	if (!priv->hw->phylink_pcs)
-+		return;
++	val = phy_read_paged(phydev, AN8855_PHY_PAGE_EXTENDED_1, AN8855_PHY_EXT_REG_14);
++	if (val < 0)
++		return val;
 +
-+	miic_destroy(priv->hw->phylink_pcs);
-+	priv->hw->phylink_pcs = NULL;
- }
- 
- static struct phylink_pcs *renesas_gmac_select_pcs(struct stmmac_priv *priv,
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rzn1.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rzn1.c
-index 13634965bc19a..01df4776edb3f 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rzn1.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rzn1.c
-@@ -35,8 +35,11 @@ static int rzn1_dwmac_pcs_init(struct stmmac_priv *priv)
- 
- static void rzn1_dwmac_pcs_exit(struct stmmac_priv *priv)
- {
--	if (priv->hw->phylink_pcs)
--		miic_destroy(priv->hw->phylink_pcs);
-+	if (!priv->hw->phylink_pcs)
-+		return;
++	*data = val & AN8855_PHY_EN_DOWN_SHIFT ? DOWNSHIFT_DEV_DEFAULT_COUNT :
++						 DOWNSHIFT_DEV_DISABLE;
 +
-+	miic_destroy(priv->hw->phylink_pcs);
-+	priv->hw->phylink_pcs = NULL;
- }
- 
- static struct phylink_pcs *rzn1_dwmac_select_pcs(struct stmmac_priv *priv,
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-index 1d7f0a57d2889..6d4bc1fe8f751 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
-@@ -539,8 +539,11 @@ static int socfpga_dwmac_pcs_init(struct stmmac_priv *priv)
- 
- static void socfpga_dwmac_pcs_exit(struct stmmac_priv *priv)
- {
--	if (priv->hw->phylink_pcs)
--		lynx_pcs_destroy(priv->hw->phylink_pcs);
-+	if (!priv->hw->phylink_pcs)
-+		return;
++	return 0;
++}
 +
-+	lynx_pcs_destroy(priv->hw->phylink_pcs);
-+	priv->hw->phylink_pcs = NULL;
- }
- 
- static struct phylink_pcs *socfpga_dwmac_select_pcs(struct stmmac_priv *priv,
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-index afe98ff5bdcb0..7396b68899c66 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-@@ -426,35 +426,14 @@ int stmmac_mdio_reset(struct mii_bus *bus)
- int stmmac_pcs_setup(struct net_device *ndev)
- {
- 	struct stmmac_priv *priv = netdev_priv(ndev);
--	struct fwnode_handle *devnode, *pcsnode;
--	struct dw_xpcs *xpcs = NULL;
--	int addr, ret;
--
--	devnode = dev_fwnode(priv->device);
--
--	if (priv->plat->pcs_init) {
--		ret = priv->plat->pcs_init(priv);
--	} else if (fwnode_property_present(devnode, "pcs-handle")) {
--		pcsnode = fwnode_find_reference(devnode, "pcs-handle", 0);
--		xpcs = xpcs_create_fwnode(pcsnode);
--		fwnode_handle_put(pcsnode);
--		ret = PTR_ERR_OR_ZERO(xpcs);
--	} else if (priv->plat->mdio_bus_data &&
--		   priv->plat->mdio_bus_data->pcs_mask) {
--		addr = ffs(priv->plat->mdio_bus_data->pcs_mask) - 1;
--		xpcs = xpcs_create_mdiodev(priv->mii, addr);
--		ret = PTR_ERR_OR_ZERO(xpcs);
--	} else {
++static int an8855_set_downshift(struct phy_device *phydev, u8 cnt)
++{
++	u16 ds = cnt != DOWNSHIFT_DEV_DISABLE ? AN8855_PHY_EN_DOWN_SHIFT : 0;
++
++	return phy_modify_paged(phydev, AN8855_PHY_PAGE_EXTENDED_1,
++				AN8855_PHY_EXT_REG_14, AN8855_PHY_EN_DOWN_SHIFT,
++				ds);
++}
++
++static int an8855_config_init(struct phy_device *phydev)
++{
++	struct air_an8855_priv *priv = phydev->priv;
 +	int ret;
 +
-+	if (!priv->plat->pcs_init)
- 		return 0;
--	}
- 
-+	ret = priv->plat->pcs_init(priv);
- 	if (ret)
--		return dev_err_probe(priv->device, ret, "No xPCS found\n");
--
--	if (xpcs)
--		xpcs_config_eee_mult_fact(xpcs, priv->plat->mult_fact_100ns);
--
--	priv->hw->xpcs = xpcs;
-+		return dev_err_probe(priv->device, ret, "Failed to initialize PCS\n");
- 
- 	return 0;
- }
-@@ -463,14 +442,10 @@ void stmmac_pcs_clean(struct net_device *ndev)
- {
- 	struct stmmac_priv *priv = netdev_priv(ndev);
- 
--	if (priv->plat->pcs_exit)
--		priv->plat->pcs_exit(priv);
--
--	if (!priv->hw->xpcs)
-+	if (!priv->plat->pcs_exit)
- 		return;
- 
--	xpcs_destroy(priv->hw->xpcs);
--	priv->hw->xpcs = NULL;
-+	priv->plat->pcs_exit(priv);
- }
- 
- struct stmmac_clk_rate {
++	/* Enable HW auto downshift */
++	ret = an8855_set_downshift(phydev, DOWNSHIFT_DEV_DEFAULT_COUNT);
++	if (ret)
++		return ret;
++
++	if (priv->needs_calibration) {
++		ret = phy_modify_mmd(phydev, MDIO_MMD_VEND1, AN8855_PHY_R50OHM_RSEL_TX_AB,
++				     AN8855_PHY_R50OHM_RSEL_TX_A_EN | AN8855_PHY_R50OHM_RSEL_TX_A |
++				     AN8855_PHY_R50OHM_RSEL_TX_B_EN | AN8855_PHY_R50OHM_RSEL_TX_B,
++				     AN8855_PHY_R50OHM_RSEL_TX_A_EN |
++				     FIELD_PREP(AN8855_PHY_R50OHM_RSEL_TX_A,
++						priv->calibration_data[0]) |
++				     AN8855_PHY_R50OHM_RSEL_TX_B_EN |
++				     FIELD_PREP(AN8855_PHY_R50OHM_RSEL_TX_B,
++						priv->calibration_data[1]));
++		if (ret)
++			return ret;
++		ret = phy_modify_mmd(phydev, MDIO_MMD_VEND1, AN8855_PHY_R50OHM_RSEL_TX_CD,
++				     AN8855_PHY_R50OHM_RSEL_TX_C_EN | AN8855_PHY_R50OHM_RSEL_TX_C |
++				     AN8855_PHY_R50OHM_RSEL_TX_D_EN | AN8855_PHY_R50OHM_RSEL_TX_D,
++				     AN8855_PHY_R50OHM_RSEL_TX_C_EN |
++				     FIELD_PREP(AN8855_PHY_R50OHM_RSEL_TX_C,
++						priv->calibration_data[2]) |
++				     AN8855_PHY_R50OHM_RSEL_TX_D_EN |
++				     FIELD_PREP(AN8855_PHY_R50OHM_RSEL_TX_D,
++						priv->calibration_data[3]));
++		if (ret)
++			return ret;
++	}
++
++	/* Apply values to reduce signal noise */
++	ret = phy_modify_mmd(phydev, MDIO_MMD_VEND1, AN8855_PHY_TX_PAIR_DLY_SEL_GBE,
++			     AN8855_PHY_CR_DA_TX_PAIR_DELAY_SEL_A_GBE |
++			     AN8855_PHY_CR_DA_TX_PAIR_DELAY_SEL_C_GBE,
++			     FIELD_PREP(AN8855_PHY_CR_DA_TX_PAIR_DELAY_SEL_A_GBE, 0x4) |
++			     FIELD_PREP(AN8855_PHY_CR_DA_TX_PAIR_DELAY_SEL_C_GBE, 0x4));
++	if (ret)
++		return ret;
++	ret = phy_set_bits_mmd(phydev, MDIO_MMD_VEND1, AN8855_PHY_RXADC_CTRL,
++			       AN8855_PHY_RG_AD_SAMPLE_PHSEL_A |
++			       AN8855_PHY_RG_AD_SAMPLE_PHSEL_C);
++	if (ret)
++		return ret;
++	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, AN8855_PHY_RXADC_REV_0,
++			    FIELD_PREP(AN8855_PHY_RG_AD_RESERVE0_A, 0x1));
++	if (ret)
++		return ret;
++	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, AN8855_PHY_RXADC_REV_1,
++			    FIELD_PREP(AN8855_PHY_RG_AD_RESERVE0_C, 0x1));
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
++static int an8855_get_tunable(struct phy_device *phydev,
++			      struct ethtool_tunable *tuna, void *data)
++{
++	switch (tuna->id) {
++	case ETHTOOL_PHY_DOWNSHIFT:
++		return an8855_get_downshift(phydev, data);
++	default:
++		return -EOPNOTSUPP;
++	}
++}
++
++static int an8855_set_tunable(struct phy_device *phydev,
++			      struct ethtool_tunable *tuna, const void *data)
++{
++	switch (tuna->id) {
++	case ETHTOOL_PHY_DOWNSHIFT:
++		return an8855_set_downshift(phydev, *(const u8 *)data);
++	default:
++		return -EOPNOTSUPP;
++	}
++}
++
++static int an8855_read_page(struct phy_device *phydev)
++{
++	return __phy_read(phydev, AN8855_PHY_SELECT_PAGE);
++}
++
++static int an8855_write_page(struct phy_device *phydev, int page)
++{
++	return __phy_write(phydev, AN8855_PHY_SELECT_PAGE, page);
++}
++
++static struct phy_driver an8855_driver[] = {
++{
++	PHY_ID_MATCH_EXACT(AN8855_PHY_ID),
++	.name			= "Airoha AN8855 internal PHY",
++	/* PHY_GBIT_FEATURES */
++	.flags			= PHY_IS_INTERNAL,
++	.probe			= an8855_probe,
++	.config_init		= an8855_config_init,
++	.soft_reset		= genphy_soft_reset,
++	.get_tunable		= an8855_get_tunable,
++	.set_tunable		= an8855_set_tunable,
++	.suspend		= genphy_suspend,
++	.resume			= genphy_resume,
++	.read_page		= an8855_read_page,
++	.write_page		= an8855_write_page,
++}, };
++
++module_phy_driver(an8855_driver);
++
++static struct mdio_device_id __maybe_unused an8855_tbl[] = {
++	{ PHY_ID_MATCH_EXACT(AN8855_PHY_ID) },
++	{ }
++};
++
++MODULE_DEVICE_TABLE(mdio, an8855_tbl);
++
++MODULE_DESCRIPTION("Airoha AN8855 PHY driver");
++MODULE_AUTHOR("Christian Marangi <ansuelsmth@gmail.com>");
++MODULE_LICENSE("GPL");
 -- 
-2.47.3
+2.53.0
 
