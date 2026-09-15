@@ -1,83 +1,83 @@
 Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866DC4B0C83
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 16:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5BC4AFE27
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 16:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.140
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789490462; cv=pass; b=EDSoGf4eDCXwyLN5gtoWTfPx6znQR6OT8V4y0sOVQgEpBVIap578doSuoLiLxox7039ZlqnY/iUk7IgDb/WKx6DNY86cRAD6gDK9wILWegW/r0qHFyhBoC+oH2AFoXAOYbkz5WJc57W6fgpgG2ZrV/8I+ufuezQj/JLgp5kr1xg=
+	t=1789490717; cv=pass; b=jxebAmbB6NqKU2RRlyFzvqBQEY+MqqRaDHwgXKwGXuMzHFJEymWTNyAKYoEVXZAQ5uRcwV/3VXHcDk5o8yCH4zlKW6qXBxaO9tVfl3c6GyfoaaYYaCjcOy22Tt//F/2m40qw8Xxb19VuJo3GBdAlOMqrPBlXB2BjIpxfYpg3icc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789490462; c=relaxed/simple;
-	bh=WZtIOEajUb1A4OG5IeP7r4iAQRTAEwrxT1fJ01BsrTw=;
+	s=arc-20240116; t=1789490717; c=relaxed/simple;
+	bh=9GwGGvfgvBSHcRik0ICfQ1lf/eR8Li3EDXS5Aa6fYyc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aQz6xbTD2X4FmHEHlcRYjJIkihr+QYxitvxbw897Sjdg6BlvvvgSTYGAubHvdAOrQ0W1Q1dR2N2nG/7aNe8K/EKYqSh/1l6bhG08D9wjO4B7O0pXXe6jwSaRniPZvwDQY3mgf4A4Jkuh9H6BfSXVm5AHpYIa3e1CC0u5ZcThb8A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TZXoHJoB; arc=pass smtp.client-ip=74.125.228.140
+	 To:Cc:Content-Type; b=NFqFJUJxYOeEpmAMUzcFBpncy/coRS1wCVQogytFcVvDdUGG9Pb+ai22xbvmq6j41Molbgmvx3fN5JXJvFdbmGkZNsB6xYYCoTemvvullf1vXf2u1923g5r9QipMuzKcNydR0Ci1TtvfWo7fNA9yiJdcNWxm568JTIkUIzD/QUY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NWdbq7zW; arc=pass smtp.client-ip=74.125.228.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TZXoHJoB"
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f9f7dbeso5258766b.0
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 09:40:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789490458; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NWdbq7zW"
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254fa650c8so7873566b.0
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 09:45:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789490713; cv=none;
         d=google.com; s=arc-20260327;
-        b=Bd/qemnmXpAWJRKA8fA5H5BZDdvuOt1po063jNxJNh4l22cJIzia66A1BQngxjFZ+E
-         OAUEzktMZZ6M3S/JFNx9anlPvpeyVOU57MiU07q504Lu9mFQeeulBsWG5whBRSShXGGx
-         IgcFv3Zy2M2Qd6TrRMGsw/Eq4wSBbzI9IKuSTaOLJKgBXHrdepXrCV4uEwf6aIcDg6oE
-         d0LTkGeokmFg3WjkkExwOSbFSwPghUI886fvA+0iQgCV9/ax9oQwdSqexv/FCZHT2Gyb
-         LkgQiMhAqKolJToSqGWjkpZ15YJQTQ1vTvxPnPxbHAjVOZGBuW1xcM5x/cYRmFzkoFh3
-         FumA==
+        b=O+FuA+cZGaoEzU8aWyUpxI+R0qwLimQ18mzCxL/zMbvfqipl2HcwU2Xy1QJc0MTUpr
+         txntoLkwTSbqlbd6+GU6k5Vdbbks95dAd0EBaKLSOZNHEMN6SOe7C0hzvdhDQhzQzaVH
+         HInXvtwmIufY4aKNw8g4Zw0DrhSgiEJpZs3zvNSmgf8sqr591j0oPhHG2h/kyJ7BfoCk
+         oO/fn1dR6FDT0jJ44us10Dlpj0MuLL6Ap/f3OrLmiipG5yn4J/H4E0LKA7CIzbBUFdZp
+         yv+5KlDDKqBRKCQwJOFyPtPWOL0EjOKMzFchuyrfXqtgbhp3mfj/xXnqlWkMPYYsQ8t/
+         iXQg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=vu3NNJZGM/HCH+I3878/9beQnFbZsU+rMWWInCqvw5Q=;
-        fh=U67/rihWGxHBdV5aRSetarAlexhY+xb/GwYdRsLBcQ0=;
-        b=OyFY92nAtEmlMHQZx49WeJ3v4buuT0cDWGCjZtqiCHxC6YclkOn7NWxhlZpRwMr2wO
-         YKmOcMbhA9rHEa/ra75pP+2VHKZ8pdiV4K0tX9ecEhP3xSskiKu6Hvt3IMxKK3pLinbm
-         J4QJCO/b48KWqhZZRS1lTr1RiuAKxXxblUFsL5rEBy9bw6kJq3moZGSH8v7uJBQzah2T
-         eFf7MvEBFt0GKiocfTRHMbgtiG5GbR7xnIau3d44ZtkFUAp/u9tdp3Hy7IT4ueDpDowU
-         PyTQRlSs524sldNwJmLY/1+Zx5oGHfV2aJl+uuBgXNCPNxcqy3Ic2XkXC+CmXBDbjMDI
-         Mtew==;
+        bh=vcZ5cZp+MTIDohAvU1rokDSJo7Wxlod0GJ6VhSswrLI=;
+        fh=knzHDO0kj7eJaX4EGetmTgV9Ei6DOh+Wv85mCN3sFNk=;
+        b=NLSilZh5a6v1v3Bu0lCxwgX/cqCiGcXj4Z/a3+sRaogO8hvZCG+yuueLgor6fE7nC5
+         VvLbE4GWQLIi5V55VYFYaatY8G/58lLNLX7Bi+NlnbODxkde4SH8dpi7wWbzKuqqfPKC
+         2McuXZotwM1uHM9Y+rQtZFGGvarND9ttI8mp8zb74G7nt+HPCPMGVGfGW5trKh2Ahm3y
+         q87IGTAWgsCLMh38Zfct/OuxeNVcKa/O5274G5HfDz2t6se78yJ5AhoxJDqcDKvpY5e4
+         /tizeFg69LxRJx6XAPvxUFpkB+iCMa/gu/VRYKVrRERdYSmsaT+9jHkHHnlHsQV7DEKh
+         4fuA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789490458; x=1790095258; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789490713; x=1790095513; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=vu3NNJZGM/HCH+I3878/9beQnFbZsU+rMWWInCqvw5Q=;
-        b=TZXoHJoBzex8LT9sllzvfXb+gaxEyUDcHaSdPUHfZ/d/RlW6ikG0SRIQgV9QJMq+89
-         8OGoivjQWCYbgbEnlav790Fgc9FvGOXvbFlkSiffIFQNRSytRc2jYTXuaE8rj3AcgIqW
-         R0xBxukM3pfM9KmNV661m885KKfz0Pz5uD++jgelyoHNu8NZHdlSzjxIUb6Heg4Ssfg9
-         P3qP82gwjzO7SLURAfHc6wtI9iQIOL0kvOiMi6Fw+JjVuOH1BVg4HT6okDqv4nAN+V/K
-         fGY+r8YKnP+/xStiy3lEjcFMVnETZj8FzncvEzi8becKegZkWaSRSqHgpk1fMPeOfrVa
-         VuUA==
+        bh=vcZ5cZp+MTIDohAvU1rokDSJo7Wxlod0GJ6VhSswrLI=;
+        b=NWdbq7zWlVt/zVbEe0MZAYwCGJspihb0GSaeHkvsFInx0ncVpk0aLQbQgxWkAJlrD7
+         yR2mwE/yH/9ATmf0FIPL2W2NDrt9jd5etw/+qi3qaJMVL3fIZTLdF+LwnWVn838Zg1Am
+         rPDvNvDdVAkYK1NYFiU1rkEqzXFJg5wLjIHNGK4c+nmveCD7K+nSd2pws03M0XMXZmMl
+         hRw+cptuUTGspkdaa4kLd0388NR4V+0TyzqfltGne7vRVqSIY6firDHXRzfB/tApUBRH
+         tA6s5zzTuwAt330VNxqaEzrNPcPTq1zD1znhJGOhr4/zk8eHKUwscT2ClHgJHXtZy1TU
+         jR0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789490458; x=1790095258;
+        d=1e100.net; s=20260707; t=1789490713; x=1790095513;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=vu3NNJZGM/HCH+I3878/9beQnFbZsU+rMWWInCqvw5Q=;
-        b=vGUKbEyVU5xeqVMN65ZnfTH1+5uztaZeOGH/VoenSVSA32+yWSUTDAPmWb/XCUIyCY
-         bPxKYT5+fVCvFlgFag6PqTfOx/LK+RFB4yEuxJ2oam5KvDf5iEEMsyisVuIVhv4NXVUE
-         kV+/CD6uv/yuSuNnx/0Rbw2jtOwg6DtUmgPRtwCdfsFgTyIKhkSucpYGPmhQ+cx5aYXw
-         3y8/Q1Xp9qMih+FS8BzWcoDgkvngxywIMo6hS0fLM3KEzgAzK4MLF8PlNRqeB6Dt5JXz
-         PTNAXWUgP/dO4SFp2nGM0N/iJ8yBJuJ7xujX50gJ6q4ujttRmr77zplUb5vgDDoHpKhi
-         sQSw==
-X-Forwarded-Encrypted: i=1; AKwUvBzXQhIc6QGroUeUcLU+h7ZZA3fvZsuzZLL8EvNsL1QXF6R8btFdkhPOp3F9njiVL5rNuIlwCNk=@vger.kernel.org
-X-Gm-Message-State: AFuF++lt6qusPbxXiLkFJW+37ftPm28gZS2QcFILRX0pn3f+1KpSsa4W
-	hvbGQ4/K49eir7yNHyv7OYPXgNUMhg3AgNqZUJvaRgbXRdozL8O3ynkTk0tXDwbr4mXLKJBwfVT
-	NEYZ/kuQCrxqH9qJ/nxSNHKsblMPaErQ=
-X-Gm-Gg: AYBFou2WIbNvUaOZQnHwbmujvV0NGPRJf9GG2uoj8uxJv9UBsZEFNv3n/zkbDnHc2hH
-	IeV/uRcahhaWAHy6MPndLLk4s09Riqu2BJ5oyQgqCY1QHAywe9I+xSEv8PCeX7gLxoDwx6zcFvq
-	RwGsl30c1FxOKllU2JcdncwGQ5L5nWBwKIm6bjnWoJk+lKXMnN0GzSLvWwFx152aemhU6xLAa9b
-	3VsUaVHe/zhNreVTmlnSQcWWSR/FUT9gC/VXM6vq+yaq+BjgHMELehVpb2qqs1amhnC2rNmU/Ko
-	cbJtg/uG8a9RGXJuKlFpbgSFjk1K51KxB7fQvqh+jkxnLClFmN5V9YMdLIC8ZA5KYvYjq4u7jpW
-	YyyijxLn3tlz7YxNoJ7d5A3VyZaQz0yC39crk9LBTypPGn3dgpdFB/+oB4CDl+fjeOuXLFPjyvi
-	JVRnYxscK5eg==
-X-Received: by 2002:a17:907:7b8d:b0:c29:5172:6151 with SMTP id
- a640c23a62f3a-c29d79cefb4mr148064866b.45.1789490457246; Tue, 15 Sep 2026
- 09:40:57 -0700 (PDT)
+        bh=vcZ5cZp+MTIDohAvU1rokDSJo7Wxlod0GJ6VhSswrLI=;
+        b=H+3bwFn6BLE/s3N0w45eBm1GkIAYQ7L8DdvQaY4GNJ3rwVXAKj4o7D0Zc2SFeINuX6
+         xT9ADbZGu+Pw63LOzLloKrO2Ls0kaxP4JdK6JIBnSWRgRTbVg4QI60PvOLQrBWJxOL7x
+         hPRJZvmD6cbnLdZovP/0nBOOWOdh05iRDp9qXwD4iWrTmhsqbqneR7/1LX3g/N7tmOKc
+         kQW2OzysQjCYGFfjIzacx7o/7e5fMDhwdhQvRdil+9x2voOYYO6aG3UcvcWgnn1s4VXD
+         NFyfwjki21KbidO51S9+P0Z1h/6nqPW5OpF8l0yp1izMq3iGFIo4jY7FRpB438GJGXsE
+         Em3A==
+X-Forwarded-Encrypted: i=1; AKwUvBy1VijVWqyIfX0oEl8uNTkSmK9AM1FpwKuO1yGnNf/57NMs1geb3YZLYn44EVgb/5tv5o6KmiE=@vger.kernel.org
+X-Gm-Message-State: AFuF++klZUpwH5clBz2Qd2EvmQtqBzwk7/2Q7hxfRd/ja+sGgM/qIf0N
+	S7AwOMQOE4iW0RUYkqOwmKCyCcj7voroMyUDf6PzJMpz/i1w8c4bhFQy0VSfgrAJZuWJSDeApU3
+	Lqc1aPPgSEIdgq/bUlqtpkxqrUNGnZMU=
+X-Gm-Gg: AYBFou0SAo7scT+Ln3n3Sm9HaI37xM6BfIbM95i8qjCBXmsmd1OKlcgXXPXGd5kR2VD
+	vH26NFXaxd9wLlapoYNKcDzFDJDub+Nd8jiNkxphgQr30HNDCpS4ck4F9ZRmIvpu6SrS+aKS9wN
+	wG5PDsaPqylkeOEvVh+ArVtNh0gFL45EQNI6NzL939aNwz5mnaXm2ZijwzRC2rnfxLcuU7uKrfa
+	2Ycmvh5KYs36PzbGGs+UYOIusDL4bKrbZ4WnBiVbvRBLnyrr8p+3NeEXV/K0Sp5fCuKD0blWGy0
+	Su/3NFTlvkU/gIzAfERlNN4+m2QAe9kok2zmkiIE8WmME7Z6MhK69F75x6JoV/avvGdmmnEoiMR
+	c2O9eFd2UtZTUAxMmNGWVlkoo06bOFZLPp1CDeXuzO4LPfAOuosD/EoOYJvsjhWruF3mlNUDnwG
+	Nx6++VpDL/nQ==
+X-Received: by 2002:a17:907:948c:b0:c24:adf4:5c73 with SMTP id
+ a640c23a62f3a-c29d773fedcmr161284366b.1.1789490712483; Tue, 15 Sep 2026
+ 09:45:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,9 +87,9 @@ MIME-Version: 1.0
 References: <20260914041221.1028092-1-zack.gomez@gmail.com> <aqeyvaw06I2883Fo@gmail.com>
 In-Reply-To: <aqeyvaw06I2883Fo@gmail.com>
 From: Zack Gomez <zack.gomez@gmail.com>
-Date: Tue, 15 Sep 2026 12:40:46 -0400
-X-Gm-Features: AcwNN1V1k-oe92wPE5LgPY7yR0oPHt-_r4hbhbeUUXP5pnRcpfylG1YgWf8SGfA
-Message-ID: <CAErB-w04-1NAxCV7hdZFxcbYx5LTocmtvCOj5mOSXD5yCCTqXQ@mail.gmail.com>
+Date: Tue, 15 Sep 2026 12:45:00 -0400
+X-Gm-Features: AcwNN1WDQXY_pMC5NqZrsA4SmeYj4x-kFu6e6I1hVD1u8f-sluStJigEyZ2240Q
+Message-ID: <CAErB-w3fmW4bQqRg7895dZ4ZRqkDJmfb7FSCLPvRCkwrhQzaqQ@mail.gmail.com>
 Subject: Re: [PATCH net] netpoll: bound the deferred transmit queue
 To: Breno Leitao <leitao@debian.org>
 Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
@@ -148,6 +148,8 @@ is counted either way: netconsole sees NET_XMIT_DROP in
 xmit_drop_count and exposes it as transmit_errors.
 
 Zack
+
+
 
 On Mon, Sep 14, 2026 at 4:47=E2=80=AFAM Breno Leitao <leitao@debian.org> wr=
 ote:
