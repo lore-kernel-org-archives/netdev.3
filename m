@@ -1,117 +1,98 @@
-Received: from out198-36.us.a.mail.aliyun.com (out198-36.us.a.mail.aliyun.com [47.90.198.36])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614C63D649F;
-	Tue, 15 Sep 2026 06:38:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512832F8E98;
+	Tue, 15 Sep 2026 06:41:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789454290; cv=none; b=qzMsVpOoo68x7R+YPpNf6iyP58d+tH8Fl2flgCax555XEt7nfRuJEie7ZtUwEFjwseju+iIV+qq9U6TNzTj33C5RdnuLGifdl2eHMD+gYgtMOHyQGH0Uk289zdVHk4InVLESyu/xUNWebFctFSgQPLUYma7N2orHv5d7jIoeO7A=
+	t=1789454503; cv=none; b=HkaHy3+4Aq7CpRkeMqnQ9eoiTEux7P6VGT1ToWjpTksw3QXfpdBb4+s662651CH4H4s3DgmA8PNgnKj4gJcOxqL26wP7Hjc7gTZSC61wYbKamFQWmA0taZVg4LWzKZuxH/Wr7RC2ddVQJI+kVWTa+8mCheuhPfCcFNQKYqD65J4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789454290; c=relaxed/simple;
-	bh=ZoB/YOwd06LMU7y/5rAFHrOp7+5PEOkCp0msYuXXddI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r4OrtzxBAOogNPBq8uMzko6JlAnjOFIr5od0mG5TJYBs3GY+wtxFTxdm0e3eIttR8SqqvQf7sCYVsOIQPLf/ed/feKghz3z423U/7EPMqKMiGPvZVB6FH39XAY5/t68HSw8rGiDBibCvE1DDOEwrqCFw4eJIQszvOLMPEtbBJxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht; spf=pass smtp.mailfrom=yinhe.ht; dkim=pass (2048-bit key) header.d=yinhe.ht header.i=@yinhe.ht header.b=XIsAxgIT; arc=none smtp.client-ip=47.90.198.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=yinhe.ht
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yinhe.ht
+	s=arc-20240116; t=1789454503; c=relaxed/simple;
+	bh=8xsDiHnrTVHnMEPDXfmMj6XBJcFRIj24SgEwMPFYk0Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rrqvhk1NHCL28Jglh8vuTa+N11uiqioDpqVlHpOecR6GFrGSMNiWDgQOYaRuJDpascp22wX8/yFbClAxrFXM/q/cgo0oUoSkqmvsjGkb7YiHUp44OjBLNIGvkE7ZtRU7QeG8yH2wV1A1YWAkHzkamdFGit+9vjjR+3M/DowPQsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bEsL92r9; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yinhe.ht header.i=@yinhe.ht header.b="XIsAxgIT"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=yinhe.ht; s=default;
-	t=1789454267; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=JDk6QxtZfGZM6KdJAQU6hPHN6qFU5g0NtpmNmfMi5Ls=;
-	b=XIsAxgITQ8LKWzg4DNVDuH3M+VYhfdbyI8IdlL6ga5rt+fFzRQxEJEmLHGUsHZvg8TIanRWI/jqCqsmbDc6fB/2mkQ/bgHNGKNdRd6P50pBKXLVmBqL22Q6W/f3J6fT3DFyNmxWF6ku4XNaMiI26r0fv+8jR73oF7xBBL651XW6y+03aDJKnUzo+yC+WeQA9fUET1SWEuYPflRg/BjR6AVnuiJ1gUphuLhU83Rhg4VnSmF7Q48u/FSwy7B4b1kQ5cTWC6CHB/P+XptCx+2pMmh2KBGAnNVqOh5JYhBw7cAPyLLSxVi2dS/MD84sGbvqy5sVN62Dcb95yLm7kOW7aaA==
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07498196|-1;BR=01201311R951S11rulernew998_84748_2000303;CH=blue;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.00134703-0.0012179-0.997435;FP=16287160341114814124|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033068005250;MF=chunyuzhiqiang@yinhe.ht;NM=1;PH=DS;RN=5;RT=5;SR=0;TI=SMTPD_---.jDz.htu_1789454266;
-Received: from localhost.localdomain(mailfrom:chunyuzhiqiang@yinhe.ht fp:SMTPD_---.jDz.htu_1789454266 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Tue, 15 Sep 2026 14:37:47 +0800
-From: chunyuzhiqiang <chunyuzhiqiang@yinhe.ht>
-To: netdev@vger.kernel.org
-Cc: linux-can@vger.kernel.org,
-	mkl@pengutronix.de,
-	kernel@pengutronix.de,
-	ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
-Subject: [PATCH] can: flexcan: fix synchronous external abort in flexcan_get_berr_counter()
-Date: Tue, 15 Sep 2026 14:35:11 +0800
-Message-ID: <20260915063511.3010642-1-chunyuzhiqiang@yinhe.ht>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bEsL92r9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789454500; x=1820990500;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=8xsDiHnrTVHnMEPDXfmMj6XBJcFRIj24SgEwMPFYk0Y=;
+  b=bEsL92r9VMWgPzN6szjdkKWUOHv+007r3Z+eq31uVYfA8TLwzibuwt9e
+   HM8sq1Zh3M2Ek6SUW0T6NlTE0ALoiZsVzAkxIecg1iqup4QGC0ZzvDEm6
+   0FqyAS8yaGfIaWp3sPjR9te/Ofs4ee5TlDy1a0wZ+FRzi36rUNSqpChgH
+   OEwipUI6R9byZ74Cq4iMpD3nxHNMs8XUT86vSVWOfbp2aRitQYbLzkTye
+   ebcjDhijpr8kMbm6K/PAWf6zEv0eoSdjWwHaXiHnGIMMwgB3KNXK7F+K/
+   FeTEblDcd01bPV7RcD4wz5GPqYd+dOj0I6dTc8EG0nk4wZDoXP62UAPJ+
+   Q==;
+X-CSE-ConnectionGUID: Sai7WhFrRX23tyti5JCJmw==
+X-CSE-MsgGUID: uwMSRZbeQ6eyLLVgXgq4zg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="93632883"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="93632883"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2026 23:41:40 -0700
+X-CSE-ConnectionGUID: VznnDdlgTX+jg4YVBXqBAw==
+X-CSE-MsgGUID: sOZgthxqQaW0wQlBHLf1rA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="1255241"
+Received: from lkp-server01.sh.intel.com (HELO 462990a40a85) ([10.239.97.150])
+  by fmviesa013.fm.intel.com with ESMTP; 14 Sep 2026 23:41:37 -0700
+Received: from kbuild by 462990a40a85 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1x6MrF-0000000048U-2nsv;
+	Tue, 15 Sep 2026 06:41:33 +0000
+Date: Tue, 15 Sep 2026 14:40:37 +0800
+From: kernel test robot <lkp@intel.com>
+To: Zihan Xi <zihanx@nebusec.ai>, dhowells@redhat.com,
+	marc.dionne@auristor.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, zihanx@nebusec.ai,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, linux-afs@lists.infradead.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Vega <vega@nebusec.ai>,
+	Luxing Yin <root@tr0jan.top>
+Subject: Re: [PATCH net v5 1/1] rxrpc: fix encap_rcv skb accounting exhaustion
+Message-ID: <202609151453.yX0JDG4h-lkp@intel.com>
+References: <d38b683f6d583cbbc23ee149b50b15b6e4efc567.1789273347.git.zihanx@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d38b683f6d583cbbc23ee149b50b15b6e4efc567.1789273347.git.zihanx@nebusec.ai>
 
-From: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
+Hi Zihan,
 
-When the FlexCAN interface is down, can_fill_info() still calls
-flexcan_get_berr_counter() to fill the error counters for a netlink
-dump. This function calls pm_runtime_resume_and_get(), which only
-enables the clocks via flexcan_runtime_resume(), but does not clear
-the MCR[MDIS] bit. Since the interface has never been opened, the
-FlexCAN module is still disabled (MDIS=1) from register_flexcandev().
-Accessing the ECR register then triggers a synchronous external abort.
+kernel test robot noticed the following build errors:
 
-This can be reproduced on an i.MX8QXP board by simply running
-`ip link show` without ever bringing the CAN interface up:
+[auto build test ERROR on net/main]
 
-    Internal error: synchronous external abort: 0000000096000210 [#1] PREEMPT SMP
-    pc : flexcan_read_le+0x0/0x18
-    lr : flexcan_get_berr_counter+0x4c/0x8c
-    Call trace:
-     flexcan_read_le+0x0/0x18
-     can_fill_info+0x1f8/0x434
-     rtnl_fill_ifinfo+0x8fc/0xbb4
-     rtnl_dump_ifinfo+0x364/0x448
-     ...
+url:    https://github.com/intel-lab-lkp/linux/commits/Zihan-Xi/rxrpc-fix-encap_rcv-skb-accounting-exhaustion/20260914-130912
+base:   net/main
+patch link:    https://lore.kernel.org/r/d38b683f6d583cbbc23ee149b50b15b6e4efc567.1789273347.git.zihanx%40nebusec.ai
+patch subject: [PATCH net v5 1/1] rxrpc: fix encap_rcv skb accounting exhaustion
+config: x86_64-randconfig-073-20260915 (https://download.01.org/0day-ci/archive/20260915/202609151453.yX0JDG4h-lkp@intel.com/config)
+compiler: clang version 22.1.3 (https://github.com/llvm/llvm-project e9846648fd6183ee6d8cbdb4502213fcf902a211)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260915/202609151453.yX0JDG4h-lkp@intel.com/reproduce)
 
-ftrace shows the exact path:
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202609151453.yX0JDG4h-lkp@intel.com/
 
-  can_fill_info() {
-    flexcan_get_berr_counter() {
-      __pm_runtime_resume() {
-        rpm_resume()
-          rpm_callback()
-            __rpm_callback()
-              pm_generic_runtime_resume()
-                flexcan_runtime_resume()
-                  flexcan_clks_enable() {
-                    clk_prepare(); clk_enable();
-                    ...
-                  }
-      }
-      do_mem_abort() {
-        do_sea()
-        ...
-      }
-    }
-  }
+All errors (new ones prefixed by >>, old ones prefixed by <<):
 
-Fix this by returning early if the interface is not running.
+>> ERROR: modpost: net/rxrpc/rxrpc.ko: symbol 'sysctl_rmem_default' undefined!
 
-Tested on i.MX8QXP: after the patch, `ip link show` no longer triggers
-the abort.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: ChunYuZhiQiang <chunyuzhiqiang@yinhe.ht>
----
- drivers/net/can/flexcan/flexcan-core.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
-index 06d5d35fc..b08779ee2 100644
---- a/drivers/net/can/flexcan/flexcan-core.c
-+++ b/drivers/net/can/flexcan/flexcan-core.c
-@@ -765,6 +765,9 @@ static int flexcan_get_berr_counter(const struct net_device *dev,
- 	const struct flexcan_priv *priv = netdev_priv(dev);
- 	int err;
- 
-+	if (!netif_running(dev))
-+		return 0;
-+
- 	err = pm_runtime_resume_and_get(priv->dev);
- 	if (err < 0)
- 		return err;
--- 
-2.47.3
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
