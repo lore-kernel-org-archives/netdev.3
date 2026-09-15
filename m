@@ -1,57 +1,57 @@
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7D72C11E6;
-	Tue, 15 Sep 2026 00:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.129.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BF4233924;
+	Tue, 15 Sep 2026 00:00:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.129.49
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789430432; cv=fail; b=Kd8MkL2epMhFUy22sBO55fFuvrSXj+cS0PFvqqWBxhTexGuuXTZzVVIS+G6GT71TP89Oe1pjAFuzYbDrJJtV7R/qXZsPZQ8fedG3O/SuZOpaWdP6t3holAIhEwCEVy0G8uw////lvUbi7c574iSolWzhMVLbaT7cwkqIX1uq7SY=
+	t=1789430434; cv=fail; b=bVAX1drH+tcnP2YvOK/lwAY9zWXdg9qOGoIgvzQDlK7ufFByP6e/x92Z8iyW/Cj4ORxpAUySy0rYujFUae2VF3nXw5zPb+p2r7K9DAhISJc8/HAuTAzE8l+v6sYj/S/iurvPnCQlwS5zW2gaZ0IDS8FAooTedczYRKFwC6ErjLo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789430432; c=relaxed/simple;
-	bh=0zNZ991taQgt1Yhz6t2ikxbkk+JwzZum1XcOyDPh1jc=;
+	s=arc-20240116; t=1789430434; c=relaxed/simple;
+	bh=9CM4E8jDD8E5SpBna4lQYaTagmtmuqTsTfiD3kSBfnQ=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=BoHFRc89puaGujhknSOR4fnXrUht5nMxUOj/kv/vbwR9HjfZ7Yw5yh+1R6DSx1UJNaRfi+FFfoDOLo1QwwE2G3AMiELIJy9NZsyGSWF04vhGq33Wa0X9BHCsLeUdKYGAdvyqk02rfskXCylPNzVZgc2rHHp8SW20BPHxe61a4Oo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sitime.com; spf=pass smtp.mailfrom=sitime.com; dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.b=o4VNW+kN; dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.b=dZv9OFdk; arc=fail smtp.client-ip=148.163.129.52
+	 Content-Type:MIME-Version; b=Wd8W1ycharGyWXA5j8c7bqWASvrARFmGTD0SCV+4INcDTCgj15GYp2U6JDFdcKkDkijbDBqwgV3V+RN0FBzix3NjGd0pgxzFtZmAUObFJadIIT9YYDLtejWroX1TEbPk0RRXmwa4fq8rrJuE29a82A6XIKwtlza4PXtGFckf49c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sitime.com; spf=pass smtp.mailfrom=sitime.com; dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.b=lKvgi+Mg; dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.b=oacEITiB; arc=fail smtp.client-ip=148.163.129.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sitime.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sitime.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.b="o4VNW+kN";
-	dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.b="dZv9OFdk"
+	dkim=pass (2048-bit key) header.d=sitime.com header.i=@sitime.com header.b="lKvgi+Mg";
+	dkim=pass (2048-bit key) header.d=Sitime.onmicrosoft.com header.i=@Sitime.onmicrosoft.com header.b="oacEITiB"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sitime.com;
  h=cc:cc:content-transfer-encoding:content-transfer-encoding:content-type:content-type:date:date:from:from:in-reply-to:in-reply-to:message-id:message-id:mime-version:mime-version:references:references:subject:subject:to:to;
- s=mail; bh=SqxjNHAVOGB8JTu0R5MdCYMloavFnVtZOrxBfopKwtQ=;
- b=o4VNW+kNIYGE5A5XqyvYx9jAU31M5hr3XObmXu1tPZYx8P2l1Dtd7AKeCKRryALZY+GubqnQA9cuY7NLFZFJH8MPurnLTzsesZI7WlAnLnxVYEQCMqa0wOZZZqfdqKKKxoksop/59KzMedQQc/y7tjnFhW07G8070oxYPSz2R9ubM948yl7YSoRKEOY5oYoXic0J5oHw6YYK2jn4ADDs/n4dnSIlfpqs9tRoCnvvv7UcS7kCiP5fwAM2gXWX6nw9pYIKy1/NS3LKYmYdsZwq8xMjFfGAZiijrPynxS0dfJ6H94JzZmZfK0LpJjtUoWM44sp8dL7ySdbkEZKQv1KiFQ==
+ s=mail; bh=ZQcIQ1aoy0pz7roiNVSRHt7QKmeUf3j1wlOT9dFI0Xc=;
+ b=lKvgi+MgSRkl4iSwoXT/sTUD2HN2k0Lk8bW8ZOALc+mBa+GFVvp6ygjqMOVyQFDYFYPKiA1xIOe4mcYOj2JH1nmOdqImr2vIIDn5/ZzBHw0QsLd6xU/SNE3xtXNxlQW9J1Orvnz16FQffRoT/LfwiDtKBMZntWESx33HOzUK1wCTAcMqxftEczEjLeG2zIun4AHnxcvHubas3S8H3dbwRPVjQbG8DFuOI488oxf9MUQjr4qC4jj1iQ7Nmmy4jWEAX0SpMZfYbVFIJJ2hN+n7GUG3hdvha9ctxjIvqC60QYUrZIkxLnQGO9AM2t8/C4k6ZbZl5BSmFKmhKPJk4dOOBQ==
 X-Virus-Scanned: Proofpoint Essentials engine
 Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11021084.outbound.protection.outlook.com [52.101.57.84])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 2A709100077;
-	Tue, 15 Sep 2026 00:00:28 +0000 (UTC)
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTPS id 97BF6100075;
+	Tue, 15 Sep 2026 00:00:30 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=awD6lyrCyO01yShzfjZnkIyGYFt22C2WhCMkhArM2RvVg4EnYq3MCLmR9L1FYfsmYy7OW7tnsRA7z9OVk50ooTHMhWJJ8eddL93rWiBBuXBX4jZE8aSn/8I5iMcQ8brP4EY3cq0tWv5spuylxV3YuCCCHB0RPMn2AEP5zunE8uQL5eVB7DYj7hexKiTkrbzjklUpuSQRoEl/cSBBPiahGh/xBle8/TIjQDaZtFldTC2QWTBIGMXWczreOfB1dgLWape6qKuDG+inV+lpw7lBfg6X6JZwseo0A0sg2dUxDs5pMQqUg5KDqrgXjEgmA5xSqZPvULUXXwVaJcz1O/lzZw==
+ b=H30qscbqtDEemRYMtDTuvmSCwca0nyXfirgVnaoeTJ9m3VzLZWwN6DWAVz6f4yV5z6ay6Uvu41I7d0YzZKHAd2yRkji/M9y9DEtFrKVSq7dCjDGFhglSxWwTWnpLhScyw6hDX9BUM03kp3NCC1GWDm1zGkM5L2QlAx6aHhnQuP4DrdMWFBEXO+ZXPrEPmlnmwXYi5tNvMDA4TKxhxVafU0GYmaFy8ORw/NT4UJ3a24nqWQ47zNcl18kLwRuFkJNo12WpOvZnlNO0BYOiLDPPQXOZwoC62tbQLZHkA210jMA3wBitOm9JCDxM9G8SbjrH/CKBlB86xOWN8SIn5yohsg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SqxjNHAVOGB8JTu0R5MdCYMloavFnVtZOrxBfopKwtQ=;
- b=TxZAoFzj9kBVavIeEOZ5of5ezrnomm6gU2eUKowSIzASbha6+i10WA435hCv4hCxH7s2oy0gdEXOQ4CrPzFmgiWrWQQiGzSw/nCB1W1RhS1I5kLvmAUs9ykIlH/F3hx0O03BFY8xpQRm0JtdQd6uSJEhif5rTsQSvJH5Xu5Vmie+gKmvkrl3cunkFbIIcfN6FRKMXR1MfYiqHMEsX2zkGVvPNuMmNY9kZxZCLGPqRMZmRKA57YAfz/wcXw5sBct4tJ+hSs1+zT9nt/xCnSqRAwTrsMyYiUHLDOtb3HfJvcczlB3wDHcf1ctaIl0Xt1mR5v+m5tRajTImW4vzlh4j7Q==
+ bh=ZQcIQ1aoy0pz7roiNVSRHt7QKmeUf3j1wlOT9dFI0Xc=;
+ b=SONK/i/tcdd9RWHnVEu82jz/n8eTfzkP/7zXQ+0fbe1E3fNa4e7a25fEVbS2T0bwUdlHkWGsYwaL26HfkJiYaSH1aYqJFLx1O3xUPDlKbFxtcwmAcPXmsQewqACpMsOR8R8tCeKQNL9MrC4SIqtZdGPSaDo1n97MZIUrYMIKDRU/3DBWYo91HCWpaxMDP8omL7SxVVBPJoJYRQcdWRhipyh0UGGZNDT17ZtfiPLDdYPKeS+6Q7HzavnWO5Wqsh3H5VcvPBwxTDcfsaFkh66/D7Bft4/xzUWrsMQVnXm/HHZmvuuaNXNDdxOTDue0xepClLusxp2Rqnlp8EoKCVgNDQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=sitime.com; dmarc=pass action=none header.from=sitime.com;
  dkim=pass header.d=sitime.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=Sitime.onmicrosoft.com; s=selector1-Sitime-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SqxjNHAVOGB8JTu0R5MdCYMloavFnVtZOrxBfopKwtQ=;
- b=dZv9OFdkuFxC/Ho7nym/p+o2sJTI/NGNPyp+S3zNgyeGs+Ft95O1rcWrJA6xYctitFzaXSQq6t6SNOPy8yU7u/Urq5SuYWMukmk7AEKwQTTjsS+OjEkChguVBDwW9s7khAAYZC3MilBSgfjcTEw6GZaQoJKS8nPUDczTuJCp182mU5Mn5uiW1WLd/v+tX/dmTmKybtNn7nOlcLggW2fl2RUpouQFARDpKK/6Jb8i3e7trGZZezUBO0t7POoy8eNJiGw/KR4rX8MOhYPNCOXPbhYHEXZi8XnxQ1JGZKUbq2aGpr6mkYJoTu0wz00oHpmBvYRt3+3eoT4QlH9gKfi+4g==
+ bh=ZQcIQ1aoy0pz7roiNVSRHt7QKmeUf3j1wlOT9dFI0Xc=;
+ b=oacEITiBGV2cE1KFDRQoF1oc3FtdxVvLb0vb+JHcNSfoWZfVPG6JkqwcsXSziyvAKUsFSz40+tibsqTTlagHKZGS4Cyx6yKf2/zPb1JwrVaPTAzzpKAcrc+5G7aa8hwM9d/3e5dhYNaVwXJeEyAGqP6qEye19/UIMyteuW45qAvqQBA5h1m+ZQFWCzANkKxx0a0mz7Q5J2txW9hD4T4OdnM66Tznh23lZiCqY1/k3GAPzfh0STkGmPxAeqIJcW7ApMFN5jeYPJaabO9ScOAYZEKl/MeT4rJNJv+f+DZEXlKNB0VuijtuUWBEsKmLgW/I7zJFbqqTySjgYyDynpwD4w==
 Received: from LVWPR20MB994915.namprd20.prod.outlook.com
  (2603:10b6:408:3bf::16) by PH0PR20MB4277.namprd20.prod.outlook.com
  (2603:10b6:510:12b::19) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Tue, 15 Sep
- 2026 00:00:20 +0000
+ 2026 00:00:24 +0000
 Received: from LVWPR20MB994915.namprd20.prod.outlook.com
  ([fe80::9551:3864:128b:8c01]) by LVWPR20MB994915.namprd20.prod.outlook.com
  ([fe80::9551:3864:128b:8c01%4]) with mapi id 15.21.0406.007; Tue, 15 Sep 2026
- 00:00:20 +0000
+ 00:00:22 +0000
 From: Ali Rouhi <arouhi@sitime.com>
 To: "jiri@resnulli.us" <jiri@resnulli.us>
 CC: "vadim.fedorenko@linux.dev" <vadim.fedorenko@linux.dev>,
@@ -65,13 +65,13 @@ CC: "vadim.fedorenko@linux.dev" <vadim.fedorenko@linux.dev>,
 	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Ali Rouhi
 	<arouhi@sitime.com>
-Subject: [PATCH net-next v9 04/15] dpll: sit9531x: read DPLL types and pin
- properties from system firmware
-Thread-Topic: [PATCH net-next v9 04/15] dpll: sit9531x: read DPLL types and
- pin properties from system firmware
-Thread-Index: AQHdRKUxVgelaNcJnEeLERFAEdSBCA==
-Date: Tue, 15 Sep 2026 00:00:18 +0000
-Message-ID: <20260915000015.80480-5-arouhi@sitime.com>
+Subject: [PATCH net-next v9 07/15] dpll: sit9531x: add support to get and set
+ priority on input pins
+Thread-Topic: [PATCH net-next v9 07/15] dpll: sit9531x: add support to get and
+ set priority on input pins
+Thread-Index: AQHdRKUyb5Vpa2oZJ0mAfndxS1/vGQ==
+Date: Tue, 15 Sep 2026 00:00:20 +0000
+Message-ID: <20260915000015.80480-8-arouhi@sitime.com>
 References: <20260915000015.80480-1-arouhi@sitime.com>
 In-Reply-To: <20260915000015.80480-1-arouhi@sitime.com>
 Accept-Language: en-US
@@ -82,47 +82,47 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=sitime.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: LVWPR20MB994915:EE_|PH0PR20MB4277:EE_
-x-ms-office365-filtering-correlation-id: e680af66-d18e-48f7-7c8c-08df12bc557b
+x-ms-office365-filtering-correlation-id: d8580ce8-a837-4cbd-b97e-08df12bc5666
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|23010399003|366016|1800799024|5023799004|56012099006|3023799007|6133799003|10067099003|22082099003|18002099003|38070700021;
+ BCL:0;ARA:13230040|376014|23010399003|366016|1800799024|56012099006|3023799007|10067099003|22082099003|18002099003|38070700021;
 x-microsoft-antispam-message-info:
- Zv8rytCy0JPzX0M0lDxCLrxjZ42Y/hpxf3h2JUAjC9B/smBRQSNPWo52Kd9DM3LZ8pH7+wScpEJs7lgtvnbADZaLrVRg3ILrP5c2PAWMNFO8yROnk1jWhPq9PAktzXKzB6jO+z3tgkn9WyQS3awhnB863U8GWnsX09BxeQ67iFVwevqClaJiAbIbgwIBdQoBV4m8tF8ZNIKoZJe/W0Mm9b8Nlp/SxiWfxTRHzyT4erRaHuNeCzCfnefc66nLg0iCEIGZola5/mEAnXBVAs8Dz280Eg5yAk83vWefIjberOySWxeGvz0kPLxamMOhNKJK8Ww+r07rOj3RrR3XBLkW2nfp5NdLcyVLMRtwGa1el8h117zKYguhTMJ6lrfh03MM7GlfnXnoy3hWqH0Rv91VYPejoj3THS0iQtVPF/Qu2G0c+qAp40OkmxTBXeeO4974tol08e10LL39R5d+3pYZg6aaVJUvPnkShgN8Bl4pmbtNFD7xssQywJh6psvzOEE2cF4rAvuJfR2+DXdC5vPScIC6AFLHQ+bGXvZTxynxjRmj6BX8s9t2tkkEzb01g6dzb6ZScRHu6B6HLeNGDRLdB3khDoF4+cvVfmcAayn387C6Es6adxgalyv7ztBvoWYiPZLasr0OFdkUYaGvQKsqMNvu4nXKRTya7LbgjPh8cz1A2zYLlnVYDzhglEp4zCNA2aVJIhBsoj8M0MKDwRqQh90JYyX8tb6/Lor+bcXi550=
+ r5PJKhicc4LosaQrXIxCqnqBpoh4nHLIULDpvpSKQDKpyd9ioW9S/3ulo8jDC3TYPrYJXUnFKvKftlmpisrW39HcD/U+tQqi4MnDXRjZvmotnAJbnYVeeeg6JBTl4VT6cSszRYrLPKD4HU3s6ISuOt6jumS1u3e5rMzHUolGfC/lYUbwtH6LuB7OVHeybQn+5mh/nqBi5JW7FeixMYDdU3FmdIe8RCtQ3gqMbhFtAFUkWSz2ihEIfQ1yQhpKBlFZPdUatVJH2G88NjoVh9PzwN4Atta5wuxwlXzWcK2wquOq/Qm9QU1mk7DxwuRy4tJwpRlrBTljqMiZCt0Fczwww9LWNjBY18PlLkUIEhIXgOJ/21rurSfdIjVycnMPl7cIlomKectQJc7eoKdE3HM1w91V4Enehg4AxOhfVHU/VVQy5D78daI9afJsq5x6L+oRj1eTXx2wF9Mbv3V2ljws0CQgntzsRhlWBMMeEQ5VelEJ61iqbbB4qkTjbsXUQGoiVsequQavUtrzGHKHZjiKxmM709IFmQJneOxyqh1GX8zOv1+4Q1yJIvB5sqkUfU4OMss5xaOHM25lahBGYaYDaco7XBcAGLRPMVluO+NUeRZa4xsdV9AOzmN14LlecPW3T+UQZ+M/KsStGDVW5eQ5WhJfVD0+wZUJ2o5OBAzVenNJF20fWXclVxEyRqAHLyDlrJ1udwYgOViU2tkziNRZ4LM0Dxbnclc8SQ0FupTu6sU=
 x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LVWPR20MB994915.namprd20.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(366016)(1800799024)(5023799004)(56012099006)(3023799007)(6133799003)(10067099003)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1102;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LVWPR20MB994915.namprd20.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(366016)(1800799024)(56012099006)(3023799007)(10067099003)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1102;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?XJKGq7an1CbXM7y8zv9Soqfg2U0Y7CdqZqO9ozkrw/fqKS2nNrcNsoL4I7?=
- =?iso-8859-1?Q?Y9GGcqRM7KkOoysgq8RG0XK7VXN8lp6RN8GZrXxkweavS/5+BmYiQAqdcJ?=
- =?iso-8859-1?Q?jg2h9IyGRwQyriHAKeyUmRLY1Z/yh2i89giCK5vWgSeU1TY1ztgxLf0i8N?=
- =?iso-8859-1?Q?FgWboYkt6z/7DRMhf4u6KXlJhNgnrbM/MOLtYiXDKIQOEvP1jE7lIEknHL?=
- =?iso-8859-1?Q?TWYxqWBUFky9os1iT5b9bbEynFaTZyutK3heTbAdhgvL9r+KCLReGa6L5i?=
- =?iso-8859-1?Q?7sEHePO7seRCuHueLEAAHn22vbaQmO33oPberuIZkv5CjF0JrWCFvXIq/9?=
- =?iso-8859-1?Q?bvIuhX5idNQ/XBDrRfZddLPES/atWiltMtIYwfx09isu3oLfPlVCTeAnZk?=
- =?iso-8859-1?Q?wyIbDBjmV0vDZVcBWxJf+PteFX3GQPruVGmve1CxBP4Ksr22I9rS5Ra+WS?=
- =?iso-8859-1?Q?+YVYcyZO7WWE12jt0heVoolwMD8SlTnCzNh1p+jhG6G/nygmRfnwK0VgxR?=
- =?iso-8859-1?Q?L13Cdsxy7X+TfJU2QCN/gDlAqSr8vdeWRUqR0rYfBrhvHn8CeeZA5kFqPL?=
- =?iso-8859-1?Q?MF78neV/d1V31E7UfiN4OBf4WoNg/xX2+vA12mZ24BatB7nfvn5MYfoYkH?=
- =?iso-8859-1?Q?GtC33J+ZsTr99RdZIHEGnLIK3RxFTn6UJ6tNKxLlTYGnw0x02Sf5FnES5c?=
- =?iso-8859-1?Q?IE13f5T8oKWpgDeLAo9DrozBqBtgaE6+eLAjKXumWTJ4uuMO6mvyb0ABCv?=
- =?iso-8859-1?Q?z4LgyI1BGRAQeQIIjGVe8HzHr9eGCSxtgzCVRt8Z4ZVSBuPgB5/vjRADJA?=
- =?iso-8859-1?Q?kXyqXf008sfa9d8LRO/nA9Iaa+lFKyotjnmE8vntbGhZADUfk1UAG5fxdI?=
- =?iso-8859-1?Q?jxVlztDZBZVBxCJaFXovVP3t61hTd3fSla+fJYUZAkXVkUdI4EuaNb5wsU?=
- =?iso-8859-1?Q?v7bswhdyET8kvjO6as8EfkkTzJQwdDwBOCLg0xTlsLMmV1S39SnnfJrPM/?=
- =?iso-8859-1?Q?ni35jo8GWQ22a4UnDEUZIEAVxKxLd4O04RS7UkHKNJaDKfR4RtaqMJUCYo?=
- =?iso-8859-1?Q?3LQHc1U6O+S4aOwicXonjU7UdlFykOSUJmvYI8quzgHZ78L+EMvGFc+Mct?=
- =?iso-8859-1?Q?/H8OBBCyv71d54Ts6ZAda18SrX/mn+P0cN8bGfBagRn+iv5B8SAi7h8Df/?=
- =?iso-8859-1?Q?8JUbbjE8g+HpaZmSi9Q3HlgIYGOhzTUqqKrDLeW1tR86YC2MQeoZYVpJWW?=
- =?iso-8859-1?Q?OBKK5CYPhiYjJramVib7ikj7pONqEqfJ9S1scouiaj8pc9DMU6BrLaIy4w?=
- =?iso-8859-1?Q?pZBz004LPWjG+a/FgXXfngLZAMKbv575jdcrk+6vJwYivhNewiebJpL+o1?=
- =?iso-8859-1?Q?FYVylYsU6upOlAh8J7Dopja05UeDu9VLUwBtJIvW7VA5VEnGQ0d734z6Z+?=
- =?iso-8859-1?Q?cpJEkXDPngS2h+Sndggg83Dbfwu23NQyOdfU6GKx9VBVuNDHGh6NOS7R0B?=
- =?iso-8859-1?Q?aL3f+qDpJRALnIHUetrJWsSSiliFFKOtyPBjgJaOU4H5+GmSWOUkvxcvKL?=
- =?iso-8859-1?Q?5Ggg2Dk5h2lb8xx1/tZ2MoO9sfbv0I4JIwXVFtg0MEYkO8q6DhYmPuii/Q?=
- =?iso-8859-1?Q?vw/CxokwPQ/XjB/2nQBNZGocDioZf1d4BP7ZXi2VUPl2qg+Wx+QXOgoFwK?=
- =?iso-8859-1?Q?TLWj25qnkY3MPrAm1JL6Rw4Se0Lm8jfsWPSiZawj0cpoAic50x/p1qNHe8?=
- =?iso-8859-1?Q?+t0g6lPrVgEJAc/mJRTDOx/xhrpWOQuYendRreJnzM1U9L?=
+ =?iso-8859-1?Q?xonUnUlUvB1Efem8ltHRoy+1j1EN8Ds5qSgBmjBYsrk84pU17pUVT9vdv8?=
+ =?iso-8859-1?Q?d85EV+LZBfeQ4XLyh1g6NPEEf6/BFJ74c64wRIJscUjNLxRrev1OYeBGPj?=
+ =?iso-8859-1?Q?H4pz39NxZOJoJh/xESdzjZg+jZC9JaMyb5kRNGdJtZDYZ4gCh6Ldl3kkKW?=
+ =?iso-8859-1?Q?y3KD6Ae3C+TaBmgjUCKA/u7vi/cIGP2EvPx9mmE2MluYgIHXZy6EyKbZNP?=
+ =?iso-8859-1?Q?mS1/MntwwXWV7rR4/5+PQKPe1MeQndYAY5UT4ElBFORnbay8TNYXY9Qe0b?=
+ =?iso-8859-1?Q?y1BA0Wq15l0ZcWJOgOPJEhg0AKqs6VOYFfyPTrRPqiQTketeMeu78i3Z3P?=
+ =?iso-8859-1?Q?v+yydHGtjhgf8k0izhWEinrWFwfI84/XAHO90tewPJHOjCLPwSYvlmZT26?=
+ =?iso-8859-1?Q?ueHnLsi5yD2KvoYZjc2yA0uS3+9i9GxQVGZWATl2Au/FU/4i8FtrSlEg2B?=
+ =?iso-8859-1?Q?6czskq4G7dBrFL2tWZonUi7Uprx4kqyF0cTjUiBf8LpP+1fyRrVkNoXPj2?=
+ =?iso-8859-1?Q?f+QQjRRm8uA6hvTSRn+0rX6LyPNyiOC7QOe2vvJ1iL5+91xh5qBEW0sPKe?=
+ =?iso-8859-1?Q?TX6ecd4XAx/exhIV1w+oF9FbApXysElMMlDtG7blqlB8Cs/de9T90mPDD9?=
+ =?iso-8859-1?Q?1dXRGyY/yie5gBypS+1Oiq2H2sP4md6V2V9nudA4tsb85rkb7hbuvKLoEJ?=
+ =?iso-8859-1?Q?MzxwpdgHM/DBaeNZO/K7vT+LPq5IB1jLz1FFmcfk3/OrnoGsVZfPKmNhWx?=
+ =?iso-8859-1?Q?0X8zb1VAjt3k7ZppH/hvSxGxLvuFtaWrZyWC4/ecvMJgWJ3SABUJZJpD8c?=
+ =?iso-8859-1?Q?x0TGaVnL4iJUeS1PTGVEEQEjgo2SN/HutbM/vaGUqXIGY/51cocY+aEMqY?=
+ =?iso-8859-1?Q?LKTGlGoTuiui0PhD2F5xDfQOuXlHfzmCbIv25KlxxzoLj973j3lfJP+/At?=
+ =?iso-8859-1?Q?q/On03/vuu5kjYoRHAqdQDgRiuceezJQNTgRkNE7Ke5lfVV3BUHwM7yx+P?=
+ =?iso-8859-1?Q?twcTxeowHjiph58H1To0dU1Dh2aKTw/jSbo4giKftwS8+IINcMbFOiRHeV?=
+ =?iso-8859-1?Q?IUQH3A42dDIs1DJZoRHqp+ma+4t/qcygaiZQMgYcKhvlN1CUb/Zde+reHP?=
+ =?iso-8859-1?Q?5H72GKcgXVndSGa46vBGvF3S5dW3H+4wC2+DQ01xniG/VJMZDLJXEfY3tS?=
+ =?iso-8859-1?Q?S0ZaJBADsVT+3vmGymb0aZa+fRM+jeSYeZIuAWpzSM59gveFlwOxQe0zTk?=
+ =?iso-8859-1?Q?RlNyC4ej5GdvZmSk/G51mgSzVKUjfl36SpgM745EFyMnthGEhXDLRUWlHi?=
+ =?iso-8859-1?Q?4YT69+Ju3Za5nN2+KCpAIfCRCRZ0s6rDQU+nl3qSx9kQBjQkssYqXUWWeh?=
+ =?iso-8859-1?Q?Fr41+833EF/VvVCMRNbj2JXSWlJeSAPAythzgeMuTzIhsBGPDkOy7v+l3I?=
+ =?iso-8859-1?Q?hZ+AnLaJ10yOG5VnDeHoXNBv4uKD/jTdN5lDUbdFNjvIpav30oNEx1crCI?=
+ =?iso-8859-1?Q?wT1DzyKaxAFPjge4GjzQ3Ljv0Nku4fZ1qzHy9sh8bw5SItFxTmU2ArkKNU?=
+ =?iso-8859-1?Q?UnyOri7e1A0hq1n8i/XefsLO4gktsKEQiTv4zS4XkPe9ZFJxMKsExFfUtO?=
+ =?iso-8859-1?Q?ZgFtUQg1gNVM/WPZ/tg4hwz/Ey5bXRbeT3S67mGXZcln5lCFUp+IzOdWPO?=
+ =?iso-8859-1?Q?qXTly1j6UY831WDgZ8sP2j6gRsgzmz6YpDQKv9GRxYJ9rSvWFCjksjl1Xz?=
+ =?iso-8859-1?Q?rTuf0zSfH3WuX5cN4DdJzOYDWfEpWZZYMx+ctsAzob5N2Q?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -132,674 +132,299 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Exchange-RoutingPolicyChecked:
-	f7tt1xlh6ODoy0OnJuCVmWocFGfj5AFbRHUJ2USPyAMWceNKTS/phNX+sXgCB32uEfxQDpDuWLPHV0c+nyd1Gc7Yin/twV3vu5QVo7VnDi8Pp0zIa1TgHiSyrbwWYJdxDdNYuiwI7B+9IEHMr6YxnUgWHwX9MZksZ5njSSHU5/S8dgMr3WqB/t7aM3RzFsCGYqnqijgIVosKZI/XxjgRS2vXw+pxtsB4f3SFQsDes0biCz9ys/Fv8ZcXpVQ+iUji7aT+EJytS+q3qBRXU69pjFUDH9c/cPuEB11BNiTgjNr02T3SizFFWiN/LXln9DR4+/jbjHZAgvdtfJlTd8ZJVw==
+	s87NWDSC3Z1kJUGsN5Uue64wbnilEL/ZjyE3Brf6+PBiOiSLYqoW8bE1GcgPGGTyooRY8rBP5tjacq7Tk25A6wME2Gp06uLwaPVZ00+ujWuOhpWNajBdioo6c5+ilHmrL2WCq9VYnm3Oz+qK1uHnEBP8rPbCMdf7TX/dWXJ7wfb05iQfEgBTnEq+p14mX9TyKLhw1I19O4giKUcVKnUeZyroxYChAmkyIdU/NWTfK05T4RORvlts/GQeTR91BB50XCAxsC11whZPA4pNe3sPA5Ukhh4PUqRl8yZRbDat3/UPWoPbAa7SnZK0dqRH/jeKvLBFlzoQO0wRBUafTvUC/Q==
 X-OriginatorOrg: sitime.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: LVWPR20MB994915.namprd20.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e680af66-d18e-48f7-7c8c-08df12bc557b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Sep 2026 00:00:18.4529
+X-MS-Exchange-CrossTenant-Network-Message-Id: d8580ce8-a837-4cbd-b97e-08df12bc5666
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Sep 2026 00:00:20.1846
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 8fb55916-cf10-4b0d-96f4-cf3952657263
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: XzGhQmo/ArftTCtAEvxcCroQWqYyzuMR4PKVc/JyxdEqIgMp+ZarsGMIwxU6DQShYDW2slLaVmV2d2cM26/v0Q==
+X-MS-Exchange-CrossTenant-userprincipalname: U5oiP6ihhK2NM3CFifNpg6kYJ3PbeRB/w6AVajHg4ptsas0/ING2GqPpBJ9vJv3lG7qe05UZRqyCCU9s7NvsrA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR20MB4277
-X-MDID: 1789430428-9L7dRFerOBBU
+X-MDID: 1789430431-KWO8D5sN5Rom
 X-PPE-STACK: {"stack":"us1"}
 X-MDID-O:
- us1;ut7;1789430428;9L7dRFerOBBU;<arouhi@sitime.com>;ee4c095510f4a2bc549243be2f087a38
+ us1;ut7;1789430431;KWO8D5sN5Rom;<arouhi@sitime.com>;ee4c095510f4a2bc549243be2f087a38
 X-PPE-TRUSTED: V=1;DIR=OUT;
 
 From: Oleg Zadorozhnyi <Oleg.Zadorozhnyi@devoxsoftware.com>=0A=
 =0A=
-The DPLL core wants a type per device and a property set per pin: a=0A=
-label, the direction, the capabilities, and the frequencies the pin=0A=
-supports.  None of that can be read from the chip -- which frequencies a=0A=
-board actually presents on a given input, and whether an output's=0A=
-embedded sync is wired to be controllable, are board facts -- so they=0A=
-come from the firmware node, with defaults for a node that does not=0A=
-describe them.=0A=
+The priority table is ordered: the slot an input occupies is its=0A=
+priority, and the device selects the lowest occupied slot whose signal is=
 =0A=
-Input pins are interleaved P and N lanes of four differential pairs, so a=
+qualified.  Getting the priority is therefore a search of the table for=0A=
+the input, and setting it moves the input to the requested slot.=0A=
 =0A=
-logical index maps to a pair and a lane, and a pair configured=0A=
-single-ended presents two independent inputs where a differential one=0A=
-presents one.  The labels follow from that, and the two extra input=0A=
-positions -- the crystal and the inter-PLL sync net -- are named=0A=
-separately.=0A=
+An input absent from the table has no priority to report, and the core is=
 =0A=
-Kept in its own file, and introduced before anything is registered, so=0A=
-the registration code that follows has nothing to say about firmware.=0A=
+told so rather than handed a made-up number.=0A=
 =0A=
 Signed-off-by: Oleg Zadorozhnyi <Oleg.Zadorozhnyi@devoxsoftware.com>=0A=
 Assisted-by: Claude:claude-4-opus [chat]=0A=
 Signed-off-by: Ali Rouhi <arouhi@sitime.com>=0A=
 ---=0A=
- drivers/dpll/sit9531x/Makefile |   2 +-=0A=
- drivers/dpll/sit9531x/core.h   |  72 ++++++=0A=
- drivers/dpll/sit9531x/prop.c   | 437 +++++++++++++++++++++++++++++++++=0A=
- drivers/dpll/sit9531x/prop.h   |  39 +++=0A=
- 4 files changed, 549 insertions(+), 1 deletion(-)=0A=
- create mode 100644 drivers/dpll/sit9531x/prop.c=0A=
- create mode 100644 drivers/dpll/sit9531x/prop.h=0A=
+ drivers/dpll/sit9531x/core.c |  76 +++++++++++++++++++++++---=0A=
+ drivers/dpll/sit9531x/core.h |   8 +++=0A=
+ drivers/dpll/sit9531x/dpll.c | 102 +++++++++++++++++++++++++++++++++++=0A=
+ 3 files changed, 178 insertions(+), 8 deletions(-)=0A=
 =0A=
-diff --git a/drivers/dpll/sit9531x/Makefile b/drivers/dpll/sit9531x/Makefil=
-e=0A=
-index a221fe55386a..819af61123f5 100644=0A=
---- a/drivers/dpll/sit9531x/Makefile=0A=
-+++ b/drivers/dpll/sit9531x/Makefile=0A=
-@@ -1,4 +1,4 @@=0A=
- # SPDX-License-Identifier: GPL-2.0-only=0A=
+diff --git a/drivers/dpll/sit9531x/core.c b/drivers/dpll/sit9531x/core.c=0A=
+index 25418485e975..484c94def578 100644=0A=
+--- a/drivers/dpll/sit9531x/core.c=0A=
++++ b/drivers/dpll/sit9531x/core.c=0A=
+@@ -521,21 +521,81 @@ bool sit9531x_input_prio_present(struct sit9531x_dev =
+*sitdev, u8 pll_idx,=0A=
+ }=0A=
  =0A=
- obj-$(CONFIG_SIT9531X_DPLL) +=3D sit9531x.o=0A=
--sit9531x-y :=3D core.o=0A=
-+sit9531x-y :=3D core.o prop.o=0A=
+ /*=0A=
+- * Rebuild a PLL's membership mask from the source codes of its priority=
+=0A=
+- * table.  The mask is what the pin state getters test, so it is refreshed=
+=0A=
+- * from exactly the values the table holds -- here after a write, and once=
+=0A=
+- * per poll from the read-back in sit9531x_chan_state_fetch().=0A=
++ * sit9531x_input_prio_get - read an input's priority slot for a PLL=0A=
++ * @input_idx:	input source in hardware encoding (see=0A=
++ *		sit9531x_input_hw_src())=0A=
++ * @prio:	output slot position (0 =3D highest)=0A=
++ *=0A=
++ * Reports the last slot this source occupied on this PLL.  The value is=
+=0A=
++ * cached from the hardware table read at startup and refreshed after ever=
+y=0A=
++ * table write and poll read-back, so pin-get reflects hardware state with=
+out=0A=
++ * issuing synchronous register reads per pin.  A source with no known slo=
+t=0A=
++ * falls back to the lowest-priority valid slot.=0A=
++ *=0A=
++ * Caller must hold sitdev->multiop_lock.=0A=
++ */=0A=
++int sit9531x_input_prio_get(struct sit9531x_dev *sitdev, u8 pll_idx,=0A=
++			    u8 input_idx, u8 *prio)=0A=
++{=0A=
++	const struct sit9531x_chan *chan;=0A=
++	u8 slot;=0A=
++=0A=
++	lockdep_assert_held(&sitdev->multiop_lock);=0A=
++=0A=
++	if (pll_idx >=3D SIT9531X_NUM_PLLS)=0A=
++		return -EINVAL;=0A=
++	input_idx =3D sit9531x_prio_src_canon(sitdev, input_idx);=0A=
++	if (input_idx >=3D SIT9531X_PRIO_NUM_SRC)=0A=
++		return -EINVAL;=0A=
++=0A=
++	chan =3D &sitdev->chan[pll_idx];=0A=
++	slot =3D chan->prio_last[input_idx];=0A=
++	if (!slot)=0A=
++		slot =3D SIT9531X_PRIO_MAX_SLOTS;=0A=
++=0A=
++	*prio =3D slot - 1;=0A=
++=0A=
++	return 0;=0A=
++}=0A=
++=0A=
++/*=0A=
++ * Refresh a PLL's cached view of its priority table from the source codes=
+=0A=
++ * the table holds -- here after a write, and once per poll from the=0A=
++ * read-back in sit9531x_chan_state_fetch().=0A=
++ *=0A=
++ * The membership mask is what the pin state getters test; the per-slot=0A=
++ * copy and the last-slot-seen array are what priority get answers from,=
+=0A=
++ * so neither costs a register read per pin.=0A=
+  */=0A=
+ static void sit9531x_prio_mask_build(struct sit9531x_dev *sitdev, u8 pll_i=
+dx,=0A=
+ 				     const u8 *srcs)=0A=
+ {=0A=
++	struct sit9531x_chan *chan =3D &sitdev->chan[pll_idx];=0A=
++	u8 first[SIT9531X_PRIO_NUM_SRC] =3D { 0 };=0A=
+ 	u16 mask =3D 0;=0A=
+-	u8 slot;=0A=
++	u8 slot, src, src_canon;=0A=
+ =0A=
+-	for (slot =3D 0; slot < SIT9531X_PRIO_MAX_SLOTS; slot++)=0A=
+-		mask |=3D BIT(srcs[slot] & SIT9531X_PRIO_NIBBLE_MASK);=0A=
++	for (slot =3D 0; slot < SIT9531X_PRIO_MAX_SLOTS; slot++) {=0A=
++		src =3D srcs[slot] & SIT9531X_PRIO_NIBBLE_MASK;=0A=
++		chan->prio_srcs[slot] =3D src;=0A=
++		src_canon =3D sit9531x_prio_src_canon(sitdev, src);=0A=
++		if (src_canon >=3D SIT9531X_PRIO_NUM_SRC)=0A=
++			continue;=0A=
++=0A=
++		mask |=3D BIT(src_canon);=0A=
++		if (!first[src_canon])=0A=
++			first[src_canon] =3D slot + 1;=0A=
++	}=0A=
++=0A=
++	/*=0A=
++	 * Assign unconditionally: a source that has left the table has no=0A=
++	 * slot, and leaving its old one behind would keep reporting it as=0A=
++	 * listed for as long as the device runs.=0A=
++	 */=0A=
++	for (src =3D 0; src < SIT9531X_PRIO_NUM_SRC; src++)=0A=
++		chan->prio_last[src] =3D first[src];=0A=
+ =0A=
+-	sitdev->chan[pll_idx].prio_mask =3D mask;=0A=
++	chan->prio_mask =3D mask;=0A=
+ }=0A=
+ =0A=
+ /* Attempts to release a forced holdover before reporting it stuck. */=0A=
 diff --git a/drivers/dpll/sit9531x/core.h b/drivers/dpll/sit9531x/core.h=0A=
-index 76a2632f0ce4..230b21b9e238 100644=0A=
+index f628bd5b7a97..1ab8ebfd78da 100644=0A=
 --- a/drivers/dpll/sit9531x/core.h=0A=
 +++ b/drivers/dpll/sit9531x/core.h=0A=
-@@ -23,7 +23,17 @@=0A=
- =0A=
- #define SIT9531X_NUM_PLLS		4=0A=
- #define SIT9531X_MAX_INPUTS		8=0A=
-+#define SIT9531X_NUM_INPUT_PAIRS	(SIT9531X_MAX_INPUTS / 2)=0A=
- #define SIT9531X_MAX_OUTPUTS		12=0A=
-+/*=0A=
-+ * INTSYNC (the inter-PLL sync net) is modeled as two pins.  The=0A=
-+ * destination PLL that locks to INTSYNC sees an input pin=0A=
-+ * (SIT9531X_INTSYNC_PIN_ID, in the input id namespace after the physical=
-=0A=
-+ * inputs and the xtal); the source PLL that drives INTSYNC sees an output=
-=0A=
-+ * pin (SIT9531X_INTSYNC_OUT_PIN_ID, appended after the physical outputs).=
-=0A=
-+ */=0A=
-+#define SIT9531X_INTSYNC_PIN_ID		(SIT9531X_MAX_INPUTS + 1)=0A=
-+#define SIT9531X_INTSYNC_OUT_PIN_ID	SIT9531X_MAX_OUTPUTS=0A=
- =0A=
- /*=0A=
-  * struct sit9531x_chip_info - chip variant identification=0A=
-@@ -41,6 +51,39 @@ struct sit9531x_chip_info {=0A=
- 	const u8	*clkout_map;=0A=
+@@ -129,6 +129,12 @@ struct sit9531x_out {=0A=
+  * @ho_freeze:		holdover freeze active=0A=
+  * @ho_valid:		holdover memory acquired, i.e. the holdover window=0A=
+  *			holds a valid estimate to fall back on=0A=
++ * @prio_srcs:		cached copy of the priority table, one source code=0A=
++ *			per slot; refreshed together with @prio_mask, so=0A=
++ *			priority reads generate no register traffic=0A=
++ * @prio_last:		slot each source occupies, plus one (0 =3D the source=0A=
++ *			is not in the table); refreshed from the same scan=0A=
++ *			as @prio_mask, so the two never disagree=0A=
+  * @prio_mask:		bit per hardware source code present in this PLL's=0A=
+  *			priority table, i.e. the sources it may select.  Read=0A=
+  *			back from the table by the periodic worker and=0A=
+@@ -143,6 +149,8 @@ struct sit9531x_chan {=0A=
+ 	bool		inner_lol;=0A=
+ 	bool		ho_freeze;=0A=
+ 	bool		ho_valid;=0A=
++	u8		prio_srcs[SIT9531X_PRIO_MAX_SLOTS];=0A=
++	u8		prio_last[SIT9531X_PRIO_NUM_SRC];=0A=
+ 	u16		prio_mask;=0A=
  };=0A=
  =0A=
-+/*=0A=
-+ * enum sit9531x_signal_mode - input signal electrical mode=0A=
-+ * @SIT9531X_MODE_SE: single-ended=0A=
-+ * @SIT9531X_MODE_DE: differential=0A=
-+ */=0A=
-+enum sit9531x_signal_mode {=0A=
-+	SIT9531X_MODE_SE =3D 0,=0A=
-+	SIT9531X_MODE_DE,=0A=
-+};=0A=
-+=0A=
-+/*=0A=
-+ * struct sit9531x_ref - input reference state=0A=
-+ * @freq:		configured frequency in Hz=0A=
-+ * @label:		board label from DT or default=0A=
-+ * @sig_mode:		signal mode of the pair this lane belongs to=0A=
-+ *			(detected from CLKINx_INPUT_MODE at probe)=0A=
-+ */=0A=
-+struct sit9531x_ref {=0A=
-+	u32				freq;=0A=
-+	const char			*label;=0A=
-+	enum sit9531x_signal_mode	sig_mode;=0A=
-+};=0A=
-+=0A=
-+/*=0A=
-+ * struct sit9531x_out - output state=0A=
-+ * @freq:		configured frequency in Hz=0A=
-+ * @label:		board label from DT or default=0A=
-+ */=0A=
-+struct sit9531x_out {=0A=
-+	u32		freq;=0A=
-+	const char	*label;=0A=
-+};=0A=
-+=0A=
- /*=0A=
-  * struct sit9531x_dev - SiT9531x device instance=0A=
-  * @dev:		parent device=0A=
-@@ -48,6 +91,8 @@ struct sit9531x_chip_info {=0A=
-  * @regmap:		paged register map=0A=
-  * @info:		detected chip variant info=0A=
-  * @multiop_lock:	serializes multi-register sequences=0A=
-+ * @ref:		array of input reference states=0A=
-+ * @out:		array of output states=0A=
-  * @xtal_freq:		crystal oscillator frequency in Hz=0A=
-  * @reset_gpio:		optional reset line (DT "reset-gpios"), NULL if absent=0A=
-  */=0A=
-@@ -59,11 +104,38 @@ struct sit9531x_dev {=0A=
- 	/* Serializes multi-step register sequences */=0A=
- 	struct mutex			multiop_lock;=0A=
- =0A=
-+	/* Hardware state */=0A=
-+	struct sit9531x_ref	ref[SIT9531X_MAX_INPUTS + 1]; /* +1 for xtal */=0A=
-+	struct sit9531x_out	out[SIT9531X_MAX_OUTPUTS];=0A=
- 	u32			xtal_freq;=0A=
- =0A=
- 	struct gpio_desc	*reset_gpio;=0A=
- };=0A=
+diff --git a/drivers/dpll/sit9531x/dpll.c b/drivers/dpll/sit9531x/dpll.c=0A=
+index ab9aa7db1839..e2ff21adfdb2 100644=0A=
+--- a/drivers/dpll/sit9531x/dpll.c=0A=
++++ b/drivers/dpll/sit9531x/dpll.c=0A=
+@@ -469,10 +469,112 @@ sit9531x_dpll_input_pin_state_on_dpll_set(const stru=
+ct dpll_pin *pin,=0A=
+ 	return rc;=0A=
+ }=0A=
  =0A=
 +/*=0A=
-+ * Logical input pins are interleaved: even index =3D P lane, odd=0A=
-+ * index =3D N lane of pair index/2 (IN0P, IN0N, IN1P, IN1N, ...).=0A=
-+ * Index SIT9531X_MAX_INPUTS is the XO input.=0A=
-+ */=0A=
-+=0A=
-+/*=0A=
-+ * sit9531x_input_pair - get input pair number for a logical input index=
++ * sit9531x_dpll_input_pin_prio_get - read input pin priority=0A=
++ *=0A=
++ * Reports the cached slot from sit9531x_input_prio_get().  The cache is=
 =0A=
-+ * @index: logical input pin index=0A=
-+ */=0A=
-+static inline u8 sit9531x_input_pair(u8 index)=0A=
-+{=0A=
-+	return index >> 1;=0A=
-+}=0A=
-+=0A=
-+/*=0A=
-+ * sit9531x_input_is_n - check if a logical input index is an N lane=0A=
-+ * @index: logical input pin index=0A=
-+ */=0A=
-+static inline bool sit9531x_input_is_n(u8 index)=0A=
-+{=0A=
-+	return index & 1;=0A=
-+}=0A=
-+=0A=
- /*=0A=
-  * sit9531x_pll_page - get register page for PLL index=0A=
-  * @pll_idx: PLL index (0 =3D PLLA, 3 =3D PLLD)=0A=
-diff --git a/drivers/dpll/sit9531x/prop.c b/drivers/dpll/sit9531x/prop.c=0A=
-new file mode 100644=0A=
-index 000000000000..c9642b702c4a=0A=
---- /dev/null=0A=
-+++ b/drivers/dpll/sit9531x/prop.c=0A=
-@@ -0,0 +1,437 @@=0A=
-+// SPDX-License-Identifier: GPL-2.0=0A=
-+/*=0A=
-+ * SiTime SiT9531x firmware node property parsing=0A=
-+ *=0A=
-+ * Copyright (C) 2026 SiTime Corp.=0A=
-+ * Author: Ali Rouhi <arouhi@sitime.com>=0A=
-+ * Author: Oleg Zadorozhnyi <Oleg.Zadorozhnyi@devoxsoftware.com>=0A=
-+ *=0A=
-+ * Retrieves pin properties from Device Tree firmware nodes (or=0A=
-+ * applies defaults when no firmware node exists).=0A=
-+ */=0A=
-+=0A=
-+#include <linux/dev_printk.h>=0A=
-+#include <linux/dpll.h>=0A=
-+#include <linux/err.h>=0A=
-+#include <linux/fwnode.h>=0A=
-+#include <linux/property.h>=0A=
-+#include <linux/slab.h>=0A=
-+#include <linux/string.h>=0A=
-+=0A=
-+#include "core.h"=0A=
-+#include "prop.h"=0A=
-+=0A=
-+/*=0A=
-+ * sit9531x_input_pin_label - fill the package label for an input pin=0A=
-+ *=0A=
-+ * Split out so input-naming changes stay local to this helper.=0A=
-+ */=0A=
-+static void sit9531x_input_pin_label(struct sit9531x_dev *sitdev,=0A=
-+				     struct sit9531x_pin_props *props, u8 id)=0A=
-+{=0A=
-+	u8 pair =3D sit9531x_input_pair(id);=0A=
-+=0A=
-+	if (sitdev->ref[id].sig_mode =3D=3D SIT9531X_MODE_DE)=0A=
-+		snprintf(props->package_label,=0A=
-+			 sizeof(props->package_label), "IN%u", pair);=0A=
-+	else=0A=
-+		snprintf(props->package_label,=0A=
-+			 sizeof(props->package_label), "IN%u%c", pair,=0A=
-+			 sit9531x_input_is_n(id) ? 'N' : 'P');=0A=
-+}=0A=
-+=0A=
-+/*=0A=
-+ * sit9531x_prop_pin_package_label_set - generate package label=0A=
-+ * @dir:	pin direction=0A=
-+ * @id:		pin index=0A=
-+ *=0A=
-+ * Generates a package label string.  Output pins are named "OUT0",=0A=
-+ * "OUT1", ...  Input pins are named after the physical pair and lane:=0A=
-+ * "IN0P", "IN0N", "IN1P", ... for single-ended lanes, or "IN0",=0A=
-+ * "IN1", ... when the pair is configured differential (the N lane is=0A=
-+ * not registered in that case).=0A=
-+ */=0A=
-+static void=0A=
-+sit9531x_prop_pin_package_label_set(struct sit9531x_dev *sitdev,=0A=
-+				    struct sit9531x_pin_props *props,=0A=
-+				    enum dpll_pin_direction dir, u8 id)=0A=
-+{=0A=
-+	/* The internal INTSYNC pin has a fixed label */=0A=
-+	if (dir =3D=3D DPLL_PIN_DIRECTION_INPUT &&=0A=
-+	    id =3D=3D SIT9531X_INTSYNC_PIN_ID) {=0A=
-+		strscpy(props->package_label, "INTSYNC",=0A=
-+			sizeof(props->package_label));=0A=
-+		props->dpll_props.package_label =3D props->package_label;=0A=
-+		return;=0A=
-+	}=0A=
-+=0A=
-+	/* The internal XO reference has a fixed label */=0A=
-+	if (dir =3D=3D DPLL_PIN_DIRECTION_INPUT && id =3D=3D SIT9531X_MAX_INPUTS)=
- {=0A=
-+		strscpy(props->package_label, "XO",=0A=
-+			sizeof(props->package_label));=0A=
-+		props->dpll_props.package_label =3D props->package_label;=0A=
-+		return;=0A=
-+	}=0A=
-+=0A=
-+	/* The internal INTSYNC source (output) pin has a fixed label */=0A=
-+	if (dir =3D=3D DPLL_PIN_DIRECTION_OUTPUT &&=0A=
-+	    id =3D=3D SIT9531X_INTSYNC_OUT_PIN_ID) {=0A=
-+		strscpy(props->package_label, "SYNCOUT",=0A=
-+			sizeof(props->package_label));=0A=
-+		props->dpll_props.package_label =3D props->package_label;=0A=
-+		return;=0A=
-+	}=0A=
-+=0A=
-+	if (dir =3D=3D DPLL_PIN_DIRECTION_INPUT)=0A=
-+		sit9531x_input_pin_label(sitdev, props, id);=0A=
-+	else=0A=
-+		snprintf(props->package_label, sizeof(props->package_label),=0A=
-+			 "OUT%u", id);=0A=
-+=0A=
-+	props->dpll_props.package_label =3D props->package_label;=0A=
-+}=0A=
-+=0A=
-+/*=0A=
-+ * sit9531x_prop_pin_fwnode_get - find firmware node for a pin=0A=
-+ * @dir:	pin direction=0A=
-+ * @id:		pin index=0A=
-+ *=0A=
-+ * Searches for input-pins/output-pins child nodes in DT, looking=0A=
-+ * for a child whose "reg" property matches @id.=0A=
-+ *=0A=
-+ * Return: 0 on success, -ENOENT if no firmware node exists=0A=
++ * refreshed from hardware at startup and by periodic read-back, so pin-ge=
+t=0A=
++ * reports hardware priority without synchronous per-pin I2C reads.=0A=
 + */=0A=
 +static int=0A=
-+sit9531x_prop_pin_fwnode_get(struct sit9531x_dev *sitdev,=0A=
-+			     struct sit9531x_pin_props *props,=0A=
-+			     enum dpll_pin_direction dir, u8 id)=0A=
++sit9531x_dpll_input_pin_prio_get(const struct dpll_pin *pin, void *pin_pri=
+v,=0A=
++				 const struct dpll_device *dpll, void *dpll_priv,=0A=
++				 u32 *prio, struct netlink_ext_ack *extack)=0A=
 +{=0A=
-+	struct fwnode_handle *pins_node, *pin_node;=0A=
-+	const char *node_name;=0A=
++	struct sit9531x_dpll_pin *dpin =3D pin_priv;=0A=
++	struct sit9531x_dpll *sitdpll =3D dpll_priv;=0A=
++	struct sit9531x_dev *sitdev =3D sitdpll->dev;=0A=
++	u8 slot;=0A=
++	int rc;=0A=
 +=0A=
-+	if (dir =3D=3D DPLL_PIN_DIRECTION_INPUT)=0A=
-+		node_name =3D "input-pins";=0A=
-+	else=0A=
-+		node_name =3D "output-pins";=0A=
-+=0A=
-+	pins_node =3D device_get_named_child_node(sitdev->dev, node_name);=0A=
-+	if (!pins_node) {=0A=
-+		dev_dbg(sitdev->dev, "'%s' sub-node is missing\n", node_name);=0A=
-+		return -ENOENT;=0A=
-+	}=0A=
-+=0A=
-+	/* Enumerate child pin nodes and find the requested one */=0A=
-+	fwnode_for_each_child_node(pins_node, pin_node) {=0A=
-+		u32 reg;=0A=
-+=0A=
-+		if (fwnode_property_read_u32(pin_node, "reg", &reg))=0A=
-+			continue;=0A=
-+=0A=
-+		if (id =3D=3D reg)=0A=
-+			break;=0A=
-+	}=0A=
-+=0A=
-+	fwnode_handle_put(pins_node);=0A=
-+=0A=
-+	props->fwnode =3D pin_node;=0A=
-+=0A=
-+	dev_dbg(sitdev->dev, "Firmware node for %s %sfound\n",=0A=
-+		props->package_label, pin_node ? "" : "NOT ");=0A=
-+=0A=
-+	return pin_node ? 0 : -ENOENT;=0A=
-+}=0A=
-+=0A=
-+/*=0A=
-+ * sit9531x_pin_props_get - get pin properties for a given pin=0A=
-+ * @dir:	pin direction (INPUT or OUTPUT)=0A=
-+ * @index:	pin index=0A=
-+ *=0A=
-+ * Allocates a pin properties structure, generates a package label,=0A=
-+ * looks up the firmware node if available, and reads optional=0A=
-+ * properties (label, connection-type, supported-frequencies-hz,=0A=
-+ * esync-control).=0A=
-+ *=0A=
-+ * Call sit9531x_pin_props_put() to free the returned structure.=0A=
-+ *=0A=
-+ * Return: pointer to pin properties on success, error pointer on error=0A=
-+ */=0A=
-+struct sit9531x_pin_props *=0A=
-+sit9531x_pin_props_get(struct sit9531x_dev *sitdev,=0A=
-+		       enum dpll_pin_direction dir, u8 index)=0A=
-+{=0A=
-+	struct dpll_pin_frequency *ranges;=0A=
-+	struct sit9531x_pin_props *props;=0A=
-+	int i, j, num_freqs =3D 0, rc;=0A=
-+	u64 *freqs =3D NULL;=0A=
-+	const char *type;=0A=
-+	u64 curr_freq;=0A=
-+=0A=
-+	props =3D kzalloc_obj(*props, GFP_KERNEL);=0A=
-+	if (!props)=0A=
-+		return ERR_PTR(-ENOMEM);=0A=
-+=0A=
-+	if (dir =3D=3D DPLL_PIN_DIRECTION_INPUT &&=0A=
-+	    index =3D=3D SIT9531X_INTSYNC_PIN_ID) {=0A=
-+		/*=0A=
-+		 * INTSYNC destination pin: a PLL locks to the INTSYNC net as a=0A=
-+		 * reference, so it can be connected and re-prioritised.=0A=
-+		 */=0A=
-+		props->dpll_props.type =3D DPLL_PIN_TYPE_INT_OSCILLATOR;=0A=
-+		props->dpll_props.capabilities =3D=0A=
-+			DPLL_PIN_CAPABILITIES_PRIORITY_CAN_CHANGE |=0A=
-+			DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE;=0A=
-+		curr_freq =3D 0;=0A=
-+	} else if (dir =3D=3D DPLL_PIN_DIRECTION_OUTPUT &&=0A=
-+		   index =3D=3D SIT9531X_INTSYNC_OUT_PIN_ID) {=0A=
-+		/*=0A=
-+		 * INTSYNC source pin: a PLL drives the INTSYNC net.  It can be=0A=
-+		 * connected/disconnected but carries no priority (driving the=0A=
-+		 * net is not a reference selection) and no frequency.=0A=
-+		 */=0A=
-+		props->dpll_props.type =3D DPLL_PIN_TYPE_INT_OSCILLATOR;=0A=
-+		props->dpll_props.capabilities =3D=0A=
-+			DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE;=0A=
-+		curr_freq =3D 0;=0A=
-+	} else if (dir =3D=3D DPLL_PIN_DIRECTION_INPUT &&=0A=
-+		   index =3D=3D SIT9531X_MAX_INPUTS) {=0A=
-+		/* The XO reference is fixed: no state or priority control. */=0A=
-+		props->dpll_props.type =3D DPLL_PIN_TYPE_INT_OSCILLATOR;=0A=
-+		props->dpll_props.capabilities =3D 0;=0A=
-+		sitdev->ref[index].freq =3D sitdev->xtal_freq;=0A=
-+		curr_freq =3D sitdev->xtal_freq;=0A=
-+	} else if (dir =3D=3D DPLL_PIN_DIRECTION_INPUT) {=0A=
-+		props->dpll_props.type =3D DPLL_PIN_TYPE_EXT;=0A=
-+		props->dpll_props.capabilities =3D=0A=
-+			DPLL_PIN_CAPABILITIES_PRIORITY_CAN_CHANGE |=0A=
-+			DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE;=0A=
-+		curr_freq =3D sitdev->ref[index].freq;=0A=
-+	} else {=0A=
-+		/*=0A=
-+		 * A synthesized clock output is an external connection with=0A=
-+		 * no more specific meaning; a board that knows better says=0A=
-+		 * so through the pin's connection-type property below.=0A=
-+		 */=0A=
-+		props->dpll_props.type =3D DPLL_PIN_TYPE_EXT;=0A=
-+		props->dpll_props.capabilities =3D=0A=
-+			DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE;=0A=
-+		curr_freq =3D sitdev->out[index].freq;=0A=
-+=0A=
-+		/*=0A=
-+		 * Allow phase-adjust over a +/-1 ms window.  The subsystem=0A=
-+		 * rejects pin_set(phase-adjust, X) when X falls outside=0A=
-+		 * [min, max], so leaving these at 0 silently blocks every=0A=
-+		 * netlink call.  1 ms is well beyond the DCO dynamic range=0A=
-+		 * but costs nothing.  Only outputs get a range: input pins=0A=
-+		 * have no .phase_adjust_set, and advertising one there would=0A=
-+		 * promise userspace something every set would refuse.=0A=
-+		 */=0A=
-+		props->dpll_props.phase_range.min =3D -1000000000; /* -1 ms in ps */=0A=
-+		props->dpll_props.phase_range.max =3D  1000000000; /* +1 ms in ps */=0A=
-+		/*=0A=
-+		 * The fine step is 30 ps, but requests are accepted at 1 ps=0A=
-+		 * resolution and rounded to the nearest achievable delay, so=0A=
-+		 * advertise the request granularity, not the hardware step.=0A=
-+		 */=0A=
-+		props->dpll_props.phase_gran =3D 1;=0A=
-+	}=0A=
-+=0A=
-+	/* Generate package label */=0A=
-+	sit9531x_prop_pin_package_label_set(sitdev, props, dir, index);=0A=
-+=0A=
-+	/*=0A=
-+	 * Both INTSYNC pins are internal to the chip and have no board-level=0A=
-+	 * wiring, so they take no properties from the firmware node.=0A=
-+	 */=0A=
-+	if (dir =3D=3D DPLL_PIN_DIRECTION_INPUT &&=0A=
-+	    (index =3D=3D SIT9531X_INTSYNC_PIN_ID ||=0A=
-+	     index =3D=3D SIT9531X_MAX_INPUTS))=0A=
-+		goto skip_fwnode_props;=0A=
-+	if (dir =3D=3D DPLL_PIN_DIRECTION_OUTPUT &&=0A=
-+	    index =3D=3D SIT9531X_INTSYNC_OUT_PIN_ID)=0A=
-+		goto skip_fwnode_props;=0A=
-+=0A=
-+	rc =3D sit9531x_prop_pin_fwnode_get(sitdev, props, dir, index);=0A=
++	mutex_lock(&sitdev->multiop_lock);=0A=
++	rc =3D sit9531x_input_prio_get(sitdev, sitdpll->id,=0A=
++				     sit9531x_input_hw_src(dpin->id), &slot);=0A=
++	mutex_unlock(&sitdev->multiop_lock);=0A=
 +	if (rc)=0A=
-+		goto skip_fwnode_props;=0A=
++		return rc;=0A=
 +=0A=
-+	/* Look for "label" property -> board label */=0A=
-+	fwnode_property_read_string(props->fwnode, "label",=0A=
-+				    &props->dpll_props.board_label);=0A=
++	dpin->prio =3D slot;=0A=
++	*prio =3D slot;=0A=
++	return 0;=0A=
++}=0A=
 +=0A=
-+	/* Look for "connection-type" property -> pin type enum */=0A=
-+	if (!fwnode_property_read_string(props->fwnode, "connection-type",=0A=
-+					 &type)) {=0A=
-+		if (!strcmp(type, "ext"))=0A=
-+			props->dpll_props.type =3D DPLL_PIN_TYPE_EXT;=0A=
-+		else if (!strcmp(type, "gnss"))=0A=
-+			props->dpll_props.type =3D DPLL_PIN_TYPE_GNSS;=0A=
-+		else if (!strcmp(type, "int"))=0A=
-+			props->dpll_props.type =3D DPLL_PIN_TYPE_INT_OSCILLATOR;=0A=
-+		else if (!strcmp(type, "synce"))=0A=
-+			props->dpll_props.type =3D DPLL_PIN_TYPE_SYNCE_ETH_PORT;=0A=
-+		else if (!strcmp(type, "mux"))=0A=
-+			props->dpll_props.type =3D DPLL_PIN_TYPE_MUX;=0A=
-+		else=0A=
-+			dev_warn(sitdev->dev,=0A=
-+				 "Unknown pin type '%s'\n", type);=0A=
++/*=0A=
++ * sit9531x_dpll_input_pin_prio_set - set input pin priority=0A=
++ *=0A=
++ * writes input priority table on Page 1 via=0A=
++ * core.c sit9531x_input_prio_set().  Forces holdover during update.=0A=
++ */=0A=
++static int=0A=
++sit9531x_dpll_input_pin_prio_set(const struct dpll_pin *pin, void *pin_pri=
+v,=0A=
++				 const struct dpll_device *dpll, void *dpll_priv,=0A=
++				 u32 prio, struct netlink_ext_ack *extack)=0A=
++{=0A=
++	struct dpll_pin *changed[SIT9531X_MAX_INPUTS + 1];=0A=
++	struct sit9531x_dpll_pin *sibling;=0A=
++	struct sit9531x_dpll_pin *dpin =3D pin_priv;=0A=
++	struct sit9531x_dpll *sitdpll =3D dpll_priv;=0A=
++	struct sit9531x_dev *sitdev =3D sitdpll->dev;=0A=
++	u8 changed_cnt =3D 0, hw_src, slot;=0A=
++	int get_rc, rc;=0A=
++=0A=
++	if (dpin->dir !=3D DPLL_PIN_DIRECTION_INPUT) {=0A=
++		NL_SET_ERR_MSG(extack, "Priority applies only to input pins");=0A=
++		return -EINVAL;=0A=
 +	}=0A=
 +=0A=
-+	props->esync_control =3D=0A=
-+		fwnode_property_read_bool(props->fwnode, "esync-control");=0A=
-+=0A=
-+	num_freqs =3D fwnode_property_count_u64(props->fwnode,=0A=
-+					      "supported-frequencies-hz");=0A=
-+	if (num_freqs <=3D 0) {=0A=
-+		num_freqs =3D 0;=0A=
-+		goto skip_fwnode_props;=0A=
++	if (prio >=3D SIT9531X_PRIO_MAX_SLOTS) {=0A=
++		NL_SET_ERR_MSG(extack, "Priority out of range (0-10)");=0A=
++		return -EINVAL;=0A=
 +	}=0A=
 +=0A=
-+	freqs =3D kcalloc(num_freqs, sizeof(*freqs), GFP_KERNEL);=0A=
-+	if (!freqs) {=0A=
-+		rc =3D -ENOMEM;=0A=
-+		goto err_alloc_freqs;=0A=
-+	}=0A=
++	mutex_lock(&sitdev->multiop_lock);=0A=
++	rc =3D sit9531x_input_prio_set(sitdev, sitdpll->id,=0A=
++				     sit9531x_input_hw_src(dpin->id),=0A=
++				     (u8)prio);=0A=
++	if (!rc) {=0A=
++		list_for_each_entry(sibling, &sitdpll->pins, list) {=0A=
++			if (!sit9531x_dpll_is_input_pin(sibling) ||=0A=
++			    sit9531x_dpll_is_xo_pin(sibling))=0A=
++				continue;=0A=
 +=0A=
-+	rc =3D fwnode_property_read_u64_array(props->fwnode,=0A=
-+					    "supported-frequencies-hz",=0A=
-+					    freqs, num_freqs);=0A=
-+	if (rc) {=0A=
-+		dev_warn(sitdev->dev,=0A=
-+			 "failed to parse supported-frequencies-hz for %s: %d\n",=0A=
-+			 props->package_label, rc);=0A=
-+		goto err_alloc_ranges;=0A=
-+	}=0A=
-+=0A=
-+	/*=0A=
-+	 * Seed the runtime ref->freq / out->freq with the first DT-listed=0A=
-+	 * supported frequency so the netlink frequency_get callback reports=0A=
-+	 * a sane initial value before any pin_set occurs.  DT lists the=0A=
-+	 * physically-wired reference frequency for each input pin and the=0A=
-+	 * default output frequency for each output pin.=0A=
-+	 */=0A=
-+	if (num_freqs > 0) {=0A=
-+		if (dir !=3D DPLL_PIN_DIRECTION_INPUT ||=0A=
-+		    index !=3D SIT9531X_MAX_INPUTS)=0A=
-+			curr_freq =3D freqs[0];=0A=
-+	}=0A=
-+=0A=
-+skip_fwnode_props:=0A=
-+	/* Neither INTSYNC pin carries a frequency attribute */=0A=
-+	if (dir =3D=3D DPLL_PIN_DIRECTION_INPUT &&=0A=
-+	    index =3D=3D SIT9531X_INTSYNC_PIN_ID)=0A=
-+		return props;=0A=
-+	if (dir =3D=3D DPLL_PIN_DIRECTION_OUTPUT &&=0A=
-+	    index =3D=3D SIT9531X_INTSYNC_OUT_PIN_ID)=0A=
-+		return props;=0A=
-+=0A=
-+	/*=0A=
-+	 * Advertise only concrete values from firmware plus current runtime=0A=
-+	 * value. For outputs without a firmware list, publish one wide range as=
++			hw_src =3D sit9531x_input_hw_src(sibling->id);=0A=
++			get_rc =3D sit9531x_input_prio_get(sitdev, sitdpll->id, hw_src, &slot);=
 =0A=
-+	 * an explicit fallback because those pins do support frequency_set.=0A=
-+	 */=0A=
-+	ranges =3D kcalloc(num_freqs + 2, sizeof(*ranges), GFP_KERNEL);=0A=
-+	if (!ranges) {=0A=
-+		rc =3D -ENOMEM;=0A=
-+		goto err_alloc_ranges;=0A=
++			if (get_rc)=0A=
++				continue;=0A=
++=0A=
++			if (sibling->prio =3D=3D slot)=0A=
++				continue;=0A=
++=0A=
++			sibling->prio =3D slot;=0A=
++			if (changed_cnt < ARRAY_SIZE(changed))=0A=
++				changed[changed_cnt++] =3D sibling->dpll_pin;=0A=
++		}=0A=
++	}=0A=
++	mutex_unlock(&sitdev->multiop_lock);=0A=
++=0A=
++	if (rc =3D=3D -EINVAL) {=0A=
++		NL_SET_ERR_MSG(extack,=0A=
++			       "Pin is not a reference of this DPLL; connect it first");=0A=
++		return rc;=0A=
++	}=0A=
++	if (rc) {=0A=
++		NL_SET_ERR_MSG(extack, "Failed to set input priority");=0A=
++		return rc;=0A=
 +	}=0A=
 +=0A=
-+	/*=0A=
-+	 * Publish the seeded rate only once the pin is certain to be built.=0A=
-+	 * The allocation above is the last thing that can fail, and a call=0A=
-+	 * that reports failure must not leave the device's cached rate=0A=
-+	 * changed behind it.=0A=
-+	 */=0A=
-+	if (curr_freq) {=0A=
-+		if (dir =3D=3D DPLL_PIN_DIRECTION_INPUT)=0A=
-+			sitdev->ref[index].freq =3D curr_freq;=0A=
-+		else=0A=
-+			sitdev->out[index].freq =3D curr_freq;=0A=
-+	}=0A=
++	while (changed_cnt--)=0A=
++		dpll_pin_change_ntf(changed[changed_cnt]);=0A=
 +=0A=
-+	j =3D 0;=0A=
-+=0A=
-+	/* Current frequency first, when known. */=0A=
-+	if (curr_freq)=0A=
-+		ranges[j++] =3D (struct dpll_pin_frequency)DPLL_PIN_FREQUENCY(curr_freq)=
-;=0A=
-+=0A=
-+	for (i =3D 0; i < num_freqs; i++) {=0A=
-+		struct dpll_pin_frequency freq =3D DPLL_PIN_FREQUENCY(freqs[i]);=0A=
-+=0A=
-+		if (freqs[i] =3D=3D curr_freq)=0A=
-+			continue;=0A=
-+		ranges[j++] =3D freq;=0A=
-+	}=0A=
-+=0A=
-+	if (dir =3D=3D DPLL_PIN_DIRECTION_OUTPUT && num_freqs =3D=3D 0) {=0A=
-+		ranges[j].min =3D 1;=0A=
-+		ranges[j].max =3D 1000000000ULL; /* 1 GHz */=0A=
-+		j++;=0A=
-+	}=0A=
-+=0A=
-+	if (j > 0) {=0A=
-+		props->dpll_props.freq_supported =3D ranges;=0A=
-+		props->dpll_props.freq_supported_num =3D j;=0A=
-+	} else {=0A=
-+		kfree(ranges);=0A=
-+		props->dpll_props.freq_supported =3D NULL;=0A=
-+		props->dpll_props.freq_supported_num =3D 0;=0A=
-+	}=0A=
-+=0A=
-+	kfree(freqs);=0A=
-+=0A=
-+	return props;=0A=
-+=0A=
-+err_alloc_ranges:=0A=
-+	kfree(freqs);=0A=
-+err_alloc_freqs:=0A=
-+	fwnode_handle_put(props->fwnode);=0A=
-+	kfree(props);=0A=
-+=0A=
-+	return ERR_PTR(rc);=0A=
++	return 0;=0A=
 +}=0A=
 +=0A=
-+/*=0A=
-+ * sit9531x_pin_props_put - release pin properties=0A=
-+ * @props:	pin properties to free=0A=
-+ */=0A=
-+void sit9531x_pin_props_put(struct sit9531x_pin_props *props)=0A=
-+{=0A=
-+	kfree(props->dpll_props.freq_supported);=0A=
-+=0A=
-+	if (props->fwnode)=0A=
-+		fwnode_handle_put(props->fwnode);=0A=
-+=0A=
-+	kfree(props);=0A=
-+}=0A=
-+=0A=
-+/*=0A=
-+ * sit9531x_prop_dpll_type_get - get DPLL channel type from firmware=0A=
-+ * @index:	DPLL channel index (0-3)=0A=
-+ *=0A=
-+ * Reads the "dpll-types" string array property from the firmware node=0A=
-+ * and returns the corresponding DPLL type enum.=0A=
-+ *=0A=
-+ * Return: DPLL type for the given channel (default: DPLL_TYPE_PPS)=0A=
-+ */=0A=
-+enum dpll_type=0A=
-+sit9531x_prop_dpll_type_get(struct sit9531x_dev *sitdev, u8 index)=0A=
-+{=0A=
-+	const char *types[SIT9531X_NUM_PLLS];=0A=
-+	int count;=0A=
-+=0A=
-+	count =3D device_property_read_string_array(sitdev->dev, "dpll-types",=0A=
-+						  types, ARRAY_SIZE(types));=0A=
-+=0A=
-+	if (index >=3D count)=0A=
-+		return DPLL_TYPE_PPS;=0A=
-+=0A=
-+	if (!strcmp(types[index], "pps"))=0A=
-+		return DPLL_TYPE_PPS;=0A=
-+	else if (!strcmp(types[index], "eec"))=0A=
-+		return DPLL_TYPE_EEC;=0A=
-+=0A=
-+	dev_warn(sitdev->dev, "Unknown DPLL type '%s', using default\n",=0A=
-+		 types[index]);=0A=
-+=0A=
-+	return DPLL_TYPE_PPS;=0A=
-+}=0A=
-diff --git a/drivers/dpll/sit9531x/prop.h b/drivers/dpll/sit9531x/prop.h=0A=
-new file mode 100644=0A=
-index 000000000000..f7f1c854b955=0A=
---- /dev/null=0A=
-+++ b/drivers/dpll/sit9531x/prop.h=0A=
-@@ -0,0 +1,39 @@=0A=
-+/* SPDX-License-Identifier: GPL-2.0 */=0A=
-+/*=0A=
-+ * SiTime SiT9531x firmware node property parsing=0A=
-+ *=0A=
-+ * Copyright (C) 2026 SiTime Corp.=0A=
-+ * Author: Ali Rouhi <arouhi@sitime.com>=0A=
-+ * Author: Oleg Zadorozhnyi <Oleg.Zadorozhnyi@devoxsoftware.com>=0A=
-+ */=0A=
-+=0A=
-+#ifndef _SIT9531X_PROP_H=0A=
-+#define _SIT9531X_PROP_H=0A=
-+=0A=
-+#include <linux/dpll.h>=0A=
-+#include <linux/fwnode.h>=0A=
-+=0A=
-+struct sit9531x_dev;=0A=
-+=0A=
-+/*=0A=
-+ * struct sit9531x_pin_props - pin properties from firmware=0A=
-+ * @fwnode:		firmware node handle (NULL if no DT node)=0A=
-+ * @dpll_props:		DPLL core pin properties=0A=
-+ * @package_label:	pin package label (e.g. "IN0", "OUT3")=0A=
-+ * @esync_control:	embedded sync is controllable=0A=
-+ */=0A=
-+struct sit9531x_pin_props {=0A=
-+	struct fwnode_handle		*fwnode;=0A=
-+	struct dpll_pin_properties	dpll_props;=0A=
-+	char				package_label[8];=0A=
-+	bool				esync_control;=0A=
-+};=0A=
-+=0A=
-+enum dpll_type sit9531x_prop_dpll_type_get(struct sit9531x_dev *sitdev,=0A=
-+					   u8 index);=0A=
-+struct sit9531x_pin_props *sit9531x_pin_props_get(struct sit9531x_dev *sit=
-dev,=0A=
-+						  enum dpll_pin_direction dir,=0A=
-+						  u8 index);=0A=
-+void sit9531x_pin_props_put(struct sit9531x_pin_props *props);=0A=
-+=0A=
-+#endif /* _SIT9531X_PROP_H */=0A=
+ static const struct dpll_pin_ops sit9531x_dpll_input_pin_ops =3D {=0A=
+ 	.direction_get		=3D sit9531x_dpll_input_pin_direction_get,=0A=
+ 	.state_on_dpll_get	=3D sit9531x_dpll_input_pin_state_on_dpll_get,=0A=
+ 	.state_on_dpll_set	=3D sit9531x_dpll_input_pin_state_on_dpll_set,=0A=
++	.prio_get		=3D sit9531x_dpll_input_pin_prio_get,=0A=
++	.prio_set		=3D sit9531x_dpll_input_pin_prio_set,=0A=
+ };=0A=
+ =0A=
+ /*=0A=
 -- =0A=
 2.39.2 (Apple Git-143)=0A=
 =0A=
