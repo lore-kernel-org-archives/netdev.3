@@ -1,26 +1,26 @@
-Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709C71A5BAE
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 06:56:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.169.211.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB098442FC2
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 06:58:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789455377; cv=none; b=cvXi6VJt3XVwvvtFjyET8IbR5NtGirRlZWqLiEhs7sr2OvPpFc2Tq07YcSchLuFTjwvg+2dQAr98TWkBJPG2F+7bJv9P5wBKyTMBvk7+WuFP1n8P9FNbix6mOS3OuPTnYoGhtrrS198ZJUvo5mc3tZDcuCx4ryWI0rzudUkagXc=
+	t=1789455529; cv=none; b=IOOyjGqV5Z0oBcNDPJPBDdjrbb9/2EcQZARY7Ups/hiOZS1rHHAH3XSR5FPZdW5WH3HYUDi22/6Kqk7gwnxDSxFMKiqW+oM0hNi1bLD0vCQXKXzzuU5QFSVKduJF1F/JyHpPIFsOf/a0FSv4T6X/AonxzmGLu9ZGlgAquZikH0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789455377; c=relaxed/simple;
+	s=arc-20240116; t=1789455529; c=relaxed/simple;
 	bh=4oNRG/3/xlCDrZh1r349EXj7/LLk+mKdMMx/Zf4qsQ0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MPoKBbjUHw7Ow8+aajsnodyy6d9O0oExpEBRMO+PmEvloO93ZkCqTeqIKXKAwJtVCJOEjWt4W8lO6Cb1wYedTJadFJgwHoMkGWhVr8ZcMSMxA2OVDP2XzKZOw+RdWegi+uPAUpQMGyRDvePQ8qNyqQVSo2ue8PRMo1R/eqO8fAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=18.169.211.239
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rnSUEpJBj6SP3S4oKVjgzHZ8MvrVh/B8swJvaNaNErVFM80SgyrN3EBji41kKwBBkpRSxarKKPeE1HKDGoI2SeIuXmLmGbcxCDjEFeVqp7/GpX7z3zuylwbo/YofzaWfJ5WLEAJDSCpmFbLH7XuwTtchyHFtZFlJSC5M7fzZgDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.92.39.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: zesmtpgz5t1789455293tc6a5c6d7
-X-QQ-Originating-IP: nFrFQVjY3xtgydLGZB0Ab/zUiFj+SO/HglpdZpanceo=
+X-QQ-mid: zesmtpgz4t1789455455tb813447d
+X-QQ-Originating-IP: E0O8eVPQcBGK4nyeP7u1A9FVuJCV/l0x13JjlIwWQRI=
 Received: from localhost.localdomain ( [122.233.172.177])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 15 Sep 2026 14:54:51 +0800 (CST)
+	id ; Tue, 15 Sep 2026 14:57:33 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 14826260696312970751
+X-BIZMAIL-ID: 16032365673336233826
 EX-QQ-RecipientCnt: 12
 From: Mengyuan Lou <mengyuanlou@net-swift.com>
 To: netdev@vger.kernel.org
@@ -35,9 +35,9 @@ Cc: jiawenwu@trustnetic.com,
 	jacob.e.keller@intel.com,
 	richardcochran@gmail.com,
 	Mengyuan Lou <mengyuanlou@net-swift.com>
-Subject: [PATCH net v5] net: Wangxun: protect ring accesses with RCU
-Date: Tue, 15 Sep 2026 14:54:47 +0800
-Message-Id: <20260915065447.4450-1-mengyuanlou@net-swift.com>
+Subject: [PATCH net v6] net: Wangxun: protect ring accesses with RCU
+Date: Tue, 15 Sep 2026 14:57:31 +0800
+Message-Id: <20260915065731.6007-1-mengyuanlou@net-swift.com>
 X-Mailer: git-send-email 2.30.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -48,24 +48,25 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpgz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
-X-QQ-XMAILINFO: MOpOMm42OY9Cm48SqYWGgZ7gL9fkgfYwcbbKVCuXEZNtIfyqtVdhAbTA
-	Jmn0Xwu/rUC1Ivyu1vNg70Y9mzBD64uZkGHHa16qce0WzeUSYKruPvAOFYv1g0AJPEUQ/3a
-	xcq048PKEFqR9T5Kyw65VQfF5xCQCFCuX/y5Sg/LA9hHWSiM4l2/wLRPw7HdAcobWX8BdyT
-	dno9bK1HwUBm6aftKDAeDYizcR86XjA4l/3IYppXSPi5Y0HbHXcuMEi50uGaMCRTsQy+Tev
-	wIgid0182Nzd+1/FxhqrrOEThifDPfbx0S+wAdS1KwIn5RlXxWrcC7oXcdGR/I3jZaaPq0I
-	MKc5ZfMyPGmpqsnuuQePqHdjnnnIg8slsDK9VwIE9klNQVvVZgKT0JGeNe9S8ukLg8aEx7h
-	IYJi3wlOrpoNWTXMEcPs3Typ3DsbJl398rvJfPvhDvvXowmrFuVGK+SryoCbEkMJiHUUm/G
-	foh3ktpZmaNWyIQxcAgfHdAzLhKUBTJi6mezPvbYquj+vo7A7smtmkeYnipBw2Bzu44sNGI
-	ArmQJFKhuTO4H8AuV6DCdFQO5pG2OIqlyEsjwASlErArACkNcDjWz0NEU3sUR2OUvCu2zbv
-	Nl750WxHGPOcBW8HkTH02+b4RsYxLCXFV3t+BAnIfpMgnj6s2Yt8qa73zk+AGj/Cqne7Eeh
-	Z7MPJ3E43DVHI8LkNNeA0M/UplTkdrjp3pjTFjArw2iydofSoukBzpbN1ruI318mXO2E2zH
-	RubEk74HJav+XcDVIP+aQ2j5O9kQlXpQwpTA7Be1oA1lDpgxT6D90jyKvt7K78TR7yKqpvl
-	tyodh135Wo3cMKNMjceANRCTm9KnGITH5la7ZyamlEkiengC14uVBorwwodKTWgt0BMkVXx
-	avOKADgWpceW/VFBj1Y+W7hUDZFI8Hj8WXgAy0MWVlDwOF11x7UQlofTtdaZiS9M1qHpDzc
-	QrgqpEmVA3VdSac7a3mkNhrG6cBJDPt02lIPVPsysHdOjaD86hx8E59vT5Cwr+C3hgJsUiu
-	AYiS+oniqaZoapkll5ULRkcUTxD1Ho7YVDhKuU2CuBkfGnxteoBU2xycGOxweNqxttkKop5
-	h6jUn/4QZ/TYJ6H1Wz9LQsEK/TcLEvJXo49HYuFnSZ5smQh2sguKlc=
-X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+X-QQ-XMAILINFO: MH7kuE/Bm6x6wJw0WbqsamItSRF6E4EsxddSoxozKUuqyfoCOeezs5BI
+	0UASg1BHxUu78rJn7MacvS2sYnGprZaMXQo1BQeu5EnRkh0bWdKtSHXncrzBiaO255uQIBr
+	A7xoO36nvlTI8fONJjg+wIQqBdkcfNlmFW/xJaLXGjVSWUHGeVO9n6kcp31i+QVFB5CpwVN
+	O6JL2uW1+I/9hmoNYOHeoDMRHJMRM8eEkQNnAzScJ5RtRcvd5M2248t6iydib/glTcIKfYe
+	PgBxe6NhbSKEt1ORdn5rYb1nFIhawc3k6QHdjwu/ZmzLduIaiMiulKDxj1q18hxwF2e2XiU
+	VNxFUZEVz8zju94FIQhYJAm2lpNhMVUy2ZwqPq6o4F+YhcGNPH7qy0x/A2zDlU1OaijAZd0
+	r70w5WLD+WBxUIUK412oLrV+EHBbZIAul/1idpiGNYUBkiZvxmKuVbZENpe+//q/+uP82zs
+	xp7AAmTEuXrDH6qAJxjZUSSubOIL4+YPXf5K6JMO4zXh4m0njAID08kkkBCiHsyti2tr4b1
+	7SHHU/SyXAUuJI2bR0yMmk/yE818jl50xp2ivUGds3AxOZupXy1kbNA3AbZdS06oBZMX19e
+	KWMoLg6kHtgY1iHx0Oh6OEb3jRzI6ZwUheM2Xi39ZyymnSBEE+cKoSUfvji/njKkp2Dr32s
+	PCictp+56e1l4oll8FoRKLv9SIczvBq5mK8PVmFOkxOGWykO8ff52I2YOOnQ8WlB1Qhzg7b
+	32AoDD0IC2+SA0LndxI5Asm8ksPR5BfaYmJg0iEzzaMwW7epOh3qZVoaHBuHgl0yPHn+f/f
+	6aJSatyGGrSbTOFjxTlxlYgXCGnBAgTgGJnKT1nnmDKcJR73C5pnpnh/Buf7bbHSy5n/vOc
+	L60bcn7CQ8ar1WL3bXQLCIejyfnQPLc0QniH1knRTFFNUkOztZNQ5/NTzasXeseIrzy4N6+
+	EIENjaWWkd1VLKmrZTz4V0OJHL58v52XIWNs23hN2g4ET/aDGADaD/REj2eGOQ6O9UU+BO5
+	CE/aYKp+U3kkC5jHQU4ZV1S23kVOOe8XQPZ/58cFVsB5bmLzmyHK2fd3jHAUWUyXAnOWvcv
+	mNAPMNVIqvTTDvFIqMcelgRvW+I7eKke88blyymwz2RCFTvfSqQOxsmhVhAau33KudcH6ej
+	fmS8pBNzTblOMuDyhyzhGKvdoA==
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
 X-QQ-RECHKSPAM: 0
 
 In the Wangxun driver family, ring pointers in wx->rx_ring[] and
