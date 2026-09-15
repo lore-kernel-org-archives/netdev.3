@@ -1,132 +1,233 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012031.outbound.protection.outlook.com [52.101.53.31])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D7842E404
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 17:52:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA9143D4EC;
+	Tue, 15 Sep 2026 17:54:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.31
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789494729; cv=pass; b=U7F/9GQDy616fJpIXtKBoJywhV97db++TtMqWxJjc+c0Hv8CqqeDA9qRyUR1JzZxuuMY4nW821m+bDN334UWGWxRAAYdd+untw0l8Gl9QIBk9/XGbqByC25A2lAtoDwSexaWnrlgeyRzvQCVN+hJnC46BDonMGOYUKExsTknOOo=
+	t=1789494862; cv=fail; b=By2YxRQDYgA29F/269TAlPJ0lXa557jL6Yl9pa5csZRSATn9kZPIm6jkkokhQeB8IPWgW+r3Uv2bDLczsC+AFwhQqPoCWtky8VFLx9nCMzFNnwuPWqjEJR/m0TaW1nhpZk3w7vXdvnpjB4kJ6GOnbq4m8ih3T1VlQ+9fabM8q/A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789494729; c=relaxed/simple;
-	bh=+4G5uXJmB7HF3o1L37WqbjganRxVa3Gn0saA7lTxNiM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Wl7TMPFlJ8PPi2roC3Rx87K2x2ULHTKuVTh1/2F7eAdtQzKN91MOYGVEI6+ciWfY0qSMV8zPH0LB0SGf6FJYrCdCa7br8g10LF84WSzG6QajOQtxLtyLvezMXiU+F1buEcQWd+wXEhJH8Yu1FsOGMxTywxYniILVDPZDD1kY7LY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WPgx9Wh6; arc=pass smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1789494862; c=relaxed/simple;
+	bh=cd2Zh+siKUw4iFkh0IUFRrLGbHIg9pK2B7vQ4SBBDfs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=JbWJXq6dIz8m1vnA9fYBgAa3nCubv8Q95LvADrP+cTx2hYbbvBpyW4UZz/E1X4SplC1OpLCKurLckyK56HnTsLZWjG2Lu2aBxYPZ/03pfkTn7o7JbbaEll7GoKK1abQQI+GO7U0mnE8+46dUxO7iZpt3auUxKrhNGr+KgZYvsE4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=rokOR0Fm; arc=fail smtp.client-ip=52.101.53.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WPgx9Wh6"
-Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2db425c9050so12065ad.0
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 10:52:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789494727; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ShLtCyMJbSt96KGg+BaemfJoYvGhSENSgzzrGx51tlJs6rbOOcuO2TB29fTnwBwOPS
-         NaiECJN4eH2kd8QxGnMb6IYeMF/1She3BlRkmJGh8egwpGRIzZb1C+jJnyZ6OdaBBpRa
-         edJxBtAj2IdiFdguU+8bISeyH98JPZSY35374OrDxdLp05FnQuYnCRqBmXk9TTkPfy8H
-         VwFp58D3N78iTJzf7XDVgvCxIlWbnn+3D2xDBAnv9qwa9bP4IKSZ8FLT+C5CPk8zKwTW
-         2kuFTWheLf9TFBvGqGp9c55b92iX/taRxvw/9WefvbDWrlBz1tAzE9rkrYddQazFmsz9
-         J7lA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+4G5uXJmB7HF3o1L37WqbjganRxVa3Gn0saA7lTxNiM=;
-        fh=XgpFsJpdYynQrvBJebnzg1hPx6bzToWHg1E/dGSfdMw=;
-        b=Ks4qDE7qh4JI5bpuNdUKkE0qx0a/J9tcrSzUDuQiusZWFhxgfrJ19iSJ1/pOElH3l+
-         H7fr3YyhnkMP+tXiZJWGco8YmV6j9AUb7rEvgcLu5FtMh9dPZOasQXnd2dD6VhbwO0rF
-         EADvYLU48fgiroHcrgOiqiAxBNVRvW4TsP2BdVWk/E+e/VcmWruvnr+V4v/3A2FP9nvu
-         me0+BgOYNwpfhYS38omlHwzDfz3pGkxj59nCN74a2QH0u6CLc79dc0hhXszudhYgCPgK
-         Ec7+bU6abgHwQ1Ut+AFllscLwoO6plFPmi2tRfJkwFHTget8DjmCW/3/bRj61L8rpns2
-         j+gw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789494727; x=1790099527; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+4G5uXJmB7HF3o1L37WqbjganRxVa3Gn0saA7lTxNiM=;
-        b=WPgx9Wh6g8ehXMOaZf8ZSNtevHb9fzr3lXk5INKsJirqC99dpiARLSwTsIwHA4pbMW
-         JbWx8MvBxDUFu6opqA60njTwuSet+XjH0Wga4OKXeEmVhOXoy61UWc3rqiL6EU8/l428
-         EjMY1UqvowxmFEZiD+cpXVE0I3gM0Ssco82ZH8FSIs0h6jzSdSLoGG2b/9Ga+W+7Aup7
-         R3Y2jKX2VRyqaVjVjF8po02JGQLWYioBTM31SQGX//CGOHsZjgwuKy0KaaC3tSzQflwo
-         ISJi8sLOMT0xayOGlmIx3TnuUJAs8/tTEps0xY78QDJPw7a+XDrg4k1OSruo0M4Rr9uE
-         eRpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789494727; x=1790099527;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+4G5uXJmB7HF3o1L37WqbjganRxVa3Gn0saA7lTxNiM=;
-        b=eJKiKkEAnL5CzeMC7U1gjZu40hz4nbYR0BXX1psMrNg0K5dZPLBFMXkBjvyUNrBn4+
-         GXpH6wkoD65MtdbmgSUofD1XvvG1JfJfEUzFjoVXqjjE6tskyvJyRLbpqpHCU1EovpsH
-         4yBgin221HphztUoNfw8M4sQiPfgJ4/CUxkPePoMXxrkPXe/6OyVp2+U2bF3B/ZIOjp8
-         5tHk9orxmGqWR19981pZVJ44XF4QjZsLVzQrXiediaVUNJdLlZAxlpiI/GrJUSD26P8S
-         WYJM8GEPVDn+LT4JPnkYbWSjha0fDk9tGBOYNVLsE8C64eoX1I/eojZ2ClGd4Is5MFcg
-         mImA==
-X-Forwarded-Encrypted: i=1; AKwUvBx/0yuxiF/DKSjU5gtg6RDxSMdGqfkeTSxxUKSV41PfeSJmAqlfZV7/PxW1D602AhoszB2I9UQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++kScyOJ9f99kz6iArFbFyu2CcsUMmVfysWnnNhI2fP+hs3oTwX9
-	5rakQ7UKGGp2lHfe3Fxmf4cUfdfUg9hpNxo4fzvg+rf4CKmlyUo2vHhbsLgAyCaPxQvQOxXpdz9
-	g7LsWWhu9AyIEckpK9PDNoJ5Sc/rKJNbLtoTsWfYr
-X-Gm-Gg: AYBFou3KqGJhcgF3zC+rZj7WAVtiRMLfgzczoM1gkw9UmMw63mTyQfxnIJc624IVwXQ
-	GqtIiM55kEnAprpImqOyEdt7VPtfDJ58+B4okLZYBLk3SXa/OZ31HhZhihJZaYKIBJB/5YTzBMZ
-	KCSmj5nmFk4pZfsnlcz9Wo/aI4KZUFnUTzjfWadK7+qu4Y0IlsxIdG97eyiNH9dWJW8m/0ZO4Ne
-	IIvz0ysotnkl4L1Q/ZRCL1cKruz3N8weSpACmbvq2EpSVrudKju0+9uJyFZnyieoR2GAFEtls90
-	1ASlSCDKBJQpsSXNlH0at66/E4tWgtc5Id1d1qS7bQ9zNw21whdvVdT/y003G8Bht27b5ZTPcYP
-	x1Ka6EB25m4tTHOLDITQMFlGWwetXJtZDa1xFNajj9NPGeb6BPMc=
-X-Received: by 2002:a17:902:f612:b0:2dd:5363:31ec with SMTP id
- d9443c01a7336-2dd89c0c38amr177395ad.14.1789494726332; Tue, 15 Sep 2026
- 10:52:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="rokOR0Fm"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=J27yW8dCaK8nRSGWdAQxwf7fDTQ1sMaz8cwQdrmrCe7N0pjRt6nbIRan0OBhvKHY8c0wcAY+K+s7438/q4nRfazo0z0a2mDnY/AaWvxuwZ/FSy3lTDnjcBI02qc0jqXRSJ9vB4b2APnJy8OXbhrJDk8eL5qhECo26tcMe4bZDx/Z/8vBT+d4OdCy4bPTOIBv/Lo+/SqD0FdKvAxwOouyCgRxTip/HmUtkHZs8ELVOjWl9btAY6Hpvq+TBtwvuLDlJpbL9BHbv1cYOsneOcHsXpMhipPVzZJHkV4bpAXvTJKx0tsq/lgwwIL/L6LrTjqcbR+Ke4SNNpaMSX8hJM8H0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=R107t7PobhUoYxLHdvWqugZBl+ZCwO+vJk5COSXsxLM=;
+ b=DUZbxi2/aMXxEruIjTO0ALtG28ylnePw6qym0hVK0PRht9OvJ6uUWSGJCmuvRQ3qkbsoQU5dR0BBd55OYSyM5CUxzgPbqECz4yqsybYMnU0Yh9+cduLTReprj4Mp5yDq/7JnF0sWpmENtZm5OnKURCIsfRbujT/GpbifYzwcdIF7CEP+wlHURVQpMkAxWYTq9k+EwB6QkSTRDXqNtgWlTxzd11I9jEGxiXWtGufUaEbl4mDWJzw1sJ4to+Q3blJVJ+j0oHMW4wvXQCS+CVxz8OZ0b6QVGft2g2sU/AZAc/MEbr7AZOxrx0o06TvTHxqgulR9YUGVOD9oFzCmC7rW+A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=R107t7PobhUoYxLHdvWqugZBl+ZCwO+vJk5COSXsxLM=;
+ b=rokOR0FmpOt4c4BAVlXN+QL1R4q7gT5jsM26oaK5Yjs7mcJptxmYbcb49ingBrY7YedC+KL5Q1V206coQRcyIqgW47LjGBt+a6uSnVokZtYH0ldPQ2XDPjJwWL5reHDCw6NtuzJ3cm7obY0U/UCv7yq0ye3re/jSQUZb6NPMO4BUX9aubIX8kGA8acT5yu51WWDEYcMv9hNeUqtE04EoIHWTTp7uA/cGafAhDkoLTnqqVaNXTCarKmZkzzAdQS5Yk9NGuCHUPyd295XKm6NS+dNgjnCpvv+fsRZa9wtmx6HZHkA5/8H9NJ0ZMXd73QHsIcHfFCDcAjaMFkZVlJFitA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by DS5PPFBB8C78349.namprd12.prod.outlook.com (2603:10b6:f:fc00::660) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Tue, 15 Sep
+ 2026 17:54:12 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0406.007; Tue, 15 Sep 2026
+ 17:54:12 +0000
+Date: Tue, 15 Sep 2026 20:53:54 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Linkui Xiao <xiaolinkui@126.com>
+Cc: dsahern@kernel.org, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Linkui Xiao <xiaolinkui@kylinos.cn>
+Subject: Re: [PATCH net v2] ipv4: fib: fix data-race and stale genid check
+ around nh->nh_saddr
+Message-ID: <20260915175354.GA805835@shredder>
+References: <20260915071503.465875-1-xiaolinkui@126.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260915071503.465875-1-xiaolinkui@126.com>
+X-ClientProxiedBy: FR0P281CA0233.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:b2::6) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
-In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
-From: Jann Horn <jannh@google.com>
-Date: Tue, 15 Sep 2026 19:51:27 +0200
-X-Gm-Features: AcwNN1Vhgv53PI2-XyXtJBbVzCNkGiiWjtvOE2b-8zHim7-UybJ3H2xniPj1VUE
-Message-ID: <CAG48ez1RsdT=O=-0city3vjgWhDvY424KtTmrCJntWy5ds3HBQ@mail.gmail.com>
-Subject: Re: [PATCH RFC POC 00/50] file: handle files on syscall exit
-To: Christian Brauner <brauner@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Jan Kara <jack@suse.cz>, Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Oleg Nesterov <oleg@redhat.com>, linux-alpha@vger.kernel.org, 
-	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
-	linux-um@lists.infradead.org, Jens Axboe <axboe@kernel.dk>, io-uring@vger.kernel.org, 
-	netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-gpio@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, bpf@vger.kernel.org, 
-	David Airlie <airlied@redhat.com>, virtualization@lists.linux.dev, kvm@vger.kernel.org, 
-	kexec@lists.infradead.org, linux-hyperv@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|DS5PPFBB8C78349:EE_
+X-MS-Office365-Filtering-Correlation-Id: 86e9552a-50b1-4855-6f82-08df13525973
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|1800799024|11063799006|4133799003|10067099003|22082099003|18002099003|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	WIpD0BU5Q7zZRx9b9ZnDtseUy6sEkNiCa9WqJ4kd/pa/XkiOul/zbcfuh4z0JKiJfatIZ/STchn0DLAm0gBOM3XHajyjNWMk11q69WBCLL9JfRehQnRrY2l4+GHFZeNxLtdrrMA5XSt4//0NdcgW/yMXh4C9GHbfsHK37Ort6cwu8a8VJieRl3zLCUSy8pu1zWe5Uq14FYY9foR+cLGphP8VJ2kVajKya1YUacOyOOE7q3moS0HBYlgkfQFsJ7WAnAHppuBEFXIvLXXqB8VuVr9F2M39nYwj9NT1FVcbqh3lrlDiH4f5o79qJLQC1XOXhXhxF2B5KaFszpJXD0/8Ex+Pd0lr9K77a3EaPD+Xo+e9du/AKDzpWidk0oY/X/v/nEpg/fWBe1+P1Y5USuS4XI1rg6X3b59SZFRB27Eg/2/DekYl+vDHUhjho4gojm+B4zEHKD7n1ZPgDw3b+oxn/Rt9+v7Ba5HlB9i5ZqOcSolCf7e9OhGdF3PB7FvSqB8AQNc80DqqxlovraM72Py3lu6RyiZud0r/EmWlweI9T74vSVaaycIC9nxCCz5GwxC2l3+Wjf5IQGD7utmfMwD5YsFrIVWTV5pq1Y5OXzznzkMVKUZg2yIt3O7HCKzXXjYW1KimC3Nwk7g6gvWBvXmLzPVBrfkZCdkZClLbBawmUyk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(1800799024)(11063799006)(4133799003)(10067099003)(22082099003)(18002099003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?BpdLlGXWhR+YT7+P7uSdWAQoScJEb3H7KdaC6qMAt3oxEZ/TSAvDQiPspMYl?=
+ =?us-ascii?Q?dHPQVCsKXGeg1PaHalxnjtakviK4Mp75sv0LaM+4OR0RrNwKnIv1ZnVHMGv3?=
+ =?us-ascii?Q?g9mP6xW7JYDvuhDe4eZHdFi3Y1mwHiqYN1pEPDeLlhOPHHa9HdByWNi8Wtis?=
+ =?us-ascii?Q?WT2+W+njA9SBTSQ/XDSQ8B797Dt7VBpay2QAyyCbCgPR5qi6udB3zw+t3R4s?=
+ =?us-ascii?Q?F5qH0NWO5daRbi5oaTt7PgMe/S94rYXU9lmw6UVHFuTGtkV9ocLFIeVl1ktp?=
+ =?us-ascii?Q?mvXHj3VOfLfq1usiGFbvsQYtKqEhgVb6B2XqIxM8ORPF+7dXMN0OTs3UvloZ?=
+ =?us-ascii?Q?tO2xFtbYKox+sHDc5LZynzoZI7JIn2uXUn6+mYhcu1Yz2RPbzadPEJBvOvAa?=
+ =?us-ascii?Q?aIxONxpuZgkkd7w21p6ZFRfiC2ifKZ6VFLVpDHE8x0pvT8Dpk3C2tzLVcK9J?=
+ =?us-ascii?Q?+gw+0gDk+tbzZXQ7gWkYdg6g+xWMut8oBpgjvZKkw9ZdHm7nf3aibhJ8DoZd?=
+ =?us-ascii?Q?NAdjVwS21vWk+14KyyrTh0J8mxXRVmT1rtzIcSTlOvVhlk5BfkO4VXxoFmil?=
+ =?us-ascii?Q?Ok44FdDkHNFBTXiwHnSv5aXkb6tzcFLX9wSq2kofuUaGG+I5i70XjlT7MIIK?=
+ =?us-ascii?Q?DXuMeH0rXE2UzJg0J+ENHz3ZXdQ/7+Khj2OcJy30X1P+qQxFjorcPviwvWx2?=
+ =?us-ascii?Q?3wsogNUcb8YDXTBQWqlB6zeia5eZhAtHCsVYhoO+Z7vgITssA9hSMuMLgx6w?=
+ =?us-ascii?Q?xHThtbnRM/B4WOkQjVdl2W+OQVFnAbeTHs6y29tPTJ8GVH60IvpV0Zla6OKR?=
+ =?us-ascii?Q?IjcZgxtpzu9Dca+AzFfyX+1uwocK7Y0DagW3WseCBIuQfjy4wfuwd+pqnaVu?=
+ =?us-ascii?Q?ni4xDrWAaEh7xrApbkHJ+lc+KUGuUaCPY/JDsrH88hUjr7dZM2JMnBa3wpE0?=
+ =?us-ascii?Q?vgEJ6r1fx65zaTAiQtSxMB7TRPZw/m5+y6acQiIJpRSI0QI+WyEfspE0Bcfb?=
+ =?us-ascii?Q?48sCkMG2qUdjTOJHhwLBiv8bEFiY+6sSLK+HPGygSKaikp+ApNlrgq7cHh9y?=
+ =?us-ascii?Q?3KmwDBl1FhSieOKzziEFQtWGG6HaofIf0BCSvriwce7ZkODs7SVOIGkIoPqF?=
+ =?us-ascii?Q?pq6zDQxExq6edSQhh4+sGaBvFOCSWeA8AKW+rfxSGRixfCOzxC1yVdHnUcAl?=
+ =?us-ascii?Q?fP4yDOSecASV5kAWnu763dtAmwCKhPeAb1Az4ga2hEQQSimbtaKfU/KbgXUE?=
+ =?us-ascii?Q?wXSDSbOObYL3yIpZSRw+V3nPWA4N+CVjxR5G+ZyA4zzIS6JDvJSm7/ZpOgnQ?=
+ =?us-ascii?Q?xr1uQHst3W8iEIvpgxvrg6GnsgLPYTlZQ+mI0P0SRwTfkiO0cLidLkyJkcAF?=
+ =?us-ascii?Q?0Jag22qSnco6LRz65g3ww2zO02z3Xpjul8eWj1/yAaIM1lmp2k2CGK10vdz7?=
+ =?us-ascii?Q?ApPT/Ema2SmyF0XjbEXAczhprZdirfZDHUMp0pwGFU9P/q8RU+mqxFyKyFSG?=
+ =?us-ascii?Q?NCoeIQikqbmYCzIDNBly2VDR6M6pJtbz6KPQ7NVvBjWutzBGFRF0+Xo9fqhL?=
+ =?us-ascii?Q?B/+EOKPZ8y3UXLoUEi46JX22FurdQdMO5z9CKQC7/iVkkkK+qWrTgJ99V8ep?=
+ =?us-ascii?Q?D+S90FfoUDLbb8tbAHY2tteyfGIM95BfhyhVT6ND5HSbFEbykTrKgYq77vuH?=
+ =?us-ascii?Q?fYXihXUhNceqwyFUZi/0M7Htf3pbU/EKw+BXs9Uoi092uxZtTWqZcgUPieIq?=
+ =?us-ascii?Q?CIuKCw7QNg=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 86e9552a-50b1-4855-6f82-08df13525973
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2026 17:54:12.0387
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: b3FjPBPNqKb9JBa9r9x4D4oxIYlsRdh3uM47sTdf7LnpjmXe47hPQqTMeoiwqjnB4xiHI6EO7jFbX20xowOKSw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPFBB8C78349
 
-On Tue, Sep 15, 2026 at 1:31=E2=80=AFPM Christian Brauner <brauner@kernel.o=
-rg> wrote:
-> TL;DR, this lets arch code handle fd install and cleanup. fd_prepare()
-> allocates a descriptor like get_unused_fd_flags() does and records it in
-> a slot on the task. fd_stage() attaches the file to that slot and
-> returns the number.
+On Tue, Sep 15, 2026 at 03:15:03PM +0800, Linkui Xiao wrote:
+> From: Linkui Xiao <xiaolinkui@kylinos.cn>
+> 
+> fib_select_multipath() compares nexthop_nh->nh_saddr against the flow
+> source address with no lock held, while fib_info_update_nhc_saddr()
+> stores a new value from another CPU as soon as the preferred source
+> address of the egress device changes.
+> 
+> Commit 195374d89368 ("ipv4: fib: annotate races around nh->nh_saddr_genid
+> and nh->nh_saddr") added WRITE_ONCE() on the store side and READ_ONCE()
+> in fib_result_prefsrc() after syzbot reported
+> 
+> 	BUG: KCSAN: data-race in fib_select_path / fib_select_path
+> 
+> but it only covered that reader. fib_select_multipath(), reached from
+> fib_select_path(), is a second lockless reader of nh->nh_saddr and was
+> left bare.
+> 
+> Moreover, nh_saddr is only meaningful when nh_saddr_genid matches
+> dev_addr_genid, as established by 195374d89368. fib_select_multipath()
 
-I'm not really a fan but I feel like if you want to do this, you
-should be using task_work so you don't have to touch the entry/exit
-paths directly? (And if task_work is too inefficient somehow, you
-could tinker with the task_work implementation.)
+It's established by commit 436c3b66ec98 ("ipv4: Invalidate nexthop cache
+nh_saddr more correctly.")
 
-> When the syscall returns success the exit path installs every staged
-> file. When it returns an error it drops the descriptors and the files.
+> skips that validation, so it can score a nexthop using a stale source
+> address and skew the ECMP selection.
+> 
+> Annotate both reads with READ_ONCE() and add the missing genid check,
+> mirroring fib_result_prefsrc().
+> 
+> Fixes: 32607a332cfe ("ipv4: prefer multipath nexthop that matches source address")
+> Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+> ---
+> V1: https://lore.kernel.org/all/CANn89iJhFL2LNQCXTANQAx8B1GVdGTJgrDwPTZOjbH8k1ygtsg@mail.gmail.com/
+> 
+> V2:
+> - point Fixes: at 32607a332cfe, which introduced the bare reader
+> - add the missing genid check as suggested by Eric Dumazet
+> 
+>  net/ipv4/fib_semantics.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+> index 7a362f2e2c2b..e2bfc11aea09 100644
+> --- a/net/ipv4/fib_semantics.c
+> +++ b/net/ipv4/fib_semantics.c
+> @@ -2184,6 +2184,7 @@ void fib_select_multipath(struct fib_result *res, int hash,
+>  	bool use_neigh;
+>  	int score = -1;
+>  	__be32 saddr;
+> +	int genid;
+>  
+>  	if (unlikely(res->fi->nh)) {
+>  		nexthop_path_fib_result(res, hash);
+> @@ -2192,6 +2193,7 @@ void fib_select_multipath(struct fib_result *res, int hash,
+>  
+>  	use_neigh = READ_ONCE(net->ipv4.sysctl_fib_multipath_use_neigh);
+>  	saddr = fl4 ? fl4->saddr : 0;
+> +	genid = saddr ? atomic_read(&net->ipv4.dev_addr_genid) : 0;
+>  
+>  	change_nexthops(fi) {
+>  		int nh_upper_bound, nh_score = 0;
+> @@ -2204,7 +2206,9 @@ void fib_select_multipath(struct fib_result *res, int hash,
+>  		    (use_neigh && !fib_good_nh(nexthop_nh)))
+>  			continue;
+>  
+> -		if (saddr && nexthop_nh->nh_saddr == saddr)
+> +		if (saddr &&
+> +		    READ_ONCE(nexthop_nh->nh_saddr_genid) == genid &&
+> +		    READ_ONCE(nexthop_nh->nh_saddr) == saddr)
+>  			nh_score += 2;
+>  		if (hash <= nh_upper_bound)
+>  			nh_score++;
 
-Is this mainly about stuff like "we installed a file descriptor and
-then the following put_user() failed"? Because if so, I think a nicer
-fix would be to have a policy of "if userspace provides unwritable
-memory to a syscall, just keep going and pretend the access worked",
-and maybe have a sysctl that kills the process when this happens to
-emphasize that userspace should not be doing this.
+The cached generation ID can remain stale for a long time and during
+this time we will silently downgrade the nexthop selection to be hash
+based. We need to refresh it in case there is a mismatch. Something
+like:
+
+diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+index e2bfc11aea09..5c9021ea3a79 100644
+--- a/net/ipv4/fib_semantics.c
++++ b/net/ipv4/fib_semantics.c
+@@ -2176,6 +2176,15 @@ static bool fib_good_nh(const struct fib_nh *nh)
+ 	return !!(state & NUD_VALID);
+ }
+ 
++static __be32 fib_nh_saddr(struct net *net, const struct fib_info *fi,
++			   struct fib_nh *nh, int genid)
++{
++	if (READ_ONCE(nh->nh_saddr_genid) == genid)
++		return READ_ONCE(nh->nh_saddr);
++
++	return fib_info_update_nhc_saddr(net, &nh->nh_common, fi->fib_scope);
++}
++
+ void fib_select_multipath(struct fib_result *res, int hash,
+ 			  const struct flowi4 *fl4)
+ {
+@@ -2206,9 +2215,7 @@ void fib_select_multipath(struct fib_result *res, int hash,
+ 		    (use_neigh && !fib_good_nh(nexthop_nh)))
+ 			continue;
+ 
+-		if (saddr &&
+-		    READ_ONCE(nexthop_nh->nh_saddr_genid) == genid &&
+-		    READ_ONCE(nexthop_nh->nh_saddr) == saddr)
++		if (saddr && fib_nh_saddr(net, fi, nexthop_nh, genid) == saddr)
+ 			nh_score += 2;
+ 		if (hash <= nh_upper_bound)
+ 			nh_score++;
+
