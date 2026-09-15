@@ -1,105 +1,134 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C832A488213
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 12:26:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789475221; cv=none; b=nl6dW9bY/+yj/vcPEHLjdw7KT+4e2FJwmLUVGDOOuRijbg+PVyEerfdkhcATGeJSkMMIkQkM2yym0r+/+KbMUBfj6r3OF2YYye8mnPwi0G4EllFhWl0TdxN5ditUwv2NMKTZQZi6HIPROjaHYQYS4BGd5p7hmCgUYbACvbCTcGA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789475221; c=relaxed/simple;
-	bh=TwEBITxsjqDNfr67b1FnkWbtZJvna7apEgcotdHSFX0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M4ianhBYiciSOI/KXi7XvO9MeLZbxeGKCXgiD75htRyg50rQGuNzGBWJ9RLYX60HqCTSmnYjopH954X6VmXuUYmoljx4dYmVIwS49MWjRYIPNuVrMyu8mqfQVr85+NlBCplad1ApB/tpbAvc2lsEWswUOfyA4yu+gPsbKXVNhD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DBkHkjjm; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDE43C0633
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 12:28:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789475338; cv=pass; b=N+lKYmIR5mjlnjU4LtwRCDwoljazrFYkS1du4ylcYLHUfvubx2Tu9DhVCzRgfoedDsI91c4HQ3fYorFMM14qMTngzgceiJPoeSRiOqJRNEoRk9AWC2TZCjMMs9oUdC31Uq6Xp9rJPKnmNd6zT8e6sJDDv9O3n0BWuojU/G4IJwM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789475338; c=relaxed/simple;
+	bh=vQqJaaExSCmg2mcEKdaCpU5otXtQE5qipBcvetgfzS4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=S6INlOYaugzegFNo91LpcH5qAxbrsIctKr/dZDRnMugYyx7zJ5GrFqvzZboHtHwLNh61VRYncevbhO/QInEO6HTzs1ykiBRqipTi0YAV0ZMG31vWfszhFsvC6POXUQH2Ndoc3iOfG8sc2vpe/rJERj2i7m/bZZxk5Gy9qY3lp8c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=N2zNSned; arc=pass smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DBkHkjjm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789475218;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=owXpxkdaiz3FjoIP3af9pZnf5S2SeMbdOA3eIgSOhpI=;
-	b=DBkHkjjmhXUEHxovENqFkit+yc8v3ZSjIerXoWtNfbzfPCyi3YN3PE1nk6ceHRERJ1lNIy
-	ijLEA/58lBGvtk0+TzYykJc13Pt0onUnT38HGxS+P4XYUoPfpCOHaDMxvqDMVkvpK790u2
-	YizjuTTvISQAYW7HVRbYswutEpeREvk=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-22-AOyTse_KPj22WjctNb7Zzw-1; Tue,
- 15 Sep 2026 08:26:55 -0400
-X-MC-Unique: AOyTse_KPj22WjctNb7Zzw-1
-X-Mimecast-MFC-AGG-ID: AOyTse_KPj22WjctNb7Zzw_1789475213
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A5099185FDA2;
-	Tue, 15 Sep 2026 12:26:53 +0000 (UTC)
-Received: from fballuch-thinkpadx1carbongen13.redhat.corp (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C73D93003EEE;
-	Tue, 15 Sep 2026 12:26:50 +0000 (UTC)
-From: Filip Balluch <fballuch@redhat.com>
-To: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Filip Balluch <fballuch@redhat.com>
-Subject: [PATCH] i40e: fix freeing of TX rings on RX allocation failure
-Date: Tue, 15 Sep 2026 14:26:39 +0200
-Message-ID: <20260915122639.64936-2-fballuch@redhat.com>
-In-Reply-To: <20260915122639.64936-1-fballuch@redhat.com>
-References: <20260915122639.64936-1-fballuch@redhat.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="N2zNSned"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-52ff0eea420so7667081cf.0
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 05:28:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789475336; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fd204fRkwUAq0NbdfiqgUYh/7QBOGJAq6nVTtU9nrJOEPP9ZUnYIPQXMUJLx6lX7Ub
+         V79i0t/BQC+W2kTsTOPRSjWUUm8mHQayngTcDXYSO29laNVdsQ18mN11adL9yTkgnpW+
+         H0ek8VHuUPA87VR7sbfbuYnfeBL5FstTLxUp+D3ez/DvZarMqE9ZjsW8JceZzX/Sj39G
+         zV8AC4Bbof1/M8FbrbPBznb1Aw3rL3TlS0zv7NtgqR2FDLKAv3i4O6Esmi0bd1igM11u
+         92D2v/UsqIYvxMwEEyYM9XAd94U0Y3oJ1ulaPh2oGmtob5whkfQ9kfPgcsm3diQ0+Adi
+         anZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=uT7e+1Xt9oHbsz2S+z1imXerWgaT4PgfuJHK1QwlFQk=;
+        fh=NNZmocIoQq6aIYEwUkIHtS8cRRlOMf30EBKPWOhIH0I=;
+        b=s/Rj7TzFyaz/jtQQiIOJKRaAn8PHJjlvuew5vYk3tcCZ0dyWwtqihZ3ndJXCCEEfQh
+         0S7YmPFMkq6TKg1LTrh4LA99UoRi3DynUFSSS3LOTvggsz1aH8yh1LSmEnWiTXytd36J
+         gg1j1PzroOQRj71gJw1HIstQ5xhqKx0PS1W6yuM/hNFgf7oKEk8IhZP6cI912t/QOqhB
+         XcNwfdtm/KxnDa9/f+cfA49VVyRcTfhCEwSUSjEl7nAWV0OJPLUzV+gTuOwUYzP/w77Q
+         niHuTrWeSE8nl9XGaURXRzHgjspSk/Q37hyJBKslQ1Kl+cG/8u2oZ7WpmUFKAWwje6Od
+         H62w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789475336; x=1790080136; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=uT7e+1Xt9oHbsz2S+z1imXerWgaT4PgfuJHK1QwlFQk=;
+        b=N2zNSned4C0R9DHn1M0f8Hf2jZFaZsHH1p96QswCEx6fRLVwKFlfY83sG0uZ4fnPAK
+         /b6fc8teTTt9aindRon+qQ0oX5sHv9R9GQF22R6vz/1uM/gXajPKtAzlOqVUHRMeDEJ+
+         4DoWu2eIXsqvBXphBZcWLEF4n0uikLKPiD68eT9z7TBNe7b43uS46gIDOfeNTrw6V42v
+         4BkcK60/uVZLKEvcv16uR44jsJKoPcO567Vap1UjB5Oqtq9TNNLKSB8nUa0tzcVLKw3U
+         OQIlHoiChHovv7CrYxOC68Rg42O+nOnswG7aOCr6PvjTkI12ndcfjdH33QJqD2IiRsrI
+         ttPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789475336; x=1790080136;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uT7e+1Xt9oHbsz2S+z1imXerWgaT4PgfuJHK1QwlFQk=;
+        b=KTmG2JaERL8cOr9QTBCZzwELkqgJpU1X2Iz5ommDYw1krssKmpRtmrkw6wi1OtCP4G
+         VfgGUURNJZWHayGZ1vJLDSBx2y5riL3s+kHr30fg/2mUENSiCaagqHwtTRtvp7g9KzyR
+         C7gQFxuWSOf79FYt8M7C4H7zAGANC9E32wYb8SQoRBpTFpetxPNT8hupM2OyBtqoOy1H
+         PsqK/VoM9S4Qy1yyl9ervGQWeMUAX8QzZs5w1ugUEzZYqOFCjaClo6A3ZZxPpzMQPw3V
+         TSTq+NuHNVo/5cZ2Hs7xHaY6UEhdvCA9AoD6aXf3U/nmngcu/2M4j2QfZP+zYCsgO4Em
+         vPKw==
+X-Forwarded-Encrypted: i=1; AKwUvBzYfzv5rbHXqFNTFvur63PY6LMczo2m0Sv9yJd3j6CBqs4hgxDepB5jH8NZLyt+E403bDx21C8=@vger.kernel.org
+X-Gm-Message-State: AFuF++mietXsvfSbYEgRIVQs69Mieo7hIQigBYK70aENj6gr0qEHOeSK
+	dPc8dp0UrrsovZdzIkb1ozvwjD4XRjlVrElcYqmhnEpUv6mjPIwcqaChzYISuPKLKwXMKrlulfZ
+	sO+cTb8lDCBF/ISWfahV0r+L+fOyRZ7NwrPpJmXjKb6NewXhjI/O6cClm5pw=
+X-Gm-Gg: AYBFou3zD9ZLsoBRppZjGCIi+EK88l/BUlrJJ8gE1yUEOaWGifvSDtTKQoc6fgWsUkR
+	B9oe++XUJ2VI1YZ4o9Pzqf4cEIiWLKljMgFPBeznIbuTjgMdgAhcruN1ZkKJ4Urpv6qx2Odw+YM
+	SDYGXcQXRH/pcNKn51fQce4o8G2KjTkYE+HwVNM9JwPEursLrqi+rjrmZ0i5Eo+FtZS0ynjqlqZ
+	w3qPiUFIn2sWsDyc+dzHSv8HpTCLnuzP6DO4RTxnYOdIopkpIrUfwkyQmZ5tYeMj3+/PvbX1LOO
+	AdlolFkRbfpPJQP8ximt8R7RRIs/s3X78/w1q0sh36lghCrC+fVqvpzwAp3MtdEzi7AqqVs2XyU
+	Svx9Q2tmT+g0Vp2EmICM05uJuKeJCDqbAVnAXJurK8h7uR/X6VHcKqzo8s90rEYQjon5Vst7jBr
+	fTnw==
+X-Received: by 2002:a05:622a:144f:b0:530:f0ca:9ab1 with SMTP id
+ d75a77b69052e-53119f52beamr48643721cf.41.1789475335575; Tue, 15 Sep 2026
+ 05:28:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+References: <20260911133146.3440982-1-victor@mojatatu.com> <20260914191108.55a1a4f1@kernel.org>
+ <CAM0EoMk7CZA2qAPEfvZ_+tUDkcUYF5nanaxER1soLJQZqMuXxQ@mail.gmail.com>
+In-Reply-To: <CAM0EoMk7CZA2qAPEfvZ_+tUDkcUYF5nanaxER1soLJQZqMuXxQ@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 15 Sep 2026 05:28:44 -0700
+X-Gm-Features: AcwNN1UBy41Um_5KI5m2D-7iyle44r2y--8W330pYgRvx1ArXAS-O7egRh3UF_k
+Message-ID: <CANn89i+pkwNwyQF4tRM+Hb1a7YA1qUqdk2tHonUMEycY23j0rQ@mail.gmail.com>
+Subject: Re: [PATCH net] net/sched: Avoid quadratic handle scan in qdisc_alloc_handle
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, Victor Nogueira <victor@mojatatu.com>, davem@davemloft.net, 
+	pabeni@redhat.com, jiri@resnulli.us, horms@kernel.org, vega@nebusec.ai, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When ethtool -G is used to change ring buffer sizes while the interface is up, i40e_set_ringparam()
-allocates temporary TX and RX rings. If the RX ring allocation fails, the error path at the
-free_tx label incorrectly calls i40e_free_tx_resources(vsi->tx_rings[i]), freeing the live TX rings
-instead of the temporary tx_rings[i].
+On Tue, Sep 15, 2026 at 4:51=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.com>=
+ wrote:
+>
+> On Mon, Sep 14, 2026 at 10:11=E2=80=AFPM Jakub Kicinski <kuba@kernel.org>=
+ wrote:
+> >
+> > On Fri, 11 Sep 2026 10:31:46 -0300 Victor Nogueira wrote:
+> > > This is a less intrusive fix meant for backporting; a cleaner approac=
+h that
+> > > uses a per-device IDA over all qdisc handles is planned for net-next.
+> >
+> > I don't think this is net-worthy in the first place.
+> > We have a ton of code under rtnl_lock.
+> > We cannot provide any protection from malicious netns admin from
+> > overloading the machine.
+>
+> That is the one million dollar question.  We labelled this as net for
+> this exact reason. i.e malicious container could overload the whole
+> machine.
+> But it borders on "hardening" (improves performance), so net-next as a
+> target sounds reasonable. It was a coin toss.
+>
+> Since we have a few similar "grey" issues in our pending queue - so
+> where's the line for net/net-next?
+>
+> > Nothing against the patch itself, but if you plan to do something
+> > else in net-next let's just go with that from the start..
+>
+> We could resend the same patch for net-next, the alternative "proper
+> fix" is more intrusive. See attached.
+> Another option: Is this worth fixing?
 
-Since the interface is still up, the next TX completion interrupt causes i40e_clean_tx_irq() to dereference
-the freed ring descriptors, resulting in a NULL pointer dereference in IRQ context and a kernel panic.
-
-This can be reproduced on systems with Intel X710 NICs under memory pressure, where
-the second port's DMA allocation fails after the first port succeeds.
-
-Fix by freeing the temporary tx_rings[i] in the error path instead of
-the live vsi->tx_rings[i].
-
-Signed-off-by: Filip Balluch <fballuch@redhat.com>
----
- drivers/net/ethernet/intel/i40e/i40e_ethtool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-index 3da9ec49cc74..6d2b076049f7 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-@@ -2249,7 +2249,7 @@ static int i40e_set_ringparam(struct net_device *netdev,
- 	if (tx_rings) {
- 		for (i = 0; i < tx_alloc_queue_pairs; i++) {
- 			if (i40e_active_tx_ring_index(vsi, i))
--				i40e_free_tx_resources(vsi->tx_rings[i]);
-+				i40e_free_tx_resources(&tx_rings[i]);
- 		}
- 		kfree(tx_rings);
- 		tx_rings = NULL;
--- 
-2.55.0
-
+A really useful fix would be to get away from RTNL :)
