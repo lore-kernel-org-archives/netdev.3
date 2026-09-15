@@ -1,134 +1,142 @@
-Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B021B248881
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:32:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC1F3D45F7
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:32:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789461122; cv=none; b=A/Tizn1CvgOVFI0SmNqL1IIh6sxjpiV6wEBvYKqtZ3StvWngTGOnQzm7QXyJPNKyj3avIhW5VUkxMitI86EtYwhdNjfe40Cnp07cgUoRcWX5yo6AOP5NEe33zGX6nUyAULx4hUmHKv/MWEw2J7F7FMc5+VLkmz7+he5WcyWZ+n0=
+	t=1789461122; cv=none; b=Rq7z+tShLdGgV00LARjHkQ+0MCg6PPLJCdm2PtQxzgsahgh9eiykgGuQCt5erbJhQxg8t2EqXqmqlAWBgBAk1/LZ9Af+OzmYhUnHzjajiA8zszFDGDJk7Y3zzrF0tcDRwwRg2hR0G8kO7cD+B0CjD+p+F/AVbKIzD28YKu3081k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789461122; c=relaxed/simple;
-	bh=Kyljv4Ok0VOKC1521YIj/5MqOlgJleHDXLfDK8e9KT4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KClsn6GSf0OeldQpuu5OfN8pQHYcLMKMawCX3yIYshAgMNMHV8DUyuEbYp0ax/2qOQ95VGpnw0hAl7aao8mtrf140jCw5vefiyLxvd/KSmmFGy+1r6P/GMn7cl5fnO0qJtwpg8jlh6QqPle5h0UujHzJUy+2cPGVafh87aBjX3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=CtmKId3R; arc=none smtp.client-ip=209.85.161.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
+	bh=Dycmcp37qz6R78WFWXjA28lq3JBfvKhCYGVidPoIuwU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=pYYaFrUTHnmq7gUCTmxTDn35T1SPcbWx7XG3RP5do9qHOUfKt0K+2SCoSA8WCFPabY0r5Wvujp1wI7aMjGIEZT8bQ46NTYuvTABh6I155JNLd0QdSlkJ6xbJzwawv0LzPBdgtgcrtVRUUSu6Vhi7haRxY6mKVb/rLhvnTnI03JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kQ3u7P6w; arc=none smtp.client-ip=74.125.227.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="CtmKId3R"
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-6b1334a3b16so2970160eaf.1
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 01:32:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kQ3u7P6w"
+Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2d747ed6d6eso21991245ad.2
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 01:32:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1789461119; x=1790065919; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nfGU+d0Ce1ol/Tm6wjF345/Jrj4e+fpsFxiynd3zRTo=;
-        b=CtmKId3RdfumA/w6zh32NfLeMv7G7HjRGzsGUTA0XZrv393XmRI2/zcF7VkSqUAlWf
-         yNwtTI4N66M0tg4+x8powKLGzGYF83QXsCtc5sO1F3BGxu6bkCWn4O1fOXQywNYH+crF
-         owvoW+M+4nJqVobywFWMLZ+rdi9tjR0iu5spiOy7v5oIcwzv1xXrv4DIqdbnqwoN39hV
-         5pSkTI19I9RQM+MiwJkjOPGgWKcZxGJ8tan0Q4VyUbHromhVr4XQfmXYDWr7QN5mh2te
-         NWNX6NF+D6GtbdqlAfggAhqlyMCYBYEgfcurQS87Ipn6poRqIQtuiYfPlwEqGrKRRbCi
-         g0TA==
+        d=gmail.com; s=20251104; t=1789461119; x=1790065919; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:content-type:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=UbV7XQLbZlfCHs0VBxXQwGcD6a80bHzq9vR/E1aGc2k=;
+        b=kQ3u7P6wowJg39qhjXHNAWHwLvgZ4nDf3O8psPyKFT654aQyLLXQen1IoeJjorxjMV
+         5Dj/9PoRlPU7xe10/vofwZEfa4tp/U4kFix0jnO6syrdrqx9vHLm36JREBWOdezUkyXS
+         n2GqJJ1loQs6vNCf9f0CNt8RP6Ex7Xw3R8nwhZ82xqdHJLXfOaYf1IuNEoyoqh+z8TOM
+         4jhUO388MPVnxBCS8WnvSP1/J3rssUdMjxA3u5iDYX658XFh8oTlRc8bJ8EKr2ul0nxC
+         OvT0/7w64X8nSSwFdjQpHtbj9wdOTaq2WAUADYnY/TstRg0WDUsmdJeXLiqdd9tlKqM9
+         +xRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20260707; t=1789461119; x=1790065919;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=nfGU+d0Ce1ol/Tm6wjF345/Jrj4e+fpsFxiynd3zRTo=;
-        b=kCi4uyQTyuRYeLlyTBQ8zEKNLK3uYy9Ywn5MjXsVnvQ24H1DyDD03DUwixUovtQ6kx
-         bdvJfLI1UeVoYZIVvAKvy0mchqjx22ewQYRTYQz6Kx4gB86NgpWSlGhDguDyxnmdY88O
-         iI1c8SL+gnICVD7ASKYN+N27f6xZBY63TZdKdMljeM/m4eAJphtd9obDNQtFsIq/vQxE
-         fpbuwC6dC48O1nBlHBgNLIbfkn1a1aBlpVFaU4XgvhQ+AXkzeUGUIYRc3ZCO3689m4vg
-         A5F7QnVfqTWF3grW7ywcE5c47WWXYWTggA0HELcQ2zb8+j0ScvrDKm5pTBD4kV5DwGQO
-         6f0w==
-X-Gm-Message-State: AFuF++nb8LAF9uWsMko5NymWI1FyzIfE616djiydcrpwX80co0hNiXu7
-	cuyXrLzhEUaxvUUK73ZM5Y5I9lmcL+svB/cKrbX/vGAMNLjyn8xvKtUS9+//fdmY2A==
-X-Gm-Gg: AYBFou38YvZn4g+37zVeUNGj+GKKgarFA4oQSC0Fibl9hM7s8J/hi8WBlfKIg/hJ63f
-	RtYK/6ew3ZNJrEzjZYa/IZpa5VHMKdFfSN129AVmWMxukx4MQ9TIwzKjdYk53XpfMNBOmxahN97
-	D4Xrv9CB0JMhWBYPUgarL8RhHZzaLPSsmid9QT0xbaUGtzT7n/g1iSVvUcAHaq386EiinuXNXi4
-	7ldjhVaqaHLzxNn4UMaupFuiq9gTvGaDS4x22nj31otGQGl4ps6+HSfghRi039sRqEVdV13fBrN
-	taytRrBSc3DmWtoDdsCMVOV3VMGkSHVb9cvdcBXHhmG3sBicTM6jUKEMPm64MkLZJkMHPxNmzxZ
-	z3yOEs/+GBkbUF5/CGN1nnlejV0zDYT91WftjMJqFeM1LHZV2GmnTvuueAGK31W/Q9JnixHiVjG
-	ftokPBnBi4Z7bgArZykc5oH52z7WeqrSbeDT2Y1tsvHMDTaBEEH0zSpEz8/wTwMH97UDX0ZB+O/
-	YN6SsXYh4u8oKSul/p+HMtSEwNjmAIHajtX3ymP6Z0GOnKDdmcT5kda
-X-Received: by 2002:a05:6820:190b:b0:6b7:83d6:2925 with SMTP id 006d021491bc7-6c5423435dbmr3269444eaf.40.1789461119455;
-        Tue, 15 Sep 2026 01:31:59 -0700 (PDT)
-Received: from xps.tailc0aff1.ts.net (149-169-99-5.nat.asu.edu. [149.169.99.5])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14382741839sm13579723c88.6.2026.09.15.01.31.58
+        h=mime-version:content-transfer-encoding:content-type:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UbV7XQLbZlfCHs0VBxXQwGcD6a80bHzq9vR/E1aGc2k=;
+        b=oWllZv8/O4Zvx2644LjvVvxDGf+WZknPT9P8SosERtlqpkUC2WtvLb/NTMZ9CGqa5o
+         fYNIH7n13RlXO91ullFkMqA/adjOfEn36bsM3BIkyDRB/gb0w9MpAIeHgrORzETv5GlX
+         yAmbh41Ye+UhGuyh4n966PkPEeFYcViMqjOiGRAHEUFHQ6TzrW87nT4vm5HmSrbOS/hi
+         +SjPNGMQc2HxXTk2IgxptPzYokjFBUNdg9rV8knL6I3Fecc4xCL2Fvt2uyttjyWGbuRb
+         D/RUWcWRjHv3h+wb0YF++vV9569hEr0TxtIojg5nz47y+Q+5RJaR513iwk9G77NtJ78d
+         hTmw==
+X-Forwarded-Encrypted: i=1; AKwUvBwxB1EtGZWoBwtaPiQKQUUS6bVYmJnu7zrcnXv9ICkB+6xoZ4lk4EMpFz/Vt0D/dr9eqjGWyLk=@vger.kernel.org
+X-Gm-Message-State: AFuF++kG6uKGKbMKRAcpo8craPHWMRQIrLXThOeDlHiX8YnxkYMvw0MR
+	gxxBbHGbZbTbqz2LiJfYGaRHr7+awuzeJ1A4Dm240bCp+ci0tlXZTrpP
+X-Gm-Gg: AYBFou3sYWZomoWxdIt/2om4n40FzRiRzPNokj0oqvyqXw4jKYuny3XSXUIzwu9uvhO
+	lI0gWnDPyn5z4Z+hcL53UR/btqNkD90Y3gx/Vx9xdnj9um3/+BVvekmHP6Iuqv4Ll+fMgCMvPLW
+	5rpef8Dfo8Y4Q3c0X+D4ol0a5vbrtgpU4RnkON9tpGugYXdjT0ITglniOyn6zCqsXwF0/bcX8jZ
+	irQ+xeLOJPv3RAGgVMW03Cq7Z1RZZJnFstEDOAlOCHAXdE6LSljGmKk1GCYGkgHpAAtAEFz+6jj
+	L3ZfO2ZxoRjfd0bQFGN4rk8OggZnyJuJGED2JfdMou9gDe2CAYKa8HgzF9baUgmaCk3BVgvWt0s
+	+h7aos7cUYNqj9RFApmxxuQCpvRbDckjH+XkWrDNfaz9d5Pxg9SSTdCyMXAixEUmnTDdj5ODB4Y
+	IKAdnk8JbcIUb7nVMH2vnsDWhvHLSzjQXDYddwiEi/u5MF2wzKARi6N+IOCMoxQ9Xv3rKM6wCEE
+	905CJrjaN9vEMs=
+X-Received: by 2002:a17:903:4585:b0:2db:210f:c104 with SMTP id d9443c01a7336-2dd6c6eb512mr140794795ad.10.1789461118326;
+        Tue, 15 Sep 2026 01:31:58 -0700 (PDT)
+Received: from [43.242.224.196] ([43.242.224.196])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33ba4cf72dbsm34608277eec.3.2026.09.15.01.31.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 01:31:59 -0700 (PDT)
-From: Xiang Mei <xmei5@asu.edu>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jakub@cloudflare.com,
-	Xiang Mei <xmei5@asu.edu>,
-	stable@vger.kernel.org,
-	co+0ea1ac045375cf05@bugs.sh
-Subject: [PATCH net] vlan: require the MAC header to be present in __vlan_insert_inner_tag()
-Date: Tue, 15 Sep 2026 01:31:52 -0700
-Message-ID: <20260915083152.705309-1-xmei5@asu.edu>
-X-Mailer: git-send-email 2.43.0
+        Tue, 15 Sep 2026 01:31:57 -0700 (PDT)
+From: Roshan Kumar <roshaen09@gmail.com>
+To: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+ herbert@gondor.apana.org.au, netdev@vger.kernel.org,
+ Christian Hopps <chopps@labn.net>
+Subject: Re: [PATCH 01/12] xfrm: iptfs: fix stack OOB read in
+ iptfs_skb_reset_frag_walk()
+Date: Tue, 15 Sep 2026 08:31:54 -0000
+Message-ID: <178946111414.531190.8806329997967238720@mail.gmail.com>
+In-Reply-To: <aqfOg-hbkOP3kwW5@secunet.com>
+References: <20260907093020.2228346-2-steffen.klassert@secunet.com>
+ <20260908224803.1587019-1-kuba@kernel.org> <aqfOg-hbkOP3kwW5@secunet.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-__vlan_insert_inner_tag() only guarantees head room via skb_cow_head(),
-never that mac_len bytes of MAC header are present.  Its ETH_HLEN
-wrappers - __vlan_insert_tag() under skb_vlan_push(), and
-vlan_insert_tag() under validate_xmit_vlan() on the generic transmit
-path - therefore rewrite the first 16 bytes at skb->data: a 12-byte
-memmove plus two 2-byte stores at +12 and +14.  No caller supplies the
-bound, while the pop helpers use skb_ensure_writable()/pskb_may_pull().
+Hi Steffen,
 
-An IFF_TUN device has hard_header_len == 0, so packet_snd() accepts a
-one-byte AF_PACKET/SOCK_RAW frame.  The first vlan push only sets a
-hwaccel tag; the next - clsact "action vlan push" or
-bpf_skb_vlan_push() - enters the helper with skb->len still 1.  The
-head comes from skbuff_small_head without __GFP_ZERO, so each push
-drags bytes from beyond skb->tail into the frame.  After three the
-one-byte send leaves as 13 bytes carrying 11 bytes of uninitialised
-slab:
+I had a look at the review and it is right that the guard changes the
+len == 0 outcome, with one nuance worth splitting out.
 
-  0000: 5a b3 62 12 80 88 ff ff 00 b3 62 12 81
-           `------------------------------'
-  only 0x5a was sent; the rest is slab, here the top 56 bits of a
-  linear-map address
+The sharing branch needs a prepared frag walk, so the guard can only
+change behavior for skbs that are frag walk eligible (head_frag set, or
+all data in frags). For those, before the change
+iptfs_skb_can_add_frags() fell through the "while (len && fragi <
+walk->nr_frags)" loop and returned true, iptfs_skb_add_frags()
+returned immediately on its own " !walk->nr_frags || offset out of
+range" check, and reassembly continued with ra_wantseq++. With the
+guard the same input returns false, takes the copy branch, and
+skb_copy_seq_read(..., 0) returns EINVAL, so the in progress
+reassembly is dropped.
 
-Require the MAC header the helper rewrites to be present, so such a
-frame is dropped rather than transmitted.
+For linear skbs the frag walk stays NULL and this corner dropped
+reassembly before the change too: the copy branch runs either way and
+skb_seq_read at the end of the buffer fails the same way. I reproduced
+that part live on v7.3-rc3 today: a partial inner packet followed by
+an AGGFRAG basic header only block with block_offset 0xffff kills the
+in progress reassembly with and without the fix, so that part already
+existed rather than being something the guard introduces.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reported-by: co+0ea1ac045375cf05@bugs.sh
-Assisted-by: LLM
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
----
- include/linux/if_vlan.h | 3 +++
- 1 file changed, 3 insertions(+)
+The review's suggestion closes the gap for the frag walk case: return
+true when len == 0, before the offset check. The dangerous walk in
+iptfs_skb_reset_frag_walk() is skipped entirely for len == 0, and
+iptfs_skb_add_frags() keeps its own bounds check for len > 0, so the
+out of bounds read cannot come back this way. The reassembly outcome
+stays identical to before the fix for head frag skbs, so there is no
+efficiency cost either.
 
-diff --git a/include/linux/if_vlan.h b/include/linux/if_vlan.h
-index 20cc16ea4e5a..4846032bf4ff 100644
---- a/include/linux/if_vlan.h
-+++ b/include/linux/if_vlan.h
-@@ -365,6 +365,9 @@ static inline int __vlan_insert_inner_tag(struct sk_buff *skb,
- 	const u8 meta_len = mac_len > ETH_TLEN ? skb_metadata_len(skb) : 0;
- 	struct vlan_ethhdr *veth;
- 
-+	if (unlikely(!pskb_may_pull(skb, mac_len)))
-+		return -EINVAL;
+Something like this on top of the patch:
+
+diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
+--- a/net/xfrm/xfrm_iptfs.c
++++ b/net/xfrm/xfrm_iptfs.c
+@@ static bool iptfs_skb_can_add_frags(const struct sk_buff *skb,
+        if (skb_has_frag_list(skb) || skb->pp_recycle != walk->pp_recycle)
+                return false;
+
++       /* len == 0: nothing to add, proceed as before the fix. */
++       if (!len)
++               return true;
 +
- 	if (skb_cow_head(skb, meta_len + VLAN_HLEN) < 0)
- 		return -ENOMEM;
- 
--- 
-2.43.0
+        /* Reject an @offset that is at or beyond the end of the walk's data
+         * before calling iptfs_skb_reset_frag_walk(), whose fragment-advance
+         * loop is otherwise unbounded and would index past walk->frags[].
+         * This mirrors the guard already present in iptfs_skb_add_frags().
+         */
+        if (!walk->nr_frags || offset >= walk->total + walk->initial_offset)
+                return false;
 
+The len == 0 drop for linear skbs existed before this change; I am
+happy to look at that separately once this series lands.
+
+Thanks for forwarding the review.
+
+Roshan
