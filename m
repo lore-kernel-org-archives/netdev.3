@@ -1,113 +1,150 @@
-Received: from mail-lr2-f12.google.com (mail-lr2-f12.google.com [74.125.230.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D2E45C6E5
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 23:03:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35A342AFB1;
+	Tue, 15 Sep 2026 23:10:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789513401; cv=none; b=QdiivIubK8oSeD5EjxyS9An+qFckIt7X9MWAuAD+ZKC85M5AkYaNKVOfyXSlut2KFH2RM2uwAODUirqBciuEudfy4hkiEXzf+nUxiV3imi99ttcCAF4llJhi0wXP4bOk+CefWjoVroK3mCV4Q1A61qtgAba1/54h53iIFBlEdyM=
+	t=1789513819; cv=none; b=c39B8WpOL0sX+Hj8b3YCXpp5T2HbFPu3CI3meZxaJjDdLp1xswtYBDxRdPFVKE94LItveVKMfd7glxog86O/gbHDxVlD8eczvFt8H8BpNOgzb38MMAnx5+DGx+y6OhZOZVC+aIrHQldwpC1Tp4iqZga6sI+YhEZoLRAewyIT93Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789513401; c=relaxed/simple;
-	bh=ITz7hBythv5OWTbmQ9c4e1mzRPysX2+YTMbCrseTj6Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EkwzZP7wv5tUjXHcF49Kvh2c7ypa9jpQXPPZgA6xttFHHFYbpCAFfqAm1ZgWHs8os9SqGGIYSvqRq8VhUjONwGexashTaThmPjktgQgvHFLo1Ufl8erEr+40hrprUdcZGVIlww13v9hHEw0BwFsuNLYmvREWer0XpDy78BFjYpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=GptVyoz5; arc=none smtp.client-ip=74.125.230.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1789513819; c=relaxed/simple;
+	bh=9Gk0LrH3CLMU7DiA29jf13FlZlmc921jIY+RqM7B3sY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LuhPfPqd+JgvmauZuh5Hn4X9cOdM/G18tAjkJoQJe8JebXBRK96tZGlpQ04sH9MO2nRVzG68yDE/1+iqoizt1eQ//stti0oXSbndTcSs6fpZ46iNYXv8CsxIkgu+1tA60anV24FaUaDIdniJlozoKiMfof2nUP+1Dzwm44bUeb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vx419V6g; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="GptVyoz5"
-Received: by mail-lr2-f12.google.com with SMTP id 38308e7fff4ca-3a302a4e42aso2843121fa.3
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 16:03:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1789513398; x=1790118198; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7NEEN5klK6sYQ7k8fj+V0z2WeSFVNwjy5fJJIdfiMPQ=;
-        b=GptVyoz53IK36EPzHcgUbYwkq3cdLH0NRj/or4T6kyOzkR86IDFCeclS5S2UF0MtOi
-         1qFF46c8la50j4maY2qhNiwkr9bYvvZlHb1218Xf2gQQ8BdWjk7xTcILqs5ImSSo2QHD
-         cWrC6Ob2OdJiBTqMdUZ62m5gnICaiuyQjAz4Q=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789513398; x=1790118198;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=7NEEN5klK6sYQ7k8fj+V0z2WeSFVNwjy5fJJIdfiMPQ=;
-        b=c2qFcZgeiADRiOz2KEwRMd7JmhaHWvQZ83ZEqG3C3yE4K4IG3zO3nKcSXGYIZtupWz
-         ZOu5rL3+ZDF4cgzWzW6ZsT/QOG0B0kFE03iNknLj3Lc6eqPHHCw+owGgjhDdmufvp2Ua
-         YSs7KqVxzoTCcwvIXJUEWWzlbTgfijCWHpsVWBpIkLQR4J1zTIq9donDHZM86kYpt7EU
-         8VZrNp3Sj+RQzNvIs/7mkqtLlfUaAkZ1GU+YAi7H9U2nYszYA3UYKLHu9VlZiyEZKTGR
-         5l/ZPld2NqXc2BeRWfyhzg2wl109s8jnIEqIVylrR0LYry/MrGhy4DAALgQLyPr4V+x6
-         ZfDQ==
-X-Forwarded-Encrypted: i=1; AKwUvByJUJYBrRk6ME782tzbyWnWSe48wf+pQrSMcd2yt1xCmY/6H6S4QX7hakf8xYFxj6LEezeuKV0=@vger.kernel.org
-X-Gm-Message-State: AFuF++mY0+tN5eTTvmSldb05CsgJvEHtl/mEpxD10Nvswiev5XBaE2Ts
-	5/LmAbp8vfjuGVRJ2VCk3i/P50VC02EUbNpslwqamPFFLbC9/vPT5rUa8fu7XykDwgV7/sWlmEy
-	9wQaXt1lfxA==
-X-Gm-Gg: AYBFou1TzCTodZNnUfhUnvb6VLXonhu0bFFu4ONE6U3HjhaxP9ccIxwCDgYnRY2gSC5
-	O4Xh/82f/45rfI7Uf2ybRMofMAcu9himQIDsAzYjVv7Pa8KwcQPnh996452StfsQa8vW/O/CJFV
-	u4zP/0izkTx/YnYnyKxhGJEvEWWa/f9Z6a4KrQr6KaiisoDZypjBdy/JFnQ2Hpxn/N4G4wWL4y7
-	dMP+dQxoLx/fOU6/Ap9tTkjUrRqJNZrlvD8B5JaXDnAkMPYHQzPcX3r4pV4QtiW7OY8oa8d8/SI
-	EEG/lncNduIh0X2aIn/ZDYhKrQtKuiGI0v4//SiEPrbzlcuXo9kBGbNDKcH4OD/nVVbiKBvoORO
-	vAJyTrYIy1WJLhxk+Felg6XhCWQRIOVKu2JgqxEyVlCNHymtvVYzXNiiJYelgkAMzyHGlsYCQoB
-	usSWM2m0xfnBpS6zQxdkw9cyW+DP9XSaPZDiSfED9QDjlXD/O6bwTTG+mkRycUD8J+UbP5t3o4m
-	p15F9GW2TtyM0APuhTsx1Wawr+vN8UO3x3QUeuVZ4rTW2SllA==
-X-Received: by 2002:a05:651c:b07:b0:3a5:b0df:b798 with SMTP id 38308e7fff4ca-3a5dc9cda9amr718651fa.9.1789513397725;
-        Tue, 15 Sep 2026 16:03:17 -0700 (PDT)
-Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com. [74.125.229.204])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a5dafa9cedsm2102681fa.27.2026.09.15.16.03.17
-        for <netdev@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Sep 2026 16:03:17 -0700 (PDT)
-Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b5e4f1744fso433747e87.2
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 16:03:17 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByXJNvGRGZCprnSLHG8hXCN5eWdA1wtOc3u0JYei96iWZuiNsFCfZhJiJoLZK9Xmo0SQVoEXUE=@vger.kernel.org
-X-Received: by 2002:a05:6402:5d1:b0:6a9:a6c0:e5ef with SMTP id
- 4fb4d7f45d1cf-6aa2244ef06mr218172a12.37.1789512913950; Tue, 15 Sep 2026
- 15:55:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vx419V6g"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789513818; x=1821049818;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=9Gk0LrH3CLMU7DiA29jf13FlZlmc921jIY+RqM7B3sY=;
+  b=Vx419V6geokFdux8OKW+RYa2EAdT6yzQKiZm+3+qCWdp/SrFGacAE/ZB
+   L6qsLnpb2qOH5BoIiw7tqq6pUEb3MuqS/9HnyeimjzEahmzn7uSjEJCk7
+   VXbOwYTDBeXtRNG8wFeP4mymu0RsFN3HthraOJmROKvfGep3bCUfVyiHI
+   znijQv5UmYJfbabUPCWS0prji78w1iHQ6VBhtGXOGyjLxcKYiMXo9Dn6G
+   z5dJyzydE5/JI5UWxB1egqN9YLk/b8isW/YsreKTzbzeedw+Ur7Qpg2FN
+   HMDLIHxG61ht1oJ4b7j9Pwsg1fjh1IybIUPQFEnvFrpz2zN6JWIGuM23e
+   A==;
+X-CSE-ConnectionGUID: ZYHlxwOLSVqewB7jCLkXaQ==
+X-CSE-MsgGUID: ns1JXAd3SaCvD8QlTofQyA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="100552589"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="100552589"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 16:10:18 -0700
+X-CSE-ConnectionGUID: zz8NMjNcSySXXZRgsIecqw==
+X-CSE-MsgGUID: tH4lm4YXS7ihvqpE9F+z+A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="298209722"
+Received: from lkp-server01.sh.intel.com (HELO 462990a40a85) ([10.239.97.150])
+  by fmviesa001.fm.intel.com with ESMTP; 15 Sep 2026 16:10:14 -0700
+Received: from kbuild by 462990a40a85 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1x6cHz-0000000059d-3v8Y;
+	Tue, 15 Sep 2026 23:10:11 +0000
+Date: Wed, 16 Sep 2026 07:10:10 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ratheesh Kannoth <rkannoth@marvell.com>, davem@davemloft.net,
+	gakula@marvell.com, horms@kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, andrew+netdev@lunn.ch,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	sgoutham@marvell.com, Subbaraya Sundeep <sbhatta@marvell.com>,
+	Ratheesh Kannoth <rkannoth@marvell.com>
+Subject: Re: [PATCH net] octeontx2-af: nix: Remove redundant BPID setup from
+ block init
+Message-ID: <202609160743.DeZuvi8V-lkp@intel.com>
+References: <20260915072029.975824-1-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
- <CAHk-=wjeamU=_RYT9cR3dZJ2N-Teo-N1+aYh7jwhrB=iWXD0cg@mail.gmail.com> <CACSVV028AdnTYa6OKDeoJYCau58uTkKMgEdqTn7crNSV8QZxOA@mail.gmail.com>
-In-Reply-To: <CACSVV028AdnTYa6OKDeoJYCau58uTkKMgEdqTn7crNSV8QZxOA@mail.gmail.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Tue, 15 Sep 2026 15:54:57 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjhJF91TCO0Zqeuf+caG2tQZ4AzbLr2qFmRmnMM4dbh4g@mail.gmail.com>
-X-Gm-Features: AcwNN1Wx2MaYDtFtmeOlL6MnzYY7doY_FEPpziKatTBWbLOeKsjmritQ5JuAL3M
-Message-ID: <CAHk-=wjhJF91TCO0Zqeuf+caG2tQZ4AzbLr2qFmRmnMM4dbh4g@mail.gmail.com>
-Subject: Re: [PATCH RFC POC 00/50] file: handle files on syscall exit
-To: rob.clark@oss.qualcomm.com
-Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Jann Horn <jannh@google.com>, Jan Kara <jack@suse.cz>, Ingo Molnar <mingo@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Oleg Nesterov <oleg@redhat.com>, linux-alpha@vger.kernel.org, 
-	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
-	linux-um@lists.infradead.org, Jens Axboe <axboe@kernel.dk>, io-uring@vger.kernel.org, 
-	netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-gpio@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, bpf@vger.kernel.org, 
-	David Airlie <airlied@redhat.com>, virtualization@lists.linux.dev, kvm@vger.kernel.org, 
-	kexec@lists.infradead.org, linux-hyperv@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260915072029.975824-1-rkannoth@marvell.com>
 
-On Tue, 15 Sept 2026 at 15:21, Rob Clark <rob.clark@oss.qualcomm.com> wrote:
->
-> With fd's it is more than just about error rollback.. exposing an fd
-> to userspace mid-way thru an ioctl is an easy security bug to write..
+Hi Ratheesh,
 
-That isn't very common code. It's something that is done by a few
-strange cases, and yes, those cases should just do it right.
+kernel test robot noticed the following build warnings:
 
-But "those few cases should do it right" does not mean "make a whole
-new subsystem for this thing that makes a simple "open" actually be
-slower and stranger".
+[auto build test WARNING on net/main]
 
-             Linus
+url:    https://github.com/intel-lab-lkp/linux/commits/Ratheesh-Kannoth/octeontx2-af-nix-Remove-redundant-BPID-setup-from-block-init/20260915-125029
+base:   net/main
+patch link:    https://lore.kernel.org/r/20260915072029.975824-1-rkannoth%40marvell.com
+patch subject: [PATCH net] octeontx2-af: nix: Remove redundant BPID setup from block init
+config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20260916/202609160743.DeZuvi8V-lkp@intel.com/config)
+compiler: alpha-linux-gcc (GCC) 16.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260916/202609160743.DeZuvi8V-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202609160743.DeZuvi8V-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c:516:12: warning: 'nix_setup_bpids' defined but not used [-Wunused-function]
+     516 | static int nix_setup_bpids(struct rvu *rvu, struct nix_hw *hw, int blkaddr)
+         |            ^~~~~~~~~~~~~~~
+
+
+vim +/nix_setup_bpids +516 drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+
+4b05528ebf0c3f Sunil Goutham   2018-10-22  513  
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  514  #define NIX_BPIDS_PER_LMAC	8
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  515  #define NIX_BPIDS_PER_CPT	1
+d6212d2e41a0cb Geetha sowjanya 2024-01-31 @516  static int nix_setup_bpids(struct rvu *rvu, struct nix_hw *hw, int blkaddr)
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  517  {
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  518  	struct nix_bp *bp = &hw->bp;
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  519  	int err, max_bpids;
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  520  	u64 cfg;
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  521  
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  522  	cfg = rvu_read64(rvu, blkaddr, NIX_AF_CONST1);
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  523  	max_bpids =  FIELD_GET(NIX_CONST_MAX_BPIDS, cfg);
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  524  
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  525  	/* Reserve the BPIds for CGX and SDP */
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  526  	bp->cgx_bpid_cnt = rvu->hw->cgx_links * NIX_BPIDS_PER_LMAC;
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  527  	bp->sdp_bpid_cnt = rvu->hw->sdp_links * FIELD_GET(NIX_CONST_SDP_CHANS, cfg);
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  528  	bp->free_pool_base = bp->cgx_bpid_cnt + bp->sdp_bpid_cnt +
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  529  			     NIX_BPIDS_PER_CPT;
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  530  	bp->bpids.max = max_bpids - bp->free_pool_base;
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  531  
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  532  	err = rvu_alloc_bitmap(&bp->bpids);
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  533  	if (err)
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  534  		return err;
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  535  
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  536  	bp->fn_map = devm_kcalloc(rvu->dev, bp->bpids.max,
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  537  				  sizeof(u16), GFP_KERNEL);
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  538  	if (!bp->fn_map)
+36323f54cd3231 Haoxiang Li     2026-06-23  539  		goto free_bpids;
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  540  
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  541  	bp->intf_map = devm_kcalloc(rvu->dev, bp->bpids.max,
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  542  				    sizeof(u8), GFP_KERNEL);
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  543  	if (!bp->intf_map)
+36323f54cd3231 Haoxiang Li     2026-06-23  544  		goto free_bpids;
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  545  
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  546  	bp->ref_cnt = devm_kcalloc(rvu->dev, bp->bpids.max,
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  547  				   sizeof(u8), GFP_KERNEL);
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  548  	if (!bp->ref_cnt)
+36323f54cd3231 Haoxiang Li     2026-06-23  549  		goto free_bpids;
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  550  
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  551  	return 0;
+36323f54cd3231 Haoxiang Li     2026-06-23  552  
+36323f54cd3231 Haoxiang Li     2026-06-23  553  free_bpids:
+36323f54cd3231 Haoxiang Li     2026-06-23  554  	rvu_free_bitmap(&bp->bpids);
+36323f54cd3231 Haoxiang Li     2026-06-23  555  	bp->bpids.bmap = NULL;
+36323f54cd3231 Haoxiang Li     2026-06-23  556  	return -ENOMEM;
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  557  }
+d6212d2e41a0cb Geetha sowjanya 2024-01-31  558  
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
