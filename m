@@ -1,108 +1,157 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05DD3D47A1
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:13:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF98A3A1683;
+	Tue, 15 Sep 2026 08:13:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789460015; cv=none; b=jHz2jKFPj8j5isRDVRpIDO8yXLPb1hYpddOwkI9iDXDpNAS9MCmk7p2pZpjzc8Rm/ozOm7qjCdcKiw8vtAng4j+J2862Iy/2PR6GYZ4MuikUzFhHLNWF8uaQuMbkFIfYf3Y/f2bu1gQk1fZiKqnriHryjaD+hiR+QDykNVNSY/c=
+	t=1789460031; cv=none; b=RwAvY0RndouUh1Ny1fETIYVBwUVg5eNJYNrqsaT7eXggUGDGxGdZNiTqguIU9FS6GpXtCnQ56w85FTgCcialf/+rAsJ7pPp9ZFo+U7lzr4qtKtWcDZ/oveAAsIvh0x/+wjZLlMWWelLXBRu49Y5WX8+FoTsB4bHJT7oPIRCrq7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789460015; c=relaxed/simple;
-	bh=jiiyXOZojpsENCUnGFE76LMjg/PvEFnumM2R/jc4XRM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sioDrJeKX6ca8Tnu9h3M1kwUOrUMAXYI5oUa1Gk45qZwBRjAyXLJbpulb7/jYNN8OLPhuHESVTCF/s/KFhbxDzLm7i+rWDi/wvOBfG8cl2IAFCBd0ilCGOcej8P8FfmBqsmz40upO6irgjT10WvYyH8Z+AKH7jPAe63jc/VIFRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G6uYjRin; arc=none smtp.client-ip=74.125.228.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789460031; c=relaxed/simple;
+	bh=CQd5havz4xxgycr++VxXFcEsCtdQlKxCbdFKfwHX0ww=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=If7azE63YzevUe5RJMZwrEywgEQArY0wjJAC/NF9pU7KsmZ41Zfj1jzgxueme6XV4CY/TcmjoaZbRrhBtarW7cwOAMl4+XWFPhiGXGH/myDmOb8nyEaI3a+h9GFspq9MlhZxMxe7iUYNCtYHz84/ong+eWxqp2GOn5pgox+fM9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VcDfKGKg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G6uYjRin"
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc4c08393dfso2058965a12.3
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 01:13:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789460013; x=1790064813; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=jiiyXOZojpsENCUnGFE76LMjg/PvEFnumM2R/jc4XRM=;
-        b=G6uYjRinJoNx6dg1TflCMLfa9/ljrnDgRD3QKHQb39O7TujgMUo+pF02nSqFVh0Gek
-         qmYpR2DchQi9NgwiWJ95+6YvTRBdqWCeXMqElkBAx4jtfV6cfKDWIMKYQ9v9lSFchXPr
-         fEjqUfgzHEb3VK1Ovv+YIy61kv4XvBJOj/gc6BkPBPmZJIIhVdCDPuMDilKjmWiDjQLO
-         wsG4wo6VvzThIC6tEJpceKCFejoB6aeOrpHLX2gLl2rKZv+uQAeIx6KjnK6Y7QcfDl2g
-         Bz0OMaR1TjgdYUo8/8PE0AclfoC5pFPCudrm/Z8y7+r2DwlEKyWAJUXn7pGerchTzVnF
-         c1ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789460013; x=1790064813;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=jiiyXOZojpsENCUnGFE76LMjg/PvEFnumM2R/jc4XRM=;
-        b=1Q5Y7gwP1slhAquhXrd4W9iuaIY8PmtWfrNY8p5WfqtooeS5tPuhiS6APJE0C6BS/P
-         EXE+qpEnCiyH3ZzqS3U0vHycOP59lkCKwFEpjX/RREafNCCtucnJkixuyK8hwSHrHXsS
-         2l+kgqSAuib+CKWqbE41r8pTTwRVvKlhWUit2ONEL/e/0Ovp7pXij4uoGHW+d6IeDQuU
-         dCz6uSRDkYhPE7NWsDnG5ghYiKYIFp4VMHVv9Ob9S9kdk0t4Yn2FnI6gRbiKJZjlqFVe
-         6hl+tY9BFsuEarvaNPjPG3C4iiHEWjxGW6BH5wYR4bA4QI8c20mPhTSuyhCXKrPYhLsV
-         0PxQ==
-X-Forwarded-Encrypted: i=1; AKwUvByQUImPgGCEevoGo6NygLKaIOdnHxLzOV0thFssbrvWqJVCbo6T59GViJPX2k2XbbFupMyIZns=@vger.kernel.org
-X-Gm-Message-State: AFuF++m6a1kmyPAqK8c6sILTZk+46obTQwp74wxPq8dQj3tW55f+K1D0
-	m3yCvfc/JVb9LF0yK7DocDa1kH8pBzi9+wtN92O92Ls91pcdonufmz2e
-X-Gm-Gg: AYBFou3f1qJ6sYiqJdpTbVquxkIXkSLxQKznEsP2/frIBgrJUM1Z4Ivjmktsv4JJEeP
-	FqEGWbmfqw5sp1m8AHhDZXJ3a9mk5hQN4jtAr0XbA9qJDlv3M4ImgWhmaVZ3KOiraPJfXz5FWut
-	7ECqNu6hvSwotrWqRfkfkMu8raSBpQahM3WETmRJA89kIWfgk+jw5efpzrMrcHnAATpX6XlOA2n
-	uGYIjAaDtkmhw0o8oLP/pbMDn7zeaEy8QQom3lMEkuYcOk67lTZQn2p2hdOLpTeHFzVWvW5v9Py
-	cM6KVUhF3ZvfEDDekML/loopDfaj56O0MoGaXOKdmUmlHKNlPZGbUdly+u7C4GxVdSaJx295AVh
-	Wy1zvXuG2hdMvtA3x/j7CAUxb5euC8+OZBygWIAD2nJhPa9KOb5cN4frbYePjy1eG9ZKi7aK+RE
-	oSFvQzl44CycVqc6jCXtN3elnCrg3eGFg9RylAaIVzKVG7NKHF8RUvAKQ/HaHBpdj6GXl0vdQq0
-	jdSY3NNSremACXGBq6A7CDAscKUid8=
-X-Received: by 2002:a05:6a21:4cc6:b0:3da:bd6d:bef4 with SMTP id adf61e73a8af0-3db40622a50mr12913747637.13.1789460012618;
-        Tue, 15 Sep 2026 01:13:32 -0700 (PDT)
-Received: from localhost.localdomain ([103.120.31.178])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14365ba729dsm49686987c88.14.2026.09.15.01.13.26
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 15 Sep 2026 01:13:31 -0700 (PDT)
-From: Khawar Ahemad <ahemadkhawar123@gmail.com>
-To: maciej.fijalkowski@intel.com
-Cc: bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	magnus.karlsson@intel.com,
-	sdf@fomichev.me,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	horms@kernel.org,
-	syzbot+aa48b5fe7bfda62d1682@syzkaller.appspotmail.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 net] ipvlan: unregister upper devices outside pnodes_lock
-Date: Tue, 15 Sep 2026 13:43:22 +0530
-Message-ID: <20260915081322.7551-1-ahemadkhawar123@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260828164918.451364-1-maciej.fijalkowski@intel.com>
-References: <20260828164918.451364-1-maciej.fijalkowski@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VcDfKGKg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D0581F000FF;
+	Tue, 15 Sep 2026 08:13:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789460029;
+	bh=ahHVIQUKCj3UqsamTwkNl7ydXLXTp+2VEfV/2bZTM+w=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=VcDfKGKgszCsvqVQiNtS6t4Jr3wJLK1aovcQLTgjzjYw/N4/ZaZbQoDBxf5oy6C0U
+	 rHlIlc4OopLYai6IlOCSQxU/yL7wo48Rt31Hi4Q+iyFQUzMpgWaheutxjfPiuM3Y7U
+	 kn6qDEglR+Rq6VSQCk1laEb3xg8D4xuiqzSjTsKN/gw7qWIdqcBgaT7R7sxqCgYakP
+	 B72KawQtbOLpTlCuOAWPrbvtmMvJZe94vNzdawZ+sWg2S4XjlW6dKl3jYv5p6TQpkc
+	 T2XO/BK1C3W0jBc6Z5mjMDGQ7kp0dxYSPAt69Ano1ndd+Nzev4E4jcsggi2P0aIfOf
+	 qsZKLKIIQlfOw==
+Content-Type: multipart/mixed; boundary="===============0798735520997638461=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Message-Id: <dc4bd7fb4d98a0066958a4e1582b6a7a407079fd9a284318848909f9594a9295@mail.kernel.org>
+In-Reply-To: <20260915071743.29394-1-zhaogongyi@bytedance.com>
+References: <20260915071743.29394-1-zhaogongyi@bytedance.com>
+Subject: Re: [PATCH bpf] bpf, sockmap: reject max_entries > INT_MAX in sock_map_alloc
+From: bot+bpf-ci@kernel.org
+To: zhaogongyi@bytedance.com,bpf@vger.kernel.org
+Cc: netdev@vger.kernel.org,linux-kernel@vger.kernel.org,john.fastabend@gmail.com,jakub@cloudflare.com,jiayuan.chen@linux.dev,edumazet@google.com,kuniyu@google.com,pabeni@redhat.com,willemb@google.com,davem@davemloft.net,kuba@kernel.org,horms@kernel.org,zhaogongyi@BYTEDANCE.COM,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Tue, 15 Sep 2026 08:13:48 +0000 (UTC)
 
-Hi Maciej,
+--===============0798735520997638461==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Thank you for letting me know, and for the fix — fixing it on the ipvlan
-side by releasing pnodes_lock before unregister_netdevice_many() is a
-cleaner solution since it removes the problematic lock ordering edge
-without touching the AF_XDP paths at all.
+> sock_map_alloc() only rejects max_entries == 0 and never caps the upper
+> bound.  sock_map_free() then walks the sks[] array with a signed int
+> iterator:
+>
+> 	int i;
+> 	for (i = 0; i < stab->map.max_entries; i++)
+> 		struct sock **psk = &stab->sks[i];
+>
+> When a SOCKMAP is created with max_entries = 0xffffffff (UINT_MAX), the
+> allocation of 32 GiB can succeed on large-memory hosts.  During free the
+> counter reaches 0x80000000, wraps to INT_MIN, is sign-extended by movslq
+> and turned into a ~16 GiB negative offset from stab->sks, pointing far
+> below the allocation.  On a KASAN kernel the shadow check for that
+> address hits an unmapped shadow page and oopses:
 
-Please consider my v6 patch withdrawn. I will not send further revisions.
+This description is technically accurate but narrower than the real bug.
+Is the KASAN-unmapped-shadow scenario the primary failure mode?
 
-I am sorry for the noise caused by the multiple revisions during this
-process, and I appreciate both the feedback and the patience from you and
-the team.
+The faulting access is an xchg() write in sock_map_free(), so on a
+non-KASAN kernel the same iteration either faults on an unmapped vmalloc
+page or, if that vmalloc address happens to be populated by an unrelated
+allocation, silently writes NULL into someone else's memory. The
+unmapped shadow page also requires CONFIG_KASAN_VMALLOC=y - with
+KASAN_VMALLOC=n, x86 kasan_init() populates the whole vmalloc shadow
+with the mapped kasan_early_shadow_page, so kasan_check_range() would
+not fault.
 
-Thanks again,
-Khawar
+Could the description mention it is an out-of-bounds write reachable
+without KASAN, not just a KASAN-only oops?
+
+>   BUG: unable to handle page fault for address: fffff521b59c5a00
+>   RIP: 0010:kasan_check_range+0x107/0x190
+>   Call Trace:
+>    sock_map_free+0x93/0x190
+>    map_create+0x68d/0xb30
+>    __sys_bpf+0x21e/0x2e70
+>
+> Vmcore confirmed stab->map.max_entries == 0xffffffff, stab->sks ==
+> 0xffffc911ace2d000, and the faulting address sks + (s64)INT_MIN * 8
+> exactly at 0xffffc90dace2d000.  The same Oops triggers on the normal
+> close()/bpf_map_free_deferred() path whenever such a map is destroyed.
+>
+> sock_hash_alloc() already bounds its allocation (buckets_num >
+> U32_MAX / sizeof(bucket)).  Reject max_entries > INT_MAX at creation
+> time so the signed iterator in sock_map_free() never sees a value that
+> would overflow.
+>
+> Triggered by syzkaller and reproduced on both a 6.6-based KASAN kernel
+> and the upstream v7.3-rc2 kernel.
+>
+> Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+
+Is 604326b41a6f the commit that introduced this bug?
+
+Looking at that commit, the version of sock_map_alloc() it created did
+cap max_entries:
+
+    /* Make sure page count doesn't overflow. */
+    cost = (u64) stab->map.max_entries * sizeof(struct sock *);
+    if (cost >= U32_MAX - PAGE_SIZE) {
+            err = -EINVAL;
+            goto free_stab;
+    }
+
+This bound limits max_entries to below (U32_MAX - PAGE_SIZE) / 8, about
+536,870,400 entries, which is far under INT_MAX. With that bound the
+signed iterator in sock_map_free() could not overflow.
+
+The check later moved into bpf_map_charge_init() with the same limit.
+The upper bound was actually removed by 0d2c4f964050 ("bpf: Eliminate
+rlimit-based memory accounting for sockmap and sockhash maps", v5.11),
+which deleted the bpf_map_charge_init() call without replacing the size
+check.
+
+Should the Fixes tag be:
+
+    Fixes: 0d2c4f964050 ("bpf: Eliminate rlimit-based memory accounting for sockmap and sockhash maps")
+
+With the current tag, automated stable backport tooling will target
+kernels from v4.20 onward, but 5.4.y and 5.10.y are not affected since
+sock_map_alloc() still had the bound there. The wrong tag also hides
+that the regression came from the rlimit-to-memcg accounting
+conversion.
+
+> diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+> index ca49bc7f8687c..38df842843289 100644
+> --- a/net/core/sock_map.c
+> +++ b/net/core/sock_map.c
+> @@ -41,6 +41,7 @@ static struct bpf_map *sock_map_alloc(union bpf_attr *attr)
+>  	struct bpf_stab *stab;
+>
+>  	if (attr->max_entries == 0 ||
+> +	    attr->max_entries > INT_MAX ||
+>  	    attr->key_size    != 4 ||
+>  	    (attr->value_size != sizeof(u32) &&
+>  	     attr->value_size != sizeof(u64)) ||
+
+The code change itself looks correct. With max_entries bounded to
+INT_MAX, the signed iterator reaches at most i = INT_MAX at the final
+test, which is representable in int, so no signed overflow remains.
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/34941876090
+--===============0798735520997638461==--
