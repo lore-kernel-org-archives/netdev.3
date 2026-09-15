@@ -1,241 +1,178 @@
-Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com [209.85.161.72])
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682C6496D42
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 14:50:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D2043C067
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 14:56:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789483860; cv=none; b=LRYk+aoE6jOKQFFe654t7X6QKTDDqJZp47FERe5L4lnYVaaPUOE5rWWx3itc8cdUC0AEeLEckytbpX6WSsWS4HGi4fXt56hvUZNut3c7xw+0kRiJ00QmByXOJ5IGhuCJmTKPYLGjcflR8JkBLrS7JXPyn9IiXOs9LfVkJaomNl0=
+	t=1789484213; cv=none; b=ZOkLNQvQWO74qrvg0msg/1zsJCHS8JHzvrGebwiQixu7eL4dXvGqh7M5JVEZjx5LcE0QMA8geBPdogJE8vsIpRjmhqwwAaq9MriBHyZTsdocc6cEwhQ8D20h03A2ERdnS2vbo+72mTInCDVetEYem8XnTe+f+5HxYj2rgKuZ1gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789483860; c=relaxed/simple;
-	bh=mP63S2kSIDdQdSMZvjLxECnRPXQjALds9wMvo+cDuJ0=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=oGiztGLEDJZCFIcvYu66T2UdhLfCju+qWzhlq0E/4QhOF0DrjEjr45pqfUX2+PBd5cvZmJddPIyDSSFZQwPTd3U85oPgkJStUc6LY59Tvxo92oTKKVgg7ThRdg9mg8pl9TnNi63P6ivmQ5Z4dH38V1teLeh7B14PhM+nVdeFHC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-6b1b8b593a4so4877081eaf.2
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 07:50:57 -0700 (PDT)
+	s=arc-20240116; t=1789484213; c=relaxed/simple;
+	bh=CnwVAcawuCeqwVLcw+UXgd0jligul/1PYTWtAo4b2W0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tgV/ECVlWYzhSiiLLCYBGTiGUDHOQNdmFdpGzepJ3byQqSrhXjU7GIAUCAJGX1rcTIx/zCu1AIWF3oIIzRLmO7GREvKOofrjdodXU2GRr+gkJhxT113aqRZPygRp2Fwa2ndqJx4IdLKh6vXrxZXZqUULrzTVX8OERy4Yg8g+bBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mEAMLcqT; arc=none smtp.client-ip=74.125.227.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mEAMLcqT"
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-39b350c69b4so2818496a91.2
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 07:56:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789484211; x=1790089011; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Ms0aUWaGGxumCyZnOZqDHnktR7rW8QHDwRgjlV4BpjA=;
+        b=mEAMLcqTpyExtBg60nmC242wyNEN8KmCOmJ/u4LEwWyllJK8SSG/ja7wtmujqDiNRJ
+         MKKcDuCDry2PJHxXlG9lXIcLzGQpA2JZ2Qfou3rNypLzYVhwPYIxH/SCKvalu3QZJgrv
+         r5UMQrNSGP6RBwsqU1fnEVps3OEOC7JCOd2aIFuBiRSgyrDLRVqQJfdmhPOBaCnQtwpx
+         qdCD8AD2sXsLX+vWNt31HVukuDne4/NdMQBBLEmnMbyF3yMYuz6O/b/Z8WmmqpTUd3DD
+         aA6rVwaHIc8Kdg25O6x+cJ4lz05EBfvy6vPTwHuC7IMS9TnTq1gphImQpqko5ZyM1t5W
+         DGKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789483856; x=1790088656;
-        h=content-type:cc:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=/JjqUbcpC8Uiq3Jgl8nzKIuk3KGjIIRFE3T7zA0MDfE=;
-        b=rsnVSExFq2X6Q+HnBQGrsIFAaWLBDmT+bwYkc4tGfgGLrB++aFt0Pn9jtmXMgTRtBn
-         U4DfgZm8xVq6WVVyvHtww9UVSu0zJ/XN0ThbJ+3CKoSgqIep4ZOfZK7Va70s2FWUUqzN
-         JBNP5fEs/GDhBXuA/HYkMaUDt1FrwTt1jcvHeTEehm9pnpk9hlIwqIk2INkYgi8AthFd
-         pk3NQD5VrH0vQyPK0o9Eft3F3nkMP9YM+ab16jx/sdkPBfw1dQ3yPP6z9GGJW6Ogg++Q
-         aF63M5PXflPBOmli/YpN+eM5eLXQ789Ex0u2sRHU/HZyellEGQa5aSVZnLB1ocexMvlm
-         5Wgw==
-X-Forwarded-Encrypted: i=1; AKwUvBx7bwKbPRAeBeNQfRGasI1AsxNQ83ggucLzrpdN5HACzviy+3GAEYGaWWK7BCuY91x0eudOmFA=@vger.kernel.org
-X-Gm-Message-State: AFuF++lyPs72xn0cAN/UAqwmd+IAK5N+E33YslnDeTb1AXjNXWkQQ2B9
-	KEycvgtFZ7mEuJL12qd1eofmHvNcYco0WRzOJXMI68clMhqi0QB0vghGLVRsJodLG5iBsjWJjRw
-	Z7f9Zd2jZIp1CWWaSrhkcTGesTYFEIvfVYXqTy5P1va4RmpoXmtsqv/0e/C8=
+        d=1e100.net; s=20260707; t=1789484211; x=1790089011;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Ms0aUWaGGxumCyZnOZqDHnktR7rW8QHDwRgjlV4BpjA=;
+        b=vKHFJcU0L7JSJNmIo1KuFm3z3665S2nq+kN3v2vceyY3pqP4iwQOyEC3kh1C+210r4
+         j9E/HbqccyXy2P8RJsfQuAquHCBf3hRm+1b8tpq8rwvjuBhDCNr14H1l0Bn9wOIUTEon
+         oVXCT2JEgktSb3R0Tr4ugLZThf1q2MeIJ3k/V6UJ5Bw6mzOjnx01pfCe55DlA2mSWDwV
+         OkCtL9LB6uTpDjDPhstMU+b4De/rtsuuS/yHqpwm5Szqm3Hh9+3wnUSistMYRq+O52Tu
+         KiUWPIKtOXWhMu2w2jTnb9STKWf4ljptpHtxTVq8qP4wvuI+iXgcotG5O+41gf6HHNlf
+         fbzQ==
+X-Gm-Message-State: AFuF++kEIW8Zb8UnuoiBk2BPnFo0s9KsU9o+v5r6khhJwY4vb/eQrPSQ
+	dTc6/Qt7UbzVM0bxGDjOT/7C3atwKI1OinaL9BoIaNcoDTmHAk5nbHVX
+X-Gm-Gg: AYBFou3dibBuDMgOQBXlMx4PGrXbiWJCWa6wxDmDV/5apMxNGjvG0zqcHFgwvUniM7e
+	QpHHZeKZRyWDtYlamxma5ABtwXuNZYVKEFxlZaKDJwjTE/LF3+wDqbonrXcFAJQq3JbqVayhR9c
+	5ht6VlJUyukrO/8HJ1cOf9RRjlw1FS1prJijl9jrrNPx9IPrSKvHBC9YK62LjXe1m9R/iKYubWp
+	sXn6IvnOPNcayi4jbc8yYMDMID+KcifGHgG9obyE0hPEJGsYEgifqqNSZrCC2/VBRNqwMddwKRe
+	Kf5NCtLqjUg9YP81FZ68NhwXbHCqpW/iV0+dz8Lno1a6bcRodoFBUCgLnNwZPk94DMeuZ3vQd1b
+	RIwm2NVYOu9qL54gYTpWai/BpxUypVSjEbAtxikNEu/95l/mEiZi9vnVfcnlkARSASSpQZHWu6g
+	0pZE71UGU0Vyt1lnnGleeUHi2jIjTVAZhXNK/tleXhzrFOaY5hhCBopnSdybPwoo7vTUVJF2H4m
+	Ohi4Iy7Po/LyQ==
+X-Received: by 2002:a17:90b:164d:b0:398:9c00:29ec with SMTP id 98e67ed59e1d1-39dec0a8e92mr13326788a91.20.1789484210723;
+        Tue, 15 Sep 2026 07:56:50 -0700 (PDT)
+Received: from ubuntu.. ([49.205.34.70])
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-39dfd9c557asm5857473a91.2.2026.09.15.07.56.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Sep 2026 07:56:50 -0700 (PDT)
+From: Ajith Parappalliyalil Venugopal <ajithpv.linux@gmail.com>
+To: tung.quang.nguyen@est.tech,
+	jmaloy@redhat.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	Ajith Parappalliyalil Venugopal <ajithpv.linux@gmail.com>
+Subject: [PATCH net-next v6] tipc: replace deprecated strcpy with strscpy in tipc_bearer_get_name()
+Date: Tue, 15 Sep 2026 14:56:41 +0000
+Message-ID: <20260915145641.2434403-1-ajithpv.linux@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:4d01:b0:6b7:83d6:2935 with SMTP id
- 006d021491bc7-6c739c763f3mr966337eaf.56.1789483856152; Tue, 15 Sep 2026
- 07:50:56 -0700 (PDT)
-Date: Tue, 15 Sep 2026 07:50:56 -0700
-In-Reply-To: <20260915081023.7433-1-ahemadkhawar123@gmail.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6aa95b50.a211d2ce.1a5198.02ad.GAE@google.com>
-Subject: [syzbot ci] Re: xsk: Fix circular locking dependency between
- &net->xdp.lock, &xs->mutex, and netdev_lock_ops
-From: syzbot ci <syzbot+ci38b383cd8e5a02dc@syzkaller.appspotmail.com>
-To: ahemadkhawar123@gmail.com, ast@kernel.org, bpf@vger.kernel.org, 
-	daniel@iogearbox.net, edumazet@google.com, hawk@kernel.org, horms@kernel.org, 
-	john.fastabend@gmail.com, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	maciej.fijalkowski@intel.com, magnus.karlsson@intel.com, 
-	netdev@vger.kernel.org, pabeni@redhat.com, sdf@fomichev.me, 
-	syzbot@syzkaller.appspotmail.com
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-syzbot ci has tested the following series
+The `strcpy()` function is deprecated and moving towards code-tree
+elimination. Replacing it with `strscpy()` fixes potential buffer
+overflow vectors by ensuring safe NULL-termination based on the
+destination buffer size limit [1][2].
 
-[v6] xsk: Fix circular locking dependency between &net->xdp.lock, &xs->mutex, and netdev_lock_ops
-https://lore.kernel.org/all/20260915081023.7433-1-ahemadkhawar123@gmail.com
-* [PATCH bpf-next v6] xsk: Fix circular locking dependency between &net->xdp.lock, &xs->mutex, and netdev_lock_ops
+To make the interface safer and more robust for future callers, refactor
+`tipc_bearer_get_name()` to accept a destination buffer length parameter.
+Replace `strcpy()` with `strscpy()` and pass through any potential
+`-E2BIG` truncation error code up to the caller. Update the existing
+caller in `net/tipc/monitor.c` to pass its array size.
 
-and found the following issue:
-possible deadlock in xp_clear_dev
+Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strcpy [1]
+Link: https://github.com/KSPP/linux/issues/88 [2]
 
-Full report is available here:
-https://ci.syzbot.org/series/fd897794-4f0d-45f4-8e63-bcb526e0b175
-
-***
-
-possible deadlock in xp_clear_dev
-
-tree:      bpf-next
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/bpf/bpf-next.git
-base:      b0ca562e0d05cf7afedcfa71c9aed180b72bcc97
-arch:      amd64
-compiler:  Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-config:    https://ci.syzbot.org/builds/d5521b86-a0b8-4ffc-ada4-91f534b028bc/config
-syz repro: https://ci.syzbot.org/findings/6aa094b3-5f39-460c-b0f7-709bbf72644c/syz_repro
-
-netlink: 14 bytes leftover after parsing attributes in process `syz.1.18'.
-======================================================
-WARNING: possible circular locking dependency detected
-syzkaller #0 Not tainted
-------------------------------------------------------
-syz.1.18/5842 is trying to acquire lock:
-ffff8881793b4e70 (&dev_instance_lock_key#3){+.+.}-{4:4}, at: netdev_lock include/linux/netdevice.h:2861 [inline]
-ffff8881793b4e70 (&dev_instance_lock_key#3){+.+.}-{4:4}, at: netdev_lock_ops include/net/netdev_lock.h:42 [inline]
-ffff8881793b4e70 (&dev_instance_lock_key#3){+.+.}-{4:4}, at: xp_clear_dev+0x13b/0x340 net/xdp/xsk_buff_pool.c:297
-
-but task is already holding lock:
-ffff8881bd5ca6b8 (&xs->mutex){+.+.}-{4:4}, at: xsk_notifier+0xcd/0x230 net/xdp/xsk.c:2114
-
-which lock already depends on the new lock.
-
-
-the existing dependency chain (in reverse order) is:
-
--> #1 (&xs->mutex){+.+.}-{4:4}:
-       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
-       __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
-       xsk_bind+0x297/0x13f0 net/xdp/xsk.c:1620
-       __sys_bind_socket net/socket.c:1945 [inline]
-       __sys_bind+0x2e3/0x410 net/socket.c:1976
-       __do_sys_bind net/socket.c:1981 [inline]
-       __se_sys_bind net/socket.c:1979 [inline]
-       __x64_sys_bind+0x7a/0x90 net/socket.c:1979
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
--> #0 (&dev_instance_lock_key#3){+.+.}-{4:4}:
-       check_prev_add kernel/locking/lockdep.c:3181 [inline]
-       check_prevs_add kernel/locking/lockdep.c:3300 [inline]
-       validate_chain kernel/locking/lockdep.c:3924 [inline]
-       __lock_acquire+0x1520/0x2cf0 kernel/locking/lockdep.c:5253
-       lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5886
-       __mutex_lock_common kernel/locking/mutex.c:646 [inline]
-       __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
-       netdev_lock include/linux/netdevice.h:2861 [inline]
-       netdev_lock_ops include/net/netdev_lock.h:42 [inline]
-       xp_clear_dev+0x13b/0x340 net/xdp/xsk_buff_pool.c:297
-       xsk_notifier+0x1a1/0x230 net/xdp/xsk.c:2123
-       notifier_call_chain+0x1a5/0x3d0 kernel/notifier.c:85
-       call_netdevice_notifiers_extack net/core/dev.c:2313 [inline]
-       call_netdevice_notifiers net/core/dev.c:2327 [inline]
-       unregister_netdevice_many_notify+0x17f9/0x2140 net/core/dev.c:12518
-       rtnl_delete_link net/core/rtnetlink.c:3652 [inline]
-       rtnl_dellink+0x5be/0x810 net/core/rtnetlink.c:3694
-       rtnetlink_rcv_msg+0x802/0xc00 net/core/rtnetlink.c:7132
-       netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
-       netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
-       netlink_unicast+0x7bd/0x940 net/netlink/af_netlink.c:1345
-       netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
-       sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
-       __sock_sendmsg net/socket.c:815 [inline]
-       ____sys_sendmsg+0x54e/0x850 net/socket.c:2713
-       ___sys_sendmsg+0x2a5/0x360 net/socket.c:2767
-       __sys_sendmsg net/socket.c:2799 [inline]
-       __do_sys_sendmsg net/socket.c:2804 [inline]
-       __se_sys_sendmsg net/socket.c:2802 [inline]
-       __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2802
-       do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
-       do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-other info that might help us debug this:
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  lock(&xs->mutex);
-                               lock(&dev_instance_lock_key#3);
-                               lock(&xs->mutex);
-  lock(&dev_instance_lock_key#3);
-
- *** DEADLOCK ***
-
-locks held by syz.1.18/5842: 3, last CPU#0:
- #0: ffffffff90036ac0 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock net/core/rtnetlink.c:80 [inline]
- #0: ffffffff90036ac0 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_net_lock include/linux/rtnetlink.h:134 [inline]
- #0: ffffffff90036ac0 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_dellink+0x41b/0x810 net/core/rtnetlink.c:3686
- #1: ffff88810e3ac750 (&net->xdp.lock){+.+.}-{4:4}, at: xsk_notifier+0x89/0x230 net/xdp/xsk.c:2110
- #2: ffff8881bd5ca6b8 (&xs->mutex){+.+.}-{4:4}, at: xsk_notifier+0xcd/0x230 net/xdp/xsk.c:2114
-
-stack backtrace:
-CPU: 0 UID: 0 PID: 5842 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
- print_circular_bug+0x2e1/0x300 kernel/locking/lockdep.c:2059
- check_noncircular+0x12e/0x150 kernel/locking/lockdep.c:2191
- check_prev_add kernel/locking/lockdep.c:3181 [inline]
- check_prevs_add kernel/locking/lockdep.c:3300 [inline]
- validate_chain kernel/locking/lockdep.c:3924 [inline]
- __lock_acquire+0x1520/0x2cf0 kernel/locking/lockdep.c:5253
- lock_acquire+0x106/0x350 kernel/locking/lockdep.c:5886
- __mutex_lock_common kernel/locking/mutex.c:646 [inline]
- __mutex_lock+0x19d/0x1550 kernel/locking/mutex.c:821
- netdev_lock include/linux/netdevice.h:2861 [inline]
- netdev_lock_ops include/net/netdev_lock.h:42 [inline]
- xp_clear_dev+0x13b/0x340 net/xdp/xsk_buff_pool.c:297
- xsk_notifier+0x1a1/0x230 net/xdp/xsk.c:2123
- notifier_call_chain+0x1a5/0x3d0 kernel/notifier.c:85
- call_netdevice_notifiers_extack net/core/dev.c:2313 [inline]
- call_netdevice_notifiers net/core/dev.c:2327 [inline]
- unregister_netdevice_many_notify+0x17f9/0x2140 net/core/dev.c:12518
- rtnl_delete_link net/core/rtnetlink.c:3652 [inline]
- rtnl_dellink+0x5be/0x810 net/core/rtnetlink.c:3694
- rtnetlink_rcv_msg+0x802/0xc00 net/core/rtnetlink.c:7132
- netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
- netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
- netlink_unicast+0x7bd/0x940 net/netlink/af_netlink.c:1345
- netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
- sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
- __sock_sendmsg net/socket.c:815 [inline]
- ____sys_sendmsg+0x54e/0x850 net/socket.c:2713
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2767
- __sys_sendmsg net/socket.c:2799 [inline]
- __do_sys_sendmsg net/socket.c:2804 [inline]
- __se_sys_sendmsg net/socket.c:2802 [inline]
- __x64_sys_sendmsg+0x1b1/0x290 net/socket.c:2802
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f47db99e159
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f47dc90c028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007f47dbc25fa0 RCX: 00007f47db99e159
-RDX: 0000000004048004 RSI: 00002000000001c0 RDI: 0000000000000005
-RBP: 00007f47dba3503b R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f47dbc26038 R14: 00007f47dbc25fa0 R15: 00007ffc72db97b8
- </TASK>
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
+Signed-off-by: Ajith Parappalliyalil Venugopal <ajithpv.linux@gmail.com>
 ---
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+v6:
+  - Dropped the unnecessary `name_len` local variable in `__tipc_nl_add_monitor()` 
+    and passed `sizeof(bearer_name)` directly, as suggested by the maintainer.
+v5:
+  - Cleaned up implementation by removing extra `ret` variable as suggested.
+  - Wrapped long lines to fix checkpatch column-limit warning.
+v4:
+  - Avoid hard-coding TIPC_MAX_BEARER_NAME in the function body.
+  - Pass size_t len from the caller down to strscpy().
+  - Forward strscpy()'s -E2BIG error up through the existing int return type.
+  - Updated function documentation comment block.
+v3:
+  - Fix patch title as suggested by Tung Quang Nguyen.
+  - No code changes from v2.
+v2:
+  - Target net-next tree instead of standard net tree as requested by Tung Quang Nguyen.
+  - No code changes from v1.
 
-To test a fix for this bug, please reply with `#syz test`
-(on a separate line) and attach the patch to the email.
+ net/tipc/bearer.c  | 6 ++++--
+ net/tipc/bearer.h  | 3 ++-
+ net/tipc/monitor.c | 3 ++-
+ 3 files changed, 8 insertions(+), 4 deletions(-)
 
-Notes:
-- The patch will be applied on top of the tested series (as an
-  incremental fix).
-- To test a new version of the whole series, please send it directly
-  to syzbot@lists.linux.dev.
-- Arguments like custom git repos and branches are not supported.
+diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c
+index 05dcd2f9e887..65fa18928fe3 100644
+--- a/net/tipc/bearer.c
++++ b/net/tipc/bearer.c
+@@ -195,9 +195,10 @@ struct tipc_bearer *tipc_bearer_find(struct net *net, const char *name)
+ /*     tipc_bearer_get_name - get the bearer name from its id.
+  *     @net: network namespace
+  *     @name: a pointer to the buffer where the name will be stored.
++ *     @len: size of the destination buffer
+  *     @bearer_id: the id to get the name from.
+  */
+-int tipc_bearer_get_name(struct net *net, char *name, u32 bearer_id)
++int tipc_bearer_get_name(struct net *net, char *name, size_t len, u32 bearer_id)
+ {
+ 	struct tipc_net *tn = tipc_net(net);
+ 	struct tipc_bearer *b;
+@@ -209,7 +210,8 @@ int tipc_bearer_get_name(struct net *net, char *name, u32 bearer_id)
+ 	if (!b)
+ 		return -EINVAL;
+ 
+-	strcpy(name, b->name);
++	if (strscpy(name, b->name, len) < 0)
++		return -E2BIG;
+ 	return 0;
+ }
+ 
+diff --git a/net/tipc/bearer.h b/net/tipc/bearer.h
+index 41eac1ee0c09..9ccc9ffa925a 100644
+--- a/net/tipc/bearer.h
++++ b/net/tipc/bearer.h
+@@ -226,7 +226,8 @@ int tipc_l2_send_msg(struct net *net, struct sk_buff *buf,
+ void tipc_bearer_add_dest(struct net *net, u32 bearer_id, u32 dest);
+ void tipc_bearer_remove_dest(struct net *net, u32 bearer_id, u32 dest);
+ struct tipc_bearer *tipc_bearer_find(struct net *net, const char *name);
+-int tipc_bearer_get_name(struct net *net, char *name, u32 bearer_id);
++int tipc_bearer_get_name(struct net *net, char *name,
++			 size_t len, u32 bearer_id);
+ struct tipc_media *tipc_media_find(const char *name);
+ int tipc_bearer_setup(void);
+ void tipc_bearer_cleanup(void);
+diff --git a/net/tipc/monitor.c b/net/tipc/monitor.c
+index a94b9b36a700..f3e965c48472 100644
+--- a/net/tipc/monitor.c
++++ b/net/tipc/monitor.c
+@@ -833,7 +833,8 @@ int __tipc_nl_add_monitor(struct net *net, struct tipc_nl_msg *msg,
+ 	void *hdr;
+ 	int ret;
+ 
+-	ret = tipc_bearer_get_name(net, bearer_name, bearer_id);
++	ret = tipc_bearer_get_name(net, bearer_name, sizeof(bearer_name),
++				   bearer_id);
+ 	if (ret || !mon)
+ 		return 0;
+ 
+-- 
+2.43.0
+
