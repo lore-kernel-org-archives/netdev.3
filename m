@@ -1,57 +1,57 @@
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3894756D5
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C382477286
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:20:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789460477; cv=none; b=kea0z7qoug3am8gPBIRVn1mr4m6GtKfwlxynEoqlUbkXCHV0UoIii0nQmtOdSTNexRwrx5yIrP4uGMVP9GxgIV2Y0qpC6jp/xISXySHXDBBjEAm4KyAR4kmn+n1S1ZTMdKZkD2uXKghSOQdx2OCXOcihe2VxyEr/XeDQ2ITPxoI=
+	t=1789460498; cv=none; b=lNeXKzbhFfq18bGPZQDy93zKLrJV4Wn/wpUrb7+fPGJ/Y5PnHzsZOMF4gBfsVZJxJoKGNUwc7m25/Ur5L/hw2ug/0ED4OcxkdtjZAI3oJCc7/2LnHJ2sU3CFJxxZydYiXukAyeMAEWSxTbBZ3RXUog9Ixk2PDs5kbYi72PWdLaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789460477; c=relaxed/simple;
-	bh=F9i32u7X67i3rjTFL62V2TeKyR+ixZjqL6I2EccGRRA=;
+	s=arc-20240116; t=1789460498; c=relaxed/simple;
+	bh=Te8HD9YkwxCOhstie9EUJ32KLA4oNHtDIGXeNIM9YkI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=C87A4GLKmMpJV6NgEFlGtIEw/FDgJzJ2pUzA8aL6m6wSvDaYexWWYfJtjtrZoEy8mjUnvlfWpB+4Qm4CvR0QqZcQ9oJTs8RIi9Tr6c1M+iiQJlI6mPf9DjWEIXhD+AIeMhH/dUrJwsBG+EE9e8WkB/AI1CuNOFJwO8q6gK1LFt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--morbo.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UbJ1cATg; arc=none smtp.client-ip=209.85.214.197
+	 To:Cc:Content-Type; b=V/iZKtsU3pr/sV7qb3NJCSWuHhHXh06ioVa+tstzu6qWNIXQ7TcdR5pVBruoa+iF6zZv4KPDWry8GhFbfAv0TsH271SQ+aOoaXwQTCZuJrK3F7Iv3C9Q6TuDor2c9jaXZ6dI3mi98EeLH77iDFC4jf6TWB2UpmmiEkGi9amJlL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--morbo.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Sm0elxDu; arc=none smtp.client-ip=209.85.214.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--morbo.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UbJ1cATg"
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2d9336581a2so80769165ad.3
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Sm0elxDu"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2d6fed0652bso45538105ad.2
         for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 01:20:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789460417; x=1790065217; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789460415; x=1790065215; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=CSHzy5Fr+v+g78gtgBhpLtU/5VBe17dtS9vTkuvViHg=;
-        b=UbJ1cATgtClWEITC/K2FRs0yA+J6QuOAQNYBjRfMOKcvsi26Iw0YJycYGDVgXnZrWu
-         OkknVjnQ8i5cwzTKofsD1XegSELSlQQWyGmBy+oTi8Rz6f+TqDoZ2wOvaqx1nNxaQq9T
-         6d32McB/8xVv6H+WPMKqesWTkJJ4jN9Fxthcfq0/8FuWBuJYGJGQCi+wKu5lEWR7zV/t
-         fOaj7SjaCurcjs6XXGANs8d147zli1iFTHrIgyTVvMzA0OEHm9Rj0L5A6lzd+IclErro
-         a5b9aL/MDPF57KGC99VttDBSXAU1ClN53SqyK+T3AFsds6CbkR0S7OKYOgJcb3XnGCg8
-         AMRw==
+        bh=aUeRHnlHuLyd8Os/OfUYHyanuI/6gSGpcAdXKzgjG1A=;
+        b=Sm0elxDuTug+KyLI8ny8KqtqtKZOMFIJlmUqfZKZtIGsP/tcONa+VEuplt7dYQpdkN
+         lu0WuWT00yQktV/5O4IVdA7Zx0lZQA2Ex75xJvHUD4V2IWv3s2bVd0xT4DobX/i5tnoJ
+         CI1csADnHX6Jo6vPyKhpWJnfHeucbxAhOzRqOT/6IJJSkynZY7MZvcHGx+isA1UH6OSu
+         rtYGVp3YO4gvXhNNO+mTLWcaINB25AbZJr4RA6acqlUzuzsWqpJRdApHH8giRudU7hdh
+         HXcteOOHe5cQrZwqXeGSuZ+WSd8/XIx8r1HZ/DPV57Zf7jgm1C8WEQw9iCmUv7vOYelq
+         +NFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789460417; x=1790065217;
+        d=1e100.net; s=20260707; t=1789460415; x=1790065215;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=CSHzy5Fr+v+g78gtgBhpLtU/5VBe17dtS9vTkuvViHg=;
-        b=npwvt39NFdCpC1VGEv3OKOt5HOXTkyLvPw23h3qygcGBQz03c/0Ek7M7Xs690lnVCh
-         ZSumo7tp3DS5Fkd6Dn0vz1GskJMu2gKtE99JI4FktNUHAM2bE0eS24VX6l7SUQUnjJbw
-         IfDwzISYvHaCPLbsEkIB0Qb49Gf/X/0uxSzXQpFiO4qu8K8UHCGiiEchxONXhkm6ld/P
-         hfB4wxIM9AlFnDdj6Gt6PzsfhgpjHHpTP4vDofMtidvF2Rv/IuIPP0E71KpOH3wBIRBD
-         YWiwmuTym6iLSlWXZhDkuZPEkWB1opfxV9UI7mzeHUSAU663GNV5iIKMBg63F+YXsuPT
-         CBOg==
-X-Forwarded-Encrypted: i=1; AKwUvByfVHTeoZ6QmxGpOFBo0yx+h1kAHiT2cmApMOG9nAWWgjauEORGabARSiusjoGKpJuYylePzNM=@vger.kernel.org
-X-Gm-Message-State: AFuF++lGqH+jnA8nc5CvVJTivof2EXXYhzqFb7ffHDI7AeYUkLfK+mxA
-	qcY7aDfwnTFdyAguHp3PElh4eqUKbderoMYWfZk/gcdHetrSGCpB56/37+JUCS83QKfF2JIV1P+
-	l
-X-Received: from plky9.prod.google.com ([2002:a17:902:7009:b0:2dd:3c92:b0a2])
- (user=morbo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:8c5:b0:2c6:90ec:f601
- with SMTP id d9443c01a7336-2dd6c5f3422mr125997365ad.8.1789460416594; Tue, 15
- Sep 2026 01:20:16 -0700 (PDT)
-Date: Tue, 15 Sep 2026 08:18:42 +0000
+        bh=aUeRHnlHuLyd8Os/OfUYHyanuI/6gSGpcAdXKzgjG1A=;
+        b=Nc2s/B0lB4lBbEteK6kW7kqSIzHQdREzsjH8dTGMZAM1rnCQzfKWDsW6wHQinvix2C
+         wKqhoXWL3RKzTxkUYb4xpaexOY1MZzXibNAdObOVdbzYE/+Trl9fbQ04CQJ0Y9AidleK
+         HuDkBd1+w5DcJ0NiXNL+fLPmnzKQKcSuBBivhYSRzPLPfl2n992xFrNVqmnDKGhu7O5O
+         mpjBl12emvGYNHvrRIeory6lMFC/fBRY4lqJCDC0ProvWEZ35nGGbhuKHh8tYao0ZYPY
+         PFWzdRXMgwJ/eL1iYhxBg8K2tuyN7Q23tl+j+AWBeSLYORDPSDN2AmWXXRrFNhpJFS4z
+         QKuQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwFCcVvG+YUOpOTCMJmXITTVlVdZLocIhJsaTuBtpWk52fmMQzZCTjbgeAORnaZX0htMTkAC3Q=@vger.kernel.org
+X-Gm-Message-State: AFuF++mgoFArQAEnO5vEQEb6enugs1sBMyV/JMB4e0TtR/v4IsLOgb7e
+	dmKXbXRoKmQcMiP+an0qjeMMOIdJEm39/gKEdV2fKsuEL7sfLiutY0M4digE9siUTSwkCPipmyO
+	x
+X-Received: from plbmz16.prod.google.com ([2002:a17:903:3510:b0:2dd:2adc:aa80])
+ (user=morbo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:a8b:b0:2d9:26b3:547
+ with SMTP id d9443c01a7336-2dd83882243mr420135ad.20.1789460414438; Tue, 15
+ Sep 2026 01:20:14 -0700 (PDT)
+Date: Tue, 15 Sep 2026 08:18:40 +0000
 In-Reply-To: <20260915081910.4142719-1-morbo@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -61,8 +61,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260915081910.4142719-1-morbo@google.com>
 X-Mailer: git-send-email 2.55.0.1032.g73a4cd73de-goog
-Message-ID: <20260915081910.4142719-26-morbo@google.com>
-Subject: [PATCH 25/28] EDAC/thunderx: Replace strlcat() with seq_buf
+Message-ID: <20260915081910.4142719-24-morbo@google.com>
+Subject: [PATCH 23/28] Input: synaptics_usb - use seq_buf and snprintf() for
+ name and phys
 From: Bill Wendling <morbo@google.com>
 To: linux-kernel@vger.kernel.org
 Cc: Bill Wendling <morbo@google.com>, codemender-patching+linux@google.com, 
@@ -123,23 +124,17 @@ Cc: Bill Wendling <morbo@google.com>, codemender-patching+linux@google.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-The threaded ISR handlers (thunderx_ocx_com_threaded_isr(),
-thunderx_ocx_lnk_threaded_isr(), and thunderx_l2c_threaded_isr()) build
-multi-line error reports by formatting register details into a scratch
-buffer and appending them to "msg" with strlcat().
+synusb_probe() constructs the device name and physical path using a mix of
+strscpy(), strlcat(), and snprintf().
 
-In preparation for removing the deprecated strlcat() API[1], refactor the
-ISR handlers to construct error messages using struct seq_buf.
-
-Additionally, fix two bugs in decode_register(): initialize "str[0] =3D '\0=
-'"
-so callers do not append stale buffer contents when no error bits match,
-and stop iterating if snprintf() truncates the buffer to avoid
-underflowing the remaining "size" counter.
+In preparation for removing the deprecated strlcat() API[1], use struct
+seq_buf to incrementally build synusb->name, and format synusb->phys with
+snprintf() after generating the USB path.
 
 Link: https://github.com/KSPP/linux/issues/370 [1]
 Cc: codemender-patching+linux@google.com
-Assisted-by: AI:Claude-3-5-Sonnet [editor_update_file, shell_command_run]
+Assisted-by: Gemini:1.5-Pro-002 [editor_update_file, make_kernel_build_sing=
+le_file, test_runner_run_kunit_test]
 Signed-off-by: Bill Wendling <morbo@google.com>
 ---
 Cc: Russell King <linux@armlinux.org.uk>
@@ -253,161 +248,73 @@ Cc: devel@lists.orangefs.org
 Cc: linux-hardening@vger.kernel.org
 Cc: linux-sound@vger.kernel.org
 ---
- drivers/edac/thunderx_edac.c | 64 ++++++++++++++++++++++--------------
- 1 file changed, 39 insertions(+), 25 deletions(-)
+ drivers/input/mouse/synaptics_usb.c | 29 +++++++++++++++++------------
+ 1 file changed, 17 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/edac/thunderx_edac.c b/drivers/edac/thunderx_edac.c
-index e7c335ca0c36..4e3781815b6d 100644
---- a/drivers/edac/thunderx_edac.c
-+++ b/drivers/edac/thunderx_edac.c
-@@ -20,6 +20,7 @@
- #include <linux/atomic.h>
- #include <linux/bitfield.h>
- #include <linux/circ_buf.h>
+diff --git a/drivers/input/mouse/synaptics_usb.c b/drivers/input/mouse/syna=
+ptics_usb.c
+index 880a0c79148c..d13d2d6202ee 100644
+--- a/drivers/input/mouse/synaptics_usb.c
++++ b/drivers/input/mouse/synaptics_usb.c
+@@ -41,6 +41,7 @@
+ #include <linux/usb.h>
+ #include <linux/input.h>
+ #include <linux/usb/input.h>
 +#include <linux/seq_buf.h>
 =20
- #include <asm/page.h>
+ #define USB_VENDOR_ID_SYNAPTICS	0x06cb
+ #define USB_DEVICE_ID_SYNAPTICS_TP	0x0001	/* Synaptics USB TouchPad */
+@@ -278,6 +279,8 @@ static int synusb_probe(struct usb_interface *intf,
+ 	struct input_dev *input_dev;
+ 	unsigned int intf_num =3D intf->cur_altsetting->desc.bInterfaceNumber;
+ 	unsigned int altsetting =3D min(intf->num_altsetting, 1U);
++	struct seq_buf s;
++	char path[64];
+ 	int error;
 =20
-@@ -47,12 +48,17 @@ static void decode_register(char *str, size_t size,
- {
- 	int ret =3D 0;
+ 	error =3D usb_set_interface(udev, intf_num, altsetting);
+@@ -334,27 +337,29 @@ static int synusb_probe(struct usb_interface *intf,
+ 			 ep->bInterval);
+ 	synusb->urb->transfer_flags |=3D URB_NO_TRANSFER_DMA_MAP;
 =20
-+	if (size > 0)
-+		str[0] =3D '\0';
++	seq_buf_init(&s, synusb->name, sizeof(synusb->name));
 +
- 	while (descr->type && descr->mask && descr->descr) {
- 		if (reg & descr->mask) {
- 			ret =3D snprintf(str, size, "\n\t%s, %s",
- 				       descr->type =3D=3D ERR_CORRECTED ?
- 					 "Corrected" : "Uncorrected",
- 				       descr->descr);
-+			if (ret < 0 || ret >=3D size)
-+				break;
- 			str +=3D ret;
- 			size -=3D ret;
- 		}
-@@ -1115,35 +1121,37 @@ static irqreturn_t thunderx_ocx_com_threaded_isr(in=
-t irq, void *irq_id)
+ 	if (udev->manufacturer)
+-		strscpy(synusb->name, udev->manufacturer,
+-			sizeof(synusb->name));
++		seq_buf_puts(&s, udev->manufacturer);
 =20
- 	while (CIRC_CNT(ocx->com_ring_head, ocx->com_ring_tail,
- 			ARRAY_SIZE(ocx->com_err_ctx))) {
-+		struct seq_buf s;
-+
- 		tail =3D ring_pos(ocx->com_ring_tail,
- 				ARRAY_SIZE(ocx->com_err_ctx));
- 		ctx =3D &ocx->com_err_ctx[tail];
-=20
--		snprintf(msg, OCX_MESSAGE_SIZE, "%s: OCX_COM_INT: %016llx",
--			ocx->edac_dev->ctl_name, ctx->reg_com_int);
-+		seq_buf_init(&s, msg, OCX_MESSAGE_SIZE);
-+
-+		seq_buf_printf(&s, "%s: OCX_COM_INT: %016llx",
-+			       ocx->edac_dev->ctl_name, ctx->reg_com_int);
-=20
- 		decode_register(other, OCX_OTHER_SIZE,
- 				ocx_com_errors, ctx->reg_com_int);
-=20
--		strlcat(msg, other, OCX_MESSAGE_SIZE);
-+		seq_buf_puts(&s, other);
-=20
- 		for (lane =3D 0; lane < OCX_RX_LANES; lane++)
- 			if (ctx->reg_com_int & BIT(lane)) {
--				snprintf(other, OCX_OTHER_SIZE,
--					 "\n\tOCX_LNE_INT[%02d]: %016llx OCX_LNE_STAT11[%02d]: %016llx",
--					 lane, ctx->reg_lane_int[lane],
--					 lane, ctx->reg_lane_stat11[lane]);
--
--				strlcat(msg, other, OCX_MESSAGE_SIZE);
-+				seq_buf_printf(&s,
-+					       "\n\tOCX_LNE_INT[%02d]: %016llx OCX_LNE_STAT11[%02d]: %016llx"=
-,
-+					       lane, ctx->reg_lane_int[lane],
-+					       lane, ctx->reg_lane_stat11[lane]);
-=20
- 				decode_register(other, OCX_OTHER_SIZE,
- 						ocx_lane_errors,
- 						ctx->reg_lane_int[lane]);
--				strlcat(msg, other, OCX_MESSAGE_SIZE);
-+				seq_buf_puts(&s, other);
- 			}
-=20
- 		if (ctx->reg_com_int & OCX_COM_INT_CE)
--			edac_device_handle_ce(ocx->edac_dev, 0, 0, msg);
-+			edac_device_handle_ce(ocx->edac_dev, 0, 0, seq_buf_str(&s));
-=20
- 		ocx->com_ring_tail++;
+ 	if (udev->product) {
+ 		if (udev->manufacturer)
+-			strlcat(synusb->name, " ", sizeof(synusb->name));
+-		strlcat(synusb->name, udev->product, sizeof(synusb->name));
++			seq_buf_puts(&s, " ");
++		seq_buf_puts(&s, udev->product);
  	}
-@@ -1196,25 +1204,28 @@ static irqreturn_t thunderx_ocx_lnk_threaded_isr(in=
-t irq, void *irq_id)
 =20
- 	while (CIRC_CNT(ocx->link_ring_head, ocx->link_ring_tail,
- 			ARRAY_SIZE(ocx->link_err_ctx))) {
-+		struct seq_buf s;
+-	if (!strlen(synusb->name))
+-		snprintf(synusb->name, sizeof(synusb->name),
+-			 "USB Synaptics Device %04x:%04x",
+-			 le16_to_cpu(udev->descriptor.idVendor),
+-			 le16_to_cpu(udev->descriptor.idProduct));
++	if (!seq_buf_used(&s))
++		seq_buf_printf(&s, "USB Synaptics Device %04x:%04x",
++			       le16_to_cpu(udev->descriptor.idVendor),
++			       le16_to_cpu(udev->descriptor.idProduct));
+=20
+ 	if (synusb->flags & SYNUSB_STICK)
+-		strlcat(synusb->name, " (Stick)", sizeof(synusb->name));
++		seq_buf_puts(&s, " (Stick)");
+=20
+-	usb_make_path(udev, synusb->phys, sizeof(synusb->phys));
+-	strlcat(synusb->phys, "/input0", sizeof(synusb->phys));
++	seq_buf_str(&s);
 +
- 		tail =3D ring_pos(ocx->link_ring_head,
- 				ARRAY_SIZE(ocx->link_err_ctx));
++	usb_make_path(udev, path, sizeof(path));
++	snprintf(synusb->phys, sizeof(synusb->phys), "%s/input0", path);
 =20
- 		ctx =3D &ocx->link_err_ctx[tail];
-=20
--		snprintf(msg, OCX_MESSAGE_SIZE,
--			 "%s: OCX_COM_LINK_INT[%d]: %016llx",
--			 ocx->edac_dev->ctl_name,
--			 ctx->link, ctx->reg_com_link_int);
-+		seq_buf_init(&s, msg, OCX_MESSAGE_SIZE);
-+
-+		seq_buf_printf(&s, "%s: OCX_COM_LINK_INT[%d]: %016llx",
-+			       ocx->edac_dev->ctl_name,
-+			       ctx->link, ctx->reg_com_link_int);
-=20
- 		decode_register(other, OCX_OTHER_SIZE,
- 				ocx_com_link_errors, ctx->reg_com_link_int);
-=20
--		strlcat(msg, other, OCX_MESSAGE_SIZE);
-+		seq_buf_puts(&s, other);
-=20
- 		if (ctx->reg_com_link_int & OCX_COM_LINK_INT_UE)
--			edac_device_handle_ue(ocx->edac_dev, 0, 0, msg);
-+			edac_device_handle_ue(ocx->edac_dev, 0, 0, seq_buf_str(&s));
- 		else if (ctx->reg_com_link_int & OCX_COM_LINK_INT_CE)
--			edac_device_handle_ce(ocx->edac_dev, 0, 0, msg);
-+			edac_device_handle_ce(ocx->edac_dev, 0, 0, seq_buf_str(&s));
-=20
- 		ocx->link_ring_tail++;
- 	}
-@@ -1880,22 +1891,25 @@ static irqreturn_t thunderx_l2c_threaded_isr(int ir=
-q, void *irq_id)
-=20
- 	while (CIRC_CNT(l2c->ring_head, l2c->ring_tail,
- 			ARRAY_SIZE(l2c->err_ctx))) {
-+		struct seq_buf s;
-+
- 		tail =3D ring_pos(l2c->ring_tail, ARRAY_SIZE(l2c->err_ctx));
- 		ctx =3D &l2c->err_ctx[tail];
-=20
--		snprintf(msg, L2C_MESSAGE_SIZE,
--			 "%s: %s: %016llx, %s: %016llx",
--			 l2c->edac_dev->ctl_name, reg_int_name, ctx->reg_int,
--			 ctx->reg_ext_name, ctx->reg_ext);
-+		seq_buf_init(&s, msg, L2C_MESSAGE_SIZE);
-+
-+		seq_buf_printf(&s, "%s: %s: %016llx, %s: %016llx",
-+			       l2c->edac_dev->ctl_name, reg_int_name, ctx->reg_int,
-+			       ctx->reg_ext_name, ctx->reg_ext);
-=20
- 		decode_register(other, L2C_OTHER_SIZE, l2_errors, ctx->reg_int);
-=20
--		strlcat(msg, other, L2C_MESSAGE_SIZE);
-+		seq_buf_puts(&s, other);
-=20
- 		if (ctx->reg_int & mask_ue)
--			edac_device_handle_ue(l2c->edac_dev, 0, 0, msg);
-+			edac_device_handle_ue(l2c->edac_dev, 0, 0, seq_buf_str(&s));
- 		else if (ctx->reg_int & mask_ce)
--			edac_device_handle_ce(l2c->edac_dev, 0, 0, msg);
-+			edac_device_handle_ce(l2c->edac_dev, 0, 0, seq_buf_str(&s));
-=20
- 		l2c->ring_tail++;
- 	}
+ 	input_dev->name =3D synusb->name;
+ 	input_dev->phys =3D synusb->phys;
 --=20
 2.55.0.1032.g73a4cd73de-goog
 
