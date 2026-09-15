@@ -1,85 +1,127 @@
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+Received: from mail.sprinte.eu (mail.sprinte.eu [141.95.128.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5BB443E38;
-	Tue, 15 Sep 2026 07:11:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE186456E11
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 07:15:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.95.128.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789456301; cv=none; b=KLvhzKd6m33VRglK4pkyZFk7B1ZZOvGOxeW8nvJAKepGnQw2keTHC46pXiH7n8qZQEsSCmgTEua1nLnXkRsP6Qcbfni9pIkdrCqtAEBvmXFqWLmJXGCvey1+zOKqYSGjuiuirRujr9dn5W4tnycDktLIwvOoJgJpNONvCIWUsdE=
+	t=1789456522; cv=none; b=KC7Y/sykHkVZ0EZN+mTXMGm3hRLJwwwVGq4tI5LI6yIbCLEEJTWMKEW2vYtOwHeFTA89O5BUBYtfu2zSVCYSbatdiLtBTJicA2lJlejSVJ8Bt3pY3DgmcCb1Cl7IoAlrmaQ3dWCw0jJrR24M5FfifvwGpUfDrL8806Rie4mhsw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789456301; c=relaxed/simple;
-	bh=2ehmnUofZbTdLc1u5yR/J6v+urGofaLLn0RAmXhFd9Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uDE3/rPjrkYqLOdZ2OJDwu3g8o5GwWwvxw2egoUjc1L8ce2UpQZMkVdyng6o9Xn2V9QPIo4cNqtZRUhKE7CyKoqAkIWwGfhXmagea7AbXaoxLk1SB2FsRWRSENkxMe7X0lp9QAlF5ghNpnrmwr7uzvZfgONZNXllh372jmmk054=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=Ice7pvFc; arc=none smtp.client-ip=217.70.183.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
+	s=arc-20240116; t=1789456522; c=relaxed/simple;
+	bh=uVWRdWECFaQNJZ0AdbRlSJGtwd7Two27IMtHrbj4iug=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=K/uaLkhFvlvbKixben/+Vo3K+Y6ALtIFinO2IZjqNiMSNt0vwi9PuTKLmKlaFVS/BnwGVme360r697PQ6H7ogsQAe2Zm9v7MVX24ExVegqjx4UfyHhbhMD6uVyjXoQhhXmW9B0/iOXEtXfuWvQ07Kji+BkCHfucFH99G6hDrEpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sprinte.eu; spf=pass smtp.mailfrom=sprinte.eu; dkim=pass (2048-bit key) header.d=sprinte.eu header.i=@sprinte.eu header.b=EZmxQaFY; arc=none smtp.client-ip=141.95.128.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sprinte.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sprinte.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="Ice7pvFc"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3C2A71F47F;
-	Tue, 15 Sep 2026 07:11:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
-	s=gm1; t=1789456296; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:in-reply-to:in-reply-to:  references:references;
-	bh=/k+y3LoBfQZyu4Fn8UExwUdQIbMcggqcKxO9y+XqHO0=;
-	b=Ice7pvFcBVgU+jIYOKrOoCHCoGn8cZe1IovgDa3pZN6T0Tg2l4ujy8yUg3wJp3bDNH97Ms
-	orM8nKgxTmqnnmHTYTECrvTp78lX2KbS4pjy4zmUdniUkCf/D9VWuW6WFhoGoQYlGr47pT
-	VCTcH94RwppT5Puvepm8gtOD8T4YfCQ5Fkn5BQuniv+NLGtancWXAOILM08rYJDK4icBqy
-	/Z1ZeGt+OmRiDD1WS3Xx6lzOfbJtEplccp48s88bTu5V6t3hcx72jl+jTdb43HQXBBlJ2G
-	q7rE2ENfs0pUXI8q9tevsgqtpTDRCJtxL8v0lo50RClXcgKvdAtAwnqvUBiRjA==
-Date: Tue, 15 Sep 2026 09:11:31 +0200
-From: Arthur Crepin Leblond <arthur@marmottus.net>
-To: Juha-Matti Tilli <juha-matti.tilli@iki.fi>
-Cc: Manivannan Sadhasivam <mani@kernel.org>, linux-arm-msm@vger.kernel.org,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
-	Mihai Moldovan <ionic@ionic.de>, Denis Kenzior <denkenz@gmail.com>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Andy Gross <agross@kernel.org>, linux-kernel@vger.kernel.org,
-	mhi@lists.linux.dev, linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org, ath12k@lists.infradead.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v7 12/15] net: qrtr: mhi: Report endpoint id in sysfs
-Message-ID: <20260915071131.GA30612@marmottus.net>
-Reply-To: arthur@marmottus.net
-References: <20260915054207.2513877-1-juha-matti.tilli@iki.fi>
- <20260915054207.2513877-13-juha-matti.tilli@iki.fi>
+	dkim=pass (2048-bit key) header.d=sprinte.eu header.i=@sprinte.eu header.b="EZmxQaFY"
+Received: from S1044812.EX793143.lan (2001:41d0:11b:2f00::8d5f:80ce) by
+ S1044812.EX793143.lan (2001:41d0:11b:2f00::8d5f:80ce) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 15 Sep 2026 09:15:10 +0200
+Received: from S1044812.EX793143.lan ([fe80::90d1:6ba3:6aa1:fae0]) by
+ S1044812.EX793143.lan ([fe80::90d1:6ba3:6aa1:fae0%6]) with mapi id
+ 15.02.2562.046; Tue, 15 Sep 2026 09:15:10 +0200
+From: Julien Blanc <julien.blanc@sprinte.eu>
+To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC: "o.rempel@pengutronix.de" <o.rempel@pengutronix.de>,
+	"hkallweit1@gmail.com" <hkallweit1@gmail.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "andrew@lunn.ch" <andrew@lunn.ch>
+Subject: [PATCH v3] Add config phase for dp83td510e phy
+Thread-Topic: [PATCH v3] Add config phase for dp83td510e phy
+Thread-Index: AQHdROHxLvvc7sWM+kiDMB+rdv5Pyw==
+Date: Tue, 15 Sep 2026 07:15:09 +0000
+Message-ID: <370d52b3f5da403b5a92226a92cb23cd92c4b4a4.camel@sprinte.eu>
+Accept-Language: fr-FR, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <B2CB37E90333FD4A87F7531C19AAE896@EX793143.lan>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260915054207.2513877-13-juha-matti.tilli@iki.fi>
-X-GND-Sasl: arthur@marmottus.net
-X-GND-Score: -100
-X-GND-Cause: dmFkZTGFzgp8DpaceHJXsLAY9igazZeLQ/Fb6nk/Zr+ipgXP7EdxuXSxa9lVDbKYEYekx2BahP04hh/UrfivTn9rNoAad/Ihbj1N8SKUiFDGm4QJMUcWFIP1SD5NWpovXOlLm3nzzJ+obYoPfs1i9jCQCcL/YPO7L6JxSZ4RjmvNJIDylGwDBDMWyfMqT6ULwSpNIY5g4ZxkdNQC4ndb70firUg16CnCPEFui1j9O1Rxt4fvlhU9XsUsW9gIIEqgGlikLVBc/V6kTPao3l+ipIJ+Abn+I5aGYA33UnXdhq2uBu9KiYninSq5SUbgvE97pS0cJaovjY7CKRYzbvX1MZDbi9NHfC3qQxjGZHlKJRaFi20WDHCYpFFYSzwQEtAkZEkF2NLmpv3OOpj3vEa4hJLgCC1g249wkPnivMuZXKCBaoLzUGUsZ9jRwAtdyaE+Gi9Wo5j2Iog+76+ejo4Q7A+TKckc5iTxz9VEuKMrVPV6Sf8xBjuq/Dwz4dVAU8gpx8RhKxxmyYVYI4yC4XYJnmFNqhjm4P2FTG50un8qTWskfdnAeX/VFhYiDPp6chbdqGiqQ7qsvggyEg0aIviPpu3J7pTId1vNiRB9fv8jrWg7fjqMLhub0jBHpSDha0ZtUIlUjQbGJ0oVKHxrnfD3sCR8Ae6jxh3B6AVgUXj5DJXESVePvg
-X-GND-State: clean
+DKIM-Signature: v=1; a=rsa-sha256; d=sprinte.eu; s=ovhex803668-selector1;
+ c=relaxed/relaxed; t=1789456510; h=from:to:subject:date;
+ bh=uVWRdWECFaQNJZ0AdbRlSJGtwd7Two27IMtHrbj4iug=;
+ b=EZmxQaFYvxUxvJX3aRTPZ3qOSrKgzPbO0+lDdrF8IJX+76D/+18rfBojbKnRhq55Mf2JglbseR0h7KqnJyOaXGczQDtojwwIrMGGJ4aBBuv+03lllJEYT4zroS4BqnBYsg1BjnaolR8eq1XvL2AXBNzKgbZx+uDqvLPO7yPD5MHcvwxG/17RwMKmXgoQl39/WrLQ3488qcPzY+wv3bcZbTwSQ1a4xOxgtBWWMAT5OBBDuFpp9HQv2erXPROvEOu2cO2T0m88Omwqh3asOwT0gm8PDi1fz/Wgt2ITvwRnNLW+O84Hjn9zIMRsegxfSwysJR16bzZWj3k12EAo+yPPbQ==
 
-On Tue, Sep 15, 2026 at 08:42:04AM +0300, Juha-Matti Tilli wrote:
->+static ssize_t endpoint_show(struct device *dev,
->+			     struct device_attribute *attr, char *buf)
->+{
->+	struct qrtr_mhi_dev *qdev = dev_get_drvdata(dev);
->+
->+	return sprintf(buf, "%u\n", qdev->ep.id);
->+}
->+
->+static DEVICE_ATTR_RO(endpoint);
-
-I think you could use sysfs_emit instead of sprintf.
-
-https://docs.kernel.org/filesystems/sysfs.html#reading-writing-attribute-data
-
-Arthur
+QWRkIGEgY29uZmlnIHBoYXNlIGZvciB0aGUgVGV4YXMgSW5zdHJ1bWVudHMgRFA4M1RENTEwRSBl
+dGhlbmV0IFBIWQ0KDQpUaGUgY29uZmlnIHBoYXNlIGN1cnJlbnRseSBzZXRzIHRoZSBmb2xsb3dp
+bmcgcHJvcGVydGllcyBmcm9tIHRoZQ0KZGV2aWNlIHRyZWU6DQogICogUk1JSSAvIFJHTUlJIG1v
+ZGUgKG5vdGUgOiBSTUlJIG1hc3RlciAvIHNsYXZlIGNhbiBvbmx5IGJlIHNldA0KICAgIGJ5IHN0
+cmFwcyBhbmQgY2Fubm90IGJlIGNoYW5nZWQgYXQgcnVudGltZSkNCiAgKiBSR01JSSBkZWxheXMu
+IFRoZXNlIGRlbGF5cyBjYW4gYmUgZW5hYmxlZCBvbiB0aGUgcGh5IHNpZGUsIG9ubHkNCiAgICBh
+cyBhIGJvb2xlYW4uIERlbGF5cyBhcmUgZW5hYmxlZCBpZiBwaHktbW9kZSBpcyByZ21paS1pZCwg
+b3INCiAgICByZ21paS1bcnh8dHhdaWQgd2hpY2ggZW5hYmxlcyBvbmx5IHRoZSBjb3JyZXNwb25k
+aW5nIGRlbGF5Lg0KICAqIEluIGNhc2UgYW5vdGhlciBtb2RlIGlzIGVuY291bnRlcmVkLCBkbyBu
+b3RoaW5nIGFuZCByZXR1cm4NCiAgICBzdWNjZXNzIChrZWVwIG9sZCBiZWhhdmlvcikNCg0KU2ln
+bmVkLW9mZi1ieTogSnVsaWVuIEJsYW5jIDxqdWxpZW4uYmxhbmNAc3ByaW50ZS5ldT4NCi0tLQ0K
+Q2hhbmdlcyBpbiB2MzoNCi0gZml4IHJldHVybmluZyBhbiB1bmluaXRpYWxpemVkIHZhbHVlIGlm
+IG1vZGUgd2FzIG5vdCByZ21paVsteHhdDQogIG9yIHJtaWkgKG1paSBpcyBhIHZhbGlkIG1vZGUg
+Zm9yIHRoaXMgcGh5IGFzIHdlbGwpLiBSZXR1cm4NCiAgc3VjY2VzcyBpbiB0aGF0IGNhc2UgdG8g
+a2VlcCB0aGUgb2xkIGRyaXZlciBiZWhhdmlvci4NCi0gdXBkYXRlZCBjb21taXQgZGVzY3JpcHRp
+b24gYWNjb3JkaW5nbHkNCg0KQ2hhbmdlcyBpbiB2MjoNCi0gcmVtb3ZlIHRoZSB1c2FnZSBvZiBw
+aHlfZ2V0X2ludGVybmFsX2RlbGF5DQotIHVzZSBib29sZWFucyB0byBtYWtlIGl0IGNsZWFyIHRo
+YXQgdGh5IHBoeSBzdXBwb3J0cyBvbmx5IGENCiAgZml4ZWQgZGVsYXkgYWN0aXZhdGlvbiwgbm8g
+Y29uZmlndXJhYmxlIGRlbGF5DQoNCiBkcml2ZXJzL25ldC9waHkvZHA4M3RkNTEwLmMgfCA2OCAr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrDQogMSBmaWxlIGNoYW5nZWQsIDY4
+IGluc2VydGlvbnMoKykNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3BoeS9kcDgzdGQ1MTAu
+YyBiL2RyaXZlcnMvbmV0L3BoeS9kcDgzdGQ1MTAuYw0KaW5kZXggOWU5YTQxYmY2NDU3Li5mNDc4
+MDI4MjVjZmUgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL25ldC9waHkvZHA4M3RkNTEwLmMNCisrKyBi
+L2RyaXZlcnMvbmV0L3BoeS9kcDgzdGQ1MTAuYw0KQEAgLTMwLDYgKzMwLDEyIEBADQogI2RlZmlu
+ZSBEUDgzVEQ1MTBFX0lOVDFfTElOSwkJCUJJVCgxMykNCiAjZGVmaW5lIERQODNURDUxMEVfSU5U
+MV9MSU5LX0VOCQkJQklUKDUpDQogDQorI2RlZmluZSBEUDgzVEQ1MTBFX1JDU1IJCQkJMHgxNw0K
+KyNkZWZpbmUgRFA4M1RENTEwRV9STUlJX01PREVfRU4JCQlCSVQoNSkNCisjZGVmaW5lIERQODNU
+RDUxMEVfUkdNSUlfTU9ERV9FTgkJQklUKDkpDQorI2RlZmluZSBEUDgzVEQ1MTBFX1RYX0NMS19T
+SElGVAkJCUJJVCgxMSkNCisjZGVmaW5lIERQODNURDUxMEVfUlhfQ0xLX1NISUZUCQkJQklUKDEy
+KQ0KKw0KICNkZWZpbmUgRFA4M1RENTEwRV9DVFJMCQkJCTB4MWYNCiAjZGVmaW5lIERQODNURDUx
+MEVfQ1RSTF9IV19SRVNFVAkJQklUKDE1KQ0KICNkZWZpbmUgRFA4M1RENTEwRV9DVFJMX1NXX1JF
+U0VUCQlCSVQoMTQpDQpAQCAtNjQ5LDYgKzY1NSw2NyBAQCBzdGF0aWMgaW50IGRwODN0ZDUxMF9j
+b25maWdfYW5lZyhzdHJ1Y3QgcGh5X2RldmljZSAqcGh5ZGV2KQ0KIAlyZXR1cm4gZ2VucGh5X2M0
+NV9jaGVja19hbmRfcmVzdGFydF9hbmVnKHBoeWRldiwgY2hhbmdlZCk7DQogfQ0KIA0KK3N0YXRp
+YyBib29sIGRwODN0ZDUxMF9jb25maWdfcmdtaWlfcnhfZGVsYXkoc3RydWN0IHBoeV9kZXZpY2Ug
+KnBoeWRldikNCit7DQorCXJldHVybiBwaHlkZXYtPmludGVyZmFjZSA9PSBQSFlfSU5URVJGQUNF
+X01PREVfUkdNSUlfSUQgfHwNCisJICAgICAgIHBoeWRldi0+aW50ZXJmYWNlID09IFBIWV9JTlRF
+UkZBQ0VfTU9ERV9SR01JSV9SWElEOw0KK30NCisNCitzdGF0aWMgYm9vbCBkcDgzdGQ1MTBfY29u
+ZmlnX3JnbWlpX3R4X2RlbGF5KHN0cnVjdCBwaHlfZGV2aWNlICpwaHlkZXYpDQorew0KKwlyZXR1
+cm4gcGh5ZGV2LT5pbnRlcmZhY2UgPT0gUEhZX0lOVEVSRkFDRV9NT0RFX1JHTUlJX0lEIHx8DQor
+CSAgICAgICBwaHlkZXYtPmludGVyZmFjZSA9PSBQSFlfSU5URVJGQUNFX01PREVfUkdNSUlfVFhJ
+RDsNCit9DQorDQorc3RhdGljIGludCBkcDgzdGQ1MTBfY29uZmlnX2luaXQoc3RydWN0IHBoeV9k
+ZXZpY2UgKnBoeWRldikNCit7DQorCWludCByZ21paV9kZWxheSA9IDA7DQorCWJvb2wgcnhfaW50
+X2RlbGF5Ow0KKwlib29sIHR4X2ludF9kZWxheTsNCisJaW50IHJldDsNCisNCisJaWYgKHBoeV9p
+bnRlcmZhY2VfaXNfcmdtaWkocGh5ZGV2KSkgew0KKwkJcnhfaW50X2RlbGF5ID0gZHA4M3RkNTEw
+X2NvbmZpZ19yZ21paV9yeF9kZWxheShwaHlkZXYpOw0KKwkJLyogU2V0IERQODNURDUxMEVfUlhf
+Q0xLX1NISUZUIHRvIGVuYWJsZSByeCBjbGsgaW50ZXJuYWwgZGVsYXkgKi8NCisJCWlmIChyeF9p
+bnRfZGVsYXkpDQorCQkJcmdtaWlfZGVsYXkgfD0gRFA4M1RENTEwRV9SWF9DTEtfU0hJRlQ7DQor
+DQorCQl0eF9pbnRfZGVsYXkgPSBkcDgzdGQ1MTBfY29uZmlnX3JnbWlpX3R4X2RlbGF5KHBoeWRl
+dik7DQorDQorCQkvKiBTZXQgRFA4M1RENTEwRV9UWF9DTEtfU0hJRlQgdG8gZW5hYmxlIHR4IGNs
+ayBpbnRlcm5hbCBkZWxheSAqLw0KKwkJaWYgKHR4X2ludF9kZWxheSkNCisJCQlyZ21paV9kZWxh
+eSB8PSBEUDgzVEQ1MTBFX1RYX0NMS19TSElGVDsNCisNCisJCXJldCA9IHBoeV9tb2RpZnlfbW1k
+KHBoeWRldiwgTURJT19NTURfVkVORDIsIERQODNURDUxMEVfUkNTUiwNCisJCQkJICAgICBEUDgz
+VEQ1MTBFX1JYX0NMS19TSElGVCB8IERQODNURDUxMEVfVFhfQ0xLX1NISUZULA0KKwkJCQkgICAg
+IHJnbWlpX2RlbGF5KTsNCisJCWlmIChyZXQpDQorCQkJcmV0dXJuIHJldDsNCisNCisJCXJldCA9
+IHBoeV9zZXRfYml0c19tbWQocGh5ZGV2LCBNRElPX01NRF9WRU5EMiwNCisJCQkJICAgICAgIERQ
+ODNURDUxMEVfUkNTUiwgRFA4M1RENTEwRV9SR01JSV9NT0RFX0VOKTsNCisNCisJCWlmIChyZXQp
+DQorCQkJcmV0dXJuIHJldDsNCisNCisJfSBlbHNlIGlmIChwaHlkZXYtPmludGVyZmFjZSA9PSBQ
+SFlfSU5URVJGQUNFX01PREVfUk1JSSkgew0KKwkJLy8gc2V0IFJNSUlfTU9ERV9FTiwgY2xlYXIg
+UkdNSUlfTU9ERV9FTiAoZXhjbHVzaXZlKQ0KKwkJcmV0ID0gcGh5X21vZGlmeV9tbWQocGh5ZGV2
+LCBNRElPX01NRF9WRU5EMiwgRFA4M1RENTEwRV9SQ1NSLA0KKwkJCQkgICAgIERQODNURDUxMEVf
+Uk1JSV9NT0RFX0VOIHwgRFA4M1RENTEwRV9SR01JSV9NT0RFX0VOLA0KKwkJCQkgICAgIERQODNU
+RDUxMEVfUk1JSV9NT0RFX0VOKTsNCisJCWlmIChyZXQpDQorCQkJcmV0dXJuIHJldDsNCisJfSBl
+bHNlIHsNCisJCS8vIG1heSBiZSBSTUlJLCB3aGljaCBpcyBzdXBwb3J0ZWQsIG9yIHNvbWV0aGlu
+ZyBlbHNlLiBKdXN0IA0KKwkJLy8gcmV0dXJuIHN1Y2Nlc3MgdG8ga2VlcCB0aGUgb2xkIGJlaGF2
+aW9yIGFuZCBub3QgYnJlYWsgDQorCQkvLyBhbnl0aGluZy4gQ29uZmlndXJhdGlvbiBtYXkgaGF2
+ZSBiZWVuIGRvbmUgYnkgc3RyYXBzIHNvIA0KKwkJLy8gaXQncyBiZXR0ZXIgdG8ga2VlcCBhcy1p
+cy4NCisJCXJldCA9IDA7DQorCX0NCisNCisJcmV0dXJuIHJldDsNCit9DQorDQogc3RhdGljIGlu
+dCBkcDgzdGQ1MTBfZ2V0X3NxaShzdHJ1Y3QgcGh5X2RldmljZSAqcGh5ZGV2KQ0KIHsNCiAJaW50
+IHNxaSwgcmV0Ow0KQEAgLTk0Miw2ICsxMDA5LDcgQEAgc3RhdGljIHN0cnVjdCBwaHlfZHJpdmVy
+IGRwODN0ZDUxMF9kcml2ZXJbXSA9IHsNCiAJLm5hbWUJCT0gIlRJIERQODNURDUxMEUiLA0KIA0K
+IAkuZmxhZ3MgICAgICAgICAgPSBQSFlfUE9MTF9DQUJMRV9URVNULA0KKwkuY29uZmlnX2luaXQJ
+PSBkcDgzdGQ1MTBfY29uZmlnX2luaXQsDQogCS5wcm9iZQkJPSBkcDgzdGQ1MTBfcHJvYmUsDQog
+CS5jb25maWdfYW5lZwk9IGRwODN0ZDUxMF9jb25maWdfYW5lZywNCiAJLnJlYWRfc3RhdHVzCT0g
+ZHA4M3RkNTEwX3JlYWRfc3RhdHVzLA0KLS0gDQoyLjQ3LjMNCg==
