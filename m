@@ -1,40 +1,39 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from mout.web.de (mout.web.de [217.72.192.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAD627AC31
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 09:22:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B76243F8DE;
+	Tue, 15 Sep 2026 09:23:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789464169; cv=none; b=KNSZBerVKyr2wSeKpn+ifCkk/1xT963qtYgAOVuDi2oWj+l903Rc8SyRw+ZHF0LyOUiAYuzzSqHYL3nv1RryTlxQbizoVziecRgVVrQQEg9qypEkp8w2NZf0ulJ1Ws9u8KZCQQMTAML0DPylp/jKbWYG6w/LhMjRSwf3KaBs04o=
+	t=1789464206; cv=none; b=adV9UJ4xcgP1wd0V/y0mgaiRZbmDK+ec0m5793+GgchPOJU+3B0ydJ5doMHjod2iil0qW4rMGeqOodbW2pkWp4i/UtqK19loK7jCjsKw7KBOLWO9m/wXDtcOU5lH01z0W0kVHYS1p1KPRJFwiEXfu0Bp7o+NvyO2pk2fq3SBvyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789464169; c=relaxed/simple;
-	bh=wun3G+cqwc1dSRFYbryu6RkHA7eXyxrMZ8RSZn4Xysg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=skmainXxDaUpTaq1Aqdj7f7u9QMNjCn9qfRIrnLzJiRs+XltomrTJs+gTlzaNQJslICZNavzJ5ZXVZde+81Zm6RPPe1cY8B235LOL0Ij0ebcMSNUJTxXqsass9nh2KSWwZDRE+i1CGHRSy/X0KW7t4E37fb/LBuexSdmaz8GzlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ZkSiaGe8; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1789464206; c=relaxed/simple;
+	bh=TsRXaS9SZYfDbO7W+pCGc7Nt6LwfyKt9qqW8YAiQGQA=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=nLL4/enBIAfNEVWFdwUAdxGNp9iT3uob0m03Fkh/yYVHQ3V6wG2B6E35hPK7MW2p+HMJNmuwZws6c4t7eX7jk8SJLRpcas1JfU7jztWi6byr2UTftd2HkB5SkpKRnIhCGXenW2HMXeb2Srq1hBDq96N8SMYsitXeCitNX16kqT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=aUbpdO/a; arc=none smtp.client-ip=217.72.192.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZkSiaGe8"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 6A078C5CD50;
-	Tue, 15 Sep 2026 09:23:20 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id E609B60498;
-	Tue, 15 Sep 2026 09:22:36 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BBB8D11C7AF52;
-	Tue, 15 Sep 2026 11:22:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789464155; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=xKrTUUhbI7sI2PzS4a1SI9XGWx76CH+QLPWd6Eq12AQ=;
-	b=ZkSiaGe8tNEK0+wK79kKgBJh+SqOBFFDIb8uZNNnBQ5EGPJX9XlwghiQM30NMdvVJ9/037
-	1WrA2BpA3EA81FDzV2eJXc7fsG34MF/hVEA0+oEI2Qnel1d3qYuWrmTOubihdtmv8kQGpY
-	MJptYFHYHZa1nAylr6wQRyXPasmMLsH44ut2bImgZ6jqUkBB/AjCaDkOcNRIdR2vjx9Y0Q
-	gYY/jcJ6Dn9BKK6oepe6zcZ+kJt7uOUPGx6H+C7fzQbFjpjPx/XLaQEqsL43D4sybQSi27
-	3oqn+anSEZ3h5787xuB60j4Kg9D+2QEz6q182GNFPK6++X4ZLL9rIyub54Tgtg==
-Message-ID: <33506454-773a-4e04-8e76-6802208406c1@bootlin.com>
-Date: Tue, 15 Sep 2026 11:22:15 +0200
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="aUbpdO/a"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1789464196; x=1790068996; i=markus.elfring@web.de;
+	bh=J9SsepJGlYSye8th6dN3yKVP2gjBVCtwjfWDerILqYM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:From:
+	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=aUbpdO/aKTkIOd6Vbz4BYac6jmfRWvz3hfKK9SDljX0kNtPoDekXKK6WipgvLaNF
+	 9Jrx9mW0haGD7al1uZ/wxgPAW7hyY/c1l8GgUKzEMqsnOXgd3h1Oc4K8z8RFPaMEe
+	 7cfzZG0kaMYqbxs7uQzwtZB2F1cxxDMe0WPb82tWvsIAwPBdoivjhO0QxoUnpQM7L
+	 XHOpYmKMFFeEl/1xgMEuIUlSrMHZSM+NRHGCtmmo0J8pIyrnR7xanHLYyvYbLG7U5
+	 t2BTLWhJzit9IZKc+TD9eRuXf17hKi4YF9DGiTS0Ak2t5mBDCSQ2JdtcDe/xgMpR0
+	 gVWw36q3VYWwFvuvog==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from client.hidden.invalid by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1M7elj-1x9RGA3vsz-003Hqp; Tue, 15
+ Sep 2026 11:23:16 +0200
+Message-ID: <15f151c7-58c8-4116-8a03-e985fd132b0f@web.de>
+Date: Tue, 15 Sep 2026 11:23:01 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,332 +41,181 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 1/6] net: stmmac: selftests: Support running
- selftests on DSA conduits
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, linux@armlinux.org.uk, hkallweit1@gmail.com,
- alexis.lothore@bootlin.com, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, kernel@esmil.dk, minda.chen@starfivetech.com,
- neil.armstrong@linaro.org, khilman@baylibre.com, jbrunet@baylibre.com,
- martin.blumenstingl@googlemail.com, jan.petrous@oss.nxp.com,
- ovidiu.panait.rb@renesas.com, Jose.Abreu@synopsys.com, nb@tipi-net.de,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- thomas.petazzoni@bootlin.com, linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, PKneuper@dspace.de,
- david.laight.linux@gmail.com
-References: <20260911212028.1497613-2-maxime.chevallier@bootlin.com>
- <20260915084530.75251-1-pabeni@redhat.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260915084530.75251-1-pabeni@redhat.com>
+Content-Language: en-GB, de-DE
+To: linux-ppp@vger.kernel.org, netdev@vger.kernel.org,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Jiri Slaby <jirislaby@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Qingfang Deng <qingfang.deng@linux.dev>,
+ Tom Parkin <tparkin@katalix.com>
+Cc: LKML <linux-kernel@vger.kernel.org>, Kees Cook <kees@kernel.org>
+From: Markus Elfring <Markus.Elfring@web.de>
+Subject: [PATCH v2 net-next] ppp_synctty: Use common error handling code in
+ ppp_sync_txmunge()
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:rrk3iWXrhJYEH/uxx8Dcqu0F9y4Jwap4VUU0PwCRGfhuPqS+2nh
+ DkSmxdgaQTHAMGH3MBD6K2K40nvnIJNdV7BNsjujWHNLuxw8hrIfCdUW8u7uUBtNSrBoNeI
+ EWDUp8Fr69yXKq6MGSR57iCt6WCedbiu8OV8XKuqQ2wfdCGlKy+n8OjqYEa8rE4R6xB9u9r
+ syhCGrkon0Eh7D5FtuzsQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:MFrb/7U7jBQ=;C/Z2u4k/toe88RtLz4zVf9yMIEr
+ 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
+ wJRT/Qnfmb0nh
 
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Tue, 15 Sep 2026 10:48:11 +0200
 
+Use an additional label so that a bit of exception handling can be better
+reused at the end of this function implementation.
 
-On 9/15/26 10:45, Paolo Abeni wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> Full review at: https://netdev-ai.bots.linux.dev/sashiko/
-> ---
-> net: stmmac: selftests: Support running selftests on DSA conduits
-> 
-> The patch wraps the selftests' dev_add_pack()/dev_remove_pack() calls in
-> new stmmac_sft_add_pack()/stmmac_sft_remove_pack() helpers.  When the
-> interface is a DSA conduit, an ETH_P_ALL packet_type is registered instead
-> and a proxy handler, stmmac_sft_filter(), compares the ethernet header's
-> h_proto before forwarding a clone to the original validator.
-> 
-> A few questions below, one on the commit message and three on the code.
-> 
->> The ARP offload's packet handler is left alone, this feature is just not
->> implemented in stmmac and due for removal.
-> 
-> [Severity: Medium]
-> Is this description accurate?  ARP offload does look implemented in two
-> places:
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
 
-ARM offload is gone on net-next, it has never been implemented properly as
-only half the machinery is there : the feature can be enabled/disabled, but
-nothing ever programmed the IPv4 address :
+v2:
+The application of a known source code transformation pattern could be rep=
+eated
+after the commit 8aaeb56aff2a557a88f83ae866da2c91ad247e59 ("ppp_synctty:
+ensure a writeable skb header") was integrated.
 
-https://lore.kernel.org/netdev/20260831071351.354255-1-maxime.chevallier@bootlin.com/
+ drivers/net/ppp/ppp_synctty.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-The ethtool selftests don't really bring anything, and were failing on all
-platforms that support this, I don't think it's worth backporting ARP offload
-removal or the stmmac_sft_add_pack machinery :(
+diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.c
+index ebd62a7ab54b..9e440e110e9f 100644
+=2D-- a/drivers/net/ppp/ppp_synctty.c
++++ b/drivers/net/ppp/ppp_synctty.c
+@@ -436,10 +436,9 @@ ppp_sync_txmunge(struct syncppp *ap, struct sk_buff *=
+skb)
+ 	int islcp;
+=20
+ 	/* Ensure we can safely access protocol field and LCP code */
+-	if (!pskb_may_pull(skb, 3)) {
+-		kfree_skb(skb);
+-		return NULL;
+-	}
++	if (!pskb_may_pull(skb, 3))
++		goto free_skb;
++
+ 	data  =3D skb->data;
+ 	proto =3D get_unaligned_be16(data);
+=20
+@@ -455,10 +454,9 @@ ppp_sync_txmunge(struct syncppp *ap, struct sk_buff *=
+skb)
+=20
+ 	/* prepend address/control fields if necessary */
+ 	if ((ap->flags & SC_COMP_AC) =3D=3D 0 || islcp) {
+-		if (skb_cow_head(skb, 2)) {
+-			kfree_skb(skb);
+-			return NULL;
+-		}
++		if (skb_cow_head(skb, 2))
++			goto free_skb;
++
+ 		skb_push(skb,2);
+ 		skb->data[0] =3D PPP_ALLSTATIONS;
+ 		skb->data[1] =3D PPP_UI;
+@@ -470,6 +468,10 @@ ppp_sync_txmunge(struct syncppp *ap, struct sk_buff *=
+skb)
+ 		ppp_print_buffer ("send buffer", skb->data, skb->len);
+=20
+ 	return skb;
++
++free_skb:
++	kfree_skb(skb);
++	return NULL;
+ }
+=20
+ /*
 
-> 
-> drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c:
-> 	static void dwmac4_set_arp_offload(struct mac_device_info *hw, bool en,
-> 					   u32 addr)
-> 
-> drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c:
-> 	static void dwxgmac2_set_arp_offload(struct mac_device_info *hw, bool en,
-> 					     u32 addr)
-> 
-> dwmac4_set_arp_offload() is wired into dwmac4_ops, dwmac410_ops and
-> dwmac510_ops, and dwxgmac2_set_arp_offload() into dwxgmac210_ops and
-> dwxlgmac2_ops.
-> 
-> stmmac_test_arpoffload() only bails out early with:
-> 
-> 	if (!priv->dma_cap.arpoffsel)
-> 		return -EOPNOTSUPP;
-> 
-> so on those cores with arpoffsel set the test really runs, and it is still
-> listed in stmmac_selftests as "ARP Offload".  Since it keeps the raw
-> dev_add_pack(&tpriv->pt) with pt.type = htons(ETH_P_ARP), does it still
-> report a spurious failure in ethtool -t on a DSA conduit, for the same
-> ETH_P_XDSA reason this patch fixes elsewhere?  Would switching that pair to
-> stmmac_sft_add_pack()/stmmac_sft_remove_pack() cover it as well?
-> 
->> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
->> index 6372ec7c3f317..6503678b646ef 100644
->> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
->> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-> 
-> [ ... ]
-> 
->> @@ -237,6 +238,9 @@ struct stmmac_test_priv {
->>  	struct stmmac_packet_attrs *packet;
->>  	struct packet_type pt;
->>  	struct completion comp;
->> +	__be16 packet_type;
->> +	int (*func)(struct sk_buff *skb, struct net_device *ndev,
->> +		    struct packet_type *pt, struct net_device *orig_ndev);
->>  	int double_vlan;
->>  	int vlan_id;
->>  	int ok;
-> 
-> [ ... ]
-> 
->> @@ -316,6 +320,50 @@ static int stmmac_test_loopback_validate(struct sk_buff *skb,
->>  	return 0;
->>  }
->>  
->> +static int stmmac_sft_filter(struct sk_buff *skb, struct net_device *ndev,
->> +			     struct packet_type *pt,
->> +			     struct net_device *orig_ndev)
->> +{
->> +	struct stmmac_test_priv *tpriv = pt->af_packet_priv;
->> +	struct ethhdr *hdr = eth_hdr(skb);
->> +	int ret = 0;
->> +
->> +	if (hdr->h_proto == tpriv->packet_type) {
->> +		struct sk_buff *nskb = skb_clone(skb, GFP_ATOMIC);
->> +
->> +		if (nskb)
->> +			ret = tpriv->func(nskb, ndev, pt, orig_ndev);
->> +	}
-> 
-> [Severity: Medium]
-> This compares the on-wire ethertype against the value the test registered
-> in pt.type, but for the VLAN tests pt.type is the protocol *after* the tag
-> has been removed:
-> 
-> __stmmac_test_vlanfilt()      pt.type = htons(ETH_P_IP), frame is 802.1Q
-> __stmmac_test_dvlanfilt()     pt.type = htons(ETH_P_8021Q), outer tag is
->                               ETH_P_8021AD
-> stmmac_test_vlanoff_common()  pt.type = ETH_P_IP or ETH_P_8021Q
-> 
-> On a normal interface the core removes the tag before the taps run:
-> 
-> net/core/dev.c:__netif_receive_skb_core() {
-> 	...
-> 	if (eth_type_vlan(skb->protocol)) {
-> 		skb = skb_vlan_untag(skb);
-> 	...
-> 	list_for_each_entry_rcu(ptype, &skb->dev->ptype_all, list) {
-> 	...
-> }
-> 
-> but on a DSA conduit skb->protocol is ETH_P_XDSA, so eth_type_vlan() is
-> false and no untagging happens there.  Doesn't that leave the driver as the
-> only tag remover, and isn't that conditional?
-
-I'm failing to understand that sentence here :( Does this have to do with
-the fact that stmmac has a SW tag stripping fallback ? if so, Peilin He is
-working on it :)
-
-> 
-> drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:stmmac_rx_vlan() {
-> 	if ((vlan_proto == htons(ETH_P_8021Q) &&
-> 	     dev->features & NETIF_F_HW_VLAN_CTAG_RX) ||
-> 	    (vlan_proto == htons(ETH_P_8021AD) &&
-> 	     dev->features & NETIF_F_HW_VLAN_STAG_RX)) {
-> 	...
-> }
-> 
-> NETIF_F_HW_VLAN_CTAG_RX is placed in hw_features on xmac cores, so it is
-> user-toggleable.  After "ethtool -K <conduit> rxvlan off", or with
-> CONFIG_VLAN_8021Q disabled where neither feature nor hw_vlan_en is ever
-> set, the frame should reach the filter with h_proto == 0x8100, the
-> comparison against ETH_P_IP fails, the frame is freed here and the C-VLAN
-> tests time out.  Would matching on the inner protocol (or skipping any
-> VLAN tags before the comparison) be more robust?
-
-That's being reworked to some extent by Ovidiu and Peilin HE, this is something
-I can work on as a follow up once things settle on the VLAN front.
-
-> 
->> +
->> +	kfree_skb(skb);
->> +	return ret;
->> +}
-> 
-> [Severity: Medium]
-> This isn't a bug introduced by this patch, but the validators reached from
-> here derive header offsets from the received IPv4 ihl field while only
-> checking for 33 linear bytes:
-> 
-> stmmac_test_loopback_validate() {
-> 	...
-> 	if (skb_headlen(skb) < (STMMAC_TEST_PKT_SIZE - ETH_HLEN))
-> 		goto out;
-> 	...
-> 	uhdr = (struct udphdr *)((u8 *)ihdr + 4 * ihdr->ihl);
-> 	...
-> 	shdr = (struct stmmachdr *)((u8 *)uhdr + sizeof(*uhdr));
-> 	...
-> 	if (shdr->magic != cpu_to_be64(STMMAC_TEST_PKT_MAGIC))
-> 	...
-> }
-> 
-> With ihl == 15 the shdr->magic read lands roughly 90 bytes past the checked
-> bound.  The same pattern exists in stmmac_test_vlan_validate().  This was
-> already reachable before the patch through the ETH_P_IP ptype registration
-> on priv->dev, and the read stays inside the RX buffer, so the practical
-> effect is stale bytes and possibly a wrong verdict.  Since the new
-> ETH_P_ALL tap widens the set of frames that get here, would it be
-> reasonable to add a length check on the derived offsets along with it?
-
-Not introduced by this patch, I'm ok with sending a followup.
-
-> 
->> +
->> +static void stmmac_sft_add_pack(struct packet_type *pt)
->> +{
->> +	struct stmmac_test_priv *tpriv = pt->af_packet_priv;
->> +
->> +	if (netdev_uses_dsa(tpriv->pt.dev)) {
->> +		tpriv->packet_type = tpriv->pt.type;
->> +		tpriv->func = tpriv->pt.func;
->> +
->> +		/* DSA conduit will report ETH_P_XDSA, so our packet handler
->> +		 * won't match. Let's register a ETH_P_ALL match and filter
->> +		 * manually in stmmac_sft_filter.
->> +		 */
->> +		tpriv->pt.type = htons(ETH_P_ALL);
->> +		tpriv->pt.func = stmmac_sft_filter;
->> +		tpriv->pt.ignore_outgoing = true;
->> +	}
->> +
->> +	dev_add_pack(pt);
->> +}
->> +
->> +static void stmmac_sft_remove_pack(struct packet_type *pt)
->> +{
->> +	dev_remove_pack(pt);
->> +}
->> +
->>  static int __stmmac_test_loopback(struct stmmac_priv *priv,
->>  				  struct stmmac_packet_attrs *attr)
->>  {
-> 
-> [ ... ]
-> 
->> @@ -928,7 +976,7 @@ static int __stmmac_test_vlanfilt(struct stmmac_priv *priv)
->>  	 * HASH values.
->>  	 */
->>  	tpriv->vlan_id = 0x123;
->> -	dev_add_pack(&tpriv->pt);
->> +	stmmac_sft_add_pack(&tpriv->pt);
->>  
->>  	ret = vlan_vid_add(priv->dev, htons(ETH_P_8021Q), tpriv->vlan_id);
->>  	if (ret)
-> 
-> [Severity: High]
-> Can an incoming frame from the switch oops here?  The handler is now
-> installed as an ETH_P_ALL tap while attr.dst is still NULL:
-> 
-> __stmmac_test_vlanfilt() {
-> 	struct stmmac_packet_attrs attr = { };
-> 	...
-> 	tpriv->packet = &attr;
-> 	tpriv->vlan_id = 0x123;
-> 	stmmac_sft_add_pack(&tpriv->pt);
-> 
-> 	ret = vlan_vid_add(priv->dev, htons(ETH_P_8021Q), tpriv->vlan_id);
-> 	...
-> 	for (i = 0; i < 4; i++) {
-> 		...
-> 		attr.dst = priv->dev->dev_addr;
-> 
-> and the VLAN validator dereferences packet->dst without a NULL check,
-> unlike stmmac_test_loopback_validate() which guards it with "if (dst)":
-> 
-> stmmac_test_vlan_validate() {
-> 	...
-> 	if (tpriv->vlan_id) {
-> 		if (skb->vlan_proto != htons(proto))
-> 			goto out;
-> 		if (skb->vlan_tci != tpriv->vlan_id) {
-> 	...
-> 	ehdr = (struct ethhdr *)skb_mac_header(skb);
-> 	if (!ether_addr_equal_unaligned(ehdr->h_dest, tpriv->packet->dst))
-> 	...
-> }
-> 
-> The ETH_P_ALL tap runs before the core's __vlan_hwaccel_clear_tag(), so a
-> received IPv4 frame that stmmac_rx_vlan() stripped into the hwaccel fields
-> with vlan_proto == ETH_P_8021Q and vlan_tci == 0x123 passes the h_proto
-> check in stmmac_sft_filter(), passes the vlan_proto/vlan_tci checks, and
-> then calls ether_addr_equal_unaligned(ehdr->h_dest, NULL).
-> 
-> Before the patch the core cleared the hwaccel tag before ETH_P_IP ptype
-> dispatch, so foreign frames were rejected by the vlan_proto check and this
-> window was not reachable from the wire.  Would setting attr.dst before
-> stmmac_sft_add_pack(), or adding a NULL guard in the validator, close it?
-
-Hm this is a real issue, but not critical IMO as, well, nobody seems to be
-running these selftests, and even less so with DSA. I can send a V4 though,
-or work on that as a followup.
-
-> 
->> @@ -1022,7 +1070,7 @@ static int __stmmac_test_dvlanfilt(struct stmmac_priv *priv)
->>  	 * HASH values.
->>  	 */
->>  	tpriv->vlan_id = 0x123;
->> -	dev_add_pack(&tpriv->pt);
->> +	stmmac_sft_add_pack(&tpriv->pt);
->>  
->>  	ret = vlan_vid_add(priv->dev, htons(ETH_P_8021AD), tpriv->vlan_id);
->>  	if (ret)
-> 
-> [ ... ]
-> 
->> @@ -1293,7 +1341,7 @@ static int stmmac_test_vlanoff_common(struct stmmac_priv *priv, bool svlan)
->>  	tpriv->pt.af_packet_priv = tpriv;
->>  	tpriv->packet = &attr;
->>  	tpriv->vlan_id = 0x123;
->> -	dev_add_pack(&tpriv->pt);
->> +	stmmac_sft_add_pack(&tpriv->pt);
->>  
->>  	ret = vlan_vid_add(priv->dev, htons(proto), tpriv->vlan_id);
->>  	if (ret)
-> 
-> [Severity: High]
-> Same ordering as __stmmac_test_vlanfilt() here: the tap is registered, then
-> vlan_vid_add() runs, and only afterwards does the function do
-> "attr.dst = priv->dev->dev_addr;", so tpriv->packet->dst is NULL for the
-> whole window.
-Yup, same answer as above :)
-
-Maxime
-
-> 
-> [ ... ]
+base-commit: 8aaeb56aff2a557a88f83ae866da2c91ad247e59
+=2D-=20
+2.55.0
 
