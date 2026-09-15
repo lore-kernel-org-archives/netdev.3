@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D893B47F1;
-	Tue, 15 Sep 2026 01:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0033CB91E;
+	Tue, 15 Sep 2026 01:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789437073; cv=none; b=kTsNGnElZ7N2lOc4NaFI67PWMDd9m/B/607jzfwobhHS82r3jLwH/vBmz8n8gffCAJKbgc0C7IX3bt39SUe5oqY962FXE4+u0Oe7ZU44hPdb7AKfx/F38FojEa+QXgz5RgO6LK9F9+s7UcY5n3CZVzhKxJOJySxCUpBIJUSdgQo=
+	t=1789437074; cv=none; b=ARzC3pE1ltNc6YUtzvQmvn/RdGm/cCFT8XPpkZ3TEpoDd/G7U0K8LkSISrbBuwW6/E05kfoT4JRMm9szt6bz66HvcQTn/Pwzsq3L0Bbqlg3aOkDJ8NjTZMqPMyG3SxDctg4mTyaujirgwa/SVij/v2/QTe8IjMys6JNRNklKgXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789437073; c=relaxed/simple;
-	bh=Q4bkzVl6r9PRJl0J6kzF5I/7BEigO3LKXoLOSGpfTNo=;
+	s=arc-20240116; t=1789437074; c=relaxed/simple;
+	bh=7rxEA6VsQyiUnTEZID31MTBLkgBvaJuw7FXnJeHREpU=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=kiGWNUoUVM3skTexEVj6YzGwK6BSz1f7UDwUrZqTN/WzTxVwTXBGsPUr8gDjw0qblGSrR1w5rtOegxHQRhrLRsuzQmGLZS2TaddbzJ7W0D15FWBNSHFj9xBBGIPOg4p/kntzIHCfepR+GE3N0YEN+GRlkBGsDKDSLUbLwmvsHt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C4w44pNn; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=kLN4BqEBf7I/2ge/UTv2p+/v53vwDheXBHsy6hOPzpB2wepK2oSsew1/ie7LO7dy+KcwCsMeu9dO0EUcoJcrRKTFDO+7z7eoiZ6b+RVuX6OOWJKtyUFnbpXQfe703a+FBo6eHz0U6Cgua5k3nYxpJ+lHk0Zwom93DB6d1PkXtN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iBBkg2tf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C4w44pNn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3408C1F00893;
-	Tue, 15 Sep 2026 01:51:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iBBkg2tf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF6B71F000FF;
+	Tue, 15 Sep 2026 01:51:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789437072;
-	bh=SG2c/gPvWKjBdqql/rYjD8xuGADQEmPC+awuQtNQqLw=;
+	s=k20260515; t=1789437073;
+	bh=Mmo4xac/+LrEZqKT9mRhqDm+hzUlhFJcX3h8aVdbZ4s=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=C4w44pNnLQqBB4d9+73WNYJpD2K0nhLkSV7s8u2Gh5fgxWzC77JjevYqFHG7iMFEE
-	 3A2p8SPTkr/4PuJpLHBKN+Vc+uZKRsUSpgonYjl32o31qOZGfcMj9UYE0pA+aT0mG7
-	 cvPp/080wcmYHWJi3afrXmZcZxWbtvCDDNjgZFfhvdniIQ2fhqa2Uth+cUTX5LdQfG
-	 U5mrBiLcDYO19T6unOcIMQOkDN8GVvl43ldI4vSKn5/44ipycuTvQl2ct+zX9CiRpX
-	 UVSjet1QHWURHITCNNtqyMhzcutrcPtHn2B7rTmBq5DnDlOO17/VS/owki0BJRnOL0
-	 +h96LRwux3TCg==
+	b=iBBkg2tfSH2TOeuS7tCB+46YtySEf9xP9bNsp0OMrCDxhuR1erq+760wPyoUk+mgf
+	 B7+l+7yBgIrVvrUHIrRMTgiE0V2eB+HeG3oOSeHoy4IQbF9M15BlXU+x5cO3LwjQZn
+	 K0JpcF5HjJAU9LgA0xQt8Y+wrti6E5ytOf8OseeVfzkz0O0agXXeJlb3Fn2NK0P1yd
+	 aJSRpLymY7+cKwsliS/ueewwJF1lJDWLobmcB4xwFiV/Nsa9PQIfxNXP5q6gyZEU9g
+	 NCcUmAeIBc9QXcdlVXwtjnyQK30w4APTOMQnpRgULuetyfRtDIH0TKE06ggepxrHZm
+	 DDp6lsx4iXoIA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 567D43924FFE;
-	Tue, 15 Sep 2026 01:50:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0F753924FFE;
+	Tue, 15 Sep 2026 01:50:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,37 +37,50 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3 net-next] octeontx2-pf: report port connector type in
- ethtool link ksettings
+Subject: Re: [PATCH net-next v11 0/2] net: phy: add X-Powers AC200/AC300 EPHY
+ support
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178943700688.1306524.15634504647242366321.git-patchwork-notify@kernel.org>
-Date: Tue, 15 Sep 2026 01:50:06 +0000
-References: <20260909040621.397255-1-rkannoth@marvell.com>
-In-Reply-To: <20260909040621.397255-1-rkannoth@marvell.com>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, sgoutham@marvell.com, hkelam@marvell.com
+ <178943700837.1306524.13969208982154394192.git-patchwork-notify@kernel.org>
+Date: Tue, 15 Sep 2026 01:50:08 +0000
+References: <20260909-submit-acx00-of-dynamic-v1-v11-0-eb45e89ef918@gmail.com>
+In-Reply-To: 
+ <20260909-submit-acx00-of-dynamic-v1-v11-0-eb45e89ef918@gmail.com>
+To: James Hilliard <james.hilliard1@gmail.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, andrew@lunn.ch, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, arnd@arndb.de, jedrzej.jagielski@intel.com,
+ andre.przywara@arm.com, wens@kernel.org, jernej.skrabec@gmail.com,
+ maxime.chevallier@bootlin.com, linux-sunxi@lists.linux.dev,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, krzysztof.kozlowski@oss.qualcomm.com
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 9 Sep 2026 09:36:20 +0530 you wrote:
-> From: Hariprasad Kelam <hkelam@marvell.com>
+On Wed, 09 Sep 2026 18:15:36 -0600 you wrote:
+> This submission contains only the networking binding and PHY driver and
+> is intended for net-next. The AC200 I2C register provider was submitted
+> separately for the MFD tree:
 > 
-> otx2_get_link_ksettings() already reports speed, duplex, autoneg, link
-> modes and FEC from CGX firmware shared data, but never fills
-> cmd->base.port.  As a result, ethtool does not show the physical
-> connector type even though firmware provides it in fwdata.port.
+>   https://patch.msgid.link/20260907-submit-ac200-mfd-v11-0-58dd9dc7f69a@gmail.com
+> 
+> The two series can build and be merged independently. AC300 needs only the
+> networking series. The AC200 runtime path additionally needs the separately
+> submitted MFD provider and binding. Their shared design point is the DT
+> representation: the MDIO PHY-package node references the AC200 I2C node for
+> access to package-control registers.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v3,net-next] octeontx2-pf: report port connector type in ethtool link ksettings
-    https://git.kernel.org/netdev/net-next/c/afabe5e67b67
+  - [net-next,v11,1/2] dt-bindings: net: x-powers: add AC200/AC300 EPHY packages
+    https://git.kernel.org/netdev/net-next/c/783f6f1fdcd5
+  - [net-next,v11,2/2] net: phy: add X-Powers AC200/AC300 EPHY driver
+    https://git.kernel.org/netdev/net-next/c/6cc2fbceb49b
 
 You are awesome, thank you!
 -- 
