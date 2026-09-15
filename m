@@ -1,103 +1,183 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9DA3F4DD0;
-	Tue, 15 Sep 2026 18:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 216D643BDB0;
+	Tue, 15 Sep 2026 18:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789496811; cv=none; b=LpR1K8/NSed+3Es7ZDlaGKUKqrGbF1ejYcVOnL7tIHhMDPPZbyTNCLPVoJ+F8LzHMfHaTRP9MnnQrH0KGHNWKdouwlBx/mGb/meb6i52tla9iZuFLyVpIT+Fl5LtR4/cd1K7ObNv1KBnKHZta2ZYS8SFlzOWtZLRbv6aRxeEpRM=
+	t=1789497023; cv=none; b=UrbuLHUZ/DWUitNC2KlhDW+TWonkBWZFuB2UDs3s3+1mnqscNoa7FBlWmzUqxW4iYlL/WVVsD8uarFny6RJLhosVi5veBMEZK5s1O61LPjAFODZA8E1xLuZzOHQbi/2x+veueZs/6Z7zvAk5n0zEmOKrcqB0xCGBjR0g+0xhhgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789496811; c=relaxed/simple;
-	bh=gWf7H/JRy9uLIwg08PvbVwyLXKw8VaP3GyMaxifSlJ0=;
+	s=arc-20240116; t=1789497023; c=relaxed/simple;
+	bh=pKH8xO25YwnfpC2mXfUbhQkwTcYQqjJEajFuWg/A4u8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pyFlDsH1kPL3Oc9xQXZ3mJjN9FxZwf3Uy7w2X8SGjIMXeQZ9p8tdyTlwciDQqPbE5GKKIhAti7sVPjmNvKfIAB7NYZgudnS4EZzfGt4vSWKKbbiteLSzRbksX2c1uPqN6qY303cGRgy54DAT5C0NjZp8smv5myi3ky/xtRy+j4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RzY0pj5O; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=nQ+nuCzFOZKDcvdE/W2DtkdCK07ZQ9EOB7PXALXokMT9HzIlJBXxT/IyCvPHxHCEEiNXsM7hCCDg1Pw9IYFKz0ONc5yTNZFh/LYBT6qVQkKe7LblnsNkXqdFHd9pgXj/loAgW2Uyum8X98wS2Q9A6j3bQ7M6PiqnDWKBSnqn5Lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FtG1AIAh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RzY0pj5O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499561F000FF;
-	Tue, 15 Sep 2026 18:26:49 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FtG1AIAh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC7911F00893;
+	Tue, 15 Sep 2026 18:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789496810;
-	bh=G89MKfJS0hMEArqVaDoqLxkrEZ+w09q0XaispIyKguQ=;
+	s=k20260515; t=1789497021;
+	bh=zCJx1lMoPaoDeiIN5oezRLV8MqYpA3JhuUg8Z+dhoag=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RzY0pj5OE+zHVBg0L0c4XpYfg7KEe5dsK4Dh7oacA1BZzClbmAE2c2dDghl+bn+z1
-	 UYMJXNs1twN0ulJgkNXGtQ1e6VMfXalrSVcToNwzmQyAFi9uPq5ChqIVVhNxyyfQlL
-	 wJIkDDrVyWzlQ/87ZrxS17tYsJ2iQlBWbG+mJUJ8QsmG4tdU2FTNlO2FwWpPNBR3nc
-	 prZMusJ40vC7o7nZixsjYETAv+MjUryC0RFu1VXZ6kWthrx+4xXY4lqaTGmbINE3KW
-	 UCqbpOBvYEQ4l0x/3ZKsvv/ClTd30Mk1pLlIL7/yQpLHfDyvoit3k6HSL4uXtWQgQx
-	 2B7pmYEL4hruw==
-Date: Tue, 15 Sep 2026 19:26:46 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
-	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [GIT PULL] bluetooth 2026-09-07
-Message-ID: <d5676b70-f60b-4ce6-b6e6-de564d5c0a29@sirena.org.uk>
-References: <20260907172648.457103-1-luiz.dentz@gmail.com>
- <20260908135708.552fcead@kernel.org>
- <a0e8bc1e-c237-41fb-b448-9594bd484cfe@sirena.org.uk>
- <CABBYNZKrSve8b=Acj2qu0YBuEZ9u9xHJe-ffRb+78x5KPY8Ntw@mail.gmail.com>
+	b=FtG1AIAh8Ifu90TvPASnvJLKq/3hHoybYyG8CBtKd2A3Tko5EoQZmhxlykHybSWCY
+	 H6+cZEX9BUB3VzICpj+OZxPJ673u94nnolr9H+SDA6dBcoGGYAc9yHJcjV+Ep8BP0l
+	 el5biVBlyvnMpvBBdnmFKteUXHpcuI8Bb8Pu3nE8NtDNIpu6JJu8fFsiOvrLa3Qrgq
+	 NkHBRSaDsJkBM6eE9SQ++npMsQoPqmrvJCP6/7TZu7tvF19A4a5+2+kwcqpI8v/iuX
+	 YN51bg9WV0sHN4tZ47tD/7Vxl/N2tA6azTTrtrat6edEQApqlwzt/pVbGgznFVhGNY
+	 okL3wnYQoU9Ng==
+Date: Tue, 15 Sep 2026 11:30:21 -0700
+From: Kees Cook <kees@kernel.org>
+To: Bill Wendling <morbo@google.com>
+Cc: linux-kernel@vger.kernel.org, codemender-patching+linux@google.com,
+	Russell King <linux@armlinux.org.uk>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>, Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Ian Abbott <abbotti@mev.co.uk>,
+	H Hartley Sweeten <hsweeten@visionengravers.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Matthias Schwarzott <zzam@gentoo.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Anil Gurumurthy <anil.gurumurthy@qlogic.com>,
+	Sudarsana Kalluru <sudarsana.kalluru@qlogic.com>,
+	"Martin K. Petersen" <mkp@kernel.org>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Martin Brandenburg <martin@omnibond.com>,
+	Jiri Pirko <jiri@resnulli.us>, Simon Horman <horms@kernel.org>,
+	Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Kanglong Wang <wangkanglong@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Qiang Ma <maqianga@uniontech.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Ard Biesheuvel <ardb@kernel.org>, Breno Leitao <leitao@debian.org>,
+	Thorsten Blum <blum@kernel.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Lyude Paul <lyude@redhat.com>,
+	Ashutosh Desai <ashutoshdesai993@gmail.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Johan Hovold <johan@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Cryolitia PukNgae <cryolitia@uniontech.com>,
+	Jiaming Zhang <r772577952@gmail.com>,
+	Will Porter <mrwillporter@gmail.com>,
+	Cen Zhang <zzzccc427@gmail.com>,
+	=?iso-8859-1?Q?C=E1ssio?= Gabriel <cassiogabrielcontato@gmail.com>,
+	Rong Zhang <i@rong.moe>, Arun Raghavan <arunr@valvesoftware.com>,
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linux-edac@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org, linux-input@vger.kernel.org,
+	linux-media@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+	devicetree@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+	linux-gpio@vger.kernel.org, linux-scsi@vger.kernel.org,
+	linux-nfs@vger.kernel.org, devel@lists.orangefs.org,
+	linux-hardening@vger.kernel.org, linux-sound@vger.kernel.org
+Subject: Re: [PATCH 28/28] drm/xe/pf: Refactor strlcat() to seq_buf in
+ sched_group_engines_read()
+Message-ID: <202609151126.29464A5E1@keescook>
+References: <20260915081910.4142719-1-morbo@google.com>
+ <20260915081910.4142719-29-morbo@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="xn3I0bKjnPwJ3YGY"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CABBYNZKrSve8b=Acj2qu0YBuEZ9u9xHJe-ffRb+78x5KPY8Ntw@mail.gmail.com>
-X-Cookie: Void where prohibited by law.
+In-Reply-To: <20260915081910.4142719-29-morbo@google.com>
 
+On Tue, Sep 15, 2026 at 08:18:45AM +0000, Bill Wendling wrote:
+> diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_pf_debugfs.c b/drivers/gpu/drm/xe/xe_gt_sriov_pf_debugfs.c
 
---xn3I0bKjnPwJ3YGY
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This is the same file touched as
+https://lore.kernel.org/all/20260915081910.4142719-28-morbo@google.com/
+and doing the same thing, roughly? I think it'd be best to combine
+these, especially since one depends on the other's addition of seq_buf.h
 
-On Tue, Sep 15, 2026 at 02:07:39PM -0400, Luiz Augusto von Dentz wrote:
-> On Tue, Sep 15, 2026 at 1:46=E2=80=AFPM Mark Brown <broonie@kernel.org> w=
-rote:
+> index 5db7fc067c4d..548a50f74422 100644
+> --- a/drivers/gpu/drm/xe/xe_gt_sriov_pf_debugfs.c
+> +++ b/drivers/gpu/drm/xe/xe_gt_sriov_pf_debugfs.c
+> @@ -377,8 +377,10 @@ static ssize_t sched_group_engines_read(struct file *file, char __user *buf,
+>  	struct xe_hw_engine *hwe;
+>  	enum xe_hw_engine_id id;
+>  	char engines[128];
+> +	struct seq_buf s;
+> +	const char *s_str;
+>  
+> -	engines[0] = '\0';
+> +	seq_buf_init(&s, engines, sizeof(engines));
 
-> > FWIW I do keep reporting signoff issues to them:
+As with the others, DECLARE_SEQ_BUF should be used.
 
-> >    https://lore.kernel.org/r/aqQARvWlSUQEHMtw@sirena.org.uk
-> >    https://lore.kernel.org/r/ap6Ze-_ckuTFyCMH@sirena.org.uk
-> >    https://lore.kernel.org/r/04d6aba2-bf5c-4e73-8ba2-1fe57218fbd9@siren=
-a.org.uk
+>  	if (group < num_groups) {
+>  		for_each_hw_engine(hwe, gt, id) {
+> @@ -386,15 +388,14 @@ static ssize_t sched_group_engines_read(struct file *file, char __user *buf,
+>  			u16 guc_logical_instance = xe_hwe_guc_logical_instance(hwe);
+>  			u32 mask = groups[group].engines[guc_class];
+>  
+> -			if (mask & BIT(guc_logical_instance)) {
+> -				strlcat(engines, hwe->name, sizeof(engines));
+> -				strlcat(engines, " ", sizeof(engines));
+> -			}
+> +			if (mask & BIT(guc_logical_instance))
+> +				seq_buf_printf(&s, "%s ", hwe->name);
+>  		}
+> -		strlcat(engines, "\n", sizeof(engines));
+> +		seq_buf_puts(&s, "\n");
+>  	}
+>  
+> -	return simple_read_from_buffer(buf, count, ppos, engines, strlen(engines));
+> +	s_str = seq_buf_str(&s);
+> +	return simple_read_from_buffer(buf, count, ppos, s_str, strlen(s_str));
 
-> These have been fixed though:
+While this is the correct length, it does illustrate why I think we need
+a new seq_buf helper to get the strlen result detected from NUL
+termination like seq_buf_str().
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next.=
-git/commit/?id=3D8d463624a249b6023e1bac6a5ebb0853a9c96d26
-> https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next.=
-git/commit/?id=3Dbe1cc4fae4cb7d506ad01fa7746db363c41dcb6e
-> https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next.=
-git/commit/?id=3D9ec9d1ade8ae7a3bd3cc061534d767fe305bedb6
+-Kees
 
-Sure, they do mostly seem to go away eventually but I'm usually sending
-reminders, and apparently at least some of these issues are making it
-into upstream pull requests so it seems the reports weren't acted on.  I
-did ask in the last of those mails if you should be a contact for the
-tree given that you seem to be doing a lot of the updates but never
-heard back on that - should I make that update?
-
-Given the issues caused by the unusual workflow for the tree I do send a
-lot of reports of issues in bluetooth.
-
---xn3I0bKjnPwJ3YGY
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmqpjeUACgkQJNaLcl1U
-h9A73Af/U2OSrrhhHgy9Lz7uuiKkxafQNrG1bpLZpdjwmRHPvOZXxloUBmNHPGQp
-ZTz/d2Gyo1DGLOgc6W8SKG7vID5iI2xK30DzDd+ma5rLhVEAAPFVYQmq79EJt3L4
-Ar/YzvvpxbFsPXWAm6Rs2G5AXYlhXjldkNNfs6sRDHAGRj1QvE+Uzf/CXRihXu2P
-BpOGMnmuB22OGhMZfpFiUDSRcls80A3Opu8K38xBko9I4kSi81QAvScqpaXWkr8D
-BAbCgymfTZ4bW9MmxGsaqmIb9QJDUXTUrhqHVlxMeguojrGzBOFUGMavAZDzNMDF
-uT/TjcXXObFTyE87OeiuT2A5S8uHTw==
-=VWmZ
------END PGP SIGNATURE-----
-
---xn3I0bKjnPwJ3YGY--
+-- 
+Kees Cook
