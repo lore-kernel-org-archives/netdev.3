@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902184BEE58;
-	Tue, 15 Sep 2026 02:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E4B4BEE58;
+	Tue, 15 Sep 2026 02:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789439470; cv=none; b=rir1ylLCFjKV1avevioFAhv8kAgYCJm+lLMm4vnupBT7zO7zKnZOEGGIYths8emc2DqwSuComo6aCHhlvbmaeD8keUD1JdTcQnlkdk8IJ59XISx+nvUe4mFqk3KmIbqNrl7sPTqUbRYSiEJzahP0hAFwWVijsAjLBIOrW2d+Tc4=
+	t=1789439475; cv=none; b=bdInm+/dsVoFU8/pZ98uWL52rZheDIjrI7vr4I99GxV16eM0nkp1ohx+zzwiTWERpPApK6bZun8UUzlYRK/+nPADc3fzdmwBeMYPuSd7eepU4UMenNcu4ytRNtJ8pAE91OXA5BDm0B1XqRC5uacLTnEPKF4pPcWWiyph1SJdNTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789439470; c=relaxed/simple;
-	bh=zFND42HEiSFkMuPzbTMZQRJP2AeJRtWlekxB52noHe0=;
+	s=arc-20240116; t=1789439475; c=relaxed/simple;
+	bh=luqtAzHVneMO5hE6o1ty72px2HAbirr34tfXI/OEyts=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=rw1c7mzT22NaHoUE8UqFQz+302DDF4He3wjfGSrlZLYY2llqwuT/7fWt1OIrBZXNOodQVNqWAJKjvumWQ9+gdFRN8tzCxV0rxHs5zsEG4AfHOu6O5V66F2jH30+t+ogyNhJjxt7KB3amv77sNIt4Rzb0c6+dqs8c8l7Kg7Jgkys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S6BVmp05; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=CVlqvnwPf7QU1eTZP/rcrCYFw4b3DFVOwgsjtGDAkIrZE3KF+iBnW3qHUlquMzbgHtvgHx5tzIPjNkkqnT6JewX+aBG/dBCASoL1UfjyuwYbvAPD7szCFEaRJWCAlo7uYrYMkCsARL7wynSmCv0jZNmm8L4JVnlGYeokUa0cIHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iAOfJCyA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S6BVmp05"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375661F000FF;
-	Tue, 15 Sep 2026 02:31:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iAOfJCyA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EECD41F000FF;
+	Tue, 15 Sep 2026 02:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789439469;
-	bh=gv5LBlaojcS+9Yw3CljDaM6/vinyztrz0NN70y6VBlc=;
+	s=k20260515; t=1789439474;
+	bh=gCCdDu0r6XiRTBz5xhKjaNE2OFCHBkKTyIEK8W3Gf7k=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=S6BVmp05ab0zUmAhhWNCB2hiHTv2m3/7+dhoaRoTz9h2ubLsTl47dW52EI97R6Rd1
-	 bCne4xX0DH3CkYJ4Eolq9vi+Uq9dw3Bne1y8iIOpFz9vRKXKmPA+aU+fcmjd11wWeW
-	 +AIazJpdIEsupC3iOFxz8emLWp2L1MyEXiPKbl3c/+8HkCbZckoPjjxVprSAReoaR9
-	 GxV1fKqFqQ/ua6Y+dcg2Ix0V2l19DGD8LnImPOA2OYcmjMiinYXqD1LNaSk84jmcpT
-	 ZDPBaCMWFJ0L0vh8pJVSw94Z1n0xnp4bv3vzQMUEd6aUjoQDXKcZu3ZvUf1DqEAwhZ
-	 H/C7sjLWr7fqw==
+	b=iAOfJCyAjxw83okjEicyR1+RPmLSid0m4i+jdxOvDe7XfuGtEuvPZMYXZWXKFuMbs
+	 1gFbPVMDkGZQPhcQEyM51nsnD89+xJH9JW0JCusv2WMSQzYuPsP0MXTRVeqBw4TTdL
+	 K7Hkt47D2Tm4hz5J+0cXg/wkBsMGuVKS9m+sS27a7k+ZQeZGf6wlCKlLwLnRFderGK
+	 O2vSFPWN9Ku9gCI5cOSP/7jKrUoNE+U1LYFZR05/acqPikZPZQYu552c3mS/VtFrTE
+	 Jh1zg4++GoLsbZsr050tTwNOwMIck3l73FP9QoAQBM/tVhIKmKmjomIrdMtlTwsx1W
+	 aCIGNgQ60m3kg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568B23924FFE;
-	Tue, 15 Sep 2026 02:30:05 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 199AD3924FFE;
+	Tue, 15 Sep 2026 02:30:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,42 +37,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: bcmgenet: restore the hardware filters on open
+Subject: Re: [PATCH net-next v7 0/6] selftests: net: make iou-zcrx tests
+ multithreaded
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178943940413.1322157.6253547859106825351.git-patchwork-notify@kernel.org>
-Date: Tue, 15 Sep 2026 02:30:04 +0000
-References: <20260913190052.939955-1-nb@tipi-net.de>
-In-Reply-To: <20260913190052.939955-1-nb@tipi-net.de>
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: netdev@vger.kernel.org, opendmb@gmail.com, florian.fainelli@broadcom.com,
- justin.chen@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org
+ <178943940862.1322157.740585578841979975.git-patchwork-notify@kernel.org>
+Date: Tue, 15 Sep 2026 02:30:08 +0000
+References: <20260909-iou-zcrx-v7-0-6b5d48a2a922@fastmail.com>
+In-Reply-To: <20260909-iou-zcrx-v7-0-6b5d48a2a922@fastmail.com>
+To: Juanlu Herrero <juanlu@fastmail.com>
+Cc: dw@davidwei.uk, netdev@vger.kernel.org, io-uring@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kuba@kernel.org, asml.silence@gmail.com, pabeni@redhat.com, shuah@kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sun, 13 Sep 2026 21:00:52 +0200 you wrote:
-> bcmgenet_hfb_init() runs INIT_LIST_HEAD() on priv->rxnfc_list, which drops
-> every rule off the list, and bcmgenet_open() calls it on each ifup. Every
-> rule the user configured is silently lost:
+On Wed, 09 Sep 2026 14:51:22 -0500 you wrote:
+> This series extends the iou-zcrx selftests to be multithreaded while
+> preserving existing single-threaded tests.
 > 
->   # ethtool -N eth0 flow-type ether dst $MAC action 0
->   Added rule with ID 0
->   # ethtool -n eth0 | grep -c Filter:
->   1
->   # ip link set eth0 down && ip link set eth0 up
->   # ethtool -n eth0 | grep -c Filter:
->   0
+> Patches 1 and 2 are prep fixes/cleanups. Patch 3 refactors the server's
+> global state. Patches 4 and 5 add the multithreaded client and server.
+> Finally, patch 6 adds the python side multithreaded test case.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: bcmgenet: restore the hardware filters on open
-    https://git.kernel.org/netdev/net/c/23ca4ddc4fce
+  - [net-next,v7,1/6] selftests: net: fix get_refill_ring_size() to use its local variable
+    https://git.kernel.org/netdev/net-next/c/649936a0daaa
+  - [net-next,v7,2/6] selftests: net: remove unused variable in process_recvzc()
+    https://git.kernel.org/netdev/net-next/c/3fb289238244
+  - [net-next,v7,3/6] selftests: net: refactor server state into struct thread_ctx
+    https://git.kernel.org/netdev/net-next/c/72ac4f0c5398
+  - [net-next,v7,4/6] selftests: net: add multithread client support to iou-zcrx
+    https://git.kernel.org/netdev/net-next/c/280189574629
+  - [net-next,v7,5/6] selftests: net: add multithread server support to iou-zcrx
+    https://git.kernel.org/netdev/net-next/c/5d3416ebe555
+  - [net-next,v7,6/6] selftests: net: add rss_multiqueue test variant to iou-zcrx
+    https://git.kernel.org/netdev/net-next/c/9814d2fa8742
 
 You are awesome, thank you!
 -- 
