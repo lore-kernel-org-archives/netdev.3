@@ -1,62 +1,70 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C6248E0F5;
-	Tue, 15 Sep 2026 11:23:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B430B49DB9E;
+	Tue, 15 Sep 2026 11:24:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789471422; cv=none; b=r9RfRQCFqhMoITxOCpo1A0jwEDOBtxwVDE6vez0BelbeHpMjj7HFlGYWT/IR9LZWQmxrP/BC4Ro2z+stc5WoT0qLCo/RPOD8CHRtTRdyWp6e5Zi8Eq3kyQRF1Qw2HWTjPKqw3bl8ZO+FeAhHqdUOdoV0yRWG9NXhvgEdMfBS3N0=
+	t=1789471486; cv=none; b=mMkT97MnptzNhfWlJZf7nM7mSRUAcxxoOLKFICcdHDVLSyA5Q81uIOxn5UGJKPR2hPMGR3L9l5FawyAFtuXSDizxoyHUvN1SwfmqyjfIIMNRijUTbQD8Yj+Tdl2mLRgabzGuPq8C3aE8UJE1225DgUHFuG2I3VUEAtLuEj+64d4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789471422; c=relaxed/simple;
-	bh=ljskRcMdf2XYphYJmHCVJgisZOIL+BdrJ5ob2W9wZ6U=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tPah0GglblAY136hPpeqTWOc7milaMAWX6I4wOraOv5WTpZiJ9cSppJLd4jYAxWfVeU/ppUc70Xy6U4EXQbYRPlqi49nKhnh8OUo3q1+AlHr8+B6hdW7s8keotuNvUQeGOQXzz/N1H8Fna3Sc9AKsAI78I/HwK05UdJMWtby5lM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sW5W091j; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0K9y0T3s; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1789471486; c=relaxed/simple;
+	bh=1O6dLIY+QKAUKcl1Y5nx7HdRrBEtMxoyP//iCehlTtg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=o4hv5KIfd8DCQy2Kky3Pc+jgpXxPldW8Eih1dpj/bUtWDYaTtKD3386gpb/T9RRJB+kGeytAd2J6moQ/RnjZq0lbz6qO6up6kaoPA8tuaGkKOUv9ADceILCtfRsd7/3bDf1IaqpSDRmYdA+QUeOPV8Er2vjdWB6WexAiTgCYGyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=RMDWjqum; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sW5W091j";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0K9y0T3s"
-Message-ID: <c863e105257ae512d32e94b56ac081c41c4284f6.camel@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1789471413;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P5YjS13qvbadUK35UlDy89MYgOvcwR+tWSGlVIQ/VWc=;
-	b=sW5W091j3UDBScCJhLbxbxDHgvyZTgpww7h/o5pW0b30/ZhQTx9Y+zffkBSE+WffXB8Gkx
-	zuDCyTSUjzsoZHneWFQCxq7vPWfQhurt4o0jOZOJCUWPNr/3PXxhoIJyC33Ko7Pq7W441l
-	SvyhTRGKwqtdPSQFk7oAXgHt+rOW1rbUzLX2KBqLLEg3la88Q8bC/P7XY1849QkQuKvT+W
-	pPaOI8rio+VtlliHY+n+/lLdIr7MzhQz2Lpz2xyPOEZL7QDJBYVFCRacXbm/9wDquSARog
-	pGMgQ2vrc4Y+9eqTSZx8n4MGQf2CzMtV9B/rZ5NSRU3NZP2sh+7PKsjj9sv0fA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1789471413;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P5YjS13qvbadUK35UlDy89MYgOvcwR+tWSGlVIQ/VWc=;
-	b=0K9y0T3soY9wKIec21PHBPzbPVB2NK6VeAw5DLPr7SUUE5RJEPHvwqfF+gHg6nL0HyGCF3
-	WBlCJOdcf3RrOECQ==
-Subject: Re: [PATCH net-next v2 4/4] net: dsa: soce: Add basic support for
- SoC-e switch IP cores
-From: Vasilij Strassheim <v.strassheim@linutronix.de>
-To: netdev-bot+sashiko@kernel.org
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- andrew@lunn.ch,  olteanv@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org,  pabeni@redhat.com, horms@kernel.org,
- linux@armlinux.org.uk,  devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- martin.kaistra@linutronix.de, b.spranger@linutronix.de
-Date: Tue, 15 Sep 2026 13:23:32 +0200
-In-Reply-To: <178895594761.219967.4769482322073838475@kernel.org>
-References: 
-	<20260903-devel-vstrassheim-soce-dsa-ml-v2-4-fb0587cb466b@linutronix.de>
-	 <178895594761.219967.4769482322073838475@kernel.org>
-Organization: Linutronix GmbH
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="RMDWjqum"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 68FBOGF001478572, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
+	t=1789471456; bh=1O6dLIY+QKAUKcl1Y5nx7HdRrBEtMxoyP//iCehlTtg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=RMDWjqum+HcK1YhLH4ApouoVzLdXYDDbSeB3fef0yWfr+aSeo41fsgB4EBDwURKAv
+	 fNxvfQnVBnmr4Rdf3IPE8hFRvRYiJVpswJXOmZ1aBaXAsrhEg57pfTukCPFFLKq0Fh
+	 MLUQEvtP6czAmpo6uBz0cuYBJIQv2DgZBNwIxfwnWjAg8ggse3v3GoocHxbBVxuqrq
+	 6VTNT/LkILm2GkTAekMO2YmVh+8LiRc4qTTIh3cBe+fHqhzWr6MIutUObzANL2Prr+
+	 ME+e4YXogOzWntuBdpWTYhS8aDrqz3aguB0ulZ0EwVZjkniEndYjLDAHRZsW2lJWlN
+	 hZyeYGp2yMfFw==
+Received: from mail.realtek.com (rtkexhmbs04.realtek.com.tw[10.21.1.54])
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 68FBOGF001478572
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 15 Sep 2026 19:24:16 +0800
+Received: from RTKEXHMBS01.realtek.com.tw (172.21.6.40) by
+ RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 15 Sep 2026 19:24:16 +0800
+Received: from RTKEXHMBS06.realtek.com.tw (10.21.1.56) by
+ RTKEXHMBS01.realtek.com.tw (172.21.6.40) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 15 Sep 2026 19:24:15 +0800
+Received: from RTKEXHMBS06.realtek.com.tw ([::1]) by
+ RTKEXHMBS06.realtek.com.tw ([fe80::b3cc:c263:b82d:e87c%10]) with mapi id
+ 15.02.2562.049; Tue, 15 Sep 2026 19:24:15 +0800
+From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
+To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>
+CC: "davem@davemloft.net" <davem@davemloft.net>, "kuba@kernel.org"
+	<kuba@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	nic_swsd <nic_swsd@realtek.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-usb@vger.kernel.org"
+	<linux-usb@vger.kernel.org>, "edumazet@google.com" <edumazet@google.com>,
+	"bjorn@mork.no" <bjorn@mork.no>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>
+Subject: RE: [PATCH net-next v3 3/8] r8152: refactor rtl8156_enable,
+ rtl8156_up, and rtl8156_down
+Thread-Topic: [PATCH net-next v3 3/8] r8152: refactor rtl8156_enable,
+ rtl8156_up, and rtl8156_down
+Thread-Index: AQHdP2eUXoCfIX6rrEGN1APubXIJNrbK4zQAgAShnqA=
+Date: Tue, 15 Sep 2026 11:24:15 +0000
+Message-ID: <e8ea8a647cb54d12943ad9606faf7714@realtek.com>
+References: <20260908075634.23740-4-nic_swsd@realtek.com>
+ <178924439038.3125.16601942086126763280@kernel.org>
+In-Reply-To: <178924439038.3125.16601942086126763280@kernel.org>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,292 +72,256 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Wed, 2026-09-09 at 12:12 +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider:
->=20
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 2 =C2=B7 Low: 1
->=20
-> - [Medium] The MDIO master transaction sequence never verifies that the
->   shared controller is idle before programming PARAMS/WRITE and kicking=
-=E2=80=A6
-> - [Medium] soce_setup() arms the switch's "tag all frames" and "DSA
->   custom rules tagging" bits, but the driver provides no .teardown=E2=80=
-=A6
-> - [Low] The compatible string and its binding description declare a
->   register layout with "the core version register at offset 0x00 and=E2=
-=80=A6
->=20
-> --
->=20
-> [ ... ]
->=20
-> > +struct soce_probe_desc {
-> > +	u32 core_version_offset;
-> > +	u32 licensed_features_offset;
-> > +	u32 implemented_features0_offset;
-> > +	u32 mdio_master_offset;
-> > +};
-> > +
-> > +static const struct soce_probe_desc soce_probe_desc_swip_00_04_0c_10 =
-=3D {
-> > +	.core_version_offset		=3D 0x0000,
-> > +	.licensed_features_offset	=3D 0x0004,
-> > +	.implemented_features0_offset	=3D 0x000c,
-> > +	.mdio_master_offset		=3D 0x0200,
-> > +};
->=20
-> [Severity: Low]
-> The compatible name soce,swip-00-04-0c-10 and the binding text describe a
-> register layout with "the core version register at offset 0x00 and featur=
-e
-> identification registers at offsets 0x04, 0x0c, and 0x10", but this
-> descriptor only models 0x00, 0x04 and 0x0c.
->=20
-> Is the 0x10 register meant to be read somewhere?  soce_sw_detect_features=
-()
-> reads only licensed_features_offset and implemented_features0_offset:
->=20
-> 	regval =3D readl(local->base_addr + probe_desc->licensed_features_offset=
-);
-> 	...
-> 	regval =3D readl(local->base_addr +
-> 		       probe_desc->implemented_features0_offset);
->=20
-> The "features0" suffix also suggests a features1 register at 0x10 that is
-> currently ignored.
->=20
-> Going the other way, mdio_master_offset =3D 0x0200 is a register block th=
-e
-> driver depends on for every MDIO transaction, but the binding does not
-> mention it at all.  Should the binding describe that block too, or should
-> the offset list in the compatible description match what the driver
-> actually models?
-
-I will remove this abstraction since only one switch register layout is
-currently supported. The MDIO master offset will be removed as well,
-because the MDIO controller will be represented by separate child
-devices with their own compatibles.
-
-The offsets encoded in soce,swip-00-04-0c-10 describe the complete
-switch identification register layout. The current minimal DSA driver
-only reads the registers and feature fields it needs, so it does not
-access the implemented-features register at 0x10 yet. I would prefer to
-retain this information for future compatible driver extensions that
-may need that register.
-
->=20
-> [ ... ]
->=20
-> > +static void soce_sw_enable_tagging(struct soce_dsa_local *local)
-> > +{
-> > +	u32 regval;
-> > +
-> > +	regval =3D readl(local->base_addr + SOCE_TAG_ALL_FRAMES_CTRL_OFFSET);
-> > +	regval |=3D SOCE_TAG_ALL_FRAMES_ENABLE;
-> > +	writel(regval, local->base_addr + SOCE_TAG_ALL_FRAMES_CTRL_OFFSET);
-> > +
-> > +	regval =3D readl(local->base_addr + SOCE_CUSTOM_RULES_TAGGING_OFFSET)=
-;
-> > +	regval |=3D SOCE_CUSTOM_RULES_TAGGING_ENABLE;
-> > +	writel(regval, local->base_addr + SOCE_CUSTOM_RULES_TAGGING_OFFSET);
-> > +}
-> > +
-> > +static int soce_setup(struct dsa_switch *ds)
-> > +{
-> > +	struct soce_priv *priv =3D ds->priv;
-> > +
-> > +	soce_sw_enable_tagging(&priv->local);
-> > +
-> > +	return 0;
-> > +}
->=20
-> [ ... ]
->=20
-> > +static const struct dsa_switch_ops soce_switch_ops =3D {
-> > +	.get_tag_protocol	=3D soce_get_tag_protocol,
-> > +	.setup			=3D soce_setup,
-> > +	.phylink_get_caps	=3D soce_phylink_get_caps,
-> > +};
->=20
-> [Severity: Medium]
-> Should there be a .teardown counterpart that clears what soce_setup()
-> armed?
->=20
-> soce_sw_enable_tagging() sets SOCE_TAG_ALL_FRAMES_ENABLE and
-> SOCE_CUSTOM_RULES_TAGGING_ENABLE, and nothing in the driver ever clears
-> them again.  There is no .teardown in soce_switch_ops, and the platform
-> callbacks only unregister:
->=20
-> soce_sw_remove()
-> 	dsa_unregister_switch(priv->ds);
->=20
-> soce_sw_shutdown()
-> 	dsa_switch_shutdown(priv->ds);
->=20
-> After an unbind or rmmod, does the core keep inserting SDSA source-port
-> tags into every frame delivered to the CPU port, with the tagger that
-> would strip them gone?  As described in the commit message, the same bits
-> also keep the user ports in CPU-directed operation:
->=20
->     "Enabling this tagging feature of the switch, places all user ports
->     into CPU-directed operation"
->=20
-> so the switch would also stay locked out of normal port-to-port
-> forwarding after the driver is removed.
-
-Yes, I had not considered this use case. The tagging state currently
-remains enabled after unbind or shutdown. In v3, I will add a .teardown
-callback that clears both SOCE_TAG_ALL_FRAMES_ENABLE and
-SOCE_CUSTOM_RULES_TAGGING_ENABLE, returning the switch to an unmanaged
-state.
-
->=20
-> > +static void soce_sw_remove(struct platform_device *pdev)
-> > +{
-> > +	struct soce_priv *priv =3D platform_get_drvdata(pdev);
-> > +
-> > +	if (!priv)
-> > +		return;
-> > +
-> > +	dsa_unregister_switch(priv->ds);
-> > +	platform_set_drvdata(pdev, NULL);
-> > +}
->=20
-> [ ... ]
->=20
-> > diff --git a/drivers/net/dsa/soce/soce_mdio.c b/drivers/net/dsa/soce/so=
-ce_mdio.c
-> > new file mode 100644
-> > index 0000000000000..692dcbe57d1a6
-> > --- /dev/null
-> > +++ b/drivers/net/dsa/soce/soce_mdio.c
->=20
-> [ ... ]
->=20
-> > +static int soce_mdio_read(struct mii_bus *bus, int addr, int reg)
-> > +{
->=20
-> [ ... ]
->=20
-> > +	mutex_lock(&local->mdio_lock);
-> > +	ret =3D local->mdio_ops->phy_read(state->ds, state->mdio_output, addr=
-,
-> > +					reg);
-> > +	mutex_unlock(&local->mdio_lock);
-> > +
-> > +	return ret;
-> > +}
->=20
-> [ ... ]
->=20
-> > +static int soce_mdio_23_02_wait_for_idle(struct dsa_switch *ds)
-> > +{
-> > +	struct soce_priv *priv =3D ds->priv;
-> > +	struct soce_dsa_local *local;
-> > +	void __iomem *ctrl;
-> > +	u32 val;
-> > +
-> > +	local =3D &priv->local;
-> > +	ctrl =3D local->mdio_master_addr + SOCE_MDIO_CTRL_OFFSET;
-> > +
-> > +	return readl_poll_timeout(ctrl, val,
-> > +		!(val & (0x1 << SOCE_MDIO_23_02_CTRL_OPSTATUS_OFFSET)), 10,
-> > +		SOCE_MDIO_TIMEOUT * 1000);
-> > +}
->=20
-> [Severity: Medium]
-> What happens to the hardware state when this poll times out?
->=20
-> On -ETIMEDOUT the OPSTATUS bit is still set, meaning the operation is
-> still in flight, and the callers just propagate the error without abortin=
-g
-> or resetting the master:
->=20
-> 	ret =3D soce_mdio_23_02_wait_for_idle(ds);
-> 	if (ret)
-> 		return ret;
->=20
-> The bus wrappers soce_mdio_read(), soce_mdio_write(), soce_mdio_read_c45(=
-)
-> and soce_mdio_write_c45() then drop mdio_lock unconditionally, so the
-> software lock protecting the shared master is released while the hardware
-> is still busy.
->=20
-> None of the transaction helpers check for idle before programming the
-> registers either.  In soce_mdio_23_02_read_c22():
->=20
-> 	regvalue =3D (regnum << SOCE_MDIO_23_02_CTRL_REGADDRDEVTYPE_OFFSET) +
-> 		   (phy_addr << SOCE_MDIO_23_02_CTRL_PHYADDR_OFFSET);
-> 	writel(regvalue, params);
->=20
-> 	regvalue =3D ((mdio_output << SOCE_MDIO_23_02_CTRL_BUS_OFFSET) + ...
->=20
-> Can the next transaction, possibly issued through a different logical bus
-> sharing the same master, reprogram PARAMS/WRITE and kick CTRL underneath
-> a still-running operation?
->=20
-
-Good point. The current implementation releases the software lock after
-a timeout, allowing a subsequent transaction to overwrite the parameter
-registers while the controller may still be busy.
-
-The hardware documentation exposes no abort or reset mechanism. In v3, I
-will therefore check that the controller is idle before programming any
-transaction register. If OPSTATUS remains set, subsequent accesses will
-time out without modifying the controller state or starting another
-transaction.
-
-> > +int soce_mdio_23_02_read_c45(struct dsa_switch *ds, int mdio_output,
-> > +			     int phy_addr, int devad, int regnum)
-> > +{
->=20
-> [ ... ]
->=20
-> > +	regvalue =3D (devad << SOCE_MDIO_23_02_CTRL_REGADDRDEVTYPE_OFFSET) +
-> > +		   (phy_addr << SOCE_MDIO_23_02_CTRL_PHYADDR_OFFSET);
-> > +	writel(regvalue, params);
-> > +
-> > +	writel(regnum, write_reg);
-> > +
-> > +	/* address cycle */
-> > +	regvalue =3D ((mdio_output << SOCE_MDIO_23_02_CTRL_BUS_OFFSET) +
-> > +		    (0x0 << SOCE_MDIO_23_02_CTRL_TRANSTYPE_OFFSET) +
-> > +		    (0x1 << SOCE_MDIO_23_02_CTRL_CLAUSE_OFFSET) +
-> > +		    (0x1 << SOCE_MDIO_23_02_CTRL_OPSTATUS_OFFSET));
-> > +	writel(regvalue, ctrl);
-> > +
-> > +	ret =3D soce_mdio_23_02_wait_for_idle(ds);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/* read cycle */
->=20
-> [Severity: Medium]
-> For Clause 45 the address cycle and the data cycle are separate hardware
-> operations.  If the address cycle times out here and is never aborted, ca=
-n
-> a later data cycle land on a stale address, and can the following
->=20
-> 	return readl(read_reg) & 0xffff;
->=20
-> hand the previous transaction's result back to phylib as a valid register
-> value?
->=20
-> Would it make sense to poll for idle before programming PARAMS/WRITE, and
-> to clear or reset the master on the timeout path before releasing
-> mdio_lock?  The same applies to soce_mdio_23_02_write_c22() and
-> soce_mdio_23_02_write_c45(), where a corrupted transaction would write to
-> an unintended PHY register.
->=20
-
-Yes, this will be addressed in v3. All transaction paths will poll for
-idle before modifying PARAMS or WRITE. A failed Clause 45 address cycle
-will return immediately, without starting the data cycle or returning
-stale read data. Subsequent accesses will leave the controller untouched
-while OPSTATUS remains set. The hardware documentation does not describe
-an abort or reset mechanism, so recovery is not available.
-
-> [ ... ]
->=20
-
+PiBUaGFuayB5b3UgZm9yIHlvdXIgY29udHJpYnV0aW9uISBTYXNoaWtvIEFJIHJldmlldyBmb3Vu
+ZCA1IHBvdGVudGlhbA0KPiBpc3N1ZShzKSB0byBjb25zaWRlcjoNCj4gDQo+IENyaXRpY2FsOiAw
+IMK3IEhpZ2g6IDIgwrcgTWVkaXVtOiAzIMK3IExvdzogMA0KPiANCj4gLSBbSGlnaF0gVmVyc2lv
+biBndWFyZCBjb2xsYXBzZWQgaW4gdGhlIHdyb25nIGRpcmVjdGlvbjoNCj4gICBgb2NwX3dvcmRf
+Y2xyX2JpdHModHAsIE1DVV9UWVBFX1BMQSwgUExBX1JDUjEsIEJJVCgzKSlgIGlu4oCmDQo+IC0g
+W0hpZ2hdIER1cmluZyB0aGUgc3BsaXQgb2YgcnRsODE1Nl91cCgpL3J0bDgxNTZfZG93bigpLCB0
+aGUgdHdvIHBvd2VyLQ0KPiAgIG1hbmFnZW1lbnQgd3JpdGVzIGZvciBSVEw4MTU3L1JUTDgxNTkg
+KFJUTF9WRVJfMTYs4oCmDQo+IC0gW01lZGl1bV0gVGhlIGNvbW1pdCBtZXNzYWdlIGRlc2NyaWJl
+cyBhIHB1cmUgY29kZS1tb3Rpb24gcmVmYWN0b3IgKCJBZGQNCj4gICBkZWRpY2F0ZWQgcnRsODE1
+NmJfZW5hYmxlIChWRVJfMTIvMTMvMTUpLCBydGw4MTU3X2VuYWJsZSwgcnRsODE1N191cCzigKYN
+Cj4gLSBbTWVkaXVtXSBydGw4MTU2X2Rvd24oKSAoUlRMX1ZFUl8xMC8xMSBhbmQgUlRMX1ZFUl8x
+Mi8xMy8xNSkgYW5kIHRoZQ0KPiAgIG5ldyBydGw4MTU3X2Rvd24oKSAoUlRMX1ZFUl8xNi8xNykg
+Ym90aCBhZGQgdHdvIE9PQiBoYW5kLW9mZiByZWdpc3RlcuKApg0KPiAtIFtNZWRpdW1dIE5ldyAn
+Q2xlYXJfU0RSJyBoYXJkd2FyZSBwcm9ncmFtbWluZyBpcyBpbnRyb2R1Y2VkIHdpdGggcmF3DQo+
+ICAgcmVnaXN0ZXIgYWRkcmVzc2VzIGFuZCBubyBzeW1ib2xpYyBkZWZpbmVzOiBgb2NwX3dvcmRf
+c2V0X2JpdHModHAs4oCmDQo+IA0KPiAtLQ0KPiANCj4gcjgxNTI6IHJlZmFjdG9yIHJ0bDgxNTZf
+ZW5hYmxlLCBydGw4MTU2X3VwLCBhbmQgcnRsODE1Nl9kb3duDQo+IA0KPiBUaGlzIHNwbGl0cyB0
+aGUgc2hhcmVkIFJUTDgxNTYgZW5hYmxlL3VwL2Rvd24gaGFuZGxlcnMgaW50byBwZXItZmFtaWx5
+DQo+IHZhcmlhbnRzOiBydGw4MTU2Yl9lbmFibGUoKSBmb3IgUlRMX1ZFUl8xMi8xMy8xNSBhbmQg
+cnRsODE1N19lbmFibGUoKSwNCj4gcnRsODE1N191cCgpLCBydGw4MTU3X2Rvd24oKSBmb3IgUlRM
+X1ZFUl8xNi8xNy4gIFRoZSBpbmxpbmUgdmVyc2lvbiBndWFyZHMNCj4gaW5zaWRlIHJ0bDgxNTZf
+ZW5hYmxlKCksIHJ0bDgxNTZfdXAoKSBhbmQgcnRsODE1Nl9kb3duKCkgYXJlIGRyb3BwZWQgYW5k
+DQo+IHJ0bF9vcHNfaW5pdCgpIGlzIHVwZGF0ZWQgdG8gaW5zdGFsbCB0aGUgbmV3IGNhbGxiYWNr
+cy4NCj4gDQo+IFtTZXZlcml0eTogTWVkaXVtXQ0KPiBUaGUgY2hhbmdlbG9nIHJlYWRzIGFzIGEg
+cHVyZSBjb2RlLW1vdGlvbiByZWZhY3RvcjoNCj4gDQo+ICAgIkFkZCBkZWRpY2F0ZWQgcnRsODE1
+NmJfZW5hYmxlIChWRVJfMTIvMTMvMTUpLCBydGw4MTU3X2VuYWJsZSwNCj4gICAgcnRsODE1N191
+cCwgYW5kIHJ0bDgxNTdfZG93biAoVkVSXzE2LzE3KSBpbnN0ZWFkIG9mIGhhbmRsaW5nDQo+ICAg
+IHBlci12ZXJzaW9uIGRpZmZlcmVuY2VzIHdpdGggaW5saW5lIHZlcnNpb24gZ3VhcmRzLiINCj4g
+DQo+IEJ1dCBydGw4MTU2X3VwKCkgYW5kIHJ0bDgxNTZfZG93bigpIHRoZW1zZWx2ZXMgYXJlIGFs
+c28gbW9kaWZpZWQsIGFuZA0KPiBzZXZlcmFsIHJlZ2lzdGVyIHdyaXRlcyBjaGFuZ2UgZm9yIGV2
+ZXJ5IGZhbWlseSBpbnZvbHZlZDoNCj4gDQo+ICAgLSBQTEFfUkNSMSBCSVQoMykgY2xlYXIgYmVj
+b21lcyB1bmNvbmRpdGlvbmFsIGluIHJ0bDgxNTZfdXAoKSwgc28gaXQNCj4gICAgIGlzIG5vdyBh
+IG5ldyB3cml0ZSBvbiBSVEw4MTU2L1JUTDgxNTZCLg0KPiAgIC0gYSBuZXcgIkVuYWJsZSBDbGVh
+cl9TRFIiIHdyaXRlIHRvIFVTQiAweGQzY2EgQklUKDE1KSBmb3INCj4gICAgIFJUTF9WRVJfMTMv
+MTUgaW4gcnRsODE1Nl91cCgpLg0KPiAgIC0gcnRsODE1Nl9kb3duKCkgcmVwbGFjZXMgdGhlIGJh
+cmUgUExBX09PQl9DVFJMIHw9IE5PV19JU19PT0Igd2l0aA0KPiAgICAgUExBX0JEQ19DUiB8PSBB
+TERQU19QUk9YWV9NT0RFIHBsdXMNCj4gICAgIFBMQV9PT0JfQ1RSTCB8PSBOT1dfSVNfT09CIHwg
+RElTX01DVV9DTFJPT0IuDQo+ICAgLSBydGw4MTU3X3VwKCkgcGVyZm9ybXMgdGhlIFVTQl9TUEVF
+RF9PUFRJT04gY2xlYXIgdGhhdCB0aGUgYmFzZWxpbmUNCj4gICAgIHNraXBwZWQgZm9yIFJUTF9W
+RVJfMTYrLCBkcm9wcyB0aGUgUExBX01DVV9TUERXTl9FTiBjbGVhciwgYW5kDQo+IGFkZHMNCj4g
+ICAgIHR3byBuZXcgd3JpdGVzIChVU0IgMHhkMzc4IEJJVCg3KSBzZXQsIFVTQiAweGNkMDYgQklU
+KDE1KSBjbGVhcikuDQo+ICAgLSBydGw4MTU3X2Rvd24oKSBjaGFuZ2VzIFBMQV9STVMvUExBX01U
+UFMgYW5kIGRyb3BzIHRoZQ0KPiAgICAgUExBX01DVV9TUERXTl9FTiBzZXQuDQo+IA0KPiBDb3Vs
+ZCB0aGUgY2hhbmdlbG9nIGRlc2NyaWJlIHRoZXNlIGhhcmR3YXJlIHByb2dyYW1taW5nIGNoYW5n
+ZXMsIG9yIGNvdWxkDQo+IHRoZXkgYmUgc3BsaXQgaW50byBzZXBhcmF0ZSBwYXRjaGVzIHNvIHRo
+ZXkgY2FuIGJlIHJldmVydGVkIG9yIGJpc2VjdGVkDQo+IGluZGVwZW5kZW50bHkgb2YgdGhlIHJl
+ZmFjdG9yPw0KDQpTdXJlLCBJIHdpbGwgbWVudGlvbiB0aGVzZSBpbiB0aGUgbmV4dCB2ZXJzaW9u
+Lg0KDQo+IA0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC91c2IvcjgxNTIuYyBiL2RyaXZl
+cnMvbmV0L3VzYi9yODE1Mi5jIGluZGV4DQo+ID4gZjAxZjQ0MmZhNzFhMC4uNmMxODk3OTBiMGJh
+YiAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL25ldC91c2IvcjgxNTIuYw0KPiA+ICsrKyBiL2Ry
+aXZlcnMvbmV0L3VzYi9yODE1Mi5jDQo+IA0KPiBbIC4uLiBdDQo+IA0KPiA+IEBAIC02ODY5LDgg
+KzY5MTIsNyBAQCBzdGF0aWMgdm9pZCBydGw4MTU2X3VwKHN0cnVjdCByODE1MiAqdHApDQo+ID4N
+Cj4gPiAgICAgICBvY3BfYnl0ZV9jbHJfYml0cyh0cCwgTUNVX1RZUEVfUExBLCBQTEFfT09CX0NU
+UkwsDQo+IE5PV19JU19PT0IpOw0KPiA+DQo+ID4gLSAgICAgaWYgKHRwLT52ZXJzaW9uID49IFJU
+TF9WRVJfMTYpDQo+ID4gLSAgICAgICAgICAgICBvY3Bfd29yZF9jbHJfYml0cyh0cCwgTUNVX1RZ
+UEVfUExBLCBQTEFfUkNSMSwgQklUKDMpKTsNCj4gPiArICAgICBvY3Bfd29yZF9jbHJfYml0cyh0
+cCwgTUNVX1RZUEVfUExBLCBQTEFfUkNSMSwgQklUKDMpKTsNCj4gDQo+IFtTZXZlcml0eTogSGln
+aF0NCj4gV2FzIHRoaXMgZ3VhcmQgY29sbGFwc2VkIGluIHRoZSB3cm9uZyBkaXJlY3Rpb24/ICBB
+ZnRlciB0aGUgc3BsaXQsDQo+IHJ0bF9vcHNfaW5pdCgpIGluc3RhbGxzIHJ0bDgxNTZfdXAoKSBv
+bmx5IGZvciBSVExfVkVSXzEwLzExIGFuZA0KPiBSVExfVkVSXzEyLzEzLzE1LCBhbmQgZ2l2ZXMg
+UlRMX1ZFUl8xNi8xNyB0aGUgbmV3IHJ0bDgxNTdfdXAoKToNCj4gDQo+ICAgICAgICAgb3BzLT51
+cCAgICAgICAgICAgICAgICAgPSBydGw4MTU2X3VwOyAgIC8qIFZFUl8xMC8xMSwNCj4gVkVSXzEy
+LzEzLzE1ICovDQo+ICAgICAgICAgLi4uDQo+ICAgICAgICAgb3BzLT51cCAgICAgICAgICAgICAg
+ICAgPSBydGw4MTU3X3VwOyAgIC8qIFZFUl8xNiwNCj4gVkVSXzE3X1FGTjY4LzEwMCAqLw0KPiAN
+Cj4gU28gdGhlICJ0cC0+dmVyc2lvbiA+PSBSVExfVkVSXzE2IiBjb25kaXRpb24gY2FuIG5vIGxv
+bmdlciBiZSB0cnVlIGluDQo+IHJ0bDgxNTZfdXAoKSwgd2hpY2ggc3VnZ2VzdHMgdGhlIHdyaXRl
+IHNob3VsZCBoYXZlIGJlZW4gcmVtb3ZlZCB0b2dldGhlcg0KPiB3aXRoIGl0cyBndWFyZCByYXRo
+ZXIgdGhhbiBtYWRlIHVuY29uZGl0aW9uYWwuICBUaGUgbmV3IHJ0bDgxNTdfdXAoKSBhbHJlYWR5
+DQo+IGNvbnRhaW5zIHRoZSBpZGVudGljYWwgd3JpdGU6DQo+IA0KPiAgICAgICAgIG9jcF93b3Jk
+X2Nscl9iaXRzKHRwLCBNQ1VfVFlQRV9QTEEsIFBMQV9SQ1IxLCBCSVQoMykpOw0KPiANCj4gRG9l
+cyB0aGlzIG1lYW4gUlRMODE1Ni9SVEw4MTU2QiBub3cgY2xlYXIgYml0IDMgb2YgUExBX1JDUjEg
+KDB4YzAxMikgb24NCj4gZXZlcnkgYnJpbmctdXAgYW5kIHJlc3VtZSwgYSB3cml0ZSB0aG9zZSBw
+YXJ0cyBuZXZlciByZWNlaXZlZCBiZWZvcmU/DQo+IFRoZSBkcml2ZXIgb25seSBuYW1lcyBPVVRF
+Ul9WTEFOIEJJVCg3KSBhbmQgSU5ORVJfVkxBTiBCSVQoNikgZm9yIHRoYXQNCj4gcmVnaXN0ZXIs
+IHNvIHRoZSBlZmZlY3Qgb2YgQklUKDMpIG9uIHRob3NlIGNoaXBzIGlzIG5vdCBvYnZpb3VzIGZy
+b20gdGhlIGNvZGUuDQoNClllcywgUlRMODE1Ni9SVEw4MTU2QiBuZWVkcyB0byBjbGVhciBiaXQg
+MyBvZiBQTEFfUkNSMSwgdG9vLg0KDQo+IA0KPiA+DQo+ID4gICAgICAgb2NwX3dvcmRfY2xyX2Jp
+dHModHAsIE1DVV9UWVBFX1BMQSwgUExBX1NGRl9TVFNfNywNCj4gTUNVX0JPUldfRU4pOw0KPiA+
+DQo+ID4gQEAgLTY4OTIsMTEgKzY5MzQsMTEgQEAgc3RhdGljIHZvaWQgcnRsODE1Nl91cChzdHJ1
+Y3QgcjgxNTIgKnRwKQ0KPiA+ICAgICAgIG9jcF93b3JkX3cwdzEodHAsIE1DVV9UWVBFX1BMQSwg
+UExBX1JYRklGT19GVUxMLA0KPiBSWEZJRk9fRlVMTF9NQVNLLA0KPiA+ICAgICAgICAgICAgICAg
+ICAgICAgMHgwOCk7DQo+ID4NCj4gPiAtICAgICBvY3Bfd29yZF9jbHJfYml0cyh0cCwgTUNVX1RZ
+UEVfUExBLCBQTEFfTUFDX1BXUl9DVFJMMywNCj4gUExBX01DVV9TUERXTl9FTik7DQo+ID4gKyAg
+ICAgb2NwX3dvcmRfY2xyX2JpdHModHAsIE1DVV9UWVBFX1BMQSwgUExBX01BQ19QV1JfQ1RSTDMs
+DQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgUExBX01DVV9TUERXTl9FTik7DQo+ID4NCj4g
+PiAtICAgICBpZiAodHAtPnZlcnNpb24gPCBSVExfVkVSXzE2KQ0KPiA+IC0gICAgICAgICAgICAg
+b2NwX3dvcmRfY2xyX2JpdHModHAsIE1DVV9UWVBFX1VTQiwNCj4gVVNCX1NQRUVEX09QVElPTiwN
+Cj4gPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFJHX1BXUkROX0VOIHwgQUxMX1NQ
+RUVEX09GRik7DQo+ID4gKyAgICAgb2NwX3dvcmRfY2xyX2JpdHModHAsIE1DVV9UWVBFX1VTQiwg
+VVNCX1NQRUVEX09QVElPTiwNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICBSR19QV1JETl9F
+TiB8IEFMTF9TUEVFRF9PRkYpOw0KPiA+DQo+ID4gICAgICAgb2NwX3dyaXRlX2R3b3JkKHRwLCBN
+Q1VfVFlQRV9VU0IsIFVTQl9SWF9CVUZfVEgsDQo+IDB4MDA2MDA0MDApOw0KPiA+DQo+ID4gQEAg
+LTY5MDYsMTAgKzY5NDgsMTkgQEAgc3RhdGljIHZvaWQgcnRsODE1Nl91cChzdHJ1Y3QgcjgxNTIg
+KnRwKQ0KPiA+ICAgICAgIH0NCj4gPg0KPiA+ICAgICAgIHI4MTUzX2FsZHBzX2VuKHRwLCB0cnVl
+KTsNCj4gPiAtICAgICBpZiAodHAtPnZlcnNpb24gPCBSVExfVkVSXzE2KQ0KPiA+IC0gICAgICAg
+ICAgICAgcjgxNTNfdTJwM2VuKHRwLCB0cnVlKTsNCj4gPiArICAgICByODE1M191MnAzZW4odHAs
+IHRydWUpOw0KPiA+DQo+ID4gLSAgICAgaWYgKHRwLT52ZXJzaW9uIDwgUlRMX1ZFUl8xNiAmJiB0
+cC0+dWRldi0+c3BlZWQgPj0NCj4gVVNCX1NQRUVEX1NVUEVSKQ0KPiA+ICsgICAgIHN3aXRjaCAo
+dHAtPnZlcnNpb24pIHsNCj4gPiArICAgICBjYXNlIFJUTF9WRVJfMTM6DQo+ID4gKyAgICAgY2Fz
+ZSBSVExfVkVSXzE1Og0KPiA+ICsgICAgICAgICAgICAgLyogRW5hYmxlIENsZWFyX1NEUiAqLw0K
+PiA+ICsgICAgICAgICAgICAgb2NwX3dvcmRfc2V0X2JpdHModHAsIE1DVV9UWVBFX1VTQiwgMHhk
+M2NhLCBCSVQoMTUpKTsNCj4gPiArICAgICAgICAgICAgIGJyZWFrOw0KPiA+ICsgICAgIGRlZmF1
+bHQ6DQo+ID4gKyAgICAgICAgICAgICBicmVhazsNCj4gPiArICAgICB9DQo+IA0KPiBbU2V2ZXJp
+dHk6IE1lZGl1bV0NCj4gVGhpcyAiQ2xlYXJfU0RSIiBwcm9ncmFtbWluZyBpcyBuZXcsIGhhcyBu
+byBiYXNlbGluZSBjb3VudGVycGFydCwgYW5kIHVzZXMgYQ0KPiByYXcgYWRkcmVzcyB3aXRoIG5v
+ICNkZWZpbmUuICBUd28gcXVlc3Rpb25zIGFib3V0IGl0Og0KPiANCj4gVGhlIHNhbWUgVVNCIGFk
+ZHJlc3MgaXMgYWNjZXNzZWQgYXMgYSBieXRlIHJlZ2lzdGVyIGVsc2V3aGVyZSBpbiB0aGlzIGZp
+bGUsIGluDQo+IHI4MTU3X2luaXQoKSBhbmQgcjgxNTlfaW5pdCgpOg0KPiANCj4gICAgICAgICBv
+Y3BfYnl0ZV9jbHJfYml0cyh0cCwgTUNVX1RZUEVfVVNCLCAweGQzY2EsIEJJVCgwKSk7DQo+IA0K
+PiB3aGlsZSB0aGUgbmV3IGNvZGUgZG9lcyBhIDE2LWJpdCByZWFkLW1vZGlmeS13cml0ZSBjb3Zl
+cmluZyAweGQzY2EuLjB4ZDNjYg0KPiBhbmQgc2V0cyBCSVQoMTUpLiAgSXMgdGhlIHVwcGVyIGJ5
+dGUgYSBwbGFpbiByZWFkL3dyaXRlIGZpZWxkPyAgSWYgYW55IG9mIGl0IGlzDQo+IFcxQyBvciBz
+dGF0dXMsIGNhbiB0aGlzIHJlYWQtbW9kaWZ5LXdyaXRlIGNsb2JiZXIgdW5yZWxhdGVkIHN0YXRl
+Pw0KPiANCj4gQWxzbywgUlRMX1ZFUl8xMiBpcyBSVEw4MTU2QiBzaWxpY29uIGFzIHdlbGwgYnV0
+IGlzIGV4Y2x1ZGVkIGhlcmUuICBJcw0KPiBWRVJfMTIgZ2VudWluZWx5IHVuYWZmZWN0ZWQsIG9y
+IHdhcyBpdCBtaXNzZWQ/DQoNClZFUl8xMiBkb2Vzbid0IHN1cHBvcnQgdGhpcyBiaXQuDQoNCj4g
+DQo+IFRoZXJlIGlzIG5vIG1hdGNoaW5nIGNsZWFyIG9mIHRoaXMgYml0IGluIHJ0bDgxNTZfZG93
+bigpLiAgSXMgdGhlIGJpdCBleHBlY3RlZA0KPiB0byBwZXJzaXN0IGFjcm9zcyBhbiBpZmRvd24v
+aWZ1cCBjeWNsZT8NCg0KWWVzLg0KDQo+IA0KPiA+ICsNCj4gPiArICAgICBpZiAodHAtPnVkZXYt
+PnNwZWVkID49IFVTQl9TUEVFRF9TVVBFUikNCj4gPiAgICAgICAgICAgICAgIHI4MTUzYl91MXUy
+ZW4odHAsIHRydWUpOyAgfQ0KPiA+DQo+ID4gQEAgLTY5MjIsMTIgKzY5NzMsOSBAQCBzdGF0aWMg
+dm9pZCBydGw4MTU2X2Rvd24oc3RydWN0IHI4MTUyICp0cCkNCj4gPg0KPiA+ICAgICAgIG9jcF93
+b3JkX3NldF9iaXRzKHRwLCBNQ1VfVFlQRV9QTEEsIFBMQV9NQUNfUFdSX0NUUkwzLA0KPiA+ICAg
+ICAgICAgICAgICAgICAgICAgICAgIFBMQV9NQ1VfU1BEV05fRU4pOw0KPiA+IC0NCj4gPiAgICAg
+ICByODE1M2JfdTF1MmVuKHRwLCBmYWxzZSk7DQo+ID4gLSAgICAgaWYgKHRwLT52ZXJzaW9uIDwg
+UlRMX1ZFUl8xNikgew0KPiA+IC0gICAgICAgICAgICAgcjgxNTNfdTJwM2VuKHRwLCBmYWxzZSk7
+DQo+ID4gLSAgICAgICAgICAgICByODE1M2JfcG93ZXJfY3V0X2VuKHRwLCBmYWxzZSk7DQo+ID4g
+LSAgICAgfQ0KPiA+ICsgICAgIHI4MTUzX3UycDNlbih0cCwgZmFsc2UpOw0KPiA+ICsgICAgIHI4
+MTUzYl9wb3dlcl9jdXRfZW4odHAsIGZhbHNlKTsNCj4gPiAgICAgICByODE1M19hbGRwc19lbih0
+cCwgZmFsc2UpOw0KPiA+DQo+ID4gICAgICAgb2NwX2J5dGVfY2xyX2JpdHModHAsIE1DVV9UWVBF
+X1BMQSwgUExBX09PQl9DVFJMLA0KPiBOT1dfSVNfT09CKTsNCj4gPiBAQCAtNjk0OSw3ICs2OTk3
+LDEwMiBAQCBzdGF0aWMgdm9pZCBydGw4MTU2X2Rvd24oc3RydWN0IHI4MTUyICp0cCkNCj4gPiAg
+ICAgICAgKi8NCj4gPiAgICAgICBvY3Bfd3JpdGVfd29yZCh0cCwgTUNVX1RZUEVfUExBLCBQTEFf
+VEVSRURPX1dBS0VfQkFTRSwNCj4gMHgwMGZmKTsNCj4gPg0KPiA+IC0gICAgIG9jcF9ieXRlX3Nl
+dF9iaXRzKHRwLCBNQ1VfVFlQRV9QTEEsIFBMQV9PT0JfQ1RSTCwNCj4gTk9XX0lTX09PQik7DQo+
+ID4gKyAgICAgb2NwX3dvcmRfc2V0X2JpdHModHAsIE1DVV9UWVBFX1BMQSwgUExBX0JEQ19DUiwN
+Cj4gPiArIEFMRFBTX1BST1hZX01PREUpOw0KPiA+ICsNCj4gPiArICAgICBvY3BfYnl0ZV9zZXRf
+Yml0cyh0cCwgTUNVX1RZUEVfUExBLCBQTEFfT09CX0NUUkwsDQo+ID4gKyAgICAgICAgICAgICAg
+ICAgICAgICAgTk9XX0lTX09PQiB8IERJU19NQ1VfQ0xST09CKTsNCj4gDQo+IFtTZXZlcml0eTog
+TWVkaXVtXQ0KPiBUaGVzZSB0d28gd3JpdGVzIGFyZSBuZXcgZm9yIHRoZSBjaGlwcyBydGw4MTU2
+X2Rvd24oKSBzdGlsbCBzZXJ2ZXMNCj4gKFJUTF9WRVJfMTAvMTEgYW5kIFJUTF9WRVJfMTIvMTMv
+MTUgcGVyIHJ0bF9vcHNfaW5pdCgpKS4gIFRoZSBiYXNlbGluZQ0KPiBlbmRlZCB0aGUgT09CIGVu
+dHJ5IHdpdGggb25seToNCj4gDQo+ICAgICAgICAgb2NwX2J5dGVfc2V0X2JpdHModHAsIE1DVV9U
+WVBFX1BMQSwgUExBX09PQl9DVFJMLA0KPiBOT1dfSVNfT09CKTsNCj4gDQo+IEFMRFBTX1BST1hZ
+X01PREUgaW4gUExBX0JEQ19DUiBhbmQgRElTX01DVV9DTFJPT0IgaW4NCj4gUExBX09PQl9DVFJM
+IGNoYW5nZSB3aG8gb3ducyBPT0Igc3RhdGUgYW5kIGhvdyB0aGUgTUNVIHByb3hpZXMgZHVyaW5n
+DQo+IEFMRFBTLCBzbyBkb2VzIHRoaXMgYWx0ZXIgV29MIGFuZCBBUlAtcHJveHkgYmVoYXZpb3Vy
+IG9uIFJUTDgxNTYvUlRMODE1NkINCj4gYWZ0ZXIgYW4gaWZkb3duIG9yIHN1c3BlbmQ/ICBUaGUg
+c2FtZSB0d28gd3JpdGVzIGFyZSBhZGRlZCB0bw0KPiBydGw4MTU3X2Rvd24oKSBiZWxvdy4NCj4g
+DQo+IEl0IGxvb2tzIGxpa2UgdGhpcyBicmluZ3MgODE1NiBpbiBsaW5lIHdpdGggcjgxNTJiX2Vu
+dGVyX29vYigpIGFuZA0KPiByODE1M19lbnRlcl9vb2IoKSwgd2hpY2ggZG8gcHJvZ3JhbSBib3Ro
+IGJpdHMuICBJZiB0aGF0IGlzIHRoZSBpbnRlbnQsIGNvdWxkIGl0DQo+IGJlIHN0YXRlZCBpbiB0
+aGUgY2hhbmdlbG9nIG9yIHNwbGl0IG91dCBzbyBhIFdvTCByZWdyZXNzaW9uIHJlcG9ydCBjYW4g
+YmUNCj4gdHJhY2VkIGJhY2sgdG8gaXQ/DQoNCkl0J3MgaW50ZW50aW9uYWwuIEkgd2lsbCBtZW50
+aW9uIHRoaXMuDQoNCj4gDQo+ID4gKw0KPiA+ICsgICAgIG9jcF93b3JkX3NldF9iaXRzKHRwLCBN
+Q1VfVFlQRV9QTEEsIFBMQV9TRkZfU1RTXzcsDQo+IE1DVV9CT1JXX0VOKTsNCj4gPiArDQo+ID4g
+KyAgICAgcnRsX3J4X3ZsYW5fZW4odHAsIHRydWUpOw0KPiA+ICsgICAgIHJ4ZHlfZ2F0ZWRfZW4o
+dHAsIGZhbHNlKTsNCj4gPiArDQo+ID4gKyAgICAgb2NwX2R3b3JkX3NldF9iaXRzKHRwLCBNQ1Vf
+VFlQRV9QTEEsIFBMQV9SQ1IsDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAgIFJDUl9BUE0g
+fCBSQ1JfQU0gfCBSQ1JfQUIpOw0KPiA+ICsNCj4gPiArICAgICByODE1M19hbGRwc19lbih0cCwg
+dHJ1ZSk7DQo+ID4gK30NCj4gPiArDQo+ID4gK3N0YXRpYyB2b2lkIHJ0bDgxNTdfdXAoc3RydWN0
+IHI4MTUyICp0cCkgew0KPiANCj4gWyAuLi4gXQ0KPiANCj4gPiArICAgICAvKiBzaGFyZSBGSUZP
+IHNldHRpbmdzICovDQo+ID4gKyAgICAgb2NwX3dvcmRfdzB3MSh0cCwgTUNVX1RZUEVfUExBLCBQ
+TEFfUlhGSUZPX0ZVTEwsDQo+IFJYRklGT19GVUxMX01BU0ssDQo+ID4gKyAgICAgICAgICAgICAg
+ICAgICAweDA4KTsNCj4gPiArDQo+ID4gKyAgICAgb2NwX3dvcmRfY2xyX2JpdHModHAsIE1DVV9U
+WVBFX1VTQiwgVVNCX1NQRUVEX09QVElPTiwNCj4gPiArICAgICAgICAgICAgICAgICAgICAgICBS
+R19QV1JETl9FTiB8IEFMTF9TUEVFRF9PRkYpOw0KPiANCj4gW1NldmVyaXR5OiBIaWdoXQ0KPiBB
+cmUgdGhlIHR3byBwb3dlci1tYW5hZ2VtZW50IHdyaXRlcyBmb3IgUlRMODE1Ny9SVEw4MTU5IHN3
+YXBwZWQgaGVyZT8NCj4gDQo+IFRoZSBiYXNlbGluZSBndWFyZGVkIHRoaXMgVVNCX1NQRUVEX09Q
+VElPTiBjbGVhciBzcGVjaWZpY2FsbHkgdG8gZXhjbHVkZQ0KPiB0aGVzZSB2ZXJzaW9uczoNCj4g
+DQo+ICAgICAgICAgaWYgKHRwLT52ZXJzaW9uIDwgUlRMX1ZFUl8xNikNCj4gICAgICAgICAgICAg
+ICAgIG9jcF93b3JkX2Nscl9iaXRzKHRwLCBNQ1VfVFlQRV9VU0IsDQo+IFVTQl9TUEVFRF9PUFRJ
+T04sDQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBSR19QV1JETl9FTiB8IEFM
+TF9TUEVFRF9PRkYpOw0KPiANCj4gYW5kIHJ0bDgxNTdfdXAoKSBpcyBpbnN0YWxsZWQgb25seSBm
+b3IgUlRMX1ZFUl8xNiBhbmQNCj4gUlRMX1ZFUl8xN19RRk42OC9RRk4xMDAsIHNvIHRoaXMgbm93
+IHJ1bnMgb24gZXhhY3RseSB0aGUgcGFydHMgdGhlIGd1YXJkDQo+IGV4Y2x1ZGVkLiAgRG9lcyBj
+bGVhcmluZyBSR19QV1JETl9FTiB8IEFMTF9TUEVFRF9PRkYgY2hhbmdlIFBIWQ0KPiBwb3dlciBt
+YW5hZ2VtZW50IG9uIDgxNTcvODE1OT8NCj4gDQo+IEluIHRoZSBvdGhlciBkaXJlY3Rpb24sIHRo
+ZSBQTEFfTUNVX1NQRFdOX0VOIGNsZWFyIHRoYXQgcnRsODE1Nl91cCgpIGRvZXMNCj4ganVzdCBi
+ZWZvcmUgdGhpcyBwb2ludCBpcyBtaXNzaW5nIGZyb20gcnRsODE1N191cCgpLCBhbmQgdGhlIHBh
+aXJlZCBzZXQgaXMgbWlzc2luZw0KPiBmcm9tIHJ0bDgxNTdfZG93bigpLiAgVGhlIGJhc2VsaW5l
+IGRpZCBib3RoIHVuY29uZGl0aW9uYWxseSBmb3INCj4gUlRMX1ZFUl8xNi8xNywgYW5kIGdyZXBw
+aW5nIHRoZSBmaWxlIGFmdGVyIHRoaXMgcGF0Y2ggdGhlIHJlbWFpbmluZw0KPiBQTEFfTUNVX1NQ
+RFdOX0VOIHNpdGVzIGFyZSBydGw4MTUzYl91cC9kb3duLCBydGw4MTUzY191cCwNCj4gcnRsODE1
+Nl91cC9kb3duLCByODE1M2JfaW5pdCwgcjgxNTZfaW5pdCBhbmQgcjgxNTZiX2luaXQgLSBub25l
+IG9mIHdoaWNoIGFyZQ0KPiByZWFjaGFibGUgZm9yIFZFUl8xNi8xNywgYW5kIHI4MTU3X2luaXQo
+KS9yODE1OV9pbml0KCkgb25seSBjbGVhciBpdCAiaWYNCj4gKHRwLT52ZXJzaW9uIDwgUlRMX1ZF
+Ul8xNikiLg0KPiANCj4gRG9lcyB0aGF0IGxlYXZlIFBMQV9NQUNfUFdSX0NUUkwzIFBMQV9NQ1Vf
+U1BEV05fRU4gYXQgd2hhdGV2ZXINCj4gdmFsdWUgdGhlIFJPTSwgT09CIGZpcm13YXJlIG9yIGEg
+cHJldmlvdXMgZHJpdmVyIGluc3RhbmNlIGxlZnQgd2hpbGUgdGhlDQo+IGludGVyZmFjZSBpcyB1
+cCBvbiB0aG9zZSBjaGlwcz8NCg0KUlRMODE1NyBhbmQgUlRMODE1OSBkbyBub3Qgc3VwcG9ydCB0
+aGlzIGJpdCwgc28gcmVtb3ZlIGl0Lg0KDQo+IA0KPiA+ICsNCj4gPiArICAgICBvY3Bfd3JpdGVf
+ZHdvcmQodHAsIE1DVV9UWVBFX1VTQiwgVVNCX1JYX0JVRl9USCwNCj4gMHgwMDYwMDQwMCk7DQo+
+ID4gKw0KPiA+ICsgICAgIGlmICh0cC0+c2F2ZWRfd29sb3B0cyAhPSBfX3J0bF9nZXRfd29sKHRw
+KSkgew0KPiA+ICsgICAgICAgICAgICAgbmV0aWZfd2Fybih0cCwgaWZ1cCwgdHAtPm5ldGRldiwg
+IndvbCBzZXR0aW5nIGlzIGNoYW5nZWRcbiIpOw0KPiA+ICsgICAgICAgICAgICAgX19ydGxfc2V0
+X3dvbCh0cCwgdHAtPnNhdmVkX3dvbG9wdHMpOw0KPiA+ICsgICAgIH0NCj4gPiArDQo+ID4gKyAg
+ICAgcjgxNTNfYWxkcHNfZW4odHAsIHRydWUpOw0KPiA+ICsNCj4gPiArICAgICAvKiBDbGVhcl9T
+RFIgKi8NCj4gPiArICAgICBvY3BfYnl0ZV9zZXRfYml0cyh0cCwgTUNVX1RZUEVfVVNCLCAweGQz
+NzgsIEJJVCg3KSk7DQo+ID4gKyAgICAgb2NwX3dvcmRfY2xyX2JpdHModHAsIE1DVV9UWVBFX1VT
+QiwgMHhjZDA2LCBCSVQoMTUpKTsNCj4gDQo+IFtTZXZlcml0eTogTWVkaXVtXQ0KPiBUaGVzZSB0
+d28gd3JpdGVzIGhhdmUgbm8gYmFzZWxpbmUgY291bnRlcnBhcnQsIG5vIHN5bWJvbGljIGRlZmlu
+ZXMsIGFuZCBubw0KPiBtYXRjaGluZyB1bmRvIGluIHJ0bDgxNTdfZG93bigpLiAgQ291bGQgdGhl
+eSBnZXQgbmFtZXMsIGFuZCBpcyB0aGUNCj4gY29tbWVudCAiQ2xlYXJfU0RSIiBlbm91Z2ggdG8g
+ZXhwbGFpbiB3aGF0IHRoZSB0d28gZGlmZmVyZW50IGFkZHJlc3NlcyBkbz8NCj4gDQo+ID4gK30N
+Cj4gPiArDQo+ID4gK3N0YXRpYyB2b2lkIHJ0bDgxNTdfZG93bihzdHJ1Y3QgcjgxNTIgKnRwKSB7
+DQo+IA0KPiBbIC4uLiBdDQo+IA0KPiA+ICsgICAgIG9jcF93cml0ZV93b3JkKHRwLCBNQ1VfVFlQ
+RV9QTEEsIFBMQV9STVMsIDE1MjYpOw0KPiA+ICsgICAgIG9jcF93cml0ZV9ieXRlKHRwLCBNQ1Vf
+VFlQRV9QTEEsIFBMQV9NVFBTLCAxMCAqIDEwMjQgLyA2NCk7DQo+IA0KPiBbU2V2ZXJpdHk6IE1l
+ZGl1bV0NCj4gVGhlIGJhc2VsaW5lIGRvd24gcGF0aCBhcHBsaWVkIDE1MjIgYW5kIE1UUFNfREVG
+QVVMVCBmb3IgUlRMX1ZFUl8xNi8xNy4NCj4gSXMgdGhlIGNoYW5nZSB0byAxNTI2IGFuZCAxMCAq
+IDEwMjQgLyA2NCBpbnRlbnRpb25hbCwgYW5kIGNvdWxkIGl0IGJlDQo+IG1lbnRpb25lZCBpbiB0
+aGUgY2hhbmdlbG9nPw0KDQpZZXMsIGl0J3MgaW50ZW50aW9uYWwuIFdpbGwgZG8uDQoNCj4gDQo+
+ID4gKw0KPiA+ICsgICAgIC8qIENsZWFyIHRlcmVkbyB3YWtlIGV2ZW50LiBiaXRbMTU6OF0gaXMg
+dGhlIHRlcmVkbyB3YWtldXANCj4gPiArICAgICAgKiB0eXBlLiBTZXQgaXQgdG8gemVyby4gYml0
+c1s3OjBdIGFyZSB0aGUgVzFDIGJpdHMgYWJvdXQNCj4gPiArICAgICAgKiB0aGUgZXZlbnRzLiBT
+ZXQgdGhlbSB0byBhbGwgMSB0byBjbGVhciB0aGVtLg0KPiA+ICsgICAgICAqLw0KPiA+ICsgICAg
+IG9jcF93cml0ZV93b3JkKHRwLCBNQ1VfVFlQRV9QTEEsIFBMQV9URVJFRE9fV0FLRV9CQVNFLA0K
+PiAweDAwZmYpOw0KPiA+ICsNCj4gPiArICAgICBvY3Bfd29yZF9zZXRfYml0cyh0cCwgTUNVX1RZ
+UEVfUExBLCBQTEFfQkRDX0NSLA0KPiA+ICsgQUxEUFNfUFJPWFlfTU9ERSk7DQo+ID4gKw0KPiA+
+ICsgICAgIG9jcF9ieXRlX3NldF9iaXRzKHRwLCBNQ1VfVFlQRV9QTEEsIFBMQV9PT0JfQ1RSTCwN
+Cj4gPiArICAgICAgICAgICAgICAgICAgICAgICBOT1dfSVNfT09CIHwgRElTX01DVV9DTFJPT0Ip
+Ow0KPiA+DQo+ID4gICAgICAgb2NwX3dvcmRfc2V0X2JpdHModHAsIE1DVV9UWVBFX1BMQSwgUExB
+X1NGRl9TVFNfNywNCj4gTUNVX0JPUldfRU4pOw0KPiA+DQo+ID4gQEAgLTEwMDcxLDcgKzEwMjE0
+LDcgQEAgc3RhdGljIGludCBydGxfb3BzX2luaXQoc3RydWN0IHI4MTUyICp0cCkNCj4gPiAgICAg
+ICAgICAgICAgIHRwLT5lZWVfYWR2ICAgICAgICAgICAgID0gTURJT19FRUVfMTAwMFQgfA0KPiBN
+RElPX0VFRV8xMDBUWDsNCj4gPiAgICAgICAgICAgICAgIHRwLT5lZWVfYWR2MiAgICAgICAgICAg
+ID0gTURJT19FRUVfMl81R1Q7DQo+ID4gICAgICAgICAgICAgICBvcHMtPmluaXQgICAgICAgICAg
+ICAgICA9IHI4MTU2Yl9pbml0Ow0KPiA+IC0gICAgICAgICAgICAgb3BzLT5lbmFibGUgICAgICAg
+ICAgICAgPSBydGw4MTU2X2VuYWJsZTsNCj4gPiArICAgICAgICAgICAgIG9wcy0+ZW5hYmxlICAg
+ICAgICAgICAgID0gcnRsODE1NmJfZW5hYmxlOw0KPiA+ICAgICAgICAgICAgICAgb3BzLT5kaXNh
+YmxlICAgICAgICAgICAgPSBydGw4MTUzX2Rpc2FibGU7DQo+ID4gICAgICAgICAgICAgICBvcHMt
+PnVwICAgICAgICAgICAgICAgICA9IHJ0bDgxNTZfdXA7DQo+ID4gICAgICAgICAgICAgICBvcHMt
+PmRvd24gICAgICAgICAgICAgICA9IHJ0bDgxNTZfZG93bjsNCj4gPiBAQCAtMTAxMTAsMTAgKzEw
+MjUzLDEwIEBAIHN0YXRpYyBpbnQgcnRsX29wc19pbml0KHN0cnVjdCByODE1MiAqdHApDQo+ID4g
+ICAgICAgICAgICAgICB0cC0+ZWVlX2FkdiAgICAgICAgICAgICA9IE1ESU9fRUVFXzEwMDBUIHwN
+Cj4gTURJT19FRUVfMTAwVFg7DQo+ID4gICAgICAgICAgICAgICB0cC0+ZWVlX2FkdjIgICAgICAg
+ICAgICA9IE1ESU9fRUVFXzJfNUdUIHwNCj4gTURJT19FRUVfNUdUOw0KPiA+ICAgICAgICAgICAg
+ICAgb3BzLT5pbml0ICAgICAgICAgICAgICAgPSByODE1N19pbml0Ow0KPiA+IC0gICAgICAgICAg
+ICAgb3BzLT5lbmFibGUgICAgICAgICAgICAgPSBydGw4MTU2X2VuYWJsZTsNCj4gPiArICAgICAg
+ICAgICAgIG9wcy0+ZW5hYmxlICAgICAgICAgICAgID0gcnRsODE1N19lbmFibGU7DQo+ID4gICAg
+ICAgICAgICAgICBvcHMtPmRpc2FibGUgICAgICAgICAgICA9IHJ0bDgxNTNfZGlzYWJsZTsNCj4g
+PiAtICAgICAgICAgICAgIG9wcy0+dXAgICAgICAgICAgICAgICAgID0gcnRsODE1Nl91cDsNCj4g
+PiAtICAgICAgICAgICAgIG9wcy0+ZG93biAgICAgICAgICAgICAgID0gcnRsODE1Nl9kb3duOw0K
+PiA+ICsgICAgICAgICAgICAgb3BzLT51cCAgICAgICAgICAgICAgICAgPSBydGw4MTU3X3VwOw0K
+PiA+ICsgICAgICAgICAgICAgb3BzLT5kb3duICAgICAgICAgICAgICAgPSBydGw4MTU3X2Rvd247
+DQo+IA0KPiBbIC4uLiBdDQo+IA0KPiBGb3IgcmVmZXJlbmNlLCBub25lIG9mIHRoZSBhYm92ZSBp
+cyBjaGFuZ2VkIGxhdGVyIGluIHRoZSBzZXJpZXM7IHRoZSBzYW1lIGNvZGUNCj4gaXMgc3RpbGwg
+cHJlc2VudCBpbiBydGw4MTU2X3VwKCksIHJ0bDgxNTZfZG93bigpLA0KPiBydGw4MTU3X3VwKCkg
+YW5kIHJ0bDgxNTdfZG93bigpIGF0IHRoZSBlbmQgb2YgdGhlIHNlcmllcy4NCj4gDQo+IC0tDQo+
+IFNhc2hpa28gQUkgcmV2aWV3IMK3DQo+IGh0dHBzOi8vbmV0ZGV2LWFpLmJvdHMubGludXguZGV2
+L3Nhc2hpa28vIy9wYXRjaHNldC8yMDI2MDkwODA3NTYzNC4yMzc0MC0xDQo+IC1uaWNfc3dzZCU0
+MHJlYWx0ZWsuY29tDQoNCkJlc3QsDQpDaGloLUthaQ0K
