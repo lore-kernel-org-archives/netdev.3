@@ -1,164 +1,744 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A40E4C0402;
-	Tue, 15 Sep 2026 18:39:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D285F4C14ED
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 18:41:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789497578; cv=none; b=ZSo2N/Px8h9PJHPSksLBT1WNksharmCQrODCCUJqMiIiBAvqLAvpec7ML/GUal7GPpXZ8bEwc7vtutGWj/8TArt913vYSb003kJRHRiMTUfkYh9b7f6DOMNaGGx1uNIaGzbAQTYWqLmOYnNbV2iZextnkKNuvc1clcTG/UTtbUA=
+	t=1789497676; cv=none; b=YKTPmwwPcOw6nr0MbfYi5Rp9nPFIg7hgZayfceKOTtrFXKAXbVeEs4m6rSFDnh+cL+XA1yH2LLJbAYzlp42Gl4InXfZRAHhdMJvlxNhg20j/j2JVGXY6SIHHCtneEfxis0/y1IFz3R/HNfWM2fa51Tj0mokvFjQCYMUMhu21V4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789497578; c=relaxed/simple;
-	bh=fqNgNFoBnVpjdChn8APMESaJQLsxtky82BWgen0Gj/g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RF/O7VZDROr9ZUzflp51il0JmTEc9bXArRHsODGwwRSgmlK4PxnNe0oc6W4/sEJ23fXQJ4XqozwmYuiscW4wBLvQCc1tW43cK8y9eVAOntxbyCOLD1eKUvVKZVXccdRKLtlbV0eWf7qqU64uGansZKTceRef+lPggKwYlKm2w34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iOL9B39Y; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789497676; c=relaxed/simple;
+	bh=PYOWye1+Ykgf4RApCWHWK0x77oDpUj9fGgitfKXQsFA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=djUDO3IapZ+Bpmoiv0tXTgJ+tNqh4pWH/QG6Z3uV5sY+P/ZK1rC1Lf4/U9LFRC9pDmAWMwYexYfSwlqF6gqw97//4s2+Zmh3YsEvSxufewu5NoIr+zuIIYaeF36EpPkYV+wUdRMtbmKf1RgnOQ39qqiwlQSLZY3b5VyQToK9O3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dPPeGrsx; arc=none smtp.client-ip=74.125.228.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iOL9B39Y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103FE1F0089B;
-	Tue, 15 Sep 2026 18:39:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789497575;
-	bh=GJPdbx3D50uXJoO9DA6FVACvDwK6YiddMGPdvjxQNDI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iOL9B39YLpHi8j/xTA9excdhrKO592Vs8pzjMn2WO6qs93YmBgp8kN456Jg5lMCy6
-	 XJQGOVecXRri/3bcjHRJ3V1TxEOLZnGLdxEXkLCo61bSiTSWlhwLyfpSdI0g6XHGN0
-	 zfnbSiswF6ZzNw024O4YR4IzccqeFVoDS+eKWav2JzrUR3XY+RCD/1Z1ycqZximCTE
-	 FGEgiuUWvhoS17iVeOKscTJDytdCI3y1YEfkgwLeB5MYcxUTTV2RL6qSmZ8QgffJ33
-	 paW7DU7d8WC2zDUgoqcOdITAZn2TffzdgN/2BZFlDYJ2xE6SZwoaQlfH4TZExND7F7
-	 8sLdcjP8y9Ayw==
-Date: Tue, 15 Sep 2026 11:39:34 -0700
-From: Kees Cook <kees@kernel.org>
-To: Bill Wendling <morbo@google.com>
-Cc: linux-kernel@vger.kernel.org, codemender-patching+linux@google.com,
-	Russell King <linux@armlinux.org.uk>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Matthias Schwarzott <zzam@gentoo.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Anil Gurumurthy <anil.gurumurthy@qlogic.com>,
-	Sudarsana Kalluru <sudarsana.kalluru@qlogic.com>,
-	"Martin K. Petersen" <mkp@kernel.org>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Jiri Pirko <jiri@resnulli.us>, Simon Horman <horms@kernel.org>,
-	Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Kanglong Wang <wangkanglong@loongson.cn>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Qiang Ma <maqianga@uniontech.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Ard Biesheuvel <ardb@kernel.org>, Breno Leitao <leitao@debian.org>,
-	Thorsten Blum <blum@kernel.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Lyude Paul <lyude@redhat.com>,
-	Ashutosh Desai <ashutoshdesai993@gmail.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Johan Hovold <johan@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Cryolitia PukNgae <cryolitia@uniontech.com>,
-	Jiaming Zhang <r772577952@gmail.com>,
-	Will Porter <mrwillporter@gmail.com>,
-	Cen Zhang <zzzccc427@gmail.com>,
-	=?iso-8859-1?Q?C=E1ssio?= Gabriel <cassiogabrielcontato@gmail.com>,
-	Rong Zhang <i@rong.moe>, Arun Raghavan <arunr@valvesoftware.com>,
-	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linux-edac@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org, linux-input@vger.kernel.org,
-	linux-media@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
-	devicetree@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-	linux-gpio@vger.kernel.org, linux-scsi@vger.kernel.org,
-	linux-nfs@vger.kernel.org, devel@lists.orangefs.org,
-	linux-hardening@vger.kernel.org, linux-sound@vger.kernel.org
-Subject: Re: [PATCH 01/28] ALSA: ac97: Refactor snd_ac97_get_name() to use
- snprintf()
-Message-ID: <202609151134.361FEA04@keescook>
-References: <20260915081910.4142719-1-morbo@google.com>
- <20260915081910.4142719-2-morbo@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dPPeGrsx"
+Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-85f0fc1fd8eso34294b3a.1
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 11:41:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789497673; x=1790102473; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=EaBCoujg1Md3+tcZVt/F9CgQEMG62zB5XWPw17HcJjM=;
+        b=dPPeGrsxs90hF43yWtLdYTY4ZvNEA/cRSsLpXx8icUmsHBSSzF+/ImwIxk2zF5aTUC
+         Y0r3CtGC/QCrbG8dV3B8+PY57AougSMzDQL48EA45u7wszZKxbhBSVE6prUv6+BLrzAG
+         0u7SYOPHDXLUfL8GmMCLVNzkyNlZ+53iSFAN8hFC0Fn5J2utAC4eI1ZqlJDMdCmtAQqC
+         rPzfSzRVj+9Cyl05lcOGzLmsC8Y+kac1/tUOgqyLBbyaMzc//IW3ov4T7BOh37sILrLX
+         8Y6P4qAOXdWg0UoQCYia26E3djA1Xx/aUuCK5HUW1SqOBS417XpchMhKWljwUA9K219c
+         xrXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789497673; x=1790102473;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=EaBCoujg1Md3+tcZVt/F9CgQEMG62zB5XWPw17HcJjM=;
+        b=0nvxuDDbkfdeIsky5sE1Qq0cABQOC5thjz6cy/+2Wi80Rb2IHYG/2V8U5Ehwj6XZR1
+         M/SgQxSriY9eZny/l/6J3cUFPpyRhN+W/ja+PY7FYZ9AUcWg4BWUe76U69Do1TW+KSeU
+         oraEcn3N3TfTdRK4vFJKlPZII813gZH71h+ZrDOIvdWMg9mBUUv9lfJx2s3Br99uNJka
+         jzrEa7caJ6yPLyXHQi/f5FbRYAQKgdZXICSiXoaqzEHECpqmzPP6fLClhnct42WvFSn+
+         bGY27eMhvrGD4NsGRmohCdh2pKUu3VSTDH2S4q67RLSnJ63CtviKhPafHoIEea/N+rwZ
+         4jnA==
+X-Gm-Message-State: AFuF++k8lm6ilvFjMFSTB8epfrHAHv8kwNJa/C50rfRVFa5jC5GjSHoz
+	kq3T3YMktCGlr4mVs5FQMYyFm/ekNV8stvcYS0/vfByB+Bh5+9iurQ95cdu8LQ==
+X-Gm-Gg: AYBFou3Q125NOVjYgx7R7IkKs54YHpix75nuiVp3eOj91YqGEGgQVv/bTVRAWE0WDQf
+	Uo5unTT0pZcNbsKOco4kH1MlGt7vqq9yZUeanFRY079fBm7dwv/eEByGa79M6XautfJr2g54DPk
+	02s0k4w2MP4rq4sj5WPLnJxnDI4fmaBkt6MKB4ILm6VaRHsJ3RmZ20gVqNMf9kxjD8MfUBmvqQ9
+	HBfkdXmR331KYYB9UZHhHp+tj7mtBFMpbPN66Mir7lVklpNipHHTQf55HGs6RZOFHikuNBhRKr1
+	5ym0A6fUm6M+PL9voKG0hlT4YFEz3DxG4zOnmPZpqpbxe935yecVqsKqLLsxFeLwE72GwYoQ7Ls
+	ca+hR8Tpn+5oKc2QahzmWysvkZkVrETNazmYDf99IwqcU22Uxv4T9ksjKQKXFkzLmiO+l3j3Cfo
+	j1YtYuWsXk3V3Pi1Nlu0jDm6IqlNe6B6+XqYSL/8cf2myIN6RdQ6b5KZZPRb4oopR3aC9BpQ0zg
+	2gSNMDYQNsX35kpIG3bQUtqnfXVBSbp6XsHCJ/krw90p+ZPTnOmjntqgY9JpI75Vws8lNDf/rU=
+X-Received: by 2002:a05:6a21:517:b0:3c3:a20f:f729 with SMTP id adf61e73a8af0-3dd52688949mr5369166637.7.1789497673304;
+        Tue, 15 Sep 2026 11:41:13 -0700 (PDT)
+Received: from localhost.ghari-thinkpadp1gen7.rmtin.csb ([111.92.26.108])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33bf5b030aesm772380eec.26.2026.09.15.11.41.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Sep 2026 11:41:12 -0700 (PDT)
+From: Harshith Hari <harshithhari000111@gmail.com>
+To: netdev@vger.kernel.org
+Cc: stephen@networkplumber.org,
+	Harshith Hari <harshithhari000111@gmail.com>
+Subject: [PATCH iproute2] ss: add -P/--process-age option to display process runtime
+Date: Wed, 16 Sep 2026 00:05:22 +0530
+Message-ID: <20260915183522.63865-1-harshithhari000111@gmail.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260915081910.4142719-2-morbo@google.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 15, 2026 at 08:18:18AM +0000, Bill Wendling wrote:
-> --- a/sound/pci/ac97/ac97_codec.c
-> +++ b/sound/pci/ac97/ac97_codec.c
-> @@ -1850,10 +1850,12 @@ void snd_ac97_get_name(struct snd_ac97 *ac97, unsigned int id, char *name,
->  
->  	pid = look_for_codec_id(snd_ac97_codec_ids, id);
->  	if (pid) {
-> -		strlcat(name, " ", maxlen);
-> -		strlcat(name, pid->name, maxlen);
-> +		int l = strlen(name);
-> +
->  		if (pid->mask != 0xffffffff)
-> -			sprintf(name + strlen(name), " rev %u", id & ~pid->mask);
-> +			snprintf(name + l, maxlen - l, " %s rev %u", pid->name, id & ~pid->mask);
-> +		else
-> +			snprintf(name + l, maxlen - l, " %s", pid->name);
->  		if (ac97 && pid->patch) {
->  			if ((modem && (pid->flags & AC97_MODEM_PATCH)) ||
->  			    (! modem && ! (pid->flags & AC97_MODEM_PATCH)))
-> @@ -1861,6 +1863,7 @@ void snd_ac97_get_name(struct snd_ac97 *ac97, unsigned int id, char *name,
->  		}
->  	} else {
->  		int l = strlen(name);
-> +
->  		snprintf(name + l, maxlen - l, " id %x", id & 0xff);
->  	}
->  }
+Add a new option (-P/--process-age) to display process uptime/age
+alongside process info inside socket user context output.
 
-I'd rather not open-code the length math here. Can't we use seq_buf()
-instead?
+Signed-off-by: Harshith Hari <harshithhari000111@gmail.com>
+---
+ man/man8/ss.8 |   3 +
+ misc/ss.c     | 456 ++++++++++++++++++++++++++++++--------------------
+ 2 files changed, 282 insertions(+), 177 deletions(-)
 
+diff --git a/man/man8/ss.8 b/man/man8/ss.8
+index b0629b82..5f345c21 100644
+--- a/man/man8/ss.8
++++ b/man/man8/ss.8
+@@ -163,6 +163,9 @@ the number of packets dropped before they are de-multiplexed into the socket
+ .TP
+ \.B \-P, \-\-process\-age
+ Show process age/runtime alongside process socket information.
++.TP
++\.B \-P, \-\-process\-age
++Show process age/runtime alongside process socket information.
+ Show processes using sockets.
+ .TP
+ .B \-T, \-\-threads
+diff --git a/misc/ss.c b/misc/ss.c
+index 6c32455d..66fb1fee 100644
+--- a/misc/ss.c
++++ b/misc/ss.c
+@@ -56,58 +56,58 @@ static int show_process_age;
+ 
+ static void print_process_age(pid_t pid)
+ {
+-char path[64];
+-FILE *f;
+-unsigned long long starttime;
+-double uptime = 0.0;
+-long clock_ticks = sysconf(_SC_CLK_TCK);
+-
+-f = fopen("/proc/uptime", "r");
+-if (!f)
+-return;
+-
+-if (fscanf(f, "%lf", &uptime) != 1) {
+-fclose(f);
+-return;
+-}
+-fclose(f);
++	char path[64];
++	FILE *f;
++	unsigned long long starttime;
++	double uptime = 0.0;
++	long clock_ticks = sysconf(_SC_CLK_TCK);
++
++	f = fopen("/proc/uptime", "r");
++	if (!f)
++		return;
+ 
+-snprintf(path, sizeof(path), "/proc/%d/stat", pid);
+-f = fopen(path, "r");
+-if (!f)
+-return;
++	if (fscanf(f, "%lf", &uptime) != 1) {
++		fclose(f);
++		return;
++	}
++	fclose(f);
+ 
+-char buf[1024];
++	snprintf(path, sizeof(path), "/proc/%d/stat", pid);
++	f = fopen(path, "r");
++	if (!f)
++		return;
+ 
+-if (fgets(buf, sizeof(buf), f)) {
+-char *ptr = strrchr(buf, ')');
++	char buf[1024];
+ 
+-if (ptr) {
+-int field = 3;
++	if (fgets(buf, sizeof(buf), f)) {
++		char *ptr = strrchr(buf, ')');
+ 
+-ptr++;
+-while (*ptr && field < 22) {
+-if (*ptr == ' ')
+-field++;
+-ptr++;
+-}
+-if (sscanf(ptr, "%llu", &starttime) == 1) {
+-double process_secs = uptime - ((double)starttime / clock_ticks);
+-long secs = (long)process_secs;
+-long hours = secs / 3600;
+-long mins = (secs % 3600) / 60;
+-long s = secs % 60;
++		if (ptr) {
++			int field = 3;
+ 
+-if (hours > 0)
+-out(",age=%ldh%ldm", hours, mins);
+-else if (mins > 0)
+-out(",age=%ldm%lds", mins, s);
+-else
+-out(",age=%lds", s);
+-}
+-}
+-}
+-fclose(f);
++			ptr++;
++			while (*ptr && field < 22) {
++				if (*ptr == ' ')
++					field++;
++				ptr++;
++			}
++			if (sscanf(ptr, "%llu", &starttime) == 1) {
++				double process_secs = uptime - ((double)starttime / clock_ticks);
++				long secs = (long)process_secs;
++				long hours = secs / 3600;
++				long mins = (secs % 3600) / 60;
++				long s = secs % 60;
++
++				if (hours > 0)
++					out(",age=%ldh%ldm", hours, mins);
++				else if (mins > 0)
++					out(",age=%ldm%lds", mins, s);
++				else
++					out(",age=%lds", s);
++			}
++		}
++	}
++	fclose(f);
+ }
+ 
+ 
+@@ -115,57 +115,58 @@ static int show_process_age;
+ 
+ static void print_process_age(pid_t pid)
+ {
+-char path[64];
+-FILE *f;
+-unsigned long long starttime;
+-double uptime = 0.0;
+-long clock_ticks = sysconf(_SC_CLK_TCK);
++	char path[64];
++	FILE *f;
++	unsigned long long starttime;
++	double uptime = 0.0;
++	long clock_ticks = sysconf(_SC_CLK_TCK);
+ 
+-f = fopen("/proc/uptime", "r");
+-if (!f)
+-return;
+-if (fscanf(f, "%lf", &uptime) != 1) {
+-fclose(f);
+-return;
+-}
+-fclose(f);
++	f = fopen("/proc/uptime", "r");
++	if (!f)
++		return;
+ 
+-snprintf(path, sizeof(path), "/proc/%d/stat", pid);
+-f = fopen(path, "r");
+-if (!f)
+-return;
++	if (fscanf(f, "%lf", &uptime) != 1) {
++		fclose(f);
++		return;
++	}
++	fclose(f);
+ 
+-char buf[1024];
++	snprintf(path, sizeof(path), "/proc/%d/stat", pid);
++	f = fopen(path, "r");
++	if (!f)
++		return;
+ 
+-if (fgets(buf, sizeof(buf), f)) {
+-char *ptr = strrchr(buf, ')');
++	char buf[1024];
+ 
+-if (ptr) {
+-int field = 3;
++	if (fgets(buf, sizeof(buf), f)) {
++		char *ptr = strrchr(buf, ')');
+ 
+-ptr++;
+-while (*ptr && field < 22) {
+-if (*ptr == ' ')
+-field++;
+-ptr++;
+-}
+-if (sscanf(ptr, "%llu", &starttime) == 1) {
+-double process_secs = uptime - ((double)starttime / clock_ticks);
+-long secs = (long)process_secs;
+-long hours = secs / 3600;
+-long mins = (secs % 3600) / 60;
+-long s = secs % 60;
++		if (ptr) {
++			int field = 3;
+ 
+-if (hours > 0)
+-out(",age=%ldh%ldm", hours, mins);
+-else if (mins > 0)
+-out(",age=%ldm%lds", mins, s);
+-else
+-out(",age=%lds", s);
+-}
+-}
+-}
+-fclose(f);
++			ptr++;
++			while (*ptr && field < 22) {
++				if (*ptr == ' ')
++					field++;
++				ptr++;
++			}
++			if (sscanf(ptr, "%llu", &starttime) == 1) {
++				double process_secs = uptime - ((double)starttime / clock_ticks);
++				long secs = (long)process_secs;
++				long hours = secs / 3600;
++				long mins = (secs % 3600) / 60;
++				long s = secs % 60;
++
++				if (hours > 0)
++					out(",age=%ldh%ldm", hours, mins);
++				else if (mins > 0)
++					out(",age=%ldm%lds", mins, s);
++				else
++					out(",age=%lds", s);
++			}
++		}
++	}
++	fclose(f);
+ }
+ 
+ 
+@@ -892,12 +893,12 @@ static int find_entry(unsigned int ino, char **buf, int type)
+ 		show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+ 	
+@@ -1088,12 +1089,12 @@ static const char *unix_netid_name(int type)
+ 		show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+ 	
+@@ -1114,12 +1115,12 @@ static const char *proto_name(int protocol)
+ 		show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+ 	
+@@ -1147,12 +1148,12 @@ static const char *vsock_netid_name(int type)
+ 		show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+ 	
+@@ -1172,12 +1173,12 @@ static const char *tipc_netid_name(int type)
+ 		show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+ 	
+@@ -1656,12 +1657,12 @@ static void sock_state_print(struct sockstat *s)
+ 		show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+ 	
+@@ -2037,12 +2038,12 @@ static int run_ssfilter(struct ssfilter *f, struct sockstat *s)
+ 		show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+ 	
+@@ -2174,12 +2175,12 @@ static int ssfilter_bytecompile(struct ssfilter *f, char **bytecode)
+ 		show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+ 	
+@@ -2727,42 +2728,76 @@ static void proc_ctx_print(struct sockstat *s)
+ 		if (find_entry(s->ino, &buf,
+ 				(show_proc_ctx & show_sock_ctx) ?
+ 				PROC_SOCK_CTX : PROC_CTX) > 0) {
+-			out(" users:(%s)", buf);
++			if (show_process_age) {
++				char *ptr_p = buf;
++
++				out(" users:(");
++				while (*ptr_p) {
++					char *pid_ptr = strstr(ptr_p, "pid=");
++
++					if (pid_ptr) {
++						char *close_paren = strchr(pid_ptr, ')');
++
++						if (close_paren) {
++							out("%.*s",
++				    (int)(close_paren - ptr_p),
++				    ptr_p);
++							pid_t pid = atoi(pid_ptr + 4);
++
++							if (pid > 0)
++								print_process_age(pid);
++							out(")");
++							ptr_p = close_paren + 1;
++						} else {
++							out("%s", ptr_p);
++							break;
++						}
++					} else {
++						out("%s", ptr_p);
++						break;
++					}
++				}
++				out(")");
++			} else {
++				out(" users:(%s)", buf);
++			}
+ 			free(buf);
+ 		}
+ 	} else if (show_processes || show_threads) {
+ if (find_entry(s->ino, &buf, USERS) > 0) {
+ if (show_process_age) {
+-char *p = buf;
+-
+-out(" users:(");
+-while (*p) {
+-char *pid_ptr = strstr(p, "pid=");
+-
+-if (pid_ptr) {
+-char *close_paren = strchr(pid_ptr, ')');
+-
+-if (close_paren) {
+-out("%.*s", (int)(close_paren - p), p);
+-pid_t pid = atoi(pid_ptr + 4);
+-
+-if (pid > 0)
+-print_process_age(pid);
+-out(")");
+-p = close_paren + 1;
+-} else {
+-out("%s", p);
+-break;
+-}
+-} else {
+-out("%s", p);
+-break;
+-}
+-}
+-out(")");
+-} else {
+-out(" users:(%s)", buf);
+-}
++				char *ptr_p = buf;
++
++				out(" users:(");
++				while (*ptr_p) {
++					char *pid_ptr = strstr(ptr_p, "pid=");
++
++					if (pid_ptr) {
++						char *close_paren = strchr(pid_ptr, ')');
++
++						if (close_paren) {
++							out("%.*s",
++				    (int)(close_paren - ptr_p),
++				    ptr_p);
++							pid_t pid = atoi(pid_ptr + 4);
++
++							if (pid > 0)
++								print_process_age(pid);
++							out(")");
++							ptr_p = close_paren + 1;
++						} else {
++							out("%s", ptr_p);
++							break;
++						}
++					} else {
++						out("%s", ptr_p);
++						break;
++					}
++				}
++				out(")");
++			} else {
++				out(" users:(%s)", buf);
++			}
+ free(buf);
+ }
+ } else {
+@@ -3245,12 +3280,12 @@ static void tcp_tls_version(struct rtattr *attr)
+ 		show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+ 	
+@@ -3279,12 +3314,12 @@ static void tcp_tls_cipher(struct rtattr *attr)
+ 		show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+ 	
+@@ -3310,12 +3345,12 @@ static void tcp_tls_conf(const char *name, struct rtattr *attr)
+ 		show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+ 	
+@@ -3673,12 +3708,12 @@ static const char *format_host_sa(struct sockaddr_storage *sa)
+ 		show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+ 	
+@@ -5831,12 +5866,12 @@ static int generic_show_sock(struct nlmsghdr *nlh, void *arg)
+ 		show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+ 	
+@@ -6217,10 +6252,69 @@ wrong_state:
+ #define OPT_BPF_MAPS 263
+ #define OPT_BPF_MAP_ID 264
+ 
++static int show_process_age;
++
++static void print_process_age(pid_t pid)
++{
++	char path[64];
++	FILE *f;
++	unsigned long long starttime;
++	double uptime = 0.0;
++	long clock_ticks = sysconf(_SC_CLK_TCK);
++
++	f = fopen("/proc/uptime", "r");
++	if (!f)
++		return;
++
++	if (fscanf(f, "%lf", &uptime) != 1) {
++		fclose(f);
++		return;
++	}
++	fclose(f);
++
++	snprintf(path, sizeof(path), "/proc/%d/stat", pid);
++	f = fopen(path, "r");
++	if (!f)
++		return;
++
++	char buf[1024];
++
++	if (fgets(buf, sizeof(buf), f)) {
++		char *ptr = strrchr(buf, ')');
++
++		if (ptr) {
++			int field = 3;
++
++			ptr++;
++			while (*ptr && field < 22) {
++				if (*ptr == ' ')
++					field++;
++				ptr++;
++			}
++			if (sscanf(ptr, "%llu", &starttime) == 1) {
++				double process_secs = uptime - ((double)starttime / clock_ticks);
++				long secs = (long)process_secs;
++				long hours = secs / 3600;
++				long mins = (secs % 3600) / 60;
++				long s = secs % 60;
++
++				if (hours > 0)
++					out(",age=%ldh%ldm", hours, mins);
++				else if (mins > 0)
++					out(",age=%ldm%lds", mins, s);
++				else
++					out(",age=%lds", s);
++			}
++		}
++	}
++	fclose(f);
++}
++
+ static const struct option long_opts[] = {
+ 	{ "process-age", no_argument, NULL, 'P' },
+ 	{ "process-age", no_argument, NULL, 'P' },
+ 	{ "process-age", no_argument, NULL, 'P' },
++	{ "process-age", no_argument, NULL, 'P' },
+ 	{ "numeric", 0, 0, 'n' },
+ 	{ "resolve", 0, 0, 'r' },
+ 	{ "options", 0, 0, 'o' },
+@@ -6283,20 +6377,28 @@ int main(int argc, char *argv[])
+ 	int ch;
+ 	int state_filter = 0;
+ 
++		case 'P':
++			show_process_age = 1;
++		show_processes = 1;
++		break;
+ 	while ((ch = getopt_long(argc, argv,
+ 				 "halBetuwxnro460spTbEf:mMiA:D:F:vVzZN:KHQSOPPP",
+ 				 long_opts, NULL)) != EOF) {
+ 		switch (ch) {
++		case 'P':
++			show_process_age = 1;
++		show_processes = 1;
++		break;
+ 	case \'P\':
+ 		show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+-	case 'P':
+-		show_process_age = 1;
++		case 'P':
++			show_process_age = 1;
+ 		show_processes = 1;
+ 		break;
+ 	
 -- 
-Kees Cook
+2.43.7
+
