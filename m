@@ -1,229 +1,180 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8BD38C438;
-	Tue, 15 Sep 2026 10:34:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADEF238C438;
+	Tue, 15 Sep 2026 10:36:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.135.140.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789468457; cv=none; b=LUZMPaSykWwSU89Pw5ltNqxnaLc27zfvV/UTAMU4pZA/+kuYXpmB34+XwsWTz4FVCB6Fo57q9WbS4OTkCw4cF+JtZFWUhc0i16cjPy7dL4BZf7g1Wg2idvNZliG52lSyoOUw/noK0m1YeZeRZzfdUQc7L8UwcvduIE3wlNhaXEI=
+	t=1789468606; cv=none; b=WBAc5ljX5Nt3TfQcJkDumC0oygnaGE6ffU6zCJKz+IjJv/pEIU91UJP6FK2kM2q9Oc1hSsCpfVWwapUmjjTLKCQk/s7t1uBYpDSTx+LbuRMi/lYz7i03hxZ6OC+XND9bEN+3KyfJBac+g0JUCZnxJ7iRALh7gstwXbPMnqqAUYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789468457; c=relaxed/simple;
-	bh=UBzkm8sfFlelF87j09jVlqAKMXd3gOjZixvTSW1iNUM=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XeXWNCcgII8NAyjNpVCYQb8mdEJ56BldYgJcPZi4HqI0GnhqJkBP7OwPIJFiQoT4BrBRT4kcp3EVZiXHXyCukYXtfgQhAlsNCIhZ4iK9M7QkyjZ/h7VpzZRxWQLrinYF+CPUwK1ssoE9knHL7Z074SGF1SrfCHSWCz9KX7Cs63E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=UdDZpaPr; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1789468606; c=relaxed/simple;
+	bh=Q3OkuS7N/l3ssQFyXrs+rq4u1D327NteZulqsS2CVFk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tMh7+7Z35weS09G6buaoFA5BMr1zg8CQb0a5l1t7JC2I2Nt6mdHgI5Qovd7x5iYKC2DpOgzWqu4XNF8pxiHAWxD1OAf3YFxm5UMn2d8XWXlm0MwbP8PjycNsj5xQC2AnZ+BK84Lk4y4MLhRbsgR9uzKNFBnnE4bQBeachNzUsK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=pass smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=Jm3Jx9a6; arc=none smtp.client-ip=5.135.140.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cjdns.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="UdDZpaPr"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1789468456; x=1821004456;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=UBzkm8sfFlelF87j09jVlqAKMXd3gOjZixvTSW1iNUM=;
-  b=UdDZpaPrMhy9UxNDYdUQ2B9Vo+zb2aigrZK2mF/dN1kszowqBeQRZ+Ej
-   dH9izaiNg1Lf8B81lRq6JXWs5TCCI58ZNEqoQbdbgrOyAP+UIcS0x/E+l
-   EQNxbLCkU4L0CN+W/hrgzwhj3y/FTwtouppmpYkaY6KyWtHqDrGApMlGO
-   BkP0/QiRwF9N3/VQgAQmP6Q98oWaJJVUPuxHratEEH8yqkCkQFwcapCQ4
-   ZoMuYehqRKuOOf3AZi08YvI5wDztnGtAc/5UPpelIdurt/KO49rsCSkGx
-   04Qjvb5/JUymDoIXY7W5dNXAi/Owf16rcsTCu6rC9dljFVzpBmGRujT/I
-   w==;
-X-CSE-ConnectionGUID: 1ACFrffETBiX3sMYoaXxFA==
-X-CSE-MsgGUID: 0wEdiCWwSIuMmHBlYohsAQ==
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="295033993"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 15 Sep 2026 03:34:15 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Tue, 15 Sep 2026 03:34:14 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Tue, 15 Sep 2026 03:34:10 -0700
-Date: Tue, 15 Sep 2026 12:34:09 +0200
-From: Daniel Machon <daniel.machon@microchip.com>
-To: <netdev-bot+sashiko@kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <horatiu.vultur@microchip.com>,
-	<steen.hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>,
-	<ast@kernel.org>, <daniel@iogearbox.net>, <hawk@kernel.org>,
-	<john.fastabend@gmail.com>, <sdf@fomichev.me>, <herve.codina@bootlin.com>,
-	<arnd@arndb.de>, <gregkh@linuxfoundation.org>, <mohsin.bashr@gmail.com>,
-	<richardcochran@gmail.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH net-next v6 12/14] net: lan966x: add PCIe FDMA XDP support
-Message-ID: <20260915103409.6cwnskzb2bl43mxv@DEN-DL-M70577.microsemi.net>
-References: <20260909-lan966x-pci-fdma-v6-12-6f48dab9d671@microchip.com>
- <178904555117.219967.2055099842496630976@kernel.org>
+	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="Jm3Jx9a6"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 60FCA477DB6;
+	Tue, 15 Sep 2026 12:36:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
+	t=1789468601; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=K2vfaOnFC7/1nB20cS53MVssmSMJc4X+W5RiRjOHV4U=;
+	b=Jm3Jx9a6tYw3fTkcU6hTEPftfoIJK9sHuHZJ7rCc5E5UCLe296b3E4aja8sRYUIOiZi86A
+	AIe+e0BgxtP57oUV95thz3/BAcCqks+Q7yVN5/PcihFn9WPJzUyNPfkALTMam0HW3eR/1D
+	oeIxGrM33tEnX0PE0kGgGXL2ondBiiMin3qXXiv8DK+94Ff836IORKyOiJwcE5zXUUi7To
+	km+WTfLFNBiZyEcsJrf1v001kqWUrzr8HQgU2pB6cUEe8qw8plo4xxpM55s0W3Dqza+Xp8
+	mtpLH3XCcRko/SxQCg2hzBh9ZXjCbsQvj7ucR9W+rBOOEUl+eT9X7xst+AvVqQ==
+From: Caleb James DeLisle <cjd@cjdns.fr>
+To: netdev@vger.kernel.org
+Cc: daniel@makrotopia.org,
+	dqfext@gmail.com,
+	SkyLake.Huang@mediatek.com,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Caleb James DeLisle <cjd@cjdns.fr>,
+	Matheus Sampaio Queiroga <srherobrine20@gmail.com>
+Subject: [PATCH v4 net-next] net: phy: mediatek: support MT7530 PHYs on EN71221 MCM
+Date: Tue, 15 Sep 2026 10:35:50 +0000
+Message-Id: <20260915103550.79957-1-cjd@cjdns.fr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <178904555117.219967.2055099842496630976@kernel.org>
+X-Last-TLS-Session-Version: TLSv1.3
 
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider:
-> 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 0
-> 
-> - [Medium] Inconsistent XDP frame presentation between the two RX hooks
->   of the same driver: after this patch lan966x has two in-tree XDP RX…
-> 
-> --
-> 
-> net: lan966x: add PCIe FDMA XDP support
-> 
-> This adds XDP support to the lan966x PCIe FDMA path, using contiguous
-> ATU-mapped buffers and a memcpy-based XDP_TX instead of the page_pool
-> scheme used by the platform path. The IFH and FCS are stripped before
-> the BPF program runs, and lan966x_xdp_setup() now skips the page_pool
-> reload for the PCIe case. Only XDP_ACT_BASIC is advertised for PCIe.
-> 
-> > diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c
-> > index 6cabbb8b47f2..02c021617a3e 100644
-> > --- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c
-> > +++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c
-> 
-> [ ... ]
-> 
-> > @@ -126,7 +127,123 @@ static bool lan966x_fdma_pci_rx_size_fits(struct fdma *fdma, u32 blockl)
-> 
-> [ ... ]
-> 
-> > +static int lan966x_xdp_pci_run(struct lan966x_port *port, void *data,
-> > +                            u32 data_len, void **xdp_data, u32 *xdp_len)
-> > +{
-> 
-> [ ... ]
-> 
-> > +     xdp_prepare_buff(&xdp,
-> > +                      data - XDP_PACKET_HEADROOM,
-> > +                      XDP_PACKET_HEADROOM + IFH_LEN_BYTES,
-> > +                      data_len,
-> > +                      false);
-> > +
-> > +     act = bpf_prog_run_xdp(xdp_prog, &xdp);
-> 
-> [ ... ]
-> 
-> > @@ -158,38 +275,33 @@ static int lan966x_fdma_pci_rx_check_frame(struct lan966x_rx *rx, u64 *src_port)
-> >       if (!lan966x_fdma_pci_rx_size_fits(fdma, blockl))
-> >               return FDMA_ERROR;
-> >
-> > -     return FDMA_PASS;
-> > +     /* Present the Ethernet frame (no IFH, no FCS). HW re-inserts the
-> > +      * FCS on TX; see lan966x_fdma_pci_xmit_xdpf(). May be overridden
-> > +      * by XDP. The FCS strip is unconditional because NETIF_F_RXFCS
-> > +      * is not advertised in hw_features.
-> > +      */
-> > +     *data = virt_addr + IFH_LEN_BYTES;
-> > +     *data_len = blockl - IFH_LEN_BYTES - ETH_FCS_LEN;
-> > +
-> > +     return lan966x_xdp_pci_run(port, virt_addr, *data_len, data, data_len);
-> >  }
-> 
-> [Severity: Medium]
-> Should the two lan966x XDP receive hooks agree on whether the FCS is part
-> of the window handed to the BPF program?
-> 
-> On the PCIe path, lan966x_fdma_pci_rx_check_frame() subtracts the FCS
-> before calling into the program:
-> 
->         *data_len = blockl - IFH_LEN_BYTES - ETH_FCS_LEN;
-> 
->         return lan966x_xdp_pci_run(port, virt_addr, *data_len, data, data_len);
-> 
-> On the platform path, lan966x_fdma_rx_check_frame() passes the raw BLOCKL
-> value and lan966x_xdp_run() only removes the IFH:
-> 
-> drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c:lan966x_fdma_rx_check_frame() {
->         ...
->         return lan966x_xdp_run(port, page, FDMA_DCB_STATUS_BLOCKL(db->status));
-> }
-> 
-> drivers/net/ethernet/microchip/lan966x/lan966x_xdp.c:lan966x_xdp_run() {
->         ...
->         xdp_prepare_buff(&xdp, page_address(page),
->                          IFH_LEN_BYTES + XDP_PACKET_HEADROOM,
->                          data_len - IFH_LEN_BYTES, false);
-> }
-> 
-> That BLOCKL value still contains the FCS, as shown by the trim done later
-> on the same path:
-> 
-> drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c:lan966x_fdma_rx_get_frame() {
->         ...
->         skb_put(skb, FDMA_DCB_STATUS_BLOCKL(db->status));
->         ...
->         skb_pull(skb, IFH_LEN_BYTES);
-> 
->         if (likely(!(skb->dev->features & NETIF_F_RXFCS)))
->                 skb_trim(skb, skb->len - ETH_FCS_LEN);
-> }
-> 
-> So xdp.data_end points four bytes past the end of the Ethernet payload on
-> the platform path, and exactly at the end of the payload on the new PCIe
-> path. Both windows stay inside the DMA buffer, so this looks like a
-> behavioural difference rather than an out-of-bounds access.
-> 
-> A program that parses backwards from data_end, compares data_end - data
-> against an L3 length field, or trims via bpf_xdp_adjust_tail() would get
-> different results depending on whether the switch is platform- or
-> PCIe-attached. The PCIe framing matches the usual XDP convention of no
-> FCS, which would make the platform hook the one that differs from
-> convention.
->
+The EcoNet EN751221 multi-chip module implementation of the MT7530
+requires some additional configuration of the PHYs on startup.
+The reason for this is not known, but it is possible that it has
+to do with the fact that the EN751221 MCM implementation of the
+MT7530 runs at an abnormal PLL frequency (362.5Mhz).
 
-They should, and the PCIe framing is the one to keep. The strip was asked for by an
-earlier round of this review, in v3, because the PCIe hook honours the post-program
-window - lan966x_xdp_pci_run() writes back xdp.data_end - xdp.data and XDP_TX uses
-it - so an FCS left in there would be delivered as payload whenever a program
-touched the tail. The platform hook does not use them for XDP_PASS or XDP_TX at
-all - it passes the pre-program length instead.
+Detect whether the MT7530 PHY is attached to the MDIO bus of an
+EcoNet EN751221 switch and if so, apply the necessary register
+updates. Additionally, never attempt to configure an MT7530
+identified PHY which does not have gigabit support because the same
+ID is used for another (FE) PHY.
 
-> > diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-> > index e089c08b9c37..9ada497767c6 100644
-> > --- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-> > +++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-> > @@ -874,11 +874,13 @@ static int lan966x_probe_port(struct lan966x *lan966x, u32 p,
-> >
-> >       port->phylink = phylink;
-> >
-> > -     /* XDP is not supported on the PCIe FDMA path. */
-> > -     if (lan966x->fdma && !lan966x_is_pci(lan966x))
-> > -             dev->xdp_features = NETDEV_XDP_ACT_BASIC |
-> > -                                 NETDEV_XDP_ACT_REDIRECT |
-> > -                                 NETDEV_XDP_ACT_NDO_XMIT;
-> > +     if (lan966x->fdma) {
-> > +             dev->xdp_features = NETDEV_XDP_ACT_BASIC;
-> > +
-> > +             if (!lan966x_is_pci(lan966x))
-> > +                     dev->xdp_features |= NETDEV_XDP_ACT_REDIRECT |
-> > +                                          NETDEV_XDP_ACT_NDO_XMIT;
-> > +     }
-> 
-> [Severity: Medium]
-> Both paths now report the same NETDEV_XDP_ACT_BASIC bit from
-> lan966x_probe_port(), so is there anything in the uAPI that lets a
-> program distinguish the FCS-included window of lan966x_xdp_run() from
-> the FCS-stripped window of lan966x_xdp_pci_run()?
-> 
-> Would it make sense to make one of the two hooks match the other so that
-> the frame presentation is the same for identically-advertised netdevs?
+Co-developed-by: Matheus Sampaio Queiroga <srherobrine20@gmail.com>
+Signed-off-by: Matheus Sampaio Queiroga <srherobrine20@gmail.com>
+Signed-off-by: Caleb James DeLisle <cjd@cjdns.fr>
+---
+ drivers/net/phy/mediatek/mtk-ge.c | 77 +++++++++++++++++++++++++++++++
+ 1 file changed, 77 insertions(+)
 
-Same as above - the correct handling is removing the FCS, so the platform hook
-is the one to move. There is no uAPI signal to describe the difference with
-either, so converging is the only option.
+diff --git a/drivers/net/phy/mediatek/mtk-ge.c b/drivers/net/phy/mediatek/mtk-ge.c
+index 96d8ac5154e5..07687b0aa59d 100644
+--- a/drivers/net/phy/mediatek/mtk-ge.c
++++ b/drivers/net/phy/mediatek/mtk-ge.c
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0+
++#include <linux/of.h>
+ #include <linux/bitfield.h>
+ #include <linux/module.h>
+ #include <linux/phy.h>
+@@ -101,6 +102,65 @@ static int mt7530_phy_config_init(struct phy_device *phydev)
+ 	return 0;
+ }
+ 
++/*
++ * The EcoNet EN751221 "G" multi-chip module MT7530 requires additional PHY
++ * configuration.
++ */
++static int en751221_mcm_phy_config_init(struct phy_device *phydev)
++{
++	int ret;
++
++	ret = genphy_soft_reset(phydev);
++	if (ret)
++		return ret;
++
++	ret = phy_write_paged(phydev, MTK_PHY_PAGE_EXTENDED_1,
++			      MTK_PHY_AUX_CTRL_AND_STATUS, 0x3a04);
++	if (ret < 0)
++		return ret;
++
++	/* Clause 45 global/local data from mt7530GePhyCfgLoad(E3.0). */
++	ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x0417, 0x7775);
++	if (ret < 0)
++		return ret;
++
++	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x00a6, 0x0350);
++	if (ret < 0)
++		return ret;
++
++	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x0012, 0xd210);
++	if (ret < 0)
++		return ret;
++
++	return mt7530_phy_config_init(phydev);
++}
++
++static bool en751221_is_mcm_phy(struct phy_device *phydev)
++{
++	struct device *parent = phydev->mdio.bus->parent;
++
++	return parent && parent->of_node &&
++	       of_device_is_compatible(parent->of_node, "econet,en751221");
++}
++
++/*
++ * MTK_GPHY_ID_MT7530 ID is also used for an EcoNet SoC FE phy, but that PHY
++ * does not advertise ESTATUS_1000_TFULL.
++ */
++static int mt7530_phy_match(struct phy_device *phydev,
++			    const struct phy_driver *phydrv)
++{
++	return (phy_read(phydev, MII_ESTATUS) & ESTATUS_1000_TFULL) != 0 &&
++		!en751221_is_mcm_phy(phydev);
++}
++
++static int en751221_phy_match(struct phy_device *phydev,
++			      const struct phy_driver *phydrv)
++{
++	return (phy_read(phydev, MII_ESTATUS) & ESTATUS_1000_TFULL) != 0 &&
++		en751221_is_mcm_phy(phydev);
++}
++
+ static int mt7531_phy_config_init(struct phy_device *phydev)
+ {
+ 	mtk_gephy_config_init(phydev);
+@@ -135,6 +195,23 @@ static struct phy_driver mtk_gephy_driver[] = {
+ 		 */
+ 		.config_intr	= genphy_no_config_intr,
+ 		.handle_interrupt = genphy_handle_interrupt_no_ack,
++		.match_phy_device = mt7530_phy_match,
++		.suspend	= genphy_suspend,
++		.resume		= genphy_resume,
++		.read_page	= mtk_phy_read_page,
++		.write_page	= mtk_phy_write_page,
++	},
++	{
++		PHY_ID_MATCH_EXACT(MTK_GPHY_ID_MT7530),
++		.name		= "EcoNet EN751221 MCM PHY",
++		.probe		= mt7530_phy_probe,
++		.config_init	= en751221_mcm_phy_config_init,
++		/* Interrupts are handled by the switch, not the PHY
++		 * itself.
++		 */
++		.config_intr	= genphy_no_config_intr,
++		.handle_interrupt = genphy_handle_interrupt_no_ack,
++		.match_phy_device = en751221_phy_match,
+ 		.suspend	= genphy_suspend,
+ 		.resume		= genphy_resume,
+ 		.read_page	= mtk_phy_read_page,
+-- 
+2.39.5
 
-> 
-> --
-> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909-lan966x-pci-fdma-v6-0-6f48dab9d671%40microchip.com
