@@ -1,97 +1,241 @@
-Received: from nabal.armitage.org.uk (unknown [92.27.6.192])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE97836DA15
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 21:34:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.27.6.192
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789508065; cv=none; b=bbXL1AphzqTS2K7Ggolg9KwEQZIUfpM+1fB+dVmL+kSpy0K3zXKKgCDfpH3OdFJK8wbjQmlZP8hAKJMfrI/BfgJA3l5SvspmcG3YYLSLL97p5lYMXuWaTK3Vpfdgbssoet+9U2b9X+oZy2kNnW14DE0XJ77seACuXxU55e3pHG8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789508065; c=relaxed/simple;
-	bh=QQWOQUchSxd2WIKgrIRfwrbBlsYxHLm4VslCY1+A1mA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rUzxBdIZI41LeiUWTp6X+e99Igzf1MfbK/l8pYoth5KeF4GcjAfhrruaEt3bQj/N5LN8HQYt/wpe8lQ1/M1r3OGlU61XWpEqdBjq4MtS+U7Q4t+CXQ3tQIVfahoUX5bdXcOVyrdrv2WVyKS5zX0tFlbrslo1LWUbWltd8ar9WIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=armitage.org.uk; spf=pass smtp.mailfrom=armitage.org.uk; dkim=pass (1024-bit key) header.d=armitage.org.uk header.i=@armitage.org.uk header.b=dppOm9yA; arc=none smtp.client-ip=92.27.6.192
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=armitage.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=armitage.org.uk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB761DE4EF
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 21:34:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789508071; cv=pass; b=eqGEyuNrb/3cygZ7BFv2XXok7jPAZANn60ovZ4rTlNutREFC10dUoPMmCdzeP4vhpAeyNx+jFA18xK+vb3jPbBnOZc6i+PQtm6I6j7JYC6JYWdv54LdJw+3TSeSU3fBBD79yWxFNV+4xCrKH8j7qCiJZYGFODNPerq3S+rumHkY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789508071; c=relaxed/simple;
+	bh=3tSi6YPO6dZgLOttRBqCdbt4IoBwpA72PAaMe+M45Sw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=L2F/vixbj36LtZQ2vSmscyS1+HmGw0by1CdKVOikqVb51xVzqAa2VoVn//F46ISRWEfjCJ2yHXGbqATBdUesyhDRwq6FWWS+PBM46mzkkYWE+PZkk/Ax/Bn7IiWnwFMC6bRgqoWXwUQr2dYQ/jI1DoIXyqVkJ4r5TOBN+cDHsnA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LP0DNZKW; arc=pass smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=armitage.org.uk header.i=@armitage.org.uk header.b="dppOm9yA"
-Received: from localhost (nabal.armitage.org.uk [127.0.0.1])
-	by nabal.armitage.org.uk (Postfix) with ESMTP id AD88D2E5E3F;
-	Tue, 15 Sep 2026 22:34:07 +0100 (BST)
-Authentication-Results: nabal.armitage.org.uk (amavisd-new);
-	dkim=pass (1024-bit key) reason="pass (just generated, assumed good)"
-	header.d=armitage.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=armitage.org.uk;
-	 h=content-transfer-encoding:mime-version:references:in-reply-to
-	:x-mailer:message-id:date:date:subject:subject:from:from
-	:received; s=20200110; t=1789508032; x=1790372033; bh=QQWOQUchSx
-	d2WIKgrIRfwrbBlsYxHLm4VslCY1+A1mA=; b=dppOm9yA7xDIyKpyJUQN4AM2sk
-	2c5hABv9EAvMO31T2g6NFNEqk4VZUVS1+9w5ho9FzSfhJVjJZ6hoA/BbKtFUUz6O
-	OU5qrh/fEMlmYBRm6xmO5TWZ0hNYJdFPOOohqGqKeNvl/UaJ4V8uGw8cmH84144I
-	Lf+eJNJUWLdGjlNo8=
-X-Virus-Scanned: amavisd-new at armitage.org.uk
-Received: from elijah.armitage.org.uk (elijah.armitage.org.uk [IPv6:2001:470:69dd:35::215])
-	by nabal.armitage.org.uk (Postfix) with ESMTPSA id 29E4E2E5E3A;
-	Tue, 15 Sep 2026 22:33:52 +0100 (BST)
-From: Quentin Armitage <quentin@armitage.org.uk>
-To: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>
-Cc: netdev@vger.kernel.org,
-	Quentin Armitage <quentin@armitage.org.uk>
-Subject: [PATCH v3] net: allow IFLA_INET_CONF messages when NLA_F_NESTED unset
-Date: Tue, 15 Sep 2026 22:33:21 +0100
-Message-ID: <20260915213320.1527029-2-quentin@armitage.org.uk>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260915140518.GA687229@shredder>
-References: <20260915140518.GA687229@shredder>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LP0DNZKW"
+Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469a34907so215281b3a.1
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 14:34:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789508069; cv=none;
+        d=google.com; s=arc-20260327;
+        b=HqS/8Fu4VWju5uGG91GlhPa5tv3Kkl1LPLDj8VRklLqRqi96il95EsQej3z5Biwj7Y
+         Gn6IrUeZJW4knzD3SFRjU55+M26LhsiLRQNFfInce50S5VKRefg+HZGERL1wEqVp7QP8
+         cGC6rLX1IduEGiBZRi5GDpCAxqBRW/1bbPPUrHf2wm7wCIVz1EzaaleSZ7GJvKKaUGCM
+         FsAO48PYFbduIg2vhzTOhz3OtR6327jTWZhboB7/GcDiMTiSkH6dfQNqAp69wZPr+vXP
+         7rPAnUDgMf5NmD3BB5q14gWfF6izwAiV48t1QLZxeh3xaHML6MprKSJcBxyBK3Zwccdo
+         nUQg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0fEUb43A7umW3ihvJnwkK88IB+JsXUCBhQ/HexoLCXg=;
+        fh=QFMgEb3XV5rS/ZRBmyHUP58oM4AaOHTWaWQeeAou20k=;
+        b=RQcWGIbK6c+/6mBRkoIFXwEhHBqESBzvRLI/PhH0XV1xgZcEwuk8oDlVO02ZYyS0sk
+         0rQ3kcvMU8Fn9dJVrYnj84C3JJt9x3Q//9Iug+qi1Fm4ri3vOwwVP5jrQkvyeWjmBhH3
+         Rgj6yg6x/lJyVEFcm4G8gmOqCJWIaFJv5uUhM82F+DbE4bJxV4czr/5BW5pqlYXr9yJu
+         SKFesyg9jMYboZ0diQESk+KUABeUSkMTVOXlB6omrVhY1opJi2Qz46GfAzAch9xKqAIJ
+         fDWYZacOrB37obsytk1EkRDNbjc4WF1KiJCSdfddBO6/+PRb4nvdW0vjz7lcLfzBZ4E4
+         5tMg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789508069; x=1790112869; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0fEUb43A7umW3ihvJnwkK88IB+JsXUCBhQ/HexoLCXg=;
+        b=LP0DNZKWysZ2JYOYBxhqxiM+dpgatrCyCQnRqnwO1C3zhethVTLhkjatrz2rns4kM8
+         1x4MByDKQi8rzvAiQY+q+aQO0+2RMXxCczO2LwqYtMhf08bCUWU+t27zt9XXEeq8YBH1
+         u0M+G+n2gDga8jlPxBJHpGSCema977WNdk7QMyLQTg9TsPhIBD2mNdY/wV89vwx3/gZM
+         Kq9T5EHfdhFXhnBcpifVf3vNiaQ5jrC89O1pCtImWpTMwwH6+vfu97Rt7jTq2+FmcRpz
+         h378UKWLGV5Z75lXYPDJw7vkfGDoxaC5Rh+Pdzxj8EJj85plvi0o8C9IvQguyra5Dhru
+         KnKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789508069; x=1790112869;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0fEUb43A7umW3ihvJnwkK88IB+JsXUCBhQ/HexoLCXg=;
+        b=UdhmuIHQhQUSk3chDRGIA2YGnRGPXiFQu5O3tWebsiUFm516+T5po/jMjG1FY0LK8N
+         EPiUDQWjiFPasrkxWO/jym4Jy50xt1CMKF3VvGLXTkcsQSIT6dsiGWwYMyimKdRhBaee
+         gqaWEIGOEg5mcFMQVMPBPIg1U/WLPj2z9CGSIEZk9qMOTzMfQffLWFCcyHwDAr93iYr5
+         k+alNZfmPPKRRAXjKxR3XlWvo0v3UNfy3bDb4Xe5CQpSUrGtCQQUjjz0oBNmCbqFQBfW
+         Mvb00qHHANhTepPVoHmvPjZMQ7VqdKB1If2Am+wfR4mNCWuzr0woDVxy+Oom5vxcCh2G
+         t9lw==
+X-Gm-Message-State: AFuF++ll6k4v1SpJ0mYup4NOWTTepMNtCVaC/irb/Q8XSpn2kY4TFSZC
+	VBBjWo4CCZeFmuIb7N20sjYpWMYp9FGEpZ3RVNjBS8p8uWkXN812CyhG0qdIjA8MEkCTSZezhKW
+	e8BVUFm6e3NtySLeKwOy5iyd5IvxMawk=
+X-Gm-Gg: AYBFou1cSOGFcS9qAmlW6edRC/FwH/cvXz/mqHEpswKd3D5FaQxiXAtB9w3b/rf2WDG
+	q5yjru6Pqlw3z4Hx6DXoWBBM/GSWmfhTNYQqdkxp4prtRbxpcBY0k5hbKG3fyI51AkFxZ6gdBOR
+	Rr7AYSWMHOsAR6/Hp0cACIeAOnW6Agy9CR/yhU0ZPrmZ+M7YWstMVq/N/DNL+cYnCKpoRhkv8fb
+	3asHIZV/85yJhruyMrObLusAnsWtxrSp5itEk+91nzs63NQzBRv+ao5HJeCRlq51+dFcXDyHmko
+	47JqnpOeciSyT/aFGF/R0KNgC6fgb0USlGK8JA7ldUJAwl204wUH0Bb3C9KfjY2rq1jUe1WBOLa
+	+BW+WZCnlwZloK1N97ezCRxwUTIqA9KNy7BuAER5GtpbEC9RX+qAA2g==
+X-Received: by 2002:a05:6a20:914f:b0:3da:bd6d:bef4 with SMTP id
+ adf61e73a8af0-3dd5f5ab21cmr393026637.13.1789508069183; Tue, 15 Sep 2026
+ 14:34:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <40d0796769992c78bffe59b179833d71ed80e771.1789393775.git.lucien.xin@gmail.com>
+ <178950186149.22033.824022402798948504@kernel.org>
+In-Reply-To: <178950186149.22033.824022402798948504@kernel.org>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Tue, 15 Sep 2026 17:34:17 -0400
+X-Gm-Features: AcwNN1UCuBUgm-EOueiaZPczPJIdPSEaimJ2WD6qHGHnlwNL-00IDB4em_SMmw4
+Message-ID: <CADvbK_foTup7AgsmLPa0=Wabmkj=6QFrzYZ1jFRQX+Wti1_Vbw@mail.gmail.com>
+Subject: Re: [PATCH net-next v15 15/15] quic: add packet parser base
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, quic@lists.linux.dev, davem@davemloft.net, 
+	kuba@kernel.org, edumazet@google.com, pabeni@redhat.com, horms@kernel.org, 
+	metze@samba.org, mbuhl@openbsd.org, tfanelli@redhat.com, hepengtao@xiaomi.com, 
+	dreibh@simula.no, linux-cifs@vger.kernel.org, pc@manguebit.org, 
+	linkinjeon@kernel.org, tom@talpey.com, kernel-tls-handshake@lists.linux.dev, 
+	chuck.lever@oracle.com, jlayton@kernel.org, steved@redhat.com, hare@suse.de, 
+	aahringo@redhat.com, dhowells@redhat.com, matttbe@kernel.org, 
+	mail@johnericson.me, xiyou.wangcong@gmail.com, alibuda@linux.alibaba.com, 
+	jbaron@akamai.com, illiliti@protonmail.com, sd@queasysnail.net, 
+	marcelo.leitner@gmail.com, daniel@haxx.se, andrew.gospodarek@broadcom.com, 
+	mef@scarletmail.rutgers.edu, paul@jakma.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Commit fa8fca88714c ("ipv4: validate IPV4_DEVCONF attributes properly")
-added validation of IFLA_INET_CONF attributes, and in the process
-changed the call of nla_for_each_nested() to nla_parse_nested(). A
-side effect of this change is that the IFLA_INET_CONF option is now
-tested for NLA_F_NESTED being set, and fails if it is not. Prior to the
-commit there was no check of NLA_F_NESTED.
+On Tue, Sep 15, 2026 at 3:51=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
+te:
+>
+> Thank you for your contribution! Sashiko AI review found 7 potential
+> issue(s) to consider:
+>
+> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 5 =C2=B7 Low: 1
+>
+> - [High] quic_request_sock_create() publishes a newly allocated request
+>   before its first packet is successfully queued: it links req into=E2=80=
+=A6
+> - [Medium] Commit message understates the scope of the patch and does not
+>   disclose that the newly added listen-side connection-establishment=E2=
+=80=A6
+> - [Medium] quic_listen_sock_lookup() passes hdr_len =3D 1 to
+>   reuseport_select_sock() (net/quic/socket.c:292-293), but by the time=E2=
+=80=A6
+> - [Medium] In quic_accept_sock_exists() (net/quic/socket.c:132-135) and
+>   quic_listen_sock_switch() (socket.c:~330) the indirect call is=E2=80=A6
+> - [Medium] A QUIC Initial decryption failure inside
+>   quic_packet_get_alpn() is counted twice and once under the wrong=E2=80=
+=A6
+> - [Medium] quic_packet_listen_process() treats every non-zero return of
+>   quic_crypto_verify_token() as a peer token-validation failure.
+> - [Low] The documented meanings of struct quic_packet's saddr/daddr are
+>   the reverse of the new receive-side implementation.
+>
+> --
+>
+> quic: add packet parser base
+>
+> This adds the RX side of the QUIC packet handling: quic_packet_rcv() look=
+s
+> up the socket for an incoming datagram, quic_packet_process() dispatches =
+it,
+> and ICMP Packet Too Big errors are turned into PMTU updates.  A listener
+> path with ALPN parsing, request sock creation and a per-socket deferred
+> workqueue is added as well.
+>
+> A few questions on the new code below.
+>
+> > diff --git a/net/quic/socket.c b/net/quic/socket.c
+> > index 1e278a2109b2f..0fcb123d31bba 100644
+> > --- a/net/quic/socket.c
+> > +++ b/net/quic/socket.c
+> > @@ -24,6 +24,324 @@ static void quic_enter_memory_pressure(struct sock =
+*sk)
+>
+> [ ... ]
+>
+> > +/* Create and enqueue a QUIC request sock for a new incoming connectio=
+n. */
+> > +struct quic_request_sock *quic_request_sock_create(struct sock *sk,
+> > +                                                struct quic_conn_id *o=
+dcid,
+> > +                                                u8 retry, gfp_t gfp)
+> > +{
+>
+> [ ... ]
+>
+> > +     /* Enqueue request into listen socket=E2=80=99s pending list for =
+accept(). */
+> > +     list_add_tail(&req->list, quic_reqs(sk));
+> > +     sk_acceptq_added(sk);
+> > +     return req;
+> > +}
+> > +
+> > +int quic_request_sock_backlog_tail(struct sock *sk,
+> > +                                struct quic_request_sock *req,
+> > +                                struct sk_buff *skb)
+> > +{
+> > +     u32 limit =3D sk->sk_rcvbuf / sk->sk_max_ack_backlog;
+> > +     int len =3D skb->truesize;
+> > +
+> > +     limit =3D  max_t(u32, limit, QUIC_MIN_UDP_PAYLOAD * 4);
+> > +     if (req->blen + len > limit || !__sk_rmem_schedule(sk, len, false=
+)) {
+> > +             QUIC_INC_STATS(sock_net(sk), QUIC_MIB_PKT_RCVDROP);
+> > +             kfree_skb(skb);
+> > +             return -ENOBUFS;
+> > +     }
+>
+> [Severity: High]
+> Can this path leak the quic_request_sock and permanently consume an accep=
+t
+> queue slot?
+>
+> quic_request_sock_create() already published the request before the first
+> packet was queued:
+>
+>         list_add_tail(&req->list, quic_reqs(sk));
+>         sk_acceptq_added(sk);
+>
+> and quic_packet_listen_process() then hands it straight to the enqueue:
+>
+> net/quic/packet.c:
+>         out:
+>                 /* Add to backlog list and wake blocked accept() calls */
+>                 return quic_request_sock_backlog_tail(sk, req, skb);
+>
+> On the -ENOBUFS path above only the skb is freed.  The request stays link=
+ed in
+> quic_reqs(sk) with an empty backlog, and sk_acceptq_added() is not undone=
+.
+>
+> The size test is deterministic for a given packet size, since limit is
+> max(sk_rcvbuf / sk_max_ack_backlog, QUIC_MIN_UDP_PAYLOAD * 4), so a clien=
+t
+> sending a large Initial fails on the first attempt and on every
+> retransmission, and the slot is never reclaimed.  Repeating with differen=
+t
+> addresses or DCIDs would then make sk_acceptq_is_full() refuse all furthe=
+r
+> connections.
+>
+> Should this failure path unlink and free a freshly created request, or sh=
+ould
+> the request only be created after the first packet is successfully queued=
+?
+>
+False:
 
-Change nla_parse_nested() to nla_parse(). This restores the previous
-functionality of not checking NLA_F_NESTED, thereby allowing code that
-(incorrectly) doesn't set NLA_F_NESTED to continue to work.
+This does not leak the quic_request_sock. The request remains on the
+listener's accept queue, so accept() can still consume it and create the
+accept socket.
 
-This issue was identified because keepalived started logging errors when
-it was configuring macvlans that it created.
+Dropping the skb here only means that this particular packet was not queued
+due to the buffer limit. The peer is expected to retransmit the packet, and
+once the connection is accepted, the retransmitted packet will be processed
+by the accept socket.
 
-Fixes: fa8fca88714c ("ipv4: validate IPV4_DEVCONF attributes properly")
+(I will check those with 'Severity: Medium' of this patchset tomorrow.)
 
-Signed-off-by: Quentin Armitage <quentin@armitage.org.uk>
----
- net/ipv4/devinet.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
-index a90be57c63be..5b6b11c943e4 100644
---- a/net/ipv4/devinet.c
-+++ b/net/ipv4/devinet.c
-@@ -2117,9 +2117,10 @@ static int inet_validate_link_af(const struct net_device *dev,
- 		return err;
- 
- 	if (tb[IFLA_INET_CONF]) {
--		err = nla_parse_nested(nested_tb, IPV4_DEVCONF_MAX,
--				       tb[IFLA_INET_CONF], inet_devconf_policy,
--				       extack);
-+		err = nla_parse(nested_tb, IPV4_DEVCONF_MAX,
-+				nla_data(tb[IFLA_INET_CONF]),
-+				nla_len(tb[IFLA_INET_CONF]),
-+				inet_devconf_policy, extack);
- 
- 		if (err < 0)
- 			return err;
--- 
-2.55.0
-
+Thanks.
