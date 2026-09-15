@@ -1,57 +1,57 @@
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5498C4756A3
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:20:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3894756D5
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:20:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789460474; cv=none; b=izHBl2hLtaCFdvepanr/J3WanCtVw3yQcXdCPHcxRkXixeACf18IxBknCirxNuVOmO0ui14TmjbTSLE+8FB+dzjtEFkgLRuyDmX3Zhp66/eZ1YU0/wBwXfK8yoIGsHXTZDV0TfVvKbO7c7lX9RVJl7tFssDuMDZ9XQADSrWf/ww=
+	t=1789460477; cv=none; b=kea0z7qoug3am8gPBIRVn1mr4m6GtKfwlxynEoqlUbkXCHV0UoIii0nQmtOdSTNexRwrx5yIrP4uGMVP9GxgIV2Y0qpC6jp/xISXySHXDBBjEAm4KyAR4kmn+n1S1ZTMdKZkD2uXKghSOQdx2OCXOcihe2VxyEr/XeDQ2ITPxoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789460474; c=relaxed/simple;
-	bh=RwAdEk8GoMG+Ylv02Q78v2tXMpN+9oITjoSVCa+/lcI=;
+	s=arc-20240116; t=1789460477; c=relaxed/simple;
+	bh=F9i32u7X67i3rjTFL62V2TeKyR+ixZjqL6I2EccGRRA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nNYidS9eSjIfuq4c9+XzXMZbq8NehaJg35r8h7FVNqACdZCWpQDGuF+Qg0S5HMBUvwRuhcRAUviPdqYlLqpswHrx4Bb6cyOiSHR+JrtATxIVnG7ryqKtGXf0xPbPcMxpfTrwllfkqZ0wZvTN+nJol8223/eCwPgnb10Dc97iEzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--morbo.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KmARG9aJ; arc=none smtp.client-ip=209.85.215.198
+	 To:Cc:Content-Type; b=C87A4GLKmMpJV6NgEFlGtIEw/FDgJzJ2pUzA8aL6m6wSvDaYexWWYfJtjtrZoEy8mjUnvlfWpB+4Qm4CvR0QqZcQ9oJTs8RIi9Tr6c1M+iiQJlI6mPf9DjWEIXhD+AIeMhH/dUrJwsBG+EE9e8WkB/AI1CuNOFJwO8q6gK1LFt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--morbo.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UbJ1cATg; arc=none smtp.client-ip=209.85.214.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--morbo.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KmARG9aJ"
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-c89704da8c7so5652966a12.0
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 01:20:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UbJ1cATg"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2d9336581a2so80769165ad.3
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 01:20:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789460419; x=1790065219; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789460417; x=1790065217; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=3R1bHblX/YSNAoDVuSots2jijK47BJf7ndWg1gXSC20=;
-        b=KmARG9aJw+EfrxjNpwdI07LN4CIXUR8sFQ6kkwPFhACadzvxbNPSIDqr//33Alc4UY
-         R52INMML5LN0aTuN8HjZxDuM76h1AAPcVXn64yUT5rjit5U+iGgl1MF/BPOb2cuiZPyE
-         Wv+fQiUqjwl3D7XanEH4V1189fAZLMrNUiH5L4sX194GyKiZUpMsh1fcaGDV5CYbubY9
-         zj839tWYTRKD3DVNfwMII7er+yQ1vrEDArJ2YZCq2Nc1++mCm4429OPTjsrTlmItPsPN
-         +wzv3LuzLp959vh3m2lMJbDvEUvDqQ7gTJ7C0wDgVReew1uK7PhFLz5ZO2mKQArH31TA
-         dF6A==
+        bh=CSHzy5Fr+v+g78gtgBhpLtU/5VBe17dtS9vTkuvViHg=;
+        b=UbJ1cATgtClWEITC/K2FRs0yA+J6QuOAQNYBjRfMOKcvsi26Iw0YJycYGDVgXnZrWu
+         OkknVjnQ8i5cwzTKofsD1XegSELSlQQWyGmBy+oTi8Rz6f+TqDoZ2wOvaqx1nNxaQq9T
+         6d32McB/8xVv6H+WPMKqesWTkJJ4jN9Fxthcfq0/8FuWBuJYGJGQCi+wKu5lEWR7zV/t
+         fOaj7SjaCurcjs6XXGANs8d147zli1iFTHrIgyTVvMzA0OEHm9Rj0L5A6lzd+IclErro
+         a5b9aL/MDPF57KGC99VttDBSXAU1ClN53SqyK+T3AFsds6CbkR0S7OKYOgJcb3XnGCg8
+         AMRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789460419; x=1790065219;
+        d=1e100.net; s=20260707; t=1789460417; x=1790065217;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=3R1bHblX/YSNAoDVuSots2jijK47BJf7ndWg1gXSC20=;
-        b=lFWpLeVhAfY0TThCCNk6m6qTcQyDayzbnYec+KbO/vYtHHkm7rsJjTisSnbYtT0nqY
-         GJo484MDaaZE2OLkRVgeOOAPHDfy4LaPqJTtOktUccx8Yem5Vco1yVLKWLpr6zIDBwCN
-         tvOpP3iPGtvp5XUx9fN3IuyWMzq38pOI6XSU2vj6fZz48ePrbidM99nVLISLS7EJ2VHp
-         +4v16cp0JVabQFvaO3EsLnQjHL3rOlAFyagniPdeMIFhNHIPZcEdGlFNIuOoa9RLNJQi
-         Q23sdc8zEA/7bpdh61sZYAv8ofg8vVEgSiwJ+RfENQjehSjzzexAaa0X5KlB7Dmz0Grk
-         2GEQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz8xAgV6xNdaoZcOn+cSjDLwtznD7cSYhp0lRY85o8ER9UEzSuiZJ8njRV2cwMgaOm3qY89Vfg=@vger.kernel.org
-X-Gm-Message-State: AFuF++netS4OEylVz43+H8hAbr9a8GDauxrAdjLBauNqTkRrS7vhlgvq
-	vUwK2dW6LRnjSIs06y6qh7oyBwCtS68I0M8KIbu2yKoGHf7nGyYrBhXIG/u9Fz1wWolrbsOVsPj
-	G
-X-Received: from pghu21.prod.google.com ([2002:a63:ef15:0:b0:cc4:da05:ef4c])
- (user=morbo job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3315:b0:3d3:aec2:4dcd
- with SMTP id adf61e73a8af0-3db40623e61mr13262094637.25.1789460418341; Tue, 15
- Sep 2026 01:20:18 -0700 (PDT)
-Date: Tue, 15 Sep 2026 08:18:44 +0000
+        bh=CSHzy5Fr+v+g78gtgBhpLtU/5VBe17dtS9vTkuvViHg=;
+        b=npwvt39NFdCpC1VGEv3OKOt5HOXTkyLvPw23h3qygcGBQz03c/0Ek7M7Xs690lnVCh
+         ZSumo7tp3DS5Fkd6Dn0vz1GskJMu2gKtE99JI4FktNUHAM2bE0eS24VX6l7SUQUnjJbw
+         IfDwzISYvHaCPLbsEkIB0Qb49Gf/X/0uxSzXQpFiO4qu8K8UHCGiiEchxONXhkm6ld/P
+         hfB4wxIM9AlFnDdj6Gt6PzsfhgpjHHpTP4vDofMtidvF2Rv/IuIPP0E71KpOH3wBIRBD
+         YWiwmuTym6iLSlWXZhDkuZPEkWB1opfxV9UI7mzeHUSAU663GNV5iIKMBg63F+YXsuPT
+         CBOg==
+X-Forwarded-Encrypted: i=1; AKwUvByfVHTeoZ6QmxGpOFBo0yx+h1kAHiT2cmApMOG9nAWWgjauEORGabARSiusjoGKpJuYylePzNM=@vger.kernel.org
+X-Gm-Message-State: AFuF++lGqH+jnA8nc5CvVJTivof2EXXYhzqFb7ffHDI7AeYUkLfK+mxA
+	qcY7aDfwnTFdyAguHp3PElh4eqUKbderoMYWfZk/gcdHetrSGCpB56/37+JUCS83QKfF2JIV1P+
+	l
+X-Received: from plky9.prod.google.com ([2002:a17:902:7009:b0:2dd:3c92:b0a2])
+ (user=morbo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:8c5:b0:2c6:90ec:f601
+ with SMTP id d9443c01a7336-2dd6c5f3422mr125997365ad.8.1789460416594; Tue, 15
+ Sep 2026 01:20:16 -0700 (PDT)
+Date: Tue, 15 Sep 2026 08:18:42 +0000
 In-Reply-To: <20260915081910.4142719-1-morbo@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -61,8 +61,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260915081910.4142719-1-morbo@google.com>
 X-Mailer: git-send-email 2.55.0.1032.g73a4cd73de-goog
-Message-ID: <20260915081910.4142719-28-morbo@google.com>
-Subject: [PATCH 27/28] drm/xe/pf: Convert strlcat() to seq_buf in control_read()
+Message-ID: <20260915081910.4142719-26-morbo@google.com>
+Subject: [PATCH 25/28] EDAC/thunderx: Replace strlcat() with seq_buf
 From: Bill Wendling <morbo@google.com>
 To: linux-kernel@vger.kernel.org
 Cc: Bill Wendling <morbo@google.com>, codemender-patching+linux@google.com, 
@@ -123,17 +123,23 @@ Cc: Bill Wendling <morbo@google.com>, codemender-patching+linux@google.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-control_read() builds a list of supported SR-IOV VF control commands in a
-stack buffer by calling strlcat() twice per command in a loop.
+The threaded ISR handlers (thunderx_ocx_com_threaded_isr(),
+thunderx_ocx_lnk_threaded_isr(), and thunderx_l2c_threaded_isr()) build
+multi-line error reports by formatting register details into a scratch
+buffer and appending them to "msg" with strlcat().
 
-In preparation for removing the deprecated strlcat() API[1], use struct
-seq_buf and seq_buf_printf() to format each command line and pass
-seq_buf_used() directly to simple_read_from_buffer().
+In preparation for removing the deprecated strlcat() API[1], refactor the
+ISR handlers to construct error messages using struct seq_buf.
+
+Additionally, fix two bugs in decode_register(): initialize "str[0] =3D '\0=
+'"
+so callers do not append stale buffer contents when no error bits match,
+and stop iterating if snprintf() truncates the buffer to avoid
+underflowing the remaining "size" counter.
 
 Link: https://github.com/KSPP/linux/issues/370 [1]
 Cc: codemender-patching+linux@google.com
-Assisted-by: CoT-Agent:Gemini-2.0-Flash [editor_update_file, shell_command_=
-run]
+Assisted-by: AI:Claude-3-5-Sonnet [editor_update_file, shell_command_run]
 Signed-off-by: Bill Wendling <morbo@google.com>
 ---
 Cc: Russell King <linux@armlinux.org.uk>
@@ -247,44 +253,161 @@ Cc: devel@lists.orangefs.org
 Cc: linux-hardening@vger.kernel.org
 Cc: linux-sound@vger.kernel.org
 ---
- drivers/gpu/drm/xe/xe_gt_sriov_pf_debugfs.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/edac/thunderx_edac.c | 64 ++++++++++++++++++++++--------------
+ 1 file changed, 39 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_gt_sriov_pf_debugfs.c b/drivers/gpu/drm/=
-xe/xe_gt_sriov_pf_debugfs.c
-index 0f242db775e1..5db7fc067c4d 100644
---- a/drivers/gpu/drm/xe/xe_gt_sriov_pf_debugfs.c
-+++ b/drivers/gpu/drm/xe/xe_gt_sriov_pf_debugfs.c
-@@ -4,6 +4,7 @@
-  */
-=20
- #include <linux/debugfs.h>
+diff --git a/drivers/edac/thunderx_edac.c b/drivers/edac/thunderx_edac.c
+index e7c335ca0c36..4e3781815b6d 100644
+--- a/drivers/edac/thunderx_edac.c
++++ b/drivers/edac/thunderx_edac.c
+@@ -20,6 +20,7 @@
+ #include <linux/atomic.h>
+ #include <linux/bitfield.h>
+ #include <linux/circ_buf.h>
 +#include <linux/seq_buf.h>
 =20
- #include <drm/drm_print.h>
- #include <drm/drm_debugfs.h>
-@@ -663,15 +664,15 @@ static ssize_t control_write(struct file *file, const=
- char __user *buf, size_t c
- static ssize_t control_read(struct file *file, char __user *buf, size_t co=
-unt, loff_t *ppos)
+ #include <asm/page.h>
+=20
+@@ -47,12 +48,17 @@ static void decode_register(char *str, size_t size,
  {
- 	char help[128];
-+	struct seq_buf s;
- 	size_t n;
+ 	int ret =3D 0;
 =20
--	help[0] =3D '\0';
-+	seq_buf_init(&s, help, sizeof(help));
- 	for (n =3D 0; n < ARRAY_SIZE(control_cmds); n++) {
--		strlcat(help, control_cmds[n].cmd, sizeof(help));
--		strlcat(help, "\n", sizeof(help));
-+		seq_buf_printf(&s, "%s\n", control_cmds[n].cmd);
++	if (size > 0)
++		str[0] =3D '\0';
++
+ 	while (descr->type && descr->mask && descr->descr) {
+ 		if (reg & descr->mask) {
+ 			ret =3D snprintf(str, size, "\n\t%s, %s",
+ 				       descr->type =3D=3D ERR_CORRECTED ?
+ 					 "Corrected" : "Uncorrected",
+ 				       descr->descr);
++			if (ret < 0 || ret >=3D size)
++				break;
+ 			str +=3D ret;
+ 			size -=3D ret;
+ 		}
+@@ -1115,35 +1121,37 @@ static irqreturn_t thunderx_ocx_com_threaded_isr(in=
+t irq, void *irq_id)
+=20
+ 	while (CIRC_CNT(ocx->com_ring_head, ocx->com_ring_tail,
+ 			ARRAY_SIZE(ocx->com_err_ctx))) {
++		struct seq_buf s;
++
+ 		tail =3D ring_pos(ocx->com_ring_tail,
+ 				ARRAY_SIZE(ocx->com_err_ctx));
+ 		ctx =3D &ocx->com_err_ctx[tail];
+=20
+-		snprintf(msg, OCX_MESSAGE_SIZE, "%s: OCX_COM_INT: %016llx",
+-			ocx->edac_dev->ctl_name, ctx->reg_com_int);
++		seq_buf_init(&s, msg, OCX_MESSAGE_SIZE);
++
++		seq_buf_printf(&s, "%s: OCX_COM_INT: %016llx",
++			       ocx->edac_dev->ctl_name, ctx->reg_com_int);
+=20
+ 		decode_register(other, OCX_OTHER_SIZE,
+ 				ocx_com_errors, ctx->reg_com_int);
+=20
+-		strlcat(msg, other, OCX_MESSAGE_SIZE);
++		seq_buf_puts(&s, other);
+=20
+ 		for (lane =3D 0; lane < OCX_RX_LANES; lane++)
+ 			if (ctx->reg_com_int & BIT(lane)) {
+-				snprintf(other, OCX_OTHER_SIZE,
+-					 "\n\tOCX_LNE_INT[%02d]: %016llx OCX_LNE_STAT11[%02d]: %016llx",
+-					 lane, ctx->reg_lane_int[lane],
+-					 lane, ctx->reg_lane_stat11[lane]);
+-
+-				strlcat(msg, other, OCX_MESSAGE_SIZE);
++				seq_buf_printf(&s,
++					       "\n\tOCX_LNE_INT[%02d]: %016llx OCX_LNE_STAT11[%02d]: %016llx"=
+,
++					       lane, ctx->reg_lane_int[lane],
++					       lane, ctx->reg_lane_stat11[lane]);
+=20
+ 				decode_register(other, OCX_OTHER_SIZE,
+ 						ocx_lane_errors,
+ 						ctx->reg_lane_int[lane]);
+-				strlcat(msg, other, OCX_MESSAGE_SIZE);
++				seq_buf_puts(&s, other);
+ 			}
+=20
+ 		if (ctx->reg_com_int & OCX_COM_INT_CE)
+-			edac_device_handle_ce(ocx->edac_dev, 0, 0, msg);
++			edac_device_handle_ce(ocx->edac_dev, 0, 0, seq_buf_str(&s));
+=20
+ 		ocx->com_ring_tail++;
  	}
+@@ -1196,25 +1204,28 @@ static irqreturn_t thunderx_ocx_lnk_threaded_isr(in=
+t irq, void *irq_id)
 =20
--	return simple_read_from_buffer(buf, count, ppos, help, strlen(help));
-+	return simple_read_from_buffer(buf, count, ppos, help, seq_buf_used(&s));
- }
+ 	while (CIRC_CNT(ocx->link_ring_head, ocx->link_ring_tail,
+ 			ARRAY_SIZE(ocx->link_err_ctx))) {
++		struct seq_buf s;
++
+ 		tail =3D ring_pos(ocx->link_ring_head,
+ 				ARRAY_SIZE(ocx->link_err_ctx));
 =20
- static const struct file_operations control_ops =3D {
+ 		ctx =3D &ocx->link_err_ctx[tail];
+=20
+-		snprintf(msg, OCX_MESSAGE_SIZE,
+-			 "%s: OCX_COM_LINK_INT[%d]: %016llx",
+-			 ocx->edac_dev->ctl_name,
+-			 ctx->link, ctx->reg_com_link_int);
++		seq_buf_init(&s, msg, OCX_MESSAGE_SIZE);
++
++		seq_buf_printf(&s, "%s: OCX_COM_LINK_INT[%d]: %016llx",
++			       ocx->edac_dev->ctl_name,
++			       ctx->link, ctx->reg_com_link_int);
+=20
+ 		decode_register(other, OCX_OTHER_SIZE,
+ 				ocx_com_link_errors, ctx->reg_com_link_int);
+=20
+-		strlcat(msg, other, OCX_MESSAGE_SIZE);
++		seq_buf_puts(&s, other);
+=20
+ 		if (ctx->reg_com_link_int & OCX_COM_LINK_INT_UE)
+-			edac_device_handle_ue(ocx->edac_dev, 0, 0, msg);
++			edac_device_handle_ue(ocx->edac_dev, 0, 0, seq_buf_str(&s));
+ 		else if (ctx->reg_com_link_int & OCX_COM_LINK_INT_CE)
+-			edac_device_handle_ce(ocx->edac_dev, 0, 0, msg);
++			edac_device_handle_ce(ocx->edac_dev, 0, 0, seq_buf_str(&s));
+=20
+ 		ocx->link_ring_tail++;
+ 	}
+@@ -1880,22 +1891,25 @@ static irqreturn_t thunderx_l2c_threaded_isr(int ir=
+q, void *irq_id)
+=20
+ 	while (CIRC_CNT(l2c->ring_head, l2c->ring_tail,
+ 			ARRAY_SIZE(l2c->err_ctx))) {
++		struct seq_buf s;
++
+ 		tail =3D ring_pos(l2c->ring_tail, ARRAY_SIZE(l2c->err_ctx));
+ 		ctx =3D &l2c->err_ctx[tail];
+=20
+-		snprintf(msg, L2C_MESSAGE_SIZE,
+-			 "%s: %s: %016llx, %s: %016llx",
+-			 l2c->edac_dev->ctl_name, reg_int_name, ctx->reg_int,
+-			 ctx->reg_ext_name, ctx->reg_ext);
++		seq_buf_init(&s, msg, L2C_MESSAGE_SIZE);
++
++		seq_buf_printf(&s, "%s: %s: %016llx, %s: %016llx",
++			       l2c->edac_dev->ctl_name, reg_int_name, ctx->reg_int,
++			       ctx->reg_ext_name, ctx->reg_ext);
+=20
+ 		decode_register(other, L2C_OTHER_SIZE, l2_errors, ctx->reg_int);
+=20
+-		strlcat(msg, other, L2C_MESSAGE_SIZE);
++		seq_buf_puts(&s, other);
+=20
+ 		if (ctx->reg_int & mask_ue)
+-			edac_device_handle_ue(l2c->edac_dev, 0, 0, msg);
++			edac_device_handle_ue(l2c->edac_dev, 0, 0, seq_buf_str(&s));
+ 		else if (ctx->reg_int & mask_ce)
+-			edac_device_handle_ce(l2c->edac_dev, 0, 0, msg);
++			edac_device_handle_ce(l2c->edac_dev, 0, 0, seq_buf_str(&s));
+=20
+ 		l2c->ring_tail++;
+ 	}
 --=20
 2.55.0.1032.g73a4cd73de-goog
 
