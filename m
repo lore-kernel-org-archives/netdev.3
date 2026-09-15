@@ -1,166 +1,279 @@
-Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C2F248881
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:24:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7934481657
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:26:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789460671; cv=none; b=r/uP0kbdom3OnnbWbh29jm4yIPEY3xnPzqqXX26FRYS3o0aiq5nFclb0OMSggJ8sX1JcduNBQlbooCt6z/hVVzpVP94YbDC7xzCWN552pOp//8DZFtROPdQ1cDWCl1RijKBBsOm5vZuGYvGG3QHRiYYSpuNyGc+Ptri/JdLKFDs=
+	t=1789460771; cv=none; b=ASKUZw/IuiEw3JMSJXIBbwy6iXVALgim0/2/34HT5i9b1NDCfoqWb3wyc0UWktyMZCH762TWWhGRaOVRRsyhDSmMUCjk0mn8OB6hmnczNyHjuwsIgds5F4gGUs902gjPot2hfi4VJCGbzdi3glNAjabJJosgG5oFFX0R6ricSGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789460671; c=relaxed/simple;
-	bh=VaSVSvGNOEyimvK4Anlo4Z8wexqycRFEXogcDwlR67A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WrN7s1dJdc0HqNgoryS4Fta3w77Kn3VSagWKCGSNKjFEyTBaTrN/JT5l7HcfMHRDo+mhr73imKf2nMUoNK1mwO6a+jlIpnut8lnhWXF+DUWI9Cwsw+UoE0Pkpz30qh/VgPQOXNfXc0jmfg7psCcu09AISw7/9v1PWmlThZv6M+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=AZ4vnQsL; arc=none smtp.client-ip=74.125.228.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
+	s=arc-20240116; t=1789460771; c=relaxed/simple;
+	bh=Hbrp06lq3B7opj8tzjJVqcfrxhhZTvzJ1WqUPePmYuc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=VW33EDot0Esjetcol4/Ow8T7wQQJHPJ6vdYNjjhLeWxwlIo4WDa8/MLUzHSAx8fcIC5lZ6TL1GwZ6KtIpKXW4bAix1WUtUhhxTi9jnYSYByizkumU1K5IsOKa+rmf27n74gGhZ8mS5zCg4VIhSAWg6tgVZeL2QlJOuwvhnoKYG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--morbo.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WHrmEiyb; arc=none smtp.client-ip=209.85.210.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--morbo.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="AZ4vnQsL"
-Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-85469f20513so10391b3a.0
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 01:24:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WHrmEiyb"
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-869b8d63e28so5217075b3a.0
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 01:26:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1789460669; x=1790065469; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GkgxmHG570UDfiLBKnKDfBvipL+pxKJzUQX50Pt2PMw=;
-        b=AZ4vnQsL3TZW1Wr28/Y1ZGo3lqhXyne4c2FxH5RPrRWpXnf4RhXTdVTCQyrWrBc/qC
-         a73amykBPBR1Eujos0/9wua916z2PSj6QJPI87ixEhSGkmEaJSbG8YDZdCq3euW0uHxm
-         ey2Op3MD3WsdT2wxaxAd5DZrUGTF2GRafXe7CtfOnmGR8p16N/0FiS6cCSKZCXu+rlUy
-         UXKylnZi5RhRjz+Bubfv+xE2IadF0QzuWFimEs0LhFkp4dXFkqGWGm+VOZP0TnWLmxYo
-         MtDWPVc+7igq6c0HhshNfVaki2pZtBneii4ByLLJjST6xpUeVrvUUCYj+tgNatL2JpDm
-         3hyg==
+        d=google.com; s=20251104; t=1789460769; x=1790065569; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=tzVl62qjzRm92BALDDypl3TnCOJSNAaLaOJ/zmWRh10=;
+        b=WHrmEiybgihHBpxn1qGH8XpYvJpfpu7jogBHd1b06T4NM0p7KHOnGRCdNsb4ESucdt
+         pzWBhQJxsEngiUoy+6/UcQcveO64dWqtI0gsEDqyO/352rG6sXRCmH+kZURpjc4qnJQw
+         JxJgR2LwOC+2Pv/f6Z4EWx1oisUmgPtxKAWITK6eoafi9zUdlxueXJKAKWmjQnHDk7FN
+         T+FygJ7gQfChaTH/ciFBzqOdRMBEvNXPKUY9obBLfXvJfnTVaUT2dEV2IG0IMuTr8ZDm
+         IbDUIddcxn2UIE8orj54TUlt5xiLSL+fNkfNNpEn0lMhwzAOl6mRl757YvpKaJEmVJrL
+         z32Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789460669; x=1790065469;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=GkgxmHG570UDfiLBKnKDfBvipL+pxKJzUQX50Pt2PMw=;
-        b=GunctobYirsMYsGMroVWWAKYrfH38q4MFGt4MgGEAkhYFtigfYulqzhyNfdZI2hVZN
-         lL28Mq6LvtKGoPqSwF9uElE8A7i1VH5cyaT+QiLEpYCAf3vrg2OXW5KXH9ZuxaUpjNnd
-         2BEKp+pTJKl+K7ZLhE8TRLWS56i2CM7c+KDzxsNyaL4H9qlVlw5Daq55vjbJcB5x734D
-         qas/tOrLeCOXPpknbTwBbBBXOcW4P7LR54WZJPjf6ZB/ewrmBa3d2wy6h1eK/9MmZuNb
-         AX6FDjCHcVqE1pf/+UZiO9IpgEApaZ3HSYWbfW8gCIqx1RP2rwRYdkqn4fG33/mfnj9g
-         18Rw==
-X-Gm-Message-State: AFuF++mMVf0CH8QzJOMmXu2dYAOTdTp9P1o9xid3nTvtJ4K4okKZsWM4
-	xulK4hbC/fNkj7VIrTBIUL5uiIw+HIKjM84FlKyKcLS5skw1eNv/9txQ/rdRraFntg==
-X-Gm-Gg: AYBFou05kEZ4LKJ95+1dXw9eLpujiIgpt0S8ypaWR3ATFw5L4SPVW4TR3RlK5AjILYo
-	uz+zjqDKlB6/CuzUcxZSoGJHEkrp85no6VtTFT4D8HKJpqmpH1NSNzS2BtXDGgrzasmRNR082I2
-	3HIclubOp9i5fZ96wb3GM1Kfq4ROv0TSy8n8jqYmTpWkkSZ+fZtSpkop7va4bLLhaz6OnXQxWax
-	rMOWu0PbPFPeUCou/mHaAnu/XOLgXK2d+R67WLXh18jO5Z83Cl+VMggbVQl9eGB5Dg28Qqwj2he
-	exNPKkb/9pHM5uBJWeOTtp1GszIv+oy25RQjJexeAAPqK2rR97Gq/cOXFe3WjtqgOJ/QQmVqD7V
-	46EWSGgPISycKjBTRNOJDJP5PBDUEdEELI/9++hUAuCSrE3fQ6NCePwA4UH80L9LLp7ZEGbMUlO
-	x1ErYRqjJPAoiAhigg/I+PDj4NRpPKo2RVpvYfQofKtZaue6h6ixUUOhvDA0TNQt2I7FKi4ERxl
-	XOKif1/nwdbWDzLaLJAIC/3Nk5FiFrQfOyD4UcdE5iYB66ZY4UvYmop
-X-Received: by 2002:a05:6a20:244e:b0:3d1:be60:281b with SMTP id adf61e73a8af0-3dd5285001fmr315141637.15.1789460668846;
-        Tue, 15 Sep 2026 01:24:28 -0700 (PDT)
-Received: from xps.tailc0aff1.ts.net (149-169-99-5.nat.asu.edu. [149.169.99.5])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14365bb6ba0sm29374866c88.15.2026.09.15.01.24.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 01:24:28 -0700 (PDT)
-From: Xiang Mei <xmei5@asu.edu>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	jakub@cloudflare.com,
-	Nicolai Buchwitz <nb@tipi-net.de>,
-	Justin Chen <justin.chen@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>
-Subject: [PATCH net] net: bcmgenet: restore the hardware filters on open
-Date: Tue, 15 Sep 2026 01:24:24 -0700
-Message-ID: <20260915082426.703892-1-xmei5@asu.edu>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20260707; t=1789460769; x=1790065569;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tzVl62qjzRm92BALDDypl3TnCOJSNAaLaOJ/zmWRh10=;
+        b=knfG3JWImOQI8myRKsi1GRAy6R4F8mP23iKgvBJzhb9G9amlyBn4aIEt9aCkbCtz+G
+         nEnVNs5c1KqCS14DKBALqSV/Ai1X84Wrw2a0sRssvfEvTt8SW4nfwv5PEmqbk6oG4MJp
+         ZsXniL2+S9gCFyE6JDu6uSA/L/kOGYH+t6wQNDWgea66bhy/ibpKmMGUIEsE9MM6WjtP
+         3435lw773gkDDXm29GROYC+FVzZC3pM7Zu70NeXDeZKGedp4xfOAVa7VSYvpoTh9cnj4
+         rKJPmNpLz9g1LTR6/0IvPIIz/6VYuRS2B6GaH49wDv+KKp5eUF74jynAIfzffSbSkK59
+         B0IQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw65Fc/aLSxw+VUM843/QjD+Gns4JnpJ8yPbYEkWge5r0tzr80tFiZU3v6aux7GneQhGRj+5q0=@vger.kernel.org
+X-Gm-Message-State: AFuF++lmM0Np2UZYi4NcHCpBrNEhUxW+MR76FuVxRvhdAt3Yf8uijT3D
+	iBWQduwrvUbh8Ba3wPxG4aXKNK+VrhCtQYCxG0s9uCF5SuOurMun2FKO5xHx7lDG47Ck87ITNOE
+	3
+X-Received: from plbjx4.prod.google.com ([2002:a17:903:1384:b0:2dd:1457:fac8])
+ (user=morbo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:190d:b0:2dd:4168:7bd3
+ with SMTP id d9443c01a7336-2dd6c6c0cb1mr140747065ad.12.1789460411041; Tue, 15
+ Sep 2026 01:20:11 -0700 (PDT)
+Date: Tue, 15 Sep 2026 08:18:36 +0000
+In-Reply-To: <20260915081910.4142719-1-morbo@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260915081910.4142719-1-morbo@google.com>
+X-Mailer: git-send-email 2.55.0.1032.g73a4cd73de-goog
+Message-ID: <20260915081910.4142719-20-morbo@google.com>
+Subject: [PATCH 19/28] x86/setup: Use snprintf() to concatenate builtin and
+ boot command lines
+From: Bill Wendling <morbo@google.com>
+To: linux-kernel@vger.kernel.org
+Cc: Bill Wendling <morbo@google.com>, codemender-patching+linux@google.com, 
+	Russell King <linux@armlinux.org.uk>, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Helge Deller <deller@gmx.de>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Ian Abbott <abbotti@mev.co.uk>, 
+	H Hartley Sweeten <hsweeten@visionengravers.com>, Tony Luck <tony.luck@intel.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Matthew Brost <matthew.brost@intel.com>, 
+	"=?UTF-8?q?Thomas=20Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Matthias Schwarzott <zzam@gentoo.org>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Arend van Spriel <arend.vanspriel@broadcom.com>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	Sylwester Nawrocki <s.nawrocki@samsung.com>, Peter Griffin <peter.griffin@linaro.org>, 
+	Alim Akhtar <alim.akhtar@samsung.com>, Linus Walleij <linusw@kernel.org>, 
+	Anil Gurumurthy <anil.gurumurthy@qlogic.com>, 
+	Sudarsana Kalluru <sudarsana.kalluru@qlogic.com>, "Martin K. Petersen" <mkp@kernel.org>, 
+	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, Kees Cook <kees@kernel.org>, 
+	Jiri Pirko <jiri@resnulli.us>, Simon Horman <horms@kernel.org>, Chuck Lever <cel@kernel.org>, 
+	Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Mike Rapoport (Microsoft)" <rppt@kernel.org>, 
+	Kanglong Wang <wangkanglong@loongson.cn>, Tiezhu Yang <yangtiezhu@loongson.cn>, 
+	Qiang Ma <maqianga@uniontech.com>, Randy Dunlap <rdunlap@infradead.org>, 
+	Pengpeng Hou <pengpeng@iscas.ac.cn>, Ard Biesheuvel <ardb@kernel.org>, Breno Leitao <leitao@debian.org>, 
+	Thorsten Blum <blum@kernel.org>, Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Lyude Paul <lyude@redhat.com>, 
+	Ashutosh Desai <ashutoshdesai993@gmail.com>, Imre Deak <imre.deak@intel.com>, 
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, Johan Hovold <johan@kernel.org>, 
+	Johannes Berg <johannes.berg@intel.com>, 
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
+	Alexander Stein <alexander.stein@ew.tq-group.com>, 
+	Cryolitia PukNgae <cryolitia@uniontech.com>, Jiaming Zhang <r772577952@gmail.com>, 
+	Will Porter <mrwillporter@gmail.com>, Cen Zhang <zzzccc427@gmail.com>, 
+	"=?UTF-8?q?C=C3=A1ssio=20Gabriel?=" <cassiogabrielcontato@gmail.com>, Rong Zhang <i@rong.moe>, 
+	Arun Raghavan <arunr@valvesoftware.com>, linux-arm-kernel@lists.infradead.org, 
+	loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linux-edac@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
+	linux-input@vger.kernel.org, linux-media@vger.kernel.org, 
+	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev, 
+	brcm80211-dev-list.pdl@broadcom.com, devicetree@vger.kernel.org, 
+	linux-samsung-soc@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	devel@lists.orangefs.org, linux-hardening@vger.kernel.org, 
+	linux-sound@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Nicolai Buchwitz <nb@tipi-net.de>
+When CONFIG_CMDLINE_BOOL is enabled without CONFIG_CMDLINE_OVERRIDE,
+setup_arch() appends boot_command_line to builtin_cmdline using two
+strlcat() calls before copying the result back to boot_command_line.
 
-bcmgenet_hfb_init() runs INIT_LIST_HEAD() on priv->rxnfc_list, which drops
-every rule off the list, and bcmgenet_open() calls it on each ifup. Every
-rule the user configured is silently lost:
+In preparation for removing the deprecated strlcat() API[1], format the
+combined command line into a temporary buffer using a single snprintf()
+call and copy the result to both builtin_cmdline and boot_command_line.
+Using a temporary buffer avoids undefined behavior from passing overlapping
+source and destination buffers to snprintf().
 
-  # ethtool -N eth0 flow-type ether dst $MAC action 0
-  Added rule with ID 0
-  # ethtool -n eth0 | grep -c Filter:
-  1
-  # ip link set eth0 down && ip link set eth0 up
-  # ethtool -n eth0 | grep -c Filter:
-  0
-
-Initialise the lists once at probe and restore the rules on open, as
-bcmgenet_resume() already does.
-
-Fixes: 3e370952287c ("net: bcmgenet: add support for ethtool rxnfc flows")
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
-Reviewed-by: Justin Chen <justin.chen@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20260913190052.939955-1-nb@tipi-net.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://github.com/KSPP/linux/issues/370 [1]
+Cc: codemender-patching+linux@google.com
+Assisted-by: Developer:Gemini_2.5_Pro [editor_update_file, make_kernel_buil=
+d_single_file, checkpatch_run]
+Signed-off-by: Bill Wendling <morbo@google.com>
 ---
- .../net/ethernet/broadcom/genet/bcmgenet.c    | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Thomas Gleixner <tglx@kernel.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: x86@kernel.org
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ian Abbott <abbotti@mev.co.uk>
+Cc: H Hartley Sweeten <hsweeten@visionengravers.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: "Thomas Hellstr=C3=B6m" <thomas.hellstrom@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Matthias Schwarzott <zzam@gentoo.org>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Saravana Kannan <saravanak@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Cc: Peter Griffin <peter.griffin@linaro.org>
+Cc: Alim Akhtar <alim.akhtar@samsung.com>
+Cc: Linus Walleij <linusw@kernel.org>
+Cc: Anil Gurumurthy <anil.gurumurthy@qlogic.com>
+Cc: Sudarsana Kalluru <sudarsana.kalluru@qlogic.com>
+Cc: "Martin K. Petersen" <mkp@kernel.org>
+Cc: Trond Myklebust <trondmy@kernel.org>
+Cc: Anna Schumaker <anna@kernel.org>
+Cc: Mike Marshall <hubcap@omnibond.com>
+Cc: Martin Brandenburg <martin@omnibond.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Jiri Pirko <jiri@resnulli.us>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Chuck Lever <cel@kernel.org>
+Cc: Jeff Layton <jlayton@kernel.org>
+Cc: NeilBrown <neil@brown.name>
+Cc: Olga Kornievskaia <okorniev@redhat.com>
+Cc: Dai Ngo <Dai.Ngo@oracle.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Kanglong Wang <wangkanglong@loongson.cn>
+Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
+Cc: Qiang Ma <maqianga@uniontech.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Breno Leitao <leitao@debian.org>
+Cc: Thorsten Blum <blum@kernel.org>
+Cc: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Lyude Paul <lyude@redhat.com>
+Cc: Ashutosh Desai <ashutoshdesai993@gmail.com>
+Cc: Imre Deak <imre.deak@intel.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: Johan Hovold <johan@kernel.org>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Cc: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: Cryolitia PukNgae <cryolitia@uniontech.com>
+Cc: Jiaming Zhang <r772577952@gmail.com>
+Cc: Will Porter <mrwillporter@gmail.com>
+Cc: Cen Zhang <zzzccc427@gmail.com>
+Cc: "C=C3=A1ssio Gabriel" <cassiogabrielcontato@gmail.com>
+Cc: Rong Zhang <i@rong.moe>
+Cc: Arun Raghavan <arunr@valvesoftware.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: loongarch@lists.linux.dev
+Cc: linux-mips@vger.kernel.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linux-edac@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: intel-xe@lists.freedesktop.org
+Cc: linux-input@vger.kernel.org
+Cc: linux-media@vger.kernel.org
+Cc: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Cc: brcm80211@lists.linux.dev
+Cc: brcm80211-dev-list.pdl@broadcom.com
+Cc: devicetree@vger.kernel.org
+Cc: linux-samsung-soc@vger.kernel.org
+Cc: linux-gpio@vger.kernel.org
+Cc: linux-scsi@vger.kernel.org
+Cc: linux-nfs@vger.kernel.org
+Cc: devel@lists.orangefs.org
+Cc: linux-hardening@vger.kernel.org
+Cc: linux-sound@vger.kernel.org
+---
+ arch/x86/kernel/setup.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index a2305e6428d1..b916080f4ff1 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -749,8 +749,17 @@ static void bcmgenet_hfb_init(struct bcmgenet_priv *priv)
- 		INIT_LIST_HEAD(&priv->rxnfc_rules[i].list);
- 		priv->rxnfc_rules[i].state = BCMGENET_RXNFC_STATE_UNUSED;
+diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+index cda6adb9f69c..c40e0edd7c13 100644
+--- a/arch/x86/kernel/setup.c
++++ b/arch/x86/kernel/setup.c
+@@ -916,9 +916,11 @@ void __init setup_arch(char **cmdline_p)
+ #else
+ 	if (builtin_cmdline[0]) {
+ 		/* append boot loader cmdline to builtin */
+-		strlcat(builtin_cmdline, " ", COMMAND_LINE_SIZE);
+-		strlcat(builtin_cmdline, boot_command_line, COMMAND_LINE_SIZE);
+-		strscpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
++		char tmp[COMMAND_LINE_SIZE];
++
++		snprintf(tmp, COMMAND_LINE_SIZE, "%s %s", builtin_cmdline, boot_command_=
+line);
++		strscpy(builtin_cmdline, tmp, COMMAND_LINE_SIZE);
++		strscpy(boot_command_line, tmp, COMMAND_LINE_SIZE);
  	}
-+}
-+
-+static void bcmgenet_hfb_restore(struct bcmgenet_priv *priv)
-+{
-+	struct bcmgenet_rxnfc_rule *rule;
- 
- 	bcmgenet_hfb_clear(priv);
-+
-+	list_for_each_entry(rule, &priv->rxnfc_list, list)
-+		if (rule->state != BCMGENET_RXNFC_STATE_UNUSED)
-+			bcmgenet_hfb_create_rxnfc_filter(priv, rule);
- }
- 
- static int bcmgenet_begin(struct net_device *dev)
-@@ -3376,8 +3385,8 @@ static int bcmgenet_open(struct net_device *dev)
- 
- 	bcmgenet_set_hw_addr(priv, dev->dev_addr);
- 
--	/* HFB init */
--	bcmgenet_hfb_init(priv);
-+	/* Restore the filters, the MAC was reset above */
-+	bcmgenet_hfb_restore(priv);
- 
- 	/* Reinitialize TDMA and RDMA and SW housekeeping */
- 	ret = bcmgenet_init_dma(priv, true);
-@@ -4075,6 +4084,7 @@ static int bcmgenet_probe(struct platform_device *pdev)
- 
- 	/* Mii wait queue */
- 	init_waitqueue_head(&priv->wq);
-+	bcmgenet_hfb_init(priv);
- 	INIT_WORK(&priv->bcmgenet_irq_work, bcmgenet_irq_task);
- 
- 	priv->clk_wol = devm_clk_get_optional(&priv->pdev->dev, "enet-wol");
-@@ -4272,10 +4282,7 @@ static int bcmgenet_resume(struct device *d)
- 	bcmgenet_set_hw_addr(priv, dev->dev_addr);
- 
- 	/* Restore hardware filters */
--	bcmgenet_hfb_clear(priv);
--	list_for_each_entry(rule, &priv->rxnfc_list, list)
--		if (rule->state != BCMGENET_RXNFC_STATE_UNUSED)
--			bcmgenet_hfb_create_rxnfc_filter(priv, rule);
-+	bcmgenet_hfb_restore(priv);
- 
- 	/* Reinitialize TDMA and RDMA and SW housekeeping */
- 	ret = bcmgenet_init_dma(priv, false);
--- 
-2.43.0
+ #endif
+ 	builtin_cmdline_added =3D true;
+--=20
+2.55.0.1032.g73a4cd73de-goog
 
