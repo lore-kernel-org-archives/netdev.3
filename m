@@ -1,143 +1,140 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47004372B57;
-	Tue, 15 Sep 2026 13:59:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789480780; cv=none; b=liodNQusgmi3i6LYObY/apuAjum068jznq45o/qil3v8jq2KGK7x60BLEBng8Q+FnuNmPbsIjHV+a7v9wQSvOimI7bkdVRytD0FP8eLbxXbqY9nnEi7q620qW7ku8NZNG9I69X9JnRYMG30Ky0XNwlP3pOnEn8yVJ4S+ELm81kU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789480780; c=relaxed/simple;
-	bh=MPNwDySajHBTgQoxxPTy4tz7FJNKza+ZVwhy6UjvdYw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LVu+3KroDA7+yQTKFycOsn0PHrCXLr5rqv2np3nyOtxPWnhJqu9dUqzK3jiLIxPgEgEiuMBkE/A0oKVTQQ9DsmjgvB1wjho7TStShILIySu+WrUcWQ+wLQIF/aU1QIcO7+XHlA6Op0cGRU+UPhh8KKUVc4F9LoKbVL04epw0iW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256:X25519MLKEM768)
-	 (Exim 4.100)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1x6Th5-000000000fl-1rZv;
-	Tue, 15 Sep 2026 13:59:31 +0000
-Date: Tue, 15 Sep 2026 14:59:27 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	driver-core@lists.linux.dev,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	linux-wireless@vger.kernel.org,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	linux-bluetooth@vger.kernel.org
-Subject: Re: [RFC PATCH 0/4] device_schedule_reprobe(): core helper and
- conversions
-Message-ID: <aqlPPyblTK8c6-zZ@makrotopia.org>
-References: <anpxFdwNxk0XwPjQ@makrotopia.org>
- <2026081139-strenuous-greasily-f4e5@gregkh>
- <cb0d42dd-4755-49a8-8a05-297e4283914e@oss.qualcomm.com>
- <2026081133-crazy-enquirer-97ce@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581773451CC
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 14:01:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789480875; cv=pass; b=ZhdkGm0u8pFEztzd1RX2EsaMAHAxB10oIYfprzznLi95i4KLu79t8zy3ARZwtYm5KUspSqW+uV5gr2l0nSZWKkHU9BfPN7XCwWdSrO4fYI+9+qNkI6S/wfpo6HmprZvmY2iEUANiBeFWkPc+eNcV+R2ssLosf+LaUzdiLdmyc3U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789480875; c=relaxed/simple;
+	bh=2NAUNgidQSi9/Ny6AX+R2NgK0jl15Ql6k403oGeK+f0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KjNQAgLgdMDDXBVoXyB+0lNpIT3NwNt4vcss9+5WcNv3y3xdYOdYZmaLWRREPiUuQaKODF6TTdPiIG6y9So/Sj6C6Y12enkToQZebM0h80jyECWEsvE46AzRUgA3lnQemr9hBJoaK/bp75nYqT/QoMyJsKTSXSfmVzCs07Sl7Ts=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=BaQzD9BQ; arc=pass smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="BaQzD9BQ"
+Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc4aa0f1766so2386378a12.0
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 07:01:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789480873; cv=none;
+        d=google.com; s=arc-20260327;
+        b=oxaoR8qnz+6gGMTAwnN528m8mBbTmNjGZDBBSVBVkPG5gdArUxSozKm2Yod3Na+FwE
+         axi2FGuwzF+h6QzSDqTWtR8rOFd/6fpxKHLfdS33/o+v4/7SjTQRlve2I/xQGtW4/chn
+         xp5LsjJQfOmm2xCOr6b7mktIuT9EbrW8hHSRvDwrPZne9ZOGHZ1wTr6FolW/ectTi1wN
+         JW6DE1dDJ2FtwUR8EX5e5RvZptDg13F8AKddmmkJaTXG1SR8u2bvnk8RkDDXH5Is4XDs
+         jKtes7LXFczngMgb707pgSMkXW1ZyJtbZBq7VkqzQ55GVp2+aJxwJlZdptE0YtswKuc6
+         Mj0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=HWEG56T0hCCLawyisL7XQGFOuFmLzEuCnYcRjJEU+8s=;
+        fh=vKIV8J8HjoO2xATNTINbNG/WX/BOVynlde8xquD0Hco=;
+        b=WC1UyyUfjGPXXzBUZwBHXj8SNzy/rKVUnyuLrrmC/0BIvQrb3thWPeMMUGMWFlw5he
+         yt3MmaD1AEAZGEDU9UvJ24+94A0tF1IA88lFtKCz/xv4qcCR0s1aCxJ8fVAhzSwxbxgF
+         n71i2ZFf4ut3/4Wv6v/VG80AMv6SB1g7Kor/HnUPQEwjqwj7pQU4SJu481Ev/JffUdEw
+         SUlx45xzNYpcZE+IQyJq3O0IXH5rw7jqykHTjw2RppVDVdsr4URLr/0dkO05SPfPZfT5
+         hYM+3bwXpiVE1UpX4takPExVk85si/wzS70skYeFNWOOtdgHYoA1quQ/BGtecRtIrqy8
+         n1Kg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1789480873; x=1790085673; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=HWEG56T0hCCLawyisL7XQGFOuFmLzEuCnYcRjJEU+8s=;
+        b=BaQzD9BQHNlRZizZgmy3alxCON5V48nhTyJGmWGM448gpRu7MitsNiyNWKw0z2+O6Z
+         VeTy0VFOeGtHinmyYQKBlNTPHA98uxeFIAA1DkcbWeMO9dzWu5ZTU4iySUuksGlzR4ne
+         1Eq8/YW2infgZdTH3Qp/Bpho4PkNeRG9Asz0w=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789480873; x=1790085673;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HWEG56T0hCCLawyisL7XQGFOuFmLzEuCnYcRjJEU+8s=;
+        b=WZIvMOPNLytbrbLbmeDCQdknadoXOMdrmheCE3pZdinsuW35xb0WOuYCAWMM29/jOv
+         auozQPlTDFd/4YvV/1R0uogoqGo84d5hg7Uu1Q3K3o5TeL8a8S26FiNpove6223Wa8G2
+         u7GedHLdYrLlia+iEIW8HbZrMO2tvtb8dSmzSvw0MyyWrMMftuCNbHK0N0KF4RTbkJ4U
+         gWmzSv4IMf1MtClcOiNvklf9DSTEyTWrJtF7xKA251Uv/IdapnGuRiNln98HQiOxmoMg
+         Dxi6t/EElS/MzoF7SJ+NOCyfBVgawThSCYh+5dRvE6kt+jnsIfU5fgELqxpA1sOZmii7
+         qsHQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxJSXch3EbM8Y4bQ6wMnV8TEsvCpB7AVOYLlf0coq6Z16lEWArMbEsE02BX1g0krFvcbAGLlFw=@vger.kernel.org
+X-Gm-Message-State: AFuF++l/p0auRrKhuhMSR4SYrKzS+LYCC/i4TvBNF/0y2cQFSDATMCQG
+	FTZTeUo8g+RZChSMHB2iUA0T4DnCH3GocmnBPBuGv+5bhoRW+Ihzs9hTscHxHiJxJTFNmoDYiFd
+	MQXzNCxRVNzGJVj23tiiCATHp0oTw5/aSVSqCH3IP
+X-Gm-Gg: AYBFou17uKhx5vhiyX7NZGU3AfvYETukfGyp2l3vgwtaBFZqqvJenHNYcgVaJ4N4e0C
+	aQsL8U6ddfjAWFMfrzcEI42CKzPK/nOWGIdYdJPCN8SgUBkQJIxc+vZks90AUfViS+lux8B/YxI
+	21BazIzOl/njMLV7bEUqpR/xAT/uWNkH0+rrfwp9AD3C8xYCtxE51rKsinL/aklAAIfS++uannK
+	DxNOVVZD47rbweQc9147hnpiFipzzVsKmKHeWc7xndjY6BXkkHN/r+aGEHqprimIvM/Zg4Yyg6N
+	1NzCptEPzM81+yUce3f5fI60KtqhM5XZbfXqKRQ3gK0JM/SBJisGCzbukNlPftrM4UQGVkKb5+9
+	TDvUP+fBH9ZTJ4stbkcPavGK+jpoV2mAO/w==
+X-Received: by 2002:a05:6a20:1609:b0:3d3:afd9:6040 with SMTP id
+ adf61e73a8af0-3db40746ea8mr17275071637.27.1789480873361; Tue, 15 Sep 2026
+ 07:01:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026081133-crazy-enquirer-97ce@gregkh>
+References: <20260911133146.3440982-1-victor@mojatatu.com> <20260914191108.55a1a4f1@kernel.org>
+ <CAM0EoMk7CZA2qAPEfvZ_+tUDkcUYF5nanaxER1soLJQZqMuXxQ@mail.gmail.com> <CANn89i+pkwNwyQF4tRM+Hb1a7YA1qUqdk2tHonUMEycY23j0rQ@mail.gmail.com>
+In-Reply-To: <CANn89i+pkwNwyQF4tRM+Hb1a7YA1qUqdk2tHonUMEycY23j0rQ@mail.gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Tue, 15 Sep 2026 10:01:01 -0400
+X-Gm-Features: AcwNN1UHzxHf6t3mZh8c3sGOc9BYhCflv8qYadGp1lb3dsFLGyvR-vnAHHJkQNs
+Message-ID: <CAM0EoMnibuY3=JE7+sTnwiAj8_vSKJ9Wx-rZStXrQmZ2EWXMoA@mail.gmail.com>
+Subject: Re: [PATCH net] net/sched: Avoid quadratic handle scan in qdisc_alloc_handle
+To: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, Victor Nogueira <victor@mojatatu.com>, davem@davemloft.net, 
+	pabeni@redhat.com, jiri@resnulli.us, horms@kernel.org, vega@nebusec.ai, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 11, 2026 at 05:07:47PM +0900, Greg Kroah-Hartman wrote:
-> That feels a bit better, as long as this code really is "safe" :)
+On Tue, Sep 15, 2026 at 8:28=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
+wrote:
 >
-> So, how can this be tested and fixed up so it isn't an RFC anymore?
+> On Tue, Sep 15, 2026 at 4:51=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.co=
+m> wrote:
+> >
+> > On Mon, Sep 14, 2026 at 10:11=E2=80=AFPM Jakub Kicinski <kuba@kernel.or=
+g> wrote:
+> > >
+> > > On Fri, 11 Sep 2026 10:31:46 -0300 Victor Nogueira wrote:
+> > > > This is a less intrusive fix meant for backporting; a cleaner appro=
+ach that
+> > > > uses a per-device IDA over all qdisc handles is planned for net-nex=
+t.
+> > >
+> > > I don't think this is net-worthy in the first place.
+> > > We have a ton of code under rtnl_lock.
+> > > We cannot provide any protection from malicious netns admin from
+> > > overloading the machine.
+> >
+> > That is the one million dollar question.  We labelled this as net for
+> > this exact reason. i.e malicious container could overload the whole
+> > machine.
+> > But it borders on "hardening" (improves performance), so net-next as a
+> > target sounds reasonable. It was a coin toss.
+> >
+> > Since we have a few similar "grey" issues in our pending queue - so
+> > where's the line for net/net-next?
+> >
+> > > Nothing against the patch itself, but if you plan to do something
+> > > else in net-next let's just go with that from the start..
+> >
+> > We could resend the same patch for net-next, the alternative "proper
+> > fix" is more intrusive. See attached.
+> > Another option: Is this worth fixing?
+>
+> A really useful fix would be to get away from RTNL :)
 
-The helper went out as v2 [1] and v3 [2] on its own, and it now travels
-as patch 3 of the mxl862xx devlink flash series [3], whose driver is
-its first user: that driver reflashes a DSA switch over MDIO and has no
-in-place path back, so it reinitialises through a deferred detach and
-re-probe. Patch 4 of that series does not link without the helper and
-the series cannot be split around it, so what it needs from the driver
-core is an ack on that patch.
+Indeed ;-> Right now the AI kiddies are trnding to targetting rtnl as
+you can see from this one ;->
 
-On testing. Every firmware flash and every recovery in that series ends
-in device_schedule_reprobe(), so the helper is on the path of all of
-the following, run on an MxL86252C switch of the BananaPi R4 Pro 8X: an
-upgrade through fwupd; a reboot issued while a flash was running, which
-waits for the transfer to finish; a host crash in the middle of a
-transfer, whose wedged download the driver drains in the background
-before re-probing; and a power cut in the middle of a transfer, after
-which the bootloader came up ready and fwupd flashed the switch back to
-a released firmware. That kernel was built with PROVE_LOCKING,
-PROVE_RCU, DEBUG_LOCK_ALLOC, DEBUG_MUTEXES, DEBUG_SPINLOCK,
-DEBUG_RT_MUTEXES, DEBUG_WW_MUTEX_SLOWPATH, DEBUG_ATOMIC_SLEEP, KASAN
-(generic), UBSAN, DETECT_HUNG_TASK and SOFTLOCKUP_DETECTOR, on PREEMPT,
-and the logs were clean.
-
-On the fixing up, since the version in this thread:
-
-The helper adds no state to the driver core. That version grew a
-shutdown_done bit in struct device_private, set from device_shutdown();
-the work now tests defer_all_probes instead, which device_shutdown()
-and dpm_prepare() both set before they touch any device. base.h and
-core.c are untouched, so the patch is dd.c and device.h only.
-
-Nothing is locked in the caller's context, and the parent is neither
-pinned nor locked. Recording dev->parent and taking
-__device_driver_lock() meant the device lock was taken where the caller
-stands, which inverted against the devlink instance lock that a devlink
-flash holds across the call, and a pinned parent can be replaced by
-device_move() without any device lock held. The work now takes
-device_lock(dev) alone, and a bus that sets need_parent_lock is refused
-with -EINVAL when the re-probe is scheduled. usb_bus_type is the only
-such bus in the tree, and the three conversions re-probe PCI and serdev
-devices, so none of them is refused.
-
-__device_release_driver() reports whether it released the driver, and
-takes an abort_if_blocked flag. It drops the device lock while busy
-consumer links are unbound; on re-acquisition it re-checks
-defer_all_probes and abandons the release, which closes the window
-where a ->remove() could follow a ->shutdown() on the same device. Only
-the deferred re-probe passes true, since an administrative unbind has
-to complete and driver_detach() would spin on a device it never
-released. Because the work learns whether it was the call that released
-the driver, an unbind winning that race is no longer undone by the
-re-attach.
-
-The work runs on system_freezable_wq rather than the unbound queue
-Marco commented on, so a re-probe pending across system suspend runs
-once the system has resumed, instead of detaching a suspended device or
-racing its late suspend callbacks.
-
--EPROBE_DEFER is kept out of the re-probe error path, where
-dev_err_probe() would have recorded it as the device's deferred probe
-reason. The kernel-doc no longer promises that an administrative unbind
-is never undone, which unbind_store() does not guarantee, and it now
-states the calling context and the freezable behaviour.
-
-The conversions of the open-coded users in iwlwifi, hci_h5 and
-btintel_pcie follow once the helper is merged, which is the part that
-removes the module_get(THIS_MODULE) you objected to. Hans reviewed and
-tested the helper and the hci_h5 conversion on RTL8723BS hardware
-[4][5]; the helper has changed materially since, so I have not carried
-those tags over.
-
-[1] https://lore.kernel.org/all/cover.1787185594.git.daniel@makrotopia.org/
-[2] https://lore.kernel.org/all/cover.1787281239.git.daniel@makrotopia.org/
-[3] https://lore.kernel.org/all/cover.1789175618.git.daniel@makrotopia.org/
-[4] https://lore.kernel.org/all/c461462f-de0b-43e8-ac9e-541013f5f8da@oss.qualcomm.com/
-[5] https://lore.kernel.org/all/7ffe0c2e-0742-488a-ab6c-1dc2fabc049c@oss.qualcomm.com/
-
-Thanks,
-
-
-Daniel
+cheers,
+jamal
