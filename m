@@ -1,114 +1,100 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44EF04BD7A6;
-	Tue, 15 Sep 2026 18:12:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8815B4AA3F9;
+	Tue, 15 Sep 2026 18:12:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789495938; cv=none; b=Y1WIMcH5vgvvmjhMzXSoXG2sEvOHMRXuzaHLV4VFien/Pagpzx5Fb1YJv9vC56RrQqJ4838Rof2jFPMbYnudFB7T06w7ra5FgXTHxLOuXU66YkyZHDwXtIJrCVcfN9A3q1vHWHAxIjvQPT07i/kH+SO5nx8LO7ByZYTqSAZo2Ck=
+	t=1789495956; cv=none; b=k2ZNh64Huw+ojz1NBi5kRDCiB/GgOIlz2xlTzZ6Tk2+EMBIldGyYf3vctc/S+7agcsxcKw1vWD+q4SnEHbNfO1AnbNbbxg6UCevVptLQ6N0+L2tD1+6VyHAYgl/Gy6tGtrtWyNsA/tGKHrthocbdzOPKDm0aQRXkhoSiJR/70nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789495938; c=relaxed/simple;
-	bh=XB/KEQCSAc1J4gUrX3IgKw9KbyOlNAsIQ7xYJOLJ2ho=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=k7eawuMYNGVDMzOa/7R9k7gxpUQkwOcdABXvfCUBu9374NjTkbTdR/sbGwzmQHWLMFimpIZ7mFevx8HLrtykiXBQ760HN/njWkoexqP2X/aJVcvsdXA4P+Yy0aaC1Ut1AEkgA57QGAVb6K3MN0ifffd918RI4qC5aTR0oHOlR9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=f49LiwUc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bhstI4lH; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1789495956; c=relaxed/simple;
+	bh=RnCXiFbM1SzdFNCgrQuTjcDJhm67a4cNz7MJMWzIUgE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=g3gAWCtA9mSVcfe+N7aXA7ldWbd2BlAr0PO8CEGBjUedPFyzBeamOuUXIRNmwcHI27wipVpIKgH/E8ryGMNM1zMybv8ot8RQyAjwfDNSl5/5sA+x/quTZ6NEypGdVZvJiht+rX8N9GZAGs+Y7G6vF5K9rLkLSw2LkThYd7OJKYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aIGdbwmP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="f49LiwUc";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bhstI4lH"
-Message-ID: <a0adf8c0f108d8a4293604b1d446b8c9eeade987.camel@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1789495933;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f1HS1pYOm3wOjNHIO+4Joxh2Gs5wWkLGBOA0RtJQydQ=;
-	b=f49LiwUcN2wlyanQPkBlTSYuN5rmdOrejHPC2Jmejx27YX+5hS5I/x99OyjDil8S7NpeMk
-	3MzTeadsHmNMQSzMRmL1pbkDBJrdVW41c7gIXjD8e18S5T6oyhpceFkA57taTd1tpGzvsS
-	BjXFTH5d8BKLA5rBbzSJHwqtqGdTWCFauK94TKi0xgNSgWXD1iWuu7KobUH+eB4GibtPsW
-	Uz4CTWQfK1MWym7aJR0Ex0GFokbPFEgvd/haL6QruJfaycXviOsjXao/M46NFB3wFQ1kFI
-	dhy5DbxbQbLAKNgbcEIr56enrCfDo1rrsdeVLGdn+itAIybIRjyPOcfyrYFR6w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1789495933;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f1HS1pYOm3wOjNHIO+4Joxh2Gs5wWkLGBOA0RtJQydQ=;
-	b=bhstI4lHFVpXgoTQAAkmblf0vq4BrRKfQ9pnOQKoPDp3FjmLWVX8Z72RewoKhqvZikrb+/
-	3zsu3L+1k3PH+AAQ==
-Subject: Re: [PATCH net-next v2 4/4] net: dsa: soce: Add basic support for
- SoC-e switch IP cores
-From: Vasilij Strassheim <v.strassheim@linutronix.de>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: netdev-bot+sashiko@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
- conor+dt@kernel.org, olteanv@gmail.com, davem@davemloft.net,
- edumazet@google.com,  kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- linux@armlinux.org.uk,  devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- martin.kaistra@linutronix.de, b.spranger@linutronix.de
-Date: Tue, 15 Sep 2026 20:12:07 +0200
-In-Reply-To: <4dbeb7cd-d9b6-4e95-a586-800ea133c2a8@lunn.ch>
-References: 
-	<20260903-devel-vstrassheim-soce-dsa-ml-v2-4-fb0587cb466b@linutronix.de>
-	 <178895594761.219967.4769482322073838475@kernel.org>
-	 <c863e105257ae512d32e94b56ac081c41c4284f6.camel@linutronix.de>
-	 <4dbeb7cd-d9b6-4e95-a586-800ea133c2a8@lunn.ch>
-Organization: Linutronix GmbH
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aIGdbwmP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D8951F000FF;
+	Tue, 15 Sep 2026 18:12:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789495955;
+	bh=a7qVEHbdpDwDEc6vbWRx6TlbgYFck6ZMDFAc44J1FgI=;
+	h=From:To:Cc:Subject:Date;
+	b=aIGdbwmPoXxDzXMHFjsBlYMzGiKvMePyCVlFZNCCIV2u1VoZqRgrJeaHEQiFNb1dK
+	 PVv4mb5l3UOjFk0X8pFHLvOL2LrVWBxcHC1DNbCRwVGpv1C/bSC9lp03dm55L3kGEc
+	 INyFaul+at8pYMY434kfNzS6waFckedM2ppvIv2NeVOwdO+mf4fyCfug7QM5t2g2B0
+	 hMGQjOzBe6rJgP8naEM9ArPsCQ1N9cumpsIugFQiKhO6Hx6NsBtNogXpEU59pJf9T+
+	 YUsmu3UpujbOKnTGM600wiRRGLd8uUGtLdByXYDoPzyJRKFCHiFA06hwI/yvc/HknU
+	 ITifVwzm/1cFQ==
+From: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>
+To: Alexander Duyck <alexanderduyck@fb.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	kernel-team@meta.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	Mohsin Bashir <mohsin.bashr@gmail.com>,
+	"Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>,
+	Joe Damato <joe@dama.to>
+Subject: [PATCH net] eth: fbnic: Avoid rounding zero ring sizes
+Date: Tue, 15 Sep 2026 20:12:27 +0200
+Message-ID: <20260915181229.4159158-1-bjorn@kernel.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, 2026-09-15 at 14:56 +0200, Andrew Lunn wrote:
-> > > After an unbind or rmmod, does the core keep inserting SDSA source-po=
-rt
-> > > tags into every frame delivered to the CPU port, with the tagger that
-> > > would strip them gone?  As described in the commit message, the same =
-bits
-> > > also keep the user ports in CPU-directed operation:
-> > >=20
-> > > =C2=A0=C2=A0=C2=A0=C2=A0"Enabling this tagging feature of the switch,=
- places all user ports
-> > > =C2=A0=C2=A0=C2=A0=C2=A0into CPU-directed operation"
-> > >=20
-> > > so the switch would also stay locked out of normal port-to-port
-> > > forwarding after the driver is removed.
-> >=20
-> > Yes, I had not considered this use case. The tagging state currently
-> > remains enabled after unbind or shutdown. In v3, I will add a .teardown
-> > callback that clears both SOCE_TAG_ALL_FRAMES_ENABLE and
-> > SOCE_CUSTOM_RULES_TAGGING_ENABLE, returning the switch to an unmanaged
-> > state.
->=20
-> I would say the AI is wrong here. If you put the switch into unmanaged
-> mode, and don't have anything performing spanning tree, your network
-> could experience a broadcast storm and stop working. The .teardown
-> should disable all the ports, leaving the network in a safe
-> configuration.
+roundup_pow_of_two() is undefined for zero. ethtool permits a zero ring
+size to reach the driver, where the minimum-size check should reject it.
 
-This makes more sense. I see that other drivers use the .port_disable()
-callback to deactivate the switch's ports in this case. I would prefer
-to add this together with .port_enable(). This should be enough to have
-a safe configuration for the network if the driver is unbound.
+Validate the requested sizes before rounding them so zero is rejected
+deterministically.
 
-A global reset or deactivation would be nice for teardown, but there is
-no such feature available. For the sake of completeness, I think it
-would also be valid to reset the modified bits in teardown() as proposed
-by AI.
+Fixes: 6cbf18a05c06 ("eth: fbnic: support ring size configuration")
+Suggested-by: Alexander Duyck <alexanderduyck@fb.com>
+Signed-off-by: Björn Töpel <bjorn@kernel.org>
+---
+ drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-By the way, there are two registers involved: One for port selection and
-another for port control. I would rely on rtnl_lock() and avoid adding own
-locking mechanisms since these registers are not used anywhere else.
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
+index 0e47088ec44b..8954fcd08cb3 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
+@@ -334,11 +334,6 @@ fbnic_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
+ 	struct fbnic_net *clone;
+ 	int err;
+ 
+-	ring->rx_pending	= roundup_pow_of_two(ring->rx_pending);
+-	ring->rx_mini_pending	= roundup_pow_of_two(ring->rx_mini_pending);
+-	ring->rx_jumbo_pending	= roundup_pow_of_two(ring->rx_jumbo_pending);
+-	ring->tx_pending	= roundup_pow_of_two(ring->tx_pending);
+-
+ 	/* These are absolute minimums allowing the device and driver to operate
+ 	 * but not necessarily guarantee reasonable performance. Settings below
+ 	 * Rx queue size of 128 and BDQs smaller than 64 are likely suboptimal
+@@ -368,6 +363,11 @@ fbnic_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
+ 		return -EINVAL;
+ 	}
+ 
++	ring->rx_pending	= roundup_pow_of_two(ring->rx_pending);
++	ring->rx_mini_pending	= roundup_pow_of_two(ring->rx_mini_pending);
++	ring->rx_jumbo_pending	= roundup_pow_of_two(ring->rx_jumbo_pending);
++	ring->tx_pending	= roundup_pow_of_two(ring->tx_pending);
++
+ 	if (!netif_running(netdev)) {
+ 		fbnic_set_rings(fbn, ring, kernel_ring);
+ 		return 0;
 
->=20
-> 	Andrew
+base-commit: 18a6fe05fb6e18de29fa90d388bb34044114b3d8
+-- 
+2.55.0
 
-Thanks,
-Vasilij
