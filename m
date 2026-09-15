@@ -1,157 +1,213 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91593749F4;
-	Tue, 15 Sep 2026 10:38:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A4447F3BD
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 10:42:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789468715; cv=none; b=VQ3x8awMmARHa8Y9bC202aqVhzShVx5cBzOJV90kYQszehcuECbciMAseN5zXGwN9cTMybfEVcW4N00N2hdzM26G6CJw6cAIse4SpzFCOFbtDgbopxg3zMmp/CFLZ+aIP52CGxTSReZGJqOkHOMuYzc2hMPq5G7xQIqmKRBj1VQ=
+	t=1789468926; cv=none; b=pCoaiI5PZvy4XY5SHQZ2tx3Lmlv3lh0j2WVLAfJpXDZg58l7l9i8PjrUgSOUWInskkQzoufpuXlsQ3XyaxzEJZOYeRc12umQOkz8gTuTv4dV1V1VbfqJwOdrylLYJyRnGNTgFLFPbXKlNuG17sTBtV5Z147xU5K9QD6Z1sHX5T4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789468715; c=relaxed/simple;
-	bh=6Z7LHkwKIg/aizSm5IBUYf9WN5Apkphn9MXg6XOx3UA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Be1mW4wZ/YMpwbKLlCyAJN7J7zVkVXpg7QMkhYxtvRdOFxqgO3VQVHIfVd4PQUXUkKUT4EpJbwxKXDgUC8RCnRmwbPebDPr+csllNQKJ6fZWL7T5/twskE+bsCfsNGm2y2PwQPrPgE89Z09IBOxwhJMmJNfS52KTDxk76uFxHXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=yLEzdJcc; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1789468926; c=relaxed/simple;
+	bh=PjiVsf5uMkbDp66AlJHnffbUEZZ1EH/IIrYenWWjkEc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZJjl5/NHLaMcmECInb4aSk0EBd2bO8PiUj7NeTj32ZRsp9zk+wgDF+EW/jYT+gXYGIEE/nquQpAMcgLjKMKMAh/d+OCSH8Q33jrEMfsE+Cnub1M0yFZ/RZnbaeCxfxeIdJgFRy+BNqseY6ADynMDY362RwVa0lW9NvusnzUt7hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IiYok/zJ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="yLEzdJcc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1789468713; x=1821004713;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=6Z7LHkwKIg/aizSm5IBUYf9WN5Apkphn9MXg6XOx3UA=;
-  b=yLEzdJccxGHUxTWcVt4qq/PjuSjEABxsFJawfDcqtf2omYyGjubknkIr
-   E41qwKxrGCDnkoK2hXTjBLKtagk83tuI8Ule7b1fTp1PUIFrnoyytFxhm
-   efSUXmbUZ10Qw1Ztxlob1h22KyFHFC/OlPm6pxHPmSnLmJ8EljguWg0oJ
-   dK7jj9p7T5F/WrN6B8g9SP5jZXmwWUWygFfYoNjSbXZNWcE7TI7dcbiGW
-   6zMc+tSQVsqeqUd6t+EuuiiwGqzex7x4Pge8LKgH/sh1dwKUgGgwhCuip
-   4kcLM3laLPpH5G7IzRnFHE6MC9k4upQHliS1BoO/9pRrpFiozXZdQBEkf
-   A==;
-X-CSE-ConnectionGUID: QLRapTREQOWHwcpXAKqUcQ==
-X-CSE-MsgGUID: Ah/Kj6ePR4mQOYNSo0Qy0Q==
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="62696875"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 15 Sep 2026 03:38:32 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Tue, 15 Sep 2026 03:38:32 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Tue, 15 Sep 2026 03:38:28 -0700
-Date: Tue, 15 Sep 2026 12:38:27 +0200
-From: Daniel Machon <daniel.machon@microchip.com>
-To: <netdev-bot+sashiko@kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <horatiu.vultur@microchip.com>,
-	<steen.hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>,
-	<ast@kernel.org>, <daniel@iogearbox.net>, <hawk@kernel.org>,
-	<john.fastabend@gmail.com>, <sdf@fomichev.me>, <herve.codina@bootlin.com>,
-	<arnd@arndb.de>, <gregkh@linuxfoundation.org>, <mohsin.bashr@gmail.com>,
-	<richardcochran@gmail.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH net-next v6 13/14] misc: lan966x-pci: dts: extend cpu reg
- to cover PCIE DBI space
-Message-ID: <20260915103827.mbq6jcqb65og4zzv@DEN-DL-M70577.microsemi.net>
-References: <20260909-lan966x-pci-fdma-v6-13-6f48dab9d671@microchip.com>
- <178904555304.219967.9327319194988391867@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IiYok/zJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789468922;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hQizjq4Fv6xotoUqHmRQLNrfXJfgBpEXbkCd1IuA4Bk=;
+	b=IiYok/zJafNmYmKNOHxq4MMZ5E643/NWz9j6OdFwtqnMohZG0yma74iesjULrq8lndl+JL
+	XNwMCE7qKDwkih0yb0AXTLK4C6bl25DOJpOpxlccleDhEYX/FyK8QpoNk2+/csDobFSo5C
+	S5ZeD+IO0L1m8jwNBpe42PPsVPG+PRY=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-447-qM3KhJf6MTulpLWTFi-Gsw-1; Tue,
+ 15 Sep 2026 06:41:59 -0400
+X-MC-Unique: qM3KhJf6MTulpLWTFi-Gsw-1
+X-Mimecast-MFC-AGG-ID: qM3KhJf6MTulpLWTFi-Gsw_1789468917
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A62D5192DD6E;
+	Tue, 15 Sep 2026 10:41:56 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.44.48.83])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E61BA1800446;
+	Tue, 15 Sep 2026 10:41:50 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: mhun512@gmail.com
+Cc: qiang.zhao@nxp.com,
+	khc@pm.waw.pl,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	adiupina@astralinux.ru,
+	chleroy@kernel.org,
+	ae878000@gmail.com,
+	netdev@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v3 3/4] net: wan: hdlc: close active devices before protocol detach
+Date: Tue, 15 Sep 2026 12:41:44 +0200
+Message-ID: <20260915104144.122643-1-pabeni@redhat.com>
+In-Reply-To: <f5f0519e82a7b8bbf314dc137470f7cf931e320b.1788128904.git.mhun512@gmail.com>
+References: <f5f0519e82a7b8bbf314dc137470f7cf931e320b.1788128904.git.mhun512@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <178904555304.219967.9327319194988391867@kernel.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider:
-> 
-> Critical: 0 · High: 0 · Medium: 0 · Low: 1
-> 
-> - [Low] Claimed patch-ordering / bisectability bug: the "cpu" reg window
->   is enlarged from 0x100000 to 0x800000 only in this commit, while the…
-> 
-> --
-> 
-> misc: lan966x-pci: dts: extend cpu reg to cover PCIE DBI space
-> 
-> This grows the "cpu" register window of the switch node in the lan966x PCI
-> device tree overlay from 0x100000 to 0x800000 so that the PCIE DBI and iATU
-> registers at offset 0x400000+ are covered. Those registers are programmed
-> when the FDMA engine sets up the ATU outbound windows.
-> 
-> No Link: tags in the commit header.
-> 
-> > diff --git a/drivers/misc/lan966x_pci.dtso b/drivers/misc/lan966x_pci.dtso
-> > index 7b196b0a0eb6..7bb726550caf 100644
-> > --- a/drivers/misc/lan966x_pci.dtso
-> > +++ b/drivers/misc/lan966x_pci.dtso
-> > @@ -135,7 +135,7 @@ lan966x_phy1: ethernet-lan966x_phy@2 {
-> >
-> >                               switch: switch@e0000000 {
-> >                                       compatible = "microchip,lan966x-switch";
-> > -                                     reg = <0xe0000000 0x0100000>,
-> > +                                     reg = <0xe0000000 0x0800000>,
-> >                                             <0xe2000000 0x0800000>;
-> >                                       reg-names = "cpu", "gcb";
-> 
-> [Severity: Low]
-> 
-> This isn't a bug, just a question about the ordering of the series.
-> 
-> The earlier commits "net: lan966x: add PCIe FDMA support", "net: lan966x: add
-> PCIe FDMA MTU change support" and "net: lan966x: add PCIe FDMA XDP support"
-> already derive regs[TARGET_PCIE_DBI] from the "cpu" base plus 0x400000, and
-> fdma_pci_atu_init() writes at DBI + 0x300000 + idx * 0x200:
-> 
-> drivers/net/ethernet/microchip/fdma/fdma_pci.c
-> static void __iomem *fdma_pci_atu_addr_get(void __iomem *addr, int offset, int idx)
-> {
->         return addr + FDMA_PCI_ATU_ADDR + FDMA_PCI_ATU_IDX_SIZE * idx + offset;
-> }
-> 
-> That lands roughly 0x700000 from the "cpu" base, i.e. outside the 0x100000
-> mapping that exists until this commit. Would it be clearer to move this
-> overlay change before the driver commits that compute the DBI offset, so
-> that the mapping is never smaller than the offsets the driver derives from
-> it?
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+---
+net: wan: hdlc: close active devices before protocol detach
 
-Yes, intentional: the window is widened here and only the next commit names the
-"fdma" interrupt that lets anything use it.
+This adds a dev_close() call to unregister_hdlc_device() so that an up
+HDLC device runs its ndo_stop and protocol close callbacks before
+detach_hdlc_protocol() clears IFF_UP via hdlc_setup_dev(). The
+detach-before-unregister order introduced by ff3516442768 is kept.
 
-> 
-> For what it is worth, the intermediate commits do look safe in practice,
-> since the ATU access in lan966x_fdma_pci_init() is gated:
-> 
-> drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c
->         if (!lan966x->fdma)
->                 return 0;
->         ...
->         fdma_pci_atu_init(&lan966x->atu, lan966x->regs[TARGET_PCIE_DBI]);
-> 
-> and lan966x->fdma is only set when the node names an "fdma" interrupt in
-> lan966x_probe():
-> 
->         lan966x->fdma_irq = platform_get_irq_byname(pdev, "fdma");
->         if (lan966x->fdma_irq > 0) {
->                 ...
->                 lan966x->fdma = true;
->         }
-> 
-> The overlay here still carries only interrupt-names = "xtr", "ana", and the
-> "fdma" interrupt is added by the following commit, so the enlarged window is
-> in place before the FDMA path can be enabled. Is that ordering intentional?
+Link: https://lore.kernel.org/r/20260806020541.2011936-2-kuba@kernel.org
 
-Yes.
+> diff --git a/drivers/net/wan/hdlc.c b/drivers/net/wan/hdlc.c
+> index cbed10b1d862e..a38f90d3006ed 100644
+> --- a/drivers/net/wan/hdlc.c
+> +++ b/drivers/net/wan/hdlc.c
+> @@ -263,6 +263,7 @@ EXPORT_SYMBOL(alloc_hdlcdev);
+>  void unregister_hdlc_device(struct net_device *dev)
+>  {
+>  	rtnl_lock();
+> +	dev_close(dev);
 
-> 
-> --
-> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909-lan966x-pci-fdma-v6-0-6f48dab9d671%40microchip.com
+[Severity: High]
+This isn't a bug introduced by this patch, but the new dev_close() makes
+the remove path call into ixp4xx_hss's ndo_stop, and hss_hdlc_close()
+sleeps inside a spin_lock_irqsave() section:
+
+drivers/net/wan/ixp4xx_hss.c:hss_hdlc_close() {
+	spin_lock_irqsave(&npe_lock, flags);
+	ports_open--;
+	qmgr_disable_irq(port->rxq);
+	netif_stop_queue(dev);
+	napi_disable(&port->napi);
+	...
+	free_irq(...);
+	spin_unlock_irqrestore(&npe_lock, flags);
+}
+
+napi_disable() reaches napi_disable_locked(), which begins with
+might_sleep() and loops on usleep_range(20, 200); free_irq() also calls
+might_sleep() and takes desc->request_mutex.
+
+Can that produce a "sleeping function called from invalid context" splat
+here, and if the scheduler is actually entered, can the CPU leave npe_lock
+held while hss_hdlc_dcd_irq() -> hss_hdlc_set_carrier() spins on the same
+lock?
+
+The same path is already reachable via "ip link set hss0 down", but the
+commit message lists ixp4xx_hss among the audited-safe users:
+
+    Audit all current users: c101, n2, pc300too, pci200syn, wanxl,
+    ixp4xx_hss, fsl_qmc_hdlc and farsync unregister before releasing the
+    resources used by their close callbacks.
+
+Should the audit note this, given the remove path now runs
+hss_hdlc_close() where it previously did not?
+
+>  	detach_hdlc_protocol(dev);
+
+[Severity: High]
+Does dev_close() close the window this relies on for the RX path?
+
+detach_hdlc_protocol() sets hdlc->proto = NULL and kfree()s hdlc->state
+while the netdev is still registered, so hdlc_rcv() can still be reached
+from NET_RX softirq for frames already queued on a per-CPU
+input_pkt_queue:
+
+drivers/net/wan/hdlc.c:hdlc_rcv() {
+	...
+	BUG_ON(!hdlc->proto->netif_rx);
+	return hdlc->proto->netif_rx(skb);
+}
+
+The only barrier that drops backlogged skbs for the device runs later,
+inside unregister_netdevice():
+
+net/core/dev.c:unregister_netdevice_many_notify() {
+	...
+	flush_all_backlogs();
+
+	synchronize_net();
+	...
+}
+
+__dev_close_many() does not touch the RX backlog, so a frame handed to
+netif_rx() before ndo_stop and still sitting in another CPU's queue can
+reach hdlc_rcv() after hdlc->proto became NULL. The
+"if (!(dev->priv_flags & IFF_WAN_HDLC))" test in hdlc_rcv() does not
+filter it out, since hdlc_setup_dev() re-sets priv_flags to
+IFF_WAN_HDLC.
+
+Can that hit the BUG_ON above, or use the freed hdlc->state inside
+fr_rx()/cisco_rx()/ppp_rx() if proto was already read?
+
+[Severity: Medium]
+This is a pre-existing issue and not introduced by this patch, but the
+return value of detach_hdlc_protocol() is dropped while
+unregister_netdevice() runs unconditionally.
+
+detach_hdlc_protocol() returns early when a NETDEV_PRE_TYPE_CHANGE
+notifier refuses the type change, skipping both release points:
+
+drivers/net/wan/hdlc.c:detach_hdlc_protocol() {
+	...
+		if (err) {
+			netdev_err(dev, "Refused to change device type\n");
+			return err;
+		}
+	...
+		module_put(hdlc->proto->module);
+	...
+	kfree(hdlc->state);
+	...
+}
+
+The refusal is reachable: hdlc_raw_eth's raw_eth_ioctl() calls
+ether_setup(), so dev->type becomes ARPHRD_ETHER and a VLAN can be
+stacked on it, after which
+
+net/8021q/vlan.c:vlan_device_event() {
+	case NETDEV_PRE_TYPE_CHANGE:
+		/* Forbid underlaying device to change its type. */
+		if (vlan_uses_dev(dev))
+			return NOTIFY_BAD;
+}
+
+returns NOTIFY_BAD. lapbether_device_event() refuses the same way.
+
+Does this leak the kmalloc'ed hdlc->state and the hdlc_raw_eth module
+reference, given every caller then calls free_netdev() and loses the only
+pointer to that state?
+
+>  	unregister_netdevice(dev);
+>  	rtnl_unlock();
+-- 
+This is an AI-generated review.
+
