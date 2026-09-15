@@ -1,60 +1,65 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163753B0592;
-	Tue, 15 Sep 2026 22:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6462E32D0F5
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 22:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789512429; cv=none; b=cXFBDuUsUZ3UDuwtoiM1CIZCdySZSDGzHAtMlFggjs0qayYlRNKbfBGxOJ3H1ddhMuQt7LkpbUG4FQ2vf++T3JQxKDmmFE2ERJxmEMHR/RZmN78tvvW+/MSaEazvn7udWaa+nFqLHubJfR8ooS9G0Ck6bx7t8bT9Wr4Oen1wA00=
+	t=1789512671; cv=none; b=Oj/htKGjyGGkoOrktQ0VKQephYAp9H0Ey8eeXeQscATxARWNP25K82NpS0Hq1GefGa26QYX38G5LJoFPs8qzfr2r5poEYeZRGcKhmssIpqaiyiI6VtWujAx8AN/87vt15AwZV7b3hgEYKNLbysnsXK0/N7MxSyMq/3c2gKQBauo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789512429; c=relaxed/simple;
-	bh=YHSVUGtkRDC6pZNJXi4o+weci1RVRC8ikw3ZJdZcWiQ=;
+	s=arc-20240116; t=1789512671; c=relaxed/simple;
+	bh=LwjV3921yNSN779JY1q2oTSuM0bPfmgeY4kreZL0jeA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CfK+rl9M8AF5sNJuShEbg/L6ley75LQozqOlFbJKK0yM/Xe9mWMViVadLxACErD8IczTSZQpW1jlP9VU9k760d9VnIIne3W7N2VZTpGnCkXpNs5bzHJebbXsqURNPpdPn5DnffiUnZw+ojleqPdC1zXYwf/tdkNvrZujeGJ6mhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BKJJf0Rh; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=GYPjVuqcDArPw3swNMHI4v/mIbgKD4uSVTDmHKTQ5lbwO1e1WuqFJ+pruQIDpFxuFdRUzJQg7fr5xP/Dt3tlM8JLOnaXf6PSwmr55RDh968XMsV2aioRIv4UHl2tTh8u/qGjSv6YpekP/4GdX0ky4JXb2abLW5vY650oOJJydp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PiO2r2IF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BKJJf0Rh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F761F000FF;
-	Tue, 15 Sep 2026 22:47:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PiO2r2IF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC131F000FF;
+	Tue, 15 Sep 2026 22:51:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789512427;
-	bh=YHSVUGtkRDC6pZNJXi4o+weci1RVRC8ikw3ZJdZcWiQ=;
+	s=k20260515; t=1789512670;
+	bh=LwjV3921yNSN779JY1q2oTSuM0bPfmgeY4kreZL0jeA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=BKJJf0RhK//lvEjrun0GWME0ibF1neJ2mui5lieiwG1zkmw7WXO4sgBgQ5JisD5cI
-	 OvXz1eOXkM9BnyDCayfBWpsuzg6pGfFed/dRuTb8secR2idwtTbvMpntx6P7P7rGeM
-	 tCjXoKtciRbAcWQBgx4NFrELcIcOsx+esA02myEi2QbI1RAezWfTw4oB86ZtPyuU6O
-	 jqNRK88DMCEp7EX2cN2k+r7qsRnL1L94MgxixuFp0eHVRt2XCvwKdOauZ4Tx3gzCMN
-	 Hkk2jY7EH7ND6ztQZw+hgI7QZcWnzawzwthSr8YQjL1nWEeXjDL1+8advWU24pGOva
-	 IKPlE/w4gkgCg==
-Date: Tue, 15 Sep 2026 15:47:05 -0700
+	b=PiO2r2IFUgH9SZ7Q1yUz1oL4ef5bUKMfNqo109mkqqboOqzLdyMt593DDltvfuMgX
+	 VRz+zgh3eVAIawiBIDg0C4n+U7QzjPaOxX75SoYhmTs2t4bHKQruF4kVAnR8lHCDW0
+	 0diHT43oJRsIZkvFqd1DHLiNlrQ5UGsPpbDJu+aVn/gb6ur150ELHP2ZidfbuaYuCL
+	 DmZe2loPq9+7OZAkLHCVpJEtAF64E+9kRNAaGXDUUEIL7eA3Fe+wBE2ryDCYqAUfxd
+	 q7kv3rYGuLucLKMtjXNLlrwrul8a5VagWrG48jOczuwKL4Iz+nAY/leExgIkTGWRCv
+	 ve/+h6ZxmmJow==
+Date: Tue, 15 Sep 2026 15:51:09 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Juha-Matti Tilli <juha-matti.tilli@iki.fi>
-Cc: Manivannan Sadhasivam <mani@kernel.org>, linux-arm-msm@vger.kernel.org,
- Jeff Hugo <jeff.hugo@oss.qualcomm.com>, Jeff Johnson <jjohnson@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio
- <konradybcio@kernel.org>, Eric Dumazet <edumazet@google.com>, Kuniyuki
- Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, Willem de
- Bruijn <willemb@google.com>, "David S. Miller" <davem@davemloft.net>, Simon
- Horman <horms@kernel.org>, Mihai Moldovan <ionic@ionic.de>, Denis Kenzior
- <denkenz@gmail.com>, Marcel Holtmann <marcel@holtmann.org>, Andy Gross
- <agross@kernel.org>, linux-kernel@vger.kernel.org, mhi@lists.linux.dev,
- linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
- ath12k@lists.infradead.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v7 00/15] QRTR Multi-endpoint support
-Message-ID: <20260915154705.67cfb94f@kernel.org>
-In-Reply-To: <20260915054207.2513877-1-juha-matti.tilli@iki.fi>
-References: <20260915054207.2513877-1-juha-matti.tilli@iki.fi>
+To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Cc: "Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= (The Capable Hub)"
+ <u.kleine-koenig@baylibre.com>, Arend van Spriel
+ <arend.vanspriel@broadcom.com>, Johannes Berg <johannes@sipsolutions.net>,
+ Michael Grzeschik <mgr@kernel.org>, Denis Benato
+ <benato.denis96@gmail.com>, netdev@vger.kernel.org, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Jijie Shao
+ <shaojijie@huawei.com>, Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: Re: [PATCH] net: fealnx: remove never-true 486 CPU check
+Message-ID: <20260915155109.068c222d@kernel.org>
+In-Reply-To: <CADkSEUg2mgF6mB12uRi5605Mb0MTN=R5GF5FyrOcuyNVTc5H9w@mail.gmail.com>
+References: <20260915024638.198865-1-enelsonmoore@gmail.com>
+	<CADkSEUg2mgF6mB12uRi5605Mb0MTN=R5GF5FyrOcuyNVTc5H9w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 15 Sep 2026 08:41:52 +0300 Juha-Matti Tilli wrote:
-> Subject: [PATCH v7 00/15] QRTR Multi-endpoint support
+On Mon, 14 Sep 2026 20:36:45 -0700 Ethan Nelson-Moore wrote:
+> On Mon, Sep 14, 2026 at 7:46=E2=80=AFPM Ethan Nelson-Moore
+> <enelsonmoore@gmail.com> wrote:
+> > The fealnx driver contains a check for boot_cpu_data.x86 <=3D 4.
+> > This field encodes the x86 generation (3 =3D 386, 4 =3D 486, etc).
+> > Therefore, since 486 support was removed from the kernel in commit
+> > 8b793a92d862 ("x86/cpu: Remove M486/M486SX/ELAN support"), the
+> > condition is always true. Remove the check. =20
+>=20
+> Oops, never true*. Should I send a v2, or will whoever merges this fix it?
 
-qrtr usually goes via core networking tree.
-Please make sure you base your patches on net-next/main
+Will fix
