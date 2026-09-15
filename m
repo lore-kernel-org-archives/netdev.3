@@ -1,158 +1,125 @@
-Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A544034D90D;
-	Tue, 15 Sep 2026 15:39:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826CC3C1D60
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 15:42:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789486749; cv=none; b=pXSOvuyavbz4znbDz5g9bYOHHhA7BcgK6lO9D7yzaqK3EsAJfxZPp9KxBl8lrbr8itaBzF/hRNBSo9CbsRveUJT27pttzFnOKQ/fDcIFcz4umNThaMbXxJV3LCxOvdt50sSQSB0P8tk1oPfKmPeeOg5pyICCQKHgqvcNvVe/FAc=
+	t=1789486946; cv=none; b=CJBehws9tgzLY6xOKfRFL4gzRfHle3v8uaY/6b8yHeMPkgnLX062Uo0FT6PBXvl2HSR3KhisRUrWTsWFOytYy3YkLFNXRNNWQA20s0ptIm1M6Y1kCN5oOlIOqxUK2DaDdx2fzeAEtbKXpSpASfkbPNliGJEBQ7Y02o1IKJqBTfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789486749; c=relaxed/simple;
-	bh=sK1U2pcBRXSUG4hPLCv+k6RdkddJEp/+87Nhj5sEvK0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EAATa7DnW9ShnXTTETfuGxzXdcAtPWcEdjRdnH8IWay1I5fCbF487D4I0uIklmLGHdjv+0pgasHMHUHIWexhoQocSDpry+D9fJtYlDQA7dAfGn/ezVAiEMvkMH1MY30y2qzruHDhl4iIwAyHnWf8nYF+ALOmYUd7V+clCDb01Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=l4KoP7F1; arc=none smtp.client-ip=45.254.49.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1789486946; c=relaxed/simple;
+	bh=E+BuIG99Fs3gW60ZhBJoousphtXqpfMPQp9AyvW4hbQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GZ17ZFj2jtIbFXIcOfbk36E1pqLxsNzQxJ+Tt3dpeC5IV5S67XyqGD7w4Qmm8+InU6k3s0Dus2S09nR9lKXKkxdo3uzDdAaiGR1yGtpuLo5ZyDaODHLBnDhX1SUvh8eXqN0v/NurwFH6F4GB3ZMUrQUmv1BFuNaViOjCWNNJVRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZBImNUlx; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=DlOX6hOI; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="l4KoP7F1"
-Received: from PC-202605011814.localdomain (unknown [222.191.246.242])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 4ddda0bb6;
-	Tue, 15 Sep 2026 23:38:57 +0800 (GMT+08:00)
-From: Runyu Xiao <runyu.xiao@seu.edu.cn>
-To: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	bruce.w.allan@intel.com,
-	jgarzik@redhat.com,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	aleksandr.loktionov@intel.com,
-	runyu.xiao@seu.edu.cn,
-	jianhao.xu@seu.edu.cn
-Subject: [PATCH net v2] e1000e: roll back registered MSI-X IRQs on failure
-Date: Tue, 15 Sep 2026 23:38:50 +0800
-Message-Id: <20260915153850.1704903-1-runyu.xiao@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZBImNUlx";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="DlOX6hOI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789486943;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=piCn16bJNZqtD+Ea5Vr8Xw4q1fEfx3gnyjZeao+goZc=;
+	b=ZBImNUlxy4KUCU2yjvwB/Rt4PBRKXQZkAMDSxt1kADpnGUZgFqBeVs4QWsES6MPI/Jmhaz
+	3qzmfR+PNeP1LkDoSau1JixnGu5/WBbr273u9mH1ultGOkWEJjuXtLnJBKQQnGkJECQ9zA
+	l1/ygDO5MtfVNxshu9t4X1SEUnpNivA=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-20-d8bkigc5MD6_41lidYOUbQ-1; Tue, 15 Sep 2026 11:42:22 -0400
+X-MC-Unique: d8bkigc5MD6_41lidYOUbQ-1
+X-Mimecast-MFC-AGG-ID: d8bkigc5MD6_41lidYOUbQ_1789486941
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49e823c4868so4982325e9.0
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:42:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1789486941; x=1790091741; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=piCn16bJNZqtD+Ea5Vr8Xw4q1fEfx3gnyjZeao+goZc=;
+        b=DlOX6hOIOTQudbeylDTBlu/1eLr9D/e5UdJ9lUKctUFbOHE1dWtRspL03jEZThfnZK
+         2r9x2G6W/KEs+Taf4kKG4JW04VUulVg06CzD60FHprlShrmlQBgygtTPIfwi23cu+CJn
+         WUXykqvUdumij86ZGAFuDTDMOhs77zJSQAgidBG6cAb1/40T6XBMmY6L86zK1nS9NZqV
+         X7NqNE0mQdI+pah/MqDGkf1n/BO8uRmbebbrYyS6C9PwdtL3QxWpVsw2vj2cdA83uyoB
+         aWY+SuOz1WLFZy8WQ00FwStPAcp3qcZk7ThKX4P2+r9UYRi5FJmngKRxfMQeKB9amC8G
+         v0cQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789486941; x=1790091741;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=piCn16bJNZqtD+Ea5Vr8Xw4q1fEfx3gnyjZeao+goZc=;
+        b=Y95zxReinmySbocMkI2e2ga/oRGgAdMCjB3tWWrbuxt03Pc8gfzNKreHLMvXQQVp5Q
+         7pWhXbGBBSjXSQSN/WWHebBOjtW8l5IdKfiQqpFe9QW48TYmafiK9agPL76E8WyodkC2
+         KPkGDgX6lKb3OsgMPZdOCRK6SSz4GZUg6+BuSslC3wAh1hFJpOgag/LUYCUrtaBlPr1+
+         K4nECNR0+XZd6kUc9VuDX923e2lEitcCiY9haSVylBXqX1+Tdwy5rRPZcOGor8RdQFnN
+         G9KdCwC/I8ARuB53Sr1DMaXNRfNmBQm+XS/lCHJx0cFpikhRqcfo+nnfPBOfo+iogbr1
+         IlWQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwDzaJvguUo1E4Hvvyf+ZqXXefIpegAj65eJCYQDvjOoyeT4dAnPS+ODF3HGByOuvW63x7OOe8=@vger.kernel.org
+X-Gm-Message-State: AFuF++nrQQDEWIo/3QhcMQhzKDS53DeHk8Bwu2e/AQ8tpQ+Fj9+FX/5U
+	kKtlCpzJjvbr/evgeN8f7n+xZBUHsS99w4Eoq3gTcl7byArqwXhF96R02pdgmDZsknH4/Qf6DM8
+	Z1JXEW+ni/sxMa2BkoMaLOVg/hiTYkvGl8AIwem2hL4Nm368rOxlvXzta7A==
+X-Gm-Gg: AYBFou342cpa4iZWcIlSL0XOq4Ll+K7dB4xTGqK9z5/4Hopt5Ig/TIuoXrmunIQJhVl
+	y3GdIo3yFV16xMv0LpxC+U9zq15w3mFxfBcGart5P1k87a6QKgDRcycjHwpPYkZPGosp1qY+7p1
+	TGLtrjEKQa82ZbxhhgAh7V+/onG52uwvGMrJ6vw2rHPvhfDsGN3S/ASNgB55ljD3jxOoXqYt4Lp
+	wE5fwJkD5AM1e/5ih7mlBBxE5hY2SmNMnq6aOZlIkNBFFQLmJXl7oynn2J2EHQYuEy4nrO0Ct/W
+	VxGb+dOIwepss1irCIeMvAFgvp5lAqkrAfJgbKT8lNBstb7v00gdceYIznbCFLrPtg92wTRLXTL
+	hrcDbDse7G5cUl8ZcKmFDsY2LzmCBVcZf5J/CPNFB+Z0ocg==
+X-Received: by 2002:a05:600c:8b74:b0:49c:ee20:e787 with SMTP id 5b1f17b1804b1-49e7a658021mr197081105e9.1.1789486940765;
+        Tue, 15 Sep 2026 08:42:20 -0700 (PDT)
+X-Received: by 2002:a05:600c:8b74:b0:49c:ee20:e787 with SMTP id 5b1f17b1804b1-49e7a658021mr197079685e9.1.1789486940213;
+        Tue, 15 Sep 2026 08:42:20 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-53-30-11.retail.telecomitalia.it. [79.53.30.11])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4870b39ea31sm949332f8f.23.2026.09.15.08.42.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Sep 2026 08:42:19 -0700 (PDT)
+Date: Tue, 15 Sep 2026 17:42:17 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Jason Wang <jasowangio@gmail.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, sargun@sargun.me, jlinbox@meta.com, 
+	Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next 1/6] vsock: constify the transport in
+ vsock_for_each_connected_socket()
+Message-ID: <aqkcd_oMWK-QtXWQ@sgarzare-redhat>
+References: <20260902-vsock-guest-ns-v1-0-9995383e9a8b@meta.com>
+ <20260902-vsock-guest-ns-v1-1-9995383e9a8b@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0aa0a5b8aa0b03a1kunmde9de9ca2e1844
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCQhpCVkkaSxgaSkpPGUweH1YeHw
-	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVUpLSE
-	pPSExVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=l4KoP7F1ccZ19J9s9emNvOtdcSGqFZ0nySjWd4Axv+n8q/+epu5SUdlj8eLSOMI9y0H2LLDeIb0TvP1+GT4MwrN0lw5krh9nTY+TvHkTM/6AxeKqXcolZNN/PiGr+kPsc6FJUEKeXz0S8pDBQP5/tKrUMD4DcdnA+nnEMB9fbWo=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
-	bh=rmJRg/Am0hi7AntLZKSZ2ty+PuBbNEcVd9oFLNxQpA0=;
-	h=date:mime-version:subject:message-id:from;
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260902-vsock-guest-ns-v1-1-9995383e9a8b@meta.com>
 
-e1000_request_msix() requests the RX, TX, and other-cause interrupt
-handlers sequentially. If a later request_irq() fails, the function
-returns without releasing handlers that were registered earlier. The
-caller then disables MSI-X and falls back to MSI or legacy interrupts,
-leaving those handlers registered against disabled MSI-X vectors.
+On Wed, Sep 02, 2026 at 04:00:47PM -0700, Bobby Eshleman wrote:
+>From: Bobby Eshleman <bobbyeshleman@meta.com>
+>
+>Allow const transports to be passed too. The function only compares the
+>pointer against vsk->transport, which is itself const, and never writes
+>through it.
+>
+>No functional change.
+>
+>Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+>---
+> include/net/af_vsock.h   | 2 +-
+> net/vmw_vsock/af_vsock.c | 2 +-
+> 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Free all handlers registered before the failing request in reverse order
-before returning the error. The failed vector is not freed, and the
-existing fallback path can then disable MSI-X without retaining stale
-handlers.
-
-This can be reproduced with a QEMU e1000e device and a kernel built with
-CONFIG_E1000E=y, CONFIG_FAULT_INJECTION=y, CONFIG_FAILSLAB=y,
-CONFIG_FAULT_INJECTION_DEBUG_FS=y,
-CONFIG_FAULT_INJECTION_STACKTRACE_FILTER=y, and CONFIG_KALLSYMS_ALL=y.
-Start QEMU with an e1000e device, for example using the
--device e1000e option, then run the following commands as root inside
-the guest. Replace <e1000e-iface> with the actual interface name, such
-as enp0s3:
-
-    mount -t debugfs none /sys/kernel/debug
-    ip link set <e1000e-iface> down
-    failslab=/sys/kernel/debug/failslab
-    req=$(awk '$3 == "request_threaded_irq" { print $1; exit }' \
-        /proc/kallsyms)
-    req_end=$(printf '%x' $((0x$req + 0x2000)))
-    echo N > "$failslab/ignore-gfp-wait"
-    echo 0 > "$failslab/probability"
-    echo 0 > "$failslab/interval"
-    echo 0 > "$failslab/times"
-    echo 32 > "$failslab/stacktrace-depth"
-    echo "0x$req" > "$failslab/require-start"
-    echo "0x$req_end" > "$failslab/require-end"
-    echo 3 > "$failslab/interval"
-    echo 1 > "$failslab/times"
-    echo 100 > "$failslab/probability"
-    echo 2 > "$failslab/verbose"
-    ip link set <e1000e-iface> up
-    dmesg | grep -E 'remove_proc_entry|WARNING: fs/proc/generic.c'
-
-The third qualifying allocation in request_threaded_irq() then fails,
-after the RX and TX handlers have been installed. On an unfixed kernel,
-the last command reports a warning such as:
-
-    remove_proc_entry: removing non-empty directory 'irq/<n>'
-    WARNING: fs/proc/generic.c:<line> at remove_proc_entry
-
-The fixed kernel reaches the MSI or legacy interrupt fallback without
-this warning. The failure is deliberately injected to exercise the
-error path; it does not claim that a third request_irq() failure occurs
-spontaneously during normal operation.
-
-Fixes: 4662e82b2cb4 ("e1000e: add support for new 82574L part")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM Codex
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
-
----
-v2:
-- Add exact QEMU/failslab reproduction steps and the expected warning.
----
- drivers/net/ethernet/intel/e1000e/netdev.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index 844f31ab37ad4..f55aec340342b 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -2139,7 +2139,7 @@ static int e1000_request_msix(struct e1000_adapter *adapter)
- 			  e1000_intr_msix_tx, 0, adapter->tx_ring->name,
- 			  netdev);
- 	if (err)
--		return err;
-+		goto err_irq;
- 	adapter->tx_ring->itr_register = adapter->hw.hw_addr +
- 	    E1000_EITR_82574(vector);
- 	adapter->tx_ring->itr_val = adapter->itr;
-@@ -2148,11 +2148,16 @@ static int e1000_request_msix(struct e1000_adapter *adapter)
- 	err = request_irq(adapter->msix_entries[vector].vector,
- 			  e1000_msix_other, 0, netdev->name, netdev);
- 	if (err)
--		return err;
-+		goto err_irq;
- 
- 	e1000_configure_msix(adapter);
- 
- 	return 0;
-+
-+err_irq:
-+	while (vector)
-+		free_irq(adapter->msix_entries[--vector].vector, netdev);
-+	return err;
- }
- 
- /**
--- 
-2.34.1
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
