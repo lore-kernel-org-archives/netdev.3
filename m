@@ -1,205 +1,248 @@
-Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
+Received: from mail-ej2-f10.google.com (mail-ej2-f10.google.com [74.125.228.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CED47DFAA
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 10:26:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9E547ECDD
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 10:26:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.138
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789467970; cv=pass; b=aLMcgWDLjDL/Jr9R3pzudM2fUcdRB4or6Lx/nvxWyFHz1nd+Dxu88WK7sTGfDyDEz3j8EsSvsXHZ7Wua8zQ4n71nwZKghVuMu54SDCHk8HcvV1HAWciK0oQEisHNwj/K7ePhBxQzctIi9Z1y+9PXpq6exlSiklI9rNlPR4QNi90=
+	t=1789467981; cv=pass; b=ENSOsj3IEOlrqBuHdNp8fpxKTNksbP4WLB1oqe2T8iRPrhFQwRqLM8xoaJfgkzOUjURsIZKcDtnnthxdJn3nMCgxDpDOQJVulP9QrEOMMNcCzwxV6A6aRSipdLuff62uKh8BwdGQdUF/erqnbBSghCzV/ldeJ+l32Q5ALgDUHV4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789467970; c=relaxed/simple;
-	bh=JBUy+nz8yoNC+BZ+++kswfX4CT9SuhGl69xtoGeYccI=;
+	s=arc-20240116; t=1789467981; c=relaxed/simple;
+	bh=vZzYcJ1wT8Rd7uAkDW6XfZWMX25LGItG9EqsF3/2Qs0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gQQKk083UaO0m9Qo54u+9NBKXSvmUeSVsSdw7qxS9xw+Vjt0GbzloYVcD4SeXzrZgJtmbtz9bc7T1lKM5fGmCWNjxWUZUpikWQqnezwJ5EoO1z82fyE258v87mXeADlZgsFanrueF7cV365mW27gHGYXI9VysU8gIH9xkj2CgD0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jDeeb4TT; arc=pass smtp.client-ip=74.125.230.140
+	 To:Cc:Content-Type; b=EYZsI393ah60+xekIhfu94MzTfK0Bgyb9Ub/zDVcX0nQnGs6UIPku40xo56/05ctU97NiEhAHvGfdrl3oYL5tgNF6QWtq8PigCuv85tx/0RP8soZmOwhNUFBb3fOKttYcEcCC27ue+gr4IQxU17sTZUCeFNuWnzZeveo2nDHmEw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lY7XcFp0; arc=pass smtp.client-ip=74.125.228.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jDeeb4TT"
-Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-9106feddbdfso35790226d6.0
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 03:26:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789467966; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lY7XcFp0"
+Received: by mail-ej2-f10.google.com with SMTP id a640c23a62f3a-c25b4493edfso182598566b.0
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 03:26:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789467977; cv=none;
         d=google.com; s=arc-20260327;
-        b=lobJ+2lSMyFU2F3ldRB37bCfp0P08Idrg9diuz8kdcDnaN9l5wfqy2F5RbwNY9ZQnb
-         bUfx/DF4S4xXibA6RgOzPS1scAV064y4dEvlYIbrhu/6YDb6AF7WYnfAWgEolp/vZ/lJ
-         EYWcUj/135JQIte/Jw1M6Y5inV0Ahyln94jN9adt28NA3AGPotqIHBhNx/l7JsdJQbdk
-         IHuqLZL9QAA+Rw2THChtHw1wadj8tlymEBIGZKXn4qxJmRNb1wPF+9vXHkFdt4u3xutU
-         tB75LJK4u4D6Ul6qYb7VlM0qaYO3TWrF5XpPXNZlhuh8AJs1k/zswuXq1+Oj1Jvj2ryg
-         7r8w==
+        b=A5zjXkvPpTnKb+/4FszSoQpHTAw4qdPZmDBGwhFCIcw5OTrqAUC7NTWFxAld1pFD1w
+         QHpwl5MXXcZ0ih1xJ7Aajluk52EWdoRLDMYybxihcddsyJx0FYth+noH6ZkzvADww1FP
+         7dMu7TpIh4DaoCJT4c7Iq/QYsX6C4GM+fZ1Iz7soCNhcZIpWC2OTVuLr/cuAE23yE78X
+         merDLmUuIPO5a4UU2ccM/nhklkcnn7InMH460lJMMyq/UQqx/Ek4wYoHwT3bSRkCIK9Q
+         d3Y9CfpAZIZtR1aJ/ZwmBpiT/vsClFuWL+xjb6vMfjOAIqxbqaEin63CHQI8ItUQHOhb
+         TMGg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=TmqZCDgFfpZ8cNrOODbC41NVyTbNreASHxYyKCFmeq0=;
-        fh=8Z+fa/r5hB34cEuMbT59FJmUZuDNG9xevuvOtWwKTFA=;
-        b=oq02vUqrMWQzIDHwxVQ2Dr9aATdK+lF81nuX+c6+8svy6vM9UvV+SZtVi+FdnfLIG/
-         MaBanG+78e2m0v05WSlUx6hoZg2SXWeLrdILn3jFJq4162nHvq00kCb62CRxmI+3BP2A
-         +4dAFgi+3UkNWd/NLkbhtBCRNI0PLd3frxakqyVh8p6M+6yZaj/Sws+DdGv5P6/xqUsU
-         N3isDCdNMA2IWROnFmIf0gf4AqZtc8z7Y5qf/ff09XMDfdvoJTeBmQi8Mm/LC1Sp0jYu
-         OO1wuMC0FRsUxI+KDaoNZRkMs9H+JvyZKaf/vQiEsEFcn9ZeIbR1ksDoth7Spe2Y4vXM
-         EMYA==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=PDmTn3anCnjZEAou9hrMuvIHzai6E6SOKUBtirHS8WY=;
+        fh=FW7ZRSmdMl3+FYePKf9e6hfnNLjY+6gLiYeRedz1x2M=;
+        b=c+MCq7rFADLdBuJbDSTOAMswYO/OzeflJINJLJyKNdPHBGSqy6ZQOwWLvAOwFDkzzh
+         n60QzklYp/5hNijjfy7tlKa2i5gySVrCxnCRaGZrXmCKf7fXJTLSf2u8wNKZZdC0n47w
+         HiM/WTM/n+ke4kO8k01Y7VwjHXcz93ytvF/om02Rrv4MQAgS9JvtYIg72EqT1ewGUydz
+         f2KoLquqXZ5ndNB3rZNsam5IkHZ/YqiJpawG54bThgal5Z0l/ZriUvXQmBehvscj60ys
+         hT9EQ2/trlbZsNVOPnlKOT9rADvP+NsVnqfhyZwleFYKR9C+xzgw7DkGkxvIgkK2qQnU
+         RmdQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789467966; x=1790072766; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TmqZCDgFfpZ8cNrOODbC41NVyTbNreASHxYyKCFmeq0=;
-        b=jDeeb4TTmliDBWyDkhBxUQ/XHnCS0QKZvC65IAMifHD4q1oUfOho/THOonXqg+p7Np
-         E28VsyDwBPuuaXEMNwAjapDB3aXXSMW4FARVzt8v4mrVeefS8WU5DyrM5jVrb/JBWeIQ
-         YhkDMevzzlb4lvWLj7kB5+jvZ87PRT0uM0iOhGxqzUsJ76Yrd3rUTfBuWMVWDE/ohj1Q
-         v1pDp3ouiORLcie65UTh4msG/vEKed3cFtHOZx5vooM9gOQaOoBPLqlxU7mqvjF5sfff
-         gkGYItt+qdsjr6aqvWpLNRFmQcJt9gFEn4P3T++YLHMMt9ULMT9DrsrHwp4U1aKEY5VO
-         Grag==
+        d=gmail.com; s=20251104; t=1789467977; x=1790072777; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=PDmTn3anCnjZEAou9hrMuvIHzai6E6SOKUBtirHS8WY=;
+        b=lY7XcFp0DaklzYdRxlf81uipUv5eTR6q1EHJ6VSQFTIv/YFwkJo5spbxNLcEEOrAOn
+         Jdq7jZj3j3YXu3SqT2BwylXzHoPkV0nSXCMEGcTBNbvbNtKP/gcP4ydsZH5eziyrUHD2
+         9/ZSPcN9sLvbcJ0Y5gYIXFtyLcI9yETUOFYlFj5N5PTScDIb9vZE34ICPeTBg1nI1dAU
+         yEAMMDQifn4uZD1uCdmMP52SDOzuEFyMIfNz/ylvr8rz75e551mGXKDS/seNsuZXqSqg
+         R0yQonNdjUlqjYymQ6VNVlButSe9toe0uVOMTNz1zLsCsEvobzN4BlgFJRji5REYOvmJ
+         NDkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789467966; x=1790072766;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=TmqZCDgFfpZ8cNrOODbC41NVyTbNreASHxYyKCFmeq0=;
-        b=dIK3EcO9avOwARjsLawD7OjobDTGCzXagX55B9MS27GVoi+CWGjXsb4bYXIoX4tsWr
-         e7ZU/nNl3pH4fJD6huy7Lhb0Y827c8l0gGykW0pJ9/IQzPNjSO5sfF70ukxYR6xYirLi
-         uujLvLefk+7Leyz3AaywI3R6dadWe6nOYi0XKvMApU63n/oW9/QkBjvUlGXkRyGUyZQ3
-         dOwhqAOIU8cNYG1BIm5OtAVSaLyJ1h+8Doy9lHUh114Sn8g48M7BbsJ38b/geSMEiKqB
-         XvWAGJWFhp5e8/BlD+phROMZYbe6cHdQYsI/MzbuQ7umS7dqNCdWAJvTm1aaVy9mOShD
-         d/ew==
-X-Forwarded-Encrypted: i=1; AKwUvBx/LZJM3F82Qx1dyVnSpkUa3VyiqXSTekWYSOUilm3mSgTymbm740WyL6dLrkV7AZJbBAXhOX8=@vger.kernel.org
-X-Gm-Message-State: AFuF++kDtlsYxZ3/qxwjOdhfYkq4vWtnzVR7+q4obLre5UWlRQbIj83n
-	uMCe+5jY1dM8+lRtr+TX+e7TneNnOFE8t/NciX0LEJQa/GuWDyGaScm7XWjPMh7DOARAAEf3wYT
-	Ie4xEfsI9SYrTDpGTYsZHQ7gepXWsN/s=
-X-Gm-Gg: AYBFou2vyIS9/LZcpYH6gy0l0wZSMXIkj9saFj77Yi1tjJaXDRRP1dCHQ3iQOY0o6eC
-	nED2KjucnQwEbTxPHgrdRZtSklL6mnqmJ0mwseWEA25O/oyY9okaznEl06VgqjHQsz17MzfZ/W7
-	TgezwUC2rX4tdaBOwWS59cBG+sGnIiO+6VhW8Cv6lJEOB+6QnkdwAyM52eZ1r/OJbUB4pmJpCK7
-	ZrjARK+t6rnbqQY9BLwbrMv3GDWWvYMv0NwsS5uL1s2b+clFQPlNpVq7i5S3LEyz2ScXiv0mpoe
-	eHTmN+u81B1f4I4OO86DXTYFMiWrQEtkFNxE1S7nceINYxprZ1vFvF747BTWqJBzMaY=
-X-Received: by 2002:a05:6214:6285:20b0:912:3162:523e with SMTP id
- 6a1803df08f44-9123162551bmr69922176d6.8.1789467966144; Tue, 15 Sep 2026
- 03:26:06 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1789467977; x=1790072777;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PDmTn3anCnjZEAou9hrMuvIHzai6E6SOKUBtirHS8WY=;
+        b=jxWdmMdgeNfc7KuMu/bjEyM6KZXsOUFMg7vpQAN7nDXXU8LgY1S41doh6lQ08PPuZ8
+         PZ8P9cJoGzzIZEe9YjckOZk6uzp6F3qIEyMQNXAE+kDwoplAFpGO73hFw7jDLenfIqdU
+         PXr3ijRuMOwdZKmlo84tnJsCncLw42XjK1gnH7n1qQC7dVP/qB2f2az2DekAJo3N7rvU
+         aLT6BdH2/ZdKeBW10rQN3ER8aT1rjsC94s8n/O626L7XTLaYHSUgonwaKXijTQ2JGyHD
+         22CrD8nkwWJ0oowZTgYNMMOsqtTQ+SJJQJW5QEqe8dBIINizPwIOgmewbkSlJ0ZcvPgy
+         QU1w==
+X-Forwarded-Encrypted: i=1; AKwUvBzPZ4X3AX6JMpAcIrndmhXkMZjatP9o0JyoHthK9F7VJW283xCfYckIj1CKeb7GBeOM4na9ueU=@vger.kernel.org
+X-Gm-Message-State: AFuF++k7qRZWZOhHOtT/4pTr4E/laH7B0DgVMDsKI/KPIa1wt49YqI/B
+	UN5rB17r0EyhZ90eCSD3Nllbz9twjjz06tLzUZwgQLNaAVSBfjJYRRFnqHGBQ0lxi3XgbSNFpTA
+	QoFvdrg/XLatJIjRHT7uaA0T8rV/Ghrw=
+X-Gm-Gg: AYBFou1mbmIw1mTVqw5ySHC/9/hef2v9D1eR296AIrQMRfDCMHmXbQ7O2CpCrCjRjva
+	uxFl6OceR3R7uWvVQ+2BHZF5aydMphpI+K3yUBy2t4Kd7sW6OB4Tv68su7ucBjl0tJzoEVctYF0
+	PDy61yp93fMZtqHtKAzBIWwv8zk555I4/MlbUUdMcrpuo84FDzjXygLhBzrSmYoKslsOzRDM/46
+	G2Rzpstm+DuCcIipG/vsuY0oLELraY1JVmU/SR0mGwKZz5dlvMpmDCnd79Cimr+l8zx0diceVCg
+	+wM9ELOB8WsE0HAfxU+jfabSqHZdUzqMR07gyj6J3988ORffP22cUia50g==
+X-Received: by 2002:a17:906:6a01:b0:c26:2205:3df8 with SMTP id
+ a640c23a62f3a-c29d7717424mr36060866b.9.1789467977119; Tue, 15 Sep 2026
+ 03:26:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260914214720.2467586-1-donggeunyoo.kernel@gmail.com>
-In-Reply-To: <20260914214720.2467586-1-donggeunyoo.kernel@gmail.com>
-From: "Christian Marangi (Ansuel)" <ansuelsmth@gmail.com>
-Date: Tue, 15 Sep 2026 12:25:54 +0200
-X-Gm-Features: AcwNN1U-3EGl1dwa2s6HBcl5buSVBgdBb0MTb6m6SgGCBXYkYsN7vkg0bISTlEY
-Message-ID: <CA+_ehUwT_RYztjGJ0P_czx++wxNShT3Zv3JhjQ_eBbaoGQoNRA@mail.gmail.com>
-Subject: Re: [PATCH net v2] net: phy: qca808x: handle the active-high LED
- polarity mode
-To: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Russell King <linux@armlinux.org.uk>, Daniel Golle <daniel@makrotopia.org>, 
-	Rosen Penev <rosenp@gmail.com>, Sashiko <sashiko-bot@kernel.org>, netdev@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
+References: <20260913185849.907479-4-coiaprant@gmail.com> <178941747926.22033.15174869537556409251@kernel.org>
+In-Reply-To: <178941747926.22033.15174869537556409251@kernel.org>
+From: Coia Prant <coiaprant@gmail.com>
+Date: Tue, 15 Sep 2026 18:26:04 +0800
+X-Gm-Features: AcwNN1ULwDCN22NcSTGJGIqUo7wEAVDbHGW4RjkupXf6vRbCRoH1F1Vq6Gp7hg4
+Message-ID: <CALj3r0hg6kchV72wSv0ybPVqG93D4_QnB-diFmW45jLZwoP_cA@mail.gmail.com>
+Subject: Re: [PATCH net-next v5 03/11] phy: rockchip: naneng-combphy: add
+ SGMII MAC selection for RK3568
+To: netdev-bot+sashiko@kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, heiko@sntech.de, vkoul@kernel.org, 
+	maxime.chevallier@bootlin.com, mcoquelin.stm32@gmail.com, 
+	alexandre.torgue@foss.st.com, prabhakar.mahadev-lad.rj@bp.renesas.com, 
+	romain.gantois@bootlin.com, hkallweit1@gmail.com, neil.armstrong@linaro.org, 
+	linux@armlinux.org.uk, shawn.lin@rock-chips.com, david@ixit.cz, 
+	netdev@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-renesas-soc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Il giorno lun 14 set 2026 alle ore 23:47 Donggeun Yoo
-<donggeunyoo.kernel@gmail.com> ha scritto:
+<netdev-bot+sashiko@kernel.org> =E4=BA=8E2026=E5=B9=B49=E6=9C=8815=E6=97=A5=
+=E5=91=A8=E4=BA=8C 04:24=E5=86=99=E9=81=93=EF=BC=9A
 >
-> Commit a274465cc3be ("net: phy: support 'active-high' property for PHY
-> LEDs") added PHY_LED_ACTIVE_HIGH but did not cover qca808x, so
-> qca808x_led_polarity_set() returns -EINVAL for it. phy_probe() propagates
-> that, leaving the mdio device unbound and phy_attach_direct() falling back
-> to the genphy driver.
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider:
 >
-> Accepting the mode alone is not enough: led_polarity_mode records
-> active_low, so an explicit 'active-high' node stores 0, while
-> qca808x_config_init() re-asserts QCA808X_LED_ACTIVE_HIGH only for -1. The
-> bit does not survive the reset phy_init_hw() runs first, so the LED would
-> come up active-low.
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 0 =C2=B7 Low: 1
 >
-> An 'active-low' node needs nothing here: the bit is clear after the reset,
-> which is the polarity it asks for.
+> - [Low] In rk3568_combphy_cfg() (drivers/phy/rockchip/phy-rockchip-
+>   naneng-combphy.c:881-882) the newly added write of pipe_sgmii_mac_sel=
+=E2=80=A6
 >
-
-The commit description looks a bit "dense" and took me well 2-3 minutes to
-parse the english and understand the change. Was also the commit description
-assisted by LLM?
-
-Anyway more comments below for the patch.
-
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260908105959.70453-1-donggeunyoo.kernel%40gmail.com
-> Cc: stable@vger.kernel.org
-> Fixes: a274465cc3be ("net: phy: support 'active-high' property for PHY LEDs")
-> Signed-off-by: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
-> Assisted-by: Claude:claude-fable-5 sparse
-> ---
-> v2:
->   - No code change.  Rebased onto net/main.
->   - Cc Rosen Penev and Christian Marangi, per Andrew Lunn -- they may have
->     QCA808x hardware.  Christian wrote f203c8c77c76 ("net: phy: qcom:
->     qca808x: default to LED active High if not set"), the default this
->     patch extends.  If either of you can put an 'active-high' LED node on
->     a QCA8081 and confirm the LED comes up the right way round, I would
->     appreciate it.
->   - Say why an 'active-low' node needs nothing in qca808x_config_init().
-> v1: https://lore.kernel.org/netdev/20260912012819.2072067-1-donggeunyoo.kernel@gmail.com/
->   - Supersedes [PATCH net v3 3/3],
->     20260908105959.70453-4-donggeunyoo.kernel@gmail.com, whose
->     Reviewed-by from Andrew Lunn is dropped: that version only accepted
->     the mode, this one also makes it survive the reset.
+> --
 >
-> Compile-tested only (W=1, sparse).  I have no QCA808x hardware, and there is
-> no KUnit suite or MDIO mock under drivers/net/phy to exercise the MMD7 write
-> without it.
+> phy: rockchip: naneng-combphy: add SGMII MAC selection for RK3568
 >
->  drivers/net/phy/qcom/qca808x.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
+> This adds a "rockchip,sgmii-mac-sel" DT property to pick whether the RK35=
+68
+> SGMII interface is routed to GMAC0 or GMAC1 via PIPE_GRF_XPCS_CON0 bit 1.
+> The value is read in rockchip_combphy_parse_dt() and programmed from the
+> PHY_TYPE_SGMII branch of rk3568_combphy_cfg().
 >
-> diff --git a/drivers/net/phy/qcom/qca808x.c b/drivers/net/phy/qcom/qca808x.c
-> index 8eb51b1a006c..68fd4d0fe31b 100644
-> --- a/drivers/net/phy/qcom/qca808x.c
-> +++ b/drivers/net/phy/qcom/qca808x.c
-> @@ -200,8 +200,8 @@ static int qca808x_config_init(struct phy_device *phydev)
->         struct qca808x_priv *priv = phydev->priv;
->         int ret;
+> Link: https://dl.radxa.com/rock3/docs/hw/datasheet/Rockchip%20RK3568%20TR=
+M%20Part1%20V1.1-20210301.pdf (Page 229)
 >
-> -       /* Default to LED Active High if active-low not in DT */
-> -       if (priv->led_polarity_mode == -1) {
-> +       /* Set LED Active High unless active-low was requested in DT */
-
-Why the comment was changed if it does say exactly the same thing?
-
-> +       if (priv->led_polarity_mode != 1) {
-
-This change is O.K but I would ask you to better clarify this. -1, 0 and 1
-is very confusing here.
-
-I would introduce a simple define like
-#define QCA808X_PHY_LED_UNSET -1
-
-And set this in probe and change the condition here to directly check
-for the macro PHY_LED_ACTIVE_LOW.
-
->                 ret = phy_set_bits_mmd(phydev, MDIO_MMD_AN,
->                                        QCA808X_MMD7_LED_POLARITY_CTRL,
->                                        QCA808X_LED_ACTIVE_HIGH);
-> @@ -603,6 +603,9 @@ static int qca808x_led_polarity_set(struct phy_device *phydev, int index,
->                 case PHY_LED_ACTIVE_LOW:
->                         active_low = true;
->                         break;
-> +               case PHY_LED_ACTIVE_HIGH:
-> +                       active_low = false;
-> +                       break;
-
-The ACTIVE_HIGH wasn't a thing when this was introduced if I'm not wrong.
-Anyway this change looks good. The only problem is that I feel it would be
-better to split this patch in 2 different commits.
-
-This really addresses 2 different problems and splitting also makes the commit
-description easier to understand.
-
-One doesn't account the case where phy is reset, the other doesn't account
-the mode in led_polarity set.
-
->                 default:
->                         return -EINVAL;
->                 }
+> One question about the commit message wording:
 >
+>     The hardware reset value is 1 (GMAC1). If the property is set to 0,
+>     the driver routes SGMII to GMAC0; if set to 1 (or omitted), it
+>     remains at GMAC1.
+>
+> Does "or omitted ... it remains at GMAC1" match the code?  The write in
+> rk3568_combphy_cfg() is unconditional, so in the omitted case the driver
+> does not leave the bit alone, it actively programs it to 1.  See the
+> inline comment below.
+>
+> > diff --git a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c b/drive=
+rs/phy/rockchip/phy-rockchip-naneng-combphy.c
+> > index 7843356a4dd47..7b867e7520064 100644
+> > --- a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
+> > +++ b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
+>
+> [ ... ]
+>
+> > @@ -375,6 +377,9 @@ static int rockchip_combphy_parse_dt(struct device =
+*dev, struct rockchip_combphy
+> >
+> >       priv->ext_refclk =3D device_property_present(dev, "rockchip,ext-r=
+efclk");
+> >
+> > +     priv->sgmii_mac_sel =3D 1;
+> > +     device_property_read_u32(dev, "rockchip,sgmii-mac-sel", &priv->sg=
+mii_mac_sel);
+> > +
+>
+> [Severity: Low]
+> Since device_property_read_u32() leaves the output untouched on failure,
+> rockchip_combphy_parse_dt() ends up with priv->sgmii_mac_sel =3D=3D 1 bot=
+h when
+> the property says 1 and when the property is absent.  Is there a way for =
+the
+> driver to express "leave the bit as firmware left it"?
+>
+> Before this patch the kernel never touched PIPE_GRF_XPCS_CON0 bit 1, so a
+> board whose bootloader routed SGMII to GMAC0 kept that routing.  With thi=
+s
+> change, a DT that instantiates the combphy as PHY_TYPE_SGMII but does not
+> carry the new property has the bit re-programmed to GMAC1 on every
+> phy_init().  Can that break such a board's SGMII link?
+>
+> >       priv->phy_rst =3D devm_reset_control_get_exclusive(dev, "phy");
+> >       /* fallback to old behaviour */
+> >       if (PTR_ERR(priv->phy_rst) =3D=3D -ENOENT)
+> > @@ -873,6 +878,8 @@ static int rk3568_combphy_cfg(struct rockchip_combp=
+hy_priv *priv)
+> >               break;
+> >
+> >       case PHY_TYPE_SGMII:
+> > +             rockchip_combphy_param_write(priv->pipe_grf, &cfg->pipe_s=
+gmii_mac_sel,
+> > +                                          priv->sgmii_mac_sel > 0);
+
+The hardware reset value of PIPE_GRF_XPCS_CON0 bit 1 is 1 (GMAC1),
+so programming it to 1 when the property is absent produces the same
+result as leaving it alone =E2=80=94 the bit is already 1 after reset. The
+"remains at GMAC1" wording in the commit message reflects that.
+
+SGMII has never been functional on RK3568 in mainline before this
+series, so there is no existing in-tree or out-of-tree board whose
+SGMII link could be broken by this. A board whose firmware happened to
+route the bit to GMAC0 still cannot use SGMII with a mainline kernel
+before this series, and will need the new property to describe that
+routing once it can.
+
+> [Severity: Low]
+> This write always happens, including in the "property omitted" case, and
+> rockchip_combphy_param_write() sets the write-enable mask along with the
+> value:
+>
+>         tmp =3D en ? reg->enable : reg->disable;
+>         mask =3D GENMASK(reg->bitend, reg->bitstart);
+>         val =3D (tmp << reg->bitstart) | (mask << BIT_WRITEABLE_SHIFT);
+>
+>         return regmap_write(base, reg->offset, val);
+>
+> so with priv->sgmii_mac_sel defaulting to 1 the register gets
+> (0x1 << 1) | (GENMASK(1, 1) << 16), i.e. GMAC1 is forced.  Would it be
+> better to only issue this write when the property is actually present?
+>
+> A second question: bit 1 of PIPE_GRF_XPCS_CON0 is a single SoC-wide mux,
+> while the property sits on a per-PHY node.  If two combphy instances that
+> share the same rockchip,pipe-grf syscon are both brought up as
+> PHY_TYPE_SGMII with different property values, the last phy_init() wins a=
+nd
+> nothing is reported.  Should conflicting values be rejected or at least
+> warned about?
+>
+> >               rockchip_combphy_param_write(priv->pipe_grf, &cfg->pipe_x=
+pcs_phy_ready, true);
+> >               rockchip_combphy_param_write(priv->phy_grf, &cfg->pipe_ph=
+ymode_sel, true);
+> >               rockchip_combphy_param_write(priv->phy_grf, &cfg->pipe_se=
+l_qsgmii, true);
+> > @@ -984,6 +991,7 @@ static const struct rockchip_combphy_grfcfg rk3568_=
+combphy_grfcfgs =3D {
+> >       .con3_for_sata          =3D { 0x000c, 15, 0, 0x00, 0x4407 },
+> >       /* pipe-grf */
+> >       .pipe_con0_for_sata     =3D { 0x0000, 15, 0, 0x00, 0x2220 },
+> > +     .pipe_sgmii_mac_sel     =3D { 0x0040, 1, 1, 0x00, 0x01 },
+> >       .pipe_xpcs_phy_ready    =3D { 0x0040, 2, 2, 0x00, 0x01 },
+>
+> For what it is worth, the only in-tree SGMII consumer at the end of this
+> series, rk3568-photonicat.dts, sets rockchip,sgmii-mac-sel =3D <0>
+> explicitly, so no upstream DT changes behaviour today; the concern is abo=
+ut
+> out-of-tree or ported device trees and about the commit message wording.
+
+There is no in-tree case where two combphy instances are both brought
+up as PHY_TYPE_SGMII with different values. This is a single SoC-wide
+mux and only one SGMII link exists on RK3568, so the situation cannot
+arise on real hardware. I'll leave it as is.
