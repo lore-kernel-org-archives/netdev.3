@@ -1,382 +1,196 @@
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f6.google.com (mail-wm2-f6.google.com [74.125.225.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3789B3B0590;
-	Tue, 15 Sep 2026 21:06:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 011F63AFAE4
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 21:13:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789506393; cv=none; b=Ly9Srj13PbvHZiG28v9EwadOIhAmLz2KBb6zqUIFPtAoYUAWCcXpuhHVo1TGR+LwHa58w6i6wy3nx4fzUgHqri/+Gz5hRwFBrvjHGUl94paKGIlzUttO8CVsAbGsA3N2u0IV4ow5/Qh5SykIf8kpnFkrciTYi5+wI2e5OqNs0t0=
+	t=1789506827; cv=none; b=ME9kmmsC+LPkn4KqK1VsONrVMORnfNLuMFgXuC3fH+oQhcVt1dS4gyKZyJV/bgJbT529dE3B89be2iOHIRf7v1WcT7Vj0YG/hc9k+jDGlhGvivt8DYyqTDSdCOBfQKEVr1qn6XRatDu6jW8u1Ho8KEiqKMtlnGH6TBDRD2KSif0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789506393; c=relaxed/simple;
-	bh=g3K+lfhUgnaE/mezC2FggeKY+3skAs7DftoJWFLXh1w=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
-	 References:Date:Message-id; b=cHy07d2dj9v9jkNFX+waYqFAN/Ogzh0Sa6wqrUUOnmyTISB63BP2YaJKmkAmVW8o22EiEQslgdrn9fXoKrsS0wXfuLG/ZZzcGQM14kkq5ctIad7vd8JO+o/Iql7fZtOTNCbIaNdc6dbsApN2VLbGjKF0c/Ld26DfTIfL613hkao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=CgGIkxKc; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=abZOEX13; arc=none smtp.client-ip=103.168.172.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="CgGIkxKc";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="abZOEX13"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id 17D99EC0E47;
-	Tue, 15 Sep 2026 17:06:27 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Tue, 15 Sep 2026 17:06:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to; s=fm1; t=
-	1789506387; x=1789592787; bh=pSGhn5yb2ykQHa2+aS4x0aFSjk4p7/mwMgu
-	lDmeHEfI=; b=CgGIkxKcPckL2520PVEYtzWYJetiw5vFeYlNNv2vp5Mfb22pxYH
-	Z3AeutYDYz64s+5TK1RqBcmA7RbBREX8wPxvh0584SPPYew3QgpjBlPo2/dhmZgT
-	mTBOasxxH9hAwXvde0rydO48NfddKivQLtx56ZwL7Iz1gXzFRod4tNozprjoXIGo
-	9mpXIvxQ3cO/HdQb/TETSh+JQKks6rL1i/18pQOl6vJn2eWcICSZ56wTx5PQKJBF
-	HC+XLRRzPVok8DzJEs2ARwLoBKwD16bUKgD8449V/5qSKZHxdhMwpg2s0KWpXyJ4
-	7Ce0hxV9e+jfjB7/VGOZBkK6nB0WQB9xJwQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789506387; x=
-	1789592787; bh=pSGhn5yb2ykQHa2+aS4x0aFSjk4p7/mwMgulDmeHEfI=; b=a
-	bZOEX13veVaxfTH9bLCCccEDlmcfsW+SWN7V0AGCUl/u0pgbbhYhgWYCS6fmUYHq
-	oC7hUo+tUXrM7xhiwtXRGCwujKPeYxNOt27vlaDZ+9URcD/CQ/A2RuM7B+Y9DmRK
-	YLaq853LOAnvCGxb3570NqstfkkmXTHeov9gt2Xbvf4SxpSNz3s5uMlNzVL2YP0O
-	zWlwcLEltPsbZcpPLa2iMTXaPou7GaPNmZdwFmgfL8Wa+CVf8/l4th6cas1euomi
-	sLSCZfnlGTEl6f3K4pUqzTW9vUDLEbOU2P4AbGhMoquTQ/3AuO8vrODQ5bOfKuXg
-	3GmqEOFube8t0WXZA5Bxw==
-X-ME-Sender: <xms:UbOparFGbSXihTaj0SLZ6yYMKW7RA2xkA36-P3YSOKl-itdh0OZAMg>
-    <xme:UbOpavR8GdsKOZsh3fxLA59J8vYUUrFCKR6qbyM8laze54yY7_wUQSg3NscupXVBk
-    7yd9yaFSm1ulNvNjniFNf7lQC5aYVsCztGgeLN_itTbOhWwkQ>
-X-ME-Received: <xmr:UbOpaiO-_KpZOlsKebvR0-rsMkr2DNIRjVhVaoZ293TZj5QbzEcYhTKY_s2fyWbpmg>
-X-ME-Proxy-Cause: dmFkZTGla0jEqEOCi/nzNPCoo0ScIh2JaZoq/4ebKgNohM8wDfdyIavrkNjshsND0P8tAs
-    YhtJcgxY8ykXaMgTLV/PAPKJBCPJIZajcIR5EweJMqjOb2vZSnR4CeIgVRzxWmJX/xFJn7
-    1a4tUOzgCBFodCqSJZaKfGFB6cgCAYzxBzIwS63QgFT6wWVOBcy9MDzMapV05p1KdzDuei
-    j95DMmwaNUq7OLYkcjLYuUzH5HXYPbN7fSaJSeC8pvuikyYJkizg+ZIgbsAxuNyEKs8hFp
-    WBrrz0c1CjdAGYnAIwfX5V7HPHVKo17fBEA3/JW5/KyDlNhLH7gvRkzZhrP1FhlvukvsqI
-    ZJr5IQgxcnkpH6PeJTjjIg0oXlGXXkgjB13qbSnrrgppM61DAq1jmz15SmDbdLzhSILo6G
-    32KR8G+HesNpe+GCrZb8WvmDpiXfpJ2kv4NUy+SdqWyAhWsYNrVN7m9KyrJWkiTLSp4xCe
-    cKTabAmHjfZmAKKJRR44NmeaSKN4MlpmYoGYRFbJR44ZIC+5rVQDqWFOoEvA4/Wzqa4oNn
-    sYDwXvRPqdHIhqFKIZNR3bIrvTS/IBtFf75SfzaHkirF4Thyhe7ujZ7RBdXkwtXUghdgqC
-    VZMXofDt33LkpijoWqrkvU0sk2xgnbY295PQnKCGfdY8d4uQ7Q5c/BeGAsRA
-X-ME-Proxy: <xmx:UbOpagOfaqcQ-p9_U2E_Bv59vZp6XZHuDujeIgGZbIFCODBdt4HLXQ>
-    <xmx:UbOpasFaZV5WbjePIApkS6hC5XK4LZl1rpuQ7wEXrmZzV2qYR5m1ow>
-    <xmx:UbOpaqPhbsXQPsPmLDVCFXjBp5nxyOsYRA2_Qmtx1-sSRITQWLnneA>
-    <xmx:UbOpauvMfj7bSQ-vW5v9T23uRHHxzrYkPZPPp4oc6yipNh9Lgz-XHA>
-    <xmx:U7OpalEEvf1Cb9epx-tleNX3emopc13DaR9ZdGM8ccS9zbAaf7Y8qtDp>
-Feedback-ID: i9d664b8f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 15 Sep 2026 17:06:20 -0400 (EDT)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1789506827; c=relaxed/simple;
+	bh=fHmjTzy57JCxJPO3ez8hokC6PJGYWuA4v3xxL2WEZAY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LiL24QcmmfPv5PGHWBBCPrSWHyR26nAlunAOaEH6n8OG8qqPxZZaIKLZbS8Qfq/UotTMjEekjRJb3Nlr5GThu2oaNT8qdkHTcO5Qwy4+aGdZlQvPhRm+v/2EHJaCbZ8KsEVPUagVvTtajsiLoa7Idgee/fwzzOjcQP2qZn1Q2RA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm2-f6.google.com with SMTP id 5b1f17b1804b1-499c930cb9cso15051185e9.0
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 14:13:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789506824; x=1790111624;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=J1EWEdVsCBQk76T0fxpMg82Yd0Qx0k9r3IEM8Nyqb00=;
+        b=PDgg9zY7GFgO95mKGhHDo1+XcHo7/DNEdveVYKSjDuhF4T1K6UxysEbnbEFDf6PiHh
+         rk7TZt3KFsu+Jj9uMCO6k+EJJPv5JnY71ZJZJEBqFHBCwajyjKEI9DhWZXkUs/5laVS7
+         DRgsaQDDXs+yMt7gkJfDMdqsTCUoj0l19vNTwTcUiE6oIjUIAf+5Cbr2w4MsEIC/soZi
+         NJ6W6n4S817/jftja036u1DGgobHGK2yVhNJqjIuFwG+DsUt0Y4Ugi8NXDpKsCb8Os3i
+         v+hctkF8rpztiFKyMtPlNAnRXG5AK9+At0vdf1b3h5uInDWa5JC2wFIXe8dL7hIQ6HF/
+         br2g==
+X-Forwarded-Encrypted: i=1; AKwUvBz+YqgzvBeRWOZrmtQQ0Guzk6RBhnt+jmbVPo1lXZI5CgDI7qs3jGqBSMbTL5050soPe2hw1O8=@vger.kernel.org
+X-Gm-Message-State: AFuF++n77KWihXq4aZQpJplYrmKvA9jk1z+Vbf3oH4cxkT1Cw4CxpQAG
+	KNgMWBs4aKUxXKGGuEkldXAFNuMCo7fXNCr8YnHUnAwmYZvHchPZpKzR
+X-Gm-Gg: AYBFou1ywrjGLahNs7y0wmEH0vaJaC6AkSVD7rFQTPjj9aGYa/5exIMTOInue9qU614
+	ckjWXASO3qPozBxpvyBculzxTmtXzqYSgFDLuq5aYQRDtHCv7v/35OuTpcfQk74Bw4a2BTcApCH
+	jA79KKOXv6Gs2nFvTtB5cUHP//N8wubE090xiE0scMn+chEccNuzg2DpkNd/zLNNkgykNfbON2J
+	RLOL8YAYwCTFDorRci9kWZtMQzLIt1le9krnSEAi74WApDMAUWftQboJx60kZs/Jv8Ahf0YN4jx
+	Ni6L0jAiLxtNy74ivAkjsoLJKZIhhUCbrBz6lsDNUD8OoJNWymASSfxgaAcgbtQYLDgLdTqxIP3
+	1nTJhdELOvrtdua0uKBSQSH9J7QW/O9RHQb44vR9yiA0Q7XNDm0+ITIbprXqin7CSPqxyw3vxt8
+	Z6f81UtX2fSU7SkGYkIEkZsDO25Nv/BgeSUh0H4ukllpXUS21nZBaL6Yaz1lznjmdp1EXEKAB88
+	rkhGIefsVPKZmZ2srAn9eQtOzMDlReIbbhT
+X-Received: by 2002:a05:600c:4745:b0:49e:799e:c1c3 with SMTP id 5b1f17b1804b1-49e7a6868a8mr101385745e9.17.1789506824025;
+        Tue, 15 Sep 2026 14:13:44 -0700 (PDT)
+Received: from [192.168.88.241] (37-48-53-4.nat.epc.tmcz.cz. [37.48.53.4])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4870bf414c3sm1321506f8f.30.2026.09.15.14.13.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Sep 2026 14:13:43 -0700 (PDT)
+Message-ID: <de0fd2e5-8509-406c-9f92-cb644c42229d@ovn.org>
+Date: Tue, 15 Sep 2026 23:13:41 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: NeilBrown <neilb@ownmail.net>
-To: "Herbert Xu" <herbert@gondor.apana.org.au>
-Cc: "Eric Dumazet" <edumazet@google.com>,
- "Shin'ichiro Kawasaki" <shinichiro.kawasaki@wdc.com>,
- "syzbot" <syzbot+4d0e4d2db6dfde01b52f@syzkaller.appspotmail.com>,
- bridge@lists.linux.dev, davem@davemloft.net, horms@kernel.org,
- idosch@nvidia.com, kuba@kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, pabeni@redhat.com, razor@blackwall.org,
- steffen.klassert@secunet.com, syzkaller-bugs@googlegroups.com,
- "Thomas Graf" <tgraf@suug.ch>, linux-crypto@vger.kernel.org,
- "quanyeyang" <quanyemostima@gmail.com>
-Subject: Re: [PATCH] rhashtable: Use separate lockdep keys for each lock
-In-reply-to: <aqjf7LNmE6InABpw@gondor.apana.org.au>
-References: <6aa5fcf6.f2639fcc.29487d.0048.GAE@google.com>
-  <aqi7fpazv2KDDdvn@shinmob>
-  <CANn89iJd0QnoDo0tjrFED2myec38U8joyqR05d6BVnJ-sX=NVg@mail.gmail.com>
-  <aqjf7LNmE6InABpw@gondor.apana.org.au>
-Date: Wed, 16 Sep 2026 07:06:16 +1000
-Message-id: <178950637640.207413.1725604371084195628@noble.neil.brown.name>
-Reply-To: NeilBrown <neil@brown.name>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] openvswitch: reject a negative transport length in
+ the IPv6 L4 checksum update
+To: Norbert Szetei <norbert@doyensec.com>, netdev@vger.kernel.org
+Cc: Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>,
+ Ilya Maximets <i.maximets@ovn.org>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ dev@openvswitch.org, linux-kernel@vger.kernel.org,
+ David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>
+References: <114FAFBD-F7BC-46AE-AF9F-0D15124F130E@doyensec.com>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <114FAFBD-F7BC-46AE-AF9F-0D15124F130E@doyensec.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, 15 Sep 2026, Herbert Xu wrote:
-> On Mon, Sep 14, 2026 at 09:06:49PM -0700, Eric Dumazet wrote:
-> >
-> > Try to revert 4333ab90aaae ("rhashtable: use private lockdep class for
-> > all locks.")
->=20
-> Yes this is indeed buggy.  I know nothing about lockdep but Gemini
-> reckons that it should use separate keys instead of different
-> depths which seems fair enough:
->=20
-> ---8<---
-> Use separate lockdep keys for the different types of locks in
-> rhashtable (mutex, spin lock, and bucket locks).  They are
-> separate and not normally nested with respect to each other.
->=20
-> Also move the rhashtable_init/rhltable_init kdoc to the header
-> file as that's where the macros are defined.
->=20
-> Fixes: 4333ab90aaae ("rhashtable: use private lockdep class for all locks.")
-> Reported-by: syzbot+4d0e4d2db6dfde01b52f@syzkaller.appspotmail.com
-> Assisted-by: Gemini:gemini-3.6-flash
-> Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+On 9/15/26 9:55 PM, Norbert Szetei wrote:
+> update_ipv6_checksum() computes
+> 
+> 	int transport_len = skb->len - skb_transport_offset(skb);
+> 
+> and gates the L4 access on
+> 
+> 	if (likely(transport_len >= sizeof(struct tcphdr)))
+> 
+> sizeof yields size_t, so transport_len is converted to unsigned and every
+> negative value passes the guard.  inet_proto_csum_replace16() then reads
+> the transport checksum field out of bounds, and writes the updated value
+> back to the same address:
+> 
+>   BUG: KASAN: slab-use-after-free in inet_proto_csum_replace16+0x445/0x470
+>   Read of size 2 at addr ffff888131a4cb06 by task ovs_ipv6_oob/696
+>   CPU: 3 UID: 1000 PID: 696 Comm: ovs_ipv6_oob Tainted: G N 7.3.0-rc2+ #338
+>   Call Trace:
+>    inet_proto_csum_replace16+0x445/0x470
+>    set_ipv6_addr+0x3dd/0x460
+>    do_execute_actions+0x6a3d/0x7c40
+>    ovs_execute_actions+0xfd/0x480
+>    ovs_packet_cmd_execute+0xc38/0xf20
+>    genl_rcv_msg+0x59e/0x870
+>    netlink_rcv_skb+0x18b/0x450
+>    genl_rcv+0x2d/0x40
+>    netlink_unicast+0x6bc/0xa20
+> 
+>   The buggy address belongs to the object at ffff888131a4c980
+>    which belongs to the cache skbuff_small_head of size 704
+>   The buggy address is located 390 bytes inside of
+>    freed 704-byte region [ffff888131a4c980, ffff888131a4cc40)
+> 
+> ipv6_find_hdr() walks the extension header chain, skipping each header
+> by the length that header itself declares, and ipv6_optlen() returns up
+> to 2048.  The last skip is never checked against skb->len, and
+> parse_ipv6hdr() installs the result as the transport header.
 
-That's a much better approach - thanks for that.
+Hi, Norbert.
 
-Reviewed-by: NeilBrown <neil@brown.name>
+This looks like something that needs to be fixed in the ipv6_find_hdr().
+IMO, this function should not return an offset that doesn't exist in the
+packet, i.e. we should not be able to find what's not in there.
 
-Thanks,
-NeilBrown
+CC: David and Ido.
 
+In general, we should be able to trust the skb_transport_offset(),
+otherwise there could be other issues all over the place, not only in
+openvswitch.
 
->=20
-> diff --git a/include/linux/rhashtable-types.h b/include/linux/rhashtable-ty=
-pes.h
-> index 0e1b172a4f6c..afbc12ba71f5 100644
-> --- a/include/linux/rhashtable-types.h
-> +++ b/include/linux/rhashtable-types.h
-> @@ -70,6 +70,14 @@ struct rhashtable_params {
->  	rht_obj_cmpfn_t		obj_cmpfn;
->  };
-> =20
-> +struct rhashtable_lockdep_keys {
-> +#ifdef CONFIG_LOCKDEP
-> +	struct lock_class_key lock_key;
-> +	struct lock_class_key mutex_key;
-> +	struct lock_class_key bucket_key;
-> +#endif
-> +};
-> +
->  /**
->   * struct rhashtable - Hash table handle
->   * @tbl: Bucket table
-> @@ -141,24 +149,77 @@ struct rhashtable_iter {
-> =20
->  int __rhashtable_init_noprof(struct rhashtable *ht,
->  		    const struct rhashtable_params *params,
-> -		    struct lock_class_key *key);
-> +		    struct rhashtable_lockdep_keys *keys);
->  #define rhashtable_init_noprof(ht, params)				\
->  ({									\
-> -	static struct lock_class_key __key;				\
-> +	static struct rhashtable_lockdep_keys __keys;			\
->  									\
-> -	__rhashtable_init_noprof(ht, params, &__key);			\
-> +	__rhashtable_init_noprof(ht, params, &__keys);			\
->  })
-> +
-> +/**
-> + * rhashtable_init - initialize a new hash table
-> + * @ht:		hash table to be initialized
-> + * @params:	configuration parameters
-> + *
-> + * Initializes a new hash table based on the provided configuration
-> + * parameters. A table can be configured either with a variable or
-> + * fixed length key:
-> + *
-> + * Configuration Example 1: Fixed length keys
-> + * struct test_obj {
-> + *	int			key;
-> + *	void *			my_member;
-> + *	struct rhash_head	node;
-> + * };
-> + *
-> + * struct rhashtable_params params =3D {
-> + *	.head_offset =3D offsetof(struct test_obj, node),
-> + *	.key_offset =3D offsetof(struct test_obj, key),
-> + *	.key_len =3D sizeof(int),
-> + *	.hashfn =3D jhash,
-> + * };
-> + *
-> + * Configuration Example 2: Variable length keys
-> + * struct test_obj {
-> + *	[...]
-> + *	struct rhash_head	node;
-> + * };
-> + *
-> + * u32 my_hash_fn(const void *data, u32 len, u32 seed)
-> + * {
-> + *	struct test_obj *obj =3D data;
-> + *
-> + *	return [... hash ...];
-> + * }
-> + *
-> + * struct rhashtable_params params =3D {
-> + *	.head_offset =3D offsetof(struct test_obj, node),
-> + *	.hashfn =3D jhash,
-> + *	.obj_hashfn =3D my_hash_fn,
-> + * };
-> + */
->  #define rhashtable_init(...)	alloc_hooks(rhashtable_init_noprof(__VA_ARGS_=
-_))
-> =20
->  int __rhltable_init_noprof(struct rhltable *hlt,
->  		  const struct rhashtable_params *params,
-> -		  struct lock_class_key *key);
-> +		  struct rhashtable_lockdep_keys *keys);
->  #define rhltable_init_noprof(hlt, params)				\
->  ({									\
-> -	static struct lock_class_key __key;				\
-> +	static struct rhashtable_lockdep_keys __keys;			\
->  									\
-> -	__rhltable_init_noprof(hlt, params, &__key);			\
-> +	__rhltable_init_noprof(hlt, params, &__keys);			\
->  })
-> +
-> +/**
-> + * rhltable_init - initialize a new hash list table
-> + * @hlt:	hash list table to be initialized
-> + * @params:	configuration parameters
-> + *
-> + * Initializes a new hash list table.
-> + *
-> + * See documentation for rhashtable_init.
-> + */
->  #define rhltable_init(...)	alloc_hooks(rhltable_init_noprof(__VA_ARGS__))
-> =20
->  #endif /* _LINUX_RHASHTABLE_TYPES_H */
-> diff --git a/include/linux/rhashtable.h b/include/linux/rhashtable.h
-> index 6c5e6d9accba..ec853c1b9af3 100644
-> --- a/include/linux/rhashtable.h
-> +++ b/include/linux/rhashtable.h
-> @@ -328,8 +328,7 @@ static inline unsigned long rht_lock_nested(struct buck=
-et_table *tbl,
-> =20
->  	local_irq_save(flags);
->  	bit_spin_lock(0, (unsigned long *)bucket);
-> -	/* subclass 0 is used for ->lock and 1 for ->mutex. 2+ for bitlocks */
-> -	lock_acquire_exclusive(&tbl->dep_map, subclass+2, 0, NULL, _THIS_IP_);
-> +	lock_acquire_exclusive(&tbl->dep_map, subclass, 0, NULL, _THIS_IP_);
->  	return flags;
->  }
-> =20
-> diff --git a/lib/rhashtable.c b/lib/rhashtable.c
-> index 5da0e53a8d42..918f15a2ac69 100644
-> --- a/lib/rhashtable.c
-> +++ b/lib/rhashtable.c
-> @@ -432,7 +432,7 @@ static void rht_deferred_worker(struct work_struct *wor=
-k)
->  	int err =3D 0;
-> =20
->  	ht =3D container_of(work, struct rhashtable, run_work);
-> -	mutex_lock_nested(&ht->mutex, 1);
-> +	mutex_lock(&ht->mutex);
-> =20
->  	tbl =3D rht_dereference(ht->tbl, ht);
->  	tbl =3D rhashtable_last_table(ht, tbl);
-> @@ -1122,51 +1122,9 @@ static u32 rhashtable_jhash2(const void *key, u32 le=
-ngth, u32 seed)
->  	return jhash2(key, length, seed);
->  }
-> =20
-> -/**
-> - * rhashtable_init - initialize a new hash table
-> - * @ht:		hash table to be initialized
-> - * @params:	configuration parameters
-> - *
-> - * Initializes a new hash table based on the provided configuration
-> - * parameters. A table can be configured either with a variable or
-> - * fixed length key:
-> - *
-> - * Configuration Example 1: Fixed length keys
-> - * struct test_obj {
-> - *	int			key;
-> - *	void *			my_member;
-> - *	struct rhash_head	node;
-> - * };
-> - *
-> - * struct rhashtable_params params =3D {
-> - *	.head_offset =3D offsetof(struct test_obj, node),
-> - *	.key_offset =3D offsetof(struct test_obj, key),
-> - *	.key_len =3D sizeof(int),
-> - *	.hashfn =3D jhash,
-> - * };
-> - *
-> - * Configuration Example 2: Variable length keys
-> - * struct test_obj {
-> - *	[...]
-> - *	struct rhash_head	node;
-> - * };
-> - *
-> - * u32 my_hash_fn(const void *data, u32 len, u32 seed)
-> - * {
-> - *	struct test_obj *obj =3D data;
-> - *
-> - *	return [... hash ...];
-> - * }
-> - *
-> - * struct rhashtable_params params =3D {
-> - *	.head_offset =3D offsetof(struct test_obj, node),
-> - *	.hashfn =3D jhash,
-> - *	.obj_hashfn =3D my_hash_fn,
-> - * };
-> - */
->  int __rhashtable_init_noprof(struct rhashtable *ht,
-> -		    const struct rhashtable_params *params,
-> -		    struct lock_class_key *key)
-> +			     const struct rhashtable_params *params,
-> +			     struct rhashtable_lockdep_keys *keys)
+Best regards, Ilya Maximets.
+
+> 
+> Reject a negative length.
+> 
+> Fixes: ccb1352e76cf ("net: Add Open vSwitch kernel components.")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Norbert Szetei <norbert@doyensec.com>
+> ---
+> Reproducer available on request.
+> 
+>  net/openvswitch/actions.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
+> index dc5ff859f114..4fdc08cca058 100644
+> --- a/net/openvswitch/actions.c
+> +++ b/net/openvswitch/actions.c
+> @@ -360,6 +360,9 @@ static void update_ipv6_checksum(struct sk_buff *skb, u8 l4_proto,
 >  {
->  	struct bucket_table *tbl;
->  	size_t size;
-> @@ -1176,13 +1134,11 @@ int __rhashtable_init_noprof(struct rhashtable *ht,
->  		return -EINVAL;
-> =20
->  	memset(ht, 0, sizeof(*ht));
-> -	/* mutex_lock must use nesting level 1 */
-> -	mutex_init_with_key(&ht->mutex, key);
-> +	mutex_init_with_key(&ht->mutex, &keys->mutex_key);
->  	spin_lock_init(&ht->lock);
-> -	/* spin_lock can use nesting level 0 */
-> -	lockdep_set_class(&ht->lock, key);
-> +	lockdep_set_class(&ht->lock, &keys->lock_key);
->  #ifdef CONFIG_LOCKDEP
-> -	ht->lockdep_key =3D key;
-> +	ht->lockdep_key =3D &keys->bucket_key;
->  #endif
->  	memcpy(&ht->p, params, sizeof(*params));
-> =20
-> @@ -1236,22 +1192,13 @@ int __rhashtable_init_noprof(struct rhashtable *ht,
->  }
->  EXPORT_SYMBOL_GPL(__rhashtable_init_noprof);
-> =20
-> -/**
-> - * rhltable_init - initialize a new hash list table
-> - * @hlt:	hash list table to be initialized
-> - * @params:	configuration parameters
-> - *
-> - * Initializes a new hash list table.
-> - *
-> - * See documentation for rhashtable_init.
-> - */
->  int __rhltable_init_noprof(struct rhltable *hlt,
->  			   const struct rhashtable_params *params,
-> -			   struct lock_class_key *key)
-> +			   struct rhashtable_lockdep_keys *keys)
->  {
->  	int err;
-> =20
-> -	err =3D __rhashtable_init_noprof(&hlt->ht, params, key);
-> +	err =3D __rhashtable_init_noprof(&hlt->ht, params, keys);
->  	hlt->ht.rhlist =3D true;
->  	return err;
->  }
-> diff --git a/lib/test_rhashtable.c b/lib/test_rhashtable.c
-> index 85a615e74591..b767a38a74f9 100644
-> --- a/lib/test_rhashtable.c
-> +++ b/lib/test_rhashtable.c
-> @@ -477,7 +477,7 @@ static unsigned int __init print_ht(struct rhltable *rh=
-lt)
-> =20
->  	ht =3D &rhlt->ht;
->  	/* Take the mutex to avoid RCU warning */
-> -	mutex_lock_nested(&ht->mutex, 1);
-> +	mutex_lock(&ht->mutex);
->  	tbl =3D rht_dereference(ht->tbl, ht);
->  	for (i =3D 0; i < tbl->size; i++) {
->  		struct rhash_head *pos, *next;
-> --=20
-> Email: Herbert Xu <herbert@gondor.apana.org.au>
-> Home Page: http://gondor.apana.org.au/~herbert/
-> PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
->=20
+>  	int transport_len = skb->len - skb_transport_offset(skb);
+>  
+> +	if (unlikely(transport_len < 0))
+> +		return;
+> +
+>  	if (l4_proto == NEXTHDR_TCP) {
+>  		if (likely(transport_len >= sizeof(struct tcphdr)))
+>  			inet_proto_csum_replace16(&tcp_hdr(skb)->check, skb,
 
