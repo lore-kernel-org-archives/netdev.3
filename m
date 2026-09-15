@@ -1,94 +1,60 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E8927A47F;
-	Tue, 15 Sep 2026 00:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF8C1A0B0E
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 00:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789431672; cv=none; b=gTk3UldlpS8+i0bY68BlQjGp+JRVEirAze6lmOwLrWmehiGzNYFeCCbasGfv4O608YV0TtV8vWVvLXA8C2wgGtVwalmpKDKdE3mpEv274bvDN8APzS2rB8HMgdWt1q3CUyO8zUenzrkIFodEnIe6aJsOYmClSMc3rHFAzd/LZG8=
+	t=1789431902; cv=none; b=bqioQW59qoRfWnAJmjEmQIFBySL2NoNqN93BUN8bBIFWsvyJW+vdozBj5xO87iaToUQOXRszVnYHjlahtv2lrZOKyfODVlnomDRU2qzVDjrQHdGSMNyXCRXfGwRfwB2DFsONFwGhVzXbIT75Auwj/rX/7XvGb4jITiZfYhaju9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789431672; c=relaxed/simple;
-	bh=cUnjdvNRb1PXE6Rc0wmy0k+B6Job5/nz4WuKYy68McU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=SUi1vDe4aN0huO2rxANeK0QFUPXYABPe1LvP1t4TmJ17xhWkVLvKWTVtp9uRfYuSNtM1OP4KB5myg+dvnf4fZYKI66V92d4466ziL7NcTN1RN4V1mcTdtGsks5YDKmgvGobybkUSVxYFJEAERXMjpSlZNDVCD2zXIIj3WTYZj8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xv6P3Sgb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789431902; c=relaxed/simple;
+	bh=skyTWLyhpbZvo8IGXazH3wp8Hu28Ab9t2e6O9YRhwQE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eMNFYCtUI7FsuHpkslz4WMgFuuKrs9lybn608VEkzPCqTw1BtRhQa+REu/TiVP8YLV0wznSjQ0AZwbct2zJ5Rvu/yrsVoxCDalN6IKvHDpOpp/Dp3GJqOszRYpUDCIcmxeK2SSXe3wDOXjqUayW1iVHmSUIZjqtL9l+t7+m1iJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z7Hx8W67; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xv6P3Sgb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E260C1F000FF;
-	Tue, 15 Sep 2026 00:21:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z7Hx8W67"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82CBD1F000FF;
+	Tue, 15 Sep 2026 00:25:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789431670;
-	bh=E20L9yKp4XRKGgOaSdJzezBFqCiY2QemMpeF4gDk6tc=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Xv6P3SgbR/XPl5VzWg8N63sVLz/BrKmz+QY7D4+vjHj9SGXvxBJK1la/WTDyzq552
-	 EnWb/KE+C6x1RDJXJuqAzD6AdukGDMMoFZ4ZyACNqMqcbf0m7cBsufjB6gPHd6bRIG
-	 TR+dx9+/bZGuVGVY5zf9UWOVzu8vwLXyggwmYg64DVlGx7xJGrAxcz0Z8AqeWkB/V5
-	 wzdB3PzN5yFWC/hydeBSSs9lWNQCeRcCShCk/VHaISLw/oAL/3DkhVr1zl0UP69X7V
-	 BB0f/5E7hfMZJD0Yd6FsprKyqHJSK49E4RSFOd9bkmw1DU0yV4EYVDnwedcqwsQtgm
-	 B7SvbU70rlb7A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1983C3924FFC;
-	Tue, 15 Sep 2026 00:20:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1789431900;
+	bh=skyTWLyhpbZvo8IGXazH3wp8Hu28Ab9t2e6O9YRhwQE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Z7Hx8W67LW1f8IJ6lXHUiOTy4rvdEDkUUcJcAVZA+29nWvThfigsxhndcyO4b0cCY
+	 QCu6OF2wpFStUON1nbbhuLO1ejLSbkNjwFv2cNhuVUrmMNOVsyVcS+bmaCsLmXswMG
+	 atmsFY31TwPgeeVhwHujx4LrLtWJgBA33i1wHisHN59r/akiRZcb8KeVWNWCZxlyW5
+	 L1LV8VogmcSl0sarJX7v3BMI2e6Cw1R5AK/3jh8znTEDQFN1HoOJGfPnceiYWYFQWd
+	 EhbXRZWZYroW4O1rTgjDiIG1pbqzMl1WLrYHWnAaXqSEAsM3QSc/9K8/HbwEjsV4+P
+	 Sp/bNiZLjukpA==
+Date: Mon, 14 Sep 2026 17:24:59 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Fernando Fernandez Mancera <fmancera@suse.de>
+Cc: netdev@vger.kernel.org, horms@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, davem@davemloft.net
+Subject: Re: [PATCH 00/13 net-next] Allow compiling an IPv6-only kernel
+ network stack
+Message-ID: <20260914172459.04db43b2@kernel.org>
+In-Reply-To: <20260910144914.8025-1-fmancera@suse.de>
+References: <20260910144914.8025-1-fmancera@suse.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 1/8] netfilter: seqadj: do not take ct lock if
- seqadj
- is NULL
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178943160590.1282643.5687217999370487767.git-patchwork-notify@kernel.org>
-Date: Tue, 15 Sep 2026 00:20:05 +0000
-References: <20260911084437.1838161-2-pablo@netfilter.org>
-In-Reply-To: <20260911084437.1838161-2-pablo@netfilter.org>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
- netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, horms@kernel.org, fw@strlen.de, ja@ssi.bg
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Thu, 10 Sep 2026 16:48:25 +0200 Fernando Fernandez Mancera wrote:
+> The primary goal of this patch series is to enable the compilation of an
+> IPv6-only kernel by decoupling the core networking infrastructure from the IPv4
+> protocol.
 
-This series was applied to netdev/net-next.git (main)
-by Pablo Neira Ayuso <pablo@netfilter.org>:
+Could you useful to know for example how many of the recent CVEs were
+IPv4 specific, if you have enough token budget to get such data?
 
-On Fri, 11 Sep 2026 10:44:30 +0200 you wrote:
-> From: Fernando Fernandez Mancera <fmancera@suse.de>
-> 
-> This is a small optimization, only take ct lock if seqadj is present. In
-> the unlikely case seqadj isn't present we can return immediately. This
-> is consistent with the behavior of other functions that checks seqadj.
-> 
-> Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-> Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-> 
-> [...]
+High level, I don't have must to say beyond what you already know -
+the code movement may be too painful for backports. There are too
+many ifdefs (as Stan pointed out).
 
-Here is the summary with links:
-  - [net-next,1/8] netfilter: seqadj: do not take ct lock if seqadj is NULL
-    https://git.kernel.org/netdev/net-next/c/1b9c4f3f9cd2
-  - [net-next,2/8] netfilter: x_tables: use GFP_KERNEL_ACCOUNT in match/target
-    https://git.kernel.org/netdev/net-next/c/ba100f6f2a02
-  - [net-next,3/8] netfilter: nfnetlink: use GFP_KERNEL_ACCOUNT
-    https://git.kernel.org/netdev/net-next/c/ef2344e67c0c
-  - [net-next,4/8] netfilter: nf_tables: use GFP_KERNEL_ACCOUNT
-    https://git.kernel.org/netdev/net-next/c/e8609e8d56fb
-  - [net-next,5/8] netfilter: synproxy: use GFP_KERNEL_ACCOUNT
-    https://git.kernel.org/netdev/net-next/c/399a0b7f3258
-  - [net-next,6/8] netfilter: sysctl: use GFP_KERNEL_ACCOUNT
-    https://git.kernel.org/netdev/net-next/c/324ca7a2b6fe
-  - [net-next,7/8] netfilter: nat: use GFP_KERNEL_ACCOUNT
-    https://git.kernel.org/netdev/net-next/c/70deb8ec08cf
-  - [net-next,8/8] netfilter: conncount: use GFP_KERNEL_ACCOUNT
-    https://git.kernel.org/netdev/net-next/c/0e28586ee444
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+sparse also complains about patch 9.
