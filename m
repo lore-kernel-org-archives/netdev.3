@@ -1,41 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C594AA402;
-	Tue, 15 Sep 2026 22:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7C24AA57A;
+	Tue, 15 Sep 2026 22:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789513060; cv=none; b=ZSERQNYf2etFh7pxwPMC3WSY9f/gA7fngwwpXux45I14NhrImeauAEmA1kg6XZuUQ6DiBkrVZb/pF2RJOABa6n95Bc1FaZRMvZ+2kJgRenKyzIIqbk7Pxf7ga49a0JGBqsMZdI+L1b9/QRwK5FYnvAzHsugCZ0FN8V3SIJgyHhk=
+	t=1789513061; cv=none; b=bS/Z7M7BTeZVLRHZLu03qc74zjRkWm1r3x0bLSMAyhN43Sbx4udehYa+BxShr5mGA9ivxSXv7geLWalfRi86dGvEuiB3+2PAc8ASx3Vt7YVAuah+vm29yrSwRr0e3Q6c+V4YeFjBw+sV/hpEgAKAAmV9LgXi3v2+q8c5mNYqbK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789513060; c=relaxed/simple;
-	bh=NebeNjGPmONBULKXK5pMgSeP5mLluqTNg+XgOqPfYLY=;
+	s=arc-20240116; t=1789513061; c=relaxed/simple;
+	bh=5Jmwmt2LbEjbLvEK7HPvwOsQdXihavGsJPYpIP1qvlk=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VJ9CW2kYBPB4GzLzepbWe5ApmcxKCv3GN3qtSm2Iu2EMm5Q7DmtYjq5Aneb6Sa46GtU49cQZSGxHzQpFl4y/4GCIld6lgw0JFsuMTu/PT2/57HBG27Pa/ZGNE4MboQoD6678I+isms0Ru5Uc3yyGBayKjDYpp6whQHwcybHUc0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lXck/zpO; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=Y8OuL6VROe0ICx8wF01BdlR7PZH1/O3XeikGsz/QAG2baPg9FXr8FX6EhY2KLkLzMvOAVGR9wnwempAtas+ZSkaGLWLycZYJZZHNsr9NhT2d5UuyutmcdpEWGYfW/NSPtem0csgIwj3iUVB5nykr0FxS0UxG7DUVR4ZI2Xp6Fds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lycGnGSe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lXck/zpO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02AF41F00893;
-	Tue, 15 Sep 2026 22:57:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lycGnGSe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 282991F00898;
+	Tue, 15 Sep 2026 22:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789513058;
-	bh=L8G+SKV7jen7rULVBJdriltigZZu5qgSRUMrWlt/sk8=;
+	s=k20260515; t=1789513059;
+	bh=fKrE2yvAmVqQNgBkjdgquVpeQNXMMKke58YkcJm3KAY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lXck/zpORmWSczpFBRFqli5IXEhhQ/QQ/BSJmIKOcGDgQdxhqKBrpVoys2w1hMRNH
-	 Xtxg773OWq2bnobjaS3q86O3FjgVbCEV0UcpXKt9e8wX756OQY4J+9lopeonxSs/IO
-	 gcc6aO4/2LZdUFxxrJJejC29MgPekDlVTZHPzYmmNKupPKkyUPilv8kvHjCcZL/qgF
-	 4SIuURgBbgSDpX4tlKgUfWxUZprftfIZ2+l+aj//+gvnjk5Z7HINEgFvDpjwDLb9jc
-	 1IleSc72MZ2QkM5O4RPSQrC515l7Wf6Vb8d1jZ4EJCE2j3PLx1pMrKlWjUp78Ur9ZM
-	 s9K3SjVzBVMgQ==
-Subject: Re: [PATCH net v10 03/14] rxrpc: Fix aborting in rxperf test server
+	b=lycGnGSemzupwpe+GMUTI67j6pOUq1A+zp6JpEDR9NG+WgRsKfXS8bpfkaEJFIRJy
+	 /QQVLjSnZxjO25gk+Ub7DD5RgDPG3lOk3Oj7pSo4MV5KTovMKVfJZ83fKmARiiRJBr
+	 GsGeFF651WaDSXbrHJPG8sQ4EjPMrAVw9iK+EjevC+HTSPR70ClEBwV+va8uZnrsQX
+	 ndXepyrYS2IK0JrFyTfrmi5IXLC9+4Y1zxa0xFOBaRsMnnSBknVnfpTp+9OgoXq7D+
+	 F4zPTUszsG7F6s/qNZkfYSwe2oQjWnk6yqNZ5onNNKgaAvewFsVpB1mz9fFkTWMLPW
+	 6ovZfgbyYJrZA==
+Subject: Re: [PATCH net v10 05/14] rxrpc: Fix update of call->tx_pending
+ without holding lock
 From: netdev-bot+sashiko@kernel.org
 To: dhowells@redhat.com
 Cc: netdev@vger.kernel.org, marc.dionne@auristor.com, kuba@kernel.org,
  davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
  linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org
-Date: Tue, 15 Sep 2026 22:57:37 +0000
-Message-ID: <178951305756.22033.4393555534770367709@kernel.org>
-In-Reply-To: <20260914151340.3227501-4-dhowells@redhat.com>
-References: <20260914151340.3227501-4-dhowells@redhat.com>
+Date: Tue, 15 Sep 2026 22:57:38 +0000
+Message-ID: <178951305871.22033.17597631281343046532@kernel.org>
+In-Reply-To: <20260914151340.3227501-6-dhowells@redhat.com>
+References: <20260914151340.3227501-6-dhowells@redhat.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -46,182 +47,145 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 · Medium: 1 (1) · Low: 0
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-- [High] Stale `dropped_lock` flag across the new retry loop in
-  rxrpc_kernel_send_data() (net/rxrpc/sendmsg.c:809-838 at this commit)…
-- [Medium] Incomplete fix in rxperf_process_call() (net/rxrpc/rxperf.c):
-  the commit message states the function will "always abort if it gets a…
-
-Pre-existing issues:
-- [Medium] rxrpc_send_data()'s `out:` label executes `call->tx_pending =
-  txb;` even on the path where it has already released call->user_mutex…
+- [High] rxrpc_send_data() (net/rxrpc/sendmsg.c) leaks call->user_mutex
+  on the RXRPC_CALL_TX_NO_MORE early-exit path.
 
 --
 
-rxrpc: Fix aborting in rxperf test server
+rxrpc: Fix update of call->tx_pending without holding lock
 
-This changes rxperf_process_call() so that the trailing magic-cookie send
-aborts the call on any negative return from rxrpc_kernel_send_data() rather
-than only on -ENOMEM, and renames the trace reason rxperf_abort_oom to
-rxperf_abort_send_error.
+This moves the release of call->user_mutex down into rxrpc_send_data(),
+drops the _dropped_lock indicator parameter, and keeps call->tx_pending set
+until the txbuf has been queued.  Both callers no longer unlock the call
+mutex themselves.
 
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824091645.415423-1-dhowells%40redhat.com
+Closes: https://sashiko.dev/#/patchset/20260702144919.172295-1-dhowells%40redhat.com
+
+> diff --git a/net/rxrpc/sendmsg.c b/net/rxrpc/sendmsg.c
+> index bbb39835ef9e7..b370e440e2fdb 100644
+> --- a/net/rxrpc/sendmsg.c
+> +++ b/net/rxrpc/sendmsg.c
+> @@ -320,10 +320,9 @@ static int rxrpc_alloc_txqueue(struct sock *sk, struct rxrpc_call *call)
+>  static int rxrpc_send_data(struct rxrpc_sock *rx,
+>  			   struct rxrpc_call *call,
+>  			   struct msghdr *msg, size_t len,
+> -			   rxrpc_notify_end_tx_t notify_end_tx,
+> -			   bool *_dropped_lock)
+> +			   rxrpc_notify_end_tx_t notify_end_tx)
+> +	__releases(&call->user_mutex)
+>  {
+> -	struct rxrpc_txbuf *txb;
+>  	struct sock *sk = &rx->sk;
+>  	enum rxrpc_call_state state;
+>  	long timeo;
+
+[Severity: High]
+Now that rxrpc_send_data() is annotated __releases(&call->user_mutex) and
+owns the unlock, does the RXRPC_CALL_TX_NO_MORE test just below these
+declarations still need converting?  It is not touched by this patch and
+still returns without reaching out_unlock:
+
+net/rxrpc/sendmsg.c:rxrpc_send_data() {
+	...
+	if (test_bit(RXRPC_CALL_TX_NO_MORE, &call->flags)) {
+		trace_rxrpc_abort(call->debug_id, rxrpc_sendmsg_late_send,
+				  call->cid, call->call_id, call->rx_consumed,
+				  0, -EPROTO);
+		return -EPROTO;
+	}
+	...
+}
+
+Since the callers no longer compensate with their own mutex_unlock(), can
+this path leave call->user_mutex held on return?
+
+RXRPC_CALL_TX_NO_MORE is set when the last DATA packet is queued:
+
+net/rxrpc/sendmsg.c:rxrpc_queue_packet() {
+	...
+	if (last) {
+		set_bit(RXRPC_CALL_TX_NO_MORE, &call->flags);
+	...
+}
+
+So a sendmsg() without MSG_MORE followed by a second sendmsg() on the same
+user_call_ID would take the mutex in rxrpc_do_sendmsg() via
+mutex_lock_interruptible(&call->user_mutex), pass the
+rxrpc_call_is_complete() pre-check (a client call is in AWAIT_REPLY at this
+point), and then hit the -EPROTO return above.
+
+Would that leave subsequent users of that call blocked indefinitely, given
+that recvmsg() and the kernel-side users such as rxrpc_kernel_abort_call()
+use an uninterruptible mutex_lock(&call->user_mutex), and would the task
+then be able to exit while still owning the mutex?
+
+Would "ret = -EPROTO; goto out_unlock;" be the intended form here?
+
+> @@ -457,45 +456,46 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
+>  	if (rxrpc_call_is_complete(call) &&
+>  	    call->error < 0)
+>  		ret = call->error;
+> -out:
+> -	call->tx_pending = txb;
+> +out_unlock:
+> +	mutex_unlock(&call->user_mutex);
+>  	_leave(" = %d", ret);
+>  	return ret;
 
 [ ... ]
 
-> diff --git a/net/rxrpc/rxperf.c b/net/rxrpc/rxperf.c
-> index dad04062213f5..7e9a536153098 100644
-> --- a/net/rxrpc/rxperf.c
-> +++ b/net/rxrpc/rxperf.c
-> @@ -538,10 +538,10 @@ static int rxperf_process_call(struct rxperf_call *call)
->  	msg.msg_flags = 0;
->  	n = rxrpc_kernel_send_data(rxperf_socket, call->rxcall, &msg,
->  				   rxperf_notify_end_reply_tx);
-> -	if (n == -ENOMEM)
-> +	if (n < 0)
+> @@ -770,16 +769,15 @@ int rxrpc_do_sendmsg(struct rxrpc_sock *rx, struct msghdr *msg, size_t len)
+>  		ret = 0;
+>  		break;
+>  	case RXRPC_CMD_SEND_DATA:
+> -		ret = rxrpc_send_data(rx, call, msg, len, NULL, &dropped_lock);
+> -		break;
+> +		ret = rxrpc_send_data(rx, call, msg, len, NULL);
+> +		goto error_put;
+>  	default:
+>  		ret = -EINVAL;
+>  		break;
+>  	}
+>  
+>  out_put_unlock:
+> -	if (!dropped_lock)
+> -		mutex_unlock(&call->user_mutex);
+> +	mutex_unlock(&call->user_mutex);
+>  error_put:
+>  	rxrpc_put_call(call, rxrpc_call_put_sendmsg);
+>  	_leave(" = %d", ret);
 
-[Severity: Medium]
-The commit message says rxperf_process_call() will "always abort if it gets
-a send error", but only the trailing magic-cookie send is converted here.
-Is the bulk-reply loop earlier in the same function meant to be left alone?
+[ ... ]
 
-net/rxrpc/rxperf.c:rxperf_process_call() {
-	while (reply_len > 0) {
-		...
-		n = rxrpc_kernel_send_data(rxperf_socket, call->rxcall, &msg,
-					   rxperf_notify_end_reply_tx);
-		if (n < 0)
-			return n;
-		reply_len -= len;
-	}
-}
+> @@ -819,13 +816,9 @@ int rxrpc_do_sendmsg(struct rxrpc_sock *rx, struct msghdr *msg, size_t len)
+>  		mutex_lock(&call->user_mutex);
+>  
+>  		ret = rxrpc_send_data(rxrpc_sk(sock->sk), call, msg,
+> -				      msg_data_left(msg),
+> -				      notify_end_tx, &dropped_lock);
+> +				      msg_data_left(msg), notify_end_tx);
+>  		if (ret == -ESHUTDOWN)
+>  			ret = call->error;
+> -
+> -		if (!dropped_lock)
+> -			mutex_unlock(&call->user_mutex);
+>  		if (ret < 0)
+>  			break;
 
-That path propagates the error to rxperf_deliver_to_call(), which
-reclassifies it rather than using RXGEN_SS_MARSHAL/rxperf_abort_send_error:
+For the record, the same unconverted RXRPC_CALL_TX_NO_MORE return is moved
+below the reload: label and changed to "ret = -EPROTO; goto out_unlock;" by
+the following patch in the series, "rxrpc: Fix error handling in
+rxrpc_send_data()", so the final state of the series does not have this
+problem.
 
-	case -ENODATA:
-	case -EBADMSG:
-	case -EMSGSIZE:
-	case -ENOMEM:
-	case -EFAULT:
-		rxrpc_kernel_abort_call(rxperf_socket, call->rxcall,
-					RXGEN_SS_UNMARSHAL, ret,
-					rxperf_abort_unmarshal_error);
-
-anything else negative lands in the default arm as
-RX_CALL_DEAD/rxperf_abort_general_error, and these two return without any
-abort at all:
-
-	case -EINPROGRESS:
-	case -EAGAIN:
-		return;
-
-So a send failure in the loop can leave the call sitting in
-RXPERF_CALL_SV_REPLYING waiting for another notification, and the two send
-sites for the same reply report different abort codes and trace reasons for
-the same failure.  Would it be cleaner to route both sends through a shared
-send_error label?  For what it is worth, the later series patch "rxrpc: Fix
-error handling in rxrpc_send_data()" does exactly that, so the divergence
-only exists in this intermediate commit.
-
->  		rxrpc_kernel_abort_call(rxperf_socket, call->rxcall,
-> -					RXGEN_SS_MARSHAL, -ENOMEM,
-> -					rxperf_abort_oom);
-> +					RXGEN_SS_MARSHAL, n,
-> +					rxperf_abort_send_error);
-
-[Severity: High]
-Aborting on every negative return makes this call site reachable in cases
-where rxrpc_kernel_send_data() may return with call->user_mutex still held,
-and rxrpc_kernel_abort_call() takes that same mutex.  Can this self-deadlock?
-
-The retry loop added earlier in the series declares the flag once, outside
-the loop:
-
-net/rxrpc/sendmsg.c:rxrpc_kernel_send_data() {
-	bool dropped_lock = false;
-	...
-	for (;;) {
-		mutex_lock(&call->user_mutex);
-		ret = rxrpc_send_data(rxrpc_sk(sock->sk), call, msg,
-				      msg_data_left(msg),
-				      notify_end_tx, &dropped_lock);
-		...
-		if (!dropped_lock)
-			mutex_unlock(&call->user_mutex);
-		if (ret < 0)
-			break;
-		if (msg_data_left(msg) == 0) {
-			ret = 0;
-			break;
-		}
-		...
-	}
-}
-
-rxrpc_send_data() sets the flag after dropping the mutex and only clears it
-once it has retaken it:
-
-wait_for_space:
-	ret = -EAGAIN;
-	if (msg->msg_flags & MSG_DONTWAIT)
-		goto maybe_error;
-	mutex_unlock(&call->user_mutex);
-	*_dropped_lock = true;
-	ret = rxrpc_wait_for_tx_window(rx, call, &timeo,
-				       msg->msg_flags & MSG_WAITALL);
-	if (ret < 0)
-		goto maybe_error;
-	if (call->interruptibility == RXRPC_INTERRUPTIBLE) {
-		if (mutex_lock_interruptible(&call->user_mutex) < 0) {
-			ret = sock_intr_errno(timeo);
-			goto maybe_error;
-		}
-	}
-	...
-	*_dropped_lock = false;
-
-For an interruptible call, a signal makes rxrpc_wait_for_tx_window() or
-mutex_lock_interruptible() fail, and maybe_error falls through to success
-with copied > 0, so a positive short-send count is returned with the flag
-left true.  The loop then relocks and calls rxrpc_send_data() again with
-dropped_lock still true, so on the next pass either mutex_lock() is called
-on an already-owned mutex, or the "msg_data_left(msg) == 0" break returns to
-rxperf with call->user_mutex still held and the abort above blocks forever.
-
-Should dropped_lock be reset at the top of each iteration?  The later series
-patch "rxrpc: Fix update of call->tx_pending without holding lock" removes
-the _dropped_lock parameter entirely and has rxrpc_send_data() always
-unlock, which also resolves this.
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the same wait_for_space path
-in rxrpc_send_data() also publishes call->tx_pending with the mutex already
-dropped:
-
-success:
-	ret = copied;
-	if (rxrpc_call_is_complete(call) &&
-	    call->error < 0)
-		ret = call->error;
-out:
-	call->tx_pending = txb;
-
-Every other access to call->tx_pending is serialised by call->user_mutex, so
-if a second sendmsg() on the same user_call_ID acquired the mutex in the
-meantime and stored its own partially filled txbuf, does this unlocked store
-overwrite it and leak that txbuf, or reintroduce a stale buffer into the
-transmit stream?  The new retry loop turns this unlocked store into a
-routine resumable step rather than a terminal bail-out.  It is fixed later in
-the series by "rxrpc: Fix update of call->tx_pending without holding lock",
-which keeps the tx_pending updates inside the mutex-held region.
-
->  	return n;
->  }
+Could that conversion be folded into this patch instead, so that this commit
+on its own does not leave call->user_mutex held for anyone bisecting through
+it?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260914151340.3227501-1-dhowells%40redhat.com
