@@ -1,87 +1,90 @@
-Received: from smtp1.cs.Stanford.EDU (smtp1.cs.stanford.edu [171.64.64.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f41.google.com (mail-pz2-f41.google.com [74.125.228.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA05447805
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 20:42:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=171.64.64.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4279178C9C
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 20:44:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789504955; cv=none; b=rekChJbfjir/qrIiorsMv02e4fZEJA4mJ8nMmwxkV9k6RX0b1AdG51ao/LB9OfSOloc6Yz2wEqK2dm4pywAj/g3g7S17q9BsVqck2VhnoIa+IDKIe4nj2Q7EPYyGvKklCd6lgUw9VB1/8E7xA/8had1zQA9heKwG6M8mnMj+NC0=
+	t=1789505066; cv=none; b=CyxhcwjYVvVujsrVqPP37oZptlslWIgYNyBc0BHhlR98HXFtuKLj5vKDQkJp+YWGdJw2Zdan6J8f28MO7/4Z/pcjjM0XOmJn0SBJKBD2jGROByYADiNCMrTbVFcakQH7kMool1XwCEy9UBVqKQd0UgPOQFohIbr+HETsqNP+jWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789504955; c=relaxed/simple;
-	bh=u7FDXWmnNDm49g7TPgHmEvv/bk6vlPCVL5GgQXLAVUc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jH4slG2vbInkVyzj4bZJbQetmhzXFcE/nInpmrGLg6uBo4Z2/Xgsaa9R74BLC08ueFqtq+YXE74VvaYN/BAK3jus8YP/qlwQfs+7N5YzAYGtL542J9g9yxMWmxa9W+x+3mXiIFHbkAU8fBlXcTUhcyyZkzV6bHQAP90O7TawlpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu; spf=pass smtp.mailfrom=cs.stanford.edu; dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b=OJZqiubW; arc=none smtp.client-ip=171.64.64.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cs.stanford.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cs.stanford.edu
+	s=arc-20240116; t=1789505066; c=relaxed/simple;
+	bh=f50iAKNvxmaK1/KDn1I4sj9qO1XnFJppLd1f0SUOlzk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=D2oYvXKmA67PF9uDjOQSOkBB2DQv69/EA4A4ib6itKNUYrl0FfJMrRNJRpeeAMlW3eHkdyTSZi0lUPFzVUuyG1hYcnZaQW34zcL+uvIIgIuTuXr3BIAzjAJYn+HF6OjszSiHhBYkvOHrLsYgIdS1MJPfekNYwedXPNX8JmClK+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=xFQCajrS; arc=none smtp.client-ip=74.125.228.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cs.stanford.edu header.i=@cs.stanford.edu header.b="OJZqiubW"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=cs.stanford.edu; s=cs2308; h=Content-Transfer-Encoding:Content-Type:Cc:To:
-	Subject:Message-ID:Date:From:In-Reply-To:References:MIME-Version:Sender:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Pj8eddDYSCvJtz7Uw4MAcyZwqXmAJ5FKe6DPoEprKSI=; t=1789504952; x=1790368952; 
-	b=OJZqiubWnPZmIF8MC1qFPrFpTxhdh1Y8bYwvwInK+LY5UJk+jMjEtjJBzBRcxAg6u/G0d+Vok62
-	WXRWm1IzTd1mJd9xcCaGfFnMEJUcenUpvp293SeyXAz+ruGsAnXj+zs+vTUGM+PJrDCYtIH8vlOTW
-	1tLpfjr5qj+nP3nwUo3QpRWcE2HzAB0hIMyW08Fx68SWrXafSD7CxPvH4pQdmycCZ+EDSJ/4A9FhY
-	F3Gs3X6uLDUriuvJZfsWblna1Z7h28FsQRXwPrfeFAfqe1BuxN3VvR5yVm7mbb5Se79XDfimWuLu8
-	XUr+/cW9Rf2H8gXwcwCPhia/xp2nYgSGcFiQ==;
-Received: from mail-yx2-f13.google.com ([74.125.224.141]:50154)
-	by smtp1.cs.Stanford.EDU with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.94.2)
-	(envelope-from <ouster@cs.stanford.edu>)
-	id 1x6Zz3-00016f-PZ
-	for netdev@vger.kernel.org; Tue, 15 Sep 2026 13:42:30 -0700
-Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66e4aa8d881so288038d50.1
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 13:42:29 -0700 (PDT)
-X-Gm-Message-State: AFuF++mjQ9gxyt8Ja31/yKgeN4esamx7FglOAUzeKuYW34vWHMSXaMnx
-	RQ4MSqmXmiOpyfZTKNH1O/e9fYBCUaFbcgr7liWDsLsRywEnj6J0MNJmUVjNTMVgXewUpgkHxMu
-	zrGibjea66tuHmZk0laAyFSRlXqwjQTU=
-X-Received: by 2002:a05:690e:bcf:b0:670:f743:6eb6 with SMTP id
- 956f58d0204a3-671632908b7mr65549d50.51.1789504949147; Tue, 15 Sep 2026
- 13:42:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="xFQCajrS"
+Received: by mail-pz2-f41.google.com with SMTP id d2e1a72fcca58-85469d249c5so118721b3a.3
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 13:44:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1789505064; x=1790109864; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LalPA7C7C22kRZ/gAGitbKFO3VdtM3EeEmJYMYM4mFg=;
+        b=xFQCajrSSxSgGz3NOB/TutKqdC0kmeNnHVOTZDu+WUzmG9yymlXr24ZZcB6QUGR7HQ
+         viyZCe4WwbtWw96JBNHRLeCfWSb8eqza1ar0glgLhRhyLIIy+qjcYyYTDFwJ7/fh7wnG
+         5L5QfoLjZP8s6354hTN5XiFB5smgPRneJPFuuPHgZczbylj9O/5VGLJ83+J1VxPXADKf
+         /I1eiuxzVUx/cpiDf9Wx5vV6wBe5U7qasvs/BI5P/U833sVuh58f3CqJyLoe1Wx4zuzz
+         zy717JpYJMtQJESVUfZtsPQW7I4/ASeEUkeJaQYC5vFfKxsU+HRx7HYBYDpcGgGgpTSv
+         52tQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789505064; x=1790109864;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LalPA7C7C22kRZ/gAGitbKFO3VdtM3EeEmJYMYM4mFg=;
+        b=EgjeVKUABjZnO2FAPpb3w6oVdUXUaiNU8Bir5dVX0jTzTmfCocjcPPN9ynT5ZwPk3P
+         b698Ahx0P2jKjm9d9RsaQjSZcnrmG1uzMFqoPjgpmUZ8STdi6nAdilwqPUh+4jc5Xyte
+         5SzaTUXjaMz1ZdusD2Yym+G/7WcIwA7AMh2l3MAR4fbOeBmIKQAvn6PLCztaOOQzN/Em
+         jPH7BHREKo2Wi/4qG42Ftuv2SQJVMjIZYvtH5ukg49oumyf3HNafQux5eMNDKuP2bL1C
+         wzFE99rntZhuQknn8+HM5m2sW05XmLiVFPQbKa+4STC5H57Z8s9EWwtDredUuu1PfCvN
+         EB2Q==
+X-Gm-Message-State: AFuF++nAYKkYnFKVpuecA2+L5tfYpxg7fC11kBXf8J8nGpRl3UVUgjyc
+	ht2kK8kHSxeA0JHDoQ5ARUmJwwT1K/7efAZGaYIMCZLKVX4IOViPRmrrQmLShPTbHeM=
+X-Gm-Gg: AYBFou3oPahPWa2E1YGeFc/sNrG5ey/uj6+pw5vflbaY6D3yb1OvBnSq8JyZl7hOPyO
+	mPqRlno6je5FyO1uxm5T5C4RqrzHAjZgmLmclgGBpYX9IXU4Kv/cJOHHzbaIiPSEvHaj29b/0j1
+	x7BDnX4kMU8m3FFjgw8tFkRWeeOt6PT2wLTpnFbo1Vl4avrybmw7+rYSMC7eTY5pqp807qXiETI
+	FFuh/K7D3g/+xr1ftk1hhd5LAq5S734R7OlbSvk1ZCrHWqwmthgodH9vV2gXxhuClzsmpahud/T
+	J4KsprkhQlWobqUTj3T0AOixaEJ6rbqiXdNPCXXvQcqFx5sWPEsnLDuXuDKh8sTuRqcQySa/TXw
+	sqgcyJkC3ni9bFfkcHs40OrAd65EP5aPPTJuXwQuZHrShR+PciEPy0OmiBx5crJ6Fy8263/fVG5
+	mfVBmVVAcK/j8wet0p3crW3ocKYlKa2TSwrVOasRFpfoIeJwrAAZA58mjWl02ZWgAsps7CmWfdr
+	tBWYcUJV9SNF5IGv//VcsCw6ycubufZxpIRmfNC
+X-Received: by 2002:a05:6a00:22d4:b0:85b:635e:7814 with SMTP id d2e1a72fcca58-86f84d108f0mr15501581b3a.12.1789505064496;
+        Tue, 15 Sep 2026 13:44:24 -0700 (PDT)
+Received: from phoenix.local (204-195-96-226.wavecable.com. [204.195.96.226])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87200c581fcsm147300b3a.12.2026.09.15.13.44.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Sep 2026 13:44:24 -0700 (PDT)
+Date: Tue, 15 Sep 2026 13:44:17 -0700
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: Harshith Hari <harshithhari000111@gmail.com>
+Cc: netdev@vger.kernel.org
+Subject: Re: [PATCH iproute2] ss: add -P/--process-age option to display
+ process runtime
+Message-ID: <20260915134417.69b87049@phoenix.local>
+In-Reply-To: <20260915183522.63865-1-harshithhari000111@gmail.com>
+References: <20260915183522.63865-1-harshithhari000111@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260914230517.1190-1-ouster@cs.stanford.edu> <0b3aa22e-8939-489c-a3dd-c7f9552714d7@infradead.org>
-In-Reply-To: <0b3aa22e-8939-489c-a3dd-c7f9552714d7@infradead.org>
-From: John Ousterhout <ouster@cs.stanford.edu>
-Date: Tue, 15 Sep 2026 13:41:53 -0700
-X-Gmail-Original-Message-ID: <CAGXJAmzj2KgJ+G5LU_t5XOU5a1t0D9WnGxVi_Wh64=XBwy2Q5A@mail.gmail.com>
-X-Gm-Features: AcwNN1W9wZds5d_F9sMlHMUJvdKbr-fWWhDJVfzeKQXflDMQezvVz_O5mepmVGE
-Message-ID: <CAGXJAmzj2KgJ+G5LU_t5XOU5a1t0D9WnGxVi_Wh64=XBwy2Q5A@mail.gmail.com>
-Subject: Re: [PATCH net-next v11 00/15] Begin upstreaming Homa transport protocol
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com, 
-	horms@kernel.org, kuba@kernel.org, skhan@linuxfoundation.org, 
-	bagasdotme@gmail.com, linux-doc@vger.kernel.org, corbet@lwn.net
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Score: -1.0
-X-Scan-Signature: b65b8f26ca423de213f14dca1c6ea011
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 14, 2026 at 4:35=E2=80=AFPM Randy Dunlap <rdunlap@infradead.org=
-> wrote:
->
-> In a (mostly) x86_64 defconfig, where CONFIG_MEMCG is not set:
->
-> ../net/homa/homa_rpc.c: In function =E2=80=98homa_rpc_alloc_server=E2=80=
-=99:
-> ../net/homa/homa_rpc.c:133:22: error: =E2=80=98struct sock=E2=80=99 has n=
-o member named =E2=80=98sk_memcg=E2=80=99
->   133 |         if (hsk->sock.sk_memcg) {
->       |                      ^
-> ../net/homa/homa_rpc.c:134:68: error: =E2=80=98struct sock=E2=80=99 has n=
-o member named =E2=80=98sk_memcg=E2=80=99
->   134 |                 struct mem_cgroup *old =3D set_active_memcg(hsk->=
-sock.sk_memcg);
->       |
+On Wed, 16 Sep 2026 00:05:22 +0530
+Harshith Hari <harshithhari000111@gmail.com> wrote:
 
-Oops, I will conditionalize this code properly. Thanks for reporting.
+> Add a new option (-P/--process-age) to display process uptime/age
+> alongside process info inside socket user context output.
+> 
+> Signed-off-by: Harshith Hari <harshithhari000111@gmail.com>
+> ---
 
--John-
+Your mailing method is mangling whitespace and the patch will not apply cleanly
+to the current iproute2 tree. Suggest fixing your settings and use git send-email.
