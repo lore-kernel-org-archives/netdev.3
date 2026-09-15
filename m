@@ -1,65 +1,65 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+Received: from mail-oo2-f43.google.com (mail-oo2-f43.google.com [74.125.231.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C4F43A80B
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 05:01:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F44742E404
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 05:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789448501; cv=none; b=ZBLm+3mHZYp0otNCdqBwZqvildb5Q9VC75zwWoFhg97cy1ix1YyMlcaGo6f6ISMTSGFdS2FL7UdD/S3yHlM4P//1Hl2gii2wboyNVEv2rMIDsdUq1M7V3h4TJCFlvn3rMKkSNsDKmvC5NwJE4ZFDq/Z1Yif2eugtuA6loiWB1m8=
+	t=1789448502; cv=none; b=rS1banHWsW3I2TGaWdxeWW6awmsgFo6D+OdlcKVtYCQMnkfZzVLQMUgpLM6P9hGS10TCKTPVrE5UYCdhIVzb+8JNu1szq7GaS0wdsD5Jb8CYjZ0Qooljgf/WHf40f4sunX2/2SvPyTsy5zZFyaLPRsj0Xi7jH2Ksb9tRpOy//YM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789448501; c=relaxed/simple;
-	bh=x1gejsAd6YWA5CBEc/ub3FzHb3dF1/qcv14ggelBuvA=;
+	s=arc-20240116; t=1789448502; c=relaxed/simple;
+	bh=uCtUnL+DK0+Vcijpb0NbemyGhnyykjJ0ZTtE8mcmaSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NnDy9ptHa6B5kDPowIs2j010Qt9PvpH/Iqhyi7bN6LnHIXqbMWlhRJKxJh+1nVmGN+LmznqwdxQdULIa0RdPts1OSe7vLU05p7FmaFrp/l0Uv9eJmggAsLB0YVXAKTq0RF16vInEksBz+vBHItkT0aNa5IcbucO5vlyhA8OnrZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ODXyVOZX; arc=none smtp.client-ip=74.125.227.140
+	 MIME-Version; b=bxZyXe+XTFeCAGEdboQC87r1URCI5C51zwdmV6NMNxS4vjP1+NTcSdnxEy7Q+a5lzR594spZL3PqCsLpOpV1asiuoZwnoiEBfpUg56ulyayavqXIfY+ENOQLP1AiFswoaRibGjW7HFXFK4rVRzRO/rGfLD7/YNdMyxEJ/zlRriU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mC0I0wzN; arc=none smtp.client-ip=74.125.231.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ODXyVOZX"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccafb752so2833036a91.0
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 22:01:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mC0I0wzN"
+Received: by mail-oo2-f43.google.com with SMTP id 46e09a7af769-7f4f0c89e33so1930647a34.0
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 22:01:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789448497; x=1790053297; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789448499; x=1790053299; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=qAZ/bCmEsYsB0LV/q1vRmEmrcb+izaYrj4LP1qy1vmw=;
-        b=ODXyVOZX476O2LF2w9Y8f1RHyQIfPgCsAjNgWF600jwQS8GzP27wWYHOp7oddrhJOM
-         ywfjjB9olLkBAUGluR3cB5GOSGoH/vh9jzwlEIyeagt9Rfh2xWslkaUulfHKVzDpP3nd
-         NmsM56w07BucFsKak3j+v7W7VGkdtrVnnIrtjS/gWaQiHf/2dDKwwaxBmF7tL6W+oW6u
-         gWFgKDycU+Fm7JHGyYk3Q4UNhIwO0MutwTeICSgQuQ9ekEfHi4S5NVna8Say4RqkX+/Y
-         RWpslQRnc9CHAO/krmXw2+aMY69iLB/ZHNzrwFnCW+8WRlnbVfSAam+aCrtMet/fJexV
-         gdBQ==
+        bh=e8F3JwitOM+HzKjUaxufpWmqRA5xpMbmjQIDcQNq5os=;
+        b=mC0I0wzNejhewKPZ15ldKEsGHp6Rif7O3zEzRelpr+NJoIFF3OqAOw85MMzXtXOKc7
+         tivgimdw7rEuVvUSQOduChnJrw4BD/RW+KA+fJ0Nslz5oeBwg/E0jlreE+IGi1Q7JM3l
+         /v6GysBSLqGl6GkQU1kbmpVrUFh9otDCy/cDuws+mrA5IghF4/k2M4jFkmGGQ8sFl/9/
+         /N3nlwq3NWEBBJOfVIebE/1luBv4f7ElNNTuWxsWg37SGwbpHaY76AEPPZureKjJvuGU
+         pWMz7PB8uAOhXEqRHjqtd9m3kdH5QYMLfakY87BF/oHb2oHQNlg80tJpe0QBFfup+a/D
+         ngoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789448497; x=1790053297;
+        d=1e100.net; s=20260707; t=1789448499; x=1790053299;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=qAZ/bCmEsYsB0LV/q1vRmEmrcb+izaYrj4LP1qy1vmw=;
-        b=1VZAX675k1ilG+nNIk7poaHHKg0YSwHDcBRNKEn9jX/oioeuPf912TlmyBKMSNGyF+
-         Qsdf63/Cf5hMcLoQDkkSi9IRcrqZa/NxRw/p2o8xxytuawk2qYruf1trtW1kbR7eqtLH
-         pz8Q/IOLGsw+JiYOEnll8q9EAeeSScIoFM3k17utPAM8GDOosfWgK4PO68hrXRj4Oe8H
-         Uad9DRICz4mxVSmJkU5fDFsQCFRCfogDrdxm6XaS5aFZX9+dtX6VZrTT35/nfIspnO+7
-         qt8EBTxXAAhz86eIGEtIHJzJn6eVPEtYJVMx7Zy33JlHwDYIGDDvrUshMiV/zR7cuv6w
-         xzkw==
-X-Forwarded-Encrypted: i=1; AKwUvByON/sZJ9ydMtI6Rpp3d0A9cLiAg7C4MDtFpAvmLvAGLsQZyOhvlxuUlqNvkSfBT668JgpXrUg=@vger.kernel.org
-X-Gm-Message-State: AFuF++nMcktCB8M9xGJaKVloC/tIdGfDn03MkKQdghRbTJ1O4tHYivzh
-	ZgUHfXePRy57mtq/QQFbzt6MDsemRwgC20AII0b8AsBikZPIvelSOt3u
-X-Gm-Gg: AYBFou1YNulUn3tTYlxVoQ5/pjnwc6DxuWZ4qpa4nlnccSHwj3tcNdjFkQbekvsOyhi
-	1PKRLrippg6iLfhoGWKMCaBiduT3cjwwko8Ph+7XyRmW50eEkMgQHIVdVpKwtrmaGXSDTDNt2kh
-	Jup10VGNdBu3NZTjr+4Ginre2W0r/JqDunixVndhCsF4ziSMWGZi4vYNAm14H4xhIzBJxgc9mY5
-	GVYRoDDWCx19M9Wz3QQXMoYIUyWnf8j3Ppi/p4A2FrRCoGGdZUg0uWyzgEJy4eCC0Y35afxIggt
-	nyzahvdx/dYXg79xWuPlBVw/EMC5ipKnlO0USsFPcAwEDoeQ4Z+Byk29DIF8tAcf7pyDcPjjTOt
-	xO0Q0dJCjOWc55W8c3vgsY4796txDtOYU7Bn3TU19m8/NwOmmU7srUZtrFA5L6kX7cVQQXPseHS
-	2JKKXj3IUdNnc/Uuoz6uStqtFrhlziKpQS/Zpp+JPD23bj2Ckm8SJ7UQOr/cgLWjRzpn3P3OkVG
-	Iomc7b0I3Oglghuemz0ZC+EK12Hck8J8mkerZwdfeckWecbHGnpafdEox+EQord5NhXzY/oWewh
-	4GLX7osun2yGC5H522xl
-X-Received: by 2002:a17:90b:4a0f:b0:381:6c5:3f63 with SMTP id 98e67ed59e1d1-39debf7613bmr9948084a91.6.1789448496872;
-        Mon, 14 Sep 2026 22:01:36 -0700 (PDT)
+        bh=e8F3JwitOM+HzKjUaxufpWmqRA5xpMbmjQIDcQNq5os=;
+        b=G+VL0y7ZLg48GxgCWvtzhf4qa8h212x0Z2P+YGMyYiZiP1Ll6DVzcFASzu9dZ2HfSs
+         6ZSB9tQhRieKHAr9fs0bWyIfAyhvBU9wrX8y0tYTzLuHlaGoFpwL6fOieyNoO9dH26Ld
+         VqRFblsWvFD9dX8py/6UUZtJZoNQ2KXUBeUOwxVyCUdJbZ4twJFGZ+WzJ/bIbC0q7OuJ
+         3bVOQfs+t6GeLM9uAix0x59tuzhiWhS5JVH8QmwkYeMt0oyup2xCRnDQlGCpYCX3rXWY
+         t5rhR5YKiWRKEiUPMSQfqAK8/eyN3AiYdf79Z1tiG2KNRTGspNlCZJj4AdumfjfHsjs0
+         /aUg==
+X-Forwarded-Encrypted: i=1; AKwUvBzwou+RLQ/5CMnsS3wkoB1FCnDUH9/Mx30y1LVjgpx+ss7PBsMjt/ziVrgUPIy/ro/jJoDV11E=@vger.kernel.org
+X-Gm-Message-State: AFuF++lhrTV/Xp4Z5ISOHmnle/bN/25f5c0xPRc5Yw4g0XYovDMxZ03W
+	gc1HrTB7C3ZYj0y76lPXaiiqXyTjQn2UNwixaTo4oJaho6uvUYYXSSST
+X-Gm-Gg: AYBFou3Hltlrw/0O/+jR3rCQFVMjaPw4KooL/rcsa61wZXtd//KsG7MmYTbIJZo4oqx
+	7l7Y9AsA7Tn2Vi872wrJS/sMIu6MNwhiVGIkbEU8gnOVE1/9ueXRzndJHtM9rVybw6pVDenZQou
+	egOKo7LILAFXyVleAgZ/A6fI8WHDNodAOZVHHEyWut1kN3Ch+IGkBhld85TAX0F1gW94OCMtcPP
+	TTbetiCmaTy1cTD5LFYeTyZrw+IbBjQqHEsET/7tG8r1D3PeuSvFQ/pP5BIvpW4rYtwCvLtlJon
+	e8LYaqTbvOQw1nnhcULgTekqwOemHp0FU7IYV9yXVl13cjFq1lFeGIC/lpejWfems7XmO1r69yf
+	Bhfimryh5b6JmuRYu1QaXSwi14GoLPHd8CRv1GbOI5VdAmWDWZ40XNq0Zb+4z/9epy32DdvT5mu
+	t+v1/GM3d92SzRe6fffhKo34MV36CfKdZB8JEN2TiccAbUWLZc1mMzYdf5S4/fVQEpPWwB6MPMg
+	4moRmw/UtfbPMZKvxyP5j+/0KM8gKoVCpyPeLagZYah9lqvB1P3WIQ6pC61ShF5RCw7Cu2hr1sg
+	GZdZQ2Dp28n+bx2nq9kE
+X-Received: by 2002:a05:6830:6405:b0:805:5e7e:9bf6 with SMTP id 46e09a7af769-80899f62264mr4009489a34.21.1789448498623;
+        Mon, 14 Sep 2026 22:01:38 -0700 (PDT)
 Received: from lawlee-vm0.d4y3nv5wwgfelhhopdxv1tqjld.dx.internal.cloudapp.net ([13.93.150.60])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33ba4e51449sm26872358eec.5.2026.09.14.22.01.35
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33ba4e51449sm26872358eec.5.2026.09.14.22.01.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Sep 2026 22:01:36 -0700 (PDT)
+        Mon, 14 Sep 2026 22:01:38 -0700 (PDT)
 From: Lawrence Lee <lfqlee314@gmail.com>
 To: David Ahern <dsahern@kernel.org>,
 	Ido Schimmel <idosch@nvidia.com>,
@@ -82,9 +82,9 @@ Cc: Simon Horman <horms@kernel.org>,
 	Alexander Aring <alex.aring@gmail.com>,
 	linux-wpan@vger.kernel.org,
 	linux-bluetooth@vger.kernel.org
-Subject: [PATCH net-next v2 1/2] ipv6: update NUD_FAILED neighbors from NA messages
-Date: Tue, 15 Sep 2026 05:01:31 +0000
-Message-ID: <6596966f734f3d416bfa83722f7a595149bcc3f8.1789448374.git.lfqlee314@gmail.com>
+Subject: [PATCH net-next v2 2/2] selftests: net: test untracked NA recovery of FAILED neighbors
+Date: Tue, 15 Sep 2026 05:01:32 +0000
+Message-ID: <3f33052571409614b953a3dc7778114c51c43669.1789448374.git.lfqlee314@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1789448374.git.lfqlee314@gmail.com>
 References: <cover.1789448374.git.lfqlee314@gmail.com>
@@ -96,321 +96,219 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Transition a FAILED neighbor entry to STALE upon receipt of an NA
-message on routers when accept_untracked_na is enabled. This extends the
-RFC 9131 accept_untracked_na behavior so that FAILED entries are treated
-the same as non-existent entries. In the context of RFC 4861 which
-introduced NDP, both non-existent and FAILED entries are considered
-untracked since they do not have a valid neighbor cache entry.
+Seed a FAILED neighbor before triggering an unsolicited NA. Verify that
+the entry transitions to STALE only when drop_unsolicited_na is disabled,
+accept_untracked_na mode 1 or in-prefix mode 2 is enabled, and IPv6
+forwarding is enabled. Verify that disabling each gate or using an
+out-of-prefix source with mode 2 keeps the entry in FAILED.
 
-Trying to resolve FAILED neighbors via periodic probing (e.g. using
-NTF_EXT_MANAGED) is more work compared to this approach which uses
-information in NAs that the kernel may already be receiving. Note that
-because this behavior in IPv6 is dependent on the accept_untracked_na
-sysctl setting, this approach is more conservative than IPv4 which
-transitions FAILED neighbors to STALE by default upon receiving GARPs.
+Mark the seed externally learned and disable carrier-based eviction so
+the entry cannot be garbage-collected before the NA arrives. Require the
+marker after processing to prove that a recovered entry was updated in
+place instead of deleted and recreated.
+
+Check both the command that seeds the entry and its resulting state.
+Capture the verifier status before constructing the test description so
+the array assignment cannot mask a failure.
 
 Link: https://lore.kernel.org/r/20260813233344.445265-1-lfqlee314@gmail.com
 Assisted-by: LLM Sashiko sparse
 Signed-off-by: Lawrence Lee <lfqlee314@gmail.com>
 ---
- Documentation/networking/ip-sysctl.rst | 28 ++++----
- include/net/ndisc.h                    | 15 ++--
- net/6lowpan/ndisc.c                    | 15 ++--
- net/ipv6/ndisc.c                       | 94 +++++++++++++++++---------
- 4 files changed, 96 insertions(+), 56 deletions(-)
+ .../net/ndisc_unsolicited_na_test.sh          | 124 +++++++++++++++---
+ 1 file changed, 105 insertions(+), 19 deletions(-)
 
-diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
-index 208f46967ee5..4cc57a6be99b 100644
---- a/Documentation/networking/ip-sysctl.rst
-+++ b/Documentation/networking/ip-sysctl.rst
-@@ -3223,18 +3223,19 @@ drop_unsolicited_na - BOOLEAN
- 	Default: 0 (disabled).
+diff --git a/tools/testing/selftests/net/ndisc_unsolicited_na_test.sh b/tools/testing/selftests/net/ndisc_unsolicited_na_test.sh
+index 5db69dad0cfc..5f4f29f0ac4a 100755
+--- a/tools/testing/selftests/net/ndisc_unsolicited_na_test.sh
++++ b/tools/testing/selftests/net/ndisc_unsolicited_na_test.sh
+@@ -3,12 +3,18 @@
  
- accept_untracked_na - INTEGER
--	Define behavior for accepting neighbor advertisements from devices that
--	are absent in the neighbor cache:
-+	Define behavior for accepting neighbor advertisements for IPv6 addresses
-+	that are absent from the neighbor cache or whose entries are in FAILED
-+	state:
+ # This test is for the accept_untracked_na feature to
+ # enable RFC9131 behaviour. The following is the test-matrix.
+-# drop   accept  fwding                   behaviour
+-# ----   ------  ------  ----------------------------------------------
+-#    1        X       X  Don't update NC
+-#    0        0       X  Don't update NC
+-#    0        1       0  Don't update NC
+-#    0        1       1  Add a STALE NC entry
++# state   drop   accept  fwding                   behaviour
++# ------  ----   ------  ------  ----------------------------------------------
++# absent     1        X       X  Don't update NC
++# absent     0        0       X  Don't update NC
++# absent     0        1       0  Don't update NC
++# absent     0        1       1  Add a STALE NC entry
++# failed     1        X       X  Keep the NC entry in FAILED state
++# failed     0        0       X  Keep the NC entry in FAILED state
++# failed     0        1       0  Keep the NC entry in FAILED state
++# failed     0        1       1  Update the NC entry to STALE
++# failed     0        2       1  Update the NC entry to STALE if in-network
++# failed     0        2       1  Keep the NC entry FAILED if out-of-network
  
--	- 0 - (default) Do not accept unsolicited and untracked neighbor
--	  advertisements.
-+	- 0 - (default) Do not create new neighbor cache entries or update
-+	  FAILED entries from neighbor advertisements.
+ source lib.sh
+ ret=0
+@@ -20,7 +26,9 @@ HOST_INTF="veth-host"
+ ROUTER_INTF="veth-router"
  
--	- 1 - Add a new neighbor cache entry in STALE state for routers on
--	  receiving a neighbor advertisement (either solicited or unsolicited)
--	  with target link-layer address option specified if no neighbor entry
--	  is already present for the advertised IPv6 address. Without this knob,
--	  NAs received for untracked addresses (absent in neighbor cache) are
--	  silently ignored.
-+	- 1 - For routers, add a new neighbor cache entry or update an existing
-+	  FAILED entry to STALE upon receiving a neighbor advertisement (either
-+	  solicited or unsolicited) with the target link-layer address option
-+	  specified. Without this knob, NAs received for untracked addresses
-+	  (absent from the neighbor cache or in FAILED state) are silently
-+	  ignored.
+ ROUTER_ADDR="2000:20::1"
+-HOST_ADDR="2000:20::2"
++HOST_ADDR_IN_NETWORK="2000:20::2"
++HOST_ADDR_OUT_OF_NETWORK="2000:21::2"
++HOST_ADDR="${HOST_ADDR_IN_NETWORK}"
+ SUBNET_WIDTH=64
+ ROUTER_ADDR_WITH_MASK="${ROUTER_ADDR}/${SUBNET_WIDTH}"
+ HOST_ADDR_WITH_MASK="${HOST_ADDR}/${SUBNET_WIDTH}"
+@@ -88,6 +96,8 @@ setup()
+                 ${ROUTER_CONF}.drop_unsolicited_na=${drop_unsolicited_na}
+ 	${IP_ROUTER_EXEC} sysctl -qw \
+                 ${ROUTER_CONF}.accept_untracked_na=${accept_untracked_na}
++	${IP_ROUTER_EXEC} sysctl -qw \
++                ${ROUTER_CONF}.ndisc_evict_nocarrier=0
+ 	${IP_ROUTER_EXEC} sysctl -qw ${ROUTER_CONF}.disable_ipv6=0
+ 	${IP_ROUTER} addr add ${ROUTER_ADDR_WITH_MASK} dev ${ROUTER_INTF}
  
- 	  This is as per router-side behavior documented in RFC9131.
- 
-@@ -3249,9 +3250,10 @@ accept_untracked_na - INTEGER
- 	  used in conjunction with the ndisc_notify setting on the host to
- 	  satisfy this prerequisite.
- 
--	- 2 - Extend option (1) to add a new neighbor cache entry only if the
--	  source IP address is in the same subnet as an address configured on
--	  the interface that received the neighbor advertisement.
-+	- 2 - Extend option (1) to add a new neighbor cache entry or update a
-+	  FAILED entry only if the source IP address is in the same subnet as
-+	  an address configured on the interface that received the neighbor
-+	  advertisement.
- 
- enhanced_dad - BOOLEAN
- 	Include a nonce option in the IPv6 neighbor solicitation messages used for
-diff --git a/include/net/ndisc.h b/include/net/ndisc.h
-index 96e3bb6e83af..7fb3f10eca6c 100644
---- a/include/net/ndisc.h
-+++ b/include/net/ndisc.h
-@@ -154,11 +154,13 @@ void __ndisc_fill_addr_option(struct sk_buff *skb, int type, const void *data,
-  *     option parser will take care about that option.
-  *
-  * void (*update)(const struct net_device *dev, struct neighbour *n,
-- *		  u32 flags, u8 icmp6_type,
-+ *		  u32 flags, bool failed_recovery, u8 icmp6_type,
-  *		  const struct ndisc_options *ndopts):
-  *     This function is called when IPv6 ndisc updates the neighbour cache
-  *     entry. Additional options which can be updated may be previously
-  *     parsed by parse_opts callback and accessible over ndopts parameter.
-+ *     failed_recovery indicates that ndisc accepted the packet to recover
-+ *     an entry observed in NUD_FAILED.
-  *
-  * int (*opt_addr_space)(const struct net_device *dev, u8 icmp6_type,
-  *			 struct neighbour *neigh, u8 *ha_buf,
-@@ -197,7 +199,7 @@ struct ndisc_ops {
- 				 struct nd_opt_hdr *nd_opt,
- 				 struct ndisc_options *ndopts);
- 	void	(*update)(const struct net_device *dev, struct neighbour *n,
--			  u32 flags, u8 icmp6_type,
-+			  u32 flags, bool failed_recovery, u8 icmp6_type,
- 			  const struct ndisc_options *ndopts);
- 	int	(*opt_addr_space)(const struct net_device *dev, u8 icmp6_type,
- 				  struct neighbour *neigh, u8 *ha_buf,
-@@ -227,12 +229,13 @@ static inline int ndisc_ops_parse_options(const struct net_device *dev,
- }
- 
- static inline void ndisc_ops_update(const struct net_device *dev,
--					  struct neighbour *n, u32 flags,
--					  u8 icmp6_type,
--					  const struct ndisc_options *ndopts)
-+				    struct neighbour *n, u32 flags,
-+				    bool failed_recovery, u8 icmp6_type,
-+				    const struct ndisc_options *ndopts)
- {
- 	if (dev->ndisc_ops && dev->ndisc_ops->update)
--		dev->ndisc_ops->update(dev, n, flags, icmp6_type, ndopts);
-+		dev->ndisc_ops->update(dev, n, flags, failed_recovery,
-+				       icmp6_type, ndopts);
- }
- 
- static inline int ndisc_ops_opt_addr_space(const struct net_device *dev,
-diff --git a/net/6lowpan/ndisc.c b/net/6lowpan/ndisc.c
-index 868d28583c0a..8fedfef93740 100644
---- a/net/6lowpan/ndisc.c
-+++ b/net/6lowpan/ndisc.c
-@@ -47,7 +47,8 @@ static int lowpan_ndisc_parse_options(const struct net_device *dev,
- 	}
- }
- 
--static void lowpan_ndisc_802154_update(struct neighbour *n, u32 flags,
-+static void lowpan_ndisc_802154_update(struct neighbour *n,
-+				       bool failed_recovery,
- 				       u8 icmp6_type,
- 				       const struct ndisc_options *ndopts)
- {
-@@ -87,20 +88,24 @@ static void lowpan_ndisc_802154_update(struct neighbour *n, u32 flags,
- 		ieee802154_be16_to_le16(&neigh->short_addr, lladdr_short);
- 		if (!lowpan_802154_is_valid_src_short_addr(neigh->short_addr))
- 			neigh->short_addr = cpu_to_le16(IEEE802154_ADDR_SHORT_UNSPEC);
-+	} else if (failed_recovery) {
-+		neigh->short_addr = cpu_to_le16(IEEE802154_ADDR_SHORT_UNSPEC);
- 	}
- 	write_unlock_bh(&n->lock);
- }
- 
- static void lowpan_ndisc_update(const struct net_device *dev,
--				struct neighbour *n, u32 flags, u8 icmp6_type,
-+				struct neighbour *n, u32 flags,
-+				bool failed_recovery, u8 icmp6_type,
- 				const struct ndisc_options *ndopts)
- {
- 	if (!lowpan_is_ll(dev, LOWPAN_LLTYPE_IEEE802154))
- 		return;
- 
--	/* react on overrides only. TODO check if this is really right. */
--	if (flags & NEIGH_UPDATE_F_OVERRIDE)
--		lowpan_ndisc_802154_update(n, flags, icmp6_type, ndopts);
-+	/* React to overrides or accepted FAILED-entry recovery. */
-+	if ((flags & NEIGH_UPDATE_F_OVERRIDE) || failed_recovery)
-+		lowpan_ndisc_802154_update(n, failed_recovery, icmp6_type,
-+					   ndopts);
- }
- 
- static int lowpan_ndisc_opt_addr_space(const struct net_device *dev,
-diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
-index 90cd5d852569..84d70c09205a 100644
---- a/net/ipv6/ndisc.c
-+++ b/net/ipv6/ndisc.c
-@@ -778,13 +778,23 @@ static int pndisc_is_router(const void *pkey,
- 	return ret;
- }
- 
-+static void __ndisc_update(const struct net_device *dev,
-+			   struct neighbour *neigh, const u8 *lladdr, u8 new,
-+			   u32 flags, bool failed_recovery, u8 icmp6_type,
-+			   struct ndisc_options *ndopts)
-+{
-+	neigh_update(neigh, lladdr, new, flags, 0);
-+	/* report ndisc ops about neighbour update */
-+	ndisc_ops_update(dev, neigh, flags, failed_recovery, icmp6_type,
-+			 ndopts);
-+}
+@@ -140,24 +150,77 @@ verify_ndisc() {
+ 	local drop_unsolicited_na=$1
+ 	local accept_untracked_na=$2
+ 	local forwarding=$3
++	local initial_state=${4:-absent}
++	local same_subnet=${5:-1}
++	local neigh_show_output
++	local expected_state
 +
- void ndisc_update(const struct net_device *dev, struct neighbour *neigh,
- 		  const u8 *lladdr, u8 new, u32 flags, u8 icmp6_type,
- 		  struct ndisc_options *ndopts)
- {
--	neigh_update(neigh, lladdr, new, flags, 0);
--	/* report ndisc ops about neighbour update */
--	ndisc_ops_update(dev, neigh, flags, icmp6_type, ndopts);
-+	__ndisc_update(dev, neigh, lladdr, new, flags, false, icmp6_type,
-+		       ndopts);
++	if [ "${drop_unsolicited_na}" -eq 0 ] &&
++			[ "${forwarding}" -eq 1 ]; then
++		case "${accept_untracked_na}" in
++		1)
++			expected_state=STALE
++			;;
++		2)
++			[ "${same_subnet}" -eq 1 ] && expected_state=STALE
++			;;
++		esac
++	fi
++	if [ -z "${expected_state}" ] &&
++			[ "${initial_state}" = "failed" ]; then
++		expected_state=FAILED
++	fi
+ 
+-	neigh_show_output=$(${IP_ROUTER} neigh show \
+-                to ${HOST_ADDR} dev ${ROUTER_INTF} nud stale)
+-	if [ ${drop_unsolicited_na} -eq 0 ] && \
+-			[ ${accept_untracked_na} -eq 1 ] && \
+-			[ ${forwarding} -eq 1 ]; then
+-		# Neighbour entry expected to be present for 011 case
+-		[[ ${neigh_show_output} ]]
++	if [ -n "${expected_state}" ]; then
++		neigh_show_output=$(${IP_ROUTER} neigh show \
++			to "${HOST_ADDR}" dev "${ROUTER_INTF}")
++		if [[ " ${neigh_show_output} " != \
++				*" ${expected_state} "* ]]; then
++			return 1
++		fi
++		if [ "${initial_state}" = "failed" ]; then
++			[[ "${neigh_show_output}" == *"extern_learn"* ]]
++		fi
+ 	else
+-		# Neighbour entry expected to be absent for all other cases
++		neigh_show_output=$(${IP_ROUTER} neigh show \
++			to "${HOST_ADDR}" dev "${ROUTER_INTF}")
+ 		[[ -z ${neigh_show_output} ]]
+ 	fi
  }
  
- static enum skb_drop_reason ndisc_recv_ns(struct sk_buff *skb)
-@@ -972,14 +982,18 @@ static enum skb_drop_reason ndisc_recv_ns(struct sk_buff *skb)
- 
- static int accept_untracked_na(struct inet6_dev *idev, struct in6_addr *saddr)
+ test_unsolicited_na_common()
  {
-+    /* For any given neighbor IP address, consider it an untracked neighbor if
-+     * it is absent from the neighbor cache or if it has a NUD_FAILED entry in
-+     * the neighbor cache
-+     */
- 	switch (READ_ONCE(idev->cnf.accept_untracked_na)) {
--	case 0: /* Don't accept untracked na (absent in neighbor cache) */
-+	case 0: /* Reject NAs for untracked neighbours */
- 		return 0;
--	case 1: /* Create new entries from na if currently untracked */
-+	case 1: /* Accept NAs for untracked neighbours */
- 		return 1;
--	case 2: /* Create new entries from untracked na only if saddr is in the
-+	case 2: /* Accept NAs for untracked neighbours only if saddr is in the
- 		 * same subnet as an address configured on the interface that
--		 * received the na
-+		 * received the NA
- 		 */
- 		return !!ipv6_chk_prefix(saddr, idev->dev);
- 	default:
-@@ -1001,6 +1015,9 @@ static enum skb_drop_reason ndisc_recv_na(struct sk_buff *skb)
- 	struct neigh_table *tbl;
- 	struct neighbour *neigh;
- 	struct inet6_dev *idev;
-+	bool neigh_failed = false;
-+	bool neigh_untracked = false;
-+	bool accept_untracked = false;
- 	u8 *lladdr = NULL;
- 	SKB_DR(reason);
- 	u8 new_state;
-@@ -1067,32 +1084,41 @@ static enum skb_drop_reason ndisc_recv_na(struct sk_buff *skb)
- 	neigh = neigh_lookup(tbl, &msg->target, dev);
- 
- 	/* RFC 9131 updates original Neighbour Discovery RFC 4861.
--	 * NAs with Target LL Address option without a corresponding
--	 * entry in the neighbour cache can now create a STALE neighbour
--	 * cache entry on routers.
-+	 * NAs with Target LL Address option can now create a STALE neighbor
-+	 * cache entry on routers if the NA does not have a corresponding entry
-+	 * in the neighbour cache or has a corresponding FAILED entry.
- 	 *
--	 *   entry accept  fwding  solicited        behaviour
--	 * ------- ------  ------  ---------    ----------------------
--	 * present      X       X         0     Set state to STALE
--	 * present      X       X         1     Set state to REACHABLE
--	 *  absent      0       X         X     Do nothing
--	 *  absent      1       0         X     Do nothing
--	 *  absent      1       1         X     Add a new STALE entry
-+	 *       entry accept  fwding  solicited        behaviour
-+	 * ----------- ------  ------  ---------    ----------------------
-+	 *  non-FAILED      X       X         0     Set state to STALE
-+	 *  non-FAILED      X       X         1     Set state to REACHABLE
-+	 *      FAILED      0       X         X     Do nothing
-+	 *      FAILED      1       0         X     Do nothing
-+	 *      FAILED      1       1         X     Set state to STALE
-+	 *      absent      0       X         X     Do nothing
-+	 *      absent      1       0         X     Do nothing
-+	 *      absent      1       1         X     Add a new STALE entry
- 	 *
- 	 * Note that we don't do a (daddr == all-routers-mcast) check.
- 	 */
- 	new_state = msg->icmph.icmp6_solicited ? NUD_REACHABLE : NUD_STALE;
--	if (!neigh && lladdr && idev && READ_ONCE(idev->cnf.forwarding)) {
--		if (accept_untracked_na(idev, saddr)) {
--			neigh = neigh_create(tbl, &msg->target, dev);
--			new_state = NUD_STALE;
--		}
--	}
-+	neigh_failed = neigh &&
-+		       (READ_ONCE(neigh->nud_state) & NUD_FAILED);
-+	neigh_untracked = !neigh || neigh_failed;
-+	if (neigh_untracked) {
-+		accept_untracked = lladdr && idev &&
-+				   READ_ONCE(idev->cnf.forwarding) &&
-+				   accept_untracked_na(idev, saddr);
-+		new_state = NUD_STALE;
-+	}
-+	if (!neigh && accept_untracked)
-+		neigh = neigh_create(tbl, &msg->target, dev);
- 
- 	if (neigh && !IS_ERR(neigh)) {
-+		u32 update_flags;
- 		u8 old_flags = neigh->flags;
- 
--		if (READ_ONCE(neigh->nud_state) & NUD_FAILED)
-+		if (neigh_untracked && !accept_untracked)
- 			goto out;
- 
- 		/*
-@@ -1108,19 +1134,23 @@ static enum skb_drop_reason ndisc_recv_na(struct sk_buff *skb)
- 			goto out;
- 		}
- 
--		ndisc_update(dev, neigh, lladdr,
--			     new_state,
--			     NEIGH_UPDATE_F_WEAK_OVERRIDE|
--			     (msg->icmph.icmp6_override ? NEIGH_UPDATE_F_OVERRIDE : 0)|
--			     NEIGH_UPDATE_F_OVERRIDE_ISROUTER|
--			     (msg->icmph.icmp6_router ? NEIGH_UPDATE_F_ISROUTER : 0),
--			     NDISC_NEIGHBOUR_ADVERTISEMENT, &ndopts);
-+		update_flags = NEIGH_UPDATE_F_WEAK_OVERRIDE |
-+			       (msg->icmph.icmp6_override ?
-+				NEIGH_UPDATE_F_OVERRIDE : 0) |
-+			       NEIGH_UPDATE_F_OVERRIDE_ISROUTER |
-+			       (msg->icmph.icmp6_router ?
-+				NEIGH_UPDATE_F_ISROUTER : 0);
++	local same_subnet=${5:-1}
++	local neigh_show_output
 +
-+		__ndisc_update(dev, neigh, lladdr,
-+			       new_state, update_flags, neigh_failed,
-+			       NDISC_NEIGHBOUR_ADVERTISEMENT, &ndopts);
++	if [ "${same_subnet}" -eq 1 ]; then
++		HOST_ADDR="${HOST_ADDR_IN_NETWORK}"
++	else
++		HOST_ADDR="${HOST_ADDR_OUT_OF_NETWORK}"
++	fi
++	HOST_ADDR_WITH_MASK="${HOST_ADDR}/${SUBNET_WIDTH}"
++
+ 	# Setup the test bed, but keep links down
+-	setup $1 $2 $3
++	setup "$1" "$2" "$3"
++
++	if [ "${4:-absent}" = "failed" ]; then
++		if ! ${IP_ROUTER} neigh replace "${HOST_ADDR}" \
++				dev "${ROUTER_INTF}" \
++				nud failed extern_learn; then
++			echo "Unable to create NUD_FAILED neighbor entry"
++			return 1
++		fi
++		neigh_show_output=$(${IP_ROUTER} neigh show \
++			to "${HOST_ADDR}" dev "${ROUTER_INTF}")
++		if [[ " ${neigh_show_output} " != *" FAILED "* ]]; then
++			echo "Unable to verify NUD_FAILED neighbor entry"
++			return 1
++		fi
++		if [[ "${neigh_show_output}" != *"extern_learn"* ]]; then
++			echo "Neighbor entry is not externally learned"
++			return 1
++		fi
++	fi
  
- 		if ((old_flags & ~neigh->flags) & NTF_ROUTER) {
- 			/*
- 			 * Change: router to host
- 			 */
--			rt6_clean_tohost(dev_net(dev),  saddr);
-+			rt6_clean_tohost(net,
-+					 neigh_failed ? &msg->target : saddr);
- 		}
- 		reason = SKB_CONSUMED;
- out:
+ 	# Bring the link up, wait for the NA,
+ 	# and add a delay to ensure neighbour processing is done.
+@@ -165,22 +228,35 @@ test_unsolicited_na_common()
+ 	start_tcpdump
+ 
+ 	# Verify the neighbour table
+-	verify_ndisc $1 $2 $3
++	verify_ndisc "$1" "$2" "$3" "$4" "${same_subnet}"
+ 
+ }
+ 
+ test_unsolicited_na_combination() {
+-	test_unsolicited_na_common $1 $2 $3
++	local initial_state=${4:-absent}
++	local same_subnet=${5:-1}
++	local rc
++
++	test_unsolicited_na_common "$1" "$2" "$3" "${initial_state}" \
++		"${same_subnet}"
++	rc=$?
+ 	test_msg=("test_unsolicited_na: "
+ 		"drop_unsolicited_na=$1 "
+ 		"accept_untracked_na=$2 "
+ 		"forwarding=$3")
+-	log_test $? 0 "${test_msg[*]}"
++	if [ "${initial_state}" = "failed" ]; then
++		test_msg+=("initial_state=failed")
++	fi
++	if [ "$2" -eq 2 ]; then
++		test_msg+=("same_subnet=${same_subnet}")
++	fi
++	log_test "${rc}" 0 "${test_msg[*]}"
+ 	cleanup
+ }
+ 
+ test_unsolicited_na_combinations() {
+ 	# Args: drop_unsolicited_na accept_untracked_na forwarding
++	#       [initial_state] [same_subnet]
+ 
+ 	# Expect entry
+ 	test_unsolicited_na_combination 0 1 1
+@@ -193,6 +269,16 @@ test_unsolicited_na_combinations() {
+ 	test_unsolicited_na_combination 1 0 1
+ 	test_unsolicited_na_combination 1 1 0
+ 	test_unsolicited_na_combination 1 1 1
++
++	# Expect FAILED entry to become STALE
++	test_unsolicited_na_combination 0 1 1 failed
++	test_unsolicited_na_combination 0 2 1 failed 1
++
++	# Expect FAILED entry to remain FAILED
++	test_unsolicited_na_combination 0 0 1 failed
++	test_unsolicited_na_combination 0 1 0 failed
++	test_unsolicited_na_combination 1 1 1 failed
++	test_unsolicited_na_combination 0 2 1 failed 0
+ }
+ 
+ ###############################################################################
 -- 
 2.43.0
