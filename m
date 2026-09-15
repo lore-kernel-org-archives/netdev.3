@@ -1,149 +1,142 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0613248A8CD;
-	Tue, 15 Sep 2026 10:48:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36AC83D669C;
+	Tue, 15 Sep 2026 10:49:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789469290; cv=none; b=LtfqbDIaC057O9Y6Cion+3Rj5bTqZK3WAnRJFloGHEWcQPqjrquV8Basel2lex0Sy6tQmuznQFmdRiqeEq4z19TQWP2UFenaHwl5WT7dyiHpCZgSpRrJy/vFEM5oIn7JV7JfvJmRJTNbXoeM5mCyyG+SJ4xRiUYU04Jc9JbZAuY=
+	t=1789469356; cv=none; b=g8vF5+rZNc/VyBuv2nHfnMMW0nM7bL06qnJ9beA3B9eU/2TxOMm8aS4eOnB4ywhNka7JOxhdpxAPhG506hzAXn4ErvvKAO5nhjzg+gVlTbTYZCV4R2VTft9j7idf3E55RADnw1KKoT8gQp1ZiGkWEGDnU7eF2ofVsKRQxotwe14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789469290; c=relaxed/simple;
-	bh=Vus90CXeLcAYO7udHlHzInT4pR3rvrjiJTN4h0xfGLE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fy0NxwIeq5Xxx8p7YP7F5WhVADa0gCdMfsZwhmqPqGhFvCyR7fvNf43xpiTYIOmCQ4kWEQ0pww+l5bxLL2gYiuMUFeilIRAvPYmMV/aGxiCXA0tD/hQX4fpMg3Zr+Mnrvm8u325D3hy5LLZIDe4sfqTMP4DspDogUTzSRi00rYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3PXlvpaC; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=i/LJxFaC; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3PXlvpaC";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="i/LJxFaC"
-Message-ID: <3007fddf91fb4260538073482f5148ce8ac6a6ba.camel@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1789469285;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Vus90CXeLcAYO7udHlHzInT4pR3rvrjiJTN4h0xfGLE=;
-	b=3PXlvpaCzY+PYNuGHv+bI0A/qtR8CpAOJjpoAKLVWn/+7kKUyxIsBAX6VDd/TFRIKplPvI
-	Ns/tDrgpMnCZuXLjYQwRRLhgsdA6090jIynN+wAeyagkOWjtpgBkY2uZB85TWW6H/3GrxE
-	HFJr5lZP+020NCkmxRjBd5WKHq53mdyw+wIDN/OWfQ1nU1uo7oCPTH6Ovg+HW8+h/Fkd07
-	P0C4pJaw/+bsprjfeU8VE8/vPhuUTlVGKBGWRQ4HbQc1QZZvLc574pTG6FwH5nzYUh/rpz
-	ukO0dYIecDfOOtPl/x+jwJsHPJG1TAlGGk8LP2bq0ONG/lM4BWVg7EPTWdR4YQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1789469285;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Vus90CXeLcAYO7udHlHzInT4pR3rvrjiJTN4h0xfGLE=;
-	b=i/LJxFaCWuZCHZjlL3t6t0cocUgo+ivDH+DptNRnRu50NTZdZS4k3ocmtt9P09G/Sar8Lf
-	hvZ2cDvTOSe4tSBQ==
-Subject: Re: [PATCH net-next v2 4/4] net: dsa: soce: Add basic support for
- SoC-e switch IP cores
-From: Vasilij Strassheim <v.strassheim@linutronix.de>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-  Conor Dooley <conor+dt@kernel.org>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Russell King
- <linux@armlinux.org.uk>,  devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,  Martin Kaistra
- <martin.kaistra@linutronix.de>, Benedikt Spranger <b.spranger@linutronix.de>
-Date: Tue, 15 Sep 2026 12:48:03 +0200
-In-Reply-To: <b7fdbd43-d069-40e1-aff4-30197371739d@lunn.ch>
-References: 
-	<20260903-devel-vstrassheim-soce-dsa-ml-v2-0-fb0587cb466b@linutronix.de>
-	 <20260903-devel-vstrassheim-soce-dsa-ml-v2-4-fb0587cb466b@linutronix.de>
-	 <3c2c5b39-6a7d-4cb2-af1c-b5015b6bf1e8@lunn.ch>
-	 <db26d5c9262069a11e5cbe00e176b81e40baebeb.camel@linutronix.de>
-	 <5c955c96-7883-4e59-97ef-9fc3b63abf58@lunn.ch>
-	 <ab7e4eeed1b8296188355413cce1aa2b2aa5c670.camel@linutronix.de>
-	 <b7fdbd43-d069-40e1-aff4-30197371739d@lunn.ch>
-Organization: Linutronix GmbH
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1789469356; c=relaxed/simple;
+	bh=h2nN3RPkDO5UWrQnE9qkYdoRNLD0iQwRQZrB/JqFy0M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WTuEzZkPC3bz12l34LbCewAijqzkkYETgX0sPhiNTZudQKw8Hu0qZG0p8itzHna8n/oy731SMxN2YKMuusn+lIJ7FpLMyskzeEgWt8xBTJEZl78KSmjw89OL8ibytc0psDfZ934kSTvnWk9keM7uZztENK07tC5I+XjFCTQuIlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256:X25519MLKEM768)
+	 (Exim 4.100)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1x6Qii-000000007Dm-46Qy;
+	Tue, 15 Sep 2026 10:49:01 +0000
+Date: Tue, 15 Sep 2026 11:48:53 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: Caleb James DeLisle <cjd@cjdns.fr>
+Cc: netdev@vger.kernel.org, dqfext@gmail.com, SkyLake.Huang@mediatek.com,
+	andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Matheus Sampaio Queiroga <srherobrine20@gmail.com>
+Subject: Re: [PATCH v4 net-next] net: phy: mediatek: support MT7530 PHYs on
+ EN71221 MCM
+Message-ID: <aqkilcQAs-GERF3x@makrotopia.org>
+References: <20260915103550.79957-1-cjd@cjdns.fr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260915103550.79957-1-cjd@cjdns.fr>
 
-On Thu, 2026-09-10 at 14:18 +0200, Andrew Lunn wrote:
-> > ethernet-switch@xy {
-> > =C2=A0=C2=A0=C2=A0=C2=A0/* ... */
-> >=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0mdio_parent: mdio@204 {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0compatible =3D "soce,sw=
-ip-mdio-23-02";
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0reg =3D <0x204 0xc>, <0=
-x200 0x4>;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0reg-names =3D "data", "=
-control";
-> > =C2=A0=C2=A0=C2=A0=C2=A0};
-> >=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0mdio-mux@200 {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0compatible =3D "mdio-mu=
-x-mmioreg", "mdio-mux";
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0reg =3D <0x200 0x4>;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0mux-mask =3D <0x1f0000>=
-;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0mdio-parent-bus =3D <&m=
-dio_parent>;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0#address-cells =3D <1>;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0#size-cells =3D <0>;
-> >=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0mdio@0 {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0reg =3D <0>;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0/* PHYs connected to port 0 */
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0};
-> >=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0mdio@10000 {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0reg =3D <0x10000>;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0/* PHYs connected to port 1 */
->=20
-> These comments are probably wrong, as i suggested in my previous
-> reply. There is no reason that port 0 PHY could not be on bus 10000.
->=20
+On Tue, Sep 15, 2026 at 10:35:50AM +0000, Caleb James DeLisle wrote:
+> The EcoNet EN751221 multi-chip module implementation of the MT7530
+> requires some additional configuration of the PHYs on startup.
+> The reason for this is not known, but it is possible that it has
+> to do with the fact that the EN751221 MCM implementation of the
+> MT7530 runs at an abnormal PLL frequency (362.5Mhz).
+> 
+> Detect whether the MT7530 PHY is attached to the MDIO bus of an
+> EcoNet EN751221 switch and if so, apply the necessary register
+> updates. Additionally, never attempt to configure an MT7530
+> identified PHY which does not have gigabit support because the same
+> ID is used for another (FE) PHY.
+> 
+> Co-developed-by: Matheus Sampaio Queiroga <srherobrine20@gmail.com>
+> Signed-off-by: Matheus Sampaio Queiroga <srherobrine20@gmail.com>
+> Signed-off-by: Caleb James DeLisle <cjd@cjdns.fr>
 
-That's right. I will remove the misleading comments.
+> [...]
+> +static bool en751221_is_mcm_phy(struct phy_device *phydev)
+> +{
+> +	struct device *parent = phydev->mdio.bus->parent;
+> +
+> +	return parent && parent->of_node &&
+> +	       of_device_is_compatible(parent->of_node, "econet,en751221");
 
-> I've no idea if it will work, but maybe try:
->=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0reg =3D <0x203 0x1>;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0mux-mask =3D <0x1f>;
->=20
-> and then you get better bus numbers?
+I thought you had found better options than using the parent of_node...?
 
-Although mdio-mux-mmioreg might work, I have realized that it is not
-suitable here.
+> +}
+> +
+> +/*
+> + * MTK_GPHY_ID_MT7530 ID is also used for an EcoNet SoC FE phy, but that PHY
+> + * does not advertise ESTATUS_1000_TFULL.
+> + */
+> +static int mt7530_phy_match(struct phy_device *phydev,
+> +			    const struct phy_driver *phydrv)
+> +{
 
-According to the switch documentation, the bus selector occupies bits
-26:16 of the MDIO control register, while bit 0 is the transaction
-start/busy bit. A partial write might trigger an operation before the
-other fields have been updated.
+You miss the check for the PHY ID, see also below.
 
-Also accessing this register without checking the controller state
-could interfere with an active or failed transaction and introduce
-races (as noted by Netdev-Sashiko).
+I'd suggest something like
+	int ret;
 
-I will therefore add a dedicated MDIO mux driver. It will preserve the
-other register fields and reject bus changes while the controller is
-busy. Based on the current documentation, it will support selector
-values representable by bits 26:16. These values identify hardware MDIO
-interfaces, not switch ports.
+	ret = genphy_match_phy_device(phydev, phydrv);
+	if (!ret)
+		return 0;
 
-So, in the next version, there will be a total of 3 new small drivers.
+> +	return (phy_read(phydev, MII_ESTATUS) & ESTATUS_1000_TFULL) != 0 &&
 
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0Andrew
+The above should be helper function used by both .match_phy_device ops.
 
-Thanks,
-Vasilij
+> +		!en751221_is_mcm_phy(phydev);
+> +}
+> +
+> +static int en751221_phy_match(struct phy_device *phydev,
+> +			      const struct phy_driver *phydrv)
+> +{
+> +	return (phy_read(phydev, MII_ESTATUS) & ESTATUS_1000_TFULL) != 0 &&
+> +		en751221_is_mcm_phy(phydev);
+> +}
+> +
+>  static int mt7531_phy_config_init(struct phy_device *phydev)
+>  {
+>  	mtk_gephy_config_init(phydev);
+> @@ -135,6 +195,23 @@ static struct phy_driver mtk_gephy_driver[] = {
+>  		 */
+>  		.config_intr	= genphy_no_config_intr,
+>  		.handle_interrupt = genphy_handle_interrupt_no_ack,
+> +		.match_phy_device = mt7530_phy_match,
+> +		.suspend	= genphy_suspend,
+> +		.resume		= genphy_resume,
+> +		.read_page	= mtk_phy_read_page,
+> +		.write_page	= mtk_phy_write_page,
+> +	},
+> +	{
+> +		PHY_ID_MATCH_EXACT(MTK_GPHY_ID_MT7530),
 
+This assigns phy_id and phy_id_mask, which are used by
+genphy_match_phy_device(). However, you are setting a .match_phy_device
+op which doesn't call genphy_match_phy_device(), so this is ignored.
+
+> +		.name		= "EcoNet EN751221 MCM PHY",
+> +		.probe		= mt7530_phy_probe,
+> +		.config_init	= en751221_mcm_phy_config_init,
+> +		/* Interrupts are handled by the switch, not the PHY
+> +		 * itself.
+> +		 */
+> +		.config_intr	= genphy_no_config_intr,
+> +		.handle_interrupt = genphy_handle_interrupt_no_ack,
+> +		.match_phy_device = en751221_phy_match,
+>  		.suspend	= genphy_suspend,
+>  		.resume		= genphy_resume,
+>  		.read_page	= mtk_phy_read_page,
+> -- 
+> 2.39.5
+> 
