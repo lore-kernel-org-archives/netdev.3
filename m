@@ -1,146 +1,103 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2AF4718CF
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 09:51:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888223B05AB;
+	Tue, 15 Sep 2026 09:55:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.135.140.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789465906; cv=none; b=RwyD6NQ32uteWknEyOCLo/U1qA79CaEp8Z7g6PGQ6+rgQDwI8y8OX/eQHCCai/0Du/quSW3JO9NlNO25z1l+2YgnCsiay/cvT6Qxc/O9Y/2tGtVYMpG/I+JPvRn7G+AHrOqxdX5WOYaC/FoCDG2MGzjLpFtUzu/v2Mvbgn8G2H0=
+	t=1789466145; cv=none; b=HtNoSVFAzwJ6vBQYv3PBcrQieKOBxb6LzwvZzWw9Q9/y+UOO1JyLXE3LIM4RXmG8m7aRlDv5TpvOwdkqd/A7VkkOF16Vv/x22HdVa+OVKBL78X8EqU8N0vX6k0ERVDjRlfBmCPlhdd6AEasLrwH7yP4jl1OQlEWSJKkwGREttwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789465906; c=relaxed/simple;
-	bh=SjnPd3F4xaIZYIfBs7KNh1DDK816y1zDiNw5ZDtQAPk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jnN+Kc8DUig1MNdoQ6tkyguGFWl3XMooJEIx8Hukv5+C+SUInXyMhisSsUCxR5XQzTAUNrOdBODoLEOmXr3bkRuJlz8iHdi9+HAJYeVjtLzleyO+Eic8ds3mQCIB4+qyT4ZSPyA9e7LDsmLxg+tFiUgBb+FB+W77nwwA6mj4SkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FeNI27/T; arc=none smtp.client-ip=74.125.227.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789466145; c=relaxed/simple;
+	bh=L79TMq96hJzDyDNBjc94HUUSTaOHkWkP81NwGDtzHGs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cMT7x7kR4QHc+v20XfC46vmx2S13YXHopIMqhKMNsi/UY3hFa70nscymV1L6RtAhbhOJDTGugzDDg69i/RjWdtkNPYonXyNHDqB/awaKIyUZBiddy0UK5KgYifQlDgVls3VbG4MX7+vPCGIGTvC0Bd2cl5mPQeSfIen5BliveA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=pass smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=E56no6bX; arc=none smtp.client-ip=5.135.140.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cjdns.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FeNI27/T"
-Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-39dfcef2896so139728a91.0
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 02:51:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789465904; x=1790070704; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zczTvM2RkZrNADCe5tPZcKwAKp4jsVncoMtfbJjwrvY=;
-        b=FeNI27/TAYWdUo/oMlN1jpikw1GJKysuU7I6dQ0T4qes5BycbsveuVYZ7XKodMuhOi
-         +uZWpKhVIw7fO+uTp31bU7EUCQPV6l7cgGdYK+E6YiyvGeWGkNY0VhY5poWSm1HvjlLw
-         AY+F8dSGOJ+hXBVKT6pT83rzgaVfpm4QTErlilhJaUcKuE9yDTOOjrxOwSe+Zmx9A6CT
-         oS8xMhApQreYSOyLrLAlzRoP4s9v5e0S9bc0xApqbQ2N40pkEXLZl8RVEqvLKvH/+t7K
-         iazTiqhxYyRPmDPAOTamrTPTBZkr8pnnkgUyAM3gKmfHcY4G3GskgY0zBwhdyDDSLlt3
-         e1Sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789465904; x=1790070704;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zczTvM2RkZrNADCe5tPZcKwAKp4jsVncoMtfbJjwrvY=;
-        b=e3308ByTTw4Gd06co8NGpUSa8eaFRprQ6nmUEejvcTYB2fkho/3Boeg2nMMD6UEmHx
-         mw/DXIiHIioybK8TlyQn6/PKfDvfV51rHrZ2ZJ0vyUpWyskynrxQCgs2D4lv7Mapj7W7
-         vodwGLaE/IHDXTamDwH9KWkMiG6Jab3DFxevsNy6bvoQf72XnMXUICPGLiTUoCvEHUol
-         /THLGD7e4vN/1EETY4bFFtWlC6+mgvZWE+NO/hbWYlw4jaV5En8JUaXBzzKu97yTLQwL
-         tsQwdeAkLkKd4uFQAeJUnQfvH5cZDSZ/Y8jP2ZlEubAHR7BFihTreyOBGwT9/Csvo554
-         yJiQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx4P6JKBSAJCDgXjIMhQbmb7B4aSj6+7tJuwn7a8+eg8/I8EswGX8X4eiRSqRkzlOs/LGuALdU=@vger.kernel.org
-X-Gm-Message-State: AFuF++mupB5cRBoBK8HI+8r1wThkCRmufR/7iLL7jPHOO1GfTV/31NcC
-	doIkSFONC4/JZWBkOZpTO8pZ+HYMIH2hdowOinY9KRaUAFyLZdDxhi6FmiO0VOjIAUNXlg==
-X-Gm-Gg: AYBFou1JN4Y1VKvZPO4ygcqYfN8+RHkYjtEme1cAbO0lMOm0Nwh/MO+KnJY/yYESpTa
-	1q/NyQ6kX0PG4+w375DaH+qkocy+0tkPmRUnsDtiogYh/9cGPxdfdvZsVGcrmnP6rjhltSnnWld
-	g3x2512sxPPSbMZ6A6xsDJgQYdOrLmsr0q9R3aATJqyTtlEmpR5yguuVBweeWMD8QGly8AtYZnU
-	N4RUY/4ZdcrzfxgavoVNSSuWztwCPOueNfwH/gEGQ9Yo6T+GVkfvdAK2wE1nqnJ3yQJT0GP/n5H
-	xd/tMOW7MtIzi3cSyIf1hYxFrI7wGpepJnXZLoIsvlaDMi9UFsj1sq+RTJVdltpk0ftHT782gEX
-	wNXc7XoMnfOCE3he7asoQ40SqnbuK0rBR3QSej5FkeAnp6/rWSbvvLBvYM9w6PpXdgzaL+ZdbJI
-	xSITCZ7Tw+mcgOHJs4RrvaGa1Z9x3aTQJyrP/4CPx0qQw7lifxi0jWV3GL08CO4Z4946oIKEcEQ
-	0c1udHmtjgoaCKPDemhQGWBQ3qheeuqeyxNBgkk
-X-Received: by 2002:a17:90b:440c:b0:381:bcfb:e710 with SMTP id 98e67ed59e1d1-39dec137c0emr9047736a91.3.1789465904285;
-        Tue, 15 Sep 2026 02:51:44 -0700 (PDT)
-Received: from localhost.localdomain ([189.1.242.96])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39dfb8c09cesm1438633a91.1.2026.09.15.02.51.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 02:51:43 -0700 (PDT)
-From: Yiqi Sun <sunyiqixm@gmail.com>
-To: lucien.xin@gmail.com
-Cc: marcelo.leitner@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-sctp@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	stable@vger.kernel.org,
-	sunyiqixm@hotmai.com,
-	Yiqi Sun <sunyiqixm@gmail.com>
-Subject: [PATCH v3 net] sctp: avoid livelock while updating retransmit path
-Date: Tue, 15 Sep 2026 17:50:17 +0800
-Message-Id: <20260915095017.942213-1-sunyiqixm@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="E56no6bX"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8132D476D79;
+	Tue, 15 Sep 2026 11:55:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
+	t=1789466133; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=Fi/dRVXiXBIot4v5nHDQZH3qjk6CazAUgLOp7/ZEMyo=;
+	b=E56no6bXvfvfWeTMftV4PVj1DAjuMK7Xn6M1Q0ejyA1aBMsTX7kyxZyUIf60GgdKtarDIr
+	Lvq35rb+5Ux3RhtOABB5GVzoihOvmMoAe5VoKVQ/lVJ+xmVxOEjOtAYKeMb5/ZSgkFjwWf
+	jWrrXxjJGKdwO2WlLfVoVdeR6w0yKV3NLC4DC+3rd6jLYLxOXnm9HvV3DXqUkA7550gqNK
+	Hnrxopx2C0jqER04Ykkof8osavGCNW2vuBd8jgIsb1iRV4a4d7V4KdjS7RO7t+eLZt0nTe
+	cG1eFDCyEUs0td27/oGO17hkHL8LOP8gydXTivMlxy6lZvbAVxFZez0KJDBfdQ==
+Message-ID: <c560a70b-8ccf-415a-ba8f-0c061a9f6b03@cjdns.fr>
+Date: Tue, 15 Sep 2026 11:55:25 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v3 net-next] net: phy: mediatek: support MT7530 PHYs on
+ EN71221 MCM
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, daniel@makrotopia.org, dqfext@gmail.com,
+ SkyLake.Huang@mediatek.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ Matheus Sampaio Queiroga <srherobrine20@gmail.com>
+References: <20260911120646.4123877-1-cjd@cjdns.fr>
+ <a6e1bb7f-e395-434e-8e9b-992141969d74@lunn.ch>
+Content-Language: en-US
+From: Caleb James DeLisle <cjd@cjdns.fr>
+In-Reply-To: <a6e1bb7f-e395-434e-8e9b-992141969d74@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-sctp_assoc_update_retran_path() can loop forever when every remaining
-transport, including retran_path, is SCTP_UNCONFIRMED: the state check
-runs before the wraparound test, so the loop cannot observe that it has
-completed a full pass.
 
-Fix this by considering a transport only when it is not UNCONFIRMED,
-then checking whether the walk has returned to retran_path. This makes
-the full-pass termination independent of the transport state while
-preserving the existing fallback selection semantics.
+On 14/09/2026 14:01, Andrew Lunn wrote:
+>> + * The EcoNet EN751221 "G" multi-chip module MT7530 requires additional PHY
+>> + * configuration.
+>> + */
+>> +static int en751221_mcm_phy_config_init(struct phy_device *phydev)
+>> +{
+>> +	int ret;
+>> +
+>> +	ret = genphy_soft_reset(phydev);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	/* Master/Slave negotiation does not work reliably */
+>> +	ret = phy_write(phydev, MII_CTRL1000, ADVERTISE_1000FULL |
+>> +			CTL1000_ENABLE_MASTER | CTL1000_PREFER_MASTER |
+>> +			CTL1000_AS_MASTER);
+> Is it sufficiently broken that we should stop the user changing it?
 
-Also restore the NULL guard around the retran_path assignment. In the
-all-UNCONFIRMED case there is no eligible replacement transport, and
-installing NULL would leave later retransmit-path users and the debug
-print with a NULL path.
 
-Fixes: 4c47af4d5eb2 ("net: sctp: rework multihoming retransmission path selection to rfc4960")
-Signed-off-by: Yiqi Sun <sunyiqixm@gmail.com>
----
-Changes in v3:
-- Post as a new, independent thread.
-- Drop quoted review discussion and the reproducer attachment claim from
-  the commit message.
-- Link to v2: https://lore.kernel.org/r/20260902025206.phbpyxmpf4zrtdpx@sunyiqi-llm-kernel/
----
- net/sctp/associola.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+Well I must be going crazy because I tested this a second time and now 
+it's working without forcing master at all. I guess when I was 
+previously testing, I must have had some un-resetted state leftover from 
+trying with EEE enabled. I will re-send without this command because it 
+seems to work.
 
-diff --git a/net/sctp/associola.c b/net/sctp/associola.c
-index c0512c827d0f..4521be3bd85a 100644
---- a/net/sctp/associola.c
-+++ b/net/sctp/associola.c
-@@ -1289,18 +1289,19 @@ void sctp_assoc_update_retran_path(struct sctp_association *asoc)
- 		/* Manually skip the head element. */
- 		if (&trans->transports == &asoc->peer.transport_addr_list)
- 			continue;
--		if (trans->state == SCTP_UNCONFIRMED)
--			continue;
--		trans_next = sctp_trans_elect_best(trans, trans_next);
--		/* Active is good enough for immediate return. */
--		if (trans_next->state == SCTP_ACTIVE)
--			break;
-+		if (trans->state != SCTP_UNCONFIRMED) {
-+			trans_next = sctp_trans_elect_best(trans, trans_next);
-+			/* Active is good enough for immediate return. */
-+			if (trans_next->state == SCTP_ACTIVE)
-+				break;
-+		}
- 		/* We've reached the end, time to update path. */
- 		if (trans == asoc->peer.retran_path)
- 			break;
- 	}
- 
--	asoc->peer.retran_path = trans_next;
-+	if (trans_next)
-+		asoc->peer.retran_path = trans_next;
- 
- 	pr_debug("%s: association:%p updated new path to addr:%pISpc\n",
- 		 __func__, asoc, &asoc->peer.retran_path->ipaddr.sa);
--- 
-2.34.1
 
+Thanks,
+
+Caleb
+
+
+>
+>       ethtool     -s     devname    [speed N]    [lanes N]    [duplex half|full]
+>              [port tp|aui|bnc|mii] [mdix auto|on|off]  [autoneg on|off]  [adver‐
+>              tise N[/M]  |  advertise mode  on|off  ...]  [phyad N] [xcvr inter‐
+>              nal|external]        [wol N[/M]         | wol p|u|m|b|a|g|s|f|d...]
+>              [sopass xx:yy:zz:aa:bb:cc]      [master-slave preferred-master|pre‐
+>              ferred-slave|forced-master|forced-slave]   [msglvl   N[/M] |    ms‐
+>              glvl type on|off ...]
+>
+> You don't appear to have a config_aneg, so genphy_config_aneg() will
+> be used, which calls genphy_setup_master_slave.
+>
+>     Andrew
+>
