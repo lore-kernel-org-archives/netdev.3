@@ -1,132 +1,113 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs2-f38.google.com (mail-vs2-f38.google.com [74.125.227.38])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611AC36308D;
-	Tue, 15 Sep 2026 14:08:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0420D3A48ED
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 14:16:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789481329; cv=none; b=SUhM49hi/67ZkYeVIGUsSW2lUptpCp7Zy3GBvp/G8qXonOjvzoeqHazvzGJTbqKJ+3LzezfeUMdMRFXjav7TaCPLH8wsn8fkY08MBDEje35ia+egJ82GXrZJ9rMMeyFqBEIniadN87bK8I9+Q41NMRmI8PLQReIy1J5Ej5TBJmU=
+	t=1789481767; cv=none; b=RQsIShx1LSe2F9gaOQPY9mv14EWJWm/mclAhZdg5OBonFgx4640sVeIICoOA+gIRMjd0NwA6mO9knG/lkutw9lqbtLcLpzZ8RRrW0YcrAcBoP3ULyMA4UFAREQ404muKbAal/z5ToJdSMPGIPdY0OJMAcW0ieBLiWLy7AUbzt/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789481329; c=relaxed/simple;
-	bh=4v6n+xqh5GZs4GinReU0YRNIA+IVQq/XiGYlNXPEvfo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qcHxrkp5Ly08zPqrzoQaNZdBrbC7xuXh0Ynpt+ZrdGZ4/PXGhs0LqAQNZyecsiJe46zMVhmWlxzKmD5VS259Fn2LOFLP4k0oqk4TMlBBId1VVLOUEHi6x0bnhkV2h8tl1N7wT5DqNJdrFT90JEbVrkOZ1gOkHqz5qidCOnsce5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=X+DtQoUk; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1789481767; c=relaxed/simple;
+	bh=fZFg/j3pb6twOqqBfqfH5ANDxZSW/qTsavhnzB5RzzA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bRUc0Zz0jhOGUFblX3hoc43fTR/TF7LZjZ/B2A2ZkjrUfZiAZa51Gc+xft1YamNbA9RVJEPl/vl9lkZHe7S1wi5qYBvx08qzUam+XTznWGPI/tJTLQ1PnNjXSmXVrRU0JaMHO1fiJkYdSl8TAq6Pyd9YhUhDoE7tdJnUSdO7onA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U24A1ncC; arc=none smtp.client-ip=74.125.227.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="X+DtQoUk"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 87AD04E40639;
-	Tue, 15 Sep 2026 14:08:44 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5384F602B0;
-	Tue, 15 Sep 2026 14:08:44 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6880E11C7B007;
-	Tue, 15 Sep 2026 16:08:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789481319; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=1v8WmV1lzmVvxTEijsOq/fqJH2jWLGKp2l9KoEWhH+I=;
-	b=X+DtQoUk58tgwjATpWdhlg3I/XDyP5aatscFgJHmFwtLrjBeAZKIOosjzmuv3VLncgoEWy
-	5wULR1RU4884i6EDzcJIJDOmzddzTcgnPcS+v/gFVVo9kzXXpCRHijfFNVnVfrdmtyUmeI
-	9rgtimCcIYes3PqVMSUbsCCIvV2EpOsGSZUY9z2+WHHiR2y9KTYy4CS0Cx5Wvjwhlg0CvG
-	uo2VsHzFlOjTP0PrbxEG0vXXYP+I84KtsGvEXHJlMui2ivgPd41ou89JyvSLYYlHhf6Up/
-	r3J/7AzSmA2jCSeaf1TaK0Q21HneUgAQOP5Yd6ZsgDs1fa7DbtOnOZqCqKhpNw==
-From: "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
-Date: Tue, 15 Sep 2026 16:08:32 +0200
-Subject: [PATCH 5.15.y] macvlan: inherit needed_headroom and
- needed_tailroom from lowerdev
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U24A1ncC"
+Received: by mail-vs2-f38.google.com with SMTP id 71dfb90a1353d-5c67e2ff27bso1974673e0c.1
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 07:16:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789481765; x=1790086565; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8fJS//1ZgrWfO+Hpg+mD2bvTEqYipgvOVKK1VwTdF1g=;
+        b=U24A1ncCjpfO8XOmtRMh28g2L+lTBAGTlv+QcNj9KFJk68ZIU0Y/Fq0ndUKjPkqNnm
+         1UL0n7benzscYi2KCnQUNbKOptZVb8LXamMrh7fRL1XSUj2ACM0XOaMSe9BXhcx/G3ZE
+         EaXjDGm0Z1wn1xQXtRdFBfy7xVcL8VzqCeS88vKhwoEhIHy2mL1Btxn0GttZrpsWZopF
+         pj17+4hzLKQWnktNdO7gKm3USS/+ALSjOKOjGFqKZ84XKJQfJfXSKvQAQlWAReZ/XZ0w
+         GhFx7GYSA+quru3czgBrLrxMsPEeeMHiWFTncYDa8m3j25X0sogZ1PPrjEc5M9Gh+0dB
+         2AnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789481765; x=1790086565;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8fJS//1ZgrWfO+Hpg+mD2bvTEqYipgvOVKK1VwTdF1g=;
+        b=ekRAtJCUoaOiesmk9sDPKgU6ZnlbEbS9zMRLCm5RJDMMqMLGpQjdR9QGj6Bh0lT3Rq
+         LKO00dJT2TD0NZbqTyoZESqgYtxGBSwstvfBtA+dZxw7LGINE2Iwt4DD0SvdgJQA4b5a
+         jSSaqp5pP9ux+nwfv6wRnA9WHqiw9Os3Tq5a7hNHFw+63IdUCnPwawlHnHb7Ef+YD4ae
+         PjVaRgsHQeLuJLAbB5r+a6CBkOZheinBWjRi4Bfk8Qu8KZd+wp/h44aBqab2QeYo4mVI
+         1+6hRte22hIdf5+n24TO4p4AigdELtd9Eap1xMGbU79SbjiH3aW9TMKZlc5KKttR8JQj
+         Ue/A==
+X-Forwarded-Encrypted: i=1; AKwUvBygwa8+3f6iS+NphmUsOwzf/TK8hLXdsENy1b9g5jn4DASIlVToqGsT3ZSDXQPyTJqqN2bfbfU=@vger.kernel.org
+X-Gm-Message-State: AFuF++nzu51gUeYjbDtpAsxnd3JrBzSBJXyMsDWFcoRJGJIJMRs1woOP
+	SmYwAJmf/C4aRAzA/tkyOHxzhCXysDW2fWZGwM84JToqNDFwXHPpkMbT
+X-Gm-Gg: AYBFou27yM+fzbEJANsYuvzCkP/LwblUYTLBjAEsAT1WacLJhThhilaAlCmd5GB93aq
+	zaLWGXqsZDG8OVdXQuPk7lJH2ElYdv2xiVxO+TzKGDBpw85Dtxdmkb6eeb5ef+JbClAdarUDUc2
+	sqyL3+AtyB+x/EOGVl9nn6sEjOXOYBXVrrgHlB89NENjtOX7K26HF8K0lebTGxp7WdefTawGC0P
+	D+Hex7dAO3njxja7VC1bimWvMe96yLQG6MMP7vaulLfdQbYD9XYFasJz6+5Qm59x3Uc9JSWrXjU
+	upfgtJLPJhgItayakLMY90Ak7FdHEvzJdBAwdCd8GUhIGCsDX98L8KoU8O0IbDKfCoLALEtTery
+	i/b2JteKJFSzrJLvNikPkslnUIVC9zKaWw5LwVhnjW91e/p07AMXDRhLWzEl8xHDuVQTpbKUQOz
+	2R4TPx5QT+hGlMRG2vrr96OW5Qa2Dz52IISJ18zQVMtXZAbMTQ8YtfcU3XzNpGjrMF
+X-Received: by 2002:a05:6122:2056:b0:5c9:82a1:a6a3 with SMTP id 71dfb90a1353d-5c982a1ad55mr8136390e0c.6.1789481764710;
+        Tue, 15 Sep 2026 07:16:04 -0700 (PDT)
+Received: from beelink.. ([187.13.206.89])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5c84716a167sm16029131e0c.18.2026.09.15.07.16.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Sep 2026 07:16:04 -0700 (PDT)
+From: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Aldo Ariel Panzardo <qwe.aldo@gmail.com>
+Subject: [PATCH v2] vsock: ignore empty child namespace mode writes
+Date: Tue, 15 Sep 2026 11:15:47 -0300
+Message-ID: <20260915141547.3010692-1-qwe.aldo@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260915111417.2726515-1-qwe.aldo@gmail.com>
+References: <20260915111417.2726515-1-qwe.aldo@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260915-cve-2026-74743-5-15-v1-1-bacf32f2651c@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMwQ6CMBAFf4W8s0sosG70VwyHUhZdD2haIRrCv
- 1v0OJPMrEgaTRPOxYqoiyV7TBncoUC4+emqZENm1FV9rE6OKSxKO5C00jbElJ2wNF78GAbfI5f
- PqKO9f9cLuHRcftD9fZr7u4bXvsS2fQG2hSJHfwAAAA==
-X-Change-ID: 20260915-cve-2026-74743-5-15-7573a7afcdab
-To: stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, Patrick McHardy <kaber@trash.net>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, 
- Tangxin Xie <xietangxin@h-partners.com>, 
- Hangbin Liu <liuhangbin@kylinos.cn>, Sasha Levin <sashal@kernel.org>, 
- "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789481314; l=2806;
- i=miguel.gazquez@bootlin.com; s=20250708; h=from:subject:message-id;
- bh=JSAEZ6HJlTAJcObiAa6N//lRVUWeIEAORotoJeReHSA=;
- b=bgRDsGyWNa8uQsb9c25jnb8S9g7H/sFC2cv1x/lIl+I6LpRuO+Ud4RLJ99J/IE/jKIoB7QrBI
- HMWLPpiae2OD5uxA5PWo8pYFZK5su+4dkV47cKgmLKI93NXdqbVNfp/
-X-Developer-Key: i=miguel.gazquez@bootlin.com; a=ed25519;
- pk=k/2KI9jkmayaF0ghZ8QYUH9Wm/kFHDhl8QoZ0RHbr4w=
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
-From: Eric Dumazet <edumazet@google.com>
+__vsock_net_mode_string() returns success without updating new_mode when
+the transfer length is zero. Its caller then reads the uninitialized enum
+and may permanently store a stack-derived value in the write-once child
+mode.
 
-[ Upstream commit cef51860becd9700217c81732ca1eb1ea6ed6fe1 ]
+Return before inspecting or storing new_mode when no bytes were
+transferred. This also prevents an empty write from locking the current
+mode.
 
-macvlan devices inherit hard_header_len from lowerdev during macvlan_init(),
-but leave needed_headroom and needed_tailroom set to 0.
-
-When the underlying lowerdev requires extra headroom or tailroom for
-headers/trailers (e.g. macsec, ipsec, wireguard, tunnels, or veth with rx
-headroom), upper layers calculating packet headroom and tailroom fail to
-reserve sufficient space.
-
-This can result in reallocation overhead, skb headroom underflows, or KASAN
-slab-use-after-free crashes when dev_hard_header() / macvlan_hard_header()
-prepends header data or when lower devices append tailroom.
-
-Fix this by:
-1. Inheriting needed_headroom and needed_tailroom from lowerdev in macvlan_init().
-2. Propagating needed_headroom and needed_tailroom updates to attached macvlans
-   in macvlan_device_event() when receiving NETDEV_FEAT_CHANGE events.
-
-Fixes: b863ceb7ddce ("[NET]: Add macvlan driver")
-Reported-by: Tangxin Xie <xietangxin@h-partners.com>
-Closes: https://lore.kernel.org/netdev/CANn89i+1EW-sFNK8xoq98gMbPCeLS7e=+rs9gHfLg5Wj+4x0sw@mail.gmail.com/T/#m16adf0ff972cbfd8066c3a8e656e75eaeb12d021
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
-Link: https://patch.msgid.link/20260806141938.287660-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
+Fixes: eafb64f40ca4 ("vsock: add netns to vsock core")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
 ---
- drivers/net/macvlan.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/vmw_vsock/af_vsock.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index 86a531ffe9fc..c8c1761908c1 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -913,6 +913,8 @@ static int macvlan_init(struct net_device *dev)
- 	dev->gso_max_size	= lowerdev->gso_max_size;
- 	dev->gso_max_segs	= lowerdev->gso_max_segs;
- 	dev->hard_header_len	= lowerdev->hard_header_len;
-+	dev->needed_headroom	= lowerdev->needed_headroom;
-+	dev->needed_tailroom	= lowerdev->needed_tailroom;
- 	macvlan_set_lockdep_class(dev);
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 622dbd0467..816d25b314 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -2883,6 +2883,8 @@ static int vsock_net_child_mode_string(const struct ctl_table *table, int write,
+ 				      vsock_net_child_mode(net), &new_mode);
+ 	if (ret)
+ 		return ret;
++	if (!*lenp)
++		return 0;
  
- 	vlan->pcpu_stats = netdev_alloc_pcpu_stats(struct vlan_pcpu_stats);
-@@ -1769,6 +1771,8 @@ static int macvlan_device_event(struct notifier_block *unused,
- 		list_for_each_entry(vlan, &port->vlans, list) {
- 			vlan->dev->gso_max_size = dev->gso_max_size;
- 			vlan->dev->gso_max_segs = dev->gso_max_segs;
-+			vlan->dev->needed_headroom = dev->needed_headroom;
-+			vlan->dev->needed_tailroom = dev->needed_tailroom;
- 			netdev_update_features(vlan->dev);
- 		}
- 		break;
-
----
-base-commit: 0248c33e835ecbec3a591f93fdaae53f7b90a4d6
-change-id: 20260915-cve-2026-74743-5-15-7573a7afcdab
-
-Best regards,
---  
-Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
+ 	if (write) {
+ 		/* Prevent a "local" namespace from escalating to "global",
+-- 
+2.43.0
 
