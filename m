@@ -1,181 +1,154 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013037.outbound.protection.outlook.com [40.107.201.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D743AAF46;
-	Tue, 15 Sep 2026 12:21:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789474875; cv=fail; b=RmHPYkJlMVYZrtd7chozAjIdI4mWOGHWVrZz+zy9TVvEa1Bm+eNCUbGphwR11Wy8EyKYtgNTm7teg61lkTdOTHQU+Gdxejfpsp81v0YAhFJB+Sd+W9i8zfF8V8liu7FMcwqcZiJ3xKPxNMQpReZclisECbUGGm8n6W0Y6NvWwTc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789474875; c=relaxed/simple;
-	bh=0QVDSO7FJzu0CvpvUeLRj2p/k8a3rvEP035wi6f5cE8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=flQHn+BoEk96AcHZYkPxejN/TQqYVJcTtj2g78pG/zFWfumuOV3CvUvon9akgYjYIQASrt4IUFEdLTXmygOTeya+RIfVCKVHyvzZ09FPWa2lYnsuqtP/RjBxzsNfkURHEIZ2U09RK7xgVLh1WC8/JKc0J5qjSOCorIgOhUPUfl4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=bVpBCslt; arc=fail smtp.client-ip=40.107.201.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D97F3B71AE
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 12:24:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789475048; cv=none; b=k8HMc9c5tXfPe9dgZSd8H5LEKGRLIT0ZGZwVaXNrdSbR6YYfv2ThvEm6BKPsWiceX6a2dlN5n/3pkX39ugvXjSFQVXoUxnASXLbAhtswr1kqbye9PkfoG6PcDS7xRqmoljyAaCMFchAHVbzGY9Jv2vafBQuSI3DAkxBjM4VerW4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789475048; c=relaxed/simple;
+	bh=R/nHfQc/bcze3C4lj/8T0wT3ntxfbJYLiVnjlf3/JGs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fo/PVXPeoDy3cRi/U9J1d9YaKmeDZU/aQspw+klACeomN4CBbFPB+q6sXFF7mNVyIW22YLFEJ4xJ5iB7Oc/ENX/woUKt+aQFK7Nb+mTb3CMPeLndRrj7HBZdZHPKdMYDbZP+lpHXBmE87lmOnmYYmqLqYC//5/rGZmyeYdl2Eds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvz.org; spf=pass smtp.mailfrom=openvz.org; dkim=pass (2048-bit key) header.d=openvz.org header.i=@openvz.org header.b=bk6c3rRV; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvz.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvz.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="bVpBCslt"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ouad9hduJ9QSBthNfu1eT9KhoLmFUnnXqgXMldilkl2ttTzAe/ZdNFg5EkrfoC9P8OAyxfQg/R+XjBY4TgFv5dwYTewTAmJfKp4LyHMSS/QObuiuQT3bRQKv7bYn3ol5dZkMVjQkPhP1gmDessrWXClaUQX0yPIkfniRuBAIbV6zAJ+zfGpW3101EKFnuuQ0/6qsz6LhGFc52bPSYE06ezdgqH4FaM67KSxMlixvard5vYwnOZdL3b4eoT84BGysd15cv0ByuKEPzvCa3mbOPkVTE73noPNN/kcVKdSilQhFLLpq9yfAVosIYWKdSBop2e7NHOO1Wj/v+IgGfx3pNA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=t4TtLOb35mi0gm5IzMXBW5Vaa8ft1s1oIrIvrIJtqxM=;
- b=DLl5Fvp838sQSRkHgvGKOfyeMGRUclZ2Y+s7QTXQPKgo5q6BTfCx4faAm86hv5gEzZApbXdGNPwBpIlvxqsD5gEpivQVNFq+xjb1qZ0/Wn672pswp8s+eyVmGfw8L/BSsdUZMbnF+ZrF1aQt9ndHFylx+RsIpz2tjYuYQxmcxVqL6wb+p+ZrvVhV6FSIGNL+nCtnqxoWNaVpUkkW7xw0neI91xujfWdAZBBJBasf8rWDMg2ZbsY9hrRxTOK+aI/q7e766MI9MBnmvkguSL6rbPDEj7kwo3luj2S8cHUv2vGvcJOK7AKi2YuKDbSNqyMlN1i70bkO2kGDPQMVnzdzLA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=t4TtLOb35mi0gm5IzMXBW5Vaa8ft1s1oIrIvrIJtqxM=;
- b=bVpBCsltoD082KHh7XLqamFyljudLJKKJMDWT+h5+G1yWkY1GnBk0ENDH7B2AZkt4utP532uDs2FcxAMy8hXAMKLinWiEOT+rz8GiVAByAR1cnpPtCxTkNbvYWgQXYTGR4jKRCUhCdIFfxuxpLhPNp1D0+D/OzBsmr0eRlf1FNJZZbh6yYfn3pEHOO9wwPpRCwkutRqsjFhOsPOZrw9N45RC0rlxrVWey8DAu85SUYjGtte1o/mJsfetLlwHY0hqMYQ/BjsejYvAtupRHPGZBrgLZvRlCLAmOvZVu+YQiqTM6qBY46LR3zZrn6uo5C+L1j4//p2b8kaxIz3IXrTBwQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH1PR12MB9647.namprd12.prod.outlook.com (2603:10b6:610:2b0::10)
- by BL1PR12MB5803.namprd12.prod.outlook.com (2603:10b6:208:393::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Tue, 15 Sep
- 2026 12:21:10 +0000
-Received: from CH1PR12MB9647.namprd12.prod.outlook.com
- ([fe80::228c:766a:191d:77b2]) by CH1PR12MB9647.namprd12.prod.outlook.com
- ([fe80::228c:766a:191d:77b2%3]) with mapi id 15.21.0428.008; Tue, 15 Sep 2026
- 12:21:10 +0000
-Message-ID: <e4054f5a-e60c-4253-bccf-d05cc7c615b7@nvidia.com>
-Date: Tue, 15 Sep 2026 14:21:06 +0200
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: mlx5e:zero-prefix corruption during TCP DMA-BUF RX - help
- requested
-To: jiabin deng <dengjiabin2023@gmail.com>, netdev@vger.kernel.org
-Cc: saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com,
- linux-kernel@vger.kernel.org
-References: <CAFxp=AY2cVRQrZvB9WNnigbsobuw11NMG-cagHx0_V+ur2ToFw@mail.gmail.com>
-Content-Language: en-US
-From: Dragos Tatulea <dtatulea@nvidia.com>
-In-Reply-To: <CAFxp=AY2cVRQrZvB9WNnigbsobuw11NMG-cagHx0_V+ur2ToFw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR2P281CA0101.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9c::7) To CH1PR12MB9647.namprd12.prod.outlook.com
- (2603:10b6:610:2b0::10)
+	dkim=pass (2048-bit key) header.d=openvz.org header.i=@openvz.org header.b="bk6c3rRV"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b91369d18so1552535e9.0
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 05:24:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=openvz.org; s=google; t=1789475044; x=1790079844; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=q+zcSg7Pwq9UEUFOofd5bITUlp4qVFA73ui/ymxwgtw=;
+        b=bk6c3rRVlOUmVQcQNzxmxB9hRCQxWvOR8m8mwgznrmVL3YKKH6JPg+1wZlOlWwPMc7
+         BzzwYuZf4cU1f3J6IsPx3fR6RC2WrPBch95SeRed+dT6n7R4lPRlXRRge3XFLCj/mIkL
+         Dn4vxg2Gt7LGhEv6fAAkmTdiYGy3Zb83x4p+wJAW8YYoR6l1PNHMsGCrVwzO1Fx/q8gf
+         irgBXWWCUC14gn650lrQnbkRLcGbk2WhDdsPGdDA4UCR6/BrRMFrlxfyW4f4tYmjgask
+         Ns6h37aevEKBP0rUk4cKof0TRk4BpLHmQBu7MO52nx1Mwx9qLtJU1VTeOeAcdhQ914WK
+         8qMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789475044; x=1790079844;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=q+zcSg7Pwq9UEUFOofd5bITUlp4qVFA73ui/ymxwgtw=;
+        b=erKMrcFxl7sYut2OSp7eABw0YKvysBQkD5sBFuBtcdBb3OBxadZO8/a57kyfmgIfW6
+         mR6nCx3rLETScouG8uau+OtSbFKUl62lpCJ3t+phD+7C+pQ1ocHsXkgTSeyAaLhTpirs
+         QFvCVCGfT6pynOxh7lHuQrjfXfHd1Jq9da0SsNtt8L8a3cG62Go9fren6UGRtuv5h02L
+         VhdXNmNe7dqLy78G/+ICtSIaVeShMltu8hVYCaPBsFdkH7s+gfxrPuELLeoM8hBdb8V0
+         TsbMMsuzvC8MLdISJA2sLMuDYe6SVWLVcGe2rbFjM4j1V/Yba+1f7S2iL9VJaqL2F6fP
+         DAow==
+X-Gm-Message-State: AFuF++nn2HMY/X357j8IB+NxZi93gPm7S8778WdM1sT+5/HhqAT38jM1
+	YK9AhUtCgbAhqstLxSFoOFjh7MTagJXwZ83U2o2/r+eP4p8W1gkehH+jrDycx+J307wEzoD1cv7
+	Rua/t
+X-Gm-Gg: AYBFou1dJNEfh46Yi82aPxiPtZu65vNMjhStnsG8rxH8K8VWQI6BYFDTNBVpJi6Tl/9
+	qBtxw7mTgmfkBIPHZt3RTGGe7uRDYKyCTrKirQooRIcMJqlvXWakzL5BkTd/9QxfyLYrXtvSMEJ
+	N2z3YdFxfDXKqv9XbRIuCeKgC9Tu3wr18bzdr/o1FsQMVOvGyV6f5vH4wf3MLaDmZIsLjM7+SRU
+	REwRtT/J7BLW5T71K/LQ6/AMveXEo672jyQi4MFr9BvR0vYJwo1FuaBrr57QS9RTEnTwgDzO9Uo
+	CY49wCwvl+vFezzxjYFH4Uq3Q9RhWUNeUbSQyXYvvCVIDH7hEthT7rdG5efcaHyr1252AtbBChT
+	OgIqBskMs8TxnZphinRTDHbhxscIg9OB4URQhylj4DYKYOHxsy471BwhZCPAz5xPr2v3PUgwxiw
+	v5ZCVdm3t/bZ33rS48SMGuWNZHbEpET5W823Xmyih+aXYAYep2zzRWCN4XDSCj0HUr1RZg
+X-Received: by 2002:a05:600c:4743:b0:49d:29ab:540b with SMTP id 5b1f17b1804b1-49e8225b594mr14042915e9.15.1789475044562;
+        Tue, 15 Sep 2026 05:24:04 -0700 (PDT)
+Received: from athena.sw.ru ([2a06:5b06:b600:300:33e6:6107:4678:322f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e7ef7eca3sm54080305e9.10.2026.09.15.05.24.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Sep 2026 05:24:04 -0700 (PDT)
+From: "Denis V. Lunev" <den@openvz.org>
+To: netdev@vger.kernel.org
+Cc: dev@openvswitch.org,
+	Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	"Denis V. Lunev" <den@openvz.org>
+Subject: [PATCH v2] openvswitch: fix soft lockup in the netlink flow dump
+Date: Tue, 15 Sep 2026 14:24:01 +0200
+Message-ID: <20260915122401.3910188-1-den@openvz.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH1PR12MB9647:EE_|BL1PR12MB5803:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7f1416c0-b2b4-42b5-f867-08df1323d35b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|376014|1800799024|18002099003|10067099003|6133799003|56012099006|11063799006|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	o9XQNHJFjDLAgY7/kKVyAxrQBzTu2om9mIipulm8AMDNxYMKO0KNecrejOp6yxJula01EWnl14zx7hLNgcGAW3eaZwbn2kmdkTn8S9EPpgHFRY76XpSRXWLioYVUMNPvZ7/+LsPDuk3QcYEaY9xP6s4/XzvWKCAM6vykWUQ4bUlE3GKzhZNhYoGDzWpm3S4GQc1AI0EW28KpsUy7MCrdbMoHp+ISfc8nAoxj4IemMIrr/gMQVUxapukyxwxa4msurQDB8CYbxPOmk1ZQ3BZF5I9PHBBNMrqrmamQ2Zxcjg7ftW3DgTKmmrIhnIAWi8WYFdGdm0AlInRbwYYA5ccpowHykpSP/SfYnW9Asfmg4qrsahSAikcFdmfAN04EwFOzBZ5MMGYIsJmQc89+i3G+EiwFiP2nKnUaxncEbRF3ILm1U10qONYhyAqhgtFFuqen/EZcoRU1+c7Nq2DGbQ7B2dFhK7M3t/ONXlqEGbI/ShYwCC7s+Ra1d95fAxa19SkYR2CF2uOuRbS23sR1cGNpfXQW5xdQhnNFRHgOGGBuT/ddNqcRu+p2A2hjnIDpubmKMwMnqEPXmSum0KVb7Gc+bHctnEi3R3E1U1nLjEJU9T4QD2Dc16mYcDu2+8cYph+gO72utsTPTbTG6fgXS/Wh0yNqocnPm7Y1RWSsIIThP1w=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH1PR12MB9647.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(1800799024)(18002099003)(10067099003)(6133799003)(56012099006)(11063799006)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UGM4cHA0K3ZHZEhnRjM3RnJ2b1NGS0hlODhxL3VMUFVDZmgrdmx4ZE1yNE5O?=
- =?utf-8?B?bXgzUWNpOGZQNXI3ZUF2SWlhUjNsVTVNT2orb09sZEYyMFZnbm5OWFNoL1dy?=
- =?utf-8?B?dUkzVFpzaEI4NEQ3c2FtdE4vM0FWTjZhZDhKYlhFMmY0Y1I2ZFpZd0tkY0Rm?=
- =?utf-8?B?VmltU2grV1NhTU1xQkxHbUpBUWZDZ1RzVkJ5VndEaENUbmJkeStLM0NuMzhp?=
- =?utf-8?B?WldVMENNeHF1eHJTRFp2dys4N2RLUHN4MFA3S3lBaTJ0RklMakc5R2thNVdV?=
- =?utf-8?B?dGRnNWlqV3VzL0xXWUw3UlIvVmJSVS9maWNUWWMzOXNLc1h6dkZZbDRpekRa?=
- =?utf-8?B?S3hjQ1pJUWplbHRoWVBITnQwZ0dXMEN2N0ZYbEl0QmRoYkFsZEFXbTcyS052?=
- =?utf-8?B?eDJnZGMyVEdxd2crYWM1Q1NZQ29XZFlDN0llbTFINXRtRUVmTUh4c3Fuc2xM?=
- =?utf-8?B?M2JGNDl0VjUrclN2czRobjFEM0I1Tzc0QTBtOXBUTUtUcVlQT2MyYloxZHRS?=
- =?utf-8?B?SElHNW1IbDhVTjZIc1NGMGhSZDhaM1Z6ZDdDSnVGdHpvdy9VWFlzUzd6RXdr?=
- =?utf-8?B?YVo1b3Raby95WnFaQlNCVWFQZ0tkNnA2MzE2bFJkVVd5dmlMT1FncGZXRzVh?=
- =?utf-8?B?NmlqNVpNMTUzZk1lUW9RUHl6MW40amxVdE9sU2krMlpIWXhOWUtZQ3BlczBu?=
- =?utf-8?B?UHczTmEwalYrUTJ6L2MyYnlVbDM4SllMRzBEOFF5L1ZsNzdEZHUwOUszYVpR?=
- =?utf-8?B?ZUE3bGVPMzVzcGNBOVJnNWxVSW85WFo3dWZaKzh6MTNNamdOR0NPTFMvZlNH?=
- =?utf-8?B?NEJoTXhGdGx2L2FNOWtORTVEZVNhTXcvd2hRdGJnWjhoNDBncEU3Y3BKS2U4?=
- =?utf-8?B?elpJNjRYVXptYTBBL3NPQThOeTJVTGRvcUVzRXdxRFZycnVNeUNNZi85Z0pC?=
- =?utf-8?B?Yk1wcWFlcll1WGZwKzhoYVBYbUpkU3lMZXJHL2NDR1U1MFRsVzdRUmRSVVAw?=
- =?utf-8?B?ampFUDFPOHZUUXZJVE5tTXE1eEZCNldpcFU2S1VTNmg4Tkc5QXEyL0ZicTNj?=
- =?utf-8?B?RHdBK3hudDdpblpJQ1hoL2FFYS9RYUR0VmFGaG16Y29SNHJKZlFCYlB2cXZO?=
- =?utf-8?B?QXpyRlVybFNFK0YvK1p4Q2I2dkhRRk9CN1lKU0pPSHNwNVRmbXZlY3liaGtJ?=
- =?utf-8?B?YnRsMDJUOGJqVUVFYXpSaEZGdG80cnRRSFBTeDFML0VaVEdIb3VvM2hMTkhn?=
- =?utf-8?B?VHg5TGcxNW84WkZjWWE5dEtzNzVyQ3NzeXlxa3VtZEkxQ2VPeURFS2xPczlm?=
- =?utf-8?B?UnpNVHBzS3ZsL1lVMjJJemhHQ1lLZUtnM2YweDVtTmlaVGVQTnhxamgrZ2h5?=
- =?utf-8?B?Yzg5dFRISTE5SGN5R3lCamt5U2pYNmRRd042ZUdjQWc0NW11TU1xOSs5U1ND?=
- =?utf-8?B?Z04rYkdlRUJXaVhKSVp6aHB1U3Yzb3ROT3g5MW04TjdDOFVCZEtNdStkdkt6?=
- =?utf-8?B?OVp1YUI5WEFjYmMxRXRnYVRPUGgzSnJjMzU0MzFvQkpDMDJUWlh2ZFlJMDZr?=
- =?utf-8?B?dTJwcVJtV1FuRG9BRmpvcjJVOFF2cnZxVWJQdzkzV0VPMXR6bDF2cVB2L2g0?=
- =?utf-8?B?WlF0RDlVc3dWNVpJOTB4cDcycll1Y21haUd1UXVkME9KcDZ3eEJpWHBlSGVJ?=
- =?utf-8?B?dXZEUThFUkhHbDZtQTN3aFY4ejk1bk1CMzUxUGZuUytxM3pxSjFOVUtWRGIw?=
- =?utf-8?B?M2JXNGxKQTFyd0lqSlRQa1NlQzJ1Tm5HTVY0T2JKenlXaEhaZVBWWmVuSU5R?=
- =?utf-8?B?ajMwc1NTRmtPTnZCZkVhZkQ4bHNoWjBZK3NHUWViQURvblNMV1BVMjVVajU3?=
- =?utf-8?B?YnVYUUoxNDVad2dNc1FVM0hTdXdsNkx0cFdVU2FhSXVJcDEvdXdYc01OU3Zp?=
- =?utf-8?B?QmE4WUpIL3NhRVBhWkx4VXF3eHZRc0FxNkl0dWNWVVFuMHdjeFo3d1dqY0Jy?=
- =?utf-8?B?cXNDM3BFOFU0VWZuQUtiSm5TdDNVMjZsejNXUytuZXJPWm0rbEhpclBEbTZw?=
- =?utf-8?B?bjlXSEhyNk9ZVnFlWWlrcnJqc0pkMEljVVFNME8yM3RtNXhpQkJURjRQcDYr?=
- =?utf-8?B?YTlPU0FiRzFqZVlyOWw4Z3duUGpoRVNtTUUzYUhENnZmTkFBYlRyRWZzdW9D?=
- =?utf-8?B?K205bXA1YnRhNktUd2JvZHBzMjF6UVN2NjBoL1hQbExuUkRrOG5BM1o1ODhp?=
- =?utf-8?B?cEErbFV6UmtnbUJzZ256SnJNV3NPSFVWOWZUNXc2RnNNZEtnSWZ0dzdIdlFk?=
- =?utf-8?B?bDdmUmUzOU12RlF4Mm9uUjN0Ym9SdHExZDlKSEdJSEdzQnk3K2lsdz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7f1416c0-b2b4-42b5-f867-08df1323d35b
-X-MS-Exchange-CrossTenant-AuthSource: CH1PR12MB9647.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2026 12:21:10.2748
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6YA7uYtIm9YdbD0BX/8dJhudxYAho8AjcCKrulh6WdPEscb0jb/Gxlr/1lSamCIP5lUIN7//s6aCpSPxWsBMMg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5803
+Content-Transfer-Encoding: 8bit
 
-Hi Jiabin,
+From: Denis V. Lunev <den@openvz.org>
 
-On 15.09.26 03:49, jiabin deng wrote:
-> Hello mlx5e and networking maintainers,
-> 
-> We are investigating reproducible data corruption: with SHAMPO enabled,
-> some TCP data is corrupted when received through mlx5e directly into
-> CUDA-exported GPU DMA-BUF memory.
-> 
-> The full expected number of bytes is received, but the prefixes of some
-> payloads become zero. The corrupted ranges end exactly at the next
-> 64-byte boundary in GPU memory.
->> [...]
->
-> Each iteration uses a new TCP connection. Test connections do not run
-> concurrently.
-> 
-> Observed results:
-> 
-> We tested eight message sizes from 32 KiB to 4 MiB, with 50 iterations
-> per size:
-> 
-> - 400 iterations completed.
-> - 354 iterations contained at least one corrupted range.
-> - 20,707 corrupted ranges were recorded.
-> - All recorded corrupted ranges were zero-filled prefixes ending
->   at the next 64-byte boundary in GPU memory.
-> - Corruption was present in both snapshots, before and after the
->   explicit GPUDirect write flush.
-> 
-> A specific example:
-> 
-> - Packet payload length: 1448 bytes.
-> - Offset of the first payload byte from the start of the GPU buffer:
->   2149169912 bytes.
-> - This byte offset modulo 64 bytes is 56 bytes.
-> - First 8 bytes: zero.
-> - Remaining 1440 bytes: correct.
-> 
-This sounds a bit like the ethernet padding issue that was recently
-fixed [1]. Did you have this patch when testing?
+A production compute node carrying a few thousand datapath flows hit a
+soft lockup inside a single netlink flow dump and panicked.
 
->
-> [...]
->
+ovs_flow_cmd_dump() calls ovs_flow_stats_get() for every flow it
+emits, and that releases stats->lock with spin_unlock_bh() once per
+CPU that has touched the flow. Every release is a local_bh_enable(),
+and each one runs the pending softirq backlog in the dumping thread's
+own context.
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit?id=e2466392a0b8496000e12181cb1ee1535eb0da25
+The skb bounds how many flows one callback emits, and a large but
+sparse table adds only a walk over empty buckets, so no dumper carries
+a budget of its own. Neither bounds the softirq work the callback
+absorbs. On a CPU that carries the box's packet load the backlog
+refills as fast as it drains, so the dumping thread becomes that CPU's
+softirq engine. It never sleeps and it has no reschedule point, so
+under voluntary preemption nothing can take the CPU away from it:
+neither the ksoftirqd the kernel woke to take the work over, nor the
+stopper thread the softlockup detector dispatches to refresh its
+timestamp.
 
-Thanks,
-Dragos
+Hold BH off across the whole callback instead, the way
+ctnetlink_dump_table() does, so the nested spin_unlock_bh() stop
+draining softirqs. The loop already runs under rcu_read_lock() and
+cannot sleep. What it gives up is preemption under CONFIG_PREEMPT,
+since a BH-off region is not preemptible outside PREEMPT_RT. That
+region is bounded by the skb and the table size, where the softirq
+backlog it used to absorb is not.
+
+Signed-off-by: Denis V. Lunev <den@openvz.org>
+---
+v2:
+- leave ovs_vport_cmd_dump() alone: nsid_lock has not been BH-safe
+  since commit aed4969f2bdf ("net: net->nsid_lock does not need BH
+  safety"), so the vport dump never drained softirqs
+- disable BH before the table dereference and say in a comment that
+  the region is not there for safety
+- drop the ovs_flow_stats_get() history, note the empty-bucket walk
+  and the lost CONFIG_PREEMPT preemption in the message
+- move the Cc list out of the commit message, add the net prefix
+
+ net/openvswitch/datapath.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
+index 631a03136fa1..a80bac81c043 100644
+--- a/net/openvswitch/datapath.c
++++ b/net/openvswitch/datapath.c
+@@ -1532,6 +1532,11 @@ static int ovs_flow_cmd_dump(struct sk_buff *skb, struct netlink_callback *cb)
+ 		return -ENODEV;
+ 	}
+ 
++	/*
++	 * Not needed for safety. Stops every spin_unlock_bh() in
++	 * ovs_flow_stats_get() from running the softirq backlog here.
++	 */
++	local_bh_disable();
+ 	ti = rcu_dereference(dp->table.ti);
+ 	for (;;) {
+ 		struct sw_flow *flow;
+@@ -1552,6 +1557,7 @@ static int ovs_flow_cmd_dump(struct sk_buff *skb, struct netlink_callback *cb)
+ 		cb->args[0] = bucket;
+ 		cb->args[1] = obj;
+ 	}
++	local_bh_enable();
+ 	rcu_read_unlock();
+ 	return skb->len;
+ }
+-- 
+2.53.0
+
