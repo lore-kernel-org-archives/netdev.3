@@ -1,70 +1,244 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F1842BC43;
-	Tue, 15 Sep 2026 16:08:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756EE41A4E5
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 16:09:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789488530; cv=none; b=Oq6yigFoQE2DkCJarFVB+D+Fykbq8LCvQOAMItqLv0N+epVhGssI3MXl3okYRqi0BTOu+5atBZTzGZ5OIhdOBSHETxiKW0Ir4aoT0XKtili7M+ZB1XxNxpFoGs3ZNm5lX6H9ZyRqCNP16vaSJ/bl5qhsvnk130DMAKDKw89vJbc=
+	t=1789488569; cv=none; b=YW/CepBQadYPh83a9+6br19vGjILx3kW3TdkqHfiPBfvezB3c0AVsb2lUszKjGLK0LRGDxH5zrPQIKiST4sFAldc0sJTeisFLqgE4IcfqPUa2pOEcSARzIsDtKgq0BHHmrRbRgbWu/E2efqlykGSXUAawuJ5lWMRMiJWWEPsR5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789488530; c=relaxed/simple;
-	bh=C/usodZ/rL00N7obJgCC4jFta8AalHdWTyUXeUYcmvI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bpJJO2JaBVuA9vrT9fONwtap2hJUR0ieF4vg8+sdIX2we8Ij/zC1YxpLtRJplSSzvoCMMPWVrco2wXCRVPMoY3w9i7eDjtmBbaO+lKxsdaqv/Z/E4WA3sjxQqHxCP4Axmp/KISRP07GFzj6dXJG1Y8Cj94Ntqlf3lV7DB6PEN3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=g6jaHlNG; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1789488569; c=relaxed/simple;
+	bh=p9P7kYzSh3SbjB0vQ6ROZ0Hb+PYQpcKTdHSqF3/h/1E=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=TTq6tS8/sQ8dFnsXSjflBvGh3O4mUqZmSYmIy27r/iF9ndVOZ0/qouFWBOTMpv+Z7jqWDfuZYx06uHXSHwHB/3W1R5Hf7LUYehmjnW93oUOMy/tELaUPcXC+ADEMBfmsYcNMkTaMFpheRB89Gnl2JP07SXXFsOW5RX6w6Cx9/ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mwGUt+Zs; arc=none smtp.client-ip=209.85.214.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="g6jaHlNG"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=6ahlJLNA/H3ZAXfkZzlkdf2AY1eLbDRCPd8g1GK93gI=; b=g6jaHlNGgjVITTT8J2te6I089w
-	PvRnB6NbQGPNC+YjHRdgMlyf152Lcs1JD4E1iHkvSpG6yv0Bfcwv0Sfn8DklKjr3y6T1K5tdn73xV
-	IY3i8la6VXhp/s7UL6OkoBP1Mh+tbqKr+wfsldpDh3En5PttVHUtBfAleGBPLXqFbgio=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x6Vi4-005JH2-A6; Tue, 15 Sep 2026 18:08:40 +0200
-Date: Tue, 15 Sep 2026 18:08:40 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Myeonghun Pak <mhun512@gmail.com>
-Cc: Michael Grzeschik <mgr@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net 1/2] net: arcnet: com20020-pci: clean up failed
- channels
-Message-ID: <92cbc37a-833e-4369-b5ff-4199dbefce6e@lunn.ch>
-References: <20260915013946.73963-1-mhun512@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mwGUt+Zs"
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2d6df0a1e18so89876695ad.1
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 09:09:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789488566; x=1790093366; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=8Sn4QXU5DeLhNiD9gxKV86tuuXX6fexObvLyuo9X7U0=;
+        b=mwGUt+ZsJ+ZJqxFbysZIygU2UiTSHZy+uXcvTrNVtRXAvQo9Q3sV7dpIesr+ZwBEw+
+         3scD5uXyS498WxISeZU++tTW08fQMa3PzF/H6489Ya+ySxWiplNxgjLjD0SygSMAYrdf
+         iZQRf/SskbzFLtC9u1rDgxYrL/PLZ0NCQPKGuAzQK3WCXwkmgfc7M1+rQsQqs/7ozlzs
+         s0I660M35Lu2+Ob9waDLaf4+scrzKQxyq3qOkJdwUOcZHCZmApsdluyB0dtvhlkVa1TY
+         eHhmAS6cx6wS6DaJ6nrCgjapY2M4SrrFCPPtq+dg+jctzYudsZvuHyOTxaSoDCj7wA7/
+         B7lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789488566; x=1790093366;
+        h=content-transfer-encoding:content-type:cc:to:from:subject
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8Sn4QXU5DeLhNiD9gxKV86tuuXX6fexObvLyuo9X7U0=;
+        b=ZqoCQSr6JEi77SzbkoCTVl076SICYcqrZ+ODaKwtxgQ/Q3f06A9mmcg90AMKoyHvXE
+         wefScE13DRUMxWgsXipZnQBwFzpPrsqg2z4liaOWfAgXqo4y2wmDQcAIIE+zXWnh3IgW
+         xhIp90AMx3b5MatUOtExpoDg6IpOiawYLqzd/+jyhMGrwQux6FcM93mdVC7GaiGnS4T/
+         QisGFsMWYJaD0c14vObsW3P0AVhmlF7s+4nN3w0Q4pnEbwjZXP11/FbirUbmCDbITnb9
+         pXcJaA6wq7l+Ah2jZnhAAf92lNNGRJTzloF8FLjEqSTwxITSwZQf1i7FOZJt5iJazRif
+         qIVA==
+X-Forwarded-Encrypted: i=1; AKwUvBzKd1fb+WheLbitQnLcObsfNZZAiOWnGE3eCouYbF5N1/iIXaZJsm7gdhPqWLcDfnXcVVMqjCM=@vger.kernel.org
+X-Gm-Message-State: AFuF++krq+CJZi5LaheNu2SIZd14KCN8L/djEzXvZKFmlI2OvEQKDbqf
+	vKpq6fEfpYU8d3OkPzL5Ttzk+MIhpB1mH+fLLzqzVwqlq4J33Uh/wdcLEs1+RSizBUqv4JSLmWc
+	lG5Q71Q==
+X-Received: from plbmm8.prod.google.com ([2002:a17:903:a08:b0:2db:6055:260])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:19e8:b0:2db:2c09:98ad
+ with SMTP id d9443c01a7336-2dd6c6dbcbamr182682915ad.12.1789488566398; Tue, 15
+ Sep 2026 09:09:26 -0700 (PDT)
+Date: Tue, 15 Sep 2026 16:08:00 +0000
+In-Reply-To: <CANp29Y7hm+ehJ4+whyBtRtDMUcGXH=ee6aCrFMAMWL9k-G8ZJg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260915013946.73963-1-mhun512@gmail.com>
+Mime-Version: 1.0
+References: <CANp29Y7hm+ehJ4+whyBtRtDMUcGXH=ee6aCrFMAMWL9k-G8ZJg@mail.gmail.com>
+X-Mailer: git-send-email 2.55.0.1032.g73a4cd73de-goog
+Message-ID: <20260915160925.2611036-1-kuniyu@google.com>
+Subject: Re: [PATCH v3] net: track raw dev_put()/dev_hold() usage under CONFIG_NET_DEV_REFCNT_TRACKER=y
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: nogikh@google.com
+Cc: dvyukov@google.com, edumazet@google.com, kuba@kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, penguin-kernel@i-love.sakura.ne.jp
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 14, 2026 at 09:39:45PM -0400, Myeonghun Pak wrote:
-> After com20020_found() registers a netdev and requests its IRQ, seven
-> allocation or LED-registration failure paths free the netdev without
-> unregistering it or freeing the IRQ. The unfinished channel is not yet
-> on list_dev, so the common remove path cannot clean it up.
-> 
-> Route those failures through unregister_netdev() and free_irq() before
-> free_arcdev(). Keep failures before successful com20020_found() on the
-> existing free-only path.
-> 
-> This issue was identified during our ongoing static-analysis research
-> while reviewing kernel code.
-> 
-> Fixes: 6b17a597fc2f ("arcnet: restoring support for multiple Sohard Arcnet cards")
+From: Aleksandr Nogikh <nogikh@google.com>
+Date: Mon, 14 Sep 2026 20:48:52 +0200
+> On Mon, Sep 14, 2026 at 1:44=E2=80=AFPM Eric Dumazet <edumazet@google.com=
+> wrote:
+> >
+> > On Mon, Sep 14, 2026 at 3:24=E2=80=AFAM Tetsuo Handa
+> > <penguin-kernel@i-love.sakura.ne.jp> wrote:
+> > >
+> > > On 2026/08/29 23:58, Tetsuo Handa wrote:> syzbot is still reporting
+> > > >
+> > > >   unregister_netdevice: waiting for DEV to become free
+> > > >
+> > > > problems. There is netdevice_tracker which helps identifying culpri=
+t
+> > > (...snipped...)
+> > > > ---
+> > > > To: Eric
+> > > >   Please see off-list mail <e2f7c53b-fe15-4047-8149-145c91de297f@I-=
+love.SAKURA.ne.jp> .
+> > > >
+> > > > Changes in v3:
+> > > >   - Repost as v3, as sashiko's review comments at
+> > > >     https://sashiko.dev/#/patchset/56c707e7-1fb0-43ec-b8fb-cf6f451e=
+513e@I-love.SAKURA.ne.jp
+> > > >     was addressed. I assume that no more technical problem remains,=
+ and only how to split
+> > > >     this patch into several patches for getting approval from relev=
+ant subsystems remains.
+> > > >
+> > >
+> > > Sashiko did not find problems with this version
+> > > ( https://sashiko.dev/#/patchset/271af679-34c1-4f7e-875c-4761c22595eb=
+@I-love.SAKURA.ne.jp ) .
+> > > Any questions?
+> >
+> > I am adding Dmitry and Aleksandr to Cc, because I think the best answer
+> > to your problem is not a netdev one. More on this below.
+> >
+> > First, sorry for letting this series sit for three rounds. You are one
+> > of the very few people actually chasing the "unregister_netdevice:
+> > waiting for %s to become free" reports, that work is not fun, and
+> > silence is not the answer you deserved.
+> >
+> > Let me also say clearly that I do not think the approach is bogus. Once
+> > a reference is taken without a tracker, there is no slot to store a
+> > cookie in, so counting +1/-1 per unique stack and looking at the balanc=
+e
+> > is essentially the only thing one can do. And 10 bugs fixed is more
+> > evidence than most debug facilities come with.
+> >
+> > My problem is the cost/benefit for mainline. This adds a field to
+> > struct net_device and code to __dev_hold()/__dev_put(), which are inlin=
+e
+> > and expanded in thousands of places, in order to produce information
+> > that is strictly weaker than what ref_tracker already gives us (a stack
+> > balance cannot tell which hold was not released when the same call site
+> > does both). It is a workaround for an incomplete migration, and we woul=
+d
+> > be carrying it forever. Even with a perfect implementation I would be
+> > lukewarm, and I would rather tell you that now than stay silent again.
+> >
+> > But you should not have to wait for netdev consensus to get the data yo=
+u
+> > need, so:
+> >
+> > Could syzbot run a dedicated instance on a branch carrying this patch?
+> >
+> > There is precedent: KMSAN lived out of tree for years with its own
+> > syzbot instance, and that is exactly how it accumulated the evidence
+> > that got it merged. Your real requirement, as I understand it, is not
+> > "this must be in net-next", it is "the mechanism must be present in a
+> > tree that syzbot builds", because the remaining bugs have no reproducer
+> > and #syz test is therefore unavailable. A dedicated instance on, say,
+> > linux-next plus your patch would give you continuous coverage on exactl=
+y
+> > the bugs you cannot reproduce, immediately, and without anyone having t=
+o
+> > agree first.
+>=20
+> Normally, syzbot fuzzes kernel changes across different environments
+> (qemu, various gce machines) and architectures (amd64, arm64, riscv),
+> but adding just one dedicated instance, which would get much less
+> compute than the rest of the syzbot fleet, IMO offers very little
+> benefit over just casually running syzkaller locally.
+>=20
+> How to organize this is also an interesting question. Applying the
+> patch on the syzbot side would make syzbot show non-existent commit
+> hashes in the reports. If there's to be a separate branch/tree that we
+> would fuzz, it really must not lag too far behind linux-next/torvalds
+> - the community is very annoyed by outdated reports.
+>=20
+> Speaking of the absence of reproducers, I think we should start by
+> cleaning up the existing open bug:
+> https://syzkaller.appspot.com/bug?extid=3De2af46126e0644cbebdd
+>=20
+> Currently, it is an umbrella for many different crashes accumulated
+> over many months. It also has some reproducers; some were even found
+> recently. If we keep closing this bug after fixing the root causes
+> found by the open reproducers, syzbot will keep on discovering and
+> reporting new ones even without an extra debugging patch.
+>=20
+> A small related question: should we report it per-device type, like
+> `unregister_netdevice: waiting for netdevsimNUM to become free`,
 
-I think this tag is wrong. Please check it.
++1
 
-	Andrew
+I think this is the major reason why we slowed down netdev_hold()/put()
+conversion at some point.
+
+After Eric converted the core code and first-class drivers, I remember
+I always saw the reports were dominated by can and vcan, which we
+usually don't care much, and I gave up finding an interesting one.
+
+
+> or
+> would that only create duplicates, and it's better to keep everything
+> in one bucket?
+>=20
+> >
+> > It is not free for you: you would own the branch and the rebases. But i=
+t
+> > also turns the discussion around. If the instance produces a stream of
+> > diagnosed imbalances over a few months, the case for upstreaming become=
+s
+> > an empirical one rather than a design argument, and I would find it muc=
+h
+> > harder to object to.
+> >
+> > Dmitry, Aleksandr, does that sound feasible?
+>=20
+> Tetsuo, based on historical experience, how many issues do you expect
+> to detect this way?
+>=20
+> I can imagine setting this up as a short-term experiment, but I still
+> wonder about the benefits of having it specifically on the syzbot
+> infrastructure.
+>=20
+> >
+> > If you would rather still pursue mainline inclusion, here is what I
+> > would need, roughly in order of importance:
+> >
+> > 1) The per-call list walk has to go. Today every __dev_hold() /
+> >    __dev_put() walks a per-device list doing memcmp() of up to 160 byte=
+s
+> >    per node. With a few thousand distinct traces on a device, that is
+> >    hundreds of KB of memory traffic per refcount operation, and it gets
+> >    worse precisely on the devices you are investigating. I suspect it
+> >    costs much more than the stack_trace_save() itself. stack_depot_save=
+()
+> >    gives you a handle, and a small hash of { handle -> atomic count }
+> >    makes this O(1), removes the 6 MiB static array, the global raw
+> >    spinlock, the sticky "exhausted" flag and the dedup pass at dump tim=
+e.
+> >    Ideally this lives in lib/ref_tracker.c as a "count only" mode, so
+> >    other ref_tracker users benefit and net/core/dev.c gains a few lines=
+.
+>=20
+> FWIW there were any stack traces in the reports at all, syzbot's AI
+> repro generation (which we are piloting now) would already be able to
+> kick in and generate reproducers even if syzkaller fails.
+>=20
+> >
+> > 2) Do not overload CONFIG_NET_DEV_REFCNT_TRACKER. People enable it toda=
+y
+> >    expecting the cost of one stackdepot entry per tracked reference. A
+> >    separate option (default n, depends on DEBUG_KERNEL), ideally behind=
+ a
+> >    static key, lets them opt in knowingly. Some numbers on the slowdown
+> >    would help too.
+>=20
+> Upstreaming it under some separate option would be the best approach
+> for syzbot - we could then just enable it on all our instances.
