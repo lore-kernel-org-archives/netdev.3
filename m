@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B0A4B2038;
-	Tue, 15 Sep 2026 22:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8B94BD7A8;
+	Tue, 15 Sep 2026 22:57:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789513067; cv=none; b=NpiOZfZZVtCZftAgOpY6DJKw3JjzbhBzlnf3w5pdvPSciJc4Fz8aOQYB4W02YSWb43+KaTQX9CUVanzLdcnSUSA1Z4c7AVTwDxLuHfgjX9s8q/uaBdTeqE9WvzelUfhU8bLj/ckpYaRf1P9Cqs9Yzf/CT3d8gM1enorzD5pXZFM=
+	t=1789513067; cv=none; b=ptpO5ojLogG0b/gA00pJYQWcjIeRRGIEcZLPn53OAtSidtZ8TtEjV70YOAEge52ds1J7IZ+iC5V5FYyhYvEuifcduyhCro7MtbkJt855gYL7UbaeJtH2a+GW4wr44UnZVXcH17QNfMoixNjavczLIyLG8Di5832xqq4hYRwIBAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789513067; c=relaxed/simple;
-	bh=BgvX9jrbueN5Rm/tJdbmgfwE8emytchohzujjQY0AhQ=;
+	bh=eiLJHJUpHDNsyvfYWF635kM1t5fIgWpFmztseQQGrm0=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ZEZlgd0fOLbUMk7hRlbIgOTssLNNJRnpuEQ8lfMVjuqpz1W6XOUOOlMz2R/LCBvhGO4XoreWOsufWd+bD7hi5J/3mUJ22zWQRHba15j8kH00dR3escz9nrxSQGyc3eEF7i1aOoOxN0zXt7zj7qS5ewRm1NdIOWF4+WZaKFVc9Qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S24GzRbT; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=LXMcBw7gT55TclJYhzMLs0l7QWlVlSsnJ+rgjLe1oAfqmPJpgf1MS62gDKKfqqM07VZZZ6CDyHt/PDg/2D7uCQ42Vj1ypSjDnldJksE+2Elph6yoGuexXchlVY6PhRhO3OPsNyJpZ0iStb07DBegpRTTHISp2heLB3DiF/WYTLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MtOSNRSX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S24GzRbT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2EF51F0089B;
-	Tue, 15 Sep 2026 22:57:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MtOSNRSX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1561F00898;
+	Tue, 15 Sep 2026 22:57:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789513065;
-	bh=0FAZDEJWUBcgNu/tPczl9wmWS8AZOsh/q/XmmRGLteo=;
+	s=k20260515; t=1789513063;
+	bh=a/6cwh2cspRrRFf8wyVmMORT5BamXKXoug79Q0AFHXk=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=S24GzRbToMjIREYN7CTuFayZ3MdlQGU1gjJGSyh5EooimK+kn8RtVxQgrlJc2Jfz1
-	 JF7RL7LZrfelEjr01cdVaR9HToX8quKqL35rXefUFLC6CePgsRmnUvJME/Vy1JdW1t
-	 4f7NRGgzgihqYYri2jAxzfipA0Xv3pWTEmY/5O8jvXuft/3/dfAv0w6iW+zsvmYb2L
-	 gxcy4dbL3p8rj7lPkIm2Ad4WtyZgykT0ojUGT/RiWQGshvvLgrfM74i+j60/7+koyp
-	 1qqplDBsLNgGqFm2DdEJfZSJWV6SOSdwGm2JdvKzP965pnNVeDDvQQTuf+ZGfJP+fK
-	 12HxHlC7m4bMQ==
-Subject: Re: [PATCH net v10 11/14] afs: Fix creation of RxGK CM channel token
- to have right size
+	b=MtOSNRSXAOHJjIkMoWknarGD6xdxkKoh1FqLSGo42kE9frRqhSuuJfktkiWHLFYcJ
+	 fhMcwPW2DlT86ZfaWayXdsAwfQNzuetE/6VigXoEvbt7mV/nT+BQ3gvMBv0GkOMZ62
+	 UxAt33sUj1FdCh0PcHWkO6TMOU0es1J/p6U0tWzLDuIqEf8Llj3CFeuu5SGFIfjzLC
+	 PppgIRsVInIbAJrcgwh9Xtp2BzPMQh9vfWx3768OjSZhxUCMxy5HhTU5ok+GV07gcx
+	 fGREcop1TYHI+ti+OaQMktcasLFsOHM7FwI9wzIoejXoFIspfYpMasZU4WOIigarZL
+	 NOeKt/TabuNmg==
+Subject: Re: [PATCH net v10 09/14] rxrpc: Fix generation of notifications
+ after call completion
 From: netdev-bot+sashiko@kernel.org
 To: dhowells@redhat.com
 Cc: netdev@vger.kernel.org, marc.dionne@auristor.com, kuba@kernel.org,
  davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
  linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org
-Date: Tue, 15 Sep 2026 22:57:44 +0000
-Message-ID: <178951306451.22033.10200734629950838825@kernel.org>
-In-Reply-To: <20260914151340.3227501-12-dhowells@redhat.com>
-References: <20260914151340.3227501-12-dhowells@redhat.com>
+Date: Tue, 15 Sep 2026 22:57:42 +0000
+Message-ID: <178951306222.22033.8453547695665314169@kernel.org>
+In-Reply-To: <20260914151340.3227501-10-dhowells@redhat.com>
+References: <20260914151340.3227501-10-dhowells@redhat.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -52,92 +52,162 @@ issue(s) to consider:
 
 Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Medium] Commit message gives a factually incorrect impact analysis for
-  the bug it fixes.
+- [Medium] Undisclosed behaviour change: the new helper
+  rxrpc_requeue_call() (net/rxrpc/recvmsg.c:24) drops the `sk->sk_state…
 
 --
 
-afs: Fix creation of RxGK CM channel token to have right size
+rxrpc: Fix generation of notifications after call completion
 
-This adds the missing 4 bytes for the RXGK_Level field to the toksize
-calculation in afs_create_yfs_cm_token(), so that the size of the
-blob-to-be-encrypted matches the number of bytes actually written.  The size
-arithmetic installed by the patch looks right; the question below is only
-about the impact analysis in the commit message.
+This splits rxrpc_notify_socket() into __rxrpc_notify_socket() in
+call_state.c plus a wrapper that skips notification for completed calls,
+and adds a lighter rxrpc_requeue_call() helper used by rxrpc_recvmsg() to
+put a call back on rx->recvmsg_q without generating a notification.
 
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824091645.415423-1-dhowells%40redhat.com
+> diff --git a/net/rxrpc/call_state.c b/net/rxrpc/call_state.c
+> index 6afb54373ebbf..52465e88a0440 100644
+> --- a/net/rxrpc/call_state.c
+> +++ b/net/rxrpc/call_state.c
+> @@ -7,6 +7,61 @@
+>  
+>  #include "ar-internal.h"
+>  
+> +/*
+> + * Post a call for attention by the socket or kernel service.
+> + */
+> +static void __rxrpc_notify_socket(struct rxrpc_call *call)
+> +{
 
-> afs: Fix creation of RxGK CM channel token to have right size
->
-> Fix afs_create_yfs_cm_token() so that it calculates the token size
-> correctly, remembering to add in the 4 bytes of the level.
->
-> As it happens, this bug has no effect because crypto_krb5_how_much_buffer()
-> rounds encsize up to a multiple of the crypto block size (16 or 32) before
-> adding on the checksum size - and so there's actually 8 bytes of unused
-> space allocated within the blob-to-be-encrypted and 4 bytes of that gets
-> used.
+[ ... ]
+
+> +	rx = rcu_dereference(call->socket);
+> +	sk = &rx->sk;
+> +	if (rx && sk->sk_state < RXRPC_CLOSE) {
+
+[ ... ]
+
+> diff --git a/net/rxrpc/recvmsg.c b/net/rxrpc/recvmsg.c
+> index 56fa324d0962e..22afc71ea474f 100644
+> --- a/net/rxrpc/recvmsg.c
+> +++ b/net/rxrpc/recvmsg.c
+> @@ -17,14 +17,14 @@
+>  #include "ar-internal.h"
+>  
+>  /*
+> - * Post a call for attention by the socket or kernel service.  Further
+> - * notifications are suppressed by putting recvmsg_link on a dummy queue.
+> + * Requeue a call for recvmsg() to pick up.  We ignore RXRPC_CLOSE, allowing
+> + * recvmsg() to continue picking up calls that are already on the queue if it
+> + * wants to, but no new calls will get added.
+>   */
+> -void rxrpc_notify_socket(struct rxrpc_call *call)
+> +static void rxrpc_requeue_call(struct socket *sock, struct rxrpc_call *call)
+>  {
+> -	struct rxrpc_sock *rx;
+> -	struct sock *sk;
+> -	unsigned long flags;
+> +	struct rxrpc_sock *rx = rxrpc_sk(sock->sk);
+> +	struct sock *sk = &rx->sk;
+>  
+>  	_enter("%d", call->debug_id);
+>  
+> @@ -33,31 +33,18 @@ void rxrpc_notify_socket(struct rxrpc_call *call)
+>  		return;
+>  	}
+>  
+> -	rcu_read_lock();
+> -
+> -	rx = rcu_dereference(call->socket);
+> -	sk = &rx->sk;
+> -	if (rx && sk->sk_state < RXRPC_CLOSE) {
+> -		if (call->notify_rx) {
+> -			spin_lock_irqsave(&call->notify_lock, flags);
+> -			call->notify_rx(sk, call, call->user_call_ID);
+> -			spin_unlock_irqrestore(&call->notify_lock, flags);
+> -		} else {
+> -			spin_lock_irqsave(&rx->recvmsg_lock, flags);
+> -			if (list_empty(&call->recvmsg_link)) {
+> -				rxrpc_get_call(call, rxrpc_call_get_notify_socket);
+> -				list_add_tail(&call->recvmsg_link, &rx->recvmsg_q);
+> -			}
+> -			spin_unlock_irqrestore(&rx->recvmsg_lock, flags);
+> +	spin_lock_irq(&rx->recvmsg_lock);
+> +	if (list_empty(&call->recvmsg_link)) {
+> +		rxrpc_get_call(call, rxrpc_call_get_notify_socket);
+> +		list_add_tail(&call->recvmsg_link, &rx->recvmsg_q);
+> +	}
+> +	spin_unlock_irq(&rx->recvmsg_lock);
+>  
+> -			if (!sock_flag(sk, SOCK_DEAD)) {
+> -				_debug("call %ps", sk->sk_data_ready);
+> -				sk->sk_data_ready(sk);
+> -			}
+> -		}
+> +	if (!sock_flag(sk, SOCK_DEAD)) {
+> +		_debug("call %ps", sk->sk_data_ready);
+> +		sk->sk_data_ready(sk);
+>  	}
+>  
+> -	rcu_read_unlock();
+>  	_leave("");
+>  }
 
 [Severity: Medium]
-Is this description of the old behaviour accurate?  I can't find the
-rounding it refers to.  crypto_krb5_how_much_buffer() in
-crypto/krb5/krb5_api.c returns the sum with no block-size rounding:
+Should the changelog mention that this changes behaviour for sockets that
+have already been shut down?
 
-	case KRB5_ENCRYPT_MODE:
-		*_offset = krb5->conf_len;
-		return krb5->conf_len + data_size + krb5->cksum_len;
+The code being replaced only queued the call and rang sk_data_ready() when
+the socket was still open:
 
-and krb5_aead_encrypt() in crypto/krb5/rfc3961_simplified.c never pads
-either, placing the MIC immediately after the data:
+	rx = rcu_dereference(call->socket);
+	sk = &rx->sk;
+	if (rx && sk->sk_state < RXRPC_CLOSE) {
+		...
+			list_add_tail(&call->recvmsg_link, &rx->recvmsg_q);
+		...
+			sk->sk_data_ready(sk);
 
-	secure_offset	= 0;
-	base_len	= krb5->conf_len + data_len;
-	pad_len		= 0;
-	secure_len	= base_len + pad_len;
-	cksum_offset	= secure_len;
+rxrpc_requeue_call() has no sk_state test, while the extracted
+__rxrpc_notify_socket() in call_state.c keeps it, so the two paths now
+differ.
 
-So rather than 8 bytes of spare padding existing inside the blob, wasn't
-the effect that the last word written by afs_create_yfs_cm_token():
+The gate looks deliberate, since rxrpc_shutdown() in af_rxrpc.c sets the
+state under the same lock that guards recvmsg_q:
 
-	*xdr++ = htonl(0);			/* token.identities[0].display.len */
+	if (sk->sk_state < RXRPC_CLOSE) {
+		spin_lock_irq(&rx->recvmsg_lock);
+		sk->sk_state = RXRPC_CLOSE;
+		sk->sk_shutdown = SHUTDOWN_MASK;
+		spin_unlock_irq(&rx->recvmsg_lock);
 
-landed exactly at cksum_offset, i.e. it was left outside the encrypted and
-authenticated region and then overwritten by the checksum, because toksize
-is also what gets handed to the encryption as data_len?
+So after shutdown(fd, SHUT_RDWR) followed by further recvmsg() calls, a
+partially-read call with data still in call->recvmsg_queue is now re-added
+to rx->recvmsg_q with a rxrpc_call_get_notify_socket ref and sk_data_ready()
+is called on the closing socket, where before the requeue was dropped and
+the buffered data was never delivered.  The extra ref does appear to be
+accounted for by rxrpc_release_calls_on_socket() draining rx->recvmsg_q at
+close, so this looks like a visible semantic change rather than a leak, but
+the patch is cc'd to stable and only the new function comment hints at it.
 
-> diff --git a/fs/afs/cm_security.c b/fs/afs/cm_security.c
-> index 103168c70dd4d..5eeeef761cf31 100644
-> --- a/fs/afs/cm_security.c
-> +++ b/fs/afs/cm_security.c
-> @@ -235,7 +235,7 @@ static int afs_create_yfs_cm_token(struct sk_buff *challenge,
->  	 *	struct RXGK_AuthName	identities<>;
->  	 * };
->  	 */
-> -	toksize = keysize + 8 + 4 + 4 + 8 + xdr_len_object(authsize);
-> +	toksize = keysize + 4 + 8 + 4 + 4 + 8 + xdr_len_object(authsize);
+Also, is the new comment self-consistent?  It says "no new calls will get
+added" while describing a function whose job is to add the call back onto
+rx->recvmsg_q.
+
+> @@ -562,7 +549,7 @@ int rxrpc_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
 >  
->  	offset = 0;
->  	encsize = crypto_krb5_how_much_buffer(token_krb5, KRB5_ENCRYPT_MODE, toksize, &offset);
+>  	if (!(flags & MSG_PEEK) &&
+>  	    !skb_queue_empty(&call->recvmsg_queue))
+> -		rxrpc_notify_socket(call);
+> +		rxrpc_requeue_call(sock, call);
+>  	goto not_yet_complete;
 
-Same toksize is passed as data_len further down in the same function:
-
-	sg_init_one(&sg, encbase, encsize);
-	ret = crypto_krb5_encrypt(token_krb5, aead, &sg, 1, encsize, offset, toksize, false);
-
-There's no out-of-bounds write in either case, since cksum_len is 12, 16 or
-24 for the supported enctypes, so the extra word stayed within the allocated
-blob.  The reason the truncation went unnoticed looks to be that the only
-consumer, rxgk_yfs_decode_ticket() in net/rxrpc/rxgk_app.c, only checks:
-
-	if (ticket_len < 10 * sizeof(__be32))
-		return rxrpc_abort_conn(conn, skb, RXGK_INCONSISTENCY, -EPROTO,
-					rxgk_abort_resp_short_yfs_tkt);
-
-and never parses the identities<> field at all.
-
-Given the Fixes: tag and the cc: to stable, would it be worth correcting the
-rationale so that backporters and anyone auditing stricter third-party token
-decoders get the right picture?
+[Severity: Medium]
+Is item (1) of the changelog accurate for this call site?  It describes the
+helper as requeuing "a call for rxrpc_recvmsg() without creating another
+notification", but rxrpc_requeue_call() still calls sk->sk_data_ready(sk).
+What it actually drops is the call->notify_rx dispatch, which is unreachable
+from rxrpc_recvmsg() anyway since calls with notify_rx set are not put on
+rx->recvmsg_q.  Could the wording be adjusted to say that?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260914151340.3227501-1-dhowells%40redhat.com
