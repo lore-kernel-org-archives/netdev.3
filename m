@@ -1,197 +1,229 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747423AAF7A;
-	Tue, 15 Sep 2026 08:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB403B059D
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:16:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789460199; cv=none; b=b5uJH6XwI6jIArYD4iibjr0FS0ih2bMzrfHTrJwrnlXY0N9fOraRaHk+/7cd9Qil1SPjw0Rx0DnffCNX2mtTqYELT3UGn6UPPPj7GKu+w8rl5S2RlUFErgvec7eiAqtOgWzeLzfJcEf82O5a2FYr5ffhEPYi8qvTZNw4M3Nw5SA=
+	t=1789460208; cv=none; b=WffrFKBbsk6gIvcL2UgdvTb7ofslbWODAQ0QL/qvj36gwSPUF1wwGP130+bO5YZwH7nvOrhGdNzqr4v3URidxrkwsiXOhkHn8ugfC9YlpwmNsBdsMbv2W4LopvvETG+eQLw5x49152b15Fm9gzkI//eLlemdxbGrqGIPgJBFEg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789460199; c=relaxed/simple;
-	bh=4WcOkJHjRLjC4AKu9UPFI0KGx7DCrb78C8PL9fLCOR4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U9NbIhV7ItwEDHdT3unBUhALF78z2tHWurVABER/UIPwa0mX/96ZcoUULL3ZGR1QIp0zReQgVSmiIoQjVEFlEOuqlAtcrjd4/Tw5d6w3Fu5DMqlhK76RIsL8VhZv0nEwPD6l8sA1xHeO0z3E7k6UiZG5GzFLQO8i/RYh22xSWRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U9uRY8/9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789460208; c=relaxed/simple;
+	bh=eSAEogWzs5zUpk6kk6LnRXQCgm8s2AHDkEdyx64jo7o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=E3ozznKDckGw4vPaI1BfHGzzvrbIF15byLRPmwrk7caxozWng1wjvlA53+mjkIaQ66PN6Uzr8q/x9m7UQdk03k+fi1n7AoZrxoQ/BfoV1rU231VhzoqCHezvDscxYOqbyCjJB5GWUWe0Bsi3kaFdlScXsZJTWuM2w92y7lV9Hrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QstV5gIR; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U9uRY8/9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 241121F000FF;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QstV5gIR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789460206;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eSAEogWzs5zUpk6kk6LnRXQCgm8s2AHDkEdyx64jo7o=;
+	b=QstV5gIRh44CuBuXHsQcA1MUgqbmwYRSVs7nrW6o3js4RnoSscJf/hWnPtNph/rf0eTwip
+	5YQhpn3+GLeJ3osk+z7tfFS2mfoBFCliYsRRy1mBW97+nNs2VZ135ezbnwazWMVp5yuXBV
+	9zta/jV9iTPl5jRjmWX32X8TgDRXVwI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-632-4TVNOOonMpucPEx6upVL4Q-1; Tue,
+ 15 Sep 2026 04:16:42 -0400
+X-MC-Unique: 4TVNOOonMpucPEx6upVL4Q-1
+X-Mimecast-MFC-AGG-ID: 4TVNOOonMpucPEx6upVL4Q_1789460200
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5412E1865FDD;
+	Tue, 15 Sep 2026 08:16:40 +0000 (UTC)
+Received: from fedora.redhat.corp (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 410D51955F78;
 	Tue, 15 Sep 2026 08:16:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789460198;
-	bh=Hpy4v10/0kkxj2Bv1k7hazVd+W80HeuVCRsBuC8+OC8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=U9uRY8/9SsQIseoFqwlz3GWOZVunC1nJvdw31xULiSIGnzLdcBIQWxghV81fa1wE3
-	 BHQb7xrIfuV+NxB/mpSx5xHFy81Y0e3zycvAEkG/NZLaBWFuNYBJ9nQSqiJzsS8hS4
-	 l/DSnjVQuwJ7q/jVM050M04BwcnMTAa9nMX9oLtHaxS2jbQ10dxAhsykBHQnTiYkIl
-	 XDz7uZ7etW9LHnUI7Zl/wH81PUxEmFecYVRX4K/ttFihZZ5woW9Ef40uLI6j2SSI6z
-	 6dctUyz1O4i7P7v+XgaVCGBuHDfolawCwaRO7qIC4KFOjLIpCdlu2pinnE4Xb9v8IS
-	 H99ncHuubejMA==
-Date: Tue, 15 Sep 2026 11:16:33 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-Cc: davem@davemloft.net, gakula@marvell.com, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, sgoutham@marvell.com, andrew+netdev@lunn.ch,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Subject: Re: [PATCH v9 net] octeontx2-af: switch qmem from coherent DMA alloc
- to streaming DMA mapping
-Message-ID: <20260915081633.GH13683@unreal>
-References: <20260911022649.573300-1-rkannoth@marvell.com>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: kuba@kernel.org
+Cc: aleksandr.loktionov@intel.com,
+	andrew+netdev@lunn.ch,
+	anthony.l.nguyen@intel.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	jacob.e.keller@intel.com,
+	jtornosm@redhat.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	przemyslaw.kitszel@intel.com,
+	rafal.romanowski@intel.com,
+	sdf@fomichev.me,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net 3/4] iavf: send MAC change request synchronously
+Date: Tue, 15 Sep 2026 10:16:34 +0200
+Message-ID: <20260915081634.14281-1-jtornosm@redhat.com>
+In-Reply-To: <20260824190149.2714547-1-kuba@kernel.org>
+References: <20260824190149.2714547-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260911022649.573300-1-rkannoth@marvell.com>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Fri, Sep 11, 2026 at 07:56:49AM +0530, Ratheesh Kannoth wrote:
-> qmem_alloc() uses dma_alloc_attrs() with DMA_ATTR_FORCE_CONTIGUOUS, which
-> allocates CPU-cache-coherent DMA memory and, with CMA enabled, draws from
-> the CMA pool. qmem backs NIX/NPA queue contexts, admin queues, and LMTST
-> regions (including CN10K LMTST areas that span page boundaries), so
-> consumption grows with enabled interfaces and is hard to provision in CMA.
-> 
-> Switch qmem to a streaming-DMA-style path: allocate memory with kmalloc(),
-> then map it for device access with dma_map_single(). Add
-> otx2_dma_alloc_coherent() and otx2_dma_free_coherent() helpers and wire
-> qmem_alloc()/qmem_free() through them instead of dma_alloc_attrs()/
-> dma_free_attrs().
-> 
-> This works on Octeon because the octeontx2 driver is written for
-> DMA-coherent devices: Octeon platforms provide IO coherency (via SMMU), so
-> the driver already uses streaming DMA APIs for packet data while
-> deliberately skipping explicit CPU cache sync (DMA_ATTR_SKIP_CPU_SYNC).
-> The same IO coherency lets qmem use a streaming map of kmalloc-backed
-> memory instead of a dedicated coherent allocator or CMA reservation. That
-> is valid because the platform is DMA-coherent, not because omitting
-> dma_sync_* magically makes memory coherent.
-> 
-> cc: Leon Romanovsky <leon@kernel.org>
-> Fixes: 73d33dbc0723 ("octeontx2-af: Use DMA_ATTR_FORCE_CONTIGUOUS attribute in DMA alloc")
+All the comments below fall into pre-existing issues, concerns already
+addressed in previous versions and comments, out-of-scope items, or extreme
+edge cases. No code changes are considered necessary for a new version.
+Details for each comment:
 
-The code itself looks fine now, but the commit message does not explain
-why this patch is needed. It only describes what the patch does, which is
-unnecessary here since the change itself is straightforward.
+> [Severity: Low]
+> Is the "timeouts" part accurate? iavf_poll_virtchnl_response() returns
+> -EAGAIN on timeout, and iavf_set_mac() explicitly skips the rollback for
+> that value.
+>
+> So on a timeout nothing is rolled back, which is the opposite of what the
+> changelog describes (and matches the in-code comment). Could the changelog
+> be adjusted to say send errors only?
 
-Also, no bug is described, so neither the Fixes tag nor the "net" target
-is appropriate for this patch.
+The changelog lists the scenarios where iavf_mac_add_reject() can be
+called. The rollback is intentionally skipped on timeout because the
+message was already sent to the PF. The in-code comment explains this
+clearly. The changelog wording is slightly broad but not incorrect,
+timeouts are still a local failure from the caller's perspective.
 
-Thanks
+> [Severity: Low]
+> Now that iavf_add_ether_addrs() reports -EBUSY, -ENOMEM and send failures,
+> should the watchdog side caller consume it too? iavf_process_aq_command()
+> still discards it and returns 0 unconditionally.
 
-> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-> 
-> ---
-> v8 -> v9: Addressed Leon comment.
-> - Used kzalloc instead of kmalloc.
-> 
-> v7 -> v8: Addressed Leon comments.
-> - Replace __get_free_pages() and __GFP_COMP with kmalloc()
-> - Drop GFP_DMA32 retry loop and dma_capable()/phys_to_dma() mask probing
-> - Use dma_map_single()/dma_unmap_single() instead of dma_map_page_attrs()
->   with DMA_ATTR_REQUIRE_COHERENT
-> - Remove defensive parameter checks and dma_max_mapping_size() from the
->   allocator helper
-> - Move MAX_PAGE_ORDER validation to qmem_alloc()
-> 
-> v6 -> v7: Addressed Sashiko comments.
-> 	https://lore.kernel.org/netdev/178863855246.219967.10510865726694393307@kernel.org/
-> 
-> v5 -> v6: Addressed review comments.
-> 	https://lore.kernel.org/netdev/20260901015621.2708182-1-rkannoth@marvell.com/
-> 
-> v4 -> v5: Fixed compilation issues.
-> 	https://lore.kernel.org/netdev/20260831024210.208447-1-rkannoth@marvell.com/
-> 
-> v3 -> v4: Fixed compilation issues.
-> 	https://lore.kernel.org/netdev/apTpKcN_S1xIwRbZ@rkannoth-OptiPlex-7090/
-> 
-> v2 -> v3: Addressed sashiko comments.
-> 	https://sashiko.dev/#/patchset/20260825045616.3723078-1-rkannoth%40marvell.com
-> 
-> v1 -> v2: Rewrote patch as per sashiko comment.
-> ---
->  .../ethernet/marvell/octeontx2/af/common.h    | 45 ++++++++++++++++---
->  1 file changed, 39 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/common.h b/drivers/net/ethernet/marvell/octeontx2/af/common.h
-> index 779413a383b7..78e42549d990 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/common.h
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/common.h
-> @@ -7,6 +7,10 @@
->  #ifndef COMMON_H
->  #define COMMON_H
->  
-> +#include <linux/dma-mapping.h>
-> +#include <linux/gfp.h>
-> +#include <linux/mm.h>
-> +
->  #include "rvu_struct.h"
->  
->  #define OTX2_ALIGN			128  /* Align to cacheline */
-> @@ -44,6 +48,33 @@ struct qmem {
->  	u32		qsize;
->  };
->  
-> +static inline void *otx2_dma_alloc_coherent(struct device *dev, size_t size,
-> +					    dma_addr_t *dma_handle)
-> +{
-> +	dma_addr_t dma_addr;
-> +	void *vaddr;
-> +
-> +	vaddr = kzalloc(size, GFP_KERNEL);
-> +	if (!vaddr)
-> +		return NULL;
-> +
-> +	dma_addr = dma_map_single(dev, vaddr, size, DMA_BIDIRECTIONAL);
-> +	if (dma_mapping_error(dev, dma_addr)) {
-> +		kfree(vaddr);
-> +		return NULL;
-> +	}
-> +
-> +	*dma_handle = dma_addr;
-> +	return vaddr;
-> +}
-> +
-> +static inline void otx2_dma_free_coherent(struct device *dev, size_t size,
-> +					  void *vaddr, dma_addr_t dma_handle)
-> +{
-> +	dma_unmap_single(dev, dma_handle, size, DMA_BIDIRECTIONAL);
-> +	kfree(vaddr);
-> +}
-> +
->  static inline int qmem_alloc(struct device *dev, struct qmem **q,
->  			     int qsize, int entry_sz)
->  {
-> @@ -60,8 +91,11 @@ static inline int qmem_alloc(struct device *dev, struct qmem **q,
->  
->  	qmem->entry_sz = entry_sz;
->  	qmem->alloc_sz = (qsize * entry_sz) + OTX2_ALIGN;
-> -	qmem->base = dma_alloc_attrs(dev, qmem->alloc_sz, &qmem->iova,
-> -				     GFP_KERNEL, DMA_ATTR_FORCE_CONTIGUOUS);
-> +
-> +	if (get_order(PAGE_ALIGN(qmem->alloc_sz)) > MAX_PAGE_ORDER)
-> +		return -ENOMEM;
-> +
-> +	qmem->base = otx2_dma_alloc_coherent(dev, qmem->alloc_sz, &qmem->iova);
->  	if (!qmem->base)
->  		return -ENOMEM;
->  
-> @@ -80,10 +114,9 @@ static inline void qmem_free(struct device *dev, struct qmem *qmem)
->  		return;
->  
->  	if (qmem->base)
-> -		dma_free_attrs(dev, qmem->alloc_sz,
-> -			       qmem->base - qmem->align,
-> -			       qmem->iova - qmem->align,
-> -			       DMA_ATTR_FORCE_CONTIGUOUS);
-> +		otx2_dma_free_coherent(dev, qmem->alloc_sz,
-> +				       qmem->base - qmem->align,
-> +				       qmem->iova - qmem->align);
->  	devm_kfree(dev, qmem);
->  }
->  
-> -- 
-> 2.43.0
-> 
+The watchdog path is fire-and-forget by design, it retries on the next
+cycle. Propagating errors there would require changing the watchdog state
+machine, which is out of scope for this fix. The return value is only
+meaningful for the new synchronous caller.
+
+> [Severity: Medium]
+> iavf_mac_change_done() ignores v_op and looks only at filter state, while
+> iavf_poll_virtchnl_response() calls the predicate after every message it
+> processes.
+>
+> Consider setting an address that already has a filter whose earlier add
+> succeeded. Can an unrelated message processed by the poll loop then make
+> this return true before the ADD_ETH_ADDR reply arrives?
+
+Same concern addressed in previous comments. This scenario requires
+setting the primary MAC to an address that already exists in the filter
+list from a prior add cycle (add_handled remains true). This is an
+unusual operation. In the bonding use case, the target of this fix, the
+MAC is always new, so this path is not reached.
+
+Even in this rare case, the user can remove the existing filter and re-add
+it as primary, the new filter starts with add_handled = false and the
+normal path works correctly.
+
+> [Severity: Medium]
+> Only one batch is sent here. If the just requested primary address ends up
+> outside the first batch, can iavf_mac_change_done() ever become true? The
+> poll loop has no way to send the next batch, so this would burn the full
+> 2500 ms and return -EAGAIN.
+
+Already discussed with Przemek Kitszel in v7 review. The multi-batch
+scenario requires more than 200 pending MAC filters on a VF, which is
+extremely rare in practice. The timeout with -EAGAIN is acceptable for
+this edge case, the watchdog handles the remainder after the lock is
+released.
+
+> [Severity: High]
+> Can this rollback destroy filters that belong to a different, still
+> outstanding request?
+>
+> iavf_mac_add_reject() walks the whole list. One way to reach it with
+> ret == -EBUSY is an ADD_ETH_ADDR batch the watchdog already sent and whose
+> reply has not been processed yet. Should the rollback be scoped to the
+> address that iavf_set_mac() itself queued?
+
+Same concern addressed in previous comments. This scenario only occurs
+when setting the primary MAC to an address that already exists as a
+secondary in the filter list, an extremely rare configuration. Even if
+the watchdog later sends the MAC to the PF, it is harmless: the MAC is
+already configured on the PF, so the redundant ADD_ETH_ADDR has no
+adverse effect.
+
+> [Severity: Medium]
+> Does the -EAGAIN assumption in the comment above ("the message was sent and
+> PF will eventually respond") hold when IAVF_FLAG_PF_COMMS_FAILED is set?
+> iavf_send_pf_msg() returns success without posting anything in that case.
+
+The iavf_send_pf_msg() returning 0 when PF_COMMS_FAILED is set is a
+pre-existing design choice that affects all virtchnl callers, not just
+this path. The scenario requires the PF to be unresponsive
+(iavf_disable_vf() has run), the VF is non-functional at that point.
+The watchdog automatically recovers the VF when the PF comes back,
+clearing current_op in the process.
+
+> [Severity: Medium]
+> Is this -EBUSY reachable as a hard failure from the new caller?
+>
+> iavf_set_mac() runs with the netdev instance lock held, and the only
+> context that clears current_op is iavf_virtchnl_completion(). Can "ip link
+> set dev X address ..." or bond_enslave() now fail with -EBUSY whenever the
+> watchdog has a command in flight?
+
+Same concern addressed in previous comments. Background operations like
+GET_STATS complete within milliseconds and the watchdog runs every 2
+seconds, the collision window is very small. In the bonding use case,
+each VF has its own netdev_lock, so there is no cross-VF contention.
+
+Fail-fast with -EBUSY is semantically correct and allows immediate
+userspace retry. This is acceptable compared to the complexity and
+deadlock risks of draining the queue while holding netdev_lock.
+
+> [Severity: Medium]
+> Is this helper able to roll back a filter whose is_new_mac is already
+> cleared?
+>
+> If iavf_set_mac_sync() fails locally before the batch is built (-EBUSY
+> or -ENOMEM), both branches in iavf_mac_add_reject() skip that entry.
+> Does the PF then end up with a primary MAC that differs from
+> netdev->dev_addr?
+
+Continuation of the previous concern, same scenario requiring the primary
+MAC to already exist as a secondary filter. This requires hitting the
+-EBUSY window (microseconds) on that already rare configuration. Even
+then, the state is recoverable on retry or VF reset.
+
+> [Severity: Medium]
+> The kernel-doc promises "or error code", but ret is only ever -EAGAIN or 0,
+> and the iavf_clean_arq_element() status is dropped here.
+>
+> Should that be reported instead of spinning to the -EAGAIN timeout?
+
+The function returns 0 on success or -EAGAIN on timeout. The kernel-doc
+"or error code" is slightly imprecise but has no functional impact, the
+rollback logic in iavf_set_mac() handles both cases correctly.
+
+> [Severity: High]
+> What happens to this loop if a VFR/EMPR lands while it is polling?
+>
+> With the reset sentinels, 0xdeadbeef & 0x3FF is 751 and 0xffffffff & 0x3FF
+> is 1023, both well above hw->aq.num_arq_entries. Can this then "clean"
+> descriptors the hardware never produced and busy-spin on MMIO for the
+> remaining 2.5 s while holding the netdev instance lock?
+
+The poll loop is bounded to 2.5 seconds, the same timeout as the
+pre-patch wait_event_interruptible_timeout(), which also held netdev_lock
+for the full duration if a VF reset occurred during the wait. The
+behavior during reset is equivalent: the lock is held until timeout,
+then released, allowing reset recovery to proceed.
+
+The synchronous polling is a change in mechanism, not in behavior.
+
+> [Severity: Low]
+> Should this use event->buf_len rather than the hardcoded
+> IAVF_MAX_AQ_BUF_SIZE?
+
+The only caller allocates IAVF_MAX_AQ_BUF_SIZE, no issue today. A
+hypothetical future caller would need to match the allocation to the
+memset. Not a bug, just defensive coding for a reuse scenario that
+doesn't exist.
+
