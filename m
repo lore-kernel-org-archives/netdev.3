@@ -1,134 +1,125 @@
-Received: from mail-ua2-f12.google.com (mail-ua2-f12.google.com [74.125.226.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D45359A90
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 17:31:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.226.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECD24AD7C9;
+	Tue, 15 Sep 2026 17:39:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789493471; cv=none; b=XNZVmZ4kj9VdR4ZCdzASeeS1Yrio4XZcKjUKTOphmb2hIlNHa5Ny85uWmKrt8bbzA1KmB4rm9jkBe9bv9FZ2TWwkIx1u0cvMd7kQKs/05BxHmjB6raIgJwv2dTqsM/zYh8+aa2ec2hnmUtpyanCmHzj0i2m36n9Q4OQFtEFEX+k=
+	t=1789493978; cv=none; b=IUIpQkjchlujr53eaXjzFNsDqc/WcEoGQLMhv1p5j3zO8GsO8rpfRVQGgKO3ksu9GXSJsORS1bXph2f91YDh7yNmO2aR4W2INvp48bC9D42we/CL5hIGI3uBWnvhww/FxlCWONZXcdu7xvY/O/wQtaMyozSa5Dx4H2oThzjHGZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789493471; c=relaxed/simple;
-	bh=1L41fDFcwJhnqwC3iHJYWgVyCIQZycnmy2yM9XthIjo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ezXCqZE/owoigrjzT9kT85ESzIwf12SlVr5OJQgbvwJyvMIXXMJhxE9qASNOrZAkpBdxNv8/c8gxRScmiHQ090a778pX10qQ4Oa/+njUiyjD9BziVM+zKrBDowAKUUAj8vlTG1r+98pFs9vtrAdXfU8YJvlqmPXoCjYWCq89RR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oxIAC1a+; arc=none smtp.client-ip=74.125.226.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789493978; c=relaxed/simple;
+	bh=k3o0pUm1vkitaQ04BRZu8jhi1odWhw+CYvPHVqLuKjI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=QCiW5j+malIppDtcg+m5npwFj1XInwfrQ8o3kV7gJkFGsATjPUVrPphfwg947lCdICZfY6qWDCQUkrWwLo63Pa1CuPiUNNYMD8s234cgx65mBd8gyPyhuV6HHBZA5xHnQRXJZE0yQ4MBVkVaSd6Ste0vcqkWIW22uovg/PqkC7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C34B+qHk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oxIAC1a+"
-Received: by mail-ua2-f12.google.com with SMTP id a1e0cc1a2514c-97e9d8a796aso1901241.0
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 10:31:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789493467; x=1790098267; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=RgblY6L8XKeLM/vcFnT7fWo1z7GUneU5Hum0ZMmOcJE=;
-        b=oxIAC1a+UZ+J75VEHH2IzFKpwEeCcYfBwKmlierodh1vG/bMJaGH+qLXPFhFYmiuJM
-         ldjoKSl5YcMqxQN5f9E8jr8po7mTnEeUBgAJsipixKbs1/vMqf9rdqyi3llik5emzIFa
-         gqHDrXymdiU+9xxhfgTWBt6dqxfKZKvCU8mdH8v0pjdQPTLp1wTwj9xFiRpj1EBbOTnN
-         vsnZQUv6mAFWE7KrasvC/EGfKCEm4VMT/yE3mZzpFCFlM8V0/2/aMP588NuVQm96o5L3
-         zRU51FI79U4ZJTgO/B397rPcWlIXg+ide6sbGxB+1aJkNRVDwampwZ04P2IuMSFx6Nio
-         HUFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789493467; x=1790098267;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RgblY6L8XKeLM/vcFnT7fWo1z7GUneU5Hum0ZMmOcJE=;
-        b=TYHV9BGF6V/gzag2imo6ioKfL5C48vJCy1cK0kuVSsGap7P3pEe/XsFRLKStsBwqTU
-         qH6E/Jw0PFx5wJoNK4aL9R8S40iaZCafQJfBB46yPkN/BfIuVOnmYdbzkVIpi7TlaBDK
-         8Geb9YUZwU4Ixu3WDIAfiS/4KFYJNtedocq001hKYEj9rO8vaemxN/dD5tGZ75pJCBnv
-         SX0WlbOBy0lE5bijkPcE0eb4Wh7VBNXktROuvwBhDlfB0Hmu6uvToL151PbCicWVXItg
-         pamZZev2dZC/a706U/5wqTDUPSxpUeJanFk2FyPMOOnM+avd2un4zk0lHJ7pqQ0ndhjM
-         Zj4w==
-X-Forwarded-Encrypted: i=1; AKwUvBy2OQ8tQCANbtqqLEym8wxvHkC7ABX5AQgxOWTvLQjzeg44RdbNSV3mus09FzHZN15rjtf+sMc=@vger.kernel.org
-X-Gm-Message-State: AFuF++lEw+C8LWIfHMw6TnaRihCy7RzmKSsHpRx2FcyQj3NLgs+Khw2J
-	l92izUZnGmOgBTyu1nD/hwayz9KY74npatBtTRv4lC6x4/J3eTd3qk1m
-X-Gm-Gg: AYBFou3II0OygdDwldw0AUHKU48Gnv5qAUwYOJZy6FZXlD0mXwOvRzTB+gfMoJWCtiM
-	qwQeY0dfR+IJG6rl3JjApzx5sD2c8Ims5uE96d5JxPpjegdq0HJjNo3odxNjtTlDtPRc9CHAl8t
-	StKhertxdpdw+jc+Ka8xNosmcwFYu19LOpnKrEviyjz7Sdne6+G3Jw5qidxfgfS5Ut04KZ9k1se
-	exq2/+rsMNtZAwU1T0ylMoLtYQzn6ONoeqTT1/n/sFWeyEOsYtLLb+ixXSyTiXxpItwwL9m4pM8
-	d+RcC2WHCdJFwQx9I+yfrKvqdauVeOJMdF0rFx4vV7cTjN6g8Jso5/FknHvwLT0+xhT3duCliXu
-	+U+lLXEg1JECH/L4dWbU7Vaf8HifLZF3B/WxFNHafb7BDvFpx3CydGBFcNKcSodk1VvcqSEBmwY
-	22gO81eWRU/ogoZnpW7iszKLh1XlNyRJw0WwuvqHCVwpp/EwdOHaLC4CL474erZqBL
-X-Received: by 2002:a05:6102:8687:10b0:799:f608:79e6 with SMTP id ada2fe7eead31-79d2319d752mr2295720137.1.1789493465871;
-        Tue, 15 Sep 2026 10:31:05 -0700 (PDT)
-Received: from beelink.. ([187.13.206.89])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-79fb104b2a6sm310677137.3.2026.09.15.10.31.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 10:31:05 -0700 (PDT)
-From: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Bobby Eshleman <bobbyeshleman@meta.com>,
-	Luigi Leonardi <leonardi@redhat.com>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Aldo Ariel Panzardo <qwe.aldo@gmail.com>
-Subject: [PATCH v3] vsock: ignore empty child namespace mode writes
-Date: Tue, 15 Sep 2026 14:30:50 -0300
-Message-ID: <20260915173050.3176344-1-qwe.aldo@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260915141547.3010692-1-qwe.aldo@gmail.com>
-References: <20260915141547.3010692-1-qwe.aldo@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C34B+qHk"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A902EC2BCF5;
+	Tue, 15 Sep 2026 17:39:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1789493977;
+	bh=k3o0pUm1vkitaQ04BRZu8jhi1odWhw+CYvPHVqLuKjI=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=C34B+qHkBckr9RDyRlUkM5aZF3orDZh/FgknGHbpCNfjlE0Yxti4ph/D6aHCj37Jc
+	 XQs6sWp7ZMZwfXhQOkLrc7FpiHzApcf1ytnbrNbMnQtvywZZLtS0WO4FOYOPu2kXSO
+	 akC+JrWh5jnig5W4fvrSIXxPQzBx3RlcKp51YBSQQPgXh8dGZWwKt2Lb0vg9+r4uXt
+	 Wjz+QVEk7VJapvTMon8HvXEvy1LlPjr1rHLGPgKRh9gjQ5YFMFVhYP8RyP9kUs2cIj
+	 V/KS0vSlr7sruQfAFfwntYbNb7Dij23iN8xKlyYJ3+Y2m8e4s1Fg4YvEC31wdB6U/c
+	 C+xS0arwP5ViQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80609C88E7D;
+	Tue, 15 Sep 2026 17:39:37 +0000 (UTC)
+From: Kyle Hendry via B4 Relay <devnull+khendry.reliablecontrols.com@kernel.org>
+Date: Tue, 15 Sep 2026 10:39:20 -0700
+Subject: [PATCH net v5] net: pcs: rzn1-miic: Fix config array
+ initialization
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260915-rzn1-miic-fix-array-v5-1-b7173fd5b97d@reliablecontrols.com>
+X-B4-Tracking: v=1; b=H4sIAMeCqWoC/33NQW7CMBAF0KsgrzvI4zhx3FXvUbEww7hYCnZlR
+ xEU5e412cAiZPnn67+5i8I5cBGfu7vIPIUSUqyh/dgJOrv4wxBONQslVSd7bCD/RYRLCAQ+XMH
+ l7G7AnWOtW0USjajL38y1XNRvEXkUh3o8hzKmfFs+TbhUm+iEgHBse3KeyKLhr8xDcMeBKcUxp
+ 6HsKV0WelJPzkpc5xRIaNhKI7VlY+QG17xyap1rHpw3JyLvnW/dBqdfONTrnK6c7Cyi8szUd2+
+ 4eZ7/AVtCHJuzAQAA
+To: =?utf-8?q?Cl=C3=A9ment_L=C3=A9ger?= <clement.leger@bootlin.com>, 
+ Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
+ linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Geert Uytterhoeven <geert+renesas@glider.be>, 
+ Kyle Hendry <khendry@reliablecontrols.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789493977; l=2005;
+ i=khendry@reliablecontrols.com; s=20260813; h=from:subject:message-id;
+ bh=I5i1St31oPo6d7N+HMb7ky+0UtXFiiyAOVC61bDQiwI=;
+ b=zw5AD/zG7P/DBb2uXZ1IYVXEZMobeYcifInldvzVGBL52emRFgSyi7IJ1pn44x6B0axvooYqo
+ dEOoW+Taqm+B5/AuG/p3mZow7Mk4GGOPHFaQnSF97FCcD+aX+0UGj2r
+X-Developer-Key: i=khendry@reliablecontrols.com; a=ed25519;
+ pk=gbK6oghz3qBlBiaGCsEzALLOtj5VklmsuolHQNhDV5M=
+X-Endpoint-Received: by B4 Relay for khendry@reliablecontrols.com/20260813
+ with auth_id=946
+X-Original-From: Kyle Hendry <khendry@reliablecontrols.com>
+Reply-To: khendry@reliablecontrols.com
 
-__vsock_net_mode_string() returns success without updating new_mode when
-the transfer length is zero. Its caller then reads the uninitialized enum
-and may permanently store a stack-derived value in the write-once child
-mode.
+From: Kyle Hendry <khendry@reliablecontrols.com>
 
-Return before calling __vsock_net_mode_string() when *lenp is zero so
-that the helper is never invoked with nothing to parse and new_mode is
-never read uninitialized. This also prevents an empty write from
-locking the current mode.
+Fix memset parameters to initialize the entire DT value array
 
-Fixes: eafb64f40ca4 ("vsock: add netns to vsock core")
-Cc: stable@vger.kernel.org
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
-Signed-off-by: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
+Fixes: f39e968dc168a7bd ("net: pcs: rzn1-miic: Move configuration data to SoC-specific struct")
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Kyle Hendry <khendry@reliablecontrols.com>
 ---
+Fix issues when populating dt_val array from device tree values
 
-Changes in v3:
-  - Move the !*lenp early return before __vsock_net_mode_string()
-    instead of after it, as suggested by Stefano Garzarella.
-  - Add missing maintainer CCs per get_maintainer.pl.
-  - Add Luigi's Reviewed-by.
+Changes in v5:
+ * Target memset patch for net 
+ * Drop port number validation patch for later submission to net-next 
 
-Changes in v2:
-  - Return early instead of initializing new_mode to the current
-    value, which would silently consume the write-once transition.
+Changes in v4: https://lore.kernel.org/r/20260914-rzn1-miic-fix-array-v4-0-069112feec86@reliablecontrols.com
+ * Fix lines longer than 80 char
+ * Add of_node_put() before returning
 
- net/vmw_vsock/af_vsock.c | 3 +++
- 1 file changed, 3 insertions(+)
+Changes in v3: https://lore.kernel.org/r/20260902-rzn1-miic-fix-array-v3-0-3f7dccffaf5a@reliablecontrols.com
+ * Make invalid port number return error
+ * Update commit tags
 
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 622dbd0467..XXXXXXX 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -2879,6 +2879,9 @@ static int vsock_net_child_mode_string(const struct ctl_table *table, int write,
+Changes in v2: https://lore.kernel.org/r/20260901-rzn1-miic-fix-array-v2-0-3e907049e770@reliablecontrols.com
+ * Use a more correct array size in memset
+ * Ensure that write to dt_val is in range
 
- 	net = container_of(table->data, struct net, vsock.child_ns_mode);
+Link to v1: https://lore.kernel.org/r/20260813-rzn1-miic-fix-array-v1-1-b58cafcc917e@reliablecontrols.com
+---
+ drivers/net/pcs/pcs-rzn1-miic.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-+	if (!*lenp)
-+		return 0;
-+
- 	ret = __vsock_net_mode_string(table, write, buffer, lenp, ppos,
- 				      vsock_net_child_mode(net), &new_mode);
- 	if (ret)
+diff --git a/drivers/net/pcs/pcs-rzn1-miic.c b/drivers/net/pcs/pcs-rzn1-miic.c
+index 2b72fa98ddf1..cb74861e823c 100644
+--- a/drivers/net/pcs/pcs-rzn1-miic.c
++++ b/drivers/net/pcs/pcs-rzn1-miic.c
+@@ -683,7 +683,8 @@ static int miic_parse_dt(struct miic *miic, u32 *mode_cfg)
+ 	if (!dt_val)
+ 		return -ENOMEM;
+ 
+-	memset(dt_val, MIIC_MODCTRL_CONF_NONE, sizeof(*dt_val));
++	memset(dt_val, MIIC_MODCTRL_CONF_NONE,
++	       sizeof(*dt_val) * miic->of_data->conf_conv_count);
+ 
+ 	if (of_property_read_u32(np, "renesas,miic-switch-portin", &conf) == 0)
+ 		dt_val[0] = conf;
 
---
-2.43.0
+---
+base-commit: 83a945a529d6e002dd7339c532288a931f463dba
+change-id: 20260813-rzn1-miic-fix-array-e6ae4452c017
+
+Best regards,
+-- 
+Kyle Hendry <khendry@reliablecontrols.com>
+
+
