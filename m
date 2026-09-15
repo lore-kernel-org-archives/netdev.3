@@ -1,179 +1,323 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75D4424641;
-	Tue, 15 Sep 2026 06:04:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D3D3D810D;
+	Tue, 15 Sep 2026 06:04:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789452271; cv=none; b=O+DvQpmFm/8y9fO54a9L6EZz/YURNC7Emk8hU2SpVqUoKyJbnrQG+Ym0r0qHukY6B2NbCWOnvIllMdi4Nci+9gET3Z2VSrsYS1Fy4twNqo0LF12nuSHJ2cLZcRYA+ds2aIMAO6dPVe6YUHl+mAVHPJlqYelp1giHjtA30XA5PRw=
+	t=1789452282; cv=none; b=Gf/n0oEp1ySsAfIHHTW2USRBjAdoHXno3iw3ouI9p8XRYRcqvSdtQhySAPzmzGXYy1Axf1W9I6pt7R13keH5UkGOuP2fj21/C/6c8a0HX8YRXU2om4kn3GKnnJh4R+KbU8CLMO6DeA5BP4vAGA4C+rEd+nuJnhq8j6L6NObzy3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789452271; c=relaxed/simple;
-	bh=6UHtDyYM6OWKSCPkTbi/AeSRgvbIBj18Xsu9z1YCciw=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fEO9Pb92YShaZrghaQRpBTJHrhUWDiZjdCCnAARON7yowHZURadXwIxyn/P3lk6xaACdWNOH2x/bTXeLOp6F2JUZGPYhOyB6thCUp1ltL6VFCuxozYhHA1eJYZD+dEseH1zcV3V4rGViJhh0XAjtOjeeHxeeIDhQJBhdp/BcSVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fd3S5An/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789452282; c=relaxed/simple;
+	bh=fQU8Y/TjGzEbCBHbYKX2kLXq0pcEXR0TtcKeXeVP4vM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AxsakLLUATQX4s1wznPBhSfPhOi5j95/axvfPl0THL4247akkrSvNAEE3TWCn9jDl96qYe/10v4w8I4UqscnS+Xkiah/jiCZVrqygzDGn64mxh/5V+yoU/xd9nuNh1imox/p2vbdM5vrPGYkBDXk/HuSxmuDhmPRmBVzPaC+jjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=HNao7bFe; arc=none smtp.client-ip=180.181.231.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fd3S5An/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284401F00898;
-	Tue, 15 Sep 2026 06:04:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789452266;
-	bh=PupuCo1j5IqDRgiFXYVZIJHrxp+DMysVA/OQpVYYJbU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Fd3S5An/s08xbjt7BpEgOvEanD4romA2/Tk5SE9oY6oI8TWFEek81mMSOD/Esvedx
-	 b8qJ8j+C/8nauqDLjOgKHr2+v6IKxxSiUAXughMCpcTs6RLaJB7DUrT31nY7iqwvK9
-	 F/yxx72cv3QgLjISeS2QuyfL5ES+lntjcWBWU8bPEvDFZ0KNKx+pc1ehpI9IDjGB5u
-	 0LpMGq4OmOpLIKkW4gsMaC9xfs9X6d8JtKdXNgD5MLq+oQ2N8QlMaYj4pKkOYnw4cj
-	 vRq+TXyyF3qvktr7KWTwFETCR2+DbnopDNubY5StExxHOMLMIGvllQw7FnAj2KtOlB
-	 gYN326xBiJBiw==
-Subject: Re: [PATCH net-next 6/6] selftests: drv-net: psp: check the PSP
- disassociation notifications
-From: netdev-bot+sashiko@kernel.org
-To: kuba@kernel.org
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- daniel.zahka@gmail.com, willemdebruijn.kernel@gmail.com,
- donald.hunter@gmail.com, shuah@kernel.org, linux-kselftest@vger.kernel.org
-Date: Tue, 15 Sep 2026 06:04:25 +0000
-Message-ID: <178945226574.22033.964225107132506366@kernel.org>
-In-Reply-To: <20260912200426.121025-7-kuba@kernel.org>
-References: <20260912200426.121025-7-kuba@kernel.org>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="HNao7bFe"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=2YZiibc/bXVRXD1UnU5ITV7I8YK2sNqAjajxZP9oZrA=; 
+	b=HNao7bFep1+cjJ8RvkgmToZNZ9GYEAd1GKYgq7c0yjKY0oyfk/zqwWrLsOF3PlTY6g5QqJGC6//
+	wy1oqOJZ755mS3+WFUXNncAOH9z1DNRNzZVeWvJ6W59KBarv9hNjAPxKS8GLoK7Aez527zpV0J7ZM
+	QM76ecMFl4misMU+7IRmet8uT8KVJzBUWhwqbhWWlIHk3eeIPoNNC8g1PzLfuBM0dXWIodgbiAeFg
+	3HF76mTSClwwbbq6tfJB/5m1EL3A2hB+hbasyDGFWdJG5uaD2A8smu3psdP3QH6KqdWchZ/T579Dv
+	Xn8n+nFZWFZKEvEdQQtjbLxBqAK/hsCLxoiw==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
+	id 1x6MHM-0000000E5xo-4BEB;
+	Tue, 15 Sep 2026 14:04:30 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Tue, 15 Sep 2026 16:04:28 +1000
+Date: Tue, 15 Sep 2026 16:04:28 +1000
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Eric Dumazet <edumazet@google.com>
+Cc: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	syzbot <syzbot+4d0e4d2db6dfde01b52f@syzkaller.appspotmail.com>,
+	bridge@lists.linux.dev, davem@davemloft.net, horms@kernel.org,
+	idosch@nvidia.com, kuba@kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, pabeni@redhat.com, razor@blackwall.org,
+	steffen.klassert@secunet.com, syzkaller-bugs@googlegroups.com,
+	Thomas Graf <tgraf@suug.ch>, linux-crypto@vger.kernel.org,
+	NeilBrown <neilb@ownmail.net>, quanyeyang <quanyemostima@gmail.com>
+Subject: [PATCH] rhashtable: Use separate lockdep keys for each lock
+Message-ID: <aqjf7LNmE6InABpw@gondor.apana.org.au>
+References: <6aa5fcf6.f2639fcc.29487d.0048.GAE@google.com>
+ <aqi7fpazv2KDDdvn@shinmob>
+ <CANn89iJd0QnoDo0tjrFED2myec38U8joyqR05d6BVnJ-sX=NVg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANn89iJd0QnoDo0tjrFED2myec38U8joyqR05d6BVnJ-sX=NVg@mail.gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+On Mon, Sep 14, 2026 at 09:06:49PM -0700, Eric Dumazet wrote:
+>
+> Try to revert 4333ab90aaae ("rhashtable: use private lockdep class for
+> all locks.")
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Yes this is indeed buggy.  I know nothing about lockdep but Gemini
+reckons that it should use separate keys instead of different
+depths which seems fair enough:
 
-- [Medium] `_dev_disassoc_notify_one_of_two_netkit()` in
-  tools/testing/selftests/drivers/net/psp.py does not verify the…
+---8<---
+Use separate lockdep keys for the different types of locks in
+rhashtable (mutex, spin lock, and bucket locks).  They are
+separate and not normally nested with respect to each other.
 
---
+Also move the rhashtable_init/rhltable_init kdoc to the header
+file as that's where the macros are defined.
 
-selftests: drv-net: psp: check the PSP disassociation notifications
+Fixes: 4333ab90aaae ("rhashtable: use private lockdep class for all locks.")
+Reported-by: syzbot+4d0e4d2db6dfde01b52f@syzkaller.appspotmail.com
+Assisted-by: Gemini:gemini-3.6-flash
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 
-Adds two new psp.py subtests which subscribe to the mgmt multicast group in
-the main and guest namespaces, then verify the notifications generated by
-dev-disassoc and by netdevice removal.  Also extends
-_psp_dev_assoc_cleanup_on_netkit_del() to check the same notifications.
-
-> diff --git a/tools/testing/selftests/drivers/net/psp.py b/tools/testing/selftests/drivers/net/psp.py
-> index d44d2c83473ee..13ff5188cca3f 100755
-> --- a/tools/testing/selftests/drivers/net/psp.py
-> +++ b/tools/testing/selftests/drivers/net/psp.py
-
-[ ... ]
-
-> @@ -723,6 +723,111 @@ def _dev_change_notify_multi_ns_netkit(cfg):
-
-[ ... ]
-
-> +def _get_dev_ntf(cfg, pspnl, label):
-> +    """Wait for the next notification about the PSP device under test."""
-> +    for ntf in pspnl.poll_ntf(duration=10):
-> +        if ntf['msg'].get('id') == cfg.psp_dev_id:
-> +            return ntf
-> +    raise KsftFailEx(f"No notification received in the {label} namespace")
-> +
-> +
-> +def _check_disassoc_ntf(cfg, main_pspnl, peer_pspnl, ifindex):
-> +    """Check the notifications for a netns losing its last association."""
-> +    ntf = _get_dev_ntf(cfg, main_pspnl, "main")
-> +    ksft_eq(ntf['name'], 'dev-change-ntf')
-> +    for assoc in ntf['msg'].get('assoc-list', []):
-> +        if assoc['nsid'] != cfg.psp_dev_peer_nsid:
-> +            continue
-> +        ksft_ne(assoc['ifindex'], ifindex,
-> +                "Disassociated device still listed in the notification")
-> +
-> +    # The device is gone as far as the disassociated namespace is concerned
-> +    ntf = _get_dev_ntf(cfg, peer_pspnl, "guest")
-> +    ksft_eq(ntf['name'], 'dev-del-ntf')
-> +    ksft_true('ifindex' not in ntf['msg'],
-> +              "ifindex reported to an associated namespace")
-
-[ ... ]
-
-> +def _dev_disassoc_notify_one_of_two_netkit(cfg):
-> +    """Test the notifications with two netkits associated in one netns.
-> +
-> +    Disassociating the first netkit leaves the PSP device visible in the
-> +    guest namespace, generates a dev-change-ntf.
-> +    Disassociating the second one takes the device out of its view,
-> +    generates 'dev-del-ntf'.
-> +    """
-
-[ ... ]
-
-> +    main_pspnl, peer_pspnl = _subscribe_mgmt(cfg)
-> +
-> +    # One of the two goes away, the device stays visible in the guest netns
-> +    cfg.pspnl.dev_disassoc({'id': cfg.psp_dev_id, 'ifindex': tmp_ifindex,
-> +                            'nsid': cfg.psp_dev_peer_nsid})
-> +
-> +    ntf = _get_dev_ntf(cfg, main_pspnl, "main")
-> +    ksft_eq(ntf['name'], 'dev-change-ntf')
-> +
-> +    ntf = _get_dev_ntf(cfg, peer_pspnl, "guest")
-> +    ksft_eq(ntf['name'], 'dev-change-ntf')
-> +    found = False
-> +    for assoc in ntf['msg'].get('assoc-list', []):
-> +        ksft_ne(assoc['ifindex'], tmp_ifindex,
-> +                "Disassociated device still listed in the notification")
-> +        found |= assoc['ifindex'] == cfg.nk_guest_ifindex
-> +    ksft_true(found, "Remaining association missing from the notification")
-
-[Severity: Medium]
-
-Does this block actually check the property the commit message describes,
-that "a namespace which still has another association is only told about
-the change"?
-
-_get_dev_ntf() returns as soon as it sees one message for the device, so
-only the first guest notification is inspected.  If the kernel also sent a
-dev-del-ntf to the guest here (i.e. still_visible in
-psp_nl_notify_disassoc() were computed wrongly), nothing in this phase
-would notice it.
-
-The stale message is not just ignored, it is later consumed as if it were
-fresh.  ynl queues notifications that poll_ntf() did not hand out:
-
-tools/net/ynl/pyynl/lib/ynl.py:poll_ntf() {
-	...
-	while True:
-		try:
-			yield self.async_msg_queue.get_nowait()
-	...
-}
-
-so a bogus dev-del-ntf from the first dev_disassoc() stays in
-peer_pspnl's queue, and the second phase picks it up:
-
-_check_disassoc_ntf() {
-	...
-	ntf = _get_dev_ntf(cfg, peer_pspnl, "guest")
-	ksft_eq(ntf['name'], 'dev-del-ntf')
-	ksft_true('ifindex' not in ntf['msg'],
-		  "ifindex reported to an associated namespace")
-}
-
-Both assertions pass on the stale message, because psp_nl_dev_fill() only
-emits PSP_A_DEV_IFINDEX when cur_net == dev_net(psd->main_netdev), so any
-del-ntf destined for a non-main netns lacks ifindex.
-
-That leaves the test only able to catch a missing notification, not an
-extra one.  Would it make sense to drain both sockets after the first
-change-ntf and assert that no further notification for this device arrives
-(a short poll_ntf() that must yield nothing), before running the second
-dev_disassoc()?
-
+diff --git a/include/linux/rhashtable-types.h b/include/linux/rhashtable-types.h
+index 0e1b172a4f6c..afbc12ba71f5 100644
+--- a/include/linux/rhashtable-types.h
++++ b/include/linux/rhashtable-types.h
+@@ -70,6 +70,14 @@ struct rhashtable_params {
+ 	rht_obj_cmpfn_t		obj_cmpfn;
+ };
+ 
++struct rhashtable_lockdep_keys {
++#ifdef CONFIG_LOCKDEP
++	struct lock_class_key lock_key;
++	struct lock_class_key mutex_key;
++	struct lock_class_key bucket_key;
++#endif
++};
++
+ /**
+  * struct rhashtable - Hash table handle
+  * @tbl: Bucket table
+@@ -141,24 +149,77 @@ struct rhashtable_iter {
+ 
+ int __rhashtable_init_noprof(struct rhashtable *ht,
+ 		    const struct rhashtable_params *params,
+-		    struct lock_class_key *key);
++		    struct rhashtable_lockdep_keys *keys);
+ #define rhashtable_init_noprof(ht, params)				\
+ ({									\
+-	static struct lock_class_key __key;				\
++	static struct rhashtable_lockdep_keys __keys;			\
+ 									\
+-	__rhashtable_init_noprof(ht, params, &__key);			\
++	__rhashtable_init_noprof(ht, params, &__keys);			\
+ })
++
++/**
++ * rhashtable_init - initialize a new hash table
++ * @ht:		hash table to be initialized
++ * @params:	configuration parameters
++ *
++ * Initializes a new hash table based on the provided configuration
++ * parameters. A table can be configured either with a variable or
++ * fixed length key:
++ *
++ * Configuration Example 1: Fixed length keys
++ * struct test_obj {
++ *	int			key;
++ *	void *			my_member;
++ *	struct rhash_head	node;
++ * };
++ *
++ * struct rhashtable_params params = {
++ *	.head_offset = offsetof(struct test_obj, node),
++ *	.key_offset = offsetof(struct test_obj, key),
++ *	.key_len = sizeof(int),
++ *	.hashfn = jhash,
++ * };
++ *
++ * Configuration Example 2: Variable length keys
++ * struct test_obj {
++ *	[...]
++ *	struct rhash_head	node;
++ * };
++ *
++ * u32 my_hash_fn(const void *data, u32 len, u32 seed)
++ * {
++ *	struct test_obj *obj = data;
++ *
++ *	return [... hash ...];
++ * }
++ *
++ * struct rhashtable_params params = {
++ *	.head_offset = offsetof(struct test_obj, node),
++ *	.hashfn = jhash,
++ *	.obj_hashfn = my_hash_fn,
++ * };
++ */
+ #define rhashtable_init(...)	alloc_hooks(rhashtable_init_noprof(__VA_ARGS__))
+ 
+ int __rhltable_init_noprof(struct rhltable *hlt,
+ 		  const struct rhashtable_params *params,
+-		  struct lock_class_key *key);
++		  struct rhashtable_lockdep_keys *keys);
+ #define rhltable_init_noprof(hlt, params)				\
+ ({									\
+-	static struct lock_class_key __key;				\
++	static struct rhashtable_lockdep_keys __keys;			\
+ 									\
+-	__rhltable_init_noprof(hlt, params, &__key);			\
++	__rhltable_init_noprof(hlt, params, &__keys);			\
+ })
++
++/**
++ * rhltable_init - initialize a new hash list table
++ * @hlt:	hash list table to be initialized
++ * @params:	configuration parameters
++ *
++ * Initializes a new hash list table.
++ *
++ * See documentation for rhashtable_init.
++ */
+ #define rhltable_init(...)	alloc_hooks(rhltable_init_noprof(__VA_ARGS__))
+ 
+ #endif /* _LINUX_RHASHTABLE_TYPES_H */
+diff --git a/include/linux/rhashtable.h b/include/linux/rhashtable.h
+index 6c5e6d9accba..ec853c1b9af3 100644
+--- a/include/linux/rhashtable.h
++++ b/include/linux/rhashtable.h
+@@ -328,8 +328,7 @@ static inline unsigned long rht_lock_nested(struct bucket_table *tbl,
+ 
+ 	local_irq_save(flags);
+ 	bit_spin_lock(0, (unsigned long *)bucket);
+-	/* subclass 0 is used for ->lock and 1 for ->mutex. 2+ for bitlocks */
+-	lock_acquire_exclusive(&tbl->dep_map, subclass+2, 0, NULL, _THIS_IP_);
++	lock_acquire_exclusive(&tbl->dep_map, subclass, 0, NULL, _THIS_IP_);
+ 	return flags;
+ }
+ 
+diff --git a/lib/rhashtable.c b/lib/rhashtable.c
+index 5da0e53a8d42..918f15a2ac69 100644
+--- a/lib/rhashtable.c
++++ b/lib/rhashtable.c
+@@ -432,7 +432,7 @@ static void rht_deferred_worker(struct work_struct *work)
+ 	int err = 0;
+ 
+ 	ht = container_of(work, struct rhashtable, run_work);
+-	mutex_lock_nested(&ht->mutex, 1);
++	mutex_lock(&ht->mutex);
+ 
+ 	tbl = rht_dereference(ht->tbl, ht);
+ 	tbl = rhashtable_last_table(ht, tbl);
+@@ -1122,51 +1122,9 @@ static u32 rhashtable_jhash2(const void *key, u32 length, u32 seed)
+ 	return jhash2(key, length, seed);
+ }
+ 
+-/**
+- * rhashtable_init - initialize a new hash table
+- * @ht:		hash table to be initialized
+- * @params:	configuration parameters
+- *
+- * Initializes a new hash table based on the provided configuration
+- * parameters. A table can be configured either with a variable or
+- * fixed length key:
+- *
+- * Configuration Example 1: Fixed length keys
+- * struct test_obj {
+- *	int			key;
+- *	void *			my_member;
+- *	struct rhash_head	node;
+- * };
+- *
+- * struct rhashtable_params params = {
+- *	.head_offset = offsetof(struct test_obj, node),
+- *	.key_offset = offsetof(struct test_obj, key),
+- *	.key_len = sizeof(int),
+- *	.hashfn = jhash,
+- * };
+- *
+- * Configuration Example 2: Variable length keys
+- * struct test_obj {
+- *	[...]
+- *	struct rhash_head	node;
+- * };
+- *
+- * u32 my_hash_fn(const void *data, u32 len, u32 seed)
+- * {
+- *	struct test_obj *obj = data;
+- *
+- *	return [... hash ...];
+- * }
+- *
+- * struct rhashtable_params params = {
+- *	.head_offset = offsetof(struct test_obj, node),
+- *	.hashfn = jhash,
+- *	.obj_hashfn = my_hash_fn,
+- * };
+- */
+ int __rhashtable_init_noprof(struct rhashtable *ht,
+-		    const struct rhashtable_params *params,
+-		    struct lock_class_key *key)
++			     const struct rhashtable_params *params,
++			     struct rhashtable_lockdep_keys *keys)
+ {
+ 	struct bucket_table *tbl;
+ 	size_t size;
+@@ -1176,13 +1134,11 @@ int __rhashtable_init_noprof(struct rhashtable *ht,
+ 		return -EINVAL;
+ 
+ 	memset(ht, 0, sizeof(*ht));
+-	/* mutex_lock must use nesting level 1 */
+-	mutex_init_with_key(&ht->mutex, key);
++	mutex_init_with_key(&ht->mutex, &keys->mutex_key);
+ 	spin_lock_init(&ht->lock);
+-	/* spin_lock can use nesting level 0 */
+-	lockdep_set_class(&ht->lock, key);
++	lockdep_set_class(&ht->lock, &keys->lock_key);
+ #ifdef CONFIG_LOCKDEP
+-	ht->lockdep_key = key;
++	ht->lockdep_key = &keys->bucket_key;
+ #endif
+ 	memcpy(&ht->p, params, sizeof(*params));
+ 
+@@ -1236,22 +1192,13 @@ int __rhashtable_init_noprof(struct rhashtable *ht,
+ }
+ EXPORT_SYMBOL_GPL(__rhashtable_init_noprof);
+ 
+-/**
+- * rhltable_init - initialize a new hash list table
+- * @hlt:	hash list table to be initialized
+- * @params:	configuration parameters
+- *
+- * Initializes a new hash list table.
+- *
+- * See documentation for rhashtable_init.
+- */
+ int __rhltable_init_noprof(struct rhltable *hlt,
+ 			   const struct rhashtable_params *params,
+-			   struct lock_class_key *key)
++			   struct rhashtable_lockdep_keys *keys)
+ {
+ 	int err;
+ 
+-	err = __rhashtable_init_noprof(&hlt->ht, params, key);
++	err = __rhashtable_init_noprof(&hlt->ht, params, keys);
+ 	hlt->ht.rhlist = true;
+ 	return err;
+ }
+diff --git a/lib/test_rhashtable.c b/lib/test_rhashtable.c
+index 85a615e74591..b767a38a74f9 100644
+--- a/lib/test_rhashtable.c
++++ b/lib/test_rhashtable.c
+@@ -477,7 +477,7 @@ static unsigned int __init print_ht(struct rhltable *rhlt)
+ 
+ 	ht = &rhlt->ht;
+ 	/* Take the mutex to avoid RCU warning */
+-	mutex_lock_nested(&ht->mutex, 1);
++	mutex_lock(&ht->mutex);
+ 	tbl = rht_dereference(ht->tbl, ht);
+ 	for (i = 0; i < tbl->size; i++) {
+ 		struct rhash_head *pos, *next;
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260912200426.121025-1-kuba%40kernel.org
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
