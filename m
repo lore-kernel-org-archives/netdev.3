@@ -1,120 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo2-f6.google.com (mail-oo2-f6.google.com [74.125.231.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABC53C10B2;
-	Tue, 15 Sep 2026 12:13:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572943BF679
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 12:14:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789474428; cv=none; b=ptCvdF1iQ1TQZS+aroqqquImwErlXeyIV5hRj5xLetBEhsc/dLFf99gDgwWDwgYK7p2Jg0AUNXtSyO9n8Z9Nxucien8gUIAWMFxjR2VbBMKH3zV6xL1JWfnWh2o7I18MHZzM6Xd0VAL61Zy+dm4BZOIqEBleo0x7+sdzbg8dE5w=
+	t=1789474481; cv=none; b=rYmg9mWOXQ1XQOs4A7usZu7g2sFdFw6yCmmGE1fDtYCcswSm06VERJ2WfFmXmOaDuzaV0aZCv0G1a+y1zIb0Ke6m5Qf9IlaIPe9jYiEe/Tsa3faZ4Qph4Uy3uIgpqdGjGFT06aAwECdy+dsNvbyGNzwyVgQswUIcavvkyMpJ+nM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789474428; c=relaxed/simple;
-	bh=JcKoswAOhyuMNjq+mGSOFMd2o3VTqmC8wPMTfTEo83M=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=sAZ2UnrUyFEx6v0FeIukTfcBjlF//bE2R8MdRXlM8084wrJztT4B/od/hFFenmv+sOa2YSHHnQsQt2Xy71JoGSOpxRPWw71Ys26UGgCXFs8zUo4sFG87E4TTJuRn7UdMWcpRs5WbjzaN4gEbq1cAULN/Mwj97a5INVhI5Iz+9q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cpyHmG7U; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cpyHmG7U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A161F000FF;
-	Tue, 15 Sep 2026 12:13:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789474426;
-	bh=YzkYuMVzkpLRGXY8MKPQ97VDe6r+TzShk9f5fTc3tIE=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=cpyHmG7Uek337dIERN+s/TgP/ItZjRRX27WIafN+eVogPnvDaZ2levjx0+Ekstf9O
-	 aKmmkikGqOS29yGlLv/jMPbQnWSovGv+5ZqP5ITCqBH7IkXD/jYKFw6CJ6+/9okD6W
-	 zOeRvktNMCg4q+b+7YwOHfOExvHI2K82zpul6Qo5wdcpyQN85mi01riFEF0vrY1kVt
-	 YkbBqGJMtRUWN/PD8o3h0zNBi0G+pOIfHJYYTHwLW50aAcUGnyQ4XZSTWr9Wk750D5
-	 wMDD5wcPOzr5n8JPfqGEAX+cQy1x7ok55AUGkaWrL3AXiqXu1BjLYLyD+/jdF7Wtr3
-	 5dih0xkSdft/w==
-Content-Type: multipart/mixed; boundary="===============4719459423094257229=="
+	s=arc-20240116; t=1789474481; c=relaxed/simple;
+	bh=ThjschtgO5VzHniT0X3lzlpF3bl+1DAzVt/+7IWTpFk=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=ZKIIPgMxTbVGQzoMTA0vTr09jhq+luTFl7xxn9Mu0Fb7+kXdsrFcR/s3Ap3oO+aW60nvficcoBkqbMPyvYEQpiWZXMZZ0uP7NKFznB2HRx5vUkbzH6ufhiV5VY4p4qvBgbED9OAZ5znv6s/oN3ceHmvxYYuY2/H2lSTnRUKcb9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo2-f6.google.com with SMTP id 006d021491bc7-6b1b8f5a1d5so878512eaf.1
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 05:14:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789474478; x=1790079278;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=9GvKUPLnOF2I98DABCDFpJhWscTY1pE+sJ+D8uGup9Y=;
+        b=aPY4FezqUhY5U4Lqb+GtMtvLCBDSuDGGmC5PTvlDLme0zlKT5ponoHg0CoF1xkoyYc
+         8HkkR9AXI7x1cVQ8LD0WZYRhA9XWLRg3/thI7fUCc9G9x0QsdH2gJkSDT50XIAjlMS/I
+         IziFEmJqvZriv87+dBf/mZIH5JLriUAhkRAcuLOXkQEQ1VYoYS7oB5cbfuI31B2fLr8k
+         k3JaxrNx45SuwBcCEu4O/3HP9mwJaywvx3E6XmeZbXbw+iLujfyBXic7KuUy+3bdg1Bo
+         47Ulryy38em7qOoGlm9DCiXGxXRffBUeE9jAK2hJjs0aZZUrJCovhzMN7jApWM9/N3WT
+         dbUw==
+X-Forwarded-Encrypted: i=1; AKwUvByBRhuAfGOk5BFGIYUGktrITWCtvfRQeIu5E9eKkQEVCPO8OJ/x4SRgq8u+LUptnrid5yAc9ig=@vger.kernel.org
+X-Gm-Message-State: AFuF++n5W3lQSEaTxesKiJlQVVvd/vGL8OT4KKtZPYo8xb8eall4LIzT
+	9/N1/HReb++Hv4dLFWy6ArNBsmDwHMPNp4f9DJU1Sa/W4lTNCL9yKadP3MrzpFZhQFrg/cLWFxm
+	UvGGFD2hVo204XekimrWha3Vsgyc5clms3MAQYj4KdS7AHdwsHT7NwqT38h8=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <650558176bb55367e1b7c7cee7a4a5285aaa6adbadeaf3935337903efd2c6778@mail.kernel.org>
-In-Reply-To: <87e00ef420af81974b590f9057cc08234324d45d.1789469930.git.tanggeliang@kylinos.cn>
-References: <87e00ef420af81974b590f9057cc08234324d45d.1789469930.git.tanggeliang@kylinos.cn>
-Subject: Re: [PATCH bpf-next v2 1/2] bpf: drop duplicate check_app_limited in tcp_bpf_push
-From: bot+bpf-ci@kernel.org
-To: geliang@kernel.org,john.fastabend@gmail.com,jakub@cloudflare.com,jiayuan.chen@linux.dev,edumazet@google.com,ncardwell@google.com,kuniyu@google.com,davem@davemloft.net,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,sd@queasysnail.net,dhowells@redhat.com,matttbe@kernel.org,martineau@kernel.org
-Cc: tanggeliang@kylinos.cn,netdev@vger.kernel.org,bpf@vger.kernel.org,mptcp@lists.linux.dev,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Tue, 15 Sep 2026 12:13:45 +0000 (UTC)
+X-Received: by 2002:a05:6820:1ca4:b0:6c2:c9ec:ee7 with SMTP id
+ 006d021491bc7-6c541b41a58mr4447153eaf.37.1789474478263; Tue, 15 Sep 2026
+ 05:14:38 -0700 (PDT)
+Date: Tue, 15 Sep 2026 05:14:38 -0700
+In-Reply-To: <6a00e81a.170a0220.1c0296.0218.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6aa936ae.f81106d8.2ab401.0065.GAE@google.com>
+Subject: Re: [syzbot] [net?] unregister_netdevice: waiting for DEV to become
+ free (9)
+From: syzbot <syzbot+e2af46126e0644cbebdd@syzkaller.appspotmail.com>
+To: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
+	horms@kernel.org, idosch@nvidia.com, kuba@kernel.org, kuniyu@google.com, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	penguin-kernel@i-love.sakura.ne.jp, raoxu@uniontech.com, 
+	syzkaller-bugs@googlegroups.com, willemb@google.com
+Content-Type: text/plain; charset="UTF-8"
 
---===============4719459423094257229==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+syzbot has found a reproducer for the following issue on:
 
-> Before commit c5c37af6ecad9 ("tcp: Convert do_tcp_sendpages() to use
-> MSG_SPLICE_PAGES"), do_tcp_sendpages() did not call
-> tcp_rate_check_app_limited() internally, so callers needed an explicit
-> tcp_rate_check_app_limited() to cover it. That commit replaced
-> do_tcp_sendpages() with direct tcp_sendmsg_locked() calls, which always
-> provide the check internally. The outer call became redundant but was
-> left in place.
->
-> The site changed here, tcp_bpf_push(), is a MSG_SPLICE_PAGES loop that
-> holds the socket lock and only iterates when size > 0; tcp_sendmsg_locked()
-> is invoked on every iteration with state identical to what the outer call
-> sees, so dropping the outer call is safe and behavior-preserving.
->
-> A potential benefit of this change is that it facilitates future reuse of
-> tcp_bpf_push() for sockmap support in protocols beyond TCP, such as MPTCP.
-> Since tcp_rate_check_app_limited() is TCP-specific while sendmsg_locked()
-> is a generic interface in struct proto_ops, this change allows us to switch
-> to different protocols via sk->sk_socket->ops->sendmsg_locked() without
-> carrying protocol-specific assumptions.
->
-> Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+HEAD commit:    5445d6419962 arm64: Don't read GMID_EL1 when MTE is disabled
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
+console output: https://syzkaller.appspot.com/x/log.txt?x=1250428e580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=56ed23170c168d4c
+dashboard link: https://syzkaller.appspot.com/bug?extid=e2af46126e0644cbebdd
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+userspace arch: arm64
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15b32471580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16d742d1580000
 
-This isn't a bug, but the state-equivalence argument here looks right.
-Would it be worth tightening "which always provide the check internally"
-to something like "which performs the check on every path that queues
-data"?
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/e8b70e3bd109/disk-5445d641.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/e5227e56ac93/vmlinux-5445d641.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/54905f78be59/Image-5445d641.gz.xz
 
-Looking at tcp_sendmsg_locked(), it reaches tcp_rate_check_app_limited()
-only after the MSG_ZEROCOPY and MSG_FASTOPEN early returns:
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+e2af46126e0644cbebdd@syzkaller.appspotmail.com
 
-net/ipv4/tcp.c:tcp_sendmsg_locked() {
-    ...
-		uarg = msg_zerocopy_realloc(...);
-		if (!uarg) {
-			err = -ENOBUFS;
-			goto out_err;
-		}
-    ...
-	err = tcp_sendmsg_fastopen(sk, msg, &copied_syn, size, uarg);
-	if (err == -EINPROGRESS && copied_syn > 0)
-		goto out;
-	else if (err)
-		goto out_err;
-	}
+unregister_netdevice: waiting for netdevsim2 to become free. Usage count = 2
+ref_tracker: netdev@000000004118ac35 has 1/1 users at
+     __netdev_tracker_alloc include/linux/netdevice.h:4528 [inline]
+     netdev_tracker_alloc+0x68/0xb4 include/linux/netdevice.h:4540
+     fib_create_info+0x15cc/0x2184 net/ipv4/fib_semantics.c:1524
+     fib_table_insert+0xa4/0x12bc net/ipv4/fib_trie.c:1212
+     fib_magic+0x26c/0x344 net/ipv4/fib_frontend.c:1147
+     fib_add_ifaddr+0x114/0x500 net/ipv4/fib_frontend.c:1169
+     fib_inetaddr_event+0x114/0x1c0 net/ipv4/fib_frontend.c:1483
+     notifier_call_chain+0x1a4/0x624 kernel/notifier.c:85
+     blocking_notifier_call_chain+0x70/0xa0 kernel/notifier.c:380
+     __inet_insert_ifa+0x87c/0xa74 net/ipv4/devinet.c:566
+     inet_rtm_newaddr+0xba4/0x1140 net/ipv4/devinet.c:1001
+     rtnetlink_rcv_msg+0x66c/0x9bc net/core/rtnetlink.c:7132
+     netlink_rcv_skb+0x238/0x414 net/netlink/af_netlink.c:2556
+     rtnetlink_rcv+0x28/0x38 net/core/rtnetlink.c:7159
+     netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+     netlink_unicast+0x600/0x7f8 net/netlink/af_netlink.c:1345
+     netlink_sendmsg+0x648/0x948 net/netlink/af_netlink.c:1900
+     sock_sendmsg_nosec net/socket.c:800 [inline]
+     __sock_sendmsg+0xc8/0x17c net/socket.c:815
 
-	timeo = sock_sndtimeo(sk, flags & MSG_DONTWAIT);
-
-	tcp_rate_check_app_limited(sk);  /* is sending application-limited? */
-    ...
-}
-
-Those branches are reachable from tcp_bpf_push(), since tcp_bpf_sendmsg()
-forwards the user's flags almost verbatim and tcp_bpf_push() passes them
-on as `msghdr.msg_flags = flags | MSG_SPLICE_PAGES`, so MSG_ZEROCOPY and
-MSG_FASTOPEN both reach tcp_sendmsg_locked(). On those paths the old code
-updated tp->app_limited and the new code does not. Every one of them
-returns without queueing SPLICE_PAGES data, so there is no functional
-consequence -- but "always" is doing load-bearing work in the
-justification, and a narrower phrasing would match the code.
-
-Also, is the "only iterates when size > 0" clause needed? The internal
-check at net/ipv4/tcp.c:1190 is called unconditionally regardless of
-size, so the size > 0 property is not what makes the removal safe.
+netdevsim netdevsim2 netdevsim1 (unregistering): unset [1, 0] type 2 family 0 port 6081 - 0
 
 
 ---
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/34964239423
---===============4719459423094257229==--
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
