@@ -1,101 +1,118 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB423806CA
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 11:59:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6915E390C9E;
+	Tue, 15 Sep 2026 12:01:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.135.140.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789473593; cv=none; b=AUrBwlQdj/SK8++EIVqlDJrVV4a6u0p/Te2DvFetXfqf8ZSnSFuHS6g/TVpPoqzzflfWxbieuJQ5fLOdeMz3iJ+qj+O/Tv/xIRmvGK/eID9rolniC9vNH7W1hKuS8eBBOKIF3BF/oHbX8KQ14MMwNFYNcueLF1J7TnHtq8vO/sA=
+	t=1789473709; cv=none; b=RMQjkyZc9OTj/MQQBo+UNft7q5O9EEFNbk9CB6j1g8DwJxhasScrymc1Zpjw30+5VEx6/pwT1kmIcZdmJ0XG1jKnW6Yaf8rUK0iWW/0q6d334Q4UPANsboRQp//uJbJdVwBTL6mXsZrpABvsl6Vi0Ab5zZFDtdDh5w/F7jH4Aq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789473593; c=relaxed/simple;
-	bh=TwEBITxsjqDNfr67b1FnkWbtZJvna7apEgcotdHSFX0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I+NvixwGkOKr+ZWV2G+PXcAdyYNJh3/Ov3DudlK0lvQVhkjadslfONvY7MQu6RwMeNFHM38+CbFT4pvQn7Ur6faA/z+t1CNxYCZxa0tNHu6ws+MCQ0Mx7rjGvLVjgFL6GsMJ0llkQt+heCjviQS4m0fr+NYn4gIWx+FGozcIj5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JaE9sCuq; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789473709; c=relaxed/simple;
+	bh=WdXPTqvk0yXe35xZ8/zIQhOlQCFViHK+7/jV4H0GVU0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k3hZIvA/uOCLsqCdAqHB8rtYf6bQJzuGUB1jpuxGU6HmOyiEZWCXqvOMlftL4XFrO5nldGHocnefYK4M2UJWnChZouprkzDFu6ODwoL+8gVvueNjk8sNMk1i/ndD4Fg9I58fpD0MuQvR/ENWRhIHwW0xcv3SF/7I7jRTw2VNLN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=pass smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=tKafBG8K; arc=none smtp.client-ip=5.135.140.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cjdns.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JaE9sCuq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789473591;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=owXpxkdaiz3FjoIP3af9pZnf5S2SeMbdOA3eIgSOhpI=;
-	b=JaE9sCuqgxKtHIUsdyuVuM8C3QbcXl7BECnvLdqfl8vCyb6B9h642t6Zq9Xy/Zc/j/OxLN
-	vAvY64IF3LZiGroVBNNsAoBdC64b8K5Mg9BhSJIfKdXvbeQ2OQe4mAXPXTk9DblrIZb5UL
-	U1ffkuxq9nrIkijvQA0t70wB2M62eY0=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-588-w7d3T18TPyOItpXF1_D_bA-1; Tue,
- 15 Sep 2026 07:59:48 -0400
-X-MC-Unique: w7d3T18TPyOItpXF1_D_bA-1
-X-Mimecast-MFC-AGG-ID: w7d3T18TPyOItpXF1_D_bA_1789473586
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 586601944B32;
-	Tue, 15 Sep 2026 11:59:46 +0000 (UTC)
-Received: from fballuch-thinkpadx1carbongen13.redhat.corp (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6B59D1956045;
-	Tue, 15 Sep 2026 11:59:43 +0000 (UTC)
-From: Filip Balluch <fballuch@redhat.com>
-To: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Filip Balluch <fballuch@redhat.com>
-Subject: [PATCH] i40e: fix freeing of TX rings on RX allocation failure
-Date: Tue, 15 Sep 2026 13:59:39 +0200
-Message-ID: <20260915115939.56716-1-fballuch@redhat.com>
+	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="tKafBG8K"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3D77747E84B;
+	Tue, 15 Sep 2026 14:01:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
+	t=1789473703; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=tbavliD54dG7PozP9lPRJAT/qtK1sRmoX7AU//MVtoU=;
+	b=tKafBG8KGwbeX0kxLyniCtDhO0GbcrDfhP5FBIiC6YlLcQxrcaiePXF7ks1dS4cyPsRwcD
+	d2zoSOyyG5aZMlkZWmfOCo5qkKIMPtKK/JeF9sbZyZg265+Q/0/D3c5yc58KE8R2BWHACM
+	r2x6te608l9C4R7HWEdL2kRS0XSv7OK0ZJV5GKzxLANja8bl9qfRjllp6qLBYbVn24mgia
+	DeTfM6ljw336jVFbMd7x1AoPZbMYzKOq8gknRHo4ysKeYntnhy/S4ER2cyzTf4bjw5rUuJ
+	cbqKYimekSRbqwzECicTMTIkPPWaMED9zgDf+C+VqXZPb0r9IdGQjBKulnICQQ==
+Message-ID: <2a7edfd0-b784-4b60-b9f9-769fe00286b7@cjdns.fr>
+Date: Tue, 15 Sep 2026 14:01:29 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v5 net-next] net: phy: mediatek: support MT7530 PHYs on
+ EN71221 MCM
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: netdev@vger.kernel.org, dqfext@gmail.com, SkyLake.Huang@mediatek.com,
+ andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ Matheus Sampaio Queiroga <srherobrine20@gmail.com>
+References: <20260915113427.113296-1-cjd@cjdns.fr>
+ <aqkwYd5dTmHDCIW9@makrotopia.org>
+Content-Language: en-US
+From: Caleb James DeLisle <cjd@cjdns.fr>
+In-Reply-To: <aqkwYd5dTmHDCIW9@makrotopia.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-When ethtool -G is used to change ring buffer sizes while the interface is up, i40e_set_ringparam()
-allocates temporary TX and RX rings. If the RX ring allocation fails, the error path at the
-free_tx label incorrectly calls i40e_free_tx_resources(vsi->tx_rings[i]), freeing the live TX rings
-instead of the temporary tx_rings[i].
 
-Since the interface is still up, the next TX completion interrupt causes i40e_clean_tx_irq() to dereference
-the freed ring descriptors, resulting in a NULL pointer dereference in IRQ context and a kernel panic.
+On 15/09/2026 13:47, Daniel Golle wrote:
+> On Tue, Sep 15, 2026 at 11:34:27AM +0000, Caleb James DeLisle wrote:
+>> [...]
+>> +/*
+>> + * MTK_GPHY_ID_MT7530 ID is also used for an EcoNet SoC FE phy, but that PHY
+>> + * does not advertise ESTATUS_1000_TFULL.
+>> + */
+>> +static bool mt7530_is_gphy(struct phy_device *phydev)
+>> +{
+>> +	return phydev->phy_id == MTK_GPHY_ID_MT7530 &&
+>> +	       (phy_read(phydev, MII_ESTATUS) & ESTATUS_1000_TFULL) != 0;
+>> +}
+>> +
+>> +static int mt7530_phy_match(struct phy_device *phydev,
+>> +			    const struct phy_driver *phydrv)
+>> +{
+>> +	return mt7530_is_gphy(phydev) && !en751221_is_mcm_phy(phydev);
+>> +}
+>> +
+>> +static int en751221_phy_match(struct phy_device *phydev,
+>> +			      const struct phy_driver *phydrv)
+>> +{
+>> +	return mt7530_is_gphy(phydev) && en751221_is_mcm_phy(phydev);
+>> +}
+>> +
+>>   static int mt7531_phy_config_init(struct phy_device *phydev)
+>>   {
+>>   	mtk_gephy_config_init(phydev);
+>> @@ -135,6 +199,23 @@ static struct phy_driver mtk_gephy_driver[] = {
+>>   		 */
+>>   		.config_intr	= genphy_no_config_intr,
+>>   		.handle_interrupt = genphy_handle_interrupt_no_ack,
+>> +		.match_phy_device = mt7530_phy_match,
+>> +		.suspend	= genphy_suspend,
+>> +		.resume		= genphy_resume,
+>> +		.read_page	= mtk_phy_read_page,
+>> +		.write_page	= mtk_phy_write_page,
+>> +	},
+>> +	{
+>> +		PHY_ID_MATCH_EXACT(MTK_GPHY_ID_MT7530),
+> I'd suggest to actually use phy_id and phy_id_mask assigned by the
+> PHY_ID_MATCH_EXACT macro by calling genphy_match_phy_device() in your
+> match functions above instead of open-coding the ID match.
+> Or drop PHY_ID_MATCH_EXACT from *both* drivers.
 
-This can be reproduced on systems with Intel X710 NICs under memory pressure, where
-the second port's DMA allocation fails after the first port succeeds.
 
-Fix by freeing the temporary tx_rings[i] in the error path instead of
-the live vsi->tx_rings[i].
+I suppose the latter is easier because then I don't have to re-think 
+mt7530_is_gphy() which would be lying if it wasn't actually checking ID 
+is MTK_GPHY_ID_MT7530.
 
-Signed-off-by: Filip Balluch <fballuch@redhat.com>
----
- drivers/net/ethernet/intel/i40e/i40e_ethtool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-index 3da9ec49cc74..6d2b076049f7 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-@@ -2249,7 +2249,7 @@ static int i40e_set_ringparam(struct net_device *netdev,
- 	if (tx_rings) {
- 		for (i = 0; i < tx_alloc_queue_pairs; i++) {
- 			if (i40e_active_tx_ring_index(vsi, i))
--				i40e_free_tx_resources(vsi->tx_rings[i]);
-+				i40e_free_tx_resources(&tx_rings[i]);
- 		}
- 		kfree(tx_rings);
- 		tx_rings = NULL;
--- 
-2.55.0
+But I guess I should come back tomorrow since I'm already in trouble 
+with the 24 hour bot.
+
+
+Thanks,
+
+Caleb
+
 
