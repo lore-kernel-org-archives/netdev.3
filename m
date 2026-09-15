@@ -1,189 +1,159 @@
-Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010033.outbound.protection.outlook.com [52.101.201.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9387E443A9E
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 19:52:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.33
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789501936; cv=fail; b=UKHi9yiVPtD/N5fjsYVR6io9I0bw68B1Mb9IyM+g9c142t9eyarDDaBI8/Z2eOfxCCiXtbLBYVvtShPAYqfYQcNuUEU7QC6/nrC8zzdlaJzHtjwZegrHH24ml48qXrLNqqxlIu4JHYoAvPkfJwFYddkgVIhysK6yVtXgpSUA48Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789501936; c=relaxed/simple;
-	bh=lT8kQ0XFKqyYHJYhopwf4S+qqtl3Km++qHljOykpCus=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=FHOCqj+upkY3KkZWm294fMfJhzTmQ9KYgPc+Wk8TewXVLfuAN5tv1LtN5B6DjtRntCmJZxGJTbKaTL3LO7DkodXnR4+Dl3bdRqA+Y5Lz1PycTsrpuCs7tfW0kLcwegDv/W5j9TufN9jlAa5bx0COtunHSho4kFCnZan7hE4uDsk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ffquwl7o; arc=fail smtp.client-ip=52.101.201.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799EB45563C
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 19:55:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.76
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789502160; cv=none; b=dfdls4fYOb4cC1A+uPVqptZ2aFyCV6Llq0mF1Ey0J8EYY0IuNW0kS+RPNJDqt8QwddA0mkP7exEwo+BEDRHVxdgmpc/8l5Kf/URpIx/KgdTaUCrnNMYW9oztbwjEcarQYzL5iDdFDM+INfX9GP2vdUYAqKzeGeFPz0xzi6Lo8nE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789502160; c=relaxed/simple;
+	bh=jrv2n3UsjXfobuwALu1G+A5+pU0CPVohtvuwd05zAsQ=;
+	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=XfEUPlLnEsCKs7zIWOujAwRO0J6dP/oRvULrGb/rGdxe2SAklZb/c/al/UjK9Dc46caCm9eGmkCbqPtI1tmKjvyFhu/6FssFOiddlnC8Sin/5fG5pcM3MDqFd0kO7aehq3/iq8JhBhWCQP3dSbE8qjSETtXlLIpAjCI/fR8C8s4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com; spf=pass smtp.mailfrom=doyensec.com; dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b=BFvoQIL9; arc=none smtp.client-ip=74.125.228.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=doyensec.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ffquwl7o"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=H4WJZt0ObBpQ7IP7T4GaW7fDD/w9FdrIUhIjqEl1OEcw3uDybbEIyqzZP3IegNTsvxkMvfpDPqJTNYE5DNGQZtdAOD3rIlsLm6XzTXEf4h+9PhO/7F/kVyEqGNjb/+9+7hNa5WJVifuOLi8/Fs9qG3Yhf7tG5VFNwQdKKsUsfqLlysEUcU2PIpKiY7UPebOsCns/J373RmRbfkNNOCJLNALPgU8RSTjaqsnawrcMv0y7i3tt6MDKU3myu3OqU2RgZbWXwAv3nXNpFpM2XgaoH0TzB0oRplYtplTfrkeQFtJmtwB4oB92IabYNvzuDKdr3+sg4MCtfTs81xENkq2kfg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pL2Y+bF5D9rYxISBAoNlXETCop88WDQemd3OIJyYAX8=;
- b=LarTZ0K8zMgzr0wYgwxTEKvSGeohl+vp7/f9rWZb/z5OdoAXWOPRb9Ai0ZNXPK3XfWGmKabqjnJ3+u9hmadKmWP2OrV/VZlq+UXJmfTRXcWXlVlGAavIOE4kZS8h8gWJjK8H5RBE3TudXsNheeiTGoVo10QKUlvaTVlpwvjS7L8qubBNGja2AN9XDJgtvDy4al3AstSvsMW4BfKbNvkSi0qxD7OUOBOGLuMzatBWpBKvy5LlN07c4bTN4Ez3l1PrxtKFLSA0T2iNFdUvZ4xS30prZaTxYRIwEhYz3xu3R9ZvPxTO+HWzsm+rcdJhsA3U0CuhRqJv1jKnNxza+waOvg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pL2Y+bF5D9rYxISBAoNlXETCop88WDQemd3OIJyYAX8=;
- b=Ffquwl7odI+IyXtrigb/7tjjM8g9ULDHt1mMrUDZgCZQHvgQAyhfmyync+w8z5HMtris95yxFmGMCCoZNSlpzTdMDFzIrVimQBo0/jCfAMBlwSzmXNR3klKzGgvDHeQrCr2VLOTnL8b7OMNnGx/Y3Mlrjo30XfrtQVDlmi42pUU41guEUSzqE+5nR9QLWLUvqJlzOhUVK0Ae7xEhJA2Aluc/4PfERJ3nWbPa4kwiSuSO2z5eXqWYjgtIbMOnyNJaPdDN3yw0JbZ3bPg3Yd3AMmANunv754wWhF/IBYZf2nRvfC8IVXKWOoz16awLYe+3xLHWGYJfqwipySnODGbyrQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BN8PR12MB3313.namprd12.prod.outlook.com (2603:10b6:408:65::18)
- by SA0PR12MB4382.namprd12.prod.outlook.com (2603:10b6:806:9a::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Tue, 15 Sep
- 2026 19:52:11 +0000
-Received: from BN8PR12MB3313.namprd12.prod.outlook.com
- ([fe80::310a:77d0:b591:54a1]) by BN8PR12MB3313.namprd12.prod.outlook.com
- ([fe80::310a:77d0:b591:54a1%7]) with mapi id 15.21.0406.007; Tue, 15 Sep 2026
- 19:52:11 +0000
-Message-ID: <d6f74c00-f486-42d1-960a-2a9908434aa0@nvidia.com>
-Date: Tue, 15 Sep 2026 22:52:08 +0300
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 2/3] net/mlx5: LAG, check if vport exists on
- br_offloads
-To: Bernardo Soares <bsoares.it@gmail.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>, netdev@vger.kernel.org,
- saeedm@nvidia.com, Vlad Buslov <vladbu@nvidia.com>,
- Bernardo Soares <bersoare@isovalent.com>
-References: <dd3247a9-14d5-4866-a20e-b31d414ec1a1@nvidia.com>
- <20260914085430.18694-1-bersoare@isovalent.com>
- <20260914085430.18694-3-bersoare@isovalent.com>
-Content-Language: en-US
-From: Mark Bloch <mbloch@nvidia.com>
-In-Reply-To: <20260914085430.18694-3-bersoare@isovalent.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0047.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:cc::14) To BN8PR12MB3313.namprd12.prod.outlook.com
- (2603:10b6:408:65::18)
+	dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b="BFvoQIL9"
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a6063d7dc4so317633a12.3
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 12:55:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=doyensec.com; s=google; t=1789502156; x=1790106956; darn=vger.kernel.org;
+        h=to:cc:date:message-id:subject:mime-version
+         :content-transfer-encoding:content-type:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8BdL/nTWbKRgylMc5hg7bQyOMQwMDBoJsjLllCCKqYo=;
+        b=BFvoQIL9RTbpuv94wU/OLRA2wWPbcUnFmGR9mjRF0Kwi9Se7O65PudziwFwNoxgjcg
+         SpSbzhROR9zp827DfUH4JavVHg8wuaHLiIi4mTbgRG8Jiq7ivrETsZ/DUbWTzMacR6iD
+         W3UEF/VorIOVXJmIs5ikbrec3iL23F9m/tpdFeQAzM4ox4pQtInRnHQl/lgPbF3ZVQOx
+         v+vP51dYyDU4Q0bhIqOXsBCrQ6YUGqS/Ww1AyeNGPhhORxfFl9vGmduWGH8/TIyBtUJ7
+         687zJwiX43uW8ZyrPwpI6bar+e4ojs8oFittNsPlIGybwSTjMkWnagptSK/cfnXTbCVv
+         uobA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789502156; x=1790106956;
+        h=to:cc:date:message-id:subject:mime-version
+         :content-transfer-encoding:content-type:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8BdL/nTWbKRgylMc5hg7bQyOMQwMDBoJsjLllCCKqYo=;
+        b=gMxT8KtR+FLWzbsjuI5w7afu+XkTj/tEkhMLkvSk95BXzB+Ju+imQfyu4MCxpmxX3P
+         s0cufh/hTG8/+Bd3WlSnR9nWYiPRr+9icODfFzVDyQ7JK6waKQkW0gJJKLA5H+mad4RU
+         BpYkt2egoPGFVrWFmRfcYynxMEtSvR3YPvFyZXuRGkg/D5KjfCRHiASVJI4Xubn2zHTF
+         yilqR7cR4M6mHV30kRADrXPOfEpFtJhiWtMZta+4S4nyP1LuJKoecIOCAcs5juJUhX5x
+         m5XNnwwMXwa+e9NeMRB937FR26FOOrVfORsK5xfDIJQYhhV8HD7KlzKmvNYbPZ3+qzcM
+         XHRg==
+X-Gm-Message-State: AFuF++m5DjxanVi8i5OmFh4SedQIwLjWRTagN+lw612NiBoL5Ea09xc/
+	nG2vg+AHJzr/1SJ56dIB4kj/Mnc4cIcvhaxlS+2tzeeA2YjlwikbJfPRUG40AcEIz1SK7at3Kqi
+	EpXVrdCy/+A==
+X-Gm-Gg: AYBFou3n1SeKSoxW9LjM+IsbZJJnRQ/bXWS9U2zAZM1utOg0jdcZYe+piNpw8+oR0dx
+	DxrPhl1bfKmloxnW89q5Z9Zv6A0Y5YhZT5QwOdPlDhDF5g/7gxz04VaQ4c2reBWLiF/KJXHUwOT
+	CK8MyRE2QGwOUhstFysfTVmRQ9qhJzNAEUd+87fbdbQmolzqVwyXsJ8/8O23dGdAyCu9hQ6IVpi
+	gDZqO+8fXdMzm3Ca2BLXBLqETTdjKQ0ZKXxN51Hn/4ZM5Na/8nVASNQ/wpbFMy477BtOQq8JxXf
+	HJs7gYQ3TC7oXkvXEhNeNBhZxFoE5eLToErJs0l4/mdkquFq2rLgbVJXaZI7yq4OW66hu5CSbZx
+	X66BzUmioKJ1VqMpjhE2a0ybYMvDx4CVWGBpFp2vf3thNtQMjeMQlFWnCDbU0Qpb3Y0CTFHxonZ
+	ppYPW8mh0atg+DFjYCR/FdOuKNXc0gjHiuTmNAkP3V5JsPGJt+I7YtVSJegb+y7FYl4/tHkVgIr
+	PBAL5g0fUQwb+6hCRDTXadjH8VfGvYPH1WhKyONr5BACB1UR7uHhMBejw==
+X-Received: by 2002:a05:6402:5406:b0:6a6:32f9:e9f1 with SMTP id 4fb4d7f45d1cf-6a9f6377c5emr12290444a12.20.1789502155390;
+        Tue, 15 Sep 2026 12:55:55 -0700 (PDT)
+Received: from smtpclient.apple (83.10.8.214.ipv4.supernova.orange.pl. [83.10.8.214])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6aa1cfe07e4sm205239a12.2.2026.09.15.12.55.54
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 15 Sep 2026 12:55:54 -0700 (PDT)
+From: Norbert Szetei <norbert@doyensec.com>
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN8PR12MB3313:EE_|SA0PR12MB4382:EE_
-X-MS-Office365-Filtering-Correlation-Id: dae24a4a-13b9-462f-67e8-08df1362d50e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|18002099003|22082099003|10067099003|4143699003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	phG2BayUmErG9LwYk4URfCSjYLGa+3Ms5dgna4fYZqCHkjcBgrHsPZ41TTcc4MLv8cZFC0wlvRb6fEhnyuTQOtY1FjShnaXBb3OIvmH+TiRb/5Csm091ExKLIqUPuHQTwAigmESLBoSSsZ6XGwC063llbLfpQHGN0c+3/MtshTYGMnFgP1SlSlU2PB2WxSorTT/zEH9llQZv4Z72wdSW+8WNDrCm51FyO/aSAgv9QBBO2Q5OyKqK04OUOHM32zIHW7Ub5zVkW0pnRSn43mfH6fWzdtdiqTQ8Rm9BaPakYPGsWsIs4EJgqTwqH97ccAymNd7tOQm7i2lxT6YbPfED/4u1dpRqh0j90+YCLIQPmoUqOiLKGxO+UoHPIZ/zccdWTJ0/XNtIqakeJHc9Xf8Lty+b2I26Zhyd7ORMiaGmB9EXhFh7G5y0lTAoHnb5UPgSpQvi0EB1heOkim6d08Dq0PPmp3HCee7sj1zchj7fbtKt/WC41U/QESpI4hKFCas7h9w9wPsYPiaDjFjmw4wMjEdtxqPCoBy1UvH5cRf5m/F/GtlH8v7o0hQ+6+eXK86Y0mFJ3EVlDd2tQ7QJa/QX9fplPhw408fhJbvT6nbAFtEfFId6TMhybHjjozdfPfac2SYBS7Lug7dnpve5cfS4NVMg0A/0HF5PO+iaeXpP7/8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN8PR12MB3313.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(18002099003)(22082099003)(10067099003)(4143699003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TWNiSE5GK1k3ZWhuSUZ4cmxKTldLYXkyNnhaTTRyS05GNE03UnE5bkVGTVVH?=
- =?utf-8?B?S1U5WW02bWZHQTIzdHppejFSM2gzb01iVnp5c2Qzejk2RWlmVDZRNlh1WVZq?=
- =?utf-8?B?c3VVcHpkbjZoVmRNMnZQQ3ZPLys4Y0cvZFhVNlhFZC8wQ1ZDZzJtV1Q2Mzg0?=
- =?utf-8?B?MzBVbU1OOXMyMjVKa015WExjdjFMMStsdjRuTHIrZ0xFRUpjdGRDTVVERFVU?=
- =?utf-8?B?VENMNndvaHFUeFBFWWNXY2Y3ZlVNOXNVY3Fvb2lyc01WT0RsbGd6L2RocXEr?=
- =?utf-8?B?dzN2NVVROWZQQlVjeDFYbU5IUll1OGN1SFR3eU11ZW9TREJhaW9zYlFwVVBl?=
- =?utf-8?B?MFVscFNobmtOSXlYbGtoVnFBTVNzTFppbk5xRG9CN2UxcGMvT21UUUhiVlJF?=
- =?utf-8?B?a242ZWZ6bGZKbWtmTHgxRnJyT21abDZndkNPS2Q5S0M5OWNFQVU5V3JkQnYr?=
- =?utf-8?B?bWQxb3pxREJHMklSVVlWdnY0YXU0VHJCSjFmTWFBaTZCQlFML2dTRFY2VHcz?=
- =?utf-8?B?YjMySnZWQUQwSXBFZFllZTdOQzB5cnRBVHliZm5TQkRMMGVGTDJSU1I3UWo1?=
- =?utf-8?B?ZjN5YUt3NWFBWHpZWVJWNC9GcG1jT29XWHBUNExZLzBiWEJSRWhha0JiYkpa?=
- =?utf-8?B?RU1XL1BGTWNuWmFKSzBvNHJqdGNIdkdYTHJEb0tuZ0RSellpakhJQWhrWXFP?=
- =?utf-8?B?OU5oaTBpR3NxT1N4UWlUbE1PMU04S2laL3FRTkFRZXoyOFU5UDNvRkZkczRQ?=
- =?utf-8?B?NEdNbDZOWmZiTVRqaS9aSGFNcXNEMy81bnVlSTI1U21WUitDQjJ5WXE5RGth?=
- =?utf-8?B?cmRmd09wTGlyVWloUGs0T25YZUJjQW5udXZRcHp3NEVzNXFWY0tXNEtoTFhN?=
- =?utf-8?B?b2g2U2VseEQxYUk1WmNRalp5Z3Q4bVdFWmUvcVcxNDV3aXJIWXkvNTF6Y3M0?=
- =?utf-8?B?aSsvd0JJd1J2SjVxZjRCZlhtbXFBdmVoZ1BlQ3YvMXgyMnA5STkxRUY3Zk1t?=
- =?utf-8?B?UVFVMlB6WHp4Z3o1YmkrOURid0hVcSszc2pqK2NHRkRiTm5TRC9Lcjl5NkF3?=
- =?utf-8?B?bHY4cUU3bXMyQVZ5TDVPWEtwOFk0UmlBckdDWWQvNkRPYy9KNEVMamRxZlNl?=
- =?utf-8?B?QnVRMEE1bndyaWRUamZkZEtDYlVHNWlXcDkzazZ0aGpHTmlSa3pNanEycVJX?=
- =?utf-8?B?bzViWmlDR2xjNW1hNzExZ3pZZkpUS3ZCRVZ1Y0dVVGUvaGRTLzVnNzg1UFlR?=
- =?utf-8?B?OW94QU5oZUg2YXBGT0FsWXpQenpWUkFlek9KWmMwdXVaTk9GS1FLbkl2cTNV?=
- =?utf-8?B?M2pJU0swSm5KRnI0U1RkdS9NWVJZY3ViejhPZnNzYVdaK1hUUjI1Y1crWC9X?=
- =?utf-8?B?RHd4a3pBMG54dkxHUkZFWGRzRHVZbFhyNE1EZjJhNmxQajR1Yjg4Rytna1o0?=
- =?utf-8?B?QklGeWJ0SGw2enkxcDVJZHd0N0hnOE8xYmVHaDFFTDVUSXp5UzhGZGQ3TS9P?=
- =?utf-8?B?OE5nVTJEQU92RFJEVVVpOW50MDl3RVZiUEk1aXh4L1ZlMEhzSEE4N0Y2bFhz?=
- =?utf-8?B?Nk1hMkJXYmRSMkxhd2F6aUVhVTNYNnU1YkhuUGlJMVVpSFdFeVNsYXRIMGRR?=
- =?utf-8?B?N29oVXRqWGFTaFVMK2U1Vlc5bW10NmVTN2VmTm9HNml2MWdKUGFRd1UzWmNT?=
- =?utf-8?B?ZVpYNDVSRFJDK21vZVc1bVBSdWQ5aVpFSTBES3dVWkcrQTUrbUxYUS9NUGRw?=
- =?utf-8?B?WkNiS1NReFl2QkVtMjBGdzV6cThLK2dZbjI3SHd5eGZpMHJJaVZHenRVWXh2?=
- =?utf-8?B?TnhpaEZZZCtJd2NNUmd4dEZHK3RmL0xiY0tKT1I5blFIWUdoUDI2aUx0USt6?=
- =?utf-8?B?SXRHQU1WaEVqaDhsNjZiQkRZaStVeTQ4QWMwbEtVT3U4Y2ViS2lpclBNREN1?=
- =?utf-8?B?ckVMd3ZIdzB1RUNKQ0E0NWsvVjg1cGwza3VHclhpUHBrdVkzSFZ1VnNmTDRN?=
- =?utf-8?B?SjRXcXZuVVVCV3l1UjRPemdqWUlINWMrVWtCY1ZtSjZOZG44dTk3RXZxZnZY?=
- =?utf-8?B?bXltNHFZZjkxMjdSVFBVckdxQWdiMW5oeFJVQi9PZjc2YWJXY3V2K1R4cFE3?=
- =?utf-8?B?ckZPVHRYSHFTazljQW41V091dUZuN0V2TVNVVU4zWFY2cll4L1I5RC83T3dW?=
- =?utf-8?B?QXgxM1BRcUc0dWo5eGM4NG1zN1RBbU1yUU5BZ3VBZUMxYXhoMjBoQnBEdVlw?=
- =?utf-8?B?dDgwM2wwVmRUZStCdjlmWGFDOXpYTlBkT25wdDdBbUJDOUdoQXd6dFlwWTQx?=
- =?utf-8?B?TkJaWjJZdFFVMDhvM2RzVzBmTXJwQW4rc3FCQ0l5RnNsODFDZEtrZz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dae24a4a-13b9-462f-67e8-08df1362d50e
-X-MS-Exchange-CrossTenant-AuthSource: BN8PR12MB3313.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2026 19:52:11.4614
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dh6B932e07LUbN9qG3e16qzuv0chTCm2oBH+M2YJF73r0jgsCfIn1P7KWBrH43CC85kLhPXSAfVfiAJEoyLRwg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4382
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
+Subject: [PATCH net] openvswitch: reject a negative transport length in the
+ IPv6 L4 checksum update
+Message-Id: <114FAFBD-F7BC-46AE-AF9F-0D15124F130E@doyensec.com>
+Date: Tue, 15 Sep 2026 21:55:43 +0200
+Cc: Aaron Conole <aconole@redhat.com>,
+ Eelco Chaudron <echaudro@redhat.com>,
+ Ilya Maximets <i.maximets@ovn.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>,
+ dev@openvswitch.org,
+ linux-kernel@vger.kernel.org
+To: netdev@vger.kernel.org
+X-Mailer: Apple Mail (2.3864.700.51.1.1)
 
+update_ipv6_checksum() computes
 
+	int transport_len =3D skb->len - skb_transport_offset(skb);
 
-On 14/09/2026 11:54, Bernardo Soares wrote:
-> mlx5_esw_bridge_lower_rep_vport_num_vhca_id_get() walks a LAG bond's
-> lower devices and returns the first rep that's structurally eligible
-> (same HCA, is a rep), without checking it's tracked by the calling
-> instance's br_offloads. On a merged-eswitch HCA where a bond spans
-> reps of more than one eswitch instance, this can return a sibling's
-> rep instead of continuing to the one this instance actually owns -
-> reached via mlx5_esw_bridge_port_obj_attr_set(), so a bridge attribute
-> change on a bonded uplink can silently no-op on the right instance.
-> Fix by checking mlx5_esw_bridge_port_exists() at the point each rep is
-> picked, same as the previous commit did for the single-rep case.
-> 
-> Signed-off-by: Bernardo Soares <bersoare@isovalent.com>
+and gates the L4 access on
 
-Please squash this into patch 1.
+	if (likely(transport_len >=3D sizeof(struct tcphdr)))
 
-Mark> ---
-> v2: new patch, addresses review comment on v1 asking whether
->     mlx5_esw_bridge_lower_rep_vport_num_vhca_id_get() should verify
->     the rep it picks while walking a LAG bond's lower devices is
->     actually tracked by the calling instance's br_offloads, since it
->     otherwise returns on the first structurally-eligible rep found,
->     which is not necessarily the one owned by this eswitch instance.
-> ---
-> 
->  .../net/ethernet/mellanox/mlx5/core/en/rep/bridge.c | 13 ++++++++++---
->  1 file changed, 10 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/rep/bridge.c b/drivers/net/ethernet/mellanox/mlx5/core/en/rep/bridge.c
-> index 56592e2e6b9b..4b7b0a0fc2b2 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/rep/bridge.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/rep/bridge.c
-> @@ -85,9 +85,16 @@ mlx5_esw_bridge_lower_rep_vport_num_vhca_id_get(struct net_device *dev, struct m
->  	struct net_device *lower_dev;
->  	struct list_head *iter;
->  
-> -	if (netif_is_lag_master(dev) || mlx5e_eswitch_rep(dev))
-> -		return mlx5_esw_bridge_rep_vport_num_vhca_id_get(dev, esw, vport_num,
-> -								 esw_owner_vhca_id);
-> +	if (netif_is_lag_master(dev) || mlx5e_eswitch_rep(dev)) {
-> +		struct net_device *rep;
-> +
-> +		rep = mlx5_esw_bridge_rep_vport_num_vhca_id_get(dev, esw, vport_num,
-> +								esw_owner_vhca_id);
-> +		if (rep && !mlx5_esw_bridge_port_exists(*vport_num, *esw_owner_vhca_id,
-> +							esw->br_offloads))
-> +			return NULL;
-> +		return rep;
-> +	}
->  
->  	netdev_for_each_lower_dev(dev, lower_dev, iter) {
->  		struct net_device *rep;
+sizeof yields size_t, so transport_len is converted to unsigned and =
+every
+negative value passes the guard.  inet_proto_csum_replace16() then reads
+the transport checksum field out of bounds, and writes the updated value
+back to the same address:
+
+  BUG: KASAN: slab-use-after-free in =
+inet_proto_csum_replace16+0x445/0x470
+  Read of size 2 at addr ffff888131a4cb06 by task ovs_ipv6_oob/696
+  CPU: 3 UID: 1000 PID: 696 Comm: ovs_ipv6_oob Tainted: G N 7.3.0-rc2+ =
+#338
+  Call Trace:
+   inet_proto_csum_replace16+0x445/0x470
+   set_ipv6_addr+0x3dd/0x460
+   do_execute_actions+0x6a3d/0x7c40
+   ovs_execute_actions+0xfd/0x480
+   ovs_packet_cmd_execute+0xc38/0xf20
+   genl_rcv_msg+0x59e/0x870
+   netlink_rcv_skb+0x18b/0x450
+   genl_rcv+0x2d/0x40
+   netlink_unicast+0x6bc/0xa20
+
+  The buggy address belongs to the object at ffff888131a4c980
+   which belongs to the cache skbuff_small_head of size 704
+  The buggy address is located 390 bytes inside of
+   freed 704-byte region [ffff888131a4c980, ffff888131a4cc40)
+
+ipv6_find_hdr() walks the extension header chain, skipping each header
+by the length that header itself declares, and ipv6_optlen() returns up
+to 2048.  The last skip is never checked against skb->len, and
+parse_ipv6hdr() installs the result as the transport header.
+
+Reject a negative length.
+
+Fixes: ccb1352e76cf ("net: Add Open vSwitch kernel components.")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Norbert Szetei <norbert@doyensec.com>
+---
+Reproducer available on request.
+
+ net/openvswitch/actions.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
+index dc5ff859f114..4fdc08cca058 100644
+--- a/net/openvswitch/actions.c
++++ b/net/openvswitch/actions.c
+@@ -360,6 +360,9 @@ static void update_ipv6_checksum(struct sk_buff =
+*skb, u8 l4_proto,
+ {
+ 	int transport_len =3D skb->len - skb_transport_offset(skb);
+=20
++	if (unlikely(transport_len < 0))
++		return;
++
+ 	if (l4_proto =3D=3D NEXTHDR_TCP) {
+ 		if (likely(transport_len >=3D sizeof(struct tcphdr)))
+ 			inet_proto_csum_replace16(&tcp_hdr(skb)->check, =
+skb,
+--=20
+2.55.0
 
