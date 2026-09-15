@@ -1,110 +1,131 @@
-Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43C943A812
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 09:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B240F3EB0F0;
+	Tue, 15 Sep 2026 09:16:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789463511; cv=none; b=I2O9a8TOTNc7JvmEiPZFrBPd4Q6lZC7rWotRJVVhIdTpcOiJ3QHpdHXkNefUSiAbLuKPCCWO/WWWeBBM6n3NQCBstD7KlcTgtr8crT+1OsWeEEmaEerJ2WHe8vRCh49DURUJEduvmAzHL35L334jFqHxQpxB0rshGq329yBL/6U=
+	t=1789463819; cv=none; b=nGmWzNmo9lKpSCL9O3yQwc0XFU9+KxuXN/ehS2mrrMaP3JArCBIa9Nj7SO23ZEneS4iU8pgnwUri/iLZjiXXrnAE+vSeCLApUTgOo9fzkjyVvD3/e2UUHHPvhC+n2mgup/MrA45dkWOsBzT8ijn/MGa9WyFMoVcHdrXGQQSTeQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789463511; c=relaxed/simple;
-	bh=DZY/0oI6mCnWUve6D7j+vwx+OdhyO4q+XgrHXvoBa3g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Sh0ZQs0/D4ll5Ct65LbKSz6czRhf2SFbtJHku1rNVQpdp9gRLdQYWtFMFbTSqX2qxh9risHgvQ4/At0uB39zkMPx2Q7xSrY4K3jTV90NW1IHlMafbCi+3qq8xGs9BZ8f6bT376QXM3fOcNNxnfXXXwXyJH3FW6OIRrrdLNT6804=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MUDszfQv; arc=none smtp.client-ip=74.125.228.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789463819; c=relaxed/simple;
+	bh=pcH3XAVzOC1I/f/8RPm1k6RDkOcG5wRk5USkgfCB2xo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=b/UBb4gyapzFLjH4E80FhA+GpQBTW9Kc4GNzwiBsl7dzhT62xkZB24iOx9OafREgNX71kmAnbQLokcRtwXuK+eDS35yvW2ZDJD1Gfpkhv6Ja2g5Th1hakedjJLFRQcGfPRRCxVVZl2Y3MwEslAdYbJCeSFW3XSxolGAE4y45c2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jbdQ3iVe; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MUDszfQv"
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f56039dso8362566b.3
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 02:11:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789463508; x=1790068308; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xTNpzrYwTyZX7H+h2rvNKx7E/X9ORfxmeaOuxO0zcfQ=;
-        b=MUDszfQv96UPwPS5ok4vuNwBOTLjcfqtyCffTdzm0seTn5xh8LMoHdS0cKrSP8/Dvn
-         HQMrmZbD5/xplZyvkYov+XrkwI2RjeeUJ3j8d8kf3ZZo6XH8OsFT1JmzCExHWzP0yMd2
-         00VcuHrOyUS9qst6pmgF9GdhJ6Vpqgmz8ywmA6gOKrvboEVIIC3eh6w99sZ/P+n+qAyD
-         fI814Js+YigS4H3pJrgWPhOzA+XFQtTDhd6Qr9StURQEOy3JJ0kXx7FWyVnD+spjn7VK
-         MmWvOHHCRdlNb60ZfO/6b/c8YvR05YFSg4869KCQM6KFb6rpkLvM+a4hcenNwOS8F7uN
-         F+bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789463508; x=1790068308;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xTNpzrYwTyZX7H+h2rvNKx7E/X9ORfxmeaOuxO0zcfQ=;
-        b=bbIVjTDa26ec7HYu9sFJRtVpu0PSOOTMHiDwDHfalj5m+PehWdUKkd3KYJ2drGaFD4
-         xDjnJsasSJ2QScdqjh/6hrhErY2JJbIIcIFucBBSpZtt8V6z5r/XJ4nhd0Ejy5Tt+rZG
-         5Lskdj9A3jQA/0Fpen1AoCPw9bb4+ue4m0cr6v811W7Az1gJZvaIOD/Cd6v5S+7rfri4
-         6wZ7o0eCQMMXDJ/Qz4eOPSTyraJTuw2VRTl9BTiDtclxI/rlCMFOLki2GGUSCDXMPXLA
-         yUS+rs4wOqBn4eUUv508e/+RC/vORQkMRDUsTvXaywticiyF4LAbBVV4Px+ka6FPialZ
-         lSLQ==
-X-Forwarded-Encrypted: i=1; AKwUvByqgDZvnsn+tjWrsLOa2ETIhNSSDE5K1/Mdwnn5B0gq49BQnLmNSxd7iugao6Kk1ja6Ea/RntE=@vger.kernel.org
-X-Gm-Message-State: AFuF++kS4hlEXjiErOUpFhx8T/dh48DNalAfsxl0LiGnHG7GiqoXlcyF
-	mR0iRJvzJOXOaNkt7E94ufIwXRtfwUg7UDHUvcdtzkpvg42X7IPtu5ne
-X-Gm-Gg: AYBFou3KVI9V918gqhpqbkiXR9Oazh16gk1ZpR3DKlq/LuTa14/vIvrj+rjTxfap4Eq
-	BuD4NVOSzhGO0u47D8hUhZox+fC22WldJbrQsC+QcRo74l3TxfYoYXCcuZ+UXYWQOEO/hjt2q/F
-	/yTFyghqZmUu0gepsHZ0xVnEO1rxDYpAobZO/RxDInEezTOQf0t8Wf+jZYdq8BbqOuQ41c0lEKV
-	zEGli0DIXm9xhxUS38KbhzycBCWTAXp5wiFtCA582njsDFCypouO0ED+ERlGSzy1VQWv4aIXnPW
-	HUYEU5lm+MdLj8mG7Bwluu7tZwaeGAN8CWQkD3RpAfsAm/CHPjC+D1K3BEFc+Kyvjt18ql7KN9p
-	Wuf7semeeih6vdbFUdWliEVT6OCZIdI0+LqINu6HAmsbInf/98ykD46Hi27yZNNEGW/Z0wRadxA
-	d1ZfuHpbohyinNI56Wt11zJ6ox8UMcNjygNqimLybbFWyYWaeYdKnKaW10ab7eikqoaQpXBLDbV
-	IC7Gfjmfw==
-X-Received: by 2002:a17:907:8995:b0:c29:53ed:f0c6 with SMTP id a640c23a62f3a-c29d779c3aamr23025166b.17.1789463507903;
-        Tue, 15 Sep 2026 02:11:47 -0700 (PDT)
-Received: from mobilestation ([185.195.191.165])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2965c4e8a1sm552850266b.6.2026.09.15.02.11.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 02:11:47 -0700 (PDT)
-Date: Tue, 15 Sep 2026 12:11:43 +0300
-From: Joseph Steel <recv.jo@gmail.com>
-To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, shuah@kernel.org, 
-	joabreu@synopsys.com, yi.fang.gan@intel.com, jun.ann.lai@intel.com, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net v4 3/7] net: stmmac: Rework S-VLAN handling
-Message-ID: <ybotecadvx2x3ucgqjunv77fuyeaxmwl5tn77fswraztiklrdo@ajhpl4c52hcy>
-References: <20260908164309.59282-1-ovidiu.panait.rb@renesas.com>
- <20260908164309.59282-4-ovidiu.panait.rb@renesas.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jbdQ3iVe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBCC21F000FF;
+	Tue, 15 Sep 2026 09:16:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789463818;
+	bh=YmxwUrqc4VJ5KAOw2GSuOBCANnF+5FCzRAmFJpPfNdo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=jbdQ3iVej2dnSAzbZWY3Nnupv6rCtcC0KDyEEnw9D9Y1OIzAPf5X76nXbSevSOJrz
+	 L5MRxvOioy9yEMsxnISuAMitVY3u4dVct6HckGCT1Q06zn8gzA6L9435vcCpV0aQhq
+	 /2jj4IeSLYtjJgi5jlPh1ogspGgKD8GgqnHx6FpDa19ydTgB3p+2RzyaXVQotwxGLS
+	 LnzTQHIH3XCjWdnnfJEnwLbAOXfO6yKI7oZomQY5ORTkYUFRbsZbcGIEk5v43hP2b1
+	 pnvMOqelsTEn2Eb8qTVbKkL0A+Xb4oMP0PZbwt4M8cSUNAeLyKCWOapdcx4NuO36F2
+	 /ivqwG/gySQFw==
+Message-ID: <321725f2-7012-4fc9-8889-33ea7cef1b65@kernel.org>
+Date: Tue, 15 Sep 2026 11:16:49 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260908164309.59282-4-ovidiu.panait.rb@renesas.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v18 1/3] dt-bindings: net: Document Motorcomm
+ YT8824 PHY package
+To: Kyle Switch <kyle.switch@motor-comm.com>, Frank.Sae@motor-comm.com,
+ andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
+ jianmin.wang@motor-comm.com, jie.han@motor-comm.com
+References: <20260915082152.3104633-1-kyle.switch@motor-comm.com>
+ <20260915082152.3104633-2-kyle.switch@motor-comm.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGPBBMBCgA5AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJp2mE8AAoJEBuTQ307QWKbeaIP
+ /ihHTkTW4KsN/DQ945JJbyu5tI0J80Wue7QyyLPglyKfhgb5cLLNPpOC8cCIJsc7+W3i2P38
+ s2c1cOH6CYGE7E9ur3Vfme8NW2S2I/Z8VC7bZnzyS23wT17LrsdS/qCpx4o8U+pt/xdXDKph
+ EGRYrIEmMpUWvyYzyYKGIe25FtaayIIKpq8eZYyFcp2f/sG5IkOW5uZzHPMPdcm87jU7fyuQ
+ rAU2vx9r+ulUfQ/q9Z2roC/ode3l7t2pN7BCBCsUDp6JCrUyZrtT1e7EbA0ZRP3aOBNk2P2E
+ DQOgJGjGdO5Yx2Y9LFtltu6JbsBJHi1syGRX3AtQYOMc4Y1WGoeZJmMlvKj2ZqqXNkcWi2DS
+ IQEWB0uW6CqFsBBIMGDa+6OzdaVO/uAVXWDWml02Men3CILdI1MbVjoh8ECqYUY7OQ+JJvNN
+ vnliuq5WM3Ghd3jg/LZZrxXjdIginRHFQCjIJYLKpLZWm1/iDFedcfzqRNYmTtqscdCNHW41
+ oT3Z7BmO9xwdjuwBS6nmS6JJwkbf5Ot2QR4pB/DRU7ZwjT1qHe+9r9gF32wXVQatHNGK/VVu
+ sfwOnkdxCWkp/qb2gdQRmZh+SedStWshigH6sNfuHBloF/q+hjMRc8b2m326OZdrbSHwY1Sz
+ vti8Hn7n8NjdHO9LKB7BIdjkA9DA5WsqOuVCzsFNBFVDXDQBEADNkrQYSREUL4D3Gws46JEo
+ Z9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLueMNsWLJBv
+ BaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6eiOMheesVS
+ 5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wAGldWsRxb
+ f3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA6z6lBZn0
+ WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9YegxWKvX
+ XHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt91pFzBSO
+ IpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gUBLHFTg2h
+ YnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/JoFzZ4B0
+ p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu4vXVFBYI
+ GmpyNPYzRm0QPwARAQABwsF2BBgBCgAgAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtBYpsFAmna
+ YUkACgkQG5NDfTtBYptX+BAApg32CkxwNucNEi8WfWA8oKkW0y8YDuY6ORMo9FWNGiT/OTy0
+ vyJrLocrpn86zwfjVp+eCrssPYh8eqJfnWqmYv6ACQtHPYzPZQ3mSo8H97Z01oUxITzCxpXm
+ ZkLgPIqtDPcC2E3dPM/fVxcyowM8XsaMA9wcsaUYrta8toOq2b9tKcjleKMfMrm0gQ9u7wUc
+ QbLkwj6TCLOwucb07GXzLTNF9PZmaDUpKAZjMjmrW+le+SFvQbhamx0rxLWPR0NWntXpbCn+
+ +ACch03p/JyTBVktxFsFyCt7pTPE1kEaeuXBTe/a2D9iQvRxRW19LvuO2e59/u1wYUiH/orz
+ wbIC2S4dBsPAPihL3ztOU1yE86GPyQtSE0kU+/7snnLt4QGi6PChf3t5gnNjAzjUUovO8rgI
+ c+5yN5heq5loYHgK6OQ9OlHzsPHO9e9MOQcKlFycs1pyijFGzDwdNUm/SchK8iWT2QApTx4A
+ K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
+ n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
+ qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
+In-Reply-To: <20260915082152.3104633-2-kyle.switch@motor-comm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi
-
-On Tue, Sep 08, 2026 at 04:43:05PM +0000, Ovidiu Panait wrote:
-> The ESVL and DOVLTC bits control S-VLAN tag processing and have
-> nothing to do with the double VLAN feature, which only provides a way
-> to process an additional inner VLAN tag. However, the driver code
-> that handles them always refers to "double VLAN", which is unrelated
-> and makes the implementation confusing. The driver does not use any
-> of the inner VLAN tag features, and the networking core does not
-> support offloads for the inner tag anyway.
+On 15/09/2026 10:21, Kyle Switch wrote:
+> Motorcomm YT8824 Ethernet PHY is PHY package of 4 PHY-s.
 > 
-> To simplify the logic and to reduce the confusion regarding S-Tag vs
-> double VLAN handling, drop the is_double logic and add a hw_svlan_en
-> flag that is set when S-Tag hardware handling is enabled.
+> Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
 
-I believe I suggested to just change the "double" word to "svlan", and
-not to drop the respective logic completely. The number of S-VLAN tags
-added/removed must be still counted, otherwise any subsequent VLAN
-S-Tag removal will disable S-VLAN processing even if there are S-Tags
-left added.
+I already asked you to Cc the right addresses. That was two months ago.
+I don't understand why can't you just use tools which do all this
+correctly, but repeating same feedback and expecting different results
+is pointless, so shortly:
 
--Joseph
+NAK
 
-> 
+Longer explanation below.
 
+
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC. It might happen, that command when run on an older
+kernel, gives you outdated entries. Therefore please be sure you base
+your patches on recent Linux kernel.
+
+Tools like b4 or scripts/get_maintainer.pl provide you proper list of
+people, so fix your workflow. Tools might also fail if you work on some
+ancient tree (don't, instead use mainline) or work on fork of kernel
+(don't, instead use mainline). Just use b4 and everything should be
+fine, although remember about `b4 prep --auto-to-cc` if you added new
+patches to the patchset.
+
+You missed at least devicetree list (maybe more), so this won't be
+tested by automated tooling. Performing review on untested code might be
+a waste of time.
+
+Please kindly resend and include all necessary To/Cc entries.
+
+Best regards,
+Krzysztof
