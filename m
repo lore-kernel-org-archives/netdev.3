@@ -1,58 +1,33 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E8C390212;
-	Tue, 15 Sep 2026 07:31:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 255B2440634;
+	Tue, 15 Sep 2026 07:32:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789457479; cv=none; b=tUnVmaeSlMTBZWpzqduPluYSQU8ZSCWsoVIz4z8/baTetIgQ/kObGIHEdY3WqKEOVpWpi+8PljJ47SEU3JaVWP1WbzWkpNWN8TBuNhhHEkpNNBt4/pPt6G2t+vzvv6CdiV5TX2y6VweH9tcnAvcMazJn+cX102uAQznIewfC2gE=
+	t=1789457541; cv=none; b=r/YGJ/kHMGBv9us33kA/UGCAfTZENopXRvkZVzII7M/eI+2206JlrBua/7Q8QP27/NpOEqM52F3gKY9g8I23Ld99oqL6afM8FerIMXuBjaTMvh0yxdDGETK1OFR/1s8E+HMilCBCKK6403Fdusq6AdWdlUEbiZref3qh4cACW7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789457479; c=relaxed/simple;
-	bh=6K/w16UBrqCcu3p1jgGqeQlDh/Z28EnKCgMs3mDtaFM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nkNd2OZ+FW2Usasy6F/aFa7MDnA36vh2WivhC16bztyluMhuG7h0PtlaVRZ9y3XUTFtzo1WMv7pKVlv5o9AInA8uES2OQvK5MMpO9XIDf7oLkqQyevi1lTjKsc9cN0BP6ZTWqi7W+9wHJaPUc3OyKlxyuunucuQg4cvPVq2nnhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=k3+DfJv8; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="k3+DfJv8"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68F6Z4pk1047656;
-	Tue, 15 Sep 2026 00:31:09 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=guM89mY3EQyfrFLdaLOEtqe
-	e7dC2nqL/3xc61klpagY=; b=k3+DfJv89PzWlQFvvFaOvq6rsanOvPeQrfW6KMa
-	AYX4kxS8hiS4V01uyEl7TNPRxOx4lhSkNGoW3ZvV1cnp5x+1egQTTXTv7VPd10BO
-	+0+fJcXhLaOVswLCdhhMEoT0FWhx9L1IHUA7AWASnLNGPORyBmgXUPKGHDaGmvKd
-	qatptApbyDTf3QbcSuP2aSfRzYaEz4QlP6uVH3zZPlk8yw1mBOSvP8slSDTVeEUm
-	lRMjias01gDcGJHsWcPzy8XWccNRPfV/WwIwqXkr7N/GrY9vj8F9+ndAMAmernZH
-	4QGVwWy/W1KrE50OCxUTLoB/Ud49dFEBGtEdI10mNLAfvBw==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4gnqg6yn34-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Sep 2026 00:31:09 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 15 Sep 2026 00:31:08 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 15 Sep 2026 00:31:08 -0700
-Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id 57F233F7063;
-	Tue, 15 Sep 2026 00:31:05 -0700 (PDT)
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <kuba@kernel.org>, <linux-kernel@vger.kernel.org>, <naveenm@marvell.com>,
-        <netdev@vger.kernel.org>, <sgoutham@marvell.com>,
-        <vattunuru@marvell.com>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <pabeni@redhat.com>, Subbaraya Sundeep <sbhatta@marvell.com>,
-        "Ratheesh
- Kannoth" <rkannoth@marvell.com>
-Subject: [PATCH net] octeontx2-af: nix: Fix TX vtag upper bits programming
-Date: Tue, 15 Sep 2026 13:00:58 +0530
-Message-ID: <20260915073058.992915-1-rkannoth@marvell.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1789457541; c=relaxed/simple;
+	bh=4lrDSt9b3Z+QlOBFrNJa7mTGdvGM6/21viXwh8CdHso=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=POdIC2FhpE1SguCXhSj4EF3lnv+n7xZzpBd1oAl+2ysisWVZlKo7reEk32Z9WblyoCaEgY1A4YqAJazMGew6f/2ctBcNHijvD/dsq7pYauQnxBv2JG+RX8cPUf4EaZOzGf2NmgCXNfP31/bgR2wVrh+to3WlcV4tm6AIMtRKaVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [123.138.236.242])
+	by gateway (Coremail) with SMTP id _____8DxytF+9KhqUh0MAA--.35159S3;
+	Tue, 15 Sep 2026 15:32:14 +0800 (CST)
+Received: from linux.localdomain (unknown [123.138.236.242])
+	by front1 (Coremail) with SMTP id qMiowJAxmM139KhqQukgAA--.4430S2;
+	Tue, 15 Sep 2026 15:32:08 +0800 (CST)
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+To: Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Yao Zi <me@ziyao.cc>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v1] net: stmmac: Default DWMAC_MOTORCOMM to m on MACH_LOONGSON64
+Date: Tue, 15 Sep 2026 15:32:06 +0800
+Message-ID: <20260915073206.6665-1-yangtiezhu@loongson.cn>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,54 +35,54 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=A9/5rKWG c=1 sm=1 tr=0 ts=6aa8f43d cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8 a=aHCFOCUg1xN91pC27xIA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: 55i1oOeJTRIN6Yh1eFj5a8RTDRtkvcx3
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE1MDEwNiBTYWx0ZWRfX7+opjlQSjT3t
- /8kb9+OvWEedN7CD679sheundxe+8eMkx9MIOHjriRc3v4+olFFXVqwkJnHYR+bdAGuejha3ov1
- HXyiZblEN2aNGU3V1OV0oFB4wnPuCPw=
-X-Proofpoint-GUID: 55i1oOeJTRIN6Yh1eFj5a8RTDRtkvcx3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE1MDEwNiBTYWx0ZWRfX9tsRVrYJowjQ
- 4InZCXNpu4+tAOk9bv8yVLIAx/J4Mg3xmvaxGQ6F94SAZ3MFRdR0nnSb8rr89qIOS29oNXpf9RI
- noDcKouDbDCAPN9YI7Xss4PYxHNRUcegyl2aIbBntxpuUFCtqhmfuqxTQYpLp1Qbb8J+hqol/aY
- Fn4QLvwI7DGOQ769p3wQEGdBsO1K4YGroq5224cN1H2XspEMpqBF55c0Ac8Dcppf3P6F0GMHF9A
- jrg205u7EsizWOdXCnJ3RZXbCf5tDOAxLr9ZqvNni/C24nWlXRPwsJ51PB4JwNOA7mVZXx8KS6H
- yzEU9i6nWLyoX1zl1805VPIvOYURmI8Vn+RvBf+04FABh5r5+Yv4EUP4adsGoVmlrxNk2qrICvn
- 2KrEvNgfGrWVThEK1rpw3SwapB9NGe8Eup3XiitjJ4vkhaCpsK83mKrnUiKKic2UFkn+lsP0FNp
- yW8YFFYgT+u0QP1RRYQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-15_02,2026-09-14_02,2025-10-01_01
+X-CM-TRANSID:qMiowJAxmM139KhqQukgAA--.4430S2
+X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
+X-Coremail-Antispam: 1Uk129KBj9xXoW7XryxJFWkGF4DWF15WFWxAFc_yoWkCwcEg3
+	ZFvF1fJw45ArWUK342gw4rZ3sI9a1ku34fAa1Utayruwnrurn8X3s8uryqkrnrWw1rZF9r
+	WrySq340y347tosvyTuYvTs0mTUanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvT
+	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+	cSsGvfJTRUUUb7kYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+	w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+	W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26F4j6r4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAF
+	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxAIw28IcxkI7V
+	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
+	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6x
+	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAI
+	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
+	0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU7_MaUUUUU
 
-From: Subbaraya Sundeep <sbhatta@marvell.com>
+Currently, there is no network connectivity when upgrading to the
+latest upstream mainline kernel on certain Loongson machines such
+as Loongson-3C6000 server, because the driver for the onboard NIC
+is not enabled.
 
-The upper bits of the vtag value above bit 47 were not written to
-NIX_AF_TX_VTAG_DEFX_DATA, causing incorrect TX VLAN tag insertion
-when extended vtag fields are used.
+Enable the Motorcomm PCI DWMAC driver as a module by default when
+building for the Loongson-64 platform.
 
-Fixes: 9a946def264d ("octeontx2-af: Modify nix_vtag_cfg mailbox to support TX VTAG entries")
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+This ensures out-of-the-box support for Motorcomm YT6801 Ethernet
+controllers on Loongson machines, enabling demand-loading without
+increasing the core kernel image size.
+
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 1 +
+ drivers/net/ethernet/stmicro/stmmac/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index 153eb57bad06..091ef8dac7c9 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -3107,6 +3107,7 @@ static int nix_tx_vtag_alloc(struct rvu *rvu, int blkaddr,
- 	mutex_unlock(&vlan->rsrc_lock);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+index ab3c4cf96423..c86d6c08977c 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
++++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+@@ -408,6 +408,7 @@ config DWMAC_LOONGSON
  
- 	regval = size ? vtag : vtag << 32;
-+	regval |= (vtag & ~GENMASK_ULL(47, 0)) << 48;
- 
- 	rvu_write64(rvu, blkaddr,
- 		    NIX_AF_TX_VTAG_DEFX_DATA(index), regval);
+ config DWMAC_MOTORCOMM
+ 	tristate "Motorcomm PCI DWMAC support"
++	default m if MACH_LOONGSON64
+ 	depends on PCI
+ 	select MOTORCOMM_PHY
+ 	select STMMAC_LIBPCI
 -- 
-2.43.0
+2.42.0
 
