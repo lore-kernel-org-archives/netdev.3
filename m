@@ -1,132 +1,104 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E5B43AF657;
-	Tue, 15 Sep 2026 14:27:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D87B3B388C;
+	Tue, 15 Sep 2026 14:31:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789482450; cv=none; b=kOztOwFVlDG2nCVF3UButritoRQbj+3QMiMsp4qJxTvKwf5r7OOIWLSKwv8+Fd834qlwRWnWyp3sBfd6rU7Jf0TM2gmulU/xMt+bVISra7+rtkAOfTcm3mFkDIn3iEiJ1JzfWCzpwaRPjKEmSnnslSuFln+lYIHQlmlP7XbosIw=
+	t=1789482689; cv=none; b=aa94TC9mAUDK7Q/6F6r0/K+2kMBKTfqm6rPhT3ujuMzB2LJz/yqNQ4bAv53n4dqcHeeBgNRdSIkyY+svjxyqr4V2/UfrgPMhVII0sqzKHC24cNy7lLFysFlACHcSoZ50kEsi/DPo368uTDCpqyj1q6Rjr0q+WuV+KmKdPZo5Vc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789482450; c=relaxed/simple;
-	bh=WM00Wy2p0EbS1nPKWZz5VOFKBICv3IZa8bLp0tHtWhU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=O0Lh8jmPoCQQcfk/mdRL6OylKmfRZbRaGlNwN4yMkS8QRV0Rkcn1DfTAl3unwub7qQm5k/EyGzov+b7Bkio5ufNQn1XCCbwG4pWylpWprXqa10pYIoZPuMd6hrQdnm4Om8zwa6N7fR2uok1wukdt7K5+jzmlQIng5lSHQVmkCvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=tGNsNpI8; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1789482689; c=relaxed/simple;
+	bh=+kBGqe8h4w8eUaxlwskTO/ZRJxZ8AMVDWo2sTnpYJrw=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=AZR4gYieiWNhdMOfxhxEQPY+VW+6Q5y1/hw2w5a+YUT9pzi2es3iHa54MFt0iUXJxXnNocR/KtNRUcDOZSlQn7R/7fBZL5isW9kTzf3GnnlES2O/1dbdG7awjzaPLDgW1aH4Ixs/GkVWjYsw+p9l9r+UcrhBGta3B5ZzPH03Z6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=jqH42mZz; arc=none smtp.client-ip=129.217.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="tGNsNpI8"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 873721A081F;
-	Tue, 15 Sep 2026 14:27:25 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 52C33602B0;
-	Tue, 15 Sep 2026 14:27:25 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 92B2011C7B00F;
-	Tue, 15 Sep 2026 16:27:14 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789482440; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=fpYiE3MCziPLVm6eillPix1fONvq0kj6Q1nctc06kJc=;
-	b=tGNsNpI84la7s8hk2HZ3+i5IaMB/kBb1xPXkFwiWu5emET+xyZAuePthvdRCkUdJzD3JjC
-	c2FRvFofyiWU/JOMYnoh2BaKUD9zpcYc2CKw9G/dwfZetUQEwFDpSmyfCE3WU/BYX4WFS6
-	esaGPTKQs+rjrHXh89qpE+4RGCV4kl3orXajoS41VFQaykb8GZJC+CNlxG+R7w0lx45WmI
-	xdlxMnoJF/yI3h9YKsg56nQ9+75raRy+HAKVYyDCCS5t9rV5AwOoHI5QUZuKJbOLXgOB+q
-	oaRXKEh3wHVsoObnOVjXAki7PIPRk4NsJsRWHk/Y/y0qwajUT4T571KTwICqww==
-From: "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
-Date: Tue, 15 Sep 2026 16:27:02 +0200
-Subject: [PATCH 5.10.y] macvlan: inherit needed_headroom and
- needed_tailroom from lowerdev
+	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="jqH42mZz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tu-dortmund.de;
+	s=unimail; t=1789482656;
+	bh=XFtpK+hFHFYONy2lQaPpAqFbvrO8GHLT/QT6zQQRxts=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=jqH42mZzUZ2GTyCt1RYK+47kPBdw5i+w2ryL1sPT9FcPDMxi5AlieHOmql/WQu8Yn
+	 rz7rVm7V1Vr5f38QhLXIbmLYBeU4W4fBHBpIpMsaSf0sDHvJaERoSKh/JrQw8Cxvtm
+	 UWl5vS2Lhpp0kT1H2BvmkWqwxCU324IQQoV7KP+s=
+Received: from [192.168.178.125] (pd9eaaf06.dip0.t-ipconnect.de [217.234.175.6])
+	(authenticated bits=0)
+	by unimail.uni-dortmund.de (8.19.0.2/8.19.0.2) with ESMTPSA id 68FEUtsS023932
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Tue, 15 Sep 2026 16:30:55 +0200 (CEST)
+Message-ID: <3a3a99dc-b554-4b5d-a004-67454e66e5e0@tu-dortmund.de>
+Date: Tue, 15 Sep 2026 16:30:54 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v7 0/5] veth: add Byte Queue Limits (BQL) support
+From: Simon Schippers <simon.schippers@tu-dortmund.de>
+To: hawk@kernel.org, netdev@vger.kernel.org,
+        =?UTF-8?Q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>
+Cc: kernel-team@cloudflare.com, "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Chris Arges <carges@cloudflare.com>,
+        Mike Freemon <mfreemon@cloudflare.com>,
+        =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Breno Leitao <leitao@debian.org>, Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Stanislav Fomichev <sdf@fomichev.me>, bpf@vger.kernel.org
+References: <20260612083530.1650245-1-hawk@kernel.org>
+ <ed63c31c-0d05-4532-bed6-23b7608ec5e2@tu-dortmund.de>
+Content-Language: en-US
+In-Reply-To: <ed63c31c-0d05-4532-bed6-23b7608ec5e2@tu-dortmund.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260915-cve-2026-74743-5-10-v1-1-4496e177660d@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQ6CMBCE4Vchc3ZJS1uLvArxUOqi6wFNqwRDe
- HeLHr9J5l+ROQlndNWKxLNkeUwF+lAh3sJ0ZZJLMRrVHNVJO4oz0w7y1ltDjrSi4DkMprVjaA3
- K85l4lOVX7eFqreoPzv89v4c7x9eexLZ9AcgOpwl/AAAA
-X-Change-ID: 20260915-cve-2026-74743-5-10-a7eab384fa83
-To: stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, Patrick McHardy <kaber@trash.net>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Eric Dumazet <edumazet@google.com>, 
- Tangxin Xie <xietangxin@h-partners.com>, 
- Hangbin Liu <liuhangbin@kylinos.cn>, Sasha Levin <sashal@kernel.org>, 
- "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789482434; l=2806;
- i=miguel.gazquez@bootlin.com; s=20250708; h=from:subject:message-id;
- bh=SQu1DIEUUaPlPywRPYBn0pzzNUXz+/4U5NSSTZXDy70=;
- b=1l2CxuxdliDZjta7gmGrj61Jamga5nbbfIhWwpwlNWyxWieTvsl/PHy1Ik+oAsS7tmLtTkPwO
- 6a9dsXsljKZCWDMKi91V1jtafbhMXPc1OInT+vFtx46Q28UL8qOvvHy
-X-Developer-Key: i=miguel.gazquez@bootlin.com; a=ed25519;
- pk=k/2KI9jkmayaF0ghZ8QYUH9Wm/kFHDhl8QoZ0RHbr4w=
-X-Last-TLS-Session-Version: TLSv1.3
 
-From: Eric Dumazet <edumazet@google.com>
+On 8/10/26 15:25, Simon Schippers wrote:
+> On 6/12/26 10:35, hawk@kernel.org wrote:
+>> From: Jesper Dangaard Brouer <hawk@kernel.org>
+>>
+>> This series adds BQL (Byte Queue Limits) to the veth driver, reducing
+>> latency by dynamically limiting in-flight packets in the ptr_ring and
+>> moving buffering into the qdisc where AQM algorithms can act on it.
+> 
+> Hi :)
+> 
+> I worked on my implementation of DQL coalescing that lives in
+> dynamic_queue_limits.{h,c} and wanted to share it so we can consider it
+> for the next cycle. This is because in the next cycle I would
+> like to add BQL support for tun/tap as well, in addition to veth.
+> Is that fine for you?
+> 
+> I think it is in good shape. It uses the same logic as the v7, but
+> every new field fits inside the existing dql struct, and drivers only
+> need to call the usual netdev_tx_sent_queue() and
+> netdev_tx_completed_queue() to use it. Patch 3, 5 and 6 are the same
+> as before, only 1, 2 and 4 are new. Benchmarks looked fine for me.
+> 
+> There should be no regressions for other DQL/BQL users. I paid close
+> attention not to break the dql cache lines or other logic.
+> coal_usecs is now configurable per queue via sysfs and also via ethtool
+> as usual.
+> 
+> While working on this, I found a missing barrier in v7:
+> There was no smp_rmb() pairing the smp_wmb() in __ptr_ring_produce()
+> before dql_completed() reads dql->num_queued. This happens to be safe
+> on x86, but on other platforms the read of dql->num_queued could be
+> reordered before __ptr_ring_consume(), triggering a BUG_ON() in
+> dql_completed(). Fixed by adding the missing smp_rmb() in veth_xdp_rcv()
+> before completing.
+> 
+> Would love to hear your thoughts on the implementation!
+> 
+> Thanks,
+> Simon
 
-[ Upstream commit cef51860becd9700217c81732ca1eb1ea6ed6fe1 ]
+Hi! Any thoughts on this? Do you want to continue this series?
 
-macvlan devices inherit hard_header_len from lowerdev during macvlan_init(),
-but leave needed_headroom and needed_tailroom set to 0.
-
-When the underlying lowerdev requires extra headroom or tailroom for
-headers/trailers (e.g. macsec, ipsec, wireguard, tunnels, or veth with rx
-headroom), upper layers calculating packet headroom and tailroom fail to
-reserve sufficient space.
-
-This can result in reallocation overhead, skb headroom underflows, or KASAN
-slab-use-after-free crashes when dev_hard_header() / macvlan_hard_header()
-prepends header data or when lower devices append tailroom.
-
-Fix this by:
-1. Inheriting needed_headroom and needed_tailroom from lowerdev in macvlan_init().
-2. Propagating needed_headroom and needed_tailroom updates to attached macvlans
-   in macvlan_device_event() when receiving NETDEV_FEAT_CHANGE events.
-
-Fixes: b863ceb7ddce ("[NET]: Add macvlan driver")
-Reported-by: Tangxin Xie <xietangxin@h-partners.com>
-Closes: https://lore.kernel.org/netdev/CANn89i+1EW-sFNK8xoq98gMbPCeLS7e=+rs9gHfLg5Wj+4x0sw@mail.gmail.com/T/#m16adf0ff972cbfd8066c3a8e656e75eaeb12d021
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
-Link: https://patch.msgid.link/20260806141938.287660-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
----
- drivers/net/macvlan.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index 95ae47a7a69d..f6ad599252d3 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -910,6 +910,8 @@ static int macvlan_init(struct net_device *dev)
- 	dev->gso_max_size	= lowerdev->gso_max_size;
- 	dev->gso_max_segs	= lowerdev->gso_max_segs;
- 	dev->hard_header_len	= lowerdev->hard_header_len;
-+	dev->needed_headroom	= lowerdev->needed_headroom;
-+	dev->needed_tailroom	= lowerdev->needed_tailroom;
- 	macvlan_set_lockdep_class(dev);
- 
- 	vlan->pcpu_stats = netdev_alloc_pcpu_stats(struct vlan_pcpu_stats);
-@@ -1731,6 +1733,8 @@ static int macvlan_device_event(struct notifier_block *unused,
- 		list_for_each_entry(vlan, &port->vlans, list) {
- 			vlan->dev->gso_max_size = dev->gso_max_size;
- 			vlan->dev->gso_max_segs = dev->gso_max_segs;
-+			vlan->dev->needed_headroom = dev->needed_headroom;
-+			vlan->dev->needed_tailroom = dev->needed_tailroom;
- 			netdev_update_features(vlan->dev);
- 		}
- 		break;
-
----
-base-commit: 1797d8bf8d0c2e74defad605d14e3553d43a3caf
-change-id: 20260915-cve-2026-74743-5-10-a7eab384fa83
-
-Best regards,
---  
-Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
+Thanks!
 
