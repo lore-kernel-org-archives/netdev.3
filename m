@@ -1,143 +1,156 @@
-Received: from meesny.iki.fi (meesny.iki.fi [195.140.195.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CAD3876CC;
-	Tue, 15 Sep 2026 07:46:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=195.140.195.201
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789458405; cv=pass; b=bp/yVilX6fBgl5BL/bYK4oj+Eh1oRuQjd5Xq/hOWcg3WEIbqvtRx1HEUsygxmyb/3HeavKUxvAHsfCXfpbP14sZIGbqRHqlnw5GrQjoBncaERwDPoovZ1xHHsEcoxYbbEIGWZGrG/OwuyRlAgErILLQzfY/ZABE2DUM29Fe/iXE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789458405; c=relaxed/simple;
-	bh=CjIuEh27k1Xal8RS7CusYRx4cMVCNqvokJf2yY4eXCU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sEQPQwFas1nhvsg8dGE9ZTcFv2b0TW9FIhoRv7A8+TaFJybjYAHdH9QeXXsj1WvFoN/t09aHIgndcan9IZ2Jq/i3Sn5hzYBjGQIJLfVolbtYv7l/PgrcN+UkIMUBY9udR8dvxcGDEubppUZChM07zBnfQb4pOE/6c2xwoWL06cI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b=OqNGYX7v; arc=pass smtp.client-ip=195.140.195.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76392AE76
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 07:53:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789458832; cv=none; b=BXcxOaiF4gwN+P1RhoibiVI08ZOq88VlMlgLlAtsdsmwfYAd4Huj/CfvIt40sR+8Nf7cl+h9TDqczAiLuS7JCsCX+n1OVFJFm9eyR1f7z+n/g4gS9krLzcPtx0PO/a1j08WSUsS8uYvmY0DCL5Y6v74hNx6A2mezW0TGDsWrqgk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789458832; c=relaxed/simple;
+	bh=qGj0iqsYf6LO427haWm88855mpWkyRYG9g3zPuwY2Tw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mzX7O6QLpMY4BpbsZE2jm6rUeJdy22S4RSvcmPccSD9cRaRFwwSEXl8EMJDF4vjUEbjZ+umojtkoRczLNxjupi2e9tVJInUsmn7eJXWDeBFNPbgNiqNiKl7JbXTKysJsCJT530awC+QeqHIrcb/jcW3azOFzWygjKzQFpHiKnqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Tc3iXSeK; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ebq4TSs5; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b="OqNGYX7v"
-Received: from mandelbrot.. (xdsl-83-150-90-33.nebulazone.fi [83.150.90.33])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: jmtilli)
-	by meesny.iki.fi (Postfix) with ESMTPSA id 4hkYxT3qlZzySb;
-	Tue, 15 Sep 2026 10:46:37 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
-	t=1789458397;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Tc3iXSeK";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ebq4TSs5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789458829;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vRs19l52ovGuAIjGa7YqoKMg2NfGlSjJwTPL4k7vc2c=;
-	b=OqNGYX7vVbvIxmsjtk2iQWRf8dbYFihlNE89E8lbUVn7GPXTxHKhx9rEZduo3om+1v6KJR
-	LG07Ihot+saV2Mnj5N6DksBKYcVoX9PkMIjs5cvGfd1p6EzyFsMyjRP4d+GezG/iJIvsUY
-	P118wN8WCBkY7dViRsPQbn2lhp1t5jc=
-ARC-Seal: i=1; a=rsa-sha256; d=iki.fi; s=meesny; cv=none; t=1789458397;
-	b=oggymuq6kYnCD9ygbnfq5pW2izEpq/HMDNiT8xlKY8NWS088zm19ixvqM3dWW3yWQrJ2SK
-	AsPM/clBPb83G8I4zNv6M8YaQ8CrY0QIEpT7u2h7bCiI6aDJA0VE5F1yIvTQgN1jLEynNQ
-	YPfiB68/TscZLuN3RixRNXAJahCaELg=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=meesny; t=1789458397;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vRs19l52ovGuAIjGa7YqoKMg2NfGlSjJwTPL4k7vc2c=;
-	b=fax/XSqyVU8LzgedToyLxUTctI5UAwgECN+5d1KbxtWPNGFmjzQYWPHDpWCCOiGoUKUf4k
-	Mmj7uPTrxtFm8X2kkh/SrOFSQT8rSJ3a0iZzbhWcrrwRGuOx4faPha9xUtLG7tUVoxkVWN
-	7iqeCFgqnMB+a7sHjS1PALni7QuZNjc=
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=jmtilli smtp.mailfrom=juha-matti.tilli@iki.fi
-From: Juha-Matti Tilli <juha-matti.tilli@iki.fi>
-To: ath11k@lists.infradead.org,
-	ath12k@lists.infradead.org,
-	mhi@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Jeff Johnson <jjohnson@kernel.org>
-Cc: Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Juha-Matti Tilli <juha-matti.tilli@iki.fi>,
-	Mihai Moldovan <ionic@ionic.de>,
-	Denis Kenzior <denkenz@gmail.com>
-Subject: [PATCH v4 12/12] wifi: ath12k: bind to QRTR endpoint ID in ath12k_qmi_init_service
-Date: Tue, 15 Sep 2026 10:41:35 +0300
-Message-Id: <20260915074135.2567411-13-juha-matti.tilli@iki.fi>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260915074135.2567411-1-juha-matti.tilli@iki.fi>
-References: <20260915074135.2567411-1-juha-matti.tilli@iki.fi>
+	bh=rJIAeyon3wbikzwzpPksiOeXqT2jqUB2p5F7HwQmi1U=;
+	b=Tc3iXSeKDIufMvysz8YhSkQwBHIZxRNnaQo/YoW3sHp06cHpP4gI6hqTElz0s0qQizFZ3b
+	Rtpf1bOxLSC2nYN3by4vwwd7Fr7pS7uYMoHAnOblMtseuRrXogws9GfsGTmimBcpq6Ofr6
+	0YP3cskMyZXDvHlLKm/L3iIvDpJgW4Y=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-433-3N8SWyolNrurq7e9p9kHJg-1; Tue, 15 Sep 2026 03:53:48 -0400
+X-MC-Unique: 3N8SWyolNrurq7e9p9kHJg-1
+X-Mimecast-MFC-AGG-ID: 3N8SWyolNrurq7e9p9kHJg_1789458827
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c25edb54d22so186770666b.1
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 00:53:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1789458827; x=1790063627; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rJIAeyon3wbikzwzpPksiOeXqT2jqUB2p5F7HwQmi1U=;
+        b=ebq4TSs5c4fZyKCRwr1Gg7SrpZSHMv6+5ezCYb4oG/1gTBvy3mX43/PjWuWAWKFpLG
+         P12wwml6DACq+d7nv3zKkqbZHvVAw0CJfx6zYGa0n5GrwNJDeIZq8ZU9BXZePX3USCHD
+         lnjQ80UFLrQO4y05in//PqJQUQTJaXcFp93O30CJETpg5bKo0yHtSlkuwKEnzNR9nV/w
+         g9FoH8gpF4SkHysntLYiwRUkQn0lJDZN19/csrOEQ1VD/O1Ve8Tsmzz8oUSC9SwlyT8B
+         1B5JusS7W6fgPEnGdSO3f5d77cLc2arVCqahV5M4KS34e/N6JWIzY/D25x5Fc0wC3QMq
+         IwRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789458827; x=1790063627;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rJIAeyon3wbikzwzpPksiOeXqT2jqUB2p5F7HwQmi1U=;
+        b=UUGpCYsVX+J5e1puUTYeUeUYpBO4kUQT754lvaMlO8zd1aMchgLjtBqGzMSw9VlPIp
+         xO+aQ5U4BUbo6GqjcU2RBM2vSyN4AkurkONXrErY/k1Dn7VzCQLRD35ucMWaFmfc92Ik
+         JGWGE7xLSW3oKzElSYhAA0nwRWjxLQZRXyK3D14uzFvIwZwimTNpevGF+2+XJNVWBRPM
+         PtUpKsxKZipjsdUNDJ3bfT27FfixDnaDXajauMKGKX0/6e55P91GSQ1ytwDILn5YgZOj
+         y9wsF1hZfzzMUC4jZ1YkfRTrRVlvQQ9FP/UeXrSHNcXEU5rHch1YUTAv86juL8KjQGDE
+         Rlhw==
+X-Forwarded-Encrypted: i=1; AKwUvByoKCSyZqqCcVBKrINF7LrDwCdgouMH3U9SApM66zmIs7q1HZ7mVLaPMcHbkCeM5kur7A6Zi4o=@vger.kernel.org
+X-Gm-Message-State: AFuF++lyiBACLtXVFZEpVmLk9KNase1KwhkXIEcpypsPmmL2ybaETko3
+	FIvo7wW1UoYhk4PKpcvnoI0j8fLD44k0JRQ7QC5XogNP4l+9N/ANCPxed65AGtlqDGx7Gdotnh/
+	Je4xFP/2ew+GKCyhaLaVbcOyVa1ZtgZBgsH10d5lfYToIAYBtZnBq0ggGHg==
+X-Gm-Gg: AYBFou0UOfhqJhTjf6SFODfrm10KmKjFqA3YfjF7jlLwcNqI3lchmY/+NO/3B4jz2Kv
+	oC5735CcqddM46qYt2chrDXUIrY45faute1q5xMYrez8efJLdtvygOM2w0v1U48L4rWoroYQOGu
+	XrJ4+pW3o8jnSlPgrIwFB6daAnQD6K7p7tBq8NEX+EJAGS3DBlGQa+lQql5LNvbVYIdmLw57n1F
+	487U//vKimpzMGFHZPhwm1pPJhgUe1pspgUuHQnbkwT2E/qk7lQ3ooZtMhrJC9rNowW7QvC3WXL
+	+n6ckx2FvPfjuUpRdjLcCPH+s44ack9OQOHrGjsOFaI3HeGtniXl6Ctv6C8Env4mCcvOzFqmcaW
+	GHZdUqIJ++UNQGX9J+a0e7cgpKtpJB5IOdELz76PngHBaugGmJeL5iWqqRksSdfc2+yv6/GG7Xg
+	==
+X-Received: by 2002:a17:906:478f:b0:c29:3e59:fd03 with SMTP id a640c23a62f3a-c29b872551bmr734228866b.18.1789458826947;
+        Tue, 15 Sep 2026 00:53:46 -0700 (PDT)
+X-Received: by 2002:a17:906:478f:b0:c29:3e59:fd03 with SMTP id a640c23a62f3a-c29b872551bmr734222566b.18.1789458826418;
+        Tue, 15 Sep 2026 00:53:46 -0700 (PDT)
+Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c296614323csm535287766b.59.2026.09.15.00.53.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Sep 2026 00:53:45 -0700 (PDT)
+Message-ID: <b22f3b29-dd7f-4c9d-a975-a3753d41efce@redhat.com>
+Date: Tue, 15 Sep 2026 09:53:44 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 net-next 1/6] vxlan: vnifilter: use
+ list_for_each_entry_rcu() in vxlan_vnifilter_dump_dev()
+To: Jakub Kicinski <kuba@kernel.org>, edumazet@google.com
+Cc: davem@davemloft.net, horms@kernel.org, kuniyu@google.com,
+ idosch@nvidia.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com
+References: <20260911062200.231316-2-edumazet@google.com>
+ <20260915020009.886579-1-kuba@kernel.org>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260915020009.886579-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Mihai Moldovan <ionic@ionic.de>
+On 9/15/26 4:00 AM, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> vxlan: vnifilter: use list_for_each_entry_rcu() in vxlan_vnifilter_dump_dev()
+> 
+> This switches the vg->vni_list walk in vxlan_vnifilter_dump_dev() to
+> list_for_each_entry_rcu(), clears the saved VNI offset on the early
+> return paths, and adds cb->args[2] to track the ifindex of the device
+> currently being dumped so the VNI offset is reset when the device
+> changes.
+> 
+>> diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
+>> index dd94085e08865..0a18c32902da0 100644
+>> --- a/drivers/net/vxlan/vxlan_vnifilter.c
+>> +++ b/drivers/net/vxlan/vxlan_vnifilter.c
+>> @@ -333,22 +333,34 @@ static int vxlan_vnifilter_dump_dev(const struct net_device *dev,
+>>  				    struct sk_buff *skb,
+>>  				    struct netlink_callback *cb)
+>>  {
+>> -	struct vxlan_vni_node *tmp, *v, *vbegin = NULL, *vend = NULL;
+>> +	struct vxlan_vni_node *v, *vbegin = NULL, *vend = NULL;
+>>  	struct vxlan_dev *vxlan = netdev_priv(dev);
+>>  	struct tunnel_msg *new_tmsg, *tmsg;
+>> -	int idx = 0, s_idx = cb->args[1];
+>>  	struct vxlan_vni_group *vg;
+>>  	struct nlmsghdr *nlh;
+>> +	int idx = 0, s_idx;
+>>  	bool dump_stats;
+>>  	int err = 0;
+>>  
+>> -	if (!(vxlan->cfg.flags & VXLAN_F_VNIFILTER))
+>> +	if (cb->args[2] != dev->ifindex) {
+>> +		cb->args[1] = 0;
+>> +		cb->args[2] = dev->ifindex;
+>> +	}
+>> +	s_idx = cb->args[1];
+> 
+> [Severity: High]
+> The commit message says the ifindex tracking handles the case where
+> "devices are added or removed between dump calls, ordinal device indexes
+> can shift".  Can this new check actually observe that case?
 
-If possible, fetch the QRTR endpoint ID in ath12k_qmi_init_service, just
-before calling qmi_handle_init, and make it available in the qmi_handle.
+I think this is the only comment possibly actionable. AFAICS addressing
+sashiko comments for good would require a significant refactor switching to
+ifindex based index. That in turn feels slightly overkill.
 
-qmi_helpers will then automatically bind to this endpoint for us.
+Possibly implementing a nl_dump_check_consistent() check would make sense?
 
-This finally allows using multiple ath12k-based cards with the same QRTR
-node/port combination to work simultanenous (and, for that matter, at
-all), including combinations of ath11k-based and ath12k-based cards.
-
-Signed-off-by: Mihai Moldovan <ionic@ionic.de>
-Old-version-tested-by: Mihai Moldovan <ionic@ionic.de>
-Old-version-tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-Signed-off-by: Juha-Matti Tilli <juha-matti.tilli@iki.fi>
----
- drivers/net/wireless/ath/ath12k/qmi.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
-index 50082505c882d..3611d0eff22b3 100644
---- a/drivers/net/wireless/ath/ath12k/qmi.c
-+++ b/drivers/net/wireless/ath/ath12k/qmi.c
-@@ -9,11 +9,13 @@
- #include "qmi.h"
- #include "core.h"
- #include "debug.h"
-+#include "hif.h"
- #include <linux/of.h>
- #include <linux/firmware.h>
- #include <linux/of_address.h>
- #include <linux/ioport.h>
- #include <linux/of_reserved_mem.h>
-+#include <net/sock.h>
- 
- #define SLEEP_CLOCK_SELECT_INTERNAL_BIT	0x02
- #define HOST_CSTATE_BIT			0x04
-@@ -4075,6 +4077,13 @@ int ath12k_qmi_init_service(struct ath12k_base *ab)
- 	ab->qmi.ab = ab;
- 
- 	ab->qmi.target_mem_mode = ab->target_mem_mode;
-+
-+	ret = ath12k_hif_set_qrtr_endpoint_id(ab);
-+	if (ret) {
-+		ath12k_warn(ab, "failed to set QRTR endpoint ID: %d\n", ret);
-+		ath12k_warn(ab, "only one device per system will be supported\n");
-+	}
-+
- 	ret = qmi_handle_init(&ab->qmi.handle, ATH12K_QMI_RESP_LEN_MAX,
- 			      &ath12k_qmi_ops, ath12k_qmi_msg_handlers);
- 	if (ret < 0) {
--- 
-2.34.1
+/P
 
