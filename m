@@ -1,164 +1,173 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFBC346F481;
-	Tue, 15 Sep 2026 10:31:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4971639792B
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 10:33:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789468322; cv=none; b=Hdu6Px2qVUBd/8KCUtZn3ud23KmMHnIFX379Hdxb9Ax3V7o+n4hgN5Cnp7p71EtlDO9mjBdcEKfwn2KwHVaxiRHODER8qY7jn5Nx5EW2zpbbCpKRdwq3zM2jx+N4M9XfxuycLyExdsSFpKUiq1blirgwL4O+4+GjCPy8wn2ZoH4=
+	t=1789468385; cv=none; b=V7kw9YXr6nUXUHsbwEQzGr2G/r5SQ5ar7Dh2oE3Jj3jy+afzlMhNaIpOaBII2IN3zyYhXecj6lbNDg2R53m8GeKu01KWAW3FT1xF7ORM1B4RpQieWntLYbprfLLXPAwg5gsnMOBCVEyMk08fnk9txNni3vbZu8bmyradq5nN37c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789468322; c=relaxed/simple;
-	bh=f+acgDsCEUmeK2RsKjhHOYy9GBDMc6z7vxQ25njrSkg=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=QXpm1UgE5KYzSt3PNEWgJRFfxzBmKQ/EObSLt8aqmfH1pkyMSC8WRyuqsrsYsqyRziXDlAhyMHS++A+aCiMvVrzxuylF0zhu1zXtVT5TmmOczIaPqa78RcF9avzlBBwPwGewUkqA1h2iHRZ5IVq+mzqcZlRMaxUHovdPSwo24Xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=NuDloAuk; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1789468385; c=relaxed/simple;
+	bh=IMpvgEb64G6MDu8d41GunMygEmE2zoxuSzZCsZg1cK0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=demTBn5LLAJn9QemU87j6jP8RdDFI7dO87H1pCWa3W0DutpujJUZAEvmAc+B4qeVHotE9VFwcmMyJetTzUcWnv7XyqcpSAfat1b6quglbcT31teWZdz6dGvUdl22mWF5cO8zHtQ4IJ8uuIiXqIICfnPhscH2J15zT4bhNeL0Oxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LjPl1rRt; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="NuDloAuk"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7A7E1A91F1;
-	Tue, 15 Sep 2026 12:31:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1789468314; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=TdbzlQfgYrgDXZjn4XRhJQHZ0G7KtzwWRSeOrf0tJgs=;
-	b=NuDloAukNTRdG8ohLD1Dkm0sivl/yU3OdUQXt4wj5f/Sc6QiyNd9R8+WnqmNCZTG3jyZUI
-	2Au+6eNSDQvztzsawL6BXj15kpHMqICcu+CWLgXrqY60VzrjgYZcavqyMKNZOvAVs9SS5Y
-	YdCXWgah2JW5jRPfOclNRV28JHPBc93CNBq0iRrBj2fwExQxw6l4KJivOO1WUurKL3RpkY
-	ZZU0cs4kfRin1Nwi8BcMSB0ACmRSv0pw5m4iXRxBdlWm+gEp7zJGUbPHzbeW6BAPiaK7ug
-	tJJcDYJ8LtO+2qzt3BJhp516kC45cO16fOQL6dcLqU3qiY6iB4RUQxSEQzphQg==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LjPl1rRt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789468383;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=X4aFfoOaLNBY+Ab4zOG2d+H7sITNZn8EHiRQ7JSC1BI=;
+	b=LjPl1rRtoOjzQYrnHtwntkgtexOfGKEmJttkLOS4m41jcCD5hsk31GncjSe4ErX8di6aVM
+	Y+3x8sb4ZRBwHa7ZjWsZizx0Xc12q3K/BDZQzzSIntlw0VKn7DQOt4DkFPm/Mxk+9rho+X
+	Ma7DLYEeEu/qn9/7ScoQBlG4wLz6Am8=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-504-Q-OClTroOOSgxhLbjbvyPQ-1; Tue,
+ 15 Sep 2026 06:32:57 -0400
+X-MC-Unique: Q-OClTroOOSgxhLbjbvyPQ-1
+X-Mimecast-MFC-AGG-ID: Q-OClTroOOSgxhLbjbvyPQ_1789468376
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7C7791964CCE;
+	Tue, 15 Sep 2026 10:32:56 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.44.48.83])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 035CB426;
+	Tue, 15 Sep 2026 10:32:54 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: admin@rezlabs.io
+Cc: skalluru@marvell.com,
+	manishc@marvell.com,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH net] bnx2x: skip invalid DCBX priorities in bitmaps and FW config
+Date: Tue, 15 Sep 2026 12:32:47 +0200
+Message-ID: <20260915103247.119775-1-pabeni@redhat.com>
+In-Reply-To: <20260910080253.82432-1-admin@rezlabs.io>
+References: <20260910080253.82432-1-admin@rezlabs.io>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 15 Sep 2026 12:31:51 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: netdev-bot+sashiko@kernel.org
-Cc: florian.fainelli@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
- andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, justin.chen@broadcom.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: phy: broadcom: enable jumbo frames on
- BCM54xx
-In-Reply-To: <178946564204.22033.11365695579281446109@kernel.org>
-References: <20260914094703.1093504-1-nb@tipi-net.de>
- <178946564204.22033.11365695579281446109@kernel.org>
-Message-ID: <073f27830fa5e448448cb9cf9de132d3@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
 
-On 15.9.2026 11:47, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider:
-> 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 0
-> 
-> - [Medium] The new unconditional bcm_phy_enable_jumbo() call in
->   bcm54xx_config_init() (drivers/net/phy/broadcom.c:543) sets…
-> 
-> --
-> 
-> net: phy: broadcom: enable jumbo frames on BCM54xx
-> 
-> This adds an unconditional bcm_phy_enable_jumbo() call to
-> bcm54xx_config_init(), which sets the extended packet length bit in the
-> auxiliary control register and the PCS transmit FIFO elasticity bit in 
-> the
-> extended control register so that jumbo frames are not dropped at 100M.
-> 
->> diff --git a/drivers/net/phy/broadcom.c b/drivers/net/phy/broadcom.c
->> index d1a4edb34ad2e..b515e38755041 100644
->> --- a/drivers/net/phy/broadcom.c
->> +++ b/drivers/net/phy/broadcom.c
->> @@ -537,6 +537,13 @@ static int bcm54xx_config_init(struct phy_device 
->> *phydev)
->> 
->>  	bcm54xx_ptp_config_init(phydev);
->> 
->> +	/* Transmit is limited to 4.5 KB without it, see the BCM54210PE
->> +	 * datasheet section 5.4.12.14.
->> +	 */
->> +	err = bcm_phy_enable_jumbo(phydev);
->> +	if (err < 0)
->> +		return err;
->> +
-> 
-> [Severity: Medium]
-> This lands directly after bcm54xx_ptp_config_init() has armed the
-> TimeSync block on PTP-capable parts such as the BCM54210E, whose driver
-> entry in broadcom_drivers uses this same .config_init.  How does the 
-> added
-> elastic FIFO delay interact with the PHY timestamping path?
-> 
-> bcm_phy_enable_jumbo() in drivers/net/phy/bcm-phy-lib.c ends with:
-> 
-> 	/* Enable the elastic FIFO for raising the transmission limit from
-> 	 * 4.5KB to 10KB, at the expense of an additional 16 ns in propagation
-> 	 * latency.
-> 	 */
-> 	return phy_set_bits(phydev, MII_BCM54XX_ECR, MII_BCM54XX_ECR_FIFOE);
-> 
-> If that FIFO sits in the copper PCS transmit path downstream of the 
-> 1588
-> egress capture point, would egress timestamps then be reported
-> systematically early by that fixed delay?  A link where only one end 
-> has
-> MII_BCM54XX_ECR_FIFOE set would also become asymmetric.
-> 
-> Grepping drivers/net/phy/bcm-phy-ptp.c for latency or compensat returns 
-> no
-> matches, so there appears to be no TX/RX latency correction programmed
-> anywhere in the PHY PTP driver that could absorb the new delay.
-> 
-> There is also no gating here: no MTU or jumbo condition, no device tree
-> property and no ethtool knob, and the bit is re-armed on every
-> config_init() and via bcm54xx_resume().  tg3 sets the same hardware bit
-> only when tg3_flag(tp, JUMBO_CAPABLE) is set.
-> 
-> Would it make sense to gate the FIFO elasticity bit on an actual
-> jumbo/large-MTU requirement, or to account for the extra delay in the 
-> PTP
-> path?
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/
+---
+bnx2x: skip invalid DCBX priorities in bitmaps and FW config
 
-Regarding mtu guard:
-tg3 gates on JUMBO_CAPABLE, a device capability rather than the 
-configured MTU.
+This patch avoids shifting by INVALID_TRAFFIC_TYPE_PRIORITY (0xffffffff)
+in bnx2x_dcbx_map_nw() and bnx2x_dcbx_fw_struct() by skipping any
+traffic type whose stored priority is outside 0..MAX_PFC_PRIORITIES-1.
+The stored sentinel itself is left untouched.
 
-Also phylib does not have a MTU hook without any further changes. 
-config_init()
-runs on attach and resume, not on an MTU change. bcm7xxx.c enables it 
-unconditionally
-for the very same reason.
+> diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_dcb.c b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_dcb.c
+> index 9af81630c8a44..e429e64d589d4 100644
+> --- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_dcb.c
+> +++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_dcb.c
 
-Regarding PTP compensation:
-egress timestamping happens at the MDI, so the transmit FIFO sits ahead 
-of the
-capture point and its 16 ns does not end up in the timestamp. So AFAIU 
-nothing
-to compensate here.
+[ ... ]
 
-> 
->>  	/* Acknowledge any left over interrupt and charge the device for
->>  	 * wake-up.
->>  	 */
-> 
-> Also, the changelog says the elasticity bit raises the transmit limit
-> "from 4.5 KB to 9 KB", while the in-tree comment on the same register
-> write in bcm_phy_enable_jumbo() says 4.5KB to 10KB.  Which figure is
-> intended, and could the two be reconciled?
+> @@ -1871,6 +1878,9 @@ static void bnx2x_dcbx_fw_struct(struct bnx2x *bp,
+>  
+>  	/* Fill priority parameters */
+>  	for (pri = 0; pri < LLFC_DRIVER_TRAFFIC_TYPE_MAX; pri++) {
+> +		if (ttp[pri] >= MAX_PFC_PRIORITIES)
+> +			continue;
+> +
+>  		tt2cos[pri].priority = ttp[pri];
+>  		pri_bit = 1 << tt2cos[pri].priority;
+>  
 
-The datasheet gives 4.5 KB to 9 KB for the elasticity bit alone and 10 
-KB
-for copper mode with both bits set. The existing comment in
-bcm_phy_enable_jumbo() attributes the 10 KB to that one bit.
+[Severity: High]
+Does this continue change what the firmware is told about unmapped
+traffic types?
 
-I can send a separate patch for the existing comment if wanted?
+When the DCBX app feature is disabled or reports an error,
+bnx2x_dcbx_get_ap_feature() fills the whole table with the sentinel:
 
-Thanks,
-Nicolai
+	bp->dcbx_port_params.app.enabled = false;
+	for (index = 0 ; index < LLFC_DRIVER_TRAFFIC_TYPE_MAX; index++)
+		ttp[index] = INVALID_TRAFFIC_TYPE_PRIORITY;
+
+Before this patch, the two assignments in bnx2x_dcbx_fw_struct()
+truncated that u32 sentinel into the u8 HSI fields, so both
+tt2cos[pri].priority and pfc_fw_cfg->dcb_outer_pri[pri] ended up as
+0xFF, which is the value bnx2x_fw_defs.h documents as "not mapped":
+
+	/* used by array traffic_type_to_priority[] to mark traffic type \
+	that is not mapped to priority*/
+	#define LLFC_TRAFFIC_TYPE_TO_PRIORITY_UNMAPPED 0xFF
+
+With the new continue, both fields stay 0 from the memset earlier in
+bnx2x_dcbx_fw_struct(). Since 0 is a valid 802.1p priority, doesn't
+this now tell the firmware that the NW, iSCSI and FCoE traffic types
+are each mapped to priority 0, rather than being unmapped?
+
+The only early return in bnx2x_dcbx_fw_struct() is:
+
+	/* to disable DCB - the structure must be zeroed */
+	if ((bp->dcbx_error & DCBX_REMOTE_MIB_ERROR) && !mfw_configured)
+		return;
+
+which tests a different error bit than the app error/disabled bits, so
+the sentinel state does reach the loop. The UBSAN "exponent 255" report
+in the commit message confirms that.
+
+The values are not driver-local bookkeeping. bnx2x_dcbx_resume_hw_tx()
+calls bnx2x_dcbx_fw_struct() and then issues BNX2X_F_CMD_TX_START,
+which reaches bnx2x_func_send_tx_start():
+
+	for (i = 0; i < ARRAY_SIZE(rdata->traffic_type_to_priority_cos); i++)
+		rdata->traffic_type_to_priority_cos[i] =
+			tx_start_params->traffic_type_to_priority_cos[i];
+
+	for (i = 0; i < MAX_TRAFFIC_TYPES; i++)
+		rdata->dcb_outer_pri[i] = tx_start_params->dcb_outer_pri[i];
+
+so both arrays go into the DMA-resident flow_control_configuration
+posted with RAMROD_CMD_ID_COMMON_START_TRAFFIC.
+
+Would it work to keep the firmware encoding and only skip the shift,
+for example:
+
+	if (ttp[pri] >= MAX_PFC_PRIORITIES) {
+		tt2cos[pri].priority = LLFC_TRAFFIC_TYPE_TO_PRIORITY_UNMAPPED;
+		pfc_fw_cfg->dcb_outer_pri[pri] =
+			LLFC_TRAFFIC_TYPE_TO_PRIORITY_UNMAPPED;
+		continue;
+	}
+
+For accuracy: tt2cos[pri].cos was already 0 before the patch, because
+the u16 pri_bit = 1 << 255 evaluated to 0 in practice and the COS match
+loop never fired. The encoding changes are limited to
+tt2cos[pri].priority and dcb_outer_pri[pri] going from 0xFF to 0.
+
+The commit message says:
+
+> Keep the stored sentinel so disabled-app state remains visible; skipped
+> firmware entries stay zero from the existing memset.
+
+and:
+
+> Valid 802.1p priorities 0..7 keep the previous mapping and firmware
+> encoding.
+
+Could these be reworded to state that the firmware encoding for the
+invalid/unmapped entries does change from 0xFF to 0, and why that is
+considered equivalent? The commit message also notes the driver "was
+not rebuilt or loaded", so this part is untested against firmware.
+-- 
+This is an AI-generated review.
+
