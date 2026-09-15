@@ -1,157 +1,173 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF98A3A1683;
-	Tue, 15 Sep 2026 08:13:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A973137F8AF
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:14:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789460031; cv=none; b=RwAvY0RndouUh1Ny1fETIYVBwUVg5eNJYNrqsaT7eXggUGDGxGdZNiTqguIU9FS6GpXtCnQ56w85FTgCcialf/+rAsJ7pPp9ZFo+U7lzr4qtKtWcDZ/oveAAsIvh0x/+wjZLlMWWelLXBRu49Y5WX8+FoTsB4bHJT7oPIRCrq7E=
+	t=1789460090; cv=none; b=kv7JeCMH7JoMdmRe9az8GfNqA/bRsVHY5HBO3X+asl0taOzs9GNQa1LRiE9S7P2B2jVTQtLuNe9awZ7fJBkzlFYyAHG6ha9zfIcBq1D+267XvZyOuqz8N3f4tpzC0ixsmxv/hSqmw1TreWYNIUANc9wMUF35PxDi8TgdOFUkB+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789460031; c=relaxed/simple;
-	bh=CQd5havz4xxgycr++VxXFcEsCtdQlKxCbdFKfwHX0ww=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=If7azE63YzevUe5RJMZwrEywgEQArY0wjJAC/NF9pU7KsmZ41Zfj1jzgxueme6XV4CY/TcmjoaZbRrhBtarW7cwOAMl4+XWFPhiGXGH/myDmOb8nyEaI3a+h9GFspq9MlhZxMxe7iUYNCtYHz84/ong+eWxqp2GOn5pgox+fM9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VcDfKGKg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789460090; c=relaxed/simple;
+	bh=IIKTM3ElfQiVAIIjv3mMJgamBgHaEqIIhac2eSMcVq8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=g+1+fqzWbKDn2wYLjcDllo/HfC+qAHkG5tyHB/VLK1qjQZCuHIDL7xTI1DVk63gzjejAUsnnlDU+OClSKriiQpocfIWUkT1yI+FT9j/8LJtVMd3FdODSQsryWt7gOlI0UnVFF0pT68cvH/kVlYTt7BBTSSGJzJFzbn/Q0q5ZKck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=C9BJMZfR; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VcDfKGKg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D0581F000FF;
-	Tue, 15 Sep 2026 08:13:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789460029;
-	bh=ahHVIQUKCj3UqsamTwkNl7ydXLXTp+2VEfV/2bZTM+w=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=VcDfKGKgszCsvqVQiNtS6t4Jr3wJLK1aovcQLTgjzjYw/N4/ZaZbQoDBxf5oy6C0U
-	 rHlIlc4OopLYai6IlOCSQxU/yL7wo48Rt31Hi4Q+iyFQUzMpgWaheutxjfPiuM3Y7U
-	 kn6qDEglR+Rq6VSQCk1laEb3xg8D4xuiqzSjTsKN/gw7qWIdqcBgaT7R7sxqCgYakP
-	 B72KawQtbOLpTlCuOAWPrbvtmMvJZe94vNzdawZ+sWg2S4XjlW6dKl3jYv5p6TQpkc
-	 T2XO/BK1C3W0jBc6Z5mjMDGQ7kp0dxYSPAt69Ano1ndd+Nzev4E4jcsggi2P0aIfOf
-	 qsZKLKIIQlfOw==
-Content-Type: multipart/mixed; boundary="===============0798735520997638461=="
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="C9BJMZfR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789460087;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IIKTM3ElfQiVAIIjv3mMJgamBgHaEqIIhac2eSMcVq8=;
+	b=C9BJMZfRgT9gR0oTtMm1F8GtnomqJVBNWSq34178x7ox8QeR8gkEi2u555fHqmdDNp95Qx
+	oqG24tMBE6s6TD7stDaQRb2gHcKd8UzDSGiJmOTaaW/6drbNHmXz5/XBhsjxdn/DRmgFLW
+	MvmZ6WrdZo1Di0VJMN+jg44snG0sbE0=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-224-VG31SI_GO2C5xixWDH03XQ-1; Tue,
+ 15 Sep 2026 04:14:44 -0400
+X-MC-Unique: VG31SI_GO2C5xixWDH03XQ-1
+X-Mimecast-MFC-AGG-ID: VG31SI_GO2C5xixWDH03XQ_1789460082
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5909D1800148;
+	Tue, 15 Sep 2026 08:14:42 +0000 (UTC)
+Received: from fedora.redhat.corp (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2466A3000223;
+	Tue, 15 Sep 2026 08:14:37 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: kuba@kernel.org
+Cc: aleksandr.loktionov@intel.com,
+	andrew+netdev@lunn.ch,
+	anthony.l.nguyen@intel.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	horms@kernel.org,
+	jacob.e.keller@intel.com,
+	jtornosm@redhat.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	przemyslaw.kitszel@intel.com,
+	rafal.romanowski@intel.com,
+	sdf@fomichev.me,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net 2/4] i40e: skip unnecessary VF reset when setting trust
+Date: Tue, 15 Sep 2026 10:14:36 +0200
+Message-ID: <20260915081436.14176-1-jtornosm@redhat.com>
+In-Reply-To: <20260824190147.2714513-1-kuba@kernel.org>
+References: <20260824190147.2714513-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <dc4bd7fb4d98a0066958a4e1582b6a7a407079fd9a284318848909f9594a9295@mail.kernel.org>
-In-Reply-To: <20260915071743.29394-1-zhaogongyi@bytedance.com>
-References: <20260915071743.29394-1-zhaogongyi@bytedance.com>
-Subject: Re: [PATCH bpf] bpf, sockmap: reject max_entries > INT_MAX in sock_map_alloc
-From: bot+bpf-ci@kernel.org
-To: zhaogongyi@bytedance.com,bpf@vger.kernel.org
-Cc: netdev@vger.kernel.org,linux-kernel@vger.kernel.org,john.fastabend@gmail.com,jakub@cloudflare.com,jiayuan.chen@linux.dev,edumazet@google.com,kuniyu@google.com,pabeni@redhat.com,willemb@google.com,davem@davemloft.net,kuba@kernel.org,horms@kernel.org,zhaogongyi@BYTEDANCE.COM,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Tue, 15 Sep 2026 08:13:48 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
---===============0798735520997638461==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+All the comments below fall into pre-existing issues, concerns already
+addressed in previous versions and comments, out-of-scope items, or extreme
+edge cases. No code changes are considered necessary for a new version.
+Details for each comment:
 
-> sock_map_alloc() only rejects max_entries == 0 and never caps the upper
-> bound.  sock_map_free() then walks the sks[] array with a signed int
-> iterator:
+> [Severity: Medium]
+> This helper writes I40E_VIRTCHNL_VF_CAP_PRIVILEGE from the ndo (rtnl)
+> context. i40e_alloc_vf_res() derives the same bit from an unsynchronized
+> read of vf->trusted.
 >
-> 	int i;
-> 	for (i = 0; i < stab->map.max_entries; i++)
-> 		struct sock **psk = &stab->sks[i];
+> If that path reads vf->trusted and is preempted before the
+> set_bit()/clear_bit(), can i40e_ndo_set_vf_trust() update vf->trusted and
+> call i40e_setup_vf_trust() in between, so the stale write lands last? That
+> would leave vf->trusted true with the capability bit clear, or vf->trusted
+> false with the bit still set.
 >
-> When a SOCKMAP is created with max_entries = 0xffffffff (UINT_MAX), the
-> allocation of 32 GiB can succeed on large-memory hosts.  During free the
-> counter reaches 0x80000000, wraps to INT_MIN, is sign-extended by movslq
-> and turned into a ~16 GiB negative offset from stab->sks, pointing far
-> below the allocation.  On a KASAN kernel the shadow check for that
-> address hits an unmapped shadow page and oopses:
+> Before this patch the ndo always followed the vf->trusted update with
+> i40e_vc_reset_vf(), so the bit was recomputed from the final value of
+> vf->trusted. With the reset skipped, is anything left that reconciles the
+> two?
 
-This description is technically accurate but narrower than the real bug.
-Is the KASAN-unmapped-shadow scenario the primary failure mode?
+Pre-existing race. The original code writes vf->trusted before calling
+i40e_vc_reset_vf() without synchronization against VFLR-initiated resets
+from the service task. This patch does not change the synchronization
+model and the race window is the same order of magnitude (a few
+instructions). The scenario requires a guest-initiated VFLR at the exact
+moment of the trust change, extremely difficult to reproduce in practice.
 
-The faulting access is an xchg() write in sock_map_free(), so on a
-non-KASAN kernel the same iteration either faults on an unmapped vmalloc
-page or, if that vmalloc address happens to be populated by an unrelated
-allocation, silently writes NULL into someone else's memory. The
-unmapped shadow page also requires CONFIG_KASAN_VMALLOC=y - with
-KASAN_VMALLOC=n, x86 kasan_init() populates the whole vmalloc shadow
-with the mapped kasan_early_shadow_page, so kasan_check_range() would
-not fault.
-
-Could the description mention it is an out-of-bounds write reachable
-without KASAN, not just a KASAN-only oops?
-
->   BUG: unable to handle page fault for address: fffff521b59c5a00
->   RIP: 0010:kasan_check_range+0x107/0x190
->   Call Trace:
->    sock_map_free+0x93/0x190
->    map_create+0x68d/0xb30
->    __sys_bpf+0x21e/0x2e70
+> [Severity: High]
+> Does this condition need to consider the MAC and VLAN filters that the VF
+> was only allowed to install because it was trusted?
 >
-> Vmcore confirmed stab->map.max_entries == 0xffffffff, stab->sks ==
-> 0xffffc911ace2d000, and the faulting address sks + (s64)INT_MIN * 8
-> exactly at 0xffffc90dace2d000.  The same Oops triggers on the normal
-> close()/bpf_map_free_deferred() path whenever such a map is destroyed.
+> Trust is checked at add time only. Nothing revalidates filters that are
+> already installed when the privilege bit is dropped.
 >
-> sock_hash_alloc() already bounds its allocation (buckets_num >
-> U32_MAX / sizeof(bucket)).  Reject max_entries > INT_MAX at creation
-> time so the signed iterator in sock_map_free() never sees a value that
-> would overflow.
+> Can the __I40E_MACVLAN_SYNC_PENDING work repair this instead? Looking at
+> i40e_correct_vf_mac_vlan_filters() it only recomputes the VLAN id of
+> existing entries, so no MAC filter is deleted on trust loss.
 >
-> Triggered by syzkaller and reproduced on both a 6.6-based KASAN kernel
-> and the upstream v7.3-rc2 kernel.
+> There is also a functional side effect: mac_add_max drops back to 18 while
+> i40e_count_active_filters(vsi) still reflects the trusted-era filters, so
+> every later VIRTCHNL_OP_ADD_ETH_ADDR from that VF fails with -EPERM,
+> including a re-add of its primary MAC after a guest link down/up.
+
+Same concern addressed in previous comments. Over-limit filters configured
+while trusted remain after trust revocation, but this is acceptable because
+untrusted VFs can freely delete their own MAC and VLAN filters, there are
+no trust checks in i40e_vc_del_mac_addr_msg() or i40e_vc_remove_vlan_msg().
+The VF simply cannot add more over-limit filters.
+
+The permission check uses i40e_count_active_filters(vsi) which counts live
+filters, deletions reduce the count immediately. The "primary MAC re-add
+after link down/up" scenario does not apply: existing filters remain in
+place across link events. A guest-initiated VF reset cleans up everything
+via i40e_free_vf_res().
+
+> [Severity: Medium]
+> Can this sample of VF-controlled state race with the virtchnl handlers that
+> write it? i40e_vc_process_vf_msg() is called from
+> i40e_clean_adminq_subtask() in service task context without rtnl_lock() and
+> without taking __I40E_VIRTCHNL_OP_PENDING, so it does not exclude this ndo.
 >
-> Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+> Does that leave an untrusted VF promiscuous indefinitely? The same ordering
+> appears in i40e_vc_add_cloud_filter() and i40e_vc_add_qch_msg().
 
-Is 604326b41a6f the commit that introduced this bug?
+Same concern addressed in previous comments. This race condition exists in
+the original code as well, vf->trusted is set before i40e_vc_reset_vf(),
+creating the same window where the VF can install privileged state while
+the capability bit is still set. This patch does not introduce this race,
+it inherits the same synchronization model. Extremely difficult to
+reproduce in practice.
 
-Looking at that commit, the version of sock_map_alloc() it created did
-cap max_entries:
+Fixing this requires changing the broader synchronization between ndo
+callbacks and virtchnl processing, which is beyond the scope of this patch.
 
-    /* Make sure page count doesn't overflow. */
-    cost = (u64) stab->map.max_entries * sizeof(struct sock *);
-    if (cost >= U32_MAX - PAGE_SIZE) {
-            err = -EINVAL;
-            goto free_stab;
-    }
-
-This bound limits max_entries to below (U32_MAX - PAGE_SIZE) / 8, about
-536,870,400 entries, which is far under INT_MAX. With that bound the
-signed iterator in sock_map_free() could not overflow.
-
-The check later moved into bpf_map_charge_init() with the same limit.
-The upper bound was actually removed by 0d2c4f964050 ("bpf: Eliminate
-rlimit-based memory accounting for sockmap and sockhash maps", v5.11),
-which deleted the bpf_map_charge_init() call without replacing the size
-check.
-
-Should the Fixes tag be:
-
-    Fixes: 0d2c4f964050 ("bpf: Eliminate rlimit-based memory accounting for sockmap and sockhash maps")
-
-With the current tag, automated stable backport tooling will target
-kernels from v4.20 onward, but 5.4.y and 5.10.y are not affected since
-sock_map_alloc() still had the bound there. The wrong tag also hides
-that the regression came from the rlimit-to-memcg accounting
-conversion.
-
-> diff --git a/net/core/sock_map.c b/net/core/sock_map.c
-> index ca49bc7f8687c..38df842843289 100644
-> --- a/net/core/sock_map.c
-> +++ b/net/core/sock_map.c
-> @@ -41,6 +41,7 @@ static struct bpf_map *sock_map_alloc(union bpf_attr *attr)
->  	struct bpf_stab *stab;
+> [Severity: Medium]
+> This is a pre-existing issue and not introduced by this patch, but
+> i40e_vc_reset_vf() is void and can return having done nothing.
 >
->  	if (attr->max_entries == 0 ||
-> +	    attr->max_entries > INT_MAX ||
->  	    attr->key_size    != 4 ||
->  	    (attr->value_size != sizeof(u32) &&
->  	     attr->value_size != sizeof(u64)) ||
+> Would calling i40e_setup_vf_trust(vf, setting) unconditionally, before the
+> branch, make both artifacts deterministic?
 
-The code change itself looks correct. With max_entries bounded to
-INT_MAX, the signed iterator reaches at most i = INT_MAX at the final
-test, which is representable in int, so no signed overflow remains.
+Pre-existing issue not introduced by this patch, as the reviewer correctly
+identifies. The current structure keeps the logic clear: the else branch
+handles the no-reset case, the if branch delegates everything to the reset
+path.
 
+> [Severity: Medium]
+> The reset releases the ADQ channel VSIs and i40e_alloc_vf_res() re-creates
+> them with newly assigned seids. i40e_del_all_cloud_filters() then looks
+> the VSI up by the recorded seid. If the seid changed, the teardown takes
+> the error path and the hlist_del(), kfree(cfilter) and
+> vf->num_cloud_filters decrement are all skipped. Does this leak the
+> struct i40e_cloud_filter allocations?
 
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+Pre-existing issue, the same ordering (reset before cloud filter deletion)
+existed in the original code. This patch restructures the control flow
+but preserves the same sequence.
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/34941876090
---===============0798735520997638461==--
