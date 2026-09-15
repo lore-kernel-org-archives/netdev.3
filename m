@@ -1,260 +1,183 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AEDE42902E
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 06:42:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA594D5A1
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 06:55:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789454534; cv=none; b=qzM3jIxol+SVjQOELskybXM26jPVNJOy6q+IZTSqDDu9nszNVoJgKQVoE/GF6an0fDeA5UGeNpWR5iCzdM7eyngofYPDZZ9uOwz2IN4Npfg45NT/WKsUbrlm1ENO+FUfRi2E/dsJePga0P7SWlM7QROZ8QG7PfotH1XaJhioJRY=
+	t=1789455341; cv=none; b=iHiMHEvuVyGDxAKgufGPqBdYPr9ptopwYhCHifhPe49baN4Y85NhvIFpti6ofuBXsrC7E+cTG40AQ4XHQgQKa+xUI7+Yu9lIdyFp68N8n5MKmUa0eXi3t/CoBlkROtW4J69IgQFMIrqC8SltAh6Ohny6iGnVTtoXj60v1pQ0TIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789454534; c=relaxed/simple;
-	bh=qOnsKzskGhBqmdcMnO8N8vHINOHzsb5hs2YJ4R6RzgI=;
-	h=Date:From:To:CC:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=L9wCv3gO/MuagVYQU17uMd9agxQTffp6IPsbTJIvKOCdKmpzEXUiQPTxwMsb4ZQvPKCGlXkegsCVb5GohiXuQHT33vvKkOqPZAM1XkYdpIjU7WLoV9aeU4b1eGZHab15uvDXTDupvYdcp2KqKchn6UlSA2BhnUMwQ6qwyOwn/C0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=svJ+RGpD; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1789455341; c=relaxed/simple;
+	bh=3CW90rJKwWLBPZ8YHnyFnZ6a1XPTW9hv+mR2QBoZwrY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c0AcVPb2TfRLYMpO4G1CjeaWjmrJRYR5yQhgGNFiXk4b/dzvNm2fjOrN3oMq4+lIhNoRHCceVoFkRyHSADX9RZzNSzaY3CTXEvUmDUXLTNt70Pjcy8459WMvLU//3UielOjK6ksHuRreHSgN8by3gG38feHznCwhCcqMjk2twf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KT9JHR2Q; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="svJ+RGpD"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 16933207A4;
-	Tue, 15 Sep 2026 08:42:09 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id IgN-hIvg58nw; Tue, 15 Sep 2026 08:42:08 +0200 (CEST)
-Received: from EXCH-02.secunet.de (rl2.secunet.de [10.32.0.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 18CA520538;
-	Tue, 15 Sep 2026 08:42:08 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 18CA520538
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1789454528;
-	bh=YOpYf3dDdj3I4SjG5VR2DU+DqGxOAGpn47V8jXwPfF8=;
-	h=Date:From:To:CC:Subject:Reply-To:From;
-	b=svJ+RGpDtVGxU20vnGZQXP1heAkxkgM+ign5BCak2oyMWTMMZu2iO4zJmK3j9I6/D
-	 hWr97WM3SYxB76E316ckK0HV4nbjZM6vPi1aOwgDcDiri8jpU5UDjKSnJuk+qBZVJc
-	 KCaSvTc3o1QnN04ykCGPZ6xwBt8JE36vM+bIzSabh3G6cd6bqR2QfcwdRbe8iqh4K0
-	 lYmUCMYYQ8YaoyBYpHMe3XL/MWPzgoxrNl3CNkVZclWNg3upYC0scibOdGMJM56VLB
-	 hM6aWM/6tmlXe8VyskvoTYyM8p9BrDdkdgy9dKempP7aFGmYhy2GXfJ0rVlRTsYzSV
-	 8t1Ejawexz01A==
-Received: from moon.secunet.de (172.18.149.1) by EXCH-02.secunet.de
- (10.32.0.172) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 15 Sep
- 2026 08:42:07 +0200
-Date: Tue, 15 Sep 2026 08:42:00 +0200
-From: Antony Antony <antony.antony@secunet.com>
-To: Steffen Klassert <steffen.klassert@secunet.com>, Christian Hopps
-	<chopps@labn.net>, Herbert Xu <herbert@gondor.apana.org.au>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>
-CC: <netdev@vger.kernel.org>, Antony Antony <antony.antony@secunet.com>
-Subject: [PATCH ipsec] xfrm: iptfs: fix pp_ref_count underflow when sharing
- page_pool frags
-Message-ID: <xfrm-iptfs-pp_ref_count-underflow-v1-1-47b319c6d2f6@secunet.com>
-Reply-To: <antony.antony@secunet.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KT9JHR2Q"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e71cdb22bso17544765e9.2
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 23:55:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789455338; x=1790060138; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=IK3cIv3eA9Wbpi6yK7r4L1UxbUiz8LF7wr+ECYNcigM=;
+        b=KT9JHR2QjrGYb2GPg+zXt8FIOO91bGnSBOdUozpF/Xfg+96r/edZazoJsqv6aZMTqM
+         5rufsIWnzzTu4JbBXF2uovSFmUbotqxfA7gsLLjmVeUYx1HI3A0U688auL2M6oDJcVou
+         8JdmLUF4l7IsXIgXzvYFrCD8lO6MdxA7v54wqN5jQRHztE/rHM9i5rEdyCRUetFiGgbZ
+         UxCM91pAC8zpBHsPVXo+iqncIZZyxmMz7bCTq8US9iI2kB+P6FsXEOXR1/YuL2gxwCrz
+         EIdzr3I5I3yTVGMQDKQT6SHO2Y4RE0euKhH8jw+adkuT/lhOBE0z0Bskuwy1QV7DD9kc
+         nt4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789455338; x=1790060138;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=IK3cIv3eA9Wbpi6yK7r4L1UxbUiz8LF7wr+ECYNcigM=;
+        b=EK1j5L8LMCljnl8umXD2R9JHlSildOPIBJ3dsT81Rd39e0rlUh/tsmcp7vgh2Pq0RO
+         dzSlrww9FqlnA0YuaDEZ+VnROU5wwLgLkYqf9fUSh0ULn2R7CTRNr1TUlSbwIdXrRXhX
+         XUPzupbvCd+eDSA26fnyavoWTyw1LxFxLsfF9ak65nvDxEVQCTA7sAGYf2uz/mqrexMs
+         TGuwFXKo+qbOzNfSLNT5ja2QywV1cPbKSy1C1YzGY4Wc4icfYNVrxeTqiVpWRmgcAzUH
+         lkNIsPe2V6sgmPGes2NjFQREVeISzi86Ajic/5mzsZ4XGsF13znYp8GrtwdP7CYmoHle
+         v6og==
+X-Forwarded-Encrypted: i=1; AKwUvBxpF27gaex8mjytyi70q4klyXgRtzKtwRsg3Duntf4mnuGdKwr5vkWQ1aqix+dRJP1WLgh3by4=@vger.kernel.org
+X-Gm-Message-State: AFuF++ldIFpgEUdN2AISCDk+i0rQubnFo/QJbs5BfUjbITGqZf2kZnFT
+	loSdABe42FH8kUiWm4fr/R4FGI0FCIRStjop6RlLMM4DUdgFKAKH2Z8/igON7bbT
+X-Gm-Gg: AYBFou2ezwxlyGl6ccqeBzlXrlxw/Zgp9hT0bPCValbOQCQ9cXMe9VUhvvAJMZlfeKC
+	eJzAAE7bZ1oQGBNrT9TxA1DIa+v8NaoX9ci5vMJeUT005NJnJGeAH6PSTyu3d+5IqQOu7fh+uY0
+	wXKd/4SDpTXXgvm6Y5nDUzSZMM0YBka4keiocqTpksVWwgxBoH7I/FlrGoh0n/4uLMUQgPUutAS
+	MtoKxLNepgXnHwxHdJ/de3C2SgSSv1rZrcOsU+jKhi8ZBHnFskKuTU36k/J9/MH9mY6DJQGty5D
+	Jqsbe6CydpjMY0kk7enUOn49WKJk1nMMbLzeOEDXJ4XPNbfdv3rzZTM8aZDuyIraLefph51eooN
+	5MsyInZRqY0YKSsVI0FBrnTq590enBj5b+qNuPFTjG+Vzv2C7LzVsO3NWfSPlr3Lo2mBvgQxrTq
+	I+4ZMbQPVtbjBUsIfPygY+1Uk64L3r76G3XKEG1cIUkzlGKRlMXq+iUxr51ZU0xf5b8hQma5W4M
+	VF46FlZN3EYokw+QaWMFophxqQlXca5nIsyKIaR
+X-Received: by 2002:a05:600c:4693:b0:49c:fa20:cbfc with SMTP id 5b1f17b1804b1-49e7a66b714mr73955375e9.19.1789455337805;
+        Mon, 14 Sep 2026 23:55:37 -0700 (PDT)
+Received: from fedora-tap.advaoptical.com ([82.166.23.19])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e7d292d3csm46002775e9.4.2026.09.14.23.55.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Sep 2026 23:55:37 -0700 (PDT)
+From: Sagi Maimon <maimon.sagi@gmail.com>
+To: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Michal Simek <michal.simek@amd.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Sagi Maimon <maimon.sagi@gmail.com>
+Subject: [PATCH net-next] net: axienet: add a TX timeout handler to recover a lost DMA interrupt
+Date: Tue, 15 Sep 2026 09:55:34 +0300
+Message-ID: <20260915065534.102249-1-maimon.sagi@gmail.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-X-B4-Tracking: v=1; b=H4sIAAvkqGoC/z2P7QqDIBSGb2X4e8LJUmq3MkaUHteBpaK1NaJ7n
- 46xn+8D79fOEkbCxC6nnUV8UiLvsqjOJ6anwd2Rk8mabTbOnMJiEw+hj2h77Ve38NUZjPbhXxx
- UjQg1CAXAsn0cEvIxDk5PJYBCQv3n2s8zLYV3ykI1yloLAxIB6hEaaDshpDIom0G2ClspumINu
- Ze279rrL/CW8URp8fFdPhzH8QGf7jD/0wAAAA==
-X-Change-ID: xfrm-iptfs-pp_ref_count-underflow-063ee0302600
-X-Mailer: b4 0.16-dev
-Precedence: first-class
-Priority: normal
-Organization: secunet
-X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-02.secunet.de
- (10.32.0.172)
+Content-Transfer-Encoding: 8bit
 
-skb frags are either page_pool pages tracked via pp_ref_count
-(released by napi_pp_put_page()), or regular pages tracked via
-_refcount (released by put_netmem()).
-skb->pp_recycle was unbalanced and caused the underflow that
-hit BUG().
+axienet_dma_err_handler() is the driver's only reset path, and the only
+two places that schedule it are axienet_tx_irq() and axienet_rx_irq(),
+both on the XAXIDMA_IRQ_ERROR_MASK branch.  Every route into recovery
+therefore depends on a DMA interrupt being delivered.
 
-Fix by taking the share with page_pool_ref_page(), matching
-skb_pp_frag_ref() in skb_try_coalesce().
+If a completion interrupt is lost the queue stops making progress with
+descriptors unreclaimed, and nothing ever schedules the reset: the error
+branch cannot run because no interrupt arrives, and NAPI is not polled
+because it is only scheduled from those same handlers.  The interface
+stays wedged until the driver is unloaded.
 
-Reproduced by sharing the same page_pool frag into two extra skbs,
-releasing both before the page rotates out, then forcing rotation --
-trips WARN_ON(ret < 0) in page_pool_unref_netmem() with the bug,
-silent with the fix.
+Add an .ndo_tx_timeout handler so the netdev watchdog provides a route
+into the existing reset path that does not depend on the interrupt that
+was lost.  The handler only queues the work; axienet_dma_err_handler()
+then performs the reset in process context, as it already does for the
+error-interrupt case.
 
-[  113.863676] ------------[ cut here ]------------
-[  113.863687] WARNING: ./include/net/page_pool/helpers.h:297 at page_pool_put_netmem.constprop.0+0x1f/0x40, CPU#0: swapper/0/0
-[  113.863706] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 7.2.0-rc2-00235-gddb06ebf175f-dirty #5 PREEMPT(full)
-[  113.863713] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-[  113.863718] RIP: 0010:page_pool_put_netmem.constprop.0+0x1f/0x40
-[  113.863725] Code: 90 90 90 90 90 90 90 90 90 90 90 48 89 f0 48 83 e0 fe 48 8b 48 28 48 ff c9 74 20 48 83 c9 ff f0 48 0f c1 48 28 48 ff c9 79 07 <0f> 0b c3 cc cc cc cc 75 13 48 c7 40 28 01 00 00 00 0f b6 ca 83 ca
-[  113.863731] RSP: 0018:ffffc90000003c98 EFLAGS: 00010296
-[  113.863738] RAX: ffffea0004192d80 RBX: ffff8881017e1200 RCX: ffffffffffffffff
-[  113.863742] RDX: 0000000000000001 RSI: ffffea0004192d80 RDI: ffff888101ce2000
-[  113.863746] RBP: 000000000000000c R08: 000000000000003c R09: 0000000000000a00
-[  113.863750] R10: 0000000000000001 R11: 00000000000007e0 R12: 0000000000000000
-[  113.863754] R13: ffff888101ce3000 R14: ffffea0004192d80 R15: ffff888100a779c0
-[  113.863763] FS:  0000000000000000(0000) GS:ffff8881f8a8b000(0000) knlGS:0000000000000000
-[  113.863768] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  113.863773] CR2: 00007ff837b28000 CR3: 0000000106e91005 CR4: 0000000000170eb0
-[  113.863777] Call Trace:
-[  113.863784]  <IRQ>
-[  113.863787]  page_to_skb+0x1f3/0x210
-[  113.863798]  receive_buf+0x712/0xca0
-[  113.863807]  ? detach_buf_split_in_order+0x5d/0x110
-[  113.863819]  virtnet_poll+0x1da/0x460
-[  113.863829]  __napi_poll.constprop.0+0x2a/0x120
-[  113.863838]  net_rx_action+0x11a/0x230
-[  113.863847]  ? raise_softirq_irqoff+0x5/0x20
-[  113.863857]  ? __napi_schedule+0x31/0x50
-[  113.863864]  ? vring_interrupt+0x77/0x90
-[  113.863871]  handle_softirqs+0x127/0x260
-[  113.863880]  __irq_exit_rcu+0x50/0xf0
-[  113.863888]  common_interrupt+0x95/0xc0
-[  113.863910]  </IRQ>
-[  113.863914]  <TASK>
-[  113.863917]  asm_common_interrupt+0x22/0x40
-[  113.863924] RIP: 0010:default_idle+0xb/0x20
-[  113.863932] Code: 00 4d 29 c8 4c 01 c7 4c 29 c2 e9 6e ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 eb 07 0f 00 2d 9d d0 03 00 fb f4 <fa> c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 90
-[  113.863937] RSP: 0018:ffffffff82803e98 EFLAGS: 00000206
-[  113.863943] RAX: 0000000000000000 RBX: ffffffff8280b400 RCX: 00000000ffff49ff
-[  113.863947] RDX: 0000000000000000 RSI: ffffffff821f82b0 RDI: 000000000003e4f4
-[  113.863951] RBP: 0000000000000000 R08: 0000000000000002 R09: 0000000000000000
-[  113.863955] R10: 000000581b92d59c R11: 0000000000000000 R12: 0000000000000000
-[  113.863959] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000013a90
-[  113.863966]  default_idle_call+0x3c/0x70
-[  113.863973]  do_idle+0xdc/0x200
-[  113.863987]  cpu_startup_entry+0x29/0x30
-[  113.863995]  rest_init+0xbd/0xc0
-[  113.864002]  start_kernel+0x5fd/0x600
-[  113.864018]  x86_64_start_reservations+0x20/0x20
-[  113.864029]  x86_64_start_kernel+0xc9/0xd0
-[  113.864036]  common_startup_64+0x129/0x148
-[  113.864048]  </TASK>
-[  113.864051] ---[ end trace 0000000000000000 ]---
+.ndo_tx_timeout is added to axienet_netdev_ops alone.  On the dmaengine
+path lp->dma_err_task is never initialised - INIT_WORK() for it lives in
+axienet_init_legacy_dma() - so scheduling it there would be a bug, and
+watchdog_timeo is set in the same branch for that reason.
 
-the above warning repeated several times, 8 in this run, and then hit BUG.
+Tested on a Xilinx AXI Ethernet MAC by clearing PCI_MSIX_FLAGS_ENABLE
+underneath a running interface to drop completion interrupts: without
+this patch the TX queue stalls permanently, with it the watchdog fires
+and the interface resumes passing traffic.
 
-[  146.743192] ------------[ cut here ]------------
-[  146.743200] kernel BUG at net/core/skbuff.c:5289!
-[  146.745219] Oops: invalid opcode: 0000 [#1] SMP NOPTI
-[  146.747359] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Tainted: G        W           7.2.0-rc2-00235-gddb06ebf175f-dirty #5 PREEMPT(full)
-[  146.752482] Tainted: [W]=WARN
-[  146.753718] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-[  146.757698] RIP: 0010:__skb_to_sgvec+0x226/0x260
-[  146.759646] Code: e6 89 4c 24 08 e8 fa fd ff ff 85 c0 78 2e 8b 4c 24 08 41 01 c7 29 cb 74 26 01 cd 4d 8b 6d 00 44 8b 74 24 04 eb 86 85 db 74 15 <0f> 0b 41 bf a6 ff ff ff eb 0b 41 bf 01 00 00 00 eb 03 41 89 c7 48
-[  146.767755] RSP: 0018:ffffc90000003c78 EFLAGS: 00010206
-[  146.769965] RAX: 0000000000000001 RBX: 0000000000000078 RCX: ffff8881060ebec0
-[  146.773018] RDX: 0000000000000001 RSI: 0000000000000001 RDI: ffffea00041b7200
-[  146.775910] RBP: 000000000000006c R08: 0000000000000000 R09: 0000000000000000
-[  146.778716] R10: 0000000000000058 R11: 00000000000007e0 R12: ffff888100b25eb0
-[  146.781355] R13: 0000000000000000 R14: 000000000000006c R15: 0000000000000002
-[  146.783911] FS:  0000000000000000(0000) GS:ffff8881f8a8b000(0000) knlGS:0000000000000000
-[  146.786704] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  146.788578] CR2: 00007f9245e088a0 CR3: 0000000106575006 CR4: 0000000000170eb0
-[  146.790880] Call Trace:
-[  146.791601]  <IRQ>
-[  146.792190]  skb_to_sgvec+0x11/0x40
-[  146.793267]  esp_output_tail+0x184/0x420
-[  146.794450]  esp_output+0x12e/0x160
-[  146.795407]  xfrm_output_resume+0xb22/0xe10
-[  146.796571]  ? __memcg_slab_free_hook+0x50/0xe0
-[  146.797842]  ? iptfs_delay_timer+0x8a3/0x920
-[  146.798987]  ? kmem_cache_free+0x210/0x270
-[  146.800061]  iptfs_delay_timer+0x5dc/0x920
-[  146.801135]  ? net_rx_action+0x1fc/0x230
-[  146.802172]  ? rb_erase_linked+0x3b/0x60
-[  146.803175]  ? __pfx_iptfs_delay_timer+0x10/0x10
-[  146.804346]  __hrtimer_run_queues+0x117/0x1b0
-[  146.805452]  hrtimer_run_softirq+0x43/0x90
-[  146.806474]  handle_softirqs+0x127/0x260
-[  146.807421]  __irq_exit_rcu+0x50/0xf0
-[  146.808304]  common_interrupt+0x95/0xc0
-[  146.809229]  </IRQ>
-[  146.809733]  <TASK>
-[  146.810200]  asm_common_interrupt+0x22/0x40
-[  146.811176] RIP: 0010:default_idle+0xb/0x20
-[  146.812154] Code: 00 4d 29 c8 4c 01 c7 4c 29 c2 e9 6e ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 eb 07 0f 00 2d 9d d0 03 00 fb f4 <fa> c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 90
-[  146.816515] RSP: 0018:ffffffff82803e98 EFLAGS: 00000206
-[  146.817661] RAX: 0000000000000000 RBX: ffffffff8280b400 RCX: 0000000000000000
-[  146.819210] RDX: 0000000000000000 RSI: ffffffff821f82b0 RDI: 0000000000050834
-[  146.820733] RBP: 0000000000000000 R08: 0000000000000002 R09: 0000000000000000
-[  146.822261] R10: 0000000000155cc0 R11: 0000000000000000 R12: 0000000000000000
-[  146.823751] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000013a90
-[  146.825225]  default_idle_call+0x3c/0x70
-[  146.826032]  do_idle+0xdc/0x200
-[  146.826645]  cpu_startup_entry+0x29/0x30
-[  146.827412]  rest_init+0xbd/0xc0
-[  146.828039]  start_kernel+0x5fd/0x600
-[  146.828755]  x86_64_start_reservations+0x20/0x20
-[  146.829677]  x86_64_start_kernel+0xc9/0xd0
-[  146.830470]  common_startup_64+0x129/0x148
-[  146.831247]  </TASK>
-[  146.831661] ---[ end trace 0000000000000000 ]---
-[  146.832554] RIP: 0010:__skb_to_sgvec+0x226/0x260
-[  146.833442] Code: e6 89 4c 24 08 e8 fa fd ff ff 85 c0 78 2e 8b 4c 24 08 41 01 c7 29 cb 74 26 01 cd 4d 8b 6d 00 44 8b 74 24 04 eb 86 85 db 74 15 <0f> 0b 41 bf a6 ff ff ff eb 0b 41 bf 01 00 00 00 eb 03 41 89 c7 48
-[  146.837105] RSP: 0018:ffffc90000003c78 EFLAGS: 00010206
-[  146.838095] RAX: 0000000000000001 RBX: 0000000000000078 RCX: ffff8881060ebec0
-[  146.839418] RDX: 0000000000000001 RSI: 0000000000000001 RDI: ffffea00041b7200
-
-Fixes: 5f2b6a909574 ("xfrm: iptfs: add skb-fragment sharing code")
-Fixes: b96ba312e21c ("xfrm: iptfs: share page fragments of inner packets")
-Signed-off-by: Antony Antony <antony.antony@secunet.com>
+Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
 ---
-xfrm: iptfs fix
----
- net/xfrm/xfrm_iptfs.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ .../net/ethernet/xilinx/xilinx_axienet_main.c | 33 +++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-index 6920940a35b4..d3bca90e2c38 100644
---- a/net/xfrm/xfrm_iptfs.c
-+++ b/net/xfrm/xfrm_iptfs.c
-@@ -14,6 +14,7 @@
- #include <net/icmp.h>
- #include <net/ip6_route.h>
- #include <net/inet_ecn.h>
-+#include <net/page_pool/helpers.h>
- #include <net/xfrm.h>
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 782f903d318f..b5927e979c34 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -55,6 +55,10 @@
+ #define DMA_NUM_APP_WORDS		5
+ #define LEN_APP				4
+ #define RX_BUF_NUM_DEFAULT		128
++/* Well above any legitimate TX completion delay, including the worst case
++ * allowed by the DMA interrupt coalescing settings.
++ */
++#define AXIENET_TX_TIMEOUT		(5 * HZ)
  
- #include <crypto/aead.h>
-@@ -486,7 +487,10 @@ static int iptfs_skb_add_frags(struct sk_buff *skb,
- 			tofrag->len -= offset;
- 			offset = 0;
- 		}
--		__skb_frag_ref(tofrag);
-+		if (walk->pp_recycle)
-+			page_pool_ref_page(skb_frag_page(tofrag));
-+		else
-+			__skb_frag_ref(tofrag);
- 		shinfo->nr_frags++;
- 		shinfo->flags |= SKBFL_SHARED_FRAG;
+ /* Must be shorter than length of ethtool_drvinfo.driver field to fit */
+ #define DRIVER_NAME		"xaxienet"
+@@ -1884,6 +1888,30 @@ axienet_get_stats64(struct net_device *dev, struct rtnl_link_stats64 *stats)
+ 	} while (read_seqcount_retry(&lp->hw_stats_seqcount, start));
+ }
  
-@@ -2171,7 +2175,11 @@ static void iptfs_consume_frags(struct sk_buff *to, struct sk_buff *from)
- 		new_truesize = SKB_TRUESIZE(skb_end_offset(from));
++/**
++ * axienet_tx_timeout - Driver TX timeout callback
++ * @ndev:	Pointer to net_device structure
++ * @txqueue:	Index of the transmit queue that stalled
++ *
++ * Called by the netdev watchdog when a transmit queue has made no progress for
++ * @ndev->watchdog_timeo.  axienet_dma_err_handler() is the driver's only reset
++ * path, and it is otherwise scheduled solely from axienet_tx_irq() and
++ * axienet_rx_irq() - so a completion interrupt that is never delivered leaves
++ * the queue stopped with descriptors unreclaimed and no way back short of
++ * unloading the driver.  Schedule the reset from here as well, so a lost
++ * interrupt is recoverable.
++ *
++ * This runs from a timer, so it only queues the work; the reset itself happens
++ * in process context in axienet_dma_err_handler().
++ */
++static void axienet_tx_timeout(struct net_device *ndev, unsigned int txqueue)
++{
++	struct axienet_local *lp = netdev_priv(ndev);
++
++	netdev_err(ndev, "TX queue %u stalled, resetting DMA\n", txqueue);
++	schedule_work(&lp->dma_err_task);
++}
++
+ static const struct net_device_ops axienet_netdev_ops = {
+ 	.ndo_open = axienet_open,
+ 	.ndo_stop = axienet_stop,
+@@ -1894,6 +1922,7 @@ static const struct net_device_ops axienet_netdev_ops = {
+ 	.ndo_validate_addr = eth_validate_addr,
+ 	.ndo_eth_ioctl = axienet_ioctl,
+ 	.ndo_set_rx_mode = axienet_set_multicast_list,
++	.ndo_tx_timeout = axienet_tx_timeout,
+ #ifdef CONFIG_NET_POLL_CONTROLLER
+ 	.ndo_poll_controller = axienet_poll_controller,
+ #endif
+@@ -3054,6 +3083,10 @@ static int axienet_probe(struct platform_device *pdev)
  	} else {
- 		iptfs_skb_head_to_frag(from, &toi->frags[toi->nr_frags]);
--		skb_frag_ref(to, toi->nr_frags++);
-+		if (from->pp_recycle)
-+			page_pool_ref_page(skb_frag_page(&toi->frags[toi->nr_frags]));
-+		else
-+			skb_frag_ref(to, toi->nr_frags);
-+		toi->nr_frags++;
- 		new_truesize = SKB_DATA_ALIGN(sizeof(struct sk_buff));
+ 		ndev->netdev_ops = &axienet_netdev_ops;
+ 		ndev->ethtool_ops = &axienet_ethtool_ops;
++		/* netdev_watchdog_up() only arms the TX watchdog when
++		 * .ndo_tx_timeout is set, which is the legacy DMA path alone.
++		 */
++		ndev->watchdog_timeo = AXIENET_TX_TIMEOUT;
  	}
- 
-
----
-base-commit: 96f01b53c2d05e003b040892256de54a586e8529
-change-id: xfrm-iptfs-pp_ref_count-underflow-063ee0302600
-
-Best regards,
--Antony
+ 	/* Check for Ethernet core IRQ (optional) */
+ 	if (lp->eth_irq < 0)
+-- 
+2.47.0
 
