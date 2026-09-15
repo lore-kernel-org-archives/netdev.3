@@ -1,30 +1,32 @@
 Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0DC36F8FD;
-	Tue, 15 Sep 2026 17:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67B23F9A1A;
+	Tue, 15 Sep 2026 17:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.135.140.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789494425; cv=none; b=M8y48ElzCbahlDWkcSVXIbMMK7Wgs79Rma5U3zkL+cQ6ElNRyCVo3pIfKwyzClfISTDljygPT+P0qiG4RmCgNptcXuRlwKM5mWtzT2RweEh0tcbdDmnUY7B9kIil7C45dwz+Lwc4bj5I/xpi8WITjJp7rLVt4q+o91d/HNnpN2A=
+	t=1789494432; cv=none; b=fL5caH/qjFu0znZ2tEBiO62WZoECK0NgtDA8qE6zpfAyz06jw02LaoqxKJ85XSuj405K5G0t6MFVdE8BfAUPKW7PevGYyj/XNh7pXygTuu/VM9F1sjCon2P4dKmnr6/vO6AMHKEcAxwUqkuwzl/EIhgyroA35mMp/StMgHWSVe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789494425; c=relaxed/simple;
-	bh=CCmZIqzrfwFytRG6L0cbeORjISrBssAVbSF98DeNhtQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dfaMUGSmUX2Hd4hx0KDocfFXvpnHEko1Xxy35obZFJGbj8pmp+nq6dBDu4kLYcngGn/X18qTvn/5yzzt3ngj4meLjWeAthRFi/A24wcDoiFUNbAHpPEOmC2hqFUjKcOBiIRQ0iq9B9QuKDoj10SRjMe5apTRkpaVj2sgc+d3Sz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=pass smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=VsT5V0S/; arc=none smtp.client-ip=5.135.140.105
+	s=arc-20240116; t=1789494432; c=relaxed/simple;
+	bh=8UZcZJFE0ZJjSbxEMH1gzEs2SO3POEXxd6LWfafuw6w=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=X36b6yp+1x+pSu4b0sIesFeKidhPOPRpOldTEG/eGADyfPLz7bd+J53/jbpvh57HFbq4jl51BY9Qq+RJ0TkOsQU/JinS5PSmVyJON/XYitmZcrsYAqQJXsUtqnRZm6zaCCXs47pXPflzSe0nwU12OlE2HGC8sDzZM3PB0up1deo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=pass smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=DcBGrstM; arc=none smtp.client-ip=5.135.140.105
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cjdns.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="VsT5V0S/"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 806E848F43B;
-	Tue, 15 Sep 2026 19:46:49 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="DcBGrstM"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9B36948F1D7;
+	Tue, 15 Sep 2026 19:47:02 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
-	t=1789494419; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=80mtWLE6jZ2+9O6Z6Io20KcPF/T+lsToZLYgR/f9/Vs=;
-	b=VsT5V0S/YUshGGGxyIcT8aFxRgIf+DyMDNsS0nnZgoUquHANyyIGR6/En7f1FT7m/RsBZl
-	smcfiLxIbO+JC18H0IlJmSGzp/eXo/ox2ZzymCZj2J50sLp/KNQUB7gR0MtJUAByFD24Rg
-	JAbcX4PLptxHHg5eNzKJavX4zf72WbXmBGezuowO7RSTcS4JcQLoYZO8LFApYIomCkBe2n
-	9QMBfJA85xfZu+WXH/ybSKEjZN/ktGVc4QyabuPhaoWbstVbDSl3SSXPI1o73rd2HAaQWB
-	3sv5r0aHjvBUM5SaEhfO4A+AhHekkxuIjuVGaPLx4yrXHGyqXXOVz1MCEHPRvQ==
+	t=1789494425; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=9+LSfF6WeN65ydsS+fKszA1mpUfPTI0QyNbajR7Gplk=;
+	b=DcBGrstMfLx9yoDYxrN/8CrGgrPZ5Q4XJs14cpcSavxOgzq21UuhKFhZrDP0ev6EsahPyX
+	0iPQDXTfrmRoa+W3cvkWSyozvmH9luEptcqX3rxK6L84MvCzddcYauD/fT1k9YrNFDJFDr
+	kDpa7fYzFjVC9Q89yzqxMqFYJROZfW0r+UG7Jr8HnOVwdaV+bD5tYe2+XeXZsEuktp/1Qz
+	O2Q34pdpzVS8UPiCpIkcIGEuYhIs8LC3eNrpk6zgla+tszhz2upnMN5wmUEzg2sn0ZcqRX
+	8BJ8kX6K5XnsmTyrB53IaYTJxVfHt0ZzN43iULfcOLTQnGSf9wJH6e3V+qldZA==
 From: Caleb James DeLisle <cjd@cjdns.fr>
 To: netdev@vger.kernel.org
 Cc: andrew@lunn.ch,
@@ -52,9 +54,11 @@ Cc: andrew@lunn.ch,
 	naseefkm@gmail.com,
 	b.larsson@gmx.com,
 	Caleb James DeLisle <cjd@cjdns.fr>
-Subject: [PATCH v2 net-next 0/7] net: dsa: mt7530: support EcoNet EN751221
-Date: Tue, 15 Sep 2026 17:46:36 +0000
-Message-Id: <20260915174643.253660-1-cjd@cjdns.fr>
+Subject: [PATCH v2 net-next 2/7] dt-bindings: net: dsa: mediatek,mt7530: add passthrough mode
+Date: Tue, 15 Sep 2026 17:46:38 +0000
+Message-Id: <20260915174643.253660-3-cjd@cjdns.fr>
+In-Reply-To: <20260915174643.253660-1-cjd@cjdns.fr>
+References: <20260915174643.253660-1-cjd@cjdns.fr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,72 +68,35 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-The EcoNet EN751221 has a unique switch configuration. Every chip made
-with an EN751221 die has at least one on-die MT7530 that is MMIO based.
-This switch has 3x 10/100 ports and 1x gigabit port.
+MT7530 switches can be configured to blindly pass packets between their
+CPU/upstream port and a downstream DSA port, in particular, without
+altering the MediaTek DSA Tag on the packets. This mode is used in some
+integrations where an SoC integrated switch exists, but a more capable
+MCM switch is added to effectively replace it.
 
-Some popular chip packages such as the EN7513G and EN7526G have another
-MT7530 implemented as a multi-chip-module that connects to port 5 of
-the on-die switch and is controlled via the MDIO controller integrated
-in the on-die MT7530.
+Signed-off-by: Caleb James DeLisle <cjd@cjdns.fr>
+---
+ .../devicetree/bindings/net/dsa/mediatek,mt7530.yaml       | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-In this configurations, the upstream switch is put into a "passthrough"
-mode in which all traffic is forwarded between port 5 and port 6
-without altering its DSA tags.
-
-Furthermore, since the DSA core does not call mt753x_setup until all
-switches are present, and the downstream switch only becomes available
-when the upstream switch has configured its MDIO controller, the MDIO
-controller setup on MMIO implementations must be done before
-mt753x_setup, or else it will never complete.
-
-Finally, the on-die switch and the MCM switch connect via a TRGMII link
-which requires calibration. In order to calibrate this, PLL adjustment
-must be possible on the on-die switch, necessitating changes to the
-core_(set|clear|write|rmw) functions to support MMIO implementations.
-
-Solve all of these issues, add the TRGMII calibration, and add support
-for both switches.
-
-Since this patchset will probably be subject to some discussion, please
-consider accepting any patches that are non-controversial since it will
-make future re-submissions easier.
-
-Thanks!
-
-Changes since v1:
-* Move mt7530_setup_mdio_irq out of mt7530_setup_mdio because
-mt7530_setup_mdio may be called before mt753x_setup
-
-* Do not return error in mt7988_probe if mt7530_setup_mdio fails because
-doing so leaks the DSA switch registration, and in any case
-mt7530_setup_mdio will be called again.
-
-* default_taps_ondie not being used en751221_trgmii_cal_ok unused args
-
-* Use clk_drvp / clk_drvp instead of drvp / drvn (typo)
-
-* en751221_set_tx_drive ext values too large for fields - values taken
-from reference implementation, reduced from 16 to 15.
-
-v1: https://lore.kernel.org/netdev/20260909140346.2861572-1-cjd@cjdns.fr/
-
-Caleb James DeLisle (7):
-  net: dsa: mt7530: get ctrl phy addr using a function
-  dt-bindings: net: dsa: mediatek,mt7530: add passthrough mode
-  net: dsa: mediatek: add support for passthrough mode
-  net: dsa: mediatek: support PLL setup on MMIO MT7530
-  net: dsa: mediatek: support MDIO switch downstream of MMIO switch
-  dt-bindings: net: dsa: mediatek,mt7530: add econet,en751221
-  net: dsa: mediatek: support EN751221 switch
-
- .../bindings/net/dsa/mediatek,mt7530.yaml     |  50 +-
- drivers/net/dsa/mt7530-mdio.c                 |   1 +
- drivers/net/dsa/mt7530-mmio.c                 |  10 +-
- drivers/net/dsa/mt7530.c                      | 579 ++++++++++++++++--
- drivers/net/dsa/mt7530.h                      |  46 +-
- 5 files changed, 632 insertions(+), 54 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml b/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
+index 90b3582b7619..e29fb8693498 100644
+--- a/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
++++ b/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
+@@ -73,6 +73,13 @@ description: |
+ 
+       Check out example 7.
+ 
++  The MT7530 and MT7531 switches are capable of being operated in "passthrough"
++  mode. In this mode, traffic is unconditionally passed between the CPU port
++  and the DSA port which links to a second switch. To use passthrough mode, the
++  upstream switch is configured with a DSA link to the downstream switch. In
++  passthrough mode the upstream switch is restricted, with no other ports or
++  switch configuration allowed.
++
+ properties:
+   compatible:
+     oneOf:
 -- 
 2.39.5
 
