@@ -1,151 +1,136 @@
-Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8328448D0E
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 19:37:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789501024; cv=pass; b=fEKtMJMNzrrhnqGY4IrKdpfMV4ultHT2Ko2/KaPSeZWyyYcS6y2/U/dy4spfpkSF5TW8B5TM6s0Lp4TzsTvO6GgZGWbuLdyCddmbroB4ZtlDK6C/mI4V6CBkE7le6M5o7Ti2TiqfCfI7V2fg57ulkuGiwIlxAYPVFjkrToUY+SA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789501024; c=relaxed/simple;
-	bh=Z2f4FQ8va33TGvYyGtCEXC3YdwZgKCv0QJI6Otw6I1U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JLmG8qWttRLMnKItKgcRyJJD1Ec/4wF2Higl0JKsCcAOzfLGXHXmMarRfuUAm9NL3uc53G07XzXqFvs7NyAQFnf9p7E+Pu5qEhTbRs2CC82+Pan9P5L+rWquLcK6NtRsD7HDUuukbLz+XhyGBbeaCYGKM1Mls73XXFPbjcKkVOA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fKn2G4wd; arc=pass smtp.client-ip=74.125.224.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBBB1448BAC;
+	Tue, 15 Sep 2026 19:40:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789501209; cv=none; b=ZASHVA/7r/tHiomvsavBUSePst2DGyx+FfPWbweUL998Xh4ceeArQQJhftA8lu63/YRdcJAVsr1PCvHipj3+70YbJ5kK6RxLyeEW+rjKAnpuNkwKqVbQBD195OylLba3YmYA/vJyPB3kxyzshIIZ+xYx9g4pY81OIR1Sh0JQjII=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789501209; c=relaxed/simple;
+	bh=d6KieFsD/iu17BDGAAdr2x9QVR2UPdRXdPnYmocbMYE=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=P+vMa/Lg39XhsNUEpNoHVbhar1GWBBojsdGaQYtnMC2wu2HknNfiIZdIkYlpxRfG7J+/aAjpSHID4ZxoqMd23qiU22KiToqgHJOO/jPzVSJsj8KMcNQsV8tmQd21f3uqkJ3igU+G0g2pSUzzQeSk0P/BuOOEuRlFOhIpcnWt8jA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=iHx4fqed; arc=none smtp.client-ip=193.238.174.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fKn2G4wd"
-Received: by mail-yx2-f12.google.com with SMTP id 956f58d0204a3-66e4aae3147so157153d50.1
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 12:37:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789501021; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ibJGdbyOjktAz+ZMC6PrkjegWNMM+lL+xREha3wWtAu+x2SAw6UlRDIVx/WcBk3geU
-         PEUhmeahXB9k0pIiZc0vCqcmtY4aEXTar7AeDcRyf9+P+GzSEA98oOUs9wPnZTbQ+vtR
-         1UrvNPHYjnzFZl3b1A6l+kpswhvU7F+S4mpGjb8DNMEo6vpJvKmujQXLJDozzLfHYKia
-         4B0DG0Fwhz3wAKV4Qy8i5jsv4syKecgaCqUKVPn/IAKc8ZBsWfnSah9UbUWlGXE52MqE
-         oC4ijThfrpVZtxW5D67CBlmZqI/mq/S9AaaMjI3XfVhUL9nhccJSR4DTF08bnvOpmAA9
-         52tA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NR8RlaqooEVk50qaakjuofXzFH4w/MxQZ1es9fZiI7M=;
-        fh=ROu4K7xw+jMQv9ccFUyy/M8H6lqwlY4aVC/VxutwaiM=;
-        b=CLRCEWRJsnHSryPk2EEVRsTBJJFpg2IpNj/dSgCVxhnz+evP0wpRbTUWj7jXaSP67t
-         dqVnCueWElTonEOF4lsi4DoGSWwOEIgJVtBXgnDx484YCibarHRvHrBeq+2Zt0UjdmuG
-         JG2HkkkPjdOWVlDhLMBrBye55rzxPxbls84OyMx+lwHBa5pWG7enDuMiG/klYF7jRO4x
-         Im+vO34tOrCxQUCtdJ4Z2ZpiNwXbrZ/aWRg5dP90PG72FOxD4R1UK2Z1ZLoOF0Kg/sFf
-         I/gdEOU2c/r+nMcew0dT9KRHC9vpwGQ/kt8YMe+rUvi8CLj4/U6bbx9f5jLspn27Qcbm
-         y2sg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789501021; x=1790105821; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NR8RlaqooEVk50qaakjuofXzFH4w/MxQZ1es9fZiI7M=;
-        b=fKn2G4wd5oOdkktuabzRYBZDbglA+QrMTqjNscZoR/nO0hwyZDokFwRKLr1u5vEAVM
-         VwVyxJ8Nfp0fvRVjtlfaZ004r2sfDffWNvoYN/CKNnfmDW/k/o9ghDGLWCSo3+dz4dNQ
-         +vQ67dZdUwzvM38DEoliQNIgAFo+LMaN/wSCuUkzyEYdooAaFM41OaLlLmuNxXMQOZhY
-         W17DBNuA9wDVrcRW5RTXx0V/VAZaRiSmG3532wCjfFh1VUqU27Lw0HSIK0lOuDMX75Lw
-         5aMADngVIQA9WAZ7A7jY1zVQmpHSO8JatfArZUyh6FHgT12S0sAb0TK0iWuG68wuzczl
-         IVdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789501021; x=1790105821;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NR8RlaqooEVk50qaakjuofXzFH4w/MxQZ1es9fZiI7M=;
-        b=aDviPoUy1HulEDa4kGZ6TgmAmF74a+9r6PVPanPhyMX+8d1P4NN0g5zVllozFY4Y9x
-         OtOWDDu669TNxikI+1L5a2i1DQPcZb+uPQH2CrYrJ/A//ylmUUUIe6KhHCEETAREw04a
-         Fq8IIKavl0riNCVyWqBqoifoVN3V14jr6tciqOtial2SC2Zi0EY9ZzYTW1CTY3zaYJxg
-         DQPYW383jTOtrvVkxvbjjERJ+7Qph1HJ6eleBKH6WMixOuhVKgq9yf/vgK0S/OB2/Fb8
-         OBPmaFv66P2gBbqK1dNy02fDEi28hV/zuLZ6mySzEdCHwFpSCJ7/K1aYm+eWBDmhtGNh
-         9tbA==
-X-Forwarded-Encrypted: i=1; AKwUvBxQ2jassNInkXTmZoHILDAHgqW55qHTJpLlGcpYSo9mHoiuQ2wAqQc8xaSOuJ9DFKgt6A8C7jA=@vger.kernel.org
-X-Gm-Message-State: AFuF++kAduSaj3fCaqhNza6R8fFcDu4N4MPaxf0NkAPSSX3ScQ+c7yDq
-	ouh/ESGt743fkchKNaBILEgxurVqecyHQSbJytQ2FEs4xysdUl4Wo5fE+Q9508HTx+LdRYesxIc
-	cV28xJyhyAEghQhLHO3ftTJfy4XPH38Q=
-X-Gm-Gg: AYBFou2kCtXT9vn4wpkILE7Hm58HxSijnO9v+0ltPsUXGmZWFV5JbGwQLzMVDUaBx9N
-	mYdW3WSuiGLatLj6IhcvWwSMtJWozXosBxYlIG9Vj4KT/CCj5aeA5dakalERd01IZMUjUi1Ltqu
-	uoDj8PRWVxUmUtfR1H2acsWwbTTyLFsB4SiDQ7twOt7xDmpp0jkB5M4nBXebz5K1Fcs11IJcrZ6
-	4KvIXpI/NMzOr1dIHaw0jVDbPKS44qZxwS2sDKIJH6luBB59ucGXM40Tsjq0JqSEG/ULKxQ+Rzx
-	e3hpTNs0+AF91hu8SKNwr8qQPTsf9HC1TMUFPZ+TNsrGthpz5laEq7Wxfep7kQZKerubCFO/ikb
-	EKPoyViR0at3jQBnfy3J6ElTswxIpBb7EaSCiR+/BAg==
-X-Received: by 2002:a05:690e:1685:b0:671:158a:ef96 with SMTP id
- 956f58d0204a3-6714dfc87fbmr3560203d50.11.1789501021567; Tue, 15 Sep 2026
- 12:37:01 -0700 (PDT)
+	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="iHx4fqed"
+Received: from mx.ssi.bg (localhost [127.0.0.1])
+	by mx.ssi.bg (Potsfix) with ESMTP id 8C6B1217BB;
+	Tue, 15 Sep 2026 22:39:53 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
+	:content-type:content-type:date:from:from:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
+	 bh=2XRwvH3hz2elsKYDGcI/F3nq02hym7ZMDIB5sc84l/4=; b=iHx4fqed77tj
+	ygsgXiZaZTRIUOs66MkorSn80HV0NXGgA9TPNCOaYoy5fISBvwLNUe+MFVkyGmLL
+	sviXHfSIiYGBTutw2yGvHwLBihZpHcUS+00LiNsJrGHZcS9fTnqrZAb8blljDNS1
+	BuK7KX+7xsnRMEubTwq+ggdqiOmoHaK9EbGyK0w+DPtgcilwP4787A/182PCFHLq
+	c7hyBOz4pycyYa9+5A+sCkfjb3UqES6b0i8NtgMQPzfBhLQ2Z1X5T0BuTMDQTN+j
+	ZooH5VUSm69TxmmBFlfJm9DEEx20QqOWOGEplLGug8sAlUx2QmZtykebHD6SNrJ/
+	KQN8S0aGU+52HJ5LwohhBqv8lOklHG5IIT9rAAOycBKo09tRLgNCX3ziqUkyzvnB
+	3n+lE7HQETGvpwdlAS5SB40wthld61cFuO7t5l08+4iRLWy+6X5kWEtS9GYV1gok
+	1IOJftAiCbTeF7f+JFkQa8Iv9V+DMJ8I8UkUg8dewiXaROwD1vmgpr3DXdbDODI7
+	hVdfjovdAos6yTG1UYzCKcVl5ujuhsptMwuh4cwnEKsvYduMsBR3nI71/EJOOXDv
+	xM22+o+rpzCSa1JphXAXU1vi8BhuizWpU8Np2ley81Vew892QBccCYTdht2EzABI
+	As61PVeD+AHZyo9vRJWi0dKDsReX/k0=
+Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
+	by mx.ssi.bg (Potsfix) with ESMTPS;
+	Tue, 15 Sep 2026 22:39:53 +0300 (EEST)
+Received: from ja.ssi.bg (unknown [213.16.62.126])
+	by box.ssi.bg (Potsfix) with ESMTPSA id 76E49608B2;
+	Tue, 15 Sep 2026 22:39:55 +0300 (EEST)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 68FJdjEC099682;
+	Tue, 15 Sep 2026 22:39:45 +0300
+Date: Tue, 15 Sep 2026 22:39:45 +0300 (EEST)
+From: Julian Anastasov <ja@ssi.bg>
+To: Adriano Cordova <adrianox@gmail.com>
+cc: Simon Horman <horms@verge.net.au>, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>,
+        netdev@vger.kernel.org, lvs-devel@vger.kernel.org,
+        netfilter-devel@vger.kernel.org
+Subject: Re: [PATCH 0/4] ipvs: add per-service secure_tcp
+In-Reply-To: <20260912013216.588300-1-adrianox@gmail.com>
+Message-ID: <7f129041-0578-ec05-9e90-2ad29206df74@ssi.bg>
+References: <20260912013216.588300-1-adrianox@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260907172648.457103-1-luiz.dentz@gmail.com> <20260908135708.552fcead@kernel.org>
- <a0e8bc1e-c237-41fb-b448-9594bd484cfe@sirena.org.uk> <CABBYNZKrSve8b=Acj2qu0YBuEZ9u9xHJe-ffRb+78x5KPY8Ntw@mail.gmail.com>
- <d5676b70-f60b-4ce6-b6e6-de564d5c0a29@sirena.org.uk> <CABBYNZLKnQsypBR8Kbx4QFL9KfnVXRhO9_d5BHYQCabVZSY34g@mail.gmail.com>
- <064ec40d-66bb-4f69-ae1c-65cfed3581b4@sirena.org.uk>
-In-Reply-To: <064ec40d-66bb-4f69-ae1c-65cfed3581b4@sirena.org.uk>
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Date: Tue, 15 Sep 2026 15:36:50 -0400
-X-Gm-Features: AcwNN1WZSrhgKQi-A-4IUp8r81RK4e1x4QppNN_W4nJerIvw3znNgB3XikJm0fQ
-Message-ID: <CABBYNZJWcrvkx=6DekHxZzcrGjHwiqmSuwXqzHNV1=7BctThGA@mail.gmail.com>
-Subject: Re: [GIT PULL] bluetooth 2026-09-07
-To: Mark Brown <broonie@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net, linux-bluetooth@vger.kernel.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
 
-Hi Mark,
 
-On Tue, Sep 15, 2026 at 3:24=E2=80=AFPM Mark Brown <broonie@kernel.org> wro=
-te:
->
-> On Tue, Sep 15, 2026 at 03:16:21PM -0400, Luiz Augusto von Dentz wrote:
-> > On Tue, Sep 15, 2026 at 2:26=E2=80=AFPM Mark Brown <broonie@kernel.org>=
- wrote:
->
-> > > Given the issues caused by the unusual workflow for the tree I do sen=
-d a
-> > > lot of reports of issues in bluetooth.
->
-> > Are you referring to the unusual workflow where fixes are merged to
-> > bluetooth-next first, then to bluetooth (which changes its ID), and
-> > finally merge to net? Changing the order to have Bluetooth first and
-> > then bluetooth-next would require reworking the CI so it could
-> > determine that it is a fix and then use Bluetooth as a base just to
-> > avoid ID changes.
->
-> Yes, the routine cherry picking is certainly part of it - it's not so
-> much the fact that things get moved between branches as the fact that
-> when you have the same commit is in multiple branches and then build on
-> top of one or both of them this creates extra conflicts, often harder to
-> understand, when the branches are merged.  The more normal thing would
-> be to apply once to the right place, or the standard fallback from that
-> would be to drop the commit from branch A at the time it is moved to
-> branch B.
+	Hello,
 
-If I merge to bluetooth, then bluetooth-next won't contain the fixes
-meant for stable/rc, so I will need to merge them back to
-bluetooth-next immediately it order for our CI to stay current with
-the fixes.
+On Fri, 11 Sep 2026, Adriano Cordova wrote:
 
-> You do seem to end up removing the cherry picked commits from their
-> original branches at some point as part of your workflow (since there
-> are hardly any duplicate bluetooth commits in mainline) so they do wind
-> up being moves AFAICT but the duplicates get left sitting there for
-> quite a while.
+> IPVS currently exposes secure_tcp as a per-netns sysctl. It switches the
+> TCP state machine to the hardened tcp_states_dos table.
+> 
+> These patches make it per-service: a virtual service can set
+> IP_VS_SVC_F_SECURE_TCP which is passed into IP_VS_CONN_F_SECURE_TCP at
+> connection creation. set_tcp_state() then selects tcp_states_dos for those
+> connections with IP_VS_CONN_F_SECURE_TCP set and keeps pd->tcp_state_table
+> (the netns default, including the nomem floor) otherwise.
+> 
+> The flag is part of BACKUP_MASK, so it is preserved on sync to backups.
+> 
+>   1. uapi: define the per-service secure_tcp flags
+>   2. carry the flag on every connection-creation path (scheduler,
+>      persistence, RS-initiated, cache-bypass) and on FTP data channels
+>   3. honor it in the TCP state machine, resolving the stale FIXME
+>   4. kselftest contrasting a secure vs. a plain service.
 
-Yep, once before sending the pull request for net-next, bluetooth-next
-is rebased on top of net-next which brings all the fixes already
-merged back to bluetooth-next. Git is absolutely fine with that, I
-don't think I ever run into a conflict doing this. Git detects the
-fixes already present in net-next as duplicates and eliminates them,
-so it really surprises me when you say you are finding conflicts, not
-just duplicates.
+	Note that there is a review for patch 4 by Sashiko:
 
---=20
-Luiz Augusto von Dentz
+https://sashiko.dev/#/patchset/20260912013216.588300-1-adrianox%40gmail.com
+
+	My comments:
+
+	Patch 1:
+
+- lets start IP_VS_SVC_F_SECURE_TCP from 0x0100, i.e. to reserve
+some bits for the schedulers
+
+- IP_VS_CONN_F_SECURE_TCP: should we really sync this flag?
+It can be configured in every director differently. As
+pd->tcp_state_table can be changed at any time, it should be
+safe to sync cp->state between different secure_tcp
+modes (directors). So, if it is not synced, next free value
+should be (1 << 17).
+
+	Patch 2:
+
+- looks like we have many places that read svc->flags.
+Better ip_vs_bind_dest() to check for IP_VS_SVC_F_SECURE_TCP
+and to set IP_VS_CONN_F_SECURE_TCP. It will allow the synced
+connection to inherit the flag from the local director.
+
+	Patch 3:
+
+- there was even tcp_timeouts_dos, see commit f1f71e03b17d.
+The idea was to use reduced timeouts under attack which can
+be also tuned by user space, something that can be implemented
+by using the netlink interface.
+
+	Patch 4:
+
+- if you do not want packets to reach the real server you can
+send with TTL=1, the TCP state machine will be updated but at
+sending time an ICMP will be sent back.
+
+> Not sure about patch 4... could be dropped or absorbed into ipvs.sh
+
+	I'm not sure too.
+
+Regards
+
+--
+Julian Anastasov <ja@ssi.bg>
+
