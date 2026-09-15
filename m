@@ -1,62 +1,164 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-146.mta0.migadu.com [91.218.175.146])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37502386C12;
-	Tue, 15 Sep 2026 12:33:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239763B8BA4
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 12:34:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789475601; cv=none; b=ZWPavElBQUfhol+TYaZooXH4R8WpRnwMy2mDBn+ceqTdZRfnfOp/eM5HamTwzgrgYPHe/oIujLmNoFMFnXGsVBhKQjqkAnysXh5KLtupmzjpqgj5yhpheWam/wXnWSmL0U/hRG0qFOGobNkRAm6lyoma28yCjusFaDlC+TK5Pkk=
+	t=1789475672; cv=none; b=XRuCNAFj23niiIbHO06wyRHhutMjJLlrfhdhevqm9YNcnMhfvUDsIoIz7PBjHnEchEG3gsN0dSEEJ6pQOtacIafiZ4PlGl1mtazE+hnetlSkR6z9RwLCeoPJh/NchpMPeELiY1vj5a/2mCbFBlf8ZBH1JnPTE02qxHAezH/bkKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789475601; c=relaxed/simple;
-	bh=PEdC9lUTtTiy2Z9U5c3/mMH1KhlSdoWVq+Jq6NpvPtw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nWTUd27vxlSJWWS6alPjQcz2PUp8+HcutmFViG245GCWf08Vr4jLtm/OduOFYXtfB+12lThBDrmGFm5mNXQnUFn3f1DlRB1jU45xip/2ziUW8+0grjoEtQya5eNxAT2IahWLQcFK6bsmWj02oaJANm3at2DyZNyVTr5bf1DLrlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=hrYUC0Ua; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1789475672; c=relaxed/simple;
+	bh=OJMb8+kSmjnilK3L4bk+RoN5qnBsXE87kcO/1+97EYk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=i/hWq73KbnWUW+oCabQ6yETfz40LZNx0dv0UhD8NhVG+FNA3asGy3AkCFsEnaiiuNWLhSjahWIrjIdQ2oXS+Vgp9AX2PZHu7xxpyTNSvavtyoCnWyHa663AaIpcKjiuZ7z08z+0P4tE/8RvxGRe/WB5dtZmOcMARCwc9O9S677o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ZP2EOMQP; arc=none smtp.client-ip=91.218.175.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="hrYUC0Ua"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=T7/OcNgwFxHkq9ta9WPinQOw3Opc1nnVp+ZFlRvoxuw=; b=hrYUC0UaA8pMJIfPeFaXe9oc5O
-	D1PlZSP6U96blhaIfX645wa8Xphz0z4qBzAzx5P7BArUW2i+DTH0kaHoG1GdpTRO9n+HIUgrl6DXd
-	vb2Q8QF7aqpH1hYbEwvTt6m68q2kojpDwUDMq7Injj9wLFoN3caHfGf/Z7vEp1CSGsDs=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x6SLY-005Gvx-Nt; Tue, 15 Sep 2026 14:33:12 +0200
-Date: Tue, 15 Sep 2026 14:33:12 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Kyle Switch <kyle.switch@motor-comm.com>
-Cc: Frank.Sae@motor-comm.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
-	xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com,
-	jie.han@motor-comm.com
-Subject: Re: [PATCH net-next v18 3/3] net: phy: Add driver for Motorcomm Quad
- 2.5GbE phy
-Message-ID: <c1b1409e-c01e-4074-8e38-73e630deb751@lunn.ch>
-References: <20260915082152.3104633-1-kyle.switch@motor-comm.com>
- <20260915082152.3104633-4-kyle.switch@motor-comm.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ZP2EOMQP"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=OJMb8+kSmjnilK3L4bk+RoN5qnBsXE87kcO/1+97EYk=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789475669; v=1; x=1790080469;
+ b=ZP2EOMQPWn4P9PTmZ482XnXWojT7vIWvLDIancH3AUz6PPgIbX8Y/KZhCatHCX693eLxnyAW
+ OZgRx4/WuU4WI56v+fZfYUMLYbOXKN0iwnvxcBAA6VcCyd1gO4yu/9d7c8yF8lGNL9VeDSOjzkL
+ 5aLxFeNlKj6c1pSttdQQJ12Y=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 4f2c905f45e48e2e;
+	Tue, 15 Sep 2026 12:34:29 +0000
+X-Mizu-Trace-ID: 4f2c905f45e48e2e
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <1ec16cd0-5fef-4068-9317-1ade03c0ded6@linux.dev>
+Date: Tue, 15 Sep 2026 20:34:20 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260915082152.3104633-4-kyle.switch@motor-comm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v1] net: gro_cells: move backlog drop handling
+ outside the local lock
+To: Eric Dumazet <edumazet@google.com>
+Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Dong Chenchen <dongchenchen2@huawei.com>, David Ahern <dsahern@kernel.org>,
+ Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org,
+ Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+References: <20260915121458.214961-1-xuanqiang.luo@linux.dev>
+ <CANn89i+d4ny7K0QV-v+ZY6Kj735tPVrrzd0AzwRqe4vvu5r=aw@mail.gmail.com>
+From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+In-Reply-To: <CANn89i+d4ny7K0QV-v+ZY6Kj735tPVrrzd0AzwRqe4vvu5r=aw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-> +	res = of_get_phy_mode(np, &priv->interface_mode);
-> +	if (res < 0) {
-> +		phydev_warn(phydev, "%s, phy-mode missing in DTS.\n", __func__);
-> +		priv->interface_mode = PHY_INTERFACE_MODE_INTERNAL;
+在 2026/9/15 20:26, Eric Dumazet 写道:
+> On Tue, Sep 15, 2026 at 5:16 AM Xuanqiang Luo <xuanqiang.luo@linux.dev> wrote:
+>>
+>> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+>>
+>> When the GRO cell queue length exceeds max_backlog, gro_cells_receive()
+>> holds bh_lock while updating the RX drop counter and freeing the rejected
+>> skb. The skb has not been queued, and the counter is updated with
+>> this_cpu_inc(), so neither operation requires the queue lock.
+>>
+>> Release bh_lock before accounting for and freeing the dropped skb to
+>> shorten the critical section.
+> 
+> local_lock_nested_bh() is only a real lock on PREEMPT_RT. On other
+> kernels it is a lockdep assertion, so this patch generates the same
+> code. And this is the backlog overflow path: by definition we are
+> already dropping packets there. Shortening this "critical section"
+> buys nothing measurable, and there is no benchmark in the changelog.
+> 
+> Also, the result is harder to read than what it replaces: a label
+> named "unlock" that actually drops the skb, falling through into
+> "drop:", and a backward goto past the return. Three labels for a
+> 20-line function.
+> 
+> If you want to improve gro_cells_receive(), please add drop reasons
+> instead: SKB_DROP_REASON_DEV_READY for the !IFF_UP case and
+> SKB_DROP_REASON_CPU_BACKLOG for the overflow one. That actually helps
+> people tracking down drops.
+> 
 
-In the binding you say phy-mode is a required property. So if it is
-missing, it should be a fatal error.
+Thank you for the quick reply!
 
-	 Andrew
+I see your point. I'll take another look.
+
+Thanks,
+Xuanqiang
+
+> 
+>>
+>> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+>> ---
+>>   net/core/gro_cells.c | 24 ++++++++++++------------
+>>   1 file changed, 12 insertions(+), 12 deletions(-)
+>>
+>> diff --git a/net/core/gro_cells.c b/net/core/gro_cells.c
+>> index d8c0a28671201..f46cecd246aab 100644
+>> --- a/net/core/gro_cells.c
+>> +++ b/net/core/gro_cells.c
+>> @@ -14,7 +14,6 @@ struct gro_cell {
+>>   int gro_cells_receive(struct gro_cells *gcells, struct sk_buff *skb)
+>>   {
+>>          struct net_device *dev = skb->dev;
+>> -       bool have_bh_lock = false;
+>>          struct gro_cell *cell;
+>>          int res;
+>>
+>> @@ -26,32 +25,33 @@ int gro_cells_receive(struct gro_cells *gcells, struct sk_buff *skb)
+>>
+>>          if (!gcells->cells || skb_cloned(skb) || netif_elide_gro(dev)) {
+>>                  res = netif_rx(skb);
+>> -               goto unlock;
+>> +               goto out_rcu;
+>>          }
+>>
+>>          local_lock_nested_bh(&gcells->cells->bh_lock);
+>> -       have_bh_lock = true;
+>>          cell = this_cpu_ptr(gcells->cells);
+>>
+>> -       if (skb_queue_len(&cell->napi_skbs) > READ_ONCE(net_hotdata.max_backlog)) {
+>> -drop:
+>> -               dev_core_stats_rx_dropped_inc(dev);
+>> -               kfree_skb(skb);
+>> -               res = NET_RX_DROP;
+>> +       if (skb_queue_len(&cell->napi_skbs) > READ_ONCE(net_hotdata.max_backlog))
+>>                  goto unlock;
+>> -       }
+>>
+>>          __skb_queue_tail(&cell->napi_skbs, skb);
+>>          if (skb_queue_len(&cell->napi_skbs) == 1)
+>>                  napi_schedule(&cell->napi);
+>>
+>> +       local_unlock_nested_bh(&gcells->cells->bh_lock);
+>>          res = NET_RX_SUCCESS;
+>>
+>> -unlock:
+>> -       if (have_bh_lock)
+>> -               local_unlock_nested_bh(&gcells->cells->bh_lock);
+>> +out_rcu:
+>>          rcu_read_unlock();
+>>          return res;
+>> +
+>> +unlock:
+>> +       local_unlock_nested_bh(&gcells->cells->bh_lock);
+>> +drop:
+>> +       dev_core_stats_rx_dropped_inc(dev);
+>> +       kfree_skb(skb);
+>> +       res = NET_RX_DROP;
+>> +       goto out_rcu;
+>>   }
+>>   EXPORT_SYMBOL(gro_cells_receive);
+>>
+>>
+>> base-commit: 1142eb185b05db61a78130890fc4ed268f4cb4e6
+>> --
+>> 2.43.0
+>>
+
