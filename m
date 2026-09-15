@@ -1,211 +1,382 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE3F3BE179;
-	Tue, 15 Sep 2026 21:03:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789506231; cv=fail; b=VFnc/CnUm4b5g9ce1HCc1i05dUEKwN2z50EnvCNAkWPZFBHNNP8fr29rAn8m3+z08j5gWti6xLgol4LNEcH+93/gtTUo4DEUACWYXW/e/yjNq+UOPRly1n01/k+GaxLi6xtrLxbPBYFBgZo6h4ToA8MZfPmk7zyXwwsOaz7uzLg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789506231; c=relaxed/simple;
-	bh=GcN2CIZ/lfpJTA0nSTgU6GSkHHA0JLi/3vsLqa1SVBs=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=bigSb3XiG3+aYWb7/QsILlFYL1a9Zt8FQX7qE4bUKv/GSXGoLJu7e1rebavG2U/SBSeJhhRuJRHr58on3ZjAfsdDrn8+gh+clOJv/4QUx2502OpVBGk4j8ZdfGeuwMVGGHOg/opDpqhmCl30aBR9dIiUwbE5Mw9wATi6VIV2K+o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=qFhjc7oV; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=mEEgyO2+; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3789B3B0590;
+	Tue, 15 Sep 2026 21:06:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789506393; cv=none; b=Ly9Srj13PbvHZiG28v9EwadOIhAmLz2KBb6zqUIFPtAoYUAWCcXpuhHVo1TGR+LwHa58w6i6wy3nx4fzUgHqri/+Gz5hRwFBrvjHGUl94paKGIlzUttO8CVsAbGsA3N2u0IV4ow5/Qh5SykIf8kpnFkrciTYi5+wI2e5OqNs0t0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789506393; c=relaxed/simple;
+	bh=g3K+lfhUgnaE/mezC2FggeKY+3skAs7DftoJWFLXh1w=;
+	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
+	 References:Date:Message-id; b=cHy07d2dj9v9jkNFX+waYqFAN/Ogzh0Sa6wqrUUOnmyTISB63BP2YaJKmkAmVW8o22EiEQslgdrn9fXoKrsS0wXfuLG/ZZzcGQM14kkq5ctIad7vd8JO+o/Iql7fZtOTNCbIaNdc6dbsApN2VLbGjKF0c/Ld26DfTIfL613hkao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net; spf=pass smtp.mailfrom=ownmail.net; dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b=CgGIkxKc; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=abZOEX13; arc=none smtp.client-ip=103.168.172.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ownmail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ownmail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="qFhjc7oV";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="mEEgyO2+"
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68FKUxH6420223;
-	Tue, 15 Sep 2026 21:01:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=r4oM0Jo/sVvbOGmU0v5GYV0qZz5mUH+79bUL/ppMt9U=; b=
-	qFhjc7oVMmx8cpUWvZotN9ZseFvetqaUr7joaGoALnpFsLIihvL9gQn6V3KbzGj6
-	DzNR+9Jq+Es8G1zSLIsgsa6ghmXMO4nU1G5H5tix1ZPlaO8cqYolZiLIxER0YX93
-	El8rlhoTkzIvgN0KR8FGc9o4y0XAc6s1aQhfiuFwl6YAZtXjpK9AymhpwrY2Y69J
-	XBha25RcOAsCNSuYpH9yBD32tBeS3BSw3YOzQETAUgVubYJ+xeHnQgWjSPqcoU8Z
-	0gLXfsnixZzcQ33W2eNsDwDP18HaNvNuFOaBkMMwgBfuILSu0gGiS+K/HUDz3Rzb
-	cATDoamVAQmZrIXGw5CrIQ==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4gmy9rvfe0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 15 Sep 2026 21:01:34 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 68FL1CSP002287;
-	Tue, 15 Sep 2026 21:01:33 GMT
-Received: from co1pr03cu002.outbound.protection.outlook.com (mail-westus2azon11010055.outbound.protection.outlook.com [52.101.46.55])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4gmw6ptkp5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 15 Sep 2026 21:01:32 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RgD+oqyl0hx8wTmunpIjtw8dM+lHN6W0SSqUFlnlE/kTQQkm4gc/+82wpCDikLZDFiRMcTuws1bhbhYt8YNuK0vTOiEHkK4b4uJTvb86naKuXtN2y/DTlFv17e6XC5KWefZ8MGl8XpPcqgVVxPNZXBbfuXWHMs94pEhIzo7/mM0ZzwtYSeuYyKKAlP64BsxjYunqAehQBYjUKM4Y6Y+IiMiY/KcWYC0X55xwopJYs6iQtSSzp+XSnLiO7WJnrGABBTNO14kGaEtuXGVPB66hghZbKXfU21SwZgc8BfDoxnktUuBkuSLjLqTwcIr9wytPR+zwiJ8mTLMnxwqyMnC8Uw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=r4oM0Jo/sVvbOGmU0v5GYV0qZz5mUH+79bUL/ppMt9U=;
- b=o5AYTgki8iCPzhihDBEP4wEnA3tVJPUxnNv5z6JrkOlU8tK0waQ/fi2jJ8ypwlAh3NTTlYVJ6E7yOi7kr/XNJ5x6ueDo/eNE4Mk8vLOh0tudp6/tBEDvlHBlp2P+ncNWjMyhPicUXdzh2BEur9CUAD9t2EVbbvXYmYf5gsQB2cuFEgn5qGlNOFupLEs2NVaAaBIRLiXvQTivwH7fM55ya1j9jgVb61KvWKM2XDam4ZiD36LHd1MDU/DOLnRGr+jwsghR9UF4gDCdhSicvWP2L0MPtXyVR08CevfI82Ui10z+OnjDxA5fWORsdRUFcq3Hzj/koAXcYEvBxO58ppHyNQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=r4oM0Jo/sVvbOGmU0v5GYV0qZz5mUH+79bUL/ppMt9U=;
- b=mEEgyO2+Q/iY58qwxWS8mB5Iun8uir0H6IjJwOSbHKlJFf1XzjBmCLt50cL8be+czY8ANhBtsMl9p4OFv6h1p7M9oMzkCMGH7TDJvM0+C0ugA2K1MS2H6dCoLtb2KDoRTYWV2ZEyo+uqJCs8DBTUtb+GNr1QUUi9HGQp/tIQo5M=
-Received: from DM3PPF905D77450.namprd10.prod.outlook.com
- (2603:10b6:f:fc00::c37) by DS4PPFCC66F9CF6.namprd10.prod.outlook.com
- (2603:10b6:f:fc00::d49) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Tue, 15 Sep
- 2026 21:00:57 +0000
-Received: from DM3PPF905D77450.namprd10.prod.outlook.com
- ([fe80::c70e:bb7e:7d68:be8f]) by DM3PPF905D77450.namprd10.prod.outlook.com
- ([fe80::c70e:bb7e:7d68:be8f%6]) with mapi id 15.21.0428.004; Tue, 15 Sep 2026
- 21:00:56 +0000
-Message-ID: <c8867400-9b31-49b4-b74a-3d27e6046330@oracle.com>
-Date: Tue, 15 Sep 2026 16:00:55 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] vhost-scsi: preserve event ordering
-To: physicalmtea@gmail.com, mst@redhat.com
-Cc: jasowangio@gmail.com, pbonzini@redhat.com, stefanha@redhat.com,
-        eperezma@redhat.com, nab@linux-iscsi.org, asias@redhat.com,
-        virtualization@lists.linux.dev, kvm@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260915094244.7900-1-physicalmtea@gmail.com>
- <20260915094244.7900-2-physicalmtea@gmail.com>
-Content-Language: en-US
-From: Mike Christie <michael.christie@oracle.com>
-In-Reply-To: <20260915094244.7900-2-physicalmtea@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DS1P222CA0016.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:8:44b::12) To DM3PPF905D77450.namprd10.prod.outlook.com
- (2603:10b6:f:fc00::c37)
+	dkim=pass (2048-bit key) header.d=ownmail.net header.i=@ownmail.net header.b="CgGIkxKc";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="abZOEX13"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id 17D99EC0E47;
+	Tue, 15 Sep 2026 17:06:27 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Tue, 15 Sep 2026 17:06:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm1; t=
+	1789506387; x=1789592787; bh=pSGhn5yb2ykQHa2+aS4x0aFSjk4p7/mwMgu
+	lDmeHEfI=; b=CgGIkxKcPckL2520PVEYtzWYJetiw5vFeYlNNv2vp5Mfb22pxYH
+	Z3AeutYDYz64s+5TK1RqBcmA7RbBREX8wPxvh0584SPPYew3QgpjBlPo2/dhmZgT
+	mTBOasxxH9hAwXvde0rydO48NfddKivQLtx56ZwL7Iz1gXzFRod4tNozprjoXIGo
+	9mpXIvxQ3cO/HdQb/TETSh+JQKks6rL1i/18pQOl6vJn2eWcICSZ56wTx5PQKJBF
+	HC+XLRRzPVok8DzJEs2ARwLoBKwD16bUKgD8449V/5qSKZHxdhMwpg2s0KWpXyJ4
+	7Ce0hxV9e+jfjB7/VGOZBkK6nB0WQB9xJwQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789506387; x=
+	1789592787; bh=pSGhn5yb2ykQHa2+aS4x0aFSjk4p7/mwMgulDmeHEfI=; b=a
+	bZOEX13veVaxfTH9bLCCccEDlmcfsW+SWN7V0AGCUl/u0pgbbhYhgWYCS6fmUYHq
+	oC7hUo+tUXrM7xhiwtXRGCwujKPeYxNOt27vlaDZ+9URcD/CQ/A2RuM7B+Y9DmRK
+	YLaq853LOAnvCGxb3570NqstfkkmXTHeov9gt2Xbvf4SxpSNz3s5uMlNzVL2YP0O
+	zWlwcLEltPsbZcpPLa2iMTXaPou7GaPNmZdwFmgfL8Wa+CVf8/l4th6cas1euomi
+	sLSCZfnlGTEl6f3K4pUqzTW9vUDLEbOU2P4AbGhMoquTQ/3AuO8vrODQ5bOfKuXg
+	3GmqEOFube8t0WXZA5Bxw==
+X-ME-Sender: <xms:UbOparFGbSXihTaj0SLZ6yYMKW7RA2xkA36-P3YSOKl-itdh0OZAMg>
+    <xme:UbOpavR8GdsKOZsh3fxLA59J8vYUUrFCKR6qbyM8laze54yY7_wUQSg3NscupXVBk
+    7yd9yaFSm1ulNvNjniFNf7lQC5aYVsCztGgeLN_itTbOhWwkQ>
+X-ME-Received: <xmr:UbOpaiO-_KpZOlsKebvR0-rsMkr2DNIRjVhVaoZ293TZj5QbzEcYhTKY_s2fyWbpmg>
+X-ME-Proxy-Cause: dmFkZTGla0jEqEOCi/nzNPCoo0ScIh2JaZoq/4ebKgNohM8wDfdyIavrkNjshsND0P8tAs
+    YhtJcgxY8ykXaMgTLV/PAPKJBCPJIZajcIR5EweJMqjOb2vZSnR4CeIgVRzxWmJX/xFJn7
+    1a4tUOzgCBFodCqSJZaKfGFB6cgCAYzxBzIwS63QgFT6wWVOBcy9MDzMapV05p1KdzDuei
+    j95DMmwaNUq7OLYkcjLYuUzH5HXYPbN7fSaJSeC8pvuikyYJkizg+ZIgbsAxuNyEKs8hFp
+    WBrrz0c1CjdAGYnAIwfX5V7HPHVKo17fBEA3/JW5/KyDlNhLH7gvRkzZhrP1FhlvukvsqI
+    ZJr5IQgxcnkpH6PeJTjjIg0oXlGXXkgjB13qbSnrrgppM61DAq1jmz15SmDbdLzhSILo6G
+    32KR8G+HesNpe+GCrZb8WvmDpiXfpJ2kv4NUy+SdqWyAhWsYNrVN7m9KyrJWkiTLSp4xCe
+    cKTabAmHjfZmAKKJRR44NmeaSKN4MlpmYoGYRFbJR44ZIC+5rVQDqWFOoEvA4/Wzqa4oNn
+    sYDwXvRPqdHIhqFKIZNR3bIrvTS/IBtFf75SfzaHkirF4Thyhe7ujZ7RBdXkwtXUghdgqC
+    VZMXofDt33LkpijoWqrkvU0sk2xgnbY295PQnKCGfdY8d4uQ7Q5c/BeGAsRA
+X-ME-Proxy: <xmx:UbOpagOfaqcQ-p9_U2E_Bv59vZp6XZHuDujeIgGZbIFCODBdt4HLXQ>
+    <xmx:UbOpasFaZV5WbjePIApkS6hC5XK4LZl1rpuQ7wEXrmZzV2qYR5m1ow>
+    <xmx:UbOpaqPhbsXQPsPmLDVCFXjBp5nxyOsYRA2_Qmtx1-sSRITQWLnneA>
+    <xmx:UbOpauvMfj7bSQ-vW5v9T23uRHHxzrYkPZPPp4oc6yipNh9Lgz-XHA>
+    <xmx:U7OpalEEvf1Cb9epx-tleNX3emopc13DaR9ZdGM8ccS9zbAaf7Y8qtDp>
+Feedback-ID: i9d664b8f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 15 Sep 2026 17:06:20 -0400 (EDT)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PPF905D77450:EE_|DS4PPFCC66F9CF6:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7db99606-4053-45ad-2c5f-08df136c700d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|23010399003|1800799024|7416014|18002099003|22082099003|4143699003|10067099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	6m6+X+APlcwOr7FHjnWatquxR1rF6rKihgmib/k+Lq99n9T9/z+r+y35yNUed+QHrggmAeOhkx/c/b4xs/NXvGAb8Rw5Exa4K72oxZl9o+tzUKphLaB0EvvCGS8ZijVKvBjlDJAZFPJNsqDh+kGJMHaZCGXAQX+4tyZDnlyeIoh+uE6BtGPAi08Nu2mfyJ1qk5Ng9UiRmM5azyaDNK5/2VPVIgA+xwbA+E1+mm3vrwNW3HvMoq5Kz8ulHJ4bQREmeu7+gNIxhNskARLIGYuFtvHOvkSnnogaEQ2gqIOkOE6efSL7UPdeLK+EISbIevN+/ndCaLolCeB9ZaVYXB2FxK1fPbAImbXYg3QWHXqIaXtnLN9qD4YP9hyxlIigxLQ05mkwob1ZdK0P6tz3VmC1F2nKitcKneIJszXZ3K+OsHYRmzfH9va2h4wtt2nTvq445B2fTCofFr1BWL9g0MYD2CMgaVHnLLGavH3pHsZkoUwwkPKNuZr9Jivya2XZTlCmA0RJPES06D548BA/0QPJuvJIOR6x5krrpHio/KTY5AoZLkt9LFn/FBmzVQy6MS150owtg+44+tuM3m5VCWJ2x8HrDqD8kB7W1dWSmlAZ8AsIZvFudTyM++LsG+BEU2AwHHE5FSmR4dqw+BiUkV/IG5y4HlgITQaH0Onx2IrbtMA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PPF905D77450.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(7416014)(18002099003)(22082099003)(4143699003)(10067099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SE45NHdWSWYwc0lUQUIvR1BqbGNNNjgvdWI3aFVUTDhoNDB3MGRrZTJmMFpz?=
- =?utf-8?B?ZStwbFRHeWJYUXJKR1ROSWtjUXNQQU1EaitDWkp5YnU3Qm9BZmpiTVNFVHA2?=
- =?utf-8?B?d2JuRjUvUmdpTFBmV0FheHFDOTZ2OVlSZFNSMld4b1hKS25pMG94ZWtKRjNu?=
- =?utf-8?B?K01nYWtsek5pQ3lSam9QU3RjRmU4OFl2UW1QUEJ3aFIvUllRN0JMQlZWb1Ir?=
- =?utf-8?B?YUVZNmM4RHdXeWNGZUNQL0pobi9VY2ZpZFhuelIvSW82VG1CYnhDTkhKbkFX?=
- =?utf-8?B?ei8zQ0VOdzZHcXpkYnBRdlFaZ2dEWER3YzMzUFRlUnpoMEFyWUFOdXJ0RGNp?=
- =?utf-8?B?N2lWa3p1NFpSMUxvRi9pd2k5ODVqcTJBWG9yU0g2M0IvT0s2RHduS1hPVXFz?=
- =?utf-8?B?VnhYdUFveVpyTVdlQmlQN0U0TkZDU1hnK0VuSGJJYm1nWXlDTHlWYXlaNkl2?=
- =?utf-8?B?L0IzZkgzMGYxeEp0RXNjSTR0K1NXbElNNkJqYUxVS0x6NmJxUm5ackhwYjM5?=
- =?utf-8?B?V1JuVWg5eUhuS0o1QW9iYUtVcTFFR3lzSURHbzgwazZkelUyTUZkbUlUamJZ?=
- =?utf-8?B?TTJoU2lSQXl2TlNFOWhYR3hYdUx0YXF6VXhqMjY0Rk14cFBXT3VhcGRrdlJm?=
- =?utf-8?B?d1BKVjdkVnc4WVZSK0ZZTnpiNUl1RGRIenUyNU52OXpOa0dwYSt5aEM2dCtJ?=
- =?utf-8?B?WDhYcmwzOWpBcDBGRVdDZDNwTTF5dWFjeldpa1l4T3M1eSt5ZjBDaENFd2Rv?=
- =?utf-8?B?M0lQWjgraGlqbnEvcnJQbkhUUWdIczMxRnp5VDRUVXVjdWZLWm5ZQjJsN0pt?=
- =?utf-8?B?REJEcmthOERieHljdFJzY29wcWYxa25nM3YrbHFsTXJBcS9vaE54MG03OFZl?=
- =?utf-8?B?TkFJSld3TWdwL0loSlVycWNkcG96NllHWkJ2OE9qd3N4S2hXQjArWXkxbHFV?=
- =?utf-8?B?clRiNXVoMFpoRTRlUXovRE45RHRYc2FZaE9tTVNIN0poUDBPRTlyZWg1TUg3?=
- =?utf-8?B?T0ZPd3dRb3RhMWs4TVBDZmlqeDRGNVRNV1hyTmpqaER5TUt0SnpyZzhOVXFV?=
- =?utf-8?B?ZStiQnVHSEw3eWtpeDRkU3l5Uy9TaHRuRVI2YWZya2F5MWFrV3Rha2JLQjFl?=
- =?utf-8?B?QzIrZFJDcExMQzdIUGpFNGdtR083eVJsRE9QL3Fobys1Z09ZMnlPTVM3KzZz?=
- =?utf-8?B?OC8zS2J3WVh5RTc1ckdzN3p3cE9MRnJzZXhuTjA1UGZEZUdmeTRPNjNlalh5?=
- =?utf-8?B?L015andlTXlsc0x3aEROMnpId0ZDQk4wbTR2ZUg3SnFGOG5OM29sS0tLbldx?=
- =?utf-8?B?Q1lhMHlDTlMvYWJoU3JVQ0VYS0kyc1h4bkJCSEtyS3dzVDFOQklBaFlZa3lU?=
- =?utf-8?B?NGlIWUhBR0d0VFhjYkJwTFpYenVzWUpkazIwcVh6N1NlMWVDYXVndXBZYmt2?=
- =?utf-8?B?L0xqbWRBMThlWEh4dzR4V0wxZ1hyeGJiM3Ivc2syNUhyTEF3MGw5ZnJ5Ynh4?=
- =?utf-8?B?dEI2UWs1Q3UyazRLN2RtTzVmdWJEc21rQmVrQ3hQQ1I2TGhpSVFaTy9nVStH?=
- =?utf-8?B?ZVk4RUlNN05pSHdGUSt0ZUs0ZE45dTlwa3F4aDR2Y3dOT3JGMzFwTlhIczI0?=
- =?utf-8?B?Z1l1TXVUM3BsV28zcVRMUUxCZWZuOEJQaHVCNE5QdGZTOG9aVU9rUHQ2S3k5?=
- =?utf-8?B?R0RmRHloM3VxeDEzNTk5ZWxGbUNyM2RrZkFMcEdub2FjVDQyc2F5d0ppQ29Z?=
- =?utf-8?B?V2xwb0Y2VDljSVE4MEQvd0RKci9tWFN5Uyt3S2VBQlNwSmN1V0ZQYWhza1dh?=
- =?utf-8?B?cVBCclF0V0o4eityblhHMEN4MlhHbXl3cXArNTFZb0VNQVZtaThORlpvRDlL?=
- =?utf-8?B?SVdXV2JtZXZoOVprdXkxVndnTzlpWHppQ3pCZ1FPWmtsb3VHbWxhcFhYSUR4?=
- =?utf-8?B?VENjcE10amUySFQ1MXJhUnAxMVdqYjZBZVI0aGpLSXpzdkJ1VmN1ZmVGS1RD?=
- =?utf-8?B?V2RWbmtwYjlKa0kvWEp0aGh2aXRpNDB4YVh4Qlh2RlBTV1BBZTU3UEl3WWtn?=
- =?utf-8?B?YitvbHVrUkJ3dDdEUXErVUVDNVVnNVRkRkNic29RUk1zNFRnWWdkMkdEMDlr?=
- =?utf-8?B?OEVRNm1jTjE1VUF6MVRDdE1SVkVrdTh0eVVXYzhMTTVGV2Q4Z2ZpcHVEaUc0?=
- =?utf-8?B?dnFNUUlFMzVLTFgyZ1h2dzMzVWYyeEVzczNJNmQ2cU9tTThwdnVNUm1ncDFs?=
- =?utf-8?B?ZHVqY1pVZDRXT3pXOWRlSGdNUWJxOUVPZ1FvaU1PcVlqVUJnVVBiVG9RS2g0?=
- =?utf-8?B?NEFaby9NV3p4bHBaQVo5L0ZjaUhyNXNCK0IxNFo1U3lETDVXSzdhNzg3MlFW?=
- =?utf-8?Q?XKDIlmNyqIgU8j9M=3D?=
-X-Exchange-RoutingPolicyChecked:
-	H8bLxkLZcfiUPtph2qixLZcGoTXEYWxUobrZIMVfbzp+79j2WvnCts6UwpMRTbO5fQPK9GO74AB5V6C5IyqgIB3x0tEU9PLlyk8BLI5REIMLbMEskP2KUKQL1AjIgFyG3pKDnn0mudQzuNhbSyK6QWIF74mMbKzEm2fCfosPr9DqBLmPB3I+VEL6SN3YBUwf3bNfWbhbi0jV+rdXhf7Ywm093GC4fr8nolk1BXJRqTQmQLjSANPbPMUycvHqV67j5WqnJ50W44JaTQCOgKnQaZdSXQ+KXTfNeJtx54wGU1Cz3pb+oGPxh4Fv9E/fP0CtnyC86zEvhI/LmWiiKB8uDA==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	Ky8mBWMuf8DNphMxR878Qtc12obg9mEnEb6ge/eIchVcYi6wgq8+KIk8nojs3unHGmdo53rhAL1SEJvrXbao3bvf83Ki5lUgAeYdsAkJn8FDtpZBiRdpxFGeTUUz1xraS8J0uN17VoMtgDbsd8Bc4OmPZg2AQoIkUCYUSVTZF5+MpUnqw83jQfNdaT0Pb83j2pQesd/Temv8vGqVzQKMpyaQZ/DZ54fQid2ZSoXI+Wyu76p731+BZszg+SNKYTbqFOhkHAWgWoAyl8HSI2qUUbiYCFXFUrlYUZ/FuYA4juo7DwsTXM/HjX7Ww6X51ekTlNVr/bFYqEfcnfPBRccCQyqsHA51G9T2nxMseUvE6y2bN9wjjc4Ox3txQ9StsFAs6mHQ59vab+k9C6OspXzYwlY0Il2WBcBIfA8+BSWqaHFOHXzrSl5/KdvG04fBUNCkwNlJRnW4OX/T4G+yZF0zE6hM4fORrZVTpvMdd94+xc0DQg9a4Vw7AZuKjVfr1HG7/yYM9MHb2LOoULAITe9ZpXZRQFWOxAzX/gPBI0093hKliho1d+EEjrbFCwuU+A0VA39xshMgA2GE6gvuvYh0y5RGt7zxgowVu632LR94Q9o=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7db99606-4053-45ad-2c5f-08df136c700d
-X-MS-Exchange-CrossTenant-AuthSource: DM3PPF905D77450.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2026 21:00:56.8755
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dorZ9vmhkaEJN8VB4UC9dD0cPWOPTUvdvNChN4rQXTbiVgqqsOaXeRf9dkeOI76ITEqKmcGt7p48aq770uzbpRvgGIoC/kFP5esM3Ft5/gc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPFCC66F9CF6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-15_05,2026-09-15_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- malwarescore=0 mlxlogscore=999 suspectscore=0 mlxscore=0 phishscore=0
- lowpriorityscore=0 spamscore=0 bulkscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.19.0-2609040000 definitions=main-2609150307
-X-Proofpoint-ORIG-GUID: Z3xvOF0RJYwnMNEDfI-JPJkTMvv3cc5m
-X-Authority-Analysis: v=2.4 cv=MuvHeGae c=1 sm=1 tr=0 ts=6aa9b22e b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=VdqzKS8jKosA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=7Gl3-_t3PgB9XO-mQDs3:22 a=pGLkceISAAAA:8
- a=yPCof4ZbAAAA:8 a=3l4_7AiJYdMg46sgo0kA:9 a=QEXdDO2ut3YA:10
- a=5yU3S35YU4bGjq-dph-N:22 a=Bho9c0fBagfJEIQBS7DQ:22 cc=ntf awl=host:12107
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE1MDMwNiBTYWx0ZWRfX4eEd4RDFd/LW
- QHGFLz9B0E2s2HzTg2BAwmOOmi908Z/L4lPuYwxo0qTXh/ZcdyunU4sLaEplkCpla2sXP2b+wxC
- Pvb5hH/w6J8tvZoQIp+Xiirttshnaat6CzqURwvtlqxBf/RNZTP+
-X-Proofpoint-GUID: Z3xvOF0RJYwnMNEDfI-JPJkTMvv3cc5m
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE1MDMwNiBTYWx0ZWRfX33z9bU+QqME1
- t86V9Q6Z4vRz9I1ervtNRWarq8RzL2OsqcLDOaIf/2OxlB6iVhBj3Yb9iJo3YZFn0Sirt1anCgn
- 2RVNaQeTT3fmD+YZYglvKRquF/IemcDkqUiZyBAQfX3AUkFpQeLeKrwE0Wb5rX2yqE09PF8jZwX
- Y9Wv6iHUueS4haIt7lPcL9aYvdw06WYEcUb8b59kmLk0a7IP5ZPexf6Ke3tyt3b0NxVtmnSCeKb
- O6YmkTc9RRxlzlx2RdgYYlOzf4awXY9MGOgL2hSBTOT8VVrbH5Wrvqeb213tTt/MGu73nCMBdvG
- ckIhC74HzQ8XHGXiuz5m9S50wKcwjN2b3CnRC5ZJqb24ZGr1l09q9bF8c2iB6XR/pfQPY/VV9L2
- BQM/u7y+buwreuiY6a/rZm2BSMJldBL49aTqiVS1HyjIEopyGt/iUfRS8BwlCBUeOlLS/MIWho6
- qt2ZRmxU1eXrjCGM6+ujRP41NanFPaAFmEtAxDbA=
+From: NeilBrown <neilb@ownmail.net>
+To: "Herbert Xu" <herbert@gondor.apana.org.au>
+Cc: "Eric Dumazet" <edumazet@google.com>,
+ "Shin'ichiro Kawasaki" <shinichiro.kawasaki@wdc.com>,
+ "syzbot" <syzbot+4d0e4d2db6dfde01b52f@syzkaller.appspotmail.com>,
+ bridge@lists.linux.dev, davem@davemloft.net, horms@kernel.org,
+ idosch@nvidia.com, kuba@kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, pabeni@redhat.com, razor@blackwall.org,
+ steffen.klassert@secunet.com, syzkaller-bugs@googlegroups.com,
+ "Thomas Graf" <tgraf@suug.ch>, linux-crypto@vger.kernel.org,
+ "quanyeyang" <quanyemostima@gmail.com>
+Subject: Re: [PATCH] rhashtable: Use separate lockdep keys for each lock
+In-reply-to: <aqjf7LNmE6InABpw@gondor.apana.org.au>
+References: <6aa5fcf6.f2639fcc.29487d.0048.GAE@google.com>
+  <aqi7fpazv2KDDdvn@shinmob>
+  <CANn89iJd0QnoDo0tjrFED2myec38U8joyqR05d6BVnJ-sX=NVg@mail.gmail.com>
+  <aqjf7LNmE6InABpw@gondor.apana.org.au>
+Date: Wed, 16 Sep 2026 07:06:16 +1000
+Message-id: <178950637640.207413.1725604371084195628@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
 
-On 9/15/26 4:42 AM, physicalmtea@gmail.com wrote:
-> diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-> index 7a1f39a32..37f681aab 100644
-> --- a/drivers/vhost/scsi.c
-> +++ b/drivers/vhost/scsi.c
-> @@ -637,7 +637,7 @@ static void vhost_scsi_complete_events(struct vhost_scsi *vs, bool drop)
->   	struct llist_node *llnode;
->   
->   	mutex_lock(&vq->mutex);
-> -	llnode = llist_del_all(&vs->vs_event_list);
-> +	llnode = llist_reverse_order(llist_del_all(&vs->vs_event_list));
->   	llist_for_each_entry_safe(evt, t, llnode, list) {
->   		if (!drop)
->   			vhost_scsi_do_evt_work(vs, evt);
-> -- 
-> 2.34.1
-> 
-> 
+On Tue, 15 Sep 2026, Herbert Xu wrote:
+> On Mon, Sep 14, 2026 at 09:06:49PM -0700, Eric Dumazet wrote:
+> >
+> > Try to revert 4333ab90aaae ("rhashtable: use private lockdep class for
+> > all locks.")
+>=20
+> Yes this is indeed buggy.  I know nothing about lockdep but Gemini
+> reckons that it should use separate keys instead of different
+> depths which seems fair enough:
+>=20
+> ---8<---
+> Use separate lockdep keys for the different types of locks in
+> rhashtable (mutex, spin lock, and bucket locks).  They are
+> separate and not normally nested with respect to each other.
+>=20
+> Also move the rhashtable_init/rhltable_init kdoc to the header
+> file as that's where the macros are defined.
+>=20
+> Fixes: 4333ab90aaae ("rhashtable: use private lockdep class for all locks.")
+> Reported-by: syzbot+4d0e4d2db6dfde01b52f@syzkaller.appspotmail.com
+> Assisted-by: Gemini:gemini-3.6-flash
+> Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
+That's a much better approach - thanks for that.
+
+Reviewed-by: NeilBrown <neil@brown.name>
+
+Thanks,
+NeilBrown
+
+
+>=20
+> diff --git a/include/linux/rhashtable-types.h b/include/linux/rhashtable-ty=
+pes.h
+> index 0e1b172a4f6c..afbc12ba71f5 100644
+> --- a/include/linux/rhashtable-types.h
+> +++ b/include/linux/rhashtable-types.h
+> @@ -70,6 +70,14 @@ struct rhashtable_params {
+>  	rht_obj_cmpfn_t		obj_cmpfn;
+>  };
+> =20
+> +struct rhashtable_lockdep_keys {
+> +#ifdef CONFIG_LOCKDEP
+> +	struct lock_class_key lock_key;
+> +	struct lock_class_key mutex_key;
+> +	struct lock_class_key bucket_key;
+> +#endif
+> +};
+> +
+>  /**
+>   * struct rhashtable - Hash table handle
+>   * @tbl: Bucket table
+> @@ -141,24 +149,77 @@ struct rhashtable_iter {
+> =20
+>  int __rhashtable_init_noprof(struct rhashtable *ht,
+>  		    const struct rhashtable_params *params,
+> -		    struct lock_class_key *key);
+> +		    struct rhashtable_lockdep_keys *keys);
+>  #define rhashtable_init_noprof(ht, params)				\
+>  ({									\
+> -	static struct lock_class_key __key;				\
+> +	static struct rhashtable_lockdep_keys __keys;			\
+>  									\
+> -	__rhashtable_init_noprof(ht, params, &__key);			\
+> +	__rhashtable_init_noprof(ht, params, &__keys);			\
+>  })
+> +
+> +/**
+> + * rhashtable_init - initialize a new hash table
+> + * @ht:		hash table to be initialized
+> + * @params:	configuration parameters
+> + *
+> + * Initializes a new hash table based on the provided configuration
+> + * parameters. A table can be configured either with a variable or
+> + * fixed length key:
+> + *
+> + * Configuration Example 1: Fixed length keys
+> + * struct test_obj {
+> + *	int			key;
+> + *	void *			my_member;
+> + *	struct rhash_head	node;
+> + * };
+> + *
+> + * struct rhashtable_params params =3D {
+> + *	.head_offset =3D offsetof(struct test_obj, node),
+> + *	.key_offset =3D offsetof(struct test_obj, key),
+> + *	.key_len =3D sizeof(int),
+> + *	.hashfn =3D jhash,
+> + * };
+> + *
+> + * Configuration Example 2: Variable length keys
+> + * struct test_obj {
+> + *	[...]
+> + *	struct rhash_head	node;
+> + * };
+> + *
+> + * u32 my_hash_fn(const void *data, u32 len, u32 seed)
+> + * {
+> + *	struct test_obj *obj =3D data;
+> + *
+> + *	return [... hash ...];
+> + * }
+> + *
+> + * struct rhashtable_params params =3D {
+> + *	.head_offset =3D offsetof(struct test_obj, node),
+> + *	.hashfn =3D jhash,
+> + *	.obj_hashfn =3D my_hash_fn,
+> + * };
+> + */
+>  #define rhashtable_init(...)	alloc_hooks(rhashtable_init_noprof(__VA_ARGS_=
+_))
+> =20
+>  int __rhltable_init_noprof(struct rhltable *hlt,
+>  		  const struct rhashtable_params *params,
+> -		  struct lock_class_key *key);
+> +		  struct rhashtable_lockdep_keys *keys);
+>  #define rhltable_init_noprof(hlt, params)				\
+>  ({									\
+> -	static struct lock_class_key __key;				\
+> +	static struct rhashtable_lockdep_keys __keys;			\
+>  									\
+> -	__rhltable_init_noprof(hlt, params, &__key);			\
+> +	__rhltable_init_noprof(hlt, params, &__keys);			\
+>  })
+> +
+> +/**
+> + * rhltable_init - initialize a new hash list table
+> + * @hlt:	hash list table to be initialized
+> + * @params:	configuration parameters
+> + *
+> + * Initializes a new hash list table.
+> + *
+> + * See documentation for rhashtable_init.
+> + */
+>  #define rhltable_init(...)	alloc_hooks(rhltable_init_noprof(__VA_ARGS__))
+> =20
+>  #endif /* _LINUX_RHASHTABLE_TYPES_H */
+> diff --git a/include/linux/rhashtable.h b/include/linux/rhashtable.h
+> index 6c5e6d9accba..ec853c1b9af3 100644
+> --- a/include/linux/rhashtable.h
+> +++ b/include/linux/rhashtable.h
+> @@ -328,8 +328,7 @@ static inline unsigned long rht_lock_nested(struct buck=
+et_table *tbl,
+> =20
+>  	local_irq_save(flags);
+>  	bit_spin_lock(0, (unsigned long *)bucket);
+> -	/* subclass 0 is used for ->lock and 1 for ->mutex. 2+ for bitlocks */
+> -	lock_acquire_exclusive(&tbl->dep_map, subclass+2, 0, NULL, _THIS_IP_);
+> +	lock_acquire_exclusive(&tbl->dep_map, subclass, 0, NULL, _THIS_IP_);
+>  	return flags;
+>  }
+> =20
+> diff --git a/lib/rhashtable.c b/lib/rhashtable.c
+> index 5da0e53a8d42..918f15a2ac69 100644
+> --- a/lib/rhashtable.c
+> +++ b/lib/rhashtable.c
+> @@ -432,7 +432,7 @@ static void rht_deferred_worker(struct work_struct *wor=
+k)
+>  	int err =3D 0;
+> =20
+>  	ht =3D container_of(work, struct rhashtable, run_work);
+> -	mutex_lock_nested(&ht->mutex, 1);
+> +	mutex_lock(&ht->mutex);
+> =20
+>  	tbl =3D rht_dereference(ht->tbl, ht);
+>  	tbl =3D rhashtable_last_table(ht, tbl);
+> @@ -1122,51 +1122,9 @@ static u32 rhashtable_jhash2(const void *key, u32 le=
+ngth, u32 seed)
+>  	return jhash2(key, length, seed);
+>  }
+> =20
+> -/**
+> - * rhashtable_init - initialize a new hash table
+> - * @ht:		hash table to be initialized
+> - * @params:	configuration parameters
+> - *
+> - * Initializes a new hash table based on the provided configuration
+> - * parameters. A table can be configured either with a variable or
+> - * fixed length key:
+> - *
+> - * Configuration Example 1: Fixed length keys
+> - * struct test_obj {
+> - *	int			key;
+> - *	void *			my_member;
+> - *	struct rhash_head	node;
+> - * };
+> - *
+> - * struct rhashtable_params params =3D {
+> - *	.head_offset =3D offsetof(struct test_obj, node),
+> - *	.key_offset =3D offsetof(struct test_obj, key),
+> - *	.key_len =3D sizeof(int),
+> - *	.hashfn =3D jhash,
+> - * };
+> - *
+> - * Configuration Example 2: Variable length keys
+> - * struct test_obj {
+> - *	[...]
+> - *	struct rhash_head	node;
+> - * };
+> - *
+> - * u32 my_hash_fn(const void *data, u32 len, u32 seed)
+> - * {
+> - *	struct test_obj *obj =3D data;
+> - *
+> - *	return [... hash ...];
+> - * }
+> - *
+> - * struct rhashtable_params params =3D {
+> - *	.head_offset =3D offsetof(struct test_obj, node),
+> - *	.hashfn =3D jhash,
+> - *	.obj_hashfn =3D my_hash_fn,
+> - * };
+> - */
+>  int __rhashtable_init_noprof(struct rhashtable *ht,
+> -		    const struct rhashtable_params *params,
+> -		    struct lock_class_key *key)
+> +			     const struct rhashtable_params *params,
+> +			     struct rhashtable_lockdep_keys *keys)
+>  {
+>  	struct bucket_table *tbl;
+>  	size_t size;
+> @@ -1176,13 +1134,11 @@ int __rhashtable_init_noprof(struct rhashtable *ht,
+>  		return -EINVAL;
+> =20
+>  	memset(ht, 0, sizeof(*ht));
+> -	/* mutex_lock must use nesting level 1 */
+> -	mutex_init_with_key(&ht->mutex, key);
+> +	mutex_init_with_key(&ht->mutex, &keys->mutex_key);
+>  	spin_lock_init(&ht->lock);
+> -	/* spin_lock can use nesting level 0 */
+> -	lockdep_set_class(&ht->lock, key);
+> +	lockdep_set_class(&ht->lock, &keys->lock_key);
+>  #ifdef CONFIG_LOCKDEP
+> -	ht->lockdep_key =3D key;
+> +	ht->lockdep_key =3D &keys->bucket_key;
+>  #endif
+>  	memcpy(&ht->p, params, sizeof(*params));
+> =20
+> @@ -1236,22 +1192,13 @@ int __rhashtable_init_noprof(struct rhashtable *ht,
+>  }
+>  EXPORT_SYMBOL_GPL(__rhashtable_init_noprof);
+> =20
+> -/**
+> - * rhltable_init - initialize a new hash list table
+> - * @hlt:	hash list table to be initialized
+> - * @params:	configuration parameters
+> - *
+> - * Initializes a new hash list table.
+> - *
+> - * See documentation for rhashtable_init.
+> - */
+>  int __rhltable_init_noprof(struct rhltable *hlt,
+>  			   const struct rhashtable_params *params,
+> -			   struct lock_class_key *key)
+> +			   struct rhashtable_lockdep_keys *keys)
+>  {
+>  	int err;
+> =20
+> -	err =3D __rhashtable_init_noprof(&hlt->ht, params, key);
+> +	err =3D __rhashtable_init_noprof(&hlt->ht, params, keys);
+>  	hlt->ht.rhlist =3D true;
+>  	return err;
+>  }
+> diff --git a/lib/test_rhashtable.c b/lib/test_rhashtable.c
+> index 85a615e74591..b767a38a74f9 100644
+> --- a/lib/test_rhashtable.c
+> +++ b/lib/test_rhashtable.c
+> @@ -477,7 +477,7 @@ static unsigned int __init print_ht(struct rhltable *rh=
+lt)
+> =20
+>  	ht =3D &rhlt->ht;
+>  	/* Take the mutex to avoid RCU warning */
+> -	mutex_lock_nested(&ht->mutex, 1);
+> +	mutex_lock(&ht->mutex);
+>  	tbl =3D rht_dereference(ht->tbl, ht);
+>  	for (i =3D 0; i < tbl->size; i++) {
+>  		struct rhash_head *pos, *next;
+> --=20
+> Email: Herbert Xu <herbert@gondor.apana.org.au>
+> Home Page: http://gondor.apana.org.au/~herbert/
+> PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+>=20
 
