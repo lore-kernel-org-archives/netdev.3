@@ -1,135 +1,142 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8DF33A961A;
-	Tue, 15 Sep 2026 08:15:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3020A21C173;
+	Tue, 15 Sep 2026 08:16:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789460134; cv=none; b=h5NsRtGAtIVAAQd0Udbi3XwozPu4MNfTuR2S2IbVziiaht/kn1lYSmiEwhzycICmEjJca+oK1tcg0RoaIxDz+0f3o+qVHH402TOqeIpNXsDV74cZBhUacrZSzTmKiV8uDqYMIfyY4k9F25wfD4VGOOyU3sJ+M27bqmJRdV4u4Xw=
+	t=1789460174; cv=none; b=Pjkdhxdoq/pElzaFd3UeZ5lewJnNvMKwM+Sfje9/ukqUcSkSyOezJLY8jc8tbl3OCp4FasS2YIHMphd3qTgfm3yP5swKamCig7zDA4rcfp5oDo2MExoFV5KKX7shG58EdyBsTrUIRjYFW+aOx0r4sVET0kIJ5GuVooVeEsgY8es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789460134; c=relaxed/simple;
-	bh=cPRbZPEs8ojOrPWPVXYqdY5vmFNELiY+U1btNbqjbqo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OL9/LKzmbqXxjil7oOM/m0qZlrh78YjV2NSkobuaHSRe+cfUrD/DNEfIHvKjfz6fKv+ibQxxeELlXhIZmULa4unfryB3kfAr7+zjmQmp4FOmOE+UczvX6uzFp1ma1D9W2oN1Awo3WhkMkrkJC3uFX1IGe6AODIpybSBUb0Bs3rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=OA4GbUeH; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1789460174; c=relaxed/simple;
+	bh=KK3epFEJIZvBiKL0GnFmvRR596hNeaW3d3VO1KIRJiA=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=hvyutjzPB+g4TkNtWvzFsjjx3gEScy2GjMcgCP8iHY3beejZwBjDihlEJVrnW6h+mq783/9XyBn/ySympPNY11MdE0ljtm7MBx+/sa+wpSCWGw9hEq3RewzEsNP8sE2dS9ULX87jDwd/bXuyUCwVf4Q5b/tkvs/2TLkHvN1N9S4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=pijrW107; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="OA4GbUeH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1789460123;
-	bh=+mLf7YJol3PGpt7VzxE3z1ex1n/DMEGBgz1mEFBBuqQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OA4GbUeHsWCMBylKJv5e4/ybLArn0rDP3Hiyj7oUY1xdS56Y+NRjZ9OOd/ggGguNY
-	 AIJEcP3UFMFkymnwKuPaTW5gDAZVLKBwThHwei8lDdkvOpUBOvobvGYmbJKTEJu+/4
-	 7esN1I9zbRhsMVLGJuHCKOmau1+7hJfeMu6Cfl71TOKswGQgNyvof6Y4XuRc4dvZM/
-	 HoO0wSUPF3wkmqrNcdMceCaTXNR8qNfRz5PfYAQWuo6y+heHlOG0Ynzm5Qeqc3eQkJ
-	 yoH+AfsanB7Ds0Vja2uvi+w+FwIfuR3ASboQ0HMjIiFCz4OSLhvlA/KNStW2ngXGyv
-	 6PiaeSMmVURpg==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id D28EF60054;
-	Tue, 15 Sep 2026 10:15:22 +0200 (CEST)
-Date: Tue, 15 Sep 2026 10:15:20 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Hauke Mehrtens <hauke@hauke-m.de>
-Cc: stable@vger.kernel.org,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	netfilter-devel@vger.kernel.org
-Subject: Re: network flow offloading broken in 6.18.45+
-Message-ID: <aqj-mK5O-J4PcbLv@chamomile>
-References: <7dfa42f6-64c1-4084-bfea-d57500c245cf@hauke-m.de>
- <aqcfvRE3aHoAx8s7@chamomile>
- <aqcgG0y-nYz4DWz3@chamomile>
- <aqfofgtUfyXlfHLr@chamomile>
- <aqfqQPP2Y7iG3kM_@chamomile>
- <a031049b-ca94-4e11-b7b8-7b4c2acba954@hauke-m.de>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="pijrW107"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B2F42A47BC;
+	Tue, 15 Sep 2026 10:16:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1789460168; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=UWfZD0ncUW0ItxAIq9SE2xIusb6qLhUzEXxsMlCILUU=;
+	b=pijrW107OkWL2Homrrkn0XhV1JPT70vA+JjfxqxntJSEKMmV1x1BugJ/dH2Thxr3sKNNl/
+	Nbk/KbfPJ5vN+eCgFKUimi8d5rln3R3LURQT6IkDtlne/qnyj+mP+IxOK/KC3Oh4orppi0
+	6hB92wx/s9cxbQXyTcvxjEH9EpBFoGH46BMcFuvuFMAA1Oqg3kiMB9KeV08voHSBKVK6wu
+	tPzkMx1mzp+bF9KAU3FzNpW5kV/zNhBFWyr/iCWL+iFJIxrKaxATO2Fv9FqyZj0hi7tRQS
+	9uMYKljgm/s5punLBxzakAVCg8Qt3bFucA3vrOt6UBo/5CpAdR3/r5APz7zlsw==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <a031049b-ca94-4e11-b7b8-7b4c2acba954@hauke-m.de>
+Date: Tue, 15 Sep 2026 10:16:06 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next 2/2] selftests: drv-net: Add VLAN test
+In-Reply-To: <20260913143926.77366-3-ovidiu.panait.rb@renesas.com>
+References: <20260913143926.77366-1-ovidiu.panait.rb@renesas.com>
+ <20260913143926.77366-3-ovidiu.panait.rb@renesas.com>
+Message-ID: <62229b50d8cafb952fa234d46bc78782@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Sep 15, 2026 at 02:20:25AM +0200, Hauke Mehrtens wrote:
-> On 9/14/26 14:36, Pablo Neira Ayuso wrote:
-> > On Mon, Sep 14, 2026 at 02:28:49PM +0200, Pablo Neira Ayuso wrote:
-> > > Hi,
-> > > 
-> > > On Mon, Sep 14, 2026 at 12:13:50AM +0200, Pablo Neira Ayuso wrote:
-> > > > On Mon, Sep 14, 2026 at 12:12:16AM +0200, Pablo Neira Ayuso wrote:
-> > > > > Hi Hauke,
-> > > > > 
-> > > > > On Wed, Sep 09, 2026 at 06:29:50PM +0200, Hauke Mehrtens wrote:
-> > > > > > Hi,
-> > > > > > 
-> > > > > > flow offloading is currently broken in Linux 6.18.45.
-> > > > > > 
-> > > > > > Since the backport of commit b5964aac51e0 ("netfilter: flowtable:
-> > > > > > consolidate xmit path") to Linux 6.18.45. This is happening in a router with
-> > > > > > traffic from wifi to the Ethernet device when mac80211 returns -EOPNOTSUPP.
-> > > > > > 
-> > > > > > Upstream fixed it in 871df5007eda ("netfilter: flowtable: bail out if
-> > > > > > forward path cannot be discovered") by not offloading the flow at all.
-> > > > > > backporting this change looks more complicated.
-> > > > > > 
-> > > > > > This cam up in a discussion in an OpenWrt PR:
-> > > > > > https://github.com/openwrt/openwrt/pull/24800
-> > > > > > 
-> > > > > > An LLM suggested this change: https://github.com/openwrt/openwrt/pull/24800/changes/394d741e6e76ecd172dbbf1d9ba171e378211734
-> > > > > 
-> > > > > Patch went away.
-> > > > > 
-> > > > > > It seams to work, but I do not understand this part of the code god enough
-> > > > > > to judge if this is correct.
-> > > > > 
-> > > > > Could you attach the patch to this email for review?
-> > > > 
-> > > > I've found it :)
-> > > > 
-> > > > https://github.com/openwrt/openwrt/commit/d2b53b8043e17087b877bfc2335cbba87dffb4e0
-> > > 
-> > > I've proposed the following fix:
-> > > 
-> > > https://lore.kernel.org/netfilter-devel/20260914122456.1963453-1-pablo@netfilter.org/
-> > 
-> > Actually, this v2 should work:
-> > 
-> > https://lore.kernel.org/netfilter-devel/20260914123334.1964397-1-pablo@netfilter.org/
+Hi Ovidiu
+
+On 13.9.2026 16:39, Ovidiu Panait wrote:
+> Add a test that validates ping traffic over VLAN interfaces. It aims
+> to catch drivers which mishandle hardware VLAN tag stripping, in
+> particular QinQ.
 > 
-> Hi Pablo,
+> Three VLAN configurations are covered, each with hardware RX VLAN
+> stripping enabled and disabled (via the rx-vlan-offload and
+> rx-vlan-stag-hw-parse features):
+> - a single 802.1q VLAN interface
+> - a single 802.1ad VLAN interface
+> - an 802.1q VLAN stacked on top of an 802.1ad interface
 > 
-> Thank you for looking into this.
+> The "hw" test variants enable the RX VLAN stripping features supported
+> by the device (rx-vlan-offload and rx-vlan-stag-hw-parse), the "sw"
+> test variants disable all of them. A test is xfailed if the requested
+> configuration is not possible.
 > 
-> I think we have to handle DEV_PATH_MTK_WDMA like we do it with DEV_PATH_DSA
-> in nft_dev_path_info() too.
+> VLAN insertion offloads are not tested for now.
+> 
+> NETIF=end0 LOCAL_V4=172.16.0.2 REMOTE_V4=172.16.0.3 \
+> REMOTE_TYPE=ssh REMOTE_ARGS=root@172.16.0.3 \
+> run_kselftest.sh -t drivers/net/hw:vlan.py
+>  TAP version 13
+>  1..1
+>  # timeout set to 0
+>  # selftests: drivers/net/hw: vlan.py
+>  # # Interface: end0, driver: st_gmac
+>  # TAP version 13
+>  # 1..6
+>  # ok 1 vlan.test.8021q_hw
+>  # ok 2 vlan.test.8021q_sw
+>  # ok 3 vlan.test.8021ad_hw
+>  # ok 4 vlan.test.8021ad_sw
+>  # ok 5 vlan.test.qinq_hw
+>  # ok 6 vlan.test.qinq_sw
+>  # # Totals: pass:6 fail:0 xfail:0 xpass:0 skip:0 error:0
+>  ok 1 selftests: drivers/net/hw: vlan.py
+>  # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+> 
+> Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
 
-I don't think you can find DEV_PATH_MTK_WDMA from nft_dev_path_info().
+> [...]
 
-There is a story about this: Felix needed a way to expose the MTK SoC
-capabilities in some way to drivers, he decided to use the
-.fill_forward_path interface for this purpose.
+> +def _setup(cfg, outer_proto, inner_proto, hw_strip):
+> +    """Configure VLAN stripping and create the VLAN interfaces."""
+> +
+> +    names = ["rx-vlan-offload"]
+> +    if outer_proto == "802.1ad":
+> +        names.append("rx-vlan-stag-hw-parse")
+> +
+> +    feat = ethtool(f"-k {cfg.ifname}", json=True)[0]
+> +    feats = {}
+> +    for name in names:
+> +        # hw: skip the features the device does not support
+> +        # sw: request all of them off
+> +        if hw_strip and feat[name]["fixed"] and not 
+> feat[name]["active"]:
+> +            continue
+> +        feats[name] = hw_strip
+> +
+> +    if hw_strip and not feats:
+> +        raise KsftXfailEx("Device does not support RX VLAN stripping")
+> +
+> +    set_ethtool_feat(cfg.ifname, feat, feats)
 
-See mtk_flow_get_wdma_info(), it makes a direct call to
-dev_fill_forward_path() to get the DEV_PATH_MTK_WDMA.
-Therefore, it is not possible to see DEV_PATH_MTK_WDMA from
-nft_dev_path_info() because it does not belong there.
+If a driver refuses to set the feature, set_ethtool_feat() would not 
+fail
+and the test would be false positive.
 
-I suggested a new interface for this but SoC requirements were not
-clear at the time IIRC.
+I did a quick search and at least intel iavf could run into this:
 
-My patch is a workaround, so dev_fill_forward_path() does not fail for
-this case.
+    drivers/net/ethernet/intel/iavf/iavf_main.c:iavf_fix_strip_features() 
+{
+         [...]
+         if ((netdev->features & NETIF_F_RXFCS) && is_vlan_strip) {
+                 requested_features &= ~vlan_strip;
+         [...]
+    }
 
-> mt7915_net_fill_forward_path() from
-> drivers/net/wireless/mediatek/mt76/mt7915/main.c could also return
-> -ENODEV like mac80211 does.
-> Should we backport 871df5007eda to 6.18 instead?
+IMHO the test should check if the feature actually got enabled. This
+could be wrapped in set_ethtool_feat() or be checked afterwards. I would
+lean towards the first one.
 
-Does 871df5007eda fix the issue for you?
+> [...]
 
-If I understood correctly, this simply results in not setting up the
-flowtable bypass? ie. ethernet to wifi will just fall back to classic
-forwarding path.
+Thanks,
+Nicolai
