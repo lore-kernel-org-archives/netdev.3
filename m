@@ -1,247 +1,169 @@
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A62C44E05B
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 19:56:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68305456DFD;
+	Tue, 15 Sep 2026 20:00:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789502215; cv=none; b=Elv4a3+nXxtWvT1mYTXGgt5g6nAG0buFTPN3hNEo7jEj9PzCgIOjzdM9UI+mqYXwhRY91QQ9q1Nkh5cStPSulXCzWtBiNFhTwyUZYwCD4lqOyIKXxoD6DrSiLN0hrFeNclKT/x9a+JoP2yrOU1aFxlkd84PvshQieHdfo09lSgA=
+	t=1789502404; cv=none; b=bGrX/RexBaNbY0TNx1b8pj01XYRab3ZUekbOCuGvnlebo3HhqbkfUsbkTkQbfkFBdB7Dytorq1p87LXttqF4PySfeXJQ869AxnmDzwjJeLofzEZ7uT8c+e+5YnXM1Hof3K+eFGEKXk+U8Et/f8m+MbhJkwzpMB8SYk/Zqq0bFqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789502215; c=relaxed/simple;
-	bh=rZLpj21N4VA3IiZfTn1FGsRHE12qb2+V/np4zmO70lY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SeRrbOezBAM6v+EeWngHoiDE+5EXd3V8gFH+MGaW6DjwA11HRZV5PYxqV9llPlf96n8MKIh8XFaFG3sDNaa+RLBSfX3mTOGXYTpCHn4XxleDJU1Gwss4l5G9MLhJB8f5d5ULtT78xXCssgHqjk0oUw2uNoGF8Hc3MJrAt1eh5CM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rpyITVuI; arc=none smtp.client-ip=74.125.230.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789502404; c=relaxed/simple;
+	bh=Ozqb8Nlqcx4jTJr4HzpCRa4epQHmJdVAuT7sAYodQSg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h8BQceOegfJr5rqgsF5zv+89DQxUeabk43C2i48Tedj7+86EOj2E/POVUrGyZDf2UACoFu9/dBhkB7NbemcKPj6dAGB7Yst/ZUQFeE4MENnoZjcprAUMyPV/TKnJAv00dQg7J1RIUtzU4y5SJwNHewx9ZJ3TnuVKuq5xMAYrG8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FdbC7ZRX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rpyITVuI"
-Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-530d0d5ae11so1375611cf.0
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 12:56:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789502211; x=1790107011; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=TFCJ2lFr9tJixEGi8k+dG6GBDM56HP737LMGurM7J9k=;
-        b=rpyITVuIhtWqQ6vnsYauT4ipybwUadVrwCeGp21aQqYuDsUHNs5riXrVopkqn0MCvv
-         8etWfrsQKa6+8iKhM5jyQL3JPSlHdHqNaIo4qd0gbuoraJ4v4QLNb0XpY7/0RB+TmG/i
-         CLnurcFdvkJHNZe5nlYKP5Op8YmXLTralVr9/uBlmEL7k0P7fq9wQAGrU/t4eQtMFABS
-         Z3fgH0T6N/Pg8QtvcBDHoWQ6ORtxKOQMfjydgZOUV8W+AQdBMWPBvnEStqfjHvVHPry3
-         ZA76YGYRd/vW10PU3xrVT5L31jbGmROyh9iQy+30XrecMQZ+8kljhj9P/tEtHfr4qwSX
-         FHjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789502211; x=1790107011;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=TFCJ2lFr9tJixEGi8k+dG6GBDM56HP737LMGurM7J9k=;
-        b=pn2X8DbbHOPWYwqWYeZfpUg2LQcrW4IAs3MyR/2/4sdUKltbiWxRDCbLDuS/9mxJk9
-         tqqgf6bHgbcFpBhYoIe3AQAH3Sx4msYrpxrl7vLFuRQxDF1pjYGCnS43eXvXTUDyaKix
-         dTij86dWsJu4JSUKM7PfVlG6KsCZL/68J9M3dULYv4200tG+yhnynFpDKtgDRDQiMJ10
-         XTIWTiChnj/8sZoy/OpPk1j4a+6hJWdJv2rvBhRhwt5exYMxrCXEY1pDJ0g4d63wIuVI
-         y+K8pdsL84oB4zD4pn+jrsYckb9Lfpe19CqPNNHSzF/PO7g80VWWHnrplU8Cj/+5RoKn
-         mmsA==
-X-Gm-Message-State: AFuF++ne4+ZQcm3mQ/+e+6rLsIjm3WdLM7ANpPAgkmZgc7W0mscMRB/D
-	vNEeCG2POqoqjrzeogKOwKQxiReqAJUnMj2Brc2Vw9xtUXRT4/+NQ2yK8rEFYpueJoc=
-X-Gm-Gg: AYBFou2PHKzQ1f5l7eBlV57Zm5On2XwGIzoryT7q2ZI9OeAfQSNdfa2ubEYEU4R6STn
-	oLH8wC3aXUYsDTqPI12DWs71GaPeGQLXt8EB5LHHMkZRLa3DruHFrJ5YHsJmA3+B6Hdzc4yu7rk
-	968DX6TrwSj67DzkmdEjmZeBiej6yWwsG037HxINPQcsgwoh+XR7ECf8Z1WOYhPIhPxJ1Igq/wg
-	t8eHfK5j2qtPUnhCGsIjvmWFia4fv3VrUNycMJN3FFGiKuIQma0wZLtSDHelNSIIFld9YDUUC/A
-	ZbUDYvB8zrcW/xlbD2Ofq5s1SoEz9qramPpp9tP+0/z9ouhyLqLVOCgUrC3ThijFPISMXfg+Tja
-	TkIKkYXQKZSbYzAZ192y9uzSJFvtwi8DvtMUfdyOBuzWiGMUJN7jWxmqugUrhmfTjxdOZN0+hXK
-	4hRaRYQ5vik0t1pAKbLxljtvHAVBO4XX9SIfSsWQs8t3ToCvsysHtj2W5HLrOWlzrHm0/Eomsqw
-	XXbATY=
-X-Received: by 2002:ac8:5f8e:0:b0:530:b2e4:4e30 with SMTP id d75a77b69052e-5312640eab1mr35615791cf.61.1789502211210;
-        Tue, 15 Sep 2026 12:56:51 -0700 (PDT)
-Received: from SurHub.localdomain ([195.242.214.150])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9123be946f0sm6691096d6.27.2026.09.15.12.56.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 12:56:49 -0700 (PDT)
-From: Abdifatah Suruur <suruurism@gmail.com>
-To: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: subash.a.kasiviswanathan@oss.qualcomm.com,
-	sean.tranchetti@oss.qualcomm.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	Abdifatah Suruur <suruurism@gmail.com>
-Subject: [PATCH net-next v8] net: qualcomm: rmnet: require CAP_NET_ADMIN in the real device netns for config ops
-Date: Tue, 15 Sep 2026 22:56:42 +0300
-Message-ID: <20260915195642.1912-1-suruurism@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FdbC7ZRX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C491F00893;
+	Tue, 15 Sep 2026 20:00:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789502401;
+	bh=060FvzlSY1s+NjIuTsRc9Ny+zBNXkBYeefHqKI9hLNs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FdbC7ZRX+1TiNHMrUcD7N4WRBQ/NBC44xG38qVsD4V3M/U7dzFW46zEr0Qqn4DBLh
+	 81RKjIK0hX+oSanD1EeeT6znv1ZtBO/6T6T7l+OJxv5Yjxxv9BT8ktV29/rB30EWHC
+	 c+RL+Of48d0+QGfwFlFJq1vhsZlRvuqgPfpC9olT9jyBc9sTGaqI9QWaWclhTAl5Hu
+	 5P4bGjufQY9JEgSfSZG/wO7fQtWggHhb9+25I22lIZPV9Ncafbm0EQDnHB8Lk9OHuM
+	 PQfHziufJ1UQPWbtu5g/SXxENVthrlOlzHfeF29fBmutwBTvRudzpbz+yF0NXoZn8I
+	 fZ+V/V+bB/K3g==
+Date: Tue, 15 Sep 2026 13:00:00 -0700
+From: Kees Cook <kees@kernel.org>
+To: Bill Wendling <morbo@google.com>
+Cc: linux-kernel@vger.kernel.org, codemender-patching+linux@google.com,
+	Russell King <linux@armlinux.org.uk>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>, Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Ian Abbott <abbotti@mev.co.uk>,
+	H Hartley Sweeten <hsweeten@visionengravers.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Matthias Schwarzott <zzam@gentoo.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Anil Gurumurthy <anil.gurumurthy@qlogic.com>,
+	Sudarsana Kalluru <sudarsana.kalluru@qlogic.com>,
+	"Martin K. Petersen" <mkp@kernel.org>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Martin Brandenburg <martin@omnibond.com>,
+	Jiri Pirko <jiri@resnulli.us>, Simon Horman <horms@kernel.org>,
+	Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Kanglong Wang <wangkanglong@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Qiang Ma <maqianga@uniontech.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	Ard Biesheuvel <ardb@kernel.org>, Breno Leitao <leitao@debian.org>,
+	Thorsten Blum <blum@kernel.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Lyude Paul <lyude@redhat.com>,
+	Ashutosh Desai <ashutoshdesai993@gmail.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Johan Hovold <johan@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Cryolitia PukNgae <cryolitia@uniontech.com>,
+	Jiaming Zhang <r772577952@gmail.com>,
+	Will Porter <mrwillporter@gmail.com>,
+	Cen Zhang <zzzccc427@gmail.com>,
+	=?iso-8859-1?Q?C=E1ssio?= Gabriel <cassiogabrielcontato@gmail.com>,
+	Rong Zhang <i@rong.moe>, Arun Raghavan <arunr@valvesoftware.com>,
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linux-edac@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org, linux-input@vger.kernel.org,
+	linux-media@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+	devicetree@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+	linux-gpio@vger.kernel.org, linux-scsi@vger.kernel.org,
+	linux-nfs@vger.kernel.org, devel@lists.orangefs.org,
+	linux-hardening@vger.kernel.org, linux-sound@vger.kernel.org
+Subject: Re: [PATCH 25/28] EDAC/thunderx: Replace strlcat() with seq_buf
+Message-ID: <202609151258.5FC01072@keescook>
+References: <20260915081910.4142719-1-morbo@google.com>
+ <20260915081910.4142719-26-morbo@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260915081910.4142719-26-morbo@google.com>
 
-An rmnet device may be created with its real device in a different
-netns than the rmnet device itself (rmnet_newlink() resolves it in
-link_net), and the config paths below only check CAP_NET_ADMIN against
-dev_net(dev), while mutating rmnet port state attached to the real
-device:
+On Tue, Sep 15, 2026 at 08:18:42AM +0000, Bill Wendling wrote:
+> index e7c335ca0c36..4e3781815b6d 100644
+> --- a/drivers/edac/thunderx_edac.c
+> +++ b/drivers/edac/thunderx_edac.c
+> @@ -20,6 +20,7 @@
+>  #include <linux/atomic.h>
+>  #include <linux/bitfield.h>
+>  #include <linux/circ_buf.h>
+> +#include <linux/seq_buf.h>
+>  
+>  #include <asm/page.h>
+>  
+> @@ -47,12 +48,17 @@ static void decode_register(char *str, size_t size,
+>  {
+>  	int ret = 0;
+>  
+> +	if (size > 0)
+> +		str[0] = '\0';
+> +
+>  	while (descr->type && descr->mask && descr->descr) {
+>  		if (reg & descr->mask) {
+>  			ret = snprintf(str, size, "\n\t%s, %s",
+>  				       descr->type == ERR_CORRECTED ?
+>  					 "Corrected" : "Uncorrected",
+>  				       descr->descr);
+> +			if (ret < 0 || ret >= size)
+> +				break;
+>  			str += ret;
+>  			size -= ret;
+>  		}
 
-- rmnet_changelink() rewrites the endpoint mux table and
-  port->data_format and, via rmnet_vnd_update_dev_mtu(), can shrink the
-  MTU of the rmnet endpoint netdevs.
-- rmnet_add_bridge() and rmnet_del_bridge(), reachable via
-  ndo_add_slave/ndo_del_slave through RTM_SETLINK IFLA_MASTER, flip
-  port->rmnet_mode and port->bridge_ep on the real device's port; with
-  bridge_ep pointing at a caller-owned device, rmnet_rx_handler() then
-  forwards real-device ingress frames to it.
-- rmnet_set_coalesce() rewrites the port aggregation parameters via
-  ETHTOOL_SCOALESCE (ioctl) or ETHTOOL_MSG_COALESCE_SET (netlink),
-  whose capability checks likewise only cover dev's netns.
+Seems like seq_buf would be better her? But yes, at the very least, this
+needs to be scnprintf, not snprintf (or add the checks as you have
+here).
 
-A caller privileged only in the rmnet device's netns can therefore
-rewrite the shared cellular data-path state owned by another netns, and
-steer its ingress traffic.
+The rest of the seq_buf conversions look right.
 
-Gate the rtnl paths with rtnl_dev_link_net_capable(), matching the
-"require CAP_NET_ADMIN in the device netns for changelink" series
-(vxlan/geneve, CVE-2026-68432), and gate the ethtool setter with
-ns_capable() in the real device netns, mirroring the check dev_ethtool()
-already applies to dev's netns.  Report the new rejections through
-extack where one is available.
-
-The gates cover the configuration paths only.  Teardown (RTM_DELLINK
-reaching rmnet_dellink(), and rmnet_config_notify_cb() unregistering
-the bridge when the slave device is deleted) is intentionally left
-ungated: link deletion is normal netdev lifecycle behaviour, and the
-changelink series this matches (vxlan/geneve, CVE-2026-68432) gated
-only the configuration paths.
-
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Abdifatah Suruur <suruurism@gmail.com>
-
----
-v8:
-- drop the Fixes and stable tags, per Jakub Kicinski
-- drop the explanatory comments added next to the gates, per Jakub
-  Kicinski
-- shorten the extack messages to "request modifies device in another
-  netns", per Jakub Kicinski
-v7:
-- state explicitly in the commit message that the dellink and notifier
-  teardown paths are out of scope, per the Sashiko review
-- drop the master-moved-into-the-real-device-netns rationale from the
-  rmnet_add_bridge() comment: on the add path do_set_master() resolves
-  the master in the slave's netns, so the rationale only applies to
-  rmnet_del_bridge(), where the master comes from
-  netdev_master_upper_dev_get()
-- use the netdev comment style in rmnet_set_coalesce(), per the
-  Sashiko review
-v6:
-- gate rmnet_add_bridge() and rmnet_del_bridge() on slave_dev, the
-  RTM_SETLINK target the caller was actually authorized against,
-  instead of rmnet_dev: a master moved into the real device's netns
-  short-circuits rtnl_dev_link_net_capable() through the net_eq()
-  check, so a caller only privileged in the slave's netns could
-  otherwise attach or clear the bridge state of the real device's
-  port
-- add the Fixes tag for the commit that introduced rmnet_set_coalesce()
-v5:
-- also gate rmnet_set_coalesce(), the ethtool setter that rewrites the
-  port aggregation parameters of the real device's port, per the
-  Sashiko review
-- report the new capability rejections through extack where available
-v4:
-- use the netdev comment style, per Subash Abhinov Kasiviswanathan
-v3:
-- cover rmnet_add_bridge() and rmnet_del_bridge() with the same gate;
-  they mutate the same real-device port state via ndo_add_slave/
-  ndo_del_slave and have no capability check of their own
-- correct the impact wording: rmnet_vnd_update_dev_mtu() only reads
-  real_dev->mtu; the MTU store lands on the rmnet endpoint netdevs via
-  rmnet_vnd_change_mtu(), not on the real device
-v2:
-- drop Reported-by: (implied for the author), per Jakub Kicinski
----
- .../ethernet/qualcomm/rmnet/rmnet_config.c    | 21 ++++++++++++++++++-
- .../net/ethernet/qualcomm/rmnet/rmnet_vnd.c   | 11 +++++++++-
- 2 files changed, 30 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
-index bed6f63facf25..8bf385ab44a90 100644
---- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
-+++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
-@@ -312,6 +312,12 @@ static int rmnet_changelink(struct net_device *dev, struct nlattr *tb[],
- 	if (!rmnet_is_real_dev_registered(real_dev))
- 		return -ENODEV;
- 
-+	if (!rtnl_dev_link_net_capable(dev, dev_net(real_dev))) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "request modifies device in another netns");
-+		return -EPERM;
-+	}
-+
- 	port = rmnet_get_port_rtnl(real_dev);
- 
- 	if (data[IFLA_RMNET_MUX_ID]) {
-@@ -441,6 +447,12 @@ int rmnet_add_bridge(struct net_device *rmnet_dev,
- 	struct rmnet_port *port, *slave_port;
- 	int err;
- 
-+	if (!rtnl_dev_link_net_capable(slave_dev, dev_net(real_dev))) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "request modifies device in another netns");
-+		return -EPERM;
-+	}
-+
- 	port = rmnet_get_port_rtnl(real_dev);
- 
- 	/* If there is more than one rmnet dev attached, its probably being
-@@ -489,7 +501,14 @@ int rmnet_add_bridge(struct net_device *rmnet_dev,
- int rmnet_del_bridge(struct net_device *rmnet_dev,
- 		     struct net_device *slave_dev)
- {
--	struct rmnet_port *port = rmnet_get_port_rtnl(slave_dev);
-+	struct rmnet_priv *priv = netdev_priv(rmnet_dev);
-+	struct net_device *real_dev = priv->real_dev;
-+	struct rmnet_port *port;
-+
-+	if (!rtnl_dev_link_net_capable(slave_dev, dev_net(real_dev)))
-+		return -EPERM;
-+
-+	port = rmnet_get_port_rtnl(slave_dev);
- 
- 	rmnet_unregister_bridge(port);
- 
-diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_vnd.c b/drivers/net/ethernet/qualcomm/rmnet/rmnet_vnd.c
-index 4f0ddcedfa979..53802b485a813 100644
---- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_vnd.c
-+++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_vnd.c
-@@ -4,9 +4,11 @@
-  * RMNET Data virtual network driver
-  */
- 
-+#include <linux/capability.h>
- #include <linux/etherdevice.h>
- #include <linux/ethtool.h>
- #include <linux/if_arp.h>
-+#include <linux/netlink.h>
- #include <net/pkt_sched.h>
- #include "rmnet_config.h"
- #include "rmnet_handlers.h"
-@@ -240,9 +242,16 @@ static int rmnet_set_coalesce(struct net_device *dev,
- 			      struct netlink_ext_ack *extack)
- {
- 	struct rmnet_priv *priv = netdev_priv(dev);
-+	struct net_device *real_dev = priv->real_dev;
- 	struct rmnet_port *port;
- 
--	port = rmnet_get_port_rtnl(priv->real_dev);
-+	if (!ns_capable(dev_net(real_dev)->user_ns, CAP_NET_ADMIN)) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "request modifies device in another netns");
-+		return -EPERM;
-+	}
-+
-+	port = rmnet_get_port_rtnl(real_dev);
- 
- 	if (kernel_coal->tx_aggr_max_frames < 1 || kernel_coal->tx_aggr_max_frames > 64)
- 		return -EINVAL;
 -- 
-2.53.0
-
+Kees Cook
