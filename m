@@ -1,131 +1,236 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mta-64-227.siemens.flowmailer.net (mta-64-227.siemens.flowmailer.net [185.136.64.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B240F3EB0F0;
-	Tue, 15 Sep 2026 09:16:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598A1396B6F
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 09:19:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789463819; cv=none; b=nGmWzNmo9lKpSCL9O3yQwc0XFU9+KxuXN/ehS2mrrMaP3JArCBIa9Nj7SO23ZEneS4iU8pgnwUri/iLZjiXXrnAE+vSeCLApUTgOo9fzkjyVvD3/e2UUHHPvhC+n2mgup/MrA45dkWOsBzT8ijn/MGa9WyFMoVcHdrXGQQSTeQQ=
+	t=1789463956; cv=none; b=jR0WFNQgoCfr/OL2j7wV0GvBSS29lsC/w7eDJ01UCkuKbqvlyiLkElbTo7vPdA/b7mdDVtrHkpSNNp19bn9iHozjWiU/jc3fGYVVCvKXaT1VO3osoGJShu5I3Q9bDlBajtQSMd2ONiYKP5eGvP9/8Twh6Ga+ApDL3i3ETJFOd5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789463819; c=relaxed/simple;
-	bh=pcH3XAVzOC1I/f/8RPm1k6RDkOcG5wRk5USkgfCB2xo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b/UBb4gyapzFLjH4E80FhA+GpQBTW9Kc4GNzwiBsl7dzhT62xkZB24iOx9OafREgNX71kmAnbQLokcRtwXuK+eDS35yvW2ZDJD1Gfpkhv6Ja2g5Th1hakedjJLFRQcGfPRRCxVVZl2Y3MwEslAdYbJCeSFW3XSxolGAE4y45c2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jbdQ3iVe; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789463956; c=relaxed/simple;
+	bh=VXyqUdyenrDAbg7zhVoC8Rcnf+A/UdQbnHwkXrLTOl0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WLWXdhHrG4evX5sRq9aFKcn3kHpUHoneCBI+rGwSAOHdGik7rZwypSxKEvCzOXU/TPd3WsOMRXa/AfKCawNNDD63fImbmfbFh8/04E2PmY0Xz7tr4kBuHFvJ8wdW/FWeb8LMJ7fnoTJMTaHYT5Fx0UssufvNie5Cl3RnuaZjE8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=RkuLZo9i; arc=none smtp.client-ip=185.136.64.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jbdQ3iVe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBCC21F000FF;
-	Tue, 15 Sep 2026 09:16:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789463818;
-	bh=YmxwUrqc4VJ5KAOw2GSuOBCANnF+5FCzRAmFJpPfNdo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jbdQ3iVej2dnSAzbZWY3Nnupv6rCtcC0KDyEEnw9D9Y1OIzAPf5X76nXbSevSOJrz
-	 L5MRxvOioy9yEMsxnISuAMitVY3u4dVct6HckGCT1Q06zn8gzA6L9435vcCpV0aQhq
-	 /2jj4IeSLYtjJgi5jlPh1ogspGgKD8GgqnHx6FpDa19ydTgB3p+2RzyaXVQotwxGLS
-	 LnzTQHIH3XCjWdnnfJEnwLbAOXfO6yKI7oZomQY5ORTkYUFRbsZbcGIEk5v43hP2b1
-	 pnvMOqelsTEn2Eb8qTVbKkL0A+Xb4oMP0PZbwt4M8cSUNAeLyKCWOapdcx4NuO36F2
-	 /ivqwG/gySQFw==
-Message-ID: <321725f2-7012-4fc9-8889-33ea7cef1b65@kernel.org>
-Date: Tue, 15 Sep 2026 11:16:49 +0200
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="RkuLZo9i"
+Received: by mta-64-227.siemens.flowmailer.net with ESMTPSA id 20260915091900f2f695a45600020731
+        for <netdev@vger.kernel.org>;
+        Tue, 15 Sep 2026 11:19:00 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
+ d=siemens.com; i=alexander.sverdlin@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=p0t/QhNpXV8HWcEe61E/DPmG7fB9BX0Gj53TM6dqJQw=;
+ b=RkuLZo9in4jQjDbKCnl8OkJVt0YMw27PJSgOvvg4D8ZKse1MHKadIsMcUYNolEd/l3gyTH
+ zCspQ1i3PMJpTiPG3bE93xfRssw7Ei1o+HBFLWueo+7xVwpg2CSmp/GfFPFbOV5IYRVyZ2Tr
+ pymTqU4Fj97q6StMwncsktkgXFX+g0eIeGxPtPq0X++tdCfcR06GwUypMx7isFIkcfyjqgJC
+ d+e/NwzpAxn+eft46kWt1eNq01I0+Kg/SKmj1UxPWTyQPJzEsAyVYtsj66AmIQ5a/2S+F+gD
+ 7ZhmtDkFEjjmKGnkzOabkeWDppVo+XgrEJOYVxS2m67YMdaezgAsQTvg==;
+From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+To: netdev@vger.kernel.org
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Hauke Mehrtens <hauke@hauke-m.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v3] net: dsa: mxl-gsw1xx: force internal PHYs into a known reset state
+Date: Tue, 15 Sep 2026 11:18:45 +0200
+Message-ID: <20260915091856.1375914-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v18 1/3] dt-bindings: net: Document Motorcomm
- YT8824 PHY package
-To: Kyle Switch <kyle.switch@motor-comm.com>, Frank.Sae@motor-comm.com,
- andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
- jianmin.wang@motor-comm.com, jie.han@motor-comm.com
-References: <20260915082152.3104633-1-kyle.switch@motor-comm.com>
- <20260915082152.3104633-2-kyle.switch@motor-comm.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <20260915082152.3104633-2-kyle.switch@motor-comm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-456497:519-21489:flowmailer
 
-On 15/09/2026 10:21, Kyle Switch wrote:
-> Motorcomm YT8824 Ethernet PHY is PHY package of 4 PHY-s.
-> 
-> Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-I already asked you to Cc the right addresses. That was two months ago.
-I don't understand why can't you just use tools which do all this
-correctly, but repeating same feedback and expecting different results
-is pointless, so shortly:
+When the switch is bootstrapped with PS_NOWAIT = 0, the internal PHYs
+default to a held-in-reset state. The driver previously only worked with
+PS_NOWAIT = 1 where PHYs are released from reset automatically.
 
-NAK
+Program the PHY reset lines via the RST_REQ register before the MDIO bus
+is registered, so that PHY IDs can be read during bus scan. Release only
+the PHYs of ports that have a phy-handle in the device tree and keep the
+unused ones held in reset. Driving both directions makes the resulting
+state identical regardless of the PS_NOWAIT bootstrap: unused PHYs no
+longer stay powered when PS_NOWAIT = 1 released them automatically.
 
-Longer explanation below.
+A single 300ms delay after deasserting the needed resets ensures the PHYs
+are ready for MDIO communication (refer to Intel XWAY, Maxlinear GPY111
+datasheets or the Lantiq counterpart of the driver). The delay is skipped
+when no PHY is released from reset.
 
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+---
+Changelog:
+v3:
+- put unused PHYs into reset state (changed patch subject accordingly)
+v2:
+- Reverse Christmas tree.
+- https://lore.kernel.org/all/20260908103030.4032992-1-alexander.sverdlin@siemens.com/
+v1:
+- https://lore.kernel.org/all/20260901165049.672446-1-alexander.sverdlin@siemens.com/
 
-Please use scripts/get_maintainers.pl to get a list of necessary people
-and lists to CC. It might happen, that command when run on an older
-kernel, gives you outdated entries. Therefore please be sure you base
-your patches on recent Linux kernel.
+ drivers/net/dsa/lantiq/lantiq_gswip.h        |  2 +
+ drivers/net/dsa/lantiq/lantiq_gswip_common.c | 10 ++++
+ drivers/net/dsa/lantiq/mxl-gsw1xx.c          | 51 ++++++++++++++++++++
+ drivers/net/dsa/lantiq/mxl-gsw1xx.h          |  1 +
+ 4 files changed, 64 insertions(+)
 
-Tools like b4 or scripts/get_maintainer.pl provide you proper list of
-people, so fix your workflow. Tools might also fail if you work on some
-ancient tree (don't, instead use mainline) or work on fork of kernel
-(don't, instead use mainline). Just use b4 and everything should be
-fine, although remember about `b4 prep --auto-to-cc` if you added new
-patches to the patchset.
+diff --git a/drivers/net/dsa/lantiq/lantiq_gswip.h b/drivers/net/dsa/lantiq/lantiq_gswip.h
+index 0b75be14dc109..4f95877c59d1d 100644
+--- a/drivers/net/dsa/lantiq/lantiq_gswip.h
++++ b/drivers/net/dsa/lantiq/lantiq_gswip.h
+@@ -261,6 +261,8 @@ struct gswip_hw_info {
+ 	const struct gswip_pce_microcode (*pce_microcode)[];
+ 	size_t pce_microcode_size;
+ 	enum dsa_tag_protocol tag_protocol;
++
++	int (*setup)(struct dsa_switch *ds);
+ 	void (*phylink_get_caps)(struct dsa_switch *ds, int port,
+ 				 struct phylink_config *config);
+ 	struct phylink_pcs *(*mac_select_pcs)(struct phylink_config *config,
+diff --git a/drivers/net/dsa/lantiq/lantiq_gswip_common.c b/drivers/net/dsa/lantiq/lantiq_gswip_common.c
+index 6150dc3ffb641..7c53ded178367 100644
+--- a/drivers/net/dsa/lantiq/lantiq_gswip_common.c
++++ b/drivers/net/dsa/lantiq/lantiq_gswip_common.c
+@@ -689,6 +689,16 @@ static int gswip_setup(struct dsa_switch *ds)
+ 	 */
+ 	regmap_write(priv->mdio, GSWIP_MDIO_MDC_CFG0, 0x0);
+ 
++	/* GSW1xx will wake up the PHYs here, so it makes sense that it happens
++	 * after the auto-polling deactivation above, but before the MDIO bus
++	 * registration below
++	 */
++	if (priv->hw_info->setup) {
++		err = priv->hw_info->setup(ds);
++		if (err)
++			return err;
++	}
++
+ 	/* Configure the MDIO Clock 2.5 MHz */
+ 	regmap_write_bits(priv->mdio, GSWIP_MDIO_MDC_CFG1, 0xff, 0x09);
+ 
+diff --git a/drivers/net/dsa/lantiq/mxl-gsw1xx.c b/drivers/net/dsa/lantiq/mxl-gsw1xx.c
+index 66bf7e3319057..08c633b2caebf 100644
+--- a/drivers/net/dsa/lantiq/mxl-gsw1xx.c
++++ b/drivers/net/dsa/lantiq/mxl-gsw1xx.c
+@@ -13,6 +13,7 @@
+ #include <linux/delay.h>
+ #include <linux/jiffies.h>
+ #include <linux/module.h>
++#include <linux/of.h>
+ #include <linux/of_device.h>
+ #include <linux/of_mdio.h>
+ #include <linux/phy/phy-common-props.h>
+@@ -589,6 +590,52 @@ static void gsw150_phylink_get_caps(struct dsa_switch *ds, int port,
+ 	gsw1xx_phylink_get_lpi_caps(config);
+ }
+ 
++static int gsw1xx_setup(struct dsa_switch *ds)
++{
++	struct gsw1xx_priv *priv = container_of(ds->priv, struct gsw1xx_priv, gswip);
++	struct gswip_priv *gswip_priv = ds->priv;
++	u32 phy_mask = 0, active_mask = 0;
++	struct device_node *phy_np;
++	struct dsa_port *dp;
++	int ret;
++
++	dsa_switch_for_each_user_port(dp, ds) {
++		struct phylink_config cfg = {};
++
++		/* Is there an internal PHY on this port? */
++		gswip_priv->hw_info->phylink_get_caps(ds, dp->index, &cfg);
++		if (!test_bit(PHY_INTERFACE_MODE_INTERNAL, cfg.supported_interfaces))
++			continue;
++
++		phy_mask |= GSW1XX_RST_REQ_PHY(dp->index);
++
++		/* Will the PHY be really used? */
++		phy_np = of_parse_phandle(dp->dn, "phy-handle", 0);
++		if (!phy_np)
++			continue;
++
++		of_node_put(phy_np);
++		active_mask |= GSW1XX_RST_REQ_PHY(dp->index);
++	}
++
++	if (!phy_mask)
++		return 0;
++
++	/* Deassert resets for PHYs referenced by active ports and hold the
++	 * unused ones in reset, so the state is identical regardless of the
++	 * PS_NOWAIT bootstrap.
++	 */
++	ret = regmap_update_bits(priv->shell, GSW1XX_SHELL_RST_REQ, phy_mask,
++				 phy_mask & ~active_mask);
++	if (ret)
++		return ret;
++
++	if (active_mask)
++		msleep(300);
++
++	return 0;
++}
++
+ static struct phylink_pcs *gsw1xx_phylink_mac_select_pcs(struct phylink_config *config,
+ 							 phy_interface_t interface)
+ {
+@@ -830,6 +877,7 @@ static const struct gswip_hw_info gsw12x_data = {
+ 		[GSW1XX_MII_PORT] = GSWIP_MII_PCDU0,
+ 		[GSW1XX_MII_PORT + 1 ... GSWIP_MAX_PORTS - 1] = -1,
+ 	},
++	.setup			= gsw1xx_setup,
+ 	.mac_select_pcs		= gsw1xx_phylink_mac_select_pcs,
+ 	.phylink_get_caps	= &gsw1xx_phylink_get_caps,
+ 	.supports_2500m		= true,
+@@ -852,6 +900,7 @@ static const struct gswip_hw_info gsw140_data = {
+ 		[GSW1XX_MII_PORT] = GSWIP_MII_PCDU0,
+ 		[GSW1XX_MII_PORT + 1 ... GSWIP_MAX_PORTS - 1] = -1,
+ 	},
++	.setup			= gsw1xx_setup,
+ 	.mac_select_pcs		= gsw1xx_phylink_mac_select_pcs,
+ 	.phylink_get_caps	= &gsw1xx_phylink_get_caps,
+ 	.supports_2500m		= true,
+@@ -874,6 +923,7 @@ static const struct gswip_hw_info gsw141_data = {
+ 		[GSW1XX_MII_PORT] = GSWIP_MII_PCDU0,
+ 		[GSW1XX_MII_PORT + 1 ... GSWIP_MAX_PORTS - 1] = -1,
+ 	},
++	.setup			= gsw1xx_setup,
+ 	.mac_select_pcs		= gsw1xx_phylink_mac_select_pcs,
+ 	.phylink_get_caps	= gsw1xx_phylink_get_caps,
+ 	.port_setup		= gsw1xx_port_setup,
+@@ -895,6 +945,7 @@ static const struct gswip_hw_info gsw150_data = {
+ 		[5] = 1,
+ 		[6] = 11,
+ 	},
++	.setup			= gsw1xx_setup,
+ 	.phylink_get_caps	= gsw150_phylink_get_caps,
+ 	/* There is only a single RGMII_SLEW_CFG register in GSW150 and it is
+ 	 * unknown if RGMII slew configuration affects both RGMII ports
+diff --git a/drivers/net/dsa/lantiq/mxl-gsw1xx.h b/drivers/net/dsa/lantiq/mxl-gsw1xx.h
+index caa8f1008587a..a7976a5988bd8 100644
+--- a/drivers/net/dsa/lantiq/mxl-gsw1xx.h
++++ b/drivers/net/dsa/lantiq/mxl-gsw1xx.h
+@@ -110,6 +110,7 @@
+ #define GSW1XX_SHELL_BASE			0xfa00
+ #define  GSW1XX_SHELL_RST_REQ			0x01
+ #define   GSW1XX_RST_REQ_SGMII_SHELL		BIT(5)
++#define   GSW1XX_RST_REQ_PHY(p)			BIT(p)
+ #define  GSW1XX_SHELL_MANU_ID			0x10
+ #define   GSW1XX_SHELL_MANU_ID_PNUML		GENMASK(15, 12)
+ #define   GSW1XX_SHELL_MANU_ID_MANID		GENMASK(11, 1)
+-- 
+2.55.0
 
-You missed at least devicetree list (maybe more), so this won't be
-tested by automated tooling. Performing review on untested code might be
-a waste of time.
-
-Please kindly resend and include all necessary To/Cc entries.
-
-Best regards,
-Krzysztof
