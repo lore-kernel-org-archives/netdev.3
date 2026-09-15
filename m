@@ -1,312 +1,230 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo2-f21.google.com (mail-oo2-f21.google.com [74.125.231.149])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA834AE8AC
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 15:47:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789487238; cv=none; b=XDDR3o5RQ4hWnMiE+aMem073c3Tj2+xWc9JMR5FYNS3yMqL+X0AYfUpidVDD9J4Ezjy++78StAox3qYHgmoef9doxMyYzff6nKaymW8A1lqcutgx4U+0NzNE3102BsggQc1WOnDndIRHRk1qfeyc/pX7Rk01APqBzGPrzL9f7cY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789487238; c=relaxed/simple;
-	bh=8MNWOZVbUM9+qIbH/qe53BIN87Z+DiijyIQXccjKz0s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QFAHY3yLdgTx5KlpSbpUTXzAUZc/z6kI5QTDftw0EIsSHgwjFvOmkVRW3wxziQofZbOoe5s5I0WeRzVb7WgQLJAOoWnvtebxWesN10/zPDbrA/8EHnfVhYX3/exPivsFQdwyxPgAKXwDzbsub1lblLiaAqh1X0hZ5lfUyaJzBtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SN6L/Bkg; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Pe5AqwX5; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8809D409277
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 15:51:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.149
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789487492; cv=pass; b=HcLm9ck6lBXiJIXNicfXEmAMhV3Rhu7eyIMVTSl+zOzAW3GHQPyO2F4qpnxUmzZYBGJ7Z3sAuVXU4B2SMkTUcK/e3jtWR+Fuc0CcfKnnHyD6MDiP8NMo9mevgYnFH7ZQZEnarmS2PvZh8fYofEUpYHut9Zt9apZP+pihkVg4TL0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789487492; c=relaxed/simple;
+	bh=ZE3WRf6jwHm44maoVxf+MmYa5OvKeyvnM3vE38UytZI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VIM/ZWa7GzalGb3eYySEYYBTiDwF+sSUn9AFWLsfV79SMZdI6rBniY5n65xHkHZTmmHTbV9i6Qq0xcKA7HAZKpjkvaLj0qRstOb9OnKJba3skuEvS43iI7QmXiaf2m4bjXr/OulaG2fhzKE0Ie15vp0z5SSFdVl5K4aVv3TF8yY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gukKkM8d; arc=pass smtp.client-ip=74.125.231.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SN6L/Bkg";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Pe5AqwX5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789487231;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BBSTiFiICLW/KYf65rwgeCPALG3azRBCohXrrfoupYc=;
-	b=SN6L/Bkg+rF1GW8OPenkY2DcTRfqvkdHEWIinA5imYMDMS8MQC4PoDMCk/LMKsQ8Q+x8+v
-	APhuL7ieyj3Wzd620vDtumxe8zyx+fKu6sjHDUMzWkI0/4aeK4d7FNLRZykKODuIyfXVFH
-	IHifyV4qTX0/5+RzndpIlLF48QCT6XU=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-390-k_vGsh_mNXSwcYrMqadtSg-1; Tue, 15 Sep 2026 11:47:10 -0400
-X-MC-Unique: k_vGsh_mNXSwcYrMqadtSg-1
-X-Mimecast-MFC-AGG-ID: k_vGsh_mNXSwcYrMqadtSg_1789487229
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49e6b5c5f44so26982615e9.2
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:47:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gukKkM8d"
+Received: by mail-oo2-f21.google.com with SMTP id 46e09a7af769-7f4f0d1779dso536010a34.2
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:51:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789487489; cv=none;
+        d=google.com; s=arc-20260327;
+        b=CtskgFPQrZdckSfCBjUv6YpLbfwsJjkgBCy5dPg5y0ctyuC+GkdEVRa40Rn6WN9BGg
+         A2orMjVS1kB4f9AmUrlfQS2mvMq0NVfJBUKZjYbCAwe5zOqfmylck7ngHZEarUenXRFC
+         bsq8fj6QqZNon1lJjcPfDxoZWRSfQOTDF3NsVfKB30wzIWkO57lDij5ce2sxYK8jIJgg
+         qQObuGAJ2jtlUkea5cYyLTYOQDCWZ6GXAsIPu0bcHoiqst6JUeKQNncb1VilIuFsX9VM
+         04edWJ8aM2a06QinSV5zOgJdGxejCeRV9i05zurWj1Hy+wZgBWRP4efBe03RaQNmj/lT
+         rJyw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=qLaU8Sheaee7OVZT67w7SriDUMjtz6t3Qx6H6/8vnfk=;
+        fh=n7+0h+h3xN11mPronGyBEOARy1+ks5LHTsD3ekY7TZA=;
+        b=l6T38n+GgFsfe1Ve4neXmyvB/hk4EFr5x22dnvb0yHDHuCaLWJNFwsykLTU/IfGx7+
+         9rkSC2FLnZ8WYK3W+g2rw3Z4o7KC4E5LwAtGx8dOuwl8bbAOJ03AcU/Yl2L+KiL5ayz/
+         PeJpssxUNXIJDY7WnBhqdMNxqAuGeqssalHoNX3AhpZEAb+MygsdPceqO87y5OCQ8oe2
+         JzmSw18WKAQOmOOPrneu/FAJYwOZ5VjqgsVNlulu9ILR55pt8JExJVG9GLKUaXyBe1i0
+         fn6RMXle48Wp9UNSx4wL5qt7kGJdFb1h27Fb+Gqbnn4I163OysIpSIgu1cHta8u8+e/Z
+         KI5g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789487229; x=1790092029; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=google.com; s=20251104; t=1789487489; x=1790092289; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=BBSTiFiICLW/KYf65rwgeCPALG3azRBCohXrrfoupYc=;
-        b=Pe5AqwX5dlJipFc3223AWSKxxmKaPKm2FkdolAL3qcxYge5Xgr1zgwz0VNdzx+PSDi
-         IMl5e2q4I90AMyB+oVnLHVk9UFuejosjajEbNLUV//eYrtLYIjKjUF3jeUlk5XcV/NPl
-         XtZS1cltelWfK8QX3PyfUd+N4Bca4GMoauTGZamczUgprlYmXNCDftySN5wC0XeVSM3F
-         46I8Wu28XRLvevNhmZgOwsBqM7afDzfmoddb2vvhFbMujAGCpHvRTQTyj9jqa5dNO6mM
-         94I+vzMZDNhyG6LikDD7+mLUTVp+A8xCq43XaD2Tycn7pUnQ4K/DKtpo4auqd0YOprKQ
-         t2OQ==
+        bh=qLaU8Sheaee7OVZT67w7SriDUMjtz6t3Qx6H6/8vnfk=;
+        b=gukKkM8dVT4AU2K/S8a4Z5A1bLCxSmtuqOEAgZQ3pT9iobLe2mE4M+UVgfbY3jeooU
+         0GwrpRLAs6h926sYYQgpdbSFAm6jn8VsovNqvoyOozxGwYjnJ6E3USmXtLGOqp9GflhN
+         9SniHcESMVFD7ZkWz4KaNBypefe+tsZ/jwkJtAvkFD+ZTN8Vlknczzb0rdDY5rryMXOo
+         trGXafboZlVTqMVrYZbpqohHrsvc6gh/0i0SoFQVAM+A0zjZ5+OjuvxsufT6QsBdZ55I
+         pBpdUarEWkkkUgF9LZfgzVTaACTxXDC4gmUkXepOnNkTEUhQqcHRWCnk+Ac9iui044K3
+         dksQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789487229; x=1790092029;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1789487489; x=1790092289;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=BBSTiFiICLW/KYf65rwgeCPALG3azRBCohXrrfoupYc=;
-        b=P7Mfo20Xns99kLxtZ9sgeTQRIvrywMvyQs3jsBaRt8ligQ08gkLPYB8sXuUHjgH72v
-         FesKOzWNWsDohPisOxj12TjPESx2DW0DDw+/NEYgBJVZie+O5BcVrXYFbTYWEgim0wNc
-         hNPlBVnn6m8YZW94DpGyILquveYGv88PosomEGaEIR6bTU/bMMTxFsS1qOq/46b/ncJX
-         s6afXIJ4t8tbHqZY5/A2PTO71gHvx43qsUom670LKl+tebs+3P2Wxgdyf+TtiWlTrwsx
-         mMbXWfbVqHWEcE4OLDqmGawupRXIKARcWT8+lTIN0RsplwNgTmJ+sn3Tm0IPCOY0Oivb
-         TOTg==
-X-Forwarded-Encrypted: i=1; AKwUvBwA24YwEMqUNKB2ZuVOFeAhI1C9bNssUeZdPHigEIHjRisGGtbxUE0PrUgKC0GuVrMxU19scpw=@vger.kernel.org
-X-Gm-Message-State: AFuF++lCtLWfqmOgkAAL7YKbfe6FHqlcIPAdxP0cRVQCr/J/g5+SHnfu
-	jIOQKXs7THSQ7McICXfxfE3mfIavZUPbem7kKjw0OQplJLzDJXKNJR0L/cA/iJy5U2Z5tLoCENW
-	gXLLMyqsrUtiA9i0T7L9UteBNhoMRYxDr8uZWfKJFI7CjLt/D/iEf3sG8CA==
-X-Gm-Gg: AYBFou1q3gQJLuud1kH7SFAsYN/jT2cauBlRx+DEi3wb6QBrbhugS0T2wFIq/6iBk8Q
-	Kbme/zayeN6O3kMhgWzifdIH4L6/OOSb325jKZAS7UW43wS43eaXZxF20E3elKCDNwMpdyq9x92
-	MjKKcaMtbRkPJgvvwSaidLtLLLqJVOFE2RTS1/p8oFYpwScwPDcCUBASQALxKYGFvt85pHG+i4I
-	5xdOH0ld15ESToF6Ni/TUhsJLZEDB/ERr0cXTyElCxI++MiQm/PcW2NNdhn2GjYemRZ6gYQTL25
-	ztJiCia74lmnkiy/a7ISysKFajbMBnEs5fRlPryiZfUt7IdzAq6uSgIsgefIIPFFp/1ljnLAnBn
-	Ncy++Kv5WGX+XsW9FNs7vaRi1tI+B+PINUfFy4VoWyLV12A==
-X-Received: by 2002:a05:600c:19cb:b0:49c:eb17:cf3b with SMTP id 5b1f17b1804b1-49e7a6692afmr89061365e9.8.1789487229150;
-        Tue, 15 Sep 2026 08:47:09 -0700 (PDT)
-X-Received: by 2002:a05:600c:19cb:b0:49c:eb17:cf3b with SMTP id 5b1f17b1804b1-49e7a6692afmr89060745e9.8.1789487228579;
-        Tue, 15 Sep 2026 08:47:08 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-53-30-11.retail.telecomitalia.it. [79.53.30.11])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e7d23b7e7sm52958155e9.1.2026.09.15.08.47.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 08:47:07 -0700 (PDT)
-Date: Tue, 15 Sep 2026 17:47:02 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowangio@gmail.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Shuah Khan <shuah@kernel.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, sargun@sargun.me, jlinbox@meta.com, 
-	Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next 3/6] vsock/virtio: support guest device network
- namespace
-Message-ID: <aqlkWGyoUYrgQUzz@sgarzare-redhat>
-References: <20260902-vsock-guest-ns-v1-0-9995383e9a8b@meta.com>
- <20260902-vsock-guest-ns-v1-3-9995383e9a8b@meta.com>
+        bh=qLaU8Sheaee7OVZT67w7SriDUMjtz6t3Qx6H6/8vnfk=;
+        b=skUMxkRVYsxPv4yrpBuEThpOlAef/3SYIVxW29Yqe3Ss7z9LoKApA8rS9QiVotjbmC
+         wsVFFSXKhKajO5Q16bsU1zbmvSruZ9hx2PMROvVtV+MCLA7D4h7SJOEDNnSuO5LAPvo8
+         ReJGCiN9ehjnF2h/hNcZb1kZYPu8AtQNEUyyAwWmkR9fqm7F0dBmGwdBn7jsufBG4WPG
+         xyJCVaBA5ldEqDjVIoodnMLpkK52Ip0LSTrFotPNCax039PN8CmKFQmyY6w6nDPKytGL
+         3vtw2EG0RwkGLPAOwZfBY/GcPqdxqhoa+VISJKCYicv80bMjgoaJAdg/ZW9olws/Uo3I
+         WiDg==
+X-Gm-Message-State: AFuF++nKgAwlnwca2m6FrN7u97doPWLtJILzQOzSicnAPTilR5l6ko5V
+	KjYXA4laINRUNmRCE5aEokGDM2+M6Q38j3ECT9GxDS5rhttme8u0emy2C/Dq2jL+q0l7bGvOy87
+	u7W2CrbBwSb+jeUB0lCHpNAStdCgUYa78Nf0g8wUT
+X-Gm-Gg: AYBFou27opUDaYxuCtFNwQC6LQNsRAGpWDzVoT+eMTCzUjjMsV+Ob+adXyhHB+p0BdV
+	gt1eJ/KKNdvbS/XgaDu9J5Ku4w1B8Z0Igtxeir2/JTHgIJqhbFQei2Ct6stpJd1qDlWo/e7nVYk
+	5spu8388T9Eu7M6V0FWtWmbVZTbtjUCiL7WyIxWJcWVah4uaDBtM3Q6QE2Q85jyvA4jW5VZ+731
+	gPtMkoCx5mlzBUiFfeKsZfUBJaUr4rTV+gX+DcR3KtAWousGV632rGtPMwKpxVsc5ki6wGK/OVI
+	h3RvzB41yCF3Oz08w/mja35lBJnd301/lC1JmhURxXtDXWy09O1h5QD6f4mu1vtCY1G9furQdGw
+	VOxahkxGHmrtkWtAWRafYZeOMIRG7v7mSqBKX/ww4qzd64AXOw2zP473/5T95HHYsQXs+
+X-Received: by 2002:a05:6820:f036:b0:6c1:d6a4:9268 with SMTP id
+ 006d021491bc7-6c737b1ca30mr1441282eaf.5.1789487488174; Tue, 15 Sep 2026
+ 08:51:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260902-vsock-guest-ns-v1-3-9995383e9a8b@meta.com>
+References: <CAL8qZ1bxzBXReej7M-20HkBwON9L6NZKZP96bs7s-e=j-_Gg8w@mail.gmail.com>
+In-Reply-To: <CAL8qZ1bxzBXReej7M-20HkBwON9L6NZKZP96bs7s-e=j-_Gg8w@mail.gmail.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Tue, 15 Sep 2026 08:51:15 -0700
+X-Gm-Features: AcwNN1VZxjUbgSRdsZo-3wXq8QiVHvk8HaQExXuqbOILOADwb7TrgLSgG0x2RqI
+Message-ID: <CAAVpQUBWtdDe4dS5Sd6mETpxVdmvSrnQkBdfK=NKgoWzTJUomw@mail.gmail.com>
+Subject: Re: Subject: TCP receive memory accounting before accept() with
+ cgroup v2
+To: Cyclinder Kuo <kuocyclinder@gmail.com>
+Cc: netdev@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org, 
+	shakeel.butt@linux.dev, edumazet@google.com, roman.gushchin@linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 02, 2026 at 04:00:49PM -0700, Bobby Eshleman wrote:
->From: Bobby Eshleman <bobbyeshleman@meta.com>
+On Tue, Sep 15, 2026 at 2:08=E2=80=AFAM Cyclinder Kuo <kuocyclinder@gmail.c=
+om> wrote:
 >
->virtio-vsock did not have namespace support (the device was always
->accessible to any global namespace).
+> Hi,
 >
->Make the virtio-vsock device assignable to a namespace and initialize it
->to init_net. Because virtio-vsock and init_net are both hardcoded to
->global mode, nothing changes until the assign ioctl is issued.
+> "Resending in plain text; the previous message was rejected by netdev
+> because it contained an HTML part."
 >
->When the device's local-mode namespace is being destroyed, received
->packets are reset until new valid a namespace has been assigned and/or
->automatically returned to, and the next RX batch begins (in
->virtio_transport_rx_work). They are reset rather than dropped because
->vsock does not retransmit, so a silent drop would leave the host waiting
->for a timeout, and a connection request arriving in that window has no
->socket whose teardown would tell it otherwise. This requires making
->virtio_transport_reset_no_sock() available outside of the common code.
+> While looking into whether Kubernetes can allow net.core.somaxconn
+> by default on cgroup v2 nodes [1], I tested how receive memory is
+> accounted for connections waiting in the accept queue.
 >
->When a device is assigned to a namespace, every already established
->vsock socket that is no longer able to reach the device is forcibly
->reset. For that reason, adding new sockets to the connected table must
->be performed atomically with regards to namespace assignment. This
->ensures that when the socket is added to the connected table that it
->actually passes the new reachability conditions set by ns assignment. If
->it wins the race to the table and does NOT pass the reachability tests,
->then the reset sweep will correctly catch it. This is the purpose
->of the new helper 'vsock_maybe_set_connected()'.
+> I understand that d752a4986532 ("net: memcg: late association of sock
+> to memcg") deliberately moved memcg association to accept() time.
+> The discussion also explicitly covered data queued before accept()
+> and charging that memory when the socket is accepted [2].
 >
->Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
->---
-> include/linux/virtio_vsock.h            |  2 ++
-> net/vmw_vsock/virtio_transport.c        | 28 ++++++++++++++++++++++------
-> net/vmw_vsock/virtio_transport_common.c | 28 +++++++++++++++++++++-------
-> 3 files changed, 45 insertions(+), 13 deletions(-)
->
->diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
->index f91704731057..9c68ce1d7fb4 100644
->--- a/include/linux/virtio_vsock.h
->+++ b/include/linux/virtio_vsock.h
->@@ -286,6 +286,8 @@ void virtio_transport_inc_tx_pkt(struct virtio_vsock_sock *vvs, struct sk_buff *
-> u32 virtio_transport_get_credit(struct virtio_vsock_sock *vvs, u32 wanted);
-> void virtio_transport_put_credit(struct virtio_vsock_sock *vvs, u32 credit);
-> void virtio_transport_deliver_tap_pkt(struct sk_buff *skb);
->+int virtio_transport_reset_no_sock(const struct virtio_transport *t,
->+				   struct sk_buff *skb, struct net *net);
-> int virtio_transport_purge_skbs(void *vsk, struct sk_buff_head *list);
-> int virtio_transport_read_skb(struct vsock_sock *vsk, skb_read_actor_t read_actor);
-> int virtio_transport_notify_set_rcvlowat(struct vsock_sock *vsk, int val);
->diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
->index 4f9aa9c4c3aa..a453a4f828dc 100644
->--- a/net/vmw_vsock/virtio_transport.c
->+++ b/net/vmw_vsock/virtio_transport.c
->@@ -540,9 +540,14 @@ static bool virtio_transport_msgzerocopy_allow(void)
-> 	return true;
-> }
->
->+static bool virtio_transport_netns_assign_allow(void)
->+{
->+	return true;
->+}
->+
-> bool virtio_transport_stream_allow(struct vsock_sock *vsk, u32 cid, u32 port)
-> {
->-	return vsock_net_mode_global(vsk);
->+	return vsock_g2h_net_reachable(sock_net(sk_vsock(vsk)));
-> }
->
-> static bool virtio_transport_seqpacket_allow(struct vsock_sock *vsk,
->@@ -587,6 +592,7 @@ static struct virtio_transport virtio_transport = {
-> 		.seqpacket_has_data       = virtio_transport_seqpacket_has_data,
->
-> 		.msgzerocopy_allow        = virtio_transport_msgzerocopy_allow,
->+		.netns_assign_allow       = virtio_transport_netns_assign_allow,
->
-> 		.notify_poll_in           = virtio_transport_notify_poll_in,
-> 		.notify_poll_out          = virtio_transport_notify_poll_out,
->@@ -616,7 +622,7 @@ virtio_transport_seqpacket_allow(struct vsock_sock *vsk, u32 remote_cid)
-> 	struct virtio_vsock *vsock;
-> 	bool seqpacket_allow;
->
->-	if (!vsock_net_mode_global(vsk))
->+	if (!vsock_g2h_net_reachable(sock_net(sk_vsock(vsk))))
-> 		return false;
->
-> 	seqpacket_allow = false;
->@@ -634,6 +640,9 @@ static void virtio_transport_rx_work(struct work_struct *work)
-> 	struct virtio_vsock *vsock =
-> 		container_of(work, struct virtio_vsock, rx_work);
-> 	struct virtqueue *vq;
->+	struct net *net;
->+
->+	net = vsock_g2h_net_get();
->
-> 	mutex_lock(&vsock->rx_lock);
->
->@@ -682,10 +691,14 @@ static void virtio_transport_rx_work(struct work_struct *work)
->
-> 			virtio_transport_deliver_tap_pkt(skb);
->
->-			/* Force virtio-transport into global mode since it
->-			 * does not yet support local-mode namespacing.
->-			 */
->-			virtio_transport_recv_pkt(&virtio_transport, skb, NULL);
->+			if (unlikely(!net)) {
->+				virtio_transport_reset_no_sock(
->+					&virtio_transport, skb, &init_net);
+> My question is about memory containment before that happens:
+> if an application delays accept() indefinitely, how should the
+> receive memory of those pending connections be constrained by the
+> service's memcg?
 
-Why init_net?
+AFAIU, this cannot be constrained by memcg, and you need to
+configure some knobs (somaxconn, tcp_rmem, rmem_max)  to
+define a sane threshold per connection.
 
->+				kfree_skb(skb);
->+				continue;
->+			}
->+
->+			virtio_transport_recv_pkt(&virtio_transport, skb, net);
-> 		}
-> 	} while (!virtqueue_enable_cb(vq));
->
->@@ -694,6 +707,9 @@ static void virtio_transport_rx_work(struct work_struct *work)
-> 		virtio_vsock_rx_fill(vsock);
-> out_nofill:
-> 	mutex_unlock(&vsock->rx_lock);
->+
->+	if (net)
->+		put_net(net);
+https://lore.kernel.org/netdev/20250707213900.1543248-2-edumazet@google.com=
+/
 
-put_net() should handle NULL net, right?
 
-> }
 >
-> static int virtio_vsock_vqs_init(struct virtio_vsock *vsock)
->diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->index 88df82364f77..313ef263fd2d 100644
->--- a/net/vmw_vsock/virtio_transport_common.c
->+++ b/net/vmw_vsock/virtio_transport_common.c
->@@ -1315,8 +1315,8 @@ static int virtio_transport_reset(struct vsock_sock *vsk,
->  * loopback, this is the namespace of the socket. For vhost, this is the
->  * namespace of the VM (i.e., vhost_vsock).
->  */
->-static int virtio_transport_reset_no_sock(const struct virtio_transport *t,
->-					  struct sk_buff *skb, struct net *net)
->+int virtio_transport_reset_no_sock(const struct virtio_transport *t,
->+				   struct sk_buff *skb, struct net *net)
-> {
-> 	struct virtio_vsock_hdr *hdr = virtio_vsock_hdr(skb);
-> 	struct virtio_vsock_pkt_info info = {
->@@ -1355,6 +1355,7 @@ static int virtio_transport_reset_no_sock(const struct virtio_transport *t,
+> Test setup
+> ----------
 >
-> 	return t->send_pkt(reply, net);
-> }
->+EXPORT_SYMBOL_GPL(virtio_transport_reset_no_sock);
+> - Ubuntu 24.04, kernel 6.8.0-53-generic
+> - Kubernetes v1.35.0, cgroup v2
+> - Server container and Pod cgroups: memory.max =3D 512 MiB
+> - Private network namespace, somaxconn =3D 65535
+> - Server calls listen(65535), initially without calling accept()
+> - Client runs on a different node
 >
-> /* This function should be called with sk_lock held and SOCK_DONE set */
-> static void virtio_transport_remove_sock(struct vsock_sock *vsk)
->@@ -1478,9 +1479,14 @@ virtio_transport_recv_connecting(struct sock *sk,
+> The server container was privileged to set somaxconn in its own
+> network namespace. The host's somaxconn remained unchanged.
 >
-> 	switch (le16_to_cpu(hdr->op)) {
-> 	case VIRTIO_VSOCK_OP_RESPONSE:
->-		sk->sk_state = TCP_ESTABLISHED;
->+		/* An assign cannot see a socket that is not connected yet. */
->+		if (!vsock_maybe_set_connected(vsk)) {
->+			skerr = ECONNRESET;
->+			err = -ENETUNREACH;
->+			goto destroy;
->+		}
->+
-> 		sk->sk_socket->state = SS_CONNECTED;
->-		vsock_insert_connected(vsk);
-> 		sk->sk_state_change(sk);
-> 		break;
-> 	case VIRTIO_VSOCK_OP_INVALID:
->@@ -1736,8 +1742,6 @@ virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
+> The client established 256 TCP connections, then sent 64 KiB on
+> each connection, for a total of 16 MiB. The server subsequently
+> accepted all 256 connections without reading any data.
 >
-> 	lock_sock_nested(child, SINGLE_DEPTH_NESTING);
+> Results
+> -------
 >
->-	child->sk_state = TCP_ESTABLISHED;
->-
-> 	vchild = vsock_sk(child);
-> 	vsock_addr_init(&vchild->local_addr, le64_to_cpu(hdr->dst_cid),
-> 			le32_to_cpu(hdr->dst_port));
->@@ -1758,7 +1762,17 @@ virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
-> 	if (virtio_transport_space_update(child, skb))
-> 		child->sk_write_space(child);
+> Phase                                     Pending accepts   Total TCP
+>   Container           memcg
+>                                                accepts
+> Recv-Q       memory.current  sock
+> Baseline                                 0
+> 0                 8.49 MiB             0
+> Connected, no payload          256                        0
+>      8.49 MiB             0
+> Payload, before accept          256                        16 MiB
+>   8.49 MiB             0
+> After accept, no reads            0                            16 MiB
+>       33.82 MiB          25 MiB
 >
->-	vsock_insert_connected(vchild);
->+	/* An assign cannot see a socket that is not connected yet, and the
->+	 * check in vsock_assign_transport() above has since dropped
->+	 * vsock_register_mutex.
->+	 */
->+	if (!vsock_maybe_set_connected(vchild)) {
->+		release_sock(child);
->+		virtio_transport_reset_no_sock(t, skb, sock_net(sk));
->+		sock_put(child);
->+		return -ENETUNREACH;
->+	}
->+
-> 	vsock_enqueue_accept(sk, child);
-> 	virtio_transport_send_response(vchild, skb);
+> I used ss in the server's network namespace to observe the pending
+> accept count and the established sockets' receive queues. I also
+> read memory.current and memory.stat in both the container and its
+> parent Pod cgroup. Both reported sock=3D0 before accept(), and
+> 25 MiB after accept().
 >
+> The data was already queued on the server, but its receive memory
+> was only charged to the server's memcg when accept() was called.
 >
->-- 
->2.53.0-Meta
+> I did not exceed memory.max or test memory exhaustion, so this
+> does not demonstrate a node OOM or an absence of other network
+> memory limits.
 >
+> Current implementation
+> ----------------------
+>
+> I also inspected upstream v7.2, although I have not repeated the
+> runtime test on that kernel.
+>
+> sk_clone() still sets newsk->sk_memcg to NULL, with the comment
+> "sk->sk_memcg will be populated at accept() time" [3].
+> __inet_accept() then calls mem_cgroup_sk_alloc() and
+> __sk_charge() [4].
+>
+> I also found the discussion explaining why simply inheriting the
+> listener's sk_memcg is insufficient, particularly when a listener
+> is created in the root cgroup and passed to a process in another
+> cgroup [5].
+>
+> Questions
+> ---------
+>
+> Is the pre-accept accounting gap an intentional limitation of
+> memcg socket accounting?
 
+I think so.
+
+
+>
+> Has temporarily charging pending connections to the listener's
+> memcg, then reconciling ownership at accept(), been considered?
+
+Not sure, maybe Shakeel knows, but I think it would severely degrade
+scalability, and the change may surprise current deployments via OOM.
+
+
+> I realize this would need to handle different listener/accepter
+> cgroups and the root-cgroup listener case.
+>
+> If that is not a suitable approach, is there another mechanism
+> that should bound this memory on a per-service or per-memcg basis?
+>
+> For the Kubernetes change, we are holding off on treating
+> somaxconn as safe based solely on cgroup v2 until we understand
+> this better. Pointers to previous discussions would be appreciated.
+>
+> [1] https://github.com/kubernetes/kubernetes/issues/134194
+> [2] https://lore.kernel.org/all/20200222010456.40635-1-shakeelb@google.co=
+m/T/
+> [3] https://github.com/torvalds/linux/blob/v7.2/net/core/sock.c#L2542-L25=
+47
+> [4] https://github.com/torvalds/linux/blob/v7.2/net/ipv4/af_inet.c#L761-L=
+766
+> [5] https://lore.kernel.org/all/CAAVpQUDUULCrcTP4AQ31B5bfo-+dtw3H8CQGq9_S=
+Q7d28xXSvA@mail.gmail.com/
+>
+> Thanks,
+> Qifeng Guo
