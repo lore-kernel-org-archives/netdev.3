@@ -1,173 +1,229 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4971639792B
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 10:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8BD38C438;
+	Tue, 15 Sep 2026 10:34:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789468385; cv=none; b=V7kw9YXr6nUXUHsbwEQzGr2G/r5SQ5ar7Dh2oE3Jj3jy+afzlMhNaIpOaBII2IN3zyYhXecj6lbNDg2R53m8GeKu01KWAW3FT1xF7ORM1B4RpQieWntLYbprfLLXPAwg5gsnMOBCVEyMk08fnk9txNni3vbZu8bmyradq5nN37c=
+	t=1789468457; cv=none; b=LUZMPaSykWwSU89Pw5ltNqxnaLc27zfvV/UTAMU4pZA/+kuYXpmB34+XwsWTz4FVCB6Fo57q9WbS4OTkCw4cF+JtZFWUhc0i16cjPy7dL4BZf7g1Wg2idvNZliG52lSyoOUw/noK0m1YeZeRZzfdUQc7L8UwcvduIE3wlNhaXEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789468385; c=relaxed/simple;
-	bh=IMpvgEb64G6MDu8d41GunMygEmE2zoxuSzZCsZg1cK0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=demTBn5LLAJn9QemU87j6jP8RdDFI7dO87H1pCWa3W0DutpujJUZAEvmAc+B4qeVHotE9VFwcmMyJetTzUcWnv7XyqcpSAfat1b6quglbcT31teWZdz6dGvUdl22mWF5cO8zHtQ4IJ8uuIiXqIICfnPhscH2J15zT4bhNeL0Oxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LjPl1rRt; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789468457; c=relaxed/simple;
+	bh=UBzkm8sfFlelF87j09jVlqAKMXd3gOjZixvTSW1iNUM=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XeXWNCcgII8NAyjNpVCYQb8mdEJ56BldYgJcPZi4HqI0GnhqJkBP7OwPIJFiQoT4BrBRT4kcp3EVZiXHXyCukYXtfgQhAlsNCIhZ4iK9M7QkyjZ/h7VpzZRxWQLrinYF+CPUwK1ssoE9knHL7Z074SGF1SrfCHSWCz9KX7Cs63E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=UdDZpaPr; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LjPl1rRt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789468383;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=X4aFfoOaLNBY+Ab4zOG2d+H7sITNZn8EHiRQ7JSC1BI=;
-	b=LjPl1rRtoOjzQYrnHtwntkgtexOfGKEmJttkLOS4m41jcCD5hsk31GncjSe4ErX8di6aVM
-	Y+3x8sb4ZRBwHa7ZjWsZizx0Xc12q3K/BDZQzzSIntlw0VKn7DQOt4DkFPm/Mxk+9rho+X
-	Ma7DLYEeEu/qn9/7ScoQBlG4wLz6Am8=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-504-Q-OClTroOOSgxhLbjbvyPQ-1; Tue,
- 15 Sep 2026 06:32:57 -0400
-X-MC-Unique: Q-OClTroOOSgxhLbjbvyPQ-1
-X-Mimecast-MFC-AGG-ID: Q-OClTroOOSgxhLbjbvyPQ_1789468376
-Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7C7791964CCE;
-	Tue, 15 Sep 2026 10:32:56 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.48.83])
-	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 035CB426;
-	Tue, 15 Sep 2026 10:32:54 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: admin@rezlabs.io
-Cc: skalluru@marvell.com,
-	manishc@marvell.com,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH net] bnx2x: skip invalid DCBX priorities in bitmaps and FW config
-Date: Tue, 15 Sep 2026 12:32:47 +0200
-Message-ID: <20260915103247.119775-1-pabeni@redhat.com>
-In-Reply-To: <20260910080253.82432-1-admin@rezlabs.io>
-References: <20260910080253.82432-1-admin@rezlabs.io>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="UdDZpaPr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1789468456; x=1821004456;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=UBzkm8sfFlelF87j09jVlqAKMXd3gOjZixvTSW1iNUM=;
+  b=UdDZpaPrMhy9UxNDYdUQ2B9Vo+zb2aigrZK2mF/dN1kszowqBeQRZ+Ej
+   dH9izaiNg1Lf8B81lRq6JXWs5TCCI58ZNEqoQbdbgrOyAP+UIcS0x/E+l
+   EQNxbLCkU4L0CN+W/hrgzwhj3y/FTwtouppmpYkaY6KyWtHqDrGApMlGO
+   BkP0/QiRwF9N3/VQgAQmP6Q98oWaJJVUPuxHratEEH8yqkCkQFwcapCQ4
+   ZoMuYehqRKuOOf3AZi08YvI5wDztnGtAc/5UPpelIdurt/KO49rsCSkGx
+   04Qjvb5/JUymDoIXY7W5dNXAi/Owf16rcsTCu6rC9dljFVzpBmGRujT/I
+   w==;
+X-CSE-ConnectionGUID: 1ACFrffETBiX3sMYoaXxFA==
+X-CSE-MsgGUID: 0wEdiCWwSIuMmHBlYohsAQ==
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="295033993"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 15 Sep 2026 03:34:15 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Tue, 15 Sep 2026 03:34:14 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Tue, 15 Sep 2026 03:34:10 -0700
+Date: Tue, 15 Sep 2026 12:34:09 +0200
+From: Daniel Machon <daniel.machon@microchip.com>
+To: <netdev-bot+sashiko@kernel.org>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <horatiu.vultur@microchip.com>,
+	<steen.hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>,
+	<ast@kernel.org>, <daniel@iogearbox.net>, <hawk@kernel.org>,
+	<john.fastabend@gmail.com>, <sdf@fomichev.me>, <herve.codina@bootlin.com>,
+	<arnd@arndb.de>, <gregkh@linuxfoundation.org>, <mohsin.bashr@gmail.com>,
+	<richardcochran@gmail.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH net-next v6 12/14] net: lan966x: add PCIe FDMA XDP support
+Message-ID: <20260915103409.6cwnskzb2bl43mxv@DEN-DL-M70577.microsemi.net>
+References: <20260909-lan966x-pci-fdma-v6-12-6f48dab9d671@microchip.com>
+ <178904555117.219967.2055099842496630976@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+In-Reply-To: <178904555117.219967.2055099842496630976@kernel.org>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://netdev-ai.bots.linux.dev/sashiko/
----
-bnx2x: skip invalid DCBX priorities in bitmaps and FW config
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider:
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 0
+> 
+> - [Medium] Inconsistent XDP frame presentation between the two RX hooks
+>   of the same driver: after this patch lan966x has two in-tree XDP RX…
+> 
+> --
+> 
+> net: lan966x: add PCIe FDMA XDP support
+> 
+> This adds XDP support to the lan966x PCIe FDMA path, using contiguous
+> ATU-mapped buffers and a memcpy-based XDP_TX instead of the page_pool
+> scheme used by the platform path. The IFH and FCS are stripped before
+> the BPF program runs, and lan966x_xdp_setup() now skips the page_pool
+> reload for the PCIe case. Only XDP_ACT_BASIC is advertised for PCIe.
+> 
+> > diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c
+> > index 6cabbb8b47f2..02c021617a3e 100644
+> > --- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c
+> > +++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c
+> 
+> [ ... ]
+> 
+> > @@ -126,7 +127,123 @@ static bool lan966x_fdma_pci_rx_size_fits(struct fdma *fdma, u32 blockl)
+> 
+> [ ... ]
+> 
+> > +static int lan966x_xdp_pci_run(struct lan966x_port *port, void *data,
+> > +                            u32 data_len, void **xdp_data, u32 *xdp_len)
+> > +{
+> 
+> [ ... ]
+> 
+> > +     xdp_prepare_buff(&xdp,
+> > +                      data - XDP_PACKET_HEADROOM,
+> > +                      XDP_PACKET_HEADROOM + IFH_LEN_BYTES,
+> > +                      data_len,
+> > +                      false);
+> > +
+> > +     act = bpf_prog_run_xdp(xdp_prog, &xdp);
+> 
+> [ ... ]
+> 
+> > @@ -158,38 +275,33 @@ static int lan966x_fdma_pci_rx_check_frame(struct lan966x_rx *rx, u64 *src_port)
+> >       if (!lan966x_fdma_pci_rx_size_fits(fdma, blockl))
+> >               return FDMA_ERROR;
+> >
+> > -     return FDMA_PASS;
+> > +     /* Present the Ethernet frame (no IFH, no FCS). HW re-inserts the
+> > +      * FCS on TX; see lan966x_fdma_pci_xmit_xdpf(). May be overridden
+> > +      * by XDP. The FCS strip is unconditional because NETIF_F_RXFCS
+> > +      * is not advertised in hw_features.
+> > +      */
+> > +     *data = virt_addr + IFH_LEN_BYTES;
+> > +     *data_len = blockl - IFH_LEN_BYTES - ETH_FCS_LEN;
+> > +
+> > +     return lan966x_xdp_pci_run(port, virt_addr, *data_len, data, data_len);
+> >  }
+> 
+> [Severity: Medium]
+> Should the two lan966x XDP receive hooks agree on whether the FCS is part
+> of the window handed to the BPF program?
+> 
+> On the PCIe path, lan966x_fdma_pci_rx_check_frame() subtracts the FCS
+> before calling into the program:
+> 
+>         *data_len = blockl - IFH_LEN_BYTES - ETH_FCS_LEN;
+> 
+>         return lan966x_xdp_pci_run(port, virt_addr, *data_len, data, data_len);
+> 
+> On the platform path, lan966x_fdma_rx_check_frame() passes the raw BLOCKL
+> value and lan966x_xdp_run() only removes the IFH:
+> 
+> drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c:lan966x_fdma_rx_check_frame() {
+>         ...
+>         return lan966x_xdp_run(port, page, FDMA_DCB_STATUS_BLOCKL(db->status));
+> }
+> 
+> drivers/net/ethernet/microchip/lan966x/lan966x_xdp.c:lan966x_xdp_run() {
+>         ...
+>         xdp_prepare_buff(&xdp, page_address(page),
+>                          IFH_LEN_BYTES + XDP_PACKET_HEADROOM,
+>                          data_len - IFH_LEN_BYTES, false);
+> }
+> 
+> That BLOCKL value still contains the FCS, as shown by the trim done later
+> on the same path:
+> 
+> drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c:lan966x_fdma_rx_get_frame() {
+>         ...
+>         skb_put(skb, FDMA_DCB_STATUS_BLOCKL(db->status));
+>         ...
+>         skb_pull(skb, IFH_LEN_BYTES);
+> 
+>         if (likely(!(skb->dev->features & NETIF_F_RXFCS)))
+>                 skb_trim(skb, skb->len - ETH_FCS_LEN);
+> }
+> 
+> So xdp.data_end points four bytes past the end of the Ethernet payload on
+> the platform path, and exactly at the end of the payload on the new PCIe
+> path. Both windows stay inside the DMA buffer, so this looks like a
+> behavioural difference rather than an out-of-bounds access.
+> 
+> A program that parses backwards from data_end, compares data_end - data
+> against an L3 length field, or trims via bpf_xdp_adjust_tail() would get
+> different results depending on whether the switch is platform- or
+> PCIe-attached. The PCIe framing matches the usual XDP convention of no
+> FCS, which would make the platform hook the one that differs from
+> convention.
+>
 
-This patch avoids shifting by INVALID_TRAFFIC_TYPE_PRIORITY (0xffffffff)
-in bnx2x_dcbx_map_nw() and bnx2x_dcbx_fw_struct() by skipping any
-traffic type whose stored priority is outside 0..MAX_PFC_PRIORITIES-1.
-The stored sentinel itself is left untouched.
+They should, and the PCIe framing is the one to keep. The strip was asked for by an
+earlier round of this review, in v3, because the PCIe hook honours the post-program
+window - lan966x_xdp_pci_run() writes back xdp.data_end - xdp.data and XDP_TX uses
+it - so an FCS left in there would be delivered as payload whenever a program
+touched the tail. The platform hook does not use them for XDP_PASS or XDP_TX at
+all - it passes the pre-program length instead.
 
-> diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_dcb.c b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_dcb.c
-> index 9af81630c8a44..e429e64d589d4 100644
-> --- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_dcb.c
-> +++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_dcb.c
+> > diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+> > index e089c08b9c37..9ada497767c6 100644
+> > --- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+> > +++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+> > @@ -874,11 +874,13 @@ static int lan966x_probe_port(struct lan966x *lan966x, u32 p,
+> >
+> >       port->phylink = phylink;
+> >
+> > -     /* XDP is not supported on the PCIe FDMA path. */
+> > -     if (lan966x->fdma && !lan966x_is_pci(lan966x))
+> > -             dev->xdp_features = NETDEV_XDP_ACT_BASIC |
+> > -                                 NETDEV_XDP_ACT_REDIRECT |
+> > -                                 NETDEV_XDP_ACT_NDO_XMIT;
+> > +     if (lan966x->fdma) {
+> > +             dev->xdp_features = NETDEV_XDP_ACT_BASIC;
+> > +
+> > +             if (!lan966x_is_pci(lan966x))
+> > +                     dev->xdp_features |= NETDEV_XDP_ACT_REDIRECT |
+> > +                                          NETDEV_XDP_ACT_NDO_XMIT;
+> > +     }
+> 
+> [Severity: Medium]
+> Both paths now report the same NETDEV_XDP_ACT_BASIC bit from
+> lan966x_probe_port(), so is there anything in the uAPI that lets a
+> program distinguish the FCS-included window of lan966x_xdp_run() from
+> the FCS-stripped window of lan966x_xdp_pci_run()?
+> 
+> Would it make sense to make one of the two hooks match the other so that
+> the frame presentation is the same for identically-advertised netdevs?
 
-[ ... ]
+Same as above - the correct handling is removing the FCS, so the platform hook
+is the one to move. There is no uAPI signal to describe the difference with
+either, so converging is the only option.
 
-> @@ -1871,6 +1878,9 @@ static void bnx2x_dcbx_fw_struct(struct bnx2x *bp,
->  
->  	/* Fill priority parameters */
->  	for (pri = 0; pri < LLFC_DRIVER_TRAFFIC_TYPE_MAX; pri++) {
-> +		if (ttp[pri] >= MAX_PFC_PRIORITIES)
-> +			continue;
-> +
->  		tt2cos[pri].priority = ttp[pri];
->  		pri_bit = 1 << tt2cos[pri].priority;
->  
-
-[Severity: High]
-Does this continue change what the firmware is told about unmapped
-traffic types?
-
-When the DCBX app feature is disabled or reports an error,
-bnx2x_dcbx_get_ap_feature() fills the whole table with the sentinel:
-
-	bp->dcbx_port_params.app.enabled = false;
-	for (index = 0 ; index < LLFC_DRIVER_TRAFFIC_TYPE_MAX; index++)
-		ttp[index] = INVALID_TRAFFIC_TYPE_PRIORITY;
-
-Before this patch, the two assignments in bnx2x_dcbx_fw_struct()
-truncated that u32 sentinel into the u8 HSI fields, so both
-tt2cos[pri].priority and pfc_fw_cfg->dcb_outer_pri[pri] ended up as
-0xFF, which is the value bnx2x_fw_defs.h documents as "not mapped":
-
-	/* used by array traffic_type_to_priority[] to mark traffic type \
-	that is not mapped to priority*/
-	#define LLFC_TRAFFIC_TYPE_TO_PRIORITY_UNMAPPED 0xFF
-
-With the new continue, both fields stay 0 from the memset earlier in
-bnx2x_dcbx_fw_struct(). Since 0 is a valid 802.1p priority, doesn't
-this now tell the firmware that the NW, iSCSI and FCoE traffic types
-are each mapped to priority 0, rather than being unmapped?
-
-The only early return in bnx2x_dcbx_fw_struct() is:
-
-	/* to disable DCB - the structure must be zeroed */
-	if ((bp->dcbx_error & DCBX_REMOTE_MIB_ERROR) && !mfw_configured)
-		return;
-
-which tests a different error bit than the app error/disabled bits, so
-the sentinel state does reach the loop. The UBSAN "exponent 255" report
-in the commit message confirms that.
-
-The values are not driver-local bookkeeping. bnx2x_dcbx_resume_hw_tx()
-calls bnx2x_dcbx_fw_struct() and then issues BNX2X_F_CMD_TX_START,
-which reaches bnx2x_func_send_tx_start():
-
-	for (i = 0; i < ARRAY_SIZE(rdata->traffic_type_to_priority_cos); i++)
-		rdata->traffic_type_to_priority_cos[i] =
-			tx_start_params->traffic_type_to_priority_cos[i];
-
-	for (i = 0; i < MAX_TRAFFIC_TYPES; i++)
-		rdata->dcb_outer_pri[i] = tx_start_params->dcb_outer_pri[i];
-
-so both arrays go into the DMA-resident flow_control_configuration
-posted with RAMROD_CMD_ID_COMMON_START_TRAFFIC.
-
-Would it work to keep the firmware encoding and only skip the shift,
-for example:
-
-	if (ttp[pri] >= MAX_PFC_PRIORITIES) {
-		tt2cos[pri].priority = LLFC_TRAFFIC_TYPE_TO_PRIORITY_UNMAPPED;
-		pfc_fw_cfg->dcb_outer_pri[pri] =
-			LLFC_TRAFFIC_TYPE_TO_PRIORITY_UNMAPPED;
-		continue;
-	}
-
-For accuracy: tt2cos[pri].cos was already 0 before the patch, because
-the u16 pri_bit = 1 << 255 evaluated to 0 in practice and the COS match
-loop never fired. The encoding changes are limited to
-tt2cos[pri].priority and dcb_outer_pri[pri] going from 0xFF to 0.
-
-The commit message says:
-
-> Keep the stored sentinel so disabled-app state remains visible; skipped
-> firmware entries stay zero from the existing memset.
-
-and:
-
-> Valid 802.1p priorities 0..7 keep the previous mapping and firmware
-> encoding.
-
-Could these be reworded to state that the firmware encoding for the
-invalid/unmapped entries does change from 0xFF to 0, and why that is
-considered equivalent? The commit message also notes the driver "was
-not rebuilt or loaded", so this part is untested against firmware.
--- 
-This is an AI-generated review.
-
+> 
+> --
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909-lan966x-pci-fdma-v6-0-6f48dab9d671%40microchip.com
