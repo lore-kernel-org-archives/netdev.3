@@ -1,157 +1,138 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DE84BB5A7
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 16:57:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3232137DAA9;
+	Tue, 15 Sep 2026 16:58:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789491454; cv=none; b=ujyxLTrNA/NZz9/LxRGQRhDIeTYcnMLbu+cO6CwHFS3ea9RXmkwX6aLrstDqyYANwb4N7Hk30xUupL8xd6BNiveDLIKWx6G03VrqDqdxenGDCumyCeKaEcp3P7fMcfvax3SQLVFt4RX5nmvlwFFPziJ7TCKxfgAqRGxxDQr/438=
+	t=1789491502; cv=none; b=JDufRno4VDwcaLFxfyQ92vxqFoWKyEviiM3RVrC4s7dpO4nDqEViKRyZ2kaX4U8PXMU3ei3iR6CIHAtYMxK3vYXmk0ys4cyNmHZD+X7xMR9soa0ohhA6obuX2oBL16Itp/N6mKYGtubsGje97+DeQySSCn5Jcea1eA/KfY3dP78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789491454; c=relaxed/simple;
-	bh=UGQOSKqIrs/SiqDtxOFHpCo7Bu74vgweEvsNVqBBjrw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dxoXbJBidq9PGzd6FOhe6uFL1XUDGlO5Y2nAQ7Tsb+QvKWO5WSyReYbOqTxIlx5AoNjd8jWe1fp+3n6p4UGcN/2nb754eKVj3vJwPh73fnLexN7TXA+HSgez6vNe6I4KBXxBXtmAR0Ya3bAVdwkTNIGN0TYru1/KOh6HLtdko4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Qt68yUx+; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=q1pYs+1E; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789491502; c=relaxed/simple;
+	bh=i4/iwR4TYPYiKzsSzezhQodaLtViQj+bGNSvh82u/Zc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=aysJ1hofdc4IICWwZwQ2c1dQR9UhbNLfRN1Wq0P8bre8GP9PKyZz6f9P9NxXqTSyRpnQxKzvRyxDRR2gmjIAwxKYuZ8hRvKlR8NgNpqG2HdZxVUBeZfD0ZgfnZ1Hw96RKQqPdQvXy0H5YmbE2A2Z239d2YJsHsN12dJPM8FuNvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dwj1QLWW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qt68yUx+";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="q1pYs+1E"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789491444;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lVwyrtqiseLR+Flggta8C18yP1zmqacQADadqELow/g=;
-	b=Qt68yUx+1GhhRslqSphHTmbfFvhhRWSDtZYaRwILB0VH5ty7l7I82fiKGKJUlVpFNkp8Go
-	sO19/ETPiC4/lgL6Fvu23XM531f0Pa/xoCUBkMEWCXNMlVEmjWFrfWun+5J1BMFjeD2VXm
-	+cj162VoD1RCkNs+tmAQhiU474VfuLU=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-355-24q38WKEOOiweMqKTrrfZQ-1; Tue, 15 Sep 2026 12:57:22 -0400
-X-MC-Unique: 24q38WKEOOiweMqKTrrfZQ-1
-X-Mimecast-MFC-AGG-ID: 24q38WKEOOiweMqKTrrfZQ_1789491442
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49e65f2f1baso34485865e9.3
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 09:57:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789491441; x=1790096241; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=lVwyrtqiseLR+Flggta8C18yP1zmqacQADadqELow/g=;
-        b=q1pYs+1E3+ddnw2YbDv8FszSaPIRmxowpUQlSM9xlQ/i4LiawhX9O3Z9IY6yq8dBwY
-         3wL1ZeiaBFslOlKzwUkNnOEmOcPS6WpD0SNzpPokL4tWNqxA0oxm9WBJtRwrVmadKyCn
-         L9xrYQ3dugF5KXlvKdE+asqaQMFRLdpdiYu/8HHRmW+HhcdR+xvqOIQgEO+qVPQEJ683
-         /OS4rPxMxhqDIoSE66JAn+q+iW1+G87RloDuxwWBSb+kqv7u6+JaLtbEHY8h8u3vdP/0
-         ljXyzHt6jdslMEeevh5K5YKIqcu/8mdhSvULAQ+fYXG93Hv2nH695eyb8q9m/MPCCu+H
-         y2FQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789491441; x=1790096241;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=lVwyrtqiseLR+Flggta8C18yP1zmqacQADadqELow/g=;
-        b=kaGnV7KuNJq7U9SdkwbmYYG8MLerYMxzZo5GFwCS06F5Ef2MM85i5WY6RKBQ0dbIOO
-         VEEknBvbflLOyjaFw1yHPhcbrUn4qVyR+ZvmI0ImVVpzlFd3avDYX/D4fJd2aQ/dTtQ1
-         vVbFg2xnM3/BGxEwnAL3LoaCM0Gi/gZnb8EZF/0+FpVjsG+eD7aVRxiksCgt6C5EfPp5
-         T3rODcDSOdmd0Y1evTO8N2LfIV69F7W9E+KBqKGhCi3u9hndOEojDKljreu7vDZUTY11
-         SHLVXO1O0hV9mACufQwP4SueQDyCfbwZfi1kbK5mYG85wGnLITqHx0/dFspmoIyGXfbD
-         PvJQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx5lLs9choiYR+ptQ8Mil4ok5YIezcHKnbrsuYYPTuh6sFgJmPHhzISfFrdiPqyee19ojhK7I0=@vger.kernel.org
-X-Gm-Message-State: AFuF++mnNSW2UC/8fnMmb2NpQ6SJYO1Gz9hXKfgH/CMQAgb1o2h+9cbR
-	jdKY0nDfSBA2eEpvNpymwL3JJYVPxg2XQbLVW5eyRiOgjspG1QVSpnh2MW9sJu5RXZbYhwOeCyd
-	5MO9sF2yjUp5ETfgb7otiQxU8kAn1g08OY2WQmoanLhtIFjmLmoL7Ct/V3A==
-X-Gm-Gg: AYBFou2CkLd9IVFox5VVQxlVvkJF54BX9WXL+MR4tKWIEoctvOjcvqfvLFoTAkq4g1N
-	cQt/JWTkY8wA2FD2IlVsTt9ZV42UpRUjtWBygcDYz0ppzsfuTr5y8lxNIU3YGBvTipdCEZfNyp2
-	aS5N15lEqtKneZm6Qd0mgzbYVlZVX8fWNy/SK7lT2/ll+uRDy6EwQ7Pp1LhuBASXAWm9gX0VF2K
-	TYSRujStze4COcFa4NB7+K58w38aXgVGsS7kuXsG6YVKWR5mmSzJAoN601QFCk3uNWokrnbxWTF
-	pzhgfokD2cbgxOh2lPBWhfpaaAUnVvfUqHu7LAh7NSl7eqWT3Brn7fl8sOfoeNQr4tlD+SoZv9g
-	2GMoY89DUtWjChx7mnQ0ru+w7FQF7CNYim0/yBoKixqu99g==
-X-Received: by 2002:a05:600c:4e47:b0:49c:fa20:cc02 with SMTP id 5b1f17b1804b1-49e7a677cdbmr79242465e9.25.1789491441605;
-        Tue, 15 Sep 2026 09:57:21 -0700 (PDT)
-X-Received: by 2002:a05:600c:4e47:b0:49c:fa20:cc02 with SMTP id 5b1f17b1804b1-49e7a677cdbmr79242155e9.25.1789491441110;
-        Tue, 15 Sep 2026 09:57:21 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-53-30-11.retail.telecomitalia.it. [79.53.30.11])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e83d9fae9sm3560385e9.6.2026.09.15.09.57.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 09:57:20 -0700 (PDT)
-Date: Tue, 15 Sep 2026 18:57:15 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Luigi Leonardi <leonardi@redhat.com>
-Cc: Aldo Ariel Panzardo <qwe.aldo@gmail.com>, 
-	virtualization@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] vsock: ignore empty child namespace mode writes
-Message-ID: <aql3oxZkJIMT46hS@sgarzare-redhat>
-References: <20260915111417.2726515-1-qwe.aldo@gmail.com>
- <20260915141547.3010692-1-qwe.aldo@gmail.com>
- <aqli0Mq_jv28h7eW@leonardi-redhat>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dwj1QLWW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CC21F000FF;
+	Tue, 15 Sep 2026 16:58:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789491500;
+	bh=DhhkI+gCW/CKJwCKSjhSiYlpELpksTa48mZKJjz6KQU=;
+	h=From:Subject:Date:To:Cc;
+	b=Dwj1QLWWrUs9kpawpZzG55uPG/buJNut9cFxs+/Q5PapdBb379ALSG1IiwrRK1GOT
+	 CQ9CLl5C+fXocAVoBv9ecpBNX4pBk2NePcsnI13DGPwFgussL0GE73JkhJDQUOpD4b
+	 rz6h+oLe0rPhG3obcxl0XdoEE/iaI85Sq+06OEOK5ThF3cV8UpKJA3nbEHqHdSPyh0
+	 rqP9Et+VcINOj+83UeIEIh5b5gg4QNvDNZVNFbuJLs9dID9e84Yub0FeHL8hG0VEFm
+	 28dO1hS3yJ/cx8bv0XrxylV2Kg/yGuJkeq3vUVXPDbQ6camk33jj3QSMYO1iB+FiEs
+	 oxK+pFmVHQ4SA==
+From: Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH v3 0/5] nfsd/sunrpc: allow userland to handle rpcbind
+ registration
+Date: Tue, 15 Sep 2026 12:57:41 -0400
+Message-Id: <20260915-nfsd-norpcb-v3-0-3c60d49ade02@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <aqli0Mq_jv28h7eW@leonardi-redhat>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/1XMSwrDIBSF4a2EO65Fr0aSjrqP0kF8JdKiQYu0h
+ Oy9JnTQDM+B/1sg2+RthkuzQLLFZx9DHfzUgJ6GMFriTd2AFCXtKSfBZUNCTLNWBJk2enAopFJ
+ QizlZ59+7drvXPfn8iumz44Vt789h9OAURihRwrSsQyO50NeHTcE+zzGNsEEF/2NxjLHGvEPJt
+ XRtr/AQr+v6BeLAowLkAAAA
+X-Change-ID: 20260903-nfsd-norpcb-21cdcaf246bb
+To: Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+ Chuck Lever <cel@kernel.org>, NeilBrown <neil@brown.name>, 
+ Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
+ Tom Talpey <tom@talpey.com>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Donald Hunter <donald.hunter@gmail.com>, Shuah Khan <shuah@kernel.org>
+Cc: linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ Jeff Layton <jlayton@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2955; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=i4/iwR4TYPYiKzsSzezhQodaLtViQj+bGNSvh82u/Zc=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBqqXkl99V3efaeRQtByxE0NWUcZmZ439lWk42EP
+ LrTG9WWZ+mJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaql5JQAKCRAADmhBGVaC
+ Fa0ZD/96M6aYJf+0JxvHX9ddfzEQMrQDsqC+ckxGxzCIoM63qWto9YYLaCGPLRIAsTpe4caghb6
+ I1ibNqPrU+vD3Gh7/jz/h1BKLs59z2S6oCg7x/uc8fBG89f/uAjDctKLKVNlfiBDSrbGAQUadEB
+ ZA7l94aTrZOM61G8Uge9/gjhkkHbD4ZYn354W9eA/kmZ1wvTwfL/6VpUoJNZSlplCEIUxNzultY
+ YlbzJizwB21Bfo3rd8lBEzAqShAYnSw3rLSLzOJdFHM0oqwh+KgQ+GDDFv1BGN1lhdQemXOzgcI
+ v1x99TcO1uJjO9btaKk1FVNvjZLllzH9wDiCTL4L+tHIC0j6fgr6dHF5kynfftgGKMmfo9z6dm6
+ /mFcc6FjInxPwWAFyedeLwKk7Klurye3VyVC4krAUy+iF+2IXXAAvc60+f1XDs7XERmYxuQkW92
+ toDsKR5KHbNE9dPUUn8GsMLyxxrQPsggIWD4o1tmDHJWKIVYvsy+V7L+Vt07j5aeNqpqr98WGu8
+ IlP51r16pA4j4CRYCXO5KHB5TDTF7Wr6bWNGDlXRwmcH1xmjgfyVlFEyj9pN304ZFFX6AYDS6sL
+ JR2ovSVNu0lQUfOk8slsRf1vxe4xP/bry+3M5zuBWVFU1fwP6caNe0fMoTq14zxwNVxOTHBXBI3
+ fR27Jfe2DqwajOw==
+X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
+ fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
 
-On Tue, Sep 15, 2026 at 06:32:59PM +0200, Luigi Leonardi wrote:
->Hi Aldo,
->
->On Tue, Sep 15, 2026 at 11:15:47AM -0300, Aldo Ariel Panzardo wrote:
->>__vsock_net_mode_string() returns success without updating new_mode when
->>the transfer length is zero. Its caller then reads the uninitialized enum
->>and may permanently store a stack-derived value in the write-once child
->>mode.
->>
->>Return before inspecting or storing new_mode when no bytes were
->>transferred. This also prevents an empty write from locking the current
->>mode.
->>
->>Fixes: eafb64f40ca4 ("vsock: add netns to vsock core")
->>Cc: stable@vger.kernel.org
->>Signed-off-by: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
->>---
->>net/vmw_vsock/af_vsock.c | 2 ++
->>1 file changed, 2 insertions(+)
->>
->>diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
->>index 622dbd0467..816d25b314 100644
->>--- a/net/vmw_vsock/af_vsock.c
->>+++ b/net/vmw_vsock/af_vsock.c
->>@@ -2883,6 +2883,8 @@ static int vsock_net_child_mode_string(const struct ctl_table *table, int write,
->>				      vsock_net_child_mode(net), &new_mode);
->>	if (ret)
->>		return ret;
->>+	if (!*lenp)
->>+		return 0;
->>
->>	if (write) {
->>		/* Prevent a "local" namespace from escalating to "global",
->>-- 
->>2.43.0
->>
->
->Code LGTM.
->Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
->
->To reproduce it, I suppose we need a kernel that does not come with
->`CONFIG_INIT_STACK_ALL_ZERO` set.
->
->@Stefano do you think it's worth adding a test for this case?
+This version fixes a few problems that Chuck and agentic review pointed
+out. Original cover letter follows:
 
-Not a strong opinion on this on my side.
+While working on the recent hardening patches for the nfsd listener
+netlink interface, Chuck mentioned that we could allow userland to
+handle rpcbind registation itself.
 
-Thanks,
-Stefano
+This adds such a mechanism to the netlink listener set interface. The
+main idea is to add a new optional flag to the netlink downcall that
+tells the kernel to skip rpcbind registration altogether for the nfsd
+listeners.
 
->
->Just out of curiosity, how did you find this bug?
->
->Thanks,
->Luigi
->
+Note that NLM registration is not affected and is still handled by the
+kernel.  Handling that is trickier since it can be started by the
+client.
+
+Patches to nfsdctl will follow.
+
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+---
+Changes in v3:
+- Exempt an empty listener list from the rpcbind ownership check.
+- Drop the dead nfsacl test in nfsd_version_registerable().
+- Set an extack when the listener_set reply cannot be built.
+- selftests: check nlmsg_len against the recv() count before parsing the reply.
+- selftests: cover teardown in both ownership directions.
+- Link to v2: https://lore.kernel.org/r/20260914-nfsd-norpcb-v2-0-38263c6f59b2@kernel.org
+
+Changes in v2:
+- Refuse the legacy portlist add-fd write against a userspace-rpcbind
+  serv. nfsd_create_serv() cannot flip ownership back for an existing
+  serv, svc_addsock() expects svc_register() to register the listener,
+  and there is no way to tell the rpcbind owner about it.
+- selftests: require NFSv3 in the reply and skip where NFSv4 is not
+  built, rather than passing when neither is present.
+- selftests: cover the portlist refusal.
+- Link to v1: https://lore.kernel.org/r/20260910-nfsd-norpcb-v1-0-b4d5182d634c@kernel.org
+
+---
+Jeff Layton (5):
+      SUNRPC: allow a service to opt out of rpcbind registration
+      NFSD: add a userspace-rpcbind flag to listener_set
+      NFSD: honour the userspace-rpcbind flag in listener_set
+      NFSD: report registerable programs in the listener_set reply
+      selftests/nfsd: exercise the userspace-rpcbind listener_set flag
+
+ Documentation/netlink/specs/nfsd.yaml              |  55 ++-
+ fs/nfsd/netlink.c                                  |   5 +-
+ fs/nfsd/nfsctl.c                                   | 195 +++++++++-
+ fs/nfsd/nfsd.h                                     |   4 +-
+ fs/nfsd/nfssvc.c                                   |  66 ++--
+ include/linux/sunrpc/svc.h                         |   2 +
+ include/uapi/linux/nfsd_netlink.h                  |  20 +
+ net/sunrpc/svc.c                                   |   5 +
+ net/sunrpc/svc_xprt.c                              |   2 +-
+ .../testing/selftests/nfsd/nfsd_netlink_listener.c | 404 ++++++++++++++++++++-
+ 10 files changed, 718 insertions(+), 40 deletions(-)
+---
+base-commit: 4d46e877c21d07ddcad03da7f3b05ad2cc22b5b3
+change-id: 20260903-nfsd-norpcb-21cdcaf246bb
+
+Best regards,
+-- 
+Jeff Layton <jlayton@kernel.org>
 
