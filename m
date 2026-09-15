@@ -1,57 +1,57 @@
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28C4481657
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:26:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F390E488213
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 08:26:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789460777; cv=none; b=Je3xcwlOfJwVseFHmqctKFm1vz5FoYwTR5Q/8H1mZPI3Y41+LgotKtqFpo0N+5EzPyqOYwQU5RoYVUszzbkaTnyn4Q7OmSrN9vbSSewVfKs+f9cP8qOq4NkUdfqftN8IrRZ6rrutl2+Eb2FepATBFq2emBfLgPxcOe7N9FIiijI=
+	t=1789460799; cv=none; b=ZUPmpwWbRRVj1sjZf2n2F6rbhvCVx39z8XbUxTcmjrZ2GpGQVvNV8vKqX9FvIU59WAXR8e0XuDT72gVE2hNTm5XApaeR7BOpAzDCbNoJskjOq97Hn5fY9NyL8hz/kp3StDerwpjV43Fuz33dh9ylzZxFgJe+0nK2wbtKYy4j7v4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789460777; c=relaxed/simple;
-	bh=EqxPY8uDyH4sIF56bisQGVYV4UgUVWe6Fa26kaXaoOs=;
+	s=arc-20240116; t=1789460799; c=relaxed/simple;
+	bh=JbSID6fXeQe1AsKDTvJAsGmW8NhLrp6cj1GLFUVFC9I=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=b+TuCbyzaz6wTuMaz8iqpfJm9y/3O6DFix2ZLCz3Dn7Zm981uLNeAbpZbs5tL/MAMmP2Dw6bD0LwS1O98KVvjCNoBVTWlRTUqeTZJo+tfba6FifCIHQ7N6QXTn9bzIOMpeiZ8liYHrSM5Y8GNEraXntQxXD3ydULSaK3ySSCaHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--morbo.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ukPOMExH; arc=none smtp.client-ip=209.85.219.71
+	 To:Cc:Content-Type; b=GYkXGfAwyYHAjh4kBcxnd4+gqeS88XEhURAQrcnAjcJXlCVZq0BfG90hu7hm9f6mZXuMqhoSy4Jg8E945vcCH5gga06w7JTxD5BJlRFxsvLZV11Ycmzo/HbFgeOLpgaqxhKKhyS50gE3p4TApKQLqTKt88B9aF+nxlIhZocJpxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--morbo.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VFhLIXL7; arc=none smtp.client-ip=209.85.222.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--morbo.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ukPOMExH"
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-90e98e74535so86140936d6.1
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 01:26:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VFhLIXL7"
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-939a6937513so656206485a.3
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 01:26:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789460774; x=1790065574; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789460796; x=1790065596; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=XkXp/XZtfYpYjiXJEDXdoQGA1NlHq2kVyqBGidLpG58=;
-        b=ukPOMExHMQAHcWf61jE5xIoG2HGULISsQPlCdCLIpqBX8ETfFyVObIV8WLr1jogNRS
-         0AAC+FiBr0vrMuSTAnr/EldTVVCbw2TFSY2UHJL8ytEmYMMTtOwAnZPBoitrc85Rw3bd
-         OaIMgxR93GUHZ7cjFgcQM+jIWQIYq474hNtjNcHraDeYInEzjGYJCuR4rVU23HhP+GBP
-         2LA8mhBEr5q9a/dImkg60xRXKmJdGF5XtumnBqa/BUxSre/YyPSZAMZHxqM/D7CK4KRS
-         Hqtcn8ly8S3YkAh3zDMNLa/768AgLgeeGXEWB9xYkYq49qqwLiH98CsNifFYCSXjhH+4
-         +kTg==
+        bh=6A34g5ncwO0UUCNmS7GYn32h6CG74u/Wx3k3q5PSbh8=;
+        b=VFhLIXL7TX0MEMn71U8mpzLJIwWkhTyTyiiuBYeAtXbXEhhuEe8T5ODWwap56EfX6D
+         E1gQpTWwnWv6mkvY/IumLMrl+WJ2ZvrQs9gC1WtKAuqw5Ftg0n7MPK562qLPrBW7lTSA
+         /R9M6AuM7h+y8SFW+Rrwh/I1cGjicJlkNhDWVhz/yt0kAQDRu0O/V50BEkR+d2tHImmY
+         trZB/O3EtZowkTjJRMnEtK0DxgAXqihgZxeXZCUq6ZT603Q0nxgS9GufAVYMQIpEMDf0
+         IWSrct8BI3IVAJP8cwe5RQL+HR+Q7cOv5X0msasb9yuBFtSIsCsCoJ1S+xQaQjOn4xbc
+         liYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789460774; x=1790065574;
+        d=1e100.net; s=20260707; t=1789460796; x=1790065596;
         h=content-transfer-encoding:content-type:cc:to:from:subject
          :message-id:references:mime-version:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=XkXp/XZtfYpYjiXJEDXdoQGA1NlHq2kVyqBGidLpG58=;
-        b=nspLrnPnUvwMOTbFnFta7Ca0grEgTQZ6Rly1YKhJ9NspaDDt+MJ3rErww8kUtaXr8v
-         LCIiB2S5SLS8dMYnYpvGfs69Nq29CZAYPUPutevwhaxYbX4MB+lAlTQc9dfC3HWxh+4s
-         /JEhhykt+0VVM5ldfzUtwKRgEC8pZGzZSJ9voo+fiO9IptV+R39ViQxkqyQsUq51bfFE
-         TllskgPYx+UGJhxTVIOsAHDOjyi0WDrwuqslgHsalL617w99vKUk7x9Q/cfX17sXyfWz
-         rIcBs+rBdDsTbTu336UrM/1nzq3nU0nyABvvnmLTA2nVRU1AAEvtFpsgVZQdRxmFlXyB
-         j3og==
-X-Forwarded-Encrypted: i=1; AKwUvBw+mTkXmG1kJIIbUe5R2mR7316bikXJM68QCShvpyLz7apmsKXu6J1KBP7vnwdQaqi/rMHg32w=@vger.kernel.org
-X-Gm-Message-State: AFuF++kmjVSWaQegvEP0x3T2vW8Xblr05p7Kc6vsvPDP+rN1WqW1F5v1
-	lmJh0ukDbQoHRKYXVUiglM3/tCiHBsnDdCNcQbSfFmffcg/ZZsQW+elascxYTanEd4AL9CfMCVA
-	T
-X-Received: from plbkc7.prod.google.com ([2002:a17:903:33c7:b0:2dd:630:cea4])
- (user=morbo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1965:b0:2d3:716e:e2ae
- with SMTP id d9443c01a7336-2dd6c5ef019mr154580855ad.6.1789460411846; Tue, 15
- Sep 2026 01:20:11 -0700 (PDT)
-Date: Tue, 15 Sep 2026 08:18:37 +0000
+        bh=6A34g5ncwO0UUCNmS7GYn32h6CG74u/Wx3k3q5PSbh8=;
+        b=UHXiEltO1lPT/B94OxuJSJ51cn57EJlqa/fZ5yg+QFdQo86bLMEV7uJ48Hum8jiXg2
+         cBNjY3DiPLWAaH1/O0E9BkRHG4Z3yi97/djMSE7/gUTlywcjioE1KIUV5l+O08EFoxDK
+         vmOXUTbTyjkTGZhz/NvPimV68QSSc1uxtinqlVpPznIfwXCOliiGBpH43UsST84i0BFF
+         H84Wi61QItajpyxTAtnW3MBYEYXy8yL62kdP39pmgeQEUrqqguSukMzFdQy0Xo+rODHu
+         9gAmiuDSYen3a9/AyIsPC9aW0w5gKI4oJ/xhF9UHmvvDCebTS3xiT0iZsp/Ys88G0Db3
+         InEg==
+X-Forwarded-Encrypted: i=1; AKwUvBz914D9cmWn4pMaXqqqAAU2YeHvY2GH06KrM535ecOKuInAO3RDnSMjzyD2QUxt+00V3IoZQeU=@vger.kernel.org
+X-Gm-Message-State: AFuF++lCMKqto323YCzNJOnWc3QySec2g38qr36gj+44kIIbuKWShxy5
+	3FhNDuR2Q/LtWaxdHkjJZeeSbRxplFwrBQNVklLdwIt1F4akFAWDECZ/zAmWLrLGWZS9lYAP/ob
+	g
+X-Received: from plyw21.prod.google.com ([2002:a17:902:d715:b0:2db:8c06:4fa6])
+ (user=morbo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f712:b0:2db:20fa:9443
+ with SMTP id d9443c01a7336-2dd6c6db8c2mr126055895ad.13.1789460413607; Tue, 15
+ Sep 2026 01:20:13 -0700 (PDT)
+Date: Tue, 15 Sep 2026 08:18:39 +0000
 In-Reply-To: <20260915081910.4142719-1-morbo@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -61,8 +61,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260915081910.4142719-1-morbo@google.com>
 X-Mailer: git-send-email 2.55.0.1032.g73a4cd73de-goog
-Message-ID: <20260915081910.4142719-21-morbo@google.com>
-Subject: [PATCH 20/28] parisc: Refactor strlcat() to seq_buf in setup_cmdline()
+Message-ID: <20260915081910.4142719-23-morbo@google.com>
+Subject: [PATCH 22/28] media: si2165: Use snprintf() to format frontend name
 From: Bill Wendling <morbo@google.com>
 To: linux-kernel@vger.kernel.org
 Cc: Bill Wendling <morbo@google.com>, codemender-patching+linux@google.com, 
@@ -123,16 +123,17 @@ Cc: Bill Wendling <morbo@google.com>, codemender-patching+linux@google.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-setup_cmdline() uses multiple strlcat() calls to conditionally append
-default console and earlycon parameters to boot_command_line.
+si2165_probe() constructs the frontend name by appending the chip name and
+supported delivery system suffixes (" DVB-T", " DVB-C") to
+state->fe.ops.info.name using multiple strlcat() calls.
 
-In preparation for removing the deprecated strlcat() API[1], initialize a
-struct seq_buf with the existing boot_command_line contents and use
-seq_buf_printf() to append the console parameters.
+In preparation for removing the deprecated strlcat() API[1], format the
+complete frontend name in a single snprintf() call.
 
 Link: https://github.com/KSPP/linux/issues/370 [1]
 Cc: codemender-patching+linux@google.com
-Assisted-by: CoPilot:Gemini-1.5-Pro [editor_update_file, shell_command_run]
+Assisted-by: Developer:Gemini [editor_update_file, make_kernel_build_single=
+_file, shell_command_run]
 Signed-off-by: Bill Wendling <morbo@google.com>
 ---
 Cc: Russell King <linux@armlinux.org.uk>
@@ -246,57 +247,42 @@ Cc: devel@lists.orangefs.org
 Cc: linux-hardening@vger.kernel.org
 Cc: linux-sound@vger.kernel.org
 ---
- arch/parisc/kernel/setup.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/media/dvb-frontends/si2165.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/arch/parisc/kernel/setup.c b/arch/parisc/kernel/setup.c
-index d3e17a7a8901..fa3efc82ad87 100644
---- a/arch/parisc/kernel/setup.c
-+++ b/arch/parisc/kernel/setup.c
-@@ -17,6 +17,7 @@
- #include <linux/init.h>
- #include <linux/console.h>
- #include <linux/seq_file.h>
-+#include <linux/seq_buf.h>
- #define PCI_DEBUG
- #include <linux/pci.h>
- #undef PCI_DEBUG
-@@ -42,6 +43,7 @@ static char __initdata command_line[COMMAND_LINE_SIZE];
- static void __init setup_cmdline(char **cmdline_p)
- {
- 	extern unsigned int boot_args[];
-+	struct seq_buf s;
- 	char *p;
+diff --git a/drivers/media/dvb-frontends/si2165.c b/drivers/media/dvb-front=
+ends/si2165.c
+index f1241b63aa5c..bd15eb58fc84 100644
+--- a/drivers/media/dvb-frontends/si2165.c
++++ b/drivers/media/dvb-frontends/si2165.c
+@@ -1243,20 +1243,17 @@ static int si2165_probe(struct i2c_client *client)
+ 		chip_name, rev_char, state->chip_type,
+ 		state->chip_revcode);
 =20
- 	*cmdline_p =3D command_line;
-@@ -54,19 +56,21 @@ static void __init setup_cmdline(char **cmdline_p)
- 	strscpy(boot_command_line, (char *)__va(boot_args[1]),
- 		COMMAND_LINE_SIZE);
+-	strlcat(state->fe.ops.info.name, chip_name,
+-		sizeof(state->fe.ops.info.name));
++	snprintf(state->fe.ops.info.name, sizeof(state->fe.ops.info.name),
++		 "Silicon Labs %s%s%s",
++		 chip_name,
++		 state->has_dvbt ? " DVB-T" : "",
++		 state->has_dvbc ? " DVB-C" : "");
 =20
-+	s.buffer =3D boot_command_line;
-+	s.size =3D COMMAND_LINE_SIZE;
-+	s.len =3D strlen(boot_command_line);
-+
- 	/* autodetect console type (if not done by palo yet) */
- 	p =3D boot_command_line;
- 	if (!str_has_prefix(p, "console=3D") && !strstr(p, " console=3D")) {
--		strlcat(p, " console=3D", COMMAND_LINE_SIZE);
--		if (PAGE0->mem_cons.cl_class =3D=3D CL_DUPLEX)
--			strlcat(p, "ttyS0", COMMAND_LINE_SIZE);
--		else
--			strlcat(p, "tty0", COMMAND_LINE_SIZE);
-+		seq_buf_printf(&s, " console=3D%s",
-+			       PAGE0->mem_cons.cl_class =3D=3D CL_DUPLEX ?
-+			       "ttyS0" : "tty0");
- 	}
+ 	n =3D 0;
+-	if (state->has_dvbt) {
++	if (state->has_dvbt)
+ 		state->fe.ops.delsys[n++] =3D SYS_DVBT;
+-		strlcat(state->fe.ops.info.name, " DVB-T",
+-			sizeof(state->fe.ops.info.name));
+-	}
+-	if (state->has_dvbc) {
++	if (state->has_dvbc)
+ 		state->fe.ops.delsys[n++] =3D SYS_DVBC_ANNEX_A;
+-		strlcat(state->fe.ops.info.name, " DVB-C",
+-			sizeof(state->fe.ops.info.name));
+-	}
 =20
- 	/* default to use early console */
- 	if (!strstr(p, "earlycon"))
--		strlcat(p, " earlycon=3Dpdc", COMMAND_LINE_SIZE);
-+		seq_buf_printf(&s, " earlycon=3Dpdc");
-=20
- #ifdef CONFIG_BLK_DEV_INITRD
- 	/* did palo pass us a ramdisk? */
+ 	/* return fe pointer */
+ 	*pdata->fe =3D &state->fe;
 --=20
 2.55.0.1032.g73a4cd73de-goog
 
