@@ -1,165 +1,165 @@
-Received: from mail-oi2-f13.google.com (mail-oi2-f13.google.com [74.125.231.205])
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0723F19F40B
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 19:03:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8923B3BEF
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 19:05:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789499021; cv=none; b=fizgVjXM09i2zEDQL1PCthIYBRNYwSky5bN7tqRfoUlWKiTBERikqo/SJ4oosVnC6uCV7usJ3+eQ0x14Pj1L5cGeUZ4AeCwSbetTfwP74jJcoYImPAMtIXy00300uCJmeThAioD54QSeLPfGsIsLgSAzSgtR6K1pg3bYciZ8CRE=
+	t=1789499119; cv=none; b=eyBy29zx4QQnF9nHscrohXO3voryZrnnA1DAtmrmqvWq84/lphiuJ43gpjORxUutn8jcBEaWRDPwq6yR9OmEkzqpMtDlqfk64TuXcmlF0WkxtdGA8jCGoiNFo4SvWMewBB8PfpaRF6e9ibmuDuvrm5mh+g2X8A3gtrLgBiMCFzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789499021; c=relaxed/simple;
-	bh=8Fq4P+2Ju4lSwhzSxj9aVcUt1KO3M3r6gAx7Y5yu310=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fO4ODJYJAXystJ5fTqrTDS7JhT08ifLw4BQiL/wiWlswrO8NF1gpudkokiLGg2EG9NmoFoXWPDF5Nmc/195XCoXfuYo0vY114BcIFsNyv8s5gp1ZySiUNaW+bNn4/rVOcMKN866o2lZ3v9DVlPaBTzria2JlLU3NURBapH49Qao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SBvOeSf0; arc=none smtp.client-ip=74.125.231.205
+	s=arc-20240116; t=1789499119; c=relaxed/simple;
+	bh=zqFxS2lFyFp8vfpSA7TFoG5byAjCM/l/DWQWxfhZvBw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=km5R5VMCyELaLGghhGDZNDY7CRhqrw5fXl4qJ5itV5i9KfKkplb0Xi05fkcDZxC5DDs0YRrUrrZgB5NGvfV4UWl3rrVLeHs7DeWxga1KtbyhM7mpUxiTkWPnA97XyAsIjm1TR47Ofxh0YEBoSPOxzqmDBjwsDi3BWxs8BDC+TjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZzR509Qu; arc=none smtp.client-ip=74.125.225.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SBvOeSf0"
-Received: by mail-oi2-f13.google.com with SMTP id 5614622812f47-4b37a30eb3bso133332b6e.1
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 12:03:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZzR509Qu"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-4843172bff4so37731f8f.0
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 12:05:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789499019; x=1790103819; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7XXNu+ljv2q2jdXLpwbKTjv8fXsZBsxA93MzoFmASwE=;
-        b=SBvOeSf0Ndr9XqbOGryF32rtdhESYe+aVpeuBD5T33vfFF/ZJ/QG2VpbuTVJ8zV5EW
-         WMSwv4Tnl54bDbNsTbyC83MmqEIz59st4gQy4ktb/PjLpiFjDNV0QMITCoPEr++hVO7D
-         mJX7k7dugP3DkcQZxG8DSzGMiboU0MSZs4/tXHU3UwqqUaDqbHgM6+a+L1anRNB1kXs2
-         Dg1ISLPdmxKmTm90zTNGxY9OoC3y/1aQ1N9PdNhYMSCQyQetcatJbVJa5HSVg4blksZF
-         5VFkBmki6WbhJddLWNG3ZtOLLFHZ0vVQbKGx90z7zlT7VmFPK8ibutd0/7/errVyj8oY
-         Z9ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789499019; x=1790103819;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1789499116; x=1790103916; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7XXNu+ljv2q2jdXLpwbKTjv8fXsZBsxA93MzoFmASwE=;
-        b=cT+0Uc+yZi0LUInIVxdwmk2ih6d3cCVe58BmAZR4UakfDz5pQfkvHPSf5CIcgM2dkT
-         xbYIpzDRx/JuADitRi8bnTMvT/8AAhg88kXVWjE5kTOn4vqlTdAnMY/OjiMnUaGgScra
-         fC+4c4Qb/HcApdqwMv2FEhnseiHzavQ4y/nsCVGb1gtfq6QmRwt2bCLyYXC+6RwtgLvb
-         A/arCw3vW99Ejj1Yu8zWYodOS7xmIn4bAAYwLOprv3czabuHW+TKE3l5KAJ+GoJvxSKv
-         a6orsvKV5SAqfItvKksQbAeY836Lol4cC+GvvOKfrf1S0bX7JKiWX3fJotTF3JsJ7XjK
-         3ApA==
-X-Forwarded-Encrypted: i=1; AKwUvBxCIDMaQe6tIkIrNHqsSGShdgFl3CeAzTKx7a7u2hi6zjVPbwUofOQJk7GfPrrcD0eK+/A4duo=@vger.kernel.org
-X-Gm-Message-State: AFuF++kun0Y3RjAGsF5LjSdZ7Exifheo/HEo04YVy92hGAADUgZAEMxl
-	UpKSGKUmn9MC4Nfs/Q3gVM80zXR4EXWjCLfLybQuYgkGsCnpHsGr+PP9
-X-Gm-Gg: AYBFou2vjtrc5agRcf02REOuG9szxdTy3QL1TQyIcrrQ93nYrh33Eis0ejj2nYXzkZx
-	1yBKuBKE+mIC/OEu+DTv7sO/1UvBxa69yHgALcEqqX14Ufsygp4KATMUzMb474XQJvUFvw0J149
-	lbslnkRdXh/gpGXcK5WPLwMASh5grxtaAqnI0m+mvJxVuIPFBIX4JSETFBCniA9IXOTCY4YID5w
-	g5l+VP+OL6ltmqdtt3zd0YIw8FWpSXmaOtFg+LsR/tv9s5LyR1xT2wtzHNIzUkTtgOu761m10xE
-	XuoHrXaHay4mAtYvd413Sy7e3a++dvORs14NNzbHNg6PL0kTAfwEr5T9wAU/2ENqgT3uFfzvjil
-	jAI+BD5XPuPJNJvncw3PUU6JKUrAiLOyedkL5mOcN5c5GnKz33LFdrBwey5OyB2HUA7Oh090IID
-	Q9sA1RnnUgRPVdPOUyg5tY35zNaBHHlwMSw3dl5vokIJ8VcEe2l2aVdsX2z2Ot8sh2LpevdWU+C
-	8vchk7UQGp4OoQ/4yEgIRkx0rsvsp8bPRZauRtcNiGC5t5dLTT+RRt5yFR0K2jHVBAaZsufni1v
-	0ESGB1Nh1/Hs1cN/OuT2gkf9O+4DnRgxtj5A6pZhorrJVdWhME3+ZMwoUbqenPTp+DvctBI7aaF
-	uxIUKGX1lTCTS5PqdPpHAcg==
-X-Received: by 2002:a05:6820:169e:b0:6aa:cce3:ab61 with SMTP id 006d021491bc7-6c53f555385mr8191833eaf.9.1789499018615;
-        Tue, 15 Sep 2026 12:03:38 -0700 (PDT)
-Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4842546a51bsm836569fac.0.2026.09.15.12.03.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 12:03:37 -0700 (PDT)
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Tue, 15 Sep 2026 13:03:19 -0600
-Subject: [PATCH net-next 2/2] net: stmmac: sun8i: add support for Allwinner
- H616 EMAC1
+        bh=Og9+Bqy3ZcQHrEQ2wufI4kg6uz2g9lj20dmnJoDV6rE=;
+        b=ZzR509QuHxpazSfOrDtX/J0uYs/cnzA2G0c78i75+3OlZwe43/yIe4ANJMs5+Ih282
+         xhkUZtoNHzxwq9rmsWf9qRbT24+4ul1KdhrfdZSdRul1zZtjw69Q8Dv09PoLha00WoSZ
+         nxCvcgOL/bxu5WIGOHviJvmsCM0rr+3Zxie2i3GeVKZ9UmT+qTLdCHSqlGBwpV2L497l
+         iF+uybO04jyo1EmN8iKenx6LlGEkrX1IGYnklyeIsM4Qyi23TevWMrrEqDmROmLQSlYL
+         0GMploAB4KkT6FujNzT47o3Tgn/v+d6qEmRecRFcfwnwwnT3Jvqwz45Nt/e7qV4zh23O
+         lQZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789499116; x=1790103916;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Og9+Bqy3ZcQHrEQ2wufI4kg6uz2g9lj20dmnJoDV6rE=;
+        b=Nljf2XQmCfEJu+/428xfAc4TOGbjftnLzlQ+GVW5xQKVaMD23OsQv1cHHOUuz1K/4O
+         nSy7R34OycUrCpBpZwjWbRhaGxULoryjSfZjyDJ3qEu4czwENDvjAJxd46a46aIancTm
+         AaCN4QkhgPcDc22eROrMOiVOJCpyCde36JRq7i4rf4d2YHeQSJVCy9Jz4f8C+bEq9vru
+         aNXAiE2YMF8gnPjkc0esfk5BDxDcb7ek1frKtPzR5co7RqFv/n5q50iV5sOdCLY95ACG
+         hzMlsf/4b8jruLZ3jFV9rjbEEVwFr3BzeIuy/hPwNN1ANLKPJS+uP0GuPFe8RVGurUmK
+         RsGw==
+X-Forwarded-Encrypted: i=1; AKwUvBxR6yFMITxhDLLjYOk9uSQuLxGBj83ny4vM0ZK0EzX996SydL1cmr7SaN6b+LatjrMzfHDv3pc=@vger.kernel.org
+X-Gm-Message-State: AFuF++nrqVoxqbBnw5boRYOviH4WKOn7ERqVIP4GHXu3ghqe5LD3JpiL
+	LUc1vv5WEnEQt142hwbH/0jPrWQt4C6Xy6ImMXlii55zLmqXnyeie6fH
+X-Gm-Gg: AYBFou0DHPbw22GOB7xNncYtRzQbW/xV5LcIpikqsKLa6VylUi/zYWGYCqyX+GXVDMY
+	9rUkRRD3WXAl0GdumIhultefxNEyC1knvF6wJ4o4Ki7RqafIWpfmn+RuMiwts4F96wMLduYC2L4
+	QLKkHYvEm0exH5tlcxHC601LDGazW/yXDs1yG6Yuqk9OT0Ov/+2Qm7l5ogsl5Ffw9lZmn00nL74
+	cfl3NKvBoaAPdzmqeTyQ1PKw6CoZMqNVb/OEoXhOb/7E0L0XxSpEEdhyRH46+bNn8E81xc0alF0
+	1owUA2Ap8Mu4iHLUsta3Sjio72eAE2wcvIKyAlouweLDn0B/kYJXAG1bfALkLPgs/B9HZ9gvQxc
+	T5re2V6/smE/fijL+GAzaW8l6Gh7ZK5rfy6YqWYSsHJ95Ts2bSRzP2C+CMkhVNdeNsh7IM5BHqu
+	YdhakHSDRrG+o6paCKYbThNOXNXJ5iafMi/IlcdG87G/x/PF60faFyJ452RJHaKroEoKOrdFntU
+	BFaKy0/0AcNGq6Cx2hNhtmntAQ7HoKMKoLeKdQzgyhIl3UkNMgTmFnioLv6CA6HHl51Cx3Q7hl1
+	+wP5WjSO0RdCD1YNM4ERRooc3+la49Zuog==
+X-Received: by 2002:a05:6000:5ca:b0:487:999:7117 with SMTP id ffacd0b85a97d-4870999726fmr4107788f8f.16.1789499115875;
+        Tue, 15 Sep 2026 12:05:15 -0700 (PDT)
+Received: from ?IPV6:2003:ea:8f03:a400:b1cd:6e89:b357:c27? (p200300ea8f03a400b1cd6e89b3570c27.dip0.t-ipconnect.de. [2003:ea:8f03:a400:b1cd:6e89:b357:c27])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4870bf37e69sm1044478f8f.29.2026.09.15.12.05.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Sep 2026 12:05:15 -0700 (PDT)
+Message-ID: <29341dad-f1a1-41c0-83a5-3f7190a42d95@gmail.com>
+Date: Tue, 15 Sep 2026 21:05:14 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v4] r8169: don't enable chip LTR when the platform has
+ not enabled LTR
+To: Yogesh Gaur <yogeshgaur.83@gmail.com>, nic_swsd@realtek.com
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Javen Xu <javen_xu@realsil.com.cn>
+References: <20260911131352.2036-1-yogeshgaur.83@gmail.com>
+ <20260914130050.304-1-yogeshgaur.83@gmail.com>
+Content-Language: en-US
+From: Heiner Kallweit <hkallweit1@gmail.com>
+In-Reply-To: <20260914130050.304-1-yogeshgaur.83@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260915-submit-h616-emac1-v1-v1-2-195de0bb1f8a@gmail.com>
-References: <20260915-submit-h616-emac1-v1-v1-0-195de0bb1f8a@gmail.com>
-In-Reply-To: <20260915-submit-h616-emac1-v1-v1-0-195de0bb1f8a@gmail.com>
-To: Richard Genoud <richard.genoud@bootlin.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, 
- Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Samuel Holland <samuel@sholland.org>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
- Jose Abreu <joabreu@synopsys.com>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Maxime Ripard <mripard@kernel.org>, netdev@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, 
- linux-stm32@st-md-mailman.stormreply.com, 
- James Hilliard <james.hilliard1@gmail.com>
-X-Mailer: b4 0.15.2
 
-The H616 secondary EMAC uses a separate system-control clock register
-and supports only RMII at 10/100 Mbps. Its EPHY is provided by a
-companion AC200 or AC300 package rather than an internal PHY block.
+On 14.09.2026 15:00, Yogesh Gaur wrote:
+> rtl_enable_ltr() programs the MAC to generate LTR messages - ALDPS_LTR_EN,
+> LTR_SNOOP_EN, LTR_OBFF_LOCK_EN, plus LINK_SPEED_CHANGE_EN on
+> RTL8125/RTL8126/RTL8127 - and rtl_hw_aspm_clkreq_enable() calls it on
+> every ASPM enable, then goes on to let the chip trigger L1.2.
+> 
+> The only gate is tp->aspm_manageable, which records that the OS is allowed
+> to control ASPM. It says nothing about LTR. LTR is a separate PCIe
+> capability that only works if every device on the path to the root port
+> supports it. The PCI core works that out in pci_configure_ltr() and
+> records the result in pci_dev->ltr_path; per PCIe r6.0 sec 7.5.3.16 a
+> function must not issue LTR messages while LTR Mechanism Enable is clear.
+> 
+> So on a platform whose hierarchy has no LTR path, the driver tells the
+> chip to start sending LTR messages nothing will honour, and ties ALDPS -
+> the PHY's link-down power saving - to them. A report against RTL8125B
+> (rev 05, firmware rtl8125b-2_0.0.2) in a mini PC shows the effect: 291
+> link down/up transitions in one eight-hour boot, with repeated downshifts
+> to 100Mbps, against four transitions at boot and then a stable link on
+> the kernel before the LTR change.
+> 
+> Gate the chip's LTR programming on pci_dev->ltr_path. That field exists
+> only when CONFIG_PCIEASPM is enabled, so the test needs a preprocessor
+> guard rather than IS_ENABLED(). With CONFIG_PCIEASPM=n the PCI core's
+> pci_configure_ltr() is a stub and LTR is enabled nowhere, so the chip
+> must not issue LTR messages in that configuration either.
+> 
+> Note this does change CONFIG_PCIEASPM=n builds, which used to program
+> chip LTR unconditionally: pci_disable_link_state() is a stub that returns
+> success there, so tp->aspm_manageable ends up set.
+> 
+> Fixes: 9ab94a32af70 ("r8169: enable LTR support")
+> Assisted-by: LLM
+> Signed-off-by: Yogesh Gaur <yogeshgaur.83@gmail.com>
+> ---
+> v4:
+>  - Drop closes line.
+> v3: https://lore.kernel.org/all/20260911131352.2036-1-yogeshgaur.83@gmail.com/
+> v2: https://lore.kernel.org/all/20260910130140.910-1-yogeshgaur.83@gmail.com/
+> v1: https://lore.kernel.org/all/20260909110554.1977-1-yogeshgaur.83@gmail.com/
+> 
+> NOT VERIFIED ON HARDWARE. The causal claim above is
+> reasoned from the register writes.
+> 
+> Compile-tested only: drivers/net/ethernet/realtek/r8169_main.o, x86_64
+> defconfig + R8169=m, built W=1 clean with both CONFIG_PCIEASPM=y and
+> CONFIG_PCIEASPM=n.
+> 
+>  drivers/net/ethernet/realtek/r8169_main.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+> index ec4fc21fa21f..c305a8f19551 100644
+> --- a/drivers/net/ethernet/realtek/r8169_main.c
+> +++ b/drivers/net/ethernet/realtek/r8169_main.c
+> @@ -3037,6 +3037,18 @@ static void rtl_disable_exit_l1(struct rtl8169_private *tp)
+>  
+>  static void rtl_enable_ltr(struct rtl8169_private *tp)
+>  {
+> +	/* The chip must not issue LTR messages unless LTR is enabled for the
+> +	 * whole path up to the root port. pci_configure_ltr() works that out
+> +	 * and records the result in pci_dev->ltr_path, which exists only with
+> +	 * CONFIG_PCIEASPM; without it the PCI core never enables LTR anywhere.
+> +	 */
+> +#ifdef CONFIG_PCIEASPM
+> +	if (!tp->pci_dev->ltr_path)
+> +		return;
+> +#else
+> +	return;
+> +#endif
+> +
+>  	switch (tp->mac_version) {
+>  	case RTL_GIGA_MAC_VER_80:
+>  		r8168_mac_ocp_write(tp, 0xcdd0, 0x9003);
 
-Add an EMAC1 variant using the dedicated register and mark the PHY as
-external. The register retains the standard five-bit RX and three-bit TX
-clock delay chains, so expose their supported ranges to the shared
-syscon setup.
-
-Co-developed-by: Richard Genoud <richard.genoud@bootlin.com>
-Signed-off-by: Richard Genoud <richard.genoud@bootlin.com>
-Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-index 48c52eb96233..fdc0c3384af8 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-@@ -81,6 +81,13 @@ static const struct reg_field sun8i_syscon_reg_field = {
- 	.msb = 31,
- };
- 
-+/* EMAC1 clock register @ 0x34 in the "system control" address range */
-+static const struct reg_field sun8i_syscon_reg_field_emac1 = {
-+	.reg = 0x34,
-+	.lsb = 0,
-+	.msb = 31,
-+};
-+
- /* EMAC clock register @ 0x164 in the CCU address range */
- static const struct reg_field sun8i_ccu_reg_field = {
- 	.reg = 0x164,
-@@ -143,6 +150,18 @@ static const struct emac_variant emac_variant_h6 = {
- 	.tx_delay_max = 7,
- };
- 
-+static const struct emac_variant emac_variant_h616_emac1 = {
-+	.syscon_field = &sun8i_syscon_reg_field_emac1,
-+	/*
-+	 * The "internal PHY" is in a companion AC200 or AC300 package,
-+	 * rather than on the H616 die.
-+	 */
-+	.soc_has_internal_phy = false,
-+	.support_rmii = true,
-+	.rx_delay_max = 31,
-+	.tx_delay_max = 7,
-+};
-+
- #define EMAC_BASIC_CTL0 0x00
- #define EMAC_BASIC_CTL1 0x04
- #define EMAC_INT_STA    0x08
-@@ -1278,6 +1297,8 @@ static const struct of_device_id sun8i_dwmac_match[] = {
- 		.data = &emac_variant_a64 },
- 	{ .compatible = "allwinner,sun50i-h6-emac",
- 		.data = &emac_variant_h6 },
-+	{ .compatible = "allwinner,sun50i-h616-emac1",
-+		.data = &emac_variant_h616_emac1 },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, sun8i_dwmac_match);
-
--- 
-2.53.0
-
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
