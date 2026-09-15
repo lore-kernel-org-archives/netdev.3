@@ -1,75 +1,68 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B42E47988B;
-	Tue, 15 Sep 2026 23:56:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6663E3163;
+	Tue, 15 Sep 2026 23:58:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789516610; cv=none; b=fdrl4PqFzOBwRUyiyD9B8kWqzkwwm35j72QDIaf8VXJoBlnZN4OeD0k/NkaE2TtxPZ7KHj1vOjwefzschKaibahJAoxZyyqq40yrpQ+zH0dE0xKYo+mqfxpiyaS1IO4cML8qNJncj1vVbT0moqgPSVF25dZxNDDn58dMHpnu5z4=
+	t=1789516688; cv=none; b=gW0qfwFtJ+5EsBZv/Bn5mfZBMvXSHhS2XPWLrSfkdoKzzkC1nnDT2PtMTxdHe1HDVTfQGtt4N5sjxKLUcuGkHb67m1vllEvcDCv3b/vcr9p/gcFaf2KAmjfk9JKfD73AdG/AjG/IZta7EafXTlHRuaTbVpv09RYnI8+ZjJMuUgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789516610; c=relaxed/simple;
-	bh=YiszmNz7RV9b0dmb/0wgUJH4gIiA+io01rRIvTzgYFQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZcvB/6BJzCdKobUFPq4KNQCv2AgtxJOFOsXmO1tdhy900/Cv02XS6+Yv3NaNzb7vRk8lDqU9on7XCR5ETlTlEQPVyvMo4voboWtQ43Dv20QQNa08gEvL5ydLJ16d0NcZ/OHHmq32L5yj6WTF+iQFm5fm94KFoBtsxq86KtbNTfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xy2i0Dxz; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1789516688; c=relaxed/simple;
+	bh=qu/y9XvM+ZjAQBfx3P1AnhLv6qgbd/eR2W4AaiIjn4c=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nV7qQE6FmZCgWvp9QjiP6qRHEKE3Nz1TsdwCjA9CSaFbsNib6DQM1fTl4NS978J5k/0EV198+3SXgb/g6fZC9n1Lb0yGUYgRJ569e2BuIAwr0CvcnYd2/7oWB4HnD7hjhYU8kYK2Pdol91nUubRX9iRLy2OJAZsvtY1FZXtEQac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QY1QLraS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xy2i0Dxz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789516609; x=1821052609;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=YiszmNz7RV9b0dmb/0wgUJH4gIiA+io01rRIvTzgYFQ=;
-  b=Xy2i0DxzSIYIUYytfbbqJ8OotcwGfmgey7soIVhFORQ+psf22P4aDoWP
-   olQT8x3YEIk4ViotyTLFMhOx40iYFQV2tlwteb27ucEbO3RLvPC6cAgWg
-   KMVEmUyoqrLR1woU5w+Vr1//5F4xIG2MJ5b4OJ7ZqHXRC+bTbb0e9bPgK
-   cll2E1jqBn3nUExkka9oRc16qK8/PUUHKPXf61NO8W13f8a0MW4g6vyOt
-   RBtyK9Uqg7t5hmJISo+GLDdqiwf4U/aszKKsS/8VgnQ30swo8yueXQdCQ
-   VghdK9iVLY/CjmK0Y5+uxGJF3PVxJwtz/rZ08EKNZuBJCBwe6KbNc/AiD
-   Q==;
-X-CSE-ConnectionGUID: OGH27k96RKKBwM0kCHkykg==
-X-CSE-MsgGUID: YHJOT1glTIy0YOCyg9MrXg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="89735886"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="89735886"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 16:56:48 -0700
-X-CSE-ConnectionGUID: pJJzE+9uT4e9egIodkmW8A==
-X-CSE-MsgGUID: XR6TgAxiRzKsjMTjrqeoew==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="277294036"
-Received: from pankris-x299-ud4-pro.bj.intel.com ([10.238.152.122])
-  by orviesa005.jf.intel.com with ESMTP; 15 Sep 2026 16:56:46 -0700
-From: Kris Pan <kris.pan@intel.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Kris Pan <kris.pan@intel.com>,
-	edumazet@google.com,
-	davem@davemloft.net,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	atomasov@redhat.com,
-	oliver.sang@intel.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] net: iterate online nodes in skb_defer_free_flush()
-Date: Wed, 16 Sep 2026 07:53:35 +0800
-Message-ID: <20260915235335.3580993-1-kris.pan@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260915164008.4f65ddc4@kernel.org>
-References: <20260911020438.3502801-1-kris.pan@intel.com> <20260911023804.3503989-1-kris.pan@intel.com> <20260915164008.4f65ddc4@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QY1QLraS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E03DE1F000FF;
+	Tue, 15 Sep 2026 23:58:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789516686;
+	bh=CWBTQ3UQWvg2ZugiEmC3xkFsPu51Oqut0wT78L+RKeI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=QY1QLraSPA13NMQa8xcRDmGkm2EFU7GYZeNQw64jM6TC8CjnCSrySgF8v5SRKTrzV
+	 xIy9L116puM6Q11Zbk5H8iVjs1rIbKapNA1iV5pAcAmwqtuufqGqPbCW54WV+mNqCd
+	 8et5bbXCthScqeolrgWWnnZmcz7Tn03XDj+ymSZO8dMy8onEG4M+vlgbHdQBdtivTh
+	 cjpmxnCEKdAni9z1ee2GQAYB4b7zeJ7+SQbIZCVGB+SkoHoCzbQOxf/WnqKPMlTHb+
+	 l+kiOTL1QfX8wblmjrSxBI8fYdjOWWMeUV8dIMaXYttjpvzNt9cL0V+8bKZfo8nxj4
+	 t7UMu/bcuN4TA==
+Date: Tue, 15 Sep 2026 16:58:05 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Irlanki Sandeep <irlanki.s@samsung.com>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, ncardwell@google.com,
+ ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, corbet@lwn.net,
+ linux-kernel@vger.kernel.org, lorenzo@google.com, maze@google.com,
+ sporeba@google.com, motomuman@google.com, srihari.k@samsung.com,
+ g.pokhra@samsung.com, r.kumawat@samsung.com, raj.kumars@samsung.com,
+ ts413.lee@samsung.com
+Subject: Re: [PATCH net-next v3] tcp: add TCP_ECN and TCP_ECN_OPTION socket
+ options
+Message-ID: <20260915165805.359302fe@kernel.org>
+In-Reply-To: <20260911091148.456834-1-irlanki.s@samsung.com>
+References: <CGME20260911091026epcas5p35873551b66ec0a50e20ada6e26d2b056@epcas5p3.samsung.com>
+	<20260911091148.456834-1-irlanki.s@samsung.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Right, the node-offline race is real.  I'll fix it in a v3 so the flush
-doesn't depend on node_online_map, e.g. a per-CPU mask of pending nodes
-set by the producer and drained by the flush.
+On Fri, 11 Sep 2026 14:41:48 +0530 Irlanki Sandeep wrote:
+> Currently, ECN and Accurate ECN (AccECN) configurations in the Linux
+> kernel are controlled globally via the net.ipv4.tcp_ecn and
+> net.ipv4.tcp_ecn_option sysctl variables. This global approach lacks the
+> granularity required for modern multi-application runtimes.
 
-Thanks.
+CI (bpf-ci) reports a failure to build tools/testing/selftests/bpf on
+all tested toolchains/architectures (x86-64 gcc-15, x86-64 llvm-21,
+s390x gcc-15, aarch64 gcc-15) after this series. The build breaks in
+progs/setget_sockopt.c:
+
+    progs/setget_sockopt.c:67:11: error: use of undeclared identifier 'TCP_ECN'
+            { .opt = TCP_ECN, .new = 3, .expected = 3, .restore = 255, },
+    progs/setget_sockopt.c:68:11: error: use of undeclared identifier 'TCP_ECN_OPTION'
+            { .opt = TCP_ECN_OPTION, .new = 2, .expected = 2, .restore = 255, },
