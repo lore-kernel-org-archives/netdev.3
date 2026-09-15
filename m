@@ -1,293 +1,184 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFAA4BFE8D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D967B4A4EF4;
 	Tue, 15 Sep 2026 11:34:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.135.140.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789472081; cv=none; b=TnW9k8I4elIfamziNMXeAZVV1rfVQnSJjc/jN5hyvbLQtKFpnvYLS8uTZk5RluPfJ7rf0QUZOt6hAhvZop8n64BWYTASNi7azOdd26UfGcrx5jvxEpXtdS5+MeN+kP0vTA+JWTg+SefC00hWfVt+9nbotEZNHv4+5l0taVLXteE=
+	t=1789472081; cv=none; b=GTu+5Ztk0l9sngC45DrcjIssnzNC9WIBArm7lHGmQ8TMyjHeM1o/u4aMbiyBfN9AOpf5fmiZUhPzlOmh206psr9gdcsV8mRlFxQmhV3hWowZwCMlFok42ePzCodXcuzoaR8vEP1768UceUBwQyM/3btMCAf9rRmXkbmF15zsT5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789472081; c=relaxed/simple;
-	bh=WVbD0pO6d4mjiUvlOLIjL57eEEjsBq56vpsfDeJomcY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=i5n+hWkgw5sR+znWKq2eg0fIQh06IJa4wmEpCfQtkP6uHHdvDHnFevE3sJMNcGG8oKHaC6Q6FIYzrsw4FByd0vRZsZrb9w40E5zYUrtXeu3gzQlLhRGa6Nm9XH3GbaU+lwz7eSkR55IQxMPRhpYqXUCp64zD+H92hBMaxb0K/ME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NLbpzRry; arc=none smtp.client-ip=100.103.45.18
+	bh=KEFJLqrtBvHSM2ilsL45KGdw1zstaQc9a0kjLjgKlMc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FQRFPcBcv6qW70hXElWK75KvEXaz/f3U7fOeo56jB27KnJO+qafqM8IzJE8JSL9GHCeDHoLClyv5H9EejdExLHN4Q2r4y49wmqvLf+JcGfPklNrJuTcjY4nctPECuP8arPJLIkNnwjWAs3jr5dypRaT72vCWto+oZtSk8R90Iv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=none smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=NzA30gmc; arc=none smtp.client-ip=5.135.140.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cjdns.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NLbpzRry"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77FDC1F00893;
-	Tue, 15 Sep 2026 11:34:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789472079;
-	bh=cDPO1Tppu7zGiZS0wqcZiTuTwlavGuE/rjDjnQsBE8E=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=NLbpzRryDp6dFPNq2d5OJvruDzyZONEFg64LrDUeM5ugsoft5S7pBeG/pH66NE5IL
-	 3K1p9eHLYNaeeDaMavKCpdAseqox6l5EnfcT+KopXRUVpAGLpJ9yfjtXkfsEViD35p
-	 ADMqHomqefTxla65WmYonAYRk046Vz0TUnURPnhxUASNKqUUkNdFTTmZNpEDsrmsBU
-	 6GsRHd/hVex1t+bazl57XSA3/fWSISHGQVrMQ+hQ7z2QElRmXKMZdLoquUEY4uZ9o0
-	 wbzzdJN3unzzMqJSYGFB8PGFSj10gPRo7LK7HDW022JXae9+9AS0j5tXO3J4dwtg5G
-	 rF8s/BzuCbuwQ==
-From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 15 Sep 2026 13:31:12 +0200
-Subject: [PATCH RFC POC 26/50] dma-buf: stop unwinding sync file
- descriptors by hand
+	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="NzA30gmc"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 28A1E47C4C0;
+	Tue, 15 Sep 2026 13:34:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
+	t=1789472076; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=l7PQHSfZ7VfYkxwlucQsKGORvPo8DgZN+X++W5AjwOw=;
+	b=NzA30gmcfn9DyIMEofrPStZ4vQAnQ6ekfv+r2Zp0ikLEAaf7vm0dJhvhzmZWVGWULBKKQI
+	s4oFOp19b+Rw0RFYYJ9uAtRTriZSPLPyyHjV3EMCcu7XWiY7B1fAjey3PrxmhcF6/bRV2E
+	0e33RYWg8ICuVpOYge1XWGSpa0e0XNpkvU5ST2K+iskzt24ysFFLVio+f+WHmPS76V941e
+	DZK+Fp/aDaKd2Li2LUdaZEJCPXrjESTpRnlDXCfYs4YkchjcMy6ejx+cyvJSeYDr+ekAxq
+	kKIc5xXbIb6zSx8WG/RORW9v/omD0SbDXWWINpMvll5eV9kfsDpWIKD6sSmcGA==
+From: Caleb James DeLisle <cjd@cjdns.fr>
+To: netdev@vger.kernel.org
+Cc: daniel@makrotopia.org,
+	dqfext@gmail.com,
+	SkyLake.Huang@mediatek.com,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Caleb James DeLisle <cjd@cjdns.fr>,
+	Matheus Sampaio Queiroga <srherobrine20@gmail.com>
+Subject: [PATCH v5 net-next] net: phy: mediatek: support MT7530 PHYs on EN71221 MCM
+Date: Tue, 15 Sep 2026 11:34:27 +0000
+Message-Id: <20260915113427.113296-1-cjd@cjdns.fr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260915-work-fd-reserve-unify-folded-v1-26-4d5217d6b246@kernel.org>
-References: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
-In-Reply-To: <20260915-work-fd-reserve-unify-folded-v1-0-4d5217d6b246@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jann Horn <jannh@google.com>, 
- Jan Kara <jack@suse.cz>, Ingo Molnar <mingo@redhat.com>, 
- Peter Zijlstra <peterz@infradead.org>, linux-fsdevel@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- Oleg Nesterov <oleg@redhat.com>, linux-alpha@vger.kernel.org, 
- linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
- linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
- linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
- linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
- linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
- linux-um@lists.infradead.org, Jens Axboe <axboe@kernel.dk>, 
- io-uring@vger.kernel.org, netdev@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, linux-gpio@vger.kernel.org, 
- linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- bpf@vger.kernel.org, David Airlie <airlied@redhat.com>, 
- virtualization@lists.linux.dev, kvm@vger.kernel.org, 
- kexec@lists.infradead.org, linux-hyperv@vger.kernel.org, 
- "Christian Brauner (Amutable)" <brauner@kernel.org>
-X-Mailer: b4 0.17-dev-db0b7
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5768; i=brauner@kernel.org;
- h=from:subject:message-id; bh=WVbD0pO6d4mjiUvlOLIjL57eEEjsBq56vpsfDeJomcY=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWSt1Klbx7fSV2vzb4mztp+e+U8pjOoJ5RRLmcKaIWU0y
- e1svXhCRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwEQM9zMyHNVclB75UIUtlMkq
- +oqP/KHwKflt//9e3LImMGbio3sWXQz/448uNWN/83aF2Gujxje/v7ndnOYetv30l/bU9fpNKqo
- 7eQE=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Rely on the fd exit path machinery.
+The EcoNet EN751221 multi-chip module implementation of the MT7530
+requires some additional configuration of the PHYs on startup.
+The reason for this is not known, but it is possible that it has
+to do with the fact that the EN751221 MCM implementation of the
+MT7530 runs at an abnormal PLL frequency (362.5Mhz).
 
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Detect whether the MT7530 PHY is attached to the MDIO bus of an
+EcoNet EN751221 switch and if so, apply the necessary register
+updates. Additionally, never attempt to configure an MT7530
+identified PHY which does not have gigabit support because the same
+ID is used for another (FE) PHY.
+
+Co-developed-by: Matheus Sampaio Queiroga <srherobrine20@gmail.com>
+Signed-off-by: Matheus Sampaio Queiroga <srherobrine20@gmail.com>
+Signed-off-by: Caleb James DeLisle <cjd@cjdns.fr>
 ---
- drivers/dma-buf/dma-buf.c   | 33 ++++++++++------------------
- drivers/dma-buf/sw_sync.c   | 40 +++++++++++-----------------------
- drivers/dma-buf/sync_file.c | 52 +++++++++++++--------------------------------
- 3 files changed, 38 insertions(+), 87 deletions(-)
+ drivers/net/phy/mediatek/mtk-ge.c | 81 +++++++++++++++++++++++++++++++
+ 1 file changed, 81 insertions(+)
 
-diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
-index d504c636dc29..f0d581fad7ae 100644
---- a/drivers/dma-buf/dma-buf.c
-+++ b/drivers/dma-buf/dma-buf.c
-@@ -440,7 +440,8 @@ static long dma_buf_export_sync_file(struct dma_buf *dmabuf,
- 	enum dma_resv_usage usage;
- 	struct dma_fence *fence = NULL;
- 	struct sync_file *sync_file;
--	int fd, ret;
+diff --git a/drivers/net/phy/mediatek/mtk-ge.c b/drivers/net/phy/mediatek/mtk-ge.c
+index 96d8ac5154e5..eddb66218d7c 100644
+--- a/drivers/net/phy/mediatek/mtk-ge.c
++++ b/drivers/net/phy/mediatek/mtk-ge.c
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0+
++#include <linux/of.h>
+ #include <linux/bitfield.h>
+ #include <linux/module.h>
+ #include <linux/phy.h>
+@@ -101,6 +102,69 @@ static int mt7530_phy_config_init(struct phy_device *phydev)
+ 	return 0;
+ }
+ 
++/*
++ * The EcoNet EN751221 "G" multi-chip module MT7530 requires additional PHY
++ * configuration.
++ */
++static int en751221_mcm_phy_config_init(struct phy_device *phydev)
++{
 +	int ret;
-+	const struct fd_slot *fd;
- 
- 	if (copy_from_user(&arg, user_data, sizeof(arg)))
- 		return -EFAULT;
-@@ -451,14 +452,14 @@ static long dma_buf_export_sync_file(struct dma_buf *dmabuf,
- 	if ((arg.flags & DMA_BUF_SYNC_RW) == 0)
- 		return -EINVAL;
- 
--	fd = get_unused_fd_flags(O_CLOEXEC);
--	if (fd < 0)
--		return fd;
-+	fd = fd_prepare(O_CLOEXEC);
-+	if (IS_ERR(fd))
-+		return PTR_ERR(fd);
- 
- 	usage = dma_resv_usage_rw(arg.flags & DMA_BUF_SYNC_WRITE);
- 	ret = dma_resv_get_singleton(dmabuf->resv, usage, &fence);
- 	if (ret)
--		goto err_put_fd;
++
++	ret = genphy_soft_reset(phydev);
++	if (ret)
 +		return ret;
- 
- 	if (!fence)
- 		fence = dma_fence_get_stub();
-@@ -467,26 +468,14 @@ static long dma_buf_export_sync_file(struct dma_buf *dmabuf,
- 
- 	dma_fence_put(fence);
- 
--	if (!sync_file) {
--		ret = -ENOMEM;
--		goto err_put_fd;
--	}
--
--	arg.fd = fd;
--	if (copy_to_user(user_data, &arg, sizeof(arg))) {
--		ret = -EFAULT;
--		goto err_put_file;
--	}
-+	if (!sync_file)
-+		return -ENOMEM;
- 
--	fd_install(fd, sync_file->file);
-+	arg.fd = fd_stage(fd, sync_file->file);
-+	if (copy_to_user(user_data, &arg, sizeof(arg)))
-+		return -EFAULT;
- 
- 	return 0;
--
--err_put_file:
--	fput(sync_file->file);
--err_put_fd:
--	put_unused_fd(fd);
--	return ret;
- }
- 
- static long dma_buf_import_sync_file(struct dma_buf *dmabuf,
-diff --git a/drivers/dma-buf/sw_sync.c b/drivers/dma-buf/sw_sync.c
-index 8df20b0218a9..90852950e4e3 100644
---- a/drivers/dma-buf/sw_sync.c
-+++ b/drivers/dma-buf/sw_sync.c
-@@ -344,8 +344,7 @@ static int sw_sync_debugfs_release(struct inode *inode, struct file *file)
- static long sw_sync_ioctl_create_fence(struct sync_timeline *obj,
- 				       unsigned long arg)
++
++	ret = phy_write_paged(phydev, MTK_PHY_PAGE_EXTENDED_1,
++			      MTK_PHY_AUX_CTRL_AND_STATUS, 0x3a04);
++	if (ret < 0)
++		return ret;
++
++	/* Clause 45 global/local data from mt7530GePhyCfgLoad(E3.0). */
++	ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x0417, 0x7775);
++	if (ret < 0)
++		return ret;
++
++	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x00a6, 0x0350);
++	if (ret < 0)
++		return ret;
++
++	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x0012, 0xd210);
++	if (ret < 0)
++		return ret;
++
++	return mt7530_phy_config_init(phydev);
++}
++
++static bool en751221_is_mcm_phy(struct phy_device *phydev)
++{
++	struct device *parent = phydev->mdio.bus->parent;
++
++	return parent && parent->of_node &&
++	       of_device_is_compatible(parent->of_node, "econet,en751221");
++}
++
++/*
++ * MTK_GPHY_ID_MT7530 ID is also used for an EcoNet SoC FE phy, but that PHY
++ * does not advertise ESTATUS_1000_TFULL.
++ */
++static bool mt7530_is_gphy(struct phy_device *phydev)
++{
++	return phydev->phy_id == MTK_GPHY_ID_MT7530 &&
++	       (phy_read(phydev, MII_ESTATUS) & ESTATUS_1000_TFULL) != 0;
++}
++
++static int mt7530_phy_match(struct phy_device *phydev,
++			    const struct phy_driver *phydrv)
++{
++	return mt7530_is_gphy(phydev) && !en751221_is_mcm_phy(phydev);
++}
++
++static int en751221_phy_match(struct phy_device *phydev,
++			      const struct phy_driver *phydrv)
++{
++	return mt7530_is_gphy(phydev) && en751221_is_mcm_phy(phydev);
++}
++
+ static int mt7531_phy_config_init(struct phy_device *phydev)
  {
--	int fd = get_unused_fd_flags(O_CLOEXEC);
--	int err;
-+	const struct fd_slot *fd = fd_prepare(O_CLOEXEC);
- 	struct sync_pt *pt;
- 	struct sync_file *sync_file;
- 	struct sw_sync_create_fence_data data;
-@@ -353,41 +352,26 @@ static long sw_sync_ioctl_create_fence(struct sync_timeline *obj,
- 	/* SW sync fence are inherently unsafe and can deadlock the kernel */
- 	add_taint(TAINT_SOFTLOCKUP, LOCKDEP_STILL_OK);
- 
--	if (fd < 0)
--		return fd;
-+	if (IS_ERR(fd))
-+		return PTR_ERR(fd);
- 
--	if (copy_from_user(&data, (void __user *)arg, sizeof(data))) {
--		err = -EFAULT;
--		goto err;
--	}
-+	if (copy_from_user(&data, (void __user *)arg, sizeof(data)))
-+		return -EFAULT;
- 
- 	pt = sync_pt_create(obj, data.value);
--	if (!pt) {
--		err = -ENOMEM;
--		goto err;
--	}
-+	if (!pt)
-+		return -ENOMEM;
- 
- 	sync_file = sync_file_create(&pt->base);
- 	dma_fence_put(&pt->base);
--	if (!sync_file) {
--		err = -ENOMEM;
--		goto err;
--	}
--
--	data.fence = fd;
--	if (copy_to_user((void __user *)arg, &data, sizeof(data))) {
--		fput(sync_file->file);
--		err = -EFAULT;
--		goto err;
--	}
-+	if (!sync_file)
-+		return -ENOMEM;
- 
--	fd_install(fd, sync_file->file);
-+	data.fence = fd_stage(fd, sync_file->file);
-+	if (copy_to_user((void __user *)arg, &data, sizeof(data)))
-+		return -EFAULT;
- 
- 	return 0;
--
--err:
--	put_unused_fd(fd);
--	return err;
- }
- 
- static long sw_sync_ioctl_inc(struct sync_timeline *obj, unsigned long arg)
-diff --git a/drivers/dma-buf/sync_file.c b/drivers/dma-buf/sync_file.c
-index 2166bbdf7e4a..316fffc4067e 100644
---- a/drivers/dma-buf/sync_file.c
-+++ b/drivers/dma-buf/sync_file.c
-@@ -213,56 +213,34 @@ static __poll_t sync_file_poll(struct file *file, poll_table *wait)
- static long sync_file_ioctl_merge(struct sync_file *sync_file,
- 				  unsigned long arg)
- {
--	int fd = get_unused_fd_flags(O_CLOEXEC);
--	int err;
-+	const struct fd_slot *fd = fd_prepare(O_CLOEXEC);
- 	struct sync_file *fence2, *fence3;
- 	struct sync_merge_data data;
- 
--	if (fd < 0)
--		return fd;
-+	if (IS_ERR(fd))
-+		return PTR_ERR(fd);
- 
--	if (copy_from_user(&data, (void __user *)arg, sizeof(data))) {
--		err = -EFAULT;
--		goto err_put_fd;
--	}
-+	if (copy_from_user(&data, (void __user *)arg, sizeof(data)))
-+		return -EFAULT;
- 
--	if (data.flags || data.pad) {
--		err = -EINVAL;
--		goto err_put_fd;
--	}
-+	if (data.flags || data.pad)
-+		return -EINVAL;
- 
- 	fence2 = sync_file_fdget(data.fd2);
--	if (!fence2) {
--		err = -ENOENT;
--		goto err_put_fd;
--	}
-+	if (!fence2)
-+		return -ENOENT;
- 
- 	data.name[sizeof(data.name) - 1] = '\0';
- 	fence3 = sync_file_merge(data.name, sync_file, fence2);
--	if (!fence3) {
--		err = -ENOMEM;
--		goto err_put_fence2;
--	}
--
--	data.fence = fd;
--	if (copy_to_user((void __user *)arg, &data, sizeof(data))) {
--		err = -EFAULT;
--		goto err_put_fence3;
--	}
--
--	fd_install(fd, fence3->file);
- 	fput(fence2->file);
--	return 0;
--
--err_put_fence3:
--	fput(fence3->file);
-+	if (!fence3)
-+		return -ENOMEM;
- 
--err_put_fence2:
--	fput(fence2->file);
-+	data.fence = fd_stage(fd, fence3->file);
-+	if (copy_to_user((void __user *)arg, &data, sizeof(data)))
-+		return -EFAULT;
- 
--err_put_fd:
--	put_unused_fd(fd);
--	return err;
-+	return 0;
- }
- 
- static int sync_fill_fence_info(struct dma_fence *fence,
-
+ 	mtk_gephy_config_init(phydev);
+@@ -135,6 +199,23 @@ static struct phy_driver mtk_gephy_driver[] = {
+ 		 */
+ 		.config_intr	= genphy_no_config_intr,
+ 		.handle_interrupt = genphy_handle_interrupt_no_ack,
++		.match_phy_device = mt7530_phy_match,
++		.suspend	= genphy_suspend,
++		.resume		= genphy_resume,
++		.read_page	= mtk_phy_read_page,
++		.write_page	= mtk_phy_write_page,
++	},
++	{
++		PHY_ID_MATCH_EXACT(MTK_GPHY_ID_MT7530),
++		.name		= "EcoNet EN751221 MCM PHY",
++		.probe		= mt7530_phy_probe,
++		.config_init	= en751221_mcm_phy_config_init,
++		/* Interrupts are handled by the switch, not the PHY
++		 * itself.
++		 */
++		.config_intr	= genphy_no_config_intr,
++		.handle_interrupt = genphy_handle_interrupt_no_ack,
++		.match_phy_device = en751221_phy_match,
+ 		.suspend	= genphy_suspend,
+ 		.resume		= genphy_resume,
+ 		.read_page	= mtk_phy_read_page,
 -- 
-2.53.0
+2.39.5
 
