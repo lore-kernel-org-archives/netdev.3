@@ -1,137 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E042496D4F;
-	Tue, 15 Sep 2026 15:35:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522383BB132;
+	Tue, 15 Sep 2026 15:37:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789486503; cv=none; b=XsTUPfdEVYZTAZS+sOGSdz3oQsPxL+dpFry296ZxwSypA3AZrIBJ1f6ZDhLjT88NwIZ14mCqD8/Wzf6BMIQjt0nEDLKPVAb2ZwwbwkR5JdRljPLtM7BSlW5lJzaCVqCBR/0XhMLuwG8y87/zSbcnh7LaKBi41X0SPTY4Gn60e1c=
+	t=1789486660; cv=none; b=YL1fwh4DRoLrV9mYcgAcMtKYvJCv5/DwHfXHL0yiDcl5S66iS0x2QcAtXX+eA5tCgExW6l/OEQfb2GFoqiZkGovCwDZz+t2WGGsnEeqQZNZbsy1a+lAdXnARnwCQ2W380/o3pZySdjXxQu+Q6pFDd0vtHzhbVWqtezqg/SF/xTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789486503; c=relaxed/simple;
-	bh=Vi8QNQvOSZLu38Lc9fOwm0cZbNGfuNU56o0uf9mHrbs=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KUa3gObn2DCdKY5PDLn9J+amd1UdNRcSFVTtJJKjB3aktNl1ya6Hq5y3ku/uu/b/+5OxAkVflTm+hR6puIpDWbeXyjcuhvZrV2rhEJqrYh5nuiB3ZXP2sE06SxlBexTPn4pfUaaM9XL87+ik/uQHVtS2jTuDRHCnm6udv+2M/iA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IW909MCL; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789486660; c=relaxed/simple;
+	bh=DT+SWJ13NttiGG+Ep4psKjU5Tou3i+97dhAxqXxgAbo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JRaU/5MXJLJe3B4K81qCJNcBpw6lbzpyD0Zx5XDVUDUmUiwVm4ke67UFnzIFvmcYx/FTOMHvt5z8LVfmcKTV/DmiL7M7v3ka4FiGAIc0Mh5sxiOqK73s5e+B1HqoL9tLM+0FbbUVjEu/X7m3P2Dpx/hUNVaRXHzsj8p4KVCzGMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=t4ZkLUTT; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IW909MCL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D371F000FF;
-	Tue, 15 Sep 2026 15:35:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789486501;
-	bh=C8YtmFrSxxY0AanUwQl01S3XpkP74Rctp5eoGI1AVSo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=IW909MCLfVufJ47Dk81WpQU98oBji+YOqUk+hhsJMij2kDBlow3e5+Mk3Hbr39SeX
-	 4SkVw2pKjycEzdiwb87/aZx1HwR/TgIQBDHvwWIYWw1lLj7em2fDkheTDS4V55TyEd
-	 jpP8mtDcpwR21X6Lq399/aXjiQ7cCCeDPPnwIYo2PEq5Vfr1JCiT+g+XKhDdL/w2fY
-	 eyLQlhJPQ+lyWtadRBnhM2HrK4JDgy6xX8LPg+8A9LzyNBRdGHKRyYCPq1FVH2N6hE
-	 NkP8LxAZTxftQp4KtPk85kAkT40FfUIpxG0eKsaJuK6dPR+3xR4DvGSaWL2xvdsx2x
-	 lF6KcqN0GFxQQ==
-Subject: Re: [PATCH] ixgbe: fix incomplete ACI command buffer backup on retry
-From: netdev-bot+sashiko@kernel.org
-To: xiaolinkui@126.com
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, xiaolinkui@kylinos.cn, kuba@kernel.org
-Date: Tue, 15 Sep 2026 15:34:59 +0000
-Message-ID: <178948649971.22033.11309152117855565563@kernel.org>
-In-Reply-To: <20260912013403.2818191-1-xiaolinkui@126.com>
-References: <20260912013403.2818191-1-xiaolinkui@126.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="t4ZkLUTT"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=XOFjEqSeg2fKDr1RwpSbootKD7M1VPsazqazY07Yljs=; b=t4ZkLUTTN2iaVtGfnkFxMGlSzV
+	MTG81GiY1wSi67XuzzXBOoONYTu/w0ULC2PJ8P+d5t1xqfihTmT+BI5H/VUbsFp6Ohp2nKq4uQjF2
+	HBM0Gc6smOWcW6SQccL2cAloTtyGXZz/eDQOgKVwR7jYpf+aCtLrzMBeEV8cqNCiAIJc=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x6VDp-005Iqc-OT; Tue, 15 Sep 2026 17:37:25 +0200
+Date: Tue, 15 Sep 2026 17:37:25 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Myeonghun Pak <mhun512@gmail.com>
+Cc: Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Michael Chan <mchan@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Ijae Kim <ae878000@gmail.com>
+Subject: Re: [PATCH v2] tg3: clean up PHYLIB resources on probe failure
+Message-ID: <b8973293-8132-47d7-be28-972ec87b72d4@lunn.ch>
+References: <20260914222246.29761-1-mhun512@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260914222246.29761-1-mhun512@gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
+On Mon, Sep 14, 2026 at 06:22:46PM -0400, Myeonghun Pak wrote:
+> tg3_get_invariants() can register an MDIO bus and connect a PHY for
+> USE_PHYLIB devices. If tg3_init_one() later fails, its common error path
+> releases the mappings and netdev without undoing those PHYLIB resources.
+> 
+> Disconnect the PHY and unregister the MDIO bus before the remaining
+> teardown. The existing IS_CONNECTED and MDIOBUS_INITED flags make both
+> helpers safe when initialization only completed partially.
+> 
+> This issue was identified during our ongoing static-analysis research while
+> reviewing kernel code.
+> 
+> Fixes: 158d7abdae85 ("tg3: Add mdio bus registration")
+> Assisted-by: OpenAI:GPT-5.6
+> Co-developed-by: Ijae Kim <ae878000@gmail.com>
+> Signed-off-by: Ijae Kim <ae878000@gmail.com>
+> Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+> ---
+> Changes in v2:
+> - Remove the redundant USE_PHYLIB guard; both cleanup helpers already
+>   check their initialization flags, as discussed with Andrew Lunn.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+That is not exactly what i said. I pointed out that tg3_mdio_init() is
+not guarded by USE_PHYLIB. tg3_phy_init() is guarded by
+USE_PHYLIB. Generally, you keep code symmetrical, the conditions you
+apply to init should be also applied to fini. However, the existing
+code is not great, tg3_remove_one() is not symmetrical. However, there
+is no reason to make it worse.
 
-- [Medium] Commit message overstates the impact of the fixed bug.
-- [Low] Commit message names the wrong ice function as the reference
-  implementation.
 
---
+    Andrew
 
-ixgbe: fix incomplete ACI command buffer backup on retry
-
-The patch replaces the kmalloc() plus single-byte store in
-ixgbe_aci_send_cmd() with kmemdup() so the whole indirect command buffer
-is saved before an EBUSY retry, skips the backup when buf_size is 0, and
-keys the restore off buf_cpy instead of buf. The code change itself looks
-correct; the questions below are about the changelog only, so the diff
-hunks are snipped.
-
-> So every retry hands the firmware a buffer whose content, apart from the
-> first byte, is uninitialized slab memory, and on a read command the
-> caller's buffer is overwritten with that garbage when the retry finally
-> gives up.
-
-[Severity: Medium]
-Can the firmware actually see that garbage?  In
-ixgbe_aci_send_cmd_execute() the buffer only reaches the HIBA registers
-when the descriptor carries LIBIE_AQ_FLAG_RD:
-
-drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c:ixgbe_aci_send_cmd_execute() {
-	...
-	if (desc->flags & cpu_to_le16(LIBIE_AQ_FLAG_RD)) {
-		for (i = 0; i < buf_size / 4; i++)
-			IXGBE_WRITE_REG(hw, IXGBE_PF_HIBA(i), ((u32 *)buf)[i]);
-	...
-}
-
-The backup/restore path only runs for the opcodes listed in
-ixgbe_should_retry_aci_send_cmd_execute(): disable_rxen, get_phy_caps,
-get_link_status and get_link_topo.  disable_rxen and get_link_topo pass
-(NULL, 0), and the two that do pass a buffer (ixgbe_aci_get_phy_caps()
-and ixgbe_aci_get_link_info()) build their descriptor with
-ixgbe_fill_dflt_direct_cmd_desc(), which sets only LIBIE_AQ_FLAG_SI.
-LIBIE_AQ_FLAG_RD is OR-ed in only by set_phy_cfg, the NVM write,
-nvm_pkg_data and nvm_pass_component_tbl paths, none of which are
-retryable.
-
-Also, on both EBUSY exits ixgbe_aci_send_cmd_execute() returns before the
-"Write a response values to a buf" block, so buf is not touched by an
-EBUSY attempt and the restore is effectively a no-op there.
-
-Would it be more accurate to describe the effect as the caller's output
-buffer being filled with uninitialized slab bytes once retries are
-exhausted, rather than as garbage being handed to the firmware on every
-retry?  As written the message suggests a functional firmware
-interaction problem, which affects how this reads for stable triage.
-
-> Use kmemdup() to copy the whole buffer, exactly like the equivalent
-> ice_sq_send_cmd() already does.
-
-[Severity: Low]
-Is ice_sq_send_cmd() the right reference here?  That function is the
-low-level control queue submit routine, the counterpart of
-ixgbe_aci_send_cmd_execute(), and it has no buffer backup.  The
-kmemdup()-based backup and restore-on-EBUSY logic lives in
-ice_sq_send_cmd_retry() in drivers/net/ethernet/intel/ice/ice_common.c:
-
-drivers/net/ethernet/intel/ice/ice_common.c:ice_sq_send_cmd_retry() {
-	...
-	if (is_cmd_for_retry) {
-		if (buf) {
-			buf_cpy = kmemdup(buf, buf_size, GFP_KERNEL);
-			if (!buf_cpy)
-				return -ENOMEM;
-		}
-	...
-		if (buf_cpy)
-			memcpy(buf, buf_cpy, buf_size);
-	...
-}
-
-Could the changelog name ice_sq_send_cmd_retry() instead?
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260912013403.2818191-1-xiaolinkui%40126.com
+---
+pw-bot: cr
+	
