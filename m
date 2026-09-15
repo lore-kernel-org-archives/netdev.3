@@ -1,98 +1,260 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512832F8E98;
-	Tue, 15 Sep 2026 06:41:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AEDE42902E
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 06:42:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789454503; cv=none; b=HkaHy3+4Aq7CpRkeMqnQ9eoiTEux7P6VGT1ToWjpTksw3QXfpdBb4+s662651CH4H4s3DgmA8PNgnKj4gJcOxqL26wP7Hjc7gTZSC61wYbKamFQWmA0taZVg4LWzKZuxH/Wr7RC2ddVQJI+kVWTa+8mCheuhPfCcFNQKYqD65J4=
+	t=1789454534; cv=none; b=qzM3jIxol+SVjQOELskybXM26jPVNJOy6q+IZTSqDDu9nszNVoJgKQVoE/GF6an0fDeA5UGeNpWR5iCzdM7eyngofYPDZZ9uOwz2IN4Npfg45NT/WKsUbrlm1ENO+FUfRi2E/dsJePga0P7SWlM7QROZ8QG7PfotH1XaJhioJRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789454503; c=relaxed/simple;
-	bh=8xsDiHnrTVHnMEPDXfmMj6XBJcFRIj24SgEwMPFYk0Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rrqvhk1NHCL28Jglh8vuTa+N11uiqioDpqVlHpOecR6GFrGSMNiWDgQOYaRuJDpascp22wX8/yFbClAxrFXM/q/cgo0oUoSkqmvsjGkb7YiHUp44OjBLNIGvkE7ZtRU7QeG8yH2wV1A1YWAkHzkamdFGit+9vjjR+3M/DowPQsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bEsL92r9; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1789454534; c=relaxed/simple;
+	bh=qOnsKzskGhBqmdcMnO8N8vHINOHzsb5hs2YJ4R6RzgI=;
+	h=Date:From:To:CC:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=L9wCv3gO/MuagVYQU17uMd9agxQTffp6IPsbTJIvKOCdKmpzEXUiQPTxwMsb4ZQvPKCGlXkegsCVb5GohiXuQHT33vvKkOqPZAM1XkYdpIjU7WLoV9aeU4b1eGZHab15uvDXTDupvYdcp2KqKchn6UlSA2BhnUMwQ6qwyOwn/C0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=svJ+RGpD; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bEsL92r9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789454500; x=1820990500;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=8xsDiHnrTVHnMEPDXfmMj6XBJcFRIj24SgEwMPFYk0Y=;
-  b=bEsL92r9VMWgPzN6szjdkKWUOHv+007r3Z+eq31uVYfA8TLwzibuwt9e
-   HM8sq1Zh3M2Ek6SUW0T6NlTE0ALoiZsVzAkxIecg1iqup4QGC0ZzvDEm6
-   0FqyAS8yaGfIaWp3sPjR9te/Ofs4ee5TlDy1a0wZ+FRzi36rUNSqpChgH
-   OEwipUI6R9byZ74Cq4iMpD3nxHNMs8XUT86vSVWOfbp2aRitQYbLzkTye
-   ebcjDhijpr8kMbm6K/PAWf6zEv0eoSdjWwHaXiHnGIMMwgB3KNXK7F+K/
-   FeTEblDcd01bPV7RcD4wz5GPqYd+dOj0I6dTc8EG0nk4wZDoXP62UAPJ+
-   Q==;
-X-CSE-ConnectionGUID: Sai7WhFrRX23tyti5JCJmw==
-X-CSE-MsgGUID: uwMSRZbeQ6eyLLVgXgq4zg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="93632883"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="93632883"
-Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Sep 2026 23:41:40 -0700
-X-CSE-ConnectionGUID: VznnDdlgTX+jg4YVBXqBAw==
-X-CSE-MsgGUID: sOZgthxqQaW0wQlBHLf1rA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="1255241"
-Received: from lkp-server01.sh.intel.com (HELO 462990a40a85) ([10.239.97.150])
-  by fmviesa013.fm.intel.com with ESMTP; 14 Sep 2026 23:41:37 -0700
-Received: from kbuild by 462990a40a85 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1x6MrF-0000000048U-2nsv;
-	Tue, 15 Sep 2026 06:41:33 +0000
-Date: Tue, 15 Sep 2026 14:40:37 +0800
-From: kernel test robot <lkp@intel.com>
-To: Zihan Xi <zihanx@nebusec.ai>, dhowells@redhat.com,
-	marc.dionne@auristor.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, zihanx@nebusec.ai,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, linux-afs@lists.infradead.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Vega <vega@nebusec.ai>,
-	Luxing Yin <root@tr0jan.top>
-Subject: Re: [PATCH net v5 1/1] rxrpc: fix encap_rcv skb accounting exhaustion
-Message-ID: <202609151453.yX0JDG4h-lkp@intel.com>
-References: <d38b683f6d583cbbc23ee149b50b15b6e4efc567.1789273347.git.zihanx@nebusec.ai>
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="svJ+RGpD"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 16933207A4;
+	Tue, 15 Sep 2026 08:42:09 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id IgN-hIvg58nw; Tue, 15 Sep 2026 08:42:08 +0200 (CEST)
+Received: from EXCH-02.secunet.de (rl2.secunet.de [10.32.0.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 18CA520538;
+	Tue, 15 Sep 2026 08:42:08 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 18CA520538
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1789454528;
+	bh=YOpYf3dDdj3I4SjG5VR2DU+DqGxOAGpn47V8jXwPfF8=;
+	h=Date:From:To:CC:Subject:Reply-To:From;
+	b=svJ+RGpDtVGxU20vnGZQXP1heAkxkgM+ign5BCak2oyMWTMMZu2iO4zJmK3j9I6/D
+	 hWr97WM3SYxB76E316ckK0HV4nbjZM6vPi1aOwgDcDiri8jpU5UDjKSnJuk+qBZVJc
+	 KCaSvTc3o1QnN04ykCGPZ6xwBt8JE36vM+bIzSabh3G6cd6bqR2QfcwdRbe8iqh4K0
+	 lYmUCMYYQ8YaoyBYpHMe3XL/MWPzgoxrNl3CNkVZclWNg3upYC0scibOdGMJM56VLB
+	 hM6aWM/6tmlXe8VyskvoTYyM8p9BrDdkdgy9dKempP7aFGmYhy2GXfJ0rVlRTsYzSV
+	 8t1Ejawexz01A==
+Received: from moon.secunet.de (172.18.149.1) by EXCH-02.secunet.de
+ (10.32.0.172) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 15 Sep
+ 2026 08:42:07 +0200
+Date: Tue, 15 Sep 2026 08:42:00 +0200
+From: Antony Antony <antony.antony@secunet.com>
+To: Steffen Klassert <steffen.klassert@secunet.com>, Christian Hopps
+	<chopps@labn.net>, Herbert Xu <herbert@gondor.apana.org.au>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>
+CC: <netdev@vger.kernel.org>, Antony Antony <antony.antony@secunet.com>
+Subject: [PATCH ipsec] xfrm: iptfs: fix pp_ref_count underflow when sharing
+ page_pool frags
+Message-ID: <xfrm-iptfs-pp_ref_count-underflow-v1-1-47b319c6d2f6@secunet.com>
+Reply-To: <antony.antony@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <d38b683f6d583cbbc23ee149b50b15b6e4efc567.1789273347.git.zihanx@nebusec.ai>
+X-B4-Tracking: v=1; b=H4sIAAvkqGoC/z2P7QqDIBSGb2X4e8LJUmq3MkaUHteBpaK1NaJ7n
+ 46xn+8D79fOEkbCxC6nnUV8UiLvsqjOJ6anwd2Rk8mabTbOnMJiEw+hj2h77Ve38NUZjPbhXxx
+ UjQg1CAXAsn0cEvIxDk5PJYBCQv3n2s8zLYV3ykI1yloLAxIB6hEaaDshpDIom0G2ClspumINu
+ Ze279rrL/CW8URp8fFdPhzH8QGf7jD/0wAAAA==
+X-Change-ID: xfrm-iptfs-pp_ref_count-underflow-063ee0302600
+X-Mailer: b4 0.16-dev
+Precedence: first-class
+Priority: normal
+Organization: secunet
+X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-02.secunet.de
+ (10.32.0.172)
 
-Hi Zihan,
+skb frags are either page_pool pages tracked via pp_ref_count
+(released by napi_pp_put_page()), or regular pages tracked via
+_refcount (released by put_netmem()).
+skb->pp_recycle was unbalanced and caused the underflow that
+hit BUG().
 
-kernel test robot noticed the following build errors:
+Fix by taking the share with page_pool_ref_page(), matching
+skb_pp_frag_ref() in skb_try_coalesce().
 
-[auto build test ERROR on net/main]
+Reproduced by sharing the same page_pool frag into two extra skbs,
+releasing both before the page rotates out, then forcing rotation --
+trips WARN_ON(ret < 0) in page_pool_unref_netmem() with the bug,
+silent with the fix.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Zihan-Xi/rxrpc-fix-encap_rcv-skb-accounting-exhaustion/20260914-130912
-base:   net/main
-patch link:    https://lore.kernel.org/r/d38b683f6d583cbbc23ee149b50b15b6e4efc567.1789273347.git.zihanx%40nebusec.ai
-patch subject: [PATCH net v5 1/1] rxrpc: fix encap_rcv skb accounting exhaustion
-config: x86_64-randconfig-073-20260915 (https://download.01.org/0day-ci/archive/20260915/202609151453.yX0JDG4h-lkp@intel.com/config)
-compiler: clang version 22.1.3 (https://github.com/llvm/llvm-project e9846648fd6183ee6d8cbdb4502213fcf902a211)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260915/202609151453.yX0JDG4h-lkp@intel.com/reproduce)
+[  113.863676] ------------[ cut here ]------------
+[  113.863687] WARNING: ./include/net/page_pool/helpers.h:297 at page_pool_put_netmem.constprop.0+0x1f/0x40, CPU#0: swapper/0/0
+[  113.863706] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 7.2.0-rc2-00235-gddb06ebf175f-dirty #5 PREEMPT(full)
+[  113.863713] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+[  113.863718] RIP: 0010:page_pool_put_netmem.constprop.0+0x1f/0x40
+[  113.863725] Code: 90 90 90 90 90 90 90 90 90 90 90 48 89 f0 48 83 e0 fe 48 8b 48 28 48 ff c9 74 20 48 83 c9 ff f0 48 0f c1 48 28 48 ff c9 79 07 <0f> 0b c3 cc cc cc cc 75 13 48 c7 40 28 01 00 00 00 0f b6 ca 83 ca
+[  113.863731] RSP: 0018:ffffc90000003c98 EFLAGS: 00010296
+[  113.863738] RAX: ffffea0004192d80 RBX: ffff8881017e1200 RCX: ffffffffffffffff
+[  113.863742] RDX: 0000000000000001 RSI: ffffea0004192d80 RDI: ffff888101ce2000
+[  113.863746] RBP: 000000000000000c R08: 000000000000003c R09: 0000000000000a00
+[  113.863750] R10: 0000000000000001 R11: 00000000000007e0 R12: 0000000000000000
+[  113.863754] R13: ffff888101ce3000 R14: ffffea0004192d80 R15: ffff888100a779c0
+[  113.863763] FS:  0000000000000000(0000) GS:ffff8881f8a8b000(0000) knlGS:0000000000000000
+[  113.863768] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  113.863773] CR2: 00007ff837b28000 CR3: 0000000106e91005 CR4: 0000000000170eb0
+[  113.863777] Call Trace:
+[  113.863784]  <IRQ>
+[  113.863787]  page_to_skb+0x1f3/0x210
+[  113.863798]  receive_buf+0x712/0xca0
+[  113.863807]  ? detach_buf_split_in_order+0x5d/0x110
+[  113.863819]  virtnet_poll+0x1da/0x460
+[  113.863829]  __napi_poll.constprop.0+0x2a/0x120
+[  113.863838]  net_rx_action+0x11a/0x230
+[  113.863847]  ? raise_softirq_irqoff+0x5/0x20
+[  113.863857]  ? __napi_schedule+0x31/0x50
+[  113.863864]  ? vring_interrupt+0x77/0x90
+[  113.863871]  handle_softirqs+0x127/0x260
+[  113.863880]  __irq_exit_rcu+0x50/0xf0
+[  113.863888]  common_interrupt+0x95/0xc0
+[  113.863910]  </IRQ>
+[  113.863914]  <TASK>
+[  113.863917]  asm_common_interrupt+0x22/0x40
+[  113.863924] RIP: 0010:default_idle+0xb/0x20
+[  113.863932] Code: 00 4d 29 c8 4c 01 c7 4c 29 c2 e9 6e ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 eb 07 0f 00 2d 9d d0 03 00 fb f4 <fa> c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 90
+[  113.863937] RSP: 0018:ffffffff82803e98 EFLAGS: 00000206
+[  113.863943] RAX: 0000000000000000 RBX: ffffffff8280b400 RCX: 00000000ffff49ff
+[  113.863947] RDX: 0000000000000000 RSI: ffffffff821f82b0 RDI: 000000000003e4f4
+[  113.863951] RBP: 0000000000000000 R08: 0000000000000002 R09: 0000000000000000
+[  113.863955] R10: 000000581b92d59c R11: 0000000000000000 R12: 0000000000000000
+[  113.863959] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000013a90
+[  113.863966]  default_idle_call+0x3c/0x70
+[  113.863973]  do_idle+0xdc/0x200
+[  113.863987]  cpu_startup_entry+0x29/0x30
+[  113.863995]  rest_init+0xbd/0xc0
+[  113.864002]  start_kernel+0x5fd/0x600
+[  113.864018]  x86_64_start_reservations+0x20/0x20
+[  113.864029]  x86_64_start_kernel+0xc9/0xd0
+[  113.864036]  common_startup_64+0x129/0x148
+[  113.864048]  </TASK>
+[  113.864051] ---[ end trace 0000000000000000 ]---
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202609151453.yX0JDG4h-lkp@intel.com/
+the above warning repeated several times, 8 in this run, and then hit BUG.
 
-All errors (new ones prefixed by >>, old ones prefixed by <<):
+[  146.743192] ------------[ cut here ]------------
+[  146.743200] kernel BUG at net/core/skbuff.c:5289!
+[  146.745219] Oops: invalid opcode: 0000 [#1] SMP NOPTI
+[  146.747359] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Tainted: G        W           7.2.0-rc2-00235-gddb06ebf175f-dirty #5 PREEMPT(full)
+[  146.752482] Tainted: [W]=WARN
+[  146.753718] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+[  146.757698] RIP: 0010:__skb_to_sgvec+0x226/0x260
+[  146.759646] Code: e6 89 4c 24 08 e8 fa fd ff ff 85 c0 78 2e 8b 4c 24 08 41 01 c7 29 cb 74 26 01 cd 4d 8b 6d 00 44 8b 74 24 04 eb 86 85 db 74 15 <0f> 0b 41 bf a6 ff ff ff eb 0b 41 bf 01 00 00 00 eb 03 41 89 c7 48
+[  146.767755] RSP: 0018:ffffc90000003c78 EFLAGS: 00010206
+[  146.769965] RAX: 0000000000000001 RBX: 0000000000000078 RCX: ffff8881060ebec0
+[  146.773018] RDX: 0000000000000001 RSI: 0000000000000001 RDI: ffffea00041b7200
+[  146.775910] RBP: 000000000000006c R08: 0000000000000000 R09: 0000000000000000
+[  146.778716] R10: 0000000000000058 R11: 00000000000007e0 R12: ffff888100b25eb0
+[  146.781355] R13: 0000000000000000 R14: 000000000000006c R15: 0000000000000002
+[  146.783911] FS:  0000000000000000(0000) GS:ffff8881f8a8b000(0000) knlGS:0000000000000000
+[  146.786704] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  146.788578] CR2: 00007f9245e088a0 CR3: 0000000106575006 CR4: 0000000000170eb0
+[  146.790880] Call Trace:
+[  146.791601]  <IRQ>
+[  146.792190]  skb_to_sgvec+0x11/0x40
+[  146.793267]  esp_output_tail+0x184/0x420
+[  146.794450]  esp_output+0x12e/0x160
+[  146.795407]  xfrm_output_resume+0xb22/0xe10
+[  146.796571]  ? __memcg_slab_free_hook+0x50/0xe0
+[  146.797842]  ? iptfs_delay_timer+0x8a3/0x920
+[  146.798987]  ? kmem_cache_free+0x210/0x270
+[  146.800061]  iptfs_delay_timer+0x5dc/0x920
+[  146.801135]  ? net_rx_action+0x1fc/0x230
+[  146.802172]  ? rb_erase_linked+0x3b/0x60
+[  146.803175]  ? __pfx_iptfs_delay_timer+0x10/0x10
+[  146.804346]  __hrtimer_run_queues+0x117/0x1b0
+[  146.805452]  hrtimer_run_softirq+0x43/0x90
+[  146.806474]  handle_softirqs+0x127/0x260
+[  146.807421]  __irq_exit_rcu+0x50/0xf0
+[  146.808304]  common_interrupt+0x95/0xc0
+[  146.809229]  </IRQ>
+[  146.809733]  <TASK>
+[  146.810200]  asm_common_interrupt+0x22/0x40
+[  146.811176] RIP: 0010:default_idle+0xb/0x20
+[  146.812154] Code: 00 4d 29 c8 4c 01 c7 4c 29 c2 e9 6e ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 eb 07 0f 00 2d 9d d0 03 00 fb f4 <fa> c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 90
+[  146.816515] RSP: 0018:ffffffff82803e98 EFLAGS: 00000206
+[  146.817661] RAX: 0000000000000000 RBX: ffffffff8280b400 RCX: 0000000000000000
+[  146.819210] RDX: 0000000000000000 RSI: ffffffff821f82b0 RDI: 0000000000050834
+[  146.820733] RBP: 0000000000000000 R08: 0000000000000002 R09: 0000000000000000
+[  146.822261] R10: 0000000000155cc0 R11: 0000000000000000 R12: 0000000000000000
+[  146.823751] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000013a90
+[  146.825225]  default_idle_call+0x3c/0x70
+[  146.826032]  do_idle+0xdc/0x200
+[  146.826645]  cpu_startup_entry+0x29/0x30
+[  146.827412]  rest_init+0xbd/0xc0
+[  146.828039]  start_kernel+0x5fd/0x600
+[  146.828755]  x86_64_start_reservations+0x20/0x20
+[  146.829677]  x86_64_start_kernel+0xc9/0xd0
+[  146.830470]  common_startup_64+0x129/0x148
+[  146.831247]  </TASK>
+[  146.831661] ---[ end trace 0000000000000000 ]---
+[  146.832554] RIP: 0010:__skb_to_sgvec+0x226/0x260
+[  146.833442] Code: e6 89 4c 24 08 e8 fa fd ff ff 85 c0 78 2e 8b 4c 24 08 41 01 c7 29 cb 74 26 01 cd 4d 8b 6d 00 44 8b 74 24 04 eb 86 85 db 74 15 <0f> 0b 41 bf a6 ff ff ff eb 0b 41 bf 01 00 00 00 eb 03 41 89 c7 48
+[  146.837105] RSP: 0018:ffffc90000003c78 EFLAGS: 00010206
+[  146.838095] RAX: 0000000000000001 RBX: 0000000000000078 RCX: ffff8881060ebec0
+[  146.839418] RDX: 0000000000000001 RSI: 0000000000000001 RDI: ffffea00041b7200
 
->> ERROR: modpost: net/rxrpc/rxrpc.ko: symbol 'sysctl_rmem_default' undefined!
+Fixes: 5f2b6a909574 ("xfrm: iptfs: add skb-fragment sharing code")
+Fixes: b96ba312e21c ("xfrm: iptfs: share page fragments of inner packets")
+Signed-off-by: Antony Antony <antony.antony@secunet.com>
+---
+xfrm: iptfs fix
+---
+ net/xfrm/xfrm_iptfs.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
+index 6920940a35b4..d3bca90e2c38 100644
+--- a/net/xfrm/xfrm_iptfs.c
++++ b/net/xfrm/xfrm_iptfs.c
+@@ -14,6 +14,7 @@
+ #include <net/icmp.h>
+ #include <net/ip6_route.h>
+ #include <net/inet_ecn.h>
++#include <net/page_pool/helpers.h>
+ #include <net/xfrm.h>
+ 
+ #include <crypto/aead.h>
+@@ -486,7 +487,10 @@ static int iptfs_skb_add_frags(struct sk_buff *skb,
+ 			tofrag->len -= offset;
+ 			offset = 0;
+ 		}
+-		__skb_frag_ref(tofrag);
++		if (walk->pp_recycle)
++			page_pool_ref_page(skb_frag_page(tofrag));
++		else
++			__skb_frag_ref(tofrag);
+ 		shinfo->nr_frags++;
+ 		shinfo->flags |= SKBFL_SHARED_FRAG;
+ 
+@@ -2171,7 +2175,11 @@ static void iptfs_consume_frags(struct sk_buff *to, struct sk_buff *from)
+ 		new_truesize = SKB_TRUESIZE(skb_end_offset(from));
+ 	} else {
+ 		iptfs_skb_head_to_frag(from, &toi->frags[toi->nr_frags]);
+-		skb_frag_ref(to, toi->nr_frags++);
++		if (from->pp_recycle)
++			page_pool_ref_page(skb_frag_page(&toi->frags[toi->nr_frags]));
++		else
++			skb_frag_ref(to, toi->nr_frags);
++		toi->nr_frags++;
+ 		new_truesize = SKB_DATA_ALIGN(sizeof(struct sk_buff));
+ 	}
+ 
+
+---
+base-commit: 96f01b53c2d05e003b040892256de54a586e8529
+change-id: xfrm-iptfs-pp_ref_count-underflow-063ee0302600
+
+Best regards,
+-Antony
+
