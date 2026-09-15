@@ -1,208 +1,194 @@
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A4D406834
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 03:23:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A420419FD2
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 03:32:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.205
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789442639; cv=pass; b=UURpEkjL/b31f/6gNaINU5qZ8Yhqcd3iESfMqt+Wgs/Sw+E2RZbZ+/OBUJF9iZ719gIcOQA5dNM3IxQmHy4RhZPNKYrEkJhkLwYZ9mkRWY2O9VSNG2tNxNS8EcrN2XmV33bvWFDGfQN4p3/S4PWXwI3ZnbN4p8CIXv8Ft8swpow=
+	t=1789443157; cv=pass; b=qctzB7XI/O3Cea9G/+l7sKBKcjeR5t4UdRQYKry43BBx5qPhBle19AEzxJuQPdaIBfrr7cabk9FFsu0tstoaWCxh1qTNUqPCFg4IpnC38akkz14Tu1iZv2sg77882AeNaCEC9xdq7ZhlAONkdxVgZ98MpJX7gy/GW8tZvF5EJQk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789442639; c=relaxed/simple;
-	bh=hrlqEHIst1+X+TMWk/G28Uq0LlSGdUaoK7pgCo9bqCk=;
+	s=arc-20240116; t=1789443157; c=relaxed/simple;
+	bh=cNyUgiHAc1OpzVC4kIHbtZu2xQfpQFZZ2m7gUGOvwQA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RTCZPnDQ+2brnGKPXVvDeMh/QPHQTXoQYzTdINjWNNAMPsjsGHySBqSG1jG9UoUPgzXWmLGcbg+TF7gW1xCfk+0H+lhaR9bEPFZx/uEm5S+PfKsb45sSFEkvYqn4dWH2pnkUUwAQO78inNsHsFat9+zhX/DFVZWuqwniN/uiYqE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J+S9KbHQ; arc=pass smtp.client-ip=74.125.230.204
+	 To:Cc:Content-Type; b=EeFIDMfplMssc84tGv7cjm/4dZXlL4yiTuPPhkO7Oqc+BBN7zm8kunsQ+Rmd+7SPE+4dfwg+NF+Cg1vyGLsaqAEq6cdYjxFoL0/4EHPLN9HKlWnjiOGBUPQS4HBvKK1qJdMjiLjRGolXve/6pb7LyRF91Em6txK1lm/PxAbZ6w0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sZY84jaQ; arc=pass smtp.client-ip=74.125.230.205
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J+S9KbHQ"
-Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-5309ce58730so46963791cf.2
-        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 20:23:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789442634; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sZY84jaQ"
+Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-530301ff353so28363641cf.2
+        for <netdev@vger.kernel.org>; Mon, 14 Sep 2026 20:32:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789443150; cv=none;
         d=google.com; s=arc-20260327;
-        b=qn9BO8VsRBh2cblSOgDk9/03Nb+U6JMH8cQTJ7lM4m+dzvHWYhiXcCFEVSUheGEGWh
-         F4aKJcesX+P/36n2a4m03J98806YpnPwhyBZxof10aR0vycFQlY1ZA9DyJsR4ODjIdXi
-         yYr+ZFLAZLx48MwrHeN1g0lVDR8k0R2sYLNAybODv8wGAJgxP2vZtlGTt8sVqzydiKsy
-         +qsuDlzyvfovM0eEi9+/25Wj6aiqoPOUY5yuO+2+q3qCrllUPDx7kmK3UViFBQqFI3KM
-         XixMj/9qbFRAdWXVd27BkKQWW816GcZhKY//OjX3J4p1reMjpc0SsiVunlo6tZx+6ZQg
-         p9Eg==
+        b=risLjOLpd9Wp1fFX5M6dJuPFn1M7eWjuZP4QbcFifKn9zBcZTf60W62nx5MGypZOAm
+         UZBPFvRbau3zLv39dlfGjJFAmMM+2zAtj5ptsbT69AlqKTfgXuT919r2qPCitE/KXvk4
+         +f6HUe3/srq8GluFgmaVhoWeU9yYcxyorGHIEvnvwN6zhg75TWhQo3Tvsc4AeuvNwXdL
+         OlmjNS1iwsxNwnltVICKhHmTpt8KF49LubZjJHRa+QQjaIHDImWEA2NC3ot23kRV8/2+
+         G8AYvpAsraFR6UWEp4vhsQqM71GNRYlcgOwmbOMiA9eV6UPtmZKBWQEzKDZBKrY3oRTh
+         Jygg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=m2EsZhkDukapRbXUxImFy1u31FPKcjz83SS6cNGFy7U=;
-        fh=zX1UkrfBrhShjCci2cMBSFiauI3jFNGW9S7NABItTQM=;
-        b=rzsIFJeT0d170roR00+TCxGeXE+9BcsukUYvUJ57MZ7YvA1CNdGevcbJjjiQVTOji1
-         0WDpLnbfQCeLigOLzgB/FR8MdCCbW/qpQlpP9/bT3ZrokIujlJpjLFhv9V+UajDetTde
-         kc/+CiJNZMT6Es6S17CG9lPdED4qws8X6qW+wZfT5wibz9sVFGN7AYSicRQFH6RFPxxt
-         BDYkbhlVHZGTiG2uoUyHQcf9jdQd/gt+un2J4da8cVypofRRLmG+STVZYJUPS+zWD0ny
-         OiATA2Ibm+v/vb7GakD3e8dmjOKnsvb9HcrmAucALdrEKHjfQM2MvL8tKb/ZLHbCP4Oi
-         WVEQ==;
+        bh=aWObjhMohUFlVKMQj21hIxDdB+FomHl/XtrzQrYZUHI=;
+        fh=7SxVEQrwGwh5wF7vINKo+ypDB3D75C0f3L95VvdEz/Y=;
+        b=i4V5icOhf34DHWbqIYDiOJkVeuCwWL1pUDz6f6Ki1IiDlNbfGYqBYXEiYV6s7u9f/o
+         Xu2AOcdpitOGF9J7oI3yjyWPvjpyJlJ06AwQ3TXYP1SCMySnEtnteY2wSwwN6pR5yVEI
+         YtZ7Zj0obdKzYCUp1gW/QY0ItXCLXQN1dNmYueWeZh1x0QZiiD9Iueermner9ufV+EUj
+         Xq2rlue+Y0DIj3oy6ObHt9fqWTWQE2rGTf9GZgnyOogEtnn+iX4+z1SXBBwEk/lQUmtB
+         /b50tgpbEAfFLw02MqQf6EXSpybhqtmPKLRCHnAKTqfOx5wTAA+LX7VvhjcX3APn5c3j
+         JrUA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789442634; x=1790047434; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789443150; x=1790047950; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=m2EsZhkDukapRbXUxImFy1u31FPKcjz83SS6cNGFy7U=;
-        b=J+S9KbHQkhc8Wuy3uBKOw2ZZjCiK5jHRfY+HRx1LYECYkHL8KGu1neRZhCeq2G8Ixc
-         85vDh1FwYQ17xgYR6oe5rUT/BXogMU3ZS3JbUPWan+VNjV6MCeIYn/QR1iu6A3OtvGut
-         wenUevD91b7hpGDeEYVjtQ4n+j1etPnaP6+hsWZxL06fGAK1j3yxP0YHWQgEJT0jdPDi
-         T4dHvR4/4GEWmDAxIYwp4GcDWp1kL5TR2Qbvt3r5lVNPlIGhuNmH6gkrImTgGs56bzpL
-         l496FFyZZd0kwiqrVASlMsn9w+fZKrw7MZ0jnlGZTkGqayjfBd8An0TZoYqjQqJbbhFg
-         wgjA==
+        bh=aWObjhMohUFlVKMQj21hIxDdB+FomHl/XtrzQrYZUHI=;
+        b=sZY84jaQWEEqduXPxmIE2bTrAubeL/Koh+dNtfx1jnADJQ646fyCbDZCt8TnhEm74K
+         uu+p5LqM8dU2TrUs1Abhv3LnUjLDIfnPPugQuYa2vyPkla+quogOJFA//L0qA3kTR1fJ
+         nAscOQpneOm7QeuewyUUaJlw78v6s+JLy/LFkPNH6LrR35ppYBl1WmxYrDZM0P716+J7
+         GkIY5OhJGRW+UQ+PGx40ziZKkWa2THDVo0wV+IEdLxz91JA4g+U6QB36YJeBP6pvB/Ze
+         McJa0g+8Rdj670/YeLKMkHWk1seYmYzilOud6t8OWLjJI57iXCLUy/YfZY3fHHyut9hZ
+         nIjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789442634; x=1790047434;
+        d=1e100.net; s=20260707; t=1789443150; x=1790047950;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=m2EsZhkDukapRbXUxImFy1u31FPKcjz83SS6cNGFy7U=;
-        b=XexRw0o/JQSDownYo8Bj/4l7CNtoliJv5FoNyXLRd8qj2apsCyhNCDU16WFF2MH1NR
-         +h7NmKSnwgXwb0LWO31YYVRW0ZAxgUXsopA0elThFd8l9tsII8E6UtFoBLVN+9LYdVqo
-         1iJ7MU0fVpE0z5SzaBUo1cakDt1c05bnNI2RawMnDuaKuqc0kXkdNvk2VPd8L+6g2qOr
-         1chII590qoutZhdQPyZHJxof0PgH5oTF10T/jnCgpEnNiJwTmt738z29eGrv2gYOtwHu
-         oJn1Mx4EOJLpK6Z8QFAZEmtsqUGeaE6wzdcQz0MivMGLi/vCBx9JbdpVewLKlY3Lxt4d
-         nWFw==
-X-Forwarded-Encrypted: i=1; AKwUvBy6QyWTu+GnuYPjN3SAP1/4LvozkDFRUWbtF77ZBRw8/oeRgaivpapzabHFY6E71IUHPISoOjU=@vger.kernel.org
-X-Gm-Message-State: AFuF++nSCkzSz5Wchiyzz0VYntTYsYNcpF0dl/ps1cpdwtkBRaLFk1y/
-	vUa3auZbFBw0hFA8fjuGDK1KzQuguwaZFLdgHi1+xGlAHqNLa2H0snatmMDFXefAq11rWs8dt1t
-	OZUy2ruzKW6MDPcEgvtpFnhOBzFmXPwrL50qJXC6R
-X-Gm-Gg: AYBFou1XqSXEqNfjALurw32A6OJNj0A7JpPbp0nSDw7WSfb1h/AdZlP//MWjuarwg/E
-	YnuXq6GSCEWYwutow4KiPwc3uh5z4hHyTj6QQkBcWLaJnk4GPKVBGXGNmAfgeo+/xN+yPuz8LRU
-	a0a8WE3ygnSBiJ7TCKDRN+AoqHa6o4dqc3dckZpOkYUj4FyUyEEkuhuHOg0tEo3e+EXaF/LDTP2
-	xCn+pCVbKnRuag5vf4ds0c9m/7pQo6uwcnwRj+XOzjyVPC9ilhRe0dFtAub/EXiPcT6SrsGguVD
-	gCVi8kyler5XqqDlsYOUNQRaMGUE4zK57gaUhQQW+eoBlW9wRt3tVji6BX2G9CuPqXjfMiZm/zj
-	CW5PcLiXjs7r+1kwzg8iEThzcTH0dWeTALoo5r0Fjc3HjCo9oUyMC+FRGs9ZX3G18Cdp0RtrbYZ
-	STzg==
-X-Received: by 2002:a05:622a:15c5:b0:530:d1d6:792d with SMTP id
- d75a77b69052e-5310cf42260mr79871191cf.15.1789442633858; Mon, 14 Sep 2026
- 20:23:53 -0700 (PDT)
+        bh=aWObjhMohUFlVKMQj21hIxDdB+FomHl/XtrzQrYZUHI=;
+        b=DMRv0aZ26I8zmnZsny5BRXQu8lD4RogGQWyvn2THRtlJbcoApiGZls7SdIcvhTKGmr
+         XE7vUQa3G0ZAUlp81GGlsbF3JjHTs82bL0HTg+thPDvhZxMtMkQDOeQMaQv5IzMpdHiZ
+         NSWcGImYUq8Fjowb9y4CC2TpZQ1wI+5sgFNG3Oi4THXcBn6VuVF7QOs13TCijPJbBYKc
+         3CbQsow2nLYzoAuV1vE3IgQjcRwAOSsfMMIR27rq+WSStCC8IZ4WhqpGI6vQRnNk45vo
+         v3erYF2eBFMiXYL7kIu8dg/X3JJPB5WW1dF7jyS9A4GxOxOn49tSZFdpOO4VDkd23aOL
+         N+7g==
+X-Gm-Message-State: AFuF++m7JTjA0xVVSfJScggglrI24WBG+F56cCUfxq5FSu8PmJpP/QRf
+	r6AcdKyQuxmveFtrrh+UWzUtaNDlzivqImgbFZgLws1fWPJqNa0tczGolQDfPNgrhkb/YIHM+tb
+	Nw5ViYZ+BYupa3pEc9g1Q+21iv2hPqy+PRk5CJAkH
+X-Gm-Gg: AYBFou2JCCNH99AUsbfU4PF8RWVSZMfR4iN+fNYF8V7zyTqrwXvxqq2dRRrsFPW7u/h
+	gim1r76VqCpewIi2qrFOYcQb2IfOAUKZwKQ36zDE/7ZqjM9dsl0IstA8jnoMBvEgiRZRI2uE0kf
+	5KvwUKLpd6MBRKp6JPD6BLfsG+cP4wNHVj8v5jJQmgnxBShM6MpCdmHkD0MdfzKimB+yd0VLrzz
+	V6Br13uEURfyLdQfMeKrip0audPya8uUuFKgZvU1neNMfE0hwT/qVIhGLoat8QTyFcmuYTEZ+qG
+	k0UoHUnx2YQnHoHB6chZxvCsBXt3dISvX36SjMgU2DmzI3jodlFfy+JXhTFkNkaLQlEmjNuBRnk
+	d6bbq9LQWBTMZ2+LzTh2OpQ346oCwle6QZd7t5EwGwlLb7pJNmzfp2zUPaGftPma4rQw=
+X-Received: by 2002:a05:622a:5a0f:b0:530:42e5:f3a2 with SMTP id
+ d75a77b69052e-5310d03126emr77108521cf.43.1789443149347; Mon, 14 Sep 2026
+ 20:32:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260911073758.2714564-1-xiaolinkui@126.com> <CAAVpQUAUAgAVutpQgMu4LjG1KOpm9Du0Kw1kbp2vHtHqQ5USZw@mail.gmail.com>
- <CANn89iJTMxWERqz1tdxuQ2jW6Rr7xN_ceh_yejtrBTPwN_YEeg@mail.gmail.com>
- <CANn89iJfphTDBFKdNkgmBHDybc8wV2EGSJoiHvzR0ht4V2bMAA@mail.gmail.com> <182acfbd-d03a-4847-8fb8-4d0d29f22107@126.com>
-In-Reply-To: <182acfbd-d03a-4847-8fb8-4d0d29f22107@126.com>
+References: <cover.1789284524.git.petalzu987@gmail.com> <619733e91a715790da8c4efd88f51897ff06e253.1789284524.git.petalzu987@gmail.com>
+In-Reply-To: <619733e91a715790da8c4efd88f51897ff06e253.1789284524.git.petalzu987@gmail.com>
 From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 14 Sep 2026 20:23:41 -0700
-X-Gm-Features: AcwNN1W3r4K_dqI2PDFpl2Z4moprvaKFdCce3ABAcBP6EBshrMSO52lUYdXu3_g
-Message-ID: <CANn89iJhFL2LNQCXTANQAx8B1GVdGTJgrDwPTZOjbH8k1ygtsg@mail.gmail.com>
-Subject: Re: [PATCH] ipv4: fib: annotate data-race around nh->nh_saddr
-To: Linkui Xiao <xiaolinkui@126.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>, davem@davemloft.net, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, idosch@nvidia.com, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Linkui Xiao <xiaolinkui@kylinos.cn>
+Date: Mon, 14 Sep 2026 20:32:16 -0700
+X-Gm-Features: AcwNN1U7GCotunQsTYXYjB_YxjMuP5n5dmEUyI1TjjIDjqQV_GEfLMGHoJFfqMM
+Message-ID: <CANn89i+YZP4X6WWvGJ2EkV5RshSiT50A0pxZe4un6jB2YKah+A@mail.gmail.com>
+Subject: Re: [PATCH net 1/1] net: tcp: account zero-copy receive VMA memory
+To: Ren Wei <weir@nebusec.ai>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, kuniyu@google.com, pabeni@redhat.com, 
+	willemb@google.com, davem@davemloft.net, kuba@kernel.org, horms@kernel.org, 
+	rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com, 
+	ncardwell@google.com, vega@nebusec.ai, petalzu987@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 14, 2026 at 7:37=E2=80=AFPM Linkui Xiao <xiaolinkui@126.com> wr=
-ote:
+On Mon, Sep 14, 2026 at 7:46=E2=80=AFPM Ren Wei <weir@nebusec.ai> wrote:
 >
+> From: Zixuan Chai <petalzu987@gmail.com>
 >
+> TCP_ZEROCOPY_RECEIVE installs page references in a user VMA and then
+> consumes the corresponding skb. The socket charge is released at that
+> point, so a process can retain an unbounded number of receive pages,
+> including page-table memory, by advancing through a large VMA.
 >
-> On 2026/9/15 04:21, Eric Dumazet wrote:
-> > On Mon, Sep 14, 2026 at 12:57=E2=80=AFPM Eric Dumazet <edumazet@google.=
-com> wrote:
-> >>
-> >> On Mon, Sep 14, 2026 at 12:51=E2=80=AFPM Kuniyuki Iwashima <kuniyu@goo=
-gle.com> wrote:
-> >>>
-> >>> On Fri, Sep 11, 2026 at 12:38=E2=80=AFAM Linkui Xiao <xiaolinkui@126.=
-com> wrote:
-> >>>>
-> >>>> From: Linkui Xiao <xiaolinkui@kylinos.cn>
-> >>>>
-> >>>> fib_select_multipath() compares nexthop_nh->nh_saddr against the flo=
-w
-> >>>> source address with no lock held, while fib_info_update_nhc_saddr()
-> >>>> stores a new value from another CPU as soon as the preferred source
-> >>>> address of the egress device changes.
-> >>>>
-> >>>> Commit 195374d89368 ("ipv4: fib: annotate races around nh->nh_saddr_=
-genid
-> >>>> and nh->nh_saddr") added WRITE_ONCE() on the store side and READ_ONC=
-E()
-> >>>> in fib_result_prefsrc() after syzbot reported
-> >>>>
-> >>>>          BUG: KCSAN: data-race in fib_select_path / fib_select_path
-> >>>>
-> >>>> but it only covered that reader. fib_select_multipath(), reached fro=
-m
-> >>>> fib_select_path(), is a second lockless reader of nh->nh_saddr and w=
-as
-> >>>> left bare.
-> >>>
-> >>> 32607a332cfe added the reader after 195374d89368.
-> >>>
-> >>
-> >> Indeed, please put in V2:
-> >>
-> >> Fixes: 32607a332cfe ("ipv4: prefer multipath nexthop that matches
-> >> source address")
-> >
-> > Adding Willem
-> >
-> > It seems that this code also lacks a check against genid?
-> Thanks Eric and Kuniyuki for the correction. I'll send a V2 with Fixes:
-> 32607a332cfe.
+> Reserve the VMA size in TCP socket memory accounting while the mapping
+> exists. This charges the reservation to the socket memory cgroup and
+> TCP protocol budget, and releases it when the last VMA fragment is
+> unmapped. Keep the reservation across same-mm VMA splits and moves,
+> disallow expansion and fork inheritance, and reject inherited VMAs from
+> the zero-copy path. Use a strict accounting kind so ordinary receive-
+> buffer minimum allowances cannot bypass the reservation limit.
 >
-> Kuniyuki, good catch on the missing genid check. nh_saddr is only
-> meaningful when nh_saddr_genid matches dev_addr_genid, and
-> fib_select_multipath() currently skips that validation. I'll fold the
-> genid check into V2 along with the READ_ONCE annotations, unless you'd
-> prefer to send it as a separate patch. Let me know.
->
+> Fixes: 93ab6cc69162 ("tcp: implement mmap() for zero copy receive")
+> Cc: stable@vger.kernel.org
+> Reported-by: VEGA <vega@nebusec.ai>
+> Assisted-by: LLM
+> Signed-off-by: Zixuan Chai <petalzu987@gmail.com>
+> Signed-off-by: Ren Wei <weir@nebusec.ai>
+> ---
 
-I (Eric) was the one who mentioned the genid thing :)
 
-Send a V2 with both bugs fixed.
-Thanks
+This is not a bug, and this patch would be a serious regression.
 
-> Best regards,
-> Linkui Xiao
-> >
-> > diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
-> > index 50e96f86ca59ab164f764f5d2185d158c14a4a6a..5a8bbcb65daaada1c3ae963=
-39cabc2e801653dac
-> > 100644
-> > --- a/net/ipv4/fib_semantics.c
-> > +++ b/net/ipv4/fib_semantics.c
-> > @@ -2185,6 +2185,7 @@ void fib_select_multipath(struct fib_result
-> > *res, int hash,
-> >          bool use_neigh;
-> >          int score =3D -1;
-> >          __be32 saddr;
-> > +       int genid;
-> >
-> >          if (unlikely(res->fi->nh)) {
-> >                  nexthop_path_fib_result(res, hash);
-> > @@ -2193,6 +2194,7 @@ void fib_select_multipath(struct fib_result
-> > *res, int hash,
-> >
-> >          use_neigh =3D READ_ONCE(net->ipv4.sysctl_fib_multipath_use_nei=
-gh);
-> >          saddr =3D fl4 ? fl4->saddr : 0;
-> > +       genid =3D saddr ? atomic_read(&net->ipv4.dev_addr_genid) : 0;
-> >
-> >          change_nexthops(fi) {
-> >                  int nh_upper_bound, nh_score =3D 0;
-> > @@ -2205,7 +2207,9 @@ void fib_select_multipath(struct fib_result
-> > *res, int hash,
-> >                      (use_neigh && !fib_good_nh(nexthop_nh)))
-> >                          continue;
-> >
-> > -               if (saddr && nexthop_nh->nh_saddr =3D=3D saddr)
-> > +               if (saddr &&
-> > +                   READ_ONCE(nexthop_nh->nh_saddr_genid) =3D=3D genid =
-&&
-> > +                   READ_ONCE(nexthop_nh->nh_saddr) =3D=3D saddr)
-> >                          nh_score +=3D 2;
-> >                  if (hash <=3D nh_upper_bound)
-> >                          nh_score++;
->
+NACK.
+
+1) There is no vulnerability here.
+vm_insert_pages() accounts every installed page in the RSS of the
+mapping process (insert_page_into_pte_locked() does
+inc_mm_counter(vma->vm_mm, mm_counter_file(folio))), and the page
+tables allocated for the mapping are GFP_KERNEL_ACCOUNT, as your own
+stack trace shows (pte_alloc_one).
+So the memory is accounted, it is attributed to the process holding
+it, and oom_badness() sees it. Your own log says so :
+[  701.147561][ T5539] poc invoked oom-killer: gfp_mask=3D0x440dc0
+The OOM killer was doing exactly the right thing, and was about to
+kill 'poc'. The kernel only "panics" because your reproducer does :
+    sysctl -w vm.panic_on_oom=3D2
+With panic_on_oom=3D2, any program doing malloc()+memset() in a loop is
+a "kernel vulnerability". Please do not send such reports.
+
+Releasing the socket charge once the skb is consumed is by design :
+ownership of the pages moves to user space, exactly like a recvmsg()
+copying into an anonymous buffer of the same size. Nothing is
+unbounded, this is bounded by the address space the process mapped
+and populated, and that memory is charged to it.
+
+The Fixes: tag and the stable Cc are therefore not appropriate.
+
+2) The patch itself is a much better DoS than the one it claims to
+fix.
+You are charging *address space* to tcp_memory_allocated at mmap()
+time. Address space is not memory.
+An unprivileged user can mmap() a few GB on a TCP socket, without
+allocating a single page, and push tcp_memory_allocated above
+tcp_mem[1]. The whole host then stays under TCP memory pressure for
+as long as the mapping exists : every socket on the machine starts
+shrinking its buffers and dropping packets. Repeat on a few sockets
+and you reach tcp_mem[2].
+
+3) It breaks the intended use of TCP_ZEROCOPY_RECEIVE.
+The expected model is to mmap() a large region once and slide a
+window through it for the lifetime of the flow. With your patch these
+mmap() calls fail with -ENOMEM, or start failing at random whenever
+the host happens to be under TCP memory pressure. This is an ABI
+break, and it is not covered by any test. tcp_mmap.c in
+tools/testing/selftests/net/ was neither updated nor, apparently,
+run.
+
+4) Implementation problems, in no particular order :
+- __sk_mem_raise_allocated() and __sk_mem_reduce_allocated() are
+  called from mmap(), munmap() and exit_mmap(), without the socket
+  lock. sk_forward_alloc is bypassed entirely, so the socket
+  accounting no longer describes the charge held on its behalf.
+- SK_MEM_RECV_ZEROCOPY 0x100 overloads a 'kind' argument that is a
+  small enum, used in the tracepoint, and forces a change of the
+  fall-through in a core function.
+- Adding a .close vm_op silently disables VMA merging, see
+  is_mergeable_vma().
+- VM_DONTCOPY and VM_DONTEXPAND are user visible behavior changes,
+  proposed here for stable kernels.
+- The reservation is never reduced on partial unmap : nr_pages is the
+  size of the original VMA and the refcount only tracks fragments.
+  Unmapping all but one page keeps the full charge forever, on a
+  socket that sock_hold() keeps alive long after close().
+- mmgrab() and sock_hold() are redundant. vma->vm_file already pins
+  the socket, and vma->vm_mm cannot go away under its own vma. Once
+  VM_DONTCOPY is set, the zc_vma->mm =3D=3D mm test is dead code.
+- kmalloc_obj() does not exist in any of the stable trees you are
+  Cc'ing.
