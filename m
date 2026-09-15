@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8174B3B83FC;
-	Tue, 15 Sep 2026 13:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D543B83FC
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 13:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789477271; cv=none; b=XTZnPwEptEj8u5EP9KUGskgHoEQ5yyIIDzh2x7RbNp2hANdxRZz7trS5ZCaj/ECfjlc0/q43GhL+s/iKGIPXtbQAMLXn9X7Jzv98K8laalIcwLtXBUBwcGe5IytIhHm3ys4rcFZIv2ftlqSFythJk++QckE00dOTCbjWt5hVsWQ=
+	t=1789477274; cv=none; b=jYkGmDR2vwb3AbZ6HG0avhlcF1AZkJzxpblRlJ2uyV3NgH3nm+iUNMN9ObX4Ihi3rMOv174s4ftNniuTdsmw++k1aRonuRkAXGabYcA6ueXVqT+zdk64D+mtH1oTl63XZDLlRsNxhCKdxEUVoyFoJn+82MK7hwlnA9fcQBqUgPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789477271; c=relaxed/simple;
-	bh=X3yu9EpBrkDnQC2rpNCvAHoyo2oI73MPTKB/tYAsvrI=;
+	s=arc-20240116; t=1789477274; c=relaxed/simple;
+	bh=if1M6z/u/A2ScTi/uYkx9JHuYgEW8SweK2xkbcz1j8M=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=SbHvC3g1a9ISH8Vk3LK8QKN9McMCeP4Q+puxHeOxh5vvdKwUEl+LoAOrst8S/8IiLAlKQV0xKNrjb1xdLbWY7yZu0L/x9vdZWW8VnApssShlNqGY5Sjx80oVqUVCuEGMmLr2EbSgoDBKS4InOn2ID7d3Kft4FEZ0anvcLJnYErI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jM6hoDYf; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=Ey7pPvHIU7C153ewnhuECF4tJxFqy9u6vbEXLNmnbOWPPTwa70hhssTvTVQCoK0lxG31JorwYMIg8MnlnAKW9Q+MuDwTDdQSYaMsLUeYNkqSJrvdnXt2tYs2E4mCLnpY6E1kvLKjUNLUkFvz06NgSs1xWsCoYvMcF8qDrZo3sD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LjHDvE4I; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jM6hoDYf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E17F1F000FF;
-	Tue, 15 Sep 2026 13:01:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LjHDvE4I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C1F1F000FF;
+	Tue, 15 Sep 2026 13:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789477270;
-	bh=DwrNzdpZsdBICzQS3joCbAAZTICEFFGqUOqLpF4/IqE=;
+	s=k20260515; t=1789477273;
+	bh=2EEe0E8cI9tTxwJBmp1Y7lDL0YykHEKCtrU1an42H4M=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=jM6hoDYf7e3eYetsZv3kATelJT+mn44wj8+tKPT/+GFteMnHS4mYNgAHXLxZjuRR2
-	 rHrfOlBP0eAZKBU5vKV8aRii/GUpkCJnskMoA7nibhyI6YB5rcVkzYps4RcFuIxvDe
-	 NaJEUQJeB2jUyOjJsavaAXmVRm7/myfhuSHXycE5rH6qPG0Wk/5jaTxbER1Ql9QdCj
-	 EPVB2/ewiTpSBeo82J5sBFQV95BScAZqzqgYznz9lJZuD25XV3mGTcjeXNLAibcjLI
-	 j1zgI7fQxjGotlwtzIglHrotpqpyZNldrcDYsjKqDCl41hvUudybrX7Op3W5UYBCzm
-	 3yAO4Z2s+ikKQ==
+	b=LjHDvE4ImpkTA8Sdz7l7d2AsS1tSNCkF0zey/O/t59Fkrb+nqxN0anYVkbWtMtFJe
+	 nLKI/GnNgZuKRV60n9UUBBLfDccmW90Fu+iSFIIAeuIhN7xKTvJ6FSTjSoqhKrczoa
+	 9R9lErzEIuufsXCLELn2MtVetY0jZN3J/XxKuOuHNa+WBTdFULxUIDSmkGkZApL6yb
+	 2mLMpmm0CkmOXnBaCq93OKpPQWDVyct4cK8Q1qmOK0iNSfU/3YHCZI6pL+mwyLg9fG
+	 O01ZHu7IeXD53uYQI2MQRkqV8t/PYGtmIo0qkEULJx5CzIrV0AgwQhF8LIeODCm1Qo
+	 OxrKhw7JcXYXg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19A2539263A4;
-	Tue, 15 Sep 2026 13:00:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 196B539263A4;
+	Tue, 15 Sep 2026 13:00:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,44 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 1/2] net/sched: hhf: cap hh_flows_limit at change time
+Subject: Re: [PATCH net-next] tcp: make smp_rmb() conditional in tcp_poll()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178947720466.1607766.7479529593447485027.git-patchwork-notify@kernel.org>
-Date: Tue, 15 Sep 2026 13:00:04 +0000
-References: <QDISC-B855.v1.20260911153152@mojatatu.com>
-In-Reply-To: <QDISC-B855.v1.20260911153152@mojatatu.com>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- vtlam@google.com, stable@vger.kernel.org, victor@mojatatu.com,
- hybris@mojatatu.ai, sashiko-bot@kernel.org
+ <178947720787.1607766.4672913101588270762.git-patchwork-notify@kernel.org>
+Date: Tue, 15 Sep 2026 13:00:07 +0000
+References: <20260913123224.762935-1-edumazet@google.com>
+In-Reply-To: <20260913123224.762935-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ ncardwell@google.com, kuniyu@google.com, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Sat, 12 Sep 2026 14:09:19 -0400 you wrote:
-> hhf_change() stores TCA_HHF_HH_FLOWS_LIMIT with no upper bound. A huge
-> hh_flows_limit lets each new heavy-hitter flow pass the
-> hh_flows_current_cnt check in alloc_new_hh() and forces a fixed-size
-> kzalloc(GFP_ATOMIC) per flow under spoofed traffic, for unbounded memory
-> growth.
+On Sun, 13 Sep 2026 12:32:24 +0000 you wrote:
+> Commit a4d258036ed9 ("tcp: Fix race in tcp_poll") added smp_rmb() in
+> tcp_poll() and smp_wmb() in tcp_reset() (now tcp_done_with_error())
+> to ensure that if tcp_poll() observed socket closure, it would also
+> observe sk->sk_err.
 > 
-> Bound the attribute with NLA_POLICY_MAX() at 2*HH_FLOWS_CNT (the
-> hhf_init() default) and report the rejected value via extack. The
-> deprecated nested parse is kept: legacy tc does not set NLA_F_NESTED on
-> TCA_OPTIONS. Configs relying on hh_limit above the default were relying
-> on unbounded, unsafe behaviour and are not supported going forward.
+> Currently, tcp_poll() unconditionally executes smp_rmb() at the end
+> of every invocation, which on weakly-ordered architectures such as ARM64
+> emits a memory barrier instruction (dmb ishld) on the poll fast path,
+> even for healthy, active sockets.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/2] net/sched: hhf: cap hh_flows_limit at change time
-    https://git.kernel.org/netdev/net/c/2cef2588c995
-  - [net,2/2] selftests/tc-testing: add hhf hh_limit cap tests
-    https://git.kernel.org/netdev/net/c/0654f4dba1fb
+  - [net-next] tcp: make smp_rmb() conditional in tcp_poll()
+    https://git.kernel.org/netdev/net-next/c/e8c06b895281
 
 You are awesome, thank you!
 -- 
