@@ -1,142 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A646835E1A8;
-	Tue, 15 Sep 2026 20:26:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43BDF453A54
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 20:33:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789503997; cv=none; b=RrWQCm49+mqHkfLuriMIWvsiD1PJlGwEy7ES1VgXkHidhkl833AQcoIHWRhtwnKtE4AEtw/E/9XwBsZBw4Z7BM4rosgkBgMm8b+Ml9p7rIQUORk0z0rHHo1VvTwVqFoVJazo2vwFaMeHqdNv5Nl16U2M7yHFcl8MPAgfN7q3q7Y=
+	t=1789504413; cv=none; b=GuVrUYYGG4+gXCL5yVgMQAf/L5F/jjLy+U165IKQhf3Tm74ZuJvjBmGqvGAJNgOwN1ktP0/zhRJmUG+Le7En1i616eo59awUstMQAhDUweoExmF148Ew4OR/VGNRbgHKC8ydVMbzr5QLHul5qU+M9bykEVMG74FpqQ5RFytmlAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789503997; c=relaxed/simple;
-	bh=p9FzcHvzEo6//+9LkWPlg4+X47e9L8Vsw++LvvWbZkA=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bek/aPazehfy0MbmcEO59mR1VxfzhqAm1REjLDVsu6Dvt1tnsnfAygE73lhKQj0k4ncMk/NLvYYL4c9QRUGhYPS4xNhbSmWsiM/04mQfuLFCLw4t2cXbZhbc44vd87BQKY0SLMpqkPykUL3eNhmEr96OTu+W2bUpklEECQ5kOY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kpMi0nVw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789504413; c=relaxed/simple;
+	bh=45/eohNmGxzgetiRK5lMcxh9V1IsBJwlnwaJid+CtAE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CKwJ0wpRnKfEihNn3G0ZjNsOfwhe3Hb7lch3BZLJv9Ndwlt3tLzrrOE6aM/Xqm4PVbKzHPXH4rsRMrqbtQ6fT7cEytQ49tg+BTfceypbeaPI3dqfXWmsP8EFz/LW/8eVNkM6rxdSuy1WtIK3BdUBKWYPhWX00BA24tT2NDkpdzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jb/LzoNA; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kpMi0nVw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B43B91F000FF;
-	Tue, 15 Sep 2026 20:26:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789503996;
-	bh=qC+xnHENasn5vp64ecDoz3DjX2JIj8WYObnXwzazahM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=kpMi0nVwTEK7U8lEwyax67+haOFcnLPFPQie/53QLQ4D4aa9OzXjTvBg86b+b2Mmx
-	 G/6Oha2BoPhzwKMHO7y933z9U54w9qUdcFmRqiL7pUhezDapl8n5nE9QpctUC6pk2x
-	 e73mm95frwdq5eTHrDsnJhgh8azyBB7DQVTk601EQtnzfen8GhODXuPMVj5kzLAG1E
-	 obT7v6WrOFtcZa7SONCwQh2HjrA9NBiNzaUDpc2ha0ZV+i/5cyPDPvOPx2jcG/Kbm8
-	 +vkNvCfKM/YicxwN3CE1u/JoefruZinRw/0oFCatVDgqtJzZGvfUSjwRoMoP+Rx5aQ
-	 pRLREm+LZFcFA==
-Subject: Re: [PATCH net-next] net: phy: marvell: add support for active-low
- and active-high LEDs
-From: netdev-bot+sashiko@kernel.org
-To: olek2@wp.pl
-Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Tue, 15 Sep 2026 20:26:35 +0000
-Message-ID: <178950399524.22033.13133348870074259078@kernel.org>
-In-Reply-To: <20260914200847.445375-1-olek2@wp.pl>
-References: <20260914200847.445375-1-olek2@wp.pl>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jb/LzoNA"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 0CDD9C5CD53;
+	Tue, 15 Sep 2026 20:34:13 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 400E2602B0;
+	Tue, 15 Sep 2026 20:33:29 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8614A11C7AFE5;
+	Tue, 15 Sep 2026 22:33:13 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789504403; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=EaTBQSFDY9HqCiNlkTKbGEfGfiR2jHJYb7QJIPYFUTU=;
+	b=jb/LzoNA59kiYJnRzas+LoinY1Sw+b4PsE7rgm/n6GJvhG2pg9BnzQ2sLKCzTIcRpQnuAA
+	sA4Jc9hJuw3g/bDDXcCb/voAubto6tXDlnvtwVKMfwXTj4pwh4kXh4VdKoJ+tA9CeUz0ZC
+	AbgcFPqQbmWWkdJ2hWRvBxJUqnfZyak+cOKHTrkm308yid/SB83QA73zL4rn14Ubjz4HUu
+	Ba+WqXLrxosE10orHQzNUG8XMXsJF7Lkb633gTRGy8EfgzQzwyCV6wagjtLXSuiDoIsJX3
+	07g+4RG/qkRjf8a+62XVeiBEb6c8/ku0OM+PIfdNCTPxi0PpEcqVCv6URgfE+g==
+Message-ID: <5df35a3e-d2c6-4576-868f-d3194de3deb0@bootlin.com>
+Date: Tue, 15 Sep 2026 22:33:12 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 1/2] dt-bindings: net: allwinner: add H616 EMAC1
+To: James Hilliard <james.hilliard1@gmail.com>,
+ Richard Genoud <richard.genoud@bootlin.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+ Jose Abreu <joabreu@synopsys.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc: Maxime Ripard <mripard@kernel.org>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com
+References: <20260915-submit-h616-emac1-v1-v1-0-195de0bb1f8a@gmail.com>
+ <20260915-submit-h616-emac1-v1-v1-1-195de0bb1f8a@gmail.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260915-submit-h616-emac1-v1-v1-1-195de0bb1f8a@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+Hi James,
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+On 9/15/26 21:03, James Hilliard wrote:
+> The H616 secondary EMAC uses a separate system-control clock register
+> and supports only RMII at 10/100 Mbps. Add its distinct compatible
+> without an older fallback, since using the primary EMAC clock register
+> would not work.
+> 
+> Constrain the PHY interface mode to RMII, matching the hardware. The
+> EMAC1 clock register also retains the three-bit TX and five-bit RX delay
+> chains, so allow the existing Allwinner delay properties for this
+> compatible.
 
-- [Medium] Incomplete mask for 2-bit LED polarity field in
-  phy_modify_paged.
+I don't think there's such a thing as RMII delays. RMII has a single
+clock, contrary to RGMII that has a TX and a RX clock with a 2ns delay
+between clock and data.
 
---
+I think it's just a leftover in this IP from the other variants that
+can do RGMII ? You should just be able to drop the comment changes here,
+and same goes for the dwmac patch.
 
-> diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
-> --- a/drivers/net/phy/marvell.c
-> +++ b/drivers/net/phy/marvell.c
-> @@ -3585,6 +3589,41 @@ static int m88e1318_led_hw_control_get(struct phy_device *phydev, u8 index,
->  	return marvell_get_led_rules(index, rules, mode);
->  }
->  
-> +static int m88e1318_led_polarity_set(struct phy_device *phydev, int index,
-> +				     unsigned long modes)
-> +{
-> +	bool force_active_low = false, force_active_high = false;
-> +	u32 mode;
-> +
-> +	if (index >= M88E1318S_MAX_LEDS)
-> +		return -EINVAL;
-> +
-> +	for_each_set_bit(mode, &modes, __PHY_LED_MODES_NUM) {
-> +		switch (mode) {
-> +		case PHY_LED_ACTIVE_LOW:
-> +			force_active_low = true;
-> +			break;
-> +		case PHY_LED_ACTIVE_HIGH:
-> +			force_active_high = true;
-> +			break;
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +	}
-> +
-> +	if (force_active_low)
-> +		return phy_modify_paged(phydev, MII_MARVELL_LED_PAGE,
-> +					MII_88E1318S_PHY_LED_POL,
-> +					MII_88E1318S_PHY_LED_POL_ACT_HIGH(index), 0);
-> +
-> +	if (force_active_high)
-> +		return phy_modify_paged(phydev, MII_MARVELL_LED_PAGE,
-> +					MII_88E1318S_PHY_LED_POL, 0,
-> +					MII_88E1318S_PHY_LED_POL_ACT_HIGH(index));
-> +
-> +	return -EINVAL;
-> +}
-> +
->  static int marvell_probe(struct phy_device *phydev)
->  {
->  	struct marvell_priv *priv;
+Maxime
 
-[Severity: Medium]
-The LED polarity field in page 3 register 0x11 is two bits wide per
-LED, but m88e1318_led_polarity_set() only ever touches the lower bit
-of the field. MII_88E1318S_PHY_LED_POL_ACT_HIGH(idx) expands to
-1 << 2 * idx, so for the active-low case the phy_modify_paged() call
-clears just that one bit and leaves the upper bit of the pair
-untouched; for the active-high case the mask argument is 0, so no
-bits are cleared at all and only the low bit is set.
-
-That means the result depends on whatever the field held before. If
-the LED was left in one of the encodings that has the upper bit set
-(e.g. the tri-state/high-Z variant configured by the bootloader or by
-strapping), asking for active-low leaves the pair as 0b10 - i.e. the
-requested polarity is silently not applied - and asking for
-active-high produces 0b11, which is not one of the documented
-encodings. Since this callback is reached from the LED polarity
-plumbing on any DT/sysfs configuration, the LED can end up in a state
-that neither the user nor a later led_hw_control_get() agrees with.
-
-The fix is to read-modify-write the whole two-bit field: pass a mask
-covering both bits (something like GENMASK(2 * index + 1, 2 * index),
-or a dedicated MII_88E1318S_PHY_LED_POL_MASK(idx) macro) and the
-desired encoding as the set value, so both the active-low and
-active-high paths fully define the field. Since you have the 88E1318
-hardware and I do not have the TRM in front of me, could you confirm
-from the datasheet what the upper bit of each pair means and what the
-correct encodings for plain active-low and active-high are? If the
-upper bit selects tri-state-when-off behaviour that we deliberately
-want to preserve, please say so and add a comment, but then the
-active-high path still must not be able to produce the reserved 0b11
-combination.
-
-While you are there, please also use BIT()/GENMASK() and parenthesise
-the shift in the new macro rather than open-coding 1 << 2 * (idx).
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260914200847.445375-1-olek2%40wp.pl
