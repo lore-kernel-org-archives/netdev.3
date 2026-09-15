@@ -1,127 +1,126 @@
-Received: from mail.sprinte.eu (mail.sprinte.eu [141.95.128.206])
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE186456E11
-	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 07:15:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.95.128.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0177438423A;
+	Tue, 15 Sep 2026 07:15:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789456522; cv=none; b=KC7Y/sykHkVZ0EZN+mTXMGm3hRLJwwwVGq4tI5LI6yIbCLEEJTWMKEW2vYtOwHeFTA89O5BUBYtfu2zSVCYSbatdiLtBTJicA2lJlejSVJ8Bt3pY3DgmcCb1Cl7IoAlrmaQ3dWCw0jJrR24M5FfifvwGpUfDrL8806Rie4mhsw4=
+	t=1789456549; cv=none; b=RZP52a40PDmZ7KyKyiF9wdwzn+yDkp49+xGUzosZHgp4otAG1VNKhe+0mPERA+XmWJP/14yUVdxE7A1lk/UXowePD9u6DWUII30pOIPY4XbTdDTZfWxUFm+5savBDG8YAXZ9dlOhuFdJIfFbiyIGi0MtAjqPCrfDyH6nRcZavRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789456522; c=relaxed/simple;
-	bh=uVWRdWECFaQNJZ0AdbRlSJGtwd7Two27IMtHrbj4iug=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=K/uaLkhFvlvbKixben/+Vo3K+Y6ALtIFinO2IZjqNiMSNt0vwi9PuTKLmKlaFVS/BnwGVme360r697PQ6H7ogsQAe2Zm9v7MVX24ExVegqjx4UfyHhbhMD6uVyjXoQhhXmW9B0/iOXEtXfuWvQ07Kji+BkCHfucFH99G6hDrEpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sprinte.eu; spf=pass smtp.mailfrom=sprinte.eu; dkim=pass (2048-bit key) header.d=sprinte.eu header.i=@sprinte.eu header.b=EZmxQaFY; arc=none smtp.client-ip=141.95.128.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sprinte.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sprinte.eu
+	s=arc-20240116; t=1789456549; c=relaxed/simple;
+	bh=dbDofAJzOD7kRcaOMCUP8xSI/nvZSHZ3HdUg41Vv+GQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gjXzaKzypHlVZxsZY7XPLSpA80NLga8fNXkO13oAWZlDpkDYMlwhFtOuQfg9S1W/nafWwLmMkopXU2HhWNyHmopi8FtxuMnMgcST315cXkQS6jsC77wFHR5SDFtRUEeFkrHvMh2cNFTunyKXHRuMzwHMS4GFXqZcRSSXHYnacMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=jbZUfewF; arc=none smtp.client-ip=220.197.31.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sprinte.eu header.i=@sprinte.eu header.b="EZmxQaFY"
-Received: from S1044812.EX793143.lan (2001:41d0:11b:2f00::8d5f:80ce) by
- S1044812.EX793143.lan (2001:41d0:11b:2f00::8d5f:80ce) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Tue, 15 Sep 2026 09:15:10 +0200
-Received: from S1044812.EX793143.lan ([fe80::90d1:6ba3:6aa1:fae0]) by
- S1044812.EX793143.lan ([fe80::90d1:6ba3:6aa1:fae0%6]) with mapi id
- 15.02.2562.046; Tue, 15 Sep 2026 09:15:10 +0200
-From: Julien Blanc <julien.blanc@sprinte.eu>
-To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC: "o.rempel@pengutronix.de" <o.rempel@pengutronix.de>,
-	"hkallweit1@gmail.com" <hkallweit1@gmail.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "andrew@lunn.ch" <andrew@lunn.ch>
-Subject: [PATCH v3] Add config phase for dp83td510e phy
-Thread-Topic: [PATCH v3] Add config phase for dp83td510e phy
-Thread-Index: AQHdROHxLvvc7sWM+kiDMB+rdv5Pyw==
-Date: Tue, 15 Sep 2026 07:15:09 +0000
-Message-ID: <370d52b3f5da403b5a92226a92cb23cd92c4b4a4.camel@sprinte.eu>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <B2CB37E90333FD4A87F7531C19AAE896@EX793143.lan>
-Content-Transfer-Encoding: base64
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="jbZUfewF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Mz
+	w8wjlNPlBuD8FWvB+1DdecCrMSj+FthQONbcurIVE=; b=jbZUfewFMGt+X733RM
+	eo1SelXIZ4scom2ERX0LqtplBAgOEV8z1+jcvCXKoR4MhobcUj5+P7jofsSgBJ/d
+	NTznWVzEqJXkEpnXZnQFtSeQvWMA8nhz56l503IJf0qm7mkjOK3nF8l01eJSCedH
+	/DBJCth+dSNPKBNk8JWZkCSzM=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wDXF8J58KhqsRw2BQ--.17892S2;
+	Tue, 15 Sep 2026 15:15:07 +0800 (CST)
+From: Linkui Xiao <xiaolinkui@126.com>
+To: dsahern@kernel.org,
+	idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Linkui Xiao <xiaolinkui@kylinos.cn>
+Subject: [PATCH net v2] ipv4: fib: fix data-race and stale genid check around nh->nh_saddr
+Date: Tue, 15 Sep 2026 15:15:03 +0800
+Message-Id: <20260915071503.465875-1-xiaolinkui@126.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; d=sprinte.eu; s=ovhex803668-selector1;
- c=relaxed/relaxed; t=1789456510; h=from:to:subject:date;
- bh=uVWRdWECFaQNJZ0AdbRlSJGtwd7Two27IMtHrbj4iug=;
- b=EZmxQaFYvxUxvJX3aRTPZ3qOSrKgzPbO0+lDdrF8IJX+76D/+18rfBojbKnRhq55Mf2JglbseR0h7KqnJyOaXGczQDtojwwIrMGGJ4aBBuv+03lllJEYT4zroS4BqnBYsg1BjnaolR8eq1XvL2AXBNzKgbZx+uDqvLPO7yPD5MHcvwxG/17RwMKmXgoQl39/WrLQ3488qcPzY+wv3bcZbTwSQ1a4xOxgtBWWMAT5OBBDuFpp9HQv2erXPROvEOu2cO2T0m88Omwqh3asOwT0gm8PDi1fz/Wgt2ITvwRnNLW+O84Hjn9zIMRsegxfSwysJR16bzZWj3k12EAo+yPPbQ==
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDXF8J58KhqsRw2BQ--.17892S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWr4kCF45Kr1ftrykur48WFg_yoW5Xr1fpF
+	W8AasFq347Xay3AFs2qF47A3W8uw4Fya4F9ryIk390vwn8X343XFySg3sY9as8ZF4kXw43
+	AF4kWr1UArWq9aDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UpVb9UUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqRsf9Wqo8Hun6wAA3d
 
-QWRkIGEgY29uZmlnIHBoYXNlIGZvciB0aGUgVGV4YXMgSW5zdHJ1bWVudHMgRFA4M1RENTEwRSBl
-dGhlbmV0IFBIWQ0KDQpUaGUgY29uZmlnIHBoYXNlIGN1cnJlbnRseSBzZXRzIHRoZSBmb2xsb3dp
-bmcgcHJvcGVydGllcyBmcm9tIHRoZQ0KZGV2aWNlIHRyZWU6DQogICogUk1JSSAvIFJHTUlJIG1v
-ZGUgKG5vdGUgOiBSTUlJIG1hc3RlciAvIHNsYXZlIGNhbiBvbmx5IGJlIHNldA0KICAgIGJ5IHN0
-cmFwcyBhbmQgY2Fubm90IGJlIGNoYW5nZWQgYXQgcnVudGltZSkNCiAgKiBSR01JSSBkZWxheXMu
-IFRoZXNlIGRlbGF5cyBjYW4gYmUgZW5hYmxlZCBvbiB0aGUgcGh5IHNpZGUsIG9ubHkNCiAgICBh
-cyBhIGJvb2xlYW4uIERlbGF5cyBhcmUgZW5hYmxlZCBpZiBwaHktbW9kZSBpcyByZ21paS1pZCwg
-b3INCiAgICByZ21paS1bcnh8dHhdaWQgd2hpY2ggZW5hYmxlcyBvbmx5IHRoZSBjb3JyZXNwb25k
-aW5nIGRlbGF5Lg0KICAqIEluIGNhc2UgYW5vdGhlciBtb2RlIGlzIGVuY291bnRlcmVkLCBkbyBu
-b3RoaW5nIGFuZCByZXR1cm4NCiAgICBzdWNjZXNzIChrZWVwIG9sZCBiZWhhdmlvcikNCg0KU2ln
-bmVkLW9mZi1ieTogSnVsaWVuIEJsYW5jIDxqdWxpZW4uYmxhbmNAc3ByaW50ZS5ldT4NCi0tLQ0K
-Q2hhbmdlcyBpbiB2MzoNCi0gZml4IHJldHVybmluZyBhbiB1bmluaXRpYWxpemVkIHZhbHVlIGlm
-IG1vZGUgd2FzIG5vdCByZ21paVsteHhdDQogIG9yIHJtaWkgKG1paSBpcyBhIHZhbGlkIG1vZGUg
-Zm9yIHRoaXMgcGh5IGFzIHdlbGwpLiBSZXR1cm4NCiAgc3VjY2VzcyBpbiB0aGF0IGNhc2UgdG8g
-a2VlcCB0aGUgb2xkIGRyaXZlciBiZWhhdmlvci4NCi0gdXBkYXRlZCBjb21taXQgZGVzY3JpcHRp
-b24gYWNjb3JkaW5nbHkNCg0KQ2hhbmdlcyBpbiB2MjoNCi0gcmVtb3ZlIHRoZSB1c2FnZSBvZiBw
-aHlfZ2V0X2ludGVybmFsX2RlbGF5DQotIHVzZSBib29sZWFucyB0byBtYWtlIGl0IGNsZWFyIHRo
-YXQgdGh5IHBoeSBzdXBwb3J0cyBvbmx5IGENCiAgZml4ZWQgZGVsYXkgYWN0aXZhdGlvbiwgbm8g
-Y29uZmlndXJhYmxlIGRlbGF5DQoNCiBkcml2ZXJzL25ldC9waHkvZHA4M3RkNTEwLmMgfCA2OCAr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrDQogMSBmaWxlIGNoYW5nZWQsIDY4
-IGluc2VydGlvbnMoKykNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3BoeS9kcDgzdGQ1MTAu
-YyBiL2RyaXZlcnMvbmV0L3BoeS9kcDgzdGQ1MTAuYw0KaW5kZXggOWU5YTQxYmY2NDU3Li5mNDc4
-MDI4MjVjZmUgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL25ldC9waHkvZHA4M3RkNTEwLmMNCisrKyBi
-L2RyaXZlcnMvbmV0L3BoeS9kcDgzdGQ1MTAuYw0KQEAgLTMwLDYgKzMwLDEyIEBADQogI2RlZmlu
-ZSBEUDgzVEQ1MTBFX0lOVDFfTElOSwkJCUJJVCgxMykNCiAjZGVmaW5lIERQODNURDUxMEVfSU5U
-MV9MSU5LX0VOCQkJQklUKDUpDQogDQorI2RlZmluZSBEUDgzVEQ1MTBFX1JDU1IJCQkJMHgxNw0K
-KyNkZWZpbmUgRFA4M1RENTEwRV9STUlJX01PREVfRU4JCQlCSVQoNSkNCisjZGVmaW5lIERQODNU
-RDUxMEVfUkdNSUlfTU9ERV9FTgkJQklUKDkpDQorI2RlZmluZSBEUDgzVEQ1MTBFX1RYX0NMS19T
-SElGVAkJCUJJVCgxMSkNCisjZGVmaW5lIERQODNURDUxMEVfUlhfQ0xLX1NISUZUCQkJQklUKDEy
-KQ0KKw0KICNkZWZpbmUgRFA4M1RENTEwRV9DVFJMCQkJCTB4MWYNCiAjZGVmaW5lIERQODNURDUx
-MEVfQ1RSTF9IV19SRVNFVAkJQklUKDE1KQ0KICNkZWZpbmUgRFA4M1RENTEwRV9DVFJMX1NXX1JF
-U0VUCQlCSVQoMTQpDQpAQCAtNjQ5LDYgKzY1NSw2NyBAQCBzdGF0aWMgaW50IGRwODN0ZDUxMF9j
-b25maWdfYW5lZyhzdHJ1Y3QgcGh5X2RldmljZSAqcGh5ZGV2KQ0KIAlyZXR1cm4gZ2VucGh5X2M0
-NV9jaGVja19hbmRfcmVzdGFydF9hbmVnKHBoeWRldiwgY2hhbmdlZCk7DQogfQ0KIA0KK3N0YXRp
-YyBib29sIGRwODN0ZDUxMF9jb25maWdfcmdtaWlfcnhfZGVsYXkoc3RydWN0IHBoeV9kZXZpY2Ug
-KnBoeWRldikNCit7DQorCXJldHVybiBwaHlkZXYtPmludGVyZmFjZSA9PSBQSFlfSU5URVJGQUNF
-X01PREVfUkdNSUlfSUQgfHwNCisJICAgICAgIHBoeWRldi0+aW50ZXJmYWNlID09IFBIWV9JTlRF
-UkZBQ0VfTU9ERV9SR01JSV9SWElEOw0KK30NCisNCitzdGF0aWMgYm9vbCBkcDgzdGQ1MTBfY29u
-ZmlnX3JnbWlpX3R4X2RlbGF5KHN0cnVjdCBwaHlfZGV2aWNlICpwaHlkZXYpDQorew0KKwlyZXR1
-cm4gcGh5ZGV2LT5pbnRlcmZhY2UgPT0gUEhZX0lOVEVSRkFDRV9NT0RFX1JHTUlJX0lEIHx8DQor
-CSAgICAgICBwaHlkZXYtPmludGVyZmFjZSA9PSBQSFlfSU5URVJGQUNFX01PREVfUkdNSUlfVFhJ
-RDsNCit9DQorDQorc3RhdGljIGludCBkcDgzdGQ1MTBfY29uZmlnX2luaXQoc3RydWN0IHBoeV9k
-ZXZpY2UgKnBoeWRldikNCit7DQorCWludCByZ21paV9kZWxheSA9IDA7DQorCWJvb2wgcnhfaW50
-X2RlbGF5Ow0KKwlib29sIHR4X2ludF9kZWxheTsNCisJaW50IHJldDsNCisNCisJaWYgKHBoeV9p
-bnRlcmZhY2VfaXNfcmdtaWkocGh5ZGV2KSkgew0KKwkJcnhfaW50X2RlbGF5ID0gZHA4M3RkNTEw
-X2NvbmZpZ19yZ21paV9yeF9kZWxheShwaHlkZXYpOw0KKwkJLyogU2V0IERQODNURDUxMEVfUlhf
-Q0xLX1NISUZUIHRvIGVuYWJsZSByeCBjbGsgaW50ZXJuYWwgZGVsYXkgKi8NCisJCWlmIChyeF9p
-bnRfZGVsYXkpDQorCQkJcmdtaWlfZGVsYXkgfD0gRFA4M1RENTEwRV9SWF9DTEtfU0hJRlQ7DQor
-DQorCQl0eF9pbnRfZGVsYXkgPSBkcDgzdGQ1MTBfY29uZmlnX3JnbWlpX3R4X2RlbGF5KHBoeWRl
-dik7DQorDQorCQkvKiBTZXQgRFA4M1RENTEwRV9UWF9DTEtfU0hJRlQgdG8gZW5hYmxlIHR4IGNs
-ayBpbnRlcm5hbCBkZWxheSAqLw0KKwkJaWYgKHR4X2ludF9kZWxheSkNCisJCQlyZ21paV9kZWxh
-eSB8PSBEUDgzVEQ1MTBFX1RYX0NMS19TSElGVDsNCisNCisJCXJldCA9IHBoeV9tb2RpZnlfbW1k
-KHBoeWRldiwgTURJT19NTURfVkVORDIsIERQODNURDUxMEVfUkNTUiwNCisJCQkJICAgICBEUDgz
-VEQ1MTBFX1JYX0NMS19TSElGVCB8IERQODNURDUxMEVfVFhfQ0xLX1NISUZULA0KKwkJCQkgICAg
-IHJnbWlpX2RlbGF5KTsNCisJCWlmIChyZXQpDQorCQkJcmV0dXJuIHJldDsNCisNCisJCXJldCA9
-IHBoeV9zZXRfYml0c19tbWQocGh5ZGV2LCBNRElPX01NRF9WRU5EMiwNCisJCQkJICAgICAgIERQ
-ODNURDUxMEVfUkNTUiwgRFA4M1RENTEwRV9SR01JSV9NT0RFX0VOKTsNCisNCisJCWlmIChyZXQp
-DQorCQkJcmV0dXJuIHJldDsNCisNCisJfSBlbHNlIGlmIChwaHlkZXYtPmludGVyZmFjZSA9PSBQ
-SFlfSU5URVJGQUNFX01PREVfUk1JSSkgew0KKwkJLy8gc2V0IFJNSUlfTU9ERV9FTiwgY2xlYXIg
-UkdNSUlfTU9ERV9FTiAoZXhjbHVzaXZlKQ0KKwkJcmV0ID0gcGh5X21vZGlmeV9tbWQocGh5ZGV2
-LCBNRElPX01NRF9WRU5EMiwgRFA4M1RENTEwRV9SQ1NSLA0KKwkJCQkgICAgIERQODNURDUxMEVf
-Uk1JSV9NT0RFX0VOIHwgRFA4M1RENTEwRV9SR01JSV9NT0RFX0VOLA0KKwkJCQkgICAgIERQODNU
-RDUxMEVfUk1JSV9NT0RFX0VOKTsNCisJCWlmIChyZXQpDQorCQkJcmV0dXJuIHJldDsNCisJfSBl
-bHNlIHsNCisJCS8vIG1heSBiZSBSTUlJLCB3aGljaCBpcyBzdXBwb3J0ZWQsIG9yIHNvbWV0aGlu
-ZyBlbHNlLiBKdXN0IA0KKwkJLy8gcmV0dXJuIHN1Y2Nlc3MgdG8ga2VlcCB0aGUgb2xkIGJlaGF2
-aW9yIGFuZCBub3QgYnJlYWsgDQorCQkvLyBhbnl0aGluZy4gQ29uZmlndXJhdGlvbiBtYXkgaGF2
-ZSBiZWVuIGRvbmUgYnkgc3RyYXBzIHNvIA0KKwkJLy8gaXQncyBiZXR0ZXIgdG8ga2VlcCBhcy1p
-cy4NCisJCXJldCA9IDA7DQorCX0NCisNCisJcmV0dXJuIHJldDsNCit9DQorDQogc3RhdGljIGlu
-dCBkcDgzdGQ1MTBfZ2V0X3NxaShzdHJ1Y3QgcGh5X2RldmljZSAqcGh5ZGV2KQ0KIHsNCiAJaW50
-IHNxaSwgcmV0Ow0KQEAgLTk0Miw2ICsxMDA5LDcgQEAgc3RhdGljIHN0cnVjdCBwaHlfZHJpdmVy
-IGRwODN0ZDUxMF9kcml2ZXJbXSA9IHsNCiAJLm5hbWUJCT0gIlRJIERQODNURDUxMEUiLA0KIA0K
-IAkuZmxhZ3MgICAgICAgICAgPSBQSFlfUE9MTF9DQUJMRV9URVNULA0KKwkuY29uZmlnX2luaXQJ
-PSBkcDgzdGQ1MTBfY29uZmlnX2luaXQsDQogCS5wcm9iZQkJPSBkcDgzdGQ1MTBfcHJvYmUsDQog
-CS5jb25maWdfYW5lZwk9IGRwODN0ZDUxMF9jb25maWdfYW5lZywNCiAJLnJlYWRfc3RhdHVzCT0g
-ZHA4M3RkNTEwX3JlYWRfc3RhdHVzLA0KLS0gDQoyLjQ3LjMNCg==
+From: Linkui Xiao <xiaolinkui@kylinos.cn>
+
+fib_select_multipath() compares nexthop_nh->nh_saddr against the flow
+source address with no lock held, while fib_info_update_nhc_saddr()
+stores a new value from another CPU as soon as the preferred source
+address of the egress device changes.
+
+Commit 195374d89368 ("ipv4: fib: annotate races around nh->nh_saddr_genid
+and nh->nh_saddr") added WRITE_ONCE() on the store side and READ_ONCE()
+in fib_result_prefsrc() after syzbot reported
+
+	BUG: KCSAN: data-race in fib_select_path / fib_select_path
+
+but it only covered that reader. fib_select_multipath(), reached from
+fib_select_path(), is a second lockless reader of nh->nh_saddr and was
+left bare.
+
+Moreover, nh_saddr is only meaningful when nh_saddr_genid matches
+dev_addr_genid, as established by 195374d89368. fib_select_multipath()
+skips that validation, so it can score a nexthop using a stale source
+address and skew the ECMP selection.
+
+Annotate both reads with READ_ONCE() and add the missing genid check,
+mirroring fib_result_prefsrc().
+
+Fixes: 32607a332cfe ("ipv4: prefer multipath nexthop that matches source address")
+Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+---
+V1: https://lore.kernel.org/all/CANn89iJhFL2LNQCXTANQAx8B1GVdGTJgrDwPTZOjbH8k1ygtsg@mail.gmail.com/
+
+V2:
+- point Fixes: at 32607a332cfe, which introduced the bare reader
+- add the missing genid check as suggested by Eric Dumazet
+
+ net/ipv4/fib_semantics.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+index 7a362f2e2c2b..e2bfc11aea09 100644
+--- a/net/ipv4/fib_semantics.c
++++ b/net/ipv4/fib_semantics.c
+@@ -2184,6 +2184,7 @@ void fib_select_multipath(struct fib_result *res, int hash,
+ 	bool use_neigh;
+ 	int score = -1;
+ 	__be32 saddr;
++	int genid;
+ 
+ 	if (unlikely(res->fi->nh)) {
+ 		nexthop_path_fib_result(res, hash);
+@@ -2192,6 +2193,7 @@ void fib_select_multipath(struct fib_result *res, int hash,
+ 
+ 	use_neigh = READ_ONCE(net->ipv4.sysctl_fib_multipath_use_neigh);
+ 	saddr = fl4 ? fl4->saddr : 0;
++	genid = saddr ? atomic_read(&net->ipv4.dev_addr_genid) : 0;
+ 
+ 	change_nexthops(fi) {
+ 		int nh_upper_bound, nh_score = 0;
+@@ -2204,7 +2206,9 @@ void fib_select_multipath(struct fib_result *res, int hash,
+ 		    (use_neigh && !fib_good_nh(nexthop_nh)))
+ 			continue;
+ 
+-		if (saddr && nexthop_nh->nh_saddr == saddr)
++		if (saddr &&
++		    READ_ONCE(nexthop_nh->nh_saddr_genid) == genid &&
++		    READ_ONCE(nexthop_nh->nh_saddr) == saddr)
+ 			nh_score += 2;
+ 		if (hash <= nh_upper_bound)
+ 			nh_score++;
+-- 
+2.25.1
+
