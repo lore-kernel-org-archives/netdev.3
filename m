@@ -1,81 +1,190 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A5039792B;
-	Tue, 15 Sep 2026 10:12:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C685A47ACC6
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 10:16:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789467145; cv=none; b=P3KkmxM8GDwM8SU87Tw0D+mjIGH9Ti/ZxgxvWvA4cxyutvhz6rz6jDru5THadfafDRSKLPgArJJTEvkm+DMYgjvGsuaac7bhO2NfZg7JGvHsSEiiKY+eDUurZxHr1ur3fLxqGmxiGhiMnlfzrCcH22UnUYZSsgT+bVuQMfAnfhk=
+	t=1789467418; cv=none; b=VixsbPfUM5N8/T1pIdGFT295Bp0oiOcOOw4c+zLVCmyUKtgRk2bjC3EHICIgkzIGTsJL+qNV8MpAjhuKUci1iQR0Nt1/ViK1/RcaUpM6kS2VeQ4Z57qBKWncuZ6Rx8XIu+P1CwLCAHDxDFibCP3mx2+s+F1iU1+Kqgbk9aASs2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789467145; c=relaxed/simple;
-	bh=Pyaor3OexTPbvVE2eALaC6NSiFgHwqvaYEtSZvsceZA=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:Date:Message-ID; b=uKfQ8vCpTtshVKrila4f8udF4uMj3cAqfMA6wf5TtV7IAq3acxXV6TsmbXv7D1jhoyEP0xJz+yvuTGyCm+Lj03LpEdu8YuYHru+UlQ+2j+bnZ5d7luQLZvWnCWXEiXIhuV5+XM/vkHl+L1ZhGgZNaFyPfKAp8JY066dLw3ZXN8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=DwmM9Wkw; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1789467418; c=relaxed/simple;
+	bh=N4fsCDWKXj8cFUOuROoEasUX7c1f/yp1SRGQJLzc1Nw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pc4KvDbZ7SSkVeMG4eDUsxvQBRJpw4IK0reWrG5hbTFn9A52zZE3gMImPxtd4ncb2D9c8E8p/a4SnlJvKkUQrRRStjFfzZCfnhyqX+hjlO1KJ0GreaE3edH4xNGXd1554axOYEWeHd1Qt0hZd1KzLrGB+87Wd+iTz0Uoiwjtsi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cpIm+PFw; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=fDzT2FM3; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="DwmM9Wkw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Content-Type:MIME-Version:From:To:Subject:Date:
-	Message-ID; bh=Pyaor3OexTPbvVE2eALaC6NSiFgHwqvaYEtSZvsceZA=; b=D
-	wmM9WkwbqD6wf+DfxVcx/AiH0NUxH820D/BT0haRQXWkDRBjvjM8JDck/wzDVFtV
-	FPkOvqnsxkAe8g0wOYQDhL1puByb7XnZdMSebxQE2zjMbpQtVZxD44xk3m5ttVXn
-	E0lbfpRPup0bcDMlZZuaIfPQR7KgjdZtOjPlAEDl4M=
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cpIm+PFw";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="fDzT2FM3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789467415;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Nl7n8UtlhHNNnQK/R4cfZiAkVCgsHC/OU98HtE4D5Wg=;
+	b=cpIm+PFwCQwe6DdkUPdE5TAd7DghtihlWWYPw5djzD3pxCq9R+KMTq4eEL3QP8ZKYOZyKC
+	VsjGHfinbp5odzwlyNeAXcAc+UmWH+gMdVnK0V55jmKcoJrazeNR62d44mg0pz0Mn1IAFn
+	76TPZmgDMupwBWXzlLkPeL8C1gSgORU=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-547-uuheN8DbNWK5NuYRTEvkrg-1; Tue, 15 Sep 2026 06:16:54 -0400
+X-MC-Unique: uuheN8DbNWK5NuYRTEvkrg-1
+X-Mimecast-MFC-AGG-ID: uuheN8DbNWK5NuYRTEvkrg_1789467413
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-490a767b782so37446865e9.2
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 03:16:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1789467413; x=1790072213; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Nl7n8UtlhHNNnQK/R4cfZiAkVCgsHC/OU98HtE4D5Wg=;
+        b=fDzT2FM30uTs0LU8vhtVg5yeVQN664cEEkCTbixot3m+6/dO7U5lxsnFfbKLcWePW0
+         eealzO3XEQDavNBjpD9orzsFIlLnEa7MAcD3J9KC6W4poj9EAGnQ3jY0UbrxE8gJPo/d
+         bVGQ6M5S7pklM4DGoamszHM82CMo/WO7uK/Wm/4d53iphplLWH7HopoYUWhlM6B9ysWh
+         H8MDPflENfIyhtTJoyHGzBeVKdEplSxwrXzfSDC10fcGT1V45/zRMt7kW94b416jJGIA
+         KrDITQIAhy4oqXDY27d5wxWQRQv3g6mfRPL4ONLlFirJBcJfOPd3cLVhJ9nyq7XQhQcz
+         RIGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789467413; x=1790072213;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Nl7n8UtlhHNNnQK/R4cfZiAkVCgsHC/OU98HtE4D5Wg=;
+        b=hCoHtMAXy7xvjU8NUuX+o65O5h5KOik1qWWtDSNLi2kcF4h1mSsGhnGb20OQYOHSBA
+         YvinUzctWCGA8bNDONjeNz1cvPCUIWrkAkKYIpqFZ/bMdc50U9WIhRfSGp3NCPiGCBz9
+         el/4reJKprURKJ3H572oifLcgEXOStvnd0RaKt46eDSlnnpfU6Va+sBJAAiMostgZLAj
+         XOPjGWUDSvpn2FotdCepqu7ZZhmmsOGo+AYgnu4epEv+S7Wk6s6Fmy0vB9b1iLrikOH3
+         /qyUCt+zQC4b2iBMipCW+R8aleecQoolFqXNQhRIZb/phZBd1daqZIXeLefZ0D8kWLk9
+         AlkQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzjz8+tPmrnF9V9Vvce/iPvNBwTU7lP6gXj9s1SBPygTyCwTKVUiRTtoxGwig5BhoNsxmFPlhg=@vger.kernel.org
+X-Gm-Message-State: AFuF++mKIegGC9Bey4Zn3CiGwGZT5dTYP7ENOvEtxT014uMhnTx4bwlZ
+	mQ6MmLhNp8hIkEfTdl7pq2zW6FeDh4I3/a6BbdteU9Qt1u3lF84UnRp5JMyRVVVfWg6FkRQEA/a
+	b1J5TzLk4G3z0ti80Y4GdutzN9Vye6tjJc3n7fhRGcexQ40oZVe2/FugzZw==
+X-Gm-Gg: AYBFou1Bg9RcqLmkLP09Ly4HI/2ynr3c2wirySHOGsp1jQeShKIBzupcP8kSQBNPsML
+	RZnHextR4KmnGHgRiraYdn59zZOePuhn/BfbeW1Ikx7gziq6grEtqqdsrd0B1DGnEAHuzyYe1WB
+	h9Pt6ciZiJYqFMxmzEWCV9vJEZZlQlD4/0S6DHKi39SZDXT/k45bj5HdmjgEtgi4lQ0dbBhvxW4
+	aaPf+xoizp3VtGXfXtbwKMt1jbFPEqclt+8zC62D1Elbo8fN85xaMTahgaPJ/rGjzF9Ct0N6Jbx
+	YURkrCQ0FPkxKSxnOdbixXcMbPMWX8bv/ppPVuTU9N6QbV2+gAhcbFIPxbXzWAJqBUEY5wOd3pY
+	LpaP1yMSsNXtbzo7xWENU+wS59WeOlXjFB5KeCPpbk7KsjA==
+X-Received: by 2002:a05:600c:3145:b0:49e:74c6:d973 with SMTP id 5b1f17b1804b1-49e822c5633mr7079045e9.31.1789467412898;
+        Tue, 15 Sep 2026 03:16:52 -0700 (PDT)
+X-Received: by 2002:a05:600c:3145:b0:49e:74c6:d973 with SMTP id 5b1f17b1804b1-49e822c5633mr7078495e9.31.1789467412452;
+        Tue, 15 Sep 2026 03:16:52 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-53-30-11.retail.telecomitalia.it. [79.53.30.11])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e7d69f3c0sm57509095e9.6.2026.09.15.03.16.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Sep 2026 03:16:51 -0700 (PDT)
+Date: Tue, 15 Sep 2026 12:16:47 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Jason Wang <jasowangio@gmail.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, sargun@sargun.me, jlinbox@meta.com, 
+	Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next 0/6] vsock: assign the guest vsock device to a
+ network namespace
+Message-ID: <aqkaTXHDf5nfPL9w@sgarzare-redhat>
+References: <20260902-vsock-guest-ns-v1-0-9995383e9a8b@meta.com>
+ <apqGcFDFm9_Wtw4q@sgarzare-redhat>
+ <apsANK7ySuRzzK0V@devvm29614.prn0.facebook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-From: Tian Run <15503232150@163.com>
-To: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, David S. Miller <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org
-Subject: [PATCH net-next] i40e: fix VF queue mapping collision with PF queue 0
-Date: Tue, 15 Sep 2026 18:11:18 +0800
-Message-ID: <178946707899.849053.3626754711268331752@bigrain>
-X-CM-TRANSID:_____wBn+6vHGalqxkDoAg--.261S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxJryDWF15WrWxtry5Wr1xXwb_yoW8urW3pr
-	WUCryYk34kXF4rW3yjga109Fn3Awn5KrW5WF4ftwn09a9IkF4UXF1UKayagry8ArZ5ta13
-	tFZrArW7Cr4DJ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jb189UUUUU=
-X-CM-SenderInfo: jprvkiqtstjiivq6il2tof0z/xtbC4Ap9cmqpGco7ggAA3M
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <apsANK7ySuRzzK0V@devvm29614.prn0.facebook.com>
 
-aTQwZV92c2lfc2V0dXAoKSBsaW1pdHMgdGhlIHF1ZXVlIHBhaXJzIG9mIGFuIFNSSU9WIFZTSSB0
-bwpwZi0+bnVtX2xhbl9tc2l4IGFuZCBmaWxscyBpbmZvLnF1ZXVlX21hcHBpbmdbXSBvbmx5IGZv
-ciB0aGF0IG1hbnkKZW50cmllcywgbGVhdmluZyB0aGUgcmVzdCB6ZXJvZWQuIGk0MGVfdmNfZ2V0
-X3BmX3F1ZXVlX2lkKCkgcmVzb2x2ZXMKc3VjaCBhbiBlbnRyeSB0byBhYnNvbHV0ZSBxdWV1ZSAw
-LCB3aGljaCBiZWxvbmdzIHRvIHRoZSBQRiBpdHNlbGYuCgppNDBlX2NvbmZpZ192c2lfdHhfcXVl
-dWUoKSB0aGVuIG92ZXJ3cml0ZXMgdGhlIFBGJ3MgcXVldWUgMCBjb250ZXh0CndpdGggdGhlIFZG
-J3MgcmluZyBhbmQgcmUtcHJvZ3JhbXMgUVRYX0NUTCgwKSBpbnRvIFZGIG1vZGUuIFRoZSBQRidz
-Cm5leHQgdHJhbnNtaXQgb24gcXVldWUgMCB3ZWRnZXMgdGhlIHF1ZXVlOiB0aGUgZGV2aWNlIHN0
-b3BzIGl0LApyZXBvcnRzIGEgTWFsaWNpb3VzIERyaXZlciBEZXRlY3Rpb24gZXZlbnQgd2l0aG91
-dCBhIHZhbGlkIGV2ZW50IElELApzZXRzIGJvdGggUEZfTURFVF9UWCBhbmQgVlBfTURFVF9UWCBh
-bmQgdGhlIFBGIGVudGVycyBhIE5FVERFVgpXQVRDSERPRyAvIHJlc2V0IGxvb3AuCgphbGxvY19x
-dWV1ZV9wYWlycyBpcyBzZXQgdG8gcGYtPm51bV92Zl9xcHMsIHNvIEdFVF9WRl9SRVNPVVJDRVMK
-YWR2ZXJ0aXNlcyB0aGUgZnVsbCBjb3VudCBhbmQgYSBWRiB3aXRoIG1vcmUgb25saW5lIENQVXMg
-dGhhbiB0aGUKUEYncyBudW1fbGFuX21zaXggKGUuZy4gYSA0LUNQVSBndWVzdCBvbiBhIDMtQ1BV
-IGhvc3QpIGNvbmZpZ3VyZXMKdGhlIGV4dHJhIHF1ZXVlIHBhaXIgYW5kIGhpdHMgdGhlIHVucHJv
-Z3JhbW1lZCBtYXBwaW5nIGVudHJ5LgoKQ2xhbXAgYWxsb2NfcXVldWVfcGFpcnMgYnkgbnVtX2xh
-bl9tc2l4IGxpa2UgaTQwZV92c2lfc2V0dXAoKSBkb2VzLApzbyB0aGUgVkYgaXMgb25seSBvZmZl
-cmVkIHF1ZXVlIHBhaXJzIHdob3NlIG1hcHBpbmcgd2FzIHByb2dyYW1tZWQuCgpGaXhlczogMTU2
-M2YyZDJlMDEyICgiaTQwZTogRG8gbm90IGFsbG93IHVzZSBtb3JlIFRDIHF1ZXVlIHBhaXJzIHRo
-YW4gTVNJLVggdmVjdG9ycyBleGlzdCIpClNpZ25lZC1vZmYtYnk6IFRpYW4gUnVuIDwxNTUwMzIz
-MjE1MEAxNjMuY29tPgotLS0KIGRyaXZlcnMvbmV0L2V0aGVybmV0L2ludGVsL2k0MGUvaTQwZV9t
-YWluLmMgfCA2ICsrKysrKwogMSBmaWxlIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKQoKZGlmZiAt
-LWdpdCBhL2RyaXZlcnMvbmV0L2V0aGVybmV0L2ludGVsL2k0MGUvaTQwZV9tYWluLmMgYi9kcml2
-ZXJzL25ldC9ldGhlcm5ldC9pbnRlbC9pNDBlL2k0MGVfbWFpbi5jCmluZGV4IGFiYmM3MWU4MS4u
-MjkzNDg2MmRhIDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9pbnRlbC9pNDBlL2k0
-MGVfbWFpbi5jCisrKyBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L2ludGVsL2k0MGUvaTQwZV9tYWlu
-LmMKQEAgLTExNDQzLDYgKzExNDQzLDEyIEBAIHN0YXRpYyBpbnQgaTQwZV9zZXRfbnVtX3Jpbmdz
-X2luX3ZzaShzdHJ1Y3QgaTQwZV92c2kgKnZzaSkKIAogCWNhc2UgSTQwRV9WU0lfU1JJT1Y6CiAJ
-CXZzaS0+YWxsb2NfcXVldWVfcGFpcnMgPSBwZi0+bnVtX3ZmX3FwczsKKwkJLyogaTQwZV92c2lf
-c2V0dXAoKSBsaW1pdHMgcXVldWUgcGFpcnMgdG8gbnVtX2xhbl9tc2l4OworCQkgKiBrZWVwIGFs
-bG9jX3F1ZXVlX3BhaXJzIGNvbnNpc3RlbnQgd2l0aCB0aGF0IGxpbWl0LgorCQkgKi8KKwkJaWYg
-KHRlc3RfYml0KEk0MEVfRkxBR19NU0lYX0VOQSwgcGYtPmZsYWdzKSkKKwkJCXZzaS0+YWxsb2Nf
-cXVldWVfcGFpcnMgPQorCQkJCW1pbl90KHUxNiwgcGYtPm51bV92Zl9xcHMsIHBmLT5udW1fbGFu
-X21zaXgpOwogCQlpZiAoIXZzaS0+bnVtX3R4X2Rlc2MpCiAJCQl2c2ktPm51bV90eF9kZXNjID0g
-QUxJR04oSTQwRV9ERUZBVUxUX05VTV9ERVNDUklQVE9SUywKIAkJCQkJCSBJNDBFX1JFUV9ERVND
-UklQVE9SX01VTFRJUExFKTsKLS0gCjIuNDMuMAoK
+On Fri, Sep 04, 2026 at 10:30:28AM -0700, Bobby Eshleman wrote:
+>On Fri, Sep 04, 2026 at 10:55:17AM +0200, Stefano Garzarella wrote:
+>> On Wed, Sep 02, 2026 at 04:00:46PM -0700, Bobby Eshleman wrote:
+>> > vsock network namespaces let a host put each VM in a namespace of its
+>> > own. A guest has no equivalent yet. It has a single G2H device that
+>> > cannot be assigned to a network namespace.
+>>
+>> Thanks for this, I'll do a proper review next week, in the mean time some
+>> comments below:
+>>
+>> >
+>> > This series lets a guest move that device into a network namespace. A
+>> > new ioctl on /dev/vsock, IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS, assigns the
+>> > device to the namespace of the calling process. The namespace's existing
+>>
+>> Why an ioctl?
+>>
+>> I'm asking because I'd like to know if you've already considered any
+>> alternatives (sysfs, netlink, etc.)
+>>
+>> How do you think the ioctl should be used? Should we provide an userspace
+>> tool, or extending some existing tools?
+>>
+>> Thanks,
+>> Stefano
+>
+>Really only because /dev/vsock exists and the prior series used it.
+
+Yeah, I vaguely remember that we may have discussed switching to netlink 
+in that thread, but I can't find it.
+
+>
+>Considering netlink, it might be the better option because there is a
+>lot of prior art solving problems we might have in the future. For
+>example, I was thinking about when users suddenly lose access to vsock,
+>with just the current assign ioctl there is no way for apps or users to
+>figure out why this happened. We can have an ioctl() setter for user,
+>but in netdev world users can actually get a notification via netlink as
+>to which namespace the device went to and what its ifindex is there (see
+>__dev_change_net_namespace() for the RTM_DELLINK and RTM_NEWLINK
+>messages). There is probably more, but that's the case that comes to
+>mind.
+
+netlink seems like the right way to go, do you think it'll be a real 
+pain to implement?
+
+>
+>>
+>> > ns_mode then decides who may use it: a "global" namespace shares the
+>> > device with every other global namespace, and a "local" namespace keeps
+>> > the host connection to itself. The device starts out in the initial
+>> > namespace, so until the ioctl is issued nothing has moved and no mode
+>> > has changed. There is no explicit unassign as assigning the device back
+>> > to the initial namespace is equivalent.
+>> >
+>> > The ioctl requires CAP_NET_ADMIN in the initial user namespace.
+>> >
+>> > Connections that can no longer reach the device after a move are reset,
+>> > so that a namespace which has lost access cannot keep using a socket it
+>> > opened while it still had access. Following netdevs, the device returns
+>> > to the initial namespace when the namespace it was moved to is deleted.
+>> >
+>> > Transports opt in through a new netns_assign_allow callback. Only
+>> > virtio-vsock implements it here.
+>>
+>> Why? (Not asking to support all the others, asking to explain the reason or
+>> ask helps from others to extend it)
+>>
+>> Thanks,
+>> Stefano
+>
+>Sure, can add a note here about extending it. I just didn't want to
+>implement code without having an environment allowing me to test it.
+
+It's fine, I'm not asking you to do it ;-)
+
+Sorry again for the delay, I hope to review this series today/tomorrow.
+
+Thanks,
+Stefano
 
