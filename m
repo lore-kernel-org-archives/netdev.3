@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5983CB8F0
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 23:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF3D4D9F79
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 23:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789602942; cv=none; b=T41DkLnuZjN/Lb9OMVa8gcD44SjpcOYGPd4sAajZW0HEGE7e1VNelxob1BwdVNuu+IHWF1JadYK5cuxJ8Gk4veoxYxNUd1e0LbiHdGuUVXteMB0DWYuIiHwaSOvrhV8u1OMDpi2twbazWmxN0bfrdKCtQ3vqdsB+VuRjJt/+qis=
+	t=1789602943; cv=none; b=QJdjqidmAwc8L+7V6uhReA1DpP0oC3nsGF53Exr5CcxxqJuPowXlNP5zLJIm6Q+5Ff/fo6ftzqIIxklv5lrCTVH9Oy99RU0aH71V39gMHTax0NtEOtfzkWE4I1fcZZhS406g9Y/68T0roGW9253jLWiWmBV7+nFUqyfSPLFIP0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789602942; c=relaxed/simple;
-	bh=jopall65XG5bP/LkVF3LlIENbMwL2Ae1cBI2KtTofDE=;
+	s=arc-20240116; t=1789602943; c=relaxed/simple;
+	bh=ilmL7E7xkmV+bOFEx31249Yv0hClg9S3BRI9uLj5OlA=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ZxETZovM8VJUaD4hwJ1Ww6yJxtbermV1BVFkw/Pg73IKkVIKj5vFU/3fCFGhimOmmQibAufe4GEWJo81x4qM7pBFEEXuKNqYuWyLNIPQnaWLgVDhafUaLSwgxf3cX3yMzFsYjHCp90gyM/eDy2n9aITr34RzzqWIUBDLAiVilVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J4jyEAd6; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=J6Qn4AUAUxNdesZg1QE2K+MTbg38kjmGWV66IhuYkDExu9YQwaPjgfMit0+1RztBW1lwUBZ1bULHVTx4oaBvterSzAtUPk77TsQWXFk/XCSzRks88RlGMGgs/kt8Qq5bnn+V3hMGxQzEYgCWb+5ebklDL9aueJ7Uo3XNzwp7FcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SzyWwar4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J4jyEAd6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B18E1F00893;
-	Wed, 16 Sep 2026 23:55:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SzyWwar4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92A861F00898;
+	Wed, 16 Sep 2026 23:55:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789602941;
-	bh=Wq7Cb8f+QlFo33jDx4OLlb+tvxBxZep+xHU9Y45S580=;
+	s=k20260515; t=1789602942;
+	bh=1IrJFrz3O3MmYQ5GZga8UhWsetbofyYNObC0BruXdNQ=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=J4jyEAd6D2YKbPqPP0jvwnFVGH2JfZBR4QF76RYyhIyfODcZ0hPNDm1R1ZotSW89T
-	 aFa0mYAsDbEYYE4I1fhlCh2As7q089pWLF8ouA9bBhMWJrwe/KxkESc7+um2j593D8
-	 Mg6XN5iBfi0lEgL3Z0uE2BwroGPPPH8ONO7/khdsUKM8wMBq9D7rLmnKLdjHV7DrNu
-	 bNsrTSwEFPL3l0+CCd46x8dKCX437wsFs+2s1v97CiI7T+uD3WE/mGfEE4a2Lzeqkp
-	 AH70YL55m8GF3s0YUVi7JsWzXitg5wcAdJqc3Pd0ieHR8r30mo03CzuezEjT1QrFoC
-	 dUhFOxM7DiAyA==
-Subject: Re: [PATCH v4 net-next 2/8] vxlan: vnifilter: use
- list_for_each_entry_rcu() in vxlan_vnifilter_dump_dev()
+	b=SzyWwar4ITi4k1Wa/h6gcY2IxxAwytCC4Bfjxh6yLSIjQdxkHs5rHOHBqFAJGQ50o
+	 rNL8DjB3ZNeG6YT2VOsGJsMPTMS0DyIF5qhaGPejy6TOzn/Ta0RPSRKYo610bmEKMg
+	 PoLY8aEel5vLij8EfhPrMm9Kamvwfz0d5kjUoNxcOQDy/tUds7XX/z0Y6Yp3hfONA6
+	 nh9nBeYcx/+EHdpLz3QAW1btuFUntjh574qWFlxhYSUCMTG8L4ki9RSEEau8g7Sbmt
+	 56x+5akn595GX8rd4Q+DkS9PB5lF593j/E81z2UiPOYgd+NBAv44SHp4v2UCnHCBQG
+	 3PHQFoDlLc9Jw==
+Subject: Re: [PATCH v4 net-next 3/8] vxlan: vnifilter: signal interrupted
+ RTM_GETTUNNEL dumps
 From: netdev-bot+sashiko@kernel.org
 To: edumazet@google.com
 Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
  andrew+netdev@lunn.ch, netdev@vger.kernel.org, eric.dumazet@gmail.com,
  kuniyu@google.com
-Date: Wed, 16 Sep 2026 23:55:39 +0000
-Message-ID: <178960293995.22033.13473813342519065221@kernel.org>
-In-Reply-To: <20260915175501.391567-3-edumazet@google.com>
-References: <20260915175501.391567-3-edumazet@google.com>
-X-sashiko-severity: Low
+Date: Wed, 16 Sep 2026 23:55:41 +0000
+Message-ID: <178960294113.22033.1537285071354326342@kernel.org>
+In-Reply-To: <20260915175501.391567-4-edumazet@google.com>
+References: <20260915175501.391567-4-edumazet@google.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,129 +50,119 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 0 · Low: 1
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Low] Incomplete dump consistency in the paginated RTM_GETTUNNEL dump:
-  both resume cursors remain plain ordinals (cb->args[0] = netdev…
+- [Medium] The generation counter added by this patch is not bumped on a
+  mutating error path, so an RTM_GETTUNNEL dump that straddles the…
 
 --
 
-vxlan: vnifilter: use list_for_each_entry_rcu() in vxlan_vnifilter_dump_dev()
+vxlan: vnifilter: signal interrupted RTM_GETTUNNEL dumps
 
-This switches the vg->vni_list walk in vxlan_vnifilter_dump_dev() to
-list_for_each_entry_rcu(), since writers modify the list with
-list_add_rcu()/list_del_rcu().  It also clears cb->args[1] on the early
-return paths and tracks the device ifindex in cb->args[2] so a stale VNI
-offset is not carried over to the next device of a paginated dump.
+This adds a per-netns generation counter to struct vxlan_net, bumped when
+the set of vxlan devices in the netns changes or when a vni_list is
+modified, and feeds it to nl_dump_check_consistent() from
+vxlan_vnifilter_dump_dev() so user space sees NLM_F_DUMP_INTR on an
+interrupted RTM_GETTUNNEL dump.
+
+No Link: tags in the commit header.
 
 > diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
-> index e433e66f6d4d3..4404b912a7427 100644
+> index 4404b912a7427..ce986a00a05c9 100644
 > --- a/drivers/net/vxlan/vxlan_vnifilter.c
 > +++ b/drivers/net/vxlan/vxlan_vnifilter.c
-> @@ -333,22 +333,34 @@ static int vxlan_vnifilter_dump_dev(const struct net_device *dev,
->  				    struct sk_buff *skb,
->  				    struct netlink_callback *cb)
->  {
-> -	struct vxlan_vni_node *tmp, *v, *vbegin = NULL, *vend = NULL;
-> +	struct vxlan_vni_node *v, *vbegin = NULL, *vend = NULL;
->  	struct vxlan_dev *vxlan = netdev_priv(dev);
->  	struct tunnel_msg *new_tmsg, *tmsg;
-> -	int idx = 0, s_idx = cb->args[1];
->  	struct vxlan_vni_group *vg;
->  	struct nlmsghdr *nlh;
-> +	int idx = 0, s_idx;
->  	bool dump_stats;
->  	int err = 0;
+
+[ ... ]
+
+> @@ -691,13 +707,16 @@ static int vxlan_vni_update(struct vxlan_dev *vxlan,
+>  	if (ret)
+>  		return ret;
 >  
-> -	if (!(vxlan->cfg.flags & VXLAN_F_VNIFILTER))
-> +	if (cb->args[2] != dev->ifindex) {
-> +		cb->args[1] = 0;
-> +		cb->args[2] = dev->ifindex;
-> +	}
-> +	s_idx = cb->args[1];
-> +
-> +	if (!(vxlan->cfg.flags & VXLAN_F_VNIFILTER)) {
-> +		cb->args[1] = 0;
-> +		cb->args[2] = 0;
->  		return -EINVAL;
+> -	if (*changed)
+> +	if (*changed) {
+> +		vxlan_vnifilter_seq_inc(dev_net(vxlan->dev));
+>  		vxlan_vnifilter_notify(vxlan, vninode, RTM_NEWTUNNEL);
 > +	}
 >  
->  	/* RCU needed because of the vni locking rules (rcu || rtnl) */
->  	vg = rcu_dereference(vxlan->vnigrp);
-> -	if (!vg || !vg->num_vnis)
-> +	if (!vg || !vg->num_vnis) {
-> +		cb->args[1] = 0;
-> +		cb->args[2] = 0;
->  		return 0;
-> +	}
+>  	return 0;
+>  }
 
-[Severity: Low]
-The new cb->args[2] check only runs after vxlan_vnifilter_dump() has already
-selected a device using the unchanged ordinal cursor cb->args[0]:
+[Severity: Medium]
 
-drivers/net/vxlan/vxlan_vnifilter.c:vxlan_vnifilter_dump() {
+Should the counter also be bumped when vxlan_vni_update_group() fails
+after it has already overwritten vninode->remote_ip?
+
+In vxlan_vni_update_group() the new group is stored into the dump-visible
+list node before the fallible multicast steps:
+
+	if (group)
+		memcpy(&vninode->remote_ip, group, sizeof(vninode->remote_ip));
+
+	if (vxlan->dev->flags & IFF_UP) {
+		if (vxlan_addr_multicast(&old_remote_ip) &&
+		    !vxlan_group_used(vn, vxlan, vninode->vni, ...)) {
+			ret = vxlan_igmp_leave(vxlan, &old_remote_ip, 0);
+			if (ret)
+				goto out;
+		}
+
+		if (vxlan_addr_multicast(&vninode->remote_ip)) {
+			ret = vxlan_igmp_join(vxlan, &vninode->remote_ip, 0);
+			if (ret == -EADDRINUSE)
+				ret = 0;
+			if (ret)
+				goto out;
+		}
+	}
+
+	*changed = true;
+
+	return 0;
+out:
+	return ret;
+
+The memcpy is not undone on either goto out, and *changed stays false, so
+vxlan_vni_update() takes the "if (ret) return ret;" path above and never
+reaches the new vxlan_vnifilter_seq_inc() call even though the entry's
+dumped content has already changed.
+
+Is that failure reachable in practice?  vxlan_igmp_join() ends in
+ip_mc_join_group():
+
+net/ipv4/igmp.c:__ip_mc_join_group() {
 	...
-	for_each_netdev_rcu(net, dev) {
-		if (!netif_is_vxlan(dev))
-			continue;
-		if (idx < s_idx)
-			goto skip;
-		err = vxlan_vnifilter_dump_dev(dev, skb, cb);
+	if (count >= READ_ONCE(net->ipv4.sysctl_igmp_max_memberships))
+		goto done; /* err = -ENOBUFS */
 	...
 }
 
-If a vxlan device is unregistered between two dump skbs, the ordinal of the
-partially dumped device drops below cb->args[0] and it is skipped before
-vxlan_vnifilter_dump_dev() gets a chance to compare ifindexes.
+which returns -ENOBUFS once the default net.ipv4.igmp_max_memberships
+limit of 20 is exceeded on the vxlan socket.
 
-Can the remaining VNIs of that device then be dropped from the dump result
-even with the new ifindex tracking in place?
+The dump reads v->remote_ip both for the VXLAN_VNIFILTER_ENTRY_GROUP and
+GROUP6 attributes and for the range coalescing decision in
+vxlan_vnifilter_dump_dev():
 
-Also, is the extra clearing of cb->args[1]/cb->args[2] in these two early
-return paths needed?  The unconditional check at the top of
-vxlan_vnifilter_dump_dev() already resets cb->args[1] for any device whose
-ifindex differs from the saved one, and vxlan_vnifilter_dump() breaks out of
-for_each_netdev_rcu() on -EMSGSIZE without visiting further devices.
+		if (!dump_stats && vnirange(vend, v) == 1 &&
+		    vxlan_addr_equal(&v->remote_ip, &vend->remote_ip)) {
 
->  
->  	tmsg = nlmsg_data(cb->nlh);
->  	dump_stats = !!(tmsg->flags & TUNNEL_MSG_FLAG_STATS);
-> @@ -362,7 +374,7 @@ static int vxlan_vnifilter_dump_dev(const struct net_device *dev,
->  	new_tmsg->family = PF_BRIDGE;
->  	new_tmsg->ifindex = dev->ifindex;
->  
-> -	list_for_each_entry_safe(v, tmp, &vg->vni_list, vlist) {
-> +	list_for_each_entry_rcu(v, &vg->vni_list, vlist) {
->  		if (idx < s_idx) {
->  			idx++;
->  			continue;
+If such a failed update lands between two dump skbs, does
+vxlan_vnifilter_base_seq() return the same value, so
+nl_dump_check_consistent() leaves NLM_F_DUMP_INTR clear and user space
+assembles a dump mixing pre- and post-mutation group content with no
+indication the snapshot was interrupted?
 
-[Severity: Low]
-Resume inside the device is still a plain position into vg->vni_list, and
-RTNL/RCU are dropped between dump skbs.  If a VNI located before s_idx is
-removed between two calls, the entries after it shift down by one, so is one
-VNI skipped from the dump?  Conversely, a VNI added before s_idx would make
-one entry appear twice.
+The entry ordinals still add up in this case (idx += vnirange(vbegin,
+vend) + 1 over a coalesced run equals its node count), so this does not
+duplicate or skip entries, only skews the reported group addresses.  The
+same error path also skips the RTM_NEWTUNNEL notification, so no listener
+learns of the change that was applied.
 
-At this commit there is no generation counter, no cb->seq and no
-nl_dump_check_consistent(), so userspace gets no NLM_F_DUMP_INTR indication
-that the dump was interrupted.
+Would it make sense to bump the counter right where remote_ip is
+committed, or to restore the old remote_ip on the goto out paths?
 
-The next patch in the series, "vxlan: vnifilter: signal interrupted
-RTM_GETTUNNEL dumps", adds vxlan_vnifilter_base_seq()/cb->seq plus
-nl_dump_check_consistent() in vxlan_vnifilter_dump_dev(), which covers this
-case.  Would it be worth noting in this commit message that skipped or
-duplicated VNIs remain possible until that patch, since this one already
-claims to address shifting ordinal indexes?
-
-> @@ -394,6 +406,7 @@ static int vxlan_vnifilter_dump_dev(const struct net_device *dev,
->  	}
->  
->  	cb->args[1] = err ? idx : 0;
-> +	cb->args[2] = err ? dev->ifindex : 0;
->  
->  	nlmsg_end(skb, nlh);
->
+The condition is still present at the end of the series, in
+vxlan_vni_update_group() and vxlan_vni_update().
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260915175501.391567-1-edumazet%40google.com
