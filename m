@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4AA46EF6A;
-	Wed, 16 Sep 2026 08:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FDB46D2AC;
+	Wed, 16 Sep 2026 08:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789546573; cv=none; b=pl4LS+oqusATqFlrjp5GEhqjL7pl5cOoDq94LupzikEoXCEzaduPre0VZ9iAvlWD35QktCIdD3cq+h53lvPbN+A0zDhkzLi6jD5Y7HniV1orqr89JDbfTANkmPQT9mnIazaTYUmLrTjhjMuol3/bo2Ie18u1OeJ5Kq5ZYvDrpzA=
+	t=1789546579; cv=none; b=upnQ16atGbpr/5rP1fPe50lOjslbuAmxJG1ZHnVJZpOmuUQHB97tZYB5aOrRF4vkW/fAD8Jv8Y2n8sOgtLLwfkDCjWwegsYqLZZDA+j1krrhbwQBuwf3wCAEbcGAVofsbameW2sayp6jFIkQfKftJE1ndHc95uXXLCyoRTBCduw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789546573; c=relaxed/simple;
-	bh=/2xvqTP0mvDwFIqkv76KfwcACFaR5MjO+w+isGX9NVw=;
+	s=arc-20240116; t=1789546579; c=relaxed/simple;
+	bh=9C+buMh1A2W5iJhEdAOkVTtarTzV6swX+ZZ+4AJDYdc=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=e0UqqikO0O4O8CJP8AaMbaTiFvcPQc6HEaBErB0ai/Nr6s4R2rcFWHPHuwi3RP2GBrGil1+8HbssRWBr4tV4UZ7y0eqpCgybcSwzEgBakHA+OuWgPW3cfe3x/7so9HsJVSzXRjmfRATtVcM3O3TRgBomDhWsH4EweSnExmSPgWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=geYsQBiM; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=OhInaiphvEe4vWDwHIH2BFziJyJaO4y8LY6R4K5kWX2Gr2fUDJdYsKANoIao7Ay9422Jn2rIciFLdBPwOwAbyiCFS1MTxH6yo6joAvV8a3+TrORbsaZ18bwCX6cltkl2W2WijrstG8/K+E4pPP8SicC+i303PSwLfdGnZHKVW8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UUksON9U; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="geYsQBiM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE11B1F00893;
-	Wed, 16 Sep 2026 08:15:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UUksON9U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 151C01F000FF;
+	Wed, 16 Sep 2026 08:15:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789546560;
-	bh=2uCHDGI5F8P/IKm3GeZXgX7qbmwnNJFVwSbjVkxzoQs=;
+	s=k20260515; t=1789546559;
+	bh=/Od+57+k43rHq4QfblUn+Osm9v5McaPdc0Y+ZbjieiY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=geYsQBiMVBRCM9ln3Sq38XdEsMSX3TXnay2f6UaneQa0ELVBY15xaVe4lZ6Zs9lik
-	 +I2cOD6LzJBp62VGsvKt+DGihfjXU4MbQRG7y0EgiFdeO8wTLv+elvZlYrxHqlzux+
-	 nj8uVLo4rHBtxXSjhouknEWL8rWfeZUxHw7lB07MoEuZ2tc8K9EQluAynA2whXG96t
-	 ES/jCRZTe1If8WNabCkAvfGgHh0hbNDeoO4xysBAb4oYDujg8kk+o0oKwD8ueba7c7
-	 mh02EpS4ZKGJcm/jSOoPGEfM7BDWIzqNV+vAW2xFQOpqW9eQtbx/1BMCPAXY2ngNCz
-	 jwA0d13BAeTCQ==
-Subject:
- Re: [PATCH net-next v14 4/4] ptp: ocp: add TAP CPLD flashing via devlink
+	b=UUksON9U54KGeBXCq7/jkhOHmWh8rtu8UIXdZzHGstn1XaJgBcTzVDvxOIAnrTIrt
+	 OOg3KKNqmCbFUFo6YuvROI+Y9iLsvuKXccJd8DQwCj3NpTWq0VGhuzTjvOyNE0XWFQ
+	 0OaAerP3V6vSiZtoFXuX2SOUOTblQLG/QEGxQ5OrgYqRx5gQozEZuduGhYrTrX+RAL
+	 2KWBRpFY9fgkk9zg9kc2DobLZoXMw5q02BGMaPOpWmbPwzle/7wZyWXnzxJ4kJuzCn
+	 bW5JPfpq4kW7nlycCHD365x2xTvOpYUYY2+7Wlch0CoJjXqGxMiX4cX/V+4yPIGJaB
+	 DovAkOFLEJghg==
+Subject: Re: [PATCH net-next v14 3/4] ptp: ocp: add TAP CPLD access for ADVA
+ TimeCard X1
 From: netdev-bot+sashiko@kernel.org
 To: maimon.sagi@gmail.com
 Cc: richardcochran@gmail.com, vadim.fedorenko@linux.dev, kuba@kernel.org,
@@ -36,10 +36,10 @@ Cc: richardcochran@gmail.com, vadim.fedorenko@linux.dev, kuba@kernel.org,
  arkadiusz.kubalewski@intel.com, corbet@lwn.net, rdunlap@infradead.org,
  skhan@linuxfoundation.org, netdev@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Date: Wed, 16 Sep 2026 08:15:59 +0000
-Message-ID: <178954655931.22033.443056531719725611@kernel.org>
-In-Reply-To: <20260914071531.11640-5-maimon.sagi@gmail.com>
-References: <20260914071531.11640-5-maimon.sagi@gmail.com>
+Date: Wed, 16 Sep 2026 08:15:57 +0000
+Message-ID: <178954655751.22033.1449062072421212704@kernel.org>
+In-Reply-To: <20260914071531.11640-4-maimon.sagi@gmail.com>
+References: <20260914071531.11640-4-maimon.sagi@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,488 +50,403 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 10 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 8 · Low: 2
+Critical: 0 · High: 0 · Medium: 3 · Low: 2
 
-- [Medium] The new `fw.cpld` flash component only exists while the driver
-  happens to hold a successfully cached CPLD IDCODE.
-- [Medium] bp->cpld_id / bp->cpld_usercode are invalidated only on the
-  success path of adva_x1_cpld_flash()…
-- [Medium] Documentation/networking/devlink/ptp_ocp.rst (line 60) states
-  "container formats such as ``.jed`` are rejected", but…
-- [Medium] The CPLD "transparent configuration mode" entered by
-  CPLD_CMD_EN_CFG_TP is tracked by `bp->cpld_in_config_mode`, but the…
-- [Medium] adva_x1_cpld_flash() invalidates the cached CPLD identity
-  (`WRITE_ONCE(bp->cpld_id, 0); WRITE_ONCE(bp->cpld_id_tried, false);…
-- [Medium] The only validation applied to the user-supplied bitstream in
-  adva_x1_cpld_flash() is `if (!fw->size || fw->size % CPLD_PAGE_SIZE)`…
-- [Medium] The ISC command frame lengths for CPLD_CMD_EN_CFG_TP (0x74),
-  CPLD_CMD_DIS_CFG (0x26) and CPLD_CMD_REFRESH (0x79) disagree with…
-- [Medium] The programming sequence in adva_x1_cpld_flash() never issues
-  ISC_PROGRAM_USERCODE (0xC2) - the CPLD_CMD_* table added by this patch…
-- [Low] Documentation states that the CPLD identification read - which
-  claims the shared I2C bus and reprograms the on-card mux - happens…
-- [Low] adva_x1_cpld_read_id() publishes bp->cpld_usercode and then
-  bp->cpld_id with plain WRITE_ONCE() and an explicit comment that…
+- [Medium] adva_x1_mblaze_release() (drivers/ptp/ptp_ocp.c:4375-4393)
+  detects that the MicroBlaze firmware never dropped the grant, but only…
+- [Medium] adva_x1_mblaze_release() (drivers/ptp/ptp_ocp.c:4382-4390)
+  writes MBLAZE_RELEASE (0x55550000) to pps_select->i2c_bus_ctrl and…
+- [Medium] bp->cpld_i2c_adap_nr has two unsynchronized writers -
+  ptp_ocp_i2c_notifier_call() (drivers/ptp/ptp_ocp.c:5981-5986) and…
+- [Low] This commit adds #include <linux/iopoll.h>
+  (drivers/ptp/ptp_ocp.c:23) and #include <linux/firmware.h> (line 30),…
+- [Low] In both adva_x1_cpld_read_id() and cpld_status_show(), a failure
+  of adva_x1_mux_select(bp, ADVA_MUX_CHANNEL) takes 'goto release',…
 
 --
 
-ptp: ocp: add TAP CPLD flashing via devlink
+ptp: ocp: add TAP CPLD access for ADVA TimeCard X1
 
-This adds a devlink flash component named fw.cpld that programs the Lattice
-MachXO3 configuration flash on ADVA TimeCard X1 boards over I2C, reusing the
-TMC bus arbitration added earlier.  ->info_get() also starts publishing the
-image USERCODE as the running version of that component.
+This adds a request/grant handshake with the on-card MicroBlaze firmware so
+the host I2C controller can be re-routed onto the TMC bus, where the PCA9548
+and the Lattice TAP CPLD live.  On top of that it adds a root-only
+cpld_status sysfs attribute and reports the Lattice device ID as the fixed
+devlink version cpld.id, read once from the driver's own worker.
 
-A few questions on the new code below.
-
-> diff --git a/Documentation/ABI/testing/sysfs-timecard b/Documentation/ABI/testing/sysfs-timecard
-> index c440d8930384..6ddca452bc63 100644
-> --- a/Documentation/ABI/testing/sysfs-timecard
-> +++ b/Documentation/ABI/testing/sysfs-timecard
-> @@ -35,6 +35,10 @@ Description:	(RO, root only) The flags set in the status register of the
->  		probe, and reported from that cached value as the fixed
->  		"cpld.id" version by devlink dev info.
->  
-> +		New CPLD firmware is programmed with devlink dev flash,
-> +		selecting the "fw.cpld" component; see
-> +		Documentation/networking/devlink/ptp_ocp.rst.
-> +
-
-[Severity: Low]
-This file still describes the identification read as a one-time event ("The
-Lattice device ID of the CPLD is read once by the driver, shortly after
-probe"), and ptp_ocp.rst says "the driver does that once from its own
-worker".
-
-After this patch adva_x1_cpld_flash() re-arms the one-shot gate on success:
-
-	WRITE_ONCE(bp->cpld_id, 0);
-	WRITE_ONCE(bp->cpld_id_tried, false);
-	bp->cpld_id_attempts = 0;
-
-and ptp_ocp_sync_work() only skips the read while cpld_id_tried is true, so
-the bus-claiming, mux-reprogramming ID/USERCODE read runs again after every
-successful CPLD update.
-
-Should both documents be reworded now that the read is no longer once per
-binding?
-
-> diff --git a/Documentation/networking/devlink/ptp_ocp.rst b/Documentation/networking/devlink/ptp_ocp.rst
-> index 3f997cd9f3a3..37e9f1ebd1a8 100644
-> --- a/Documentation/networking/devlink/ptp_ocp.rst
-> +++ b/Documentation/networking/devlink/ptp_ocp.rst
-
-[ ... ]
-
-> @@ -33,3 +33,38 @@ The ``ptp_ocp`` driver reports the following versions
->         reprograms the on-card mux, so the driver does that once from its
->         own worker and reports the cached value here; the version is
->         omitted until that read has succeeded.
-> +   * - ``fw.cpld``
-> +     - running
-> +     - USERCODE of the image programmed into the TAP CPLD, formatted as
-> +       ``0x%08x``.  Read together with ``cpld.id`` and reported the same
-> +       way.  This is the component name to pass to ``devlink dev flash``
-> +       to update the CPLD.
-
-[ ... ]
-
-> +   * - ``fw.cpld``
-> +     - The configuration flash of the TAP CPLD on ADVA TimeCard X1 boards,
-> +       programmed over I2C with the MachXO3 in-system programming commands
-> +       and activated with a REFRESH, so the new image runs immediately.
-> +       The image is the raw configuration bitstream, a whole number of
-> +       16-byte pages; container formats such as ``.jed`` are rejected.
-
-[Severity: Medium]
-Where are container formats rejected?  The only input check in
-adva_x1_cpld_flash() is the length test:
-
-	if (!fw->size || fw->size % CPLD_PAGE_SIZE) {
-		NL_SET_ERR_MSG_MOD(extack,
-				   "image must be a whole number of 16-byte pages");
-		return -EINVAL;
-	}
-
-There is no preamble, magic or CRC check, so any file whose size happens to
-be a multiple of 16 (a 4096-byte .jed, for instance) is accepted and copied
-straight into the LSC_PROG_INCR_NV frames.
-
-Would it be better to either add a real format check or to drop the claim
-that .jed files are rejected?
+A few questions on the arbitration and on the adapter-number caching below.
 
 > diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-> index 98cb26077181..58b90b2b282f 100644
+> index f4299878c27c..98cb26077181 100644
 > --- a/drivers/ptp/ptp_ocp.c
 > +++ b/drivers/ptp/ptp_ocp.c
-
-[ ... ]
-
-> @@ -2158,6 +2169,17 @@ ptp_ocp_devlink_flash_update(struct devlink *devlink,
->  	const char *msg;
->  	int err;
->  
-> +	if (params->component) {
-> +		if (!bp->has_cpld ||
-> +		    strcmp(params->component, ADVA_CPLD_COMPONENT)) {
-> +			NL_SET_ERR_MSG_MOD(extack,
-> +					   "unsupported flash component");
-> +			return -EOPNOTSUPP;
-> +		}
-> +
-> +		return adva_x1_cpld_flash(bp, devlink, params->fw, extack);
-> +	}
-> +
-
-[Severity: Medium]
-This gate accepts the component whenever bp->has_cpld is set, but
-ptp_ocp_devlink_info_get() only publishes the name inside a narrower
-condition:
-
-	id = READ_ONCE(bp->cpld_id);
-	if (bp->has_cpld && id) {
-		...
-		err = devlink_info_version_running_put_ext(req, "fw.cpld", buf,
-							   ver_type);
-
-The core resolves the component name only through info_get():
-
-net/devlink/dev.c:devlink_flash_component_get() {
-	...
-	if (!lookup_ctx.lookup_name_found) {
-		NL_SET_ERR_MSG_ATTR(extack, nla_component,
-				    "selected component is not supported by this device");
-		return -EINVAL;
-	}
-}
-
-so the check here never runs for a mismatched name, and the stricter
-info_get() condition decides whether fw.cpld can be flashed at all.
-
-Can that make the CPLD unflashable in the cases where flashing is the
-recovery action?  ptp_ocp_sync_work() latches the one-shot read:
-
-	if (err != -EBUSY &&
-	    (!err || ++bp->cpld_id_attempts >= CPLD_ID_MAX_ATTEMPTS))
-		WRITE_ONCE(bp->cpld_id_tried, true);
-
-Once ten non-EBUSY failures have happened, cpld_id stays 0 for the lifetime
-of the binding, fw.cpld is never reported, and devlink refuses the request
-with -EINVAL.
-
-Would deriving the capability from the static has_cpld board flag (or always
-emitting the version string, with an unknown value when the read has not
-succeeded) be more robust than deriving it from the opportunistic cache?
-
-[ ... ]
-
-> @@ -4522,6 +4568,48 @@ static int adva_x1_mux_select(struct ptp_ocp *bp, int ch)
->  	return adva_x1_i2c_xfer(bp, ADVA_MUX_ADDR, val, NULL, 0, NULL, 0);
->  }
->  
-> +/*
-> + * Argument bytes that follow an ISC opcode.  Returns NULL with @nargs set
-> + * when the arguments are all zero: adva_x1_i2c_xfer() zeroes the buffer.
-> + */
-> +static const u8 *adva_x1_cpld_args(u8 cmd, u8 *nargs)
-> +{
-> +	static const u8 en_cfg_tp[] = { 0x08, 0x00 };
-> +	/* cfg sector only */
-> +	static const u8 erase_cfg[] = { 0x04, 0x00, 0x00 };
-> +
-> +	switch (cmd) {
-> +	case CPLD_CMD_EN_CFG_TP:
-> +		*nargs = sizeof(en_cfg_tp);
-> +		return en_cfg_tp;
-> +	case CPLD_CMD_ERASE:
-> +		*nargs = sizeof(erase_cfg);
-> +		return erase_cfg;
-> +	case CPLD_CMD_RESET_ADDR:
-> +	case CPLD_CMD_SET_DONE:
-> +		*nargs = 3;
-> +		return NULL;
-> +	case CPLD_CMD_DIS_CFG:
-> +	case CPLD_CMD_REFRESH:
-> +		*nargs = 2;
-> +		return NULL;
-> +	default:
-> +		*nargs = 0;
-> +		return NULL;
-> +	}
-> +}
-
-[Severity: Medium]
-Are the operand counts for 0x74, 0x26 and 0x79 right?  These three produce
-3-byte frames here, while the in-tree Lattice drivers send opcode plus three
-operand bytes:
-
-drivers/fpga/machxo2-spi.c:
-	#define ISC_ENABLE		{0xc6, 0x08, 0x00, 0x00}
-	#define LSC_REFRESH		{0x79, 0x00, 0x00, 0x00}
-
-drivers/fpga/lattice-sysconfig.h:
-	#define	SYSCONFIG_ISC_DISABLE		{0x26, 0x00, 0x00, 0x00}
-	#define	SYSCONFIG_LSC_REFRESH		{0x79, 0x00, 0x00, 0x00}
-
-Every other frame this patch builds (READ_ID, READ_STATUS, READ_USERCODE,
-ERASE {0x0e,0x04,0x00,0x00}, RESET_ADDR, SET_DONE, WRITE_PAGE) matches those
-drivers byte for byte, which makes EN_CFG_TP, DIS_CFG and REFRESH the
-outliers.  Could the operand counts be quoted against FPGA-TN-02055?
-
-Related: nothing checks that configuration mode was actually entered.
-adva_x1_cpld_wait_ready() looks only at BUSY and FAILED, and the ENAB bit
-(bit 9, cfgena in machxo2-spi.c) is never read.  If the enable frame is not
-latched, an idle part reports neither BUSY nor FAILED, the erase and page
-writes are ignored, DONE is still set from the old image, and the final
-DONE/!BUSY/ERR check after REFRESH passes - so the update is reported
-successful with the configuration flash untouched.  Should the status be
-read after EN_CFG_TP and the update fail with -EIO when ENAB is clear?
-
-[ ... ]
-
-> @@ -4547,14 +4635,82 @@ static int adva_x1_cpld_read_status(struct ptp_ocp *bp, u32 *status)
-
-[ ... ]
-
-> +/* Wait for BUSY to clear, ignoring a pending cancel.  An ISC command issued
-> + * while the part is still erasing or programming may not latch, so an abort
-> + * has to wait the operation out before it can leave configuration mode.
-> + */
-> +static int adva_x1_cpld_wait_idle(struct ptp_ocp *bp, unsigned int max_ms)
-> +{
-
-[ ... ]
-
-> +/* Leave transparent configuration mode.  cpld_in_config_mode stays set when
-> + * DIS_CFG does not get through, so a later cleanup() tries again rather than
-> + * recording an exit that never happened.
-> + */
-> +static void adva_x1_cpld_exit_config(struct ptp_ocp *bp)
-> +{
-> +	int err;
-> +
-> +	if (!bp->cpld_in_config_mode)
-> +		return;
-> +
-> +	adva_x1_cpld_wait_idle(bp, CPLD_ERASE_MS);
-> +
-> +	err = adva_x1_cpld_write(bp, CPLD_CMD_DIS_CFG);
-> +	if (err)
-> +		dev_warn(&bp->pdev->dev,
-> +			 "CPLD left in configuration mode: %d\n", err);
-> +	else
-> +		bp->cpld_in_config_mode = false;
-> +}
-
-[Severity: Medium]
-Which cleanup() does this comment refer to?  In this tree
-cpld_in_config_mode is referenced only in the struct declaration, in
-adva_x1_cpld_flash() and in this function, and adva_x1_cpld_flash() sets it
-unconditionally on every entry:
-
-	bp->cpld_in_config_mode = true;
-
-so nothing ever observes the "stays set" state and retries the DIS_CFG.
-ptp_ocp_detach() destroys cpld_lock and unregisters the device without
-claiming the bus or sending DIS_CFG, so if DIS_CFG errors here the part is
-left in transparent configuration mode past unbind - the state the comment
-in adva_x1_cpld_flash() calls unsafe ("A stray DIS_CFG is harmless; leaving
-config mode enabled is not").
-
-Also, the comment above adva_x1_cpld_wait_idle() describes waiting "ignoring
-a pending cancel" for "an abort", but there is no cancel or abort path in
-this sequence - read_poll_timeout() and msleep() are uninterruptible.  Is
-the only real difference from adva_x1_cpld_wait_ready() that FAILED is not
-terminal?  If so, could the comments be reworded to match?
-
->  /*
-> - * Read the Lattice device ID into bp->cpld_id.  Done once, off the
-> - * unprivileged devlink path, which reports the cached value.  -EBUSY means
-> - * cpld_lock is held, so the caller can retry rather than wait behind a long
-> - * CPLD operation.
-> + * Read the Lattice device ID and the image USERCODE under one bus claim.
-> + * Done once, off the unprivileged devlink path, which reports the cached
-> + * values.  -EBUSY means cpld_lock is held, so the caller can retry rather
-> + * than wait behind a long CPLD operation.
->   */
->  static int adva_x1_cpld_read_id(struct ptp_ocp *bp)
->  {
-
-[ ... ]
-
-> @@ -4568,8 +4724,19 @@ static int adva_x1_cpld_read_id(struct ptp_ocp *bp)
->  	if (ret)
->  		goto release;
->  	ret = adva_x1_cpld_cmd_read(bp, CPLD_CMD_READ_ID, data, 4);
-> -	if (!ret)
-> -		WRITE_ONCE(bp->cpld_id, get_unaligned_be32(data));
-> +	if (ret)
-> +		goto deselect;
-> +	id = get_unaligned_be32(data);
-> +
-> +	ret = adva_x1_cpld_cmd_read(bp, CPLD_CMD_READ_USERCODE, data, 4);
-> +	if (ret)
-> +		goto deselect;
-> +	usercode = get_unaligned_be32(data);
-> +
-> +	/* cpld_id is the validity flag for both, so publish it last. */
-> +	WRITE_ONCE(bp->cpld_usercode, usercode);
-> +	WRITE_ONCE(bp->cpld_id, id);
+> @@ -20,10 +20,14 @@
+>  #include <linux/spi/altera.h>
+>  #include <net/devlink.h>
+>  #include <linux/i2c.h>
+> +#include <linux/iopoll.h>
+>  #include <linux/mtd/mtd.h>
+>  #include <linux/nvmem-consumer.h>
+>  #include <linux/crc16.h>
+>  #include <linux/dpll.h>
+> +#include <linux/unaligned.h>
+> +#include <linux/delay.h>
+> +#include <linux/firmware.h>
 
 [Severity: Low]
-Is the publish ordering the comment relies on actually enforced?
-WRITE_ONCE() gives no store-store ordering, and the reader side in
-ptp_ocp_devlink_info_get() has no matching load-load ordering:
+This isn't a bug, but is linux/iopoll.h used by anything in this commit?
+There is no read_poll_timeout() or readx_poll_timeout() caller here; the
+first one, adva_x1_cpld_wait_idle(), arrives with the next patch in the
+series.
 
-	id = READ_ONCE(bp->cpld_id);
-	if (bp->has_cpld && id) {
-		...
-		sprintf(buf, "0x%08x", READ_ONCE(bp->cpld_usercode));
+The same applies to the comments in adva_x1_i2c_xfer() and
+adva_x1_bus_claim() that justify the per-claim scratch buffer with an image
+upload:
 
-On arm64 or powerpc a concurrent devlink dev info could see a valid cpld_id
-with a stale or zero cpld_usercode and print fw.cpld 0x00000000.  Would
-smp_store_release()/smp_load_acquire() (or smp_wmb()/smp_rmb()) be the right
-pairing here?
+	/* One scratch buffer per claim rather than per transfer: an upload
+	 * holds the claim for the whole image.
+	 */
 
-> @@ -4627,6 +4794,154 @@ cpld_status_show(struct device *dev, struct device_attribute *attr,
->  }
->  static DEVICE_ATTR_ADMIN_RO(cpld_status);
+There is no upload path in this patch either.  Would it be tidier to move
+the include (and possibly those sentences) to the patch that introduces the
+flashing code?
+
+[ ... ]
+
+> @@ -4226,6 +4266,367 @@ static const struct ocp_attr_group art_timecard_groups[] = {
+>  	{ },
+>  };
 >  
 > +/*
-> + * Program the CPLD configuration flash from @fw and activate it.  Selected
-> + * by the "fw.cpld" flash component; the SPI flash keeps the default path.
-> + * Runs under cpld_lock with the i2c adapter lock held, so an EEPROM read
-> + * blocks for as long as programming takes.
+> + * adva_x1 TAP CPLD (Lattice LCMXO3LF-2100) helpers.
+> + *
+> + * The card has two I2C controllers; Linux registers only 0x00150000.
+> + * The i2c_bus_ctrl handshake re-routes what each is wired to:
+> + *
+> + *   grant 0:  0x150000 -> EEPROMs     0x120000 -> TMC or M.2, MB's choice
+> + *   grant 1:  0x150000 -> TMC bus     0x120000 -> M.2
+> + *
+> + * The PCA9548 at 0x74 and the CPLD at 0x40 behind its channel 0 are on the
+> + * TMC bus, reachable only while the grant is held.  The EEPROMs are not
+> + * behind the adapter for that window, so a CPLD operation holds cpld_lock
+> + * and the adapter lock to keep the EEPROM and nvmem paths off it.
 > + */
-> +static int adva_x1_cpld_flash(struct ptp_ocp *bp, struct devlink *devlink,
-> +			      const struct firmware *fw,
-> +			      struct netlink_ext_ack *extack)
-> +{
-> +	size_t offset;
-> +	int err;
-> +	u32 st;
 > +
-> +	if (!fw->size || fw->size % CPLD_PAGE_SIZE) {
-> +		NL_SET_ERR_MSG_MOD(extack,
-> +				   "image must be a whole number of 16-byte pages");
-> +		return -EINVAL;
+> +#define ADVA_MUX_ADDR     0x74
+> +#define ADVA_CPLD_ADDR    0x40
+> +#define ADVA_MUX_CHANNEL  0
+> +
+> +/* Longest command or reply; bounds each half of the per-claim scratch. */
+> +#define ADVA_CPLD_XFER_MAX 32
+> +
+> +#define MBLAZE_REQUEST    0x0000aaaaU
+> +#define MBLAZE_GRANTED    0x5555aaaaU
+> +#define MBLAZE_RELEASE    0x55550000U
+> +#define MBLAZE_RETRIES    200
+> +#define MBLAZE_RETRY_US   10000
+
+[ ... ]
+
+> +/* Hand the segment back, and wait for the firmware to drop the grant before
+> + * the caller unlocks the adapter: a transfer queued behind us would
+> + * otherwise be clocked out while the controller is still on the TMC bus,
+> + * which is what holding the adapter lock across the grant exists to stop.
+> + */
+> +static void adva_x1_mblaze_release(struct ptp_ocp *bp)
+> +{
+> +	int i;
+> +
+> +	if (!bp->pps_select)
+> +		return;
+> +
+> +	iowrite32(MBLAZE_RELEASE, &bp->pps_select->i2c_bus_ctrl);
+> +	/* Flush the posted write, as the acquire path does. */
+> +	ioread32(&bp->pps_select->i2c_bus_ctrl);
+> +
+> +	for (i = 0; i < MBLAZE_RETRIES; i++) {
+> +		if (ioread32(&bp->pps_select->i2c_bus_ctrl) != MBLAZE_GRANTED)
+> +			return;
+> +		usleep_range(MBLAZE_RETRY_US, MBLAZE_RETRY_US + 1000);
 > +	}
 
 [Severity: Medium]
-Should there also be an upper bound here, and a cross-check against the
-cached IDCODE?  Nothing limits fw->size to the configuration-flash capacity
-of the part, and CPLD_CMD_RESET_ADDR is issued only once before the loop, so
-the auto-incrementing ISP address pointer walks past the sector that ERASE
-(operand 0x04) cleared when the image is oversized or of the wrong density.
+Can this loop ever iterate more than once?
 
-The same missing bound makes the duration of the operation caller-chosen.
-The programming loop runs fw->size / 16 iterations, each an I2C transfer plus
-a sleeping status poll, with no fatal_signal_pending() or other cancellation
-point, while both bp->cpld_lock and the root adapter lock taken by
-adva_x1_bus_claim() are held:
+The three magic values look like a host-owned low half (0xaaaa = request) and
+a firmware-owned high half (0x5555 = grant):
 
-	i2c_lock_bus(adap, I2C_LOCK_ROOT_ADAPTER);
+	MBLAZE_REQUEST    0x0000aaaa
+	MBLAZE_GRANTED    0x5555aaaa
+	MBLAZE_RELEASE    0x55550000
 
-so ptp_ocp_read_eeprom() and cpld_status_show() are blocked for the whole
-time.  Would a size cap derived from the IDCODE plus a bail-out on a fatal
-signal bound both cases?
+adva_x1_mblaze_acquire() writes 0x0000aaaa and waits for the composite
+0x5555aaaa, so the value read back includes the request bits the host itself
+wrote.
+
+If the readback here behaves the same way, then writing 0x55550000 clears the
+low half, the very first ioread32() returns something other than 0x5555aaaa,
+and adva_x1_mblaze_release() returns straight away - even while the firmware
+still has the controller wired to the TMC bus.  The dev_warn() below would
+then be unreachable.
+
+Should the predicate look only at the firmware-owned field, for example
+waiting for (val & 0xffff0000) == 0, rather than comparing against a value
+that contains the host's own request bits?
+
+Or is i2c_bus_ctrl a write-only mailbox whose readback returns firmware state
+alone?  If so it would be worth saying that in the comment, since the
+guarantee stated in the changelog ("The hand-back waits for the firmware to
+drop the grant before the adapter lock is released") rests entirely on this
+loop.
+
+> +
+> +	dev_warn(&bp->pdev->dev, "TMC bus still granted after release\n");
+> +}
 
 [ ... ]
 
-> +	devlink_flash_update_status_notify(devlink, "Erasing",
-> +					   ADVA_CPLD_COMPONENT, 0, 0);
-> +	err = adva_x1_cpld_write(bp, CPLD_CMD_ERASE);
-> +	if (!err)
-> +		err = adva_x1_cpld_wait_ready(bp, CPLD_ERASE_MS);
-> +	if (err)
-> +		goto exit_config;
+> +/* Route the host controller back to the EEPROMs and release the adapter.
+> + * Safe after a failed claim: it also clears a request that was never granted.
+> + */
+> +static void adva_x1_bus_release(struct ptp_ocp *bp)
+> +{
+> +	struct i2c_adapter *adap = bp->cpld_adap;
+> +
+> +	if (!adap)
+> +		return;
+> +
+> +	adva_x1_mblaze_release(bp);
+> +	bp->cpld_adap = NULL;
+> +	kfree(bp->cpld_buf);
+> +	bp->cpld_buf = NULL;
+> +	i2c_unlock_bus(adap, I2C_LOCK_ROOT_ADAPTER);
+> +	i2c_put_adapter(adap);
+> +}
 
 [Severity: Medium]
-Where does the new USERCODE get programmed?  The command table added by this
-patch has no ISC_PROGRAM_USERCODE (0xC2), and the sequence goes EN_CFG_TP ->
-ERASE {0x0e,0x04,0x00,0x00} -> RESET_ADDR -> page writes -> SET_DONE ->
-REFRESH.
+When the hand-back times out, adva_x1_mblaze_release() only logs "TMC bus
+still granted after release" and returns void, so adva_x1_bus_release() has
+no way to learn about it and drops i2c_unlock_bus() / i2c_put_adapter()
+anyway.
 
-On MachXO2/MachXO3 the USERCODE lives in the configuration flash sector that
-the ERASE CFG bit wipes, and a raw page bitstream fed to LSC_PROG_INCR_NV
-does not carry it (Diamond programs it from the .jed UH field with the
-dedicated command).  If that holds for this part, then after a successful
-update the worker re-reads an erased USERCODE and
+What happens to the next transfer on that adapter if the controller is still
+routed to the TMC segment?  ptp_ocp_read_eeprom() is reachable from the
+unprivileged DEVLINK_CMD_INFO_GET path:
 
-	err = devlink_info_version_running_put_ext(req, "fw.cpld", buf,
-						   ver_type);
+	if (!bp->has_eeprom_data) {
+		ptp_ocp_read_eeprom(bp);
 
-reports the erased pattern as the running version, which contradicts the
-documented meaning of fw.cpld ("USERCODE of the image programmed into the
-TAP CPLD").  I could not confirm the MachXO3 USERCODE location from the tree
-- note that machxo2-spi.c likewise never programs one - so this may be worth
-checking against the datasheet.  Should the flow program the USERCODE before
-SET_DONE, or should the documentation stop presenting it as an image
-identifier?
+and also from serialnum_show() and the at24 / nvmem sysfs files.  Since an
+at24 read starts with an address-byte write to 0x50 or 0x58, this would not
+just return TMC data as EEPROM content but also clock writes at whatever sits
+at those addresses on the TMC segment.
+
+Would it make sense for adva_x1_mblaze_release() to return an error and for
+adva_x1_bus_release() to keep the adapter locked (or otherwise stop using it)
+when the grant was never dropped?
 
 [ ... ]
 
-> +	/* The image on the part changed, so the cached USERCODE has too. */
-> +	WRITE_ONCE(bp->cpld_id, 0);
-> +	WRITE_ONCE(bp->cpld_id_tried, false);
-> +	bp->cpld_id_attempts = 0;
+> +/*
+> + * Cache the adapter the CPLD hangs off.  ptp_ocp_i2c_notifier_call() misses
+> + * it when the i2c controller driver is already loaded: the adapter is then
+> + * added from inside platform_device_register(), before bp->i2c_ctrl is set.
+> + * Only direct children are searched, so a mux adapter cannot match.
+> + */
+> +static void adva_x1_cache_i2c_adap(struct ptp_ocp *bp)
+> +{
+> +	struct device *child;
 > +
-> +exit_config:
-> +	adva_x1_cpld_exit_config(bp);
-> +deselect:
+> +	if (!bp->has_cpld || !bp->i2c_ctrl ||
+> +	    READ_ONCE(bp->cpld_i2c_adap_nr) >= 0)
+> +		return;
+> +
+> +	child = device_find_child(&bp->i2c_ctrl->dev, NULL,
+> +				  adva_x1_i2c_adap_match);
+> +	if (!child)
+> +		return;
+> +
+> +	WRITE_ONCE(bp->cpld_i2c_adap_nr, i2c_verify_adapter(child)->nr);
+> +	put_device(child);
+> +}
+
+[Severity: Medium]
+bp->cpld_i2c_adap_nr now has two unlocked writers doing check-then-act:
+this function from probe, and ptp_ocp_i2c_notifier_call().  Can both miss?
+
+device_add() emits the notification before linking the device to its parent:
+
+drivers/base/core.c:device_add() {
+	...
+	bus_notify(dev, BUS_NOTIFY_ADD_DEVICE);
+	...
+	if (parent)
+		klist_add_tail(&dev->p->knode_parent,
+			       &parent->p->klist_children);
+	...
+}
+
+and bp->i2c_ctrl is only assigned after platform_device_register() returns.
+So if the adapter's device_add() is in flight on another thread
+(asynchronous probing via driver_async_probe= or the modprobe async_probe
+parameter), the notifier skips its store because bp->i2c_ctrl is still NULL,
+while device_find_child(&bp->i2c_ctrl->dev, ...) here does not see the
+not-yet-linked adapter.
+
+Nothing re-runs adva_x1_cache_i2c_adap(), and ptp_ocp_sync_work() gates on
+
+	READ_ONCE(bp->cpld_i2c_adap_nr) >= 0
+
+so cpld_i2c_adap_nr would stay -1 for the lifetime of the device: cpld.id
+never reported, cpld_status returning -ENODEV.
+
+The reverse interleaving looks possible too - this function publishing a
+number after a BUS_NOTIFY_DEL_DEVICE has already set it to -1 - in which case
+the stale number makes adva_x1_bus_claim() fail its parent re-check ten times
+and latch cpld_id_tried.
+
+READ_ONCE()/WRITE_ONCE() stop tearing but do not make the test and the store
+atomic here.  Would serializing both writers under cpld_lock, or retrying the
+lookup from the worker instead of only once at probe, close this?
+
+> +
+> +/*
+> + * Claim the TMC bus.  The adapter lock is held across the handshake to keep
+> + * the EEPROM, nvmem and at24 paths off the controller while it is routed
+> + * away from the EEPROMs; an EEPROM read blocks until the claim is dropped.
+> + */
+> +static int adva_x1_bus_claim(struct ptp_ocp *bp)
+
+[ ... ]
+
+> +/* Select a mux channel, or deselect all with ch < 0 - the power-on state.
+> + * The mux is on the TMC bus, so what it is left set to never affects the
+> + * EEPROM paths.
+> + */
+> +static int adva_x1_mux_select(struct ptp_ocp *bp, int ch)
+> +{
+> +	u8 val = (ch >= 0) ? BIT(ch) : 0;
+> +
+> +	return adva_x1_i2c_xfer(bp, ADVA_MUX_ADDR, val, NULL, 0, NULL, 0);
+> +}
+
+[ ... ]
+
+> +static int adva_x1_cpld_read_id(struct ptp_ocp *bp)
+> +{
+> +	u8 data[4];
+> +	int ret;
+> +
+> +	if (!mutex_trylock(&bp->cpld_lock))
+> +		return -EBUSY;
+> +
+> +	ret = adva_x1_bus_claim(bp);
+> +	if (ret)
+> +		goto out;
+> +	ret = adva_x1_mux_select(bp, ADVA_MUX_CHANNEL);
+> +	if (ret)
+> +		goto release;
+> +	ret = adva_x1_cpld_cmd_read(bp, CPLD_CMD_READ_ID, data, 4);
+> +	if (!ret)
+> +		WRITE_ONCE(bp->cpld_id, get_unaligned_be32(data));
 > +	adva_x1_mux_select(bp, -1);
 > +release:
 > +	adva_x1_bus_release(bp);
-> +unlock:
+
+[Severity: Low]
+When adva_x1_mux_select(bp, ADVA_MUX_CHANNEL) fails, the goto release jumps
+past the matching adva_x1_mux_select(bp, -1), so the PCA9548 at 0x74 is
+handed back to the MicroBlaze with channel 0 possibly still enabled.  An I2C
+transfer can be reported as failed after the mux control byte was already
+acknowledged (controller timeout or arbitration handling), so a non-zero
+return does not prove the register was not written.
+
+The comment on adva_x1_mux_select() describes deselect-all as the state the
+driver restores, so should the select-failure path deselect as well?
+
+On the success path the return value of adva_x1_mux_select(bp, -1) is
+discarded, so a failed deselect also leaves channel 0 open with no
+indication.  cpld_status_show() has the same two paths.
+
+> +out:
 > +	mutex_unlock(&bp->cpld_lock);
+> +	if (ret)
+> +		dev_dbg(&bp->pdev->dev,
+> +			"CPLD device ID unavailable: %d\n", ret);
+> +
+> +	return ret;
+> +}
+> +
+> +/* cpld_status - show the flags set in the TAP CPLD status register. */
+> +static ssize_t
+> +cpld_status_show(struct device *dev, struct device_attribute *attr,
+> +		 char *buf)
+> +{
 
-[Severity: Medium]
-Does this leave stale values published on the failure paths?  The
-invalidation sits after the post-REFRESH status check, so every error from
-CPLD_CMD_ERASE onwards jumps to exit_config or deselect and skips it, while
-the erase has already cleared the configuration sector or REFRESH has
-already swapped the running image.
+[ ... ]
 
-ptp_ocp_devlink_info_get() then keeps reporting the pre-flash IDCODE as the
-fixed cpld.id and the pre-flash USERCODE as the running fw.cpld version, and
-because cpld_id_tried is still true, ptp_ocp_sync_work() (gated on
-!cpld_id_tried) never refreshes them:
+> +	ret = adva_x1_bus_claim(bp);
+> +	if (ret)
+> +		goto out;
+> +	ret = adva_x1_mux_select(bp, ADVA_MUX_CHANNEL);
+> +	if (ret)
+> +		goto release;
+> +	ret = adva_x1_cpld_read_status(bp, &st);
+> +	adva_x1_mux_select(bp, -1);
+> +release:
+> +	adva_x1_bus_release(bp);
 
-	if (bp->has_cpld && !READ_ONCE(bp->cpld_id_tried) &&
+[ ... ]
 
-so the stale pair is published until unbind/rebind.  Would invalidating
-before ERASE, and unconditionally once REFRESH may have been accepted, be
-more accurate?
+> @@ -5052,6 +5455,20 @@ ptp_ocp_sync_work(struct work_struct *work)
+>  
+>  	bp->sync = sync;
+>  
+> +	/* The adapter can appear after probe, so read the ID from here once
+> +	 * it has.  A claim can fail transiently - the firmware may not grant
+> +	 * the segment straight after power-up - so retry a bounded number of
+> +	 * times.  -EBUSY means cpld_lock is held and does not count.
+> +	 */
+> +	if (bp->has_cpld && !READ_ONCE(bp->cpld_id_tried) &&
+> +	    READ_ONCE(bp->cpld_i2c_adap_nr) >= 0) {
+> +		int err = adva_x1_cpld_read_id(bp);
+> +
+> +		if (err != -EBUSY &&
+> +		    (!err || ++bp->cpld_id_attempts >= CPLD_ID_MAX_ATTEMPTS))
+> +			WRITE_ONCE(bp->cpld_id_tried, true);
+> +	}
+> +
+>  	queue_delayed_work(system_power_efficient_wq, &bp->sync_work, HZ);
+>  }
 
-[Severity: Medium]
-Separately, these three stores run under cpld_lock, but the matching updates
-in ptp_ocp_sync_work() do not - adva_x1_cpld_read_id() drops the mutex
-before returning:
+[ ... ]
 
-adva_x1_cpld_read_id()
-out:
-	mutex_unlock(&bp->cpld_lock);
-
-ptp_ocp_sync_work()
-	if (err != -EBUSY &&
-	    (!err || ++bp->cpld_id_attempts >= CPLD_ID_MAX_ATTEMPTS))
-		WRITE_ONCE(bp->cpld_id_tried, true);
-
-Can the worker's store then undo this invalidation?  If the worker is
-scheduled out between adva_x1_cpld_read_id() returning with a valid cpld_id
-and its WRITE_ONCE(cpld_id_tried, true), a flash can complete in between and
-reset the state, after which the worker's store leaves cpld_id_tried true
-with cpld_id == 0.  The read is gated on !cpld_id_tried, so ID and USERCODE
-are never re-read, cpld.id and fw.cpld are permanently omitted from devlink
-dev info, and the core then refuses component fw.cpld until module reload.
-
-The unsynchronized pair also makes the non-atomic ++bp->cpld_id_attempts
-race with the plain bp->cpld_id_attempts = 0 store here.  Would moving the
-attempts/tried bookkeeping into adva_x1_cpld_read_id(), under cpld_lock,
-close both?
+> @@ -5227,11 +5656,21 @@ ptp_ocp_i2c_notifier_call(struct notifier_block *nb,
+>  
+>  found:
+>  	bp = dev_get_drvdata(dev);
+> -	if (add)
+> +	adap = i2c_verify_adapter(child);
+> +	if (add) {
+>  		ptp_ocp_symlink(bp, child, "i2c");
+> -	else
+> +		/* Only the card's own controller: a mux child added on it
+> +		 * reaches ptp_ocp through the same walk.  Numbers are
+> +		 * recycled, so the claim re-checks the parent itself.
+> +		 */
+> +		if (bp->i2c_ctrl && adap->dev.parent == &bp->i2c_ctrl->dev)
+> +			WRITE_ONCE(bp->cpld_i2c_adap_nr, adap->nr);
+> +	} else {
+> +		/* invalidate before free, but only for the cached adapter */
+> +		if (READ_ONCE(bp->cpld_i2c_adap_nr) == adap->nr)
+> +			WRITE_ONCE(bp->cpld_i2c_adap_nr, -1);
+>  		sysfs_remove_link(&bp->dev.kobj, "i2c");
+> -
+> +	}
+>  	return 0;
+>  }
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260914071531.11640-1-maimon.sagi%40gmail.com
