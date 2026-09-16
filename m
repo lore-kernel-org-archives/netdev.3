@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F4D3D6CC3
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 19:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8D24BF952
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 19:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789586149; cv=none; b=Oi5QsZ7GRRgvHrlEgszUmEgggLDahUuaT1ooJVLdwolrydUUK5BY3MtcjOj7L4Mw2o6UoB6oEICmq5hwjVy8SBdihBli4LQm2/HBBj118zCrA2PwfszzUqZYoQBEQyOHQdf31KVYt+7BOoF90I7Eek4m3dC7CJOl7/w1548wRsk=
+	t=1789586149; cv=none; b=Mg0dVSiNXm3wvzY5TMnm7quEEVGv5YNW1miRf7ilCZAC129KoQJfSiErvakVWaK/eO1qOs07OWuXruaSZQa2AEY/QHhNqRVUPTZWdRQpI8MLqbzt7ulAz5FSaiJWZk66apuz0WyU8Y7jCRMVY0/KTsW7lUep32VbUEbUXBQpS8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789586149; c=relaxed/simple;
-	bh=LEebwCTA8iUl0CJFIsTqsro5YxpwEBNblGdsuxuxbjE=;
+	bh=1ZxUiBnE1l5KQU6PoL3/8TvS0ltfVeafJkmwmcLaWoY=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SgoeqOWjL7/uElJOkKjvb/R1NguOI4pvYIEb82+ytBXVuMOR5sLKAhhaE+/3vRDgQBq/W0gAozkch5QlluBrAjG1r3Ve+kYv7TeV6f62CP48w/gv9K3Ezn52485089xlpJT6swtNVF83ygVa+rR119LqdOPfqgASgF1kmys/2lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=moOQRca6; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=EEHs3RTq3KlJEcjTIO2B/Ud7h7p5C76FdZqU+7ZHY2xajOJn4DcRd4KA5AuUZqhv/bopeG8f7q7Bpw5b3lKmvGDKlphkf608gFvYN3Q9IJAOK30drdVxPhrRV3K4SqNJ3iQ1q8Lm2PKP4jIKMEQBsJl1LX1xVv9Pk7AyzyepykY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HffiUD+/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="moOQRca6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D954C1F00899;
-	Wed, 16 Sep 2026 19:15:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HffiUD+/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD791F00898;
+	Wed, 16 Sep 2026 19:15:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789586123;
-	bh=UEKwG4nOZdMUECN3l1DU/s4JT+vIWDFLtqT7pE+LzAg=;
+	s=k20260515; t=1789586122;
+	bh=5H+QD7ikhP7UVYMkPN8E2wI6SPz4V9UfPgrZQuUccJA=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=moOQRca6xFolYBu10T6mSMoqwLTkJ17uUBECc9kZMRkmE8TzIQzjk+Zg1anuM/EOF
-	 Tcj4lzWF2OpooefTDi2oVRYsyRHBHXaToil13ot0UAm8Q4JokxGX1uGo1zRL+RWSoz
-	 yM0+Ar8+t/l+CwUFcEobKk/cgEmkHmWPcu00fuxe2ImCJvCH7nUsGOr72Z1cTfSf5s
-	 gUcjC2AXM87l6DQ8dhwkkynh0Gp74M+5jd77Bta0dovgVngvnvP1hp+slr0pTN0TpM
-	 U/j0jnlDEn6T9ze9YZ1EZbJk5jRnvmU3kcpVsHAjkqZsWDy6MjloQ/gIGWswH0YLbC
-	 Qnh2FGm0ncqKA==
-Subject: Re: [PATCH net-next v2 6/9] netlink: specs: devlink: populate
- multi-attr attrs for region read and line card
+	b=HffiUD+/KKPgCTPTaWTqgxqpXcgIpP3ewfwRyuYy4PwJmM7KY3RyS16+pctiRktC9
+	 OpM3RTcarD4J16woCyiTivSeCG3Ukdv1NTC7zHTvVTLEfkLmUwN7YoGXkdZxDC4ILb
+	 bWpVllqf89YFFKzgKDCm3q3cLkuZG5/epHwvTbF1/gn8kierJ2IyYEaLbStFogyOzq
+	 QtjKUKSmVbI1/gLowkSrZuOLnCpkQ8vQbEBAXcRrOatd3nXeIhgvfdUreVrLPmUndR
+	 No/jRcao3NzeoI45PTn3sWiJtFB+L6QtbjrZ68oShio+sTxdNB7ACcVShxLCPzw0Dm
+	 7+M6E+MT6RkmQ==
+Subject: Re: [PATCH net-next v2 4/9] netlink: specs: devlink: complete the
+ port function nest
 From: netdev-bot+sashiko@kernel.org
 To: kuba@kernel.org
 Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
  pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, jiri@resnulli.us,
  tariqt@nvidia.com, moshe@nvidia.com, donald.hunter@gmail.com
-Date: Wed, 16 Sep 2026 19:15:22 +0000
-Message-ID: <178958612241.22033.13388440378905861636@kernel.org>
-In-Reply-To: <20260915161341.1053476-7-kuba@kernel.org>
-References: <20260915161341.1053476-7-kuba@kernel.org>
+Date: Wed, 16 Sep 2026 19:15:21 +0000
+Message-ID: <178958612108.22033.8567015919160539222@kernel.org>
+In-Reply-To: <20260915161341.1053476-5-kuba@kernel.org>
+References: <20260915161341.1053476-5-kuba@kernel.org>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -47,169 +47,135 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 0 (1) · Low: 1 (1)
+Critical: 0 · High: 0 · Medium: 0 · Low: 2 (1)
 
-- [Low] The patch fixes a user-visible decoding defect but carries no
-  Fixes: tag.
+- [Low] Missing `Fixes:` tag on a user-visible uAPI-description fix.
+- [Low] The newly added `max-io-eqs` attribute in the `dl-port-function`
+  attribute set (Documentation/netlink/specs/devlink.yaml) carries no…
 
 Pre-existing issues:
-- [Medium] DEVLINK_ATTR_INDEX is specified as `type: uint`
-  (Documentation/netlink/specs/devlink.yaml:896-901) and the generated…
-- [Low] Residual instance of the same spec/codegen defect class in the
-  same file: the `dl-fmsg` fractional attribute set…
+- [Low] Concern (assessed as pre-existing and low impact): the `dl-
+  nested-devlink` nest now referenced by the new port-function `devlink`…
 
 --
 
-netlink: specs: devlink: populate multi-attr attrs for region read and line card
+netlink: specs: devlink: complete the port function nest
 
-This adds multi-attr: true to the region-snapshot, region-chunk and
-linecard-type entries in their fractional attribute sets, and expands the
-region-get and linecard-get request/reply attribute lists so the attributes
-the kernel actually emits are visible to the C code generator.
+The devlink spec's dl-port-function nest stopped at caps even though the
+kernel also emits DEVLINK_PORT_FN_ATTR_DEVLINK and
+DEVLINK_PORT_FN_ATTR_MAX_IO_EQS, so ynl could not decode port replies on
+mlx5 SFs and VFs.  This adds the two missing attributes to the spec and
+regenerates the devlink netlink policy.
 
-A few questions below.
+A couple of questions below.
 
-> netlink: specs: devlink: populate multi-attr attrs for region read and line card
->
-> Three attributes are emitted repeatedly inside their nest:
-> [ ... ]
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The commit message says:
+
+  Commit 5af3e3876d56 ("devlink: Support setting max_io_eqs") added the
+  uAPI value and the hand written policy but never touched the spec.
 
 [Severity: Low]
-Would a Fixes: tag be appropriate here?  The change looks like it repairs
-a userspace-visible decoding defect rather than only improving the spec
-text.  SpecAttr.is_multi defaults to False in
-tools/net/ynl/pyynl/lib/nlspec.py, and _rsp_add() in
-tools/net/ynl/pyynl/lib/ynl.py then overwrites earlier values:
+Since the offending commit is already identified, and the symptom is a hard
+decode failure in userspace rather than a cosmetic gap, would a Fixes: tag
+be appropriate here?
 
-    if not is_multi:
-        rsp[name] = decoded
+  Fixes: 5af3e3876d56 ("devlink: Support setting max_io_eqs")
 
-So before this patch ynl reported only the last DEVLINK_ATTR_REGION_CHUNK,
-the last DEVLINK_ATTR_REGION_SNAPSHOT and the last
-DEVLINK_ATTR_LINECARD_TYPE, meaning region reads and linecard
-supported-type lists came out truncated.
+devlink_nl_port_function_attrs_put() puts DEVLINK_PORT_FN_ATTR_MAX_IO_EQS
+on every port-get do and dump for affected hardware:
 
-git blame points at f2f9dd164db0 for the region-read op attribute list and
-68c84289bcc0 for the dl-region-snapshots / dl-region-chunks /
-dl-linecard-supported-types sets.  Without Fixes: tags, stable tooling has
-no way to work out which releases carry the broken spec.
+net/devlink/port.c:devlink_port_fn_max_io_eqs_fill() {
+	...
+	err = nla_put_u32(msg, DEVLINK_PORT_FN_ATTR_MAX_IO_EQS, max_io_eqs);
+	...
+}
+
+so ynl-based tooling aborts with the quoted "Space 'dl-port-function' has
+no attribute with value '6'" until this spec change lands.  Without a tag,
+backport tooling has nothing structured to key off.
 
 > diff --git a/Documentation/netlink/specs/devlink.yaml b/Documentation/netlink/specs/devlink.yaml
-> index f23466fb27f97..5c9c672497d44 100644
+> index 7ec52f81c3230..962789dfbfacf 100644
 > --- a/Documentation/netlink/specs/devlink.yaml
 > +++ b/Documentation/netlink/specs/devlink.yaml
-
-[ ... ]
-
-> @@ -1278,6 +1279,7 @@ attribute-sets:
->      attributes:
->        -
->          name: region-chunk
-> +        multi-attr: true
->  
->    -
->      name: dl-region-chunk
+> @@ -992,6 +992,14 @@ attribute-sets:
+>          type: bitfield32
+>          enum: port-fn-attr-cap
+>          enum-as-flags: true
+> +      -
+> +        name: devlink
+> +        type: nest
+> +        nested-attributes: dl-nested-devlink
+> +        doc: Handle of the peer devlink instance instantiated for this function.
+> +      -
+> +        name: max-io-eqs
+> +        type: u32
 
 [Severity: Low]
-This isn't a bug introduced by this patch, but is the dl-fmsg set a few
-lines further down in the same file affected by the same mismatch?  It
-declares fmsg-obj-nest-start, fmsg-pair-nest-start, fmsg-arr-nest-start,
-fmsg-nest-end and fmsg-obj-name with no multi-attr, while
-devlink_fmsg_prepare_skb() in net/devlink/health.c emits each of those
-repeatedly inside one DEVLINK_ATTR_FMSG nest:
+This isn't a bug, but the sibling devlink attribute added in the same hunk
+carries a doc: while max-io-eqs does not.  Could a doc: line be added
+stating what the value means, e.g. the maximum number of IO event queues
+configurable for the function?
 
-    fmsg_nlattr = nla_nest_start_noflag(skb, DEVLINK_ATTR_FMSG);
-    ...
-    list_for_each_entry(item, &fmsg->item_list, list) {
-    ...
-            case DEVLINK_ATTR_FMSG_OBJ_NAME:
-                    err = nla_put_string(skb, item->attrtype, (char *)&item->value);
+>  
+>    -
+>      name: dl-dpipe-tables
+> diff --git a/net/devlink/netlink_gen.c b/net/devlink/netlink_gen.c
+> index 30f01901b5877..17d1edcdb935e 100644
+> --- a/net/devlink/netlink_gen.c
+> +++ b/net/devlink/netlink_gen.c
+> @@ -46,17 +46,26 @@ devlink_attr_param_type_validate(const struct nlattr *attr,
+>  }
+>  
+>  /* Common nested types */
+> +const struct nla_policy devlink_dl_nested_devlink_nl_policy[DEVLINK_ATTR_INDEX + 1] = {
+> +	[DEVLINK_ATTR_BUS_NAME] = { .type = NLA_NUL_STRING, },
+> +	[DEVLINK_ATTR_DEV_NAME] = { .type = NLA_NUL_STRING, },
+> +	[DEVLINK_ATTR_INDEX] = NLA_POLICY_FULL_RANGE(NLA_UINT, &devlink_attr_index_range),
+> +	[DEVLINK_ATTR_NETNS_ID] = { .type = NLA_U32, },
+> +};
 
-dl-fmsg is reachable from the health-reporter-diagnose reply, so the same
-last-value-wins decoding applies there.
+[Severity: Low]
+This is a pre-existing typing mismatch and not something this patch
+introduces, but pulling dl-nested-devlink into the port function nest makes
+it visible to more spec-driven decoders.
 
-Note that the fix for fmsg cannot be the same one-line annotation:
-TypeMultiAttr._complex_member_type() in tools/net/ynl/pyynl/ynl_gen_c.py
-raises
-
-    raise Exception(f"Sub-type {self.attr['type']} not supported yet")
-
-for flag sub-types, so marking the four flag markers multi-attr would break
-C code generation.  Is a separate, larger modelling change for fmsg planned,
-or is it intentionally left out of scope given the commit message limits
-itself to "region read and line card"?
-
-[ ... ]
-
-> @@ -1971,7 +1974,7 @@ operations:
->          post: devlink-nl-post-doit
->          request:
->            value: 42
-> -          attributes: &region-id-attrs
-> +          attributes:
->              - bus-name
->              - dev-name
->              - index
-                 ^^^^^
-
-[Severity: Medium]
-This is a pre-existing issue and not something this patch introduces - the
-patch only re-enumerates index in the region-get and linecard-get lists -
-but while the index attribute is being written out explicitly here, is the
-declared width consistent with how the kernel reads it?
-
-The spec declares it as variable width:
+The spec declares netns-id as u32 in the root devlink attribute set:
 
       -
-        name: index
-        type: uint
-        doc: Unique devlink instance index.
-        checks:
-          max: u32-max
+        name: netns-id
+        type: u32
 
-and the generated policy is NLA_POLICY_FULL_RANGE(NLA_UINT, ...) for these
-ops.  validate_nla() accepts either width for NLA_UINT:
+while the kernel emits it signed:
 
-    case NLA_SINT:
-    case NLA_UINT:
-            if (attrlen != sizeof(u32) && attrlen != sizeof(u64)) {
+net/devlink/netlink.c:devlink_nl_put_nested_handle() {
+	...
+		if (nla_put_s32(msg, DEVLINK_ATTR_NETNS_ID, id))
+	...
+}
 
-so an 8-byte payload holding a value <= U32_MAX passes validation, since the
-range check itself uses nla_get_uint().
+and the value can be the negative sentinel:
 
-The two readers in net/devlink/netlink.c then disagree.
-devlink_nl_filter_alloc() does:
+net/core/net_namespace.c:peernet2id_alloc() {
+	...
+	if (!check_net(net))
+		return NETNSA_NSID_NOT_ASSIGNED;
+	...
+}
 
-    flt->devlink_index = nla_get_uint(attrs[DEVLINK_ATTR_INDEX]);
+Would ynl then render an unassigned namespace as 4294967295 rather than -1?
+Wire width and kernel-side length validation are identical for NLA_U32 and
+NLA_S32, so this looks like a display-only difference, but should the spec
+(and hence the generated policy) say sint/s32 here?
 
-while devlink_get_from_attrs_lock(), the pre_doit resolver used by these
-ops, does:
-
-    index = nla_get_u32(attrs[DEVLINK_ATTR_INDEX]);
-    devlink = devlinks_xa_lookup_get(net, index);
-
-On a big-endian kernel, wouldn't nla_get_u32() return the high half of an
-8-byte payload, i.e. 0 for any in-range value, so the request resolves
-devlink index 0 or returns -ENODEV instead of addressing the instance the
-caller asked for?
-
-> @@ -1979,7 +1982,15 @@ operations:
->          reply: &region-get-reply
->            value: 42
-> -          attributes: *region-id-attrs
-> +          attributes:
-> +            - bus-name
-> +            - dev-name
-> +            - index
-> +            - port-index
-> +            - region-name
-> +            - region-size
-> +            - region-max-snapshots
-> +            - region-snapshots
+>  const struct nla_policy devlink_dl_parent_dev_nl_policy[DEVLINK_ATTR_INDEX + 1] = {
+>  	[DEVLINK_ATTR_BUS_NAME] = { .type = NLA_NUL_STRING, },
+>  	[DEVLINK_ATTR_DEV_NAME] = { .type = NLA_NUL_STRING, },
+>  	[DEVLINK_ATTR_INDEX] = NLA_POLICY_FULL_RANGE(NLA_UINT, &devlink_attr_index_range),
+>  };
 
 [ ... ]
 
