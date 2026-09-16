@@ -1,51 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B17C7EEC3;
-	Wed, 16 Sep 2026 00:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B57261B9E;
+	Wed, 16 Sep 2026 00:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789518320; cv=none; b=Bjg0wf/zjc4Yx2nkh900lq8NGTguaGHehGYn+AcFAUPMSxUXwiBPSml1INEDr8E8974IZz7FUC1tKUkuRL2CEFRomJskmzBv4gjZM44Q06UYKqGzDeaJbTdKZ4KzP/gOaJN71iySwmDo/N3gGtm5ZCOTwwH1k0ss87U8gr7VwGY=
+	t=1789518467; cv=none; b=YFkF2JgfuZhq14D7D/97HfiBL60mXmySXB5N5vo/4OswK/0iR/YmHF4V8f44cLFjwBcjjY8lcIH1B80Pzlbxwur2uDEfzLNC7UrHbq2lgCjk+BblJWCXxK0vw6c1TrDCjGuJXQCTkpssrsTYhkA94ev9lbNnGevxMksesWTWefM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789518320; c=relaxed/simple;
-	bh=A0Let5NCg9d9Z9NVPwRMaZTpNOePHVeO3MMV1IFuGtE=;
+	s=arc-20240116; t=1789518467; c=relaxed/simple;
+	bh=zBHeSccDFFkxDFgM+LQwqGnqD0GJ/exIAj5s4pWJfMI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TZqvj3YAUP2wOUsxmmtl5nUz4iSuGIZo/GVV4TKEdoBYMDKMeTqBnuLs1yckh4VlwpKufOQFq+hpayBKAEaej+w5mdgUJVAi7NkCpKYfmLxZN3S+VUPcZhJgJgbL41OrE66vxJd1TzYNn4EyQFsfBMwDVrEwvkAuXWrxaNxNlIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WTI9RUBB; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=l/WOoy7ZmSITwledjXrl6/H0sb4gt75I9TFjrAIt23Ifgt6DIrUEKzEDDKtetAxgnN18ZPTHeXlXppt4AaFf0ZyfUfiRuMZ70+b6P8iKCPUhrNEsACXTLYZCw6QAc2CJUa1+cpGZMo7+7R5uR6ckMubl9sV0xegkZCWZzvJp8U0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lYt744jW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WTI9RUBB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A301F000FF;
-	Wed, 16 Sep 2026 00:25:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lYt744jW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2EC1F00893;
+	Wed, 16 Sep 2026 00:27:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789518319;
-	bh=oCoSEk/kdI6Jx/Hs/Ys/2xTpv2gnopuAEfd6oSTk8rU=;
+	s=k20260515; t=1789518466;
+	bh=LZVhOwbUIyk+nmeyfUkudCPhv2w7uxIapEjDJgnaAYs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=WTI9RUBBKTus/OejACddjmDt4WpWCJnxpQYbgneSXISSOjPXhkMi94mfL37NWPMvr
-	 1t4sJc02jmrYa86lVfMD2LosqN+Y3QDXzzN8U1nO8l1cWGW6hN/UOuJSa2Q/ECKp/n
-	 WMZJaNJYaxr4ZIeAZhpAvzsnsoe+56YtJ+Rnze8q+fJglyCZ2bIheyoKyoWQC9L0Rr
-	 KZyqPHzhPI9TtNVFpje8aUGKavG68sWrLd7ZnPhiO+CC1pDD0tASaiVQEN9ltvAr+/
-	 OEXwJjnDFzR56ZfPJs2PuRyTdgD9Jeew2GJVLtrV2ZWfclOk9B//LU0r5jG1e81iWJ
-	 61ujnb0tHDTvA==
-Date: Tue, 15 Sep 2026 17:25:18 -0700
+	b=lYt744jW6Ij05BMOv7YYa2wSwbwuP2gRHcMGj0ME7HHbUTF5ykuBuSU2Fx4zmudWw
+	 7180uvdP4nQebB0dgT9pFkFto2AEgCrF2B7OJkmmF9HBXKlm7+9yK+btZ3PEDm0Qw/
+	 OyjwdlZDEjW7i0srSJolTaxhuM2HLyFl87NJdH4Jih3rywJlaFAQQPxbODlRGrmdZF
+	 TEtDvdhS+5aCamlpK9tFV0L+gQJo68byN8c160pBRSMYNTrO5XioDLo9O1waSRBt8O
+	 8C6Z8OrAERMfaOVZ+So9ziN7x5sjwTYdiuAL0nFkOx6VhPzduRdTMSaIR9lfRlxceH
+	 82Zsu9IbYlriA==
+Date: Tue, 15 Sep 2026 17:27:44 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Srinivas Neeli <srinivas.neeli@amd.com>
-Cc: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Richard Cochran <richardcochran@gmail.com>,
- Michal Simek <michal.simek@amd.com>, "Sebastian Andrzej Siewior"
- <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, Steven
- Rostedt <rostedt@goodmis.org>, <netdev@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-arm-kernel@lists.infradead.org>, <linux-rt-devel@lists.linux.dev>,
- <neelisrinivas18@gmail.com>, <git@amd.com>
-Subject: Re: [PATCH net-next v2 6/8] net: xilinx: tsn: add the endpoint RX
- data path
-Message-ID: <20260915172518.09e66147@kernel.org>
-In-Reply-To: <20260909-patches_v2_external-v2-6-3a40babaff4c@amd.com>
-References: <20260909-patches_v2_external-v2-0-3a40babaff4c@amd.com>
-	<20260909-patches_v2_external-v2-6-3a40babaff4c@amd.com>
+To: Fan Wu <fanwu01@zju.edu.cn>
+Cc: netdev@vger.kernel.org, kys@microsoft.com, haiyangz@microsoft.com,
+ wei.liu@kernel.org, decui@microsoft.com, longli@microsoft.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, Simon Horman
+ <horms@kernel.org>, Song Li <songl@zju.edu.cn>
+Subject: Re: [PATCH net v3] net: mana: fix reset work race with device
+ removal
+Message-ID: <20260915172744.06c9521d@kernel.org>
+In-Reply-To: <20260909042529.652301-1-fanwu01@zju.edu.cn>
+References: <20260909042529.652301-1-fanwu01@zju.edu.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,25 +49,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 9 Sep 2026 00:49:54 +0530 Srinivas Neeli wrote:
-> +	guard(spinlock_bh)(&xchan->rx_lock);
+On Wed,  9 Sep 2026 04:25:29 +0000 Fan Wu wrote:
+> @@ -420,6 +414,8 @@ struct gdma_irq_context {
+>  enum gdma_context_flags {
+>  	GC_PROBE_SUCCEEDED	= 0,
+>  	GC_IN_SERVICE		= 1,
+> +	GC_REMOVING		= 2,
+> +	GC_SERVICE_DURING_PROBE	= 3,
+>  };
 
-Quoting documentation:
-
-  Using device-managed and cleanup.h constructs
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
-  Netdev remains skeptical about promises of all "auto-cleanup" APIs,
-  including even ``devm_`` helpers, historically. They are not the preferred
-  style of implementation, merely an acceptable one.
-  
-  Use of ``guard()`` is discouraged within any function longer than 20 lines,
-  ``scoped_guard()`` is considered more readable. Using normal lock/unlock is
-  still (weakly) preferred.
-  
-  Low level cleanup constructs (such as ``__free()``) can be used when building
-  APIs and helpers, especially scoped iterators. However, direct use of
-  ``__free()`` within networking core and drivers is discouraged.
-  Similar guidance applies to declaring variables mid-function.
-  
-See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#using-device-managed-and-cleanup-h-constructs
+Looks like AI isn't convinced by you fix.
+Locking is much better than state bits...
