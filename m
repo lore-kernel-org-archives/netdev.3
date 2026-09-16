@@ -1,161 +1,124 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067F3361965
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 04:11:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF43E352021
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 04:23:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789531867; cv=none; b=dP6ZhHeUKdf7IaTqsG62gBwrnyWHiaEBaix4/JDofYERrW46c0QtRbcs9N31CJj4/yEBkBSRa6j2mXpoQTSVeI3RwzcybvFcG21QbwG/Iavqi6+WMYkjQQCiLExLrEPiBVpjkOpH3KPYX0bInps1+Hs+IPpReyUxVknxCYiHVS4=
+	t=1789532618; cv=none; b=mq2DRSd1w+A63fC+JuzJsQEyNtFSnlgt7DDW9PDPYVlKtO7UzACr8jvrqY9R6JPYIckAhsZxbDOw9K8WV74z8cg3ghxWdB7eTeRD0YNX8gwYf/1HaMSTB5cdn736gvqdYI7ba9b83L0rpEoBHEePGwyZwxhgS2pxIJqZ+QxxQtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789531867; c=relaxed/simple;
-	bh=BG9eS0VX6qiKVgiD2TzOx/munym2UoldfB5y0hqmq+A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VnKhdiW/vB2uzOExNSFF+IqpgBqfcHQM7kfsij/J0XPb4Z5USkNqvrFNuKFDD6nkYhZlB9RdDEc9Y1tm2W6vWNUa+7hGV4tXnZKkG0lR4XxkalucRrB3VDY8eN127esUud2cKb5zvsWkH9w62OFxlszgZWTa3wO8jtt3QQ1VCXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=MFhDn59u; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
+	s=arc-20240116; t=1789532618; c=relaxed/simple;
+	bh=QZmwRyZaNMaBsYnngARNyVoFzF84rPmGiwG/pP0Feu8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=l4jbjaegYW71sZFkjyH7k+eyBUpUfXpHa2Ls8pZGxtpdyc7g3hS+8PAtQ/pPGQ/BltXsviBbLDQh4wVn09LdTj33yxmbTBWIxY+d8G8KoUjNoJ3+bOFLto4n077Cka2WPNefrQArbScdTq+yxV/1P2iWqLSz8oaQVHn8so4RRFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b=E0rx3YRr; arc=none smtp.client-ip=74.125.227.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="MFhDn59u"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2dd1dcdcf95so14444725ad.1
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 21:11:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=networkplumber-org.20251104.gappssmtp.com header.i=@networkplumber-org.20251104.gappssmtp.com header.b="E0rx3YRr"
+Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2d8fe517774so6065355ad.0
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 21:23:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1789531864; x=1790136664; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nFZ79naFkHGO8T/sa7Ej6UkWwoja78MVIsc91vCgw9k=;
-        b=MFhDn59uJJ3GWyBrovaJkAD7odCGpM8WUhl7YXjWeK4geIA0i6YYp/SSDfVPAdDXMC
-         07EbKtQzhZlTkzs40a5aiuqCG3qC6wx5K8A51EkYepsMPJillE4ytwWNlXbXO2LtiK/D
-         snlAtiEuyeF7+V94FFJ8ks3tYb6J7DeeVzkA737buGZy2TZuCQd8hrMYxXnQR05xzD+K
-         vQlWV613mm+XqeRXqlMcIkpOjywNUioI3wNpYgnPejjFvsQYpqnDPKkF1sVA/SeAHzBR
-         ZUcm8ynbT0eyIeHUdLFtn63D1as4nVkktdVyRKf17Ym6oFJuuQI3L0AM7Bt1Z4DLQ3HE
-         plsQ==
+        d=networkplumber-org.20251104.gappssmtp.com; s=20251104; t=1789532616; x=1790137416; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=EYABSkSS26EMkyxvyNh64zgwhUm5P/9St7X6gtjIBRo=;
+        b=E0rx3YRrgPqu4iyJuJF6lIkjWmS4AMQWCUExZocBYjqiELunDVJW3IG5NKrQX6p5Tl
+         QF/Z85qMudNRkzs2rjR4bf5cQBDyIwTDZaqtSTxkA10ivcYt/ipHTE4Ae2W/LbudMx6F
+         UVHKw+ZoFGh+FM293OlsAuOx1QvPEIclB5exFhAvNb45fBk2FTTA3TACdk4IeVus3hFp
+         Hgp4eangk/SCMAOS3Kzzln2XdCHAArx5+QRVfdwSKJhSGDHn1fldjfCPCVjg13g+tp1X
+         FcSSfKZmQINLJ4I4C83Pf5Jn7Rqn0fhdkOlYycAGi4sQ11fanSjkcNFFxoffpDtt/yAd
+         k7lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789531864; x=1790136664;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=nFZ79naFkHGO8T/sa7Ej6UkWwoja78MVIsc91vCgw9k=;
-        b=T5vEdhTUPuaqVXGwlu6iQNvGIp+NygeN4i1770OTDUWHEAeU72PNG1MLiJP4N3InFz
-         Z+LLQS0U14bqJ+d8BQXPkjRuyatSFN3iZLXNBP2N9yLpd6NIZhTaCCahq2y6pCrn9+A/
-         h3Hze6BJ70XJPTDqppM/pIM2uuvNsfnfAX2Em+sIWTEJsdeST82Dj1B6tH4fZI/5XFLy
-         lE5Tnam1fSRiEYna+Bxd8gGcrqN+Bjm+veOrtSwezne5/hVooj9nGJWD5wacy2jgMGjG
-         fGkEW9cgbbbVEbGdR5M7vvU26/bLhAK77xX8ogqlG5bQe6rX+aiSjJSSC4xt0CyuEp6p
-         wAOw==
-X-Forwarded-Encrypted: i=1; AKwUvByi4NmB6tAjtq1j7ZP2+eWvtUmgGN1Xk7GGlMbQwpuMVLMc5WP/ras/r3mPf6de3w6Y3sx7rPc=@vger.kernel.org
-X-Gm-Message-State: AFuF++np5F+uKnGoSZHNeZK83pJmltmglM+++UCteuoB2J0ZPwVi+9Sk
-	2aMZn228JKds2zt3YZD0bS7ENs2OAy4oLDD2xzpNgsk/rMHov4ZlxVl5hiuQzLhKJQ==
-X-Gm-Gg: AYBFou23PNc/88LZyUubGWx+43ny3DOITEOqbeb9oRcbtHqpVWqX/NQv8LXB2Cgz3KI
-	6KZNuGfok8w5g+foXjaT/okVZuwTM+dIiMMlsKIGExJxnWRE7K9gSOd6kmtxAGWhhjNQZT4Akwh
-	dXW44bc1mcL1Z7ZZXrh2tY/VOkqslNhqUYK9e22AYhYQuFIf2ROG09eFQJE7kV/R8/RgzgAlhkF
-	VJwTbjEhyU5TtEQi3Xgqe4iKHllGx0ZPVOtZAkp3Gwru/jAwtzC88gUVVC0PEODyEv9fVMczaRT
-	x3jqT71Ge1iFzP7Ep2XIeqXshO+sZ6CiK5CE+gtIo2GkpBznR1dROM9Rt6wFJ3Pq1L8ViVRjyGm
-	fsmh1ZlXytjAyu9U7jkaYwAXI29aoFGWRKnbpUVO6seYOgmVEqNTJkQeEr7Ifc5ZwvXz+rNqyUJ
-	ZZz1okxo7cOJkz/qhNnwOGGDe0FBNaMekm00/kn+1uswDdaxUMou/LAR7JGUoh0Bc+TPok3ycRk
-	lSXalJSj8xe6As4NwxU9dlrtSerY9B8znATlpVATRgF9eA+
-X-Received: by 2002:a17:902:e74f:b0:2d7:1858:1d96 with SMTP id d9443c01a7336-2dd764c14dfmr75730075ad.7.1789531864357;
-        Tue, 15 Sep 2026 21:11:04 -0700 (PDT)
-Received: from p1.. (209-147-138-4.nat.asu.edu. [209.147.138.4])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33bf5af4f0bsm4138749eec.24.2026.09.15.21.11.03
+        d=1e100.net; s=20260707; t=1789532616; x=1790137416;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=EYABSkSS26EMkyxvyNh64zgwhUm5P/9St7X6gtjIBRo=;
+        b=QjziPMLGGjDQalypQVNGuia3MRoRWuP2wjpJeevRmzDcVv0gpryLYgYUtJtc7Yd4wI
+         rDb8hM5Pn3DA3evFezO3+lWFyPEWUSxEXsKavDYOIAhNnXaboWdcAjIJfQx6XsHbvVeP
+         08JTo7B++B/fMFrh99DZA9SraZKfU4iF33zYuxso7L5G3YWD18fgdLQ6kNUIiCEeJJy0
+         FeSwe7UULY6VBEK9LoUbClnl/PgqUzJExsuhmBZUJLx1tUCvbQGRGKGERW39rdizEx8U
+         Cq1LOC24ko7DQm/I2qEdoZCxHOT5Bc956flmn+fBj+pOgBwxPhotq4ew5jjlwuOw3yfp
+         4Wkw==
+X-Gm-Message-State: AFuF++lSYGcxLeEjOJpvuy8L+urSoCoIRoKSN6sQ1K/v2onrKZVNlnfG
+	ntNpe6Snfc9BzVUAVZQYUOH4ItKDbgCxH9jNy8ZN8CGm8yIXQrDtVYl436EWMVZ+v/80kJwD5ni
+	EbOFf
+X-Gm-Gg: AYBFou0zdb94+fWP5vPXTwQftZk4LcKc4Q1kbyvIkJI8FsH2wHwwD35u2xLv87/xRXo
+	H2gZ0ENZ1LFL5yy1KbJUtQkXI4Rc2jekWMQb0rHxpUDAX8RiFmgm40nxgeSQcy7wIKTxmcdZhkm
+	xhsbKrPKF8VzxaN2p4eb/A+EpMWm+SlmE7zr4eKuWjk5Gfybu+uT0ZyCwSp73IfqX/QdDJiV4zq
+	DuLmgZzgJm6zWOyIxwFeIf35+isq1w7clew1KPQWDbwYLFOqUxlSdlYNMXz9FFIwRBkDD78R8Qz
+	r4xOt9yVvEvkGRAmSttCnsoDsoMsX2ZW2ze3t9ET1bG3hUFdeYrHf6iuyjCJRObQceD4m5u3Yah
+	FKCJCy69Ok5e0FLBN1gI2aAreBfhMtftc+TFBbX5V5o7jC95t188dIEVtj5T8KXUOfUNbgzCuFS
+	32zcTR8loz1s/h/oyEZSeUnN061DYjUHOpqJbqwmSNS9ig15RP6ozl+4i1Yix4/rJGAkO6DAL45
+	O6CMfOMNbeK0ECZHdPR/OhFG5T+4vE3Wl/LpmTY
+X-Received: by 2002:a17:902:ce81:b0:2dd:64:12ac with SMTP id d9443c01a7336-2dd8e632d3bmr19476045ad.11.1789532615894;
+        Tue, 15 Sep 2026 21:23:35 -0700 (PDT)
+Received: from phoenix.local (204-195-96-226.wavecable.com. [204.195.96.226])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd89f2d5ffsm4411535ad.81.2026.09.15.21.23.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 21:11:03 -0700 (PDT)
-From: Xiang Mei <xmei5@asu.edu>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	co+ff13a35f73bb7891@bugs.sh,
-	stable@vger.kernel.org,
-	Xiang Mei <xmei5@asu.edu>
-Subject: [PATCH net] bpf: lwt: clear stale IP control block after pushing an encap header
-Date: Tue, 15 Sep 2026 21:11:02 -0700
-Message-ID: <20260916041102.1914333-1-xmei5@asu.edu>
-X-Mailer: git-send-email 2.43.0
+        Tue, 15 Sep 2026 21:23:35 -0700 (PDT)
+Date: Tue, 15 Sep 2026 21:23:29 -0700
+From: Stephen Hemminger <stephen@networkplumber.org>
+To: Harshith Hari <harshithhari000111@gmail.com>
+Cc: netdev@vger.kernel.org
+Subject: Re: [PATCH iproute2 v2] ss: add -P/--process-age option to display
+ process runtime
+Message-ID: <20260915212329.0d4f31f7@phoenix.local>
+In-Reply-To: <20260915213100.77691-1-harshithhari000111@gmail.com>
+References: <20260915213100.77691-1-harshithhari000111@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-bpf_lwt_push_ip_encap() prepends an encapsulation header and calls
-skb_reset_network_header(), but leaves the IP control block describing the
-inner header. Its offsets are relative to the network header, so they now
-point into the encapsulated packet.
+On Wed, 16 Sep 2026 03:01:00 +0530
+Harshith Hari <harshithhari000111@gmail.com> wrote:
 
-On an ingress lwt-bpf encap route a forwarded packet carrying a Record
-Route option then reaches __ip_options_echo() with a stale opt->rr. It
-takes the option length from the packet and copies up to 255 bytes into the
-fixed-size option storage on the __icmp_send() stack. ip_forward_options()
-writes at a packet-controlled offset for the same reason.
+> diff --git a/misc/ss.c b/misc/ss.c
+> index 6c32455d..6058ca29 100644
+> --- a/misc/ss.c
+> +++ b/misc/ss.c
+> @@ -56,58 +56,58 @@ static int show_process_age;
+>  
+>  static void print_process_age(pid_t pid)
+>  {
+> -char path[64];
+> -FILE *f;
+> -unsigned long long starttime;
+> -double uptime = 0.0;
+> -long clock_ticks = sysconf(_SC_CLK_TCK);
+> -
+> -f = fopen("/proc/uptime", "r");
+> -if (!f)
+> -return;
+> -
+> -if (fscanf(f, "%lf", &uptime) != 1) {
+> -fclose(f);
+> -return;
+> -}
+> -fclose(f);
+> +	char path[64];
+> +	FILE *f;
+> +	unsigned long long starttime;
+> +	double uptime = 0.0;
+> +	long clock_ticks = sysconf(_SC_CLK_TCK);
+> +
+> +	f = fopen("/proc/uptime", "r");
+> +	if (!f)
+> +		return;
+>  
 
-Clear the stale state once the outer header is in place, as the tunnel
-encapsulators do and as seg6_local.c was taught to do in commit
-f967455fb2a5 ("seg6: reset IP6CB after IPv6 decapsulation") and commit
-44930446dde4 ("ipv6: seg6: clear IPv4 control block on IPIP
-decapsulation").
+You are not starting with existing upstream source!
+There is no code with /proc/uptime in upstream version of misc/ss.c
 
-  BUG: KASAN: stack-out-of-bounds in __ip_options_echo (net/ipv4/ip_options.c:96)
-  Write of size 255 at addr ffff8880bee08930 by task exploit/150
+Also the point of ss is to print info about sockets, not to
+be a replacement for ps.
 
-  Call Trace:
-   <IRQ>
-   __asan_memcpy (mm/kasan/shadow.c:106)
-   __ip_options_echo (net/ipv4/ip_options.c:96)
-   __icmp_send (net/ipv4/icmp.c:949)
-   ip_forward (./include/net/icmp.h:43 net/ipv4/ip_forward.c:176)
-   lwtunnel_input (net/core/lwtunnel.c:465)
-   ip_rcv (net/ipv4/ip_input.c:612)
-   __netif_receive_skb_one_core (net/core/dev.c:6264)
-   process_backlog (net/core/dev.c:6728)
-   __napi_poll (net/core/dev.c:7787)
-   net_rx_action (net/core/dev.c:8007)
-   handle_softirqs (kernel/softirq.c:645)
-   do_softirq.part.0 (kernel/softirq.c:546)
-   </IRQ>
-   __local_bh_enable_ip (kernel/softirq.c:473)
-   __dev_queue_xmit (net/core/dev.c:4961)
-   packet_sendmsg (net/packet/af_packet.c:3143)
-   __sys_sendto (net/socket.c:2281)
-   __x64_sys_sendto (net/socket.c:2288)
-   do_syscall_64 (arch/x86/entry/syscall_64.c:84)
-   entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
-
-Cc: stable@vger.kernel.org
-Fixes: 52f278774e79 ("bpf: implement BPF_LWT_ENCAP_IP mode in bpf_lwt_push_encap")
-Reported-by: <co+ff13a35f73bb7891@bugs.sh>
-Assisted-by: LLM
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
----
- net/core/lwt_bpf.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/net/core/lwt_bpf.c b/net/core/lwt_bpf.c
-index da49364ec63d..17be476b5717 100644
---- a/net/core/lwt_bpf.c
-+++ b/net/core/lwt_bpf.c
-@@ -649,6 +649,18 @@ int bpf_lwt_push_ip_encap(struct sk_buff *skb, void *hdr, u32 len, bool ingress)
- 	if (ingress)
- 		skb_postpush_rcsum(skb, iph, len);
- 	skb_reset_network_header(skb);
-+	if (ipv4) {
-+		memset(&(IPCB(skb)->opt), 0, sizeof(IPCB(skb)->opt));
-+	} else {
-+		bool l3slave = ipv6_l3mdev_skb(IP6CB(skb)->flags);
-+		int iif = IP6CB(skb)->iif;
-+
-+		memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
-+		IP6CB(skb)->iif = iif;
-+		IP6CB(skb)->nhoff = offsetof(struct ipv6hdr, nexthdr);
-+		if (l3slave)
-+			IP6CB(skb)->flags |= IP6SKB_L3SLAVE;
-+	}
- 	if (is_udp_tunnel) {
- 		size_t iph_sz = ipv4 ? iph->ihl * 4 : sizeof(struct ipv6hdr);
- 
--- 
-2.43.0
 
