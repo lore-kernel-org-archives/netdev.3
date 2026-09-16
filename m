@@ -1,85 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20DB24534AC
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 13:54:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C28503BD8;
+	Wed, 16 Sep 2026 13:54:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789566848; cv=none; b=erojXiQWySIt4BOiWCsAg0MDRLJrKQMwEi/CR6J4tFTZWY47Ee+u9rm4MetNjz29Fvc8m3eDyEk3+imK/9cguvDhCLbn1FA8cKeQ6IiqqzUB1AEYIoaqSxsZcAA+y4qbOj4cwu6/5HGVh2wL/85C9CyLyiWp1ue5BJqOcKFJFjs=
+	t=1789566851; cv=none; b=JBHSDI030bQGRnSbaoSKTV0hetNXgIZe61pu7tlU6+IC80pNFEx3rn8pyek/drXCoejhB9vy9+EyuOlO7OkJAYsOhyJlXTVeWbXtAjVN8V4wT3k8NqEkIrJoZ3YOWabC/jLbRk7cFu5ftPh02dSWFuX90+tLN7O11HKGNoC7thM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789566848; c=relaxed/simple;
-	bh=xXPMzTivDyJyiGQ/g83hUg4bBoMGbHu/Z5c2HLCvhR0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rkrOmT/W+vRF8TLH3MSsXq8EhKqdps2FDfiwW5AltdxuaHVQh89uMcwZ4BIBgIT6wT0yy1vwu0N2RkrJGV9KNXeCmZgXe0zP4wtsSwfXsJ42TRTFQONTvqPXoPRgx+FytHqJmMnm0MMsafzqpJ/TDF796xxVMaitWqZUJZveRBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y4YJsVY3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789566851; c=relaxed/simple;
+	bh=/9MCjfhdugiDF6wauqRFfzV/HQVMKnX3+zLGfKdbJXI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lf4H4iOEmqiQK4zYn6w2dZYGW5PbOFIRnElLM6xaSa5Q/CqNIk0b2L5GbkFbZQfxg2cpsZokj4ybhrCwUuS+EH8khHULY/B23q0kqMIEIMz0//hwk8ze7vNmICAdkoObbgpq0rOHgmkfhm2whDEJmNWc7VNgcANhB41a2hA4Lzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=iuIxhXR6; arc=none smtp.client-ip=220.197.31.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y4YJsVY3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB7B1F000FF;
-	Wed, 16 Sep 2026 13:54:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789566842;
-	bh=T9gdB9pKTrrQAGFKq8sKZdE4OBE6MPiU4pD/VQNGsl0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Y4YJsVY3AfN3egOYzaErN6dchwdXROQmTBk6VUcq1ev0N6iulsL0ROP3/rLHZgmYd
-	 oRa3iFjuhfKHT9QrNTulS1CLCezu7Mf+wrQyft1zu5sMQXnyr+gpQCtaMcLnuwrGto
-	 0S3aQ1V2cur/qTlvePBMXZ/4/EA5/DKZHy7YicY+A3JyJplpeNPcnAFS5Jj1rv+DKp
-	 hMWiE2ORab3lGeg3PXQ0fC7H8w/jpG5eDB1ui4eFsqZLnzYC0fmQ5J3x0VthTqv3n4
-	 ITFl6NsPeqT0u9fMCrja3qjULZuDbST+XA6bxqjQnwfC5VorGcclIfPgofNUXMrbo7
-	 DYdlBLDCn+Tog==
-Date: Wed, 16 Sep 2026 14:53:58 +0100
-From: Simon Horman <horms@kernel.org>
-To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH iwl-net v2] ice: fix LLDP AQ filter fallback not working
- on E82x and E830 hardware
-Message-ID: <20260916135358.GJ51261@horms.kernel.org>
-References: <20260915125525.3975646-1-aleksandr.loktionov@intel.com>
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="iuIxhXR6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Ux
+	HOqLqY0ioEbW+y+gjnHEMXBft+GOWtp81bJHPmr4o=; b=iuIxhXR6uz/47dNXIc
+	6sqlj+Gunny0Wz7yUfYi9IUA8JJsqES5Ozihy/KBOv2HJkO4BbFe3Qyvs+U6j27C
+	jJ1Z6hqIgQS/+XjchYDJpv0LMKw8Za1AXoTGkMGHJuVJDlMAnCDKQGUYwgpz/Grm
+	YRZmFU7cqwslpi4zZHgrBAhAo=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3V803n6pqYsHmBQ--.44918S2;
+	Wed, 16 Sep 2026 21:52:56 +0800 (CST)
+From: Linkui Xiao <xiaolinkui@126.com>
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Linkui Xiao <xiaolinkui@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [Intel-wired-lan] [PATCH net] igb: fix uninitialized first word in igb_set_eeprom()
+Date: Wed, 16 Sep 2026 21:52:54 +0800
+Message-Id: <20260916135254.1016847-1-xiaolinkui@126.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260915125525.3975646-1-aleksandr.loktionov@intel.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3V803n6pqYsHmBQ--.44918S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Kw47KrW7ArW7CF4UCFy8Xwb_yoW8WF18pF
+	WUCasa93y8XrnrWa1kGa18Aa4Dt3W8trWYgF10k3yF9ws8A393Zry2q3yUGryYkrZ5uFsI
+	kFs7Cwn8A3WDXaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07ULFxUUUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlRg7EmqqnzjGbgAA3r
 
-On Tue, Sep 15, 2026 at 02:55:25PM +0200, Aleksandr Loktionov wrote:
-> Commit 4d5a1c4e6d49 ("ice: do not add LLDP-specific filter if not
-> necessary") restructured ice_vsi_cfg_sw_lldp() to first attempt a
-> generic ethernet Rx filter and, on failure, fall back to the specialized
-> LLDP filter control AQ command (0x0A0A) via ice_lldp_fltr_add_remove().
-> This fallback is gated by ice_fw_supports_lldp_fltr_ctrl(), which only
-> accepted E810, causing two distinct omissions.
-> 
-> E82x (ICE_MAC_GENERIC, e.g. E822/E823) support the same LLDP filter
-> control AQ command with the same minimum firmware API version as E810
-> (>= 1.7.1). On E82x systems where the generic ethernet LLDP Rx filter
-> cannot be added, the AQ fallback silently returns -EOPNOTSUPP and the
-> port is left with no LLDP Rx filter.
-> 
-> E830 has been supported since kernel 6.9 and implements the same AQ
-> command but requires a higher minimum API version (>= 1.7.11). Starting
-> with NVM 1.2 / FW 7.9.1, the generic ethernet LLDP Rx filter path is
-> blocked on E830, making the AQ fallback the only viable option. With
-> ice_fw_supports_lldp_fltr_ctrl() returning false for E830, no LLDP Rx
-> filter is installed after a firmware-update-triggered reset (e.g. NVM
-> 1.1->1.2 on an E830-CC in HPE DL380 Gen11), and the interface stays
-> link-down with complete loss of network connectivity.
-> 
-> Replace the single-type if-chain with a switch on hw->mac_type so each
-> family's version requirement is explicit. E810 and E82x share the 1.7.1
-> constants; E830 gets its own 1.7.11 constants. The default branch returns
-> false, covering any future MAC type that does not implement the command.
-> 
-> Fixes: 4d5a1c4e6d49 ("ice: do not add LLDP-specific filter if not necessary")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> ---
-> v1 -> v2: rewrite as a single combined patch using a switch on
-> hw->mac_type, instead of two separate patches (E82x fix, then a
-> follow-up E830 fix layered on top).
+From: Linkui Xiao <xiaolinkui@kylinos.cn>
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+igb_set_eeprom() does a read/modify/write of the first EEPROM word when
+the requested range does not start on a word boundary. The error from
+that read is stored in ret_val but never checked, so the function keeps
+going with an eeprom_buff[0] that kmalloc() left uninitialised and
+programs it into the NVM. The read failure is not even reported, because
+ret_val is overwritten by the result of the write below.
+
+The write is followed by nvm.ops.update(), so the corrupted word is
+covered by a fresh checksum and the damage survives a reload.
+
+The read of the last word already bails out on error, do the same for the
+first one. Skipping the write also keeps the stale ret_val from being
+lost, and igb_set_fw_version() is correctly not called since the NVM was
+left untouched.
+
+Fixes: 9d5c824399de ("igb: PCI-Express 82575 Gigabit Ethernet driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+---
+ drivers/net/ethernet/intel/igb/igb_ethtool.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+index 65014a54a6d1..19ff9eb2c4d2 100644
+--- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
++++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+@@ -814,6 +814,8 @@ static int igb_set_eeprom(struct net_device *netdev,
+ 		 */
+ 		ret_val = hw->nvm.ops.read(hw, first_word, 1,
+ 					    &eeprom_buff[0]);
++		if (ret_val)
++			goto out;
+ 		ptr++;
+ 	}
+ 	if (((eeprom->offset + eeprom->len) & 1) && (ret_val == 0)) {
+-- 
+2.25.1
 
