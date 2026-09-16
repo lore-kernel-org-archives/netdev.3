@@ -1,71 +1,115 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370564E432B;
-	Wed, 16 Sep 2026 23:42:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69CE45563F;
+	Wed, 16 Sep 2026 23:42:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789602144; cv=none; b=AVwOlZAZVL+54zGrKNx1BhyvkA+Lzx7Dtp6lf67W6+Q9KO2rbGCuF+JhmFOxdkKiwOko3CP75rNv5XbUylY3oH4r64PYLhpruD7ZX4gdG5JOhOc8i4F1QAW4pz8zpdE836PIghQwLXKzk6xT3GP0vBojuUtvzZtIHsAKYZzI4CI=
+	t=1789602157; cv=none; b=k6BrH9QS51yUCdVU2ZKsD6G8Hu0eY/Y5RbBA2KMNBQH36OEsyjvhPBLzssPdEz/vcrD0ZlKQlPp5pTNsgMKmlvPO4oNlnls7jISYCKS2XHW1clG6ZmXxoignVhWcvUvK1ydtH9kfxVk5g3pZZmjFauHtKvPtFoa4g9VlHerku5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789602144; c=relaxed/simple;
-	bh=Nll9OGHbGCxjZb8QZNwWF6g40MzhhmE4MNUM6cjObbs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TALDe+s3ISDEVejtU9xxvY1Yi6dXpCK2In0EzRox94Y/ShWLqCSKhr6BDpGUvLClSHerzmZOHmorVPrfQV43gZkl1wzLTFkGFwCoP0wflFtHbQYCSEYVyQeW2C2iNCkyTd/EMasXY30ywphrvvApz0DfM8lFogF3J9WFCjJMiG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ZubSyk2w; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1789602157; c=relaxed/simple;
+	bh=PzKkMxsSFVXbH2ST9awkV6tBuLR/rPvVcw6VpTfg62s=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=G3gE99ihe3Xl949mxFAFPZoErt9sl/q4M7/ckmxiHD+PZ69c+8H5xFDlMS2ti8CEJT7FCXv9VJZYRFW4rGFnjf1iAblBKfqxmBOgrwYKcPOBNdARWxc6Ncohg75+tdslefJTuaUO7knvpcByW586Z78PV8tVkcCyusBmif+yaKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fQlOau3O; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ZubSyk2w"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=KUFBmY6J/JxptuKRKRrQdn8H9NJg2yDCbCFeAvvwk40=; b=ZubSyk2w6DJQlpTY4UZUZqlPJ3
-	h/mFc3uJ5OY3Rjjpqm0k9tegbQ49Uc2F0Uvg6gZGyql7YKShJ7RfMeygzjQTcDty/CdHBwnND+yHg
-	X1PJLJ6fr/59buWDpIevp81U+/lnubJeXx19mTRTp6CgTo8GGxqr/xJAORqRzSjaYJ/Y=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x6zGK-005Yx9-CU; Thu, 17 Sep 2026 01:42:00 +0200
-Date: Thu, 17 Sep 2026 01:42:00 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Abhishek Ojha <abhishek.ojha@savoirfairelinux.com>
-Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	rmk+kernel@armlinux.org.uk, horatiu.vultur@microchip.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] net: phy: micrel: Advance register data pointer in write
- loop
-Message-ID: <c1b5781f-475a-4867-a95b-b4e85ca3c2d7@lunn.ch>
-References: <20260916231928.1336305-1-abhishek.ojha@savoirfairelinux.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fQlOau3O"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9568C1F000FF;
+	Wed, 16 Sep 2026 23:42:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789602156;
+	bh=0hvf0/Djh6pFUqL1HPlpZe8vWgHonCbMs9ZGbsXVmg0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=fQlOau3OcmZFg/oK3o9Gslayi0e0l1Bd7KCfZNnpnRF9NXV32bZAwvhkiUaoaSnT9
+	 l2YNUCtk+DGJURXeX6IKUwp4XoEpDWd3g2gAauqFK9+GL1KDAx+9r9h76mAbuwSgEK
+	 D5kfkD1J1CZtzW0z+paZ/Fus124xYIMOqvdLuVVy542fxY+KfgzbE1F4nYQJNSnTGI
+	 MSZX+IbSp6KysT1/ceiNw3MtnnMYJ53wwhuDBIl2h4wRTR8h5qtK+jFEYrwa9DLY8R
+	 HI8GUEfxe/aG3+oVgcq3kNMPcwQLkIIsmHiELWFTsD9IhMH0PJo2tFAzrLsGvMkXYF
+	 wki8SMCAmqAfQ==
+Subject: Re: [PATCH net-next 2/6] net/mlx5: HWS, Fix error message in
+ mlx5hws_cmd_generate_wqe
+From: netdev-bot+sashiko@kernel.org
+To: tariqt@nvidia.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, erezsh@nvidia.com,
+ gal@nvidia.com, leon@kernel.org, linux-kernel@vger.kernel.org,
+ linux-rdma@vger.kernel.org, mbloch@nvidia.com, saeedm@nvidia.com,
+ kliteyn@nvidia.com
+Date: Wed, 16 Sep 2026 23:42:35 +0000
+Message-ID: <178960215515.22033.15231787947837063127@kernel.org>
+In-Reply-To: <20260915111912.3926585-3-tariqt@nvidia.com>
+References: <20260915111912.3926585-3-tariqt@nvidia.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260916231928.1336305-1-abhishek.ojha@savoirfairelinux.com>
 
-On Wed, Sep 16, 2026 at 07:19:28PM -0400, Abhishek Ojha wrote:
-> lanphy_write_reg_data() does not advance the data pointer while iterating
-> over the register table. As a result, it writes the first entry num times
-> and leaves the remaining errata registers unconfigured.
-> 
-> Single-entry tables are unaffected, but tables with multiple entries
-> leave every entry after the first unapplied.
-> 
-> Advance the data pointer after each successful write so every table entry
-> is applied in order.
-> 
-> Fixes: c8732e933925 ("net: phy: micrel: lan8842 errata")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Abhishek Ojha <abhishek.ojha@savoirfairelinux.com>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-Makes you wounder if the short_center_tap errata has any value.
+Critical: 0 · High: 0 · Medium: 0 · Low: 1
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+- [Low] Commit subject/message misidentifies the location of the fix.
 
-    Andrew
+--
+
+net/mlx5: HWS, Fix error message in mlx5hws_cmd_generate_wqe
+
+This adds the missing trailing newline to the error message printed when
+the generate WQE command fails in the HWS send path.
+
+> net/mlx5: HWS, Fix error message in mlx5hws_cmd_generate_wqe
+
+[Severity: Low]
+This isn't a code bug, but does the subject point at the right function?
+The only change is in hws_send_wqe_fw() in
+drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c, which is the
+caller of mlx5hws_cmd_generate_wqe():
+
+send_wqe:
+	ret = mlx5hws_cmd_generate_wqe(mdev, &attr, &cqe);
+	if (ret) {
+		mlx5_core_err(mdev, "Failed to write WQE using command\n");
+		return ret;
+	}
+
+mlx5hws_cmd_generate_wqe() itself lives in hws/cmd.c and both of its error
+prints already end with '\n':
+
+	ret = mlx5_cmd_exec(mdev, in, sizeof(in), out, sizeof(out));
+	if (ret) {
+		mlx5_core_err(mdev, "Failed to write GTA WQE using FW\n");
+		return ret;
+	}
+
+	status = MLX5_GET(generate_wqe_out, out, status);
+	if (status) {
+		mlx5_core_err(mdev, "Invalid FW CQE status %d\n", status);
+		return -EINVAL;
+	}
+
+Would something like "net/mlx5: HWS, Add missing newline to error message in
+hws_send_wqe_fw" be more accurate, so that someone grepping cmd.c for the
+quoted string is not sent to the wrong place?
+
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c
+> index ae3ff232c63bc..80cfd0ddba08b 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c
+> @@ -1287,7 +1287,7 @@ hws_send_wqe_fw(struct mlx5_core_dev *mdev,
+>  send_wqe:
+>  	ret = mlx5hws_cmd_generate_wqe(mdev, &attr, &cqe);
+>  	if (ret) {
+> -		mlx5_core_err(mdev, "Failed to write WQE using command");
+> +		mlx5_core_err(mdev, "Failed to write WQE using command\n");
+>  		return ret;
+>  	}
+>
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260915111912.3926585-1-tariqt%40nvidia.com
