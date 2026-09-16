@@ -1,43 +1,44 @@
 Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azolkn19010016.outbound.protection.outlook.com [52.103.23.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11364AEBF7;
-	Wed, 16 Sep 2026 10:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB444F4758;
+	Wed, 16 Sep 2026 10:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.23.16
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789555302; cv=fail; b=s9nLCe4RO8gAhu2oV8V3cRrVffMLWXlEhgAbM3GJyKn8tOZZfe7NpAL/iLtMQ9a8p9DR817rm8rh5UBmUypS+71JHKF9rk1iPcBFtc+XtsGwlZuOiWMgGfTNVctaX2DWlAX0PmZV4kGZvi9C4DkapbKnTut5LLj6xp1A6jalGbU=
+	t=1789555311; cv=fail; b=cWNskdi6G2RAsCC5JMx/FhyGryNhDvYFD0z1mOMdyos3G9RTnzV0YR54LKwJJn9jriTTJ0aluUa9YqW8mrQTeLu54hLy+MtpQQDm+Jxans3wJsS035jRpP+x2Gv+aj90IB8VUtCcl+iVGhOmHudzvnPBwO294ze0w4T6VKLTe2I=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789555302; c=relaxed/simple;
-	bh=I3/t2NfFW2sXomerku9I0Rl0kFpvKmoZj0xcQBj281Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=kdorAXZfdLM5Qiu7k5bkSjhC1wDcUuiVoOLuQITgVJPrIb/QLUnKmetfEWYdobdSkFBqumoJ/L7yWHletk+8jE76FpQODW+uYElJb06bVsmXXsqd45WMvWSoHuDltslEBtiTTMKtmogUc9vLWwLXvBrvGnxqONHk8jtCt5ChvD8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=DvM3/UTm; arc=fail smtp.client-ip=52.103.23.16
+	s=arc-20240116; t=1789555311; c=relaxed/simple;
+	bh=jympCvUpn85cEui+DzMoTbtoq7p75ilaqnSWhUmHIcI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=E21o3WhSGWOGhW8EGb7ULLdoxw7rj10sqI7CKFc9ukcSabSWbK4N/uvW5h9AEoG2bWixzFrTW/4sLOjcQY9+MsO9BuTAS0hrWIKjHVTn476FP/KG9bjFmt/wqha7yDXnF5X1J8zWh6L8cIbnuoxzwQS3np6HwZmnwjzQYsEEbuw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=Hr6HvXz+; arc=fail smtp.client-ip=52.103.23.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="DvM3/UTm"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="Hr6HvXz+"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uXj7BSg+w9q2Ra5kdgk/H7zLPfcg5Ve2FlAbfDuP1BosLXrmYYsRG0ECB6nvMLUGPgVX0adAVQX/anacGyfSXIabJ4sBU3ya7uYzmpr9gy2NxcX7K2YEXw7cSOkL4DLiIgxau0djXPQ+0a3UH3EwknoQyo4VivQ/wC6ak/fH9Rxpy4spZ5P3JAU0OXTbdXeWVlo2G9f2XPQ6HTDpzyR+BzTIoKlkbLK8ZBPgUkfm5i6SBRADXHKBpzDnZeQI60/CC2ojne5RRWYDai26oDbbPjJvapVPH/j/NnlaZEJqfqgR+N+R1FBvv83IgTN2zjgXfJFznMn2dKEKq5XaYko25Q==
+ b=su8HarmpSWy3flOFRdN9ZkiMMU4uOkHlm9nbEZPQQ8yDwAQQzzODKmz0UKx/Td8MfZiKIs9HHx+V9CXL6NqijUHioVFD+5Y1ZghrX5G2Diu4qvvb5191zgCGJuG1BzQFEsyxTiJRcAk8zLGttJoohLMtWlVhHdIjjlnbuvjOkDB5V6np58pzPjXTsGB2cq2a3MMLi8T4fGIthbZQ5q+l5KL3BgRj+EomAISaPsqi46d0uF7egSrO+khpXk2okV6xgiiNpfgyPca5qWpcs+rrqsi234JgIroym5Vj0cDr6GUsIkGYwNab3LwhL3GFsqd77j/GwUcGZ4v7YO+TaNozow==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XJiVK2qY+H0B057/s/OkdwNxxT96cCaaJFfAHUjZ2uE=;
- b=ERX3RfgHlQMyQeQ+UM4KNSD4xv+qdN1L5GvpkNlCrILEbXfnSUW8c4+sUNwDYH7BQsiWjFQ3F6y6EFlyAFX/iP3alIMccIlq7BNHGlxdsqtZEPt8qzrspneYtsDZz+Cpx/cO/ckH6lpH/e4kZ5l2Is/Utm8+lvgUuWa5EiG/ScBFlPXYOq6116hlpAmaQtR0GvQyTiQ7w7HrW0xCHT19oDKrTF6OFUE8mSZxSH3YdtAJr9W8iuYCafMFl/M1hcqblj7rL2QXCrDCFm2vm/Ejdt2BjKH1VZz+cWbGSLt654PRleoPqiKicFceS6YQOdd4GtYwb4w0VMwGyE7/zRKKxA==
+ bh=QZnYBaJw0xmP9Ir385yWRE1vP1XpTl5npLYizfD3pvU=;
+ b=AdEAnDFpZhj4Uxwk+Y4stVPKDGkVJYCUHxa6I6zXXKIzx6GLkh3p+du3vZd95GyJZKvT2+uHaAI24xQ7m+7bm4tIMyKXwkt2CmkLyHk03HEVVONsz2klfq9QXDSqxyw5idLQIqNVi6dKvdCSlLdfNsS1tOWik+Oz0YJQlGfz4YztBpSeR8WTaWS0Bk4CJX0ej+czeFVLdwhl52zXmfuMdv3zd+Dt+eKYl8SUP7X1NOfS9xm3xmje2togJ3nPGL0oE82LVIXzwgDnferNbO6AExRtQ4SZnC0jOnbyBEfjFeXOxMW0HzNuvYG1mqNdWsSU6TvdwDqC9IgPvPWS7KNjCQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XJiVK2qY+H0B057/s/OkdwNxxT96cCaaJFfAHUjZ2uE=;
- b=DvM3/UTmYq1z1Nv9Wz0VtRjKCGq3VErtKljDcDJ39e3I1Rht872Nj1yjkw+4hx/SzBKdW3ylnOuwtji9aRk8ESsfzM572yocg0rfHRxTez/rwCnp+MGKNID8dVHfncNowJBngebWsQ+MO7+5KZlVbHaNbgGqh8fUTLxdXgGzcmhVyMcEsg9u0BXyDZerWzXIX080x6DuYyqMi/roIhKYhTxfaDKXQRcZA7VGdKMXDLY9C6gqz4M2Sfts7EKgtYkZ2UicWtSEeOrFWmT9oMmuaUh+5LUaDejEMkCnTQy5lTjCanStPpO0oRWjy4JSLJ1hAh16lMPeXSqKhGcaRiyu+A==
+ bh=QZnYBaJw0xmP9Ir385yWRE1vP1XpTl5npLYizfD3pvU=;
+ b=Hr6HvXz+DT4+k9eZh6rIrhFdL1/U8WYuf+8mvnyAr1ZJTI463DCdq3rTmZRKgMmnZJ4mLJ92hb7UE/h8BhnDV98gaMmIumTP07B07VzcUkYmDJC6WAP0JnT0dfS69LjoERpri2rrLUdNWggPYJHRzC1D7E7b3Zl9t7F6n02bVJpznhvQgBsQjgeCyRTRvvF3QvI7GuOAlAQ4ggHTQhVpOVO6ta8CmQxQJXm1Yq+4Tx9brz+6pStvjhaz2ERUp4i5j5pXEl80ud5sJz8L4Gdb123cSjbBQsT35HD+Ep3nQVbk6wmRRRIFPPiXk0KDXneElRbbtbHd8V3f4OBJ/h3ogA==
 Received: from CH3PR11MB8413.namprd11.prod.outlook.com (2603:10b6:610:170::8)
  by SJ1PR11MB6129.namprd11.prod.outlook.com (2603:10b6:a03:488::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Wed, 16 Sep
- 2026 10:41:15 +0000
+ 2026 10:41:25 +0000
 Received: from CH3PR11MB8413.namprd11.prod.outlook.com
  ([fe80::5cba:cff:2a19:7d1d]) by CH3PR11MB8413.namprd11.prod.outlook.com
  ([fe80::5cba:cff:2a19:7d1d%4]) with mapi id 15.21.0406.007; Wed, 16 Sep 2026
- 10:41:14 +0000
+ 10:41:24 +0000
 From: Thomas Karpiniec <tom.karpiniec@outlook.com>
 To: netdev@vger.kernel.org
 Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
@@ -52,18 +53,20 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Bartosz Golaszewski <brgl@kernel.org>,
 	linux-arm-msm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net 0/2] stmmac: fix ETHQOS SerDes interface handling
-Date: Wed, 16 Sep 2026 20:39:48 +1000
+Subject: [PATCH net 1/2] net: stmmac: propagate platform mac_finish errors
+Date: Wed, 16 Sep 2026 20:39:49 +1000
 Message-ID:
- <CH3PR11MB8413FCBA598F7FABC04ADCFEE4B92@CH3PR11MB8413.namprd11.prod.outlook.com>
+ <CH3PR11MB8413069BD77B03793D1A9B42E4B92@CH3PR11MB8413.namprd11.prod.outlook.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <CH3PR11MB8413FCBA598F7FABC04ADCFEE4B92@CH3PR11MB8413.namprd11.prod.outlook.com>
+References: <CH3PR11MB8413FCBA598F7FABC04ADCFEE4B92@CH3PR11MB8413.namprd11.prod.outlook.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: MEWPR01CA0033.ausprd01.prod.outlook.com
  (2603:10c6:220:1e5::10) To CH3PR11MB8413.namprd11.prod.outlook.com
  (2603:10b6:610:170::8)
 X-Microsoft-Original-Message-ID:
- <20260916103950.41510-1-tom.karpiniec@outlook.com>
+ <20260916103950.41510-2-tom.karpiniec@outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,63 +76,62 @@ MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CH3PR11MB8413:EE_|SJ1PR11MB6129:EE_
-X-MS-Office365-Filtering-Correlation-Id: fa0d4ece-fdc7-4a0f-a1ae-08df13df07aa
+X-MS-Office365-Filtering-Correlation-Id: ce4159e3-2e6c-4e2b-6c67-08df13df0e19
 X-MS-Exchange-SLBlob-MailProps:
-	ZILSnhm0P3mCYd7/icPJlj+s+m08RC6kNef5q+OLiNZfQBsyEZWRq4Sam60CoVMEBMN+iod1IlN7HXOQNbtT/1ytkE6HnMv2vOSuh0fcXtTReF53Az6K1bZQ+7kHIJ+JfQ94xS/5tZZpQ9ybJrlna0gg/3FTNGMhdQ3lMlXCx8/mNqqBfWfShbtbNzVj7rY8qGNJiWiYnKiUTlI+FTjr4ax4wYJB8rVD9ij+MrhB32OeSmaNA0DT5pmOASftFCQfXJoIQkaDPlQ4sUNuGRaYvKA6woHS6L4PnYxkBisSvR08uJQNEukD+BAOT82ODYusLT2wqy45V5lItR89ptYQsEv881XaRWUtVqClgituTQuv8kpXFqvUL7XULNt4LGtgn8ZS/JIo6H/LRfXP4Pt+hEyxWxYf0m50RjEVb8NBMTgG9eLAb8zfScbHzRMCtnkeLyFYqZqCFEkQodOgQwio7l29H7pTVCUavo65gviD8S5UmmH53Hc9u743pSZGK7mRKcCPqpqYgFw9WKGxa+0M1sDALmK2juA+zs+aQWS7zKrJWP6vLsQpMBcPUy8OLkuvBDTCNHE0zMuNGRL7JD+gvzfBP8xC1g5q3UsspHsDJVahZwzpGlUWwKovj1MDLshL3vvtbLCGbCrCKg1Zow6dnYpJWe0k8trQQgLE3v9rPz9yNcxhKr1U58KXilbph5f4Bf/8uRyXQ/hjtWeDzl9Ias2Bmb+PIr68ONS26fxpt27dNX4Xr/DOoQytfGvuvQonyhXnBHuSfrbinJYMAEBIUDc/tsS8MDme
+	7qh87CJt6y1mqZO6407WRLxlypE3k+ej2YpIfKi8HR6YKlr3sp/pHw1FGW5zSfhIuM0S1ESNUxXFEwKkpDTWK2ymjPWu3lXFip+IkrG9MWZGSW+kSdZG9zKNPlcNEk45YCsYbwrcq0suyE/cyssvNflj1Dg09GSKIqv9TDkaiNttxiXxBPlMogMt9RV20XOUDb9VAaRMP8j5MLHEgFfEr07C2xTf7RO9+5nY0VISXooQPgMnSVb7QPT9qr4EkTgyAwYh/7FYS5wzBTJKGU7a+6EMtrhNEFOArNBLhHaIFZdxJl/1zHuQDKNcgR33gZhCx0Qmhfl6k0efDVIhZG745hlk2UtFkEnPkukwpEVvvWsI/TXB1XW0YBB6oWLhamniVKE1qSEdr0odcLLs1xWDnvSa0rFKXJgyBIzoPWDBuORmsVBRJ25mLk+lCB+Z25/YJSIIw4oQpzox3+egZqSHMve2TsblVc1U8i8VDQJGjQHuRMPeJMZWq1Yld6H84/dSTph37VkoCDH+twNL8XdeZuXyaCaDPOoU02T3QYa2zWaFN2OJDTVqubZvsEBuJMCFGqayMbuHS7vSTfVd8rG6HVZ/1BFDJWk73SmeTMxz1xDebTSGpGbvUtpWb3OTEV1yqnb6OJ+XfzdANES9Ke+JL14NmP4QyDMS1alPj96EKNY0QEZzX6l5WuHts1p5nC7nGAfz2gfqnGDULvQ4y6CboM0G6hFiWokUChOVh+/asgMooFiCGca5/dr7Q5r6Po7l
 X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|5072599009|25010399006|4140399003|19110799012|8060799015|15080799012|39105399006|20031999006|37011999003|24021099003|23021999003|440099028|3412199025|40105399003|41105399003|30101999006|2607281247196008;
+	BCL:0;ARA:14566002|5072599009|25010399006|41001999006|19110799012|8060799015|15080799012|51005399006|37011999003|24021099003|23021999003|440099028|3412199025|40105399003|2607281247196008;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?wx0oHjV+ZPYoDpq6uCGdrttk7oFtC3ztTac6h2NS6ibeV8HuwF8WPq3swq+a?=
- =?us-ascii?Q?W8sEktUgTPw+zRyE7ht0rdy7HtOAjKHur3Lwu+sFjeMrBXXk/34w4olBs2Z8?=
- =?us-ascii?Q?4a9vr2/jD1tvgbBIH0+SKOlVQTlR5Sc6BRPv0/KCKjKODGuX+SS0BH8EF6sd?=
- =?us-ascii?Q?wPHPQZq9ua6twKYnxzCyU8XWlkmwNRLBqFKprMewo4MerXudKAirq5KrrNYr?=
- =?us-ascii?Q?ZKliHkJKXnZXCxFsbprfXnaTW0vdBsHgoQK51racY5qR0SEX+1KShgjvFb4w?=
- =?us-ascii?Q?jx5qz/nXe5xYd6vsbWFhD0lxiqafNFYKlksiPp8UHkaYzNo1niYguvbI6vMF?=
- =?us-ascii?Q?iGvz1mIXbNq0K/Y418AtllkooW5poZ2wqPQxl3j9Ch7XttpFZ/8Ye18qeh+r?=
- =?us-ascii?Q?IEvB2o+fWAScTb17miYpndm65s1tk0ajQP3zsufcVYxyK938F16meVi7sPqK?=
- =?us-ascii?Q?Kmn0al626Ew4hy6/ssjeepiXqlkqBdxN9y5J6THz/MXlWdENbQpc5XTEKgMZ?=
- =?us-ascii?Q?zx12kAKT4cZn6BuOUjNKiFB0S49iERt2YzaQGICRAH3CGiBnTlocBFg9gSQm?=
- =?us-ascii?Q?MeefN8PLzqsHDrV52e4bmEbvoepPFXWNez7u5VcjYaZPMk36w8g1TMSqwQOS?=
- =?us-ascii?Q?t6KIo1zisJcja1uqbniEToCxF+kTVH8yey3mXgqoU1+ZqkxiVuw7K++2OJNn?=
- =?us-ascii?Q?XlEJuPof198WS3eUH56T/amPkFLFs82mMY8t2D/T2WXwNasSHfxOaHKD30B6?=
- =?us-ascii?Q?pjMZc9iNU6ywT7tSUJ3QwSGCtisN6HgicI+PWsxADeerVa6wk9DvUSbPawvH?=
- =?us-ascii?Q?zJRkHnXJatevOYgYFDaxDfLg9BygzBB4rKGMjOeqPHz305M7Ov9pOC6s3GGY?=
- =?us-ascii?Q?yVoUt1vfcHKxwWj8l/NoowNA456dllLuR1YdnlxF4wMY/bn53G8icTiHuUAi?=
- =?us-ascii?Q?6GHAkYnw3uJgT6IFCHczPVMAhCShvUlSbt6UK0cElopK1FgkGwxMlOtPwwk6?=
- =?us-ascii?Q?OFjxtl0nQHXj17g/vUwFh+MuonBEJiaX3+wUbIWo47tgAD+91Q1TfPCAW141?=
- =?us-ascii?Q?pZpLe8ty?=
+	=?us-ascii?Q?e3mLhfJY0BVoR3vhIQ/jo+vnjkJkGrpy8aMq+8SOXZiSkTobk6JQVXaM3oTQ?=
+ =?us-ascii?Q?m3OYZsWLy/wDWwG0hCK/mR1DHww+ItzmW2LA1q5A95aBYTo7+ami9Pb2SH6m?=
+ =?us-ascii?Q?yi4Sfbv/47gdzlGSyyD2mLAA2H2oGK4fbt+EFpUPriuf+mzQfNrIMIbp8I24?=
+ =?us-ascii?Q?wEDOqhGEkjGN/40DC0CkBNhEHWeLwcmrh9zW342cNfXMF8oup8wGlR3FFXev?=
+ =?us-ascii?Q?YicTa/w88dtafVI6QG0E217u8TJievWVlyOkI2S44EaMO9cJabBytdTaJedN?=
+ =?us-ascii?Q?YI7N8kj3YTgegpXX4jJrGDbGbrKnt6lAt7rTVk2wRm63snBSksekB9t1lgrR?=
+ =?us-ascii?Q?TAK+Qsp6RxTjkdrDmBpyg6oUyuIk6iYQCIYwRqdvyNsmgkb2CQKRnqXY+yx9?=
+ =?us-ascii?Q?GRsj3ks4N9IiNDM/zHI6D8/kITHY2RISSFZmLdbOQoFFRGFmBLCbXqJAfKvr?=
+ =?us-ascii?Q?Hsh10KVVPE+jK/QV6mpBHl3sMxnWStaw1K70NOk75KqDr1PnhI71QDDVQQh3?=
+ =?us-ascii?Q?BBcTBX9Gik6ATHzM7UwAjtMI1/Tcc2vjioXi7xHcNKlGYPvBt1GZW58nW10Q?=
+ =?us-ascii?Q?Em8u7BKWn+l7PWYF8qShPZ/eq7xzPBfa6G0UTbID61dpqb4WFIJripsZHIZ0?=
+ =?us-ascii?Q?1upAC2xmBqlGcE8vVFyGVL/j9jjTc/I1KgVLMmMPjC8+CSz0vfleu8TUwbAJ?=
+ =?us-ascii?Q?4xaewEvo8HTHIja6rxQEozNFWf6mbZBaaEPTo9bYWc4UxrufiPSPHkxGnjBA?=
+ =?us-ascii?Q?X8/0+rwWcvIolIRf7OQzQFrmokMxxBYhJwjuS53goT/2FCTTes2DDehHDxm+?=
+ =?us-ascii?Q?8MNljzW2wTsBqCXYCA6QG1NsvnWSeY32D7ITw+JWL3kuktF+NX4CBJWUe8rx?=
+ =?us-ascii?Q?XS8pQmPr4Ve8qzOvQ6gaXH3AoaXvOjcCzf+3LGIAYF/z5GUyL3fcPPNZW2Yb?=
+ =?us-ascii?Q?hvHGzQ1fLNwokWypFl+fiCB4Q0QLoYDN6/e04hktrDNR5Hrsj6GZ7NzSiHrq?=
+ =?us-ascii?Q?PecW?=
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?/CnB9yxPJHEuLaHYO7EWHlX43OX27/ZgRVz6kG4CfE/Otjjz7plwejKz1iMm?=
- =?us-ascii?Q?Id1AJLeHqd8ysPuU+fWGsmJ3aIkOU1hITomp6nUZxpWHV145GvCwKPcRPPfU?=
- =?us-ascii?Q?CAK2qEL/hbbIsBaE9wM9Z6NrZCx12h9SrVIAhiGjukWqmaBP2gNCSoaIpGbt?=
- =?us-ascii?Q?TwHuJHBKpaoTL2x/kJdm9OnRc0RlvtP61m0er69+oXuxn6JomGBL923CmWm6?=
- =?us-ascii?Q?lTcnhFCnqxaHeAoYzAdyZBz/JNfj1eZFvAPqoxJsl9WqC/CPKfnMeTP3Jnmp?=
- =?us-ascii?Q?nI3BBQQKz+0009vQo7tIh6p9CN8jEa1EdjiPMzHRYyeN38MGf7VhrUSY91OP?=
- =?us-ascii?Q?OsL4PBlwLsHQcZb+OqnelM2TuMr0DMxQCf3Yspf2MYRwxOgBW297oec36L77?=
- =?us-ascii?Q?izFaA6WCvcWBtGSRfkIBkOhMkuv5ugbnupfbvzeNdgHDDeE49ConPrYwzUYs?=
- =?us-ascii?Q?NvxCNkMBa+ZkZk4Y9peMUkP/B6IlWS0TFfQebmKNnoRu93RrO8IHGfmse5pD?=
- =?us-ascii?Q?O/SX+cOodcs8VQczyp9ONaAgv7sROKeEf/0KZTJL52HZ8vBg2C1ULvhouARE?=
- =?us-ascii?Q?2xMOBZIXkOeEjItl0aNtfhF20pevOcamBGzjWAPbs5nLGZRqEq8o/vRn6rTv?=
- =?us-ascii?Q?lR2Hxi6eYMgsnX+7LCNA5KZz8fDFwhdC2/pD5pO+z5G/hzxEBAVCrNgwqPwn?=
- =?us-ascii?Q?qnL94W3l9JhwGFZbK9p6LKS59he3M0UPQC3XKLFQ1sp0ELpVyDa6ohvGSe23?=
- =?us-ascii?Q?hOT2TfhKYy7SnwzroWEWpHf+jkt3qidia5RbDUJmzI1aApRWID9Q5/xJ4JaJ?=
- =?us-ascii?Q?T1V+LXbudLVK3aE/PYu/7Mpqboc3kap6x3ZWLHy8I08Cw71l3VcEgu+225wQ?=
- =?us-ascii?Q?kgORoDm4HU6GQD1sfqzEL/cN5MCTmzpfl2P50dCwoUqHKQmLbVbSiZHCEV8R?=
- =?us-ascii?Q?pHPkm8vES/TdNTk6X5Bhzd1Gm1mup8vxjyfkzgfz0kj3MKesF0cVPUspimXK?=
- =?us-ascii?Q?bF+so2aRW61PXGPiXMSA8Ut0QTKn2BRBuL6nnl4W61h+dV8A+yQhlSRyc2VO?=
- =?us-ascii?Q?TDkjIUqJPt3Cw7ukdpunpLfueA8fKNWCh4mERbxrcNNGG6T8+zHQB2LRlRoe?=
- =?us-ascii?Q?ICijHlpw05tqosbFqZmCWRJfPcyrEgPdPaUrE1b1tB89wShjL62CWn0DLYpz?=
- =?us-ascii?Q?C//Lcfz4/JaFcdfc2J9D692YBiJQbsgM63MUVArSbagnxGgCdWoYzUQ9toot?=
- =?us-ascii?Q?Izx8Yx8RPdPwxvqqDl+FKhG7BklHgGVm5QkCq2/Ilaf0i4X/Yib+4ysPjD1J?=
- =?us-ascii?Q?m/n1Ajpezs2cNePg51kcCANos+FbQkIQHe9f+26tEqL9QXoV7LcOIFWjkr+V?=
- =?us-ascii?Q?IBKdGk7Fwiomik/scBmuWv7EMHcz9kseBXnemg9OpXFdivs3z12sISKwmr6d?=
- =?us-ascii?Q?2PkyssR/vIMPeuxBuIk9fj5pGuowG+BJ?=
+	=?us-ascii?Q?sflDwqwu9Sfkm+ZOpznWBtCQEwzMtcKrkSl3Sm4gNDQCfV0t90wBYQwHShil?=
+ =?us-ascii?Q?aJn2fpplSLZ3tKZWKr1E9PZji3VdWgdd6bogRH9PTScdSSGxD1oZ0zn6grEN?=
+ =?us-ascii?Q?iFq2kd8KhWIV8l0jekPaRjode3FhtQwEhCtvUOcn0eRhP2KcsTA/JvdDt4yB?=
+ =?us-ascii?Q?s/84v9nbrTOemfPm3GptXeevHTbb0CDN8j139ZaxwelTl4NPwg34CYsL8RoV?=
+ =?us-ascii?Q?L4dF3g1qbL0COPx2w1EguIvCUjwTyOHxs6wgsJt3LFFVyU81aczhfLGZz+98?=
+ =?us-ascii?Q?VtVbX4BsKBjQpU7lU89mQuX8yXjvtaTRQUhqycaZIV2Kgx5NAP/tglLcb9sn?=
+ =?us-ascii?Q?tDmIESt1u4rTdXMmQXU+NZ3hh72MfLF4iAFwbq6lT3hYTwGRt8qHZIz1aqbK?=
+ =?us-ascii?Q?UPHz43RzmcpAEf3bsYuCEBNj2C6BAi5eedon62ARllJGi8pxj3QDU57GN9OE?=
+ =?us-ascii?Q?ZNuGLuY2egJCwfh3SAe7zkn06XM4wPiLcau9aC2DwqucQd5mIttlfGpoleC3?=
+ =?us-ascii?Q?kNX2xdXEQb9yKcZ8tVNk2atF2BUIsEO14X349qAq7NQtUIQZbSv0inFMmEbm?=
+ =?us-ascii?Q?iKhoP+5SBDs+GD68ox+FJo1CT9slPb2oKk/vkWLCEkcN/2+p6xM/WUCehMPb?=
+ =?us-ascii?Q?XR+Zq6xnwzkWm+H2Eu+B0+IA2K18UE4qZSYsDrCckNz9zpVzzDTPBEhc+n5N?=
+ =?us-ascii?Q?bwF9+hKGKUayv7sF4mQ6cd2vlSP7PKNrC9U2E/gH5JA2ZZKHC8t779zfAcwE?=
+ =?us-ascii?Q?OwxSCN5gVN1L6FeT02cT2WQXAZvWYx1C3PYzDO8kRJhVOJFZIBZdGOdxWKxA?=
+ =?us-ascii?Q?W7Pq27QYyq/CvoUMQHClVC3jDCYb1viujj7xVL+1QW7BOYrBgAyn117jq1CY?=
+ =?us-ascii?Q?W1ZuZfIqfZdcwKvgKs9mJU6Vd/uGKwtHlj/q9ZEAVgGwE5Oj7TdNsEWqAvBq?=
+ =?us-ascii?Q?nY5JpWe7puy8PaYDjFpqTtZiyvUfLnXbLQQP34pyYhcuZpyJGUbdO0RHfp85?=
+ =?us-ascii?Q?1KKfDy94qmBSFsszyFPWR65RPqLtJGApEmY1pMJ07DK3SckOCEkM7YsAuxrV?=
+ =?us-ascii?Q?/GmvAVReICm6TYweaiVNBXPWO1AUws01mvv7x0AeSb1pt+T0sv3Eap/7YG6N?=
+ =?us-ascii?Q?E9d/Zr8uoYVEjbUV26kbpJ/K+t2sykGLDs4sdAhDcc6FAx5j3qVQWgUKhj5D?=
+ =?us-ascii?Q?8W5pooDrR0ybTwYiEzaTpS6GcF2FqKDZpGGnFiwWad4TGGplPuI0Vf66XinA?=
+ =?us-ascii?Q?1RX1dWzKJRhc6SAg23Toi4AFEcJenUC6O0BaeecbAfOfsY2vJroU3rfods1R?=
+ =?us-ascii?Q?Ngr2L37mlpPJ47zM10KHcg3XnICbTfbYQH6kOwDkGVr8/35XspZC1/vu8vXB?=
+ =?us-ascii?Q?ymPKFLsJkhVFeqUtZxA1JNTQt2x5YEdbe5iA94FZjPDPdUf8T/9M0HhBZrdR?=
+ =?us-ascii?Q?kXeZZOhd/jZxXdHG4poJrjV0hoqoK2b9?=
 X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fa0d4ece-fdc7-4a0f-a1ae-08df13df07aa
+X-MS-Exchange-CrossTenant-Network-Message-Id: ce4159e3-2e6c-4e2b-6c67-08df13df0e19
 X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8413.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 10:41:14.4161
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 10:41:24.8524
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
@@ -137,38 +139,41 @@ X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
 	00000000-0000-0000-0000-000000000000
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR11MB6129
 
-This series fixes gigabit connectivity with ETHQOS and a QCA8081 PHY on
-an IQ-8275 EVK, along with an error-propagation bug found while reviewing
-the same configuration path. The first patch passes platform mac_finish()
-errors to phylink. The second advertises the supported SerDes interfaces
-so that phylink retains the PHY's lower-speed copper modes.
+From: Thomas Karpiniec <tom@wendy.sh>
 
-This revision was built into a WendyOS test image and booted on the
-IQ-8275 EVK. Tests covered boot at 1Gbps and 2.5Gbps, physical cable swaps
-in both directions, stable carrier, and traffic at 1Gbps. Injecting
--ETIMEDOUT at the platform callback held carrier down at both speeds;
-restarting the interface after disabling injection recovered it. This
-was a synthetic callback error, not a physical SerDes failure.
+stmmac_mac_finish() discards the platform callback's return value and
+always reports success to phylink. For example, the Qualcomm ETHQOS
+callback can return an error from phy_set_mode_ext() if SerDes
+configuration fails. Phylink then treats the interface as successfully
+configured and can report carrier even though the SerDes is not ready.
 
-The tests used regulator_ignore_unused: without it, the upstream board
-tree repeatedly lost PCS link. The vendor tree has a REFGEN always-on
-workaround absent from this tree. No extra kernel or device-tree patches
-were applied for these tests.
+Return the platform callback's result so that phylink can report the
+failure and keep the link down until a subsequent configuration succeeds.
+Keep returning zero when no platform callback is installed.
 
-Sparse reported no findings in the changed code.
+Fixes: e654cfc718d4 ("net: stmmac: configure SerDes on mac_finish")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM sparse
+Signed-off-by: Thomas Karpiniec <tom@wendy.sh>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Patch 2 uses SerDes APIs introduced in v7.1. Older affected kernels
-need an adapted backport rather than a straight cherry-pick.
-
-Thomas Karpiniec (2):
-  net: stmmac: propagate platform mac_finish errors
-  net: stmmac: qcom-ethqos: advertise supported SerDes interfaces
-
- .../ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c    | 22 ++++++++++++++++++++++
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  |  4 ++--
- 2 files changed, 24 insertions(+), 2 deletions(-)
-
-
-base-commit: ceac0de741bfb47ca255eee075257b3bb31f0651
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 1fb5f804ea23..1350e92943ac 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -1048,8 +1048,8 @@ static int stmmac_mac_finish(struct phylink_config *config, unsigned int mode,
+ 	struct stmmac_priv *priv = netdev_priv(ndev);
+ 
+ 	if (priv->plat->mac_finish)
+-		priv->plat->mac_finish(ndev, priv->plat->bsp_priv, mode,
+-				       interface);
++		return priv->plat->mac_finish(ndev, priv->plat->bsp_priv, mode,
++					     interface);
+ 
+ 	return 0;
+ }
 -- 
 2.50.1 (Apple Git-155)
+
