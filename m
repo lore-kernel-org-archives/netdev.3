@@ -1,160 +1,138 @@
-Received: from mail-oo2-f41.google.com (mail-oo2-f41.google.com [74.125.231.169])
+Received: from mail-pz2-f41.google.com (mail-pz2-f41.google.com [74.125.228.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E683BAD81
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 03:08:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2436E3A4F35
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 03:09:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789528110; cv=none; b=Wfb+BPfcyl5Cq2Gy46Q+MBfvNgfOYYMP7rXYD8oDw/D7RB/qwf2pmaDb3jno6gVhG0OE8nx65s+UG7l7V7mvGuDHeWA50OO49ypOsCmSRZA3+eXE86RdyaYDqCIuse4ww8Tbcp5FUy8Hsuaf27rhJZ2kcMyo9WSxzXQXFDGPs/4=
+	t=1789528202; cv=none; b=OlbQIbAescRJU4wS1FcHyzZEILTEqajl3jylR1y7eWhdzs1QNI54S3ONdAdSfFJnX0SE2XwD8Nt/bmi+psUD04ZhbKkmD2KhN3nInp97Ld2hNVNow4rSEZ8j0OK3h4WpuqMhvR1j/72DycjtHdZfZPMVy12X4TUtBNXKkNNZESI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789528110; c=relaxed/simple;
-	bh=BzeM2wwKwRHzaqQoq07OCW4sqSwwDLJ+43BF/yaIJkc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kU2oFSDKRWSOLCa40DA7UgbVbRVoR85oSB8XkaKJ5RpxxOXG+lqte+YkgGtoVbKrVVYLEW+2deD6amBfmL8L0zpI6LNtDmPSymwgHMSgSkFu1mGzuSSmwmRt8TqCLmM7ZFXPyQUDQulzzdt5PG3HwhrIDGK44qP2vOGnL6mBBrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SB4lTQIq; arc=none smtp.client-ip=74.125.231.169
+	s=arc-20240116; t=1789528202; c=relaxed/simple;
+	bh=s3onKEyrT+0WHtiaDzpK2XQ5j/0XZyztY0aypjYq4dE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=k/VgMEySl2g9rWLyFfcUqSeO301aiRjTlOOK6ri6bB520LDUA1tpo5+Uv2ru4o5ND/P6qxJGj53HKkJIOAOAlVomO4+pKXBeTm/IajjdhhMkgV0QtyYHke0+W+idz8UBVxZjp4lePasu727N+JSlvYrv9NNC3MXA5QSE4G5A5h8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JTuSBm/W; arc=none smtp.client-ip=74.125.228.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SB4lTQIq"
-Received: by mail-oo2-f41.google.com with SMTP id 006d021491bc7-6bff4d6504cso227910eaf.2
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 20:08:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JTuSBm/W"
+Received: by mail-pz2-f41.google.com with SMTP id 41be03b00d2f7-cc1cea4bfb6so202709a12.3
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 20:09:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789528107; x=1790132907; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=AxECogFnkMA6SSiFQYeE519yjpa6TKSl2zEHDB706vw=;
-        b=SB4lTQIqXQ5CbZIroa8E+mHZSiJOCGHcdj35RUrqEpV7lACip7VV1vMAMSxWxVjGsa
-         9EMshe/bNVatZ3a06/8SlLRaT/h91/NjBxfoJdTIJ3Cwy8FoMEkmKS4/GxrqcSK1/1p8
-         prvz02RNGQPLfennL12R0nyELlMqDvHz2Liyswcs76BFTnpzB4UH+t8Q+L5g4H2gaIFz
-         vfAzm8eCcJpiJLTrZmj27FIFF8EK2wNTml05MmUVleORX2jsllhwr3oEPnU5/3fUHfnv
-         fl3Bb7dG6F/rUqJsugQRFdtaXhvES3EJl9TsSt1SewC6YVhAR9fS7kbCgH0AGsCV7Tdd
-         TXZw==
+        d=gmail.com; s=20251104; t=1789528199; x=1790132999; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Xo/F38+zAwDZOYgaXngSmzbr3sc8wNw9Tr/i8NiK348=;
+        b=JTuSBm/WipSCDtIsyDkAXXnr4lekbxN0M/G0OXJAq2pQx6qoLk/QEFCBpsFbfESfNU
+         nGdL9umXrre0dDHQWnmrJzQXQw69/74CkqzB38gGf+riHLFcf02mcx+A+sWByGJ0PqIb
+         FeM61oI5hLLwiMF6DiWjafX1Q396Y8v0n+1p0g+mxYGfLQ1Xui/L91UhrEd4W9XMtpQ+
+         warOOBaKdz+V/0ncqm8CxhchItw2B4ndN1a4Wyl71bjXfbB8J1ZmsH8Ge0diVp5UHrIl
+         PekM+6NaV3Ohn85DZH2ns6++euHQl2Lm2YLNLKoJT/lAKhX8hKml9N+Io/sEmaOVHpPV
+         /Oag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789528107; x=1790132907;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1789528199; x=1790132999;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=AxECogFnkMA6SSiFQYeE519yjpa6TKSl2zEHDB706vw=;
-        b=2l4SHqwCiZjlC3t0mXprgX+em9DgQ3cfQwlNkwhelbsZ0tK0YHIHpWJRLSOgDJQN1S
-         ZdG0pvsgOgKsOqYWcoeRMHDrFrATpFIWzJSwcsyIX3cpmu2um1FFbX5mFPYJHZOuk2bW
-         62kvs6WzZk01Ixv0Sfhxl1OWRR9B4WN3UfcSdhvQ8Wqcbi9YZoKGSWGJg+wXczIpRGZr
-         6CvK28GUBois+lxGlxZc/vbagMqIPIjXpe1RRTGiUNirvdGoiHKJsoXguumuUdQGQUA3
-         1wZZNlaAcS3qTUV5InWVuRqtt11M8ADXB7lQWA28Kfo9U2lKBHtu+D1LpMLnq/91aPEx
-         XujA==
-X-Forwarded-Encrypted: i=1; AKwUvBzykjL4XoG9dPAFbwohtffToBIa7jr3Qax2DPO45vMl5H+OPw7EJoTd6osqzWkdDwdlWM+/N1o=@vger.kernel.org
-X-Gm-Message-State: AFuF++lrD3uowRr9jTrbzRrnA0cxQzZvS3cMv7gjXQNftJAvRl23ueIz
-	nF76ZeR7hm21oYfky178T30sMt1Mwck5zDILWQZUkbC6rbVXnNs4UVdp
-X-Gm-Gg: AYBFou1LfYpiBcaQjdC+3gkKp+oOZzAVcZg6jWP7+XuA5pA3ouEphLavii4MKeZHGvv
-	yaEbNhCBVsmUrcaOd6ekXmEizRHn8o2zUd0Fqp448GkuMjFKoTXn5lSHuk9zMY2G/f22bxtjJ/v
-	BQeL+lbtQ0yM0UlqIcY1FfBfDqlZ9zDDbEFelzKc0cRd0l+zX8f7j8BiZPKuvjhiivRFO3tPTWo
-	WVc7lIuZ1lq9cVnYnTunfqaXU7lkpUY13wQA8+q5hCuyV5ClHG0MaEhaqUU51aKDfRkoJrOZHaM
-	eH3PL7PKq0xXbk/fAsB6UrPSEieVey4bbBk62STIBmsO25qgghipGORdKKvEEAde5njC9HdPUrk
-	+edljyIwhXhWiVpUo9sJvgY7FEMXToVZ1xLXa7dVUtNad4nKFshDKZ+Gy/jqdN9vTrgjnyxJdEM
-	k5Y8+87Bpb7Q3rtmGgY8CxziJHaCqEwuojF6O0sqX/n1K/sGmDF4s/VS+zJtR4m473H75U0kKu1
-	jvBvXH46eLbVsTYsphmc9NnfSyk6KB5/d5rTXuYT+TQ9FTykUeBrOY9F6KC+2T626h0OF5O6+Xq
-	yNrq/AigQlc4EuWLn988mVquSfW/LByP1ss4E17AZwv5Hqz/y+KYD7ChfbTliBZ/RDsHh9GGzfC
-	J4E3nwJ+YugkQXZqZOCH3ZzaCuQwD0/4l
-X-Received: by 2002:a05:6820:f0c:b0:6b1:6636:e919 with SMTP id 006d021491bc7-6c7d1cc53f8mr2704731eaf.11.1789528106832;
-        Tue, 15 Sep 2026 20:08:26 -0700 (PDT)
-Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6c7a677b3bdsm1718078eaf.6.2026.09.15.20.08.25
+        bh=Xo/F38+zAwDZOYgaXngSmzbr3sc8wNw9Tr/i8NiK348=;
+        b=I3IsTAezZv6oiBMr1hdY1XRf5wv8piRFia+rdvKnJpei8F5kmnbT5Twvu5zadGlEIh
+         NKfTGgBU8R+W22+tTAIJTdO1rrAAEqEcbaS62p9XU1cl5uVgnG2GeN7Bm/jiuay08L0G
+         UhThfJbVGC+VHCnVISgJYM5mfHLzz8q5dFX30/rxtLgm6fQB8z11fne70Y85Q0L/kynq
+         g56K6RxtM9yo/r02HvuhPxahkOFRhd9aV3KJXXUxvbMSy2L9toSit7xnYDvx+EEAqd/Q
+         8WGy/UxcJQa1AV7MWv9m/MdtaH/AfrHG0xXO/M2B6uaVF0jtMX59FLYTnEOJQZOLAWou
+         tqdA==
+X-Forwarded-Encrypted: i=1; AKwUvBxcBb3wWShR+hyIfJFDGL9OQUiTaQUWTnEo0jGiW8k1az4a4P1BEXW/8rH2WCE2acKVhJdDYLw=@vger.kernel.org
+X-Gm-Message-State: AFuF++kYCNIdE2ohecStrCmfWQ7URIOYf+xeIqAe2NhDb1UavtPXYvWz
+	sAtJbdhIYlhMcJLmsO6tFxlSSW0wWzYU4UYnoS5EIbzB2UxH1wlNc39P
+X-Gm-Gg: AYBFou0MB5ZWx9EDlmHGIvD3Sb+7lWa02lNMJtM9Z3+58C2Kt+Yophbpv7SvCnCXMdp
+	DE2xiRknebdW+pKwUCd4vO8d1ZRqbQ53mNUG2SVPlFDZp6O2nTnJzBNu3C7o0Zg0mFN9C9wIwIH
+	JMWnb3m0Zgrwc+pbzFx3GKF8WRzkTfHsV6hIl/GVGcHATz+MhVBCnG0Vdrbf22FZoN1K5vW2/pi
+	Bk5jBeZTXh0Hq7XNnwnW8gD4rKkIDx0PYouUO3XI6M6lozGEEOcavcDKzMdgitCJZEWrOi5el/x
+	RZ56zSXhCMLtYrU83gt8TdOFFmoKZ3L5Muy17LmNiF89v8fx/dHCo6JhU6X7elrnocS/G3qef0g
+	bMeWxB+vSZSI6AWAE6TduLcIIffOXTbfJAyEJtLA5h0sDXvB0AKqNBT3eqpH1LaXhpswzAfcAXE
+	trNLBGpC9dAT/EjtlMIT3tQZkBN7B9fpNKusc2p2I20zIwxP9I77ST6sWmDoa1gSUQSig7Ki2aN
+	3B2NTvrTWinuCNuQarX4hDfVM8pybqOzzFsKGrWPaUnbZftdXqZ/INk87jS//avPloWrBWPABJk
+	EQ==
+X-Received: by 2002:a17:90b:2744:b0:398:ba56:b926 with SMTP id 98e67ed59e1d1-39e1e5770b9mr2371994a91.25.1789528198934;
+        Tue, 15 Sep 2026 20:09:58 -0700 (PDT)
+Received: from Inspiron-14-5420.. ([2402:e280:21c6:671:13da:4baf:148d:4ebb])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14397197dc8sm1984591c88.3.2026.09.15.20.09.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 20:08:26 -0700 (PDT)
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Tue, 15 Sep 2026 21:07:41 -0600
-Subject: [PATCH net-next v2 2/2] net: stmmac: sun8i: add support for
- Allwinner H616 EMAC1
+        Tue, 15 Sep 2026 20:09:58 -0700 (PDT)
+From: "Hemendra M. Naik" <hemendranaik@gmail.com>
+To: kuba@kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	hemendranaik@gmail.com,
+	horms@kernel.org,
+	jhs@mojatatu.com,
+	jiri@resnulli.us,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	shuah@kernel.org,
+	tahiliani@nitk.edu.in,
+	vishy0777@gmail.com
+Subject: Re: [PATCH net-next v5 3/3] net/sched: pie: correct tc_pie_xstats field documentation
+Date: Wed, 16 Sep 2026 08:39:50 +0530
+Message-Id: <20260916030950.6667-1-hemendranaik@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260904231758.4082471-1-kuba@kernel.org>
+References: <20260904231758.4082471-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260915-submit-h616-emac1-v1-v2-2-322b32e40eb9@gmail.com>
-References: <20260915-submit-h616-emac1-v1-v2-0-322b32e40eb9@gmail.com>
-In-Reply-To: <20260915-submit-h616-emac1-v1-v2-0-322b32e40eb9@gmail.com>
-To: Richard Genoud <richard.genoud@bootlin.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, 
- Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Samuel Holland <samuel@sholland.org>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
- Jose Abreu <joabreu@synopsys.com>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Maxime Ripard <mripard@kernel.org>, netdev@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, 
- linux-stm32@st-md-mailman.stormreply.com, 
- James Hilliard <james.hilliard1@gmail.com>
-X-Mailer: b4 0.15.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The H616 secondary EMAC uses a separate system-control clock register
-and supports only RMII at 10/100 Mbps. It connects internally to the
-co-packaged AC200 or AC300 EPHY and has no external PHY pins.
+Hi @Jakub,
 
-Add an EMAC1 variant using the dedicated register and enable only RMII.
-Leave PHY initialization to the PHY driver instead of using the H3
-internal-PHY controls. No RX or TX clock delays are configured for this
-RMII-only variant.
+Thank you for the review. Replies are inline below.
 
-Co-developed-by: Richard Genoud <richard.genoud@bootlin.com>
-Signed-off-by: Richard Genoud <richard.genoud@bootlin.com>
-Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+> Should the vendored copy in tools/include/uapi/linux/pkt_sched.h be
+> updated in the same patch? [...] So after this change the two in-tree
+> copies of the same structure describe the same field with different
+> units. [...] Would a resync of tools/include/uapi/linux/pkt_sched.h,
+> or at least of the tc_pie_xstats comments, be appropriate so the stale
+> documentation the commit message aims to eliminate is actually gone
+> from the tree?
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-index 48c52eb96233..e8f86df50060 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-@@ -81,6 +81,13 @@ static const struct reg_field sun8i_syscon_reg_field = {
- 	.msb = 31,
- };
- 
-+/* EMAC1 clock register @ 0x34 in the "system control" address range */
-+static const struct reg_field sun8i_syscon_reg_field_emac1 = {
-+	.reg = 0x34,
-+	.lsb = 0,
-+	.msb = 31,
-+};
-+
- /* EMAC clock register @ 0x164 in the CCU address range */
- static const struct reg_field sun8i_ccu_reg_field = {
- 	.reg = 0x164,
-@@ -143,6 +150,13 @@ static const struct emac_variant emac_variant_h6 = {
- 	.tx_delay_max = 7,
- };
- 
-+static const struct emac_variant emac_variant_h616_emac1 = {
-+	.syscon_field = &sun8i_syscon_reg_field_emac1,
-+	/* The co-packaged AC200/AC300 PHY does not use the H3 PHY controls. */
-+	.soc_has_internal_phy = false,
-+	.support_rmii = true,
-+};
-+
- #define EMAC_BASIC_CTL0 0x00
- #define EMAC_BASIC_CTL1 0x04
- #define EMAC_INT_STA    0x08
-@@ -1278,6 +1292,8 @@ static const struct of_device_id sun8i_dwmac_match[] = {
- 		.data = &emac_variant_a64 },
- 	{ .compatible = "allwinner,sun50i-h6-emac",
- 		.data = &emac_variant_h6 },
-+	{ .compatible = "allwinner,sun50i-h616-emac1",
-+		.data = &emac_variant_h616_emac1 },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, sun8i_dwmac_match);
+We would prefer to leave this out of v6. The v4 review asked us to drop
+that, and we did; adding it back now would undo that. The copy is
+stale well beyond this one comment (u32 prob, no dq_rate_estimating, no
+FQ-PIE additions at all), so fixing a single unit comment there would
+not help much. A proper resync feels like its own patch.
 
--- 
-2.53.0
+> This isn't a bug introduced by this patch, but does the exported value
+> always match the newly documented microsecond unit? [...] a qdelay
+> whose nanosecond value exceeds 2^32-1 (roughly 4.295 s) wraps modulo
+> 2^32 ns and then gets divided, reporting a small microsecond number
+> for a large delay. [...] Would moving the cast after the division in
+> both sch_pie.c and sch_fq_pie.c be worth a follow-up, so the code
+> matches the microsecond contract this comment now states?
+
+Thank you for catching this; the bug is real, and you already flagged
+the same issue for sch_fq_pie.c on patch 1 — we will fix it there with
+div_u64(). No code change is needed for this patch itself; it is 
+comment-only and correct as posted. We will send the sch_pie.c fix as 
+a follow-up after this series.
+
+
+
+
+One more query: I see that the counterpart iproute2 v5 patches are currently
+marked as "Awaiting Upstream". In that case, is it necessary to post a v6 of 
+the iproute2 series, or can we wait for the v5 patch to be reviewed?
+
+
+
+Thanks,
+Hemendra
+
 
