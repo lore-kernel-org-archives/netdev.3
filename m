@@ -1,616 +1,661 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7A64CEE66
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 16:43:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DF248FF83;
+	Wed, 16 Sep 2026 16:50:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789577053; cv=none; b=imVozaXpiSN6/O0fAEdiNPABvJccJ94gHM0EkEpHXSXcdsHyhDOguHcH0wueKwVl18zoIEmPogLAUcSpnovcolsI+6zOd2xDmRDaLeJValF7yVjzb+7AFaEfWFhHBGaOewTC2vUz304DCE1B+M8HC/stkVTccE6m8JjKQZxORss=
+	t=1789577414; cv=none; b=cmDXAnokw6OvtnMKpInNhkKF5J46HnZbtIwJXvkrPGfZ4/2JWzJqkbapgvgu646i54a4d5VVMA0KeFeOj5wrMRCDod3g1keSNIg2x/hZTFl83wd3g2KkrO10kAM9phjAr6fNrJCRb2IooD97lmNaLctn9nli4A/85MtBsBXlrzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789577053; c=relaxed/simple;
-	bh=VewGv01dzeArNwz6G4oTQ7PUYU/ujavLp1cXDQYa58Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o76xyQDfMSXo6ZdE+/zJUD5RWYrax3K4hcJsdTvpSFz9lYinfWf1Xdbz0g43mYa+gH6uwWBpG0eMLnVvZv/pPSJR+yWZXZK5TutvKzhBju7FOS2Md9ks9B2rG7iH54jxDQOgOn2MDJqKtaS2B0S2tan9zQ2uzc0/lXLmR0oI4eQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RlaS27U5; arc=none smtp.client-ip=74.125.228.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789577414; c=relaxed/simple;
+	bh=PvE5gwnvrLjj+qizyD1DjjC9DOL5FxPeN+s/O5bRng4=;
+	h=Date:From:To:CC:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=ni9mhj4Vf6O0Wc//fCkEwfQCDBOqnWB2+5eJ2iCxSnDryUzfOqlEJeZGlg+9LooyevYe76SdqPveWMPgW60tQfDLWwmrWbHPn+k+7bKT2bmwwHQoJXktiIVNkeljXGNRpX1JO07wsT0ckyiYZ3Bit+B0idnQzZhFvnDRgC6zqDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=lI8q8aF2; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RlaS27U5"
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc4c08393dfso899741a12.3
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 09:43:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789577034; x=1790181834; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=eqHY/HHhqcI64MdlILGee2ugK76bq9SvJgTA/Q/klAg=;
-        b=RlaS27U5GAiMDv9FFMaSA464jvCzw5uejDMxWWR+C/7UD+1TJaFZ2WdIj9iRCNYbOk
-         aSu6yS/E0zXSW04qCSE+62paAhhIeAaToS2jrCnzZ9LVEvSTCWaGQSGlM88UWB8lvMlt
-         ZgrZpSo9BaJ6BgIWbo+kXpTDnZrhsdy6+wBt+uoBuSjTol1HWGbiWWfPinvUIG2hOCRY
-         5xgmGjRRW9gmqZAQ1m7UTGWs03Cgj+0rT7jUCkSYETlC2yQ9jU5xtm5OyS9qwURSkt8V
-         renyvz0uB9a09EgGyvsYvYsUqqh1esUxupJkooVQ52QzFSS+SvBh+VCqqoN3n1bV+dor
-         DMRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789577034; x=1790181834;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=eqHY/HHhqcI64MdlILGee2ugK76bq9SvJgTA/Q/klAg=;
-        b=h9jCKtXSOMRtWQ0bsu3Efw5WzTT49QpDbOZcesbPe0FL8YoYT6izhMTzuI8Ov9EcyE
-         +CxnYk9MRkSVPNGDSB/y2baQrWfy/pkd+guwPgA6zRQ0BzwE1ScPQGTQ0sCZLU8RbYJr
-         YGEMjVjPVgGc/QRhxMX+VUTKEbG756vNQufY2VohaU3QrU0hN+iemNoxDZFP0mcsxufm
-         6uThHLWnAksKfSlWcVIkQ3GjAEhapmdya2Bp1Ip7ccDTHMwzql7Y2EZzUfv5ksmvqv3B
-         2SGfvHiFbdUnzUxsMmLIYoce6eGIHgv+uwWHdw0gvBSghQ6c51Tc4JxAHnPgNj1gHw54
-         9dVg==
-X-Gm-Message-State: AFuF++mOLyJWxLem3RMABCir2RJJZS1icN5qAqvUnuRgX9/YJM99pyE6
-	iUaPN5dPai1mf3xiyuhZmF0DRh9sLerdfShk+QbSEYqc4tFERhggQ9le8uDNiq/nZ10=
-X-Gm-Gg: AYBFou0QwPtO4vIgJcb9yeVgpEs2yAv7JM1C5rx6n9hFzRjyKpIcD43wny3gz+PFNUu
-	TowtyhM4AOR7KnUurb6kM9MT6x6XfCa3IxOcGKaDrmFZun3f1AfAFl8Fex3xJ+PWeLkxzd4P1c/
-	fm8v4I8xsWndfvbnbA8syzyTswIdRfWmEMqjrIk9KxLL16syTtvvO1YIDPwzO7ucUF4IZnPk5Mv
-	NsZTiuVTn5cEFIkVt+AH92Aamz1RwllTdAgqsB+Lgv6JXGM6sBC3gExrLna5DJIGlLkUMoO+4Lx
-	HiPjR8xzBOM7+hJNjBo/wbWFsNu4z87oxjYrkm/2zYYyirkZ/K6aP+0YjdBnEYQDR0Pxl5NtE33
-	UKSb8Y8oAG07l680KQlEEYaNURSd9vJShzc0iPObrpmqqJSKCtHpr888D0dGrGWOh1pT6tlx+qW
-	PMJdM3k7+GIGcea0wEy2o4mz2fVRjwYYmBrZFmywPqrrrg7NVg7L5KAdii0B1NotLoPLhBLHz1Q
-	Pl2ZORdzAUSgED/VIa5cnlLjw==
-X-Received: by 2002:a05:6a21:3294:b0:3d8:1f68:59ac with SMTP id adf61e73a8af0-3dd5f79ce3dmr7651251637.23.1789577034165;
-        Wed, 16 Sep 2026 09:43:54 -0700 (PDT)
-Received: from d.home.yangfl.dn42 ([2a09:bac5:661a:1232::1d0:c5])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc50acc757csm1902278a12.32.2026.09.16.09.43.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 09:43:53 -0700 (PDT)
-From: David Yang <mmyangfl@gmail.com>
-To: netdev@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 8/8] net: dsa: motorcomm: Add SerDes PCS
-Date: Thu, 17 Sep 2026 00:43:08 +0800
-Message-ID: <20260916164310.3168269-9-mmyangfl@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260916164310.3168269-1-mmyangfl@gmail.com>
-References: <20260916164310.3168269-1-mmyangfl@gmail.com>
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="lI8q8aF2"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68GFfcxx2321380;
+	Wed, 16 Sep 2026 09:49:39 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=OtcixqO2RGVkz8SaQj6eeRl
+	wDrXL4L52OxV9Lu8ANQY=; b=lI8q8aF2kj4hyFIjZnyiWXcpJtJME/6sAdyA8BG
+	balFlfPefelc7++da3EcRbmp5kZZJ290M2WKyE8GYbGNab8HooKNneirxE3LieBa
+	0wuABWR5aWc6Ph0VvvtKgHzbL4GsqlHnda0A9O8eIFhFa91loZ2/D9fLYx10m8ft
+	o77NBGwB1ewjpbK9VEiEGnIw5kZ+MUnHFQOG8HZs5XfYTMWh+Lw1WdUWPlhEg+tr
+	yifjC2+CYf0+q7V35tRco8gEkWSauEZlgGgdRa3eOYAYfBRChcaA8Lik+Fo7NPl1
+	J8+XUTOHOGJi+1DAvSrcj9oubC4RhHR531uQIWVCu6x8K2Q==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4gqeft5arj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 16 Sep 2026 09:49:38 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Wed, 16 Sep 2026 09:49:38 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Wed, 16 Sep 2026 09:49:37 -0700
+Received: from kernel-ep2 (unknown [10.29.36.53])
+	by maili.marvell.com (Postfix) with ESMTP id 3B8923F70BA;
+	Wed, 16 Sep 2026 09:49:32 -0700 (PDT)
+Date: Wed, 16 Sep 2026 22:19:32 +0530
+From: Nitin Shetty J <nshettyj@marvell.com>
+To: <netdev-bot+sashiko@kernel.org>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <gakula@marvell.com>, <sgoutham@marvell.com>, <rkannoth@marvell.com>,
+        <sbhatta@marvell.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <bbhushan2@marvell.com>, <horms@kernel.org>, <hkalra@marvell.com>
+Subject: Re: [PATCH net v3] octeontx2-af: Fix rep link state sync and
+ workqueue races
+Message-ID: <aqrInFMnvs4K48+3@kernel-ep2>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE2MDIzMCBTYWx0ZWRfX442R3iHeNYhR
+ iocSV5+F4PNsNYsvUGjqthJjTO9wZ4QCGgCIFcbMtd7eJyLBBswd50ggAmTbOAX0PDqdXKtekFL
+ Db304eQMF6/366VB8jzdmLVHNzQTyv4=
+X-Authority-Analysis: v=2.4 cv=cIV1IVeN c=1 sm=1 tr=0 ts=6aaac8a2 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22 a=9R54UkLUAAAA:8
+ a=M5GUcnROAAAA:8 a=VwQbUJbxAAAA:8 a=CTFQr-jT7tHTmo-U8y8A:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=O8hF6Hzn-FEA:10 a=YTcpBFlVQWkNscrzJ_Dz:22
+ a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-ORIG-GUID: hWeE5C8-zKupUh2wbCzOhlYm7sYzQZbx
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE2MDIzMCBTYWx0ZWRfX62PoMdSiCysp
+ 64xwVsj7H0XyXGJeSsN0mLSHRGVYAwzWLVlutg/+63zZp+33UGYRpw8duNOdMuPAsFhkdjvZkx/
+ RiXVWAWR+uyjljKmssg1NwgOsbPr8HqMg3iOTJej5hfX22xnjPEWW5M5OgwotgUMf050OjziRxt
+ 226Twz+0rNgxSm0SpDiSYc43PXt6XvfaZ6osDYMstBPAFvfuYYOWYsSwA157wuTTXZBMPirmoKF
+ w5dAKsVNYTxwzxTWSinSw6yyXp9RMUEhsumvpzy++Rh0eHeVaP1roNo/V54nBwo/7ht4hlrpZ+M
+ 8GYOk2okDnF2ydf1GUoGN3keTQkw+0PytjmdAl/JGKFF42z0k+k+jUMn4ko1+R1M2mTABAVdUlK
+ IheApH5VLpwxbar/U6plHb1Ml696DGTdtY+cfzvuKEgKWR9dsN+Xix9wsGR1SX7SblGULoeBiBt
+ lLYF6bnrNljUqNdtZZQ==
+X-Proofpoint-GUID: hWeE5C8-zKupUh2wbCzOhlYm7sYzQZbx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-16_03,2026-09-16_02,2025-10-01_01
 
-Support in-band negotiation of the SerDes ports.
+On 2026-09-09 at 04:21:15, netdev-bot+sashiko@kernel.org (netdev-bot+sashiko@kernel.org) wrote:
+> Thank you for your contribution! Sashiko AI review found 10 potential
+> issue(s) to consider:
+> 
+> Critical: 0 · High: 2 (1) · Medium: 7 (1) · Low: 1
+> 
+> - [High] The new authorization gates added by this patch
+>   (`req->hdr.pcifunc != rvu->rep_pcifunc -> -EPERM` in…
+> - [High] rvu_mbox_handler_get_rep_cnt() now truncates rvu->rep_cnt /
+>   rep2pfvf_map to RVU_MAX_REP (64) entries, but every consumer in the AF…
+> - [Medium] rvu_rep_open() and rvu_rep_stop() in nic/rep.c now return
+>   early for every VF representor (`if (rep->pcifunc &…
+> - [Medium] The new teardown barrier in rvu_remove() only flushes
+>   rvu->afpf_wq_info.mbox_wq before destroy_workqueue(rep_wq), and its…
+> - [Medium] The representor PF's own TL2->LBK link enable performed by
+>   rvu_rep_pf_init() (rvu_rep.c:445-451, rvu_switch_enable_lbk_link(rvu,…
+> - [Medium] rvu_remove() decides whether to destroy rvu->rep_evt_wq, and
+>   clears the pointer, without holding rvu->rsrc_lock, whereas…
+> - [Medium] The patch introduces a lockless publish/consume protocol for
+>   rvu->rep_evt_wq (rvu_remove() uses WRITE_ONCE(),…
+> - [Medium] rvu_rep_install_mcam_rules() tests test_bit(NIXLF_INITIALIZED,
+>   &pfvf->flags) outside any lock and then calls…
+> - [Medium] Draining the representor event workqueue after unregistering
+>   interrupts causes mailbox communication timeouts.
+> - [Low] In the first-time GET_REP_CNT path, `rvu->rep_pcifunc =
+>   req->hdr.pcifunc;` (rvu_rep.c:504) executes before both -ENOMEM exits…
+> 
+> Pre-existing issues:
+> - [High] When rvu_rep_install_mcam_rules() fails (the new err_disable_lbk
+>   path still returns err), rvu_switch_enable()'s uninstall_rules label…
+> - [Medium] rvu_rep_install_tx_rule() first calls rvu_rep_tx_vlan_cfg(),
+>   which allocates a NIX TX VTAG definition entry and programs…
+> 
+> --
+> 
+> octeontx2-af: Fix rep link state sync and workqueue races
+> 
+> This moves the representor event workqueue creation from
+> rvu_rep_install_mcam_rules() into rvu_mbox_handler_get_rep_cnt(), adds
+> sender and bounds validation to the REP mailbox handlers, and makes LBK
+> link configuration take rsrc_lock.  A few questions below about the new
+> validation and teardown paths.
+> 
+> > diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+> > index 937b085582b5..dc4e1fa900b7 100644
+> > --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+> > +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+> > @@ -3721,6 +3721,20 @@ static void rvu_remove(struct pci_dev *pdev)
+> >  	rvu_unregister_dl(rvu);
+> >  	rvu_unregister_interrupts(rvu);
+> >  	rvu_flr_wq_destroy(rvu);
+> > +	if (rvu->rep_evt_wq) {
+> > +		struct workqueue_struct *rep_wq = rvu->rep_evt_wq;
+> > +
+> > +		/* NULL the pointer before flushing mbox_wq.  Any mbox handler
+> > +		 * still in flight will snapshot NULL via READ_ONCE() and return
+> > +		 * -EINVAL without calling queue_work(), so no new items can be
+> > +		 * added to rep_wq after flush_workqueue(mbox_wq) returns.
+> > +		 */
+> > +		WRITE_ONCE(rvu->rep_evt_wq, NULL);
+> > +		flush_workqueue(rvu->afpf_wq_info.mbox_wq);
+> > +		destroy_workqueue(rep_wq);
+> > +	} else {
+> > +		flush_workqueue(rvu->afpf_wq_info.mbox_wq);
+> > +	}
+> 
+> [Severity: Medium]
+> This teardown sits after rvu_unregister_interrupts(), which has
+> already disabled the AF-PF mailbox interrupt (RVU_AF_PFAF_MBOX_INT_ENA_W1C,
+> or cn20k_rvu_unregister_interrupts()).  destroy_workqueue() calls
+> drain_workqueue(), so any rep_evt_work still queued now runs to
+> completion here, and rvu_rep_wq_handler() -> rvu_rep_up_notify() does
+> otx2_mbox_msg_send_up() followed by otx2_mbox_wait_for_zero() and
+> otx2_mbox_wait_for_rsp() on rvu->afpf_wq_info.mbox_up.
+> 
+> With the mailbox interrupt already gone, the PF's reply is never
+> processed by the AF, so each of those waits has to time out rather
+> than complete.  With a non-empty rep_evtq_head that is paid per
+> queued event, all while holding rvu->mbox_lock, which stretches
+> rvu_remove() out by seconds at a time on a path userspace is
+> blocked on.
+> 
+> Would it be better to move this block ahead of
+> rvu_unregister_interrupts() so the pending up-notifies can still be
+> acknowledged, or alternatively to stop rvu_rep_wq_handler() from
+> sending anything once removal has started (a teardown flag checked
+> before otx2_mbox_msg_send_up(), or draining rep_evtq_head and
+> freeing the qentries without notifying)?  Note the same question
+> applies to the qentry list itself: nothing appears to free the
+> entries that are still on rvu->rep_evtq_head if the handler is not
+> allowed to consume them.
+> 
+wiil fix it in next patch version.
 
-Signed-off-by: David Yang <mmyangfl@gmail.com>
----
- drivers/net/dsa/motorcomm/Makefile   |   1 +
- drivers/net/dsa/motorcomm/chip.c     |  61 ++++++-
- drivers/net/dsa/motorcomm/chip.h     |   6 +
- drivers/net/dsa/motorcomm/mdio_bus.c |  31 +++-
- drivers/net/dsa/motorcomm/mdio_bus.h |  15 ++
- drivers/net/dsa/motorcomm/pcs-921x.c | 235 +++++++++++++++++++++++++++
- drivers/net/dsa/motorcomm/pcs.h      |  13 ++
- 7 files changed, 355 insertions(+), 7 deletions(-)
- create mode 100644 drivers/net/dsa/motorcomm/pcs-921x.c
- create mode 100644 drivers/net/dsa/motorcomm/pcs.h
+> [Severity: Medium]
+> Is flushing only rvu->afpf_wq_info.mbox_wq enough to close the
+> queue_work() window the comment describes?
+> 
+> The same rvu_mbox_handler_* dispatch also runs on
+> rvu->afvf_wq_info.mbox_wq via rvu_afvf_mbox_handler(), and that
+> workqueue is destroyed much later, inside rvu_disable_sriov() ->
+> rvu_mbox_destroy().  For AF-VF messages the dispatcher clears only the
+> func bits and keeps the sender-supplied PF field, so
+> rvu_mbox_handler_nix_lf_start_rx()/nix_lf_stop_rx()/rvu_nix_lf_teardown()
+> can reach rvu_rep_notify_pfvf_state(), which sets
+> req.hdr.pcifunc = rvu->rep_pcifunc and therefore passes the new -EPERM
+> gate:
+> 
+> CPU0 (afvf mbox work)               CPU1 (rvu_remove)
+>   wq = READ_ONCE(rvu->rep_evt_wq);  /* non-NULL */
+>                                     WRITE_ONCE(rvu->rep_evt_wq, NULL);
+>                                     flush_workqueue(afpf mbox_wq);
+>                                     destroy_workqueue(rep_wq);
+>   queue_work(wq, &rvu->rep_evt_work);  /* freed wq */
+> 
+> Should the afvf mailbox workqueue be flushed here too (or the VF mailbox
+> torn down before this point)?  The qentry that handler already kmalloc'd
+> and put on rep_evtq_head is leaked in that case as well.
+> 
+wiil fix it in next patch version.
 
-diff --git a/drivers/net/dsa/motorcomm/Makefile b/drivers/net/dsa/motorcomm/Makefile
-index f7cce7eabbb8..1d2c1b3064c4 100644
---- a/drivers/net/dsa/motorcomm/Makefile
-+++ b/drivers/net/dsa/motorcomm/Makefile
-@@ -3,4 +3,5 @@ obj-$(CONFIG_NET_DSA_YT921X) += yt921x.o
- yt921x-objs := chip.o
- yt921x-$(CONFIG_NET_DSA_YT921X_LEDS) += leds.o
- yt921x-objs += mdio_bus.o
-+yt921x-objs += pcs-921x.o
- yt921x-objs += smi.o
-diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-index c7a8004ce34a..530bea77ac70 100644
---- a/drivers/net/dsa/motorcomm/chip.c
-+++ b/drivers/net/dsa/motorcomm/chip.c
-@@ -28,6 +28,7 @@
- #include "chip.h"
- #include "leds.h"
- #include "mdio_bus.h"
-+#include "pcs.h"
- #include "smi.h"
+> [Severity: Medium]
+> Can rvu->rep_evt_wq become non-NULL after this if () test?  The
+> producer, rvu_mbox_handler_get_rep_cnt(), now publishes the pointer
+> under rvu->rsrc_lock, while this teardown reads and clears it with no
+> lock and never re-checks:
+> 
+> CPU0 (get_rep_cnt work on mbox_wq)   CPU1 (rvu_remove)
+>                                      if (rvu->rep_evt_wq)  /* NULL */
+>                                      else
+>                                        flush_workqueue(mbox_wq);
+>   mutex_lock(&rvu->rsrc_lock);
+>   rvu->rep_evt_wq = alloc_workqueue(...);
+> 
+> The freshly created workqueue and its worker pool are then never
+> destroyed, and a REP_EVENT_NOTIFY message processed later in the same
+> drained batch can queue_work(&rvu->rep_evt_work) on a workqueue nothing
+> waits for, so rvu_rep_wq_handler() may touch rvu after
+> devm_kfree(&pdev->dev, rvu).  Would taking rsrc_lock here (or a
+> "removing" flag checked by the handler) close that?
+>
+wiil fix it in next patch version.
  
- struct yt921x_mib_desc {
-@@ -3511,6 +3512,10 @@ yt921x_port_up(struct yt921x_priv *priv, int port, unsigned int mode,
- 	if (ps == YT921X_SPEED_NUM)
- 		return -EINVAL;
- 
-+	mask = YT921X_PORT_SPEED_M | YT921X_PORT_TX_MAC_EN |
-+	       YT921X_PORT_RX_MAC_EN | YT921X_PORT_TX_PAUSE |
-+	       YT921X_PORT_RX_PAUSE | YT921X_PORT_DUPLEX_FULL |
-+	       YT921X_PORT_CTRL_LINK_AN;
- 	ctrl = YT921X_PORT_SPEED(ps);
- 	if (duplex == DUPLEX_FULL)
- 		ctrl |= YT921X_PORT_DUPLEX_FULL;
-@@ -3519,7 +3524,9 @@ yt921x_port_up(struct yt921x_priv *priv, int port, unsigned int mode,
- 	if (rx_pause)
- 		ctrl |= YT921X_PORT_RX_PAUSE;
- 	ctrl |= YT921X_PORT_RX_MAC_EN | YT921X_PORT_TX_MAC_EN;
--	res = yt921x_reg_write(priv, YT921X_PORTn_CTRL(port), ctrl);
-+	if (pp->serdes && pp->inband)
-+		ctrl |= YT921X_PORT_CTRL_LINK_AN;
-+	res = yt921x_reg_update_bits(priv, YT921X_PORTn_CTRL(port), mask, ctrl);
- 	if (res)
- 		return res;
- 
-@@ -3539,7 +3546,8 @@ yt921x_port_up(struct yt921x_priv *priv, int port, unsigned int mode,
- 		if (rx_pause)
- 			ctrl |= YT921X_SERDES_RX_PAUSE;
- 		mask |= YT921X_SERDES_LINK;
--		ctrl |= YT921X_SERDES_LINK;
-+		if (!pp->inband)
-+			ctrl |= YT921X_SERDES_LINK;
- 		res = yt921x_reg_update_bits(priv, YT921X_SERDESn(port),
- 					     mask, ctrl);
- 		if (res)
-@@ -3570,7 +3578,6 @@ yt921x_port_config(struct yt921x_priv *priv, int port, unsigned int mode,
- 	struct yt921x_port *pp = &priv->ports[port];
- 	struct device *dev = to_device(priv);
- 	u32 mask;
--	u32 ctrl;
- 	int res;
- 
- 	if (BIT(port) & info->internal_mask) {
-@@ -3615,6 +3622,29 @@ yt921x_port_config(struct yt921x_priv *priv, int port, unsigned int mode,
- 	return -EINVAL;
- }
- 
-+static struct phylink_pcs *
-+yt921x_phylink_mac_select_pcs(struct phylink_config *config,
-+			      phy_interface_t interface)
-+{
-+	struct dsa_port *dp = dsa_phylink_to_port(config);
-+	struct yt921x_priv *priv = to_yt921x_priv(dp->ds);
-+	const struct yt921x_info *info = priv->info;
-+	int port = dp->index;
-+
-+	if (!(BIT(port) & info->serdes_mask))
-+		return NULL;
-+
-+	switch (interface) {
-+	case PHY_INTERFACE_MODE_SGMII:
-+	case PHY_INTERFACE_MODE_100BASEX:
-+	case PHY_INTERFACE_MODE_1000BASEX:
-+	case PHY_INTERFACE_MODE_2500BASEX:
-+		return &priv->ports[port].pcs;
-+	default:
-+		return NULL;
-+	}
-+}
-+
- static void
- yt921x_phylink_mac_link_down(struct phylink_config *config, unsigned int mode,
- 			     phy_interface_t interface)
-@@ -4202,6 +4232,11 @@ static int yt921x_chip_setup(struct yt921x_priv *priv)
- 	if (res)
- 		return res;
- 
-+	res = yt921x_reg_clear_bits(priv, YT921X_SERDES_CTRL,
-+				    YT921X_SERDES_CTRL_TEST);
-+	if (res)
-+		return res;
-+
- 	return 0;
- }
- 
-@@ -4211,6 +4246,8 @@ static int yt921x_dsa_setup(struct dsa_switch *ds)
- 	struct device *dev = to_device(priv);
- 	struct device_node *np = dev->of_node;
- 	struct device_node *child;
-+	unsigned long mask;
-+	int port;
- 	int res;
- 
- 	mutex_lock(&priv->reg_lock);
-@@ -4244,6 +4281,23 @@ static int yt921x_dsa_setup(struct dsa_switch *ds)
- 		return -ENODEV;
- 	}
- 
-+	mask = priv->info->serdes_mask;
-+	for_each_set_bit(port, &mask, YT921X_PORT_NUM) {
-+		struct yt921x_port *pp = &priv->ports[port];
-+
-+		pp->pcs.ops = &yt921x_phylink_pcs_ops;
-+		pp->pcs.poll = true;
-+
-+		__set_bit(PHY_INTERFACE_MODE_SGMII,
-+			  pp->pcs.supported_interfaces);
-+		__set_bit(PHY_INTERFACE_MODE_100BASEX,
-+			  pp->pcs.supported_interfaces);
-+		__set_bit(PHY_INTERFACE_MODE_1000BASEX,
-+			  pp->pcs.supported_interfaces);
-+		__set_bit(PHY_INTERFACE_MODE_2500BASEX,
-+			  pp->pcs.supported_interfaces);
-+	}
-+
- 	mutex_lock(&priv->reg_lock);
- 	res = yt921x_chip_setup(priv);
- 	mutex_unlock(&priv->reg_lock);
-@@ -4261,6 +4315,7 @@ static int yt921x_dsa_setup(struct dsa_switch *ds)
- }
- 
- static const struct phylink_mac_ops yt921x_phylink_mac_ops = {
-+	.mac_select_pcs	= yt921x_phylink_mac_select_pcs,
- 	.mac_link_down	= yt921x_phylink_mac_link_down,
- 	.mac_link_up	= yt921x_phylink_mac_link_up,
- 	.mac_config	= yt921x_phylink_mac_config,
-diff --git a/drivers/net/dsa/motorcomm/chip.h b/drivers/net/dsa/motorcomm/chip.h
-index c1b5f29eb0fa..0cbb54834fff 100644
---- a/drivers/net/dsa/motorcomm/chip.h
-+++ b/drivers/net/dsa/motorcomm/chip.h
-@@ -910,6 +910,8 @@ struct yt921x_port {
- 
- 	/* SerDes in use */
- 	bool serdes:1;
-+	/* Link from in-band status (PHYLINK_PCS_NEG_INBAND) */
-+	bool inband:1;
- 	/* BR_HAIRPIN_MODE */
- 	bool hairpin:1;
- 	/* BR_ISOLATED */
-@@ -929,8 +931,12 @@ struct yt921x_port {
- 
- 	struct yt921x_led *leds[YT921X_LED_GROUP_NUM];
- #endif
-+
-+	struct phylink_pcs pcs;
- };
- 
-+#define pcs_to_yt921x_port(_pcs) container_of((_pcs), struct yt921x_port, pcs)
-+
- struct yt921x_reg_ops {
- 	int (*read)(void *context, u32 reg, u32 *valp);
- 	int (*write)(void *context, u32 reg, u32 val);
-diff --git a/drivers/net/dsa/motorcomm/mdio_bus.c b/drivers/net/dsa/motorcomm/mdio_bus.c
-index ba70343f3f33..1a3f3cc68275 100644
---- a/drivers/net/dsa/motorcomm/mdio_bus.c
-+++ b/drivers/net/dsa/motorcomm/mdio_bus.c
-@@ -19,8 +19,7 @@ static int yt921x_intif_wait(struct yt921x_priv *priv)
- 			       &val);
- }
- 
--static int
--yt921x_intif_read(struct yt921x_priv *priv, int port, int reg, u16 *valp)
-+int yt921x_intif_read(struct yt921x_priv *priv, int port, int reg, u16 *valp)
- {
- 	struct device *dev = to_device(priv);
- 	u32 mask;
-@@ -58,8 +57,7 @@ yt921x_intif_read(struct yt921x_priv *priv, int port, int reg, u16 *valp)
- 	return 0;
- }
- 
--static int
--yt921x_intif_write(struct yt921x_priv *priv, int port, int reg, u16 val)
-+int yt921x_intif_write(struct yt921x_priv *priv, int port, int reg, u16 val)
- {
- 	u32 mask;
- 	u32 ctrl;
-@@ -86,6 +84,31 @@ yt921x_intif_write(struct yt921x_priv *priv, int port, int reg, u16 val)
- 	return yt921x_intif_wait(priv);
- }
- 
-+int
-+yt921x_intif_modify_changed(struct yt921x_priv *priv, int port, int reg,
-+			    u16 mask, u16 val)
-+{
-+	int res;
-+	u16 v;
-+	u16 u;
-+
-+	res = yt921x_intif_read(priv, port, reg, &v);
-+	if (res)
-+		return res;
-+
-+	u = v;
-+	u &= ~mask;
-+	u |= val;
-+	if (u == v)
-+		return 0;
-+
-+	res = yt921x_intif_write(priv, port, reg, u);
-+	if (res)
-+		return res;
-+
-+	return 1;
-+}
-+
- static int yt921x_mbus_int_read(struct mii_bus *mbus, int port, int reg)
- {
- 	struct yt921x_priv *priv = mbus->priv;
-diff --git a/drivers/net/dsa/motorcomm/mdio_bus.h b/drivers/net/dsa/motorcomm/mdio_bus.h
-index ae5792b8da24..e79b725d435b 100644
---- a/drivers/net/dsa/motorcomm/mdio_bus.h
-+++ b/drivers/net/dsa/motorcomm/mdio_bus.h
-@@ -33,6 +33,21 @@
- 
- struct yt921x_priv;
- 
-+int yt921x_intif_read(struct yt921x_priv *priv, int port, int reg, u16 *valp);
-+int yt921x_intif_write(struct yt921x_priv *priv, int port, int reg, u16 val);
-+int yt921x_intif_modify_changed(struct yt921x_priv *priv, int port, int reg,
-+				u16 mask, u16 val);
-+
-+static inline int
-+yt921x_intif_modify(struct yt921x_priv *priv, int port, int reg, u16 mask,
-+		    u16 val)
-+{
-+	int res;
-+
-+	res = yt921x_intif_modify_changed(priv, port, reg, mask, val);
-+	return res >= 0 ? 0 : res;
-+}
-+
- int yt921x_mbus_int_init(struct yt921x_priv *priv, struct device_node *mnp);
- int yt921x_mbus_ext_init(struct yt921x_priv *priv, struct device_node *mnp);
- 
-diff --git a/drivers/net/dsa/motorcomm/pcs-921x.c b/drivers/net/dsa/motorcomm/pcs-921x.c
-new file mode 100644
-index 000000000000..dcf7397cd241
---- /dev/null
-+++ b/drivers/net/dsa/motorcomm/pcs-921x.c
-@@ -0,0 +1,235 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Copyright (c) 2026 David Yang
-+ */
-+
-+#include "chip.h"
-+#include "mdio_bus.h"
-+#include "pcs.h"
-+#include "smi.h"
-+
-+#define to_device(priv) ((priv)->ds.dev)
-+
-+static int
-+yt921x_serdes_config(struct yt921x_priv *priv, int port, unsigned int neg_mode,
-+		     phy_interface_t interface,
-+		     const unsigned long *advertising, bool permit_pause_to_mac)
-+{
-+	bool inband = neg_mode & PHYLINK_PCS_NEG_INBAND;
-+	struct yt921x_port *pp = &priv->ports[port];
-+	bool changed = false;
-+	u16 bmcr;
-+	u32 mask;
-+	u32 ctrl;
-+	u16 val;
-+	int adv;
-+	int res;
-+
-+	switch (interface) {
-+	case PHY_INTERFACE_MODE_SGMII:
-+		ctrl = YT921X_SERDES_MODE_SGMII;
-+		break;
-+	case PHY_INTERFACE_MODE_100BASEX:
-+		ctrl = YT921X_SERDES_MODE_100BASEX;
-+		break;
-+	case PHY_INTERFACE_MODE_1000BASEX:
-+		ctrl = YT921X_SERDES_MODE_1000BASEX;
-+		break;
-+	case PHY_INTERFACE_MODE_2500BASEX:
-+		ctrl = YT921X_SERDES_MODE_2500BASEX;
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	res = yt921x_reg_update_bits(priv, YT921X_SERDESn(port),
-+				     YT921X_SERDES_MODE_M, ctrl);
-+	if (res)
-+		return res;
-+
-+	mask = YT921X_PORT_CTRL_LINK_AN | YT921X_PORT_CTRL_PAUSE_AN;
-+	ctrl = 0;
-+	if (inband)
-+		ctrl |= YT921X_PORT_CTRL_LINK_AN;
-+	if (neg_mode == PHYLINK_PCS_NEG_INBAND_ENABLED && permit_pause_to_mac)
-+		ctrl |= YT921X_PORT_CTRL_PAUSE_AN;
-+	res = yt921x_reg_update_bits(priv, YT921X_PORTn_CTRL(port), mask, ctrl);
-+	if (res)
-+		return res;
-+
-+	if (inband) {
-+		res = yt921x_reg_clear_bits(priv, YT921X_SERDESn(port),
-+					    YT921X_SERDES_LINK);
-+		if (res)
-+			return res;
-+	}
-+
-+	adv = phylink_mii_c22_pcs_encode_advertisement(interface, advertising);
-+	if (adv >= 0) {
-+		res = yt921x_intif_modify_changed(priv, port, MII_ADVERTISE,
-+						  U16_MAX, adv);
-+		if (res < 0)
-+			return res;
-+
-+		changed = !!res;
-+	}
-+
-+	res = yt921x_intif_read(priv, port, MII_BMCR, &val);
-+	if (res)
-+		return res;
-+
-+	bmcr = val;
-+	if (neg_mode == PHYLINK_PCS_NEG_INBAND_ENABLED)
-+		bmcr |= BMCR_ANENABLE;
-+	else
-+		bmcr &= ~BMCR_ANENABLE;
-+
-+	/* If the ANENABLE bit was changed, the PHY will restart negotiation,
-+	 * so we don't need to flag a change to trigger its own restart.
-+	 */
-+	if (bmcr != val)
-+		changed = false;
-+
-+	bmcr &= ~BMCR_ISOLATE;
-+	res = yt921x_intif_write(priv, port, MII_BMCR, bmcr);
-+	if (res)
-+		return res;
-+
-+	pp->inband = inband;
-+	return changed;
-+}
-+
-+static unsigned int
-+yt921x_phylink_pcs_inband_caps(struct phylink_pcs *pcs,
-+			       phy_interface_t interface)
-+{
-+	return LINK_INBAND_DISABLE | LINK_INBAND_ENABLE;
-+}
-+
-+static void
-+yt921x_phylink_pcs_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
-+			     struct phylink_link_state *state)
-+{
-+	struct yt921x_port *pp = pcs_to_yt921x_port(pcs);
-+	struct yt921x_priv *priv = yt921x_port_to_priv(pp);
-+	struct device *dev = to_device(priv);
-+	int port = pp->index;
-+	u16 bmsr;
-+	u16 lpa;
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+
-+	res = yt921x_intif_read(priv, port, MII_BMSR, &bmsr);
-+	if (res)
-+		goto out;
-+
-+	res = yt921x_intif_read(priv, port, MII_LPA, &lpa);
-+
-+out:
-+	mutex_unlock(&priv->reg_lock);
-+
-+	if (res) {
-+		dev_err(dev, "Failed to %s PCS port %d: %i\n", "get state of",
-+			port, res);
-+		state->link = false;
-+		return;
-+	}
-+
-+	phylink_mii_c22_pcs_decode_state(state, neg_mode, bmsr, lpa);
-+}
-+
-+static void yt921x_phylink_pcs_an_restart(struct phylink_pcs *pcs)
-+{
-+	struct yt921x_port *pp = pcs_to_yt921x_port(pcs);
-+	struct yt921x_priv *priv = yt921x_port_to_priv(pp);
-+	struct device *dev = to_device(priv);
-+	int port = pp->index;
-+	u16 val;
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+
-+	res = yt921x_intif_read(priv, port, MII_BMCR, &val);
-+	if (res)
-+		goto end;
-+
-+	val |= BMCR_ANRESTART;
-+	res = yt921x_intif_write(priv, port, MII_BMCR, val);
-+
-+end:
-+	mutex_unlock(&priv->reg_lock);
-+
-+	if (res)
-+		dev_err(dev, "Failed to %s PCS port %d: %i\n", "restart",
-+			port, res);
-+}
-+
-+static void yt921x_phylink_pcs_disable(struct phylink_pcs *pcs)
-+{
-+	struct yt921x_port *pp = pcs_to_yt921x_port(pcs);
-+	struct yt921x_priv *priv = yt921x_port_to_priv(pp);
-+	struct device *dev = to_device(priv);
-+	int port = pp->index;
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+	res = yt921x_intif_modify(priv, port, MII_BMCR, BMCR_PDOWN, BMCR_PDOWN);
-+	mutex_unlock(&priv->reg_lock);
-+
-+	if (res)
-+		dev_err(dev, "Failed to %s PCS port %d: %i\n", "power down",
-+			port, res);
-+}
-+
-+static int yt921x_phylink_pcs_enable(struct phylink_pcs *pcs)
-+{
-+	struct yt921x_port *pp = pcs_to_yt921x_port(pcs);
-+	struct yt921x_priv *priv = yt921x_port_to_priv(pp);
-+	int port = pp->index;
-+	u16 val;
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+
-+	res = yt921x_intif_read(priv, port, MII_BMCR, &val);
-+	if (res)
-+		goto end;
-+
-+	val &= ~BMCR_PDOWN;
-+	val |= BMCR_ANRESTART;
-+	res = yt921x_intif_write(priv, port, MII_BMCR, val);
-+
-+end:
-+	mutex_unlock(&priv->reg_lock);
-+
-+	return res;
-+}
-+
-+static int
-+yt921x_phylink_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
-+			  phy_interface_t interface,
-+			  const unsigned long *advertising,
-+			  bool permit_pause_to_mac)
-+{
-+	struct yt921x_port *pp = pcs_to_yt921x_port(pcs);
-+	struct yt921x_priv *priv = yt921x_port_to_priv(pp);
-+	int port = pp->index;
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+	res = yt921x_serdes_config(priv, port, neg_mode, interface,
-+				   advertising, permit_pause_to_mac);
-+	mutex_unlock(&priv->reg_lock);
-+
-+	return res;
-+}
-+
-+const struct phylink_pcs_ops yt921x_phylink_pcs_ops = {
-+	.pcs_inband_caps	= yt921x_phylink_pcs_inband_caps,
-+	.pcs_get_state		= yt921x_phylink_pcs_get_state,
-+	.pcs_an_restart		= yt921x_phylink_pcs_an_restart,
-+	.pcs_disable		= yt921x_phylink_pcs_disable,
-+	.pcs_enable		= yt921x_phylink_pcs_enable,
-+	.pcs_config		= yt921x_phylink_pcs_config,
-+};
-diff --git a/drivers/net/dsa/motorcomm/pcs.h b/drivers/net/dsa/motorcomm/pcs.h
-new file mode 100644
-index 000000000000..42426558086a
---- /dev/null
-+++ b/drivers/net/dsa/motorcomm/pcs.h
-@@ -0,0 +1,13 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Copyright (c) 2026 David Yang
-+ */
-+
-+#ifndef _YT_PCS_H
-+#define _YT_PCS_H
-+
-+#include <linux/phylink.h>
-+
-+extern const struct phylink_pcs_ops yt921x_phylink_pcs_ops;
-+
-+#endif
--- 
-2.53.0
+> > diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
+> > index a2781e0f504e..69b260fdd52d 100644
+> > --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
+> > +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
+> 
+> [ ... ]
+> 
+> > @@ -95,8 +101,17 @@ static void rvu_rep_wq_handler(struct work_struct *work)
+> >  int rvu_mbox_handler_rep_event_notify(struct rvu *rvu, struct rep_event *req,
+> >  				      struct msg_rsp *rsp)
+> >  {
+> > +	struct workqueue_struct *wq;
+> >  	struct rep_evtq_ent *qentry;
+> >  
+> > +	wq = READ_ONCE(rvu->rep_evt_wq);
+> > +	if (!wq)
+> > +		return -EINVAL;
+> > +
+> > +	/* Only the registered representor PF may send REP_EVENT_NOTIFY. */
+> > +	if (req->hdr.pcifunc != rvu->rep_pcifunc)
+> > +		return -EPERM;
+> 
+> [Severity: High]
+> How much does this gate actually restrict, given that rvu->rep_pcifunc
+> is whatever function sent MBOX_MSG_GET_REP_CNT first?
+> 
+> rvu_mbox_handler_get_rep_cnt() still does an unconditional
+> rvu->rep_pcifunc = req->hdr.pcifunc with no check that the sender is the
+> representor function (PCI_DEVID_RVU_REP), no capability check and no
+> rep_mode gating.  The PF driver forwards VF mailbox messages to the AF
+> verbatim - otx2_pfvf_mbox_handler() only rewrites the func bits and does
+> no message-ID filtering:
+> 
+> 	msg->pcifunc &= ~RVU_PFVF_FUNC_MASK;
+> 	msg->pcifunc |= (vf_idx + 1) & RVU_PFVF_FUNC_MASK;
+> 
+> So can a guest VF send GET_REP_CNT before the representor driver probes,
+> become rvu->rep_pcifunc, and then satisfy both new -EPERM checks?  From
+> there REP_EVENT_NOTIFY with req->pcifunc pointing at any other
+> CGX-mapped function passes is_pf_func_valid()/is_pf_cgxmapped() (those
+> only confirm the victim exists), and rvu_rep_up_notify() then does:
+> 
+> 	if (event->event & RVU_EVENT_MAC_ADDR_CHANGE)
+> 		ether_addr_copy(pfvf->mac_addr, event->evt_data.mac);
+> 
+> overwriting the victim's AF-side MAC and sending a forged up-notify to
+> the victim's PF.  is_rep_dev() is just a pcifunc comparison against
+> rvu->rep_pcifunc, so the same caller also gets representor treatment in
+> rvu_nix.c / rvu_npc_fs.c, and the real representor driver is locked out
+> afterwards because its GET_REP_CNT now returns -EPERM.  Should the
+> registration itself authenticate the representor rather than trusting
+> the first mailbox caller?
+> 
+For the guest VF path, we can check req->hdr.pcifunc & RVU_PFVF_FUNC_MASK
+in rvu_mbox_handler_get_rep_cnt() and reject with -EPERM if set,
+so a VF can not register as rep_pcifunc.
+Full PF authentication is a larger change, we'll address that in a
+separate patch set.
 
+> [ ... ]
+> 
+> >  int rvu_rep_notify_pfvf_state(struct rvu *rvu, u16 pcifunc, bool enable)
+> >  {
+> > -	struct rep_event *req;
+> > -	int pf;
+> > +	struct rep_event req = { 0 };
+> > +	struct msg_rsp rsp;
+> >  
+> >  	if (!is_pf_cgxmapped(rvu, rvu_get_pf(rvu->pdev, pcifunc)))
+> >  		return 0;
+> >  
+> > -	pf = rvu_get_pf(rvu->pdev, rvu->rep_pcifunc);
+> > -
+> > -	mutex_lock(&rvu->mbox_lock);
+> > -	req = otx2_mbox_alloc_msg_rep_event_up_notify(rvu, pf);
+> 
+> [ ... ]
+> 
+> > +	req.hdr.pcifunc = rvu->rep_pcifunc;
+> > +	req.event = RVU_EVENT_PFVF_STATE;
+> > +	req.pcifunc = pcifunc;
+> > +	req.evt_data.vf_state = enable;
+> > +	return rvu_mbox_handler_rep_event_notify(rvu, &req, &rsp);
+> >  }
+> 
+> [ ... ]
+> 
+> > @@ -334,19 +344,22 @@ int rvu_rep_install_mcam_rules(struct rvu *rvu)
+> >  			continue;
+> >  
+> >  		pcifunc = rvu_make_pcifunc(rvu->pdev, pf, 0);
+> > +		pfvf = rvu_get_pfvf(rvu, pcifunc);
+> >  		rvu_get_nix_blkaddr(rvu, pcifunc);
+> > +		if (test_bit(NIXLF_INITIALIZED, &pfvf->flags))
+> > +			rvu_switch_enable_lbk_link(rvu, pcifunc, true);
+> 
+> [Severity: Medium]
+> Does moving rsrc_lock inside rvu_switch_enable_lbk_link() serialize
+> anything useful here?  The NIXLF_INITIALIZED test is outside the lock,
+> and the flag is set in rvu_mbox_handler_nix_lf_start_rx() and cleared in
+> rvu_mbox_handler_nix_lf_stop_rx()/rvu_nix_lf_teardown() with no lock at
+> all.  rvu_rep_install_mcam_rules() runs from
+> rvu_devlink_eswitch_mode_set() -> rvu_switch_enable(), which holds no
+> RVU lock:
+> 
+> CPU0 (devlink switchdev)              CPU1 (mbox NIX_LF_STOP_RX)
+>   test_bit(NIXLF_INITIALIZED) /* 1 */
+>                                       clear_bit(NIXLF_INITIALIZED);
+>                                       rvu_switch_update_rules(false)
+>                                         rvu_rep_update_rules()
+>                                           lbk_link(..., false); /* lock */
+>   rvu_switch_enable_lbk_link(true);
+>     /* lock, writes enable */
+> 
+> Doesn't that leave the TL2 LBK link on channel 63 enabled for a function
+> whose NIXLF was stopped or freed?  The new err_disable_lbk rollback and
+> the new rep_mode loop in rvu_switch_disable() can lose the same race
+> against a concurrent LF start.
+> 
+Yes. this race is still open since rsrc_lock isn't held across the
+test_bit(NIXLF_INITIALIZED, ...) check and the subsequent LBK link
+enable/disable. Fixing it properly needs broader lock coverage across
+that check-then-act sequence, so we'd like to take it up in a
+follow-up patch.
+
+> [ ... ]
+> 
+> > @@ -366,30 +382,37 @@ int rvu_rep_install_mcam_rules(struct rvu *rvu)
+> >  		}
+> >  	}
+> > +	return 0;
+> >  
+> > -	/* Initialize the wq for handling REP events */
+> > -	spin_lock_init(&rvu->rep_evtq_lock);
+> > -	INIT_LIST_HEAD(&rvu->rep_evtq_head);
+> > -	INIT_WORK(&rvu->rep_evt_work, rvu_rep_wq_handler);
+> > -	rvu->rep_evt_wq = alloc_workqueue("rep_evt_wq", WQ_PERCPU, 0);
+> > -	if (!rvu->rep_evt_wq) {
+> > -		dev_err(rvu->dev, "REP workqueue allocation failed\n");
+> > -		return -ENOMEM;
+> > +err_disable_lbk:
+> > +	/* Undo any LBK links enabled above before the MCAM rule failure.
+> > +	 * Disabling a link that was never enabled is a safe no-op.
+> > +	 */
+> > +	for (pf = 1; pf < hw->total_pfs; pf++) {
+> > +		if (!is_pf_cgxmapped(rvu, pf))
+> > +			continue;
+> > +		pcifunc = rvu_make_pcifunc(rvu->pdev, pf, 0);
+> > +		rvu_switch_enable_lbk_link(rvu, pcifunc, false);
+> > +		rvu_get_pf_numvfs(rvu, pf, &numvfs, NULL);
+> > +		for (vf = 0; vf < numvfs; vf++) {
+> > +			pcifunc = rvu_make_pcifunc(rvu->pdev, pf, vf + 1);
+> > +			rvu_switch_enable_lbk_link(rvu, pcifunc, false);
+> > +		}
+> >  	}
+> > -	return 0;
+> > +	return err;
+> >  }
+> 
+> [Severity: Medium]
+> Does this rollback miss the representor function itself?
+> rvu_rep_pf_init() enables the LBK link for rvu->rep_pcifunc:
+> 
+> 	set_bit(NIXLF_INITIALIZED, &pfvf->flags);
+> 	rvu_switch_enable_lbk_link(rvu, pcifunc, true);
+> 
+> but this loop, and the new rep_mode loop in rvu_switch_disable(), both
+> skip anything that is not CGX-mapped, and the representor is a separate
+> non-CGX-mapped function (PCI_DEVID_RVU_REP).  rvu_nix_tx_tl2_cfg()
+> explicitly allows the write for it:
+> 
+> 	if (!is_pf_cgxmapped(rvu, pf) && !is_rep_dev(rvu, pcifunc))
+> 		return;
+> 
+> So after a failed install, or after "devlink dev eswitch set mode
+> legacy", does the representor PF keep its TL2 nodes pointed at LBK
+> channel 63 with all matching NPC entries deleted?  Nothing re-evaluates
+> it either, since rvu_rep_pf_init() leaves NIXLF_INITIALIZED set on the
+> rep pfvf.
+> 
+will fix it in next patch version.
+
+> [Severity: High]
+> This isn't a bug introduced by this patch, but every rule-installation
+> failure now routes through this return err, so it may be worth fixing
+> alongside.  rvu_switch_enable()'s uninstall_rules label does
+> kfree(rswitch->entry2pcifunc) without clearing the pointer or resetting
+> rswitch->used_entries, and rvu_devlink_eswitch_mode_set() has already
+> committed rswitch->mode.  A following "devlink dev eswitch set mode
+> legacy" reaches rvu_switch_disable(), whose only guard is:
+> 
+> 	if (!rswitch->used_entries)
+> 		return;
+> 	...
+> free_ents:
+> 	...
+> 	kfree(rswitch->entry2pcifunc);
+> 
+> which frees the same pointer a second time.  rvu_rep_update_rules() and
+> rvu_switch_update_rules(), reachable from NIX_LF_START_RX/STOP_RX
+> mailbox messages, are gated only on used_entries as well and then read
+> rswitch->entry2pcifunc[entry].  Should the failure path also clear
+> rswitch->entry2pcifunc and rswitch->used_entries?
+> 
+will fix it in next patch version.
+
+> [Severity: Medium]
+> This is a pre-existing issue, but does the new cleanup also need to
+> release TX VTAG definitions?  rvu_rep_install_tx_rule() calls
+> rvu_rep_tx_vlan_cfg() first, which allocates a NIX TX VTAG definition
+> entry and programs NIX_AF_TX_VTAG_DEFX_DATA/CTL, and only then calls
+> rvu_mbox_handler_npc_install_flow().  When the MCAM install fails the
+> returned vtag0_idx is dropped: err_disable_lbk only touches LBK links,
+> and rvu_switch_enable()'s uninstall_rules/free_entries labels only
+> delete NPC flows and free MCAM entries, while VTAG entries live in
+> nix_hw->txvlan and need nix_tx_vtag_free().  Do repeated failed
+> switchdev enables then consume the hardware VTAG definition table?
+> 
+Yes. since it is exisitng issue will fix it in separate patch.
+
+> [ ... ]
+> 
+> > @@ -443,35 +466,92 @@ int rvu_mbox_handler_esw_cfg(struct rvu *rvu, struct esw_cfg_req *req,
+> 
+> [ ... ]
+> 
+> >  int rvu_mbox_handler_get_rep_cnt(struct rvu *rvu, struct msg_req *req,
+> >  				 struct get_rep_cnt_rsp *rsp)
+> >  {
+> > -	int pf, vf, numvfs, hwvf, rep = 0;
+> > +	int pf, vf, numvfs, hwvf, rep = 0, cnt;
+> > +	int ret = 0;
+> >  	u16 pcifunc;
+> > +	u16 *map;
+> > +
+> > +	/* Serialize first-time initialization. mbox_wq is WQ_PERCPU so
+> > +	 * handlers for different PFs can run concurrently; without this
+> > +	 * lock two callers could both observe rep2pfvf_map == NULL and
+> > +	 * double-allocate the workqueue, leaking one permanently.
+> > +	 */
+> > +	mutex_lock(&rvu->rsrc_lock);
+> > +
+> > +	if (rvu->rep2pfvf_map) {
+> > +		ret = rvu_rep_get_rep_map(rvu, req, rsp);
+> > +		goto unlock;
+> > +	}
+> >  
+> >  	rvu->rep_pcifunc = req->hdr.pcifunc;
+> 
+> [Severity: Low]
+> Is it intentional that rvu->rep_pcifunc is published before both -ENOMEM
+> exits below?  On either failure rvu->rep2pfvf_map stays NULL, so the
+> fast-path guard above does not fire for the next caller, which re-enters
+> this branch and overwrites rvu->rep_pcifunc.  Meanwhile the failed
+> caller already has is_rep_dev() true, and its pcifunc is consumed by
+> rvu_rep_install_rx_rule()/rvu_rep_install_tx_rule() (req.vf =
+> rvu->rep_pcifunc) and by rvu_rep_pf_init(), which sets
+> NIXLF_INITIALIZED and enables the LBK link for it.  Would assigning
+> rep_pcifunc only on the success path avoid that stale state?
+> 
+> > -	rsp->rep_cnt = rvu->cgx_mapped_pfs + rvu->cgx_mapped_vfs;
+> > -	rvu->rep_cnt = rsp->rep_cnt;
+> > +	cnt = min_t(int, rvu->cgx_mapped_pfs + rvu->cgx_mapped_vfs,
+> > +		    RVU_MAX_REP);
+> 
+will fix it in next patch version.
+
+> [Severity: High]
+> What happens on a part where rvu->cgx_mapped_pfs + rvu->cgx_mapped_vfs
+> exceeds RVU_MAX_REP?  The map is capped here, but the consumers are not:
+> rvu_switch_enable() still sizes the MCAM allocation from the uncapped
+> sum (times 4 in rep mode), and rvu_rep_install_mcam_rules() still loops
+> pf = 1..hw->total_pfs and vf = 0..numvfs with no bound tied to
+> rvu->rep_cnt.
+> 
+> Both rule installers take their VLAN/index from rvu_rep_get_vlan_id(),
+> which falls off its loop and returns the identifier of representor 0
+> when the pcifunc is not in the map:
+> 
+> 	for (id = 0; id < rvu->rep_cnt; id++)
+> 		if (rvu->rep2pfvf_map[id] == pcifunc)
+> 			return id;
+> 	return 0;
+> 
+> So for every function past the cap, does rvu_rep_install_rx_rule()
+> program a rule identical to representor 0's -
+> 
+> 	vlan_tci = rep_id | BIT_ULL(8);
+> 	req.vf = rvu->rep_pcifunc;
+> 	req.index = rep_id;
+> 
+> - and steer that traffic to the wrong representor?  Their state events
+> are dropped on the peer side as well, since rvu_rep_get_repid() returns
+> -EINVAL and only the new warning fires.  Since numvfs is an 8-bit
+> per-PF field summed over all CGX PFs, 8 PFs with 8 VFs each already
+> passes 64.  Would rejecting such a configuration with a diagnostic here,
+> or applying the same cap in the rule installer and event producers, be
+> preferable to silent truncation?
+> 
+the cgx_mapped_pfs  and cgx_mapped_vfs are programmed from firmware.
+max cgx_mapped_pfs is 8 and max cgx_mapped_vfs per PF is 3. this is
+well within the limit 64. will fix it in next patch version.
+
+> [ ... ]
+> 
+> > +	/* Initialize the wq for handling REP events */
+> > +	spin_lock_init(&rvu->rep_evtq_lock);
+> > +	INIT_LIST_HEAD(&rvu->rep_evtq_head);
+> > +	INIT_WORK(&rvu->rep_evt_work, rvu_rep_wq_handler);
+> > +	rvu->rep_evt_wq = alloc_workqueue("rep_evt_wq", WQ_UNBOUND, 0);
+> 
+> [Severity: Medium]
+> The consumer side uses READ_ONCE(rvu->rep_evt_wq) as the gate for
+> touching rep_evtq_lock, rep_evtq_head and rep_evt_work, but the
+> publication here is a plain store with no smp_store_release() and the
+> reader has no acquire.  On a weakly ordered machine, can a consumer that
+> is not serialized with this function by rvu->mbox_lock - for example
+> rvu_mbox_handler_rep_event_notify() reached from an AF-VF mailbox work
+> item, since rvu_afvf_mbox_handler() does not take mbox_lock - see
+> rep_evt_wq non-NULL before the spin_lock_init()/INIT_LIST_HEAD()/
+> INIT_WORK() stores are visible, and then run spin_lock() and
+> list_add_tail() on uninitialized state?  The same ordering question
+> applies to rvu->rep_pcifunc, which now gates the -EPERM check.
+> 
+will fix it in next patch version.
+
+> > diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_switch.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_switch.c
+> > index 49ce38685a7e..8c2c98403507 100644
+> > --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_switch.c
+> > +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_switch.c
+> > @@ -12,11 +12,18 @@ void rvu_switch_enable_lbk_link(struct rvu *rvu, u16 pcifunc, bool enable)
+> >  {
+> >  	struct rvu_pfvf *pfvf = rvu_get_pfvf(rvu, pcifunc);
+> >  	struct nix_hw *nix_hw;
+> > +	int blkaddr;
+> >  
+> > -	nix_hw = get_nix_hw(rvu->hw, pfvf->nix_blkaddr);
+> > +	mutex_lock(&rvu->rsrc_lock);
+> > +	blkaddr = pfvf->nix_blkaddr;
+> > +	nix_hw = get_nix_hw(rvu->hw, blkaddr);
+> >  	/* Enable LBK links with channel 63 for TX MCAM rule */
+> > -	rvu_nix_tx_tl2_cfg(rvu, pfvf->nix_blkaddr, pcifunc,
+> > +	if (!nix_hw)
+> > +		goto unlock;
+> > +	rvu_nix_tx_tl2_cfg(rvu, blkaddr, pcifunc,
+> >  			   &nix_hw->txsch[NIX_TXSCH_LVL_TL2], enable);
+> > +unlock:
+> > +	mutex_unlock(&rvu->rsrc_lock);
+> >  }
+> 
+> [ ... ]
+> 
+> > @@ -229,8 +236,20 @@ void rvu_switch_disable(struct rvu *rvu)
+> >  	if (!rswitch->used_entries)
+> >  		return;
+> >  
+> > -	if (rvu->rep_mode)
+> > +	if (rvu->rep_mode) {
+> > +		for (pf = 1; pf < hw->total_pfs; pf++) {
+> > +			if (!is_pf_cgxmapped(rvu, pf))
+> > +				continue;
+> > +			pcifunc = rvu_make_pcifunc(rvu->pdev, pf, 0);
+> > +			rvu_switch_enable_lbk_link(rvu, pcifunc, false);
+> > +			rvu_get_pf_numvfs(rvu, pf, &numvfs, NULL);
+> > +			for (vf = 0; vf < numvfs; vf++) {
+> > +				pcifunc = rvu_make_pcifunc(rvu->pdev, pf, vf + 1);
+> > +				rvu_switch_enable_lbk_link(rvu, pcifunc, false);
+> > +			}
+> > +		}
+> >  		goto free_ents;
+> > +	}
+> 
+> > diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
+> > index 0f5d5642d3f7..ef47e7e21901 100644
+> > --- a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
+> > +++ b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
+> 
+> [ ... ]
+> 
+> > @@ -459,6 +465,9 @@ static int rvu_rep_open(struct net_device *dev)
+> >  	netif_carrier_on(dev);
+> >  	netif_tx_start_all_queues(dev);
+> >  
+> > +	if (rep->pcifunc & RVU_PFVF_FUNC_MASK)
+> > +		return 0;
+> > +
+> >  	evt.event = RVU_EVENT_PORT_STATE;
+> >  	evt.evt_data.port_state = 1;
+> >  	evt.pcifunc = rep->pcifunc;
+> 
+> [Severity: Medium]
+> These two early returns in rvu_rep_open() and rvu_rep_stop() skip the
+> RVU_EVENT_PORT_STATE notification for every VF representor, which is the
+> representor-to-representee link state propagation added by the commit in
+> the Fixes: tag (b8fea84a0468).  After this, does "ip link set <vf-rep>
+> up/down" still affect the representee?
+> 
+> The reason the notification does not work today looks like the missing
+> handler on the VF side - otx2vf_process_mbox_msg_up() only handles
+> MBOX_MSG_CGX_LINK_EVENT and answers everything else with:
+> 
+> 	default:
+> 		otx2_reply_invalid_msg(&vf->mbox.mbox_up, 0, 0, req->id);
+> 		return -ENODEV;
+> 
+> while the PF side does implement
+> otx2_mbox_up_handler_rep_event_up_notify().  Would adding
+> MBOX_MSG_REP_EVENT_UP_NOTIFY to otx2vf_process_mbox_msg_up() be the fix
+> instead?  Neither the commit message nor the changelog mentions these
+> two hunks.
+> 
+I agree this should be properly handled instead of simply early return.
+will fix this issue in separate patch.
+
+> > @@ -478,6 +487,9 @@ static int rvu_rep_stop(struct net_device *dev)
+> >  	netif_carrier_off(dev);
+> >  	netif_tx_disable(dev);
+> >  
+> > +	if (rep->pcifunc & RVU_PFVF_FUNC_MASK)
+> > +		return 0;
+> > +
+> >  	evt.event = RVU_EVENT_PORT_STATE;
+> >  	evt.pcifunc = rep->pcifunc;
+> >  	rvu_rep_notify_pfvf(priv, RVU_EVENT_PORT_STATE, &evt);
+> 
+> Thanks for looking at these.
+> 
+> -- 
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260903074840.2373506-1-nshettyj%40marvell.com
+> 
