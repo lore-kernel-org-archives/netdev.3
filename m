@@ -1,71 +1,49 @@
-Received: from mail-pj2-f2.google.com (mail-pj2-f2.google.com [74.125.227.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out28-97.mail.aliyun.com (out28-97.mail.aliyun.com [115.124.28.97])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2AA14E80B1
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 10:58:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D571B4A92C7;
+	Wed, 16 Sep 2026 11:00:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789556306; cv=none; b=eMcXquKfBfKF0cYFiTOMhlzwQJNMGwSIHz4pUwATCrOIp8BG24XIo6iUQgvYnBbkg+GUpOqqnG2X+nwEGh/NWtfhjz0xs/UD6AuscxWZa5OtTUyPK79hUeQfo29FfnA8JTZ1DCBF5B+1ASuaant5TqUfSMfRgY9g7LZEiAqGJ2o=
+	t=1789556470; cv=none; b=V+oS4FKvE6z0rJ9IkXLTOUpUlFKChL+sddJm5SuIgct+PIZlvkFfcJ942/DTGAKDKrvlIR4nurDgHvRJcbMRhdEylhQdilSUxVKostbs6wOXekPVb+Q2vmRDuSxO6dzLhsxvYvWZcIDMJidWgeuOHgDmaIPNe9ALx6hYhP5dNlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789556306; c=relaxed/simple;
-	bh=97QLcNfG4SYEqzkhQWb/dBQh4N68dG6xlt0LNXhlfpQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=thNLc5+0u7rfKSoaAQSu0evzpi5PTb4UCaw1uSXauAv1PYqxn4SkxW8HN14dtWFotIQZa3e96MfyEzQ2nUJgLmWQceC+sbtcbk8nTNPlxbfyt+Y3DtgGsqGU/USdiaO29q9ObREdu+GEi92Ms3XiEbJlq7vab6/BslBebd8mZCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GQfSLYSS; arc=none smtp.client-ip=74.125.227.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GQfSLYSS"
-Received: by mail-pj2-f2.google.com with SMTP id d9443c01a7336-2db39df9c51so20758665ad.1
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 03:58:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789556290; x=1790161090; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Kb1DFdILoNMBbkLAVYLbyq2AQV+b6SDIT+EkRgSHolY=;
-        b=GQfSLYSSxBVLyX+yFWdqX2DpNUbvjYntoQqQK06GLV0mgGH/hoOG1tpBL8HbvO2CyD
-         gCQ0qzHacD+LusfaAVXPBpERiv+BDYADi8yPCxfAegXk9m7hZ/jfJWYqh0Lx7M3pXbbI
-         Vim4iq83RgfFTUfap/4wQ78PVMeUskNo6dGRu/Weu6KNHTt7W78XBnK3XDk43JQvzYwB
-         pbaJ2rh8ozOUHsNp14kB3u28/BrnVQmLVt9gO3eHGn2ndgje5kX4QLCFJ89DyBaXO2S6
-         8iLBr/t9UWk+uEDGIWjBS1XD1W+eDluiDigA7/hPytVJXkn6+G1DT8XUmKgvU50WKWzs
-         1bfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789556290; x=1790161090;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Kb1DFdILoNMBbkLAVYLbyq2AQV+b6SDIT+EkRgSHolY=;
-        b=RN6eKc2G1JmrDGW8kBu2wCZl/Jihj7BsAAppwW1qT/8B59fKtHAjn3GaOtbUHwOoAE
-         hdkjmer+h/j5YaUx5JyTpKKEbAVhV3KieaM0cLjZPtSvome+aJmDUmZnOiDZGrsq+C2d
-         sxPmUI8go6lH5RtSAo7cZYXBTXwVLT4t7O4Ut0arzbKrgxn1mPfDtVQnhIYokTI2eEB9
-         xKiVlO/emky1L/TqxmMT27g9w8YgGKUWMTLHVDoC2GjJyNjBlux7NMpMr4K7DA9bcnMK
-         tTakO8QbKnCw9NNP9+0nGNApfRNZUb4cy+bCftiIVgt6b69++byPyvhxaeuLgdhypOC4
-         dC5g==
-X-Gm-Message-State: AFuF++nbQt3K6z60ww7Hk4hijuGGkxW4KKu34tN8zeqUo0rCf7aulWkH
-	h+TAH0QL8+y4sT2i8WopXQ/T+XC1SqfB718CThSImychCKX0KmqdlrdZmxZxMCTDZV97p57t
-X-Gm-Gg: AYBFou0+DPGw1ce6Ts0f+H5zjELp7UuE2MIf8nNC7UGz4qnLikLkhXnYOeU0y4OVXgB
-	hhJ2tgz3Z72NsvTTG48P0zuJQF4RAgv7WG5J7h0/7mn2Wc7vsCvHEFHs94osieIP+cwgFKMRO5C
-	kIxdeCWq71C/VdA9FcFHxRnn9R0bSHkwe8kC9g0EBXTa8BZAQUaSrPc74ZYjSZobsrSvDfAAd1X
-	xTXrHP9p7ZV0Ik1LlCgwwJcdXAQvdlxgZtboTJwDqGhqIoHv0pFPqFgpjPhjGwqgNCG/xMat416
-	6+jtv/wjbKfGZwkScGrzxyyhC4v/ZkYCS+EDnEFiG7nQSufRDlK6IlxY9sgNHwbyy5P8Uu3innE
-	J1QjDbNlvEgVuExO9uW4R7EYHlNtz1YZnh4MJEobPFPlhQCEV2bhdbd+UGcyX4bCasCEYJAey8/
-	ZSO9nTbbjIXQnwnmJaeEgQYPqsi/5eKroDNaec5UnUua/rEsuRGHEutWB6lfIOhZchI8LgP0QGR
-	K7NFu0XaAOM7qYUwDry1xE=
-X-Received: by 2002:a17:903:2f8e:b0:2d8:d4de:fa80 with SMTP id d9443c01a7336-2dd8dc0c2e4mr47954055ad.4.1789556289961;
-        Wed, 16 Sep 2026 03:58:09 -0700 (PDT)
-Received: from amasharm-thinkpadp16vgen1.redhat.corp ([2401:4900:1c2c:2223:9a71:51cd:e556:51ed])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33bf596e20esm7497068eec.3.2026.09.16.03.58.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 03:58:09 -0700 (PDT)
-From: Aman Sharma <amanrsdev@gmail.com>
-To: netdev@vger.kernel.org
-Cc: dsahern@kernel.org,
-	stephen@networkplumber.org,
-	amasharm@redhat.com,
-	Aman Sharma <amanrsdev@gmail.com>
-Subject: [PATCH iproute2-next] ip-route2: document uid parameter for route get
-Date: Wed, 16 Sep 2026 16:27:59 +0530
-Message-ID: <20260916105759.742997-1-amanrsdev@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	s=arc-20240116; t=1789556470; c=relaxed/simple;
+	bh=Zvl8/4ZZwYZLccVkUB547ZzDDQ1t32sAHwySvAl/eMU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=jCUxpf0K0cYYfYjQYe+vceJL7lkG855927eWjgVsROoHq7KxN9EDwv6QyiR90peQflgvl7Mdb5BwBrw5xYBhIpUAsDzq7iT1kbQ8AEdRo14tRhvrFD+SbkXJr2XBe7Y2zJE0UZkFgclqL5Wt64VOMm9D9DnM9dhqXaka7tfEHEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06751054|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.316453-0.0542113-0.629336;FP=13581216796813840310|15|2|17|0|-1|-1|-1;HT=maildocker-contentspam033045220102;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=19;RT=19;SR=0;TI=SMTPD_---.jExZdZ9_1789556112;
+Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jExZdZ9_1789556112 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Wed, 16 Sep 2026 18:55:12 +0800
+From: Kyle Switch <kyle.switch@motor-comm.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	Frank.Sae@motor-comm.com,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: ming.xu@motor-comm.com,
+	xiaolin.xu@motor-comm.com,
+	jianmin.wang@motor-comm.com,
+	jie.han@motor-comm.com
+Subject: [PATCH net-next v19 2/3] net: phy: Add support for Template Control register for PMA
+Date: Wed, 16 Sep 2026 18:55:03 +0800
+Message-Id: <20260916105504.3262767-3-kyle.switch@motor-comm.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260916105504.3262767-1-kyle.switch@motor-comm.com>
+References: <20260916105504.3262767-1-kyle.switch@motor-comm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,33 +52,93 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The 'ip route get' command accepts a 'uid NUMBER' parameter
-to simulate route selection as if sent by a specific user.
-This is useful for testing per-user routing policies.
+Add support for the 10GBASE-T PMA Template Test Mode register
+field, which allows selecting one of eight test modes (Normal and
+TestMode1..TestMode7) used for PHY validation.
 
-Add documentation for this parameter in the 'ip route get'
-section of the man page.
-
-Signed-off-by: Aman Sharma <amanrsdev@gmail.com>
+Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
 ---
- man/man8/ip-route.8.in | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/phy/phy-c45.c | 23 +++++++++++++++++++++++
+ include/linux/phy.h       |  1 +
+ include/uapi/linux/mdio.h | 12 ++++++++++++
+ 3 files changed, 36 insertions(+)
 
-diff --git a/man/man8/ip-route.8.in b/man/man8/ip-route.8.in
-index fd04432f..852e996e 100644
---- a/man/man8/ip-route.8.in
-+++ b/man/man8/ip-route.8.in
-@@ -1368,6 +1368,10 @@ force the output device on which this packet will be routed.
- the firewall mark
- .RB ( "fwmark" )
+diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
+index 870920311f9a..c5f5753f7194 100644
+--- a/drivers/net/phy/phy-c45.c
++++ b/drivers/net/phy/phy-c45.c
+@@ -1408,6 +1408,29 @@ int genphy_c45_fast_retrain(struct phy_device *phydev, bool enable)
+ }
+ EXPORT_SYMBOL_GPL(genphy_c45_fast_retrain);
  
-+.TP
-+.BI uid " NUMBER"
-+the user ID as seen by the route lookup
++/**
++ * genphy_c45_template_testmode - configure template testmode registers
++ * @phydev: target phy_device struct
++ * @test_mode: testmode includes Normal to Test mode 7
++ *
++ * Description: Set template testmode include Normal to Test mode 7
++ *
++ * Return: 0 on success, or a negative error code on failure (e.g. register
++ * read/write error).
++ */
++int genphy_c45_template_testmode(struct phy_device *phydev, u16 test_mode)
++{
++	u16 ctrl;
 +
- .TP
- .BI vrf " NAME"
- force the vrf device on which this packet will be routed.
++	if (test_mode > MDIO_PMA_10GBT_TESTMODE_7)
++		return -EOPNOTSUPP;
++
++	ctrl = FIELD_PREP(MDIO_PMA_10GBT_TESTMODE_MASK, test_mode);
++	return phy_modify_mmd(phydev, MDIO_MMD_PMAPMD, MDIO_PMA_10GBT_TESTMODE,
++			      MDIO_PMA_10GBT_TESTMODE_MASK, ctrl);
++}
++EXPORT_SYMBOL_GPL(genphy_c45_template_testmode);
++
+ /**
+  * genphy_c45_plca_get_cfg - get PLCA configuration from standard registers
+  * @phydev: target phy_device struct
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 3d8afe6b7f1c..2db804b8fd4d 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -2357,6 +2357,7 @@ int genphy_c45_loopback(struct phy_device *phydev, bool enable, int speed);
+ int genphy_c45_pma_resume(struct phy_device *phydev);
+ int genphy_c45_pma_suspend(struct phy_device *phydev);
+ int genphy_c45_fast_retrain(struct phy_device *phydev, bool enable);
++int genphy_c45_template_testmode(struct phy_device *phydev, u16 test_mode);
+ int genphy_c45_plca_get_cfg(struct phy_device *phydev,
+ 			    struct phy_plca_cfg *plca_cfg);
+ int genphy_c45_plca_set_cfg(struct phy_device *phydev,
+diff --git a/include/uapi/linux/mdio.h b/include/uapi/linux/mdio.h
+index 06f4bc3c20c7..353ca13c64fc 100644
+--- a/include/uapi/linux/mdio.h
++++ b/include/uapi/linux/mdio.h
+@@ -63,6 +63,7 @@
+ /* Media-dependent registers. */
+ #define MDIO_PMA_10GBT_SWAPPOL	130	/* 10GBASE-T pair swap & polarity */
+ #define MDIO_PMA_10GBT_TXPWR	131	/* 10GBASE-T TX power control */
++#define MDIO_PMA_10GBT_TESTMODE 132 /* Test mode control */
+ #define MDIO_PMA_10GBT_SNR	133	/* 10GBASE-T SNR margin, lane A.
+ 					 * Lanes B-D are numbered 134-136. */
+ #define MDIO_PMA_10GBR_FSRT_CSR	147	/* 10GBASE-R fast retrain status and control */
+@@ -320,6 +321,17 @@
+ /* PMA 10GBASE-R Fast Retrain status and control register. */
+ #define MDIO_PMA_10GBR_FSRT_ENABLE	0x0001	/* Fast retrain enable */
+ 
++/* PMA 10GBASE-T Template Test Mode Register*/
++#define MDIO_PMA_10GBT_TESTMODE_MASK GENMASK(15, 13) /* Template test mode */
++#define MDIO_PMA_10GBT_TESTMODE_NORMAL 0x0 /* Template Normal */
++#define MDIO_PMA_10GBT_TESTMODE_1 0x1 /* Template TestMode1 */
++#define MDIO_PMA_10GBT_TESTMODE_2 0x2 /* Template TestMode2 */
++#define MDIO_PMA_10GBT_TESTMODE_3 0x3 /* Template TestMode3 */
++#define MDIO_PMA_10GBT_TESTMODE_4 0x4 /* Template TestMode4 */
++#define MDIO_PMA_10GBT_TESTMODE_5 0x5 /* Template TestMode5 */
++#define MDIO_PMA_10GBT_TESTMODE_6 0x6 /* Template TestMode6 */
++#define MDIO_PMA_10GBT_TESTMODE_7 0x7 /* Template TestMode7 */
++
+ /* PCS 10GBASE-R/-T status register 1. */
+ #define MDIO_PCS_10GBRT_STAT1_BLKLK	0x0001	/* Block lock attained */
+ 
 -- 
-2.55.0
+2.25.1
 
