@@ -1,163 +1,189 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AC22EA15C
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 13:05:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789563933; cv=none; b=R2pafSajeoiwCwkg0Ou1hsZ40EmcfzDAY8ujwsKhIeZUsDiFO+yJ+RuAo/HU5xYbhh2nIgzJM6BaW9GFpdzsxwVa6Ih3NHHigZrBPwB190LJo5yX9Mt2glD4d37QJaAiq6I9u5XnC5GiAvb1hNjzTnlsnLkIqExHtU2bWwpcJ8M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789563933; c=relaxed/simple;
-	bh=UeH2UGk52k+SKj9tD9AGMqAfOV7JIXNvyWwvPitzd1U=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UqfcuiGOoUE+jxx0GPH8beDJYI5A7guTK8yNqvqrmxm7/VPdGC2jEYa5NL25yhCoR8RBycxBqsDFLbj/Ax6bS+W6DTuxN2bwhAvZJnARicxUBlOwYCoozcgunybbch12A9koGEtRhplj95PNuw7pUxutVl8BvdH3el7O/WlGeEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OMT3cOU8; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F39D38DC72
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 13:06:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.205
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789564016; cv=pass; b=M2bEeRrAURLv5QzYDVXMyf/ewzEfc/ZAvB/ZtwnJJcmmtxvWbLwloXDMZiAyzCP3k9HMGePLT2p5jM5zeCgwFIO7ZWjypwdRTdtaUzyM7N7O15bsTcIt9v3OdjlNGH9GeFBHwTZFAJR+G0HHzJdFk+Gl3UTvN9qzgV0y6uswQu8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789564016; c=relaxed/simple;
+	bh=zOTxCNq0eD0ToBFamiWBTvjKMrhzH5E6NH9yaL6muro=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=M+ijuO8bxZ4QTHZRz2O4f7OoJeWcLahWg/xNz9wysakVEDYzTJLHh4gu/zyZrJ5aHLF2AKwpWgq2BpMPy1hwHrSOqJZkgmqP1wBe0CN85ZblpK0Y/wxu3MESa3fVFSDnaOWDB/HRkzWYEAjLL1qtEw/5EPPPoK0cGlC4gEIhRgY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ITsapOX7; arc=pass smtp.client-ip=74.125.230.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OMT3cOU8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EF231F000FF;
-	Wed, 16 Sep 2026 13:05:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789563932;
-	bh=6gJ7OjGqFuhbohkbs30QVsuyYkxAUMRLJXF4ROwv9bI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=OMT3cOU89qDSAUkHDarIsL6CfNMYspk0IsLW3om3dzLyTeyUAAXdLa66/5bf1yD6D
-	 CgsTPEsgwNrdM0b7Gkc9Z2gAGWkO7FxJ4WL7URdbgYAJybChc5C/zUazmSihCKRZ1E
-	 OYIdMhprJZxmsFao8tZKn0jI9+lQ3KgtGwCEmhfpgkHpPy023x5MadHfui5N9WUhtD
-	 mMiGb5In1VuD+uE0cTiaVAJw+KXXkHc8KJxhXGKDHXRg2pJt51GDpjeOPcdwg38q3j
-	 Ufsu7ON5PsRTV/15q0bg6kY1uRAkDycAh2EpLt9GWAhQ1IgPsc3pTSorPCt9/SV/dd
-	 +VbUGOa23jJvg==
-Subject: Re: [PATCH v2 net] net: skbuff: do not leave stale header offsets
- after pskb_carve()
-From: netdev-bot+sashiko@kernel.org
-To: edumazet@google.com
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, eric.dumazet@gmail.com,
- syzbot+586af68eb819833c2d91@syzkaller.appspotmail.com,
- xuanqiang.luo@linux.dev, achender@kernel.org, rds-devel@oss.oracle.com
-Date: Wed, 16 Sep 2026 13:05:31 +0000
-Message-ID: <178956393100.22033.7676411417898444402@kernel.org>
-In-Reply-To: <20260915130423.3956471-1-edumazet@google.com>
-References: <20260915130423.3956471-1-edumazet@google.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ITsapOX7"
+Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-5309ce58730so15051661cf.2
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 06:06:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789564014; cv=none;
+        d=google.com; s=arc-20260327;
+        b=CatCLcr5Syl27fp967/FypNJjZtIfZCN6bw4SF9TCUO4vZZjhD91Xok16FbCKVnyxe
+         dcI7sDTbG4f0YWyB6dNOFZ0oWRyqFcLGrC3FzJ8R2KbjcpPrzzhiu+L+2i+NiZIAA8a8
+         RdoI+vcBs5rLsu1kvOzzkIiOaTeRnWKPcg8ien6+Buj2U/v/zTdJ379VkUjUuglCSu38
+         d+8Hgt5ckt21z1Ay6+ZayHmkxAW6Nc/koEFDHgdsGW+0E3fcn7a5oGR6ISbX6q4Ejg4z
+         /11KY3TbtTDV30tk+p319S9zNPUoANlz0/FHadj4AIqIv48+FTsGV/nY3pKXjPmYqFwE
+         DXhg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ZN4FHiBKKDSmMlPWEfU/UxJRMWeAnYfTUSCncWyBnV4=;
+        fh=6G5TuUGUQfu0JU8p9qnjWzYPT8GVuCA/+UGIWcmux1E=;
+        b=XRqcTeGf8xhqlIvCj6vh/CyDyaZIYWEIUytcZTvZn4knPF11eMPDzRpHXQR3w1Gm2P
+         LWFueOuzB5gBd6bjsuj6+HrB52iRcGQVLCoXjhdVZIQycI9hkEM+na6kbF/WKpbCZzis
+         2d8foedHnV2I/KIrAS0PBf0GHny5TPFyjNPfS0BLbtPSieJ0sukXOxUWOeM0/GIQNG3v
+         MdQ5Xi+SM7diQvqq75CquagYhUVBnxhPZFoodgES16uBQs4KCrS3mEyktzIECFdxtEJj
+         Af7FVZ9tz+qJ3A2p8c3t2FJ31oOaWojKTBL/fSfzDgNM18C05vpr3dqEspM/EGUuuOd5
+         e6tA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789564014; x=1790168814; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ZN4FHiBKKDSmMlPWEfU/UxJRMWeAnYfTUSCncWyBnV4=;
+        b=ITsapOX7JeN20YRNBveUwEDsuDepa2nn/QjPsBnmDoQkg9e8qXZ0I7upZ5XZi+zQmR
+         a6H116kmgQdZG2yPAaOCsQ2wbvWOCHtP6mqdPxrY7dOhxBktwoK9KoWzMFd0NhN4kxIT
+         cGnn6d7QumjSTT3CSJ8YSRg64rpFlcmNK6VILBC5aevw8l+g1p76VQ24PcSElI4taOCD
+         HrrirasOAuovym5F6PntKFiUW5t0v0kbS4+1w+RBXWPB/80pWSxi6mNxEIJUMDrpN833
+         OCy5LzrCDuWfbZ+UDq3Qceey4sGrWaR2z0zdB8VEDg/mvGtLwI4rd9mAEIuy8gaDBGen
+         C9Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789564014; x=1790168814;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZN4FHiBKKDSmMlPWEfU/UxJRMWeAnYfTUSCncWyBnV4=;
+        b=piBvqjVqNy/6Oy84C125KJHIRGqnj4buXs0S98Kfe5WlcgQ3J38UrHMXUHo2q5TeMU
+         MlWrbd8PfFqrH8J2PTdsSiDq3auyfzsYq5O5pxEQFbxAjSl8UHtQcxPcCsReuv9uXTYS
+         02/+DJ6OwMdnr+mPfcqOFcU0Wp75VgPtsS1NFSEjCue0+yfbLca7qm6jzlfd4P9YU8az
+         pL6eUfvmSVTLpQHt829xoQt6dyAwJS/vFpbZSYDySG6DlliUriFUhRy2EOmPtewM3bhb
+         h/3alDOwYswOz51ZLMQ2SiMBNmAzXvxHalpYmNuq997qxxg8TuinYKo4BRpjkSorRdxm
+         UtPg==
+X-Forwarded-Encrypted: i=1; AKwUvBzzicMyKEmO0WabQ3C4Go0Bd9NSjUZthlUWS2pDYcb2SQGu3toHprA6PKR70Pl3z+GvyC6w7hA=@vger.kernel.org
+X-Gm-Message-State: AFuF++k/v7YnnI9eU3V+lsggz5IK5N51BwT2wbqqbBOhPQ4DyzPqlsNJ
+	gbMD+cCqEPOjoCLg8w2f3cwWpeRfVDQygCqL31g+fixbL/v9a3aKzzw/hI7n52hwP4Hp3UjvpaU
+	RD9HDDA16MyC1uel2ZxJN1V1+HCTFIOk3kw68i0/M
+X-Gm-Gg: AYBFou1+9ixRJRD9jvyhus/0yfCu7pem25IedgC2NiIZSD2GUOaKGPn1XHih98sMaxJ
+	T6IrjZAsi/U1k6jnGC88h3lzntxfaQ8ZIEYpBHQoR54i0L1KTFkUwzKe8pnggT8Pl6QiJ0JzgjR
+	qau+0tjUYiPc5eVQuPaC1zAnJuNEyQtQTZuC5D0zL8DnrAavgfB2cmYzNbZByGtvfE935QrcNx9
+	hgIbKjuagitwnQ9sHUeqtmoesW0EqHBQXlzdaTYOTOYTPANI4+Kfo/HTLgF5CoGOPRIhFM1GgxT
+	fg5iX6CtnpzwvshTpwUkUZsPuisTU5zDn19E4RUWHkOcHy9CcxyUrnv/ZRSUBn6VoRL0KRyiy4A
+	dSevPTGNWUgI9R1n7mCdHRBFcKQgQ2tj7D9JDz3iK+jVzlq+MsLV8o9kRprEEyEeadZc=
+X-Received: by 2002:a05:622a:2518:b0:530:aae3:2421 with SMTP id
+ d75a77b69052e-5327f20587cmr43715441cf.1.1789564013084; Wed, 16 Sep 2026
+ 06:06:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260916124153.43457-1-kerneljasonxing@gmail.com>
+In-Reply-To: <20260916124153.43457-1-kerneljasonxing@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 16 Sep 2026 06:06:41 -0700
+X-Gm-Features: AcwNN1UsdGW_E1ootYDWVE9QOLHhtDqBzL52GTg_uZ9bvWIX2ch5Pq3aVNfeVX8
+Message-ID: <CANn89iLB9pRvcz_u+YCDdEzt5G=bgq5=Jk7P_xjgUfF7En-ghA@mail.gmail.com>
+Subject: Re: [PATCH net] tcp: preserve timestamps across receive queue collapse
+To: Jason Xing <kerneljasonxing@gmail.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	willemb@google.com, kuniyu@google.com, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+On Wed, Sep 16, 2026 at 5:42=E2=80=AFAM Jason Xing <kerneljasonxing@gmail.c=
+om> wrote:
+>
+> When tcp_collapse() rebuilds skbs under memory pressure, the copy
+> process doesn't include the right tstamp and hwtstamp from the
+> old skb.
+>
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Good catch, the problem is real: memcpy(nskb->cb, skb->cb, ...) copies
+has_rxtstamp, but nskb->tstamp and hwtstamps are left at zero, so
+tcp_recv_timestamp() ends up emitting no cmsg at all.
 
-- [Medium] Incomplete invalidation of checksum metadata in the new
-  skb_carve_reset_headers() (net/core/skbuff.c:6842).
 
---
+> In net timestamping case, if such an skb happens to be the last
+> one consumed in a recvmsg() call, the application receives no RX
+> timestamp for that call.
+>
+> Fix this by copying both tstamp and hwtstamp to the new skb right
+> after the initialization.
+>
+> Fixes: 98aaa913b4ed ("tcp: Extend SOF_TIMESTAMPING_RX_SOFTWARE to TCP rec=
+vmsg")
+> Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
+> ---
+>  net/ipv4/tcp_input.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+> index 0f60a1dbf927..c5756db892f2 100644
+> --- a/net/ipv4/tcp_input.c
+> +++ b/net/ipv4/tcp_input.c
+> @@ -5835,6 +5835,8 @@ tcp_collapse(struct sock *sk, struct sk_buff_head *=
+list, struct rb_root *root,
+>
+>                 memcpy(nskb->cb, skb->cb, sizeof(skb->cb));
+>                 skb_copy_decrypted(nskb, skb);
+> +               nskb->tstamp =3D skb->tstamp;
+> +               skb_hwtstamps(nskb)->hwtstamp =3D skb_hwtstamps(skb)->hwt=
+stamp;
+>                 TCP_SKB_CB(nskb)->seq =3D TCP_SKB_CB(nskb)->end_seq =3D s=
+tart;
+>                 if (list)
+>                         __skb_queue_before(list, skb, nskb);
 
-net: skbuff: do not leave stale header offsets after pskb_carve()
+However this samples the wrong skb. nskb aggregates data from several
+skbs in the loop below, and you are copying the timestamp of the first
+one, while 98aaa913b4ed (the commit you are fixing) established the
+opposite invariant:
 
-The two pskb_carve() helpers used to call skb_headers_offset_update(skb, 0),
-which left mac/network/transport offsets describing bytes that were just
-removed. This patch adds skb_carve_reset_headers() to unset the mac and
-transport headers, reset the network header, clear mac_len, zero the inner
-header state, and downgrade CHECKSUM_PARTIAL to CHECKSUM_NONE.
+  "When skbs are coalesced either in the sk_receive_queue or the
+   out_of_order_queue always choose the timestamp of the appended skb
+   to maintain the invariant of returning the timestamp of the last
+   byte in the recvmsg buffer."
 
-Closes: https://lore.kernel.org/netdev/6aa3e9d3.f2639fcc.29487d.0028.GAE@google.com/
+tcp_try_coalesce() and tcp_add_backlog() both implement "last one
+wins", please do the same here, something like:
 
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index cc3b4b70288b4..609f2c7f4a47a 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -6832,6 +6832,34 @@ struct sk_buff *alloc_skb_with_frags(unsigned long header_len,
->  }
->  EXPORT_SYMBOL(alloc_skb_with_frags);
->  
-> +/* pskb_carve_inside_header() and pskb_carve_inside_nonlinear()
-> + * remove the first bytes of a packet and reallocate skb->head.
-> + *
-> + * Whatever headers were present before the operation are gone,
-> + * we must not leave stale offsets, otherwise users of this skb
-> + * (skb_dump(), drop_monitor, taps, ...) would read or pull garbage.
-> + */
-> +static void skb_carve_reset_headers(struct sk_buff *skb)
-> +{
-> +	skb_unset_mac_header(skb);
-> +	skb_unset_transport_header(skb);
-> +	skb_reset_network_header(skb);
-> +	skb->mac_len = 0;
-> +
-> +	/* Inner offsets have no "unset" marker, zero them so that
-> +	 * skb_inner_network_header_was_set() becomes false and no
-> +	 * consumer mistakes them for a real (and long gone) header.
-> +	 */
-> +	skb->inner_mac_header = 0;
-> +	skb->inner_network_header = 0;
-> +	skb->inner_transport_header = 0;
-> +	skb->inner_protocol = 0;
-> +	skb->encapsulation = 0;
-> +
-> +	if (skb->ip_summed == CHECKSUM_PARTIAL)
-> +		skb->ip_summed = CHECKSUM_NONE;
-> +}
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 0f60a1dbf927..81d587654d3d 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -5854,6 +5854,12 @@ tcp_collapse(struct sock *sk, struct
+sk_buff_head *list, struct rb_root *root,
+                                if (skb_copy_bits(skb, offset,
+skb_put(nskb, size), size))
+                                        BUG();
+                                TCP_SKB_CB(nskb)->end_seq +=3D size;
++                               if (TCP_SKB_CB(skb)->has_rxtstamp) {
++                                       TCP_SKB_CB(nskb)->has_rxtstamp =3D =
+true;
++                                       nskb->tstamp =3D skb->tstamp;
++                                       skb_hwtstamps(nskb)->hwtstamp =3D
++                                               skb_hwtstamps(skb)->hwtstam=
+p;
++                               }
+                                copy -=3D size;
+                                start +=3D size;
+                        }
 
-[Severity: Medium]
-The changelog says the goal is that "all the header state is invalidated in
-one place".  Is the checksum state fully invalidated here?
+This would be the fourth copy of these lines, but let's keep the fix
+minimal for net, a helper shared by the three call sites can come
+later in net-next.
 
-skb_carve_reset_headers() only rewrites ip_summed, while skb->csum,
-skb->csum_valid, skb->csum_complete_sw, skb->csum_level and
-skb->csum_not_inet keep the values they had before the bytes were removed.
+This is testable from user space (small SO_RCVBUF + many small
+segments + delayed read hits tcp_prune_queue(), see
+LINUX_MIB_TCPRCVCOLLAPSED); a selftest addition to
+tools/testing/selftests/net/rxtimestamp.c would be welcome.
 
-For the CHECKSUM_PARTIAL case, the syzbot dump quoted in the changelog shows
-the incoming skb already has valid=1:
+Thanks.
 
-  csum(0x100120 start=288 offset=16 ip_summed=3 complete_sw=0 valid=1 level=0)
-
-After the downgrade this becomes ip_summed=CHECKSUM_NONE with csum_valid
-still 1, and skb_csum_unnecessary() in include/linux/skbuff.h returns true on
-csum_valid alone:
-
-  static inline int skb_csum_unnecessary(const struct sk_buff *skb)
-  {
-	return ((skb->ip_summed == CHECKSUM_UNNECESSARY) ||
-		skb->csum_valid ||
-		(skb->ip_summed == CHECKSUM_PARTIAL &&
-		 skb_checksum_start_offset(skb) >= 0));
-  }
-
-Can a consumer of the carved skb then believe the payload was already
-verified, even though the bytes the checksum covered are gone?  A leftover
-csum_not_inet would similarly still claim CRC32c semantics, and skb_dump()
-would print the contradictory "ip_summed=0 ... valid=1".
-
-Should csum_valid, csum_complete_sw, csum_level and csum_not_inet be cleared
-in the same helper?
-
-The CHECKSUM_COMPLETE case looks untouched as well.  Unlike
-skb_pull_rcsum()/skb_postpull_rcsum(), the carve path never subtracts the off
-bytes removed from the front from skb->csum, and pskb_extract() trims the tail
-with plain pskb_trim() rather than pskb_trim_rcsum():
-
-  net/core/skbuff.c:pskb_extract() {
-	...
-	if (pskb_carve(clone, off, gfp) < 0 ||
-	    pskb_trim(clone, to_copy)) {
-	...
-  }
-
-So a CHECKSUM_COMPLETE skb keeps a whole-packet checksum that no longer
-matches its contents.  Would it make sense to also drop or fix up
-CHECKSUM_COMPLETE in skb_carve_reset_headers(), or to use pskb_trim_rcsum()
-in pskb_extract()?
-
-The only in-tree user of pskb_extract() is RDS, which copies the queued data
-to userspace and never calls a checksum validation helper, so there is no
-functional failure visible today; the concern is the trust bits left on a
-generic exported helper.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260915130423.3956471-1-edumazet%40google.com
+pw-bot: cr
