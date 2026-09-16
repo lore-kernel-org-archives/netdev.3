@@ -1,195 +1,195 @@
-Received: from www.nmnhosting.com (watt.d-silva.org [119.15.109.137])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C144E46DFF1;
-	Wed, 16 Sep 2026 08:02:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=119.15.109.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC81459AEE
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 08:10:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789545759; cv=none; b=Rdtd3Ilw/zv4Bb/zxNqHv7EiO1UZPDg65Zv2l6iLJLwfbluSqJPzDonXKZjn//PGacsJUhCQavKmMbtO102JeScp1vuTuKpZbmRtD8RF5WLlJ1nu4gALbg8StEy1i2/y7ADjhNrtXZkVCtBW1wuHaagtT5bM6EOF9E4fMdXXxYE=
+	t=1789546223; cv=none; b=ln/FJZXAVF8hgRNyoGyNnV3Nls++nFNaLmkamp9TL4KjiW+pjojms6P59H4cVwSemJJfq05cuGv/aqcIuNtyqvB4FUKj4fx1IDOxP143717BWA2YxTkYdobPJH9zTs/mMujl1QEzuPFowkrMiMO+fw57h3/COsKu9mAF9FUBboo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789545759; c=relaxed/simple;
-	bh=zPCY6/vUjWDI+sFBANAGcLfIUObtGn4bFnBc8Fjrn40=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GYoePU85fcVDZCN0m05cdbVe7iQ96bgU3J2DYAzeng9hUGi2VuD+7+MzPMFF69+H/lxParaLpuIRPhq3krsrLKV6NeyFZ7BuNuwJRn54TsSQ53ieuEYu0pkgHSA7xKdyS9vZKlRCOu+3sJpLRyWgyfDZCmg+Os2uHX/RiAAZtpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=d-silva.org; spf=pass smtp.mailfrom=d-silva.org; dkim=pass (2048-bit key) header.d=d-silva.org header.i=@d-silva.org header.b=1ti+bg6o; arc=none smtp.client-ip=119.15.109.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=d-silva.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=d-silva.org
+	s=arc-20240116; t=1789546223; c=relaxed/simple;
+	bh=nkTivANmUXq4e9wIM0SOH6H4eHJjSyDHp1VOxM3zsjM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qwlKKvhL081XDW419t8PnYJzt5Z+ZEFmwtIzjgX8YsOCP7QFjDu7Iwj3xRsnJmpvPKZC2NQvdasVliHTTZMg24nRl3A5dGUvzECfg2tCbj52TBVx0O+qETcT8HX7tIJaQYAWzRh+4haJ1BMwOFEp6Km5Be6Zkvnd3hgmd6nkY08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XyKnPYOr; arc=none smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=d-silva.org header.i=@d-silva.org header.b="1ti+bg6o"
-Received: from hawking.lan (ntp.lan [10.0.1.1])
-	by www.nmnhosting.com (Postfix) with ESMTPSA id BD2FE424F0;
-	Wed, 16 Sep 2026 18:02:08 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=d-silva.org; s=2025a;
-	t=1789545728;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qySEvs8hSKqFW9xRbMnFJTfjwY1BWKalrlpW2SDfROM=;
-	b=1ti+bg6oQ0pvM5B9lpqBTOzlQQQRN2HUkiO1sKJvUdK+t8WqTnb3l3iXJfbLU31bcj2WU2
-	Q+vZ0sPRUkFymCQciORp9qEReBUuqz64To8pjdEfCMaG8dJHbMjFchecehW1e/ooZz7b8d
-	EhEWI9J7fRcZGo9Q0yEBIrXD+te4Mv4PSKqd+O6OMS0TDYzA7Cgq7gsO1pMsTJ6RAmMS7F
-	6Ogcgssfprnnfu02QKpZBzAaJvdApxWeoWyTF8DUcAQoTZFtXGXW8ZqVqVFnzj/P1mWnbS
-	uOZMKGoJCscQiyeL4ed7T0dEXkNyxbE9JtzuM6bowZicxJ8KgBkl/26c4kC3rw==
-X-GPT-Reason: legitimate; the email is a technical discussion regarding
-	Linux kernel patches (net-next) for Allwinner H616/H618 hardware,
-	which perfectly matches the technical nature of the "alastair@d-silva.org" mailbox;
-	 the sender domain "d-silva.org" aligns with the "From" header,
-	and the content is a detailed, multi-paragraph engineering analysis
-	with no signs of marketing, phishing, or urgency; there are no URLs
-	or suspicious requests for credentials, and the conversation thread
-	follows a standard developer mailing list format.
-Message-ID: <a5fed5614eb09f958772fae636e748069851e059.camel@d-silva.org>
-Subject: Re: [PATCH net-next 0/4] net: Add Allwinner H616/H618 EMAC1 and
- AC300 EPHY support
-From: Alastair D'Silva <alastair@d-silva.org>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>, James Hilliard
-	 <james.hilliard1@gmail.com>, wens@kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Heiner Kallweit
- <hkallweit1@gmail.com>,  Russell King <linux@armlinux.org.uk>, Alexandre
- Torgue <alexandre.torgue@foss.st.com>, "David S . Miller"	
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski	
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>,  Krzysztof Kozlowski	 <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, 	netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, 	linux-sunxi@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, Jernej Skrabec
- <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>
-Date: Wed, 16 Sep 2026 18:02:08 +1000
-In-Reply-To: <3196ccec-7cf3-434b-b7bb-dec64fe29583@bootlin.com>
-References: <20260916044119.475666-1-alastair@d-silva.org>
-	 <CAGb2v64HZoqBscyKTkTin6DnMv5_kZpBxoS+cm7aYy09pRc7hA@mail.gmail.com>
-	 <CADvTj4qRMviM=KXinCKi657pVC_kj7Kt1yizW_EGDu4m7VKQFg@mail.gmail.com>
-	 <2ac659ffa08eeddc6654827f5a8fbd7fe374a128.camel@d-silva.org>
-	 <3196ccec-7cf3-434b-b7bb-dec64fe29583@bootlin.com>
-Autocrypt: addr=alastair@d-silva.org; prefer-encrypt=mutual;
- keydata=mQINBGactvoBEADBFM2HqfQUUM4j40ZQPyYzmnM8S6zrycO0ipDDPMs7nZMzyzGzOdqfS
- VB/tuYvZOOKVWzJuWJ5aT/YyHx54r3L+D5hTkEG0sXPVJky3yTS9sbHEMSLBHb8TVVuhPVPuieV4g
- Nkqg5POMTidk8xAw50WpV++tUlewXVSciehnuCQPXhXMP7FcCh4uO8LdN7E8m7ir1LafKTFfoWPah
- KVT8NGG9r+ucrFcN5F+VnHxTDaI68yRPkNdtUWmp22wIX1KwDCtKFrndYO4p5Hv2hlDKomsuIIHHn
- muQGRwuh0xpf0nVJNF8ETZHMzxQLfo3e/HvxBFOTkwY9w7CuuQFZchbhS0I3PfmGT0+jiNcdfqjDC
- fPPB5uhy+DkR6wO72vuwFYUrpU2mdliDSdKEtWBHulnXMJjpBOXetfIwhI8G2dTVg59lN5i9DvJZc
- 7y1Sp+qfZQ4P9qpYZyQEKR4GNDOdnm6F2LW2cZkcyAU/Ii765zdDMTQMIzZNSxT/FcDd0K1voTNRl
- QHbQw+kmIMhzSv2JefcC9oNbE0XYzcBDNP5T3O/4itOQ90GCKQEPAbIPeBjlQif7kkyvo/H6yv4s9
- duuK7zbJD9AID/+KGLkpU3p68VDB/C2ZSb9rQz3p1CJNSfsX/CPk7sPqA7RKZ4a2B0hSJ2pJCncNZ
- KXtMlkkm/FmewARAQABtCdBbGFzdGFpciBEJ1NpbHZhIDxhbGFzdGFpckBkLXNpbHZhLm9yZz6JAl
- EEEwEKADsWIQTQGemDFwqYyU/dBWv75AdnjVo60gUCZpy2+gIbAwULCQgHAgIiAgYVCgkICwIEFgI
- DAQIeBwIXgAAKCRD75AdnjVo60qHZEACJnLfpS71Hk8bX0CLCNJ5wgqdZD3pBHEdbv9Ux9kRlZp4a
- ZFwlg9ltwBjl2dZP3PLtD9xQdsdYKVippKd5a7ZZC2y81oDaHjeC9LnPYn8+ce3mGE/+gRyoNfToY
- N06DeUNJKSlZ9t11UIqZCgfp12u16/Yrigy8C4ihEeHXlLhNX6JkeJR5gsHXJnC7vSuMZY+Qz2R72
- ZidWg+cd2WDMGop5sbTvc+55q94A7vTMlWzaix5HdbEUA3sd2U0dMBju5QodRGGhDQMcCu64TydRD
- MtMzzOk9ThJ036ze3HASWGOppyQmaw58k+XNzbHlr9Sc1LsFUNF7zpWXac2rzlywbyRAdFIT/TC76
- hy9zOkwIo2nwA/tdIwLx1j0UZPpAMQmcDUvJqZh6sE+fv6HN0yMPr+sSYJmriMt8Z6leCEHQXOHVI
- SI5z5FvV3coMmHYRq6aXpfs/8SLiYgkV3B0HE/E18Y3j1OkeLYoqIH1VfzQZeCSL/S77NYvk60/MV
- 1HFSyqLdUR3uWZI4uZzoEcMoB0GX33uCTp2Ntc00+wSntwekCUQLCMLUb7dZrbpVuobHoWWtkiD2I
- uE5kAiaVwwwzM0BUwiM6VzVoKbeECz93rdsNtwoDqM0NtzoISC46H/BKVQ9mRNXDO4ThEBpJ4H2Tn
- mPNRYYcR0u2mNy1EJII04w==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-9 
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XyKnPYOr"
+Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cea34f01so617750a12.1
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 01:10:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789546204; x=1790151004; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=iUsD627B/6M5jyv1UJxvIMio9SziZyI6UnP6z74oBus=;
+        b=XyKnPYOraE1XyhHvbxhOev1tK4nDmePjiIguBf4pnQqCZPLPbRWuCP9WQXeRNFnTCK
+         b38nBSpGEVn06GDTKfOfy39hYCEkC5oueYJN1G4tD4P+cQWFZilSSFZsS5W4AXjsn78s
+         633GH9EScJNtBtFEfl2oyEmSwW8Kt2pHfOjkfXlmNWnCLq7CHoxNrJAzkbh34gM9i1Yg
+         6fKTCLuIoAxw95pVGrWMqRk0tjBc9Z2qK21xUsMNMM8cXt9h7eb1KfaoxGNR3+K5aAyj
+         Mq17NxbN5fBxBgEZtH2KOSSsnRQAGP8CW6B4K63Lr8U8HIp+nPIFF+D8YC7wEobd8ypv
+         O0XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789546205; x=1790151005;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iUsD627B/6M5jyv1UJxvIMio9SziZyI6UnP6z74oBus=;
+        b=Hw3caEw/Lj/szWND18QQxPY2T7dNm9lGehREpxEAOHYdw6VA6zMn79vqsLnoW/r/3R
+         XVLFdlXpiJN6eHE48AFV+z7vmcO/sp8M43IljkIwB8mKwhzqu+i1ikbmVHdyJkOWMhL9
+         E91GbyFmVIxeAsxexTNaeKl+bOd/miDogDeGJYJRbKxVMu1Ylg1wMRHqpKHrbHl7VSac
+         miPM9l8dnyz4anvJCDGQKwcj4KHDtMXDnkCGBvmavAhWCUrLBBe7D4eD843TmLg0Z0Pf
+         eYVcFfAvpg9HCfeR08N9S8dWCiMOjUpofl0Z6qibURyGNDWKcUZqrYvOOlY2w1tYQqGq
+         n/rg==
+X-Gm-Message-State: AFuF++kuNIx8Hn1QLiiyLy4vW99SbfOzzap6UGG6zijZDKpCY6m/sHx8
+	5fz1tV/Gf6sII+e8YRyCssyjL+Hp6USKAMyXqz1rIhPcqwe+8EFjneDMTk05dQ==
+X-Gm-Gg: AYBFou2DVWf/wWq5IieBs5RREEqX5V65d7FO6mL27uR+mIZ3tREUSZ6Vzlafzws81Nc
+	KJiRcvgxgjADV/2zxnHsjONSJe2DumY0Z3V7QKc1h6vNxQL8VI/BJIFRqy0vy8LHLSCNyJWl1TE
+	P7lZpSYSfrR3pr9kWsdL6/RR1FSsE2w+sGdQsN5uLS0SuusLALzwyFYU1f4SNCB6dXexj/xiOKN
+	L9jqOOvmLr8gqOrMqVKOhy0HvQSQzf2mGSkMISA1whTNVunUAH+oCJo6DKH2QZ4plxLAdeBRiT4
+	n65kc3odfhlNqJu7ZxWxYb9lhlnBSVi7fdukwV5BLAVt8btanUlsXRF58k4C4mAbnqpo7GJRBEA
+	lGw2PirdvVu704nTTi0uC/DwyTEIVC+aBrP0tQeunX/823BBEl849CFva/p/LRvZyorhVRUVsWL
+	Yao46M/CcqoRnw5XMl/74xSRXMFXnNbzg+Wq4kSt8i6Uhszj9awEDToDm6e8g5gjNCr+uoEw1dN
+	bsbU+j/POr1s+o6xDzYL+TxdozNnahFH+7bdA==
+X-Received: by 2002:a17:90a:1c82:b0:39e:24ab:9fb0 with SMTP id 98e67ed59e1d1-39e24aba659mr1236240a91.6.1789546204505;
+        Wed, 16 Sep 2026 01:10:04 -0700 (PDT)
+Received: from localhost.localdomain ([180.101.244.68])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e1d1626adsm952594a91.4.2026.09.16.01.10.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Sep 2026 01:10:03 -0700 (PDT)
+From: Aohan Mei <ljp1205831794@gmail.com>
+To: netdev@vger.kernel.org
+Cc: linux-sctp@vger.kernel.org,
+	marcelo.leitner@gmail.com,
+	lucien.xin@gmail.com,
+	imv4bel@gmail.com,
+	Aohan Mei <henrymei@tencent.com>,
+	TencentOS Corvus AI <corvus@tencent.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] sctp: don't re-register a removed transport as last_data_from
+Date: Wed, 16 Sep 2026 16:09:51 +0800
+Message-ID: <20260916080955.1019050-1-ljp1205831794@gmail.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+From: Aohan Mei <henrymei@tencent.com>
 
-On Wed, 2026-09-16 at 09:06 +0200, Maxime Chevallier wrote:
-> Hi,
-> On 9/16/26 08:49, Alastair D'Silva wrote:
->=20
-> > There is one subtle timing issue worth highlighting from our
-> > Armbian
-> > testing on the Mellow Fly-C5 (H618):
-> >=20
-> > In James's dwmac patch, setting soc_has_internal_phy =3D false causes
-> > sun8i_dwmac_probe() to fall through to sun8i_dwmac_reset(priv). The
-> > Synopsys EMAC DMA soft reset (EMAC_BASIC_CTL1 bit 0) requires a
-> > running
-> > RMII clock from the PHY to clear.
-> >=20
-> > While this reset succeeds when the PHY driver is built-in and
-> > probes
-> > synchronously, if CONFIG_XPOWERS_ACX00_PHY is built as a module
-> > (=3Dm)
-> > or if the PHY probe defers (-EPROBE_DEFER on
-> > regulator/clock/nvmem),
-> > the PHY is unpowered and not clocking when sun8i_dwmac_probe()
-> > runs.
-> >=20
-> > This causes sun8i_dwmac_reset() to time out after 100ms ("EMAC
-> > reset
-> > timeout"), failing MAC driver probe. In our testing, deferring the
-> > MAC
-> > reset until sun8i_dwmac_init() (which runs upon ndo_open after
-> > phylink
-> > has attached and the PHY is active) avoided this probe failure.
->=20
-> I'm OK with going with James' version, however this seems like a
-> valid
-> point that needs to be figured out.
->=20
-> James, can you add Alastair in CC of your next iterations, and
-> Alastair
-> it would be great if you could give James's patches a test when he
-> submits them :)
->=20
-> There's more stuff in the dwmac part for Alastair's version, some
-> -EPROBEFER handling for clocks, the reset thing as well as the MUX
-> part, for which use-cases is all of that required ?
->=20
-> If that's something that needs to land with proper EMAC1 support,
-> maybe
-> this could be split out from Alastair's work (in individual patches
-> please), and integrated in James's series ?
->=20
-> Maxime
+When an association is in COOKIE-ECHOED state and the peer sends a
+bundled [ERROR(Stale Cookie)][DATA] packet from one of its non-primary
+addresses, processing the ERROR chunk takes the non-fatal stale-cookie
+retry path sctp_sf_do_5_2_6_stale(), which queues
+SCTP_CMD_DEL_NON_PRIMARY while keeping the association alive.
+sctp_cmd_del_non_primary() removes every non-primary transport -
+including the very transport this packet arrived on, which is still
+referenced by the receive lookup and shared by all chunks of the
+packet via chunk->transport.
 
-Thanks Maxime. Here is the breakdown of why those pieces were in my
-earlier patch and how they relate to James's series:
+sctp_assoc_rm_peer() does redirect asoc->peer.last_data_from away from
+the removed transport, but right afterwards the bundled DATA chunk
+makes sctp_assoc_bh_rcv() re-register
+asoc->peer.last_data_from = chunk->transport unconditionally, undoing
+the redirection with the just-removed transport.
 
-1. MDIO MUX & H3_EPHY_SELECT:
-   These are NOT needed for James's series.
-   My initial test tree was using the legacy
-   "allwinner,sun8i-h3-mdio-mux" node inherited from older
-   vendor/Armbian DTs. That mux driver attempts to toggle
-   H3_EPHY_SELECT (bit 0 of SYSCON), which on H616 register 0x34 is
-   actually SYSCON_EPIT (interface type), so I had to mask it out.
-   With James's series, there is no fake mdio-mux node (direct MDIO bus
-   with the ethernet-phy-package), which is much cleaner and completely
-   bypasses all H3 mux code.
+Once the packet is done, the receive reference is dropped and the
+transport is RCU-freed, while the surviving association keeps the
+dangling last_data_from.  A later FWD-TSN (or the delayed SACK timer)
+makes sctp_gen_sack() dereference it (->param_flags and friends), and
+sctp_make_sack()/sctp_outq_select_transport() may write to the freed
+object and link it into the live transport list.  This is a
+use-after-free triggerable by any malicious SCTP peer (or a local
+unprivileged user acting as one) with no capabilities required:
 
-2. -EPROBE_DEFER handling in get_ephy_nodes():
-   Also NOT needed for H616 EMAC1.
-   get_ephy_nodes() is only called when soc_has_internal_phy =3D true.
-   In James's series, all PHY clocks, regulators, and NVMEM cells are
-   managed inside the PHY package driver
-   (drivers/net/phy/xpowers/ac300.c), where -EPROBE_DEFER is already
-   handled cleanly via dev_err_probe().
-   (The get_ephy_nodes() fix is only relevant as an independent=C2=A0
-   cleanup=C2=A0for legacy H3/V3s platforms).
+  BUG: KASAN: slab-use-after-free in sctp_do_sm+0x498a/0x5660
+  Read of size 4 at addr ffff88800e1e356c by task poc/115
+  Call Trace: sctp_do_sm <- sctp_assoc_bh_rcv <- sctp_inq_push <-
+              sctp_rcv <- ip_protocol_deliver_rcu <- ip_rcv
+  Allocated: sctp_transport_new <- sctp_assoc_add_peer <-
+             sctp_process_init (INIT-ACK processing)
+  Freed: kfree <- sctp_transport_destroy_rcu <- rcu_core
+         (call_rcu queued by sctp_transport_put at end of sctp_rcv)
+  The buggy address is located 364 bytes inside of freed 1024-byte
+  region [ffff88800e1e3400, ffff88800e1e3800), cache kmalloc-1k
 
-3. MAC Soft Reset timing (The one piece that IS needed):
-   This is the one issue that affects James's series.
-   Because emac_variant_h616_emac1 sets soc_has_internal_phy =3D false,
-   sun8i_dwmac_probe() falls through to line 1221:
-       ret =3D sun8i_dwmac_reset(priv);
+Related is commit 03a9d10ecf71 ("sctp: drop a chunk if its transport was
+removed"), which only covers the window between the receive lookup and
+the chunk processing (e.g. an ASCONF DEL-IP racing the socket backlog);
+here the transport is removed *while* the packet is being processed, by
+an earlier chunk of the same packet, so the drop in sctp_inq_push() does
+not reach this path.  Verified with the bundled [ERROR(Stale
+Cookie)][DATA] + FWD-TSN reproducer: the KASAN report above still fires
+with that commit applied, and is gone with this patch on top.
 
-   The Allwinner EMAC DMA soft reset (EMAC_BASIC_CTL1 bit 0) requires
-   the RMII clock from the PHY to toggle in order to complete.
-   If CONFIG_XPOWERS_ACX00_PHY is built as a module (=3Dm), or if any of
-   the AC300 package resources defer probe, the PHY is unpowered and
-   not clocking during sun8i_dwmac_probe(). sun8i_dwmac_reset() will
-   time out after 100ms ("EMAC reset timeout"), aborting the MAC probe
-   completely.
-   For EMAC1, skipping sun8i_dwmac_reset() during probe and letting it
-   run in sun8i_dwmac_init() (which runs upon ndo_open after phylink
-   has connected and the PHY is clocked) avoids this probe failure.
+Fix it by never registering a dead transport as last_data_from:
+sctp_transport_free() sets ->dead when the transport is removed, so
+both re-registration sites (the association and the endpoint backlog
+paths) can simply skip it, keeping the redirection done by
+sctp_assoc_rm_peer() in effect.
 
-James, I'm happy to test your next revision on physical Mellow Fly-C5
-(H618) hardware as both a builtin driver, and a module.
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+Cc: stable@vger.kernel.org
+Assisted-by: CodeBuddy:Kimi-K3
+Signed-off-by: Aohan Mei <henrymei@tencent.com>
+---
+ net/sctp/associola.c   | 16 ++++++++++++----
+ net/sctp/endpointola.c | 10 ++++++----
+ 2 files changed, 18 insertions(+), 8 deletions(-)
 
---=20
-Alastair D'Silva
-0493 18 5566
+diff --git a/net/sctp/associola.c b/net/sctp/associola.c
+index 5b0ae616e1ff9..ecef09959630d 100644
+--- a/net/sctp/associola.c
++++ b/net/sctp/associola.c
+@@ -1023,11 +1023,19 @@ static void sctp_assoc_bh_rcv(struct work_struct *work)
+ 			continue;
+ 
+ 		/* Remember where the last DATA chunk came from so we
+-		 * know where to send the SACK.
++		 * know where to send the SACK.  chunk->transport may have
++		 * been removed while processing an earlier chunk of this
++		 * same packet (e.g. a stale-cookie ERROR chunk queues
++		 * SCTP_CMD_DEL_NON_PRIMARY, which removes the non-primary
++		 * transport this packet arrived on), so never register a
++		 * dead transport; otherwise last_data_from would be left
++		 * dangling once the receive reference is dropped and the
++		 * transport is freed.
+ 		 */
+-		if (sctp_chunk_is_data(chunk))
+-			asoc->peer.last_data_from = chunk->transport;
+-		else {
++		if (sctp_chunk_is_data(chunk)) {
++			if (!chunk->transport || !chunk->transport->dead)
++				asoc->peer.last_data_from = chunk->transport;
++		} else {
+ 			SCTP_INC_STATS(net, SCTP_MIB_INCTRLCHUNKS);
+ 			asoc->stats.ictrlchunks++;
+ 			if (chunk->chunk_hdr->type == SCTP_CID_SACK)
+diff --git a/net/sctp/endpointola.c b/net/sctp/endpointola.c
+index dfb1719275dba..f9d4f318e132e 100644
+--- a/net/sctp/endpointola.c
++++ b/net/sctp/endpointola.c
+@@ -392,11 +392,13 @@ static void sctp_endpoint_bh_rcv(struct work_struct *work)
+ 			continue;
+ 
+ 		/* Remember where the last DATA chunk came from so we
+-		 * know where to send the SACK.
++		 * know where to send the SACK.  As in sctp_assoc_bh_rcv(),
++		 * never register a dead (already removed) transport.
+ 		 */
+-		if (asoc && sctp_chunk_is_data(chunk))
+-			asoc->peer.last_data_from = chunk->transport;
+-		else {
++		if (asoc && sctp_chunk_is_data(chunk)) {
++			if (!chunk->transport || !chunk->transport->dead)
++				asoc->peer.last_data_from = chunk->transport;
++		} else {
+ 			SCTP_INC_STATS(ep->base.net, SCTP_MIB_INCTRLCHUNKS);
+ 			if (asoc)
+ 				asoc->stats.ictrlchunks++;
+-- 
+2.43.7
+
