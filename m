@@ -1,86 +1,132 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB6F44CAC6;
-	Wed, 16 Sep 2026 08:14:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE0B3D6662;
+	Wed, 16 Sep 2026 08:14:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789546478; cv=none; b=s4Z+s5bpnzXX8SVtph6dtEdSr+RTTFZburrKl8NO4kI30P2RIDPsxycUF7SsN5kd8UkEQbG/NVf37+vNRMpsuLQfG0V/5eMHnsLAE7/9tIPlfcllqRrZ7BSdhJtysihvGvXgGZaLGkLCUV/Gfv/GK6DtF7c+GLBANJbtwP7Etk8=
+	t=1789546509; cv=none; b=jGZBQrLVvU8CONUFrNao84B77PuBGsZtc3JiDXPal48f0Axlcm2rJdGQ+WzwY/lYLfEa40ZSjIWqnFd/rQNrUPKGe7L3noypkWsq09w8PdNDKZzcrv0woTa+8G3IHtx6wGkBAMiQJu3yJ2d1MceIVc+CN2sJggAVwD7mEKPnhkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789546478; c=relaxed/simple;
-	bh=Pd02UcGb8Nlw+efSj/ToovWghrx8vtQKejJ4ygeqY7E=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=S/S0z7wCUq8FHz9tyTDsNZtLuxH9sAG5hZoEjXnTglgkFPsUSb+sG/qmYmoYx66aS5pSElCxJdKDH1kb29nd3w2n2fhkhy9ldJli3CIpoYe0E57zokPJLZ2MsdWpcfLvnc3j86ejBx7NIOeiBacZczaaDxnTU8eAN4mgVje1pZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=k3du6MZN; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="k3du6MZN"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 68G8D81z82222553, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1789546389;
-	bh=bddv7LOh8I8prGPJH7iCAe8jzLnvPktOVLGUrp7IdFs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=k3du6MZNo6QxxSlxkhe6KaPkfEkaU1ExEGfkx29AuYiahbrGxS3a4lLwSiJxXbRAG
-	 RXsQn0X2ie2s4RcCKTmIUQjynKWChRdL5P48l6JFLqcg0lSWqZ5iLrDKZA0RJr3HKX
-	 mG9YNMVfSZ5yrnSUW97hQILI6F1YkJQgX3YLoy2rFHLqPbN+uRvB1u04bJbtJwKaZ5
-	 RMy05ZaynohZ7iS15YYO/uvwNQO3nuKgQos9EMFlqUBZG/uORuj29HhKlJZmtVkKXh
-	 1jpbx44XfT6HZZ7ZoNMwNWVFkadVsgeo7pJ5uroYSlGD6cSgIOwTorAq8kAmYbBybc
-	 0juSupFLEe13w==
-Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 68G8D81z82222553
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 16 Sep 2026 16:13:09 +0800
-Received: from RS-EX-MBS2.realsil.com.cn (172.29.17.102) by
- RS-EX-MBS3.realsil.com.cn (172.29.17.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Wed, 16 Sep 2026 16:13:08 +0800
-Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS2.realsil.com.cn
- (172.29.17.102) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Wed, 16 Sep 2026 16:13:08 +0800
-From: javen <javen_xu@realsil.com.cn>
-To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <maxime.chevallier@bootlin.com>, <horms@kernel.org>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<daniel@makrotopia.org>, <linux@armlinux.org.uk>, <enelsonmoore@gmail.com>,
-	<daniel@thingy.jp>, Javen Xu <javen_xu@realsil.com.cn>
-Subject: [PATCH net-next v1] r8169: set eee_enable_default base on LPI cap
-Date: Wed, 16 Sep 2026 16:13:06 +0800
-Message-ID: <20260916081306.184-1-javen_xu@realsil.com.cn>
-X-Mailer: git-send-email 2.50.1.windows.1
+	s=arc-20240116; t=1789546509; c=relaxed/simple;
+	bh=nyL5IWzpydVjpCH/OgbKHsn40UXHbYHTISGJwQxLKLw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ddeMv+OknOPCUI/vwwAbPeW76qEE4VUAlYqQ8dPnUJmQLsODfsPDJObojHxh1nr2+yoYWxPBzzvzMEuxBlTw/XF3tEu9yYIeOjOL5fURPIWKUl7qMClMSPSy9pkoAI+BH36TCQWLxRS9fvBB6XVadl7tFXk4W94w2KoYoJY/G7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; arc=none smtp.client-ip=129.217.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
+Received: from [129.217.186.100] ([129.217.186.100])
+	(authenticated bits=0)
+	by unimail.uni-dortmund.de (8.19.0.2/8.19.0.2) with ESMTPSA id 68G8ECk4026897
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 16 Sep 2026 10:14:12 +0200 (CEST)
+Message-ID: <f4509145-1148-4ec1-b1aa-9bf944de7263@tu-dortmund.de>
+Date: Wed, 16 Sep 2026 10:14:12 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v7 0/5] veth: add Byte Queue Limits (BQL) support
+To: Jesper Dangaard Brouer <hawk@kernel.org>, netdev@vger.kernel.org,
+        =?UTF-8?Q?Jonas_K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>
+Cc: kernel-team@cloudflare.com, "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Chris Arges <carges@cloudflare.com>,
+        Mike Freemon <mfreemon@cloudflare.com>,
+        =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Breno Leitao <leitao@debian.org>, Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Stanislav Fomichev <sdf@fomichev.me>, bpf@vger.kernel.org
+References: <20260612083530.1650245-1-hawk@kernel.org>
+ <ed63c31c-0d05-4532-bed6-23b7608ec5e2@tu-dortmund.de>
+ <3a3a99dc-b554-4b5d-a004-67454e66e5e0@tu-dortmund.de>
+ <a184d9c0-aa3a-4d00-9a0e-e7a1d9d344b0@kernel.org>
+Content-Language: en-US
+From: Simon Schippers <simon.schippers@tu-dortmund.de>
+In-Reply-To: <a184d9c0-aa3a-4d00-9a0e-e7a1d9d344b0@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Javen Xu <javen_xu@realsil.com.cn>
+On 9/16/26 08:45, Jesper Dangaard Brouer wrote:
+> 
+> 
+> On 9/15/26 16:30, Simon Schippers wrote:
+>> On 8/10/26 15:25, Simon Schippers wrote:
+>>> On 6/12/26 10:35, hawk@kernel.org wrote:
+>>>> From: Jesper Dangaard Brouer <hawk@kernel.org>
+>>>>
+>>>> This series adds BQL (Byte Queue Limits) to the veth driver, reducing
+>>>> latency by dynamically limiting in-flight packets in the ptr_ring and
+>>>> moving buffering into the qdisc where AQM algorithms can act on it.
+>>>
+>>> Hi :)
+>>>
+>>> I worked on my implementation of DQL coalescing that lives in
+>>> dynamic_queue_limits.{h,c} and wanted to share it so we can consider it
+>>> for the next cycle. This is because in the next cycle I would
+>>> like to add BQL support for tun/tap as well, in addition to veth.
+>>> Is that fine for you?
+>>>
+>>> I think it is in good shape. It uses the same logic as the v7, but
+>>> every new field fits inside the existing dql struct, and drivers only
+>>> need to call the usual netdev_tx_sent_queue() and
+>>> netdev_tx_completed_queue() to use it. Patch 3, 5 and 6 are the same
+>>> as before, only 1, 2 and 4 are new. Benchmarks looked fine for me.
+>>>
+>>> There should be no regressions for other DQL/BQL users. I paid close
+>>> attention not to break the dql cache lines or other logic.
+>>> coal_usecs is now configurable per queue via sysfs and also via ethtool
+>>> as usual.
+>>>
+>>> While working on this, I found a missing barrier in v7:
+>>> There was no smp_rmb() pairing the smp_wmb() in __ptr_ring_produce()
+>>> before dql_completed() reads dql->num_queued. This happens to be safe
+>>> on x86, but on other platforms the read of dql->num_queued could be
+>>> reordered before __ptr_ring_consume(), triggering a BUG_ON() in
+>>> dql_completed(). Fixed by adding the missing smp_rmb() in veth_xdp_rcv()
+>>> before completing.
+>>>
+>>> Would love to hear your thoughts on the implementation!
+>>>
+>>> Thanks,
+>>> Simon
+>>
+>> Hi! Any thoughts on this? Do you want to continue this series?
+> 
+> Appreciate getting poked :-)
+> 
+> I will not have time to work on this until after October 5th.
 
-When initializing phylink configuration, if LPI capabilities is
-non-zero, it indicates the hardware supports EEE, thus we enable it by
-default.
+Noted, no problem.
 
-Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
----
- drivers/net/ethernet/realtek/r8169_main.c | 1 +
- 1 file changed, 1 insertion(+)
+> 
+> If you Simon have time, feel free to submit a V8 patchset with the
+> barrier fix mentioned above.  I should have cycles to review and ACK
+> (except between 26 sep to Oct 4).
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index b6f7d212ed77..6923069266f2 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -6583,6 +6583,7 @@ static int rtl_init_phylink(struct rtl8169_private *tp)
- 	tp->phylink_config.type = PHYLINK_NETDEV;
- 	tp->phylink_config.mac_managed_pm = true;
- 	tp->phylink_config.lpi_capabilities = rtl8169_get_lpi_caps(tp);
-+	tp->phylink_config.eee_enabled_default = !!tp->phylink_config.lpi_capabilities;
- 	tp->phylink_config.mac_capabilities |= MAC_ASYM_PAUSE | MAC_SYM_PAUSE;
- 
- 	switch (tp->sfp_mode) {
--- 
-2.43.0
+I would then also move the coalescing logic to
+dynamic_queue_limits.{h,c}, ok?
+
+I am convinced that it is the right decision, because it:
+- saves us the new struct veth_bql_state, everything fits nicely into
+  the dql struct in the existing cachelines
+- allows other software interfaces like tun/tap to use the same logic,
+  which is my goal :-) others could be e.g. wireguard and ifb
+- allows to change coal_usecs per queue
+
+> 
+> We are still interested in getting this merged. Notice the bug fix from
+> Jonas 60db47f02bfa ("veth: fix queue index used to wake the peer txq in
+> veth_poll").  We are running XDP on our veth production interfaces, so
+> we didn't notice this.  Still, we are currently waiting for this fix to
+> get fully rolled out, before proceeding with the BQL variant.
+
+Yes, I saw that. Probably did not happen to me because I was always
+using single queue..
+
+Thanks.
 
