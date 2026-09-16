@@ -1,179 +1,210 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011001.outbound.protection.outlook.com [52.101.70.1])
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F508287E;
-	Wed, 16 Sep 2026 02:20:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.1
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789525227; cv=fail; b=DDwUg7XVlWHcqs93lSbUDUXP1xcz+Hui3LTwpga7OYPkgTTtzd7bxZVa/DH9gpQbW2fImmdNODkZHfdYtPQvEr+zz0HNYVux8i7ZO+V3GAFzPIrnHvlhfN1sxoVSxJb0RVHBA10vFJNSgrk04sa5JZYpr53z8X8S7osHXkkm4LQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789525227; c=relaxed/simple;
-	bh=WhoRMoofxvxhLVrueoSmubrRi44WGvqnkTBlgJjs9jM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=gdTuqqaZ3TBGDScMKdgGwFmbCICOzmVmlV8BHSGm9EMvwsJI/QfQj6Od0dqgBD+qwbHFYDNzy38LT75PUqRJU27G+tL3b2gVmajEHm3wsMuWsRkEuEplNJ+lqFb8EK5HeQ0BXkKZIF+I0SHEx9BJ73GiSlJvTfxXyXU0bJDPAM8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=nV/gi5xm; arc=fail smtp.client-ip=52.101.70.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2E353E0B;
+	Wed, 16 Sep 2026 02:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789525300; cv=none; b=GapajTeieYY4MqhFQYBgkCvO7Er7R2L/+xmBOFy1kyccUpb2ihCrEJtrnGwHXL9VhhnG0h+joy/p16o49ubcUMUZSkCNrwZCfXlueNtA8ni7/lQET2cupovjHqZElstcwILgNWZordlXIstVld5QrNbkYGhTPL++5KTWJDlHl7k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789525300; c=relaxed/simple;
+	bh=iUvspt1cR7FJNAoPjQkq6ZimRx1IVGd1CvtYGyIOkVA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pb49/bd9q6KUsfgg6MLblOePh+BILVxz69XWiUchTXJft3EC0fIiY1UIuZI+zHlQuWBsuAkGkKxuHFWD1WbG6GWB+btRCK5KNdAJgeh4rySmCSd+T0ON/EMM3vfwu/TklmPXff2Id71caLWmb6xlSLpIkIq4d62EHm/QeK4z6UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=flrFov5o; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="nV/gi5xm"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=w4cxudBLvWgWsYj1ZshKOu9tgl8iYqGAXOi0isfQe2TOzcxRIArhk7Zl2fQLJWfvbumPbKyYTLXROUR9EKHynHql9FmqwBLuWY3wZm+nqafzBRx3eHLqPIa54yK5/BtZr4/wWaB7XPxdX6nqi3NZdgL0SdmmA6owGN/j3gJ1Qjc6m4rak0XQsxjnqiBiPsBZD1RzGjwabXg1TIJIv72CcxaaABjGikT37TG4YJPAzy8oTBAtpeYslYNwTWkjbwl/FgrGuWvG875STS3atm5XDCWmae+7E9FscHy9UuTmfQ93eK/aX1LeKzGRO59oOaMsIg3tGu+2ONTIs4AEsADsgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=U478V79N5VPfcMq0bCi6tB6r7wZHyfgjSGgfT4jgwOA=;
- b=YAyTrvfjko/5NiuFggMon+5so9+aQijzg9jsDrN56LKsrnZnCU4l/yKly7rZJEt7Ot7LuNt+X0+xybsBerJGbJYQXo1J3KIQWqQaPuhOC1jlgracvHRPrNcSMepEDgOBvSuR2EEj8Apyo70yzoYxyPSmTvOWQ4u5edGY7B/6H7FgU8oCaDfRszghUEHY72xCB8CwNgwRMhKiIM4/KraHUczo6JwiX7hc1oNwrxgC8jSpJVKg1Vhw9OWiru0Q/nA6d/yN91s9vBsUcZq3WGRsUi8ZtWH7Nxj+kr6a5GYkOB6CUe4HcWaqfQ3yrjMuxUAoc3RPU9Wk/EXcvtBgAXrn4Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=U478V79N5VPfcMq0bCi6tB6r7wZHyfgjSGgfT4jgwOA=;
- b=nV/gi5xmQJME45O5pSTmfFGeYhQ2on4LeENjyl2bT2RJ3v+hkLMXTzHBVtJ9Pfr94EG98XlmBdamvr/1YXxa/bRWXwBUb/ytxrdxjD6V+lNmdwdwuyT7wW5PuO5MCuzpjBCJ8cZP9vx+jNv13vif655NerlGVrSBJeFbG523+aklkuABg9EjDuvW5RgVUHwGibu2UYwMibz0NsylqCbDynH59MdXoEJePsBoDaaNj9Gzjz9HapkYnDivZBS6icCJOrR3L2W9ScrwVBDdle0taTGNVQbr+wWUmBva5qdxzqjc8uJmETajw7cZ9yNyG+e02NklzDdWQCREr+wxI6NwNQ==
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- (2603:10a6:150:2fc::18) by AS8PR04MB8451.eurprd04.prod.outlook.com
- (2603:10a6:20b:347::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.11; Wed, 16 Sep
- 2026 02:20:21 +0000
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a%5]) with mapi id 15.21.0406.007; Wed, 16 Sep 2026
- 02:20:21 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-CC: Zefir Kurtisi <zefir.kurtisi@westermo.com>, Claudiu Manoil
-	<claudiu.manoil@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
-	<daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
- Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>,
-	Simon Horman <horms@kernel.org>, Richard Cochran <richardcochran@gmail.com>,
-	"Y.B. Lu" <yangbo.lu@nxp.com>, Ioana Ciornei <ioana.ciornei@nxp.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>
-Subject: RE: [PATCH v3 net 2/7] net: enetc: ensure enetc_xdp_xmit() calls
- enetc_update_tx_ring_tail()
-Thread-Topic: [PATCH v3 net 2/7] net: enetc: ensure enetc_xdp_xmit() calls
- enetc_update_tx_ring_tail()
-Thread-Index: AQHdRWFs5icfT0mSEk6HhNc4f+7o1rbQeO3A
-Date: Wed, 16 Sep 2026 02:20:21 +0000
-Message-ID:
- <GV2PR04MB11739136B93D0455F1907E10D88B92@GV2PR04MB11739.eurprd04.prod.outlook.com>
-References: <20260915222735.1016937-1-vladimir.oltean@nxp.com>
- <20260915222735.1016937-3-vladimir.oltean@nxp.com>
-In-Reply-To: <20260915222735.1016937-3-vladimir.oltean@nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|AS8PR04MB8451:EE_
-x-ms-office365-filtering-correlation-id: 2a44b9ad-221d-417f-ad32-08df13990f04
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|19092799006|376014|7416014|366016|23010399003|1800799024|38070700021|10067099003|4143699003|56012099006|11063799006|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- t6Ovpxh2l5397xQivlBHNigFOiEY40FlgJ1Jzuc+jKX6EEyPRTrvrBPsj7dIeO2ox8e9c+kiAvDkSNwoxyFr0DiwWtgwcPYJy1rX5/9vMK/9O8gUShY4htH8LN0woXHcrfUIb8YVWSNkZ9KDl8r84AaHI27//pB71ZrRqgA6TzK5y7JYEeaIib/QW8eMNxeX+/8fx6k+jNtPi6FVlDnyLVwj9v1IMVrQM8qwi1F97JWwSWoRnXEEeBikl2ur11ahQtMWrw5OII2cvvbBLTpcATccgmEEzVJcNPj7OduHEUu1v9IfliM1jZFcZPrqwDbccK4Z08Dv78P/g7X/ioEE4ZuUm2OYvgw9GWeWuHgwxQZN+7GodIe/kWZKmEzCcrgnBLe+in/fTLxkGQxTPLecZ15GnqaHeutDvDOBtmCAxkwkH2mjiTbND2Hev43WK0PZU5Ua3bgrCyO1DOg/hUOTtmbTnVHdctgHROcSdkX+3Pdr2b4HHavbJ13FVho9CZJbzGGz3NM1M1eJnSivUqAqW9AZaZBrusevYRxw2Re2/fibwPLsTNcARqjGkXGfl7WT7GhTipotE3TuPOWIw8IJqZnf4AAvgNsmyj3+tH1RLuD4/fh+GVcJDEjKTXPlEmXu+iKQdQTkVzQXJFC0iznAT++l1FVXAFqXrUG4L0ljUgScY75MQTlZvdASnDUi27s4RSPGdsE8m4l3TnT9LD2O9rpvxUna4mlB1LVA5P+aWwg=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(7416014)(366016)(23010399003)(1800799024)(38070700021)(10067099003)(4143699003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?Dw4V+Jd0CrzdM96Rnnwl3Ik0jf7/1CFpam35ybCE/3OZt+OATonLE3BVChqS?=
- =?us-ascii?Q?plWX3AfmernIahnIjYQ23d9CRr+mq+5C49fFnXyD7uu8yowUtvqQTvQMskNt?=
- =?us-ascii?Q?fIAatx4gQSgqzOcBu/D50tNCFLQ1VZ9gSwqlSw6vVQ6daY8rfW5hAnFkXFAd?=
- =?us-ascii?Q?Uhr77f4UJDnJcimK26hQz4a/XLThenTsonAnu68oNeVxcsme98ttfH6vw2TQ?=
- =?us-ascii?Q?Kv1C1y3/Fypq628CtEePmC34Ew1D60E9XoWiqkapc+fGQ0PSHck1l8wZq58q?=
- =?us-ascii?Q?pn5PAALHWv+Xp/dIE5x4w9RTHzOFFlN6un/kM/ZSUcmrkk0FAoz309FPYAbj?=
- =?us-ascii?Q?l7xuwuXwArMwOe/Bel/HQkPPPBJrUkAEFBILjfFY+3VD9DuoeswxWl6ybUa3?=
- =?us-ascii?Q?nz4tDCT6FHuGxLV2uz/hCWhE7HMOQmmDv3CQm6lYRYqBMZtxhuGtpCh0X2LR?=
- =?us-ascii?Q?2y47OqALHZKDKpX8rhnjwnAK1UapJZEXf3ztKX6Rh3UvKv8Wt6SVWget+HCc?=
- =?us-ascii?Q?r7YatODZMxc0A3jRkl1Tbdy88dw424KWyzfih0mlX9ClqnYIsEQmmIflvqN4?=
- =?us-ascii?Q?fFcnMciGQYeAneP8oXp7zSim0S5RftbBwodTcB8BmIHVLzddZ7Pe/qB3Snuo?=
- =?us-ascii?Q?8wlzllvm4fmslVsG9y6BqxW+HhPPZxn+N6rbRlky7z2IRLY+QXnwpDzIxsvQ?=
- =?us-ascii?Q?KNTU+Gp16YuqY7aF72pjDttokNw0i8GD/uWev7Qhy/Gc4oyUUpO5D+vivq7G?=
- =?us-ascii?Q?f0Elae3uNIBZrv2cQKu2sQsLcyBsIIFpmDCC16xD0Tt+I0mIBvkPeDszPLk8?=
- =?us-ascii?Q?0TvejQr54vUzOHjsTPhHTskgGinY9TNUSVO9EGqGnx36v1t4mi/YTSwLALTE?=
- =?us-ascii?Q?ZjFiXjd8texJniJP064PXKagruIbh78bN98j1cHqT4F6iqU2watEsa8UdlAS?=
- =?us-ascii?Q?FberR3/SZy2MdCrMote9I7V1nsQLlw1o/cobdXrGD5fB8WYpaBd8KyuBMjyQ?=
- =?us-ascii?Q?G/bfwzOhR86QNVyyKo3y2vcgKz1FLCkkuCHU2aL2ehThfrfiSxro79xwiuD9?=
- =?us-ascii?Q?7j907A5z7RIlnOZaSVzZsg/pXH97Ne4ZfyNWJ1kswKjy2vfTBXdSuIN2hL+w?=
- =?us-ascii?Q?tJO0f0klBMr27KPnGLsVVh/TNrXP2JyBvay8WioYkoKctO93qyqV2rdkn+uq?=
- =?us-ascii?Q?bNgp7Oz61rKesSAW4/XC9O8NYsOsbK/hqtF44rH9K4g5+mZ0JSVA5yG4zupv?=
- =?us-ascii?Q?1Nu602Y0qJ2pL7pX1ZaKn44plcMTm3ehJFB8AYFIe76Qto/DLwjnFxLVauxv?=
- =?us-ascii?Q?hfYN3hTUSz7qd38Qcs539GEQ+VegRl3TF7c5z0AvYEugnapB2iYmcwxkGE7r?=
- =?us-ascii?Q?vN1N5+PtCxhNAP3qjSzL6GDZJnOBWi7Qj5ZAqb2Brw8tlDXFGMuNaHkpiPzt?=
- =?us-ascii?Q?jX5KFu6Ie8iyLIzS1gSYVS1KoA+VLm6wMeTV4LtJOYn3iCRHtm3ZBgGm4umG?=
- =?us-ascii?Q?9+BFB/yXmt8LC2YjLPogqDxTyOW/wdJ498XIOUWeAKn4Ga6CXHahvgYX+MOK?=
- =?us-ascii?Q?D7yu0t34g2YeqP3IxLuSmOSf+KLjDSMVmyvNCgsOeHpSNG4rBvY8towALJ1K?=
- =?us-ascii?Q?Bss2W2QB+a+r+i+h9tS2joqw2S7+/rpQH2yl0YyNUJF0xEFdirblutyaxSqC?=
- =?us-ascii?Q?CoXlNBDYOM8GHAheufvz77AfgiNG9d0NrfhYMLSY8d1zAjDW?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="flrFov5o"
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68FLZ4Z8472874;
+	Tue, 15 Sep 2026 19:21:27 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=ltw4RGtgj3eJZ4alyQ2JcmL
+	xJKP7QsjNdQIHqtsFMiE=; b=flrFov5o3AobwqlzeyQwVJUeJiT1Sz52ER50CM/
+	TpLA4IFQY70jQr0fQ5z1mN+fnyCtgofCbHfNTImt0cUVsd+gw4z6zDgBVXS61igT
+	KtH7fYbCxNnKtH0kO808u7EXr39+dblqYVAlIfn5lWLBkpUbYdD8Jh2ysM5EzkYd
+	ZkiCh1fOGScgZjC2R37xy+MHPMCoiogZzLUm9aRAZyxLo7KmTcXECxWxtNgm2EBb
+	DFz28wr8LB9P74yjJeocQWaGYcUYFLYMxE2rv/zVq1EtSAgw6AUI0RvSNzm+X4BD
+	bb1K66NyZ/YSB2tHbz8MPpNrosJGlZdKEtpAmacBGM/gD1g==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4gq5e4n4e9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 15 Sep 2026 19:21:26 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 15 Sep 2026 19:21:26 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Tue, 15 Sep 2026 19:21:26 -0700
+Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with ESMTP id AEC323F7052;
+	Tue, 15 Sep 2026 19:21:22 -0700 (PDT)
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <davem@davemloft.net>, <gakula@marvell.com>,
+        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <sgoutham@marvell.com>
+CC: <andrew+netdev@lunn.ch>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>, <leon@kernel.org>,
+        Ratheesh Kannoth
+	<rkannoth@marvell.com>
+Subject: [PATCH net] octeontx2-af: Fix memory scaling limitation in SR-IOV mode
+Date: Wed, 16 Sep 2026 07:51:11 +0530
+Message-ID: <20260916022111.1083017-1-rkannoth@marvell.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2a44b9ad-221d-417f-ad32-08df13990f04
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Sep 2026 02:20:21.2207
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: sL76Vf1KyYuEGw+L0yV80YuJ1+r6G29NxPt0Exp7FvUZRN6x/oFLdeukRj3V8WoHjRQGCyOdKhjuoIFwFDN7Jg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8451
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: 3T4jKNoaPDse7Q4qILxAR-G0VixW0hIz
+X-Proofpoint-ORIG-GUID: 3T4jKNoaPDse7Q4qILxAR-G0VixW0hIz
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE2MDAzMCBTYWx0ZWRfX2XpFALOwielU
+ hV2hBLN6KFI07mwDNc5DFTyKjcmnz+EkGUA2PEdJNGFUjmz94t98HMYIhuT4G79rBeIuIeDVyhg
+ a3aNADvEObUOYcM589EWPcIgQqsfWPf29aaPKZEjawSHVlG14X6Z69IhI0l4EwWl4UhHuSefcm7
+ vPrblPcTOq+yq2/s3cTI/o7W3VajLk2EedCUj3zVTwDYFObRb1fUZjXwfNm8rowN3MUcDCzUmN2
+ ZW2Nbv0r0rP2eh/kpoW+MnD19t/kWvA8CmRbVhc1+zhoChJ61vHSh8UfiRTMDZoTR57MUl1ivhq
+ 7XF/eBlxff2ZmFZmy6BMnIA2ihD4UBtqn94m58b8kf+lAH3U/pZ7YSxMnNZrdUC7AOYPkDO2PYH
+ TRQ0YyxTB71onOwoRp3iY5Z7N8yMk043D2p9ERqck4B7E0iOY4yYwD1nMTcYdg4fRB1iVrH0heE
+ 1RkocMTMTsr2caIFtqA==
+X-Authority-Analysis: v=2.4 cv=N6W8hG9B c=1 sm=1 tr=0 ts=6aa9fd26 cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=EAYMVhzMl8SCOHhVQcBL:22 a=VwQbUJbxAAAA:8 a=M5GUcnROAAAA:8 a=c92rfblmAAAA:8
+ a=BO82YpIejP-UPoK7PFAA:9 a=OBjm3rFKGHvpk9ecZwUJ:22 a=GvGzcOZaWPEFPQC_NcjD:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE2MDAzMCBTYWx0ZWRfX3m7jNV9nri2S
+ vTMVoLDIieKWHcqPUO6TmXCPfgCc39bv6DcKjvpKTYguB+KK/Rnjn90F3R4Z4gqQ8AhNjMV3H76
+ uy7VNNHpMgohqPTPJ6NF2xfim4RjYL4=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-15_05,2026-09-15_02,2025-10-01_01
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c
-> b/drivers/net/ethernet/freescale/enetc/enetc.c
-> index e7ecdf8ef67c..c9c23e994f6d 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-> @@ -1813,7 +1813,6 @@ int enetc_xdp_xmit(struct net_device *ndev, int
-> num_frames,
->  	struct skb_shared_info *shinfo;
->  	struct enetc_bdr *tx_ring;
->  	int xdp_tx_bd_cnt, i, k;
-> -	int xdp_tx_frm_cnt =3D 0;
->=20
->  	if (unlikely(test_bit(ENETC_TX_DOWN, &priv->flags) ||
->  		     !netif_carrier_ok(ndev)))
-> @@ -1845,19 +1844,17 @@ int enetc_xdp_xmit(struct net_device *ndev, int
-> num_frames,
->  						    &xdp_redirect_arr[i]);
->  			break;
->  		}
-> -
-> -		xdp_tx_frm_cnt++;
->  	}
->=20
-> -	if (unlikely((flags & XDP_XMIT_FLUSH) || k !=3D xdp_tx_frm_cnt))
-> +	if (unlikely(k && ((flags & XDP_XMIT_FLUSH) || k < num_frames)))
->  		enetc_update_tx_ring_tail(tx_ring);
->=20
-> -	tx_ring->stats.xdp_tx +=3D xdp_tx_frm_cnt;
-> -	tx_ring->stats.xdp_tx_drops +=3D num_frames - xdp_tx_frm_cnt;
-> +	tx_ring->stats.xdp_tx +=3D k;
-> +	tx_ring->stats.xdp_tx_drops +=3D num_frames - k;
->=20
->  	enetc_unlock_mdio();
->=20
-> -	return xdp_tx_frm_cnt;
-> +	return k;
->  }
->  EXPORT_SYMBOL_GPL(enetc_xdp_xmit);
->=20
-> --
-> 2.43.0
+The original code used DMA_ATTR_FORCE_CONTIGUOUS, which could exhaust
+the CMA pool when a large number of VFs were requested.
 
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Fix this by switching to the DMA streaming API. This is equivalent on
+Octeon platforms, which provide full I/O coherency via the SMMU.
+
+Cc: Leon Romanovsky <leon@kernel.org>
+Fixes: 73d33dbc0723 ("octeontx2-af: Use DMA_ATTR_FORCE_CONTIGUOUS attribute in DMA alloc")
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+
+---
+v9 -> v10: Updated commit message as suggested by Leon
+
+v8 -> v9: Addressed Leon comment.
+- Used kzalloc instead of kmalloc.
+
+v7 -> v8: Addressed Leon comments.
+- Replace __get_free_pages() and __GFP_COMP with kmalloc()
+- Drop GFP_DMA32 retry loop and dma_capable()/phys_to_dma() mask probing
+- Use dma_map_single()/dma_unmap_single() instead of dma_map_page_attrs()
+  with DMA_ATTR_REQUIRE_COHERENT
+- Remove defensive parameter checks and dma_max_mapping_size() from the
+  allocator helper
+- Move MAX_PAGE_ORDER validation to qmem_alloc()
+
+v6 -> v7: Addressed Sashiko comments.
+	https://lore.kernel.org/netdev/178863855246.219967.10510865726694393307@kernel.org/
+
+v5 -> v6: Addressed review comments.
+	https://lore.kernel.org/netdev/20260901015621.2708182-1-rkannoth@marvell.com/
+
+v4 -> v5: Fixed compilation issues.
+	https://lore.kernel.org/netdev/20260831024210.208447-1-rkannoth@marvell.com/
+
+v3 -> v4: Fixed compilation issues.
+	https://lore.kernel.org/netdev/apTpKcN_S1xIwRbZ@rkannoth-OptiPlex-7090/
+
+v2 -> v3: Addressed sashiko comments.
+	https://sashiko.dev/#/patchset/20260825045616.3723078-1-rkannoth%40marvell.com
+
+v1 -> v2: Rewrote patch as per sashiko comment.
+---
+ .../ethernet/marvell/octeontx2/af/common.h    | 45 ++++++++++++++++---
+ 1 file changed, 39 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/common.h b/drivers/net/ethernet/marvell/octeontx2/af/common.h
+index 779413a383b7..78e42549d990 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/common.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/common.h
+@@ -7,6 +7,10 @@
+ #ifndef COMMON_H
+ #define COMMON_H
+ 
++#include <linux/dma-mapping.h>
++#include <linux/gfp.h>
++#include <linux/mm.h>
++
+ #include "rvu_struct.h"
+ 
+ #define OTX2_ALIGN			128  /* Align to cacheline */
+@@ -44,6 +48,33 @@ struct qmem {
+ 	u32		qsize;
+ };
+ 
++static inline void *otx2_dma_alloc_coherent(struct device *dev, size_t size,
++					    dma_addr_t *dma_handle)
++{
++	dma_addr_t dma_addr;
++	void *vaddr;
++
++	vaddr = kzalloc(size, GFP_KERNEL);
++	if (!vaddr)
++		return NULL;
++
++	dma_addr = dma_map_single(dev, vaddr, size, DMA_BIDIRECTIONAL);
++	if (dma_mapping_error(dev, dma_addr)) {
++		kfree(vaddr);
++		return NULL;
++	}
++
++	*dma_handle = dma_addr;
++	return vaddr;
++}
++
++static inline void otx2_dma_free_coherent(struct device *dev, size_t size,
++					  void *vaddr, dma_addr_t dma_handle)
++{
++	dma_unmap_single(dev, dma_handle, size, DMA_BIDIRECTIONAL);
++	kfree(vaddr);
++}
++
+ static inline int qmem_alloc(struct device *dev, struct qmem **q,
+ 			     int qsize, int entry_sz)
+ {
+@@ -60,8 +91,11 @@ static inline int qmem_alloc(struct device *dev, struct qmem **q,
+ 
+ 	qmem->entry_sz = entry_sz;
+ 	qmem->alloc_sz = (qsize * entry_sz) + OTX2_ALIGN;
+-	qmem->base = dma_alloc_attrs(dev, qmem->alloc_sz, &qmem->iova,
+-				     GFP_KERNEL, DMA_ATTR_FORCE_CONTIGUOUS);
++
++	if (get_order(PAGE_ALIGN(qmem->alloc_sz)) > MAX_PAGE_ORDER)
++		return -ENOMEM;
++
++	qmem->base = otx2_dma_alloc_coherent(dev, qmem->alloc_sz, &qmem->iova);
+ 	if (!qmem->base)
+ 		return -ENOMEM;
+ 
+@@ -80,10 +114,9 @@ static inline void qmem_free(struct device *dev, struct qmem *qmem)
+ 		return;
+ 
+ 	if (qmem->base)
+-		dma_free_attrs(dev, qmem->alloc_sz,
+-			       qmem->base - qmem->align,
+-			       qmem->iova - qmem->align,
+-			       DMA_ATTR_FORCE_CONTIGUOUS);
++		otx2_dma_free_coherent(dev, qmem->alloc_sz,
++				       qmem->base - qmem->align,
++				       qmem->iova - qmem->align);
+ 	devm_kfree(dev, qmem);
+ }
+ 
+-- 
+2.43.0
 
