@@ -1,256 +1,449 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f41.google.com (mail-pz2-f41.google.com [74.125.228.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C7B4CEE4E;
-	Wed, 16 Sep 2026 17:38:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5465151C351
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 17:43:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789580324; cv=none; b=ZsPkiq5aKpM/ZJ/BPfOrr0esQT9rdTOFZX0lGszyf+11wYpHP3+FS5s+FV/cRNMaQYrCgdHLlr2AULBAmME5OKEgvXtlt7KwsyrF5A/mOhvXv8n5tBwrh2tbcXpTqHf7LkFPKMISjh6HIOxtfZhWC05n8s3bv2uEHIoD+1Nj1TI=
+	t=1789580613; cv=none; b=VI7w6xiyKU/EyiA/I/5vWodnmlD8zx+pkGm86VKaCaUtAh2auhd0EC699cyTsCGfP5Ns3igejhhNFl6F98p76+shNdjnjjptfBdPH8W8/D9P4L2JK2q9+DyNlEj7348mx7x6t3v3UKxY96uZsaaPgxrx+eyFQtS8VIBrSnap9rA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789580324; c=relaxed/simple;
-	bh=huuvDYYHx4dziZjSfHbT0AUGsvZFvUBJqk93qr3mpbA=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=B//lHPHoXLVtwZ+ZFIyG4meGBacKwlpl6oWXVVzEOktM+0VRQWNBpd4XIGiqVq5FNpQ0FnokFQveWGKiplf9AXhzEM/zD33xJ5fnltrO9agu2YHO/bLZjjSDIMeu96Xl7IH/zpp6a1JtKidpu4gx3nhAPMb7PTKUraKBiyMyS6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vo+n4HIF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789580613; c=relaxed/simple;
+	bh=/EQmlTpPWabY3NIR14EHBnf/GGPLY/Gd8xk8Z8Tii4A=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=eljmdjo7EfcqX34aA0ARANccP1B11Kf6E6UrQ8JvrkY3KMwp+K4BKAVDeeQ1fmt+dc7VCbFLmsJEW1cYKd9cpfpyfVhJn4NYxwWtXexmeC17cGmG7eZCtqQ7ar76Nlh+0r7MxE20d9saUSRJbyQUQ8fStZ8i91AiNgxep5nXQUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b4xNSpuX; arc=none smtp.client-ip=74.125.228.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vo+n4HIF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E72E21F000FF;
-	Wed, 16 Sep 2026 17:38:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789580310;
-	bh=vruFXSNiZzTcRGVZVsS3u3NJkuqePVUQ0NhUeEs2RY0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Vo+n4HIFQCH/Qa2BWMIvwrWrS5r26RhT2ws+YF6RT7Wd+uj5Sv2n8POsTYRuQzvaT
-	 KRCh2NnHmu6S4DoOdWdms2m7LANEkliYt7DRzYoc+eFogKdI+x1Cx7BdQHFP5fNXAi
-	 2yoKffnnTLgCsg1tPaQJsYlIhKeEg0MjmQBZU3HXLEX+Qob0aSZX3l17CvW1tFSWFK
-	 T82bPU9qBWeWTrVljlSMgoMYN1dWFC87cvOesp0gfYoGzU+eRFosO0BxNvyiy+NUib
-	 WBx5zuCNAbtcJitN7jD0DeJJP2xPyctkJjk33P+ebSWsx21gH7tpwm27ovc3iyodf3
-	 LjN3gr4CJgNEA==
-Subject: Re: [PATCH ipsec v2] xfrm: fix races in device state cleanup
-From: netdev-bot+sashiko@kernel.org
-To: nicoyip.dev@gmail.com
-Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Date: Wed, 16 Sep 2026 17:38:29 +0000
-Message-ID: <178958030946.22033.17018749865001469631@kernel.org>
-In-Reply-To: <20260914133540.3666907-1-nicoyip.dev@gmail.com>
-References: <20260914133540.3666907-1-nicoyip.dev@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b4xNSpuX"
+Received: by mail-pz2-f41.google.com with SMTP id d2e1a72fcca58-85469b355ffso840879b3a.1
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 10:43:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789580594; x=1790185394; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=ZbW+4m7Ckt5T3Vp0i2qlknolTY3jp+RjMzIv0/DlDJ8=;
+        b=b4xNSpuXwmkzbsZ28awrx3a9n1EIPa+llNW8kvJCGPnDmKCHETbeohmM586vr+jBH8
+         5gxI/Ob0Hx4vTDFDTLD9ica7af62Q9dZcbXceIJhu5ewU+4A1ovkPkVFCJ47HSj2yzx0
+         6hY2Q0K3uSEPviQttYxhBnoZ7Ydk3yWvPVbn/QX/po4jLmSFubWZWaeOZwPLBjk7pLWG
+         54Jz6wN2EXSsKtMEqrL2IMlIf6RJiyNakQZjliLs2vod6uIA3TQlgphITZAXx4YiYVnE
+         pOfWgmYe4++elR77Hy8S7Ul2Pazi0qfcawN5fRN/DrY36dySh/p0WK6UXNXBaXkHMZUt
+         hNbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789580594; x=1790185394;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZbW+4m7Ckt5T3Vp0i2qlknolTY3jp+RjMzIv0/DlDJ8=;
+        b=H5wIQObxy1ojNR85pWUUeaUVVVDgsL2A5oCeyR+KBJaIGvEDhwneVBvRda57kW3CkE
+         nOAIJ+LknmrHEJGUL2d+JMU0QiPQWGiRa2DU64Eix6aglEY5zNG5kZGsFMqNRttS17+d
+         0SkigLYo8A5l8DpRSvux8iMp7FGefmQwf6JkH1ooZEZ6G29UmTnedWhnLnVqhFjHkzmy
+         2chpWaw7BP554aGcpL2Gp+gBY3QxQcMtDmBvefr4KLP1lXqpJs/iWoGcgUBRMjqQFsyb
+         I/oKy4uwVpLdzqPNm03yvorginsYEcOVaTJEkJX+KLJTaHTi1kTkx20nQoQ+e7TZaWWb
+         CK6w==
+X-Forwarded-Encrypted: i=1; AKwUvBxqwfFSEBoVopQR64o+hXkZDaug+0KHQhW0a9IUVZvcZPnGpwj0RBS21fRGAyXegwebW/Yr22U=@vger.kernel.org
+X-Gm-Message-State: AFuF++mohFf80gh/Kcp4a1PoXFbRJFsVkFpcvaFzQsXLqjiveLWyMrMI
+	sFQ5OGpPT3LTDFzj1TgYYubeJnRnHYGMUkGcG5QWBzcJPoysRQiXAeak
+X-Gm-Gg: AYBFou0W0Gi4Etf/BbQxor7jSDM0z8y7Tt9UztBq6dw03v41hXtM3TUpi59Um/IIrXE
+	VtSXoxc3eZcHYhBeQrojKXMqZfcrgG1s5zkKKndPL1ufgXUQS5DkYKNQ6RKG0ar0Hi0y3a5VoJo
+	uiGv24LYyzFyiOpGa+Uj8i4ao8Zjly4ABzOuU1pMiMq0nRsAhzZUZh9KJj2sRYO1nSxYpYw7M70
+	lePuA12iNr+X3UrHHat77VvZJ4X5AiChLnq/dxdjGdn7dMC5qIj4DVyEqVMBIFQJ9xYzLIhM+P2
+	ZNXFwUHPjL6ods/sVlpD4+2LsJ4/xKER9jh0y4UGNoI44Q9a4XlTdLt22OMuPFnikhzWx8gSvfK
+	JEXrdOmT73nhMIzstpMn1ihMhTFSvmQ/e3LJ14leQwjRXngGlKTxZmUJdr3s1TBVw0HpUuP6+w0
+	MJo1C7itovhCFOV7fkRvrF6CX8fgb1e49PdKMmr192WC4tWX/up3zH4gBS5lG1fR+0/I0hoYDVz
+	HFcnJ7qB7TBA8nNY49h4loNvw==
+X-Received: by 2002:a05:6a00:6088:b0:857:73e2:9106 with SMTP id d2e1a72fcca58-87239aa08b2mr7833547b3a.22.1789580594131;
+        Wed, 16 Sep 2026 10:43:14 -0700 (PDT)
+Received: from localhost ([13.93.150.60])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-871febde2f7sm1700356b3a.6.2026.09.16.10.43.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Sep 2026 10:43:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 16 Sep 2026 17:43:11 +0000
+Message-Id: <DLGXDIB879EO.IDZNAIRY0VFJ@gmail.com>
+Subject: Re: [PATCH net-next v2 1/2] ipv6: update NUD_FAILED neighbors from
+ NA messages
+From: "Lawrence Lee" <lfqlee314@gmail.com>
+To: "Ido Schimmel" <idosch@nvidia.com>
+Cc: "David Ahern" <dsahern@kernel.org>, "David S. Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Simon
+ Horman" <horms@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>,
+ <netdev@vger.kernel.org>, "Arun Ajith S" <aajith@arista.com>, "Roopa
+ Prabhu" <roopa@nvidia.com>, "Jaehee Park" <jhpark1013@gmail.com>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, "Shuah
+ Khan" <shuah@kernel.org>, <linux-doc@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ "Alexander Aring" <alex.aring@gmail.com>, <linux-wpan@vger.kernel.org>,
+ <linux-bluetooth@vger.kernel.org>
+X-Mailer: aerc 0.17.0
+References: <cover.1789448374.git.lfqlee314@gmail.com>
+ <6596966f734f3d416bfa83722f7a595149bcc3f8.1789448374.git.lfqlee314@gmail.com> <20260916120202.GA935660@shredder>
+In-Reply-To: <20260916120202.GA935660@shredder>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
+On Wed Sep 16, 2026 at 12:02 PM UTC, Ido Schimmel wrote:
+> On Tue, Sep 15, 2026 at 05:01:31AM +0000, Lawrence Lee wrote:
+> > Transition a FAILED neighbor entry to STALE upon receipt of an NA
+> > message on routers when accept_untracked_na is enabled. This extends th=
+e
+> > RFC 9131 accept_untracked_na behavior so that FAILED entries are treate=
+d
+> > the same as non-existent entries. In the context of RFC 4861 which
+> > introduced NDP, both non-existent and FAILED entries are considered
+> > untracked since they do not have a valid neighbor cache entry.
+>
+> RFC 4861 didn't introduce NDP (RFC 1970 did), so please omit this bit.
+> But if you're going to mention RFC 4861, then cite 7.3.3 which says that
+> "If address resolution fails, the entry SHOULD be deleted". The fact
+> that Linux keeps it as FAILED is an implementation detail and treating
+> it as untracked is correct from RFC perspective.
+>
 
-Critical: 0 · High: 1 · Medium: 0 (1) · Low: 1
+That's my mistake, I'll update this to mention that 4861 is just the=20
+most recent NDP standard and will cite 7.3.3.
 
-- [High] net/xfrm/xfrm_state.c, xfrm_dev_state_free(): the patch
-  publishes `WRITE_ONCE(xso->dev, NULL)` (line 788) under…
-- [Low] net/xfrm/xfrm_state.c, xfrm_dev_state_flush() line 1011: the new
-  `&& xfrm_state_hold_rcu(x)` gate makes the deferred device-GC pass…
+> >=20
+> > Trying to resolve FAILED neighbors via periodic probing (e.g. using
+> > NTF_EXT_MANAGED) is more work compared to this approach which uses
+> > information in NAs that the kernel may already be receiving. Note that
+> > because this behavior in IPv6 is dependent on the accept_untracked_na
+> > sysctl setting, this approach is more conservative than IPv4 which
+> > transitions FAILED neighbors to STALE by default upon receiving GARPs.
+> >=20
+> > Link: https://lore.kernel.org/r/20260813233344.445265-1-lfqlee314@gmail=
+.com
+> > Assisted-by: LLM Sashiko sparse
+> > Signed-off-by: Lawrence Lee <lfqlee314@gmail.com>
+> > ---
+> >  Documentation/networking/ip-sysctl.rst | 28 ++++----
+> >  include/net/ndisc.h                    | 15 ++--
+> >  net/6lowpan/ndisc.c                    | 15 ++--
+> >  net/ipv6/ndisc.c                       | 94 +++++++++++++++++---------
+> >  4 files changed, 96 insertions(+), 56 deletions(-)
+>
+> The RFC was:
+>
+> 1 file changed, 11 insertions(+), 2 deletions(-)
+>
+> I'm not sure how this ballooned to this size...
+>
 
-Pre-existing issues:
-- [Medium] Split responsibility for validating xso->dev between core and
-  driver: include/net/xfrm.h, xfrm_dev_state_update_stats() snapshots…
+Some of the additional size can be attributed to doc/comment changes,=20
+but a lot of it comes from changes I implemented to address issues found=20
+by the local Sashiko review I ran. It was definitely an oversight on my=20
+part to not mention these in either the commit message or comments,=20
+sorry about that.
 
---
+> > diff --git a/include/net/ndisc.h b/include/net/ndisc.h
+> > index 96e3bb6e83af..7fb3f10eca6c 100644
+> > --- a/include/net/ndisc.h
+> > +++ b/include/net/ndisc.h
+> > @@ -154,11 +154,13 @@ void __ndisc_fill_addr_option(struct sk_buff *skb=
+, int type, const void *data,
+> >   *     option parser will take care about that option.
+> >   *
+> >   * void (*update)(const struct net_device *dev, struct neighbour *n,
+> > - *		  u32 flags, u8 icmp6_type,
+> > + *		  u32 flags, bool failed_recovery, u8 icmp6_type,
+> >   *		  const struct ndisc_options *ndopts):
+> >   *     This function is called when IPv6 ndisc updates the neighbour c=
+ache
+> >   *     entry. Additional options which can be updated may be previousl=
+y
+> >   *     parsed by parse_opts callback and accessible over ndopts parame=
+ter.
+> > + *     failed_recovery indicates that ndisc accepted the packet to rec=
+over
+> > + *     an entry observed in NUD_FAILED.
+> >   *
+> >   * int (*opt_addr_space)(const struct net_device *dev, u8 icmp6_type,
+> >   *			 struct neighbour *neigh, u8 *ha_buf,
+> > @@ -197,7 +199,7 @@ struct ndisc_ops {
+> >  				 struct nd_opt_hdr *nd_opt,
+> >  				 struct ndisc_options *ndopts);
+> >  	void	(*update)(const struct net_device *dev, struct neighbour *n,
+> > -			  u32 flags, u8 icmp6_type,
+> > +			  u32 flags, bool failed_recovery, u8 icmp6_type,
+> >  			  const struct ndisc_options *ndopts);
+> >  	int	(*opt_addr_space)(const struct net_device *dev, u8 icmp6_type,
+> >  				  struct neighbour *neigh, u8 *ha_buf,
+> > @@ -227,12 +229,13 @@ static inline int ndisc_ops_parse_options(const s=
+truct net_device *dev,
+> >  }
+> > =20
+> >  static inline void ndisc_ops_update(const struct net_device *dev,
+> > -					  struct neighbour *n, u32 flags,
+> > -					  u8 icmp6_type,
+> > -					  const struct ndisc_options *ndopts)
+> > +				    struct neighbour *n, u32 flags,
+> > +				    bool failed_recovery, u8 icmp6_type,
+> > +				    const struct ndisc_options *ndopts)
+> >  {
+> >  	if (dev->ndisc_ops && dev->ndisc_ops->update)
+> > -		dev->ndisc_ops->update(dev, n, flags, icmp6_type, ndopts);
+> > +		dev->ndisc_ops->update(dev, n, flags, failed_recovery,
+> > +				       icmp6_type, ndopts);
+> >  }
+>
+> All the changes in this file can be dropped. See below.
+>
 
-xfrm: fix races in device state cleanup
+This is tied to the lowpan changes below.
 
-The patch makes the deferred device-GC pass in xfrm_dev_state_flush() take a
-temporary xfrm_state reference while it still holds xfrm_state_dev_gc_lock,
-and moves the xso->dev clearing and the dev_gclist unlink under that same
-lock so only one caller claims the device cleanup. hlist_del() is replaced
-by hlist_del_init() so the node is left unhashed.
+> > =20
+> >  static inline int ndisc_ops_opt_addr_space(const struct net_device *de=
+v,
+> > diff --git a/net/6lowpan/ndisc.c b/net/6lowpan/ndisc.c
+> > index 868d28583c0a..8fedfef93740 100644
+> > --- a/net/6lowpan/ndisc.c
+> > +++ b/net/6lowpan/ndisc.c
+> > @@ -47,7 +47,8 @@ static int lowpan_ndisc_parse_options(const struct ne=
+t_device *dev,
+> >  	}
+> >  }
+> > =20
+> > -static void lowpan_ndisc_802154_update(struct neighbour *n, u32 flags,
+> > +static void lowpan_ndisc_802154_update(struct neighbour *n,
+> > +				       bool failed_recovery,
+> >  				       u8 icmp6_type,
+> >  				       const struct ndisc_options *ndopts)
+> >  {
+> > @@ -87,20 +88,24 @@ static void lowpan_ndisc_802154_update(struct neigh=
+bour *n, u32 flags,
+> >  		ieee802154_be16_to_le16(&neigh->short_addr, lladdr_short);
+> >  		if (!lowpan_802154_is_valid_src_short_addr(neigh->short_addr))
+> >  			neigh->short_addr =3D cpu_to_le16(IEEE802154_ADDR_SHORT_UNSPEC);
+> > +	} else if (failed_recovery) {
+> > +		neigh->short_addr =3D cpu_to_le16(IEEE802154_ADDR_SHORT_UNSPEC);
+> >  	}
+> >  	write_unlock_bh(&n->lock);
+> >  }
+> > =20
+> >  static void lowpan_ndisc_update(const struct net_device *dev,
+> > -				struct neighbour *n, u32 flags, u8 icmp6_type,
+> > +				struct neighbour *n, u32 flags,
+> > +				bool failed_recovery, u8 icmp6_type,
+> >  				const struct ndisc_options *ndopts)
+> >  {
+> >  	if (!lowpan_is_ll(dev, LOWPAN_LLTYPE_IEEE802154))
+> >  		return;
+> > =20
+> > -	/* react on overrides only. TODO check if this is really right. */
+> > -	if (flags & NEIGH_UPDATE_F_OVERRIDE)
+> > -		lowpan_ndisc_802154_update(n, flags, icmp6_type, ndopts);
+> > +	/* React to overrides or accepted FAILED-entry recovery. */
+> > +	if ((flags & NEIGH_UPDATE_F_OVERRIDE) || failed_recovery)
+> > +		lowpan_ndisc_802154_update(n, failed_recovery, icmp6_type,
+> > +					   ndopts);
+> >  }
+> > =20
+> >  static int lowpan_ndisc_opt_addr_space(const struct net_device *dev,
+>
+> I'm not sure why you added these lowpan changes to the patch. They are
+> not described in the commit message. Given that lowpan_ndisc_update()
+> already has a TODO comment about only handling overrides, I suggest to
+> ignore it. If needed, it can be modified in the future by someone who
+> can explain the use case and test the change.
+>
 
-A few questions below.
+I added the lowpan changes after my local Sashiko review run identified=20
+an issue where a FAILED neighbor can retain an outdated private short=20
+address if it's moved to STALE by a non-override NA. Happy to drop all=20
+lowpan-related changes or update comments/commit message to reflect the=20
+changes, please let me know your preference.
 
-> diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-> index 36a4f6793edef..282d09d0c2475 100644
-> --- a/net/xfrm/xfrm_state.c
-> +++ b/net/xfrm/xfrm_state.c
-> @@ -780,17 +780,20 @@ EXPORT_SYMBOL_GPL(xfrm_dev_state_delete);
->  void xfrm_dev_state_free(struct xfrm_state *x)
->  {
->  	struct xfrm_dev_offload *xso = &x->xso;
-> -	struct net_device *dev = READ_ONCE(xso->dev);
-> +	struct net_device *dev;
->  
-> +	spin_lock_bh(&xfrm_state_dev_gc_lock);
-> +	dev = READ_ONCE(xso->dev);
->  	if (dev && dev->xfrmdev_ops) {
-> -		spin_lock_bh(&xfrm_state_dev_gc_lock);
-> +		WRITE_ONCE(xso->dev, NULL);
+> > diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+> > index 90cd5d852569..84d70c09205a 100644
+> > --- a/net/ipv6/ndisc.c
+> > +++ b/net/ipv6/ndisc.c
+> > @@ -778,13 +778,23 @@ static int pndisc_is_router(const void *pkey,
+> >  	return ret;
+> >  }
+> > =20
+> > +static void __ndisc_update(const struct net_device *dev,
+> > +			   struct neighbour *neigh, const u8 *lladdr, u8 new,
+> > +			   u32 flags, bool failed_recovery, u8 icmp6_type,
+> > +			   struct ndisc_options *ndopts)
+> > +{
+> > +	neigh_update(neigh, lladdr, new, flags, 0);
+> > +	/* report ndisc ops about neighbour update */
+> > +	ndisc_ops_update(dev, neigh, flags, failed_recovery, icmp6_type,
+> > +			 ndopts);
+> > +}
+> > +
+> >  void ndisc_update(const struct net_device *dev, struct neighbour *neig=
+h,
+> >  		  const u8 *lladdr, u8 new, u32 flags, u8 icmp6_type,
+> >  		  struct ndisc_options *ndopts)
+> >  {
+> > -	neigh_update(neigh, lladdr, new, flags, 0);
+> > -	/* report ndisc ops about neighbour update */
+> > -	ndisc_ops_update(dev, neigh, flags, icmp6_type, ndopts);
+> > +	__ndisc_update(dev, neigh, lladdr, new, flags, false, icmp6_type,
+> > +		       ndopts);
+> >  }
+>
+> This hunk can be dropped.
+>
 
-[Severity: High]
-Can moving this clear ahead of the driver callback open a NULL dereference
-window on the output path?
+Tied to the lowpan changes above.
 
-After this change xso->dev is published as NULL here, the lock is dropped,
-and xso->type is only set to XFRM_DEV_OFFLOAD_UNSPECIFIED after
-xdo_dev_state_free() returns.  For the whole duration of the callback a
-lockless reader sees xso.type == XFRM_DEV_OFFLOAD_PACKET together with
-xso.dev == NULL.
+> > =20
+> >  static enum skb_drop_reason ndisc_recv_ns(struct sk_buff *skb)
+> > @@ -972,14 +982,18 @@ static enum skb_drop_reason ndisc_recv_ns(struct =
+sk_buff *skb)
+> > =20
+> >  static int accept_untracked_na(struct inet6_dev *idev, struct in6_addr=
+ *saddr)
+> >  {
+> > +    /* For any given neighbor IP address, consider it an untracked nei=
+ghbor if
+> > +     * it is absent from the neighbor cache or if it has a NUD_FAILED =
+entry in
+> > +     * the neighbor cache
+> > +     */
+>
+> Redundant given the comments in the caller and the sysctl documentation.
+> Simply modify the existing comments below to mention FAILED case.
+>
 
-xfrm_output() picks the offload branch purely on the type:
+Will update.
 
-net/xfrm/xfrm_output.c:xfrm_output() {
-	...
-	if (x->xso.type == XFRM_DEV_OFFLOAD_PACKET) {
-		if (!xfrm_dev_offload_ok(skb, x)) { ... }
-	...
-		if (x->props.mode == XFRM_MODE_TUNNEL && !skb->sk)
-			return xfrm_dev_direct_output(sk, x, skb);
-	...
-}
+> >  	switch (READ_ONCE(idev->cnf.accept_untracked_na)) {
+> > -	case 0: /* Don't accept untracked na (absent in neighbor cache) */
+> > +	case 0: /* Reject NAs for untracked neighbours */
+> >  		return 0;
+> > -	case 1: /* Create new entries from na if currently untracked */
+> > +	case 1: /* Accept NAs for untracked neighbours */
+> >  		return 1;
+> > -	case 2: /* Create new entries from untracked na only if saddr is in t=
+he
+> > +	case 2: /* Accept NAs for untracked neighbours only if saddr is in th=
+e
+> >  		 * same subnet as an address configured on the interface that
+> > -		 * received the na
+> > +		 * received the NA
+> >  		 */
+> >  		return !!ipv6_chk_prefix(saddr, idev->dev);
+> >  	default:
+> > @@ -1001,6 +1015,9 @@ static enum skb_drop_reason ndisc_recv_na(struct =
+sk_buff *skb)
+> >  	struct neigh_table *tbl;
+> >  	struct neighbour *neigh;
+> >  	struct inet6_dev *idev;
+> > +	bool neigh_failed =3D false;
+> > +	bool neigh_untracked =3D false;
+> > +	bool accept_untracked =3D false;
+>
+> Try to maintain reverse xmas tree:
+>
+> https://docs.kernel.org/next/process/maintainer-netdev.html#local-variabl=
+e-ordering-reverse-xmas-tree-rcs
+>
 
-and xfrm_dev_offload_ok() explicitly tolerates a NULL device:
+Will fix.
 
-net/xfrm/xfrm_device.c:xfrm_dev_offload_ok() {
-	struct net_device *dev = x->xso.dev;
-	...
-	if ((!dev || dev == xfrm_dst_path(dst)->dev) && !xdst->child->xfrm) {
-	...
-ok:
-	if (!dev)
-		return true;
-}
-
-so a forwarded (skb->sk == NULL) tunnel-mode packet reaches:
-
-net/xfrm/xfrm_output.c:xfrm_dev_direct_output() {
-	skb->dev = x->xso.dev;
-	__skb_push(skb, skb->dev->hard_header_len);
-}
-
-Before this patch xso->dev was cleared after the callback, one store before
-xso->type, so the inconsistent state lasted a couple of instructions.  Now
-it spans the driver callback, which can block for a long time, for example:
-
-drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c:mlx5e_xfrm_free_state() {
-	if (sa_entry->work)
-		cancel_work_sync(&sa_entry->work->work);
-
-	if (sa_entry->dwork)
-		cancel_delayed_work_sync(&sa_entry->dwork->dwork);
-
-	mlx5e_accel_ipsec_fs_del_rule(sa_entry);
-	mlx5_ipsec_free_sa_ctx(sa_entry);
-}
-
-The state can still be referenced by an xfrm_dst bundle while
-xfrm_dev_state_flush() runs (ip link set <offload dev> down or device
-unregister), so a packet can be inside xfrm_output() at that moment.  Would
-it be safer to clear xso->type before, or together with, xso->dev under the
-lock?
-
->  		if (!hlist_unhashed(&x->dev_gclist))
-> -			hlist_del(&x->dev_gclist);
-> -		spin_unlock_bh(&xfrm_state_dev_gc_lock);
-> +			hlist_del_init(&x->dev_gclist);
-> +	}
-> +	spin_unlock_bh(&xfrm_state_dev_gc_lock);
->  
-> +	if (dev && dev->xfrmdev_ops) {
->  		if (dev->xfrmdev_ops->xdo_dev_state_free)
->  			dev->xfrmdev_ops->xdo_dev_state_free(dev, x);
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the reordering above changes
-which contexts can race with an unchecked re-read of x->xso.dev in the mlx5
-stats callback.
-
-The core snapshots and validates the device, then passes only x:
-
-include/net/xfrm.h:xfrm_dev_state_update_stats() {
-	struct net_device *dev = READ_ONCE(xdo->dev);
-
-	if (dev && dev->xfrmdev_ops &&
-	    dev->xfrmdev_ops->xdo_dev_state_update_stats)
-		dev->xfrmdev_ops->xdo_dev_state_update_stats(x);
-}
-
-and the driver re-reads the field with no NULL check:
-
-drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c:mlx5e_xfrm_update_stats() {
-	struct net *net = dev_net(x->xso.dev);
-
-The clear in xfrm_dev_state_free() does not take x->lock and no stats reader
-takes xfrm_state_dev_gc_lock, so a clear landing between the core check and
-the driver re-read gives dev_net(NULL).
-
-With this patch the clear now happens before xdo_dev_state_free(), which is
-where mlx5e_xfrm_free_state() does cancel_delayed_work_sync() on the delayed
-work that runs mlx5e_ipsec_handle_sw_limits() -> xfrm_state_check_expire()
--> xfrm_dev_state_update_stats().  Previously the clear only happened after
-that work had been cancelled.
-
-Should the callback receive the dev the core already validated, the way
-xdo_dev_state_add/delete/free do, or should the driver NULL-check?
-
-> -		WRITE_ONCE(xso->dev, NULL);
->  		xso->type = XFRM_DEV_OFFLOAD_UNSPECIFIED;
->  		netdev_put(dev, &xso->dev_tracker);
->  	}
-> @@ -1005,9 +1008,10 @@ int xfrm_dev_state_flush(struct net *net, struct net_device *dev, bool task_vali
->  	hlist_for_each_entry_safe(x, tmp, &xfrm_state_dev_gc_list, dev_gclist) {
->  		xso = &x->xso;
->  
-> -		if (xso->dev == dev) {
-> +		if (xso->dev == dev && xfrm_state_hold_rcu(x)) {
-
-[Severity: Low]
-Does this turn the deferred pass into a best-effort one?
-
-When refcount_inc_not_zero() fails the entry is skipped with no cleanup, no
-restart and no error, so xfrm_dev_state_flush() can return to
-xfrm_dev_event() while the xso->dev_tracker netdev reference is still
-outstanding.  The trailing xfrm_flush_gc() does not close that window,
-because the state is only queued after the refcount already dropped to zero:
-
-net/xfrm/xfrm_state.c:__xfrm_state_destroy() {
-	spin_lock_bh(&xfrm_state_gc_lock);
-	hlist_add_head(&x->gclist, &xfrm_state_gc_list);
-	spin_unlock_bh(&xfrm_state_gc_lock);
-	schedule_work(&xfrm_state_gc_work);
-}
-
-net/xfrm/xfrm_state.c:xfrm_flush_gc() {
-	flush_work(&xfrm_state_gc_work);
-}
-
-so flush_work() can observe the work as idle just before it is queued.
-
-The same applies to a state claimed by another xfrm_dev_state_free() caller,
-since the claim unlinks it from dev_gclist under the lock while the netdev
-reference is only dropped after the callback returns.
-
-To be clear, this does not look like the unregister hang that 07b87f9eea0c
-addressed: a zero refcount means the destroy path is committed and
-unconditionally reaches xfrm_dev_state_free() -> netdev_put() through the GC
-worker, and netdev_wait_allrefs_any() polls with msleep() and rebroadcasts
-NETDEV_UNREGISTER once a second, which re-runs xfrm_dev_state_flush().  So
-the observable effect appears to be a bounded extra delay in device
-unregistration in a rare interleaving.
-
-Separately, since every successful claim does goto restart_gc from the list
-head while skipped entries stay on the list, the walk re-scans them each
-time.  Was an O(n^2) re-walk of the device GC list intended here?
-
->  			spin_unlock_bh(&xfrm_state_dev_gc_lock);
->  			xfrm_dev_state_free(x);
-> +			xfrm_state_put(x);
->  			spin_lock_bh(&xfrm_state_dev_gc_lock);
->  			goto restart_gc;
+> >  	new_state =3D msg->icmph.icmp6_solicited ? NUD_REACHABLE :=20
+> >  	NUD_STALE;
+> > -	if (!neigh && lladdr && idev && READ_ONCE(idev->cnf.forwarding)) {
+> > -		if (accept_untracked_na(idev, saddr)) {
+> > -			neigh =3D neigh_create(tbl, &msg->target, dev);
+> > -			new_state =3D NUD_STALE;
+> > -		}
+> > -	}
+> > +	neigh_failed =3D neigh &&
+> > +		       (READ_ONCE(neigh->nud_state) & NUD_FAILED);
+> > +	neigh_untracked =3D !neigh || neigh_failed;
+> > +	if (neigh_untracked) {
+> > +		accept_untracked =3D lladdr && idev &&
+> > +				   READ_ONCE(idev->cnf.forwarding) &&
+> > +				   accept_untracked_na(idev, saddr);
+> > +		new_state =3D NUD_STALE;
+> > +	}
+> > +	if (!neigh && accept_untracked)
+> > +		neigh =3D neigh_create(tbl, &msg->target, dev);
+> > =20
+> >  	if (neigh && !IS_ERR(neigh)) {
+> > +		u32 update_flags;
+> >  		u8 old_flags =3D neigh->flags;
+> > =20
+> > -		if (READ_ONCE(neigh->nud_state) & NUD_FAILED)
+> > +		if (neigh_untracked && !accept_untracked)
+> >  			goto out;
+> > =20
+> >  		/*
+>
+> This can be simplified to:
+>
+> diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+> index 90cd5d852569..7d114bdb263e 100644
+> --- a/net/ipv6/ndisc.c
+> +++ b/net/ipv6/ndisc.c
+> @@ -1082,19 +1082,21 @@ static enum skb_drop_reason ndisc_recv_na(struct =
+sk_buff *skb)
+>  	 * Note that we don't do a (daddr =3D=3D all-routers-mcast) check.
+>  	 */
+>  	new_state =3D msg->icmph.icmp6_solicited ? NUD_REACHABLE : NUD_STALE;
+> -	if (!neigh && lladdr && idev && READ_ONCE(idev->cnf.forwarding)) {
+> -		if (accept_untracked_na(idev, saddr)) {
+> -			neigh =3D neigh_create(tbl, &msg->target, dev);
+> -			new_state =3D NUD_STALE;
+> +	if (!neigh || (READ_ONCE(neigh->nud_state) & NUD_FAILED)) {
+> +		if (!lladdr || !idev || !READ_ONCE(idev->cnf.forwarding) ||
+> +		    !accept_untracked_na(idev, saddr)) {
+> +			if (neigh)
+> +				neigh_release(neigh);
+> +			return reason;
 >  		}
+> +		if (!neigh)
+> +			neigh =3D neigh_create(tbl, &msg->target, dev);
+> +		new_state =3D NUD_STALE;
+>  	}
+> =20
+>  	if (neigh && !IS_ERR(neigh)) {
+>  		u8 old_flags =3D neigh->flags;
+> =20
+> -		if (READ_ONCE(neigh->nud_state) & NUD_FAILED)
+> -			goto out;
+> -
+>  		/*
+>  		 * Don't update the neighbor cache entry on a proxy NA from
+>  		 * ourselves because either the proxied node is off link or it
+>
 
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260914133540.3666907-1-nicoyip.dev%40gmail.com
+Was originally unsure if I should modify the existing logical structure. =
+=20
+Thanks for the suggestion, will implement this. Is it appropriate to=20
+credit you with a commit tag?
+
+> > =20
+> >  		if ((old_flags & ~neigh->flags) & NTF_ROUTER) {
+> >  			/*
+> >  			 * Change: router to host
+> >  			 */
+> > -			rt6_clean_tohost(dev_net(dev),  saddr);
+> > +			rt6_clean_tohost(net,
+> > +					 neigh_failed ? &msg->target : saddr);
+> >  		}
+>
+> What is the reason for this change? It's also not explained in the
+> commit message and I suspect it's not needed.
+
+This was added in response to another Sashiko local review finding. =20
+Let's say we have some FAILED neighbor T with NTF_ROUTER set. If we get=20
+an NA from source address S with target address T and with the Router=20
+bit clear, existing kernel code will cleanup routes with gateway S, but=20
+IMO we should clean routes with gateway T instead since that is the=20
+neighbor which was updated by the NA. I can either update=20
+comments/commit message to reflect this or remove the change entirely,=20
+please let me know your preference.
+
