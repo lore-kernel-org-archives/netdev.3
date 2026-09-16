@@ -1,201 +1,174 @@
-Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azolkn19010016.outbound.protection.outlook.com [52.103.23.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E42F3AFD02
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 10:35:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11364AEBF7;
+	Wed, 16 Sep 2026 10:41:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.23.16
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789554926; cv=pass; b=UBurbTt+lo2IK/M16VfCjETkwL7dZ5bvbE2BFqDi767pjX0dmm/F84QS50R1ia0h15gJdaWcb1IrN18XmUBYxj8UML5AK21uYMgK36gil2+MNiz5lXQKZEE26wXY/+87C3ozzcylNh8PLh9pN+hMWgh/7RS+bLRGgGybDlsuG+8=
+	t=1789555302; cv=fail; b=s9nLCe4RO8gAhu2oV8V3cRrVffMLWXlEhgAbM3GJyKn8tOZZfe7NpAL/iLtMQ9a8p9DR817rm8rh5UBmUypS+71JHKF9rk1iPcBFtc+XtsGwlZuOiWMgGfTNVctaX2DWlAX0PmZV4kGZvi9C4DkapbKnTut5LLj6xp1A6jalGbU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789554926; c=relaxed/simple;
-	bh=0AtVtBXzAjTr5tgxiE3p7ZGzyivFmkCFWSojKz8lYTI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gOP+b2uNNtKIZiKwtLDa1JaDANMKat+x3CW42Gq7K+wOFvuGmPK0YIg1ZPGnI8RRVB9b4vMc3YILr80EhVVFcK0oEtAvB/zNQPuDQ4tjtqcmjO//a5disIXgKa4aocC5Yc+hgDydNZPyOdsmzk7l7Zw1oF/ZQ74ePfM76BTgl6U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=OoYxiJZb; arc=pass smtp.client-ip=74.125.228.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1789555302; c=relaxed/simple;
+	bh=I3/t2NfFW2sXomerku9I0Rl0kFpvKmoZj0xcQBj281Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=kdorAXZfdLM5Qiu7k5bkSjhC1wDcUuiVoOLuQITgVJPrIb/QLUnKmetfEWYdobdSkFBqumoJ/L7yWHletk+8jE76FpQODW+uYElJb06bVsmXXsqd45WMvWSoHuDltslEBtiTTMKtmogUc9vLWwLXvBrvGnxqONHk8jtCt5ChvD8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=DvM3/UTm; arc=fail smtp.client-ip=52.103.23.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="OoYxiJZb"
-Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-8633a38df87so443469b3a.2
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 03:35:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789554908; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WmB0LGgHH1n3bCIBOT0+IdhsCsgfkGzp/U3JOsRWpWvACFBo2mhyk0/cpdfOP9NEHT
-         HScgrlISl7z4CRZDhSaIjgtHQRIOxTw6x674YQrR3VP/AT77O1egnK9dpTpK7nOxjqWo
-         Vo3wKBlrkT65+l0kZWH6zuIIW/SmWR4pp2aAcqnIV1kGUYFOCg/qmHPBjuxg7xjupcVx
-         AOPc9QdpL86g7ftU9pmgTGA3yNmvesKit2iUTto04Q3aWl6OLvVFqVrHZN/7zriT1y9X
-         ynWuf7JE1ynEtAoxxQVmNha4g3Q5qoGQmEmDiGphSfCN9ma7E7p8g8C6wuKVTEmmQI0k
-         4H6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=VX2UakJDyoshtDZiFNwXMfLqIFwYkzWpLSYo8MxgLTM=;
-        fh=psW8OOxpMrGOX9P2hwo5xfcMJ9gE6whvkBB9TxNIKW8=;
-        b=eicQsVTuDb7Rrths9wdHfwtAk4PkKsxi4V0NSQgH61ojIUCE4wlp/Jg1ZnsqJYfuCY
-         QdkiqCLNYlmexDvYC2dM7TyQN/1gWfluZyklkwPUsNO9I7xDLbXTsMUAyTQuf6cRtuxW
-         kOARjAvmrFqPQ9pud8L/F81Tlg/8so7AS+WRRVSmOe8r+gmAxJaROOSzhKcperZYXeEO
-         xD+5CQTkpDWuD7twivWn+eXRibNXYuq6ui9CPnlQNN7a++h0juQcJ47k8j4ZKrlwwAsf
-         K/WI1yCyFvk6JMYVdYZzAhtEs9Tj+J/DytprF1MPprbqcnBftBAkJiyNR+hCSD8tNyxr
-         cPYw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1789554908; x=1790159708; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VX2UakJDyoshtDZiFNwXMfLqIFwYkzWpLSYo8MxgLTM=;
-        b=OoYxiJZb5X67JANQwOQEOKdNd+VkZ2nkebX/I6hMEn7iJ+6XGmpXuVZ8mJvw4xwouA
-         mnkEZPAFYxfT7LZ6eZIND8IOXig0ZnCBY+j5GIv2I0mB/ywJnNA5iBX1FK0gPPYAWEhC
-         v+5I/AthittJAQ4NktQnEmXIMToAurLwZbWIY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789554908; x=1790159708;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VX2UakJDyoshtDZiFNwXMfLqIFwYkzWpLSYo8MxgLTM=;
-        b=edkO0yq7Uoti4wPKNAuNMofKtLOHj3GMAsqavXFlB2bp0R/X5Hopdea55LoVzmMcZO
-         x1lFRetyvq4CLIVLVZn7U8p5aJa25sk+ISPP0XhnCm8ZaYj2tFvtwcMuxFL7jb72dDH7
-         ZeU/E/urTtFh/Hq68WxFh+Aei1oeDx766g2OB73HuZOUsyCfmxsnDl+LhXP99bT2P55N
-         KKyXiiYdYl9j4S2eScETCd45i20p7pyMikcsN62ewuE/STa4k/B2DEusB7q4Vw2hc40g
-         9Q19PT6NABzy6O9jnY1q+NdryrrSLgTzp5xHH3fbLCWa5dJtZ76yogOLQrghtkdNcGmt
-         c2xA==
-X-Forwarded-Encrypted: i=1; AKwUvByTMEq3VL0V/ukiqbUftKf05z3aQwZYi0TBiVBhcMXKMWwBsf9kdx+ccl2MZXaeIyr3OoIiuU8=@vger.kernel.org
-X-Gm-Message-State: AFuF++ln/LfrfTlUeHxfuXGhL0zgqY8Omlvzgx+ncDVdWEghtyVNrvb5
-	h2nFlRyTPSi0ivAj8/rXCJ1XTZuYmvOrrHWCPaErTQO2T5MaTq1Rt+KZIef6j58PcxvEwE/irD1
-	xtrR/gUJTMpAQo3btE0oSWfAiBu5Om70mom7alEs9
-X-Gm-Gg: AYBFou0Oc9fzwwfx23/Raq6MZAXWVgblF3Iisy0Rwrz1QgPeQ2r++KhPn2bpIH0/1U4
-	72XFIeYkDPLVaQOFc6PYqFIbJAjMxhWOkYo5BxD7ILbK34rbJtIYzeB1LU0k4x5PdJ1NCjxZc1F
-	wIsAyeczi5gLMO28D6ooNMObpYVAsyKj3SPcFGLK62t0zDQibOIw7s1EX6JeMcX0pFC3+jotkVY
-	hnwY12n3eUaB8Ao9g20fFdHTl+lJoxumYM0/8awb46pNpeC3f8tVrLCH5K1TE7QWCJRfuLturLl
-	ClzB3w6+ZB4uCH72MvX58jyccfcrf29OrSFDZqXf+jFKBQu0VW7KVgvnruE9mPwctMDmc3q9+Np
-	tttHP7q0rhmi6o4gRIvOaXO0HrIZ9cbLWuA==
-X-Received: by 2002:a05:6a00:3399:b0:862:bb07:2b97 with SMTP id
- d2e1a72fcca58-87238c81968mr4158870b3a.13.1789554908396; Wed, 16 Sep 2026
- 03:35:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="DvM3/UTm"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uXj7BSg+w9q2Ra5kdgk/H7zLPfcg5Ve2FlAbfDuP1BosLXrmYYsRG0ECB6nvMLUGPgVX0adAVQX/anacGyfSXIabJ4sBU3ya7uYzmpr9gy2NxcX7K2YEXw7cSOkL4DLiIgxau0djXPQ+0a3UH3EwknoQyo4VivQ/wC6ak/fH9Rxpy4spZ5P3JAU0OXTbdXeWVlo2G9f2XPQ6HTDpzyR+BzTIoKlkbLK8ZBPgUkfm5i6SBRADXHKBpzDnZeQI60/CC2ojne5RRWYDai26oDbbPjJvapVPH/j/NnlaZEJqfqgR+N+R1FBvv83IgTN2zjgXfJFznMn2dKEKq5XaYko25Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XJiVK2qY+H0B057/s/OkdwNxxT96cCaaJFfAHUjZ2uE=;
+ b=ERX3RfgHlQMyQeQ+UM4KNSD4xv+qdN1L5GvpkNlCrILEbXfnSUW8c4+sUNwDYH7BQsiWjFQ3F6y6EFlyAFX/iP3alIMccIlq7BNHGlxdsqtZEPt8qzrspneYtsDZz+Cpx/cO/ckH6lpH/e4kZ5l2Is/Utm8+lvgUuWa5EiG/ScBFlPXYOq6116hlpAmaQtR0GvQyTiQ7w7HrW0xCHT19oDKrTF6OFUE8mSZxSH3YdtAJr9W8iuYCafMFl/M1hcqblj7rL2QXCrDCFm2vm/Ejdt2BjKH1VZz+cWbGSLt654PRleoPqiKicFceS6YQOdd4GtYwb4w0VMwGyE7/zRKKxA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XJiVK2qY+H0B057/s/OkdwNxxT96cCaaJFfAHUjZ2uE=;
+ b=DvM3/UTmYq1z1Nv9Wz0VtRjKCGq3VErtKljDcDJ39e3I1Rht872Nj1yjkw+4hx/SzBKdW3ylnOuwtji9aRk8ESsfzM572yocg0rfHRxTez/rwCnp+MGKNID8dVHfncNowJBngebWsQ+MO7+5KZlVbHaNbgGqh8fUTLxdXgGzcmhVyMcEsg9u0BXyDZerWzXIX080x6DuYyqMi/roIhKYhTxfaDKXQRcZA7VGdKMXDLY9C6gqz4M2Sfts7EKgtYkZ2UicWtSEeOrFWmT9oMmuaUh+5LUaDejEMkCnTQy5lTjCanStPpO0oRWjy4JSLJ1hAh16lMPeXSqKhGcaRiyu+A==
+Received: from CH3PR11MB8413.namprd11.prod.outlook.com (2603:10b6:610:170::8)
+ by SJ1PR11MB6129.namprd11.prod.outlook.com (2603:10b6:a03:488::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Wed, 16 Sep
+ 2026 10:41:15 +0000
+Received: from CH3PR11MB8413.namprd11.prod.outlook.com
+ ([fe80::5cba:cff:2a19:7d1d]) by CH3PR11MB8413.namprd11.prod.outlook.com
+ ([fe80::5cba:cff:2a19:7d1d%4]) with mapi id 15.21.0406.007; Wed, 16 Sep 2026
+ 10:41:14 +0000
+From: Thomas Karpiniec <tom.karpiniec@outlook.com>
+To: netdev@vger.kernel.org
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net 0/2] stmmac: fix ETHQOS SerDes interface handling
+Date: Wed, 16 Sep 2026 20:39:48 +1000
+Message-ID:
+ <CH3PR11MB8413FCBA598F7FABC04ADCFEE4B92@CH3PR11MB8413.namprd11.prod.outlook.com>
+X-Mailer: git-send-email 2.50.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MEWPR01CA0033.ausprd01.prod.outlook.com
+ (2603:10c6:220:1e5::10) To CH3PR11MB8413.namprd11.prod.outlook.com
+ (2603:10b6:610:170::8)
+X-Microsoft-Original-Message-ID:
+ <20260916103950.41510-1-tom.karpiniec@outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260911133146.3440982-1-victor@mojatatu.com> <20260914191108.55a1a4f1@kernel.org>
- <CAM0EoMk7CZA2qAPEfvZ_+tUDkcUYF5nanaxER1soLJQZqMuXxQ@mail.gmail.com> <20260915085304.775a829a@kernel.org>
-In-Reply-To: <20260915085304.775a829a@kernel.org>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Wed, 16 Sep 2026 06:34:57 -0400
-X-Gm-Features: AcwNN1WvBcfAG7EFjO15o-r5CDxCboMMaccMuPUhP6OGNkWCH0RcRNUHMR7GEAs
-Message-ID: <CAM0EoMmiw_kVnK4RjTT_dkquw0YLSB5VgO_7EoV2WT_pQXbCYw@mail.gmail.com>
-Subject: Re: [PATCH net] net/sched: Avoid quadratic handle scan in qdisc_alloc_handle
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Victor Nogueira <victor@mojatatu.com>, davem@davemloft.net, edumazet@google.com, 
-	pabeni@redhat.com, jiri@resnulli.us, horms@kernel.org, vega@nebusec.ai, 
-	netdev@vger.kernel.org, Yuan Tan <yuantan098@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8413:EE_|SJ1PR11MB6129:EE_
+X-MS-Office365-Filtering-Correlation-Id: fa0d4ece-fdc7-4a0f-a1ae-08df13df07aa
+X-MS-Exchange-SLBlob-MailProps:
+	ZILSnhm0P3mCYd7/icPJlj+s+m08RC6kNef5q+OLiNZfQBsyEZWRq4Sam60CoVMEBMN+iod1IlN7HXOQNbtT/1ytkE6HnMv2vOSuh0fcXtTReF53Az6K1bZQ+7kHIJ+JfQ94xS/5tZZpQ9ybJrlna0gg/3FTNGMhdQ3lMlXCx8/mNqqBfWfShbtbNzVj7rY8qGNJiWiYnKiUTlI+FTjr4ax4wYJB8rVD9ij+MrhB32OeSmaNA0DT5pmOASftFCQfXJoIQkaDPlQ4sUNuGRaYvKA6woHS6L4PnYxkBisSvR08uJQNEukD+BAOT82ODYusLT2wqy45V5lItR89ptYQsEv881XaRWUtVqClgituTQuv8kpXFqvUL7XULNt4LGtgn8ZS/JIo6H/LRfXP4Pt+hEyxWxYf0m50RjEVb8NBMTgG9eLAb8zfScbHzRMCtnkeLyFYqZqCFEkQodOgQwio7l29H7pTVCUavo65gviD8S5UmmH53Hc9u743pSZGK7mRKcCPqpqYgFw9WKGxa+0M1sDALmK2juA+zs+aQWS7zKrJWP6vLsQpMBcPUy8OLkuvBDTCNHE0zMuNGRL7JD+gvzfBP8xC1g5q3UsspHsDJVahZwzpGlUWwKovj1MDLshL3vvtbLCGbCrCKg1Zow6dnYpJWe0k8trQQgLE3v9rPz9yNcxhKr1U58KXilbph5f4Bf/8uRyXQ/hjtWeDzl9Ias2Bmb+PIr68ONS26fxpt27dNX4Xr/DOoQytfGvuvQonyhXnBHuSfrbinJYMAEBIUDc/tsS8MDme
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|5072599009|25010399006|4140399003|19110799012|8060799015|15080799012|39105399006|20031999006|37011999003|24021099003|23021999003|440099028|3412199025|40105399003|41105399003|30101999006|2607281247196008;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?wx0oHjV+ZPYoDpq6uCGdrttk7oFtC3ztTac6h2NS6ibeV8HuwF8WPq3swq+a?=
+ =?us-ascii?Q?W8sEktUgTPw+zRyE7ht0rdy7HtOAjKHur3Lwu+sFjeMrBXXk/34w4olBs2Z8?=
+ =?us-ascii?Q?4a9vr2/jD1tvgbBIH0+SKOlVQTlR5Sc6BRPv0/KCKjKODGuX+SS0BH8EF6sd?=
+ =?us-ascii?Q?wPHPQZq9ua6twKYnxzCyU8XWlkmwNRLBqFKprMewo4MerXudKAirq5KrrNYr?=
+ =?us-ascii?Q?ZKliHkJKXnZXCxFsbprfXnaTW0vdBsHgoQK51racY5qR0SEX+1KShgjvFb4w?=
+ =?us-ascii?Q?jx5qz/nXe5xYd6vsbWFhD0lxiqafNFYKlksiPp8UHkaYzNo1niYguvbI6vMF?=
+ =?us-ascii?Q?iGvz1mIXbNq0K/Y418AtllkooW5poZ2wqPQxl3j9Ch7XttpFZ/8Ye18qeh+r?=
+ =?us-ascii?Q?IEvB2o+fWAScTb17miYpndm65s1tk0ajQP3zsufcVYxyK938F16meVi7sPqK?=
+ =?us-ascii?Q?Kmn0al626Ew4hy6/ssjeepiXqlkqBdxN9y5J6THz/MXlWdENbQpc5XTEKgMZ?=
+ =?us-ascii?Q?zx12kAKT4cZn6BuOUjNKiFB0S49iERt2YzaQGICRAH3CGiBnTlocBFg9gSQm?=
+ =?us-ascii?Q?MeefN8PLzqsHDrV52e4bmEbvoepPFXWNez7u5VcjYaZPMk36w8g1TMSqwQOS?=
+ =?us-ascii?Q?t6KIo1zisJcja1uqbniEToCxF+kTVH8yey3mXgqoU1+ZqkxiVuw7K++2OJNn?=
+ =?us-ascii?Q?XlEJuPof198WS3eUH56T/amPkFLFs82mMY8t2D/T2WXwNasSHfxOaHKD30B6?=
+ =?us-ascii?Q?pjMZc9iNU6ywT7tSUJ3QwSGCtisN6HgicI+PWsxADeerVa6wk9DvUSbPawvH?=
+ =?us-ascii?Q?zJRkHnXJatevOYgYFDaxDfLg9BygzBB4rKGMjOeqPHz305M7Ov9pOC6s3GGY?=
+ =?us-ascii?Q?yVoUt1vfcHKxwWj8l/NoowNA456dllLuR1YdnlxF4wMY/bn53G8icTiHuUAi?=
+ =?us-ascii?Q?6GHAkYnw3uJgT6IFCHczPVMAhCShvUlSbt6UK0cElopK1FgkGwxMlOtPwwk6?=
+ =?us-ascii?Q?OFjxtl0nQHXj17g/vUwFh+MuonBEJiaX3+wUbIWo47tgAD+91Q1TfPCAW141?=
+ =?us-ascii?Q?pZpLe8ty?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?/CnB9yxPJHEuLaHYO7EWHlX43OX27/ZgRVz6kG4CfE/Otjjz7plwejKz1iMm?=
+ =?us-ascii?Q?Id1AJLeHqd8ysPuU+fWGsmJ3aIkOU1hITomp6nUZxpWHV145GvCwKPcRPPfU?=
+ =?us-ascii?Q?CAK2qEL/hbbIsBaE9wM9Z6NrZCx12h9SrVIAhiGjukWqmaBP2gNCSoaIpGbt?=
+ =?us-ascii?Q?TwHuJHBKpaoTL2x/kJdm9OnRc0RlvtP61m0er69+oXuxn6JomGBL923CmWm6?=
+ =?us-ascii?Q?lTcnhFCnqxaHeAoYzAdyZBz/JNfj1eZFvAPqoxJsl9WqC/CPKfnMeTP3Jnmp?=
+ =?us-ascii?Q?nI3BBQQKz+0009vQo7tIh6p9CN8jEa1EdjiPMzHRYyeN38MGf7VhrUSY91OP?=
+ =?us-ascii?Q?OsL4PBlwLsHQcZb+OqnelM2TuMr0DMxQCf3Yspf2MYRwxOgBW297oec36L77?=
+ =?us-ascii?Q?izFaA6WCvcWBtGSRfkIBkOhMkuv5ugbnupfbvzeNdgHDDeE49ConPrYwzUYs?=
+ =?us-ascii?Q?NvxCNkMBa+ZkZk4Y9peMUkP/B6IlWS0TFfQebmKNnoRu93RrO8IHGfmse5pD?=
+ =?us-ascii?Q?O/SX+cOodcs8VQczyp9ONaAgv7sROKeEf/0KZTJL52HZ8vBg2C1ULvhouARE?=
+ =?us-ascii?Q?2xMOBZIXkOeEjItl0aNtfhF20pevOcamBGzjWAPbs5nLGZRqEq8o/vRn6rTv?=
+ =?us-ascii?Q?lR2Hxi6eYMgsnX+7LCNA5KZz8fDFwhdC2/pD5pO+z5G/hzxEBAVCrNgwqPwn?=
+ =?us-ascii?Q?qnL94W3l9JhwGFZbK9p6LKS59he3M0UPQC3XKLFQ1sp0ELpVyDa6ohvGSe23?=
+ =?us-ascii?Q?hOT2TfhKYy7SnwzroWEWpHf+jkt3qidia5RbDUJmzI1aApRWID9Q5/xJ4JaJ?=
+ =?us-ascii?Q?T1V+LXbudLVK3aE/PYu/7Mpqboc3kap6x3ZWLHy8I08Cw71l3VcEgu+225wQ?=
+ =?us-ascii?Q?kgORoDm4HU6GQD1sfqzEL/cN5MCTmzpfl2P50dCwoUqHKQmLbVbSiZHCEV8R?=
+ =?us-ascii?Q?pHPkm8vES/TdNTk6X5Bhzd1Gm1mup8vxjyfkzgfz0kj3MKesF0cVPUspimXK?=
+ =?us-ascii?Q?bF+so2aRW61PXGPiXMSA8Ut0QTKn2BRBuL6nnl4W61h+dV8A+yQhlSRyc2VO?=
+ =?us-ascii?Q?TDkjIUqJPt3Cw7ukdpunpLfueA8fKNWCh4mERbxrcNNGG6T8+zHQB2LRlRoe?=
+ =?us-ascii?Q?ICijHlpw05tqosbFqZmCWRJfPcyrEgPdPaUrE1b1tB89wShjL62CWn0DLYpz?=
+ =?us-ascii?Q?C//Lcfz4/JaFcdfc2J9D692YBiJQbsgM63MUVArSbagnxGgCdWoYzUQ9toot?=
+ =?us-ascii?Q?Izx8Yx8RPdPwxvqqDl+FKhG7BklHgGVm5QkCq2/Ilaf0i4X/Yib+4ysPjD1J?=
+ =?us-ascii?Q?m/n1Ajpezs2cNePg51kcCANos+FbQkIQHe9f+26tEqL9QXoV7LcOIFWjkr+V?=
+ =?us-ascii?Q?IBKdGk7Fwiomik/scBmuWv7EMHcz9kseBXnemg9OpXFdivs3z12sISKwmr6d?=
+ =?us-ascii?Q?2PkyssR/vIMPeuxBuIk9fj5pGuowG+BJ?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fa0d4ece-fdc7-4a0f-a1ae-08df13df07aa
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8413.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 10:41:14.4161
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR11MB6129
 
-On Tue, Sep 15, 2026 at 11:53=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> w=
-rote:
->
-> On Tue, 15 Sep 2026 07:50:54 -0400 Jamal Hadi Salim wrote:
-> > On Mon, Sep 14, 2026 at 10:11=E2=80=AFPM Jakub Kicinski <kuba@kernel.or=
-g> wrote:
-> > > On Fri, 11 Sep 2026 10:31:46 -0300 Victor Nogueira wrote:
-> > > > This is a less intrusive fix meant for backporting; a cleaner appro=
-ach that
-> > > > uses a per-device IDA over all qdisc handles is planned for net-nex=
-t.
-> > >
-> > > I don't think this is net-worthy in the first place.
-> > > We have a ton of code under rtnl_lock.
-> > > We cannot provide any protection from malicious netns admin from
-> > > overloading the machine.
-> >
-> > That is the one million dollar question.  We labelled this as net for
-> > this exact reason. i.e malicious container could overload the whole
-> > machine.
-> > But it borders on "hardening" (improves performance), so net-next as a
-> > target sounds reasonable. It was a coin toss.
->
-> IMO any attack from containers / user ns is hardening. If it leads
-> to a crash we take it via net _because it's a crash_ not because
-> user ns can trigger it.
->
+This series fixes gigabit connectivity with ETHQOS and a QCA8081 PHY on
+an IQ-8275 EVK, along with an error-propagation bug found while reviewing
+the same configuration path. The first patch passes platform mac_finish()
+errors to phylink. The second advertises the supported SerDes interfaces
+so that phylink retains the PHY's lower-speed copper modes.
 
-Ok - will review the pending ones with this in mind.
+This revision was built into a WendyOS test image and booted on the
+IQ-8275 EVK. Tests covered boot at 1Gbps and 2.5Gbps, physical cable swaps
+in both directions, stable carrier, and traffic at 1Gbps. Injecting
+-ETIMEDOUT at the platform callback held carrier down at both speeds;
+restarting the interface after disabling injection recovered it. This
+was a synthetic callback error, not a physical SerDes failure.
 
-FWIW, here are the rules we have been using:
+The tests used regulator_ignore_unused: without it, the upstream board
+tree repeatedly lost PCS link. The vendor tree has a REFGEN always-on
+workaround absent from this tree. No extra kernel or device-tree patches
+were applied for these tests.
 
-It is net if: Regression (worked before, broke) or always-triggerable
-crash/UAF/leak/lockup
-This specific bug could potentially cause a soft lockup but it wasnt
-consistently...
+Sparse reported no findings in the changed code.
 
-It goes to net-next if:
-a) Never worked (adds a cap, validation, accounting, or enforcement
-that never existed, e.g. memcg-class)
-b) Doc/comment
-c) tests - although the exception we currently make is if we create a
-tdc test for a net patch then it goes to net just dont cc stable on
-it.
+Patch 2 uses SerDes APIs introduced in v7.1. Older affected kernels
+need an adapted backport rather than a straight cherry-pick.
 
-> > Since we have a few similar "grey" issues in our pending queue - so
-> > where's the line for net/net-next?
->
-> TBH the line shifts depending on how bad the AI flood is.
-> I tried to document some rules but it only lead to bikesheding.
-> So my recommendation is to write the final fix, without worrying
-> about keeping it simple. And assume the maintainers will redirect
-> to the other tree based on their judgement when applying.
->
-> With all the AI kiddies these days we routinely apply to a different
-> tree than tagged.
->
+Thomas Karpiniec (2):
+  net: stmmac: propagate platform mac_finish errors
+  net: stmmac: qcom-ethqos: advertise supported SerDes interfaces
 
-Given the flood, here are the priority rules we are using:
-1) submit net before net-next
-2) All bugs must be reproducible by our (semi-automated) system
-(hybris). I dont even look at issues unless they are reproducible
-(hence my nagging "do you have a PoC?" ;->)
-3) Assign a priority to each bug and submit the highest priority ones
-first. The priorities are assigned as follows:
-- base (reproduced, ACCURATE) +1
-- Crash (oops/panic/NULL-deref/OOM/corruption) +2
-- UAF +2
-- Lockup (soft lockup/livelock/infinite loop) +1
-- leak +1
-- simple-trigger (plain tc/tdc, no special PoC) +1
-- privilege required: (root) +1 / (unshare -Urn) +2
+ .../ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c    | 22 ++++++++++++++++++++++
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  |  4 ++--
+ 2 files changed, 24 insertions(+), 2 deletions(-)
 
-The priority is capped at 9. So a priority 9 with net gets immediate attent=
-ion.
-A priority 9 that requires root permission is not as important as
-priority 9 that requires cap_net_admin (-urn)
-Yuan has a taxonomy as well; he calls these L1 and L2 when we pull the
-reports from his system.
-There is an exception: Priority 10. These are assigned to bugs which
-require no root/cap_net_admin and other UPEs
 
-We also capture all "pre-existing bugs" and address them when the
-pending queue is empty. Most of these end up being a waste after fixes
-go in.
-
-> > > Nothing against the patch itself, but if you plan to do something
-> > > else in net-next let's just go with that from the start..
-> >
-> > We could resend the same patch for net-next, the alternative "proper
-> > fix" is more intrusive. See attached.
->
-> I'm not sure we have to do this, given Victor's patch already
-> drops the time 50x ?
->
-> > Another option: Is this worth fixing?
->
-> Right, I think it is but IDK if it's worth maintaining state for.
-> IOW Victor's patch would be enough for my taste.
-
-Ok, we'll send that patch as net-next.
-
-cheers,
-jamal
+base-commit: ceac0de741bfb47ca255eee075257b3bb31f0651
+-- 
+2.50.1 (Apple Git-155)
