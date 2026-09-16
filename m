@@ -1,76 +1,76 @@
 Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6FDF270552
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 02:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8D83AC0ED
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 02:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789524248; cv=none; b=EXGXleddH7FzA1HB8/wosTimJIjqAN0il9ZtGeBWR4pyV+oRSn/Uwyl8jIXJddm3zAkxzWqUtUzTCZW+cUcV2I4dIRGVFJYb6BqobsisJbjHofWWf4N4rSaErk87SBgcrp0nrf+OVyChdo3GM2JjPQEmyTq8pz1sBLQhp76GJAw=
+	t=1789524588; cv=none; b=rCBOAQhFlNBhj5Oi4iOyob4k+x6W5xoJ2h0MhxjtXaD0yudNR6vVu6WZFJrXiWq6J+N+avICrJv2/1kNK4jb0rgSwvAaYkFQkjTlWsR5eLtcpVPJafuaNhtQ1fAW9FPO7tA3mkOBiASb+QPwsnOcZx7RRZPy4u0poWto6ZQE3+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789524248; c=relaxed/simple;
-	bh=VYcIVUSYQLV4sjwuoeaRc5KM8Pt0LayXAdVTM+vIopM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PVrnXvVs//2dY90A1ADZf1Nw6xlLmFDhU3ZcSzovRS84CahXo0vXWN8nxfX+2WSJIqn5ITzSJOFta+2+o4aOg8f6tv/nDNn7jg3SWQlpvFVS0cSFSzelRbthZcqj8Yh3fFyelBkAKq7eD9Eft/6xah3RrH3tgqvvrut8Pb30UQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dju/W7Mf; arc=none smtp.client-ip=74.125.228.43
+	s=arc-20240116; t=1789524588; c=relaxed/simple;
+	bh=YG4COEKulNp769D/BH1fCYynnVil3u1ZWIifJ+zRmkU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EF/EdivB3aK6GPQHI4lz85QughC+Bob75ZVSe8/X4z85JAf/AXrKrssOWb0o/QqbFO7Xfiw7Auk+jlIovSk8tb9D1bvUP6Q+t+ckzpMmk1gEbn07SgM8mvFU3bgk2hFCHrjP+3ysjZBKktDGgODNW6xNYeQbpIv1T+EL3KEk470=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FcPv8o/x; arc=none smtp.client-ip=74.125.228.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dju/W7Mf"
-Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-85a4329731cso262934b3a.3
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 19:04:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FcPv8o/x"
+Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-85469f204f6so208122b3a.2
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 19:09:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789524237; x=1790129037; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789524580; x=1790129380; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=GY32qtKDHLqp705JJ4dXs20ZzYr5H1bBKfaTF23PTKo=;
-        b=Dju/W7Mf62vk/L0wvQpBefMZzv8TJPaWkwY41Y0SYjiTKxxy6Yapehzh8+/y8sqWG8
-         OA8CgXwV1AyPokG+fr3xKR5UwjDGbpBQiHs/6EflRLtqGwZfZC3XOaX9DzDg7bx2ttjk
-         h55wAjKixZn4si8w/AiRtV+gQjNjYI5ZUds0WszsFz5ZHmwlta2yuNpbt9Y88yGpfprv
-         Ybq/qCUucgt9HnYo4I2ENvhNVN5QQClwGpHIm0mRgJLAQOB9VRgAsyR7DstHQ5hLcuRV
-         XcbmLBQpkfPQ+Je6C7fYAzwma8oOumjjTq02EqvdZokI6UffpXmlke1ibT+C8QrnrPjb
-         1rMw==
+        bh=wm31bZPNQbk147CGwUHP23ZCay3Kn8INjT2oDuzYLtc=;
+        b=FcPv8o/xNEeDJ15f/ck+7wOxyuQ2vkXb07FBv5bMzvikGrllRPat9zjKwyIOLs+PI8
+         eDahLH9sOQfC0PRkZ/FshyIVzJA9coonZkbh80KwlFcAWMoy04H//EiyOFIvoHgTBarc
+         llqXpc46GUK9EuP8zXQuwe9K1HAdGa59XW1BibI0XAGjs11vgCIuW3Ws4w73m7MVjO+S
+         bLy9kJY6uM6ZaClAuaI7+Vc+AGFVb1hhS2uV6VOEHAYcasKHlLuqSLV3cvh4IqEyGCxx
+         KOv+sSDHpFdYFZHU8ZqCu8YFqcF3BfPPDBDtX4oqxW8zpgDVaWB/sH7YRjfFXRswjBpB
+         IwjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789524237; x=1790129037;
+        d=1e100.net; s=20260707; t=1789524580; x=1790129380;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=GY32qtKDHLqp705JJ4dXs20ZzYr5H1bBKfaTF23PTKo=;
-        b=KX60U+1CHO2qtg6V5mdTgkEXLij7GigDTLl2rrJ2P/vutenda2uvoq6xuYmxgJy2Z1
-         B1PJmqmu9IrNnh1SG16dOg2NbMZZVf4ba+7m5FPD/1oewCXBIciCyO/h9edFLEadcOZ7
-         ovyYtsiL4hJgP+jBkRnICY0DchZMmqR+ZB6OEWEJU+iMMWQ1gvZD090dVwpSJhJRPdsr
-         HTQslp5BvUzeeTWWc5kGnXdDvTakk1eL7dzoGfl1fOnP0ZwMeJBhVkebj8csi3Crdtt0
-         gVAYOfs1Xvnht3s6Z5ntfllldPjqdcZiXxSei1c2s27wRAxpVY0FC2OWEKD6SjD0ckL2
-         LFjQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy3Ayr+t5KxouvzxLf8LdlFBGKbtnOQqzOakPuAKlnI9soZHtez17fSMTvT17DZkMDCkNEA2W4=@vger.kernel.org
-X-Gm-Message-State: AFuF++mXrA2ICpMfNGQdhve1VkM43OfoptqZSaTeYeaUGoM6Y34o6fM+
-	72p1tOpY6NPUoouERVGhXloiCFuKkXBOhWTGznBwyEqtvc+dxsr776kD
-X-Gm-Gg: AYBFou0PvfUki8acHkmFjCbEVc1zBe6JLbsElfvKC1POvGy1mfjmNOyRVuGOFlZaEQv
-	RgYXGQ57JgZQICXa5J+6YufT1dr5ai7f07sYi69NX4v96Dal+hOQUpbRdk6gcz+xvmIxTnDeD9M
-	QDHm90r4VPgefVeYpqS86JTZso1kyrH0jHvR+shxdlr0Trutlbrh3vyTZXgHdL30PLXWr7A1+KM
-	BqcNmd/7j0PF8+ktbSsFjUIo+Rm7wB71KEaIQMQmeLa0EelaSDGGBZAzy9Jn0Y95rJSFJl2+4y/
-	7/u2STMhvCX5rv5/Wdg7MK34CqCxYcs2asMDhHNWw7uADqwkvg5vTv+brhZ5rlQEzIDWmm1+VTH
-	iKLq+Fx+wYvuxVIkE+mRKEw3bRi/1pK3uWgvaG3fqG7iZwwerNWE5aVepMaOuI+Lc2+rHQpaFQQ
-	lkOOxw9fGncbIGoDbSQzqC27Ll1hX11qkV7A3OZFyRGbHch8fX2F94xg==
-X-Received: by 2002:a05:6a00:1a8c:b0:857:7317:cff5 with SMTP id d2e1a72fcca58-8723a4942bemr1132881b3a.22.1789524236922;
-        Tue, 15 Sep 2026 19:03:56 -0700 (PDT)
+        bh=wm31bZPNQbk147CGwUHP23ZCay3Kn8INjT2oDuzYLtc=;
+        b=fArUzSSyuDyJ854Qy9I0psmCM1cJNBXz2kISRiMfdUKmZjQYc0ng1J5hPxI6erwUXo
+         isfptkLmu55rt3UQgKCxAxoXQEo09Rgj2CcxlrMWJvZhGPpo22D5AcYCyItKAlQXKXnB
+         RPzOLzW0u7gpkaaiwZCY3C1SvXONYUoXjAtecdgbv1HxT8pbh0sC/YpVCTFX2CmJ4Gnn
+         0Es/Gk9dCrx5/n50+UFDCZW+37fzb+UXJIF0krzow05WNgm5LomQK+Cj6ts864arLwdm
+         aHyzuN9PXnDCFBzfXgZXooyWofATi1ykCg6b/P4SCQtQRKX1ImhdHr9boRdUAVF9Z3T2
+         5Uig==
+X-Forwarded-Encrypted: i=1; AKwUvBxJD8igSqvysOnO5NspElPKot6qsz912T0aWCHR9uzbtABAvs16GkRqzq7iiP6+FsOYFSu9c0U=@vger.kernel.org
+X-Gm-Message-State: AFuF++lXxDuLDiZe+Mn53ON2nRrFrrEaWIvEPqNcKGCWrVteYsVQVydx
+	Y+qpzKLSk5uxUNt/p4JkEXLFiauz5tVCEscz8zH7om7y+jlk+OwPhHCo
+X-Gm-Gg: AYBFou0qu1tYYh15cQ0VoCkPTcyOHtY6LO9677hRcydURzpH/IHlZlNH6wEOAZ6UGYr
+	34p4QS779kbjqueoy26o1YERebDWhDq3h0gurzOBqRUCAdeNYv0vD+GpE6mInSQAtIyaJ1ukjdM
+	7fB9KdriG+fFVIMyEc1gdNBSyAcZQnqX8hHWoYWF+7pZyFoXbhMc0PgrW/ZilbwPgBUGpmqrHM4
+	TQap15nG9fQ/UKYECZMDtCmEcPnq8sKKufV0EablZnAyNm0n9C+QsppAtss1yhqClBvhdGCK6W2
+	BZF1gaUNti84DqZSAWNfdVOjmZExphKtAwPy6UGzt0RNxcoFsnQD8wq90O48SBPvBpUxfsCAVCZ
+	Rg0dPU0rhq39qZgXrPwJE9qR1+EUo7RutG6Cj2MZkdXUZL5FNy0zATmfe3qr11GIJciJStafjWJ
+	J+eaTJ3p4WQXrMv+4h850VRuAZtAR5nXj8imTHsOV9EBzSPJjF8u7GLA==
+X-Received: by 2002:a17:90b:1845:b0:39d:f259:3363 with SMTP id 98e67ed59e1d1-39e1e491d27mr2086478a91.12.1789524580108;
+        Tue, 15 Sep 2026 19:09:40 -0700 (PDT)
 Received: from lgs.. ([2001:250:5800:1002::de93])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-872024e4369sm385031b3a.58.2026.09.15.19.03.52
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e1bbfdd49sm1508988a91.11.2026.09.15.19.09.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 19:03:56 -0700 (PDT)
+        Tue, 15 Sep 2026 19:09:39 -0700 (PDT)
 From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	John Crispin <john@phrozen.org>,
+	Ralph Hempel <ralph.hempel@lantiq.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] net: dsa: mv88e6xxx: fix netdev reference leak on remove
-Date: Wed, 16 Sep 2026 10:03:40 +0800
-Message-ID: <20260916020340.2580417-1-lgs201920130244@gmail.com>
+Cc: stable@vger.kernel.org
+Subject: [PATCH] net: lantiq: fix netdev leak on remove
+Date: Wed, 16 Sep 2026 10:09:30 +0800
+Message-ID: <20260916020930.2606675-1-lgs201920130244@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -80,49 +80,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-mv88e6xxx_probe() uses the referenced network device provided through
-platform data, but the remove path does not drop the corresponding
-reference.
+ltq_etop_probe() allocates the network device with alloc_etherdev_mq(),
+but the remove path does not call the matching free_netdev() after
+unregistering the device.
 
-The probe failure path correctly calls dev_put() for pdata->netdev.
-However, after a successful probe, mv88e6xxx_remove() tears down the
-switch resources without releasing this reference, leaving the network
-device reference count unbalanced after driver removal.
+The probe failure path releases the allocated network device with
+free_netdev(). However, after a successful probe, ltq_etop_remove()
+only unregisters the network device and leaves the allocation alive.
 
-Call dev_put() in mv88e6xxx_remove() after the switch resources have
-been torn down.
+Call free_netdev() after unregister_netdev() to release the network
+device during driver removal.
 
 This issue was found by manual code inspection.
 
-Fixes: 877b7cb0b6f2 ("net: dsa: mv88e6xxx: Add minimal platform_data support")
+Fixes: 504d4721ee8e ("MIPS: Lantiq: Add ethernet driver")
 Cc: stable@vger.kernel.org
 Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/lantiq_etop.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 80b877c74513..e4394af2a3a2 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -7464,6 +7464,7 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
- 
- static void mv88e6xxx_remove(struct mdio_device *mdiodev)
- {
-+	struct dsa_mv88e6xxx_pdata *pdata = mdiodev->dev.platform_data;
- 	struct dsa_switch *ds = dev_get_drvdata(&mdiodev->dev);
- 	struct mv88e6xxx_chip *chip;
- 
-@@ -7486,6 +7487,9 @@ static void mv88e6xxx_remove(struct mdio_device *mdiodev)
- 		mv88e6xxx_irq_poll_free(chip);
- 
- 	mv88e6xxx_phy_destroy(chip);
-+
-+	if (pdata)
-+		dev_put(pdata->netdev);
+diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
+index 83ce3bfefa5c..ecf2f3cbf4d9 100644
+--- a/drivers/net/ethernet/lantiq_etop.c
++++ b/drivers/net/ethernet/lantiq_etop.c
+@@ -711,6 +711,7 @@ static void ltq_etop_remove(struct platform_device *pdev)
+ 		ltq_etop_hw_exit(dev);
+ 		ltq_etop_mdio_cleanup(dev);
+ 		unregister_netdev(dev);
++		free_netdev(dev);
+ 	}
  }
  
- static void mv88e6xxx_shutdown(struct mdio_device *mdiodev)
 -- 
 2.43.0
 
