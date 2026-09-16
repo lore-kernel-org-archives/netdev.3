@@ -1,260 +1,250 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC4347988E;
-	Wed, 16 Sep 2026 08:35:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6609E4734EF;
+	Wed, 16 Sep 2026 08:36:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789547747; cv=none; b=cWfLxxzIsvPGLHL6Q/PGQZG46xfadS34o6mmBTt+/QcS11cm3EuAJufwyRs0TebBd8jdrSQ5Rb+jtbl6Gwf7+28z0pAtUBN1qAnZN+EmVYvhSjUWtuBhfrXWjAU2p3DaYaecvJsK4HHoqCAWjRvK7GQug8hrr1wYx9EdP5PLGNQ=
+	t=1789547811; cv=none; b=WYNVYI96xDREE9cGoqmzO/DssVZS0ef3tHfcOVP8rUHm59G3nLIyjJ6MUAfjwHVeY5nqfLde53aGeKRbmwJkDwAg9bAbss1A7s0s/q3OTnY9KRd3A4Soqci2lMjBHBTW21NMeeE67v3tkzBdpm6LH2iT80zCUnN//TVoe2pUDsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789547747; c=relaxed/simple;
-	bh=SKU4+tmBKCX90X/0ylR4SSbXibRSKRHggV4ish8i2kA=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Khi93IUC1WmFzt9yzRdHfbD9J4F4ip/WCAY8aZbbY+1Cizx2a5M45NsD/nj2ckbocKEW9JJ0KjCCDKdJMPlnck7r4aBHZHsy2nKLx6dbTxlMeyUn2qiflfM6F6eGaExCBtE9NH0rxA5K7eAkxO0MezpKBVCEnCfPhxPc7PsnoMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mLbBjiBV; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789547811; c=relaxed/simple;
+	bh=PMQFmPxypefDsDInVFMie6lTBo2CFEOggSIRsn23rJM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fu5k+iw1BXi9i/5TDhFBZcsvU6NpMF5l54ItYEV4sntvmavbd1VCbcv0RttY5AMPX7v1/26DXQozMG/qeixjWOSYNnI75ecpYH52iEep5mWxUDhJzJXDbh5p9F9cEEQOTE0sfjb5YkGP/OLbuWs9F1EvaCKHNUSFJwfGRg+kdqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=aX+BQbgJ; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mLbBjiBV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 213BB1F000FF;
-	Wed, 16 Sep 2026 08:35:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789547746;
-	bh=CayLRKUNsc0TJbrvDf4IDI2pxtN0W0DY6AarkdXTgYw=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=mLbBjiBVQc1i28n56C7FIQ+V5ktXseCZLUEEkm/RP1wQc+2brjl5hxPErcOG5QKB+
-	 QUc0jRUFdFoFFUxNQBzYJ4SvGu8syDasvnPc/X+9j7w4bp3/gVZsc1vOekYojzIc7c
-	 4qKltftQoiDU2jdQ4XVJiSbM0FWuYddfei8cnccJEGycSL+qIqqpLPddrzYvHVsOBa
-	 H95V7qFodS+TAJjnb0MavbWcc6xDsdSAJcmCMM7E3pkfN5wxeT4QpOHTUKuZmo79fo
-	 yVwec4Tn1vmoepv2RaRPtce+qLOGhfqmcPkk9U93q7h8v3yzTaF2EvSvmMqEjwQ8iC
-	 50FoJKKszOZxQ==
-Subject:
- Re: [PATCH net] net: dsa: microchip: Save the periodic output flags and index
-From: netdev-bot+sashiko@kernel.org
-To: bastien.curutchet@bootlin.com
-Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, richardcochran@gmail.com, ceggers@arri.de,
- arun.ramadoss@microchip.com, pascal.eberhard@se.com,
- miquel.raynal@bootlin.com, thomas.petazzoni@bootlin.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Wed, 16 Sep 2026 08:35:44 +0000
-Message-ID: <178954774464.22033.13485295141219382399@kernel.org>
-In-Reply-To: <20260914-fix-perout-v1-1-9f45531a7585@bootlin.com>
-References: <20260914-fix-perout-v1-1-9f45531a7585@bootlin.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="aX+BQbgJ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=3y0ffgBYe0x0G3FqzpZgiy6yuK/kmiHQ6LmN1/Pon0w=; t=1789547809; x=1790757409; 
+	b=aX+BQbgJM0WxjV0VnunTN1sJdzhCxPH1uMdDyj8GfKA+ifmudIfvRahXaYQ9QrpgnkWCgvwfrH2
+	82XN/WCPFYaHdZRgjLnBBCjPzCfjW+5foPwY0gm90ROIglRMBVaZAjqMt7USu7fmLJQ0CNYIMTEBC
+	MSJBNQvr8YCZbgATZpEbkrjAv9BJrOApj1c1acYd1pcap9+IfEQeWtuxSXaVsLpXkl9Pmwiy4/bz7
+	/Afm9DDffOl/Bmq3/RiNDTfzbJTl7g52xpQxXqRA/PoiBb3ODDsd5xMu9G0NMxwPGV9EqL2pJnGfh
+	BG8FUg40YQL8S77T8H9//69E9HtqzKETiiCQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1x6l8H-00000000Z3x-3jzT;
+	Wed, 16 Sep 2026 10:36:46 +0200
+From: Johannes Berg <johannes@sipsolutions.net>
+To: netdev@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Subject: [GIT PULL] wireless-2026-09-16
+Date: Wed, 16 Sep 2026 10:35:55 +0200
+Message-ID: <20260916083642.110609-3-johannes@sipsolutions.net>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider:
+Hi,
 
-Critical: 0 · High: 0 · Medium: 1 (2) · Low: 2
+First pull for this fixes cycle, I missed the cutoff last week
+and was catching up from vacation before. Quite a few changes,
+but mostly syzbot and/or LLM fixes.
 
-- [Medium] Incomplete fix: ksz_ptp_enable_perout() now saves
-  request->flags into ptp_data->perout_flags, but no companion storage…
-- [Low] The commit message states two user-visible symptoms — a non-zero
-  pin/index is lost on restart, and "if a flag was set in the request…
-- [Low] A failed perout re-configuration corrupts the saved restart
-  state.
+Please pull and let us know if there's any problem.
 
-Pre-existing issues:
-- [Medium] The driver advertises caps.n_per_out = 3 and
-  ksz_ptp_enable_perout() accepts a second perout enable while tou_mode…
-- [Medium] ksz_ptp_enable_perout() calls ptp_find_pin(), which
-  include/linux/ptp_clock_kernel.h:393-406 documents as requiring…
+Thanks,
+johannes
 
---
 
-net: dsa: microchip: Save the periodic output flags and index
 
-The patch stores the perout request's flags and index into struct
-ksz_ptp_data when the periodic output is enabled, and replays them from
-ksz_ptp_restart_perout() instead of hard-coding index 0 and flags 0.
+The following changes since commit adf50c47a47f0f0f0b79dd58ffade9919cddebea:
 
-A few questions on the commit message and the code below.
+  Merge tag 'net-7.3-rc2' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-09-03 10:18:12 -0700)
 
-> net: dsa: microchip: Save the periodic output flags and index
->
-> When the periodic output is restarted, the request flags and index are
-> always set to 0. So if a pin other than the first one was used, or if a
-> flag was set in the request that triggered the periodic output, it is
-> lost when the output is restarted.
+are available in the Git repository at:
 
-[Severity: Low]
-Is the flags half of this description reachable today?
+  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2026-09-16
 
-ksz_ptp_clock_register() sets caps.n_pins, caps.n_per_out, caps.enable and
-caps.verify, but never sets caps.supported_perout_flags. The chardev path
-then does:
+for you to fetch changes up to 1eeca1d5e0920fbdad6449768fd2d4364e714180:
 
-drivers/ptp/ptp_chardev.c:ptp_perout_request() {
-	...
-	if (perout->flags & ~ops->supported_perout_flags)
-		return -EOPNOTSUPP;
-	...
-}
+  wifi: brcmsmac: fix UAF in brcms_free_timer() (2026-09-15 11:52:56 +0200)
 
-and the v1 ioctl masks with PTP_PEROUT_V1_VALID_FLAGS (defined as 0), while
-ptp_sysfs.c period_store() builds a zero-initialized ptp_clock_request. So
-request->flags looks like it is always 0 when ksz_ptp_enable_perout() runs,
-which would make the PTP_PEROUT_DUTY_CYCLE handling in the driver dead code
-at the moment.
+----------------------------------------------------------------
+Many fixes:
+ - mac80211: S1G TIM bitmap fix
+ - ath12k: remove undocumented DT ABI implementation
+ - various firmware API and over-the-air hardening changes
+ - fixes for most cfg80211/mac80211 syzbot reports
 
-The index half does look like a real user-visible fix, since caps.n_per_out
-is 3 and a perout configured on channel 1 or 2 was previously restarted on
-TOU/pin index 0. Given the Cc: stable, could the message distinguish which
-part fixes an observable problem and which part is future-proofing?
+----------------------------------------------------------------
+Ali Ahmet Memis (1):
+      wifi: wilc1000: fix out-of-bounds read in P2P public action frames
 
-> Save the request's flags and index when the periodic output is
-> initialized.
-> Use the save flags and index when the periodic output is reset
+Bogdan Nicolae (1):
+      wifi: brcmfmac: cyw: pass PMKID to firmware if present
 
-This isn't a bug, but "Use the save flags" should probably be "Use the
-saved flags".
+Daehyeon Ko (1):
+      wifi: libipw: reject TKIP frames without a full MIC
 
-> diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
-> index 39cc70d65900b..4f924df9e32bf 100644
-> --- a/drivers/net/dsa/microchip/ksz_ptp.c
-> +++ b/drivers/net/dsa/microchip/ksz_ptp.c
-> @@ -222,6 +222,8 @@ static int ksz_ptp_enable_perout(struct ksz_device *dev,
->  		return 0;
->  	}
->  
-> +	ptp_data->perout_flags = request->flags;
-> +	ptp_data->perout_index = request->index;
+Devin Wittmayer (1):
+      wifi: mac80211: refuse to make a monitor active when it has no queue
 
-[Severity: Medium]
-Does saving flags without saving request->on make the restart path read
-uninitialized stack memory?
+Doruk Tan Ozturk (1):
+      wifi: mwifiex: bound the pairwise-cipher OUI walk to the IE length
 
-The only flag ksz_ptp_enable_perout() accepts is PTP_PEROUT_DUTY_CYCLE, and
-that flag selects the branch that consumes request->on:
+Fan Wu (1):
+      wifi: wcn36xx: Fix potential use-after-free in TX ack timer teardown
 
-drivers/net/dsa/microchip/ksz_ptp.c:ksz_ptp_enable_perout() {
-	...
-	if (request->flags & PTP_PEROUT_DUTY_CYCLE) {
-		pulse_width_ns = request->on.sec * NSEC_PER_SEC +
-			request->on.nsec;
-	} else {
-	...
-}
+Ivan Pustogarov (1):
+      wifi: mac80211: avoid out-of-bounds read for empty PREQ elements
 
-ksz_ptp_restart_perout() declares "struct ptp_perout_request request;" with
-no initializer and assigns only start, period, index and flags, so
-request.on (the union member with rsv[4]) stays whatever was on the stack.
-Before this patch request.flags was hard-coded to 0 there, so the duty-cycle
-branch could not be reached from the restart path.
+Jiangshan Yi (2):
+      wifi: libertas_tf: fix UAF in lbtf_free_adapter()
+      wifi: brcmsmac: fix UAF in brcms_free_timer()
 
-Either the resulting pulse width fails ksz_ptp_tou_pulse_verify() (-EINVAL
-or -ERANGE), in which case ksz_ptp_tou_reset() has already cleared
-TRIG_ENABLE and settime()/adjtime() returns an error while tou_mode stays
-KSZ_PTP_TOU_PEROUT, or it passes and an arbitrary value is programmed into
-REG_TRIG_PULSE_WIDTH__4 by ksz_ptp_configure_perout().
+Johannes Berg (35):
+      .get_maintainer.ignore: add myself
+      wifi: cfg80211: don't get the radio mask for netdev-less wdevs
+      wifi: cfg80211: check IP header size in cfg80211_classify8021d()
+      wifi: cfg80211: don't free driver-owned scan requests
+      wifi: cfg80211: only group hidden BSSes with beacon entries
+      wifi: cfg80211: don't filter by BSS type when removing stale entries
+      wifi: cfg80211: ibss: ref BSS entry for joined event
+      wifi: cfg80211: fix NAN regulatory enforcement
+      wifi: cfg80211: reduce RTNL holding in regulatory enforcement
+      wifi: mac80211: don't apply peer rates to off-channel frames
+      wifi: mac80211: don't drop scan probe requests for lack of peer rates
+      wifi: mac80211: don't start a ROC while scanning
+      wifi: mac80211: don't warn when an IBSS has no channel to scan
+      wifi: mac80211: don't offload TC setup on AP_VLAN interfaces
+      wifi: mac80211: suppress chanctx warning for debugfs reset
+      wifi: mac80211: abort chanswitch when leaving a mesh
+      wifi: mac80211: reset state when starting AP fails
+      wifi: mac80211: reset the LED state when ifup fails
+      wifi: mac80211: only operate on TDLS peers in the TDLS code
+      wifi: cfg80211: restore netns_immutable on failures
+      wifi: cfg80211: undo netns switch if renaming the wiphy fails
+      wifi: mac80211: unlist vifs when their netdev is unregistered
+      wifi: cfg80211: get the wiphy out of a dying network namespace
+      wifi: mac80211_hwsim: don't hand frames to mac80211 while stopping
+      wifi: mac80211: don't allow injecting frames wider than the chanctx
+      wifi: mac80211: reset the AP_VLAN tailroom counter on ifdown
+      wifi: mac80211: require a peer station for TDLS setup confirm
+      wifi: mac80211: don't allow link changes when iface is down
+      wifi: mac80211: don't RCU-dereference the mesh CSA settings we just set
+      wifi: mac80211: don't access the TSF of a down interface
+      wifi: mac80211: add HE 6 GHz capability in the scan elems len
+      wifi: mac80211: mesh: reset the CSA state when leaving
+      wifi: mac80211: mesh: release the channel if start fails
+      wifi: mac80211: set up the TX info early to fix failure paths
+      Merge tag 'ath-current-20260914' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath
 
-Would it make sense to also save request->on (or the whole validated
-request) and to zero-initialize the local request in
-ksz_ptp_restart_perout(), so a saved flag and its payload always travel
-together?
+Karl Mehltretter (1):
+      wifi: brcmfmac: fix lost 802.1x TX completion wakeup
 
-[Severity: Low]
-Should these two assignments happen only after the output has been fully
-configured and started?
+Krzysztof Kozlowski (1):
+      wifi: ath12k: ahb: Revert undocumented ABI and dead code
 
-At this point in ksz_ptp_enable_perout() the cycle-width check,
-ksz_ptp_tou_pulse_verify(), ksz_ptp_configure_perout(), ksz_ptp_tou_gpio()
-and ksz_ptp_tou_start() can all still fail. A request accepted while
-tou_mode is already KSZ_PTP_TOU_PEROUT and then rejected, for example by:
+Lachlan Hodges (1):
+      wifi: mac80211: include TIM bitmap control for buffered S1G mcast traffic
 
-	cycle_width_ns = timespec64_to_ns(&ptp_data->perout_period);
-	if ((cycle_width_ns & TRIG_CYCLE_WIDTH_M) != cycle_width_ns)
-		return -EINVAL;
+Linmao Li (1):
+      wifi: mwifiex: prevent authentication frame length truncation
 
-leaves the rejected request's index and flags latched in ptp_data. A later
-ksz_ptp_settime()/ksz_ptp_adjtime() -> ksz_ptp_restart_perout() would then
-re-arm the rejected channel rather than the last one that was successfully
-configured. Before the patch that path always re-armed index 0.
+Mariano Baragiola (1):
+      wifi: virt_wifi: free skb when disconnected
 
->  	ptp_data->perout_target_time_first.tv_sec  = request->start.sec;
->  	ptp_data->perout_target_time_first.tv_nsec = request->start.nsec;
->  
-> @@ -795,8 +797,8 @@ static int ksz_ptp_restart_perout(struct ksz_device *dev)
->  	request.start.nsec = next.tv_nsec;
->  	request.period.sec  = ptp_data->perout_period.tv_sec;
->  	request.period.nsec = ptp_data->perout_period.tv_nsec;
-> -	request.index = 0;
-> -	request.flags = 0;
-> +	request.index = ptp_data->perout_index;
-> +	request.flags = ptp_data->perout_flags;
+Nicolas Escande (1):
+      wifi: ath11k: cleanup arsta in ath11k_mac_peer_cleanup_all()
 
-[Severity: Medium]
-This is a pre-existing issue and not introduced by this patch, but the saved
-index now feeds an unlocked pin lookup.
+Peng Hao (1):
+      wifi: mwifiex: fix IRQ leak using wrong index in MSI-X error path
 
-ksz_ptp_enable_perout() calls ptp_find_pin(), whose contract is documented
-in include/linux/ptp_clock_kernel.h:
+Pengpeng Hou (1):
+      wifi: mwifiex: validate scan response extents
 
- * The caller must hold ptp_clock::pincfg_mux.  Drivers do not have
- * access to that mutex as ptp_clock is an opaque type.  However, the
- * core code acquires the mutex before invoking the driver's
- * ptp_clock_info::enable() callback
+Rik van Riel (1):
+      wifi: mac80211: avoid WARN in set_bitrate_mask when sdata not in driver
 
-That holds for the ksz_ptp_enable() path only, where ptp_chardev.c wraps the
-call:
+Runyu Xiao (1):
+      wifi: wlcore: release runtime PM ref on regdomain config failure
 
-	scoped_cond_guard(mutex_intr, return -ERESTARTSYS, &ptp->pincfg_mux)
-		return ops->enable(ops, &req, perout->period.sec || perout->period.nsec);
+Shengzhuo Wei (2):
+      wifi: p54: validate curve data length in the calibration curve converters
+      wifi: p54: require a full exp_if record in PDR_INTERFACE_LIST
 
-ksz_ptp_restart_perout() reaches ptp_find_pin() from
-ksz_ptp_settime()/ksz_ptp_adjtime() holding only ptp_data->lock, so
-info->pin_config[] is walked while PTP_PIN_SETFUNC (ptp_set_pinfunc()) can
-be rewriting func/chan under pincfg_mux. That can yield a wrong index in
-PTP_GPIO_INDEX, or -1 and a spurious -EINVAL from settime()/adjtime().
+Shmulik Cohen (3):
+      wifi: libipw: reject too-short beacon and probe responses
+      wifi: libipw: reject too-short association responses
+      wifi: ipw2x00: bound management frame length to the receive buffer
 
-Note that switching to ptp_find_pin_unlocked() here would invert the lock
-order established by the enable() path (pincfg_mux -> ptp_data->lock via
-ptp_set_pinfunc() -> ptp_disable_pinfunc() -> info->enable()). Would caching
-the resolved pin at enable() time, alongside the flags and index this patch
-already caches, be an option?
+Slawomir Stepien (4):
+      wifi: cfg80211: verify if AP_VLAN belongs to the correct AP
+      wifi: cfg80211: do not support direct add of station to AP_VLAN interfaces
+      wifi: cfg80211: move link_id validation earlier in nl80211_new_station()
+      wifi: cfg80211: check if AP has been started or joined a mesh before adding new station
 
->  
->  	return ksz_ptp_enable_perout(dev, &request, 1);
->  }
-> diff --git a/drivers/net/dsa/microchip/ksz_ptp.h b/drivers/net/dsa/microchip/ksz_ptp.h
-> index 7067ec9bd1e6f..da6a2efb23d72 100644
-> --- a/drivers/net/dsa/microchip/ksz_ptp.h
-> +++ b/drivers/net/dsa/microchip/ksz_ptp.h
-> @@ -31,6 +31,8 @@ struct ksz_ptp_data {
->  	enum ksz_ptp_tou_mode tou_mode;
->  	struct timespec64 perout_target_time_first;  /* start of first pulse */
->  	struct timespec64 perout_period;
-> +	unsigned int perout_flags;
-> +	unsigned int perout_index;
->  };
+Stanislaw Gruszka (1):
+      wifi: iwlegacy: fix broadcast stations deallocation
 
-[Severity: Medium]
-This is a pre-existing limitation rather than something the patch
-introduces, but does the new index only work for a single active channel?
+Tianchu Chen (2):
+      wifi: rsi: fix heap OOB write on key removal
+      wifi: wilc1000: fix RX buffer OOB-write in wilc_wlan_handle_isr_ext()
 
-caps.n_per_out is 3, and ksz_ptp_enable_perout() accepts a second enable
-while a perout is already running:
+Zhao Li (1):
+      wifi: mwifiex: validate action frame fixed fields
 
-	if (ptp_data->tou_mode != KSZ_PTP_TOU_PEROUT &&
-	    ptp_data->tou_mode != KSZ_PTP_TOU_IDLE)
-		return -EBUSY;
+Zihan Xi (1):
+      wifi: virt_wifi: don't transfer operstate before register
 
-All perout bookkeeping is single-slot (perout_target_time_first,
-perout_period, and now perout_index/perout_flags), and
-ksz_ptp_restart_perout() replays exactly one request. Configuring perout on
-channels 0 and 1 therefore overwrites the saved state, and after a clock
-step only the most recently configured channel is re-armed; the other
-trigger unit keeps a target time in the old clock epoch.
-
-Would it be worth mentioning this scope in the commit message?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260914-fix-perout-v1-1-9f45531a7585%40bootlin.com
+ .get_maintainer.ignore                             |   2 +
+ drivers/net/wireless/ath/ath11k/mac.c              |  25 +++-
+ drivers/net/wireless/ath/ath12k/wifi7/ahb.c        |  51 +------
+ drivers/net/wireless/ath/wcn36xx/dxe.c             |   2 +-
+ .../wireless/broadcom/brcm80211/brcmfmac/core.c    |   2 +
+ .../broadcom/brcm80211/brcmfmac/cyw/core.c         |   5 +-
+ .../broadcom/brcm80211/brcmsmac/mac80211_if.c      |   4 +
+ drivers/net/wireless/intel/ipw2x00/ipw2100.c       |   4 +-
+ drivers/net/wireless/intel/ipw2x00/ipw2200.c       |   9 ++
+ .../wireless/intel/ipw2x00/libipw_crypto_tkip.c    |  12 +-
+ drivers/net/wireless/intel/ipw2x00/libipw_rx.c     |   6 +
+ drivers/net/wireless/intel/iwlegacy/common.c       |   2 +-
+ drivers/net/wireless/intersil/p54/eeprom.c         |  22 ++-
+ drivers/net/wireless/marvell/libertas_tf/main.c    |   2 +-
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c    |  12 +-
+ drivers/net/wireless/marvell/mwifiex/pcie.c        |   2 +-
+ drivers/net/wireless/marvell/mwifiex/scan.c        |  54 ++++++--
+ drivers/net/wireless/marvell/mwifiex/util.c        |  10 +-
+ drivers/net/wireless/microchip/wilc1000/cfg80211.c |  14 ++
+ drivers/net/wireless/microchip/wilc1000/wlan.c     |   9 ++
+ drivers/net/wireless/rsi/rsi_91x_mgmt.c            |   2 -
+ drivers/net/wireless/ti/wlcore/main.c              |   4 +-
+ drivers/net/wireless/virtual/mac80211_hwsim_main.c |  39 ++++--
+ drivers/net/wireless/virtual/virt_wifi.c           |   4 +-
+ include/linux/ieee80211-mesh.h                     |   4 +-
+ include/net/mac80211.h                             |   5 +-
+ net/mac80211/cfg.c                                 |  18 ++-
+ net/mac80211/debugfs.c                             |   2 +-
+ net/mac80211/debugfs_netdev.c                      |   9 ++
+ net/mac80211/ieee80211_i.h                         |   2 +-
+ net/mac80211/iface.c                               |  39 +++++-
+ net/mac80211/main.c                                |   4 +
+ net/mac80211/mesh.c                                |  34 +++--
+ net/mac80211/offchannel.c                          |   7 +
+ net/mac80211/pm.c                                  |   8 +-
+ net/mac80211/rate.c                                |   8 ++
+ net/mac80211/scan.c                                |   2 +-
+ net/mac80211/tdls.c                                |  40 ++++--
+ net/mac80211/tx.c                                  | 115 ++++++++++------
+ net/wireless/core.c                                | 153 ++++++++++++---------
+ net/wireless/core.h                                |  18 ++-
+ net/wireless/ibss.c                                |  38 ++---
+ net/wireless/nl80211.c                             |  64 +++++----
+ net/wireless/rdev-ops.h                            |   3 +
+ net/wireless/reg.c                                 |  52 +++++--
+ net/wireless/reg.h                                 |  16 +++
+ net/wireless/scan.c                                |  43 +++++-
+ net/wireless/util.c                                |  38 +++--
+ 48 files changed, 694 insertions(+), 326 deletions(-)
