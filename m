@@ -1,78 +1,76 @@
-Received: from mail-pz2-f41.google.com (mail-pz2-f41.google.com [74.125.228.41])
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26323AE197
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 02:52:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1F1395276
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 03:00:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789527149; cv=none; b=cxrd2VcFCUYm11/jw2qY0YOPQrimA965mZvCK4oK3oByN6gNMqelAaXegUjc50rmDnMCmbELcHsNbygwsvdwIIhpjFbmrNrL46Qa3vBC2RWZOSXLuNBkT+wE1yI6y+bmF8aLoVJz5NZzzIEVsDSosbeFlrOSR4KbZVn0ReOvXNI=
+	t=1789527628; cv=none; b=VFgQhbjTzwveyxF3JhfkwqMOCboFl+OzstrNhP5PsE/nn0xHjPWg5NELq1Y34v8+87tfZZdQDJACfbc0JwEyviAYLzhrjO6RH97Woh0HB3yoRicObVwzA6mVqrYLHtxWBAFwc3KlSMOKwHQ96lYU8f1QGmHYoP7NbC5L+cPZGME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789527149; c=relaxed/simple;
-	bh=tX9M+W6f3YXesN8e9sqc2endp/ilgoluGKgnYvWZ2YA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GNJBw7d8imjjvm2iHZX8lH60bBgxBAlgPAqt2LNfehq6BnnbiKErZSe+tW2RzWgu6KaS4uImOhzIqxbiNTqFobXEXLuMvdxyoRu1ilfC+kNmvfqJzvEd30Q0lFXP1fHnaIlsTwQzWn7iefOySi7cqtYYWxHukjeATeg0LvU5tBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rUY8FHpt; arc=none smtp.client-ip=74.125.228.41
+	s=arc-20240116; t=1789527628; c=relaxed/simple;
+	bh=RmS+xdgWocibZMZYCA84W4qaV1yXYkVlLzdVkYyMD5g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kvPyO9GxNAetwHfChRNmKnFMArLWHI2z6Bugaye6tSNXKNwYMZHt74Tg+roG/jX0xWjWS5fyquv0nyJW2iuznfMbpTyx2jrcUjgRc5rp9xmO7NDOG3CgMO6+MObnVcTJ+QJ43cY0G8/jsUz8ayz/+MLMNAuQ94HHX8S4efeN7fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FRO2IsBn; arc=none smtp.client-ip=74.125.227.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rUY8FHpt"
-Received: by mail-pz2-f41.google.com with SMTP id d2e1a72fcca58-8674704dab1so544490b3a.2
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 19:52:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FRO2IsBn"
+Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-398a147688bso388927a91.1
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 20:00:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789527147; x=1790131947; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789527626; x=1790132426; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4i5M/+Fcpjtf5aQ6npx1txWnbcVS6QYJviLzGTvfRwQ=;
-        b=rUY8FHptKrMiwUG9/g2dcbDsRs5GN1MoJKfwS+ruKhBxsaplrnQUPoCL1VtRxbNJrk
-         +axtsUUEMS+O01Oc3S1t5c2S4RoqEdV8QG++LdyCZUJtBBFUSCu1OK1TtTkvF7JxCRum
-         VvJB4EeHxd0eJDKwLCBVmAsQb/H7alYhXyr4gQHjETbGTt30CLe41E6c63VzpDfolKWS
-         3Eo4Oa6Uqc5tdR6uTpnImwCV5+9aVO+3ZzCIYHgNrTo4dUmgeuXKPM4hlUreThujHzhG
-         Bqae+uC+FhITtVyndrG+FcixTDTi/B4YkK+VvwhKBk9oIbfyvETlSJwKDVpQjSPKCdb6
-         CUiQ==
+        bh=jVvxgQIw7AeCLmLEQiDzAuJvlTjekJJ3lxgJZwxjO7I=;
+        b=FRO2IsBn7A5sw6+At3iy+Hv7iM5Q4dItUOzD5FevIWXH8KmHuHGdQYHMV7GQqvw3DO
+         ox2z1ZWb7RptCWNdtp8A5pwufxwYaXiRuJgTRXL92CXSgzwne4nJQsFZDPhhYtGhXIRo
+         gde1t+ip/ntDSFyB6zfqyoO2lAX52ee0X/2TsKywty9vDPYjbke7tUk6J5od2AMQwCs1
+         grTjra0u+oqLEYU4tCyVeGZP8L1axqBWuuoft1h+4o553wUfkmIcnIp0QjWGaTOE6GRU
+         WSWDlbypD/k7O/eozwyePZ401UmR3ek5TPhQEuZjWVaAmrjeRFOoia4FLyxpXZbEXlkw
+         IZ+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789527147; x=1790131947;
+        d=1e100.net; s=20260707; t=1789527626; x=1790132426;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=4i5M/+Fcpjtf5aQ6npx1txWnbcVS6QYJviLzGTvfRwQ=;
-        b=syqy49MfIr8abiSTVOMTGXjqo+I/uGXmhcMbp0uPk1oqdImZhzl9sOaWi278poq8Yy
-         0WhsdjBz+VdxgExITsmux1M06qH3DUaejpXuW+epKcqHP9j+Xapc1y5zufJE6IoUgpFS
-         UPv+MKgxV481YnytV75aFxFO3TsqKhXhamJeE/yPcGh/xFBDdnajc7ctBbXZda6/I/vH
-         60lb8nbrAd1BDWhSQtjaJD+g201iRojTxjspb4ulSTFa9zJLrJPlumj9Pdf8pO5FxXry
-         nOOWoLubDcR0D34Im10V194LiyPBUgRDDnORNRAMx/6lGifzsS3tvQug9V1ajF0l8x8o
-         xwFg==
-X-Forwarded-Encrypted: i=1; AKwUvBwkK0Xfzyd5UZ1iWEtPfSvhgrbqPX24APsYk6ImI+h6uVdyuRQGaE7ksTP90HV5MqcgtUw4ctM=@vger.kernel.org
-X-Gm-Message-State: AFuF++k6Imok+QTQje0eWBTAHMZcPWTCpgr8QnU89ZHMwV0aZW3Upovy
-	rsDLtwzU5mIrG3UTRaqJLbvujFZ8TssVfxKCzFd1xVv3NiJLeSR9U6hZ
-X-Gm-Gg: AYBFou0VFlpziJ8/1flNds9j2ROgz0IRHpddUOgAAwZz8ZtRQXRn288mvVrVGENp++t
-	ZMAZ5okvVHuXLA6qgU+1UU8MhLxC1zA3cYK18v7Uw01LJTKMpTbn65E3zL1waOATQ/iuSE+irQz
-	Met18DoFy6feTLnv9vSXE/q3Of6xMLVeH/t9pEhUI9yVJGB+fToeQOQMMWL0jgM94sMUuMMTk7Q
-	wGLmh40ONtbuG05Zb98IFGljb3AnmFb6s+FUxlBU+Il3xoF8nJDOMIK53OTklEGA021K3fW2mMu
-	cXydqbs+ii/mqXXA8+STYDB8scXesBr9xFDm6twNc7Bzu+HLNm18E3do8ba5ukYb8k4hSF4+rSp
-	x/6rKPGSzvoPoqS0g60EN0xp1e5kNCYI4wrVuPsQHahTGnkM6WuXQdG4almosXSzLg03ybOVU/2
-	8868Hyx6iPDts+3J/1lyKBmyPLch9HrCYmEknlfbK2K5nEx+qApAKvgg==
-X-Received: by 2002:a05:6a00:4613:b0:851:c2a6:172f with SMTP id d2e1a72fcca58-8723b87eadfmr1399876b3a.7.1789527146998;
-        Tue, 15 Sep 2026 19:52:26 -0700 (PDT)
+        bh=jVvxgQIw7AeCLmLEQiDzAuJvlTjekJJ3lxgJZwxjO7I=;
+        b=kS2zJK15yXEZgiKmfK7zy689v0oalf6TPtMuXEp2E0yQmHpX8ZPz0JNkZxq67ToQH5
+         VvwoDSNWvCtwIuaZwEde23oultOxQtEg1hysqQ3RosyOSaijWr4LIVn/tnIi67oT7PwN
+         nO+KEctq8X+436hfpIySkSVvV0KGVlqk+cXXRI+E86a2hSDrhg9hj3WISQ2lhHDptp0w
+         VnNg7LbOBSxChDOe0/xCJexVSpJTaESz5jWjDLqOxFJkwmSxj0W9TTg4Zjx/TpOnEz2N
+         WR9/PdwmqtXK0lioBP4myxqWj/7XwisE9MFO3QJxn+F02N9K2Jem5vA23JQjJX8HNMU1
+         2D4w==
+X-Forwarded-Encrypted: i=1; AKwUvBzw7/+ktLDjg5s5NIdIO7ZfzAUfVwunJC0m8EXSEe9BzPnwX0yGFNEtqx1i5l2vF9WaciTjs9U=@vger.kernel.org
+X-Gm-Message-State: AFuF++lG1LnO8KSYr4NDuiiEn0Rul3/1ZQ+I6SsebVlaaKdOmQtVKDPE
+	xMZCG0Ldj5Jb5GX5nip6zUQ3FXBzi37rcgC6hSudOFUza9NTdR68QO4r
+X-Gm-Gg: AYBFou2Fd6fd8mj/9ra9I71J1Ax6nHFgul+uLfBrlAr5uAyhNVMslVYeVoxqsWUMiOa
+	AOE/zG6giF4H2udIdOV2f0iCp3YUMxic0F1CWc/BJd73Ds/TOWyb4QLaS9n4MbEK9d7FOqAHVs3
+	RqDzFrpkXxHaudrfoRRrqxLU6AeG9igPtSoBvzSokaBebcocR+R4Ioy80ZGUP/R78KcUHYSzu7t
+	wvsnMgBU2gvz44v8XILAIF+ISppQk12p7h43YrgV7uYnxMi53iSDU/w4U45gIPqQetC7ULbUKg4
+	hY2J878ym4Y7Gdcu5q07Apc5gbiN40ggXHFsp6kEafqDMEDISkqoF9KtbMBzWXNmt6+4BNEzB1j
+	NIWXy08IY8L+TuRTBAgM2+ym4bl45lrAYdsUF9EFDJyuaZhDbui+ANgUysjdj1Pv8kEKjy0nnAg
+	tdqZAa8HDySuYTK/l654TmA9x8ZNiHeZQptwEvqP4qmg5gN6Q6QRM03A==
+X-Received: by 2002:a17:90b:4fcf:b0:398:b1eb:136c with SMTP id 98e67ed59e1d1-39e1e2f3dedmr2184461a91.9.1789527625769;
+        Tue, 15 Sep 2026 20:00:25 -0700 (PDT)
 Received: from lgs.. ([2001:250:5800:1002::de93])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8720172b126sm414532b3a.38.2026.09.15.19.52.21
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14395caccf1sm2428257c88.2.2026.09.15.20.00.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 19:52:26 -0700 (PDT)
+        Tue, 15 Sep 2026 20:00:25 -0700 (PDT)
 From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Potnuri Bharat Teja <bharat@chelsio.com>,
+To: Yangbo Lu <yangbo.lu@nxp.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Ganesh Goudar <ganeshgr@chelsio.com>,
-	Arjun Vynipadath <arjun@chelsio.com>,
-	Casey Leedom <leedom@chelsio.com>,
+	Richard Cochran <richardcochran@gmail.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: Guangshuo Li <lgs201920130244@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] cxgb4: fix FW SGE queue cleanup on remove
-Date: Wed, 16 Sep 2026 10:52:15 +0800
-Message-ID: <20260916025215.2780658-1-lgs201920130244@gmail.com>
+Subject: [PATCH] net: dpaa2: ptp: fix device node reference leak on remove
+Date: Wed, 16 Sep 2026 11:00:15 +0800
+Message-ID: <20260916030015.2818545-1-lgs201920130244@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -82,45 +80,38 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-init_one() allocates the FW SGE queues with setup_fw_sge_queues()
-before registering the network devices.
+dpaa2_ptp_probe() gets a referenced device node with
+of_find_compatible_node() and stores it in dev->of_node.
 
-The probe failure path releases these queues with
-t4_free_sge_resources(). However, the normal removal path only calls
-t4_free_sge_resources() through cxgb_down() when
-CXGB4_FULL_INIT_DONE is set.
+The probe failure paths release this reference with of_node_put().
+However, after a successful probe, dpaa2_ptp_remove() tears down the
+PTP and MC resources without dropping the device node reference.
 
-If the device is successfully probed and removed before it is fully
-initialized, such as when none of its network interfaces has been
-opened, CXGB4_FULL_INIT_DONE remains clear and the FW SGE queues are
-left allocated.
-
-Release any remaining FW SGE queues when removing an adapter which has
-not completed full initialization.
+Release dev->of_node during driver removal and clear the pointer after
+dropping the reference.
 
 This issue was found by manual code inspection.
 
-Fixes: 843bd7db79c8 ("cxgb4: Setup FW queues before registering netdev")
+Fixes: d346c9e86d86 ("dpaa2-ptp: reuse ptp_qoriq driver")
 Cc: stable@vger.kernel.org
 Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
 ---
- drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-ptp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-index 1ced6df6eac8..146419c66348 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
-@@ -7116,6 +7116,9 @@ static void remove_one(struct pci_dev *pdev)
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-ptp.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-ptp.c
+index 4497e3c0456d..440319a1e775 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-ptp.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-ptp.c
+@@ -232,6 +232,8 @@ static void dpaa2_ptp_remove(struct fsl_mc_device *mc_dev)
+ 	fsl_mc_free_irqs(mc_dev);
+ 	dprtc_close(mc_dev->mc_io, 0, mc_dev->mc_handle);
+ 	fsl_mc_portal_free(mc_dev->mc_io);
++	of_node_put(dev->of_node);
++	dev->of_node = NULL;
+ }
  
- 		if (adapter->flags & CXGB4_FULL_INIT_DONE)
- 			cxgb_down(adapter);
-+		else if (adapter->sge.fw_evtq.desc ||
-+			 adapter->sge.intrq.desc)
-+			t4_free_sge_resources(adapter);
- 
- 		if (adapter->flags & CXGB4_USING_MSIX)
- 			free_msix_info(adapter);
+ static const struct fsl_mc_device_id dpaa2_ptp_match_id_table[] = {
 -- 
 2.43.0
 
