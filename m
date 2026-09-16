@@ -1,59 +1,61 @@
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
+Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CF84B8DF2
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 10:01:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3DC4AF16E
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 10:01:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789552889; cv=none; b=PYbIbJEJj0talbRJxaR6+A2TAH8Zz98ULpJ/2pWtcc8hbcivHl7TgwKqe45JfU+xcwlYvfitxZWiJFnVRAUrfco3hqdprCPqLslJ60jRe0Gko8gmiW5sv/Xz9MNFmbGfluKl6Pv9jJyBCdZLMdu67icsmQa9srBknsGAg2T8W/I=
+	t=1789552904; cv=none; b=bQbw7UCyE2GRhTwwIu8Z5J6uiy69gU4yjSx08VcU6iyiGB8UwP64iBg6QQxadIltC2cNEd8eGFVkReI/1jBehfO4Jou0CMH5oSWy6UVH9KjjXfYeBFH9Gvcv0ebJb3Ugfp5Cpmat5nKQEMpWmPM+xjynOy5bOTwoDyTAg6bQbeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789552889; c=relaxed/simple;
-	bh=liQCnC+7llIdd0GbDQgAcy+Lo8oCdyPjuVg2jjY+iJ0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=W1Dg8V/LeH+UQGLJeRY8BOKBCAxpW6548oxZ5nL0vH7ysA1k6F9fDuklBpLiR0C+6I1FEq/PAjbzGib3u/PQ+isxfYiilEMkUdpDrt1qkQNky37N5rBodaHde+sGvrXWuD8asj46TXAYSwnENgyxSS+tDSfxOEYtd4nCo6JJB8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=ixdVHWsx; arc=none smtp.client-ip=74.125.230.204
+	s=arc-20240116; t=1789552904; c=relaxed/simple;
+	bh=6Y63ypW1o8fSc5npG6Ogumje01PNdZEHgLH/DsEfGOU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=S8IUk5qZ0XHaDYXyw+wrCuViycX0c1/69tQB5JYyVu2534UWRMQhjqiPFl7CwA+9IHdJ1AX3YDdTBdn85xdldlQVA5PyQpJjG+5vVvsusq3ZH7JDrN06eiLpraE9S+ZeHmsRz/WKkqbyprcQyfQXGJ4JbiB3xK0E8kGX/sEK4rM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=H7xRn2Gn; arc=none smtp.client-ip=74.125.230.205
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="ixdVHWsx"
-Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-530e28a62abso9582231cf.1
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 03:01:23 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="H7xRn2Gn"
+Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-52fb76543e2so2360571cf.1
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 03:01:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1789552881; x=1790157681; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vTcGH5T/cFDHbJXjhA+gaILzByIxBykFt4Pcjft5gX4=;
-        b=ixdVHWsxIhCA1PMF0QqGnh+noZzQ3OWF7lW/lnOmtL7OKYGTdWy+AwU16OQYmfBhFZ
-         Me5RGubz8tV8YC+opjc6E7IAotPViH6WgjG3EtwAiwTyrnODuqJiUrmI7vv3aEI9+qBl
-         AsQm+nk+JNgwKx9g3Fw06MNpb5QLVR6tbFM7A=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789552881; x=1790157681;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=mojatatu.com; s=google; t=1789552883; x=1790157683; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=vTcGH5T/cFDHbJXjhA+gaILzByIxBykFt4Pcjft5gX4=;
-        b=NGWlBdkJIUGz4DAB7Y/08FyFkf+uWb53OAHccilfCT0Yqof/IaId5hyRuXtvf9QPVV
-         X7cVE7VCO40U/Epzj72CP+Wj/F3t7P6F3dWRVOYSHZSqArGeBsbo+skSXFxaCVDXJzfB
-         LuaUGgceTL6R3Zv+/tP/8lmVFXKnUBlXcXU8LimSqBaNK4P+2w9L8SIgWgsfBTPG63Za
-         3XfC9q9iMnpGB4VED/hzQK7L+UOCJzGqRvkjoK5/CLnPwL7CIbtsjR/k3htH+TGB+WGP
-         Y+KrSSG+r5mKlHJ2y7FXNR+Hl7ZaNZy729l25A0ulhThwhiz/Wt9qFpJlMZL0jzG9DJV
-         Cv0g==
-X-Gm-Message-State: AFuF++k5g/pypd5FOUSA1MF6V4PkjZARlWSqwoSwufXbmo/WWv65d7xT
-	nYIuePSub6StktfJ5Mnhoa3TRGA3kMQXV5fMAdCcVLweBejB8mPRFvtbMMNYVe0qgGh0S1L429J
-	fUfd38A==
-X-Gm-Gg: AYBFou02NSnC7EavwhaXEkyMyFTJ3rJzazFeeHtqDqtz4OZ7F61+hD2ykh0Hjit8UAx
-	AaxaPWM8zgKhq/XRvp7aGVNcX3Wf/gygLTi0SelL1yakonR4PhmGVcv3ZIXoSLed+xCON83mUHN
-	VPdoHX1BLdKgk3b378QFSnBEqLzVU7Yr4IjwbBGhaG1jbrC3D8HKuWKgAQgEhGqNxloKvXMaRcO
-	JgJpeSfZGhxaFJ1M2cAZ0XMM7KlZ99CcgouJCeIK8399BjlEeFOn2B0zzvxq6PFn49xFnHN8Wq1
-	A3cEi+yC/hSlwDxJizFJ/H8y1mBvrMQAZs8aZ2Gw+DydjahOXxyrDIo1aqcqkZCY0bSP7S+raxE
-	NYSejcHyULpIk5h/hG2Qk2JWhE8vwB+r7zPC/tA4kngsLkg5THEH6SuonB+MCw9M4bUol1U7uau
-	exBcDietpH4wbwOJsYxItewcTP7MiKZgHjY9LN1kvw8zcayiJNtoCsfRaIZvghGLvsE8LO6bxce
-	1T2MYl+0GIJO3scrHoid1ZzlaTqSMyr9jl4YCa/UUTiB635
-X-Received: by 2002:ac8:7f04:0:b0:52d:cf85:aeea with SMTP id d75a77b69052e-5327eeb282emr31030541cf.24.1789552881166;
-        Wed, 16 Sep 2026 03:01:21 -0700 (PDT)
+        bh=79RUTy9GyyU8S0QtOXN8RnXRh3vSK+UyTrb4wdm1wK4=;
+        b=H7xRn2Gn2ryKxTLVSRACVJ/24kgNOReV8nRaa8Qb5SanMp5gc5tUfodV+KdNZljlsv
+         CDe/sFfoIeYWJksth4/N/tyk/mn11BkrnwjXpZbViKjvZc3K5Z1Ffz7kmuhcYG44BJlE
+         nA386saKw+prb6me9fI9G3DTyhIWcF9oVKULw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789552883; x=1790157683;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=79RUTy9GyyU8S0QtOXN8RnXRh3vSK+UyTrb4wdm1wK4=;
+        b=ifwMGyasD1lRoUo/TiYtPRUtkVhbGEGOV3AuuQwKg9jyH1JBCNwI5ClmYODOHVDWFB
+         WrV5M5x/FRAcIoUGyCCK4QTy2q9eLPmUQdqIRHG3wBROfB72ME/yo++KuhTIxOYaXNRb
+         d1BFAymkkC/QulGZcLtIAT5UWdrD1L+ssYRc7wIlweNTb3iMUVxiXFkRJRKOV1wlyiCi
+         nsSUtGMg4TaVgKEydb+359eCGxGpCN5LsRVTKpG4ARfgzE0bhMW2gpUqLZ1iKKaXTXa7
+         HU/4l776Vn+fOe0kEg74ny1WV859tt0MfpN2TVJpUv0PVBpFrj0pbiru+vodAWAmjY5J
+         nszA==
+X-Gm-Message-State: AFuF++lKxeDFfCsWAFshhnFgheMHvQB5pSB9VmFnazIHWcRrJRR8HkBw
+	5XLAdR9DZcWAL+kAZywaJQtvtFdmL3IZWzKJPUn70dJlN1v72O0GYPXwFN81HOVr1r8JTYeRnf+
+	9Tytq9A==
+X-Gm-Gg: AYBFou3F5BkPncqmd7PfuNydg5Foqfj5Womddy8cDtvBkvWwnvG2rn3dqOKXVKcFg2b
+	Mjfelii32ISjbbH0/U9EYQtt4HF1ad7BcQW/PUcLaTBdzycWSGnFM2WyAm0qoRzbL91kz4XApPN
+	73F4xssMDiWLqv0YIVtJJaFLeyEeH46eEk8O9+5wHN9YP4J50BHKeGsbYipwVqDEQwZFa+zaqpu
+	Bs79ZZ/m5GyMZrMLFMAbVwfqANx7j/RguS0vFlQ7M+my2FqZTn7UoNJcDh5Rrn+q5SoALHxIyzk
+	HMRtvEak+pymRDnjfqj2fR/4Ied8/H1RH/+nF53MgIZiGEP4eGPYR8PjwUzd696CAlx8SwEONjA
+	gHvtPu6m1HoTkGN+Cb5V9+OifxTQ+Cpzi3l+csSfBGIQj0Ypt+I8Tvv9C8ofHLKwWLWkava+qdP
+	fPoU3px0ILXKwpNGkmw4DRBAicWixCHh/FgSO41mnQv5YErp+weyOFzMalLjLmjcJLeFrwuegUk
+	dmOHrOe1enKREGHHTrIIcKoABOp/HArti+cXFYIG2tx1Mc0nZpc29/NBMI=
+X-Received: by 2002:ac8:5747:0:b0:530:fbb1:7a92 with SMTP id d75a77b69052e-5327f58d052mr20346921cf.32.1789552883374;
+        Wed, 16 Sep 2026 03:01:23 -0700 (PDT)
 Received: from mbili.ht.home ([64.203.83.2])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-53262021a9esm18026851cf.14.2026.09.16.03.01.19
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-53262021a9esm18026851cf.14.2026.09.16.03.01.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 03:01:20 -0700 (PDT)
+        Wed, 16 Sep 2026 03:01:22 -0700 (PDT)
 From: Jamal Hadi Salim <jhs@mojatatu.com>
 To: netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
@@ -63,15 +65,16 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Alexandre Ferrieux <alexandre.ferrieux@gmail.com>,
-	stable@vger.kernel.org,
-	Sashiko <sashiko-bot@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org,
 	Victor Nogueira <victor@mojatatu.com>,
 	hybris <hybris@mojatatu.ai>
-Subject: [PATCH net 1/2] net/sched: cls_u32: fix manual hash table handle IDR aliasing
-Date: Wed, 16 Sep 2026 06:01:14 -0400
-Message-Id: <QDISC-LQFE.v1.20260911041746.1@mojatatu.com>
+Subject: [PATCH net 2/2] selftests/tc-testing: add u32 manual table handle IDR tests
+Date: Wed, 16 Sep 2026 06:01:15 -0400
+Message-Id: <QDISC-LQFE.v1.20260911041746.2@mojatatu.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <QDISC-LQFE.v1.20260911041746.1@mojatatu.com>
+References: <QDISC-LQFE.v1.20260911041746.1@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,69 +83,80 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A u32 hash table created with an explicit handle ('tc filter add ...
-handle 801: u32 divisor N') keys its IDR entry on the raw handle, while
-the destroy paths free it under handle2id(handle). The two key domains
-disagree for handles in the 0x800..0xFFF htid range:
-handle2id() folds them back into the auto-allocated id space (1..0x7FF).
+35fc: create a manual table with handle 801:, then add an auto-allocated
+table. Before the fix, the auto allocation reuses id 1 and hands out the
+same handle 0x80100000, aliasing the manual table; the test requires the
+manual 801: handle to keep exactly one entry in the dump.
 
-A manual table therefore leaves its raw-keyed IDR entry unreachable on
-delete (a permanent leak), and its delete can drop the idr entry of an
-unrelated live auto table. A later auto allocation can then hand out a
-handle that aliases the live manual table; u32_lookup_ht() first-match
-routes lookups and TCA_U32_LINK for that htid to the wrong table.
+a6e8: with a live u32 table keeping the tc_u_common alive, add and delete
+a manual table with handle 901:, then re-add it. Unpatched, the delete
+leaks the raw-keyed IDR entry and the re-add fails with -ENOSPC; the
+test requires the re-add to succeed.
 
-Key the divisor-path alloc on handle2id(handle) so allocation and
-removal share one key domain. A manual handle that maps onto an id
-already in use is rejected with -ENOSPC, and auto allocation skips ids
-held by live manual tables.
-
-Conditions to recreate:
-  ip link add test0 type dummy
-  tc qdisc add dev test0 clsact
-  tc filter add dev test0 ingress protocol ip pref 1 \
-          handle 801: u32 divisor 16
-  tc filter add dev test0 ingress protocol ip pref 2 u32 divisor 16
-  tc -d filter show dev test0 ingress | grep 'fh 801:'
-  # unpatched: two live tables with handle 0x80100000 (the pref 2 root
-  # hnode is auto-allocated id 1); patched: the auto hnode takes id 2.
-
-Also tested with a poc with a live u32 table on the block, add/delete a manual
-table 'handle 901: u32 divisor 1' twice; unpatched, the re-add fails with
--ENOSPC because the raw key leaked on the first delete.
-
-Fixes: 73af53d82076 ("net: sched: cls_u32: Fix u32's systematic failure to free IDR entries for hnodes.")
-Reported-by: Sashiko (gemini + nipa) <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260822222049.114526-1-jhs@mojatatu.com
 Reviewed-by: Victor Nogueira <victor@mojatatu.com>
 Tested-by: hybris <hybris@mojatatu.ai>
 Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
 ---
- net/sched/cls_u32.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ .../tc-testing/tc-tests/filters/u32.json      | 48 +++++++++++++++++++
+ 1 file changed, 48 insertions(+)
 
-diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
-index a3e65c8cf29e..76ce2d124079 100644
---- a/net/sched/cls_u32.c
-+++ b/net/sched/cls_u32.c
-@@ -1003,8 +1003,16 @@ static int u32_change(struct net *net, struct sk_buff *in_skb,
- 				return -ENOMEM;
- 			}
- 		} else {
--			err = idr_alloc_u32(&tp_c->handle_idr, ht, &handle,
--					    handle, GFP_KERNEL);
-+			/* The IDR is keyed on the mapped id, and that is
-+			 * what the destroy paths remove. Ask for it here,
-+			 * so a manual handle colliding with the
-+			 * auto-allocated id space is rejected (-ENOSPC)
-+			 * instead of aliasing a future auto id.
-+			 */
-+			u32 id = handle2id(handle);
-+
-+			err = idr_alloc_u32(&tp_c->handle_idr, ht, &id, id,
-+					    GFP_KERNEL);
- 			if (err) {
- 				kfree(ht);
- 				return err;
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/filters/u32.json b/tools/testing/selftests/tc-testing/tc-tests/filters/u32.json
+index e2b03f2b5e89..edc5148a8d97 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/filters/u32.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/filters/u32.json
+@@ -376,5 +376,53 @@
+         "teardown": [
+             "$TC qdisc del dev $DUMMY clsact"
+         ]
++    },
++    {
++        "id": "35fc",
++        "name": "u32 manual table then auto table: auto allocation must not alias a live manual handle",
++        "category": [
++            "filter",
++            "u32"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "$TC qdisc add dev $DEV1 ingress",
++            "$TC filter add dev $DEV1 ingress protocol ip pref 1 handle 801: u32 divisor 16"
++        ],
++        "cmdUnderTest": "$TC filter add dev $DEV1 ingress protocol ip pref 2 u32 divisor 16",
++        "expExitCode": "0",
++        "verifyCmd": "$TC -d filter show dev $DEV1 ingress",
++        "matchPattern": "fh 801:",
++        "matchCount": "1",
++        "teardown": [
++            "$TC qdisc del dev $DEV1 ingress"
++        ]
++    },
++    {
++        "id": "a6e8",
++        "name": "u32 manual table add/del does not leak its idr entry (re-adding the same handle succeeds)",
++        "category": [
++            "filter",
++            "u32"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            "$TC qdisc add dev $DEV1 ingress",
++            "$TC filter add dev $DEV1 ingress protocol ip pref 1 u32 divisor 16",
++            "$TC filter add dev $DEV1 ingress protocol ip pref 5 handle 901: u32 divisor 1",
++            "$TC filter del dev $DEV1 ingress protocol ip pref 5 handle 901: u32"
++        ],
++        "cmdUnderTest": "$TC filter add dev $DEV1 ingress protocol ip pref 6 handle 901: u32 divisor 1",
++        "expExitCode": "0",
++        "verifyCmd": "$TC -d filter show dev $DEV1 ingress",
++        "matchPattern": "fh 901: ht divisor 1",
++        "matchCount": "1",
++        "teardown": [
++            "$TC qdisc del dev $DEV1 ingress"
++        ]
+     }
+ ]
 --
 2.43.0
