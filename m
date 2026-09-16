@@ -1,127 +1,62 @@
-Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB163DDDBE
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 05:17:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F89F3DE424;
+	Wed, 16 Sep 2026 05:31:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789535871; cv=none; b=o3217bzArXnt2C10BfUqzY5LLGe/BMIb28FltO0CI6EjNQPn6H1X07ksiWXqjKTGyhswFQojCr0q05g1r6DTJ9jrs/PjawS9H7HcmYu+HF83AQP0qtq0v70Da1r7HP9yUMWY/7ahIn8ITkjPArWCuEciIqKUDG/k5YlEDl9a1eE=
+	t=1789536680; cv=none; b=nwZ0+nY1L+xngovI1q7IrMTcjJsmeBnbT1Kusx2rtlQZYEIkgN5Rgyj3BPoRxznQSi9OAb2/Ylm/+Z7XPLKhrAgrQfa8XKLEMBI4Uzuhly5t+dyweAL+lJaC1LzAgFn6wfjgER94Ud0/HFTclqZpvHC4F7iHSuXIwPInczBzocM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789535871; c=relaxed/simple;
-	bh=csuFMHNoSfXJUiEKRnyDG776nZLFpC8JOlXrzTUfBh8=;
-	h=From:To:Cc:In-Reply-To:Subject:Date:Message-ID:MIME-Version:
-	 Content-Type:References; b=AURuaKdTy6dubN04z90IHUhCUDdiOsxSpfUxZhqi76QgXQlf/p+mm5GW2rzJE4UXGMcShcjnhEiTN9ahBNDxQtEQigHH1ghNUEHOQFHQsu4v7Rm7/0SUW1hAOjvlddKfLUnjRK8iOROEGxcHjitl4uZeYRglprSJ3i5iuagwiaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=jHblaReI; arc=none smtp.client-ip=203.254.224.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1789536680; c=relaxed/simple;
+	bh=fDcFdztgqglKFi0eQ9GvswKVa8xcGIe2kDORdCHKjh8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RgYuyGbJYINpTB7MyJrKEoqK1kMV3mfuaHgFqlpQ3sd5gdzZ5FYed9S/t7q/IVHtKTiK+TZuVG2iZrihYCI3/5PfzIDevU7o1zCpnQnYLlblQamaVi8XoMb5LRt2TH+0I52H75o6gg32CdNjS1+tLR8jXjG5pAYiQrUC/axYKEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V0nhE6H6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="jHblaReI"
-Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
-	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20260916051743epoutp039009134d86aa39267a80b7fbfbcfa004~VtWMDs8cP1088610886epoutp03-
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 05:17:43 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20260916051743epoutp039009134d86aa39267a80b7fbfbcfa004~VtWMDs8cP1088610886epoutp03-
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1789535863;
-	bh=gKhZKzIlrc1a14bnjDxz+HDub4sbghbE452clME9/Og=;
-	h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
-	b=jHblaReIb6KFmt2rUgPAuvo/nhlZaxyHzH7NvaRfdi2PvdIaJ1AkRwFwH/dAZJdJG
-	 Sx0d6Q/MJAL5S2PBvK84MS+jnhmlPIUSwO77Az5RpL2Cbht0nzCyzjkmwhG9QN5cF8
-	 A7AWIFFLvTAPyOuvo+4lNhh1x7lp0qSDO5afDkyE=
-Received: from epsnrtp01.localdomain (unknown [182.195.42.153]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTPS id
-	20260916051743epcas5p43ba39ba30628791762e72cdcbb3da84e~VtWLX9s860537105371epcas5p4i;
-	Wed, 16 Sep 2026 05:17:43 +0000 (GMT)
-Received: from epcas5p3.samsung.com (unknown [182.195.38.88]) by
-	epsnrtp01.localdomain (Postfix) with ESMTP id 4hl6bB2FhSz6B9mK; Wed, 16 Sep
-	2026 05:17:42 +0000 (GMT)
-Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
-	20260916051741epcas5p4bfb1ebbc28556f987d535a280b2c8c83~VtWKO5PKF1868918689epcas5p4z;
-	Wed, 16 Sep 2026 05:17:41 +0000 (GMT)
-Received: from SRIB8EG28RUQ1R (unknown [107.108.208.92]) by
-	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260916051738epsmtip295f8f4f370b9bbd7a2150a95daed677f~VtWHYrnh-0788707887epsmtip27;
-	Wed, 16 Sep 2026 05:17:38 +0000 (GMT)
-From: "SandeepI" <irlanki.s@samsung.com>
-To: "'Jakub Kicinski'" <kuba@kernel.org>
-Cc: <netdev@vger.kernel.org>, <bpf@vger.kernel.org>, <davem@davemloft.net>,
-	<edumazet@google.com>, <pabeni@redhat.com>, <ncardwell@google.com>,
-	<ast@kernel.org>, <daniel@iogearbox.net>, <andrii@kernel.org>,
-	<corbet@lwn.net>, <linux-kernel@vger.kernel.org>, <lorenzo@google.com>,
-	<maze@google.com>, <sporeba@google.com>, <motomuman@google.com>,
-	<srihari.k@samsung.com>, <g.pokhra@samsung.com>, <r.kumawat@samsung.com>,
-	<raj.kumars@samsung.com>, <ts413.lee@samsung.com>, "'Daeil	Hwang'"
-	<daeil2.hwang@samsung.com>, <ramyashree.s@samsung.com>
-In-Reply-To: <20260915165805.359302fe@kernel.org>
-Subject: RE: [PATCH net-next v3] tcp: add TCP_ECN and TCP_ECN_OPTION socket
- options
-Date: Wed, 16 Sep 2026 10:47:37 +0530
-Message-ID: <09fd01dd459a$b2b5ec50$1821c4f0$@samsung.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V0nhE6H6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CB731F000FF;
+	Wed, 16 Sep 2026 05:31:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789536678;
+	bh=fDcFdztgqglKFi0eQ9GvswKVa8xcGIe2kDORdCHKjh8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=V0nhE6H6MYM0AODK2HbOkUiSRaJWoDD4wxE2ZUNA/B0evPOaOBxwSrwho4Kgyf9ni
+	 yDh2cpt4lubvc3eyToOHCcHEpHUSbyYzs4m3Oy4DpsrXqQ68cQvp9xTg5gMVIOYCYR
+	 n1nPcCUGkdMLTGfUL4uupRy4m6VTXXPzPhD+ATshhA9JGkjo9TQqn0P4PSNFkj7Hsi
+	 kc9KqTrw+9oUiGOV6DV5dtPtdznS83rPaje7Ot2nByAR4tm6sx2wpBrhUEDqSf9DFx
+	 Q9jeXJ7URo/KuHXCluegCVLP8QZEo01e2ym6hrtkOg/93YUPk7lMGJRzBD89YnVQ4B
+	 3bdezgxQM/S7w==
+Date: Wed, 16 Sep 2026 08:31:13 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Danielle Costantino <dcostantino@meta.com>
+Cc: Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Eran Ben Elisha <eranbe@nvidia.com>, netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 0/2] net/mlx5: command mailbox use-after-free, and
+ the teardown hang hiding it
+Message-ID: <20260916053113.GR13683@unreal>
+References: <20260915225941.554568-1-dcostantino@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQF4AsWRY+oGaIDuY7VKoCgi8Z06jgGdcOe2AS3TtgG3hNQBAA==
-Content-Language: en-in
-X-CMS-MailID: 20260916051741epcas5p4bfb1ebbc28556f987d535a280b2c8c83
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-cpgsPolicy: CPGSC10-065,Y
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20260911091026epcas5p35873551b66ec0a50e20ada6e26d2b056
-References: <CGME20260911091026epcas5p35873551b66ec0a50e20ada6e26d2b056@epcas5p3.samsung.com>
-	<20260911091148.456834-1-irlanki.s@samsung.com>
-	<20260915165805.359302fe@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260915225941.554568-1-dcostantino@meta.com>
 
-> -----Original Message-----
-> From: Jakub Kicinski <kuba@kernel.org>
-> Sent: 16 September 2026 05:28
-> To: Irlanki Sandeep <irlanki.s@samsung.com>
-> Cc: netdev@vger.kernel.org; bpf@vger.kernel.org; davem@davemloft.net;
-> edumazet@google.com; pabeni@redhat.com; ncardwell@google.com;
-> ast@kernel.org; daniel@iogearbox.net; andrii@kernel.org; corbet@lwn.net;
-> linux-kernel@vger.kernel.org; lorenzo@google.com; maze@google.com;
-> sporeba@google.com; motomuman@google.com; srihari.k@samsung.com;
-> g.pokhra@samsung.com; r.kumawat@samsung.com;
-> raj.kumars@samsung.com; ts413.lee@samsung.com
-> Subject: Re: [PATCH net-next v3] tcp: add TCP_ECN and TCP_ECN_OPTION
-> socket options
-> 
-> On Fri, 11 Sep 2026 14:41:48 +0530 Irlanki Sandeep wrote:
-> > Currently, ECN and Accurate ECN (AccECN) configurations in the Linux
-> > kernel are controlled globally via the net.ipv4.tcp_ecn and
-> > net.ipv4.tcp_ecn_option sysctl variables. This global approach lacks
-> > the granularity required for modern multi-application runtimes.
-> 
-> CI (bpf-ci) reports a failure to build tools/testing/selftests/bpf on all
-tested
-> toolchains/architectures (x86-64 gcc-15, x86-64 llvm-21, s390x gcc-15,
-aarch64
-> gcc-15) after this series. The build breaks in
-> progs/setget_sockopt.c:
-> 
->     progs/setget_sockopt.c:67:11: error: use of undeclared identifier
-> 'TCP_ECN'
->             { .opt = TCP_ECN, .new = 3, .expected = 3, .restore = 255, },
->     progs/setget_sockopt.c:68:11: error: use of undeclared identifier
-> 'TCP_ECN_OPTION'
->             { .opt = TCP_ECN_OPTION, .new = 2, .expected = 2, .restore =
-255, },
+On Tue, Sep 15, 2026 at 03:59:38PM -0700, Danielle Costantino wrote:
+> Two defects in the mlx5 command interface, both reached through the same
+> door: a firmware command that times out.
 
-Thanks for the report.
+1. Health recovery should handle this. If it does not, the bug is there.
+2. Please review the cover letter, code, and commit messages, and trim
+Keep AI-generated prose to a bare minimum. The current series is
+not reviewable in its current form.
 
-TCP_ECN and TCP_ECN_OPTION have been defined in
-tools/testing/selftests/bpf/progs/bpf_tracing_net.h to resolve the
-compilation failure in progs/setget_sockopt.c.
-
-This has been addressed in v4:
-https://lore.kernel.org/all/20260916050255.1379192-1-irlanki.s@samsung.com/
-
-Thanks,
-Sandeep.
-
+Thanks
