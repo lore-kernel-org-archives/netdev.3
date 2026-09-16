@@ -1,192 +1,139 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D094CB8D7
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 11:12:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97AD4EE85A
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 11:19:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789557156; cv=none; b=ftG9JlwdB7nmQ0Cz++aB9DJzRS3ZIFxVwWzoTjNTIl38ydxW42ebS3RL3j1gEJgwSPqPW5l/TRx3RkQmDh0WUthDGbH8H2IXxhSjxVlyS8N9cOnRsoBkYgnvleTKUW1pOTIrlZRAdNqMp9oYuB1wlbd3losJsGtPqS5lygQ0XEc=
+	t=1789557621; cv=none; b=udWdqlsTZo7wO4lnJXa0ILen9GYKX69tqfVYCTTnQzBb0CRLOY0BfIXFaBZFdNPmzUreGSRLAjY73/b37hWT4rDThB6HAs9Fy53Nv/bKX8WrUSUueNcev6IMKGLg6nFJnl7lMOIKsHyx3hnx47Xe5rb6SrnmrnYI1GNw4eECyG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789557156; c=relaxed/simple;
-	bh=qMHs98b+lVyCyWf1Q4DpkaJQOn+HVVXoxcEPhmY7mKo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qd66QFwpXaRzbtT+8m2W7NLMU5hloN+GS53jAGMM0TIUkey231Hh+WDl4cxD9mqOwVMHqoGiRlw1ENtMDgTUpvQGCyp5tdjkAyLPFd9QofIhgSxifoeprK2/sIS0RMH9SZWrLlCSCxh7HsUm1xgPUHt09vnkHttOw+bpXEjRUsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SoAGvj7m; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=UMjDytaM; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789557621; c=relaxed/simple;
+	bh=pD1Qjfy3YK5HT8O7+5FJVkc5BQauYgWN7lb05n6HNyA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=QOz0WkJeDmNFsXnQAUnmaGQcJ3GjPlrkIules3HHzMXVo8gn6TG6Qgui4BTOenpOuGJYKRzrs3/HzGD4Aq7xMF+MbCmhxSuaKuv8/48CKrv0wgLJUgnlHhS+wSAVA1enU7q/U9Kc+boVW8JD5v0vEeyKJgGY3FQse8fIDV1YZUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XXrFjHpp; arc=none smtp.client-ip=209.85.160.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SoAGvj7m";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="UMjDytaM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789557134;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GeaJ5Y5/oBBIkCxBW+vtdLO7jvDiY+4qR7G8oQAbdE8=;
-	b=SoAGvj7mP5QhecpmEWFqLvwCPW+ry+OYc+SBzK4hofCecN44j3uZ3+E3FquzD9AFMW/NhW
-	Xh5UVtOQKxxxR3OYloII+FAs5faDJTRmVec9HQQLaYZtH3li4Kgpfvcr6vVV0AGhOtmdiq
-	8tFEs4SXTp6Gs3SEPPxWeycWY+qdGCY=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-232-r8OVm-toPDKCDCT7aajgFA-1; Wed, 16 Sep 2026 07:12:12 -0400
-X-MC-Unique: r8OVm-toPDKCDCT7aajgFA-1
-X-Mimecast-MFC-AGG-ID: r8OVm-toPDKCDCT7aajgFA_1789557131
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c29959eb71fso377909866b.1
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 04:12:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XXrFjHpp"
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-51bf321d786so51395581cf.1
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 04:19:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789557131; x=1790161931; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=GeaJ5Y5/oBBIkCxBW+vtdLO7jvDiY+4qR7G8oQAbdE8=;
-        b=UMjDytaMoyE0KSDPwum95ZMcMokHVQZ1JhweXasyKEMpx3I+IZaFC1VC1AGADggUKB
-         sdHb203Lb3V+9khmuvtGv+xVEmhVjZaWG5ecvQV7V3Bp48LX3mXvPpqsGHeqcfuwg8Nb
-         Gnr6u1L98WsNK7weyY7IByq/Vv+xVCOBSwbv7E8pfb7iwuJM9p8eQSFhTLjRi0d7e0Jy
-         V096mM0k6u9Tadp04fj8Py/4mNsZTz5sbMBzMILdszy6rjOtqmoVN8ZIqRgTdi/tIbj4
-         2WuBCt69XhjnLnypG7LCm/SrsBlvYUHMrxsnziEJVka9qyDYQ5Ae70Hnfdobt/vRwEyH
-         YHrQ==
+        d=google.com; s=20251104; t=1789557595; x=1790162395; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ht2l1sqPcHDVC/hiYH33iQJTJjceFolRyzCr9EciCtI=;
+        b=XXrFjHppqqJpdTxTlb5C5Hd1wAeTSFs4yv7Vd3gB5QB41icOEfX4TMCy8Nf1zKjrD1
+         RGJpOFvblXnaD0nrktlLO6JrmvkuarOBRYu2ZJEDUMh/pyakipHYINfLL74x0B2yC+Xt
+         9GMZCfOGBli6QnMnCGgXt98f17T5JHzxpkIOVV5hv7E9NVyklQ7YffKx4B5+n0RelWfS
+         fG/qNYPtLGF8jyVFp376I8+1VILXFoJWhMM4HK7R09ZQCpP5w774VWTNgIRwH6WB4UrS
+         diPCEfutiz8x1YgtZlg0EjId8uW1C62STwGjJ3TcoBu8EF7PkB13jahukRrl2N/lr6f2
+         DOFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789557131; x=1790161931;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1789557595; x=1790162395;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GeaJ5Y5/oBBIkCxBW+vtdLO7jvDiY+4qR7G8oQAbdE8=;
-        b=shm85fBWCJuR3lYGkhrI4xz5a0cm0gnhkSRWfjwFCr4zJrvgBWAdsenEcf9ENUTcXW
-         4QeX1/5RlXe7dmqZ2EWPI2M161wilyYlZ0D6ZYSOU+1H4wuWTyrjFOLIVFwnJ3ipRvvz
-         YwThknE0cSO0UsmlfPcmzKDlWV40gzmzAQwwdJTGXimnaveHxIUh5S4VHcW7X+sLbrb2
-         +UGo1mdED/fbkJD1eMVxgw/ziOEmmLaylNIURDn4BmZUElPYce1uFEveOjrU8snb/ykA
-         9J1lwD7NMw6cq92RqH1ewQOLQVzgRRFVlIrO7YzXy3oZKYdATH5o+RalD2ugMILlcI1M
-         Gr9A==
-X-Forwarded-Encrypted: i=1; AKwUvBwTNXT63V9yXs3BqFAr5emZ07d/ZttRLFMS0JwydO5fF/PGozsYsArykvxyauEQfaaRD4jqEOU=@vger.kernel.org
-X-Gm-Message-State: AFuF++kmvW21UbNP+QX8sHsZGHPoW7v5iAzVAVO4x/YFlHKlgz1c7sv4
-	gDo7hXQqIFH0YTZmnLnYTYlYzHOu0P7O9iClo3nrRGEa+oGiI51sfBfXpIvPA3Gh/O3x43Roxf3
-	z90EQ8FydICZjeKEm8kHulVLuxTeaeJDIt7877YF4HVhPNfJbtvRZhfmq6g==
-X-Gm-Gg: AYBFou2VkKjxSYcNS1qp4yHz9KORVcfuaRZxOzTwiVJcPqW7EVGxcYGSg8EL3s9NDt/
-	HsvI/SHns3q+w5eifw176NqLtX+Bn52isGHvaHLJoCtKPVIciwk/joArGz+BB9aSQcmpKznkcc6
-	nzXoiEGuHElqCXXk8sg3tCwDT5TzTfpjIotRvQGYLKw1+IOXRj7HAlSbufE4zg6mys8AieAQEqf
-	K2xlPK8QFRC1qcMTb0vtJiuccMJjI2cWKLu7OHx/VRJyaq8oueJkQVSdbBGE9w1Dha0WO9vHfqq
-	qHJVlY+RSYsQoGMHSjw2F9i/iAoqvci6V7gT8gUoUAOujLlGcWU5H/t2X6br2Mjp/+q++8Vrp2M
-	+A9Ypjq5YC8/6AQgrQPOBjHHdwEt8lupsF3p04mOkdjGQl+LU
-X-Received: by 2002:a17:907:9707:b0:c29:3b7e:3a94 with SMTP id a640c23a62f3a-c29e5308b18mr138254966b.38.1789557131318;
-        Wed, 16 Sep 2026 04:12:11 -0700 (PDT)
-X-Received: by 2002:a17:907:9707:b0:c29:3b7e:3a94 with SMTP id a640c23a62f3a-c29e5308b18mr138250766b.38.1789557130755;
-        Wed, 16 Sep 2026 04:12:10 -0700 (PDT)
-Received: from [172.16.2.95] (5920ab7b.static.cust.trined.nl. [89.32.171.123])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c29de48755asm114171666b.24.2026.09.16.04.12.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 04:12:10 -0700 (PDT)
-From: Eelco Chaudron <echaudro@redhat.com>
-To: Ilya Maximets <i.maximets@ovn.org>
-Cc: Wang Zhan <wang.zhan@smartx.com>, netdev@vger.kernel.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, keyong.sun@smartx.com, Aaron Conole <aconole@redhat.com>,
- dev@openvswitch.org
-Subject: Re: [PATCH net-next v2] openvswitch: raise internal port TSO limit
-Date: Wed, 16 Sep 2026 13:12:09 +0200
-X-Mailer: MailMate (3.0r7032)
-Message-ID: <672C72AA-AAA3-498D-8233-00643B563CA7@redhat.com>
-In-Reply-To: <d92e90d0-437a-45eb-9803-726bf7c088dc@ovn.org>
-References: <20260916065844.1380155-1-wang.zhan@smartx.com>
- <C381651A-DA84-442F-8F75-577946A0E437@redhat.com>
- <d92e90d0-437a-45eb-9803-726bf7c088dc@ovn.org>
+        bh=ht2l1sqPcHDVC/hiYH33iQJTJjceFolRyzCr9EciCtI=;
+        b=x1hljFUsEVZv0gx5VDeTjaNCJAZ8LSiMjlcEyOlNcFFC7ZNTZXc7MraglfDR7Ft0JE
+         D3mWx/j0ztbgVa2iQuAZSpIgYJ9ZTmgUkdbmpm46lbefZd/Z7+4XxixnCwJVeMlv8zUT
+         H3g7GdMQd6/6gImcUDj40g4Z04PDCL+EZBTHaLBzagpvluJLQDFcDXowfoDtvOe4qORv
+         PxG7f3OoDYrvP8IHZugjXhfhjoFxZNFeTe2cL5EsY5j/1aipDG7gpIwOvcTwxHWFhEhJ
+         v5psqFRIO1xr0NN6A3x3TG8BX8KkIgwHJdwPB9bP1mpZc8I01g8k3iB6FBcpcSFp5oG7
+         t5oA==
+X-Forwarded-Encrypted: i=1; AKwUvBw9ll3Pthfpyywe2NaeZqn7JkN2MzAzNDcNpIZZ2WmQs2QF42GIWqh1j6vKjRB3KJYer0HwBwM=@vger.kernel.org
+X-Gm-Message-State: AFuF++n+XgV6lgh4qE7/hu9RlTSeyorjrutDD5rfGmcSK3w+ohyR+NaH
+	4EO2pcKII8wi2jl8lcTUB7vp3OQ98mi1+mTQeaR9yZWeNba6hki2fvnaASPFLFmrK6tGh3LVTuG
+	TMAOa2HfFew6P6g==
+X-Received: from qtbnu11.prod.google.com ([2002:a05:622a:7b8b:b0:530:e97d:1ea])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:ac8:6f11:0:b0:531:cbe:d53c with SMTP id d75a77b69052e-5327eeb8437mr34205831cf.35.1789557595004;
+ Wed, 16 Sep 2026 04:19:55 -0700 (PDT)
+Date: Wed, 16 Sep 2026 11:19:53 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-MS-Reactions: disallow
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.1032.g73a4cd73de-goog
+Message-ID: <20260916111953.1611574-1-edumazet@google.com>
+Subject: [PATCH net-next] netkit: no longer rely on RTNL in netkit_fill_info()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Nikolay Aleksandrov <razor@blackwall.org>
+Content-Type: text/plain; charset="UTF-8"
 
+netkit_fill_info() used rtnl_dereference() to fetch nk->peer,
+and thus required RTNL.
 
+nk->peer is already an RCU protected pointer, updated with
+rcu_assign_pointer() and read from the fast path with
+rcu_dereference(). Simply use rcu_dereference() under
+rcu_read_lock() instead.
 
-On 16 Sep 2026, at 11:49, Ilya Maximets wrote:
+While at it, use READ_ONCE() when reading nk->policy, because
+netkit_change_link() can change it at any time (it already uses
+WRITE_ONCE()).
 
-> On 9/16/26 11:37 AM, Eelco Chaudron wrote:
->>
->>
->> On 16 Sep 2026, at 8:58, Wang Zhan wrote:
->>
->>> Set the internal port TSO limit to GSO_MAX_SIZE (512 KB), as for
->>> loopback and veth. This allows the admin/user to set a GSO limit up t=
-o
->>> this value, to use BIG TCP for traffic routed through the internal po=
-rt.
->>>
->>> Only the capability limit changes: the IPv4 and IPv6 GSO and GRO limi=
-ts
->>> remain at 64 KiB until changed by the administrator.
->>>
->>> Validation used a same-host test with a temporary OVS bridge, a veth =
-pair,
->>> and a network namespace:
->>>
->>>   TCP client -> OVS internal -> OVS bridge -> veth -> TCP server
->>>
->>> The veth endpoints were BIG TCP capable throughout the test, and only=
- the
->>> OVS internal port limits changed between 64 KiB and 524280 bytes. A s=
-ingle
->>> iperf3 3.19 TCP flow, run separately over IPv4 and IPv6 with six
->>> alternating runs per state (`-t 15 -O 5`, fixed CPU affinity and port=
+Other fields (primary, mode, pair, scrub) are only set from
+netkit_new_link(), before the device is visible to dumps.
 
->>> tuple), increased throughput by 18.1% for IPv4 and 34.7% for IPv6:
->>>
->>>   protocol  BIG TCP off  BIG TCP on   CV off / on
->>>   TCP/IPv4  65.567 Gbps  77.420 Gbps  1.12% / 0.37%
->>>   TCP/IPv6  55.355 Gbps  74.568 Gbps  1.20% / 0.68%
->>>
->>> Assisted-by: LLM
->>
->> I think Ilya already mentioned this earlier, but the LLM tag means you=
- need to
->> fill in the LLM model name you used.
->
-> It looks like the rules changed recently, see:
->   816d9992d9ed ("coding-assistants: simplify attribution")
->
-> So that's just a new acceptable format, which is fine.
+Also add missing const qualifiers.
 
-Ok, missed that change :( So with that
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>
+---
+ drivers/net/netkit.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-Reviewed-by:  Eelco Chaudron <echaudro@redhat.com>
-
->>
->> The rest looks good to me.
->>
->> //Eelco
->>
->>> Signed-off-by: Wang Zhan <wang.zhan@smartx.com>
->>> ---
->>>
->>> v2:
->>> - add an empty line before netif_set_tso_max_size()
->>> - rebase net-next/main
->>> - cc all the maintainers
->>> v1: https://lore.kernel.org/20260910131635.780802-1-wang.zhan@smartx.=
-com/
->>>
->>> ---
->>>  net/openvswitch/vport-internal_dev.c | 2 ++
->>>  1 file changed, 2 insertions(+)
->>>
->>> diff --git a/net/openvswitch/vport-internal_dev.c b/net/openvswitch/v=
-port-internal_dev.c
->>> index 125d310871e93..77a16d5ebd543 100644
->>> --- a/net/openvswitch/vport-internal_dev.c
->>> +++ b/net/openvswitch/vport-internal_dev.c
->>> @@ -117,6 +117,8 @@ static void do_setup(struct net_device *netdev)
->>>  	netdev->features |=3D NETIF_F_HW_VLAN_CTAG_TX | NETIF_F_HW_VLAN_STA=
-G_TX;
->>>  	netdev->hw_features =3D netdev->features;
->>>
->>> +	netif_set_tso_max_size(netdev, GSO_MAX_SIZE);
->>> +
->>>  	eth_hw_addr_random(netdev);
->>>  }
-> Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
+diff --git a/drivers/net/netkit.c b/drivers/net/netkit.c
+index a3931cd821321c3e4888edf86efc414199127bcf..82e608e733d9ee70f71c374570211c73da76ae2c 100644
+--- a/drivers/net/netkit.c
++++ b/drivers/net/netkit.c
+@@ -1209,12 +1209,12 @@ static size_t netkit_get_size(const struct net_device *dev)
+ 
+ static int netkit_fill_info(struct sk_buff *skb, const struct net_device *dev)
+ {
+-	struct netkit *nk = netkit_priv(dev);
+-	struct net_device *peer = rtnl_dereference(nk->peer);
++	const struct netkit *nk = netkit_priv(dev);
++	const struct net_device *peer;
+ 
+ 	if (nla_put_u8(skb, IFLA_NETKIT_PRIMARY, nk->primary))
+ 		return -EMSGSIZE;
+-	if (nla_put_u32(skb, IFLA_NETKIT_POLICY, nk->policy))
++	if (nla_put_u32(skb, IFLA_NETKIT_POLICY, READ_ONCE(nk->policy)))
+ 		return -EMSGSIZE;
+ 	if (nla_put_u32(skb, IFLA_NETKIT_MODE, nk->mode))
+ 		return -EMSGSIZE;
+@@ -1228,13 +1228,18 @@ static int netkit_fill_info(struct sk_buff *skb, const struct net_device *dev)
+ 	if (nla_put_u32(skb, IFLA_NETKIT_PAIRING, nk->pair))
+ 		return -EMSGSIZE;
+ 
++	rcu_read_lock();
++	peer = rcu_dereference(nk->peer);
+ 	if (peer) {
+ 		nk = netkit_priv(peer);
+-		if (nla_put_u32(skb, IFLA_NETKIT_PEER_POLICY, nk->policy))
+-			return -EMSGSIZE;
+-		if (nla_put_u32(skb, IFLA_NETKIT_PEER_SCRUB, nk->scrub))
++		if (nla_put_u32(skb, IFLA_NETKIT_PEER_POLICY,
++				READ_ONCE(nk->policy)) ||
++		    nla_put_u32(skb, IFLA_NETKIT_PEER_SCRUB, nk->scrub)) {
++			rcu_read_unlock();
+ 			return -EMSGSIZE;
++		}
+ 	}
++	rcu_read_unlock();
+ 
+ 	return 0;
+ }
+-- 
+2.55.0.1032.g73a4cd73de-goog
 
