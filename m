@@ -1,110 +1,181 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f11.google.com (mail-wm2-f11.google.com [74.125.225.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4254AC155;
-	Wed, 16 Sep 2026 09:48:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F774A92F1
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 09:50:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789552126; cv=none; b=qDNLIqr6WMDyovYn+rYUsR499D3i64SZVJo5P6YkXw+pIiA8f3AmrWiNLiXgza1qkL+fjMH+JmRDn0wYyxQjGtlHzK7sha/sTPMG9JBogwFLrBiOvX37khmLrls7bILp7dsKdZwwfC/mYs096Maces11MthUQ3QWFg/hekg0JeE=
+	t=1789552210; cv=none; b=NpGdeIXrJoObRpaRQz3zGuU6bSUP+A4IVygDPzqnxfb8NjRHanaeLrUVcC2ygTe9VjuruEM76aOBL1n7dyHj8jcyiQl8JK3EDxdb3/mCYy18dBJ1SVrfs/Xs6Iv3KJ5vXNAJ46OP8BB4akrxYgZ6w25sSX1IEwGndOjhs6UuFcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789552126; c=relaxed/simple;
-	bh=DNHnn50GsIUIzWdFRjg15OCsLK/KeuBXWd77ZzcOKME=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eLTGCywr9JcSKqFw/AH3sGcEhJ6PTkqi8gJoRTgnzwyDceP/6FdK2GoFyjSZJuk7qzaMy5nqficLTwwVYr36E1Fr/4oOkYpMdI8wEM8bOM2PEWvgVwm9mOpFzc5xwgttCIlRXlLdtwpywFdBMvu2rRR9k7bYOKxCDpzIinD88w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LXblpg6k; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LXblpg6k"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789552106; x=1821088106;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=DNHnn50GsIUIzWdFRjg15OCsLK/KeuBXWd77ZzcOKME=;
-  b=LXblpg6kNwUgQOFweKxvyuVB4zXIkHInKLRb5jKpiZf8GMtVkw2WjRPy
-   wde7Sc4iVYVaVkbYV+QfEPX6FrPla/MOar4zm2PFy0GkjN6XxJbkxcoZF
-   Rw+CJpprEd+kwy0068YiN+DbjS7RS6bTipyBwAgc/zUR2bAdPri3R0p0s
-   XBWXEalSw871V8FCRZaTTBfi1fYVoWjIMT5ATrkj+fAm/e+bEuJu9zErD
-   qWZQeXGG8CLvCT9kZwCMd+r0dtKtr7T3McBX7hcsOUn/nAdiimzxoFcMC
-   SnMqW/qIUryVTB/7lixiuYwN3SdSyeJ3mR65ArwMhPg0/vzlGu35Pa+HZ
-   g==;
-X-CSE-ConnectionGUID: m0y6BYLHRyG0tq4J3fsoMg==
-X-CSE-MsgGUID: 0BaAcJcaQme7CFrE1w/LjA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="90136455"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="90136455"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2026 02:48:22 -0700
-X-CSE-ConnectionGUID: IlpqL7MrQl+Ox2jDvxO/ow==
-X-CSE-MsgGUID: 5FoteMpKSTy0yhwRnoZcZw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="269013733"
-Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.244.145])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2026 02:48:19 -0700
-Date: Wed, 16 Sep 2026 12:48:16 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Aamir Ahmed <elb12345@hotmail.co.uk>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Lucas Stach <dev@lynxeye.de>, Peter Korsgaard <peter@korsgaard.com>,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3] net: usb: asix: reject a truncated Data header in
- rx_fixup
-Message-ID: <aqpl4EPCIvXDLn8j@ashevche-desk.local>
-References: <AS8P251MB0001D5442318B9E58797D230C8BA2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
- <aqpKPXiVESngnVhp@ashevche-desk.local>
- <AS8P251MB000156CD4ABF9B3E03324492C8B92@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
+	s=arc-20240116; t=1789552210; c=relaxed/simple;
+	bh=wF2yTrqTzxU/LQoN8oIcGXye1s38p/VSNlZRvOUln+8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nSmdNgT0GwUO4iscKSK/hf4t3WD7hBLNyz5sO1tky0Z7Z/9PeinCYVVfyUoi2Nfud6Pj5RBz3hVFnd+7oATZegzy5meHDTQAgrbyaS9U6NoA1f9FRrWBoMu/ee+TSVG/T1UP1infdIDKmxlhMya02zZNEfOlk7ulY6VJqntBf7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm2-f11.google.com with SMTP id 5b1f17b1804b1-49e78a58e17so11590685e9.0
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 02:50:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789552200; x=1790157000;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=QppppjvOhjpWoz6HH9Z7BHWIM6lRKbDqJqUaB9rOjSw=;
+        b=ijAOmP8yn+LqYvv8JFgcKS6ihAACjOPe8fJwqhWQsZAPWSwXvuqUv6g5c5sA+eduOL
+         WvmVj8KSOPlZOGOZJnLW7vdEbXnuRprclY63Mhx5kz3PLWjTVYb1b95anL0X7Y2uNbNg
+         HK964F2yRq6/KuZSujxigK+UkaORiMQdGJ6sIUi01SMCr+2iO721oD193A85cljUNlA1
+         d+EHsCvvqiiGWHbT7IE1TImFbke00Ym3pMBmGjuEUPRcxUORs3GqZdjomXZKbjy48qAp
+         Z/2QZHy912ZMj30cIcXajm/T8Bx/s+0opXzI63Oq3a1jA+nyhEXn/H/fnTt9i03OKR4b
+         m+ig==
+X-Gm-Message-State: AFuF++m3k8ew1t8OrABzH0T2dTsNCcsF6ho8XMgFtq/GHS3F/kdrfzzt
+	xKusD6tWvPAnS44mj0RFOLyTh4VHMGkO6NB9lW8sASCKdAptXnfJhLs2
+X-Gm-Gg: AYBFou07/DVOwUsG/VC3LJIlOlhO6kZ/qv4kOp3+MznILLVb1oxGn7DPdYGO4iCkSIw
+	Cu/b0VbdQPD/61twfR6NSIbVG9knOhDKybsaigvA85ChaQpi3IhfRGh8kz2WutPBbFnd4d30b6M
+	XOmeAKZ4N9CWjf4pskoF78Oi0C6ZNQbxwthHyPnmU/3ZkWBIBnVod0IuNpPyrJJuGa2Dcl4s5BA
+	q6mfmjlsrx+D0jM9D+r3UoczSEXleRdaKeCIYCSVjHBhtx2MWe98bTHoB8K+6SH9T2IAhKs8Kt5
+	VArXMCb54nRvuw2etvhYtrZJFvdEeNFDLvr7DZrbuez2TGa/nIQGCmEOSDjcLaoD/b1gsL+WZQr
+	zZnVGJSfKSDQohDpkqrUZ+SDPQKgN72+LtadzYtwVkqajqj3hKXLqXo52FuCDjvjbHvMsGEzYVc
+	IdCPUSC3ddjOZpeyNW2cj6dZLwBmVjdkpiq4Qc0yW1VbAEgtcnUlAVujIpBDrG61gnNxEZgzG9+
+	bMtHNtDMCWPkniP+n0mxK78aoMwEFBnRljsI0w=
+X-Received: by 2002:a05:600c:c8f:b0:49c:fc6c:be15 with SMTP id 5b1f17b1804b1-49eb733c62dmr20974515e9.27.1789552199588;
+        Wed, 16 Sep 2026 02:49:59 -0700 (PDT)
+Received: from [192.168.88.241] (37-48-53-4.nat.epc.tmcz.cz. [37.48.53.4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e83cc400asm66852305e9.0.2026.09.16.02.49.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Sep 2026 02:49:58 -0700 (PDT)
+Message-ID: <d92e90d0-437a-45eb-9803-726bf7c088dc@ovn.org>
+Date: Wed, 16 Sep 2026 11:49:57 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <AS8P251MB000156CD4ABF9B3E03324492C8B92@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2] openvswitch: raise internal port TSO limit
+To: Eelco Chaudron <echaudro@redhat.com>, Wang Zhan <wang.zhan@smartx.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, keyong.sun@smartx.com,
+ Ilya Maximets <i.maximets@ovn.org>, Aaron Conole <aconole@redhat.com>,
+ dev@openvswitch.org
+References: <20260916065844.1380155-1-wang.zhan@smartx.com>
+ <C381651A-DA84-442F-8F75-577946A0E437@redhat.com>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <C381651A-DA84-442F-8F75-577946A0E437@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Sep 16, 2026 at 09:19:13AM +0100, Aamir Ahmed wrote:
-> On Wed, Sep 16, 2026 at 09:50:21AM +0300, Andy Shevchenko wrote:
-
-...
-
-> > I don't know the rules about __func__ in the error messages in net, but above
-> > may be simplified as
-> >
-> >     netdev_err(dev->net, "%s(): Short Data header, offset %d, len %d\n",
-> >                __func__, offset, skb->len);
+On 9/16/26 11:37 AM, Eelco Chaudron wrote:
 > 
-> I've based the error messages on others I found in this function, here
-> are some examples:
 > 
->   netdev_err(dev->net, "asix_rx_fixup() Data Header synchronisation was lost, remaining %d\n", ...);
->   netdev_err(dev->net, "asix_rx_fixup() Bad Header Length 0x%x, offset %d\n", ...);
->   netdev_dbg(dev->net, "asix_rx_fixup() Bad RX Length %d\n", ...);
->   netdev_err(dev->net, "asix_rx_fixup() Bad SKB Length %d, %d\n", ...);
+> On 16 Sep 2026, at 8:58, Wang Zhan wrote:
 > 
-> __func__ here expands to asix_rx_fixup_internal, the internal helper
-> rather than the asix_rx_fixup() the others name.
+>> Set the internal port TSO limit to GSO_MAX_SIZE (512 KB), as for
+>> loopback and veth. This allows the admin/user to set a GSO limit up to
+>> this value, to use BIG TCP for traffic routed through the internal port.
+>>
+>> Only the capability limit changes: the IPv4 and IPv6 GSO and GRO limits
+>> remain at 64 KiB until changed by the administrator.
+>>
+>> Validation used a same-host test with a temporary OVS bridge, a veth pair,
+>> and a network namespace:
+>>
+>>   TCP client -> OVS internal -> OVS bridge -> veth -> TCP server
+>>
+>> The veth endpoints were BIG TCP capable throughout the test, and only the
+>> OVS internal port limits changed between 64 KiB and 524280 bytes. A single
+>> iperf3 3.19 TCP flow, run separately over IPv4 and IPv6 with six
+>> alternating runs per state (`-t 15 -O 5`, fixed CPU affinity and port
+>> tuple), increased throughput by 18.1% for IPv4 and 34.7% for IPv6:
+>>
+>>   protocol  BIG TCP off  BIG TCP on   CV off / on
+>>   TCP/IPv4  65.567 Gbps  77.420 Gbps  1.12% / 0.37%
+>>   TCP/IPv6  55.355 Gbps  74.568 Gbps  1.20% / 0.68%
+>>
+>> Assisted-by: LLM
+> 
+> I think Ilya already mentioned this earlier, but the LLM tag means you need to
+> fill in the LLM model name you used.
 
-Yes, and current state of affairs is confusing. If this is _internal() helper,
-it should either take a name as a parameter, or use __func__, or ideally drop
-it altogether and make error messages to be unique enough that one may easily
-guess where the problem came from.
+It looks like the rules changed recently, see:
+  816d9992d9ed ("coding-assistants: simplify attribution")
 
-But okay, since it's a common style this discussion and possible amendment is
-for another patch.
+So that's just a new acceptable format, which is fine.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> 
+> The rest looks good to me.
+> 
+> //Eelco
+> 
+>> Signed-off-by: Wang Zhan <wang.zhan@smartx.com>
+>> ---
+>>
+>> v2:
+>> - add an empty line before netif_set_tso_max_size()
+>> - rebase net-next/main
+>> - cc all the maintainers
+>> v1: https://lore.kernel.org/20260910131635.780802-1-wang.zhan@smartx.com/
+>>
+>> ---
+>>  net/openvswitch/vport-internal_dev.c | 2 ++
+>>  1 file changed, 2 insertions(+)
+>>
+>> diff --git a/net/openvswitch/vport-internal_dev.c b/net/openvswitch/vport-internal_dev.c
+>> index 125d310871e93..77a16d5ebd543 100644
+>> --- a/net/openvswitch/vport-internal_dev.c
+>> +++ b/net/openvswitch/vport-internal_dev.c
+>> @@ -117,6 +117,8 @@ static void do_setup(struct net_device *netdev)
+>>  	netdev->features |= NETIF_F_HW_VLAN_CTAG_TX | NETIF_F_HW_VLAN_STAG_TX;
+>>  	netdev->hw_features = netdev->features;
+>>
+>> +	netif_set_tso_max_size(netdev, GSO_MAX_SIZE);
+>> +
+>>  	eth_hw_addr_random(netdev);
+>>  }
+Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
