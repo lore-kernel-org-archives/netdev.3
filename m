@@ -1,139 +1,261 @@
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97AD4EE85A
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 11:19:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.200
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789557621; cv=none; b=udWdqlsTZo7wO4lnJXa0ILen9GYKX69tqfVYCTTnQzBb0CRLOY0BfIXFaBZFdNPmzUreGSRLAjY73/b37hWT4rDThB6HAs9Fy53Nv/bKX8WrUSUueNcev6IMKGLg6nFJnl7lMOIKsHyx3hnx47Xe5rb6SrnmrnYI1GNw4eECyG0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789557621; c=relaxed/simple;
-	bh=pD1Qjfy3YK5HT8O7+5FJVkc5BQauYgWN7lb05n6HNyA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=QOz0WkJeDmNFsXnQAUnmaGQcJ3GjPlrkIules3HHzMXVo8gn6TG6Qgui4BTOenpOuGJYKRzrs3/HzGD4Aq7xMF+MbCmhxSuaKuv8/48CKrv0wgLJUgnlHhS+wSAVA1enU7q/U9Kc+boVW8JD5v0vEeyKJgGY3FQse8fIDV1YZUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XXrFjHpp; arc=none smtp.client-ip=209.85.160.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB2E4EC674
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 11:22:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789557754; cv=pass; b=DL1pDVb8xTFAnzTxx0hZC0FfRJNDnGJj7JSBBzw2HXgTok5Nde3kTRs83PM30bUb42T+8ZiJzIbh/FkKxCh/62u5/YwR9MAkoXt7PAc2sgP91wNk4vmkBjT1vCP1ZLQ6zYwbkMANbbJ+7KO3vVoEV+fgDXGcpPwMK1Kcpx2PrgY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789557754; c=relaxed/simple;
+	bh=i9fMgn3pFO+cKaukGI7m6lX93VZQhWLU7HOLXULOL9g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=R73E6NVQ1TIlNCsh6uupBjJlXiMHVtILNCurr1YV3rDu6nT4e+sORomYu9Lmdd9+lTvmWMgS5M3ZBGuiOWg1Vn5zkfDIWiQg+2xr1tR5HfvjTbF6yEDpFylyU3eAaBHt5oTWye9uJIbM0ior9iuuA/Pd1iN816uUjsivgUmJZgk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=Qw0i5jIk; arc=pass smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XXrFjHpp"
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-51bf321d786so51395581cf.1
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 04:19:58 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="Qw0i5jIk"
+Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469a34907so817818b3a.1
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 04:22:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789557743; cv=none;
+        d=google.com; s=arc-20260327;
+        b=pHdYTCKIM6i5XR7BEovS+O614BvKbKgr12rV94SxGZmhJJW+/zhQ9ZQhQLktTmBDsL
+         RHSTpffNxBX24+Z+UpdAHc6Ni3LuHhWe94whaNcSZ66OjWObyEmRmGAF3EfxG/WOm6u+
+         FuDgPga6wIdlo4kgUEqDRZJL1z6UNHOYaVEhvIC2BgQKPpSZvUIajecka95M69+H6Imc
+         LA/oEpRovN32HQlhD0r0rvzjSSjOjFXbLKJr6mRCMcAmZk7KVM9L2miTQbb1gT/Xhfgy
+         yQEvGLjS/tP01s+3YfsIezq2/JwMDcGtQqFK1uRy91O0NvNegDhKzsl8/rhSpQflW28/
+         e3OA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8MqgKubQQeDu3ZBGOak5FkgZsiRbEzAZ82iAO/MP4ZQ=;
+        fh=Ck+Ss38EkPx63nO47Ke8PbOPXUyk24XZeNmR5bR3qa0=;
+        b=eaQIHoSIHxPZR+UHK0CFNSzmFLwTWlFNVwJy0e6sZkihBSn0QnYAN+vvvJei9lWmFG
+         qTlQGGoUsoZrxbBRhdJ2LPqYO+ZDn37SP7zcEFWTy/4owwt/vc45kwdy3ek5RKlOp8++
+         gU0n4/M0TZu+Ykkj3VNa3pTso1fA0gIfmxDVAJRl+isDZAxq9//axvsae1SsDsxRbDJs
+         XJWNEsXWqWUZzPemzXEnjjRQovL4ILmMWnkkJkPbBKuallkt/gtXEy4EWdEF1iaIDQxP
+         spCbXKJMTuh7Wj0yV7D4qfHMlD46ZoWuBFtTkz/LsRuE6fycvYG29BmjE+FQ1jBkaQ6q
+         Ytow==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789557595; x=1790162395; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ht2l1sqPcHDVC/hiYH33iQJTJjceFolRyzCr9EciCtI=;
-        b=XXrFjHppqqJpdTxTlb5C5Hd1wAeTSFs4yv7Vd3gB5QB41icOEfX4TMCy8Nf1zKjrD1
-         RGJpOFvblXnaD0nrktlLO6JrmvkuarOBRYu2ZJEDUMh/pyakipHYINfLL74x0B2yC+Xt
-         9GMZCfOGBli6QnMnCGgXt98f17T5JHzxpkIOVV5hv7E9NVyklQ7YffKx4B5+n0RelWfS
-         fG/qNYPtLGF8jyVFp376I8+1VILXFoJWhMM4HK7R09ZQCpP5w774VWTNgIRwH6WB4UrS
-         diPCEfutiz8x1YgtZlg0EjId8uW1C62STwGjJ3TcoBu8EF7PkB13jahukRrl2N/lr6f2
-         DOFQ==
+        d=mojatatu.com; s=google; t=1789557743; x=1790162543; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8MqgKubQQeDu3ZBGOak5FkgZsiRbEzAZ82iAO/MP4ZQ=;
+        b=Qw0i5jIkXf+O9ZYjhNtVglGc3z+uk+rL5IeW02uJW54b/9JadCvpkL9fZbbzOf6lcP
+         7AsBOkWX2rGz6/GF9/1MJAgJHlaEJIM3XxA4ako1fNVBwmZBc0kFpsWg8ifql3Me7Wj6
+         d+QcsOVpp1i3/PH2e9++YOx8R5JFRJXHHgzmM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789557595; x=1790162395;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
+        d=1e100.net; s=20260707; t=1789557743; x=1790162543;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ht2l1sqPcHDVC/hiYH33iQJTJjceFolRyzCr9EciCtI=;
-        b=x1hljFUsEVZv0gx5VDeTjaNCJAZ8LSiMjlcEyOlNcFFC7ZNTZXc7MraglfDR7Ft0JE
-         D3mWx/j0ztbgVa2iQuAZSpIgYJ9ZTmgUkdbmpm46lbefZd/Z7+4XxixnCwJVeMlv8zUT
-         H3g7GdMQd6/6gImcUDj40g4Z04PDCL+EZBTHaLBzagpvluJLQDFcDXowfoDtvOe4qORv
-         PxG7f3OoDYrvP8IHZugjXhfhjoFxZNFeTe2cL5EsY5j/1aipDG7gpIwOvcTwxHWFhEhJ
-         v5psqFRIO1xr0NN6A3x3TG8BX8KkIgwHJdwPB9bP1mpZc8I01g8k3iB6FBcpcSFp5oG7
-         t5oA==
-X-Forwarded-Encrypted: i=1; AKwUvBw9ll3Pthfpyywe2NaeZqn7JkN2MzAzNDcNpIZZ2WmQs2QF42GIWqh1j6vKjRB3KJYer0HwBwM=@vger.kernel.org
-X-Gm-Message-State: AFuF++n+XgV6lgh4qE7/hu9RlTSeyorjrutDD5rfGmcSK3w+ohyR+NaH
-	4EO2pcKII8wi2jl8lcTUB7vp3OQ98mi1+mTQeaR9yZWeNba6hki2fvnaASPFLFmrK6tGh3LVTuG
-	TMAOa2HfFew6P6g==
-X-Received: from qtbnu11.prod.google.com ([2002:a05:622a:7b8b:b0:530:e97d:1ea])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:ac8:6f11:0:b0:531:cbe:d53c with SMTP id d75a77b69052e-5327eeb8437mr34205831cf.35.1789557595004;
- Wed, 16 Sep 2026 04:19:55 -0700 (PDT)
-Date: Wed, 16 Sep 2026 11:19:53 +0000
+        bh=8MqgKubQQeDu3ZBGOak5FkgZsiRbEzAZ82iAO/MP4ZQ=;
+        b=TNETBYv3fruMDxih0FvdIqQb5xt/rFYy0tXlvzfGjeolfzhw+K/X3O/inPQaK0DRI7
+         0uVmTkpBS83e7UfXP1Sv4tdpJXic6JVPDmaY+Et6Y2Odlec5H4U9nyJ4BqcEsQmqFc2+
+         3wF//ppjqSTEZpRfqhWz0AWqj+74gpl96MnY5YRnusqtDtzzWx+4IESbwNFYMYJ+8hVE
+         vGJI92p4PXUhhMsnIdC0ko/UkwUW6jAECl3xwqTRUvX0cE8roLVO0wodJsKeCSDLPBIp
+         DouAPOBzaQYeZtrMFfW2JUhvGZsfs/jK6WWvsaU95X8wcEwj2Y+4Pvvkcoyliz4YBZmG
+         gBmg==
+X-Gm-Message-State: AFuF++nb7IfU9G/xQF6DnMxD7o7vt3/+o6gceXpoMqe7PqRFa0R/D0ne
+	qJiXskar0gW1aad04AiAmdBtaHXLt2RAZussFoSNnsOEZDo62OoLHujDP6ur+QRM9zTBlhcUAQ5
+	83m3ZQHUY0H4Tibf5V+OmwvWtm9NCon0A/A9lH2zO
+X-Gm-Gg: AYBFou3YR7EeXLx394SQ9XOvvCWmDCuS2KiePZkZxbyykzaZ6SgC3g/qkf9mg0pBTkJ
+	+5FOZ+bmOSQl3ZMWnVy6kl8iiZf/wsmEYUZDPC0MrBBD/iYTZryyBn+r8qu9L7VJPU/qxwYJmdR
+	t47G/offUONNvvOZ2kWpNCC41SVyu2OnCpG1mRb/D9JHxsjz117wabXZn9U7CCKOhHteurhk7li
+	pqDtTDlGayyDKmRTBar+K/qbgQfBCGzDCgfkHVB3xqkBIec9FxjTa6DSw9YbDgbtnhYAcyGrxGw
+	RMu+u0ceg/RXi2ParyGlp4ohkugpm3mMWNiCVbvq9T5qNaBqkzak4hLHt489nOQbmh6Gzzc/gmG
+	Ue5R+nzb7f6e19wvQlzgE6+qHRoXBL2YcPMy932CrCs4h
+X-Received: by 2002:a05:6a00:1c8b:b0:857:7337:5db8 with SMTP id
+ d2e1a72fcca58-8723d33bf51mr4172567b3a.22.1789557742377; Wed, 16 Sep 2026
+ 04:22:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.1032.g73a4cd73de-goog
-Message-ID: <20260916111953.1611574-1-edumazet@google.com>
-Subject: [PATCH net-next] netkit: no longer rely on RTNL in netkit_fill_info()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Nikolay Aleksandrov <razor@blackwall.org>
+MIME-Version: 1.0
+References: <QDISC-CTUU.v2.20260913192614@mojatatu.com> <178946024860.22033.17011861551160960190@kernel.org>
+In-Reply-To: <178946024860.22033.17011861551160960190@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Wed, 16 Sep 2026 07:22:11 -0400
+X-Gm-Features: AcwNN1XsxXLM6J0LTBSUU9fkmcmhXf28zTmVQ5ISrk3I_xAfHBvMWCA8DSV2MtE
+Message-ID: <CAM0EoMkGBit3LTYWui-LwXpMHo3Yijx8pbsOXVgz6jyqWyAOAg@mail.gmail.com>
+Subject: Re: [PATCH net v2 1/2] net/sched: sch_hfsc: bound the classify
+ inner-filter walk with a drift budget
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	victor@mojatatu.com, sashiko-bot@kernel.org, hybris@mojatatu.ai
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-netkit_fill_info() used rtnl_dereference() to fetch nk->peer,
-and thus required RTNL.
+On Tue, Sep 15, 2026 at 4:17=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
+te:
+>
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider:
+>
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 0
+>
+> - [Medium] net/sched/sch_hfsc.c:hfsc_classify(): the new `drift` budget
+>   is a *cumulative* per-packet allowance of 8 non-descending hops, not=E2=
+=80=A6
+>
 
-nk->peer is already an RCU protected pointer, updated with
-rcu_assign_pointer() and read from the fast path with
-rcu_dereference(). Simply use rcu_dereference() under
-rcu_read_lock() instead.
 
-While at it, use READ_ONCE() when reading nk->policy, because
-netkit_change_link() can change it at any time (it already uses
-WRITE_ONCE()).
+I am going to send a v3 - i think the tdc test needs some improvement.
 
-Other fields (primary, mode, pair, scrub) are only set from
-netkit_new_link(), before the device is visible to dumps.
+pw-bot:cr
 
-Also add missing const qualifiers.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Nikolay Aleksandrov <razor@blackwall.org>
----
- drivers/net/netkit.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/netkit.c b/drivers/net/netkit.c
-index a3931cd821321c3e4888edf86efc414199127bcf..82e608e733d9ee70f71c374570211c73da76ae2c 100644
---- a/drivers/net/netkit.c
-+++ b/drivers/net/netkit.c
-@@ -1209,12 +1209,12 @@ static size_t netkit_get_size(const struct net_device *dev)
- 
- static int netkit_fill_info(struct sk_buff *skb, const struct net_device *dev)
- {
--	struct netkit *nk = netkit_priv(dev);
--	struct net_device *peer = rtnl_dereference(nk->peer);
-+	const struct netkit *nk = netkit_priv(dev);
-+	const struct net_device *peer;
- 
- 	if (nla_put_u8(skb, IFLA_NETKIT_PRIMARY, nk->primary))
- 		return -EMSGSIZE;
--	if (nla_put_u32(skb, IFLA_NETKIT_POLICY, nk->policy))
-+	if (nla_put_u32(skb, IFLA_NETKIT_POLICY, READ_ONCE(nk->policy)))
- 		return -EMSGSIZE;
- 	if (nla_put_u32(skb, IFLA_NETKIT_MODE, nk->mode))
- 		return -EMSGSIZE;
-@@ -1228,13 +1228,18 @@ static int netkit_fill_info(struct sk_buff *skb, const struct net_device *dev)
- 	if (nla_put_u32(skb, IFLA_NETKIT_PAIRING, nk->pair))
- 		return -EMSGSIZE;
- 
-+	rcu_read_lock();
-+	peer = rcu_dereference(nk->peer);
- 	if (peer) {
- 		nk = netkit_priv(peer);
--		if (nla_put_u32(skb, IFLA_NETKIT_PEER_POLICY, nk->policy))
--			return -EMSGSIZE;
--		if (nla_put_u32(skb, IFLA_NETKIT_PEER_SCRUB, nk->scrub))
-+		if (nla_put_u32(skb, IFLA_NETKIT_PEER_POLICY,
-+				READ_ONCE(nk->policy)) ||
-+		    nla_put_u32(skb, IFLA_NETKIT_PEER_SCRUB, nk->scrub)) {
-+			rcu_read_unlock();
- 			return -EMSGSIZE;
-+		}
- 	}
-+	rcu_read_unlock();
- 
- 	return 0;
- }
--- 
-2.55.0.1032.g73a4cd73de-goog
-
+cheers,
+jamal
+> --
+>
+> net/sched: sch_hfsc: bound the classify inner-filter walk with a drift bu=
+dget
+>
+> hfsc_classify() can loop forever between two interior classes when two
+> flowid binds that were each legal at bind time become mutually pointing
+> after hfsc_adjust_levels() raises a level. The patch adds a budget of
+> non-descending hops to the classify walk and drops the packet with a
+> rate-limited warning when the budget runs out.
+>
+> Link: https://sashiko.dev/#/patchset/QDISC-CTUU.v1.20260908094501@mojatat=
+u.com
+>
+> > diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
+> > index e87f5021a1995..b073efaf2bf5f 100644
+> > --- a/net/sched/sch_hfsc.c
+> > +++ b/net/sched/sch_hfsc.c
+> > @@ -386,6 +386,12 @@ cftree_update(struct hfsc_class *cl)
+> >  #define      SM_MASK         ((1ULL << SM_SHIFT) - 1)
+> >  #define      ISM_MASK        ((1ULL << ISM_SHIFT) - 1)
+> >
+> > +/*
+> > + * bound on consecutive non-descending (lateral / upward) hops in a
+> > + * classify walk, mirroring htb's TC_HTB_MAXDEPTH headroom
+> > + */
+> > +#define      HFSC_CLASSIFY_MAX_DRIFT 8
+> > +
+> >  static inline u64
+> >  seg_x2y(u64 x, u64 sm)
+> >  {
+>
+> [ ... ]
+>
+> > @@ -1142,6 +1149,7 @@ hfsc_classify(struct sk_buff *skb, struct Qdisc *=
+sch, int *qerr)
+> >
+> >       *qerr =3D NET_XMIT_SUCCESS | __NET_XMIT_BYPASS;
+> >       head =3D &q->root;
+> > +     drift =3D HFSC_CLASSIFY_MAX_DRIFT;
+> >       tcf =3D rcu_dereference_bh(q->root.filter_list);
+> >       while (tcf && (result =3D tcf_classify_qdisc(skb, tcf, &res, fals=
+e)) >=3D 0) {
+> >  #ifdef CONFIG_NET_CLS_ACT
+> > @@ -1167,6 +1175,16 @@ hfsc_classify(struct sk_buff *skb, struct Qdisc =
+*sch, int *qerr)
+> >               if (cl->level =3D=3D 0)
+> >                       return cl; /* hit leaf class */
+> >
+> > +             /*
+> > +              * flowid binds skip the level check above (res.class is =
+set
+> > +              * at bind time and levels drift after), so a walk can fo=
+llow
+> > +              * lateral hops without descending; bound them here.
+> > +              */
+> > +             if (cl->level >=3D head->level && drift-- =3D=3D 0) {
+> > +                     pr_warn_ratelimited("hfsc: classify loop detected=
+, dropping packet\n");
+> > +                     return NULL;
+> > +             }
+>
+> [Severity: Medium]
+> Can this drop packets for an acyclic configuration?  drift is seeded once
+> before the while loop in hfsc_classify() and the only mutation is the
+> post-decrement above, so a descending hop never returns any budget.  That
+> makes the budget cumulative over the whole walk rather than the bound on
+> "consecutive non-descending (lateral / upward) hops" the macro comment
+> describes, and rather than what the changelog says:
+>
+>   "Bound the traversal, mirroring HTB: count only the non-descending hops=
+"
+>   "a terminating lateral chain (the level-drift false-positive family)
+>    still classifies normally"
+>
+> A terminating lateral chain longer than eight hops, or several shorter
+> lateral segments separated by legal descents, would exhaust the budget.
+> Such a chain is constructible with plain tc commands because bindings are
+> only checked at bind time:
+>
+> net/sched/sch_hfsc.c:hfsc_bind_tcf() {
+>         if (cl !=3D NULL) {
+>                 if (p !=3D NULL && p->level <=3D cl->level)
+>                         return 0;
+>
+> and levels are raised afterwards with no revalidation:
+>
+> net/sched/sch_hfsc.c:hfsc_adjust_levels() {
+>         do {
+>                 level =3D 0;
+>                 list_for_each_entry(p, &cl->children, siblings) {
+>                         if (p->level >=3D level)
+>                                 level =3D p->level + 1;
+>                 }
+>                 WRITE_ONCE(cl->level, level);
+>         } while ((cl =3D cl->cl_parent) !=3D NULL);
+>
+> So for sibling classes A1..A10, each with one leaf child, binding a filte=
+r
+> on A_i with flowid A_{i+1} while A_{i+1} is still a leaf passes
+> hfsc_bind_tcf(), and adding a child to A_{i+1} afterwards turns that hop
+> lateral.  Would resetting drift back to HFSC_CLASSIFY_MAX_DRIFT on every
+> descending hop match the documented intent?
+>
+> Should this path use break instead of return NULL?  The two existing
+> failure exits in the same loop break out to the default class:
+>
+>                 if (!cl) {
+>                         cl =3D hfsc_find_class(res.classid, sch);
+>                         if (!cl)
+>                                 break; /* filter selected invalid classid=
+ */
+>                         if (cl->level >=3D head->level)
+>                                 break; /* filter may only point downwards=
+ */
+>                 }
+>
+>         /* classification failed, try default class */
+>         cl =3D hfsc_find_class(TC_H_MAKE(TC_H_MAJ(sch->handle),
+>                                        READ_ONCE(q->defcls)), sch);
+>
+> With return NULL, a configured defcls leaf is skipped and hfsc_enqueue()
+> does qdisc_qstats_drop(sch) plus __qdisc_drop(skb, to_free).
+>
+> On the macro comment itself, is "mirroring htb's TC_HTB_MAXDEPTH headroom=
+"
+> accurate?  htb_classify() increments hops on every inner hop and HTB
+> enforces a maximum depth of TC_HTB_MAXDEPTH structurally, so its bound
+> cannot reject a legal walk.  HFSC caps neither class level nor hierarchy
+> depth, so the value 8 has no equivalent backing here.  Could the comment
+> and the changelog sentence "anything beyond a small budget is a cycle" be
+> reworded to describe the heuristic that is actually implemented?
+>
+> Also, the warning text asserts "classify loop detected" on a walk where n=
+o
+> class has been revisited.  Would a message that reports the budget being
+> exhausted be more accurate?
+>
+> >               /* apply inner filter chain */
+> >               tcf =3D rcu_dereference_bh(cl->filter_list);
+> >               head =3D cl;
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/QDISC-CTUU.v2.20260913192614%40mojatatu.com
