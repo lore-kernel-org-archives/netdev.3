@@ -1,312 +1,165 @@
-Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA6B4B1CE3
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 19:04:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4142D4E50C2
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 19:15:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789585483; cv=none; b=BCroLTAhJdWt5H3EsDyRZSxGPDEDVKWZts7Gh1CEBy30XAMOvqOtCusKynHzvR0Q8qfM/IxyvtFuu0Q+rKUt08H26vM+b06XgYILL4dYiIm+yWUp/ikUBZBaxeTHkyMrzZWsHoJRByxW6Ka8sTBZK7npvfjRTksFehh/4QjutBM=
+	t=1789586126; cv=none; b=f2Uj17em4Mm8+Sflm3hJRy9cMHZfxWkf31XWWvzFwSY8Fg5K/9+AbrIQpkh16YEUXBqYtDLbCKRCYAb0tXKA1cgNjE1J3mNgyAedQIZENOy6+yVMpXMZHi8PMUnkvYCe/ti4mE/+vjUPB4jWUgSNikZmHpQrZw+gNa7kzTYZYUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789585483; c=relaxed/simple;
-	bh=8XevL9Tzt/3h9CSJ4yzuKMm9hdwh8VPdv0da3OYlgfE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MWcY++nivzOj2xWBtHpzuh0n+S5LK3QMhNa7/Z0nJQSr/upcWNL3I8OV2wp56DlW3HhrjHZdp3OGH4kQQvxskm0nQJBwrp79RinBGmTTSyaKHwHSej5I0CfZJKIK97wMZBg1cFBiFf33sTH+GpcQVrBSAlFLjAzJifZezmWaVRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SiWWfA9/; arc=none smtp.client-ip=74.125.227.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789586126; c=relaxed/simple;
+	bh=59wiTuaAyp8zU3H7+BKsWVWzTT3nAgGLw8Qn58d8Ouo=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=EJy3MntbGJvsN6F5CbrwWFgKEKj4Obut63z3v25RzFnfR2sXveaX+564NmJEX5T356sjwJPKblSlv/PJbRxZ4S1SS3TncxOFWnk6Vbf5QQ4KjVVYeCVOudUILXcqCSQHgZTdtsqURMZnsBMbDvLweI4RZwpurqwbXZG3Y8wx91g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KOrNPS0v; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SiWWfA9/"
-Received: by mail-pj2-f1.google.com with SMTP id 98e67ed59e1d1-39e00a5b8e7so15328a91.0
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 12:04:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789585457; x=1790190257; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=j8sYuN6kNbWf7BIm+8Oi4uf1pioDuhuvzECpyItTQuw=;
-        b=SiWWfA9/as4kMvBOScEQY1m4jM1DaE+zZEs0laLFoQO5WHMonGkkg2lR/ebZ1n4TV3
-         NtVxFvqGJyNqc+9kMB+wCJWgQqxpQOxat4bY7SaJvtsh/62PrileQzWk5PKe8tSdcgtl
-         xmfegX6vhbevUL/McKG+h9jgwM6bn87OFcq1FC6eC2UkKbGgZrncvOz97pGHVIxQsUOE
-         7CzhMvANwzYGCcqA9QSDoch22fcDism8SvTPfwvaCgf3NvZzjVQnnT1ZWtyjeXxUlSTx
-         YpgurhEsdGWSdkR0KsTjMRztmQH+fMwrKH/fgA/Gl5h3+MudT8W4iVjyBHTZgA6wdp3z
-         vCxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789585457; x=1790190257;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=j8sYuN6kNbWf7BIm+8Oi4uf1pioDuhuvzECpyItTQuw=;
-        b=zbequDsEZvyFfRxKtCeuBYSlWx4lyaMghLJTQAol4y6x2OylBHez2lv/LxCRfdt/ef
-         WQmS5wlNigB8vIo2hJd0COIr8PsSW4338Z5XxY0il52ok26m8Jml64eY3m5xatgaVDnG
-         t5A4phOeKqwBSW/B69uKcK4F4K4GBKin6h2fx2DRRT74t3e68Z3UnXoFytYT0rfg/2pL
-         XDwxFEnb387egW6Wy4btzJys2gAt++6OxEvUeRXkmzLTMgKJgY0WoMVtGHw+ONmnk6MB
-         0dIUwQGTmf/1BaGx4jPDTtrbyLCVGsO55PS+zXPVQOvF4LOVbbMA7Q7QXg+Y6kiazGc7
-         yWnA==
-X-Gm-Message-State: AFuF++lyEFq+s08WJ78mu/QnynvRO6gzcsLTsVMOp7CJiYbNHlmsViMp
-	XmccRao/cW2K9yohQAfy6JKwjZB7PbIeVxQkT6CDIxQIJYYCL+JA58AO9hTs4rft
-X-Gm-Gg: AYBFou1oqcAYXl3RcHSa2M/fHyysWu5s4MQJS8VZaosqs1A7eMF87/2Ru0lZrfP1GSF
-	7/bzSiNY4caEBYKtng7CaFjkhrHRRAtvcJ47d4sxy9f8MiOnci6k0xclPCXGoWXQbwL5ddqAu19
-	kKdCkCwGlJ92yy+VeeWfcihO/jPH68TqQb1AW0BUQCBvFT35hxgYz/5ycYM/ldjZrZWAl2txbL9
-	jVI7bn7oeHy9t9q+4xOANKaqP59VQKQ61ycPr0b1BdtFbL6uEp52n5lVzEIKLITcVYk5MP//IXZ
-	SIuOlm4xcGrwP2N+I8S50eZa20tyB5k+AgEmWDKPAUhaqJ0wlZFf9x8KBDMx+LDsQaRrbgxqDCc
-	BG3Ak78Mnnf29mJsZNibdga/7eglECf2Rfyky7CqW1ow9+tXJCZiGvzsSI1XJDA9ibfagexTvL7
-	4Tzaufa2j7B9615TpsrDAYGeInUcWWHw2bxyKYd/0iQr5qxBpdxEGIJTdX44I7FN6T
-X-Received: by 2002:a17:90a:51c1:b0:39e:2e7c:d43c with SMTP id 98e67ed59e1d1-39e2e7ce429mr2888154a91.7.1789585456849;
-        Wed, 16 Sep 2026 12:04:16 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:49::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e361b3a39sm731809a91.11.2026.09.16.12.04.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 12:04:16 -0700 (PDT)
-From: Stanislav Fomichev <sdf.kernel@gmail.com>
-X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Subject: [RFC net-next 5/6] selftests: drv-net: add a kperf runner
-Date: Wed, 16 Sep 2026 12:04:08 -0700
-Message-ID: <20260916190409.1222272-6-sdf@fomichev.me>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260916190409.1222272-1-sdf@fomichev.me>
-References: <20260916190409.1222272-1-sdf@fomichev.me>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KOrNPS0v"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 521B11F00893;
+	Wed, 16 Sep 2026 19:15:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789586120;
+	bh=9V8AuP0exLhzxb1aQU3ZULhcqYMtF5fci1RwKvCTKXM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=KOrNPS0v6LAcYYFnpRisiyDK9x3f1rjyKz/ICagSkynuqU+z/t8evgncHgJf6gA05
+	 +Jjk2Vr7J1OInAwEUvH/EmNlvjcCnEMP1Gf8XlKqa3mhwnczntxqEEfRCvglkb9BRT
+	 wHbDa5ETY9rhrLkijxBRLKbPeWQgETArOtpv8IAzEbK0Q1yYRIdh/VMpfxENcd81yc
+	 pv8oes3jJF2w1b1STdMK16Gyj1WazJEDWB77mm+GyXIldIajzW0fxkg4qorigUfRrb
+	 B3QOCKxBxjr2l2GKr/24Ew4Ud1X7LktbSn1RbzJp5lt6UpS70cye2zrmUlZ98Q2tc+
+	 Kap/0HlZhlh7A==
+Subject: Re: [PATCH net-next v2 3/9] netlink: specs: devlink: describe
+ DEVLINK_ATTR_NESTED_DEVLINK
+From: netdev-bot+sashiko@kernel.org
+To: kuba@kernel.org
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, jiri@resnulli.us,
+ tariqt@nvidia.com, moshe@nvidia.com, donald.hunter@gmail.com
+Date: Wed, 16 Sep 2026 19:15:19 +0000
+Message-ID: <178958611988.22033.2838182170584631797@kernel.org>
+In-Reply-To: <20260915161341.1053476-4-kuba@kernel.org>
+References: <20260915161341.1053476-4-kuba@kernel.org>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Add a helper to manage kperf servers on both endpoints. Run the client and
-report aggregate throughput and retransmits. Use a unique PID file for
-cleanup and keep the external kperf tools optional.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
----
- .../testing/selftests/drivers/net/README.rst  |   8 +
- .../drivers/net/hw/lib/py/__init__.py         |   5 +-
- .../selftests/drivers/net/lib/py/__init__.py  |   4 +-
- .../selftests/drivers/net/lib/py/kperf.py     | 148 ++++++++++++++++++
- 4 files changed, 162 insertions(+), 3 deletions(-)
- create mode 100644 tools/testing/selftests/drivers/net/lib/py/kperf.py
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-diff --git a/tools/testing/selftests/drivers/net/README.rst b/tools/testing/selftests/drivers/net/README.rst
-index 03373d6cecb0..36a79148c0b5 100644
---- a/tools/testing/selftests/drivers/net/README.rst
-+++ b/tools/testing/selftests/drivers/net/README.rst
-@@ -141,6 +141,14 @@ Arguments used to construct the communication channel.
-   for netns - name of the "remote" namespace
-   for ssh - name/address of the remote host
- 
-+kperf
-+~~~~~
-+
-+Performance tests which use kperf expect ``kperf-client`` in ``PATH`` on the
-+local host and ``kperf-server`` in ``PATH`` on both endpoints. Kperf is an
-+optional dependency; tests which require it are skipped when it is not
-+installed.
-+
- Example
- =======
- 
-diff --git a/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py b/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
-index 857bd016e5e0..5502969bfee4 100644
---- a/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
-+++ b/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
-@@ -34,7 +34,7 @@ KSFT_DIR = (Path(__file__).parent / "../../../../..").resolve()
-     from net.lib.py import ksft_eq, ksft_ge, ksft_in, ksft_is, ksft_lt, \
-         ksft_ne, ksft_not_in, ksft_raises, ksft_true, ksft_gt, ksft_not_none
-     from drivers.net.lib.py import GenerateTraffic, Remote, SystemMonitor, \
--        Iperf3Runner
-+        Iperf3Runner, KperfResult, KperfRunner
-     from drivers.net.lib.py import NetDrvEnv, NetDrvEpEnv, NetDrvContEnv
- 
-     __all__ = ["NetNS", "NetNSEnter", "NetdevSimDev", "UserNetNS",
-@@ -55,7 +55,8 @@ KSFT_DIR = (Path(__file__).parent / "../../../../..").resolve()
-                "ksft_ne", "ksft_not_in", "ksft_raises", "ksft_true", "ksft_gt",
-                "ksft_not_none", "ksft_not_none",
-                "NetDrvEnv", "NetDrvEpEnv", "NetDrvContEnv", "GenerateTraffic",
--               "Remote", "Iperf3Runner", "SystemMonitor"]
-+               "Remote", "Iperf3Runner", "SystemMonitor", "KperfResult",
-+               "KperfRunner"]
- except ModuleNotFoundError as e:
-     print("Failed importing `net` library from kernel sources")
-     print(str(e))
-diff --git a/tools/testing/selftests/drivers/net/lib/py/__init__.py b/tools/testing/selftests/drivers/net/lib/py/__init__.py
-index e418837f0b00..5f75ce61fb65 100644
---- a/tools/testing/selftests/drivers/net/lib/py/__init__.py
-+++ b/tools/testing/selftests/drivers/net/lib/py/__init__.py
-@@ -53,12 +53,14 @@ KSFT_DIR = (Path(__file__).parent / "../../../..").resolve()
-                "ksft_not_none", "ksft_not_none"]
- 
-     from .env import NetDrvEnv, NetDrvEpEnv, NetDrvContEnv
-+    from .kperf import KperfResult, KperfRunner
-     from .load import GenerateTraffic, Iperf3Runner
-     from .system_monitor import SystemMonitor
-     from .remote import Remote
- 
-     __all__ += ["NetDrvEnv", "NetDrvEpEnv", "NetDrvContEnv", "GenerateTraffic",
--                "Remote", "Iperf3Runner", "SystemMonitor"]
-+                "Remote", "Iperf3Runner", "SystemMonitor", "KperfResult",
-+                "KperfRunner"]
- except ModuleNotFoundError as e:
-     print("Failed importing `net` library from kernel sources")
-     print(str(e))
-diff --git a/tools/testing/selftests/drivers/net/lib/py/kperf.py b/tools/testing/selftests/drivers/net/lib/py/kperf.py
-new file mode 100644
-index 000000000000..9f909dd2507f
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/lib/py/kperf.py
-@@ -0,0 +1,148 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+"""Run and parse kperf network performance measurements."""
-+
-+import re
-+import shlex
-+import subprocess
-+import uuid
-+from dataclasses import dataclass
-+
-+from lib.py import cmd, ksft_metric, ksft_metric_aggregate, \
-+    ksft_metric_reporting_enabled, ksft_pr, wait_port_listen
-+
-+
-+KPERF_PORT = 18323
-+
-+_SECTION_RE = re.compile(r"==\s+(Source|Target)\b")
-+_RATE_RE = re.compile(r"\b(Tx|Rx)\s*([0-9]+(?:\.[0-9]+)?)\s+Gbps\b")
-+_TCP_HEADER = "TCP retrans reord rtt rttvar d_ce snd_wnd cwnd"
-+_TCP_ROW_RE = re.compile(r"^\s*(?:[^:\s]+:\s*)?(\d+)(?:\s+\d+){6}\s*$")
-+
-+
-+@dataclass
-+class KperfResult:
-+    source_throughput: float
-+    target_throughput: float
-+    source_retransmits: int
-+    target_retransmits: int
-+
-+
-+class KperfRunner:
-+    """Manage kperf servers and run measurements between test endpoints."""
-+
-+    def __init__(self, env):
-+        self.env = env
-+        self._pid_file = f"/tmp/ksft-kperf-{uuid.uuid4().hex[:8]}.pid"
-+        self._started = []
-+        env.require_cmd("kperf-client", local=True)
-+        env.require_cmd("kperf-server", local=True, remote=True)
-+
-+    def _server(self, remote, kill=False):
-+        host = self.env.remote if remote else None
-+        address = self.env.remote_addr if remote else self.env.addr
-+        args = ["kperf-server", "--pid-file", self._pid_file]
-+        args += ["--kill"] if kill else ["--addr", address]
-+        return cmd(shlex.join(args) if remote else args, host=host,
-+                   fail=not kill)
-+
-+    def __enter__(self):
-+        try:
-+            for remote in (False, True):
-+                self._server(remote)
-+                self._started.append(remote)
-+            wait_port_listen(KPERF_PORT)
-+            wait_port_listen(KPERF_PORT, host=self.env.remote)
-+        except Exception:
-+            self.close()
-+            raise
-+        return self
-+
-+    def close(self):
-+        while self._started:
-+            self._server(self._started.pop(), kill=True)
-+
-+    def __exit__(self, _exc_type, _exc_value, _exc_tb):
-+        self.close()
-+
-+    def run(self, client_args=()):
-+        """Run kperf and report results when a SystemMonitor is active."""
-+        argv = ["kperf-client", "--src", self.env.remote_addr,
-+                "--dst", self.env.addr]
-+        argv += [str(arg) for arg in client_args]
-+        command = cmd(argv, background=True)
-+        try:
-+            command.process(terminate=False, fail=False, timeout=300)
-+        except subprocess.TimeoutExpired as error:
-+            command.proc.kill()
-+            command.process(terminate=False, fail=False)
-+            raise RuntimeError(f"kperf client timed out\n{command!r}") \
-+                from error
-+        if command.ret:
-+            raise RuntimeError(
-+                f"kperf client exited with status {command.ret}\n{command!r}")
-+
-+        try:
-+            result = self.parse(command.stdout + "\n" + command.stderr)
-+        except ValueError:
-+            ksft_pr(command)
-+            raise
-+
-+        if ksft_metric_reporting_enabled():
-+            ksft_metric_aggregate(
-+                "throughput", summarize="distribution",
-+                regression={"compare": "p50", "better": "higher",
-+                            "relative_tolerance": 0.05})
-+            ksft_metric_aggregate("tcp.retransmits", summarize="max")
-+            for host, throughput, retransmits in (
-+                    ("remote", result.source_throughput,
-+                     result.source_retransmits),
-+                    ("local", result.target_throughput,
-+                     result.target_retransmits)):
-+                ksft_metric("throughput", throughput, shape="scalar",
-+                            host=host)
-+                ksft_metric("tcp.retransmits", retransmits, shape="scalar",
-+                            host=host)
-+        return result
-+
-+    @staticmethod
-+    def parse(output):
-+        """Parse human-readable kperf client output."""
-+        throughput = {"Source": [], "Target": []}
-+        retransmits = {"Source": [], "Target": []}
-+        section = None
-+        in_tcp = False
-+
-+        for line in output.splitlines():
-+            match = _SECTION_RE.search(line)
-+            if match:
-+                section = match.group(1)
-+                in_tcp = False
-+                continue
-+            if section is None:
-+                continue
-+
-+            match = _RATE_RE.search(line)
-+            if match:
-+                direction, value = match.groups()
-+                if (section, direction) in (("Source", "Tx"),
-+                                             ("Target", "Rx")):
-+                    throughput[section].append(float(value))
-+                continue
-+
-+            if _TCP_HEADER in line:
-+                in_tcp = True
-+                continue
-+            if in_tcp:
-+                match = _TCP_ROW_RE.match(line)
-+                if match:
-+                    retransmits[section].append(int(match.group(1)))
-+
-+        values = (*throughput.values(), *retransmits.values())
-+        if not all(values):
-+            raise ValueError("incomplete kperf result")
-+
-+        return KperfResult(sum(throughput["Source"]),
-+                           sum(throughput["Target"]),
-+                           sum(retransmits["Source"]),
-+                           sum(retransmits["Target"]))
+- [Medium] The new `dl-nested-devlink` fractional set added by "netlink:
+  specs: devlink: describe DEVLINK_ATTR_NESTED_DEVLINK"…
+
+--
+
+netlink: specs: devlink: describe DEVLINK_ATTR_NESTED_DEVLINK
+
+This fills in the single attribute hidden by the "# TODO: fill in the
+attributes in between" gap before selftests (176), adding nested-devlink
+(175) as a multi-attr nest, plus a new dl-nested-devlink fractional set
+and the attribute in the dev-get reply.
+
+> diff --git a/Documentation/netlink/specs/devlink.yaml b/Documentation/netlink/specs/devlink.yaml
+> index 0e0791d4e2c74..7ec52f81c3230 100644
+> --- a/Documentation/netlink/specs/devlink.yaml
+> +++ b/Documentation/netlink/specs/devlink.yaml
+
+[ ... ]
+
+> @@ -1351,6 +1352,19 @@ attribute-sets:
+>        -
+>          name: index
+>  
+> +  -
+> +    name: dl-nested-devlink
+> +    subset-of: devlink
+> +    attributes:
+> +      -
+> +        name: bus-name
+> +      -
+> +        name: dev-name
+> +      -
+> +        name: index
+> +      -
+> +        name: netns-id
+                ^^^^^^^^^
+
+[Severity: Medium]
+Is the inherited type right for netns-id here?  Since this is a
+subset-of set, it picks up the main devlink set declaration:
+
+      -
+        name: netns-id
+        type: u32
+
+But the kernel emits this attribute signed, in
+devlink_nl_put_nested_handle() (net/devlink/netlink.c), which is the
+function reached by devlink_nl_fill() -> devlink_nl_nested_fill() for
+each nested_rels entry:
+
+	if (!net_eq(net, devl_net)) {
+		int id = peernet2id_alloc(net, devl_net, GFP_ATOMIC);
+
+		rcu_read_unlock();
+		if (nla_put_s32(msg, DEVLINK_ATTR_NETNS_ID, id))
+			return -EMSGSIZE;
+
+peernet2id_alloc() in net/core/net_namespace.c returns the negative
+sentinel NETNSA_NSID_NOT_ASSIGNED (-1, include/uapi/linux/net_namespace.h)
+in three cases:
+
+	if (!check_net(net))
+		return NETNSA_NSID_NOT_ASSIGNED;
+	...
+	if (!maybe_get_net(peer)) {
+		spin_unlock(&net->nsid_lock);
+		return NETNSA_NSID_NOT_ASSIGNED;
+	}
+	...
+	if (id < 0)
+		return NETNSA_NSID_NOT_ASSIGNED;
+
+The wire width is 4 bytes either way, so nothing breaks in the kernel,
+but would ynl-generated decoders and C structs now render the "nsid not
+assigned" case as 4294967295, with no way to tell it apart from a valid
+id?
+
+The request side does read the attribute unsigned, in devlink_netns_get()
+(net/devlink/dev.c):
+
+	} else if (netns_id_attr) {
+		net = get_net_ns_by_id(sock_net(skb->sk),
+				       nla_get_u32(netns_id_attr));
+
+so flipping the shared declaration would change the request typing too.
+Would it be better to declare the reply-side attribute as s32, or
+otherwise narrow the type per-use, so the documented type matches
+nla_put_s32()?
+
+One more note on scope: a later patch in this series, "netlink: specs:
+devlink: describe the netns id in the parent-dev nest", reuses this same
+subset for DEVLINK_ATTR_PARENT_DEV replies, and at 0fe71b34ba2e
+("devlink: validate the port index in the rate set request") netns-id is
+still type: u32 while the emitter still uses nla_put_s32(), so the
+mismatch persists through the end of the series.
+
+> +
+>  operations:
+>    enum-model: directional
+>    list:
+> @@ -1376,6 +1390,7 @@ operations:
+>              - index
+>              - reload-failed
+>              - dev-stats
+> +            - nested-devlink
+>        dump:
+>          reply: *get-reply
+>
+
 -- 
-2.53.0-Meta
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260915161341.1053476-1-kuba%40kernel.org
