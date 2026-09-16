@@ -1,49 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA9738E8A6;
-	Wed, 16 Sep 2026 01:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE6538330C
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 01:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789521496; cv=none; b=UUfypwU+P5rAH89MxALN8LRycRnwVXLJD6cggxZIaRS4ZcaKNNyojQeF4LY2zR1mm4TV/i0/VRLHPEl4OSuLuEHNtzLpgDCpd/kttjOZQYmtzzRTkGH7sT7c6zbNtk4k6yzOpWu7L0YXRPMGtm+d4b6FDDPVQIddgLnqDT7b+jM=
+	t=1789521580; cv=none; b=bztLsP/JoRyjZ6rirddg7C+aHsAdOx0GHXJsKAeIOW5gvzrut6crNpRCSdoXSBwTFS22n1OkZZ7EMVIufndMoqet8RgHs4QHAMoY0IvjqMzyDLj7E0bRNfiPrr+pFsAf9CG78N741XOFovhmPo570ZafpNeow85vbB/jw+aD/yY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789521496; c=relaxed/simple;
-	bh=2Mfzy/Hw/zIGmWuz6makzY737zlzZTf9GqyrD1aCXTY=;
+	s=arc-20240116; t=1789521580; c=relaxed/simple;
+	bh=CQRX8Ac2y8Hf3F784OgoZ89ytoXXMwg6mqUgEkMmZy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lcEI1AcXjRJ/XQhx5xa2nRonJvljhvwojKIaQQUBrOHs1zkTX+SyqeKJEzpgZqdwQCCGfr01Dtdvwuhh4zH7C5sQje9/GaipdeT2dimjIHpXtgKs2rvlByRpKGzKFZSgNYrEV4AKznOLJlN/iww3U8rPfnzyPiW1OAdnC6sOOuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FNtgh9fD; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=V7I39Z/oSGPwalohmJLRf3Fe1pqwOFpRVX1dG2jSi0nJU1zNPL6pMdvBRcorIzkObUd8cy/2L6KB1kEMFnzmTHAudM7PEWjSfcX5bWC9zgI6FvTiO4QRMNcZB4Z1fWlGMGX8UPbrG4OgZ67/yG8gFDs+vp3gPN1yjn57eEKZmys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jo7mKqXd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FNtgh9fD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3BCD1F000FF;
-	Wed, 16 Sep 2026 01:18:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jo7mKqXd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61AB1F000FF;
+	Wed, 16 Sep 2026 01:19:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789521495;
-	bh=Fc/KEcEpePX8jQDme+fWQ04KtaWAl60QQBLlVHiy7uw=;
+	s=k20260515; t=1789521579;
+	bh=dALJhOu9TKNIjd3cBTS4Puy1H5P2lb/xXn9oX3MrooU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FNtgh9fDxH8JeM8YBWXHATb5KHD5TagJYZLPIxf0lhUydsQ3+FHSIPB61e1Ye2uzJ
-	 qjTSn36WE/iNZ0+l12XZguvkY+BHcIDKhSokDiUyZBF8aPAUnwA0hjSTMp5grSS+uf
-	 m4cV6t3ZGjrDveXPdhRkeveX9/Hrs2eMVF/pt1DY9P8WfSeyZjHCJ7fshRt2XaHaz/
-	 w/ViKNEQigfGPi2AB0UPbJK7VrTxSg9aQu7KQWyE2/aqvir/szxt1dlDjZxzF/45f9
-	 yL+MqWZ+DQSFEgcdbXrQFwxlGpBcXxX94VjpKqB0uORPXNiCZouNuKeBXfxaM15AY9
-	 VMwRfTNwAjJww==
+	b=Jo7mKqXdkESvsL9MnGwvoZXLwspLoy+fvWhLbQASDC1wE7r9MBHc0mS+o+Aoc29+1
+	 OoQe9bWdX+H5avNnE51AhkeQ93R8XgPEGcyuy1arC63QRSbTrJKaSPYM8fjwuq/kEL
+	 qz0VNIVqmeJp9Ha/bLuKF9/UoKFdEw8pTbgKdnLZiW7pta4q/nH+AOKpYymVtwTOUH
+	 fU3e58ZMR36HCuievuQTuiHIriWzp4KhmXoiQ+OP3cOfsKvCn1X1Oj8UDPqrgTKtu+
+	 PXloM4u0OCYGHc0xC4MewjAgaYz+aopJLh+GyRKOq5aUWqvzgwxHqhVjxRWHzOnZSH
+	 fNLEOTlr4LksA==
 From: Jakub Kicinski <kuba@kernel.org>
-To: suraj.gupta2@amd.com
+To: hkallweit1@gmail.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
-	radhey.shyam.pandey@amd.com,
-	andrew+netdev@lunn.ch,
+	andrew@lunn.ch,
+	linux@armlinux.org.uk,
+	pabeni@redhat.com,
 	davem@davemloft.net,
 	edumazet@google.com,
-	pabeni@redhat.com,
-	michal.simek@amd.com,
-	netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: xilinx: axienet: Free outstanding DMA buffers on dmaengine stop
-Date: Tue, 15 Sep 2026 18:17:38 -0700
-Message-ID: <20260916011737.1638482-2-kuba@kernel.org>
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH RESUBMIT net-next] net: phy: factor out legacy PHY fixup support and make it always built-in
+Date: Tue, 15 Sep 2026 18:19:37 -0700
+Message-ID: <20260916011937.1640802-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260910141946.3017164-1-suraj.gupta2@amd.com>
-References: <20260910141946.3017164-1-suraj.gupta2@amd.com>
+In-Reply-To: <9bf96f6b-2d08-402a-af5b-cc6b33fc6d26@gmail.com>
+References: <9bf96f6b-2d08-402a-af5b-cc6b33fc6d26@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,157 +50,155 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Let's fix what AI is pointing out in another patch in the same series?
-Or please explain in the commit msg why the issue is not real,
-I'm not very familiar with the DMA engine API, TBH.
-
-AI review:
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 ---
-net: xilinx: axienet: Free outstanding DMA buffers on dmaengine stop
+net: phy: factor out legacy PHY fixup support and make it always built-in
 
-This adds clearing of the ring slot skb pointer in the TX and RX dmaengine
-completion callbacks, and makes axienet_stop() walk the TX and RX rings
-after terminating the channels to unmap and free any slot that still has a
-non-NULL skb, instead of only kfree()ing the ring shells.
+This moves the legacy PHY fixup code out of the modular part of phylib
+into a new always-built-in file, drivers/net/phy/phy_fixup.c, marks the
+registration helpers __init and changes them to return void.  struct
+phy_fixup and phy_fixup_list become private to the new file and the
+fixup mutex is dropped.
 
-> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> index 1722b7038f340..7828fbb09dc87 100644
-> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+> index 41d1b20cde2c0..5b13a74e2fa92 100644
+> --- a/drivers/net/phy/phy_device.c
+> +++ b/drivers/net/phy/phy_device.c
 
 [ ... ]
 
-> @@ -1171,6 +1172,7 @@ static void axienet_dma_rx_cb(void *data, const struct dmaengine_result *result)
->  						       &meta_max_len);
->  	dma_unmap_single(lp->dev, skbuf_dma->dma_address, lp->max_frm_size,
->  			 DMA_FROM_DEVICE);
-> +	skbuf_dma->skb = NULL;
+> @@ -427,85 +416,6 @@ static __maybe_unused int mdio_bus_phy_resume(struct device *dev)
+>  static SIMPLE_DEV_PM_OPS(mdio_bus_phy_pm_ops, mdio_bus_phy_suspend,
+>  			 mdio_bus_phy_resume);
 >  
->  	if (IS_ERR(app_metadata)) {
->  		if (net_ratelimit())
+> -/**
+> - * phy_register_fixup - creates a new phy_fixup and adds it to the list
+> - * @bus_id: A string which matches phydev->mdio.dev.bus_id (or NULL)
+> - * @phy_uid: Used to match against phydev->phy_id (the UID of the PHY)
+> - * @phy_uid_mask: Applied to phydev->phy_id and fixup->phy_uid before
+> - *	comparison (or 0 to disable id-based matching)
+> - * @run: The actual code to be run when a matching PHY is found
+> - */
 
-> @@ -1752,16 +1754,40 @@ static int axienet_stop(struct net_device *ndev)
->  		free_irq(lp->rx_irq, ndev);
->  		axienet_dma_bd_release(ndev);
->  	} else {
-> +		struct skbuf_dma_descriptor *skbuf_dma;
+[ ... ]
+
+> diff --git a/drivers/net/phy/phy_fixup.c b/drivers/net/phy/phy_fixup.c
+> new file mode 100644
+> index 0000000000000..f49fc4cefe817
+> --- /dev/null
+> +++ b/drivers/net/phy/phy_fixup.c
+> @@ -0,0 +1,99 @@
+
+[ ... ]
+
+> +/**
+> + * phy_register_fixup - creates a new phy_fixup and adds it to the list
+> + * @bus_id: A string which matches phydev->mdio.dev.bus_id (or PHY_ANY_ID)
+> + * @phy_uid: Used to match against phydev->phy_id (the UID of the PHY)
+> + *	It can also be PHY_ANY_UID
+> + * @phy_uid_mask: Applied to phydev->phy_id and fixup->phy_uid before
+> + *	comparison
+> + * @run: The actual code to be run when a matching PHY is found
+> + */
+
+[Severity: Low]
+Was the wording change in this kernel-doc block intentional?  The version
+removed from phy_device.c said "(or NULL)" for @bus_id and "(or 0 to
+disable id-based matching)" for @phy_uid_mask, which matches what the code
+does.  The new text mentions PHY_ANY_ID and PHY_ANY_UID instead.
+
+Grepping the tree at this commit, PHY_ANY_ID and PHY_ANY_UID have no
+definition anywhere; the only hits are these two new comment lines in
+phy_fixup.c plus one sentence in Documentation/networking/phy.rst.
+
+The matching code moved by this patch, phy_needs_fixup() in phy_fixup.c,
+has no wildcard handling:
+
+	if (!strcmp(fixup->bus_id, phydev_name(phydev)))
+		return true;
+
+	if (fixup->phy_uid_mask &&
+	    phy_id_compare(phydev->phy_id, fixup->phy_uid, fixup->phy_uid_mask))
+		return true;
+
+and phy_register_fixup() only special-cases a NULL bus_id:
+
+	if (bus_id)
+		strscpy(fixup->bus_id, bus_id);
+	fixup->phy_uid = phy_uid;
+	fixup->phy_uid_mask = phy_uid_mask;
+
+So platform code written against this comment would either fail to build
+on the undefined identifier, or register a fixup that never matches.
+Would it be better to keep the "(or NULL)" and "(or 0 to disable id-based
+matching)" wording?
+
+> +static void __init phy_register_fixup(const char *bus_id, u32 phy_uid,
+> +				      u32 phy_uid_mask,
+> +				      int (*run)(struct phy_device *))
+
+[ ... ]
+
+> +/* Registers a fixup to be run on any PHY with the UID in phy_uid */
+> +void __init phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
+> +				       int (*run)(struct phy_device *))
+> +{
+> +	phy_register_fixup(NULL, phy_uid, phy_uid_mask, run);
+> +}
 > +
->  		dmaengine_terminate_sync(lp->tx_chan);
->  		dmaengine_synchronize(lp->tx_chan);
->  		dmaengine_terminate_sync(lp->rx_chan);
->  		dmaengine_synchronize(lp->rx_chan);
+> +/* Registers a fixup to be run on the PHY with id string bus_id */
+> +void __init phy_register_fixup_for_id(const char *bus_id,
+> +				      int (*run)(struct phy_device *))
+> +{
+> +	phy_register_fixup(bus_id, 0, 0, run);
+> +}
+
+[ ... ]
+
+> diff --git a/include/linux/phy.h b/include/linux/phy.h
+> index 3d8afe6b7f1c5..257634a543a14 100644
+> --- a/include/linux/phy.h
+> +++ b/include/linux/phy.h
+> @@ -2440,10 +2440,10 @@ int phy_get_mac_termination(struct phy_device *phydev, struct device *dev,
+>  void phy_resolve_pause(unsigned long *local_adv, unsigned long *partner_adv,
+>  		       bool *tx_pause, bool *rx_pause);
 >  
-> -		for (i = 0; i < TX_BD_NUM_MAX; i++)
-> -			kfree(lp->tx_skb_ring[i]);
-> +		/* dmaengine_terminate_sync() aborts the descriptors still owned
-> +		 * by the DMA engine without running their completion callbacks.
-> +		 * A ring slot owns a live, DMA-mapped SKB iff its skb pointer is
-> +		 * non-NULL (the callbacks clear it on completion), so unmap and
-> +		 * free those here. Otherwise every outstanding TX/RX SKB and its
-> +		 * DMA mapping is leaked on ifdown.
-> +		 */
+> -int phy_register_fixup_for_id(const char *bus_id,
+> -			      int (*run)(struct phy_device *));
+> -int phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
+> -			       int (*run)(struct phy_device *));
+> +void __init phy_register_fixup_for_id(const char *bus_id,
+> +				      int (*run)(struct phy_device *));
+> +void __init phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
+> +				       int (*run)(struct phy_device *));
 
-[ ... TX ring loop snipped ... ]
+[Severity: Low]
+Should Documentation/networking/phy.rst be updated in the same patch?  The
+"Board Fixups" section still documents the old prototypes:
 
-> +
-> +		for (i = 0; i < RX_BUF_NUM_DEFAULT; i++) {
-> +			skbuf_dma = lp->rx_skb_ring[i];
-> +			if (skbuf_dma && skbuf_dma->skb) {
-> +				dma_unmap_single(lp->dev, skbuf_dma->dma_address,
-> +						 lp->max_frm_size, DMA_FROM_DEVICE);
-> +				dev_kfree_skb_any(skbuf_dma->skb);
-> +			}
-> +			kfree(skbuf_dma);
-> +		}
->  		kfree(lp->rx_skb_ring);
->  
->  		dma_release_channel(lp->rx_chan);
+ int phy_register_fixup_for_uid(u32 phy_uid, u32 phy_uid_mask,
+		int (*run)(struct phy_device *));
+ int phy_register_fixup_for_id(const char *phy_id,
+		int (*run)(struct phy_device *));
 
-[Severity: High]
+Two things there are now stale.  The return type is void, so code that
+assigns or tests the return value as the document suggests no longer
+compiles.
 
-Is the invariant described in the comment, "A ring slot owns a live,
-DMA-mapped SKB iff its skb pointer is non-NULL", guaranteed to hold once
-the terminate calls have returned?
+The document also just says platform code registers fixups, with no
+mention that registration is now init-only: the helpers are __init and are
+no longer exported, and phy_register_fixup() adds to phy_fixup_list, which
+is declared
 
-axienet_dma_rx_cb() re-arms the RX channel unconditionally at the end of
-every completion, with no check against a stopping flag or
-netif_running():
+	static struct list_head phy_fixup_list __ro_after_init =
+		LIST_HEAD_INIT(phy_fixup_list);
 
-drivers/net/ethernet/xilinx/xilinx_axienet_main.c:axienet_dma_rx_cb() {
-	...
-rx_submit:
-	for (i = 0; i < CIRC_SPACE(lp->rx_ring_head, lp->rx_ring_tail,
-				   RX_BUF_NUM_DEFAULT); i++)
-		axienet_rx_submit_desc(lp->ndev);
-	dma_async_issue_pending(lp->rx_chan);
-}
+so a caller outside init context gets a section mismatch from modpost and,
+if it ever runs after init, writes to read-only memory.  Modules can no
+longer call these at all.
 
-Note lp->stopping is only set in the !lp->use_dmaengine branch of
-axienet_stop(), so it does not fence this path.
-
-The callback runs from the provider tasklet with chan->lock dropped, so it
-can run on another CPU while axienet_stop() is between the terminate and
-the free loop:
-
-drivers/dma/xilinx/xilinx_dma.c:xilinx_dma_chan_desc_cleanup() {
-	...
-	spin_unlock_irqrestore(&chan->lock, flags);
-	dmaengine_desc_get_callback_invoke(&desc->async_tx, &result);
-	spin_lock_irqsave(&chan->lock, flags);
-}
-
-If the callback wins that race, axienet_rx_submit_desc() maps a fresh
-buffer, installs it in the slot and submits it:
-
-	skbuf_dma->skb = skb;
-	skbuf_dma->dma_address = sg_dma_address(skbuf_dma->sgl);
-	skbuf_dma->desc = dma_rx_desc;
-	...
-	lp->rx_ring_head++;
-	dmaengine_submit(dma_rx_desc);
-
-and xilinx_dma_tx_submit() queues it and clears the provider's guard:
-
-	append_desc_queue(chan, desc);
-	...
-	chan->terminating = false;
-
-The following dma_async_issue_pending() then restarts the channel.
-dmaengine_synchronize() is only tasklet_kill() here:
-
-drivers/dma/xilinx/xilinx_dma.c:
-static void xilinx_dma_synchronize(struct dma_chan *dchan)
-{
-	struct xilinx_dma_chan *chan = to_xilinx_chan(dchan);
-
-	tasklet_kill(&chan->tasklet);
-}
-
-so it waits for the callback to return but does not abort the descriptor the
-callback just submitted.
-
-In that case the new RX loop sees skbuf_dma->skb != NULL for that slot and
-performs dma_unmap_single() plus dev_kfree_skb_any() on a buffer the engine
-still owns.  Can this let the hardware write into a freed, unmapped skb, or
-trigger an IOMMU fault?
-
-There is also the ordering of kfree(lp->rx_skb_ring) before
-dma_release_channel(lp->rx_chan).  If the late descriptor completes in that
-window, axienet_dma_rx_cb() does:
-
-	skbuf_dma = axienet_get_rx_desc(lp, lp->rx_ring_tail++);
-	skb = skbuf_dma->skb;
-
-Is that a use-after-free of lp->rx_skb_ring?
-
-Before this change the same window only leaked the buffer.  Would it make
-sense to fence resubmission first, for example by setting the stopping flag
-for the dmaengine path before the terminate calls and checking it in
-axienet_dma_rx_cb() before the rx_submit loop, and to release the channels
-before freeing the rings?
-
-Note also that dmaengine_terminate_sync() already ends with
-dmaengine_synchronize(), so the explicit dmaengine_synchronize() calls that
-follow it here are redundant, though harmless.
+Same section of phy.rst also describes PHY_ANY_ID and PHY_ANY_UID as
+wildcards, which ties in with the kernel-doc comment above.
 -- 
 pw-bot: cr
