@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355674F4730;
-	Wed, 16 Sep 2026 15:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1892950EBE1;
+	Wed, 16 Sep 2026 15:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789572133; cv=none; b=kQjJJTukFKQ7ABM++OU3DfSfU8PApeBBR1VyiwSefhXsVKqQcEP0Ph+lqdjduyClUrNSCXeIB1H1ffxyYPvopB0//Ie3V03ByMsDDJAlDBGVu0tchvLv5+gb40gZS5iXSNnXj9Su5vK+oxDW1PFFE8O1kZjVOZeaAPlYiaefqfo=
+	t=1789572136; cv=none; b=d0pfVJumYaVOuaFME4P4OptxQZ3vdUbwmdGyszaPP4gzMdB+dR00bxNvgywI0t/iGKBe22vZvuzNJI+jK69GFbGcp6YyOor9nVd9yAk6yGUtfuSTocO1En/avU+ADjXZemLhHuRr2j9Bm2jQa7ZzF36mnL6+1np/ONH21pr+FjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789572133; c=relaxed/simple;
-	bh=AZSQtEBN7kQJsgzRDGgC/AX5q1GuadKhXLqhMjB5AHU=;
+	s=arc-20240116; t=1789572136; c=relaxed/simple;
+	bh=/74fbriUjnNYQSIL/TkwoUOLa18GcCBPLdSkiQqjEyU=;
 	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=WEiVOBFrJBkDx9XDdmfpK35HKgbOQ7j7InUnsoy3GGTczf5NTgv5EwMSNQiiy/wh1aOOe0nnF6/NH8FqZFWLZdriOxGufqGC/plA9qfD1eonc/KSiNjY8f6QMZ1ZjCSOgN5Z/r2vQX9JovsIyUh7fqns+15HguNl3CYzg/zNML8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ghwDoUYQ; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id:Subject; b=Co/dz/o+0E8XQ6+sCKnoiGluPEhocMZ0QGGVanjbqOZoS2dOoPhK6PrMm78c93Ds0tBMuYBSPKQTWAEsCQOBGWwJDdjq9/3nsJzhJB2zS0JDdeum5osjfTcWLgXjdgAxvphuy1TRdibAb7LAxrO2xGPNnJu9DXe6soqB8j8Dnlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ffuR7+/y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ghwDoUYQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D191F00893;
-	Wed, 16 Sep 2026 15:22:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ffuR7+/y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C67061F00898;
+	Wed, 16 Sep 2026 15:22:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789572127;
-	bh=8tD6Xr9J2ucQ5/OOmstOBkaQazxoKsfY0YaWI5fIV5g=;
+	s=k20260515; t=1789572129;
+	bh=YBWDwJQR8wUTVKxZlLHIc0nrXkBF14Uq3ojJa3l7PDs=;
 	h=Date:From:Cc:To:In-Reply-To:References:Subject;
-	b=ghwDoUYQfT6LqJhAL5A6kG9TMoaCptirC39o32HGg7XG01YipLD+Lk2WqNjipGxu2
-	 UKAFVY7SM+TOQWwPrJgXEvQOvqs6JKOWjehSZwPJAzTDkMB++EOtdb0iGGllqiGulf
-	 gseRWbN+//EfJXylS6lTsAwveesUkZnK6LcsR4mwkQT8ASC5ZXJ3MXAdVLIHuQZWtg
-	 Qz4sxNxJT4QPrAq2dK6cFfeIalrHwUHttgOwxiVv0TAmiP7dafVn7XziOAezZ1mHAW
-	 Z2mvSIUHiLaR78mhPW2rym4XtHu+ntuK+mzekWfWRhwmLqgJT9Zg9ntdgDO5I5Zyez
-	 1V7i3im/MJ1Gw==
-Date: Wed, 16 Sep 2026 10:22:06 -0500
+	b=ffuR7+/yGysUibXuulYHQ0R8B2p31GzrCYIsHW6Vm+ohY7O1YyuMbUogYOyp/QUdw
+	 IpDVRDq1PPqO5NuCdQ1BBRATgbu44wbIB7l94r+0e0mTmfGSA2RVFX3W0PH8Jm43kB
+	 oxltHTOo+tGxZFcY65WEwfx8YRXFczyaZAxgFHnU2qEM7vFckSqrLJvEb/unak0Id/
+	 wcJ8C8rskEi/IryIAJOJ5hHedf6B7CdiVs3cMBOrMz9NP9hauWqQfjxZgMvinuYtu4
+	 nn5374NuW6pu+tpU7F/2ChKgH3au8e59tsV3fgScOB8DwuH9IbREKMrrgwDw+yICDT
+	 Wova5UPIMhUSQ==
+Date: Wed, 16 Sep 2026 10:22:08 -0500
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -36,45 +36,30 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Eric Dumazet <edumazet@google.com>, linux-kernel@vger.kernel.org, 
- linux-sunxi@lists.linux.dev, Chen-Yu Tsai <wens@kernel.org>, 
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- Paolo Abeni <pabeni@redhat.com>, Samuel Holland <samuel@sholland.org>, 
- Conor Dooley <conor+dt@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
- netdev@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- "David S . Miller" <davem@davemloft.net>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Russell King <linux@armlinux.org.uk>
-To: Alastair D'Silva <alastair@d-silva.org>
-In-Reply-To: <20260916044119.475666-4-alastair@d-silva.org>
-References: <20260916044119.475666-1-alastair@d-silva.org>
- <20260916044119.475666-4-alastair@d-silva.org>
-Message-Id: <178957206885.228671.2262343816324087676.robh@kernel.org>
-Subject: Re: [PATCH net-next 3/4] dt-bindings: net:
- allwinner,sun8i-a83t-emac: Add Allwinner H616 EMAC1 and syscon index
+Cc: pabeni@redhat.com, andrew@lunn.ch, davem@davemloft.net, kuba@kernel.org, 
+ conor+dt@kernel.org, linux@armlinux.org.uk, jianmin.wang@motor-comm.com, 
+ hkallweit1@gmail.com, Frank.Sae@motor-comm.com, 
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com, 
+ devicetree@vger.kernel.org, jie.han@motor-comm.com, krzk+dt@kernel.org, 
+ edumazet@google.com, andrew+netdev@lunn.ch
+To: Kyle Switch <kyle.switch@motor-comm.com>
+In-Reply-To: <20260916105504.3262767-2-kyle.switch@motor-comm.com>
+References: <20260916105504.3262767-1-kyle.switch@motor-comm.com>
+ <20260916105504.3262767-2-kyle.switch@motor-comm.com>
+Message-Id: <178957207169.229437.1349790786679674746.robh@kernel.org>
+Subject: Re: [PATCH net-next v19 1/3] dt-bindings: net: Document Motorcomm
+ YT8824 PHY package
 
 
-On Wed, 16 Sep 2026 14:41:18 +1000, Alastair D'Silva wrote:
-> Document the Allwinner H616 EMAC1 and internal EMAC compatible strings
-> ("allwinner,sun50i-h616-emac1" and "allwinner,sun50i-h616-internal-emac").
-> Update the syscon property schema to support an optional register index
-> offset argument, allowing boards to reference the secondary EMAC clock
-> register on H616/H618 SoCs.
+On Wed, 16 Sep 2026 18:55:02 +0800, Kyle Switch wrote:
+> Motorcomm YT8824 Ethernet PHY is PHY package of 4 PHY-s.
 > 
-> Assisted-by: LLM
-> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+> Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
 > ---
-> 
-> Notes:
->     Tested against Allwinner H616/H618 device trees in Armbian, verifying
->     schema validation with dt_binding_check.
-> 
->  .../bindings/net/allwinner,sun8i-a83t-emac.yaml    | 14 +++++++++++---
->  1 file changed, 11 insertions(+), 3 deletions(-)
+>  .../bindings/net/motorcomm,yt8824.yaml        | 59 +++++++++++++++++++
+>  1 file changed, 59 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
 > 
 
 My bot found errors running 'make dt_binding_check' on your patch:
@@ -82,13 +67,12 @@ My bot found errors running 'make dt_binding_check' on your patch:
 yamllint warnings/errors:
 
 dtschema/dtc warnings/errors:
-/builds/robherring/linux-dt-review/Documentation/devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml: properties:syscon:items:0: {'minItems': 1, 'maxItems': 2, 'items': [{'description': 'Phandle to the device containing the EMAC or GMAC clock register'}, {'description': 'Register index offset (0 for EMAC0, 1 for EMAC1)'}]} should not be valid under {'required': ['maxItems']}
-	hint: "maxItems" is not needed with an "items" list
-	from schema $id: http://devicetree.org/meta-schemas/items.yaml
+Documentation/devicetree/bindings/net/motorcomm,yt8824.example.dtb: ethernet-phy-package@0 (motorcomm,yt8824-package): Unevaluated properties are not allowed ('phy-mode' was unexpected)
+	from schema $id: http://devicetree.org/schemas/net/motorcomm,yt8824.yaml
 
 doc reference errors (make refcheckdocs):
 
-See https://patchwork.kernel.org/project/devicetree/patch/20260916044119.475666-4-alastair@d-silva.org
+See https://patchwork.kernel.org/project/devicetree/patch/20260916105504.3262767-2-kyle.switch@motor-comm.com
 
 The base for the series is generally the latest rc1. A different dependency
 should be noted in *this* patch.
