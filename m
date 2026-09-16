@@ -1,172 +1,126 @@
-Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86D843F0B9
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 19:58:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A501A43F0A7;
+	Wed, 16 Sep 2026 20:02:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789588702; cv=none; b=orvW0UoZN7RMVHBKGMMYZk1vhHLSUtbzMPyjoKb97KoelLqzEGEnUZ0nl0vYtPsP6AGBfmWEw7iMv72FOflUpvNAyyi/VnJI5vNcgOP1d1KHepXsRY6kDa6D7CreKz9ettRn+thx0FJ9ZmnCS2ZS+A5He8dqasyhhLkW/S+PT70=
+	t=1789588958; cv=none; b=LHJmeoOYJuUEJaMhGkejs8BSbRL2YOoEX1+xlRYn/Qtf14mNbdUUNpE4rTSGeXkvt+NcXH4iJjeoG/h0sWcSsNIzIak9Jb5P8rMESmTtjyIb08C7SJca05BUxiPg6EruTD3gcKsUui6OCXpJpkc0/E9k3AUnL91BiQuco4z8P7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789588702; c=relaxed/simple;
-	bh=Ki7NN7Qmcie26yOmnohF6eP+Nmz0kYw/zHwlVnpOmbU=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=h5yOgrNPTPgMiMEQNjbjKqKn3upwk1obq2aXooBrG5uArMbiqlVpLXfllYyv1KBltabKZ453hFgtJiwYskcwNAT0RFV0siV0nbWBFTs99+fQk9yFCg/xNgdna7bm2JzhJsfd54zg5q/eBO8ZnAke1tFtnIzeQK/68Ce/SocOPdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com; spf=pass smtp.mailfrom=doyensec.com; dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b=kVzttXvJ; arc=none smtp.client-ip=74.125.228.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=doyensec.com
+	s=arc-20240116; t=1789588958; c=relaxed/simple;
+	bh=4VPXVRsL/JYVebZmiRbYJ9Zfe5tiRltX0zNY+++VXEs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VZIlttQVM+adlVUkT/YmDgXBb+qzFSBQP70/dBs4B65oRtq6cKQwnzBjhRsB+15o2WrgIEVNdNISgfoiTGDb4kHQqx6wcUDZrtYseyK/oaONgOUoo2mK3uNJA3AB/DaRt1x/WvBrNavZU1T3CenCb6iUr9rmsxI+sM/ajzxBBH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=vgXzLwGO; arc=none smtp.client-ip=5.189.157.229
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b="kVzttXvJ"
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254fa663c2so17575066b.3
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 12:58:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=doyensec.com; s=google; t=1789588686; x=1790193486; darn=vger.kernel.org;
-        h=to:cc:date:message-id:subject:mime-version
-         :content-transfer-encoding:content-type:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7j92NLv1vusg4NTs4kzoe1mqEKCmRFXV8Wht2u0ae/g=;
-        b=kVzttXvJjLKXqDrqgsf52QoNNZsNfquaHKE/bISNe+buK6nRZ7W/leqhHLraLz3E14
-         2B/c/9mamrGJAbroVUYBL6ae6Km7df0bw3tcUNComJBgsADCL8FfDC9J+SEQcem5I7PW
-         cY/6Zhx/n9pDHlzReVNI6l+X7nEZt76aF6to0kTjsUJP8vZtldOOuIdwXDVOO6JpKIwW
-         KH1xDuffqTGGvgHldq96m6og43HEiY4PA94Gq+skXAHlqUpx4L7/ELtXO5ZW9D+KQKQY
-         STJKKg2/zlmGgHpTRtyvMzM5rDOsSz8Wld5e8xKF1VWf2tpr0qgqYEWZV7xLLr4azKAp
-         eKNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789588686; x=1790193486;
-        h=to:cc:date:message-id:subject:mime-version
-         :content-transfer-encoding:content-type:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7j92NLv1vusg4NTs4kzoe1mqEKCmRFXV8Wht2u0ae/g=;
-        b=F9NHqETJ/4T2xyZj3TLERSXGaJIK/sRSBYW2sihkz9TZeT+p1dFu7NWlNVVPLz0hcX
-         Pt4U18OgH0dl7Hd1p3OSeOvy3EKqjRAiFLI9HSBTnTQ05i786DqJkUXdF8rivqalNVfI
-         BDD2hU1jJQgCJAVebsA8bK9npXWws4yMUUmpV+VCdsUJhnOdBCW2+XqHVUSdd/2vJw18
-         rNh3zTEq8jt0V4hD1Cl3P6OCDEtaZo7XpB0OjqXxOiMfsn9OTDcMqSwwo7I/A2lPElMD
-         NDw1zE7Se+qblUNTmSV5BWBl9mVCGYbKZUBU40u0/S55rlOdajB02kM9ZjVOB57iInLk
-         OOdw==
-X-Gm-Message-State: AFuF++m9Iaey8WWsapuqSTNILabnClKF9Tn4ScjgVekjruvZLpXnx+7U
-	Hn+euynOZMFQDOoP50s+gTOR+/8maRLl2x/7m00E0rT8xBdWyp1j7CQ2+zw1IqsbtB9onqJmM/O
-	slIwGudIt1A==
-X-Gm-Gg: AYBFou1APg9ynzhNALVY1/oiNkuVsH6sUhibdC0EBt2l+l4ANa+g21VZ+E8Hdr7mH/H
-	trd1EmZx39yO5akf31vwpI59ZOV2r0MsZyF1rvn3tKAblJqPpWI9tUB9XWCv7DbJY2mojonnWvC
-	XLdxn5/hRZksPBf2uPmfjq9ZLlYZJdGLtoMAgyh3SAP3UX6cP3nynd58NAB/+Ilgi5txhFNWr7U
-	BAGE1zZqOs8GQu2luu4DU7CQ9AZMAB+dfdY7jDZIgQk1RBgWxbMXMTQFupW+KDYyF/8kvba3jzC
-	IRDYmk+WRd/bE0YDhAr5hrsuC0tOnwdUgFiahSGmwI/O4XGJL3I1wjwWCNqHObXa42S29PLegVF
-	rEo4neDNOgZUvng1I3LNEIyMqMEofdUF/9Xx9YjTJGFp8p7mWmnSX8dWgZftScsQC9G86IWUniu
-	SCpcytpvZvL1JB8FJmGb1/6jTKYIFCVKbaaVDzASLVBBiWKfe7Mjoc2duuEJfEy80x3jbq3Edgd
-	LyiYEipOh5ocKGxP1qyUujw9t9LYKAa1MYUjuxpzyDy6qp/P41RkZGhnkA0CvRAZ6Fl
-X-Received: by 2002:a17:907:1c29:b0:c25:fdbc:52df with SMTP id a640c23a62f3a-c29e5244c19mr402266066b.10.1789588686107;
-        Wed, 16 Sep 2026 12:58:06 -0700 (PDT)
-Received: from smtpclient.apple (83.10.8.214.ipv4.supernova.orange.pl. [83.10.8.214])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c29de5e4ca9sm178474666b.42.2026.09.16.12.58.04
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 16 Sep 2026 12:58:05 -0700 (PDT)
-From: Norbert Szetei <norbert@doyensec.com>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="vgXzLwGO"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Content-ID:Content-Description;
+	bh=GhMZiNqLd2dOE9/TX3oM+jpcEYp/1e6C8q1PDfzzjkQ=; b=vgXzLwGOpQOBXXPQN2pMb/CaIr
+	GlcDYeiAQJwPbmquxE+qM8BfOd5ks1JJgEos0S2/j2gDSkFaG6eXrAv8t33GrHlr8amtxGUk8BeJV
+	zhZr+sYDHAWrMZ3onDsnjJHJp+QVBpOYWiCZX8EPVKsyLem+KHPGZHxrKSZqpK7PNwlw2lMupINjV
+	O0KZhy8GHWsH5Mzxy/XtoHorUS21LmG0rdWuznFpxK3OfotX424G1biIidwij3jdCAKXQfBwOx04E
+	O1N0RgZ4z4QQOhRvQeWlqgPhQa+H95iLJGXDyts//d2OUXVhP49NhtJhgMg/0kVpkorHOBHGV5hSC
+	aUlammiDA3lczTsycz3rWx6+eyHok1DbDRxWVPEhJPB72tgyuo4CuigO579HedomojitE70NnNSsB
+	paJJ++nHZDbyVw0zln9E8t76skIOhvhMF5HrSL8lYKSRkrXNWDHeojOR/DzMCEXaATKsdh3i+j6WA
+	lk6IUT2voJdE/Ssaez3+FAtwF8B1bDA493pMmZ2CWRP/DpWGCVgzB3O7PEwt2YFGl4kSsq8/giV8Z
+	abrSWHu2uWSykGVzbDXylXTPmq4Lxj8x6ycJX2Iha/M6Ejp2Mf0vkhEWYdMyV08d2vXqlaDRfkHd8
+	oFwsiayx8QQIsrsEnpFt7u+DFKea++TobiTEh1MnU=;
+From: Christian Schoenebeck <linux_oss@crudebyte.com>
+To: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org,
+ v9fs@lists.linux.dev, Haobin Wu <853555@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, aneesh.kumar@linux.vnet.ibm.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, jack@suse.cz, willy@infradead.org,
+ dhowells@redhat.com, viro@zeniv.linux.org.uk, brauner@kernel.org
+Subject:
+ Re: [PATCH v2 2/2] 9p: skip directory entries with names longer than NAME_MAX
+Date: Wed, 16 Sep 2026 22:02:08 +0200
+Message-ID: <3910569.MHq7AAxBmi@weasel>
+In-Reply-To: <20260916135403.15789-3-853555@gmail.com>
+References:
+ <20260916135403.15789-1-853555@gmail.com>
+ <20260916135403.15789-3-853555@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
-Subject: [PATCH net v2] ipv6: do not let ipv6_find_hdr() return an offset past
- the packet end
-Message-Id: <8F80BA1A-DDFD-432D-9075-242A3435FEB5@doyensec.com>
-Date: Wed, 16 Sep 2026 21:57:53 +0200
-Cc: David Ahern <dsahern@kernel.org>,
- Ido Schimmel <idosch@nvidia.com>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- Ilya Maximets <i.maximets@ovn.org>,
- Aaron Conole <aconole@redhat.com>,
- Eelco Chaudron <echaudro@redhat.com>,
- dev@openvswitch.org,
- linux-kernel@vger.kernel.org
-To: netdev@vger.kernel.org
-X-Mailer: Apple Mail (2.3864.700.51.1.1)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 
-ipv6_find_hdr() walks the extension header chain, skipping each header =
-by
-the length that header itself declares.  ipv6_optlen() returns up to =
-2048,
-and the skip is never checked against skb->len, so the offset stored in
-*offset can point past the end of the packet.
+On Wednesday, 16 September 2026 15:54:03 CEST Haobin Wu wrote:
+> The 9p wire format carries directory entry names of up to 65535 bytes
+> and nothing on the client checks them against NAME_MAX. Since the
+> previous patch, v9fs_dir_readdir_dotl() passes such names straight to
+> dir_emit(), and the VFS only rejects names of PATH_MAX bytes or more in
+> verify_dirent_name(), as -EIO, which again fails the whole getdents64()
+> call.
+> 
+> A name between NAME_MAX and PATH_MAX is therefore returned to userspace
+> even though every later operation on it fails with -ENAMETOOLONG, and
+> POSIX requires readdir() to only return components of at most NAME_MAX
+> bytes. Nothing can use such an entry, so skip it instead of returning it
+> or failing the listing, reusing the strlen() result that was already
+> computed for dir_emit().
+> 
+> Suggested-by: Dominique Martinet <asmadeus@codewreck.org>
+> Link:
+> https://lore.kernel.org/all/vz5bum547fqyxf5z4m3x7tuqkuq52jlopm65t7hvynqeulh
+> 7i3@2t4wnhfxs7qv/ Assisted-by: Claude:claude-fable-5-1
+> Signed-off-by: Haobin Wu <853555@gmail.com>
+> ---
+>  fs/9p/vfs_dir.c | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
+> 
+> diff --git a/fs/9p/vfs_dir.c b/fs/9p/vfs_dir.c
+> index af00b79d801e..ad6fdc99883d 100644
+> --- a/fs/9p/vfs_dir.c
+> +++ b/fs/9p/vfs_dir.c
+> @@ -173,6 +173,7 @@ static int v9fs_dir_readdir_dotl(struct file *file,
+> struct dir_context *ctx) }
+> 
+>  		while (rdir->head < rdir->tail) {
+> +			size_t namelen;
+> 
+>  			err = p9dirent_read(fid->clnt, rdir->buf + rdir->head,
+>  					    rdir->tail - rdir->head,
+> @@ -182,10 +183,14 @@ static int v9fs_dir_readdir_dotl(struct file *file,
+> struct dir_context *ctx) return -EIO;
+>  			}
+> 
+> -			if (!dir_emit(ctx, curdirent.d_name,
+> -				      strlen(curdirent.d_name),
+> -				      QID2INO(&curdirent.qid),
+> -				      curdirent.d_type)) {
+> +			namelen = strlen(curdirent.d_name);
+> +			if (namelen > NAME_MAX) {
+> +				p9_debug(P9_DEBUG_VFS,
+> +					 "skipping entry with %zu byte name\n",
+> +					 namelen);
 
-openvswitch installs that offset as the transport header, and
-update_ipv6_checksum() then reads and writes the transport checksum =
-field
-out of bounds:
+Fair to say why:
 
-  BUG: KASAN: slab-use-after-free in =
-inet_proto_csum_replace16+0x445/0x470
-  Read of size 2 at addr ffff88810b754b06 by task ovs_ipv6_oob/629
-  CPU: 4 UID: 1000 PID: 629 Comm: ovs_ipv6_oob Tainted: G N 7.3.0-rc3+ =
-#348
-  Call Trace:
-   inet_proto_csum_replace16+0x445/0x470
-   set_ipv6_addr+0x3dd/0x460
-   do_execute_actions+0x6a3d/0x7c40
-   ovs_execute_actions+0xfd/0x480
-   ovs_packet_cmd_execute+0xc38/0xf20
-   genl_rcv_msg+0x59e/0x870
-   netlink_rcv_skb+0x18b/0x450
-   genl_rcv+0x2d/0x40
-   netlink_unicast+0x6bc/0xa20
+  "skip dentry: name length %zu > NAME_MAX"
 
-  The buggy address belongs to the object at ffff88810b754980
-   which belongs to the cache skbuff_small_head of size 704
-  The buggy address is located 390 bytes inside of
-   freed 704-byte region [ffff88810b754980, ffff88810b754c40)
+This is only handled for 9p2000.L so far. For legacy 9p2000(.u) this should
+then also be limited in v9fs_dir_readdir() IMO.
 
-Other callers use that offset too, so bound it here rather than in one
-caller.
+/Christian
 
-Reject a header whose declared length does not fit in the packet.
-ipv6_find_hdr() already fails with -EBADMSG on a malformed chain, so =
-this
-adds no new failure mode.
+> +			} else if (!dir_emit(ctx, curdirent.d_name, namelen,
+> +					     QID2INO(&curdirent.qid),
+> +					     curdirent.d_type)) {
+>  				kfree(curdirent.d_name);
+>  				return 0;
+>  			}
 
-Fixes: f8f626754ebe ("ipv6: Move ipv6_find_hdr() out of Netfilter =
-code.")
-Suggested-by: Ilya Maximets <i.maximets@ovn.org>
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Norbert Szetei <norbert@doyensec.com>
----
-v2:
-  - fix ipv6_find_hdr() instead of the openvswitch caller, per the =
-review
-    of v1
-  - dropped the openvswitch change
-  - retitled
-v1: =
-https://lore.kernel.org/netdev/114FAFBD-F7BC-46AE-AF9F-0D15124F130E@doyens=
-ec.com/
 
-Reproducer available on request.
 
- net/ipv6/exthdrs_core.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/net/ipv6/exthdrs_core.c b/net/ipv6/exthdrs_core.c
-index 9d06d487e8b1..4a9748338cf4 100644
---- a/net/ipv6/exthdrs_core.c
-+++ b/net/ipv6/exthdrs_core.c
-@@ -278,6 +278,9 @@ int ipv6_find_hdr(const struct sk_buff *skb, =
-unsigned int *offset,
- 			hdrlen =3D ipv6_optlen(hp);
-=20
- 		if (!found) {
-+			if (skb->len - start < hdrlen)
-+				return -EBADMSG;
-+
- 			nexthdr =3D hp->nexthdr;
- 			start +=3D hdrlen;
- 		}
---=20
-2.55.0
 
