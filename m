@@ -1,188 +1,174 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+Received: from mail-ua2-f12.google.com (mail-ua2-f12.google.com [74.125.226.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867DF489861
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 21:44:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789595075; cv=none; b=bmp9QlO7cdTNmeq5ULitrkZN1naUYp77imFPHKbBSnQ/HstgSQYFUBt/xfDatOTfGSIG5XV2n6T3BLdXsdJyRkdYdafX0LCvqa7yFjRQG1p5Kw/mfQ2L08dzhYz4eHtrcf/k28+rWUXjVpJuKl6luzWyGjCkW5RKTIXs6e7HNoo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789595075; c=relaxed/simple;
-	bh=eVwAxwIHPv5sTNmzVLKDZnp4GCwOva7HQs7nyqQVR/w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KQQ0o+i2MqrF3q8pT0nm41mJSiFMIUT5DadFLi3YjMX3SvzSyKDk6L1sFA2/cCHEimj94iQG/Fe8UQT92krsVWel412W4Zt1D0ZxxafrIHrOkHud4yCeIA80+x3G3AA8HQlYzSVmq+dnjKYGHuRY+J0QsNFpz796gSb8nb8r2RI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RjXdezg7; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1B34D9F99
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 21:44:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.226.204
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789595086; cv=pass; b=RrbuyrI9tHthIjApSlo0qvMr/4Pl/75HrAjbqb3PtVJIwkngJf58F7zlXMSgIA2vX/r+XWKMbH8Ryn65ibRW7Mx+GiUWzaIbV60ET5ARWeocGCIFVqpUxMyte5+DYKf78Q52d4jJhDCrcnOd+T53tUJvA0gK+MaRB1oAWl/rl7Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789595086; c=relaxed/simple;
+	bh=+TMWi8xF1c/GpLGSJWBDMGttEHh102/5Ofx0+5TAWdU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=py3aHY3daG6KSsqQ95unaoz+mMhrPaHS3mhalauk/mQWEq1Qxb0To1FuX3n/sDDwYzOzHtKfxGF2RYV0w3yt1JFn64z44lAQ+O7X4HnQ9V7lLOXQe/NbL8GFoFzBbI3mu+oRvl3GNKrK5Xj8NvMU2sYCBVfUzlUxY2XhbbxsX6E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PhRvxyDc; arc=pass smtp.client-ip=74.125.226.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RjXdezg7"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b93204449so308525e9.3
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 14:44:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PhRvxyDc"
+Received: by mail-ua2-f12.google.com with SMTP id a1e0cc1a2514c-980b6159d30so52150241.0
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 14:44:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789595057; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jo53g5WTz6V8CRE88Hj6LMYLn692TzXwsRF8A7qHhjr1LXg7KoH+NY9fC4JlkviIIF
+         sv6Z12E8ICQcBwJWg74OY2VGtIhQVWTfS4nqBl7JMa0F3AxLN4eAn8pvEiGe0x/1Rmub
+         yJdbPpN19NALTs95VvQHn4/3SAlO/CV2ELQCf0cf1lEEAgPf1GlDcClIRVpiWHlovYU1
+         nnGFR3dr4fAav324Ozd5nwf3kJqPTSQpAGFejw60CyiP6nVKMvW2vmo5lOeLFL5Gig/z
+         RgD1Ig3+WW4EOmGwMozpyUX7iFP95qlLdAVX+UjKSLFlumW2Cf+hmUwjtJd6u0PGhLZz
+         hJOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+TMWi8xF1c/GpLGSJWBDMGttEHh102/5Ofx0+5TAWdU=;
+        fh=oGHoLIYaZZ5VXFKE3jVGGmwIpxZA9pYA7V1GB8dz7XU=;
+        b=mJAPZm3k+9PoSu0W+QWq9DtrRVnidUrw+y/ssMm/JZkVDMFiKlEXH06CHLppyR08B6
+         kC2fcB603By6x9ZTXdmnZKUVq8P1yj0slXDAfJQIPHnyNJGUpZk6CUA56cZD89HT3JrA
+         /WwsZ0EQHR7wNAVZrL48SZ5hicz9iJNT4bBoAn2V/Ij0OnocUi0GEXZKo36IksvtKFqa
+         99JhzcrJAs1oyQKYWWZdwcYCttTtF4lRzXd63xtaHRiWweJRAWEfXg0BJAUgBqdCDpZG
+         lsKHZ4z0AHwQ/ehoA9E+YcPFA5IHzc6R3WSispI/rxb5bMKXpUPFNo1yqjT3tU5QVI6L
+         kVdA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789595046; x=1790199846; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FjY+yTooIwgjzGQxDpIA0K3uDvsszA1PxNKQSXHovCI=;
-        b=RjXdezg7hC3I0tRdRlyfrlijC4LDjc0TUA+UGSGqRStz6tQyGa/sXzeJtmp8eEPiu2
-         TiOer+mzoeACb2LJnI1kqqEP4mBXket7J7x0Kfeibrx+XzgfYScgk4RM+Zodip51DNGo
-         8R9czOBSJ4xLBpAfCUai9vHaDiw47aYde/SzfjTd7Razpvt/IDLFfbzS2321cmjCkJCI
-         pQiL4Fn31o11exQH5gtyQlSP4Fx3zkbLWNi1esx/pQY53XxItdlTTJKJUwiQ8+W3X6v1
-         smKsnF1gCRhJGNl9fbMNfSF4PHqbnMUmTZ+K8yJtxk/gAnmSNI8jpvva69Z5c13GohGt
-         AWMw==
+        d=google.com; s=20251104; t=1789595057; x=1790199857; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+TMWi8xF1c/GpLGSJWBDMGttEHh102/5Ofx0+5TAWdU=;
+        b=PhRvxyDcEKpo82rz7bjO1wDQ8uBdzgmqFw/6qMLJ6ysl579NXOSm57qPRzt39pD3oV
+         RQb6cdMJNN/Ek0B5W2zGNfO0RqIoSKMqtIpUc7eAhIfyNHQGufGBDtCJwInLu+pX9hxn
+         J9cpThCkU1tmfCxsOJRLdZFf8wYm3kRlo/yoPwYzsu2PbhjQqcSKR20KyEdhLP8618yJ
+         5CmZfZeIm2+Na8mFl/ktZ3dXA1iPW6HhEYtD+ujAGpNgWXor7U3Ki4cMIqiM6LMBSHL9
+         ktggN+6MCwK15bvCxc3iBeUikkFZwpbRMOG0Pyt60U5y0YJFcb8fm4EhJ+LQPrX9SbDv
+         Tdmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789595046; x=1790199846;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=FjY+yTooIwgjzGQxDpIA0K3uDvsszA1PxNKQSXHovCI=;
-        b=UiUUWku9cBOgzQ4JPnt0qVeaJKF1BKfJHYXv9dP0ST3qIry7KzPyceMXczXO4K0ztV
-         aqKDZjMpzcWhvPQXGAEu1AcGCXIbf3GavPITZzPeq2sjYNSwRfMNvznST/cIEmHeSgOV
-         EZEkyXZNw7Oj519sjxDZYIB9ZN4VLgEWaz+9JOOcH+5inQb0zfPq7UUhqJstT7Hmjw1V
-         L/+PQ2ETcLpFJVLTaQuVz5h39cbO/EQp3r+4DdA1zz91iPQuy6BdeSV3OiL9HerEOOv/
-         jzLEVEN0j2DJn4YE0q6aVJZr+kOZSUHYReiGe/vnp8jgkKzwBkikRkM2R0KhHRoSs7SZ
-         kNJA==
-X-Forwarded-Encrypted: i=1; AKwUvBxcbPswQ67EZgwlDHL1etiZu0doAy8RyKP/EJRV0FoCJaNlAvyh8xrad2hLItAXBV26CSmlx+g=@vger.kernel.org
-X-Gm-Message-State: AFuF++nRVnAiPFjvjNBpFk4FyuLg/X3qQizccPfUNAY+E1p9ncSbS935
-	WHTUB/1j9srcZXwZyT56wcQ61aKrjXC/dnSPhuFEl5jp0p2Jp/zRO13a
-X-Gm-Gg: AYBFou2adsfluM9T9OPAWSJgK9zqWwiaiBSKTRa3twBvYbYavIC8nzYWibFZtARUExu
-	m4cTJ91fhh5HyfrGziiUHDRRzdvoAltfz8191anXZKkWI/uwHgr1DdOBWSXtQq6p6/GaCTWrg7a
-	s7NwRK1P3lgbZFykXryCiW0S5PoYUPH9BsLPuBGUAdVC2hzk4uT70kGk82V2SbQ6G9ZibJT3pUS
-	5xc/Yb4pjdL9JSfPhbxXxjI6rdvJuNzvKCO4ntiuXgZCdGWKXYEX0P7AKQZLdjBlaqJrQplD4Jq
-	wu6RL5hM2UIwJQM9C6VJvxynPhfMwhtbx5M5P8eIjrggLtkBHx8xaNiIKImPBdzYyQZQDBYmKvo
-	4MilaUgIXNpY8D0FC71uil3jFBWtKKooUYssBeC7HHg07h5KtBF4r/1V3w7XFjxABLnJ4JWvttZ
-	N0Et+xs3NUuoAtqxQi6QLz65VFas2B6+lI+/ezGmhgzuVkH+iyQkvs21rj0tw5WJAqEjOw98USx
-	iPMJtH3mbY9YfejamU=
-X-Received: by 2002:a05:600c:5489:b0:49c:f9b8:bae0 with SMTP id 5b1f17b1804b1-49eb732b2c8mr49393815e9.2.1789595045874;
-        Wed, 16 Sep 2026 14:44:05 -0700 (PDT)
-Received: from Nuel20.localdomain ([105.118.73.8])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fbd32c5e1sm35176755e9.5.2026.09.16.14.44.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 14:44:04 -0700 (PDT)
-From: Omokefe Emmanuel Onanaroghene <emmaonana18@gmail.com>
-To: linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org
-Cc: corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	rdunlap@infradead.org,
-	mchehab@kernel.org,
-	aleksander.lobakin@intel.com,
-	aleksandr.loktionov@intel.com,
-	tudor.ambarus@linaro.org,
-	emmaonana18@gmail.com,
-	bvanassche@acm.org
-Subject: [PATCH v2] docs: kdoc: fix struct_group_tagged() parsing regression
-Date: Wed, 16 Sep 2026 22:43:57 +0100
-Message-ID: <20260916214357.22573-1-emmaonana18@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20260707; t=1789595057; x=1790199857;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+TMWi8xF1c/GpLGSJWBDMGttEHh102/5Ofx0+5TAWdU=;
+        b=mJcCMqJzhfOsWIkKn+wdgZge/peBtXRSGzkh6PG5z5lunkXJ2kohichI1V6A7iHPXy
+         37C68t8cOMECJDlsLYDq1apt3OZkNHliva1EFYwpRTnndwxPanNDkc6LCX2CrzUklEiM
+         DmpSoXLjIRJzQxkIZJwT/WVlERtTglfEJjm2K0iXuX4V1h1WgRiSCSZokeW125CXfEV9
+         aUkYNMtOX944XeBE2TzSdIIZlCizH2LJ2roEZn6esaIqNBGZ43aBirmoup+1f5SkLxI3
+         n7fIMy4RDc9qQw6MFhiRYJ4y2j5ZwpQ1SJNutF5nm2s9ds0Q3J7kvhbXw2kUW56UlJY7
+         hrIw==
+X-Forwarded-Encrypted: i=1; AKwUvBzP36QEetblBHWM3rgbT8hMswHoRe1KysAJeX+KIzcK84UvjXnO0zxCiOVM/nxPb3ENLgDK53o=@vger.kernel.org
+X-Gm-Message-State: AFuF++msXhbh0H+MbVedwQ8hr/R2KsTtSWkFarLbkJThOgTg7DYCLKIp
+	nID2it0C4xUBIsWRBn3P4ME2iFMN5vJX+W8W5ttHUL9ylIu0nCuDVdT61kfdY8EJoQ7cs0JPIY6
+	CKWUOWeQR4hV9/3i1gEuTRx6ZmiAh7u25RF5MbLs=
+X-Gm-Gg: AYBFou1i9hMY4IkVbTsrxqOH0l0NpAaijjfblVmuShTa0F1VFXD1s8RmT3PtEXdFRhv
+	Tyypb60qLiBZ8Oiais+wh14AvnQXsMHWP533EJEAcBjKRPZo0TxOEaEWo/yOEu675Fsvt9kWaNL
+	B3KO/ogEMBqLtufJetHHoqn/jleucRaMRjtcgihal7rzYDrAqZ+ehpsMUGtUFQqm/oyauSG3/vD
+	paxARzKZZhUkL5hPaY3DR6Q59/p/XxLpd+WTHp/ZI5AGLT1SmV05jTo1j5MS4CjTLmgSGT8OtpS
+	ZXMyVlwoj94J3cI0yxB4Vwz8KPAuahBpmJxpyx4P+4XIsRXVKOAlnDZLt9x3efPaMRUVxjVK4qj
+	DYMU3Z9h9xzMi1GL9EfK3
+X-Received: by 2002:a05:6102:a85:b0:7a2:2a6b:e7b4 with SMTP id
+ ada2fe7eead31-7a22a6be8efmr62586137.2.1789595055938; Wed, 16 Sep 2026
+ 14:44:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260915081910.4142719-1-morbo@google.com> <20260915081910.4142719-26-morbo@google.com>
+ <202609151258.5FC01072@keescook> <20260916010945.GEaqnsWSZ-DTMyTO25@fat_crate.local>
+In-Reply-To: <20260916010945.GEaqnsWSZ-DTMyTO25@fat_crate.local>
+From: Bill Wendling <morbo@google.com>
+Date: Wed, 16 Sep 2026 14:43:59 -0700
+X-Gm-Features: AcwNN1XbboPOY3deKY79Gty15vkSErYIT9HTgeQdVXaDzFhBvm8_kiOA449bIqU
+Message-ID: <CAGG=3QVZRCJ94+DOfSsSDhsrXVYf-ec01NZBy299nYiCAYfXKg@mail.gmail.com>
+Subject: Re: [PATCH 25/28] EDAC/thunderx: Replace strlcat() with seq_buf
+To: Borislav Petkov <bp@alien8.de>
+Cc: Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, 
+	codemender-patching+linux@google.com, Russell King <linux@armlinux.org.uk>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Ian Abbott <abbotti@mev.co.uk>, 
+	H Hartley Sweeten <hsweeten@visionengravers.com>, Tony Luck <tony.luck@intel.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Matthew Brost <matthew.brost@intel.com>, 
+	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+	Matthias Schwarzott <zzam@gentoo.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Arend van Spriel <arend.vanspriel@broadcom.com>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
+	Sylwester Nawrocki <s.nawrocki@samsung.com>, Peter Griffin <peter.griffin@linaro.org>, 
+	Alim Akhtar <alim.akhtar@samsung.com>, Linus Walleij <linusw@kernel.org>, 
+	Anil Gurumurthy <anil.gurumurthy@qlogic.com>, 
+	Sudarsana Kalluru <sudarsana.kalluru@qlogic.com>, "Martin K. Petersen" <mkp@kernel.org>, 
+	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, Jiri Pirko <jiri@resnulli.us>, 
+	Simon Horman <horms@kernel.org>, Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
+	NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
+	Tom Talpey <tom@talpey.com>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Mike Rapoport (Microsoft)" <rppt@kernel.org>, 
+	Kanglong Wang <wangkanglong@loongson.cn>, Tiezhu Yang <yangtiezhu@loongson.cn>, 
+	Qiang Ma <maqianga@uniontech.com>, Randy Dunlap <rdunlap@infradead.org>, 
+	Pengpeng Hou <pengpeng@iscas.ac.cn>, Ard Biesheuvel <ardb@kernel.org>, Breno Leitao <leitao@debian.org>, 
+	Thorsten Blum <blum@kernel.org>, Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Lyude Paul <lyude@redhat.com>, 
+	Ashutosh Desai <ashutoshdesai993@gmail.com>, Imre Deak <imre.deak@intel.com>, 
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, Johan Hovold <johan@kernel.org>, 
+	Johannes Berg <johannes.berg@intel.com>, 
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
+	Alexander Stein <alexander.stein@ew.tq-group.com>, 
+	Cryolitia PukNgae <cryolitia@uniontech.com>, Jiaming Zhang <r772577952@gmail.com>, 
+	Will Porter <mrwillporter@gmail.com>, Cen Zhang <zzzccc427@gmail.com>, 
+	=?UTF-8?Q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>, 
+	Rong Zhang <i@rong.moe>, Arun Raghavan <arunr@valvesoftware.com>, 
+	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev, 
+	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linux-edac@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	intel-xe@lists.freedesktop.org, linux-input@vger.kernel.org, 
+	linux-media@vger.kernel.org, intel-wired-lan@lists.osuosl.org, 
+	netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com, 
+	devicetree@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-nfs@vger.kernel.org, devel@lists.orangefs.org, 
+	linux-hardening@vger.kernel.org, linux-sound@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-kernel-doc reports struct_group_tagged() members as excess because
-the macro transformation rewrites it to an anonymous struct and drops their
-member names.
+On Tue, Sep 15, 2026 at 6:11=E2=80=AFPM Borislav Petkov <bp@alien8.de> wrot=
+e:
+>
+> On Tue, Sep 15, 2026 at 01:00:00PM -0700, Kees Cook wrote:
+> > Seems like seq_buf would be better her? But yes, at the very least, thi=
+s
+> > needs to be scnprintf, not snprintf (or add the checks as you have
+> > here).
+> >
+> > The rest of the seq_buf conversions look right.
+>
+> This driver has been an orphan for a while now (we just made it official)=
+ so
+> I'd prefer it if we don't do anything here.
+>
+I'll remove those changes from future emails.
 
-Keep the tag and member name when transforming struct_group_tagged(). The
-nested members are then recorded as names such as fast.order; accept the
-existing unqualified @order documentation tag during validation.
+> And yes, that mega CC list is just gross.
+>
+Apologies. :-(
 
-Add a regression test based on struct page_pool_params.
-
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://lore.kernel.org/all/0cf8ea5f-418f-45f0-907c-3d1ed4f03e9f@infradead.org/
-Fixes: 2f07ddbd5793 ("docs: xforms_lists: better evaluate struct_group macros")
-Assisted-by: LLM
-Signed-off-by: Omokefe Emmanuel Onanaroghene <emmaonana18@gmail.com>
----
-Changes in v2:
-- Add Assisted-by: LLM as requested by Jonathan Corbet.
-
- tools/lib/python/kdoc/kdoc_parser.py  |  4 ++-
- tools/lib/python/kdoc/xforms_lists.py |  2 +-
- tools/unittests/test_kdoc_parser.py   | 37 +++++++++++++++++++++++++++
- 3 files changed, 41 insertions(+), 2 deletions(-)
-
-diff --git a/tools/lib/python/kdoc/kdoc_parser.py b/tools/lib/python/kdoc/kdoc_parser.py
-index d9ad1ddc87dd..ced09504f3d7 100644
---- a/tools/lib/python/kdoc/kdoc_parser.py
-+++ b/tools/lib/python/kdoc/kdoc_parser.py
-@@ -635,7 +635,9 @@ class KernelDoc:
-                 continue
-             if param_name.startswith("{unnamed_"):
-                 continue
--            if param_name in self.entry.parameterlist:
-+            if param_name in self.entry.parameterlist or \
-+               any(actual.endswith('.' + param_name)
-+                   for actual in self.entry.parameterlist):
-                 continue
- 
-             hint = self.get_suggestions_hint(param_name, self.entry.parameterlist)
-diff --git a/tools/lib/python/kdoc/xforms_lists.py b/tools/lib/python/kdoc/xforms_lists.py
-index e3dda2fe8a53..9e8b3a6b1da1 100644
---- a/tools/lib/python/kdoc/xforms_lists.py
-+++ b/tools/lib/python/kdoc/xforms_lists.py
-@@ -60,7 +60,7 @@ class CTransforms:
-         #
-         (CMatch("struct_group"), r"struct { \2+ };"),
-         (CMatch("struct_group_attr"), r"struct { \3+ };"),
--        (CMatch("struct_group_tagged"), r"struct { \3+ };"),
-+        (CMatch("struct_group_tagged"), r"struct \1 { \3+ } \2;"),
-         (CMatch("__struct_group"), r"struct { \4+ };"),
-     ]
- 
-diff --git a/tools/unittests/test_kdoc_parser.py b/tools/unittests/test_kdoc_parser.py
-index c4a76ed13dbc..1a8287e99f2e 100755
---- a/tools/unittests/test_kdoc_parser.py
-+++ b/tools/unittests/test_kdoc_parser.py
-@@ -418,6 +418,43 @@ class TestSelfValidate(GenerateKdocItem):
-         """
-         self.run_test(self.SOURCE, [self.DEFAULT.copy()], self.EXPORTS)
- 
-+
-+class TestStructGroupTagged(GenerateKdocItem):
-+    def test_nested_struct_group_tagged_members(self):
-+        source = """
-+            /**
-+             * struct page_pool_params - page pool parameters
-+             * @fast: Fast path parameters.
-+             * @order: Order of pages.
-+             * @pool_size: Number of pages.
-+             * @slow: Slow path parameters.
-+             * @netdev: Net device pointer.
-+             * @queue_idx: Queue index.
-+             * @flags: Flags.
-+             */
-+            struct page_pool_params {
-+                struct_group_tagged(page_pool_params_fast, fast,
-+                                    unsigned int order;
-+                                    unsigned int pool_size;
-+                );
-+                struct_group_tagged(page_pool_params_slow, slow,
-+                                    struct net_device *netdev;
-+                                    unsigned int queue_idx;
-+                                    unsigned int flags;
-+                );
-+            };
-+        """
-+
-+        kernel_doc = KernelDoc(self.config, "test.c", self.xforms)
-+        patcher = patch('builtins.open', new_callable=mock_open,
-+                        read_data=dedent(source))
-+        with patcher:
-+            _, entries = kernel_doc.parse_kdoc()
-+
-+        self.assertEqual(len(entries), 1)
-+        self.assertEqual(entries[0].warnings, [])
-+
-+
- #
- # Class and logic to create dynamic tests from YAML
- #
--- 
-2.43.0
-
+-bw
