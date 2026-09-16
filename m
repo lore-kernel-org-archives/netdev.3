@@ -1,51 +1,52 @@
 Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495283515E5;
-	Wed, 16 Sep 2026 03:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2661A9460;
+	Wed, 16 Sep 2026 03:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789529061; cv=none; b=Jl0f4qpwVRxDfyzoX5h9P4FLlH1xJn/r/TBcnCPi8VU4mF5KIJ/W2/RlWiZXc/AadaEnBLseDnwabboKdzxVz/lq3Qi1lQP5lct1rR+sIrM7sF9NRBoUCwyDgx5l1fA5CrBYWyjNHbsffsmBiLmSLCzhjCgXpkVeoqNrJcLlOa4=
+	t=1789529065; cv=none; b=df/obYXP96O2FsmiYQVmiv/SO6GkxWsG1oIRnuHxG14c94qGnJHzCATnzJidEBa3b9bV4B5jD1o3xgrGHVBq5p9gyeAqzZXD54H3xAcZIkyZC2OXyngLe9PE27m5iPQpVvilUr4LaqbgCrUD9GRVa9PnlOOpFes4PEUkIertrAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789529061; c=relaxed/simple;
-	bh=anHWsZmc/HioyP1vEPDMn744EpmT5YgretWwLYFhp2M=;
+	s=arc-20240116; t=1789529065; c=relaxed/simple;
+	bh=IW0//u1gpMevyolcBWeSbUdau23fguyuh11+5qqrMgQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fm4QbmvmbiUasMdAwl+V1QBHPkMEY7B2DtRRQR8OB6so2bAdUAQ3PKSOgr6YbHqUL7FHb5dzyqGPfXd4rC6NSr8r2qWNWr3GDb//k8YkuZMuSyHpJgbbsoHCda11Y4im8RsYgzt6RlYBQoudu986udWvFgmEI/cX6gPNnSAKHLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=ISnU2Akr; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=jHrNV/uq; arc=none smtp.client-ip=23.88.97.239
+	 In-Reply-To:To:Cc; b=km1vX/lY5Kg318q/6+s2QeoqwOrxBim28k/fvRPpL8JD9hko+vr/6MPY7sQOdF89NoHQhzaotA1wkiRrpDtIRGoP08dB9XdAPc8P/2nsrXAlfZEHzlisWc/yLPbD0ACqmZ1IVCqkBB8NEBV0RxU4D951UNlwxAgtEVEDhMCXmbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=sVE7EjgR; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=vZLSQTmL; arc=none smtp.client-ip=23.88.97.239
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="ISnU2Akr";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="jHrNV/uq"
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="sVE7EjgR";
+	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="vZLSQTmL"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1789529057;
-	bh=anHWsZmc/HioyP1vEPDMn744EpmT5YgretWwLYFhp2M=;
+	s=default; t=1789529062;
+	bh=IW0//u1gpMevyolcBWeSbUdau23fguyuh11+5qqrMgQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=ISnU2Akr2esuTs843s9S13XzSsk4YaWs6YBqYUmMJtucPOdXZI/xAYQAKoDec1BX4
-	 yV+BXNwDvhkvnFpKxs9lHvDoxg93AVXoipPc5ePJYcc9unEUKWnS/dSTmXkhHpbu+R
-	 18cD7uVrulfKDdN3aa8UiOWvzxjDXM3NzUiUIjd/kiDKFklEOjrJEKyup1asOvOZol
-	 YQZus2b01NAnV18fFAovIRySWmadmJsACT07e0X3OGJ8+zAyhv/D+Y88pNYphebsPh
-	 LzKMtIhHfPGTIgZXlox7CWMdPoA5UzA172Nno/KGFp1CDV0Ik2u3oRFfsoPoqYA6vJ
-	 TK7ndkV1wDAxA==
+	b=sVE7EjgR9c2h30F/rd8wXve0hkSKVqP71MWYHzhUWYaqNiDftiu8ls+wpXz0JYsJU
+	 LZZsZbFGjURphbYcmvY2PxcsVM5E0g+9smf/YWXEFDICe3P5SROMj1OIEuIrqKoTSh
+	 veRxSrEm+0DIoEHoSvvyWVvZ4HL+92oVjGiwYN39W3glJIT49Q5bnxIxXTvG7G6gyb
+	 QI3OtSn14lZv0UAtizV28s82fITXXRfhflQ1cLx0kteEh77OwiIUtCkAXzbO697HoI
+	 2lO8RYViDj1G7DANPrCWqS6+6CNDxYbdAKWJmrOh4OCJF20fUELpSZjOkqp3NdOktl
+	 ZXm1C+7+yp13Q==
 Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 50FC63FA82; Wed, 16 Sep 2026 03:24:17 +0000 (UTC)
+	id 7DB7E3FA7C; Wed, 16 Sep 2026 03:24:22 +0000 (UTC)
 X-Spam-Level: 
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1789529056;
-	bh=anHWsZmc/HioyP1vEPDMn744EpmT5YgretWwLYFhp2M=;
+	s=default; t=1789529061;
+	bh=IW0//u1gpMevyolcBWeSbUdau23fguyuh11+5qqrMgQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=jHrNV/uqut1qvRxdcb7Pj+PdryAqAmufiONqtwCM/WzcNvA/uCIiIGDavfAyuajfL
-	 NCPmbwkrXJOiKNgamERVvYQAasfMgSNFU9no3YCmfv0ixQvwJYOAz9SrJQ8H34qFdX
-	 VvmXdKruy1f+Pb4ZLCOaPfo7teJd+A3/Hcn77x5eufP7/CWzq7RxTPxZcOX9Noe+DF
-	 aEnDOGqIq9qdSgWXZVVhpATKtzuD5A056CwA76cTszYqv0D9RUQmHlApGtjLjh/41b
-	 ZplFFyv9nRxSR+pFM9RA1/qwJWFv/Yu/9djMNm9TndocCjiHvJet2T1mvD0XqGAGHp
-	 XkrTTng9VSKMw==
+	b=vZLSQTmLcfbcA7X9FYqr/tQ2ss4tqvDm9rUcONCVNw1UQr9HkmqPWbHaD25GRUti7
+	 I1NniDwqOKu51LTIjfO/fw3qFrKGYMKItj/MqloKg+4HLyRbJpJ7lBagg5sEu4mSG/
+	 Tkhfmyrs2diBaL3JlSXFLKvxvVc21OMLfwVAJVTIMDKEr1Zakneu4mN3frmP/gHO04
+	 NwmGqDVM9AjjjmWWsiu6TMACVOfSQvH9+Lp1eZPQa01WEE0RIVb6hR5CHqMb4h2ry1
+	 2iy7ruwRPYsVr9sBAeHSsC3xwu5aso9P5+Rz/GWvObI/iE+HmbGiu9Rh8KHpIuM1aK
+	 08k8whL3Pgb5Q==
 Received: from DELLLaptop.net (unknown [223.86.26.228])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 807033FA6C;
-	Wed, 16 Sep 2026 03:24:11 +0000 (UTC)
+	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 415893FA72;
+	Wed, 16 Sep 2026 03:24:16 +0000 (UTC)
 From: Birger Koblitz <mail@birger-koblitz.de>
-Date: Wed, 16 Sep 2026 05:24:00 +0200
-Subject: [PATCH net-next v12 01/15] phylink: Add phylink_mac_interrupt
+Date: Wed, 16 Sep 2026 05:24:01 +0200
+Subject: [PATCH net-next v12 02/15] phylib: Add support for PHYs with
+ broken forced mode
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260916-ax88179a-v12-1-60c04c9924a2@birger-koblitz.de>
+Message-Id: <20260916-ax88179a-v12-2-60c04c9924a2@birger-koblitz.de>
 References: <20260916-ax88179a-v12-0-60c04c9924a2@birger-koblitz.de>
 In-Reply-To: <20260916-ax88179a-v12-0-60c04c9924a2@birger-koblitz.de>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -67,59 +68,46 @@ Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org,
  Jianhui Xu <neuromoments@gmail.com>, Nicolai Buchwitz <nb@tipi-net.de>
 X-Mailer: b4 0.14.2
 
-Add the phylink_mac_interrupt() function to phylink, which
-passes a link-change interrupt received by the MAC to phylib.
-This function can be used by drivers which want to avoid
-polling the PHY and instead rely on an interrupt received by
-the MAC when a link-change happens.
+Add support for PHYs which only supported auto-negotiated
+speed modes. This prevents a kernel warning and stack-trace within the
+phy_state_machine when PHYs return -EOPNOTSUPP from config_aneg()
+because they do not support forced modes.
 
 Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
- drivers/net/phy/phylink.c | 16 ++++++++++++++++
- include/linux/phylink.h   |  1 +
- 2 files changed, 17 insertions(+)
+ drivers/net/phy/phy.c | 4 ++++
+ include/linux/phy.h   | 1 +
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index 3ec3bb43910953f3d57a4601633d0c3be65e959d..96ed13458e9f399fa911a145613d213b1c4433c8 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -1612,6 +1612,22 @@ static bool phylink_link_is_up(struct phylink *pl)
- 	return pl->netdev ? netif_carrier_ok(pl->netdev) : pl->old_link_state;
- }
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index fce9bc7be3304b408c9f3ec9b5b95c76d3680a88..b83f938fe7c3bd619ae453434fd9582c0a055a57 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -1190,6 +1190,10 @@ int phy_ethtool_ksettings_set(struct phy_device *phydev,
+ 	      duplex != DUPLEX_FULL)))
+ 		return -EINVAL;
  
-+/**
-+ * phylink_mac_interrupt() - wrapper for phy_mac_interrupt()
-+ * @pl: a pointer to a &struct phylink returned from phylink_create()
-+ *
-+ * Passes a link-change interrupt received by the MAC to phylib.
-+ */
-+void phylink_mac_interrupt(struct phylink *pl)
-+{
-+	struct phy_device *phy;
++	if (autoneg == AUTONEG_DISABLE &&
++	    (phydev->drv->flags & PHY_BROKEN_FORCED))
++		return -EOPNOTSUPP;
 +
-+	phy = pl->phydev;
-+	if (phy)
-+		phy_mac_interrupt(phy);
-+}
-+EXPORT_SYMBOL_GPL(phylink_mac_interrupt);
-+
- static void phylink_resolve(struct work_struct *w)
- {
- 	struct phylink *pl = container_of(w, struct phylink, resolve);
-diff --git a/include/linux/phylink.h b/include/linux/phylink.h
-index 1dda5c7ed5f146930d1acc6f06072e6755167af6..f6c1db837fb5062c6d42ffc6489ec06ae84e535b 100644
---- a/include/linux/phylink.h
-+++ b/include/linux/phylink.h
-@@ -768,6 +768,7 @@ int phylink_ethtool_set_eee(struct phylink *link, struct ethtool_keee *eee);
- int phylink_mii_ioctl(struct phylink *, struct ifreq *, int);
- int phylink_speed_down(struct phylink *pl, bool sync);
- int phylink_speed_up(struct phylink *pl);
-+void phylink_mac_interrupt(struct phylink *pl);
+ 	mutex_lock(&phydev->lock);
+ 	phydev->autoneg = autoneg;
  
- #define phylink_zero(bm) \
- 	bitmap_zero(bm, __ETHTOOL_LINK_MODE_MASK_NBITS)
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index 5f8d65868e0ff558c163421cfea5a6f3bd73a53e..d5f8e527ce8dfefd40a8b34e7c2f9adbcd6c87c1 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -64,6 +64,7 @@ extern const int phy_basic_ports_array[3];
+ #define PHY_RST_AFTER_CLK_EN	0x00000002
+ #define PHY_POLL_CABLE_TEST	0x00000004
+ #define PHY_ALWAYS_CALL_SUSPEND	0x00000008
++#define PHY_BROKEN_FORCED	0x00000010
+ #define MDIO_DEVICE_IS_PHY	0x80000000
+ 
+ /**
 
 -- 
 2.47.3
