@@ -1,102 +1,115 @@
-Received: from mta0.migadu.com (out-35.mta0.migadu.com [91.218.175.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2538437A83A
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 12:21:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A0A372ECD
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 12:28:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789561321; cv=none; b=dnCT8ipxyNczOh41ky/u2Ox8G3oVtWlquc/T0UPkyJsvKGVo+V2kMAgYTalTm2gnsSX/12x7Uebv/XrN+qpm+o8yXNA9xyQ0HyQOQTLASuLPyz4/5omVdrzRERumfqTxC2IywN+8o1+kjZRLg/xEMFxD/CmUQoyaRv5t8ze/1X8=
+	t=1789561725; cv=none; b=l9EG9MgUbXxvaCTi1lNlhh3kB7EaeprCcRCJSLOwj3VjtZpBqO4vZsAFPDEDOfTdffcm3+VbvHR8Y4Zxcg8opkmj81XimX3G9nbS/1MLp9oVVT6Z1AnSFhKOa7yuAMg2zwqJPk4HNgCz9F/0OD6NRtXm7kK6T0JatkLIYZrY0B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789561321; c=relaxed/simple;
-	bh=NCVqjRr1k2CsOhHZ7+Az6mApzNV5ArQ7RRzIOhNW5kg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LxnWBNhpTNyqVGGVLQxQdPzXjQ4Sv+JPnX+zrKJllnNuFtekpgGK3z2/lToMQ1SQeHvDREzR3fMFc0XuTUjUCAQBtDDV+CCCwwRwSPSYKmklWVBSIKqAggUB+7xA2be+GWl8UBusV6jVLmum5o8Xc8bMUDAGW4pODu53ApjwF4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=GBW1Xq1a; arc=none smtp.client-ip=91.218.175.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1789561725; c=relaxed/simple;
+	bh=xl+U70fbkUqzVeG1dKiFnh1LU4j3E1hpm3qW61N6DYE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fwDHkRaV4V4glUcgh2n5N0/HvNosArf9beCvfgZW4kDBNcohvpmVQY0Jpn432lSJMZODm80F7+KGjnfWUF52qmYNkpGBA/gcAmUhqm6zTsnPU5ASFuQtoUeH00hRyLg2mLhfJ7KugtTgWjKE8RiQW2YvzjWTD8/3l7PdJ8emSiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fL3lyEyR; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=PmLu0Llv; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="GBW1Xq1a"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=NCVqjRr1k2CsOhHZ7+Az6mApzNV5ArQ7RRzIOhNW5kg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789561317; v=1; x=1790166117;
- b=GBW1Xq1aZm7NG/JY6i++lgRem95d54p4Z9Uv3dlNoZepi4QB2u1Cihb/k3GFqVj3jAqR0Lqw
- qPn0IZaXTLZxoaFGV0snLsMv4c7Ja5f00l6hxxbSSo3AOJVgrNRNTZAgvanoDqCQUymPHmyjOQM
- u9vP3fj7dCOwmKgzv26GAu00=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 7de8a246f47e0e91;
-	Wed, 16 Sep 2026 12:21:57 +0000
-X-Mizu-Trace-ID: 7de8a246f47e0e91
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <2794e401-22a0-4d4d-9d89-16633fc7c609@linux.dev>
-Date: Wed, 16 Sep 2026 20:21:50 +0800
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fL3lyEyR";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="PmLu0Llv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789561722;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xl+U70fbkUqzVeG1dKiFnh1LU4j3E1hpm3qW61N6DYE=;
+	b=fL3lyEyRgxo8EHOTAo8CiomxsMnS1L1CkvBtgtgTM2MkYSt667t4fhwyixWHaEmMgNr+VN
+	9gdKCmCpoZzGba4Plr2+Mhfo4Y0wMZO1OREI3MWv+ew5VpMpbBT+dq6e7gmZeGxTQW8vnp
+	/QWwRfWEI8stwzLVM5ND0oAEPDErnCU=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-180-bp6FqJxpOtueiQ_PzwL6ow-1; Wed, 16 Sep 2026 08:28:41 -0400
+X-MC-Unique: bp6FqJxpOtueiQ_PzwL6ow-1
+X-Mimecast-MFC-AGG-ID: bp6FqJxpOtueiQ_PzwL6ow_1789561720
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49e6ba4abdfso51409465e9.1
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 05:28:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1789561720; x=1790166520; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=xl+U70fbkUqzVeG1dKiFnh1LU4j3E1hpm3qW61N6DYE=;
+        b=PmLu0LlvrmLJEt/TDCQbxgMR9bW7qo5UUhlySx/9fcdOjTJ7tFFL0WTNdz+r0449vA
+         ILc2/Hmy4fMpRS94j/ROt7kPj79jGIH4h5g14sOhOY2kQ4uQpqF81GK+M+IljxD8X5JD
+         ekuI0M15WLlf6sftHGVoKYCnUQnGgJHVIAfCxQv/SjqZaTyIr5TEitKds0BahNY7dJxF
+         P9fvSMpiSLFfYPpgVz1ENq1ieeQty78wk3shwUOt3Rgc9Wq9F3qgnLX5tLskuT9s7juD
+         JIL9wl7z/VM3TUyjM1kCTcIZmYeeG6VeWRnDjpehVcajIGyBFqN4rzj3ZJ6UCT7kAGhR
+         aN0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789561720; x=1790166520;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xl+U70fbkUqzVeG1dKiFnh1LU4j3E1hpm3qW61N6DYE=;
+        b=EdW3gmZEdvihrjA8h6mOIItdFnqqNbBX8Zeg2TKcsRh8EjdLGk1v1A2ITbzkXM/yxY
+         nNadkbBq8ARCS8ViI0d1kIQwGsuJfk9M2o9bfMbKyn4Se6t6CnTbOQwp5SZe5xvC/b2h
+         KghFs1RTjCOhgI7Hq2rnWz9BvnElEE5NaAD/D9Yii2Ov9hb/gLXPB9eoBr/9bp7tC2Lc
+         P+rYEFHX84/0AvXu60L78Qq/nUapE/Cg7erRndJczlyoVbAtVKv8L4JhWfN34zflS0lQ
+         itKxp59jJii8G9+P670duKyEvUv/JvN3EJ2bIAPvFcRb64jBjJBHO5CsAsHJxwgeSB2s
+         lIGg==
+X-Forwarded-Encrypted: i=1; AKwUvBz3H+QWgQK5pRJpPsDKh4bHgMnfPmoJcBB2ONp9MS3CX6Pk+DqL+1ivx/JMsJIUf6sTnfUUNBY=@vger.kernel.org
+X-Gm-Message-State: AFuF++n1k2NA6l+y1A5ZNXQS5zZObBpD41TwHVHMdaRlvHR1u75ak2uF
+	8V4roqiAPEk6Ca3PyNGBo/HH3G8Ud5kG6NOPQ18Lzj3+eD6YEtDZk4/2PkzCMDe71vVzPvyvH3g
+	eEf6hxvnxOlgJzB5nshxZK36YPGvBsVfEGzT66BmTFVUqtIQfk9yTNQXqQw==
+X-Gm-Gg: AYBFou3EjJjHSeYl4ZFMr9xsdw16xjnarP1CYBG0cjifXdrqgEEqHTO72DxWguqbaTF
+	1V+15zu9p2lcyeirCSHDCLaA+Zux6XRjVR1FKJJQPQdcIDLqCRPhkAgXwu+jsD8uAFtAyL0o6ZS
+	75b/W/ZPQXcRe9AquQYwaJm9eHklxtEWlDAumJRF9evHxeQa4250978mwJwCqVKeYJ/AswN9M7y
+	QND1uyq49O+vFjCRkNoZC9HadmtVU9G/yL4Avnjph9IVjUHpEKaJ9mEaW9RUg8VyVB840joTpNM
+	NTvUFqncP4XqPQaHWcy5W5LZzO3+RC+nJ9AIOm2hJGBjE5Bz1EFVhSlGXbL5EIeFaem+r4oSvX0
+	oqTXKh6P85Z1zBMqxp01rxUbdo6nz2baL36cfLuzCBIZlRg==
+X-Received: by 2002:a05:600c:6592:b0:49d:1cc7:5ec3 with SMTP id 5b1f17b1804b1-49eb7326586mr62422955e9.9.1789561719784;
+        Wed, 16 Sep 2026 05:28:39 -0700 (PDT)
+X-Received: by 2002:a05:600c:6592:b0:49d:1cc7:5ec3 with SMTP id 5b1f17b1804b1-49eb7326586mr62421665e9.9.1789561719193;
+        Wed, 16 Sep 2026 05:28:39 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-53-30-11.retail.telecomitalia.it. [79.53.30.11])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4870bef7642sm6490127f8f.5.2026.09.16.05.28.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Sep 2026 05:28:38 -0700 (PDT)
+Date: Wed, 16 Sep 2026 14:28:29 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Michal Luczaj <mhal@rbox.co>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Asias He <asias@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 1/5] vhost/vsock: Fix socket state constant
+Message-ID: <aqp2w_FZlZoR2lFY@sgarzare-redhat>
+References: <20260915-vsock-connect-reset-closing-v2-0-a1d9abb472f7@rbox.co>
+ <20260915-vsock-connect-reset-closing-v2-1-a1d9abb472f7@rbox.co>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf 03/11] bpf: Fix bpf_sock context code generation
-To: Emil Tsalapatis <emil@etsalapatis.com>, bpf@vger.kernel.org
-Cc: ast@kernel.org, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com,
- daniel@iogearbox.net, netdev@vger.kernel.org,
- Nicholas Carlini <nicholas@carlini.com>
-References: <20260916050830.8774-1-emil@etsalapatis.com>
- <20260916050830.8774-4-emil@etsalapatis.com>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20260916050830.8774-4-emil@etsalapatis.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260915-vsock-connect-reset-closing-v2-1-a1d9abb472f7@rbox.co>
 
-
-On 9/16/26 1:08 PM, Emil Tsalapatis wrote:
-> Currently, the ctx access code reads the rx_queue_mapping
-> field with either a 4-byte or 2-byte load. The rest of the bits
-> in the register are marked known zero by the verifier. However,
-> the emitted ctx access code places in the register on certain
-> the special value (-1) using BPF_MOV_IMM64, which gets sign-extended
-> to turn on all the bits in the register. By shifting this value right,
-> the program ends up with a value at runtime above what the verifier
-> assumes is possible.
+On Tue, Sep 15, 2026 at 03:15:12PM +0200, Michal Luczaj wrote:
+>Refactor under Fixes missed one: SS_UNCONNECTED (1) -> TCP_CLOSE (7).
+>Until now, sk->sk_state = 1 stood for TCP_ESTABLISHED.
 >
-> Fix this by ensuring the read value is as wide as the assumed size.
-> Use MOV32 instructions instead of MOV64 instructions to keep
-> the upper bits zero as assumed by the verifier. Also properly report
-> the size of the destination variable (the bpf_sock field, 4 bytes) instead
-> of the source (the socket field, 2 bytes).
->
-> Fixes: c3c16f2ea6d2 ("bpf: Add rx_queue_mapping to bpf_sock")
-> Reported-by: Nicholas Carlini <nicholas@carlini.com>
-> Suggested-by: Nicholas Carlini <nicholas@carlini.com>
-> Signed-off-by: Emil Tsalapatis <emil@etsalapatis.com>
+>Fixes: 3b4477d2dcf2 ("VSOCK: use TCP state constants for sk_state")
+>Signed-off-by: Michal Luczaj <mhal@rbox.co>
+>---
+> drivers/vhost/vsock.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
 
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-
-
-> ---
->   net/core/filter.c | 7 ++++---
->   1 file changed, 4 insertions(+), 3 deletions(-)
->
-> diff --git a/net/core/filter.c b/net/core/filter.c
-> index 61940e753..5d1705508 100644
-> --- a/net/core/filter.c
-> +++ b/net/core/filter.c
-> @@ -10565,11 +10565,12 @@ u32 bpf_sock_convert_ctx_access(enum bpf_access_type type,
->   				       target_size));
->   		*insn++ = BPF_JMP_IMM(BPF_JNE, si->dst_reg, NO_QUEUE_MAPPING,
->   				      1);
-> -		*insn++ = BPF_MOV64_IMM(si->dst_reg, -1);
-> +		*insn++ = BPF_MOV32_IMM(si->dst_reg, -1);
->   #else
-> -		*insn++ = BPF_MOV64_IMM(si->dst_reg, -1);
-> -		*target_size = 2;
-> +		*insn++ = BPF_MOV32_IMM(si->dst_reg, -1);
->   #endif
-> +		*target_size = sizeof_field(struct bpf_sock, rx_queue_mapping);
-> +
->   		break;
->   	}
->   
