@@ -1,71 +1,71 @@
-Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
+Received: from mail-oi2-f11.google.com (mail-oi2-f11.google.com [74.125.231.203])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D99036B920
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 15:01:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFB337D11A
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 15:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.203
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789570904; cv=none; b=LqfBqyxBFNtSGsjCuNVb1sCVRNuaQh6KCFHtE1JK7h5VxRpHsUkMV/B/ep5MT6o/nXVy1yUGmeAiIN1lynV6uKRgfHvjWufWFD8By7+OTZNXDPqQRwF8O1q6YencVB85AU12xxh2ML4FVUnXNPISYwPs0FkMXiBdeMxbuYZEcLU=
+	t=1789570907; cv=none; b=upFKH5+S57BarxEXPcaEYSdOk9/WiIJYz7v2i6dZ/qZykY53ybbiKFe21fJk+4FIjrgHjmHkUJnXcoVp7uqADFdNRzL/yJrT5cGroRcow8ogom9WP+9VcBa0n7Y1kTkzlnPJeX7B0shajB+qadofpFLQTcVO8TQmQBT+79k/1Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789570904; c=relaxed/simple;
-	bh=qTOdMFZyJWtBhUGxiYeCLLZ9ZAHwRpChV6JdhbE1CtE=;
-	h=Date:Message-ID:From:To:Cc:In-Reply-To:Subject:Content-Type; b=Jcf1BTWhM5s4DaQ+DsvemZIhnpQW9tAf5iaIdI64W40rayXWEvdOcgox2KnR3cant/WRsEGg3Y2gqEHg3YNyMtufZNXSGXgpsUedwzQo7tDPgZw3Jf+0Et375ulUPsqbFOBPVAWaGMc6wf0WE7Kn1R7Ep9tzaDXE+98MVz9aCkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o4hYa6Rb; arc=none smtp.client-ip=74.125.227.129
+	s=arc-20240116; t=1789570907; c=relaxed/simple;
+	bh=iFOavfqcbecw7h/v32EEfxZFJOc7LOr/gGBeiIbXWio=;
+	h=Date:Message-ID:From:To:Cc:In-Reply-To:Subject:Content-Type; b=u/wREeEov0q7ty8fkKQIZk2HacS3Dqshir8YfeOoVJQsTC4pcOcT8+tYFML2jiZJWmNrymzczcnz21aVHJPUZG4/4Ll0Q8dJFuCfcsovgihtueZ4NucUTY5iZg3iKuPzj4zJ0dINvgiJqLvLPbQAO42/yqN0oC0eMepQFcvZP58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ak7Ph6o9; arc=none smtp.client-ip=74.125.231.203
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o4hYa6Rb"
-Received: by mail-pj2-f1.google.com with SMTP id 98e67ed59e1d1-398e10200a6so3221325a91.1
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 08:01:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ak7Ph6o9"
+Received: by mail-oi2-f11.google.com with SMTP id 5614622812f47-4c6545d0f93so1289653b6e.0
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 08:01:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789570903; x=1790175703; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789570904; x=1790175704; darn=vger.kernel.org;
         h=content-type:subject:in-reply-to:cc:to:from:message-id:date:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=qQIDfq7HDGGaieHqLSx0OYrJfpBmlRY3pKtC45J1x9I=;
-        b=o4hYa6Rb/yDWp4NDF7oKYygVL5/TRmHzMC8xfeWmimDDH08qve6VCN+bpbCtVFlSDp
-         JC+jEqMfl345rXdn9df7UAMUieJki3f0bjLcbMQ79gn3r+X70TfamtftEoKkVt9Iqc5i
-         oDC7lbZl6Jd2vwiXguLhGuP9YalUJHe6LqHFNDqFJK9hVfer2z14xSNwYG9cOIml8ksK
-         eVVrZuNGmn7XyMjXtrPHDJszO+ra/BtAoHJefDqsE9Ya4ZvPsXDJFE0bktZeC4fA50h4
-         g802QPR3M8NK3wYS8M+PHng1tc///lxNTrcE8ikqmI8MCWSzpdYxB4xs2zHUEdQBWNOX
-         jxkw==
+        bh=iFOavfqcbecw7h/v32EEfxZFJOc7LOr/gGBeiIbXWio=;
+        b=Ak7Ph6o9vgvSZLlqVzVzu6XID+moSRD7UXs/4QFIo9OmyEgKU6Xcjh5e15azetDpoj
+         7hkkKrDdz2ndf2mgozfGUn5rVW7l6eBKguN4ydMW3g8XLohSTsnPegteKyAXnpRutos0
+         bm0N4KWm1GvDMsxA2bT3B22v6ZUNaf+Qz1TyDAsMkLVQcPgFM3uzLfkzZ/2f6VtUovH8
+         BBTTbkZnJvMlbaZHQO20mLcVwEXYBWom32QMs1uwnqaFie3rqmpe174ppnI/8RwA/vYr
+         nLfAqq2waLWbhvUuZkVDPPxbSaE0ObNzWlL6Ok5aN3APYMPwibfUX9DpPq6XxLtlZlmf
+         j0UA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789570903; x=1790175703;
+        d=1e100.net; s=20260707; t=1789570904; x=1790175704;
         h=content-type:subject:in-reply-to:cc:to:from:message-id:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=qQIDfq7HDGGaieHqLSx0OYrJfpBmlRY3pKtC45J1x9I=;
-        b=e5n3paxJnXXNO84GrRE478KVCV/3grzGEdVqknDnAhNYviB55ShgomK6xoZ4Q4I2Fy
-         zbMcVpo8PTdKeEL7KzkK6c53rTGN1nkA824dFUg1dLvMwJbC1LlE2j5/ThINc9Oyvphg
-         b/TVrNzv6P/UsOYNJ57OsGyg0f0q4UE0VcRz5uuCZWUW+bliRGdskNavHmEhRm4oWMPx
-         xCmgMOTKXK9kaSQhL37O+ju6FqWFGemCwZ9DICHaqakUIXKdXztCdx9eQeDtQkIfQXrJ
-         hoFEU2hMLsrhDD8hnSdX92mFjhRztfI5lPQTRa+Ke5O2prFGaiWsDP757/OZVDFxlsZq
-         YHkA==
-X-Gm-Message-State: AFuF++nck0SFtWpXI3KhdXzyZpdYnpajPRIKSe0RpX5EX3BYce4O2WJW
-	hvdz29FU1r31d9mZERtm58iXXPkz9RoPSp+1/iZDX4L8NNta7RJsh7r4
-X-Gm-Gg: AYBFou03MPlQsswcmydQPlG5V8/swfLSmlxBC8cSGwcLj8TyPdq/0FWVzB+k0vKzSyN
-	pdkdtQEj6PBLVLGZ6kh7LDb61YfIiY9FwW7PUggp+E0c3y3pJ+oxb5CMJlfLoxYak6LdKSa2K2T
-	0w6yNJ0A3o/t3Lp7J8K0d7pqxD9OASF48VHWB9/fttR8XKNOnKHJYNhNsPjFw5+RCDMnquy/xez
-	eBijz1xJP3FI9kyBP2bYt7AY7PqPTP+61tXbMkL+AJY6M+attuU9xdTh4Xw5emToZkSU4WKyCs4
-	qpR4X5a4QiB2pEbvpausP53QX5trZOa3oPKx/RTykNWZgAh/4B/calEuIjyJQvkAj78QeqiV7CM
-	QMtS+5tlOuqIA0zFIJF8/Q/jT4In5rgFP34AG2qlgEWPGo60QLo/0EyZZmivxrSn7pxmviiZSqV
-	zBxWMCv8/xJBRi3M5kWkYFsPqFtnj81QjKBa8wmR5mjrgNaYP+7YMyXlbiVS+R6eXS
-X-Received: by 2002:a17:90b:2f4f:b0:39d:f2b0:5afd with SMTP id 98e67ed59e1d1-39e1e24fa64mr7015363a91.2.1789570902731;
-        Wed, 16 Sep 2026 08:01:42 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:54::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e1b706089sm6284438a91.8.2026.09.16.08.01.41
+        bh=iFOavfqcbecw7h/v32EEfxZFJOc7LOr/gGBeiIbXWio=;
+        b=t1LzMihbnrLeZsuCG5zvRYtxnssKLF7wzVNO4+1ij6UCpH+m8rlRxsYAi/i7PMPK6K
+         PHamW5YSobal5hZsOnWXUoW1U7LGQmMn6oCiNkDIDgZw2jwDoN9Kb5qBbL71hCb1cKmT
+         p5F6n7Ph6b+arsoQ8Gds+LHyRuOVtcrlNgc+tgFCM3f+GSf1jT3ZLdEISkkEyiRwYrQq
+         AsZwdN3utp87DrakYuwWqV9hO5i3l21FWfW0o+yJ0plW664BZCBJoM8k2ImXcX5ZhZx6
+         lz/zfOPzGNY4aloirLV1dke19aEI5Wc5nvxCDPk5mkuNBzIG5wJCxfmEq15Keawnkb3D
+         ZMsg==
+X-Gm-Message-State: AFuF++numoMDEaZXA25VD4/3evNueBqNFa1/7SNNJfqNT92+BSuh+mMF
+	YNY0QE6JyrzlBQMjNfUqB100tgTnPyfA1wbBa/oeotcfirxGw5+B466w
+X-Gm-Gg: AYBFou1uB7tXHs71DW60cIE+gI8+ZiRHrMzVad+p2IfImqpDhGum2lLlTRnD27VykMq
+	JIdKuqn79WSHqALNmb7WGRprV/+zi7V2ee2z9RRir2e2IXjKaMcrjwmFkjz9VKVBzpj/xdil1QU
+	v8dR17UgVIO6Q3jDvQjRK+VoRvcY8EriFGIPEawIA6pAfFiVlsdE3BaSJiWGnM3gjEVR/C4BhhY
+	gaMkS60oLjKz2IU7l/phYzETpaD2mtI0rsdDnrt8x04mSagtZ1gZrniBVX9SZ0IfxKqNKbi+OV7
+	VsT0qjiFfj39/OVcm5T0zo0VgYhSKGdy2lV0LKhFLGhuQgNdSOvaawPPg36hIwJ5LxkblYLb2p/
+	O9udW68z5AYh4GsDot2GILz5ii2oAltKY7dcajCCFABcCA1WaSMLunSjnA3kBhJyXO9vU4SuX7k
+	m9+O4ITPamEIRt+TsFi2a9MvB+cEykUkA4eD1npTT8xG+7cEDSN0LAnhC/PUy6dFE=
+X-Received: by 2002:a05:6808:23c6:b0:4c3:b290:cf55 with SMTP id 5614622812f47-4ca49cc9e69mr3688999b6e.7.1789570904339;
+        Wed, 16 Sep 2026 08:01:44 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:8::])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc50aa986a5sm1797820a12.4.2026.09.16.08.01.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 08:01:42 -0700 (PDT)
-Date: Wed, 16 Sep 2026 08:01:41 -0700
-Message-ID: <1f3eabf07c1692e419efece1dd54c9cc@gmail.com>
+        Wed, 16 Sep 2026 08:01:43 -0700 (PDT)
+Date: Wed, 16 Sep 2026 08:01:42 -0700
+Message-ID: <756a472dad0f5f5c89e634fb8290b867@gmail.com>
 From: Stanislav Fomichev <sdf.kernel@gmail.com>
 To: Mina Almasry <almasrymina@google.com>
 Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, sdf@fomichev.me,
  bobbyeshleman@meta.com, linux-kernel@vger.kernel.org
 In-Reply-To:
- <CAHS8izPWsTh=XYvMfdGy1P+RS2p-nzA0cvNXU81awys4OJTW8g@mail.gmail.com>
+ <CAHS8izP-gdUcgn2OewUVSWYFWKXrkWxhavPT3=4GwoziekHi7w@mail.gmail.com>
 Subject:
- Re: [PATCH net-next v2 1/3] net: devmem: replace gen_pool with freelist
+ Re: [PATCH net-next v2 2/3] net: devmem: embed net_iov_area in binding
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -73,53 +73,6 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 
-> You're warning here that you can't destroy the dmabuf binding but
-> you're destroying it anyway. Something is off here. Do we want an
-> early return or something else?
+> Not worth a local var anymore tbh.
 
-I'm assuming we had an early return because gen_pool_destroy would
-BUG_ON on non-empty pool. Let me just reword this warning.
-
-> The LLM thinks this NULL store in unnecassary. IDK if it will help
-> anything in practice to remove it :-)
-
-No preference, let me remove it.
-
-> We don't need freelists on tx right? We should probably not allocate
-> them then?
-
-Yeah, good point, will make it rx only.
-
-> Do we really need a secondary for_each_sgtable_dma_sg loop just to
-> calculate the total_niovs? In what edge case is the total_niovs not
-> just dmabuf_len / niov_len? We do a bunch of alignment checks to make
-> sure it all works out to that no?
-
-Agreed, that should work!
-
-> binding->total_niovs and binding->area.num_niovs seem the same thing
-> always. please get rid of one, probably binding->total_niovs.
-
-Will do, thanks!
-
-> I wonder if now that both zcrx and devmem use a freelist if the
-> freelist should be part of the net_iov_area. The point of that field
-> was to hold the common stuff actually, but I'm guessing there are
-> micro-implementation differences that will make converging annoying.
-> I'm fine either way. :shrug:
-
-Let me write it down too look separately. Agreed that it'd be nice
-to generalize.
-
-> len is referenced once now; not worth a local var.
-
-SG!
-
-> if feels somewhat simple to exclude freelist from TX. Something like:
->
-> if (direction == dma_to_device)
->   <store into tx_vec>
-> else
->   <store in freelist>
-
-Will do, yeah. Thank you for the review!
+SG, will remove!
