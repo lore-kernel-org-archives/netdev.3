@@ -1,56 +1,56 @@
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BB449B466
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 16:55:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8624C2265
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 16:55:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789577764; cv=none; b=qoEJyi8fY5NZhb2mw2aOTlA05UqXCETmhidWaWvmpm1ZoHoQsq1Yro17PGQHTzP971s1oFn7AMqNX36MiqlgTxyXtQDXUUc8guXECmw9JkWtocgvMW+kL1p0jpLiQRaL6mCxvwEJfbbqVnBSv/v3ZKDv/IE58bSQagUaYGpbvOw=
+	t=1789577764; cv=none; b=dsYYN+5sA72/Bbw6KPucN4APBM0jhhUOX6CiVhyAYZGNB6QWzwwYgSWd5yKXInVS4vBLVSAXFitwNle4csnSZThMF0i85wtrvI8hZSVbHoocntuxDtpmPN7DmrxrcpK0OEqCFSpx2N96IjnPInmJ8c6+BK0ErKZ4lWCELoSQl/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789577764; c=relaxed/simple;
-	bh=xR1Q5sLExuzFz90i0r37pdp/QCv0lmQXVS/evaGADok=;
+	bh=z4SqPirq3/thTDZQPpgxjFyVh7R2/dC52uid11RI1f0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=s8VD6cuNFv28ns49v0upASWNRUXMdotbVzDXKQxu9nU7lyKSJB6Yvbaig61DeOAxx2/U6LnIx0CoOoN8Oq/eRuzKlXxf6N8eqVfbz+pkt3BgFt4GRzsKWOJhTk8GkAf1DvNgoIG76yJqrO2BFLkK/rMnp5j/FD3VbWqOpPIH+28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KOP+BASp; arc=none smtp.client-ip=209.85.216.69
+	 To:Cc:Content-Type; b=Z8X4vnVr6gIKFAo27JxpSkRtxlSDWZIkAALX2N+oN4kBwXlqtNSEeIjI9JIvfW3Il7UHgHrFgfUDGeDlgpYcZ/GeY5PdtC4eWLlIBZXe/0ciG5G//WgvL8u6JnExFvMcCh0aj+C8qu4/YgyXZnn+fnyWLGrihtKM6hw/uZ4EnNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ALRmXGGY; arc=none smtp.client-ip=209.85.216.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KOP+BASp"
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-39e25a5f6e8so1218829a91.0
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 09:55:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ALRmXGGY"
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-38e8fee6af3so4939424a91.1
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 09:55:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789577749; x=1790182549; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789577746; x=1790182546; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=v2zfHDxBJPbd3tuhOHOKrEkYplQhAkOIknYzlGp9ds4=;
-        b=KOP+BASp3DFtDzXZfXD5xBM6rRMQXV+flBghx+gNbSkRRVSkHLIbTPizXC3jOqri7c
-         2mQcR2m+HINRU7B7xFBg5/VaRzyMUdgUIVjMrdO/qtIiRgqidrA+nQRLKw9KbssMgtPw
-         ypTrAI/DyweRGvGuidV9TR8/bhXKqrEX3qc5l8f4Uk7rFcRCYJ57bgx2MWuM6heXzKUJ
-         qU6+mzm+j50YIHxZCQnZ8dIIdgXEkVqRkR2zEg5c5BBfcs/eNPMN5Vq5RQURQVhGU9OO
-         mOOZQgKzf/Nuj5PoH0gCG9MLvVCVXWycjxbILsoFU9060/dnB0t4noY7lvVWYvEBhTyY
-         RoGw==
+        bh=oWhZ/12YRa61Im8pdGuRvfUsDHPeWGyETjtUKvyBLuw=;
+        b=ALRmXGGYHbvEK2GiU+uwhJbsl9BFpW0J9ChlM0HOoQEFwdOlclLXLScjuVrYQcfnmg
+         kqH53dqpVd/Sap245AYgTj6XunfujVeTYs7oiWNDalREHTKDZxIclrVZ8+0sagjuhx79
+         vDBg2fWJS2vpIrgw7n2y1uj6qRRxTRsgOtuc514fikqaS6Eol94vPvrzOYsoXOBWdB3e
+         4moxqNMbWsMFeG6nv3kEYfqMFRms7TCPKamMi6SqyX4NifuJVk4TNarlUfFzLyCXvuO1
+         Kjc1LYSJ2FRxGTghgr/BF/UVH4nk/zv08BKL+jm/QvrSdWO8GwAwG60ePU7V7oc4tPIV
+         s4RQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789577749; x=1790182549;
+        d=1e100.net; s=20260707; t=1789577746; x=1790182546;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=v2zfHDxBJPbd3tuhOHOKrEkYplQhAkOIknYzlGp9ds4=;
-        b=Ejer6OUT7eAmVFjtC4bX6rdApL3b8IwuN4cZe2knZ37Uw6tutTpObRnESWvB0fsy/3
-         i3HV0Dnh1d5EL4DUFb7mlhxLEMA7wXoEnkXUK8w9H0d/1TI7ghyv6U2DGm5OIQhDBG4h
-         9quiweI1VR/wW7vigrxr45rYHUu3b7ssUY75MXi8nlulxvTQWe8xO6P+GZ5Mp+peeZlt
-         Qk/eFhPP3b7am99cJQ0ZYS5p36K1Dhl93yJmmv6PZRa20+wOn7pLlSSNExDy2YOz1qE8
-         SS2skfTDYbe45uFrTRLm1iDDj57Xqau/TgFSmizNCTiZ6KB7F11qVYTkzUyNYofH3aTw
-         haaQ==
-X-Gm-Message-State: AFuF++mcXHNgbxGBPJZKj+gPOSg+6YbjWlkknOqz8JHfL1/Eg/8bkaHw
-	eVBhK5RThci00ohOWA13n2Dme0G3gDr1AvcRVEAEq0RxEpZqloFPBhLpwHs037wspHJ4LZqqN+/
-	22lIPr6YzaSXlLf3QapNdTXq92sWXics95kTROukBIIZ66KSreZ5AzSrKHJaAqepky5WSZnTDv5
-	9EKZ9Y6oiY8zBAxnX++Zo+4q5VWwY+ZVOj/+gGXirX1EQQdbEqkCj3j817fwyUz9E=
-X-Received: from pjbqi13.prod.google.com ([2002:a17:90b:274d:b0:39d:9fd8:ce01])
+        bh=oWhZ/12YRa61Im8pdGuRvfUsDHPeWGyETjtUKvyBLuw=;
+        b=EZ4l04yqBSieAjJOyb+Cy1Gm2/AMoW3oHxGvLArwxiIdNKfCr7Q3uNM3F4GokBU5c5
+         IrHGx/zbsHXWCV/mtNsul/wcfgN6b4N5p9EiueGjWhO9Cc0NXZ9n8hustZa8DB7QTo45
+         LO2poLogtHWVkNIcTUH7l396b9lI2n98qNRuWl61iq4qVsfKC1O4rRrt1yYmQ3jemNKQ
+         OiOpJOkGoxCTEDV4IlPaVgObaqlj4eQw/Wd9wMAW/sx9Asr2HgsalE03QGphDB8mkkWV
+         tjhrwjxWkrx2nSVuiPVz3G40vHKHo46Ml7R4xfw8birip0OdOPf0t+mhWG7kaCBvd3c/
+         Lz/A==
+X-Gm-Message-State: AFuF++mKtUTmYeVCmIUy+VLBBMHKnFFxftptpf0lnfrcGNSUgqCOt+Ow
+	6SfignLNVklITtw6Fv8ljP2BCE3aJ4i16I42PoP3mxDe3Zx1w9XzpoAG+rxANgR127uP6Md53iS
+	5BwNhW1zqND5QFuWi+jotflCccSt9HR2Ox3ALzsL40yUjE3JybpOtaYU97VG7iEO4PGk/YCe9XG
+	pJMHGBzwPbbWMo7vhV3S/7VxaNpH5WQZq6QjgtmniDbclDMFiCsx4HFxyep/JBcH0=
+X-Received: from pjni12.prod.google.com ([2002:a17:90a:838c:b0:39d:e6b1:6c0c])
  (user=hramamurthy job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:4e88:b0:398:cb56:e92 with SMTP id 98e67ed59e1d1-39e1e30ba45mr8188161a91.11.1789577748138;
- Wed, 16 Sep 2026 09:55:48 -0700 (PDT)
-Date: Wed, 16 Sep 2026 16:55:32 +0000
+ 2002:a17:90b:46:b0:39e:35a0:9c0f with SMTP id 98e67ed59e1d1-39e35a0a211mr877977a91.14.1789577744326;
+ Wed, 16 Sep 2026 09:55:44 -0700 (PDT)
+Date: Wed, 16 Sep 2026 16:55:28 +0000
 In-Reply-To: <20260916165533.2187434-1-hramamurthy@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260916165533.2187434-1-hramamurthy@google.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260916165533.2187434-12-hramamurthy@google.com>
-Subject: [PATCH net-next v7 11/12] gve: add ctrl ops for queue operations
+Message-ID: <20260916165533.2187434-8-hramamurthy@google.com>
+Subject: [PATCH net-next v7 07/12] gve: add gve_ctrl_ops for gve
+ initialization/teardown sequences
 From: Harshitha Ramamurthy <hramamurthy@google.com>
 To: netdev@vger.kernel.org
 Cc: joshwash@google.com, hramamurthy@google.com, andrew+netdev@lunn.ch, 
@@ -74,207 +75,198 @@ Cc: joshwash@google.com, hramamurthy@google.com, andrew+netdev@lunn.ch,
 	przemyslaw.kitszel@intel.com
 Content-Type: text/plain; charset="UTF-8"
 
-Add the next few control ops to
+From: Joshua Washington <joshwash@google.com>
 
-- create queues
-- destroy queues
+Driver initialization and teardown involve a number of control plane
+operations that need to be defined for gve_probe to operate in both
+mailbox and adminq modes. This list includes:
 
-These changes are just moving existing code into ops, no functional
-change.
+- get_ptype_map: a mapping of packet types (L3+L4) held in RX completion
+  descriptors
+- configure_rss: set up default RSS configuration if the device is not
+  queryable
+- setup_stats_report: set up DMA region for stats report (AQ-only)
+- reset_flow_rules: needed in teardown; flushes all flow rules from
+  device
 
 Reviewed-by: Willem de Bruijn <willemb@google.com>
 Reviewed-by: Jordan Rhee <jordanrhee@google.com>
 Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Joshua Washington <joshwash@google.com>
 Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
 ---
-v6:
-- drop unintentional change of gve_priv from const to non-const
-
-v5:
-- remove double logging during queue creation/destruction on err also (Sashiko)
-
- drivers/net/ethernet/google/gve/gve.h        |  4 ++
- drivers/net/ethernet/google/gve/gve_adminq.c | 50 ++++++++++++++++++++
- drivers/net/ethernet/google/gve/gve_adminq.h |  2 +
- drivers/net/ethernet/google/gve/gve_main.c   | 43 +++--------------
- 4 files changed, 63 insertions(+), 36 deletions(-)
+ drivers/net/ethernet/google/gve/gve.h        | 12 ++++++++++
+ drivers/net/ethernet/google/gve/gve_adminq.c |  7 +++---
+ drivers/net/ethernet/google/gve/gve_adminq.h |  3 +--
+ drivers/net/ethernet/google/gve/gve_main.c   | 24 +++++++++++++++-----
+ 4 files changed, 34 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/net/ethernet/google/gve/gve.h b/drivers/net/ethernet/google/gve/gve.h
-index 016e85ed91a5..00966b6a730f 100644
+index 026d685ecaee..e0583e8cd2cd 100644
 --- a/drivers/net/ethernet/google/gve/gve.h
 +++ b/drivers/net/ethernet/google/gve/gve.h
-@@ -843,6 +843,8 @@ struct gve_device_info {
-  * @configure_rss: Set up default RSS configuration
-  * @setup_stats_report: Set up DMA region for stats report (AdminQ only)
-  * @reset_flow_rules: Flush all flow rules from device
-+ * @create_queues: Sends commands to the device to create TX/RX queues.
-+ * @destroy_queues: Sends commands to the device to destroy TX/RX queues.
+@@ -833,12 +833,24 @@ struct gve_device_info {
+  *                  structures stored in @priv to be used during initialization.
+  * @set_num_ntfy_blks: Sets no. of vectors into @priv to be used during
+  *                     initialization.
++ * @get_ptype_map: Learn packet type map from device and store it in @priv
++ * @configure_rss: Set up default RSS configuration
++ * @setup_stats_report: Set up DMA region for stats report (AdminQ only)
++ * @reset_flow_rules: Flush all flow rules from device
   */
  struct gve_ctrl_ops {
  	int (*map_db_bar)(struct gve_priv *priv);
-@@ -861,6 +863,8 @@ struct gve_ctrl_ops {
- 				  dma_addr_t stats_report_addr,
- 				  u64 interval_ms); /* AQ-specific */
- 	int (*reset_flow_rules)(struct gve_priv *priv);
-+	int (*create_queues)(struct gve_priv *priv);
-+	int (*destroy_queues)(struct gve_priv *priv);
+ 	void (*unmap_db_bar)(struct gve_priv *priv);
+ 	void (*set_num_queues)(struct gve_priv *priv);
+ 	int (*set_num_ntfy_blks)(struct gve_priv *priv);
++	int (*get_ptype_map)(struct gve_priv *priv);
++	int (*configure_rss)(struct gve_priv *priv,
++			     struct ethtool_rxfh_param *param);
++	int (*setup_stats_report)(struct gve_priv *priv,
++				  u64 stats_report_len,
++				  dma_addr_t stats_report_addr,
++				  u64 interval_ms); /* AQ-specific */
++	int (*reset_flow_rules)(struct gve_priv *priv);
  };
  
  struct gve_priv {
 diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
-index f0218d78bc5d..450341b70968 100644
+index 901673d2e264..1176e13fafc0 100644
 --- a/drivers/net/ethernet/google/gve/gve_adminq.c
 +++ b/drivers/net/ethernet/google/gve/gve_adminq.c
-@@ -943,6 +943,30 @@ static void gve_set_default_rss_sizes(struct gve_priv *priv)
- 	}
+@@ -1329,8 +1329,7 @@ int gve_adminq_report_nic_ts(struct gve_priv *priv,
+ 	return gve_adminq_execute_cmd(priv, &cmd);
  }
  
-+int gve_adminq_destroy_queues(struct gve_priv *priv)
-+{
-+	int num_tx_queues = gve_num_tx_queues(priv);
-+	int err;
-+
-+	err = gve_adminq_destroy_tx_queues(priv, 0, num_tx_queues);
-+	if (err) {
-+		netif_err(priv, drv, priv->dev,
-+			  "failed to destroy tx queues\n");
-+		/* This failure will trigger a reset - no need to clean up */
-+		return err;
-+	}
-+	netif_dbg(priv, drv, priv->dev, "destroyed tx queues\n");
-+	err = gve_adminq_destroy_rx_queues(priv, priv->rx_cfg.num_queues);
-+	if (err) {
-+		netif_err(priv, drv, priv->dev,
-+			  "failed to destroy rx queues\n");
-+		/* This failure will trigger a reset - no need to clean up */
-+		return err;
-+	}
-+	netif_dbg(priv, drv, priv->dev, "destroyed rx queues\n");
-+	return err;
-+}
-+
- static void gve_enable_supported_features(struct gve_priv *priv,
- 					  u32 supported_features_mask,
- 					  const struct gve_device_option_jumbo_frames
-@@ -1791,3 +1815,29 @@ void gve_adminq_teardown_mgmt_irq(struct gve_priv *priv)
- 		priv->mgmt_irq_requested = false;
+-int gve_adminq_get_ptype_map_dqo(struct gve_priv *priv,
+-				 struct gve_ptype_lut *ptype_lut)
++int gve_adminq_get_ptype_map_dqo(struct gve_priv *priv)
+ {
+ 	struct gve_ptype_map *ptype_map;
+ 	union gve_adminq_command cmd;
+@@ -1356,9 +1355,9 @@ int gve_adminq_get_ptype_map_dqo(struct gve_priv *priv,
+ 
+ 	/* Populate ptype_lut. */
+ 	for (i = 0; i < GVE_NUM_PTYPES; i++) {
+-		ptype_lut->ptypes[i].l3_type =
++		priv->ptype_lut_dqo->ptypes[i].l3_type =
+ 			ptype_map->ptypes[i].l3_type;
+-		ptype_lut->ptypes[i].l4_type =
++		priv->ptype_lut_dqo->ptypes[i].l4_type =
+ 			ptype_map->ptypes[i].l4_type;
  	}
- }
-+
-+int gve_adminq_create_queues(struct gve_priv *priv)
-+{
-+	int num_tx_queues = gve_num_tx_queues(priv);
-+	int err;
-+
-+	err = gve_adminq_create_tx_queues(priv, 0, num_tx_queues);
-+	if (err) {
-+		netif_err(priv, drv, priv->dev, "failed to create %d tx queues\n",
-+			  num_tx_queues);
-+		return err;
-+	}
-+	netif_dbg(priv, drv, priv->dev, "created %d tx queues\n",
-+		  num_tx_queues);
-+
-+	err = gve_adminq_create_rx_queues(priv, priv->rx_cfg.num_queues);
-+	if (err) {
-+		netif_err(priv, drv, priv->dev, "failed to create %d rx queues\n",
-+			  priv->rx_cfg.num_queues);
-+		return err;
-+	}
-+	netif_dbg(priv, drv, priv->dev, "created %d rx queues\n",
-+		  priv->rx_cfg.num_queues);
-+
-+	return err;
-+}
+ err:
 diff --git a/drivers/net/ethernet/google/gve/gve_adminq.h b/drivers/net/ethernet/google/gve/gve_adminq.h
-index 0b48e9f2a82a..d696e4932a8b 100644
+index fe1e8868cdfe..5e51c060e237 100644
 --- a/drivers/net/ethernet/google/gve/gve_adminq.h
 +++ b/drivers/net/ethernet/google/gve/gve_adminq.h
-@@ -628,6 +628,8 @@ int gve_adminq_configure_device_resources(struct gve_priv *priv,
- 					  dma_addr_t db_array_bus_addr,
- 					  u32 num_ntfy_blks);
- int gve_adminq_deconfigure_device_resources(struct gve_priv *priv);
-+int gve_adminq_create_queues(struct gve_priv *priv);
-+int gve_adminq_destroy_queues(struct gve_priv *priv);
- int gve_adminq_create_tx_queues(struct gve_priv *priv, u32 start_id, u32 num_queues);
- int gve_adminq_destroy_tx_queues(struct gve_priv *priv, u32 start_id, u32 num_queues);
- int gve_adminq_create_single_rx_queue(struct gve_priv *priv, u32 queue_index);
+@@ -652,8 +652,7 @@ int gve_adminq_report_nic_ts(struct gve_priv *priv,
+ 			     dma_addr_t nic_ts_report_addr);
+ 
+ struct gve_ptype_lut;
+-int gve_adminq_get_ptype_map_dqo(struct gve_priv *priv,
+-				 struct gve_ptype_lut *ptype_lut);
++int gve_adminq_get_ptype_map_dqo(struct gve_priv *priv);
+ int gve_adminq_set_num_ntfy_blks(struct gve_priv *priv);
+ void gve_adminq_set_num_queues(struct gve_priv *priv);
+ int gve_adminq_map_db_bar(struct gve_priv *priv);
 diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index 44669b2f25d7..33af1437b3c0 100644
+index 82bf2c5fed3f..8cd82d92d3b0 100644
 --- a/drivers/net/ethernet/google/gve/gve_main.c
 +++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -886,33 +886,16 @@ static int gve_unregister_qpls(struct gve_priv *priv)
+@@ -653,7 +653,8 @@ static int gve_alloc_control_plane_resources(struct gve_priv *priv)
  
- static int gve_create_rings(struct gve_priv *priv)
+ static int gve_setup_control_plane_resources(struct gve_priv *priv)
  {
--	int num_tx_queues = gve_num_tx_queues(priv);
- 	int err;
- 	int i;
+-	int err = 0;
++	const struct gve_ctrl_ops *ops = priv->ctrl_ops;
++	int err;
  
--	err = gve_adminq_create_tx_queues(priv, 0, num_tx_queues);
-+	err = priv->ctrl_ops->create_queues(priv);
- 	if (err) {
--		netif_err(priv, drv, priv->dev, "failed to create %d tx queues\n",
--			  num_tx_queues);
- 		/* This failure will trigger a reset - no need to clean
- 		 * up
- 		 */
- 		return err;
+ 	err = gve_adminq_configure_device_resources(priv,
+ 						    priv->counter_array_bus,
+@@ -668,7 +669,7 @@ static int gve_setup_control_plane_resources(struct gve_priv *priv)
  	}
--	netif_dbg(priv, drv, priv->dev, "created %d tx queues\n",
--		  num_tx_queues);
--
--	err = gve_adminq_create_rx_queues(priv, priv->rx_cfg.num_queues);
--	if (err) {
--		netif_err(priv, drv, priv->dev, "failed to create %d rx queues\n",
--			  priv->rx_cfg.num_queues);
--		/* This failure will trigger a reset - no need to clean
--		 * up
--		 */
--		return err;
--	}
--	netif_dbg(priv, drv, priv->dev, "created %d rx queues\n",
--		  priv->rx_cfg.num_queues);
  
- 	if (gve_is_gqi(priv)) {
- 		/* Rx data ring has been prefilled with packet buffers at queue
-@@ -1067,26 +1050,12 @@ static int gve_queues_mem_alloc(struct gve_priv *priv,
+ 	if (!gve_is_gqi(priv)) {
+-		err = gve_adminq_get_ptype_map_dqo(priv, priv->ptype_lut_dqo);
++		err = ops->get_ptype_map(priv);
+ 		if (err) {
+ 			dev_err(&priv->pdev->dev,
+ 				"Failed to get ptype map: err=%d\n", err);
+@@ -690,12 +691,13 @@ static int gve_setup_control_plane_resources(struct gve_priv *priv)
+ 		goto teardown_clock;
+ 	}
  
- static int gve_destroy_rings(struct gve_priv *priv)
+-	err = gve_adminq_report_stats(priv, priv->stats_report_len,
++	err = ops->setup_stats_report(priv, priv->stats_report_len,
+ 				      priv->stats_report_bus,
+ 				      GVE_STATS_REPORT_TIMER_PERIOD);
+ 	if (err)
+ 		dev_err(&priv->pdev->dev,
+ 			"Failed to report stats: err=%d\n", err);
++
+ 	gve_set_device_resources_ok(priv);
+ 	return 0;
+ 
+@@ -719,6 +721,7 @@ static int gve_setup_control_plane_resources(struct gve_priv *priv)
+  */
+ static void gve_teardown_control_plane_resources(struct gve_priv *priv)
  {
--	int num_tx_queues = gve_num_tx_queues(priv);
++	const struct gve_ctrl_ops *ops = priv->ctrl_ops;
  	int err;
  
--	err = gve_adminq_destroy_tx_queues(priv, 0, num_tx_queues);
--	if (err) {
--		netif_err(priv, drv, priv->dev,
--			  "failed to destroy tx queues\n");
--		/* This failure will trigger a reset - no need to clean up */
--		return err;
--	}
--	netif_dbg(priv, drv, priv->dev, "destroyed tx queues\n");
--	err = gve_adminq_destroy_rx_queues(priv, priv->rx_cfg.num_queues);
--	if (err) {
--		netif_err(priv, drv, priv->dev,
--			  "failed to destroy rx queues\n");
--		/* This failure will trigger a reset - no need to clean up */
--		return err;
--	}
--	netif_dbg(priv, drv, priv->dev, "destroyed rx queues\n");
--	return 0;
-+	err = priv->ctrl_ops->destroy_queues(priv);
+ 	/* Tell device its resources are being freed */
+@@ -728,11 +731,13 @@ static void gve_teardown_control_plane_resources(struct gve_priv *priv)
+ 			dev_err(&priv->pdev->dev,
+ 				"Failed to reset flow rules: err=%d\n", err);
+ 		/* detach the stats report */
+-		err = gve_adminq_report_stats(priv, 0, 0x0, GVE_STATS_REPORT_TIMER_PERIOD);
++		err = ops->setup_stats_report(priv, 0, 0x0,
++					      GVE_STATS_REPORT_TIMER_PERIOD);
+ 		if (err)
+ 			dev_err(&priv->pdev->dev,
+ 				"Failed to detach stats report: err=%d\n", err);
+ 		gve_teardown_clock(priv);
 +
-+	/* A failure will trigger a reset - no need to clean up */
-+	return err;
+ 		err = gve_adminq_deconfigure_device_resources(priv);
+ 		if (err)
+ 			dev_err(&priv->pdev->dev,
+@@ -1827,6 +1832,7 @@ static int gve_xdp(struct net_device *dev, struct netdev_bpf *xdp)
+ 
+ int gve_init_rss_config(struct gve_priv *priv, u16 num_queues)
+ {
++	const struct gve_ctrl_ops *ops = priv->ctrl_ops;
+ 	struct gve_rss_config *rss_config = &priv->rss_config;
+ 	struct ethtool_rxfh_param rxfh = {0};
+ 	u16 i;
+@@ -1842,15 +1848,17 @@ int gve_init_rss_config(struct gve_priv *priv, u16 num_queues)
+ 
+ 	rxfh.hfunc = ETH_RSS_HASH_TOP;
+ 
+-	return gve_adminq_configure_rss(priv, &rxfh);
++	return ops->configure_rss(priv, &rxfh);
  }
  
- static void gve_queues_mem_free(struct gve_priv *priv,
-@@ -2498,6 +2467,8 @@ static const struct gve_ctrl_ops gve_adminq_ops = {
- 	.release_db_resources	= gve_adminq_release_db_resources,
- 	.setup_mgmt_irq		= gve_adminq_setup_mgmt_irq,
- 	.teardown_mgmt_irq	= gve_adminq_teardown_mgmt_irq,
-+	.create_queues		= gve_adminq_create_queues,
-+	.destroy_queues		= gve_adminq_destroy_queues,
+ int gve_flow_rules_reset(struct gve_priv *priv)
+ {
++	const struct gve_ctrl_ops *ops = priv->ctrl_ops;
++
+ 	if (!priv->max_flow_rules)
+ 		return 0;
+ 
+-	return gve_adminq_reset_flow_rules(priv);
++	return ops->reset_flow_rules(priv);
+ }
+ 
+ int gve_adjust_config(struct gve_priv *priv,
+@@ -2489,6 +2497,10 @@ static const struct gve_ctrl_ops gve_adminq_ops = {
+ 	.unmap_db_bar		= gve_adminq_unmap_db_bar,
+ 	.set_num_queues		= gve_adminq_set_num_queues,
+ 	.set_num_ntfy_blks	= gve_adminq_set_num_ntfy_blks,
++	.get_ptype_map		= gve_adminq_get_ptype_map_dqo,
++	.reset_flow_rules	= gve_adminq_reset_flow_rules,
++	.setup_stats_report	= gve_adminq_report_stats,
++	.configure_rss		= gve_adminq_configure_rss,
  };
  
  static int gve_init_priv(struct gve_priv *priv)
