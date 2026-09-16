@@ -1,93 +1,75 @@
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0474453A26;
-	Wed, 16 Sep 2026 22:45:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627BF4DBD6B;
+	Wed, 16 Sep 2026 23:01:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789598759; cv=none; b=XYye86viuPa0D4ouvHnWeCHvE+eqc3r72dk6Uldd05u5ZdsOKyDXlI2MxEYcSejUa0bcZOsJV95vHDR9XxJUVrgdKSixsCVjUzUe0k9UNrasTbW/jnmjEpd0Z0LbDjYJmt1K2kXaJMGJvc6uTFDkBGHEKcylU1Z0V4c4cdTEyMA=
+	t=1789599682; cv=none; b=e8WNGWTAfZoFhZUH0Ov7ThuKT4BA1/4Nx2JcQ1qa2lL6VopRfQLkvTPpxEGJJDi61oe0vIt5M+yFPMG8y35WxPaQo+Bp6hhauMtItzPecD00fll2nH8lXnvzN4Op4aCZHY7DSOyRY+K07TIcPQfmHY9KUcj+9+VklwXwE1kLA64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789598759; c=relaxed/simple;
-	bh=QPJiK86gWczwyhvPZ/RtOdPnY9Fb/B11shcZsNCWri8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VPW7Vo0/KzgdCavUK21qg+D9W1Q4JvyF9ZKgje4bGwc09d/f2PTHUi4Wv56fHytCxDyXLYcLUJ/Rlh/Lso/Thc9jgGS7mtzZNx0hxEbL0woHF5tCAJUxNjXV5Scp6i/UGINzX5gOMiWVR+KdPNukmCEXAzWxS/bIwioFfx8Uveg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=fs+hCgF7; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+	s=arc-20240116; t=1789599682; c=relaxed/simple;
+	bh=93RJ0b9Nbcj0EoOUg+YHsC6rl8O7AOlwHicENLbhICM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=HdVO3oztDW53vhtlK6yOtxIqQy4mHHzxXCk1Fki0enVKdO+pcc7fQB3/nSOYh/1YiARLzvDzVyoKxCaR1nRmUdkPsjbuPJ6Smg99r4viaJxdLdwOWoJvYVulkb5ViGgS0F88RaRGNfsLEUBrV6PWOfTXY7wwRJGhmPnVi9UU2Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bk4LW8Cu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="fs+hCgF7"
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id DB2DB14C2D6;
-	Thu, 17 Sep 2026 00:45:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1789598748;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=S0vKeMZP5O8XjD8NFaFZ+hYELsVn/1VFNg126B2KHt0=;
-	b=fs+hCgF7/LuEowH7wAbL5nKlzv1OH24p621QUlYZTo82FfDXJDAQNz7UiSEmskKXiH1nt8
-	zoqvDKRXSrtfstBCHKE07HMZ94E+S7viRMOTd3h9oZs+EM6xTFsufAegiuM3taPCCtqaWa
-	9dGTGnZ8hoZ7y0NuvdCy2S19ING1ImYye2oqJ6JYPH6P5zwHMgtyKQgn9FCFjOm0sorVKp
-	4GPZYbkaugumFBF9TrTMGowagXIRYJBjC+8sEJIOteShopY0rC1tTAfKGr32qiCdvKVFIH
-	aTnyUWlO6t6ERwO9VQEPHqH5hEAm4R3gg5u4laVBFv9Q0Qy1ZTuMx4DPDmVdmw==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 1d946a2e;
-	Wed, 16 Sep 2026 22:45:41 +0000 (UTC)
-Date: Thu, 17 Sep 2026 07:45:26 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Christian Schoenebeck <linux_oss@crudebyte.com>
-Cc: ericvh@kernel.org, lucho@ionkov.net, v9fs@lists.linux.dev,
-	Haobin Wu <853555@gmail.com>, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, aneesh.kumar@linux.vnet.ibm.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, jack@suse.cz, willy@infradead.org,
-	dhowells@redhat.com, viro@zeniv.linux.org.uk, brauner@kernel.org
-Subject: Re: [PATCH v2 2/2] 9p: skip directory entries with names longer than
- NAME_MAX
-Message-ID: <aqscBuQli__0XUv4@codewreck.org>
-References: <20260916135403.15789-1-853555@gmail.com>
- <20260916135403.15789-3-853555@gmail.com>
- <3910569.MHq7AAxBmi@weasel>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bk4LW8Cu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D1821F000FF;
+	Wed, 16 Sep 2026 23:01:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789599677;
+	bh=T/LKB4vwvCEFL6rIXKqGzozNS2ZR6ZhKudjebWeJJ7Y=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=bk4LW8Cuq3lqd6jYx9SYqfkEpp6Wm8Kdlhi4GvQHfk2IB4GM6NJC2jiD13dOsxSFo
+	 d8sZk+LxPry/jhBAFsO/AmpHNsPjOSD2+YBqfIL63uhfAl4DYJyBW7jTeD7f18Jsgs
+	 lwLlGyEJvT5EedlOkWeC7aOSljT/0GBf9RF9MWcEVL+x4xc4xGZqY/URZFUvsP4k6r
+	 RCi9D6YdkQ/zFFjN8m9yueaRsFSsu+FSIdgo3OpR+gNRnEOBE5d3wdj/0mZuvmg0tF
+	 2h2I+7NLo5wx4a/NgVntlVFA8oJM6tB36A/z1lxTHuuzvrm+pOt24UQXRPaGFuAQbG
+	 tnSQh+0wf6Iiw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568E839E8A7E;
+	Wed, 16 Sep 2026 23:00:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <3910569.MHq7AAxBmi@weasel>
+Subject: Re: [GIT PULL] wireless-2026-09-16
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178959961089.3323142.8312446968745652036.git-patchwork-notify@kernel.org>
+Date: Wed, 16 Sep 2026 23:00:10 +0000
+References: <20260916083642.110609-3-johannes@sipsolutions.net>
+In-Reply-To: <20260916083642.110609-3-johannes@sipsolutions.net>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org
 
-Christian Schoenebeck wrote on Wed, Sep 16, 2026 at 10:02:08PM +0200:
-> > +			if (namelen > NAME_MAX) {
-> > +				p9_debug(P9_DEBUG_VFS,
-> > +					 "skipping entry with %zu byte name\n",
-> > +					 namelen);
+Hello:
+
+This pull request was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed, 16 Sep 2026 10:35:55 +0200 you wrote:
+> Hi,
 > 
-> Fair to say why:
+> First pull for this fixes cycle, I missed the cutoff last week
+> and was catching up from vacation before. Quite a few changes,
+> but mostly syzbot and/or LLM fixes.
 > 
->   "skip dentry: name length %zu > NAME_MAX"
+> Please pull and let us know if there's any problem.
+> 
+> [...]
 
-Agreed.
+Here is the summary with links:
+  - [GIT,PULL] wireless-2026-09-16
+    https://git.kernel.org/netdev/net/c/fefaac1176bf
 
-I'd also say to keep this as P9_DEBUG_ERROR rather than VFS: it should
-be rare enough and nobody will enable DEBUG_VFS immediately, this keeps
-the message at the same log level as it was previously
-
-(P9_DEBUG_ERROR is not printed by default, but I've been meaning to
-try to change that eventually... Someday™)
-
-> This is only handled for 9p2000.L so far. For legacy 9p2000(.u) this should
-> then also be limited in v9fs_dir_readdir() IMO.
-
-In practice this was already the case because of the processing in
-p9dirent_read(), so I have no strong opinion here, but I do agree it
-makes more sense to be symetrical yes.
-If done it should be noted as a behavior change in the commit message
-(or split in yet another commit) though
-
+You are awesome, thank you!
 -- 
-Dominique Martinet | Asmadeus
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
