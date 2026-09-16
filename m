@@ -1,194 +1,194 @@
-Received: from mail-ua2-f12.google.com (mail-ua2-f12.google.com [74.125.226.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDE146A5E0
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 08:28:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.226.204
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789547314; cv=pass; b=coUeDeeq/a1g9+/c27K+rPom8l3rEhzTa6lb7pWXkxEQ6Cu16jSPUPsxaoyMaFRl7fu65dQRZhHjTOjc41Zldp0+OW9VGr+Yh6ZwyuPuBkyoi+NjGgAsdtDaNRS7k8ahV9Sod+XXQRLP3JWESpMFHHbOaKG2ItfCy657a2yyGFk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789547314; c=relaxed/simple;
-	bh=T9FXw02kbHJEl+ZSBnKkmAGVnRlakuQY/1vtyQfdaEU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XDsvM0ZOCwPswa8u/cXg8RUXJZh8edKRcGOpDj1F2cp5Rph2L7k3JT0c0zufWJ5HWMM1BiS82fqSnnEXcxeSUn6G7vlkYrW3wlSxy60zU9MpRPj2HSaciEfkr6dIXS+4a5/7sGs8hYKSy2foXFAXIrk9rHEp021SlvDxj4hJkKE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VoGSrkoy; arc=pass smtp.client-ip=74.125.226.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92BB94734EF;
+	Wed, 16 Sep 2026 08:35:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789547702; cv=none; b=FXnLg5zfpPeV9udCspzKbmwRxYQNoBAcHKpGJBD3lCs6s4QMN0R35JPKXhTrYOiIex5kj2AIpKTxEeVennajFYorc3M+/pg6m8uATzWsjSjq0K2WAgQ6UJgQWHKgI5thWakES0Ry1SERNktOdt4RoNWugAHIBWl0NajaTueYSlk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789547702; c=relaxed/simple;
+	bh=cc0gBrSRtQgDKF9OjnL3WLZPTEowHIvYsV0ALRjuzIE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=evrDv3QhxofbUt69aOIOjTcSq2WanxopYAbMOKcKpvCV1VE8alyRCfy3HcA9AuCpDdKO/XRxKp6Jq5PkeLQyIER4R5OP2lGzCe3Ne+41PB9m5worKoFOxCg/ZpUqv7jPWpA9/Ed32lvTyXixILHEb9O0xPXE3DYYB7NY3N7+u/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=jxRLtJ/O; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VoGSrkoy"
-Received: by mail-ua2-f12.google.com with SMTP id a1e0cc1a2514c-97e9d8a796aso117972241.0
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 01:28:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789547310; cv=none;
-        d=google.com; s=arc-20260327;
-        b=mQcCpJs5l6RRlulB15rWFFH2zSBzkhiuER/xxzQKW5bHajJnvB9BXVD+MeDhfqqwmA
-         /u5yPCAsdBFtG1FjMeQGdetvGxye6l2fGX1r5je1UcOK2Rd5kdsfIwimxpd/cPWQ65R8
-         FxwYxYr1goEjZfemFe/AA9NGgo73IaURGXzuDmrPakvpx8nm90M4xNlC9/GSqjDfX2xq
-         J2Q8h9ilz/BGhJKl+IaX0e6Lan3uWofKmentoEVYca53RyOA1rCdIqM6Fi2PbYqEQo/K
-         A5rwN7tA35pO1GwUDS4YuXVSDXqW5GB0/X/HZxLn28uLUiBvH/WrfkRErMNMTwSiHKJ9
-         irwg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=MArIcxEq1DF3tM6gYQ8CgYvDf8FqlVp7SuT0GyZ8Xuo=;
-        fh=vbcRiWLMOXBb4rMNUuLDU7rj6D5QgME5oHQ60ASLYu4=;
-        b=Eys9pL9Jj7cfMLixp7NJcje/LyyYh0lG35Vys8DYpjOBQUiFMYXPTWH1i3qsXJkaAo
-         lL+FNqUvU/ZMnKEtJSnz6rCdh9XT/YeirkU5G3vQaLJMu3C6Zor7B+LD/CspYUXBnGWK
-         55qsybo8oZQqlLiADkBXXMqofBoit9sz71L/wf4cLJvN9bbT2poSiy+F5E4KIiYpthWf
-         Favy7+3h5liqmD73iD189FZOONQgBd7pLzTNVbPh5HoP9SsE9lVrVwFBLy1zFatonZhK
-         +VlfWfSjrHdrdduVt+eD2NvF+Ot0ja3JSHKEQ9zfVk3+2jfglgzapzunJ+r4JZwqt/O3
-         3Vpw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789547310; x=1790152110; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=MArIcxEq1DF3tM6gYQ8CgYvDf8FqlVp7SuT0GyZ8Xuo=;
-        b=VoGSrkoykj4iHFBQlHi6x04MMZ4xlV2riMpfJ6wSq6uWEU/YZEm4zFEvaKTt8Bnss/
-         KguOf6k2h3GF/q5RTu8fC4OklgcKX8epdHUlHqWQjhJq+iFTkPt/+mCMs4J7O3GvYvQF
-         P+hKfiW15cldfddkPJMiS7aOS0vemE/CqqIXnZNuGTjdax3yzKFz5ArlVFlmuAw+0E9s
-         Qy6HfEuGzy1JhqU5AikECaOVGMfNxTdehATGPVl74iq2MShnoj+5SOEzJbHLB3Kew61N
-         kI+b/JimjFPEp/gErA0Q/OAqkM3ZqEcQY8su3dd7sw7vd/8Cl2vmjq+HPXXJ/PrdOJKs
-         vpUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789547310; x=1790152110;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MArIcxEq1DF3tM6gYQ8CgYvDf8FqlVp7SuT0GyZ8Xuo=;
-        b=lqJnxwRrSsUywyf/JilN9GWvx+cVRZ3k0bKuWewOiZM5H8m4qqRoKmfCX79tnf5Ajo
-         XjklF8kxlFfMOydTFKgPg/FvB7CKhlUqQvd5o4KRYJ/4X+TNgkYXUveR3Z5h/cLntwAw
-         gQXeoiiXsE1j+glBHZQD1xQMsfqWsHdJDfnUZP8LgUmSbFtI2DGWDE6iCovn3wRdmncS
-         8qTfaBFMH2s+T0nH1a0Ldp9ZWWiRJU6NOrbQiOSD37cYdQ5Q9/PKQcdMAsncgYkSoghU
-         Lp/XDPrEU66gnm0pEP10oT/M4niLFmyJwO0WedpuQZQWVn+vn8/ACYQg41J2OrImbi+t
-         xQwg==
-X-Forwarded-Encrypted: i=1; AKwUvBy903EEdLSwzUuGnetRDIzcwJandhGK++n7DtKPZcNRgOGHkxSS7/bJzSovs8iThRgYSSXlQJk=@vger.kernel.org
-X-Gm-Message-State: AFuF++nMPYn756+CWrIyjGuIXS7cSXd6iTe1vMaYFTklr0DPlUwncQT5
-	GuNTLdbdaUvW1xzSSGsgKsu+3JNtclICTfz0Zo4077Qes7p4+RqDa68qM+1XyiV4O7G7ppiJ+8u
-	NHmszcIAnzlnz41Om2H5bwWLH1jg9xz/60FVEfzU=
-X-Gm-Gg: AYBFou3OjLqzQ6BVs/Zyir00qPkJ15ZKgWqgx4Q49khTl/XeBglazKXr3Ra/iDmz+cr
-	3GS9O2ePISlW1cRnMCqjShWFeSiEqoK1ZtKcPzZX0CR0W9QZJSFbDuiC57OEV5Gjkfth1GLLkWL
-	WQRNffiW3msagqhQxpwik6/OGMW0p6YBcMT45a9R7O38FSVIk4LsqI3wDRhhqdK63HdIofBJfRk
-	rbZImdSC2xo5u22qM7njs4lxV/CvVLc8G+lgnCRrpyX38xVAumx2UX2HU+OKYTIvYeT78hYissp
-	8U5fDg41BhQP6efqDbLN67GxpBPC9AtyVLSE42FEbo5ReVsWN3ox8jXLkrExc444kPwVUUnaQZt
-	vl7Yg5c1U+l62VCQIjy4B
-X-Received: by 2002:a05:6102:3712:b0:786:a11e:484d with SMTP id
- ada2fe7eead31-7a0522a8290mr540435137.6.1789547309631; Wed, 16 Sep 2026
- 01:28:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="jxRLtJ/O"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68FLVmJr791604;
+	Wed, 16 Sep 2026 08:34:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=kmcnHV
+	o/VF1PQEVaXp5czCv6NEEorHC1Lrf+zvinosU=; b=jxRLtJ/OPuIAOhSSDkaeTR
+	IUuKsyo+R+8cfMkw/SqTeyPmxqtH//hkV4UbT2oS+7V705hYORm8mg9K/cu0DzYN
+	nnqum5ryXd8SD4WZLECuTkFikyDj5h/PQHSbZnAyaY/VwxIFpekwWNwOAZjJxoTy
+	A1SKU7IwEecTr6UafXbiR1N+ybT1RKZGcrJI+h+RvslhDCIuA9L4Jh0E++LfKaYb
+	+c8Kd88SKsWiGWJK0AB0l6GEzxPLIpBMr0S2VQqUyW1Zd9q519SHd3If1Ifnfb4f
+	RfDBscvmWTFpuzmOAnfArrAW+LdmwuUhRhJJgTgToHBkTrogTZc6MjT+1xMH4OfA
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmw5e3bd4-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 16 Sep 2026 08:34:52 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68G7VKFM1354977;
+	Wed, 16 Sep 2026 08:34:51 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gpw6d60a8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 16 Sep 2026 08:34:51 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68G8YnJ064880914
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 16 Sep 2026 08:34:50 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9898358052;
+	Wed, 16 Sep 2026 08:34:49 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 619D75805E;
+	Wed, 16 Sep 2026 08:34:44 +0000 (GMT)
+Received: from [9.123.4.74] (unknown [9.123.4.74])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 16 Sep 2026 08:34:44 +0000 (GMT)
+Message-ID: <69676c38-3d68-41db-8b26-3e589d7477d5@linux.ibm.com>
+Date: Wed, 16 Sep 2026 14:04:42 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260915081910.4142719-1-morbo@google.com> <20260915081910.4142719-4-morbo@google.com>
- <202609151155.CC22827@keescook>
-In-Reply-To: <202609151155.CC22827@keescook>
-From: Bill Wendling <morbo@google.com>
-Date: Wed, 16 Sep 2026 01:28:13 -0700
-X-Gm-Features: AcwNN1W06HBvxyPAyDNMWJbd-pZRzg8rOuNuZoGljznF0BEtCKl9YZ-3dIsOV-o
-Message-ID: <CAGG=3QU2LxKLdqTOHse4U9AZ3sGAUe-C_wbDnBq4W1ncdsPVwg@mail.gmail.com>
-Subject: Re: [PATCH 03/28] ARM: atags: Replace strlcat() with snprintf() for
- cmdline extend
-To: Kees Cook <kees@kernel.org>
-Cc: linux-kernel@vger.kernel.org, codemender-patching+linux@google.com, 
-	Russell King <linux@armlinux.org.uk>, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Tony Luck <tony.luck@intel.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Matthew Brost <matthew.brost@intel.com>, 
-	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
-	Matthias Schwarzott <zzam@gentoo.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Arend van Spriel <arend.vanspriel@broadcom.com>, Rob Herring <robh@kernel.org>, 
-	Saravana Kannan <saravanak@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	Sylwester Nawrocki <s.nawrocki@samsung.com>, Peter Griffin <peter.griffin@linaro.org>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Linus Walleij <linusw@kernel.org>, 
-	Anil Gurumurthy <anil.gurumurthy@qlogic.com>, 
-	Sudarsana Kalluru <sudarsana.kalluru@qlogic.com>, "Martin K. Petersen" <mkp@kernel.org>, 
-	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
-	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, Jiri Pirko <jiri@resnulli.us>, 
-	Simon Horman <horms@kernel.org>, Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
-	NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
-	Tom Talpey <tom@talpey.com>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Mike Rapoport (Microsoft)" <rppt@kernel.org>, 
-	Kanglong Wang <wangkanglong@loongson.cn>, Tiezhu Yang <yangtiezhu@loongson.cn>, 
-	Qiang Ma <maqianga@uniontech.com>, Randy Dunlap <rdunlap@infradead.org>, 
-	Pengpeng Hou <pengpeng@iscas.ac.cn>, Ard Biesheuvel <ardb@kernel.org>, Breno Leitao <leitao@debian.org>, 
-	Thorsten Blum <blum@kernel.org>, Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Lyude Paul <lyude@redhat.com>, 
-	Ashutosh Desai <ashutoshdesai993@gmail.com>, Imre Deak <imre.deak@intel.com>, 
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, Johan Hovold <johan@kernel.org>, 
-	Johannes Berg <johannes.berg@intel.com>, 
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
-	Alexander Stein <alexander.stein@ew.tq-group.com>, 
-	Cryolitia PukNgae <cryolitia@uniontech.com>, Jiaming Zhang <r772577952@gmail.com>, 
-	Will Porter <mrwillporter@gmail.com>, Cen Zhang <zzzccc427@gmail.com>, 
-	=?UTF-8?Q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>, 
-	Rong Zhang <i@rong.moe>, Arun Raghavan <arunr@valvesoftware.com>, 
-	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linux-edac@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	intel-xe@lists.freedesktop.org, linux-input@vger.kernel.org, 
-	linux-media@vger.kernel.org, intel-wired-lan@lists.osuosl.org, 
-	netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com, 
-	devicetree@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, linux-scsi@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, devel@lists.orangefs.org, 
-	linux-hardening@vger.kernel.org, linux-sound@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v4] net/smc: fix lgr/lnk lifetime vs diag reader race
+To: dust.li@linux.alibaba.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        alibuda@linux.alibaba.com, sidraya@linux.ibm.com
+Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
+        guwen@linux.alibaba.com, hidayath@linux.ibm.com,
+        stable@vger.kernel.org, netdev@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
+References: <20260911090906.1949163-1-mjambigi@linux.ibm.com>
+ <aqlgtaEk3kNcg-Yp@linux.alibaba.com>
+Content-Language: en-US
+From: Mahanta Jambigi <mjambigi@linux.ibm.com>
+In-Reply-To: <aqlgtaEk3kNcg-Yp@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE2MDExMCBTYWx0ZWRfX4Em5HNzT5pal
+ eq1KKGon54KhlusFWQHiFyDb9JkeiqoAIdcA+2ZytslTPzyT77jnorMQI/YB2h2Z3CQ/OUzUH7U
+ 7xmeceU1LfappMr500Wj/xPGbgHMNLmHAMtC7hLO0uLXd7Y1B6aeeVVUYrUrfcHoafn3umDtYRp
+ /jkCg5qe4DehghDT53bCJrVXjJdvYUs3EsoviUL50xlh3sfsQ2Urw4hE/7kLfkek47G1idznYHW
+ jAZbKdz/S6imk2AfIsaEN1ZlLKyDYi5PUHLR+ez2Oii7y2/S/yKOwlBkIkgeoEKmD7z1kIxWaFQ
+ 2ouer50hjqJr99En1N2JCRS5HEjiztGVmjKnTOeoX4jLv5HforsN53BpCNWuPudGagdeKvBe5TZ
+ ypxn1kQIg1X/gXt0C+o4qLsmktj0N/vHHJy2rCvZH1SZhjM0YnNx2L7QS+QdBeiPFwDGLAEYsiz
+ 9ddu9rnr9YqlRtq3UQA==
+X-Authority-Analysis: v=2.4 cv=E/NYNqdl c=1 sm=1 tr=0 ts=6aaa54ac cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
+ a=YHxmyfIP1JK-PJW0Qm8A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: ERhaANj-Ri9YnmA8eZPjDjfQe14IxmCD
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE2MDExMCBTYWx0ZWRfX/4ISbXYEpjfq
+ B96KRHw4ThAfKERCFJkhaOgbC304egqUDiu5mBT6nMVgs76KihkfrJDY4K+To+IW4gEblR0/K6H
+ 0ezoi2HcqMjrYzs845k5AvEmWWDIDMc=
+X-Proofpoint-GUID: DKl4FDDp2rZ50n65ITuA9AM52mwOliTX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-15_05,2026-09-15_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 lowpriorityscore=0 priorityscore=1501 spamscore=0
+ adultscore=0 clxscore=1015 bulkscore=0 malwarescore=0 suspectscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
+ definitions=main-2609160110
 
-On Tue, Sep 15, 2026 at 12:00=E2=80=AFPM Kees Cook <kees@kernel.org> wrote:
-> On Tue, Sep 15, 2026 at 08:18:20AM +0000, Bill Wendling wrote:
-> > --- a/arch/arm/kernel/atags_parse.c
-> > +++ b/arch/arm/kernel/atags_parse.c
-> > @@ -121,9 +121,10 @@ __tagtable(ATAG_REVISION, parse_tag_revision);
-> >  static int __init parse_tag_cmdline(const struct tag *tag)
-> >  {
-> >  #if defined(CONFIG_CMDLINE_EXTEND)
-> > -     strlcat(default_command_line, " ", COMMAND_LINE_SIZE);
-> > -     strlcat(default_command_line, tag->u.cmdline.cmdline,
-> > -             COMMAND_LINE_SIZE);
-> > +     size_t len =3D strlen(default_command_line);
-> > +
-> > +     snprintf(default_command_line + len, COMMAND_LINE_SIZE - len,
-> > +              " %s", tag->u.cmdline.cmdline);
-> >  #elif defined(CONFIG_CMDLINE_FORCE)
-> >       pr_warn("Ignoring tag cmdline (using the default kernel command l=
-ine)\n");
-> >  #else
->
-> It's pretty clear we have a pattern of "simple append" that is needed,
-> and while strlcat() does that, it's horrible. I feel like we need an
-> appending scnprintf(), and it needs to return like strscpy() does (i.e.
-> -E2BIG on truncation).
->
-> My goal would be:
->
-> - don't open-code string length math
-> - never leave the destination unterminated
-> - allow for format strings
-> - yes/no return indication for "did this truncate?"
->
-> Initializing a whole seq_buf struct for these small cases is too much
-> overhead...
->
-> For both cases (small without seq_buf, large with seq_buf), it is also
-> frequently needed to know the resulting strlen. seq_buf doesn't do this
-> right today, and a strscpy-style return value also doesn't tell us. :(
->
-Something like "llvm::Twine" would work well for this.
 
--bw
+
+On 15/09/26 8:43 pm, Dust Li wrote:
+> On 2026-09-11 11:09:06, Mahanta Jambigi wrote:
+>> The diag dump walks the socket hash table under a read_lock and
+>> dereferences conn->lgr and conn->lnk.  Two terminal teardown paths
+>> drop those references via smc_conn_free() while the socket is still
+>> hashed:
+>> 
+>> - smc_conn_kill() -> smc_close_active_abort() -> smc_conn_free() -
+>> smc_close_passive_work() -> smc_conn_free()
+>> 
+>> This allows the diag reader to dereference a freed lgr or lnk.
+>> 
+>> Fix it by unhashing the socket before smc_conn_free() is called at
+>> each of these two sites.  Any socket visible to the diag reader
+>> under the hash read_lock then has valid conn->lgr and conn->lnk
+>> pointers.
+>> 
+>> Fixes: f16a7dd5cf27 ("smc: netlink interface for SMC sockets") Fixes:
+>> 9dbe086c69b8 ("net/smc: fix invalid link access in dumping SMC-R
+>> connections") Signed-off-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
+>> --- Changes in v4: - dropped smc_conn_unhash() wrapper, conn-
+>> >unhashed flag, and all changes to af_smc.c, smc.h, smc_core.c and
+>> smc_core.h; smc_unhash_sk() is already idempotent via sk_hashed(),
+>> so direct calls at the two teardown sites in smc_close.c are
+>> sufficient - dropped the __smc_release() hunk: it needs no change
+>> since the subsequent unhash there is already a safe no-op - fixed
+>> premature-unhash issue present in v3: smc_conn_free() must not unhash
+>> because smc_conn_abort() calls it before smc_switch_to_fallback() in
+>> both smc_listen_decline() and smc_connect_rdma() error paths; unhashing
+>> there would make live fallback sockets invisible to smcss -
+>> likewise, the ISM/RDMA retry loops (smc_find_ism_v2_device_serv(), 
+>> smc_find_rdma_v2_device_serv()) call smc_conn_abort() on a failed attempt
+>> and then smc_conn_create() on the next device; unhashing in 
+>> smc_conn_free() would permanently hide the established connection
+>> from smc_diag since smc_conn_create() does not re-hash the socket
+> 
+> Hi Mahanta,
+> 
+> This version looks clean. And you explained why we can't call unhash
+> in smc_conn_abort() well. But smc_conn_abort() still calls
+> smc_conn_free(), when the smc_sk is still hashed, is there still a
+> race window with dump ?
+
+Hi Dust,
+
+Thank you for catching this corner case!
+
+During early handshake setup (when sk_state is *SMC_INIT*),
+smc_conn_abort() can be called on connection failure/fallback and
+invokes smc_conn_free() while the socket remains hashed, leaving a
+window where a concurrent diag dump could evaluate smc_conn_lgr_valid()
+and dereference conn->lgr / conn->lnk.
+
+Since sockets in *SMC_INIT* are in a transient embryonic handshake phase
+and userspace (smcss) *skips displaying link-group, DMB, and connection
+details for INIT state sockets anyway*, we could have __smc_diag_dump()
+skip inspecting connection/link-group extensions when r->diag_state ==
+SMC_INIT:
+
+diff --git a/net/smc/smc_diag.c b/net/smc/smc_diag.c
+--- a/net/smc/smc_diag.c
++++ b/net/smc/smc_diag.c
+@@ -90,6 +90,9 @@ static int __smc_diag_dump(struct sock *sk, struct
+sk_buff *skb,
+ 	r->diag_state = sk->sk_state;
++	if (r->diag_state == SMC_INIT)
++		return 0;
++
+ 	if (smc->use_fallback)
+ 		r->diag_mode = SMC_DIAG_MODE_FALLBACK_TCP;
+ 	else if (smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd)
+
+Together with unhashing before smc_conn_free() in smc_close.c for
+established and closing sockets, this cleanly closes the race window
+across all socket states without touching the hash table mechanics
+during fallback/retry.
+
+Does this approach look good to you? If you agree, I will prepare and
+submit v5 with this change. Please let me know if you have any other
+suggestions or alternative approaches, and I'll be happy to look into them.
+
+Best regards,
+Mahant
