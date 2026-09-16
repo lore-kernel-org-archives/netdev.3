@@ -1,203 +1,299 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010010.outbound.protection.outlook.com [52.101.61.10])
+Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F22E44C662;
-	Wed, 16 Sep 2026 08:20:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789546848; cv=fail; b=BeMt2FmBSQ6+rOi4cFeZ/YhtCPyfuuOGYJ/zC78taM5WuUlpGtlU/cEVlqYu2/fCs2nqAMS4kiFSNoEUSpeRAy6ltoiX/oOT0OpE09iHTDEiGIz6cvoNGzhqIeLufVevYd81CLQKGbe8BqFVEr9O8tq3Vx4RnYeqE1QhwfoHX74=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789546848; c=relaxed/simple;
-	bh=mvxgqqWcACPeYjxh9AXbLrN8KtmLxlctLe37yA2CfDo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=kL9riMWkzRa5PfSZ92tb5GRG5NJgChfTgoKdx69+TpfmT6pn5WSMNVkT13XTQR4Uba9ZwAx2aRuLHducNXTzvMOIM7qtPGrJdAZEclPBjlvAAycui4ld0EkHzLnBhmxcySuTtp5Sf0g1ZZGpSCU1AiWmb+UhDBmHCux7+TDRf60=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=P/GcNS96; arc=fail smtp.client-ip=52.101.61.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E60253F44FC;
+	Wed, 16 Sep 2026 08:20:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789546871; cv=none; b=TQUpA3pLvSdQbHkG3NjECPfp9kvcGOvtZQ6iRm1SEYA/+65cWeadXVkRYjNc/0Xe0Z3/VLfkRV79GQudUq55ZhSWRIE6FoM6Qc49uArDVHc9B28dMqLjBpsUbmeZZSG5DJU8sHO5qvt/4ecVkc0fQpg/aAs+KQMiIt1kfCSQ354=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789546871; c=relaxed/simple;
+	bh=ix6laa1fKv2LFzkSRvr2rCnc+C4gK0RcvvSc9hf8WMo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qgTgsjE6FQt49Ez/g6XMt8KvhKZ9xScLMn4bbn04DYtAHoLXqKlxcJodi2XPTB+oLKim3Ck6v27Hm2YgsaDJQZdRZrd7tUxefAOTxeR/+bdSHHcpYYZlP6fZukujPTOF6aN8z1cQzQwb5VpLoVlDLzo2iZQ3GAVq4vEVQEIKThE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=rr1Uyzd0; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ha6rUjAP; arc=none smtp.client-ip=103.168.172.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="P/GcNS96"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yY8LAFUJn5IjLbik+4WxufeTAfiqCSjnniLBKBC3iMpEJIkpsUOPaapCYAp1TCUs52DLP0GA5eA74UD+Kb/dOVKVJfpXog6dfFdCPxqb9jFPGuKRp0kd/po5LF8MKnEgpvVuhkia5GRZEubR32Ee0fsCneyEMrYuLLFML87OBL0YnGy0oPukJyJG2AgVGQk98sD0nEwJ8XsGlXRqTNvppMbz9sn+rN18tiM7UpIE7Xvmy1OM9/ZyX0Wivn+b0AvhteY9RZcwvMvy70DfTkWZe65c9CJG/iYE41z8cNbDBv7CTYIJ2qUu8nx+kELB3hGj3+rZ0vfC/+JuspMQeY49UA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4XQLnQxspT2WGlgStY6UUTdEfeQ3zNnl61R2VQvkliQ=;
- b=N2ER4adwMujQnp5yLs3v2jyFTyegQ5F8KVrlWYdOnavfJhqPF+48cVhdFTAeAfLCPAJxY2YC76GeAUc3ejAW/PjsiTkXZ9nt4ZRj5r9eBYXXu24iMoHInNvJwYAUhZotRqX22VtAI+iMzXulDv52RbWq4nUup6NPbdkHP+qmFLzhCisSymcKTJRVToiOTOE2YlbOFzEX4+xh0eJgzfqJUb7iiAfdmKO8HuweGFwKTgmXUWHrtQmaoPSXhGY+GVONCDdXno4eydw0YaO3wcylD7GLMQUkpM2hKyvyJgcrWNx4B9HJdfg1xE/5f/4l4gesCEIyyzTrO35Tsj/J6Fk05w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4XQLnQxspT2WGlgStY6UUTdEfeQ3zNnl61R2VQvkliQ=;
- b=P/GcNS960oBbZwxyeACcSj6AN8yO/ixuzKdSpBC/dAZIl+nYzmbvBgFVwhx67RPbvHZBR99Jm5rPwyk+LZqqw7sgQDbwhWLwz3MvJziSPb4mYcVseXEQOsatnZuSlSRPC3fP6A/bAZ3nR9P1e32RQDg2aGgDr2ihrH0mhhZXY2JyiMz6kZuID0AY8/bRWg2pbnfQ3/1rfFf//XRpHDsoQYcD56SF6xOlN+zI+/FdVnwsIgkJSaisiI8HgHe1ZPSoNrylb724gtOFbhurRNHa0KdmeTawb7e6TZMAPk8l0j0YWdFWVugQ1DB4kSlnY1iNXPLhdEO6E/S+liVnI+evmQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by IA0PR12MB7532.namprd12.prod.outlook.com (2603:10b6:208:43e::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Wed, 16 Sep
- 2026 08:20:37 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0406.007; Wed, 16 Sep 2026
- 08:20:37 +0000
-Date: Wed, 16 Sep 2026 11:20:28 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Yun Zhou <yun.zhou@windriver.com>
-Cc: dsahern@kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v4] net: erspan: set lltx to avoid sch_direct_xmit
- deadlock
-Message-ID: <20260916082028.GA879236@shredder>
-References: <20260916061314.936440-1-yun.zhou@windriver.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260916061314.936440-1-yun.zhou@windriver.com>
-X-ClientProxiedBy: FR3P281CA0138.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:95::17) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="rr1Uyzd0";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ha6rUjAP"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id DCE67140021C;
+	Wed, 16 Sep 2026 04:20:52 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Wed, 16 Sep 2026 04:20:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1789546852;
+	 x=1789633252; bh=UDg6j9mrNyQqsYJm04DMtPrMhfBRlvBun7iipLIlzG0=; b=
+	rr1Uyzd0LiQ7IrIdneM94F8+BDZxZrj7gj9vknOAlJ2lPtWkIom+O3r2uS7VNQVO
+	J60ApCH+TOenX+oXvQXILCglVGuqFdtXmoadWGw8zhtGQxLlcgTmcucaQr2Nyy1S
+	0AhvJggnxsLJni27YKIOoC6ZomQvdhuHa6EkCePEp6HoX5efiGztblVzR+jAFmm5
+	Q0U7nQvPtz44nWT+7P9XwM8MhejYyY2XvZBxci/7nMhKc0DNFCPbvUiNKcEZNMiu
+	CwjbRtVpwCVHT+W6DjYd94nnYT4qZQ8CNWnKh8gV3CFOWjkN+iBcWybeCL94j2rv
+	Prk/zkhpKzFu4VZojTDlEw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789546852; x=
+	1789633252; bh=UDg6j9mrNyQqsYJm04DMtPrMhfBRlvBun7iipLIlzG0=; b=h
+	a6rUjAPyKE+E0e1NaTEXilEtmYWYsjQLlzANWs7gPUqtsDwLEroE1VtZ4nSu7hw+
+	OO9vKsbBf4eridM+afR2wRfy2eGNPYUvlBXXpjCskxYn5kiIW+EFXBh52/YlHWgE
+	qGCACiD0kk4QY4et0v+gv9ARuxfJ727L/aMp7q3BHhNTyem6KhMlH7sAJwyFCW9L
+	rmO2kwse82NixoN04OMy4G1623cAJZoPL54JOVVYrMbTpXBbpEHLiDCTzVV1hAPm
+	qqyR1FVye3rSL/DwxgPBsijkR0jDBGMtWAU4WtkgNDy3OBj2kXFI6aRYYXntXPzq
+	RwTqHwGRIBmNAn5hOzczQ==
+X-ME-Sender: <xms:Y1GqapcYaEc2nmjd9kLbpBHzVKDasiVaaenT-s5MBCH40Ei92uJDPA>
+    <xme:Y1Gqav-9xifvD5wHyFto0jUQEg3LjlOvy9e5xJRGSQROEuQ0ppTW7spRj-Geyd-Wl
+    00s6BovIXPkWpQg0u6GongnWxwQ6_pmfQZVQaHrJIYR3jTij5LPuq5E>
+X-ME-Received: <xmr:Y1GqahMfBRJwjNg5nfGcq3oDbaNpnYm7Hr39msZ9GpVM8x58jWvsOqnc4sHjSH-EkpxDIsE5v4GLD3wGjY88Fts-fFgkINI>
+X-ME-Proxy-Cause: dmFkZTEZ/FnrnXrU0dEbJjONYhhQwSshApZlhZstejMN6Z5IZDCVI7roXM0j3CI2q2k1PC
+    2hTp4NJu7GUVxuvGfqN77iOwSeR8geeg9ly7q/IijxwIN8h5Ah66sqbbTT4DuZOOOOxCk4
+    Rx6ch++MK/g7lhXzhIzX8oTl0t4Siqj/nNxWuwIQHjIK0hX9uNLPpYYPYTInwnXSVc7eBQ
+    U3VtcvWJoDjXAUToMAlziBp+EK6pbvyPXd6f9we3lbAjVAUJbeNQwo5H94J323XkPsVWaA
+    CT5UzxCzKEZdrUjTailj/lt7nCELWJiqFb/z1z3icU8AyNb2S3j1dtmiLpz8y5xFWtXBpV
+    IBAp1csKjbf+qVECC1rLdWqTRl0be5kQpXktBHieFqvJtSUeIlPPAhJmJarCBYFNEeM/i1
+    yEOcv/+zMLk33OkY0dmdTpVAkRNCOSC0tET3OrAimKK+1mFPPVd2H+xJJExPoGugSK8TGK
+    UtigDus3oM4GmBVM5GEOOIp2jq8Dcm0e7X9t+fcN4bGEUqWeYXpvpjYiWviDXjHV6lWtx3
+    Qj5KbwDTcq2PjfXHs+mvZgXGZyBCo171ib16j6PFlbPQeq0kRYihYnt64+bGNyKvSjxYh1
+    nSJkrh6QieW8Ecu9IvmM4Tcljt36Py24LcdiAzZDvj/SjUiKt57OeJJmk9gg
+X-ME-Proxy: <xmx:Y1GqalXkt8eCJNLLfZhAV9F5tSXgOMh4tEJsTaaB27Xcznc1A2ABJA>
+    <xmx:Y1GqaphVgxC5cXkEIOamR_qX6u_wyxCLb-YLTC4YvVrN2c0j76YsfA>
+    <xmx:Y1Gqal-46MJGu_4c0mGVa0KPYvhsDVu0znPAIGdVYkfhI9XXQXQqnA>
+    <xmx:Y1GqagTk9YHyzcLF2XE-qwpePbGH3VB6P8Kxj-NDMvn-Vnd2IQf6sQ>
+    <xmx:ZFGqakW_7fChfta5fkhU3U3noDdREZX9zb0hEbmzvcNQSD8CLgc18ccM>
+Feedback-ID: i80c9496c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 16 Sep 2026 04:20:51 -0400 (EDT)
+Date: Wed, 16 Sep 2026 10:20:49 +0200
+From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: paul@pbarker.dev, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, geert+renesas@glider.be, magnus.damm@gmail.com,
+	richardcochran@gmail.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	vadim.fedorenko@linux.dev, sergei.shtylyov@gmail.com,
+	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next v4 01/10] net: ethernet: ravb: Remove gPTP
+ control from WoL setup and restore
+Message-ID: <20260916082049.GN1991210@fsdn.se>
+References: <20260909173027.2201560-2-niklas.soderlund+renesas@ragnatech.se>
+ <20260915015434.881057-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|IA0PR12MB7532:EE_
-X-MS-Office365-Filtering-Correlation-Id: e1315053-1836-44d8-e379-08df13cb633e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|23010399003|1800799024|56012099006|10067099003|11063799006|22082099003|18002099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	IFXmclXk3g/pn5k76vGxgfrgtAxDAVH91GHKhNbB4WRSvoRg2EyOzDZNRJALPt5oW8IYm6BWtvkuS8+z3I6jXEr/wx2xNZMPb8T16ugvbtN1/7D5CTKJq2L6L2XQAHOgpKyqNxCpi2W94RXp8EzcWYqwUi1W1dD6jZ8WKDsMElyOyEhIHtywgMMOJeFZgA+n60PMarE/9rSAWI53nbil21bBeJVqZhd5/0+XzTo2O8Bz2kmawZQKoPOYALqfiy1ClCXbA5iWPZCTsmjWo+lzwTmMsy9LWP3XJf+8M1/JfHe8XY/fUprnLiEN09rfB2qWjEozAMfr9ljMOWpGnlW5nUT6tZ7rF9jqgrc4RRTfNOndzQu1a4IH88Me2kvGUwqg0yQCiEZqYyDZNvM/gvef6yTZmNIxERvBxNqPLoyCxDQzDvJmDIMGiISyglZ3My02CMLcysZ1AYxqaEJW2s1mQSJ6sXA+rTSVrFfTCaDV1cwld3c2Skuv/rzjTzI7rqMBc38iqrrga/CKozX1eU9NFdqogdyeV3gqc1OMV9VIm0s/YUVqhpN5dy8RkIKSlxTnzwsQnQtBtLKNTIRkP9mPWNIn5oU2oEDWBm6PuSbfxkhYyczZ3cdsYHn7QUKGVfMbAQ5aHqx3gNf9GSHfTJQdXPLBZYB5JTXCRFhnNrvK154=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(56012099006)(10067099003)(11063799006)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?HsM2Af8LQ/ntGJISLd9hU7SI1PDVu0Oz/IQ8RVfnB+P2HA14J+AOTdIKyHm6?=
- =?us-ascii?Q?i1RiSqBFzTA7TAnvhnImEQRhZlO2QTaCUg4W6aqt8VdAvzSqPdxKAP9bMSCU?=
- =?us-ascii?Q?rqsgGqLJkGumasEt+kQuo2VNq4Z7UpStfioIrxB7AgsZ5gbXXdOyJRjMHs8Q?=
- =?us-ascii?Q?KL/lhrLlzeo6CvqdfR+RHUxcZhnaB6EMb2L++ELPkM5zi8uVUZJaMcLSJOBj?=
- =?us-ascii?Q?aL1Q9N5h6EJ3nnNRjtgEPtYynHK9g2x3tlt1ylrCtAzAe7e8IVYOmN0BisoX?=
- =?us-ascii?Q?dpBxkXt9QsadpuzvPtbRqgegZH5J6ObJyO3HixOWGsppU3WIIKM6iyoQZ0Cp?=
- =?us-ascii?Q?CEHxMvExO9jXH/Jzq5xz7X+j8eCFS50VnLUxR0Tqcv3nMXfwZ/NkW/vqj13u?=
- =?us-ascii?Q?hzc8ELUuKdnGSX33k1CYRS4OUn57N3FqJ01kcuOoD62/dJKgyH3ZqNdz9fK5?=
- =?us-ascii?Q?YWNqMJA1loRhOgkMRcSZCbGzv7VFarSmeJZAES4S/81Ct8rNusH3JS+xyzFv?=
- =?us-ascii?Q?uub8W6mQYvBs44hCcvskqhTK9rZysZuyRFKnemOYUGU13r3xnukyxzrxu4Nw?=
- =?us-ascii?Q?8F++LTMnkwsEJ9+4adB/ufbUdDwImAhaaPQFl66GAhr/Rz339iqe/5HtGBxg?=
- =?us-ascii?Q?sgU5iNtplz4ULUcU0HHz5tvyc2Ulos5Lrw9Uf6ejHvm365DdlKmJRREM7r1E?=
- =?us-ascii?Q?Gb7au5cQ1CzKO6To/bo2q86Mon3SeY/Y2zxKq/cFTqyEse3OT+m9y68UJNJA?=
- =?us-ascii?Q?VYGb30QzTnDbTKoWlnhS2XOW3JC55nDSAkGUzz7pf3nFBxq5fEzLBd/6y4La?=
- =?us-ascii?Q?uEVO3aaLApAMlPVF381zr3O7yqbV32/FDSKHegzCJ+ZSN++xDMF4JXAwPIrK?=
- =?us-ascii?Q?sqURT68bQ6pVY/vm32cjCiuapZumOYBgWDCmM9jtdXhdVHHVGNtp4JJMB19s?=
- =?us-ascii?Q?E1TsGncUBd6/eBc2vLrchuZ3PByFpnbPtLTRYMKz9W2G5Ozzvr5UgFEpwAk6?=
- =?us-ascii?Q?uJoNLF7SsL1Ye99MohP2Y9THaz8QI7t2SG/qcwmeXSKzR7VNW7Le7tnmvNkc?=
- =?us-ascii?Q?78YVFVIzHU945FPHPrOLWmKxSC1FiZHQGCZhfPwcCSmIaFG+qdiEDsDh3df/?=
- =?us-ascii?Q?8vcrxxFNouU5rKBGYcb9afT0kJB9oVZn78vzMw3FZBVSgi1pJfCMqAbxSFr+?=
- =?us-ascii?Q?W3jL2zN41pL293RAW3W4Up8fqp94GpzdOY/pfGbKUqw5ezdivOCu1dMJclbb?=
- =?us-ascii?Q?0EQsCrcm3NzCLnu/x5RAQHUmfpV3uhlEHQSWSIpgxS1dMLqBrNYUVO9gQ2RQ?=
- =?us-ascii?Q?Sn4IIHZqyTcIA+hR99iCHQ1X+IEaTm5RBphxmmcTdxku0p7tigM0IvzvzwNT?=
- =?us-ascii?Q?6FH6DGnsSgw7mw3Kgvr/81MXgPYWF5xuOYmw5MEL3cLuzou+Q/BFqMh/izl+?=
- =?us-ascii?Q?HxByp6EGqNSNloKiOLZmzxeS0Uc3SoWaaizJ/BppZ6sfYg0FSdrGF1lHGOoz?=
- =?us-ascii?Q?fq1+NfPQf8XWZGzR2ag/siB5oFw/vwABM430sASB/xYM0YgxsaXXhz/6NLXF?=
- =?us-ascii?Q?8N+XrFAZffl61OG/D2FfTuLM9/2zWJ9YtNmmaFDJ/Y04zxhl5Vj8DTteyilW?=
- =?us-ascii?Q?c+hNS3fKfcJLxuvjC/qSigsQ8tOvP18mpgf3xnHEdzDM3YS1uD24U6Rt/Ne6?=
- =?us-ascii?Q?R0QZZSAmNR8Bp1wmEfWuIwx6WhCLjndd/a3qFcYJx3jWwNJk?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e1315053-1836-44d8-e379-08df13cb633e
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 08:20:37.6763
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4IQhuZqwfFmsmJsVcYm7S/DMyqR/vyYSAHZyz3Yiv5f10c8NKoiTpICGIWTEjfLBtaHgRhTfS3tRcDYCsN6kyA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7532
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260915015434.881057-1-kuba@kernel.org>
 
-On Wed, Sep 16, 2026 at 02:13:14PM +0800, Yun Zhou wrote:
-> erspan_xmit() re-enters the network stack via ip_tunnel_xmit(), causing
-> nested acquisition of _xmit_lock on the underlay device while already
-> holding the ERSPAN device's _xmit_lock, creating an ABBA deadlock:
-> 
->   sch_direct_xmit [lock erspan] -> erspan_xmit -> ip_tunnel_xmit ->
->   ip_output -> __dev_queue_xmit -> sch_direct_xmit [lock underlay]
-> 
-> Set dev->lltx = true so HARD_TX_LOCK() skips the spinlock for ERSPAN.
-> This is safe as erspan_xmit() has no shared mutable state: o_seqno is
-> atomic, TX stats are per-CPU u64_stats, dst_cache is per-CPU, and
-> o_flags is no longer modified in the xmit path since commit 9958e69b9893
-> ("gre: fix ERSPAN o_flags race/corruption in xmit and fill_info").
-> GRETAP, the sibling device with identical xmit structure, already sets
-> lltx.
+Hello Jakub,
 
-In v3 I asked that the commit message:
+The LLM feedback (except the one for the already existing theoretical 
+error in the error path which I will not try to fix in this already big 
+series) is based on the LLM hallucination on the commit message. I will 
+try to rewrite it so please the LLM.
 
-1. State that the overlay and underlay devices should be of the same
-type (both erspan or both ip6erspan) for the splat to happen.
-
-2. Mention the IPv6 fix. Currently you only describe the IPv4 path:
-erspan_xmit() -> ip_tunnel_xmit()
-
-https://lore.kernel.org/netdev/20260803151146.GA766007@shredder/
-
-> 
-> Reported-by: syzbot+9bda1b9fbb7fbdf9b62b@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=9bda1b9fbb7fbdf9b62b
-> Fixes: 84e54fe0a5ea ("gre: introduce native tunnel support for ERSPAN")
-> Fixes: 5a963eb61b7c ("ip6_gre: Add ERSPAN native tunnel support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yun Zhou <yun.zhou@windriver.com>
+On 2026-09-14 18:54:33 -0700, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
 > ---
-> v4:
->   - refine commit message
+> net: ethernet: ravb: Remove gPTP control from WoL setup and restore
 > 
-> v3:
->   - add fix for IPv6
+> This removes the ccc_gac special case that stopped the gPTP clock in
+> ravb_wol_setup() and re-initialized it in ravb_wol_restore(), on the
+> grounds that ravb_open()/ravb_close() already handle gPTP start/stop.
+> A few questions about the suspend side of that reasoning below.
 > 
-> v2:
->   - change subject prefix to [PATCH net]
+> >     This makes the special case to stop and start it when resuming from WoL
+> >     redundant. As the ndev will always be closed and re-opened when
+> >     suspending and resuming the system.
 > 
->  net/ipv4/ip_gre.c  | 2 ++
->  net/ipv6/ip6_gre.c | 2 ++
->  2 files changed, 4 insertions(+)
+> [Severity: High]
+> Is the statement "the ndev will always be closed and re-opened when
+> suspending and resuming the system" accurate for the WoL path?  In
+> ravb_suspend() the WoL case returns before ravb_close() is reached:
 > 
-> diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-> index 82309efd417e..0058cb20e36a 100644
-> --- a/net/ipv4/ip_gre.c
-> +++ b/net/ipv4/ip_gre.c
-> @@ -1367,6 +1367,8 @@ static int erspan_tunnel_init(struct net_device *dev)
->  	dev->features		|= GRE_FEATURES;
->  	dev->hw_features	|= GRE_FEATURES;
->  	dev->priv_flags		|= IFF_LIVE_ADDR_CHANGE;
-> +	/* Skip TX lock: xmit re-enters stack, risking ABBA with underlay */
+> 	rtnl_lock();
+> 	if (priv->wol_enabled) {
+> 		ret = ravb_wol_setup(ndev);
+> 		rtnl_unlock();
+> 		return ret;
+> 	}
+> 
+> 	ret = ravb_close(ndev);
+> 
+> So on a WoL suspend, ravb_close() (and therefore its
+> "if (info->gptp || info->ccc_gac) ravb_ptp_stop(ndev);") does not run at
+> all during suspend; it only runs later, on the resume side, from the
+> ravb_close() call at the end of ravb_wol_restore().  Does that make the
+> suspend-side removal something other than a redundancy cleanup?
+> 
+> > diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+> > index ea1c7e536791..36173a09e2fd 100644
+> > --- a/drivers/net/ethernet/renesas/ravb_main.c
+> > +++ b/drivers/net/ethernet/renesas/ravb_main.c
+> > @@ -3182,9 +3182,6 @@ static int ravb_wol_setup(struct net_device *ndev)
+> >  	/* Enable MagicPacket */
+> >  	ravb_modify(ndev, ECMR, ECMR_MPDE, ECMR_MPDE);
+> >  
+> > -	if (priv->info->ccc_gac)
+> > -		ravb_ptp_stop(ndev);
+> > -
+> >  	return enable_irq_wake(priv->emac_irq);
+> >  }
+> 
+> [Severity: High]
+> Following on from the commit message question: was this call also doing
+> gPTP interrupt masking that nothing else on this path does?  ravb_ptp_stop()
+> does more than unregister the PHC:
+> 
+> drivers/net/ethernet/renesas/ravb_ptp.c:
+> static void ravb_ptp_disable(struct net_device *ndev)
+> {
+> 	ravb_write(ndev, 0, GIC);
+> 	ravb_write(ndev, 0, GIS);
+> }
+> ...
+> void ravb_ptp_stop(struct net_device *ndev)
+> {
+> 	...
+> 	ravb_ptp_disable(ndev);
+> 	ravb_ptp_sync_irqs(ndev);
+> 
+> ravb_wol_setup() clears RIC0/RIC2/TIC and writes ECSIPR, and only
+> synchronizes and wake-enables priv->emac_irq.  It never touches GIC/GIS,
+> and it does not synchronize ndev->irq/err_irq/mgmt_irq.  The GIC bits are
+> armed from userspace via ravb_ptp_extts() (GIC_PTCE) and ravb_ptp_perout()
+> (GIC_PTME) and are cleared only by ravb_ptp_disable().
+> 
+> Since the WoL path also skips pm_runtime_force_suspend() and
+> reset_control_assert(), the block stays powered while suspended, so a
+> programmed compare/capture can still fire on the now-suspended non-wake
+> line and be latched and replayed by resume_device_irqs().  ravb uses
+> SYSTEM_SLEEP_PM_OPS(ravb_suspend, ravb_resume), so that replay happens
+> before ravb_resume() runs.
+> 
+> Can the replayed interrupt then reach ravb_ptp_interrupt() while
+> ravb_wol_restore() is resetting the block?
+> 
+> 	ravb_interrupt()/ravb_multi_interrupt()
+> 	  -> ravb_ptp_interrupt()
+> 	       gis &= ravb_read(ndev, GIC);
+> 	       if ((gis & GIS_PTCF) && clock) {
+> 		       ...
+> 		       event.timestamp = ravb_read(ndev, GCPT);
+> 		       ptp_clock_event(clock, &event);
+> 
+> priv->ptp.clock is still non-NULL after this change, so would that push a
+> timestamp read from a just-reset GCPT to userspace, and RMW GIS/GCCR/GPTC
+> concurrently with the unlocked ravb_set_opmode()/ravb_set_config_mode() in
+> ravb_wol_restore()?
+> 
+> Also, does the remaining "/* Only allow ECI interrupts */" comment still
+> describe the code for ccc_gac parts, and is the PHC (/dev/ptpN) now meant
+> to stay registered for the whole suspended interval?
+> 
+> The restore-side removal of ravb_ptp_init() does look redundant; would it
+> make sense to keep the suspend-side masking and synchronization, or to
+> spell out in the commit message why dropping it is safe?
+> 
+> > @@ -3204,9 +3201,6 @@ static int ravb_wol_restore(struct net_device *ndev)
+> >  	if (error)
+> >  		return error;
+> >  
+> > -	if (priv->info->ccc_gac)
+> > -		ravb_ptp_init(ndev, priv->pdev);
+> > -
+> 
+> [Severity: Medium]
+> After this change, is ravb_wol_restore() the only place that drives the
+> AVB-DMAC through CCC_OPC_RESET while the gPTP PHC is still registered?
+> The reset and config-mode re-entry happen at the top of the function:
+> 
+> 	/* Set reset mode to rearm the WoL logic. */
+> 	error = ravb_set_opmode(ndev, CCC_OPC_RESET);
+> 	if (error)
+> 		return error;
+> 
+> 	/* Set AVB config mode. */
+> 	error = ravb_set_config_mode(ndev);
+> 
+> The other opmode transition sites stop the PHC first.  ravb_close():
+> 
+> 	/* Stop PTP Clock driver */
+> 	if (info->gptp || info->ccc_gac)
+> 		ravb_ptp_stop(ndev);
+> 
+> and the ravb_open() error path:
+> 
+> out_ptp_stop:
+> 	/* Stop PTP Clock driver */
+> 	if (info->gptp || info->ccc_gac)
+> 		ravb_ptp_stop(ndev);
+> 	ravb_stop_dma(ndev);
+> out_set_reset:
+> 	ravb_set_opmode(ndev, CCC_OPC_RESET);
+> 
+> The reset drops the GCCR TCSS=ADJGPTP selection and GTI programming that
+> ravb_ptp_init() установ establishes, and priv->ptp.default_addend /
+> current_addend still describe the pre-reset hardware; the clock is
+> unregistered only later, by the ravb_close() at the end of the same
+> function.  Pre-patch the ccc_gac branch unregistered the PHC in
+> ravb_wol_setup() and re-created it here, so no registered PHC spanned the
+> reset.  Should ravb_wol_restore() follow the same ordering as its peers?
+> 
+> >  	if (info->nc_queues)
+> >  		napi_enable(&priv->napi[RAVB_NC]);
+> >  	napi_enable(&priv->napi[RAVB_BE]);
+> 
+> [Severity: High]
+> This isn't a bug introduced by this patch, but while both functions are
+> being touched: can the NAPI enable/disable counts get out of balance on
+> the WoL error paths, and hang in napi_disable()?
+> 
+> ravb_wol_setup() disables both NAPI instances and then returns the
+> enable_irq_wake() result without re-enabling them:
+> 
+> 	if (info->nc_queues)
+> 		napi_disable(&priv->napi[RAVB_NC]);
+> 	napi_disable(&priv->napi[RAVB_BE]);
+> 	ravb_write(ndev, ECSIPR_MPDIP, ECSIPR);
+> 	...
+> 	return enable_irq_wake(priv->emac_irq);
+> 
+> ravb_suspend() propagates that error directly.  On the restore side, the
+> two early returns above skip the napi_enable() calls when ravb_wait()
+> times out.
+> 
+> Since the WoL suspend path never closes the interface, the netdev stays
+> netif_running() with NAPI disabled, and a failed suspend callback leaves
+> dev->power.is_suspended clear so ravb_resume() is skipped.  The next
+> ravb_close() (from "ip link set dev X down" or unregister_netdev()), or a
+> retried suspend re-entering ravb_wol_setup(), calls napi_disable() again:
+> 
+> net/core/dev.c:napi_disable_locked() {
+> 	...
+> 		while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
+> 			usleep_range(20, 200);
+> 			val = READ_ONCE(n->state);
+> 		}
+> 
+> 		new = val | NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC;
+> 	...
+> }
+> 
+> A completed disable leaves SCHED|NPSVC set and only napi_enable() clears
+> them, so does the second disable spin here with no timeout while rtnl and
+> the netdev instance lock are held?
 
-Nit: I would drop this comment. It doesn't add anything and we don't
-have it above similar assignments in the file.
-
-> +	dev->lltx = true;
->  	netif_keep_dst(dev);
->  
->  	return ip_tunnel_init(dev);
-> diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-> index 8ebda0b6a78b..578fb3475f8c 100644
-> --- a/net/ipv6/ip6_gre.c
-> +++ b/net/ipv6/ip6_gre.c
-> @@ -1871,6 +1871,8 @@ static int ip6erspan_tap_init(struct net_device *dev)
->  		dev->mtu -= 8;
->  
->  	dev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
-> +	/* Skip TX lock: xmit re-enters stack, risking ABBA with underlay */
-
-Same.
-
-> +	dev->lltx = true;
->  	ip6erspan_tnl_link_config(tunnel, 1);
->  
->  	netdev_hold(dev, &tunnel->dev_tracker, GFP_KERNEL);
-> -- 
-> 2.43.0
-> 
+-- 
+Kind Regards,
+Niklas Söderlund
