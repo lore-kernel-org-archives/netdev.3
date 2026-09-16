@@ -1,64 +1,65 @@
-Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6954D3C10AB
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293133B9956
 	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 05:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789535321; cv=none; b=paPUkfIqFvKWVDkXX4xtyOHsi/13GwmifQYMNw3lDut/XttBEKIVyCGhTGrxL8w8hUE6ne2zWzxIFTBGtyzyRgrGZatKPJ0oaunVCeg7kMrn7/M+qKb+PBeP2Qxx2Uj6eIHbhxus8UoKOgf6Uo6ztnPvU6TOe/uMCRYOQ5dUrNA=
+	t=1789535322; cv=none; b=EuLXcXY8BSCombpm0SgtfWwjtlnSY/0StWY3eM+Ql7aH7S7HZFaD3ACt8NpJhMYCoI43NdEmdDesPMkZKOrY19PX+dvP34v3rvZ9OyhLLKMIh7x06u7SRYfpDf9gyDH69EKaB78YQYttbvBCt7d1z67/EYeI+c7m7MAk2WG0c9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789535321; c=relaxed/simple;
-	bh=J80yl7pSeu1aJfefCtPfA36j81IPQ16Uf9GsjRy4ypI=;
+	s=arc-20240116; t=1789535322; c=relaxed/simple;
+	bh=RCAx16luTF02kZgEZ0D7CHSImQt7iTlNbzO7mxUy3ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wltf66d7TB3Xoh8tHHBdpkCEUd24if5rK8mtkhy8X5LXzD3BzkDB/qVKG3AQWdld9A0HihvbUw6ywa0gymjvD7rMYPmgF6JuYhxl0+bo808+jNxwEzic2NcR1kC8JxpjRKMpStTViFYCQ//7Ebi3SLhKT9WrOFftcjTWzsCm4ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=CBZV1qX9; arc=none smtp.client-ip=74.125.228.42
+	 MIME-Version; b=Fpuo8hUdrg8DTeF6zqeXmPZ7KzoVBj7lQYd2tcTePio1+N8/SIt4lmASkEhezTtlR683eVUEzRxhi5cUXAab9+DNJAfnUIdLC01hXrGSHdk928XsHEdwPwQrl2cUiWnC2YbWRkYLK7lts7mKB9ddR2+bhD7M+GWBwRUpss/qwDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=OxPPh95V; arc=none smtp.client-ip=74.125.227.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="CBZV1qX9"
-Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc1cebcb8d7so129921a12.0
+	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="OxPPh95V"
+Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-396ccd4f99cso524207a91.0
         for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 22:08:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1789535320; x=1790140120; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=02XHkDP9g5u8iUqxCMNdoLYMMHIC7E9GJphz8qfrxd8=;
-        b=CBZV1qX9y/6ieDA1u7zFLcdTSW9lxsBq2OfRLG+gqUirQbXk0dpi3xArLAfThzGTZL
-         ePev5iWdXH/RRi8u7L4lKGbomhdsnPaKFye3DFCq+zlEflt0mniyVYEfkV4OYbEXJsn1
-         6Cu7am0dAjZ0oyxCc5RbRDrfBjazcaQuWkzdILMe6DlRlTKoBbkiCw1JXeXhZtb5pcNO
-         lZsxuuFBJKfqNeDMrmcvi/pylA897xY2kIL1jl9ptdaQfPfsOQTV+9ofJPB+Wp9dIxUa
-         XLHV58EBez//rshBd+JnshnnUa7OGVh7tqbrmlV2e6wvHmUiEy0VJegs8gFIDftwHSVM
-         lKUg==
+        bh=w8uvju0VQfszCfaJ5PHHj1YzIoy00iEV5n4pCl9kK1c=;
+        b=OxPPh95VKbBNNDbkUKzIXhA9JRSi8dRCtRWokBGbz45AXCMNb0PQXGhqp2hnJW4J8u
+         1HV6sa082mtOtRwFf12j8RscEr8vzpXIngCi0Hd2B5uyVQMXv2AFoDce6IbGX5q6ciIq
+         LI/61bf/6M89bKum+lIxyCCatIhW0aOB2OtbPfgdZPVkWRzPpuM5f+fdoz16u54xJGl5
+         JBTuLswOMYIP4LPm0YGxSuxOBdPhC2aXqSrZs+8VLTCrXEzEOT0/1War7PsselthR78H
+         M6hq9h8pcKdbMwIvhcDtXv6fcrBxoE0FpNBRpA4cDev1MX+TA9D1dMIGgdggo/rEUbX2
+         m+xQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20260707; t=1789535320; x=1790140120;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=02XHkDP9g5u8iUqxCMNdoLYMMHIC7E9GJphz8qfrxd8=;
-        b=w9M9HFVZB+pUWlkW3vef0wKOAb0oAEoG//qVipoxB2KeezG725PgEPmA+TzeQa1Tga
-         Wj4ZETEp9D+0cykqixFjSkwsUYRgb1vfVHShK3DatmRdzdr+NquK/cR7TmiktN6kgoYW
-         SzOWPp1KlpdlaBGEVmrFprL2kJ2MrqJsdk0mpCpbK5feuBnWinegkYCAkZLcdbyLP0X7
-         Fdpw5k5cJd2+/bTKk+P7pewO3PJH/gZnFYau7NGAaJKQ/FMLuKJb/DQwZBAxMaIqJnHB
-         +sUpHGxPK21zxcREad2AHpzvnCDOKo+YD5yszPuGVwK+ACwoxFDTsw5uYraPNGH8f2me
-         n7Lw==
-X-Forwarded-Encrypted: i=1; AKwUvBwt5Gu6mTjEoLbDvitxCHFuju7q8i7cs7aU5fz8tDhpd+fVjbzAGDPwOPzMIb1zBxa1qN6vf+Q=@vger.kernel.org
-X-Gm-Message-State: AFuF++kkYhaLJrrd1sLKXy3TWJFjMD2he6AcSqlUHA6iUvHlF/whOcgl
-	C66ssL4xo7yuQs3Ck35L7RsLudEwwynT8DUJkJvbKt27Ar8N48d+MTuitAzRhmKOVIs=
-X-Gm-Gg: AYBFou25E66UNtJt6qrmZYqpHEeyXyfUE+2lD1cGAo6GCG7oljynpvf2imATEux0rJo
-	Uln/YzPwwuNeaa94VHjljMKMN80K0X4n4riy6tIOJ026mPxmEUozlGBQ+fVDjtmUiEU5+NFPlx/
-	8jb9YEHMLYcU3uIi+Bw2qlfLApAWxTDuV1o+hBPex2I9HmoJh09I9VEUHPNo7df1pg9xP0Po6rV
-	ljn7Si5mtOCU3XsAJ0Q9/DjQU2Cj5L5XjSh9PODJCSP8LmOm/TfknW1xJsQfPBdo15LsXSNrF9F
-	LynS82TWjv9cceYE+8Sgk9T7lfLBIcjb5Ha+uKV6VlUUFYZAO/IuZfW6Mei1wg3XKem4xeexvja
-	KRK47K+3E8aiGSuPetOPbsqh3/LbJYj4z3e52o1cg4aeHOU7J7+7k6tlVMudpnqG4WOYT22fDuH
-	VnRF/RfKgd8c8T0vbp6UE5jx18GjdtZvMzBhmQwzQnPFk1uD6knTmOLaDLdaHdV0SVfnvTMXiNh
-	oKN2ZzDsp20k/+2ZCWiZ737jFbfwyr5YQCsMc8=
-X-Received: by 2002:a17:90a:fc46:b0:395:8124:ac53 with SMTP id 98e67ed59e1d1-39e1ff502a0mr1231132a91.6.1789535319534;
-        Tue, 15 Sep 2026 22:08:39 -0700 (PDT)
+        bh=w8uvju0VQfszCfaJ5PHHj1YzIoy00iEV5n4pCl9kK1c=;
+        b=ArV0+ceaHOmoRO4XDkBhYEZK80KW0T8nCC+j1XR5TqT2ehP0FS/XieyqrZ3Qp1MU19
+         08oQAKXI8zF8zyH0ftJDEFrry7/41GNIW1jZwUGNPz4G7WnBvlvLUvPp12BUo/p8PbwR
+         o8Wt2pLfkfprWQ/2nFicwdFsCWv7NcNTpqfqNflux9VuyV5N1E2GtLS2TnFXxSnuoh1T
+         YQHEJGGw6jdRexK5fYT7559WFaP3ZQaoRWjCXdXsHbmZ3zTylegA5lUthAeDZdWstiUN
+         BOiBvsAeN+USBGooZ/Mk+/tY29O+HhOg4L/BmiSX4kyIzjKvUR7iBThK49P8iw6wDdea
+         FE5w==
+X-Forwarded-Encrypted: i=1; AKwUvBzPo8Zguf6uhmZUwp9iK0p1WvmQW8qNQjIHyuAFH3vJbGYSEGlg/h2c+9A6JdcInsyxbx/xKXw=@vger.kernel.org
+X-Gm-Message-State: AFuF++l2CSahv6ZNYncy+oGzLUjEyAz9ayDtTVC2lfXYU5Wftt2FrGxI
+	+6wJPTV6OPd44Q/qXorWbYDR2nexHj3rxIZSWoVf3hTEXQmu3nH95xoDtz8XsxUsvgu86FadIp/
+	CHxgU
+X-Gm-Gg: AYBFou3rf1Oa20d2/833tvnmmTpexTP69OQiQ3ncBVFJE1CrDY8QsP3azzPFGxHYrh3
+	qn2o51ZoHVkOoha7vhEKDAPmMyhNJGAocb5a4aq3gu+NDUcDYHJR0B2xvzIbkcxW6me6OhcKzSn
+	xT8oMlFuEBSLabDsOCz85NIAPXDenZVlHyQcbX9tYCC8118nLIyPzehqCdNWFowS7Cnqw0hhP+v
+	nFd/KhSi0gxLSS5eJ8EIkhzUUOe/EcZATVisE7qJGlRrIPkscimmA5QvV+mgpsphlMVFPehMrqD
+	QUmT3BQie6j1GK9f2Knzz77q6ppbIP9CVjNfAB3GQiWrSNv4tLyXtQn8PmlyDxV5ZBdKdzVW4k1
+	621ISDqRWcQwsOhRA2F+7QRSdljaYcD+FXqi0W4ABugK7ihgNlIFrNTBc+wDPcwNapRGjYeYjUT
+	cHmyV8HrBmn2PfST+ku+gkl2TneHc6B8ulUp0B7vd+CvEi+zNfU+W2oEMvY8nwybn2NXcTkw0yB
+	aNtcVvkIasJbqnHBLuDsLQmulw9eMQyNQa5R1qjkta/m6IK
+X-Received: by 2002:a17:90b:3a43:b0:39d:f5b1:e365 with SMTP id 98e67ed59e1d1-39e1e559b78mr3162444a91.25.1789535320402;
+        Tue, 15 Sep 2026 22:08:40 -0700 (PDT)
 Received: from alpine05.ht.home (107-190-31-17.cpe.teksavvy.com. [107.190.31.17])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e1bbfdd49sm2363363a91.11.2026.09.15.22.08.38
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e1bbfdd49sm2363363a91.11.2026.09.15.22.08.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 22:08:39 -0700 (PDT)
+        Tue, 15 Sep 2026 22:08:40 -0700 (PDT)
 From: Emil Tsalapatis <emil@etsalapatis.com>
 To: bpf@vger.kernel.org
 Cc: ast@kernel.org,
@@ -67,11 +68,10 @@ Cc: ast@kernel.org,
 	memxor@gmail.com,
 	daniel@iogearbox.net,
 	netdev@vger.kernel.org,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Nicholas Carlini <nicholas@carlini.com>
-Subject: [PATCH bpf 05/11] bpf: Reject pkt arguments in mutating subprogs
-Date: Wed, 16 Sep 2026 05:08:23 +0000
-Message-ID: <20260916050830.8774-6-emil@etsalapatis.com>
+	Emil Tsalapatis <emil@etsalapatis.com>
+Subject: [PATCH bpf 06/11] selftests/bpf: Test rejection of pkt args to mutating subprogs
+Date: Wed, 16 Sep 2026 05:08:24 +0000
+Message-ID: <20260916050830.8774-7-emil@etsalapatis.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260916050830.8774-1-emil@etsalapatis.com>
 References: <20260916050830.8774-1-emil@etsalapatis.com>
@@ -83,48 +83,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The verifier tracks changes in how PTR_TO_PACKET registers'
-bounds are modified across subprog boundaries. PTR_TO_PACKET
-registers are actually passed as PTR_TO_MEM, which is assumed
-valid for the entire call. This is not the case with packet memory,
-where a pskb_* call may invalidate its memory region.
+Add a selftests that ensures that PTR_TO_PACKET arguments can
+only be passed to subprogs that will never adjust the underlying
+packet memory, and are rejected otherwise.
 
-Reject BPF code that passes PTR_TO_PACKET pointers to subprogs that
-may mutate a packet. We cannot pass the pointer as a true PTR_TO_PACKET
-because we would also need to somehow pass the PTR_TO_PACKET_META
-or PTR_TO_PACKET_END to the subprog. Since we cannot avoid representing
-the pointer in the subprog as PTR_TO_MEM, only permit it if the
-subprog is guaranteed not to mutate the packet.
-
-Fixes: 80f281664f5a ("bpf: Support pointers in global func args")
-Reported-by: Nicholas Carlini <nicholas@carlini.com>
-Suggested-by: Nicholas Carlini <nicholas@carlini.com>
 Signed-off-by: Emil Tsalapatis <emil@etsalapatis.com>
 ---
- kernel/bpf/verifier.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ .../bpf/progs/verifier_global_ptr_args.c      | 53 +++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 6c6b8d852..507bc14b4 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -10375,6 +10375,16 @@ static int btf_check_func_arg_match(struct bpf_verifier_env *env, int subprog,
- 			if (check_mem_reg(env, reg, argno, arg->mem_size, BPF_READ | BPF_WRITE, NULL,
- 					  NULL))
- 				return -EINVAL;
-+			/*
-+			 * PTR_TO_PACKET get passed as PTR_TO_MEM, preventing
-+			 * us from adjusting bounds tracking info.
-+			 */
-+			if ((reg_is_pkt_pointer_any(reg) || reg_is_dynptr_slice_pkt(reg)) &&
-+			    sub->changes_pkt_data) {
-+				bpf_log(log, "%s is a packet pointer, but func#%d may change packet data\n",
-+						reg_arg_name(env, argno), subprog);
-+				return -EINVAL;
-+			}
- 			if (!(arg->arg_type & PTR_MAYBE_NULL) &&
- 			    (type_may_be_null(reg->type) || bpf_register_is_null(reg))) {
- 				bpf_log(log, "%s is expected to be non-NULL\n",
+diff --git a/tools/testing/selftests/bpf/progs/verifier_global_ptr_args.c b/tools/testing/selftests/bpf/progs/verifier_global_ptr_args.c
+index b277b1efb..10019af5e 100644
+--- a/tools/testing/selftests/bpf/progs/verifier_global_ptr_args.c
++++ b/tools/testing/selftests/bpf/progs/verifier_global_ptr_args.c
+@@ -350,4 +350,57 @@ int anything_to_untrusted_mem(void *ctx)
+ 	return 0;
+ }
+ 
++struct pkt_arg {
++	__u64 x;
++	__u8 pad[56];
++};
++
++__weak int subprog_pkt_ptr_no_change(struct pkt_arg *p)
++{
++	if (!p)
++		return 0;
++
++	return p->x;
++}
++
++SEC("?tc")
++__success
++int pkt_ptr_to_global_mem_arg_no_change(struct __sk_buff *skb)
++{
++	void *data = (void *)(long)skb->data;
++	void *data_end = (void *)(long)skb->data_end;
++	struct pkt_arg *p = data;
++
++	if ((void *)(p + 1) > data_end)
++		return 0;
++
++	return subprog_pkt_ptr_no_change(p);
++}
++
++__weak int subprog_pkt_ptr_changes_data(struct __sk_buff *skb __arg_ctx,
++					struct pkt_arg *p)
++{
++	if (!p)
++		return 0;
++
++	bpf_skb_pull_data(skb, 0);
++	return p->x;
++}
++
++SEC("?tc")
++__failure __log_level(2)
++__msg("R2 is a packet pointer, but func#{{[0-9]+}} may change packet data")
++__msg("Caller passes invalid args into func#{{[0-9]+}} ('subprog_pkt_ptr_changes_data')")
++int pkt_ptr_to_global_mem_arg_changes_data(struct __sk_buff *skb)
++{
++	void *data = (void *)(long)skb->data;
++	void *data_end = (void *)(long)skb->data_end;
++	struct pkt_arg *p = data;
++
++	if ((void *)(p + 1) > data_end)
++		return 0;
++
++	return subprog_pkt_ptr_changes_data(skb, p);
++}
++
+ char _license[] SEC("license") = "GPL";
 -- 
 2.54.0
 
