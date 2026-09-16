@@ -1,89 +1,163 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B15D412BF7
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 13:02:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AC22EA15C
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 13:05:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789563755; cv=none; b=a8hVKv/m9peptzw7mVA4KE1J6sBdoqBp0RJLvnM4ouqFSzjzLLhGVqQij5+t9KWmAEPE1shOUYdc0+qhKCrKYdBPDpLqCQIs+8kIRighl7hLWXwDgVJkDnqXynIwIAiEq6zFe1lgi6nE/L4KgJXkdi2eEXmmG3Zzij5yTx6oLRw=
+	t=1789563933; cv=none; b=R2pafSajeoiwCwkg0Ou1hsZ40EmcfzDAY8ujwsKhIeZUsDiFO+yJ+RuAo/HU5xYbhh2nIgzJM6BaW9GFpdzsxwVa6Ih3NHHigZrBPwB190LJo5yX9Mt2glD4d37QJaAiq6I9u5XnC5GiAvb1hNjzTnlsnLkIqExHtU2bWwpcJ8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789563755; c=relaxed/simple;
-	bh=/iA1i+fEz1OGwBmOfoih5OvcxjKj5L5pH1QANttn9/M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uyUtfXx0mMPKi2YEh2kaASJr/vuDvX2btSvOI2UvyZC0UrZGX0x/pXFAhtuKE7gCZP0QXH9I/PJkLF6biG0BzJ0Aqc2D68PrPttNP8Gcu2Kq1G6y38LNOGmxUkgZx+7l8dKtkXCoatgJzY+LaAo7ldZ6zH1AshtYxzzBKC2+0xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LbQIxnE5; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1789563933; c=relaxed/simple;
+	bh=UeH2UGk52k+SKj9tD9AGMqAfOV7JIXNvyWwvPitzd1U=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=UqfcuiGOoUE+jxx0GPH8beDJYI5A7guTK8yNqvqrmxm7/VPdGC2jEYa5NL25yhCoR8RBycxBqsDFLbj/Ax6bS+W6DTuxN2bwhAvZJnARicxUBlOwYCoozcgunybbch12A9koGEtRhplj95PNuw7pUxutVl8BvdH3el7O/WlGeEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OMT3cOU8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LbQIxnE5"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id B57364E40712;
-	Wed, 16 Sep 2026 13:02:31 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 8268F60337;
-	Wed, 16 Sep 2026 13:02:31 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2C54811C7B01E;
-	Wed, 16 Sep 2026 15:02:16 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789563746; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=Ob+rWI8KnN+HI9KrEep3pQqea5Fog14Wdci4nh+7dCY=;
-	b=LbQIxnE5GkwaTQBhNYc0u473Lluj0FyRcGGYeSdTAiGzC1Ostl3ejYmmyZo2TMjEJiWZM4
-	Y9i00svqukaLhVdDZb77FcmuqJtyeJTdIQ5FLcvzMTTGMpR2izmF8hcr4ZvkJFAZzd1Qjf
-	F0g0biJrSj5vvG2gQvuOEbB7QqIQdiNGjgvftWWU1Hy9rHWhRg8G1nB2wjyE8wOXkALpZf
-	d2VkQM1uS2rvVwf4geHuIv5S/yw3OmlqL9OwncapVJAyWhKSifh4HZz2y9zbk9Rv2O3GyP
-	WDFEUpcwVJmYX7Jo3BD6x9+/o3CTloAgpTiPx4RzsNZzOx/Uv5pu9/fmIItXDQ==
-Message-ID: <2377467b-5379-4759-a6ce-1d129c2b41ff@bootlin.com>
-Date: Wed, 16 Sep 2026 15:02:15 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OMT3cOU8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EF231F000FF;
+	Wed, 16 Sep 2026 13:05:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789563932;
+	bh=6gJ7OjGqFuhbohkbs30QVsuyYkxAUMRLJXF4ROwv9bI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=OMT3cOU89qDSAUkHDarIsL6CfNMYspk0IsLW3om3dzLyTeyUAAXdLa66/5bf1yD6D
+	 CgsTPEsgwNrdM0b7Gkc9Z2gAGWkO7FxJ4WL7URdbgYAJybChc5C/zUazmSihCKRZ1E
+	 OYIdMhprJZxmsFao8tZKn0jI9+lQ3KgtGwCEmhfpgkHpPy023x5MadHfui5N9WUhtD
+	 mMiGb5In1VuD+uE0cTiaVAJw+KXXkHc8KJxhXGKDHXRg2pJt51GDpjeOPcdwg38q3j
+	 Ufsu7ON5PsRTV/15q0bg6kY1uRAkDycAh2EpLt9GWAhQ1IgPsc3pTSorPCt9/SV/dd
+	 +VbUGOa23jJvg==
+Subject: Re: [PATCH v2 net] net: skbuff: do not leave stale header offsets
+ after pskb_carve()
+From: netdev-bot+sashiko@kernel.org
+To: edumazet@google.com
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com,
+ syzbot+586af68eb819833c2d91@syzkaller.appspotmail.com,
+ xuanqiang.luo@linux.dev, achender@kernel.org, rds-devel@oss.oracle.com
+Date: Wed, 16 Sep 2026 13:05:31 +0000
+Message-ID: <178956393100.22033.7676411417898444402@kernel.org>
+In-Reply-To: <20260915130423.3956471-1-edumazet@google.com>
+References: <20260915130423.3956471-1-edumazet@google.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/2] net: stmmac: propagate platform mac_finish errors
-To: Thomas Karpiniec <tom.karpiniec@outlook.com>, netdev@vger.kernel.org
-Cc: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
- Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Choong Yong Liang <yong.liang.choong@linux.intel.com>,
- Bartosz Golaszewski <brgl@kernel.org>, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <CH3PR11MB8413FCBA598F7FABC04ADCFEE4B92@CH3PR11MB8413.namprd11.prod.outlook.com>
- <CH3PR11MB8413069BD77B03793D1A9B42E4B92@CH3PR11MB8413.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <CH3PR11MB8413069BD77B03793D1A9B42E4B92@CH3PR11MB8413.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi,
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-On 9/16/26 12:39, Thomas Karpiniec wrote:
-> From: Thomas Karpiniec <tom@wendy.sh>
-> 
-> stmmac_mac_finish() discards the platform callback's return value and
-> always reports success to phylink. For example, the Qualcomm ETHQOS
-> callback can return an error from phy_set_mode_ext() if SerDes
-> configuration fails. Phylink then treats the interface as successfully
-> configured and can report carrier even though the SerDes is not ready.
-> 
-> Return the platform callback's result so that phylink can report the
-> failure and keep the link down until a subsequent configuration succeeds.
-> Keep returning zero when no platform callback is installed.
-> 
-> Fixes: e654cfc718d4 ("net: stmmac: configure SerDes on mac_finish")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM sparse
-> Signed-off-by: Thomas Karpiniec <tom@wendy.sh>
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-Let's see if this uncovers other dirt under the stmmac phylink carpet :)
+- [Medium] Incomplete invalidation of checksum metadata in the new
+  skb_carve_reset_headers() (net/core/skbuff.c:6842).
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+--
 
-Maxime
+net: skbuff: do not leave stale header offsets after pskb_carve()
 
+The two pskb_carve() helpers used to call skb_headers_offset_update(skb, 0),
+which left mac/network/transport offsets describing bytes that were just
+removed. This patch adds skb_carve_reset_headers() to unset the mac and
+transport headers, reset the network header, clear mac_len, zero the inner
+header state, and downgrade CHECKSUM_PARTIAL to CHECKSUM_NONE.
+
+Closes: https://lore.kernel.org/netdev/6aa3e9d3.f2639fcc.29487d.0028.GAE@google.com/
+
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index cc3b4b70288b4..609f2c7f4a47a 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
+> @@ -6832,6 +6832,34 @@ struct sk_buff *alloc_skb_with_frags(unsigned long header_len,
+>  }
+>  EXPORT_SYMBOL(alloc_skb_with_frags);
+>  
+> +/* pskb_carve_inside_header() and pskb_carve_inside_nonlinear()
+> + * remove the first bytes of a packet and reallocate skb->head.
+> + *
+> + * Whatever headers were present before the operation are gone,
+> + * we must not leave stale offsets, otherwise users of this skb
+> + * (skb_dump(), drop_monitor, taps, ...) would read or pull garbage.
+> + */
+> +static void skb_carve_reset_headers(struct sk_buff *skb)
+> +{
+> +	skb_unset_mac_header(skb);
+> +	skb_unset_transport_header(skb);
+> +	skb_reset_network_header(skb);
+> +	skb->mac_len = 0;
+> +
+> +	/* Inner offsets have no "unset" marker, zero them so that
+> +	 * skb_inner_network_header_was_set() becomes false and no
+> +	 * consumer mistakes them for a real (and long gone) header.
+> +	 */
+> +	skb->inner_mac_header = 0;
+> +	skb->inner_network_header = 0;
+> +	skb->inner_transport_header = 0;
+> +	skb->inner_protocol = 0;
+> +	skb->encapsulation = 0;
+> +
+> +	if (skb->ip_summed == CHECKSUM_PARTIAL)
+> +		skb->ip_summed = CHECKSUM_NONE;
+> +}
+
+[Severity: Medium]
+The changelog says the goal is that "all the header state is invalidated in
+one place".  Is the checksum state fully invalidated here?
+
+skb_carve_reset_headers() only rewrites ip_summed, while skb->csum,
+skb->csum_valid, skb->csum_complete_sw, skb->csum_level and
+skb->csum_not_inet keep the values they had before the bytes were removed.
+
+For the CHECKSUM_PARTIAL case, the syzbot dump quoted in the changelog shows
+the incoming skb already has valid=1:
+
+  csum(0x100120 start=288 offset=16 ip_summed=3 complete_sw=0 valid=1 level=0)
+
+After the downgrade this becomes ip_summed=CHECKSUM_NONE with csum_valid
+still 1, and skb_csum_unnecessary() in include/linux/skbuff.h returns true on
+csum_valid alone:
+
+  static inline int skb_csum_unnecessary(const struct sk_buff *skb)
+  {
+	return ((skb->ip_summed == CHECKSUM_UNNECESSARY) ||
+		skb->csum_valid ||
+		(skb->ip_summed == CHECKSUM_PARTIAL &&
+		 skb_checksum_start_offset(skb) >= 0));
+  }
+
+Can a consumer of the carved skb then believe the payload was already
+verified, even though the bytes the checksum covered are gone?  A leftover
+csum_not_inet would similarly still claim CRC32c semantics, and skb_dump()
+would print the contradictory "ip_summed=0 ... valid=1".
+
+Should csum_valid, csum_complete_sw, csum_level and csum_not_inet be cleared
+in the same helper?
+
+The CHECKSUM_COMPLETE case looks untouched as well.  Unlike
+skb_pull_rcsum()/skb_postpull_rcsum(), the carve path never subtracts the off
+bytes removed from the front from skb->csum, and pskb_extract() trims the tail
+with plain pskb_trim() rather than pskb_trim_rcsum():
+
+  net/core/skbuff.c:pskb_extract() {
+	...
+	if (pskb_carve(clone, off, gfp) < 0 ||
+	    pskb_trim(clone, to_copy)) {
+	...
+  }
+
+So a CHECKSUM_COMPLETE skb keeps a whole-packet checksum that no longer
+matches its contents.  Would it make sense to also drop or fix up
+CHECKSUM_COMPLETE in skb_carve_reset_headers(), or to use pskb_trim_rcsum()
+in pskb_extract()?
+
+The only in-tree user of pskb_extract() is RDS, which copies the queued data
+to userspace and never calls a checksum validation helper, so there is no
+functional failure visible today; the concern is the trust bits left on a
+generic exported helper.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260915130423.3956471-1-edumazet%40google.com
