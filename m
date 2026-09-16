@@ -1,155 +1,135 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5F126FA60;
-	Wed, 16 Sep 2026 00:37:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4E42C11FA;
+	Wed, 16 Sep 2026 00:37:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789519066; cv=none; b=QqzE9k2rU1Q2dM0fiD3s6CSS3CynFL75BxMauW6OPQUHZT0AlLLRcvp62t7cZ0X2C1wa8buxIJipG0FZ5lLR/GbdbmUiPXEVH0C7C+E7cXY1w9HOq+VcmEe2tenK8gtL/kz0gyxHr1x2drHdSlcAkyLic5t8mgVbjKf89z7C0YU=
+	t=1789519082; cv=none; b=qVbCcP787tShcIOWJtCJXpxOkaNv60/ptEYjtJ3D62/SrVP7zOg9mzdWzNb2Dxi71zaXPbr7DOtCf10vK1LjmP1Qv74LTcUf/wexc7O6gPgCEyWdGzQ5F/8olP5kGnBP2xCbA56gogQrUVZmtHc94B42gDNVnX9VBnZRvwnFkLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789519066; c=relaxed/simple;
-	bh=DtVYUA/vYJIivPuXrZGBtVMOp3omOx7ZxIZlX+85/uk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=F8JK6++RK+Afptgan4PMfNrep3uz2Tfi+dz6K06LFyI+0bQAvai/8MPdu1oPCn2nnk8KUS0EOHfWTua6Q4uxHGtBM5sDB6WpMZRhsDr83x7b51/Ja2yZEnOf29ky6CtniYAoobpJg8WcwqTs+FYGxGEhxhN/nVVY/e5lXRc6TpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b8/+wIab; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1789519082; c=relaxed/simple;
+	bh=SiwQkzrVDQV01ATxvtgkke17srYjd2v+wZbwrFSMpLg=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=lUxG/W5yRwhfiXD6XdDImU9s0a7LFEsZCtZ9dvOhf+H9/Md5CFU8lfd8iLsDiDt+4zEWL2DO4cuSTnFlw7SFS7f6L+XET3HRu1dIoHRL2TgQnxmtU+tE9VVk7BjFm/VrckSS8xXJex7Kj5/gB+mZdlHxJz/aoYQQhKX7fLANpvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D7Rr6X7p; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b8/+wIab"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789519064; x=1821055064;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=DtVYUA/vYJIivPuXrZGBtVMOp3omOx7ZxIZlX+85/uk=;
-  b=b8/+wIabVkbnu2sJ8K3DMqsSan33a3HWsK7Qpr7KTVdtA3QZNIhEuzuK
-   Zuv7fbgdLHL0Sy3zmpGa6n3xvEvh1NMc3zWtoZ34E3HWVozo6L7DsPk4V
-   +ps61NvjoWIYOi8l573cKWgexUy/OQ4hiekFwb09rmRSwK50xFUG8Xfzi
-   f2BLiRrL3wmzk/g3h2c5TuAH468DFm7ZSGJi0OZYrzo4Kjxx1nFan2k88
-   osrl4/RyfFlt2LcpkHaf0M1vby5xJH5ygxahwt7bVg5IVb4MGgkab2Wu1
-   QU/PsvnNdCyZ/Lg8jbiKHN6E310peote8/35IQcmQ8lHo2Hk+5ZRu9owm
-   A==;
-X-CSE-ConnectionGUID: kaS2K0DiRoST8/9biesJVQ==
-X-CSE-MsgGUID: G+j+g3ZeQImXDnNUomkjgg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="89765849"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="89765849"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 17:37:43 -0700
-X-CSE-ConnectionGUID: YDHxOXJXR4G0wTwtU+16hA==
-X-CSE-MsgGUID: 6JHzmVFGTNqWl/g3qaRE9A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="278414208"
-Received: from pankris-x299-ud4-pro.bj.intel.com ([10.238.152.122])
-  by fmviesa005.fm.intel.com with ESMTP; 15 Sep 2026 17:37:41 -0700
-From: Kris Pan <kris.pan@intel.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: horms@kernel.org,
-	atomasov@redhat.com,
-	oliver.sang@intel.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kris Pan <kris.pan@intel.com>
-Subject: [PATCH net v3] net: iterate online nodes in skb_defer_free_flush()
-Date: Wed, 16 Sep 2026 08:34:30 +0800
-Message-ID: <20260916003430.3612956-1-kris.pan@intel.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D7Rr6X7p"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1BDB1F000FF;
+	Wed, 16 Sep 2026 00:37:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789519075;
+	bh=XTpmwRnvzOj8JJNAxlGAUdt8jPuIe+377jHtDnXTwqg=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=D7Rr6X7p8Q6RF0rF1IqN7DPQmg+3UP978dqQj1J5j0F/fs3LO9a+eH3lfzoanZUGf
+	 5mzJaMq1JH+TvVbch2O6mGpOEq7F3qbSwqEQyGU6scD46s2oGYIjdHEQS/9BqQ5NBV
+	 pGMA1xcxzeUC6gozfSUwHEhvdi+FEdpI99jtrnn4X4aCHWPXyOh6NPCilJ3JF4/4zc
+	 c4Gl9bgWxGXiUjKONBUf1W3EAPyoWioa8/605queJ8n73QFzDMrA5k15YMszKK/o3L
+	 npkc4ej9EeshrEOAF+fm8FtQWRt8lGs1fSli5wJsmzk1zGsNOA2iYb01+pZC/1FVAC
+	 R4HSXoEVobNQg==
+Subject: Re: [PATCH net 1/2] virtio_net: copy zerocopy frags in start_xmit
+ without NAPI
+From: netdev-bot+sashiko@kernel.org
+To: willemdebruijn.kernel@gmail.com
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ andrew+netdev@lunn.ch, willemb@google.com, kleaver@janestreet.com,
+ doebel@amazon.de, stable@vger.kernel.org
+Date: Wed, 16 Sep 2026 00:37:54 +0000
+Message-ID: <178951907424.22033.18396065221753685013@kernel.org>
+In-Reply-To: <20260914214229.1674102-2-willemdebruijn.kernel@gmail.com>
+References: <20260914214229.1674102-2-willemdebruijn.kernel@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-skb_attempt_defer_free() only queues skbs on the current CPU's node
-(numa_node_id() of a running CPU), which is always online, so the
-flush loop never needs to visit nodes that are merely possible.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-for_each_node() walks node_possible_map.  On machines where the
-possible map is much larger than the online map -- e.g. a POWER10
-LPAR with 32 possible but 1 online node -- the flush loop touches 31
-cold, always-empty per-node lists on every softirq pass.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-Use for_each_online_node() to iterate only node_online_map.
+- [Medium] The new drop path added to start_xmit()
+  (drivers/net/virtio_net.c, the `if (!use_napi &&…
 
-Since the flush now skips offline nodes, also drain the per-node
-lists in dev_cpu_dead().  A skb is queued on the alloc CPU's list at
-the freeing CPU's node index; if that node is offlined before the
-alloc CPU flushes, the skb is stranded.  Likewise, skbs queued on a
-CPU that later goes offline are never freed, since its softirq no
-longer runs.
+--
 
-Loopback UDP throughput in a QEMU guest with 32 possible / 1 online
-nodes (bench_udp, 8 senders, interleaved runs) improves by ~5%.
+virtio_net: copy zerocopy frags in start_xmit without NAPI
 
-Fixes: 5628f3fe3b16 ("net: add NUMA awareness to skb_attempt_defer_free()")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Suggested-by: Adrian Tomasov <atomasov@redhat.com>
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Closes: https://lore.kernel.org/oe-lkp/202512112119.5b9829a-lkp@intel.com
-Signed-off-by: Kris Pan <kris.pan@intel.com>
----
- net/core/dev.c | 27 +++++++++++++++++++++++++--
- 1 file changed, 25 insertions(+), 2 deletions(-)
+For the !use_napi path, start_xmit() now calls skb_orphan_frags() before
+the existing skb_orphan(), so zerocopy frags that do not set
+SKBFL_DONT_ORPHAN (PACKET_TX_RING, vhost_net) are deep-copied instead of
+staying pinned until the next transmit. On copy failure the skb is
+dropped and tx_dropped is bumped.
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index ecfbd72d5d1a4..896498b349500 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -6907,7 +6907,7 @@ static void skb_defer_free_flush(void)
- 	struct skb_defer_node *sdn;
- 	int node;
- 
--	for_each_node(node) {
-+	for_each_online_node(node) {
- 		sdn = this_cpu_ptr(net_hotdata.skb_defer_nodes) + node;
- 
- 		if (llist_empty(&sdn->defer_list))
-@@ -12895,9 +12895,12 @@ int __dev_change_net_namespace(struct net_device *dev, struct net *net,
- static int dev_cpu_dead(unsigned int oldcpu)
- {
- 	struct sk_buff **list_skb;
--	struct sk_buff *skb;
-+	struct llist_node *free_list;
-+	struct sk_buff *skb, *next;
-+	struct skb_defer_node *sdn;
- 	unsigned int cpu;
- 	struct softnet_data *sd, *oldsd, *remsd = NULL;
-+	int node;
- 
- 	local_irq_disable();
- 	cpu = smp_processor_id();
-@@ -12957,6 +12960,26 @@ static int dev_cpu_dead(unsigned int oldcpu)
- 		rps_input_queue_head_incr(oldsd);
- 	}
- 
-+	/* Drain skbs deferred to the offlining CPU: its softirq no longer
-+	 * runs, so skb_defer_free_flush() would never free them.  Also drain
-+	 * skbs deferred to this CPU's node, which may leave node_online_map
-+	 * and thus be skipped by the for_each_online_node() loop in
-+	 * skb_defer_free_flush().
-+	 */
-+	for_each_node(node) {
-+		sdn = per_cpu_ptr(net_hotdata.skb_defer_nodes, oldcpu) + node;
-+		free_list = llist_del_all(&sdn->defer_list);
-+		llist_for_each_entry_safe(skb, next, free_list, ll_node)
-+			dev_consume_skb_any(skb);
-+	}
-+	node = cpu_to_node(oldcpu);
-+	for_each_online_cpu(cpu) {
-+		sdn = per_cpu_ptr(net_hotdata.skb_defer_nodes, cpu) + node;
-+		free_list = llist_del_all(&sdn->defer_list);
-+		llist_for_each_entry_safe(skb, next, free_list, ll_node)
-+			dev_consume_skb_any(skb);
-+	}
-+
- 	return 0;
- }
- 
+> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> index e34c52d059d39..1ce528c18f9e7 100644
+> --- a/drivers/net/virtio_net.c
+> +++ b/drivers/net/virtio_net.c
+> @@ -3349,6 +3349,13 @@ static netdev_tx_t start_xmit(struct sk_buff *skb, struct net_device *dev)
+>  	else
+>  		virtqueue_disable_cb(sq->vq);
+>  
+> +	if (!use_napi &&
+> +	    unlikely(skb_orphan_frags(skb, GFP_ATOMIC))) {
+> +		DEV_STATS_INC(dev, tx_dropped);
+> +		dev_kfree_skb_any(skb);
+> +		return NETDEV_TX_OK;
+> +	}
+> +
+
+[Severity: Medium]
+Can this early return leave already-queued descriptors in the avail ring
+with no doorbell?
+
+In the !use_napi path the only notification in start_xmit() is at the end:
+
+	kick = use_napi ? __netdev_tx_sent_queue(txq, skb->len, xmit_more) :
+			  !xmit_more || netif_xmit_stopped(txq);
+	if (kick) {
+		if (virtqueue_kick_prepare(sq->vq) && virtqueue_notify(sq->vq)) {
+
+Earlier skbs of a batch call xmit_skb() with xmit_more == true, publish
+their descriptors and deliberately skip the notify, relying on the last
+skb of the batch to ring the bell. dev_hard_start_xmit() decides that:
+
+net/core/dev.c:dev_hard_start_xmit() {
+	...
+		rc = xmit_one(skb, dev, txq, next != NULL);
+	...
+}
+
+so the final skb in the chain is the one with xmit_more == false.
+
+If that final skb is a zerocopy skb without SKBFL_DONT_ORPHAN (an
+AF_PACKET TX_RING sender, or vhost_net under nested virt) and
+skb_copy_ubufs() fails its GFP_ATOMIC page allocation, the new block
+returns NETDEV_TX_OK without reaching virtqueue_kick_prepare() /
+virtqueue_notify(). Are the previously added frames then invisible to the
+device until some unrelated later transmit on the same queue happens to
+kick it?
+
+Batching for this queue looks reachable without BQL: for a root qdisc
+without TCQ_F_ONETXQUEUE on a multi-queue virtio-net device,
+dequeue_skb() uses try_bulk_dequeue_skb_slow(), which chains up to 8 skbs
+for the same txq. The BQL-driven try_bulk_dequeue_skb() path stays inert
+here because the !use_napi path never calls __netdev_tx_sent_queue(), and
+__free_old_xmit() accounts ORPHAN skbs into stats->packets, so
+netdev_tx_completed_queue() is always fed zero bytes.
+
+Would it work to fall through to the kick logic (or replicate it) before
+dropping the skb? The pre-existing xmit_skb() failure return below has the
+same shape, though it is annotated "This should not happen!", whereas this
+new path turns a routine -ENOMEM under memory pressure into a
+doorbell-skipping return.
+
+>  	/* timestamp packet in software */
+>  	skb_tx_timestamp(skb);
+>
+
 -- 
-2.43.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260914214229.1674102-1-willemdebruijn.kernel%40gmail.com
