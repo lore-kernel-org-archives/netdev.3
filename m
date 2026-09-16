@@ -1,176 +1,156 @@
-Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013034.outbound.protection.outlook.com [52.101.83.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC964AF69F
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 09:50:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.59.177.22
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789552222; cv=none; b=kuYJ+K+TNBbmxH3iz394v2v8bGwODRHozDgRc8aEG6qILj4OnevgunwDmeJ1gTifUE0q1gabWwb8HlQRD9UrDcaq7ota906hp/jxbS89aHlUcg6VYFuEydBhry4iR+yKZ0/w6Jv/gfUI8YZu1GBn8IZvf7Kjje0yLCIrsPa+Q18=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789552222; c=relaxed/simple;
-	bh=eu8f5FCnTca0TkLoILu6E1Ex79RV51c9eJ7Z0fo+MHM=;
-	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
-	 MIME-Version:Content-Type; b=EcqdEphv5VXW1KAwzkjnKChLZArMGm4Oa0o6PB5hgMEL13oKhhsUueimiP6rZa9wYk65aQYxX/qyDJziUQTcyvXPq1gToUZwf7LGSZdMN3+YHBjb6Uy/g/zAVNu7aZ9DYeZOUl5IPsdFLSqemvp9ezJxZ150alpvqNp930nVLJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=52.59.177.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid:tivesync1t1789552124t1cc6fdad
-Received: from 3DB253DBDE8942B29385B9DFB0B7E889 (jiawenwu@trustnetic.com [122.233.172.177])
-X-QQ-SSF:0000000000000000000000000000000
-From: =?utf-8?b?Smlhd2VuIFd1?= <jiawenwu@trustnetic.com>
-X-BIZMAIL-ID: 1009071293264724054
-To: <netdev@vger.kernel.org>
-Cc: "'Mengyuan Lou'" <mengyuanlou@net-swift.com>,
-	"'Andrew Lunn'" <andrew+netdev@lunn.ch>,
-	"'David S. Miller'" <davem@davemloft.net>,
-	"'Eric Dumazet'" <edumazet@google.com>,
-	"'Jakub Kicinski'" <kuba@kernel.org>,
-	"'Paolo Abeni'" <pabeni@redhat.com>,
-	"'Jacob Keller'" <jacob.e.keller@intel.com>,
-	"'Kees Cook'" <kees@kernel.org>,
-	"'Aleksandr Loktionov'" <aleksandr.loktionov@intel.com>,
-	=?UTF-8?Q?'Uwe_Kleine-K=C3=B6nig_=28The_Capable_H?=
-	=?UTF-8?Q?ub=29'?= <u.kleine-koenig@baylibre.com>,
-	"'Rongguang Wei'" <weirongguang@kylinos.cn>,
-	"'Chenguang Zhao'" <zhaochenguang@kylinos.cn>
-References: <E5215E3514E295BA+20260916063312.203457-1-jiawenwu@trustnetic.com>
-In-Reply-To: <E5215E3514E295BA+20260916063312.203457-1-jiawenwu@trustnetic.com>
-Subject: RE: [PATCH net-next v3] net: wangxun: use cached NCSI and WOL capability flags
-Date: Wed, 16 Sep 2026 17:48:43 +0800
-Message-ID: <02bc01dd45c0$8f532090$adf961b0$@trustnetic.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4424ACC9E;
+	Wed, 16 Sep 2026 09:50:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.34
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789552230; cv=fail; b=eEqMboR+LXYaq5Mi305GW0O3QT7Agm0ahfND1gV31O6FOW+6eDpmRNevNH/7fUGS68XnsI8I+mcrJGIUd5Au8Rb4Es6uIXMdcPe6YVD6kxJvwB2FB/tywy7Ym54vFu2oUisDB9a5Id30FLb0bk+QMxf4zzSoi6/AbesGKRs82Gk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789552230; c=relaxed/simple;
+	bh=jo5VWYWQfh9X1CmHTV2oq2dQXbnKQcpjWuKaHyZ2Ysc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=KS5jZVAAWh2TguagKH2x/DwLEoHCzIKUHyAgL6AgXJdZ3g5uVcAJiaRXMRRKLFGGmxBdUk8vtOe373XpgzwzqhM+iR+KhoWqcCYx12vjJdjNI7eDI98AV7b6u5rheW2ohaXSmE5mMfJb0JlndQcjlRmEO4hPZLznZQ4m4cvOQTE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=QhEwhFY2; arc=fail smtp.client-ip=52.101.83.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="QhEwhFY2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ln4IQU2If6MKG6Fyzhn3DHeYGVVzCQ99hZGJOxdGPaXLyXe4ujf0A612dKODvOu6UnMbA51uTxa4IyTQiWUzxRS3SocwlWWPWiXdOFqmQ8cL65BH6X02Ua449Em8eGMehVRXDKZZ2NfwkTvRTjwkt/TP9cHX7WN7w2nEb8VcVJy4Ai6Ijg6nC47+QNzy4r0BE9I0oim6IG4kXwWlLtaUY2T9VbA9T3aJR5F57ZYtTGdps9bWwbRZetIhHpyn5tNC93iPK6xC0Oyx9rlUWZ/kDzU4LBi0Q3MVaaLaCZ1KqNvlnDqdziAKHMqoVHKVe1qdfxPkyi02TjjfvraeNcuXTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2+ONQNIXnZqEFz0HGqTuJo8oKP1yaa6WikAVQrF15Rg=;
+ b=wRpomZqGUdgiec6q07YXt01HwFYm2FnevJ59qiGBE17Wys8DKYS/wjN2lg6qC9+/jQ06fKn8X4vGUj1CZfxnlnU0MvlIrp+DspBbdw972wInXMd+rFsCmXjZqJYn3VMWWR2BLEGuI46n1eEOud+FlzQlToe77V0vXCZJ1yqYcp/28g+WdOvsnjyhyQx6pPpAHEaWrABRHH7bXymGvGV5atUlth6OcZgSlUjkKWy3xoLYJpzu5RCzBTpmkSeOCcjoszVkwq2SEJudC1Rn8459RajKzSKIFF+n9mcXBv0qucjm4pi4sNbZ9vSMzio9ASvyjzrlEtkVBDbfsvy+bbMSyg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2+ONQNIXnZqEFz0HGqTuJo8oKP1yaa6WikAVQrF15Rg=;
+ b=QhEwhFY2/VRHkUWWKLqyKB8JHRNlaDNkdqM9pfoO1kBKwDQIf4ZHjfTx2+0AaH6FH9/bxlM+jthrgTCKUhAhsxo0K0qZAQAgIDFPbWtfqI1V4k6iTglPrKyxvYgD6bXkzKvFArRsKZ9QHSAEgLU6yrflS8tO9Qu+9nFRdEa1QwSAWPSOv8bjq67PMXayfSuReGlDWPg5HeuZwal9FQ0yL/A4P7YHR3g+dbobQtKWveb2NElhtM51tMRS9aDUtjYgU99JbbHEmgamPdOSO/sHlipQlqIpycQyiWLHG2KXGYGon4j2ciFNXvQpDKhJ80fflLhOhwtV8BHFuwVWqz9CMA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
+ by VI0PR04MB10140.eurprd04.prod.outlook.com (2603:10a6:800:246::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Wed, 16 Sep
+ 2026 09:50:10 +0000
+Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
+ ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
+ ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0428.009; Wed, 16 Sep 2026
+ 09:50:09 +0000
+Date: Wed, 16 Sep 2026 12:50:05 +0300
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	Zefir Kurtisi <zefir.kurtisi@westermo.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Simon Horman <horms@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	"Y.B. Lu" <yangbo.lu@nxp.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>
+Subject: Re: [PATCH v3 net 6/7] net: enetc: linearize PTP event packets with
+ one-step TX timestamping
+Message-ID: <20260916095005.qe7ka5asu3e526cf@skbuf>
+References: <20260915222735.1016937-1-vladimir.oltean@nxp.com>
+ <20260915222735.1016937-7-vladimir.oltean@nxp.com>
+ <GV2PR04MB1173959323D0661626527F64988B92@GV2PR04MB11739.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <GV2PR04MB1173959323D0661626527F64988B92@GV2PR04MB11739.eurprd04.prod.outlook.com>
+X-ClientProxiedBy: VI1P190CA0047.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:800:1bb::13) To AM0PR04MB6900.eurprd04.prod.outlook.com
+ (2603:10a6:208:17d::10)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: zh-cn
-Thread-Index: AQGZo/KSQRPqL0GSVyv0tGsJ3RH597dYN/6Q
-X-QQ-SENDSIZE: 520
-Feedback-ID: tivesync:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: MHO0m1kA5sGIk6qU9yqz8Erp4sC/7fsbpNNc4NAkRbkXG3r4OOwMSo7K
-	qmdtWZcplc1FaUlGX+BWEjcjZmnaXwOspNPdWET8HX7jZGnRHxF/8hPsbZHPXFyVDwmQutE
-	ayO++soddGPoQfi1ECdo+2MSwSOBeoPLkuVcxuxvCxLm0V/pKolKyhOnCCnircNnUqvyoEA
-	02qLK9P/gEgqtBhyEuvPbLDVBURYSeNJBOhRqSJmL2td7M0ueJTsMHaAuyVJsj3erukf+cn
-	PJtkrt2fthFfSOIc8xV256en33sDnjo75uOTuIX1EmwFKTBL73kjQ8OUrfO8FW4JeF4FMjj
-	A/LW88vE2bSgTzflboWgg1UMWse4m10YUVuKbQnwNMhQdpzG2m5mwXOctLsBhquvX+y3Gjz
-	mxPQ1UAlRBm+6b7WVyUjfIW75suj7sB3jk7YPpzq+VR+ti6I4eVKga7dpyMkca7rUFp5zGb
-	WyH15iX75dc/BU0vfG/rSU9WLA5uidSUqPiGIzCqOw2LIkWBGlhLa5OQgS59PA+aK/DFUUr
-	eXUkN6XEVSN9yr+iAuAk5TEwwbtsO0uTrumWPMMcD8wMkHJKbd5eyFBZzFSIw/H1fUkcCWM
-	Vkg3ubKmGjA0M4YhG3tq3Z41BSq2aVNsCBdrIvBq8uLmU/c5cu3IpRBZ3zcFgulcCvxtq8R
-	xXUJkpyE1skriQsBLNfGU6MdeIYoXIjUVevmMVlKHF5KFTlCO6rQMblaX9U7CrZM4OVbQy8
-	RXRU3CzEAHantzS5IARkq0mTyhxw3tG4G5gyOD5b1cj7M2IYdjZrXfw+/pxhMEA22Limi+d
-	1V6M097n/zIaVpqprJ1V5jyO5ThNY+ddP0IbsCyM5VnNZ3uR0aE9iK0DhqG4+iRWpDlCwHZ
-	coL+41JK9sv6cUbowN6fJNNSDitOdx53juTbvoLPSvcPl9+rHraeffHd9+5+dmJuzzL91+o
-	tv/uTors692CeO25TpQoVBqRw/6V3xukQpHM84cr6AxYTiuLaQ3ETcffpuFFd4XZi29B84S
-	rFZVqGDGUrayMef7KIK6NUorfbVmibb9Voe+tW1bDqyDfKF7SQfoO6p7z4pMTw/zS/RB9Wr
-	bdHIKI/AvHOZ6qNWFdijR2OXnfE+tolFsOs3vDKnLzn5i6Cy0k6yH8Nr+yYEmu0So+SQYe3
-	kKl9fGj4WyjY94gscJMT9G38Eg==
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-X-QQ-RECHKSPAM: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|VI0PR04MB10140:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1719ceb3-d26c-4798-c746-08df13d7e561
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|10070799003|19092799006|366016|376014|7416014|10067099003|4143699003|18002099003|22082099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	HT0RJPpsYunO0uxoATCVXZ1wSiTCXsDULasDpj/TIWmNTeMMMvB+5XQ0KCk3YxqH6ddYeB4DaivDHIczbsLkA5QCvvf0ABwt2hJ2X2CpRCVzg2Lq5wm99rFOmGVdJWMPleOv2lf9E3Qj2/7Knl1KD4p4rm24xGVQd4dgpVyEo4rBa5QHixpJynWgr4pft2xcLBJRgbp8n2mPqQHxpwZlMmNNacBJYQxJl3zXq4eX/3TkF3EyXOBQAfK61C2VkjPyw/nSSicfO+EducLfwgPI0mhNmSxfX8wlaySx9ckbotOgwOhZU4yqTHetHWAO/E6YX1vHEis+KE5gIT2GPRWPFXh+m0OROrKLWN5IjeTM05E49P8QH3D+1VJ5xHVpeprJy0GKaIFGEa1f7nHuksnh9Azvm4JbUwvY01iqUaNy+s9jjrQ/Xu3mujdLsXMj/S1ZeLYjtGFlTEaSsyDK7qKnoYLZARlaQz5ITGK9ANITLwUQY2HYJVnFfAnZ+xMLxjmYBan6k2+0trrF1JO041DU5+fUBf2uJxdwlWcEuBhuN7+gd1Wre+PsTpsri4SAVHY7Ara0U2Jz6LYtpRHusdlm/ba6qZsP4HjX9BNBdtnoADAybQeYjXS1INrwoPqoW0Tn6YIE+QT7senZG/4QNTFB9mtVY5nlQNbaBJWBQ8klCDQ=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(10070799003)(19092799006)(366016)(376014)(7416014)(10067099003)(4143699003)(18002099003)(22082099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?JR5r3KUvQ7/r7mWSyuLjqDvNvmm5DHRFhO66KAZ0fJbMDm5V4Aazuvhj2eMv?=
+ =?us-ascii?Q?gDtnOueBqnx4Pn40PvhctOMuGlJsh85s7sPBN9BdEmGJNdoJOcs4sqyK8Fy6?=
+ =?us-ascii?Q?JPbsC8t45vg3GbQDx6SCkVyCzkKZPLezx+tAp2eAVM3tlqjNCnAG94ANMlEF?=
+ =?us-ascii?Q?GJ0vvhZAYEZRVtezo5mS3ZEps7aeRQMl1XiTNaSd60J8g97sYwItyvTb0K89?=
+ =?us-ascii?Q?36d/qH8thJfawMkLEco6C6g8cqKgwfdo4f4XNqRrToFWcqPAJDp5SLu2jq7L?=
+ =?us-ascii?Q?BV3C5l3r4yZlkLG474hvSELxPDNqrO+bVb/LMA0jEwo/MENf30sR78cyVp2H?=
+ =?us-ascii?Q?8oDbTpzfAWMHm/2XPfHWIOS4EuQyjmO1yIVLbr/uzeXNzngBzyeL5YcME7Ag?=
+ =?us-ascii?Q?8hqFwHAgi20ffxES5nDOVYlDarZ21De5hD3JfAEaSv1ZiVsU9JEVJJCKxhgP?=
+ =?us-ascii?Q?qrYdGGQN1D+ztrvymkHIqd59geow0V67Iwu23cArRjJH6LfWthgDftgU1BvV?=
+ =?us-ascii?Q?PJ+ZTMYC2sHLe3Gm5/qAnOwj9Ook34Hid1/Wl3tQAtN04DiH1afzNccv5tuy?=
+ =?us-ascii?Q?ABqW8S0hLckM7ANDde+NZU6EG6O3JaEkGAtH2yLcIhvyZaZLyiDnUfaVLmAo?=
+ =?us-ascii?Q?fr+yoiULTuHI6nEogKdKu2pwAPv8XW7WEDwU46oiK2BnS1ejPfEKvZ2jUF4f?=
+ =?us-ascii?Q?9lP95QkgHKnxoGL7vIiCheMb0TzSHkI5hH0uJVd9qwkWEG68ctpVNcMrHrLc?=
+ =?us-ascii?Q?NYqrwAZOMzX0/i7te9MTbj/s7t4a3XbjA8mjXDvRPVR743LuWlnu0aWFNEck?=
+ =?us-ascii?Q?WewJtmL5w9Pi032ZG/9b1kqnMxHeN9Fydozj9gnKhALULulMYH84CAIYsv8Y?=
+ =?us-ascii?Q?sSGkQG6lGICYBspxUOjRC1IuERXMNpcdDNApPP+Zxr/nA2VGpNqH2hmYqPiX?=
+ =?us-ascii?Q?64IzDOIGfzDpqN6+DmDfsTyPe+LBqtkvg8BpA07dDtPd04eUxHVwD4YeLwMl?=
+ =?us-ascii?Q?ubZWofs8Y8I2PXxc8yk8GqfSPk36FeDyB+PhU1co1bMJYxpkVSKz2d9VEF5H?=
+ =?us-ascii?Q?fsIxvKd9I4aUC6oenlI8rdqies2RD38uu+Oi8+47j32eMSkxxj9bQZRUqidW?=
+ =?us-ascii?Q?OSRXBiYlcmBE+3iE8T1wh++2lNrEgUqQPTNZIYoVqGWeEeyibe8XCdD9yWJP?=
+ =?us-ascii?Q?NA/lKXnt/XTH5nbe0MzY6CVzuU/9v5aUgXdJf6fXy/z9uNAbMrM3xQxPidH7?=
+ =?us-ascii?Q?W0ZVsUsO9UwjBfg9U2phmiR3hNDraTM3RX8QBROxMrw7VVpE5+bO6yMPnLhU?=
+ =?us-ascii?Q?ZSi1/JO4Vg46aMqIYiuEWjjm14B0+gHx74F4wWttz0+1sdDgHJfxGHjhfrwz?=
+ =?us-ascii?Q?sGyt3CTrgp0FWzpHvGdmyuqqhscUvJ8CxTL6KTr7JNMDKvMCvFmIwFJ1zWtF?=
+ =?us-ascii?Q?I+7wM/qBLhUyCXbrk/q5wuFPRb7XLU1iZl+hcyo02yEFXDKy7rrJxNa/QCQ4?=
+ =?us-ascii?Q?5B+uGLexhRjw2ZXV/paqA88EmoWBD680hrc5jlq1pKA1dyl6mxJpd+OdugYV?=
+ =?us-ascii?Q?Q1yf8h9oMbzG6QPFvMOjli6Ybiw4puMdyDgRixwQiQZcfSWBkbstKjO51Nav?=
+ =?us-ascii?Q?ZeloIjvSTl26dCcToUjaRPqaBhXjmFIm4fCCR6IrR2CFS4igPLpCg6o4fr5v?=
+ =?us-ascii?Q?ni/0qgYSlpmAmmC9eC4UpMCnfAn1AjKEfAMiMaYuq+SX4LAIDoLaoqWfhfe2?=
+ =?us-ascii?Q?qT6iO8yppV2Oi0rXRFdV/NHunSm+CRACheydAH+BFuXT2JP8Yk9jw5ha2Sjr?=
+X-MS-Exchange-AntiSpam-MessageData-1: 7PeFM6qBS3tFbmBYvsqkcIC2fIcFVSoq0F0=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1719ceb3-d26c-4798-c746-08df13d7e561
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 09:50:09.9121
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zZ7RziUxTZuJc4szpUcjbc5TFAhjuREplTxUzIKBEg5T4cWoV+r1caCprgmFmoAoTB5ZaflHcdS7zsvbQ6I+OQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10140
 
-On Wed, Sep 16, 2026 2:33 PM, Jiawen Wu wrote:
-> wx_disable_rx() and txgbe_disable_device() open-code the same subsystem
-> device ID tests to decide whether the MAC receiver and transmitter have
-> to stay enabled for out-of-band management:
+On Wed, Sep 16, 2026 at 04:59:47AM +0300, Wei Fang wrote:
+> > ---
+> > v2->v3:
+> > - replace skb_linearize() with skb_linearize_cow(),
 > 
-> 	(subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP ||
-> 	(subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP
-> 
-> ngbe_init_type_code() already decodes the subsystem device ID into
-> wx->ncsi_enabled and wx->wol_hw_supported. Do the same in
-> txgbe_init_type_code() and let both call sites test the cached flags, so
-> that each driver decides the capability once while probing instead of
-> having shared code re-derive it from raw IDs.
-> 
-> This is not equivalent for ngbe, and that is intentional.
-> wx->ncsi_enabled has never been read since it was added by commit
-> 02338c484ab6 ("net: ngbe: Initialize sw info and register netdev"), and
-> it is wider than the inline test:
-> 
-> 	wx->ncsi_enabled = (ncsi_mask == WX_NCSI_SUP ||
-> 			   type_mask == NGBE_SUBID_OCP_CARD) ? 1 : 0;
-> 
-> OCP mezzanine cards are NCSI capable by design, so the NCSI semantics do
-> apply to them, and they need the MAC receiver to keep running for
-> out-of-band management. The inline test does not cover the OCP card
-> type, so on such a card that does not have the NCSI bit set the receiver
-> was turned off on every path reaching wx_disable_rx(), i.e.
-> ngbe_disable_device() on ifdown, wx_stop_adapter() from ngbe_reset_hw()
-> and wx_configure_rx(), and management traffic was dropped. Reading
-> ncsi_enabled keeps the receiver enabled on these cards.
-> 
-> No Fixes: tag is added on purpose. The broken behaviour goes back to the
-> initial ngbe support in v6.2, and wx_disable_rx() has since been moved
-> into libwx and reworked several times, so this does not cherry-pick into
-> stable kernels in any useful form.
-> 
-> For txgbe both flags are newly initialized, but wol_hw_supported is only
-> consumed by txgbe_disable_device() there - txgbe does not implement the
-> WoL ethtool ops - so txgbe behaviour is unchanged.
-> 
-> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+> This is not true, this patch still use skb_linearize().
 
-This patch should be deferred.
-Another conflicting fix needs to be committed first.
+Yeah, sorry, I ran a bunch of tests in 'git rebase -i' to reproduce the
+issues with this patch unapplied (this is why it's reordered to 6/7 in
+this series while it was 2/6 in the previous one), and I then updated
+the commit message with the conclusions, but apparently forgot to fold
+the actual code change as well :-/
 
-> ---
-> v3:
-> - Rewritting commit message.
-> 
-> v2: https://lore.kernel.org/all/F76F75E3FFF42A39+20260908025416.42250-1-jiawenwu@trustnetic.com
-> - Remove single-use locals.
-> - Describe the behavior change on ngbe OCP cards.
-> 
-> v1: https://lore.kernel.org/all/95D34449BA183C54+20260901070238.78509-1-jiawenwu@trustnetic.com
-> ---
->  drivers/net/ethernet/wangxun/libwx/wx_hw.c      | 3 +--
->  drivers/net/ethernet/wangxun/txgbe/txgbe_main.c | 6 ++++--
->  2 files changed, 5 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-> index 111aadf79208..2490c4dd548f 100644
-> --- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-> +++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-> @@ -1313,8 +1313,7 @@ void wx_disable_rx(struct wx *wx)
->  		rxctrl &= ~WX_RDB_PB_CTL_RXEN;
->  		wr32(wx, WX_RDB_PB_CTL, rxctrl);
-> 
-> -		if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
-> -		      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
-> +		if (!(wx->ncsi_enabled || wx->wol_hw_supported)) {
->  			/* disable mac receiver */
->  			wr32m(wx, WX_MAC_RX_CFG,
->  			      WX_MAC_RX_CFG_RE, 0);
-> diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-> index eb91c4f28ecd..0ecbd1c0e553 100644
-> --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-> +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-> @@ -267,8 +267,7 @@ static void txgbe_disable_device(struct wx *wx)
->  		wx_set_all_vfs(wx);
->  	}
-> 
-> -	if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
-> -	      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
-> +	if (!(wx->ncsi_enabled || wx->wol_hw_supported)) {
->  		/* disable mac transmiter */
->  		wr32m(wx, WX_MAC_TX_CFG, WX_MAC_TX_CFG_TE, 0);
->  	}
-> @@ -381,6 +380,9 @@ static void txgbe_init_type_code(struct wx *wx)
->  		wx->media_type = wx_media_unknown;
->  		break;
->  	}
-> +
-> +	wx->wol_hw_supported = ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP);
-> +	wx->ncsi_enabled = ((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP);
->  }
-> 
->  /**
-> --
-> 2.51.0
-> 
+I'll make this change together with other feedback for v4.
 
+Thanks for noticing.
