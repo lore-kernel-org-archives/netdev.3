@@ -1,452 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazolkn19011030.outbound.protection.outlook.com [52.103.33.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FDB46D2AC;
-	Wed, 16 Sep 2026 08:16:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789546579; cv=none; b=upnQ16atGbpr/5rP1fPe50lOjslbuAmxJG1ZHnVJZpOmuUQHB97tZYB5aOrRF4vkW/fAD8Jv8Y2n8sOgtLLwfkDCjWwegsYqLZZDA+j1krrhbwQBuwf3wCAEbcGAVofsbameW2sayp6jFIkQfKftJE1ndHc95uXXLCyoRTBCduw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789546579; c=relaxed/simple;
-	bh=9C+buMh1A2W5iJhEdAOkVTtarTzV6swX+ZZ+4AJDYdc=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OhInaiphvEe4vWDwHIH2BFziJyJaO4y8LY6R4K5kWX2Gr2fUDJdYsKANoIao7Ay9422Jn2rIciFLdBPwOwAbyiCFS1MTxH6yo6joAvV8a3+TrORbsaZ18bwCX6cltkl2W2WijrstG8/K+E4pPP8SicC+i303PSwLfdGnZHKVW8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UUksON9U; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B62D43CE4B;
+	Wed, 16 Sep 2026 08:19:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.33.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789546776; cv=fail; b=a0o4CyKyg6lY7OHpb4CHAuOqg6ja1PHmyRmxyZFPsflWbgZvc6t0P8KSO6kZkHDTjn8sdfpW5hBZz7l8/B8f3ytk9zpxm+Xe9XTi/n/RycaeqUsOdGeHNRA6rutDnkjJVh7yKLrIk4DOgpKTLUwXUM7G1goa3l8ZDi1WwLBF3VE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789546776; c=relaxed/simple;
+	bh=gHFRNhUNweHuC9U6BQX9K6Vni3D9fjb1ZmqgBsJ6yMQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=KRHZgrYa3KbZREIXWE2Q52rzjrnF7ujNX5LOpBsEjAZRa3VTDJHiPyPBtFwt+zNg7MnkMu9oAsw23mbgQdx/CUi+G0BJEomzV0kmjrfAb0uAO1IXlDiRNbKYh68fQF/TqS+q9JtLdokD96e3uImzaBamlM1DAkOZ3FZwRMEgvdk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk; spf=pass smtp.mailfrom=hotmail.co.uk; dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b=u+bzk+cy; arc=fail smtp.client-ip=52.103.33.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UUksON9U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 151C01F000FF;
-	Wed, 16 Sep 2026 08:15:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789546559;
-	bh=/Od+57+k43rHq4QfblUn+Osm9v5McaPdc0Y+ZbjieiY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=UUksON9U54KGeBXCq7/jkhOHmWh8rtu8UIXdZzHGstn1XaJgBcTzVDvxOIAnrTIrt
-	 OOg3KKNqmCbFUFo6YuvROI+Y9iLsvuKXccJd8DQwCj3NpTWq0VGhuzTjvOyNE0XWFQ
-	 0OaAerP3V6vSiZtoFXuX2SOUOTblQLG/QEGxQ5OrgYqRx5gQozEZuduGhYrTrX+RAL
-	 2KWBRpFY9fgkk9zg9kc2DobLZoXMw5q02BGMaPOpWmbPwzle/7wZyWXnzxJ4kJuzCn
-	 bW5JPfpq4kW7nlycCHD365x2xTvOpYUYY2+7Wlch0CoJjXqGxMiX4cX/V+4yPIGJaB
-	 DovAkOFLEJghg==
-Subject: Re: [PATCH net-next v14 3/4] ptp: ocp: add TAP CPLD access for ADVA
- TimeCard X1
-From: netdev-bot+sashiko@kernel.org
-To: maimon.sagi@gmail.com
-Cc: richardcochran@gmail.com, vadim.fedorenko@linux.dev, kuba@kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, jiri@resnulli.us,
- arkadiusz.kubalewski@intel.com, corbet@lwn.net, rdunlap@infradead.org,
- skhan@linuxfoundation.org, netdev@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Wed, 16 Sep 2026 08:15:57 +0000
-Message-ID: <178954655751.22033.1449062072421212704@kernel.org>
-In-Reply-To: <20260914071531.11640-4-maimon.sagi@gmail.com>
-References: <20260914071531.11640-4-maimon.sagi@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b="u+bzk+cy"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ECKuRMAs9TBwAqwXurB5p0rOWIUSsw/zXnBbQ5aVHFasV6Su3b0MimzFD235HtOloE0BjG8PCalsCvs6nikkR/I5SOrcwRYxSEIQWYM5rw1lgRV24BZBku+myepoNIrlUQqdKFRkJcEYWz1K1Qj0A6kYJTJxSIXv5jTuRLUMKA225tUwf7kURyIVutqubD1s68vatiXKYt1jVkzalo0aSt/lH0PWKe+wRztcOXvUHre/5dPc7peIn1sCbxa2hxj7iA/jmcNBHd93OxQxmDNwq+MDLYECeNHzfBia7gTG7H1CBLr4+Gr8+Yov1LoCYH5zomU2Ap/8LE6y2sqb2ldSYQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1KHLYxYd8DjqRo5xO31ANrShFj/xyYJrGAaUWJjFZi4=;
+ b=IomRMPPyYLLFhvOSL5ir4/uTLxqyqaEMGn6pWOWYNXPnTR7cRo7F52hRm97GQR0RnxtBM1s7BVtU7+BG58KUus//r/EU0hhoaKNjK7f6u2pZCOZW0BVwAk0nhRZTu202GZuIfMYJ1NlWf0tqjXxr1lZ4OYRS5RPTSpoW550QQD7tFQxPx3xbnxJmrGiyZ+N18Sy+8AGowm9kB5VoG7OUZyHfyeZOincf1fXYPxo9Rf+/MG4osyQgFELTipH3S7KBpjm/WPH5T80obmZEYEZVoUeKY6rmDeNj5gJzuMScJfIzjBR9mmrZWtosVZbqLzeJvQRBqXVNNUA6VjN21yxAlQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.CO.UK;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1KHLYxYd8DjqRo5xO31ANrShFj/xyYJrGAaUWJjFZi4=;
+ b=u+bzk+cyztJw/qxT+Bc4XY6h0qXnpc2ISnZSb4ubK2yuwCtXE6of6F1sfuoeZzKR+CU3uf0IMRqx9fR280O2bpeX08eBso0Ywtu2F3vnYDamH+Dc3tbhNnYCJ1Nk584OEkZGEee5J3k4V/4NTMWCzeGcgO5iHn1PqMy7R1m9eMLPNPhME+VdEhBUyIlDQr2T9NhQ1FsMtXjtpCyZP/FCl/bgSh9JcWbnCF6BBwyBaWdiMEm0rS+xAqY7+zDznKzRzrMijHud0iTdE7KTKxd24zPDiZwUcJOpYO1HxmfFPWN7dCf4XVaCR8ueMpeq2oKHQEZIA0Rq3oxX+EBfnmxqrw==
+Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:344::22)
+ by AS4P251MB0895.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:577::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Wed, 16 Sep
+ 2026 08:19:17 +0000
+Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+ ([fe80::2952:d4d0:4ba:8352]) by AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+ ([fe80::2952:d4d0:4ba:8352%3]) with mapi id 15.21.0428.008; Wed, 16 Sep 2026
+ 08:19:17 +0000
+From: Aamir Ahmed <elb12345@hotmail.co.uk>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Aamir Ahmed <elb12345@hotmail.co.uk>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Lucas Stach <dev@lynxeye.de>,
+	Peter Korsgaard <peter@korsgaard.com>,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v3] net: usb: asix: reject a truncated Data header in rx_fixup
+Date: Wed, 16 Sep 2026 09:19:13 +0100
+Message-ID:
+ <AS8P251MB000156CD4ABF9B3E03324492C8B92@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.53.0.windows.1
+In-Reply-To: <aqpKPXiVESngnVhp@ashevche-desk.local>
+References: <AS8P251MB0001D5442318B9E58797D230C8BA2@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM> <aqpKPXiVESngnVhp@ashevche-desk.local>
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: LO4P265CA0235.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:315::12) To AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:20b:344::22)
+X-Microsoft-Original-Message-ID:
+ <20260916081913.16658-1-elb12345@hotmail.co.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8P251MB0001:EE_|AS4P251MB0895:EE_
+X-MS-Office365-Filtering-Correlation-Id: 47822aff-86cd-4eee-98fb-08df13cb3308
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|25031999004|25010399006|15080799012|23021999003|37011999003|55001999006|24021099003|51005399006|8060799015|19110799012|5072599009|2607281247196008|40105399003|440099028|3412199025|26104999009|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?PsWSS58FbM7s4Y9QB/KY4y9RACX1p6WjNUeBqG5EQScVgAM2vQx3Sg/+KPI3?=
+ =?us-ascii?Q?zoUVLSqYQXqOUwIw8ZL18RkmoxAsG9WWGxdaAYJPwIh7YINwic2Yp3dhNrCc?=
+ =?us-ascii?Q?jrXFPxgoGggErSTs4S6tLXSuMnR51CaTg4kQxBzPnj+wMOqlsuO7NdZvdvPE?=
+ =?us-ascii?Q?0iEQP9K/l5eYZwI7Q/6cZLol60Y4AjZvuPyiVUQ02pqQcHv8ZbXrW7RVJMFa?=
+ =?us-ascii?Q?MzBzcFM7VGgWvl6K1Mwen822lWrVvvSmbPqgHVgBDn/Tf6O3WBN3/ivuKKG3?=
+ =?us-ascii?Q?g++10rYGO/uWtkvntj65IYx4ZqG8/PeUiBSvr8VKw7TwlhTerFmyKVrb8GNP?=
+ =?us-ascii?Q?1KkVVJ9dvwlw7Jsi2Bojze0R0Wy3VKMQkCq5eKOQRMqvtPDUWULBhha/04jO?=
+ =?us-ascii?Q?I8nh1n4AUEiOYRA/e1PO7Y3zDIFYh1HC7LiNBqJf3IBnq+O04NxpeVoPQVOg?=
+ =?us-ascii?Q?/+A1GHuiPFJJQrXJ6IKPdimiK64N6h3WKH7oXcwPA/QeJPF6M8cmAm5sB476?=
+ =?us-ascii?Q?YekJD06FFDFcMrjMxt0Xm6HhU2iqWAZacgadf72Cn9TAN5fgCTPe8RErvFLx?=
+ =?us-ascii?Q?wYKA+47eNCujwOPq+IjsoQa3pxhBrzvZMDkDtwgftdXU11o5tVQ82fMIxmIg?=
+ =?us-ascii?Q?+UJTN27v6CGvs9l4IvlYMuyZSRebKWg4rwqpXo2R4J8O/n2f6xbUAlQpPwOA?=
+ =?us-ascii?Q?PML/rJVzAuaWruxJn1fHrUaXW5FOhCz9ZVi928++diJTHEuEhpxf4ZnGD0+H?=
+ =?us-ascii?Q?OyyRaQAt3d3rDismnj1MsmpCXCIT5SDJ2GzJvPDUHGpZaezwSHS94NToGY6O?=
+ =?us-ascii?Q?JZbeZWkUhBEqOoIO8q/80AGnE6EHjf3A2MbHiNOJIRmCYvv4FVzFvEvv1ag5?=
+ =?us-ascii?Q?0WJ5qS6ypaxvPksvWfsEQ9CC/3fPwjxNb7PNsjVDXbxcuyX3P+EMurUOaC1W?=
+ =?us-ascii?Q?3GHSnH2Ip7YoNOIarv8AZGRmOrW6wiCLBHD9BE6TEx+MJMird+C9eFG8ySQ0?=
+ =?us-ascii?Q?gGB0Xx3ud3R0cG65xnS0QvpnJjAwd9vzm+Lzq1SftMCfC+QfZb73uRV4wbEc?=
+ =?us-ascii?Q?yIOiFvjE?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?EknnhUn6hUNAA1LsXhEJACaKDb3EGYj4Jk4/MJ3p+p31p3/vu5P7Mb9y/SBg?=
+ =?us-ascii?Q?/b+Bj7og6avD4x0cTifZhbfAjg2AHSZ3r+kRA4jn5i6EttMVuGGspO26iD1B?=
+ =?us-ascii?Q?3RRXcSbRn+zBuMwnepgK8DSfQ5lf52c4PoPj1/cu7IkgHOEGx9EF6e2Sb8un?=
+ =?us-ascii?Q?ZYjS2dwjdczWo8PLPC0JCKiQZiK5fvsicfH7+jWni1fyAvlBP84r9qP1RsGE?=
+ =?us-ascii?Q?zC2A1Wux5CdkRibrefL/D8xj6XCNkpP1JXU5G6abLUZDL77uu7BXq6F0Xnvr?=
+ =?us-ascii?Q?g1SmUYTRAECRLQHnme0d3WkcotiWMlOFYZG1stpE04UaIuv9Hu0eoqwDXorm?=
+ =?us-ascii?Q?++d5LHVPWXiXkaMghTXG2k2IHTH0V5zDKQ4ClguUozCv/JxRO8rkWV6XaWMZ?=
+ =?us-ascii?Q?DvXfGiZBUrs0/eHa3CjFWlJkKguMf1IM2t9vdLFg2pqhY2LNU1wIPDBKHmtn?=
+ =?us-ascii?Q?ajZySLq8x7KMayBBXfhUFLD5A6F4V7n/TyxL480OCvtl2RoQR4jNPHzYwLYK?=
+ =?us-ascii?Q?0kXZVL7/gBTFJ5bRGNNnmdtkL9UHA9/or40aNE3gyi1y51VUK2H9mIXOlKBQ?=
+ =?us-ascii?Q?mkIUlzp/7sRlfbKCihLDHL6CILnafgg/pURXwlyoXmkBKQvVtXdWFWNXS6jO?=
+ =?us-ascii?Q?u+umLmnjLbow4zNHhTD0d76/VjQuS1WJFcj+DQ2oaIGDiz0DWKCVdRUUMC2l?=
+ =?us-ascii?Q?M6h85YhG+hkZOjc/KleYPJ9DArtpiGrW3RMnbREKvtuPwdYVFyeg+Y8ztFco?=
+ =?us-ascii?Q?kSnLTKSUuEFR35BbCoTmjW6s5DZkk7hUh53/jAnCnXgS526uvExWU9oJsYUh?=
+ =?us-ascii?Q?ZTQ1FocdmJaZx9RiZix5Emt/vyYlX7WT+dbOEDVJdYIlga0hkRYWnKG3l2ac?=
+ =?us-ascii?Q?bNRlhgvqG3UDnwTBnNXdi9mL/n1Yxadl7IMWF6byOIKsRqzPd9bp2XLhbUmU?=
+ =?us-ascii?Q?kPgcQG1wWMCIyEJGTgOGAj40EV4w/E/rLh+ajtAbJXXbidXqhqisUDTLNLOX?=
+ =?us-ascii?Q?qPOa2Dp5vPwJ95Jvsnz3MCbDVjAmmcCrMqfHRSRVai367RoBVK+hND1+s7hu?=
+ =?us-ascii?Q?Zn/USO6725ohOs7FoqhyYaVi5O2kJ5MMtRaa3UKRUQXG24qutNEsvyMrT/5F?=
+ =?us-ascii?Q?FySiehOMdrEuImswXGWX3h8pr9RRpaYXIbkeMCdsJnx72lMyaetJWOiZlmGq?=
+ =?us-ascii?Q?JjFnScUssK1grCKgnwolY7SOU87lI79pgzPTLzbml78AcVGgWB/MTWdru+FA?=
+ =?us-ascii?Q?6KlzuUiaFoL41LisTEQJAOwHjqNgLmLxC/EsyC1wAGARzNTQC8uegsDA9m3Y?=
+ =?us-ascii?Q?PKAcpThrTzQfTPgARp2ibnHHKmhQ4d7KGZQMOr35g3JJeOHYlSAUXkDVdk8l?=
+ =?us-ascii?Q?YTUWptOFXqZJ0LIupeVMjauhhe5BL1OWvZ7yAeFzXkt1IiLVLwl25hjhwafi?=
+ =?us-ascii?Q?WCQ30JMtLCevgRH6RvZvq8fRyDOUZcVq?=
+X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 47822aff-86cd-4eee-98fb-08df13cb3308
+X-MS-Exchange-CrossTenant-AuthSource: AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 08:19:17.6200
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4P251MB0895
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider:
+On Wed, Sep 16, 2026 at 09:50:21AM +0300, Andy Shevchenko wrote:
+> I don't know the rules about __func__ in the error messages in net, but above
+> may be simplified as
+>
+>     netdev_err(dev->net, "%s(): Short Data header, offset %d, len %d\n",
+>                __func__, offset, skb->len);
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 2
+I've based the error messages on others I found in this function, here
+are some examples:
 
-- [Medium] adva_x1_mblaze_release() (drivers/ptp/ptp_ocp.c:4375-4393)
-  detects that the MicroBlaze firmware never dropped the grant, but only…
-- [Medium] adva_x1_mblaze_release() (drivers/ptp/ptp_ocp.c:4382-4390)
-  writes MBLAZE_RELEASE (0x55550000) to pps_select->i2c_bus_ctrl and…
-- [Medium] bp->cpld_i2c_adap_nr has two unsynchronized writers -
-  ptp_ocp_i2c_notifier_call() (drivers/ptp/ptp_ocp.c:5981-5986) and…
-- [Low] This commit adds #include <linux/iopoll.h>
-  (drivers/ptp/ptp_ocp.c:23) and #include <linux/firmware.h> (line 30),…
-- [Low] In both adva_x1_cpld_read_id() and cpld_status_show(), a failure
-  of adva_x1_mux_select(bp, ADVA_MUX_CHANNEL) takes 'goto release',…
+  netdev_err(dev->net, "asix_rx_fixup() Data Header synchronisation was lost, remaining %d\n", ...);
+  netdev_err(dev->net, "asix_rx_fixup() Bad Header Length 0x%x, offset %d\n", ...);
+  netdev_dbg(dev->net, "asix_rx_fixup() Bad RX Length %d\n", ...);
+  netdev_err(dev->net, "asix_rx_fixup() Bad SKB Length %d, %d\n", ...);
 
---
+__func__ here expands to asix_rx_fixup_internal, the internal helper
+rather than the asix_rx_fixup() the others name.
 
-ptp: ocp: add TAP CPLD access for ADVA TimeCard X1
-
-This adds a request/grant handshake with the on-card MicroBlaze firmware so
-the host I2C controller can be re-routed onto the TMC bus, where the PCA9548
-and the Lattice TAP CPLD live.  On top of that it adds a root-only
-cpld_status sysfs attribute and reports the Lattice device ID as the fixed
-devlink version cpld.id, read once from the driver's own worker.
-
-A few questions on the arbitration and on the adapter-number caching below.
-
-> diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-> index f4299878c27c..98cb26077181 100644
-> --- a/drivers/ptp/ptp_ocp.c
-> +++ b/drivers/ptp/ptp_ocp.c
-> @@ -20,10 +20,14 @@
->  #include <linux/spi/altera.h>
->  #include <net/devlink.h>
->  #include <linux/i2c.h>
-> +#include <linux/iopoll.h>
->  #include <linux/mtd/mtd.h>
->  #include <linux/nvmem-consumer.h>
->  #include <linux/crc16.h>
->  #include <linux/dpll.h>
-> +#include <linux/unaligned.h>
-> +#include <linux/delay.h>
-> +#include <linux/firmware.h>
-
-[Severity: Low]
-This isn't a bug, but is linux/iopoll.h used by anything in this commit?
-There is no read_poll_timeout() or readx_poll_timeout() caller here; the
-first one, adva_x1_cpld_wait_idle(), arrives with the next patch in the
-series.
-
-The same applies to the comments in adva_x1_i2c_xfer() and
-adva_x1_bus_claim() that justify the per-claim scratch buffer with an image
-upload:
-
-	/* One scratch buffer per claim rather than per transfer: an upload
-	 * holds the claim for the whole image.
-	 */
-
-There is no upload path in this patch either.  Would it be tidier to move
-the include (and possibly those sentences) to the patch that introduces the
-flashing code?
-
-[ ... ]
-
-> @@ -4226,6 +4266,367 @@ static const struct ocp_attr_group art_timecard_groups[] = {
->  	{ },
->  };
->  
-> +/*
-> + * adva_x1 TAP CPLD (Lattice LCMXO3LF-2100) helpers.
-> + *
-> + * The card has two I2C controllers; Linux registers only 0x00150000.
-> + * The i2c_bus_ctrl handshake re-routes what each is wired to:
-> + *
-> + *   grant 0:  0x150000 -> EEPROMs     0x120000 -> TMC or M.2, MB's choice
-> + *   grant 1:  0x150000 -> TMC bus     0x120000 -> M.2
-> + *
-> + * The PCA9548 at 0x74 and the CPLD at 0x40 behind its channel 0 are on the
-> + * TMC bus, reachable only while the grant is held.  The EEPROMs are not
-> + * behind the adapter for that window, so a CPLD operation holds cpld_lock
-> + * and the adapter lock to keep the EEPROM and nvmem paths off it.
-> + */
-> +
-> +#define ADVA_MUX_ADDR     0x74
-> +#define ADVA_CPLD_ADDR    0x40
-> +#define ADVA_MUX_CHANNEL  0
-> +
-> +/* Longest command or reply; bounds each half of the per-claim scratch. */
-> +#define ADVA_CPLD_XFER_MAX 32
-> +
-> +#define MBLAZE_REQUEST    0x0000aaaaU
-> +#define MBLAZE_GRANTED    0x5555aaaaU
-> +#define MBLAZE_RELEASE    0x55550000U
-> +#define MBLAZE_RETRIES    200
-> +#define MBLAZE_RETRY_US   10000
-
-[ ... ]
-
-> +/* Hand the segment back, and wait for the firmware to drop the grant before
-> + * the caller unlocks the adapter: a transfer queued behind us would
-> + * otherwise be clocked out while the controller is still on the TMC bus,
-> + * which is what holding the adapter lock across the grant exists to stop.
-> + */
-> +static void adva_x1_mblaze_release(struct ptp_ocp *bp)
-> +{
-> +	int i;
-> +
-> +	if (!bp->pps_select)
-> +		return;
-> +
-> +	iowrite32(MBLAZE_RELEASE, &bp->pps_select->i2c_bus_ctrl);
-> +	/* Flush the posted write, as the acquire path does. */
-> +	ioread32(&bp->pps_select->i2c_bus_ctrl);
-> +
-> +	for (i = 0; i < MBLAZE_RETRIES; i++) {
-> +		if (ioread32(&bp->pps_select->i2c_bus_ctrl) != MBLAZE_GRANTED)
-> +			return;
-> +		usleep_range(MBLAZE_RETRY_US, MBLAZE_RETRY_US + 1000);
-> +	}
-
-[Severity: Medium]
-Can this loop ever iterate more than once?
-
-The three magic values look like a host-owned low half (0xaaaa = request) and
-a firmware-owned high half (0x5555 = grant):
-
-	MBLAZE_REQUEST    0x0000aaaa
-	MBLAZE_GRANTED    0x5555aaaa
-	MBLAZE_RELEASE    0x55550000
-
-adva_x1_mblaze_acquire() writes 0x0000aaaa and waits for the composite
-0x5555aaaa, so the value read back includes the request bits the host itself
-wrote.
-
-If the readback here behaves the same way, then writing 0x55550000 clears the
-low half, the very first ioread32() returns something other than 0x5555aaaa,
-and adva_x1_mblaze_release() returns straight away - even while the firmware
-still has the controller wired to the TMC bus.  The dev_warn() below would
-then be unreachable.
-
-Should the predicate look only at the firmware-owned field, for example
-waiting for (val & 0xffff0000) == 0, rather than comparing against a value
-that contains the host's own request bits?
-
-Or is i2c_bus_ctrl a write-only mailbox whose readback returns firmware state
-alone?  If so it would be worth saying that in the comment, since the
-guarantee stated in the changelog ("The hand-back waits for the firmware to
-drop the grant before the adapter lock is released") rests entirely on this
-loop.
-
-> +
-> +	dev_warn(&bp->pdev->dev, "TMC bus still granted after release\n");
-> +}
-
-[ ... ]
-
-> +/* Route the host controller back to the EEPROMs and release the adapter.
-> + * Safe after a failed claim: it also clears a request that was never granted.
-> + */
-> +static void adva_x1_bus_release(struct ptp_ocp *bp)
-> +{
-> +	struct i2c_adapter *adap = bp->cpld_adap;
-> +
-> +	if (!adap)
-> +		return;
-> +
-> +	adva_x1_mblaze_release(bp);
-> +	bp->cpld_adap = NULL;
-> +	kfree(bp->cpld_buf);
-> +	bp->cpld_buf = NULL;
-> +	i2c_unlock_bus(adap, I2C_LOCK_ROOT_ADAPTER);
-> +	i2c_put_adapter(adap);
-> +}
-
-[Severity: Medium]
-When the hand-back times out, adva_x1_mblaze_release() only logs "TMC bus
-still granted after release" and returns void, so adva_x1_bus_release() has
-no way to learn about it and drops i2c_unlock_bus() / i2c_put_adapter()
-anyway.
-
-What happens to the next transfer on that adapter if the controller is still
-routed to the TMC segment?  ptp_ocp_read_eeprom() is reachable from the
-unprivileged DEVLINK_CMD_INFO_GET path:
-
-	if (!bp->has_eeprom_data) {
-		ptp_ocp_read_eeprom(bp);
-
-and also from serialnum_show() and the at24 / nvmem sysfs files.  Since an
-at24 read starts with an address-byte write to 0x50 or 0x58, this would not
-just return TMC data as EEPROM content but also clock writes at whatever sits
-at those addresses on the TMC segment.
-
-Would it make sense for adva_x1_mblaze_release() to return an error and for
-adva_x1_bus_release() to keep the adapter locked (or otherwise stop using it)
-when the grant was never dropped?
-
-[ ... ]
-
-> +/*
-> + * Cache the adapter the CPLD hangs off.  ptp_ocp_i2c_notifier_call() misses
-> + * it when the i2c controller driver is already loaded: the adapter is then
-> + * added from inside platform_device_register(), before bp->i2c_ctrl is set.
-> + * Only direct children are searched, so a mux adapter cannot match.
-> + */
-> +static void adva_x1_cache_i2c_adap(struct ptp_ocp *bp)
-> +{
-> +	struct device *child;
-> +
-> +	if (!bp->has_cpld || !bp->i2c_ctrl ||
-> +	    READ_ONCE(bp->cpld_i2c_adap_nr) >= 0)
-> +		return;
-> +
-> +	child = device_find_child(&bp->i2c_ctrl->dev, NULL,
-> +				  adva_x1_i2c_adap_match);
-> +	if (!child)
-> +		return;
-> +
-> +	WRITE_ONCE(bp->cpld_i2c_adap_nr, i2c_verify_adapter(child)->nr);
-> +	put_device(child);
-> +}
-
-[Severity: Medium]
-bp->cpld_i2c_adap_nr now has two unlocked writers doing check-then-act:
-this function from probe, and ptp_ocp_i2c_notifier_call().  Can both miss?
-
-device_add() emits the notification before linking the device to its parent:
-
-drivers/base/core.c:device_add() {
-	...
-	bus_notify(dev, BUS_NOTIFY_ADD_DEVICE);
-	...
-	if (parent)
-		klist_add_tail(&dev->p->knode_parent,
-			       &parent->p->klist_children);
-	...
-}
-
-and bp->i2c_ctrl is only assigned after platform_device_register() returns.
-So if the adapter's device_add() is in flight on another thread
-(asynchronous probing via driver_async_probe= or the modprobe async_probe
-parameter), the notifier skips its store because bp->i2c_ctrl is still NULL,
-while device_find_child(&bp->i2c_ctrl->dev, ...) here does not see the
-not-yet-linked adapter.
-
-Nothing re-runs adva_x1_cache_i2c_adap(), and ptp_ocp_sync_work() gates on
-
-	READ_ONCE(bp->cpld_i2c_adap_nr) >= 0
-
-so cpld_i2c_adap_nr would stay -1 for the lifetime of the device: cpld.id
-never reported, cpld_status returning -ENODEV.
-
-The reverse interleaving looks possible too - this function publishing a
-number after a BUS_NOTIFY_DEL_DEVICE has already set it to -1 - in which case
-the stale number makes adva_x1_bus_claim() fail its parent re-check ten times
-and latch cpld_id_tried.
-
-READ_ONCE()/WRITE_ONCE() stop tearing but do not make the test and the store
-atomic here.  Would serializing both writers under cpld_lock, or retrying the
-lookup from the worker instead of only once at probe, close this?
-
-> +
-> +/*
-> + * Claim the TMC bus.  The adapter lock is held across the handshake to keep
-> + * the EEPROM, nvmem and at24 paths off the controller while it is routed
-> + * away from the EEPROMs; an EEPROM read blocks until the claim is dropped.
-> + */
-> +static int adva_x1_bus_claim(struct ptp_ocp *bp)
-
-[ ... ]
-
-> +/* Select a mux channel, or deselect all with ch < 0 - the power-on state.
-> + * The mux is on the TMC bus, so what it is left set to never affects the
-> + * EEPROM paths.
-> + */
-> +static int adva_x1_mux_select(struct ptp_ocp *bp, int ch)
-> +{
-> +	u8 val = (ch >= 0) ? BIT(ch) : 0;
-> +
-> +	return adva_x1_i2c_xfer(bp, ADVA_MUX_ADDR, val, NULL, 0, NULL, 0);
-> +}
-
-[ ... ]
-
-> +static int adva_x1_cpld_read_id(struct ptp_ocp *bp)
-> +{
-> +	u8 data[4];
-> +	int ret;
-> +
-> +	if (!mutex_trylock(&bp->cpld_lock))
-> +		return -EBUSY;
-> +
-> +	ret = adva_x1_bus_claim(bp);
-> +	if (ret)
-> +		goto out;
-> +	ret = adva_x1_mux_select(bp, ADVA_MUX_CHANNEL);
-> +	if (ret)
-> +		goto release;
-> +	ret = adva_x1_cpld_cmd_read(bp, CPLD_CMD_READ_ID, data, 4);
-> +	if (!ret)
-> +		WRITE_ONCE(bp->cpld_id, get_unaligned_be32(data));
-> +	adva_x1_mux_select(bp, -1);
-> +release:
-> +	adva_x1_bus_release(bp);
-
-[Severity: Low]
-When adva_x1_mux_select(bp, ADVA_MUX_CHANNEL) fails, the goto release jumps
-past the matching adva_x1_mux_select(bp, -1), so the PCA9548 at 0x74 is
-handed back to the MicroBlaze with channel 0 possibly still enabled.  An I2C
-transfer can be reported as failed after the mux control byte was already
-acknowledged (controller timeout or arbitration handling), so a non-zero
-return does not prove the register was not written.
-
-The comment on adva_x1_mux_select() describes deselect-all as the state the
-driver restores, so should the select-failure path deselect as well?
-
-On the success path the return value of adva_x1_mux_select(bp, -1) is
-discarded, so a failed deselect also leaves channel 0 open with no
-indication.  cpld_status_show() has the same two paths.
-
-> +out:
-> +	mutex_unlock(&bp->cpld_lock);
-> +	if (ret)
-> +		dev_dbg(&bp->pdev->dev,
-> +			"CPLD device ID unavailable: %d\n", ret);
-> +
-> +	return ret;
-> +}
-> +
-> +/* cpld_status - show the flags set in the TAP CPLD status register. */
-> +static ssize_t
-> +cpld_status_show(struct device *dev, struct device_attribute *attr,
-> +		 char *buf)
-> +{
-
-[ ... ]
-
-> +	ret = adva_x1_bus_claim(bp);
-> +	if (ret)
-> +		goto out;
-> +	ret = adva_x1_mux_select(bp, ADVA_MUX_CHANNEL);
-> +	if (ret)
-> +		goto release;
-> +	ret = adva_x1_cpld_read_status(bp, &st);
-> +	adva_x1_mux_select(bp, -1);
-> +release:
-> +	adva_x1_bus_release(bp);
-
-[ ... ]
-
-> @@ -5052,6 +5455,20 @@ ptp_ocp_sync_work(struct work_struct *work)
->  
->  	bp->sync = sync;
->  
-> +	/* The adapter can appear after probe, so read the ID from here once
-> +	 * it has.  A claim can fail transiently - the firmware may not grant
-> +	 * the segment straight after power-up - so retry a bounded number of
-> +	 * times.  -EBUSY means cpld_lock is held and does not count.
-> +	 */
-> +	if (bp->has_cpld && !READ_ONCE(bp->cpld_id_tried) &&
-> +	    READ_ONCE(bp->cpld_i2c_adap_nr) >= 0) {
-> +		int err = adva_x1_cpld_read_id(bp);
-> +
-> +		if (err != -EBUSY &&
-> +		    (!err || ++bp->cpld_id_attempts >= CPLD_ID_MAX_ATTEMPTS))
-> +			WRITE_ONCE(bp->cpld_id_tried, true);
-> +	}
-> +
->  	queue_delayed_work(system_power_efficient_wq, &bp->sync_work, HZ);
->  }
-
-[ ... ]
-
-> @@ -5227,11 +5656,21 @@ ptp_ocp_i2c_notifier_call(struct notifier_block *nb,
->  
->  found:
->  	bp = dev_get_drvdata(dev);
-> -	if (add)
-> +	adap = i2c_verify_adapter(child);
-> +	if (add) {
->  		ptp_ocp_symlink(bp, child, "i2c");
-> -	else
-> +		/* Only the card's own controller: a mux child added on it
-> +		 * reaches ptp_ocp through the same walk.  Numbers are
-> +		 * recycled, so the claim re-checks the parent itself.
-> +		 */
-> +		if (bp->i2c_ctrl && adap->dev.parent == &bp->i2c_ctrl->dev)
-> +			WRITE_ONCE(bp->cpld_i2c_adap_nr, adap->nr);
-> +	} else {
-> +		/* invalidate before free, but only for the cached adapter */
-> +		if (READ_ONCE(bp->cpld_i2c_adap_nr) == adap->nr)
-> +			WRITE_ONCE(bp->cpld_i2c_adap_nr, -1);
->  		sysfs_remove_link(&bp->dev.kobj, "i2c");
-> -
-> +	}
->  	return 0;
->  }
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260914071531.11640-1-maimon.sagi%40gmail.com
+Kind Regards
+Aamir A.
