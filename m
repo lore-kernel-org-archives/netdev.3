@@ -1,69 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA8A37F8C1;
-	Wed, 16 Sep 2026 12:53:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E13A37F33C;
+	Wed, 16 Sep 2026 12:54:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789563182; cv=none; b=A10UX64BU0KTVBwA++J70PZtM+aKiOrM4cUYkFlQwztfDsWNZnbA9Z2oLbQm8THUXj1qM5TysCVOn1q/ZyWBiO1w0NNQqQTltOhYBC6AoRKPKuNI90Kh1vU4QRRuizsTjexIUBPdVYenjzEfVtpF04J7izES1C3PrBXDnXFNQVQ=
+	t=1789563255; cv=none; b=AVD2GuzvmTw9mhTQsN4mvYT1EAnhWblbcy1RrWPwBnw7ryiwO2n9Qn7OjBxcnP1NOdeUwiSDTdWv0XJ9M+TF9KLrnxkwTWKuIi0Ct+3uR+dcyQ0Dsz0Lb3pT7cXZO8+abMxft6nhy3xA50VIqIZa4OIOkufmJcXoSu9wYa+SZ90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789563182; c=relaxed/simple;
-	bh=1jPHqqKWVgzdASRumvweTZPlu0WRjucZswerhj1CvjY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NFUM3gaYAKe53NF0eRRpUaCDENt1NilMPrqe1juGzyltpja/KJdcEB0o/P8Vp0W42B49OZj56qfbNTPGT+A+BVBgXmp+Gcgm4fwMgDfC1hgPQQfeKmRLeT4ImEmt9ckKdQy7JYY33NJ0POJjtbD7akf7h5eF2KBCkuPu5HYHO/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FlsZMWhx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789563255; c=relaxed/simple;
+	bh=zImIvHonBtT04hXaiapfE0jkw5hjkK2GJ2GVk2hMFSU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BHGeKwYmH6DzdA0SNcLjgfBm6doBQFPVN6ujiBE4mZchxI0JEzGXWPl7HGVLuft6pgNlhkTk5/yRicg4pLJoTcw0LArQu3pBFb1rZ6YfWves6pwlZzlRffzQuBb9OLH42pokN3XJxVyru6lciVDHBo0cXh2U8pYRSRc9h9OmZKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=kZ7RNGwX; arc=none smtp.client-ip=117.135.210.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FlsZMWhx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7318B1F000FF;
-	Wed, 16 Sep 2026 12:52:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789563180;
-	bh=ECGhs/jw631DcK951Pu4QrAhITSXxLczEZxG3qzOMuk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FlsZMWhxqTrZxfa975FyF9k7IqZJ672OKh2vyiyW8ergfy0tX5lr6UrHMgJOdlDkV
-	 EaFwAS8u5CjqS7HECHElbah/+oHVAC4pOt/E2hSjbl5hcoxtkhn647Quk3GdNOgK79
-	 PfCznRL9lDCL0VojUDxdArew56r1LLH61A9t//qhAQJxcWLCIv4A/MmzYNqVn0i4vX
-	 nekz1XfNtV6r1HCygaFJ5nPG7346dnMQY3xr1LSqDtnZaV/o4hCu1PJ3/JOyDsEE3A
-	 ybnCfFcxH8A+e4jYBo5ZHYVTmfafMs7BG8HZ4riSWUQTNYEtkzgSdf/2kkqJs1f9lW
-	 yuxyVxlaN5awQ==
-Date: Wed, 16 Sep 2026 13:52:56 +0100
-From: Simon Horman <horms@kernel.org>
-To: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-Cc: Alexander Duyck <alexanderduyck@fb.com>,
-	Jakub Kicinski <kuba@kernel.org>, kernel-team@meta.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, Mina Almasry <almasrymina@google.com>,
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="kZ7RNGwX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=nN
+	z6UvgI9RLeoxVnXq3+KTZCnkqsS4362EB+sFY/FgY=; b=kZ7RNGwXJZV3fCqM1j
+	b/vepziZA+Nb41g7m/di8x3lB9aLnE0NottjVhYaMg7PliKG33hmLXKrIesHj3Gx
+	5+aY1d6JZTpwcAXJk2nDD4VsSOdnzMYYex8dIeTVHq5T5RAQZDMuSAhpE0HMJ+KO
+	f9mZ7yvytkZClxCzMF6aak3Ko=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp5 (Coremail) with SMTP id QCkvCgAXf8s+kapqLnIfHw--.57650S2;
+	Wed, 16 Sep 2026 20:53:18 +0800 (CST)
+From: Linkui Xiao <xiaolinkui@126.com>
+To: dsahern@kernel.org,
+	idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Sashiko <netdev-bot+sashiko@kernel.org>
-Subject: Re: [PATCH net] eth: fbnic: Fix payload page pool error cleanup
-Message-ID: <20260916125256.GH51261@horms.kernel.org>
-References: <20260915104917.3978113-1-bjorn@kernel.org>
+	Linkui Xiao <xiaolinkui@kylinos.cn>
+Subject: [PATCH net v3] ipv4: fib: fix data-race and stale genid check around nh->nh_saddr
+Date: Wed, 16 Sep 2026 20:53:16 +0800
+Message-Id: <20260916125316.988044-1-xiaolinkui@126.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260915104917.3978113-1-bjorn@kernel.org>
+X-CM-TRANSID:QCkvCgAXf8s+kapqLnIfHw--.57650S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWr4kCF4UAr13tw4UJr45GFg_yoWrJw4rpF
+	W8Jasrt347XayaqrsxtFW7X3WF9w4rtFWS9r92kws09wn8Xr13JF9ag3sY9as8XF4kXw42
+	yFs8Wr1UArZ0kaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07ULFxUUUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqR64j2qqkT5gywAA3E
 
-On Tue, Sep 15, 2026 at 12:49:15PM +0200, Björn Töpel wrote:
-> The payload page pool pointer contains an error pointer when its
-> allocation fails. The cleanup path passes that error pointer to
-> page_pool_destroy() instead of destroying the header page pool. This
-> can dereference the error pointer and leave the header page pool
-> allocated.
-> 
-> Destroy the header page pool instead.
-> 
-> Fixes: 8a11010fdd96 ("eth: fbnic: allocate unreadable page pool for the payloads")
-> Reported-by: Sashiko <netdev-bot+sashiko@kernel.org>
-> Link: https://lore.kernel.org/netdev/178915061000.219967.7726187707862333281@kernel.org/
-> Signed-off-by: Björn Töpel <bjorn@kernel.org>
+From: Linkui Xiao <xiaolinkui@kylinos.cn>
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+fib_select_multipath() compares nexthop_nh->nh_saddr against the flow
+source address with no lock held, while fib_info_update_nhc_saddr()
+stores a new value from another CPU as soon as the preferred source
+address of the egress device changes.
+
+Commit 195374d89368 ("ipv4: fib: annotate races around nh->nh_saddr_genid
+and nh->nh_saddr") added WRITE_ONCE() on the store side and READ_ONCE()
+in fib_result_prefsrc() after syzbot reported
+
+	BUG: KCSAN: data-race in fib_select_path / fib_select_path
+
+but it only covered that reader. fib_select_multipath(), reached from
+fib_select_path(), is a second lockless reader of nh->nh_saddr and was
+left bare.
+
+Moreover, nh_saddr is only meaningful when nh_saddr_genid matches
+dev_addr_genid, as established by commit 436c3b66ec98 ("ipv4: Invalidate
+nexthop cache nh_saddr more correctly."). fib_select_multipath()
+skips that validation, so it can score a nexthop using a stale source
+address and skew the ECMP selection.
+
+Annotate both reads with READ_ONCE() and refresh the cached source
+address via fib_info_update_nhc_saddr() when the genid does not match,
+mirroring fib_result_prefsrc().
+
+Fixes: 32607a332cfe ("ipv4: prefer multipath nexthop that matches source address")
+Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+---
+V1: https://lore.kernel.org/all/CANn89iJhFL2LNQCXTANQAx8B1GVdGTJgrDwPTZOjbH8k1ygtsg@mail.gmail.com/
+
+V2:
+- point Fixes: at 32607a332cfe, which introduced the bare reader
+- add the missing genid check as suggested by Eric Dumazet
+
+V3:
+- correct the commit reference to 436c3b66ec98, which established the
+  rule that nh_saddr is only valid when nh_saddr_genid matches
+  dev_addr_genid (195374d89368 only added the READ_ONCE()/WRITE_ONCE()
+  annotations)
+- refresh the cached source address via fib_info_update_nhc_saddr()
+  when the genid does not match, instead of skipping the comparison,
+  to avoid silently downgrading ECMP selection to hash-based for a
+  long stale period (suggested by Ido Schimmel)
+
+ net/ipv4/fib_semantics.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+index 7a362f2e2c2b..5c9021ea3a79 100644
+--- a/net/ipv4/fib_semantics.c
++++ b/net/ipv4/fib_semantics.c
+@@ -2176,6 +2176,15 @@ static bool fib_good_nh(const struct fib_nh *nh)
+ 	return !!(state & NUD_VALID);
+ }
+ 
++static __be32 fib_nh_saddr(struct net *net, const struct fib_info *fi,
++			   struct fib_nh *nh, int genid)
++{
++	if (READ_ONCE(nh->nh_saddr_genid) == genid)
++		return READ_ONCE(nh->nh_saddr);
++
++	return fib_info_update_nhc_saddr(net, &nh->nh_common, fi->fib_scope);
++}
++
+ void fib_select_multipath(struct fib_result *res, int hash,
+ 			  const struct flowi4 *fl4)
+ {
+@@ -2184,6 +2193,7 @@ void fib_select_multipath(struct fib_result *res, int hash,
+ 	bool use_neigh;
+ 	int score = -1;
+ 	__be32 saddr;
++	int genid;
+ 
+ 	if (unlikely(res->fi->nh)) {
+ 		nexthop_path_fib_result(res, hash);
+@@ -2192,6 +2202,7 @@ void fib_select_multipath(struct fib_result *res, int hash,
+ 
+ 	use_neigh = READ_ONCE(net->ipv4.sysctl_fib_multipath_use_neigh);
+ 	saddr = fl4 ? fl4->saddr : 0;
++	genid = saddr ? atomic_read(&net->ipv4.dev_addr_genid) : 0;
+ 
+ 	change_nexthops(fi) {
+ 		int nh_upper_bound, nh_score = 0;
+@@ -2204,7 +2215,7 @@ void fib_select_multipath(struct fib_result *res, int hash,
+ 		    (use_neigh && !fib_good_nh(nexthop_nh)))
+ 			continue;
+ 
+-		if (saddr && nexthop_nh->nh_saddr == saddr)
++		if (saddr && fib_nh_saddr(net, fi, nexthop_nh, genid) == saddr)
+ 			nh_score += 2;
+ 		if (hash <= nh_upper_bound)
+ 			nh_score++;
+-- 
+2.25.1
 
