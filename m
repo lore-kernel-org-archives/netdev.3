@@ -1,119 +1,180 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149B1C2C8;
-	Wed, 16 Sep 2026 00:12:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789517543; cv=none; b=ojwuq4ndlvQAjUSUbkMJUyuqAqRKbq652ei+YssslrliRs/T/K+MOfarx3YMCHgf5l+cyMePD5stsXJnsDcABiSl5IvUPEdbEpO8jOu9HrlCPOfE3UYj9qq+4OyzGASdyRj9S2OSFwt6m9pYtX2oEuKA8KnICDsP2eA8vDCxcaM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789517543; c=relaxed/simple;
-	bh=r2XKFChzgP9CS6sr2s7CiPvPEhe/5GEvTsSFCtxYPtY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p+LTsl4VC0Zdjl/RfeNEcDxZZVAtc08P7FstpGCSt5/4XpiqW5Onn5nDYmDEpCXRqon5hRTApcvfmI/Vbb/W3koYacRy2xhyiODFQxQ7SFaWqclhYIeXn4W0D0PLdBNnsCvLZ6Pa+NBvXr8JaK+ix8MtoWu9cK6WBpVhojZXRk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=vXZ6W6j6; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=vXZ6W6j6; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8312AEE1
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 00:17:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.153.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789517842; cv=fail; b=HwO1o7Zpq/oOq1neJuRgCbO7DJ1Kw80XqEpTjX/g/YEjgkZ4CT/Qa7Q0+eOYizZASuGefNEdwCkTELLf3GpH9vFYXLzOrFnEZN2270xw1r0nWWZQ76r3Hupu5v6Iybs+sBgJZ/51ztpoCO6XofcZmcXNxWmiGr9eThUll835YJw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789517842; c=relaxed/simple;
+	bh=5av3QgEhikSP0tSNbBAG2bZkciaGDEOrmy5hau/6dIY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rLV/xwpivrqzDM4+4r3Wr7AdSHMDEG/8BLrzHi7Ld5cGHqRe0SfnsI7zP4U5U+pR6GareXPevvIrA5Vs8aDaGQy1WE9nJvRm8GxabmFAER4SBOGUVzaSoB9Zm4pxp7P7o1LoqbRbz5hcBqmTlMvlZFMdLWfFRlwpZeWi1TEefj4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=SV3hPlDn; arc=fail smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="vXZ6W6j6";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="vXZ6W6j6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1789517539;
-	bh=r2XKFChzgP9CS6sr2s7CiPvPEhe/5GEvTsSFCtxYPtY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vXZ6W6j6FgHZ67pzhwIL8mtJ6P4i5QFZwcUdaWLO9CHIEtk6ZuRFQpRuWD++OWWPZ
-	 eaA5f/qR0165vQyVGqZY/0jaSWTxzqWGdNIGK9bOG/nAOLIaVnldSd0nnyk7LFdYlx
-	 wuV3SOe0iC7ma0wPV3DkSjq/LipTJMOuTmYO0qyZRukeybE2T/4vlGwgCO4XDnLUdP
-	 Su/PiPdpoMwjRdVz5BOEAz+GDI5FfwBsn68C6BUrs7c3cZOg87ZeBbP+hgqtfa3+28
-	 Sd5DuTXJ5mX16Qqjt0iOZb9ZIDlS8d4Y6OGGbDnl+U/Hx2kq/LchgHjuF+Fpwxnt0z
-	 IPspsJDTVXQ+w==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id E6C383FA7C; Wed, 16 Sep 2026 00:12:19 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1789517539;
-	bh=r2XKFChzgP9CS6sr2s7CiPvPEhe/5GEvTsSFCtxYPtY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vXZ6W6j6FgHZ67pzhwIL8mtJ6P4i5QFZwcUdaWLO9CHIEtk6ZuRFQpRuWD++OWWPZ
-	 eaA5f/qR0165vQyVGqZY/0jaSWTxzqWGdNIGK9bOG/nAOLIaVnldSd0nnyk7LFdYlx
-	 wuV3SOe0iC7ma0wPV3DkSjq/LipTJMOuTmYO0qyZRukeybE2T/4vlGwgCO4XDnLUdP
-	 Su/PiPdpoMwjRdVz5BOEAz+GDI5FfwBsn68C6BUrs7c3cZOg87ZeBbP+hgqtfa3+28
-	 Sd5DuTXJ5mX16Qqjt0iOZb9ZIDlS8d4Y6OGGbDnl+U/Hx2kq/LchgHjuF+Fpwxnt0z
-	 IPspsJDTVXQ+w==
-Received: from [IPV6:2409:8a62:2532:dca0:14f4:3e22:1e7c:23c2] (unknown [IPv6:2409:8a62:2532:dca0:14f4:3e22:1e7c:23c2])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id C1C923EAED;
-	Wed, 16 Sep 2026 00:12:14 +0000 (UTC)
-Message-ID: <06c5becb-f500-4527-9bc3-b448ef5b1633@birger-koblitz.de>
-Date: Wed, 16 Sep 2026 02:12:04 +0200
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="SV3hPlDn"
+Received: from pps.filterd (m0001303.ppops.net [127.0.0.1])
+	by m0001303.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 68FMOTKO458159
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 17:17:19 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	pps82601-s2048-2026-q3; bh=y4AfS6tr9HrRnC6D4zpOkbqwXmfmGihLXHO3T
+	H7isxM=; b=SV3hPlDnkLVLzLZ5wbnt0LfyWojFDHoTKaL9JlUmAXLtdCh4GpdZ/
+	SKD174SCvrUikKcMBYauckYS3JgM+tWicqg6Oj1Bmcs0oYCNvfbaKfuYGlrVLJKf
+	r6OwvK9Qe/f4pBy01MEWp1c9CWkCnaxUkeQw8Qd9+jvYiKtQS4cVfUVdETDA7xaZ
+	i02VojdTANK3f3sj2LsPaRR7E9gJFNv8lt86XsIF/4fC95eqm/hGduydG7DxeyJK
+	pir0xIEvbcfyHKR1q53dV/4//VMrQo9fK9ExB2hkeqKevwM0hhR489OnIDrdaCGJ
+	MkoepWkx0zrAKKuQkN2Vqp+EvaVdA5v5g==
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
+	by m0001303.ppops.net (PPS) with ESMTPS id 4gq0vdermy-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 17:17:19 -0700 (PDT)
+Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-807383233b9so3037067a34.3
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 17:17:19 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789517839; cv=none;
+        d=google.com; s=arc-20260327;
+        b=R+hJH4OuznCoU9CzUl7IrzVcCrHas4+Ou0ruALQTJgnjjGWMTRYpTlprRjm85+QJ6h
+         SAjVYYy6JU283OPB37JZgaUxE2WwpupZhZn0IkD9TBG1L287tanhSGvp4Ad460tszCg2
+         60bkmFXyAun7nYxeWKQoYqAPXvJbVIzMQjMKHEFuLLA1qm6DxmU/fbryK+ptw5FDQ/xB
+         wV+T6iZD0ywTma6k5fdWxjR5Qegckwqqy6AKc4Owz6SuWjICC41qcA2kBY3KFmd0/tpg
+         ooO3dqwgi5+hJsgHQAOAINu53f5u0tU3Dl2mcM23N2Fldh6vgZOZb+eAEF5JA5BNTrm8
+         PZDw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version;
+        bh=Kw8qhFcrPQrG+D+0UL2QgWXn6zGjS5meCnbxBsS+WIw=;
+        fh=PGKngNQL1NJxYzwYu9q0oj6CywJgdm9XhU/pOCUImDs=;
+        b=AhOrqOfnbmpPkD0usG11qAFWGLEH/6et2dnm+RN2vNjsr1sz03R8YEp7YTiXvwc5zF
+         LAjxeib7USM8pwIfnxYdrPgHV9E6RoXgECsUS4G4eBX7qWzs2eBOV0NSb0ie/rkxnxmC
+         8AwTnsoDL4uH8m83ql5kFz+2liSLgMvoxHPbeouXPVyr6ONsi1JYSS+HIFpaeWdU6U+s
+         E3utS3CdcEHGjwcBfhBx48vIkbYRzs2o0Ox8kKtagvnBB5n0TtP+QC6Shz9ZAGFpv87P
+         ujHD4esVKEPj+H5xw3oTzzj07Of2Zu5/135RR/dOLF1/qI7TPS2m0LoHe0wY43Mf8NlJ
+         T8vg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789517839; x=1790122639;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Kw8qhFcrPQrG+D+0UL2QgWXn6zGjS5meCnbxBsS+WIw=;
+        b=PtYXtlBYOK6AUyl3D4BinVOYVqElXyqEboNByuOidDagj4D3qJXv8gQIy3TBt+PCJ5
+         PojySGCXlBbanAnfrjug6Vmb/okKz0Okd2NSk+EyRso0jIRA/Jvjz1F6qYWukQGuh5bN
+         Q1TrVZjZUNmfOuOGZ/Tb7jxn1ht1BhUdNUHA069X7rj5WCtW2uZqGN7lr0fmT9tPV80y
+         GHuV+wu7nDTX8gCbGb0X33+BHEp8kQW6nHDRABwQSLBnDHvGsiGY8LRd1lqRVr/yokJm
+         bGWSDx4JqonTbmgyw4oIpX6iDFr4GbtPImDeRoFMg3g1NxJ6k8s9IzRcBJD2adg/oaKW
+         Q3VQ==
+X-Forwarded-Encrypted: i=1; AKwUvByksVxROgcULZ2dDmN7zT8CbYnElpd/0XBMRv8AoSMbO1EzURVz0xYVZPalTLQPn3u6mblO5Is=@vger.kernel.org
+X-Gm-Message-State: AFuF++l7u8QtugN2U7dPNgqoUvD1Dyb3Wu4vj2wN8h3hQDiJ4enJACu7
+	A8ennh5GJZ2Z71eDx0wDFLU2Yf1FbDXHLdY96j7Zi8kF2mhAL+Vuf8CXxeDx7uZvmAFseIoIaoC
+	t07RJWC/lUb+G9sPJtUgaj7BIOHmN8uBX5fmp7iJZUHpnGETdbfOMdqZmiqPq/iTmE87ozlHeSK
+	JD1m30LOqKP4LZnVGpXLWlpxw77mZlgj0=
+X-Gm-Gg: AYBFou1nCBln026rbXDnro/M71clW0K6Bs83c54LXd/qGlRhG1FTqsnUen9kDe68Te+
+	jhGIflkJrXdOTk+CvrH0KPPf+jZ6iRNy3EHOe7T+mtHk/trtNAZcSf+lRnVeOybMKmRyH9Gc7Qo
+	j9AkebmOpmFkqMtONBwWoTxKl+lGALCW5OFxLQ+dUcJnf9D/qhPl2+SD5gZxGLyhS7YX0uAW5F
+X-Received: by 2002:a05:6830:d0a:b0:7e6:d54e:8fe3 with SMTP id 46e09a7af769-80b2d408fadmr803746a34.9.1789517838953;
+        Tue, 15 Sep 2026 17:17:18 -0700 (PDT)
+X-Received: by 2002:a05:6830:d0a:b0:7e6:d54e:8fe3 with SMTP id
+ 46e09a7af769-80b2d408fadmr803625a34.9.1789517837178; Tue, 15 Sep 2026
+ 17:17:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v11 06/15] ax88179_178a: Add HW support for
- AX179A-based chips
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Nicolai Buchwitz <nb@tipi-net.de>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Russell King <linux@armlinux.org.uk>, Heiner Kallweit
- <hkallweit1@gmail.com>, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jianhui Xu <neuromoments@gmail.com>
-References: <20260914-ax88179a-v11-0-5ea7a925ba6d@birger-koblitz.de>
- <20260914-ax88179a-v11-6-5ea7a925ba6d@birger-koblitz.de>
- <18c931ca985a82a044c9269743fb4fb7@tipi-net.de>
- <3103b046-fa19-4b59-af4a-f326783eda4f@lunn.ch>
- <9a4ad1ba-0d98-4a5d-b18d-742f82337641@birger-koblitz.de>
- <8a9ddbff-01e6-4a0d-98a3-ddc06ec30055@lunn.ch>
-Content-Language: en-US
-From: Birger Koblitz <mail@birger-koblitz.de>
-In-Reply-To: <8a9ddbff-01e6-4a0d-98a3-ddc06ec30055@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260731211601.3033906-1-zhipingz@meta.com> <CAH3zFs0vQidHOWif_LmS0=65S9iiCo7yGibqLvFT5jadjj8wVA@mail.gmail.com>
+ <CAH3zFs2XnH6gT0fO4=WLi4x1SL2+Y0S=Jo45SWkR=unPegQ8Hw@mail.gmail.com>
+ <CAH3zFs2X8=x-XMXhwC7_aUZivCCPQOSuyXMy-ryKqxLEFY9u-Q@mail.gmail.com>
+ <c0c8dea4-1571-482e-be33-f965c7c357d2@amd.com> <CAH3zFs3=t3rNDDjUsCAekfhEGOJPyx-YXKta7NdHy3kBKU_RHQ@mail.gmail.com>
+ <20260915144901.554f905f@shazbot.org>
+In-Reply-To: <20260915144901.554f905f@shazbot.org>
+From: Zhiping Zhang <zhipingz@meta.com>
+Date: Tue, 15 Sep 2026 17:17:06 -0700
+X-Gm-Features: AcwNN1UDllFH7fZheftU62Oc0zcY8368FZvRR7u05GnfBjshQDxnxMnIHm9x8No
+Message-ID: <CAH3zFs3MwpxLNL+qK9e-jPBLasjfxeMvudhgz5XzwrtvL1Dz=w@mail.gmail.com>
+Subject: Re: [PATCH v13 0/5] vfio/dma-buf: add TPH support for peer-to-peer
+ access - ping
+To: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>
+Cc: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        Bjorn Helgaas <bhelgaas@google.com>, kvm@vger.kernel.org,
+        linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE2MDAwMiBTYWx0ZWRfX+IZvtZu29DIx
+ jqRQOTCu9NUYjkoqxJi62r3sFWWMEvycImAuqU1oimlxVEqFpE67q8+HCYsYJXP5PIQdoUB9Z59
+ gn0L4DfPSpo9Vwy6QlLbhAK0S5lJnAJoMveiwnMaQbB8OXGtYzK2mHePfNBoq16zx+ZO/EKkOrK
+ vfmTpysBtKodOktm2jW1NppdM0KXaucNqq8yntySByI155mza9oqnux2qwFCIUzIKl61HD5o4ex
+ A87nWpBqQVU3xUD/Wtpgazf+tdytW4DmHSJQdgNCl8UjHqgvF9BL6UYnqOGSf6p+A3ASWEE3SxZ
+ IEofv2WRuUcyD+gK+hhfyy7q7t7b0kknE1yYZjVFWet8MwcTweoRRMwkCnKVU4N3/3YpP4QvfXm
+ Fz8b8Xo8dmz1bVMCGslVEKapgGuqYZIfpceBQpVNR6NN6dDl5Sg5y0oRLIdw/jPGUxGeoPI7n5h
+ GYLPEksdi+Ycb2yWKmA==
+X-Proofpoint-GUID: MTzgs9QCDcFj7GY2kJV2U4J9DOCtKDpA
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE2MDAwMiBTYWx0ZWRfX0E66Xdqv42W+
+ jLePWdwlNSLYV9Rdo97+nPWfEjQYDjQdivx8ayPnPWtuOqtNbQQni1GZ8LyTOf22Ps9e2+8UfoP
+ WAr+Pxjzb+iELRt8Wnu/llV0ybpwjUE=
+X-Authority-Analysis: v=2.4 cv=FviQbGrq c=1 sm=1 tr=0 ts=6aa9e00f cx=c_pps
+ a=+3WqYijBVYhDct2f5Fivkw==:117 a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=_78whYxrdx1mplLwxq1U:22
+ a=VwQbUJbxAAAA:8 a=VabnemYjAAAA:8 a=r1p2_3pzAAAA:8 a=tEdGRIS0mffteslzfD0A:9
+ a=QEXdDO2ut3YA:10 a=gKebqoRLp9LExxC7YDUY:22 a=r_pkcD-q9-ctt7trBg_g:22
+X-Proofpoint-ORIG-GUID: MTzgs9QCDcFj7GY2kJV2U4J9DOCtKDpA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-15_05,2026-09-15_02,2025-10-01_01
 
-On 9/15/26 14:07, Andrew Lunn wrote:
-> On Tue, Sep 15, 2026 at 02:01:48AM +0200, Birger Koblitz wrote:
->> On 9/14/26 18:53, Andrew Lunn wrote:
->>>>> +static const struct net_device_ops ax88179a_netdev_ops = {
->>>>> +	.ndo_open		= usbnet_open,
->>>>> +	.ndo_stop		= usbnet_stop,
->>>>> +	.ndo_start_xmit		= usbnet_start_xmit,
->>>>> +	.ndo_tx_timeout		= usbnet_tx_timeout,
->>>>> +	.ndo_get_stats64	= dev_get_tstats64,
->>>>> +	.ndo_change_mtu		= ax88179_change_mtu,
->>>>> +	.ndo_set_mac_address	= ax88179_set_mac_addr,
->>>>> +	.ndo_validate_addr	= eth_validate_addr,
->>>>> +	.ndo_eth_ioctl		= usbnet_mii_ioctl,
->>>>
->>>> dev->mii.mdio_read is never initialized for ax88179a, so
->>>> dev->mii.mdio_read()
->>>> through usbnet_mii_ioctl() is a NULL function pointer.
->>>>
->>>> Something like:
->>>>
->>>>     static int ax88179a_mii_ioctl(...)
->>>>     {
->>>>     	struct ax88179_data *data = netdev2data(net);
->>>>     	return phylink_mii_ioctl(data->phylink, ifr, cmd);
->>>>     }
->>>
->>> Is this transitory? Does a later patch fix this up?
->>> The aim is to remove all dev->mii accesses.
->>>
->>
->> No, unfortunately, this is an mii-leftover. I thought that
->> usbnet was emulating the mii ioctl somehow, not that it was expecting
->> to be able to use a mii_mdio_read. I will remove the
->>>>> +	.ndo_eth_ioctl		= usbnet_mii_ioctl,
->> line, entirely.
-> 
-> It would be nice to use what is proposed, so the ioctl keeps working.
-> 
-> You can test it with mii-tool.
+On Tue, Sep 15, 2026 at 1:49=E2=80=AFPM Alex Williamson <alex@shazbot.org> =
+wrote:
+>
+> >
+> On Mon, 14 Sep 2026 09:44:57 -0700
+> Zhiping Zhang <zhipingz@meta.com> wrote:
+>
+> > Thanks Christian -- no worries on the bandwidth, I'll add the Acked-by
+> > to patch 3.
+> >
+> > Hi Alex, Jason, Bjorn,
+> >
+> > Could you help with reviews on patch 4 (vfio/pci) and patch 5
+> > (RDMA/mlx5), plus acks on patches 1-2 (PCI TPH core) so the set can
+> > travel whole if it goes through the VFIO tree, which is the route
+> > Christian suggests?
+> >
+> > I've also rebased the set onto 7.3 (base 5225b8eec4c9) and retested on
+> > hardware -- PCIe analyzer captures confirming the requested ST and PH
+> > on outbound TLPs, no splats.
+> >
+> > One thing to decide: upstream took 13 for
+> > VFIO_DEVICE_FEATURE_ZPCI_ERROR after v13 went out, so
+> > VFIO_DEVICE_FEATURE_DMA_BUF_TPH becomes 14 in the respin -- let me
+> > know if you'd rather it be something else.
+> >
+> > I'll post v14 after I hear from you. Delta from v13 is the rebase,
+> > that feature-number move, and nothing else functional.
+>
+> IIRC, we're pretty well settled on the vfio-pci front.  The feature
+> number does need to be iterated to the next available.  We still need
+> acks from PCI and mlx5, and given the extent of the mlx5 changes I
+> expect I need to provide a branch for Jason/Leon once I merge it.
+> Thanks,
+>
+> Alex
+>
 
-Thanks for the help, Andrew. I now implemented it as proposed by Nicolai 
-and will send it shortly, after a bit more testing.
+Thanks Alex, it is great to know the vfio-pci side is settled! Bjorn
+acked patches 1 and 2 today, so PCI is covered.
 
-Birger
+Hi Jason, Leon, could you take a look at patch 5, the RDMA/mlx5 consumer?
+
+https://lore.kernel.org/linux-pci/20260731211601.3033906-6-zhipingz@meta.co=
+m/
+
+Thanks,
+Zhiping
