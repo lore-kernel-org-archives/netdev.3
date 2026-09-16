@@ -1,407 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209933EDE7E;
-	Wed, 16 Sep 2026 06:47:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D41E3F1065;
+	Wed, 16 Sep 2026 06:47:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789541265; cv=none; b=Z8Ex468p0mXDCVTGMnUGGp4cGH2cly0BNuE3Y1b0zOWunYA0mVHhigurXLE5U++exnwxkUr3RDRx/eJlyUyqRimdmdc04/CKp06ZrStD7IZ2WeI4qf2IBLZd7nmIqukgkmgRr2mXdSRpn7P51iqX5ivbddmq59xxM/lBjcaPs7g=
+	t=1789541284; cv=none; b=hpGT3i1x8R5nzgPPyHPexOC2yR49svMD1m+gP9dsXSu+06nNQ3QElfWzfbfatkiZQK7Ice7GB2AY8+1K1O5h01lYm/evu26KCljlGZkkN1/EbCBOHFOwbzHt+3lC7Te/bfs4rjtfyAIE1g786PKkcRP9C9AzVpZMsVYrfSXV/4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789541265; c=relaxed/simple;
-	bh=Shz+y+PGcxuROkvZnKD9eI6Al1q+lWT8CSWWRnqj8DA=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=cZLZ+gwvfcMZXkhiMyXb34Pyaa72Fu1vvhFaW1DBGI8f+xhbv4z3rbw4mv8gZunuvwtC/GayALA+lHxssN+XNAj+LrPOQIhRKvHvz7xvFg/X+TaS/nbApEn+TMuUG7Y2vDnS+xGTHYeKDJ88GFwhENTm6hPp/DPsPBSH5d5K5zY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WdjOOmRJ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789541284; c=relaxed/simple;
+	bh=/NuyNdwGAP6B87EGLnfIuEHCUMBTUh8tcjbfbMaSbHI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lnO7tts4i/wkKbhJv6lNW4NH0V4VgFNhKc5t6LbmttxrRKMO/oDUuNnyb6Ose7QmZDtN/Rle+QmkTh3kuaiuWPbbsGZ/tqeOiId+6HEhNz7+WbfALfq7SY0T+EbQZcgnFj6lohHKqhAa3NUtfQU4p15UJ1VHcbiF6fdEmtCup2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=GEp3tSpa; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WdjOOmRJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7803B1F00898;
-	Wed, 16 Sep 2026 06:47:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789541261;
-	bh=r2kym4KRDmjsYqCFw7Sl0rygDL+A/S5TKEC/M/seOn8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=WdjOOmRJbooHygRPfNvbQ7uMeUVD3beeeBRi+YK3ljegHDV/iuLiuK06fCawDQykS
-	 f2g0OmKyRqVSFmRzHd7BWN7WyUTwCaqnrsrDLBeGwr6vwOsTILQzlhp3wx3Kupnd3S
-	 T+QN5nzh8abMRzmGsILjpDL2BReYcgG/dLtJ6vt1493hqI9vDlFlp1ixWzz8pxWFxh
-	 TSd3OH/4rwp/J2i08PvnRuXpR+KI5wT1B3nYTfno38OpkQUi6c7CDHjPjAD7VZhZrx
-	 7Y4L0BjQuZAO05EEz7uQiWZd3Ma2Klds3KHQsYPmlbdbHOEqlGqPEopifHBT9IpjAN
-	 dyH1B+afFE03Q==
-Subject: Re: [PATCH net-next v11 15/15] ax88796b: Add support for AX88772D,
- AX88179A and AX88279
-From: netdev-bot+sashiko@kernel.org
-To: mail@birger-koblitz.de
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk, andrew@lunn.ch,
- hkallweit1@gmail.com, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, neuromoments@gmail.com
-Date: Wed, 16 Sep 2026 06:47:40 +0000
-Message-ID: <178954126007.22033.1111190336627979779@kernel.org>
-In-Reply-To: <20260914-ax88179a-v11-15-5ea7a925ba6d@birger-koblitz.de>
-References: <20260914-ax88179a-v11-15-5ea7a925ba6d@birger-koblitz.de>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="GEp3tSpa"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BACC5152B;
+	Tue, 15 Sep 2026 23:47:52 -0700 (PDT)
+Received: from [172.18.224.124] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 195A63F86F;
+	Tue, 15 Sep 2026 23:47:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789541276; bh=/NuyNdwGAP6B87EGLnfIuEHCUMBTUh8tcjbfbMaSbHI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=GEp3tSpa8XB8QxBd0oa+aNvXs9Wjp9F5h+mc45cc2tPJ/TQ4PzMB72kjHbIaDBAKT
+	 u7WRTBkobBSO/RWXjbM3yh1a6bBVxuCM7aJFUZiL2zN9ic950zfUYQHttfNJ67o1Kl
+	 EGgI+2sQatABtrP70AjVtaa89ouzZzY6As3vlon0=
+Message-ID: <ad2ca583-1562-4d31-8601-fef6da88f694@arm.com>
+Date: Wed, 16 Sep 2026 08:47:46 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 4/4] net: stmmac: dwmac-sun8i: Add Allwinner H616
+ EMAC clock index and internal PHY support
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Alastair D'Silva <alastair@d-silva.org>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, James Hilliard <james.hilliard1@gmail.com>,
+ richard.genoud@bootlin.com
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-sunxi@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, Chen-Yu Tsai <wens@kernel.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>
+References: <20260916044119.475666-1-alastair@d-silva.org>
+ <20260916044119.475666-5-alastair@d-silva.org>
+ <579d7650-583e-49bd-aa51-02fc52940ea1@bootlin.com>
+Content-Language: en-GB
+From: Andre Przywara <andre.przywara@arm.com>
+In-Reply-To: <579d7650-583e-49bd-aa51-02fc52940ea1@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 6 potential
-issue(s) to consider:
+Hi,
 
-Critical: 0 · High: 1 · Medium: 5 · Low: 0
+On 9/16/26 08:24, Maxime Chevallier wrote:
+> Hi,
+> 
+> On 9/16/26 06:41, Alastair D'Silva wrote:
+>> Support EMAC1 and the internal Fast Ethernet PHY (AC300) on Allwinner
+>> H616 and H618 SoCs:
+>> - Allow reading a register index from the syscon property to offset the
+>>    regmap field for EMAC1's dedicated clock control register.
+>> - Add emac_variant_h616_internal with support for internal PHY, MII,
+>>    RMII, and RGMII modes.
+>> - Delay the MAC software reset until sun8i_dwmac_init() when using the
+>>    internal PHY, ensuring the PHY has powered on and begun generating
+>>    the receive clock before the MAC attempts to reset.
+>> - Skip setting H3_EPHY_SELECT for H616 internal EMAC, which does not
+>>    use the H3-style EPHY select bit.
+>> - Handle -EPROBE_DEFER cleanly during clock and reset control acquisition
+>>    in get_ephy_nodes().
+>>
+>> Assisted-by: LLM
+>> Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+>> ---
+> 
+> Even if this is a duplicate some of the work done by James Hilliard, this
+> raises interesting points.
 
-- [High] asix_ax88279_config_aneg() (drivers/net/phy/ax88796b.c:146-166)
-  programs the vendor 2.5G advertisement bit (MII_ADVERTISE bit 12,…
-- [Medium] asix_ax88279_get_features() (ax88796b.c:168-186) clears only
-  ETHTOOL_LINK_MODE_100baseT_Half_BIT after…
-- [Medium] asix_ax88279_read_status() (ax88796b.c:108) uses the return
-  value of `phy_read(phydev, AX_CTRL_STATUS)` without checking for a…
-- [Medium] asix_ax88772D_get_features() (ax88796b.c:207-223) removes only
-  ETHTOOL_LINK_MODE_1000baseT_Full_BIT from the abilities produced by…
-- [Medium] asix_ax88279_read_status() (ax88796b.c:99-144) has no `if
-  (!phydev->link) return 0;` guard after genphy_read_status(): it…
-- [Medium] In asix_ax88279_read_status() (ax88796b.c:128-133) the link-
-  partner 2500baseT advertisement bit is only ever assigned inside the…
+I think the point is that this patch is just wrong, in many parts ;-)
+I think much of the code stems from the original Allwinner BSP code, 
+which is just, say, misinformed in many respects. The use of compatible 
+strings, and shoehorning the PHY clock into the MAC code are just 
+examples. More below.
 
---
+>> Notes:
+>>      Tested on Mellow Fly-C5 (Allwinner H618) under Armbian, verifying stable
+>>      EMAC1 probe, deferred soft reset with the internal AC300 EPHY, and 100M full
+>>      duplex operation under load.
+>>
+>>   .../net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 65 ++++++++++++++++---
+>>   1 file changed, 55 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+>> index 48c52eb96233..1728893589a6 100644
+>> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+>> @@ -130,6 +130,16 @@ static const struct emac_variant emac_variant_a64 = {
+>>   	.tx_delay_max = 7,
+>>   };
+>>   
+>> +static const struct emac_variant emac_variant_h616_internal = {
+>> +	.syscon_field = &sun8i_syscon_reg_field,
+>> +	.soc_has_internal_phy = true,
 
-ax88796b: Add support for AX88772D, AX88179A and AX88279
+For instance this cannot be true. internal_phy refers to the H3 
+generation, which works quite differently. We had this issue already 
+with the H6, and there is a comment there mentioning this.
 
-The patch adds phy_driver entries and mdio device ids for the AX88772D,
-AX88179A and AX88279 PHYs found in ASIX USB-Ethernet controllers, with
-custom get_features, read_status, config_aneg and config_init callbacks
-for the 2.5G part.
+And this becomes obvious in other parts of the code, where this patch 
+reverts the has_internal_phy tests, because they don't apply here.
 
-A few questions about the new callbacks below.
+>> +	.support_mii = true,
+>> +	.support_rmii = true,
+>> +	.support_rgmii = true,
 
-> diff --git a/drivers/net/phy/ax88796b.c b/drivers/net/phy/ax88796b.c
-> index f20ddf6491499..62f6beb25f41e 100644
-> --- a/drivers/net/phy/ax88796b.c
-> +++ b/drivers/net/phy/ax88796b.c
-> @@ -13,6 +13,19 @@
->  #define PHY_ID_ASIX_AX88772A		0x003b1861
->  #define PHY_ID_ASIX_AX88772C		0x003b1881
->  #define PHY_ID_ASIX_AX88796B		0x003b1841
-> +#define PHY_ID_ASIX_AX88772D		0x003b772d
-> +#define PHY_ID_ASIX_AX88179A		0x003b179a
-> +#define PHY_ID_ASIX_AX88279		0x003b2790
-> +
-> +#define AX_ADVERTISE_2500		0x1000
-> +
-> +/* MII Vendor registers */
-> +#define AX_CTRL_STATUS			0x1d
-> +#define AX_CTRL_STATUS_SPEED_MASK	0x0c
-> +#define   AX_CTRL_STATUS_SPEED_10	0x0
-> +#define   AX_CTRL_STATUS_SPEED_100	0x4
-> +#define   AX_CTRL_STATUS_SPEED_1000	0x8
-> +#define   AX_CTRL_STATUS_SPEED_2500	0xc
->  
->  MODULE_DESCRIPTION("Asix PHY driver");
->  MODULE_AUTHOR("Michael Schmitz <schmitzmic@gmail.com>");
-> @@ -83,6 +96,103 @@ static int asix_ax88772a_read_status(struct phy_device *phydev)
->  	return 0;
->  }
->  
-> +static int asix_ax88279_read_status(struct phy_device *phydev)
-> +{
-> +	int ret, val;
-> +
-> +	ret = genphy_read_status(phydev);
-> +	if (ret)
-> +		return ret;
-> +
 
-[Severity: Medium]
-Should there be a link check here before the vendor decoding, the way
-asix_ax88772a_read_status() does it?
+>> +	.rx_delay_max = 31,
+>> +	.tx_delay_max = 7,
+>> +};
+> James's series [1] says this SoC only supports RMII (yet includes RGMII timing
+> control), and here for seemingly the same device, there's MII and RGMII
+> support listed.
+> 
+> [1] : https://lore.kernel.org/r/20260915-submit-h616-emac1-v1-v1-0-195de0bb1f8a@gmail.com
+> 
+> Maybe you can coordinate with one another, can we connect that SoC to a non-internal PHY ?
+> If so, can we use MII, RMII and RGMII ? or is it just RMII ?
 
-drivers/net/phy/ax88796b.c:asix_ax88772a_read_status() {
-	ret = genphy_update_link(phydev);
-	if (ret)
-		return ret;
+This MAC is *only* connected to the AC200/AC300 PHY, which is a separate 
+die, but co-packaged into the SoC. So that's set in stone. And while the 
+MAC IP might support more MII modes (because it's maybe the same IP as 
+the primary MAC? We don't know), it is irrelevant here, since only RMII 
+is usable.
 
-	if (!phydev->link)
-		return 0;
-	...
-}
+Cheers,
+Andre
 
-When the link is down (or autoneg has not completed) genphy_read_status()
-deliberately publishes an unknown state:
+> 
+> Maxime
 
-drivers/net/phy/phy_device.c:genphy_read_status() {
-	...
-	phydev->speed = SPEED_UNKNOWN;
-	phydev->duplex = DUPLEX_UNKNOWN;
-	...
-}
-
-asix_ax88279_read_status() then overwrites both, plus phydev->interface,
-from the vendor register.  With no link AX_CTRL_STATUS reads 0, which
-decodes to AX_CTRL_STATUS_SPEED_10, so does ethtool end up reporting
-"10Mb/s, Full" on an unplugged port instead of Unknown?
-
-> +	/* Read actual speed from vendor register */
-> +	val = phy_read(phydev, AX_CTRL_STATUS);
-> +	switch (val & AX_CTRL_STATUS_SPEED_MASK) {
-> +	case AX_CTRL_STATUS_SPEED_2500:
-> +		phydev->speed = SPEED_2500;
-> +		break;
-> +	case AX_CTRL_STATUS_SPEED_1000:
-> +		phydev->speed = SPEED_1000;
-> +		break;
-> +	case AX_CTRL_STATUS_SPEED_100:
-> +		phydev->speed = SPEED_100;
-> +		break;
-> +	case AX_CTRL_STATUS_SPEED_10:
-> +		phydev->speed = SPEED_10;
-> +	}
-
-[Severity: Medium]
-Is the phy_read() return value missing an error check here?
-
-These PHYs are internal to USB Ethernet controllers, so every MDIO access
-is a USB control transfer that can fail with -EIO, -ETIMEDOUT or -ENODEV
-on surprise removal.  The errno is then masked as if it were register
-content, and since the switch covers all four values of the two-bit field
-with no default, every error decodes to a concrete speed:
-
-	(-EIO)      & 0x0c == 0x08 -> AX_CTRL_STATUS_SPEED_1000 -> SPEED_1000
-	(-ETIMEDOUT) & 0x0c == 0x00 -> AX_CTRL_STATUS_SPEED_10   -> SPEED_10
-
-The fabricated speed then selects phydev->interface further down, so the
-MAC/PCS can be configured for 2500BASEX or SGMII based on an errno, and
-the function still returns 0.  The MMD read a few lines below does check,
-and asix_ax88772a_read_status() in the same file does:
-
-	val = phy_read(phydev, MII_BMCR);
-	if (val < 0)
-		return val;
-
-> +
-> +	/* MDIO_AN_10GBT_STAT_LP2_5G is broken, but we can deduce that
-> +	 * the link-partner advertised 2500M if remotely AN succceded
-> +	 * for link speed > 1000M and we locally have a link speed of
-> +	 * 2500M
-> +	 */
-> +	val = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_AN_10GBT_STAT);
-> +	if (val >= 0 && val & MDIO_AN_10GBT_STAT_REMOK) {
-> +		linkmode_mod_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
-> +				 phydev->lp_advertising,
-> +				 phydev->speed == SPEED_2500);
-> +	}
-
-[Severity: Medium]
-Can the 2500baseT bit in phydev->lp_advertising go stale here?
-
-The bit is only ever assigned inside this branch.  If the MMD read fails,
-or the new partner reports REMOK == 0, the previous value survives.
-
-genphy_read_lpa() does not clear it either, it only touches the clause-22
-partner modes:
-
-drivers/net/phy/phy_device.c:genphy_read_lpa() {
-		if (!phydev->autoneg_complete) {
-			mii_stat1000_mod_linkmode_lpa_t(phydev->lp_advertising, 0);
-			mii_lpa_mod_linkmode_lpa_t(phydev->lp_advertising, 0);
-			return 0;
-		}
-	...
-}
-
-So after a 2.5G partner has linked up once and the cable is then moved to
-a 1G partner, does ethtool keep listing 2500baseT/Full under "Link partner
-advertised link modes"?  Would clearing the bit whenever the current read
-does not positively establish 2.5G partner advertisement be better?  The
-phy_read_mmd() error is also swallowed rather than propagated.
-
-> +	/* Only supports full duplex */
-> +	phydev->duplex = DUPLEX_FULL;
-> +
-> +	/* PHY switches interface between 2.5GBit and slower modes */
-> +	if (phydev->speed == SPEED_2500)
-> +		phydev->interface = PHY_INTERFACE_MODE_2500BASEX;
-> +	else
-> +		phydev->interface = PHY_INTERFACE_MODE_SGMII;
-> +
-> +	return 0;
-> +}
-> +
-> +static int asix_ax88279_config_aneg(struct phy_device *phydev)
-> +{
-> +	bool adv_2500;
-> +	int ret;
-> +
-> +	if (phydev->autoneg == AUTONEG_DISABLE) {
-> +		phydev_warn(phydev, "Disabling autoneg is not supported\n");
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-> +	ret = genphy_config_aneg(phydev);
-> +
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	adv_2500 = linkmode_test_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, phydev->advertising);
-> +	ret = phy_modify(phydev, MII_ADVERTISE, AX_ADVERTISE_2500,
-> +			 adv_2500 ? AX_ADVERTISE_2500 : 0);
-> +
-> +	return ret;
-> +}
-
-[Severity: High]
-Is the 2.5G advertisement bit ever taken into an auto-negotiation session
-here?  genphy_config_aneg() takes the restart decision before bit 12 of
-MII_ADVERTISE is written.
-
-Toggling ETHTOOL_LINK_MODE_2500baseT_Full_BIT does not change any register
-that genphy_config_advert() writes, its MII_ADVERTISE mask does not contain
-AX_ADVERTISE_2500 (0x1000):
-
-drivers/net/phy/phy_device.c:genphy_config_advert() {
-	err = phy_modify_changed(phydev, MII_ADVERTISE,
-				 ADVERTISE_ALL | ADVERTISE_100BASE4 |
-				 ADVERTISE_PAUSE_CAP | ADVERTISE_PAUSE_ASYM,
-				 adv);
-	...
-}
-
-so changed stays 0 and no restart is issued for a running, non-isolated
-PHY:
-
-drivers/net/phy/phy_device.c:genphy_check_and_restart_aneg() {
-	if (!restart) {
-		ret = phy_read(phydev, MII_BMCR);
-		...
-		if (!(ret & BMCR_ANENABLE) || (ret & BMCR_ISOLATE))
-			restart = true;
-	}
-
-	if (restart)
-		return genphy_restart_aneg(phydev);
-
-	return 0;
-}
-
-phy_start_aneg() only calls phy_check_link_status() afterwards, and
-phy_modify() discards the changed indication, so the new bit 12 value sits
-in the register without BMCR_ANRESTART.  In the opposite case, where
-something else did set changed, the restart happens while bit 12 still
-holds its old value, so does the session negotiate the stale 2.5G
-capability?
-
-Would writing bit 12 before genphy_config_aneg(), or using
-phy_modify_changed() plus an explicit genphy_restart_aneg(), fix both
-directions?
-
-> +
-> +static int asix_ax88279_get_features(struct phy_device *phydev)
-> +{
-> +	int ret;
-> +
-> +	/* MDIO_DEVS1/2 empty, so set mmds_present bits to allow reading abilities */
-> +	phydev->c45_ids.mmds_present |= MDIO_DEVS_PMAPMD | MDIO_DEVS_AN;
-> +
-> +	linkmode_set_bit_array(phy_basic_ports_array, ARRAY_SIZE(phy_basic_ports_array),
-> +			       phydev->supported);
-> +
-> +	ret = genphy_c45_pma_read_abilities(phydev);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* AX88279 does not support reported 100baseT-half duplex mode */
-> +	linkmode_clear_bit(ETHTOOL_LINK_MODE_100baseT_Half_BIT, phydev->supported);
-> +
-> +	return 0;
-> +}
-
-[Severity: Medium]
-Should 10baseT_Half be cleared here too?
-
-genphy_c45_pma_read_abilities() reaches the ext-abilities path (which is
-what makes 100baseT_Half appear in the first place), and there the two
-10 Mbit modes come from the same EXTABLE bit:
-
-drivers/net/phy/phy-c45.c:genphy_c45_pma_read_ext_abilities() {
-	linkmode_mod_bit(ETHTOOL_LINK_MODE_10baseT_Full_BIT,
-			 phydev->supported,
-			 val & MDIO_PMA_EXTABLE_10BT);
-	linkmode_mod_bit(ETHTOOL_LINK_MODE_10baseT_Half_BIT,
-			 phydev->supported,
-			 val & MDIO_PMA_EXTABLE_10BT);
-	...
-}
-
-So 10baseT half duplex stays in phydev->supported and hence in
-phydev->advertising and MII_ADVERTISE, while asix_ax88279_read_status()
-states the opposite and forces the result:
-
-	/* Only supports full duplex */
-	phydev->duplex = DUPLEX_FULL;
-
-If a partner resolves 10baseT half duplex, the resolved DUPLEX_HALF is
-replaced by DUPLEX_FULL and the MAC is configured for full duplex.  If the
-PHY really cannot do half duplex, should the mode be dropped from
-supported instead?  Which of the two is correct for this part?
-
-> +
-> +static int asix_ax88279_config_init(struct phy_device *phydev)
-> +{
-> +	__set_bit(PHY_INTERFACE_MODE_2500BASEX, phydev->possible_interfaces);
-> +	__set_bit(PHY_INTERFACE_MODE_SGMII, phydev->possible_interfaces);
-> +
-> +	return 0;
-> +}
-> +
->  static void asix_ax88772a_link_change_notify(struct phy_device *phydev)
->  {
->  	/* Reset PHY, otherwise MII_LPA will provide outdated information.
-> @@ -94,6 +204,25 @@ static void asix_ax88772a_link_change_notify(struct phy_device *phydev)
->  	}
->  }
->  
-> +static int asix_ax88772D_get_features(struct phy_device *phydev)
-> +{
-> +	int ret;
-> +	__ETHTOOL_DECLARE_LINK_MODE_MASK(mask) = {};
-> +
-> +	/* MDIO_DEVS1/2 empty, so set mmds_present bits to allow reading abilities */
-> +	phydev->c45_ids.mmds_present |= MDIO_DEVS_PMAPMD | MDIO_DEVS_AN;
-> +
-> +	ret = genphy_read_abilities(phydev);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* AX88772D does not support reported 1000baseT mode */
-> +	linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT, mask);
-> +	linkmode_andnot(phydev->supported, phydev->supported, mask);
-> +
-> +	return 0;
-> +}
-
-[Severity: Medium]
-Should the other gigabit modes be masked out as well on this 100 Mbit
-part?  genphy_read_abilities() derives three modes from MII_ESTATUS:
-
-drivers/net/phy/phy_device.c:genphy_read_abilities() {
-		linkmode_mod_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT,
-				 phydev->supported, val & ESTATUS_1000_TFULL);
-		linkmode_mod_bit(ETHTOOL_LINK_MODE_1000baseT_Half_BIT,
-				 phydev->supported, val & ESTATUS_1000_THALF);
-		linkmode_mod_bit(ETHTOOL_LINK_MODE_1000baseX_Full_BIT,
-				 phydev->supported, val & ESTATUS_1000_XFULL);
-	...
-}
-
-Only 1000baseT_Full is removed, so if the AX88772D also reports
-ESTATUS_1000_THALF or ESTATUS_1000_XFULL, those modes remain in
-phydev->supported and phydev->advertising and are written to MII_CTRL1000
-by genphy_config_advert().  Are those two bits known to be clear on this
-part, or would masking the whole gigabit class be safer?
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260914-ax88179a-v11-0-5ea7a925ba6d%40birger-koblitz.de
