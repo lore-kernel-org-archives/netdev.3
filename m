@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C1024A078
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 02:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA222347500
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 02:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789524924; cv=none; b=nMR5QQLzyqfYkycFkgf2Ux0SillCLNbTU0rOvjI3wc55JCF3exHVNAAlwEreResz2fBiVUOsJrqyzLrfhAD3C5mRsa6IGaZLDPlyX9p7LzlZtlaoomu+6l4Ckcsxp5j7BAi7BdWtmS3qhFgvOV7G8PKuEvzFqVvm5nMvqfucYd4=
+	t=1789524930; cv=none; b=BNSj673otpXpgt+DN/twQh2qe4gH6LHReiXYWJhgmZGg6eZKJRaX8sJd/6mzhH5tmWzv9IqSgytLZidbsGDdpLyXkycd2Dxxn8X03WyIIyPx/wj4D7gLNaGJT+CDnwLnXnMlyp8VKJXFpY1EPbMQwI+29sc/sBAKRxoZSbM6sI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789524924; c=relaxed/simple;
-	bh=jJuTjhxBzAWuLAaqOU5DvB5luNqVOlRV1PcOfAmXKw0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ha9g+scS7TX3jK7v0c/4SsYzAXhEl5ymwTik4IK2m/0x9SZohbuxO1hJfu2wwDs8mSxFhe8SKuDK7NyZDhdCXPnwWO1MX8yENw2je0HJiFeY5wn9yiEg3/sN6g/L2Kl0sLA9OQwqvWZV7yicA47Wa+anWTOq9ntydE9fb3DtzDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZqzN8RDf; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789524930; c=relaxed/simple;
+	bh=1wdRSlmdiSjm6HkzZx4Oit4oKCKb5sPKww7jEUIB7lc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XKO9NXGuMsAiUuBggWh3d0sGKYTGCiy6Cu9I1+NCllRI/4qx+TJUolP4ato6+kVpVMvVAClkI1ASL5RVz9WgMIw1abIsMuGGiZAvt/JAH6rhHJVLk1errp/1ScEC5tFDRcgHQhYlUfoQUthEmwaephW2OkKB49jT9uanvz/rLUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gvt99tFt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZqzN8RDf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 727151F000FF;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gvt99tFt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D083D1F00899;
 	Wed, 16 Sep 2026 02:15:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789524918;
-	bh=kV1vDk+raetgZszT92lvlKPPnyCUAhiPe4989g4eTcY=;
-	h=From:To:Cc:Subject:Date;
-	b=ZqzN8RDfZrC0NvvQRkZTnyMubIDgl2EkozDcM06XtuPZFi+ZPLahkgB7xQQvbTLDm
-	 ktKP+d/p/85/eNFryHIrLXh0arUmQzXTVQgLDesNQBie5426kRpd72l8H+GhG/wpW+
-	 5A+rDgmYYoqREHbF1nmVzVZB7nZ61cP4paXKNCR6phtBfc6TzJxzdQXeLmn/o+RLhz
-	 shoaq1T+CXXgPbFspWB80PBvtDNDInYR2kZssWdRgH+2uz3YUQUTWdH2WXDHRNHmXN
-	 DUuME+LCDUJSuiYx4sCq5SmNnTa65Hys+YmC+ErqIcRD/1M3xcZMQGCySmv/UYaqpE
-	 c9jgvj9k7Q71g==
+	s=k20260515; t=1789524919;
+	bh=Ax9xUzjMNo2LfNWMGkdDIqGfgMqrqIgx6xtdtKyUHaU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=gvt99tFtcQ7S8SU68Dv3wYaC9yHAgK3jyuT86CWgbXh7p13efrL8jpivEYuVACO1w
+	 qc94l2IerPHtzm8qOfrfx0O0CBSuUqhyOJkQlKXrKMgGZuzGeCk4BrmSBSdkMdk2VI
+	 EBww8m2TSFd4EDZ9ccl2KV/I6bvYmZ8rwWbeW/VX+nw+mXJ5p9D8DB6u0/qjqnsDtK
+	 RmgU+8efudgfGxsfpZkpoXL6P8WWMClHEbUgSPI/XT7E2yYJ2TwcI2S77bIdG6pS1v
+	 yqqD8PXqO9boDEkrrbpQFiexZZalVUQqEKQwqdyD37xk8svgjzqhckShDXAl4B1zR+
+	 bkY5hLX1fd5ZA==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -34,10 +35,12 @@ Cc: netdev@vger.kernel.org,
 	horms@kernel.org,
 	donald.hunter@gmail.com,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 1/2] netlink: specs: nlctrl: fix the policy attribute numbering
-Date: Tue, 15 Sep 2026 19:15:15 -0700
-Message-ID: <20260916021516.1701760-1-kuba@kernel.org>
+Subject: [PATCH net-next 2/2] netlink: specs: nlctrl: let getfamily take a family id
+Date: Tue, 15 Sep 2026 19:15:16 -0700
+Message-ID: <20260916021516.1701760-2-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260916021516.1701760-1-kuba@kernel.org>
+References: <20260916021516.1701760-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,45 +49,33 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-mask and pad are declared the wrong way round, giving mask 11 and
-pad 12, while enum netlink_policy_type_attr has
-NL_POLICY_TYPE_ATTR_PAD at 11 and NL_POLICY_TYPE_ATTR_MASK at 12.
+ctrl_policy_family[] accepts CTRL_ATTR_FAMILY_ID and ctrl_getfamily()
+looks the family up by it, but the spec lists only family-name in the
+request.  C YNL generates struct members and setters from that list, so
+struct nlctrl_getfamily_req has no way to carry an id and resolving a
+family id - the one a client gets handed in nlmsg_type - back to a name
+needs a full dump.
 
-The kernel emits the mask for every NLA_POLICY_MASK() attribute, so a
-Python YNL client parsing a policy dump maps it onto pad and throws it
-away - 30 of them in ethtool's policy alone.  In the other direction the
-64-bit alignment padding, which the kernel does emit on architectures
-without efficient unaligned access, is decoded as a u64 mask and blows
-up the whole dump. But those architectures are rare.
-
-The generated C parser is not affected, it keys the attributes off the
-uAPI symbol names rather than off the values the spec derives.
+Python YNL happens to encode any attribute of the op's attribute set,
+which is why this went unnoticed.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- Documentation/netlink/specs/nlctrl.yaml | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ Documentation/netlink/specs/nlctrl.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/Documentation/netlink/specs/nlctrl.yaml b/Documentation/netlink/specs/nlctrl.yaml
-index 7e7c158e3e73..6acac4aeab03 100644
+index 6acac4aeab03..a400365cdbeb 100644
 --- a/Documentation/netlink/specs/nlctrl.yaml
 +++ b/Documentation/netlink/specs/nlctrl.yaml
-@@ -156,12 +156,12 @@ doc: |
-       -
-         name: bitfield32-mask
-         type: u32
--      -
--        name: mask
--        type: u64
-       -
-         name: pad
-         type: pad
-+      -
-+        name: mask
-+        type: u64
-       -
-         name: byte-order
-         doc: Byte order of the attribute, absent means host byte order.
+@@ -191,6 +191,7 @@ doc: |
+         request:
+           value: 3
+           attributes:
++            - family-id
+             - family-name
+         reply: &all-attrs
+           value: 1
 -- 
 2.55.0
 
