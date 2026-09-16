@@ -1,64 +1,64 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5ACA3BCD3A
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 05:08:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81AE33BED11
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 05:08:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789535319; cv=none; b=LkRj/aiiaqRe4Qewihi306e3gFrltEgW5DJTKxCIFTpCHwMWCcMjsG8u9zVVRFbWUGwXNvBHpVnjMzQCidDfBAGZYhtRizEBJ9afPAem+sBskKjPGoWce61Ejz/atCTzeu6bPgoQdJ6WS9R2naj/4oP7HYOvL7QQmgyotGeOjmc=
+	t=1789535319; cv=none; b=Dht7uXBzY4JwE0Ge+/Wjgnf8CBtqaaCSq8kOeMW6Tf5bhzATjN1pu3ADTsHcBgD3frEdzvzUFqva7PDfcbm+C70wQcqrVnG9puZ19B0+/ZziJqxpPfxhCTL3aMJUIeCpXaWJ+9nK4XmsYVUbH8DWeIPfhoNDj0Dy+y+fKlfIyWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789535319; c=relaxed/simple;
-	bh=v9l7tVvrVmZba6RbmYUyb8MQTP/pDEanXcjNhFrjUxk=;
+	bh=LqP62nguFNFw4UIn14y1SSzotfAejTBFagu336IS0II=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o5QUFTj1jK8gcEavf0vtRPqjP+60MIaCEEXRJ1Ge26UIYYk/nFDpllcxYoFg6+19c2xQlBvVvrpbqQQq9ET0aRk1xnbh2+zFedb2pJZxvCcmcsCsLVLiiiWn96J0TUKNrqjRXex4d6o2eA+8ztBvpCTjIhhlsFFRo1tWrWG1LLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=jJw1dPLh; arc=none smtp.client-ip=74.125.228.12
+	 MIME-Version; b=C3xd9r6ISuYX/dBdUCnfuSl1+vjyy2tw5xvYHdH0GRVPS4/4QTDQw2nXjummn4lK6/FHm9sLNLE/lx7gkrvz14kupMztI4zYHIgC7njmXpEyhzC0S0NE57y373rRQCBeJrS8qBbyUOjQERcHxvRguMWis+roCe8jYyXIpDg/wYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=YnY7rDe+; arc=none smtp.client-ip=74.125.228.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="jJw1dPLh"
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cea4c7a0so360153a12.1
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 22:08:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="YnY7rDe+"
+Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc50bcf87b2so354896a12.1
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 22:08:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1789535317; x=1790140117; darn=vger.kernel.org;
+        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1789535318; x=1790140118; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=+wuJ2qCnS/wmK7OW9fsN5CCesdI0U+o2AEkrSo+G4ms=;
-        b=jJw1dPLhJSnuG9Gh1vMwSr+ktNh7SQLON6ojgVMcpCAHSstTny8Q8VVrv3Yqbq9ILg
-         tyxC9mn7wfhPfjcF3YlK9PMq1i0hvDTyplpvXByRhtWXYKWMPmK23R4RlkRgwWSG/bdq
-         MMf+OesyLBaFdcCwnAhdwwZBNJiAraaT8L6+gWBbEEhxVNeRHfkMmB4hR5pneHdLUPqZ
-         zgOtivJ4LO2LZdPfnx3y2tZ8rGIVWxaUOtgGGGtymdTTacBEuRF9jwLnXzgcHYQksc6u
-         ALn2wZhYXvvCJt6wKZP1JWLdvhn06ONjRvEkCztf2Sm0JKwguxmraXi14Dt5PVE1mPDZ
-         mZGQ==
+        bh=p7GrN4YXw+hUYBnpeWbeGsPVdLzgCyXeoX7BDPf9SCY=;
+        b=YnY7rDe+qIUfirVI/+8mw6S3XTF+lq4eN0nIqs+AfgULoNzlgE6+D1t4UlTmnuLF+0
+         8tVL3WQCarMLU1odpXgl7pO5cZswgoluRGG7JNtEFgSrFCdfnpX21y8UdqNp3baO84CR
+         Ybv6OSgIdAmSjQD93jE0SZEEFV5uc98qA5Dal5SiJWTsoxHyu2V5OxzbZQQmfswZtFYR
+         sq051ZI0ees8gix+8r6JQqvq29iZ0Lv07n4VgxR/NUWPQQ67Pt+u1qqjq271q1Dav+Dm
+         EC338Vv20GbmYPBIMPbOh3DwaP11NbpG6pLG/6RbKH+6TBMyWn2e4jPemKZtNpCd+ynw
+         NKgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789535317; x=1790140117;
+        d=1e100.net; s=20260707; t=1789535318; x=1790140118;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+wuJ2qCnS/wmK7OW9fsN5CCesdI0U+o2AEkrSo+G4ms=;
-        b=kym8by/yYpbLWENjZh0MQNuuPAKCvCnRX+hLUuUuBr44B00/kxvVLEO5OavXEFtfY2
-         n3lMjtdmphqRZf1TFiqTSCPbyj9c+QTaIVO6yZpZQYrFZvKyFmFTirYPAfX95Y0kCa4b
-         YHv//UALpvhvXTtaouOPmvQe3atsQv/BHtIUITiaPWMKTimRtN2W0BY5cqZURCk8djNH
-         1nFw30RvT0Q+/hQUPqPfIPQXywROARmxAJx25yC7chNe0+HVO+eJyxLbsaT8H7TMG52Q
-         UXgFNIeAxmd8liDoD/jCY6z8pgkdBCG2rCTogc8wd51EEOCsFLJxvATA1SCzw7rgKa5c
-         q2lw==
-X-Forwarded-Encrypted: i=1; AKwUvBxjHnLyB7RX+L8C8hmrYT6+rvcVGItv0nUYzfv6qyIVqjo0fAC1ZRLZR4u6cgFiX57vAmxbHcs=@vger.kernel.org
-X-Gm-Message-State: AFuF++ljnMUqD6BxuoNV4Gb9KtRF+VGtD5QkuywYOC7czObBGq49Mhf0
-	fLwealMnwpoc+DOR4gL9JtD6BCVadKkJ8CApJxFJwoPRny7XkQbi+yJhp6mVwcKATLA=
-X-Gm-Gg: AYBFou2nWuZjRB8+HBUKjX7Z6u0/pIvlIppfJTjqPmhZumlgItJKx4DuUyOCp3Rq+Wt
-	e0z7xFczDX8e26OlegT0dQ0ZI8wwcUw0eLIuL5Dbzl33A4ksLsw/b18XjnT8y30/0+T2L8UhC8a
-	rYq3UXJF8ODX/pXxH6lt1yhRK6FxTYCYlPdkphWlaDui4c3T7y96tu3kuPbUmmCaDfobvNTQZQi
-	RpFphwTQzEhsBb5URKRUTlHhHWJmF+bAbAKBoXh4AiqsS2Oe2Ff6QwwWUPjV4czMM8pjtD6zYgX
-	jeGmdcc7ln5FzWO+45Vh+2ZrQ54uvHkR1f8nLPDbFVRRDjDeROkTrQxuNsYOFwCfrCtS2zKGafo
-	Kx01n83pF7mc7WSnJItArjlcf1CBCvKlnGLWOPU1zAqn9RujiHybTfgVOLvwriRcN6U+kaex5NI
-	XeH85yhm4V5FdOmsPKzBPNSyg3SqtPdZ7ZEjUkG0iMEBwTsBt/cDdcGXsm9hcMi8UkvZjPd4zdw
-	H1jen6tmUIbpYvdnF6UaD5Y7MsolFL70kWqe5cBUbMuHp2vPg==
-X-Received: by 2002:a17:90b:3c91:b0:39e:1310:cb36 with SMTP id 98e67ed59e1d1-39e1e5110e4mr2908224a91.20.1789535317119;
+        bh=p7GrN4YXw+hUYBnpeWbeGsPVdLzgCyXeoX7BDPf9SCY=;
+        b=u5f54zxWdzsX1xc0XHDl30Lezka8Cv28p0KxMprATKyOf/hkbcJuflkqg/n7U6vhEH
+         rVk4arngGg+KJjgJOuvOE6nTKdVoCnKcgU/7JSQRmTsgI/5LTwl7YVlkSvC6hqkzlwZ2
+         Q/m/LBY+BXSqC/kKYiSeIQ7ktx4Se4Ip05ESRdfWTBFZOh8ZCYJAjtbq8v5IUE2MzZZ6
+         CAVf2PaEBnVAuWmJKo/FhRQUXOAH5NKmLmRhqsjtUQ+e7nBLNFqrv5+LZLAAl1+Eb+Ld
+         5Kp4x50uuAWzKsazNuwI/gJiNwFo/Aks6RYIWzCJv5+0gP3YH7D32wrgrJbVe5k5y0Im
+         RsjQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw9Y/if11qauB3FxVdXXL4uCdC+AKDD5QGq3yWV6WWLWtD2kS9vuZvHAfIjfroz7IVlAuKtzbM=@vger.kernel.org
+X-Gm-Message-State: AFuF++kpRwo+jC4zDQD7nHWI0+2RC+u1ruN5DJBpO3THAEwWuFQwhoGO
+	NtCiHUvb/EXOUn2KGoYam2fWxOZ/zkmyZGIzA5TDnXv7SZwREBEKIZX36zGAgJkLQ9U=
+X-Gm-Gg: AYBFou36TvTtLS4e7f+leDdd/z8a1r9sV5EVe8L2P4jb0ggSYZq7vd9eugMBmuQihrs
+	6bOrZsGszt2WkkOdaTwbCvf012WkhfQPTLb5iBOHjMVcd9bZ55mG2hewDxFRt5rhzHpv5PM9ry6
+	RizR+4F1wNBAxvReiSY0rNmqIZAFUjEN+83T8QDjRo1Y2b4rc5meUQTcH4jP4L/Kij/rXxjJ9PQ
+	CDj1NKc116O2YrddRTGbQXbSGvTN4KZtXSZQYzgLguIaYsZWKX5Sa4kMmBgpEA/ZjswmSYfe6O4
+	OjbLldDQRFL8RYEfYa145M4CDly6zOU0T3xx0shJqLTuKRCsm/jlG/MASa/plBqiyTqlESNWTVm
+	pzT97Yulp28TmTn9xURKESXVET16LQoxQdGou8tNdWabfRT68m4LEnAayUCvASCTlcy4UIoupVs
+	l4WZFAwcgH/kFNpDHX5UgksZt1VF1NoNgjWMmyEUoliIPIV+P0NkvVeibDUiY0TFCcTPoaTx7Je
+	hg2oHU4yut6vAKuFloxMkgkUPeBYU8kKbHBPw==
+X-Received: by 2002:a17:90b:2ec7:b0:39d:f317:44cd with SMTP id 98e67ed59e1d1-39e1e4907f3mr3114547a91.14.1789535317907;
         Tue, 15 Sep 2026 22:08:37 -0700 (PDT)
 Received: from alpine05.ht.home (107-190-31-17.cpe.teksavvy.com. [107.190.31.17])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e1bbfdd49sm2363363a91.11.2026.09.15.22.08.36
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e1bbfdd49sm2363363a91.11.2026.09.15.22.08.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 22:08:36 -0700 (PDT)
+        Tue, 15 Sep 2026 22:08:37 -0700 (PDT)
 From: Emil Tsalapatis <emil@etsalapatis.com>
 To: bpf@vger.kernel.org
 Cc: ast@kernel.org,
@@ -67,10 +67,11 @@ Cc: ast@kernel.org,
 	memxor@gmail.com,
 	daniel@iogearbox.net,
 	netdev@vger.kernel.org,
-	Emil Tsalapatis <emil@etsalapatis.com>
-Subject: [PATCH bpf 02/11] selftests/bpf: Test dynptr slices past end of skb
-Date: Wed, 16 Sep 2026 05:08:20 +0000
-Message-ID: <20260916050830.8774-3-emil@etsalapatis.com>
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Nicholas Carlini <nicholas@carlini.com>
+Subject: [PATCH bpf 03/11] bpf: Fix bpf_sock context code generation
+Date: Wed, 16 Sep 2026 05:08:21 +0000
+Message-ID: <20260916050830.8774-4-emil@etsalapatis.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260916050830.8774-1-emil@etsalapatis.com>
 References: <20260916050830.8774-1-emil@etsalapatis.com>
@@ -82,96 +83,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a selftest to ensure dynptr slices cannot include
-past the end of the linear area of an skb.
+Currently, the ctx access code reads the rx_queue_mapping
+field with either a 4-byte or 2-byte load. The rest of the bits
+in the register are marked known zero by the verifier. However,
+the emitted ctx access code places in the register on certain
+the special value (-1) using BPF_MOV_IMM64, which gets sign-extended
+to turn on all the bits in the register. By shifting this value right,
+the program ends up with a value at runtime above what the verifier
+assumes is possible.
 
+Fix this by ensuring the read value is as wide as the assumed size.
+Use MOV32 instructions instead of MOV64 instructions to keep
+the upper bits zero as assumed by the verifier. Also properly report
+the size of the destination variable (the bpf_sock field, 4 bytes) instead
+of the source (the socket field, 2 bytes).
+
+Fixes: c3c16f2ea6d2 ("bpf: Add rx_queue_mapping to bpf_sock")
+Reported-by: Nicholas Carlini <nicholas@carlini.com>
+Suggested-by: Nicholas Carlini <nicholas@carlini.com>
 Signed-off-by: Emil Tsalapatis <emil@etsalapatis.com>
 ---
- .../testing/selftests/bpf/prog_tests/dynptr.c | 10 ++++++++++
- .../selftests/bpf/progs/dynptr_success.c      | 20 +++++++++++++++++++
- 2 files changed, 30 insertions(+)
+ net/core/filter.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/dynptr.c b/tools/testing/selftests/bpf/prog_tests/dynptr.c
-index 5fda11590..439656036 100644
---- a/tools/testing/selftests/bpf/prog_tests/dynptr.c
-+++ b/tools/testing/selftests/bpf/prog_tests/dynptr.c
-@@ -9,6 +9,7 @@
- enum test_setup_type {
- 	SETUP_SYSCALL_SLEEP,
- 	SETUP_SKB_PROG,
-+	SETUP_SKB_PROG_NONLINEAR,
- 	SETUP_SKB_PROG_TP,
- 	SETUP_XDP_PROG,
- };
-@@ -32,6 +33,7 @@ static struct {
- 	{"test_ringbuf", SETUP_SYSCALL_SLEEP},
- 	{"test_skb_readonly", SETUP_SKB_PROG},
- 	{"test_dynptr_skb_data", SETUP_SKB_PROG},
-+	{"test_dynptr_skb_slice_non_linear", SETUP_SKB_PROG_NONLINEAR},
- 	{"test_dynptr_skb_meta_data", SETUP_SKB_PROG},
- 	{"test_dynptr_skb_meta_flags", SETUP_SKB_PROG},
- 	{"test_adjust", SETUP_SYSCALL_SLEEP},
-@@ -94,7 +96,9 @@ static void verify_success(const char *prog_name, enum test_setup_type setup_typ
- 		bpf_link__destroy(link);
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 61940e753..5d1705508 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -10565,11 +10565,12 @@ u32 bpf_sock_convert_ctx_access(enum bpf_access_type type,
+ 				       target_size));
+ 		*insn++ = BPF_JMP_IMM(BPF_JNE, si->dst_reg, NO_QUEUE_MAPPING,
+ 				      1);
+-		*insn++ = BPF_MOV64_IMM(si->dst_reg, -1);
++		*insn++ = BPF_MOV32_IMM(si->dst_reg, -1);
+ #else
+-		*insn++ = BPF_MOV64_IMM(si->dst_reg, -1);
+-		*target_size = 2;
++		*insn++ = BPF_MOV32_IMM(si->dst_reg, -1);
+ #endif
++		*target_size = sizeof_field(struct bpf_sock, rx_queue_mapping);
++
  		break;
- 	case SETUP_SKB_PROG:
-+	case SETUP_SKB_PROG_NONLINEAR:
- 	{
-+		struct __sk_buff ctx = {};
- 		int prog_fd;
- 		char buf[64];
+ 	}
  
-@@ -106,6 +110,12 @@ static void verify_success(const char *prog_name, enum test_setup_type setup_typ
- 			    .repeat = 1,
- 		);
- 
-+		if (setup_type == SETUP_SKB_PROG_NONLINEAR) {
-+			ctx.data_end = ETH_HLEN + sizeof(struct iphdr);
-+			topts.ctx_in = &ctx;
-+			topts.ctx_size_in = sizeof(ctx);
-+		}
-+
- 		prog_fd = bpf_program__fd(prog);
- 		if (!ASSERT_GE(prog_fd, 0, "prog_fd"))
- 			goto cleanup;
-diff --git a/tools/testing/selftests/bpf/progs/dynptr_success.c b/tools/testing/selftests/bpf/progs/dynptr_success.c
-index e0745b6e4..b668ebd61 100644
---- a/tools/testing/selftests/bpf/progs/dynptr_success.c
-+++ b/tools/testing/selftests/bpf/progs/dynptr_success.c
-@@ -10,6 +10,7 @@
- #include "errno.h"
- 
- #define PAGE_SIZE_64K 65536
-+#define TEST_SKB_LINEAR_SIZE (sizeof(struct ethhdr) + sizeof(struct iphdr))
- 
- char _license[] SEC("license") = "GPL";
- 
-@@ -211,6 +212,25 @@ int test_dynptr_skb_data(struct __sk_buff *skb)
- 	return 1;
- }
- 
-+SEC("?tc")
-+int test_dynptr_skb_slice_non_linear(struct __sk_buff *skb)
-+{
-+	struct bpf_dynptr ptr;
-+	void *data;
-+
-+	if (bpf_dynptr_from_skb(skb, 0, &ptr)) {
-+		err = 1;
-+		return 1;
-+	}
-+
-+	/* Ensure we cannot read past the end of the buffer. */
-+	data = bpf_dynptr_slice(&ptr, TEST_SKB_LINEAR_SIZE + 1, NULL, 1);
-+	if (data)
-+		err = 2;
-+
-+	return 1;
-+}
-+
- SEC("?tc")
- int test_dynptr_skb_meta_data(struct __sk_buff *skb)
- {
 -- 
 2.54.0
 
