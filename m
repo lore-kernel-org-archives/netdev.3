@@ -1,84 +1,86 @@
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7AB53ECF3;
-	Wed, 16 Sep 2026 16:50:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789577422; cv=pass; b=nZlgX4emxhusYWPGYieGXdFNr3cwYyLqNhYy0bewUbwaOHIEnftquv/qXDcvtCMIFHysxZCGJFDP4UY8KXa5Tnc6L8O0rY9B/fmXWZ6OIYodOmpRFQehlmq+xX9JdRgVYyzN+3ADkpnyLjh20q/jiCG3zXqtbX8LU13Tyu45dxs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789577422; c=relaxed/simple;
-	bh=i6EC5vxuX0/Lxjjt2b5P3iBKqz8EIqc8iGLZKY6JBmo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b4F9WxfExVFFJFrTMSMlcWCE/qDnvNEIp8IF/l9am1JOCu99zvu2+Ps5oGov1S2vHzsnu5/oPnfGEbMhHBLy9Lta7FxWOVsgXDkEo5ZAjeGkMSQXB4Z1evOO/jsBhmJ2N1uroGuGzSUAvP9FfO9xV9YakBIJa9NGyVsIpnQU9uY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc; spf=pass smtp.mailfrom=ziyao.cc; dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b=ftYpPvZl; arc=pass smtp.client-ip=136.143.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziyao.cc
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B6B4B4041;
+	Wed, 16 Sep 2026 16:52:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789577568; cv=none; b=FBr5OKHN7fCgVK46xlS2o18Mn8g8XsCjyOhgCWN34CTnGVDBbBqeh/gOQHiOkz+syRu3cfPqjFqT2CtTbWKsoGK8wB0BrKZ3QiGZNsGTlhzp9x62LF2I4LdYudIkdGbB3AcB1sPMqYqRexXePOE1jAR2G5VWadZjZqaOA1eDGak=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789577568; c=relaxed/simple;
+	bh=+7airHDE3PtH7ond3yrLNxXmrn2F84jwlK2NYh87MYU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iGdEYAFPm6CJZ8M+nUzy1bE2dI+clIVSMrsMR9zu01HiP4rHkQRtMX7ue1EaOFKPk0xmANK4uf36O4ByeGlMH+/9N6d+PGjrH7pkkC5FMzjZ0dla2iAYHPpuG8w5PwgXMG3dO3YuWeGj7JGw54NXgXUvUNT5eM12MGEuTHlt6IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ogS8rujA; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b="ftYpPvZl"
-ARC-Seal: i=1; a=rsa-sha256; t=1789577385; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=KoyqZmpQCx0XRpo2HCQbhbIU70ZPCCqaK/vaJSyFpnkAzWwvNw08dpnAiItFh1sMQBsgSzfE1iI/3U5gsKyRUZTtezTF7NF+pvAkBrz7zf85uNhtjseOAdlvQZC24776U0NklesxCprcMrjDMdVdqp+WnFbTAm/GdmPjFgwJLb4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1789577385; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=lCywjmCCkpLsZJq2VCSfSNRtbFNx8PVHX0fH2Mpr6lg=; 
-	b=jH4yfcebi9gbbV0VWpx3T2iywy9E4WQnLFyWEJdOxU8FeShNLU4EqbVkvG/YRNGMOIIjP4nacz1taUFkCkCYAuhzGQempFG/HKPrKUdBL0RMr7Uu+0GZD9T5XhWx6iT3NvT65BWHxlEegtchPABfNYkekhWHGzlYtd6jFexMAXI=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=ziyao.cc;
-	spf=pass  smtp.mailfrom=me@ziyao.cc;
-	dmarc=pass header.from=<me@ziyao.cc>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1789577385;
-	s=zmail; d=ziyao.cc; i=me@ziyao.cc;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=lCywjmCCkpLsZJq2VCSfSNRtbFNx8PVHX0fH2Mpr6lg=;
-	b=ftYpPvZlYUICDJ0K5Wn9rosFI+R8gT+y+ZblVEmHQ5G9p2V8c5ZZOwRi3Z/waG/O
-	P17bcf4tgTexjVCeyX7nP/kBWpXlJUOUxcDLOdb6Ut8jNxgwWoUzXSY7Sm1F7U9P7gT
-	5VOIwJxVKLxp0bAPs7qia84/TU8JN8tve/9DxwNk=
-Received: by mx.zohomail.com with SMTPS id 1789577382669156.6825865686152;
-	Wed, 16 Sep 2026 09:49:42 -0700 (PDT)
-Date: Wed, 16 Sep 2026 16:49:38 +0000
-From: Yao Zi <me@ziyao.cc>
-To: Tiezhu Yang <yangtiezhu@loongson.cn>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Yao Zi <me@ziyao.cc>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v1] net: stmmac: Default DWMAC_MOTORCOMM to m on
- MACH_LOONGSON64
-Message-ID: <aqrIoiKSN1kMPT0f@pie>
-References: <20260915073206.6665-1-yangtiezhu@loongson.cn>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ogS8rujA"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=acBKg2iUfuozfgd2lK7Fd0gwUoP8pMuPREZqYNWxnZA=; b=ogS8rujAyj3bv292dkmGYGmxy1
+	0NFmHQeIR8aNRB7dsT3jdtrkbodLC8Hn5UWr1J7zymvSvvpGSFqt8GTHY0poEOR2LyAeta1wcpw8+
+	PMx6xIcpSMB+GJsyNxpmFLimrR0o05VjK08DK8kHM/AF4xRNtm6WQauf5x/Uz6uzmLh89Hqj2hyPw
+	Jtm7i+PytLowFd1rhsL2uqVSytmrWZnlkx+nfwEG3Pnt5FTdRQTqlyNPzFFZB5mMwKaXOXv6fTSSe
+	lWCfn3lLJlIf6bWa9rrLjaZgcY9y/+bLCivuluPUiP9iZXo501W+ZfocXOS+OdSacQh0Pzq5owUXA
+	c8LDTw6A==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x6sry-00000009nSP-42v9;
+	Wed, 16 Sep 2026 16:52:27 +0000
+Message-ID: <239ec20e-103b-4dbe-add5-61241fad7e19@infradead.org>
+Date: Wed, 16 Sep 2026 09:52:26 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260915073206.6665-1-yangtiezhu@loongson.cn>
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-0.2.13.1.5.4/289.567.80
-X-ZohoMailClient: External
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs: networking: radiotap: Fix bracket
+To: Manuel Ebner <manuelebnerli@mailbox.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>
+Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260916123458.314458-2-manuelebnerli@mailbox.org>
+ <20260916123458.314458-8-manuelebnerli@mailbox.org>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20260916123458.314458-8-manuelebnerli@mailbox.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 15, 2026 at 03:32:06PM +0800, Tiezhu Yang wrote:
-> Currently, there is no network connectivity when upgrading to the
-> latest upstream mainline kernel on certain Loongson machines such
-> as Loongson-3C6000 server, because the driver for the onboard NIC
-> is not enabled.
+
+
+On 9/16/26 5:34 AM, Manuel Ebner wrote:
+> Remove needless ')' from code.
 > 
-> Enable the Motorcomm PCI DWMAC driver as a module by default when
-> building for the Loongson-64 platform.
+> Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
+
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+
+> ---
+>  Documentation/networking/radiotap-headers.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> This ensures out-of-the-box support for Motorcomm YT6801 Ethernet
-> controllers on Loongson machines, enabling demand-loading without
-> increasing the core kernel image size.
+> diff --git a/Documentation/networking/radiotap-headers.rst b/Documentation/networking/radiotap-headers.rst
+> index 1a1bd1ec0..aadc7bc6b 100644
+> --- a/Documentation/networking/radiotap-headers.rst
+> +++ b/Documentation/networking/radiotap-headers.rst
+> @@ -133,7 +133,7 @@ its prototypes available in include/net/cfg80211.h.  You use it like this::
+>  
+>  		    case IEEE80211_RADIOTAP_ANTENNA:
+>  			    /* radiotap uses 0 for 1st ant */
+> -			    antenna = *iterator.this_arg);
+> +			    antenna = *iterator.this_arg;
+>  			    break;
+>  
+>  		    case IEEE80211_RADIOTAP_DBM_TX_POWER:
 
-YT6801 isn't a Loongson-specific peripheral, it's already shipped in
-many other PCIe addon cards, and some x86 laptops iirc, thus it just
-seems wrong to do this in the driver's Kconfig entry. I would NAK this
-patch.
-
-> Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-
-Best regards,
-Yao Zi
+-- 
+~Randy
