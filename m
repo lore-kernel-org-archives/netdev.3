@@ -1,152 +1,130 @@
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.7])
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E13A37F33C;
-	Wed, 16 Sep 2026 12:54:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D773918E025
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 12:54:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789563255; cv=none; b=AVD2GuzvmTw9mhTQsN4mvYT1EAnhWblbcy1RrWPwBnw7ryiwO2n9Qn7OjBxcnP1NOdeUwiSDTdWv0XJ9M+TF9KLrnxkwTWKuIi0Ct+3uR+dcyQ0Dsz0Lb3pT7cXZO8+abMxft6nhy3xA50VIqIZa4OIOkufmJcXoSu9wYa+SZ90=
+	t=1789563294; cv=none; b=Lg8liiEJXLg0L9+lB4iHjR2kkrL8QBXVBiB2ncQD5CJ5ofLTwHCI9qRhgc8kv98i1Vgv6oZzohHeIbq/VbRMWrH4eyyEC5KO7ENhOiCH4FwRsLiCNiJ42X4enrtbZ5lCYEhMQyKwoJ/IRtkc6xE5Pb4QoDIiOD1eFy1O8U5hRqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789563255; c=relaxed/simple;
-	bh=zImIvHonBtT04hXaiapfE0jkw5hjkK2GJ2GVk2hMFSU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BHGeKwYmH6DzdA0SNcLjgfBm6doBQFPVN6ujiBE4mZchxI0JEzGXWPl7HGVLuft6pgNlhkTk5/yRicg4pLJoTcw0LArQu3pBFb1rZ6YfWves6pwlZzlRffzQuBb9OLH42pokN3XJxVyru6lciVDHBo0cXh2U8pYRSRc9h9OmZKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=kZ7RNGwX; arc=none smtp.client-ip=117.135.210.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	s=arc-20240116; t=1789563294; c=relaxed/simple;
+	bh=JOUFo0S4YVXgW3AZJVv1gX7JBH1ftFBXtnjMu7CkgC4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gHx+Q1GgIZiqqbQrZ0GCZPBcZm2b3rH8F7Tl/Lj5Mxes0O8QNHLzIfhVvp2pnvMNqazLv5/dMV/CPA4JLIB1COGsGKu+Car+fZkHjH5rcsTdte/VDELbFigZLr608fHt+uu9GXA6E9v6UeGaSazd8a/pQw3GpcSdUb82xJ6+AYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=S+1tQ5rE; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="kZ7RNGwX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=nN
-	z6UvgI9RLeoxVnXq3+KTZCnkqsS4362EB+sFY/FgY=; b=kZ7RNGwXJZV3fCqM1j
-	b/vepziZA+Nb41g7m/di8x3lB9aLnE0NottjVhYaMg7PliKG33hmLXKrIesHj3Gx
-	5+aY1d6JZTpwcAXJk2nDD4VsSOdnzMYYex8dIeTVHq5T5RAQZDMuSAhpE0HMJ+KO
-	f9mZ7yvytkZClxCzMF6aak3Ko=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp5 (Coremail) with SMTP id QCkvCgAXf8s+kapqLnIfHw--.57650S2;
-	Wed, 16 Sep 2026 20:53:18 +0800 (CST)
-From: Linkui Xiao <xiaolinkui@126.com>
-To: dsahern@kernel.org,
-	idosch@nvidia.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Linkui Xiao <xiaolinkui@kylinos.cn>
-Subject: [PATCH net v3] ipv4: fib: fix data-race and stale genid check around nh->nh_saddr
-Date: Wed, 16 Sep 2026 20:53:16 +0800
-Message-Id: <20260916125316.988044-1-xiaolinkui@126.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="S+1tQ5rE"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=orTjrJgdIthhiSkEHnMjpV/Zx7HQOE9vFKlzsou8J5U=; b=S+1tQ5rEsxlZcOwD7Y5rXaZmA6
+	oEnjJMttxlvdi5JBpYB8YVR4O7CxtmYcjQQbxxGG4q7oTWqNypz46mGPzmKQ+po9Nuvo6wpl+oU05
+	iOBG6+P+637jNpV/PBnvHkunO+TkH6tAPBZv14NDm1WQPdFaHaUz46xZ3vmWR3Rv1yH+SBug5Vc55
+	k+K6d8SGXl4X5TVJdkeoHTR72nVaSTX4SwA3pF6i7U1PUU7Png8FbWiqCYq0suPwRqDEI81llfsB9
+	MeLbO5oZHfHrIYYlSeruOUlHJfevAduHBUIRpYOYR0jIHOFQaADZCT+Zt83VmTy8qEb/hqiDEq0YM
+	zmQd7bYg==;
+Received: from sslproxy03.your-server.de ([88.198.220.132])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1x6p9y-0001OA-0Q;
+	Wed, 16 Sep 2026 14:54:46 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1x6p9y-00038u-09;
+	Wed, 16 Sep 2026 14:54:45 +0200
+Message-ID: <1ddaab0e-e034-4d34-8d2a-8976992754c4@iogearbox.net>
+Date: Wed, 16 Sep 2026 14:54:44 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:QCkvCgAXf8s+kapqLnIfHw--.57650S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxWr4kCF4UAr13tw4UJr45GFg_yoWrJw4rpF
-	W8Jasrt347XayaqrsxtFW7X3WF9w4rtFWS9r92kws09wn8Xr13JF9ag3sY9as8XF4kXw42
-	yFs8Wr1UArZ0kaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07ULFxUUUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqR64j2qqkT5gywAA3E
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] netkit: no longer rely on RTNL in
+ netkit_fill_info()
+To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com, Nikolay Aleksandrov <razor@blackwall.org>
+References: <20260916111953.1611574-1-edumazet@google.com>
+Content-Language: en-US
+From: Daniel Borkmann <daniel@iogearbox.net>
+Autocrypt: addr=daniel@iogearbox.net; keydata=
+ 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
+In-Reply-To: <20260916111953.1611574-1-edumazet@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28125/Wed Sep 16 08:24:23 2026)
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
+On 9/16/26 1:19 PM, Eric Dumazet wrote:
+> netkit_fill_info() used rtnl_dereference() to fetch nk->peer,
+> and thus required RTNL.
+> 
+> nk->peer is already an RCU protected pointer, updated with
+> rcu_assign_pointer() and read from the fast path with
+> rcu_dereference(). Simply use rcu_dereference() under
+> rcu_read_lock() instead.
+> 
+> While at it, use READ_ONCE() when reading nk->policy, because
+> netkit_change_link() can change it at any time (it already uses
+> WRITE_ONCE()).
+> 
+> Other fields (primary, mode, pair, scrub) are only set from
+> netkit_new_link(), before the device is visible to dumps.
+> 
+> Also add missing const qualifiers.
+> 
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
 
-fib_select_multipath() compares nexthop_nh->nh_saddr against the flow
-source address with no lock held, while fib_info_update_nhc_saddr()
-stores a new value from another CPU as soon as the preferred source
-address of the egress device changes.
-
-Commit 195374d89368 ("ipv4: fib: annotate races around nh->nh_saddr_genid
-and nh->nh_saddr") added WRITE_ONCE() on the store side and READ_ONCE()
-in fib_result_prefsrc() after syzbot reported
-
-	BUG: KCSAN: data-race in fib_select_path / fib_select_path
-
-but it only covered that reader. fib_select_multipath(), reached from
-fib_select_path(), is a second lockless reader of nh->nh_saddr and was
-left bare.
-
-Moreover, nh_saddr is only meaningful when nh_saddr_genid matches
-dev_addr_genid, as established by commit 436c3b66ec98 ("ipv4: Invalidate
-nexthop cache nh_saddr more correctly."). fib_select_multipath()
-skips that validation, so it can score a nexthop using a stale source
-address and skew the ECMP selection.
-
-Annotate both reads with READ_ONCE() and refresh the cached source
-address via fib_info_update_nhc_saddr() when the genid does not match,
-mirroring fib_result_prefsrc().
-
-Fixes: 32607a332cfe ("ipv4: prefer multipath nexthop that matches source address")
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
----
-V1: https://lore.kernel.org/all/CANn89iJhFL2LNQCXTANQAx8B1GVdGTJgrDwPTZOjbH8k1ygtsg@mail.gmail.com/
-
-V2:
-- point Fixes: at 32607a332cfe, which introduced the bare reader
-- add the missing genid check as suggested by Eric Dumazet
-
-V3:
-- correct the commit reference to 436c3b66ec98, which established the
-  rule that nh_saddr is only valid when nh_saddr_genid matches
-  dev_addr_genid (195374d89368 only added the READ_ONCE()/WRITE_ONCE()
-  annotations)
-- refresh the cached source address via fib_info_update_nhc_saddr()
-  when the genid does not match, instead of skipping the comparison,
-  to avoid silently downgrading ECMP selection to hash-based for a
-  long stale period (suggested by Ido Schimmel)
-
- net/ipv4/fib_semantics.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
-
-diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
-index 7a362f2e2c2b..5c9021ea3a79 100644
---- a/net/ipv4/fib_semantics.c
-+++ b/net/ipv4/fib_semantics.c
-@@ -2176,6 +2176,15 @@ static bool fib_good_nh(const struct fib_nh *nh)
- 	return !!(state & NUD_VALID);
- }
- 
-+static __be32 fib_nh_saddr(struct net *net, const struct fib_info *fi,
-+			   struct fib_nh *nh, int genid)
-+{
-+	if (READ_ONCE(nh->nh_saddr_genid) == genid)
-+		return READ_ONCE(nh->nh_saddr);
-+
-+	return fib_info_update_nhc_saddr(net, &nh->nh_common, fi->fib_scope);
-+}
-+
- void fib_select_multipath(struct fib_result *res, int hash,
- 			  const struct flowi4 *fl4)
- {
-@@ -2184,6 +2193,7 @@ void fib_select_multipath(struct fib_result *res, int hash,
- 	bool use_neigh;
- 	int score = -1;
- 	__be32 saddr;
-+	int genid;
- 
- 	if (unlikely(res->fi->nh)) {
- 		nexthop_path_fib_result(res, hash);
-@@ -2192,6 +2202,7 @@ void fib_select_multipath(struct fib_result *res, int hash,
- 
- 	use_neigh = READ_ONCE(net->ipv4.sysctl_fib_multipath_use_neigh);
- 	saddr = fl4 ? fl4->saddr : 0;
-+	genid = saddr ? atomic_read(&net->ipv4.dev_addr_genid) : 0;
- 
- 	change_nexthops(fi) {
- 		int nh_upper_bound, nh_score = 0;
-@@ -2204,7 +2215,7 @@ void fib_select_multipath(struct fib_result *res, int hash,
- 		    (use_neigh && !fib_good_nh(nexthop_nh)))
- 			continue;
- 
--		if (saddr && nexthop_nh->nh_saddr == saddr)
-+		if (saddr && fib_nh_saddr(net, fi, nexthop_nh, genid) == saddr)
- 			nh_score += 2;
- 		if (hash <= nh_upper_bound)
- 			nh_score++;
--- 
-2.25.1
-
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
