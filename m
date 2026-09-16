@@ -1,126 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC7B517BC5;
-	Wed, 16 Sep 2026 23:42:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFD044A41D
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 23:46:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789602163; cv=none; b=M29foK4g1D4oVqbfAJu7MtRUTOM23KwYwrflrR32j+gNXp/XQYD8Q34WMlLcX/oayXvLwCRYQe7xSyutaXRqFJO6kLLuqQN18fTmvWMZeYCanozhDyyv8QpSlJbBxfqC46sTDP47GIAlYkitsAsIRySGIO2UpoR/shg/VcX1SNU=
+	t=1789602417; cv=none; b=V2VFbTzRY9lJoVUyjRJBemSgJiZw+oo+XQAwz57zY9FdUkKlsgjl3+SBLVXjyLtWkJPkOpsWzByTCW7V9YXVXRyIfdPw05v2fSyuuiaDrNyosF30QtXgYWEHqAAFjbZthlTmu1CAp8YgQtW9Us45QH3OCsoudZ+9TH7tVy11Al0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789602163; c=relaxed/simple;
-	bh=kWYy1PQXA+7DHbMTI6w1XB0iRmxKh7Jf9HGtR6JFxrc=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uJKeg8uLo9nIBys1jtC45q73e0qVlM2jDlQwF2jFxPg7DXhdXLGd0eq+XcV8CzrLh/eS7jcFoJ4GeF8G3p7PbE+tEG+/6q/t31yH5PGDYq2Kr5K2we0ArsviRN6vwxA8niXIzfeP8UxcQf1qgd9VQhpx58x1yKvn7tKZPiufwcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kFZ+nfgl; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789602417; c=relaxed/simple;
+	bh=VIzkbkLXxZKsovXpA+xdjAahySxj4wsP44L+acvQp1s=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=asQ/MzifA0SEf8yjQ99ImeAko/nddob1/xsFNIxWXgsFjvPywBqYUS8idVGyuaJTXG0u3iI6yn8aNPnMZnEKKscTEcf1s3E1kvIWbZaKPjqDRfPJ45NUy2wTtlwokFDwbNiCk7Y+zme1kS6wU6IHhVel7vNDj4pXDsWo2is2lhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kRE6/LFA; arc=none smtp.client-ip=209.85.214.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kFZ+nfgl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4273E1F00898;
-	Wed, 16 Sep 2026 23:42:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789602162;
-	bh=85uWKwpmF5gi1QZlMuzRzmcyieBVYjzFiSEl42U0mXQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=kFZ+nfglFjp+5GI4dvbQyFl1BVQisH267RQBPMcyRLjYscZNDun2CgDWtpj/mT9Aa
-	 ek9KbItI/Zg1g0Xe/LwSw37SNlRqIq1stR2IJHFbaDir6tEZ51RofX5sj4KVw1A77a
-	 XrtAcnkIsiCJGDuKkY3LdWItwmvSMPOh6I+WgKCGXB3bPhOboA/sAT6rOu6FW6Ky/J
-	 sf6LH1OrxBEfQu8Rvem3T8zTwOR3MsQYf9yJUlntbojSVKqiJr0OxvJk4GJ6iGejbt
-	 693xplhTMq8UlGr0zpNH3dDuZazsVv5Ixt6DocfgC9l5i3gdX+4EiPuQ4OKjIsd6wh
-	 0UgO5phO2FL7w==
-Subject: Re: [PATCH net-next 6/6] net/mlx5: HWS, Remove unneeded WRITE_ONCE in
- post send
-From: netdev-bot+sashiko@kernel.org
-To: tariqt@nvidia.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, erezsh@nvidia.com,
- gal@nvidia.com, leon@kernel.org, linux-kernel@vger.kernel.org,
- linux-rdma@vger.kernel.org, mbloch@nvidia.com, saeedm@nvidia.com,
- kliteyn@nvidia.com
-Date: Wed, 16 Sep 2026 23:42:40 +0000
-Message-ID: <178960216085.22033.7885415920375901762@kernel.org>
-In-Reply-To: <20260915111912.3926585-7-tariqt@nvidia.com>
-References: <20260915111912.3926585-7-tariqt@nvidia.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kRE6/LFA"
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2d7443e0f0bso5010935ad.1
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 16:46:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789602415; x=1790207215; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hK+wEjpxWroA8oXhEwZgbSNMxTBytitf0+teGzIfaNE=;
+        b=kRE6/LFAmorDNoeizhKwXfudaRivj9m2hO8dQM1I6oySraQn4hRxGMGQFiUDsscVbn
+         hHKS+93OP2LHaVV/4z+0in0OSBUxGRNUh9UPjVrNF05c/Uxam4VQ+AodyEDYYq+WSg6I
+         HwJllHTmMP0Cmhat+KTl79hcU5qljolUdtFrpgTD0nFlccGA6x1u6kCwqhVXLi8J5G9C
+         x2HBt283gkOmv02Fwj8KewVZ+5s79WY0nRyG6K2Q3Uq1hoKykQx6QsxNjKS0PhUpM36q
+         lPNss/jOniTK4PNWlbUxjHfGp0SkOp8dwB3znttf7ZbemWBSYdvuGEJb8Yvw34pxQ3NZ
+         wk4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789602415; x=1790207215;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=hK+wEjpxWroA8oXhEwZgbSNMxTBytitf0+teGzIfaNE=;
+        b=fnB+rLkz6n4yKgF3mS1itngvU1aCxEsS3pU8kZ202IEanqDNHGO0giGP1rY6ZOc3PJ
+         EOlePo3PDrzez3eNA0wEtjFdSfAUIAor22bn+nopY/BXcBLeGncatmgFVh+3BTupZvYn
+         eJ8PMEk63xzG22piNZFhEB+wLvUtoxI9xD/rOXVnIsBUYrb0Y55CKba6/OtAAirKj84U
+         4KU9JxbJOQigDlpA4ZkvDgtewnSTC2gsClV4lV3gELK9yrEAMSoYuBF1CdWx+xehvsE9
+         FvsM+OuS44qyXsGRKcM2HruN1M8WsNNuDrv3m2HB12gDG6hj71aoEqqPUfDUSkLwyMZB
+         8j7g==
+X-Forwarded-Encrypted: i=1; AKwUvBxB9ZDNH3Qa8agzykPuSd4uxzBR/tAQwQg6Bh1aGXs484Uokq+VHutVwyeDXyFi3sK8AXDTylU=@vger.kernel.org
+X-Gm-Message-State: AFuF++n6lGAZDqE7CIwbYxzQGqmjiH1/GYfgIEj1xtzWgERTM4MH8hG/
+	+B3AteaKcyIiReoHrvvKpTW91v7lHiI1ChU6cGNnPmgVWQL7HETLkjXsXbpkao1tgtBbLMyPYb4
+	VN4RLlg==
+X-Received: from plhl8.prod.google.com ([2002:a17:903:1208:b0:2dd:630:cea4])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2984:b0:2db:7269:38ef
+ with SMTP id d9443c01a7336-2dd8e40ef80mr99903675ad.14.1789602414500; Wed, 16
+ Sep 2026 16:46:54 -0700 (PDT)
+Date: Wed, 16 Sep 2026 23:46:13 +0000
+In-Reply-To: <CADvbK_dHPkHjkPwu0RepYgDsHs5reHepprRHU9hDFBxQM9_RGw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+References: <CADvbK_dHPkHjkPwu0RepYgDsHs5reHepprRHU9hDFBxQM9_RGw@mail.gmail.com>
+X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
+Message-ID: <20260916234654.420056-1-kuniyu@google.com>
+Subject: Re: [PATCH net-next v15 15/15] quic: add packet parser base
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: lucien.xin@gmail.com
+Cc: aahringo@redhat.com, alibuda@linux.alibaba.com, 
+	andrew.gospodarek@broadcom.com, chuck.lever@oracle.com, daniel@haxx.se, 
+	davem@davemloft.net, dhowells@redhat.com, dreibh@simula.no, 
+	edumazet@google.com, hare@suse.de, hepengtao@xiaomi.com, horms@kernel.org, 
+	illiliti@protonmail.com, jbaron@akamai.com, jlayton@kernel.org, 
+	kernel-tls-handshake@lists.linux.dev, kuba@kernel.org, linkinjeon@kernel.org, 
+	linux-cifs@vger.kernel.org, mail@johnericson.me, marcelo.leitner@gmail.com, 
+	matttbe@kernel.org, mbuhl@openbsd.org, mef@scarletmail.rutgers.edu, 
+	metze@samba.org, netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org, 
+	pabeni@redhat.com, paul@jakma.org, pc@manguebit.org, quic@lists.linux.dev, 
+	sd@queasysnail.net, steved@redhat.com, tfanelli@redhat.com, tom@talpey.com, 
+	xiyou.wangcong@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+From: Xin Long <lucien.xin@gmail.com>
+Date: Wed, 16 Sep 2026 14:08:22 -0400
+> > > +struct sock *quic_listen_sock_lookup(struct sk_buff *skb, union quic_addr *sa,
+> > > +                                  union quic_addr *da, struct sock *usk,
+> > > +                                  struct quic_data *alpns)
+> > > +{
+> >
+> > [ ... ]
+> >
+> > > +out:
+> > > +     if (sk && sk->sk_reuseport)
+> > > +             sk = reuseport_select_sock(sk, quic_addr_hash(net, da), skb, 1);
+> >
+> > [Severity: Medium]
+> > Should the hdr_len argument be 0 rather than 1 here?
+> >
+> > quic_udp_rcv() already did skb_pull(skb, sizeof(struct udphdr)) before
+> > quic_packet_rcv() is reached, so skb->data points at the QUIC payload, and
+> > reuseport_select_sock() documents hdr_len as how far the pointer must advance
+> > to reach the payload.
+> >
+> > With a classic SO_ATTACH_REUSEPORT_CBPF program, run_bpf_filter() does:
+> >
+> > net/core/sock_reuseport.c:
+> >         if (unlikely(!pskb_may_pull(skb, hdr_len)))
+> >                 return -EINVAL;
+> >         ...
+> >         pskb_pull(skb, hdr_len);
+> >         ...
+> >         __skb_push(skb, hdr_len);
+> >
+> > so the filter would see the datagram starting one byte into the QUIC header:
+> > all its offsets are shifted and the first byte (form/fixed/type bits) is
+> > invisible, which can select the wrong socket in the reuseport group.
+> >
+> > [ ... ]
+> >
+> True:
+> 
+> BPF programs may need to access the QUIC header, so I will pass 0 to
+> reuseport_select_sock() to ensure the full QUIC packet is visible.
 
-Critical: 0 · High: 0 · Medium: 0 · Low: 1
-
-- [Low] Incomplete cleanup plus an incorrect commit-message premise.
-
---
-
-net/mlx5: HWS, Remove unneeded WRITE_ONCE in post send
-
-This drops the WRITE_ONCE(doorbell_cseg, NULL) statement and its comment
-from hws_send_engine_post_ring() in the HWS send path, on the grounds that
-the store targets a by-value parameter and therefore has no effect.
-
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c
-> index bddac018b44b8..8b70040eaca03 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/send.c
-> @@ -111,9 +111,6 @@ static void hws_send_engine_post_ring(struct mlx5hws_send_ring_sq *sq,
->  	wmb();
->  
->  	mlx5_write64((__be32 *)doorbell_cseg, sq->uar_map);
-> -
-> -	/* Ensure doorbell is written on uar_page before poll_cq */
-> -	WRITE_ONCE(doorbell_cseg, NULL);
->  }
-
-[Severity: Low]
-The changelog says:
-
-    b) This code originated from another place (copy-paste bug),
-    where there was actually a CQ polling right after this line,
-    and the WRITE_ONCE was writing to another place.
-
-Does that match the in-tree origin?  The only other place carrying this
-exact comment and idiom is mlx5_aso_post_wqe() in
-drivers/net/ethernet/mellanox/mlx5/core/lib/aso.c:
-
-	mlx5_write64((__be32 *)doorbell_cseg, aso->uar_map);
-
-	/* Ensure doorbell is written on uar_page before poll_cq */
-	WRITE_ONCE(doorbell_cseg, NULL);
-
-and there doorbell_cseg is also a by-value parameter:
-
-	void mlx5_aso_post_wqe(struct mlx5_aso *aso, bool with_data,
-			       struct mlx5_wqe_ctrl_seg *doorbell_cseg)
-
-so the store is dead at that site too, rather than "writing to another
-place".  That line predates the HWS send path (it came in with commit
-c491ded04325b9 in 2022).
-
-Should aso.c get the same deletion in this patch?  Unlike the HWS site, the
-aso.c one really is followed by CQ polling in every caller, for example
-mlx5e_ipsec_aso_query():
-
-	mlx5_aso_post_wqe(aso->aso, false, &wqe->ctrl);
-	read_poll_timeout_atomic(mlx5_aso_poll_cq, ret, !ret, 10,
-				 10 * USEC_PER_MSEC, false, aso->aso, false);
-
-with the same pattern in mlx5e_tc_meter (en/tc/meter.c) and the macsec
-paths, so the comment there documents an ordering guarantee the code never
-implemented.  No runtime failure follows from it, since all of those
-callers poll inside a read_poll_timeout*() retry loop and simply retry.
-
-After this change, the two functionally identical doorbell-ring helpers in
-the same driver no longer agree, and the construct the changelog calls
-erroneous is still present at the site the changelog points to as its
-origin.  Would it make sense to either remove it there as well, or, if some
-real ordering requirement exists at that site, add an actual barrier
-instead of a store to a local?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260915111912.3926585-1-tariqt%40nvidia.com
+Why do you use reuseport_select_sock() here ?
