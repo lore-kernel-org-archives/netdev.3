@@ -1,333 +1,166 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6096C2D8385;
-	Wed, 16 Sep 2026 00:37:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B116B342538;
+	Wed, 16 Sep 2026 00:41:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789519086; cv=none; b=DlKUz3guPXG5sBcpHMo+q+fk7FqCscgp7lyZlrsdEshC7CibCrigkawbvx0sNCzfmSGTtBnbB3j76EQZy2rLVVxbU1Z9NkCG3ccAQNdLIgkJn0DE6lJnj0cpURe8qRDdZO+lhTeyubS9JQV4RCRjZ7kDEAbARSQZmE0//Mz68eQ=
+	t=1789519270; cv=none; b=dUY0FdVr0exrJEzroe7SUjafV7yxgyq4cojbwdJhxhwpDYNhT6/tZDIfCeW1EZ9KpHzn+UWcAoF1aT4LIikTLyOcZOlZ2RSM9V2ITBrf5SU4MwtaDUPgR+17DZMeAB26R9hFvkPA0PJeSCTTXM2u6OF6fdCc1wq8fgtjMWuXsxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789519086; c=relaxed/simple;
-	bh=PD4ipA27buJj5TyftjyAo8ovH6jNypJtDwOgLFOva9s=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BI3ik9gbDP+qSDNNsEkBAhHJISlzSjr5gkELD8TeembfKX7kcKTeSutJcupFt0Im/WhhonZnmkRLy6CHt3u9CTaoBm/s9J6kltezkwwoH2gpdN0E+GCgghFtC/DBB/8zvujFdCaWK9iJC7esh4OfUbyg6i1M208UNsO3Mf8LFco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NK3xry2d; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789519270; c=relaxed/simple;
+	bh=PiYQJkAGkuJBIyzKHKtgcR6WQgdtYuoTQCzilchGnWs=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=t7H5uJX4wCQHoxL/0fZS3oKhXLd5fBMXQJ2HGsYsaMFBOmrif/3xEGFfxUzZ7o7ign6+boHVuURfhPUAB7pcmo1P0t1mIRnDMmMZHF5g8cyV2HKanlppZV8BhBeZ3yoGp5Of4KfGFnBYTD+yCRPh6ZgV6kulCosOcuUv5KRU0uY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=sOZbLu5e; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NK3xry2d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED5131F00893;
-	Wed, 16 Sep 2026 00:37:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789519076;
-	bh=l81ZUcvlWvIO06J8B1jF4VqUWbNfS9IC5rXtYgsK3CU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NK3xry2dt16gW+UQDc7PXkLPAZlSRVUf9dwOL6/DvS2hruK2dpAp9wuRzqO1hikaK
-	 EqhQiir90ihW1x2HwRVxKFVIW6ATUzKH1BzRo0FevsK3KbxJyh0XCNNYzWIIVgl0/q
-	 OGZr9MYdrs4hsosnt0paDwoVDhuEkH3OvJZUag3/AV+ZS3WhJ3B4IWbeSglRnF2N7F
-	 35Q1CdDqndU4CEA2GL+1rS7fnMSkLaBVHPbte9zz7sp4UXPT9cDtNkNQA1Pc+lP5J2
-	 4/QjRR4DOoMEb0YFOeYK892c0adQlejKQPrsO0Ff8rKC9Txp0WYcmFQnI0n9SqC0Rb
-	 JUtsuuyMSVglQ==
-Subject:
- Re: [PATCH net 2/2] packet: use ubuf_info completion for TX_RING packets
-From: netdev-bot+sashiko@kernel.org
-To: willemdebruijn.kernel@gmail.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- andrew+netdev@lunn.ch, willemb@google.com, kleaver@janestreet.com,
- doebel@amazon.de, stable@vger.kernel.org
-Date: Wed, 16 Sep 2026 00:37:55 +0000
-Message-ID: <178951907555.22033.17789684814809358562@kernel.org>
-In-Reply-To: <20260914214229.1674102-3-willemdebruijn.kernel@gmail.com>
-References: <20260914214229.1674102-3-willemdebruijn.kernel@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="sOZbLu5e"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:Message-ID:Subject:Cc:To
+	:From:Date:MIME-Version:From:Reply-To;
+	bh=NheJufshGj64fhQKNC2c1j1k0ck6W8lDGbWhTay9uUc=; b=sOZbLu5ewE2w8rWxU4D/CswcOx
+	vscT/TR8V1ChxhajcNhxsAxXX1GdIm1/RSRx7ubFcr0dhqE/e/Aer1+4AVYBL2AlOv1C4Q4APfSgV
+	bRUb14/0B5DwqRLMIYou200gkuWYkYtB9Mb8rQ6eSfBtDTDYS7QqI4UH9SzM8KxR8GhZrq7sMc/Bd
+	DSCwoISx0sN0zEwd5oiMfAhueKhCXJO8CRKnmS91PYW62IzBRAnIGt97wWKyLxiNvisbUFbYC3vBs
+	gLqbtDk2oQLAcdruS5xD7b4sKxqWd7Y/XGluJ1o57LoXxm07Kd4Y5Oari8tZ2vtnzM3eg77XVBp+Z
+	mnfwUndg==;
+Received: from maestria.local.igalia.com ([192.168.10.14] helo=mail.igalia.com)
+	by fanzine2.igalia.com with esmtps 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1x6dhc-002hgB-1A; Wed, 16 Sep 2026 02:40:43 +0200
+Received: from webmail.service.igalia.com ([192.168.21.45])
+	by mail.igalia.com with esmtp (Exim)
+	id 1x6dha-0087zL-Kq; Wed, 16 Sep 2026 02:40:43 +0200
+Received: from localhost ([127.0.0.1] helo=webmail.igalia.com)
+	by webmail.service.igalia.com with esmtp (Exim 4.98.2)
+	(envelope-from <mfo@igalia.com>)
+	id 1x6dha-00000002ADJ-2w79;
+	Wed, 16 Sep 2026 02:40:42 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Date: Tue, 15 Sep 2026 21:40:42 -0300
+From: Mauricio Faria de Oliveira <mfo@igalia.com>
+To: Joel Granados <joel.granados@kernel.org>
+Cc: Kees Cook <kees@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
+ Nicolas Schier <nsc@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ kernel-dev@igalia.com, linux-riscv@lists.infradead.org,
+ linux-kernel@vger.kernel.org, fsverity@lists.linux.dev,
+ keyrings@vger.kernel.org, bpf@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ netdev@vger.kernel.org, linux-wpan@vger.kernel.org,
+ lvs-devel@vger.kernel.org, netfilter-devel@vger.kernel.org,
+ coreteam@netfilter.org, linux-sctp@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+ bridge@lists.linux.dev, mptcp@lists.linux.dev, rds-devel@oss.oracle.com,
+ virtualization@lists.linux.dev
+Subject: Re: [PATCH RFC v3 00/13] sysctl: add module aliases
+In-Reply-To: <uufwu7rqyxf7h55lgavcwrnylnq5gdbd7o5d7mfugrxpblds2d@adra5c2z22gg>
+References: <20260819-sysctl-module-aliases-v3-0-aab90569365d@igalia.com>
+ <bpnqwggtidgiec5akns3fa5edbsvl7xf55dxabtwng2xspy4pn@ue554aii2ngk>
+ <53155340c897560bfc67e61ba9568fd6@igalia.com>
+ <mokz5pdtwswkyab4byfq7q7m6ac2g6ceoi6jflyxmaszaibzqa@su6m4kamtdpy>
+ <b1a6cec17e7c828fcebe310ca2a0d25b@igalia.com>
+ <rywhz6soawf5dzyui5g7dnbufsgpxr7ma7honuhejwgncemzrm@f32at7hl6ugm>
+ <6e93af907298022f077126f1be7bd386@igalia.com>
+ <uufwu7rqyxf7h55lgavcwrnylnq5gdbd7o5d7mfugrxpblds2d@adra5c2z22gg>
+Message-ID: <cdc75421500371a8839fe5347af5c103@igalia.com>
+X-Sender: mfo@igalia.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Report: NO, Score=-2.1, Tests=ALL_TRUSTED=-3,BAYES_50=0.8,KAM_DMARC_NONE=0.125,KAM_DMARC_STATUS=0.005
+X-Spam-Score: -20
+X-Spam-Bar: --
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider:
+On 2026-09-10 04:29, Joel Granados wrote:
+> On Wed, Sep 09, 2026 at 02:29:30PM -0300, Mauricio Faria de Oliveira wrote:
+>> On 2026-09-09 11:07, Joel Granados wrote:
+>> > On Fri, Sep 04, 2026 at 02:45:23PM -0300, Mauricio Faria de Oliveira wrote:
+>> >> On 2026-09-04 10:41, Joel Granados wrote:
+>> >> > On Thu, Aug 20, 2026 at 06:22:13PM -0300, Mauricio Faria de Oliveira wrote:
+>> >> >> On 2026-08-20 09:51, Joel Granados wrote:
+>> >> >> > On Wed, Aug 19, 2026 at 03:16:13PM -0300, Mauricio Faria de Oliveira wrote:
+>> >> >> >> This series adds 'sysctl:' aliases to modules that register sysctl tables; e.g.:
+>> > <... snip ...>
+>> >> > use the correct call moving forward?
+>> >>
+>> >> This scheme currently covers all modules, AFAIK, as it is wrapped in the
+>> >> functions that register sysctl tables.
+>> >>
+>> >> On moving forward: usage of such functions in a way that breaks a
+>> >> requirement of this series (e.g., failing to specify the template
+>> >> table/path parameter(s), or not having constant initializers) hits a
+>> >> build error, as the requirements are actually from the compiler.
+>> >>
+>> >> >> I guess that a different design could use MODULE_SYSCTL_TABLE() as
+>> >> >> MODULE_DEVICE_TABLE(), declared per table instead of wrapped into
+>> >> >> register sysctl functions.
+>> >> >> However, it seems to require moving the value of the path argument (or
+>> >> >> its template) into the macro and still referencing it in the function
+>> >> >> (or its instantiation of the template), which adds obfuscation, to all
+>> >> >> callers.
+>> >> >>
+>> >> >> What do you think?
+>> >> > It might be that having it inside the module subsys is more work, but I
+>> >> > believe that there is the right place to have it. I still don't see that
+>> >> > adding a module specific arg to the sysctl register is a good thing.
+>> >>
+>> >> Ok, cool. I can work on a different design.
+>> >>
+>> >> Please just let me know whether you are OK with the remaining (above),
+>> >> and I'll be happy to tackle this.
+>> >
+>> > What is "the remaining"?
+>> 
+>> I meant the rest of the email, addressing the points/questions you
+>> raised.
+> 
+> * The dependency on a sysctl path to load a module still is
+>   backwards to me. It should be: I need feature A, I load modules
+>   M{1,2,3} for A and I set sysctl S{1,2,3...}. Not sure why sysctl tools
+>   do it the other way around.
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 1
+Right, but note:
+- the feature may, or may not, be built as a module (unknown to sysctl
+tool).
+- there is no simple way to identify which module provides a sysctl,
+today.
 
-- [High] tpacket_ubuf_complete() (net/packet/af_packet.c:2576) writes
-  into the TX ring slot via…
-- [Medium] Commit message overstates the ring-teardown lifetime
-  guarantee.
-- [Medium] uAPI semantics documented in
-  Documentation/networking/packet_mmap.rst are no longer implemented,…
-- [Low] Two comment/logic pairs in net/packet/af_packet.c still describe
-  the tpacket skb destructor that this patch deletes.
+Let's compare this with device-id module aliases: userspace doesn't know
+whether a driver is built-in or a module, but it can load the module, if
+any, based on the device-id, not the module name.
 
---
+> * The fact that the invariance is in the sysctl path and not the module
+>   identifier maybe points to a deeper issue.
 
-packet: use ubuf_info completion for TX_RING packets
+It does seem that the invariance in the sysctl path is correct, as that
+doesn't change with the variable of whether the code is built-in or a
+module.
 
-tpacket_snd() now attaches a per-packet ubuf_info (struct tpacket_uarg) to
-the skb instead of overriding skb->destructor, so a ring slot is released
-only once all references to the payload have been freed or copied. The uarg
-holds an sk_wmem_alloc reference, and the now unused skb_zcopy_*_nouarg
-helpers are removed.
+A similar comparison with device-id module aliases applies, IIUIC.
 
-Closes: https://lore.kernel.org/netdev/20260909085542.3370986-1-doebel@amazon.de/
+> * I still believe that this is better placed outside the sysctl
+>   subsys as it does not cater solely to module loading.
 
-A few questions on the commit message and on the new completion path.
+Understood; your point about a module-specific argument in sysctl
+register functions precisely confirmed that this approach is misplaced.
 
-The commit message says:
+I'll try a different design, more similar to MODULE_DEVICE_TABLE().
+Maybe the only requirement from sysctl is for struct
+ctl_table.procname's offset to be zero (for file2alias). And apparently
+something with the path string in a table declaration macro. We'll see.
 
-> The uarg holds an sk_wmem_alloc reference, rather than an sk_refcnt
-> reference. packet_free_tx_ring waits on sk_wmem_alloc before freeing
-> the ring pages.
+Thanks again for reviewing and providing constructive feedback. That's
+very appreciated.
 
-[Severity: Medium]
-Is that wait unconditional? In the tree at this commit it looks like it
-applies only in two narrow cases:
-
-net/packet/af_packet.c:packet_free_tx_ring() {
-	deferred = vec->deferred;
-	if (!deferred || !sk_wmem_alloc_get(sk)) {
-		free_pg_vec(pg_vec, order, len);
-		return;
-	}
-	...
-}
-
-and vec->deferred is only allocated for vmalloc-backed blocks:
-
-net/packet/af_packet.c:alloc_pg_vec() {
-	...
-		if (tx_ring && !vec->deferred &&
-		    is_vmalloc_addr(pg_vec[i].buffer)) {
-			vec->deferred = kzalloc_obj(*vec->deferred,
-						    GFP_KERNEL | __GFP_NOWARN);
-	...
-}
-
-packet_free_tx_ring() is also reached only on the closing path:
-
-net/packet/af_packet.c:packet_set_ring() {
-	...
-		if (tx_ring && closing)
-			packet_free_tx_ring(sk, pg_vec, order, req->tp_block_nr);
-		else
-			free_pg_vec(pg_vec, order, req->tp_block_nr);
-	...
-}
-
-So for the usual __get_free_pages()-backed ring, and for any non-closing
-teardown, the new sk_wmem_alloc reference does not appear to hold the ring
-pages. Could the message spell out which cases actually wait, since this is
-the only lifetime argument offered for a change tagged Cc: stable?
-
-> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-> index 76bde7906d494..41fc053075dae 100644
-> --- a/net/packet/af_packet.c
-> +++ b/net/packet/af_packet.c
-> @@ -2528,26 +2528,6 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
->  	goto drop_n_restore;
->  }
->  
-> -static void tpacket_destruct_skb(struct sk_buff *skb)
-> -{
-> -	struct packet_sock *po = pkt_sk(skb->sk);
-> -
-> -	if (likely(po->tx_ring.pg_vec)) {
-> -		void *ph;
-> -		__u32 ts;
-> -
-> -		ph = skb_zcopy_get_nouarg(skb);
-> -
-> -		ts = __packet_set_timestamp(po, ph, skb);
-> -		__packet_set_status(po, ph, TP_STATUS_AVAILABLE | ts);
-> -
-> -		packet_dec_pending(&po->tx_ring);
-> -		complete(&po->skb_completion);
-> -	}
-> -
-> -	sock_wfree(skb);
-> -}
-> -
-
-[Severity: Low]
-With tpacket_destruct_skb() gone, two comments that describe it are left
-behind. In tpacket_snd() the xmit error path still reads:
-
-net/packet/af_packet.c:tpacket_snd() {
-	...
-			if (err && __packet_get_status(po, ph) ==
-				   TP_STATUS_AVAILABLE) {
-				/* skb was destructed already */
-				skb = NULL;
-				goto out_status;
-			}
-			/*
-			 * skb was dropped but not destructed yet;
-			 * let's treat it like congestion or err < 0
-			 */
-	...
-}
-
-Do those inferences still hold? The slot can now be AVAILABLE while the skb
-is alive (payload copied by skb_copy_ubufs()), and the skb can be gone while
-the slot is still TP_STATUS_SENDING when a clone or segment still holds a
-uarg reference, since tpacket_ubuf_complete() returns early on
-!refcount_dec_and_test().
-
-packet_free_tx_ring() also still says:
-
-	/* A detached ring's pending count can miss late skb destructors. */
-
-Should that now name tpacket_ubuf_complete() instead, given that is what
-holds the extra sk_wmem_alloc reference the deferral waits on?
-
->  static int __packet_snd_vnet_parse(struct virtio_net_hdr *vnet_hdr, size_t len)
->  {
->  	if ((vnet_hdr->flags & VIRTIO_NET_HDR_F_NEEDS_CSUM) &&
-> @@ -2587,27 +2567,57 @@ static int packet_snd_vnet_parse(struct msghdr *msg, size_t *len,
->  	return 0;
->  }
->  
-> +struct tpacket_uarg {
-> +	struct ubuf_info	ubuf;
-> +	struct packet_sock	*po;
-> +	void			*ph;
-> +};
-> +
-> +static void tpacket_ubuf_complete(struct sk_buff *skb, struct ubuf_info *uarg,
-> +				  bool success)
-> +{
-> +	struct tpacket_uarg *tu = container_of(uarg, struct tpacket_uarg, ubuf);
-> +	struct packet_sock *po = tu->po;
-> +	void *ph = tu->ph;
-> +	__u32 ts = 0;
-> +
-> +	if (!refcount_dec_and_test(&uarg->refcnt))
-> +		return;
-> +
-> +	if (likely(READ_ONCE(po->tx_ring.pg_vec))) {
-> +		if (likely(skb))
-> +			ts = __packet_set_timestamp(po, ph, skb);
-> +		__packet_set_status(po, ph, TP_STATUS_AVAILABLE | ts);
-> +
-> +		packet_dec_pending(&po->tx_ring);
-> +		complete(&po->skb_completion);
-> +	}
-
-[Severity: High]
-Can these writes through tu->ph land in pages that have already been freed?
-
-The only guard here is the unsynchronized READ_ONCE(po->tx_ring.pg_vec)
-test, and that load is not ordered against the swap(rb->pg_vec, pg_vec) plus
-free in packet_set_ring()/packet_free_tx_ring(). For a page-backed ring the
-close path takes the !deferred branch shown earlier and frees the blocks
-immediately, even though sk_wmem_alloc_get(sk) is non-zero because of the
-outstanding uarg reference.
-
-The frag page references taken in tpacket_fill_skb() used to cover the
-page-backed case, but they are dropped before the completion runs:
-
-net/core/skbuff.c:skb_copy_ubufs() {
-	...
-	/* skb frags release userspace buffers */
-	for (i = 0; i < num_frags; i++)
-		skb_frag_unref(skb, i);
-	...
-release:
-	skb_zcopy_clear(skb, false);
-}
-
-So a sequence like:
-
-CPU0 (xmit/copy)			CPU1 (close)
-tpacket_ubuf_complete()
-  READ_ONCE(po->tx_ring.pg_vec)  /* non-NULL */
-					packet_set_ring(closing=1)
-					  packet_free_tx_ring()
-					    free_pg_vec()  /* !deferred */
-  __packet_set_status(po, ph, ...)  /* freed pages */
-
-Frames whose payload is fully consumed by copylen (to_write == 0, e.g. a
-vnet_hdr whose hdr_len covers the whole frame) never had a frag reference at
-all. An analogous window existed for the deleted tpacket_destruct_skb() once
-skb_copy_ubufs() had dropped the frag references, but this patch makes
-copy-time completion the normal release path and re-bases the lifetime
-argument on sk_wmem_alloc, so should packet_free_tx_ring() honour
-sk_wmem_alloc unconditionally, or the ph access be made properly
-synchronized?
-
-Separately, on the pg_vec == NULL branch packet_dec_pending() is skipped.
-Does a late completion after ring teardown leave the per-CPU pending count
-permanently elevated?
-
-> +
-> +	kfree(tu);
-> +	sk_free(&po->sk);
-> +}
-> +
-> +static const struct ubuf_info_ops tpacket_ubuf_ops = {
-> +	.complete = tpacket_ubuf_complete,
-> +};
-> +
-
-[ ... ]
-
-> @@ -2906,7 +2917,24 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
->  			virtio_net_hdr_set_proto(skb, &vnet_hdr);
->  		}
->  
-> -		skb->destructor = tpacket_destruct_skb;
-> +		uarg = kmalloc(sizeof(*uarg), GFP_KERNEL);
-> +		if (unlikely(!uarg)) {
-> +			if (likely(len_sum > 0))
-> +				err = len_sum;
-> +			else
-> +				err = -ENOMEM;
-> +			goto out_status;
-> +		}
-> +		uarg->po = po;
-> +		uarg->ph = ph;
-> +		uarg->ubuf.ops = &tpacket_ubuf_ops;
-> +		uarg->ubuf.flags = SKBFL_ZEROCOPY_FRAG;
-
-[Severity: Medium]
-Since only SKBFL_ZEROCOPY_FRAG is set here (no SKBFL_DONT_ORPHAN), even a
-plain skb_clone() takes the skb_orphan_frags() -> skb_copy_ubufs() ->
-skb_zcopy_clear() path and completes the uarg, as do
-skb_orphan_frags_rx() from dev_queue_xmit_nit() when any tap is attached,
-tun_net_xmit(), and __skb_tstamp_tx().
-
-At that point neither skb_hwtstamps(skb)->hwtstamp nor skb_tstamp(skb) has
-been filled in, so tpacket_get_timestamp() returns 0 and the slot is
-published as bare TP_STATUS_AVAILABLE.
-
-Documentation/networking/packet_mmap.rst still documents the old contract:
-
-	The kernel updates each status of sent
-	frames with TP_STATUS_SENDING until the end of transfer.
-
-	At the end of each transfer, buffer status returns to TP_STATUS_AVAILABLE.
-
-and the PACKET_TIMESTAMP section tells applications to "wait for status of
-relevant frames to be updated resp. the frame handed over to the
-application", then "walk through the frames to pick up the individual hw/sw
-timestamps", noting that with only TP_STATUS_AVAILABLE set "the tp_sec and
-tp_{n,u}sec members do not contain a valid value".
-
-Should packet_mmap.rst be updated in this patch to describe the new release
-and timestamp point?
-
-> +		refcount_set(&uarg->ubuf.refcnt, 1);
-> +
-> +		/* Hold a sk_wmem_alloc reference until completion */
-> +		refcount_inc(&po->sk.sk_wmem_alloc);
-> +		skb_zcopy_init(skb, &uarg->ubuf);
-> +
->  		__packet_set_status(po, ph, TP_STATUS_SENDING);
->  		packet_inc_pending(&po->tx_ring);
->
+> 
+> Best
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260914214229.1674102-1-willemdebruijn.kernel%40gmail.com
+Mauricio
