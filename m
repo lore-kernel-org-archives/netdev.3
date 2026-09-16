@@ -1,153 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61BF84A7CA4;
-	Wed, 16 Sep 2026 23:13:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E054BA1F1;
+	Wed, 16 Sep 2026 23:16:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789600398; cv=none; b=C8BB1zmeci+Gwc1RL1sXLhlFERGcArkyplOldqBRpmhdmxusjeZt3Vu3PiJag7tivIg6/4oBGWLMC8HpcIsGAR5MjTPwjNpBukT6PNbYJ/j9q3WVz649FqswifwtlXI72CmRTG8bQG4QGvA+NDQ+JCcvsUACGlPtoCgFErnL8nE=
+	t=1789600620; cv=none; b=dN4feFCELBOkCfhK4GHQMabLN1s75zGc9dct5KBU+kEJLXGwlI6rAMdiOrTEz4/GbNWPBr0GkhMwxCHesInhDDPxg7F+WcmgPqtOazHO9FT0NXvDAfImxuLJLdVaij6QriJ0UFTzDJ9XARLcUczOLAez0mUrF7dGwlGvlZNcz68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789600398; c=relaxed/simple;
-	bh=lBTBQ+AeEAILr+eSl0d5P93ajBM4IBD+/ux9b0Eq4V8=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JwNZmtYuVIHdNROU7fKUA1S3PDLlyuBPI/e/SC0C6ClAjtZ3XIVWF6j0kd+BEezys1i3lKkr/MlZIBQdN81pTv8MxHkwXzIjmS2Ynloh1Nfrs2/qKtwbBjHHDBQPEN5/w1ydWLnP8ACItdOjG4uFPrZySZdhpsBzg6NcGa3yC84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YrgbqbNe; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789600620; c=relaxed/simple;
+	bh=r7pBaUBxw3xOb8KYvIhU3DLDZsCLCBiv8UsgNVUMdls=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NJPicNA2B2JPsYeKkNMwiwJPJvOd+Nx/Aci6ueOcqY5znK+8U9oLLEDwbezJ81VwpkL3zUydcNOgAaYuLOsF1E+sxoQhjUariktbVskH89qmkaMFMglde1MIrEZBv1iitBvnM06yFCNF0tL33DxqTCv2Y7IyyaqPJN9Ks3MVKQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=UGss3Ajo; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YrgbqbNe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 666721F000FF;
-	Wed, 16 Sep 2026 23:13:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789600397;
-	bh=J/QEUcvSZ2w/o2gb77Pk/nyMb8ULXPLIpeXqeBAgaH8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=YrgbqbNeqelT0NFpeYR+DPKhuRskSkRKO0WMoJNRmSrfurDIcPPeunV7c7Ujemcy7
-	 czk/G8+wfiqxq+LqiOY58recGq0R0Ri3+nKKjFwx+33ppw6asuFGwAVkZ6f4cFSSvb
-	 xibfgX9BBMf/sYjmWMmktfpcrAFjWriweyFb7vFNtBQx21aq6lML/v+ETi3Ki/jOHs
-	 VIbhpSdVbohheZSYI9FIffcYOhWrqICFr9nTqxI5TmDKHpZeH8wgwgCx4A0qolC17X
-	 g7hNF8vGkXIROvduTNSpiKMLJ/dnrrFPbsYE1buGafa8Ius00HVTZGOOytWWAxob38
-	 vVUkHy2v9TBOw==
-Subject: Re: [PATCH net v2 2/2] selftests: drv-net: psp: test PSP and TCP ULP
- mutual exclusion
-From: netdev-bot+sashiko@kernel.org
-To: daniel.zahka@gmail.com
-Cc: edumazet@google.com, ncardwell@google.com, kuniyu@google.com,
- davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- willemdebruijn.kernel@gmail.com, andrew+netdev@lunn.ch, shuah@kernel.org,
- willemb@google.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-Date: Wed, 16 Sep 2026 23:13:16 +0000
-Message-ID: <178960039600.22033.386517201454373799@kernel.org>
-In-Reply-To: <20260915-psp-ktls-fix-v2-2-0eedc3b148ec@gmail.com>
-References: <20260915-psp-ktls-fix-v2-2-0eedc3b148ec@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="UGss3Ajo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1789600615;
+	bh=FhKvU2lAmQGHzBrHlcQkBr1s4HxlDRhQuXlCwCORBUg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UGss3AjozwwP0Tlgt8e6abJ7n9Xjh2TVHI+muViP4C2CDKyOMpSd8eni3A19njEMQ
+	 h/jUOSdpv4TREdqUsTE9c0ZJpyUm7shH/jMd7QmRNwLgLCGrK33Flq8DmmaDEyy3m8
+	 Uthsx+LeI+rJDXGRo2l3teJXH8pKvSRcgT4xWDCvu3H9T8xFi2ykaTZEq0shExIKCM
+	 W3dsTcEJWbvYTJ2EryfmQFkAwCXy2vK2790YwV3s35biitVq1loxZXc4Rx6ppY/Wv4
+	 sd0+Y6DOkbkGyCROTaAB5BKCtsbGG1XeJBloLAO0MaPH+vfCK7EZlJq7OdkK97PJ2o
+	 +iZ3DdFtVA+0g==
+Received: from localhost.localdomain (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with ESMTPSA id 34B3060088;
+	Thu, 17 Sep 2026 01:16:55 +0200 (CEST)
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: davem@davemloft.net,
+	netdev@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	horms@kernel.org,
+	fw@strlen.de,
+	ja@ssi.bg
+Subject: [PATCH net 00/10] Netfilter/IPVS fixes for net
+Date: Thu, 17 Sep 2026 01:16:41 +0200
+Message-ID: <20260916231652.127456-1-pablo@netfilter.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+Hi,
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+The following patchset contains Netfilter/IPVS fixes for net:
 
-- [Medium] In tools/testing/selftests/drivers/net/psp.py, the new helper
-  `_require_tls_ulp()` (lines 338-344) wraps…
+1) Set on HW_DEAD after HW_PENDING is cleared in the flowtable offload
+   to ensure GC does not zap it, from Jérémy Jean.
 
---
+2) Hold the nfnetlink_queue mutex while removing the queue instance
+   from the netlink notifier that handles NETLINK_URELEASE to fix a
+   possible race with the UNBIND command. From Florian Westphal.
 
-selftests: drv-net: psp: test PSP and TCP ULP mutual exclusion
+3) Reject route with NULL rt6i_idev in ip6t_rpfilter. From Weiming Shi.
 
-This adds two psp.py cases that check PSP associations and TCP ULPs are
-mutually exclusive in both orders, plus a _require_tls_ulp() helper that
-skips when kTLS is unavailable, and enables CONFIG_TLS=y in the
-drivers/net selftest config.
+4) Reject rtinfo->addrnr set to zero from ip6t_rt .checkentry path.
+   This also fortifies the datapath loop as per Florian's request.
+   From Luxiao Xu.
 
-> diff --git a/tools/testing/selftests/drivers/net/psp.py b/tools/testing/selftests/drivers/net/psp.py
-> index 315648a770d00..a5b1e14f120f0 100755
-> --- a/tools/testing/selftests/drivers/net/psp.py
-> +++ b/tools/testing/selftests/drivers/net/psp.py
+5) Fix checksuming in nft_synproxy for IPv6, from Karl Mehltretter.
 
-[ ... ]
+6) Revalidate ihl before calling icmp_send() in IPVS,
+   from Julian Anastasov.
 
-> @@ -333,6 +335,50 @@ def assoc_version_mismatch(cfg):
->              ksft_eq(the_exception.nl_msg.error, -errno.EINVAL)
->  
->  
-> +def _require_tls_ulp():
-> +    with socket.create_server(("localhost", 0)) as srv, \
-> +         socket.create_connection(srv.getsockname()) as s:
-> +        try:
-> +            s.setsockopt(socket.SOL_TCP, TCP_ULP, b"tls")
-> +        except OSError as exc:
-> +            raise KsftSkipEx("kTLS not available") from exc
+7) Sanitize flags in IPVS sync messages that are received in the
+   backup, from Julian Anastasov.
 
-[Severity: Medium]
+8) Fix suspicious RCU usage splat in ctnetlink with expectations.
 
-Should this handler be narrowed to the errnos that actually mean "no
-kTLS"?  As written, every OSError from the TCP_ULP setsockopt turns into
-a skip, including -EINVAL, which is exactly the errno the kernel side of
-this series returns:
+9) Remove WARN_ON_ONCE in dev_fill_forward_path(). Recent support
+   from IPIP tunnels allow for loops. From Farhad Alemi.
 
-net/ipv4/tcp_ulp.c:__tcp_set_ulp() {
-	...
-	err = -EINVAL;
-	if (sk_has_decrypt_user(sk))
-		goto out_err;
-	...
-}
+10) Check for expired catchall elements in the insert and deactivate
+    path. From Aohan Mei.
 
-The probe socket here is a plain loopback TCP connection with no PSP
-association, so the only legitimate reasons to skip are the "ULP unknown
-/ TLS not built" errnos, ENOENT from __tcp_ulp_find_autoload() and
-EOPNOTSUPP.
+Please, pull these changes from:
 
-If sk_has_decrypt_user() ever returns true for an ordinary TCP socket -
-and the parent commit anticipates growth there ("As other users of
-skb->decrypted come along, they can be added to sk_has_decrypt_user()") -
-the probe fails with EINVAL and the helper reports a skip.
+  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git nf-26-09-17
 
-Would restricting the skip to exc.errno in (errno.ENOENT,
-errno.EOPNOTSUPP) and letting other errnos propagate keep the assertions
-below load-bearing?
+Thanks.
 
-> +
-> +
-> +def assoc_psp_ulp_exclusive(cfg):
-> +    """ Test that a TCP ULP cannot be attached to a PSP socket """
-> +    _init_psp_dev(cfg)
-> +    _require_tls_ulp()
+----------------------------------------------------------------
 
-[Severity: Medium]
+The following changes since commit ceac0de741bfb47ca255eee075257b3bb31f0651:
 
-Since _require_tls_ulp() is the first gate in both assoc_psp_ulp_exclusive()
-and assoc_ulp_psp_exclusive(), does an over-broad kernel-side
-sk_has_decrypt_user() end up disabling both directions of the
-mutual-exclusion check at once?  The result would be two skips in CI rather
-than a failure for the case these tests were added to catch.
+  netlink: do not free nlk->groups while lockless readers can use it (2026-09-15 18:44:02 -0700)
 
-> +
-> +    with _make_clr_conn(cfg) as s:
-> +        try:
-> +            cfg.pspnl.rx_assoc({"version": 0,
-> +                                "dev-id": cfg.psp_dev_id,
-> +                                "sock-fd": s.fileno()})
-> +            with ksft_raises(OSError) as cm:
-> +                s.setsockopt(socket.SOL_TCP, TCP_ULP, b"tls")
-> +            ksft_eq(cm.exception.errno, errno.EINVAL)
-> +        finally:
-> +            _close_conn(cfg, s)
-> +
-> +
-> +def assoc_ulp_psp_exclusive(cfg):
-> +    """ Test that a PSP assoc cannot be added to a socket with a TCP ULP """
-> +    _init_psp_dev(cfg)
-> +    _require_tls_ulp()
+are available in the Git repository at:
 
-[ ... ]
+  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git nf-26-09-17
 
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260915-psp-ktls-fix-v2-0-0eedc3b148ec%40gmail.com
+for you to fetch changes up to d9be517d5aef7ebf132b0f33965c7a8232a02da9:
+
+  netfilter: nf_tables: skip expired catchall elements on insert and delete (2026-09-17 01:00:01 +0200)
+
+----------------------------------------------------------------
+netfilter pull request 26-09-17
+
+----------------------------------------------------------------
+Aohan Mei (1):
+      netfilter: nf_tables: skip expired catchall elements on insert and delete
+
+Farhad Alemi (1):
+      net: remove WARN_ON_ONCE() from the dev_fill_forward_path() loop check
+
+Florian Westphal (1):
+      netfilter: nfnetlink_queue: hold nfnl mutex in event notifier
+
+Julian Anastasov (2):
+      ipvs: revalidate ihl before icmp_send
+      ipvs: filter some flags received in the backup server
+
+Jérémy Jean (1):
+      netfilter: flowtable: publish HW_DEAD after worker is done
+
+Karl Mehltretter (1):
+      netfilter: nft_synproxy: use the family-aware checksum helper
+
+Luxiao Xu (1):
+      netfilter: ip6t_rt: fix zero-address non-strict match out-of-bounds read
+
+Naman Gulati (1):
+      netfilter: ctnetlink: fix suspicious RCU usage in expect_iter_name
+
+Weiming Shi (1):
+      netfilter: ip6t_rpfilter: reject routes without inet6_dev
+
+ net/core/dev.c                        |  2 +-
+ net/ipv6/netfilter/ip6t_rpfilter.c    |  2 +-
+ net/ipv6/netfilter/ip6t_rt.c          | 11 ++++++++---
+ net/netfilter/ipvs/ip_vs_core.c       |  6 ++++++
+ net/netfilter/ipvs/ip_vs_sync.c       | 33 ++++++++++++++++++++++++++++++---
+ net/netfilter/nf_conntrack_netlink.c  |  3 ++-
+ net/netfilter/nf_flow_table_offload.c |  7 ++++++-
+ net/netfilter/nf_tables_api.c         |  8 ++++++--
+ net/netfilter/nfnetlink_queue.c       |  8 +++++---
+ net/netfilter/nft_synproxy.c          |  3 ++-
+ 10 files changed, 67 insertions(+), 16 deletions(-)
