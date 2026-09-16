@@ -1,131 +1,145 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E054B0E5C;
-	Wed, 16 Sep 2026 16:31:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2904AB3B7
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 16:40:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789576308; cv=none; b=FxpQskEFBgZ2qB4JjIC1bG8jeZQjzySkKvbBpUA/mey7nRibeq3LudyDHrKYT3N/p8vRZah7xCaUCczjeFxQk9WfOavF6eh1Hjy/gapE/4fUH4ljVC+/jt1awfH1hFBaMXmHOZ9jmLjSUxchuxahEfCUQq+gU4oTBMGdqijOKcg=
+	t=1789576840; cv=none; b=eavFB17N/5y2v7LOhQRBY4zCjIBTnnw7Du2d4uk/Sh31n4mF6/8PJaKQBvXOUvu9uTAlmh57+QMPhgdu9KPACgHkqY9OztDuICIj4k808xyNIYDNV8ZONcA9AEotTg2qfMpn3+eqBGoNTbepQZhx1ydqAwm5a20Er+oPwejuAzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789576308; c=relaxed/simple;
-	bh=CTbEL7ibtIjohujGx4TcudNt1JPX5O+OKTGx5KXh9Hs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ZXCfGWlN3C2o7WU4LTd3iZwbTsxoUPgDt5TzWoJwcJJH0jC4+BbJxb6H7fRV5/eRiTFKFGmQFC9Z5BezLVrF99zjc9Rbh9Qecj8JdEL8kolKqa0IUJH+6kdw9rDifcwYmU1ci0TEA3ECK3qDwcR28DjDS6hyFS8YHs54gQBTrMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ps9FzI1r; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=g11KRm2F; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1789576840; c=relaxed/simple;
+	bh=nSsSWXBX9C4+LhFuaC9s9XNJIBXDx86cIiaBNLs2SYE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OepjLOsql9yzL6Lqq3fYSaV54hDXiGZAfLaS5bl+orbXVGtYLinPpj/saJOlsCFA+evCCHBViURhHdgX6UE9ojrDBJLEOK2MlTaNaciAGylD85m5fAcOGJDrpbNeeAm4S7yNKl+Yp/spc8m498O2TGQJexKthBrz+ZkZiucZ024=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=N1HqnVtE; arc=none smtp.client-ip=209.85.210.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ps9FzI1r";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="g11KRm2F"
-Message-ID: <ffec9201db3d12944dbd350010560f6234262bbe.camel@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1789576292;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hPa06aPl29CoMqM4aUjsPzJu/eemi4sk0IvMnx3stDg=;
-	b=Ps9FzI1rPqjIhTYi7YqBdiN2/XBqSM3AkgV2cKvMidd60hyp+kulkB+GMfOLLwzp0QcBmg
-	QIxyhNbY7TK0m8T0JLHRmFmP9s3o5G5lOTJdpoIkA6O5tDCTQYj+EJG2k4KyrewZQC8qMK
-	nITpaWQ5TDN/xBXWnoxIWMcWxGAMocL8StJoj+JgRejI5+HzEpBzuc5yRovoBRFW3PdSue
-	5It3tKJF/pWs8o/YgEhmrICFfMw6kHPdGRuVyO6KQwEMJOtSxk0IDPMo2+/YofdVx1VPZZ
-	BqwV3MlXRekdj6eY/dWvCH3KtElhSJA3zlKQl/iPL5OCNyt95vUQS36t/VvzbA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1789576292;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hPa06aPl29CoMqM4aUjsPzJu/eemi4sk0IvMnx3stDg=;
-	b=g11KRm2FnNNF9CtE1gnHOxYt0Jlk0DHY97Ufon9OLzU7hzT6+bkO3CoGuvn775rFf/hK+j
-	WRCasrTd+88aGwAQ==
-Subject: Re: [PATCH net-next v2 4/4] net: dsa: soce: Add basic support for
- SoC-e switch IP cores
-From: Vasilij Strassheim <v.strassheim@linutronix.de>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-  Conor Dooley <conor+dt@kernel.org>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Russell King
- <linux@armlinux.org.uk>,  devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,  Martin Kaistra
- <martin.kaistra@linutronix.de>, Benedikt Spranger <b.spranger@linutronix.de>
-Date: Wed, 16 Sep 2026 18:31:31 +0200
-In-Reply-To: <2346e6ee-4075-4d64-8e3e-8fbd1ce81cd6@lunn.ch>
-References: 
-	<20260903-devel-vstrassheim-soce-dsa-ml-v2-0-fb0587cb466b@linutronix.de>
-	 <20260903-devel-vstrassheim-soce-dsa-ml-v2-4-fb0587cb466b@linutronix.de>
-	 <3c2c5b39-6a7d-4cb2-af1c-b5015b6bf1e8@lunn.ch>
-	 <db26d5c9262069a11e5cbe00e176b81e40baebeb.camel@linutronix.de>
-	 <5c955c96-7883-4e59-97ef-9fc3b63abf58@lunn.ch>
-	 <ab7e4eeed1b8296188355413cce1aa2b2aa5c670.camel@linutronix.de>
-	 <b7fdbd43-d069-40e1-aff4-30197371739d@lunn.ch>
-	 <3007fddf91fb4260538073482f5148ce8ac6a6ba.camel@linutronix.de>
-	 <2346e6ee-4075-4d64-8e3e-8fbd1ce81cd6@lunn.ch>
-Organization: Linutronix GmbH
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="N1HqnVtE"
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-80638c24bedso1656239a34.0
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 09:40:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1789576827; x=1790181627; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=SjnTPR/EGL67/pMd+T2zbAYFe3UJ3Z05Gc3GQfpLaVg=;
+        b=N1HqnVtEapPsh29OdVjaRqzp4kXDll9PJyHhkgx6T7eSVwJIj4v2FmnO3ysCnMOOcZ
+         mpFvCt640HelqNfeTJYLY9Sj86qBGX+zHj3jQ+JDzoj5kPjLCDJTEjsPDV/ybzF3Wpug
+         s5iCuAvKyNLss8CNwoAWGRSHVhDaS8cQVimzwrfnpUVGp9a9wBWs3T83+ipIuR6eCIe1
+         UXB/y2mG5gMtu80+GVM2wewV1XsX9ugoWMVNq4MmBUofMaJbr7IVd5NUSis4epqRQ/+o
+         jYScVewCffEvkFfUFSPPkb9aQsX/xvGLZONwj+1viclw3xw6wZDqk+qbzp8iCLjyZQ4n
+         S6wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789576827; x=1790181627;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SjnTPR/EGL67/pMd+T2zbAYFe3UJ3Z05Gc3GQfpLaVg=;
+        b=r0aMqI8otXRinpchnosXWoEUhk4xSRVNlQssLUU1VvQWgTNXi0r4Xqgbi/vZHHm+jh
+         bePtwew4HvQRMnvj6ngTuUZcveKv/sMv0TyDxUjCw+CmaIWs95M0ynzpEQdfK3iJlwc5
+         ESXGes771/G7sfVxOWt6GQklr2kgpBOaqHB8Zpm6jg94Rg41d7f+syew78m9ZWlXs2sf
+         pLn0U9CUBwW+I3CZ1bCgbZQljLonntlW58kZ6BhOfU/tDXYZUZ+AQUtiDUdgf7Eaup2f
+         xyrLQGQv9Lm5X1DfF8IJPHGDSp/NTTOGKNCwo3CkwgTYw6SIY/fGXUcPVMja6HoD0wdW
+         TnsA==
+X-Forwarded-Encrypted: i=1; AKwUvBxacF2f7kcAy34JkWjDA9i8NxmsqHLoqc9ouh+TK2iPSpmc83iLUnaDwGgKMJGS0p/YOzAPaF8=@vger.kernel.org
+X-Gm-Message-State: AFuF++nr5+1ZQ5yo1Rz3/q+gspKBEbLc6U1hif/XYrJL3BOUmlIagoDY
+	+la9R6vg27tGP2pqYmZf8Q6+NZ/0H/Hd7EpAsVVMHDd1g88X8Hx4+VPUVasdITXURe8=
+X-Gm-Gg: AYBFou2Tee1Inmz95NAJ+Jb47pRlepyYGBiPZjGSKkJOWFhrlleA9LYlm3AngX4Qozf
+	FSteH/4kWl6qywE76IhR5P/hMrc96XNgPqxKPDcLf8/KU0JbysnjSoRvVXjMjMtUDn/KkCg4tUL
+	maNK5A206LHml2flTOtFCH6D549+ehJgnoJhRVQxCp3J2yXxJT3z5HFeUb5BucWaBG+2I5gugVj
+	xlX8HPdaDwigpDZiK1ghjqeQKiYIuJUuo7QGhcchw6dcfwT6fES/fernWCADDzKAFcMlipgaP0R
+	k+lLIqp0PUd4+EzGOFUGbnzO66G55qdhYQrx8OOKevvhHP0bu5oSR7j6ZKYMT7OP3xxMzIvY+Gt
+	BAuBI/9Z0QjecuyiX2cjMtJMHRF7vuPZzk1hRnXOkM3PcpMUNHmXSZqQL1itvtQMzSxhZ2/7kdU
+	RTDALqUaE1j/xKUmRVhkCHwtoJbuUUUTp/QWmlnwOwGKBmpscV+8a53I/RZSIbmw==
+X-Received: by 2002:a05:6830:67e4:b0:807:50d:7f3a with SMTP id 46e09a7af769-80c4e7f7ba1mr199721a34.30.1789576826716;
+        Wed, 16 Sep 2026 09:40:26 -0700 (PDT)
+Received: from 20HS2G4 ([2a09:bac6:bf21:96::f:339])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-80c46dbe483sm255445a34.20.2026.09.16.09.40.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Sep 2026 09:40:26 -0700 (PDT)
+Date: Wed, 16 Sep 2026 11:40:24 -0500
+From: Chris Arges <carges@cloudflare.com>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	wireguard@lists.zx2c4.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-team@cloudflare.com
+Subject: Re: [PATCH net v2] wireguard: wait for per-peer crypto during removal
+Message-ID: <aqrGeOpbu_u-CBes@20HS2G4>
+References: <20260913-fix-wg-peer-removal-v2-1-0cade985245a@cloudflare.com>
+ <aqpqEIy_h0DIywRy@zx2c4.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aqpqEIy_h0DIywRy@zx2c4.com>
 
-On Tue, 2026-09-15 at 14:52 +0200, Andrew Lunn wrote:
-> > Although mdio-mux-mmioreg might work, I have realized that it is not
-> > suitable here.
-> >=20
-> > According to the switch documentation, the bus selector occupies bits
-> > 26:16 of the MDIO control register, while bit 0 is the transaction
-> > start/busy bit. A partial write might trigger an operation before the
-> > other fields have been updated.
->=20
-> Maybe. I can see at minimum it is a bit messy.  The mux would need to
-> write the upper bits, but set the lower start/busy to 0. The MDIO
-> driver would then need to read back the register, OR in the bits it
-> wants to set, and set the start bit.
->=20
-> This start bit is pretty common, and generally, writes without it set
-> are safe. But you need to test it on this particular hardware.
->=20
+On 2026-09-16 12:06:08, Jason A. Donenfeld wrote:
+> On Sun, Sep 13, 2026 at 07:19:08AM -0500, Chris J Arges wrote:
+> > Calling peer_remove_after_dead() currently flushes device-wide packet
+> > crypto and handshake workqueues while holding RTNL. This is problematic as
+> > unrelated peers can continue adding work to those queues, blocking other
+> > tasks that want to take the RTNL lock.
+> > 
+> > Instead, this patch tracks pending crypto handoffs for each peer using a
+> > counter. After marking the peer dead, synchronize_net() prevents new
+> > submissions. Next, wait for pending crypto workers to schedule TX work and
+> > for RX NAPI to drain the peer's RX queue. Then flush only the peer's TX
+> > packet and handshake work.
+> > 
+> > This scopes teardown synchronization to the removed peer and prevents
+> > unrelated peers from extending the RTNL hold time.
+> >  struct wg_device;
+> > @@ -161,6 +162,7 @@ static inline int wg_queue_enqueue_per_device_and_peer(
+> >  	 */
+> >  	if (unlikely(!wg_prev_queue_enqueue(peer_queue, skb)))
+> >  		return -ENOSPC;
+> > +	atomic_inc(&PACKET_PEER(skb)->packet_crypt_pending);
+> >  
+> >  	/* Then we queue it up in the device queue, which consumes the
+> >  	 * packet as soon as it can.
+> > @@ -182,6 +184,8 @@ static inline void wg_queue_enqueue_per_peer_tx(struct sk_buff *skb, enum packet
+> >  	atomic_set_release(&PACKET_CB(skb)->state, state);
+> >  	queue_work_on(wg_cpumask_choose_online(&peer->serial_work_cpu, peer->internal_id),
+> >  		      peer->device->packet_crypt_wq, &peer->transmit_packet_work);
+> > +	if (atomic_dec_and_test(&peer->packet_crypt_pending))
+> > +		wake_up_var(&peer->packet_crypt_pending);
+> >  	wg_peer_put(peer);
+> >  }
+> >  
+> > diff --git a/drivers/net/wireguard/receive.c b/drivers/net/wireguard/receive.c
+> > index 824bbefce61c..bb35e3205491 100644
+> > --- a/drivers/net/wireguard/receive.c
+> > +++ b/drivers/net/wireguard/receive.c
+> > @@ -476,9 +476,11 @@ int wg_packet_rx_poll(struct napi_struct *napi, int budget)
+> >  
+> >  next:
+> >  		wg_noise_keypair_put(keypair, false);
+> > -		wg_peer_put(peer);
+> >  		if (unlikely(free))
+> >  			dev_kfree_skb(skb);
+> > +		if (atomic_dec_and_test(&peer->packet_crypt_pending))
+> > +			wake_up_var(&peer->packet_crypt_pending);
+> > +		wg_peer_put(peer);
+> 
+> This adds two atomic updates to a per-peer counter for every RX packet
+> and TX batch. That could introduce contention across crypto workers. I
+> suppose it'd be good to see some measurements in if this changes
+> anything. Certainly it should change _something_. Question is by how
+> much.
+> 
+> Jason
 
-Yes, it works.
+Thanks, I'll get some numbers here and share. We're testing this on some
+production machines now. In addition I'll get numbers from my synthetic testing
+and report back.
 
-> > Also accessing this register without checking the controller state
-> > could interfere with an active or failed transaction and introduce
-> > races (as noted by Netdev-Sashiko).
->=20
-> The mdio mux framework should take care of all the locking for you.
-> Take a look a mdio_mux_read(). It takes the lock of the real MDIO bus
-> controller, sets the mux, performs the read, and then releases the
-> lock.
->=20
-> The only thing you need to be careful of is write must wait around for
-> the write to complete before returning. Some MDIO bus implementations
-> don't wait, they leave it running, and do a check the bus is idle
-> before doing the next operation.
->=20
-
-I would like to do both. Check at the beginning and wait for the
-operation to complete. However, this final wait should not last forever.
-If a timeout occurs, something is completely broken and an error is
-reported accordingly.
-
-I still had concerns about the following call to set the mux with
-mdio_mux_mmioreg_switch_fn() if the previous operation ended in such an
-error and released the lock. However, in that case, we are already in a
-faulty state and it can not get any worse. The following operation
-checks the state and aborts anyway. An alternative switch_fn() with the
-overhead of an extra driver is not worth it just to preserve a bitfield
-in undefined error state.
-
-So I will implement this as suggested at the beginning using
-mdio-mux-mmioreg.
-
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0Andrew
-
-Thanks,
-Vasilij
-
+--chris
