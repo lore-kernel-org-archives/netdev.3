@@ -1,70 +1,114 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D71559D624;
-	Wed, 16 Sep 2026 18:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35454B1D1E;
+	Wed, 16 Sep 2026 18:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789583983; cv=none; b=Jh+p8EPJYH9PH/oBxlktm8rY0qzG8wEjoCIj08gPmlYRsOYjzDL26/13QHJpbmphArzeNbIGMsJ9s41QAv3LDctiMeu8t2LvOUoYiiMgsId34e3DGhFeB21aRTFjl063jpTdOOBwhtqfn4Osy+T6Ki4LNtH0YQJ56yks8lVZZC4=
+	t=1789584088; cv=none; b=J0rgzkzWq7Vcw/x7FPUmChZjgPDVZrfJis6W6Dsc2LcrQJmGs23HzkYjwMd14YVrDt8wq4GRa1vXD3lBWFSdg1bsG4EwP+gssoeVtaw4LpU8FI0ut/xnI2Pb1/mlabY5U/SOPEg/+PpyUclkx6QacqchwWKWo9ArgFP0aM8rNqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789583983; c=relaxed/simple;
-	bh=+f5Tgl4cEFfd82o/W147y9QknzaaQJiNYhCNBAio0x0=;
+	s=arc-20240116; t=1789584088; c=relaxed/simple;
+	bh=A9gTqPy2U+L2MFZYDapWdvYX2Leh6ZzFi5tjFFh2Bsc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AMDkrl64RAV8dTKu9WZ77Lk8e+QQ4lb+u7Rmc+0VoCW4N2wzPaHSvDOTCqj+Ba4j5gKCvyulG7KWy3E0CZdHdCugvVonHVtPcDuWPOi9HpYKitd4DoecWG1J9YA8I1bfqh8De5WHoJx5L/TXqTLLO4p23OiSJ13oyxqjS+7W+68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=5l45xZVP; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fzgouvd+IuWGuTypU2nqeM+ATm+3D5Solni+a/ExXhxN/yx+Av/qZbJFjD5KW98BoBamZBg4DKWlZOsqb76hBCkehAeu4gyQW5cMvC0apXs1m3lRZr3nZBtKCudWZR+4GgBF1BZms5a9oKsgLLkgKHYduTT7XLL7LF628z0D6Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iuPgsrK/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="5l45xZVP"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=n8RfaPTtIcuG/AoRXgZK8uOBj18+7W4RZVpPqIbO+pg=; b=5l45xZVPxuKbo+gEAzosZhFSjo
-	xNq9Rahs5J9NHg45piEHuVPsAO9d1FfS1aUb9DYWR7CtTR4LySos/YGQxGqSWy125MA+eTnj94SVR
-	X+C407wiDntzGcqHY57hisO+aNkPtKHFEYNaPY2+rq7V7drU0SNVpKxuXyWWBYmnSKjw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x6uX2-005X4y-Dw; Wed, 16 Sep 2026 20:38:56 +0200
-Date: Wed, 16 Sep 2026 20:38:56 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Matheus Alves de Almeida <matheus.aalmeida@inf.ufrgs.br>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 1/3] r8169: propagate errors from PHY write
- operations
-Message-ID: <f4e563a9-5c25-4026-853f-5d5d30f5a0d9@lunn.ch>
-References: <20260916152444.167196-1-matheus.aalmeida@inf.ufrgs.br>
- <20260916152444.167196-2-matheus.aalmeida@inf.ufrgs.br>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iuPgsrK/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B191F000FF;
+	Wed, 16 Sep 2026 18:40:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789584060;
+	bh=xAFDzTHLADEZ47wTVVOj8v/d3xF7Uy72lZG5jxS51J0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=iuPgsrK/x2+h10PLQ3u2mtur+HvfyVIofs8/L9k8BaJwBYuFGQOfPBXIoQM06sxZR
+	 wyHuVPjMXWiBRsZC3Imx/n73USvJhCo4nKv3L9C0v4w3vYvRGfTTPbQZs4AWEkrGWi
+	 zHeXL2b+ZdXcMHX7y498b7037+XXnFackTbxf4KaisT2RkKy9xp7VafmeI9Y2MBTw9
+	 5Ph3GN2XIKc7GX87c/lcyZE4l++EFBI5AVAfGwchqZUXAlgSC6Gndhltj+FC5c0VmK
+	 bKr7zdTY9Sk/xuOqaXj2f+hO+RQMo42buosvO9gp1+ow4yEhIHo3wOcijLLWLgln4M
+	 DP7QOpzSls66g==
+Date: Wed, 16 Sep 2026 19:40:56 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net,
+	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [GIT PULL] bluetooth 2026-09-07
+Message-ID: <1f430395-ae36-48a5-8bf5-0ff90fbb1eb7@sirena.org.uk>
+References: <064ec40d-66bb-4f69-ae1c-65cfed3581b4@sirena.org.uk>
+ <CABBYNZJWcrvkx=6DekHxZzcrGjHwiqmSuwXqzHNV1=7BctThGA@mail.gmail.com>
+ <aqnMueXiCztLUn-w@sirena.org.uk>
+ <CABBYNZ+A+bNZ0THj0EZ4KfMj6wPMhD6hvbt5FP-exZnqxb4E-Q@mail.gmail.com>
+ <6ce3c671-12e3-4057-9610-23efe14832cf@sirena.org.uk>
+ <CABBYNZKiy+t_GC9dL6nraiH26m+2U=kuAF8NMAPNW-BhtOSovA@mail.gmail.com>
+ <1add998c-b408-45cf-9442-0fda2674fe32@sirena.org.uk>
+ <CABBYNZJn-ZYkX1DrOg9QWQHLWP_Pzh62M__X_jd0eXrKQx-K_Q@mail.gmail.com>
+ <6b74cabb-daa9-4598-b118-6874f7993dd7@sirena.org.uk>
+ <CABBYNZ+Nj3x9K1AC0FtcSAG8OaM7tND8+E5UkDzvshVNrRMYRw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="drctHe+nEncUGQ+m"
 Content-Disposition: inline
-In-Reply-To: <20260916152444.167196-2-matheus.aalmeida@inf.ufrgs.br>
+In-Reply-To: <CABBYNZ+Nj3x9K1AC0FtcSAG8OaM7tND8+E5UkDzvshVNrRMYRw@mail.gmail.com>
+X-Cookie: Double!
 
-> -static void r8168_phy_ocp_write(struct rtl8169_private *tp, u32 reg, u32 data)
-> +static int r8168_phy_ocp_write(struct rtl8169_private *tp, u32 reg, u32 data)
->  {
->  	if (rtl_ocp_reg_failure(reg))
-> -		return;
-> +		return 0;
->  
->  	RTL_W32(tp, GPHY_OCP, OCPAR_FLAG | (reg << 15) | data);
->  
-> -	rtl_loop_wait_low(tp, &rtl_ocp_gphy_cond, 25, 10);
-> +	return rtl_loop_wait_low(tp, &rtl_ocp_gphy_cond, 25, 10) ?
-> +		0 : -ETIMEDOUT;
 
-Maybe rewrite rtl_loop_wait_low(), _high() and rtl_loop_wait() to use
-iopoll.h?
+--drctHe+nEncUGQ+m
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-	Andrew
+On Wed, Sep 16, 2026 at 02:34:18PM -0400, Luiz Augusto von Dentz wrote:
+> On Wed, Sep 16, 2026 at 2:33=E2=80=AFPM Mark Brown <broonie@kernel.org> w=
+rote:
+
+> > On Wed, Sep 16, 2026 at 02:30:30PM -0400, Luiz Augusto von Dentz wrote:
+
+> > > Fixes tree is in:
+
+> > > https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.g=
+it
+
+> > The master branch?  There's also a for-upstream branch, though I see
+> > it's very old.
+
+> We only really use the master nowadays.
+
+OK, that'll be there from tomorrow.
+
+Thanks for adding your subsystem tree as a participant of linux-next.  As
+you may know, this is not a judgement of your code.  The purpose of
+linux-next is for integration testing and to lower the impact of
+conflicts between subsystems in the next merge window.
+
+You will need to ensure that the patches/commits in your tree/series have
+been:
+     * submitted under GPL v2 (or later) and include the Contributor's
+        Signed-off-by,
+     * posted to the relevant mailing list,
+     * reviewed by you (or another maintainer of your subsystem tree),
+     * successfully unit tested, and
+     * destined for the current or next Linux merge window.
+
+Basically, this should be just what you would send to Linus (or ask him
+to fetch).  It is allowed to be rebased if you deem it necessary.
+
+--drctHe+nEncUGQ+m
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmqq4rcACgkQJNaLcl1U
+h9AcjAf+IYzDQIaJVHHmC8WyKRsH7xvHyfziCOQLxuHYPzuQoZH60hT4A551z20D
+2jex8BCzSq9x/q8In7s3b8ZtaN6xVWaesWn+1VGcmSvYP5x5Ao3iog6xpU6c30Ok
+ClVbALDUPoIaRuanGjUjJJ5AQszkhWF9c4Ya/xwnZUvkNgoR2Uz+liN59Ku8qsYN
+c0zfpP+qQs1xir10+IXa+pEWDsxoSVNL+4YkkAlQ9ixfOtkCoK8DWDp/fX+/zDPZ
+fUrSVWatXlj25BSEu8mQc+0R/OCNxaXahc6PxvZwzWTCmjPLWbgn4wesqpocU41n
+1NdBHCZ6ZSA8DsJm0P54MbbFkYl8Bw==
+=ZiyC
+-----END PGP SIGNATURE-----
+
+--drctHe+nEncUGQ+m--
