@@ -1,249 +1,132 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+Received: from mail.auroraos.dev (unknown [95.181.193.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F48534448
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 16:55:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9974A7C9D;
+	Wed, 16 Sep 2026 16:58:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.181.193.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789577764; cv=none; b=rqBDe9U6GwtgVbahVJIBV3HYBgGl8N8CGoY2qk6iAIObs1jcPbVw4aYRIsU2V/bFrJA+auUX6wcRh+GCrIH+OdkiDdEyd2vgBnnoDQ4K5UqUBDuB1xF96mEVUr2X532WtnZLgd35PiGCWaF91aIJFAQ3VYUbF6nX0LQlI7y6RJk=
+	t=1789577943; cv=none; b=HVIXVKm+aDDwmh3roe6G6gFNd3hR6p/Vs4+bA7E6Q1idLkc0HS9TmF2dIDxR4VIYFvOZtKQtt0RYq3VJ/Wky7j1WRxx3SdANE6O7yB+phDC38byLMJok2kHVli1+fBtXCenxij0SSfAT17VUrsO9jkILvdaYREsVORw5lWXkN44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789577764; c=relaxed/simple;
-	bh=E+QXeAG4Y9RDFn77Ou6NGcYxAmNtWwu68Ror7E8Gts4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=eA4tbj64NyqJOmNnueTXmE1vqsfli9UInVnvWGpIovinek8Ps5s+LkjqJIrV8KCJB8hbNcfS1f8BBjjXW1DsgvPYst7ELbt21bjCtrkJR4WYlPytC8OrcjuM+3qAh719qgwjaS07b2VzYBxq301qTrmEWGN1NLUKsxUzsu/abnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wOqP30zp; arc=none smtp.client-ip=209.85.215.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wOqP30zp"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cb48f41343aso2316333a12.1
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 09:55:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789577748; x=1790182548; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JO9Ky20S2jHg/xefTb0uMixaRPMVt8a2BodJDABVtE0=;
-        b=wOqP30zpId5ilKPxILMomI8KdW+NBeo/GuZ96K4cAPehZRmxA/u2Hhz7FXR8YYP4Pn
-         2YLgzjw6bG4vWd4VVUjvqP426gPCERHbmSpSgeWU3gH4g35cukD7eb3P8ROmAlUzboku
-         xIBKZoGYgCfNceG+KSQYgZbfkqGHsWgHyOLCLemNpoJfuHHR9Rt6H1w9jzRGm9LX40iZ
-         1KdQfAPlP3WZBAfa0JOVCa/pd1toUO8i6E+UCulz0UWYi3kiHBY/60bmhZj8qvbXawh6
-         YJfoA+ZI9RPeMKAXe4ZzMQ21/PM66PgOdOhuZjoAogpsQ5RP3fSGYeRW0GWAdgqNzSDt
-         EFEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789577748; x=1790182548;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JO9Ky20S2jHg/xefTb0uMixaRPMVt8a2BodJDABVtE0=;
-        b=xAUjtYXMgMytPz6BsquCpki9W2q5g3wgxlNjAeYQ/TsCC54ZFDpGAi4eXV2MhTV8Kg
-         JvddKXnIJRamALD83H4DXTPhVq4PmivUHQsGo/JGazqy82RNWrvjSs7d61fAe8TpR98M
-         JsriAKkw/pdREP9Ba5g5UHFd6DDCoHaEoJMLBnVuqkI3cihaD2tWQMS1JMcFRMxWA8Vj
-         vejOtkwJAAGjukf4+KDHJhsd91Z+0j1YWbr4vyBMc4f73A3903antibHRSOQqDerWgEE
-         LpPuhnrRXs612L/CzZxLw+97U1wC/+6/Fc/0GyVm5hlTOa9L0lJ8tqITsmw8WYAzLpW7
-         UiYQ==
-X-Gm-Message-State: AFuF++n4ZFka0YxpGKiQWSjRke2+X45IdwDDeTkljTd34T3TDwa7lJrF
-	nZopHRH/fruVC8T6xC6vFwrKU15TVSim2IyO+MbLqD8RX5ZeUjUZv8ZQSpaino2PdIP6iXfEY24
-	PvVrAakLIbUOiaSkhLPLqDYctjsgBTwQYdSrt0F5IkCcVYkdOzYB4pNPWYo44kgU7De0lxSG7LE
-	szIzZ7kwmSLqBLzq3y8yGYO5NWwYRBbZGF8pYQBzt+Mj872DAbyMLKk3WFnXNRKjs=
-X-Received: from pjbgb8.prod.google.com ([2002:a17:90b:608:b0:39d:8105:c8b5])
- (user=hramamurthy job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:6c5:b0:39e:3427:616a with SMTP id 98e67ed59e1d1-39e361930b5mr401025a91.28.1789577747371;
- Wed, 16 Sep 2026 09:55:47 -0700 (PDT)
-Date: Wed, 16 Sep 2026 16:55:31 +0000
-In-Reply-To: <20260916165533.2187434-1-hramamurthy@google.com>
+	s=arc-20240116; t=1789577943; c=relaxed/simple;
+	bh=nCOkKQ3QYNmr6YwW0KkBrOquIDT5V02Kc3+70ny9WPM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=JiWAWPZ7cq0HkWX3mncu6uIv4DJ9Vnhpe4Tjj4UQaz1AjTkvUHg6vYg0q7HEWOmlr76+PEPKfJl5MHEroAc7/7q5PUAzCarL/cfKaB3ZOu7jU+olFofYN5cpmj9wcbShu7wPTCmxI1OzKc9WBmEuYlMTl1reJEPNjavMSj7xVDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=auroraos.dev; spf=pass smtp.mailfrom=auroraos.dev; arc=none smtp.client-ip=95.181.193.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=auroraos.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=auroraos.dev
+Received: from [192.168.2.104] (91.78.42.68) by exch16.corp.auroraos.dev
+ (10.189.209.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1847.3; Wed, 16 Sep
+ 2026 19:58:42 +0300
+Message-ID: <9fad10fc-dcd9-437e-b422-018638524632@auroraos.dev>
+Date: Wed, 16 Sep 2026 19:58:42 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260916165533.2187434-1-hramamurthy@google.com>
-X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260916165533.2187434-11-hramamurthy@google.com>
-Subject: [PATCH net-next v7 10/12] gve: setup and teardown management interrupts
-From: Harshitha Ramamurthy <hramamurthy@google.com>
-To: netdev@vger.kernel.org
-Cc: joshwash@google.com, hramamurthy@google.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, 
-	john.fastabend@gmail.com, sdf@fomichev.me, jordanrhee@google.com, 
-	willemb@google.com, nktgrg@google.com, maolson@google.com, thostet@google.com, 
-	jacob.e.keller@intel.com, debarghyak@google.com, kees@kernel.org, 
-	bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	przemyslaw.kitszel@intel.com
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] ch9200: return error on failed register writes in
+ ch9200_bind()
+To: <netdev-bot+sashiko@kernel.org>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <linux-usb@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <mjg59@srcf.ucam.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20260914202503.52920-1-s.shtylyov@auroraos.dev>
+ <178951445003.22033.8083675025384414442@kernel.org>
+Content-Language: en-US
+From: Sergey Shtylyov <s.shtylyov@auroraos.dev>
+In-Reply-To: <178951445003.22033.8083675025384414442@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: exch16.corp.auroraos.dev (10.189.209.38) To
+ exch16.corp.auroraos.dev (10.189.209.38)
 
-From: Joshua Washington <joshwash@google.com>
+On 9/16/26 2:20 AM, netdev-bot+sashiko@kernel.org wrote:
 
-Introduce control ops to setup/teardown control plane IRQs. Admin
-queue-specific functionality is moved to admin queue files.
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider:
+> 
+> Critical: 0 · High: 1 · Medium: 0 · Low: 0
+> 
+> - [High] Ineffective fix: the six newly added `if (retval < 0) return
+>   retval;` checks in ch9200_bind() (drivers/net/usb/ch9200.c) cannot…
+> 
+> --
+> 
+> ch9200: return error on failed register writes in ch9200_bind()
+> 
+> The patch adds error checks after the six control_write() calls in
+> ch9200_bind() so that a failed vendor register write aborts the bind
+> instead of being ignored.  It carries a Fixes tag for the original driver
+> commit 4a476bd6d1d9.
+> 
+>> diff --git a/drivers/net/usb/ch9200.c b/drivers/net/usb/ch9200.c
+>> index a206ffa76f1b9..ab3cd3902ed72 100644
+>> --- a/drivers/net/usb/ch9200.c
+>> +++ b/drivers/net/usb/ch9200.c
+>> @@ -360,32 +360,44 @@ static int ch9200_bind(struct usbnet *dev, struct usb_interface *intf)
+>>       data[1] = 0x0F;
+>>       retval = control_write(dev, REQUEST_WRITE, 0, MAC_REG_THRESHOLD, data,
+>>                              0x02, CONTROL_TIMEOUT_MS);
+>> +     if (retval < 0)
+>> +             return retval;
+> 
+> [Severity: High]
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Jordan Rhee <jordanrhee@google.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Joshua Washington <joshwash@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
----
- drivers/net/ethernet/google/gve/gve.h        |  4 +++
- drivers/net/ethernet/google/gve/gve_adminq.c | 36 ++++++++++++++++++++
- drivers/net/ethernet/google/gve/gve_adminq.h |  2 ++
- drivers/net/ethernet/google/gve/gve_main.c   | 32 +++++------------
- 4 files changed, 51 insertions(+), 23 deletions(-)
+   But why? 8-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve.h b/drivers/net/ethernet/google/gve/gve.h
-index 6c46c842070b..016e85ed91a5 100644
---- a/drivers/net/ethernet/google/gve/gve.h
-+++ b/drivers/net/ethernet/google/gve/gve.h
-@@ -837,6 +837,8 @@ struct gve_device_info {
-  * @request_db_info: Request and store doorbell information into @priv
-  * @release_db_resources: Release device hold on DMA memory holding doorbell
-  *			  info (AdminQ only)
-+ * @setup_mgmt_irq: Setup control plane IRQ
-+ * @teardown_mgmt_irq: Teardown control plane IRQ
-  * @get_ptype_map: Learn packet type map from device and store it in @priv
-  * @configure_rss: Set up default RSS configuration
-  * @setup_stats_report: Set up DMA region for stats report (AdminQ only)
-@@ -849,6 +851,8 @@ struct gve_ctrl_ops {
- 	int (*set_num_ntfy_blks)(struct gve_priv *priv);
- 	int (*request_db_info)(struct gve_priv *priv);
- 	void (*release_db_resources)(struct gve_priv *priv);
-+	int (*setup_mgmt_irq)(struct gve_priv *priv);
-+	void (*teardown_mgmt_irq)(struct gve_priv *priv);
- 	int (*get_ptype_map)(struct gve_priv *priv);
- 	int (*configure_rss)(struct gve_priv *priv,
- 			     struct ethtool_rxfh_param *param);
-diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
-index b89825a85db8..f0218d78bc5d 100644
---- a/drivers/net/ethernet/google/gve/gve_adminq.c
-+++ b/drivers/net/ethernet/google/gve/gve_adminq.c
-@@ -1755,3 +1755,39 @@ void gve_adminq_release_db_resources(struct gve_priv *priv)
- 			"Could not deconfigure device resources: err=%d\n",
- 			err);
- }
-+
-+static irqreturn_t gve_mgmnt_intr(int irq, void *arg)
-+{
-+	struct gve_priv *priv = arg;
-+
-+	/* Device resources are not okay; consider the interrupt spurious. */
-+	if (!gve_get_device_resources_ok(priv))
-+		return IRQ_HANDLED;
-+
-+	queue_work(priv->gve_wq, &priv->service_task);
-+	return IRQ_HANDLED;
-+}
-+
-+int gve_adminq_setup_mgmt_irq(struct gve_priv *priv)
-+{
-+	int err;
-+
-+	snprintf(priv->mgmt_msix_name, sizeof(priv->mgmt_msix_name),
-+		 "gve-mgmnt@pci:%s", pci_name(priv->pdev));
-+	err = request_irq(priv->msix_vectors[priv->mgmt_msix_idx].vector,
-+			  gve_mgmnt_intr, 0, priv->mgmt_msix_name, priv);
-+	if (err)
-+		return err;
-+
-+	priv->mgmt_irq_requested = true;
-+
-+	return 0;
-+}
-+
-+void gve_adminq_teardown_mgmt_irq(struct gve_priv *priv)
-+{
-+	if (priv->mgmt_irq_requested) {
-+		free_irq(priv->msix_vectors[priv->mgmt_msix_idx].vector, priv);
-+		priv->mgmt_irq_requested = false;
-+	}
-+}
-diff --git a/drivers/net/ethernet/google/gve/gve_adminq.h b/drivers/net/ethernet/google/gve/gve_adminq.h
-index 52172bf228eb..0b48e9f2a82a 100644
---- a/drivers/net/ethernet/google/gve/gve_adminq.h
-+++ b/drivers/net/ethernet/google/gve/gve_adminq.h
-@@ -659,4 +659,6 @@ int gve_adminq_map_db_bar(struct gve_priv *priv);
- void gve_adminq_unmap_db_bar(struct gve_priv *priv);
- int gve_adminq_request_db_info(struct gve_priv *priv);
- void gve_adminq_release_db_resources(struct gve_priv *priv);
-+int gve_adminq_setup_mgmt_irq(struct gve_priv *priv);
-+void gve_adminq_teardown_mgmt_irq(struct gve_priv *priv);
- #endif /* _GVE_ADMINQ_H */
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index 984b32c7c7a6..44669b2f25d7 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -291,18 +291,6 @@ static void gve_free_stats_report(struct gve_priv *priv)
- 	priv->stats_report = NULL;
- }
- 
--static irqreturn_t gve_mgmnt_intr(int irq, void *arg)
--{
--	struct gve_priv *priv = arg;
--
--	/* Device resources are not okay; consider the interrupt spurious. */
--	if (!gve_get_device_resources_ok(priv))
--		return IRQ_HANDLED;
--
--	queue_work(priv->gve_wq, &priv->service_task);
--	return IRQ_HANDLED;
--}
--
- static irqreturn_t gve_intr(int irq, void *arg)
- {
- 	struct gve_notify_block *block = arg;
-@@ -527,6 +515,7 @@ static int gve_alloc_notify_blocks(struct gve_priv *priv)
- 
- static void gve_teardown_notify_blocks(struct gve_priv *priv)
- {
-+	const struct gve_ctrl_ops *ops = priv->ctrl_ops;
- 	int i;
- 
- 	if (!priv->ntfy_blocks)
-@@ -546,29 +535,24 @@ static void gve_teardown_notify_blocks(struct gve_priv *priv)
- 		block->irq_requested = false;
- 	}
- 
--	if (priv->mgmt_irq_requested) {
--		free_irq(priv->msix_vectors[priv->mgmt_msix_idx].vector, priv);
--		priv->mgmt_irq_requested = false;
--	}
-+	ops->teardown_mgmt_irq(priv);
- }
- 
- static int gve_setup_notify_blocks(struct gve_priv *priv)
- {
-+	const struct gve_ctrl_ops *ops = priv->ctrl_ops;
- 	const struct cpumask *node_mask;
- 	unsigned int cur_cpu;
- 	int i;
- 	int err;
- 
--	/* Setup Management Vector  - the last vector */
--	snprintf(priv->mgmt_msix_name, sizeof(priv->mgmt_msix_name),
--		 "gve-mgmnt@pci:%s", pci_name(priv->pdev));
--	err = request_irq(priv->msix_vectors[priv->mgmt_msix_idx].vector,
--			  gve_mgmnt_intr, 0, priv->mgmt_msix_name, priv);
-+	/* Setup Management Vector */
-+	err = ops->setup_mgmt_irq(priv);
- 	if (err) {
--		dev_err(&priv->pdev->dev, "Did not receive management vector.\n");
-+		dev_err(&priv->pdev->dev,
-+			"Did not receive management vector.\n");
- 		return err;
- 	}
--	priv->mgmt_irq_requested = true;
- 
- 	node_mask = gve_get_node_mask(priv);
- 	cur_cpu = cpumask_first(node_mask);
-@@ -2512,6 +2496,8 @@ static const struct gve_ctrl_ops gve_adminq_ops = {
- 	.configure_rss		= gve_adminq_configure_rss,
- 	.request_db_info	= gve_adminq_request_db_info,
- 	.release_db_resources	= gve_adminq_release_db_resources,
-+	.setup_mgmt_irq		= gve_adminq_setup_mgmt_irq,
-+	.teardown_mgmt_irq	= gve_adminq_teardown_mgmt_irq,
- };
- 
- static int gve_init_priv(struct gve_priv *priv)
--- 
-2.55.0.1032.g73a4cd73de-goog
+> Can these new checks ever observe a failed register write?  control_write()
+> in the same file discards the USB transfer status on its normal path:
+
+   By "failed register write" I meant any error in control_write(), including
+kmemdup() failure (which precludes the USB request from being sent at all)...
+
+> drivers/net/usb/ch9200.c:control_write() {
+>         ...
+>         err = usb_control_msg(dev->udev,
+>                               usb_sndctrlpipe(dev->udev, 0),
+>                               request, request_type, value, index, buf, size,
+>                               timeout);
+>         if (err >= 0 && err < size)
+>                 err = -EINVAL;
+>         kfree(buf);
+> 
+>         return 0;
+> 
+> err_out:
+>         return err;
+> }
+> 
+> The only return err; is at err_out:, which is reached solely from the
+> kmemdup() -ENOMEM branch.  All six patched call sites pass a non-NULL
+> 2-byte data buffer, so the only negative value the new checks can see is
+> -ENOMEM from that allocation.
+
+   I kinda noticed. :-)
+
+[...]
+
+> The sibling helper control_read() already returns err on its normal path,
+> and ch9200_mdio_read() checks it with if (ret < 0), so the convention
+> control_write() is expected to follow already exists in this file.
+
+   And I'm extending it to control_write(), but in another patch...
+
+> Would it make more sense to change control_write() to return err after
+> kfree(buf) instead of (or in addition to) adding the caller-side checks?
+> As it stands the commit message claim that this makes the driver "bail out
+> of ch9200_bind() on failed writes" does not seem to hold for actual
+> transfer failures.
+
+   I'm getting bored...
+   If any *human* maintainer insists that I merge the 2 patches, I surely
+will... Or maybe I should resubmit both against net.git (net-next.git?) as
+a series?
+
+[...]
+
+MBR, Sergey
 
