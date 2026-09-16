@@ -1,35 +1,60 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE7C3AEF34
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 01:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADAA43BD25E;
+	Wed, 16 Sep 2026 01:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789523489; cv=none; b=ZE0NZrEeEdX8AUWiSdT1GfumsWt5f8wuy1R0Oi73VbCIo7Lx0QNobqjJLumQydAiExOevfqV3tZTCbIJ0y1Bs8zWmv6fnK4o7450X/g28grFVNiB2gFizlz214B6hY1LhKy1ndB1CfXLXXBMg0uOvjVxCJfAyHzpWACF1y4IFtU=
+	t=1789523562; cv=none; b=CCEYNzVaGNgNCHg20/976NEKQqkMaH6zHb76k7tix96V+b50fs0b/aMjNAdjkxi7un4V7f0F+Ey3gZeRLNTO7BzHnDmpw1Z/25f7TR4AZO6UuUX1VLjN0rtdU13arE48xcTZ3YyjzI084eCyPg53ODtgPRJY7yM/N8GdyzeBaGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789523489; c=relaxed/simple;
-	bh=zsDePw4UurWYdYi1GeWbU4dIdy2imxbk4jv8M9lE8SM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=rHYvZO9VPm9+OMlq2uLWsTp/dg2/Sj3Y1exsRbp0SIiaWIwvU779KeV2mwXLSVy72epWDVNQ2/Eol1rb29cJbcaZb7KvaSKlHGNXcmLnGjGNRCSIaAwqbtHYHF4MR5WK9Y6Ho8A7t/JCl1l6/CA2VrUrIEuFx1uJolvyJawmnP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CfkD1u0O; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789523562; c=relaxed/simple;
+	bh=S96SCCQMhEjwnXlFBOZIjSxxFW0f0No2NroXewdITh4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Wlc7byvfV9UTlwd4l3N1JQsjs6VBrpoDWEe+UCYPaEfMz19xypQyHMFM3ink2sI5ARb2TLlYMqStonIyYYXGJ63EDdcITXJovwEwHKlTP/ND9RVJEkCzAVCu7t3pT4bPfQEURhU7r14cpB14c2Ljv2FO3M+kuwPJcP8sZHUKvq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aYH0HZ+i; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CfkD1u0O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46BDF1F000FF;
-	Wed, 16 Sep 2026 01:51:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aYH0HZ+i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B291F0089B;
+	Wed, 16 Sep 2026 01:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789523470;
-	bh=WYzfTa7B/dKK+1UOwlwhbpCeNLBmLUSD35bS1WuR96A=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=CfkD1u0O/beAu9YjtNe7/4hlA5+ohuSGhdygsx8j+tfYRNejpbFKhxFpuyuzBc5g+
-	 ruXkYu5kKcKHFD+sG3RPgKvzpSa7BKwmmFdXx56xGzx4IZ4iGARc6n+wQPnQ288c5e
-	 etIILUlspyUrf5BkDlXMg2Und6wNDvZMql8AUagYjuxWcD9raNdpP0SYuTLQjMPeGt
-	 /ralFTfDjlCcdPxJ/FTpMyjCRJ/zHpZR/MeU1oWllb5Zt0G9/n54l0HTK3LmDZmz9N
-	 Ft7eZZn0cSIyxBlHM4luQUhDvmA3PR0mV2Dvu+mwnr1Nj/rJC4NI36WvwpwidfZidu
-	 bWJx6COsrlV6w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A2C3927075;
-	Wed, 16 Sep 2026 01:50:05 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1789523548;
+	bh=n/YREz5Yu4jOuw8ePgf3Z/ncnOGAJxvm8jhdmX8CkHw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=aYH0HZ+iSxcKu1Hg9jheC2cDtHcGdh7p82d1tO1IdgH9FKQARBdOSefdXlr9wBgO1
+	 fJ3ml3HTZlgSibz67gQkO7/15v8Ssxfao45iPIWsntOeeKg7uGHi7c/o+dtHYrnxgW
+	 XT2gUumHSDs1QbseVF5a9WIDTAoKqUVEQ6Plelq9Aps3IDjBDd5k3N+ivmNqzPU6TE
+	 aNUxtJRlHMWt4EbaiJQUS9B6oAgI+Wa721dJwxzzboNECGC8TWNlv/cZFBwCBp7tHW
+	 Shzc5yxHmQ9S2l1qxQtY4nUik3obl1P6D+RswgqtFOavjctPw/kk6/2d170dU0uQsd
+	 lMn6o8b779NiA==
+From: Sasha Levin <sashal@kernel.org>
+To: Greg KH <greg@kroah.com>
+Cc: Sasha Levin <sashal@kernel.org>,
+	stable@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Wei Wang <weiwan@google.com>,
+	Martin KaFai Lau <kafai@fb.com>,
+	Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+	David Ahern <dsahern@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	Miguel Gazquez <miguel.gazquez@bootlin.com>
+Subject: Re: [PATCH v6.1.y 4/4] ipv4: start using dst_dev_rcu()
+Date: Tue, 15 Sep 2026 21:52:10 -0400
+Message-ID: <daily-reply-20260915-0005-re-ipv4-dst-dev-rcu-6-1@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <823f66b1-5a3c-4ca2-812a-de2c5281c49e@bootlin.com>
+References: <823f66b1-5a3c-4ca2-812a-de2c5281c49e@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,41 +62,12 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] netlink: do not free nlk->groups while lockless
- readers
- can use it
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178952340464.2355876.9608476266653618510.git-patchwork-notify@kernel.org>
-Date: Wed, 16 Sep 2026 01:50:04 +0000
-References: <20260911160804.917099-1-edumazet@google.com>
-In-Reply-To: <20260911160804.917099-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, eric.dumazet@gmail.com, jamesburton@meta.com
 
-Hello:
+> The 6.6 backport were merged in 6.6.157. Would it be possible to merge 
+> the 6.1 version ?
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Queued the series for 6.1, thanks.
 
-On Fri, 11 Sep 2026 16:08:04 +0000 you wrote:
-> netlink_realloc_groups() uses krealloc() under netlink_table_grab().
-> Whenever NLGRPSZ(groups) lands in a different kmalloc bucket, the old
-> bitmap is freed immediately.
-> 
-> Two readers of nlk->groups / nlk->ngroups do not hold the netlink
-> table lock:
-> 
-> [...]
-
-Here is the summary with links:
-  - [net] netlink: do not free nlk->groups while lockless readers can use it
-    https://git.kernel.org/netdev/net/c/ceac0de741bf
-
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Thanks,
+Sasha
