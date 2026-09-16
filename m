@@ -1,135 +1,139 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1318B48EBEF
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 09:02:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879AF499F1F;
+	Wed, 16 Sep 2026 09:08:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789549379; cv=none; b=AaGN7QOsGRRMc/hI42qq1sxWK2ptt0tD2w/31/aeD5SsDHqx5LprD0+r1E6hYUsQ2gcvT84A6Oj3AVgnMdtjlgLFZesCqwrPJYvRlwd9SWFRzZKoBv7JhXaytl0gXDfYaTKWRmERZgJn9VIY99maKc+WuW16O4HhfNIy2N6kJ3A=
+	t=1789549709; cv=none; b=ZeSwpMIE4s+MB/vQJVyLrlPWaJmQW0a87N0FX1Y24CkfrfM02CqgaaIEpmzhRm6mn06O4zngaSHA+XcT7TpNKKlKEKNCcGN3a6ElpP/bK6AEJ3qVq54ie7sCR4yi9ePpn5b3y+ata2AymCjfv5IzxjkZS35EmSr5y3M7RyHvTKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789549379; c=relaxed/simple;
-	bh=oDdSwtrjQ8X7B2K6x4JHtkCI7kSJPnDbA6DGUG+W1sA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lVmkv7qdmfJxFkaKxieKYti17sUtsYw3WBhAY95LDscBA38Yg6VK/udQDdhT/1J/atun1jgwOOdrL41JW7dF0m2pcPvR2BwtWNNGuvp1XXhDR28b4mZxk47PZw4ylHOC5tnKZMh8s5+T+YHJj8MTtLcGng+si2PymTzXw5WdHOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=xHbmW0bE; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1789549709; c=relaxed/simple;
+	bh=DaTkmw6+/4vAj+jTnbLXSyLldCRkaqvKEd2gil+mVLw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X2gHnQoAOuOg9F3QjIFSGdQeMDhBQWZHyqugHFRaVBPtnEYnsNJweGADxCZzGiohLmhac6sizChBxgfdPDE63NlBEv2IK99qGvreQ7cxpms3/6roGK8/tQWHTSMGfZqLDH0vf0Fz0pOhM8Ev4ZDc/+0LC3fGQ5phabFCQjFoNjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DbjJMDJo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="xHbmW0bE"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 60F7B20538;
-	Wed, 16 Sep 2026 11:02:34 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id GfVOy7lCKhaD; Wed, 16 Sep 2026 11:02:33 +0200 (CEST)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id B4D76201CC;
-	Wed, 16 Sep 2026 11:02:33 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com B4D76201CC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1789549353;
-	bh=yy9D/E9FeTmj7YViB3WIUnvD4lK2YNHANr/NhoeFwpc=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=xHbmW0bE+RkyHrqgw5Xjp+qEwP0lsJAFKoJB2PHeAKi77JYsLV9clGlYyzEygqNLH
-	 Z5myOX25uvxQoXH/nvmSHVM124QCqpUKTJeWvVE6LQcXwcfe6wru43Snuort0LQ2dP
-	 i7xOI/K7o1nOvlKBW99NC4w8GwVrFGQKD7mywoNBVRUxMeiTc+ZoifH9z34NfS2NIM
-	 zIpbGcikz8vf6W7UaGbTsi9dl9+pWzeMs6kzbQJc7/AP3VN9hXGB/RFK2a7CYPsOIn
-	 0AnnHEkmztYInVGRpqqmiS1yzi/2d8w9r0PEbcEks6GHpsGgiMm/C1c6ejE854w2zs
-	 wy7TmS5+eZWsw==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 16 Sep
- 2026 11:02:32 +0200
-Received: (nullmailer pid 51204 invoked by uid 1000);
-	Wed, 16 Sep 2026 09:02:32 -0000
-Date: Wed, 16 Sep 2026 11:02:32 +0200
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Roshan Kumar <roshaen09@gmail.com>
-CC: Jakub Kicinski <kuba@kernel.org>, <davem@davemloft.net>,
-	<herbert@gondor.apana.org.au>, <netdev@vger.kernel.org>, Christian Hopps
-	<chopps@labn.net>
-Subject: Re: [PATCH 01/12] xfrm: iptfs: fix stack OOB read in
- iptfs_skb_reset_frag_walk()
-Message-ID: <aqpbKKiNcQFemUk0@secunet.com>
-References: <20260907093020.2228346-2-steffen.klassert@secunet.com>
- <20260908224803.1587019-1-kuba@kernel.org>
- <aqfOg-hbkOP3kwW5@secunet.com>
- <178946111414.531190.8806329997967238720@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DbjJMDJo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C11701F000FF;
+	Wed, 16 Sep 2026 09:08:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1789549693;
+	bh=1c5BkG1XwUGSYihHgqGld4BqIOfDyTeiCgVyGKTLkns=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=DbjJMDJogC8wmX9uIsrav3Iwtmpm7VdSW6iGJVYfuqGtqfOxKJyjAsJciaS7cCIJj
+	 5MBV82FutMYTWXCkoB4pdHCAGx+1QxfOEXi6lnAJXJD4VbqptsKZlj/Xsr0nhtlOXb
+	 +P586OykuvYqikYSGWTjMD332werjohzIpCI0jpI=
+Date: Wed, 16 Sep 2026 10:06:19 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, dave.hansen@linux.intel.com,
+	Liam.Howlett@oracle.com, ljs@kernel.org, david@redhat.com,
+	willy@infradead.org, shakeel.butt@linux.dev, vbabka@kernel.org,
+	jannh@google.com, aliceryhl@google.com, arve@android.com,
+	cmllamas@google.com, christian@brauner.io, tkjos@android.com,
+	dsahern@kernel.org, davem@davemloft.net,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v7 2/5] binder: Make shrinker rely solely on per-VMA lock
+Message-ID: <2026091635-steadfast-widely-7753@gregkh>
+References: <20260831203056.838265-1-surenb@google.com>
+ <20260831203056.838265-3-surenb@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <178946111414.531190.8806329997967238720@mail.gmail.com>
-X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
- (10.32.0.171)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260831203056.838265-3-surenb@google.com>
 
-On Tue, Sep 15, 2026 at 08:31:54AM -0000, Roshan Kumar wrote:
-> Hi Steffen,
+On Mon, Aug 31, 2026 at 01:30:53PM -0700, Suren Baghdasaryan wrote:
+> From: Dave Hansen <dave.hansen@linux.intel.com>
 > 
-> I had a look at the review and it is right that the guard changes the
-> len == 0 outcome, with one nuance worth splitting out.
+> tl;dr: lock_vma_under_rcu() is already a trylock. No need to do both
+> it and mmap_read_trylock().
 > 
-> The sharing branch needs a prepared frag walk, so the guard can only
-> change behavior for skbs that are frag walk eligible (head_frag set, or
-> all data in frags). For those, before the change
-> iptfs_skb_can_add_frags() fell through the "while (len && fragi <
-> walk->nr_frags)" loop and returned true, iptfs_skb_add_frags()
-> returned immediately on its own " !walk->nr_frags || offset out of
-> range" check, and reassembly continued with ra_wantseq++. With the
-> guard the same input returns false, takes the copy branch, and
-> skb_copy_seq_read(..., 0) returns EINVAL, so the in progress
-> reassembly is dropped.
+> Long Version:
 > 
-> For linear skbs the frag walk stays NULL and this corner dropped
-> reassembly before the change too: the copy branch runs either way and
-> skb_seq_read at the end of the buffer fails the same way. I reproduced
-> that part live on v7.3-rc3 today: a partial inner packet followed by
-> an AGGFRAG basic header only block with block_offset 0xffff kills the
-> in progress reassembly with and without the fix, so that part already
-> existed rather than being something the guard introduces.
+> == Background ==
 > 
-> The review's suggestion closes the gap for the frag walk case: return
-> true when len == 0, before the offset check. The dangerous walk in
-> iptfs_skb_reset_frag_walk() is skipped entirely for len == 0, and
-> iptfs_skb_add_frags() keeps its own bounds check for len > 0, so the
-> out of bounds read cannot come back this way. The reassembly outcome
-> stays identical to before the fix for head frag skbs, so there is no
-> efficiency cost either.
+> Historically, binder used an mmap_read_trylock() in its shrinker code.
+> This ensures that reclaim is not blocked on an mmap_lock. Commit
+> 95bc2d4a9020 ("binder: use per-vma lock in page reclaiming") added
+> support for the per-VMA lock, but left mmap_read_trylock() as a
+> fallback.
 > 
-> Something like this on top of the patch:
+> This was presumably because the per-VMA locking can fail for several
+> reasons and most (all?) lock_vma_under_rcu() callers have a fallback
+> to mmap_read_trylock().
 > 
-> diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-> --- a/net/xfrm/xfrm_iptfs.c
-> +++ b/net/xfrm/xfrm_iptfs.c
-> @@ static bool iptfs_skb_can_add_frags(const struct sk_buff *skb,
->         if (skb_has_frag_list(skb) || skb->pp_recycle != walk->pp_recycle)
->                 return false;
+> == Problem ==
 > 
-> +       /* len == 0: nothing to add, proceed as before the fix. */
-> +       if (!len)
-> +               return true;
+> The fallback is not worth the complexity here. lock_vma_under_rcu() is
+> essentially already a non-blocking trylock. The main reason it fails
+> is also the reason mmap_read_trylock() fails: something is holding
+> mmap_write_lock().
+> 
+> The only remedy for a collision with mmap_write_lock() is to wait,
+> which this code can not do. So the "fallback" after
+> lock_vma_under_rcu() failure is not really a fallback: it is really
+> likely to just be retrying in vain. That retry in an of itself isn't
+> horrible. But it adds complexity.
+> 
+> == Solution ==
+> 
+> Now that per-VMA locks are universally available, lock_vma_under_rcu()
+> will not persistently fail. Rely on it alone and simplify the code.
+> The removal of the fallback does not affect NOMMU case because binder
+> driver depends on CONFIG_MMU.
+> 
+> While at it we also make the handling of the cases where the original
+> binder VMA is gone consistent. There are two cases to consider when
+> Binder VMA is gone:
+> 1. there is no VMA at that location anymore.
+> 2. there is now another unrelated VMA at that location.
+> 
+> Before this change we handle case 1 by having the shrinker proceed to
+> free the page, and just skip the zap_vma_range() call. And we handle
+> case 2 by having the shrinker return LRU_SKIP. While either behavior
+> is acceptable, we need to handle them in a consistent way. Handle both
+> cases by freeing the page without touching the VMA (skipping the
+> zap_vma_range()).
+> 
+> Full disclosure: I originally tried to do this with
+> lock_vma_under_rcu_wait(), but it did not fit well with the mmap_lock
+> trylock semantics. Claude caught this in a review and suggested the
+> approach in this path. It seemed sane to me. So, Suggesed-by: Claude,
+> I guess.
+> 
+> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Shakeel Butt <shakeel.butt@linux.dev>
+> Cc: linux-mm@kvack.org
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Arve Hjønnevåg <arve@android.com>
+> Cc: Todd Kjos <tkjos@android.com>
+> Cc: Christian Brauner <christian@brauner.io>
+> Cc: Carlos Llamas <cmllamas@google.com>
+> Cc: Alice Ryhl <aliceryhl@google.com>
+> Cc: David S. Miller <davem@davemloft.net>
+> Cc: David Ahern <dsahern@kernel.org>
+> Cc: netdev@vger.kernel.org
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Acked-by: Carlos Llamas <cmllamas@google.com>
+> ---
+>  drivers/android/binder_alloc.c | 46 ++++++++++++++++------------------
 
-That's ok with me. But drop the comment above, this does not
-give any usefull information.
+This file will be going away (along with the other binder .c files) for
+7.4-rc1, so I don't object to this getting into other trees now, just
+note that it will not be needed if you wait a release cycle :)
 
-> +
->         /* Reject an @offset that is at or beyond the end of the walk's data
->          * before calling iptfs_skb_reset_frag_walk(), whose fragment-advance
->          * loop is otherwise unbounded and would index past walk->frags[].
->          * This mirrors the guard already present in iptfs_skb_add_frags().
->          */
->         if (!walk->nr_frags || offset >= walk->total + walk->initial_offset)
->                 return false;
-> 
-> The len == 0 drop for linear skbs existed before this change; I am
-> happy to look at that separately once this series lands.
+thanks,
 
-Thanks!
-
+greg k-h
