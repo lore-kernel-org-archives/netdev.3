@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C471332B109
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 01:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BEFD38AC68
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 01:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789521138; cv=none; b=VTSI2hHuoXUbg4L9OcvJRRa9IHK9v5Zlzih0OR1EmvFvFF8u+GmuQ/R+tcBfo90EyOSoGXUc9BhdyN7foUiX/hIEoisYuDuDc9iiV94D1hsphUQOFDPk5XHByxYS1sbmWyYmDTwduT5LN7Tmvb6KrqMS94hdq7+VqkSbmafJW9s=
+	t=1789521139; cv=none; b=HIt7xOYvvgSA7ymaUW7OTgsO+Ep6gpJV7GjW4ITliyrLO6AVuZN+P/hMl8EGQ1J3YHJY8N6O0t9rZErT0LP5tpxJjjvDxf1hkHt4i0wAXG+t5dTipw83qlJ/xnuCwuH6QwODh9DTBzUYTJ8sm7fhd70vXcAvpfE3UEP26p4o4Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789521138; c=relaxed/simple;
-	bh=F0eVdDkjTrmpsdKr8jizC45JdCNESM0JhFWfs4u24wg=;
+	s=arc-20240116; t=1789521139; c=relaxed/simple;
+	bh=G3ansEJNeuVNJB6cmQQ+xoU1w+cht16CW1VtVIPgz4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UBlxo+gBNavCVOZz+u8LqORLoigUmOeQ1Gq92JLFykivvQ3DEoAhfeqF4ewQxW73D1X8dnTbL2Vmzvs5R/0o/O3AbeN6kG1wXacY5W1araBT18HWNxd/deWqVJhvGlgvaTvJccvOz2vhDuPtO3T02JwaMJH4kxTcpsimgO1Jl1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bj/jLMaQ; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=UziBuBi2BMVFCfYTgRgYEJe1ct2Um7MG5yBwgGPjex1Z4GMNfITKiHk4492L9bFN9WKFYcCazDayu9mohQU3qRnGEzkeLbsWTmWGSmD69+v2ZHmCg8mwxyZTTbZJv3HPmiA95SB/AID4Hq0efOaP1rptsgNvD+CPZMPmZztFLDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZCwTfF+S; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bj/jLMaQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F367E1F000FF;
-	Wed, 16 Sep 2026 01:12:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZCwTfF+S"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A40A1F00893;
+	Wed, 16 Sep 2026 01:12:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789521136;
-	bh=gJ8ur+EjRQob+u81L0jjwHEFD1+k58HdSjgti2KtJwc=;
+	s=k20260515; t=1789521137;
+	bh=0Te0Wbgyrd2sMprktQKFp/QcBOlOq3/62AE5rlMzp3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Bj/jLMaQom0JuUBwjL6EbIVGpwsMUrCkXaTCrh0tpqAZws45W0lC2E/go/CBaPgtb
-	 w2LHYTpnC+4ChTh1uJh5kdOAxxiYrn1VoWQzzKHjlAwAY2ebXcjB2GtR+0NhFM8NJ7
-	 Epz6Jl6WsFyNLRL0YEXZuk7Wr+L6BmvFRrrHTprid068OsojIyDlhu7FpiVvQeQlAH
-	 T4XcTR+0zaXyrgiInSdOX0LKBEpobz+xjordLfwlXeyp6k2YnWBX4EpZmDyMJH+6O/
-	 P7R6x9IcJfrduYpi4uQ1TV5U5KOhw+I7ocFQfEc34c7RWcdlbM2nlofesvs97VKDk/
-	 bg4U3oIF9TwLw==
+	b=ZCwTfF+S9wu+lMgSAPNBeqJ2I1g/6/GpMebbdpepaDmJRMLR2gGYf3paWp+81GwUn
+	 Y6SMsqv5DzGSXkdYMsaCExip7ltn9YCg4W5pV4+Hb3xwEdoSXikBZdXd5mVfwlV1HS
+	 /3MP0bEJL590WOBElPNJuQoerBLDZ88jcMtFMjGbbM+ZR8M+M+pDZtI/lI5HuyipEP
+	 UoTdx7oHhdyw/uMoA5N0wNzXsIja+3MAsQXHhZnyevjsIK1e4XdMXRcEyG6ngqTQCX
+	 j98hoZcVUc+n3QHjHn1pztnA+hMPfsfa9swYDCOrIlSEGxywghObUJRXCufYD3GQpc
+	 Y8YsigWz4RIYQ==
 From: Jakub Kicinski <kuba@kernel.org>
 To: anthony.l.nguyen@intel.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -46,12 +46,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	pmenzel@molgen.mpg.de,
 	aleksandr.loktionov@intel.com,
 	alexander.nowlin@intel.com
-Subject: Re: [PATCH net 04/15] ice: E822: keep Tx timestamps disabled during offset calibration
-Date: Tue, 15 Sep 2026 18:12:15 -0700
-Message-ID: <20260916011215.1632391-1-kuba@kernel.org>
+Subject: Re: [PATCH net 05/15] ice: E822: cancel offset verification work during reset preparation
+Date: Tue, 15 Sep 2026 18:12:16 -0700
+Message-ID: <20260916011216.1632452-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260911003430.3386340-5-anthony.l.nguyen@intel.com>
-References: <20260911003430.3386340-5-anthony.l.nguyen@intel.com>
+In-Reply-To: <20260911003430.3386340-6-anthony.l.nguyen@intel.com>
+References: <20260911003430.3386340-6-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,208 +63,207 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-ice: E822: keep Tx timestamps disabled during offset calibration
+ice: E822: cancel offset verification work during reset preparation
 
-This moves the clearing of port->tx.calibrating out of
-ice_ptp_port_phy_restart() and into ice_ptp_wait_for_offsets(), so that Tx
-timestamps stay disabled until the Tx and Rx PHY offsets have been
-configured.  It also adds two dev_dbg() messages covering the pending and
-the completed calibration cases.
+This adds a kthread_cancel_delayed_work_sync() of the E82x offset
+verification work (ov_work) to ice_ptp_prepare_for_reset(), so that the
+work does not run while the PTP reset sequence executes.  A few questions
+about the changelog and about the placement of the new cancel.
 
-No Link: tags present in the commit header.
+First, on the described failure mechanism:
 
-A few questions below.
-
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> index 68537705e8399..d018f02f700d7 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> @@ -1156,6 +1156,7 @@ static int ice_ptp_check_tx_fifo(struct ice_ptp_port *port)
->  static void ice_ptp_wait_for_offsets(struct kthread_work *work)
->  {
->  	struct ice_ptp_port *port;
-> +	unsigned long flags;
->  	struct ice_pf *pf;
->  	struct ice_hw *hw;
->  	int tx_err;
-> @@ -1178,12 +1179,28 @@ static void ice_ptp_wait_for_offsets(struct kthread_work *work)
->  		tx_err = ice_phy_cfg_tx_offset_e82x(hw, port->port_num);
->  	rx_err = ice_phy_cfg_rx_offset_e82x(hw, port->port_num);
->  	if (tx_err || rx_err) {
-> -		/* Tx and/or Rx offset not yet configured, try again later */
-> +		/* Tx and/or Rx offset not yet configured, try again later.
-> +		 * This is expected during normal link-up: the vernier offset
-> +		 * calibration cannot complete until at least one packet has
-> +		 * been transmitted, so the first retries routinely land here.
-> +		 */
-> +		dev_dbg(ice_pf_to_dev(pf),
-> +			"PTP offset not yet valid for port %u (tx_err=%d rx_err=%d)\n",
-> +			port->port_num, tx_err, rx_err);
->  		kthread_queue_delayed_work(pf->ptp.kworker,
->  					   &port->ov_work,
->  					   msecs_to_jiffies(100));
->  		return;
->  	}
-> +
-> +	/* Tx and Rx offsets are now configured, enable Tx timestamps */
-> +	spin_lock_irqsave(&port->tx.lock, flags);
-> +	port->tx.calibrating = false;
-> +	spin_unlock_irqrestore(&port->tx.lock, flags);
-
-[Severity: High]
-Does placing the only clear of port->tx.calibrating after the combined
-"if (tx_err || rx_err)" gate make the Tx timestamp gate depend on Rx
-calibration?
-
-The two directions have independent offset-ready registers.  On the Tx side,
-ice_phy_cfg_tx_offset_e82x() programs the total Tx offset and sets:
-
-drivers/net/ethernet/intel/ice/ice_ptp_hw.c:ice_phy_cfg_tx_offset_e82x() {
-	...
-	err = ice_write_phy_reg_e82x(hw, port, P_REG_TX_OR, 1);
-	...
-}
-
-and thereafter returns 0 immediately ("Nothing to do if we've already
-programmed the offset").  Meanwhile the Rx side keeps failing until a packet
-has actually been received:
-
-drivers/net/ethernet/intel/ice/ice_ptp_hw.c:ice_phy_cfg_rx_offset_e82x() {
-	...
-	if (!(reg & P_REG_RX_OV_STATUS_OV_M))
-		return -EBUSY;
-	...
-}
-
-So in the Tx-done/Rx-pending state, ice_ptp_wait_for_offsets() loops on the
-100 ms retry branch with tx_err == 0 and rx_err == -EBUSY and never reaches
-the new "port->tx.calibrating = false".
-
-Since calibrating is written in only two places after this patch (set true
-in ice_ptp_port_phy_restart(), cleared here), is there anything left that
-can reopen the Tx gate?  ice_ptp_is_tx_tracker_up() stays false:
-
-drivers/net/ethernet/intel/ice/ice_ptp.c:ice_ptp_is_tx_tracker_up() {
-	return tx->init && !tx->calibrating;
-}
-
-and every request is refused, with ice_tstamp() only bumping the skipped
-counter:
-
-drivers/net/ethernet/intel/ice/ice_txrx.c:ice_tstamp() {
-	idx = ice_ptp_request_ts(tx_ring->tx_tstamps, skb);
-	if (idx < 0) {
-		tx_ring->vsi->back->ptp.tx_hwtstamp_skipped++;
-		return;
-	}
-	...
-}
-
-This is reachable on an ordinary link-up when the link partner is silent or
-passive, or in one-way/tap topologies, and it persists until the next link
-transition.  Before this patch the Tx gate did not depend on the Rx side.
-
-Would gating the clear on tx_err == 0 only, and letting the Rx offset
-configuration continue to retry independently, be the intended behaviour?
-
-[Severity: Low]
-Should the surrounding documentation be updated along with the new
-semantics?  The kernel-doc directly above ice_ptp_wait_for_offsets() still
-says:
-
- * Once the offset in either direction is measured, configure the associated
- * registers with the calibrated offset values and enable timestamping. The Tx
- * and Rx directions are configured independently as soon as their associated
- * offsets are known.
-
-and the member doc in ice_ptp.h for struct ice_ptp_tx still says:
-
- * @calibrating: if true, the PHY is calibrating the Tx offset. During this
- *               window, timestamps are temporarily disabled.
-
-After the patch the flag is cleared only when ice_ptp_check_tx_fifo(),
-ice_phy_cfg_tx_offset_e82x() and ice_phy_cfg_rx_offset_e82x() all succeed,
-so the Tx gate now also encodes Rx state and Tx FIFO state.  The window is
-also no longer temporary in all cases: on the ice_start_phy_timer_e82x()
-error path ice_ptp_port_phy_restart() breaks before queueing ov_work, and
-ice_ptp_port_phy_stop() cancels ov_work without restoring the flag.
-
-> +
-> +	dev_dbg(ice_pf_to_dev(pf),
-> +		"PTP offset valid for port %u, Tx timestamps enabled\n",
-> +		port->port_num);
->  }
->  
->  /**
-> @@ -1269,10 +1286,13 @@ ice_ptp_port_phy_restart(struct ice_ptp_port *ptp_port)
->  		if (err)
->  			break;
->  
-> -		/* Enable Tx timestamps right away */
-> -		spin_lock_irqsave(&ptp_port->tx.lock, flags);
-> -		ptp_port->tx.calibrating = false;
-> -		spin_unlock_irqrestore(&ptp_port->tx.lock, flags);
-> +		/* Do not clear calibrating flag here. Tx timestamps remain
-> +		 * disabled until ice_ptp_wait_for_offsets() has verified
-> +		 * that the Tx and Rx offset calibration has completed.
-> +		 * Clearing it here would allow Tx timestamps to be reported
-> +		 * before the PHY offset registers are configured, leading
-> +		 * to incorrect timestamp values.
-> +		 */
+> Without this, ice_ptp_wait_for_offsets() can execute during a reset,
+> find that ice_is_reset_in_progress() is true, and re-queue itself in a
+> tight loop. Meanwhile, the reset path in ice_ptp_rebuild_owner() calls
+> ice_ptp_port_phy_restart(), which starts a new ov_work. This results in
+> two ov_work instances running simultaneously, racing over the PHY offset
+> registers and the calibrating flag.
 
 [Severity: Medium]
-Is the "leading to incorrect timestamp values" description in this comment,
-and the matching commit message text, accurate for this window?
+Can this sequence happen as described?  ov_work is a single
+struct kthread_delayed_work per port (ice_ptp.h, struct ice_ptp_port) run
+by one per-PF kworker, so the same work item cannot execute twice at once.
 
-The commit message says:
+The re-queue in ice_ptp_wait_for_offsets() also does not look like a tight
+loop, and it returns before touching the PHY offset registers or
+port->tx.calibrating:
 
-    Timestamps produced during this window use uncalibrated PHY offsets and
-    can produce incorrect values.
+	if (ice_is_reset_in_progress(pf->state)) {
+		/* wait for device driver to complete reset */
+		kthread_queue_delayed_work(pf->ptp.kworker,
+					   &port->ov_work,
+					   msecs_to_jiffies(100));
+		return;
+	}
 
-    When ptp4l receives incorrect timestamps, it may reject them and wait
-    for the next sync interval (typically 1-2 seconds), compounding delays
-    during link cycling.
+And ice_ptp_port_phy_restart(), the only site that arms ov_work, already
+cancel-syncs it under ps_lock before queueing again:
 
-During that window P_REG_TX_OR is 0.  ice_start_phy_timer_e82x() begins by
-calling ice_stop_phy_timer_e82x(), whose first action is:
-
-drivers/net/ethernet/intel/ice/ice_ptp_hw.c:ice_stop_phy_timer_e82x() {
-	err = ice_write_phy_reg_e82x(hw, port, P_REG_TX_OR, 0);
+	kthread_cancel_delayed_work_sync(&ptp_port->ov_work);
 	...
-}
+	kthread_queue_delayed_work(pf->ptp.kworker, &ptp_port->ov_work, 0);
 
-and TX_OR is only set back to 1 by ice_phy_cfg_tx_offset_e82x() once the
-total Tx offset has been programmed.  The driver documents that write as
-invalidating timestamps:
+Could the changelog describe the actual window instead, for example a
+worker instance that already passed the reset-in-progress check and is
+mid-PHY-access when the reset starts, or one that gets re-armed after the
+new cancel?
 
-drivers/net/ethernet/intel/ice/ice_ptp_hw.c:ice_ptp_clear_phy_offset_ready_e82x() {
- * Clear PHY TX_/RX_OFFSET_READY registers, effectively marking all transmitted
- * and received timestamps as invalid.
-	...
-}
+Second, on the Fixes tag:
 
-And timestamps captured without the valid bit are dropped rather than
-reported:
+> Fixes: 4809671015a1 ("ice: Fix E810 PTP reset flow")
 
-drivers/net/ethernet/intel/ice/ice_ptp.c:ice_ptp_process_tx_tstamp() {
-	...
-	/* Discard any timestamp value without the valid bit set */
-	if (!(raw_tstamp & ICE_PTP_TS_VALID))
-		drop_ts = true;
-	...
-}
+[Severity: Medium]
+Is this the right commit to reference?  git grep ov_work at 4809671015a1
+under drivers/net/ethernet/intel/ice/ returns no matches, so the E82x
+offset verification work did not exist yet at that commit, and the code
+being changed here is the ICE_MAC_GENERIC branch of the PTP reset flow
+rather than the E810 reset flow.  Stable tooling will use this tag to pick
+backport targets.
 
-Is the pre-patch symptom then a missing Tx timestamp (slot held until read
-or timeout, counted in tx_hwtstamp_timeouts) rather than a wrong value
-delivered to ptp4l?  The sibling patch in this series ("ice: E825: stop
-clearing PHY_REG_TX_OFFSET_READY") states that with the offset-ready bit
-clear "the hardware still captures Tx timestamps, but it no longer sets the
-valid bit", which seems to point the same way.
+Third, on the reference to an existing cancellation:
 
-Could the commit message and this new comment be reworded to describe the
-actual failure mode, so that anyone matching user reports against the
-Fixes: tag is not misled?
+> Cancel ov_work in ice_ptp_prepare_for_reset() alongside the existing
+> cancellation of the Tx tracker. The comment in the existing code already
+> documents that ov_work interference during reset is a concern but only
+> cancels it during ice_ptp_release().
 
+[Severity: Medium]
+Does ice_ptp_prepare_for_reset() still release the Tx tracker in this
+tree?  The ice_ptp_release_tx_tracker(pf, &pf->ptp.port.tx) call that used
+to be there was removed by the earlier patch in this series, "ice: fix
+removal of PTP timestamp tracker during reset", so there is nothing left
+in that function to cancel ov_work "alongside".
+
+Which existing comment documents ov_work interference during reset?  At the
+series baseline the only ov_work-adjacent comments are "Start the PHY timer
+in Vernier mode" and "temporarily disable Tx timestamps while calibrating
+PHY offset", and neither mentions reset.
+
+> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+> index d018f02f700d7..9bf3bac552f11 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+> @@ -2998,6 +2998,14 @@ void ice_ptp_prepare_for_reset(struct ice_pf *pf, enum ice_reset_req reset_type)
+>  	if (reset_type == ICE_RESET_PFR)
+>  		return;
 >  
->  		kthread_queue_delayed_work(pf->ptp.kworker, &ptp_port->ov_work,
->  					   0);
+> +	/* Cancel the offset verification work for E82x before releasing the
+> +	 * Tx tracker. If ov_work is running during reset, it may issue
+> +	 * sideband queue commands that will fail or timeout, and may
+> +	 * reference state that is being torn down.
+> +	 */
+
+[Severity: Medium]
+Same point as above for the comment text itself: ice_ptp_prepare_for_reset()
+does not release the Tx tracker anymore, so "before releasing the Tx
+tracker" describes an ordering that does not exist here.  The only
+remaining ice_ptp_release_tx_tracker() call is in ice_ptp_release(), and
+there it runs before the ICE_MAC_GENERIC ov_work cancel reached via
+ice_ptp_port_phy_stop(), i.e. the reverse order.  Would it be clearer to
+drop that clause?
+
+The second sentence also mentions sideband queue commands, but
+ice_ptp_wait_for_offsets() returns as soon as ice_is_reset_in_progress() is
+true, before any sideband access.  Which state that is being torn down does
+the work reference?
+
+> +	if (hw->mac_type == ICE_MAC_GENERIC)
+> +		kthread_cancel_delayed_work_sync(&ptp->port.ov_work);
+
+[Severity: High]
+Should this cancel be taken under ptp->port.ps_lock?  Both existing
+ov_work cancel sites hold it, and ice_ptp_port_phy_restart() holds it
+across cancel, PHY start and re-queue:
+
+	mutex_lock(&ptp_port->ps_lock);
+	...
+	kthread_cancel_delayed_work_sync(&ptp_port->ov_work);
+	...
+	err = ice_start_phy_timer_e82x(hw, port);
+	...
+	kthread_queue_delayed_work(pf->ptp.kworker, &ptp_port->ov_work, 0);
+
+Without ps_lock here, can ov_work be armed again right after the sync
+cancel returns, so the reset sequence still runs with ov_work queued?
+
+Two arming paths look reachable during the reset window.  One is the
+PTP_CLOCK_SETTIME ioctl, which has no ptp->state or reset-in-progress
+check:
+
+ice_ptp_settime64()
+	/* Recalibrate and re-enable timestamp blocks for E822/E823 */
+	if (hw->mac_type == ICE_MAC_GENERIC)
+		ice_ptp_restart_all_phy(pf);
+
+The other is the clock-owner PF on a multi-PF E82x adapter, where
+ice_ptp_rebuild_owner() -> ice_ptp_restart_all_phy() walks the adapter port
+list and arms a peer PF's ov_work:
+
+	list_for_each_entry_rcu(port, &pf->adapter->ports.list, list_node) {
+		...
+		if (port->link_up)
+			ice_ptp_port_phy_restart(port);
+
+while that peer PF's own service task is inside
+ice_ptp_prepare_for_reset() on another CPU.  There is no cross-PF reset
+serialization for E82x, since ice_ptp_prepare_rebuild_sec() is gated on
+ICE_MAC_GENERIC_3K_E825 in the following hunk.
+
+Would doing the cancel inside the ps_lock critical section, or simply
+reusing ice_ptp_port_phy_stop(), close that window?  The ov_work callback
+ice_ptp_wait_for_offsets() only takes port->tx.lock with
+spin_lock_irqsave(), never ps_lock, so taking ps_lock around the sync
+cancel should not deadlock.
+
+[Severity: Low]
+Separately, who re-arms ov_work for a non-owner PF after this cancel?
+ice_ptp_wait_for_offsets() is the only place that programs the vernier
+offsets and clears the calibrating flag:
+
+	port->tx.calibrating = false;
+
+and ice_ptp_is_tx_tracker_up() gates every Tx timestamp on it:
+
+	return tx->init && !tx->calibrating;
+
+At this commit the only re-arm during reset is ice_ptp_restart_all_phy()
+from ice_ptp_rebuild_owner(), which runs on the clock-owner PF only, for
+non-PFR only, for link-up ports only, and can arm a peer PF's ov_work just
+before that peer cancels it here.  Note this appears to be resolved by the
+next patch in the series, "ice: call PTP link change only from link
+events", which adds an unconditional per-PF ice_ptp_link_change() call at
+the end of ice_rebuild(); with that in place every PF re-arms its own
+ov_work after its own rebuild.  Worth mentioning in the changelog that this
+patch depends on that follow-up?
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but the state that
+ice_ptp_prepare_for_reset() leaves behind interacts with an incomplete
+teardown path.  ice_ptp_release() early-returns whenever
+pf->ptp.state is neither ICE_PTP_UNINIT nor ICE_PTP_READY:
+
+	if (pf->ptp.state != ICE_PTP_READY) {
+		mutex_destroy(&pf->ptp.port.ps_lock);
+		ice_ptp_cleanup_pf(pf);
+		if (pf->ptp.clock) {
+			ptp_clock_unregister(pf->ptp.clock);
+			pf->ptp.clock = NULL;
+		}
+		return;
+	}
+
+ice_ptp_cleanup_pf() only removes the port from the adapter list and drops
+the kref, so unloading the driver while the state is ICE_PTP_RESETTING
+(set here) or ICE_PTP_ERROR (set on the ice_ptp_rebuild() failure path)
+leaks the kthread worker created by kthread_run_worker() in
+ice_ptp_init_work() and the tx->tstamps allocation from
+ice_ptp_alloc_tx_tracker(), and does not sync-cancel ptp->work or
+port.ov_work before the devm-allocated ice_pf embedding them goes away.
+That branch also leaves state non-UNINIT, unlike the invariant the comment
+above ice_ptp_release() describes.
+
+>  	if (ice_pf_src_tmr_owned(pf) && hw->mac_type == ICE_MAC_GENERIC_3K_E825)
+>  		ice_ptp_prepare_rebuild_sec(pf, false, reset_type);
+>  
+
+[ ... ]
