@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C241DD9AC;
-	Wed, 16 Sep 2026 00:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C23220F2A;
+	Wed, 16 Sep 2026 00:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789517481; cv=none; b=uQwi45RjHn9rqiZSm6WOvZSdTPSf3q5HYQj2NgkqmBw36WA+10djgr2j94ZfChO9f+2vIM9hxgCaIFq4kJyL5NnKgsmVSaUaF9hKrxAJgYus9OMhCSPNclAE7kSOj1+r+nX66uzThxd/z8cF0XNxxVYKrg6X6YcYrjXym+EB9ZE=
+	t=1789517482; cv=none; b=O6ak7xSSJEA21+dfz+lLUQqeahohgD85ceJBqk8Q5Z9MeICaR6p173USDDQ4ViQHUlgtwGqT5sHLE7o+moi/Rw9GSkJOyRAIfNRBtnyxb8wmmjjjbqJyxEfNhMeKJdGVWtQeLH1XZ9rrs0rHhFz8Eugpm7Hh8bqtgZqcaO4/Mmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789517481; c=relaxed/simple;
-	bh=tNk2lk/ETcxk9WOm8a4avYaurOmQpC0gZa4z41y8j50=;
+	s=arc-20240116; t=1789517482; c=relaxed/simple;
+	bh=zlkUlxJKCTkpP8QhnzcFpLANTeTd9OEttN67+21zJBs=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=PBTtsFt1htRgXBKyZtr7FCushBSqmsjheq/nu97HI3ojA4yp6dhnMfgLcgvXRw778XK1AKrbuZtHFN56TR+UNXjGapMEEBX/bO3GCbpVFHzJbEZzWjwF3nXJkUE/ke5xiXySvYaCcx6TU1oxJY8xrqNK+XknfwYougBoA/ukVOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ybu/t1Q5; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=bCwJkMxHtpLtyFxIQalD99bqaylGzp5fmOkXzybg/f8weFr/x/wwlmWA7X9sMKW8DHMuyl1G8cv6sl3Tsp6O8lyUFBJW/5a0m3RiuLMKcH09a7BJV/NRZaFLbhM8nkajiLoOFgAmvcmG5mY+O4OkC/9tlCtHwJEsAtnRYK7XVNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SdbaMBBV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ybu/t1Q5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF13C1F000FF;
-	Wed, 16 Sep 2026 00:11:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SdbaMBBV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A471F000FF;
+	Wed, 16 Sep 2026 00:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789517480;
-	bh=h0jvqgC79bdg0pdzTtOyCEQHgcIpzw+yLTKCSTLmEGk=;
+	s=k20260515; t=1789517481;
+	bh=zBi+8VflY6U1hsAkYpIZ7xAekYpbED/eSp4GBepulgg=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Ybu/t1Q5PHjEuRAqiE1/J148VOgeQo8iYgqqmzI/3iXvFuos5aSOQOLpHXOliNZRG
-	 V9Ceo1ZveZADvGVvuNzgK5B1vAG3A8BKupH2AYbFtcjypMJxLkxlUqlkwf6iViIytd
-	 GhpJmSiPUMs/MIlh7tEKA0PA/atih+k/ElG0HkfPddeCqXsw+r5zrbAVoHvYCcQfa/
-	 R6hmDwp/R+8U8lMOJU+RNqgFudRZYhGogexXbCNTotX/AZ+bQ4OE5EV4HSHEOn/VEE
-	 +HCxUaB912DLsy3MjZZFOKUHd6jzEsmNUXZtGlUx9xEUbJ1j9sIUnDmpIBoIiTilzG
-	 cMLcWkbhcAlHw==
+	b=SdbaMBBVfJci6+ntEmacmm2TB75VCvN6sjAuTx06YdQUBOgUfaEli0d17CX5JCxiF
+	 Lyv7XiTWFsHn/fjlaX5xAVCsKW/WEz8QcLlH1yJOk8EKSIOkzY6g1RAyLpANCz+clN
+	 KoL1MEttEzRIcf3r0H4wKBVdFEoYgfTRipn5dv63z9GzwIVKm0Qj/4HGOBEND5/vDk
+	 0bw/+kPmLDDGVI2meIZlbl+PsDMl2YANSrzoRb+fUIxmq1JZzkCdmgs3OtEZ8p7mWz
+	 6e/GuJS+bbK1LT7Y7YaVRUrM+u/W86H8w3SVHw6mJV8FAExlkOqhpwCrf3z8e036ep
+	 vjh4/WDOAeomA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939E7392706C;
-	Wed, 16 Sep 2026 00:10:15 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198CB392706C;
+	Wed, 16 Sep 2026 00:10:17 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,54 +37,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 net-next] dt-bindings: net: Use consistent indentation
- in
- the example
+Subject: Re: [PATCH net-next v3] net: 8390: pcnet_cs: release PCMCIA window on
+ setup_shmem_window() error
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178951741413.2328807.13052906737611774655.git-patchwork-notify@kernel.org>
-Date: Wed, 16 Sep 2026 00:10:14 +0000
-References: <20260914155645.112508-2-krzysztof.kozlowski@oss.qualcomm.com>
-In-Reply-To: <20260914155645.112508-2-krzysztof.kozlowski@oss.qualcomm.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Cc: justin.chen@broadcom.com, florian.fainelli@broadcom.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, ulli.kroll@googlemail.com, linusw@kernel.org,
- clement.leger@bootlin.com, olteanv@gmail.com, hkallweit1@gmail.com,
- linux@armlinux.org.uk, hayashi.kunihiko@socionext.com, mhiramat@kernel.org,
- nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
- shayne.chen@mediatek.com, sean.wang@mediatek.com, johannes@sipsolutions.net,
- matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
- jjohnson@kernel.org, richardcochran@gmail.com, geert+renesas@glider.be,
- magnus.damm@gmail.com, vineetha.g.jaya.kumaran@intel.com,
- claudiu.manoil@nxp.com, alexandre.belloni@bootlin.com, elder@kernel.org,
- s-vadapalli@ti.com, rogerq@kernel.org, bcm-kernel-feedback-list@broadcom.com,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-renesas-soc@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
- ath10k@lists.infradead.org
+ <178951741563.2328807.18203609526787283104.git-patchwork-notify@kernel.org>
+Date: Wed, 16 Sep 2026 00:10:15 +0000
+References: <20260913204104.53408-1-mhun512@gmail.com>
+In-Reply-To: <20260913204104.53408-1-mhun512@gmail.com>
+To: Myeonghun Pak <mhun512@gmail.com>
+Cc: linux@dominikbrodowski.net, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, horms@kernel.org,
+ ae878000@gmail.com
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 14 Sep 2026 17:56:46 +0200 you wrote:
-> Correct indentation in the examples to consistent 2- or 4-spaces
-> indentation to fix dt-check-style warnings ("example 0
-> [indent-consistent] indent mismatch ...").  Preferred is 4-spaces, but
-> re-indenting entire example just for that is too much churn.
+On Sun, 13 Sep 2026 16:41:04 -0400 you wrote:
+> setup_shmem_window() acquires a PCMCIA memory window using
+> pcmcia_request_window(). If pcmcia_map_mem_page() or the subsequent
+> ioremap() fails, the function returns without releasing the requested
+> window.
 > 
-> In cortina,gemini-ethernet.yaml also drop the wrongly indented mdio bus,
-> because it is not necessary for the example.
+> pcnet_config() treats shared-memory setup failure as non-fatal and falls
+> back to setup_dma_config(). Probe can therefore continue while socket
+> window 3 and its reserved iomem range remain unnecessarily held for the
+> rest of the bound lifetime of the device. pcmcia_disable_device()
+> eventually releases the window during teardown.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2,net-next] dt-bindings: net: Use consistent indentation in the example
-    https://git.kernel.org/netdev/net-next/c/032ef43b9dab
+  - [net-next,v3] net: 8390: pcnet_cs: release PCMCIA window on setup_shmem_window() error
+    https://git.kernel.org/netdev/net-next/c/30da1c2a4150
 
 You are awesome, thank you!
 -- 
