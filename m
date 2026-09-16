@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F26348477;
-	Wed, 16 Sep 2026 01:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FCE538E8A6;
+	Wed, 16 Sep 2026 01:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789521853; cv=none; b=sKpfqV7Elc7gEl0MGVxC/VTLywh1VF3U5KUU3pWBOaADHXHKxSCBpLHrjFQXfpvX8lQRiArh6tb1MzaiFBRl5ZHwz+enoHVxrt0oZrfovxE/GK3xq5iVERpnjPjDTwMjlDpYLJl9ErD83JxMHdUGLjHJXBZ3OEn9zv0yXsZgKQs=
+	t=1789521855; cv=none; b=JRtRYpBrp/skP7E9AX7AoiDMbrqbDTDqgtCGLdxS+/S+bL8stvKBlN15OGfXdLXgMYxhDf09LjEcIqfPVEwXBGvq4jyV4HqF7f7SVrNG2FIZXP+hHJM8L6oDg5GtJ7t5SD4KDCk9zYC/NMe4KjT4ihmiDEmR3rMH5ltqZI0zPiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789521853; c=relaxed/simple;
-	bh=n8+5dHg3jdmWa57RiC8x7xDwMxMSLE8du758VDc+8aw=;
+	s=arc-20240116; t=1789521855; c=relaxed/simple;
+	bh=npcSujyEEd2SRHw4nuUMiecjC5st/1wY1TITZ68AlA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VkdCiSSa+E7suUozeoYHl7R//BUbOTPqxVAI6BZzDC3zi8N+pi/T8Pwq15kyk8/27J2tnvmCsj4AZOitP0tYDTiQrZNTdh2kSAQtWo9IDOERNqhJH7mbhLEG5YTvTofhA5Dr0f0OywxaSP4zIJWn7bMLDgQPBmG9INxfpSwXnLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QlTIzsrD; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=dIZ/yHShVfqikCnpjZn+XP9EX7n6WSkC76P8Idk1CRAt3wF4zM2ywfaoRny4cas7+Ynv8HTnflyAXG6bOmDhz+sO+WRox5mHv473ui0u6AEYe1oW9Y7nBGnE3e2BJLfn7iju3oDR8Un22JCSyt5RakGI70U5rGntqKpM+SjnnOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HThccR3o; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QlTIzsrD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB9291F000FF;
-	Wed, 16 Sep 2026 01:24:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HThccR3o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3092F1F00893;
+	Wed, 16 Sep 2026 01:24:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789521852;
-	bh=PlD7CFT+H6A8lBwoe+Oft1tubktXcd3yJZSUUnwZ5hs=;
+	s=k20260515; t=1789521853;
+	bh=32XND97J7LshlJf99P5j6/iwoGe5IIErkGrBE+ritiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QlTIzsrDMjuH6qEhz4zd47Vx61PEN61JPhKFSUsi9AK9F9vomZ7Bang/FHsJlfb8t
-	 s8hpn5mWz7Lw6jw36RcuHsjQVpPdCP1wVexEsRqCuRByfm7Yb0gR+3XH3v2Ey45Sv6
-	 uE+i5VaCKE7HD3rfMMvGGH2qybIpuYIEYeMxuCiTFH7lekgqiQnhVOkenqjnWYW1x7
-	 Ja0wrLExCASdQmECVOcj66QW7DSux+ADJlB+p7TA5FYor/t+agv+btxBAqgfZtEOTI
-	 9Q7xbhKP29ma86i+tvsJDMVXDZroBmmWosEmF57iILq9Ad6nzpHCSQGlS/QVtrazF8
-	 8TUWOK1n74DDw==
+	b=HThccR3oIye0ixR/VSDCj6DWOfQxiYCRZ4lurbDh6sJA5QWZ2OtCmm3UTxKM4EOz5
+	 Cjdax7oBmnTUNhvaFBZ/iPmqwyu1pYbx8luU9ePXl6wt7tW4D8AU+bFTI2hjVcJa/G
+	 1+I4uSaJG4aUiPwUqFYcAGKs71wn9OQMduI3Hj6+LKXz1Ubp/O/QKLppUajYqBOGrt
+	 Pf6x4c0MLGSLhxKujh+ELg323uS1LY8lJu+6zYPObJpW59GACUq9/t5YsATnHYbWGx
+	 EVwMiOGPhIjZwZrjgn3UfoWoqustevvpLDbb0FgQbSDDQh14KTyq+F0SBtRDqL9BLG
+	 hRpG+PQNEx+Eg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: javen_xu@realsil.com.cn
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -38,12 +38,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	horms@kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v13 1/7] r8169: add support for multi irqs
-Date: Tue, 15 Sep 2026 18:24:10 -0700
-Message-ID: <20260916012410.1649367-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v13 2/7] r8169: refactor RX path to prepare for multi-queue
+Date: Tue, 15 Sep 2026 18:24:12 -0700
+Message-ID: <20260916012412.1649399-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260910063110.1350-2-javen_xu@realsil.com.cn>
-References: <20260910063110.1350-2-javen_xu@realsil.com.cn>
+In-Reply-To: <20260910063110.1350-3-javen_xu@realsil.com.cn>
+References: <20260910063110.1350-3-javen_xu@realsil.com.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,159 +55,117 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-r8169: add support for multi irqs
+r8169: refactor RX path to prepare for multi-queue
 
-This converts the single struct napi_struct in struct rtl8169_private into a
-dynamically allocated array indexed by IRQ vector, replaces the open-coded
-request_irq()/free_irq() calls with per-vector pci_request_irq()/pci_free_irq()
-helpers, and passes the NAPI instance through rtl_rx() and the interrupt
-handler.
+This patch moves the RX state out of struct rtl8169_private into a new
+struct rtl8169_rx_ring array, switches the netdev allocation to
+devm_alloc_etherdev_mqs() with up to 8 RX queues, and keeps the active
+ring count at 1.
 
-A couple of questions below.
-
-> RSS uses multi rx queues to receive packets, and each rx queue needs one
-> irq and napi. So this patch adds support for multi irqs and napi here.
-
-[Severity: Low]
-This isn't a bug, but does the changelog match what the patch does?
-
-rtl_alloc_irq() still asks for exactly one vector:
-
-	nvecs = pci_alloc_irq_vectors(pdev, 1, 1, flags);
-
-and the new rtl_setup_rx_params() hard-codes a single ring:
-
-	static void rtl_setup_rx_params(struct rtl8169_private *tp)
-	{
-		tp->num_rx_rings = 1;
-	}
-
-So tp->irq_nvecs and tp->num_rx_rings are both always 1 here, every new
-loop over irq_nvecs runs once, and netif_set_real_num_queues(tp->dev, 1, 1)
-has no effect until the later patches in the series raise the vector and
-queue counts.  Would something like "prepare for multiple IRQs and NAPI
-instances, no functional change" describe this patch more accurately?
+No Link: tags were present in the commit header.
 
 > diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-> index 5415ff62a2869..b362855c262f8 100644
+> index b362855c262f8..f80ad229ae5f8 100644
 > --- a/drivers/net/ethernet/realtek/r8169_main.c
 > +++ b/drivers/net/ethernet/realtek/r8169_main.c
-
-[ ... ]
-
-> @@ -5043,13 +5066,43 @@ static irqreturn_t rtl8169_interrupt(int irq, void *dev_instance)
->  	}
->  
->  	rtl_irq_disable(tp);
-> -	napi_schedule(&tp->napi);
-> +	napi_schedule(napi);
->  out:
->  	rtl_ack_events(tp, status);
->  
->  	return IRQ_HANDLED;
->  }
->  
-> +static void rtl8169_free_irq(struct rtl8169_private *tp)
-> +{
-> +	for (int i = 0; i < tp->irq_nvecs; i++) {
-> +		struct napi_struct *napi = &tp->rtl8169_napi[i];
+> @@ -74,9 +74,19 @@
+>  #define NUM_TX_DESC	256	/* Number of Tx descriptor registers */
+>  #define NUM_RX_DESC	256	/* Number of Rx descriptor registers */
+>  #define R8169_TX_RING_BYTES	(NUM_TX_DESC * sizeof(struct TxDesc))
+> -#define R8169_RX_RING_BYTES	(NUM_RX_DESC * sizeof(struct RxDesc))
 > +
-> +		pci_free_irq(tp->pci_dev, i, napi);
-> +	}
-> +}
-> +
-> +static int rtl8169_request_irq(struct rtl8169_private *tp)
-> +{
-> +	struct net_device *dev = tp->dev;
-> +	struct napi_struct *napi;
-> +	int i, rc;
-> +
-> +	for (i = 0; i < tp->irq_nvecs; i++) {
-> +		napi = &tp->rtl8169_napi[i];
-> +		rc = pci_request_irq(tp->pci_dev, i, rtl8169_interrupt,
-> +				     NULL, napi, "%s-%d", dev->name, i);
-> +		if (rc)
-> +			goto free_irq;
-> +	}
-> +	return 0;
+> +/*
+> + * Workaround for the hardware DMA prefetcher. The H/W might aggressively
+> + * fetch one more descriptor even after hitting the RingEnd mark. We
+> + * allocate this extra dummy space as padding to prevent out-of-bounds
+> + * access and potential IOMMU faults.
+> + */
+> +#define R8169_RX_RING_BYTES	((NUM_RX_DESC + 1) * sizeof(struct RxDesc))
 
 [Severity: Medium]
-Does switching to pci_request_irq() here drop IRQF_NO_THREAD for MSI and
-MSI-X?
+The commit message says this patch "is a preparatory refactoring of the
+RX path", but this macro change is a behavioural change on every chip the
+driver supports.  Could it be split into its own patch and described in
+the changelog?
 
-pci_request_irq() in drivers/pci/irq.c has no flags argument:
+The new comment asserts that the MAC "might aggressively fetch one more
+descriptor even after hitting the RingEnd mark", causing "out-of-bounds
+access and potential IOMMU faults".  If that is accurate, every released
+kernel has that DMA hazard on the RX ring today.  Is there an erratum or
+vendor reference for this, and should the change carry a Fixes: tag so it
+can be picked up for stable?
 
-	unsigned long irqflags = IRQF_SHARED;
+There is also a size effect worth mentioning in the changelog.  struct
+RxDesc is 16 bytes and NUM_RX_DESC is 256, so the request goes from
+exactly 4096 bytes to 4112 bytes:
 
-	if (!handler)
-		irqflags |= IRQF_ONESHOT;
+	256 * 16 = 4096	/* order-0 */
+	257 * 16 = 4112	/* order-1 */
 
-Since rtl8169_interrupt is passed as the primary handler and thread_fn is
-NULL, every vector ends up registered with plain IRQF_SHARED.  On kernels
-booted with threadirqs, and on PREEMPT_RT where force_irqthreads() is
-always true, irq_setup_forced_threading() in kernel/irq/manage.c then does:
+Since dma_alloc_coherent() is page granular, doesn't this turn each RX
+descriptor ring allocation in rtl8169_alloc_rx_desc() into an order-1
+allocation, i.e. 8 KiB of coherent memory per ring instead of 4 KiB (and
+64 KiB instead of 32 KiB once the series scales to 8 rings)?
 
-	if (new->flags & (IRQF_NO_THREAD | IRQF_PERCPU | IRQF_ONESHOT))
-		return 0;
-	...
-	new->flags |= IRQF_ONESHOT;
+>  #define R8169_TX_STOP_THRS	(MAX_SKB_FRAGS + 1)
+>  #define R8169_TX_START_THRS	(2 * R8169_TX_STOP_THRS)
+> +#define R8169_MAX_RX_QUEUES	8
+> +#define R8169_DEFAULT_RX_QUEUES	1
+> +#define R8169_MAX_TX_QUEUES	1
+>  
+>  #define OCP_STD_PHY_BASE	0xa400
+>  
 
-so rtl8169_interrupt() is moved into ->thread_fn behind
-irq_default_primary_handler() and the vector stays masked for the duration
-of the handler.
+[ ... ]
 
-That looks like it reverts commit 870f531e178e ("r8169: set IRQF_NO_THREAD
-if MSI(X) is enabled"), which set IRQF_NO_THREAD precisely because MSI and
-MSI-X are never shared.  Was this behaviour change intended?  If not,
-request_threaded_irq() with per-vector flags would keep the previous
-semantics.
+> @@ -4349,55 +4403,107 @@ static void rtl8169_rx_clear(struct rtl8169_private *tp)
 
+[ ... ]
+
+> +static int rtl8169_alloc_rx_desc(struct rtl8169_private *tp)
+> +{
+> +	struct pci_dev *pdev = tp->pci_dev;
+> +	struct rtl8169_rx_ring *ring;
 > +
-> +free_irq:
-> +	while (--i >= 0)
-> +		pci_free_irq(tp->pci_dev, i, &tp->rtl8169_napi[i]);
-> +	return rc;
+> +	for (int i = 0; i < tp->num_rx_rings; i++) {
+> +		ring = &tp->rx_ring[i];
+> +		ring->rx_desc_array = dma_alloc_coherent(&pdev->dev,
+> +							 R8169_RX_RING_BYTES,
+> +							 &ring->rx_phy_addr,
+> +							 GFP_KERNEL);
+> +		if (!ring->rx_desc_array)
+> +			return -ENOMEM;
+> +	}
+> +	return 0;
 > +}
-> +
 
 [ ... ]
 
-> @@ -5221,7 +5275,6 @@ static int rtl_open(struct net_device *dev)
->  {
->  	struct rtl8169_private *tp = netdev_priv(dev);
->  	struct pci_dev *pdev = tp->pci_dev;
-> -	unsigned long irqflags;
->  	int retval = -ENOMEM;
->  
->  	pm_runtime_get_sync(&pdev->dev);
-> @@ -5246,8 +5299,7 @@ static int rtl_open(struct net_device *dev)
->  
->  	rtl_request_firmware(tp);
->  
-> -	irqflags = pci_dev_msi_enabled(pdev) ? IRQF_NO_THREAD : IRQF_SHARED;
-> -	retval = request_irq(tp->irq, rtl8169_interrupt, irqflags, dev->name, tp);
-> +	retval = rtl8169_request_irq(tp);
->  	if (retval < 0)
->  		goto err_release_fw_2;
->  
-
-[ ... ]
-
-> @@ -6202,10 +6283,17 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+> @@ -6283,10 +6408,17 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
 >  		}
 >  	}
 >  
-> +	tp->rtl8169_napi = kcalloc(tp->irq_nvecs, sizeof(struct napi_struct),
-> +				   GFP_KERNEL);
-> +	if (!tp->rtl8169_napi)
+> +	tp->rx_ring = kcalloc(tp->num_rx_rings, sizeof(struct rtl8169_rx_ring),
+> +			      GFP_KERNEL);
+> +	if (!tp->rx_ring)
 > +		return -ENOMEM;
+> +
+>  	tp->rtl8169_napi = kcalloc(tp->irq_nvecs, sizeof(struct napi_struct),
+>  				   GFP_KERNEL);
+> -	if (!tp->rtl8169_napi)
+> +	if (!tp->rtl8169_napi) {
+> +		kfree(tp->rx_ring);
+>  		return -ENOMEM;
+> +	}
 
 [Severity: Medium]
-Does this new error exit leak the phylink instance?
+Do these two bare returns leak the phylink instance created by
+rtl_init_phylink()?
 
-rtl_init_phylink() stores an unmanaged phylink_create() result in
-tp->phylink, and the neighbouring failure paths in rtl_init_one() all
-release it explicitly, for example the r8169_mdio_register() failure:
+By this point in rtl_init_one() phylink_create() has already succeeded,
+and it is not a devm allocation.  Every other failure path in the same
+window destroys it, for example the r8169_mdio_register() failure just
+above:
 
 	rc = r8169_mdio_register(tp);
 	if (rc) {
@@ -223,25 +181,27 @@ and the register_netdev() failure just below:
 		goto err_free_napi;
 	}
 
-The netdev itself is devm-allocated, so devres unwinding on probe failure
-frees the netdev but nothing frees the phylink object.  Should this branch
-use the same unwind, e.g. rc = -ENOMEM followed by a goto to a label that
-calls phylink_destroy()?
+rtl_remove_one() is never called for a failed probe, so when the
+tp->rx_ring kcalloc() fails under memory pressure the phylink state
+machine and its internal state have no owner.  The tp->rtl8169_napi
+failure path that this hunk touches has the same shape.
 
-This is still the case at the end of the series, where the same branch only
-gains a kfree(tp->rx_ring).
+Would a goto to a label that does phylink_destroy() (plus
+kfree(tp->rx_ring)) be preferable to adding more bare returns here?
 
-> +
-> +	r8169_init_napi(tp);
-> +
->  	rc = register_netdev(dev);
->  	if (rc) {
->  		phylink_destroy(tp->phylink);
-> -		return rc;
-> +		goto err_free_napi;
->  	}
+This is still present at the end of the series, so no later patch in the
+set appears to address it.
+
+>  
+>  	r8169_init_napi(tp);
 >  
 
 [ ... ]
--- 
-pw-bot: cr
+
+> @@ -6328,6 +6460,7 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+>  
+>  err_free_napi:
+>  	r8169_free_napi(tp);
+> +	kfree(tp->rx_ring);
+>  	return rc;
+>  }
