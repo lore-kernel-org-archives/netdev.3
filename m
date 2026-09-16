@@ -1,62 +1,62 @@
 Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131304B0E58
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 19:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5E34AB3D9
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 19:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789587470; cv=none; b=Qq5DtLAdrWhXmFzj15MjhPs1FxsStBBSqZDlJeQHjaM/1coIbFTpoxKNRouO9GtXl82IJNAM+ClvA2cdUyxg3styaWuOq1Tci2nwpFRGIwqFT9LTjD+fqHHJgbglhD/Z22Kp/CYxtAY6N4ZNU5HMa2COpoZwR+qBnz6RPBf6/Ec=
+	t=1789587471; cv=none; b=SJ451VYQOa8C00veyPpsvzyjOtI9KBL+bJLMdwScbaWEjLt33EwEs4xtOSLqUF89rBNzYZmJx8t8D9FukjYIZcKgYSQ/QMNe6p2YDgalBQpHN7OugUvqQPQep5H1prC+K9TbKuy544o1WtwZegczjUA+BoQy71vBCKE1WDlSoKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789587470; c=relaxed/simple;
-	bh=B4CPVh+5rWhlU/pXoDIh36pS5SijulILYduOtOart7M=;
+	s=arc-20240116; t=1789587471; c=relaxed/simple;
+	bh=ddPCkLG/mZMQG7Ygxj4GAeNW18W2hB6ed3Wan91fRWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h6SxstSkPMJKRDHEnR5Cz4Z6XlWKmIPUMZJ4/dGbkPNpltD0BWOn15dZATebSuiIe8iObwq67H1Sh3aTVa+5PVpIpnz+6KrDDpzSAGkezBGTU1K41Zp1XDcP2J8DY4At4XplQ4oR443CHK6wSJFWPSIHuh5KXQXfzSHoTItStTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n/2PxljE; arc=none smtp.client-ip=74.125.225.141
+	 MIME-Version; b=JxF5Y+FOOsSHJa80ju07d1lrheFQ8d12NxiDjpYhv6/yETHv88xqnkzGAWmZ2H1Z3oDjYiHoCf18jIK52ThRdILMx3dfDmp0dQV59381wMdiBg98JcMcTgLuCi6HV+w/ReG0yNai4oOBjzvCPJCgvb6uye7W7qGU4JF6+NwfMYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TJ2DNBIB; arc=none smtp.client-ip=74.125.225.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n/2PxljE"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b912e4b11so639855e9.3
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 12:37:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TJ2DNBIB"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b91369d18so948555e9.0
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 12:37:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789587463; x=1790192263; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789587458; x=1790192258; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=5SzyobERMhWoAi0wsAy/lTdmDWo3eJYL4BsZertPOTA=;
-        b=n/2PxljEjS/Md4Ser2yRH9lhE9iKMhttyqFaMU3TFqeZl4lcLqR24rkIHkGQtAonVS
-         tBqZvRAkAhBYTANhqAb8nlUPwJJHLLSz9cb2ZI/baUJVp3GRXPGOqxbRw4HUTZHO+42T
-         vAXZMagjN+qlONZM5TrGKYmgyaBA66e8vSWDjXTeCjDsiUT4UYn7XUrNavNFjI58kD4P
-         rio+W/NCTNH0NEYpyjgFqQP/v27UnI78A1dl9GLi/8bl7ppRxas3EAxKgdHWlasQca16
-         wAf8uKikRAfb5PMpiXB+E3DelG15WtPKU78G+GUd7dgtWPrdQkw/lKhOjS6SBp2gM5oQ
-         71Ow==
+        bh=tk+LZk++Zz9blrRTZ2t/G1JXrIPeHycnebwimkzWD3M=;
+        b=TJ2DNBIBPFygk0HXRfK48t20WSD+fb8RBQBdKix/Ri5I2qjREEAnMzs8rLuW0/Z7CR
+         v+8VChYmdK/A3bskV6drcvVAX/XNUTOjHcoraeW9ce9adi3FRMBHWX/YugPbtfq1MbSV
+         lIfkAj/sMWmnWkhekZ/s1whtVcSfeHUwvsgYVOUiFFc45bllMhqpguBJyMjK+/HcQhbN
+         /pvFFdTE6KKizrNr4/fb22eErkph6qycYk1ILKiLq/JANgnc86m5Lw87J127SwgXhW2j
+         X6GnOmDBybJGBXXepsVfkjDU0RKuS9cc2YpamEvHmHMWIfEDEomv+H36Im9dBoyvk+N/
+         5vEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789587463; x=1790192263;
+        d=1e100.net; s=20260707; t=1789587458; x=1790192258;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=5SzyobERMhWoAi0wsAy/lTdmDWo3eJYL4BsZertPOTA=;
-        b=TgYsIlP9AQQgU1WMPqKtJK2UIm4vFHwP167xZeQUkgSrARGFmFI2zO51Hmif+P526s
-         Ju7WQpWVyEmyMIRV4971wHEiqQaIObaJcLF/tN3KXoK84s8S85gXvr5hQJFGkTFe1cQ3
-         hk5XDQwXGHv9aTW7mMyWIroxpQZfVHPEqDmEgJcQyvKKVubeQnlulecJPVnPjoWSjBQi
-         rVKBLj+uCG5WXlLQJX+VHDG4tFDUKbKzoiKI2nxQL/UEwEyedWzXymwVnlU6NqeN1SEY
-         7wdVxngl8JZOfBZyzlyXzghQQYK6h/BgcjliUPdAl/isXv361bHgDf7BQjViiy5/T4U/
-         63EQ==
-X-Gm-Message-State: AFuF++nDVemX6Si5x+lG7FLjyJEDrkrrpinORh7199zHbz9J9gS97C4q
-	V6/PljoWSybnypI1k2hzPjwJA4MXs/t2pjZDK3xxhJb4jTr+/tHuMWKPuvQzikbyKO0=
-X-Gm-Gg: AYBFou3kJzn0JubZSa1LJtSK11nm4r4scEo2wklmx3B0M0P8SxZSeiwi+fEpbVd/lEg
-	Brodjlz2/y2oXSiJLTG7GG6RdXqm7Mo8s0zokbsppZu/AyBv1sqjySaBfniZiFXoXV5OWb15vao
-	kziMsRNdPLZAk5emNRRCHIOwtZ0yJ5gC59PmltIYrELunuU9sryJspRPI4qvr+TgK4wLoLQ/ZTa
-	Uq9CGoTVbBh7KNno+/7Eg26VglaY114AaoQucSpRY6zcV6osrSUCexYqOAuQ0gVUWb7QittcMIX
-	fhDUUp9NhO6zBt3y2phmUouhZdQ33JwirJKGKca9UOSvmsZBA2eVir+D3KXIFSMOKFr5j8Gflz7
-	LDrey87p5mRhiPPCMhuEAIN+uZJHRxC9dCgN8Xx917Ikers8bSQ/thNhRAEI4B+ojLxTKa+of6Z
-	67TELC1aXHL5HM1DevkWfnvceHUP1pyoC74YVk8skHT6efyrhnaXmYqKNJtGEk01c=
-X-Received: by 2002:a05:600c:4e86:b0:49d:15b9:2a2a with SMTP id 5b1f17b1804b1-49eb72f3d08mr47340035e9.10.1789587462833;
-        Wed, 16 Sep 2026 12:37:42 -0700 (PDT)
+        bh=tk+LZk++Zz9blrRTZ2t/G1JXrIPeHycnebwimkzWD3M=;
+        b=FPUG83NO+BRkkvvMcVAkXzkR3wZJIhi/6EXH63+q/AXWUSkxcaCuMsydO/raFY4nlX
+         cp6XaQloc4qFknx2camZESYCU+MEB5fuK3ZKcOeJNYsM89HvfTIMEJi9CS1urhMNhPSS
+         c+d6IHXuDWRBtS+ypDyOCeVYMbWN8s9J978KxtqpvKjlmsFr9FNov7rp1VtaoGcBaprd
+         8X1j9FqZJUnIUEG+bzMq6x2kSpLFpRqcgPo7mCDPSGIf+RFiOhdrgXG2DlWsPwgnSEP5
+         O2XHqDjyMPLsqpFIEQo5gkQq1H3P42eGoqYQOGtpJk9ywzVOnNbLS1ctoD9Wjy4IxjsR
+         oDOg==
+X-Gm-Message-State: AFuF++n61FdGut8x5US+PgU1evdWB/cYMBwNk/Y2vtO7akXVMFPTjcxf
+	D02TSBYwVxrh9ihvnNjKzPU557UwEXoXXVKcQOMa91bBqgh1yY+1x3P5EJ9CXFXIyyM=
+X-Gm-Gg: AYBFou2shuHOmnI6NYRdvtiqRTZbXFZ3+rzKj6NFYhOJZk+LyT+wv6zLVsXptzI5UhC
+	7vIgTXX2CiT2S+E+WC20TrIoNgdrQF0/byWLs3dKbTqfwlUTg8GcKZEewvVhfXvLVJXH/ZvHW4k
+	qxmVHCZD6KYLExk5tkQXAZAdiGr904v2XE0whN7N8HYTUtjGodAj+/Z65xnjE8YfECz0z8hWXy1
+	RmF043vHG1PnhTTseReUfAEQl8rVnQMMxJojXoAi/oXspoIimJ/QA6FwUN7oSFsY4VS30QsYJXK
+	Fw7YL5/ne+oHQEu3Gp6UGf0OApnlfw00547kSbCs4Es9REd/pYmPnoLmQBUFqgT+uQPaUJPxyQL
+	bcJmCipFVEkKdwVPiNwOSDhmTZDccwHdQkfFWCOdndqaZwigAJpM/8U2f7Cd+LckdRKoY41IdGT
+	IAvBRaskyZRvSbCpHrrMsEgNAmY+bBYyJvsy+dq94HqPDGkeEIuR/UqNA+4hjXT7s=
+X-Received: by 2002:a05:600c:8b30:b0:49e:7862:c09e with SMTP id 5b1f17b1804b1-49eb72fd676mr47695055e9.14.1789587457746;
+        Wed, 16 Sep 2026 12:37:37 -0700 (PDT)
 Received: from kali ([169.224.126.44])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fbd23ac75sm12936105e9.13.2026.09.16.12.37.40
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fbd23ac75sm12936105e9.13.2026.09.16.12.37.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 12:37:42 -0700 (PDT)
+        Wed, 16 Sep 2026 12:37:37 -0700 (PDT)
 From: Ali Firas <alishmery18@gmail.com>
 To: netdev@vger.kernel.org,
 	idosch@nvidia.com
@@ -70,9 +70,9 @@ Cc: kuba@kernel.org,
 	roopa@nvidia.com,
 	linux-kernel@vger.kernel.org,
 	Ali Firas <alishmery18@gmail.com>
-Subject: [PATCH net-next v2 3/5] net: account per-CPU netdev stats to memcg
-Date: Wed, 16 Sep 2026 22:34:47 +0300
-Message-ID: <20260916193449.2552039-4-alishmery18@gmail.com>
+Subject: [PATCH net-next v2 1/5] vxlan: vnifilter: reject VNIs outside the 24-bit space
+Date: Wed, 16 Sep 2026 22:34:45 +0300
+Message-ID: <20260916193449.2552039-2-alishmery18@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260916193449.2552039-1-alishmery18@gmail.com>
 References: <20260916193449.2552039-1-alishmery18@gmail.com>
@@ -84,41 +84,75 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-netdev_alloc_pcpu_stats() allocates a per-CPU stats block with plain
-GFP_KERNEL, so it is not charged to the cgroup of the process that
-created the object it belongs to. The netdev's own queue arrays, ethtool
-state and NAPI config are already allocated with GFP_KERNEL_ACCOUNT in
-alloc_netdev_mqs(), which leaves the stats block allocated alongside
-them as the unaccounted part of the same device.
+VXLAN_VNIFILTER_ENTRY_START and VXLAN_VNIFILTER_ENTRY_END are declared as
+bare NLA_U32, so neither is bounded before vxlan_process_vni_filter()
+hands them to vxlan_vni_add_del():
 
-Make the macro use GFP_KERNEL_ACCOUNT. This affects 34 call sites in 25
-files; all of them already test the return value and propagate -ENOMEM,
-so none of them has to be excluded. __GFP_ACCOUNT only charges an
-allocation made from a task in a non-root memcg, so callers that run at
-boot or from a driver probe are unaffected in practice. The devm_ and
-explicit-gfp forms of the macro are left alone.
+	int v, err = 0;
+	...
+	for (v = start_vni; v <= end_vni; v++) {
 
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
+v is int and end_vni is __u32, so the comparison is done unsigned. A
+request carrying only START=0xffffffff gives vni_start == vni_end ==
+0xffffffff, which looks like a single-VNI request. v is then -1,
+"v <= end_vni" converts it to 0xffffffff and passes, v++ makes v 0, and
+the loop walks the whole space upwards from there, allocating a VNI node
+and a per-CPU stats block per iteration under rtnl_lock. Any range
+ending at 0xffffffff behaves the same way, including narrow ones such as
+START=0xfffff001 END=0xffffffff.
+
+Separately, a VNI at or above VXLAN_N_VID is accepted and stored even
+though the VXLAN header carries only 24 bits: vxlan_vni_field() shifts
+without masking, so such an entry occupies its own rhashtable slot while
+being truncated on the wire.
+
+Range-validate both attributes against the 24-bit VNI space, which is
+what vxlan_mdb.c already does for its own VNI attributes. The request is
+then rejected during netlink policy validation, before
+vxlan_process_vni_filter() is reached, and nothing is allocated. Make
+the loop counter u32 while touching this: that is not what terminates
+the loop, the policy check is, but it removes the signed overflow past
+INT_MAX and matches the u32 vni parameter vxlan_vni_add() already takes.
+
 Assisted-by: LLM
 Signed-off-by: Ali Firas <alishmery18@gmail.com>
 ---
 v1: https://lore.kernel.org/netdev/20260909092645.3105263-1-alishmery18@gmail.com/
- include/linux/netdevice.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/vxlan/vxlan_vnifilter.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 1f0710eef185..7c659012355d 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -3171,7 +3171,7 @@ static inline void dev_dstats_tx_dropped(struct net_device *dev)
- })
+diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
+index dd94085e0886..5aaaaeee8110 100644
+--- a/drivers/net/vxlan/vxlan_vnifilter.c
++++ b/drivers/net/vxlan/vxlan_vnifilter.c
+@@ -459,9 +459,15 @@ static int vxlan_vnifilter_dump(struct sk_buff *skb, struct netlink_callback *cb
+ 	return err;
+ }
  
- #define netdev_alloc_pcpu_stats(type)					\
--	__netdev_alloc_pcpu_stats(type, GFP_KERNEL)
-+	__netdev_alloc_pcpu_stats(type, GFP_KERNEL_ACCOUNT)
++static const struct netlink_range_validation vni_filter_vni_range = {
++	.max = VXLAN_N_VID - 1,
++};
++
+ static const struct nla_policy vni_filter_entry_policy[VXLAN_VNIFILTER_ENTRY_MAX + 1] = {
+-	[VXLAN_VNIFILTER_ENTRY_START] = { .type = NLA_U32 },
+-	[VXLAN_VNIFILTER_ENTRY_END] = { .type = NLA_U32 },
++	[VXLAN_VNIFILTER_ENTRY_START] = NLA_POLICY_FULL_RANGE(NLA_U32,
++							      &vni_filter_vni_range),
++	[VXLAN_VNIFILTER_ENTRY_END] = NLA_POLICY_FULL_RANGE(NLA_U32,
++							    &vni_filter_vni_range),
+ 	[VXLAN_VNIFILTER_ENTRY_GROUP]	= NLA_POLICY_EXACT_LEN(sizeof_field(struct iphdr, daddr)),
+ 	[VXLAN_VNIFILTER_ENTRY_GROUP6]	= NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
+ };
+@@ -814,7 +820,8 @@ static int vxlan_vni_add_del(struct vxlan_dev *vxlan, __u32 start_vni,
+ 			     int cmd, struct netlink_ext_ack *extack)
+ {
+ 	struct vxlan_vni_group *vg;
+-	int v, err = 0;
++	int err = 0;
++	u32 v;
  
- #define devm_netdev_alloc_pcpu_stats(dev, type)				\
- ({									\
+ 	vg = rtnl_dereference(vxlan->vnigrp);
+ 
 -- 
 2.53.0
 
