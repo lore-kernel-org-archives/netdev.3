@@ -1,134 +1,142 @@
-Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
+Received: from mail-oo2-f43.google.com (mail-oo2-f43.google.com [74.125.231.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C056B2EC090
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 03:05:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6343AEF55
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 03:08:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789527957; cv=none; b=PahNaxNmGEEmAeWBGz+sDyhd7Mt44cnpgVBbDqA443hdbPvgcpDwLdNrbht9raY3kc3HarAdCA0bLukEbuFZ4Basc9x0D7KiyqDBWeCFVqCU5ASF+oX7SUdonzQFiAQ/gs4WsGehJf8TN6JuEesuYzzTn3ncirX6ShjwIDZUR4M=
+	t=1789528107; cv=none; b=ahYQG1XsLFMHOuUJEMieHBYzZCnGrUJEkTvWzifZovQtIrpGQ7+DdgFMBZsIBAvCg3YjBF9+qZCBaQOdNhAlT9xC3MpfjfV7FTMe9ttTZxHngp+L2CCZWDGrFRU+b2CqUSaT70BD64boMC3RpXlzdx9Kn2QEwh3TxiEymAyyhdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789527957; c=relaxed/simple;
-	bh=kRKbBg0C00LiJiDKCOnV/1e65cxSnK2qqQwxLUqAQLE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Z5ILsmLLXzBoSIhzUsaYOAZ9QKph5zL91/6XoclEoIVU/ishqBhG4Hu47WzReDYbTgRmB5/rjj3O75bDimNdnrvLvMxgroudyTlusxkTx990edlP7OKjjMz7EnlV+0FJZtCjshBUU40ELo02FRGjHDNGBroaIuHAdT4grMk58nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HokhomKb; arc=none smtp.client-ip=74.125.227.171
+	s=arc-20240116; t=1789528107; c=relaxed/simple;
+	bh=QHVgJvpKezcvlggXMVVjq9FpqZ5k0yxkTV4q1VHG+A4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=qZ+70K6RPMdSipATH7E/KGTuHuTwSqgxuteu8cJgH5bKj3OC2IJPjovM3utM8bx893KI9toR5GCAOYKwbSoU4QuQgzpsZ4J4baORvbnhf/lNUkmPaTGLy+5Su3p0iW3oRXKOukEgR8CylQ75B2Uy7ZzxwsbDHBuHb6m2fLmYlcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TVZLfzLA; arc=none smtp.client-ip=74.125.231.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HokhomKb"
-Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-396ccd4f99dso372920a91.2
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 20:05:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TVZLfzLA"
+Received: by mail-oo2-f43.google.com with SMTP id 006d021491bc7-6bcc0c496d1so182549eaf.3
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 20:08:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789527955; x=1790132755; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kRKbBg0C00LiJiDKCOnV/1e65cxSnK2qqQwxLUqAQLE=;
-        b=HokhomKbjGvjRHDzcLBLqJRaNrH5elgWvTJsdBsWvuaMCPXsyvimcnYXJBLyIkYbFJ
-         Dfs7J/zhr9PRnmm+gmdIVaPD1PnQ4aLbN2Ab358MRxW0nWg1gmBucSwE1aaXb25HicFA
-         HAyVYwWSz0d6lNipWnbWh8QLYek8cOSM0Ud6c8zAsfLWO3k4XdFZA7QLvM3g4I20Wmjl
-         rWaFJquPeXK6vXkqcdDp4hfU+dh9pjgsttoDfkz10v5vZQV1duAVMJHuw/ToR3d0I0o3
-         Bn+2+ocpuGLx9YVVKVmkV7OMJXgBfCP3RuAyPaK6fsovf1pDlExoya0fC6lzpfhfSQ/g
-         7a+Q==
+        d=gmail.com; s=20251104; t=1789528103; x=1790132903; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=QS2BYMR+x6ZlCVJM56HodZfD/aY2Xxc0QJwlrpiO7pc=;
+        b=TVZLfzLA3ByBH4vZfdhcyxoSheprZ3YBLsy1/2GNrSuBkTKEXUA5Q9Rzd69bC/toAG
+         3Z8hidi6Q+r0KAHhPtxYLrflbO5FlBtXnuABlqfaikwkYw4ARXAKG39xSsaebzf4uF9x
+         Wc7RnbbvV9ld/PKySRwzNc0Uoelzae3jX6n05IXnAMWkJs1d4yA6SFRhr0gqeA9FEJWV
+         DMI8fVZcDmOLROC2doAPKvU3x1g4pe85gH2rki+WDEa4ctcaNtFjG44Q/MlGQBLvrzcA
+         OUQxb//TWZLs+9p2FH0iEbBckroZveueG2PLL4etMVUGy1WOsNqKcCQ3IbD8VBa/LEDB
+         vM1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789527955; x=1790132755;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kRKbBg0C00LiJiDKCOnV/1e65cxSnK2qqQwxLUqAQLE=;
-        b=v/rwdcBmxN7zhNbj3YlRzaLj6nr9KVwSXdXfET1QAk1q7bi8eY2UjYeGvDTAKGQwPo
-         RXurTBiitFHzroHqCIhixwkIIVEInouLpWeKLAcH7I3f0y23N/o0rAinJNKBcl40x3OR
-         QKWgmg+sF+f4XKHNuIXA5PtH4r8g5ymEP34uG2eefkaLXd2/QaibZJ2nBQOaFl3DcPmF
-         kFGZRL96X7tv+2RdH+0v8lr0btSrXgh4VFiZ1ykxsydm3lQOuXOhHRbGD6MVTmHHobdV
-         26czUaIk3H3nZriDsCKf3RedA171DOMiWa2Ta+a0mYTvQ0HSR93QnbHjMzbVNMGYcE0g
-         DL9g==
-X-Forwarded-Encrypted: i=1; AKwUvBysz53ku8bI6PEsXZWLzNlEN0qLfUnrnv0yxvbpyHDFr3xUMHRwCjhv8clpQwaNYf2NBYdrZhA=@vger.kernel.org
-X-Gm-Message-State: AFuF++naywSxMJi0tS3BRou7fMJtzJKAXOQxbjkV4uYcDRD/VHi6ygIB
-	CEoJ+9sHliSRlYQIugs/L3wAkMx9BVlbHn21DQd/hRu3cl46ip78LQum
-X-Gm-Gg: AYBFou0fmUOtpeQESjKI73idiYAxeN4TN3CQA6f7r5iCSXqqPRq4Ps2LpByH3EiDQK1
-	itYejihxNMTS/pvKrhmgIV1EX34aEuxWnhZEaYuBzqmmeJHrcZLW/iUntIkM4Q+GmszO5rcwkOC
-	oo6fByaDeJxXui/BoN96EaRHr/BpeN+NGHExDNZ5Irmb+izFh1lnZY1D8xlaUpSzYT2sm7cT2dl
-	uJ25PW1ynKabUaY/Q7J2NGm4in145ISIwbNUnk+utMlWyGn9/11KbqE6E6Scacb6fl0R7axAVGc
-	WGkHxZfnlQC1+FFRdiaKvHWZD03WWHAB9xZehNus4JE4GKoB0ZDZV2w5wgKJPO4X3wu1smFJSo7
-	WZqkyLSeG0Of58zlVL3j3RWwBrEAh9ffN4M89hNWcDl2xchDSqjNR9xvnERoCbvl1AeKzpklHFn
-	nQVR+wmRTjdylMpQVW1fS4U/mLa3GwEgga25Y2W6i6RPhosgVNMoxKTkuhvFTNKJ8KZe50iVbFW
-	f2wcyzXS7FcTgGsi6Wq34MsYqUpbdqJ323Jx2IS+27jMbxbbXqPBVjQhD4fDHyXh3xkYlUrjpV/
-X-Received: by 2002:a17:90b:3a43:b0:39d:f5b1:e365 with SMTP id 98e67ed59e1d1-39e1e559b78mr2375705a91.25.1789527954984;
-        Tue, 15 Sep 2026 20:05:54 -0700 (PDT)
-Received: from Inspiron-14-5420.. ([2402:e280:21c6:671:13da:4baf:148d:4ebb])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14395d5d0f3sm2649001c88.12.2026.09.15.20.05.49
+        d=1e100.net; s=20260707; t=1789528103; x=1790132903;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=QS2BYMR+x6ZlCVJM56HodZfD/aY2Xxc0QJwlrpiO7pc=;
+        b=1Qd4Kw9sx2XBJHj6L7M6S05x+w5c157Hc/7C5rbmDCdoUX5dWSLyVayuFUlUbJ8ew1
+         3pXEur3tDNJPTgffDYLv/X48jEDlAgaxdFQ/HEBT3eDj2SzJbU1rjbOn8pwtvmkSz68/
+         M93fC5mX1LOQxqhf3JIPLttz3owIwfOSgDzeTmFO07AfD9Ou2KSS5M/mX7NRL7s2xqPi
+         XsT3bBrj++1scl6lvQ/S0XniyzQmGmiYT+1BS1iZRWhwx+R1FPPB5lCCbhNbTrtoZzPo
+         YoShVz7xahgfUG1ZW/K7ypuMJ5CaU+7rSxqIRC38vIVfZvL1JcNPcUGClWzbmnp18zpu
+         /mww==
+X-Forwarded-Encrypted: i=1; AKwUvBwtztoftPGHgU4hbrlCOc4CSra812kuB79QbuPUvbK9lrDIhHiG/QpVHvXNDHvxwY/Q6QLUCdg=@vger.kernel.org
+X-Gm-Message-State: AFuF++khPkyKpHoscC+fkDfk77ynjbsy32zgxDhJPlIeyyYpxVO+K3An
+	uFOHdz4ItHBxbCHuSyn8cyqQ8V3ULNGddrwzqVHViG8oSZDAf/nAvkHX
+X-Gm-Gg: AYBFou3XMHQ3bR2T4FSgthN/ImRpBx+MKrTkmizRXGPb4ML6eY0zksbB21knyfkKbWl
+	arB41mGDlvDFo5I4+Q159TfRolQJOTegYAXYJiXg2CJwF5mEwMUh7FiLpO2sa1d6y6PQeju/ZYV
+	UyKNVbW3tSdGnEfOCgJGSs4CBNxsUeT9ptSIIxYqKTrXFSeHH8zQ1P7je6kPF0Thuo2ksK7eSkW
+	Dh80q2q3brWqs4gHVH4pvWe7ilnNZkMG50Duq6ZVow8kvxDDmjAvEYrKn4sQbSfmb7aw9u/D6Ix
+	YuUuIadXz7fGfcs5lHPbz3kZkMVzH4Jwcmt7UjNqlZoa+tFC3buXbyreSTs2eIG9pb4RSdYbBlG
+	cylJ4Y01wiER9AvQ/h1JM+cVZrIB8L+53m4cMYlnnDBDD5jn4JIEP5f9XWj1qvf61zJdFToidlE
+	tHXildQL23/gL7+zX2GPzG/virkuoroDhl4xrhKWp1muPewDwKtXabaQMEEVOjeKrqktiaO3Erv
+	IQWsu8/YXChMuwQQweV/B24P6EVlqmIZrrH/N6pALOUFl4e4Qk1KJjHHNsJDWkkrNfVEHHSteNY
+	CnPz82vS47ZNqG+5WqFeU8QRJ2dhL0HOmMrvmFm4R3DLL8exOiaqYjRWF3eky/hinEeoKaP6CQo
+	5kNUcMgpId9s+XILvCss7Aw==
+X-Received: by 2002:a05:6820:624:b0:6bd:ea89:56d5 with SMTP id 006d021491bc7-6c7d1fca49amr1195068eaf.22.1789528103375;
+        Tue, 15 Sep 2026 20:08:23 -0700 (PDT)
+Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6c7a677b3bdsm1718078eaf.6.2026.09.15.20.08.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 20:05:54 -0700 (PDT)
-From: "Hemendra M. Naik" <hemendranaik@gmail.com>
-To: kuba@kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	hemendranaik@gmail.com,
-	horms@kernel.org,
-	jhs@mojatatu.com,
-	jiri@resnulli.us,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	shuah@kernel.org,
-	tahiliani@nitk.edu.in,
-	vishy0777@gmail.com
-Subject: Re: [PATCH net-next v5 2/3] selftests: tc-testing: add fq_pie per-flow class stats test
-Date: Wed, 16 Sep 2026 08:35:46 +0530
-Message-Id: <20260916030546.6393-1-hemendranaik@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260904231757.4082435-1-kuba@kernel.org>
-References: <20260904231757.4082435-1-kuba@kernel.org>
+        Tue, 15 Sep 2026 20:08:22 -0700 (PDT)
+From: James Hilliard <james.hilliard1@gmail.com>
+Subject: [PATCH net-next v2 0/2] net: stmmac: add Allwinner H616 EMAC1
+ support
+Date: Tue, 15 Sep 2026 21:07:39 -0600
+Message-Id: <20260915-submit-h616-emac1-v1-v2-0-322b32e40eb9@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/22OzQ6CMBCEX4Xs2Zq2/IiefA/DoS0LrLHFtJVgC
+ O9uQY8mc5nMzje7QEBPGOCSLeBxokCjS0YeMjCDcj0yapMHyWXFz6Jg4aUtRTZUomJolRFsEkw
+ U+YnndSGV1pCqT48dzTv2Bg4jczhHaL5JItzRxI263Q4U4ujf+weT2Bu/sfL/WBJn4ly2yLUWX
+ a2uvVX0OJrRQrOu6wcKN2vx1AAAAA==
+X-Change-ID: 20260914-submit-h616-emac1-v1-143703842abb
+To: Richard Genoud <richard.genoud@bootlin.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+ Jose Abreu <joabreu@synopsys.com>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc: Maxime Ripard <mripard@kernel.org>, netdev@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ James Hilliard <james.hilliard1@gmail.com>
+X-Mailer: b4 0.15.2
 
-Hi @Jakub,
+The H616 secondary EMAC supports RMII at 10/100 Mbps and uses a separate
+system-control clock register at offset 0x34. Add its binding and a
+sun8i stmmac variant using that register. A distinct compatible without
+an older fallback prevents the driver from using EMAC0's clock register.
 
-Thank you for the review. Replies are inline below.
+EMAC1 connects internally to the co-packaged AC200 or AC300 EPHY and has
+no external PHY pins. Leave PHY initialization to the PHY driver instead
+of using the H3 internal-PHY controls. The RMII-only variant does not
+expose the RGMII clock-delay properties.
 
-> This isn't a bug, the flip is correct: patch 1 of this series does add
-> the cap in fq_pie_change() [...] The only remark is about the commit
-> message wording [...] Once these land, "patch 1/3" no longer
-> identifies anything in git history. Could the commit message name the
-> change or the behaviour instead, so a backporter can pair this test
-> flip with the kernel change?
+The AC200/AC300 EPHY driver and package bindings are already in
+net-next. This series separates the H616 EMAC1 MAC driver and binding
+support from the earlier combined series. PWM, MFD and device-tree
+enablement are being handled separately.
 
-This whole case will be gone in v6. We are dropping the flows-65536 cap
-in patch 1, so there will be no behavior change left for this test to
-flip. Case 83be will stay exactly as it is today.
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+---
+Changes in v2:
+- Drop EMAC1 TX/RX clock-delay property support and keep the existing
+  RGMII-only delay descriptions unchanged, as requested by Maxime Ripard.
+- Clarify that EMAC1 connects internally to a co-packaged PHY, not an
+  external PHY or the H3-style internal-PHY controls.
+- Rebase onto current net-next.
+- Link to v1: https://patch.msgid.link/20260915-submit-h616-emac1-v1-v1-0-195de0bb1f8a@gmail.com
 
-> Can any of this ping traffic actually reach the fq_pie child? [...]
-> 'ping -s 500' produces roughly 542-byte frames, so all 50 packets look
-> like they are dropped in TBF and fq_pie never sees a packet [...]
-> Would dropping '-s 500' (or raising the TBF burst above the frame
-> size) be the intent here?
+---
+James Hilliard (2):
+      dt-bindings: net: allwinner: add H616 EMAC1
+      net: stmmac: sun8i: add support for Allwinner H616 EMAC1
 
-Confirmed, all of them were being dropped. We will fix this in v6 by
-dropping -s 500, which defaults to the standard 56-byte payload used by
-the other tc-testing cases with this TBF setup, and by adding -W 0.01 so
-the test does not stall for about 10 seconds per run.
+ .../bindings/net/allwinner,sun8i-a83t-emac.yaml          | 13 +++++++++++++
+ Documentation/devicetree/bindings/net/snps,dwmac.yaml    |  2 ++
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c        | 16 ++++++++++++++++
+ 3 files changed, 31 insertions(+)
+---
+base-commit: 87b80c2f6b05cad9f0ff9136709c62a0f59923e3
+change-id: 20260914-submit-h616-emac1-v1-143703842abb
 
-> Which iproute2 version prints these tokens? [...] tc routes the blob
-> to q_fq_pie's existing print_xstats, which only knows the legacy
-> qdisc counters [...] and has no notion of the new type discriminator.
-> With any released tc the regex matches 0 times [...] and tdc has no
-> iproute2 version gating, so the case fails permanently rather than
-> being skipped. [...] Should it also state the required iproute2
-> change, since the case cannot pass on a patched kernel with a shipped
-> tc either?
-
-You are right, no released tc prints those fields yet. We will fix this
-in v6 by relaxing the match to just the class line ("class fq_pie
-2:[0-9]+"), which generic tc code prints directly from the kernel's
-class dump regardless of tc version. The commit message will also note
-that the per-flow fields need the companion iproute2 update.
-
-Thanks,
-Hemendra
+Best regards,
+--  
+James Hilliard <james.hilliard1@gmail.com>
 
