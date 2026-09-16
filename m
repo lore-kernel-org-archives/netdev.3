@@ -1,46 +1,41 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603D93DAAC2;
-	Wed, 16 Sep 2026 12:33:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC704EE87F
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 12:35:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789562008; cv=none; b=pEnuq72yjjQCv8cgCjODU7u93dgew9S9kDAt8Ss8oyb6lvsPraCHLLArnVpr3kRdQ2T8xDyvDAMl5IvUdWpQu6ARXshXYa5v5oiFKByot8QmodXsOTcM7F+mTAVCigEdW+kZb6PYbTpWgDv2kxO6NIQOXnX4e33sYQVas2OqX1A=
+	t=1789562108; cv=none; b=mrZWmhVV4Y84Y+kHvAmBnIzkII9UA4cRYvILwchQqAMDWqQbOb+D7cdO6Xz7nRKEQDY8W17WdztE7d8rEe42ONjIAFh/zHILqkEDKDxFJXOKIEmRsNsLz8B7S0uFqz1gbRmzDZ5Xs9mmYMgcjZXUXW2BSW/ovkztKX5lX4G0l0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789562008; c=relaxed/simple;
-	bh=sP5rqHNvJgvFdZoxhnqZDbO9crun1Qy+FcnrYXyNKLM=;
+	s=arc-20240116; t=1789562108; c=relaxed/simple;
+	bh=VCLKLWhXdt113SN5py48YYJpfZW5pOKUyWyENVGV2Bk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jgdEPunix+nOdvx4iB5qtO9OF1e6CJbAV39ZH/CxHzHtMm8QVPTqvP75yjG1vNWRWk3dZSzXmUN7pavuu5Q6xPi0vVtbLSNqYKQLJXTT3sGKeTQ5CEEbKQ8LGIr6hEserjGwxTK5xnMa9FnrD1gffteJZ/ROFkVWI2hWvwroZwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=OsdACiBa; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=uCgueT8Z/YDd/0f4WI4DqIESRDlvgFik4gm9iJHTAf8Xms0g3rJ+jfsYNHiZmNRShor5o1xSpKgtmh2UwtVBcPeqo2MHXBZAoGPDBjlKD5DMOISAir3Qm+YeQkqSeONhk9cEVeP6xq+arGCUDmyfcnF07q0qhUd2Dc2IIrqa2h8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JOPUhVNM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="OsdACiBa"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=KC7cqL1N9efHNeYoXYd5krKXRGhul30TvrWbn8hygIo=; b=OsdACiBaI6MVSfYUvr0Ce8J2Gd
-	TjGj81Em3XhRffHy2Coyuyg0ZTTOkaHJbMJ5i+Qu78hDsChCTcoODBKssFZnJKm/2K2xV+wvlUnsc
-	y4gHoXbJXOtjfpc5Xv9o62CIyx0eEPdxxPEvaax32AQm64ICZTr/AjF/ZQjzY6vdTMQA=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x6opB-005Tbh-C0; Wed, 16 Sep 2026 14:33:17 +0200
-Date: Wed, 16 Sep 2026 14:33:17 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: javen <javen_xu@realsil.com.cn>
-Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	freddy_gu@realsil.com.cn, nb@tipi-net.de,
-	maxime.chevallier@bootlin.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, daniel@makrotopia.org,
-	vladimir.oltean@nxp.com
-Subject: Re: [PATCH net-next v1 3/3] net: phy: realtek: add support for
- RTL8261D_VM
-Message-ID: <d640b8b3-40de-464c-baf1-05b8dc1239a6@lunn.ch>
-References: <20260916081444.497-1-javen_xu@realsil.com.cn>
- <20260916081444.497-4-javen_xu@realsil.com.cn>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JOPUhVNM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98EA51F000FF;
+	Wed, 16 Sep 2026 12:35:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789562105;
+	bh=YNB/s1mswh64q12U6Hacif3SbRQSsxBfLpW75bfhJA4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=JOPUhVNM8fxTnS8AZrznLsLnbvEYOk4AR8I1lvYWRgAKLdVMuRb4EAlVA5GE4vv//
+	 Osj8v09uMCPAFs0to4mRuCtpWab7ueaREwEMM13HiNUtu6252NtErhXk2yr49OgV1T
+	 y88FFP+bw9OzJBaVkQZ7MTIsIIqDjNadvAWDaQiI312J3128ravAzDUwhQqtAuA7h6
+	 94F9jVdULkmHvm7ML9GZVnGgOmcYfREAFLbk23Xp7naIfZpNI9xr2wJDKeLeBLz6MT
+	 lXZRAfR9nI4GV52uy2uacthfv/5EtngamcbF4jWsd3400LL7jqxFlgPVuIGgu3iDql
+	 OGMsOUui1WKwQ==
+Date: Wed, 16 Sep 2026 13:35:01 +0100
+From: Simon Horman <horms@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+	pabeni@redhat.com, andrew+netdev@lunn.ch,
+	Alexander Duyck <alexanderduyck@fb.com>
+Subject: Re: [PATCH net] eth: fbnic: ring the doorbell if a burst ends in a
+ drop
+Message-ID: <20260916123501.GE51261@horms.kernel.org>
+References: <20260915022327.913218-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,15 +44,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260916081444.497-4-javen_xu@realsil.com.cn>
+In-Reply-To: <20260915022327.913218-1-kuba@kernel.org>
 
-On Wed, Sep 16, 2026 at 04:14:44PM +0800, javen wrote:
-> From: Javen Xu <javen_xu@realsil.com.cn>
+On Mon, Sep 14, 2026 at 07:23:27PM -0700, Jakub Kicinski wrote:
+> fbnic_tx_map() skips the doorbell write, and the completion request,
+> for every packet handed to it with xmit_more set, counting on the
+> packet which ends the burst to publish them all. When that packet is
+> dropped instead - skb_put_padto(), skb_cow_head() or a DMA mapping
+> failure - nothing rings. The descriptors of the preceding packets stay
+> invisible to the HW until the next transmit on that queue, which for a
+> burst-then-idle workload may never come.
 > 
-> Add support for RTL8261D_VM, its phy id is 0x001cc89a.
+> Remember the meta descriptor of the last packet left without a doorbell
+> and flush it from the error paths. The completion request has to be set
+> on that descriptor rather than simply writing the tail, otherwise the HW
+> would transmit the packets but never report a head, and the ring would
+> fill up and stall for good.
 > 
-> Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
+> This is very similar to Joe's recent series of fixes for bnxt.
+> Not seen in real life, reproduced under QEMU with failure injection.
+> 
+> Fixes: 9a57bacd574b ("eth: fbnic: Add basic Tx handling")
+> Reviewed-by: Alexander Duyck <alexanderduyck@fb.com>
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> Reproduced under the QEMU fbnic model by failing the DMA mapping of the
+> last segment of a software-GSO burst: 21 descriptors (7 packets) stayed
+> in the ring with head stuck at 24 and tail at 45, 10094 bytes stuck in
+> BQL, and QEMU saw none of the 7 frames.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-    Andrew
