@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE2538C2D1
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 01:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943A738D01E
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 01:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789521141; cv=none; b=LhswtTBFcd09Pcdxe1IU4mLMuFOxbx4Tha4c3thjz/zO+oOdYn1duVG280PjS5UlMjOmMna2aL25tuyQX0A0tnD/nG1uRNERReJ46efRgNw0O/3oUFrz9guY6Os75ICTiTQ4XSgI6SB6ikF0DMqjExbKlTSqr0HZZX4HHpmy/A4=
+	t=1789521142; cv=none; b=r9r7TrbJxYldqfLqepRvATc5cYTcOHQ8zeBbm+jgyKqjHVASm9vf6vTmlP/IfEjPsCklbLnjKvwk7paRE3MvUeREjr6IFtAXGN6YyLDeO/OfTsqEjJig6wwIWhzxInrRWp3wLd5+K8PMvaKzEFUN1f1ozf4ZEWWJABuZNTodVow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789521141; c=relaxed/simple;
-	bh=hSYmJwoWTNhZsgbOBF/ROkeJFa7xQJWgZ6GHokMtqO8=;
+	s=arc-20240116; t=1789521142; c=relaxed/simple;
+	bh=1RhHThSqd/KimY9wRNFitg2SUVjj0NwoM03Zdo+X1XQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GFzI+0Yb0YOvos9L3dEqo04iRj6QW5sV+nTr0K+brypkezIj0qGb98JD4XzkmLhm8DJOdkMA5fdUy/OGkgZ1Uay5gw/hoM+geEpdFpKdpuLbTlRtpLfXsPMkJkZ+Aymg2e8a+aylqizL3r1LnvfHTGr5wgczlAxi+w0dwreY9WE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EK/yuFvS; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=qNZfI9ytt3MmaFjiKySGIG6PnkSXN3TgVpyhiLFmveyPqLZnVfS1Nf6Xq1PFqGPvAYTDqpcprFzNvR4cKvS0IzHU2MBNJSwJB2sKRV0sx+HAF341wDKhZHSYK74DGHQCBlaj699qGsjKvuc9Wp14NEkMaOvjJ+EWckUMrUB5pNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cGeF1vUr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EK/yuFvS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB83A1F000FF;
-	Wed, 16 Sep 2026 01:12:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cGeF1vUr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F25811F00893;
+	Wed, 16 Sep 2026 01:12:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789521139;
-	bh=BedP/Q5oSFj6KVVFu2tehb67HWGjDTKMUUvxiAaBNY0=;
+	s=k20260515; t=1789521140;
+	bh=E8n5W4uIXIGIlbAsMP6HBa4XricOo8OG6gef/U1L/wg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EK/yuFvSQMBCCfQRZIVe1Fcy48TlUlS+uFK3nNn4dpm1TztQV1k0SlEQkgs8hnTuf
-	 lPK+oKrIKUACNGAkdrcIk3Pxl8DMeNJ86izgyt+SHCLzffAbLW2b3NgDb8hiWngjFI
-	 QGYJHDN4GtsOEUjGkooKvGz+QMwh0krzvWIObETEOH06KfucdT65lp3N9r/ntwQAKB
-	 y0Xt4H7hykjdjrFlImlnf49gvp1MB8C3zUtWaScSMoXaay3JPsjEIw9igln7yJvDVr
-	 Gc+rUvo4Yy7sshkt8UwCcQl2wG1RCteL5tO7/zuF+9QCAjv1zNREAkO/RA2G4oJrJX
-	 ZrLhI1PjHGQpg==
+	b=cGeF1vUrICI3jF6d9AXIkzapMX7LAnCbZGCidz5yq1K8yFzp8FdTO8xXFBRcExD/q
+	 EsMtnI3j8k93zlpc+aHj0mmtU7UPOvRBYf83CEi07giyMKORnDIAPrpC9iX4OHB2ZA
+	 evOhuMmkcNdpnINw+XrvmabJ+6GFgSlmoG4B9nxLwBGO00mDtDFCmbCGGklHPsswb9
+	 +WX+iQom/eTpUh1qBfsyda8NKg1iKSTFJd555EDNGsby2/WPGNaEhHSZ4RLMOpkCIL
+	 5dg0qYAgDOrhgb6xZrBw5H5qAzk/vFuTFmOGII5jnfbX0d2IZXtMsgGLsEvmdA9siu
+	 asBkrCWMnJkKg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: anthony.l.nguyen@intel.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -46,12 +46,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	pmenzel@molgen.mpg.de,
 	aleksandr.loktionov@intel.com,
 	alexander.nowlin@intel.com
-Subject: Re: [PATCH net 06/15] ice: call PTP link change only from link events
-Date: Tue, 15 Sep 2026 18:12:18 -0700
-Message-ID: <20260916011218.1632528-1-kuba@kernel.org>
+Subject: Re: [PATCH net 07/15] ice: E825: stop clearing PHY_REG_TX_OFFSET_READY
+Date: Tue, 15 Sep 2026 18:12:19 -0700
+Message-ID: <20260916011219.1632582-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260911003430.3386340-7-anthony.l.nguyen@intel.com>
-References: <20260911003430.3386340-7-anthony.l.nguyen@intel.com>
+In-Reply-To: <20260911003430.3386340-8-anthony.l.nguyen@intel.com>
+References: <20260911003430.3386340-8-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,278 +63,128 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-ice: call PTP link change only from link events
+    ice: E825: stop clearing PHY_REG_TX_OFFSET_READY
 
-The patch drops the ice_ptp_link_change() calls from ice_up_complete() and
-ice_down() so that only the admin queue link event handler drives PTP link
-state, seeds ptp_port->link_up during ice_ptp_init(), and re-checks the link
-state at the end of ice_rebuild(). The PTP kworker creation is also moved
-earlier in ice_ptp_init(), with the periodic work queued only once the state
-is ICE_PTP_READY.
+This drops the PHY_REG_TX_OFFSET_READY = 0 write from
+ice_stop_phy_timer_eth56g() on E825 devices. Clearing that bit left hardware
+capturing Tx timestamps without the valid bit, which desynchronized the
+internal outstanding timestamp counter until a PHY soft reset. Only
+PHY_REG_RX_OFFSET_READY is cleared now.
 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-> index d88835482d3aa..f32041dd8b274 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_main.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
-
-[ ... ]
-
-> @@ -7273,7 +7272,6 @@ int ice_down(struct ice_vsi *vsi)
+> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+> index 3a41c711e751b..d48eb3c618231 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+> @@ -2115,10 +2115,6 @@ int ice_stop_phy_timer_eth56g(struct ice_hw *hw, u8 port, bool soft_reset)
+>  {
+>  	int err;
 >  
->  	if (vsi->netdev) {
->  		vlan_err = ice_vsi_del_vlan_zero(vsi);
-> -		ice_ptp_link_change(vsi->back, false);
->  		netif_carrier_off(vsi->netdev);
->  		netif_tx_disable(vsi->netdev);
->  	}
-
-[ ... ]
-
-> @@ -7794,6 +7792,14 @@ static void ice_rebuild(struct ice_pf *pf, enum ice_reset_req reset_type)
->  
->  	ice_update_pf_netdev_link(pf);
->  
-> +	if (test_bit(ICE_FLAG_PTP_SUPPORTED, pf->flags) && pf->hw.port_info) {
-> +		bool link_up;
-> +
-> +		link_up = !!(pf->hw.port_info->phy.link_info.link_info &
-> +			     ICE_AQ_LINK_UP);
-> +		ice_ptp_link_change(pf, link_up);
-> +	}
-> +
-
-[Severity: High]
-Does this re-create, in the reset path, the same double PHY
-re-initialization that the changelog describes as problem 1?
-
-With the ice_ptp_link_change(vsi->back, false) call gone from ice_down(),
-nothing clears ptp_port->link_up during reset preparation.  The only
-remaining writers of that field are the store in ice_ptp_link_change() and
-the new seed in ice_ptp_init().
-
-ice_prepare_for_reset() calls ice_pf_dis_all_vsi() -> ice_down() before
-ice_ptp_prepare_for_reset(), so previously link_up was cleared while the
-state was still ICE_PTP_READY and the local port was skipped here:
-
-ice_ptp_restart_all_phy()
-	if (port->link_up)
-		ice_ptp_port_phy_restart(port);
-
-Now link_up survives the reset, so ice_rebuild() -> ice_ptp_rebuild() ->
-ice_ptp_rebuild_owner() -> ice_ptp_restart_all_phy() does a real restart of
-the local port, and then the block added above calls
-ice_ptp_link_change(pf, true), which re-enters ice_ptp_port_phy_restart() a
-second time within the same ice_rebuild().
-
-For ICE_MAC_GENERIC that second entry does:
-
-ice_ptp_port_phy_restart()
-	kthread_cancel_delayed_work_sync(&ptp_port->ov_work);
-	...
-	ptp_port->tx.calibrating = true;
-	...
-	err = ice_start_phy_timer_e82x(hw, port);
-
-which cancels the offset verification work queued milliseconds earlier by
-the first restart, re-asserts calibrating and restarts the timer.  On
-ICE_MAC_GENERIC_3K_E825 it re-runs ice_start_phy_timer_eth56g(), i.e. a PHY
-soft reset, timer stop, incval reprogram, PHC resync and clearing/setting of
-the offset-ready bits.
-
-Neither guard in ice_ptp_link_change() short-circuits this call:
-ice_reset_subtask() clears pf->hw.reset_ongoing right before ice_rebuild(),
-and ice_ptp_rebuild() has already set the state to ICE_PTP_READY earlier in
-ice_rebuild().
-
-One more question on the same block: ice_ptp_link_change() discards the
-return value of ice_ptp_port_phy_restart(), and the E825 restart begins by
-stopping the timer.  If the redundant second attempt fails, can it leave a
-previously working PHY timer stopped, at a point where
-ice_update_pf_netdev_link() has already turned the carrier on and woken the
-Tx queues?
-
-Would it be cleaner to have exactly one driver of the post-reset PHY
-restart, either ice_ptp_restart_all_phy() or this new block, rather than
-both?
-
->  	/* tell the firmware we are up */
->  	err = ice_send_version(pf);
->  	if (err) {
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> index 9bf3bac552f11..4dec728e219d8 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> @@ -1323,9 +1323,6 @@ void ice_ptp_link_change(struct ice_pf *pf, bool linkup)
->  	struct ice_ptp_port *ptp_port;
->  	struct ice_hw *hw = &pf->hw;
->  
-> -	if (pf->ptp.state != ICE_PTP_READY)
-> -		return;
-> -
->  	ptp_port = &pf->ptp.port;
->  
->  	if (!kref_get_unless_zero(&ptp_port->ref))
-> @@ -1334,6 +1331,9 @@ void ice_ptp_link_change(struct ice_pf *pf, bool linkup)
->  	/* Update cached link status for this port immediately */
->  	ptp_port->link_up = linkup;
->  
-> +	if (pf->ptp.state != ICE_PTP_READY)
-> +		goto exit_kref_put;
-> +
-
-[Severity: High]
-Can moving the state check below the store make a half-initialized port
-visible to ice_ptp_restart_all_phy()?
-
-ice_ptp_setup_pf() publishes the port before the rest of PTP init runs:
-
-	kref_init(&ptp->port.ref);
-
-	spin_lock(&pf->adapter->ports.lock);
-	list_add_rcu(&ptp->port.list_node, &pf->adapter->ports.list);
-	spin_unlock(&pf->adapter->ports.lock);
-
-After that, and while pf->ptp.state is still ICE_PTP_INITIALIZING, a link
-event reaching ice_ptp_link_change() now sets ptp_port->link_up = true
-before returning.  At that point ice_ptp_init_port() may not yet have run
-mutex_init(&ptp_port->ps_lock) or spin_lock_init(&tx->lock), and
-pf->ptp.kworker is still NULL.
-
-ice_ptp_restart_all_phy() gates only on the kref and the cached flag:
-
-		if (!kref_get_unless_zero(&port->ref))
-			continue;
-		rcu_read_unlock();
-
-		if (port->link_up)
-			ice_ptp_port_phy_restart(port);
-
-and it is reachable from ice_ptp_settime64(), which does no ptp->state check
-and ends with:
-
-	/* Recalibrate and re-enable timestamp blocks for E822/E823 */
-	if (hw->mac_type == ICE_MAC_GENERIC)
-		ice_ptp_restart_all_phy(pf);
-
-The PHC character device already exists at that point, because
-ice_ptp_init_owner() -> ice_ptp_create_clock() runs earlier in
-ice_ptp_init(), so a clock_settime() on the owner PF, or a reset of the
-owner PF concurrent with the probe of a peer PF, can reach it.
-
-On ICE_MAC_GENERIC the restart then does:
-
-		kthread_queue_delayed_work(pf->ptp.kworker, &ptp_port->ov_work,
-					   0);
-
-with pf->ptp.kworker == NULL, and kthread_queue_delayed_work() starts with
-raw_spin_lock_irqsave(&worker->lock, flags).
-
-Before this patch link_up stayed false for the whole of ice_ptp_init()
-because ice_ptp_link_change() returned before the store while the state was
-not READY, so the port->link_up guard skipped the initializing port.  Should
-link_up only be published after the kworker exists and after the port locks
-are initialized?
-
->  	/* Skip HW writes if reset is in progress */
->  	if (pf->hw.reset_ongoing)
->  		goto exit_kref_put;
-
-[ ... ]
-
-> @@ -3443,6 +3444,22 @@ void ice_ptp_init(struct ice_pf *pf)
->  	if (err)
->  		goto err_clean_pf;
->  
-> +	/* Seed link_up from current PHY status, since link may already be up
-> +	 * (e.g. after PXE boot) with no link-change edge to catch it later.
-> +	 */
-> +	if (pf->hw.port_info)
-> +		ptp->port.link_up =
-> +			!!(pf->hw.port_info->phy.link_info.link_info &
-> +			ICE_AQ_LINK_UP);
-
-[Severity: Medium]
-Is ptp_port->link_up now written from two contexts without any
-synchronization?
-
-This seed runs on the probe thread, while ice_ptp_link_change() writes the
-same plain bool from the service task via the admin queue link event
-handler, and after this patch that store happens before the ICE_PTP_READY
-bail-out.  ice_init() clears ICE_SERVICE_DIS and arms pf->serv_tmr before
-ice_init_features() calls ice_ptp_init(), so both writers can run
-concurrently.
-
-There is no lock, and no WRITE_ONCE/READ_ONCE pairing, between the probe
-thread's read of phy.link_info and its store to link_up, so a link
-transition processed inside that window is silently dropped.
-
-Link events are edge triggered:
-
-ice_link_event()
-	if (link_up == old_link && link_speed == old_link_speed)
-		return 0;
-
-so if the surviving value is false while the link is physically up,
-ice_ptp_reset_phy_timestamping() -> ice_ptp_port_phy_restart() takes:
-
-	if (!ptp_port->link_up)
-		return ice_ptp_port_phy_stop(ptp_port);
-
-and nothing later corrects it.  On E82x the vernier timer would then never
-be started and timestamping would stay off until the link physically
-toggles.  Note also that ice_ptp_port_phy_restart() reads link_up before
-taking ptp_port->ps_lock, so ps_lock does not cover this field.
-
-> +
-> +	/* Create the kworker before restarting the PHY, which queues work on
-> +	 * it in the E82x restart path. This prevents concurrent link events
-> +	 * from reaching ice_ptp_port_phy_restart() while kworker is still NULL
-> +	 */
-> +	err = ice_ptp_init_work(pf, ptp);
-> +	if (err)
-> +		goto err_clean_pf;
-> +
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but since the unwind path is
-being reshuffled here, should err_clean_pf also release the Tx timestamp
-tracker?
-
-By the time this new goto err_clean_pf can be taken, ice_ptp_init_port() ->
-ice_ptp_init_tx()/ice_ptp_init_tx_e82x() -> ice_ptp_alloc_tx_tracker() has
-already allocated:
-
-	tstamps = kzalloc_objs(*tstamps, tx->len);
-	in_use = bitmap_zalloc(tx->len, GFP_KERNEL);
-	stale = bitmap_zalloc(tx->len, GFP_KERNEL);
-
-but the unwind only does:
-
-err_clean_pf:
-	mutex_destroy(&ptp->port.ps_lock);
-	ice_ptp_cleanup_pf(pf);
-
-ice_ptp_cleanup_pf() only unlinks the port from the adapter list and drops
-the kref, and err_exit then sets ptp->state = ICE_PTP_UNINIT, which makes
-ice_ptp_release() return at its first check, so
-ice_ptp_release_tx_tracker() never runs.  The same leak existed on the old
-err_exit path when ice_ptp_init_work() failed, so this predates the patch;
-the trigger is a kthread_run_worker() failure in ice_ptp_init_work().
-
->  	/* Start the PHY timestamping block */
->  	ice_ptp_reset_phy_timestamping(pf);
->  
-> @@ -3451,9 +3468,10 @@ void ice_ptp_init(struct ice_pf *pf)
->  
->  	ptp->state = ICE_PTP_READY;
->  
-> -	err = ice_ptp_init_work(pf, ptp);
+> -	err = ice_write_ptp_reg_eth56g(hw, port, PHY_REG_TX_OFFSET_READY, 0);
 > -	if (err)
-> -		goto err_exit;
-> +	/* Start periodic work only after the state is READY; the worker
-> +	 * returns without rescheduling while the state is not READY.
-> +	 */
-> +	kthread_queue_delayed_work(ptp->kworker, &ptp->work, 0);
->  
->  	dev_info(ice_pf_to_dev(pf), "PTP init successful\n");
->  	return;
+> -		return err;
+> -
+
+[Severity: High]
+With this write gone, is anything left that suppresses Tx timestamp
+reporting while the E825 PHY is being re-calibrated?
+
+ice_start_phy_timer_eth56g() begins by calling the stop helper and only
+asserts Tx readiness at the very end:
+
+	err = ice_stop_phy_timer_eth56g(hw, port, false);
+	...
+	err = ice_phy_cfg_parpcs_eth56g(hw, port);
+	err = ice_phy_cfg_ptp_1step_eth56g(hw, port);
+	err = ice_phy_cfg_mac_eth56g(hw, port);	/* PHY_REG_TOTAL_TX_OFFSET_L/U */
+	...
+	err = ice_write_40b_ptp_reg_eth56g(hw, port, PHY_REG_TIMETUS_L, incval);
+	err = ice_ptp_one_port_cmd(hw, port, ICE_PTP_INIT_INCVAL);
+	...
+	err = ice_sync_phy_timer_eth56g(hw, port);
+	...
+	err = ice_write_ptp_reg_eth56g(hw, port, PHY_REG_TX_OFFSET_READY, 1);
+
+Across that whole window the Tx offset registers are being reprogrammed and
+the port timer has not yet been re-synced to the PHC, but per the commit
+message hardware now marks captures valid, so this check in
+ice_ptp_process_tx_tstamp() no longer drops them:
+
+		/* Discard any timestamp value without the valid bit set */
+		if (!(raw_tstamp & ICE_PTP_TS_VALID))
+			drop_ts = true;
+
+The E82x branch of ice_ptp_port_phy_restart() gates this in software:
+
+		spin_lock_irqsave(&ptp_port->tx.lock, flags);
+		ptp_port->tx.calibrating = true;
+		spin_unlock_irqrestore(&ptp_port->tx.lock, flags);
+		...
+		/* Do not clear calibrating flag here. Tx timestamps remain
+		 * disabled until ice_ptp_wait_for_offsets() has verified
+		 * that the Tx and Rx offset calibration has completed.
+		 * Clearing it here would allow Tx timestamps to be reported
+		 * before the PHY offset registers are configured, leading
+		 * to incorrect timestamp values.
+		 */
+
+while the E825 branch does not:
+
+	case ICE_MAC_GENERIC_3K_E825:
+		err = ice_start_phy_timer_eth56g(hw, port);
+		break;
+
+Since ice_ptp_is_tx_tracker_up() only tests tx->init && !tx->calibrating,
+new requests keep being accepted during the restart, and the restart path
+holds only ps_lock while the reader takes tx->lock, so the two do not
+exclude each other. Should the E825 case set tx.calibrating around
+ice_start_phy_timer_eth56g() to replace the removed hardware gate?
+
+The same exposure looks unbounded on the early-return paths of
+ice_start_phy_timer_eth56g(), for example the ice_ptp_lock() failure:
+
+	if (!ice_ptp_lock(hw)) {
+		dev_err(ice_hw_to_dev(hw), "Failed to acquire PTP semaphore\n");
+		return -EBUSY;
+	}
+
+because PHY_REG_TX_OFFSET_READY is only re-asserted on the success path.
+The reachable trigger is a link up or link speed change
+(ice_ptp_link_change() -> ice_ptp_port_phy_restart()) concurrent with any
+SO_TIMESTAMPING application. Could the commit message also mention this
+change in reporting behaviour during calibration?
+
+>  	err = ice_write_ptp_reg_eth56g(hw, port, PHY_REG_RX_OFFSET_READY, 0);
+>  	if (err)
+>  		return err;
+
+[Severity: Low]
+The kernel-doc and the debug print of ice_stop_phy_timer_eth56g() now
+describe more than the body does:
+
+ * Stop the clock of a PHY port. This must be done as part of the flow to
+ * re-calibrate Tx and Rx timestamping offsets whenever the clock time is
+ * initialized or when link speed changes.
+
+	ice_debug(hw, ICE_DBG_PTP, "Disabled clock on PHY port %u\n", port);
+
+After this change the body only clears PHY_REG_RX_OFFSET_READY, so no Tx
+offset is invalidated and no clock enable bit is touched, while
+ice_start_phy_timer_eth56g() still asserts both PHY_REG_TX_OFFSET_READY and
+PHY_REG_RX_OFFSET_READY. ice_ptp_port_phy_stop() is likewise documented as
+"Stop timestamping for a PHY port" while Tx timestamping stays enabled for
+ICE_MAC_GENERIC_3K_E825. Should the comment and the log message be updated
+to say only the Rx offset-ready bit is cleared?
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but with the body reduced to a
+single register write the unused soft_reset parameter becomes quite visible:
+
+ * @soft_reset: if true, hold the SOFT_RESET bit of PHY_REG_PS
+
+ice_stop_phy_timer_eth56g() never reads soft_reset, and PHY_REG_PS appears
+nowhere in drivers/net/ethernet/intel/ice/ outside this comment; the E82x
+counterpart ice_stop_phy_timer_e82x() does honour the flag via P_REG_PS and
+P_REG_PS_SFT_RESET_M. Both call sites are therefore equivalent:
+ice_ptp_port_phy_stop() passes true for ICE_MAC_GENERIC_3K_E825 and
+ice_start_phy_timer_eth56g() passes false. Would it make sense to drop the
+parameter, or to document that it is ignored on ETH56G?
