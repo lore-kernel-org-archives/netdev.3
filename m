@@ -1,145 +1,116 @@
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2904AB3B7
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 16:40:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFBF4B402E
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 16:43:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789576840; cv=none; b=eavFB17N/5y2v7LOhQRBY4zCjIBTnnw7Du2d4uk/Sh31n4mF6/8PJaKQBvXOUvu9uTAlmh57+QMPhgdu9KPACgHkqY9OztDuICIj4k808xyNIYDNV8ZONcA9AEotTg2qfMpn3+eqBGoNTbepQZhx1ydqAwm5a20Er+oPwejuAzY=
+	t=1789577029; cv=none; b=T/BDtEtt6h+TwJL0tQxLkK37mylr3SBn6fXVCafGMFfJ8WTV+tQsNh4XBRP1VOiVrOHyACZMtd5AOhlOZ/KmIEGINGIBzabQGWkMGshoy15KOvhMgOw5fw2ZAPmGVQa59yk4SZv5nyzS2HNSKpGOuhr892m2hOLrxL7KpPNUBsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789576840; c=relaxed/simple;
-	bh=nSsSWXBX9C4+LhFuaC9s9XNJIBXDx86cIiaBNLs2SYE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OepjLOsql9yzL6Lqq3fYSaV54hDXiGZAfLaS5bl+orbXVGtYLinPpj/saJOlsCFA+evCCHBViURhHdgX6UE9ojrDBJLEOK2MlTaNaciAGylD85m5fAcOGJDrpbNeeAm4S7yNKl+Yp/spc8m498O2TGQJexKthBrz+ZkZiucZ024=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=N1HqnVtE; arc=none smtp.client-ip=209.85.210.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	s=arc-20240116; t=1789577029; c=relaxed/simple;
+	bh=cRIImi/lPk53n1lWQ4BsxrEtpf2R34//cfhxTWVnMy4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YKkSWzV62wYjjUHCgudXbaLKPi4SEtNWJuPiMwHZbqfgUbiLQkk6MBW1iiAXUo06YW84DP5fTuxoj4W3ZVaswb3d0o5twXOXS+Wfx5Nh3Gv61kiOt41tVu/GoZvb253KoZEZIshaB3yRq6nVOTpuUQY1SjmglvBiwYiur2U+Zpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JRus32LU; arc=none smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="N1HqnVtE"
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-80638c24bedso1656239a34.0
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 09:40:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JRus32LU"
+Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cea4ae2cso997724a12.0
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 09:43:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1789576827; x=1790181627; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=SjnTPR/EGL67/pMd+T2zbAYFe3UJ3Z05Gc3GQfpLaVg=;
-        b=N1HqnVtEapPsh29OdVjaRqzp4kXDll9PJyHhkgx6T7eSVwJIj4v2FmnO3ysCnMOOcZ
-         mpFvCt640HelqNfeTJYLY9Sj86qBGX+zHj3jQ+JDzoj5kPjLCDJTEjsPDV/ybzF3Wpug
-         s5iCuAvKyNLss8CNwoAWGRSHVhDaS8cQVimzwrfnpUVGp9a9wBWs3T83+ipIuR6eCIe1
-         UXB/y2mG5gMtu80+GVM2wewV1XsX9ugoWMVNq4MmBUofMaJbr7IVd5NUSis4epqRQ/+o
-         jYScVewCffEvkFfUFSPPkb9aQsX/xvGLZONwj+1viclw3xw6wZDqk+qbzp8iCLjyZQ4n
-         S6wg==
+        d=gmail.com; s=20251104; t=1789577009; x=1790181809; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0VTiuPg5ZB9LmT2MDT455GVREdoYqL1EhzCrifxbyUE=;
+        b=JRus32LU/EnkGj5DeuL5SLHyT1OD2lCGh1d+YHTlCbRk04adSiTFP3zQj1vSlsfgCY
+         57tNl7brpwFsYy4fTQQyAEcfXpJBIbgqcLv1Gfuy37h/HY7bL7TD038rNCgZAFTQTRLy
+         Jhg0voYfBrhywPUNd84UGM70kiD1Zfkrkomf/N9XhKp84dyXDmFg58/jXMsGzIsBtiUZ
+         2ZLo9T4FOvjVYCfOEeodedJymBRADJDb5b7tOV8WgU/ZIH1WxLON1EXduj7SlVaVdKrZ
+         jor8yuHKNtUgGFa1J5U7eDGFc4Zyr4NtKojZNsogHBgbWNtnjVlG9fSdJLs9KJXDrE82
+         QtOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789576827; x=1790181627;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SjnTPR/EGL67/pMd+T2zbAYFe3UJ3Z05Gc3GQfpLaVg=;
-        b=r0aMqI8otXRinpchnosXWoEUhk4xSRVNlQssLUU1VvQWgTNXi0r4Xqgbi/vZHHm+jh
-         bePtwew4HvQRMnvj6ngTuUZcveKv/sMv0TyDxUjCw+CmaIWs95M0ynzpEQdfK3iJlwc5
-         ESXGes771/G7sfVxOWt6GQklr2kgpBOaqHB8Zpm6jg94Rg41d7f+syew78m9ZWlXs2sf
-         pLn0U9CUBwW+I3CZ1bCgbZQljLonntlW58kZ6BhOfU/tDXYZUZ+AQUtiDUdgf7Eaup2f
-         xyrLQGQv9Lm5X1DfF8IJPHGDSp/NTTOGKNCwo3CkwgTYw6SIY/fGXUcPVMja6HoD0wdW
-         TnsA==
-X-Forwarded-Encrypted: i=1; AKwUvBxacF2f7kcAy34JkWjDA9i8NxmsqHLoqc9ouh+TK2iPSpmc83iLUnaDwGgKMJGS0p/YOzAPaF8=@vger.kernel.org
-X-Gm-Message-State: AFuF++nr5+1ZQ5yo1Rz3/q+gspKBEbLc6U1hif/XYrJL3BOUmlIagoDY
-	+la9R6vg27tGP2pqYmZf8Q6+NZ/0H/Hd7EpAsVVMHDd1g88X8Hx4+VPUVasdITXURe8=
-X-Gm-Gg: AYBFou2Tee1Inmz95NAJ+Jb47pRlepyYGBiPZjGSKkJOWFhrlleA9LYlm3AngX4Qozf
-	FSteH/4kWl6qywE76IhR5P/hMrc96XNgPqxKPDcLf8/KU0JbysnjSoRvVXjMjMtUDn/KkCg4tUL
-	maNK5A206LHml2flTOtFCH6D549+ehJgnoJhRVQxCp3J2yXxJT3z5HFeUb5BucWaBG+2I5gugVj
-	xlX8HPdaDwigpDZiK1ghjqeQKiYIuJUuo7QGhcchw6dcfwT6fES/fernWCADDzKAFcMlipgaP0R
-	k+lLIqp0PUd4+EzGOFUGbnzO66G55qdhYQrx8OOKevvhHP0bu5oSR7j6ZKYMT7OP3xxMzIvY+Gt
-	BAuBI/9Z0QjecuyiX2cjMtJMHRF7vuPZzk1hRnXOkM3PcpMUNHmXSZqQL1itvtQMzSxhZ2/7kdU
-	RTDALqUaE1j/xKUmRVhkCHwtoJbuUUUTp/QWmlnwOwGKBmpscV+8a53I/RZSIbmw==
-X-Received: by 2002:a05:6830:67e4:b0:807:50d:7f3a with SMTP id 46e09a7af769-80c4e7f7ba1mr199721a34.30.1789576826716;
-        Wed, 16 Sep 2026 09:40:26 -0700 (PDT)
-Received: from 20HS2G4 ([2a09:bac6:bf21:96::f:339])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-80c46dbe483sm255445a34.20.2026.09.16.09.40.25
+        d=1e100.net; s=20260707; t=1789577009; x=1790181809;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=0VTiuPg5ZB9LmT2MDT455GVREdoYqL1EhzCrifxbyUE=;
+        b=e07KqV2TOl87SO59hupR2GhBisdLkWMw56oMd8gFD2/qiBs+jg/JhqZeeA6trpPous
+         aBsQPVDQFlQMZxBCcMqk22csAYc4rESbSgHm0rRNbnuWEXeKL8NBYYYqwCqVcmUxbgpW
+         0FZPr9d9ij3XZJftjpOBvs1hHrtN1iYYo0Y0XtGov3THPravDgPE4jEyhukW/EVcbUch
+         vuLcUy+gQDacjOZL3kG2BpPkrOFgQjPwCbqW3+E236hButgd+wYgRaEFHavPpodTd6Z3
+         ZQZhvDKpq2rwm5lwP4Mtdzr9BXeAvwH0YtnH//+EH+ZVR0DbBiThSKUc470ToBFV4Ht4
+         FGWQ==
+X-Gm-Message-State: AFuF++me35/ce/6JVlAlUIt1jPCA3bu70glNdAnTtmP3CzbKOXzS9fnD
+	cuWwkIDL+lVpNT0BIoZCRw796tsJ0kpkXrpI0LJf7czUKSDtbtak6C/v0r3lhTsl8UY=
+X-Gm-Gg: AYBFou3xbdoU35muLwRKGed1akJhtugesajooh9BO0ZebBit9MpHbpe/KnAgkTH5xvz
+	bWX+i7pGQ1fNZdp0n/YzHfASuxyMhdIoTVoKlIebQtWuTTx0bJboWfIOSnv5GHMzImmWLgZvNMA
+	ogqnX03/HqmqzwZmCeFZTUXhemsj7iHZ8uu2Ur5Hj0hZI8V7o1OMBa4+RsNoBJmcRUMXuY7NvRv
+	H7yV9/GMQWA8kt9xbkERZK3ksjOkBgjRaWfnFsisRGChg6VZyNmycw1LPb+4hntSnTBVD6xiFqk
+	gusBhAzcAxmAxz2XOBiL/6b3aBUB2705Y+P1EnnsA69t1soeqx9+2Tr4MYks4C/8kqroMAmZ2tZ
+	QYhc41PKdCfJA+MSxywtwAzTioxcMSq9p7VEro8Qb7crqzLr5ODM1y2XqP+oJKzMw9sOEzwtqQs
+	SVL0F0LhDYxT9y/uUsE72Zw6qikDpvKMGfEFyHkz41mdGLyQyyMRAQ2OGmKzzlUBQSQrw7YlOrj
+	3tQjJAq9JgMd8rMX3iq3/a2fBISCBqeEb1V
+X-Received: by 2002:a05:6a21:e8a:b0:3d3:b00b:50fc with SMTP id adf61e73a8af0-3dd5f7b3ab7mr8788940637.28.1789577008744;
+        Wed, 16 Sep 2026 09:43:28 -0700 (PDT)
+Received: from d.home.yangfl.dn42 ([2a09:bac5:661a:1232::1d0:c5])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc50acc757csm1902278a12.32.2026.09.16.09.43.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 09:40:26 -0700 (PDT)
-Date: Wed, 16 Sep 2026 11:40:24 -0500
-From: Chris Arges <carges@cloudflare.com>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+        Wed, 16 Sep 2026 09:43:28 -0700 (PDT)
+From: David Yang <mmyangfl@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	wireguard@lists.zx2c4.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-team@cloudflare.com
-Subject: Re: [PATCH net v2] wireguard: wait for per-peer crypto during removal
-Message-ID: <aqrGeOpbu_u-CBes@20HS2G4>
-References: <20260913-fix-wg-peer-removal-v2-1-0cade985245a@cloudflare.com>
- <aqpqEIy_h0DIywRy@zx2c4.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2 0/8] net: dsa: motorcomm: Add SerDes PCS
+Date: Thu, 17 Sep 2026 00:43:00 +0800
+Message-ID: <20260916164310.3168269-1-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aqpqEIy_h0DIywRy@zx2c4.com>
+Content-Transfer-Encoding: 8bit
 
-On 2026-09-16 12:06:08, Jason A. Donenfeld wrote:
-> On Sun, Sep 13, 2026 at 07:19:08AM -0500, Chris J Arges wrote:
-> > Calling peer_remove_after_dead() currently flushes device-wide packet
-> > crypto and handshake workqueues while holding RTNL. This is problematic as
-> > unrelated peers can continue adding work to those queues, blocking other
-> > tasks that want to take the RTNL lock.
-> > 
-> > Instead, this patch tracks pending crypto handoffs for each peer using a
-> > counter. After marking the peer dead, synchronize_net() prevents new
-> > submissions. Next, wait for pending crypto workers to schedule TX work and
-> > for RX NAPI to drain the peer's RX queue. Then flush only the peer's TX
-> > packet and handshake work.
-> > 
-> > This scopes teardown synchronization to the removed peer and prevents
-> > unrelated peers from extending the RTNL hold time.
-> >  struct wg_device;
-> > @@ -161,6 +162,7 @@ static inline int wg_queue_enqueue_per_device_and_peer(
-> >  	 */
-> >  	if (unlikely(!wg_prev_queue_enqueue(peer_queue, skb)))
-> >  		return -ENOSPC;
-> > +	atomic_inc(&PACKET_PEER(skb)->packet_crypt_pending);
-> >  
-> >  	/* Then we queue it up in the device queue, which consumes the
-> >  	 * packet as soon as it can.
-> > @@ -182,6 +184,8 @@ static inline void wg_queue_enqueue_per_peer_tx(struct sk_buff *skb, enum packet
-> >  	atomic_set_release(&PACKET_CB(skb)->state, state);
-> >  	queue_work_on(wg_cpumask_choose_online(&peer->serial_work_cpu, peer->internal_id),
-> >  		      peer->device->packet_crypt_wq, &peer->transmit_packet_work);
-> > +	if (atomic_dec_and_test(&peer->packet_crypt_pending))
-> > +		wake_up_var(&peer->packet_crypt_pending);
-> >  	wg_peer_put(peer);
-> >  }
-> >  
-> > diff --git a/drivers/net/wireguard/receive.c b/drivers/net/wireguard/receive.c
-> > index 824bbefce61c..bb35e3205491 100644
-> > --- a/drivers/net/wireguard/receive.c
-> > +++ b/drivers/net/wireguard/receive.c
-> > @@ -476,9 +476,11 @@ int wg_packet_rx_poll(struct napi_struct *napi, int budget)
-> >  
-> >  next:
-> >  		wg_noise_keypair_put(keypair, false);
-> > -		wg_peer_put(peer);
-> >  		if (unlikely(free))
-> >  			dev_kfree_skb(skb);
-> > +		if (atomic_dec_and_test(&peer->packet_crypt_pending))
-> > +			wake_up_var(&peer->packet_crypt_pending);
-> > +		wg_peer_put(peer);
-> 
-> This adds two atomic updates to a per-peer counter for every RX packet
-> and TX batch. That could introduce contention across crypto workers. I
-> suppose it'd be good to see some measurements in if this changes
-> anything. Certainly it should change _something_. Question is by how
-> much.
-> 
-> Jason
+Support in-band negotiation of the SerDes ports.
 
-Thanks, I'll get some numbers here and share. We're testing this on some
-production machines now. In addition I'll get numbers from my synthetic testing
-and report back.
+v2:
+  - Remove YT921X_PORT_MASK_* macros
+  - code style nits
+  - unconditionally write BMCR_ANRESTART
+v1: https://lore.kernel.org/r/20260909190541.466476-1-mmyangfl@gmail.com
 
---chris
+David Yang (8):
+  net: dsa: motorcomm: Remove YT921X_PORT_MASK_* macros
+  net: dsa: motorcomm: Split xMII and SERDES port masks
+  net: dsa: motorcomm: Check port type with runtime info
+  net: dsa: motorcomm: Fix register bit field names
+  net: dsa: motorcomm: Introduce yt921x_speed
+  net: dsa: motorcomm: Hoist port_to_priv helper into chip.h
+  net: dsa: motorcomm: Split MDIO bus module
+  net: dsa: motorcomm: Add SerDes PCS
+
+ drivers/net/dsa/motorcomm/Makefile   |   2 +
+ drivers/net/dsa/motorcomm/chip.c     | 525 ++++++---------------------
+ drivers/net/dsa/motorcomm/chip.h     | 106 +++---
+ drivers/net/dsa/motorcomm/leds.c     |  14 +-
+ drivers/net/dsa/motorcomm/mdio_bus.c | 301 +++++++++++++++
+ drivers/net/dsa/motorcomm/mdio_bus.h |  54 +++
+ drivers/net/dsa/motorcomm/pcs-921x.c | 235 ++++++++++++
+ drivers/net/dsa/motorcomm/pcs.h      |  13 +
+ 8 files changed, 793 insertions(+), 457 deletions(-)
+ create mode 100644 drivers/net/dsa/motorcomm/mdio_bus.c
+ create mode 100644 drivers/net/dsa/motorcomm/mdio_bus.h
+ create mode 100644 drivers/net/dsa/motorcomm/pcs-921x.c
+ create mode 100644 drivers/net/dsa/motorcomm/pcs.h
+
+-- 
+2.53.0
+
