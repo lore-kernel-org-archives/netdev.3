@@ -1,339 +1,70 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF1C4AF665;
-	Wed, 16 Sep 2026 10:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2114E66B8;
+	Wed, 16 Sep 2026 10:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789554112; cv=none; b=PCsy4V548HXP8ijte+Q+wCGHw52kOPFeIDj2NOVboNn4TChYbIBZyDn43zt+tFKQyA0FUN7JtvJEFe5a38UJypsAlghk8LncSlhCQ7+mztxI2l/NvuHNYqpJ7QGxxRZfQdBczvRE2Rt0idrIYcB+4AHfZ8vWgCSREL6daG9Mjk4=
+	t=1789554664; cv=none; b=HYSDIHmGE/gZwpQr3Iv1Ph3qJAh0d8wKUBOgL5m9+6vbwbyUo4lgv4kViB/T6T3KS1/0O+TGxdF+yx2wFs2P58EBmtDNRP+hrbqgscfQ+7cd6FgTfmH3lQeDfpnWW4yEi6Jh80KSK2bSpz4PDqujvBTn04zhM3cQpx0L1SsW+bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789554112; c=relaxed/simple;
-	bh=MonDTbPytzLmWxFK63YU6exNxj2WjCjHahERtcjjU3k=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nM5xvdToJqI18V1pbtsUINKtc6vrvpDOEurPSb7rWdI7yVAkftvzylmytCjyDIWzLHxZJ3ezYKBuJEWD2cDjGPbYg/H3Ye1I5CLSg8CfuWj1ZgQk8T8m9mgouswMRKfhe6jT05AXhX5n5e7tU0GpfnGX8p3ujH35y8Ow2u+fvJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZJ6Bu7mA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789554664; c=relaxed/simple;
+	bh=GEP+hGb2iE1o7wcjDbQ4fv1FVBbBCEuBYvDsihslWMo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=nG12+PAZmqikaPQl7qWHmS9f1/9pupjiGjgSaNSHfBMX4aQOQUVRpi1dOFdTjHkJNrU6D6gVB/QPrSQp4te/k1PQ/hYq6byT+3pvaQJXBvjnkregxfv7JZAg90pwkiNpJbe7NDo5bB1zzjgj/Js/qd9gECOylSXdBrK2XxBfpVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l6cnAa0a; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZJ6Bu7mA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E1A1F00899;
-	Wed, 16 Sep 2026 10:21:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l6cnAa0a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC101F00893;
+	Wed, 16 Sep 2026 10:30:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789554074;
-	bh=jrEvQHvjEN2PwmB35CoS2QLXe7RJjBHQnGiMZGTLFjk=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ZJ6Bu7mAfxdOhryiLVd0RKN32AxsmLlSUOq6l+m0vYS/amKtQgvdZdTowA6m62UOE
-	 oqwgsRWxRtJLKO/fbuo9Y88JdI4hmrAQy1dHIPMzpqqXeYokubY2LWfCNoY9LKi0UI
-	 sdhRcz0wlqrIHH+1EtHZbiZt+GM2u0j/PPy+iQgESCWzvOqOaHbnrxPjocCj7kjGPQ
-	 IRqmyPZIXCPoTb3Na2tIJ+nFf+/fWwivQZhT56r86079UhzV7skJVL2Nd2r+lux2av
-	 fhTzR+lnpR+Cw8eJBZOUKrT0kowFMj8pHUS5z9q7PsL06lkBYZfFhJSSMDY4qOkPpx
-	 xvTZa9Evkc+bg==
-From: Linus Walleij <linusw@kernel.org>
-Date: Wed, 16 Sep 2026 12:20:59 +0200
-Subject: [PATCH net-next v15 2/4] net: dsa: tag_ks8995: Add the KS8995 tag
- handling
+	s=k20260515; t=1789554659;
+	bh=Fmnr5/uLooqS/bMx64dP7eD2bGWt7k9KQuKfroU6rHE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=l6cnAa0aiCoTjAionrqVVA/hr8u1j6Bmvr3eKrdGXALmvXhb74KaaAlHE7Z3q1FYE
+	 8PATwhrc/j1bB1F4uarHZkonOznndDJWvYFw83VYvueP7K7VJhLhU7XcIznP5MRpJo
+	 lPrzahY5xRRSds59RgxtX2435BAoGzLasUQKOysTKhg/7MoaEWS/eZ/eYM3O6p+0x8
+	 JRnV1gwaDdjahBcHx+1hT0/tauzOW2R/SPbHUqfZV2Ll0YTIovY9RKRq3vaWToRxQM
+	 ixt8Z2G4ZzHqMTSpssWoF5eFWZKphGjLH9s916mN7JresUSJRDfU9F7eXmVQSQOiy3
+	 G5HMDspPrOnfQ==
+Message-ID: <f6e80b4e6f1f83294c7332b28d1fdfff42c503bf.camel@kernel.org>
+Subject: Re: [PATCH 0/2] Drop redundant tcp_rate_check_app_limited calls
+From: Geliang Tang <geliang@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: John Fastabend <john.fastabend@gmail.com>, Jakub Sitnicki	
+ <jakub@cloudflare.com>, Jiayuan Chen <jiayuan.chen@linux.dev>, Eric Dumazet
+	 <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>, Kuniyuki
+ Iwashima	 <kuniyu@google.com>, "David S. Miller" <davem@davemloft.net>,
+ Paolo Abeni	 <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Sabrina
+ Dubroca	 <sd@queasysnail.net>, David Howells <dhowells@redhat.com>,
+ Matthieu Baerts	 <matttbe@kernel.org>, Mat Martineau
+ <martineau@kernel.org>, Geliang Tang	 <tanggeliang@kylinos.cn>,
+ netdev@vger.kernel.org, bpf@vger.kernel.org, 	mptcp@lists.linux.dev
+Date: Wed, 16 Sep 2026 18:30:51 +0800
+In-Reply-To: <20260915160125.29be79e7@kernel.org>
+References: <cover.1789368148.git.tanggeliang@kylinos.cn>
+	 <20260915160125.29be79e7@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.56.2-9 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260916-ks8995-to-ksz8-v15-2-8825ff5fd4be@kernel.org>
-References: <20260916-ks8995-to-ksz8-v15-0-8825ff5fd4be@kernel.org>
-In-Reply-To: <20260916-ks8995-to-ksz8-v15-0-8825ff5fd4be@kernel.org>
-To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>, 
- Simon Horman <horms@kernel.org>, Russell King <linux@armlinux.org.uk>, 
- Nicolai Buchwitz <nb@tipi-net.de>
-Cc: netdev@vger.kernel.org, Woojung Huh <Woojung.Huh@microchip.com>, 
- devicetree@vger.kernel.org, Linus Walleij <linusw@kernel.org>
-X-Mailer: b4 0.16.0
+Content-Transfer-Encoding: 8bit
 
-The KS8995 100Mbit switch can do proper DSA per-port tagging
-with the proper set-up. This adds the code to handle ingress
-and egress KS8995 tags.
+Hi Jakub,
 
-The tagger is used by the KSZ8995XA support added later in this
-series.
+On Tue, 2026-09-15 at 16:01 -0700, Jakub Kicinski wrote:
+> On Mon, 14 Sep 2026 15:14:21 +0800 Geliang Tang wrote:
+> >   bpf: drop duplicate check_app_limited in tcp_bpf_push
+> >   tls: drop duplicate check_app_limited in tls_push_sg
+> 
+> you can't have 2 patches in one series targeting different trees
 
-The tag is a modified 0x8100 ethertype tag where a bit in the
-last nibble is set for each target port.
+Right, my bad. I'll send them as two separate patches in v3, each to
+its own tree.
 
-Always insert a distinct outer switch tag. User ports remove this
-field on egress, so reusing an existing 802.1Q header would consume
-the sender VLAN tag instead of preserving it.
-
-Push any hardware-accelerated VLAN tag into the packet first. This
-keeps the switch tag at offset 12 while retaining 802.1Q, 802.1ad and
-stacked VLAN headers as inner payload, and avoids relying on a valid
-SKB MAC header in direct transmit paths.
-
-Rate-limit receive untagging errors so repeated failures cannot flood
-the kernel log.
-
-Assisted-by: LLM
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
----
- MAINTAINERS          |   1 +
- include/net/dsa.h    |   2 +
- net/dsa/Kconfig      |   6 ++
- net/dsa/Makefile     |   1 +
- net/dsa/tag_ks8995.c | 180 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 190 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0e04d92d1b09..6e0d16e3ee4d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -17772,6 +17772,7 @@ F:	Documentation/devicetree/bindings/net/dsa/microchip,lan937x.yaml
- F:	drivers/net/dsa/microchip/*
- F:	include/linux/dsa/ksz_common.h
- F:	include/linux/platform_data/microchip-ksz.h
-+F:	net/dsa/tag_ks8995.c
- F:	net/dsa/tag_ksz.c
- 
- MICROCHIP LAN743X ETHERNET DRIVER
-diff --git a/include/net/dsa.h b/include/net/dsa.h
-index 7507d632e7c6..5d12191b6f6f 100644
---- a/include/net/dsa.h
-+++ b/include/net/dsa.h
-@@ -61,6 +61,7 @@ struct tc_action;
- #define DSA_TAG_PROTO_NETC_VALUE		33
- #define DSA_TAG_PROTO_KSZ8463_VALUE		34
- #define DSA_TAG_PROTO_MT7628_VALUE		35
-+#define DSA_TAG_PROTO_KS8995_VALUE		36
- 
- enum dsa_tag_protocol {
- 	DSA_TAG_PROTO_NONE		= DSA_TAG_PROTO_NONE_VALUE,
-@@ -99,6 +100,7 @@ enum dsa_tag_protocol {
- 	DSA_TAG_PROTO_NETC		= DSA_TAG_PROTO_NETC_VALUE,
- 	DSA_TAG_PROTO_KSZ8463		= DSA_TAG_PROTO_KSZ8463_VALUE,
- 	DSA_TAG_PROTO_MT7628		= DSA_TAG_PROTO_MT7628_VALUE,
-+	DSA_TAG_PROTO_KS8995		= DSA_TAG_PROTO_KS8995_VALUE,
- };
- 
- struct dsa_switch;
-diff --git a/net/dsa/Kconfig b/net/dsa/Kconfig
-index 23b4b74004ed..4f44bf3ede23 100644
---- a/net/dsa/Kconfig
-+++ b/net/dsa/Kconfig
-@@ -125,6 +125,12 @@ config NET_DSA_TAG_MXL_GSW1XX
- 	  Say Y or M if you want to enable support for tagging frames for
- 	  MaxLinear GSW1xx switches.
- 
-+config NET_DSA_TAG_KS8995
-+	tristate "Tag driver for Micrel KS8995 switch"
-+	help
-+	  Say Y if you want to enable support for tagging frames for the
-+	  Micrel KS8995 switch.
-+
- config NET_DSA_TAG_KSZ
- 	tristate "Tag driver for Microchip 8795/937x/9477/9893 families of switches"
- 	help
-diff --git a/net/dsa/Makefile b/net/dsa/Makefile
-index d15bcf5c68f0..1f9cc30e9988 100644
---- a/net/dsa/Makefile
-+++ b/net/dsa/Makefile
-@@ -25,6 +25,7 @@ obj-$(CONFIG_NET_DSA_TAG_BRCM_COMMON) += tag_brcm.o
- obj-$(CONFIG_NET_DSA_TAG_DSA_COMMON) += tag_dsa.o
- obj-$(CONFIG_NET_DSA_TAG_GSWIP) += tag_gswip.o
- obj-$(CONFIG_NET_DSA_TAG_HELLCREEK) += tag_hellcreek.o
-+obj-$(CONFIG_NET_DSA_TAG_KS8995) += tag_ks8995.o
- obj-$(CONFIG_NET_DSA_TAG_KSZ) += tag_ksz.o
- obj-$(CONFIG_NET_DSA_TAG_LAN9303) += tag_lan9303.o
- obj-$(CONFIG_NET_DSA_TAG_MT7628) += tag_mt7628.o
-diff --git a/net/dsa/tag_ks8995.c b/net/dsa/tag_ks8995.c
-new file mode 100644
-index 000000000000..f011bf01845e
---- /dev/null
-+++ b/net/dsa/tag_ks8995.c
-@@ -0,0 +1,180 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2026 Linus Walleij <linusw@kernel.org>
-+ */
-+#include <linux/bitfield.h>
-+#include <linux/etherdevice.h>
-+#include <linux/log2.h>
-+#include <linux/list.h>
-+#include <linux/net.h>
-+#include <linux/slab.h>
-+
-+#include "tag.h"
-+
-+/* The Micrel KS8995XA / Microchip KSZ8995XA Special Tag Packet ID (STPID)
-+ * pushes its tag in a modified VLAN (802.1Q) tag.
-+ * -----------------------------------------------------------
-+ * | MAC DA | MAC SA | 2 bytes tag | 2 bytes TCI | EtherType |
-+ * -----------------------------------------------------------
-+ * The tag is: 0x8100 |= BIT(port), ports 0,1,2,3
-+ */
-+
-+#define KS8995_NAME "ks8995"
-+
-+#define KS8995_TAG_LEN		VLAN_HLEN
-+/* Reserve room for the switch tag and a hardware-accelerated VLAN tag. */
-+#define KS8995_NEEDED_HEADROOM	(KS8995_TAG_LEN + VLAN_HLEN)
-+
-+#define KS8995M_STPID_STD	GENMASK(15, 4)
-+#define KS8995M_STPID_PORTMASK	GENMASK(3, 0)
-+#define KS8995M_STPID(portmask)	htons(ETH_P_8021Q | FIELD_PREP(KS8995M_STPID_PORTMASK, portmask))
-+
-+static struct sk_buff *ks8995_xmit(struct sk_buff *skb, struct net_device *dev)
-+{
-+	struct vlan_ethhdr *hdr;
-+	u16 portmask;
-+
-+	/* VLAN insertion requires a complete, linear Ethernet header. */
-+	if (unlikely(!pskb_may_pull(skb, ETH_HLEN))) {
-+		kfree_skb(skb);
-+		return NULL;
-+	}
-+
-+	/* Prepare the special KS8995 tags */
-+	portmask = dsa_xmit_port_mask(skb, dev);
-+
-+	/* The switch expects the special tag at offset 12. Move any hardware
-+	 * accelerated VLAN tag into the payload so the conduit cannot insert
-+	 * it outside the special tag.
-+	 */
-+	if (unlikely(skb_vlan_tag_present(skb))) {
-+		skb = __vlan_hwaccel_push_inside(skb);
-+		if (!skb)
-+			return NULL;
-+	}
-+
-+	/* Always add a distinct outer tag. The user port removes this field on
-+	 * egress, so reusing an existing 802.1Q tag would consume that VLAN tag.
-+	 */
-+	skb = vlan_insert_tag(skb, KS8995M_STPID(portmask), 0);
-+	/* vlan_insert_tag() drops the skb on failure */
-+	if (!skb)
-+		return NULL;
-+	hdr = skb_vlan_eth_hdr(skb);
-+	netdev_dbg(dev, "%s: inserted VLAN TAG %04x TCI %04x\n",
-+		   __func__, ntohs(hdr->h_vlan_proto),
-+		   ntohs(hdr->h_vlan_TCI));
-+
-+	return skb;
-+}
-+
-+static struct sk_buff *ks8995_rcv(struct sk_buff *skb, struct net_device *dev)
-+{
-+	int portmask;
-+	int port;
-+	u16 etype;
-+
-+	/* The special tag may be in the packet or VLAN metadata. In either
-+	 * case, its TPID must retain the source-port bits.
-+	 *
-+	 * Read the in-band TPID directly because skb->protocol contains
-+	 * ETH_P_XDSA.
-+	 */
-+	if (skb_vlan_tag_present(skb))
-+		etype = ntohs(skb->vlan_proto);
-+	else
-+		etype = ntohs(*(__be16 *)dsa_etype_header_pos_rx(skb));
-+	if ((etype & KS8995M_STPID_STD) != ETH_P_8021Q) {
-+		netdev_dbg(dev, "%s: dropped ethertype 0x%04x\n",
-+			   __func__, etype);
-+		kfree_skb(skb);
-+		return NULL;
-+	}
-+
-+	portmask = FIELD_GET(KS8995M_STPID_PORTMASK, etype);
-+	if (unlikely(!is_power_of_2(portmask))) {
-+		netdev_dbg(dev, "%s: dropped invalid port mask 0x%04x\n",
-+			   __func__, portmask);
-+		kfree_skb(skb);
-+		return NULL;
-+	}
-+	port = ilog2(portmask);
-+
-+	netdev_dbg(dev, "%s: received ethertype %04x\n",
-+		   __func__, etype);
-+
-+	/* Move an in-band special tag into VLAN metadata. If already
-+	 * offloaded, its TPID was validated above.
-+	 */
-+	if (!skb_vlan_tag_present(skb)) {
-+		skb = skb_vlan_untag(skb);
-+		if (!skb) {
-+			/* skb_vlan_untag drops the skb on failure */
-+			if (net_ratelimit())
-+				netdev_err(dev, "%s: unable to untag skb\n", __func__);
-+			return NULL;
-+		}
-+	}
-+
-+	netdev_dbg(dev, "%s: etype %04x portmask %04x (%d)\n",
-+		   __func__, etype, portmask, port);
-+	skb->dev = dsa_conduit_find_user(dev, 0, port);
-+	if (!skb->dev) {
-+		kfree_skb(skb);
-+		return NULL;
-+	}
-+
-+	/* The special tag's TCI is now in the hardware-accelerated VLAN
-+	 * metadata. The switch preserves the TCI of tagged
-+	 * frames, but inserts the ingress port's default tag for untagged frames.
-+	 * Since the driver programs the default tag to 0, a zero TCI identifies
-+	 * an originally untagged frame. Preserve every non-zero TCI as an
-+	 * 802.1Q tag, including VID 0 frames with PCP or DEI set.
-+	 */
-+	if (!skb->vlan_tci) {
-+		netdev_dbg(dev, "%s: clear VLAN tag from frame\n", __func__);
-+		__vlan_hwaccel_clear_tag(skb);
-+	} else {
-+		skb->vlan_proto = htons(ETH_P_8021Q);
-+		netdev_dbg(dev, "%s: vlan_tci = 0x%04x VLAN frame\n",
-+			   __func__, skb->vlan_tci);
-+	}
-+
-+	dsa_default_offload_fwd_mark(skb);
-+
-+	return skb;
-+}
-+
-+static void ks8995_flow_dissect(const struct sk_buff *skb, __be16 *proto,
-+				int *offset)
-+{
-+	const __be16 *encap_proto;
-+	__be16 buffer;
-+
-+	*proto = 0;
-+	*offset = 0;
-+
-+	/* Extra TX headroom does not increase the in-band RX tag length. */
-+	encap_proto = skb_header_pointer(skb, KS8995_TAG_LEN - sizeof(buffer),
-+					 sizeof(buffer), &buffer);
-+	if (!encap_proto)
-+		return;
-+
-+	*proto = *encap_proto;
-+	*offset = KS8995_TAG_LEN;
-+}
-+
-+static const struct dsa_device_ops ks8995_netdev_ops = {
-+	.name = KS8995_NAME,
-+	.proto	= DSA_TAG_PROTO_KS8995,
-+	.xmit = ks8995_xmit,
-+	.rcv = ks8995_rcv,
-+	.flow_dissect = ks8995_flow_dissect,
-+	.needed_headroom = KS8995_NEEDED_HEADROOM,
-+};
-+
-+MODULE_DESCRIPTION("DSA tag driver for Micrel KS8995 family of switches");
-+MODULE_LICENSE("GPL");
-+MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_KS8995, KS8995_NAME);
-+
-+module_dsa_tag_driver(ks8995_netdev_ops);
-
--- 
-2.55.0
+Thanks,
+-Geliang
 
