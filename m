@@ -1,36 +1,36 @@
-Received: from mta0.migadu.com (out-158.mta0.migadu.com [91.218.175.158])
+Received: from mta0.migadu.com (out-4.mta0.migadu.com [91.218.175.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E91B46D085
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 08:37:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24C244CF5E
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 08:40:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789547872; cv=none; b=pCmXEpN3hlhDpfKcsCCcca4gzrVO5C1p+vEyp95eR2fyf6EDsxHhYYzPF3ieLySWIzP1aNdy+FOxKDXhOr941RTEmJVnS2yUwKnA20gD/HDe7aviBPngzIBfglf0P/gcoV0H47yQ41lCIyLkHU99RbA02ZMIX7EU0AZh/nIYZPw=
+	t=1789548052; cv=none; b=IZTo0qqz4Vgj9w856ksUUQ90rR/BRKH8obBzn53K5qGUcuDeZ8TmzfZdY8RE33p2BwQzTMGi+qy7AWzTFKVFjT9q89La4w6KApx4mvuqsf70e4xrn0zXUfhJaqh48fjixTyeE4kbjsCVY//Nr8qA8uQn5Y6i82vgSSUBTVbrgdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789547872; c=relaxed/simple;
-	bh=J157RENJaSOVnRBc0VpFasHVK4YEoAwYHyLHBJ8LIgQ=;
+	s=arc-20240116; t=1789548052; c=relaxed/simple;
+	bh=FhrTUCd/cVH8OoVyad9tP9zVOBg5mMP7ZPaAcgmccV4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FIGVO9FYmAhZPaNh0j5iR2jZz1ZFm/bCKjeH+MX5kGaaHAVp5HpzNmCY9asqIyn/4iZZdBvYVHmvdNlpL90O9xKwV/fyGiUudvITxLziDNQ4ms4CyQxsy9hgLvBgbFbzlNEUVqy49nB1B4t229Oks/tJLljk4I/0wJfO6qoyBCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=P27qSDlD; arc=none smtp.client-ip=91.218.175.158
+	 In-Reply-To:Content-Type; b=eBd5W0CFw33edXDdk2eWVdp1mL36TJvDC5AHHumdy1RnEv13Rr9Zw8E0VdR4+YO1D8xAitIYK7X3i8oTx9S7iIjv/NT66Jx8Bs2twH9ToMlE0NIMoQKRCtylRYQl8dqmty4Jja987W7JR+IU5ZLMrcJlphjGE3/OmfVp+Rsdd0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Z14n6AO8; arc=none smtp.client-ip=91.218.175.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="P27qSDlD"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Z14n6AO8"
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=J157RENJaSOVnRBc0VpFasHVK4YEoAwYHyLHBJ8LIgQ=;
+DKIM-Signature: a=rsa-sha256; bh=FhrTUCd/cVH8OoVyad9tP9zVOBg5mMP7ZPaAcgmccV4=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789547868; v=1; x=1790152668;
- b=P27qSDlDb23W1FaR9JKgOhrCQdXP/CoEYJMa3CRTcDljbe8C5LvfWyKmRof+adWsOEaGaFNC
- 0CnqIk8J5Sl7lqapCSz+wq3+/c5o1SUvJaKgDsaDhK6AHW5eyNusHyQh5MB3lMsEMyCll+6eOSc
- 583/jmlFNytDxLPdG8MQ6E/U=
+ t=1789548048; v=1; x=1790152848;
+ b=Z14n6AO8qkfBp86t4Gm46sWpqIlvYAfyZfVpPzzJiUzVdmfdNFvJaEOB1sMhi/NO6mF85lAx
+ iojhbLRngx4alc45P+bj+EzbgtwvAsL5IfQMwheaYQQRL6rhRD97wQfDbDXRT5uGKKnc43xFjBz
+ SAYVCrYnfEjJd4AWMw6iRoXs=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 10bbcbde662d06e7;
-	Wed, 16 Sep 2026 08:37:38 +0000
-X-Mizu-Trace-ID: 10bbcbde662d06e7
+Received: by smtp.migadu.com with ESMTPS id 6f5ce7a0d81dd4a7;
+	Wed, 16 Sep 2026 08:40:42 +0000
+X-Mizu-Trace-ID: 6f5ce7a0d81dd4a7
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <c45fe13e-0879-4848-b66d-b95c49a906a6@linux.dev>
-Date: Wed, 16 Sep 2026 16:37:29 +0800
+Message-ID: <d29a20bc-eaf1-4745-9470-188613965c46@linux.dev>
+Date: Wed, 16 Sep 2026 16:40:34 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,59 +38,96 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] nfc: llcp: Fix socket reference leak in
- nfc_llcp_recv_ui()
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: david+nfc@ixit.cz, edumazet@google.com, horms@kernel.org,
- kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- oe-linux-nfc@lists.linux.dev, pabeni@redhat.com, sameo@linux.intel.com,
- stable@vger.kernel.org, davem@davemloft.net
-References: <20260916073424.1971784-1-vulab@iscas.ac.cn>
-From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
-In-Reply-To: <20260916073424.1971784-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH net-next v2 2/2] net: ethernet: oa_tc6: add reset-gpios
+ support
+To: Alessandro Zini <alessandro.zini@siemens.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+References: <20260916075349.21822-1-alessandro.zini@siemens.com>
+ <20260916075349.21822-3-alessandro.zini@siemens.com>
+From: Qingfang Deng <qingfang.deng@linux.dev>
+In-Reply-To: <20260916075349.21822-3-alessandro.zini@siemens.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-在 2026/9/16 15:34, Wentao Liang 写道:
-> In nfc_llcp_recv_ui(), nfc_llcp_sock_get() is called to find the bound
-> socket. If the socket type is not SOCK_DGRAM, the function returns
-> directly without releasing the socket reference via nfc_llcp_sock_put(),
-> resulting in a reference count leak.
-> 
-> Add nfc_llcp_sock_put() when the socket type is not SOCK_DGRAM.
-> 
-> Fixes: 968272bf0087 ("NFC: Handle LLCP UI frames")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Hi,
+
+On 2026/9/16 15:53, Alessandro Zini wrote:
+> OPEN Alliance 10BASE-T1x MAC-PHY Serial Interface specification
+> (v1.1, Section 8.2) defines an external RESET pin as an optional reset
+> source for the MAC-PHY.
+>
+> Add support for an optional reset GPIO in oa_tc6_init(). If specified in
+> the device tree, assert the hardware reset line for 10 us and allow 1 ms
+> settle time for crystal oscillator startup before performing the initial
+> TC6 control protection check and software reset.
+>
+> Suggested-by: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+> Signed-off-by: Alessandro Zini <alessandro.zini@siemens.com>
 > ---
->   net/nfc/llcp_core.c | 6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-> index db5bc6a878dd..5813c80ca593 100644
-> --- a/net/nfc/llcp_core.c
-> +++ b/net/nfc/llcp_core.c
-> @@ -888,8 +888,12 @@ static void nfc_llcp_recv_ui(struct nfc_llcp_local *local,
+> Changes in v2:
+> - Moved reset GPIO handling from lan865x.c to common oa_tc6.c as suggested
+>    by Parthiban Veerasooran.
+>
+>   drivers/net/ethernet/oa_tc6.c | 21 +++++++++++++++++++++
+>   1 file changed, 21 insertions(+)
+>
+> diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6.c
+> index 6fcc5f561d560..a697e2cb99cd8 100644
+> --- a/drivers/net/ethernet/oa_tc6.c
+> +++ b/drivers/net/ethernet/oa_tc6.c
+> @@ -11,6 +11,8 @@
+>   #include <linux/mdio.h>
+>   #include <linux/phy.h>
+>   #include <linux/oa_tc6.h>
+> +#include <linux/gpio/consumer.h>
+> +#include <linux/delay.h>
 >   
->   	/* We're looking for a bound socket, not a client one */
->   	llcp_sock = nfc_llcp_sock_get(local, dsap, LLCP_SAP_SDP);
-> -	if (llcp_sock == NULL || llcp_sock->sk.sk_type != SOCK_DGRAM)
-> +	if (!llcp_sock)
->   		return;
-> +	if (llcp_sock->sk.sk_type != SOCK_DGRAM) {
-> +		nfc_llcp_sock_put(llcp_sock);
-> +		return;
+>   /* Control command header */
+>   #define OA_TC6_CTRL_HEADER_DATA_NOT_CTRL	BIT(31)
+> @@ -88,6 +90,7 @@ struct oa_tc6 {
+>   	bool disable_traffic;
+>   	bool prot_ctrl;
+>   	enum oa_tc6_quirk_flag quirk_flags;
+> +	struct gpio_desc *reset_gpio;
+>   };
+>   
+>   enum oa_tc6_header_type {
+> @@ -1503,6 +1506,24 @@ struct oa_tc6 *oa_tc6_init(struct spi_device *spi, struct net_device *netdev,
+>   	if (!tc6->spi_data_rx_buf)
+>   		return NULL;
+>   
+> +	tc6->reset_gpio = devm_gpiod_get_optional(&spi->dev, "reset",
+> +						  GPIOD_OUT_LOW);
+
+Please use GPIOD_OUT_HIGH here, so the reset pin is initially asserted, 
+and the first gpiod_set_value_cansleep below can be removed. See 
+function __mdiobus_register as an example.
+
+> +	if (IS_ERR(tc6->reset_gpio)) {
+> +		dev_err_probe(&spi->dev, PTR_ERR(tc6->reset_gpio),
+> +			      "Failed to get reset GPIO\n");
+> +		return NULL;
 > +	}
->   
->   	/* There is no sequence with UI frames */
->   	skb_pull(skb, LLCP_HEADER_SIZE);
+> +
+> +	if (tc6->reset_gpio) {
+> +		/* Assert hardware reset for 10 us (datasheet specifies min 5 us)
+> +		 * and allow 1 ms settle time for crystal oscillator startup.
+> +		 */
+> +		gpiod_set_value_cansleep(tc6->reset_gpio, 1);
+> +		fsleep(10);
+> +		gpiod_set_value_cansleep(tc6->reset_gpio, 0);
+> +		fsleep(1000);
+> +	}
+> +
+>   	/* Check the PROTE bit status so that we can reset the device */
+>   	ret = oa_tc6_check_ctrl_protection(tc6);
+>   	if (ret) {
 
-Reviewed-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Kind regards,
 
-Please use the [PATCH net] subject prefix for fixes targeting the net 
-tree. See the netdev submission guidelines:
-
-https://docs.kernel.org/process/maintainer-netdev.html#networking-subsystem-netdev
-
-Thanks,
-Xuanqiang
