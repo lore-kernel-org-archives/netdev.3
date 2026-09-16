@@ -1,322 +1,190 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f18.google.com (mail-pj2-f18.google.com [74.125.227.146])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B7448AE0F
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 17:14:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE4E376A08
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 17:23:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789578842; cv=none; b=OaU5+LCGT6CheU22gGgrt/BK5v7pqYqmOoi0Ix0TE58XSnqxE3tANO1/Aq8vh4qvPpGVD87SYRaP0S/Fs2xpWPnvpw+gstUAcWpeiS97BlPsSI2ApGYxagrwL9Pi2wQOHfTzVQJmGRiyhS0O60yB8nrXftErFFY42Ux+rJOz0AM=
+	t=1789579420; cv=none; b=U+vHspXEMYPjm7ARDoEGCs0hh/3lJBkSISDK0rCHof7tvGUX0cmJigm28nvSy4Lt+H5YPVKFkdMq2qgkeBOoL5MNj51dOxKVg5BNHxeBIqgHmLGjkboIq6Hj5tJn8crLAKYQSQ6WniEo1uPJRUMqMStPYPJT5mcv6ZU/Sgnwy7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789578842; c=relaxed/simple;
-	bh=MowQt+K170gbSghvfo0hhm7Y8rD7woW3oyvuy0UsKCk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bImu6bYcHTOddiqcUqkWj+1ne7FrpBvSkEA+HvVBHSBSmDij16xx/vgWzzA98KbbQ8BbUYUKbtOsUEvOEr7zULfRzcr3/0yvAafa+JRzKm7Kyc//hedY6kbGplWGTE1SDPheYSH3Ht9Nc9613+zi7i+j97Q/dtWldmHbfBKLBV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=SLAeiwu7; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=IgAFLOGR; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1789579420; c=relaxed/simple;
+	bh=2r/ur1vHQQ7hUa5k+c+J4cgWoSYzzgQ7+aJxr497qD4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aznXeijNtSOvUR/RqgaOv8aDoY+ya1bOEsprakhCagwErrVkmHU/DXEcqBA29Thi4XhSMbr7/1wDX4IKYCKRpxDygJbxs7B42Ms/cq/pznKYwbRVd9k9mD8mMWKafONlX8Jv0jBSng5FlOCZjOFyN8L3M91P5dc+jnDiku/E37Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20251104.gappssmtp.com header.i=@davidwei-uk.20251104.gappssmtp.com header.b=qTWE9AMH; arc=none smtp.client-ip=74.125.227.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=davidwei.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="SLAeiwu7";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="IgAFLOGR"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68GFeT522600368
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 17:13:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=DeHaJe9Qao7AHi4F08K5E9v8
-	rW7Bb0sStmKEtc/P+qE=; b=SLAeiwu7Uwh3KtN5bkGk2pkL1bNJCqnYJJm+/bKM
-	N02h/UGRZWasLth58wbhc9CM5/IvSvYxlF/OrdZb93lc6sBKujTDcOYv/FVDrq3n
-	Kq6tcTOU8ycf7s8GBLkxkjbVa8XOnf2dJXe+RYbaHU+hJK6cdrd0XRZx/lzPbZye
-	DJKAqz5FCxV5O299KWgTkwdNZ/XWNJeTjiZSvoPApkVNVwDIJqsKyo+MVX6l0VwV
-	zeLSz0iavekN7QRt/U6aWL1dOhaeQKW4/3ssXePJqUmB9bz8IY6JdcwznpDgszI3
-	Z6wPIjlCzqpHssgTD/0MlJnozWCVCrqvNw/5dhkof2zmTQ==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gquwb13vc-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 17:13:59 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-93a07b5b5efso436202385a.1
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 10:13:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=davidwei-uk.20251104.gappssmtp.com header.i=@davidwei-uk.20251104.gappssmtp.com header.b="qTWE9AMH"
+Received: by mail-pj2-f18.google.com with SMTP id d9443c01a7336-2db22383fe8so8441495ad.2
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 10:23:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1789578838; x=1790183638; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=DeHaJe9Qao7AHi4F08K5E9v8rW7Bb0sStmKEtc/P+qE=;
-        b=IgAFLOGRwUQc0ciS/Y+0xLCCOcVTBeM7YshX0hmUn4US/uuZe9zi7QtXNOUUaypbFj
-         TyTLSdFkUL56QlykpfqunKZ2cPtQwbqdQblKes2B5UCSlqIdecg/OYrQEa3TwM9cfdgd
-         FaUO45tL+18jRmeyJeRp0nVuuH440WMIxBUEpUdCn5Ye4Z/THvMOhAd5sYm1ZxGdWhf8
-         lGHiU+CX6oryx8Uj6hjo+QlmfeUZeqoFHOQl0Tz52HVLeRtOLUyKCRj1v3s8MW9nQ7mj
-         Ig52YZN5r5FsItLD9BVUA9z+Rx+xRUpxrey6OlLQftZJc/XvV82fgohMydkqX1VMJ36U
-         wIpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789578838; x=1790183638;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=davidwei-uk.20251104.gappssmtp.com; s=20251104; t=1789579417; x=1790184217; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=DeHaJe9Qao7AHi4F08K5E9v8rW7Bb0sStmKEtc/P+qE=;
-        b=ZYQr+uULWxBsfhcAWnPPPbySNEJfnIjOo6ZxoS0tsc8xY11kYWbSA8WQt16cQhAFvz
-         Nb7IOEdrbdYl+XeMNQ+Y3QOqoMlS780EcQP8IphPbtU9h/EiT/7A5tmx9VkqamO+CTr2
-         VhlINEnfhzwOvljfIYYVqL6XU874ETwZDRTR2oHvZu/vsHYjKNsYDe63Nd9DOPDqi5ft
-         IX0k41pviMZS7qS/yF66NcBuA9xS2pYxgopstjx+AVJeUzFPKLYiXx17dCK5jtAStvMv
-         xN20mEdW3YhFh/AvrPBfBFgCqx0hmSUEhE2jF2F/QrOz6fWyAzbz4bcarbiK76cZaWMD
-         PjlA==
-X-Forwarded-Encrypted: i=1; AKwUvBwvilwj3DzM1oPeb9/XfuZnUvns+NOQYOGRdyzumFnqFralqn9bHnMyGLNJcE4OE3c01wO32AE=@vger.kernel.org
-X-Gm-Message-State: AFuF++mKEBr/ND6taN8btY0XKcNhLStp+OVCVXp75iAYD+heNff8rdcp
-	PV6WomCJl/nkJBrY5vta04YNLBdX76j0mLpeXJ1HmHdmgyns6418iAFG/VgdcNPKqrFpfqnfcpG
-	LpeABMREk21C81jnTf6j1RVA9V4jrnfYhoGwFJijBl4uHiHnFheHHi0V8MPU=
-X-Gm-Gg: AYBFou2OFXyVJ0Xnwl4oMzmSjXLVP58T60ZoPKhP6BQNikaXZsJEv4QQ7+td/XjLoBy
-	4rLdoxicsbv9OKWTtfoKGK6VEz0KWAfJCImwtHBXtFdTkmXM6zjIGLoF2SgxM5HRo5CUeQeYw+U
-	kn67z0efZGDMCF9Bjuia0X3pUDaJqGJf1zMiL6G9vRXF5LP8k4kC9est+aOU8E5aFNRNeb3nyNb
-	Uh42qQUzjvmlvS1NLmlbLiqY/WM2B98sFqAH0acRdiS55Ex0ej2Hn3U0nGOfSZ7qJR0dLHAlufI
-	PEfO2dnjS6yWDSrRW+AUhOc7HYDQ9NLZYIKICh1Xvm6t1BQJ/JAwBOl3SqPD1EXZrIwx2QzxAbi
-	uQasm8hJ984I71CXRJun39T9It+0uGxRG/HdvATEF1eBHdk1DTQ==
-X-Received: by 2002:a05:620a:1789:b0:937:6f98:c68f with SMTP id af79cd13be357-93bc62405afmr61133085a.1.1789578837991;
-        Wed, 16 Sep 2026 10:13:57 -0700 (PDT)
-X-Received: by 2002:a05:620a:1789:b0:937:6f98:c68f with SMTP id af79cd13be357-93bc62405afmr61126785a.1.1789578837460;
-        Wed, 16 Sep 2026 10:13:57 -0700 (PDT)
-Received: from localhost (mob-176-242-39-34.net.vodafone.it. [176.242.39.34])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4870bef7642sm7943207f8f.5.2026.09.16.10.13.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 10:13:56 -0700 (PDT)
-Date: Wed, 16 Sep 2026 19:12:56 +0200
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Jose Abreu <Jose.Abreu@synopsys.com>, netdev@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH net] net: stmmac: fix rx Scatter-Gather support
-Message-ID: <aqrOGKHuJ63wWd8y@lore-qca>
-References: <20260916-stmmac-rx-sg-fix-v1-1-b49b7b8f725f@oss.qualcomm.com>
- <2ec95f84-2eaf-407f-8372-6f6e89eb1e3b@bootlin.com>
+        bh=mrxKqPcjgQ5tUNDYvVuvcLSiDIZVjPZraogbQhp09P4=;
+        b=qTWE9AMHz0bedGjuA186VAWjh7XDkVGBzwbAFjGkOAMzCuJdyyGkntcYjOlB/vXlKI
+         cnCBAXcxmgv5gB1cNUJ2T626pyhOdEBxCHcOBjoL9N57wDR2aVdKglRoiEgWbbN2GS4E
+         8GGDT610NkN4eCyMR1zqKNSdyPzqH6zHAqasTJV33w2NgQADIDQuhgvpD+eQDeLAMSLs
+         FkfjkvCH4PPEFrnzTURk0t3OE6P8DYFzM2vFDZknbN4/3PGnVHwWd9MMPVFAWaL12pM6
+         gxoLFEODIfkKlhhfOhnQLsuz5EIQs9Lf2ZWACFWcOLnPNtMzlX6oTK7CW7aOCV1TBQzc
+         vY0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789579417; x=1790184217;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=mrxKqPcjgQ5tUNDYvVuvcLSiDIZVjPZraogbQhp09P4=;
+        b=EG9oflUnHS+HJhOu0Eipgc7vMXL/Ym/n9ZixDI5Ob6ef6FvKVFSF7FPqetQDljSPFe
+         mMmGeR+/5sIrwlZhmizKYcmbR3nlGMptYqRXhAH52qvS09DU1i4/DIVZUc3td5eRnn3c
+         XoRrSuEX8oSLKQaki2rLkogKWfPFv6SUMKr6yTK/XTQLBb3FMPuNplro61K54ih3EwD7
+         Ylv4SkZ3nx+qCpbK3PA94AqKnkKIjAsvPI6jJlra9wURvOixU+lG4KIoM+PJkAji8ksz
+         rNkmv1cisyS8xuAn+4kb/5V47lh5+05g+ec4tiRJuvuX3g5Yd7sFKCgwZqGHUzvVF+5F
+         Z9Mg==
+X-Gm-Message-State: AFuF++nHoJYO+EwnawLlHvzsJOlntwaOXpCxr1isTwUuMuejQt7H8urO
+	/33ZT/YL3AgB+wTU153Wjuwc4l81RmBxiSBlaEsS/PSjn5WwA5j/LtlsHtls+598F20=
+X-Gm-Gg: AYBFou2svQaXAggQmYNfrpvHdtV7pYtUfxhLHvQrYIRE462IqlSG6lihP+i0kHXTj7N
+	lTCVASJSh1aY+j0xJMWv1ZA1VPssIGV5++/Y5XsVpajJHgk8sMJ1OAeh4B2eraVf8BwFEQTo61C
+	AGOUnhUyu9UA243mlHpUafHmefWbhgiMHvFNhT1dUlz9jzP9zoAbUMwNQoegi6AjTRzMVoXgeBU
+	UIJgJx+l2SUPSme+GassAgveY8EXxUaQYKfFXiVbeyGkO/hoZ8BnIBDBXmJ0dBeQyXpNCWhr4pj
+	nFi7FbOofTlMqIiTsuutzgndEC+ArEXpPIC5Cr7T7lBHVGQF8UaeOng755Ns/NHtQCukmkw2xkl
+	piBOseZlDUcN4CCvpimHqbxwwCHZWWPjwFS6XjafRisai1Vqoj9ntqQW07qRrNO7jJcdN0+yfRv
+	UKrHFiTDAx1g0JAsgJJKRSizq38va1hQR7KkeIySN9PoWNL2kLCJnf3GmtH+jxbndgypX24dEdL
+	g30sYbaTcsXwjw5cvTvZzTsdQbKg1sdXW02je/BmiKxPRYPH4uLQfDWo02BnI+57Zb266DE
+X-Received: by 2002:a17:903:9ce:b0:2c9:e9db:8167 with SMTP id d9443c01a7336-2dd8e00347bmr76211565ad.7.1789579417229;
+        Wed, 16 Sep 2026 10:23:37 -0700 (PDT)
+Received: from ?IPV6:2a03:83e0:1156:1:c8f:b917:4342:fa09? ([2620:10d:c090:500::6:fa0c])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd89ee0a56sm15181545ad.50.2026.09.16.10.23.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Sep 2026 10:23:36 -0700 (PDT)
+Message-ID: <5eaa3be7-1615-4f8b-81e1-449db0e986ef@davidwei.uk>
+Date: Wed, 16 Sep 2026 10:23:34 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Im3uIu74X4MILul3"
-Content-Disposition: inline
-In-Reply-To: <2ec95f84-2eaf-407f-8372-6f6e89eb1e3b@bootlin.com>
-X-Authority-Analysis: v=2.4 cv=H4JOUOYi c=1 sm=1 tr=0 ts=6aaace57 cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=AQCpnuTwkiGt/6pP7chwVg==:17
- a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22 a=VwQbUJbxAAAA:8
- a=P-IC7800AAAA:8 a=EUspDBNiAAAA:8 a=a7vlQkQE84izC6u3-4sA:9 a=CjuIK1q_8ugA:10
- a=pPXggMpnJ1fGgHuoTg8A:9 a=IoWCM6iH3mJn3m4BftBB:22 a=d3PnA9EDa4IxuAV0gXij:22
-X-Proofpoint-GUID: fvhvNbUrtsbgK3_d3oflH57BSRX3Cohz
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE2MDIzNSBTYWx0ZWRfXzrkqSoZ7jNff
- 2xDFrt5+WEsgB3q9iC/U+h9lxx+GDLBosJ3eO8mml2ogl62JAD4CAFlF/unzvDp8L12qnPrRS62
- kJXt0KXb5Id3HxUZt9KJ+zPot0U6jVOHijkdJt8S0FOZ7IZg8cyVDQ2u2Owwuff+S59SJymW/DL
- Olk5wu8RDRMMN6LgiPVamgKIe2vIfVljA4oImXmlpIKSdNMUkOAV/WMc4r+z/+azZdgUtOT+oIH
- NFHkKCiqh19PJGpIvPVh68Gyu9tqM0093J5aMMpPPPbAUs1JlifsqYWl1P/R6z0NvwYk7O0TLxn
- A7yh5aQBWr9l4CtEE6X2aX2/p/Q97W0c+9C8cxY/gnRPHOLDMwW1S/B3xHBZfEExVn63wzHzECL
- lM6Q5GFeHclYq4JQ0BPxucjlojEoNGhbDigxj+14HEcdbaJCkb8Jm/d2xj1hNyvIa1zagaCL8Ir
- 1juqvXIU3t9P7Ppiejw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE2MDIzNSBTYWx0ZWRfXxlugwMra9ZN7
- 6n/AfRJfkCmwTKwepZrT8CFYw1whAvP5VShYSSApli+3TO6w/2N3tcqzq2pH64xcEk00+XR2oBH
- 09S/GELvoraGHSkjT3vmvJaxqtRMrU0=
-X-Proofpoint-ORIG-GUID: fvhvNbUrtsbgK3_d3oflH57BSRX3Cohz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-16_03,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0 spamscore=0 priorityscore=1501 impostorscore=0
- phishscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609160235
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] tcp: initialize skb tx timestamp key before cloning
+To: Eric Dumazet <edumazet@google.com>
+Cc: netdev@vger.kernel.org, Neal Cardwell <ncardwell@google.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>, "David S. Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Jason Xing <kerneljasonxing@gmail.com>
+References: <20260915214450.2882680-1-dw@davidwei.uk>
+ <CANn89iLkkiXvjWzH=_iGNV-_n8aAUSiCVuwy1VPYb6BKZO-rew@mail.gmail.com>
+Content-Language: en-US
+From: David Wei <dw@davidwei.uk>
+In-Reply-To: <CANn89iLkkiXvjWzH=_iGNV-_n8aAUSiCVuwy1VPYb6BKZO-rew@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
---Im3uIu74X4MILul3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 2026-09-15 15:21, Eric Dumazet wrote:
+> On Tue, Sep 15, 2026 at 2:44 PM David Wei <dw@davidwei.uk> wrote:
+>>
+>> tcp_tx_timestamp() can select skbs from the rtx queue when all the
+>> copied data has been sent in tcp_sendmsg_locked(). These skbs may be
+>> already cloned, sharing the same shinfo, and handed off into the lower
+>> tx layers.
+>>
+>> tcp_tx_timestamp() sets tx_flags before setting skb tskey, racing with
+>> any reader of both. It is possible to observe a valid tx_flag, but an
+>> uninitialized tskey, which produces a large underflow after subtracting
+>> the socket tskey.
+>>
+>> Initialize skb tskey just before cloning while its shinfo is still
+>> private. In tcp_tx_timestamp(), if it selects a cloned skb from the rtx
+>> queue from the current tcp_sendmsg_locked() call (i.e. tx_flags and
+>> txstamp_ack are 0) and the pre-init skb tskey matches, then tx_flags can
+>> be set safely.
+>>
+>> If the skb is not shared, coming from the write queue, then both tskey
+>> and tx_flags are set, as before.
+>>
+>> Fixes: 838eb9687691 ("tcp: tcp_tx_timestamp() must look at the rtx queue")
+>> Assisted-by: LLM
+>> Signed-off-by: David Wei <dw@davidwei.uk>
+> 
+> pw-bot: cr
+> 
+> Sorry, this patch significantly hurts TCP performance and has many bugs.
+> 
+> I am sure your LLM can find a cheaper solution if you ask it to try harder.
 
-> Hi Lorenzo
+This wasn't a yolo patch straight from an LLM, I tried quite hard to
+reason with the bug and possible solutions. Maybe that's the problem -
+the LLM is actually smarter than me :)
 
-Hi Maxime,
+> 
+> Some hints if needed:
+> 
+> First idea:
+> 
+> 1) In tcp_tx_timestamp():
+> 
+> Keep shinfo / tcb accesses inside if (unlikely(tsflags)) so normal
+> traffic pays zero cost.
+> When falling back to skb = skb_rb_last(&sk->tcp_rtx_queue):
+> Verify TCP_SKB_CB(skb)->end_seq == tp->write_seq and
+> !tcp_has_tx_tstamp(skb). If either fails, do not touch skb.
+> Always write shinfo->tskey before sock_tx_timestamp(sk, sockc,
+> &shinfo->tx_flags) (and do the same in
+> bpf_sock_ops_enable_tx_tstamp()).
+> If pre-initializing shinfo->tskey in __tcp_transmit_skb() before
+> skb_clone(oskb, gfp_mask) (which already dirties shinfo->dataref in
+> the same cache line), guard it with !tcp_has_tx_tstamp(oskb) and use
+> TCP_SKB_CB(oskb)->end_seq - 1 (or seq + len - 1), without the bogus if
+> (shinfo->tskey != tskey) check in tcp_tx_timestamp().
+> 
+> 2) In tcp_sendmsg_locked() (to preserve TX_SCHED / TX_SOFTWARE /
+> TX_HARDWARE on non-blocking partial sends):
+> 
+> Before calling tcp_push_one() / __tcp_push_pending_frames() at the end
+> of the loop (when skb->len >= size_goal), check if
+> (!sk_stream_memory_free(sk)) goto wait_for_space;.
+> At wait_for_space:, only call tcp_push() if timeo != 0 (since when
+> !timeo, sk_stream_wait_memory() immediately returns -EAGAIN and out:
+> will run tcp_tx_timestamp() before tcp_push()).
+> 
+> Second idea:
+> 
+> We can solve this cleanly and minimally by:
+> 
+> Reordering the writes in tcp_tx_timestamp() (and
+> bpf_sock_ops_enable_tx_tstamp()) so shinfo->tskey is written first via
+> WRITE_ONCE(), followed by publishing shinfo->tx_flags via
+> smp_store_release() in __sock_tx_timestamp().
 
->=20
-> On 9/16/26 17:25, Lorenzo Bianconi wrote:
-> > When a received frame is larger than dma_buf_sz, the DMA scatters it
-> > across multiple RX descriptors (rx Scatter-Gather). The secondary RX
-> > buffer (sec_page) was only allocated and programmed when split-header
-> > (SPH) was active, so for regular frames buffer2 was neither allocated
-> > nor backed by a valid mapping. As soon as an incoming frame overflowed
-> > buffer1, the DMA wrote the overflow into the unmapped secondary-buffer
-> > address, triggering an SMMU translation fault on IOMMU-based platforms:
-> >=20
-> > arm-smmu 15000000.iommu: Unhandled context fault: fsr=3D0x402, iova=3D0=
-x00000000, fsynr=3D0x7f0011, cbfrsynra=3D0x1c90, cb=3D11
-> > arm-smmu 15000000.iommu: FSR    =3D 00000402 [Format=3D2 TF], SID=3D0x1=
-c90
-> > arm-smmu 15000000.iommu: FSYNR0 =3D 007f0011 [S1CBNDX=3D127 WNR PLVL=3D=
-1]
-> >=20
-> > Enable scatter-gather for non-SPH frames: always allocate the secondary
-> > RX buffer and always mark buffer2 as valid in stmmac_init_rx_buffers()
-> > and stmmac_rx_refill(), and account for it in the buffer length
-> > computation. stmmac_rx_buf1_len() now returns min(dma_buf_sz, plen - le=
-n)
-> > on the last descriptor, while stmmac_rx_buf2_len() returns the remaining
-> > bytes on the last descriptor and dma_buf_sz on the intermediate ones. T=
-he
-> > GMAC4 + split-header path keeps using the accumulated payload length
-> > semantics, since there an intermediate descriptor's buffer2 can be only
-> > partially filled.
-> >=20
-> > Fixes: 88ebe2cf7f3f ("net: stmmac: Rework stmmac_rx()")
-> > Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
->=20
-> Ah this is also nice ! Ran into that with the Jumbo Frame selftest, it
-> spills into the next desc and it doesn't end well (at least on dwmac1000).
->=20
-> I don't know how you've tested that, can you test it in conjunction with
-> this patch too ?
->=20
-> https://lore.kernel.org/netdev/20260911212028.1497613-6-maxime.chevallier=
-@bootlin.com/
->=20
-> It changes the way we select the dma_buf_sz based on the MTU.
+I did think about this solution. I still don't fully grasp the memory
+model and how READ/WRITE_ONCE and acquire-release works, so I wasn't
+entirely sure if it was sufficient.
 
-Ack. My main goal here is to keep the default MTU/rx length (1536B) on
-the stmmac device and to split the received packet (e.g. with length 8KB)
-over multiple DMA descriptors.
+There could be situations where the skb is pushed early, and the lower
+layers copy the shinfo e.g. GSO and COW. I don't have experience with
+this code, so I find it hard to evaluate plausible paths that LLMs
+suggest.
 
->=20
-> I'll run your series on the boards I have and report if anything weird ha=
-ppens,
-> but if you have some testing commands to share that would be awesome :)
+That's why I opted for the pre-set tskey before clone approach in this
+RFC. I didn't think this would affect perf that badly, but yeah it is a
+really hot function.
 
-If you want to test with a simple ping you just need to increase the MTU on
-the sender (e.g. setting MTU to 7KB). In case you prefer to test with TCP, =
-you
-would need to change even the route MTU used by the stmmac device:
+I believe I can make the GSO path work with acquire-release. For COW, do
+you think it is actually relevant?
 
-- sender:
-  $ip link set <nic> mtu 7000
-- receiver (stmmac):
-  $ip route change <net> dev <nic> mtu 7000
-
-Regards,
-Lorenzo
-
->=20
-> Maxime
->=20
-> > ---
-> >  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 25 ++++++++-------=
---------
-> >  1 file changed, 8 insertions(+), 17 deletions(-)
-> >=20
-> > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/driver=
-s/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > index 1fb5f804ea23..be7cb0cafeb5 100644
-> > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> > @@ -1659,17 +1659,14 @@ static int stmmac_init_rx_buffers(struct stmmac=
-_priv *priv,
-> >  		buf->page_offset =3D stmmac_rx_offset(priv);
-> >  	}
-> > =20
-> > -	if (priv->sph_active && !buf->sec_page) {
-> > +	if (!buf->sec_page) {
-> >  		buf->sec_page =3D page_pool_alloc_pages(rx_q->page_pool, gfp);
-> >  		if (!buf->sec_page)
-> >  			return -ENOMEM;
-> > =20
-> >  		buf->sec_addr =3D page_pool_get_dma_addr(buf->sec_page);
-> > -		stmmac_set_desc_sec_addr(priv, p, buf->sec_addr, true);
-> > -	} else {
-> > -		buf->sec_page =3D NULL;
-> > -		stmmac_set_desc_sec_addr(priv, p, buf->sec_addr, false);
-> >  	}
-> > +	stmmac_set_desc_sec_addr(priv, p, buf->sec_addr, true);
-> > =20
-> >  	buf->addr =3D page_pool_get_dma_addr(buf->page) + buf->page_offset;
-> > =20
-> > @@ -5097,7 +5094,7 @@ static inline void stmmac_rx_refill(struct stmmac=
-_priv *priv, u32 queue)
-> >  				break;
-> >  		}
-> > =20
-> > -		if (priv->sph_active && !buf->sec_page) {
-> > +		if (!buf->sec_page) {
-> >  			buf->sec_page =3D page_pool_alloc_pages(rx_q->page_pool, gfp);
-> >  			if (!buf->sec_page)
-> >  				break;
-> > @@ -5108,10 +5105,7 @@ static inline void stmmac_rx_refill(struct stmma=
-c_priv *priv, u32 queue)
-> >  		buf->addr =3D page_pool_get_dma_addr(buf->page) + buf->page_offset;
-> > =20
-> >  		stmmac_set_desc_addr(priv, p, buf->addr);
-> > -		if (priv->sph_active)
-> > -			stmmac_set_desc_sec_addr(priv, p, buf->sec_addr, true);
-> > -		else
-> > -			stmmac_set_desc_sec_addr(priv, p, buf->sec_addr, false);
-> > +		stmmac_set_desc_sec_addr(priv, p, buf->sec_addr, true);
-> >  		stmmac_refill_desc3(priv, rx_q, p);
-> > =20
-> >  		rx_q->rx_count_frames++;
-> > @@ -5160,7 +5154,7 @@ static unsigned int stmmac_rx_buf1_len(struct stm=
-mac_priv *priv,
-> >  	plen =3D stmmac_get_rx_frame_len(priv, p, coe);
-> > =20
-> >  	/* First descriptor and last descriptor and not split header */
-> > -	return min_t(unsigned int, priv->dma_conf.dma_buf_sz, plen);
-> > +	return min_t(unsigned int, priv->dma_conf.dma_buf_sz, plen - len);
-> >  }
-> > =20
-> >  static unsigned int stmmac_rx_buf2_len(struct stmmac_priv *priv,
-> > @@ -5170,10 +5164,6 @@ static unsigned int stmmac_rx_buf2_len(struct st=
-mmac_priv *priv,
-> >  	int coe =3D priv->hw->rx_csum;
-> >  	unsigned int plen =3D 0;
-> > =20
-> > -	/* Not split header, buffer is not available */
-> > -	if (!priv->sph_active)
-> > -		return 0;
-> > -
-> >  	/* For GMAC4, when split header is enabled, in some rare cases, the
-> >  	 * hardware does not fill buf2 of the first descriptor with payload.
-> >  	 * Thus we cannot assume buf2 is always fully filled if it is not
-> > @@ -5188,8 +5178,9 @@ static unsigned int stmmac_rx_buf2_len(struct stm=
-mac_priv *priv,
-> >  	 * Thus 'plen - len' always gives the correct length of buf2.
-> >  	 */
-> > =20
-> > -	/* Not GMAC4 and not last descriptor */
-> > -	if (priv->plat->core_type !=3D DWMAC_CORE_GMAC4 && (status & rx_not_l=
-s))
-> > +	/* Not GMAC4, or non-SPH and not last descriptor */
-> > +	if ((priv->plat->core_type !=3D DWMAC_CORE_GMAC4 || !priv->sph_active=
-) &&
-> > +	    (status & rx_not_ls))
-> >  		return priv->dma_conf.dma_buf_sz;
-> > =20
-> >  	/* GMAC4 or last descriptor */
-> >=20
-> > ---
-> > base-commit: ceac0de741bfb47ca255eee075257b3bb31f0651
-> > change-id: 20260916-stmmac-rx-sg-fix-a8d2d8a3ba01
-> >=20
-> > Best regards,
->=20
-
---Im3uIu74X4MILul3
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaqrOGAAKCRA6cBh0uS2t
-rEc9AP9lSxuJ98JUZ5NxlDXvDdE1CpA/9FW+O7HPw5YG+Vr8SAEA72d2As0gaD79
-SwV5DGTakhWkPgzYvdCuvCZPG+diNwE=
-=L9Kn
------END PGP SIGNATURE-----
-
---Im3uIu74X4MILul3--
+> 
+> Guarding tcp_rtx_queue fallback with if (skb &&
+> tcp_has_tx_tstamp(skb)) return; so we never overwrite tskey on an
+> in-flight cloned skb that already has active timestamp flags.
+> 
+> Performing a symmetric smp_load_acquire() on
+> skb_shinfo(orig_skb)->tx_flags in __skb_tstamp_tx() (and
+> skb_complete_tx_timestamp()) before reading tskey.
+> This avoids touching __tcp_transmit_skb() or the tcp_sendmsg_locked()
+> loop, adds zero overhead to the TX fastpath (skb_tx_timestamp()
+> remains a relaxed check), and compiles to plain MOVs on x86 while
+> providing proper release-acquire ordering (stlrb/ldarb) on ARM64.
