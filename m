@@ -1,93 +1,90 @@
-Received: from mta0.migadu.com (out-41.mta0.migadu.com [91.218.175.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5182E472F62
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 08:41:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3333348F82D;
+	Wed, 16 Sep 2026 09:01:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789548099; cv=none; b=QtGouELTbbMDDNCwukwwXelWPNORgfrxfj7zK5iHNlFUXzQWoVCmo9q5r/zU13Vy8+6nQWc0OZ/D/T7xmRTokjk/oacn6CpR2spjc0OzK3MlmqEvGxz2yvT2QYZv/BSu4VYHzmRr3FyufFZd9FFIImTjtV+QtEoYmqsig0wU9PE=
+	t=1789549287; cv=none; b=GXjGFG4itdMcfbybC8Cp5ifvPbKhFKMwFB4zf1Yik/3QS+fXemDfY48OCHaEn7MoQLf5+D5kNfOK0kOSMTOkj4uFxaeli30y1QnCHtaWD2rF4McqZSJ2dxeO26nUbtR15VZbRodQPOY+4ZKA2XoAqDYFHvbWNcvLO20i+/2VLVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789548099; c=relaxed/simple;
-	bh=9QxL4Gb1UAhoBwy3DBUFXQ+YjM+gNoib2VJGzBio/Qc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=huswpqhopi4q57F1NeuwJcQKsGldmXkG3Je5sS3hlQCES5wMhDkqOrJQV2j1xVFlsTiryL5BySCfjfTLD5+Dmz6KAHiPSC7wsjCnaNw35NDdBYMUVEz+EetrIR1e8etzWHzI+EfvtlwjFriXxDhC7uzjABjpFB9GsrEk8c/qATQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vYJNJ4Wu; arc=none smtp.client-ip=91.218.175.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vYJNJ4Wu"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=9QxL4Gb1UAhoBwy3DBUFXQ+YjM+gNoib2VJGzBio/Qc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789548092; v=1; x=1790152892;
- b=vYJNJ4WuHE3PjnNGDmf/ESwJ3dvOHEBqzKZMGpfwHmY9P/r3LQW2Aclk1Ksq5mTGyZFQtvO7
- 5jqw9lUMQGENtmrYqlSy7RtSRgCeSc97y7ET7+ruVVRjsDrLsqSOg0NhiqgDXCNNtZZEUd9sAbP
- IeZl5tSy9p6T3JXPQg4Q1nKg=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id e6d426d6e7280090;
-	Wed, 16 Sep 2026 08:41:32 +0000
-X-Mizu-Trace-ID: e6d426d6e7280090
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <047c05f7-be17-4dc5-8774-db6f9c84ae07@linux.dev>
-Date: Wed, 16 Sep 2026 16:41:24 +0800
+	s=arc-20240116; t=1789549287; c=relaxed/simple;
+	bh=4mZpkxATI4qiyTSXSJVGZ61KAftzgBuhrIfRNPs44+E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pRVkHD6glUg0yLGVU1HMH+/lPXOpNT3g3ev6n1OM7wHN40A+kqKqPhpoVWfI5U5M26IVg3JZy+7XVOCYhL1EEf1A1xFxJb3Q3ZNQJ1pACGG+b2VlVIXIhbSEUERRB1D9S0c0xoot6fa1mhyKIpP19rIdoATz4ng6O9TeqixG3Fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+X-PTX-Original-Recipient: andrew@lunn.ch
+X-PTX-Original-Recipient: luizluca@gmail.com
+X-PTX-Original-Recipient: olteanv@gmail.com
+X-PTX-Original-Recipient: davem@davemloft.net
+X-PTX-Original-Recipient: edumazet@google.com
+X-PTX-Original-Recipient: linusw@kernel.org
+X-PTX-Original-Recipient: kuba@kernel.org
+X-PTX-Original-Recipient: pabeni@redhat.com
+X-PTX-Original-Recipient: o.rempel@pengutronix.de
+X-PTX-Original-Recipient: kernel@pengutronix.de
+X-PTX-Original-Recipient: a.fatoum@pengutronix.de
+X-PTX-Original-Recipient: alvin.sipraga@analog.com
+X-PTX-Original-Recipient: linux-kernel@vger.kernel.org
+X-PTX-Original-Recipient: netdev@vger.kernel.org
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 929EB200124;
+	Wed, 16 Sep 2026 11:01:03 +0200 (CEST)
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1x6lVn-001CpX-1X;
+	Wed, 16 Sep 2026 11:01:03 +0200
+Received: from ore by dude04 with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1x6lVn-00000001SqM-1e2b;
+	Wed, 16 Sep 2026 11:01:03 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Linus Walleij <linusw@kernel.org>,
+	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	=?UTF-8?q?Alvin=20=C5=A0ipraga?= <alvin.sipraga@analog.com>,
+	netdev@vger.kernel.org
+Subject: [PATCH net-next v3 0/3] net: dsa: realtek: EEE support for RTL8365MB-VC
+Date: Wed, 16 Sep 2026 11:00:59 +0200
+Message-ID: <20260916090102.349157-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] netfilter: nf_dup_netdev: Fix net_device reference leak
- in nft_fwd_dup_netdev_offload()
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: davem@davemloft.net, edumazet@google.com, fw@strlen.de, horms@kernel.org,
- kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- netfilter-devel@vger.kernel.org, pabeni@redhat.com, pablo@netfilter.org,
- phil@nwl.cc, wenxu@ucloud.cn, stable@vger.kernel.org, coreteam@netfilter.org
-References: <20260916073627.1971921-1-vulab@iscas.ac.cn>
-From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
-In-Reply-To: <20260916073627.1971921-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-在 2026/9/16 15:36, Wentao Liang 写道:
-> In nft_fwd_dup_netdev_offload(), dev_get_by_index() gets a reference to
-> the net_device corresponding to oif. When nft_flow_action_entry_next()
-> fails (returning NULL), the function returns -E2BIG directly without
-> dropping the net_device reference via dev_put(), causing a reference
-> leak.
-> 
-> Add dev_put(dev) before returning -E2BIG on failure.
-> 
-> Fixes: be2861dc36d7 ("netfilter: nft_{fwd,dup}_netdev: add offload support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
->   net/netfilter/nf_dup_netdev.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/netfilter/nf_dup_netdev.c b/net/netfilter/nf_dup_netdev.c
-> index 3b0a70e154cd..dd627b7d72d9 100644
-> --- a/net/netfilter/nf_dup_netdev.c
-> +++ b/net/netfilter/nf_dup_netdev.c
-> @@ -80,8 +80,10 @@ int nft_fwd_dup_netdev_offload(struct nft_offload_ctx *ctx,
->   		return -EOPNOTSUPP;
->   
->   	entry = nft_flow_action_entry_next(ctx, flow);
-> -	if (!entry)
-> +	if (!entry) {
-> +		dev_put(dev);
->   		return -E2BIG;
-> +	}
->   
->   	entry->id = id;
->   	entry->dev = dev;
+On these switches EEE is enabled by default, but so far it is neither
+visible nor controllable from user space. This series wires EEE up to
+phylib/phylink on the RTL8365MB-VC integrated-PHY ports so it can be
+observed and controlled per port via ethtool
 
-Please update your local tree.
+Oleksij Rempel (3):
+  net: phy: realtek: use C45 for RTL8365MB-VC internal PHY MMD access
+  net: dsa: realtek: rtl8365mb: extract PHY OCP address halves with
+    FIELD_GET
+  net: dsa: realtek: rtl8365mb: add EEE support
 
-Florian Westphal has already fixed this issue:
+ drivers/net/dsa/realtek/realtek.h        |   4 +
+ drivers/net/dsa/realtek/rtl8365mb_main.c | 137 ++++++++++++++++++++++-
+ drivers/net/dsa/realtek/rtl83xx.c        |  20 ++++
+ drivers/net/phy/realtek/realtek_main.c   |   2 +
+ 4 files changed, 161 insertions(+), 2 deletions(-)
 
-https://lore.kernel.org/all/20260605114715.11297-1-fw@strlen.de/
+--
+2.47.3
 
-Thanks!
