@@ -1,76 +1,46 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF59F126C02
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 06:31:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5EB19BC8
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 06:34:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789540289; cv=none; b=bcnL31wuG1I/7VdqHlyakl2yPPQdtIdPKNApBgIGRVKUozcavYn8vYGlpvdqjOgBllxy9yvMlC/jbnlLtMJZ1ZsvXqWNKs2Y+dn8oNMgyEppuT8qZHxF80MEoG6RnyA3m16VVrMZijPSn9r3m+NpB2GoVxs4qmwxyUlF9jzkPPA=
+	t=1789540494; cv=none; b=j28PBE3mb74bApjT0tOBP+ToXYJu9PmSMMNcSSrubEiImL8gq8VvgjpZPV3SpkC8I+/s0H+6FmiuSig99x71jVUibggaa3UzC7j2X5SHUgPfae/QxLH/LUPxoS3DM5fAgMo14RjL3SX26MZ8yA3pbYRV1fkWp/gvxDEqRQm07Hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789540289; c=relaxed/simple;
-	bh=Ni7Nb/tkSb8xMBveKfixGMHJTCUSsBx41uEaih62Pk4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZDs9FwjHAY2/tMLIovI7uLUUKx3Siftt0fWVdgGgM9VnueE8dVMS6DV7bEf7x1i2ItpmOuRUPXEE6OVWmK9ooUc0DblUJ99OJbc5m+eUoJI6thFoxsGKmB29zMFbP17iTK/CmMmDNSYH4YR2rM3yxTYs5ZT3TxOlZ9UMZb7mld4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pL6mji5z; arc=none smtp.client-ip=74.125.228.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pL6mji5z"
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc4cacd3409so590171a12.2
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 23:31:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789540287; x=1790145087; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=WouBy8LrBhobloOGcs5+4K8UnnGyA8XojKOtb+0NfU4=;
-        b=pL6mji5zB5KPC6uoVGtIQKoGi95xo69J3dQwnXgpRGvKy43PT6QS+Prp6zshRB21WX
-         zxDeNFc+GHOasZiROXri90d1Lb25pVhOLM3ksQXd19AZRYVlHU3dgJFtOuQj58+uTRND
-         NFG5na3ozBv2FpuJm6BWdx8ZN1/Jhwgza4s3umrbzcS1CmyG7qNYQzWUzMrEylBOppQk
-         r4Nn8UTteh70kodW7JJu4F7ev+6rHasqQDqUNDeqgahMHLpH93GRb4mv+JklXGvtMplR
-         HEE1Gw5fcm+G/D17Ex5iz3Wx15cSaiQ94n8k8LUkyUlktzmQG1y28x0Solfvi0hjlaia
-         dFPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789540287; x=1790145087;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=WouBy8LrBhobloOGcs5+4K8UnnGyA8XojKOtb+0NfU4=;
-        b=NNdu7PJOBSFMJ1L6xid6LO0USvMdoSJtVTGmEqPkGS1IyE6HCq3lAWuvAxAVYg34v4
-         IxeZ4K3D4Dff5jElJZx8HWnuGrlZnOmssS9hMxexCufkA1EbStsn/+Jt8pAQBGQC91Jf
-         Ix3g2j1R9QM7cbcgTcVzoj/WK509NdqO2MGBQDvBwC28tJdz4h07rCPkOWyOTzbnPpKq
-         aJkLhMW8Kbgm3LQQay43D/qrDdym04udojsFQ9VAKG/zYHvvHZlvk7VJjgaYBhR5v0vR
-         IidNH5mMZz5WQMCA96++zz7YVTCZbRpAlZ41HYpHX8lonvb4f1zFUJRw2IlKNWq3f6fO
-         i8AA==
-X-Forwarded-Encrypted: i=1; AKwUvBzP+E2p/ToCmubKXvWPpEBBneDN1cdkQP0YMJKSGPNXkxObaP7yIKcNwV6LtjNby7EAuFgqKAY=@vger.kernel.org
-X-Gm-Message-State: AFuF++nqTXbDFpyNsQGxebKdi5JT9FY/2fCBxQdMA3c3IECTPZC4002T
-	1W7lYxdwg75Jk4i0xrSQMNBXM2uX56JSjrsBa3jvEX5IUSblfgj0mk0+
-X-Gm-Gg: AYBFou1P23wriKg4LSBVi4KdNXExaj6/9V4fnOhfh6DFGmtzpUiT9xfIA/sQiNLwEif
-	WYrb7Ty24HyOmOwdC1E+XrzABamHf863nwCdvvA5tPvU0Iqfl3bqr1R51p3WKS2R52H5dC99/3K
-	Rr3LMGvtxj5XM/VMOFh+POGD0+7sRAZaheFzsxp/apE2y8yHrFr5X5e+L3+ls5u22aTF1lN7dSl
-	TOw8FYYGsFDn6/43EVHz74MQOeeFvmjLkFn1Nvh+/k0VRM8ejCVv21ZtHWLR7wdw4g0+RatqCpA
-	leaj3pWs6ZW1fulXw0Vy25P9nwhha+hkjwjXf9XJeqNFDsh9nJ31n72n4FM+BlCKIme8P+I4F+U
-	vx1DbY2NXgDC2pSoV5bFJx2Pfvj/LuiGN9JGCHHS5Nppir6A9ncg8NPX3Tk2msK2P+2jEosIfhZ
-	0RJduUvIJuHJTOlhWsnC2iqScaIbbeCu/hpW5R3CMlhkWY/Y5DrYU3YVgkXU5xniMC
-X-Received: by 2002:a17:90b:582b:b0:39e:f1:b2de with SMTP id 98e67ed59e1d1-39e1e4c54fcmr3564649a91.20.1789540287232;
-        Tue, 15 Sep 2026 23:31:27 -0700 (PDT)
-Received: from lgs.. ([2001:250:5800:1002::de93])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e1b712ea3sm2906637a91.9.2026.09.15.23.31.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 23:31:26 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Kevin Curtis <kevin.curtis@farsite.co.uk>,
+	s=arc-20240116; t=1789540494; c=relaxed/simple;
+	bh=aSA6NZRSqCtr07VE4S0pTX5CUiXj0XFDNMoK65Mm9Ug=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W3ypOVSFO7TkwKa6Xl+H76A2Xa4xCghlX7RUqep8K6pBsKp9pn0NfOMiZF+VrkfyNiY7op9VABIgOX541KwFDNfj49SL+n+tFFqGDyFghotKsSpBJKRoLokricS0BtZdbXgTZxA5flXsHDcajt8diPhHVpXqR1QB3e7M3XYcHJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.204.34.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: esmtpsz20t1789540404tffbcb8cc
+X-QQ-Originating-IP: ygmYash9cphqOed+MSMZmeHhk+Pujrhbwupm36lzRN8=
+Received: from w-MS-7E16.trustnetic.com ( [122.233.172.177])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 16 Sep 2026 14:33:14 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 9852207754865000035
+EX-QQ-RecipientCnt: 14
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] net: wan: farsync: disable PCI device on removal
-Date: Wed, 16 Sep 2026 14:31:18 +0800
-Message-ID: <20260916063118.2924049-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Kees Cook <kees@kernel.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>,
+	Rongguang Wei <weirongguang@kylinos.cn>,
+	Chenguang Zhao <zhaochenguang@kylinos.cn>,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v3] net: wangxun: use cached NCSI and WOL capability flags
+Date: Wed, 16 Sep 2026 14:33:12 +0800
+Message-ID: <E5215E3514E295BA+20260916063312.203457-1-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,39 +48,120 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: OASHEhBpbRXHirO9kvqiFX2DUZvZXx136rPAg0ixHSXhBOWyLwlcWO00
+	/wnrZQqWlIjeKXLeiP8mlJBawTnI5jNL8grt1OF2W9YsSx4nTKVcE1zAI64plUjkk1qMabV
+	RAMrlOp3J2sJHvC6eA9a2kZWms3aFKsRcBM/RNnOCKbuEDFCM0XfjMykjylahu4hBYIJNYW
+	PY0GR6roF4Sdk+l9gE37roTBPU0yjsxTlYSdp7Hrt+9tbemLH4aYHjKzi9H1OlhtrjszsYe
+	lblH4cNOyOsRdcri+D7BJH//p/1REBCvtFfsB8Dtyye/DxF7th5jbRCgPx8Z+cHYVsfr6f6
+	XM9A3Jd+lubtQx1jE9u82wMZzEfE/Mxj7WgKjX3GOXIBeWGvLirnS7RGdgEt5zMYmx0omGv
+	21mrcRbnwzISL+3cRBtZRsA3vuUeuqRG1L6Cuz92euTyGWlzd7GKACjkOHixNVyHokHjv1F
+	apkIMBCvJzXcjh5r+w8RKxzhGgRSQXZFikbRR12SxqLP16ok5LDSfBHBdKIla1RoFU0UYhQ
+	S/52PC0DD1I1rRuGpDzyGyMdW1TfvxbUeufpZDMaPsU1Jj2MMxuSQJ9Tj9WInZazyMqS93/
+	kyZevg9zDxutHC7vPv9xk5PrcWz4OwCippnOksvnTFMNKw/0sQrp774tdog9PJpFe/xBWhe
+	4JXnMIind3JItZt3TJgKiNqcwLbW0jhmSqnU74f5Xc0uOauWDvzYCUuWvB72uEjCDkJl5Yr
+	o3DY6BDd7p5As0XpXgjZYCjf4Dfhg0IRunwUTb90F9p63v4qX3HexltzNqNfRaAJPh5Yi0G
+	KGxlPFIbhvswt2DgCcIEG9JnT4NYl/zMLrL/G+XQEjzxUBRXTrvG7yejhLwv7u9+q8+JZWi
+	IduLdTBLuWyGJzQ+Zn/Mk2T5NcPeKkAAkwCJw0H97QHcOMEu1D0YlDdc4HgrTLgWMEByzVq
+	oAlQHgbqCkfmRxq8VYom523Wp6r0Nkt7DPc9zHOqJdDC0P95fZ3b/ohZkU6YyJO38whBoh3
+	zbC285TUoN6CdFTEMLVYrSFoqNlwgADPSJotqJ0a6lCZVPXEk/nXpXRhfsNhcReBonUfD8S
+	4PnxJhp0MQt2G7IRCZqzm/V+qBome6ICA==
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-QQ-RECHKSPAM: 0
 
-fst_add_one() calls pci_enable_device() to enable the PCI device. The
-probe failure paths call pci_disable_device() to release the matching
-enable reference, but fst_remove_one() does not disable the device
-after a successful probe.
+wx_disable_rx() and txgbe_disable_device() open-code the same subsystem
+device ID tests to decide whether the MAC receiver and transmitter have
+to stay enabled for out-of-band management:
 
-As a result, the PCI device enable reference remains unbalanced after
-the driver is removed.
+	(subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP ||
+	(subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP
 
-Call pci_disable_device() after the existing interrupt, tasklet,
-mapping, DMA and PCI region cleanup to release the enable reference.
+ngbe_init_type_code() already decodes the subsystem device ID into
+wx->ncsi_enabled and wx->wol_hw_supported. Do the same in
+txgbe_init_type_code() and let both call sites test the cached flags, so
+that each driver decides the capability once while probing instead of
+having shared code re-derive it from raw IDs.
 
-This issue was found by manual code inspection.
+This is not equivalent for ngbe, and that is intentional.
+wx->ncsi_enabled has never been read since it was added by commit
+02338c484ab6 ("net: ngbe: Initialize sw info and register netdev"), and
+it is wider than the inline test:
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+	wx->ncsi_enabled = (ncsi_mask == WX_NCSI_SUP ||
+			   type_mask == NGBE_SUBID_OCP_CARD) ? 1 : 0;
+
+OCP mezzanine cards are NCSI capable by design, so the NCSI semantics do
+apply to them, and they need the MAC receiver to keep running for
+out-of-band management. The inline test does not cover the OCP card
+type, so on such a card that does not have the NCSI bit set the receiver
+was turned off on every path reaching wx_disable_rx(), i.e.
+ngbe_disable_device() on ifdown, wx_stop_adapter() from ngbe_reset_hw()
+and wx_configure_rx(), and management traffic was dropped. Reading
+ncsi_enabled keeps the receiver enabled on these cards.
+
+No Fixes: tag is added on purpose. The broken behaviour goes back to the
+initial ngbe support in v6.2, and wx_disable_rx() has since been moved
+into libwx and reworked several times, so this does not cherry-pick into
+stable kernels in any useful form.
+
+For txgbe both flags are newly initialized, but wol_hw_supported is only
+consumed by txgbe_disable_device() there - txgbe does not implement the
+WoL ethtool ops - so txgbe behaviour is unchanged.
+
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 ---
- drivers/net/wan/farsync.c | 1 +
- 1 file changed, 1 insertion(+)
+v3:
+- Rewritting commit message.
 
-diff --git a/drivers/net/wan/farsync.c b/drivers/net/wan/farsync.c
-index 6508c53bdc24..0ea637270ad7 100644
---- a/drivers/net/wan/farsync.c
-+++ b/drivers/net/wan/farsync.c
-@@ -2561,6 +2561,7 @@ fst_remove_one(struct pci_dev *pdev)
- 				  card->tx_dma_handle_card);
+v2: https://lore.kernel.org/all/F76F75E3FFF42A39+20260908025416.42250-1-jiawenwu@trustnetic.com
+- Remove single-use locals.
+- Describe the behavior change on ngbe OCP cards.
+
+v1: https://lore.kernel.org/all/95D34449BA183C54+20260901070238.78509-1-jiawenwu@trustnetic.com
+---
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c      | 3 +--
+ drivers/net/ethernet/wangxun/txgbe/txgbe_main.c | 6 ++++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+index 111aadf79208..2490c4dd548f 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+@@ -1313,8 +1313,7 @@ void wx_disable_rx(struct wx *wx)
+ 		rxctrl &= ~WX_RDB_PB_CTL_RXEN;
+ 		wr32(wx, WX_RDB_PB_CTL, rxctrl);
+ 
+-		if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
+-		      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
++		if (!(wx->ncsi_enabled || wx->wol_hw_supported)) {
+ 			/* disable mac receiver */
+ 			wr32m(wx, WX_MAC_RX_CFG,
+ 			      WX_MAC_RX_CFG_RE, 0);
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+index eb91c4f28ecd..0ecbd1c0e553 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -267,8 +267,7 @@ static void txgbe_disable_device(struct wx *wx)
+ 		wx_set_all_vfs(wx);
  	}
- 	fst_card_array[card->card_no] = NULL;
-+	pci_disable_device(pdev);
- 	kfree(card);
+ 
+-	if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
+-	      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
++	if (!(wx->ncsi_enabled || wx->wol_hw_supported)) {
+ 		/* disable mac transmiter */
+ 		wr32m(wx, WX_MAC_TX_CFG, WX_MAC_TX_CFG_TE, 0);
+ 	}
+@@ -381,6 +380,9 @@ static void txgbe_init_type_code(struct wx *wx)
+ 		wx->media_type = wx_media_unknown;
+ 		break;
+ 	}
++
++	wx->wol_hw_supported = ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP);
++	wx->ncsi_enabled = ((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP);
  }
  
+ /**
 -- 
-2.43.0
+2.51.0
 
