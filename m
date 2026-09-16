@@ -1,163 +1,213 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012027.outbound.protection.outlook.com [52.101.66.27])
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9183321254B;
-	Wed, 16 Sep 2026 02:16:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.27
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789524997; cv=fail; b=SAIf8eAjk+3TCD+tWdbbcDJyJnTNr7y7+mQfJfTp15PU3fTjYOTSvsaFQgRs4+PLXW2hd4vvbDf6z4f5vDM76WDSju1Pt4dgamlXaZIbohVGipydG85wM02FQYVUxDL36VX2uHqHzEsBMDBsB6flsWjIVABYAZWluUopZDWgZ20=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789524997; c=relaxed/simple;
-	bh=U+i8WWJlyxu/4dHfqjE0e2x3vgWwHkDylcKUc8VHYv4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=lBwvlEWhPcfZ58j6tkiaZnK5RVdirK3Li3VyH6ZKURvna3GPT8mS8HTqEHpHWdyPL6+5T6JuZwJeYg6pJQ7cvl82PQb3I5sGrc19Mk+Dw7EotxvxtmdXJeiRsqiibzNyqgXP4ThdfmzpcEUSm4Rb2Kf4BzRhTYZc4SPaVn51pno=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=PvnDrrlC; arc=fail smtp.client-ip=52.101.66.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C6733DEE5;
+	Wed, 16 Sep 2026 02:16:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789525006; cv=none; b=O0Pvu+5FihR/LXea27MyzniEHS/EuBh3/VusdXenblJxldfvGeT5F3sr281nVO/5R65bylJ5hg++PLJUXfikzLu39oVsVSHreUSoMrc6138+6aGdqUkMpA708MW++Jcmu5P8YEowwbthzRH0u5nmuO5YAh/HsVGpajrjG6w3K4o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789525006; c=relaxed/simple;
+	bh=+7ERvJIEmInl+TT2Pq2Zf+uPj16hTW5VqLOuCnrAswo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VvcAJc5AiDPLJymX8+qyweGeGbMmeTgzCp0T477BwQR4GRCdM8whJ1uQO439oq2BqUlmCYa/1W0cwjDk4sV9x57BEbJr6299ZyaBiFu2f7mq5P14+jILcgTD4mM7vJfI+kTwayjVM3rfYVGy96RSxqWW8V2Kex/cjsndrj8m38w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=hLEctKEh; arc=none smtp.client-ip=220.197.31.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="PvnDrrlC"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XCx3tOn2Suyd+uf5v9E89zFKytU4z7HWw4XTfIJ7aAaeoOVCaUmL8rzNZBPAGXDb1RukyVKCvU8urI+5OWTgyKhxg3Qw23PWRgRt2q20DXZKHPtxxk/6A0besX59fr5nVlTP+iyxUn1rfRccBrpjVIwg0A1f6T/clCbHWEL+5gesBt6LfzP7Brp0ZgDl+eoWm0l9Lo8Wp6xoRT3xtAX6/IctglcVufd7Yfq4nDlq9BBTXHWZjIMzm6XpORsNuHi0Y16Yeuin0R9DuAW1dkV8Nre7QEJHBzmSxkdaHae3U3W8H0K/ILU6BTLI/pCr981tvSt/O+P0t4MaH8vKe/JrQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RiLph8+2Rh6LJTiud0qidgkkcllxgZpUgJpFe9YpexE=;
- b=Uk4wUOe6x5g7F0o26e8j5QSuyQFULcbGgi6sxNpI33H0KgdvcpzKbP6FaLa7x1YZw7jcGcmzWdYhaK5jUF9oOUZRfRXRuwpsbazi2jgYiL+NPHqOH/Tj9nxoix5j6/xJ+1kGStxLKGcVubxOPK0pPq61qMFJUc1+580jeX4Mal2ZhV0Ks2YN1zyI+t0R1M6/pv35qyo3j6ZXH/Me0kQIYTDJ1JkYO6VXWGc4d/X3679bY50ChVHWcEDaqwsvpalhEUqiiQdr9C9KKGoRNDo4svDkWmhnrv5JtlWg6M72E1ox7HXnJs/Xn1tWYNojJhy0SN7XwR0wKmauvqHc25uCRg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RiLph8+2Rh6LJTiud0qidgkkcllxgZpUgJpFe9YpexE=;
- b=PvnDrrlCXp/MBq39cQPXbhKPvgPIuhOo5qxW1nEo1F5LAiYpJrMAjDL0msHFmPZlkzDBexrt7ohpYhpys/If5KojPD9HGOqDoTY4CEjvuJEuIrSNgtvJWEL1ZQzRaA0Fsd2UXgF/ilhmYis4oFHChypPWlreJr7rPqS1TeadGL0otT97XaomA3Ryhmzz2m9JNsO39btn59ASp0zMJVBuRXK8z/4lp+GbjSYfsqnKLwP21nMsZnVq61WjzX4aauLNFkwHzqYKhQhJ3D/5og+3r9+J7u8pj3Op5ArKNolreiqaJsekmDWeYxwHqO9TXsQ9orrDcZoUDBms1duj59wbpw==
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- (2603:10a6:150:2fc::18) by PA4PR04MB7885.eurprd04.prod.outlook.com
- (2603:10a6:102:ce::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Wed, 16 Sep
- 2026 02:16:28 +0000
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a%5]) with mapi id 15.21.0406.007; Wed, 16 Sep 2026
- 02:16:28 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-CC: Zefir Kurtisi <zefir.kurtisi@westermo.com>, Claudiu Manoil
-	<claudiu.manoil@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
-	<daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
- Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>,
-	Simon Horman <horms@kernel.org>, Richard Cochran <richardcochran@gmail.com>,
-	"Y.B. Lu" <yangbo.lu@nxp.com>, Ioana Ciornei <ioana.ciornei@nxp.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>
-Subject: RE: [PATCH v3 net 1/7] net: enetc: consistenly track dropped frames
- in enetc_xdp_xmit()
-Thread-Topic: [PATCH v3 net 1/7] net: enetc: consistenly track dropped frames
- in enetc_xdp_xmit()
-Thread-Index: AQHdRWFs/AKCnwLCzUukg6Ba8qfMRLbQd+ZQ
-Date: Wed, 16 Sep 2026 02:16:28 +0000
-Message-ID:
- <GV2PR04MB11739B011069410AB4B517A6188B92@GV2PR04MB11739.eurprd04.prod.outlook.com>
-References: <20260915222735.1016937-1-vladimir.oltean@nxp.com>
- <20260915222735.1016937-2-vladimir.oltean@nxp.com>
-In-Reply-To: <20260915222735.1016937-2-vladimir.oltean@nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|PA4PR04MB7885:EE_
-x-ms-office365-filtering-correlation-id: 803d0c13-9ec6-4730-a999-08df1398846b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|23010399003|7416014|376014|1800799024|19092799006|38070700021|56012099006|11063799006|4143699003|10067099003|18002099003|22082099003;
-x-microsoft-antispam-message-info:
- fru/sgaEsusWdCReDGU8PMnzNqHQlwQX19HB23Tefeuyj3yogTqchV4eoFYoB8pqjy2xc1aTIK38IThA/f14p99RI28RZiphRyNNiNVDLUhSqI9lw+cVImk+jQU5EWHfZUnzL9wf32vJ8jORss7Q8XNPTyISG1amS0GTVbUvbcYpYdcKjaowsubHbhmmxD9kCpwyMDdhzCswe77UwaD77W3yrEi05/Msk3sbq71BQlLsltPMGuujBwELz3EhqhT4W+z/K+6Xc/1uLYIFOvaQqMGUgWPkckykorbVTA3M/vkSchHwCsbP4AVmNsdRgClxdf1W9nUcSXCCGookWHTvj//ntRw+YAmUIIsZfMJxnqflwi65mkN485GXB8FnuWwcnVDV+Oztqo40QlU83pMurf6dgUuXp32W6caDeC+FcnQFx6nMJTsrcFPOY8b3BwRntUGXTPoX4yM+Vt609XpVk+zXGz5KBc1xXDayBkgglwKrQCzUKDv8ISJ+EBDVF6OyH9+DxFCXN2WmgzCq+9u/levR7WecUw4Dk6fvD81xnQoiz2xNbpUNWW4B02Zpg7Xy/lv/rWswbojJwuUWaOJUS3vDiODqqASoPhyxGOqOY0IfQzRMgGeyDwUJOfQb8A3IjLFRfstYxtcYXOz50tcHhMZ6OUaGXYs5Jn8/2MoeF+/wawuszfuFZoYQm0GFwPtzS8Wb5gMsUUxa7I5Uh32lhw==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(7416014)(376014)(1800799024)(19092799006)(38070700021)(56012099006)(11063799006)(4143699003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?02U2LURKwPLxEzWka4OcRJTEpnWo3L7EjeBfCPv4ZgEYW3YKKPqKRbVxL2OL?=
- =?us-ascii?Q?16iICqJcx6jc8TxVInHsIGkY7iaSkDwD3ZEaUs/8b7NcsCKi0fAgPyKETTWp?=
- =?us-ascii?Q?jTPMe79qJ75527kRxFcl+Sk/JNeu7TjvZZGDSQncuNMxFPtrXP1UVuT8Q3UD?=
- =?us-ascii?Q?ZygK3StMVwWtRaREt56YnyJzf3Go+/x/tZMD7eAy6K7ubr0xtW5aarwM0oAq?=
- =?us-ascii?Q?z3uU10/Sb2yn6tC9Loirb9UvHZoRPzFby/4cs0Ip5xDBV5r+6gvZpH5fvFFE?=
- =?us-ascii?Q?TFBtzZUTWN0ASCDkijAMgei88MktZRXCxes/2dmRBzyVcf15wMRzmllq9cZQ?=
- =?us-ascii?Q?RWZvNv++08MOVFTf1qcG8xHycF71X5WZ2CPAqQLUVLtLUjXUIpO3sndjJkwK?=
- =?us-ascii?Q?DD2KGQeYDJYanPFs147xL1Vi8Mc0+nOYEwkBL9by9aYH+M4S7+ZJgNi2dARV?=
- =?us-ascii?Q?HZCcEr2nWOAP5Uyx1Arb13FUK1kLK5bEC72kn2szXitHSp04oLIsZotlKxW2?=
- =?us-ascii?Q?ojCbpwYf6UdRlHtPy9RFovuC7484xoX8GF6SYwC0riD5Sdh8YkPU80M////w?=
- =?us-ascii?Q?j3ExpyPrR+g5Mnmv0Cjipi/atJs8Y3aORf/eAJf9McVBVqrsyQlZEd2TKTyK?=
- =?us-ascii?Q?9ePLeH1NvWjI3r0EA3bGVfeUz0rtte0H9OVOnL8eHMxDMirQaHEvUPUukC4z?=
- =?us-ascii?Q?/OQMp0FQfXONehPdJTcWgAQbXqi0FACSZhlViS+iM7jEDZMZVwUgfwLtYsIF?=
- =?us-ascii?Q?wxhoUt21DDqCKQePd2rdcR1VfgkQ/fN4w2GlByTVKaU6Q2rjtwrXY/d8fm8I?=
- =?us-ascii?Q?sJqU0fUjWldaVB+JZ2pUBA3I002svG7rIctB0KqXwBXSfCnWYvpE8GoJavt+?=
- =?us-ascii?Q?koUoADdATC5owRON4nOaIYgQs0UKuNFqZDvhWQ3FjeYsLmONLOiIwVncNBAE?=
- =?us-ascii?Q?LRp3VBLPE8EOPxir/PkjPUtkP+PrzgTHqamRCriszJuyoB3IkhlkTTeDQQJy?=
- =?us-ascii?Q?wDwy8ZEwetXdmVc3v3/VftidCPPw5A9S/AoLilgdCbRKiCfyPUPY7P5CrAjH?=
- =?us-ascii?Q?5qHcNrowzQRf20U7qXnoDJXjrmAyE3mCGOTBXG0FeSSmt1Cgetr2SgYgQR1o?=
- =?us-ascii?Q?a/ecXLQwbixRAZANhlpPCMikBFldbvDGYDLnvvs+LLTOIDrMXrMSeFRblrFv?=
- =?us-ascii?Q?S5DAi5w4VX1yo9+Ozu+C693yucJ7zxVMnabm45PqaJxKabprsioN3Q2lJ2Ji?=
- =?us-ascii?Q?tlHMS6wthZ/yFY1katIq4/st0Pjt323fCPO7nr3WSR0/m2xAvuVriE4rJwYd?=
- =?us-ascii?Q?oohuRQwk9CbsmvViDzneah1vMGB00Mnw3dvDRpEg/qGa6u6aDV0gXVLJ0UlI?=
- =?us-ascii?Q?9k2V4RbQffPUAjYccJrhDO4lfmprXF1Beh0sMRCTbOytdPvWZKr4snOrbVBz?=
- =?us-ascii?Q?MkJ2RgXQAiG2tnJcTBX5w2Susj+kImXbsg/yxSxFJ33iQIwL5gdgZ2lPRexz?=
- =?us-ascii?Q?zqFtjcd09xhkO4oeBOdILulNzvcyfP6aH9ZD1Lnv+PdZFDyK/NR4kNgXeuuO?=
- =?us-ascii?Q?PVLTL2sCnptOMlmukGYlRGmBYjQ0Urde9MEFAb75+JygJpjzlAu6DJEKtXch?=
- =?us-ascii?Q?Xq1iugn0YQsJIszBeEA+/kcL0m9ILA2MnkxcHMTuuyjbjSdd6s9uxTfG3EcB?=
- =?us-ascii?Q?U+p3W09ISW0ZWsZjndj0Q9Hz93ZTNUMg+OyrAIOSqHXp5zn0?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="hLEctKEh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=GtNeDLEL3cZw63X0BeAVNi6atiMHIlq/9+o/lSVzZXA=;
+	b=hLEctKEhyv1IWULCYVqHEer/WN6aDoaG/gt/cbcQSsleivfDWM+lAhr8MhyZSc
+	VU8VEigWPJ0bfsy9chcrEQtM1U7S8yCB1k2xEu1grx8sDvWQyjevdFzO+W8fF3rX
+	TF5rxJjtwImFyUAcH6u4G0g3FKSerA4iwVhvRbfaqkljc=
+Message-ID: <4e98fbb0-c416-4059-b605-56a1e0e48cbb@126.com>
+Date: Wed, 16 Sep 2026 10:15:55 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 803d0c13-9ec6-4730-a999-08df1398846b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Sep 2026 02:16:28.7143
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: u1Fy5y6EMPfKDSm2bs8EsuzhKIFZHIOS15pFzjSwq8YkM+PBaTAnBSWMHrdEMPsjKBgoLZ7HV/BqD6Gl0JEkug==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7885
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] ipv4: fib: fix data-race and stale genid check
+ around nh->nh_saddr
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: dsahern@kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Linkui Xiao <xiaolinkui@kylinos.cn>
+References: <20260915071503.465875-1-xiaolinkui@126.com>
+ <20260915175354.GA805835@shredder>
+Content-Language: en-US
+From: Linkui Xiao <xiaolinkui@126.com>
+In-Reply-To: <20260915175354.GA805835@shredder>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDHnzTc+6lqSjS3BQ--.18307S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Jw4kXF4UXry3KFy8WFW7urg_yoW7uFWxpF
+	W8tasrt347JFy29FsrtF47Z3W09w4rtFyF9r9293yY93Z8Xr13JFWSgr9I9F98Xr4kXw42
+	yF45Wr1UAryY9aDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UZNVkUUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlR07Emqp+938OwAA3D
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c
-> b/drivers/net/ethernet/freescale/enetc/enetc.c
-> index 80f0082f6c63..e7ecdf8ef67c 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-> @@ -1843,7 +1843,6 @@ int enetc_xdp_xmit(struct net_device *ndev, int
-> num_frames,
->  			for (i =3D 0; i < xdp_tx_bd_cnt; i++)
->  				enetc_unmap_tx_buff(tx_ring,
->  						    &xdp_redirect_arr[i]);
-> -			tx_ring->stats.xdp_tx_drops++;
->  			break;
->  		}
->=20
-> @@ -1854,6 +1853,7 @@ int enetc_xdp_xmit(struct net_device *ndev, int
-> num_frames,
->  		enetc_update_tx_ring_tail(tx_ring);
->=20
->  	tx_ring->stats.xdp_tx +=3D xdp_tx_frm_cnt;
-> +	tx_ring->stats.xdp_tx_drops +=3D num_frames - xdp_tx_frm_cnt;
->=20
->  	enetc_unlock_mdio();
->=20
-> --
-> 2.43.0
+Hi Ido,
 
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Thanks a lot for the review. Both points are valid, and I'll address
+them in v3.
+
+1. Commit reference
+
+You're right — the rule that nh_saddr is only meaningful when
+nh_saddr_genid matches dev_addr_genid was established by commit
+436c3b66ec98 ("ipv4: Invalidate nexthop cache nh_saddr more
+correctly."), not by 195374d89368. The latter only added the
+READ_ONCE()/WRITE_ONCE() annotations. I'll correct the commit message
+accordingly.
+
+2. Refresh on genid mismatch instead of skipping
+
+I agree that skipping the comparison on a genid mismatch would
+silently downgrade ECMP selection to hash-based for as long as the
+cached genid remains stale, which defeats the purpose of the
+source-address matching introduced by 32607a332cfe.
+
+I'll adopt your fib_nh_saddr() helper in v3:
+
+     static __be32 fib_nh_saddr(struct net *net, const struct fib_info *fi,
+                                struct fib_nh *nh, int genid)
+     {
+         if (READ_ONCE(nh->nh_saddr_genid) == genid)
+             return READ_ONCE(nh->nh_saddr);
+
+         return fib_info_update_nhc_saddr(net, &nh->nh_common,
+                                          fi->fib_scope);
+     }
+
+and simplify the check to:
+
+     if (saddr && fib_nh_saddr(net, fi, nexthop_nh, genid) == saddr)
+         nh_score += 2;
+
+This keeps the fast path free of extra work when the genid matches,
+while refreshing the cached source address on a mismatch, mirroring
+fib_result_prefsrc().
+
+I'll send v3 shortly. Thanks again for the guidance.
+
+Best regards,
+Linkui Xiao
+
+On 2026/9/16 01:53, Ido Schimmel wrote:
+> On Tue, Sep 15, 2026 at 03:15:03PM +0800, Linkui Xiao wrote:
+>> From: Linkui Xiao <xiaolinkui@kylinos.cn>
+>>
+>> fib_select_multipath() compares nexthop_nh->nh_saddr against the flow
+>> source address with no lock held, while fib_info_update_nhc_saddr()
+>> stores a new value from another CPU as soon as the preferred source
+>> address of the egress device changes.
+>>
+>> Commit 195374d89368 ("ipv4: fib: annotate races around nh->nh_saddr_genid
+>> and nh->nh_saddr") added WRITE_ONCE() on the store side and READ_ONCE()
+>> in fib_result_prefsrc() after syzbot reported
+>>
+>> 	BUG: KCSAN: data-race in fib_select_path / fib_select_path
+>>
+>> but it only covered that reader. fib_select_multipath(), reached from
+>> fib_select_path(), is a second lockless reader of nh->nh_saddr and was
+>> left bare.
+>>
+>> Moreover, nh_saddr is only meaningful when nh_saddr_genid matches
+>> dev_addr_genid, as established by 195374d89368. fib_select_multipath()
+> 
+> It's established by commit 436c3b66ec98 ("ipv4: Invalidate nexthop cache
+> nh_saddr more correctly.")
+> 
+>> skips that validation, so it can score a nexthop using a stale source
+>> address and skew the ECMP selection.
+>>
+>> Annotate both reads with READ_ONCE() and add the missing genid check,
+>> mirroring fib_result_prefsrc().
+>>
+>> Fixes: 32607a332cfe ("ipv4: prefer multipath nexthop that matches source address")
+>> Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+>> ---
+>> V1: https://lore.kernel.org/all/CANn89iJhFL2LNQCXTANQAx8B1GVdGTJgrDwPTZOjbH8k1ygtsg@mail.gmail.com/
+>>
+>> V2:
+>> - point Fixes: at 32607a332cfe, which introduced the bare reader
+>> - add the missing genid check as suggested by Eric Dumazet
+>>
+>>   net/ipv4/fib_semantics.c | 6 +++++-
+>>   1 file changed, 5 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+>> index 7a362f2e2c2b..e2bfc11aea09 100644
+>> --- a/net/ipv4/fib_semantics.c
+>> +++ b/net/ipv4/fib_semantics.c
+>> @@ -2184,6 +2184,7 @@ void fib_select_multipath(struct fib_result *res, int hash,
+>>   	bool use_neigh;
+>>   	int score = -1;
+>>   	__be32 saddr;
+>> +	int genid;
+>>   
+>>   	if (unlikely(res->fi->nh)) {
+>>   		nexthop_path_fib_result(res, hash);
+>> @@ -2192,6 +2193,7 @@ void fib_select_multipath(struct fib_result *res, int hash,
+>>   
+>>   	use_neigh = READ_ONCE(net->ipv4.sysctl_fib_multipath_use_neigh);
+>>   	saddr = fl4 ? fl4->saddr : 0;
+>> +	genid = saddr ? atomic_read(&net->ipv4.dev_addr_genid) : 0;
+>>   
+>>   	change_nexthops(fi) {
+>>   		int nh_upper_bound, nh_score = 0;
+>> @@ -2204,7 +2206,9 @@ void fib_select_multipath(struct fib_result *res, int hash,
+>>   		    (use_neigh && !fib_good_nh(nexthop_nh)))
+>>   			continue;
+>>   
+>> -		if (saddr && nexthop_nh->nh_saddr == saddr)
+>> +		if (saddr &&
+>> +		    READ_ONCE(nexthop_nh->nh_saddr_genid) == genid &&
+>> +		    READ_ONCE(nexthop_nh->nh_saddr) == saddr)
+>>   			nh_score += 2;
+>>   		if (hash <= nh_upper_bound)
+>>   			nh_score++;
+> 
+> The cached generation ID can remain stale for a long time and during
+> this time we will silently downgrade the nexthop selection to be hash
+> based. We need to refresh it in case there is a mismatch. Something
+> like:
+> 
+> diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+> index e2bfc11aea09..5c9021ea3a79 100644
+> --- a/net/ipv4/fib_semantics.c
+> +++ b/net/ipv4/fib_semantics.c
+> @@ -2176,6 +2176,15 @@ static bool fib_good_nh(const struct fib_nh *nh)
+>   	return !!(state & NUD_VALID);
+>   }
+>   
+> +static __be32 fib_nh_saddr(struct net *net, const struct fib_info *fi,
+> +			   struct fib_nh *nh, int genid)
+> +{
+> +	if (READ_ONCE(nh->nh_saddr_genid) == genid)
+> +		return READ_ONCE(nh->nh_saddr);
+> +
+> +	return fib_info_update_nhc_saddr(net, &nh->nh_common, fi->fib_scope);
+> +}
+> +
+>   void fib_select_multipath(struct fib_result *res, int hash,
+>   			  const struct flowi4 *fl4)
+>   {
+> @@ -2206,9 +2215,7 @@ void fib_select_multipath(struct fib_result *res, int hash,
+>   		    (use_neigh && !fib_good_nh(nexthop_nh)))
+>   			continue;
+>   
+> -		if (saddr &&
+> -		    READ_ONCE(nexthop_nh->nh_saddr_genid) == genid &&
+> -		    READ_ONCE(nexthop_nh->nh_saddr) == saddr)
+> +		if (saddr && fib_nh_saddr(net, fi, nexthop_nh, genid) == saddr)
+>   			nh_score += 2;
+>   		if (hash <= nh_upper_bound)
+>   			nh_score++;
 
