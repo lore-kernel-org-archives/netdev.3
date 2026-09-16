@@ -1,219 +1,201 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34FF4E66A7;
-	Wed, 16 Sep 2026 10:33:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E42F3AFD02
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 10:35:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789554843; cv=fail; b=YImSh6i/sWptPK3qHoKBjC4IfVIE86cTOsKf1J2yXCPFV1rJqff2ztF2wDQMzb/qlSyCnTcIKOh9jOaqyjYrD1QjJ0eaFEdeu+hqtIYOeFNxpVpw8mAAF65abCrmLqo3NaJZRRVVSW5sohSiOy7C9ltdGYpy0fX/of8eahIzx80=
+	t=1789554926; cv=pass; b=UBurbTt+lo2IK/M16VfCjETkwL7dZ5bvbE2BFqDi767pjX0dmm/F84QS50R1ia0h15gJdaWcb1IrN18XmUBYxj8UML5AK21uYMgK36gil2+MNiz5lXQKZEE26wXY/+87C3ozzcylNh8PLh9pN+hMWgh/7RS+bLRGgGybDlsuG+8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789554843; c=relaxed/simple;
-	bh=XGb9OccIOxQr8Z9kxRNI/bVNR4M6hE7Cdb1wVK3k6Sg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=lOTpY6QIWR5aapn2C8iv9YrIUbhLn93QMvwN/A50ZussJLbY1jr2J6J9kwNhji/TXv3IbXMU8WEd1eE4MZBzfc5H45D90kaGSIGi2ZsZ1VX3ZDZ/r3spuMjWlgD0kILJq10xUtIZuHTMaMwuKQaMH3uUVeMJmuAUhtajSj9sLyg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WipH0xKX; arc=fail smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1789554926; c=relaxed/simple;
+	bh=0AtVtBXzAjTr5tgxiE3p7ZGzyivFmkCFWSojKz8lYTI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gOP+b2uNNtKIZiKwtLDa1JaDANMKat+x3CW42Gq7K+wOFvuGmPK0YIg1ZPGnI8RRVB9b4vMc3YILr80EhVVFcK0oEtAvB/zNQPuDQ4tjtqcmjO//a5disIXgKa4aocC5Yc+hgDydNZPyOdsmzk7l7Zw1oF/ZQ74ePfM76BTgl6U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=OoYxiJZb; arc=pass smtp.client-ip=74.125.228.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WipH0xKX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789554830; x=1821090830;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=XGb9OccIOxQr8Z9kxRNI/bVNR4M6hE7Cdb1wVK3k6Sg=;
-  b=WipH0xKXynz/khs5iR4nGCJbSgxUOjz5yuhmVej+Hk9buiNLxphcRpdi
-   i/qlrTU2/zdekGRKGgSIo7a8SL/Y4xjk/J8hR1SM+vs6wwUHNnWAZ3coo
-   sW0FHivZuYs0QseQfizacuf5iJbs7eS9SDvX8i1xmzrXyYFJ9v1HXoqmk
-   jXP16DGHl08oot4QEorfMdThk6F1l6s10Io01ftNqJ8J0vByTJFiBcLav
-   B+urSwFt40XWgr8yoYYeQZGar5FoLwaI0SaMl4B8JnGOIRSG1NQT4mZ5O
-   NXmm5VuTlL5ja0El32rp8zl/ZGxFNTpsOHh34CDglyxW4ppd9+yjFJ9Iw
-   g==;
-X-CSE-ConnectionGUID: lWH6jx8gTLqN6CV88R+ZJQ==
-X-CSE-MsgGUID: Y/zEDOZYSLyG/HVbJQA/Xw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="89972669"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="89972669"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2026 03:33:46 -0700
-X-CSE-ConnectionGUID: EY2pzqCYShefgioaikF+RA==
-X-CSE-MsgGUID: WeGV7ymJQ9a25YBKHDVZPw==
-X-ExtLoop1: 1
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2026 03:33:46 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Wed, 16 Sep 2026 03:33:45 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Wed, 16 Sep 2026 03:33:45 -0700
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.12) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Wed, 16 Sep 2026 03:33:43 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=huXCPs6HoPkbdkW6Jo2dAqF9hmxz8oZLsWVHxAMIvolrC33/fo2fnrp4yv0aeGGQB11EF4RfJy00hpM19qd5TyFFKxo3RB8RjvAlqHdD3sc7sPbTs03ISLfKaSbl7wjOulrS/Xuc0xOnhep7B5oyWvX3025R5z1/MyTwRwGXuKTaVjJir9my+euTbOw7t87rc00XqhxQ+DJj6wAmxI/ggJG71GNm/c2J+GmTfG4tJy6dkfZSEKxDsPUnpAiWArkurrtzJvZKH5I+BXiLgxfnevYxadcxvelRRxr+/dw8qAkCXns1wC/skw6i+yvG+X9Or+sH9GSbZubfFnMuBttPvQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kQ4qn0t7+V9jJKC+upXe/wp4L00QB9MWQFavaCiD1jo=;
- b=tJkrEcT4KUZomeIG1m4FXlJS7n1R6akDmrznNkU2q8BrtXLQROnD9Bsu3/lolBeRZ57Tjg+AYnvwHpKOIz67q/cNgtnpI7JB8yVH7KoHj/Y0tIv71dqtTDRBSIG4hDJ0faMAKirTwQHazGZ3svB5fspF3PikieAZiNJA1cBw8ar761W99lzEtSREX36SupOjQEFqQIgIIVPtRc7Sm6LGcCtUzN7OTuBUUkAPB0FDYWf2O9qwe2LK2n1aZGO6KJ5Qv5+x4Ia4tJZc+0lMTB7JjC498dUE49CzlD+8ZWlqdI1ZK6z5A7Z7vZiXsvX3r/ufvMNOWUn9jnwmdi2XenWpxg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
- by IA3PR11MB9422.namprd11.prod.outlook.com (2603:10b6:208:57e::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Wed, 16 Sep
- 2026 10:33:41 +0000
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::e6f0:6afb:6ef9:ab5c%6]) with mapi id 15.21.0406.007; Wed, 16 Sep 2026
- 10:33:41 +0000
-From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-To: Guangshuo Li <lgs201920130244@gmail.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Petr Machata <petrm@nvidia.com>, "Keller, Jacob E"
-	<jacob.e.keller@intel.com>, Jijie Shao <shaojijie@huawei.com>,
-	=?iso-8859-1?Q?Uwe_Kleine-K=F6nig_=28The_Capable_Hub=29?=
-	<u.kleine-koenig@baylibre.com>, Ruoyu Wang <ruoyuw560@gmail.com>, "Jakub
- Raczynski" <j.raczynski@samsung.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-CC: "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH] net: sungem: disable PCI device on remove
-Thread-Topic: [PATCH] net: sungem: disable PCI device on remove
-Thread-Index: AQHdRaOcMZDefrI7fkuZVXTpmUJ/l7bQ/Oug
-Date: Wed, 16 Sep 2026 10:33:40 +0000
-Message-ID: <IA3PR11MB8986AAE7C62816D4C14ABDC8E5B92@IA3PR11MB8986.namprd11.prod.outlook.com>
-References: <20260916055913.2910349-1-lgs201920130244@gmail.com>
-In-Reply-To: <20260916055913.2910349-1-lgs201920130244@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|IA3PR11MB9422:EE_
-x-ms-office365-filtering-correlation-id: 8ccef5ff-4dc2-4895-78ed-08df13ddf9d7
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|366016|38070700021|921020|11063799006|56012099006|10067099003|5023799004|18002099003|22082099003;
-x-microsoft-antispam-message-info: qwTb3VObX5SP7vtpUF0SISpzM2Qw45to0YFfoBNLPa1UQBoSuQLd+OsTpW4k4FNRXXqxC6SZ5YcoFyg+Eblr1p9eojBXeCndCiJEwngJPCSTnBsGCMtWKb9Q9bc3IQzuTG8Ekxl5hjcvCprn+BGk5Yge+FEgLC316PvqtxPpSUgcsfA+HpGglXkG3aU5I2YMCenrDOAlCx5GSL4HipZg30RhWjYbs2pVncbFwx4lzVK7fqEqNY+k0I/xwieLm4aG14+Lt5z9t+0YcDC73fTnwK0nzQDQ1g4HqgAPGKwD5gJ2cWHHoNMW6dnHRnbwkJBzJdSMNfXh/NLcHc6/hXKYl4Gz8hO/IeDPmoUFXfoQnxodJteenWPCQbhTNWCNLleZEzcZCgwDvBOdMcY1tWL2zTboGsdhu87qkSYjPJhG8eOippSx09ef24e1i+zfA2fbLCzA/LHCeNEyXc6GVedQ2DD+4cXrSj0cxsO5l2XYrMoyPyPPBoD7o1/ny1UT6MvLGwvdKmMlGdGLXcMWrBNO40doMZ/DPMip/XNRmxYsnpVKOifiEoKXC6evm/DUaKSVWbLzuZUm8f3tSWRH10X5SuddGsBWt/kODT7PFSJSxP+JdtfX5F8Riv+QzxpppfnWTndK9dDqxIyXUpwkNSBZLpKsRM1ua4TyfeiS9iDQjJrgtCTj2tYsizPvizs7QS5COM97s/GlAPn7TCVWI23VlT2agD7M2jFEC1zPVOA+Ccq6DG3GXtNCJ1ayOLwiL7Ev
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(366016)(38070700021)(921020)(11063799006)(56012099006)(10067099003)(5023799004)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?LrH4HLPXDvW/a6b5nvufqliU1lvjEXNsX5hdn55nW4+HK+gm9Q7/4J16JN?=
- =?iso-8859-1?Q?ItgfXhZOJhD7p8pOAjMpD/1+GMyF8yKIyCObNmLyM+IfdjDQjOqyxA+xSe?=
- =?iso-8859-1?Q?3zMnv8/nIV36/gebPc+BvbFedyLGg8UhSKmDKjNppu6kBvTH13ljrUR+Wq?=
- =?iso-8859-1?Q?9YkR2wKjBeHSIOdTG55QT1JBZMf5Ltb/WsHSoPEa+eVoCKVZH76CDPlDJ7?=
- =?iso-8859-1?Q?BJC2YaZBXUw4jM+iYG/B9nJDS4lmcuACpo0t5PmHIjOd1JcqDPqDER0zqx?=
- =?iso-8859-1?Q?CQJpdLj9OTdPkShEAQIJLYGUYhKKBMLxZQ+nLzt6A6p5LWflkP/KkYhSme?=
- =?iso-8859-1?Q?ML2sL9kOYyfsnSOlXXAOh/c4m2Ky6JjlMJ5wN5pQvcFE8NCB1R+h1EVMrM?=
- =?iso-8859-1?Q?iE0AnKQL3XwczXemwPauP96uz6bzSooCeRsKpdf76a9woesljnFxd4FVX3?=
- =?iso-8859-1?Q?mHIZuYp+iixKlvvC69fRwsRJi9zZbiYgs2dcG68BIyIBTTySJ+fhulER+8?=
- =?iso-8859-1?Q?bxka62DtJU9DjkLIII4SxQLcRr3gUfCKUIeCkBCxthkJ6a/sd8aM4jR9TY?=
- =?iso-8859-1?Q?IdPr23EFEJ7qPxGl4SvsVZd7Djtur/xJ+p9yTgfR6Lz00EtpGsjysu0koZ?=
- =?iso-8859-1?Q?uzEVytLpDiqf7wTLgmHSn1y0bmIO2qh0oWHsJ4VddD1/iDE601ttiedeaN?=
- =?iso-8859-1?Q?DUwQNXdwJI9OwnCDDHxTn7FIIgNvZMgAZg97sor+SGJpYgfQJ8oAA0AAqO?=
- =?iso-8859-1?Q?+/gy/Hb0xxqDCgGkv7eyEU4yYFSwptpF7coaiBcxRjT1szPo8MZNdU6Nef?=
- =?iso-8859-1?Q?mSgOICUSl44UIVgdGc/53Yi1Qjx0ZzpOBcpjoqsxb222/+D8wJtd03Af3Y?=
- =?iso-8859-1?Q?qReITuu2Iou5b242x/vgYGv8mY/P+2duCKZ8amN97MFqVGxdU3eUJqgt2Q?=
- =?iso-8859-1?Q?5nKzQylvW/bkgI8jcqoAC70yaediQBxmURa1hka9cTB6VkiX+U8J3nf4k4?=
- =?iso-8859-1?Q?F/ZVN1t42J43tmakfR3/IA9DBAmgBA/q3NLgwty0g4mygO4BgRztscpwEN?=
- =?iso-8859-1?Q?Gsio5N91nSqfcANnH10ElkeC2XVjJXllG/JUg02z80kFzqsI0ZDB7jNSQD?=
- =?iso-8859-1?Q?2Gj6i7I1QROBR/NQIv7NzlTq1Bxn4ao+Bq0/y/SfaazMaV2yd6tf0M0C6Y?=
- =?iso-8859-1?Q?T7t/7q9D0edrkMLaEDhIeLrBzLmdekLBeRiwg3b8CuosRQ/PaJuqCq7OY0?=
- =?iso-8859-1?Q?GI/q+s0HFloarXyPCKBv4E8NwYG0R+taJLPOHzU2yv+GVENK1lAb4u/A5q?=
- =?iso-8859-1?Q?FdS86sbxAL0kWL+BW9BgEXSq7d0flIUA6xJmbXKTnhq2rfQ1DjAMzGzm+Q?=
- =?iso-8859-1?Q?La0zi2Ezy44j9tVbc7HRd7a4N8+qjsybW46KUqTpHZLHp4IqOJHkrsdG5v?=
- =?iso-8859-1?Q?ZXR1zLbKHefGcntryc4F8AAKk9jbRGbpeEJJZ6fvuwQN+2MC4YqZQb+q42?=
- =?iso-8859-1?Q?Ud/Hw8qUEtXkEpzg5XJQ+uwTAJ+MdkFL2J8YiatsQHnSNXCIhElZCcSDz/?=
- =?iso-8859-1?Q?65dCdcQj8U0Ex3r3jX0iEvmjH8phKOorbGN/SvtbR0R7KCpjiGFRlxW1eh?=
- =?iso-8859-1?Q?jsjtTrtnvK5hB+v5J6oPdWX1ej7rxsPrM4vQm4YFBjEIFbbR1sJTWpsDIr?=
- =?iso-8859-1?Q?m3BrnTXo7mxXjzJMAqFyfSmyNFq8kjqIJwiWXEQrwgQBYdZbT/loexphBe?=
- =?iso-8859-1?Q?8sBqDkdn4j/p0tJJ5liTy6E3nUmn+Ji8TQB8Dpnfa0o9Y6LpmMg1bNxCTb?=
- =?iso-8859-1?Q?49978Fum1rjZGEJKfkcN9BBGUGkJbig=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="OoYxiJZb"
+Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-8633a38df87so443469b3a.2
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 03:35:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789554908; cv=none;
+        d=google.com; s=arc-20260327;
+        b=WmB0LGgHH1n3bCIBOT0+IdhsCsgfkGzp/U3JOsRWpWvACFBo2mhyk0/cpdfOP9NEHT
+         HScgrlISl7z4CRZDhSaIjgtHQRIOxTw6x674YQrR3VP/AT77O1egnK9dpTpK7nOxjqWo
+         Vo3wKBlrkT65+l0kZWH6zuIIW/SmWR4pp2aAcqnIV1kGUYFOCg/qmHPBjuxg7xjupcVx
+         AOPc9QdpL86g7ftU9pmgTGA3yNmvesKit2iUTto04Q3aWl6OLvVFqVrHZN/7zriT1y9X
+         ynWuf7JE1ynEtAoxxQVmNha4g3Q5qoGQmEmDiGphSfCN9ma7E7p8g8C6wuKVTEmmQI0k
+         4H6A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VX2UakJDyoshtDZiFNwXMfLqIFwYkzWpLSYo8MxgLTM=;
+        fh=psW8OOxpMrGOX9P2hwo5xfcMJ9gE6whvkBB9TxNIKW8=;
+        b=eicQsVTuDb7Rrths9wdHfwtAk4PkKsxi4V0NSQgH61ojIUCE4wlp/Jg1ZnsqJYfuCY
+         QdkiqCLNYlmexDvYC2dM7TyQN/1gWfluZyklkwPUsNO9I7xDLbXTsMUAyTQuf6cRtuxW
+         kOARjAvmrFqPQ9pud8L/F81Tlg/8so7AS+WRRVSmOe8r+gmAxJaROOSzhKcperZYXeEO
+         xD+5CQTkpDWuD7twivWn+eXRibNXYuq6ui9CPnlQNN7a++h0juQcJ47k8j4ZKrlwwAsf
+         K/WI1yCyFvk6JMYVdYZzAhtEs9Tj+J/DytprF1MPprbqcnBftBAkJiyNR+hCSD8tNyxr
+         cPYw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1789554908; x=1790159708; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=VX2UakJDyoshtDZiFNwXMfLqIFwYkzWpLSYo8MxgLTM=;
+        b=OoYxiJZb5X67JANQwOQEOKdNd+VkZ2nkebX/I6hMEn7iJ+6XGmpXuVZ8mJvw4xwouA
+         mnkEZPAFYxfT7LZ6eZIND8IOXig0ZnCBY+j5GIv2I0mB/ywJnNA5iBX1FK0gPPYAWEhC
+         v+5I/AthittJAQ4NktQnEmXIMToAurLwZbWIY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789554908; x=1790159708;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VX2UakJDyoshtDZiFNwXMfLqIFwYkzWpLSYo8MxgLTM=;
+        b=edkO0yq7Uoti4wPKNAuNMofKtLOHj3GMAsqavXFlB2bp0R/X5Hopdea55LoVzmMcZO
+         x1lFRetyvq4CLIVLVZn7U8p5aJa25sk+ISPP0XhnCm8ZaYj2tFvtwcMuxFL7jb72dDH7
+         ZeU/E/urTtFh/Hq68WxFh+Aei1oeDx766g2OB73HuZOUsyCfmxsnDl+LhXP99bT2P55N
+         KKyXiiYdYl9j4S2eScETCd45i20p7pyMikcsN62ewuE/STa4k/B2DEusB7q4Vw2hc40g
+         9Q19PT6NABzy6O9jnY1q+NdryrrSLgTzp5xHH3fbLCWa5dJtZ76yogOLQrghtkdNcGmt
+         c2xA==
+X-Forwarded-Encrypted: i=1; AKwUvByTMEq3VL0V/ukiqbUftKf05z3aQwZYi0TBiVBhcMXKMWwBsf9kdx+ccl2MZXaeIyr3OoIiuU8=@vger.kernel.org
+X-Gm-Message-State: AFuF++ln/LfrfTlUeHxfuXGhL0zgqY8Omlvzgx+ncDVdWEghtyVNrvb5
+	h2nFlRyTPSi0ivAj8/rXCJ1XTZuYmvOrrHWCPaErTQO2T5MaTq1Rt+KZIef6j58PcxvEwE/irD1
+	xtrR/gUJTMpAQo3btE0oSWfAiBu5Om70mom7alEs9
+X-Gm-Gg: AYBFou0Oc9fzwwfx23/Raq6MZAXWVgblF3Iisy0Rwrz1QgPeQ2r++KhPn2bpIH0/1U4
+	72XFIeYkDPLVaQOFc6PYqFIbJAjMxhWOkYo5BxD7ILbK34rbJtIYzeB1LU0k4x5PdJ1NCjxZc1F
+	wIsAyeczi5gLMO28D6ooNMObpYVAsyKj3SPcFGLK62t0zDQibOIw7s1EX6JeMcX0pFC3+jotkVY
+	hnwY12n3eUaB8Ao9g20fFdHTl+lJoxumYM0/8awb46pNpeC3f8tVrLCH5K1TE7QWCJRfuLturLl
+	ClzB3w6+ZB4uCH72MvX58jyccfcrf29OrSFDZqXf+jFKBQu0VW7KVgvnruE9mPwctMDmc3q9+Np
+	tttHP7q0rhmi6o4gRIvOaXO0HrIZ9cbLWuA==
+X-Received: by 2002:a05:6a00:3399:b0:862:bb07:2b97 with SMTP id
+ d2e1a72fcca58-87238c81968mr4158870b3a.13.1789554908396; Wed, 16 Sep 2026
+ 03:35:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: SHRV7NDsZZzB1aGZ/Cacok4YHaVwfWI8Fn0L20WGhq5V6E9YD2/UtStw93Df3yxqHCMTvJqw+SNTU81hB8ZMKr6djkR7zZg6yilaW9lZFcyJ5ZIXmrlvVrIiymtZt3K/K/sJGi/JOggMGD1UBQM6Gi6Ajba8S25vl3SOVGKbX40pgPNidpyVMgiXlCC3yi2BlE510CdCjvpR/GDE/9jccOKxWl7R/fVDD1PZloFIBv9YqX+5WPe1dUuTvTLsNmXsrFwmVqYVF8a02ATzNrSZx/24CGbVDEV7n4Y8qAw1wXf9y3T3PyXrRGsDI5fIam30c0kqswoLg2X5+IiU6r+rfg==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8ccef5ff-4dc2-4895-78ed-08df13ddf9d7
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Sep 2026 10:33:40.9618
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: QKcqrJpYZVBZjklDRBQ6SpvlvXlE4JO214BGqplNyuXaBikqMccuXBLRCbbVKq7E/xU+njwIXFVO5pCLVAlvYZAsRG+1qb8JkfxbOR4VvMA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB9422
-X-OriginatorOrg: intel.com
+References: <20260911133146.3440982-1-victor@mojatatu.com> <20260914191108.55a1a4f1@kernel.org>
+ <CAM0EoMk7CZA2qAPEfvZ_+tUDkcUYF5nanaxER1soLJQZqMuXxQ@mail.gmail.com> <20260915085304.775a829a@kernel.org>
+In-Reply-To: <20260915085304.775a829a@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Wed, 16 Sep 2026 06:34:57 -0400
+X-Gm-Features: AcwNN1WvBcfAG7EFjO15o-r5CDxCboMMaccMuPUhP6OGNkWCH0RcRNUHMR7GEAs
+Message-ID: <CAM0EoMmiw_kVnK4RjTT_dkquw0YLSB5VgO_7EoV2WT_pQXbCYw@mail.gmail.com>
+Subject: Re: [PATCH net] net/sched: Avoid quadratic handle scan in qdisc_alloc_handle
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Victor Nogueira <victor@mojatatu.com>, davem@davemloft.net, edumazet@google.com, 
+	pabeni@redhat.com, jiri@resnulli.us, horms@kernel.org, vega@nebusec.ai, 
+	netdev@vger.kernel.org, Yuan Tan <yuantan098@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Sep 15, 2026 at 11:53=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> w=
+rote:
+>
+> On Tue, 15 Sep 2026 07:50:54 -0400 Jamal Hadi Salim wrote:
+> > On Mon, Sep 14, 2026 at 10:11=E2=80=AFPM Jakub Kicinski <kuba@kernel.or=
+g> wrote:
+> > > On Fri, 11 Sep 2026 10:31:46 -0300 Victor Nogueira wrote:
+> > > > This is a less intrusive fix meant for backporting; a cleaner appro=
+ach that
+> > > > uses a per-device IDA over all qdisc handles is planned for net-nex=
+t.
+> > >
+> > > I don't think this is net-worthy in the first place.
+> > > We have a ton of code under rtnl_lock.
+> > > We cannot provide any protection from malicious netns admin from
+> > > overloading the machine.
+> >
+> > That is the one million dollar question.  We labelled this as net for
+> > this exact reason. i.e malicious container could overload the whole
+> > machine.
+> > But it borders on "hardening" (improves performance), so net-next as a
+> > target sounds reasonable. It was a coin toss.
+>
+> IMO any attack from containers / user ns is hardening. If it leads
+> to a crash we take it via net _because it's a crash_ not because
+> user ns can trigger it.
+>
 
+Ok - will review the pending ones with this in mind.
 
-> -----Original Message-----
-> From: Guangshuo Li <lgs201920130244@gmail.com>
-> Sent: Wednesday, September 16, 2026 7:59 AM
-> To: Andrew Lunn <andrew+netdev@lunn.ch>; David S. Miller
-> <davem@davemloft.net>; Eric Dumazet <edumazet@google.com>; Jakub
-> Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; Petr
-> Machata <petrm@nvidia.com>; Loktionov, Aleksandr
-> <aleksandr.loktionov@intel.com>; Keller, Jacob E
-> <jacob.e.keller@intel.com>; Jijie Shao <shaojijie@huawei.com>; Uwe
-> Kleine-K=F6nig (The Capable Hub) <u.kleine-koenig@baylibre.com>; Ruoyu
-> Wang <ruoyuw560@gmail.com>; Guangshuo Li <lgs201920130244@gmail.com>;
-> Jakub Raczynski <j.raczynski@samsung.com>; netdev@vger.kernel.org;
-> linux-kernel@vger.kernel.org
-> Cc: stable@vger.kernel.org
-> Subject: [PATCH] net: sungem: disable PCI device on remove
->=20
-> gem_init_one() enables the PCI device with pci_enable_device().
->=20
-> The probe failure path balances this operation with
-> pci_disable_device(). However, after a successful probe,
-> gem_remove_one() releases the PCI resources and netdev without
-> disabling the PCI device.
->=20
-> Call pci_disable_device() during removal to balance the successful
-> pci_enable_device() call.
->=20
-> This issue was found by manual code inspection.
->=20
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
->  drivers/net/ethernet/sun/sungem.c | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/drivers/net/ethernet/sun/sungem.c
-> b/drivers/net/ethernet/sun/sungem.c
-> index dc5638d105db..6abf4d292802 100644
-> --- a/drivers/net/ethernet/sun/sungem.c
-> +++ b/drivers/net/ethernet/sun/sungem.c
-> @@ -2806,6 +2806,7 @@ static void gem_remove_one(struct pci_dev *pdev)
->  		iounmap(gp->regs);
->  		pci_release_regions(pdev);
->  		free_netdev(dev);
-> +		pci_disable_device(pdev);
->  	}
->  }
->=20
-> --
-> 2.43.0
+FWIW, here are the rules we have been using:
 
-The fix is correct, but please resend targeting the net tree, and document =
-testing.
-Please also clarify the practical impact supporting the stable backport req=
-uest.
+It is net if: Regression (worked before, broke) or always-triggerable
+crash/UAF/leak/lockup
+This specific bug could potentially cause a soft lockup but it wasnt
+consistently...
 
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+It goes to net-next if:
+a) Never worked (adds a cap, validation, accounting, or enforcement
+that never existed, e.g. memcg-class)
+b) Doc/comment
+c) tests - although the exception we currently make is if we create a
+tdc test for a net patch then it goes to net just dont cc stable on
+it.
+
+> > Since we have a few similar "grey" issues in our pending queue - so
+> > where's the line for net/net-next?
+>
+> TBH the line shifts depending on how bad the AI flood is.
+> I tried to document some rules but it only lead to bikesheding.
+> So my recommendation is to write the final fix, without worrying
+> about keeping it simple. And assume the maintainers will redirect
+> to the other tree based on their judgement when applying.
+>
+> With all the AI kiddies these days we routinely apply to a different
+> tree than tagged.
+>
+
+Given the flood, here are the priority rules we are using:
+1) submit net before net-next
+2) All bugs must be reproducible by our (semi-automated) system
+(hybris). I dont even look at issues unless they are reproducible
+(hence my nagging "do you have a PoC?" ;->)
+3) Assign a priority to each bug and submit the highest priority ones
+first. The priorities are assigned as follows:
+- base (reproduced, ACCURATE) +1
+- Crash (oops/panic/NULL-deref/OOM/corruption) +2
+- UAF +2
+- Lockup (soft lockup/livelock/infinite loop) +1
+- leak +1
+- simple-trigger (plain tc/tdc, no special PoC) +1
+- privilege required: (root) +1 / (unshare -Urn) +2
+
+The priority is capped at 9. So a priority 9 with net gets immediate attent=
+ion.
+A priority 9 that requires root permission is not as important as
+priority 9 that requires cap_net_admin (-urn)
+Yuan has a taxonomy as well; he calls these L1 and L2 when we pull the
+reports from his system.
+There is an exception: Priority 10. These are assigned to bugs which
+require no root/cap_net_admin and other UPEs
+
+We also capture all "pre-existing bugs" and address them when the
+pending queue is empty. Most of these end up being a waste after fixes
+go in.
+
+> > > Nothing against the patch itself, but if you plan to do something
+> > > else in net-next let's just go with that from the start..
+> >
+> > We could resend the same patch for net-next, the alternative "proper
+> > fix" is more intrusive. See attached.
+>
+> I'm not sure we have to do this, given Victor's patch already
+> drops the time 50x ?
+>
+> > Another option: Is this worth fixing?
+>
+> Right, I think it is but IDK if it's worth maintaining state for.
+> IOW Victor's patch would be enough for my taste.
+
+Ok, we'll send that patch as net-next.
+
+cheers,
+jamal
