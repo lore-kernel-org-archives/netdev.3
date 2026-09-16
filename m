@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5455022579E;
-	Wed, 16 Sep 2026 00:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071E52D63E5;
+	Wed, 16 Sep 2026 00:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789519874; cv=none; b=CHemOijU6qsy7cL77JeRucs03yaI1XgXazXRiu29HkZdlrwKyQpONFCEl+fU9q3aaI8wEVuKL60zan9M9cGjbnTbPJdV2QbRgbNa78l5O1USpHem34S+vxDcFmqCrFEY92Zrriw3BV4k+KkDrcvLarSTxs5m/S07X0lkWBTQc6g=
+	t=1789519877; cv=none; b=HcWt1PGrEKGPUQ6aSXTRQnu0awgTgDuDMs9H0Y4xMHkA8KKZaE9Og46zrH/P7Pw1xJy59/7L1oDTe44pRQMZgnsSzv9NO2c+fYX9bFXir0g6nBG0+rAYQGuHdpfY4L2VPu8zYLKNj6OQ8PyAvbtX9YBA5As62y963U4kFPTpWh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789519874; c=relaxed/simple;
-	bh=arRfOlNEmXIpOVWBOgXYpyuxN1gXr1S7cIaegzSmHL8=;
+	s=arc-20240116; t=1789519877; c=relaxed/simple;
+	bh=bfQzHVnvHjBqcPRiF7fNcJ7tust5Dk//ZKVemXZ6aYg=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=JVp8uc48l8h3SMW2pvmpnUAY4cqXn19E0p3TRzaglB99SZapdHd6uR8BTsfKQ4bRSQPVUGDVmL0+4sELJQ/oieJGLu6dYkepeHKjWcQ4fgo//kzAECGj4wXHeXPyBiuTzQEOLxunfl/s6jHRsfzQBCJZznUHvtcoHjXWtQ+CXec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EL5MYjkV; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=uOkp4hBDyITj6iFQPZdM3DBWitd0/sn0jJmeyONOrux57LY7o8ZepQSZJ595XKx7/q6cSzEnZZl33fU/M0tsqv8UxRv8l4ZHMIPUV9+ILGaTdmnO9tEDpAZqTzFBtHWw3SNCVCg2l1LbenvtvVLyixxTeMjriQlSET3omDNbN6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CjniXSyn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EL5MYjkV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008CD1F000FF;
-	Wed, 16 Sep 2026 00:51:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CjniXSyn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F26C61F00893;
+	Wed, 16 Sep 2026 00:51:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789519870;
-	bh=BxjCEMiTXxljFVqlrSqpR4ljJsuj7IVvEXFsAOdSYUI=;
+	s=k20260515; t=1789519873;
+	bh=+rv/gSqVCAewuJ2dU/6tLYPKGMMcqsXnqxtbXdkyy9U=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=EL5MYjkVkQKF5CivANgDH9apPXFxUX6g9G62Z25P5KpJPx/wnpnlKeRGfBWciY1Ch
-	 9wFDvLtN4L7HBgM58ROIdX/TN5mnDhU2DAbCxOtbeGzARgNP/gNiy/kVdwf7eW6N0d
-	 5Y8cG7heZsKCh5fska7RfxIrQQoXoNoRwYFegp6pe5PiMJJrqOF83TqVutaMNc5RVD
-	 WPTr3C+RzjTlRgHjZXdW53dEyPYkGU3SgAIK9dyCWZNPguWCiq+J5lzTMeVkEj/LFz
-	 pIc/077PrdJlGJpwV7hQlpCqF803wo6HN2sJl9WwF50NXwMfTl1CcuPw1md31yI6xx
-	 eeNzkCUiqDFHg==
+	b=CjniXSynPkljYCdEG6CJ71cY/R+F8Uq2XzeNjqnjuK4VaqAQuoADWySnDCgmmEoKI
+	 /NIUcciNqyyfLgT+RfOs0tIeEPkl/L14ydzsTgvxXwZE8Q3eEH0+E2Pl75j8FQiR6h
+	 iWXBCxRAew7UU4QtBjTvjBBMzx4SR2UHzWq+CmJYRG65TQDQSQg7d+cof/uDPnLM8y
+	 W9F2NgF5RsgVsZELjzYlxKbtvG2LjL5hP9U4t2QVc+c0CcBAqfeFGRUKMiO2FAsWSh
+	 LYimXMdDAc98Va3csZnNcyMxiGhRoK4MJX0tVWCd6PN3Nw7lGM7QifQGu++Z/X1UQu
+	 QdSXQKokmhTmQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939A43927074;
-	Wed, 16 Sep 2026 00:50:05 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 939C83927074;
+	Wed, 16 Sep 2026 00:50:08 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,45 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: ip_tunnel: initialize `options_len` before
- referencing options
+Subject: Re: [PATCH net v2] net/qla3xxx: disable the PCI device on remove
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178951980439.2341174.3543067231110573907.git-patchwork-notify@kernel.org>
-Date: Wed, 16 Sep 2026 00:50:04 +0000
-References: <20260913090851.468216-1-cnfourt@gmail.com>
-In-Reply-To: <20260913090851.468216-1-cnfourt@gmail.com>
-To: Gris Ge <cnfourt@gmail.com>
-Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
+ <178951980712.2341174.5297094058191389457.git-patchwork-notify@kernel.org>
+Date: Wed, 16 Sep 2026 00:50:07 +0000
+References: <20260913204534.53825-1-mhun512@gmail.com>
+In-Reply-To: <20260913204534.53825-1-mhun512@gmail.com>
+To: Myeonghun Pak <mhun512@gmail.com>
+Cc: GR-Linux-NIC-Dev@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- stable@vger.kernel.org, horms@kernel.org, kees@kernel.org,
- gustavoars@kernel.org, cratiu@nvidia.com, gal@nvidia.com, tariqt@nvidia.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, ae878000@gmail.com,
+ horms@kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sun, 13 Sep 2026 17:08:50 +0800 you wrote:
-> The following command triggers a kernel panic:
+On Sun, 13 Sep 2026 16:45:34 -0400 you wrote:
+> ql3xxx_probe() enables the PCI device and balances that reference on
+> probe failure. However, ql3xxx_remove() releases the mappings and PCI
+> regions without disabling the device, leaving the enable reference
+> held after unbind.
 > 
->   ip link add d0 type dummy; ip link set d0 up
->   ip route add 10.30.0.0/16 \
->     encap ip id 300 geneve_opts 4660:66:11223344 dev d0
-> 
->   memcpy: detected buffer overflow: 4 byte write of buffer size 0
->   kernel BUG at lib/string_helpers.c:1044!
->   ...
->   ip_tun_parse_opts.part.0.cold+0x10/0x10
->   ip_tun_build_state+0x116/0x2a0
+> Add pci_disable_device() at the end of ql3xxx_remove() to balance the
+> successful probe's pci_enable_device() call. Keep the existing manual
+> cleanup and probe error handling unchanged.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v2] net: ip_tunnel: initialize `options_len` before referencing options
-    https://git.kernel.org/netdev/net/c/455ebeadf714
+  - [net,v2] net/qla3xxx: disable the PCI device on remove
+    https://git.kernel.org/netdev/net-next/c/d328b5ad4a52
 
 You are awesome, thank you!
 -- 
