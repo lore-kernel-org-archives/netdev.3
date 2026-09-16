@@ -1,16 +1,16 @@
 Received: from mx1.white.stw.pengutronix.de (mx1.white.stw.pengutronix.de [185.203.200.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67DB6479877;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549C044AB90;
 	Wed, 16 Sep 2026 09:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.200.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789549292; cv=none; b=eU1QCoo8twrpkVnwFv8IOe+pRxY+zkB2m0TIH1YvttWZkF3/q1ptrm9cwf9d0Y5oz54ZHfrZs55WG2eOj86/V0P2W3s223kgR7C3YYHWLd4aZ1aV7i487s84vk6PHAdQTwc4p1/3t50OX4kktyoeXtfnwNOhWIy9eGVr+eN1vd0=
+	t=1789549293; cv=none; b=chOXh28ZOPHgjEyrfOpcJjpNVGabd1lq/BfBOZSrnSnRkt2C+Z62DwpFfEGvW1ktsK2zaPD2jhRVxec6ythfaltoFHRb20h9PiCisqORqbp6wxFQF15UAMqqOwGOS5hkS0wJkWuzfpB741EZsLh1vQDqtDoaQp4v3jAUyNgv6lQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789549292; c=relaxed/simple;
-	bh=Lh2YpoweQWTV782T1aSpLLm143KnrvMJcpmoWZTmQ8M=;
+	s=arc-20240116; t=1789549293; c=relaxed/simple;
+	bh=91wbg/bu2gtyMOvzzNBAgNWwZMHv8M2P9CRKkGct2lA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jEFwJjF5rW1Wpl12oe/mt5jgb7/dnXJtcLzu+kYp6e8T4juAaNicTWA1ZpOGMInjlgDTBAbPMIbjfcQMHA/1KSNMiuwfxLLLLs7gqx5017Z92d5Z8s835KiHzFPn7EVq6qRkKnPFUaEgDUiKCMGGf+BQFqsDXenF1DW5OGJLi6Q=
+	 MIME-Version; b=Svx5qk+EE1zofiTI+hQC6jGLWgQiJTU4kEBc4cm3lvmtwKnZy3pb6J7pQg1SZH/vTLDSk9xQiG/XKQnX6gdj3PsH+t2y5dh/sriY9ofgn/m2UAHR1n/johHiUl4SPlJpPOBG2kVbwKTL5TWt4uQV4xGG26UYcQHAnPJuhmGU9m4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.200.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -30,17 +30,17 @@ X-PTX-Original-Recipient: linux-kernel@vger.kernel.org
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 9B696201E6B;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id A2A43201F41;
 	Wed, 16 Sep 2026 11:01:03 +0200 (CEST)
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1x6lVn-001CpZ-1f;
+	id 1x6lVn-001CpY-1b;
 	Wed, 16 Sep 2026 11:01:03 +0200
 Received: from ore by dude04 with local (Exim 4.98.2)
 	(envelope-from <ore@pengutronix.de>)
-	id 1x6lVn-00000001Sqg-1r0W;
+	id 1x6lVn-00000001SqV-1lRk;
 	Wed, 16 Sep 2026 11:01:03 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: Linus Walleij <linusw@kernel.org>,
@@ -57,9 +57,9 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>,
 	=?UTF-8?q?Alvin=20=C5=A0ipraga?= <alvin.sipraga@analog.com>,
 	netdev@vger.kernel.org
-Subject: [PATCH net-next v3 2/3] net: dsa: realtek: rtl8365mb: extract PHY OCP address halves with FIELD_GET
-Date: Wed, 16 Sep 2026 11:01:01 +0200
-Message-ID: <20260916090102.349157-3-o.rempel@pengutronix.de>
+Subject: [PATCH net-next v3 1/3] net: phy: realtek: use C45 for RTL8365MB-VC internal PHY MMD access
+Date: Wed, 16 Sep 2026 11:01:00 +0200
+Message-ID: <20260916090102.349157-2-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260916090102.349157-1-o.rempel@pengutronix.de>
 References: <20260916090102.349157-1-o.rempel@pengutronix.de>
@@ -71,73 +71,47 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Extract the two OCP address halves with FIELD_GET() before handing them
-to FIELD_PREP() to build the ADDRESS register value.
+The RTL8365MB-VC PHYs are integrated into the switch and have no MMD
+registers of their own. What phylib accesses as MMD registers (EEE)
+actually lives in the switch's OCP registers; the realtek DSA driver maps
+those MMD requests onto OCP and exposes them over C45.
 
-rtl8365mb_phy_ocp_prepare() previously fed FIELD_PREP() the raw
-ocp_addr >> 1 and >> 6. FIELD_PREP() masks the value to the field at run
-time, so that was correct for the current callers, which all pass a
-run-time register address.
-
-FIELD_PREP()'s compile-time width check only fires for a compile-time
-constant value. None reached it here: the address is computed as
-PHYREG_BASE + regnum * 2 from a run-time regnum. The EEE support that
-follows adds callers with constant OCP addresses (0xa5c4 etc.); clang
-folds those into the inlined ocp_prepare(), so the shifted constant now
-reaches the check, overflows the 5-/4-bit field and breaks the build
-(gcc does not fold it here). FIELD_GET() narrows each half to the field
-width first, so the value already fits.
-
-No functional change.
+For a C22 PHY, phy_read_mmd()/phy_write_mmd() would use C22 indirect-MMD,
+which this hardware does not implement. Point .read_mmd/.write_mmd at
+genphy_{read,write}_mmd_c45() so phylib's MMD accesses go over C45 to the
+DSA driver's mapping instead.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Reviewed-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
 ---
-New in v3, fixing the clang FIELD_PREP build failure Jakub Kicinski
-reported against v2.
----
- drivers/net/dsa/realtek/rtl8365mb_main.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+Anticipated reviewer questions:
 
-diff --git a/drivers/net/dsa/realtek/rtl8365mb_main.c b/drivers/net/dsa/realtek/rtl8365mb_main.c
-index f8220d832e46..efde1f3b604e 100644
---- a/drivers/net/dsa/realtek/rtl8365mb_main.c
-+++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
-@@ -199,6 +199,14 @@
- #define   RTL8365MB_GPHY_OCP_MSB_0_CFG_CPU_OCPADR_MASK	0x0FC0
- #define RTL8365MB_PHY_OCP_ADDR_PREFIX_MASK		0xFC00
- 
-+/* The full 16-bit OCP address is split across two registers: bits [15:10] are
-+ * the prefix (RTL8365MB_PHY_OCP_ADDR_PREFIX_MASK above), and bits [9:1] go into
-+ * the ADDRESS register as two fields, [5:1] and [9:6]. Bit 0 is always 0 - PHY
-+ * OCP registers are 2-byte aligned.
-+ */
-+#define RTL8365MB_PHY_OCP_ADDR_5_1_MASK			GENMASK(5, 1)
-+#define RTL8365MB_PHY_OCP_ADDR_9_6_MASK			GENMASK(9, 6)
-+
- /* The PHY OCP addresses of PHY registers 0~31 start here */
- #define RTL8365MB_PHY_OCP_ADDR_PHYREG_BASE		0xA400
- 
-@@ -871,6 +879,8 @@ static int rtl8365mb_phy_poll_busy(struct realtek_priv *priv)
- static int rtl8365mb_phy_ocp_prepare(struct realtek_priv *priv, int phy,
- 				     u32 ocp_addr)
- {
-+	u16 ocp_addr_lo = FIELD_GET(RTL8365MB_PHY_OCP_ADDR_5_1_MASK, ocp_addr);
-+	u16 ocp_addr_hi = FIELD_GET(RTL8365MB_PHY_OCP_ADDR_9_6_MASK, ocp_addr);
- 	u32 val;
- 	int ret;
- 
-@@ -887,9 +897,9 @@ static int rtl8365mb_phy_ocp_prepare(struct realtek_priv *priv, int phy,
- 	val = RTL8365MB_PHY_BASE;
- 	val |= FIELD_PREP(RTL8365MB_INDIRECT_ACCESS_ADDRESS_PHYNUM_MASK, phy);
- 	val |= FIELD_PREP(RTL8365MB_INDIRECT_ACCESS_ADDRESS_OCPADR_5_1_MASK,
--			  ocp_addr >> 1);
-+			  ocp_addr_lo);
- 	val |= FIELD_PREP(RTL8365MB_INDIRECT_ACCESS_ADDRESS_OCPADR_9_6_MASK,
--			  ocp_addr >> 6);
-+			  ocp_addr_hi);
- 	ret = regmap_write(priv->map_nolock,
- 			   RTL8365MB_INDIRECT_ACCESS_ADDRESS_REG, val);
- 	if (ret)
+Q: .read_mmd/.write_mmd now use the C45 helpers, but the DSA user MDIO bus
+   only gains .read_c45/.write_c45 in the next patch -- is this bisect-broken?
+A: No. Until then an MMD access returns -EOPNOTSUPP, but the only one that runs
+   is the EEE-ability read in phy_probe(), which phylib ignores; probe, link and
+   traffic are unaffected. ethtool --show-eee reports EEE unsupported here -- the
+   same as before this series, since these ports gain EEE only in the next patch
+   -- so it is not a regression. Verified on an RTL8365MB-VC.
+---
+ drivers/net/phy/realtek/realtek_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+index 97b0b67b9900..b55691681df6 100644
+--- a/drivers/net/phy/realtek/realtek_main.c
++++ b/drivers/net/phy/realtek/realtek_main.c
+@@ -3338,6 +3338,8 @@ static struct phy_driver realtek_drvs[] = {
+ 	}, {
+ 		PHY_ID_MATCH_EXACT(0x001cc942),
+ 		.name		= "RTL8365MB-VC Gigabit Ethernet",
++		.read_mmd	= genphy_read_mmd_c45,
++		.write_mmd	= genphy_write_mmd_c45,
+ 		/* Interrupt handling analogous to RTL8366RB */
+ 		.config_intr	= genphy_no_config_intr,
+ 		.handle_interrupt = genphy_handle_interrupt_no_ack,
 -- 
 2.47.3
 
