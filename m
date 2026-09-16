@@ -1,158 +1,126 @@
-Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11010069.outbound.protection.outlook.com [52.101.228.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f41.google.com (mail-pz2-f41.google.com [74.125.228.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1075832470E;
-	Wed, 16 Sep 2026 02:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789526384; cv=fail; b=B2AKWFNiZSrz7QCbr1uyrRoHxIzv/fAETNKOqi45hv6xPf44mPIfpL2uYN+xoTeFz958p19SBq8t2Lql2e22zmb0HMJr93mTWEac7+ID/LVFaUpXN0+lGg7zo4MkuS9C4r0DRBia1BZRlidLVYvTjxiVksj/Bs/IwGZM9SpNUbc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789526384; c=relaxed/simple;
-	bh=ZQ6ijfmn/pAZbEsS1SCfvOqCtKeWx7ZcU1k2thi5RfI=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=b6UucbBLplEVzuakpbXZDHhf7fLLOQkOxcXSW4oIF/vS0P4n8lAApDCsKdce7djxbYbfC57utiCRxCtyBi0myeGjvmeSFg7DYJc7oRhUeZ6d3v9oYr/wBIyEm/ZZKTtwjHfMyWDtp+tGGFIVcdsICODIFKR+ghDRjfHoLCpgfHo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=jUlQmUBX; arc=fail smtp.client-ip=52.101.228.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26323AE197
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 02:52:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789527149; cv=none; b=cxrd2VcFCUYm11/jw2qY0YOPQrimA965mZvCK4oK3oByN6gNMqelAaXegUjc50rmDnMCmbELcHsNbygwsvdwIIhpjFbmrNrL46Qa3vBC2RWZOSXLuNBkT+wE1yI6y+bmF8aLoVJz5NZzzIEVsDSosbeFlrOSR4KbZVn0ReOvXNI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789527149; c=relaxed/simple;
+	bh=tX9M+W6f3YXesN8e9sqc2endp/ilgoluGKgnYvWZ2YA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GNJBw7d8imjjvm2iHZX8lH60bBgxBAlgPAqt2LNfehq6BnnbiKErZSe+tW2RzWgu6KaS4uImOhzIqxbiNTqFobXEXLuMvdxyoRu1ilfC+kNmvfqJzvEd30Q0lFXP1fHnaIlsTwQzWn7iefOySi7cqtYYWxHukjeATeg0LvU5tBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rUY8FHpt; arc=none smtp.client-ip=74.125.228.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="jUlQmUBX"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=x47kXyYKEkhHvBQ8FJFBhEGQqxtvRFDMF0+5ucdAucdRzeb2jv0DCcyustVm9ad4ILHc63Y1InHM8OdNJ40Qu9uPkk5O7hLxJK4xjWpcy5OiASYlYd4W8wDcMf187dS6kb3OO0i9EF3I+rKde8kNPhg5Ue1VBWfiqKzB8yCDSoSaJPXjPPNHNUqM0koGdIVExWeHQNR66G4sLYw/xB9mue53hFQ0yaNOod9cTTSZ29fdoxT+4gnssy64c5Ew+hDtAWvDrvkJ6QRWq2A0yAyorGPihXnuN1faoVR6GqjnO9AyxNw+BbwOrB9empesZ9jdh/e7E2a110d5MWw3SrCA4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZQ6ijfmn/pAZbEsS1SCfvOqCtKeWx7ZcU1k2thi5RfI=;
- b=qIsXO6Tc2Sv+HhFiDTw6Ld3KFVXITD1jHXRuEyNX3vXDaxSv87zEuTEz4TYuPi+XsQugQBxZE0Xp3+Gk1jOHd7nDt/pRtDdwGSiSdfyB1DSEmWlLdaYgHxZKm0EvVOtwc+ca11gMhjdTPPyNt2OjaIiKX2rRxSJFLma81W+HeGBLjvNBnNymYOe95gy1sbQ1+qzrJN4VUfiXBPK43oSZwnraMi6F+NL6Xuq8n2TaVuCGJJ/pp6X1lXzGewGwQDl2JRoMe3yBUVjPIfq5cjqxKGwttRh6ZgxtAOHYTwq8CemqRLuQuPtG5jmqu7/W92CVtDhdfHOrkdOLbz8YEPt5yA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZQ6ijfmn/pAZbEsS1SCfvOqCtKeWx7ZcU1k2thi5RfI=;
- b=jUlQmUBXaRSWxVuvTQ7wv838VRPq7xmViiurvfPNGiluQKUYFd8RL37OH/EfRvXehsF9CTOArV1NsQ2wHB0ais1YyxpPhysnXQBNnTA5raHJjkNCjAyqm9mEcyPK2XlvTMKHGiO9GMCFbGK+aE5ax58F4YFsrfbZc9ObPYhNJWM=
-Received: from TYCPR01MB7481.jpnprd01.prod.outlook.com (2603:1096:400:f4::5)
- by TYYPR01MB12355.jpnprd01.prod.outlook.com (2603:1096:405:f3::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.13; Wed, 16 Sep
- 2026 02:39:35 +0000
-Received: from TYCPR01MB7481.jpnprd01.prod.outlook.com
- ([fe80::8071:f03b:77d1:aeaf]) by TYCPR01MB7481.jpnprd01.prod.outlook.com
- ([fe80::8071:f03b:77d1:aeaf%7]) with mapi id 15.21.0428.009; Wed, 16 Sep 2026
- 02:39:35 +0000
-From: Yoshihisa Yamamoto <yoshihisa.yamamoto.xn@renesas.com>
-To: =?utf-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>, Andrew Lunn
-	<andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, Russell King
-	<linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>
-CC: Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Yoshihisa
- Yamamoto <yoshihisa.yamamoto.xn@renesas.com>
-Subject: [PATCH net] net: pcs: rzn1-miic: Reset PRCMD state before unprotect
- sequence
-Thread-Topic: [PATCH net] net: pcs: rzn1-miic: Reset PRCMD state before
- unprotect sequence
-Thread-Index: Ad1FhIqTpUP0rtxUTJWPkJgJUNHxrg==
-Date: Wed, 16 Sep 2026 02:39:35 +0000
-Message-ID:
- <TYCPR01MB748139F059DF2459B9813416A4B92@TYCPR01MB7481.jpnprd01.prod.outlook.com>
-Accept-Language: ja-JP, en-US
-Content-Language: ja-JP
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=renesas.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: TYCPR01MB7481:EE_|TYYPR01MB12355:EE_
-x-ms-office365-filtering-correlation-id: fee1b0ed-8e77-4dd0-a89b-08df139bbef0
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|23010399003|7416014|366016|1800799024|376014|10067099003|18002099003|56012099006|11063799006|38070700021;
-x-microsoft-antispam-message-info:
- DjX2xitDc3uZ0F3BfbDhqMvJWJoANZai7dFPX3FVG7s8wAxTXW0Gk6VkNCD+/fCU7W+KzKBDTIRHaFyVZHvqogHEKDBsWl0JDrUSLjFjhS+EODH1+Wg9rZ01uxaOU6cv58DiGIWh5UWeXx/BpLEfcAxIh333z9PNtmwKFE1h4mhq8ea/IAHF2sWfmyy3x6UTXuZgd006ya4Jw+uYLbUoLY8l2xKPo8W9+rlqhH52m0mV3IrsdvHYgOYz7/9nLt9WUtvAuBP0cPIepRcjw8CHXVimIYkRw4rOAUGO0ORYlEwPQ/HP0MH0wCIYoWTETH7KWiJedBtseGx0ZOhx4KS+mJ7/+/rvDASVBa+uAvUh+6UmCO6+1CATMi9gAkys11EJFSxwYM5jy0iHvLQfCX6bIadWvfpQCuOHHhYXmNIVH+IQRw0HgV+aZJT5EXkb4M2nABVv0B3drNz4BnZ8S0Gzk3rU6cYh+XHuwos/Tqi2m1fm85szgiRBrncvs52/ibb+uUOw++k77KUCrWS1uAiWtYHlVg41V0Fok0tG9Zd3BfvpZScKadHL9/zX9tVXx9QAL2leYlO2kUhOsWqCHymxvKtBjdE6LW5f2+t2m7WQN2l7/UfXA2yJpc6hIiaSpJSMCMmIJZbyyfpIoBfABMGyCTK63C3yARw46p2ALI5bFnM1F46cEEtbp18w0f185Se5rR4aYMBptZYG8l1q26pvzdSMeO52v9u+1lsR5hung+w=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:ja;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYCPR01MB7481.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(366016)(1800799024)(376014)(10067099003)(18002099003)(56012099006)(11063799006)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?cEhmS282R09CUzBsckZVSmNKYkNxOHVrbkRNYmMrZmNuOFJxTUJSK0RpcXc0?=
- =?utf-8?B?U0NUM0FDMWtYeFdBZTcvUVo2V29NVUZWUTlROHZTcXRNNXdRaDlLazkydERH?=
- =?utf-8?B?aWpBV3NkUWdCcDZoUzJwQlZVWGNkdzl1ZVlqREtvbVErTG93UVBJRnBUUHZG?=
- =?utf-8?B?aVBtQ1I4ZFdhTG9ScmNqWmNpQ3hSd3hkZ0xaeEE0cG0zOUp4YXozMERRZ085?=
- =?utf-8?B?bC9DRTMyN3VkT1BXL3BSbXZjNEl4Zmh2T2xGOHJLTHp4NVExMi92RVl2MDBQ?=
- =?utf-8?B?TzM3RU52QkVmd2hHWTRQc1Bzbno1L1VUWFdoTjhMMXJJRkpLK0lzZm1hSy9X?=
- =?utf-8?B?azJwVVBwM3d5T0pWZ2FDd0VLeVVVNzRMWXhYTXZKNkErU1FhTDBOS0ErcDMy?=
- =?utf-8?B?dGVhTE8wTms3V1p2dmRZU0krYmpxUUZzOW1UV2Y5T1lOWXNqVUk5TW1BQUUv?=
- =?utf-8?B?ZmsrRU5hRVVqeFptWXFuT2gvUlI3bFIzNkRJeHk4aVpYVFhabnhicmYyaWsw?=
- =?utf-8?B?b2oxOFNCTU5TSmFJby9RQmJEeFVMclNYRy9qZE1DWkduekZ3NGZZMnVNK09r?=
- =?utf-8?B?K2MxVktUZUVPZURJSmZLS0ZOZnlpT0M0YjdCWkpyM0llYlBSWnZIRHluRUJy?=
- =?utf-8?B?Q1p0TkhsREFoK05Wei9xL04yVTFoZGhpb3BQNUVYYnJMWUpVYVYrVFMrb3Jx?=
- =?utf-8?B?YVozUGJLVWI1TmU2Nnh4MkI4TENPSmRpdmVGSERqbjRDd0dXenlVTEJqaTZI?=
- =?utf-8?B?WXVmeTRkd3pvZGlEbGpZYnFGU3lvZnJ2VStiWUM5REM2V1Z2M0pPemNReFYz?=
- =?utf-8?B?VnBWVmEwbXNCWVcwdkU1U2JWYkZxampMV2k3STdvUE9GWDdBN1dvazYveTJr?=
- =?utf-8?B?blladkRabG05YStVQ0JEcXpUTGNVdC9GaDZLUXJFVTlCYmFJSFJLblFQcHR2?=
- =?utf-8?B?TUdnL2JadnpHeVcra2ZtWCtQUlZ6WndraEtaS1UvMDVQRURSWDdCZ2Voc0c2?=
- =?utf-8?B?elFWSWh0elZJZEc5cWxFSGxsaGJPT0ZaVFVYc2NXT1I5U3JuRTZMVWZsZXZr?=
- =?utf-8?B?aEVsNGZoUDZEcVQ5Rk5mV0JzN3NUbFh3YXpqbGVDSmhmSStTb3pTRXllWmQv?=
- =?utf-8?B?R0NtQU42OHJFU0k4NUt4WUUxZE1jRXhMbUFpd014Z0FkQTBFZzRscXQ4WHRv?=
- =?utf-8?B?U2dCVkhzYUVkN09tdG1oWFFSelBsSnFwQUZEMGxPS3AvUUFtektYTEZ5L3lj?=
- =?utf-8?B?WVkrb2hrOFhvMFU5bWd0YUpXYkU1enNkSlFyTklBM3NwWDdWc2NmV01jUklY?=
- =?utf-8?B?cTJua3V0Q3JacDBlUTJ6M1c5Qkp4Vi8wTmZNeEZ6dXh5aEN0NXBuZ3RFNE9W?=
- =?utf-8?B?YmdrNXlJSjExSFY0KzhqQUZVQ1Z6YzNySEFCTFdZTmdlUVJJUkg5U1dXd3R1?=
- =?utf-8?B?YUQ2bEkzTFhqWXZuTDE5OUxkOXdiaFR5ckdseFBKV09MWjV5aHA2WjZwRFBj?=
- =?utf-8?B?ZW5KV3pxdElZMW5KeGNvTFhTWFE2Qk5Ld3JlUEtpMVExZjF4Z0o1ZVpOeFZm?=
- =?utf-8?B?dzdYczQvZWVvQSttWGRBbUJXVmpESngvRGpmWFBmL0poSU1JN1F3UURrdGY2?=
- =?utf-8?B?WDRmMk1sTTIxZjRJVkkxUzFaUkhDaForZTVVOW9JcjN4dmQvUUZaeDdONS9u?=
- =?utf-8?B?UjBoRU4yTFhwenVjWGREWmpMQWl1ZHJ5ay9vUmFTd1VZdDBHaVBCSlZ6cVBS?=
- =?utf-8?B?VkVYYUhvVnhrdjh3QVZDZ2pLMFZXam5ic2xqTWtkZk9oTFdzTyttT2RnZ0pC?=
- =?utf-8?B?bTk5Smt5WjhJRkE3U1RjTHZYR3VueGVuVTZnK09DRmV3U010bENZNXR3NjhT?=
- =?utf-8?B?bDg2MEN0WGdlR2p6dHdzekVaUUlKbWI3cFRRV1EwQ0dOWlVaYkNPUXV1Mjl4?=
- =?utf-8?B?Vk94Y1huN0I4V3NIdVhkSmtNSlVKQTEwOVQ1cEdVT3JRTHZoNVhpMWc2RnZo?=
- =?utf-8?B?VHdSbzVQUi96WXk2TWpXSG9ET3daeEZqYitIZVl3UXk2em51NlA3dWRUTXN5?=
- =?utf-8?B?QWx0c3NtZk9kTTV2ZVcvdGEveWZCMFFWRnN2VkJGOGwrTUU4TURmOW9sZ0Vy?=
- =?utf-8?B?OTc4aEc5YUN4WWd0V2tlRkdGVUlYalVsdThneThrdlN4aGhhOC9BdmlaYTdB?=
- =?utf-8?B?L1NhdzRMdWxOTXJLOVNqWDFIVUlUdDNLR1c4SzBuSWVMcTdzZ3hlam5rYUNh?=
- =?utf-8?B?eEllRml0NitscDFWamoyUkpKZTdXeitYLzhVSG90cklCRFJFKzZ2d0oySmJz?=
- =?utf-8?B?ZXZ1c1FJRGxCOElpTUdRVVlaMndtWWtsakZNMHZvZzZIdGM1Q01zNG1sZXJw?=
- =?utf-8?Q?vUL//DKYinNwepWw=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rUY8FHpt"
+Received: by mail-pz2-f41.google.com with SMTP id d2e1a72fcca58-8674704dab1so544490b3a.2
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 19:52:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789527147; x=1790131947; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4i5M/+Fcpjtf5aQ6npx1txWnbcVS6QYJviLzGTvfRwQ=;
+        b=rUY8FHptKrMiwUG9/g2dcbDsRs5GN1MoJKfwS+ruKhBxsaplrnQUPoCL1VtRxbNJrk
+         +axtsUUEMS+O01Oc3S1t5c2S4RoqEdV8QG++LdyCZUJtBBFUSCu1OK1TtTkvF7JxCRum
+         VvJB4EeHxd0eJDKwLCBVmAsQb/H7alYhXyr4gQHjETbGTt30CLe41E6c63VzpDfolKWS
+         3Eo4Oa6Uqc5tdR6uTpnImwCV5+9aVO+3ZzCIYHgNrTo4dUmgeuXKPM4hlUreThujHzhG
+         Bqae+uC+FhITtVyndrG+FcixTDTi/B4YkK+VvwhKBk9oIbfyvETlSJwKDVpQjSPKCdb6
+         CUiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789527147; x=1790131947;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4i5M/+Fcpjtf5aQ6npx1txWnbcVS6QYJviLzGTvfRwQ=;
+        b=syqy49MfIr8abiSTVOMTGXjqo+I/uGXmhcMbp0uPk1oqdImZhzl9sOaWi278poq8Yy
+         0WhsdjBz+VdxgExITsmux1M06qH3DUaejpXuW+epKcqHP9j+Xapc1y5zufJE6IoUgpFS
+         UPv+MKgxV481YnytV75aFxFO3TsqKhXhamJeE/yPcGh/xFBDdnajc7ctBbXZda6/I/vH
+         60lb8nbrAd1BDWhSQtjaJD+g201iRojTxjspb4ulSTFa9zJLrJPlumj9Pdf8pO5FxXry
+         nOOWoLubDcR0D34Im10V194LiyPBUgRDDnORNRAMx/6lGifzsS3tvQug9V1ajF0l8x8o
+         xwFg==
+X-Forwarded-Encrypted: i=1; AKwUvBwkK0Xfzyd5UZ1iWEtPfSvhgrbqPX24APsYk6ImI+h6uVdyuRQGaE7ksTP90HV5MqcgtUw4ctM=@vger.kernel.org
+X-Gm-Message-State: AFuF++k6Imok+QTQje0eWBTAHMZcPWTCpgr8QnU89ZHMwV0aZW3Upovy
+	rsDLtwzU5mIrG3UTRaqJLbvujFZ8TssVfxKCzFd1xVv3NiJLeSR9U6hZ
+X-Gm-Gg: AYBFou0VFlpziJ8/1flNds9j2ROgz0IRHpddUOgAAwZz8ZtRQXRn288mvVrVGENp++t
+	ZMAZ5okvVHuXLA6qgU+1UU8MhLxC1zA3cYK18v7Uw01LJTKMpTbn65E3zL1waOATQ/iuSE+irQz
+	Met18DoFy6feTLnv9vSXE/q3Of6xMLVeH/t9pEhUI9yVJGB+fToeQOQMMWL0jgM94sMUuMMTk7Q
+	wGLmh40ONtbuG05Zb98IFGljb3AnmFb6s+FUxlBU+Il3xoF8nJDOMIK53OTklEGA021K3fW2mMu
+	cXydqbs+ii/mqXXA8+STYDB8scXesBr9xFDm6twNc7Bzu+HLNm18E3do8ba5ukYb8k4hSF4+rSp
+	x/6rKPGSzvoPoqS0g60EN0xp1e5kNCYI4wrVuPsQHahTGnkM6WuXQdG4almosXSzLg03ybOVU/2
+	8868Hyx6iPDts+3J/1lyKBmyPLch9HrCYmEknlfbK2K5nEx+qApAKvgg==
+X-Received: by 2002:a05:6a00:4613:b0:851:c2a6:172f with SMTP id d2e1a72fcca58-8723b87eadfmr1399876b3a.7.1789527146998;
+        Tue, 15 Sep 2026 19:52:26 -0700 (PDT)
+Received: from lgs.. ([2001:250:5800:1002::de93])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8720172b126sm414532b3a.38.2026.09.15.19.52.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Sep 2026 19:52:26 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Potnuri Bharat Teja <bharat@chelsio.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Ganesh Goudar <ganeshgr@chelsio.com>,
+	Arjun Vynipadath <arjun@chelsio.com>,
+	Casey Leedom <leedom@chelsio.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] cxgb4: fix FW SGE queue cleanup on remove
+Date: Wed, 16 Sep 2026 10:52:15 +0800
+Message-ID: <20260916025215.2780658-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB7481.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fee1b0ed-8e77-4dd0-a89b-08df139bbef0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Sep 2026 02:39:35.3956
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: z1KTaz/xUZo6NiBwtIegDckmfKE3j4QOS8zsyid2sFvU0VlYhQcIL52mqwJg3LGNFZsRa6lr48fBZGnQBcI1RyQ8we/M23vBZBqFUOoKDd0BPFkUBTFdqxvDXNu9yx1r
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYYPR01MB12355
+Content-Transfer-Encoding: 8bit
 
-T24gUlovVDJIIE1JSUMsIHdyaXRpbmcgMHgwMDAwIHRvIFBSQ01EIHJlc2V0cyB0aGUgY29tbWFu
-ZCBzdGF0ZQ0KbWFjaGluZSB0byB0aGUgSURMRSBzdGF0ZS4NCg0KUmVzZXQgUFJDTUQgYmVmb3Jl
-IGlzc3VpbmcgdGhlIHVucHJvdGVjdCBzZXF1ZW5jZSBzbyB0aGF0IGl0IGFsd2F5cw0Kc3RhcnRz
-IGZyb20gYSBrbm93biBzdGF0ZSwgcmVnYXJkbGVzcyBvZiBhbnkgcHJldmlvdXMgUFJDTUQgYWN0
-aXZpdHkuDQoNClNpZ25lZC1vZmYtYnk6IFlvc2hpaGlzYSBZYW1hbW90byB5b3NoaWhpc2EueWFt
-YW1vdG8ueG5AcmVuZXNhcy5jb20NCi0tLQ0KZHJpdmVycy9uZXQvcGNzL3Bjcy1yem4xLW1paWMu
-YyB8IDMgKysrDQoxIGZpbGUgY2hhbmdlZCwgMyBpbnNlcnRpb25zKCspDQoNCmRpZmYgLS1naXQg
-YS9kcml2ZXJzL25ldC9wY3MvcGNzLXJ6bjEtbWlpYy5jIGIvZHJpdmVycy9uZXQvcGNzL3Bjcy1y
-em4xLW1paWMuYw0KaW5kZXggMmI3MmZhOThkLi44MTg3NTZiYjggMTAwNjQ0DQotLS0gYS9kcml2
-ZXJzL25ldC9wY3MvcGNzLXJ6bjEtbWlpYy5jDQorKysgYi9kcml2ZXJzL25ldC9wY3MvcGNzLXJ6
-bjEtbWlpYy5jDQpAQCAtMjcwLDYgKzI3MCw5IEBAIHN0YXRpYyBzdHJ1Y3QgbWlpY19wb3J0ICpw
-aHlsaW5rX3Bjc190b19taWljX3BvcnQoc3RydWN0IHBoeWxpbmtfcGNzICpwY3MpDQoNCiBzdGF0
-aWMgdm9pZCBtaWljX3VubG9ja19yZWdzKHN0cnVjdCBtaWljICptaWljKQ0Kew0KKyAgICAgICAg
-ICAgIC8qIFJlc2V0IFBSQ01EIHN0YXRlIGJlZm9yZSB1bnByb3RlY3Qgc2VxdWVuY2UgKi8NCisg
-ICAgICAgICAgICB3cml0ZWwoMHgwMDAwLCBtaWljLT5iYXNlICsgTUlJQ19QUkNNRCk7DQorDQog
-ICAgICAgICAgICAvKiBVbnByb3RlY3QgcmVnaXN0ZXIgd3JpdGVzICovDQogICAgICAgICAgICB3
-cml0ZWwoMHgwMEE1LCBtaWljLT5iYXNlICsgTUlJQ19QUkNNRCk7DQogICAgICAgICAgICB3cml0
-ZWwoMHgwMDAxLCBtaWljLT5iYXNlICsgTUlJQ19QUkNNRCk7DQotLSANCjIuMzQuMQ0K
+init_one() allocates the FW SGE queues with setup_fw_sge_queues()
+before registering the network devices.
+
+The probe failure path releases these queues with
+t4_free_sge_resources(). However, the normal removal path only calls
+t4_free_sge_resources() through cxgb_down() when
+CXGB4_FULL_INIT_DONE is set.
+
+If the device is successfully probed and removed before it is fully
+initialized, such as when none of its network interfaces has been
+opened, CXGB4_FULL_INIT_DONE remains clear and the FW SGE queues are
+left allocated.
+
+Release any remaining FW SGE queues when removing an adapter which has
+not completed full initialization.
+
+This issue was found by manual code inspection.
+
+Fixes: 843bd7db79c8 ("cxgb4: Setup FW queues before registering netdev")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+index 1ced6df6eac8..146419c66348 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
+@@ -7116,6 +7116,9 @@ static void remove_one(struct pci_dev *pdev)
+ 
+ 		if (adapter->flags & CXGB4_FULL_INIT_DONE)
+ 			cxgb_down(adapter);
++		else if (adapter->sge.fw_evtq.desc ||
++			 adapter->sge.intrq.desc)
++			t4_free_sge_resources(adapter);
+ 
+ 		if (adapter->flags & CXGB4_USING_MSIX)
+ 			free_msix_info(adapter);
+-- 
+2.43.0
+
