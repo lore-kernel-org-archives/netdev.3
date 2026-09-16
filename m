@@ -1,154 +1,136 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0F14A5C34
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 09:29:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8124A99DD;
+	Wed, 16 Sep 2026 09:36:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789551007; cv=none; b=CEpqzUcPo2P+rWcNFivNA/lLgu0K/kM2BzudFW25582xDDXT+o98t9ZYhqe9/7FvqKuKzV6/mtnPZBIsCJQkG7VbwqKM6Cw31AtvXmB+Z+FXva7qqp+7NZPSQDQQev695C1v+uUBuZXExFfvACZjepY80zOnL61uFGv21YnE8Zw=
+	t=1789551399; cv=none; b=AGi3/fCkfEQ+ah8+55TRRq0gzAwNUF+N0amG2dJfq1NJ3r4Ndo0ennLaKuMuF9pIZhq9n8ZmFGjqts2guYBEL+dz0dnEMnMLjRvAYzi0vVVhDWqAZ3I1TqNoMVhhAD4yfuX/s8bU7ZgbwF/0L1tpo5QpQD7DsoNKAJt6tSlIBHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789551007; c=relaxed/simple;
-	bh=g/iC+DIqI1xrZJ0xCTu4BStW2wCcnb3D4yhvlUsffN0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NGz4PO2d81Lp0QF713WQoOqxH/QK1W1fm/al2uJk4hRMA+3vRSFnnx6ano/uarC4izdZhrxxA0Romq/Rm69eb+BR20pAGyGh6i6vUlYJ++7p1ogpmhrW5TARFLOEfdS/4JaJtJY4mvSHMG9eL6sTzaIsnhwQbY5ZYiDwj+QK2sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TqKxl7Lr; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789551399; c=relaxed/simple;
+	bh=Tv8q4KRhHYd6df+3R2bPg1gJXfFzLEsuAAmD8hbaHmc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QshLiol5mDldZOzob7/jj+y0ZNWcXXmsLrwbJIgT4uKS79ggICB8brrn3tnssR0g8Gzfa7Xt6AKb76PiW8q3LVRPFAEa3KRqUmkt87x7d5dmzPkseSXLnugaeYjeJwXZxCawirD3Zm+WyYtylRP0UIhM9JzznzsIqy++vzG3adQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=FrwusAfm; arc=none smtp.client-ip=188.68.63.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TqKxl7Lr"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49e6598dd44so3815325e9.1
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 02:29:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789550994; x=1790155794; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=drCB0bFzLSt3iJv3AQNAxjZ5jc1SFYIJv68Mmbr8obI=;
-        b=TqKxl7LrugOFrQrgr8bdk88+4lv6xwiasJTOfStkN5VPSjnmIzv6T/HIKUKB391l8m
-         aP0WS6ji1Q/XPsOSzWynGbp6G3Sqk/TrqGdPwxlP+NPP7z04EpDLifyTLmNpyKjPitul
-         EB9Rkfwh8ymrL4n1jIueyXuEuicoczUb6JmVVr6Ywn6sjH6iyLNAuPuGHRMBurrKQw1r
-         4ZrPpvellJRfv8uBz/Hvs87/BfLCOS4sganTG4pAUCnUPLSPyjBBFaxLvBqNXUXAURG3
-         7JEvragE67izv0WU4XGTUcfR1iYvN1W8CdmHmjmDSfZR8IAkAZA9Dx4kydTrt7X1fSg9
-         yxqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789550994; x=1790155794;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=drCB0bFzLSt3iJv3AQNAxjZ5jc1SFYIJv68Mmbr8obI=;
-        b=axHCgEsp68HdmU7Gp2TrifJc281K6MF/rm4E1Lv7GkAtxJTXfzVjz+isx4bUeRRRcg
-         nekC6fj2IOQYqO7OkniNy367BbAbBKjEmb+FngxqenXwYeQSViA5vFyGVC/2Tki31wBb
-         dcaIJodFWFaYJgBWnnuHo+odZBofPq+ppsDRQCifeNy0WyrnQwBd+DKucJzMgXkY3ZtM
-         hT0sx7jPJFcqCIR6vnus5dB1ynit+0SQBXkPyAcqZ/I1+H4lo5gv4z7kCm63VexTpOH7
-         INCDmac/oZnqnMya4TyyfScoNMM1bffAJnjyHWG3YMG7B1j9cgAgw8++yiaqys63lSyF
-         GYLw==
-X-Forwarded-Encrypted: i=1; AKwUvBw+tCnyNEqFbNsZiz4q/1/ze777FdNla+9U2kFj8oI/O3BsN1sECvqibiQv1EOzCDmOpDVogrQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++ktafgEtgS2K49SYOjcQmAIypBSf6lFEeyKmBO7+t4TZJds4BzM
-	+OU7F6i49+fKrtz+wbiIyzHVCULizzqFOhS00n+PL7qqBiN0meFgTkdJ
-X-Gm-Gg: AYBFou3/yTNzI4JGjDKO2y7ghyhAdkp17M+DxFTyitI9HIU6g2A+AgHV+h8tKD++MAy
-	eupiGsTucwsVi//nF93+EyRkMxfSArHcHkt6mtMDAmXJ2xPdW6pI+rumU4t+Ngk54sMmN/dIC6E
-	ZDiV6VhFpOkMiVDVtLeSIRHqe9BDoKo7fr4PDMifaQgMWug0DFMCQGWoyCiOJrDU1PgfF0/eI53
-	Tac/1zth3E0Q3rWYJjcwrAW8NmueX9ZaAVZtXyHk8OriVd8WawiC+EsoyKgxMKRrOAxDvKMu8dY
-	ppw0il2XXZtrG9pK7jr5j94aCPU+/aNgEzXJuNEfM31vnme9mVyNM3KxjUe9aGnqbVBAWmmksul
-	r/85wxO7vGOiUI3IT+qwCPsOLjRsMxkHV7he7wejqKQ5xgtCXbQ3dJP++a1WkDXryktQZTBlVhy
-	YsbSOd8yMumwurNixBf7h43GI3FUPAuxLxFrxcbs4B+0iTObTlfloNmjuSdpz+qY7ZKbqu61Bdi
-	rcSxGf7J0qr1Rrg363tWaoG1DbxeTMThZ7Y
-X-Received: by 2002:a05:600c:4709:b0:493:f5bf:4dc6 with SMTP id 5b1f17b1804b1-49eac46374bmr21150555e9.7.1789550993497;
-        Wed, 16 Sep 2026 02:29:53 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e83db9102sm64812065e9.12.2026.09.16.02.29.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 02:29:53 -0700 (PDT)
-Date: Wed, 16 Sep 2026 10:29:51 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Kees Cook <kees@kernel.org>
-Cc: Bill Wendling <morbo@google.com>, linux-kernel@vger.kernel.org,
- codemender-patching+linux@google.com, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Andrew
- Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Peter Griffin <peter.griffin@linaro.org>, Linus
- Walleij <linusw@kernel.org>, "Martin K. Petersen" <mkp@kernel.org>, Trond
- Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, Jiri
- Pirko <jiri@resnulli.us>, Simon Horman <horms@kernel.org>, Chuck Lever
- <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown
- <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo
- <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, Jaroslav Kysela
- <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Andrew Morton
- <akpm@linux-foundation.org>, "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Kanglong Wang <wangkanglong@loongson.cn>, Tiezhu Yang
- <yangtiezhu@loongson.cn>, Qiang Ma <maqianga@uniontech.com>, Randy Dunlap
- <rdunlap@infradead.org>, Pengpeng Hou <pengpeng@iscas.ac.cn>, Ard
- Biesheuvel <ardb@kernel.org>, Breno Leitao <leitao@debian.org>, Thorsten
- Blum <blum@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, Johan Hovold
- <johan@kernel.org>, Cen Zhang <zzzccc427@gmail.com>, =?UTF-8?B?Q8Ohc3Np?=
- =?UTF-8?B?bw==?= Gabriel <cassiogabrielcontato@gmail.com>, Rong Zhang
- <i@rong.moe>, linux-input@vger.kernel.org, linux-media@vger.kernel.org,
- netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
- devicetree@vger.kernel.org, linux-gpio@vger.kernel.org,
- devel@lists.orangefs.org, linux-hardening@vger.kernel.org,
- linux-sound@vger.kernel.org
-Subject: Re: [PATCH 01/28] ALSA: ac97: Refactor snd_ac97_get_name() to use
- snprintf()
-Message-ID: <20260916102532.4b881a25@pumpkin>
-In-Reply-To: <202609151134.361FEA04@keescook>
-References: <20260915081910.4142719-1-morbo@google.com>
-	<20260915081910.4142719-2-morbo@google.com>
-	<202609151134.361FEA04@keescook>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="FrwusAfm"
+Received: from mors-relay8204.netcup.net (localhost [127.0.0.1])
+	by mors-relay8204.netcup.net (Postfix) with ESMTPS id 4hlDKX1HLYz8k2q;
+	Wed, 16 Sep 2026 09:36:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1789551376;
+	bh=Tv8q4KRhHYd6df+3R2bPg1gJXfFzLEsuAAmD8hbaHmc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=FrwusAfmP8YMMj2RRVKzKx+h6Vnq/gUqUyIL0fiEsTBtUtA8ux+7RXO7FUh2Fy7tU
+	 xuqFroAZtyTtHK5sbkPfhGC+YvK0yheoK2kD4R3EuXGVVKKHgzlZ0hvPWYTctk2rL7
+	 8a4v0wkVlyM0xHvIT1HTRkxPZ91l06OSep+OwFMcVcjKd4t+WEDnLVX1SnprlOuePB
+	 m9yB4U6f1y9kdx80cbBBCkeWX7qbuzfJw27J4IBt1dBZ7lBH81avFzdx0g9RrHo9AS
+	 vuNL+T10TiR67NOyMP6HowEhbB9z8NSt++6/nfrhSW6/0qYfeA0OeRFJtsG+lAEoLc
+	 5fcOuqX0ELSNQ==
+Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
+	by mors-relay8204.netcup.net (Postfix) with ESMTPS id 4hlDKV4WRXz8jp0;
+	Wed, 16 Sep 2026 09:36:14 +0000 (UTC)
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4hlDKS1lcwz8sbH;
+	Wed, 16 Sep 2026 11:36:11 +0200 (CEST)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 25E5E5F9C8;
+	Wed, 16 Sep 2026 11:36:06 +0200 (CEST)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <6e1aa91c-3749-4d8f-ae77-a7180d7ff84d@leemhuis.info>
+Date: Wed, 16 Sep 2026 11:36:04 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: qrtr: resend HELLO on MHI resume
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+ Vlastimil Babka <vbabka@suse.com>, Manivannan Sadhasivam <mani@kernel.org>,
+ Daniel J Blueman <daniel@quora.org>,
+ Linux regressions mailing list <regressions@lists.linux.dev>,
+ Takashi Iwai <tiwai@suse.de>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Chris Lew <christopher.lew@oss.qualcomm.com>,
+ Pranav Mahesh Phansalkar <pranav.phansalkar@oss.qualcomm.com>,
+ Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-wireless <linux-wireless@vger.kernel.org>,
+ "ath11k@lists.infradead.org" <ath11k@lists.infradead.org>,
+ "ath12k@lists.infradead.org" <ath12k@lists.infradead.org>,
+ netdev <netdev@vger.kernel.org>
+References: <20260909055846.16539-1-daniel@quora.org>
+ <hcr4woicsnz3pbhzlguuwjlego7yli3znhjmsx4cdz66xa74zd@wjtle2yslc4b>
+ <c99d9feb-0a19-4f8d-915b-c2ece401e3fa@suse.com>
+ <6257c447-788d-4362-851e-0d552bcf7c56@oss.qualcomm.com>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+In-Reply-To: <6257c447-788d-4362-851e-0d552bcf7c56@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-PPP-Message-ID: <178955136698.941304.16981546198776007441@mxe9fb.netcup.net>
+X-Rspamd-Server: rspamd-worker-8404
+X-Rspamd-Queue-Id: 25E5E5F9C8
+X-NC-CID: CUZg8elczhzvougDh6PJ0vtRzakfTbjPRF8VlS48Dsn0b8J++jc=
 
-On Tue, 15 Sep 2026 11:39:34 -0700
-Kees Cook <kees@kernel.org> wrote:
-
-(I've just juked a lot of the 'reply to' list - too long to gmail.)
-
-> On Tue, Sep 15, 2026 at 08:18:18AM +0000, Bill Wendling wrote:
-> > --- a/sound/pci/ac97/ac97_codec.c
-> > +++ b/sound/pci/ac97/ac97_codec.c
-> > @@ -1850,10 +1850,12 @@ void snd_ac97_get_name(struct snd_ac97 *ac97, unsigned int id, char *name,
-> >  
-> >  	pid = look_for_codec_id(snd_ac97_codec_ids, id);
-> >  	if (pid) {
-> > -		strlcat(name, " ", maxlen);
-> > -		strlcat(name, pid->name, maxlen);
-> > +		int l = strlen(name);
-> > +
-> >  		if (pid->mask != 0xffffffff)
-> > -			sprintf(name + strlen(name), " rev %u", id & ~pid->mask);
-> > +			snprintf(name + l, maxlen - l, " %s rev %u", pid->name, id & ~pid->mask);
-> > +		else
-> > +			snprintf(name + l, maxlen - l, " %s", pid->name);
-> >  		if (ac97 && pid->patch) {
-> >  			if ((modem && (pid->flags & AC97_MODEM_PATCH)) ||
-> >  			    (! modem && ! (pid->flags & AC97_MODEM_PATCH)))
-> > @@ -1861,6 +1863,7 @@ void snd_ac97_get_name(struct snd_ac97 *ac97, unsigned int id, char *name,
-> >  		}
-> >  	} else {
-> >  		int l = strlen(name);
-> > +
-> >  		snprintf(name + l, maxlen - l, " id %x", id & 0xff);
-> >  	}
-> >  }  
+On 9/16/26 05:09, Jeff Johnson wrote:
+> On 9/15/2026 3:48 AM, Vlastimil Babka wrote:
+>> On 9/11/26 12:44, Manivannan Sadhasivam wrote:
+>>> On Wed, Sep 09, 2026 at 01:58:44PM +0800, Daniel J Blueman wrote:
+>>>> Since the MHI HELLO exchange was relocated, it is sent only at device
+>>>> registration. During a suspend-resume cycle, the firmware in WiFi
+>>>> cards such as WCN7850 indefinitely waits for another HELLO,
+>>>> triggering:
+>>>> [...]
+>>>> Fixes: 544d85de4dc2 ("net: qrtr: Send HELLO message on endpoint register")
+>>>> Signed-off-by: Daniel J Blueman <daniel@quora.org>
+>>>> [...]
+>>>> diff --git a/net/qrtr/af_qrtr.c b/net/qrtr/af_qrtr.c
+>>>> index 78347c937af7..2ffcfc2fdb4a 100644
+>>>> --- a/net/qrtr/af_qrtr.c
+>>>> +++ b/net/qrtr/af_qrtr.c
+>>>> @@ -623,6 +623,19 @@ static void qrtr_hello_work(struct work_struct *work)
+>>>>  	qrtr_port_put(ctrl);
+>>>>  }
+>>>>  
+>>>> +/* Trigger the HELLO handshake after the remote has been reset, eg on resume */
+>>>
+>>> Use proper kernel-doc please.
+>
+>> Please prioritize merging this sooner than later (it's a regression from
+>> 7.3-rc2 that would hit people if it made it to 7.3 final) even if it means
+>> fixing up non-critical aspects later, or by maintainer upon merging.
 > 
-> I'd rather not open-code the length math here. Can't we use seq_buf()
-> instead?
+> Concur. I recently fast-forwarded my ath tree and picked up the buggy commit,
+> so everyone using my tree is now affected.
+
+I wonder if we need somebody (Daniel?) to repost this patch to at least
+have a chance to get it into the next -rc, as I didn't find the fix in
+netdev's patchwork when I just looked -- maybe I missed something, but I
+guess that's because the patch wasn't CCed to netdev.
+
+Ciao, Thorsten
+
+> And just want to point out that many of the function comments in this file do
+> not use kernel-doc format, so I would not consider that a blocker. But it also
+> would be trivial for the maintainer to add.
+> 
+> I've tested this on my HP ZBook 14 where I've replaced the OEM Wi-Fi adapter
+> with WCN7850...
+> 
+> Tested-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+> 
+> /jeff
 > 
 
-Or just use the length returned by the strscpy() call that wrote the initial
-part of name[].
-The return the name length so the callers don't have to use strcat()
-themselves.
-Replacing strlcat() with strlen() and a copy is just pointless.
-
-David
