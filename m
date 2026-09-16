@@ -1,275 +1,117 @@
-Received: from mta0.migadu.com (out-203.mta0.migadu.com [91.218.175.203])
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1383B9956
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 05:07:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.203
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B34357CE9
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 05:08:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789535264; cv=none; b=qx7HMK/KpNq7P8z5eStbPcgmp4l8VnP3MTgIqW2nNCBC+CX8xHIvEdbnV/Gwo4eO6gwyPy1MI6cLrUNC8r7YGSCiTCCxAonkI02x7hR97JNAnjGFSAt+BcugTxx1SH7i8AAs0Rzi403rkDQQJT13+5BBGVSeCdA2acVKyaefT0k=
+	t=1789535317; cv=none; b=UjGBdKDKKqM2DSOp8EYSV7aeQFSB971xsdYfPb+dE3V0RkTB136YGclU4lDCA9o7/eQnTKqkGKzBIioeCw43IH2YBiF44mauJv/3HaPSgJg0aNLLGxyV4g8aqpDCmbzVPzuYSfNnOKGLz6F/YiiC66VHK0GfffH0DYdZQwLwIr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789535264; c=relaxed/simple;
-	bh=poXf8b/EZKEJ+wam5kWmYqcw7E5qpknfD3ZooWuAUBk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FIq62G/YCXhgwxXOFDWNU4JaRN4nFI1yBLPmTrXjMCJ3DAf5szWf+YU+5wA5fQ9eagKJh6iqzZWmqxN7RXMIKna/ueZSqSQTWS4HTwHAbpvHuRGKdwKd87R7cCjCxwf/Un62mjI8idQm1hmIqDGShVi0tnAEYrgm+twQ+IfqoR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=B/5qpQ1r; arc=none smtp.client-ip=91.218.175.203
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1789535317; c=relaxed/simple;
+	bh=2cgZHqdIDWjy5S2mo79peEOhzTJ1Ke+APakpgI0d4ZM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I7xpEadKXlhY7xgAEZWKo5Hp2M+9WBO1q7ofYMg/hl8L2Yx9snHV36CY+oAcCZ3rVim/J6bilINVE5Y9pRlTO4lwPe2Sc+AnhNj7TzQ6ejBE5e9DitvAqkWhkEiB25styodB93+558dpcd7v7SSmgyL5o2TPLTfD3wEVTrXcyV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=I3WP6PLh; arc=none smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="B/5qpQ1r"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=poXf8b/EZKEJ+wam5kWmYqcw7E5qpknfD3ZooWuAUBk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789535260; v=1; x=1790140060;
- b=B/5qpQ1rxngliTZEAcjaLdBU8sYJmZhnWS7J8r+aAuvSki+oSktUnReazhNKFyRcVrLFKoDz
- yJwYvJ5Tcn67gxhbRqevPE3cgwiUPTmUCHDWPC7FUoRY8uAK0RS7tr1lJ9Pz3qPUixWHRVnLtHg
- dpqAl9vfeY52mqGG9/4tZzUk=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta12.migadu.com with ESMTPS id be70240e79be7685;
-	Wed, 16 Sep 2026 05:07:40 +0000
-X-Mizu-Trace-ID: be70240e79be7685
-X-Migadu-Flow: FLOW_OUT
-Date: Wed, 16 Sep 2026 13:07:27 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Jakub Kicinski <kuba@kernel.org>, jv@jvosburgh.net, razor@blackwall.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	pabeni@redhat.com, daniel@iogearbox.net, joamaki@gmail.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	liuhangbin@kylinos.cn
-Subject: Re: [PATCH net v4] bonding: fix slave_cnt leak on XDP error paths
-Message-ID: <aqokD2avF7B7Towi@fedora>
-References: <20260914-bond_slave_cnt-v4-1-d14864a39e60@kylinos.cn>
- <20260916012721.1653880-2-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="I3WP6PLh"
+Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cea50dc0so230071a12.2
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 22:08:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1789535315; x=1790140115; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=j9ZKxm5fjZ6Tz5RkeiPUJnapHxTN5p2mOK51NP1wOEA=;
+        b=I3WP6PLhDcuaKCqdSweGcprMPYZHHHtH2X35W33TwkodGvSxmlYZR2kkFksr2M3639
+         3noZq8jDpVLhjVL71c/nnG1Pi/bR25T8+xmnvUdY1W2n09JYOQ4bGDf8hvxyJoXwp4Rn
+         p0ZMpTZS2xo3HvkkZesb69eYs4mjiCW0K1SqlW8ENZfjKQ7DIWIT7rjqRgJhfSX4m4iM
+         Qw0sUGOH854L/Umhz7l8G9W/LCuRIBj1QIctp4Aw3vCs82XbJuXpUvI5Z319q6qRb8MS
+         rsU5gO1kw3eQkBORn02k17jhYO/kl7HwstbCLmPz/STiakzpIvGhCCkAO+mA9+sKmHeG
+         1cIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789535315; x=1790140115;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=j9ZKxm5fjZ6Tz5RkeiPUJnapHxTN5p2mOK51NP1wOEA=;
+        b=EmLMHoLYecNYIlMlHAa+7Tl3i87EN73W8z7Nd2J6Kfeq5j0VFDuBC/kCJz+mjixf/9
+         p1Utupm2zsvXfgYvazXk1v0dnyFCGp3grSuc4Lb8GRlYUKX3fJAb3kqG1xunShy/4aQD
+         4fuTjtLU1t0q3vllRNeIHtuSXG+gz/u+iO0lp1jdsEk43MYCQD/qgSNNK2nmZlHNgiGi
+         4PezLs2BuXN94b92fWgwWln2+VjqSh4miVHVTx5iwG3Qc5FoBo0V8XolKtreKUceW+fa
+         zdynsk4DD7rUDrtRTeXVzgfrqZeBA97N1JgrR1F0H/DW1StiJ1S5F1jOyMw2LQ1Guu+e
+         zyEw==
+X-Forwarded-Encrypted: i=1; AKwUvByPesiOQgSpZ7HCENaCASpGJBhqLk0l70ShATL71ZVnNZqWxqySa3ZfPLYxMHOPth9t3CP9e7A=@vger.kernel.org
+X-Gm-Message-State: AFuF++m3P+s1LU7SEputj+jJDkopl8Pqz8i76zvlX8alXD/KwOy8kcZb
+	rUYh4l4WCGh7O0T6y6y+xL6gLVsN3NmSqeoAGu+TM3u9zKIDUbslp79F8eRwPifbT5U=
+X-Gm-Gg: AYBFou2WGZXvUsL7RBsAeEM4d+HS//BfL2nfNchSS8MOAv4V1KkJoh8tyWAF+yO+UEn
+	Ue+xkSK6hHuXrsDrMExzFWTVWnEsul2kLD6Mpyo6rLAZOrQh4X+lGJH6Vt8uY4ldQOLl77W4VyL
+	IZSRDd9WNxZs25FD9WIsdKnmKUBNlBDodI5BriOhXwRDjgtnWYYdfVxl1cSH2pLAYiB+vOZcBpy
+	IUQ4Lg8OIqKQzlQLKmlPzIejJRC9+unZGkWv2Nnt086YCB0cuGxmlb1za18FoPl3jCwVE9Zu+av
+	Ll1lR1xIJcUT/iMwgbN1ucBxxYZfltij46Ke4CoLoRuOqzKzDEWK2jYs3qu+mun5yiUewzC550T
+	FjwBvlysXkYAAPwLCwsmQCZU//QG6y4Lc2a/LQIY1pK7unIjwrjs2KsA10hH8zLUMtvttLRLq++
+	KyhC6FmVLESgTXIcLvG2KBJ44cThC8KGcdozVdmWGAgrjVZua+Insl7vmw5c5/Cs2qDjOhNsUF9
+	dH3Dh59LHwAUXQDiLDhQAH8OA5wsSN7jZ8s1ug=
+X-Received: by 2002:a17:90b:3c11:b0:39d:efa9:cd1a with SMTP id 98e67ed59e1d1-39e1e2655e6mr3057475a91.4.1789535315262;
+        Tue, 15 Sep 2026 22:08:35 -0700 (PDT)
+Received: from alpine05.ht.home (107-190-31-17.cpe.teksavvy.com. [107.190.31.17])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e1bbfdd49sm2363363a91.11.2026.09.15.22.08.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Sep 2026 22:08:34 -0700 (PDT)
+From: Emil Tsalapatis <emil@etsalapatis.com>
+To: bpf@vger.kernel.org
+Cc: ast@kernel.org,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	daniel@iogearbox.net,
+	netdev@vger.kernel.org,
+	etsal <etsal@alpine05.astextra>,
+	Emil Tsalapatis <emil@etsalapatis.com>
+Subject: [PATCH bpf 00/11] skb/arena bugfixes
+Date: Wed, 16 Sep 2026 05:08:18 +0000
+Message-ID: <20260916050830.8774-1-emil@etsalapatis.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260916012721.1653880-2-kuba@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-Hi Jakub, 
+From: etsal <etsal@alpine05.astextra>
 
-Thanks for the notify.
+Set of verifier-focused bugfixes related to dynptrs, SKB
+management in BPF, and dynptrs.
 
-Jay, Nikolay, please correct me if you disagree with my comments.
+Signed-off-by: Emil Tsalapatis <emil@etsalapatis.com>
 
-On Tue, Sep 15, 2026 at 06:27:22PM -0700, Jakub Kicinski wrote:
-> Clashiko classified the broader issues as independent but I'm not sure.
-> If there are more problems with pre-publishing the count we need
-> a different fix? Or am I not reading closely enough?
-> 
-> AI review:
-> ---
-> bonding: fix slave_cnt leak on XDP error paths
-> 
-> The three XDP failure exits in bond_enslave() used to jump straight to
-> err_sysfs_del, which skipped the slave_cnt decrement and let the counter
-> drift upward on every failed enslave. A new err_slave_cnt label is added
-> ahead of err_sysfs_del to undo the increment.
-> 
-> > diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-> > index a9bff7663eeca..577d85c838040 100644
-> > --- a/drivers/net/bonding/bond_main.c
-> > +++ b/drivers/net/bonding/bond_main.c
-> > @@ -2305,7 +2305,7 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
-> >  			SLAVE_NL_ERR(bond_dev, slave_dev, extack,
-> >  				     "Slave does not support XDP");
-> >  			res = -EOPNOTSUPP;
-> > -			goto err_sysfs_del;
-> > +			goto err_slave_cnt;
-> >  		}
-> >  	} else if (bond->xdp_prog) {
-> >  		struct netdev_bpf xdp = {
-> 
-> [Severity: High]
-> 
-> This is a pre-existing ordering issue that dates back to 9e2ee5c7e7c3 and
-> is not introduced by this patch, but since the new err_slave_cnt stage sits
-> right here it seems worth asking about.
-> 
-> By the time bond_enslave() reaches this ndo_bpf / ndo_xdp_xmit test, the
-> slave has already been published to the lockless transmit path:
-> 
-> 	res = bond_master_upper_dev_link(bond, new_slave, extack);
-> 	...
-> 	WRITE_ONCE(bond->slave_cnt, bond->slave_cnt + 1);
-> 	...
-> 	if (bond_uses_primary(bond)) {
-> 		block_netpoll_tx();
-> 		bond_select_active_slave(bond);
-> 		unblock_netpoll_tx();
-> 	}
-> 
-> 	if (!slave_dev->netdev_ops->ndo_bpf ||
-> 	    !slave_dev->netdev_ops->ndo_xdp_xmit) {
-> 
-> For the trunk modes the switch default arm already ran
-> bond_set_active_slave(new_slave) with new_slave->link == BOND_LINK_UP, so
-> bond_slave_can_tx() is true for it.
+Emil Tsalapatis (11):
+  bpf: Fix bounds check for skb-backed dynptrs
+  selftests/bpf: Test dynptr slices past end of skb
+  bpf: Fix bpf_sock context code generation
+  selftests/bpf: Add selftests for rx_queue_mapping context access
+  bpf: Reject pkt arguments in mutating subprogs
+  selftests/bpf: Test rejection of pkt args to mutating subprogs
+  bpf: Prevent variable arena/non-arena register contents
+  selftests/bpf: Test for mixed arena/nonarena code paths
+  bpf: Track whether dynptr type is known
+  bpf: Track skb memory invalidation by packet-backed dynptrs
+  selftests/bpf: Test dynptr slice invalidation on skb clobber
 
-Not since the bond_uses_primary() if checking, the new_slave could be set to
-active even more early during enslave. e.g. in bond_main.c:2174
+ include/linux/bpf_verifier.h                  |   5 +
+ include/linux/skbuff.h                        |   3 +-
+ kernel/bpf/cfg.c                              |  10 +-
+ kernel/bpf/verifier.c                         | 112 +++++++++--
+ net/core/filter.c                             |   7 +-
+ .../testing/selftests/bpf/prog_tests/dynptr.c |  10 +
+ .../testing/selftests/bpf/progs/dynptr_fail.c | 183 ++++++++++++++++++
+ .../selftests/bpf/progs/dynptr_success.c      |  20 ++
+ .../selftests/bpf/progs/verifier_arena.c      |  49 +++++
+ .../bpf/progs/verifier_global_ptr_args.c      |  53 +++++
+ .../selftests/bpf/progs/verifier_sock.c       |  38 ++++
+ 11 files changed, 472 insertions(+), 18 deletions(-)
 
-  switch (BOND_MODE(bond)) {
-  ...
-  case BOND_MODE_TLB:
-  case BOND_MODE_ALB:
-      bond_set_active_slave(new_slave);
-  default:
-      bond_set_active_slave(new_slave);
+-- 
+2.54.0
 
-I think the bond assume the new slave is in trunk modes in this situation,
-which could pass any traffic.
-
-> 
-> Can a concurrent bond_xdp_xmit(), which only takes rcu_read_lock() and does
-> not hold RTNL, pick that not-yet-validated slave in this window?
-> 
-> bond_xdp_xmit()
->   bond_xdp_xmit_roundrobin_slave_get()
->     slave_cnt = READ_ONCE(bond->slave_cnt);
->     if (likely(slave_cnt)) {
->         slave_id = bond_rr_gen_slave_id(bond) % slave_cnt;
->         return bond_get_slave_by_id(bond, slave_id);
-
-bond_get_slave_by_id() loop each slaves, even the slave_cnt not updated, the
-new slave still could be chosen.
-
-> 
-> bond_get_slave_by_id() only checks bond_slave_can_tx(), never XDP
-> capability, and bond_xdp_xmit() then does:
-> 
-> 	err = slave_dev->netdev_ops->ndo_xdp_xmit(slave_dev, 1, frames1, flags);
-> 
-> with no NULL test, so would this be an indirect call through a NULL
-> ndo_xdp_xmit for a slave that lacks it?
-> 
-> The devmap gate does not appear to help here either: __xdp_enqueue() and
-> is_valid_dst() only look at the bond device's xdp_features, which still
-> advertise NETDEV_XDP_ACT_NDO_XMIT during this window because
-> bond_xdp_set_features() only runs after the XDP block. The same exposure
-> looks reachable through bond_xmit_activebackup_slave_get() for
-> bond_uses_primary() modes, where bond_select_active_slave() may publish the
-> new slave as curr_active_slave before the capability check.
-> 
-> Would it make sense to move the ndo_bpf / ndo_xdp_xmit validation earlier,
-> before the slave is linked and counted?
-
-I saw Nikolay has done a similar fix e9acda52fd2e ("bonding: fix use-after-free
-due to enslave fail after slave array update"). But the risk is till there.
-So how up we should move the xdp ops?
-
-Maybe add a checking as a workaround before we do a safe re-order for
-bond_enslave?
-
-  if (likely(slave_dev->netdev_ops->ndo_xdp_xmit))
-      err = slave_dev->netdev_ops->ndo_xdp_xmit(slave_dev, 1, frames1, flags);
-
-Nikolay, what do you think?
-
-> 
-> [ ... ]
-> 
-> > @@ -2348,6 +2348,9 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
-> >  	return 0;
-> >  
-> >  /* Undo stages on error */
-> > +err_slave_cnt:
-> > +	WRITE_ONCE(bond->slave_cnt, bond->slave_cnt - 1);
-> > +
-> >  err_sysfs_del:
-> >  	bond_sysfs_slave_del(new_slave);
-> >  
-> 
-> [Severity: Medium]
-> 
-> These leaks are pre-existing, the three XDP exits already fell into this
-> same unwind chain before this patch, so they are not introduced here. Since
-> this patch adds the stage where the symmetric undo would belong, is it worth
-> handling the rest of the state applied just above the XDP block?
-> 
-> Reaching the XDP checks means this group has already run, with no
-> intervening label:
-> 
-> 	WRITE_ONCE(bond->slave_cnt, bond->slave_cnt + 1);
-> 	netdev_compute_master_upper_features(bond->dev, true);
-> 	bond_set_carrier(bond);
-> 
-> 	bond_slave_ns_maddrs_add(bond, new_slave);
-> 
-> err_slave_cnt reverses only the counter and falls through to err_sysfs_del,
-> so does the bond keep a feature mask recomputed from a device that never
-> became a slave, and for a first slave with an up link keep reporting
-> LOWER_UP with zero slaves, since nothing on the unwind path re-runs
-> netdev_compute_master_upper_features() or bond_set_carrier()?
-
-Yes, I think we could do it, in a separate patch.
-
-> 
-> Does bond_slave_ns_maddrs_add() also leak solicited-node multicast
-> addresses on the rejected netdev? bond_options.c takes real references:
-> 
-> 	void bond_slave_ns_maddrs_add(struct bonding *bond, struct slave *slave)
-> 	{
-> 		if (!bond->params.arp_validate)
-> 			return;
-> 		slave_set_ns_maddrs(bond, slave, true);
-> 	}
-> 
-> and no label between err_slave_cnt and err_undo_flags calls
-> bond_slave_ns_maddrs_del(). err_detach only re-runs
-> bond_change_active_slave() / bond_select_active_slave() when the new slave
-> had become curr_active_slave, so with mode=active-backup plus arp_validate
-> plus ns_ip6_target and the new slave staying backup, would these accumulate
-> on each retried enslave?
-
-Yes, we could.
-
-> 
-> For round-robin and 802.3ad, which are both XDP-capable and not
-> bond_uses_primary(), the block above also ran:
-> 
-> 	if (bond_dev->flags & IFF_PROMISC) {
-> 		res = dev_set_promiscuity(slave_dev, 1);
-> 	...
-> 	if (bond_dev->flags & IFF_ALLMULTI) {
-> 		res = dev_set_allmulti(slave_dev, 1);
-> 	...
-> 		dev_mc_sync_multiple(slave_dev, bond_dev);
-> 		dev_uc_sync_multiple(slave_dev, bond_dev);
-> 		if (BOND_MODE(bond) == BOND_MODE_8023AD)
-> 			dev_mc_add(slave_dev, lacpdu_mcast_addr);
-> 
-> Does the released device stay in promiscuous and allmulti mode with the
-> multicast and unicast sync entries still programmed after the XDP failure?
-
-Yes
-
-> 
-> __bond_release_one() performs exactly the mirror operations, which suggests
-> these are the required undo steps:
-> 
-> 	bond_slave_ns_maddrs_del(bond, slave);
-> 	...
-> 	WRITE_ONCE(bond->slave_cnt, bond->slave_cnt - 1);
-> 	...
-> 	netdev_compute_master_upper_features(bond->dev, true);
-> 	...
-> 		if (old_flags & IFF_PROMISC)
-> 			dev_set_promiscuity(slave_dev, -1);
-> 	...
-> 		if (old_flags & IFF_ALLMULTI)
-> 			dev_set_allmulti(slave_dev, -1);
-> 	...
-> 		if (old_flags & IFF_UP)
-> 			bond_hw_addr_flush(bond_dev, slave_dev);
-> 
-> and that path is not reachable here because the enslave failed.
-
-Yes, I think we can do it in another patch.
-
-Thanks
-Hangbin
