@@ -1,231 +1,172 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496C52D7817
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 13:17:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1124F6467;
+	Wed, 16 Sep 2026 13:22:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789564640; cv=none; b=Ryf/A4BS5/rc1+GCBxKqXBsewqdvaoxwX4Tz2mj6yLuuKE763yLRAyYrUM2JUGQSG5xp0QC3i+j9LVQIqhS+LBsKLW4rFWHYvP+yTgC5JD2VZ+t/WTAf4iRci4RzFt/tHjuUiHDBVgizbWS45/r+9od42VY4sef6xJeYVBQidWs=
+	t=1789564941; cv=none; b=dObSfwTZaEiEj3KrhywLOkmCRV0Nb/lzXJ/V9EDv++T/hkt1tRUglefgQSy9cvwvcorAvnWy81JGIuUx+NJ1chVZwT3Oewrfq1xOuEiAxUXwK053gLaJgUNTEkVjZrFQX7ooSH74tH5VIIDNRQ9614PTLbtYKyR77TV2kGVqynQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789564640; c=relaxed/simple;
-	bh=OXCTiYZ/7caImlsv50eWp1ZJeayCZKJU7MD6X5Xk3f0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DZYPLp+XHGz/e2TCJtgemW2FNnapg3aJWHk6bxiKS2a/t9kR7m0bDAwzv0iEuqnEr+YK9H7OIF+qyZUSr25hliNxtWcyYui/2euU+blHmgIw16awz3a9hQEiq5ASZ54YKrNtJH0Fs8x23itQ7amrEmR9e+WcZMxTix4+KVs97MU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SdCW9oLp; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=dCgkb3nc; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789564941; c=relaxed/simple;
+	bh=ze+Aw9WdTGhsZ4i0naMYgcnBoUTra4tVH8dOWrOEABo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QwpGyOAl4SnL6NOQxmHSzms4LBzH5Dn7H/dx0WesNa0TQ9GFZPwzCSeSBNa+OTVkYFHYw6hktkjsum1nu/CwbIamJWYWn+gUGwMXLv6oKPf+VQxRDQ1MxlsLGBUM6iy+1sTXvg09H90uKljqThjBjHcdn4GemWB9jTb425QnU1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ib4HMDi/; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SdCW9oLp";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="dCgkb3nc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789564638;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=docZh/8sl7dXFnUbYvGXsVtko0JDj9j3X/6xWphAisg=;
-	b=SdCW9oLpFQOHyzlzCsy/Z3WlGmUPyVRycn4QAs4VNzIW9xo7sFUnOzZRQ+85SwsWo3n3iC
-	ukrOv0Mlb0VkH9GpeMJbqtFUNLPoGq5gXGCv1V/DInZDsbs5NDE802eZ3nOnZ0XzZBSg+T
-	RPLTT6JCXikT0SovHCe0UDTteopvaMM=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-138-zjFBrNtUMIikjmuJO77bOw-1; Wed, 16 Sep 2026 09:17:16 -0400
-X-MC-Unique: zjFBrNtUMIikjmuJO77bOw-1
-X-Mimecast-MFC-AGG-ID: zjFBrNtUMIikjmuJO77bOw_1789564636
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-490a767b782so49767975e9.2
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 06:17:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789564635; x=1790169435; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=docZh/8sl7dXFnUbYvGXsVtko0JDj9j3X/6xWphAisg=;
-        b=dCgkb3nc7RiAE7oke44k4wbTny6Zob+lAT/cwDvQwMIGV0PEr/YCUwwvAJ/2OeFKte
-         Ojlffzr/Vw9GyrvDrqTLSUjaDJqUCeaCaRALEoFatW/kC43bDNXAa7F1WP6Wx59v11G3
-         73EuXUSKEpzGo1p8wNqwOgFwNmSsFiMrM9bCc+flN+WuO3gdoiMt9QpE94SQLKrO8rHC
-         LZP3PBIMst2orJ0QlpCUrh3nUKR36zLi/wCmRIhHK8cLRzYBzkvSDNJM9eE6PhAgwnU6
-         YnKsqqzg44R6ewgm54+u3JNuuc1tZANvObV7yTrU2ey6Yf552siMOqrEavI/L9hLjtf/
-         j8rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789564635; x=1790169435;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=docZh/8sl7dXFnUbYvGXsVtko0JDj9j3X/6xWphAisg=;
-        b=Ya8mA3gohjQQa9xet6HKJKheuP1ib9/ClxbRCZVfaE5FyDCk5o6C+1cES5fUYIbMTl
-         Bv4FDURr2/T+ASOqwBXvIHGpC8s+DEGTpi3qqpKXhGe2vraEjin/I7j+Hf7pXEeyqwCD
-         Gm5ywhuAEEhJEohS3XW/ARNr4upcr3NT03uFAT27sPxGZZPUIPmgp/bIwBz4TFBvFBzV
-         V0TrUr6QWMED5bNJVuti5SXc+Wr1fmqa5QdnZvHwj4PWrYzCL443WF978UGR/HN1KBNC
-         FAwUSS9rkwnyFixkvOAiiLAwLU9JqjhLa33DFZZkHfc6GbSa2b6MqR1JYc/jGTKqhvk5
-         gfXw==
-X-Gm-Message-State: AFuF++ko9wLExm6s7yX90hDF/93LOPkgJzyIWcwYTgD53DMYddf0l9bs
-	QfRJbqIUUIdzFbGu+2mqZ7KHXjMJ/NbzmTL/T56xjnMucQRXsbT4LT8HUiT22F4Mm+xqLqd37oy
-	oaVsCoyl4t8E88711Yp3jhqdhB0X+2E9xU6o1glN+L28Bh/nd/3DvNCCZIg==
-X-Gm-Gg: AYBFou0dMmbEJcKeFHDEKc1s4Kdc2QBizyW1rFQycjj8oQ8ZF49QsKU7fvKNaH+gwOW
-	cbblPJK7QG21XfRb88evQkhRRhQYACOT5bAg4/qa0rA27Gq5AbwF5vXXIdZu9mB/dLAIAq1dbOB
-	zEQBvSS/uBzybxabOz6o6EbTFq1fK6f2a/gXHzmboc0EQA/2OWHmtTOhlDjWu6s591yytaP0RqR
-	iaW17lsWMCC5bgkg6ax8itxpNG7ODr9vnr3NwDaQehKcS9DnF7CFgtAZ0CAoQQSwPRTGABwwZun
-	OqAacjmg2gSUYwCb4tUWSp9pNPwP2OL/DiZ2vk8ZFA0Lc2xMBfEbKE08Aew5BL+JaS7Tv/KfHw=
-	=
-X-Received: by 2002:a05:600c:1986:b0:49e:70b2:66ab with SMTP id 5b1f17b1804b1-49eac40f67emr32595395e9.0.1789564635524;
-        Wed, 16 Sep 2026 06:17:15 -0700 (PDT)
-X-Received: by 2002:a05:600c:1986:b0:49e:70b2:66ab with SMTP id 5b1f17b1804b1-49eac40f67emr32595095e9.0.1789564635086;
-        Wed, 16 Sep 2026 06:17:15 -0700 (PDT)
-Received: from [192.168.2.83] ([46.175.183.46])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4870bf413dcsm7232759f8f.31.2026.09.16.06.17.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Sep 2026 06:17:13 -0700 (PDT)
-Message-ID: <c93e917a-6c66-44f1-a3c1-5c5f5b3930da@redhat.com>
-Date: Wed, 16 Sep 2026 15:17:11 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ib4HMDi/"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68GCVbZO3753170;
+	Wed, 16 Sep 2026 13:22:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=TA9laSBzAgR+QI2Gg
+	X0SBR/sLGZub2r9/L5mZE+8KuE=; b=ib4HMDi/B75zLJBuHUK6/QD70DsXsgBJ2
+	FCKj4mmSpToE04C2AdmmxRRuqt18b8cBH74I8+t+tdMNPhfUqucsO8HQeKFbjlOb
+	3f1m+sgm0IVC6kO9Ggay4JhRzD9IbON53gCzUVBHZpqtG1QupSbw6W7jdV7y8k5H
+	oMl687etIis6e+nWceJQpQ6ztEoy5DVFAaMpr8JMxluKeXqQ2gEuWiI9MclQ7ruN
+	+892RIFfmD2vFlXy+BkbMsHftpYnQRYArMkHl4hRAkW0j2X7/CfKNgVOGBYBE0Su
+	wAlAu1ci4BjSiEgGNwrYCwjKApCOh8TN7ag0FL0joE/P1Ql6j6Kqw==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmx83vr0q-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 16 Sep 2026 13:22:06 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68GCZStC1404907;
+	Wed, 16 Sep 2026 13:22:05 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gpyxseh9q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 16 Sep 2026 13:22:04 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68GDM15X45613326
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 16 Sep 2026 13:22:01 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DCBBE2004B;
+	Wed, 16 Sep 2026 13:22:00 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9687820040;
+	Wed, 16 Sep 2026 13:22:00 +0000 (GMT)
+Received: from t83lp71.lnxne.boe (unknown [9.87.84.240])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 16 Sep 2026 13:22:00 +0000 (GMT)
+From: Nagamani PV <nagamani@linux.ibm.com>
+To: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com
+Cc: wintera@linux.ibm.com, aswin@linux.ibm.com, hca@linux.ibm.com,
+        gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, kees@kernel.org, linux-s390@vger.kernel.org,
+        netdev@vger.kernel.org, Nagamani PV <nagamani@linux.ibm.com>,
+        stable@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
+Subject: [PATCH net v2 1/2] s390/ctcm: Fix timer corruption in fsm_addtimer()
+Date: Wed, 16 Sep 2026 15:21:48 +0200
+Message-ID: <20260916132149.4185912-2-nagamani@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260916132149.4185912-1-nagamani@linux.ibm.com>
+References: <20260907144511.3810194-1-nagamani@linux.ibm.com>
+ <20260916132149.4185912-1-nagamani@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-next 2/2] ice: don't offload drop filters that bypass
- higher priority filters
-To: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, anthony.l.nguyen@intel.com,
- przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- priyalee.kushwaha@intel.com, kiran.patil@intel.com,
- wojciech.drewek@intel.com, michal.swiatkowski@linux.intel.com,
- intel-wired-lan@lists.osuosl.org, linux-kernel@vger.kernel.org
-References: <20260910154824.3603687-3-poros@redhat.com>
- <20260912083645.145790-1-horms@kernel.org>
-Content-Language: en-US
-From: Petr Oros <poros@redhat.com>
-In-Reply-To: <20260912083645.145790-1-horms@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE2MDE3NCBTYWx0ZWRfX0u6a/Auel9Pe
+ WSQ1QuMFOFql2+c0OWUImfZZ/rA4CtL4GKOODKnYaEC12D56UKpTE5BYHBaSlnN9KL/+qs2lbmy
+ lHw5v6/O5YaMfegVRJ6QuARO0h+4MxGjFys6vh9JHx+2ceR09ZYxCAzGW/vqmbiOPGovrozs0uq
+ rBST6jPhWiW1wcxnBtUiIxvrn5wFmxXOfqPbk52woV2MeK5l97xY8CCuz84CvDeswCiETPJ/A1b
+ TXMrVED+YuY1/LMkZxZcPg5SBDipAXxvIkcw0CPnfRgi8gb3tKRB8O0jiNFhZf5vUO7DXowgIfq
+ jl8G90CGV//9f975kKHESOG4rP3F8C2esXt3dU0I6mua/JL1D9R0iDuUABLpusB5vWMLrsejt2r
+ nlbfxbfek5je9IjK1ASJfLiXMv+9hQpYM6NzrPUSFOHuDax/K838pEl9D/pGQE+3BBFh0M/PEAJ
+ 8gvE/84z29OHMWVxwVg==
+X-Proofpoint-ORIG-GUID: qOfK38SfL7-OYQsNycEfvfVKMkwqjaWO
+X-Proofpoint-GUID: qgcfhJcrB-XyGGN-B-s8fJllxMysbn-u
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE2MDE3NCBTYWx0ZWRfX06ZeQgcVQyXI
+ Dtns36RmohEDnx7N7j8QzVrSNSapVU15i4Z/Kkb8EZh6V0HgIjf78DbL9n6pGJr2/ihPfYAuYAL
+ wKS5SqQeSnHgmKbR1cN8qjSLydLjiOY=
+X-Authority-Analysis: v=2.4 cv=cY9HPXDM c=1 sm=1 tr=0 ts=6aaa97fe cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=c92rfblmAAAA:8 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
+ a=T_NMYt6YcsbJOU4cA00A:9 a=GvGzcOZaWPEFPQC_NcjD:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-16_02,2026-09-15_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 spamscore=0 bulkscore=0 clxscore=1015 suspectscore=0
+ impostorscore=0 malwarescore=0 phishscore=0 adultscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609160174
 
+fsm_addtimer() calls timer_setup() unconditionally before add_timer().
+If called on an already-pending timer, timer_setup() re-initializes
+the timer's list_head fields while the timer is still enqueued in the
+wheel, corrupting the timer list.
 
-On 9/12/26 10:36, Simon Horman wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> Full review at: https://sashiko.dev/#/patchset/20260910154824.3603687-2-poros@redhat.com?part=2
-> ---
-> ice: don't offload drop filters that bypass higher priority filters
->
-> This commit tracks software-only TC filters to prevent the hardware from
-> incorrectly offloading lower priority drop rules that would override them.
-> It tracks un-offloaded filters within a device block and rejects conflicting
-> drop offloads.
->
->> diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.c b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
->> --- a/drivers/net/ethernet/intel/ice/ice_tc_lib.c
->> +++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-> [ ... ]
->> @@ -2269,6 +2269,112 @@ ice_find_tc_flower_fltr(struct ice_pf *pf, unsigned long cookie)
-> [ ... ]
->> +static void ice_tc_track_sw_fltr(struct ice_pf *pf,
->> +				 struct net_device *filter_dev,
->> +				 struct flow_cls_offload *cls_flower,
->> +				 enum ice_eswitch_fltr_direction direction)
->> +{
->> +	struct ice_tc_sw_fltr *sw_fltr;
->> +
->> +	hlist_for_each_entry(sw_fltr, &pf->tc_sw_fltr_list, node)
->> +		if (sw_fltr->cookie == cls_flower->cookie)
->> +			return;
-> [Severity: High]
-> Does this early return break tracking for TC shared blocks?
->
-> When a shared block is bound to multiple interfaces, the driver will only
-> track the cookie for the first interface because this check returns early
-> when it sees the same cookie.
-Correct. For a block bound to multiple devices of one PF only the first
-binding's filter_dev is remembered, so the guard protects the first
-binding only. The impact is a missed refusal on the other bindings,
-never a false refusal, but it is easy to do better. I will rework the
-tracking in v2 to keep one entry per cookie and filter_dev pair, so
-every binding replay creates its own entry and the guard covers all of
-them.
->
->> +
->> +	sw_fltr = kzalloc_obj(*sw_fltr);
-> [ ... ]
->> +static bool
->> +ice_tc_drop_bypasses_fltr(struct ice_pf *pf, struct net_device *filter_dev,
->> +			  u32 prio, enum ice_eswitch_fltr_direction direction)
->> +{
->> +	struct ice_tc_flower_fltr *fltr;
->> +	struct ice_tc_sw_fltr *sw_fltr;
->> +
->> +	hlist_for_each_entry(sw_fltr, &pf->tc_sw_fltr_list, node)
->> +		if (sw_fltr->filter_dev == filter_dev &&
-> [Severity: High]
-> Because the tracking entry is bound strictly to the first interface's
-> filter_dev, won't this check fail to protect other ports sharing the same
-> block?
-Yes, same root cause as above, fixed by the same v2 rework. The
-per device comparison itself has to stay because TC priorities are not
-ordered across blocks, only the tracking granularity was wrong.
->
->> +		    sw_fltr->direction == direction && sw_fltr->prio < prio &&
->> +		    !sw_fltr->is_drop)
->> +			return true;
-> [ ... ]
->> @@ -2336,6 +2471,9 @@ ice_del_cls_flower(struct ice_vsi *vsi, struct flow_cls_offload *cls_flower)
->>   	struct ice_pf *pf = vsi->back;
->>   	int err;
->>   
->> +	if (ice_tc_untrack_sw_fltr(pf, cls_flower->cookie))
->> +		return 0;
->> +
-> [Severity: High]
-> When deleting a filter from a shared block, the first net_device will delete
-> the unique tracking entry here. Won't subsequent callback invocations for the
-> other ports in the shared block fall through to the hardware failure path
-> and incorrectly return -EINVAL?
-They will, though that is what every DESTROY for an unknown cookie
-returned before this patch too, so nothing gets worse. With the v2
-per binding tracking each DESTROY invocation removes its own entry and
-returns 0, which fixes this for tracked filters as a side effect.
->
->>   	/* find filter */
->>   	fltr = ice_find_tc_flower_fltr(pf, cls_flower->cookie);
->>   	if (!fltr) {
-> Later in ice_del_cls_flower(), the filter is removed and freed:
->
-> drivers/net/ethernet/intel/ice/ice_tc_lib.c:ice_del_cls_flower() {
->      ...
-> 	/* delete filter from an ordered list */
-> 	hlist_del(&fltr->tc_flower_node);
->
-> 	/* free the filter node */
-> 	kfree(fltr);
->      ...
-> }
->
-> [Severity: High]
-> This is a pre-existing issue, but is it safe to modify tc_flower_fltr_list
-> and free the filter here?
->
-> While this runs under the rtnl_lock, the background device reset task
-> (ice_reset_subtask) calls ice_rem_all_chnl_fltrs(), which iterates over
-> pf->tc_flower_fltr_list and frees filters using kfree() without holding
-> the rtnl_lock or any driver-specific lock protecting the list.
->
-> Could this concurrent access during a hardware reset result in list corruption
-> or a use-after-free?
-Confirmed, this race is real and pre-existing. ice_prepare_for_reset()
-runs from the service task without RTNL and for a non PFR reset with
-mqprio active it calls ice_remove_q_channels() with rem_fltr true,
-which walks and frees tc_flower_fltr_list entries concurrently with
-the RTNL serialized cls_flower paths. It predates this series and the
-list reader added here runs in the same RTNL context as the existing
-readers, so this series does not widen it. I will address it in a
-separate fix.
+The timer is already initialized once by fsm_settimer() which calls
+timer_setup() correctly. Multiple callsites invoke fsm_addtimer()
+without a preceding fsm_deltimer(), including ctcm_main.c
+ctcmpc_send_sweep_req() and ctcm_mpc.c mpc_action_side_xid(), making the
+redundant timer_setup() in fsm_addtimer() a real corruption risk.
 
-I will send v2 of this series with the per binding tracking rework.
+Remove the redundant timer_setup() calls from fsm_addtimer() and
+fsm_modtimer(), and replace add_timer() with mod_timer() which safely
+handles both pending and non-pending timers atomically without
+corrupting the timer wheel.
 
-Regards,
+Fixes: e99e88a9d2b0 ("treewide: setup_timer() -> timer_setup()")
+Cc: stable@vger.kernel.org
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Link: https://sashiko.dev/#/patchset/20260803182736.2356374-1-nagamani@linux.ibm.com?part=1
+Reviewed-by: Aswin Karuvally <aswin@linux.ibm.com>
+Tested-by: Aswin Karuvally <aswin@linux.ibm.com>
+Signed-off-by: Nagamani PV <nagamani@linux.ibm.com>
+---
+Changes in v2:
+- fix function name ctcm_send_sweep() -> ctcmpc_send_sweep_req()
+  in the commit message (Sashiko netdev-bot)
+- call mod_timer() then return 0 explicitly, preserving the
+  "Always returns 0" contract documented in fsm.h (Sashiko netdev-bot)
+---
+ drivers/s390/net/fsm.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-Petr
+diff --git a/drivers/s390/net/fsm.c b/drivers/s390/net/fsm.c
+index 9b8622aef807..936ed0bc8401 100644
+--- a/drivers/s390/net/fsm.c
++++ b/drivers/s390/net/fsm.c
+@@ -171,11 +171,9 @@ fsm_addtimer(fsm_timer *this, int millisec, int event, void *arg)
+ 	       this->fi->name, this, millisec);
+ #endif
+ 
+-	timer_setup(&this->tl, fsm_expire_timer, 0);
+ 	this->expire_event = event;
+ 	this->event_arg = arg;
+-	this->tl.expires = jiffies + (millisec * HZ) / 1000;
+-	add_timer(&this->tl);
++	mod_timer(&this->tl, jiffies + msecs_to_jiffies(millisec));
+ 	return 0;
+ }
+ 
+@@ -189,12 +187,9 @@ fsm_modtimer(fsm_timer *this, int millisec, int event, void *arg)
+ 		this->fi->name, this, millisec);
+ #endif
+ 
+-	timer_delete(&this->tl);
+-	timer_setup(&this->tl, fsm_expire_timer, 0);
+ 	this->expire_event = event;
+ 	this->event_arg = arg;
+-	this->tl.expires = jiffies + (millisec * HZ) / 1000;
+-	add_timer(&this->tl);
++	mod_timer(&this->tl, jiffies + msecs_to_jiffies(millisec));
+ }
+ 
+ EXPORT_SYMBOL(init_fsm);
+-- 
+2.53.0
 
