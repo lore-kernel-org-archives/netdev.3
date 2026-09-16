@@ -1,77 +1,80 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+Received: from mail-pj2-f8.google.com (mail-pj2-f8.google.com [74.125.227.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB853D1AB3
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 06:51:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814073EDE76
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 06:59:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789541510; cv=none; b=sjGqaC3oVHKVBNqhqWxNBUmYvlwvgiO8IlvFN8kA2S7mTHP87CdLGaHHlksOIFAe7UxHaHQd71X6EUoMm1of95Vegbcc+I8npwdX+QkGFv7kbJl0XUi96JFrxwU6Y84TOyNNF2TMNg2rW3HmJY05BF2FZcj6fHCA9k35H96uwT0=
+	t=1789541955; cv=none; b=JiPSPv2YuCCgM5CgC0+K2sJttKmXecU+XAuf362ZKS4lrZPeNgofDFsfBnEEHeFMY8nKQWuDbcTkM+PH5jFAhhaoF6SwgKMnW57+vZat6LKV4hEc9Q2DCkai6k05nLCwAhm3QSRYfaYdZ4RKfWFtqCsYVJ1n72b/omOhtw8q6wI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789541510; c=relaxed/simple;
-	bh=fzdVRBFHxJxY+YTfyuXhR7kIKBfpFjNgij1UV4zMuq8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LyyAPSsttqVmCgIQ6HHDoxPxtaEKEXRi6lnGAFit4MiE5VMgJsw/coFhsfNSXAtOLMQ2ylnVN8H/YL4dS6aX+P2ulOApk4aN/7KOQ7WWxvvUt0GoHfqOe+XEHCXm875zMfaEQKXk6N5gdLn1115Sq93LJcCDee14cQwsyI6dz1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gbTu75qQ; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789541955; c=relaxed/simple;
+	bh=9wq81MwoyRhLSycu0c16sOirgL767ksT7+VRYZLtU/8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lsijNUDhiebSpLC29Yy2mKQ7V2JDBAZt+X6Ih41RTcpw6jBnVGNp2A0RlUISuEXfyeWT4HioBJviuskJuHeA+Ll1OYP1T1NWQg5u1B43r6uyhkJvgwwV7bzMS4dpDZHDEP9tHeMBrAiul2GOmA0m+V+bxmRFhXBNUFTiUUKPpqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=smartx.com; spf=none smtp.mailfrom=smartx.com; dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b=E2otPR2K; arc=none smtp.client-ip=74.125.227.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=smartx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=smartx.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gbTu75qQ"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396cccbba91so409598a91.1
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 23:51:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=smartx-com.20251104.gappssmtp.com header.i=@smartx-com.20251104.gappssmtp.com header.b="E2otPR2K"
+Received: by mail-pj2-f8.google.com with SMTP id 98e67ed59e1d1-38fd9408220so1901257a91.1
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 23:59:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789541508; x=1790146308; darn=vger.kernel.org;
+        d=smartx-com.20251104.gappssmtp.com; s=20251104; t=1789541951; x=1790146751; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=AN3SOTukBoOl3ckWtu7ycjUkrBPQfO8wZi20AvSxNVY=;
-        b=gbTu75qQoC57s1gMoAikpg97jgc7jvcfuXFFSgce5v4J5c1bFqPgVdXiizcXTD2pW5
-         CkHtcISpux8FyWjEkWOmaJQ0LyT9OT2xa1tyxTIzrX6Es2pICJ3p8kZqdk5F7j5ZdU4k
-         EUizwHQMLbcVqoQ9Pp+8r2sXivgnOEsTAt5vhz/c7tI0L+ch1ov/ETKxVdUfNkk+qtKv
-         4zXqO0BjsHqXCtTUZNSStY6ibtdECBEyj6PAtqbVwAFPheM7/HpdiylCDA87kZOsU0XN
-         Ci79ZhJtTPYdS9SZtUKI/EN0Jtt0lZJ6IGqa0y/GmxdjI1ItrgQVAttWeaKVDG2JiEOs
-         3K9g==
+        bh=gBbvtju1ayJ/ZgzK2DJpV4i9W4ld+ODJTWHqQe35pfU=;
+        b=E2otPR2KeLOd9x8UszC816PaW8MqHXyBqQI+mydMP/BUFuFQd7fs7aWejaOtnVs7s7
+         im79GQD59AlZj3JEDNTdjLEz+K9vz/33/aMJfZS5UOtRuAQrpCs2k3+3BJhZUE7wXF74
+         u64Gt1rbrKm3bwpLtcpFwlqyjHPKfzQpOZ+d/7eKBKg1fzKEN1l6dm51ZOcG4wLgic6O
+         fB1DU7CYV/VKXET8dxGRq7tGrHF8+JA5EMTVXRtE4ar+xjK1mXKk05iQgO6B82j4F+4Q
+         ONxs6r969nGfJvuk6ceRQVQ7/e8yEQ3SpAUK5sV9vlJoBLfDC1DyS/VFsmwomGDBYc5m
+         rRcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789541508; x=1790146308;
+        d=1e100.net; s=20260707; t=1789541951; x=1790146751;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=AN3SOTukBoOl3ckWtu7ycjUkrBPQfO8wZi20AvSxNVY=;
-        b=1bRzxQEz9OGw3WgXwLwDg6lck524Q0MablJXm21MVvHu6rHWhNA8yzVJvh1+z1f37x
-         qC5lLkiTdqHCxR4NgewpjPmp2Xlm1VQ58KR/DhZJhxQ5p3iyQWjXMuSgR4b5DkWkjpd6
-         2iKKdgbZLA8E5qyGF7UM7K+HRB56ydK3QIS85Q6ITxLUlJ0rg06FQ5ASDrFvk6mMW8Ha
-         DBWplwoZWNXrCCFX6FjR+ypLGspfq9Ol+qIY5ZvMrddU0iZTG9hnwk8s18/KX+mr0rcv
-         6abOOSz1GEeMjE0NRjXTGbpQ7LUAvoDFfEoWa5ynb7hY7L8Kao/Cby0hocL0JNNQMNvW
-         NUlw==
-X-Forwarded-Encrypted: i=1; AKwUvBydCxN59wEbK2s0ykx0009QfE8YPgyKpmJdxOn5Y8dysBJGWac2mH3x6c2+5wFvmf4sNeRr49U=@vger.kernel.org
-X-Gm-Message-State: AFuF++mkmqXYulsDQ7tFkyqx7cDn3spw/GDxJ3Vie5Y8SXp5DiJ3fmWX
-	rbCir1OLVenrbKqxfN3L1XWvRezCIfmNpgYhNIVglrXdx31/e0U3jjTq
-X-Gm-Gg: AYBFou12o0P47co+dn39O2YidW0JOXlsb1P2+rDFo7CZa3uDKt0wqgehrGb4jzCZlZe
-	dciT3tdgyQ3pUa0eTH4K8Szl5rbKO8vN2gPYCH5Lgw/Y0Uvd18euISE1W2bvgQwLJi8UIY1RNS9
-	bY7kB9suq9fyb4lnqjhqcGZnbOHb8DigeMHSiztI1kA06Rcyf6DYJq9ugaU6nK2ZMXY3IfGB+4C
-	KhDvTaOr7ZyTnYzHmzvLJIKaqgFR65AcjajlwHfqn4tbN5x9tUPO7s60H1L6GHdYGr/UuHBS8o+
-	SYBqctcfkDzYRFA3Gpoii39+4l+CbiTk67QMjOuXWbLjpYUmz5XNCeZSoFyub7T41bjhtHDCXJ7
-	W03un3OnmNKhResys9iGTOtD78y4uB6iD4nUGtDcmgLxqcpHsPLQqrp7x3ZfWU+8qVmyYyV1jyQ
-	SsvnNeuzvJAFZkrDizDtHTXduweVc/3L/PACYNTK5eTUL8nDqgzsOSFg==
-X-Received: by 2002:a17:90b:4cc8:b0:398:c292:ac80 with SMTP id 98e67ed59e1d1-39e1e330a2dmr3903318a91.10.1789541508193;
-        Tue, 15 Sep 2026 23:51:48 -0700 (PDT)
-Received: from lgs.. ([2001:250:5800:1002::de93])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e1b9068c6sm2903880a91.1.2026.09.15.23.51.42
+        bh=gBbvtju1ayJ/ZgzK2DJpV4i9W4ld+ODJTWHqQe35pfU=;
+        b=Yxrbh4D2rYxMNv6JobkYdylNNqxkEllWVyexBBoEZ6ZwSpkMq89/fGVyqAwSamebgG
+         QwQq63NjkXJ/aF4nhHSOIwMAHjXtVCvBcr87VbHgbjtHV+f0DGgdOV9bYrUXCaoyD5bg
+         nNRBF4fCqAueGzpdLOjGzOAhiIyhwCwz/4EMGQtUGHLRz7BaFrGbuUx769uXA02ZYfLI
+         FMGTIRdY99Ym2DgFM4lj3+tJZMnz3kfqDRoGewGCt6TDrO7gvoUkG2oyi+L7kjst/275
+         dgz6i7XznPVV/YTrWYWC70rAFukvpr+CfLo7Cl914/8kYr1keotZZ0EQS9LxLmldGLxd
+         0i0w==
+X-Gm-Message-State: AFuF++nbCPyTbHwf2+09ztq+FkHnHK8iVsOTJEc0vaCfP2bZtTofzQR1
+	gSr7Jct48Vpe6xQDoJPyGlW6O4tc3a/A84l/VD0ES9vP9YzQeHmU+23wHSrPfq+7D9hZhkTR2/d
+	+/XHu4VJU5czZKPI0AgHl0gEBGnSGzapM3xpP3oz0G7iOaj+xrvg08Wfz3aVcWcQxNcuBNNtae3
+	CKjRKM
+X-Gm-Gg: AYBFou2hP1zGyExyvYgVi0KTwL5xTDZOai9TGuOMwxCdzD0f7tdebnw7chxSnQRV9gM
+	uWWS91oG5nMTHCa7k4MuAwerB+iJJKW5oQOeQG4f1FDkk50oJywJvTJmg8vTdYi22cOePDwprBK
+	WUvmtc3L6FIaoLMStaVU5ZWZHqombCuwHSCURP3QB6SGXcpDwRWRSX026Tg7T47yFmIK7mkLsWl
+	l9hrzjEUhsnFct5BqUJ/0OBbJwXSfxrD05yewsao1fvsrwFngem7eQ4yU0+Ym2avWMxxAYENECf
+	e9yGHBbpb0bBvUGNTPqLYgYqU5l3jd4GArA5uP0iIjIcc8Y7rTnZKsfF3isK2St4KzhhjNBX2Fj
+	JIL+eUGzAo5bT2J+zQ+mdkkGaWgYyCLhLrx37fpdlIE2lU2OlhTNZMuMSHFxmXEIsicQUQAcTQb
+	o8CjIulJR8CLnD7rg+Zb1SSqfSdSGaunRgRrOb6YkcZL4/tDa/6GmiS7Rmd2EIAsczLKCQzfo/W
+	6fgdYAtWX6u
+X-Received: by 2002:a05:6a20:918e:b0:3d3:b00a:7082 with SMTP id adf61e73a8af0-3dd5f7b25d9mr3693551637.28.1789541950844;
+        Tue, 15 Sep 2026 23:59:10 -0700 (PDT)
+Received: from localhost.localdomain ([23.148.204.128])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33bf5aa1194sm5787959eec.14.2026.09.15.23.59.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2026 23:51:47 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Zhao Qiang <qiang.zhao@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] net: wan: fsl_ucc_hdlc: release resources on remove
-Date: Wed, 16 Sep 2026 14:51:36 +0800
-Message-ID: <20260916065136.2926089-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Tue, 15 Sep 2026 23:59:10 -0700 (PDT)
+From: Wang Zhan <wang.zhan@smartx.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	keyong.sun@smartx.com,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	dev@openvswitch.org,
+	Wang Zhan <wang.zhan@smartx.com>
+Subject: [PATCH net-next v2] openvswitch: raise internal port TSO limit
+Date: Wed, 16 Sep 2026 14:58:44 +0800
+Message-ID: <20260916065844.1380155-1-wang.zhan@smartx.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,49 +83,56 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ucc_hdlc_probe() allocates and registers an HDLC netdev and, when the
-TDM interface is enabled, separately allocates struct ucc_tdm. The
-probe failure paths release these resources, but the remove path does
-not.
+Set the internal port TSO limit to GSO_MAX_SIZE (512 KB), as for
+loopback and veth. This allows the admin/user to set a GSO limit up to
+this value, to use BIG TCP for traffic routed through the internal port.
 
-As a result, the registered HDLC netdev can outlive its private data
-and retain a dangling private pointer. The separately allocated TDM
-data is also leaked when a TDM-mode device is removed.
+Only the capability limit changes: the IPv4 and IPv6 GSO and GRO limits
+remain at 64 KiB until changed by the administrator.
 
-Unregister the HDLC device before releasing the UCC and DMA resources,
-free the netdev after the hardware resources have been cleaned up, and
-free the TDM data before releasing the private data.
+Validation used a same-host test with a temporary OVS bridge, a veth pair,
+and a network namespace:
 
-This issue was found by manual code inspection.
+  TCP client -> OVS internal -> OVS bridge -> veth -> TCP server
 
-Fixes: c19b6d246a35 ("drivers/net: support hdlc function for QE-UCC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+The veth endpoints were BIG TCP capable throughout the test, and only the
+OVS internal port limits changed between 64 KiB and 524280 bytes. A single
+iperf3 3.19 TCP flow, run separately over IPv4 and IPv6 with six
+alternating runs per state (`-t 15 -O 5`, fixed CPU affinity and port
+tuple), increased throughput by 18.1% for IPv4 and 34.7% for IPv6:
+
+  protocol  BIG TCP off  BIG TCP on   CV off / on
+  TCP/IPv4  65.567 Gbps  77.420 Gbps  1.12% / 0.37%
+  TCP/IPv6  55.355 Gbps  74.568 Gbps  1.20% / 0.68%
+
+Assisted-by: LLM
+Signed-off-by: Wang Zhan <wang.zhan@smartx.com>
 ---
- drivers/net/wan/fsl_ucc_hdlc.c | 3 +++
- 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
-index 809f21fb93f5..ffc8b989e33a 100644
---- a/drivers/net/wan/fsl_ucc_hdlc.c
-+++ b/drivers/net/wan/fsl_ucc_hdlc.c
-@@ -1254,6 +1254,7 @@ static int ucc_hdlc_probe(struct platform_device *pdev)
- static void ucc_hdlc_remove(struct platform_device *pdev)
- {
- 	struct ucc_hdlc_private *priv = dev_get_drvdata(&pdev->dev);
-+	unregister_hdlc_device(priv->ndev);
+v2:
+- add an empty line before netif_set_tso_max_size()
+- rebase net-next/main
+- cc all the maintainers
+v1: https://lore.kernel.org/20260910131635.780802-1-wang.zhan@smartx.com/
+
+---
+ net/openvswitch/vport-internal_dev.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/net/openvswitch/vport-internal_dev.c b/net/openvswitch/vport-internal_dev.c
+index 125d310871e93..77a16d5ebd543 100644
+--- a/net/openvswitch/vport-internal_dev.c
++++ b/net/openvswitch/vport-internal_dev.c
+@@ -117,6 +117,8 @@ static void do_setup(struct net_device *netdev)
+ 	netdev->features |= NETIF_F_HW_VLAN_CTAG_TX | NETIF_F_HW_VLAN_STAG_TX;
+ 	netdev->hw_features = netdev->features;
  
- 	uhdlc_memclean(priv);
++	netif_set_tso_max_size(netdev, GSO_MAX_SIZE);
++
+ 	eth_hw_addr_random(netdev);
+ }
  
-@@ -1266,6 +1267,8 @@ static void ucc_hdlc_remove(struct platform_device *pdev)
- 		iounmap(priv->utdm->siram);
- 		priv->utdm->siram = NULL;
- 	}
-+	free_netdev(priv->ndev);
-+	kfree(priv->utdm);
- 	kfree(priv);
- 
- 	dev_info(&pdev->dev, "UCC based hdlc module removed\n");
+
+base-commit: 87b80c2f6b05cad9f0ff9136709c62a0f59923e3
 -- 
-2.43.0
-
+2.47.3
