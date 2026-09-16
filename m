@@ -1,65 +1,56 @@
-Received: from out28-169.mail.aliyun.com (out28-169.mail.aliyun.com [115.124.28.169])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767D836F411;
-	Wed, 16 Sep 2026 00:41:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4DA37CD29;
+	Wed, 16 Sep 2026 00:43:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789519304; cv=none; b=STJrRjf4EsMhplV6uJ4ks/7Iqdy610Fq60y6U1TPRKEqUuPkSkH27UhSn0EBtX33R5ZxEjOoZD2npsxM8eEZQDDZXa5wmqapcuzSPz6s6AM8Ib6i6qI0iEGhoHmPmbOL1JefcfUYIWkhM2abKjqpHGtAt8XmfNhaH4RVT/14Bpk=
+	t=1789519442; cv=none; b=QkaiKCGmFPb4avRiLaWY3l0L7HpoV3mVT4+JxAEFgjerH45lHvqT7FoiFO/BbB9nS1URtSo3gFu1nNMRCK1HSy+/uZkWBEet2Xjo1NPIUW6J2KoBoZLuHZXXnKx3WuPpwJiOiV5TOXRepF0gE3EX4Hz8dhyt2pQFuYc3oMIy1PM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789519304; c=relaxed/simple;
-	bh=XTmXF+DcWOLz2da0MbDlhvUuKjXqsnmRkUlgHzvUP/I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TpHXs5RPZxBIScCdFcoTPwAS1ArEqucmlryzkWSEY7NLA84kvnlMK4QpTIoCC2vk2N2WvQLwrj8Y79tjZ1Ix61N3idP5BfnDtJfSrIn05C3srBb3pmxV3bU8Eb9feI+1vY207WmZ+fFUuT9eWtHgCrjQ26WoSP+NTJjuorPnmQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.1066961|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.0107248-0.000963259-0.988312;FP=7698849270438870102|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037032089;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=14;RT=14;SR=0;TI=SMTPD_---.jEWW67-_1789519287;
-Received: from 10.10.26.192(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jEWW67-_1789519287 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Wed, 16 Sep 2026 08:41:29 +0800
-Message-ID: <3d6235e4-89cb-4881-8c7c-0de2a6206bca@motor-comm.com>
-Date: Wed, 16 Sep 2026 08:41:26 +0800
+	s=arc-20240116; t=1789519442; c=relaxed/simple;
+	bh=WxDSRqy7995+Va2Mq31qoZJtvt0+l09Tb5YzKqPnv6s=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fq+L6+q+Ni6Cfd+mwlm9KzNkgnGeiArtxqxOEj3iwvU0i/bXASFOfiGnfUhMWHWTTsMW3fiXD7yU5eFTCyO068p9/Gz8rAL2uswK2bcttCjOzv41pGrlSfvb5Lg9x0KgXCPoSyOnWJBHKJeK/tHVp3ZT9ibLR8UmnwJKp9cgwcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aqGYoeEd; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aqGYoeEd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B321F000FF;
+	Wed, 16 Sep 2026 00:43:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789519428;
+	bh=UZJ9ZLYDY9Si6yZkpOfMCT2e7GSOMrfiHFCZtwfcegk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=aqGYoeEdY5Y8yrXBYhNzKYy1XCqEyXyGWTxGdi16vdRlKleFqEYCpf5KuF1QP/OM2
+	 VSYCXf8uqQ+Uotj30cZKL6xxgLxZEP/x7kKH2mB++397MCP6VoPBGaDC4bQxFmK1gI
+	 7s/YRB3bHP3GJYaSRwGEUWQ9DSml/tNsqpb88nzgEh/Ec70p0OAjr9+VnEwlFvVLr6
+	 7jbHnIgWBvDO6JAVWhFjdTBMKumigQrb1AZSTTpXYaFMFVMhxVQ3frY6QnkrVbGe0F
+	 lc1ebPj3q1WlOKDCfK9pVjzOpPySj8u/1ig/8lUYrBIDUUMRWv0cGUlpLfSjj0LFMl
+	 863527/kYv1Cw==
+Date: Tue, 15 Sep 2026 17:43:47 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Myeonghun Pak <mhun512@gmail.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] net: tulip: dmfe: Disable PCI device on removal
+Message-ID: <20260915174347.4f5acec4@kernel.org>
+In-Reply-To: <20260915020359.89842-1-mhun512@gmail.com>
+References: <20260915020359.89842-1-mhun512@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v18 3/3] net: phy: Add driver for Motorcomm Quad
- 2.5GbE phy
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Frank.Sae@motor-comm.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
- jianmin.wang@motor-comm.com, jie.han@motor-comm.com
-References: <20260915082152.3104633-1-kyle.switch@motor-comm.com>
- <20260915082152.3104633-4-kyle.switch@motor-comm.com>
- <c1b1409e-c01e-4074-8e38-73e630deb751@lunn.ch>
-Content-Language: en-US
-From: Kyle Switch <kyle.switch@motor-comm.com>
-In-Reply-To: <c1b1409e-c01e-4074-8e38-73e630deb751@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Mon, 14 Sep 2026 22:03:59 -0400 Myeonghun Pak wrote:
+> Subject: [PATCH net] net: tulip: dmfe: Disable PCI device on removal
 
-On 9/15/26 20:33, Andrew Lunn wrote:
->> +	res = of_get_phy_mode(np, &priv->interface_mode);
->> +	if (res < 0) {
->> +		phydev_warn(phydev, "%s, phy-mode missing in DTS.\n", __func__);
->> +		priv->interface_mode = PHY_INTERFACE_MODE_INTERNAL;
-> In the binding you say phy-mode is a required property. So if it is
-> missing, it should be a fatal error.
-
-Ans: I had considered this issue before submitting the patch.
-
-         Between using a default value and returning an exception,
-
-         the code currently chooses to provide a default. This will be
-
-         changed to return an fatal error in a later version.
-
->
-> 	 Andrew
+Please stop wasting our time fixing bugs in 30 year old drivers that
+nobody cares about.
+-- 
+pw-bot: reject
+pv-bot: slop
