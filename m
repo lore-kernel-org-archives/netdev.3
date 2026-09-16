@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1083E45038
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 00:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFBC13A258
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 00:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789517474; cv=none; b=hjr7bIQTIKdksTg4INvSeeLIXs+IjrlcOYInPlA9w9mp2RhRYMZEQfsZTT9CX2dFAEoJrIhzPr6RYxw/3waaLoUB9bDLC16ayvxXjEQJqqQE1ajrVuAO/Wz/mZ468u7rxIFT586ZjJeGoSu7CZP4s5xfGZEt1KNmjCuxO8QK9Bs=
+	t=1789517475; cv=none; b=tDyXxe1LSPX5e8qjfxZBDO0a/K5V00AsTDSrfDDnCLv3K0E+2WIriTKDpKD2ZYN8XokDZHRd1TArikrM7Uj42LvB1BEpDxSXdehTJkbjK6dtHNM6E3BE1WpfrsaLP45GgORdbrsia2XYA+X2iSV517ulMq6+F9uEQ7q6tyA0/y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789517474; c=relaxed/simple;
-	bh=DvSJPM8Myr+ypEnm01zJe9A/N1cGi1lYBCZvyml1hUk=;
+	s=arc-20240116; t=1789517475; c=relaxed/simple;
+	bh=JyX2jFMc3vSKsl/U6/u1m1dwjSt2Mo/sRY62Q3Sl6aU=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=cuqJuRYCsWenSeuzvlI3fVXZ1+dYg8sxza1Keejho8n+nCAjGaKZpfpOlWRlgvvqjBZCOpXLf4aUa4dBFlNI9BcC3NstFhZHy5S5a1KbgC3JXd+4WiC2n/Q9XbeAB3wIZvqRp6PTq3S81cg0XJfiPpRfJanJ1wqBgGbgLrou8ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YG0Di4Z+; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=JmNELzKkNRBiyXDJIR1BZZt5eG3OnYUZAaGSquY+pXwHjVQ5jg8A/Kjkxn/0XQJ9grZJN4uNRVD3RwmKlji6n9CH7cA8DZYZFn46qUAaWSm144J5odZgBT0vWlnUJSffUI/JHCXQkhKzOzdq/UKWBCGERU+Vao0pfCqrbbblJu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f1nxqZ5O; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YG0Di4Z+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEDB41F00893;
-	Wed, 16 Sep 2026 00:11:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f1nxqZ5O"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D8A1F000FF;
+	Wed, 16 Sep 2026 00:11:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789517472;
-	bh=IHaN2gWi1wmMGuSk7FDz+nB9y4UxJZOxrSjuldSnjBs=;
+	s=k20260515; t=1789517473;
+	bh=D5jMq3f2Yy/ZDSkoech/7qYqbpoi0CVkKz7eZOPEjNo=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=YG0Di4Z+3lgq/WUoHH8rRU1zB8+fJ4ai/NjsNswUqxLb0/CsTRVORoOqv4x3FOu0D
-	 o1kBzfGyaV3kTW0a+iNg5uGKRKlSEAfC+mkzdeaB/s6cMai0zq88OvbSTY7e+0xT/J
-	 Az/UUn/DJnDCqf4K2MI1TA4zM87OvolpS6mQ/dWrJRgu8GVq+jfU2OnSsAmnUKthMF
-	 XSsgrMAiThIy0OtcFpKXh5LefBo827vAqzClhEdIrUSex6Vr1ZxYyz4RpRTZfjMrFR
-	 B2vneFdB3Mm9S4gtT1jddINuyzILMLfLMxuHAHfkd5mzdkOxKuNvkMVPnEWOAuIhPJ
-	 4ml4Oimex0vFQ==
+	b=f1nxqZ5OJejye4FJv1CW3ZTjBy7aKDLNK7m62FZ26wGRT2h2zOdg/MvexjEfzGSfa
+	 G63Va+gHCDwi/LK4EM9HFlibyfVDmp6h9yiN9fTXASRocW0hFrX8jDER9V2bARCvpq
+	 OR+zqIL7e3b2mtrRQllwiEBhvPBRx68mJvZ9E3FTcBwNFY9Yilga7aNt6bJWvGlORU
+	 NsQRDgAZMC6aoJqYYqzWEe/t9jQulBNf+KFT/t6wVhs509L8PLXLy6RDGx+Eou7aQV
+	 l+c3WEjLVEK1ycPYZfnQsCofHzfvOLmY3vjKFGM29yo6HLjUhu0cCI3gO/jgG9Xp8p
+	 Rkn00IJJW/nrg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 937B9392706C;
-	Wed, 16 Sep 2026 00:10:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198DB392706C;
+	Wed, 16 Sep 2026 00:10:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 net] pppoatm: ensure a writable skb header and linear
- data
+Subject: Re: [PATCH net] net: stmmac: fix TSO header length truncation
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178951740612.2328807.2734322587316636220.git-patchwork-notify@kernel.org>
-Date: Wed, 16 Sep 2026 00:10:06 +0000
-References: <20260912233048.3977192-1-edumazet@google.com>
-In-Reply-To: <20260912233048.3977192-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, eric.dumazet@gmail.com, mitch@sfgoth.com,
- 3chas3@gmail.com, qingfang.deng@linux.dev
+ <178951740763.2328807.9767514074293530178.git-patchwork-notify@kernel.org>
+Date: Wed, 16 Sep 2026 00:10:07 +0000
+References: 
+ <20260911-stmmac-fix-header-length-v1-1-8fc103334327@oss.qualcomm.com>
+In-Reply-To: 
+ <20260911-stmmac-fix-header-length-v1-1-8fc103334327@oss.qualcomm.com>
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ niklas.cassel@axis.com, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sat, 12 Sep 2026 23:30:48 +0000 you wrote:
-> In pppoatm_send(), LLC encapsulation checks whether there is sufficient
-> headroom for the 4-byte LLC header, but does not ensure that the skb header
-> is writable.
+On Fri, 11 Sep 2026 11:20:15 +0200 you wrote:
+> stmmac_tso_xmit() stores the protocol header length returned by
+> stmmac_tso_header_size() in a u8. stmmac_tso_valid_packet() admits
+> headers up to 1023 bytes, so a header longer than 255 bytes wraps modulo
+> 256 (486 becomes 230, 256 becomes 0).
 > 
-> Normal transmit packets passing through ppp_start_xmit() have their header
-> unshared via skb_cow_head(). However, packets can also reach pppoatm_send()
-> via PPP channel bridging (PPPIOCBRIDGECHAN) without going through
-> ppp_start_xmit().
+> A TCP over IPv6 socket carrying a few hundred bytes of sticky
+> destination/hop-by-hop options makes skb_tcp_all_headers() exceed 255
+> while staying below the 1023-byte limit, so such an skb reaches
+> stmmac_tso_xmit().
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2,net] pppoatm: ensure a writable skb header and linear data
-    https://git.kernel.org/netdev/net/c/ecc7253683a3
+  - [net] net: stmmac: fix TSO header length truncation
+    https://git.kernel.org/netdev/net/c/15989abd74f1
 
 You are awesome, thank you!
 -- 
