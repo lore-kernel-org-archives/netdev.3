@@ -1,67 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38202874E6;
-	Wed, 16 Sep 2026 01:06:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C290D1DF736
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 01:08:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789520766; cv=none; b=HfJ+zGJiSgw/o/kynGTiXa9o3CnbVRCo3Ea3VWkbhT6wm6hkBJtrXl3FGUza+80I2HO0UBkzustteioXRVUbJcFOQK3yeKHWzH3V1/mjtymPv7myjYaVvtVuUwHkji90a1TZni/bMw7DgkMzh6qpyjbDIiL29USlWiiy7jnPXCI=
+	t=1789520886; cv=none; b=tlo5nI4zed+FCSZ29upsFHUYRU8fpoCG7xdvPhHf7RRHXZvuNiJOatW0MyMichTza4gT08uObmsNCQI/1WTimdW0/sCghz9rxLv7POJcJuJGe55mAKvAPKSaK+h+9E+5UK0xgW9iXvZEtcS+45+PkrYqfnGKYmFYXGiNZNBvEqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789520766; c=relaxed/simple;
-	bh=ZkIMFahVBYH1CQ4o/QIlzjjKpE2FkezKAhx3Tah8uC0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p7t7KStPbKxKCtg8l+t8VK8ktv4n9DXMQHNyiKGhPXvwQXbukwK44P8+xn7pwe2QwUNI1MDDr8TqAcenaT8dF3BF93rbpEbQVfZzIBaKgcgZ6hF0eoIk6EN0RzEO8+DHtW5FuKd+IISWWjhHUN7WLv/N0ThAdv+EFonDCn/Zq0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DNbnkCpO; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789520886; c=relaxed/simple;
+	bh=atmMXUCCJVT+j6u7gYWsI9eMCNTKjfv32dYzkJZTVVo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MVygbxxMK/+AwE4pS9LNDU4eeepTfii4zM9sUTuYs4hNpcwVbP9k2vfxZ0shaJ9DiOFE295fqepB/eaFkPDAB7Tvx38yVczOtu2ojNHABLw79WQCLb51reBxD/yijb9PBClPslrw6ARQD9cmWAlRVkgnn0IHxKWKde3ylEcO8Ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ImcDzZOA; arc=none smtp.client-ip=74.125.227.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DNbnkCpO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C83F1F000FF;
-	Wed, 16 Sep 2026 01:06:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789520765;
-	bh=u21N0zd2LeVS+La3mGIX7olO+1XgqdEuoZs0E93JSOw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=DNbnkCpO+RTWtTF+MVpzhyfYZzE/anDN19wGD6KS7dCNoHJMUO+zlpDD29UiuLAWq
-	 IxP21HIFOlCRCSRyMn+WpLvjHiXuk/cgjLc5K8twZmviveZcA+tJMbhDFHpnN7x6N5
-	 4vYGI90ehW0pDSNMigSrH9ugUF+m+Z1gqt7SopIaksHbSzuPZafNp24dhN1NAAH4jz
-	 kKbQj1Cf+dEjiulI/+vEki9T3fdffYjaMMbUr1gC7dSVZTYoOP/TTP1Zj/xQkOePHY
-	 bc2jYMTtVsi3jwVleMbNxnD3xixzkIFrWwISFlYaN4sPrmF/ZPFYWMYDByd6i/uPhg
-	 M4DCwW+Pa3X3w==
-Date: Tue, 15 Sep 2026 18:06:03 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Long Li <longli@microsoft.com>
-Cc: Long Li <longli@kernel.org>, Konstantin Taranov
- <kotaranov@microsoft.com>, "David S . Miller" <davem@davemloft.net>, Paolo
- Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky
- <leon@kernel.org>, Haiyang Zhang <haiyangz@microsoft.com>, "K . Y .
- Srinivasan" <kys@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui
- <decui@microsoft.com>, shradhagupta@linux.microsoft.com, Simon Horman
- <horms@kernel.org>, ernis@linux.microsoft.com, stephen@networkplumber.org,
- shirazsaleem@microsoft.com, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-hyperv@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v5 00/13] net: mana: reconfigure by replacing
- the queue set
-Message-ID: <20260915180603.7434fad8@kernel.org>
-In-Reply-To: <20260909222416.884246-1-longli@microsoft.com>
-References: <20260909222416.884246-1-longli@microsoft.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ImcDzZOA"
+Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2dd77300825so3920545ad.1
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 18:08:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789520884; x=1790125684; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=tbs73jlWEbTHLi2KYaUQlSC+D6XNcbZaCoATLOY/ueE=;
+        b=ImcDzZOAlH6ANtxLnpwvum92fjDL6VWNVunyM9/jMFVYo4oL6HEAWrBLdkvAWrX54E
+         PMtb9LthNqgM+sJxl8QI/qmDvmsDk5eWu+lou3/07r0REaxYjql9m6phmiw1kt9eR5Qq
+         cHeO2IyAozpg4sLvaOHsSBoR7J1+skP3mfnD4DM3JUumqLrZdYcgoySTiJuaRMbpnfsi
+         nKvhMjJf55Wi6rAlj/5iTAL39DnqwLYCeoyp1sIGlMhwnKHIW8uHKxfkdQcdLUU+UjOd
+         oVNCMZzgKp9EcscNlFZZwcy30+M3MvQMwqkTTX7gQdQdMRU0wuJNvbMrvwlmXoI3y87K
+         BX/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789520884; x=1790125684;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=tbs73jlWEbTHLi2KYaUQlSC+D6XNcbZaCoATLOY/ueE=;
+        b=RViFps8VHNgEc/yubPWkJu2vD2sCYD4HGr7k8e1anWgXdCV9vGEwHqzrdneq2XxD+p
+         p3Ct9YZpGznQfgnkwSX/dkuqT0d475gkpVzl7FXI6N4omngx+5tIqwekGTNWySiGZEsO
+         ppJz5qNjflR2cCtFD1k29CyE66N7X5eRvtKvHsS5T0QUHWPnp2iBQMV9W0gCgS/fCYMJ
+         scttbGrjPgk8oOeP5k3DYndpW62+WOokOgagwajsuBqlx8/zcNopcaZRr6yHL7FsLjdz
+         tWDloVXatuYc1+eqBSrOThcpln23+KKLE2pNYwLfU0QGCQV6SS/vPpzCdNYOyv8Arbjx
+         pdqA==
+X-Forwarded-Encrypted: i=1; AKwUvBwwdg/Usn0H10qw4mTfxCCsiLIv2d+dsA1ec/brDqmtwTUWD5OqUqYgrMXYEK8iOKA04+u+PlE=@vger.kernel.org
+X-Gm-Message-State: AFuF++kTkQJPXvhJ4t/KYVPobMetMtwoCbvuCb90Z4Zs8W2GcD2b85gi
+	yOyWk08Cu3bQn8+8KkexvONyfr71FAmuxpAdgavG39wBe2BzL+gq0WHH
+X-Gm-Gg: AYBFou1N82jBu7XFyGbwwo30Yuv0cILUGrvrOXWckQSvG0DItr1NDV1cQZjd67wEaFE
+	M8EHGCmoLln27iIchFh2t2gZ0/TB7Qi2P/jt8zGM9E8CoHmIf9zIYOV1Jnd2GFAtY5e3/wtsk6A
+	gukzEfSYRTVKo4zAt1PlmO5LiIXwdgpforyi7TfqbKRuIfy8IyWZ4ti7cJWUv2v8wTyaTQc/wbN
+	Xz6/Jlolx+Srwt9SXlhYqndY5q8RaeM6mIGWsBHOjHoNesfdokL2AkG+nrzLr6boagp7GRQxi+h
+	kRF9z++/3ijEh7VujWXTeAMnoGeEaNPwpUNm/DAanA5O6x2Hwb3wrNtA+JD1VjJKmHAdGa9SOK8
+	B+sSXvWRlm9xro+iQuMrg9M7LVgU9LFS/7YQS/eSgrIx435j3I+zYNokoFJBWWwTaQlpYuAF/rL
+	4/FenWVWWDGFI9q+QwHG8o2p0vkdprIwKsMXepBdjNN5JIUZi7TkaCebfwjS9DHWhZzlof2/I=
+X-Received: by 2002:a17:903:3886:b0:2dd:4168:7bd3 with SMTP id d9443c01a7336-2dd8e40f457mr14196975ad.12.1789520884107;
+        Tue, 15 Sep 2026 18:08:04 -0700 (PDT)
+Received: from gmail.com ([2a03:2880:7ff:51::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd89ee0cc9sm2864095ad.46.2026.09.15.18.08.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Sep 2026 18:08:03 -0700 (PDT)
+Date: Tue, 15 Sep 2026 18:07:16 -0700
+From: Narcisa Vasile <narcisav.kernel@gmail.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: narcisav.kernel@gmail.com, netdev@vger.kernel.org, kuba@kernel.org,
+	daniel.zahka@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, pabeni@redhat.com, shuah@kernel.org,
+	horms@kernel.org, willemb@google.com, petrm@nvidia.com,
+	anubhavsinggh@google.com, richardbgobert@gmail.com,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3] selftests: drv-net: add BIG TCP test cases
+Message-ID: <aqnrxDIh8/+/8zGn@gmail.com>
+References: <20260913052419.77910-1-narcisav.kernel@gmail.com>
+ <178936359771.22033.17578992147371005884@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <178936359771.22033.17578992147371005884@kernel.org>
 
-On Wed,  9 Sep 2026 15:24:03 -0700 Long Li wrote:
-> Replace detach/attach reconfiguration with pre-allocation and queue-set
-> replacement. Allocation failure leaves the running configuration intact.
-> Publication failure attempts rollback; if rollback also fails, the port
-> is stopped and requires administrative recovery.
+On Mon, Sep 14, 2026 at 05:26:37AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider:
+> 
+> Critical: 0 · High: 0 · Medium: 1 (1) · Low: 1
+> 
+> - [Medium] The four new `big_tcp_*` variants are yielded by
+>   `_gro_variants()` in tools/testing/selftests/drivers/net/gro_lib.py…
+> - [Low] The patch changes the failure-tolerance policy in `run_test()`
+>   from `test_name.startswith("large_")` to…
+> 
+The tests can still be run for all 3 variants and the MTU setup is
+useful for all modes. The commit seems clear enough.
 
-Does not apply cleanly, also the AI email reporting had an outage late
-last week so please check if any of the feedback is actionable:
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909222416.884246-11-longli@microsoft.com
--- 
-pw-bot: cr
+> Pre-existing issues:
+> - [Medium] `check_recv_pkts()` (tools/testing/selftests/net/lib/gro.c)
+>   reads `correct_payload[num_pkt]` once per received non-FIN frame with…
+
+This is a valid pre-existing issue. I've sent a separate patch to net
+with the fix, according to the guidance on fixes. That patch doesn't
+conflict with this one.
+
+> -- 
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260913052419.77910-1-narcisav.kernel%40gmail.com
