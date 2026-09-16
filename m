@@ -1,97 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.26.1.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A1F2DEA93;
-	Wed, 16 Sep 2026 05:36:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F40B364934;
+	Wed, 16 Sep 2026 05:44:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.26.1.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789536986; cv=none; b=Rz6T9qZm6Szqh/4zB4sLVQKNRWXhMN98OYFrVNQ9OEiVAbYZ+HB6KAA0YvIwciiTP3wRiTBv8uPxYTvjvAlOIYWjFh9d5xfYUIHJ6zKjHJ9qA9VEViTd4fC4LYlrkB7p2nlF83r1MzJF5u/1lsIUImPexJU6/AZJS3ynr6QvP0g=
+	t=1789537456; cv=none; b=ZXU9Wlfgz+AgemtDuD2giaZrXfMpgnqVIHFKLii864/AFzzFVAE5C05CEV6qPT0Ovd7ND1FqC5AtUxwUiEstT8tOTsQiCxLj7I9wKKZulp/p/2yhdNmLrVg4QKvi8s/iGK8opN2FOqBaORo5T7iROvx8LQymmV3VPeTEsqVTaZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789536986; c=relaxed/simple;
-	bh=6CSki8oXQ9r96gPmio9pI3wDPMyJ9FCJU/vdVVPjIb4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qFMNaeicf1CqG1ZSHs2pkAI6NIZUbZl1X3ZuGlqti54aAF5qYicXTGvZErrwGw/yxcRHoeEMxPoUzDgPftNl9K89DET/1RUICcZC6Jj6cTDUIS/WC0CAKSL02QOO9inoHJ6zkwYq+N/fmjU4u2k0Zf7cge0RmuzMBX2MslPTBj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mx9MoT6G; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789537456; c=relaxed/simple;
+	bh=2GAP0TSdQjwy3Iz5z9+xG0FChzdAkaPelMGPuWjJl1s=;
+	h=MIME-Version:Content-Type:Subject:From:To:CC:In-Reply-To:
+	 References:Date:Message-ID; b=GwQET+g5z25Bo2jNVa/IJyUS+LKlNF6+pMfSSoMdduWbIsYhDQq/ktlv5NekemIb6fbaVt85iSoL7N846UJgut0CDFl2UqSCCUzIlP22wM/R44V+vzCWxRtZmJDK7ChyJh7R1L0O90GAihsDzO9ynh3ZoeEA9rCkEJoT2JPn9b4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=t4kTDsK2; arc=none smtp.client-ip=52.26.1.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mx9MoT6G"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 713381F000FF;
-	Wed, 16 Sep 2026 05:36:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789536985;
-	bh=6fNqwUyRYw4wI/6pMel3zHowqqHSYPYMRGW/eYkFdJU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Mx9MoT6GuA+YrKibM/ey2OM4T9XPqeYVVLBDTzXhe25iw9xP8BQ/O+2JY8aFOwdaz
-	 ZPBZiPyVSjd9mxcHlbwpNK8sEAYDyamn4/1SdUDYmIf7rsqjrnbMDYz7YSMyr6Aqsv
-	 NzklMDFGV/dEPTfCvWWmE+OZZnt/wxdReK/CTDaQBPDykyyT3dKabnmyqChDvPsdA0
-	 5e2sfnYugkuJbuDeE6p9dvidugD3anwUxlZUbu2kRq8f+9OUgk7f3DOWyftGu/eqbt
-	 KytbrFcF7BraNAqX+fqKLfCvmwhDdSqfRNwQu+IdNRYsPf6nRO9R/zUelTm7Iy/zGj
-	 MwsovY/Tm0JIw==
-Date: Wed, 16 Sep 2026 08:36:21 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-Cc: davem@davemloft.net, gakula@marvell.com, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, sgoutham@marvell.com, andrew+netdev@lunn.ch,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Subject: Re: [PATCH net] octeontx2-af: Fix memory scaling limitation in
- SR-IOV mode
-Message-ID: <20260916053621.GS13683@unreal>
-References: <20260916022111.1083017-1-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="t4kTDsK2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1789537455; x=1821073455;
+  h=mime-version:content-transfer-encoding:subject:from:to:
+   cc:in-reply-to:references:date:message-id;
+  bh=lMly06yvXJw368HvsLkeEKdmRrbzT1Mb+UvQ7yEb718=;
+  b=t4kTDsK2ab1UgD0bynVBpF6X5WA82pTUUthKsZq6iZ3w6M/qrgimtQWA
+   HUsoVy+IcGBxLG72J8vuCssFf3UBY2EjpwNV/vV9/ry+bXNtOMBT65Egl
+   0PIBxHPnGTA8DfeNUdaNrwELd9VxZLQKFOWjfOxs1vPN6Fs+qbR1kUIYh
+   g/wV/juEpfTPIs/ShvM4y/RCDB9phXNL265jeHKewIbw8jB8PrtAXsidx
+   ObLuUbTxxL6SgtRYEgYZ4oCmbl5nuXKg9EHypopNQ9K6S5rzP8+sE1KBz
+   Vs2oErTOFrSrU7LiNV89JlGldFBll/OZTOaWVNt9YXaNBXIEWinmCBPQ3
+   Q==;
+X-CSE-ConnectionGUID: MEiWN9uLRICXJUjhMSoeng==
+X-CSE-MsgGUID: 46+o4USfTQm+e5ExoXzW/w==
+X-IronPort-AV: E=Sophos;i="6.27,103,1787011200"; 
+   d="scan'208";a="28830891"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2026 05:44:12 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:11501]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.22.113:2525] with esmtp (Farcaster)
+ id 280a168c-da7d-476c-a87a-4478e80f6ebb; Wed, 16 Sep 2026 05:44:12 +0000 (UTC)
+X-Farcaster-Flow-ID: 280a168c-da7d-476c-a87a-4478e80f6ebb
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.46;
+ Wed, 16 Sep 2026 05:44:12 +0000
+Received: from dev-dsk-akiyano-1c-2138b29d.eu-west-1.amazon.com (172.19.83.6)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.46;
+ Wed, 16 Sep 2026 05:44:10 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260916022111.1083017-1-rkannoth@marvell.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] net: ena: fix PHC cleanup on probe failure
+From: Arthur Kiyanovski <akiyano@amazon.com>
+To: Guangshuo Li <lgs201920130244@gmail.com>
+CC: Arthur Kiyanovski <akiyano@amazon.com>, David Arinzon
+	<darinzon@amazon.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Sang-Heon Jeon
+	<ekffu200098@gmail.com>, =?utf-8?q?Niklas_S=C3=B6derlund?=
+	<niklas.soderlund+renesas@ragnatech.se>, Dawei Feng <dawei.feng@seu.edu.cn>,
+	Amit Bernstein <amitbern@amazon.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+In-Reply-To: <20260916022954.2690322-1-lgs201920130244@gmail.com>
+References: <20260916022954.2690322-1-lgs201920130244@gmail.com>
+Date: Wed, 16 Sep 2026 05:44:00 +0000
+Message-ID: <178953744017.13037.8123570146284827976.b4-review@b4>
+X-Mailer: b4 0.15.2
+X-ClientProxiedBy: EX19D039UWB001.ant.amazon.com (10.13.138.119) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-On Wed, Sep 16, 2026 at 07:51:11AM +0530, Ratheesh Kannoth wrote:
-> The original code used DMA_ATTR_FORCE_CONTIGUOUS, which could exhaust
-> the CMA pool when a large number of VFs were requested.
-> 
-> Fix this by switching to the DMA streaming API. This is equivalent on
-> Octeon platforms, which provide full I/O coherency via the SMMU.
-> 
-> Cc: Leon Romanovsky <leon@kernel.org>
-> Fixes: 73d33dbc0723 ("octeontx2-af: Use DMA_ATTR_FORCE_CONTIGUOUS attribute in DMA alloc")
-> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-> 
-> ---
-> v9 -> v10: Updated commit message as suggested by Leon
-> 
-> v8 -> v9: Addressed Leon comment.
-> - Used kzalloc instead of kmalloc.
-> 
-> v7 -> v8: Addressed Leon comments.
-> - Replace __get_free_pages() and __GFP_COMP with kmalloc()
-> - Drop GFP_DMA32 retry loop and dma_capable()/phys_to_dma() mask probing
-> - Use dma_map_single()/dma_unmap_single() instead of dma_map_page_attrs()
->   with DMA_ATTR_REQUIRE_COHERENT
-> - Remove defensive parameter checks and dma_max_mapping_size() from the
->   allocator helper
-> - Move MAX_PAGE_ORDER validation to qmem_alloc()
-> 
-> v6 -> v7: Addressed Sashiko comments.
-> 	https://lore.kernel.org/netdev/178863855246.219967.10510865726694393307@kernel.org/
-> 
-> v5 -> v6: Addressed review comments.
-> 	https://lore.kernel.org/netdev/20260901015621.2708182-1-rkannoth@marvell.com/
-> 
-> v4 -> v5: Fixed compilation issues.
-> 	https://lore.kernel.org/netdev/20260831024210.208447-1-rkannoth@marvell.com/
-> 
-> v3 -> v4: Fixed compilation issues.
-> 	https://lore.kernel.org/netdev/apTpKcN_S1xIwRbZ@rkannoth-OptiPlex-7090/
-> 
-> v2 -> v3: Addressed sashiko comments.
-> 	https://sashiko.dev/#/patchset/20260825045616.3723078-1-rkannoth%40marvell.com
-> 
-> v1 -> v2: Rewrote patch as per sashiko comment.
-> ---
->  .../ethernet/marvell/octeontx2/af/common.h    | 45 ++++++++++++++++---
->  1 file changed, 39 insertions(+), 6 deletions(-)
-> 
+On Wed, 16 Sep 2026 10:29:54 +0800, Guangshuo Li <lgs201920130244@gmail.com> wrote:
+> diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+> index ea89619039d8..5f0864d16dd3 100644
+> --- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
+> +++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+> @@ -4122,6 +4122,7 @@ static int ena_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+>  err_device_destroy:
+>  	ena_com_delete_host_info(ena_dev);
+>  	ena_com_admin_destroy(ena_dev);
+> +	ena_phc_destroy(adapter);
+>  ena_devlink_destroy:
+>  	ena_devlink_free(devlink);
+>  err_metrics_destroy:
 
-Thanks,
-Reviewed-by: Leon Romanovsky <leon@kernel.org>
+Thank you for the patch.
+It looks correct.
+
+Please resend this together with "net: ena: fix MMIO read buffer leak on
+probe failure" as one two-patch series - both insert a line into the same
+hunk, so they conflict with each other.
+
+-- 
+Arthur Kiyanovski <akiyano@amazon.com>
