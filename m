@@ -1,113 +1,147 @@
-Received: from mail-oi2-f12.google.com (mail-oi2-f12.google.com [74.125.231.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298B04CEE51
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 15:34:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.204
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789572849; cv=pass; b=cnFpYvt7IqSiYsRPrdNhIWRWvMUSz3OKbcOwlNosBofYyuPcSKcvIyIfIfAG43RTQMjKBT9ZxWzxQRAqKjSTD0tUgE/LWg5fdGXaoebG4ZzdJ3lHVDszUueEhxNMFatPb0nCtuWEWjoeasiOrfudc2HPQ7eNOx0Jp0BWT5pkvfU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789572849; c=relaxed/simple;
-	bh=zZktuYM5vkbbaJAwKYlDDzrEkMORd47SKIFSfpXwcLY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DMNrogwPP9oKTVVi+ZDAqNPKyM/js5CELO2sZ1EnXCBs/WdyBOW6MkcYVi1vAXqtnfRdgdS/Sx09vb28kTN5hTGUYUNhz9nFn+hQcuhGePeL8o12UgLwatlHFZcfZi1/KcerWWEwNcIifx2g6uS3+PULQBM7aOSwJM54z7P2rAk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h3E77TLb; arc=pass smtp.client-ip=74.125.231.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C604AAC62
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 15:38:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789573132; cv=none; b=m/wW5XEQwI9L0cnAGYso1bWYZp46+XYCtNlLotCkqDFNXrTfCA7oy1t+fMQ3AH3FoyowEC5RNHE0/j6vlUjJmHb2fWXwcItKJ0P15WfTAG0CMxSWkG8pzJM/UjwF13Xy8fUaWs8+pk/lcMhT+sbLHNHMHwC1+8yMQBMzRCDI5WM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789573132; c=relaxed/simple;
+	bh=huEs+LEHo8cFHfOkkR7JHzzpk8mAxFJ2h/PPE9NkvtA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VBwwxJKjqGcJ5dqOo90gA56KDBLbIziyyRmLqQDMmeWFBs9MAl1rhJ30aWlIh3pbQBU+6qmqbb4iJbNYy3CmWbf87eHEHfCffePc2GXqitP4ij9Bd9Kz47ugkFk3WxRpvMvV6qvAcC1qNlkI3NKZI9rhIYlWYxJ1ifkKKhb17J8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bhJDkRgu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cOe2/Vn1; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h3E77TLb"
-Received: by mail-oi2-f12.google.com with SMTP id 5614622812f47-4b37a30eac5so656009b6e.0
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 08:34:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789572837; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QDKLnbcru1vREe0H4zV3rfimTNZcB7dx7wkrqh0n39BubNwxHhYWBd2rfzFcLjwXrK
-         XJkL37ldwWr0EP3byAm0UdEhZxHCssfnRZiYv4Gq147plImi10TOiPfPqq4MAwD+7DT/
-         fOtIZCwUVFT/QExp6Goo3rx3MCziBkTcbc6IcrJODEQn9vfk1kQvQ+mljnSMWLk5q0+R
-         xtpyvq1A3SihHK/PHHMpHu4FdT3OosDtxGaELQuw+zxBOPAB7qa+HOUGu386aiGKhocv
-         KX2+Azk1XTtjGlgT/S2R6xnITtLFz/Nl4LooBcdN1z3oRXJ5ZyqNu9L84X4e/klOgxWI
-         e4xw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=7nXkNJ0W9DbPmL6Zr/GJxmR4Go8S9Arg4OF8y81et0Q=;
-        fh=wEvcC3P4qWViI1SRGZsuIfArFn3ZbxxNbZHtz2y/5j4=;
-        b=bTCRSbzLRtC0xmWOd8nNgGd+b96/Os80pa3FKDjKxA5Rgn5zAl1RlMZ+Xp/Mboy94j
-         z9EhuTpdpNDcO231ruGn7uPowTvb0Aec/zMURhrGlRoNYbcIOfU3kpniBJmHWYXy7rqr
-         7TX0S+D+B/teN0FIEvhaBBFw5GG3FKmXDieDx1AzAOWKHiBixkaes5sRL0YZu8LVqAr+
-         ZaJEPBQ9NxeyhPT57QX4qfpKNFgiuWIhAcsDHxphkCLEdXgn7QILP5WUppZ8Y8GqffyR
-         u3NJQXtRJWh64NqE3P2pSIeh8Dxz+GFZA0sehmrHrXQfGTXfOmZW/Xguq9ju9q5W3f7r
-         KtDQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bhJDkRgu";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cOe2/Vn1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789573124;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QJCqqA6Q4AOgIHS7UBKFb/3fKqTDi7g5pa0Z96svO8U=;
+	b=bhJDkRgujq0iWc9JPmHM0rD7BoafFpOkDfsW/CHeLT/A99pLbMQp5Nj6kU18QScFiyA3hq
+	PCyUu2zVOQQqC3VsPClc8/rsYy1UOgLK0SQawtWDOxKN6c8SyTY5lmh6Q1Oia8x7Zeq8cf
+	ZDWskb+i1dSydTGijN0hXFlgHkvKNT8=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-202-zgOLfIn2MQiDQe6GE1ckbQ-1; Wed, 16 Sep 2026 11:38:42 -0400
+X-MC-Unique: zgOLfIn2MQiDQe6GE1ckbQ-1
+X-Mimecast-MFC-AGG-ID: zgOLfIn2MQiDQe6GE1ckbQ_1789573121
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-487038bc9b8so2025056f8f.2
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 08:38:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789572837; x=1790177637; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=redhat.com; s=google; t=1789573121; x=1790177921; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=7nXkNJ0W9DbPmL6Zr/GJxmR4Go8S9Arg4OF8y81et0Q=;
-        b=h3E77TLbuA+xKn9DhvAVsPAK3/GSck3MHKLPyfLuzqhW4DeqnWeH1DIb/16b9FaytU
-         aXE+ONNiSIDmVzIIsDgCQvw8IqnZSNFc+tC6x3Q/v9BLz7zOweIANakvGHuN29qXm6ZD
-         cv/pqUBZg4OUV6WVlz3FVm1aWVRhth56upbmPatJlTdDKW3ivvJsNaQEevuF4gAzpuZn
-         SUfvDqzBkwTOQ3a0nk3mMKxWeaHFeSWKPn/GcQpO9xNyhlSV5FD8cuyYG4qkXYodXG8C
-         wW6gOVhbgIqR9/tWs6qPbI1Z26Au8J8RoOZ760gomMpTKN6AQq9GrSR+pCUrLa8JiMor
-         Vszw==
+        bh=QJCqqA6Q4AOgIHS7UBKFb/3fKqTDi7g5pa0Z96svO8U=;
+        b=cOe2/Vn170kHRte8QHpTEwRT0IGE6bNpHwsgcDSTrDNKlxg1DaMWVpOopu8uj/JNY2
+         4q7Lv3421UqsGckKANvR3YbYA+CrzqYL+MC8vvBx8UdFQwrwDAwlpJnYTEq0Shr+0PMn
+         fqtmDzko+Xu+fCdbLWSafAAWBBdx/oYBl23qCChtL72+6NFHUXMSlQxzrwfHl/l2WbVz
+         jJs4vBlUMPN3lEkzmHxFTamcl0dgzXm9hSnabfXsQk/lNPVC0uuoDil59R6y8Iatw6VT
+         sYHYWzQ4fzyQkEIbhK8Tllwe2Q2jzJGNaHsN4OYv8YYYE+IJ75eCtcg7KT2Lhwxz7PnV
+         SDYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789572837; x=1790177637;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1789573121; x=1790177921;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7nXkNJ0W9DbPmL6Zr/GJxmR4Go8S9Arg4OF8y81et0Q=;
-        b=cMFY8aoKVKk5ZVfUDbODkMlA+s8jM6MCJvD8/nLhVTs8ANVwXrVaGUojitD+LvnAFE
-         bnV4d/Q/EYxi9XDh3hUorhAbyoACfXIgwCzxP3OAEV1nZrdXglBgyLn0ogjd59+To1Xi
-         gWMvVGlZikym002VGL22iPKre53OGnCbnLcHsXVY4DPyZgOoMReoWNyG+R/3FU6rxMt8
-         HlU0Hu0xr7LgCNLfHlynfTyAOmsM+7Y7aC1MMQwUmBOs/qLycc7aXCiQwHDX/UNW8BLp
-         NeYssuzETROTVW4zFn81aCcsa0ghElrH8bu9aSrtGniN0yhE+7T+prqHK7F4d+MlkBaK
-         pSpg==
-X-Forwarded-Encrypted: i=1; AKwUvBx51ZkJ44cjhdyMn3CnYb+4FxfaHf8RJbibdEHqN6BVGiMHpaZhYkt9bYq1dmI6IEGIUmCO5qA=@vger.kernel.org
-X-Gm-Message-State: AFuF++n12Jx8TIAVN7UAmtkzxeqK6SrH67yLlqJkfVYLnnXnox0ZIA1j
-	+J+xQIj80M6nvo79fMm/uPaURcQUKTIyoCIOjiCcQdFKWW+f/cY307DqGql7UIIDRq1tO2I71m/
-	y6HjU33hfVDaLrvNQJWg+A2voA6t11QU=
-X-Gm-Gg: AYBFou2NQuvK5Mohx1NZ8NQ6WhiAWuAjN6S+GRVN29bHrlFlPlMAPYLURDr7LwEunoX
-	r0YuNUIm6rCdf+8wtGRPgTpIoLMriTuqXLLU7Ewn3vVlVBtNou8PgGDbIy1UFd4l64WLb+AV6oy
-	AYJMe0LhlS+K84G+L0cvWRSv7/UWs09edZcz9eGnJyG+j9CK5NG7vrfwDJpCI1W87N4PGGPEdZl
-	xVLdOvno31XyP/saD/lAkJwiwJ17sL0TjJ22/AYJKx514kNiFAYXo2yITpeyt351ecX/ZJLLcse
-	xxHO8NGtmAaZfkv1u2ITf841jVK/ms0xDi3mdDKxwMZtvBjyyJ/2EmEvdHCut5d+60r9rdbYfGV
-	kOMX+VS5Pzvgx
-X-Received: by 2002:a05:6808:192a:b0:4c1:2b62:35a4 with SMTP id
- 5614622812f47-4ca4b209c35mr7149752b6e.5.1789572837389; Wed, 16 Sep 2026
- 08:33:57 -0700 (PDT)
+        bh=QJCqqA6Q4AOgIHS7UBKFb/3fKqTDi7g5pa0Z96svO8U=;
+        b=MOzv/JAvFsCXctmrlBhwPAo3BvG1qX0kCFFtEXIwETRYmjcj10bUqFueOYZxQ7aJRQ
+         JNz5iDeNPSINSs9eiCc9OH/OjsUpn0Mi41qhkfo7E7Be5lbbpYM6dLLfEZE/Yv9yTqsQ
+         zgyDIFFHAZfhX5BKXZtEXY6MkXMBoWUff5wys7P1XjcQHJMChrl9lJ5qEkh7bEQWffvz
+         nSMFpm9x0IPbc+7OkYN9Am/DzBI6pFh4JpEfwvH67VQNW3Bt/B17inmpl9R71U0Z+koD
+         oz1udqiIyCudi1J/jVzdBziXgyt2/uYTTKAQTdsbxUEchTyj9rQmbFXSo5AbIKWjPIlT
+         35KQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzWXJIGxh3ZMfAF/+T/gc3xqFPG6n8l93ep5etBI+seKMakCpcgacNBrg09p+Lez+3IFvSEVyQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++ku/2n1BFvbSU++u5fJBRZSBpCzBIgfmVFwNGs0IosFhnrgC++f
+	RDJJCBHk3zHrxjD7I3IqsSRZ14xGGBUMIPhC4C4ChuW+t79oQWa1pmEKGkQ3sVmTjG+EnUy7CxW
+	lhLnMZQ23Sl/ZLUlBu1aYbxPP/AwkEwjH18sJ97qaG3RJoXhv98prR6X3LQ==
+X-Gm-Gg: AYBFou0f0LE0jY6KLS2WP5TDCy7ENXx5VLMhL55TLPLRWIk6nzJ1VpTCYzZxS3Fy8lY
+	BHNX9L7CfL/EXlwTptqfKdLw4n6JD3YgcBSDqTb0ZBsqlSz4njHuL6JTbrlUjxuTnd8L/MZbzKS
+	FwrfFjBmirB0Z6U0faCL0kOOb1z2HhWNsXg2oCF2uQoR1l4LgdLHC4tfpviN3MhAF3qJEasrTzS
+	k79ljUXllHRlXHaRY8unvsaXyokkyeCJ95vdFGmPvWk7QLQRwwXDjqgM55RLrQ2j3AxNKiWM0r6
+	PW+79E5UFH5CJmGE7hVH1ddUfm/zIJW28ONm75ojJSayTcvWig2D/j7XlKOBks1/HYsIRsP4tkC
+	WBMfnjVGOfD0GTEdQPYTffOPLInQd6z0JttOP7W5eVJ0HWw==
+X-Received: by 2002:a05:6000:4711:b0:487:fb0:9ff with SMTP id ffacd0b85a97d-4870fb00af5mr2913402f8f.22.1789573121090;
+        Wed, 16 Sep 2026 08:38:41 -0700 (PDT)
+X-Received: by 2002:a05:6000:4711:b0:487:fb0:9ff with SMTP id ffacd0b85a97d-4870fb00af5mr2913360f8f.22.1789573120615;
+        Wed, 16 Sep 2026 08:38:40 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-53-30-11.retail.telecomitalia.it. [79.53.30.11])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4870bf1fad3sm7165977f8f.12.2026.09.16.08.38.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Sep 2026 08:38:40 -0700 (PDT)
+Date: Wed, 16 Sep 2026 17:38:28 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
+Cc: Bobby Eshleman <bobbyeshleman@meta.com>, 
+	Luigi Leonardi <leonardi@redhat.com>, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3] vsock: ignore empty child namespace mode writes
+Message-ID: <aqq3t5p0hN2jsSpT@sgarzare-redhat>
+References: <20260915141547.3010692-1-qwe.aldo@gmail.com>
+ <20260915173050.3176344-1-qwe.aldo@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260914103009.3007019-1-kyle.switch@motor-comm.com> <20260914103009.3007019-2-kyle.switch@motor-comm.com>
-In-Reply-To: <20260914103009.3007019-2-kyle.switch@motor-comm.com>
-From: David Yang <mmyangfl@gmail.com>
-Date: Wed, 16 Sep 2026 23:33:20 +0800
-X-Gm-Features: AcwNN1Xf34H8g-kn4gOyiQSOVYNCT8nY_Xc0awS-9DZtNhTPEXcDEx2JStxG6x8
-Message-ID: <CAAXyoMN6k4Qx8sJCw_t1W3mMrER-Eo=FO3ZjHr3BbaxJDeW5Ew@mail.gmail.com>
-Subject: Re: [PATCH net-next v7 1/6] net: dsa: motorcomm: initialize
- dsa_switch based on chipid
-To: Kyle Switch <kyle.switch@motor-comm.com>
-Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com, 
-	jianmin.wang@motor-comm.com, wei.zhang@gl-inet.com, sijia.huang@gl-inet.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260915173050.3176344-1-qwe.aldo@gmail.com>
 
-On Mon, Sep 14, 2026 at 6:30=E2=80=AFPM Kyle Switch <kyle.switch@motor-comm=
-.com> wrote:
->  static const struct of_device_id yt921x_of_match[] =3D {
-> -       { .compatible =3D "motorcomm,yt9215" },
-> -       {}
-> +       { .compatible =3D "motorcomm,yt9215", },
-> +       { /* sentinel */ }
->  };
->  MODULE_DEVICE_TABLE(of, yt921x_of_match);
+On Tue, Sep 15, 2026 at 02:30:50PM -0300, Aldo Ariel Panzardo wrote:
+>__vsock_net_mode_string() returns success without updating new_mode when
+>the transfer length is zero. Its caller then reads the uninitialized enum
+>and may permanently store a stack-derived value in the write-once child
+>mode.
+>
+>Return before calling __vsock_net_mode_string() when *lenp is zero so
+>that the helper is never invoked with nothing to parse and new_mode is
+>never read uninitialized. This also prevents an empty write from
+>locking the current mode.
+>
+>Fixes: eafb64f40ca4 ("vsock: add netns to vsock core")
+>Cc: stable@vger.kernel.org
+>Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+>Signed-off-by: Aldo Ariel Panzardo <qwe.aldo@gmail.com>
+>---
+>
+>Changes in v3:
+>  - Move the !*lenp early return before __vsock_net_mode_string()
+>    instead of after it, as suggested by Stefano Garzarella.
+>  - Add missing maintainer CCs per get_maintainer.pl.
+>  - Add Luigi's Reviewed-by.
+>
+>Changes in v2:
+>  - Return early instead of initializing new_mode to the current
+>    value, which would silently consume the write-once transition.
+>
+> net/vmw_vsock/af_vsock.c | 3 +++
+> 1 file changed, 3 insertions(+)
+>
+>diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+>index 622dbd0467..XXXXXXX 100644
+>--- a/net/vmw_vsock/af_vsock.c
+>+++ b/net/vmw_vsock/af_vsock.c
+>@@ -2879,6 +2879,9 @@ static int vsock_net_child_mode_string(const struct ctl_table *table, int write,
+>
+> 	net = container_of(table->data, struct net, vsock.child_ns_mode);
+>
+>+	if (!*lenp)
+>+		return 0;
+>+
 
-Meaningless.
+I would have moved it even before the net assignmet, but in any case, it 
+doesn't make much difference:
+
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+
