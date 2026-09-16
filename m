@@ -1,233 +1,206 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi2-f32.google.com (mail-oi2-f32.google.com [74.125.231.224])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D209840B116;
-	Wed, 16 Sep 2026 19:25:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789586711; cv=none; b=DK1Ymt6xqVTUGR/Jvg7EPGxp5oGFcNTug/mM+P5v6hAx/zV/uAATVt5MipoFhIYuDLAMSdKm1SWqD74ibGdvoSsQzt3w71m4ZwAnQBU2LpndKOPSnqxYNn2nRVO2WQtKrZx6iaYKda5CcYbukJdNkYYJXA3s2N2UPbUC/SXQr28=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789586711; c=relaxed/simple;
-	bh=vBLWiwsvcrO2QTp/Qkh5PZXG+Y2wDOEwySNTzXkON5c=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tTMJAWcJDbgQTX8JuM4QzmGEAlk5lyZ8lkFS5L9PE9dI2SJP8gwo2yNNOt9B4jUxvo4Zxp6ebIr9Ewque6CHMOjA6Qja8J9Io1yLL3jseDWRB0zjHAl6AItU/fjpHX0a4jdX/lwNXKZKMx8h4tpFUT+QfCLbVnmK+/pz314Plkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AujQkcLT; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B99D418A22
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 19:26:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.224
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789586829; cv=pass; b=TxXjpr/4eAkCdmPZWLhBwaAuR4IakJwAqGgXvX9XN7hwi/DjoZ1X/F5G5Aw3rNlhk33YZbDVV2FBGaT0608mZCm9pvELzLJE23rFONdatMz/pxSreqkQMuuZMsg07D9RzmdYfKO2uqr3gp+FPfxjTO7h8XnA9s6WXQP1or9yoe8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789586829; c=relaxed/simple;
+	bh=OuBImfA2VtpjROUE4x9h29QyIc/c9CdbVEUrPXOnFn4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cKtF1odMm6FcwffxrOOYh327OUa+QNeufmDefO+zGQWVOiZQ5kiIAnloWFwnAdf8L8gfiarSwG26Y7/WvNxV9sWi8fGVEB/mLiNYOMEIZ3f2XOKElnUTYt6AWilW2maOANP1C9AUGgNaaZYQ8T9TkiZcIX0s7F5zdQx9UUMzw6U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L43aTNMG; arc=pass smtp.client-ip=74.125.231.224
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AujQkcLT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602CB1F00893;
-	Wed, 16 Sep 2026 19:25:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789586705;
-	bh=oSJ4At+/bKyZm3/c0BeAcv+TQwh0u1yTXsJ1f6zkWGg=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=AujQkcLT6a3xSAZouOMSWDO1CPqpS0cACsSo1hZxIUQI+4faiO9GRHiyEP1NGsGOC
-	 9lCwV9ZKw4uMDOUuv3gD/1Iz9anxIkyRK75y3C6ua5aGDJudRxTVr3YcboJDuP4UAg
-	 bvdfsaGF43MzVmismA/J45ItMuFM/TDFYliqBJrVaawPWEerv7DNGffUenlfe7u76C
-	 FoaHhiuggfgzPdDxd86KT5CCFEBGBEPBYnOmcpMx2nSVK6UHWTcua6XkSU9BccLXR9
-	 SM4L6s4r1OUS7eRedi2XYljKzPQRPyazkfUHgr7Rx9G2fdzyQFnPgq361JgsxS4mbr
-	 jN5lk91uOVupA==
-Subject:
- Re: [PATCH net v2] net: prestera: validate num_counters in counter response
-From: netdev-bot+sashiko@kernel.org
-To: elb12345@hotmail.co.uk
-Cc: enachman@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, vmytnyk@marvell.com,
- serhiy.boiko@marvell.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Wed, 16 Sep 2026 19:25:03 +0000
-Message-ID: <178958670391.22033.8038941818788955835@kernel.org>
-In-Reply-To: =?utf-8?q?=3CAS8P251MB0001EE76C8EC41B2CEFAE213C8BB2=40AS8P251MB?=
- =?utf-8?q?0001=2EEURP251=2EPROD=2EOUTLOOK=2ECOM=3E?=
-References: =?utf-8?q?=3CAS8P251MB0001EE76C8EC41B2CEFAE213C8BB2=40AS8P251MB0?=
- =?utf-8?q?001=2EEURP251=2EPROD=2EOUTLOOK=2ECOM=3E?=
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L43aTNMG"
+Received: by mail-oi2-f32.google.com with SMTP id 46e09a7af769-7f4f0dd5507so17460a34.3
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 12:26:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789586814; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LnvEvg9roLxxbvKfFklo1HwW8Mskn9TwjukC5xjczqn+zARQdEwm+/Kcj3hrBmZAAM
+         Ucrk6+s2CtPmgSvQKyECqdVmeM9C0P2aOGQe0glwgr7HKkcmlZJYUONX+nD5SBm2tpvq
+         FB9VOB7ENyLt7RjptPKKOHjWsjkFtvv2zHz1wIbWgM2V2aIFeP+cOknOVwDBAyNegO0M
+         Do98NabzJWLK3Ag3qfxgW2qZriwdyO42iXiYpu6s9QP66i7uefCuD25Sk3cIP2r0FmXp
+         4poA4fGySCMv5O+sELkHYJo1xB9RnqgISCHsLVCTxYgdI91o/ZWHOqEfgdK/X2RGPQ45
+         89UA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GqRw9HltWqM2sAD6nJCLGSalO5mjXMLxRfeaddbbUlA=;
+        fh=FRodeysEZFPZ8IlvHgcjhKpZM5ODE8IZm/11+Ahuv9o=;
+        b=qzC9//FA97o6Q5rEuRSxM3aPVssO+KIOOFJEDhYWG0bz4n5r9097RJnQ95MQ38rwj3
+         AtLoJUJUmfoSAGYkp3AGS7fmTmMyeMj5VzCYCpn5eNX2WrRJeR2Q0wQRHESY+fsAtw9m
+         jIWt9lJiJqiIfWphkkBE7VeQxdHzFud3oiuFRwFf9kRqfhObt6eqiQVBRlP0Trp7KH2G
+         AVANH9x8KR3Qkb2vDCkBV5v5i4iQmoMA8s6H8zYp1KiVZ9m7x8G2g/rOduoLdInQAhui
+         sI3RkLsYA0lrimWeMCy3ZKAXWqZkWlhzJF4AYua0xi7EopdNbi+Jyt51b5vY/ahgDXyZ
+         KMBg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789586814; x=1790191614; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=GqRw9HltWqM2sAD6nJCLGSalO5mjXMLxRfeaddbbUlA=;
+        b=L43aTNMGj0WsEFPWzjUtSxP8gV5PBz69FGK97PqP81FFSg2XNjHgT4Nw1yMIeaJUlp
+         8cwX9nNrP/BZjYCF9PsY1MgeXFH1LqBRG6UXcV+Ixms2eY1BnGiEPTzMh+LVUJv/PTc4
+         K/Kc4PxU4GHEoZ1VLBDjYIE1csuBS/zRz/rLseR2Bbgk3bVYCZhNBJiXQ5EBDAt8uMAY
+         NsSTO+0bTMs6lEoRrih1gLCuV3nUfYDuCPX41P1lSzZ7izuxrlwMRNbxqL/coKLf+mUF
+         k7l0bWFv5zhCtiNyvBByq1hB/vsXaQwJs5AR2JZROLF/CR2CnU+YUTG3W0rgh3bEL7hj
+         XKww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789586814; x=1790191614;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GqRw9HltWqM2sAD6nJCLGSalO5mjXMLxRfeaddbbUlA=;
+        b=q4ekwgAubwlFW3sz/nVv7KK0+88lOLLOOzxNrfnN5+/RA4njhKAnN3FlbhC+guLr/O
+         u7G5VfaIxZVExZegBSJNdzc7JzwJcCaLKugbwBubbFgVN0/+K+Uc015SFdwa+BMHtHj3
+         veashLt7iYE/CJQZovQztXIeW/9o2IUdMKaQ48K8cQTZzcNauPVXe7VoZJ6lsML53QW/
+         6FYvzDqLvbq4rQOYZ/iNgD3vPSrqrVv1yBLs7hvwG2XIyObhKtfXU8JaR6LKNv+abbmN
+         vkZS1bg8jlvrzoSmQlfAN8q3n9NagIE3DZFYDOfEML1msSD72kkDryWy0BwbRc1hdzYP
+         tlVw==
+X-Forwarded-Encrypted: i=1; AKwUvByDsHRfnhbkDi5i+UJfxflr2X60pZ6NdpxQMMUAYFz4F0FMrRQRVBKRQQzx+/SpUxk1tUMsP04=@vger.kernel.org
+X-Gm-Message-State: AFuF++kyiCZkkiDbQHbz5DnEgtzr6OXFpTaBvjjAsqcHmNKQUxUudeGz
+	cAv8qxnKffA5118V//DBApK12SG+mYAE5nR85882VsluOGspdcQFLwNTsiPL0BfYVbXnXijRh9F
+	qzRJSbQPUeVl5nlXwDVqErnZx2mndXjs=
+X-Gm-Gg: AYBFou12vvS/mroGtUmks/Kzkv/YLMRdKGBE8WWRgtaMD30Wea9vAq8RchtDJrZQX+9
+	YScpp0tMRiE983hWL4cldnuTvC+WZEogi3KfiOeRtY8v2+FhVj4lgpT08iyam2u58KKNrM7qsN2
+	92TTaLSf9HNMsfElJ0XqJngYsSY7u6RSiK7hlk5eZk0kyJqOGUylSi+DAwUwsCklc62/l504tN/
+	JHcMxd1IkvvOwN7TudjgRGnH6m9Y7Xp/NPZSs7SvXoQutSMLRnjTvGvEmbVeX3AA+vYp7PZFjql
+	lo0gLrmAOvWsZNXMLsmwJTT1EGuCA50l1Z3hkEDRTyZCFURFnuaBY5s=
+X-Received: by 2002:a05:6808:238b:b0:4b9:e5fa:8a19 with SMTP id
+ 5614622812f47-4ca4c17d6e7mr4445335b6e.30.1789586814265; Wed, 16 Sep 2026
+ 12:26:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260916050830.8774-1-emil@etsalapatis.com> <20260916050830.8774-6-emil@etsalapatis.com>
+ <CAMB2axOAut_9utesiV9mG40bskrDscu+Gu9FUMNRKZC+hbd8UQ@mail.gmail.com> <DLGYLT5UIFDA.38RG9UBZNYI58@etsalapatis.com>
+In-Reply-To: <DLGYLT5UIFDA.38RG9UBZNYI58@etsalapatis.com>
+From: Amery Hung <ameryhung@gmail.com>
+Date: Wed, 16 Sep 2026 12:26:43 -0700
+X-Gm-Features: AcwNN1V67fVu0jyiCVA6Tar7WC_uaAL4bPriMPLTUZNtE3MtDtEKZZbaOWcawGg
+Message-ID: <CAMB2axNHEidSAzh5gG3UJHeqzK4VZ_Rsy+wvFt6N-q-qBsm+5A@mail.gmail.com>
+Subject: Re: [PATCH bpf 05/11] bpf: Reject pkt arguments in mutating subprogs
+To: Emil Tsalapatis <emil@etsalapatis.com>
+Cc: bpf@vger.kernel.org, ast@kernel.org, andrii@kernel.org, eddyz87@gmail.com, 
+	memxor@gmail.com, daniel@iogearbox.net, netdev@vger.kernel.org, 
+	Nicholas Carlini <nicholas@carlini.com>, Mahe Tardy <mahe.tardy@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+On Wed, Sep 16, 2026 at 11:41=E2=80=AFAM Emil Tsalapatis <emil@etsalapatis.=
+com> wrote:
+>
+> On Wed Sep 16, 2026 at 5:57 AM UTC, Amery Hung wrote:
+> > On Tue, Sep 15, 2026 at 10:10=E2=80=AFPM Emil Tsalapatis <emil@etsalapa=
+tis.com> wrote:
+> >>
+> >> The verifier tracks changes in how PTR_TO_PACKET registers'
+> >> bounds are modified across subprog boundaries. PTR_TO_PACKET
+> >> registers are actually passed as PTR_TO_MEM, which is assumed
+> >> valid for the entire call. This is not the case with packet memory,
+> >> where a pskb_* call may invalidate its memory region.
+> >>
+> >> Reject BPF code that passes PTR_TO_PACKET pointers to subprogs that
+> >> may mutate a packet. We cannot pass the pointer as a true PTR_TO_PACKE=
+T
+> >> because we would also need to somehow pass the PTR_TO_PACKET_META
+> >> or PTR_TO_PACKET_END to the subprog. Since we cannot avoid representin=
+g
+> >> the pointer in the subprog as PTR_TO_MEM, only permit it if the
+> >> subprog is guaranteed not to mutate the packet.
+> >
+> > CC Mahe.
+> >
+> > Hi Emil,
+> >
+> > There is a related but separate issue [1] addressed by 8fe994c80af2
+> > (=E2=80=9Cbpf: Consolidate function call pkt_access validation=E2=80=9D=
+). I think a
+> > long-term solution could be supporting ARG_PTR_TO_PACKET for global
+> > subprograms. For example:
+> >
+> > int parse_something(struct __sk_buff *skb, __u16 off,
+> >                     char *data_start __arg_packet, ...);
+> >
+> > The verifier could require a real PTR_TO_PACKET at the call site and
+> > verify the global subprogram with a real PTR_TO_PACKET, rather than
+> > converting it to PTR_TO_MEM. This would preserve packet access rules,
+> > allow reads from cgroup_skb programs while rejecting writes in the
+> > callee, and automatically invalidate the argument after calls such as
+> > bpf_skb_pull_data().
+> >
+>
+> Hi Amery,
+>
+>     that makes sense to me, especially since this is a feature expected
+> by existing programs. The main issue I see is that since we want to be ab=
+le
+> to pass it with subprogs we need to find a way to annotate its current si=
+ze
+> (maybe passing it as a __sz that is checked by the verifier to be <=3D th=
+e
+> range - off of the pointer in the caller?)
 
-Critical: 0 · High: 1 (1) · Medium: 0 (1) · Low: 0
+Yes. Supporting mem+size for global subprog similar to kfunc is
+another direction, but ARG_PTR_TO_PACKET is simipler considering there
+are other complication with packet (e.g., pkt ptr invalidation). With
+ARG_PTR_TO_PACKET, the global subprog can be verified with a symbolic
+packet pointer and establish its range through the usual data_end
+checks.
 
-- [High] In prestera_counter_stats_work() the new capacity value is
-  computed as an unguarded u32 subtraction, `remaining =…
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but
-  block->counter_flag, allocated with kcalloc(block->num_counters, 1) in…
-- [Medium] prestera_hw_counters_get() derives resp->num_counters,
-  resp->done and every resp->stats[i] entry from a buffer allocated with…
-
---
-
-net: prestera: validate num_counters in counter response
-
-The patch adds a stats_len parameter to prestera_hw_counters_get() and
-rejects a firmware reply whose num_counters exceeds either the requested
-bulk count or the space left in the caller's stats array.  The only caller,
-prestera_counter_stats_work(), computes that space as
-block->num_counters - counter->total_read.
-
-> diff --git a/drivers/net/ethernet/marvell/prestera/prestera_counter.c b/drivers/net/ethernet/marvell/prestera/prestera_counter.c
-> index 3a762d17ba6c6..f261104729e91 100644
-> --- a/drivers/net/ethernet/marvell/prestera/prestera_counter.c
-> +++ b/drivers/net/ethernet/marvell/prestera/prestera_counter.c
-> @@ -342,6 +342,7 @@ static void prestera_counter_stats_work(struct work_struct *work)
->  	u32 resched_time = COUNTER_POLL_TIME;
->  	u32 count = COUNTER_BULK_SIZE;
->  	bool done = false;
-> +	u32 remaining;
->  	int err;
->  	u32 i;
->  
-> @@ -368,10 +369,12 @@ static void prestera_counter_stats_work(struct work_struct *work)
->  		goto resched;
->  	}
->  
-> +	remaining = block->num_counters - counter->total_read;
-
-[Severity: High]
-Can this u32 subtraction underflow, and if so does the new bound still
-protect block->stats[]?
-
-counter->total_read and counter->is_fetching live in struct
-prestera_counter and survive across work invocations, but the block
-reference is dropped on every reschedule:
-
-  resched:
-  	if (block)
-  		prestera_counter_block_put(counter, block);
-  	schedule_delayed_work(&counter->stats_dw, resched_time);
-
-If the last counter of that block is released in the meantime, the
-refcount-zero path in prestera_counter_block_put() clears the list slot
-and frees the block:
-
-  	for (i = 0; i < counter->block_list_len; i++) {
-  		if (counter->block_list[i] &&
-  		    counter->block_list[i]->id == block->id) {
-  			counter->block_list[i] = NULL;
-  			break;
-  		}
-  	}
-
-prestera_counter_block_list_add() then reuses the first NULL slot, so a
-different block, with its own firmware-reported num_counters, can end up
-at the same index.  prestera_counter_block_get_by_idx() re-resolves purely
-by index:
-
-  	if (idx >= counter->block_list_len)
-  		return NULL;
-  	...
-  	if (!counter->block_list[idx] ||
-  	    !prestera_counter_block_incref(counter->block_list[idx])) {
-
-There is no check that this is the same block the in-progress fetch
-started on, so the next poll continues with the old total_read.  When
-total_read is larger than the new block->num_counters, remaining wraps to
-near 4G and &block->stats[counter->total_read] is already past the end of
-the smaller allocation.
-
-Should total_read be validated or clamped against block->num_counters
-here, or should the fetch state (is_fetching/total_read) be made
-per-block, rather than deriving the bound from it?
-
->  	prestera_counter_block_lock(block);
->  	err = prestera_hw_counters_get(counter->sw, counter->total_read,
->  				       &count, &done,
-> -				       &block->stats[counter->total_read]);
-> +				       &block->stats[counter->total_read],
-> +				       remaining);
->  	prestera_counter_block_unlock(block);
->  	if (err)
->  		goto abort;
-
-The commit message says:
-
-    Pass the remaining capacity down and reject a reply that exceeds the
-    request or the space left. This also keeps counter->total_read within
-    block->num_counters, so the next poll cannot start past the array.
-
-Does that invariant hold only while the block instance at curr_idx stays
-the same?  If the block can be replaced between polls, the "next poll
-cannot start past the array" claim looks like it needs qualifying.
-
-> diff --git a/drivers/net/ethernet/marvell/prestera/prestera_hw.c b/drivers/net/ethernet/marvell/prestera/prestera_hw.c
-> index 7695cbb2ce626..2e5cffefea701 100644
-> --- a/drivers/net/ethernet/marvell/prestera/prestera_hw.c
-> +++ b/drivers/net/ethernet/marvell/prestera/prestera_hw.c
-> @@ -2324,6 +2325,11 @@ int prestera_hw_counters_get(struct prestera_switch *sw, u32 idx,
->  	if (err)
->  		goto free_buff;
->  
-> +	if (__le32_to_cpu(resp->num_counters) > min(*len, stats_len)) {
-> +		err = -EINVAL;
-> +		goto free_buff;
-> +	}
-> +
->  	for (i = 0; i < __le32_to_cpu(resp->num_counters); i++) {
->  		stats[i].packets += __le64_to_cpu(resp->stats[i].packets);
->  		stats[i].bytes += __le64_to_cpu(resp->stats[i].bytes);
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the new check relates
-resp->num_counters to the requested count and the destination capacity,
-never to the number of bytes the device actually wrote.
-
-The reply buffer in prestera_hw_counters_get() comes from kmalloc(), not
-kzalloc(), and prestera_fw_cmd_send() only bounds the reply length from
-above and copies exactly that many bytes:
-
-  drivers/net/ethernet/marvell/prestera/prestera_pci.c:prestera_fw_cmd_send() {
-  	ret_size = prestera_fw_read(fw, PRESTERA_CMDQ_RCV_LEN_REG(qid));
-  	if (ret_size > out_size) {
-  	...
-  	memcpy_fromio(out_msg, prestera_fw_cmdq_buf(fw, qid) + in_size, ret_size);
-  }
-
-ret_size is not propagated back, and prestera_cmd_ret() validates only the
-ACK type and status, which sit in the first bytes of the reply.  For a
-short but ACKed reply, num_counters, done and stats[] would be stale heap
-content, and a garbage count within min(*len, stats_len) passes the new
-test, so uninitialised bytes get accumulated with += into block->stats[]
-and later reported to userspace via prestera_counter_stats_get() ->
-prestera_acl_rule_get_stats().
-
-Would using kzalloc() for the reply buffer, or plumbing ret_size out of
-the send path so the reply length can be checked against
-struct_size(resp, stats, resp->num_counters), be worth doing while this
-area is being touched?
-
-[Severity: High]
-This is a pre-existing issue and not introduced by this patch, but since
-it is in the same block lifecycle the patch relies on: does
-prestera_counter_block_put() leak block->counter_flag?
-
-prestera_counter_block_get() allocates it:
-
-  	block->counter_flag = kcalloc(block->num_counters,
-  				      sizeof(*block->counter_flag),
-  				      GFP_KERNEL);
-
-and the refcount-zero teardown frees everything else:
-
-  	prestera_hw_counter_block_release(counter->sw, block->id);
-  	idr_destroy(&block->counter_idr);
-  	mutex_destroy(&block->mtx);
-  	kfree(block->stats);
-  	kfree(block);
-
-The only kfree(block->counter_flag) in the driver is on the err_list_add
-unwind path in prestera_counter_block_get(), so every block create/destroy
-cycle driven by tc flower rule add/delete appears to lose num_counters
-bytes.  Should a kfree(block->counter_flag) be added next to
-kfree(block->stats)?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/AS8P251MB0001EE76C8EC41B2CEFAE213C8BB2%40AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+>
+> > [1] https://lore.kernel.org/bpf/aqkhifLvyAhw66jg@gmail.com/#t
+> >
+> >>
+> >> Fixes: 80f281664f5a ("bpf: Support pointers in global func args")
+> >> Reported-by: Nicholas Carlini <nicholas@carlini.com>
+> >> Suggested-by: Nicholas Carlini <nicholas@carlini.com>
+> >> Signed-off-by: Emil Tsalapatis <emil@etsalapatis.com>
+> >> ---
+> >>  kernel/bpf/verifier.c | 10 ++++++++++
+> >>  1 file changed, 10 insertions(+)
+> >>
+> >> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+> >> index 6c6b8d852..507bc14b4 100644
+> >> --- a/kernel/bpf/verifier.c
+> >> +++ b/kernel/bpf/verifier.c
+> >> @@ -10375,6 +10375,16 @@ static int btf_check_func_arg_match(struct bp=
+f_verifier_env *env, int subprog,
+> >>                         if (check_mem_reg(env, reg, argno, arg->mem_si=
+ze, BPF_READ | BPF_WRITE, NULL,
+> >>                                           NULL))
+> >>                                 return -EINVAL;
+> >> +                       /*
+> >> +                        * PTR_TO_PACKET get passed as PTR_TO_MEM, pre=
+venting
+> >> +                        * us from adjusting bounds tracking info.
+> >> +                        */
+> >> +                       if ((reg_is_pkt_pointer_any(reg) || reg_is_dyn=
+ptr_slice_pkt(reg)) &&
+> >> +                           sub->changes_pkt_data) {
+> >> +                               bpf_log(log, "%s is a packet pointer, =
+but func#%d may change packet data\n",
+> >> +                                               reg_arg_name(env, argn=
+o), subprog);
+> >> +                               return -EINVAL;
+> >> +                       }
+> >>                         if (!(arg->arg_type & PTR_MAYBE_NULL) &&
+> >>                             (type_may_be_null(reg->type) || bpf_regist=
+er_is_null(reg))) {
+> >>                                 bpf_log(log, "%s is expected to be non=
+-NULL\n",
+> >> --
+> >> 2.54.0
+> >>
+> >>
+>
