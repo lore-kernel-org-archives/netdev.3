@@ -1,82 +1,101 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263DA49DBBF;
-	Wed, 16 Sep 2026 12:36:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9FF4E56CB;
+	Wed, 16 Sep 2026 12:37:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789562198; cv=none; b=BM1HC8pyk7OHTlHH5vs49RQ3GbN+dqK4ZAfzj4QUBCF1Nx6UixFnFqiLNxG01cnN/AmVCUYIU63eN8ADK2Vk1JGntq3BAVvQBbJdIjPVkqpdWH6BWMcs9SEmYCaK3WrZr8I15SBpPONkotHxiZjQtSEL476yDdyEibARPma81rs=
+	t=1789562223; cv=none; b=ofUI9N1RSWghD7XUvcKrntNayrxFnHGzIWGeYYRMSkAWYJeen1f44GWCJ2Vze2OvBgouOXw1BFXWEbT7ykfpKuMcheNKARXmQvytMIhwJcUgvUB38zZr056o7N/WSSAV/934FCdj5tS3JSU8/8pYrBW5t961HVQYZDvlEeW6uUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789562198; c=relaxed/simple;
-	bh=kNPPbPR/mrHlcfwUn7SC1I0/pDn9Yz/1l9GTGHdWz38=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=beHhmVP+GGhJaVFD9R8GtqeA5Zs59Nibc1xdwQuDaHrVbFD2/8pGmC6mq4MBHSBeKGXPDaICcioyqgH5ekwXLkCEKkrgL6kjMgd/2wt8LEy2zkvuZ9HSFCBbzDym1cO/ovSUV+paZFvqlDQyzYI6bZ5ImvVGaOMwWc2osepwa3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=emYA7/Lz; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1789562223; c=relaxed/simple;
+	bh=z2X3IWvxcIovq+DhIej610/YZKXjKmzE2HYwb5mcwOY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=W+dwQrudWyt/XH6tFjyxbB4dTumj2Fwyc3EDoW0bURRm6yBktEEJy7cIAXQ6ugmu4j2BqjdI18Kk4mv4MjeAgL7vAamChbWeQ6Ac3Ls46hiE0aRF0YrZyimnaEnapPBFSJnjrQf6kA18HKJ6ZHDtnqOaFk8yWK0xmoKMgYL1Gdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=VEDWqV4W; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=prn3Udg9; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="emYA7/Lz"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=RFQCYq+nQwh7la753siJRbrhr6ylRbKn2cdDnKmooSU=; b=emYA7/LzM6PguZHoZPKDgP2lHy
-	Z6f4c9/E3MauZz8rWuOtGi/5nRAhtscX13ONH350Z8WxMQ/St1t4bqR0T1P+uCME8QnbeTjmsexVh
-	KvRuJI2IZtEQVpI/wtsI33vPl9S6WLKQCiTEoUeQdOqIYQQKwszOdb4FBQF8szZYjWow=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x6osG-005TeW-VU; Wed, 16 Sep 2026 14:36:28 +0200
-Date: Wed, 16 Sep 2026 14:36:28 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Linus Walleij <linusw@kernel.org>,
-	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="VEDWqV4W";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="prn3Udg9"
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4hlJKx6YXCzKmyp;
+	Wed, 16 Sep 2026 14:36:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1789562213;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T+hxp5i4/rxB1qypgVpYvutTN8n+adlKnfsbE41Eeec=;
+	b=VEDWqV4Wae6lZZ8rXS0nKEAbxZnOD+zOM2dvOlXbfTUUQU6UUPSU1P5zxYgF8JDmMYN+z/
+	UgndONINQR061AuKEB+V89EbVBQ2r3yUTjC08RNKit2WvlLvB+npmHS/SKEqXD3itZYVTU
+	Wc25zJuiMhewqiqmLnurM3eidHuNoYYbTztZGMOUlqBHzngQEbuDp26xxBnNXqEVJraRbb
+	oei8pfHUw840aSFhzoahEogTdtizL8TttniNR7Gl2rgIpxiU3SRwdfhSmsLNWMHQC9wV75
+	WEAoDBNcndjA9oSMpPuO3cEaCz/dUVUx5xh7MXXyEPr08rjtPXXjrEsS+yFxSw==
+From: Manuel Ebner <manuelebnerli@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1789562212;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T+hxp5i4/rxB1qypgVpYvutTN8n+adlKnfsbE41Eeec=;
+	b=prn3Udg9449as0Cuyvdrj9cQEUOwv1iHnM2CQO+jrrvi+6mrq/mZ2xxZUQhggoqg47Dwia
+	lZAjG8pCb+YgjHltDTryuwawc0+z+jr6zTriKpArcJ/vhT6ztkNB0OIFtAwXv+OOMNvwsh
+	yVaUQHV5TGHq8HFm/KZjI9ImhiEAWxYOyyUcECLjfa6IpcUvsplp14Q1bPXZpN66EYOaqn
+	oIZMLi7HqDXCewfoi/KtzAY6jabaHnccKtR3LQl/gXECng5McvpNE1M62YjDnmqDnqw0Qx
+	xi8Yeu+6MTC+Asf+GBbj12GITCSLbbsNMJxG8fzY9mjxNWBkvNYEChwls0MXtw==
+To: Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Alvin =?utf-8?Q?=C5=A0ipraga?= <alvin.sipraga@analog.com>,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v3 2/3] net: dsa: realtek: rtl8365mb: extract
- PHY OCP address halves with FIELD_GET
-Message-ID: <55eb74e5-b91b-4662-bc9d-60e92255b4e7@lunn.ch>
-References: <20260916090102.349157-1-o.rempel@pengutronix.de>
- <20260916090102.349157-3-o.rempel@pengutronix.de>
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>
+Cc: Manuel Ebner <manuelebnerli@mailbox.org>,
+	netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] docs: ethtool: Fix bracket
+Date: Wed, 16 Sep 2026 14:34:55 +0200
+Message-ID: <20260916123458.314458-5-manuelebnerli@mailbox.org>
+In-Reply-To: <20260916123458.314458-2-manuelebnerli@mailbox.org>
+References: <20260916123458.314458-2-manuelebnerli@mailbox.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260916090102.349157-3-o.rempel@pengutronix.de>
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-ID: cc0b2efbb7da47b9edf
+X-MBO-RS-META: yq7uqemmxoqmwgyz9u7m3kxdknhmfci3
 
-On Wed, Sep 16, 2026 at 11:01:01AM +0200, Oleksij Rempel wrote:
-> Extract the two OCP address halves with FIELD_GET() before handing them
-> to FIELD_PREP() to build the ADDRESS register value.
-> 
-> rtl8365mb_phy_ocp_prepare() previously fed FIELD_PREP() the raw
-> ocp_addr >> 1 and >> 6. FIELD_PREP() masks the value to the field at run
-> time, so that was correct for the current callers, which all pass a
-> run-time register address.
-> 
-> FIELD_PREP()'s compile-time width check only fires for a compile-time
-> constant value. None reached it here: the address is computed as
-> PHYREG_BASE + regnum * 2 from a run-time regnum. The EEE support that
-> follows adds callers with constant OCP addresses (0xa5c4 etc.); clang
-> folds those into the inlined ocp_prepare(), so the shifted constant now
-> reaches the check, overflows the 5-/4-bit field and breaks the build
-> (gcc does not fold it here). FIELD_GET() narrows each half to the field
-> width first, so the value already fits.
-> 
-> No functional change.
-> 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Add missing ')' to sentence.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
+---
+ Documentation/networking/ethtool-netlink.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-    Andrew
+diff --git a/Documentation/networking/ethtool-netlink.rst b/Documentation/networking/ethtool-netlink.rst
+index e92abf45f..393f2b6d3 100644
+--- a/Documentation/networking/ethtool-netlink.rst
++++ b/Documentation/networking/ethtool-netlink.rst
+@@ -131,7 +131,7 @@ For compact form, ``ETHTOOL_A_BITSET_SIZE`` and ``ETHTOOL_A_BITSET_VALUE`` are
+ mandatory. ``ETHTOOL_A_BITSET_MASK`` attribute is mandatory if
+ ``ETHTOOL_A_BITSET_NOMASK`` is not set (bitset represents a value/mask pair);
+ if ``ETHTOOL_A_BITSET_NOMASK`` is not set, ``ETHTOOL_A_BITSET_MASK`` is not
+-allowed (bitset represents a single bitmap.
++allowed (bitset represents a single bitmap).
+ 
+ Kernel bit set length may differ from userspace length if older application is
+ used on newer kernel or vice versa. If userspace bitmap is longer, an error is
+-- 
+2.55.0
+
