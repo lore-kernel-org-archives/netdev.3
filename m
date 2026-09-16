@@ -1,116 +1,121 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E85322FDE6;
-	Wed, 16 Sep 2026 03:24:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1D09460
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 03:24:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789529072; cv=none; b=pdqoBjCu19KOtRoinWPD17fBBhUlNsTp9csKtmSUgetgWUJ7ummPWMJAAA2up7rUES9x4eWPtPy+UAoQviZA3STKGfhQ7Qi3ANQegMbysMb5l1f4ktTPO5MffeDNvSio7sgHg2YBP7Lu+573A2oWz69DtLYViyQvw3kOndfQfPM=
+	t=1789529079; cv=none; b=KgjPI1CqAkTv4R3SXcjOH8bBqmutDLid+qpVYlppDtl3/qHeLufQvhR+kE6/tnhxCBXumtdC1iN6t2Qk4LcDNFXL1s+ueDwEu+F2cFU60/NhMh3b+Q0IHLDyq5WkNu18Sz0QR5hgMTQXNsD3e0zFmgLRj0qO0DfN0BM/m5qqYEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789529072; c=relaxed/simple;
-	bh=UcT1TW4Sdw6h/EHK92PDO/srxgGudwpIfaE1pzE+OMg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Oaeq1pZoO+u+ApiQ4NrOmIY/uAa2iFjbqzkuaeG8foPU7YDnL+6wltg3/vdlJB158wpIplGQ24KXLyi8hlUVHhxp9ucrn9TXdd2ByJdHrC/yxTgujM75gTC5n8SO22Q5ia0GHmIh22o9siB47QgjRJKq+OHk//y3B3Rrje2M9HU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=d9hGxStL; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=T/8f0C+F; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	s=arc-20240116; t=1789529079; c=relaxed/simple;
+	bh=iDthSQqefFrOLg0kDxpCSPIAK7dnv2RUYvXiwlkwsRI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mggc3N2zAJfSlbOQggLBRIIHk0MHJ6SbzRff2j9eluK4fbEuyonygR+hraji5XCWRdn9oHcHAYE8gKEcIvww+3UOVJAsqZClyKJcbBPIyws8Znx21Ug+EVgbfSdk0LhjAW7VXDixwcETC3GARsJJ6ZMBME6OnFJnsJFzec0gDVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pwsvjzma; arc=none smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="d9hGxStL";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="T/8f0C+F"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1789529067;
-	bh=UcT1TW4Sdw6h/EHK92PDO/srxgGudwpIfaE1pzE+OMg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=d9hGxStLOX/tgzu3stA80+Y6M7OYSRMRT7ZzzFctaXF2NV6Avery05OHqykF2Da+a
-	 ZP0hT8t6ftO36gDu35nMeFm3Z/VnHtU1Cgdg6rqm7wBoHOGwng3tMm4YSH4+Q9dmSl
-	 0IerrqNv3TJ34o8MnIG5Qqs8stX4xaeGixkK3ofKiI2SbjfgdwHI7YgV0JgcmCFjkE
-	 xVnc5ckTkswxpk/wVHDNkbPPfMBIeUn+hmzN64DY5xdY20GIAPI7cO9E6P+zCVRqKA
-	 5wk8bQQZmfPVi4PfaioYtMg/OKTkkJphbVrnal2yBALlbmLUOHyE0llzYpZIQPK3eS
-	 vA+bAb0LUHBDg==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 36B013FA6F; Wed, 16 Sep 2026 03:24:27 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1789529066;
-	bh=UcT1TW4Sdw6h/EHK92PDO/srxgGudwpIfaE1pzE+OMg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=T/8f0C+FP9a3eZ6DMj5QxDRNyoFm2Himtx+wr7CDNrbq57SXToudsZGdGpsvJyQch
-	 /x7sPtrb69UV+oz+P3shL4b2e3OVmYIIF+IlcdhzYWSDj4pYmxNzMA3n1CGSUVNhax
-	 /Rxjvdu20LFn8hO9pqjNVlFFItH50loBVZL76EFJzg94p7j2Uq3WgkVQWX5FR50/6y
-	 BB+Z4ZJmSnUuRWASihKMTPat9ds3ECj1DvwDGZlUhxSEpClRlsH+BbsKmr0gK4dJmz
-	 a18AeSHxvsUcCm9b1JJXST7oKUVHzf12oiLMV0+kTxlgdu7lm1YBdqgC3R7mftf3RD
-	 eiGJviKW3nNug==
-Received: from DELLLaptop.net (unknown [223.86.26.228])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 8197A3FA75;
-	Wed, 16 Sep 2026 03:24:21 +0000 (UTC)
-From: Birger Koblitz <mail@birger-koblitz.de>
-Date: Wed, 16 Sep 2026 05:24:02 +0200
-Subject: [PATCH net-next v12 03/15] ax88179_178a: Fix endianness of pause
- watermark register
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pwsvjzma"
+Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cea4ae2dso278098a12.3
+        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 20:24:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789529077; x=1790133877; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=hewLRE41ZIFiAVylPPAMUN536cPkfHAC1jqHJ9IalwI=;
+        b=PwsvjzmabTVUzalQ2cu2esCbIhvgN7baFnMCGdxz8R9HspexJDJaPZTl0zZLaB1ymE
+         1z3erk0KGJyRLR+Vu2iZPETmHfqxJiEvCGXZ5L60fje75hxM4IFKo3kI8CAAX7Z4IhJP
+         75DPW5VT5+wZ7Z5aDCUo+C/n/EsIHuYVAaC/ktoaQ6PET7Xdfl/KmBeyoVsnwwYg8Esa
+         +vNqUNdDeTMlHKsIGXQ6uER8wEHuDv70yjjwAoCjyDH4p1SABDOrdwCqJ4iLZuRceaV+
+         rpJvSYGBbJNwlJddcfnUTA+yTPHmMeoj3Zc3XW5SX/thYB2cngk+D63TJKv8TUx0CUgS
+         Q5Jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789529077; x=1790133877;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=hewLRE41ZIFiAVylPPAMUN536cPkfHAC1jqHJ9IalwI=;
+        b=FgOpGursVDxwAyP6s/S95SuVdsXO37sg/YohoxIBxp821j6GgT4yfz6BH5TnMtpU/L
+         OlnClXjscxCU5CGQh4KGKT6JGRawSRaFevsOlUdIpI+Cru80X9aV61GlCf8VqF88ks2X
+         zn0vA/JvR+CJVUHMd//NXzgdd5Fgy4qbPypwswDhZRDAww2+CTK5YnP35gRn1bdmzcKF
+         DfdgC4/QSdIt902tsGJtsenyOuxSX/jpxZXZ5upgDRdbRaCMEckuzCUUhIiQHMUMr9vl
+         g6265woVjVDe9mLNbVmzQRxuWSDaHxm6t0oDRNkXSPHCq1e5X9+SLVfseKc/coGK5s34
+         cdZw==
+X-Forwarded-Encrypted: i=1; AKwUvBwABuxiOljGkUk1jTou+9nb5c1IgY2q2XsG5aXceWb+fY0sQGtoZwT+rSbJq4Od1+kHxCu+NIQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++k67gK3yiZ562GMa1ds6k/d2nTahY3dSHSOK30rnXYeIYgI+gsk
+	BhYEjxU/YQ9plMdAEvbiego/rZMnaQR0cZqS4RiYRVOn1ySwIufS1IbC
+X-Gm-Gg: AYBFou337C9xJFon4NsV+scnKK1vj9EZsZde329Z0+m7E1KmJ5JMkEwgkRv6AvJ01TN
+	1IhGHpD0re1fiYEuTdxc6lSkZMWDL+9WD1X1vsm0eI3xm94WhnKS72khEscmToXsbN0eiA6yFvH
+	05Vm1su5TXbQiQGmT+UGs4iouhtD744vCYCN46Pb6/0MpKmS1sOxSzmmjfTbLGo0sdm8iqYeoeu
+	zZ8nYryvw2eYurshZR/alcfT3sNYi8XMB0/DAlLUln+id7BTDvFokVLa1lsPfnj9l9wWy+Ue+vG
+	NCW6qsptgYXQq5iLLj6w5t2NJZ6eG9udI71jxEu0Q2/M7qUrerXbb4/TLgwmkhngjL1sZEsK6EF
+	iHJ58AeZ3Cti3X0HrFJtlNMLNo/qNbJQ0Ec5WbX9dNC2drxnbnAnUnSmNamQfAV5ysjVvy2L6wm
+	MYKgXpfD83xT6PZ7hMgIN5qUOoJoEf5x2sNx7E+oE8qOnEYEqRQq9b36a3kzTGU10/
+X-Received: by 2002:a17:90b:390e:b0:39e:53a:c8d4 with SMTP id 98e67ed59e1d1-39e1e424a7dmr2098764a91.12.1789529077349;
+        Tue, 15 Sep 2026 20:24:37 -0700 (PDT)
+Received: from lgs.. ([2001:250:5800:1002::de93])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e1bb234c3sm1772473a91.6.2026.09.15.20.24.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Sep 2026 20:24:36 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Fan Gong <gongfan1@huawei.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Gur Stavi <gur.stavi@huawei.com>,
+	Xin Guo <guoxin09@huawei.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] net: hinic3: unregister event callback on remove
+Date: Wed, 16 Sep 2026 11:24:27 +0800
+Message-ID: <20260916032427.2899987-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260916-ax88179a-v12-3-60c04c9924a2@birger-koblitz.de>
-References: <20260916-ax88179a-v12-0-60c04c9924a2@birger-koblitz.de>
-In-Reply-To: <20260916-ax88179a-v12-0-60c04c9924a2@birger-koblitz.de>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, 
- Heiner Kallweit <hkallweit1@gmail.com>
-Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Birger Koblitz <mail@birger-koblitz.de>, 
- Jianhui Xu <neuromoments@gmail.com>
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
 
-The 16-bit pause watermark register is little endian as
-described in the ASIX 4.1.0 out-of-tree driver. Correct the
-register byte sequence but also swap the configuration values
-used in the code in order to keep the current behaviour.
+hinic3_nic_probe() registers the NIC event callback with
+hinic3_adev_event_register(). All probe failure paths unregister the
+callback before returning.
 
-The endianness is relevant for 16-bit writes to the register.
+The normal removal path, however, tears down and frees the NIC device
+without calling hinic3_adev_event_unregister(), leaving the auxiliary
+device event callback pointing to hinic3_nic_event().
 
-Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+If an event is delivered after the NIC private data has been released,
+the callback may dereference the freed nic_dev and netdev objects.
+
+Unregister the NIC event callback before starting the device teardown.
+
+This issue was found by manual code inspection.
+
+Fixes: 17fcb3dc12bb ("hinic3: module initialization and tx/rx logic")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
 ---
- drivers/net/usb/ax88179_178a.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/huawei/hinic3/hinic3_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-index 81d8412ce8e2fac981df076ea1385e6e87525cfe..2ed46ab62c0065d32040439f31d44f118d7e9952 100644
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -32,8 +32,8 @@
- #define AX_ACCESS_EEPROM			0x04
- #define AX_ACCESS_EFUS				0x05
- #define AX_RELOAD_EEPROM_EFUSE			0x06
--#define AX_PAUSE_WATERLVL_HIGH			0x54
--#define AX_PAUSE_WATERLVL_LOW			0x55
-+#define AX_PAUSE_WATERLVL_LOW			0x54
-+#define AX_PAUSE_WATERLVL_HIGH			0x55
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_main.c b/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
+index 0a888fe4c975..42e2ad179a9f 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
+@@ -499,6 +499,8 @@ static void hinic3_nic_remove(struct auxiliary_device *adev)
+ 	if (!hinic3_support_nic(nic_dev->hwdev))
+ 		return;
  
- #define PHYSICAL_LINK_STATUS			0x02
- 	#define	AX_USB_SS		0x04
-@@ -1619,11 +1619,10 @@ static int ax88179_reset(struct usbnet *dev)
- 	dev->rx_urb_size = 1024 * 20;
++	hinic3_adev_event_unregister(adev);
++
+ 	netdev = nic_dev->netdev;
+ 	unregister_netdev(netdev);
  
- 	*tmp = 0x34;
--	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_PAUSE_WATERLVL_LOW, 1, 1, tmp);
-+	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_PAUSE_WATERLVL_HIGH, 1, 1, tmp);
- 
- 	*tmp = 0x52;
--	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_PAUSE_WATERLVL_HIGH,
--			  1, 1, tmp);
-+	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_PAUSE_WATERLVL_LOW, 1, 1, tmp);
- 
- 	/* Enable checksum offload */
- 	*tmp = AX_RXCOE_IP | AX_RXCOE_TCP | AX_RXCOE_UDP |
-
 -- 
-2.47.3
+2.43.0
 
