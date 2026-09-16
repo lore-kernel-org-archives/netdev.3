@@ -1,34 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2BA4E80A0;
-	Wed, 16 Sep 2026 10:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF1C4AF665;
+	Wed, 16 Sep 2026 10:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789554109; cv=none; b=HjUWrpr3UnDCTGRTQHYZ35ZByKM4wrqMDTJPaLMm7nJATvvCi063F+gBwWKrdsk2TQfmXwm69E5bstS0EarkD/JuM5hd0VoFFtGXIUDr04axPgHlwM6xGuxE93GwWfhHrhu9aTIqSJah+EssJ8Zi0vLUs8tTpM9DYywjwJnfUDg=
+	t=1789554112; cv=none; b=PCsy4V548HXP8ijte+Q+wCGHw52kOPFeIDj2NOVboNn4TChYbIBZyDn43zt+tFKQyA0FUN7JtvJEFe5a38UJypsAlghk8LncSlhCQ7+mztxI2l/NvuHNYqpJ7QGxxRZfQdBczvRE2Rt0idrIYcB+4AHfZ8vWgCSREL6daG9Mjk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789554109; c=relaxed/simple;
-	bh=Uk1mmoFU1zofLKy0RUbxwye1iO+ngs3IfVOOrWxA+04=;
+	s=arc-20240116; t=1789554112; c=relaxed/simple;
+	bh=MonDTbPytzLmWxFK63YU6exNxj2WjCjHahERtcjjU3k=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZU6l5YxarahYqR6ujWIgmbqCxiDR7JLWnmvnSGWkN4ZQ6NVqT6r69aFiZX3WEqgOpz9iRXr4nCTzS6rVr2KWPIRbvpmcR3FK29zVt+P2+oPeIBBkdNKmefmW6AIPWo4GRm7dvFXTez6yGtPvbns2FsJ8YpcceUDIOLp4rHq81z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jHSA062l; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=nM5xvdToJqI18V1pbtsUINKtc6vrvpDOEurPSb7rWdI7yVAkftvzylmytCjyDIWzLHxZJ3ezYKBuJEWD2cDjGPbYg/H3Ye1I5CLSg8CfuWj1ZgQk8T8m9mgouswMRKfhe6jT05AXhX5n5e7tU0GpfnGX8p3ujH35y8Ow2u+fvJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZJ6Bu7mA; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jHSA062l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC4A11F0089A;
-	Wed, 16 Sep 2026 10:21:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZJ6Bu7mA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E1A1F00899;
+	Wed, 16 Sep 2026 10:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789554084;
-	bh=5mBIyLGxT6rSP6IwF3+0+A2RkLXT/lEoLb6udrTGapc=;
+	s=k20260515; t=1789554074;
+	bh=jrEvQHvjEN2PwmB35CoS2QLXe7RJjBHQnGiMZGTLFjk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=jHSA062lDTmkwehn4UEpkqU2cYaKIdzZs/8kQdRXFg1bpVdzHY8yml9MNNCQJZgWx
-	 0XwOBoNymwPViv/NnHcM7UQXBi+XljYaVKOOC2qXcfQiwGG8H2/kPLA/M84+ERNR4q
-	 fjo1CBGQEKKBEPWmLS59LHtWA+sHLzi1MDAMLwLfXs+uveWxEuevZvtEoNr/aqb8No
-	 DhSSddKPEc+I37bgbapVcG4JNwraeVD+Bo4+jrZbM5LBw84ZHDBj9jcXyjxYamSzeb
-	 HGAj0+/2x/pr/hf6VnT2Q73GWeqHUE+nBQ9rgMf7aLjlaCIeGOBw7UF1KdYY9XjH3+
-	 7rjw+Qy8Yqhyw==
+	b=ZJ6Bu7mAfxdOhryiLVd0RKN32AxsmLlSUOq6l+m0vYS/amKtQgvdZdTowA6m62UOE
+	 oqwgsRWxRtJLKO/fbuo9Y88JdI4hmrAQy1dHIPMzpqqXeYokubY2LWfCNoY9LKi0UI
+	 sdhRcz0wlqrIHH+1EtHZbiZt+GM2u0j/PPy+iQgESCWzvOqOaHbnrxPjocCj7kjGPQ
+	 IRqmyPZIXCPoTb3Na2tIJ+nFf+/fWwivQZhT56r86079UhzV7skJVL2Nd2r+lux2av
+	 fhTzR+lnpR+Cw8eJBZOUKrT0kowFMj8pHUS5z9q7PsL06lkBYZfFhJSSMDY4qOkPpx
+	 xvTZa9Evkc+bg==
 From: Linus Walleij <linusw@kernel.org>
-Date: Wed, 16 Sep 2026 12:21:01 +0200
-Subject: [PATCH net-next v15 4/4] net: dsa: ks8995: Delete surplus driver
+Date: Wed, 16 Sep 2026 12:20:59 +0200
+Subject: [PATCH net-next v15 2/4] net: dsa: tag_ks8995: Add the KS8995 tag
+ handling
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,7 +38,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260916-ks8995-to-ksz8-v15-4-8825ff5fd4be@kernel.org>
+Message-Id: <20260916-ks8995-to-ksz8-v15-2-8825ff5fd4be@kernel.org>
 References: <20260916-ks8995-to-ksz8-v15-0-8825ff5fd4be@kernel.org>
 In-Reply-To: <20260916-ks8995-to-ksz8-v15-0-8825ff5fd4be@kernel.org>
 To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
@@ -52,933 +53,286 @@ Cc: netdev@vger.kernel.org, Woojung Huh <Woojung.Huh@microchip.com>,
  devicetree@vger.kernel.org, Linus Walleij <linusw@kernel.org>
 X-Mailer: b4 0.16.0
 
-The Microchip KSZ driver now handles the KS(Z)8995XA. The old
-driver identified the shared 0x95/0x0 ID as KS8995MA, but this ID
-cannot distinguish MA from XA. No KS8995MA users are known, and
-KS8995E has no documented SPI management interface. Neither variant
-has been verified with the replacement driver.
+The KS8995 100Mbit switch can do proper DSA per-port tagging
+with the proper set-up. This adds the code to handle ingress
+and egress KS8995 tags.
 
-The two in-tree device trees using the "micrel,ks8995" compatible:
+The tagger is used by the KSZ8995XA support added later in this
+series.
 
- arch/arm/boot/dts/intel/ixp/intel-ixp42x-linksys-wrv54g.dts
- arch/arm/boot/dts/intel/ixp/intel-ixp42x-actiontec-mi424wr.dtsi
+The tag is a modified 0x8100 ethertype tag where a bit in the
+last nibble is set for each target port.
 
-both use KS8995XA hardware and continue to be supported by the
-replacement driver without regressions.
+Always insert a distinct outer switch tag. User ports remove this
+field on egress, so reusing an existing 802.1Q header would consume
+the sender VLAN tag instead of preserving it.
 
-Delete the old driver, but leave a stub behind in Kconfig so new
-users will be automatically phased over to the new symbol when
-migrating their configs.
+Push any hardware-accelerated VLAN tag into the packet first. This
+keeps the switch tag at offset 12 while retaining 802.1Q, 802.1ad and
+stacked VLAN headers as inner payload, and avoids relying on a valid
+SKB MAC header in direct transmit paths.
 
-The old driver supports platform data (board file) instantiation,
-but nothing in the kernel tree makes use of this legacy mechanism so
-it is fine to delete.
+Rate-limit receive untagging errors so repeated failures cannot flood
+the kernel log.
 
+Assisted-by: LLM
 Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 Signed-off-by: Linus Walleij <linusw@kernel.org>
 ---
- drivers/net/dsa/Kconfig  |  10 +-
- drivers/net/dsa/Makefile |   1 -
- drivers/net/dsa/ks8995.c | 857 -----------------------------------------------
- 3 files changed, 6 insertions(+), 862 deletions(-)
+ MAINTAINERS          |   1 +
+ include/net/dsa.h    |   2 +
+ net/dsa/Kconfig      |   6 ++
+ net/dsa/Makefile     |   1 +
+ net/dsa/tag_ks8995.c | 180 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 190 insertions(+)
 
-diff --git a/drivers/net/dsa/Kconfig b/drivers/net/dsa/Kconfig
-index e3d88f41fecf..fe8cd5338fda 100644
---- a/drivers/net/dsa/Kconfig
-+++ b/drivers/net/dsa/Kconfig
-@@ -112,11 +112,13 @@ config NET_DSA_RZN1_A5PSW
- config NET_DSA_KS8995
- 	tristate "Micrel KS8995 family 5-ports 10/100 Ethernet switches"
- 	depends on SPI
--	depends on NET_DSA_MICROCHIP_KSZ_SPI = n
--	select NET_DSA_TAG_NONE
-+	select NET_DSA_MICROCHIP_KSZ_COMMON
-+	select NET_DSA_MICROCHIP_KSZ_SPI
- 	help
--	  This driver supports the Micrel KS8995 family of 10/100 Mbit ethernet
--	  switches, managed over SPI.
-+	  This is a transitional option for users who had NET_DSA_KS8995
-+	  enabled. It automatically enables the new NET_DSA_MICROCHIP_KSZ_SPI
-+	  driver which supersedes it. This option will be removed in a future
-+	  kernel release.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 0e04d92d1b09..6e0d16e3ee4d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17772,6 +17772,7 @@ F:	Documentation/devicetree/bindings/net/dsa/microchip,lan937x.yaml
+ F:	drivers/net/dsa/microchip/*
+ F:	include/linux/dsa/ksz_common.h
+ F:	include/linux/platform_data/microchip-ksz.h
++F:	net/dsa/tag_ks8995.c
+ F:	net/dsa/tag_ksz.c
  
- config NET_DSA_SMSC_LAN9303
- 	tristate
-diff --git a/drivers/net/dsa/Makefile b/drivers/net/dsa/Makefile
-index df849cd0e640..7e637d56b35c 100644
---- a/drivers/net/dsa/Makefile
-+++ b/drivers/net/dsa/Makefile
-@@ -2,7 +2,6 @@
- obj-$(CONFIG_NET_DSA_BCM_SF2)	+= bcm-sf2.o
- bcm-sf2-objs			:= bcm_sf2.o bcm_sf2_cfp.o
- obj-$(CONFIG_NET_DSA_LOOP)	+= dsa_loop.o
--obj-$(CONFIG_NET_DSA_KS8995) 	+= ks8995.o
- obj-$(CONFIG_NET_DSA_MT7530)	+= mt7530.o
- obj-$(CONFIG_NET_DSA_MT7530_MDIO) += mt7530-mdio.o
- obj-$(CONFIG_NET_DSA_MT7530_MMIO) += mt7530-mmio.o
-diff --git a/drivers/net/dsa/ks8995.c b/drivers/net/dsa/ks8995.c
-deleted file mode 100644
-index 77d8b842693c..000000000000
---- a/drivers/net/dsa/ks8995.c
-+++ /dev/null
-@@ -1,857 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--/*
-- * SPI driver for Micrel/Kendin KS8995M and KSZ8864RMN ethernet switches
-- *
-- * Copyright (C) 2008 Gabor Juhos <juhosg at openwrt.org>
-- * Copyright (C) 2025 Linus Walleij <linus.walleij@linaro.org>
-- *
-- * This file was based on: drivers/spi/at25.c
-- *     Copyright (C) 2006 David Brownell
-- */
--
--#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
--
--#include <linux/bits.h>
--#include <linux/if_bridge.h>
--#include <linux/if_vlan.h>
--#include <linux/types.h>
--#include <linux/kernel.h>
--#include <linux/module.h>
--#include <linux/delay.h>
--#include <linux/device.h>
--#include <linux/gpio/consumer.h>
--#include <linux/of.h>
--#include <linux/spi/spi.h>
--#include <net/dsa.h>
--
--#define DRV_VERSION		"0.1.1"
--#define DRV_DESC		"Micrel KS8995 Ethernet switch SPI driver"
--
--/* ------------------------------------------------------------------------ */
--
--#define KS8995_REG_ID0		0x00    /* Chip ID0 */
--#define KS8995_REG_ID1		0x01    /* Chip ID1 */
--
--#define KS8995_REG_GC0		0x02    /* Global Control 0 */
--
--#define KS8995_GC0_P5_PHY	BIT(3)	/* Port 5 PHY enabled */
--
--#define KS8995_REG_GC1		0x03    /* Global Control 1 */
--#define KS8995_REG_GC2		0x04    /* Global Control 2 */
--
--#define KS8995_GC2_HUGE		BIT(2)	/* Huge packet support */
--#define KS8995_GC2_LEGAL	BIT(1)	/* Legal size override */
--
--#define KS8995_REG_GC3		0x05    /* Global Control 3 */
--#define KS8995_REG_GC4		0x06    /* Global Control 4 */
--
--#define KS8995_GC4_10BT		BIT(4)	/* Force switch to 10Mbit */
--#define KS8995_GC4_MII_FLOW	BIT(5)	/* MII full-duplex flow control enable */
--#define KS8995_GC4_MII_HD	BIT(6)	/* MII half-duplex mode enable */
--
--#define KS8995_REG_GC5		0x07    /* Global Control 5 */
--#define KS8995_REG_GC6		0x08    /* Global Control 6 */
--#define KS8995_REG_GC7		0x09    /* Global Control 7 */
--#define KS8995_REG_GC8		0x0a    /* Global Control 8 */
--#define KS8995_REG_GC9		0x0b    /* Global Control 9 */
--
--#define KS8995_GC9_SPECIAL	BIT(0)	/* Special tagging mode (DSA) */
--
--/* In DSA the ports 1-4 are numbered 0-3 and the CPU port is port 4 */
--#define KS8995_REG_PC(p, r)	(0x10 + (0x10 * (p)) + (r)) /* Port Control */
--#define KS8995_REG_PS(p, r)	(0x1e + (0x10 * (p)) + (r)) /* Port Status */
--
--#define KS8995_REG_PC0		0x00    /* Port Control 0 */
--#define KS8995_REG_PC1		0x01    /* Port Control 1 */
--#define KS8995_REG_PC2		0x02    /* Port Control 2 */
--#define KS8995_REG_PC3		0x03    /* Port Control 3 */
--#define KS8995_REG_PC4		0x04    /* Port Control 4 */
--#define KS8995_REG_PC5		0x05    /* Port Control 5 */
--#define KS8995_REG_PC6		0x06    /* Port Control 6 */
--#define KS8995_REG_PC7		0x07    /* Port Control 7 */
--#define KS8995_REG_PC8		0x08    /* Port Control 8 */
--#define KS8995_REG_PC9		0x09    /* Port Control 9 */
--#define KS8995_REG_PC10		0x0a    /* Port Control 10 */
--#define KS8995_REG_PC11		0x0b    /* Port Control 11 */
--#define KS8995_REG_PC12		0x0c    /* Port Control 12 */
--#define KS8995_REG_PC13		0x0d    /* Port Control 13 */
--
--#define KS8995_PC0_TAG_INS	BIT(2)	/* Enable tag insertion on port */
--#define KS8995_PC0_TAG_REM	BIT(1)	/* Enable tag removal on port */
--#define KS8995_PC0_PRIO_EN	BIT(0)	/* Enable priority handling */
--
--#define KS8995_PC2_TXEN		BIT(2)	/* Enable TX on port */
--#define KS8995_PC2_RXEN		BIT(1)	/* Enable RX on port */
--#define KS8995_PC2_LEARN_DIS	BIT(0)	/* Disable learning on port */
--
--#define KS8995_PC13_TXDIS	BIT(6)	/* Disable transmitter */
--#define KS8995_PC13_PWDN	BIT(3)	/* Power down */
--
--#define KS8995_REG_TPC0		0x60    /* TOS Priority Control 0 */
--#define KS8995_REG_TPC1		0x61    /* TOS Priority Control 1 */
--#define KS8995_REG_TPC2		0x62    /* TOS Priority Control 2 */
--#define KS8995_REG_TPC3		0x63    /* TOS Priority Control 3 */
--#define KS8995_REG_TPC4		0x64    /* TOS Priority Control 4 */
--#define KS8995_REG_TPC5		0x65    /* TOS Priority Control 5 */
--#define KS8995_REG_TPC6		0x66    /* TOS Priority Control 6 */
--#define KS8995_REG_TPC7		0x67    /* TOS Priority Control 7 */
--
--#define KS8995_REG_MAC0		0x68    /* MAC address 0 */
--#define KS8995_REG_MAC1		0x69    /* MAC address 1 */
--#define KS8995_REG_MAC2		0x6a    /* MAC address 2 */
--#define KS8995_REG_MAC3		0x6b    /* MAC address 3 */
--#define KS8995_REG_MAC4		0x6c    /* MAC address 4 */
--#define KS8995_REG_MAC5		0x6d    /* MAC address 5 */
--
--#define KS8995_REG_IAC0		0x6e    /* Indirect Access Control 0 */
--#define KS8995_REG_IAC1		0x6f    /* Indirect Access Control 0 */
--#define KS8995_REG_IAD7		0x70    /* Indirect Access Data 7 */
--#define KS8995_REG_IAD6		0x71    /* Indirect Access Data 6 */
--#define KS8995_REG_IAD5		0x72    /* Indirect Access Data 5 */
--#define KS8995_REG_IAD4		0x73    /* Indirect Access Data 4 */
--#define KS8995_REG_IAD3		0x74    /* Indirect Access Data 3 */
--#define KS8995_REG_IAD2		0x75    /* Indirect Access Data 2 */
--#define KS8995_REG_IAD1		0x76    /* Indirect Access Data 1 */
--#define KS8995_REG_IAD0		0x77    /* Indirect Access Data 0 */
--
--#define KSZ8864_REG_ID1		0xfe	/* Chip ID in bit 7 */
--
--#define KS8995_REGS_SIZE	0x80
--#define KSZ8864_REGS_SIZE	0x100
--#define KSZ8795_REGS_SIZE	0x100
--
--#define ID1_CHIPID_M		0xf
--#define ID1_CHIPID_S		4
--#define ID1_REVISION_M		0x7
--#define ID1_REVISION_S		1
--#define ID1_START_SW		1	/* start the switch */
--
--#define FAMILY_KS8995		0x95
--#define FAMILY_KSZ8795		0x87
--#define CHIPID_M		0
--#define KS8995_CHIP_ID		0x00
--#define KSZ8864_CHIP_ID		0x01
--#define KSZ8795_CHIP_ID		0x09
--
--#define KS8995_CMD_WRITE	0x02U
--#define KS8995_CMD_READ		0x03U
--
--#define KS8995_CPU_PORT		4
--#define KS8995_NUM_PORTS	5 /* 5 ports including the CPU port */
--#define KS8995_RESET_DELAY	10 /* usec */
--
--enum ks8995_chip_variant {
--	ks8995,
--	ksz8864,
--	ksz8795,
--	max_variant
--};
--
--struct ks8995_chip_params {
--	char *name;
--	int family_id;
--	int chip_id;
--	int regs_size;
--	int addr_width;
--	int addr_shift;
--};
--
--static const struct ks8995_chip_params ks8995_chip[] = {
--	[ks8995] = {
--		.name = "KS8995MA",
--		.family_id = FAMILY_KS8995,
--		.chip_id = KS8995_CHIP_ID,
--		.regs_size = KS8995_REGS_SIZE,
--		.addr_width = 8,
--		.addr_shift = 0,
--	},
--	[ksz8864] = {
--		.name = "KSZ8864RMN",
--		.family_id = FAMILY_KS8995,
--		.chip_id = KSZ8864_CHIP_ID,
--		.regs_size = KSZ8864_REGS_SIZE,
--		.addr_width = 8,
--		.addr_shift = 0,
--	},
--	[ksz8795] = {
--		.name = "KSZ8795CLX",
--		.family_id = FAMILY_KSZ8795,
--		.chip_id = KSZ8795_CHIP_ID,
--		.regs_size = KSZ8795_REGS_SIZE,
--		.addr_width = 12,
--		.addr_shift = 1,
--	},
--};
--
--struct ks8995_switch {
--	struct spi_device	*spi;
--	struct device		*dev;
--	struct dsa_switch	*ds;
--	struct mutex		lock;
--	struct gpio_desc	*reset_gpio;
--	struct bin_attribute	regs_attr;
--	const struct ks8995_chip_params	*chip;
--	int			revision_id;
--	unsigned int max_mtu[KS8995_NUM_PORTS];
--};
--
--static const struct spi_device_id ks8995_id[] = {
--	{"ks8995", ks8995},
--	{"ksz8864", ksz8864},
--	{"ksz8795", ksz8795},
--	{ }
--};
--MODULE_DEVICE_TABLE(spi, ks8995_id);
--
--static const struct of_device_id ks8995_spi_of_match[] = {
--	{ .compatible = "micrel,ks8995" },
--	{ .compatible = "micrel,ksz8864" },
--	{ .compatible = "micrel,ksz8795" },
--	{ },
--};
--MODULE_DEVICE_TABLE(of, ks8995_spi_of_match);
--
--static inline u8 get_chip_id(u8 val)
--{
--	return (val >> ID1_CHIPID_S) & ID1_CHIPID_M;
--}
--
--static inline u8 get_chip_rev(u8 val)
--{
--	return (val >> ID1_REVISION_S) & ID1_REVISION_M;
--}
--
--/* create_spi_cmd - create a chip specific SPI command header
-- * @ks: pointer to switch instance
-- * @cmd: SPI command for switch
-- * @address: register address for command
-- *
-- * Different chip families use different bit pattern to address the switches
-- * registers:
-- *
-- * KS8995: 8bit command + 8bit address
-- * KSZ8795: 3bit command + 12bit address + 1bit TR (?)
-- */
--static inline __be16 create_spi_cmd(struct ks8995_switch *ks, int cmd,
--				    unsigned address)
--{
--	u16 result = cmd;
--
--	/* make room for address (incl. address shift) */
--	result <<= ks->chip->addr_width + ks->chip->addr_shift;
--	/* add address */
--	result |= address << ks->chip->addr_shift;
--	/* SPI protocol needs big endian */
--	return cpu_to_be16(result);
--}
--/* ------------------------------------------------------------------------ */
--static int ks8995_read(struct ks8995_switch *ks, char *buf,
--		 unsigned offset, size_t count)
--{
--	__be16 cmd;
--	struct spi_transfer t[2];
--	struct spi_message m;
--	int err;
--
--	cmd = create_spi_cmd(ks, KS8995_CMD_READ, offset);
--	spi_message_init(&m);
--
--	memset(&t, 0, sizeof(t));
--
--	t[0].tx_buf = &cmd;
--	t[0].len = sizeof(cmd);
--	spi_message_add_tail(&t[0], &m);
--
--	t[1].rx_buf = buf;
--	t[1].len = count;
--	spi_message_add_tail(&t[1], &m);
--
--	mutex_lock(&ks->lock);
--	err = spi_sync(ks->spi, &m);
--	mutex_unlock(&ks->lock);
--
--	return err ? err : count;
--}
--
--static int ks8995_write(struct ks8995_switch *ks, char *buf,
--		 unsigned offset, size_t count)
--{
--	__be16 cmd;
--	struct spi_transfer t[2];
--	struct spi_message m;
--	int err;
--
--	cmd = create_spi_cmd(ks, KS8995_CMD_WRITE, offset);
--	spi_message_init(&m);
--
--	memset(&t, 0, sizeof(t));
--
--	t[0].tx_buf = &cmd;
--	t[0].len = sizeof(cmd);
--	spi_message_add_tail(&t[0], &m);
--
--	t[1].tx_buf = buf;
--	t[1].len = count;
--	spi_message_add_tail(&t[1], &m);
--
--	mutex_lock(&ks->lock);
--	err = spi_sync(ks->spi, &m);
--	mutex_unlock(&ks->lock);
--
--	return err ? err : count;
--}
--
--static inline int ks8995_read_reg(struct ks8995_switch *ks, u8 addr, u8 *buf)
--{
--	return ks8995_read(ks, buf, addr, 1) != 1;
--}
--
--static inline int ks8995_write_reg(struct ks8995_switch *ks, u8 addr, u8 val)
--{
--	char buf = val;
--
--	return ks8995_write(ks, &buf, addr, 1) != 1;
--}
--
--/* ------------------------------------------------------------------------ */
--
--static int ks8995_stop(struct ks8995_switch *ks)
--{
--	return ks8995_write_reg(ks, KS8995_REG_ID1, 0);
--}
--
--static int ks8995_start(struct ks8995_switch *ks)
--{
--	return ks8995_write_reg(ks, KS8995_REG_ID1, 1);
--}
--
--static int ks8995_reset(struct ks8995_switch *ks)
--{
--	int err;
--
--	err = ks8995_stop(ks);
--	if (err)
--		return err;
--
--	udelay(KS8995_RESET_DELAY);
--
--	return ks8995_start(ks);
--}
--
--/* ks8995_get_revision - get chip revision
-- * @ks: pointer to switch instance
-- *
-- * Verify chip family and id and get chip revision.
-- */
--static int ks8995_get_revision(struct ks8995_switch *ks)
--{
--	int err;
--	u8 id0, id1, ksz8864_id;
--
--	/* read family id */
--	err = ks8995_read_reg(ks, KS8995_REG_ID0, &id0);
--	if (err) {
--		err = -EIO;
--		goto err_out;
--	}
--
--	/* verify family id */
--	if (id0 != ks->chip->family_id) {
--		dev_err(&ks->spi->dev, "chip family id mismatch: expected 0x%02x but 0x%02x read\n",
--			ks->chip->family_id, id0);
--		err = -ENODEV;
--		goto err_out;
--	}
--
--	switch (ks->chip->family_id) {
--	case FAMILY_KS8995:
--		/* try reading chip id at CHIP ID1 */
--		err = ks8995_read_reg(ks, KS8995_REG_ID1, &id1);
--		if (err) {
--			err = -EIO;
--			goto err_out;
--		}
--
--		/* verify chip id */
--		if ((get_chip_id(id1) == CHIPID_M) &&
--		    (get_chip_id(id1) == ks->chip->chip_id)) {
--			/* KS8995MA */
--			ks->revision_id = get_chip_rev(id1);
--		} else if (get_chip_id(id1) != CHIPID_M) {
--			/* KSZ8864RMN */
--			err = ks8995_read_reg(ks, KS8995_REG_ID1, &ksz8864_id);
--			if (err) {
--				err = -EIO;
--				goto err_out;
--			}
--
--			if ((ksz8864_id & 0x80) &&
--			    (ks->chip->chip_id == KSZ8864_CHIP_ID)) {
--				ks->revision_id = get_chip_rev(id1);
--			}
--
--		} else {
--			dev_err(&ks->spi->dev, "unsupported chip id for KS8995 family: 0x%02x\n",
--				id1);
--			err = -ENODEV;
--		}
--		break;
--	case FAMILY_KSZ8795:
--		/* try reading chip id at CHIP ID1 */
--		err = ks8995_read_reg(ks, KS8995_REG_ID1, &id1);
--		if (err) {
--			err = -EIO;
--			goto err_out;
--		}
--
--		if (get_chip_id(id1) == ks->chip->chip_id) {
--			ks->revision_id = get_chip_rev(id1);
--		} else {
--			dev_err(&ks->spi->dev, "unsupported chip id for KSZ8795 family: 0x%02x\n",
--				id1);
--			err = -ENODEV;
--		}
--		break;
--	default:
--		dev_err(&ks->spi->dev, "unsupported family id: 0x%02x\n", id0);
--		err = -ENODEV;
--		break;
--	}
--err_out:
--	return err;
--}
--
--static int ks8995_check_config(struct ks8995_switch *ks)
--{
--	int ret;
--	u8 val;
--
--	ret = ks8995_read_reg(ks, KS8995_REG_GC0, &val);
--	if (ret) {
--		dev_err(ks->dev, "failed to read KS8995_REG_GC0\n");
--		return ret;
--	}
--
--	dev_dbg(ks->dev, "port 5 PHY %senabled\n",
--		(val & KS8995_GC0_P5_PHY) ? "" : "not ");
--
--	val |= KS8995_GC0_P5_PHY;
--	ret = ks8995_write_reg(ks, KS8995_REG_GC0, val);
--	if (ret)
--		dev_err(ks->dev, "failed to set KS8995_REG_GC0\n");
--
--	dev_dbg(ks->dev, "set KS8995_REG_GC0 to 0x%02x\n", val);
--
--	return 0;
--}
--
--static void
--ks8995_mac_config(struct phylink_config *config, unsigned int mode,
--		  const struct phylink_link_state *state)
--{
--}
--
--static void
--ks8995_mac_link_up(struct phylink_config *config, struct phy_device *phydev,
--		   unsigned int mode, phy_interface_t interface,
--		   int speed, int duplex, bool tx_pause, bool rx_pause)
--{
--	struct dsa_port *dp = dsa_phylink_to_port(config);
--	struct ks8995_switch *ks = dp->ds->priv;
--	int port = dp->index;
--	int ret;
--	u8 val;
--
--	/* Allow forcing the mode on the fixed CPU port, no autonegotiation.
--	 * We assume autonegotiation works on the PHY-facing ports.
--	 */
--	if (port != KS8995_CPU_PORT)
--		return;
--
--	dev_dbg(ks->dev, "MAC link up on CPU port (%d)\n", port);
--
--	ret = ks8995_read_reg(ks, KS8995_REG_GC4, &val);
--	if (ret) {
--		dev_err(ks->dev, "failed to read KS8995_REG_GC4\n");
--		return;
--	}
--
--	/* Conjure port config */
--	switch (speed) {
--	case SPEED_10:
--		dev_dbg(ks->dev, "set switch MII to 100Mbit mode\n");
--		val |= KS8995_GC4_10BT;
--		break;
--	case SPEED_100:
--	default:
--		dev_dbg(ks->dev, "set switch MII to 100Mbit mode\n");
--		val &= ~KS8995_GC4_10BT;
--		break;
--	}
--
--	if (duplex == DUPLEX_HALF) {
--		dev_dbg(ks->dev, "set switch MII to half duplex\n");
--		val |= KS8995_GC4_MII_HD;
--	} else {
--		dev_dbg(ks->dev, "set switch MII to full duplex\n");
--		val &= ~KS8995_GC4_MII_HD;
--	}
--
--	dev_dbg(ks->dev, "set KS8995_REG_GC4 to %02x\n", val);
--
--	/* Enable the CPU port */
--	ret = ks8995_write_reg(ks, KS8995_REG_GC4, val);
--	if (ret)
--		dev_err(ks->dev, "failed to set KS8995_REG_GC4\n");
--}
--
--static void
--ks8995_mac_link_down(struct phylink_config *config, unsigned int mode,
--		     phy_interface_t interface)
--{
--	struct dsa_port *dp = dsa_phylink_to_port(config);
--	struct ks8995_switch *ks = dp->ds->priv;
--	int port = dp->index;
--
--	if (port != KS8995_CPU_PORT)
--		return;
--
--	dev_dbg(ks->dev, "MAC link down on CPU port (%d)\n", port);
--
--	/* Disable the CPU port */
--}
--
--static const struct phylink_mac_ops ks8995_phylink_mac_ops = {
--	.mac_config = ks8995_mac_config,
--	.mac_link_up = ks8995_mac_link_up,
--	.mac_link_down = ks8995_mac_link_down,
--};
--
--static enum
--dsa_tag_protocol ks8995_get_tag_protocol(struct dsa_switch *ds,
--					 int port,
--					 enum dsa_tag_protocol mp)
--{
--	/* This switch actually uses the 6 byte KS8995 protocol */
--	return DSA_TAG_PROTO_NONE;
--}
--
--static int ks8995_setup(struct dsa_switch *ds)
--{
--	return 0;
--}
--
--static int ks8995_port_enable(struct dsa_switch *ds, int port,
--			      struct phy_device *phy)
--{
--	struct ks8995_switch *ks = ds->priv;
--
--	dev_dbg(ks->dev, "enable port %d\n", port);
--
--	return 0;
--}
--
--static void ks8995_port_disable(struct dsa_switch *ds, int port)
--{
--	struct ks8995_switch *ks = ds->priv;
--
--	dev_dbg(ks->dev, "disable port %d\n", port);
--}
--
--static int ks8995_port_pre_bridge_flags(struct dsa_switch *ds, int port,
--					struct switchdev_brport_flags flags,
--					struct netlink_ext_ack *extack)
--{
--	/* We support enabling/disabling learning */
--	if (flags.mask & ~(BR_LEARNING))
--		return -EINVAL;
--
--	return 0;
--}
--
--static int ks8995_port_bridge_flags(struct dsa_switch *ds, int port,
--				    struct switchdev_brport_flags flags,
--				    struct netlink_ext_ack *extack)
--{
--	struct ks8995_switch *ks = ds->priv;
--	int ret;
--	u8 val;
--
--	if (flags.mask & BR_LEARNING) {
--		ret = ks8995_read_reg(ks, KS8995_REG_PC(port, KS8995_REG_PC2), &val);
--		if (ret) {
--			dev_err(ks->dev, "failed to read KS8995_REG_PC2 on port %d\n", port);
--			return ret;
--		}
--
--		if (flags.val & BR_LEARNING)
--			val &= ~KS8995_PC2_LEARN_DIS;
--		else
--			val |= KS8995_PC2_LEARN_DIS;
--
--		ret = ks8995_write_reg(ks, KS8995_REG_PC(port, KS8995_REG_PC2), val);
--		if (ret) {
--			dev_err(ks->dev, "failed to write KS8995_REG_PC2 on port %d\n", port);
--			return ret;
--		}
--	}
--
--	return 0;
--}
--
--static void ks8995_port_stp_state_set(struct dsa_switch *ds, int port, u8 state)
--{
--	struct ks8995_switch *ks = ds->priv;
--	int ret;
--	u8 val;
--
--	ret = ks8995_read_reg(ks, KS8995_REG_PC(port, KS8995_REG_PC2), &val);
--	if (ret) {
--		dev_err(ks->dev, "failed to read KS8995_REG_PC2 on port %d\n", port);
--		return;
--	}
--
--	/* Set the bits for the different STP states in accordance with
--	 * the datasheet, pages 36-37 "Spanning tree support".
--	 */
--	switch (state) {
--	case BR_STATE_DISABLED:
--	case BR_STATE_BLOCKING:
--	case BR_STATE_LISTENING:
--		val &= ~KS8995_PC2_TXEN;
--		val &= ~KS8995_PC2_RXEN;
--		val |= KS8995_PC2_LEARN_DIS;
--		break;
--	case BR_STATE_LEARNING:
--		val &= ~KS8995_PC2_TXEN;
--		val &= ~KS8995_PC2_RXEN;
--		val &= ~KS8995_PC2_LEARN_DIS;
--		break;
--	case BR_STATE_FORWARDING:
--		val |= KS8995_PC2_TXEN;
--		val |= KS8995_PC2_RXEN;
--		val &= ~KS8995_PC2_LEARN_DIS;
--		break;
--	default:
--		dev_err(ks->dev, "unknown bridge state requested\n");
--		return;
--	}
--
--	ret = ks8995_write_reg(ks, KS8995_REG_PC(port, KS8995_REG_PC2), val);
--	if (ret) {
--		dev_err(ks->dev, "failed to write KS8995_REG_PC2 on port %d\n", port);
--		return;
--	}
--
--	dev_dbg(ks->dev, "set KS8995_REG_PC2 for port %d to %02x\n", port, val);
--}
--
--static void ks8995_phylink_get_caps(struct dsa_switch *dsa, int port,
--				    struct phylink_config *config)
--{
--	unsigned long *interfaces = config->supported_interfaces;
--
--	if (port == KS8995_CPU_PORT)
--		__set_bit(PHY_INTERFACE_MODE_MII, interfaces);
--
--	if (port <= 3) {
--		/* Internal PHYs */
--		__set_bit(PHY_INTERFACE_MODE_INTERNAL, interfaces);
--		/* phylib default */
--		__set_bit(PHY_INTERFACE_MODE_MII, interfaces);
--	}
--
--	config->mac_capabilities = MAC_SYM_PAUSE | MAC_10 | MAC_100;
--}
--
--/* Huge packet support up to 1916 byte packages "inclusive"
-- * which means that tags are included. If the bit is not set
-- * it is 1536 bytes "inclusive". We present the length without
-- * tags or ethernet headers. The setting affects all ports.
-- */
--static int ks8995_change_mtu(struct dsa_switch *ds, int port, int new_mtu)
--{
--	struct ks8995_switch *ks = ds->priv;
--	unsigned int max_mtu;
--	int ret;
--	u8 val;
--	int i;
--
--	ks->max_mtu[port] = new_mtu;
--
--	/* Roof out the MTU for the entire switch to the greatest
--	 * common denominator: the biggest set for any one port will
--	 * be the biggest MTU for the switch.
--	 */
--	max_mtu = ETH_DATA_LEN;
--	for (i = 0; i < KS8995_NUM_PORTS; i++) {
--		if (ks->max_mtu[i] > max_mtu)
--			max_mtu = ks->max_mtu[i];
--	}
--
--	/* Translate to layer 2 size.
--	 * Add ethernet and (possible) VLAN headers, and checksum to the size.
--	 * For ETH_DATA_LEN (1500 bytes) this will add up to 1522 bytes.
--	 */
--	max_mtu += VLAN_ETH_HLEN;
--	max_mtu += ETH_FCS_LEN;
--
--	ret = ks8995_read_reg(ks, KS8995_REG_GC2, &val);
--	if (ret) {
--		dev_err(ks->dev, "failed to read KS8995_REG_GC2\n");
--		return ret;
--	}
--
--	if (max_mtu <= 1522) {
--		val &= ~KS8995_GC2_HUGE;
--		val &= ~KS8995_GC2_LEGAL;
--	} else if (max_mtu > 1522 && max_mtu <= 1536) {
--		/* This accepts packets up to 1536 bytes */
--		val &= ~KS8995_GC2_HUGE;
--		val |= KS8995_GC2_LEGAL;
--	} else {
--		/* This accepts packets up to 1916 bytes */
--		val |= KS8995_GC2_HUGE;
--		val |= KS8995_GC2_LEGAL;
--	}
--
--	dev_dbg(ks->dev, "new max MTU %d bytes (inclusive)\n", max_mtu);
--
--	ret = ks8995_write_reg(ks, KS8995_REG_GC2, val);
--	if (ret)
--		dev_err(ks->dev, "failed to set KS8995_REG_GC2\n");
--
--	return ret;
--}
--
--static int ks8995_get_max_mtu(struct dsa_switch *ds, int port)
--{
--	return 1916 - ETH_HLEN - ETH_FCS_LEN;
--}
--
--static const struct dsa_switch_ops ks8995_ds_ops = {
--	.get_tag_protocol = ks8995_get_tag_protocol,
--	.setup = ks8995_setup,
--	.port_pre_bridge_flags = ks8995_port_pre_bridge_flags,
--	.port_bridge_flags = ks8995_port_bridge_flags,
--	.port_enable = ks8995_port_enable,
--	.port_disable = ks8995_port_disable,
--	.port_stp_state_set = ks8995_port_stp_state_set,
--	.port_change_mtu = ks8995_change_mtu,
--	.port_max_mtu = ks8995_get_max_mtu,
--	.phylink_get_caps = ks8995_phylink_get_caps,
--};
--
--/* ------------------------------------------------------------------------ */
--static int ks8995_probe(struct spi_device *spi)
--{
--	struct ks8995_switch *ks;
--	int err;
--	int variant = spi_get_device_id(spi)->driver_data;
--
--	if (variant >= max_variant) {
--		dev_err(&spi->dev, "bad chip variant %d\n", variant);
--		return -ENODEV;
--	}
--
--	ks = devm_kzalloc(&spi->dev, sizeof(*ks), GFP_KERNEL);
--	if (!ks)
--		return -ENOMEM;
--
--	mutex_init(&ks->lock);
--	ks->spi = spi;
--	ks->dev = &spi->dev;
--	ks->chip = &ks8995_chip[variant];
--
--	ks->reset_gpio = devm_gpiod_get_optional(&spi->dev, "reset",
--						 GPIOD_OUT_HIGH);
--	err = PTR_ERR_OR_ZERO(ks->reset_gpio);
--	if (err) {
--		dev_err(&spi->dev,
--			"failed to get reset gpio: %d\n", err);
--		return err;
--	}
--
--	err = gpiod_set_consumer_name(ks->reset_gpio, "switch-reset");
--	if (err)
--		return err;
--
--	if (ks->reset_gpio) {
--		/*
--		 * If a reset line was obtained, wait for 100us after
--		 * de-asserting RESET before accessing any registers, see
--		 * the KS8995MA datasheet, page 44.
--		 */
--		gpiod_set_value_cansleep(ks->reset_gpio, 0);
--		udelay(100);
--	}
--
--	spi_set_drvdata(spi, ks);
--
--	spi->mode = SPI_MODE_0;
--	spi->bits_per_word = 8;
--	err = spi_setup(spi);
--	if (err) {
--		dev_err(&spi->dev, "spi_setup failed, err=%d\n", err);
--		return err;
--	}
--
--	err = ks8995_get_revision(ks);
--	if (err)
--		return err;
--
--	err = ks8995_reset(ks);
--	if (err)
--		return err;
--
--	dev_info(&spi->dev, "%s device found, Chip ID:%x, Revision:%x\n",
--		 ks->chip->name, ks->chip->chip_id, ks->revision_id);
--
--	err = ks8995_check_config(ks);
--	if (err)
--		return err;
--
--	ks->ds = devm_kzalloc(&spi->dev, sizeof(*ks->ds), GFP_KERNEL);
--	if (!ks->ds)
--		return -ENOMEM;
--
--	ks->ds->dev = &spi->dev;
--	ks->ds->num_ports = KS8995_NUM_PORTS;
--	ks->ds->ops = &ks8995_ds_ops;
--	ks->ds->phylink_mac_ops = &ks8995_phylink_mac_ops;
--	ks->ds->priv = ks;
--
--	err = dsa_register_switch(ks->ds);
--	if (err)
--		return dev_err_probe(&spi->dev, err,
--				     "unable to register DSA switch\n");
--
--	return 0;
--}
--
--static void ks8995_remove(struct spi_device *spi)
--{
--	struct ks8995_switch *ks = spi_get_drvdata(spi);
--
--	dsa_unregister_switch(ks->ds);
--	/* assert reset */
--	gpiod_set_value_cansleep(ks->reset_gpio, 1);
--}
--
--/* ------------------------------------------------------------------------ */
--static struct spi_driver ks8995_driver = {
--	.driver = {
--		.name	    = "spi-ks8995",
--		.of_match_table = ks8995_spi_of_match,
--	},
--	.probe	  = ks8995_probe,
--	.remove	  = ks8995_remove,
--	.id_table = ks8995_id,
--};
--
--module_spi_driver(ks8995_driver);
--
--MODULE_DESCRIPTION(DRV_DESC);
--MODULE_VERSION(DRV_VERSION);
--MODULE_AUTHOR("Gabor Juhos <juhosg at openwrt.org>");
--MODULE_LICENSE("GPL v2");
+ MICROCHIP LAN743X ETHERNET DRIVER
+diff --git a/include/net/dsa.h b/include/net/dsa.h
+index 7507d632e7c6..5d12191b6f6f 100644
+--- a/include/net/dsa.h
++++ b/include/net/dsa.h
+@@ -61,6 +61,7 @@ struct tc_action;
+ #define DSA_TAG_PROTO_NETC_VALUE		33
+ #define DSA_TAG_PROTO_KSZ8463_VALUE		34
+ #define DSA_TAG_PROTO_MT7628_VALUE		35
++#define DSA_TAG_PROTO_KS8995_VALUE		36
+ 
+ enum dsa_tag_protocol {
+ 	DSA_TAG_PROTO_NONE		= DSA_TAG_PROTO_NONE_VALUE,
+@@ -99,6 +100,7 @@ enum dsa_tag_protocol {
+ 	DSA_TAG_PROTO_NETC		= DSA_TAG_PROTO_NETC_VALUE,
+ 	DSA_TAG_PROTO_KSZ8463		= DSA_TAG_PROTO_KSZ8463_VALUE,
+ 	DSA_TAG_PROTO_MT7628		= DSA_TAG_PROTO_MT7628_VALUE,
++	DSA_TAG_PROTO_KS8995		= DSA_TAG_PROTO_KS8995_VALUE,
+ };
+ 
+ struct dsa_switch;
+diff --git a/net/dsa/Kconfig b/net/dsa/Kconfig
+index 23b4b74004ed..4f44bf3ede23 100644
+--- a/net/dsa/Kconfig
++++ b/net/dsa/Kconfig
+@@ -125,6 +125,12 @@ config NET_DSA_TAG_MXL_GSW1XX
+ 	  Say Y or M if you want to enable support for tagging frames for
+ 	  MaxLinear GSW1xx switches.
+ 
++config NET_DSA_TAG_KS8995
++	tristate "Tag driver for Micrel KS8995 switch"
++	help
++	  Say Y if you want to enable support for tagging frames for the
++	  Micrel KS8995 switch.
++
+ config NET_DSA_TAG_KSZ
+ 	tristate "Tag driver for Microchip 8795/937x/9477/9893 families of switches"
+ 	help
+diff --git a/net/dsa/Makefile b/net/dsa/Makefile
+index d15bcf5c68f0..1f9cc30e9988 100644
+--- a/net/dsa/Makefile
++++ b/net/dsa/Makefile
+@@ -25,6 +25,7 @@ obj-$(CONFIG_NET_DSA_TAG_BRCM_COMMON) += tag_brcm.o
+ obj-$(CONFIG_NET_DSA_TAG_DSA_COMMON) += tag_dsa.o
+ obj-$(CONFIG_NET_DSA_TAG_GSWIP) += tag_gswip.o
+ obj-$(CONFIG_NET_DSA_TAG_HELLCREEK) += tag_hellcreek.o
++obj-$(CONFIG_NET_DSA_TAG_KS8995) += tag_ks8995.o
+ obj-$(CONFIG_NET_DSA_TAG_KSZ) += tag_ksz.o
+ obj-$(CONFIG_NET_DSA_TAG_LAN9303) += tag_lan9303.o
+ obj-$(CONFIG_NET_DSA_TAG_MT7628) += tag_mt7628.o
+diff --git a/net/dsa/tag_ks8995.c b/net/dsa/tag_ks8995.c
+new file mode 100644
+index 000000000000..f011bf01845e
+--- /dev/null
++++ b/net/dsa/tag_ks8995.c
+@@ -0,0 +1,180 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2026 Linus Walleij <linusw@kernel.org>
++ */
++#include <linux/bitfield.h>
++#include <linux/etherdevice.h>
++#include <linux/log2.h>
++#include <linux/list.h>
++#include <linux/net.h>
++#include <linux/slab.h>
++
++#include "tag.h"
++
++/* The Micrel KS8995XA / Microchip KSZ8995XA Special Tag Packet ID (STPID)
++ * pushes its tag in a modified VLAN (802.1Q) tag.
++ * -----------------------------------------------------------
++ * | MAC DA | MAC SA | 2 bytes tag | 2 bytes TCI | EtherType |
++ * -----------------------------------------------------------
++ * The tag is: 0x8100 |= BIT(port), ports 0,1,2,3
++ */
++
++#define KS8995_NAME "ks8995"
++
++#define KS8995_TAG_LEN		VLAN_HLEN
++/* Reserve room for the switch tag and a hardware-accelerated VLAN tag. */
++#define KS8995_NEEDED_HEADROOM	(KS8995_TAG_LEN + VLAN_HLEN)
++
++#define KS8995M_STPID_STD	GENMASK(15, 4)
++#define KS8995M_STPID_PORTMASK	GENMASK(3, 0)
++#define KS8995M_STPID(portmask)	htons(ETH_P_8021Q | FIELD_PREP(KS8995M_STPID_PORTMASK, portmask))
++
++static struct sk_buff *ks8995_xmit(struct sk_buff *skb, struct net_device *dev)
++{
++	struct vlan_ethhdr *hdr;
++	u16 portmask;
++
++	/* VLAN insertion requires a complete, linear Ethernet header. */
++	if (unlikely(!pskb_may_pull(skb, ETH_HLEN))) {
++		kfree_skb(skb);
++		return NULL;
++	}
++
++	/* Prepare the special KS8995 tags */
++	portmask = dsa_xmit_port_mask(skb, dev);
++
++	/* The switch expects the special tag at offset 12. Move any hardware
++	 * accelerated VLAN tag into the payload so the conduit cannot insert
++	 * it outside the special tag.
++	 */
++	if (unlikely(skb_vlan_tag_present(skb))) {
++		skb = __vlan_hwaccel_push_inside(skb);
++		if (!skb)
++			return NULL;
++	}
++
++	/* Always add a distinct outer tag. The user port removes this field on
++	 * egress, so reusing an existing 802.1Q tag would consume that VLAN tag.
++	 */
++	skb = vlan_insert_tag(skb, KS8995M_STPID(portmask), 0);
++	/* vlan_insert_tag() drops the skb on failure */
++	if (!skb)
++		return NULL;
++	hdr = skb_vlan_eth_hdr(skb);
++	netdev_dbg(dev, "%s: inserted VLAN TAG %04x TCI %04x\n",
++		   __func__, ntohs(hdr->h_vlan_proto),
++		   ntohs(hdr->h_vlan_TCI));
++
++	return skb;
++}
++
++static struct sk_buff *ks8995_rcv(struct sk_buff *skb, struct net_device *dev)
++{
++	int portmask;
++	int port;
++	u16 etype;
++
++	/* The special tag may be in the packet or VLAN metadata. In either
++	 * case, its TPID must retain the source-port bits.
++	 *
++	 * Read the in-band TPID directly because skb->protocol contains
++	 * ETH_P_XDSA.
++	 */
++	if (skb_vlan_tag_present(skb))
++		etype = ntohs(skb->vlan_proto);
++	else
++		etype = ntohs(*(__be16 *)dsa_etype_header_pos_rx(skb));
++	if ((etype & KS8995M_STPID_STD) != ETH_P_8021Q) {
++		netdev_dbg(dev, "%s: dropped ethertype 0x%04x\n",
++			   __func__, etype);
++		kfree_skb(skb);
++		return NULL;
++	}
++
++	portmask = FIELD_GET(KS8995M_STPID_PORTMASK, etype);
++	if (unlikely(!is_power_of_2(portmask))) {
++		netdev_dbg(dev, "%s: dropped invalid port mask 0x%04x\n",
++			   __func__, portmask);
++		kfree_skb(skb);
++		return NULL;
++	}
++	port = ilog2(portmask);
++
++	netdev_dbg(dev, "%s: received ethertype %04x\n",
++		   __func__, etype);
++
++	/* Move an in-band special tag into VLAN metadata. If already
++	 * offloaded, its TPID was validated above.
++	 */
++	if (!skb_vlan_tag_present(skb)) {
++		skb = skb_vlan_untag(skb);
++		if (!skb) {
++			/* skb_vlan_untag drops the skb on failure */
++			if (net_ratelimit())
++				netdev_err(dev, "%s: unable to untag skb\n", __func__);
++			return NULL;
++		}
++	}
++
++	netdev_dbg(dev, "%s: etype %04x portmask %04x (%d)\n",
++		   __func__, etype, portmask, port);
++	skb->dev = dsa_conduit_find_user(dev, 0, port);
++	if (!skb->dev) {
++		kfree_skb(skb);
++		return NULL;
++	}
++
++	/* The special tag's TCI is now in the hardware-accelerated VLAN
++	 * metadata. The switch preserves the TCI of tagged
++	 * frames, but inserts the ingress port's default tag for untagged frames.
++	 * Since the driver programs the default tag to 0, a zero TCI identifies
++	 * an originally untagged frame. Preserve every non-zero TCI as an
++	 * 802.1Q tag, including VID 0 frames with PCP or DEI set.
++	 */
++	if (!skb->vlan_tci) {
++		netdev_dbg(dev, "%s: clear VLAN tag from frame\n", __func__);
++		__vlan_hwaccel_clear_tag(skb);
++	} else {
++		skb->vlan_proto = htons(ETH_P_8021Q);
++		netdev_dbg(dev, "%s: vlan_tci = 0x%04x VLAN frame\n",
++			   __func__, skb->vlan_tci);
++	}
++
++	dsa_default_offload_fwd_mark(skb);
++
++	return skb;
++}
++
++static void ks8995_flow_dissect(const struct sk_buff *skb, __be16 *proto,
++				int *offset)
++{
++	const __be16 *encap_proto;
++	__be16 buffer;
++
++	*proto = 0;
++	*offset = 0;
++
++	/* Extra TX headroom does not increase the in-band RX tag length. */
++	encap_proto = skb_header_pointer(skb, KS8995_TAG_LEN - sizeof(buffer),
++					 sizeof(buffer), &buffer);
++	if (!encap_proto)
++		return;
++
++	*proto = *encap_proto;
++	*offset = KS8995_TAG_LEN;
++}
++
++static const struct dsa_device_ops ks8995_netdev_ops = {
++	.name = KS8995_NAME,
++	.proto	= DSA_TAG_PROTO_KS8995,
++	.xmit = ks8995_xmit,
++	.rcv = ks8995_rcv,
++	.flow_dissect = ks8995_flow_dissect,
++	.needed_headroom = KS8995_NEEDED_HEADROOM,
++};
++
++MODULE_DESCRIPTION("DSA tag driver for Micrel KS8995 family of switches");
++MODULE_LICENSE("GPL");
++MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_KS8995, KS8995_NAME);
++
++module_dsa_tag_driver(ks8995_netdev_ops);
 
 -- 
 2.55.0
