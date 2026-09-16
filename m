@@ -1,63 +1,63 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED794B0E32
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 16:43:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E31D4B8271
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 16:43:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789577036; cv=none; b=u5NIm9V4y4DcavBc/e5JFnMRrSnAHJuY1vaCqf+F3TvWQ5r6QfftSzBBRGN4/pxB/C3n0PUeacwwHPXY8Z0gmO1lSBnQVFI8KObhPxyWDIg05BouSsdJzUsYQjhQBdvHhSMIH2Isp45+elTie7g7FMPAYHp3u3DNNj1OfOj6/RA=
+	t=1789577043; cv=none; b=iEADAOSaK2ZyIJedVzr1b7sYRrRN+Qpcqz+JFOB+vIf1A0+z82LM9OsoAvuyVh6ZfPdPshwkbdRPu3cZH0qw0aHVJCOogBjGQjxuAJk5cDjNaTeSx66hhvDhHODG2TZxRzFUqwd5vYlF9sz4ZQgfg0L1QWu3Zs6OuShFbRoT9Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789577036; c=relaxed/simple;
-	bh=YuVnVbkxesHUrvTiDDRRP7qicf2K8BySrtV+L0OtK/E=;
+	s=arc-20240116; t=1789577043; c=relaxed/simple;
+	bh=oxQfveLbn2/DQNzTnqZa8s/d01tWMQISQrNwQD1mY0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ojv3ar2UIV4VN4PEiCrxZUvXasv49W0znp5c+SjUXqk6kafBFu9stAmwQREdrY3N3BamaJN5IowCFKLAh312D4UCp+dXGGcma1o7+3pNGXVbxFJ0OAn6SJjhk/TufhmKB+wRXIv2YxHQSlYVBxZLx4v0QCdAlopWYI0xpeCh7YQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hhN0a1Hh; arc=none smtp.client-ip=74.125.228.12
+	 MIME-Version; b=tZFPYf1W6IPFR8/IGyChXImk5eDMRE3k+YXKxT01WfEP0iXiabTV3HQLt2yir/mG2lNAQNDeosxxdNdSHfaqDYtn1t07ADH47qRkwH0NTHQoRSm0ppNo8yxUOnYEp8Tkz/14KB3HH5Dz4QHWwvqK3glU0IwnwzvFn36ZP6FmPwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d3h9qAUz; arc=none smtp.client-ip=209.85.215.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hhN0a1Hh"
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cea4ae2cso997863a12.0
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 09:43:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d3h9qAUz"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-cc502a179c1so1350422a12.1
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 09:43:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789577015; x=1790181815; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789577025; x=1790181825; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=nUdkePa1f6mE21SLiU0MIHgY8wUKKU9ZP9pTIcp6WpA=;
-        b=hhN0a1HhHOvtP/in0VooKFYuw15/0BMdFcO5nuDobVqnaET8L9Z3HSIuOTtTJxKtPe
-         Y1vJR53kCQIdEYnXT1sNaRhjAygsEDX85ol2Y6iGl2ypsx7Qpq+VdNyPlIVI8CKs32pW
-         wmjM/MljKrDx6mPlaG2yc+tEfsBhXlXvOTdwF84SQbgCOCmIjyJP6RQWoBOQfdWidFu2
-         bvF5RmQweATBXVencG+hzlp1vSKRwPJAlQ15jphsJsXmSzjKqoy40VZMc4QXHeqv/mJE
-         jfHocyxG+4zt6uJBeTB0HTzwvPi4B8XOQuyrFkd56SAMP0W2apbablmrcgbhj5nEjjN8
-         wT1A==
+        bh=tuN8aoHSWEa5dHkvtDyZOdX8Adpy+bSIBgKElfCoi4g=;
+        b=d3h9qAUz9V4eGZ7hZevVjwLTRFqqxs1TmDZHHFAU8KYYu6l1IZ68oqfZyMUlWaM7cP
+         g71w6CX7nL3TRzBvXri3XOdBBN+JxlLpGJ4UWwQobBtFAl99V4TgZDPSeVrcbPN5vVBt
+         3L5IoQ5Pv+b5ulaRZkPxBPwRX51vX+0yoAOZWD5AyT8r6xq2T6aEiPVSRen/ZKItd6gF
+         ZJlHIi6K+2NUrThp1fNgrA+HmKbCS6ewQKr4RX11IOLGuhSG479yUUw0Eo+XP2gIY6vs
+         5av/FNDnC+DHdJMZYWVPXRcZO5ZxgXRhYX/ilQaFtVTKsQn7Dso5RBoEOFIIZW7oui//
+         qRCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789577015; x=1790181815;
+        d=1e100.net; s=20260707; t=1789577025; x=1790181825;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=nUdkePa1f6mE21SLiU0MIHgY8wUKKU9ZP9pTIcp6WpA=;
-        b=L2S5SI4EgCJHJSDuWLD+zepN8Gcc6vyfdEepC6kiV0nHwxSMAIdxaufbEbAIKtr75E
-         3WoBhQhgVyON6fbYEMJv0OLufHzYSvfKjQ9qCLJKiQiWbs61Ma6K2yQscdQXgUuV6OOt
-         rkXuS5U4QiAYOOzyxzZDU5o4/FUpV3XntWH6VO9tj5khgImKE2A7Djzso7OIEzfwEIG2
-         RY2U0eencWO+TRmaITZu7PlIR9y10PaLnTctZK66UYuYRfDqAKrg/EPA4yiQoB+6BiBj
-         +4zsfye3WHaVaryKFFAbGDFh3hTQ5/EekoPIaWbyDvVVfjdoZmd9CZv7vYGq+pFdiXnv
-         ClpA==
-X-Gm-Message-State: AFuF++nOHOxx+onujln6Wlwho/Z1HYEOf8tyR0Cjzt1FCstkBy3aSaf8
-	lSPyco3XezI8z/1GkRnAeG0e7AQwqLDBs0HTc+LZ+M3Kn1enW645EWSE4SgC6cx7LXQ=
-X-Gm-Gg: AYBFou3jIBbOS7+8ULH6zsOTulBXg5Bg9kHofkGiEbb8LL5zzxLFD5T5musONLirlHD
-	yi6WXBBZD1+6a9gvMbtFaI2y2rF43h9pJpUylJRH+DCIdnRg2ssT/PQHYcsxbpzA8dJ9DFp480u
-	u8qo+NriOUq0MX0jyDv3JjWR3+iVp4sndTdOzXh3qolWrF+8wSZmllDAF34Th9vdceG2y1kiJht
-	Hbd71YPWHK0xRg+Q9jBdGXnKhwCzY1YcV9cYnbo4bZSr5HBiC+3IiyAvWEQhKhE3KX1ikChdvxF
-	lXQo2ttbrkHVhNcnwJa+v1A/Hk0c5dadBlASncz6pee0EUxgkEu3BMEFVVmM+ygkWxecD/gcdOK
-	hanvldHqkgV+KD2p80MTdALiZwG6CgBgfCGMGBxlljJS39DYYg2sTwSSqDB6jUoO59SGxnLVg3l
-	oF+uECZHwiKrsayhu88LDRnB24EYpS2oLF3Ve38aUCUrA3aSxq4qsX4eF3u8bO7o+9aKGe+h5MN
-	DP5W6+Mk0sOXHFwvGe+aaAZUiZf0WMmlP8x
-X-Received: by 2002:a05:6a20:72a6:b0:3c3:7179:a640 with SMTP id adf61e73a8af0-3dd5f3c0a6cmr8204589637.3.1789577015271;
-        Wed, 16 Sep 2026 09:43:35 -0700 (PDT)
+        bh=tuN8aoHSWEa5dHkvtDyZOdX8Adpy+bSIBgKElfCoi4g=;
+        b=kEw9743pkbFzeUt3NwiHdaU4diYFb6VQeIS/lOhGAm5E6D4VurOMbgBCm2GRnKo5sL
+         i5qtgFJB9svrZC2Og5jTPTeFzmo2CoO/pLMR8Q+5HYyotkQ4Kfr7mod2pLbXH2kYLZlq
+         pz2rLiPHyk66Fl9YgP0fZ+Od/A9Dh1hLGQcH9OaXJaY9m6EAkEuM2lIx+LsuWmv95eWl
+         gK9Z8V4Om32PkuxKF0aY5jg7SGOTQ+tw2rqfRrQlxUMqi3qa5X9WAstM5mdnu3n2Isgr
+         tpNOUA7hVoFKjtmGpWFMnKaJTXXYQWtILGBEdNSd7jWG1/KMEdI4OLuL8T6mUWsZrjuW
+         Mf7g==
+X-Gm-Message-State: AFuF++kwr3KxUuPkMFDnbUOXeaR7DPC1U9/hVrS52VD/WcLtmMJ9ZdAa
+	jCZmLsic4zo/AIe9XtRsUtvNpckhRaslLGqCVf0zd+bLvvgUAl2RfFtOns3gve9mDms=
+X-Gm-Gg: AYBFou3bffSXHjlHjYQ7H4RZrC/d8A3YgCkce1vywcnCfkX9KQsy9lAtqbpR+WNQDO6
+	eNlvTNAS1mMiwmw6ofolfZy6Oez58uTieQQfh9NwFEPCMK3ISnoPPWT/pzUODQJFw6FkHmOzOcN
+	B+zYQNyL3B2zB0EbsyK01FetgphDWikXe2coG5CQwC6ufBcQFnldWS4vmumY+JnbU0UnNC+evuw
+	bvHmaipTV/IfUfAnWwz98BhnoHjztwMJITcqhPQXZparvIPsbUMMo3fg1jTKbp2RT3q7i7choDp
+	FGkwRyWYi83QXWi+WmaUAG6STPTZQeJiaRej9ggnSprsrPPDkCyjKEv4jxnTz4pqbm8A5Q03NfO
+	GGwzMEhEgvqAOoUdbeT8pqSKViqv3fuXO9BmN97WqsxqE5L7WTHnj7oSKWFPK0nWPJzpZWp6RyL
+	VIvFdNK52iJRJIFXHCuZ6AOJO138Yj24FzfrX1EQ53LHOMY2VbBxAASRHH/fegPpMGdEWPXRezr
+	Co9IyWuIJOh58qNrgdmHZB3Poqr92PBDol7Xg==
+X-Received: by 2002:a05:6a00:4099:b0:842:3c77:5996 with SMTP id d2e1a72fcca58-87341085fd4mr330193b3a.1.1789577025130;
+        Wed, 16 Sep 2026 09:43:45 -0700 (PDT)
 Received: from d.home.yangfl.dn42 ([2a09:bac5:661a:1232::1d0:c5])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc50acc757csm1902278a12.32.2026.09.16.09.43.31
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc50acc757csm1902278a12.32.2026.09.16.09.43.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 09:43:34 -0700 (PDT)
+        Wed, 16 Sep 2026 09:43:44 -0700 (PDT)
 From: David Yang <mmyangfl@gmail.com>
 To: netdev@vger.kernel.org
 Cc: David Yang <mmyangfl@gmail.com>,
@@ -69,9 +69,9 @@ Cc: David Yang <mmyangfl@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Russell King <linux@armlinux.org.uk>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 2/8] net: dsa: motorcomm: Split xMII and SERDES port masks
-Date: Thu, 17 Sep 2026 00:43:02 +0800
-Message-ID: <20260916164310.3168269-3-mmyangfl@gmail.com>
+Subject: [PATCH net-next v2 5/8] net: dsa: motorcomm: Introduce yt921x_speed
+Date: Thu, 17 Sep 2026 00:43:05 +0800
+Message-ID: <20260916164310.3168269-6-mmyangfl@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260916164310.3168269-1-mmyangfl@gmail.com>
 References: <20260916164310.3168269-1-mmyangfl@gmail.com>
@@ -83,139 +83,180 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Replace external_mask with xmii_mask and serdes_mask, and advertise the
-interface modes it actually supports.
-
-Also move struct yt921x_info into chip.h for future use.
+FIELD_PREP values cannot be used as case labels. Introduce enum for
+future use.
 
 Signed-off-by: David Yang <mmyangfl@gmail.com>
 ---
- drivers/net/dsa/motorcomm/chip.c | 39 ++++++++++++--------------------
- drivers/net/dsa/motorcomm/chip.h | 13 +++++++++++
- 2 files changed, 27 insertions(+), 25 deletions(-)
+ drivers/net/dsa/motorcomm/chip.c | 62 ++++----------------------------
+ drivers/net/dsa/motorcomm/chip.h | 43 ++++++++++++++--------
+ 2 files changed, 34 insertions(+), 71 deletions(-)
 
 diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-index 5acd7d27ff40..b527a9cfd3e8 100644
+index 3a8efffb3f97..aac550bb4f72 100644
 --- a/drivers/net/dsa/motorcomm/chip.c
 +++ b/drivers/net/dsa/motorcomm/chip.c
-@@ -96,53 +96,48 @@ static const struct yt921x_mib_desc yt921x_mib_descs[] = {
- 	MIB_DESC(1, YT921X_MIB_DATA_TX_OAM, "TxOAM"),
- };
+@@ -3771,29 +3771,15 @@ yt921x_port_up(struct yt921x_priv *priv, int port, unsigned int mode,
+ {
+ 	const struct yt921x_info *info = priv->info;
+ 	struct yt921x_port *pp = &priv->ports[port];
++	int ps = ethtool_speed_to_yt921x(speed);
+ 	u32 mask;
+ 	u32 ctrl;
+ 	int res;
  
--struct yt921x_info {
--	const char *name;
--	u16 major;
--	/* Unknown, seems to be plain enumeration */
--	u8 mode;
--	u8 extmode;
--	/* Ports with integral GbE PHYs, not including MCU Port 10 */
--	u16 internal_mask;
--	/* TODO: see comments in yt921x_dsa_phylink_get_caps() */
--	u16 external_mask;
--};
--
- static const struct yt921x_info yt921x_infos[] = {
- 	{
- 		"YT9215SC", YT9215_MAJOR, 1, 0,
- 		GENMASK(4, 0),
-+		BIT(9),
- 		BIT(8) | BIT(9),
- 	},
- 	{
- 		"YT9215S", YT9215_MAJOR, 2, 0,
- 		GENMASK(4, 0),
--		BIT(8) | BIT(9),
-+		BIT(9),
-+		BIT(8),
- 	},
- 	{
- 		"YT9215RB", YT9215_MAJOR, 3, 0,
- 		GENMASK(4, 0),
- 		BIT(8) | BIT(9),
-+		0,
- 	},
- 	{
- 		"YT9214NB", YT9215_MAJOR, 3, 2,
- 		BIT(1) | BIT(3),
--		BIT(8) | BIT(9),
-+		BIT(9),
-+		BIT(8),
- 	},
- 	{
- 		"YT9213NB", YT9215_MAJOR, 3, 3,
- 		BIT(1) | BIT(3),
- 		BIT(9),
-+		BIT(9),
- 	},
- 	{
- 		"YT9218N", YT9218_MAJOR, 0, 0,
- 		GENMASK(7, 0),
- 		0,
-+		0,
- 	},
- 	{
- 		"YT9218MB", YT9218_MAJOR, 1, 0,
- 		GENMASK(7, 0),
- 		BIT(8) | BIT(9),
-+		BIT(8) | BIT(9),
- 	},
- 	{}
- };
-@@ -4021,15 +4016,10 @@ yt921x_dsa_phylink_get_caps(struct dsa_switch *ds, int port,
- 		 */
- 		__set_bit(PHY_INTERFACE_MODE_INTERNAL,
- 			  config->supported_interfaces);
--	} else if (info->external_mask & BIT(port)) {
--		/* TODO: external ports may support SERDES only, XMII only, or
--		 * SERDES + XMII depending on the chip. However, we can't get
--		 * the accurate config table due to lack of document, thus
--		 * we simply declare SERDES + XMII and rely on the correctness
--		 * of devicetree for now.
--		 */
-+		return;
-+	}
+-	switch (speed) {
+-	case SPEED_10:
+-		ctrl = YT921X_PORT_SPEED_10;
+-		break;
+-	case SPEED_100:
+-		ctrl = YT921X_PORT_SPEED_100;
+-		break;
+-	case SPEED_1000:
+-		ctrl = YT921X_PORT_SPEED_1000;
+-		break;
+-	case SPEED_2500:
+-		ctrl = YT921X_PORT_SPEED_2500;
+-		break;
+-	case SPEED_10000:
+-		ctrl = YT921X_PORT_SPEED_10000;
+-		break;
+-	default:
++	if (ps == YT921X_SPEED_NUM)
+ 		return -EINVAL;
+-	}
++
++	ctrl = YT921X_PORT_SPEED(ps);
+ 	if (duplex == DUPLEX_FULL)
+ 		ctrl |= YT921X_PORT_DUPLEX_FULL;
+ 	if (tx_pause)
+@@ -3810,25 +3796,7 @@ yt921x_port_up(struct yt921x_priv *priv, int port, unsigned int mode,
  
--		/* SERDES */
-+	if (BIT(port) & info->serdes_mask) {
- 		__set_bit(PHY_INTERFACE_MODE_SGMII,
- 			  config->supported_interfaces);
- 		/* REVSGMII (SGMII in PHY role) should go here, once
-@@ -4042,9 +4032,8 @@ yt921x_dsa_phylink_get_caps(struct dsa_switch *ds, int port,
- 		__set_bit(PHY_INTERFACE_MODE_2500BASEX,
- 			  config->supported_interfaces);
- 		config->mac_capabilities |= MAC_2500FD;
--
--		/* XMII */
--
-+	}
-+	if (BIT(port) & info->xmii_mask) {
- 		/* Not tested. To add support for XMII:
- 		 *   - Add proper interface modes below
- 		 *   - Handle them in yt921x_port_config()
+ 	if (pp->serdes) {
+ 		mask = YT921X_SERDES_SPEED_M;
+-		switch (speed) {
+-		case SPEED_10:
+-			ctrl = YT921X_SERDES_SPEED_10;
+-			break;
+-		case SPEED_100:
+-			ctrl = YT921X_SERDES_SPEED_100;
+-			break;
+-		case SPEED_1000:
+-			ctrl = YT921X_SERDES_SPEED_1000;
+-			break;
+-		case SPEED_2500:
+-			ctrl = YT921X_SERDES_SPEED_2500;
+-			break;
+-		case SPEED_10000:
+-			ctrl = YT921X_SERDES_SPEED_10000;
+-			break;
+-		default:
+-			return -EINVAL;
+-		}
++		ctrl = YT921X_SERDES_SPEED(ps);
+ 		mask |= YT921X_SERDES_DUPLEX_FULL;
+ 		if (duplex == DUPLEX_FULL)
+ 			ctrl |= YT921X_SERDES_DUPLEX_FULL;
+@@ -3850,25 +3818,7 @@ yt921x_port_up(struct yt921x_priv *priv, int port, unsigned int mode,
+ 		if (res)
+ 			return res;
+ 
+-		switch (speed) {
+-		case SPEED_10:
+-			ctrl = YT921X_MDIO_POLLING_SPEED_10;
+-			break;
+-		case SPEED_100:
+-			ctrl = YT921X_MDIO_POLLING_SPEED_100;
+-			break;
+-		case SPEED_1000:
+-			ctrl = YT921X_MDIO_POLLING_SPEED_1000;
+-			break;
+-		case SPEED_2500:
+-			ctrl = YT921X_MDIO_POLLING_SPEED_2500;
+-			break;
+-		case SPEED_10000:
+-			ctrl = YT921X_MDIO_POLLING_SPEED_10000;
+-			break;
+-		default:
+-			return -EINVAL;
+-		}
++		ctrl = YT921X_MDIO_POLLING_SPEED(ps);
+ 		if (duplex == DUPLEX_FULL)
+ 			ctrl |= YT921X_MDIO_POLLING_DUPLEX_FULL;
+ 		ctrl |= YT921X_MDIO_POLLING_LINK;
 diff --git a/drivers/net/dsa/motorcomm/chip.h b/drivers/net/dsa/motorcomm/chip.h
-index 83cd454955dd..83e76cefbccd 100644
+index 3fb0c6a69dd8..b3670f1e1427 100644
 --- a/drivers/net/dsa/motorcomm/chip.h
 +++ b/drivers/net/dsa/motorcomm/chip.h
-@@ -960,6 +960,19 @@ struct yt921x_reg_ops {
- 	int (*write)(void *context, u32 reg, u32 val);
- };
- 
-+struct yt921x_info {
-+	const char *name;
-+	u16 major;
-+	/* Unknown, seems to be plain enumeration */
-+	u8 mode;
-+	u8 extmode;
-+	/* Ports with integral GbE PHYs, not including MCU Port 10 */
-+	u16 internal_mask;
-+	/* Note: xmii_mask and serdes_mask may overlap */
-+	u16 xmii_mask;
-+	u16 serdes_mask;
+@@ -89,11 +89,6 @@
+ #define  YT921X_SERDES_DUPLEX_FULL		BIT(3)
+ #define  YT921X_SERDES_SPEED_M			GENMASK(2, 0)
+ #define   YT921X_SERDES_SPEED(x)			FIELD_PREP(YT921X_SERDES_SPEED_M, (x))
+-#define   YT921X_SERDES_SPEED_10			YT921X_SERDES_SPEED(0)
+-#define   YT921X_SERDES_SPEED_100			YT921X_SERDES_SPEED(1)
+-#define   YT921X_SERDES_SPEED_1000			YT921X_SERDES_SPEED(2)
+-#define   YT921X_SERDES_SPEED_10000			YT921X_SERDES_SPEED(3)
+-#define   YT921X_SERDES_SPEED_2500			YT921X_SERDES_SPEED(4)
+ #define YT921X_PORTn_CTRL(port)		(0x80100 + 4 * (port))  /* Bit 7-0 shared with PORT_STATUS */
+ #define  YT921X_PORT_CTRL_PAUSE_AN		BIT(10)
+ #define  YT921X_PORT_CTRL_LINK_AN		BIT(9)
+@@ -107,11 +102,6 @@
+ #define  YT921X_PORT_TX_MAC_EN			BIT(3)
+ #define  YT921X_PORT_SPEED_M			GENMASK(2, 0)
+ #define   YT921X_PORT_SPEED(x)				FIELD_PREP(YT921X_PORT_SPEED_M, (x))
+-#define   YT921X_PORT_SPEED_10				YT921X_PORT_SPEED(0)
+-#define   YT921X_PORT_SPEED_100				YT921X_PORT_SPEED(1)
+-#define   YT921X_PORT_SPEED_1000			YT921X_PORT_SPEED(2)
+-#define   YT921X_PORT_SPEED_10000			YT921X_PORT_SPEED(3)
+-#define   YT921X_PORT_SPEED_2500			YT921X_PORT_SPEED(4)
+ #define YT921X_PON_STRAP_FUNC		0x80320
+ #define YT921X_PON_STRAP_VAL		0x80324
+ #define YT921X_PON_STRAP_CAP		0x80328
+@@ -122,11 +112,16 @@
+ #define  YT921X_MDIO_POLLING_LINK		BIT(3)
+ #define  YT921X_MDIO_POLLING_SPEED_M		GENMASK(2, 0)
+ #define   YT921X_MDIO_POLLING_SPEED(x)			FIELD_PREP(YT921X_MDIO_POLLING_SPEED_M, (x))
+-#define   YT921X_MDIO_POLLING_SPEED_10			YT921X_MDIO_POLLING_SPEED(0)
+-#define   YT921X_MDIO_POLLING_SPEED_100			YT921X_MDIO_POLLING_SPEED(1)
+-#define   YT921X_MDIO_POLLING_SPEED_1000		YT921X_MDIO_POLLING_SPEED(2)
+-#define   YT921X_MDIO_POLLING_SPEED_10000		YT921X_MDIO_POLLING_SPEED(3)
+-#define   YT921X_MDIO_POLLING_SPEED_2500		YT921X_MDIO_POLLING_SPEED(4)
++
++enum yt921x_speed {
++	YT921X_SPEED_10,
++	YT921X_SPEED_100,
++	YT921X_SPEED_1000,
++	YT921X_SPEED_10000,
++	YT921X_SPEED_2500,
++	YT921X_SPEED_NUM
 +};
 +
- struct yt921x_priv {
- 	struct dsa_switch ds;
+ #define YT921X_SENSOR			0x8036c
+ #define  YT921X_SENSOR_TEMP			BIT(18)
+ #define YT921X_TEMP			0x80374
+@@ -1004,4 +999,22 @@ struct yt921x_priv {
+ 	struct yt921x_acl_blk *acl_blks[YT921X_ACL_BLK_NUM];
+ };
  
++static inline int ethtool_speed_to_yt921x(int speed)
++{
++	switch (speed) {
++	case SPEED_10:
++		return YT921X_SPEED_10;
++	case SPEED_100:
++		return YT921X_SPEED_100;
++	case SPEED_1000:
++		return YT921X_SPEED_1000;
++	case SPEED_2500:
++		return YT921X_SPEED_2500;
++	case SPEED_10000:
++		return YT921X_SPEED_10000;
++	default:
++		return YT921X_SPEED_NUM;
++	}
++}
++
+ #endif
 -- 
 2.53.0
 
