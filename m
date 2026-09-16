@@ -1,198 +1,96 @@
-Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0591543CE71
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 07:32:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789543986; cv=pass; b=XEX2Nu0FdOBHE5QSdwJrjCSWOUpzPq3qcOzsxv0k1V1HbHr8W7XFEIzdQ3fTkArN2vvp2rEpbm+2/biwJa1iErVDm+xKFOCJAOOWYHrLJEWaNxzEeae3ArsLMrFJnMVl986Ba7tn/VjdI4+qaD/YOJKR0vLd1zPC1OBD/LENhHE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789543986; c=relaxed/simple;
-	bh=mjR04Bkrj9erkkufpQlRwq76e4C529B6SDKCewiFrYY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T9wqWbfdJGoNf13U/LZ4RZPjfHKgI1gd4kf/hvpbTsP7h9aLS3tydXWFakfy5uKUoDFwr8+ndwxpXejW77Bn1NOkm5JgA4bsjLm33EWUNVHwQeHfBbUh9v4oVC2Mdmk7pxsPi1uVibr9rhUkpvqe6/AiT9/76CM6iX+dOPICl+s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=OJIYvXnP; arc=pass smtp.client-ip=74.125.228.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="OJIYvXnP"
-Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc4c08393b0so531061a12.0
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 00:32:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789543970; cv=none;
-        d=google.com; s=arc-20260327;
-        b=dQiPEKiIlEiTN5ueK3GN/6WZy5UHl7VxbF5zBzyRdV0Qj7YsL9zdtutOTUa4IpvVvq
-         OFjcD+27AAYoikpXGNuPa2iGW5EoOxyQjSauFZ2WEYXyaAYyNfvwX3KZvF6mQcQjxnxN
-         Pa3+58rrloGK3jk8uAi5Vazqvnf9AKSZNmLtl4K29ZVPYRNZDtwSuelnqMCfm9UwkuoM
-         AWTWOrUuvVesBp9mg9UvSFbKYEHbcrsknyCfADz4cD5C6/OKWfaoh28ZFlvo10iuL8yL
-         7odo/b5Ia2TFw6Zz//zBnhY0bl7KJBbfytcK4dWBjKNPa2wWxylZFCofODS4RGzJ6pS7
-         eq9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=VZpiE0+zzAEvG+TqmxLhQovdw7arxClPfA9bmtpoXjE=;
-        fh=1F4JlWiolUWgYxV5NY8tgwh+3ZIutFywicXuT4yuFlU=;
-        b=Wz/J7ds14kNU2XLS8o30G5jEDHXKGn+GBx6fAY9QfKd7FSdZJXecEg/YKz07LMJ+0J
-         WzIrF8Epy6QtfsmUIfAjHtrm/QT174uP6Fcjf4sVviTqETj0I1fiMM6le3nI68QkoalI
-         Yi0jP32XgZt+zX/beUlLu1TmAJ6qRD8Ms8pN2YIjQJZIlQoYxw5TFMIcdwXLkEmHgP1z
-         9uXOOqAc9Fe5FTW33C94Uf5vDyuZveKsIg4Abt7mYPHVpvMa/WD6XqLGWLD3Qsv/zEJI
-         v/svzr4KzJYEui/CqDs3E85d7n7FrSttA99+17ysOJkTJCGIgTi0fchKefpwYYWN8wBM
-         yTog==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1789543970; x=1790148770; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VZpiE0+zzAEvG+TqmxLhQovdw7arxClPfA9bmtpoXjE=;
-        b=OJIYvXnPpF9Lju1/Az7OlaneV7iSXbgSm69SplH0kBg8jdVCwjt9Vz8RRxe1U47DC7
-         +wRTs5dhS46ut47RPGJs7xtA0yzzbb9pEIxWn/yqgyhu0L/Bz1I73RiPbe+GYD+F7T5Q
-         wDxYxCfFZu5bsIL4Thd6eJSAlbydMPVcUsyLuQalJFDJRlddQmbHKf7UD/axONPtOe/w
-         JRa+6v0F8kq5P4Ekx4JZmzYWB7xLD1moz161O0GW5F6PW+RW5UjMSJ5ufEYr/3Vj4m9G
-         BhEPsCJxxCvZtiOUdAi+0N+u3EueqbUeDsq0n3bUKO20Ew/oZLyzfBO0lh2oRw3+NO3q
-         i+bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789543970; x=1790148770;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VZpiE0+zzAEvG+TqmxLhQovdw7arxClPfA9bmtpoXjE=;
-        b=BjDwqhWAKUX36HMRHhx/97uYxix+Ekrce/sqr2GnYFFmFkUSBiMl1+n1TyKLeLO8V0
-         WSU3nlWKh6xRkAETZ2PULtKmA66kpI4qf8CTcg7+SShViu9cVZz7i87r/K6HDvWE5FkE
-         z/k/caUTlYo58toAmX4WVGJeX0U4EzwOnGIMUwYwf4ZWoFg3cmHFuwzi9Q4S0ugV4dOE
-         RYQjyXs3QXAyv4NshzaySb4GyXhV/fB3z6u9HX5AOs5faEjcZrzYwdFxZYkPogLra5o6
-         FIUYoO43fAU7lm8Y4ra8jYWA3WPPt2d9GimBgxDXMxl7rGX+GyF+wQpV/32KQZQcqvVy
-         Ny8g==
-X-Forwarded-Encrypted: i=1; AKwUvBxuD334gQWuvSmLuPL0y66yy5bKUHaudrKvutM48FFUcYPOeyvnDJ5fkVefDIGJeK/LpcnYPLM=@vger.kernel.org
-X-Gm-Message-State: AFuF++kuwfUG1333L9akWZ7OkwECLdnKzSuFFUcyO9hpzabTnC5F9BzY
-	SBP0i8L/hHOJueexv33EhvTXOC+ukvnbr7Xjvq4HCoc3v1p/Nn30s63kdZ8vkK5xTsbWS6SwhMQ
-	AElzf4HkK7DZHFohjUtx+Xu+4gXO8bOrxZ96s4eSG
-X-Gm-Gg: AYBFou398in0BfYbmJOyVuYFurOHUC6cwK4FTohgKlxKzzUMFN0FeMaxy3jbCAHs+N3
-	8zBte9Xm3PrxmrfFZ+EeGEIHbVCynNyQhYQW3Zk8qAokvgWdRav4nwVLb1/tFrYxDjjyMmf5kMM
-	NynLrMsjtwhI0V+SOzhvq8JiLGoEMgN0btOk8R8GKJ18Oe6rfm0F41kbuJhnBreSQP0c5w/N7kr
-	6wuy6JH5oHGpg2IqYwrT41GbCe+tk+xOU5WYFrppYCMBsXUm7D4MtfkPaNv+akzIhwIWHgh9ab1
-	vXj1sEmWadAdnqJjzx93eh3Rjfxf2SQ5kA2J0+AoELPk4CEH6CcyHPPgwtOC5S4i+ouUqUSX7Vf
-	EAMpVB9/amRmL4b7iZz2v/UqPWSGDhKlQovvKKaVQ8E/27g==
-X-Received: by 2002:a17:90b:524d:b0:39d:eca2:5c81 with SMTP id
- 98e67ed59e1d1-39e1e2dea05mr3829092a91.8.1789543969709; Wed, 16 Sep 2026
- 00:32:49 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C28C44CAC6;
+	Wed, 16 Sep 2026 07:35:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789544121; cv=none; b=ABgCTM+LgTjiWXWn9uS2TigzfXDaqEllTrdK2DQZtMBXda4MnB0eViHZAXeWbnunbgdYDSefYUO0DiQHCqEQqCxN6YWjyP7WF2zBlAFAQXbNVY3uCGssZPoTBNh6CnW7ujs2NsV7e60mzYUhEJilib8POm/GKMmX8K/cR56c6qw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789544121; c=relaxed/simple;
+	bh=1UVeQwscyNpnmYJo6LD9uYaqcx3DxYBMukW55ElL214=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qbQ5EAakh4h3nRJRbhGPAh08d2RzaJaMAsjMMR4YHS0B5ESwD6omDDgF3Jlwoq0OGshogFUSmwTxXPlKCiAXh5tpebiDkqeWukxbDztK2SZkIW2vItFwU4z9tfaXX8pvF9EnVnPtS+KkeQP+ShW6MzrQArbsX+YqFIrU7uu/qCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
+	by APP-03 (Coremail) with SMTP id rQCowAAnLjycRqpq3DDfBw--.40397S2;
+	Wed, 16 Sep 2026 15:34:52 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: davem@davemloft.net
+Cc: david+nfc@ixit.cz,
+	edumazet@google.com,
+	horms@kernel.org,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	oe-linux-nfc@lists.linux.dev,
+	pabeni@redhat.com,
+	sameo@linux.intel.com,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] nfc: llcp: Fix socket reference leak in nfc_llcp_recv_ui()
+Date: Wed, 16 Sep 2026 07:34:24 +0000
+Message-Id: <20260916073424.1971784-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260916041102.1914333-1-xmei5@asu.edu>
-In-Reply-To: <20260916041102.1914333-1-xmei5@asu.edu>
-From: Xiang Mei <xmei5@asu.edu>
-Date: Wed, 16 Sep 2026 00:32:38 -0700
-X-Gm-Features: AcwNN1Xljv2HCFLUQMDufNtEairMBCo-H1BK8G1-p5r5dXNC6bE7Jd1RDn7HVDo
-Message-ID: <CAPpSM+SpeOa5uo5rffXejDa4g9VGphp1GvirJgUWze-O+cQyzA@mail.gmail.com>
-Subject: Re: [PATCH net] bpf: lwt: clear stale IP control block after pushing
- an encap header
-To: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org, 
-	bpf@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, co+ff13a35f73bb7891@bugs.sh, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAAnLjycRqpq3DDfBw--.40397S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrKryrArW5WF15Gw48Xry7Wrg_yoWktFc_AF
+	1xCr17Xrs8CF43Ja9rGr4jy397Wrn7Wr4fZr1IyFsrJa4FyayFyrnxWrn3CrnrCa1UuF47
+	ArykArySqw1IyjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbaxFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
+	6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUtVWrXwAv7VC2z280aVAFwI0_Cr0_Gr1UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
+	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
+	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
+	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr
+	1lIxAIcVC0I7IYx2IY6xkF7I0E14v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_
+	JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYx
+	BIdaVFxhVjvjDU0xZFpf9x0JUCNtxUUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAIMA2qqP7kcHwABsF
 
-On Tue, Sep 15, 2026 at 9:11=E2=80=AFPM Xiang Mei <xmei5@asu.edu> wrote:
->
-> bpf_lwt_push_ip_encap() prepends an encapsulation header and calls
-> skb_reset_network_header(), but leaves the IP control block describing th=
-e
-> inner header. Its offsets are relative to the network header, so they now
-> point into the encapsulated packet.
->
-> On an ingress lwt-bpf encap route a forwarded packet carrying a Record
-> Route option then reaches __ip_options_echo() with a stale opt->rr. It
-> takes the option length from the packet and copies up to 255 bytes into t=
-he
-> fixed-size option storage on the __icmp_send() stack. ip_forward_options(=
-)
-> writes at a packet-controlled offset for the same reason.
->
-> Clear the stale state once the outer header is in place, as the tunnel
-> encapsulators do and as seg6_local.c was taught to do in commit
-> f967455fb2a5 ("seg6: reset IP6CB after IPv6 decapsulation") and commit
-> 44930446dde4 ("ipv6: seg6: clear IPv4 control block on IPIP
-> decapsulation").
->
->   BUG: KASAN: stack-out-of-bounds in __ip_options_echo (net/ipv4/ip_optio=
-ns.c:96)
->   Write of size 255 at addr ffff8880bee08930 by task exploit/150
->
->   Call Trace:
->    <IRQ>
->    __asan_memcpy (mm/kasan/shadow.c:106)
->    __ip_options_echo (net/ipv4/ip_options.c:96)
->    __icmp_send (net/ipv4/icmp.c:949)
->    ip_forward (./include/net/icmp.h:43 net/ipv4/ip_forward.c:176)
->    lwtunnel_input (net/core/lwtunnel.c:465)
->    ip_rcv (net/ipv4/ip_input.c:612)
->    __netif_receive_skb_one_core (net/core/dev.c:6264)
->    process_backlog (net/core/dev.c:6728)
->    __napi_poll (net/core/dev.c:7787)
->    net_rx_action (net/core/dev.c:8007)
->    handle_softirqs (kernel/softirq.c:645)
->    do_softirq.part.0 (kernel/softirq.c:546)
->    </IRQ>
->    __local_bh_enable_ip (kernel/softirq.c:473)
->    __dev_queue_xmit (net/core/dev.c:4961)
->    packet_sendmsg (net/packet/af_packet.c:3143)
->    __sys_sendto (net/socket.c:2281)
->    __x64_sys_sendto (net/socket.c:2288)
->    do_syscall_64 (arch/x86/entry/syscall_64.c:84)
->    entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
->
-> Cc: stable@vger.kernel.org
-> Fixes: 52f278774e79 ("bpf: implement BPF_LWT_ENCAP_IP mode in bpf_lwt_pus=
-h_encap")
-> Reported-by: <co+ff13a35f73bb7891@bugs.sh>
-> Assisted-by: LLM
-> Signed-off-by: Xiang Mei <xmei5@asu.edu>
-> ---
->  net/core/lwt_bpf.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
->
-> diff --git a/net/core/lwt_bpf.c b/net/core/lwt_bpf.c
-> index da49364ec63d..17be476b5717 100644
-> --- a/net/core/lwt_bpf.c
-> +++ b/net/core/lwt_bpf.c
-> @@ -649,6 +649,18 @@ int bpf_lwt_push_ip_encap(struct sk_buff *skb, void =
-*hdr, u32 len, bool ingress)
->         if (ingress)
->                 skb_postpush_rcsum(skb, iph, len);
->         skb_reset_network_header(skb);
-> +       if (ipv4) {
-> +               memset(&(IPCB(skb)->opt), 0, sizeof(IPCB(skb)->opt));
-> +       } else {
-> +               bool l3slave =3D ipv6_l3mdev_skb(IP6CB(skb)->flags);
-> +               int iif =3D IP6CB(skb)->iif;
-> +
-> +               memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
-> +               IP6CB(skb)->iif =3D iif;
-> +               IP6CB(skb)->nhoff =3D offsetof(struct ipv6hdr, nexthdr);
-> +               if (l3slave)
-> +                       IP6CB(skb)->flags |=3D IP6SKB_L3SLAVE;
-> +       }
->         if (is_udp_tunnel) {
->                 size_t iph_sz =3D ipv4 ? iph->ihl * 4 : sizeof(struct ipv=
-6hdr);
->
-> --
-> 2.43.0
->
+In nfc_llcp_recv_ui(), nfc_llcp_sock_get() is called to find the bound
+socket. If the socket type is not SOCK_DGRAM, the function returns
+directly without releasing the socket reference via nfc_llcp_sock_put(),
+resulting in a reference count leak.
 
-I just found Weiming post a patch solving same problem:
+Add nfc_llcp_sock_put() when the socket type is not SOCK_DGRAM.
 
-https://lore.kernel.org/bpf/20260915170147.3943392-2-bestswngs@gmail.com/
+Fixes: 968272bf0087 ("NFC: Handle LLCP UI frames")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ net/nfc/llcp_core.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-and that patch covers the cases I didn't consider so please ignore this pat=
-ch.
+diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+index db5bc6a878dd..5813c80ca593 100644
+--- a/net/nfc/llcp_core.c
++++ b/net/nfc/llcp_core.c
+@@ -888,8 +888,12 @@ static void nfc_llcp_recv_ui(struct nfc_llcp_local *local,
+ 
+ 	/* We're looking for a bound socket, not a client one */
+ 	llcp_sock = nfc_llcp_sock_get(local, dsap, LLCP_SAP_SDP);
+-	if (llcp_sock == NULL || llcp_sock->sk.sk_type != SOCK_DGRAM)
++	if (!llcp_sock)
+ 		return;
++	if (llcp_sock->sk.sk_type != SOCK_DGRAM) {
++		nfc_llcp_sock_put(llcp_sock);
++		return;
++	}
+ 
+ 	/* There is no sequence with UI frames */
+ 	skb_pull(skb, LLCP_HEADER_SIZE);
+-- 
+2.34.1
 
-Thanks,
-Xiang
