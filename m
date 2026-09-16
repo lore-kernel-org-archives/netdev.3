@@ -1,167 +1,144 @@
-Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
+Received: from www.nmnhosting.com (watt.d-silva.org [119.15.109.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5EB19BC8
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 06:34:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47BE33BE146;
+	Wed, 16 Sep 2026 06:45:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=119.15.109.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789540494; cv=none; b=j28PBE3mb74bApjT0tOBP+ToXYJu9PmSMMNcSSrubEiImL8gq8VvgjpZPV3SpkC8I+/s0H+6FmiuSig99x71jVUibggaa3UzC7j2X5SHUgPfae/QxLH/LUPxoS3DM5fAgMo14RjL3SX26MZ8yA3pbYRV1fkWp/gvxDEqRQm07Hk=
+	t=1789541118; cv=none; b=k7LUtZxJC9I09oJpCy8Yb0QFfFR8PBmWl9qhOucCYOmveAMqeo5EQKHVn21aAA4Y1eKnoGGERWPopko2iHJ6ufRkrbOjeuyFSmx2633+96UAEtq2CB3MFq3Hn4EgIgHvDMqmNZSwc1MKa1F/YcYImY465+zGsu0EyobaUb91y6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789540494; c=relaxed/simple;
-	bh=aSA6NZRSqCtr07VE4S0pTX5CUiXj0XFDNMoK65Mm9Ug=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W3ypOVSFO7TkwKa6Xl+H76A2Xa4xCghlX7RUqep8K6pBsKp9pn0NfOMiZF+VrkfyNiY7op9VABIgOX541KwFDNfj49SL+n+tFFqGDyFghotKsSpBJKRoLokricS0BtZdbXgTZxA5flXsHDcajt8diPhHVpXqR1QB3e7M3XYcHJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.204.34.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz20t1789540404tffbcb8cc
-X-QQ-Originating-IP: ygmYash9cphqOed+MSMZmeHhk+Pujrhbwupm36lzRN8=
-Received: from w-MS-7E16.trustnetic.com ( [122.233.172.177])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 16 Sep 2026 14:33:14 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 9852207754865000035
-EX-QQ-RecipientCnt: 14
-From: Jiawen Wu <jiawenwu@trustnetic.com>
-To: netdev@vger.kernel.org
-Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Kees Cook <kees@kernel.org>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>,
-	Rongguang Wei <weirongguang@kylinos.cn>,
-	Chenguang Zhao <zhaochenguang@kylinos.cn>,
-	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v3] net: wangxun: use cached NCSI and WOL capability flags
-Date: Wed, 16 Sep 2026 14:33:12 +0800
-Message-ID: <E5215E3514E295BA+20260916063312.203457-1-jiawenwu@trustnetic.com>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1789541118; c=relaxed/simple;
+	bh=M+Dy4hfdzKr1mC3pzwMJT0ZQBgMsvSHf4Z0mHzxQnL0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=IVnt+vXHfFMjvY3o6HlBDutKWtSUcldKronLSm1SKZwiYv3qXDyxQANZz8xW1/XCcfRVTr6fjaF7vUyS3Zz7cLO9vm1NgAXdl76aLPHHrXYKelRlRGJw5AOG8sucwc3aMuspUSU1ekT9rBb78FeW92wTQOfDOqwk4xr10pBR5hU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=d-silva.org; spf=pass smtp.mailfrom=d-silva.org; dkim=pass (2048-bit key) header.d=d-silva.org header.i=@d-silva.org header.b=DnXOpwgv; arc=none smtp.client-ip=119.15.109.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=d-silva.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=d-silva.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=d-silva.org header.i=@d-silva.org header.b="DnXOpwgv"
+Received: from hawking.lan (ntp.lan [10.0.1.1])
+	by www.nmnhosting.com (Postfix) with ESMTPSA id 90DC240B5A;
+	Wed, 16 Sep 2026 16:45:06 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=d-silva.org; s=2025a;
+	t=1789541106;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=M+Dy4hfdzKr1mC3pzwMJT0ZQBgMsvSHf4Z0mHzxQnL0=;
+	b=DnXOpwgviacP2DhK2BYPRRrVyAIkSBt3eDumbyDy01rnRZwe63pGxFi3W4jlRmMeiSnnNf
+	10o9KN5ENRAjkCFq3eDiz2dfrwqhLg0av0ilv1uz7MbEqJb38ejgYcn3DBRvqsGr2GlHTH
+	PU999QCMrh0GHivRTeNnX3J9WG1CI8u6k9WFeaJ58KbpT+rkysguz8bKTgtwvTv76b6Iho
+	vK1vVUKmPV2Lv9PrbPD/u6Gvt83tC5ZsWH0fsYugJfCZzLSoXD8jbTM/UyhFAfODn9r8Ae
+	RJzMAH7c75wK4JH60HGaIShrKtjNjhLQ8bZ9Vz9SkO1llGJfv2nmLFdPzNkxeA==
+X-GPT-Reason: legitimate; the email is a technical discussion regarding
+	a Linux kernel patch (net-next) which perfectly matches the technical
+	content of a developer-focused mailbox; the sender domain (d-silva.org)
+	aligns with the personal mailbox (alastair@d-silva.org), and the
+	content includes a specific code diff and a link to a reputable
+	developer platform (lore.kernel.org); there are no indicators of
+	phishing, urgency, or unsolicited marketing.
+Message-ID: <4404f56f441a4f61e01ebde721ca0220cc96a948.camel@d-silva.org>
+Subject: Re: [PATCH net-next 4/4] net: stmmac: dwmac-sun8i: Add Allwinner
+ H616 EMAC clock index and internal PHY support
+From: Alastair D'Silva <alastair@d-silva.org>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn	
+ <andrew+netdev@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, Russell
+ King	 <linux@armlinux.org.uk>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>,  "David S . Miller"	 <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski	 <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,  Krzysztof
+ Kozlowski	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, James
+ Hilliard	 <james.hilliard1@gmail.com>, richard.genoud@bootlin.com
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-sunxi@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, Chen-Yu Tsai <wens@kernel.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland
+ <samuel@sholland.org>
+Date: Wed, 16 Sep 2026 16:45:06 +1000
+In-Reply-To: <579d7650-583e-49bd-aa51-02fc52940ea1@bootlin.com>
+References: <20260916044119.475666-1-alastair@d-silva.org>
+	 <20260916044119.475666-5-alastair@d-silva.org>
+	 <579d7650-583e-49bd-aa51-02fc52940ea1@bootlin.com>
+Autocrypt: addr=alastair@d-silva.org; prefer-encrypt=mutual;
+ keydata=mQINBGactvoBEADBFM2HqfQUUM4j40ZQPyYzmnM8S6zrycO0ipDDPMs7nZMzyzGzOdqfS
+ VB/tuYvZOOKVWzJuWJ5aT/YyHx54r3L+D5hTkEG0sXPVJky3yTS9sbHEMSLBHb8TVVuhPVPuieV4g
+ Nkqg5POMTidk8xAw50WpV++tUlewXVSciehnuCQPXhXMP7FcCh4uO8LdN7E8m7ir1LafKTFfoWPah
+ KVT8NGG9r+ucrFcN5F+VnHxTDaI68yRPkNdtUWmp22wIX1KwDCtKFrndYO4p5Hv2hlDKomsuIIHHn
+ muQGRwuh0xpf0nVJNF8ETZHMzxQLfo3e/HvxBFOTkwY9w7CuuQFZchbhS0I3PfmGT0+jiNcdfqjDC
+ fPPB5uhy+DkR6wO72vuwFYUrpU2mdliDSdKEtWBHulnXMJjpBOXetfIwhI8G2dTVg59lN5i9DvJZc
+ 7y1Sp+qfZQ4P9qpYZyQEKR4GNDOdnm6F2LW2cZkcyAU/Ii765zdDMTQMIzZNSxT/FcDd0K1voTNRl
+ QHbQw+kmIMhzSv2JefcC9oNbE0XYzcBDNP5T3O/4itOQ90GCKQEPAbIPeBjlQif7kkyvo/H6yv4s9
+ duuK7zbJD9AID/+KGLkpU3p68VDB/C2ZSb9rQz3p1CJNSfsX/CPk7sPqA7RKZ4a2B0hSJ2pJCncNZ
+ KXtMlkkm/FmewARAQABtCdBbGFzdGFpciBEJ1NpbHZhIDxhbGFzdGFpckBkLXNpbHZhLm9yZz6JAl
+ EEEwEKADsWIQTQGemDFwqYyU/dBWv75AdnjVo60gUCZpy2+gIbAwULCQgHAgIiAgYVCgkICwIEFgI
+ DAQIeBwIXgAAKCRD75AdnjVo60qHZEACJnLfpS71Hk8bX0CLCNJ5wgqdZD3pBHEdbv9Ux9kRlZp4a
+ ZFwlg9ltwBjl2dZP3PLtD9xQdsdYKVippKd5a7ZZC2y81oDaHjeC9LnPYn8+ce3mGE/+gRyoNfToY
+ N06DeUNJKSlZ9t11UIqZCgfp12u16/Yrigy8C4ihEeHXlLhNX6JkeJR5gsHXJnC7vSuMZY+Qz2R72
+ ZidWg+cd2WDMGop5sbTvc+55q94A7vTMlWzaix5HdbEUA3sd2U0dMBju5QodRGGhDQMcCu64TydRD
+ MtMzzOk9ThJ036ze3HASWGOppyQmaw58k+XNzbHlr9Sc1LsFUNF7zpWXac2rzlywbyRAdFIT/TC76
+ hy9zOkwIo2nwA/tdIwLx1j0UZPpAMQmcDUvJqZh6sE+fv6HN0yMPr+sSYJmriMt8Z6leCEHQXOHVI
+ SI5z5FvV3coMmHYRq6aXpfs/8SLiYgkV3B0HE/E18Y3j1OkeLYoqIH1VfzQZeCSL/S77NYvk60/MV
+ 1HFSyqLdUR3uWZI4uZzoEcMoB0GX33uCTp2Ntc00+wSntwekCUQLCMLUb7dZrbpVuobHoWWtkiD2I
+ uE5kAiaVwwwzM0BUwiM6VzVoKbeECz93rdsNtwoDqM0NtzoISC46H/BKVQ9mRNXDO4ThEBpJ4H2Tn
+ mPNRYYcR0u2mNy1EJII04w==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-9 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: OASHEhBpbRXHirO9kvqiFX2DUZvZXx136rPAg0ixHSXhBOWyLwlcWO00
-	/wnrZQqWlIjeKXLeiP8mlJBawTnI5jNL8grt1OF2W9YsSx4nTKVcE1zAI64plUjkk1qMabV
-	RAMrlOp3J2sJHvC6eA9a2kZWms3aFKsRcBM/RNnOCKbuEDFCM0XfjMykjylahu4hBYIJNYW
-	PY0GR6roF4Sdk+l9gE37roTBPU0yjsxTlYSdp7Hrt+9tbemLH4aYHjKzi9H1OlhtrjszsYe
-	lblH4cNOyOsRdcri+D7BJH//p/1REBCvtFfsB8Dtyye/DxF7th5jbRCgPx8Z+cHYVsfr6f6
-	XM9A3Jd+lubtQx1jE9u82wMZzEfE/Mxj7WgKjX3GOXIBeWGvLirnS7RGdgEt5zMYmx0omGv
-	21mrcRbnwzISL+3cRBtZRsA3vuUeuqRG1L6Cuz92euTyGWlzd7GKACjkOHixNVyHokHjv1F
-	apkIMBCvJzXcjh5r+w8RKxzhGgRSQXZFikbRR12SxqLP16ok5LDSfBHBdKIla1RoFU0UYhQ
-	S/52PC0DD1I1rRuGpDzyGyMdW1TfvxbUeufpZDMaPsU1Jj2MMxuSQJ9Tj9WInZazyMqS93/
-	kyZevg9zDxutHC7vPv9xk5PrcWz4OwCippnOksvnTFMNKw/0sQrp774tdog9PJpFe/xBWhe
-	4JXnMIind3JItZt3TJgKiNqcwLbW0jhmSqnU74f5Xc0uOauWDvzYCUuWvB72uEjCDkJl5Yr
-	o3DY6BDd7p5As0XpXgjZYCjf4Dfhg0IRunwUTb90F9p63v4qX3HexltzNqNfRaAJPh5Yi0G
-	KGxlPFIbhvswt2DgCcIEG9JnT4NYl/zMLrL/G+XQEjzxUBRXTrvG7yejhLwv7u9+q8+JZWi
-	IduLdTBLuWyGJzQ+Zn/Mk2T5NcPeKkAAkwCJw0H97QHcOMEu1D0YlDdc4HgrTLgWMEByzVq
-	oAlQHgbqCkfmRxq8VYom523Wp6r0Nkt7DPc9zHOqJdDC0P95fZ3b/ohZkU6YyJO38whBoh3
-	zbC285TUoN6CdFTEMLVYrSFoqNlwgADPSJotqJ0a6lCZVPXEk/nXpXRhfsNhcReBonUfD8S
-	4PnxJhp0MQt2G7IRCZqzm/V+qBome6ICA==
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
-X-QQ-RECHKSPAM: 0
 
-wx_disable_rx() and txgbe_disable_device() open-code the same subsystem
-device ID tests to decide whether the MAC receiver and transmitter have
-to stay enabled for out-of-band management:
+On Wed, 2026-09-16 at 08:24 +0200, Maxime Chevallier wrote:
+> Hi,
+>=20
+> >=20
+<snip>
 
-	(subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP ||
-	(subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP
+> > =C2=A0.../net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 65
+> > ++++++++++++++++---
+> > =C2=A01 file changed, 55 insertions(+), 10 deletions(-)
+> >=20
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+> > b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+> > index 48c52eb96233..1728893589a6 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+> > @@ -130,6 +130,16 @@ static const struct emac_variant
+> > emac_variant_a64 =3D {
+> > =C2=A0 .tx_delay_max =3D 7,
+> > =C2=A0};
+> > =C2=A0
+> > +static const struct emac_variant emac_variant_h616_internal =3D {
+> > + .syscon_field =3D &sun8i_syscon_reg_field,
+> > + .soc_has_internal_phy =3D true,
+> > + .support_mii =3D true,
+> > + .support_rmii =3D true,
+> > + .support_rgmii =3D true,
+> > + .rx_delay_max =3D 31,
+> > + .tx_delay_max =3D 7,
+> > +};
+> James's series [1] says this SoC only supports RMII (yet includes
+> RGMII timing
+> control), and here for seemingly the same device, there's MII and
+> RGMII
+> support listed.
+>=20
+> [1] : https://lore.kernel.org/r/20260915-submit-h616-emac1-v1-v1-0-
+> 195de0bb1f8a@gmail.com
+>=20
+> Maybe you can coordinate with one another, can we connect that SoC to
+> a non-internal PHY ?
+> If so, can we use MII, RMII and RGMII ? or is it just RMII ?
+>=20
+> Maxime
 
-ngbe_init_type_code() already decodes the subsystem device ID into
-wx->ncsi_enabled and wx->wol_hw_supported. Do the same in
-txgbe_init_type_code() and let both call sites test the cached flags, so
-that each driver decides the capability once while probing instead of
-having shared code re-derive it from raw IDs.
+I just double checked, MII & RGMII are bogus.
 
-This is not equivalent for ngbe, and that is intentional.
-wx->ncsi_enabled has never been read since it was added by commit
-02338c484ab6 ("net: ngbe: Initialize sw info and register netdev"), and
-it is wider than the inline test:
+Only EMAC0 can be connected to an external PHY.
 
-	wx->ncsi_enabled = (ncsi_mask == WX_NCSI_SUP ||
-			   type_mask == NGBE_SUBID_OCP_CARD) ? 1 : 0;
-
-OCP mezzanine cards are NCSI capable by design, so the NCSI semantics do
-apply to them, and they need the MAC receiver to keep running for
-out-of-band management. The inline test does not cover the OCP card
-type, so on such a card that does not have the NCSI bit set the receiver
-was turned off on every path reaching wx_disable_rx(), i.e.
-ngbe_disable_device() on ifdown, wx_stop_adapter() from ngbe_reset_hw()
-and wx_configure_rx(), and management traffic was dropped. Reading
-ncsi_enabled keeps the receiver enabled on these cards.
-
-No Fixes: tag is added on purpose. The broken behaviour goes back to the
-initial ngbe support in v6.2, and wx_disable_rx() has since been moved
-into libwx and reworked several times, so this does not cherry-pick into
-stable kernels in any useful form.
-
-For txgbe both flags are newly initialized, but wol_hw_supported is only
-consumed by txgbe_disable_device() there - txgbe does not implement the
-WoL ethtool ops - so txgbe behaviour is unchanged.
-
-Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
----
-v3:
-- Rewritting commit message.
-
-v2: https://lore.kernel.org/all/F76F75E3FFF42A39+20260908025416.42250-1-jiawenwu@trustnetic.com
-- Remove single-use locals.
-- Describe the behavior change on ngbe OCP cards.
-
-v1: https://lore.kernel.org/all/95D34449BA183C54+20260901070238.78509-1-jiawenwu@trustnetic.com
----
- drivers/net/ethernet/wangxun/libwx/wx_hw.c      | 3 +--
- drivers/net/ethernet/wangxun/txgbe/txgbe_main.c | 6 ++++--
- 2 files changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-index 111aadf79208..2490c4dd548f 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -1313,8 +1313,7 @@ void wx_disable_rx(struct wx *wx)
- 		rxctrl &= ~WX_RDB_PB_CTL_RXEN;
- 		wr32(wx, WX_RDB_PB_CTL, rxctrl);
- 
--		if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
--		      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
-+		if (!(wx->ncsi_enabled || wx->wol_hw_supported)) {
- 			/* disable mac receiver */
- 			wr32m(wx, WX_MAC_RX_CFG,
- 			      WX_MAC_RX_CFG_RE, 0);
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index eb91c4f28ecd..0ecbd1c0e553 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -267,8 +267,7 @@ static void txgbe_disable_device(struct wx *wx)
- 		wx_set_all_vfs(wx);
- 	}
- 
--	if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
--	      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
-+	if (!(wx->ncsi_enabled || wx->wol_hw_supported)) {
- 		/* disable mac transmiter */
- 		wr32m(wx, WX_MAC_TX_CFG, WX_MAC_TX_CFG_TE, 0);
- 	}
-@@ -381,6 +380,9 @@ static void txgbe_init_type_code(struct wx *wx)
- 		wx->media_type = wx_media_unknown;
- 		break;
- 	}
-+
-+	wx->wol_hw_supported = ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP);
-+	wx->ncsi_enabled = ((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP);
- }
- 
- /**
--- 
-2.51.0
-
+--=20
+Alastair D'Silva
