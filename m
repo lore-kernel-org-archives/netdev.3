@@ -1,46 +1,47 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710BF370D6D;
-	Wed, 16 Sep 2026 12:48:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9298B379EF7;
+	Wed, 16 Sep 2026 12:49:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789562883; cv=none; b=Qky7VqJ/Lg0sY7U2oHtdhgTKL4/V6nLqllpt82IG0u4x4sdjr2Y9YYlcKY4h14r9G8MrpPx+Wvfr9wDsRJgCD6eC9ntlqYPBcBB4FHj2PTdgMibW6WBeSVPc2fCa7aPibcnQLeJfuhHT/U6NApBNkHftW8iNa6iAN0g3BkIkIbk=
+	t=1789562955; cv=none; b=O39BC03h61egim2IrqM4sZWwlwrmEc7byTkI9WFUAstRFSbII32EV3Aqpst56YppDJW9KZ+n5cF0KZr3NYLLaH1Q6MlqN0a7mqcf+PSDAPrRPIzG9y97t36cdXnahTtD1tgNciqAHAEIxmCpneDMJv/17MtCdgQ4xLsyJrUyvNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789562883; c=relaxed/simple;
-	bh=R34EB5qFvvrywXo1K+BTEbmF+nDTnonFgX4fLLYengc=;
+	s=arc-20240116; t=1789562955; c=relaxed/simple;
+	bh=aXD+aDZjT4W62ZovS6WlHqNRB2tUZg07K2BOjth0IGw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gr/0fMpHwHsXIjV0vV3BQ9g5l1Vlb7c79JKdCR0NLmve7uGBNs+GRcWboNQVZKn1Rcu8nTM67Oi12L27PcdihQ21eMmtrYczUi+l0qwYO71j0FioOqDGqn7lZAYnFYaPutFcwTMMcJYdEK2W026DkcH0P00wGMcTcPJ95Vrsudo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=1mtH46k/; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=qylwHo0rvx30LK9da5+OAYRn3A5J8UPfypg3uN8PGqw8QKXmIFm6iiErQ/vZ/nhoDaNrAfL/hEtbS/h9aCKCeVP/Vhti7DDdottiUtbIx5x15W2pkDI5XBfdsBGD7v1Suyl6KjBijfG3zqx8SyGZADhvW+PTEqifio55MVn/OW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BdVOKmpQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="1mtH46k/"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=faRlwFMysTxCjCo21JyJKodaamvxM72G1wUYp1D5DJk=; b=1mtH46k/iB3pekHOQEV+cEM1ut
-	F+lI7wR3/mfk4GNMtuZnHrrN/6iRkS0AFwqwccVodoYvFd0wtZ6fvDIMLI1iJgto9IkmlGdnL7f4v
-	dRiI9+s19Gj36Mgpz1F1ctGswc/dzR6UQkUw5E3q0dyU8zjlQyhfesoNGNgoRKAwktew=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x6p3E-005Tll-09; Wed, 16 Sep 2026 14:47:48 +0200
-Date: Wed, 16 Sep 2026 14:47:47 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Manuel Ebner <manuelebnerli@mailbox.org>
-Cc: Jakub Kicinski <kuba@kernel.org>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BdVOKmpQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8E3F1F000FF;
+	Wed, 16 Sep 2026 12:49:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789562953;
+	bh=Akpf3sVV5hMKrXoprjFhWmMCl1UxJohB43ip4C/fV4c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BdVOKmpQMqrTMV6o4Q/J4t3nWmPfkRZQX/rBaZFfPDKBw52V9kbILFD2UPUC0w27o
+	 KJ7P22LQzrCF6Y8gWgsjLOPgAw6iU1QYaWNfcgiM0f2mWoynS1t0z25LYQ9o0br8vW
+	 quRyC6NXIg9wKzxbNoKl2P5RMA75y4YTTdc0+NvV1GOcSs0zY2p5p55LpgOyix/ZpS
+	 INsWmjq+rJBriwPASkCRiB+Fl+MfdVnZHfP8gA7E+GSnsaxNnB7prSEFqjgTnJKS+B
+	 xHhwz2ILc/SITxzezVvDvFS2BcMr7a+7msD7O+sZwUgC/KTyqgWue+5hsTvpYlFThu
+	 4DMLDOMtmo0ng==
+Date: Wed, 16 Sep 2026 13:49:08 +0100
+From: Simon Horman <horms@kernel.org>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: linux-ppp@vger.kernel.org, netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>, netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] docs: ethtool: Fix bracket
-Message-ID: <725e1e77-89e9-4077-b8df-2cb7b9be0cab@lunn.ch>
-References: <20260916123458.314458-2-manuelebnerli@mailbox.org>
- <20260916123458.314458-5-manuelebnerli@mailbox.org>
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Jiri Slaby <jirislaby@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Qingfang Deng <qingfang.deng@linux.dev>,
+	Tom Parkin <tparkin@katalix.com>,
+	LKML <linux-kernel@vger.kernel.org>, Kees Cook <kees@kernel.org>
+Subject: Re: [PATCH v2 net-next] ppp_synctty: Use common error handling code
+ in ppp_sync_txmunge()
+Message-ID: <20260916124908.GG51261@horms.kernel.org>
+References: <15f151c7-58c8-4116-8a03-e985fd132b0f@web.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,13 +50,28 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260916123458.314458-5-manuelebnerli@mailbox.org>
+In-Reply-To: <15f151c7-58c8-4116-8a03-e985fd132b0f@web.de>
 
-On Wed, Sep 16, 2026 at 02:34:55PM +0200, Manuel Ebner wrote:
-> Add missing ')' to sentence.
+On Tue, Sep 15, 2026 at 11:23:01AM +0200, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Tue, 15 Sep 2026 10:48:11 +0200
 > 
-> Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
+> Use an additional label so that a bit of exception handling can be better
+> reused at the end of this function implementation.
+> 
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> ---
+> 
+> v2:
+> The application of a known source code transformation pattern could be repeated
+> after the commit 8aaeb56aff2a557a88f83ae866da2c91ad247e59 ("ppp_synctty:
+> ensure a writeable skb header") was integrated.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+I have mixed feelings about this as it seems to be a cleanup
+outside of the context of other work [1].
 
-    Andrew
+But I believe it is correct and does use the preferred goto label based
+cleanup mechanism.
+
+Reviewed-by: Simon Horman <horms@kernel.org>
+
