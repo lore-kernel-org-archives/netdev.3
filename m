@@ -1,100 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6CE49DBBF
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 12:39:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC014F053C
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 12:42:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789562399; cv=none; b=A70aiuLBCVLnwFeGh1Zd9m4NuZgoSaKI+GK5c9ovKHQpqhujbeD7StaTx0wowdNUIINEJ5r5mEbzKZCkpiBYOTOn0/ObZepmHVTgBsg/MlWWjOcN77JvmyJjOGiVKCLo8TIt05DJoq/KL+QcruRmdxPKTOilbfnZSdzsdWwTBj0=
+	t=1789562528; cv=none; b=BM3lmm8GrFt7YDqitI6f2dbX2L6pcZFxCltuytgwWCIePw/y3IfvOdm3gP8BfgLJv9uPt7+JOT+QkZASsmllh1hVp3d9ZSdoZ5IdXWtZ11RGWp+6/klcm+3fulMFNFxV9NapQL9XCGSWY2GftU8g3ncaA7XIStR8v3ofti9kN9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789562399; c=relaxed/simple;
-	bh=obbFqjsqQURuuAHQWNSkuAlWX86upgongf34c6qMYbI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LVNT1SJjXpnrsFakOANCKsOzO9wGJYUztOMYPHNQNK+51ceyrZ0thWqRUaDD/nRS4OgTgwl+8NuQVVH5mXLeru5Wr0f6aYAvErKYuy3m8kuWe2AuVW+4oqiAAt+/EHMAJDpqk0fc1bDSktrNQPUlMt//wIVBRfIwLCk6HMyluIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EJiT8+XG; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789562528; c=relaxed/simple;
+	bh=ds1bo4pwxQdBiUgJBCPtUtc/GnamteKwx+efkM/Pa0A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=STSrRrjiDxA/7nH1Eg5axb7Om2TcjtL/+yNLjKIbecnMQScfPGgWkq3SsLkppLYuKX6Upv3XLNw6DZ3ibyNtlC/7EsPBxYfZx/ls87cXfi+4mBT1MR6n1rqox29mqnDzQuiuhbsEbjBHU9ZFv6TXoJhXoohgB+eKMZ5t6Tjyna0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l6K/aQ+u; arc=none smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EJiT8+XG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6461B1F000FF;
-	Wed, 16 Sep 2026 12:39:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789562398;
-	bh=rWVOzU/2+C0cR+TBJ0RERl5URTwYNBV6yjGd33DBYv8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EJiT8+XGPZBLvzp69vVOdVafxFunskKAyqg8MjiTWCwvZqnMkY20CewqIa9ge1SwT
-	 SRtACzrbqwq7o57C9/SNMIylRQsqh0esYf78tnP9ftbBtgP1hOomaxEUW0LMvlKnz2
-	 A3ucx0o2ZYOXTw0rR7Yf11cE/y6S6QF+0ppXF6P42jbhfJi3dLn62bN+AygWv8pome
-	 VmsDVxyYsiLSV1JE61XpoHR4Vdqn/7YSWQDKYu1ATiny620WLml3fovC7Gw//p3OOy
-	 Ma1VPaMoQnTQa0xYekKLBXQ9/jHEmNj7Cl3ZaZUemECbEka3NquYaWkimmM/gWT7Ox
-	 qsuXGWx59BBCA==
-Date: Wed, 16 Sep 2026 13:39:54 +0100
-From: Simon Horman <horms@kernel.org>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, eric.dumazet@gmail.com,
-	Jungwoo Lee <jwlee2217@gmail.com>, Wongi Lee <qw3rtyp0@gmail.com>
-Subject: Re: [PATCH net] net: lock the socket in sock_gettstamp()
-Message-ID: <20260916123954.GF51261@horms.kernel.org>
-References: <20260915043055.3441600-1-edumazet@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l6K/aQ+u"
+Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc4aa0f1a94so632190a12.2
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 05:42:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789562521; x=1790167321; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=W9M5OuXlFLCy9BLJR1BD5x0IKdwWKcWD6cmzPENDMSM=;
+        b=l6K/aQ+u+RYflQHxzAjieswiT6UKVGVNIKCuPhmcU4NmUVt2zUdSZtNve+TbGVqQ/j
+         YEihSgiHRC/2dDLUY1X+5+suvFaGYBPkbthADb3bznQf1jQXI6/QEC9kqqE6H2KBX8It
+         mrS0RiajwNtECAwlD4U0cDsAsPShSgkoW/2bC/4DLCnIyS9kQS5F3l5mqqWDL9C3MAJ1
+         IjJNJP5GzBPwUYFmYufWYPqTmYnOEzHjuU+qIK4QlZujtaWYeTbFPh8qbJZLlW3LoTh5
+         UdDeBp3p8QK76YrC6V63SDQwvHGO9Qln6ndkQhcW/o9gXwHxnGufl5fxPJf8gM4ulGug
+         pyvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789562521; x=1790167321;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=W9M5OuXlFLCy9BLJR1BD5x0IKdwWKcWD6cmzPENDMSM=;
+        b=HvvoKD8o1iTe3LZr1CEq1Kj6c0daXySYmhdVVEeb1k/ECqqnv+FT9DboOHszFuoVmJ
+         6LZCa2SHcVCWb5lxK7e4PBVAwmtPZo9L5E84csec+t7TaFya79SN9Ab8ff2MIb1HpkdT
+         A5Or/YO5sOeGCX/CnMIHZhx/4j2hhLBrdgvCEsN3kQFPsvVtU/W/wmdz4hwOz1jNTA9O
+         ceQveRPZ8lfpBMCCs0IGL/VrSC8Izn8XD/U/+mKGtGgY8m3DNv+xPPTUKKrC2KjGWvRV
+         OvtBcfFCnpc/EjdwAsDKGOPgQKUqmo+Ujubc4z/D4sZKQsUGW2eXxbEdpyuh/OM0x9zW
+         UD4w==
+X-Gm-Message-State: AFuF++nNx2cfVPIloT0XrI1YJummbF/TsBIZYUukSYAZGCiNTXQX82n/
+	jKgfhEwofR/ED+B7fd04VgbSAmsJxnpXpA9Z/yCjJydM+uf37Migky1XkdeEIALpxrLBDA==
+X-Gm-Gg: AYBFou1SURkMmp7RlK+Oq7ec94MUvfMOIqYVYhFaU+beMdufOf062BFXqWh5BviN8Ig
+	49ESp3ddjNgtVt3WOXXeh3z4DF/QmpCRjLE2XzlocGUWtt2Uj3HhEvVzAAevCiNRmvAC7fJ1SIR
+	kAghjX9Cy8flfl8UaXknhTGugmm/mQpZwuGYeaqVJmupZLj3W0Nk6s8XLhyPcKEMJur48HQbwcG
+	O7e51f/fwm0sR8R1z7SH9czWlCuvqEB0WNOEQ0bEeMt93R0n0OonUpsB6b3kSYTmex8g4oYEvld
+	Wiv7XM9mjk1MKrHbfGfmhPpSywy2fpV1eabLOfQReVHxrX656oldxLfluoQ6vo5p8LxNRICYfZi
+	Tgl5Ryt6XC6iwh/aGNApaR35HrhbkvaQ0rjsUDrNzZM4zJYrvrLXjEqKOjqGfgJ3drbZnPa5uZY
+	8fwwoeyE9B0w7DJPpHJMvaq3TZrec8sMeX+UqGFUzIcUddGU411JxVEczBrgKpzTQNNjxx3IK5e
+	RUpg1MejO9rAtzhVBXFKi57BiwWoiDeuI1F7pXGnD/B3rGGjOSalqhjkE2hKKUhrT6LQltNqvfs
+	5lz7x4XO6V0mbXdyA7SuC0EHlGPIm1Y80F0e/gdxLMS/a0wxhZWSPFSOB1A=
+X-Received: by 2002:a17:90b:380f:b0:39e:1494:1863 with SMTP id 98e67ed59e1d1-39e1e56b3f6mr5557144a91.25.1789562520844;
+        Wed, 16 Sep 2026 05:42:00 -0700 (PDT)
+Received: from KERNELXING-MC1.tencent.com ([43.132.141.24])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e1b69331esm5070948a91.4.2026.09.16.05.41.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Sep 2026 05:41:59 -0700 (PDT)
+From: Jason Xing <kerneljasonxing@gmail.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	willemb@google.com,
+	kuniyu@google.com
+Cc: netdev@vger.kernel.org,
+	Jason Xing <kerneljasonxing@gmail.com>
+Subject: [PATCH net] tcp: preserve timestamps across receive queue collapse
+Date: Wed, 16 Sep 2026 20:41:53 +0800
+Message-Id: <20260916124153.43457-1-kerneljasonxing@gmail.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260915043055.3441600-1-edumazet@google.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 15, 2026 at 04:30:54AM +0000, Eric Dumazet wrote:
-> sk->sk_flags must only be changed while holding the socket lock,
-> because sock_set_flag() and sock_reset_flag() use non atomic
-> operations (__set_bit() and __clear_bit()).
-> 
-> sock_gettstamp() is one of the last places where a bit of sk->sk_flags
-> is changed from a syscall without owning the socket lock, through
-> sock_enable_timestamp(sk, SOCK_TIMESTAMP).
-> 
-> sk_set_memalloc() and sk_clear_memalloc() also change sk->sk_flags
-> without the socket lock, but their callers (nbd, iscsi_tcp, nvme-tcp,
-> sunrpc, wireguard) need a careful audit, this will be addressed in a
-> separate patch.
-> 
-> Jungwoo Lee and Wongi Lee reported an UDP socket use-after-free
-> caused by this bug: a SIOCGSTAMPNS_NEW ioctl racing with bind()
-> can cancel the SOCK_RCU_FREE bit that udp_lib_get_port() just set,
-> because both threads perform a read-modify-write on the same word.
-> 
->   CPU 0 (bind)                        CPU 1 (SIOCGSTAMPNS_NEW)
->   --------------------------------    ----------------------------
->   read sk_flags = F                   read sk_flags = F
->   compute F | BIT(SOCK_RCU_FREE)      compute F | BIT(SOCK_TIMESTAMP)
->   store F | BIT(SOCK_RCU_FREE)
->   sk_add_node_rcu(sk, ...)
->                                       store F | BIT(SOCK_TIMESTAMP)
-> 
-> After the lost update, SOCK_RCU_FREE is clear while the socket is
-> visible to lockless UDP receive lookups. sk_destruct() then frees
-> the socket immediately instead of waiting for a RCU grace period,
-> while the receive path still holds a reference-less pointer to it:
-> 
->  BUG: KASAN: slab-use-after-free in ipv4_pktinfo_prepare+0x30/0x410
->  Read of size 8 at addr ffff888008806610 by task exploit/207
->  CPU: 0 UID: 1000 PID: 207 Comm: exploit Not tainted 6.12.95+ #1
->   ipv4_pktinfo_prepare+0x30/0x410
->   udp_queue_rcv_one_skb+0x51c/0x1180
->   udp_unicast_rcv_skb+0x109/0x350
->   ip_protocol_deliver_rcu+0x14b/0x310
->   ip_local_deliver_finish+0x29d/0x390
->   ip_local_deliver+0x24d/0x2a0
-> 
-> Only grab the socket lock when SOCK_TIMESTAMP has to be set,
-> to keep the common case lockless.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Reported-by: Jungwoo Lee <jwlee2217@gmail.com>
-> Reported-by: Wongi Lee <qw3rtyp0@gmail.com>
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
+When tcp_collapse() rebuilds skbs under memory pressure, the copy
+process doesn't include the right tstamp and hwtstamp from the
+old skb.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+In net timestamping case, if such an skb happens to be the last
+one consumed in a recvmsg() call, the application receives no RX
+timestamp for that call.
+
+Fix this by copying both tstamp and hwtstamp to the new skb right
+after the initialization.
+
+Fixes: 98aaa913b4ed ("tcp: Extend SOF_TIMESTAMPING_RX_SOFTWARE to TCP recvmsg")
+Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
+---
+ net/ipv4/tcp_input.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 0f60a1dbf927..c5756db892f2 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -5835,6 +5835,8 @@ tcp_collapse(struct sock *sk, struct sk_buff_head *list, struct rb_root *root,
+ 
+ 		memcpy(nskb->cb, skb->cb, sizeof(skb->cb));
+ 		skb_copy_decrypted(nskb, skb);
++		nskb->tstamp = skb->tstamp;
++		skb_hwtstamps(nskb)->hwtstamp = skb_hwtstamps(skb)->hwtstamp;
+ 		TCP_SKB_CB(nskb)->seq = TCP_SKB_CB(nskb)->end_seq = start;
+ 		if (list)
+ 			__skb_queue_before(list, skb, nskb);
+-- 
+2.43.5
 
