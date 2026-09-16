@@ -1,46 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB014BD108;
-	Wed, 16 Sep 2026 11:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D657B4E56D1;
+	Wed, 16 Sep 2026 11:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789559012; cv=none; b=BAqLmInZiuvf6rY1FACXS74/5+9AuPXcPvxotQtEpGHxqJntgk1c76Olm1pR37b2XwLCH0TP8NGQwpACh5ic3sOzX8f7YxZljx/SY3AZ3lh7q4jCnKTu4G4pKPpnGukXE9udVhKNZRmMMySLy+/hAGINipxnrV9AFPD1GmWFcrQ=
+	t=1789559408; cv=none; b=U40nr7NKdrZA1ZJC80gpYnup5BjNpERX4lkMQRGanbMvYLIY/kwqn65AYd2YdYcVyUZgxWP1Dawe3NMRTl0dpLhtLCN6rMVCrNvcBTAvD+ithu+b0vURW+o7wM0uxjpdRJe6N0Yy05HhvTj7jGP+hcviZrlGZKl3JFjJkbr29Co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789559012; c=relaxed/simple;
-	bh=goppTDHzWaqosN/1Y+/NEdVF1fbVuJ4qxiiCvPvpA5Q=;
+	s=arc-20240116; t=1789559408; c=relaxed/simple;
+	bh=BtzL1WjzyyiVgDG9bdORuUhmySKbO+w1kIj3Wp4eExA=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iN44HysxQQWfA/ejXATp/epjpKpTH0MWwfV95d4yEvzHZt0+3J/mMG+Sg9QrclGXlcR7J+zA2tTPtAOkyW3vYearjI3VARjj1R3ZAdiWAJV4xvKAFoePZ96AGkBduhAlY04ZQZ/W/iKBMK35n3rmBN23hTgBbsJ6ia1nxxRRubM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jXtGdBVY; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=AH3XmON5CPYQghvXhReK2iOsM/nMW6/pME7QSGSMuro4PkhksJvQ4UNDxHUT9yC6dna8ZAYpknAXC/e+W+sLTGt4f0aaWBh3FP3iz9TJRQy9Jnn2Xf+zSQrZSfzl1qwlwbE6qF3tH/po1uCeNrStv7s8YRbUv5riWbyeBdfjSzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V5d9o3/Q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jXtGdBVY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C741F000FF;
-	Wed, 16 Sep 2026 11:43:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V5d9o3/Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5DCB1F000FF;
+	Wed, 16 Sep 2026 11:49:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789558994;
-	bh=cpTUrOF05Dcy1Bk2KAYOIW3v5WZK34oP8mQ9ZpYwf3Y=;
+	s=k20260515; t=1789559396;
+	bh=LjgLSw2MeL5vGjW/rbVSbpNes7RvuqTBrpBub5QjU2E=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=jXtGdBVYViMXZx0efLs39QetMVB182/hwnwQoOEpr/FmlYyMa9eEjJkqeG1CHn0/W
-	 EBPeKSVsA26oHySGGsVqPfM7yce2TokzlWOWaYC6xe5WVYWiNSEA2rlgOwFSUAWtp+
-	 PZjbjCG1gg70mJgZhju5RkL8wbzFvj96vsAh8YosIv4uCAEjo4sQbfryJksJGMqx7/
-	 cc5MUe/E1jfbzTtp890pdLGNb06yzp+UAxfvDEtfcEb9NW/PUxd366RlPy7xgFY1Ry
-	 0nJwlai3ya16/Onz2HC+Vt1bSkl1F5vIcp2kZYCtqk+osLXAOCtLIQRbnaXnXDnwXE
-	 KewRDn8pgj74Q==
+	b=V5d9o3/Q56q/nqPu66WlLzFTSH6eWM2fvDyPPX8s53fRCK2Q4O8mXKdFR0+sbs4IM
+	 2Uwtw0HbQW92rHuVl1BRdMmS+JBi+A53ws4jhb/0x8xMqEmbrJRf1ez2/gq+XxywCD
+	 sX0MDaUpqS4H6oIy3MWelsBGsGl3NISxAI19FIlqC/bHydqGRsQbF4m/Ge31FLNRqo
+	 i93OKRE2fMcVSlBPlRY6NsueMZQiQDCdiSR0GDDp/8Gg/gaWIhL75hrID+CApdizns
+	 VfNMFIbiltLrr+zVODBlxTccoWGyG6MiEPtm8myDzVO+ORhK8XGt/eg9J6VtSngcQX
+	 FKcxG7AGCUPOA==
 Subject:
- Re: [PATCH v4 1/2] net: pcs: rzn1-miic: Fix config array initialization
+ Re: [PATCH net] net: axienet: bound TX completion cleanup by the NAPI budget
 From: netdev-bot+sashiko@kernel.org
-To: khendry@reliablecontrols.com
-Cc: clement.leger@bootlin.com, andrew@lunn.ch, hkallweit1@gmail.com,
- linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, prabhakar.mahadev-lad.rj@bp.renesas.com,
- linux-renesas-soc@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Wed, 16 Sep 2026 11:43:13 +0000
-Message-ID: <178955899323.22033.2372714834297554596@kernel.org>
-In-Reply-To:
- <20260914-rzn1-miic-fix-array-v4-1-069112feec86@reliablecontrols.com>
-References:
- <20260914-rzn1-miic-fix-array-v4-1-069112feec86@reliablecontrols.com>
+To: maimon.sagi@gmail.com
+Cc: radhey.shyam.pandey@amd.com, netdev@vger.kernel.org,
+ robert.hancock@calian.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, michal.simek@amd.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Date: Wed, 16 Sep 2026 11:49:55 +0000
+Message-ID: <178955939540.22033.11518643324722820075@kernel.org>
+In-Reply-To: <20260914114821.55503-1-maimon.sagi@gmail.com>
+References: <20260914114821.55503-1-maimon.sagi@gmail.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -51,130 +48,130 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 (1) · Medium: 0 · Low: 0
+Critical: 0 · High: 1 · Medium: 0 · Low: 1
 
-- [High] One-byte heap out-of-bounds write in miic_parse_dt() on the
-  RZ/T2H (renesas,r9a09g077-miic) variant, which the series' own port-…
-
-Pre-existing issues:
-- [High] Unbounded array index / wild pointer dereference in
-  miic_dump_conf() (drivers/net/pcs/pcs-rzn1-miic.c:566-580).
+- [High] drivers/net/ethernet/xilinx/xilinx_axienet_main.c:795 — the
+  newly added `if (!force && packets >= budget) break;` is evaluated at…
+- [Low] The kernel-doc block of axienet_free_tx_chain()
+  (drivers/net/ethernet/xilinx/xilinx_axienet_main.c:768-781) was not…
 
 --
 
-net: pcs: rzn1-miic: Fix config array initialization
+net: axienet: bound TX completion cleanup by the NAPI budget
 
-This corrects the memset() in miic_parse_dt() so that the whole
-kmalloc_objs() allocated dt_val array is initialized to
-MIIC_MODCTRL_CONF_NONE, instead of just the first byte. While looking at
-the surrounding code a couple of questions came up about how dt_val is
-indexed and later printed.
+This adds a break in axienet_free_tx_chain() so the TX completion loop
+stops once the NAPI budget has been spent, instead of being bounded only
+by the TX ring size.  The check is skipped when @force is set.
 
-> diff --git a/drivers/net/pcs/pcs-rzn1-miic.c b/drivers/net/pcs/pcs-rzn1-miic.c
-> index 2b72fa98ddf13..cb74861e823c8 100644
-> --- a/drivers/net/pcs/pcs-rzn1-miic.c
-> +++ b/drivers/net/pcs/pcs-rzn1-miic.c
-> @@ -683,7 +683,8 @@ static int miic_parse_dt(struct miic *miic, u32 *mode_cfg)
->  	if (!dt_val)
->  		return -ENOMEM;
+> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> index 1722b7038f340..4381643227139 100644
+> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> @@ -788,6 +788,13 @@ static int axienet_free_tx_chain(struct axienet_local *lp, u32 first_bd,
+>  	dma_addr_t phys;
 >  
-> -	memset(dt_val, MIIC_MODCTRL_CONF_NONE, sizeof(*dt_val));
-> +	memset(dt_val, MIIC_MODCTRL_CONF_NONE,
-> +	       sizeof(*dt_val) * miic->of_data->conf_conv_count);
->  
->  	if (of_property_read_u32(np, "renesas,miic-switch-portin", &conf) == 0)
->  		dt_val[0] = conf;
+>  	for (i = 0; i < nr_bds; i++) {
+> +		/* A NAPI poll must not return more than its budget.  Stop on a
+> +		 * packet boundary once it is spent - cur_p->skb is only set on
+> +		 * a packet's last descriptor, so no packet is left half-freed.
+> +		 */
+> +		if (!force && packets >= budget)
+> +			break;
+> +
 
 [Severity: High]
-Now that the size of this buffer is spelled out as conf_conv_count bytes,
-can the index used a few lines further down in miic_parse_dt() run one
-past the end on the RZ/T2H variant?
+What happens on this path when budget is 0 and force is false?  The test
+is evaluated before any descriptor is looked at, and 0 >= 0 is true, so
+the loop breaks at i == 0.
 
-	for_each_available_child_of_node(np, conv) {
-		if (of_property_read_u32(conv, "reg", &port))
-			continue;
-		...
-		/* Adjust for 0 based index */
-		dt_val[port + !miic->of_data->miic_port_start] = conf;
+netpoll calls the poll function with a budget of exactly 0:
 
-For rzt2h_miic_of_data the relevant fields are:
-
-	.conf_conv_count = 5,
-	.miic_port_start = 0,
-	.miic_port_max = 4,
-
-With miic_port_start == 0 the index is port + 1, so a child node with
-reg = <4> and a renesas,miic-input property writes dt_val[5] in a 5 byte
-allocation. The companion patch "net: pcs: rzn1-miic: Verify port number
-from dtb" bounds port by miic_port_max, but since miic_port_max is 4 for
-RZ/T2H the reg = <4> case still passes the check and still writes one byte
-past the allocation.
-
-Is miic_port_max = 4 intended here? The hardware description elsewhere in
-the driver only covers four converters:
-
-	static const char * const rzt2h_index_to_string[] = {
-		"SWITCH_PORTIN",
-		"CONV0",
-		"CONV1",
-		"CONV2",
-		"CONV3",
-	};
-
-and the binding restricts reg to enum: [0, 1, 2, 3] for the r9a09g077
-compatibles. Would bounding the computed index by conf_conv_count (or
-setting miic_port_max = 3 for RZ/T2H) be more appropriate?
-
-On RZ/N1 the same expression stays in range because miic_port_start == 1
-makes the index equal to port, with a maximum of 5 in a 6 entry array.
-
-[Severity: High]
-This isn't a bug introduced by this patch, but since the same dt_val array
-is involved: the values stored here are used directly as a string table
-index in miic_dump_conf(), without any range check.
-
-miic_parse_dt() stores the raw u32 DT properties into the s8 array:
-
-	if (of_property_read_u32(np, "renesas,miic-switch-portin", &conf) == 0)
-		dt_val[0] = conf;
+net/core/netpoll.c:poll_one_napi() {
 	...
-		dt_val[port + !miic->of_data->miic_port_start] = conf;
-
-and when no MODCTRL entry matches, miic_match_dt_conf() unconditionally
-dumps them:
-
-	dev_err(miic->dev, "Failed to apply requested configuration\n");
-	miic_dump_conf(miic, dt_val);
-
-miic_dump_conf() then does:
-
-	for (i = 0; i < of_data->conf_conv_count; i++) {
-		if (conf[i] != MIIC_MODCTRL_CONF_NONE)
-			conf_name = of_data->conf_to_string[conf[i]];
-		...
-		dev_err(miic->dev, "%s: %s\n",
-			of_data->index_to_string[i], conf_name);
-
-conf_to_string has 14 valid indices (0..MIIC_HSR_PORTB) and
-rzt2h_conf_to_string has 9 (0..ETHSS_ETHSW_PORT2). A DT value outside
-those ranges never matches a table row, so it always reaches this path,
-and a value above 127 is truncated to a negative s8. Can this read a
-pointer sized word from outside the string table and then dereference it
-in the %s conversion?
-
-struct miic_of_data already carries the bound, but it does not appear to be
-read anywhere:
-
-	u8 conf_to_string_count;
+	/* We explicitly pass the polling call a budget of 0 to
+	 * indicate that we are clearing the Tx path only.
+	 */
+	work = napi->poll(napi, 0);
 	...
-	u8 index_to_string_count;
+}
 
-Would it make sense to validate conf[i] against conf_to_string_count
-before the lookup, or to reject out of range renesas,miic-input and
-renesas,miic-switch-portin values in miic_parse_dt()?
+lp->napi_tx is registered with netif_napi_add() in axienet_probe(), so it
+is on dev->napi_list and poll_napi() reaches axienet_tx_poll(), which
+forwards the budget unchanged with force = false:
+
+	packets = axienet_free_tx_chain(lp, lp->tx_bd_ci, lp->tx_bd_num, false,
+					&size, budget);
+
+With the new break taken at i == 0, does this turn the netpoll TX reclaim
+into a no-op?  No dma_unmap_single() or napi_consume_skb() runs, and
+lp->tx_bd_ci += i leaves the consumer index unchanged.
+
+Since packets is then 0, axienet_tx_poll() also skips the if (packets)
+block containing netdev_completed_queue() and netif_wake_queue(), and
+packets < budget (0 < 0) is false, so napi_complete_done() and the
+re-write of lp->tx_dma_cr that re-enables TX completion interrupts are
+skipped too.
+
+Can this stall netconsole/kgdboe output when interrupts are disabled, for
+example during an oops, where the TX completion interrupt and the NAPI
+softirq will never run?  Ring-full detection depends only on software
+clearing cur_p->cntrl:
+
+drivers/net/ethernet/xilinx/xilinx_axienet_main.c:axienet_check_tx_bd_space() {
+	...
+	if (cur_p->cntrl)
+		return NETDEV_TX_BUSY;
+	...
+}
+
+and cur_p->cntrl is cleared solely by axienet_free_tx_chain(), so
+netif_xmit_stopped(txq) stays true and __netpoll_send_skb()'s bounded
+retry loop, which calls netpoll_poll_dev() to "tickle device maybe there
+is some cleanup", exhausts its tries with the skbs still pinned on the
+ring.
+
+Before this patch the same call cleaned every completed descriptor, with
+budget only used as the napi_consume_skb() bulk-free hint, and
+napi_consume_skb(skb, 0) degrades to dev_consume_skb_any().
+
+Would it work to make budget 0 mean "clean everything, report no work",
+for instance:
+
+	if (!force && budget && packets >= budget)
+		break;
+
+or alternatively leave the loop unbounded and clamp the value returned by
+axienet_tx_poll() to the budget?
+
+The commit message reasons about budget 0 only for the force path:
+
+  "The check is skipped on the @force path, which cleans up
+   after a DMA mapping failure with a @budget of 0."
+
+Could the netpoll caller be covered as well, since it uses budget 0 with
+force = false?
+
+[Severity: Low]
+Should the kernel-doc block just above axienet_free_tx_chain() be updated
+in the same patch?  It still reads:
+
+ * @nr_bds:	Max number of descriptors to clean up
+ ...
+ * @budget:	NAPI budget (use 0 when not called from NAPI poll)
+
+@nr_bds is no longer the only cleanup bound for the !force path, and
+@budget is no longer just a napi_consume_skb() hint.  A caller that
+follows the documented advice of passing 0 outside NAPI poll with
+force = false now reclaims nothing and does not advance lp->tx_bd_ci.
+Could the @budget line state that cleanup stops after @budget completed
+packets when @force is false?
+
+>  		cur_p = &lp->tx_bd_v[(first_bd + i) % lp->tx_bd_num];
+>  		status = cur_p->status;
+>
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260914-rzn1-miic-fix-array-v4-0-069112feec86%40reliablecontrols.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260914114821.55503-1-maimon.sagi%40gmail.com
