@@ -1,119 +1,179 @@
-Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011001.outbound.protection.outlook.com [52.101.70.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB165353EC0
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 02:17:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F508287E;
+	Wed, 16 Sep 2026 02:20:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.1
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789525058; cv=pass; b=NMN3nExpdAQCpCpf68bS/9daxogxdwEkLGMQK1Mi1HGYv2MP574nVcuSLtx2LNwaQbA0BIa9gUISN631MTl9Thm8OLpv5pXBrVTMDiR/N35vlSlL4aLOw7YMgis3KEeENpLUlP9MI93WiqEoib8BpyXxWCitr4MqpRYZQMNJDs4=
+	t=1789525227; cv=fail; b=DDwUg7XVlWHcqs93lSbUDUXP1xcz+Hui3LTwpga7OYPkgTTtzd7bxZVa/DH9gpQbW2fImmdNODkZHfdYtPQvEr+zz0HNYVux8i7ZO+V3GAFzPIrnHvlhfN1sxoVSxJb0RVHBA10vFJNSgrk04sa5JZYpr53z8X8S7osHXkkm4LQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789525058; c=relaxed/simple;
-	bh=54qaMNvX84LihabUIKKX9MFlFiugZNCJrolAMMRbI6E=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=pBUgE6jq1sbXxd4WU8u+krSMlX8b5o/a3WgWtd7rlPd+Drq3LgmihDLdH1CWu65D0h6w2cYPwzIUHzgiVo8cWEEjyLaiXowObjW6dNAy9kIYOQxqzVND3lZSuccCIgaCDagmQAV0ongTrzHpjvsm++X/RhXlHAR22zI+dUw0Uyw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Oz2dN5tU; arc=pass smtp.client-ip=74.125.228.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789525227; c=relaxed/simple;
+	bh=WhoRMoofxvxhLVrueoSmubrRi44WGvqnkTBlgJjs9jM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=gdTuqqaZ3TBGDScMKdgGwFmbCICOzmVmlV8BHSGm9EMvwsJI/QfQj6Od0dqgBD+qwbHFYDNzy38LT75PUqRJU27G+tL3b2gVmajEHm3wsMuWsRkEuEplNJ+lqFb8EK5HeQ0BXkKZIF+I0SHEx9BJ73GiSlJvTfxXyXU0bJDPAM8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=nV/gi5xm; arc=fail smtp.client-ip=52.101.70.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oz2dN5tU"
-Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a60590a85cso910486a12.0
-        for <netdev@vger.kernel.org>; Tue, 15 Sep 2026 19:17:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789525053; cv=none;
-        d=google.com; s=arc-20260327;
-        b=q98dcfD4PnRyJfrQ066uTovWpyQXPpvfr63S/ukjjildxSy1dDxG5U7pgB5NGS1ALD
-         ijfvFMMIKQ+dncNKjiDaPyjIQekWQEp4436fKAYLLBSxlECRJdBbNn3B3OLFdpvfx6VX
-         hjZKTOVK45qQlXgGj8F8s2U6V1XFR6sTDi4YeY4CDESOgej9FzfIskfEbO7HmsIiBczK
-         fSjH2lzBb0zufLg/qyJ0RmH902gnJVKJbsPy6b3iNvPntT91A2qvdYWbJ+37urGcKA+k
-         4Bef1auuiAA4jX2W72V5JzWGec3Pd4bfvvUed2zbgpn7l7zAE2CqLfyZTQ8wqWs4JEdf
-         O5IQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=54qaMNvX84LihabUIKKX9MFlFiugZNCJrolAMMRbI6E=;
-        fh=tpSEDLA8mUhBrsl7MaGGLstJr7vJOCRMKrwxK9Ke7b8=;
-        b=osTdLRfoY4IJz7xxlDM6UXDtdMQVXQ+uBxqAHOnZukHn1x4pqfE5u7aplWtpJPq9Gg
-         rcTkAWLdo4cgBA926MiLCImdYDHog9SWmY1Q34Xs5ZoAl+tdohuYPXLnrprS4fb0H9LY
-         JnrNrlc2RtDdL0R6rTZavFORpKYZH3Xwth1cTpiydtaAXA6Usf+E9iw4sdSRvyx35XBf
-         BqKQmmAy7lrl6Cm6lcxg8I9odaHYl2ds3/0y8098rNeu//M0gouJZo2ETSRO0lbhPmSx
-         AdHftaBsy7xfD4Z0neM8e+veAla/5vjbNPeBAl64N3fy2CFAxvvZj2jRCgreMpi1pWCb
-         Z/gw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789525053; x=1790129853; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=54qaMNvX84LihabUIKKX9MFlFiugZNCJrolAMMRbI6E=;
-        b=Oz2dN5tUqi4OcOZk/UFTk+Z+ZadbyGfwHoSXrfRbAPEr28/DW2BZkM69EzvlREzwmN
-         SKPnaZMbFq2It+ycXcqRd/NAOypJHwX0q3hscWShwUrJqRaXAn62kQD3fVmM+A4Tg8iD
-         CZRFirKDJcGklXY+VRnQtDtZ2oZ6xmj0GKqVWfrq+9Z5eZzOOO8rxCPGkRliy5JoOmge
-         uZ0DDGStjCF/goau/LVBjlEltuO10nB+085cRWrnmdFsYDMc5y+zHhdP26EJhM6U1HWI
-         ZJNVQd+9wekZOwbny3BufBoRdI+0pZJP3Hy1PtnKM+3gSDZyTt7ckrp/PTo+5pAKXcH1
-         +qeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789525053; x=1790129853;
-        h=content-type:cc:to:subject:message-id:date:from:mime-version
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=54qaMNvX84LihabUIKKX9MFlFiugZNCJrolAMMRbI6E=;
-        b=tAcwim4B8EpkXpmpbURQINhH/fGYhL03C/Wgk8K7hVQlUBfkOU3xJfKshb3kk+6wb2
-         yxqHYfa5ndBTxFmdgm9PzxHXOAsXuqVimlQ4IyNJwB94vE0iUrTRp4oUwUFL/Pm2J7ye
-         HW8GxHmMHvZQSkPhu5kLRqoHS/8Yb8WMzr9LYakGdoH6CY2DZOswyMFzS9MFb56FXpXV
-         sboru7EUeEVK2Zo5+o7zGEoBrDJQH3QQyE3ZyPXHJAs45pIAduERjq3LR7FGL32RMNNv
-         KGUwFFRil5C1/dsMZ+HmoVeFdQmxPHpZdRaC/+dw6AP95yPTnd1fiaTOCvSivR4qMGv1
-         fkog==
-X-Forwarded-Encrypted: i=1; AKwUvByHFZFsT7FfWrVZHk8TUa3dnMUD4gAc443GkzzWuAjctbvOcJl39qEcjSMVHKLueh2vM5bXlGg=@vger.kernel.org
-X-Gm-Message-State: AFuF++mVxwQlH8flv7rcziSRSTgTgGS7S/CwqXgbtl/pnygc+d6Yh+QP
-	7BkTbn31o+NAlpC1IwgBlWW2Yd66Sw+zjlpU4hrnsUvyj31f9REAVj19kTdL9d1Tkj4P4h+I00F
-	dlagjG3lVolQVwKFI5FPj5vuFf0CcphE=
-X-Gm-Gg: AYBFou2Jb3rRv+QUgnpyqm04jgzWGD+gHFMR19QUEkJqjmeYaq7OmCw+Z6DxQkU7Ehr
-	uqr4EenZoaXB3/8utpW6sHUxkOie/KOgBTb3u+eqhNd2gH6imqM1bUI7eyDREz5sVqy+jT/IM0C
-	eoQW4tVyFJN4hgu7FLLP5eWVsMyH5xkr1vH+swh0oY8UoI1lXvsT2EFwOdym3umVI7mRrXMz3+q
-	ARp4wtTJGG8om7e8+I0YRjtsMLs1NFdx8BsjsmIUxmMQx3JjIQhwkf5Vffahs3s5qiS9VO1f1xe
-	baYZTvAFJfg3SqeHZ2quhsbytQbKRNXEGPZjlCBz7rs7m1wsI0rcfJperQ==
-X-Received: by 2002:a17:907:9309:b0:c29:60c1:7e55 with SMTP id
- a640c23a62f3a-c29e523d53dmr34794466b.12.1789525053165; Tue, 15 Sep 2026
- 19:17:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="nV/gi5xm"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=w4cxudBLvWgWsYj1ZshKOu9tgl8iYqGAXOi0isfQe2TOzcxRIArhk7Zl2fQLJWfvbumPbKyYTLXROUR9EKHynHql9FmqwBLuWY3wZm+nqafzBRx3eHLqPIa54yK5/BtZr4/wWaB7XPxdX6nqi3NZdgL0SdmmA6owGN/j3gJ1Qjc6m4rak0XQsxjnqiBiPsBZD1RzGjwabXg1TIJIv72CcxaaABjGikT37TG4YJPAzy8oTBAtpeYslYNwTWkjbwl/FgrGuWvG875STS3atm5XDCWmae+7E9FscHy9UuTmfQ93eK/aX1LeKzGRO59oOaMsIg3tGu+2ONTIs4AEsADsgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=U478V79N5VPfcMq0bCi6tB6r7wZHyfgjSGgfT4jgwOA=;
+ b=YAyTrvfjko/5NiuFggMon+5so9+aQijzg9jsDrN56LKsrnZnCU4l/yKly7rZJEt7Ot7LuNt+X0+xybsBerJGbJYQXo1J3KIQWqQaPuhOC1jlgracvHRPrNcSMepEDgOBvSuR2EEj8Apyo70yzoYxyPSmTvOWQ4u5edGY7B/6H7FgU8oCaDfRszghUEHY72xCB8CwNgwRMhKiIM4/KraHUczo6JwiX7hc1oNwrxgC8jSpJVKg1Vhw9OWiru0Q/nA6d/yN91s9vBsUcZq3WGRsUi8ZtWH7Nxj+kr6a5GYkOB6CUe4HcWaqfQ3yrjMuxUAoc3RPU9Wk/EXcvtBgAXrn4Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=U478V79N5VPfcMq0bCi6tB6r7wZHyfgjSGgfT4jgwOA=;
+ b=nV/gi5xmQJME45O5pSTmfFGeYhQ2on4LeENjyl2bT2RJ3v+hkLMXTzHBVtJ9Pfr94EG98XlmBdamvr/1YXxa/bRWXwBUb/ytxrdxjD6V+lNmdwdwuyT7wW5PuO5MCuzpjBCJ8cZP9vx+jNv13vif655NerlGVrSBJeFbG523+aklkuABg9EjDuvW5RgVUHwGibu2UYwMibz0NsylqCbDynH59MdXoEJePsBoDaaNj9Gzjz9HapkYnDivZBS6icCJOrR3L2W9ScrwVBDdle0taTGNVQbr+wWUmBva5qdxzqjc8uJmETajw7cZ9yNyG+e02NklzDdWQCREr+wxI6NwNQ==
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ (2603:10a6:150:2fc::18) by AS8PR04MB8451.eurprd04.prod.outlook.com
+ (2603:10a6:20b:347::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.11; Wed, 16 Sep
+ 2026 02:20:21 +0000
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a%5]) with mapi id 15.21.0406.007; Wed, 16 Sep 2026
+ 02:20:21 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+CC: Zefir Kurtisi <zefir.kurtisi@westermo.com>, Claudiu Manoil
+	<claudiu.manoil@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
+	<daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
+ Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>,
+	Simon Horman <horms@kernel.org>, Richard Cochran <richardcochran@gmail.com>,
+	"Y.B. Lu" <yangbo.lu@nxp.com>, Ioana Ciornei <ioana.ciornei@nxp.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>
+Subject: RE: [PATCH v3 net 2/7] net: enetc: ensure enetc_xdp_xmit() calls
+ enetc_update_tx_ring_tail()
+Thread-Topic: [PATCH v3 net 2/7] net: enetc: ensure enetc_xdp_xmit() calls
+ enetc_update_tx_ring_tail()
+Thread-Index: AQHdRWFs5icfT0mSEk6HhNc4f+7o1rbQeO3A
+Date: Wed, 16 Sep 2026 02:20:21 +0000
+Message-ID:
+ <GV2PR04MB11739136B93D0455F1907E10D88B92@GV2PR04MB11739.eurprd04.prod.outlook.com>
+References: <20260915222735.1016937-1-vladimir.oltean@nxp.com>
+ <20260915222735.1016937-3-vladimir.oltean@nxp.com>
+In-Reply-To: <20260915222735.1016937-3-vladimir.oltean@nxp.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|AS8PR04MB8451:EE_
+x-ms-office365-filtering-correlation-id: 2a44b9ad-221d-417f-ad32-08df13990f04
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|19092799006|376014|7416014|366016|23010399003|1800799024|38070700021|10067099003|4143699003|56012099006|11063799006|22082099003|18002099003;
+x-microsoft-antispam-message-info:
+ t6Ovpxh2l5397xQivlBHNigFOiEY40FlgJ1Jzuc+jKX6EEyPRTrvrBPsj7dIeO2ox8e9c+kiAvDkSNwoxyFr0DiwWtgwcPYJy1rX5/9vMK/9O8gUShY4htH8LN0woXHcrfUIb8YVWSNkZ9KDl8r84AaHI27//pB71ZrRqgA6TzK5y7JYEeaIib/QW8eMNxeX+/8fx6k+jNtPi6FVlDnyLVwj9v1IMVrQM8qwi1F97JWwSWoRnXEEeBikl2ur11ahQtMWrw5OII2cvvbBLTpcATccgmEEzVJcNPj7OduHEUu1v9IfliM1jZFcZPrqwDbccK4Z08Dv78P/g7X/ioEE4ZuUm2OYvgw9GWeWuHgwxQZN+7GodIe/kWZKmEzCcrgnBLe+in/fTLxkGQxTPLecZ15GnqaHeutDvDOBtmCAxkwkH2mjiTbND2Hev43WK0PZU5Ua3bgrCyO1DOg/hUOTtmbTnVHdctgHROcSdkX+3Pdr2b4HHavbJ13FVho9CZJbzGGz3NM1M1eJnSivUqAqW9AZaZBrusevYRxw2Re2/fibwPLsTNcARqjGkXGfl7WT7GhTipotE3TuPOWIw8IJqZnf4AAvgNsmyj3+tH1RLuD4/fh+GVcJDEjKTXPlEmXu+iKQdQTkVzQXJFC0iznAT++l1FVXAFqXrUG4L0ljUgScY75MQTlZvdASnDUi27s4RSPGdsE8m4l3TnT9LD2O9rpvxUna4mlB1LVA5P+aWwg=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(7416014)(366016)(23010399003)(1800799024)(38070700021)(10067099003)(4143699003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?Dw4V+Jd0CrzdM96Rnnwl3Ik0jf7/1CFpam35ybCE/3OZt+OATonLE3BVChqS?=
+ =?us-ascii?Q?plWX3AfmernIahnIjYQ23d9CRr+mq+5C49fFnXyD7uu8yowUtvqQTvQMskNt?=
+ =?us-ascii?Q?fIAatx4gQSgqzOcBu/D50tNCFLQ1VZ9gSwqlSw6vVQ6daY8rfW5hAnFkXFAd?=
+ =?us-ascii?Q?Uhr77f4UJDnJcimK26hQz4a/XLThenTsonAnu68oNeVxcsme98ttfH6vw2TQ?=
+ =?us-ascii?Q?Kv1C1y3/Fypq628CtEePmC34Ew1D60E9XoWiqkapc+fGQ0PSHck1l8wZq58q?=
+ =?us-ascii?Q?pn5PAALHWv+Xp/dIE5x4w9RTHzOFFlN6un/kM/ZSUcmrkk0FAoz309FPYAbj?=
+ =?us-ascii?Q?l7xuwuXwArMwOe/Bel/HQkPPPBJrUkAEFBILjfFY+3VD9DuoeswxWl6ybUa3?=
+ =?us-ascii?Q?nz4tDCT6FHuGxLV2uz/hCWhE7HMOQmmDv3CQm6lYRYqBMZtxhuGtpCh0X2LR?=
+ =?us-ascii?Q?2y47OqALHZKDKpX8rhnjwnAK1UapJZEXf3ztKX6Rh3UvKv8Wt6SVWget+HCc?=
+ =?us-ascii?Q?r7YatODZMxc0A3jRkl1Tbdy88dw424KWyzfih0mlX9ClqnYIsEQmmIflvqN4?=
+ =?us-ascii?Q?fFcnMciGQYeAneP8oXp7zSim0S5RftbBwodTcB8BmIHVLzddZ7Pe/qB3Snuo?=
+ =?us-ascii?Q?8wlzllvm4fmslVsG9y6BqxW+HhPPZxn+N6rbRlky7z2IRLY+QXnwpDzIxsvQ?=
+ =?us-ascii?Q?KNTU+Gp16YuqY7aF72pjDttokNw0i8GD/uWev7Qhy/Gc4oyUUpO5D+vivq7G?=
+ =?us-ascii?Q?f0Elae3uNIBZrv2cQKu2sQsLcyBsIIFpmDCC16xD0Tt+I0mIBvkPeDszPLk8?=
+ =?us-ascii?Q?0TvejQr54vUzOHjsTPhHTskgGinY9TNUSVO9EGqGnx36v1t4mi/YTSwLALTE?=
+ =?us-ascii?Q?ZjFiXjd8texJniJP064PXKagruIbh78bN98j1cHqT4F6iqU2watEsa8UdlAS?=
+ =?us-ascii?Q?FberR3/SZy2MdCrMote9I7V1nsQLlw1o/cobdXrGD5fB8WYpaBd8KyuBMjyQ?=
+ =?us-ascii?Q?G/bfwzOhR86QNVyyKo3y2vcgKz1FLCkkuCHU2aL2ehThfrfiSxro79xwiuD9?=
+ =?us-ascii?Q?7j907A5z7RIlnOZaSVzZsg/pXH97Ne4ZfyNWJ1kswKjy2vfTBXdSuIN2hL+w?=
+ =?us-ascii?Q?tJO0f0klBMr27KPnGLsVVh/TNrXP2JyBvay8WioYkoKctO93qyqV2rdkn+uq?=
+ =?us-ascii?Q?bNgp7Oz61rKesSAW4/XC9O8NYsOsbK/hqtF44rH9K4g5+mZ0JSVA5yG4zupv?=
+ =?us-ascii?Q?1Nu602Y0qJ2pL7pX1ZaKn44plcMTm3ehJFB8AYFIe76Qto/DLwjnFxLVauxv?=
+ =?us-ascii?Q?hfYN3hTUSz7qd38Qcs539GEQ+VegRl3TF7c5z0AvYEugnapB2iYmcwxkGE7r?=
+ =?us-ascii?Q?vN1N5+PtCxhNAP3qjSzL6GDZJnOBWi7Qj5ZAqb2Brw8tlDXFGMuNaHkpiPzt?=
+ =?us-ascii?Q?jX5KFu6Ie8iyLIzS1gSYVS1KoA+VLm6wMeTV4LtJOYn3iCRHtm3ZBgGm4umG?=
+ =?us-ascii?Q?9+BFB/yXmt8LC2YjLPogqDxTyOW/wdJ498XIOUWeAKn4Ga6CXHahvgYX+MOK?=
+ =?us-ascii?Q?D7yu0t34g2YeqP3IxLuSmOSf+KLjDSMVmyvNCgsOeHpSNG4rBvY8towALJ1K?=
+ =?us-ascii?Q?Bss2W2QB+a+r+i+h9tS2joqw2S7+/rpQH2yl0YyNUJF0xEFdirblutyaxSqC?=
+ =?us-ascii?Q?CoXlNBDYOM8GHAheufvz77AfgiNG9d0NrfhYMLSY8d1zAjDW?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Kenny Hsieh <kenny111575@gmail.com>
-Date: Wed, 16 Sep 2026 10:17:22 +0800
-X-Gm-Features: AcwNN1XxfOvvKrV2F5QzPoOkWrOGLBKZFdGKKdmcyH8Ac85pDEwI-499SN0DF1o
-Message-ID: <CAKUyoTvQbO=6ed1p3iC_n9Jm9gSTwtHm7_NRAiJmuaNaKjuOvA@mail.gmail.com>
-Subject: i2c: sysfs interface to enable MCTP on mux child busses
-To: andi.shyti@kernel.org, peda@lysator.liu.se, linux-i2c@vger.kernel.org
-Cc: matt@codeconstruct.com.au, jk@codeconstruct.com.au, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2a44b9ad-221d-417f-ad32-08df13990f04
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Sep 2026 02:20:21.2207
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: sL76Vf1KyYuEGw+L0yV80YuJ1+r6G29NxPt0Exp7FvUZRN6x/oFLdeukRj3V8WoHjRQGCyOdKhjuoIFwFDN7Jg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8451
 
-Hi Andi, Peter
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c
+> b/drivers/net/ethernet/freescale/enetc/enetc.c
+> index e7ecdf8ef67c..c9c23e994f6d 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+> @@ -1813,7 +1813,6 @@ int enetc_xdp_xmit(struct net_device *ndev, int
+> num_frames,
+>  	struct skb_shared_info *shinfo;
+>  	struct enetc_bdr *tx_ring;
+>  	int xdp_tx_bd_cnt, i, k;
+> -	int xdp_tx_frm_cnt =3D 0;
+>=20
+>  	if (unlikely(test_bit(ENETC_TX_DOWN, &priv->flags) ||
+>  		     !netif_carrier_ok(ndev)))
+> @@ -1845,19 +1844,17 @@ int enetc_xdp_xmit(struct net_device *ndev, int
+> num_frames,
+>  						    &xdp_redirect_arr[i]);
+>  			break;
+>  		}
+> -
+> -		xdp_tx_frm_cnt++;
+>  	}
+>=20
+> -	if (unlikely((flags & XDP_XMIT_FLUSH) || k !=3D xdp_tx_frm_cnt))
+> +	if (unlikely(k && ((flags & XDP_XMIT_FLUSH) || k < num_frames)))
+>  		enetc_update_tx_ring_tail(tx_ring);
+>=20
+> -	tx_ring->stats.xdp_tx +=3D xdp_tx_frm_cnt;
+> -	tx_ring->stats.xdp_tx_drops +=3D num_frames - xdp_tx_frm_cnt;
+> +	tx_ring->stats.xdp_tx +=3D k;
+> +	tx_ring->stats.xdp_tx_drops +=3D num_frames - k;
+>=20
+>  	enetc_unlock_mdio();
+>=20
+> -	return xdp_tx_frm_cnt;
+> +	return k;
+>  }
+>  EXPORT_SYMBOL_GPL(enetc_xdp_xmit);
+>=20
+> --
+> 2.43.0
 
-I would like to gauge whether a small sysfs attribute on i2c adapters
-would be acceptable before writing code.
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
 
-MCTP over I2C (drivers/net/mctp/mctp-i2c.c) creates one netdev per I2C
-bus that carries MCTP, and which busses those are is declared by an
-'mctp-controller' property in the devicetree. We ship one firmware
-image across several chassis whose I2C topologies differ, so we
-describe only the root busses in the devicetree and instantiate the
-muxes at runtime over the i2c sysfs interface.
-
-What we would like is a writable attribute on adapters below an
-mctp-i2c-controller root, creating an mctp-i2c netdev when enabled and
-removing it when disabled. Entity Manager would enable it on the
-channels that need MCTP after instantiating the muxes. The driver side
-already exists: mctp_i2c_add_netdev() and its counterpart are what the
-i2c bus notifier calls today, so this only adds a second trigger.
-
-Our preference would be for mctp-i2c to add the attribute group itself
-with sysfs_create_group() on the adapter's device, leaving
-drivers/i2c/ untouched. That does mean one subsystem adding files to
-another subsystem's devices, which is why I would rather ask than
-assume. Do you have any thoughts or concerns on this, or a shape you
-would suggest instead?
-
-(Resending as plain text; the previous copy was rejected by the vger lists.)
-
-Thanks,
-Kenny
