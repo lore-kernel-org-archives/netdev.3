@@ -1,43 +1,43 @@
 Received: from www.nmnhosting.com (watt.d-silva.org [119.15.109.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7833AC0E9;
-	Wed, 16 Sep 2026 04:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B59C39A04C;
+	Wed, 16 Sep 2026 04:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=119.15.109.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789533693; cv=none; b=nR1Y7eGlwtexEmE6Y1WuCvy/7rrEJXdyI+WPbr7pDQGrqPcR0aDqSwb3T+qkAJgDqNZgW7W6ZunuM6lQtdDhttiRXSgwGhYU9MgVQ8Dr3+lkYiAfNM5C1IwaC47Zb/3RA4QB7bChXO+BlZBGQBcbWxMAccZtZQ5rzWJINrnIhEQ=
+	t=1789533698; cv=none; b=m8LZ42AQBVlLRzb+wvALpI4MFfNR4drsAZRkwhKK9KVoVwojX4llvizzNbnmb+ZD979Uluu8dplglTLHDypcBpBZ0IdNgJ7nDV7dvkS8qPyT+diUtG7sP7ioEfNZ13AU6nthHhgq/F1/cDki/JSWvKkpaLxpzf1qtgeyxeEWICo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789533693; c=relaxed/simple;
-	bh=uZjsORFcCwvkT2AAbXO2aZSM8USV3slRXFzd5UB31wU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b6NGknRPSXLGwZte4AZ3i4RoUb552NRHJ66V2l1YtjZYQptFKP3PgzBEo+xupDkonabYBAc3vk0oVaVoTAu1Ldny7YvSxOxLlwH8yQgPSigCP3JGKGzHUWymp3YaYqBqv18Mx6zo3U8lj3tXrm6Si2CkhtBBVRGWpbbVZTkuJFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=d-silva.org; spf=pass smtp.mailfrom=d-silva.org; dkim=pass (2048-bit key) header.d=d-silva.org header.i=@d-silva.org header.b=UlWnZZ+U; arc=none smtp.client-ip=119.15.109.137
+	s=arc-20240116; t=1789533698; c=relaxed/simple;
+	bh=7NPwQy2auI7LmLQm3SpYdb8l1i8zjUHB0l13I1dVu+s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TJErwAUV8DItRYz5DwWKEsUFNkikz+H8PO0PvrnHXWYKPfYbFplyKFIFX7rTcEcsUhSlBhsQnnMO2ZD4UehG/lFblEEz9JoiRqqjp/3RlJ3JJ4x5SW85oTmIcKBnvx0WjmyhRsoBHT6DEsYGMPHc9KkQsAWGigtZxbxEYfErvrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=d-silva.org; spf=pass smtp.mailfrom=d-silva.org; dkim=pass (2048-bit key) header.d=d-silva.org header.i=@d-silva.org header.b=TVevDxfh; arc=none smtp.client-ip=119.15.109.137
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=d-silva.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=d-silva.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=d-silva.org header.i=@d-silva.org header.b="UlWnZZ+U"
+	dkim=pass (2048-bit key) header.d=d-silva.org header.i=@d-silva.org header.b="TVevDxfh"
 Received: from Hawking.lan (hawking.lan [10.0.1.4])
-	by www.nmnhosting.com (Postfix) with ESMTP id B042B40B5A;
-	Wed, 16 Sep 2026 14:41:19 +1000 (AEST)
+	by www.nmnhosting.com (Postfix) with ESMTP id 5165D424F1;
+	Wed, 16 Sep 2026 14:41:27 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=d-silva.org; s=2025a;
-	t=1789533679;
+	t=1789533687;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=xTOSXHHE0Mp7WmhyDX8b5V5DuyvbmNcf+A+5A/N8sLo=;
-	b=UlWnZZ+UVMEPdKCU7xcAFSbFO3th1cLIUDQAVgxHnxVx1R+lEdIoyMk1vV0Zvwe2nSIpwL
-	ZFyTQtYBEJxngpet4wEa3OPi+HSxb4lNcF1PXZITorzVYPJT4u3LOS8vxeo3DLrUmsfe6B
-	TewlUlT2TQQ1Jy3bYF7TtfNh9XyrThGWCMlvR+GJSfOutXpYKeisnXx9dwWGRF8qlWMsEG
-	auLx73Cc4M2pirx+S2/HIHW1devcpDo59O9lqW8cz8l750238DpVNnbKOBNHEZyWKcO5j5
-	Zhfw65agxQeObJuk7lgCCccPAoV2TQR2qaioEusCk4c4fTDd7nGlets9PDlnOQ==
-X-GPT-Reason: legitimate; the email is a technical software patch
-	submission for the Linux kernel (net-next) regarding Allwinner
-	SoC hardware support. The sender (alastair@d-silva.org) matches
-	the personal mailbox list provided in the environment context
-	(alastair@d-silva.org), and the content is highly specific technical
-	documentation with no marketing, phishing, or scam indicators. There
-	are no URLs, no requests for sensitive information, and the subject
-	line directly corresponds to the technical body describing driver
-	and device tree updates.
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=G/UK2qpKtNV1mnmu2lxIpo6gk6uPMJBOxxrjbjHOjE8=;
+	b=TVevDxfhqAX54sA9vZQWaBqtG2zSD+Fe4J8ZB3UfbBQbzBqtslXdfrAEeqtC1fQ96qI76z
+	5AfPBj+mSDZoIrTHZDbnK0/kAvULYaMDkDb5IXM5+1UWsD21tn0VtitEEzOM1XSpsp4t0X
+	TjhGRUUlZTgYMNWnBcstLBe6HvvG5M0v1LKn6Zu+AHLNs8qx468UcZaLwtaqLRfP93v4UK
+	mbzORxn1jAJMkLN+Jp7l1AquUN2gxO6FsamKTCbbNAKiDquqOKCVgZNXoCiYKlN44CLkTU
+	pDs6OkpBpQ2zyVIsaGpX5laoY6fOgDs5L6NPF/Q+H2vUuR4GqgvAojeeGH1nHA==
+X-GPT-Reason: legitimate; this is a technical Linux kernel patch
+	submission for device tree bindings. The mailbox (alastair@d-silva.org)
+	aligns perfectly with the sender (Alastair D'Silva <alastair@d-silva.org>),
+	and the content is a standard git-style patch for the net-next
+	mailing list. The URL domain (devicetree.org) is relevant to the
+	technical topic of hardware bindings, and there are no indicators
+	of phishing, marketing, or urgency.
 From: Alastair D'Silva <alastair@d-silva.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Heiner Kallweit <hkallweit1@gmail.com>,
@@ -60,10 +60,12 @@ Cc: netdev@vger.kernel.org,
 	Jernej Skrabec <jernej.skrabec@gmail.com>,
 	Samuel Holland <samuel@sholland.org>,
 	Alastair D'Silva <alastair@d-silva.org>
-Subject: [PATCH net-next 0/4] net: Add Allwinner H616/H618 EMAC1 and AC300 EPHY support
-Date: Wed, 16 Sep 2026 14:41:15 +1000
-Message-ID: <20260916044119.475666-1-alastair@d-silva.org>
+Subject: [PATCH net-next 1/4] dt-bindings: net: phy: Add Allwinner AC300 EPHY binding
+Date: Wed, 16 Sep 2026 14:41:16 +1000
+Message-ID: <20260916044119.475666-2-alastair@d-silva.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260916044119.475666-1-alastair@d-silva.org>
+References: <20260916044119.475666-1-alastair@d-silva.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -72,60 +74,107 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series adds support for the secondary Ethernet MAC controller (EMAC1)
-and the co-packaged AC300 Fast Ethernet Physical Layer (EPHY) found on
-Allwinner H616 and H618 SoCs.
+Add device tree binding documentation for the Allwinner AC300
+Fast Ethernet Physical Layer (EPHY) co-packaged on Allwinner
+H616 and H618 SoCs.
 
-The Allwinner H616/H618 SoCs feature two EMAC instances: EMAC0 (typically
-used with an external RGMII Gigabit PHY) and EMAC1 (Fast Ethernet,
-connected internally to the co-packaged AC300 EPHY). EMAC1 uses a
-dedicated clock control register in the syscon register space, which is
-accessed via an offset index in the DT syscon property.
+Assisted-by: LLM
+Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+---
 
-The AC300 is an integrated 10/100M (100BASE-TX / 10BASE-T) Fast Ethernet
-PHY communicating over MDIO at address 16 + phy_addr. It requires
-retrieving factory bandgap calibration data from the SID nvmem controller,
-managing internal power rails and clocks, and optimizing transceiver signal
-parameters.
+Notes:
+    Tested on Mellow Fly-C5 (Allwinner H618) under Armbian with Linux 6.18 and
+    7.x kernels, verifying schema validation with dt_binding_check.
 
-To ensure reliable link establishment and MAC software reset with the
-internal PHY, dwmac-sun8i is updated to defer MAC software reset until
-sun8i_dwmac_init() after the internal PHY has powered on and begun
-clock generation.
-
-The series is structured as follows:
-- Patch 1: DT binding for Allwinner AC300 EPHY.
-- Patch 2: PHY driver for Allwinner AC300 EPHY.
-- Patch 3: DT binding update for Allwinner H616 EMAC1 and syscon index.
-- Patch 4: dwmac-sun8i driver support for H616 EMAC1 clock index and
-           internal PHY deferred reset.
-
-Testing:
-- Tested on physical Mellow Fly-C5 hardware (Allwinner H618) running
-  Armbian with sustained 100Mbps full-duplex network traffic (DHCP,
-  iperf3, NFS rootfs).
-- Device tree bindings validated with dt_binding_check.
-- Separate SoC and board DTS additions will be submitted via the
-  linux-sunxi tree.
-
-Alastair D'Silva (4):
-  dt-bindings: net: phy: Add Allwinner AC300 EPHY binding
-  net: phy: Add Allwinner AC300 EPHY driver
-  dt-bindings: net: allwinner,sun8i-a83t-emac: Add Allwinner H616 EMAC1
-    and syscon index
-  net: stmmac: dwmac-sun8i: Add Allwinner H616 EMAC clock index and
-    internal PHY support
-
- .../net/allwinner,sun50i-h618-ac300-ephy.yaml |  79 +++++
- .../net/allwinner,sun8i-a83t-emac.yaml        |  14 +-
- .../net/ethernet/stmicro/stmmac/dwmac-sun8i.c |  65 +++-
- drivers/net/phy/Kconfig                       |   9 +
- drivers/net/phy/Makefile                      |   1 +
- drivers/net/phy/ac300-phy.c                   | 331 ++++++++++++++++++
- 6 files changed, 486 insertions(+), 13 deletions(-)
+ .../net/allwinner,sun50i-h618-ac300-ephy.yaml | 79 +++++++++++++++++++
+ 1 file changed, 79 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/net/allwinner,sun50i-h618-ac300-ephy.yaml
- create mode 100644 drivers/net/phy/ac300-phy.c
 
+diff --git a/Documentation/devicetree/bindings/net/allwinner,sun50i-h618-ac300-ephy.yaml b/Documentation/devicetree/bindings/net/allwinner,sun50i-h618-ac300-ephy.yaml
+new file mode 100644
+index 000000000000..a04416e78138
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/allwinner,sun50i-h618-ac300-ephy.yaml
+@@ -0,0 +1,79 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/allwinner,sun50i-h618-ac300-ephy.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Allwinner AC300 Ethernet PHY
++
++maintainers:
++  - Alastair D'Silva <alastair@d-silva.org>
++
++description:
++  The AC300 is an integrated Fast Ethernet Physical Layer (EPHY) co-packaged
++  with Allwinner H616 and H618 SoCs, communicated with over MDIO.
++
++allOf:
++  - $ref: ethernet-phy.yaml#
++
++select:
++  properties:
++    compatible:
++      contains:
++        const: allwinner,sun50i-h618-ac300-ephy
++  required:
++    - compatible
++
++properties:
++  compatible:
++    items:
++      - const: ethernet-phy-id0044.1400
++      - const: allwinner,sun50i-h618-ac300-ephy
++      - const: ethernet-phy-ieee802.3-c22
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    minItems: 1
++    items:
++      - description: 25MHz reference clock from CCU
++      - description: 2MHz reference clock from PWM
++
++  clock-names:
++    minItems: 1
++    items:
++      - const: ephy
++      - const: pwm
++
++  nvmem-cells:
++    items:
++      - description: Calibration data from SID
++
++  nvmem-cell-names:
++    items:
++      - const: calibration
++
++required:
++  - compatible
++  - reg
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    mdio {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        ethernet-phy@0 {
++            compatible = "ethernet-phy-id0044.1400",
++                         "allwinner,sun50i-h618-ac300-ephy",
++                         "ethernet-phy-ieee802.3-c22";
++            reg = <0>;
++            clocks = <&ccu 81>, <&ac300_pwm_clk>;
++            clock-names = "ephy", "pwm";
++            nvmem-cells = <&ephy_calibration>;
++            nvmem-cell-names = "calibration";
++        };
++    };
 -- 
 2.53.0
 
