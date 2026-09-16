@@ -1,174 +1,129 @@
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD2E4F648E
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 13:28:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1CD7446074;
+	Wed, 16 Sep 2026 13:28:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789565310; cv=none; b=dmbrD/SvHkeSU3zLlpF4skyjeBRLl8ugd60WHVIYqpKE/KlBvcWlyFHcNmUdpY7fYMXqocae6psz1gJWan5t4i5Dmuk9d7zw09NPq+cAhXJgbBuUmTqEx+L4SlBrMjQFQDcLgFR1uGGzimk5mFcvUH/hPLHJnL6G8dO3jw+eoSk=
+	t=1789565337; cv=none; b=ToJO2p5inaLEUEm2MZC0tlkIkga5tSkcrzHsMun0EoTyRCW+mEtutGi2EFEogtnMtgDlDcM9EFYK91EVvK7XCjYW3yJVsS0fQaFKj6kTM9iSCvA1cCnuWjYfwG30F1VaE8bKEDZ5m4UfZYr0uWi3SNnmz/D+SBVr8mR6mN/GEGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789565310; c=relaxed/simple;
-	bh=fPyCOloq5l1SFrzJDr2ND2xWq+e02v0qTHwLynVA3Co=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZAcE6vOTm7GqnOuhLnSpKgCmAauBBCW7slyhiCWqRdcYLjmgMnA4o8LNH4wM7ahsEFXOALC3A6SWaOKZtVWMs0mjQx5gt1v5oooYcUHpUkmnx0N24SRM3m2iKDOPHFlk5X3IJbIxf3qmW2fIFpAztjIql2ZNI71ZxOgdkNGz0Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HAogRK/K; arc=none smtp.client-ip=209.85.160.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1789565337; c=relaxed/simple;
+	bh=9MrfUzBbRxO3K/j5gxi6S7iy4qoB+aIJE60TUfbvLEQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ckfAD5Fz/tL4qpVhKximi9HQbw8Ph/75a4GBvCkHKpkZaLmQcGc/l7WXK1IWLyuq9wLFSHtOBxB+CPHEwOOg7Gsz6PdWDc+vyLKMfJcfhpktzDvrCaEDgTA2RIj1mk/yVUUbEs49qOjS6OHITQQfcbiERSnUkSOv0yKK1jnuqG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=FckN4SA3; arc=none smtp.client-ip=117.135.210.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HAogRK/K"
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-53000c06184so185517831cf.3
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 06:28:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789565307; x=1790170107; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=m1JvXy2nXpgoeE9mgRX+MS48Du0oEssSMEfevUwb+14=;
-        b=HAogRK/Kj4UIoyP957czg6zU0CrvxUpOztpV/n3WG+WG4qjVoB5ADYLCYva1yib0zm
-         8DtoXBfh4yksxiI5D+i36+IcUtze/kuc13pk4QjYDDHVMdXzPoK2mp60hULg0MD0iak7
-         yvJW0MyEcqdojSbXOLD7ev+AwAGlepodELgI72xdrUznpIHXCorjYYIXK92c5xWihsFS
-         3jAfhPX+HLBBHFo3ZoW9EtuwLIMg1H1mnwz3A3chHbA5ppyFDxR62C7qsUF/asUeQ4s0
-         IharPW40wheBcgMGABlErMAoIgZoZh9U8wqfxy21qgVVTB0mGRTPdbLTnPyN+VmfkKNZ
-         z/ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789565307; x=1790170107;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=m1JvXy2nXpgoeE9mgRX+MS48Du0oEssSMEfevUwb+14=;
-        b=Dy/+xAuye+eE5mbKOlKYnUN32TPAvCyfsitMbIbTrCIq108ZxB81kcJiWytL53z5it
-         fqx/e/n8CLZu9F0ZrhYWo/vJlZnWffcV1uhagDNpO6tApzJJdI9erIxa5MgeDv0K/wnu
-         2M3qZz7kZFMrC7B/jgbfJwTk0NTb9xSYAWhuZtc8TyuWb6X+27d1Ahow1NQQ789mTEvc
-         NZbtbex5TdhhITupgiuSun3p41vtLO60/c4vWw9fDklPoJSXkiyxM25dTrGbKRPdClX5
-         ZRvgIQsijXVznxMKlU93PFLK77AtpLWcAgiFN9uXLlXffbFoMeFZf6F0l2TBYW1KZ3jm
-         MrlQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxr73KIwz7Dc4j86WXYH1GoFf9MSovtYhaRJXPhHAXU5/LKM/CWGyFqNmTGGfbC5lExJcyQTaM=@vger.kernel.org
-X-Gm-Message-State: AFuF++mhIMO3oAE2VdSJ9zNBwkDG/QErUuiRp5t9bBUXaBeAuAI0JgaA
-	gQH0G71IjrHj1N2rhjCCx6zsgRBW1AjvrFE7ldvIGz8inj433a/TBnN8jHmxrX1WyxoOJiTFoTe
-	/1wMhqpvSBRP+cQ==
-X-Received: from qts26.prod.google.com ([2002:a05:622a:a91a:b0:531:1aa:c419])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:90d:b0:530:e6b9:f5d5 with SMTP id d75a77b69052e-5327eea9eacmr43401391cf.36.1789565306807;
- Wed, 16 Sep 2026 06:28:26 -0700 (PDT)
-Date: Wed, 16 Sep 2026 13:28:22 +0000
-In-Reply-To: <20260916132822.1791040-1-edumazet@google.com>
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="FckN4SA3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=mU
+	eWvQyELQ91Zo7gd0quF0DPhsMTPLIThzQR0sZzvog=; b=FckN4SA30XOP6w1T8p
+	4TiZwK09qFPed466ZHcJoH/Ha4DkptRPANfpFDGVbaPNK2iTvxQ2yFu3Yt0jhuOi
+	KwJpH+Oqqn0QMpbuvJkWV4NUlDokgKxHx+UYSRiM3QJsSUp3uOqH1+gjvwax8rqF
+	mlU5vRsnWVvSTkauwH2Nr/qSk=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PikvCgDnvepPmapqaFzjHw--.21948S2;
+	Wed, 16 Sep 2026 21:27:43 +0800 (CST)
+From: Linkui Xiao <xiaolinkui@126.com>
+To: anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Linkui Xiao <xiaolinkui@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [Intel-wired-lan] [PATCH net] igb: unregister the i2c adapter when register_netdev() fails
+Date: Wed, 16 Sep 2026 21:27:40 +0800
+Message-Id: <20260916132740.1001797-1-xiaolinkui@126.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260916132822.1791040-1-edumazet@google.com>
-X-Mailer: git-send-email 2.55.0.1032.g73a4cd73de-goog
-Message-ID: <20260916132822.1791040-3-edumazet@google.com>
-Subject: [PATCH net-next 2/2] hsr: no longer rely on RTNL in hsr_fill_info()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PikvCgDnvepPmapqaFzjHw--.21948S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxGr17Wr45XF17Ar4DAw4Utwb_yoW5GF4xpF
+	4DAa4fCr4jqrnFga1DJ3W0yFyYkaySk3yYka17Zw4fWFn8tryDXryYyFyYyFyrKrZ5u3Zx
+	tr4qvw15Cr1UAr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UA9N3UUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqQ++lWqqmU+yYgAA3L
 
-hsr_fill_info() used hsr_port_get_hsr(), which walks hsr->ports
-with hsr_for_each_port_rtnl(), forcing "ip link show" dumps to
-hold RTNL.
+From: Linkui Xiao <xiaolinkui@kylinos.cn>
 
-hsr->ports is an RCU protected list: ports are added with
-list_add_tail_rcu(), removed with list_del_rcu() and freed with
-kfree_rcu(), and the data path already iterates over it with
-hsr_for_each_port().
+igb_probe() sets up the bit-banging i2c adapter with igb_init_i2c()
+before it registers the netdev, but the err_register path only zeroes
+adapter->i2c_adap instead of unregistering the adapter. On i350 parts,
+where igb_init_i2c() really registers the bus, the adapter is therefore
+still registered when free_netdev() releases the memory that embeds it.
+The i2c core keeps pointing at the freed adapter, so any later access to
+that bus dereferences freed memory, and the adapter number is leaked.
 
-Add a local RCU variant of hsr_port_get_hsr() and use it from
-hsr_fill_info() under rcu_read_lock().
+Call igb_remove_i2c() instead, the same way igb_remove() tears the bus
+down. Move the helper next to igb_init_i2c() so that it is in scope for
+igb_probe(). i2c_del_adapter() returns early for an adapter that was
+never registered, so the parts without i2c support are unaffected.
 
-The remaining fields (sup_multicast_addr, prot_version) are set
-once at device creation. hsr->sequence_nr is now read with
-READ_ONCE(), since the transmit paths increment it under
-hsr->seqnr_lock only.
-
-Also add missing const qualifiers.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+Fixes: 441fc6fdb47a ("igb: Add i2c interface to igb.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
 ---
- net/hsr/hsr_netlink.c | 35 ++++++++++++++++++++++++++---------
- 1 file changed, 26 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/intel/igb/igb_main.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/net/hsr/hsr_netlink.c b/net/hsr/hsr_netlink.c
-index 88940e8014b24f35d6a54f49fb7ac82956aed383..fc7820eae884132dbd5f4e62a4397d2c6d1bf79d 100644
---- a/net/hsr/hsr_netlink.c
-+++ b/net/hsr/hsr_netlink.c
-@@ -147,44 +147,61 @@ static void hsr_dellink(struct net_device *dev, struct list_head *head)
- 	unregister_netdevice_queue(dev, head);
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index d4a897a8c82c..f965ca144f42 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -3190,6 +3190,16 @@ static s32 igb_init_i2c(struct igb_adapter *adapter)
+ 	return status;
  }
  
-+/* RCU variant of hsr_port_get_hsr() */
-+static struct hsr_port *hsr_port_get_hsr_rcu(const struct hsr_priv *hsr,
-+					     enum hsr_port_type pt)
++/**
++ *  igb_remove_i2c - Cleanup  I2C interface
++ *  @adapter: pointer to adapter structure
++ **/
++static void igb_remove_i2c(struct igb_adapter *adapter)
 +{
-+	struct hsr_port *port;
-+
-+	hsr_for_each_port(hsr, port)
-+		if (port->type == pt)
-+			return port;
-+	return NULL;
++	/* free the adapter bus structure */
++	i2c_del_adapter(&adapter->i2c_adap);
 +}
 +
- static int hsr_fill_info(struct sk_buff *skb, const struct net_device *dev)
- {
--	struct hsr_priv *hsr = netdev_priv(dev);
-+	const struct hsr_priv *hsr = netdev_priv(dev);
-+	const struct hsr_port *port;
- 	u8 proto = HSR_PROTOCOL_HSR;
--	struct hsr_port *port;
+ /**
+  *  igb_probe - Device Initialization Routine
+  *  @pdev: PCI device information struct
+@@ -3657,7 +3667,7 @@ static int igb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
  
--	port = hsr_port_get_hsr(hsr, HSR_PT_SLAVE_A);
-+	rcu_read_lock();
-+
-+	port = hsr_port_get_hsr_rcu(hsr, HSR_PT_SLAVE_A);
- 	if (port) {
- 		if (nla_put_u32(skb, IFLA_HSR_SLAVE1, port->dev->ifindex))
- 			goto nla_put_failure;
- 	}
- 
--	port = hsr_port_get_hsr(hsr, HSR_PT_SLAVE_B);
-+	port = hsr_port_get_hsr_rcu(hsr, HSR_PT_SLAVE_B);
- 	if (port) {
- 		if (nla_put_u32(skb, IFLA_HSR_SLAVE2, port->dev->ifindex))
- 			goto nla_put_failure;
- 	}
- 
--	port = hsr_port_get_hsr(hsr, HSR_PT_INTERLINK);
-+	port = hsr_port_get_hsr_rcu(hsr, HSR_PT_INTERLINK);
- 	if (port) {
- 		if (nla_put_u32(skb, IFLA_HSR_INTERLINK, port->dev->ifindex))
- 			goto nla_put_failure;
- 	}
- 
-+	rcu_read_unlock();
-+
- 	if (nla_put(skb, IFLA_HSR_SUPERVISION_ADDR, ETH_ALEN,
- 		    hsr->sup_multicast_addr) ||
--	    nla_put_u16(skb, IFLA_HSR_SEQ_NR, hsr->sequence_nr))
--		goto nla_put_failure;
-+	    nla_put_u16(skb, IFLA_HSR_SEQ_NR, READ_ONCE(hsr->sequence_nr)))
-+		return -EMSGSIZE;
- 	if (hsr->prot_version == PRP_V1)
- 		proto = HSR_PROTOCOL_PRP;
- 	else if (nla_put_u8(skb, IFLA_HSR_VERSION, hsr->prot_version))
--		goto nla_put_failure;
-+		return -EMSGSIZE;
- 	if (nla_put_u8(skb, IFLA_HSR_PROTOCOL, proto))
--		goto nla_put_failure;
-+		return -EMSGSIZE;
- 
- 	return 0;
- 
- nla_put_failure:
-+	rcu_read_unlock();
- 	return -EMSGSIZE;
+ err_register:
+ 	igb_release_hw_control(adapter);
+-	memset(&adapter->i2c_adap, 0, sizeof(adapter->i2c_adap));
++	igb_remove_i2c(adapter);
+ err_eeprom:
+ 	if (!igb_check_reset_block(hw))
+ 		igb_reset_phy(hw);
+@@ -3849,16 +3859,6 @@ static int igb_enable_sriov(struct pci_dev *pdev, int num_vfs, bool reinit)
  }
  
+ #endif
+-/**
+- *  igb_remove_i2c - Cleanup  I2C interface
+- *  @adapter: pointer to adapter structure
+- **/
+-static void igb_remove_i2c(struct igb_adapter *adapter)
+-{
+-	/* free the adapter bus structure */
+-	i2c_del_adapter(&adapter->i2c_adap);
+-}
+-
+ /**
+  *  igb_remove - Device Removal Routine
+  *  @pdev: PCI device information struct
 -- 
-2.55.0.1032.g73a4cd73de-goog
+2.25.1
 
