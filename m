@@ -1,341 +1,184 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA40C41443B
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 12:58:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608A43812DA;
+	Wed, 16 Sep 2026 12:58:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789563487; cv=none; b=Q8OKmV4A6GPqKXAGwW5COfvWY6BSWAONb5WkfunANmj+CSTHeACT+yOsnjp8wk95pDxlH4eJfVzvqlDZDkOSvkCht0UTwzsc4nHU2q8QBvLwEO4fCz0MZOcq0wl85YnoEFC45YvUJ/+Y8S2uP1n6gavWVnkjngPU9OOAVlIbH0U=
+	t=1789563522; cv=none; b=MT+CTqUnVWvXLgzyzl5ASC2B8ZYiRamMUH5yTbrnI2Z6yOp5GRNzH5QkvsL4mrxJ3Xr3kas6NAww7b4UTjvgxHem5kjOEP8oPiROKfP4CF27328X1Kgt6xA3FWOpzQwn92V3ge7HYcGmBm3qXODCm7TbK/TT9mZJ8qKwffaewys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789563487; c=relaxed/simple;
-	bh=XtPpBw1QH8nWC5HzGrgI1eK910398/q/Oe8gdd92LpQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MvAVKptBmrttcrhsR1OMDkoYuN28JqnFtdMyEWv88NP57XeOfiHuzazKuakHpnb7VhzSk0VxD0IykaAzb5U9YL9kYqVwsWFYXPNcJM9dVmj8rHBCyAxXwDzGTIkzpH/CchIjbIUupqRV+uA4CxQ3e15v1NGkQZwElf0v7kPW0zY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MLf2TTLS; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tJ7l1VWP; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789563522; c=relaxed/simple;
+	bh=MVDwrdRoGs7U1+TI5rmeNPhvfPkVPX1VtkpZjTciIV8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HXf6yQXptBMXLKfjUUgwXeXgt2w2MeFvr+SjtUMxmIy3pS0WxxCzTymBNuZyZwAai0NEkU2BPFCeuklAezrY4GOZ2Q9XTHeLxsYSfFwp7pj5OfkUR14l2mjyLGfZomQsnwW46FDLj5FLJ30T9EcDuklL4qjcRz0df2BKN7xf1I4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mg0pcc7B; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MLf2TTLS";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tJ7l1VWP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789563483;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hoPAB7dHaYgVjnpxXhRX3HsUt/cMJmwFIRFkXtozlmw=;
-	b=MLf2TTLSfVi11yK82X+Cvyykku3pVxDFbKBpEe/mqjGkdNZv9U74SfuS/4rcqJ2CnbroNr
-	BhxabNhXH705YATAOVZ2jF7SkoORHa7NRZlYtbnLt0CMzavI2jooabUytRy9ACQdpmaDTA
-	3bhSYNoURvIaPctEz37Pi0q8oXcFC0g=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-19-F60jENVVPXq0RNSXGHSqwA-1; Wed, 16 Sep 2026 08:58:02 -0400
-X-MC-Unique: F60jENVVPXq0RNSXGHSqwA-1
-X-Mimecast-MFC-AGG-ID: F60jENVVPXq0RNSXGHSqwA_1789563481
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-4870ee5618aso396840f8f.1
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 05:58:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789563481; x=1790168281; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hoPAB7dHaYgVjnpxXhRX3HsUt/cMJmwFIRFkXtozlmw=;
-        b=tJ7l1VWPHLfuhyoo4ochjoAfmdxK6NhXKd/dIAMnxRw8GaAY0bgtUb34q5OnlPB35x
-         ILiQZSApXV9MYo4BvAG0mqD2Alq2E5P7MbK9eYWJLqJGiCWyqILB6HCxMjbj1a0bocHn
-         qh7m0TKkPCmLHIv1IszvxbLwD8/8miirWaYnx4zS0egI4KhXVcJNlByPTZuw9xI7FTmp
-         HOwWCekxemBby625G7ipzFBjqsispNDcC4HDsZFC3V6BizsCEHoCCyhlNOEqE6VSSVsH
-         01qhiaCrdN2G+XOHBZpYDIKD16vPC3j7KfsVgOA0hztFoIp6u8FKoWpe8zNI6OQAc26L
-         OtNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789563481; x=1790168281;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hoPAB7dHaYgVjnpxXhRX3HsUt/cMJmwFIRFkXtozlmw=;
-        b=MlPQyDc7Pl5mzQZHRpd0aaoKMOWmr1R4qkv4hMj4JWcBAD66vih87FK6WpTwz2X32E
-         p9VRua5JciLzCfzBiloVw9soJ2NlivHZPACVLWWFpfRsAcLwQU+5uKpcesoGYWBniQlu
-         o8aVXO52XmU2QQvD9zdJvQleQlW5kk/uz7MYYgEiDEn9elACjxR515ZCOYFHxTpOEdtZ
-         T7Di2ooB7fYWXQXZOR2QBmELUHB2qO6A6NBu/fCR9UKZ3AT9jJNdLeky+DYvUlRF6YDK
-         TpHZTlc6I4/hSpxBVVgYWkX7q4RcrWHkWzE9kfq6xDG92kQKg/tB4nNlBgao7Wt/pvEF
-         i6rA==
-X-Forwarded-Encrypted: i=1; AKwUvBxtTMX6NwLvrIX/GzPWdP7SC6dqhm4TODdpnok3O7MLYljf+6lx1lNQjOQViI+2KZ4diIHDr+M=@vger.kernel.org
-X-Gm-Message-State: AFuF++l9C0GkkRoSQDhnt/uGkLQsPdXfQHMvA3sFMWSXT3LiIYYUSx+8
-	mx5f1JSDy3MjU8aRGbka7L2xgARbWj19JkenTOtnwR+JEIsVMhIPSooav4ctVaqG1JTBz4B4oYf
-	KRnqAg1XhFKOmNFmMVgkCu/gN40yY4m4YDRFUEyQ92PCJmH32C0N5N+/9qw==
-X-Gm-Gg: AYBFou2FpAF8uIv3FYL3LkcSOu+p3OPWgAkQI0Lqsf8E5WPqiuJsasOHfnVKb8THTmP
-	y3O/6rkoreU5XGr8QTa7NB9aDSKOr1NyCwmslsHbX8prcPD6TJI79IuM7B6cI9CgZ2KAo9jDFua
-	oBS95+l4C/gpfp1mn/kfSkodmxcxGIZ54jhEVemGHhZkC3qGogu/tzgdTLHHvt9FkvowDF3p4/D
-	mLAOg8+EsV0dlAJaI1hMkxap94osn3YfWmH8Q6wyyut/vA2dOvmbbGCtlOTace8EYyvjJrJhiTS
-	PgNYSjgU4+pqL6vKRHwC7euORGLxEKclietJcHUzLh9zQcUfvBFSuDsQlakmgSwmijqFL880Gj/
-	QOsbECFO7uF25houb/cjb3Ghswpy3nDVyOXWGGhTuIEUxyg==
-X-Received: by 2002:a05:6000:460c:b0:485:8b5d:96d with SMTP id ffacd0b85a97d-4870cf42bedmr7008667f8f.19.1789563481212;
-        Wed, 16 Sep 2026 05:58:01 -0700 (PDT)
-X-Received: by 2002:a05:6000:460c:b0:485:8b5d:96d with SMTP id ffacd0b85a97d-4870cf42bedmr7008586f8f.19.1789563480644;
-        Wed, 16 Sep 2026 05:58:00 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-53-30-11.retail.telecomitalia.it. [79.53.30.11])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4870bf1fad3sm6355913f8f.12.2026.09.16.05.57.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 05:58:00 -0700 (PDT)
-Date: Wed, 16 Sep 2026 14:57:43 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowangio@gmail.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Shuah Khan <shuah@kernel.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, sargun@sargun.me, jlinbox@meta.com, 
-	Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next 2/6] vsock: add IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS
-Message-ID: <aqqPXr2LNJUM4yMW@sgarzare-redhat>
-References: <20260902-vsock-guest-ns-v1-0-9995383e9a8b@meta.com>
- <20260902-vsock-guest-ns-v1-2-9995383e9a8b@meta.com>
- <aqlTlFvQL34-WViB@sgarzare-redhat>
- <aqmTYoCMmzx1BM1v@devvm29614.prn0.facebook.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mg0pcc7B"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 7444B4E40718;
+	Wed, 16 Sep 2026 12:58:37 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2BA9160337;
+	Wed, 16 Sep 2026 12:58:37 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AA4C311C7B026;
+	Wed, 16 Sep 2026 14:58:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789563512; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=ACT1BcK2mKgNZY0JsO79zzKWzTVjsJHY3lvjP8nZdTE=;
+	b=mg0pcc7ByLpO4n0yIIzGsYslxzp3CzZxijRHgtRU9iQ/zr675u+8g2DIyGBO1DZDKpmYmO
+	OEcGjZUEK3dhD2llZZhjh6/DLQaOiNdKNJLYzNXe+Ts7tdeXVjD7LfeBhHPDozqn42Dvbq
+	VPFeAbR1qDmPfU1Gzgc/UQGD5MWIq/ixcH2yA9Edz4CHxb3hDqHRcTAqmNcm2eYCkye4if
+	2bRCtUZ1An7Vk3LlsaxmQXk9PSXYoAnTNwBw49urNnpdyL57ySVOhjYpzU5ghm/MP+PrJk
+	74kxz5tUxeQXBNE3U9+RJeBOBhxSd5Gik5LYItYRujgnbbL9c9INU7TpQpWURg==
+Message-ID: <97924d2f-45f9-44d5-b482-97fcbb70abdc@bootlin.com>
+Date: Wed, 16 Sep 2026 14:58:25 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <aqmTYoCMmzx1BM1v@devvm29614.prn0.facebook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 2/2] net: stmmac: qcom-ethqos: advertise supported
+ SerDes interfaces
+To: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
+ Thomas Karpiniec <tom.karpiniec@outlook.com>
+Cc: netdev@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+ Bartosz Golaszewski <brgl@kernel.org>,
+ Russell King <rmk+kernel@armlinux.org.uk>, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <CH3PR11MB8413FCBA598F7FABC04ADCFEE4B92@CH3PR11MB8413.namprd11.prod.outlook.com>
+ <CH3PR11MB841353E5708DDD7C5E2EA1D5E4B92@CH3PR11MB8413.namprd11.prod.outlook.com>
+ <aqqI9wOnradk9d7K@oss.qualcomm.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <aqqI9wOnradk9d7K@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Sep 15, 2026 at 11:50:10AM -0700, Bobby Eshleman wrote:
->On Tue, Sep 15, 2026 at 05:28:25PM +0200, Stefano Garzarella wrote:
->> On Wed, Sep 02, 2026 at 04:00:48PM -0700, Bobby Eshleman wrote:
->> > From: Bobby Eshleman <bobbyeshleman@meta.com>
->> >
->> > Namespaces let a host isolate a VM's vsock traffic to a specific
->> > namespace, but in a guest vsock traffic cannot be isolated to a
->> > namespace. The vsock device is hardcoded to global mode and can't be
->> > moved into a local-mode namespace.
->> >
->> > Introduce ioctl IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS on /dev/vsock that
->>
->> We already discussed about netlink, but I'm not sure how much work can
->> take, here just another alternative, what about adding
->> /proc/sys/net/vsock/g2h_owner sysctl that can be read/write where:
->> 0 - no owner
->> 1 - owner
->>
->> 0 -> 1 transition, move the device in the new nets
->> 1 -> 0 transition, reset back to init_ns
->
->That seems reasonable, but if multi-device support ever lands, this
->might be harder to adapt cleanly?
+Hi,
 
-I see, but maybe we can have a dev0/ dev1/ subfolders in that case.
-
->
+On 9/16/26 14:17, Mohd Ayaan Anwar wrote:
+> On Wed, Sep 16, 2026 at 08:39:50PM +1000, Thomas Karpiniec wrote:
+>> From: Thomas Karpiniec <tom@wendy.sh>
 >>
->> > gives userspace a way to move the device to the calling pid's namespace.
->> > The call requires CAP_NET_ADMIN in the root user namespace. A privileged
->> > user wishing to "unassign" the device can move it to the init_netns,
->> > which is hardcoded to global mode (so no unassign call is necessary).
->> >
->> > A getter to read the current assignment back was considered, returning
->> > either the namespace's net_cookie or its nsfs inode number, but neither
->> > seemed useful enough to bake into the uAPI now. It can be added later if
->> > a user turns up that needs it.
->> >
->> > Add a transport hook to indicate support for guest namespacing, so that
->> > transports may opt in/out. A transport that opts out keeps the
->> > reachability rules it had before this ioctl existed.
->> >
->> > Sockets are reset when the underlying device moves to a different
->> > namespace, so as to prevent reachability from the previous and now
->> > disallowed namespace.
->> >
->> > Following the approach of netdevs, the device returns to init_net when
->> > its namespace is removed. Care is taken to not break flows when the
->> > device is inside a global namespace that is being torn down and alive
->> > sockets are in a different global namespace. In this scenario, the
->> > device's netns getter pre-emptively falls back to the init_net (always
->> > global) so that these flows are not disrupted. If init_netns ever
->> > supports local-mode in the future, this logic will have to be changed.
->> >
->> > Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
->> > Link: https://lore.kernel.org/all/20200427142518.uwssa6dtasrp3bfc@steredhat/
->> > Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
->> > ---
->> > Documentation/admin-guide/sysctl/net.rst |  18 +++
->> > include/net/af_vsock.h                   |   7 ++
->> > include/uapi/linux/vm_sockets.h          |   6 +
->> > net/vmw_vsock/af_vsock.c                 | 198 ++++++++++++++++++++++++++++++-
->> > 4 files changed, 228 insertions(+), 1 deletion(-)
->> >
+>> With a QCA8081 PHY and phy-mode = "2500base-x", stmmac reports only
+>> 2500BASE-X in phylink's supported_interfaces. Phylink consequently removes
+>> 10/100/1000BASE-T modes from the PHY's advertisement, preventing a link
+>> with a gigabit switch.
+>>
+>> The QCA8081 uses SGMII for lower copper speeds and 2500BASE-X for 2.5Gbps.
+>> ETHQOS already reconfigures the SerDes in ethqos_mac_finish_serdes() when
+>> the PHY changes interface, but does not advertise this capability.
+>>
+>> Provide a get_interfaces() callback for serial interfaces. Add SGMII and
+>> 2500BASE-X when the SerDes validates them, allowing phylink to retain the
+>> corresponding copper link modes. Leave the existing stmmac fallback to
+>> the firmware interface in place when no interfaces are reported. RGMII
+>> configurations are unchanged.
+>>
+>> Fixes: 61e9be0efbe8 ("net: stmmac: qcom-ethqos: add support for 2.5G BASEX mode")
+>> Cc: stable@vger.kernel.org # 7.1+
+>> Assisted-by: LLM sparse
+>> Signed-off-by: Thomas Karpiniec <tom@wendy.sh>
+>> ---
+>>  .../stmicro/stmmac/dwmac-qcom-ethqos.c        | 22 +++++++++++++++++++
+>>  1 file changed, 22 insertions(+)
+>>
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+>> index ac7d6d3e205a..3493e090f1a8 100644
+>> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+>> @@ -1,6 +1,7 @@
+>>  // SPDX-License-Identifier: GPL-2.0
+>>  // Copyright (c) 2018-19, Linaro Limited
+>>  
+>> +#include <linux/bitops.h>
+>>  #include <linux/module.h>
+>>  #include <linux/of.h>
+>>  #include <linux/of_net.h>
+>> @@ -564,6 +565,26 @@ static void ethqos_pcs_set_inband(struct qcom_ethqos *ethqos, bool enable)
+>>  	stmmac_pcs_ctrl_ane(priv, enable, 0);
+>>  }
+>>  
+>> +static void ethqos_get_interfaces_serdes(struct stmmac_priv *priv, void *bsp_priv,
+>> +					 unsigned long *interfaces)
+>> +{
+>> +	struct qcom_ethqos *ethqos = bsp_priv;
+>> +
+>> +	if (!ethqos->serdes_phy)
+>> +		return;
+>> +
+>> +	/* PHYs such as QCA8081 switch between SGMII and 2500BASE-X with
+>> +	 * the negotiated copper speed. mac_finish reconfigures the SerDes
+>> +	 * accordingly; let phylink validate all modes that path supports.
+>> +	 */
+>> +	if (!phy_validate(ethqos->serdes_phy, PHY_MODE_ETHERNET,
+>> +			  PHY_INTERFACE_MODE_SGMII, NULL))
+>> +		__set_bit(PHY_INTERFACE_MODE_SGMII, interfaces);
+>> +	if (!phy_validate(ethqos->serdes_phy, PHY_MODE_ETHERNET,
+>> +			  PHY_INTERFACE_MODE_2500BASEX, NULL))
+>> +		__set_bit(PHY_INTERFACE_MODE_2500BASEX, interfaces);
+>> +}
+>> +
+> 
+> So, I had proposed this exact change a while back:
+> https://lore.kernel.org/netdev/aMgootkPQ%2FGcdiXX@oss.qualcomm.com/
+> 
+> As Russell noted, this behaviour is due to the messed-up integrated
+> PCS support in STMMAC/QCOM-ETHQOS.
+> 
+> I would defer to him for this if he's around.
+
+Indeed, but we haven't heard from him in a while, let's see if we can
+figure this out. 
+
+Does this IP have an integrated PCS ? (i.e. dma_cap.pcs is set)
+you can check that in debugfs :
+
+mount -t debugfs none /sys/kernel/debug
+cat /sys/kernel/debug/stmmaceth/eth0/dma_cap | grep PCS
+
+if it's Y, then you have the integrated one.
+
+Russell worked hard on that, it looks like a lot of the plumbing went
+through.
+
+I think the right approach here is to have the PCS itself report the
+list of supported interfaces, instead of relying on the glue. looking
+at stmmac_pcs.c :
+
+220 int stmmac_integrated_pcs_init(struct stmmac_priv *priv,                                
+221                                const struct stmmac_pcs_info *pcs_info)                  
+222 {                                                                                       
+223         struct stmmac_pcs *spcs;                                                        
+224                                                                                         
+225         spcs = devm_kzalloc(priv->device, sizeof(*spcs), GFP_KERNEL);                   
+226         if (!spcs)                                                                      
+227                 return -ENOMEM;                                                         
 
 [...]
+                                                             
+246         /* Only allow 2500BASE-X if the SerDes has support. */                          
+247         if (priv->plat->flags & STMMAC_FLAG_SERDES_SUPPORTS_2500M)                      
+248                 __set_bit(PHY_INTERFACE_MODE_2500BASEX,                                 
+249                           spcs->pcs.supported_interfaces);                              
+250                                                                                         
+251         priv->integrated_pcs = spcs;                                                    
+252                                                                                         
+253         return 0;                                                                       
+254 }        
 
->> > +
->> > +static void vsock_reset_unreachable_sock(struct sock *sk)
->> > +{
->> > +	if (vsock_g2h_net_reachable(sock_net(sk)))
->> > +		return;
->> > +
->> > +	sk->sk_state = TCP_CLOSE;
->> > +	sk->sk_err = ECONNRESET;
->> > +	sk_error_report(sk);
->>
->> Should we send the reset to the other peer too?
->>
->> Or avoid to set TCP_CLOSE, so the user will see the error and close it?
->
->Sending the reset sounds good. At least the peer won't be waiting around
->forever. Will work that into v2.
+Can you test settung the STMMAC_FLAG_SERDES_SUPPORTS_2500M flag in
+dwmac-qcom-ethqos ?
 
-If it's too much of work, we can skip it, it's not a strong opinion on 
-my side. It was more a question of what we should do ;-)
-
->
->>
->> > +}
->> > +
->> > +/* Move the g2h device to @net. Returns -ENODEV if no g2h transport is loaded
->> > + * and -EOPNOTSUPP if the loaded one cannot be moved.
->> > + */
->> > +static int vsock_g2h_net_assign(struct net *net)
->> > +{
->> > +	int ret = 0;
->> > +
->> > +	mutex_lock(&vsock_register_mutex);
->> > +	if (!transport_g2h) {
->> > +		ret = -ENODEV;
->> > +	} else if (!vsock_g2h_netns_assignable()) {
->> > +		ret = -EOPNOTSUPP;
->> > +	} else {
->> > +		/* See vsock_maybe_set_connected() comment about synchronizing
->> > +		 * with connecting sockets.
->> > +		 */
->> > +		rcu_assign_pointer(vsock_g2h_net, net);
->> > +		vsock_for_each_connected_socket(transport_g2h,
->> > +						vsock_reset_unreachable_sock);
->> > +	}
->> > +	mutex_unlock(&vsock_register_mutex);
->> > +
->> > +	return ret;
->> > +}
->> > +
->> > +/* Move the g2h device back to init_net if it lives in @net, which is about to
->> > + * be destroyed.
->> > + */
->> > +static void vsock_g2h_net_reset(struct net *net)
->> > +{
->> > +	bool reset = false;
->> > +
->> > +	/* Avoid taking the mutex if the namespaces don't match. */
->> > +	if (likely(rcu_access_pointer(vsock_g2h_net) != net))
->> > +		return;
->> > +
->> > +	mutex_lock(&vsock_register_mutex);
->> > +	if (rcu_access_pointer(vsock_g2h_net) == net) {
->> > +		rcu_assign_pointer(vsock_g2h_net, &init_net);
->> > +		reset = true;
->> > +	}
->> > +	mutex_unlock(&vsock_register_mutex);
->> > +
->> > +	if (reset)
->> > +		synchronize_rcu();
->> > +}
->> > +
->> > static struct sock *vsock_dequeue_accept(struct sock *listener)
->> > {
->> > 	struct vsock_sock *vlistener;
->> > @@ -2745,6 +2920,15 @@ static long vsock_dev_do_ioctl(struct file *filp,
->> > 			retval = -EFAULT;
->> > 		break;
->> >
->> > +	case IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS:
->> > +		if (!capable(CAP_NET_ADMIN)) {
->> > +			retval = -EPERM;
->> > +			break;
->> > +		}
->> > +
->> > +		retval = vsock_g2h_net_assign(current->nsproxy->net_ns);
->> > +		break;
->> > +
->> > 	default:
->> > 		retval = -ENOIOCTLCMD;
->> > 	}
->> > @@ -2978,6 +3162,7 @@ static __net_init int vsock_sysctl_init_net(struct net *net)
->> >
->> > static __net_exit void vsock_sysctl_exit_net(struct net *net)
->> > {
->> > +	vsock_g2h_net_reset(net);
->>
->> Why calling this in the sysctl_exit ?
->
->Should we add another pernet_operations? I agree the name of
->vsock_sysctl_ops does not really fit as a general "do all per-net
->operations here" location.
-
-Aaaaa, it's not really related to sysctl.
-
-Maybe we can rename it or add another pernet_operations.
-
->
->>
->> > 	vsock_sysctl_unregister(net);
->> > }
->> >
->> > @@ -3104,13 +3289,21 @@ EXPORT_SYMBOL_GPL(vsock_core_register);
->> >
->> > void vsock_core_unregister(const struct vsock_transport *t)
->> > {
->> > +	bool g2h_net_reset = false;
->> > +
->> > 	mutex_lock(&vsock_register_mutex);
->> >
->> > 	if (transport_h2g == t)
->> > 		transport_h2g = NULL;
->> >
->> > -	if (transport_g2h == t)
->> > +	if (transport_g2h == t) {
->> > 		transport_g2h = NULL;
->> > +		/* The device is gone, so is its namespace assignment. */
->> > +		if (rcu_access_pointer(vsock_g2h_net) != &init_net) {
->> > +			rcu_assign_pointer(vsock_g2h_net, &init_net);
->> > +			g2h_net_reset = true;
->> > +		}
->> > +	}
->> >
->> > 	if (transport_dgram == t)
->> > 		transport_dgram = NULL;
->> > @@ -3119,6 +3312,9 @@ void vsock_core_unregister(const struct vsock_transport *t)
->> > 		transport_local = NULL;
->> >
->> > 	mutex_unlock(&vsock_register_mutex);
->> > +
->> > +	if (g2h_net_reset)
->> > +		synchronize_rcu();
->>
->> Why we need this? (I'd add also a comment with the reason)
->
->We might actually be able to drop it... I do think we need to keep it in
->vsock_g2h_net_reset() because it makes sure that vsock_g2h_net_get()
->doesn't dereference a destroyed net.
->
->vsock_core_unregister() isn't on the teardown path, so even if we
->re-assign to init_net the previous net is still alive.
-
-Agree.
-
->
->
->One thing I realized when answering your uAPI questions and looking at
->the code is that IOCTL_VM_SOCKETS_GET_LOCAL_CID is not namespace aware,
->but I think it probably should be? I remember for host ns we strived for
->truly strong isolation.
-
-Can you elabore a bit more?
-
-Thanks,
-Stefano
+Maxime
 
