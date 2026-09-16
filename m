@@ -1,83 +1,83 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37342DC331
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 12:30:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBFB4EC673
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 12:30:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789561828; cv=none; b=ainpzDXZNH9p0NQ01FKJuy1slkO/oi+t7XqiQjxQpGTDbCqeJWo4Xy+y61EbgQpJCUdRI9qjvG5jlkK4QWCBVsDCXJsHO55a66Qb7abvkPTR0z3nQM4vGiSSw187jQ3dMxea3pl9+cpjI0LaazFM3avCSjn96IEqhZ8UYf9RjVs=
+	t=1789561850; cv=none; b=ONCSZGQaPh5fU2vtst4vgwSg4+kuwQPyCXXiRShYSfvsepjO0R6lS6+V8XZas2Kb+843wpG5DUc9ln4btFMRxIJXLFfq790J95Md9KDD0JILPLErryTJgPaIep9/WLgOuyFaHg/VaBbswFeFHFqTsg2hnMEjVsK3oxGKtBUGhDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789561828; c=relaxed/simple;
-	bh=Fmhcgo0917MgP6Yewu3ZjCmJzTY2NacAiSJbTsPkO7k=;
+	s=arc-20240116; t=1789561850; c=relaxed/simple;
+	bh=FrcWMoDVbMbpzp4CIH1n1Jf3KfV7MxTjfsHaS9A0FCc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ehvHN0bRtGs8FMBO7ZeQFusOf9mwW3/un8ZE991PlhlNuF3KWJqZg6mNQ0FNZg+p6dhQzwsDfSQFAWNMkkg9N86uEArGfedqIbpGGOCssvBEQLhPJ2+KiU2Kkm4Lh4eCPc2k+Lh0FGpsUGNGN6tYTpPH2+eOrVID2Bre4I9gYx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XQaeTSyF; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=gEL8QAVM; arc=none smtp.client-ip=170.10.133.124
+	 Content-Type:Content-Disposition:In-Reply-To; b=hzq32oeCzPtkhTtbIK7PsllIj2IqtFC16SvVFeD1G9a+EfzBxt/S/IHJNOuPMv87JK9VV+Wfac1wMfzzb1U3Thnd886aVQBcPwvP67aDf57uwXbg9YWgowfFzTO8W8iz1rM3sTpVvgqT54qbfe3giyDm4D9rjbER0pyGKR+UjrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GH8sI7q8; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=XAWmEGsM; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XQaeTSyF";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="gEL8QAVM"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GH8sI7q8";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="XAWmEGsM"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789561825;
+	s=mimecast20190719; t=1789561846;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Rqm8tyx2h9IoJaqWWUmjhp0Aa68nUfNy8FsMl7kX/nI=;
-	b=XQaeTSyFLzbvk/4KmviPYJcLD1lDd456NbMxkg3+nr/wjOU834Ar1LMRlADilD4LKwUB9J
-	QkPAbuj9iUyu18pf8C8UsLhdG5XoxYy7qxOvejuBIBm+59W4uzr1tovto8CQ3oip9k028G
-	TgmJgLgB3SoSEzkXvJm2oIuu+k3wlAc=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=y/lsJ0PSjJUTTQP4j3h3/faX0ng/XvkH6X4rWSQ3RUA=;
+	b=GH8sI7q8u3uXlnWzND6MTU+GX3dpATMJ16Einyab2uHbiMpC1f/vlwGZAuuga5SylKCOXr
+	Q0qReBxRQNggTcIk7SuonRHNMuaL+IQzNvQneX1L6VZOH0Eqg1ThtXmVmntxSk4F4FjSE/
+	wxazINgjaWGHdo2v+mJ8XnPCgG2jrJk=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-324-xDHXFnwMP6eXO4PpWdT6kQ-1; Wed, 16 Sep 2026 08:30:23 -0400
-X-MC-Unique: xDHXFnwMP6eXO4PpWdT6kQ-1
-X-Mimecast-MFC-AGG-ID: xDHXFnwMP6eXO4PpWdT6kQ_1789561822
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-48589603501so3265370f8f.3
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 05:30:23 -0700 (PDT)
+ us-mta-219-9sqcCBDZMI6nvbrXVNUgjQ-1; Wed, 16 Sep 2026 08:30:45 -0400
+X-MC-Unique: 9sqcCBDZMI6nvbrXVNUgjQ-1
+X-Mimecast-MFC-AGG-ID: 9sqcCBDZMI6nvbrXVNUgjQ_1789561844
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49cd74fc1aaso30675715e9.1
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 05:30:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789561822; x=1790166622; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1789561844; x=1790166644; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Rqm8tyx2h9IoJaqWWUmjhp0Aa68nUfNy8FsMl7kX/nI=;
-        b=gEL8QAVM+uTzeFyDj8Fo0B1Bnboxr3hiqPOHoxCqsnGp8AOJ4cncQb8H7QNbsz4hMf
-         TxKnkv7WqKBN00wwF7cyTkMo+Bhdp1Ejr9MXEZCQ95kJ/L1cMj2D27VBNdi2+KNS5Wt5
-         HYsiw4PjlFkW/JTEtd1jIKirB+VOFjIijfZjKCrBI94A4eGZCttCladspb8tQyxFg+XZ
-         7TK/KwOx9VvlfuSiCEyaslKeGzLzi8O3ohO6Vw9jyWRL3yeFQQfnVVu3iIjqCVga4DoV
-         fpENBwQgt1GsiuRHPg1euRt7bZc3gmu3FpO9MT0YX42J5D+j1y5BK7y/Lb9C+wFhj0Ah
-         abdw==
+        bh=y/lsJ0PSjJUTTQP4j3h3/faX0ng/XvkH6X4rWSQ3RUA=;
+        b=XAWmEGsMHw35Ajbokq2rmA08Ye2RzOdlWs1wrp2KWaobTHRosLAizxaEU1QtEgTll3
+         IXKvXHL9eZ426KSEI3YaDhH2NXCxT9JlH+3tv2vQqVUv54hzGm2gtMo9w+ThT4ivQyLh
+         LkXT99FovFTqb5uGpOM53UirHN1djK7HvN+mtqf/EhT6dtpd0PQ86TPfPcWMSEdWBS2n
+         FbJ0Rw8gqME96qAH8E2NVzUhOd9Dsnn7J/QldkzED48MgI5tXEK4E7Kj+aKj8ICcniRP
+         dtmCP2i8dyNdVZ5ugB2/3FAVU5KbwuvGQ2uMgTbvJMTf7w+9MLmVGoArq2eels6mBr/R
+         z8OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789561822; x=1790166622;
+        d=1e100.net; s=20260707; t=1789561844; x=1790166644;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Rqm8tyx2h9IoJaqWWUmjhp0Aa68nUfNy8FsMl7kX/nI=;
-        b=dKGFEdbY8KEj6P2zmRQiwPAdlJdlPQcpUSSjhZGAqBHXRZePLH6ySao1Qk6nwLXk3i
-         HXoeF7rji5JqZy+PPC7/4YIWuJ7tCcXDvbkSQnG+uurDjc3nuKSIm1Jm0Je34RDgMDDl
-         d5zaHoav0LMQ8JAfDY6FKMjlWBKnejG6Yr+dj3Mayrj7kiNMZRqtrSDW7p4Ne8ZphZ1B
-         V7A2Ub+8tXi0XFcPFJ9RU/F3BoVdazCgkJv/f0fcTSUDT1M6K68k0RKi7g61H4Ya50By
-         ++oNoleCidZQzlhBBlYS4OErM2zO74GqEpCSOJl3uDTTOxMYAOnWgZUYRvlrhfFaNloO
-         A0WQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxEKU3h7dVUAXZMTodyOAPkIRxgBKzgicGzWa/dYb3igZyHHM37PRnmB3p2g20WMw7QhpuSq+k=@vger.kernel.org
-X-Gm-Message-State: AFuF++lU7x9irx2QhUvbTzXdGFBPWDOAMnBT8D7caXuiLsus+CbS67YJ
-	k9PJwa8enYpfs2C/T4SvjH+QU9qot/4Y9sL+iQf3MZ7dJ07v23x4gsf6ZDdnrmR9W+yVdauMTMh
-	KbRdEm7jv2Dj+5ij7i2CXbBK/5QKAk/6isfExovghJZt93EKzpwwJj/uwvQ==
-X-Gm-Gg: AYBFou38TpoRtvIE/3/jt+/v4GGoiVZRse9uBEVk0Oo0ofQiJmhNv/eNR+Z5yMnpGBI
-	CGc9iPDgTbMrn/JypbNGXxSetm/rMnZnMoRCFh++xQ9fibSPw29m4q9uOGqFUMxvcJpgAC04nQw
-	iyMy/e0Y6uaDOKppN6uqLcK4ONXyT3oWk8343TkuiCDoCndQwTov6qUY255ecLFVC+RV4wL8cpb
-	0bWERbOknZ9Boc9Sa1EE19rnycEgoC3NAxb91EavT75FFIhyEk2bxc7tue2L1lCIE9GytUASXjG
-	8abC+hmGZiiOihmLTr9+7vVuWmwUNgeM8uw/vx072yT6ewG/dJLz42pCrcp+ZU+KR4zW/rA2Qnr
-	SNfYr3jsx1EwefqLDRXXDldxDqGfjaJ2tfpnxFnQwKoxtxA==
-X-Received: by 2002:a05:6000:2003:b0:487:41c:175e with SMTP id ffacd0b85a97d-4870d03fdabmr2882243f8f.22.1789561822265;
-        Wed, 16 Sep 2026 05:30:22 -0700 (PDT)
-X-Received: by 2002:a05:6000:2003:b0:487:41c:175e with SMTP id ffacd0b85a97d-4870d03fdabmr2882180f8f.22.1789561821702;
-        Wed, 16 Sep 2026 05:30:21 -0700 (PDT)
+        bh=y/lsJ0PSjJUTTQP4j3h3/faX0ng/XvkH6X4rWSQ3RUA=;
+        b=ZHQsh93vi+yBzJJWiZ4reUIsA3RNgEnUSO/IMsdWvIjq6nPMN71yEua/DIvalOPuWj
+         iI5OHirDLIaR6ml4Ls5kuaktfZCedBkFtAcCtG7Pic3xNVqkipKC/20f4fhma4Ij/xD5
+         6e2hxtIJUi8O7awhUHR0F+SauUq1fGY+Kksw+Ck5sO8R5yOLgxYH9p/9tF7aN6WAeDet
+         tJiwYt/7Y9KBzFKbFMivYqBFD7LuSyLgXZgeblXuDaZ07OboVtoYHpXzVbkkLLZpgImk
+         u9EIe029s8+VtUEZWf4B2TSRyjYccddjXqpZgwgwp3Aln0B//kODiDVnM5zmizcip/lB
+         p0Kw==
+X-Forwarded-Encrypted: i=1; AKwUvBx+yI3eBYF2We0mGRqs6mT+7Uj8chnNC7qqYPNR2PlbARgVvBzByUdHuFzTvQLwMwUfmpHFVb8=@vger.kernel.org
+X-Gm-Message-State: AFuF++lYsJcZgGEMLPyKuKxQD/GSPuyZKlDQkncJoOB5gy7cxr7hl8gP
+	hl0+aj564s2fkYQvjDMs38zBQvip2rc+1YJKDQQia/rYy3KKWbcX77E0fQx/YUowooZlfmJ1ACK
+	3noXGKVO+nu9PWCx2KaYyeOE8E2cRPuPL1YxDSIdBwgnUmgJFj6IizFrhJA==
+X-Gm-Gg: AYBFou2+D1xpu30bkgA86/CMUM21gPYxFJaKshyiHoCxNyW95E/IlWAv9ddpqzOVb2J
+	AREnXj/sxz32BTX4nh4c8RVhgwxrDw/CTS4r2RpZED2AvTsGP9BUv7Ygr/5EtP2T513gUA1Gv/s
+	fuLu2jLqWpaV4okq4x6sfzX1kgwS9zBb69a89+rt1eUR1pS2JHJQbCX/NTsyFXfvzYQRS9hjaOE
+	PTdzXgAgqXVRRrOBijzV39RNcIBiNwDL4c2YDIbM9S7/ewCW+D2W/gQ3QIZbgVw0PXs5hfPQjZ5
+	Ju+kzfxkI3GMmXxC7BysuPj4uhCnTIzvxn3N4WrDJEDW1sa1U1wCigq3tvLorDt+ufaivOP8B1w
+	9DMfnsUa5G0qNh0me+vEM3MISAKx2i0qPAHI6xM9g5M4dZQ==
+X-Received: by 2002:a05:600c:19c6:b0:49e:645e:2616 with SMTP id 5b1f17b1804b1-49eac463955mr25967105e9.5.1789561843688;
+        Wed, 16 Sep 2026 05:30:43 -0700 (PDT)
+X-Received: by 2002:a05:600c:19c6:b0:49e:645e:2616 with SMTP id 5b1f17b1804b1-49eac463955mr25966565e9.5.1789561843075;
+        Wed, 16 Sep 2026 05:30:43 -0700 (PDT)
 Received: from sgarzare-redhat (host-79-53-30-11.retail.telecomitalia.it. [79.53.30.11])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4870bf413dcsm6941143f8f.31.2026.09.16.05.30.19
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e83addf36sm76621175e9.5.2026.09.16.05.30.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 05:30:21 -0700 (PDT)
-Date: Wed, 16 Sep 2026 14:30:14 +0200
+        Wed, 16 Sep 2026 05:30:42 -0700 (PDT)
+Date: Wed, 16 Sep 2026 14:30:39 +0200
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: Michal Luczaj <mhal@rbox.co>
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, 
@@ -87,11 +87,11 @@ Cc: Stefan Hajnoczi <stefanha@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
 	Asias He <asias@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
 	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2 2/5] vsock/virtio: Streamline socket reset on
- transport/PM event
-Message-ID: <aqp3Po7OcubJboM_@sgarzare-redhat>
+Subject: Re: [PATCH net v2 3/5] vsock: Enforce no-transport invariant for
+ TCP_LISTEN sockets
+Message-ID: <aqp7CV9DnfsG1GJc@sgarzare-redhat>
 References: <20260915-vsock-connect-reset-closing-v2-0-a1d9abb472f7@rbox.co>
- <20260915-vsock-connect-reset-closing-v2-2-a1d9abb472f7@rbox.co>
+ <20260915-vsock-connect-reset-closing-v2-3-a1d9abb472f7@rbox.co>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -100,55 +100,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20260915-vsock-connect-reset-closing-v2-2-a1d9abb472f7@rbox.co>
+In-Reply-To: <20260915-vsock-connect-reset-closing-v2-3-a1d9abb472f7@rbox.co>
 
-On Tue, Sep 15, 2026 at 03:15:13PM +0200, Michal Luczaj wrote:
->Follow vhost's vhost_vsock_reset_orphans() and VMCI's
->vmci_transport_handle_detach(): set SHUTDOWN_MASK, which will come handy
->later in the series.
+On Tue, Sep 15, 2026 at 03:15:14PM +0200, Michal Luczaj wrote:
+>A non-blocking connect() running in parallel with a blocking connect(),
+>combined with a racy listen() that hits right after a connect timeout:
+>TCP_SYN_SENT -> TCP_CLOSE -> TCP_LISTEN, while the connect() loop is still
+>in progress.
+>
+>Enforce the invariant. Prevent a socket from becoming a listener after
+>acquiring a transport.
 
-IMO it would be better to include the reason here as well. Every commit 
-should explain why doing a change.
+We should improve this comment; it's not entirely clear to me, TBH.
 
 >
->Note that commit c38f57da428b ("vhost/vsock: fix reset orphans race with
->close timeout") fixed a race between pending close timer, i.e.
->virtio_transport_close_timeout(), and a transport/PM reset. But here we
->never set SOCK_DONE, hence no race.
->
->Fixes: 0ea9e1d3a9e3 ("VSOCK: Introduce virtio_transport.ko")
+>Fixes: c0cfa2d8a788 ("vsock: add multi-transports support")
 >Signed-off-by: Michal Luczaj <mhal@rbox.co>
 >---
-> net/vmw_vsock/virtio_transport.c | 3 +++
-> 1 file changed, 3 insertions(+)
+> net/vmw_vsock/af_vsock.c | 6 +++---
+> 1 file changed, 3 insertions(+), 3 deletions(-)
 >
->diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
->index 4f9aa9c4c3aa..4d6991321699 100644
->--- a/net/vmw_vsock/virtio_transport.c
->+++ b/net/vmw_vsock/virtio_transport.c
->@@ -413,11 +413,14 @@ static void virtio_vsock_event_fill(struct virtio_vsock *vsock)
+>diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+>index f840498b58af..499e902becfa 100644
+>--- a/net/vmw_vsock/af_vsock.c
+>+++ b/net/vmw_vsock/af_vsock.c
+>@@ -1973,13 +1973,13 @@ static int vsock_listen(struct socket *sock, int backlog)
+> 		goto out;
+> 	}
 >
-> static void virtio_vsock_reset_sock(struct sock *sk)
-> {
->+	struct vsock_sock *vsk = vsock_sk(sk);
+>-	if (sock->state != SS_UNCONNECTED) {
+>+	vsk = vsock_sk(sk);
 >+
-> 	/* vmci_transport.c doesn't take sk_lock here either.  At least we're
-> 	 * under vsock_table_lock so the sock cannot disappear while we're
-> 	 * executing.
-> 	 */
->
->+	vsk->peer_shutdown = SHUTDOWN_MASK;
+>+	if (sock->state != SS_UNCONNECTED || vsk->transport) {
 
-In all other places we use WRITE_ONCE/READ_ONCE on vsk->peer_shutdown, 
-should we do the same here?
+Are we changing the behavior when an error occurs?
+
+If we call `connect()` on a socket (with no others running in parallel), 
+it fails, and then when we call `listen()`, it now fails, whereas before 
+it didn't. Can this happen? Is that what we want?
+
+If so, we should mention it at least in the commit description; if not, 
+perhaps we should unassign the transport in the `connect` call.
 
 Thanks,
 Stefano
 
-> 	sk->sk_state = TCP_CLOSE;
-> 	sk->sk_err = ECONNRESET;
-> 	sk_error_report(sk);
+> 		err = -EINVAL;
+> 		goto out;
+> 	}
 >
->-- 2.55.0
+>-	vsk = vsock_sk(sk);
+>-
+> 	if (!vsock_addr_bound(&vsk->local_addr)) {
+> 		err = -EINVAL;
+> 		goto out;
+>
+>-- 
+>2.55.0
 >
 
