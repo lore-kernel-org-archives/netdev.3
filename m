@@ -1,77 +1,57 @@
-Received: from out28-121.mail.aliyun.com (out28-121.mail.aliyun.com [115.124.28.121])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E4621254B;
-	Wed, 16 Sep 2026 00:45:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.121
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FFA3563CD;
+	Wed, 16 Sep 2026 00:48:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789519540; cv=none; b=PZXf+4Lk/VA0JiTGQMKEhePATTCoJp4dzX5901xnD/H0qj4DZg5gxCn+hibUKWwkg2nJq+3323PReVsZe1g9qs/pWzKpLIj2iCI5kEDKRD09ktyfC+2Ql0kEYfEI0a29x04LaQKXKD6hfO0N6I1SmkWt+BI1DtV34kr9GB3L9A4=
+	t=1789519724; cv=none; b=px4hERGgkjnUd2iCClWaUhtDEUPDGHnjxTyDVix11qlRbEloFwKJ+S5GLu3XuGufP6l+twX7FI6kAG3uS+yH89tmjFXpFWOI3DWDuKSev70MQIISO1j9fFsUbSDKh1E9UMALv+3KHlauV9WHV5Bp4VJh+3mymgcmTZX10UxabUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789519540; c=relaxed/simple;
-	bh=SJy0CJxKyWYTfkHIDSlYC2tKvszR5q7zLVBZrn+ydVw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZyFDGDOoncl3xhKsxHUCtT+7YA+t0uX6acZAiGaF342A7RkHYeL5OrnufaCHnP+Tv7eFXtbGn5EOJoyGAeKGnDmiC+JXTkEOH/t7T40Ht71Qag6zWizCzHELvuR0UsvkqV/qXmEuF0auE9zm/+m3lMZPzokgD/zsp/IUTDbXw0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.121
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.09098641|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0979617-0.000473135-0.901565;FP=16786935194897668094|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037032089;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=14;RT=14;SR=0;TI=SMTPD_---.jEUwywK_1789519527;
-Received: from 10.10.26.192(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jEUwywK_1789519527 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Wed, 16 Sep 2026 08:45:29 +0800
-Message-ID: <e137f7aa-4755-466a-89d4-e2868e20210b@motor-comm.com>
-Date: Wed, 16 Sep 2026 08:45:27 +0800
+	s=arc-20240116; t=1789519724; c=relaxed/simple;
+	bh=CWZAaWCVhrh92dZlXOVV0Cgwff1PjvnSV4yHvPThoLk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oxwfE2FW22Q5jPMWPHGT+k7wiSmX435pMa25zlcsnTCvEua/dqEV2j4stSAQsc3EuYFuCd9gXnOjgR0s1lPTY1QMmoi8lg5niNzdBIveqnz1p5QkRZ5dEZas3E/Ikcm5vg5+DpAD5Dv0KlxqeQRIsxg5dgC7ctLRj7srUsRNSGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GZFRzPl1; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GZFRzPl1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89E81F000FF;
+	Wed, 16 Sep 2026 00:48:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789519717;
+	bh=zwSGxEJsXGq7U13gthDmY1h3f4ICZxjQntRtAG1kDWg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=GZFRzPl1JkvETNHJE0ROefs+VhOjBZja4wWyRt8xXlt0uMoGe00z1pZr90UAU/yvY
+	 EiIybvjhETTLI+9BkLmaxCR6ZNjkeT1bTvbVxnxRXv5ruPGSSOxkEzonuuwNOYdQy0
+	 kUye8J/4La+UyE7JdVpj7KoKBqD4qdzgVVCumFDoC2jEdavLau/gi7gHkG+C91Op2c
+	 0iK062YXQQXdAVUcNV/OhI3AJdafACcjHYAZ8mtoq5VrQV/moXLq7e28Fi8KlvlY1Q
+	 Xo4vUCYiayTSgBR5lP3QkPylXTqsHJADkbF02oGnCU2c6r9Hdgxyzru6aJ4dEK+hwh
+	 krq0z5AQaWzyg==
+Date: Tue, 15 Sep 2026 17:48:36 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Ali Firas <alishmery18@gmail.com>
+Cc: netdev@vger.kernel.org, idosch@nvidia.com, pabeni@redhat.com,
+ davem@davemloft.net, edumazet@google.com, andrew+netdev@lunn.ch,
+ razor@blackwall.org, roopa@nvidia.com, bestswngs@gmail.com, xmei5@asu.edu,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 2/2] vxlan: vnifilter: roll back VNI insertion
+ when the group update fails
+Message-ID: <20260915174836.464fae55@kernel.org>
+In-Reply-To: <20260911215203.3054653-2-alishmery18@gmail.com>
+References: <20260911215203.3054653-1-alishmery18@gmail.com>
+	<20260911215203.3054653-2-alishmery18@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v18 2/3] net: phy: Add support for Template
- Control register for PMA
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Frank.Sae@motor-comm.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
- jianmin.wang@motor-comm.com, jie.han@motor-comm.com
-References: <20260915082152.3104633-1-kyle.switch@motor-comm.com>
- <20260915082152.3104633-3-kyle.switch@motor-comm.com>
- <14de4b19-254b-4d45-9239-5a3badbbb73d@lunn.ch>
-Content-Language: en-US
-From: Kyle Switch <kyle.switch@motor-comm.com>
-In-Reply-To: <14de4b19-254b-4d45-9239-5a3badbbb73d@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
+On Sat, 12 Sep 2026 00:52:03 +0300 Ali Firas wrote:
+> Subject: [PATCH net v2 2/2] vxlan: vnifilter: roll back VNI insertion when the group update fails
 
-On 9/15/26 20:18, Andrew Lunn wrote:
->> +/**
->> + * genphy_c45_template_testmode - configure template testmode registers
->> + * @phydev: target phy_device struct
->> + * @test_mode: testmode includes Normal to Test mode 7
->> + *
->> + * Description: Set template testmode include Normal to Test mode 7
->> + *
->> + * Return: 0 on success, or a negative error code on failure (e.g. register
->> + * read/write error).
->> + */
->> +int genphy_c45_template_testmode(struct phy_device *phydev, int test_mode)
->> +{
->> +	int ctrl;
-> I would suggest test_mode is a u16, or at least an unsigned type. ctrl
-> should be a u16, since phy_modify_mmd() and phy_write() etc take a
-> u16.
->
->> +
->> +	if (test_mode < MDIO_PMA_10GBT_TESTMODE_NORMAL ||
->> +	    test_mode > MDIO_PMA_10GBT_TESTMODE_7)
->> +		return -EOPNOTSUPP;
-> And once test_mode is unsigned, you don't need to test if its is less
-> than 0.
-Ans: okay, will be fixed in next patch.
->      Andrew
->
-> ---
-> pw-bot: cr
-> 	
+Please trim the slop.
+Ido may disagree but this looks like net-next material to me
+-- 
+pw-bot: cr
