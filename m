@@ -1,341 +1,113 @@
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk2-f34.google.com (mail-qk2-f34.google.com [74.125.230.226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B824A6CC1;
-	Wed, 16 Sep 2026 09:41:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789551685; cv=none; b=G+qrkhYS9/2nJtwNEtYW+my8dDBLS5EHpVae8HXF6V32WigYDQW0tzkoyHL6+gF451ql8tGWjdTNWBbhAr6xF7W5gP4jmdDVxf5sGBiGveaSJkKOAagjm8EB4tD9FkMlaFxMUwGvNVpDU5GBL4F7jyT5LTRvNAxPLtuyqVjxFac=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789551685; c=relaxed/simple;
-	bh=2w7ACpCdwYnaZ4I4xvZ8Tj2vBn8yUy8LWiytd80jL4A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AE+AVPGJqxdiv4R+DUJ6VZMTBEX0o9aRL1fiKMbPzal8ezX7yOPPfTIBoBx1AGie6bBIyM7VVMKPV1gJ4SuFO3XeZnVpX4JxUDGXteUq7eNnEGD5R/HQP9zPABJksnjVq3nwO4DBdUXfNehh1sUdmeyhd6Ag0AJkmPyWPhy8QdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=nF15ywYj; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=pUT91mXy; arc=none smtp.client-ip=103.168.172.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446A64A9D46
+	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 09:41:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.226
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789551710; cv=pass; b=dfo1kARkGGU9lenn0fDTBYtQyQ0HwAvTyEkuNj9F4634KVSfsrshoRVAYYs9H15wcfUX5dct/lSspVfv5EK/dV0ydYgLNGGbXmmbKnsdmTAcvqE5kRW/9kuJuPZucIvC14ZpINPPaLJlu6hTfajHtmBQDTiUqw7lOFUeYvkKGHI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789551710; c=relaxed/simple;
+	bh=dd0XjmXLbr6av17ldrfsndZXMA3/+aCy2CJ+JrZ60SY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oXw/dk04ppFz4V5MRIzj6M947qhu9m23zXajROW/vc/Nt2BJVJiFPLL1Z+1MzBIJqK3/PdKJ4pUcQds9eFphoLP5Z6XEMey7I9EY6LpZ2ouDBKk/9iYC84uOunfwQ4n5TzWV0bai4MTNL3gO2zl9y5ahiL4Z19a+pY5Cs5NV6qM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qQck2Eax; arc=pass smtp.client-ip=74.125.230.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="nF15ywYj";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="pUT91mXy"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id 108CCEC0F1A;
-	Wed, 16 Sep 2026 05:41:11 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Wed, 16 Sep 2026 05:41:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1789551671;
-	 x=1789638071; bh=/JcGtibZVIg1ugk9+a0Nc9vldI5Xgow89hIjICGjpv8=; b=
-	nF15ywYj4CgVHjur5OHjiEVAJoPtNJa2t6soqzWdaanxxNFWbA5423lJN/hVppFS
-	RJ/cdLAcvxqBpTGYFXro4Mwwmi1xQfZcS29XUJRezfFtb+aN/3RccYb9rFQYNdpU
-	liyG1lzx7EfWMnR6QHQU3JwnKIdwze3cg5PFgaMmqNz4wypNwfHqdt8U7W/7fPKy
-	dBE10RiNY+uKp6GIALucR/rrs+ObTvneSaz7lZwscYi3oV+DJLf1QCiDH6NHjypL
-	hbEdSmTVqrgAQ4cy3hd0/USsqg0TCyPXq6hM2q3HfdPyeV8e2kEmfpGoys6K19uL
-	jBMGgW/floBWFzi9Z+8qDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789551671; x=
-	1789638071; bh=/JcGtibZVIg1ugk9+a0Nc9vldI5Xgow89hIjICGjpv8=; b=p
-	UT91mXyElM45QTltR2+FpY3xsw84t1AtK4OusyaoxDP+2NLvT7zsPT5nGNydUNsv
-	HV/lkR0jznlnnkYtutlgGW7BUAcWzVM7cIsX6IIys7j+Ub475I3TFoAnsGhJhsZt
-	d0SULYtw7f+CzR2V24qwBNPMIOl8//ns8d0qaopNS5NjlTzqOGXMZ9jNa/hxz7Ft
-	DD83RDUkQ+RdGwL36erSD6l7pA6x5XKvUqkIRGVyv1/ORpgay5tAhSNal/co7Fwn
-	Tgp15fh4FZkabxPURl9vdw3E9SYi9Kr/zCzjxSLHSvOYtoSE0GKpgWN1aMdj1U4j
-	xICpKXf0K3v8oxZ97VpUA==
-X-ME-Sender: <xms:NmSqasB4KvQszZ7P7N4BeOzJWSpkrgtvWSkc2XpxlGQV2pT-3Bb3DQ>
-    <xme:NmSqanSFuoyH5FLXBVkAHYxdG_57Dygpedq7Y2LwKz3YCKSgczam6NxyNMaZ8CzIc
-    E418aJu1eZ9tvaRvzfCPw6MBfstSaJUVyy7ZUOP6HWgI5JKGqxQ1g3q>
-X-ME-Received: <xmr:NmSqauQp4GiSACApeN1WX9hUxYsq8ZG5tolcYFLux7P30i2PhZKVhvxuIRZPrz9bYa3b9THJWy5J8Y_A60vQ5gJwZ51sacw>
-X-ME-Proxy-Cause: dmFkZTFTX9n2XjUy1Cb0bi/GlIJNxYAMuC6ZgsLrLkxSquQom2bE8MUcubdZ8srtzL6VhW
-    G/2q229ryeqHm3m4gZg81kwnacc9IOaFOKsnjKU3Pm6gEd7562lEMPyb2R/XxlXM52p/l9
-    x+qXVjF9XU4/XJXQtr/dLymMs68zz6psN6zmJWvyqpimOFfj0WdJ9iJcdOPcqWUsKjfdKO
-    x0P4bDrMNRzl01oalYb/whs4lBytohXiitybcHwSZqr+m/YVME/96lqNIHulWW7c5Tq5L/
-    brC9LbQGtJhvNEDjmMql9gyoENR88Vm7t2w1H/7rKOYIaQfZRxcZBZkRB+eh4lHiMe4kda
-    SYir4nfjwj8sUQMYbibLI3u/+1mi6H0Ey+rieQkqsABeX2GbuTrOUssa4+j5FviSzGKbFQ
-    Plf6GGWBh6VG3t5QRlEqdT/36o7HirsOmwVNhWuxmkYqVG6pHKfhlROrUS9WA0PmDTxr77
-    n5dPwHPvZfn7cfRES0HGcItp/ZkOWT21SttgnL1bI5MApXvbskDtzo1PYekxu8g6MQWO2j
-    YVKkv6sdGSTMF6lQNSS59vbOQGxb2UPlbq1EFSHaT2igKEPEyaipNiboHXO92fPI78ojqh
-    3ULR8pw4qQv89+uFQ+SZI54Mf+2lWGjvZyAnAcq7lbvmjcHeQrW/8CpTUpUA
-X-ME-Proxy: <xmx:NmSqalJFX8Vj8-VBMWCR9zHVEOcC6y_R_52GxLozGc3gUDYIj4HMwA>
-    <xmx:NmSqalHvJkGB1VfufMkladGYIKzywIOy2NbXWdPGpN1BBnYhyhJFyA>
-    <xmx:NmSqaiRiOZnJnIQ-Wbgzqk5kiZz60eGv2p4YysMiQSXFOEc1J1kJvA>
-    <xmx:NmSqauUqcZKXxmZM7Y_vRGeyNMXT8KYzYDQVfF4vUyBBhrmDlcUzfg>
-    <xmx:N2SqapoIsLOg-OqhiJ3ovLotMSQX9bWX7ZfIJnW5CIEZPyOlhtKpXT_8>
-Feedback-ID: i80c9496c:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 16 Sep 2026 05:41:09 -0400 (EDT)
-Date: Wed, 16 Sep 2026 11:41:07 +0200
-From: Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: paul@pbarker.dev, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, geert+renesas@glider.be, magnus.damm@gmail.com,
-	richardcochran@gmail.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	vadim.fedorenko@linux.dev, sergei.shtylyov@gmail.com,
-	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v4 03/10] net: ethernet: ravb: Simplify gPTP
- start and stop
-Message-ID: <20260916094107.GP1991210@fsdn.se>
-References: <20260909173027.2201560-4-niklas.soderlund+renesas@ragnatech.se>
- <20260915015437.881154-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qQck2Eax"
+Received: by mail-qk2-f34.google.com with SMTP id af79cd13be357-939109f067eso70168085a.0
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 02:41:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789551701; cv=none;
+        d=google.com; s=arc-20260327;
+        b=N+237zPPv4ZjilLnImMi7tjX3CW+TnyK+XBRkJAbEO+18ru1q0C+Z5+/yiacSwFpdO
+         wPC9k9um/IyN6xEwlUqbmu1XkOxoJu+CBhMpFvy/koim7THIR4Mlr5e1H0txcXOg8UbB
+         1dqiScyunjeEyixKhB/TkOKCaNubTL5gXyTU/Z3nYwW7k5KdBcWxPl8o1bs6HTC9PGY6
+         /f9ezIQEx2zNRldvQML8mNtEyesAMQUN8bJHnyGkR+NPt3cqOwIA4ZoV0Pj15eOtjcKV
+         WuvnyvM3SjoXsA8+JUkdbJXbrsxnTv75XhnPwGPt/cMPWcEgyG5p4/RVXUham9Jev92m
+         Ef8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=dd0XjmXLbr6av17ldrfsndZXMA3/+aCy2CJ+JrZ60SY=;
+        fh=UHjOHk6S865wL8vAzVDHIJWIDVAU+syCKHzM3zLlBuM=;
+        b=MHLHfX7qAeY+tpimj9dP+EZQhDiTQIEhNh/cBKPXH6bcaGtqfxXW5GEkj6CfjRTDOS
+         l47z+cTuPDcE3CzITN8HkNhT1ZToOS0sreJixWDnR5NYovez0vjCCmFwd5DIrp3xT2+2
+         DKVxhGhQO4Ul9J4Rob70vAUwc5ixalJGrtAS6IN6II85gOfnpe+e9abXo/VuklWi7GjG
+         NuiA3eVUAHminNRXzVY7Yh4QzcJLMkgRpNG8FOMbksEUqAGR20jwchwVZT4//2f8rH9/
+         jUIDtI4mDUb4yBvTv1vy6M9d5m17B3hRCiMcBpqQdLZsKotdn41udFQtg3ngPJ6wSu/z
+         9/jQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789551701; x=1790156501; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=dd0XjmXLbr6av17ldrfsndZXMA3/+aCy2CJ+JrZ60SY=;
+        b=qQck2EaxCKi4Uv0sJjK3manqk1cVY7UTs+3b6Rg7JosOC0NAhCZTy3X2x9wUG0VV7Q
+         WcNv/i/HyuUlGMTnc2y4LJEMccBKJsEiITHqf1vysluHNcpxRYbmligHei4FYY4IJIV/
+         QAr5Af0qjKwl1UtvyZaLvQCUEcZ6CpiU0WxdoAXkDzkP9lS3eQXamwqkwX88tacqgAID
+         7XoO/Fb5o4U/p7+Xna7qIIL9Pn3KoSnMxvsv5/ekXojPfgns+1kJxR6QNqKQX3PD8Kft
+         9O9F5sxZF3abTKexlCbyDCQy0usdH+BmLkdq2dp+QZv8pbE6/+wIulSeb4BaD05Dwh6d
+         oBOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789551701; x=1790156501;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dd0XjmXLbr6av17ldrfsndZXMA3/+aCy2CJ+JrZ60SY=;
+        b=rnPmy7gMmIncixlwu2pT6w+ggqI6e0A408U+hN1/OWmRC1kCFdSkVlDdV6fLQGc8tc
+         C4o4973RcHBk4KTgrRFCWSV1tlgIw/CQHXajDRBTPcwuLzOVRUGpRo6bhUdforcfpcMF
+         VyHDW3CuR0Szhxi6VxxWsAo9spieRVv8ZC8YIRHeCru8J5NWV4ZcO8HuRJ4uHBfOJYDk
+         eCY/1OALgaFlg8H87KWZU4c0qlYg42FHOpD8sWGbOx+j63FdJbQNIvYP43cBVbQ/D9EV
+         nKUXffhGCo8cTbyQpy2FN66UBFzLRFjhooJtN/MpUnNFkb4+lvmDMGKowGPWS/+T+CMy
+         yHbA==
+X-Forwarded-Encrypted: i=1; AKwUvByvKX2uKCX9bmI0iYtmmJTHbwTqSPsE91CcUudDVP8iPdRJ9eyrhkjhEgAj437M870aSfR/p3Q=@vger.kernel.org
+X-Gm-Message-State: AFuF++m2Wjs/+lNsfmpfYPuH5dmYpHJzsuBtTkuOOKt52r1NXvOu0z6o
+	UDTysTU+gSfU7GbcwLPD164sIwdCI4Y0yqI7i2gXT134f+pRuWGdEuO0N8UBnBslADdXj6X89yI
+	oo2jf+TNpQwNrmJIpk6EBV8WdvjYUy2Y2aMK/fdR4
+X-Gm-Gg: AYBFou07tFnKdDHALAXdPyAgdS7SalDhFGixI/b6NGHVuntUaqYXQjyipiJ46cUGq5L
+	I7HIkntrVco1O8yVxJahemY22MOoBM9jzfmWmjJQSc+9VzsgR4YJ7iRcOj+7rbOfkuFqL28nWks
+	kOPJLyxCm/LOiO25NblQSluJiARkFwqVZHhQ9dqjc/NJ7EUaM8YuPKbSxtcp/4NXfoXf6X6jBL7
+	sAjeS/6/XYpWOo0y0baG2HA7Kao7tnPzh3HSO/mFY97RUZw80RjaeZnmlU+bHIJNsQFx7urK3aV
+	hN/33XIUeXKqxcVgxnKOW/thlXCAqOGWx1Ms9aw8Jn9OOO3ttVa1ybXBYyrXiv4hB4lUz6NSPiV
+	o8trh1jRDSwx32r41YborbwR1Fko1S7qIhAPqrTDKJHqKmvKeK3V3poarWT6zebV+SzM=
+X-Received: by 2002:a05:620a:72d2:20b0:93b:c22a:e98a with SMTP id
+ af79cd13be357-93bc22af796mr17857385a.2.1789551700440; Wed, 16 Sep 2026
+ 02:41:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260915015437.881154-1-kuba@kernel.org>
+References: <20260916041102.1914333-1-xmei5@asu.edu> <CAPpSM+SpeOa5uo5rffXejDa4g9VGphp1GvirJgUWze-O+cQyzA@mail.gmail.com>
+In-Reply-To: <CAPpSM+SpeOa5uo5rffXejDa4g9VGphp1GvirJgUWze-O+cQyzA@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 16 Sep 2026 02:41:29 -0700
+X-Gm-Features: AcwNN1UxUZyShrWWdOdzZP5TvGhMt62DuqGu9sAhw7uSD_TZmpKiYAfpJ3xalwE
+Message-ID: <CANn89iJtyY_ooHfbqPw4=GVwXQeEc0k6RxS9dJGnA8TZgu8rSw@mail.gmail.com>
+Subject: Re: [PATCH net] bpf: lwt: clear stale IP control block after pushing
+ an encap header
+To: Xiang Mei <xmei5@asu.edu>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	netdev@vger.kernel.org, bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	co+ff13a35f73bb7891@bugs.sh, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello Jakub,
+On Wed, Sep 16, 2026 at 12:32=E2=80=AFAM Xiang Mei <xmei5@asu.edu> wrote:
 
-On 2026-09-14 18:54:37 -0700, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> net: ethernet: ravb: Simplify gPTP start and stop
-> 
-> The patch folds the gptp-flag ravb_ptp_init() and ravb_ptp_stop() calls into
-> ravb_dmac_init() and ravb_stop_dma(), and drops the info->gptp part of the
-> two combined gptp/ccc_gac call sites in ravb_open() and ravb_close().  It is
-> described as having no functional change.
-> 
-> A few questions about the resulting start/stop balance below.
-> 
-> > diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-> > index a89f6fe7866fe..2d0022a4f85c3 100644
-> > --- a/drivers/net/ethernet/renesas/ravb_main.c
-> > +++ b/drivers/net/ethernet/renesas/ravb_main.c
-> > @@ -707,7 +707,15 @@ static int ravb_dmac_init(struct net_device *ndev)
-> >  		return error;
-> >  
-> >  	/* Setting the control will start the AVB-DMAC process. */
-> > -	return ravb_set_opmode(ndev, CCC_OPC_OPERATION);
-> > +	error = ravb_set_opmode(ndev, CCC_OPC_OPERATION);
-> > +	if (error)
-> > +		return error;
-> > +
-> > +	/* Initialise PTP Clock driver */
-> > +	if (info->gptp)
-> > +		ravb_ptp_init(ndev, priv->pdev);
-> > +
-> > +	return 0;
-> >  }
-> >  
-> >  static void ravb_get_tx_tstamp(struct net_device *ndev)
-> > @@ -1115,6 +1123,10 @@ static int ravb_stop_dma(struct net_device *ndev)
-> >  			netdev_err(ndev, "failed to stop AXI BUS\n");
-> >  	}
-> >  
-> > +	/* Stop PTP Clock driver */
-> > +	if (info->gptp)
-> > +		ravb_ptp_stop(ndev);
-> > +
-> 
-> [Severity: High]
-> Is the new stop reachable on all exits from ravb_stop_dma()?  It sits after
-> three unconditional error returns earlier in the same function:
-> 
-> 	error = ravb_wait(ndev, TCCR, info->tccr_mask, 0);
-> 	if (error)
-> 		return error;
-> 
-> 	error = ravb_wait(ndev, CSR, CSR_TPO0 | CSR_TPO1 | CSR_TPO2 | CSR_TPO3,
-> 			  0);
-> 	if (error)
-> 		return error;
-> 	...
-> 	error = ravb_wait(ndev, CSR, CSR_RPO, 0);
-> 	if (error)
-> 		return error;
-> 
-> Before this patch, ravb_close(), ravb_set_ringparam(),
-> ravb_tx_timeout_work() and ravb_open()'s unwind all called ravb_ptp_stop()
-> unconditionally before ravb_stop_dma(), so a wait timeout did not affect the
-> unregister.
-> 
-> ravb_close() treats a ravb_stop_dma() failure as non-fatal:
-> 
-> 	/* Set the config mode to stop the AVB-DMAC's processes */
-> 	if (ravb_stop_dma(ndev) < 0)
-> 		netdev_err(ndev,
-> 			   "device will be stopped after h/w processes are done.\n");
-> 
-> and then goes on to free the rings, program CCC_OPC_RESET and drop the
-> runtime-PM reference.  For .gptp devices (ravb_gen2_hw_info,
-> ravb_rzv2m_hw_info) does that leave the PHC registered after ndo_stop has
-> returned success, with the gPTP interrupt enables still set because
-> ravb_ptp_disable()/ravb_ptp_sync_irqs() in ravb_ptp_stop() were skipped?
-> 
-> A subsequent open then runs ravb_dmac_init() -> ravb_ptp_init(), whose
-> 
-> 	WRITE_ONCE(priv->ptp.clock, clock);
-> 
-> overwrites the only handle, while ravb_ptp_stop() only xchg()s the current
-> pointer.  Since ravb_remove() has no independent PTP unregister and ends in
-> free_netdev(), does the stranded registration leave ptp_clock_info pointing
-> into freed netdev private memory, reachable through the surviving
-> /dev/ptpN?
-> 
-> ravb_ptp_stop() looks idempotent (xchg of priv->ptp.clock), so would doing
-> the stop before the fallible ravb_wait() calls, or on all exit paths, keep
-> the old behaviour?
+>
+> I just found Weiming post a patch solving same problem:
+>
+> https://lore.kernel.org/bpf/20260915170147.3943392-2-bestswngs@gmail.com/
+>
+> and that patch covers the cases I didn't consider so please ignore this p=
+atch.
 
-If any of the stop steps before the gPTP fail the device is borked. I 
-guess the LLM would say the same thing if any other of the calls in the 
-stop chain where reordered too.
+pw-bot: cr
 
-> 
-> >  	/* Stop AVB-DMAC process */
-> >  	return ravb_set_opmode(ndev, CCC_OPC_CONFIG);
-> >  }
-> > @@ -1719,9 +1731,7 @@ static int ravb_set_ringparam(struct net_device *ndev,
-> >  
-> >  	if (netif_running(ndev)) {
-> >  		netif_device_detach(ndev);
-> > -		/* Stop PTP Clock driver */
-> > -		if (info->gptp)
-> > -			ravb_ptp_stop(ndev);
-> > +
-> >  		/* Wait for DMA stopping */
-> >  		error = ravb_stop_dma(ndev);
-> >  		if (error) {
-> 
-> [Severity: High]
-> Same question for this call site: with the explicit pre-stop removed, does a
-> ravb_stop_dma() timeout here return with the interface detached and the Gen2
-> gPTP clock still registered?
-
-Same reply.
-
-> 
-> [ ... ]
-> 
-> > @@ -1961,7 +1967,7 @@ static int ravb_open(struct net_device *ndev)
-> >  	ravb_emac_init(ndev);
-> >  
-> >  	/* Initialise PTP Clock driver */
-> > -	if (info->gptp || info->ccc_gac)
-> > +	if (info->ccc_gac)
-> >  		ravb_ptp_init(ndev, priv->pdev);
-> >  
-> >  	/* PHY control start */
-> > @@ -1974,9 +1980,6 @@ static int ravb_open(struct net_device *ndev)
-> >  	return 0;
-> >  
-> >  out_ptp_stop:
-> > -	/* Stop PTP Clock driver */
-> > -	if (info->gptp || info->ccc_gac)
-> > -		ravb_ptp_stop(ndev);
-> >  	ravb_stop_dma(ndev);
-> >  out_set_reset:
-> >  	ravb_set_opmode(ndev, CCC_OPC_RESET);
-> 
-> [Severity: High]
-> Does this leak the registered PTP clock for info->ccc_gac devices when
-> ravb_open() fails?
-
-This seems to be a real find, nice. Will fix.
-
-> 
-> ravb_open() still calls ravb_ptp_init() for info->ccc_gac, but the
-> counterpart at out_ptp_stop: is gone, and the relocated teardown in
-> ravb_stop_dma() is gated on:
-> 
-> 	if (info->gptp)
-> 		ravb_ptp_stop(ndev);
-> 
-> info->gptp and info->ccc_gac are mutually exclusive (.gptp in
-> ravb_gen2_hw_info and ravb_rzv2m_hw_info, .ccc_gac in ravb_gen3_hw_info and
-> ravb_gen4_hw_info), so nothing unregisters the clock on this path.
-> 
-> The failure right after the init is a plain software path, ravb_phy_start()
-> -> ravb_phy_init() returns -ENOENT when of_phy_connect() fails, or
-> propagates an of_phy_register_fixed_link() error:
-> 
-> 	error = ravb_phy_init(ndev);
-> 	if (error)
-> 		return error;
-> 
-> Since ndo_open failed, ndo_stop/ravb_close() is never called, so the
-> if (info->ccc_gac) ravb_ptp_stop(ndev); in ravb_close() does not run either.
-> Does that leave /dev/ptpN live on a block that ravb_open() then puts into
-> CCC_OPC_RESET and runtime-suspends, so gettime64/settime64/adjfine perform
-> MMIO with no runtime-PM reference held, and with GIC/GIS enables still set?
-> 
-> And on a later successful open, ravb_ptp_init()'s
-> WRITE_ONCE(priv->ptp.clock, clock) replaces the handle, so the first
-> registration can no longer be reached by ravb_ptp_stop().  With
-> ravb_remove() calling free_netdev() without any PHC unregister, does that
-> become a use-after-free through the surviving PTP chardev?
-> 
-> Would keeping if (info->ccc_gac) ravb_ptp_stop(ndev); at out_ptp_stop:
-> restore the balance?
-> 
-> > @@ -2020,10 +2023,6 @@ static void ravb_tx_timeout_work(struct work_struct *work)
-> >  
-> >  	netif_tx_stop_all_queues(ndev);
-> >  
-> > -	/* Stop PTP Clock driver */
-> > -	if (info->gptp)
-> > -		ravb_ptp_stop(ndev);
-> > -
-> >  	/* Wait for DMA stopping */
-> >  	if (ravb_stop_dma(ndev)) {
-> >  		/* If ravb_stop_dma() fails, the hardware is still operating
-> > @@ -2056,10 +2055,6 @@ static void ravb_tx_timeout_work(struct work_struct *work)
-> >  	ravb_emac_init(ndev);
-> >  
-> >  out:
-> > -	/* Initialise PTP Clock driver */
-> > -	if (info->gptp)
-> > -		ravb_ptp_init(ndev, priv->pdev);
-> > -
-> >  	netif_tx_start_all_queues(ndev);
-> >  
-> >  out_unlock:
-> 
-> [Severity: Medium]
-> Can TX-timeout recovery now resume traffic with the Gen2 gPTP clock left
-> unregistered?
-> 
-> In ravb_stop_dma() the new stop runs just before the fallible final
-> transition:
-> 
-> 	/* Stop PTP Clock driver */
-> 	if (info->gptp)
-> 		ravb_ptp_stop(ndev);
-> 
-> 	/* Stop AVB-DMAC process */
-> 	return ravb_set_opmode(ndev, CCC_OPC_CONFIG);
-> 
-> If that ravb_set_opmode() times out, ravb_tx_timeout_work() takes the
-> "hardware is still operating" branch:
-> 
-> 	if (ravb_stop_dma(ndev)) {
-> 		...
-> 		ravb_rcv_snd_enable(ndev);
-> 		goto out;
-> 	}
-> 	...
-> out:
-> 	netif_tx_start_all_queues(ndev);
-> 
-> With the ravb_ptp_init() at out: removed, RX/TX and the TX queues are
-> re-enabled for .gptp devices while the PHC has been unregistered and the
-> gPTP interrupts cleared.  Previously this path always re-registered the
-> clock when resuming operation.  Does hardware timestamping and /dev/ptpN
-> now stay gone until a full close/open cycle?
-> 
-> [ ... ]
-
--- 
-Kind Regards,
-Niklas Söderlund
+Thanks.
