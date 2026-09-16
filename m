@@ -1,49 +1,51 @@
-Received: from mta0.migadu.com (out-6.mta0.migadu.com [91.218.175.6])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D5736A004
-	for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 02:15:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D1C349CD2;
+	Wed, 16 Sep 2026 02:16:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789524947; cv=none; b=Il7uksMqiHwByp/t6kdVv4Tyd49gYEReaOfq1FKesIHvZ3aK7tinI59Dzo2up92yY9s+bABn1qCPjUs2MA50VkoLtN13twMZndxSFDBiiA0sso6mOx8FTSc6YlmstAhLHbv7QnEEyIDx+Uxil4+1bkDWbRWSCsahgF/lwE/2LD4=
+	t=1789524997; cv=none; b=BjNzWhU99hp0RxVDBFO3/jvWkmDnbSdzNwKIpxoTkkXxG2WjlboFo+WCgFUt+Nu/97CRGnV0RPc+TCAzA2DoPgdLh0ZA2daskbLwkxQAfGAFDZZ3tTBmdHGwDf3xNiLTUoMwcQBJoGgoZVhmL2lQhvnSODf3DOMdC6hOl0ZUBKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789524947; c=relaxed/simple;
-	bh=AoqB6iH1VbyFxRickE+XE02detVh4zbD+pkrOIM8KZ8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CbMaJXa5fZFEK3VYZEsjYfHv/jme0NJDQ+V9CGnKf+RwlBO3nQFZCCEWijxmhaeqxvhivqljuB3rYHfI8uWuq9e9q2HggXSn/k2NXdpCY2glH64m5oiEvSNvko7EkzCTX5zLYXkopJ0RRVYDosUnJkHmDFxy+nNYtHfIPsI1aQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=T8h1pEnd; arc=none smtp.client-ip=91.218.175.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1789524997; c=relaxed/simple;
+	bh=6ZxDcPAqQVJS73JgYo4ez8O9QdcZ0Sgl2MFN9zCIbJ8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ewDjwpyE+KsMhNjYZ9kun+LNBEgOhtpYICgNtrEp1dPddF++5eXOJBV/sHnkl41vTY8tL/vy7iKyMiy8wnhYIScYFQ1XYyolFxTqaWTYGfrx1vr5XbiDbK+3m2dNGsUFXEAq/MwJ/h2qsN+Z7VCk9myXhpa9tKO92yRJhJhY6b0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S7lEX8cJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="T8h1pEnd"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=AoqB6iH1VbyFxRickE+XE02detVh4zbD+pkrOIM8KZ8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789524935; v=1; x=1790129735;
- b=T8h1pEnde7mod1YXIydIdyabJN1Zi6ZBCi9O3sG9ncl2Dx0xEfePE3//8dWV3bArpJb/Mae6
- 4HYzg8bwmpwRQ47u9xFzFdwjHSbJoJE341RVwpoGmCSvnCjaKlfjaenn+LTQefMDhYq1Kzzpj4/
- oWgNlpcHyMxLt/cPjmzMDFNk=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 04c3db0f84c267eb;
-	Wed, 16 Sep 2026 02:15:14 +0000
-X-Mizu-Trace-ID: 04c3db0f84c267eb
-X-Migadu-Flow: FLOW_OUT
-From: Chenguang Zhao <chenguang.zhao@linux.dev>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S7lEX8cJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B9F31F000FF;
+	Wed, 16 Sep 2026 02:16:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789524991;
+	bh=j9CXVwoOhd+i1uANIa2OgTibMVhdmc64PHu4ihbI664=;
+	h=From:To:Cc:Subject:Date;
+	b=S7lEX8cJ2aSbDcDgBnmeJtVx1DjKzG4HEmODQddnZwHai9xWsRiixUhgS6e+9ferT
+	 glYoZdyrp76YyA/9/pfdhyGgHJSaJ5Goixk2Ok/IIeEksfjYv0RzfHCoo0/cO6CaFM
+	 /06+nLFX+3wp6NOBCg72Lavpj39Gu4noNSD60DRFJyag2bSOOirYM467PtLwfv5HKN
+	 I3gzzpThkP6KL9enUoPc1HHPchNY0ykamsAA15FzxrYcdSRJVxk9YUdnovECfwh5Vz
+	 n8aZs+tciiF+d9mcFX0JFyDJ7ZdA7lVIPlC+fGamp2zasYE90dRAdy5oCAOLSG0Cu7
+	 +OHR1+RzYlvqw==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
-	chenguang.zhao@linux.dev,
-	Chenguang Zhao <zhaochenguang@kylinos.cn>,
-	syzbot+694b49f41098a5df4fd7@syzkaller.appspotmail.com
-Subject: [PATCH net] net: phy: allow phy_detach() before netdev registration
-Date: Wed, 16 Sep 2026 10:15:05 +0800
-Message-Id: <20260916021505.238990-1-chenguang.zhao@linux.dev>
-X-Mailer: git-send-email 2.25.1
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	donald.hunter@gmail.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	razor@blackwall.org,
+	dw@davidwei.uk,
+	bpf@vger.kernel.org
+Subject: [PATCH net-next] netlink: specs: netdev: update doc for xsk tx-checksum and zc-max-segs
+Date: Tue, 15 Sep 2026 19:16:08 -0700
+Message-ID: <20260916021608.1702731-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,40 +54,82 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Chenguang Zhao <zhaochenguang@kylinos.cn>
+Minor touch ups to the XSK-related doc strings in the netdev spec.
 
-phylink_connect_phy() may be called from probe without RTNL while the
-net_device is still NETREG_UNINITIALIZED. If PHY bring-up fails,
-phy_detach() uses rtnl_dereference(dev->hwprov) and lockdep reports
-suspicious RCU usage.
+Tx checksum is (obviously?) Layer 4 (TCP/UDP), not Layer 3 (IP).
 
-hwprov cannot have been assigned before register_netdevice(). Relax the
-RCU check for that state only; registered devices still require RTNL.
+The xdp_zc_max_segs change is more subtle, I guess, but to kernel devs
+saying "frags" may sound like the number of skb frags. The value includes
+the head in this case. The default of 1 means single buffer, XDP_USE_SG
+sockets are refused when it is 1. Let's use the word "buffer" instead
+of "frag".
 
-Fixes: 35f7cad1743e ("net: Add the possibility to support a selected hwtstamp in netdevice")
-Reported-by: syzbot+694b49f41098a5df4fd7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=694b49f41098a5df4fd7
-
-Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- drivers/net/phy/phy_device.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+CC: donald.hunter@gmail.com
+CC: ast@kernel.org
+CC: daniel@iogearbox.net
+CC: hawk@kernel.org
+CC: john.fastabend@gmail.com
+CC: sdf@fomichev.me
+CC: razor@blackwall.org
+CC: dw@davidwei.uk
+CC: bpf@vger.kernel.org
+---
+ Documentation/netlink/specs/netdev.yaml | 5 +++--
+ include/uapi/linux/netdev.h             | 2 +-
+ tools/include/uapi/linux/netdev.h       | 2 +-
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 94b2e85e00a3..acd8d658a29e 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1941,7 +1941,9 @@ void phy_detach(struct phy_device *phydev)
- 		/* hwprov may technically be protected by ops lock but
- 		 * not for devices with a phydev, see phy_link_topo_add_phy()
- 		 */
--		hwprov = rtnl_dereference(dev->hwprov);
-+		hwprov = rcu_dereference_protected(dev->hwprov,
-+						   lockdep_rtnl_is_held() ||
-+						   dev->reg_state == NETREG_UNINITIALIZED);
- 		/* Disable timestamp if it is the one selected */
- 		if (hwprov && hwprov->phydev == phydev) {
- 			rcu_assign_pointer(dev->hwprov, NULL);
+diff --git a/Documentation/netlink/specs/netdev.yaml b/Documentation/netlink/specs/netdev.yaml
+index 3e3f03bd5c29..e13461cf3fc3 100644
+--- a/Documentation/netlink/specs/netdev.yaml
++++ b/Documentation/netlink/specs/netdev.yaml
+@@ -80,7 +80,7 @@ doc: >-
+       -
+         name: tx-checksum
+         doc: >-
+-          L3 checksum HW offload is supported by the driver.
++          L4 checksum HW offload is supported by the driver.
+       -
+         name: tx-launch-time-fifo
+         doc: >-
+@@ -118,7 +118,8 @@ doc: >-
+         enum: xdp-act
+       -
+         name: xdp-zc-max-segs
+-        doc: max fragment count supported by ZC driver
++        doc: max buffer count per packet supported by ZC driver,
++             including the head buffer
+         type: u32
+         checks:
+           min: 1
+diff --git a/include/uapi/linux/netdev.h b/include/uapi/linux/netdev.h
+index 35ff083221c7..9026e0414fbe 100644
+--- a/include/uapi/linux/netdev.h
++++ b/include/uapi/linux/netdev.h
+@@ -58,7 +58,7 @@ enum netdev_xdp_rx_metadata {
+  * enum netdev_xsk_flags
+  * @NETDEV_XSK_FLAGS_TX_TIMESTAMP: HW timestamping egress packets is supported
+  *   by the driver.
+- * @NETDEV_XSK_FLAGS_TX_CHECKSUM: L3 checksum HW offload is supported by the
++ * @NETDEV_XSK_FLAGS_TX_CHECKSUM: L4 checksum HW offload is supported by the
+  *   driver.
+  * @NETDEV_XSK_FLAGS_TX_LAUNCH_TIME_FIFO: Launch time HW offload is supported
+  *   by the driver.
+diff --git a/tools/include/uapi/linux/netdev.h b/tools/include/uapi/linux/netdev.h
+index 35ff083221c7..9026e0414fbe 100644
+--- a/tools/include/uapi/linux/netdev.h
++++ b/tools/include/uapi/linux/netdev.h
+@@ -58,7 +58,7 @@ enum netdev_xdp_rx_metadata {
+  * enum netdev_xsk_flags
+  * @NETDEV_XSK_FLAGS_TX_TIMESTAMP: HW timestamping egress packets is supported
+  *   by the driver.
+- * @NETDEV_XSK_FLAGS_TX_CHECKSUM: L3 checksum HW offload is supported by the
++ * @NETDEV_XSK_FLAGS_TX_CHECKSUM: L4 checksum HW offload is supported by the
+  *   driver.
+  * @NETDEV_XSK_FLAGS_TX_LAUNCH_TIME_FIFO: Launch time HW offload is supported
+  *   by the driver.
 -- 
-2.25.1
+2.55.0
 
