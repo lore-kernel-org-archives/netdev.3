@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E994EFFCE;
-	Thu, 17 Sep 2026 21:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC44B43E094;
+	Thu, 17 Sep 2026 21:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789680293; cv=none; b=kN9uYSCeMYd9moo/0fGXFsYUDx3Cj8C+Z+8tIHHFT4dRtsRmitQPzXenZ4o9hVKSa+440iloEds6ysGwAAqS2RUY25A2Zm1xs7tDd2NKWejD5nu+o350vjHAnbzWgBgmvfgKVa3WVbn/7s4N0TJGC2GLEW3ZAN3yyko5d+cdXRg=
+	t=1789680294; cv=none; b=J3MOFeWLkYp3MMUhbv7J+RuwmFyarlWFo7QbLpvlx2PQGVj6cA/5QpIunwnrz9cczQ76VHA3wuHqltzpleJCtTZNBnPiibxChaPN+1oWWDCWaot+dXKYrYh60pPGB2xV1/n3JpxiyR/EEGZbuKJ9V9Wvj5jCg2A3QSa60sOeICA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789680293; c=relaxed/simple;
-	bh=P8voqwId4Gda+5U2KPBBLwsnhgv+Zhy9VZZz81W0Osg=;
+	s=arc-20240116; t=1789680294; c=relaxed/simple;
+	bh=3BkZUvKbXo3gseQ3NiLk+TqrBhHyFg4iU2spdpXGSwM=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=REpk8DcizfdIUhmZh8tusvEd3p5Su6hYoSCzh8Oe9+s7FPZXSWzunY3b0TgOInyuCWNONyrGn7LdAZqs7fOgeGXXEQVImPqri+haG4taW8DmP2vxvYIs8Hqdr0hLSEaVLo0Y/L3Nd1HkPbeL7iT8y0lsyi5GTh8cRV2QUu7k7Rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WNnIGdKN; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=lb3Khejkv+26uew2z2Fs/Y//WomNqdTlEoVXj+KLldg1ZQM1QqpanuE3Z6gSQ6rvNShGNcX1TuCsiSbTfx/EaQC+m2eelBLmsImmSH38EBNce7TbmSl4Upubuz8nCHeEklj8QL66Itt+twHGrn5btiBLKZWqvR5ValL6iJnHX6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d5e05E2T; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WNnIGdKN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C5F51F00893;
-	Thu, 17 Sep 2026 21:24:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d5e05E2T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD011F00899;
+	Thu, 17 Sep 2026 21:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789680291;
-	bh=N6R9pMOaRwb2THfN4DreUB5DADY2TM0zL/rqkrabrhI=;
+	s=k20260515; t=1789680292;
+	bh=xQN5Zi22qEu3fThZpOR9EXRBKcIQEi0pZoe7hDYvdxY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=WNnIGdKNZt/MlrSHkibOnjiMJbQwsY4qxGh6XHQ8eaifqtkiVCXfJu/EHmvkQOQQC
-	 r8jMgQfyc/RjumtkiEIhkGmjYot5ruprN65ukaIJrew9EHUvbhDf4dRxNgfKIOJfb+
-	 nL6tJki8V6bqtKk1TmzdEPzfPZTOY7l3az19LGeG1EeTkowLG6VfhniPPdM4Abf2Id
-	 p9AfJ5eGbGQe4HTMHHiFAIdRwItiirE/EcCcVKV78BiTz+zPEqovDrBO9cHvvdQYSL
-	 G4G3qWPuIR5+AtaK6w7e/ZOtCCg6phqwuC0VY/y8N9jKz47qX0cVljBf4JWCIAsgkJ
-	 0+/bVlsZvvC6g==
-Subject: Re: [PATCH net-next v12 01/15] phylink: Add phylink_mac_interrupt
+	b=d5e05E2Tz7CcymC6kmo+2uxH5DkICyaOyEUQxSun4IWb6U6PAI/oEMKhtAqm2QN45
+	 U3Vfqc6MxIo5/yIoqhg3BCZYg/34oTI72cN/Z9GzFqkQXhvtm5RXcYSJBwH/6bfMWX
+	 o4ljI+alE+mqSd3lqMRfyUy7yFIXWPW5Dlc37E3xquWXvpK4/UnWlcQBfcQYOVJmCu
+	 9u5Qau6nHERFmLFCaW4kuGxu5DA4MUuwz2pUJIcGqqwu3XAHRNu33YwAuo21u+LQY6
+	 D2EinmAgba0pI570xFRjd6NtJruEI9xSBnyj/+SiiXFVM72GbeJDnj0iiqOCXZ5rRC
+	 ouGPUvEjciBJw==
+Subject: Re: [PATCH net-next v12 02/15] phylib: Add support for PHYs with
+ broken forced mode
 From: netdev-bot+sashiko@kernel.org
 To: mail@birger-koblitz.de
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk, andrew@lunn.ch,
  hkallweit1@gmail.com, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, neuromoments@gmail.com
-Date: Thu, 17 Sep 2026 21:24:50 +0000
-Message-ID: <178968029017.22033.2874254681410388676@kernel.org>
-In-Reply-To: <20260916-ax88179a-v12-1-60c04c9924a2@birger-koblitz.de>
-References: <20260916-ax88179a-v12-1-60c04c9924a2@birger-koblitz.de>
-X-sashiko-severity: Medium
+Date: Thu, 17 Sep 2026 21:24:51 +0000
+Message-ID: <178968029151.22033.7401061944066839860@kernel.org>
+In-Reply-To: <20260916-ax88179a-v12-2-60c04c9924a2@birger-koblitz.de>
+References: <20260916-ax88179a-v12-2-60c04c9924a2@birger-koblitz.de>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,135 +51,162 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Critical: 0 · High: 1 · Medium: 1 · Low: 0 (1)
 
-- [Medium] `phylink_mac_interrupt()`
-  (drivers/net/phy/phylink.c:1621-1628) reads `pl->phydev` with no…
-- [Low] Claim that the newly exported `phylink_mac_interrupt()`
-  (drivers/net/phy/phylink.c) and its prototype…
+- [High] NULL pointer dereference of `phydev->drv` in
+  phy_ethtool_ksettings_set() (drivers/net/phy/phy.c:1193-1195).
+- [Medium] Incomplete gating of PHY_BROKEN_FORCED: the new flag is
+  consulted only in phy_ethtool_ksettings_set()…
+
+Pre-existing issues:
+- [Low] Concern that PHY_BROKEN_FORCED has no in-tree user, making the
+  patch behaviorally inert (dead branch in phy_ethtool_ksettings_set())…
 
 --
 
-phylink: Add phylink_mac_interrupt
+phylib: Add support for PHYs with broken forced mode
 
-This adds an exported phylink_mac_interrupt() helper which forwards a
-link-change interrupt received by the MAC to phylib by calling
-phy_mac_interrupt() on pl->phydev.  It is intended for drivers that want to
-avoid polling the PHY.
+Adds a PHY_BROKEN_FORCED driver flag and makes
+phy_ethtool_ksettings_set() reject AUTONEG_DISABLE requests with
+-EOPNOTSUPP for drivers that set it.  The stated goal is to avoid the
+WARN and stack trace in the PHY state machine when config_aneg()
+returns -EOPNOTSUPP for forced modes.
 
-(no Link: tags in the commit header)
-
-> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-> index 3ec3bb4391095..96ed13458e9f3 100644
-> --- a/drivers/net/phy/phylink.c
-> +++ b/drivers/net/phy/phylink.c
-> @@ -1612,6 +1612,22 @@ static bool phylink_link_is_up(struct phylink *pl)
->  	return pl->netdev ? netif_carrier_ok(pl->netdev) : pl->old_link_state;
->  }
+> diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+> index fce9bc7be3304..b83f938fe7c3b 100644
+> --- a/drivers/net/phy/phy.c
+> +++ b/drivers/net/phy/phy.c
+> @@ -1190,6 +1190,10 @@ int phy_ethtool_ksettings_set(struct phy_device *phydev,
+>  	      duplex != DUPLEX_FULL)))
+>  		return -EINVAL;
 >  
-> +/**
-> + * phylink_mac_interrupt() - wrapper for phy_mac_interrupt()
-> + * @pl: a pointer to a &struct phylink returned from phylink_create()
-> + *
-> + * Passes a link-change interrupt received by the MAC to phylib.
-> + */
-> +void phylink_mac_interrupt(struct phylink *pl)
-> +{
-> +	struct phy_device *phy;
+> +	if (autoneg == AUTONEG_DISABLE &&
+> +	    (phydev->drv->flags & PHY_BROKEN_FORCED))
+> +		return -EOPNOTSUPP;
 > +
-> +	phy = pl->phydev;
-> +	if (phy)
-> +		phy_mac_interrupt(phy);
-> +}
-> +EXPORT_SYMBOL_GPL(phylink_mac_interrupt);
+
+[Severity: High]
+Can phydev->drv be NULL here?
+
+The rest of phylib treats a NULL drv as a reachable state while the
+phy_device is still attached to a netdev.  phy_remove() in
+phy_device.c ends with:
+
+	phydev->drv = NULL;
+
+without detaching the PHY from the netdev, so ndev->phydev and
+phydev->attached_dev stay set after a driver unbind through
+/sys/bus/mdio_bus/drivers/<drv>/unbind.
+
+The callee a few lines below in this same function guards for exactly
+that:
+
+drivers/net/phy/phy.c:_phy_start_aneg() {
+	lockdep_assert_held(&phydev->lock);
+
+	if (!phydev->drv)
+		return -EIO;
+	...
+}
+
+and so do phy_config_inband() and phy_ethtool_nway_reset().  The entry
+point does not:
+
+drivers/net/phy/phy.c:phy_ethtool_set_link_ksettings() {
+	if (!phydev)
+		return -ENODEV;
+
+	return phy_ethtool_ksettings_set(phydev, cmd);
+}
+
+So for "ethtool -s <dev> autoneg off speed 100 duplex full" after a PHY
+driver unbind, does this new test dereference a NULL phydev->drv and turn
+the previous -EIO return into an oops?
+
+There is a second aspect: the read is also outside mutex_lock(&phydev->lock),
+and phy_remove() clears the pointer without holding phydev->lock or rtnl, so
+moving the test under the mutex would not close the window either.  Would an
+explicit check be preferable, e.g.
+
+	if (autoneg == AUTONEG_DISABLE && phydev->drv &&
+	    (phydev->drv->flags & PHY_BROKEN_FORCED))
+		return -EOPNOTSUPP;
+
+or an early "if (!phydev->drv) return -EIO;" matching the convention used
+elsewhere in this file?
 
 [Severity: Medium]
-Is the unsynchronized read of pl->phydev here safe?  Every other reader of
-that field in phylink.c is serialized, and the struct member carries the
-comment describing that rule:
+Is phy_ethtool_ksettings_set() the only path that commits AUTONEG_DISABLE?
 
-	/* Serialize updates to pl->phydev with phylink_resolve() */
-	struct mutex phydev_mutex;
+The SIOCSMIIREG handler in phy_mii_ioctl() also writes forced mode with no
+PHY_BROKEN_FORCED test:
 
-phylink_resolve() and phylink_bringup_phy() take pl->phydev_mutex, and the
-ethtool/ioctl/phylink_speed_up()/phylink_speed_down() readers run under
-ASSERT_RTNL().  Since this new helper is documented as being called from a
-MAC link-change interrupt, it can take neither the mutex nor RTNL, and the
-signature (struct phylink * only) gives the caller no way to pin the
-phy_device across the call.
-
-Can this race with teardown?  phylink_disconnect_phy() is the only writer
-that clears the pointer:
-
-drivers/net/phy/phylink.c:phylink_disconnect_phy() {
-	mutex_lock(&pl->phydev_mutex);
-	phy = pl->phydev;
-	if (phy) {
-		...
-		pl->phydev = NULL;
-		...
-	}
-	mutex_unlock(&pl->phydev_mutex);
-
-	if (phy) {
-		flush_work(&pl->resolve);
-		phy_disconnect(phy);
-	}
+drivers/net/phy/phy.c:phy_mii_ioctl() {
+	...
+		case MII_BMCR:
+			if ((val & (BMCR_RESET | BMCR_ANENABLE)) == 0) {
+				if (phydev->autoneg == AUTONEG_ENABLE)
+					change_autoneg = true;
+				phydev->autoneg = AUTONEG_DISABLE;
+	...
+		mdiobus_write(phydev->mdio.bus, prtad, devad, val);
+	...
+		if (change_autoneg)
+			return phy_start_aneg(phydev);
 }
 
-So the sequence would be:
+For a PHY flagged PHY_BROKEN_FORCED whose config_aneg() returns
+-EOPNOTSUPP (asix_ax88279_config_aneg(), added later in this series),
+phy_start_aneg() -> _phy_start_aneg() -> phy_config_aneg() fails and the
+error reaches the ioctl caller, but neither the BMCR write nor
+phydev->autoneg = AUTONEG_DISABLE is rolled back.
 
-CPU0 (MAC link IRQ)
-phylink_mac_interrupt()
-	phy = pl->phydev;		/* latched */
+On the next transition to PHY_UP (ifdown/ifup, link flap, cable test exit),
+does the state machine then hit the same WARN this patch aims to remove?
 
-CPU1 (RTNL)
-phylink_disconnect_phy()
-	pl->phydev = NULL;
-	phy_disconnect(phy)		/* phy_stop_machine() ->
-					   cancel_delayed_work_sync(
-						&phydev->state_queue) */
-
-CPU0 resumes
-	phy_mac_interrupt(phy)
-		phy_trigger_machine(phy)
-			phy_queue_state_machine()
-				mod_delayed_work(..., &phy->state_queue, ...)
-
-Does that re-arm the PHY state machine work after the teardown path already
-did its synchronous cancel, so the state machine runs on a detached phydev?
-
-For an SFP cage the phy_device is also freed while the interface is still
-up:
-
-drivers/net/phy/sfp.c:sfp_sm_phy_detach() {
-	sfp_remove_phy(sfp->sfp_bus);	/* -> phylink_sfp_disconnect_phy()
-					   -> phylink_disconnect_phy() */
-	phy_device_remove(sfp->mod_phy);
-	phy_device_free(sfp->mod_phy);
-	sfp->mod_phy = NULL;
+drivers/net/phy/phy.c:_phy_state_machine() {
+	if (state_work == PHY_STATE_WORK_ANEG) {
+		err = _phy_start_aneg(phydev);
+		func = &_phy_start_aneg;
+	}
+	...
+	if (err < 0)
+		phy_error_precise(phydev, func, err);
 }
 
-Can the mod_delayed_work() above then write into the freed phy_device?
+phy_mii_ioctl() is exported and wired as ndo_eth_ioctl by a number of MAC
+drivers, directly or via phy_do_ioctl_running().  For the device in this
+series the MAC routes ndo_eth_ioctl to phylink_mii_ioctl(), whose
+SIOCSMIIREG case uses phylink_phy_write() and does not touch
+phydev->autoneg, so that particular combination does not reach the WARN
+today.  Would placing the gate where autoneg is actually committed, in
+_phy_start_aneg() or phy_config_aneg(), cover both entry points?
 
-Separately, the load of pl->phydev is a plain access to a field written
-under a mutex on another CPU.  Should this at least be READ_ONCE()?  As
-written, nothing prevents the compiler from re-loading pl->phydev when
-forming the call argument, which would make the "if (phy)" test useless and
-pass NULL into phy_mac_interrupt() -> mod_delayed_work().
+> diff --git a/include/linux/phy.h b/include/linux/phy.h
+> index 5f8d65868e0ff..d5f8e527ce8df 100644
+> --- a/include/linux/phy.h
+> +++ b/include/linux/phy.h
+> @@ -64,6 +64,7 @@ extern const int phy_basic_ports_array[3];
+>  #define PHY_RST_AFTER_CLK_EN	0x00000002
+>  #define PHY_POLL_CABLE_TEST	0x00000004
+>  #define PHY_ALWAYS_CALL_SUSPEND	0x00000008
+> +#define PHY_BROKEN_FORCED	0x00000010
 
-Would it make sense to either make pl->phydev lookup IRQ-safe (RCU with
-deferred free, or hold a device reference), or to document in the kernel-doc
-that the caller must quiesce its link interrupt before
-phylink_disconnect_phy()/phylink_destroy()?  The added kernel-doc currently
-states no calling context or lifetime contract.
+[Severity: Low]
+This isn't a bug introduced by this patch, but a note on flag adoption.
 
-> +
->  static void phylink_resolve(struct work_struct *w)
->  {
->  	struct phylink *pl = container_of(w, struct phylink, resolve);
+The value 0x10 does not collide with any existing PHY_* flag, and there is
+an in-tree user by the end of the series: drivers/net/phy/ax88796b.c sets
 
-[ ... ]
+	.flags		= PHY_IS_INTERNAL | PHY_BROKEN_FORCED,
+
+on the AX88279 entry, whose asix_ax88279_config_aneg() returns -EOPNOTSUPP
+for AUTONEG_DISABLE, so the new branch is not dead code.
+
+Two existing drivers already reject forced mode in their config_aneg()
+without setting the new flag, bcm84881_config_aneg() and
+en8811h_config_aneg().  That is pre-existing behaviour and not changed
+here; would converting them be a reasonable follow-up?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260916-ax88179a-v12-0-60c04c9924a2%40birger-koblitz.de
