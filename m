@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB334FD7B9;
-	Thu, 17 Sep 2026 21:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4484FDA57;
+	Thu, 17 Sep 2026 21:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789680310; cv=none; b=Fy5VoNcLR5hgUoYqi9xnk9wOE5/NMoKGy3JV31xjiYFOrEtWe6UtusmezgeSUQa+FI48zwnmzmQLdSy7DdUq4WTgqltIFBe4yc1xR8x+a++KR70VfDeAPKWzDAmbeqTTEodwwxFcPZRwC+DWU9WwTBIbF2RBp9jW75seXayp8gE=
+	t=1789680311; cv=none; b=uSg6iEb7F5dJZv3eUXnEXNpEWj1oKglAlUw7JoJKNOGvFtMvF3MVNmZe2W2VhGgKhfqhYj4Td3xDnlRWrIq9S4eqxPc1b9VrYe6de5cl1MLKn0BK7Gz8anEPTNXMjxf9nY1VSbH17TWYG48WWCniVT+3fWvWnG57MJt0QXfCVV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789680310; c=relaxed/simple;
-	bh=qisEgIS/5chZ/VJn8+lVuOWhXvQD1f4T7SJBz4X5VDI=;
+	s=arc-20240116; t=1789680311; c=relaxed/simple;
+	bh=3Soqwa9aCnMRKp8Ckh5O4dwXgjowimeTvGOfgLH+uQg=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nRA0xv4osn2Gr4cKb0imQbOwopZPJ8N4+k36I18wmS16vjdgKPD64nv9XwhtbMpEIKOybuCYMy8gMGliFVpLDDUDhVdwZHt6GbXup3xnPQubEHjzWWs3Ea4h4rFTmTWaPG1LdyyRvg169cMVwp+VoVXvH5JkS3aGNOpl+pISptM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oEZM/0uu; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=VFUx9z7bChr8oabHbPVQNV0CsDCeULkVfKFN7EI6EAVWajkrFt6wHLPX9ifr6oQRyKdq4Fw6Q7Ne4lmonr4E9wMWuEySRHrahjrOqKyxpTvXYIeFxFbGNl9TkRRYfCqPrIabQ/FYRxZwIG0aiC+5Q+SfeSkzg7QdPqWtDmVpOCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TxVaWUu9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oEZM/0uu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA1721F000FF;
-	Thu, 17 Sep 2026 21:25:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TxVaWUu9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F9D1F00898;
+	Thu, 17 Sep 2026 21:25:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789680307;
-	bh=4u4Kx7uMFTKGeAvr9D5KBr+pxP+rbnGZ/Uaz86jsU6Q=;
+	s=k20260515; t=1789680308;
+	bh=33GWiymEFGZ9uHc1/28Y+Uzh4ovlAps01Ukc6z8eSPk=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=oEZM/0uuEuNUW/R3jUeTLUWjD2d0FYVvCgSYr4w/zhs6anMKUhUHbNDxnk0mu6wxY
-	 IanWLQ48wjvp6dKVORLGTe+aF+ECy9kP4tsUOptnaiXWIxleP/apsw0pLFf8/faDvZ
-	 2iVjnPuV0yJQaGmTVamgmF9RWp1iwBbAxrs29iK4IsvkoqJyGIx23muzPqGXnoy82m
-	 CnHwBHE/7nuh1cal0hGGWkDbc/XAvTP9g/dxwPG3XyMwToSMk8CGSnmIhyA0+4AEm9
-	 Rkxv8LdQqaBDmdxnzn9cIzgUZz2KlKbV8hp62QsHKwm2J9eFBl6obmNYiTa5xLoRrF
-	 3U8Jo6VxfOWbg==
-Subject: Re: [PATCH net-next v12 13/15] ax88179_178a: Update driver name and
- information
+	b=TxVaWUu9Z3GNPv+6+j8bbbvZyTBxvTvtA7LKQjT1dcTjLWFIkN8lgIaN0q1ixIx9I
+	 m0Af0tTuP/3WefAZHP03IlM0xXE6BAitoGK7/6a25/Yh6+VtctuzF2VvgHuS1Sbsbt
+	 P9BHtNbQ1qaC+dilJLrbh5Gkags2x7hPbz8NwVLUf0kXgY0Wf7fnbXawPyEUabU2yO
+	 LbtMti9mcGe2l3XR39nuFoIVWvek3F8NdAFrxzWRkbuDd6SXfITdrtPPEdDOF8HAA/
+	 tH4f7kp1qSGOJDA0H9n+w4iPns9R0OT9YndKnldUInvxX+uoguekVEb75e2RhBSPX/
+	 HNZrDxZpkHCRg==
+Subject: Re: [PATCH net-next v12 14/15] ax88179_178a: Add support for
+ AX88179A/772D/279 EEPROM access
 From: netdev-bot+sashiko@kernel.org
 To: mail@birger-koblitz.de
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk, andrew@lunn.ch,
  hkallweit1@gmail.com, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, neuromoments@gmail.com
-Date: Thu, 17 Sep 2026 21:25:06 +0000
-Message-ID: <178968030633.22033.16665978438548871360@kernel.org>
-In-Reply-To: <20260916-ax88179a-v12-13-60c04c9924a2@birger-koblitz.de>
-References: <20260916-ax88179a-v12-13-60c04c9924a2@birger-koblitz.de>
-X-sashiko-severity: Critical
+Date: Thu, 17 Sep 2026 21:25:07 +0000
+Message-ID: <178968030755.22033.11537311081987859211@kernel.org>
+In-Reply-To: <20260916-ax88179a-v12-14-60c04c9924a2@birger-koblitz.de>
+References: <20260916-ax88179a-v12-14-60c04c9924a2@birger-koblitz.de>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,222 +48,259 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 5 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider:
 
-Critical: 1 · High: 0 · Medium: 1 · Low: 3
+Critical: 0 · High: 0 · Medium: 3 · Low: 0
 
-- [Critical] usb: net: sysfs ABI and module name breakage for ax88179
-- [Medium] Undisclosed Kconfig symbol rename leaves two in-tree
-  defconfigs orphaned.
-- [Low] FALSE POSITIVE (retained only per validation policy): the concern
-  claims `select AX88796B_PHY` is bogus because the synthetic PHY IDs…
-- [Low] The Kconfig prompt/help and MODULE_DESCRIPTION updated by this
-  patch still describe the module as Gigabit-only while the device list…
-- [Low] Firmware-version producer/consumer mismatch: ax88179a_bind()
-  (drivers/net/usb/ax88179a_devices.c:761-766) reads only three bytes…
+- [Medium] The patch smuggles an undisclosed RX-path repair into an
+  "EEPROM access" commit: `ax88179_bind()` now sets…
+- [Medium] `ax88179_eeprom_access_params()`
+  (drivers/net/usb/ax88179_lib.c:197-214) picks the hardware address…
+- [Medium] `ax88179_get_eeprom()` (drivers/net/usb/ax88179_lib.c:237-249)
+  only rejects `ret < 0` from `__ax88179_read_cmd()`, but…
 
 --
 
-ax88179_178a: Update driver name and information
+ax88179_178a: Add support for AX88179A/772D/279 EEPROM access
 
-This renames the Kconfig symbol for the ax88179 driver, extends the Kconfig
-prompt and help text with the newly supported chips, and adds selects for
-PHYLINK and AX88796B_PHY. It also renames the usb_driver structure and its
-.name string and updates MODULE_DESCRIPTION.
-
-> diff --git a/drivers/net/usb/Kconfig b/drivers/net/usb/Kconfig
-> index 115990b0d9537..4158455a2da76 100644
-> --- a/drivers/net/usb/Kconfig
-> +++ b/drivers/net/usb/Kconfig
-> @@ -195,11 +195,12 @@ config USB_NET_AX8817X
->  	  This driver creates an interface named "ethX", where X depends on
->  	  what other networking devices you have in use.
->  
-> -config USB_NET_AX88179_178A
-> -	tristate "ASIX AX88179/178A USB 3.0/2.0 to Gigabit Ethernet"
-> +config USB_NET_AX88179
-> +	tristate "ASIX AX88179/179A/178A USB 3.0/2.0 to Gigabit Ethernet"
->  	depends on USB_USBNET
-> -	select CRC32
->  	select PHYLINK
-> +	select AX88796B_PHY
-> +	select CRC32
->  	default y
-
-[Severity: Medium]
-Does this rename leave the two loongarch defconfigs behind?  Both
-arch/loongarch/configs/loongson32_defconfig and
-arch/loongarch/configs/loongson64_defconfig still carry:
-
-    # CONFIG_USB_NET_AX88179_178A is not set
-
-Since Kconfig silently ignores unknown symbols, and USB_NET_AX88179 keeps
-"default y" while both defconfigs have CONFIG_USB_USBNET=m, doesn't
-USB_NET_AX88179 come out as m there and the module get built on platforms
-that explicitly disabled it?  The same silent flip would happen to any
-existing .config with the old symbol disabled when run through
-make oldconfig.
-
-Should the two defconfig lines be renamed in the same patch?
-
-The commit message says only:
-
-    Add additionally supported devices to Kconfig description, add
-    further requirements such as PHYLINK.
-
-    Update driver name in usb_driver and update MODULE_DESCRIPTION
-    to include the additionally supported chips.
-
-The user-visible Kconfig symbol rename from USB_NET_AX88179_178A to
-USB_NET_AX88179 is not mentioned at all.  Could the changelog call it out
-so backporters know to look for defconfig fallout?
-
->  	help
->  	  This option adds support for ASIX AX88179 based USB 3.0/2.0
-> @@ -207,6 +208,9 @@ config USB_NET_AX88179_178A
->  
->  	  This driver should work with at least the following devices:
->  	    * ASIX AX88179
-> +	    * ASIX AX88179A/B
-> +	    * ASIX AX88279
-> +	    * ASIX AX88772D/E
->  	    * ASIX AX88178A
->  	    * Sitcomm LN-032
->  
-
-[Severity: Low]
-This isn't a bug, but the prompt and help text still say Gigabit only,
-while the list now includes a Fast Ethernet part and a 2.5G part.  The
-prompt reads "ASIX AX88179/179A/178A USB 3.0/2.0 to Gigabit Ethernet" and
-the help text says "to Gigabit Ethernet adapters", yet the added entries
-are AX88279 and AX88772D/E.
-
-The device table comments in ax88179_178a.c describe them as:
-
-	/* ASIX AX88772D USB 2.0 100Mbit Ethernet */
-	/* ASIX AX88279 USB 3.2 2500Mbit Ethernet */
-
-and ax88179a_phylink_setup() in ax88179a_devices.c matches that:
-
-	data->phylink_config.mac_capabilities = MAC_SYM_PAUSE | MAC_ASYM_PAUSE | MAC_100;
-	if (data->is_ax88772d)
-		data->phylink_config.mac_capabilities |= MAC_10;
-	else if (data->chip_version < AX_VERSION_AX88279)
-		data->phylink_config.mac_capabilities |= MAC_10 | MAC_1000;
-	else
-		data->phylink_config.mac_capabilities |= MAC_1000 | MAC_2500FD;
-
-Could the wording be widened to cover 10/100 and 2.5G as well?
-
-> diff --git a/drivers/net/usb/Makefile b/drivers/net/usb/Makefile
-> index 2ecead0181eaf..4026f19ecb826 100644
-> --- a/drivers/net/usb/Makefile
-> +++ b/drivers/net/usb/Makefile
-> @@ -12,7 +12,7 @@ obj-$(CONFIG_USB_HSO)		+= hso.o
->  obj-$(CONFIG_USB_LAN78XX)	+= lan78xx.o
->  obj-$(CONFIG_USB_NET_AX8817X)	+= asix.o
->  asix-y := asix_devices.o asix_common.o ax88172a.o
-> -obj-$(CONFIG_USB_NET_AX88179_178A)      += ax88179.o
-> +obj-$(CONFIG_USB_NET_AX88179)      += ax88179.o
->  ax88179-y := ax88179_178a.o ax88179a_devices.o ax88179_lib.o
-
-[ ... ]
+This adds ethtool EEPROM read support for the AX88179A/772D eFuse array
+and the AX88279 flash, by making the read block size and the access
+command per-device instead of hardcoded 2-byte EEPROM words.  Write
+access is refused for the newer parts.
 
 > diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-> index 93031b9ee92bc..2601a8875b9e2 100644
+> index 2601a8875b9e2..4c69568ec4a23 100644
 > --- a/drivers/net/usb/ax88179_178a.c
 > +++ b/drivers/net/usb/ax88179_178a.c
+> @@ -687,6 +687,19 @@ static int ax88179_bind(struct usbnet *dev, struct usb_interface *intf)
+>  	ax179_data->resume = ax88179_resume;
+>  	ax179_data->suspend = ax88179_suspend;
+>  
+> +	ret = ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_CHIP_STATUS,
+> +			       1, 1, &ax179_data->chip_version);
+> +	if (ret < 0)
+> +		goto err_nodev;
+> +
+> +	ax179_data->chip_version = (ax179_data->chip_version & 0xf0) >> 4;
+> +	ax179_data->is_ax88772d = 0;
+> +	ax179_data->ip_align = 1;
+                              ^^^
+
+[Severity: Medium]
+Is this ip_align assignment related to EEPROM access at all?  It looks
+like an RX-path change that belongs to a different patch in the series.
+
+ip_align has no EEPROM consumer.  Its only user is ax88179_set_multicast()
+in ax88179_lib.c, which decides whether the hardware inserts the 2-byte
+IP alignment pseudo header:
+
+	data->rxctl = (AX_RX_CTL_START | AX_RX_CTL_AB | AX_RX_CTL_DROPCRCERR);
+	if (data->ip_align)
+		data->rxctl |= AX_RX_CTL_IPE;
+
+That gating was introduced earlier in this series ("ax88179_178a: Add
+AX179A/AX279 multicast configuration"), and until this commit nothing on
+the ax88179_178a.c path ever set ip_align, so it stayed 0 from kzalloc.
+Meanwhile ax88179_rx_fixup() strips the pad unconditionally:
+
+	/* Skip IP alignment pseudo header */
+	skb_pull(skb, 2);
+
+Since ax88179_set_multicast() is wired as .ndo_set_rx_mode in
+ax88179_netdev_ops, dev_open() -> __dev_open() -> dev_set_rx_mode() runs
+it on every "ip link set up", and again on promisc/allmulti/multicast
+changes.  Does that mean every frame received on classic AX88179/178A
+adapters is shifted by 2 bytes in the intermediate commits of the series,
+and that this line is the fix?
+
+Would it make sense to move this initialization into the commit that added
+the ip_align gating (or carry a Fixes: tag if that commit is already
+applied), and mention it in the changelog?
+
+>  	ax179_data->eeprom_read_cmd = AX_ACCESS_EEPROM;
+>  	ax179_data->eeprom_write_cmd = AX_ACCESS_EEPROM;
+>  	ax179_data->eeprom_block = 2;
+> +	ax179_data->eeprom_wen = 0;
+> +
+>  	dev->net->netdev_ops = &ax88179_netdev_ops;
+>  	dev->net->ethtool_ops = &ax88179_ethtool_ops;
+>  	dev->net->needed_headroom = 8;
 
 [ ... ]
 
-> @@ -1353,7 +1353,7 @@ static struct usb_driver ax88179_178a_driver = {
->  	.disable_hub_initiated_lpm = 1,
->  };
+> diff --git a/drivers/net/usb/ax88179_lib.c b/drivers/net/usb/ax88179_lib.c
+> index 3b498206c50d5..db77b7d4539ec 100644
+> --- a/drivers/net/usb/ax88179_lib.c
+> +++ b/drivers/net/usb/ax88179_lib.c
+> @@ -194,36 +194,61 @@ int ax88179_set_wol(struct net_device *net, struct ethtool_wolinfo *wolinfo)
+>  	return 0;
+>  }
 >  
-> -module_usb_driver(ax88179_178a_driver);
-> +module_usb_driver(ax88179_driver);
+> +static void
+> +ax88179_eeprom_access_params(struct ax88179_data *ax179_data, int i, u16 *value, u16 *idx)
+> +{
+> +	/* AX88179 has a word-addressable EEPROM
+> +	 * AX88179A uses EFUSES with 20 bytes length
+> +	 * AX88279 has an EEPROM addressable in 256 byte blocks
+> +	 */
+> +	if (ax179_data->chip_version < AX_VERSION_AX88179A) {
+> +		*value = i;
+> +		*idx = 1;
+> +	} else if (ax179_data->chip_version >= AX_VERSION_AX88279) {
+> +		*value = (i * ax179_data->eeprom_block) >> 16;
+> +		*idx = (i * ax179_data->eeprom_block) & 0xffff;
+> +	} else {
+> +		*value = i << 4;
+> +		*idx = 0;
+> +	}
+> +}
+
+[Severity: Medium]
+Should the address encoding be derived from the raw chip_version nibble
+here, rather than from the eeprom_read_cmd/eeprom_block pair that the same
+request already uses?
+
+chip_version comes straight from the device in ax88179_bind():
+
+	ret = ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_CHIP_STATUS,
+			       1, 1, &ax179_data->chip_version);
+	...
+	ax179_data->chip_version = (ax179_data->chip_version & 0xf0) >> 4;
+
+and it is never checked against enum ax_chip_version in ax88179_lib.h,
+which only defines 0x0, 0x4, 0x6 and 0x7.  For a device bound by
+ax88179_178a.c that reports any nibble >= 0x6 (rebadged clone,
+unenumerated silicon, or a register that reads back 0xf), bind() has
+already declared word-addressable EEPROM (AX_ACCESS_EEPROM, block 2), but
+this helper hands out eFuse-style (i << 4) or flash-style addresses.  Does
+ethtool -e then return bytes from unrelated EEPROM addresses on such a
+device?
+
+The same nibble is now used to refuse writes:
+
+	ax179_data = dev->driver_priv;
+	if (ax179_data->chip_version >= AX_VERSION_AX88179A)
+		return -EOPNOTSUPP;
+
+Is that gate better expressed in terms of eeprom_write_cmd/eeprom_wen?  As
+written, a legacy device reporting >= 0x6 loses ethtool -E even though
+bind() configured AX_ACCESS_EEPROM with eeprom_wen = 0, which worked at
+the parent commit.
+
+There is also a predicate mismatch between the three users of the nibble.
+ax88179a_bind() picks flash parameters with an equality test:
+
+	if (ax179_data->chip_version == AX_VERSION_AX88279) {
+		ax179_data->ip_align = 1;
+		ax179_data->eeprom_read_cmd = AX88179A_FLASH_READ;
+
+while ax88179a_get_eeprom_len() and this helper both use >=:
+
+	if (ax179_data->chip_version >= AX_VERSION_AX88279)
+		return AX88279_EEPROM_LEN;
+	else
+		return AX88179A_EEPROM_LEN;
+
+For a nibble of 0x8-0xf, doesn't that combine eFuse geometry from bind
+(AX_ACCESS_EFUS, 20-byte blocks) with the 16 KiB length and flash-style
+addressing, so ethtool issues hundreds of AX_ACCESS_EFUS transfers with
+addresses well past the 32 x 20 byte eFuse array and reports the results
+as EEPROM contents?
+
+>  int ax88179_get_eeprom(struct net_device *net, struct ethtool_eeprom *eeprom, u8 *data)
+>  {
+>  	struct usbnet *dev = netdev_priv(net);
+> -	u16 *eeprom_buff;
+> -	int first_word, last_word;
+> -	int i, ret;
+> +	struct ax88179_data *ax179_data;
+> +	int first, last, i, ret;
+> +	u8 *eeprom_buff;
+> +
+> +	ax179_data = dev->driver_priv;
 >  
-> -MODULE_DESCRIPTION("ASIX AX88179/178A based USB 3.0/2.0 Gigabit Ethernet Devices");
-> +MODULE_DESCRIPTION("ASIX AX88179/179A/178A based USB 3.0/2.0 Gigabit Ethernet Devices");
->  MODULE_LICENSE("GPL");
+>  	if (eeprom->len == 0)
+>  		return -EINVAL;
+>  
+>  	eeprom->magic = AX88179_EEPROM_MAGIC;
+>  
+> -	first_word = eeprom->offset >> 1;
+> -	last_word = (eeprom->offset + eeprom->len - 1) >> 1;
+> -	eeprom_buff = kmalloc_array(last_word - first_word + 1, sizeof(u16),
+> -				    GFP_KERNEL);
+> +	first = eeprom->offset / ax179_data->eeprom_block;
+> +	last = (eeprom->offset + eeprom->len - 1) / ax179_data->eeprom_block;
+> +
+> +	eeprom_buff = kzalloc((last - first + 1) * ax179_data->eeprom_block, GFP_KERNEL);
+>  	if (!eeprom_buff)
+>  		return -ENOMEM;
+>  
+> -	/* ax88179/178A returns 2 bytes from eeprom on read */
+> -	for (i = first_word; i <= last_word; i++) {
+> -		ret = __ax88179_read_cmd(dev, AX_ACCESS_EEPROM, i, 1, 2,
+> -					 &eeprom_buff[i - first_word]);
+> +	for (i = first; i <= last; i++) {
+> +		u16 value, idx;
+> +
+> +		ax88179_eeprom_access_params(ax179_data, i, &value, &idx);
+> +		ret = __ax88179_read_cmd(dev, ax179_data->eeprom_read_cmd,
+> +					 value, idx, ax179_data->eeprom_block,
+> +					 eeprom_buff + (i - first) * ax179_data->eeprom_block);
+> +
+>  		if (ret < 0) {
+>  			kfree(eeprom_buff);
+>  			return -EIO;
+>  		}
+      ^^^^^
 
-[Severity: Low]
-Same wording question here: the new MODULE_DESCRIPTION still says
-"USB 3.0/2.0 Gigabit Ethernet Devices" although the driver now also binds
-the 10/100 AX88772D and the 2.5G AX88279.  Would it be worth updating this
-string too?
+[Severity: Medium]
+Should this test be ret != ax179_data->eeprom_block instead of ret < 0?
 
-One more observation, in code this patch does not touch but which comes
-from earlier patches in the same series and is still present at the end of
-the series:
+__usbnet_read_cmd() in usbnet.c returns the number of bytes the device
+actually transferred, and copies only that many:
 
-[Severity: Low]
-Is the reported firmware version short one byte?  ax88179a_bind() in
-drivers/net/usb/ax88179a_devices.c fills only three entries:
+	err = usb_control_msg(dev->udev, usb_rcvctrlpipe(dev->udev, 0),
+			      cmd, reqtype, value, index, buf, size,
+			      USB_CTRL_GET_TIMEOUT);
+	if (err > 0 && err <= size) {
+		if (data)
+			memcpy(data, buf, err);
 
-	for (int i = 0; i < 3; i++) {
-		ret = ax88179_read_cmd(dev, AX88179A_ACCESS_BL, (0xFD + i),
-				       1, 1, &ax179_data->fw_version[i]);
-		if (ret < 0)
-			ax179_data->fw_version[i] = 0xff;
-	}
-	netdev_info(dev->net, "AX88179A/279/772D Chip Version: %x, FW: %d.%d.%d.%d\n", ...
+So a zero-length or short response is accepted here as a complete block,
+and since the buffer is now kzalloc()ed, the untransferred remainder is
+handed to userspace as 0x00.  Does that make a failed or partial device
+read indistinguishable from an unprogrammed eFuse/flash region?
 
-but both consumers print four, the probe message above and the ethtool
-path in ax88179a_get_drvinfo():
+The old loop had the same ret < 0 test but only ever asked for a single
+2-byte word; this patch now requests 20-byte AX_ACCESS_EFUS and 256-byte
+AX88179A_FLASH_READ transfers per iteration, where a busy device or a
+rejected address can legitimately short-read.
 
-	snprintf(info->fw_version, sizeof(info->fw_version), "%d.%d.%d.%d",
-		 priv->fw_version[0], priv->fw_version[1],
-		 priv->fw_version[2], priv->fw_version[3]);
-
-struct ax88179_data is allocated with kzalloc_obj(), so fw_version[3] is
-always zero rather than firmware data, and ethtool -i reports a trailing
-".0" that never came from the device.  Should the fourth byte be read from
-its real source, or should the stored and displayed version consistently
-use three components?
+>  	}
+>  
+> -	memcpy(data, (u8 *)eeprom_buff + (eeprom->offset & 1), eeprom->len);
+> +	memcpy(data, eeprom_buff + eeprom->offset % ax179_data->eeprom_block, eeprom->len);
+>  	kfree(eeprom_buff);
+>  	return 0;
+>  }
+> @@ -231,12 +256,17 @@ int ax88179_get_eeprom(struct net_device *net, struct ethtool_eeprom *eeprom, u8
+>  int ax88179_set_eeprom(struct net_device *net, struct ethtool_eeprom *eeprom, u8 *data)
+>  {
+>  	struct usbnet *dev = netdev_priv(net);
+> +	struct ax88179_data *ax179_data;
+>  	u16 *eeprom_buff;
+>  	int first_word;
+>  	int last_word;
+>  	int ret;
+>  	int i;
+>  
+> +	ax179_data = dev->driver_priv;
+> +	if (ax179_data->chip_version >= AX_VERSION_AX88179A)
+> +		return -EOPNOTSUPP;
+> +
 
 [ ... ]
-
-> @@ -1341,8 +1341,8 @@ static const struct usb_device_id products[] = {
->  };
->  MODULE_DEVICE_TABLE(usb, products);
->  
-> -static struct usb_driver ax88179_178a_driver = {
-> -	.name =		"ax88179_178a",
-> +static struct usb_driver ax88179_driver = {
-> +	.name =		"ax88179",
->  	.id_table =	products,
->  	.probe =	usbnet_probe,
->  	.suspend =	ax88179_suspend_wrapper,
-
-[Severity: Critical]
-This renames things that are visible to userspace, and I don't see
-any compatibility shim for them.
-
-usb_register() uses struct usb_driver .name verbatim for the driver
-directory, so /sys/bus/usb/drivers/ax88179_178a becomes
-/sys/bus/usb/drivers/ax88179 with this patch.  Anything that pokes
-bind, unbind or new_id under the old path - udev rules, suspend/resume
-helper scripts, test harnesses - silently stops finding the directory
-after a kernel upgrade.
-
-The module name changes too: the Makefile hunk in this patch keeps
-ax88179-y := ax88179_178a.o ax88179a_devices.o ax88179_lib.o, so the
-object is now ax88179.ko where it used to be ax88179_178a.ko.  Explicit
-modprobe ax88179_178a invocations and any /etc/modprobe.d/ entries
-(blacklist ax88179_178a, options ax88179_178a ...) no longer resolve.
-Hotplug autoloading should still work since it goes through the
-MODULE_DEVICE_TABLE(usb, products) modaliases, but the by-name cases
-do not.
-
-Would you consider adding MODULE_ALIAS("ax88179_178a") next to the
-updated MODULE_DESCRIPTION so the old module name keeps resolving, or
-is the view that the old name is young enough that nothing depends on
-it?  Either way, could the changelog state explicitly that the usb
-driver .name and the module name change, since right now it only
-mentions "Update driver name in usb_driver" without noting the
-user-visible consequences?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260916-ax88179a-v12-0-60c04c9924a2%40birger-koblitz.de
