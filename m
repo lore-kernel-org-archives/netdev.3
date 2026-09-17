@@ -1,129 +1,113 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-152.mta0.migadu.com [91.218.175.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58AD37F30A;
-	Thu, 17 Sep 2026 02:14:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C126E37F8CA
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 02:17:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789611242; cv=none; b=E1d8s/l8dGkxKS+mb/i9N333Uisy8Hp0CITQLFtT406OdM26tyRKAYgERShivy/59PwvUQysSbjSRwvB8C42NKetW8blVPYlSNq5eE1fB8V3qtQ3HvDhM2xtChzgqflZtRFtev197Wb6u7ixlRdJFSTb4T3h8JwmQzpoWIpUj/E=
+	t=1789611447; cv=none; b=NKGlDFwRq/rQ2JyYNyYkmPtebtQ+uePLIe41xFXmaI2Kjqnv1XSdnKo4n77htPbwxSDIHDqXL7FvcU3hk6fZdOMod8BgUwbmLdAEPpFLbZ7qoV0hCOOpe+V/8sRBynllU8hNazykQFVxmKcPnRWut/lNQHXCYedUxBs2pDE7vQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789611242; c=relaxed/simple;
-	bh=qKL6VzIHy8fYD9P82qSgmcOD60vtNuCECmmLFFqLXII=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=s5XaS6rD5bJYp7pQS7tmYWAIpbmK1uLSc44+/arVTDbNTC3KaenYIME5mOsQsNETb9ogO+QrApin2Gu+sqvYZPi2KAL6wxRjbshkbQxSqIkw4q5KOpHVM2P6uHIpyZ1aITAEb4MzUW7REGNVSZR4ZSMxKojd+gby5pzY204c3ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=UrYZRFTf; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1789611447; c=relaxed/simple;
+	bh=6ZKkVFe30ui4+BMavPMekwCbHs+/Mni0LzTbLyfg8Zg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=BO1HZLXMZnTB/xclruX9kbiPorskSpKrhD/HAJwBR3C2QyfAGFWcxr9O+9rrvSLDSXrhngAfmgL1fJZZ/T1ToM4s7E3hMMQ3sLnkAOA6AiM4NP3MDCcoC0TmXEE0NkkCmEaH87+jv/NYY8ksQPNH02uEpRmlR/6npncuOM+M1g0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=SH/T9r2C; arc=none smtp.client-ip=91.218.175.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="UrYZRFTf"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68H00d6D2578021;
-	Wed, 16 Sep 2026 19:13:40 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=LMbT0JmCI+rLg44rP/aR0Sg
-	2kzqMWG1VSxt5wdgVr70=; b=UrYZRFTfB9fKMmN7H0s9dmSPYGqFt0PmmzCOt3R
-	L7Zq0f8YgDuUGKIQgE105KHvXobDWMfmI2R8dbOLyMIW0IgwNAujkAHrkIpVOBsV
-	pDfBpwDm9NyqBeYv9bWNpRegSTO742vLx47Psf1xC7ZDVOXEei/zLgN7snF9L8cL
-	cR+LLHc6VsuDJmqGsbWOJ6t/8EFTaEgzo8TfSfkodkK/9VlW0/OZ3zu6jTgwZSLu
-	ge8tUcMigWR0m441UlYwaWsw9Bi9GZZOIjDk4R+fZ5DFW/AoNpMpwhoH2Su7WpS3
-	nW0Mfugxg/SeP1OHLYMYR0N1pBKg807qXeI6alZi2xT089Q==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4gqqujny21-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Sep 2026 19:13:39 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 16 Sep 2026 19:13:39 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Wed, 16 Sep 2026 19:13:39 -0700
-Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id D23CB3F7053;
-	Wed, 16 Sep 2026 19:13:35 -0700 (PDT)
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
-        "Subbaraya
- Sundeep" <sbhatta@marvell.com>,
-        Ratheesh Kannoth <rkannoth@marvell.com>
-Subject: [PATCH net-next] octeontx2-af: nix: Log TX scheduler queue validation failures
-Date: Thu, 17 Sep 2026 07:43:27 +0530
-Message-ID: <20260917021327.1124199-1-rkannoth@marvell.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="SH/T9r2C"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=6ZKkVFe30ui4+BMavPMekwCbHs+/Mni0LzTbLyfg8Zg=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789611443; v=1; x=1790216243;
+ b=SH/T9r2CxIow3ov2kN79+LbKILtiqFRpSuWnKadHcVqQ+45wpm3b6pVZP9mlVOxE1G02TS2s
+ 8OCDj9gxTjmyuwzegZEFwOs7GHhAJ7cXHuQsnDmPPrdkMZadvfW2LxmSvsdBbakznlYfbNMlk24
+ 05d8PInjJlaW53waTDdslLQs=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id a56a1f4abc55b453;
+	Thu, 17 Sep 2026 02:17:23 +0000
+X-Mizu-Trace-ID: a56a1f4abc55b453
+X-Migadu-Flow: FLOW_OUT
+From: Hangbin Liu <hangbin.liu@linux.dev>
+Date: Thu, 17 Sep 2026 10:17:01 +0800
+Subject: [PATCH net] selftests: net: update netfilter netlink config
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE3MDAyOCBTYWx0ZWRfXxObxhNtNeA4Y
- 7GdSKkqPK0jMdiToZqrlngxZRHx38/fey3MKYyJKmFQ2s+06T2eV341+lWD3u9JdHkehK+0KXq/
- Y778Qc3ddlQGijb5U5A/Sfje1gyYqWIHK68vAFZNpw/KnN5nSVGERQ2dNdroAfOrX5zsJPFNtNJ
- OdrQshGGk5S0p395HYpSUTyo8VfUz5Wgt7Q3pw+dVEVjglYDti+52JDp7/8qn3dreCVM3tPktGA
- AoKng+bDBG/Yd4OatKrKe93mdh2VPGwD4B1OUhnEk8gVwdberA3pt3VXPRh2+IBMM5D/IUghJ00
- yzE81PTwtAO8ixljrudNL/6jaf8NApj+SEGl+1CZfqEJrWsaleL11PV33yRrxhXCSZV/NOZN6yf
- QMC8KhKiymtkopJohL59pomNIInbN1ps0LmI1cNXH6jlyUy5JULd6HPuhGS4xqXdMav3DObJla/
- 2bk34ZrA7+kXTwkJaWQ==
-X-Proofpoint-GUID: BigU30hSahoM8F9aeMLufZM_1zGb54ZS
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE3MDAyOCBTYWx0ZWRfX7LqoaLzMuAVV
- H+X8re6TiQwn9qy1RD2VCYHpELX4XWS0QNDixS9WDbog5iw+pBIH7yVXLMJWoYAoKvI8gjR7tym
- NcVbd5ShVCoOHEEy6yQO9uma4anOqN4=
-X-Authority-Analysis: v=2.4 cv=F6LC5ahN c=1 sm=1 tr=0 ts=6aab4cd3 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=EAYMVhzMl8SCOHhVQcBL:22 a=M5GUcnROAAAA:8 a=IgfSDKnIuoUFKMqXljMA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: BigU30hSahoM8F9aeMLufZM_1zGb54ZS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-16_03,2026-09-16_02,2025-10-01_01
+Message-Id: <20260917-selftest_config-v1-1-bf25ccbfb18e@kylinos.cn>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MTQqAIBBA4avIrBNqiP6uEhGpYw2EhSMRRHdPW
+ n6L9x4QikwCg3og0sXCR8ioCgV2W8JKml02YIlN2VetFtp9IkmzPYLnVWPXGOfq2iAayNUZyfP
+ 9H0cIlGB63w8i6rrnZgAAAA==
+X-Change-ID: 20260917-selftest_config-286bdd44b22b
+To: Matthieu Baerts <matttbe@kernel.org>, 
+ Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+ Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, 
+ Phil Sutter <phil@nwl.cc>, Fernando Fernandez Mancera <fmancera@suse.de>
+Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+ mptcp@lists.linux.dev, Hangbin Liu <liuhangbin@kylinos.cn>
+X-Mailer: b4 0.14.3
 
-From: Subbaraya Sundeep <sbhatta@marvell.com>
+From: Hangbin Liu <liuhangbin@kylinos.cn>
 
-Emit dev_err() when is_valid_txschq() rejects a scheduler queue
-mapping so misconfigured TX scheduler allocations are easier to
-diagnose.
+Since commit d4349ba9872d ("netfilter: allow nfnetlink built-in only"),
+NETFILTER_NETLINK was changed to a bool. Use 'y' instead of 'm'.
+Otherwise the build emits:
 
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+  .config:5688:warning: symbol value 'm' invalid for NETFILTER_NETLINK
+
+Fixes: d4349ba9872d ("netfilter: allow nfnetlink built-in only")
+Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
 ---
- .../net/ethernet/marvell/octeontx2/af/rvu_nix.c    | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+This is a simple update addressing the same issue, so I’d like to post it
+directly to netdev instead of bothering two separate subsystems
+(mptcp and netfilter).
+---
+ tools/testing/selftests/net/mptcp/config     | 2 +-
+ tools/testing/selftests/net/netfilter/config | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index 153eb57bad06..995ca8ccf2ae 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -325,14 +325,22 @@ static bool is_valid_txschq(struct rvu *rvu, int blkaddr,
- 		if ((nix_get_tx_link(rvu, map_func) !=
- 		     nix_get_tx_link(rvu, pcifunc)) &&
- 		     (rvu_get_pf(rvu->pdev, map_func) !=
--				rvu_get_pf(rvu->pdev, pcifunc)))
-+				rvu_get_pf(rvu->pdev, pcifunc))) {
-+			dev_err(rvu->dev,
-+				"Invalid tx link: pcifunc %x map pcifunc %x\n",
-+				pcifunc, map_func);
- 			return false;
--		else
-+		} else {
- 			return true;
-+		}
- 	}
- 
--	if (map_func != pcifunc)
-+	if (map_func != pcifunc) {
-+		dev_err(rvu->dev,
-+			"pcifunc %x map pcifunc %x not equal\n", pcifunc,
-+			map_func);
- 		return false;
-+	}
- 
- 	return true;
- }
+diff --git a/tools/testing/selftests/net/mptcp/config b/tools/testing/selftests/net/mptcp/config
+index 59051ee2a986..bb9c4c97c620 100644
+--- a/tools/testing/selftests/net/mptcp/config
++++ b/tools/testing/selftests/net/mptcp/config
+@@ -18,7 +18,7 @@ CONFIG_NET_CLS_ACT=y
+ CONFIG_NET_CLS_FW=m
+ CONFIG_NETFILTER=y
+ CONFIG_NETFILTER_ADVANCED=y
+-CONFIG_NETFILTER_NETLINK=m
++CONFIG_NETFILTER_NETLINK=y
+ CONFIG_NETFILTER_XTABLES=m
+ CONFIG_NETFILTER_XTABLES_LEGACY=y
+ CONFIG_NETFILTER_XT_MATCH_BPF=m
+diff --git a/tools/testing/selftests/net/netfilter/config b/tools/testing/selftests/net/netfilter/config
+index c3c121b6f300..629b2b29ed1a 100644
+--- a/tools/testing/selftests/net/netfilter/config
++++ b/tools/testing/selftests/net/netfilter/config
+@@ -44,7 +44,7 @@ CONFIG_NET_CLS_U32=m
+ CONFIG_NETDEVSIM=m
+ CONFIG_NETFILTER=y
+ CONFIG_NETFILTER_ADVANCED=y
+-CONFIG_NETFILTER_NETLINK=m
++CONFIG_NETFILTER_NETLINK=y
+ CONFIG_NETFILTER_NETLINK_QUEUE=m
+ CONFIG_NETFILTER_SYNPROXY=m
+ CONFIG_NETFILTER_XTABLES=m
+
+---
+base-commit: 1dd85662fee6e2ac580b1c4f9a0c0a7ae6e31f0e
+change-id: 20260917-selftest_config-286bdd44b22b
+
+Best regards,
 -- 
-2.43.0
+Hangbin Liu <liuhangbin@kylinos.cn>
 
