@@ -1,88 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56315AA67D;
-	Thu, 17 Sep 2026 15:03:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2764973BA;
+	Thu, 17 Sep 2026 15:05:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789657435; cv=none; b=lVPzlwn0mGNGd3xbrQ/M7tdjRmilqcZYv/CRsEs1M8HmyRowLOE/G2qvqWY15tYUdpjpZCgHNbPFnJNKLJXFvSeyLK+Wye+4628m6mtbGR1Effncdy8WDslTiPlOS7Y/VurRhPdyzHkoc0VsgoiyIDInnLUdliyPR4CgM+/F6Vg=
+	t=1789657558; cv=none; b=aoVE+ly8ZSujstC3ra8atYeckytguZvWxewJgFovZ0DWeEApd8uToFC+pC1LLPqPT2eUx8+QwfGxDo9A4qMb6Nxoi1ARiVScb3OlPtv3/8NhQR9JAYp63kKswDNGAWVgSQcE21ETPT+pIh2gzV7a69lzkg+tKJI+/DSI/0E7r44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789657435; c=relaxed/simple;
-	bh=Uc5weSts25nZNlldM7KpaVaUrcWLaJtcP6qB/u8woO0=;
+	s=arc-20240116; t=1789657558; c=relaxed/simple;
+	bh=LqL/0kljGKJhXL31YOmzbq3nfv6vRF4UJIBHY7IP5Sc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lLngoxwz4Fn2qIJdG38gShMzuyePfLd9gZ1hNWPv6RRsTBzBm9BjVUoXSSxjpyUbh2V7x+lf+gOgveKx+hehk1C1GUJ1ifSP/RM8uQjB90ZIBjapeKA9mQOnPrzl/cfbs1TqD78WexQiXsAo40WEz4pFokfjEgrd1yaUQdtDNLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hti4jig/; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=uzxMpdaBBvd8ItUexv8s1YPhgN4Q5jgcpy/73le86XudTDc/frMnLTb9eH3HlruHfsHq3dAju6+vmvWI/fs9RWYNpKmsooarZtFoSWHNdOv+Fx1iSwvolSk7foOp6wDJebx2jxikrTc9oOHLBO9HZx/vSV4rsbmUrwbuKEszy5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=t2/qzzzy; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hti4jig/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D1A71F000FF;
-	Thu, 17 Sep 2026 15:03:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789657420;
-	bh=Uc5weSts25nZNlldM7KpaVaUrcWLaJtcP6qB/u8woO0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hti4jig/GfSMiiM5Hzk+SBZFZJ9qSsa3bdtQfEwTccZLUh4zx0pPulx2cHqfC1s6X
-	 0N8vtJ1IVS3LsdEJjarF9fg+Tl59zIJzb7eIcqiHqmkdYRkyOBDlbSmO8w30CP0KSu
-	 wp+7bynbmiwuoZNyjKtxD6xrrb7WUobs3txe3ncBaMa7bGc07kzgUst3884ffUvXoc
-	 r0mzrSWIhsLUGsp8FjvXYIEKGsR1obmd4IZqaNuYPsVb5RVfXCfqVkrxJJgLcgRUgu
-	 3sRG78G1h8QWuVUNqHk8IO67cxprIFvqp+9kx3zhSQPuemP04sAzLdu/z1pnCFEljq
-	 MKhea3bxzpF7Q==
-Date: Thu, 17 Sep 2026 16:03:36 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Cc: Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>, bpf <bpf@vger.kernel.org>,
-	Networking <netdev@vger.kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-next@vger.kernel.org
-Subject: Re: Missing signoff in the bpf tree
-Message-ID: <9d668d7c-8f85-49ad-bdb9-5cb81fb6f60d@sirena.org.uk>
-References: <aqvBPVcN__UX8P85@sirena.org.uk>
- <DLHJEZ0K0FV1.SCQLJJQNS1ES@gmail.com>
- <66d3f5cd-12df-4000-8459-360ba57cea12@sirena.org.uk>
- <DLHJUSTDSQ05.28VUGOV7YPS6V@gmail.com>
- <ec2acd16-40e3-46b7-b120-ce9eec70e942@sirena.org.uk>
- <DLHK013DCY3J.19Y8X3Z0RTWCI@gmail.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="t2/qzzzy"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=xJOwgYi9AsLFETj5P07KS7icxDQTYVsi9d2yzmRT4T0=; b=t2/qzzzyp9tTNVrahR16BD/kfi
+	QGsz5UiuR0lAl4EpGn+qCgG78KupUM6RXniV88PUv3kprugmNm3aT5Xm+smJDRlIbg55yRhPd42ba
+	2qfi/hL9zPhWcg78bfSyCnRipuf2Qhzqwev7E2gYZyXWIrlJHyyFFbuIRCbcipo9cGkk=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x7Dft-005hJS-1x; Thu, 17 Sep 2026 17:05:21 +0200
+Date: Thu, 17 Sep 2026 17:05:21 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Linkui Xiao <xiaolinkui@126.com>
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Linkui Xiao <xiaolinkui@kylinos.cn>, stable@vger.kernel.org
+Subject: Re: [PATCH net] net: stmmac: ethtool: validate TX coalesce before
+ reprogramming RX
+Message-ID: <15b8cbc2-f3ca-4845-9a93-7fff6c5aede6@lunn.ch>
+References: <20260917131235.1360959-1-xiaolinkui@126.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="GY2RYStuRZFknsXy"
-Content-Disposition: inline
-In-Reply-To: <DLHK013DCY3J.19Y8X3Z0RTWCI@gmail.com>
-X-Cookie: Whip it, whip it good!
-
-
---GY2RYStuRZFknsXy
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20260917131235.1360959-1-xiaolinkui@126.com>
 
-On Thu, Sep 17, 2026 at 01:27:01PM +0200, Kumar Kartikeya Dwivedi wrote:
-> On Thu Sep 17, 2026 at 1:23 PM CEST, Mark Brown wrote:
+On Thu, Sep 17, 2026 at 09:12:35PM +0800, Linkui Xiao wrote:
+> From: Linkui Xiao <xiaolinkui@kylinos.cn>
+> 
+> __stmmac_set_coalesce() applies the RX part of the request first and
+> only afterwards checks the TX parameters. The RX path already calls
+> stmmac_rx_watchdog() and stores rx_riwt[] and rx_coal_frames[], so when
+> the TX check rejects the request the driver returns -EINVAL after having
+> silently changed the hardware. A following ethtool -c then reports the
+> new RX values even though the command failed.
+> 
+> This became easy to hit once the per-queue interface was added.
+> __stmmac_get_coalesce() reports tx-usecs and tx-frames as 0 for a queue
+> index that is RX-only, and ethtool applies per-queue coalesce by reading
+> the current values first and sending them straight back. The next set is
+> therefore guaranteed to trip the test for both TX fields being zero,
+> right after the RX watchdog has been reprogrammed.
+> 
+> Move both TX checks in front of the RX block so a request is either
+> applied completely or rejected without touching the device.
+> 
+> Fixes: db2f2842e6f5 ("net: stmmac: add per-queue TX & RX coalesce ethtool support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+> ---
+>  .../ethernet/stmicro/stmmac/stmmac_ethtool.c  | 21 ++++++++++++-------
+>  1 file changed, 13 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+> index 154cc0c7623d..325db062f72a 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+> @@ -850,6 +850,19 @@ static int __stmmac_set_coalesce(struct net_device *dev,
+>  	else if (queue >= max_cnt)
+>  		return -EINVAL;
+>  
+> +	/* Check the TX parameters before anything is applied: the RX part
+> +	 * below already writes to the hardware, so rejecting the request
+> +	 * afterwards would leave the device with only half of the settings
+> +	 * the caller asked for while reporting a failure.
+> +	 */
 
-> > Do you have a full list of the current committers, I guess there's been
-> > more bitrot than just this?
+Why such a verbose comment? Look at the rest of the code and make your
+comments similar in verbosity.
 
-> It's me and Eduard, apart from Alexei, Daniel, and Andrii.
+    Andrew
 
-I've added you and Eduard.
+---
+pw-bot: cr
 
---GY2RYStuRZFknsXy
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmqsAUcACgkQJNaLcl1U
-h9AtEAf+Onfe6gqwWMdwGPXS9W/qmMlQ1qDQKmuYCcDu5RvFasCkyZd2NFxMRHoM
-pljbsN/XQNcgvqTAqz8uukxJ4s7snSqyPuS8G3Yx7GzMM7gkTkpsws4gXQt6Cp0p
-MXRQuBOAonYRDZms3YpNPfaIMOOQPxEIam1oZPbfkt/VeLiHAYG7JPtv9sF7eKG+
-vec1aqjAepZEMqZKEUVUXNQHJi4q4qSIUoP+xm81xkztRDNDH3khJNzWG/JHxbra
-l4jfPXbuMtm4k6hUUcfKvIOTaqUIewSr7PIFfRa4qlNKRKW1a5BYGFxtABNPd31u
-JOj+tfTLcZ+dm96sEOeJFsG0NQ8vJg==
-=ltKS
------END PGP SIGNATURE-----
-
---GY2RYStuRZFknsXy--
