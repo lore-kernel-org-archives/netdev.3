@@ -1,84 +1,67 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010C24F3EB4
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 20:43:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888FB3064B5;
+	Thu, 17 Sep 2026 20:45:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789677839; cv=none; b=GY7HhgrsH0umUcLTdOQ7HOFMYZabthxaU23KDRl+CkwI/M0uHp1suDpEcd6TXhwWf6ynsrm3d4586qkHC5NcpAGTNmKu/KrHf64mrrxtctJpdJzUoG+GvmaNL/J1R38jdPpCCDPTu31s61TZ3no/35VbP6moRQs52ij7FyAd90w=
+	t=1789677951; cv=none; b=nkTeH68Am/2Tmk4NC5biYmkszUPCTAlYebp86OybXtx65d7n8oMyD/x9Xo3yUNBmkHRfUy0IuoixEXU9RhYkIayQYfQcVcxNdWYx0cSUVPXzRlFl5FxG/h5B7tjCRUu0H7oxAcUopUaMBuns5DNt4Nhx6whojFs9uK5OlAdDth8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789677839; c=relaxed/simple;
-	bh=3sf9YuBAZ2zv9t1g2dgGBjeM9ZfIN0Yd/tz3mo8MbxA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TI6fqLMH+wFekUDFQL6flq0vtOJLCn0J+jNIN6Fkw2TlKuAMtLOdLPcFMh9K5qc5bNbtAvR0SE68JIuv6c+R/MByA0V0EuFwjWdKBFNQYUZSO3h2oQOWTnRR/1EsvlY/MlfMjinKGPhCB6LZpScpZGKDn5TtzhAX9+C+JH3iDZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ryFXBWcT; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789677951; c=relaxed/simple;
+	bh=6h2ET/czH94AUBMIbJrqUDxH7pFf3R8w/S/LKVkMXeg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u5zsmp6FcKF+9dbexEa4VuVeXAy8jT9Avou/8wekfmhfobIxL67XmXt8eLwmb4MJXRiXwivhDvmVPb+KXj+qZxRIRec/9c+f1KWrlnSoh03gc9P7ll3whlbTq9JQwtb0CFHa4F64D0CZn1HBY0wnbd4nwvrVMNFCmwEZEssr6EQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dATjc1ny; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ryFXBWcT"
-Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d91ede8035so631365ad.3
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 13:43:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789677829; x=1790282629; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9ia2nV/eyt+q8ysG7SMAINIwAk3HmajymljLtHeWJQM=;
-        b=ryFXBWcTYawFB3BGv/pfWTAIDdTh29wQg6jfqCyPuJV0AVPE754oH8c5KPuT2lcB2u
-         WvDdv0z11q4lrB9Ul0zcyv6HzN0cMrGVOY+R48cUvjatKoAZhHtJOA3lDpRBZrTjer3W
-         ZgimzYwE9sEZw07NDOq/NkrnN/s/Vbb/9zOmHfllM8/JqklzbYog+cDrKhEqbcmZXumX
-         fjwn+aNMNiN8vBEBfU5zP0UX+Uv81A8XA+onB6AHk/DFhlUiuGfWWJmwRQUCilZBFl02
-         6LLfxI0FMgrGoc0pcJ3FL/i2hDprFh3DIXwBRwbegVujtTWym8/kltGrIthkFl28bVqt
-         q7QQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789677829; x=1790282629;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=9ia2nV/eyt+q8ysG7SMAINIwAk3HmajymljLtHeWJQM=;
-        b=vyenYRzmvH6pVFfO0fLtNRWl1VYu/ABNr0oJc1K5BkzGhFt7J6kBK/T/69+qSeL7yK
-         GwCcPMU8G8jpB9wLgAk9T5OxuhuOuZTQVJDxo1wCDwqdkT5IszKXIC/VfUQh2W7UwTHE
-         UHuTLpSVYSjJOVvhY0BQGVDp5zIVX3i3li4IwWOmf0ovh5qcq7EiIemJIGS/WuhcAsig
-         h6Cwx8UMeEVaDkInN30pvXeCp76KlcZeNad2RIGi1OJCoKuIL/gqHmnLMx4XDUAM2ujY
-         eFWJYEbEOK3fqAvxhQ8z4MSVV4QS7lXKc6qJDPdBjhwPNWePfXtakqKSnVgruUMoweYB
-         6y9g==
-X-Gm-Message-State: AFuF++mmH2ITeVgKDjLoXwpd1HO4xsAb1sVr5UPEu7DzN1NnwH48vZeG
-	pdJefbQlUoN+YGdU0dOOtPLVByU0FSA3yhFdz12F1AEW5dy5sdJ17sGcU344ea+g
-X-Gm-Gg: AYBFou0A/2PnvTyzt2p7XztrSSzUmaRr6YuJki5lCvQBp0vCgFC5nCBG2V2i4YHupoe
-	WGSTKXBNyEXe5V298YMc9t6A+azEFFCTO8cyjPTVWHeZP8XSeTkOEHyqjIFMbKPdxoAKNeJsbvF
-	Q1+TshW9f9RnWFPhbS487mWK8jpdteFXgmtAdW7vEshOoSmfyi/SenpYUw3ymhfMJ9MzCQykZuq
-	DIYmqiPpfEzrJASubot7Ny4ph7qLhrkLYGyz3hD7859NqUrRK9MZiLvhLw3G34M+Sb5g6QXu8eT
-	le4LII332sYKw9d8Jq0D925JEcgSHel94uZMd3EAb6tIxdENOJhis9Cd84MXCkvYPA1O8dXgARg
-	2cQ3jal5ubhyJwQJ92gRcDiD9Fb01Zw2Vjk4G1MtxPBZPGWhyZUc2PaRS16DlDuJfhZEZyvSJn4
-	TibhoMQmdToFwBXnDeClFymcQDG3DPWBUMFoANOGItDEC7jeSrx61pAqAAUAz81dvqCIWC6lhOR
-	TiR7gz3U4wHlqzPICLxdTPG/FdVUEsm50M991d3QgBq9vB643VoKEfVtnDdjct7JtXzdM/KbfQ=
-X-Received: by 2002:a17:903:2312:b0:2cc:6018:f030 with SMTP id d9443c01a7336-2ddb1b899famr7318915ad.14.1789677829118;
-        Thu, 17 Sep 2026 13:43:49 -0700 (PDT)
-Received: from Inspiron-14-5420.. ([2402:e280:21c6:671:6248:69c:ea81:be26])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33c1943f4bcsm3620046eec.21.2026.09.17.13.43.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 13:43:48 -0700 (PDT)
-From: "Hemendra M. Naik" <hemendranaik@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dATjc1ny"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789677950; x=1821213950;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=6h2ET/czH94AUBMIbJrqUDxH7pFf3R8w/S/LKVkMXeg=;
+  b=dATjc1nyJQeagVzbwaGwWKwxMUk7w3uSJvd2BRLZlEaPHKn2su028Ywq
+   yQ4nnF6O6H1cDl+e4rHb3A1+U5FnnvEQgFAHAuXzcV7C2brCP9Nd+fzPx
+   jTWjEsrA/tDZ93dIJZg6f5Wc0q9z1b34BDkjVko+97kFxqHMOVcuOWZIi
+   AtqletcfheNnhch7RbH7mBjCJVfArOV72w7Xy5TRuIdPTo4GdE7pwhdRr
+   gpB7eEGE7rMxpkbbztJYGocL8aEERkAvRVT5XEjI6QsvT6Bs4gKvjpdjp
+   u6/tpuX/tUKvsAycFpK1AqU+g35156vKMst69on8HtIKCkIHM67clJTBY
+   w==;
+X-CSE-ConnectionGUID: t/GJFjwgQ32XwTIEwNLhGw==
+X-CSE-MsgGUID: 646dFh26QsC/XZezCVRmzg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="100739282"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="100739282"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 13:45:48 -0700
+X-CSE-ConnectionGUID: g9BaIqJVRYyuZ5HcpWcmzw==
+X-CSE-MsgGUID: TCQXq+cTTVeKX+QyLhj3GA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="297502056"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by fmviesa002.fm.intel.com with ESMTP; 17 Sep 2026 13:45:48 -0700
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	horms@kernel.org,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	mheib@redhat.com,
+	przemyslaw.kitszel@intel.com,
 	jiri@resnulli.us,
-	jhs@mojatatu.com,
-	shuah@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	vishy0777@gmail.com,
-	tahiliani@nitk.edu.in,
-	"Hemendra M. Naik" <hemendranaik@gmail.com>
-Subject: [PATCH net-next v6 3/3] net/sched: pie: correct tc_pie_xstats field documentation
-Date: Fri, 18 Sep 2026 02:12:25 +0530
-Message-Id: <20260917204225.275251-4-hemendranaik@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260917204225.275251-1-hemendranaik@gmail.com>
-References: <20260917204225.275251-1-hemendranaik@gmail.com>
+	horms@kernel.org,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	rdunlap@infradead.org,
+	linux-doc@vger.kernel.org
+Subject: [PATCH net-next 0/3][pull request] i40e: add runtime-tunable ATR sample rate
+Date: Thu, 17 Sep 2026 13:45:37 -0700
+Message-ID: <20260917204541.3072415-1-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,39 +70,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The comments describing struct tc_pie_xstats do not match the values
-exported by the kernel.
+Mohammad Heib says:
 
-Update the delay field comment to microseconds (PSCHED_TICKS2NS() /
-NSEC_PER_USEC). Update avg_dq_rate to bytes/second (avg_dq_rate *
-PSCHED_TICKS_PER_SEC >> PIE_SCALE).
+This series makes the Flow Director ATR sample rate configurable at
+runtime through a devlink parameter.
 
-Documentation-only; no UAPI layout or runtime change. Touch
-include/uapi/linux/pkt_sched.h only
+On systems with many queues and high-rate TCP workloads, the fixed
+default sampling interval can cause frequent Flow Director
+reprogramming and TCP packet reordering. The optimal interval depends
+on the workload and system configuration.
 
-Signed-off-by: Hemendra M. Naik <hemendranaik@gmail.com>
-Signed-off-by: Vishal Kamath <vishy0777@gmail.com>
-Signed-off-by: Mohit P. Tahiliani <tahiliani@nitk.edu.in>
----
- include/uapi/linux/pkt_sched.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Patch 1 moves atr_sample_rate from per-ring to PF level, since it is
+a global policy.
 
-diff --git a/include/uapi/linux/pkt_sched.h b/include/uapi/linux/pkt_sched.h
-index 9c0c9787f0c3..969fa30efae7 100644
---- a/include/uapi/linux/pkt_sched.h
-+++ b/include/uapi/linux/pkt_sched.h
-@@ -920,9 +920,9 @@ enum {
- 
- struct tc_pie_xstats {
- 	__u64 prob;			/* current probability */
--	__u32 delay;			/* current delay in ms */
-+	__u32 delay;			/* current delay in microseconds */
- 	__u32 avg_dq_rate;		/* current average dq_rate in
--					 * bits/pie_time
-+					 * bytes/second
- 					 */
- 	__u32 dq_rate_estimating;	/* is avg_dq_rate being calculated? */
- 	__u32 packets_in;		/* total number of packets enqueued */
+Patch 2 exposes it as a devlink runtime parameter so administrators
+can tune it without rebuilding the driver.
+
+Patch 3 fixes a pre-existing issue where re-enabling ATR via ethtool
+private flags did not trigger a ring reset, leaving fd_ena stale in
+the TX queue HW context.
+
+The following are changes since commit 26ee8cd69d46a14b37ba5e512084fe80d730127a:
+  net: qualcomm: rmnet: require CAP_NET_ADMIN in the real device netns for config ops
+and are available in the git repository at:
+  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue 40GbE
+
+Mohammad Heib (3):
+  i40e: move ATR sample rate from ring to PF level
+  i40e: add devlink parameter for Flow Director ATR sample rate
+  i40e: trigger PF reset when re-enabling ATR via ethtool
+
+ Documentation/networking/devlink/i40e.rst     | 20 +++++++++++
+ drivers/net/ethernet/intel/i40e/i40e.h        |  1 +
+ .../net/ethernet/intel/i40e/i40e_devlink.c    | 36 +++++++++++++++++++
+ .../net/ethernet/intel/i40e/i40e_ethtool.c    |  7 ++++
+ drivers/net/ethernet/intel/i40e/i40e_main.c   |  9 ++---
+ drivers/net/ethernet/intel/i40e/i40e_txrx.c   |  6 ++--
+ drivers/net/ethernet/intel/i40e/i40e_txrx.h   |  3 +-
+ 7 files changed, 72 insertions(+), 10 deletions(-)
+
 -- 
-2.34.1
+2.47.1
 
