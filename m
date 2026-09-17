@@ -1,312 +1,181 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013012.outbound.protection.outlook.com [40.107.201.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27238421A15
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 11:14:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789643697; cv=none; b=tdeHTUHKadFfMTwq02dX4tXMAfISccam0nuzZctykeTL48pfS45RhsODmL/PZ27ma2y4bztz+A4/KOQRpDoYC75MxXK4/r8eug86oX0gVsMH1Ns/CNugI0Dm/CbisllD2t3Rn+L4bmVK75Xujzvbn+n6/hrIE4J5V1+ckudzKao=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789643697; c=relaxed/simple;
-	bh=yaUHywk+HRls2oGlqzbXlpzTPa0QB+HsreFfTJvFWng=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F/rmgBcYwQ44ya8crUo/zjLLnCoCqEPiDioLu8ZgYrA6RIdCO0AlRDCS8cHml+K0blnv+SMqmMeSROPMaF/T07SOVdXigvBmRT/AF1gxK7ET+CvDEeFnkwn4Wx+wh1ZnrXbyLS53hDGo7pOIz5eHfUjwUgBljEVOr6ik67XPP0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jMGpU7/k; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=iKaVX+lc; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828C7445AF2;
+	Thu, 17 Sep 2026 11:15:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789643722; cv=fail; b=EOfRrWmP++CLgQwWJdm5ZM63RrUxvP02RiAcDp0ZuIekIpRbC7sf34DKwg01E4Prmj09VBMM1qsg/v30KX/vCj8Aah/ZRm97QbqFTyTlhyfpPcrk/jrCogv2j3xv2aLKot0mZvBGyasNdhvZJyVWTGk7UssfK7UZE4MrcSTGKYw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789643722; c=relaxed/simple;
+	bh=CR65iGfRmTz1UFSQXCX1w7C6iCKRvSE6jzCoPjaSy9I=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eL0ihuR8FNF+FTjS+Zjg7q2z0thiw16ba/Qyogjyzs7nlSP1mUqf65GvO1cu30ayVLXSSA9Zvh0VOfW5OjTZtoD+hF27HgIK2XQ5mv0JTK9YlxRtugcr5t3ak1JoyJs2Ke6jSTy4KlKdn3OkuQREAuleS9Ia6FDDF8pAXXk/6Uo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=J4x+NScM; arc=fail smtp.client-ip=40.107.201.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jMGpU7/k";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="iKaVX+lc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789643689;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tB6cedv3wb2iJpHvP6bOucKdHMXRoYEnunTmHPPHgss=;
-	b=jMGpU7/kdWWMiiQxhSJZwjSfD+CdYOhUzU4OvcVo3uI0nYPsoitB4nMlk1meBmSmOSFdCg
-	zccstMVJTyW+KQAAWjWxALmRyh7U6EDTg3zbcresgIDCEyTszsAaeRIslaofS62JgxKyl/
-	v6czAZbjHpkx7pybcDS4isfjNzRE8vQ=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-98-HtmcwqubPP-ZVs8ssDSxUQ-1; Thu, 17 Sep 2026 07:14:47 -0400
-X-MC-Unique: HtmcwqubPP-ZVs8ssDSxUQ-1
-X-Mimecast-MFC-AGG-ID: HtmcwqubPP-ZVs8ssDSxUQ_1789643687
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49cced8309bso7384555e9.3
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 04:14:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789643686; x=1790248486; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tB6cedv3wb2iJpHvP6bOucKdHMXRoYEnunTmHPPHgss=;
-        b=iKaVX+lcctg7zr2wv3mTpFf3jdj3H08DNJwn7/bPKo/RSLqBtknUc/Wrz6j4M8wp30
-         zFcDeWf25i3d3kgJbI7GHxeQWyKl21n4u5hkyAHMHNpD/hk5x1NN3hHFvVS9sBC4IbiE
-         5gHT9L8wSqTJpLJIdB5Tv/ZpMquOgZiz7RM+mnbIXw8VHIwCnjQJ+bwnfZTbKP2ZjaHK
-         l6xU9CY5wVnR39eJzMU9xQKVxzGIL6MZxtbZGK5SJBEftaffsNmo77/JF2DV4qoU+c59
-         lWVTpZiCTJn9cBZ5Tlrw3iOeLRVfEJMEtsJht8ZegRPVH134YPWel6MOWv1C59PDqZT5
-         X+ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789643686; x=1790248486;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tB6cedv3wb2iJpHvP6bOucKdHMXRoYEnunTmHPPHgss=;
-        b=sgZGr/y4vlmUgt5UdSIij7snDHdiCFwcZP3xoXuIpDiKDXaOCgt+wpa+dOhPyJ+u81
-         R2sHrxmeoRQ+mkBbu8NlRDvSJF/Tq/L6MBqUB+7yq4HT/EOeDv2g51ijHHPLNVUT0HFI
-         04lp7NHN+h964aEwJtqTgNufChyGnvgNGCFM1VwRTdKqLbOGnlqYxjbwroQDB4eTBw0y
-         Ph+DPAzi/pMwrelvsnxe6HGIgOcD5UuoJi+qM/K/9TpbbBvCPbKw1CVuWNtdnfltanbG
-         gDs1cWg3hFHN0RMa8pHsIUIBZ7UQUtNRzTfRqq1tltbQLtI0MB/4rkhQBm9KhVWZihZh
-         4Bdw==
-X-Forwarded-Encrypted: i=1; AKwUvBxo0mWLLMo0JSl1gEj0CeBBPdWbg9i0z+rxOsK8y+yJMmInrUUXzEz0E935TXWIh4Gwjdfvipw=@vger.kernel.org
-X-Gm-Message-State: AFuF++mKTVKF/Nn8pc2Ku71nZXEEX5MTlg1G1o+yLxZl4ZsXQU3tn9/U
-	ETROFgi40mYhcbHeT7VgzUouEKrEtSupIo/Jpv+VvIQYVJ3ZqeNqv2qfGmf1Gs9iyXvXgDPXSuT
-	ty5Rx+n3i3HzGP20THdVj4qVT1kXqRm5xGUBDbOQ5KnoDoD+siD6bh/OJvCOc0C9+pw==
-X-Gm-Gg: AYBFou2z1so9+Utjk+sGKvPKWWPgTxuFV4wclSfsOnSWqgccBE3e115KKNMU8KSlEX5
-	WymooQO7WRGtBLxxnhCUULN4x4/HwjiGEJXAUpIUIAsRyc1uwJmPdwrbM9bMN+nt2CzaeX4fuig
-	RRvVncuPpakcdD660i74v+zYiVpbjm26s010BNWUYqPoYyPk5wfFXleXPLmOfcaY3SO5wcBEXYV
-	zX262J8kGE5P0fuNB5a0d4C4QXQU02gECzJlhSkQnSGbpj+SDVNiwhKBZmT4vJFTNkRr6N/llLs
-	pvO9cowVbisvOn8WPZo+BrN6XagF25posbUdRMegVar9jKI2RLfvweFz1EuCQW1wbPCIP874LWS
-	y99JMqClfbm5mkSQITTtONRPmTnj0wiEuy4Ud0WBssVi7rB8E5vC+v3FOzvZlG0tjJcH2z9LzVg
-	==
-X-Received: by 2002:a05:600c:a14:b0:49d:433:c3b6 with SMTP id 5b1f17b1804b1-49ec053a640mr75279795e9.27.1789643686546;
-        Thu, 17 Sep 2026 04:14:46 -0700 (PDT)
-X-Received: by 2002:a05:600c:a14:b0:49d:433:c3b6 with SMTP id 5b1f17b1804b1-49ec053a640mr75279395e9.27.1789643686000;
-        Thu, 17 Sep 2026 04:14:46 -0700 (PDT)
-Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fbbd83e39sm95218655e9.4.2026.09.17.04.14.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Sep 2026 04:14:44 -0700 (PDT)
-Message-ID: <21775818-943d-4978-911a-4da550d49781@redhat.com>
-Date: Thu, 17 Sep 2026 13:14:43 +0200
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="J4x+NScM"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YPhgUD8oL+HJGiiLhH5AEo7WmFqEfHrWBlAqS6Q9mvoZlh2CWuI93dAQ48/A7OzdleIhs30kHJ5BIE/YDDt2n/3eWJfKJhchS9VC0st12Re4KwOp6qzSwwiLmcdRqKARMBRs+A3mPhpjvjtDGaMweAP8WOEohb6/CnqrvyauRKG4xONfn2EN0yO4ayeGCuKBTA5i27l0Qb3/JDsjdNX0Zx2MzyNUvtbj2kmYToPiSEcUaIgcqwcHVG3Zai3zIVVQLlzJ0w1bsy+9uGFnSSGg9IA7V+p8+MSxH49FIhIIJmjKB+O6twDPVbCK32tnDNoyOU1PQEyAOwyUQkuZQEHPEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tIPFNSajlJPOTRNJN4X0yg07Ss8O28fgThYg/NGe9jk=;
+ b=PHpmtas8Bv9IXgJLwaT9DvfDfDqLUFqP9XvAshnzVd3GmBlX7FbJRj8aDWIM3IcpU42ocVzBRx/np7N6LN1AnQQ/bYoG3qmuLSFtRGJLy7WPSqBcpbK/nFfhRyHRlILM/QhyFAU/xmcWOXjfwER75iqIno9nStMqXwxUPt85SHfnrJM4Hkx293+sr97v87aYdDiYXMmlDxPEOoyxyaT8tNC74n2eyldp2o3CnJUHeTlbKWDIXRkSGB3WDwF0AaYVK2AnhQyBEoh9nf6RnrvH0Q/Rp392H2qyrnIbeYS8pAlZxZuLZaR2EiB6SwEa7rY0WCgKbQBxvvi9SpzG+Cge2g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tIPFNSajlJPOTRNJN4X0yg07Ss8O28fgThYg/NGe9jk=;
+ b=J4x+NScMrxvv3++Uj3jjL0HSARXcB3ZODwEOjv3sqbz9BIy74Wd/6xgs0Ax/fIO1PvR3vPEH3n9bWjF5eRLQ1++f2BKbjRkAL2oRbPAOz48BOA+72oiZKhlL9oOK32EtL8FhAxm/hO7gXafoJ5fNnui8HGfziRJMUEk4gUH/rAKgUTqUTlAbTMQ0JdzXQTbJHMAZEMoqBEfY7WNbbe2joPN1VQjIGw3NydY1Gz/96fyDHB945Evuwy7Jxg5+OwE4zUvbBYj2JVCYb4pN+nocWX8a3lyc6b1cesp8xx4CdY+nT2i6k37XwSjYvhwKdeFmm4a6uNGdbWVDmbhy0RcBqQ==
+Received: from CH5P220CA0013.NAMP220.PROD.OUTLOOK.COM (2603:10b6:610:1ef::27)
+ by SJ0PR12MB6736.namprd12.prod.outlook.com (2603:10b6:a03:47a::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.12; Thu, 17 Sep
+ 2026 11:15:11 +0000
+Received: from CH3PEPF00000010.namprd04.prod.outlook.com
+ (2603:10b6:610:1ef:cafe::2d) by CH5P220CA0013.outlook.office365.com
+ (2603:10b6:610:1ef::27) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.12 via Frontend Transport; Thu,
+ 17 Sep 2026 11:15:10 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ CH3PEPF00000010.mail.protection.outlook.com (10.167.244.41) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.451.8 via Frontend Transport; Thu, 17 Sep 2026 11:15:10 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 17 Sep
+ 2026 04:15:00 -0700
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Thu, 17 Sep 2026 04:14:55 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
+ (10.126.190.181) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
+ Transport; Thu, 17 Sep 2026 04:14:51 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Leon Romanovsky <leon@kernel.org>, <linux-rdma@vger.kernel.org>, "Mark
+ Bloch" <mbloch@nvidia.com>, <netdev@vger.kernel.org>, Saeed Mahameed
+	<saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>, Cosmin Ratiu <cratiu@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>, Dragos Tatulea
+	<dtatulea@nvidia.com>, Eric Dumazet <edumazet@google.com>, Gal Pressman
+	<gal@nvidia.com>, Jakub Kicinski <kuba@kernel.org>, Jason Gunthorpe
+	<jgg@ziepe.ca>, Leon Romanovsky <leonro@nvidia.com>, open list
+	<linux-kernel@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH mlx5-next 00/10] mlx5: Move data direct infrastructure to mlx5_core
+Date: Thu, 17 Sep 2026 14:14:12 +0300
+Message-ID: <20260917111422.4054862-1-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/2] mptcp: avoid unneeded actions on subflow reset
-To: netdev-bot+sashiko@kernel.org, matttbe@kernel.org
-Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, horms@kernel.org,
- netdev@vger.kernel.org, mptcp@lists.linux.dev, stable@vger.kernel.org,
- shardul.b@mpiricsoftware.com, xinyang@anthropic.com
-References: <20260915-net-mptcp-misc-fixes-7-3-rc4-v1-1-a257797dd5d0@kernel.org>
- <178959153492.22033.1944011998010756543@kernel.org>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <178959153492.22033.1944011998010756543@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PEPF00000010:EE_|SJ0PR12MB6736:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4392205f-9508-45cb-1f0f-08df14acf019
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|82310400026|7416014|376014|1800799024|23010399003|56012099006|11063799006|10067099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	u33CHcSu4lF9A91DpJYjbrqtJv7jJjbAyqvlPKlrz4BlW7lsERM/vQosw4nKNQ7dzi9ScDR5FJqC2SieNVxyV779ZxbECZ6MnmCCBOjlyiWDQNOIRV8tBIA2XVLNUw0ZxORD9ZlmUVSpQrlHmHkVNPJbvZqMM434RkhfCJ0mPbF9SYhG2h9yuwVGWmY3IeH8GKxLOJZFSj5AjH3B9Jd3EcJ/Sjva99pVdAH4R1bGFXA2vhU+pH7NsU0MC4KOuCnPLmzVvZLZDiTRcWVBfCxiRpJYXtaUqOmhJ+bDYBEcKqsPVtylKDGEz6lNoDP7IOCcRugyBre4xk2L/zHRvcXaHgBhCnMNaDehzWvTS6hjplv2yTHkV/bQcm8LLSqfFvFjuMqQjNBk0Pqmf3DD1t1a1aMyAvnm8Dxyry0fE0F4+XrvX36lVO6AOb3bW3dfYAvAuxZVdToSU3TxoJN+Yc8iOTosL/xQJBq5jGrJYdEgsoTPQq4tCqAHkD5o3Hj0Gq1FU3mwenz6QU3ov4mnBC1NtsMz/lcGKFf7mrnTAQcMxOllWw/aMSSdJHy4h/f/69Hx1GXjRqCMz4xlm7C1rJ1Qapu3xZdsEqbLN/jqt8M7fbk1bfFE4GN+6nQlKuna4+I8udttzNve8XkTB7/oJk55GPt2cO1WQqKhx2uia/c9nJnYB2JP4yoAj1FS9zn6ym9UebRRDgQ+5rxa+vOda/ggDg==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(7416014)(376014)(1800799024)(23010399003)(56012099006)(11063799006)(10067099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	uc+SjkI5edrSkqsRgC2hyPc3pZMWVGYeSbCaNzeXTidW+u99gSKL0fBRX48dju0T1yqOjuj+0cpINBj69vtNoDJoaBXAyKKzvLDSNCIvncUiLzJEcBRUR7wYwRdb0uNFJ1y3wEkDLKk/k/qBBd7buFjIf7CRuw6kYN8ug+C9pKxxtT+sNSa6g+svNCkUcbHJ4BOCOfOv/hXkn230kUSyK4Nu46I0lAfMQxefKxIQw/xz8+NyrTL7G7jNOaKmFI97sYhSuN0hI8iXvHcSr5CyXAG0ieYyeXBkNvbbuJNYUZX8QiPHOSrE4L6GiRVJhExc5pXzcW2aWGaO9zWHzrCgfXnBGyjaSBMLyVMX7aUDyGBjFuGuBTc9qsMPdn1rqmUvKIkcPKD/f6RjvmSUTIpQTvcNEbcnDiwI1xWemiqcpXhmaQ/P7jUYvpzdyTZW/PQF
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 11:15:10.3503
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4392205f-9508-45cb-1f0f-08df14acf019
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH3PEPF00000010.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6736
 
-On 9/16/26 22:45, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider:
-> 
-> Critical: 0 · High: 2 · Medium: 1 · Low: 0
-> 
-> - [High] The new unconditional `if (subflow->resetting) return;` in
->    subflow_state_change() (net/mptcp/subflow.c:1891) removes the last…
-> - [High] mptcp: data race in bitfield resetting and close_event_done
-> - [Medium] The new early return in subflow_state_change()
->    (net/mptcp/subflow.c:1891) is justified by an in-code comment claiming…
-> 
-> --
-> 
-> mptcp: avoid unneeded actions on subflow reset
-> 
-> This adds a new subflow->resetting bit, set in mptcp_subflow_reset() before
-> tcp_done(), and uses it to return early from subflow_state_change() so the
-> nested mptcp_data_ready() recursion is broken. The early return also skips
-> the data-available check, the error report and subflow_sched_work_if_closed().
-> 
->> diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
->> index 01db7edce18a6..cbe227d218449 100644
->> --- a/net/mptcp/subflow.c
->> +++ b/net/mptcp/subflow.c
->> @@ -438,6 +438,7 @@ void mptcp_subflow_reset(struct sock *ssk)
->>   	/* must hold: tcp_done() could drop last reference on parent */
->>   	sock_hold(sk);
->>   
->> +	subflow->resetting = 1;
->>   	mptcp_send_active_reset_reason(ssk);
->>   	tcp_done(ssk);
->>   	if (!test_and_set_bit(MPTCP_WORK_CLOSE_SUBFLOW, &mptcp_sk(sk)->flags))
-> 
-> [Severity: High]
-> The new bit is carved out of the same 32-bit bitfield word as
-> closeing/close_event_done/mpc_drop, and a C bitfield store is a
-> read-modify-write of that whole word, not of the single bit.  So the
-> question is whether that word is only ever written under one lock.
-> 
-> mptcp_subflow_reset() now writes subflow->resetting.  On the
-> mptcp_mp_fail_no_response() path the caller is mptcp_worker(), which
-> holds the msk socket lock and then lock_sock_fast(ssk), so both locks
-> are held.  But the DSS-corruption path -- mptcp_dss_corruption() ->
-> mptcp_subflow_reset() -- runs from get_mapping_status() /
-> mptcp_subflow_data_available() in the ssk receive path, i.e. with only
-> the subflow socket lock (and possibly in BH context).  Meanwhile
-> mptcp_close_ssk() writes subflow->close_event_done = true holding only
-> the msk socket lock.  Those two locks do not exclude each other, so
-> the two load/or/store sequences can interleave on the same word.
-> 
-> If the msk-side store wins, the resetting = 1 store is silently
-> dropped, subflow_state_change() takes the old path and we are back to
-> the recursive mptcp_data_ready() and the data lock re-acquisition this
-> patch is meant to break -- the failure mode is the same deadlock, just
-> rarer and harder to reproduce.  If the reset-side store wins,
-> close_event_done is lost and the post-close event handling runs twice.
-> KCSAN should be able to flag this write/write pair.
-> 
-> Is there serialization here that I am missing for the
-> mptcp_dss_corruption() caller?  If not, would you consider keeping
-> resetting out of the msk-owned bitfield word -- a plain bool next to
-> data_avail/scheduled, or a bit in a flags word updated with set_bit()
-> -- so that setting it under the ssk lock cannot clobber bits owned by
-> the msk lock?
+Hi,
 
-This is actually a pre-exiting issue, and quite unrelated. Could deserve 
-a separate/later fix.
+Data direct support currently lives in mlx5_ib, which owns the data
+direct PCI driver, device matching and resource management. To prepare
+for data direct support in netdev, move this infrastructure to mlx5_core
+and provide a common interface for its consumers.
 
-> [ ... ]
-> 
->> @@ -1883,6 +1884,13 @@ static void subflow_state_change(struct sock *sk)
->>   
->>   	__subflow_state_change(sk);
->>   
->> +	/* Rx queue processing is unneeded, error reporting will take place at
->> +	 * __mptcp_close_ssk() time and subflow reset can't happen in case of
->> +	 * fallback: subflow_sched_work_if_closed() would be a no-op.
->> +	 */
->> +	if (subflow->resetting)
->> +		return;
->> +
-> 
-> [Severity: High]
-> Can a reset subflow with a non-empty ssk->sk_receive_queue still get
-> cleaned up after this early return?
-> 
-> mptcp_subflow_reset() calls tcp_done(ssk), and tcp_set_state(TCP_CLOSE)
-> unhashes the socket, so subflow_data_ready() cannot fire again for this
-> ssk.  That makes the tcp_done() -> sk_state_change() ->
-> subflow_state_change() path the last remaining entry into
-> mptcp_subflow_data_available() for this subflow, and the new return skips
-> it.
-> 
-> The flush that exists for exactly this case lives in validate_data_csum():
-> 
-> net/mptcp/subflow.c:validate_data_csum() {
-> 	...
-> 	if (skb_queue_is_last(&ssk->sk_receive_queue, skb)) {
-> 		/* if this subflow is closed, the partial mapping
-> 		 * will be never completed; flush the pending skbs, so
-> 		 * that subflow_sched_work_if_closed() can kick in
-> 		 */
-> 		if (unlikely(ssk->sk_state == TCP_CLOSE))
-> 			while ((skb = skb_peek(&ssk->sk_receive_queue)))
-> 				sk_eat_skb(ssk, skb);
-> 
-> 		/* not enough data to validate the csum */
-> 		return MAPPING_EMPTY;
-> 	}
-> 	...
-> }
-> 
-> With the skbs left in place, does __mptcp_close_subflow() keep skipping
-> the subflow forever?
-> 
-> net/mptcp/protocol.c:__mptcp_close_subflow() {
-> 	...
-> 		/* 'subflow_data_ready' will re-sched once rx queue is empty */
-> 		if (!skb_queue_empty_lockless(&ssk->sk_receive_queue))
-> 			continue;
-> 
-> 		mptcp_close_ssk(sk, ssk, subflow);
-> 	...
-> }
-> 
-> mptcp_worker() has already cleared MPTCP_WORK_CLOSE_SUBFLOW at that point,
-> and recvmsg() only spools msk->backlog_list in mptcp_move_skbs() /
-> __mptcp_move_skbs(), so it never touches ssk->sk_receive_queue.
-> 
-> A concrete path with net.mptcp.checksum_enabled=1: a bad DSS csum arms
-> subflow->fail_tout in mptcp_subflow_fail(); a later partially received
-> mapping returns MAPPING_EMPTY leaving skbs queued on msk->first; the
-> MP_FAIL echo never arrives, so mptcp_worker() calls
-> mptcp_mp_fail_no_response():
-> 
-> net/mptcp/protocol.c:mptcp_mp_fail_no_response() {
-> 	...
-> 	slow = lock_sock_fast(ssk);
-> 	mptcp_subflow_reset(ssk);
-> 	WRITE_ONCE(mptcp_subflow_ctx(ssk)->fail_tout, 0);
-> 	unlock_sock_fast(ssk, slow);
-> }
-> 
-> fail_tout is then cleared, and since __mptcp_close_ssk() is never reached,
-> mptcp_start_tout_timer() is never called either.  Does that leave the msk
-> in TCP_ESTABLISHED with its only, dead subflow, no pending timer, and a
-> reader blocked in mptcp_recvmsg() that is never woken with EOF or an
-> error?
-> 
-> The same early return also appears to leave reset join subflows (the
-> 'reset:' label in check_fully_established() and __mptcp_flush_join_list())
-> with their context and queued skbs pinned on msk->conn_list.
-> 
-> For reference, the DSS-corruption path itself looks unaffected, because
-> __mptcp_move_skbs_from_subflow() re-calls mptcp_subflow_data_available(ssk)
-> in its own loop.
+The series first replaces the direct IB unbind callback with a blocking
+notifier chain, allowing multiple consumers to receive unbind events.
+It then separates consumer registration from initialization,
+consolidates the per-device state and resources, and keeps IB-specific
+locking and MR teardown in mlx5_ib.
 
-This may deserve to be fixed in the same series.
+With these preparations in place, the final patch moves the shared
+implementation and PCI driver to mlx5_core. Data direct initialization
+and resource creation run during core load, before consumers attach;
+cleanup runs during core unload, after consumers detach.
 
-> [Severity: Medium]
-> The comment states "subflow reset can't happen in case of fallback:
-> subflow_sched_work_if_closed() would be a no-op".  Is that premise
-> enforced anywhere?
-> 
-> mptcp_mp_fail_no_response() resets msk->first purely on fail_tout expiry,
-> with no __mptcp_check_fallback() test.  fail_tout is armed by
-> mptcp_subflow_fail() while the msk is not yet in fallback, and nothing
-> seems to clear it when a later fallback succeeds: __mptcp_try_fallback()
-> only touches allow_subflows / MPTCP_FALLBACK_DONE, and the pm.c side clears
-> fail_tout only on an MP_FAIL echo.
-> 
-> With net.mptcp.checksum_enabled=1: a middlebox mangles the MPTCP options,
-> MAPPING_BAD_CSUM with valid_csum_seen sends MP_FAIL and arms
-> fail_tout = jiffies + TCP_RTO_MAX; the echo never arrives; a subsequent
-> MAPPING_NODSS on the same first subflow makes mptcp_try_fallback() succeed,
-> so MPTCP_FALLBACK_DONE is set while fail_tout is still armed.  The tout
-> timer then runs mptcp_worker() -> mptcp_mp_fail_no_response() ->
-> mptcp_subflow_reset(msk->first) with __mptcp_check_fallback(msk) true.
-> 
-> In that state tcp_done() sets SHUTDOWN_MASK/TCP_CLOSE, so subflow_is_done(ssk)
-> is true and msk->first == ssk, which is precisely the branch that is not a
-> no-op:
-> 
-> net/mptcp/subflow.c:subflow_sched_work_if_closed() {
-> 	...
-> 	/* when the fallback subflow closes the rx side, trigger a 'dummy'
-> 	 * ingress data fin, so that the msk state will follow along
-> 	 */
-> 	if (__mptcp_check_fallback(msk) && subflow_is_done(ssk) &&
-> 	    msk->first == ssk &&
-> 	    mptcp_update_rcv_data_fin(msk, subflow->map_seq +
-> 				      subflow->map_data_len, true))
-> 		mptcp_schedule_work(sk);
-> }
-> 
-> Skipping that call means mptcp_update_rcv_data_fin() is never invoked, the
-> msk never moves to CLOSE_WAIT/RCV_SHUTDOWN, and blocked readers get no EOF
-> until the close timeout (net.mptcp.close_timeout, 60 s by default) fires
-> and mptcp_do_fastclose() sets TCP_CLOSE and purges the backlog instead of
-> delivering a clean EOF.  Should the comment be qualified, or should the
-> check be narrowed so the fallback DATA_FIN injection still runs?
-Yeah sashiko does not like my wording, plus another unrelated race 
-between fallback and mp_fail timeout.
+The data direct PCI driver is also explicitly named "mlx5_dd", replacing
+the previous "mlx5_ib" name derived from KBUILD_MODNAME.
 
-/P
+This series by Dragos prepares the shared infrastructure for netdev
+support.  The netdev consumer will follow in a separate series.
+
+Regards,
+Tariq
+
+Dragos Tatulea (10):
+  RDMA/mlx5: Notify data direct users via a notifier chain on unbind
+  RDMA/mlx5: Add mlx5_data_direct_supported() helper
+  RDMA/mlx5: Make the data direct VUID query self-contained
+  RDMA/mlx5: Give the data direct PCI driver a proper name
+  RDMA/mlx5: Move and rename data direct resource functions
+  RDMA/mlx5: Add new registration stage for data direct users
+  RDMA/mlx5: Extract IB specific lock out of data direct
+  RDMA/mlx5: Consolidate data direct state into one object
+  RDMA/mlx5: Pull data_direct resource creation in init phase
+  mlx5: Move data direct implementation to mlx5_core
+
+ drivers/infiniband/hw/mlx5/Makefile           |   1 -
+ drivers/infiniband/hw/mlx5/cmd.c              |  21 -
+ drivers/infiniband/hw/mlx5/cmd.h              |   2 -
+ drivers/infiniband/hw/mlx5/data_direct.c      | 227 ----------
+ drivers/infiniband/hw/mlx5/data_direct.h      |  23 -
+ drivers/infiniband/hw/mlx5/main.c             | 144 +------
+ drivers/infiniband/hw/mlx5/mlx5_ib.h          |  18 +-
+ drivers/infiniband/hw/mlx5/mr.c               |   7 +-
+ drivers/infiniband/hw/mlx5/odp.c              |   2 +-
+ drivers/infiniband/hw/mlx5/std_types.c        |   3 +-
+ drivers/infiniband/hw/mlx5/umr.c              |  11 +-
+ .../net/ethernet/mellanox/mlx5/core/Makefile  |   2 +-
+ .../ethernet/mellanox/mlx5/core/data_direct.c | 402 ++++++++++++++++++
+ .../net/ethernet/mellanox/mlx5/core/main.c    |  15 +
+ .../ethernet/mellanox/mlx5/core/mlx5_core.h   |   5 +
+ include/linux/mlx5/data_direct.h              |  47 ++
+ include/linux/mlx5/driver.h                   |   8 +
+ 17 files changed, 517 insertions(+), 421 deletions(-)
+ delete mode 100644 drivers/infiniband/hw/mlx5/data_direct.c
+ delete mode 100644 drivers/infiniband/hw/mlx5/data_direct.h
+ create mode 100644 drivers/net/ethernet/mellanox/mlx5/core/data_direct.c
+ create mode 100644 include/linux/mlx5/data_direct.h
+
+
+base-commit: 36b1d3299d0b6aa51485cc9a79b8d94948d5f3d4
+-- 
+2.44.0
 
