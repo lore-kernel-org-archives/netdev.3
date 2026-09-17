@@ -1,51 +1,50 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DADB4ABBDB
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 19:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7654DE720
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 19:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789671798; cv=none; b=NI70zu7HtOiBV05Vu/omhjEyRguwmW5hW0j531T7MtUk455UAdPBhwWyqfDb/H+ZW4QyxZZbSIG+sQDEPXPvgFfnKnuZblCBE7tlWRHgKPOVbfCJWbKwzcilKps99VaAi9h8+oarQwWmOHgs3vuiKGlp8ui7Ol1JG0ZvL/0NbQE=
+	t=1789671803; cv=none; b=ATJ4/WzL7L4R4l5aL2rgXgPlN2K1+ecIJx36vQZd+O1Sng00o5NiLWK+rxN2RDgro2v1MZqPVy0WU0Yhk6UNDWqtaS9Le5Bzg8EpeR1ufl8BghC4KTR/PZqe9JNY9Q0xUms1eyU0bqTu8AiaRTGZhI7qKJMMFe8WinwgT/j/Peo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789671798; c=relaxed/simple;
-	bh=YuTxLUECdgv8wQnjykfLiiSbljluWKlJs1FuE2fg9ac=;
+	s=arc-20240116; t=1789671803; c=relaxed/simple;
+	bh=SWP+IV1fMGdfLy7tC2KweUFw6pKdEpbaTGT+nRZ1yto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P01KRYDA98KA8+jXwGsGrlZ0ZEBwcSM9iqca+YRyEtlDpzJo46pEpk0HCAyyqW1x0LmorlGuF4a49abTGV2lPxUxitHPF3vk0pVlr8XFvBBlJwPPa8qejNKx+vqsEB6RE/Pu/jBIxCUqwPDfuaEf6y4Xd3BRHYMsVpVtvRaSVl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CVf7P2gP; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=qpfacM0RDbVyPK1hxLT//GOkL+FZx6LRlTWb/F8jSCR5PTMLtVmEmdTWYDNHDkQ+apfIYNyi8sTakivne5LGiGjyqcb1vWiEtoZYtmMJ5pQ5pxbT1rNa2QL/D9SsWOSHJIACuvLnuSb0rwo7E+8GbPrpJp80GMufyGhLNM8vnTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hE2JB7vN; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CVf7P2gP"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hE2JB7vN"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789671795;
+	s=mimecast20190719; t=1789671800;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oUesHNqg+ZVQdyp3TqOiMgGR4RIEF42DCBqJOEUMffo=;
-	b=CVf7P2gPOAVgdP+dUxlJ9Xa2iF21ArdSmAQHZ8Nm0z0teqQyCwk9mz2VjejwPs8mWoxN0n
-	mYO7L1f/ZXdhwfFsyIP3MUs2QVdTWerOFaLnrbmEYTd1Km6VG8z6mTkuDEvg5PmCxP1haE
-	ITF6ZB4BDxpSJZDE303Z/7v5v4/Vens=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=6EB1T0pXKzjvsuv215L9ed3awL8vEMvUzqiYASmBEWw=;
+	b=hE2JB7vNfImd79U8/+L7NxscgLTHQyVNPqfKaiLLphbDK8Ng+gxzt2Lxh5r5xLBAzaxBle
+	/333vknY8uN/i7L6EZrsDZFD1qsDuoHgz9s+oJukVOpOtgEY/H6AAIy4ofD0uVBNgno6da
+	39E4nkNV49Dpwx7J2/HSpqtjhyy1Oxk=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-90-iDK-JP4kO3WRna3BMUBTAQ-1; Thu,
- 17 Sep 2026 15:03:11 -0400
-X-MC-Unique: iDK-JP4kO3WRna3BMUBTAQ-1
-X-Mimecast-MFC-AGG-ID: iDK-JP4kO3WRna3BMUBTAQ_1789671789
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-118-iatIkS3sOwWgx1D4V012qQ-1; Thu,
+ 17 Sep 2026 15:03:15 -0400
+X-MC-Unique: iatIkS3sOwWgx1D4V012qQ-1
+X-Mimecast-MFC-AGG-ID: iatIkS3sOwWgx1D4V012qQ_1789671793
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9F4A4195C26B;
-	Thu, 17 Sep 2026 19:03:08 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B47861912C6A;
+	Thu, 17 Sep 2026 19:03:12 +0000 (UTC)
 Received: from ShadowPeak.redhat.com (unknown [10.44.49.1])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DF81819AC047;
-	Thu, 17 Sep 2026 19:03:04 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0CEC719AC047;
+	Thu, 17 Sep 2026 19:03:08 +0000 (UTC)
 From: Petr Oros <poros@redhat.com>
 To: netdev@vger.kernel.org
 Cc: Petr Oros <poros@redhat.com>,
-	stable@vger.kernel.org,
 	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -57,9 +56,9 @@ Cc: Petr Oros <poros@redhat.com>,
 	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
 	intel-wired-lan@lists.osuosl.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH iwl-net 1/2] ice: fix DPLL registration on boards without the SMA clock mux
-Date: Thu, 17 Sep 2026 21:02:57 +0200
-Message-ID: <20260917190258.3239282-2-poros@redhat.com>
+Subject: [PATCH iwl-net 2/2] ice: skip the SW pin description on boards with generic DPLL pins
+Date: Thu, 17 Sep 2026 21:02:58 +0200
+Message-ID: <20260917190258.3239282-3-poros@redhat.com>
 In-Reply-To: <20260917190258.3239282-1-poros@redhat.com>
 References: <20260917190258.3239282-1-poros@redhat.com>
 Precedence: bulk
@@ -71,97 +70,81 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-The SMA and U.FL connectors of an E810-C timing board are routed by a
-PCA9575 GPIO expander, and ice_dpll_init_info_sw_pins() reaches it
-through ice_read_sma_ctrl(). On a board that carries a CGU but no such
-expander the netlist lookup fails with -ENXIO, which aborts
-ice_dpll_init_info() and with it the whole DPLL registration:
+ice_dpll_init_info_sw_pins() describes the SMA and U.FL wrappers by
+pointing them at fixed positions of the input and output arrays, inputs
+4 and 5 and outputs 0 and 1 on an E810-C SFP, and reads the ref-sync
+partner of the input it picked. The arrays are sized by the pin counts
+firmware reports. On a board that does not match the Intel reference
+layout the driver has already fallen back to generic pins, and when
+such a board reports fewer pins than the reference the reads run past
+the end of the arrays.
 
-  ice 0000:cc:00.0: ice_dpll_init_info - fail: d->inputs:...
-  ice 0000:cc:00.0: DPLLs init failure err:-6
+The wrappers are never registered on a generic board, but
+ice_dpll_init_pins() still calls ice_dpll_pin_ref_sync_register() on
+them, so a stray nonzero partner from the out of bounds read would pair
+NULL pins.
 
-Userspace loses the EEC and PPS devices, every CGU pin and the recovered
-clock pin.
-
-The netlist describes the mux with a clock mux node, which
-ice_init_feature_support() already turns into ICE_F_SMA_CTRL. Key the
-software controlled pins on that flag. Without the mux the SMA wrappers
-stay inputs, the state the mux path programs at init anyway, and do not
-advertise DIRECTION_CAN_CHANGE. The U.FL pins are the other leg of the
-mux, so they are hidden, and the outgoing CGU pins stay visible as
-REF-SMA1 and REF-SMA2/U.FL2.
-
-The layout is not exotic, the E810_C827_SyncE_SFP_SEC configuration in
-Intel's 4.80 NVM package has no clock mux node either. Such boards
-worked until the SMA and U.FL redesign moved the expander access into
-the DPLL init path.
+Describe the wrappers only when the static pin table is in use and keep
+their ref-sync registration under the same condition. The default
+programming of the PCA9575 clock mux stays on the generic path, a board
+that has the mux still needs its SMA connectors switched to inputs.
 
 Fixes: 2dd5d03c77e2 ("ice: redesign dpll sma/u.fl pins control")
-Cc: stable@vger.kernel.org
 Signed-off-by: Petr Oros <poros@redhat.com>
 ---
- drivers/net/ethernet/intel/ice/ice_dpll.c | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
-index 85a74cd6ea1f3e..e0362b6bf332e5 100644
+index e0362b6bf332e5..81bb32d2b23012 100644
 --- a/drivers/net/ethernet/intel/ice/ice_dpll.c
 +++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-@@ -107,6 +107,9 @@ static const struct dpll_pin_frequency ice_esync_range[] = {
-  */
- static bool ice_dpll_is_sw_pin(struct ice_pf *pf, u8 index, bool input)
- {
-+	if (!input && !ice_is_feature_supported(pf, ICE_F_SMA_CTRL))
-+		return false;
-+
- 	if (input && pf->hw.device_id == ICE_DEV_ID_E810C_QSFP)
- 		index -= ICE_DPLL_SW_PIN_INPUT_BASE_QSFP -
- 			 ICE_DPLL_SW_PIN_INPUT_BASE_SFP;
-@@ -1213,6 +1216,8 @@ static int ice_dpll_sma_direction_set(struct ice_dpll_pin *p,
+@@ -4124,15 +4124,15 @@ static int ice_dpll_init_pins(struct ice_pf *pf, bool cgu)
+ 			if (ret)
+ 				goto deinit_sma;
+ 			count += ICE_DPLL_PIN_SW_NUM;
++			ret = ice_dpll_pin_ref_sync_register(pf->dplls.sma,
++							     ICE_DPLL_PIN_SW_NUM);
++			if (ret)
++				goto deinit_ufl;
+ 		}
+ 		ret = ice_dpll_pin_ref_sync_register(pf->dplls.inputs,
+ 						     pf->dplls.num_inputs);
+ 		if (ret)
+ 			goto deinit_ufl;
+-		ret = ice_dpll_pin_ref_sync_register(pf->dplls.sma,
+-						     ICE_DPLL_PIN_SW_NUM);
+-		if (ret)
+-			goto deinit_ufl;
+ 	} else {
+ 		count += pf->dplls.num_outputs + 2 * ICE_DPLL_PIN_SW_NUM;
+ 	}
+@@ -4501,6 +4501,8 @@ static int ice_dpll_init_info_sw_pins(struct ice_pf *pf)
+ 	int i, ret;
+ 	u8 data;
  
- 	if (p->direction == direction && p->active)
- 		return 0;
-+	if (!ice_is_feature_supported(p->pf, ICE_F_SMA_CTRL))
-+		return -EOPNOTSUPP;
- 	ret = ice_read_sma_ctrl(&p->pf->hw, &data);
- 	if (ret)
- 		return ret;
-@@ -4510,9 +4515,14 @@ static int ice_dpll_init_info_sw_pins(struct ice_pf *pf)
- 						  true, &freq_supp_num);
- 		pin->prop.freq_supported_num = freq_supp_num;
- 		pin->prop.capabilities =
--			(DPLL_PIN_CAPABILITIES_DIRECTION_CAN_CHANGE |
--			 DPLL_PIN_CAPABILITIES_PRIORITY_CAN_CHANGE |
--			 caps);
-+			(DPLL_PIN_CAPABILITIES_PRIORITY_CAN_CHANGE | caps);
-+		if (ice_is_feature_supported(pf, ICE_F_SMA_CTRL)) {
-+			pin->prop.capabilities |=
-+				DPLL_PIN_CAPABILITIES_DIRECTION_CAN_CHANGE;
-+		} else {
-+			pin->active = true;
-+			pin->direction = DPLL_PIN_DIRECTION_INPUT;
-+		}
- 		pin->pf = pf;
- 		pin->prop.board_label = ice_dpll_sw_pin_sma[i];
- 		pin->input = &d->inputs[pin_abs_idx];
-@@ -4526,6 +4536,7 @@ static int ice_dpll_init_info_sw_pins(struct ice_pf *pf)
- 		pin->idx = i;
- 		pin->prop.type = DPLL_PIN_TYPE_EXT;
- 		pin->prop.capabilities = caps;
-+		pin->hidden = !ice_is_feature_supported(pf, ICE_F_SMA_CTRL);
- 		pin->pf = pf;
- 		pin->prop.board_label = ice_dpll_sw_pin_ufl[i];
- 		if (i == ICE_DPLL_PIN_SW_1_IDX) {
-@@ -4555,6 +4566,9 @@ static int ice_dpll_init_info_sw_pins(struct ice_pf *pf)
++	if (d->generic)
++		goto init_sma_ctrl;
+ 	if (pf->hw.device_id == ICE_DEV_ID_E810C_QSFP)
+ 		input_idx_offset = ICE_E810_RCLK_PINS_NUM;
+ 	phase_adj_max = max(d->input_phase_adj_max, d->output_phase_adj_max);
+@@ -4566,6 +4568,7 @@ static int ice_dpll_init_info_sw_pins(struct ice_pf *pf)
  		ice_dpll_phase_range_set(&pin->prop.phase_range, phase_adj_max);
  	}
  
-+	if (!ice_is_feature_supported(pf, ICE_F_SMA_CTRL))
-+		return 0;
-+
- 	/* Initialize the SMA control register to a known-good default state.
- 	 * Without this write the PCA9575 GPIO expander retains its power-on
- 	 * default (all outputs high) which makes all SW pins appear inactive.
++init_sma_ctrl:
+ 	if (!ice_is_feature_supported(pf, ICE_F_SMA_CTRL))
+ 		return 0;
+ 
+@@ -4584,7 +4587,7 @@ static int ice_dpll_init_info_sw_pins(struct ice_pf *pf)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = ice_dpll_pin_state_update(pf, pin, ICE_DPLL_PIN_TYPE_SOFTWARE,
++	ret = ice_dpll_pin_state_update(pf, d->sma, ICE_DPLL_PIN_TYPE_SOFTWARE,
+ 					NULL);
+ 	if (ret)
+ 		return ret;
 -- 
 2.55.0
 
