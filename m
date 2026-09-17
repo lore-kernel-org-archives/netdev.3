@@ -1,39 +1,35 @@
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21E558F092;
-	Thu, 17 Sep 2026 14:23:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5C75947EF;
+	Thu, 17 Sep 2026 14:31:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789655035; cv=none; b=dPyupzKAwydjM52Wxi4tqgIyLkor7zcwXhS25HbfDDHehnMrOynPhw2yo1J9clX5lMqUT5vf2lFhXXvFcLlV2xjPjCzYFxyN8xrL0j8tD8wojuVJQmZyvWzGiGqpB4hAVhM3vxz+qkv1JIVooXjmJrXuliDcumpb6vhYLyxXK0Y=
+	t=1789655473; cv=none; b=jPZJ0eWwQ7mR5R498ES2sPTzIcVLqm1JYr69G2HDrVnX2gw7wMmqx5VfIICifMEyJyojfFXHZn7EmGPNCB0J1R5uMqkblhr6t9LFRO/9ByItO/Pk5mYf7RxeEqT/FXbwkDK3qPjRt3aBXdz7E2HEC1Qcbv8wRLQvhuDz6FIQbIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789655035; c=relaxed/simple;
-	bh=AbPGuFvrX+Y/Z/llspYtmWkIySpxasLTu86xOBq0XPM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NfPi+tskDQjnd8HJDvC9cdBPqVXQLVhphTpLcFUvjwxjI/3K3nfnWwfU7M/ClV/DltFX3zGvuCyLXm1vvJnbLNbeYMQGcb4F0vYy5iPzagwRapuqu8sybcNyn5celk29s9yZlc2/V5HzYu62SAG3FHpSV5aLlnOn2NVy/S3QFtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-05 (Coremail) with SMTP id zQCowADH+ELp96tqBV+CCA--.45567S2;
-	Thu, 17 Sep 2026 22:23:37 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: andrew+netdev@lunn.ch
-Cc: arkadiusz.kubalewski@intel.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	jiri@resnulli.us,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	richardcochran@gmail.com,
-	vadim.fedorenko@linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] ptp: ocp: Fix dpll device reference leak in ptp_ocp_probe()
-Date: Thu, 17 Sep 2026 14:23:37 +0000
-Message-Id: <20260917142337.2156652-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1789655473; c=relaxed/simple;
+	bh=uEl4EECKGXhBp9GF2kkvwWzKjgeAIHxbVYK7tvBgEEQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=rVSkU5i3i/OjR9/clJQ1ntnjH6Po9WPtoeJMkcoOGUJ3Ep+hOB5/D7Pr00ufvuI1vJVBUs2+N/eAoohabwxxEktY3IAxJY+RW74zoOnT8hPKCe1d5357Gx58AiC4veWFVo/iXiYAoTl8b5GZBGNN+us5ZB+Uppr4kjri/v7ILPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kaGmDRP7; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kaGmDRP7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F38B1F00898;
+	Thu, 17 Sep 2026 14:31:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789655471;
+	bh=KHa8g/o3ojjpCzhC1dcYtNo1S27K7jUNp+brVCmz6W4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=kaGmDRP73EAovXlnIrU6yFrohP/3C41V3F1V5eOLlQ8PPQY88qQe954FUjgFwJs6g
+	 BRBBoddxrQ42MyM3JBwLkoNgJHT8TLmvaYMl7shJ/NsY/vpn18sIUv2NJ0s0UK0g80
+	 afv91FNBC8jobE7Tu07hUsZR/cEvYLJ1Io12qfFKl4XlK1rwDNBuVLqEvYAA/Pba/f
+	 cD9gHSxKBSdcG2D/F3Sy4wqY88YvTFWla/36oiQyRcGfAysK0jH8AzRRgn5nWBiu4S
+	 ZoBaD+dj4acH/DzgcoxrLI5UBQFeqlaqRv3jaTTUVaWVYvLUvQ5HpJg2rYKEJ8Gfgh
+	 D3fdrlqV1CGNw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A57381196A;
+	Thu, 17 Sep 2026 14:30:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,54 +37,53 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowADH+ELp96tqBV+CCA--.45567S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrKryrGrWrAF4kCr15GFWfXwb_yoWDJFc_C3
-	4jvF9rXF1DuF18Kw18AryDZry0kFnFqr48Kr4ktrs3J345XFyYgrZ09Fn8Gw1vgr1rAryD
-	ZasxXrsxAFsFgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbqAYjsxI4VWDJwAYFVCjjxCrM7CY07I20VC2zVCF04k26cxKx2IY
-	s7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4
-	kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_
-	Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26r
-	xl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
-	6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVWxJr0_GcWlOx8S6xCaFVCjc4AY6r
-	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq62Iq12xI8VA0II8E6IAqYI8I648v4I1lFIxG
-	xcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l42
-	xK82IY6x8ErcxFaVAv8VW8GFyrJr1UJwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
-	F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GF
-	ylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
-	4UJVWxJr1lIxAIcVC2z280aVCY1x0267AKxVW0oVCq3bIYCTnIWIevJa73UjIFyTuYvjxU
-	rdb1UUUUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAQNA2qr9nADpwAAsl
+Subject: Re: [PATCH net-next v8] net: qualcomm: rmnet: require CAP_NET_ADMIN
+ in
+ the real device netns for config ops
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178965540489.3675117.1032576692809888118.git-patchwork-notify@kernel.org>
+Date: Thu, 17 Sep 2026 14:30:04 +0000
+References: <20260915195642.1912-1-suruurism@gmail.com>
+In-Reply-To: <20260915195642.1912-1-suruurism@gmail.com>
+To: Abdifatah Suruur <suruurism@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ subash.a.kasiviswanathan@oss.qualcomm.com, sean.tranchetti@oss.qualcomm.com,
+ horms@kernel.org, kuba@kernel.org
 
-ptp_ocp_probe() takes a reference on the dpll device with
-dpll_device_get(), but jumps to the out label without dropping it when
-dpll_device_register() fails, so the reference leaks. Put it before
-returning.
+Hello:
 
-Fixes: 09eeb3aecc6c ("ptp_ocp: implement DPLL ops")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/ptp/ptp_ocp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index beacc2ffb166..dacb941da8e9 100644
---- a/drivers/ptp/ptp_ocp.c
-+++ b/drivers/ptp/ptp_ocp.c
-@@ -5106,8 +5106,10 @@ ptp_ocp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	}
- 
- 	err = dpll_device_register(bp->dpll, DPLL_TYPE_PPS, &dpll_ops, bp);
--	if (err)
-+	if (err) {
-+		dpll_device_put(bp->dpll, &bp->tracker);
- 		goto out;
-+	}
- 
- 	for (i = 0; i < OCP_SMA_NUM; i++) {
- 		bp->sma[i].dpll_pin = dpll_pin_get(clkid, i, THIS_MODULE,
+On Tue, 15 Sep 2026 22:56:42 +0300 you wrote:
+> An rmnet device may be created with its real device in a different
+> netns than the rmnet device itself (rmnet_newlink() resolves it in
+> link_net), and the config paths below only check CAP_NET_ADMIN against
+> dev_net(dev), while mutating rmnet port state attached to the real
+> device:
+> 
+> - rmnet_changelink() rewrites the endpoint mux table and
+>   port->data_format and, via rmnet_vnd_update_dev_mtu(), can shrink the
+>   MTU of the rmnet endpoint netdevs.
+> - rmnet_add_bridge() and rmnet_del_bridge(), reachable via
+>   ndo_add_slave/ndo_del_slave through RTM_SETLINK IFLA_MASTER, flip
+>   port->rmnet_mode and port->bridge_ep on the real device's port; with
+>   bridge_ep pointing at a caller-owned device, rmnet_rx_handler() then
+>   forwards real-device ingress frames to it.
+> - rmnet_set_coalesce() rewrites the port aggregation parameters via
+>   ETHTOOL_SCOALESCE (ioctl) or ETHTOOL_MSG_COALESCE_SET (netlink),
+>   whose capability checks likewise only cover dev's netns.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v8] net: qualcomm: rmnet: require CAP_NET_ADMIN in the real device netns for config ops
+    https://git.kernel.org/netdev/net-next/c/26ee8cd69d46
+
+You are awesome, thank you!
 -- 
-2.34.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
