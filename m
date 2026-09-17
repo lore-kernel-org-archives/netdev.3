@@ -1,105 +1,148 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07C64A3F37
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 09:22:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E694A8A13
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 09:22:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789636936; cv=none; b=sIiBd6ig95q3qvPirN+7O4n8Q1lhelNsd94wgKuDMJWtYGcIRZC9xAJvbEk3RD7O0Qa2HCkUQKLQJh7vg2zfWPf+1ZShiL9UWtbkZsZk7dFdUyo7Hfnl3vjxb6Vq8eQISb8EKDtUfsp/a/ofv8AVIZmyipH65sU/TXiY3pHpHBQ=
+	t=1789636946; cv=none; b=u6Ds/R7kqUVAmXrVPFOVd9iMxM2fEPR3FwVGMPLYCE9RNYKLG8ILham+CIA5nOn8Nxm5BMcFMC3yVn19C+XdXbHmSPEz+i0kntMHKHZDNW1LlSU2oCEIWAdc1REvQa1KK9s4zJwgPbwA2k0fnbE5NsCsu5XcpYFMBdSx/WodonQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789636936; c=relaxed/simple;
-	bh=XizrKC03PF6PblcGiGCjeGlG2cS3W1oVronU2P/cWf4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=f3lDPMB8keTb+CycnwLDbs+PfVX6DjTXatqtk9hgdgidjF6bcLjkWcgFMShxRfaxCcS6uXNiJOQs4XjlXjbqX34uq2jzNx6JHaeI2AibN9I4RyNWdF5HwTtbZBW7T0xrjDYOGnLeP9u8chMAhnIQTbpSzyneXVBdj6rQZSIxfRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dCGdc1lX; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1789636946; c=relaxed/simple;
+	bh=+Stjrj+vGNOF5NuNWJl/btEftxR8T7A4aY+OgvE3Ijs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=uotHEfkZam3t8fsVcnzttr0yJ6eNp+JyLEVzm3LsVJL5leb+QVbvl0r69hFgLJ6/K380b3QXSTb1gxZcZSjHFTGnVnwJtxu5qLrAepe7IMmmWDawRjaUsByarmDtrolzDkJIWYahvuCutVPnXSDqaqD3CWTWZrNhriJf+Ws+zsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BJamNHrP; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dCGdc1lX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789636934; x=1821172934;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=XizrKC03PF6PblcGiGCjeGlG2cS3W1oVronU2P/cWf4=;
-  b=dCGdc1lXCUUavfS4jKM6/yF7FHt5JB8ud5mHNvRi1LzXtBOPXVcRnIXA
-   AYiP0aE1jYjZRt5vEdnfr5ERqOA0c17v4HHfW+nJgPzZdzFB3iVCJc7qb
-   21MKVp1k//rzNhbbgegtn5osQYDd5G92KeZlVq9LThre3yKaCA4rL+Kza
-   m9k2TrVsE28CLaJiH1sZiu60deNEr1xWXR9sxFAu5AbzCFvq/mVYqjzBu
-   zHay0tiI2NT4H8SlIpAuBe6xPwZNeoR2VFpgJ9N7JYrhaS5Nj/j+P2BVh
-   oiA02faSPHQca3pOyX54eDJNAjdVbf1ojdy7ckDxDtvYXq9RV2CM/kev7
-   g==;
-X-CSE-ConnectionGUID: yZC0pugcRfmxAhZx7zWuXA==
-X-CSE-MsgGUID: zXDRBhIlRcufvN5Nc2P0HQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="92549912"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="92549912"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 02:22:14 -0700
-X-CSE-ConnectionGUID: zIvLWTLTRlWGA3o8oVBj0A==
-X-CSE-MsgGUID: tUC/x3aLRY+kYzd5R0F8aw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="267451472"
-Received: from linux.intel.com ([10.54.29.200])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 02:22:14 -0700
-Received: from [10.102.89.17] (soc-5CG4396XFD.clients.intel.com [10.102.89.17])
-	by linux.intel.com (Postfix) with ESMTP id 86CA020B5708;
-	Thu, 17 Sep 2026 02:22:12 -0700 (PDT)
-Message-ID: <7df5cf3e-b4f7-407f-8da4-c0abdc7752ce@linux.intel.com>
-Date: Thu, 17 Sep 2026 11:22:11 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BJamNHrP"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id AC8DEC5CD6F;
+	Thu, 17 Sep 2026 09:23:06 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 528DA5FAA3;
+	Thu, 17 Sep 2026 09:22:22 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2F91211C7B073;
+	Thu, 17 Sep 2026 11:22:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789636941; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=0qQ2paoHG8bvZyAwZpWekURyukr1Gkc/RRDyLmU4R3M=;
+	b=BJamNHrP3uwXYpFlqZjl8VGvUvakoOwSjwk1ZAFDleEoH0EMTGzQGqNsBdw2Z138b0CrRz
+	UvCcl5MTcFwNQDjp0uwPMNCH/D5f2jyMy/pzhCCbHBjUYJvUqjoQw6OydEYhdl6mMAyGJE
+	b6s76JD5ojJs/tQBGKsGVRaMTX9qlp8AL8sjI6LECbAgkgrTbJQ2Gz+WsAcQpMW/P6Yamp
+	e+Lhg4v/qbDrhIDAHMOLYBYMYgJAJ1wt3kXC1uflaMA4FAXZ5N+NN+P+Lape/acWWXE9EF
+	rBovCVkTeyJJ7JR24dZeDT6yuV42GXFomz4nvKvJfIyvAAvf/ZpPZnatK4zbCg==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-net v2 2/3] ice: fix autoneg disable when link partner
- doesn't support AN
-To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
- intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com
-Cc: netdev@vger.kernel.org, Konrad Knitter <konrad.knitter@intel.com>
-References: <20260915125529.3975723-1-aleksandr.loktionov@intel.com>
- <20260915125529.3975723-3-aleksandr.loktionov@intel.com>
-Content-Language: pl
-From: Tomasz Lichwala <tomasz.lichwala@linux.intel.com>
-In-Reply-To: <20260915125529.3975723-3-aleksandr.loktionov@intel.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Thu, 17 Sep 2026 11:22:17 +0200
+Message-Id: <DLHHCJ7NP756.3S1PWCQHV5Q3V@bootlin.com>
+Subject: Re: [PATCH net-next v2 3/4] net: macb: Add MQPRIO qdisc hardware
+ offload support
+Cc: <git@amd.com>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+To: "Vineeth Karumanchi" <vineeth.karumanchi@amd.com>,
+ <conor.dooley@microchip.com>, <andrew+netdev@lunn.ch>,
+ <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+ <pabeni@redhat.com>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260909142056.1433875-1-vineeth.karumanchi@amd.com>
+ <20260909142056.1433875-4-vineeth.karumanchi@amd.com>
+In-Reply-To: <20260909142056.1433875-4-vineeth.karumanchi@amd.com>
+X-Last-TLS-Session-Version: TLSv1.3
 
+Hello Vineeth,
 
-
-On 15.09.2026 14:55, Aleksandr Loktionov wrote:
-
-> +static bool ice_autoneg_disable_allowed(struct ice_port_info *p)
+On Wed Sep 9, 2026 at 4:20 PM CEST, Vineeth Karumanchi wrote:
+> Add support for TC_SETUP_QDISC_MQPRIO hardware offload, allowing
+> traffic class to queue mapping via the mqprio qdisc.
+>
+> Implement macb_setup_mqprio() which configures TC-to-queue mappings
+> through netdev_set_num_tc() and netdev_set_tc_queue(), and resets
+> them when num_tc is zero. The driver advertises TC_MQPRIO_HW_OFFLOAD_TCS
+> offload level.
+>
+> Add macb_tc_query_caps() to report mqprio capabilities. Setting
+> validate_queue_counts to true delegates queue count and overlap
+> validation to the mqprio core via mqprio_validate_queue_counts(),
+> avoiding redundant checks in the driver.
+>
+> Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+> ---
+> Changes in v2:
+> - No functional change; rebased on net-next, which renamed the
+>   struct net_device pointer to "netdev" (was "dev"/"ndev").
+>
+>  drivers/net/ethernet/cadence/macb_main.c | 59 ++++++++++++++++++++++++
+>  1 file changed, 59 insertions(+)
+>
+> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ether=
+net/cadence/macb_main.c
+> index ff7e02d3fab8..67150ff03066 100644
+> --- a/drivers/net/ethernet/cadence/macb_main.c
+> +++ b/drivers/net/ethernet/cadence/macb_main.c
+> @@ -4492,6 +4492,60 @@ static int macb_setup_taprio(struct net_device *ne=
+tdev,
+>  	return err;
+>  }
+> =20
+> +static int macb_setup_mqprio(struct net_device *netdev,
+> +			     struct tc_mqprio_qopt_offload *mqprio)
 > +{
-> +	u8 an_info = p->phy.link_info.an_info;
+> +	struct tc_mqprio_qopt *qopt =3D &mqprio->qopt;
+> +	u8 num_tc =3D qopt->num_tc;
+> +	int err;
+> +	u8 i;
 > +
-> +	if (an_info & ICE_AQ_AN_COMPLETED)
-> +		return true;
-> +	/* ICE_AQ_LP_AN_ABILITY is only valid when link is up */
-> +	return (p->phy.link_info.link_info & ICE_AQ_LINK_UP) &&
-> +	       !(an_info & ICE_AQ_LP_AN_ABILITY);
+> +	/* Handle reset case early */
+> +	if (!num_tc) {
+> +		netdev_reset_tc(netdev);
+> +		return 0;
+> +	}
+> +
+> +	/* Configure traffic classes */
+> +	qopt->hw =3D TC_MQPRIO_HW_OFFLOAD_TCS;
+> +
+> +	err =3D netdev_set_num_tc(netdev, num_tc);
+> +	if (err)
+> +		return err;
+> +
+> +	for (i =3D 0; i < num_tc; i++) {
+> +		err =3D netdev_set_tc_queue(netdev, i, qopt->count[i],
+> +					  qopt->offset[i]);
+> +		if (err)
+> +			goto err_reset_tc;
+> +
+> +		netdev_dbg(netdev, "MQPRIO: TC%d -> queue %u (count=3D%u)\n",
+> +			   i, qopt->offset[i], qopt->count[i]);
+> +	}
 
-When link is down and AN hasn't completed, this still silently no-ops the disable request (unchanged from before). Worth confirming that's the intended UX, or returning -EINVAL here too.
+MACB queue N is always higher priority than queue M if N > M. Here we
+should refuse the setup if mqprio->qopt->offset[i] isn't sorted no?
 
+I asked an LLM and it found a precedent in igc:
+igc_tsn_is_tc_to_queue_priority_ordered()
+https://elixir.bootlin.com/linux/v7.2.5/source/drivers/net/ethernet/intel/i=
+gc/igc_main.c#L6797-L6801
+
+> +
+> +	return 0;
+> +
+> +err_reset_tc:
+> +	netdev_reset_tc(netdev);
+> +	return err;
 > +}
-> +
->  /**
->   * ice_setup_autoneg
->   * @p: port info
-> @@ -2539,8 +2561,8 @@ ice_setup_autoneg(struct ice_port_info *p, struct ethtool_link_ksettings *ks,
->  			}
->  		}
->  	} else {
-> -		/* If autoneg is currently enabled */
-> -		if (p->phy.link_info.an_info & ICE_AQ_AN_COMPLETED) {
-> +		/* If autoneg completed or link partner does not support AN */
-> +		if (ice_autoneg_disable_allowed(p)) {
->  			/* If autoneg is supported 10GBASE_T is the only PHY
->  			 * that can disable it, so otherwise return error
->  			 */
 
 Thanks,
-Tomasz
+
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
