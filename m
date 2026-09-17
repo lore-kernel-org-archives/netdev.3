@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E9E4F55B8;
-	Thu, 17 Sep 2026 16:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7BA6484887;
+	Thu, 17 Sep 2026 16:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789661492; cv=none; b=asAFC6x2ESgre6kuEsw6m5gKAFhCZ6erk4hOnbys+4n8IYEPnx3sft1nOtb5jKkPSM6hs/KCXdwbVpKgV9HIqwP2joIC+SSauUMktST6kd9xKpMBM1CrVVfoAWD20bxRBl6WF3I+s+j4Ft0rDSVspsBLRQ6X7RhjhozdYkyaWqA=
+	t=1789661493; cv=none; b=CTe3iZsrc+H5SDm6beLFmIe9pnHJ15LKNZ4zoSCEU8+u7KIHXSVYJX6kniRAfO2w7tdH0MVqy2+fhW5OAYQhjXBTpac82YUEPPlTVoYCq5w4GzUtQyelMXRftV8/udYoN5bv+OFfxAL/V3d+XMfNIEnc2+Tvu+I4hhjVZuunsJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789661492; c=relaxed/simple;
-	bh=wvHhtTjuoEXTunup/rsGyb0DtAP1u5UjHlZi2bSE59E=;
+	s=arc-20240116; t=1789661493; c=relaxed/simple;
+	bh=XLq14amChtVLngFo7FeTSWjQHy+Obkh+WCgmm2oxHMc=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PyMenewgHGgUkrCaHHWXr49I70RblOqIOcA4fzIbrX0DVDzQV/CPEDPeQHrrb8ZfkfAgtImxcdjHQq7RFPxYItTEt9kBVhBwk217OgjtlDfe1Dwtg6XLSREzLm+N4BqjZ07C2HyStJ0lMOzQHVTGJbBqhSJ8MWkP83UT4axCxgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HcY5iPM0; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=pWyKO8SB0SqTtCri/AiGTsu2hlT1nO0fERAYL06HsycqaMtJeilD/JmxRAc/ArJV9vYVhULY6rH0dWqum97ZXkH9KMGDmS6foU6OOlR/0kTAm9iRSp/hLUKhIXw3kXg8L7SA+n5tsI6tT99wx14jzczhwILGutonO7Py35p41TU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B5weQJSP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HcY5iPM0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8CA51F000FF;
-	Thu, 17 Sep 2026 16:11:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B5weQJSP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D5E21F00893;
+	Thu, 17 Sep 2026 16:11:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789661489;
-	bh=KrCZqwy9pFTCU44gJbcrSQTmGwofKQjYbevZEsYNTVA=;
+	s=k20260515; t=1789661491;
+	bh=/OQVXbZ93H+3QSEAtwzj3ljgELqCMLc3VT6YdacFU4k=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=HcY5iPM0eYcPikDynIglWTvD2YUO+ZKxIGiWjFQy9ZbRmTqwU8sAE8tMR0g6BL9zR
-	 I4cL9/zhOX9wzgTiyRazcOdg3PRcvEuTEFysfvFNsg5D/NDofm3c/lK9sm0RnAzzu+
-	 TwLwc5qfhleESNY9v5VKAvSTeL0Y6gt1kF2Va3ipCsvdYM7J8tVGvRcMXKAbYp4eq4
-	 SfgXEkzDnJvqBQjbvd1VG/D0S1PfwspltMFXnZzNiyglTstrXvqtD+lFriJX8ajn1b
-	 qSBvYb6v/HcZ+ODeEvzrTVH20YbPiUG4maE28qt1wvn+/A+A4orcHtje5zmasXWe5c
-	 v4s9+AR45b2cQ==
-Subject: Re: [PATCH net-next v16 4/6] net: dsa: mxl862xx: add devlink
- flash_update and info_get
+	b=B5weQJSP8V6Visa/kHLA06nPztj/wPEcskitFHaO9ubuaSbQ9iqEiWD/jAuF3FmiB
+	 dGqhhavruo3mkhZ5WgHM7rsZDAzIouGfYSz43Cj5socIXgFl540QAYsAWai4y3rKU9
+	 XwxtLhUQDNncgMGoUmK9Cn+Tnd/4KY6eNgiHkHhVnVYso3mDHORKCVuWV2m7BHUuJo
+	 PY0gCeHtflfnk4+xP/weq/sCbrCBrTMYZPLXka9LTIU9s/wPlkOZOffN7bSJxsQBK/
+	 uIL4sGW2Kou37zdQQR7vE35juMLTNZQDG4xRyXBauGre7Eb3PKSg7Dja7/w+nTCNty
+	 R8MEN4oMI7FtA==
+Subject: Re: [PATCH net-next v16 5/6] net: dsa: mxl862xx: recover switch stuck
+ in MCUboot rescue mode
 From: netdev-bot+sashiko@kernel.org
 To: daniel@makrotopia.org
 Cc: jiri@resnulli.us, davem@davemloft.net, edumazet@google.com,
@@ -36,13 +36,13 @@ Cc: jiri@resnulli.us, davem@davemloft.net, edumazet@google.com,
  rafael@kernel.org, dakr@kernel.org, andrew@lunn.ch, olteanv@gmail.com,
  netdev@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org, driver-core@lists.linux.dev
-Date: Thu, 17 Sep 2026 16:11:28 +0000
-Message-ID: <178966148840.22033.17320023611707849421@kernel.org>
-In-Reply-To: =?utf-8?q?=3Cead86a76820125b51db12ea8de45b7e844bb173b=2E1789477?=
+Date: Thu, 17 Sep 2026 16:11:29 +0000
+Message-ID: <178966148996.22033.4317503843038112442@kernel.org>
+In-Reply-To: =?utf-8?q?=3C1b6f092c5c93f34b6905e5f66f8498bdab6eeb23=2E1789477?=
  =?utf-8?q?568=2Egit=2Edaniel=40makrotopia=2Eorg=3E?=
-References: =?utf-8?q?=3Cead86a76820125b51db12ea8de45b7e844bb173b=2E17894775?=
+References: =?utf-8?q?=3C1b6f092c5c93f34b6905e5f66f8498bdab6eeb23=2E17894775?=
  =?utf-8?q?68=2Egit=2Edaniel=40makrotopia=2Eorg=3E?=
-X-sashiko-severity: High
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -52,407 +52,392 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 7 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 4
+Critical: 0 · High: 0 · Medium: 4 · Low: 1
 
-- [High] mxl862xx_devlink_flash_update() relies on the devlink instance
-  lock to serialize against .remove(), but dsa_unregister_switch()…
-- [Medium] Asymmetric blocked-command gating: during the whole flash
-  window (priv->block_host == true, priv->skip_teardown == false)…
-- [Medium] mxl862xx_devlink_flash_update() latches priv->skip_teardown =
-  true unconditionally and only afterwards calls…
-- [Low] The commit message states 'Scheduling the re-probe can only fail
-  on memory allocation'.
-- [Low] The kernel-doc for struct mxl862xx_priv describes @block_host as
-  'reject firmware API commands (except FW_UPDATE) during a firmware…
-- [Low] mxl862xx_sb_pdi_reset() writes MXL862XX_SB_PDI_CTRL_RST - a CTRL
-  *mode* encoding - as the data value for the ADDR and DATA registers.
-- [Low] In mxl862xx_flash_firmware() the SB PDI register reset
-  (CTRL/ADDR/DATA := 0) is issued immediately after SYS_MISC_FW_UPDATE,…
+- [Medium] Rescue mode leaves priv->fw_version at 0.0.0, so
+  mxl862xx_phylink_get_caps() (drivers/net/dsa/mxl862xx/mxl862xx-…
+- [Medium] mxl862xx_setup() now calls mxl862xx_rescue_mode_detect() as
+  the very first switch access and returns its errno verbatim, so…
+- [Medium] mxl862xx_rescue_drain_finish() orders its checks so that `if
+  (!chunk)` pre-empts the 'a firmware is answering ... an image survived…
+- [Medium] mxl862xx_setup_rescue() queues the multi-minute (up to hours)
+  drain with queue_work(system_long_wq, &priv->rescue_heal_work).
+- [Low] struct mxl862xx_priv's kernel-doc documents @rescue_failed as
+  '(rescue_mode) the self-heal gave up or cannot run; the loader needs a…
 
 --
 
-net: dsa: mxl862xx: add devlink flash_update and info_get
+net: dsa: mxl862xx: recover switch stuck in MCUboot rescue mode
 
-This adds devlink dev flash and devlink dev info support to the mxl862xx
-DSA driver, transferring a validated image over the SB PDI protocol after
-rebooting the switch into its MCUboot loader.  Firmware API commands are
-short-circuited for the duration and a deferred re-probe reinitialises the
-driver afterwards.
-
-A few questions on the new code below.
-
-The commit message states:
-
-    Scheduling the re-probe can only fail on memory allocation, and only
-    after the switch has already been flashed.
-
-[Severity: Low]
-Is that the only failure mode?  device_schedule_reprobe() also rejects the
-request with -EINVAL:
-
-drivers/base/dd.c:device_schedule_reprobe() {
-	if (!drv || !dev->bus || dev->bus->need_parent_lock || !dev->p ||
-	    dev->p->dead || !device_is_registered(dev))
-		return -EINVAL;
-
-mdio_device_remove() -> device_del() runs kill_device() (which sets
-dev->p->dead) before bus_remove_device() -> mxl862xx_remove() ->
-dsa_unregister_switch(), and dsa_unregister_switch() is where removal
-blocks on the devlink instance lock the flash holds.
-
-So an MDIO device unregistration racing a flash would reach
-device_schedule_reprobe() with dev->p->dead already set, and
-mxl862xx_devlink_flash_update() would return -EINVAL to userspace for a
-flash whose transfer and mxl862xx_wait_ready() both succeeded.  Would it
-be worth reflecting that in the commit message?
+This adds probe-time detection of the MCUboot loader over the clause-22
+SB PDI mailbox, registers the switch in a reduced "rescue mode" so
+devlink stays usable, and adds a background work item that drains a
+download an interrupted host left wedged in the loader's receive loop.
 
 > diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-fw.c b/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
-> new file mode 100644
-> index 0000000000000..139c14adf2d98
-> --- /dev/null
+> index 139c14adf2d98..d001a884e6fc6 100644
+> --- a/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
 > +++ b/drivers/net/dsa/mxl862xx/mxl862xx-fw.c
 
 [ ... ]
 
-> +static int mxl862xx_sb_pdi_reset(struct mxl862xx_priv *priv)
+> @@ -219,6 +269,379 @@ static void mxl862xx_flash_notify(struct devlink *dl, const char *status,
+>  	devlink_flash_update_status_notify(dl, status, NULL, done, total);
+>  }
+>  
+
+[ ... ]
+
+> +/* The loader is not asking for a chunk: it may still be programming the last
+> + * one, or the counter has reached zero and it is verifying the image and
+> + * resetting into READY. Before the first chunk it may also still be erasing
+> + * for the session that died, which no verify window covers. Wait that out --
+> + * STAT cannot tell the cases apart, and guessing would mean writing END into a
+> + * live receive loop.
+> + *
+> + * Return: 0 once the loader has left the loop, -EAGAIN if it asks for another
+> + * chunk after all, -EIO for a loader still holding the count when the window
+> + * expires, -ECANCELED on teardown, or an SMDIO bus error.
+> + */
+> +static int mxl862xx_rescue_drain_finish(struct mxl862xx_priv *priv, u32 chunk)
 > +{
+> +	struct device *dev = &priv->mdiodev->dev;
+> +	int stat;
+> +
+> +	if (chunk)
+> +		stat = mxl862xx_sb_pdi_poll_drain(priv, MXL862XX_SB_PDI_POLL_US,
+> +						  MXL862XX_SB_PDI_VERIFY_MS);
+> +	else
+> +		stat = mxl862xx_sb_pdi_poll_drain(priv,
+> +						  MXL862XX_SB_PDI_SLOW_POLL_US,
+> +						  MXL862XX_FW_ERASE_TIMEOUT_MS);
+> +	if (stat < 0)
+> +		return stat;
+> +	if (stat == MXL862XX_SB_PDI_READY)
+> +		return 0;
+> +	if (stat == MXL862XX_SB_PDI_VERIFY_BAD) {
+> +		dev_err(dev,
+> +			"flash: loader stuck after %u chunks, power cycle it\n",
+> +			chunk);
+> +		return -EIO;
+> +	}
+> +	if (stat) {
+> +		if (!chunk) {
+> +			dev_err(dev,
+> +				"flash: loader still busy after the erase window\n");
+> +			return -EIO;
+> +		}
+> +		/* A firmware is answering, not the loader: an image survived
+> +		 * in flash and booted.
+> +		 */
+> +		dev_info(dev, "flash: firmware booted while draining\n");
+> +		return 0;
+> +	}
+
+[Severity: Medium]
+
+Is the ordering of the chunk == 0 test against the "firmware booted"
+case here intentional?  The same non-zero, non-READY STAT value returns
+-EIO when chunk == 0 and 0 ("firmware booted while draining") when
+chunk > 0.
+
+There seems to be a path that reaches the chunk == 0 arm with a real
+firmware status word in STAT.  mxl862xx_rescue_mode_detect() already
+feeds one advance byte in its STAT == 0 branch:
+
+	ret = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_STAT,
+				   MXL862XX_DRAIN_CHUNK_BYTES);
+	...
+	rb = mxl862xx_sb_pdi_poll_drain(priv, MXL862XX_SB_PDI_POLL_US,
+					MXL862XX_SB_PDI_STEP_MS);
+
+If that byte was the last one outstanding and the loader's verify plus
+reset outlasts MXL862XX_SB_PDI_STEP_MS, detection returns
+MXL862XX_IN_RESCUE with rescue_ready still false.  The heal work then
+starts its drain, its first mxl862xx_sb_pdi_poll_drain() sees the
+lingering count, and mxl862xx_rescue_drain_finish(priv, 0) waits up to
+MXL862XX_FW_ERASE_TIMEOUT_MS -- during which the freshly booted
+firmware publishes its own status word, which lands in the chunk == 0
+arm and returns -EIO.
+
+mxl862xx_rescue_heal_work_fn() then latches rescue_failed and skips the
+reprobe, so priv->rescue_mode stays set for the life of the binding:
+mxl862xx_api_wrap() keeps returning -ENODEV, devlink dev info reports
+nothing and devlink dev flash returns -EIO, on a switch that is running
+firmware.
+
+Does that conflict with the commit message?
+
+  "a valid image that a last-moment interruption left bootable comes up
+   as running firmware, with no second-guessing in the drain path"
+
+Would moving the chunk == 0 check after the "firmware booted"
+classification, or distinguishing the two by the STAT value rather than
+by chunk, cover this?
+
+[ ... ]
+
+> +void mxl862xx_rescue_heal_work_fn(struct work_struct *work)
+> +{
+> +	struct mxl862xx_priv *priv =
+> +		container_of(work, struct mxl862xx_priv, rescue_heal_work);
+> +	struct device *dev = &priv->mdiodev->dev;
 > +	int ret;
 > +
-> +	ret = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_CTRL,
-> +				   MXL862XX_SB_PDI_CTRL_RST);
-> +	if (ret < 0)
-> +		return ret;
+> +	ret = mxl862xx_rescue_drain(priv);
+> +	if (ret == -ECANCELED)
+> +		return;
+> +	if (ret) {
+> +		/* Nothing retries this, so say so: rescue_ready stays clear
+> +		 * and devlink dev flash reports why it refuses.
+> +		 */
+> +		dev_err(dev, "flash: download recovery failed: %pe\n",
+> +			ERR_PTR(ret));
+> +		WRITE_ONCE(priv->rescue_failed, true);
+> +		return;
+> +	}
+
+[ ... ]
+
+> +	if (test_bit(MXL862XX_FLAG_WORK_STOPPED, &priv->flags))
+> +		return;
 > +
-> +	ret = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_ADDR,
-> +				   MXL862XX_SB_PDI_CTRL_RST);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_DATA,
-> +				    MXL862XX_SB_PDI_CTRL_RST);
+> +	if (device_schedule_reprobe(dev, MXL862XX_FW_REPROBE_DELAY_MS))
+> +		WRITE_ONCE(priv->rescue_failed, true);
 > +}
 
-[Severity: Low]
-This isn't a bug today, but mxl862xx_sb_pdi_reset() uses
-MXL862XX_SB_PDI_CTRL_RST, a CTRL mode encoding, as the data value written
-to the ADDR and DATA registers.  That only works because the constant
-happens to be 0x00.  Would a plain 0 (or a separate constant) express the
-intent better here?  If the CTRL mode encoding ever changed, the ADDR
-latch would silently be left non-zero and slices would be programmed at
-the wrong flash offset, which is the failure class the half-bank address
-write checking was added to catch.
-
 [ ... ]
 
-> +static int mxl862xx_flash_firmware(struct mxl862xx_priv *priv,
-> +				   const struct firmware *fw,
-> +				   u32 payload_size, struct devlink *dl)
+> +int mxl862xx_rescue_mode_detect(struct mxl862xx_priv *priv, bool settle)
 > +{
-
-[ ... ]
-
-> +	/* Step 1: reboot the firmware into MCUboot rescue mode */
-> +	ret = mxl862xx_api_wrap(priv, SYS_MISC_FW_UPDATE, NULL, 0,
-> +				false, false);
-> +	if (ret) {
-> +		dev_err(&priv->mdiodev->dev,
-> +			"flash: FW_UPDATE command failed: %pe\n",
-> +			ERR_PTR(ret));
-> +		return ret;
-> +	}
+> +	int stat, dat, ret, rb, a, d;
 > +
-> +	/* Step 2: wait for bootloader ready */
-> +	mxl862xx_flash_notify(dl, "Waiting for bootloader", 0, 0);
+> +	/* rescue_ready gates flashing; a wedged loader needs the drain first. */
+> +	WRITE_ONCE(priv->rescue_ready, false);
+> +
 > +	ret = mxl862xx_sb_pdi_reset(priv);
 > +	if (ret < 0)
-> +		goto write_err;
+> +		return ret;
 > +
-> +	/* Failures from here on end up at no_end, which returns the error
-> +	 * without signalling END -- see there.
-> +	 */
-> +	ret = mxl862xx_sb_pdi_poll_stat(priv, MXL862XX_SB_PDI_READY,
-> +					MXL862XX_FW_READY_TIMEOUT_MS);
+> +	/* Presence: a live chip latches the scratch write, an absent one floats. */
+> +	a = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_ADDR,
+> +				 MXL862XX_SB_PDI_PROBE_A);
+> +	if (a < 0)
+> +		return a;
+> +	d = mxl862xx_smdio_write(priv, MXL862XX_SB_PDI_DATA,
+> +				 MXL862XX_SB_PDI_PROBE_D);
+> +	if (d < 0)
+> +		return d;
+> +	a = mxl862xx_smdio_read(priv, MXL862XX_SB_PDI_ADDR);
+> +	if (a < 0)
+> +		return a;
+> +	d = mxl862xx_smdio_read(priv, MXL862XX_SB_PDI_DATA);
+> +	if (d < 0)
+> +		return d;
+> +	if ((u16)a != MXL862XX_SB_PDI_PROBE_A ||
+> +	    (u16)d != MXL862XX_SB_PDI_PROBE_D)
+> +		return -ENODEV;
 
-[Severity: Low]
-Is the 3 s MXL862XX_FW_READY_TIMEOUT_MS budget enough here?  The deadline
-starts right after SYS_MISC_FW_UPDATE and has to cover a full chip reset
-plus MCUboot initialisation, which makes it the tightest timeout in this
-file (the others are 5 s, 60 s and 300 s).  A switch that is slower to
-reach the console loop would abort the flash with the sticky rescue bit
-already set.
+[Severity: Medium]
 
-For reference, mxl862xx_wait_ready() unconditionally sleeps 2000 ms
-because "it always takes at least 2 seconds" for the WSP firmware, which
-is a strictly later milestone than the loader.
+Should a failure of the SB PDI probe be fatal to binding?  The rescue
+channel is an addition, but mxl862xx_setup() now runs this first and
+propagates the errno:
+
+	rescue = mxl862xx_rescue_mode_detect(priv, false);
+	if (rescue < 0) {
+		dev_err(ds->dev, "switch state detection failed: %pe\n",
+			ERR_PTR(rescue));
+		return rescue;
+	}
+
+so a part whose clause-45 mailbox works fine, but which does not latch
+0x5a5a/0xa5a5 at MXL862XX_SB_PDI_ADDR/DATA, now fails probe with -ENODEV
+and exposes no interfaces at all.  The file header states the offsets are
+not guaranteed:
+
+  * The SMDIO PHY address comes from the device tree; the 0xe1xx register
+  *   offsets are the OTP reset defaults and the only layout supported here.
+
+Would treating a detection failure as "no rescue support available" and
+falling through to mxl862xx_reset()/mxl862xx_wait_ready() be safer than
+refusing to bind?
+
+The STAT classification rests on the same single sample.  The commit
+message says a running firmware "answers with its own non-zero status
+word (0x0003 on the firmware tested)", and the STAT == 0 branch below
+calls 0 "the one value a running firmware never holds".  A firmware
+whose status word reads 0 gets the destructive CTRL=WR / DATA=0 / STAT=1
+poke and is then registered in rescue mode with every user port
+re-registered as unused.  Is that assumption documented anywhere outside
+the tested image?
 
 [ ... ]
 
-> +int mxl862xx_devlink_flash_update(struct dsa_switch *ds,
-> +				  struct devlink_flash_update_params *params,
-> +				  struct netlink_ext_ack *extack)
+> diff --git a/drivers/net/dsa/mxl862xx/mxl862xx.c b/drivers/net/dsa/mxl862xx/mxl862xx.c
+> index 5668aac9ef7a1..d5e29fd74adbc 100644
+> --- a/drivers/net/dsa/mxl862xx/mxl862xx.c
+> +++ b/drivers/net/dsa/mxl862xx/mxl862xx.c
+> @@ -667,27 +667,85 @@ static void mxl862xx_free_bridge(struct dsa_switch *ds,
+>  	priv->bridges[bridge->num] = 0;
+>  }
+>  
+> +static void mxl862xx_setup_rescue(struct dsa_switch *ds)
 > +{
-
-[ ... ]
-
-> +	/* Close ports while the firmware is still alive so the DSA core's
-> +	 * MDB/FDB tracking is drained, and detach user ports so userspace
-> +	 * cannot reopen them during the flash. The conduit is only closed,
-> +	 * not detached: it belongs to the MAC driver. This driver binds a
-> +	 * single switch with a direct host link and no cascade ports, so the
-> +	 * conduit serves only this switch, and flashing it reboots the switch,
-> +	 * which takes the tree down regardless.
-> +	 */
-> +	rtnl_lock();
-> +	dsa_switch_for_each_user_port(dp, ds) {
-> +		if (dp->user) {
-> +			dev_close(dp->user);
-> +			netif_device_detach(dp->user);
-> +		}
+> +	struct mxl862xx_priv *priv = ds->priv;
+> +
+> +	if (priv->rescue_ready) {
+> +		dev_warn(ds->dev,
+> +			 "switch in MCUboot rescue mode, use devlink to flash new firmware\n");
+> +		return;
 > +	}
-
-[Severity: High]
-Can this dereference a freed net_device when an unbind races the flash?
-
-The commit message says the instance lock covers .remove():
-
-    The devlink core holds the instance lock across the whole flash and
-    devlink_unregister() takes the same lock, so .remove() already waits
-
-But dsa_unregister_switch() frees the user netdevs before it reaches that
-lock:
-
-net/dsa/dsa.c:dsa_tree_teardown() {
-	dsa_tree_teardown_ports(dst);
-
-	dsa_tree_teardown_switches(dst);
-	...
-}
-
-dsa_tree_teardown_ports() -> dsa_port_teardown() does:
-
-net/dsa/dsa.c:dsa_port_teardown() {
-	case DSA_PORT_TYPE_USER:
-		if (dp->user) {
-			dsa_user_destroy(dp->user);
-			dp->user = NULL;
-		}
-	...
-	dsa_port_devlink_teardown(dp);
-}
-
-and dsa_user_destroy() drops rtnl before freeing:
-
-net/dsa/user.c:dsa_user_destroy() {
-	rtnl_lock();
-	netdev_upper_dev_unlink(conduit, user_dev);
-	unregister_netdevice(user_dev);
-	phylink_disconnect_phy(dp->pl);
-	rtnl_unlock();
-
-	dsa_port_phylink_destroy(dp);
-	gro_cells_destroy(&p->gcells);
-	free_netdev(user_dev);
-}
-
-The devlink instance lock is only taken later, in
-dsa_tree_teardown_switches() -> dsa_switch_devlink_unregister() ->
-devlink_unregister().
-
-So the flash path reads dp->user under {instance lock, rtnl} while the DSA
-core frees the netdev and clears dp->user under dsa2_mutex only.  If the
-flash loop acquires rtnl after free_netdev() and before dp->user = NULL,
-netif_device_detach() would do test_and_clear_bit(__LINK_STATE_PRESENT,
-&dev->state) on freed memory.
-
-The patch adds an explicit instance-lock barrier plus a flag for
-->shutdown() in mxl862xx_flash_shutdown(); would an equivalent barrier be
-needed for the .remove()/unbind path?
-
-[ ... ]
-
-> +	mutex_lock_nested(&priv->mdiodev->bus->mdio_lock, MDIO_MUTEX_NESTED);
-> +	priv->flash_owner = NULL;
-> +	priv->block_host = false;
-> +	priv->skip_teardown = true;
-> +	mutex_unlock(&priv->mdiodev->bus->mdio_lock);
 > +
-> +	/* Reinitialise through a deferred re-probe: remove() runs with
-> +	 * skip_teardown set, then a fresh probe() starts against whatever
-> +	 * the switch now runs. The core skips the re-probe if the device
-> +	 * is unbound or shut down before it fires.
+> +	if (priv->rescue_failed) {
+> +		dev_warn(ds->dev,
+> +			 "switch in MCUboot with an unfinishable download, power cycle it\n");
+> +		return;
+> +	}
+> +
+> +	/* Drain the wedged download in the background so it never holds the
+> +	 * devlink lock; info and flash become available once ready.
 > +	 */
-> +	err = device_schedule_reprobe(ds->dev, MXL862XX_FW_REPROBE_DELAY_MS);
-> +
-> +	return ret ? ret : err;
+> +	dev_warn(ds->dev,
+> +		 "switch in MCUboot with an interrupted download, recovering in background\n");
+> +	queue_work(system_long_wq, &priv->rescue_heal_work);
 > +}
 
 [Severity: Medium]
-priv->skip_teardown is latched to true before it is known whether a
-re-probe was actually scheduled.  device_schedule_reprobe() allocates its
-own work item:
 
-drivers/base/dd.c:device_schedule_reprobe() {
-	rp = kzalloc_obj(*rp);
-	if (!rp)
-		return -ENOMEM;
+What happens to this work item across a system suspend?  system_long_wq
+is not WQ_FREEZABLE, and the only abort condition inside
+mxl862xx_rescue_drain() and mxl862xx_sb_pdi_poll_drain() is
+MXL862XX_FLAG_WORK_STOPPED, which is set from the probe error path,
+remove(), shutdown() and the flash path, but not from any PM transition.
 
-If the transfer and mxl862xx_wait_ready() both succeeded but the
-allocation fails, what state is the driver left in?  A grep over the
-driver shows skip_teardown is only ever set to true, and there is no
-netif_device_attach(), no enable_delayed_work() and no
-clear_bit(MXL862XX_FLAG_WORK_STOPPED) outside probe, so nothing undoes any
-of it without a fresh probe.
+The commit message says the drain "takes tens of minutes for a large
+image", so a suspend landing inside it does not look exotic.  The worker
+would keep issuing mxl862xx_smdio_read()/mxl862xx_smdio_write() while the
+MDIO controller or conduit driver suspends, and a negative return from
+those propagates out of mxl862xx_rescue_drain() into
+mxl862xx_rescue_heal_work_fn():
 
->From then on mxl862xx_api_wrap() takes the short-circuit for every
-command:
-
-	if (priv->skip_teardown) {
-		ret = read ? -ENODEV : 0;
-		goto out;
+	if (ret) {
+		dev_err(dev, "flash: download recovery failed: %pe\n",
+			ERR_PTR(ret));
+		WRITE_ONCE(priv->rescue_failed, true);
+		return;
 	}
 
-so bridge, VLAN and STP writes are reported to userspace as applied while
-the live switch keeps its power-on forwarding configuration, all user
-netdevs stay netif_device_detach()ed, the stats poll stays disabled, and
-every further devlink dev flash is refused with an extack that is no
-longer true:
+which then refuses devlink dev flash with -EIO for the rest of the
+binding, even though the loader is still drainable.  Would a freezable
+workqueue, or a PM notifier that sets MXL862XX_FLAG_WORK_STOPPED and
+requeues afterwards, fit better here?  device_schedule_reprobe() already
+uses system_freezable_wq for the same reason.
 
-	if (priv->skip_teardown) {
-		NL_SET_ERR_MSG_MOD(extack,
-				   "a previous flash awaits its reprobe");
-		return -EBUSY;
-	}
-
-The commit message accepts the -ENOMEM outcome as a system-wide condition,
-but userspace is also told the flash failed via "return ret ? ret : err"
-although the new firmware is running, and nothing is logged to tell the
-administrator that an unbind/rebind is now required.  Would setting
-skip_teardown only once the re-probe is queued be an option?
-
-> diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-host.c b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
-> index 11759fa6069b1..4b3956a518cfe 100644
-> --- a/drivers/net/dsa/mxl862xx/mxl862xx-host.c
-> +++ b/drivers/net/dsa/mxl862xx/mxl862xx-host.c
+>  static int mxl862xx_setup(struct dsa_switch *ds)
+>  {
 
 [ ... ]
 
-> @@ -340,6 +342,24 @@ int mxl862xx_api_wrap(struct mxl862xx_priv *priv, u16 cmd, void *_data,
+> +	priv->rescue_mode = rescue;
 >  
->  	mutex_lock_nested(&priv->mdiodev->bus->mdio_lock, MDIO_MUTEX_NESTED);
+> +	/* Software-only SerDes state, needed before anything can reach phylink,
+> +	 * including a rescue-mode flash clearing rescue_mode ahead of reprobe.
+> +	 */
+>  	mutex_init(&priv->serdes_lock);
+>  	for (i = 0; i < ARRAY_SIZE(priv->serdes_ports); i++)
+>  		mxl862xx_setup_pcs(priv, &priv->serdes_ports[i],
+>  				   i + MXL862XX_FIRST_SERDES_PORT);
 >  
-> +	if (priv->skip_teardown) {
-> +		ret = read ? -ENODEV : 0;
-> +		goto out;
+> +	if (priv->rescue_mode) {
+> +		mxl862xx_setup_rescue(ds);
+> +		return 0;
 > +	}
 > +
-> +	/* During the post-flash readiness poll block_host stays set, but the
-> +	 * flash path's own firmware version reads must reach the new image;
-> +	 * host writes stay blocked so stale resource IDs cannot corrupt it.
-> +	 * A blocked write reports success: the reprobe discards the switch
-> +	 * configuration anyway, and a bridge tearing down over a flash must
-> +	 * not see port_vlan_del() fail, which leaks its VLAN group.
-> +	 */
-> +	if (priv->block_host && cmd != SYS_MISC_FW_UPDATE &&
-> +	    !(read && priv->flash_owner == current)) {
-> +		ret = read ? -EBUSY : 0;
-> +		goto out;
-> +	}
 
 [Severity: Medium]
-This gate fakes success for writes but returns -EBUSY for reads.  Does
-that leave the delete paths that start with a read uncovered?
 
-During the transfer block_host is true, skip_teardown is still false and
-flash_owner is NULL, so a concurrent MDB deletion takes the -EBUSY branch
-on its very first firmware access:
+This path returns success with priv->fw_version still all zeros, since
+mxl862xx_wait_ready() -- the only writer of fw_version -- never runs in
+rescue mode.  Does that break phylink creation for the CPU port on some
+boards?
 
-mxl862xx_port_mdb_del()
-	ret = MXL862XX_API_READ(priv, MXL862XX_MAC_TABLEENTRYQUERY, qparam);
+mxl862xx_phylink_get_caps() gates the SerDes interfaces on the cached
+version:
 
-The compensation added below only recognises -ENODEV under skip_teardown,
-so -EBUSY is returned to the DSA core as a failed deletion:
+	case 10 ... 12:
+	case 14 ... 16:
+		if (!MXL862XX_FW_VER_MIN(priv, 1, 0, 84))
+			break;
+		__set_bit(PHY_INTERFACE_MODE_QSGMII, config->supported_interfaces);
 
-net/dsa/switch.c:dsa_port_do_mdb_del() {
-	err = ds->ops->port_mdb_del(ds, port, mdb, db);
-	if (err) {
-		refcount_set(&a->refcount, 1);
-		goto out;
-	}
+With 0.0.0 the gate is always false, so ports 10-12 and 14-16 end up with
+no supported_interfaces bit set at all, and ports 9/13 lose QSGMII and
+10G_QXGMII.  phylink_create() rejects that outright:
 
-and the host variant stops processing the remaining ports entirely:
+net/phy/phylink.c:phylink_create() {
+	if (phy_interface_empty(config->supported_interfaces)) {
+		dev_err(config->dev,
+			"phylink: error: empty supported_interfaces\n");
+		return ERR_PTR(-EINVAL);
+	...
+}
 
-net/dsa/switch.c:dsa_switch_host_mdb_del() {
-	dsa_switch_for_each_port(dp, ds) {
-		if (dsa_port_host_address_match(dp, info->dp)) {
-			err = dsa_port_do_mdb_del(dp, info->mdb, info->db);
+and CPU ports have no unused-port fallback:
+
+net/dsa/dsa.c:dsa_tree_setup_ports() {
+		if (dsa_port_is_dsa(dp) || dsa_port_is_cpu(dp)) {
+			err = dsa_port_setup(dp);
 			if (err)
-				break;
-		}
-	}
+				goto teardown;
+	...
+}
 
-mxl862xx_devlink_flash_update() drops rtnl before setting block_host, so
-any bridge teardown during the roughly one minute transfer (ip link set
-lanX nomaster, ip link del br0, bridge mdb del) can hit this.  Since v16
-deliberately made blocked writes report success so that port_vlan_del()
-does not fail during a bridge teardown, should the read-first delete paths
-get the same treatment?  mxl862xx_port_mdb_add() has the same leading read
-and handles neither error code.
-
-> diff --git a/drivers/net/dsa/mxl862xx/mxl862xx.c b/drivers/net/dsa/mxl862xx/mxl862xx.c
-> index cfa7e3e269a28..5668aac9ef7a1 100644
-> --- a/drivers/net/dsa/mxl862xx/mxl862xx.c
-> +++ b/drivers/net/dsa/mxl862xx/mxl862xx.c
+So on a board whose CPU port is one of 10-12/14-16, or is 9/13 with
+phy-mode qsgmii or 10g-qxgmii, probe would fail with -EINVAL and rescue
+mode could never be entered.  The patch adds the rescue-mode bypass in
+mxl862xx_phylink_mac_select_pcs() -- should mxl862xx_phylink_get_caps()
+get the same treatment for its firmware-version gate?
 
 [ ... ]
-
-> @@ -1572,6 +1623,12 @@ static int mxl862xx_port_mdb_del(struct dsa_switch *ds, int port,
->  	ether_addr_copy(qparam.mac, mdb->addr);
->  
->  	ret = MXL862XX_API_READ(priv, MXL862XX_MAC_TABLEENTRYQUERY, qparam);
-> +	/* Post-flash teardown: the firmware and its MAC table are gone, so
-> +	 * there is nothing left to delete. Outside it, -ENODEV is a bus error
-> +	 * and must be reported.
-> +	 */
-> +	if (ret == -ENODEV && priv->skip_teardown)
-> +		return 0;
->  	if (ret)
->  		return ret;
-
-This is the translation referenced above; it covers the teardown window
-but not the -EBUSY the same read returns while block_host is set.
 
 > diff --git a/drivers/net/dsa/mxl862xx/mxl862xx.h b/drivers/net/dsa/mxl862xx/mxl862xx.h
-> index 432a5f3f2e08e..2d38885ecfdab 100644
+> index 2d38885ecfdab..4ed2fd5cbca7c 100644
 > --- a/drivers/net/dsa/mxl862xx/mxl862xx.h
 > +++ b/drivers/net/dsa/mxl862xx/mxl862xx.h
+> @@ -332,6 +338,16 @@ struct mxl862xx_fw_version {
 
 [ ... ]
 
-> @@ -319,6 +323,15 @@ struct mxl862xx_fw_version {
->   * @evlan_ingress_size: per-port ingress Extended VLAN block size
->   * @evlan_egress_size:  per-port egress Extended VLAN block size
->   * @vf_block_size:      per-port VLAN Filter block size
-> + * @block_host:         reject firmware API commands (except FW_UPDATE)
-> + *                      during a firmware flash
-> + * @flash_owner:        task running the post-flash readiness poll; only its
-> + *                      own firmware reads pass block_host
-> + * @skip_teardown:      discard firmware API commands during the teardown
-> + *                      triggered by the post-flash reprobe
+> + * @rescue_ready:       (rescue_mode) loader is at a clean READY and will accept
+> + *                      a flash; false while rescue_heal_work is draining
+> + * @rescue_failed:      (rescue_mode) the self-heal gave up or cannot run; the
+> + *                      loader needs a power cycle and no flash can be accepted
 
 [Severity: Low]
-Do these two descriptions match mxl862xx_api_wrap()?  Writes are not
-rejected or discarded at all there, they return 0 and report success to
-the caller, while only reads see -EBUSY (block_host) or -ENODEV
-(skip_teardown).  The "except FW_UPDATE" exception list is also incomplete,
-since the flash task's own reads pass too, as the @flash_owner entry just
-below notes.
 
-Given the faked write success is deliberate, could the wording be adjusted
-so a later reader does not add error handling based on the documented
-semantics?
+This isn't a bug, but does "the loader needs a power cycle" hold for
+every producer of this flag?  mxl862xx_rescue_heal_work_fn() also sets it
+after a fully successful drain, purely because the hand-off failed:
+
+	if (device_schedule_reprobe(dev, MXL862XX_FW_REPROBE_DELAY_MS))
+		WRITE_ONCE(priv->rescue_failed, true);
+
+In that case the loader sits at a clean READY and only a driver rebind is
+needed, which is what the devlink documentation added later in this
+series says ("a completed drain whose reprobe could not be scheduled ...
+need only a driver rebind").
+
+A third producer is the START/ACK branch of
+mxl862xx_rescue_mode_detect(), where rescue_heal_work is never queued at
+all, so "the self-heal gave up or cannot run" does not describe it
+either.  All three collapse into the same -EIO and "download recovery
+failed" extack in mxl862xx_devlink_flash_update().  Could the kernel-doc
+just say the loader cannot accept a flash, and leave the per-cause
+remedies to the documentation?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/cover.1789477568.git.daniel%40makrotopia.org
