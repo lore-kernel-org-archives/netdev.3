@@ -1,79 +1,40 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A23BD4D9F84
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 11:57:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB974D0CE0;
+	Thu, 17 Sep 2026 11:58:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789646246; cv=none; b=RNrco48RijilQl30hZV+XQxr0pJmRippa6iXvvAe7ONClbi66630dARvYIT73xUkDmdwV14j6fE2aIvtZwxY8IawvGTmnJWvShKv6J3RN7xQn9PajF8QtlzYAHsvOG+tQBLlYUaBZHk029RqfJy8r4YvnsE71GffSgCN+IotY+8=
+	t=1789646332; cv=none; b=WcBkX85uNRYrIyssCri8nSqC/mKF6nRrEvgj3ItS17btOo1yeo1SFuajcCRCuCBEaxHXioc+n26hw51u6Ki6tP2r9o0Q76p3G96AQBZ/HwYhx1GYao/SAwNuaVzFTZjT4PFd8UaAxAf3qmHizrH3WyVKvRXJJvWu03YERFlapRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789646246; c=relaxed/simple;
-	bh=/JmFXBnZ5o6iVoL/3jZKa1soaX4Hw/WgDxT/Fm9DA54=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bpRdRXjn2LlMBpV+qYc5z5UiTNgAAboP33lzgV5Zjcq6/o04ZpKXYaS4QPDIA7C8dMmkvYoad07sC2VrCygfggRzLyPdrT6Xa3uxoT7lWfBQVATuPRwZcnQC3nmmdmV9iEncTba7IU4iRkP1EYP4/NXoWNJEWcoDX8em7BnZ4x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gOUKS8hb; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gOUKS8hb"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e6c0fce17so4566335e9.1
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 04:57:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789646220; x=1790251020; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ePwmsMkUKDU1SxF8E4e113FncU/+AY22Hw2g6GemxcY=;
-        b=gOUKS8hbOgrYl8blR/OahLwLOP221DbRsqwd/+EuP00Taj/iHcqYZVRwghSvhOy9CE
-         xv1bgSEFCzc94oTxUJfh4N0MJPXlDF3P2SgQsw0OyEw7e5sU2ahFUDjZ3Kb0t7pGizWs
-         GnjxtlDldNL1i3tnH12RnAcVenHoqmJ111i+Ebv1cUUUbWtya1X668XcjPQ9azBy0+40
-         9gA0eibAS4UBSOe97bHl+AGd46DlpT+32uVLsfweIvXll9HFzK/7PMEUmHxibS6r4/k8
-         /ls+U+LVgLHrPb3kp07Y7suncdHoh1g+ytu685sJUNrt2Z3KSLtM6HSL+n8fWifXomIy
-         yvTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789646220; x=1790251020;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ePwmsMkUKDU1SxF8E4e113FncU/+AY22Hw2g6GemxcY=;
-        b=o58QAbbWKN/2QCNqXXwuza8V7Yud20R03CdaQiaDheV9pW5jCdqVTD4K4ZBe1SHQIW
-         VwMpyKX489i+7cW38roU1mUPbpPwcTfwHsv+nZ/5FshM52SnjHjZ6MuBZaCLU+GdvbyW
-         66Z19wmDPGzmqI7yrCMw5fivqPteO3PgSA1Ssa9ucjeNG45A3NMkEifchqErtLghHWed
-         3dq9pP8ESVNRfDmdYJlGgpJVTsSfoYgucYylhUrydxvRO7zIUjeDccHETmk3qeT+X+SA
-         55Q/eUHY4mGRTcEsq5kEOimKqvyXzvLbEOvIEvktI0WlD0jSm5daSF7T3AZDLaFeGvi6
-         YhVg==
-X-Forwarded-Encrypted: i=1; AKwUvBxXP00qdlIKYbxO6VUWmyF81q+zeyUeXpt3b/a1eM5fJTqY9ZHhqexwCPO7u1rr/Td1ug0vXCE=@vger.kernel.org
-X-Gm-Message-State: AFuF++nO9puW3Q8K9Lz7X1EqXR1D5g4y27KqNja5pH+lLMQH9CuVNItT
-	uZ6QRFNCc9egRsRIVng0PE7Z+QzkWcPvFdP7afRIElpVkA94Hg6J6lI4
-X-Gm-Gg: AYBFou3x6Pq5HN9NTO/B9jnyLzoSRyVM24a3jgzmY2BFveDrzQsoKyPNeD3pdA6Bmgf
-	P+CodS+jNldA4y4SD84FiOHkJ0O9dBHdbUEae5KnhmbeFtrs2Oesd0hGCELrqYDZGWQj+hG2PlH
-	cvbNKo5yvlP8rghG5LociJuGMDTl141VqsPNmR9ONXTQvKFzb3S9hYhoFc3lrY/2AwO/qQc97CL
-	88j04fha0yfmzjyzmak5UQsTTVmdJzxHhQfDnFO75EPBfgVPUUT2ERk7y1LH6q7eXJ9u898NlTX
-	OdBnrPQLwiliqdTNeXlC+pK0tAQBP/HV42csiT0YHgHqGaadDORDu8f+qVwwB/9X3je+l4tlL8X
-	qLCGMRmRRL/T94qkZLMCXxzV6Ez9bP1k2yPuwWmv52saGNMGmmUoUcp0T/3U/i3pmM1A6MQr0Lp
-	+mcnqBUHzAbHsLEqYMV1ZSrlotDWUvehs5RQAjzEpSxgiQsXM4BRxsBKxIs78z5eme+0tab0Qwx
-	aLIomvls+92KGgmMiGPK0aXF1HxmcsZSnxplQlF
-X-Received: by 2002:a05:600c:198d:b0:49e:7a00:b9a5 with SMTP id 5b1f17b1804b1-49eac4642ffmr84127505e9.4.1789646220111;
-        Thu, 17 Sep 2026 04:57:00 -0700 (PDT)
-Received: from fedora-tap.advaoptical.com ([82.166.23.19])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e847eab65sm91365315e9.2.2026.09.17.04.56.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 04:56:59 -0700 (PDT)
-From: Sagi Maimon <maimon.sagi@gmail.com>
-To: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	netdev@vger.kernel.org
-Cc: Robert Hancock <robert.hancock@calian.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Michal Simek <michal.simek@amd.com>,
-	linux-arm-kernel@lists.infradead.org,
+	s=arc-20240116; t=1789646332; c=relaxed/simple;
+	bh=YqLFuJq396QQX7QY2JmqdsE0CwNv2C0DJlNzLta/S1A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VB49ITxxhGSEhy6bdnl5nBBwp0mjAyAgRaIkeZsMEYOi4EpfqO4HX4PKVmCpCrO5zp+qMZohIkKoL2+cFZp7D6BOOSENsR/PouIkCPJrVgGMTGBUSvtiI+SICL/U0zKKROUwka7L2Hp6KkRcdKTDZ5S8XpZohbi4l5ttERcLpbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
+	by APP-05 (Coremail) with SMTP id zQCowAC3HzrT1atqqQmACA--.2301S2;
+	Thu, 17 Sep 2026 19:58:11 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: Rengarajan.S@microchip.com
+Cc: Thangaraj.S@microchip.com,
+	UNGLinuxDriver@microchip.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	john.efstathiades@pebblebay.com,
+	kuba@kernel.org,
 	linux-kernel@vger.kernel.org,
-	Sagi Maimon <maimon.sagi@gmail.com>
-Subject: [PATCH net v2] net: axienet: bound TX completion cleanup by the NAPI budget
-Date: Thu, 17 Sep 2026 14:56:57 +0300
-Message-ID: <20260917115657.20697-1-maimon.sagi@gmail.com>
-X-Mailer: git-send-email 2.47.0
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] net: usb: lan78xx: Fix URB reference leak in lan78xx_submit_deferred_urbs()
+Date: Thu, 17 Sep 2026 11:58:11 +0000
+Message-Id: <20260917115811.2150119-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,94 +42,57 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowAC3HzrT1atqqQmACA--.2301S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7GF4rGr4UZF4rAr4kJF4kXrb_yoWkurX_Ww
+	1UGFyDGryUArWqyr43KrsIvF4akanrXw1kur9aga9Ig34jyFnYvF17Aa9xArsrW3yru3WD
+	Jwn8KrW5JrWagjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbgkYjsxI4VWkKwAYFVCjjxCrM7CY07I20VC2zVCF04k26cxKx2IY
+	s7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4
+	kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_
+	Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxV
+	W0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
+	7VC0I7IYx2IY67AKxVWUtVWrXwAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x0Yz7
+	v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0E0s8F02x267IIx4CEVc8vx2IErcIFxwAC
+	I402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrw
+	CF04k20xvE74AGY7Cv6cx26r48ZrWUJr1UMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E
+	5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtV
+	W8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY
+	1x0267AKxVWxJVW8Jr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14
+	v26r4UJVWxJr1lIxAIcVC2z280aVCY1x0267AKxVW0oVCq3bIYCTnIWIevJa73UjIFyTuY
+	vjxUquOJDUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgMNA2qrq3aE6gAAs5
 
-axienet_tx_poll() passes lp->tx_bd_num to axienet_free_tx_chain() as
-@nr_bds, and @budget is only forwarded to napi_consume_skb() as its
-bulk-free hint.  Nothing limits the cleanup loop to the NAPI budget, so
-the number of packets returned is bounded by the TX ring size rather
-than by the budget, and the poll can report more work than it was
-given:
+usb_get_from_anchor() hands over a reference to the URB, which the caller
+must release. lan78xx_submit_deferred_urbs() never does, so every deferred
+Tx URB keeps an extra reference: the counter grows on each suspend/resume
+cycle and the URBs are never freed when the buffers are released. Drop
+the reference after submitting, and on the path that drops the packet
+instead of submitting it.
 
-  eth0: NAPI poll function axienet_tx_poll+0x0/0x180 [xilinx_emac]
-        returned 96, exceeding its budget of 64.
-
-Returning more than the budget breaks the NAPI contract.  It also makes
-the "packets < budget" test in axienet_tx_poll() false, so
-napi_complete_done() is skipped and TX completion interrupts are not
-re-enabled on that pass.  NAPI reschedules the poll, so this recovers,
-but the accounting is wrong either way.
-
-In steady state fewer descriptors complete per poll than the budget
-allows, which is why this is rarely observed.  Triggering it needs more
-than @budget completions outstanding at once - for example when TX
-completion interrupts have not been taken for a while and a full ring is
-reclaimed in one go.
-
-Stop the loop once the budget is spent.  cur_p->skb is only set on a
-packet's last descriptor, so breaking there never leaves a packet
-half-freed.
-
-A zero budget must not be treated as a spent budget.  netpoll calls
-napi->poll() with a budget of 0 to reclaim the TX path only, and
-axienet_tx_poll() forwards it unchanged with @force false; testing
-packets >= budget alone would break out before examining a single
-descriptor, leaving skbs unfreed and lp->tx_bd_ci unchanged.  Since
-cur_p->cntrl is cleared only here, axienet_check_tx_bd_space() would
-keep reporting the ring full and netconsole output could stall.  Zero
-therefore means no limit, which also covers the @force callers that
-clean up after a DMA mapping failure with a budget of 0.
-
-Fixes: 9e2bc267e780 ("net: axienet: Use NAPI for TX completion path")
-Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
+Fixes: 5f4cc6e25148 ("lan78xx: Fix race conditions in suspend/resume handling")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
-v2:
-- Do not treat a zero budget as a spent budget.  netpoll polls with a
-  budget of 0 to reclaim the TX path only, and v1 broke out of the loop
-  before examining any descriptor, so nothing was reclaimed and the ring
-  could stay full.  Reported by the Sashiko AI reviewer.
-- Update the @budget kernel-doc: it bounds the cleanup when @force is
-  false, and zero means no limit.  It previously read "use 0 when not
-  called from NAPI poll", which after v1 would have meant "reclaim
-  nothing".
-- Compile-tested only; the board this was found on is not available to
-  me at the moment.  v1 was verified on hardware with the napi:napi_poll
-  tracepoint (8424 polls, max work 64 against a budget of 64).
+ drivers/net/usb/lan78xx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-v1: https://lore.kernel.org/netdev/20260914114821.55503-1-maimon.sagi@gmail.com/
- drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 782f903d318f..f643453261f1 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -772,7 +772,9 @@ static int axienet_device_reset(struct net_device *ndev)
-  * @force:	Whether to clean descriptors even if not complete
-  * @sizep:	Pointer to a u32 accumulating the total byte count of
-  *		completed packets (using skb->len). Ignored if NULL.
-- * @budget:	NAPI budget (use 0 when not called from NAPI poll)
-+ * @budget:	NAPI budget. When @force is false, cleanup stops after this
-+ *		many completed packets. Zero means no limit, as used by the
-+ *		netpoll TX reclaim and by callers outside NAPI poll.
-  *
-  * Would either be called after a successful transmit operation, or after
-  * there was an error when setting up the chain.
-@@ -788,6 +790,15 @@ static int axienet_free_tx_chain(struct axienet_local *lp, u32 first_bd,
- 	dma_addr_t phys;
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index bcf293ea1bd3..8e075a31d97c 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -5204,10 +5204,12 @@ static bool lan78xx_submit_deferred_urbs(struct lan78xx_net *dev)
+ 		    !netif_carrier_ok(dev->net) ||
+ 		    pipe_halted) {
+ 			lan78xx_release_tx_buf(dev, skb);
++			usb_put_urb(urb);
+ 			continue;
+ 		}
  
- 	for (i = 0; i < nr_bds; i++) {
-+		/* A NAPI poll must not return more than its budget.  Stop on a
-+		 * packet boundary once it is spent - cur_p->skb is only set on
-+		 * a packet's last descriptor, so no packet is left half-freed.
-+		 * A zero budget means no limit: netpoll polls with a budget of
-+		 * 0 to reclaim the TX path only, and must still clean the ring.
-+		 */
-+		if (!force && budget && packets >= budget)
-+			break;
-+
- 		cur_p = &lp->tx_bd_v[(first_bd + i) % lp->tx_bd_num];
- 		status = cur_p->status;
+ 		ret = usb_submit_urb(urb, GFP_ATOMIC);
++		usb_put_urb(urb);
  
+ 		if (ret == 0) {
+ 			netif_trans_update(dev->net);
 -- 
-2.47.0
+2.34.1
 
