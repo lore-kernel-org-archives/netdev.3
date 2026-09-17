@@ -1,222 +1,177 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-227.mta0.migadu.com [91.218.175.227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE3B396D25
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 08:10:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 582333F1643
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 08:12:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789632605; cv=none; b=R+gTiwJhlogOR59qrtY9pTVGNQE1O/sTVKNCYsMdOcq0hEnaoNfwLWLIyacJ/b9Vq+p5EkTfIbyQ5FJ2JlvQH9/qYYH2VNvIMzFRan4CQEJd4K1n/R1r+uDQQtUgLdSg/5Rj6v6UigXH7hgOebPNxOP16Smi0sXrwkg6EPw98zU=
+	t=1789632759; cv=none; b=QYhZ7NmJcb2WpyDWkJ8SaQT5LAU4OAzar/pO5Yj2E54FuvVBfzigBe42qoYusEMXRbumrK+GkUJvhW+Nn1oecH6QUUNJP5UkSv2BA2t4yh0uJoXMcOKQZYTAxaQMSRHI35LGu+G30NrJdXG/hMDKKhRb5LdpBD6a0OdYSDAq4es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789632605; c=relaxed/simple;
-	bh=zTBX4uJ2je0sZHFIO4v5F3vRjCpVCYmo9zYr4T5Pizo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mbKSkbbBB1OBjgUamn09RXNCrR8p9HRz1ca87mPwQiSffSZovHmTZCdiArBR3AdX/OiXRHtXSpLoS3E+Qx/X1ODum7r0i/qw1EV/K0j1RVLFiMxbZYKgwCWZrsGXcKG3VIKUpo1oKURuNAQqWCelGCsCwiJrMTI7aBocQXvh4o0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TuytHM4N; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=J1QB0+Hc; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789632759; c=relaxed/simple;
+	bh=3bNS7vZoXU7N1kY+Mih7avyiv/bjFO+bIZ/936OV2eE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZWw5ejM4j+mn4UmR1tTSPiLrvu3lrlWXS9yFVXD87ZYfySi25NIqCb5BoGhTHygF8b6KAK5uJVRzH/zOwkKpSeq1fnyAbzIuHq7Voasx+p4KlJGmtvssGSM5+kdSWaLv7rOHUBGm2qsm/Eq4HrznmgFVfunK2j+qpcY25vc0X/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Kf4/7XpN; arc=none smtp.client-ip=91.218.175.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TuytHM4N";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="J1QB0+Hc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789632602;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uxpwaWgqlb3l6AI1MIqjUVNiDYcws9hnLKUyrIEJE2Q=;
-	b=TuytHM4N5vxx1sK390bPleroBqMOd8qGfzwTD5prDRCIqb2xlC75OXAT95WRwVhj3EmFeB
-	mmYvK8oZhyRgx1r3fk8b50D12ux58uKRgTdlJl7+wqawLQt6GacqSaURIdcvsylYlHrlf6
-	u1NoFBKXGiKTns2kxDSDn4v/TgKehao=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-441-CWrE0nQzMYWGlFj4YInSmw-1; Thu, 17 Sep 2026 04:10:01 -0400
-X-MC-Unique: CWrE0nQzMYWGlFj4YInSmw-1
-X-Mimecast-MFC-AGG-ID: CWrE0nQzMYWGlFj4YInSmw_1789632600
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49e65bee41aso3686805e9.0
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 01:10:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789632600; x=1790237400; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uxpwaWgqlb3l6AI1MIqjUVNiDYcws9hnLKUyrIEJE2Q=;
-        b=J1QB0+Hcn38E+Q29javUrajdxaCiCO75PNfX5FdW9DEzGGSuvfajFIUgNaqPsce1fd
-         wgAZAVxBCB4mndB43aG236sr1pYCgYPdNoWrYimWkQbDxKMTVokwe6eLkcvUPGdHl2Z2
-         TVhGbksqXqRnFltjtuTSTOuGk8KIW9B74liKyU9qIpl7Z8UtQwj0BGEWNOmOC49v+Ea+
-         Ube4X7VoWi2LeKLB+gP3OWI5PoGoC3XqIfRqIfD53GFR2Jp0tE3dTtQGcPZqOXiOOQ6K
-         ry0BcGIHpDSJV+jr++sCweZ+q7ktwrTxu7B8eHQBiljlzwMA6Zv6ogBxiNKWz+c9s/lr
-         eoJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789632600; x=1790237400;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=uxpwaWgqlb3l6AI1MIqjUVNiDYcws9hnLKUyrIEJE2Q=;
-        b=pCxSqFn89Yh7jtw2uirb4I4MKj1OMoHyFq0KtMZaT/tX2DceWh1WBrJuxErqA35Bbe
-         sJytBrGmhVY1yrkeve/ESPaakUNAIzuzun8H5aXw3VPH/FM251ys5BTtpO8sFcWWzKBv
-         TD4u+zDGleUCzJmJbT12lXVNTJjAtHJdYAe7u9PYpznD/cDnyryLZ4PoWCJjVIRanG+M
-         BIczS0Z703QLy8bshvGDx67xY2x31cTWanCHQehlGYqZQNUlkk57eE+s2ZfqRpGp9io6
-         h1uBySIApEFXMqc5BTeCjoNSfpYQ4dfmK642xYwmvTvpPG6lm51MjdZCOe5qbvPb2CUR
-         kliQ==
-X-Forwarded-Encrypted: i=1; AKwUvByuD2hV8DkJf8U6wfUMKGoqw6o47rfE9QN50v+WNyQsfQRZJ2hac/PCDpjkHFNu1T56SlKMfA8=@vger.kernel.org
-X-Gm-Message-State: AFuF++nxou5I6ODd8eVieAeDCik3n+Anl5AK6UZ5mqyh+d4C4J0G429t
-	WAgRPzTEtfT3z0Y7N+3mJkZ1KfpHveHjMK7HmwDy2/oHeYagAFWRpERkoEGtqGH/FNa75ai5CC0
-	dyIhWpYNa32kieCwHzrg6OV1LxCSmkXFg95MHe4zbwLbnNwnMvcXNg1dIEA==
-X-Gm-Gg: AYBFou39uZqapJPu+s0wwEN43dSknhp8powhu3DGlZBm3tNAZvYPzAPhPJHL34Rk1Am
-	gDnILrJa2jFJLlumDM+b00xJz+FhfX66T0TJe9AtSIrzhds92DySsqgl3vhK+znCh5wiS6rH0xR
-	AgSl6TOhepJ0m1MUfyL6abpQQ3dqJvrBRExqla3zQgbonUdCBiSRHeHiWMrXN1Y/K6D0nzZ+zuh
-	BkX4t7h8DZ6KENwKL7pPHot46NeHYMLugYdFzKsVg8Zh+ZhaNQywQMBbioQ7kfcwdla0im/XDWw
-	N3qdGpX6P4kpWNZmVzVk3mKWPNMI72mnBT79CZqPe4gutxEZLFc4FdWo/JbFFY6wRQw0ZiTndNN
-	8UK57VNdbqdpJa8ML39c1ilnbTaRYdMhze0/IPYNOdfwi2Zxhy+WcfR+vZzjFMis6VOdACjBgsQ
-	==
-X-Received: by 2002:a05:600d:8643:20b0:49e:7c8c:bc77 with SMTP id 5b1f17b1804b1-49fbd1c9005mr22472725e9.7.1789632599800;
-        Thu, 17 Sep 2026 01:09:59 -0700 (PDT)
-X-Received: by 2002:a05:600d:8643:20b0:49e:7c8c:bc77 with SMTP id 5b1f17b1804b1-49fbd1c9005mr22472315e9.7.1789632599375;
-        Thu, 17 Sep 2026 01:09:59 -0700 (PDT)
-Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fbd17051fsm57323325e9.0.2026.09.17.01.09.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Sep 2026 01:09:58 -0700 (PDT)
-Message-ID: <126c1419-0df6-49b5-9cef-cb9f45c716c0@redhat.com>
-Date: Thu, 17 Sep 2026 10:09:56 +0200
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Kf4/7XpN"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=3bNS7vZoXU7N1kY+Mih7avyiv/bjFO+bIZ/936OV2eE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789632754; v=1; x=1790237554;
+ b=Kf4/7XpN+XXJy1XmOAPCad0qeTiTCs9GI4sHhuBz+MAotbrj6pnyvpKAG2E/WyjFX+saYH3d
+ WKQtZqX42HVy3Yr7s8NB4ah0nABzld9+aeUWhgkoO8jQQMwyvLkV2UnySpPo0kvWYv6vjGm5fzF
+ yMTxENaEfZi9GgrScIiUh4pw=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 6fe8c84a50e127c8;
+	Thu, 17 Sep 2026 08:12:24 +0000
+X-Mizu-Trace-ID: 6fe8c84a50e127c8
+X-Migadu-Flow: FLOW_OUT
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: bpf@vger.kernel.org,
+	mptcp@lists.linux.dev
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
+	VEGA <vega@nebusec.ai>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Shuah Khan <shuah@kernel.org>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	Matt Bobrowski <mattbobrowski@google.com>,
+	Tejun Heo <tj@kernel.org>,
+	Nicolas Rybowski <nicolas.rybowski@tessares.net>,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH bpf v1 1/2] mptcp, bpf: reject bpf_sk_release() on msk
+Date: Thu, 17 Sep 2026 16:11:57 +0800
+Message-ID: <20260917081209.361367-1-jiayuan.chen@linux.dev>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] tipc: reject invalid and unexpected GRP_ACK_MSG to
- prevent bc_ackers underflow
-To: edumazet@google.com, tung.quang.nguyen@est.tech
-Cc: davem@davemloft.net, kuba@kernel.org, horms@kernel.org,
- netdev@vger.kernel.org, eric.dumazet@gmail.com, jamesburton@meta.com,
- stable@vger.kernel.org, security@1seal.org, jmaloy@redhat.com,
- netdev-bot+sashiko@kernel.org
-References: <20260913044233.193927-1-edumazet@google.com>
- <178936156410.22033.16977639465746131797@kernel.org>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <178936156410.22033.16977639465746131797@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 9/14/26 06:52, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider:
-> 
-> Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
-> 
-> - [Medium] Incomplete ACK accounting in tipc_group_proto_rcv()
->    (net/tipc/group.c:799-808): the new validation gates the decrement of…
-> 
-> Pre-existing issues:
-> - [Medium] Pre-existing (not introduced or claimed by this patch): in
->    tipc_send_group_bcast() (net/tipc/socket.c:1131-1137) the packets…
-> 
-> --
-> 
-> tipc: reject invalid and unexpected GRP_ACK_MSG to prevent bc_ackers underflow
-> 
-> This tightens the GRP_ACK_MSG path in tipc_group_proto_rcv() so that the
-> message is dropped when grp->bc_ackers is zero, and so that only an ACK
-> whose value equals grp->bc_snd_nxt (and which is not a repeat of the
-> member's own last ACK) is allowed to decrement grp->bc_ackers.
-> 
->> diff --git a/net/tipc/group.c b/net/tipc/group.c
->> index 14e6732624e28..74f6d3dac0784 100644
->> --- a/net/tipc/group.c
->> +++ b/net/tipc/group.c
->> @@ -797,10 +797,10 @@ void tipc_group_proto_rcv(struct tipc_group *grp, bool *usr_wakeup,
->>   		tipc_group_open(m, usr_wakeup);
->>   		return;
->>   	case GRP_ACK_MSG:
->> -		if (!m)
->> +		if (!m || !grp->bc_ackers)
->>   			return;
->>   		acked = msg_grp_bc_acked(hdr);
->> -		if (less_eq(acked, m->bc_acked))
->> +		if (acked != grp->bc_snd_nxt || m->bc_acked == acked)
->>   			return;
->>   		m->bc_acked = acked;
->>   		if (--grp->bc_ackers)
-> 
-> [Severity: Medium]
-> The new test gates the decrement on the sequence value and on per-member
-> duplication.  Does it also need to check that the acking member was one of
-> the members actually counted into grp->bc_ackers for the current round?
-> 
-> tipc_group_update_bc_members() counts and re-arms receivers only:
-> 
-> net/tipc/group.c:tipc_group_update_bc_members() {
-> 	u16 prev = grp->bc_snd_nxt - 1;
-> 	...
-> 	for (n = rb_first(&grp->members); n; n = rb_next(n)) {
-> 		m = container_of(n, struct tipc_member, tree_node);
-> 		if (tipc_group_is_receiver(m)) {
-> 			tipc_group_update_member(m, len);
-> 			m->bc_acked = prev;
-> 			ackers++;
-> 		}
-> 	}
-> 
-> 	/* Mark number of acknowledges to expect, if any */
-> 	if (ack)
-> 		grp->bc_ackers = ackers;
-> 	grp->bc_snd_nxt++;
-> }
-> 
-> A member in MBR_JOINING or MBR_LEAVING is therefore neither summed into
-> ackers nor re-armed, so it keeps a stale m->bc_acked.  The same holds for a
-> member created after the round was published, since
-> tipc_group_create_member() sets:
-> 
-> 	m->bc_acked = grp->bc_snd_nxt - 1;
-> 
-> In both cases m->bc_acked differs from grp->bc_snd_nxt, so a GRP_ACK_MSG
-> from that member passes both new conditions and still executes
-> --grp->bc_ackers although it contributed no increment.  The lookup on this
-> path, tipc_group_find_member(), applies no state filter.
-> 
-> Can that let grp->bc_ackers reach zero while a counted receiver still owes
-> an ACK?  The number of accepted decrements per round looks bounded by
-> grp->member_cnt rather than by the counted acker set.
-> 
-> If bc_ackers is cleared early, tipc_group_bc_cong() stops reporting
-> congestion:
-> 
-> net/tipc/group.c:tipc_group_bc_cong() {
-> 	/* If prev bcast was replicast, reject until all receivers have acked */
-> 	if (grp->bc_ackers) {
-> 		*grp->open = false;
-> 		return true;
-> 	}
-> 
-> so the sender releases the next group broadcast while the previous replicast
-> round is still outstanding, which is the ordering guarantee from
-> 2f487712b893, one of the Fixes tags on this patch.  The zero-transition
-> branch also runs list_del_init(&m->small_win) and *m->group->open = true for
-> the acking member, which need not be a receiver, and the genuine acker's
-> later ACK is then swallowed by the new !grp->bc_ackers guard, so its
-> small_win / tipc_group_update_member() bookkeeping never runs.
-> 
-> The commit message states that "each member can acknowledge at most once per
-> round" - that part holds per member, but does it cover members that were
-> never counted for the round?
-> 
-> Would a per-round marker set in tipc_group_update_bc_members(), or accepting
-> only members whose m->bc_acked == grp->bc_snd_nxt - 2, close the remaining
-> gap?
-> 
-> The u16 wrap to 65535 itself does look closed by the new !grp->bc_ackers
-> guard, so what is left here is the premature clearing of the counter that
-> item 2 of the commit message also mentions.
+A bpf prog can do this today:
 
-My reading of the above is that it's a slightly different problem, that 
-could/should deserve a separate patch. WDYT?
+	subflow = bpf_skc_lookup_tcp(...);
+	msk = bpf_skc_to_mptcp_sock(subflow);
+	bpf_sk_release(msk);
 
-/P
+bpf_skc_to_mptcp_sock() returns subflow->conn without taking any
+reference, so bpf_sk_release() drops a refcount nobody took on the msk,
+and the subflow reference is leaked:
+
+refcount_t: underflow; use-after-free.
+WARNING: lib/refcount.c:28 at refcount_warn_saturate+0xdf/0x120, CPU#2: mptcp_pair/440
+Call Trace:
+ <IRQ>
+ sock_gen_put+0xda/0x100
+ bpf_sk_release+0x5e/0xd0
+ bpf_prog_780c70b94862636c_rel_msk+0x127/0x132
+ __dev_queue_xmit+0x104b/0x3c90
+ ip_finish_output2+0x9af/0x1c40
+ __ip_finish_output+0x510/0x7e0
+ ip_finish_output+0x2f/0x320
+ ip_output+0x17a/0x3f0
+ ip_local_out+0x12f/0x170
+ __ip_queue_xmit+0x81d/0x1d50
+ ip_queue_xmit+0x4a/0x80
+ __tcp_transmit_skb+0x2f6f/0x5110
+ __tcp_send_ack.part.0+0x385/0x740
+ tcp_send_ack+0x70/0x90
+ __tcp_ack_snd_check+0x1c9/0x8d0
+ tcp_rcv_established+0xa1e/0x44f0
+ tcp_v4_do_rcv+0x4b8/0xb30
+ tcp_v4_rcv+0x27af/0x3e60
+ ip_protocol_deliver_rcu+0x95/0x410
+ ip_local_deliver_finish+0x357/0x5b0
+ ip_local_deliver+0x15c/0x1c0
+ ip_rcv+0x284/0x320
+
+bpf_skc_to_mptcp_sock() is listed in is_ptr_cast_function(), so if the
+subflow is a referenced obj (returned by bpf_skc_lookup_tcp()), the msk
+becomes a referenced obj too, which lets bpf_sk_release() take it. That
+list is for helpers casting a sock to another type at the same address,
+which does not hold here: msk and subflow are two different socks.
+
+Drop it from is_ptr_cast_function(). To keep the msk from outliving the
+subflow it was derived from, tie the two together with the existing
+parent_id, so this gets rejected as well:
+
+	subflow = bpf_skc_lookup_tcp(...);
+	msk = bpf_skc_to_mptcp_sock(subflow);
+	bpf_sk_release(subflow);
+	msk->token;			/* rejected now */
+
+The other option was to reject bpf_skc_to_mptcp_sock() on a referenced
+subflow altogether, but that breaks progs which only read msk fields, so
+go with parent_id.
+
+Reported-by: VEGA <vega@nebusec.ai>
+Fixes: 3bc253c2e652 ("bpf: Add bpf_skc_to_mptcp_sock_proto")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+---
+ kernel/bpf/verifier.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 9e79750e2480..5db49a0c346f 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -522,11 +522,21 @@ static bool is_ptr_cast_function(enum bpf_func_id func_id)
+ 		func_id == BPF_FUNC_skc_to_tcp_sock ||
+ 		func_id == BPF_FUNC_skc_to_tcp6_sock ||
+ 		func_id == BPF_FUNC_skc_to_udp6_sock ||
+-		func_id == BPF_FUNC_skc_to_mptcp_sock ||
+ 		func_id == BPF_FUNC_skc_to_tcp_timewait_sock ||
+ 		func_id == BPF_FUNC_skc_to_tcp_request_sock;
+ }
+ 
++/*
++ * bpf_skc_to_mptcp_sock() does not cast its argument. It returns the parent
++ * MPTCP socket of the subflow that was passed in, so the return value must not
++ * inherit the argument's reference, or bpf_sk_release() would put the wrong
++ * socket.
++ */
++static bool is_ptr_derive_function(enum bpf_func_id func_id)
++{
++	return func_id == BPF_FUNC_skc_to_mptcp_sock;
++}
++
+ static bool is_sync_callback_calling_kfunc(u32 btf_id);
+ static bool is_async_callback_calling_kfunc(u32 btf_id);
+ static bool is_callback_calling_kfunc(u32 btf_id);
+@@ -11369,6 +11379,14 @@ static int check_helper_call(struct bpf_verifier_env *env, struct bpf_insn *insn
+ 		bpf_diag_mod_begin(env, &regs[BPF_REG_0], NULL, BPF_DIAG_MOD_WRITE);
+ 		regs[BPF_REG_0].type &= ~PTR_MAYBE_NULL;
+ 		regs[BPF_REG_0].id = meta.ref_obj.id;
++	} else if (is_ptr_derive_function(func_id) &&
++		   find_reference_state(env->cur_state, meta.ref_obj.id)) {
++		err = validate_ref_obj(env, &meta.ref_obj);
++		if (err)
++			return err;
++
++		/* Ensures we don't access the object after a release_reference() */
++		regs[BPF_REG_0].parent_id = meta.ref_obj.id;
+ 	} else if (is_acquire_function(func_id, meta.map.ptr)) {
+ 		int id = acquire_reference(env, insn_idx, 0);
+ 
+-- 
+2.43.0
 
