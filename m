@@ -1,124 +1,165 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39C23A6F1A
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 08:29:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D8942A14D
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 08:29:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789633785; cv=none; b=TeE589x2Jn8uUQP0N7Tdnvv6/XvZqitQBENbKN59prgw4DHRIAjWZfb6lZzX0T9xrvSx8gA69y6xzm37ctRTKHLzsN3nw5K0oSMQx7EWN6AgmGR/7UBee0CtQqTEJElzRJ9jWKcR71GdkxV3Sn77RzCm+tHRDVGRmjLpv1Nc6Gw=
+	t=1789633790; cv=none; b=BBKTNFYPYIQyIhDCy/RbnKMXrbo9+FEwBhY11EnhgEI8CN83yjo4X9QyeziFLyVA6pj3MJf1pOBq2bDFgB2nlwx7awDx7qvBFvx/g0T+MnnaXWccHGPnFVOrxpwPbUYsFZmqRatZW0dXNVinUKKJBhT6M2piSKyqGzbMiT8LQTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789633785; c=relaxed/simple;
-	bh=WWyYZw8tBywiBXwYte7KMgI+DaSqsyddNxnCJcZg7zA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tUNVIPAS7Z+N/J/Yo7X3rlB9RpgHrUBEPdEbXjm6FSISeHqwBqAXmuuMfTmIsFg6L5/KYJ93gK7Cqs9MCyq7tjJDUG2lZOujIqX/0kqSdg77uhVEiudwfXsQdStnyhOiYmWvWdrsUBfpkhJV8+nwhHZZfMh+kOm+OhFgLHuMNAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YWmJU3vt; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789633790; c=relaxed/simple;
+	bh=CFRrn4x6ponRYhQFZSF7DOt0uGwt2i4dOTnusXvOQb0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ZOmFuhIvcH5hRbQ0WNDFkKrKyVFUJcnBmBpJCzfcehNvqlBPUHlJZmALYMNxG7QODve8WQyAeYB9iVGatzJYSd3NPkZ0QT/kxU263n37iiASahLhjCLQ9VeX877rWN+kmpPE6/Wi/3z8PgrrWtPNOPYezYsdrzG5kXSkcYjqPOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Nep53tXD; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=eqbmLGoO; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YWmJU3vt"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789633772;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Hz4NjmNPVB7tW6852/se/FDTpEK9t+GLc4SzvAzUiv4=;
-	b=YWmJU3vtcs2UCR9xde6qOVc4I0OTKK/fhdtjzXHI25FgSzybjzKRUZ2yolXz7rAhSq0qWY
-	Srw9daKj64Em/Pivy+mK+lJSU0q4ZoG2s9tc9kZkC26YXFYe6+hllzy1/pd9OLZBaPGG2V
-	DLbKVEa9Nf4FEn0Ugd8Rb+KoNOcsAto=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-74-4SqpmexYOYuOltyYrQyK9g-1; Thu,
- 17 Sep 2026 04:29:27 -0400
-X-MC-Unique: 4SqpmexYOYuOltyYrQyK9g-1
-X-Mimecast-MFC-AGG-ID: 4SqpmexYOYuOltyYrQyK9g_1789633765
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 21F65195E936;
-	Thu, 17 Sep 2026 08:29:25 +0000 (UTC)
-Received: from [100.90.87.156] (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 55B2830002C7;
-	Thu, 17 Sep 2026 08:29:20 +0000 (UTC)
-Message-ID: <c3cffd82-c57c-4cbf-b287-a73a3d078676@redhat.com>
-Date: Thu, 17 Sep 2026 10:29:18 +0200
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Nep53tXD";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="eqbmLGoO"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68H7xMWS396668
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 08:29:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	LoFiFadfWvsKDJXbfNr3lKGOOeQeasFcKWql2l4h94M=; b=Nep53tXDRmyvNxjO
+	UdWe3HxdJMbHkxJkXsLVuZgfX4eyf9bbheqRvNPFp1RGyxHD1Mrcwdn7hlHpmhWE
+	dqSHFmXhutcfrZk//Ta6XX59KUTDmLRH/TX5ORBhjVWFvp1od9Eu7VMu02absITx
+	s0TnbZTvccHYtrHjbltIQof8xB5955cCCWa+fT60Z37oaLcQO+3xYO5+wKcg82ds
+	VJcu95N/z/F/I8sx/UScBqv1joVb60ZlJbn5TiIwhHigBe1d33CRFgZEIvCP8IwK
+	yyeW/LUg4/v3iyPF+W7az8ueIUOTxId8dPdSCcj1MGVNipmDDq7K4FYxjR7NgVga
+	DDiN5w==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4grca0r3ur-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 08:29:39 +0000 (GMT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-939f925ba4eso143102885a.3
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 01:29:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1789633779; x=1790238579; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=LoFiFadfWvsKDJXbfNr3lKGOOeQeasFcKWql2l4h94M=;
+        b=eqbmLGoOB7K+4rSeccq8QnX8Mcb+3Pttj3qmit4Dl4eG2UjYpKNyrpG4EgzRX4M7B8
+         l/XdlivywPNwwjp/WFqoEXzGh6Wg/xf6+59aPOJNAbuDEcd9hFF9Zm9dAStp6ql/77vO
+         g50PTyxddE81LJG5xDganX3FBIzL0PZJCEbacR/QM/vQ8DX9sRx7yVgWJPZs3Ve0rlT5
+         noDjFYw8PZiRQvofLheR1/H8ZeDZE+kHg32iP4feevnuY08/WL8CKQsjaYqmt8w5Mft9
+         NKiyvl0AnpdnMa0/1X7N7nONgHhogdK3ZyE3fwiTsP9JbTiCtYjhnt+/cibpNyrF+7o+
+         FeHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789633779; x=1790238579;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LoFiFadfWvsKDJXbfNr3lKGOOeQeasFcKWql2l4h94M=;
+        b=yrIFAENAm2d4eVNzMtJsTLfPGnPuDORrjppJQUrPS8R4cJCVQS8ofK0Dp5dymphuf0
+         kDdec5ODRyp1kwwJrGiAPasiHhWgLGJzSGoABb2pjucH2i6NBaRPkdAtCq1u7VtM3aLQ
+         JzQD/WECZj1Iw7GdTLDZVsrstgNNpDyTjtFaQioBftVpkiZtsQwtpj6OjYtCCfIfdDg5
+         ZMdOo5BvFQ0MU/sI5M5TXFIABsj6jD9vRpdwVF13tAlab0LkjcPsHeQhZw/Xqbu5V990
+         BOrFE1Eu4vdjDNDI4vGxTjgSvby0a15RtPQwgvFg7i4x3KMkaSA74n76XkgIOylL0yg2
+         mILg==
+X-Forwarded-Encrypted: i=1; AKwUvBxbHX7SDmIPsJiH/A9xGLS7S+ZdJRcVjGOLEJ1lVOdOZ+oIKbvN8WxuRwFRQ2a13Ih6LA281Ns=@vger.kernel.org
+X-Gm-Message-State: AFuF++lx3Q6MAFnsrCd7aLJToLntgm9m3Gh1rwGqYwOjdngE/w5zyQRN
+	3+p6+HuPMSaXLfpOXttRo1TiOmccs431A4YNsojy058NWafqB9bDAsZdHqh3lp1VvOP98NJXsif
+	8U6qoQclPaniSRYGs5o7rP/3YwYsBaZeqTfdOO90/LE6+LFYzFUZ5VdwV1Yw=
+X-Gm-Gg: AYBFou2SjKabtKseZiXspX0RbJkO5jMmNHzpy91y5pZ54N8Xi0rv6R4d9xGU67SECX7
+	+V3918hlZ2pfZXm09YfO7O+otoaOuknNrU30ROR9zH/QmaWDGeIi5miG9UelUuu0w12v0bGjV8x
+	PnhEdcZBQTr4rUX1+1EdoJ2sNuqTRPxkyodRXgEwfTfbbxalZSPuLrDrWsRGf3Waw/1kxKQyUJk
+	U39fnOGInx+qmdg/R5idQZHdJmc9ffXz5JnLmxumpCwhTUX439QHnBX+jZerca/Vk5APBYlAYN1
+	/w0iArkrCvZINATCXbdm5Sl/9GDx6xiw7ZT+m64uAViyuQbneE9EI0pwwKsWtrAkiKL7vJix9Jn
+	zCYGgsJOHMfpAug==
+X-Received: by 2002:a05:620a:7018:b0:938:fc91:91ce with SMTP id af79cd13be357-93bb771e83cmr987990385a.20.1789633778991;
+        Thu, 17 Sep 2026 01:29:38 -0700 (PDT)
+X-Received: by 2002:a05:620a:7018:b0:938:fc91:91ce with SMTP id af79cd13be357-93bb771e83cmr987985585a.20.1789633778521;
+        Thu, 17 Sep 2026 01:29:38 -0700 (PDT)
+Received: from localhost ([188.216.77.92])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4870bf27198sm13477625f8f.15.2026.09.17.01.29.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2026 01:29:37 -0700 (PDT)
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Date: Thu, 17 Sep 2026 10:29:08 +0200
+Subject: [PATCH nf-next v3 2/6] net: netfilter: nf_flow_table: set inner
+ protocol when popping tunnel header
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] dpll: reject a reference sync pin which is not on the
- pin's dpll
-To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, vadim.fedorenko@linux.dev,
- arkadiusz.kubalewski@intel.com, jiri@resnulli.us, milena.olech@intel.com,
- przemyslaw.kitszel@intel.com
-References: <20260915213047.1352286-1-kuba@kernel.org>
-Content-Language: en-US
-From: Ivan Vecera <ivecera@redhat.com>
-In-Reply-To: <20260915213047.1352286-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Message-Id: <20260917-nf-flowtable-sw-accel-ip6ip-sit-preliminary-v3-2-fd2ea96fac7d@oss.qualcomm.com>
+References: <20260917-nf-flowtable-sw-accel-ip6ip-sit-preliminary-v3-0-fd2ea96fac7d@oss.qualcomm.com>
+In-Reply-To: <20260917-nf-flowtable-sw-accel-ip6ip-sit-preliminary-v3-0-fd2ea96fac7d@oss.qualcomm.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
+        Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Andrew Lunn <andrew+netdev@lunn.ch>, David Ahern <dsahern@kernel.org>,
+        Ido Schimmel <idosch@nvidia.com>
+Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        netdev@vger.kernel.org,
+        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Proofpoint-ORIG-GUID: 8Yr4kvfs9lgeqU5oAQmokzVtzeYO667F
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE3MDExNSBTYWx0ZWRfXwbPPOyia5cwT
+ jiJEgwaJtJa3NVwl8pQb7AToQYwNHaW4DL6uNJos3tJVIscnz/vin7wmKX6Y9oG3swEoFM1cK9m
+ wzHgMMRKt92zLgNA7Xm0NhMXw/QgQDQ=
+X-Proofpoint-GUID: 8Yr4kvfs9lgeqU5oAQmokzVtzeYO667F
+X-Authority-Analysis: v=2.4 cv=dOQzC+Zb c=1 sm=1 tr=0 ts=6aaba4f3 cx=c_pps
+ a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
+ a=EUspDBNiAAAA:8 a=gKarwEfFoU5_EcFYj1IA:9 a=QEXdDO2ut3YA:10
+ a=PEH46H7Ffwr30OY-TuGO:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE3MDExNSBTYWx0ZWRfX+d8RgcXZhs0d
+ cFsPCFLp9/CVilu4QEORjOMhbiQ2mpbxPXMAJXzddpFN525NCKsKnAQjYoOLZfCTtievZiOe5dx
+ wfxqNtLkwO9yOgpwBVav4CW9PeOJ1mKeUtBa13pb2gJv8ga3ZwJQMlDbRXqUMLKcycFiOftGmIG
+ 9siHQOF4N06cja+i+yXB7vSjNCme7EgAAvQZGA9zLfyKVc+nm9KbfAJpKjfr/9gsqNqjaCsHbOO
+ BeCeSNMtwVK+m6eFw/ncrySbji3Mj7Pd0Lkj4wEW8Qdn0FA+4U86MZKAI4QjG270G83n2e2cK9l
+ IyRkWmxa1VFdFeIPh0PzhJuX4B85TnmsQS3WsnO51acb/HECp4pgL3JmGounaY1gQEvn7nWDqex
+ KrF6RiXEYgOImJAswLS/BdeMT1tj799YMyrkLD8bbf/qTsIi4FKSYYQojScIIKY58ReJvfUIDHl
+ HtRumFj+bYRDYOqiRug==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-17_01,2026-09-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 suspectscore=0 malwarescore=0 priorityscore=1501 phishscore=0
+ spamscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609170115
 
-On 9/15/26 11:30 PM, Jakub Kicinski wrote:
-> dpll_pin_ref_sync_state_set() resolves the partner's driver private data
-> with dpll_pin_on_dpll_priv() and passes the result to ref_sync_get() and
-> ref_sync_set() without looking at it. The helper returns NULL when the
-> partner holds no ref on that dpll. Of the two drivers implementing the
-> feature only zl3073x dereferences the pointer (sync_pin->id); ice ignores
-> it, so ice cannot fault here.
-> 
-> The NULL is a teardown race, not a steady state - zl3073x registers every
-> input pin with every channel, so the partner is normally present on the
-> dpll the base pin resolves to. zl3073x_dev_stop() unregisters pins one at
-> a time, taking and dropping dpll_lock for each, and between the partner's
-> turn and the base pin's the partner is out of that dpll's pin_refs while
-> still registered with the channels not yet torn down, so
-> dpll_pin_available() keeps passing. That path is not only driver removal:
-> devlink reload and devlink dev flash both run zl3073x_dev_stop().
-> 
-> Reproduced by holding that state open with a mock dpll device, which is
-> where the frame name comes from:
-> 
->   BUG: kernel NULL pointer dereference, address: 0000000000000000
->   Oops: Oops: 0000 [#1] SMP NOPTI
->   RIP: 0010:mock_ref_sync_get+0x5/0x30
->   Call Trace:
->    <TASK>
->    dpll_pin_ref_sync_set+0x19f/0x4a0
->    dpll_nl_pin_set_doit+0x17d/0x840
->    genl_family_rcv_msg_doit+0xd6/0x130
->    genl_rcv_msg+0x181/0x2b0
->    netlink_rcv_skb+0x55/0x100
->    genl_rcv+0x23/0x30
->    netlink_unicast+0x24d/0x370
->    netlink_sendmsg+0x1e2/0x420
->    __sys_sendto+0x1db/0x1f0
->    __x64_sys_sendto+0x1f/0x30
->    do_syscall_64+0xe1/0x490
-> 
-> Commit d2e914a4a0d0 ("dpll: fix NULL pointer dereference in
-> dpll_msg_add_pin_ref_sync()") added the same guard to the read side, which
-> the kernel walks into by itself because the delete notification is emitted
-> from inside the unregister; the write side needs a pin-set to land in the
-> window and was left alone. Test the priv rather than look up pin_refs
-> directly, so that the two halves key off the same condition.
-> 
-> Fixes: 58256a26bfb3 ("dpll: add reference sync get/set")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> CC: vadim.fedorenko@linux.dev
-> CC: arkadiusz.kubalewski@intel.com
-> CC: jiri@resnulli.us
-> CC: ivecera@redhat.com
-> CC: milena.olech@intel.com
-> CC: przemyslaw.kitszel@intel.com
+Pop the outer tunnel header and set skb->protocol to the inner protocol
+derived from ctx->tun.inner_proto in nf_flow_ip_tunnel_pop(), instead of
+bailing out unless the tunnel carries IP-in-IP or IPv6-in-IPv6.
+This is a preliminary patch to support IPv4 over IPv6 and SIT tunnel
+flowtable offload.
 
-Reviewed-by: Ivan Vecera <ivecera@redhat.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+---
+ net/netfilter/nf_flow_table_ip.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
+index 42e8de696474..cd636b4cf74b 100644
+--- a/net/netfilter/nf_flow_table_ip.c
++++ b/net/netfilter/nf_flow_table_ip.c
+@@ -372,6 +372,11 @@ static void nf_flow_ip_tunnel_pop(struct nf_flowtable_ctx *ctx,
+ 
+ 	skb_pull(skb, ctx->tun.hdr_size);
+ 	skb_reset_network_header(skb);
++
++	if (ctx->tun.inner_proto == IPPROTO_IPIP)
++		skb->protocol = htons(ETH_P_IP);
++	else
++		skb->protocol = htons(ETH_P_IPV6);
+ }
+ 
+ static bool nf_flow_skb_encap_protocol(struct nf_flowtable_ctx *ctx,
+
+-- 
+2.55.0
 
