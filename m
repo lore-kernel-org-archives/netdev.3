@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3F4131A555;
-	Thu, 17 Sep 2026 00:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD48735AC0E;
+	Thu, 17 Sep 2026 00:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789605674; cv=none; b=Jt1Q9uzpWAWsN0D8r1hKyh6NfX49vEys/AZ0HfgsrE1vgg6vOj3nEaWTKsQ5OW2RuKVoUFGyu4p6n8FpfDQOo5jqUgkmJiWcHz/PHJ2bQRBdNwXcewMj9XtiHLwCpdlIrI9PUZ7yCLHfQMtQzheWmWBWgoR9X6qB5VGVerlXOyM=
+	t=1789605676; cv=none; b=sYbuRaUFX/zPKRkU1s+84nJypJtTgCGq3zy+GHwiG3Ga3B6xY++mQyVSBL/b504ASqgnZ+D9jy7DZy8Yd1CmNegv2YvioGrBuUPXiYbzJKYqVni6W0TATBLeQLI6oYWSkQWRD/uRXctQO1LGmJvnjKHl6fVgpmThGrME0xEe2bI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789605674; c=relaxed/simple;
-	bh=nv8ehzXNWQ0YNPXGG1PuuM/QJ9hcptY2hc36fynuM4w=;
+	s=arc-20240116; t=1789605676; c=relaxed/simple;
+	bh=TMYrpy/+RZqUoXo/yVjHs13BjMWZ6p/GEKf3aFMKpbo=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=TZS75eFWyPs1VvDzgB69UKPpMdby3tSO15ZO0iiP0+ATkR3XujIYsLFW+5bAzhEzVxAHiy2eTWm6NEHn8Gz25tSkSmwoWLnyXwr+X/EPb/03/XhjIwOjy4zNiqYhTa4NoZAsoJxHnrkIZRfPMNTGuyls8T4BsxW/qHEvcxApHzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XbpixoQS; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=HtSGL9hZwINo+id+WHGJaR7XB6FBviFBhGLM4GgTtdZqcH2tVqub0tEiECQlkPUFyJIGszHT6lDOapLXF6uwZMcoYea2vmnmTC52oF/zFA/I1aMYKGbTJQdv4gMDzEEyjloHF/SPU0CPhHPtfzuo27LVcoHCU4swN0TchD4tgqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K57Fxd0y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XbpixoQS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79111F00893;
-	Thu, 17 Sep 2026 00:41:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K57Fxd0y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8EC1F000FF;
+	Thu, 17 Sep 2026 00:41:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789605673;
-	bh=KLVHZY0CAS1n0MDo2625TmenwP1t/VjdqFNKwIwcANM=;
+	s=k20260515; t=1789605675;
+	bh=UnADkelt0yYoNkuSuv/e2FHJ3nkCeLtPp+9a+Y1YXrM=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=XbpixoQSLQtf6CIrx8/KS7F4TMM4kL0JDtNtynizKwpCcBAz8Q6B2sbkCnYcrZ9B7
-	 0AJeM5uaIfJIoSgsbaDokTOnlsACFXbHyfZsNr+qdQD6Nv1XRrK2NlEUuFBrxTnkOF
-	 abpOQkSYp+xHVHOJVrSy5mKRMV1gPecgkTneebafBMhfOjLP0uwhNBJguY4IyduNVN
-	 q2vPjvXHC0J7qm1XbSLmOwbR1dtKVSXdua21TStABZaD+qWo+DgilCLl6YHdE8Dj0p
-	 m8+DKMRNCPdFHaJAnpC70+Xh+vPf7ktopA3Hcme+JhsmGYiQHiObp7gnsPRrp8jCuL
-	 WsAOqgYZahw0w==
+	b=K57Fxd0yjrzw2dmwFQKiARHq0jo3UnX0xTgnPQUrTOi9jjNRgBS7HBF/7UjSMYxTF
+	 uJzy+bw6/tIS2t9wSH0W/vcxxNlEBqYHzhJV+3ZNAPzf8xMxcgk6lVEl7SydMMRDap
+	 LEyMQ/ncynYXMYAYp5yw/YEt8bWNZODfFPALObTbl2yA5xVCxrfS2h6mYqUEXJmj7o
+	 WL9SPlR6x8/GAZESyPgKI/AfJlvxbtb9imAWVGFOiXImRHZW7HFOFei6lB/m0aT5i0
+	 qqOoxlsFiZ4pcWCKPyX+hX+9wuOts5pvrRjrcGGAsfrFQMV3oZDEYiCG/hkuMkgVdi
+	 NJY/UXjsP/rIw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D089D39E9601;
-	Thu, 17 Sep 2026 00:40:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56BA339E9601;
+	Thu, 17 Sep 2026 00:40:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,38 +37,43 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] mptcp: return sk_wait_data() errors from recvmsg()
+Subject: Re: [PATCH net-next] net: netsec: fix device_node reference leak on
+ phy_np
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178960560738.3354472.16740899411483597781.git-patchwork-notify@kernel.org>
-Date: Thu, 17 Sep 2026 00:40:07 +0000
-References: <20260913-b4-send-mptcp-recv-error-v1-1-4eaa3684a8b8@gmail.com>
-In-Reply-To: <20260913-b4-send-mptcp-recv-error-v1-1-4eaa3684a8b8@gmail.com>
-To: Mark Amirkan <markdamirkan@gmail.com>
-Cc: matttbe@kernel.org, martineau@kernel.org, mptcp@lists.linux.dev,
- kuba@kernel.org, geliang@kernel.org, davem@davemloft.net, horms@kernel.org,
- linux-kernel@vger.kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- edumazet@google.com
+ <178960560887.3354472.8942406926487476518.git-patchwork-notify@kernel.org>
+Date: Thu, 17 Sep 2026 00:40:08 +0000
+References: <20260913064102.37452-1-yigejiang86@gmail.com>
+In-Reply-To: <20260913064102.37452-1-yigejiang86@gmail.com>
+To: Yige Jiang <yigejiang86@gmail.com>
+Cc: netdev@vger.kernel.org, ilias.apalodimas@linaro.org,
+ kojima.masahisa@socionext.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sun, 13 Sep 2026 10:30:05 +0000 you wrote:
-> From: Mark Amirkan <markdamirkan@gmail.com>
+On Sun, 13 Sep 2026 14:41:02 +0800 you wrote:
+> netsec_of_probe() takes a reference on the PHY device_node with
+> of_parse_phandle() and stores it in priv->phy_np, but the driver never
+> drops it.  One device_node reference is leaked per probe, on the success
+> path as well as on every error path reached after netsec_of_probe().
 > 
-> Commit 581302298524 ("mptcp: error out earlier on disconnect") made
-> mptcp_recvmsg() stop when sk_wait_data() returns an error.  The error is
-> stored in err, but the function then jumps to a path which returns
-> copied.  When no data was copied, recvmsg() therefore returns zero and
-> reports a false EOF.
+> Neither consumer takes ownership.  of_mdio_parse_addr() is a static
+> inline taking a const struct device_node * that only reads the "reg"
+> property.  of_phy_connect() borrows as well: of_phy_get_and_connect() in
+> drivers/net/mdio/of_mdio.c brackets its own call with of_node_get() at
+> :364 and of_node_put() at :373, which would be a double put if
+> of_phy_connect() consumed the reference.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] mptcp: return sk_wait_data() errors from recvmsg()
-    https://git.kernel.org/netdev/net/c/60404266ef3e
+  - [net-next] net: netsec: fix device_node reference leak on phy_np
+    https://git.kernel.org/netdev/net/c/5ae916fabca1
 
 You are awesome, thank you!
 -- 
