@@ -1,86 +1,86 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.5])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A869F3B6BE3
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 16:25:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFA54C10C4
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 16:32:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789662357; cv=fail; b=O/9C0WUTqFWrPw2I4tiYd0kLL65ghO79Pz5bM6xrvJxSIvMjB+YHmgvlCStqjP5ZcSOK1I7rB+m17lJHIZiUVhNqvGsVS4jF3QitRCPOOZbo/fcQHesRer2CyVvEqagQpWgVohmliHlvwE9Gb0oAb19vW3SPokIar7X7wb0snsc=
+	t=1789662754; cv=fail; b=Oio2k0aaGSd1Ppuy6l3trcKzsSvr+7hzQgVoTh/KaLhw1oB1f8Gwy+VoJe9hVisltggJkZ4BUM6mew//smfFghpRuOFxux0kjlVMTyCnjuqHkPYR0QmcvyGVFhTesbLVpQDC/GMVnFEVVVnCAVKk+RNes7/zFJ9AVqK/+/6cwXs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789662357; c=relaxed/simple;
-	bh=9NVlRe0sxev9UTW1FSUihg/l5PsA/NEB9qT0AEoTQ2c=;
+	s=arc-20240116; t=1789662754; c=relaxed/simple;
+	bh=Qi/6dKQ5ZYOUZyw55v1jZy+Qz2RbxRJ39qBMSeUKBMQ=;
 	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=K6ytKcFsZL/xsKyBmFRFVmaZwDw4R8MMvOYskapJb5RMj75/uGhju+u/yRTCmQtUKO9qTkkLNgviXBkL1Zwgteg43P5SR4t5Sb+l3C/EYwWT+v1JfOyPyMTAPc7XrOAjdOcYmHCfiJ68fUCtuYxb74VMkMYhzpDwcIylgitdWxA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gab0ostN; arc=fail smtp.client-ip=192.198.163.5
+	 Content-Type:MIME-Version; b=oE8PVm8nKAfzaQPW0OwW0CB5Rn8djgvnkt5QeQH2o5npr1ViyoiDxxBOP8sig9KANUqxDf8d5l9B2rqE/hJ0Om+6XRaOEF1EI6lsuALVKkqrRova7QbYl4gu79gQiOM8DJdzozPCGg4ZjnmCEd9RQUYc8VV6Tr+HeIsm9ow6QRU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=map87Zbw; arc=fail smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gab0ostN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="map87Zbw"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789662354; x=1821198354;
+  t=1789662752; x=1821198752;
   h=message-id:date:subject:to:cc:references:from:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=9NVlRe0sxev9UTW1FSUihg/l5PsA/NEB9qT0AEoTQ2c=;
-  b=Gab0ostNafKff6CQjB3bIrY8bBv1L+0gwNy8AOjMlLSli3HYS2oUbNRI
-   XBYw99LIgmp/lxugFE9HaM4RCqsEznjQFqEFMhkTLaKdULWb/+lte+yww
-   pQHKFnGrc/wYolePT8Z2wHhxrWXzp1sxZyAQoZMcqA44Z2zDDxIIvesAr
-   acr0iC+PzSxIYk4FUuL5aCAS5jkpDrovcNx9Ah7vkpFS0ItGAfH0XRwlY
-   BqgfExVYYS8LkH+4WoAYoZ4dnhw6zxejDsduZWySPw71xLQ85w7E+UU9v
-   jk2Z8h8IhsxKyazgkMfFvMTQOuknja/DSlyLLtEsvd8oK7r8ON1rkyM61
-   A==;
-X-CSE-ConnectionGUID: HomGrSnYR6+krRcKkvPsBQ==
-X-CSE-MsgGUID: 1SfCa22PRZuREKwxAKzGsA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="607119"
+  bh=Qi/6dKQ5ZYOUZyw55v1jZy+Qz2RbxRJ39qBMSeUKBMQ=;
+  b=map87ZbwzLL3O8TbZ8z3zVAlxZj1/aapyXY7TDna0+Px59iq9Afa2lOV
+   NE5+fbU4lM7vX8rfigSH67+GEdFtXB8kOalxWo+luNJQLx78zdCcLJuiY
+   yL+a/7+8xLl/RcuW5J/C/WMCgN3vTrFXWT5ACKH6ciEEDbacgu2ahdZoa
+   cb+XmLdhZ4olq0E23y/ZRrKdioDeRy1TXQoNi+JkdhphOugqkv4N7sClv
+   J18UmlHBt3SexP0nnTE8anTwoC9gDArES3vLUlC6YDlrCbjOytLOww1Dl
+   iZDNonLu2JjFmUIIniRasRcKFG/fcP+RZL2BzC9y8FJHYjapxWTXWE/UQ
+   Q==;
+X-CSE-ConnectionGUID: aMA/iBNPR8iQl2bnTSw3nQ==
+X-CSE-MsgGUID: PbNUiFDISaexA22mHD4+nw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="93935917"
 X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="607119"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa115.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 09:25:53 -0700
-X-CSE-ConnectionGUID: pwQaX3cfQ1iL6pPKy7UFPg==
-X-CSE-MsgGUID: 85TucmbsREyJJlpq6o8wKA==
+   d="scan'208";a="93935917"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 09:32:03 -0700
+X-CSE-ConnectionGUID: c4ZNXaWFSZKCO/LjQhrSuw==
+X-CSE-MsgGUID: XrPYRRKuTKeK5faH0aOF1A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="270213192"
+   d="scan'208";a="297385514"
 Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 09:25:53 -0700
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 09:32:03 -0700
 Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
  ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Thu, 17 Sep 2026 09:25:52 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ 15.2.2562.46; Thu, 17 Sep 2026 09:32:02 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
  ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Thu, 17 Sep 2026 09:25:52 -0700
-Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.31) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ 15.2.2562.46 via Frontend Transport; Thu, 17 Sep 2026 09:32:02 -0700
+Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.24) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Thu, 17 Sep 2026 09:25:51 -0700
+ 15.2.2562.46; Thu, 17 Sep 2026 09:32:02 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=N1v0llUFla+JHkeKUIQ8tz9YM861FayO96u4kxmktncoEjRRk+/vP/DSAJU8V/0ZKpONdEekHHsMg4tNgS0Kj3C0s7+wgJVYeLh5FJwnCdxyNxoyxG/NWqh5Fe0zZJUqC3aVp2bB3WCbzeYnATZAVscoJAK8wfU9uloEXBRmtEh7Gek4/+grIkjzMvMDsLN37us2sUtrhvuevNmiC1gr+czhKGZo3FLT4ugtfZymAURecJMXR4pEyrAX1xGkTlJnUImXQo8NDmF9Y5AHziYgmr7U+MLhfy2/oHXwunx/rfbA+vHvcjhyh1y1Qwr4Fz1nRQXJN6+ZLURrjsnDVdzlIA==
+ b=xESupYbVmcI8nzDMOcNCp4bbkxZUpmDYsy7uD0lHv/un5lIL3EgnVW4V+ZpHTzRsrG5FleNHMlij/je3tbUc2LScx+kKmhqiZGChkKNGXs0FicCA9u4BcOp65tH6W+vLkQBLSjc9MoFw4VgiDJC7PPoPUC8yn1eNrsRRLiNSjfYOwrCyxhqlGpGySbCv6mSonNsIsbnLDtxkzc2dG9ryd1s3KThJ/dXl72A4OZPmdIqjMU++zP7Of0RYtZDUmsPEySNiDDtncFRDwBkrmhod2V4M0Dl9XKWewFBapLHBeYC1fNnabDzOr2n6i2G6/TmLtXHOFwSWY00RGDcjgH0+Ig==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yndF+tW7W8V2CiLmm5Zn370kX/Xon3d8YUs05Fmqdk4=;
- b=nSm3mzeuodOkMsXMr3NKbOlqnTj5Lg7ftIVcyIiaKL6GOf3hCoFEadskca2zgA1ueNo59MmEdr5uPZBdJRZmypFMZxEhsJRzm3bhJ0p/3febXIyIu7ZwvYA6P1ZSge6vCxz7I0+Jj0xyxzZN9cMj0W9pHAEftAi7GoSJVtpp4twmjis3ffFR8bpvj+gaKnZbiNg19FkmgRbfA2hf04JvVMjCsUvG1K842yuaKLN/55Hr/gBh7CUoQc8OF/si5r1GP5bap/bo1zhU3nU1GdOr0+1ZrKSMuhzPGkc4FODXN9NK4Tv1uQn8TxUnAmON11r8cCAuQszPHOUjYcjmTfxEFw==
+ bh=9I1G95JniG4pIBmWa1TR2cFjyYLMygFSqK83Y8aQoes=;
+ b=TVU1k0Z0GmMuK+uSKiPwgu4KmgavbugRR2oVrfCMUWI215zuuPQlTnKqhvawdYpOAyGkAe7m8DRa5A2CRgne1hVRXziQQ523t9UJ8lkPyVmULRY2q2i++CXhHaAUCjcJ1u4I8B4GcdZoleR4/kjXfblP745Z9N36np5ZKJB8daKJlt4a9cUvcw2kHdwKw+uc0tud060Vp9OZjZFFyxkEnRLwsh2V6OEetOJClhpQUjoNxgD7oglljiuflcsh2qRocc5lwzV7amnfGtvb7WQWqF4GVFwS/XzMIb+ST7J+SENdiKnSX2bDUyB9WlpUcXpwG6dwcEomaaInUH7o44lnCg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
- by DSWPR11MB9740.namprd11.prod.outlook.com (2603:10b6:8:355::18) with
+ by CO1PR11MB5154.namprd11.prod.outlook.com (2603:10b6:303:99::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.12; Thu, 17 Sep
- 2026 16:25:48 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Thu, 17 Sep
+ 2026 16:31:58 +0000
 Received: from DS0PR11MB7381.namprd11.prod.outlook.com
  ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
  ([fe80::4c39:dfe6:d6dc:6f58%6]) with mapi id 15.21.0406.007; Thu, 17 Sep 2026
- 16:25:48 +0000
-Message-ID: <ad6bffd3-c4dd-48ef-8f23-a521af7d0707@intel.com>
-Date: Thu, 17 Sep 2026 09:25:45 -0700
+ 16:31:58 +0000
+Message-ID: <098b8650-1c43-41d5-b0e5-bc8d73cadfc4@intel.com>
+Date: Thu, 17 Sep 2026 09:31:56 -0700
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 04/15] ice: E822: keep Tx timestamps disabled during
- offset calibration
+Subject: Re: [PATCH net 05/15] ice: E822: cancel offset verification work
+ during reset preparation
 To: Jakub Kicinski <kuba@kernel.org>, <anthony.l.nguyen@intel.com>
 CC: <davem@davemloft.net>, <pabeni@redhat.com>, <edumazet@google.com>,
 	<andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>,
@@ -89,15 +89,15 @@ CC: <davem@davemloft.net>, <pabeni@redhat.com>, <edumazet@google.com>,
 	<arkadiusz.kubalewski@intel.com>, <poros@redhat.com>,
 	<richardcochran@gmail.com>, <horms@kernel.org>, <pmenzel@molgen.mpg.de>,
 	<aleksandr.loktionov@intel.com>, <alexander.nowlin@intel.com>
-References: <20260911003430.3386340-5-anthony.l.nguyen@intel.com>
- <20260916011215.1632391-1-kuba@kernel.org>
+References: <20260911003430.3386340-6-anthony.l.nguyen@intel.com>
+ <20260916011216.1632452-1-kuba@kernel.org>
 From: Jacob Keller <jacob.e.keller@intel.com>
 Content-Language: en-US
-In-Reply-To: <20260916011215.1632391-1-kuba@kernel.org>
+In-Reply-To: <20260916011216.1632452-1-kuba@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR04CA0362.namprd04.prod.outlook.com
- (2603:10b6:303:81::7) To DS0PR11MB7381.namprd11.prod.outlook.com
+X-ClientProxiedBy: MW4PR04CA0293.namprd04.prod.outlook.com
+ (2603:10b6:303:89::28) To DS0PR11MB7381.namprd11.prod.outlook.com
  (2603:10b6:8:134::14)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -106,291 +106,293 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|DSWPR11MB9740:EE_
-X-MS-Office365-Filtering-Correlation-Id: e9c41546-40cd-4e0b-fe1f-08df14d854e3
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|CO1PR11MB5154:EE_
+X-MS-Office365-Filtering-Correlation-Id: 442abe54-0af0-453c-eb65-08df14d931cd
 X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024|23010399003|6133799003|10067099003|5023799004|11063799006|4143699003|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: q60Xx6ZFFiicqypXRTd8cGVjl/MlDMl/xho5yZxoXRGoqwkroDmVxi3U1OXy2Pti8UkNn+jMFsKnDTWxd8j8IWw4Cqllhm2VxTDBpNy8xmDBIVw8NvWYKzBFnrTfDVkmRNs33h7Gmy6Y8KzQ28PzWTh5uahx62Fj1Gl7QUbFhHXeFXs+5add2CEps3moCddFDaiCZnly0HriitYn3vAjM+HdFf6pq7vR+WxJ68QF5/baTA+bYAgFFa7sx1CnFjwgKTnWLiyE2diLEMKosWFYYcvxjUYDtyb/uJPh1G88ns7n3TgraMnqG5u3xen8qhEdNQ7KpmIu9bmm8Gsec9PmoNFgp1Zlrcd7H3WQ+6UI7kql26vNuNaChW+woDrqK2M7CJArI9WJ3NeytAMgZxUc1AHE/NEofqlyDApMdU3HTIM6O549GYrzQ4eSIhfz8bDdo2691hKOSNoeRw+S5uxjAudptRs/hdyATcjxGCXK+THubu6fMcFvM74zyR0mRgHbnQixUtVXWEaVigBBl7wAumO8Hb7rfFIn31KQSFb9ScCI+7v50TL6Ypq/tJo4MBAZng44Mmo9vcimPe4SA3X7+XTPwjfnTQTn7EJi0+bKULp9V8maN/iCMOJDOl6BizJ6mJ8yHkAxJXAV4H9gFGV1r0AdxJOG7SBmMK0qdYjfdjg=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(23010399003)(6133799003)(10067099003)(5023799004)(11063799006)(4143699003)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|366016|22082099003|18002099003|11063799006|5023799004|4143699003|56012099006|3023799007|6133799003|10067099003;
+X-Microsoft-Antispam-Message-Info: izvqHv2rOHOgInrWeQB+kml66MXo3o0iM2Lx0GZD24RwMVSKFtJRUnFmxFc6kxv9B5Pc/mZf18bts1d/e8JLQLkfNG1h7q6JKcRmH5yXFEb1DNDu8qgvvpl4qBJRJZ++BcWZSgVeLwaM/LESwJlvAoJtkEumWNC+mlhMLqRNe7kjcK0B7zHOwy/vdU4n/2aFYjm2erbkPX+3K+vGVEahD7jbz/E++wDUsnY3LRiihu+fhYB+2PH8+wOgryBtTimZdbxjhjUJU+lIqaAsambVqrWPR0MlV0xCENiUvjD+zzcFERalfG14VIY+FwXHdSXIr0URt7nnwz61IDijsoqEO7GIEb3h11YoScRhGMqCDAe/UlXgrWaHEdeYa/1wwcuNoWfCJS+ROlIzJpXEum7CxXzvwvNXbwAnMqZO8YmnNZkq0IgvBP1kLjAFOH7ODaEV4BLvxn/HK+IjGr+62SiJAQwLBV00VGEAcpkijDooE243mnbe+a2RneP19vKxWLk4oMxBhLM+A072RRCZAvv2ukMPEQlFhwh+jpFXzZugFn3YkuJVYWaD98ZocvRkBzAFLgiYU8CZcZAq93PjiV9svxkUmpGvbsHNi/JCPq82kSagYNGRbURY4KA4QnROctteU6R+ydr+OzKgNbuMmBOSpXtuJAelJeg8d2FtetG2sO4=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(366016)(22082099003)(18002099003)(11063799006)(5023799004)(4143699003)(56012099006)(3023799007)(6133799003)(10067099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?d0FGa0dMMGo2dXdVaW9CZlhWQVNYcEw5bGdELzd5N2UzWEhWaVZlU0RIMDlq?=
- =?utf-8?B?a0xUam91WEx3ZERCTGdxV2Rpc0VKWnVOZ2xlQ1pXZzU2Z1RHcFA3all4b1RN?=
- =?utf-8?B?Z2t3dld4Z3RUWGNQY2ZJV0hEL05kSTVVK2lSVDNBQ1RROFJHTUhnVDR3WWVN?=
- =?utf-8?B?bTB0Y1FmeTJwS1plaE53N2ZWNU16TFBaM3pIbk9FV3AxQ3RHMk8wNXJlN1Fh?=
- =?utf-8?B?TDBLbEswOHlRVHplYnh4Q05jYXB4dzN3Z2l5aGovVlhnODFnazd5dUtFbmI3?=
- =?utf-8?B?dHUrY3U4akRPTUNSZzR2UTZWWE9HWU5pU0VKeWw4OWxRdHJMVnQvRGR4aHBi?=
- =?utf-8?B?MXc1c3pTUGE1YXY2Umtjd2lqTGVXZWhYcFExenBqSHc1aDExdExxZnMyWVJs?=
- =?utf-8?B?RG1McVdHc0RDUytLcTRjTWR0ek91WHBKWkt2MG9jNXpmeHZyWUQ4RUkxWld4?=
- =?utf-8?B?YkVPVjJsRzM0djloVG9EbDgyMHRhcTBvMmFjRncwbVUzWkVzU2FUaXBiVGkw?=
- =?utf-8?B?MFpWSkFQeGt2Z0xGZWNRRHRIVU1tQ1pOMDkwK3pwRk5ZZVdkL3pXWnhrL3Z0?=
- =?utf-8?B?bXhscm1qMC8weWIrMS9YQ0ZvWGZQaml6aUlkRCtpNHl6UklGQURqSis1d2JP?=
- =?utf-8?B?Z0lqVXRCeC9JUFNBdXhsNVRNdE9tdlJHd0pyTzkvRzNONFNUTElLcGFKSHJw?=
- =?utf-8?B?UUU0aGFSWTd0V2s1RzUxOTNjUzBLTUh4UVFUSnBUaTgycGZIWWFWSlBXZGly?=
- =?utf-8?B?VHhMYzNweER3MUpTODI2UVVFV2R1Q3BhaHRvZ3I3UnM3eWRwRDJqeThqMEQw?=
- =?utf-8?B?MUNNS2JHWCtwcVlJd3FqSGFya0poeGNsMkxXYkk5YzUyQTR2MmRaUG5DeWdu?=
- =?utf-8?B?Zmo4a01VT28zWnpFdXNzWWxFdjhLK04yVGJkU1NFVEplbUdFdUN5akdVUkpE?=
- =?utf-8?B?d3pNU1M4cStDektMbTU1bnQvYmZRc2MxemlGMkUvSzF0WWlsVU9uL0MyUTFZ?=
- =?utf-8?B?NXRvZUJJTy8ycGtVQktwUGNuQ0xjRGxJZHVFTUl1UkVoYm9yZzUxSkRyVkVq?=
- =?utf-8?B?MHBoeThsejVqQWwxUTd3UkdtSXBzWitMZnZOQ2ltOFZqdUYyaEljS0RJQ0t3?=
- =?utf-8?B?UndIUmZ3N0FqdkZkaG5idXdqdFcyOWZsaEhUNUFKY2JEVmlWWHdtUExsdlRz?=
- =?utf-8?B?dTBEUjZqZXBFbVg0OGtLZ0ZsYStDSUpJcU1TdzU5WVVwd1FRYkk1M3pWM2J0?=
- =?utf-8?B?SmdEMk41SVZpWWtGMXBuaE5VYkpwTWZMTGU4NFF4ZTdUZkl5RXI4NGxxNlVT?=
- =?utf-8?B?dHNGR3NEbzBtMzFIdWZTQUhob2lnWVFWUjQxaHBLUWlXUkJWNXJFQUJvZnVy?=
- =?utf-8?B?V0NyV2p4Vk9qSDlrZzY2SGEvMjlxdTl0U0JZM09IUEMrU082ODluRUQ4UEZy?=
- =?utf-8?B?NGkxTVkyUWZZYTVSRmlDL0JjMnZqTmRCYVEyYmZ2MFVMRm9rcmEzc1M4bUFC?=
- =?utf-8?B?TTRZVG5wK0JJNzVQQTFXUE0xWitkUGJTSUlEMUsreWlrUGdINUlGRWNTd00z?=
- =?utf-8?B?a1lBMDJHbVpzLzNqbHdzSk4ybEZSU2N1d0hnaHdOd0NweitheTRXZEpLTjNW?=
- =?utf-8?B?czY2S0pTZ3VUTm5nQ2s1NiswM1EvQ1BvMzdjeDVOUVMwN3RQc05IU29ZTlow?=
- =?utf-8?B?M3NqYlNxM05ZSVcvcTY0dVRQcGh0TlVzSXMzZ3MxMmswdnRHRnpZNzNvNFp5?=
- =?utf-8?B?aEk0dk40SFBDdDlrczNIdXpzYmxldkxtT0Jobm1VYW9XOCszZHNaekxRTysx?=
- =?utf-8?B?N2V0czhucTRsUUk2OGJuZjFHQ013Mzc1Vk9xMWhLV0NFQTZjalA4aEs2S2pB?=
- =?utf-8?B?c003NmZXUTB4Z3pPSGZIamNDS1NIWVJsVVZoR0xLRG1FRGpaYm1xd3dnOGVo?=
- =?utf-8?B?K0xuTGluYzNhSm5ET0RoSDhhZmhWWkVOODlDRDk0U2JtWlpORlFIRGYxZnpP?=
- =?utf-8?B?TXBVc0RSUjdlWXlyWDBxUXROQzFVYWxxblF4WmZyK0FieU9QU1YrRzRDK2NZ?=
- =?utf-8?B?aHZXRk9FR3c5WFJsMS92ZFB5Q04wZ2lkZGFBbzhwRG9wSGZvendsV01TMTU5?=
- =?utf-8?B?OEZab0pWSEZSNW9QcDBIeWxNK2lEcUJpRnBwRVNLWWdwYlBXQkNWeEg5SlhH?=
- =?utf-8?B?R2JvZ2s2ZVFFbmZ4VmJXdit3UGlNODdQUm1mZjBPajViclJmcC90ZG1yVk9X?=
- =?utf-8?B?UnI4ZnVwRVBReHpXOWF4UXRhb2FtOGw2VVkvaUUvZzl0NCtTK1owNUk0QWNW?=
- =?utf-8?B?SVRoalBqZmVXSHhnNmtVa3dTUnNuOVRwVnJGMkliNUJ2eGlpWEgrN3FPQkdX?=
- =?utf-8?Q?CA3vHpItWxRhAC90=3D?=
-X-Exchange-RoutingPolicyChecked: aI4wPRkNxcDkquYb123GOUMdrhKgmOwkbYRS1kwmRsTIMlu+sbsDsBxmx8v9zR4up3aHfN/Y5Doc4mykE9TtYfyrfqZgka/0tprD7J5zjAE0kQsDi6wP3yNue6Pv2IzsANP2+1gnBvTHQD44K9Z9Mkra3wRhI/eJ1bxEMC5ceU3DLURMUJpwl1sITXdKtOPkHfuYO1HaVZGBr0m4fQ0yteJ/c/h2HJvLHv6GaRKCoi53D9NC+R+sZTzGw3RSceYO9V7g7lGllErpPv296PNE/fVwlXr6GR/4+eDAoKmRPgCwqpLPSeKDX5mdd5LvBMIhf3OB7IBrHXRUUuqU1rInmQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: e9c41546-40cd-4e0b-fe1f-08df14d854e3
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aEVLYmdvSlMyVUFrNjNmZVlZTHkwYk1qTkZMR0xWQnBvdE5ZMzNkaVRPKzJF?=
+ =?utf-8?B?ajlJTXFGWnhLUEZ4azNTaEN1M3VBek9QL2oyL0gxQUlIYzJCNk5peklyUVVK?=
+ =?utf-8?B?NjBCbW1OU2Z2VFc1SENlNkdMSy9LTUpPeENjMkhhQlJUZUxpeHRQYUlJN3Vh?=
+ =?utf-8?B?NVIyS0NZYlJoRnZpWUt6d0dYOWhPVkh6NXBOMEhKNjBsbElRQ285Y1hPSXc5?=
+ =?utf-8?B?cHRWQjUyTHNRRmUyNHYxQ2NZUVZYV0pkNjJMUzlXRkMycDIvemVkcCtnVmh4?=
+ =?utf-8?B?eTIzY1BlUkx5UUNWMU1RTG5SZEVNcXQ3c25mSFIvc0FHSFVTS0t1K0NvbG15?=
+ =?utf-8?B?blAvZGIyNkhqOERBd3lkOHZJYW5aVkt2SnJwWDdQSklUUWIvVHljcDJCVXVp?=
+ =?utf-8?B?WVBHRkxTc2pMeE12MXpoL0JhRUVUNVhyWFYreFFBaXA2YXAxV3lURU9qa2Nz?=
+ =?utf-8?B?c0JHdXJSTnVyOVlEdkFpaGxGcHUxNjdyM0tHaHo3QTJMQktlM0ZKQk5sTk5K?=
+ =?utf-8?B?ZUJEc09GMzJiYWRxaWRkUXpIeXZWYVcwZ1VTNHltTVFFS1dUOCtQUm5vaURY?=
+ =?utf-8?B?MnVXdjFmZE1JUHA1MVA4MzdtZDdkVHptczJNazBZMWVSSkQ2RE1STmRIMU53?=
+ =?utf-8?B?QkJxMHhDOE50OFcrb3gwU2ZERXU0QzFyTXlZaW5SemhpMTNNUUlaRUZUTGxO?=
+ =?utf-8?B?U25sQXdjVnVxVjZhckxjT2JhZnNLZTJEazlHTk5hdE1weTlTNC9qMmk5K0VF?=
+ =?utf-8?B?RncrNU9qcWtZODNLSUdnUE9FRXVPR1Y2QVNDSURnM0czNmgvRGpwUkFLNEcx?=
+ =?utf-8?B?ek9CODBQMGtNcXRTWWpQTGJ3UmJYVkE5NEt4ZlRSdkJreWI5WXJpaVROSEhD?=
+ =?utf-8?B?ZWRCQnZXR2drbUV0L0V2MW5FTFZhSko4MG1sSzcyd0FNY2NETWNyWDhETW94?=
+ =?utf-8?B?N0R4Z0trUHloOGhDNlZ5aWZiK216VkdsbUpxeEtDK1Z2dDZYVDFtOWVQMW9s?=
+ =?utf-8?B?QzNpL3UwZjNIYlVBSFFyQUR6R2k5aTZHS1N4OC9pdUE3MnAxeHVFbTNXbVJZ?=
+ =?utf-8?B?dUFJemg4WE5KcmMveG80ZWZ3MFRRUUo5dHE2SWZhRlFjMlNiOGNtMzZ6S05j?=
+ =?utf-8?B?Z1czKzNyYzhlUkJsZUxvQ3VVbWh5Nk9LenN1TEpYU1VnU1B1TmlxQkJIeHpl?=
+ =?utf-8?B?alE5a05tNGFUWUhCSXpWQ0dZdGtvRGtYWWlSMnZRb21WTnkrUHVZR0pnWC9O?=
+ =?utf-8?B?MnBwaUZ5SS95V0xFODJsZkM0LzA4WmpwWTRTYjdMTmxqb0c3NUxWUnFCU0Y4?=
+ =?utf-8?B?b2x1S1lzekY1QjV2V2FVaHIvZzc2SmRRaGFic3Q5UC8xMXd5Nmx3a1lwNE15?=
+ =?utf-8?B?bElXbEkramZxeElJRzVNMEQ4VDVxNHluNHY0Uk1iUklIRzF6ellwb3FEZEdJ?=
+ =?utf-8?B?V253dEFmT2xhZXBHa2wwak1FZ2tKNHpxM1krcmJqbi9HTktSdm1FaUxPYmZa?=
+ =?utf-8?B?d2tCUjVHQ0R0NlpaQ3VTeXhpS3NmVDN1SC9TRlQyME5reWFrK2hCd2c5ZUMr?=
+ =?utf-8?B?QWxDMFVsT0wySFNRU2hCZFV5S09ZVXVncWVNeDVNZFBhRTNYRkJ4MDA4eXNL?=
+ =?utf-8?B?Y1prSWhaVDE2Z3FKNFRkSlR0RHc2YlpGb1FVc1RkNzhza3pldlNRVWdiU1hP?=
+ =?utf-8?B?MjNOWjQxQm43Y1lTNHA4VlhVMGpBb1BCUmhNejRDbWlzQ3U4OVozZTZOU2k3?=
+ =?utf-8?B?SlB1dzJMTVp1OHdsNHhhb1Bkb1RYTjhwYVB5K0tLTTRTWGU5OHVTemlzNXor?=
+ =?utf-8?B?dlFrdEJSNlc0TFQ0WUpyY3FSQ3BEN0xLT0xxKy9VaWJxNmhTSFVUS2hYcWYw?=
+ =?utf-8?B?UE5yQTU1VUNqVWNES1BjVGtJdkZURFBsYVdyZi9VQWJsSlRxWDJmYUo0aFhF?=
+ =?utf-8?B?a29TQWF3U1I2aHVMcWR2YmhwUGtMY28yNjZTaG0xeFBUcmhYeGU5TjFsd2xU?=
+ =?utf-8?B?UFgvdFl4MFI2eVRKVmxBdG1FZlBJenptOFFMaUNPd0pLRG9XZTdXUjgyaHNW?=
+ =?utf-8?B?K2kvNmtWMndzNGtEMEFRdkt3MHNTVVFOODR0MWtoeG1TeTJsUlcyNDQ4a3Nh?=
+ =?utf-8?B?TDViMUhDcVFkNEl6WGpzeStyQUFJZis0VGFjNzhCNTkyL3gyWWtZSUxXZjlt?=
+ =?utf-8?B?QXJqUnlmSFBiRnN6WGJpUFBoZWRMMjcxUzdxVnAwK3ZqZlpIeTNJWXZjc01P?=
+ =?utf-8?B?aXZtVFczUXhzV0NsLzFHcGVreU9QeW9MRXVQZ1VWdm5iYjNSVUFJWmhqK2VM?=
+ =?utf-8?B?T0tvU3RNak9ySmtFYUp0U000L2JrTFpkajBOR0EvU2tiWGcvS2V4bXYxc2I5?=
+ =?utf-8?Q?QQEz1nFpbaak1PAk=3D?=
+X-Exchange-RoutingPolicyChecked: x49c81+Z+R3BdasPv0DEmBuB7LNZ2ex2tqhkP3cnyqEDi1uzHtgLb9hQRmtoYhwEAZ584+3LF1SmKK0UC9sCNpf93dr9fTbS9m3TgsAINnVhW2cGiQOzhd8/VXSZtKGHrrzQb0/VBtAMXACSF1AJ/Kjy34k064SknFxJ7m7ex3DHfXP5R50vhytYe2e4OLK11UP/mhPKBbPjepdsNLuRYKWk6q88EEVvyoy3hjFCQGoTNACNxOD/kRyQw9UnTJ8npZWy9wMXl7pNn2LF9koqNbWfw+CiDjkvptgsL/UQvtRnkQN3DdwtOlVMEBB7YyeOG0K4qvYhhzWaLmw+pVQDoQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 442abe54-0af0-453c-eb65-08df14d931cd
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 16:25:48.1550
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 16:31:58.7671
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VCe3ZEqmnXd/dpQbT5cUiPwYtUN9WUV7IaPP+UTvnwtHDxf8qiqAwn/vyEyNK1Xa0TEb2jGk0PTNszO3bfhwPuXk1QI9l5KzDsC8FmCv11U=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSWPR11MB9740
+X-MS-Exchange-CrossTenant-UserPrincipalName: nacEiEEvNYbw+iMeLWv3Osz2/y8sdzDrotQe9CffbMYcfaPRNmrfc3wDEQMK8vz7eX8EIkzdwvt1eyH2an8vhV/IAsxZGV2Tdiqyn43qTUo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB5154
 X-OriginatorOrg: intel.com
 
 On 9/15/2026 6:12 PM, Jakub Kicinski wrote:
 > This is an AI-generated review of your patch. The human sending this
 > email has considered the AI review valid, or at least plausible.
 > ---
-> ice: E822: keep Tx timestamps disabled during offset calibration
+> ice: E822: cancel offset verification work during reset preparation
 > 
-> This moves the clearing of port->tx.calibrating out of
-> ice_ptp_port_phy_restart() and into ice_ptp_wait_for_offsets(), so that Tx
-> timestamps stay disabled until the Tx and Rx PHY offsets have been
-> configured.  It also adds two dev_dbg() messages covering the pending and
-> the completed calibration cases.
+> This adds a kthread_cancel_delayed_work_sync() of the E82x offset
+> verification work (ov_work) to ice_ptp_prepare_for_reset(), so that the
+> work does not run while the PTP reset sequence executes.  A few questions
+> about the changelog and about the placement of the new cancel.
 > 
-> No Link: tags present in the commit header.
+> First, on the described failure mechanism:
 > 
-> A few questions below.
-> 
->> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
->> index 68537705e8399..d018f02f700d7 100644
->> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
->> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
->> @@ -1156,6 +1156,7 @@ static int ice_ptp_check_tx_fifo(struct ice_ptp_port *port)
->>  static void ice_ptp_wait_for_offsets(struct kthread_work *work)
->>  {
->>  	struct ice_ptp_port *port;
->> +	unsigned long flags;
->>  	struct ice_pf *pf;
->>  	struct ice_hw *hw;
->>  	int tx_err;
->> @@ -1178,12 +1179,28 @@ static void ice_ptp_wait_for_offsets(struct kthread_work *work)
->>  		tx_err = ice_phy_cfg_tx_offset_e82x(hw, port->port_num);
->>  	rx_err = ice_phy_cfg_rx_offset_e82x(hw, port->port_num);
->>  	if (tx_err || rx_err) {
->> -		/* Tx and/or Rx offset not yet configured, try again later */
->> +		/* Tx and/or Rx offset not yet configured, try again later.
->> +		 * This is expected during normal link-up: the vernier offset
->> +		 * calibration cannot complete until at least one packet has
->> +		 * been transmitted, so the first retries routinely land here.
->> +		 */
->> +		dev_dbg(ice_pf_to_dev(pf),
->> +			"PTP offset not yet valid for port %u (tx_err=%d rx_err=%d)\n",
->> +			port->port_num, tx_err, rx_err);
->>  		kthread_queue_delayed_work(pf->ptp.kworker,
->>  					   &port->ov_work,
->>  					   msecs_to_jiffies(100));
->>  		return;
->>  	}
->> +
->> +	/* Tx and Rx offsets are now configured, enable Tx timestamps */
->> +	spin_lock_irqsave(&port->tx.lock, flags);
->> +	port->tx.calibrating = false;
->> +	spin_unlock_irqrestore(&port->tx.lock, flags);
-> 
-> [Severity: High]
-> Does placing the only clear of port->tx.calibrating after the combined
-> "if (tx_err || rx_err)" gate make the Tx timestamp gate depend on Rx
-> calibration?
-> 
-> The two directions have independent offset-ready registers.  On the Tx side,
-> ice_phy_cfg_tx_offset_e82x() programs the total Tx offset and sets:
-> 
-> drivers/net/ethernet/intel/ice/ice_ptp_hw.c:ice_phy_cfg_tx_offset_e82x() {
-> 	...
-> 	err = ice_write_phy_reg_e82x(hw, port, P_REG_TX_OR, 1);
-> 	...
-> }
-> 
-> and thereafter returns 0 immediately ("Nothing to do if we've already
-> programmed the offset").  Meanwhile the Rx side keeps failing until a packet
-> has actually been received:
-> 
-> drivers/net/ethernet/intel/ice/ice_ptp_hw.c:ice_phy_cfg_rx_offset_e82x() {
-> 	...
-> 	if (!(reg & P_REG_RX_OV_STATUS_OV_M))
-> 		return -EBUSY;
-> 	...
-> }
-> 
-> So in the Tx-done/Rx-pending state, ice_ptp_wait_for_offsets() loops on the
-> 100 ms retry branch with tx_err == 0 and rx_err == -EBUSY and never reaches
-> the new "port->tx.calibrating = false".
-> 
-> Since calibrating is written in only two places after this patch (set true
-> in ice_ptp_port_phy_restart(), cleared here), is there anything left that
-> can reopen the Tx gate?  ice_ptp_is_tx_tracker_up() stays false:
-> 
-> drivers/net/ethernet/intel/ice/ice_ptp.c:ice_ptp_is_tx_tracker_up() {
-> 	return tx->init && !tx->calibrating;
-> }
-> 
-> and every request is refused, with ice_tstamp() only bumping the skipped
-> counter:
-> 
-> drivers/net/ethernet/intel/ice/ice_txrx.c:ice_tstamp() {
-> 	idx = ice_ptp_request_ts(tx_ring->tx_tstamps, skb);
-> 	if (idx < 0) {
-> 		tx_ring->vsi->back->ptp.tx_hwtstamp_skipped++;
-> 		return;
-> 	}
-> 	...
-> }
-> 
-> This is reachable on an ordinary link-up when the link partner is silent or
-> passive, or in one-way/tap topologies, and it persists until the next link
-> transition.  Before this patch the Tx gate did not depend on the Rx side.
-> 
-> Would gating the clear on tx_err == 0 only, and letting the Rx offset
-> configuration continue to retry independently, be the intended behaviour?
-> 
-
-Yea, thats is the intended behavior. Will investigate and fix.
-
-> [Severity: Low]
-> Should the surrounding documentation be updated along with the new
-> semantics?  The kernel-doc directly above ice_ptp_wait_for_offsets() still
-> says:
-> 
->  * Once the offset in either direction is measured, configure the associated
->  * registers with the calibrated offset values and enable timestamping. The Tx
->  * and Rx directions are configured independently as soon as their associated
->  * offsets are known.
-> 
-> and the member doc in ice_ptp.h for struct ice_ptp_tx still says:
-> 
->  * @calibrating: if true, the PHY is calibrating the Tx offset. During this
->  *               window, timestamps are temporarily disabled.
-> 
-> After the patch the flag is cleared only when ice_ptp_check_tx_fifo(),
-> ice_phy_cfg_tx_offset_e82x() and ice_phy_cfg_rx_offset_e82x() all succeed,
-> so the Tx gate now also encodes Rx state and Tx FIFO state.  The window is
-> also no longer temporary in all cases: on the ice_start_phy_timer_e82x()
-> error path ice_ptp_port_phy_restart() breaks before queueing ov_work, and
-> ice_ptp_port_phy_stop() cancels ov_work without restoring the flag.
-> 
-
-I'll make sure to update the comment after resolving the other report
-above to match.
-
->> +
->> +	dev_dbg(ice_pf_to_dev(pf),
->> +		"PTP offset valid for port %u, Tx timestamps enabled\n",
->> +		port->port_num);
->>  }
->>  
->>  /**
->> @@ -1269,10 +1286,13 @@ ice_ptp_port_phy_restart(struct ice_ptp_port *ptp_port)
->>  		if (err)
->>  			break;
->>  
->> -		/* Enable Tx timestamps right away */
->> -		spin_lock_irqsave(&ptp_port->tx.lock, flags);
->> -		ptp_port->tx.calibrating = false;
->> -		spin_unlock_irqrestore(&ptp_port->tx.lock, flags);
->> +		/* Do not clear calibrating flag here. Tx timestamps remain
->> +		 * disabled until ice_ptp_wait_for_offsets() has verified
->> +		 * that the Tx and Rx offset calibration has completed.
->> +		 * Clearing it here would allow Tx timestamps to be reported
->> +		 * before the PHY offset registers are configured, leading
->> +		 * to incorrect timestamp values.
->> +		 */
+>> Without this, ice_ptp_wait_for_offsets() can execute during a reset,
+>> find that ice_is_reset_in_progress() is true, and re-queue itself in a
+>> tight loop. Meanwhile, the reset path in ice_ptp_rebuild_owner() calls
+>> ice_ptp_port_phy_restart(), which starts a new ov_work. This results in
+>> two ov_work instances running simultaneously, racing over the PHY offset
+>> registers and the calibrating flag.
 > 
 > [Severity: Medium]
-> Is the "leading to incorrect timestamp values" description in this comment,
-> and the matching commit message text, accurate for this window?
+> Can this sequence happen as described?  ov_work is a single
+> struct kthread_delayed_work per port (ice_ptp.h, struct ice_ptp_port) run
+> by one per-PF kworker, so the same work item cannot execute twice at once.
 > 
-> The commit message says:
+> The re-queue in ice_ptp_wait_for_offsets() also does not look like a tight
+> loop, and it returns before touching the PHY offset registers or
+> port->tx.calibrating:
 > 
->     Timestamps produced during this window use uncalibrated PHY offsets and
->     can produce incorrect values.
+> 	if (ice_is_reset_in_progress(pf->state)) {
+> 		/* wait for device driver to complete reset */
+> 		kthread_queue_delayed_work(pf->ptp.kworker,
+> 					   &port->ov_work,
+> 					   msecs_to_jiffies(100));
+> 		return;
+> 	}
 > 
->     When ptp4l receives incorrect timestamps, it may reject them and wait
->     for the next sync interval (typically 1-2 seconds), compounding delays
->     during link cycling.
+> And ice_ptp_port_phy_restart(), the only site that arms ov_work, already
+> cancel-syncs it under ps_lock before queueing again:
 > 
-> During that window P_REG_TX_OR is 0.  ice_start_phy_timer_e82x() begins by
-> calling ice_stop_phy_timer_e82x(), whose first action is:
-> 
-> drivers/net/ethernet/intel/ice/ice_ptp_hw.c:ice_stop_phy_timer_e82x() {
-> 	err = ice_write_phy_reg_e82x(hw, port, P_REG_TX_OR, 0);
+> 	kthread_cancel_delayed_work_sync(&ptp_port->ov_work);
 > 	...
-> }
+> 	kthread_queue_delayed_work(pf->ptp.kworker, &ptp_port->ov_work, 0);
 > 
-> and TX_OR is only set back to 1 by ice_phy_cfg_tx_offset_e82x() once the
-> total Tx offset has been programmed.  The driver documents that write as
-> invalidating timestamps:
-> 
-> drivers/net/ethernet/intel/ice/ice_ptp_hw.c:ice_ptp_clear_phy_offset_ready_e82x() {
->  * Clear PHY TX_/RX_OFFSET_READY registers, effectively marking all transmitted
->  * and received timestamps as invalid.
-> 	...
-> }
-> 
-> And timestamps captured without the valid bit are dropped rather than
-> reported:
-> 
-> drivers/net/ethernet/intel/ice/ice_ptp.c:ice_ptp_process_tx_tstamp() {
-> 	...
-> 	/* Discard any timestamp value without the valid bit set */
-> 	if (!(raw_tstamp & ICE_PTP_TS_VALID))
-> 		drop_ts = true;
-> 	...
-> }
-> 
-> Is the pre-patch symptom then a missing Tx timestamp (slot held until read
-> or timeout, counted in tx_hwtstamp_timeouts) rather than a wrong value
-> delivered to ptp4l?  The sibling patch in this series ("ice: E825: stop
-> clearing PHY_REG_TX_OFFSET_READY") states that with the offset-ready bit
-> clear "the hardware still captures Tx timestamps, but it no longer sets the
-> valid bit", which seems to point the same way.
+> Could the changelog describe the actual window instead, for example a
+> worker instance that already passed the reset-in-progress check and is
+> mid-PHY-access when the reset starts, or one that gets re-armed after the
+> new cancel?
 > 
 
-This should be reworded. One note is that any comments or changes
-regarding E825 do not necessarily apply accurately to E822, because the
-E825 doesn't do vernier calibration. I believe this analysis is correct,
-though, and will fix the commit message.
+Hm. I'll update the commit message.
 
-> Could the commit message and this new comment be reworded to describe the
-> actual failure mode, so that anyone matching user reports against the
-> Fixes: tag is not misled?
+> Second, on the Fixes tag:
+> 
+>> Fixes: 4809671015a1 ("ice: Fix E810 PTP reset flow")
+> 
+> [Severity: Medium]
+> Is this the right commit to reference?  git grep ov_work at 4809671015a1
+> under drivers/net/ethernet/intel/ice/ returns no matches, so the E82x
+> offset verification work did not exist yet at that commit, and the code
+> being changed here is the ICE_MAC_GENERIC branch of the PTP reset flow
+> rather than the E810 reset flow.  Stable tooling will use this tag to pick
+> backport targets.
 > 
 
-I will try to improve the message.
+I'll check. I'm not sure how the original author landed on this commit.
 
+> Third, on the reference to an existing cancellation:
+> 
+>> Cancel ov_work in ice_ptp_prepare_for_reset() alongside the existing
+>> cancellation of the Tx tracker. The comment in the existing code already
+>> documents that ov_work interference during reset is a concern but only
+>> cancels it during ice_ptp_release().
+> 
+> [Severity: Medium]
+> Does ice_ptp_prepare_for_reset() still release the Tx tracker in this
+> tree?  The ice_ptp_release_tx_tracker(pf, &pf->ptp.port.tx) call that used
+> to be there was removed by the earlier patch in this series, "ice: fix
+> removal of PTP timestamp tracker during reset", so there is nothing left
+> in that function to cancel ov_work "alongside".
+> 
+> Which existing comment documents ov_work interference during reset?  At the
+> series baseline the only ov_work-adjacent comments are "Start the PHY timer
+> in Vernier mode" and "temporarily disable Tx timestamps while calibrating
+> PHY offset", and neither mentions reset.
+> 
+>> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+>> index d018f02f700d7..9bf3bac552f11 100644
+>> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
+>> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+>> @@ -2998,6 +2998,14 @@ void ice_ptp_prepare_for_reset(struct ice_pf *pf, enum ice_reset_req reset_type)
+>>  	if (reset_type == ICE_RESET_PFR)
+>>  		return;
 >>  
->>  		kthread_queue_delayed_work(pf->ptp.kworker, &ptp_port->ov_work,
->>  					   0);
+>> +	/* Cancel the offset verification work for E82x before releasing the
+>> +	 * Tx tracker. If ov_work is running during reset, it may issue
+>> +	 * sideband queue commands that will fail or timeout, and may
+>> +	 * reference state that is being torn down.
+>> +	 */
+> 
+> [Severity: Medium]
+> Same point as above for the comment text itself: ice_ptp_prepare_for_reset()
+> does not release the Tx tracker anymore, so "before releasing the Tx
+> tracker" describes an ordering that does not exist here.  The only
+> remaining ice_ptp_release_tx_tracker() call is in ice_ptp_release(), and
+> there it runs before the ICE_MAC_GENERIC ov_work cancel reached via
+> ice_ptp_port_phy_stop(), i.e. the reverse order.  Would it be clearer to
+> drop that clause?
+> 
+
+Yes.
+
+> The second sentence also mentions sideband queue commands, but
+> ice_ptp_wait_for_offsets() returns as soon as ice_is_reset_in_progress() is
+> true, before any sideband access.  Which state that is being torn down does
+> the work reference?
+> 
+>> +	if (hw->mac_type == ICE_MAC_GENERIC)
+>> +		kthread_cancel_delayed_work_sync(&ptp->port.ov_work);
+> 
+> [Severity: High]
+> Should this cancel be taken under ptp->port.ps_lock?  Both existing
+> ov_work cancel sites hold it, and ice_ptp_port_phy_restart() holds it
+> across cancel, PHY start and re-queue:
+> 
+> 	mutex_lock(&ptp_port->ps_lock);
+> 	...
+> 	kthread_cancel_delayed_work_sync(&ptp_port->ov_work);
+> 	...
+> 	err = ice_start_phy_timer_e82x(hw, port);
+> 	...
+> 	kthread_queue_delayed_work(pf->ptp.kworker, &ptp_port->ov_work, 0);
+> 
+> Without ps_lock here, can ov_work be armed again right after the sync
+> cancel returns, so the reset sequence still runs with ov_work queued?
+> 
+> Two arming paths look reachable during the reset window.  One is the
+> PTP_CLOCK_SETTIME ioctl, which has no ptp->state or reset-in-progress
+> check:
+> 
+> ice_ptp_settime64()
+> 	/* Recalibrate and re-enable timestamp blocks for E822/E823 */
+> 	if (hw->mac_type == ICE_MAC_GENERIC)
+> 		ice_ptp_restart_all_phy(pf);
+> 
+> The other is the clock-owner PF on a multi-PF E82x adapter, where
+> ice_ptp_rebuild_owner() -> ice_ptp_restart_all_phy() walks the adapter port
+> list and arms a peer PF's ov_work:
+> 
+> 	list_for_each_entry_rcu(port, &pf->adapter->ports.list, list_node) {
+> 		...
+> 		if (port->link_up)
+> 			ice_ptp_port_phy_restart(port);
+> 
+> while that peer PF's own service task is inside
+> ice_ptp_prepare_for_reset() on another CPU.  There is no cross-PF reset
+> serialization for E82x, since ice_ptp_prepare_rebuild_sec() is gated on
+> ICE_MAC_GENERIC_3K_E825 in the following hunk.
+> 
+> Would doing the cancel inside the ps_lock critical section, or simply
+> reusing ice_ptp_port_phy_stop(), close that window?  The ov_work callback
+> ice_ptp_wait_for_offsets() only takes port->tx.lock with
+> spin_lock_irqsave(), never ps_lock, so taking ps_lock around the sync
+> cancel should not deadlock.
+> 
+
+Makes sense.
+
+> [Severity: Low]
+> Separately, who re-arms ov_work for a non-owner PF after this cancel?
+> ice_ptp_wait_for_offsets() is the only place that programs the vernier
+> offsets and clears the calibrating flag:
+> 
+> 	port->tx.calibrating = false;
+> 
+> and ice_ptp_is_tx_tracker_up() gates every Tx timestamp on it:
+> 
+> 	return tx->init && !tx->calibrating;
+> 
+> At this commit the only re-arm during reset is ice_ptp_restart_all_phy()
+> from ice_ptp_rebuild_owner(), which runs on the clock-owner PF only, for
+> non-PFR only, for link-up ports only, and can arm a peer PF's ov_work just
+> before that peer cancels it here.  Note this appears to be resolved by the
+> next patch in the series, "ice: call PTP link change only from link
+> events", which adds an unconditional per-PF ice_ptp_link_change() call at
+> the end of ice_rebuild(); with that in place every PF re-arms its own
+> ov_work after its own rebuild.  Worth mentioning in the changelog that this
+> patch depends on that follow-up?
+> 
+
+Yes at a minimum we'll have to reference that, possibly re-ordering the
+commits.
+
+> [Severity: Medium]
+> This isn't a bug introduced by this patch, but the state that
+> ice_ptp_prepare_for_reset() leaves behind interacts with an incomplete
+> teardown path.  ice_ptp_release() early-returns whenever
+> pf->ptp.state is neither ICE_PTP_UNINIT nor ICE_PTP_READY:
+> 
+> 	if (pf->ptp.state != ICE_PTP_READY) {
+> 		mutex_destroy(&pf->ptp.port.ps_lock);
+> 		ice_ptp_cleanup_pf(pf);
+> 		if (pf->ptp.clock) {
+> 			ptp_clock_unregister(pf->ptp.clock);
+> 			pf->ptp.clock = NULL;
+> 		}
+> 		return;
+> 	}
+> 
+> ice_ptp_cleanup_pf() only removes the port from the adapter list and drops
+> the kref, so unloading the driver while the state is ICE_PTP_RESETTING
+> (set here) or ICE_PTP_ERROR (set on the ice_ptp_rebuild() failure path)
+> leaks the kthread worker created by kthread_run_worker() in
+> ice_ptp_init_work() and the tx->tstamps allocation from
+> ice_ptp_alloc_tx_tracker(), and does not sync-cancel ptp->work or
+> port.ov_work before the devm-allocated ice_pf embedding them goes away.
+> That branch also leaves state non-UNINIT, unlike the invariant the comment
+> above ice_ptp_release() describes.
+> 
+
+I believe this will be addressed by other changes in the series.
+
+>>  	if (ice_pf_src_tmr_owned(pf) && hw->mac_type == ICE_MAC_GENERIC_3K_E825)
+>>  		ice_ptp_prepare_rebuild_sec(pf, false, reset_type);
+>>  
+> 
+> [ ... ]
 
