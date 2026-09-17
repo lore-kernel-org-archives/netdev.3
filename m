@@ -1,124 +1,118 @@
-Received: from mail.avm.de (mail.avm.de [212.42.244.119])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A790B46D559;
-	Thu, 17 Sep 2026 10:03:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BBB1F4631;
+	Thu, 17 Sep 2026 10:04:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789639431; cv=none; b=qGBnlKUGbBsyCv+g75jssVloSgCE7n7DdSfTgvZsLbADQdwpMfG+G+XvR6/fFX6jE3fYxhtkqddF0r4Ji9rY2KCYZMDDy7uMsnpUQcjHhTYz0BKlK57D0Y1tzQQrsslV2N4Kv+q9MNbQn8r8pTqiA8V7KYLxbhs6FScRz828LCQ=
+	t=1789639470; cv=none; b=GamU/uujxuHkHgpB2oUd/07NkTJH3/ldRXr0ZS1q5V+4Uz6RQ3nvdBHhpAwqnT17++C8dboLu86HnRjqgqVVyiUi0dO9S20KHY2Tz6QKJSSPwXr17SxP0YCPe4mCuUcJd1f4QQwaOUC8HDeGRxVa3sRw4b9SppbyWUilObVvrK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789639431; c=relaxed/simple;
-	bh=YKVLIQtatBhn5yK/xtLhS4dBm2eOpXamOjk5hO60+Mw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IA3i9XEkYjeEoTdMuBxS98DQTgqWQYUhSzjb0BjhyKFxJCqC7IVwt8+sbahO5mlkT8N2jQEhvwmc9UCJ5R+OtO1kXTWtJSYMkFKUlKnSBFDxKhw113uiAcfsGQcxiihKFqbvLzZH6ep81DCajM6U3LaHa1P1cIcs7o+AFXBtwjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com; spf=pass smtp.mailfrom=fritz.com; dkim=pass (2048-bit key) header.d=fritz.com header.i=@fritz.com header.b=pa6r9mEW; arc=none smtp.client-ip=212.42.244.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fritz.com
+	s=arc-20240116; t=1789639470; c=relaxed/simple;
+	bh=tqUsQnVQ6+0AGejYyjS3eeE+jYuqzZYYt2aVEmhleFk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=biJS5UPZaPbpaKY1L3fgWBv/Hql80NBYbRd6VqFGCDqy3QHzSbcRwZ/prBM8muMh2UJm1DvXo6UItFxKySMDzrf8IGT9hp99sJ8h0ZwfheId6FQTt3TnKIQ817HM7veDTrVy86RVPBv2sfJW6AA02DMvguJLOUX9pXwltE3rSeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oCWO23E7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fritz.com header.i=@fritz.com header.b="pa6r9mEW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fritz.com; s=mail;
-	t=1789639398; bh=YKVLIQtatBhn5yK/xtLhS4dBm2eOpXamOjk5hO60+Mw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=pa6r9mEW5JKwfXLpjjkk6v03ol+QiWEZMNrQyVm+rLT1EZyDQoht4H+xBiPLoSQqS
-	 pRXVBUZj0CcN8H4qRdVMP5fk8MPo++ZT9zPOa59a8WL9HjFntSYa+zYeUot8rh9kie
-	 ZWT2fESBMRh6u1L5rR4i3UPSJBMV/6sDOLJrIahYpyXuW3NbeQ4lOMbVCF/a3FPyJL
-	 vd2lCg0iuIc6ePeRf1NLnoWYtE+H/5Pp1i7NgEOMKDXS0BDTiSsLeLHgm2nRc5I3Ah
-	 7cyjGp3UkFfrL6U7LQ5s5PPHG2jtPLxWl2W4DMraPOyqRwGXVW4VQwIPUDxvKGwpme
-	 42MVQjIgFh00w==
-Received: from [212.42.244.71] (helo=mail.avm.de)
-	by mail.avm.de with ESMTP (eXpurgate 4.57.1)
-	(envelope-from <t.martitz@fritz.com>)
-	id 6aabbae6-ea3f-7f0000032729-7f000001add2-1
-	for <multiple-recipients>; Thu, 17 Sep 2026 12:03:18 +0200
-Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
-	by mail.avm.de (Postfix) with ESMTPS;
-	Thu, 17 Sep 2026 12:03:18 +0200 (CEST)
-From: Thomas Martitz <t.martitz@fritz.com>
-To: Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-	linux-kernel@vger.kernel.org (open list)
-Cc: Thomas Martitz <t.martitz@fritz.com>,
-	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v5 0/1] macvlan: allow source mode devices along with passthru
-Date: Thu, 17 Sep 2026 12:02:57 +0200
-Message-ID: <20260917100258.2582568-1-t.martitz@fritz.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oCWO23E7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C3A81F000FF;
+	Thu, 17 Sep 2026 10:04:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789639456;
+	bh=9RJR2h0qHtxMiw9TYA3+iKS1eMqprIRMDs4v7Dy4PLg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=oCWO23E7KxKz8qfc36onezw+s4uvcvZKbFDjGYlDb9R8zOZq2Hpb9UHIJDysoVhuK
+	 rz5Nsh6zw8RPtmNi4ZbevYC/BPq2HOe2kyarxeIDM6bFM4zfJsOM8CnjwICuA+Vd70
+	 yVM8iugGHOZRDzsjPJG9BEdSgRnrm1F0riet0B7I7FEdjLl3HgAVAtX82w7NXooGoS
+	 CZx/02xumAQgM7OfTNzbyol1MS0eBVrEB278ZG5Y52zpsoTIQUkqVajQ7VwBbqGLqu
+	 rx0/XdbHnk5wOkjOC12XSxkvoM32sXzukSLanuBifqEhpFD9Yd2Ura6A/iAReeFK0K
+	 MV4p5XuYiPHdA==
+Date: Thu, 17 Sep 2026 12:04:12 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Arthur Crepin Leblond <arthur@marmottus.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Arnd Bergmann <arnd@arndb.de>, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v8 2/3] dt-bindings: net: wiznet,w5100: add link
+ status interrupt
+Message-ID: <20260917-sexy-quixotic-ermine-138eab@quoll>
+References: <20260915-wiznet-link-gpio-v8-0-d173622474cc@marmottus.net>
+ <20260915-wiznet-link-gpio-v8-2-d173622474cc@marmottus.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-purgate-ID: 149429::1789639398-FDC87720-101C1876/0/0
-X-purgate-type: clean
-X-purgate-size: 2437
-X-Notice: Whitelisted
-X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
-X-purgate: clean
-X-pfmilter: host: postfix-mx-02  mail-id: 38D6AA048F  external: no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260915-wiznet-link-gpio-v8-2-d173622474cc@marmottus.net>
 
-Hello,
+On Tue, Sep 15, 2026 at 10:06:03AM +0200, Arthur Crepin Leblond wrote:
+> Add an optional link status interrupt which can be connected to the
+> LINKLED pin on the device to detect link status changes. This second
+> interrupt is only supported on wiznet,w5500.
+> 
+> Signed-off-by: Arthur Crepin Leblond <arthur@marmottus.net>
+> ---
+> v8:
+>  - Remove Krzysztof Kozlowski reviewed-by tag after Sashiko review
+>    changes
+>   - Make the interrupts property conditional
+> 
+> v7:
+>  - No changes
+> 
+> v6:
+>  - Fix DT error: use minItems
+>  - Remove conditional properties
+> 
+> v5:
+>  - Make the DT interrupts property dynamic from the compatible one
+>  - Fix DT bindings errors
+> 
+> v4:
+>  - Update interrupts in DT bindings
+> 
+> v3:
+>  - Fix DT binding errors
+> 
+> v2:
+>  - Convert device tree binding to YAML
+> ---
+>  .../devicetree/bindings/net/wiznet,w5100.yaml      | 38 ++++++++++++++++++----
+>  1 file changed, 31 insertions(+), 7 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/wiznet,w5100.yaml b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
+> index 25098308eb6e..da03f4e07f29 100644
+> --- a/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
+> +++ b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
+> @@ -12,10 +12,6 @@ maintainers:
+>  description: |
+>    This is a standalone 10/100 MBit Ethernet controller with SPI interface.
+>  
+> -allOf:
+> -  - $ref: /schemas/net/ethernet-controller.yaml#
+> -  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> -
+>  properties:
+>    compatible:
+>      enum:
+> @@ -24,8 +20,11 @@ properties:
+>        - wiznet,w5500
+>  
+>    interrupts:
+> -    maxItems: 1
 
-we're trying to solve a use case on our devices where two SoC are
-connected on the same board, using the only available high-speed interface.
+Broadest constraints always stay here.
 
-One SoC runs the main Linux system including the full routing stack
-(FRITZ!OS) and the other SoC implements most of the GPON ONT side.
+I already asked for proper syntax here:
+https://lore.kernel.org/all/688f57cd-a098-4904-b8cd-965470a89386@kernel.org/
 
-The high-speed interface is of course also used for the user traffic.
-Therefore we must tell the inter-SoC traffic apart from the user traffic.
+https://elixir.bootlin.com/linux/v6.11-rc6/source/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml#L127
 
-We achieve this by matching the well-known MAC address of the ONT SoC.
-The user traffic passes through the ONT SoC without modifying MAC headers.
-Now we would like to use macvlan (with source mode devices) on the main
-SoC side for this but our routing stack requires the rx_handler to be
-available. Therefore macvlan is currently not an option.
-
-With this patch macvlan becomes an option because the current limitation
-of either "one passthru device" or "any other configuration" is relaxed
-for the combination of passthru and any number of source mode devices.
-
-This allows us to configure a source mode device for the other SoC and
-register an rx_handler for further processing on the passthru device.
-
-Thanks in advance!
-
----
-Changes in v4
-- Prevent macvlan_restore_mac() from changing the MAC address
-  of remaining source mode interfaces.
-- Set MACVLAN_F_PASSTHRU on the macvlan_port only after adding
-  the passthru interface truly succeeds.
-- Changing existing interfaces to passthru mode shouldn't become
-  allowed.
-
-Changes in v3
-- fix passthru port removal caused by passing the wrong 
-  device to macvlan_port_release_mac(). This was also
-  detected by syzbot.
-- macvlan_port_release_mac() is now named macvlan_restore_mac()
-  and gets passed a "struct macvlan_port" directly.
-- Link to v2: https://lore.kernel.org/netdev/20260709100512.1383421-1-t.martitz@fritz.com/
-
-Changes in v2:
-- changed several port-wide checks (macvlan_passthru()) to 
-  per-interface checks (vlan->mode == vlan->mode == MACVLAN_MODE_PASSTHRU)
-- correctly handle removing the passthru interface when there are still
-  source interfaces
-- Link to initial posting: https://lore.kernel.org/netdev/20260612092345.2352255-1-t.martitz@fritz.com/
----
-
-Thomas Martitz (1):
-  macvlan: allow source mode devices along with passthru
-
- drivers/net/macvlan.c | 107 ++++++++++++++++++++++++++++--------------
- 1 file changed, 73 insertions(+), 34 deletions(-)
-
--- 
-2.54.0
+Best regards,
+Krzysztof
 
