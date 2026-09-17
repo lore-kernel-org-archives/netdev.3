@@ -1,207 +1,194 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed2-f7.google.com (mail-ed2-f7.google.com [74.125.228.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8403A3B1016;
-	Thu, 17 Sep 2026 08:19:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789633150; cv=none; b=aKGw4H34gTllna7+CWgWF5q5O1UK2omfaT+HgCw6Z+BBPi2MbRUeziig6J62Id4S5AOeJpCv0JSKeC75gQnEihcFUbo2cC5Egp8jxDaxIX2OHtvCoXrJCvv1sPg2qCYp4XFSUkz5MwOVyC4wP+u1XK/MS8/DeI705xmgQNXCRwo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789633150; c=relaxed/simple;
-	bh=OOomfKftFBRnz+rSNUtws033tSlDbkznMVxKX8gkal0=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ISdQ8CIOmZcUsOQSShrTr1oTS6hLS5Lhf5IIkAfUaZxmx2+860gZiS+ICFFKiPOa4TkSdxvBA0r02FDSnnkXPRr9gKr3eHn6DFO0jZSQBVFIwMYAqcjKYOxvAtUUg1ko2u9gBAaZLnkVB8NVTGdgbvtlOqHwGhm8mKMSb9p/vSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CJn7AYvy; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3B53FFF94
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 08:21:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789633278; cv=pass; b=GoC6pz0aap3qgy/PXreX0LVxSTzx6nZSxjsxmEIr0kR1u7il1y1DeIUC5n0GFhLWG0jx3vJTj0ZGTAd2ypIDYJwatvzaWimIplEZqNKlFKH4nhyKqPylDgbwXe0STJu7zISBhUuRQRo0gWZ2zNXowO4M21m0zA1JEOi7e+xpaps=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789633278; c=relaxed/simple;
+	bh=Mt2nG22gQ2VlhRCDsFPAMB9fHywKLlkANeCXC+o2mY4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sJyHFISbiWipvG7wolqJve6eOJW62wy4x7LdVsLMIa1KFRrAK8aG1BEZtRAWdDjQj6CocTAl3Z95XkcEyB1eAuJohdG3KCBL5Y1roHHBsXCWGdHgft6FPS6hIBGUE4pziGAUbgv0J5Ip4TAU8lK7BDxRYQMqCR8WEYUvFS1pKYg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LkNgSj6j; arc=pass smtp.client-ip=74.125.228.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CJn7AYvy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C7311F000FF;
-	Thu, 17 Sep 2026 08:19:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789633147;
-	bh=TLhhUntP2UZd7usambWoY0dwKj1ntPIBjjB55O/+Cfo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=CJn7AYvy9IBI2JLMN/hlKubM4BWIpnkD5dgJ/udfIJGEmK2hMH2R7FWZkRHzLhPv4
-	 Ltgp6qlU5FKFa8R0v4Bv2rWrZOkjOSgJ/RlTpXSjQ68jVO/RyfWXLCkhUiURZJILnY
-	 A5jT0iNk/ZNUh8kDHI2tCuDB7Kn5pvHrRpgpQel9FDeWhnM6XvH42lHJNY8+2ZT3/A
-	 DZPdimsp2A/NeQKdoxBTqcWgMazI6VDHvM2VJYbGj8a3sMrvDUxzTWn8cXzY+DOUeF
-	 aAOJExkVKAJirw04SnxV2bCBkiiQoI8Eg0mlOhaGdp31o70i69dyfK4ncApxcRQ2DA
-	 v+yf3HzFoJGCw==
-Subject: Re: [PATCH] net: mediatek: fix PPE resource leak on remove
-From: netdev-bot+sashiko@kernel.org
-To: lgs201920130244@gmail.com
-Cc: nbd@nbd.name, lorenzo@kernel.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- stable@vger.kernel.org
-Date: Thu, 17 Sep 2026 08:19:05 +0000
-Message-ID: <178963314597.22033.1751942424673544030@kernel.org>
-In-Reply-To: <20260916051618.2904439-1-lgs201920130244@gmail.com>
-References: <20260916051618.2904439-1-lgs201920130244@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LkNgSj6j"
+Received: by mail-ed2-f7.google.com with SMTP id 4fb4d7f45d1cf-6aa44774ee2so8388a12.0
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 01:21:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789633275; cv=none;
+        d=google.com; s=arc-20260327;
+        b=VNw8ltx5O0A/YqTpP9IAYFQwEIYdeSYTMzjMgQK653rK2UtwiL9ZthkQ7ZreaaTIyG
+         PzKztIJ/BGDPuvOAmzgOY3igNOe8qbjPrz+xihZSlWlHZqZXWdLjLcwcjyLd9rLuvTfs
+         vhPf3rpBkbWsohCJ3Tvu3ZlF2xgCDUFcYUu+nHvcPrM1vzRvtgTeq55dW2kWQccc/XWb
+         7ZEYs+JywNL9CeRYzTCNtmuVncxhfY7ydloq5H0aIds5r/mf0OnvbuZbAkhQNI4Zf+ci
+         WLS3aDG2D5RWWK9OgtUMpTDDN4rAkyvt1PpQxlfn/pacKvqbKxc0RwMJzLQHe2Hncnya
+         bYSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Mt2nG22gQ2VlhRCDsFPAMB9fHywKLlkANeCXC+o2mY4=;
+        fh=1IKvIUyt9sj6mmxym99qoVKF0t2PexA6JZeywJ0nZ7s=;
+        b=H+t9lgA+Vo+cDlyW7vip8PyJIA8q2bGntDp+Fq5ClhU5a5degDlpQFuZ2XqcAKWbHS
+         KkeBEP8SNK9Jna1AlWfv4UR3gBxpoVAgEFIl9OuYiXSag3RFljo4nlMss9noqCIa1Jig
+         NP/hy7t7Pjvt2bYfgU3Z4qOW4RzxUf84rzaor2nktF3wOwGqLTCjuLDda9VMApjvsdLS
+         DKPbUMGkxZRDB3zuPH/njA1ibJz4zsvf/AeEnTYcVnt56Bz/oCwGsbkbrhtkm9waZlnu
+         UeT0Jou5gbzdtG3ytq8aGytPIjSQ62W6PNhoHTU/9vOEtH5clIj4LtZKZmYes5zRiN0u
+         seuA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789633275; x=1790238075; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Mt2nG22gQ2VlhRCDsFPAMB9fHywKLlkANeCXC+o2mY4=;
+        b=LkNgSj6j1mh+t4RwWFqK0oZGmHByGzWfcY/zg1MYPjx1xJGUsm3Levzmg417PBZ/GX
+         lS4n4bDiQ7tLC+iV/ptYNIlTQKgCmtD1qqq8DZwX9nwKvUybD/WxwuNLq4XlqOFraN6J
+         e2pkajBHBVhw76hnQuSRkrcUSmYLUl2cuqQsGypWILVEmLEgyVf7iCYEaFBHfJOGlAVO
+         OkhaajhhQu9KyE5sB+km8AUYGVWRbxEDjZUgMUXB26aVb+rynQUFpvOtQ6Q6gekDOdPp
+         PhRf1Uhn6Mpea/EwRT/oMizBfmS2ibRJGktxgpXutOxCGzD+nfIksnWachRymFwffUsd
+         RH3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789633275; x=1790238075;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Mt2nG22gQ2VlhRCDsFPAMB9fHywKLlkANeCXC+o2mY4=;
+        b=gnUXBiX2SiKu65sL48WoD+zNio3pVLGHJeFfjSjKnczsTNXNxkl52ZE47uc5tizNax
+         ByGTqTIP52AMsLRY+t9lOKeu89uFM9NW2LOYruh3sK09txii86JZ+Z1nOPLl5h3YwZop
+         3QxPzN2kCNwWe/xtriIbqiZn90IfAx1CfX9ydmioEdGLw3I7sCi8piNuDxzcA1F7oo0X
+         APZ0hUwhqJfDAqbampbrLoqyVhELK4nYWhef2tSAWQr0m5vIatrEtpmO39GaEHCIaJXq
+         fvjEqr4YFPeh9sKhkztVsW+tgXp5Ye64jqYIC/yX0vutMSTiqkwkt0AFINUwofbULaVT
+         eIMQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw8ftAMZaHPPnZRnoRHlmIkrFcMRN1xrscsPxGejAsUXgVwByS2Mdce3pW7GX5vSfW0VPd29mQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++n1d3hqrclRdbZQpW0lVAGi4q4sCD3P1m9MQQlVHotjZqT4c96t
+	xS7zox1sEo7BRg3oGEj1JorWVzKmiJG64ELg7N1l6Qc7SvVP/qGm+HBwb6FbjscafkM1ZzIA8v3
+	+CDnZa45GzcGEhgPIZn2zWo9xTh5C2rg=
+X-Gm-Gg: AYBFou0a79ZStMHjapl6+jVr7bYQVygwiijoBIxxLraS0hP08wIcFI/ArI6xGoD3nTG
+	Iq7WOBJWoDIsB0qufbkX5PLnf8RMtsMgEFfzFgOlJv1/EX0qEmEiRtEL46BxQu8b2Z2Cco+YXKe
+	wu+xH4OQCm7Mxj3MyQvhst4lEhGc834wqiprL551wmxFprCNLuC3ceNwTO6fUZ5S3+Zj/GFdEPi
+	rvqyaJwfj/o0+ghlLeinpcbxrg7/GHL9RgJnO+pmQCU554eQaEGos6rfHTnQED2KX2GbmPnqHmn
+	RBfZskrHMk4CR3HfVVgX2IhApfLQcRAkwSCCjoIgHJ6lZjgslFAixl5Y8nqvWAcMp0Fw5g==
+X-Received: by 2002:a17:907:3f11:b0:c25:35cd:fdb2 with SMTP id
+ a640c23a62f3a-c29f526dd2dmr190379266b.7.1789633275095; Thu, 17 Sep 2026
+ 01:21:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <CH3PR11MB8413FCBA598F7FABC04ADCFEE4B92@CH3PR11MB8413.namprd11.prod.outlook.com>
+ <CH3PR11MB841353E5708DDD7C5E2EA1D5E4B92@CH3PR11MB8413.namprd11.prod.outlook.com>
+ <aqqI9wOnradk9d7K@oss.qualcomm.com> <97924d2f-45f9-44d5-b482-97fcbb70abdc@bootlin.com>
+ <CH3PR11MB8413131D50175690DF9FDAB0E4B82@CH3PR11MB8413.namprd11.prod.outlook.com>
+ <3bdf2ecc-9dd1-428c-8841-36b1f19916e7@bootlin.com>
+In-Reply-To: <3bdf2ecc-9dd1-428c-8841-36b1f19916e7@bootlin.com>
+From: Coia Prant <coiaprant@gmail.com>
+Date: Thu, 17 Sep 2026 16:21:03 +0800
+X-Gm-Features: AcwNN1XL07xRu5XXN3J_i5sQYnNCkDU2pPnYaE7rXj6dGCxz8rSrRM8IV9aR83Q
+Message-ID: <CALj3r0gXP0+bwsPVtuw=9RRQ6gpmuHzGc5PzF_a3XXXTTZYcqQ@mail.gmail.com>
+Subject: Re: [PATCH net 2/2] net: stmmac: qcom-ethqos: advertise supported
+ SerDes interfaces
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Thomas Karpiniec <tom.karpiniec@outlook.com>, 
+	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>, netdev@vger.kernel.org, 
+	Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Choong Yong Liang <yong.liang.choong@linux.intel.com>, Bartosz Golaszewski <brgl@kernel.org>, 
+	Russell King <rmk+kernel@armlinux.org.uk>, linux-arm-msm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
+Maxime Chevallier <maxime.chevallier@bootlin.com> =E4=BA=8E2026=E5=B9=B49=
+=E6=9C=8817=E6=97=A5=E5=91=A8=E5=9B=9B 13:36=E5=86=99=E9=81=93=EF=BC=9A
+>
+> Hi Thomas,
+>
+> +Coia
+>
+> On 9/17/26 06:29, Thomas Karpiniec wrote:
+>
+> >> Can you test settung the STMMAC_FLAG_SERDES_SUPPORTS_2500M flag in
+> >> dwmac-qcom-ethqos ?
+> >
+> > I can confirm that dma_cap.pcs =3D Y.
+>
+> Thanks for looking up :) This is a good start
+>
+> >
+> > I tested setting STMMAC_FLAG_SERDES_SUPPORTS_2500M on hardware and unfo=
+rtunately the flag alone doesn't solve the problem.
+>
+> Yeah, but it's still the right first move. Russell planned to do that as =
+well :
+>
+> https://lore.kernel.org/netdev/E1vvDJi-0000000ArhH-3ipf@rmk-PC.armlinux.o=
+rg.uk/#t
+>
+> >
+> > I think there are a couple of things missing. stmmac_phylink_setup does=
+n't use the integrated PCS bitmap to populate config->supported_interfaces,=
+ so SGMII is still not advertised to phylink as a usable host interface. Al=
+so stmmac_integrated_pcs_init is adding 1000BASE-X unconditionally, which w=
+ouldn't be appropriate here.
+>
+> Ok so, the missing bit seems to be that priv->integrated_pcs isn't taken
+> into account in stmmac_phylink_setup(). This needs to be added then :)
+>
+> Looks like there's also the inband support that needs addressing, that wa=
+s
+> part of his RFC here :
+>
+> https://lore.kernel.org/netdev/E1vvDJi-0000000ArhH-3ipf@rmk-PC.armlinux.o=
+rg.uk/#t
+>
+> > I did a proof-of-concept fixing those things and the end result looks a=
+ little messy: config->supported_interfaces could come from either get_inte=
+rfaces _or_ the integrated PCS with unclear (to me) responsibility.
+>
+> There's only dwmac-intel, dwmac-spacemit and dwmac-rk that use the
+> .get_interfaces() API. Let me add Coia in CC, as they're working
+> on better PCS support specifically for Rockchip :
+>
+> https://lore.kernel.org/netdev/20260915123802.1561724-1-coiaprant@gmail.c=
+om/
+>
+> For spacemit, looks like it's not really a problem as there's no PCS
+> involved. For intel though, heh... Intel platforms with dwmac AND PCS
+> are hard to come by, but I think at that point let's roll with the
+> bitwise or'int of get_interfaces + pcs interfaces.
+>
+> > This POC did show that STMMAC_FLAG_SERDES_SUPPORTS_2500M enabled phylin=
+k to configure the integrated PCS for 2500BASE-X and a 2.5 Gbps link came u=
+p with no apparent issues.
+>
+> Maybe the blind spot is inband aneg. Mohd, you were quite involved in
+> this, do you remember where we stand on that front ?
+>
+> Thanks,
+>
+> Maxime
 
-Critical: 0 · High: 2 (1) · Medium: 0 · Low: 0
+Thanks for adding me.
 
-- [High] mtk_remove() now calls mtk_ppe_deinit(eth)
-  (drivers/net/ethernet/mediatek/mtk_eth_soc.c:5409) *before*…
-- [High] The patch closes only half of the leak it claims to fix.
+For the Rockchip side, rk_get_interfaces() no longer needs to advertise
+SGMII: stmmac_phylink_setup() already OR's the PCS's supported_interfaces
+into config->supported_interfaces, and the XPCS driver provides SGMII
+there. I'll drop the SGMII line from rk_get_interfaces() so RGMII ports
+don't advertise SGMII unnecessarily.
 
-Pre-existing issues:
-- [High] mtk_ppe_init() registers per-PPE debugfs entries via
-  mtk_ppe_debugfs_init() (mtk_ppe.c:934), which creates a top-level…
+On the qcom issue: the missing bit seems to be that
+stmmac_phylink_setup() only looks at priv->hw->xpcs and
+priv->hw->phylink_pcs, not priv->integrated_pcs. Extending the existing
+OR to cover the integrated PCS would let qcom-ethqos work without a
+new get_interfaces() callback.
 
---
-
-net: mediatek: fix PPE resource leak on remove
-
-This adds a mtk_ppe_deinit(eth) call to mtk_remove() so that the l2_flows
-rhashtables allocated by mtk_ppe_init() are released on device removal, the
-way the probe error unwind already does.  A few questions about the placement
-and the completeness of the teardown below.
-
-> diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-> index fd7a49ae88d01..903dac36ccf10 100644
-> --- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-> +++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-> @@ -5406,6 +5406,7 @@ static void mtk_remove(struct platform_device *pdev)
->  
->  	netif_napi_del(&eth->tx_napi);
->  	netif_napi_del(&eth->rx_napi);
-> +	mtk_ppe_deinit(eth);
-
-[Severity: High]
-Can this destroy ppe[i]->l2_flows while the netdevs are still registered and
-their flow offload callbacks are still live?
-
-mtk_ppe_deinit() only calls rhashtable_destroy(), which frees the bucket
-table and leaves ht->tbl dangling, while eth->ppe[i] stays non-NULL:
-
-drivers/net/ethernet/mediatek/mtk_ppe.c:mtk_ppe_deinit() {
-	for (i = 0; i < ARRAY_SIZE(eth->ppe); i++) {
-		if (!eth->ppe[i])
-			return;
-		rhashtable_destroy(&eth->ppe[i]->l2_flows);
-	}
-}
-
-The unregister_netdev() calls only happen afterwards, in mtk_cleanup() ->
-mtk_unreg_dev(), and unregistering a device with offloaded flower rules
-replays the removals back into the driver:
-
-unregister_netdev() -> dev_shutdown() -> tcf_block_offload_unbind() ->
-tcf_block_unbind() -> tcf_block_playback_offloads(..., add=false) ->
-fl_reoffload()
-
-net/sched/cls_flower.c:fl_reoffload() {
-		cls_flower.command = add ?
-			FLOW_CLS_REPLACE : FLOW_CLS_DESTROY;
-
-For an MTK_FLOW_TYPE_L2 (bridge) entry that lands back in the already
-destroyed table:
-
-mtk_eth_setup_tc_block_cb() -> mtk_flow_offload_cmd() ->
-mtk_flow_offload_destroy() -> mtk_foe_entry_clear() ->
-
-drivers/net/ethernet/mediatek/mtk_ppe.c:__mtk_foe_entry_clear() {
-	if (entry->type == MTK_FLOW_TYPE_L2) {
-		rhashtable_remove_fast(&ppe->l2_flows, &entry->l2_node,
-				       mtk_flow_l2_ht_params);
-
-Is there anything preventing a concurrent FLOW_CLS_REPLACE from reaching
-mtk_foe_entry_commit_l2() -> rhashtable_lookup_get_insert_fast() on the same
-freed table?  mtk_remove() holds neither rtnl nor mtk_flow_offload_mutex.
-
-The same applies to eth->reset.monitor_work and eth->pending_work, which are
-only cancelled later, inside mtk_cleanup():
-
-drivers/net/ethernet/mediatek/mtk_eth_soc.c:mtk_cleanup() {
-	mtk_sgmii_destroy(eth);
-	mtk_unreg_dev(eth);
-	mtk_free_dev(eth);
-	cancel_work_sync(&eth->pending_work);
-	cancel_delayed_work_sync(&eth->reset.monitor_work);
-
-If those re-run mtk_open()/napi_enable(), the receive path reaches
-mtk_ppe_check_skb() -> rhashtable_lookup_fast(&ppe->l2_flows) on the freed
-table.
-
-The probe unwind orders this the other way around:
-
-err_unreg_netdev:
-	mtk_unreg_dev(eth);
-err_deinit_ppe:
-	mtk_ppe_deinit(eth);
-
-Would placing mtk_ppe_deinit(eth) after mtk_cleanup(eth) match that order?
-
-[Severity: High]
-Does this leave eth->flow_table leaked?
-
-mtk_probe() initializes two rhashtables per PPE index: l2_flows inside
-mtk_ppe_init(), and eth->flow_table inside mtk_eth_offload_init():
-
-drivers/net/ethernet/mediatek/mtk_ppe_offload.c:mtk_eth_offload_init() {
-	if (!eth->ppe[id] || !eth->ppe[id]->foe_table)
-		return 0;
-	return rhashtable_init(&eth->flow_table, &mtk_flow_ht_params);
-}
-
-The only two rhashtable_destroy() call sites in
-drivers/net/ethernet/mediatek/ are both on ppe->l2_flows, in mtk_ppe_init()'s
-error path and in mtk_ppe_deinit(), so eth->flow_table's bucket table is
-never freed on unbind either before or after this patch.  Should
-mtk_ppe_deinit() (or the remove path) also destroy eth->flow_table?
-
-Two related observations on eth->flow_table:
-
-Only rhashtable_free_and_destroy() does cancel_work_sync(&ht->run_work), so a
-pending deferred rehash work item stays pointing into struct mtk_eth, which
-is devm_kzalloc'ed in mtk_probe() and freed on detach.
-
-eth->flow_table is a single per-device field, but mtk_eth_offload_init() is
-called once per PPE index in the mtk_probe() loop, and ppe_num is 2 on
-mt7986/mt7981 and 3 on mt7988.  Does re-running rhashtable_init() on the same
-object overwrite and leak the previously allocated bucket table already at
-probe time?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but since mtk_ppe_deinit() is now
-the PPE teardown for the remove path: it has no counterpart for the debugfs
-entries created during init.
-
-mtk_ppe_init() ends with mtk_ppe_debugfs_init(ppe, index), and that creates a
-top level directory plus two files whose private data is the devm_kzalloc'ed
-struct mtk_ppe:
-
-drivers/net/ethernet/mediatek/mtk_ppe_debugfs.c:mtk_ppe_debugfs_init() {
-	root = debugfs_create_dir(ppe->dirname, NULL);
-	debugfs_create_file("entries", S_IRUGO, root, ppe, &mtk_ppe_debugfs_foe_all_fops);
-	debugfs_create_file("bind", S_IRUGO, root, ppe, &mtk_ppe_debugfs_foe_bind_fops);
-
-The root dentry is not stored anywhere and there is no debugfs_remove() for
-the PPE in the driver (the only debugfs_remove() in
-drivers/net/ethernet/mediatek/ is in mtk_wed.c, which does keep
-hw->debugfs_dir).  With CONFIG_DEBUG_FS=y, does reading
-/sys/kernel/debug/ppe0/entries after unbind dereference the freed struct
-mtk_ppe and its freed dmam-allocated foe_table, and does a re-probe collide
-with the stale ppe0 directory?  Would adding the debugfs teardown to
-mtk_ppe_deinit() be appropriate here?
-
->  	mtk_cleanup(eth);
->  	free_netdev(eth->dummy_dev);
->  	mtk_mdio_cleanup(eth);
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260916051618.2904439-1-lgs201920130244%40gmail.com
+Best,
+Coia
