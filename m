@@ -1,62 +1,62 @@
-Received: from mail-oi2-f12.google.com (mail-oi2-f12.google.com [74.125.231.204])
+Received: from mail-oi2-f13.google.com (mail-oi2-f13.google.com [74.125.231.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9FE4E9C24
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 20:05:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469CB4EB86E
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 20:05:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789675551; cv=none; b=HUJq+g/xZDyqWkeIdqt4u1HjszZP3wB9vSbqKQX2CTldthNqQEGXBLjYddi+CQDo1FNmazkBv8c9AWqQD8LyIo0hRis0ShWrTwQLBm+X4OyD8CEIF9OwC52sPKNgQozRPjo6ZT9vk+elBVXU7MbrBUV1o6W3lgEX5v0EiJ0w02o=
+	t=1789675555; cv=none; b=U15OUjTkCEgkwZcLrhpri0Z6n5ezOIbPDXaTISw2KDHGMQ3Ae12RKTpgiaZHbDGwuCK4tS8N1c9jWVr7a7PKsGrbWqnUhOgR+wrk7SCtIkA94bA37xTtfQlMORxSfvK0zLoRWdN+sZbgENpXbEjcO0ybz3STRVsk8lssH52BBxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789675551; c=relaxed/simple;
-	bh=51ac+Vg1/cfjx/8XZ4g0wF5pv8rVZrwzTpqc6URdDJA=;
+	s=arc-20240116; t=1789675555; c=relaxed/simple;
+	bh=1Kuz6tS5Py1WMjbe0MPgCCfqRKMN/UYPaHrtMokGw5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gkwVFFpfCOtqphVsIl+s+Ui/Q2x3UzVH3V+dE0/8Y/ytwP5Ay8Z3FzVTDCL7qcUQ4ijhPk9vsIPDld5KLlfaEjxJUWl+A4OILeyUfzJ0ZlE1RU+8jjJPTyTa0orHFH8cuhI0ySmKVshuylnFHyXf8xLvXkvtO4llBrsCx9VPF/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dXQSIanm; arc=none smtp.client-ip=74.125.231.204
+	 MIME-Version; b=LRNHUvxfnBZ6aYccUShiBmqdKGPTx41Wjk8VF6w1dqlzUOFFsbPDDv1t65NilDStYAQKLvpJEH2F2zu9nqDiZxATQFSCJ6NWiJrQDOVY9ef96JRuUN3FSyXFEHbPr5eYeidI+D3JhzLzblywSkW1RtrA9qfcDo8k3I26KeOC6h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fofo3AKX; arc=none smtp.client-ip=74.125.231.205
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dXQSIanm"
-Received: by mail-oi2-f12.google.com with SMTP id 46e09a7af769-805c194bc92so1391324a34.1
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 13:05:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fofo3AKX"
+Received: by mail-oi2-f13.google.com with SMTP id 5614622812f47-4c6ed1de994so67705b6e.0
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 13:05:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789675548; x=1790280348; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789675551; x=1790280351; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=QheH0cwJ4f6+zK5Im6E2DdV5SRCbfGfGNXI2nbs+6m4=;
-        b=dXQSIanmT7hqoD7oul2NfuSivHKfTwcVpb74IagEXW1cJ2fh+XKkzwRGlub7iJPXlE
-         VTN5kBQEohklNYVQQCUCuKZjliEq90YEwuHUaEn+EXVvJ9dh5TswspjWVrJ5FEgq57iU
-         J3NF+l7MOtG29Bb1YT8HYlS0LpJUbg9fyc1o18ConRDHNCN/8BD93SAiVfcb3ZkIQ4Aa
-         eQa5j8wIfSP+EbCQqmJjEjrYN0AgUb45OJ0H2Dzn4P4rmsLQB8l8iSc9lmU36XAbenOW
-         tD3xNBN6xkl6RrhD4LxbnXLOzv04NsePjlNFtzuqU05x0diEtM/hN0WQcYbqgXNAs1zY
-         6MvA==
+        bh=6mrj/+J6JJhLD0EYx9SyMDWcw43Nzov4qv5yvCmdOUA=;
+        b=Fofo3AKXyQE42RM+yzx1j5CkNHvESagmN121jGzH7nvmsvx6R8QV78OrjAynr1YhgV
+         bYjdBpVFixJFJ2xrrmIjQDhxrj7h/UeJkXpmv9GjC7R1t31yi1TI8eQsNfTV1JfyjPuz
+         JOZGkqNdK+uN8z7x+roj0AAa/Wf120ElGOlMgij3TgxvKDgdX80fSs0Li2FXnfrdfpBz
+         kEcElUgSgdlzY3OeNjWOyyRhXp05avkYfgC60sVWO702dbGKKz47Voq1fnEmc00XYr2A
+         aa2YTOv1L99RVMDa8r+eEYNxTkJOo+Dyc+HOdJjo6j9cJpBzesRvxVLJu6xShkx581Ci
+         soUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789675548; x=1790280348;
+        d=1e100.net; s=20260707; t=1789675551; x=1790280351;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=QheH0cwJ4f6+zK5Im6E2DdV5SRCbfGfGNXI2nbs+6m4=;
-        b=QFCNKESWsycR1zsOBmBgzphQahR8Njwhh5t7/JhI3hAWXYZy7p9IDL8K3ciYPcS6a/
-         kYnTSRZ6uRRCOlRYAaHnYebvfw1kUvLTHiiK8uJwJkkqHXUvqpWwlzgCVzukojrlOu19
-         cFBFuOxNaZheM+huSJ1+GgFXGYgObHx7hHwvTRKz2qDNiXifTh7QjjeyncO/PlE7SZrr
-         Cwv6+aUoMde3WzNUfqjwO1kI0k7HUkz/GFPESdgpaT64bQlUFJXwx7MaeKMIa1U5waC4
-         skecnjgZw7gzMze9LIMPfIQZ3FYW3DkMUOmp+sqnSLy5Ekn9ZVJV5kWySNqTzdudcLv3
-         BQpQ==
-X-Gm-Message-State: AFuF++kUgl3qWseZSZRqiP/fWEqfRXHGHqFU+0aGNhXsN9Io7C2YoF38
-	8mE+6Nc2gD4HWItMDcYGysdJyvNW7WSuZWLP76d+ZAbbJiRTnhPkAi+q
-X-Gm-Gg: AYBFou0kYXNSIkM+Wm8nUNcsnNIHmzQa5SsP2hy8SKpHPrtUJTjA3p5nVo44qMA7Owf
-	lR3l2Rah7nU5ymV65YBYp2aFFa/VESkhdM0srvXP35123/WTfOq+y2NUhEVMWW4zsWXqM/C9fpQ
-	1+t7sYjQt/5zZaaQX0GkpcsC9T9LoM1FIzYB9NYm2iceoftnTNjDIaEgJI6uFazbaKSlkZlYbWC
-	xJQHVTfWnuGIbcx3QMJYFLyRGxW9UkN3IyO8H88B71LHIliw3voyRc7fgI+13E4ZJuM+59f+dUl
-	0VNMe9f++eIPCvxlzDbsbyMvAsyA9QwVFRQws/f6oiwuoegm+WwWBiinyWZ5cXGW6MGVwT3HUB8
-	2948kueIm3sgt0QSUMAt3T/rJEVGzzhL7jWhxWk+I+L3BAA0JbmkWoT5QRAqPLSIblUT+9qaEWs
-	8XJPfR5OPdZgZAXIkSEeytWbVccgHBkmlPR9qMu+NSm9jgOTyx2rfa3+nC7suVIw==
-X-Received: by 2002:a05:6830:2116:b0:80c:d30f:971 with SMTP id 46e09a7af769-80de199fae9mr252068a34.18.1789675547784;
-        Thu, 17 Sep 2026 13:05:47 -0700 (PDT)
-Received: from localhost ([2a03:2880:ff:43::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-80c477cc3d3sm3957887a34.27.2026.09.17.13.05.46
+        bh=6mrj/+J6JJhLD0EYx9SyMDWcw43Nzov4qv5yvCmdOUA=;
+        b=2ypiNVe1joK8px5SnHh81zsJg4a6XARvOHzxw7kclsl2k6bmt6xovpcLw9EV3hI7/s
+         bob/s9qwfSJu0wn5EyH17xxC3Z5N14k4wO6Sv0PMYwhiygPTfe3uPo8a9bmUIeqCbI95
+         FW+bNf5W+9OLVSm309tvLvwfoJjkgOw7oi2aXv2aHmncrAKDzkc8op9McqwcSMoWDSSd
+         xQ6QxwewItRO0bYqnufK81hStoQ1LMVCto+8JHMGPAyqpvhrQSR0wkDDPqwyD9GS+p22
+         6BSzJytD265yq73RZo7Z5AZb07ohbLM0yYLXOcgl0Y5SzDiDy0jjLWlOBQ5arJw4y2zg
+         z9wA==
+X-Gm-Message-State: AFuF++kJmIeJdnTIndFTZjBu26HCDNJ10X5iH4JXFFxdwT1f0mRz2+Fs
+	S4FrZcK/LpfW6t/HeHCqq5QuaDzEnOn/b5vMjrGasyiS+UfjATXCMa1O
+X-Gm-Gg: AYBFou3I9cqrniVVcGIr+uNLjMl3KB1EzoZFR6N9whHzttYBP1xkU2ZAicoALLZTAZi
+	ATx2u1mZ6Yd6nX4bA/bolWPRzcvrF+SWRHHdV3V6YAZpsSRD2QpnlMrqeLznMtpY51NXEzqpxsv
+	HeUIqq8krU5gOODii00wyVDUexb5cNmWmDAYW2ColLnhK4H+kQ+mcbKW/LcngZbPOlra/QbwLMP
+	V8OIpVXXeXV4Fa8nofaRCiFzaOQB/pjRScp4x09b6c1DTsiNwOieUD6EgFtobWUX52//e+0XnGV
+	3TL/0Ne5LLHyfUgox4g9xLS/vnXooDU71J+yKJriDHu4GNv2ivCniNK/AnUzyWFckgNn33HeuAe
+	9IOJG3SFqo1XnmwdAKYpmj0j1SGnUi4BiVZuV9lYXrSbszVQtJL7q8TgLBJFE7qyEKQVD17bVN8
+	M08AK/L8KUWDxMzM0QGNQvR7EdmVyTGh3zg5EyA0Ffv+DlNtTQy7b3vbriiXrFQg==
+X-Received: by 2002:a05:6808:3a0b:b0:4c7:43f3:b65 with SMTP id 5614622812f47-4ccf9996a27mr460852b6e.38.1789675550902;
+        Thu, 17 Sep 2026 13:05:50 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:48::])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4cb6c80c75bsm3667697b6e.6.2026.09.17.13.05.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 13:05:47 -0700 (PDT)
+        Thu, 17 Sep 2026 13:05:49 -0700 (PDT)
 From: Amery Hung <ameryhung@gmail.com>
 To: bpf@vger.kernel.org
 Cc: netdev@vger.kernel.org,
@@ -72,9 +72,9 @@ Cc: netdev@vger.kernel.org,
 	kerneljasonxing@gmail.com,
 	ameryhung@gmail.com,
 	kernel-team@meta.com
-Subject: [PATCH bpf-next v4 02/15] bpf: Make struct_ops tasks_rcu grace period optional
-Date: Thu, 17 Sep 2026 13:05:28 -0700
-Message-ID: <20260917200542.3689605-3-ameryhung@gmail.com>
+Subject: [PATCH bpf-next v4 03/15] bpf: Add bpf_struct_ops accessor helpers
+Date: Thu, 17 Sep 2026 13:05:29 -0700
+Message-ID: <20260917200542.3689605-4-ameryhung@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260917200542.3689605-1-ameryhung@gmail.com>
 References: <20260917200542.3689605-1-ameryhung@gmail.com>
@@ -88,178 +88,153 @@ Content-Transfer-Encoding: 8bit
 
 From: Martin KaFai Lau <martin.lau@kernel.org>
 
-bpf_struct_ops_map_free() currently waits for both a regular RCU grace
-period and a tasks RCU grace period for every struct_ops map through
-synchronize_rcu_mult(call_rcu, call_rcu_tasks).
+Add the helper functions bpf_struct_ops_map_kdata() and
+bpf_struct_ops_map_cfi_stubs() in bpf_struct_ops.c. They will be called
+from cgroup.c in the upcoming patch to create a struct_ops to cgroup
+attachment link.
 
-A regular RCU grace period is still required for all struct_ops maps
-because the struct_ops trampoline ksyms requires a rcu grace period
-(take a look at the list_del_rcu in __bpf_ksym_del).
-Add a map_free_pre_rcu() callback so the struct_ops map can remove
-ksyms before bpf_map_put() wait for the regular rcu grace period.
+bpf_struct_ops_valid_to_reg() is also exposed for the upcoming caller
+in cgroup.c.
 
-The tasks RCU grace period is only needed by tcp_congestion_ops.
-Add free_after_tasks_rcu_gp only to struct bpf_struct_ops instead
-of the bpf_map.
-
-When CONFIG_TASKS_RCU=n, synchronize_rcu_tasks() is the same as
-synchronize_rcu(). Since all struct_ops maps now complete a regular RCU
-grace period before bpf_struct_ops_map_free() runs, skip the extra
-synchronize_rcu_tasks() call in this case.
-
-This cleanup prepares for a later patch that needs to support
-free_after_mult_rcu_gp.
+The link update validation is also refactored into a new function
+bpf_struct_ops_link_update_check() such that it can be reused by the
+caller in cgroup.c in the upcoming patch.
 
 Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Reviewed-by: Eduard Zingerman <eddyz87@gmail.com>
 Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Amery Hung <ameryhung@gmail.com>
 ---
- include/linux/bpf.h         |  7 +++++++
- kernel/bpf/bpf_struct_ops.c | 31 +++++++++++++------------------
- kernel/bpf/syscall.c        |  3 +++
- net/ipv4/bpf_tcp_ca.c       | 16 ++++++++++++++++
- 4 files changed, 39 insertions(+), 18 deletions(-)
+ include/linux/bpf.h         | 27 +++++++++++++++++++
+ kernel/bpf/bpf_struct_ops.c | 53 +++++++++++++++++++++++++++----------
+ 2 files changed, 66 insertions(+), 14 deletions(-)
 
 diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 2a5fa346aada..1198404885c8 100644
+index 1198404885c8..90ab467d25a2 100644
 --- a/include/linux/bpf.h
 +++ b/include/linux/bpf.h
-@@ -90,6 +90,7 @@ struct bpf_map_ops {
- 	struct bpf_map *(*map_alloc)(union bpf_attr *attr);
- 	void (*map_release)(struct bpf_map *map, struct file *map_file);
- 	void (*map_free)(struct bpf_map *map);
-+	void (*map_free_pre_rcu)(struct bpf_map *map);
- 	int (*map_get_next_key)(struct bpf_map *map, void *key, void *next_key);
- 	void (*map_release_uref)(struct bpf_map *map);
- 	void *(*map_lookup_elem_sys_only)(struct bpf_map *map, void *key);
-@@ -2131,6 +2132,11 @@ struct btf_member;
-  *	   unloaded while in use.
-  * @name: The name of the struct bpf_struct_ops object.
-  * @func_models: Func models
-+ * @free_after_tasks_rcu_gp: Set to true if it needs the bpf core to wait for
-+ *                           a tasks_rcu gp before freeing the struct_ops map
-+ *                           and its progs. It is unnecessary if the @unreg
-+ *                           has waited for the correct rcu gp or the @unreg
-+ *                           has ensured all struct_ops prog has finished running.
-  */
- struct bpf_struct_ops {
- 	const struct bpf_verifier_ops *verifier_ops;
-@@ -2149,6 +2155,7 @@ struct bpf_struct_ops {
- 	struct module *owner;
- 	const char *name;
- 	struct btf_func_model func_models[BPF_STRUCT_OPS_MAX_NR_MEMBERS];
-+	bool free_after_tasks_rcu_gp;
- };
+@@ -2290,6 +2290,11 @@ u32 bpf_struct_ops_id(const void *kdata);
+ int bpf_struct_ops_for_each_prog(const void *kdata,
+ 				 int (*cb)(struct bpf_prog *prog, void *data),
+ 				 void *data);
++void *bpf_struct_ops_map_kdata(struct bpf_map *map);
++void *bpf_struct_ops_map_cfi_stubs(struct bpf_map *map);
++bool bpf_struct_ops_valid_to_reg(struct bpf_map *map);
++int bpf_struct_ops_link_update_check(struct bpf_map *new_map, struct bpf_map *old_map,
++				     struct bpf_map *expected_old_map);
  
- /* Every member of a struct_ops type has an instance even a member is not
+ #ifdef CONFIG_NET
+ /* Define it here to avoid the use of forward declaration */
+@@ -2354,6 +2359,28 @@ static inline void bpf_map_struct_ops_info_fill(struct bpf_map_info *info, struc
+ static inline void bpf_struct_ops_desc_release(struct bpf_struct_ops_desc *st_ops_desc)
+ {
+ }
++static inline u32 bpf_struct_ops_id(void *kdata)
++{
++	return 0;
++}
++static inline void *bpf_struct_ops_map_kdata(struct bpf_map *map)
++{
++	return NULL;
++}
++static inline void *bpf_struct_ops_map_cfi_stubs(struct bpf_map *map)
++{
++	return NULL;
++}
++static inline bool bpf_struct_ops_valid_to_reg(struct bpf_map *map)
++{
++	return false;
++}
++static inline int bpf_struct_ops_link_update_check(struct bpf_map *new_map,
++						   struct bpf_map *old_map,
++						   struct bpf_map *expected_old_map)
++{
++	return -EOPNOTSUPP;
++}
+ 
+ #endif
+ 
 diff --git a/kernel/bpf/bpf_struct_ops.c b/kernel/bpf/bpf_struct_ops.c
-index 3935bf35a423..7802859eac1e 100644
+index 7802859eac1e..12ce9654ffdd 100644
 --- a/kernel/bpf/bpf_struct_ops.c
 +++ b/kernel/bpf/bpf_struct_ops.c
-@@ -1024,9 +1024,18 @@ static void __bpf_struct_ops_map_free(struct bpf_map *map)
- 	bpf_map_area_free(st_map);
+@@ -1276,7 +1276,23 @@ int bpf_struct_ops_for_each_prog(const void *kdata,
  }
+ EXPORT_SYMBOL_GPL(bpf_struct_ops_for_each_prog);
  
-+static void bpf_struct_ops_map_free_pre_rcu(struct bpf_map *map)
+-static bool bpf_struct_ops_valid_to_reg(struct bpf_map *map)
++void *bpf_struct_ops_map_kdata(struct bpf_map *map)
 +{
-+	struct bpf_struct_ops_map *st_map = (struct bpf_struct_ops_map *)map;
++	struct bpf_struct_ops_map *st_map;
 +
-+	bpf_struct_ops_map_del_ksyms(st_map);
++	st_map = container_of(map, struct bpf_struct_ops_map, map);
++	return st_map->kvalue.data;
 +}
 +
- static void bpf_struct_ops_map_free(struct bpf_map *map)
++void *bpf_struct_ops_map_cfi_stubs(struct bpf_map *map)
++{
++	struct bpf_struct_ops_map *st_map;
++
++	st_map = container_of(map, struct bpf_struct_ops_map, map);
++	return st_map->st_ops_desc->st_ops->cfi_stubs;
++}
++
++bool bpf_struct_ops_valid_to_reg(struct bpf_map *map)
  {
  	struct bpf_struct_ops_map *st_map = (struct bpf_struct_ops_map *)map;
-+	struct bpf_struct_ops *st_ops = st_map->st_ops_desc->st_ops;
-+	bool tasks_rcu = st_ops->free_after_tasks_rcu_gp;
  
- 	/* st_ops->owner was acquired during map_alloc to implicitly holds
- 	 * the btf's refcnt. The acquire was only done when btf_is_module()
-@@ -1037,24 +1046,8 @@ static void bpf_struct_ops_map_free(struct bpf_map *map)
- 
- 	bpf_struct_ops_map_dissoc_progs(st_map);
- 
--	bpf_struct_ops_map_del_ksyms(st_map);
--
--	/* The struct_ops's function may switch to another struct_ops.
--	 *
--	 * For example, bpf_tcp_cc_x->init() may switch to
--	 * another tcp_cc_y by calling
--	 * setsockopt(TCP_CONGESTION, "tcp_cc_y").
--	 * During the switch,  bpf_struct_ops_put(tcp_cc_x) is called
--	 * and its refcount may reach 0 which then free its
--	 * trampoline image while tcp_cc_x is still running.
--	 *
--	 * A vanilla rcu gp is to wait for all bpf-tcp-cc prog
--	 * to finish. bpf-tcp-cc prog is non sleepable.
--	 * A rcu_tasks gp is to wait for the last few insn
--	 * in the tramopline image to finish before releasing
--	 * the trampoline image.
--	 */
--	synchronize_rcu_mult(call_rcu, call_rcu_tasks);
-+	if (tasks_rcu && IS_ENABLED(CONFIG_TASKS_RCU))
-+		synchronize_rcu_tasks();
- 
- 	__bpf_struct_ops_map_free(map);
+@@ -1329,6 +1345,26 @@ static int bpf_struct_ops_map_link_fill_link_info(const struct bpf_link *link,
+ 	return 0;
  }
-@@ -1163,6 +1156,7 @@ static struct bpf_map *bpf_struct_ops_map_alloc(union bpf_attr *attr)
  
- 	mutex_init(&st_map->lock);
- 	bpf_map_init_from_attr(map, attr);
-+	map->free_after_rcu_gp = true;
- 
- 	return map;
- 
-@@ -1195,6 +1189,7 @@ const struct bpf_map_ops bpf_struct_ops_map_ops = {
- 	.map_alloc_check = bpf_struct_ops_map_alloc_check,
- 	.map_alloc = bpf_struct_ops_map_alloc,
- 	.map_free = bpf_struct_ops_map_free,
-+	.map_free_pre_rcu = bpf_struct_ops_map_free_pre_rcu,
- 	.map_get_next_key = bpf_struct_ops_map_get_next_key,
- 	.map_lookup_elem = bpf_struct_ops_map_lookup_elem,
- 	.map_delete_elem = bpf_struct_ops_map_delete_elem,
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index def57bddb092..01a1f1dd3b67 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -954,6 +954,9 @@ void bpf_map_put(struct bpf_map *map)
- 		/* bpf_map_free_id() must be called first */
- 		bpf_map_free_id(map);
- 
-+		if (map->ops->map_free_pre_rcu)
-+			map->ops->map_free_pre_rcu(map);
++int bpf_struct_ops_link_update_check(struct bpf_map *new_map,
++				     struct bpf_map *old_map,
++				     struct bpf_map *expected_old_map)
++{
++	struct bpf_struct_ops_map *st_map, *old_st_map;
 +
- 		WARN_ON_ONCE(atomic64_read(&map->sleepable_refcnt));
- 		/* RCU tasks trace grace period implies RCU grace period. */
- 		if (READ_ONCE(map->free_after_mult_rcu_gp))
-diff --git a/net/ipv4/bpf_tcp_ca.c b/net/ipv4/bpf_tcp_ca.c
-index 791e15063237..e224ecafbd69 100644
---- a/net/ipv4/bpf_tcp_ca.c
-+++ b/net/ipv4/bpf_tcp_ca.c
-@@ -339,6 +339,22 @@ static struct bpf_struct_ops bpf_tcp_congestion_ops = {
- 	.validate = bpf_tcp_ca_validate,
- 	.name = "tcp_congestion_ops",
- 	.cfi_stubs = &__bpf_ops_tcp_congestion_ops,
-+	/* The struct_ops's function may switch to another struct_ops.
-+	 *
-+	 * For example, bpf_tcp_cc_x->init() may switch to
-+	 * another tcp_cc_y by calling
-+	 * setsockopt(TCP_CONGESTION, "tcp_cc_y").
-+	 * During the switch,  bpf_struct_ops_put(tcp_cc_x) is called
-+	 * and its refcount may reach 0 which then free its
-+	 * trampoline image while tcp_cc_x is still running.
-+	 *
-+	 * A vanilla rcu gp is to wait for all bpf-tcp-cc prog
-+	 * to finish. bpf-tcp-cc prog is non sleepable.
-+	 * A rcu_tasks gp is to wait for the last few insn
-+	 * in the tramopline image to finish before releasing
-+	 * the trampoline image.
-+	 */
-+	.free_after_tasks_rcu_gp = true,
- 	.owner = THIS_MODULE,
- };
++	if (!old_map)
++		return -ENOLINK;
++	if (expected_old_map && old_map != expected_old_map)
++		return -EPERM;
++
++	st_map = container_of(new_map, struct bpf_struct_ops_map, map);
++	old_st_map = container_of(old_map, struct bpf_struct_ops_map, map);
++	/* The new and old struct_ops must be the same type. */
++	if (st_map->st_ops_desc != old_st_map->st_ops_desc)
++		return -EINVAL;
++
++	return 0;
++}
++
+ static int bpf_struct_ops_map_link_update(struct bpf_link *link, struct bpf_map *new_map,
+ 					  struct bpf_map *expected_old_map)
+ {
+@@ -1347,23 +1383,12 @@ static int bpf_struct_ops_map_link_update(struct bpf_link *link, struct bpf_map
+ 		return -EOPNOTSUPP;
  
+ 	mutex_lock(&update_mutex);
+-
+ 	old_map = st_link->map;
+-	if (!old_map) {
+-		err = -ENOLINK;
+-		goto err_out;
+-	}
+-	if (expected_old_map && old_map != expected_old_map) {
+-		err = -EPERM;
++	err = bpf_struct_ops_link_update_check(new_map, old_map, expected_old_map);
++	if (err)
+ 		goto err_out;
+-	}
+ 
+ 	old_st_map = container_of(old_map, struct bpf_struct_ops_map, map);
+-	/* The new and old struct_ops must be the same type. */
+-	if (st_map->st_ops_desc != old_st_map->st_ops_desc) {
+-		err = -EINVAL;
+-		goto err_out;
+-	}
+ 
+ 	err = st_map->st_ops_desc->st_ops->update(st_map->kvalue.data, old_st_map->kvalue.data, link);
+ 	if (err)
 -- 
 2.52.0
 
