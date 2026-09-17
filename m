@@ -1,214 +1,379 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746274E2F0B;
-	Thu, 17 Sep 2026 12:19:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209DD4D7D55
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 12:20:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.204
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789647574; cv=fail; b=rVFSkqi36tnMv5nMrwqzHk3xqYtwe6/qeQE7R7w7MtI0ouVNiKDgdwtDvTQ/+tVPekoNl0Tw92aDeKBIVHW7dG+zTzXjcL4RiOXYqOPcfqwJZZ96Uc9U6QGjL6AxnfP0+j2N39aHByOCkihlV7gcyH9mnlxXqpZsonITDy/Imdc=
+	t=1789647672; cv=pass; b=OKhgK1psYZfB+JTLn6/UB2qzimi5BogaZIF4wHVe9/qMvm4IbU/r/lfQT3XLdyXCWkFA1HMTxcBV8ctHf0OiyXg/wDX4fNRwQ/HiO2TRN+Z4t7LwgVTWIx3bclM1F74pZKHynBeXl6G6stmBo2fA+j0sSrNoJmPUCEqd4Py/rwA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789647574; c=relaxed/simple;
-	bh=sX/tLLv2i0LwA6jF3sdaBxWVtFun4YjVGFfgSRVLC4E=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=mIpZsSFZ/M41zFPnevz/TLKl4Ir/XL6HgGSP7PNivsyA2ol6DNcyLkRh7W92v+5CCKDuX1ukhVouMSUedY9Dq+p5BQa4F7R6ioI8tuHVyw+GGoGhy2+3SQ0S+n0+4kw8QV07cjc5PXdRuLGGCvFDRYwLZlsdoXLg11g23/j+ozY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b=Y8pba/86; arc=fail smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1789647672; c=relaxed/simple;
+	bh=AgdM9A2toQshFXzWIt1NLUOFu7oRlbj14WU2EvE1KRo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mwRv/ZVZ7NxgP5f5QqNRF/PSJCwyY2DNobt7bKAu8W+cWAp6ZVUbr9zq5n0arGutO99ysZGBYQCff6iMQL0xmT/eiS+1OohqVcxP5jT7h6cu+MdDk+KUjRbxeQCuBV/RpmDDrm913R+ovQLi2nQ9fCWLuXqn7KEDbJB0NEq/U38=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iTam1gbG; arc=pass smtp.client-ip=74.125.229.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b="Y8pba/86"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68H9dcRO496973;
-	Thu, 17 Sep 2026 05:19:01 -0700
-Received: from bn1pr04cu002.outbound.protection.outlook.com (mail-eastus2azon11020096.outbound.protection.outlook.com [52.101.56.96])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4gqqujrcpx-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 17 Sep 2026 05:19:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=n0C7DYI/2YJp+OzmWJfKSyf1mQoo74JFKZVMausITUh3Gsnxm0mZjtx5NLxBhRTAGVbYziW2RBqOW6xOI3uZlodLVZwnYqR/0nkYTOrrYo9+xo2AWYfPy5F5ftoVAtLe0fAf2zsW/eqQ2DHK+LNzSinstjNSOnN3goH3SQw+xGttE44VJjbRLsU69n1HSHG82/j9UNTwgh0JJIh62Ak9OVdepQgOH3RWFy44aoWNF3Azj3sbclx8xKzg2PLp3u5CCxqDnfuanoSYLk+x6ci56kgZzX3aLxAwHk6CwdMD/F6TF7tyl1u8ijuuSGlPhxX+GEcEHnlMs61pLZN/e+eK3g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HSE3SNcrw03rWa+Zw2tfyOy3xJmX1EoOltK/SEGzNl8=;
- b=KH6sBI/3Ad9zLDb9yPYzNdVyQdMQnQh/hWTGHxhNt1oNo9uJqj5T9Fir+ZfbvLxdvqMYcFlVzseoDdnN3eeFwjQHYVNO5VFlIJb98zLLyOm2IRnRw5Qs13Ut8KDzXM6YNHzux1q/95LjaFryuGPfB6GTpbJzQPaun4kEquSgdIVQU9SDfmSOJadrOzRncrdDQSXHTsB4NQIWlKH3z8clv8lUuLYCDKtRGF2PxUuD9M8+jMGp2KXg6nZa5kJ5suVgE+1R3Wcv3+fcpnRCTXz6RUMbC5a75/eBhNUq4wpgBpZzAx3SZdWzSX8MqdxcauOo1W4P24e9F47VUxw73EwUzQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=marvell.com; dmarc=pass action=none header.from=marvell.com;
- dkim=pass header.d=marvell.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HSE3SNcrw03rWa+Zw2tfyOy3xJmX1EoOltK/SEGzNl8=;
- b=Y8pba/86ZbtQW4HjDY06pu/7GcLlxJ0T3CSEa8KTEOUFgpfdC/gR7R+ieDjlilbR4jsIoLVVqT05wtXYKENIubIqcrLfVmU4wUI9hOvgZzeqxqvtzxO78H/8MycMigVslxJIWkQ7JqYqueMputOnUpTG1W40mq1CsMlHb8u3mgg=
-Received: from BL1PPFB0715B38B.namprd18.prod.outlook.com
- (2603:10b6:20f:fc04::dbb) by MW3PR18MB3484.namprd18.prod.outlook.com
- (2603:10b6:303:52::8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.12; Thu, 17 Sep
- 2026 12:18:53 +0000
-Received: from BL1PPFB0715B38B.namprd18.prod.outlook.com
- ([fe80::d72d:7d68:4c45:cc20]) by BL1PPFB0715B38B.namprd18.prod.outlook.com
- ([fe80::d72d:7d68:4c45:cc20%7]) with mapi id 15.21.0428.011; Thu, 17 Sep 2026
- 12:18:53 +0000
-From: Elad Nachman <enachman@marvell.com>
-To: Wentao Liang <vulab@iscas.ac.cn>
-CC: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-        "davem@davemloft.net"
-	<davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "maksym.glubokiy@plvision.eu"
-	<maksym.glubokiy@plvision.eu>,
-        "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [EXTERNAL] [PATCH] net: prestera: flower: fix ruleset leak in
- prestera_flower_prio_get()
-Thread-Topic: [EXTERNAL] [PATCH] net: prestera: flower: fix ruleset leak in
- prestera_flower_prio_get()
-Thread-Index: AQHdRpX0ZuwNSln01EqDBJUtkhkoNbbSr2eA
-Date: Thu, 17 Sep 2026 12:18:52 +0000
-Message-ID:
- <BL1PPFB0715B38B44DA1B3829001C682744DBB82@BL1PPFB0715B38B.namprd18.prod.outlook.com>
-References: <20260917111603.2148710-1-vulab@iscas.ac.cn>
-In-Reply-To: <20260917111603.2148710-1-vulab@iscas.ac.cn>
-Accept-Language: en-US, he-IL
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL1PPFB0715B38B:EE_|MW3PR18MB3484:EE_
-x-ms-office365-filtering-correlation-id: c2a39727-1e68-4e00-2351-08df14b5d680
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|376014|1800799024|23010399003|10070799003|366016|18002099003|22082099003|38070700021|10067099003|11063799006|56012099006;
-x-microsoft-antispam-message-info:
- 99vDKa1j6skW7qYvM66LrkYkXoZFIe4NlpVH8KC27Y+xU3iP8MTVeJb3lblHSbZ3pEhfOpA5musAbBI64uU3TlnnvPnYHzYQPJNiUaZmV2TkvBxUagSMWHojNrwb78jCAxbk8xV002GHAbNHP8xMGV+CXKUYM4AxbmiRIXCDNqUXEq3rNM0ghHlNGA7g/zmm03IN6Q5xBxSfXrG+4Uk90LkFQCBtqgjXz3OXVgPO9iEETofwZiPS09o7vzXkPGRft077xNjrn7cB/WNeh6tkSYBSjLWgdelf5mOUzq847YcX52q0DTdT6s2Gh6INfV+7JQVhtnVmIXCYvs+LYIh9cO6EU+B2uBov8GiouIQccfxNuqoBG1X5xgEFyqvtddPM6djNXXCih/O0tacubNn6Gz5NwSkitqq8h8Ytvt3xq8Oxy0hOZZ+vR7n8zbz5OdeIOsG4GgvqlVVRMbLJFwd46MHsq7QtV+bMkC3E/HnaqS2EZenHIFctQ2McPFt04giN9Rvp6tHpabbUdGlgBxV/XUkbLHNfVRQcX64eeHyaIaA+ygPqOwheqkarDbKP2mIDNmKjWS5+pNgoXKMZoFeOiONM2A79AJPmHhPf7jSsrxIq+5yVA6nOOBPbhFIYmjYlrg95nQ5aSnNPIe9P9o9KfEPLcv6d+W2tvZgpm2bmihaiwf5KMALDKgpswvvy+mk2zIY0H9dVE5iXcLp2fq5JbvgbM7+G9YeDq0D19jRVtTM=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PPFB0715B38B.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(23010399003)(10070799003)(366016)(18002099003)(22082099003)(38070700021)(10067099003)(11063799006)(56012099006);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 2
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?2toqZjdFErGBMYLuUQAuVirxq7i55xKqSoLVVrxqPy/OwuvRA/0lLkbyHaWw?=
- =?us-ascii?Q?N50Wseb0UB5f38T/Hz9CwPI8fNH1s2/t/fOe+JQv0tgX2bJAFAtEBosxB9TQ?=
- =?us-ascii?Q?9vGJrOoahFDZkqaM9TwR1ZqTNyb5QV0E57TA67uX1Z71NitHwwuI1h4YmUaq?=
- =?us-ascii?Q?h04LtYZcZO/VjUhflTcZJQxXT/NUxmKJ9MQMhWrpauFGv6jZG2JqCxkbLKSQ?=
- =?us-ascii?Q?NwcgNDgr1rKdZKth37sy3IolxKBlj+PTHHs+PRm1hphFIzTgHRqKIAFKgb1o?=
- =?us-ascii?Q?vP7NvkbE1lCQkXi0CUnu/XApdXI2F9sSI0mC7XibJoI5dct3x+LhbJFD2Cqb?=
- =?us-ascii?Q?XJ0nVehQf4+jqGxy8+Pk3BiJgGj6l7KFnyolls/80nz5x3+cK2dOheXI8EC2?=
- =?us-ascii?Q?2ekiYv2G9Pyo6R0VgQTpMEgDHFNfDFUiowwBlO8dDZpK6i8Ux9uYm/VcG/kq?=
- =?us-ascii?Q?Jaib6aI6dk7PZvN5jWB2ewKDGLDTvwEdn9Bm7p29KDjIWTz5buPMQKtuIEI6?=
- =?us-ascii?Q?APfUGoH7HENhCRu0dDltRbJ3giUbJHu1FlsWHkuP0G5zlox51vFQnkhtZtn8?=
- =?us-ascii?Q?qc+1mB6c17WmgDUcal9dmZKZk/07lJQ84XXkzRQi3dFW3PbQVpboPex5PoWF?=
- =?us-ascii?Q?jdjFVuU2kMV5sgWT5xe6T5UOR/BuXW0YHAdnPsuJ67SrRQ296b1KZoYotUFc?=
- =?us-ascii?Q?pWMeMZ8g3f9ZCn216C6Jhh1L+TXOsC57BXistdJGb28nl2LzZ8NGYC0qe1Tl?=
- =?us-ascii?Q?JK7gVNAhV91EcTm7ktuMQKz6gjWjJArYlGxEbWmcJ863Jr8z8EoutMvQXUnr?=
- =?us-ascii?Q?OD3QQZUc/x6G4+Dvxi4qCAGz14zmq6r3L0OfNmhg5r84JEbmW29MFegn7fg8?=
- =?us-ascii?Q?Jrvj5q9vcN+thw+bor6LMQQigidWz/iYxBHOlQzCY915rZUXYdjWLyaj9eWF?=
- =?us-ascii?Q?YIPEHimNF8Se9mSEqsMp3YC9UWzXwHtoF7U71a5juw3Iwoq0owZrB6RByeoe?=
- =?us-ascii?Q?fCigdjsV6WdKaBxY23zUyoFcSl3QzMSs9C5A5Wlc1FMU0RAtrXtHsxXfumXq?=
- =?us-ascii?Q?K3upNAXYcA0SeEmlZ+Z2uObhrPmVYCMWfYC7GOWgjZGQFSorC43VTP3gtrVX?=
- =?us-ascii?Q?y0WnDQwie9XiN/OIeNLJHOB8piilMEQPF8ruqebUIp/LtrAf7xJjAsEcBhHl?=
- =?us-ascii?Q?hxowCGwflN8wycsAn0e+5RC9jK9G0tEqw1h9lMwuXZ96bpVT3Y/SERZnxoPu?=
- =?us-ascii?Q?0cSooxx6PfRa8TnvLFonn40br050ApMwP3WYIZakYzIIf//M3CSnhXpOTtXK?=
- =?us-ascii?Q?NBreqWjCIZJ9UcSQOg91CgPWRX24by9K8QHdlU8xIE/9UTtmICZhRae4dRyx?=
- =?us-ascii?Q?qiLDviXesD1fPD01Y2Fr5a6V+bxtrlsYr0ZDl6vHk2GJsemoHBOJhy3Bkl0I?=
- =?us-ascii?Q?DGR2q63v/SS6ggKX0JaE6a8HDMXDmpWOknhBCjYuAOb8t09jDOzJNEK8xAIC?=
- =?us-ascii?Q?TTPWN7BmdFdUQdg3Wf5Jn8RlKTtDAonaBC3+hbXlapWpKqvjmjgpRZaQ8Jdf?=
- =?us-ascii?Q?sQIdigLBnnmKXAdPfubrAKjaRxrHNgLFjKv0XxEC9OcsatGXwZwc/EbavfJw?=
- =?us-ascii?Q?5Hr2W531Ne8kUBpYMWEqlohdh6xzmx5djf41mVzwUk69+IcitPxIt6qXj1DJ?=
- =?us-ascii?Q?LngEZrArByZ3rndQXncX/Ub3POd92YRsuqcP5a0YlaUMDEAMDfz5k5YIV59A?=
- =?us-ascii?Q?lzn+kJS6KsPMvLr30Lu4BFu2LT4WLH39oqQLupDznZziWPE6SRgcRc6LS5H+?=
-x-ms-exchange-antispam-messagedata-1: 4BdH6YmLxqiHrA==
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iTam1gbG"
+Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b5e4f13d77so853665e87.0
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 05:20:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789647651; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZjHkG3A/0OGikks7dZCrjhlw3UUnEB7YEZOWyt1HlCOkp4pWfabIL8jHqb3hzfbnOe
+         rH4/h0t1C31QVGOjFqxkRaFeX2cQpXkZmk6F2M84JUle+nG8QZUCNYCAPZn+70i+NmG6
+         6XNhexmQ4ytIGH0kayEVqi3JdR8YO7spLmoLjJNX/xk9Cdq/W6ddyNjVRmF6jHkF2Rof
+         nY/22szOsFjdqkNlQ/77/IHvVGr0V9+2tIPGjAhKT0j5bUdb/6JXgBFWAMxw8ZlraFDf
+         C+oj8I0IKiuJuP98501oOhHw0lKHwm4Hk3pjzXOF1NDVpKHcSjNNVOMTMEngSQmgSEyh
+         nBSg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=tYijwURBgre4NraXqG8mIJdmB3HdAUmRokXImKMdIY4=;
+        fh=/SzUngrR/P2gNs4fglipOv+FDUUzndl/otWOQB+Hqks=;
+        b=I7j5awLK4UFmXh3I56tIO7x2ASD8ucRI+Q/eo4Eetbj+6jMWha82adjYfYqB2R1Xu3
+         i85d0mnwZxo/sIYM6Y2EJfA4yLUEszBguKVv4yrugOV3uStieRRNWK9SeGszTN5Y8Le4
+         j+xINorvWW9QkeSH8xnxmemo00cDdCBalU3Qds/x1ahwmPxSJPbEETD0fiYj3dm0wxC4
+         1xz4Qi/Uc0AaVeMuEJq0JWSoy1L6z8QcIF0fg9eOX5MnV1QeYuaYI4h8V4SO2g1TPTVd
+         Bnm2JJCciKvoaL+KN82JqnuJJ6T+KI0xbn7C9J96V7O+e7waTWcWL3k6Nx3KzPPXkSbb
+         xepw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789647651; x=1790252451; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=tYijwURBgre4NraXqG8mIJdmB3HdAUmRokXImKMdIY4=;
+        b=iTam1gbGO4AIw1aZb5oSVQRR6NosZ0NCer15BRAK9jFYfAetn6p+faFry16W2jyDVv
+         PrtyFn9kPlqpn5q1LiJF4J3DL7ML2P552oTOMAPERH1gpFMX5NL/Xgd1G+q5nVcxfSOT
+         epAgO6hoJSl7Ldv7uLhu/tFhGcfPH2HEwNIhO92qMJgmPSCqjJrWhsK9HmCAowlG499p
+         2VExxVm6+WQh0gfmHnyAUuKEnFV/4A9MgR6M9aOqcEKZkWGW9atYcjkFAgV/istDEidE
+         2GOlQL23XM5Agq+B9X2i3J6TfQmSZoAd6BMKMHpsxdAPxl0RxcZG23tWRLDWXfowuS+j
+         bvDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789647651; x=1790252451;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tYijwURBgre4NraXqG8mIJdmB3HdAUmRokXImKMdIY4=;
+        b=KjE70oPAkZRa1JmejjBhWoNbzkxZSL/tQy+nZr7Pbhhoc3lnZ5rlw/Kw8khKN+jvtb
+         lWAjvxzjaa3/UTCk9T+nOte90PquWIptqlyEydE37qcQEudReWtPzi/URqFkwfqQv1Gm
+         DDeRs4JoMIW504WcxAnqZ8olQuHQcLWteDFAaGeAe+MP/K0DNNnz94d1g1Mi6M5Jm8u9
+         FoIlyXJRigPiu8XbTAIdCf95FCK/Ryvnhn6E5TSKDxdtgEohzP2o+R3MDSyIdVvHDg2q
+         uFb4odWhM70oP9unY+3QQdIT+za/w/lPORYsXM/Zqapf7UpCQLvxffVuIoZVlzoXc/Xc
+         rY2w==
+X-Forwarded-Encrypted: i=1; AKwUvBx/k9sD8DO9GMXPXvE548NicyIehTMsGzEVuCWMlcLvmBXlCeKw+XXlRDqrRe8kaoqDEYOKUlg=@vger.kernel.org
+X-Gm-Message-State: AFuF++ktKVIry5SI+jaIVwC/pUKHr5jb6eVI8W+qdHFTfx6635FoUbom
+	/XCLKBK90yZKG73qSjtip3/NcUG5R81frSk3Zfw9spZrHHG6klJkx99RCiC0d6qLwdzF/Aqunyk
+	jGLBUjHIAj7Kd4ZjBktPYDSgrVMuMGno=
+X-Gm-Gg: AYBFou0pAej3b1K9xqkPT0j3Wf+Y+aD71TX9RBzxRypHu0Okvhzr/Y6WN9DilEzDI6X
+	7NLD8Kj7vfrYQOfAGtDYlPcBufmGqp2lcWxFOmyiLdA8Uqo3f4Estw+KUU2luh8kO4BsaVDz1IM
+	HeyejkhMOip1YbvhrHr1nLHmUVKkFeYwd/LbFzAG4lu8kQZti21taBmZT3Ph0/5bG8LjIoP3sVc
+	z38leExVuQWJsM7iVZt/6cQeJhUBXbeuoiTwjon5GywdTISGxC/5XL66dlNszE+q8SEzuoBA4BV
+	/xbAmwFmOjnZygbwLcUryU9V7/tp1D14wKChpLD0+Ls3AvYQRkx8aT8hBLvtHvjB
+X-Received: by 2002:a05:6512:a8c:b0:5b6:1a7c:27 with SMTP id
+ 2adb3069b0e04-5b8b6649f01mr2202222e87.42.1789647650597; Thu, 17 Sep 2026
+ 05:20:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked:
-	rj0lMiqwH3qtccp1G2scIi6hPsIEs+zJ2ysUx58YOO57g2B7GNuZKhAQQ+oaD3s70DllcrrbNwZNXkhTXbsZ6tAcxHe0PF+8fHIP6VeK2RPD68abW3pD6WYAjxB+v9Li9f5GCnhD1O1Ap6Fi/a6SyojvrFLDk9IJwV6VruTP9/puL5q1biJXLgDMmulGlznAHDigoEut+FFgz3POCLi2I6LmdjY1mRtq8DIZh5qZPqUEmxHW1bDf66mE3UlUYkaVs8OpftuUK3UU6cgVLUHqE2c8ilne13X9B+Ht0syw79PX5CMsCw0nH8+LWZrym3FoX+opGZ151NzmJQ1L8lxDYg==
-X-OriginatorOrg: marvell.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL1PPFB0715B38B.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c2a39727-1e68-4e00-2351-08df14b5d680
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Sep 2026 12:18:52.9993
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: gnxn/moslyP7btA96yybdIujGjuhkpx6IX14I6WZ5M7U37RtVWAqXU3vnTTNH/Q3h2+9A+yJ9Jv4RsW2Xfz2JA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR18MB3484
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE3MDE3MiBTYWx0ZWRfX5zA5ntxWgkjr
- qDNSb4ZhWn30UnSIOZeVBDr+38Fq2a7mVg6/hYb4HympOgvn7JZWq+bvlbuUe75PPrbu4lZesAh
- 29HcSA34AJtt/xsQf/nKwy6MSOQNnWGB8ufeuhOIg0W1sMvnrb7owBRm5kjLWbgP9T9XvqRdULx
- D7RvIR3x4NTAd/90ioa+JJzULMWOn5m2+Qv4vren+nm3aA4A1YnWIMrYDPpXnKDuw4PbdYCO96X
- 37lbiAjlJazO1YRXjP/N1E/UDO9aaiWDU+FaR+8rtuj/tIinTnOlO0mfwspSQg/l4YcS86AEvvD
- dVEIV0MuPxGer5XjL7jQxmu4/8gLIZj0gCHKuHjBJLMrrLje2p+Vw9byzaU6kRde8ZDzLhWEzcA
- zZIGcYsp2k7YDnR8fqVOdw6mAu+klDGx2ZAUbptumi483mFK7C4gDE2EKOJgIpnCgN2BmrMXqts
- zSQX3o9Jaw5wXB2Foew==
-X-Proofpoint-GUID: rppCs3IgAErOoKbTKLkRG2GT_b-0UEXw
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE3MDE3MiBTYWx0ZWRfX51d2h8Ii9l7m
- mAO00pzq2N4RHcU6Ptmo9KiR8dojpLPycG50VCKLjvm1yy4qz+8ncbPwCRzcsZkBPHiSd28S3kC
- AotBZdiY5r1FFcdPwVrS67+KVvIUlSo=
-X-Authority-Analysis: v=2.4 cv=F6LC5ahN c=1 sm=1 tr=0 ts=6aabdab5 cx=c_pps
- a=NO5CczpcTQW1gtzKHD9VpQ==:117 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=VdqzKS8jKosA:10 a=-AAbraWEqlQA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=EAYMVhzMl8SCOHhVQcBL:22 a=VwQbUJbxAAAA:8
- a=oVJIqqGrwzkRX3ny5XwA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: rppCs3IgAErOoKbTKLkRG2GT_b-0UEXw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-17_02,2026-09-16_02,2025-10-01_01
+References: <20260915065534.102249-1-maimon.sagi@gmail.com> <178962831034.22033.349240265456808212@kernel.org>
+In-Reply-To: <178962831034.22033.349240265456808212@kernel.org>
+From: Sagi Maimon <maimon.sagi@gmail.com>
+Date: Thu, 17 Sep 2026 15:20:24 +0300
+X-Gm-Features: AcwNN1Xpv2dec-eWESeM4Wy6Y9WRN3elg-R5JrcdXrRAdLmAUBat1N6Ju4KqLAs
+Message-ID: <CAMuE1bGnQNWvEKVzjwo7nZSzA8Ctv0bsW=uE_CnhUOPBvc6DUw@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: axienet: add a TX timeout handler to
+ recover a lost DMA interrupt
+To: netdev-bot+sashiko@kernel.org
+Cc: radhey.shyam.pandey@amd.com, netdev@vger.kernel.org, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	michal.simek@amd.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> prestera_acl_ruleset_lookup() returns the ruleset with its reference
-> count incremented, and the caller is expected to release it with
-> prestera_acl_ruleset_put(). prestera_flower_prio_get() only reads the
-> priority range and returns without dropping the reference, so the
-> ruleset is never destroyed.
+On Thu, Sep 17, 2026 at 9:58=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wro=
+te:
 >
-> Release the reference after the priorities have been read.
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider:
 >
-> Fixes: 44af95718fed5 ("net: prestera: manage matchall and flower prioriti=
-es")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
->  drivers/net/ethernet/marvell/prestera/prestera_flower.c | 2 ++
->  1 file changed, 2 insertions(+)
+> Critical: 0 =C2=B7 High: 1 (1) =C2=B7 Medium: 0 =C2=B7 Low: 0
 >
-> diff --git a/drivers/net/ethernet/marvell/prestera/prestera_flower.c b/dr=
-ivers/net/ethernet/marvell/prestera/prestera_flower.c
-> index 58b116cabd48..10d7e149822b 100644
-> --- a/drivers/net/ethernet/marvell/prestera/prestera_flower.c
-> +++ b/drivers/net/ethernet/marvell/prestera/prestera_flower.c
-> @@ -411,6 +411,8 @@ int prestera_flower_prio_get(struct prestera_flow_blo=
-ck *block, u32 chain_index,
->               return PTR_ERR(ruleset);
+> - [High] The new .ndo_tx_timeout handler (axienet_tx_timeout(),
+>   drivers/net/ethernet/xilinx/xilinx_axienet_main.c:1907-1913) only=E2=80=
+=A6
 >
->       prestera_acl_ruleset_prio_get(ruleset, prio_min, prio_max);
-> +     prestera_acl_ruleset_put(ruleset);
-> +
->       return 0;
->  }
+> Pre-existing issues:
+> - [High] axienet_dma_err_handler()
+>   (drivers/net/ethernet/xilinx/xilinx_axienet_main.c:2727-2810) tears=E2=
+=80=A6
 >
 > --
-> 2.34.1
+>
+> net: axienet: add a TX timeout handler to recover a lost DMA interrupt
+>
+> This adds an .ndo_tx_timeout handler to axienet_netdev_ops that queues
+> lp->dma_err_task, so the netdev watchdog can reach the existing DMA reset
+> path without depending on a DMA interrupt.  watchdog_timeo is set to 5 * =
+HZ
+> in the legacy DMA branch of axienet_probe().
+>
+> > diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/driver=
+s/net/ethernet/xilinx/xilinx_axienet_main.c
+> > index 782f903d318f3..b5927e979c341 100644
+> > --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> > +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+>
+> [ ... ]
+>
+> > @@ -1884,6 +1888,30 @@ axienet_get_stats64(struct net_device *dev, stru=
+ct rtnl_link_stats64 *stats)
+> >       } while (read_seqcount_retry(&lp->hw_stats_seqcount, start));
+> >  }
+> >
+> > +/**
+> > + * axienet_tx_timeout - Driver TX timeout callback
+> > + * @ndev:    Pointer to net_device structure
+> > + * @txqueue: Index of the transmit queue that stalled
+> > + *
+> > + * Called by the netdev watchdog when a transmit queue has made no pro=
+gress for
+> > + * @ndev->watchdog_timeo.  axienet_dma_err_handler() is the driver's o=
+nly reset
+> > + * path, and it is otherwise scheduled solely from axienet_tx_irq() an=
+d
+> > + * axienet_rx_irq() - so a completion interrupt that is never delivere=
+d leaves
+> > + * the queue stopped with descriptors unreclaimed and no way back shor=
+t of
+> > + * unloading the driver.  Schedule the reset from here as well, so a l=
+ost
+> > + * interrupt is recoverable.
+> > + *
+> > + * This runs from a timer, so it only queues the work; the reset itsel=
+f happens
+> > + * in process context in axienet_dma_err_handler().
+> > + */
+> > +static void axienet_tx_timeout(struct net_device *ndev, unsigned int t=
+xqueue)
+> > +{
+> > +     struct axienet_local *lp =3D netdev_priv(ndev);
+> > +
+> > +     netdev_err(ndev, "TX queue %u stalled, resetting DMA\n", txqueue)=
+;
+> > +     schedule_work(&lp->dma_err_task);
+> > +}
+>
+> [Severity: High]
+> Does the queue actually get restarted after this reset?
+>
 
-void prestera_acl_ruleset_put(struct prestera_acl_ruleset *ruleset)
+You are right that it does not, for the DRV_XOFF case.  Thank you - the
+analysis is correct and I had not covered that path.
+
+For what it is worth, the hardware run behind the changelog did recover,
+and the logs say why it did not expose this.  Sampling once a second
+across the wedge (MSI-X disabled, TX completions stopped):
+
+  T+6   TXirq=3D24542  tx_pkts=3D1767  tx_timeout=3D0  backlog=3D131264b/92=
+p
+  T+7   TXirq=3D24542  tx_pkts=3D1767  tx_timeout=3D1  backlog=3D131306b/93=
+p
+  T+8   TXirq=3D24542  tx_pkts=3D1767  tx_timeout=3D1  backlog=3D0b/0p
+  ...
+  T+22  TXirq=3D24542  tx_pkts=3D1767  tx_timeout=3D1  backlog=3D0b/0p
+
+The qdisc backlog drains to zero on the sample after the reset while
+tx_packets stays frozen, so the queue was woken, and tx_timeout stays at
+1 for the remaining 15 seconds, so the watchdog did not re-fire.  With
+CONFIG_BQL=3Dy the dql limit stopped the queue via STACK_XOFF before the
+128-descriptor ring filled, and netdev_reset_queue() clears exactly that
+bit.  "TX ring unexpectedly full" never appeared in either run, which is
+consistent with DRV_XOFF never being set.
+
+So the recovery was only ever demonstrated for the BQL stop, exactly as
+you suggest, and the DRV_XOFF path is untested.
+
+That gap is pre-existing and independent of this patch -
+axienet_dma_err_handler() has never woken the queue, and the
+error-interrupt path into it has the same problem - so I have sent it
+separately rather than folding it in:
+
+  net: axienet: restart the TX queue after a DMA error reset
+
+That one is a missing call and I am comfortable sending it reasoned from
+the code, but this patch is a different matter: its changelog claims the
+interface resumes passing traffic, and that is a behavioural claim I
+should demonstrate rather than assert.  So I will repost the TX timeout
+patch once I can test the DRV_XOFF case on hardware, about a month from
+now.
+
+> dev_watchdog() only calls ndo_tx_timeout for a queue that is already
+> stopped:
+>
+> net/sched/sch_generic.c:dev_watchdog() {
+>         ...
+>                         if (!netif_xmit_stopped(txq))
+>                                 continue;
+>         ...
+>                         dev->netdev_ops->ndo_tx_timeout(dev, i);
+> }
+>
+> In the scenario the changelog describes (lost TX completion, descriptors
+> unreclaimed) the stop bit is __QUEUE_STATE_DRV_XOFF, set here:
+>
+> drivers/net/ethernet/xilinx/xilinx_axienet_main.c:axienet_start_xmit() {
+>         ...
+>         if (axienet_check_tx_bd_space(lp, MAX_SKB_FRAGS + 1)) {
+>                 netif_stop_queue(ndev);
+>         ...
+> }
+>
+> axienet_dma_err_handler() then resets DMA, zeroes every TX BD, sets
+> lp->tx_bd_ci =3D lp->tx_bd_tail =3D 0, re-enables NAPI and returns.  The =
+only
+> queue-state clearing it does is netdev_reset_queue(), which touches
+> STACK_XOFF only, and nothing at all without CONFIG_BQL:
+>
+> include/linux/netdevice.h:netdev_tx_reset_queue() {
+> #ifdef CONFIG_BQL
+>         clear_bit(__QUEUE_STATE_STACK_XOFF, &q->state);
+>         dql_reset(&q->dql);
+> #endif
+> }
+>
+> There is no netif_wake_queue()/netif_tx_wake_all_queues() and no
+> netif_trans_update() anywhere in axienet_dma_err_handler().  The remainin=
+g
+> wake site in axienet_tx_poll() is gated on packets:
+>
+> drivers/net/ethernet/xilinx/xilinx_axienet_main.c:axienet_tx_poll() {
+>         packets =3D axienet_free_tx_chain(lp, lp->tx_bd_ci, lp->tx_bd_num=
+, false,
+>                                         &size, budget);
+>
+>         if (packets) {
+>         ...
+>                 if (!axienet_check_tx_bd_space(lp, MAX_SKB_FRAGS + 1))
+>                         netif_wake_queue(ndev);
+>         }
+> }
+>
+> Can axienet_free_tx_chain() ever return non-zero after the handler cleare=
+d
+> cur_p->status for every descriptor?  And the wake in axienet_start_xmit()
+> cannot run while the queue is stopped.
+>
+> If DRV_XOFF survives the reset, and txq->trans_start is never refreshed,
+> doesn't dev_watchdog()'s time_after(jiffies, trans_start + watchdog_timeo=
+)
+> stay true, so the timeout path re-fires every 5 seconds, re-running
+> napi_disable() / axienet_dma_stop() / __axienet_device_reset() /
+> axienet_dma_start() and printing netdev_crit + netdev_err indefinitely
+> while the interface still cannot transmit?
+>
+> The driver's other reset path does refresh the timestamp:
+>
+> drivers/net/ethernet/xilinx/xilinx_axienet_main.c:axienet_device_reset() =
 {
-	if (!refcount_dec_and_test(&ruleset->refcount))
-		return;
+>         ...
+>         netif_trans_update(ndev);
+> }
+>
+> Would adding netif_trans_update() plus a wake of the TX queue at the tail
+> of axienet_dma_err_handler() be needed for the recovery claimed in the
+> changelog ("the watchdog fires and the interface resumes passing traffic"=
+)
+> to hold for the DRV_XOFF case rather than only for a BQL-only stop?
+>
+> [Severity: High]
+> This is a pre-existing issue and not introduced by this patch, but the ne=
+w
+> trigger makes it much easier to reach: axienet_dma_err_handler() tears do=
+wn
+> the TX ring with no exclusion against axienet_start_xmit().
+>
+> The worker calls napi_disable() (which only excludes axienet_tx_poll()),
+> axienet_dma_stop(), then re-enables transmission for a BQL-only stop befo=
+re
+> it starts freeing descriptors:
+>
+> drivers/net/ethernet/xilinx/xilinx_axienet_main.c:axienet_dma_err_handler=
+() {
+>         axienet_dma_stop(lp);
+>         netdev_reset_queue(ndev);       /* clears __QUEUE_STATE_STACK_XOF=
+F */
+>
+>         for (i =3D 0; i < lp->tx_bd_num; i++) {
+>                 cur_p =3D &lp->tx_bd_v[i];
+>                 if (cur_p->cntrl) {
+>                         dma_addr_t addr =3D desc_get_phys_addr(lp, cur_p)=
+;
+>
+>                         dma_unmap_single(lp->dev, addr, ..., DMA_TO_DEVIC=
+E);
+>                 }
+>                 if (cur_p->skb)
+>                         dev_kfree_skb_irq(cur_p->skb);
+>         ...
+>         lp->tx_bd_ci =3D 0;
+>         lp->tx_bd_tail =3D 0;
+>
+>         axienet_dma_start(lp);
+> }
+>
+> It never takes the per-queue _xmit_lock and never calls
+> netif_tx_disable()/netif_device_detach(), and the core unfreezes the queu=
+es
+> as soon as ndo_tx_timeout() returns, long before the work runs:
+>
+> net/sched/sch_generic.c:dev_watchdog() {
+>                         netif_freeze_queues(dev);
+>                         dev->netdev_ops->ndo_tx_timeout(dev, i);
+>                         netif_unfreeze_queues(dev);
+> }
+>
+> So while the teardown loop is running, can a transmit on another CPU ente=
+r
+>
+> drivers/net/ethernet/xilinx/xilinx_axienet_main.c:axienet_start_xmit() {
+>         ...
+>         WRITE_ONCE(lp->tx_bd_tail, new_tail_ptr);
+>         netdev_sent_queue(ndev, skb->len);
+>
+>         /* Start the transfer */
+>         axienet_dma_out_addr(lp, XAXIDMA_TX_TDESC_OFFSET, tail_p);
+> }
+>
+> and write cur_p->cntrl/phys/skb into a descriptor the worker is about to
+> unmap and clear?  The outcomes look like an skb freed by the worker and
+> then re-referenced, a DMA mapping released while a fresh buffer is being
+> programmed into the same descriptor, and lp->tx_bd_tail/tx_bd_ci rewound =
+to
+> 0 out of step with the hardware tail pointer written by axienet_start_xmi=
+t().
+>
+> Since this new .ndo_tx_timeout makes the reset a routine event (and, per =
+the
+> comment above, potentially every 5 seconds), should the reset path be mad=
+e
+> to exclude the xmit path, for example with netif_tx_disable() around the
+> descriptor teardown?
 
-	prestera_acl_ruleset_destroy(ruleset);
-}
+Agreed, and I think that is a real bug today rather than only with this
+patch.  It is a bigger change to a path I cannot currently exercise, so
+I would prefer to send it as its own patch once I have the board back.
 
-If the refcount was one when you called put, this will destroy the ruleset.
-Did you verify that the refcount is at least two on this call to prestera_f=
-lower_prio_get() ?
-
-Elad.
-
+>
+> [ ... ]
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/20260915065534.102249-1-maimon.sagi%40gmail.com
