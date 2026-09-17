@@ -1,131 +1,113 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9BC265621;
-	Thu, 17 Sep 2026 01:01:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87ABA2FD665;
+	Thu, 17 Sep 2026 01:22:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789606918; cv=none; b=ZWSNtvqkxms4V04r9qZFpsemo+Y507Oa2LIU9orfamLDqDfhp4umOFAs6EEQjSaS9y/y5aI/jCuHusNvnVls+HJy7sobVWY5uNNhDVVELVm8pPCeYuMjhj4X/y9TxfU44BjvBB/OUs4YSFjiLRt0EYfoV2jDLZ3xAA9gET4DLTM=
+	t=1789608124; cv=none; b=TxC/QCpDpxsG0cc0TQrpcshaTG+md/srhCbLMJxJgOQjf66o95hUkNRolQ2wcXybG7/R0gGA2jTV3l/egSQaj/wQtLKSvAF4kivnIBu+0pOx5EBRFWoevtiMq7aotWwUaKWWp4ggyiOQk8TIT5NlQJcaFpN7LcMv6hi+e7yDUfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789606918; c=relaxed/simple;
-	bh=UYj33uToIe6OR13RPp5d3tTHqWSnJ5S7fiV/rx58uk8=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=kSGetfSZzXLhllI89AGqIuj1rQLSx4pnAo/rrmodjP1n+3IAWeF1B1D88bJte06uJs/ynURB5HmIXIuAZkhCPNuowRuoJ9FFA4140WkDi9IKKnOPwQtBM4Z4xwSLbjle3qldEyzsaWwxtecfr6ylHscFjQKonfsNJ1JHbm+12mQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [123.138.236.242])
-	by gateway (Coremail) with SMTP id _____8DxytH7O6tqydkMAA--.37580S3;
-	Thu, 17 Sep 2026 09:01:47 +0800 (CST)
-Received: from [10.130.40.83] (unknown [123.138.236.242])
-	by front1 (Coremail) with SMTP id qMiowJAxlMz4O6tqoqUhAA--.44539S2;
-	Thu, 17 Sep 2026 09:01:45 +0800 (CST)
-Subject: Re: [PATCH net-next v1] net: stmmac: Default DWMAC_MOTORCOMM to m on
- MACH_LOONGSON64
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Yao Zi <me@ziyao.cc>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260915073206.6665-1-yangtiezhu@loongson.cn>
- <90a666a8-9f6a-4640-a219-731f3d551c66@bootlin.com>
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-Message-ID: <f6b93b98-e0d3-9e28-e366-4df126e6ab5f@loongson.cn>
-Date: Thu, 17 Sep 2026 09:01:44 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1789608124; c=relaxed/simple;
+	bh=rrv0ZsKZkUrsFxngXKcbhlEXSxHcCSrCkjHauOs6nxs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HfX0/AktoDDt1Rcqsan1bsLmjnXJ3sHm3MaMKMH09LEf3mopVpQe1iN239Z38ZIsmjeCMkw6OdzNQilB+69prxhlriFrrHUXs4FuV/nt+mZz+GdRjODqQgNZ3QckbTO0hq7ALUCgBOPe6cwsddiRXYuBiCjzyz9oRoUEn0vOSuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=airoha.com; spf=pass smtp.mailfrom=airoha.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=R19IqMMb; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=airoha.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=airoha.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="R19IqMMb"
+X-UUID: 2c4436a0b23611f18dc8c9802ae25ab1-20260917
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=3jQnTexqLKlsnZgBOq3eCESiN5enzxrupb9BUw6kI2k=;
+	b=R19IqMMb7cMU8veLH4GljeUXzmgnWVjL4t09TUNP6Rkd2gUnTILg5yHc+B7+RddypjNkC84F7Gftm1sg9k0kM2ZaYwnev/w8EIgOdMHW6J9l90Un7RlJAlgT/61XA2ydRApPv6jyNlRFzk5UW+2Sq1j+v+8Qo/ZNxapnbE/nVEI=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:4f96e879-d44e-423e-b3ea-272219574f4a,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:7db8b62,CLOUDID:202f6928-9ebf-4787-bb42-3cd26eee85aa,B
+	ulkID:nil,BulkQuantity:0,SF:102|836|865|888|898,TC:-5,Content:0|15|50|99,E
+	DM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA:0,
+	AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 2c4436a0b23611f18dc8c9802ae25ab1-20260917
+Received: from mtkmbs09n1.mediatek.inc [(172.21.101.35)] by mailgw02.mediatek.com
+	(envelope-from <ar702101@airoha.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 297475316; Thu, 17 Sep 2026 09:21:56 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Thu, 17 Sep 2026 09:21:55 +0800
+Received: from mediatek.com (172.18.153.125) by mtkmbs13n1.mediatek.inc
+ (172.21.101.73) with Microsoft SMTP Server id 15.2.2562.29 via Frontend
+ Transport; Thu, 17 Sep 2026 09:21:55 +0800
+Received: by arhtenbupstream01.localdomain (Postfix, from userid 1007)
+	id 503B9140DB0; Thu, 17 Sep 2026 09:21:55 +0800 (CST)
+From: Weiting Lee <weiting.lee@airoha.com>
+To: <netdev@vger.kernel.org>
+CC: <andrew@lunn.ch>, <hkallweit1@gmail.com>, <linux@armlinux.org.uk>,
+	<davem@davemloft.net>, <kuba@kernel.org>, <edumazet@google.com>,
+	<pabeni@redhat.com>, <linux-kernel@vger.kernel.org>, <bjorn@mork.no>,
+	<ericwouds@gmail.com>, <frank-w@public-files.de>, <joseph.lin@airoha.com>,
+	<wenshin.chung@airoha.com>, <lucien.jheng@airoha.com>,
+	<albert-al.lee@airoha.com>, Weiting Lee <weiting.lee@airoha.com>
+Subject: [PATCH] net: phy: air_en8811h: add dedicated suspend callback for AN8811HB
+Date: Thu, 17 Sep 2026 09:21:02 +0800
+Message-ID: <20260917012102.3103131-1-weiting.lee@airoha.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <90a666a8-9f6a-4640-a219-731f3d551c66@bootlin.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAxlMz4O6tqoqUhAA--.44539S2
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7ur15CF18Zw43AF15JFW5Jwc_yoW8KFy3pr
-	4qya429r1kJF45Jw4kA3y8WF90ga97KrZ8u3Z7Jw1fXFZFkryjqryqqFWYqF1UCrWDXF12
-	yrW5uasxC3WDAwbCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
-	8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AK
-	xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
-	AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
-	14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIx
-	kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
-	wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
-	4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8zwZ7UU
-	UUU==
+Content-Type: text/plain
 
-On 2026/9/17 上午12:54, Maxime Chevallier wrote:
-> Hi
-> 
-> On 9/15/26 09:32, Tiezhu Yang wrote:
->> Currently, there is no network connectivity when upgrading to the
->> latest upstream mainline kernel on certain Loongson machines such
->> as Loongson-3C6000 server, because the driver for the onboard NIC
->> is not enabled.
->>
->> Enable the Motorcomm PCI DWMAC driver as a module by default when
->> building for the Loongson-64 platform.
->>
->> This ensures out-of-the-box support for Motorcomm YT6801 Ethernet
->> controllers on Loongson machines, enabling demand-loading without
->> increasing the core kernel image size.
->>
->> Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
->> ---
->>   drivers/net/ethernet/stmicro/stmmac/Kconfig | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
->> index ab3c4cf96423..c86d6c08977c 100644
->> --- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
->> +++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
->> @@ -408,6 +408,7 @@ config DWMAC_LOONGSON
->>   
->>   config DWMAC_MOTORCOMM
->>   	tristate "Motorcomm PCI DWMAC support"
->> +	default m if MACH_LOONGSON64
->>   	depends on PCI
->>   	select MOTORCOMM_PHY
->>   	select STMMAC_LIBPCI
-> 
-> I agree with Yao Zi, this belongs in your .config, maybe your
-> defconfig, but not in the stmmac Kconfig.
+The AN8811HB hardware requires a re-negotiation sequence before
+entering power-down to correctly restore the link upon resume.
+Add an8811hb_suspend() to handle this.
 
-Thanks for the constructive suggestions.
+Signed-off-by: Weiting Lee <weiting.lee@airoha.com>
+---
+ drivers/net/phy/air_en8811h.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-Before moving forward, I'd like to share an alternative thought.
-As noted in the earlier review, this network controller could be
-used across multiple architectures. To avoid the redundant churn
-in the defconfigs of every single architecture, I am wondering if
-we could unconditionally set it to default m in the Kconfig instead.
-
-Please let me know whether it makes sense:
-
-```
-diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig 
-b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-index ab3c4cf96423..bea18cb4b697 100644
---- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
-+++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-@@ -408,6 +408,7 @@ config DWMAC_LOONGSON
-
-  config DWMAC_MOTORCOMM
-         tristate "Motorcomm PCI DWMAC support"
-+       default m
-         depends on PCI
-         select MOTORCOMM_PHY
-         select STMMAC_LIBPCI
-```
-
-If no, I will modify the arch-specific config.
-
-Thanks,
-Tiezhu
+diff --git a/drivers/net/phy/air_en8811h.c b/drivers/net/phy/air_en8811h.c
+index a03d63dd4ac9..5b1edb127c68 100644
+--- a/drivers/net/phy/air_en8811h.c
++++ b/drivers/net/phy/air_en8811h.c
+@@ -1573,6 +1573,19 @@ static void an8811hb_remove(struct phy_device *phydev)
+ 	}
+ }
+ 
++static int an8811hb_suspend(struct phy_device *phydev)
++{
++	int ret;
++
++	clk_save_context();
++
++	ret = phy_modify(phydev, MII_BMCR, 0, BMCR_ANRESTART);
++	if (ret < 0)
++		return ret;
++
++	return genphy_suspend(phydev);
++}
++
+ static struct phy_driver en8811h_driver[] = {
+ {
+ 	PHY_ID_MATCH_MODEL(EN8811H_PHY_ID),
+@@ -1606,7 +1619,7 @@ static struct phy_driver en8811h_driver[] = {
+ 	.config_aneg		= en8811h_config_aneg,
+ 	.read_status		= en8811h_read_status,
+ 	.resume			= en8811h_resume,
+-	.suspend		= en8811h_suspend,
++	.suspend		= an8811hb_suspend,
+ 	.config_intr		= en8811h_clear_intr,
+ 	.handle_interrupt	= en8811h_handle_interrupt,
+ 	.led_hw_is_supported	= en8811h_led_hw_is_supported,
+-- 
+2.43.0
 
