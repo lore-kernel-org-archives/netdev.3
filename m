@@ -1,164 +1,223 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+Received: from mail-pj2-f5.google.com (mail-pj2-f5.google.com [74.125.227.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9AF39F190
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 03:03:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27493358378
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 03:05:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789614196; cv=none; b=Sqn1BBBrP7A0Mo7e6IcF46OI9+QBcPg/SoSInr1Ww0+kld/5B5LUEld6jd67adjoiYpZjHUO0L9320Qv08hOgwggIK0UoI6G7GesXCs9O4TWM44D1mc8feSRlN4E0NYZUHhxzvcy1mDrin2R25vB/cCT1NmU1J+cUxJKsf+Pi4M=
+	t=1789614348; cv=none; b=Dr1/45KUKJ83RbYE0REIIXRty/m5eZkwhAhMcYkUsqdE9tGwiDlFF4o5NT/VXsMrLDl46lxSbO2Z0LOh2m6JZnO7qLZwVo2lD3FU0xtOT8oJFxTtFzxYikbvH5I8ESVHUuMkLQgM93gyewFbamBOqGmKyRZgZPaoCBWDnRie2f8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789614196; c=relaxed/simple;
-	bh=ZAnMJFfRyn/L7UjKQ6wtOpZX1ERwvLKzcxMf+sbJyxU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u1DkC4NpUQqM9fG65VNfvQAohJLtd1wcdz0iBJGix/B5cveU688AC7iwKRILmwh8dqWS2Cm+WJDn9p6eLm5V0PRhS6PPGvRWtSsG8B+nmYYembD3G2+MDMEY3amF4jtQuBBJU/QL6yDReyDMAbFOtBTOQZXAecQmcJ/c7FF0BZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=ko2XybKf; arc=none smtp.client-ip=74.125.227.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1789614348; c=relaxed/simple;
+	bh=YavanCZcN6GwCOP2AzZi9fy/8p+AsGhmLV2iICw/lv0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=FZyA53pv03anROlF0YWE3dep79qnXmtDejKtZ5uoEHkyDvWrrU9haYfk4oqFpWJ35+D+A/oAciNOQwfa+0JaKJ7z/P3e49rKgBuyNaK8EnpSh/c/gQqH0N+4UBI4SyuaBMkmpThTWAnAVdqOdlS9kAWoaurCseO5jQT+gxay9hI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AILxZt3P; arc=none smtp.client-ip=74.125.227.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="ko2XybKf"
-Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2d90ba1d807so4116735ad.3
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 20:03:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AILxZt3P"
+Received: by mail-pj2-f5.google.com with SMTP id d9443c01a7336-2d6fbdc8772so1585295ad.0
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 20:05:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1789614190; x=1790218990; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bEiJ73gdk+1H2UniqJzXdx9Ojg0hZPLKGrnSs4IPJHI=;
-        b=ko2XybKf+ORIdYCZGisQEx+vJ90W4rwUFC+yt/UmDoIucUX3CJlNfEx/m0E5hYYiiF
-         vE3yYs7g03ua78cYT/714tTFpd+T00ig3wnoE6+NSYH70jYFyeqF4rkzXytzfYUkJo8X
-         /fG5dy0XxE4zFdIRt8GglWF89aeWyPpK14Q3aK/W3Veco3WmWhwDMNUeTWp+6QMiAcTS
-         641xbiHUYWoe5ffuGxAMXfFsrRfR9G0qgGvuQGLLcfAjVSVy5lolL8J5Sp7nz/TXNseI
-         FjlOW51EO+2GWMPwo0rKZm/mMldNTQC8TaZ77cPHBtGFvzAgu9NpMuaTsvD9nDj0S5/P
-         LmsA==
+        d=gmail.com; s=20251104; t=1789614346; x=1790219146; darn=vger.kernel.org;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GmKX7x8Mi0sQYSQi5uPWAMNZJvojTYX1qQ+b3jxypgs=;
+        b=AILxZt3PX7pekqz9oL/GDit7gvhMD9kDHUFo73nlIeDbQlYALNoiTkb+JXToZeLp+H
+         2GSh/vnocjUP3g26yCPiQFUZiO7vvL1Y4NeokoyDli2AD20dkd/1FT+f+9ciC0Zv/C6c
+         VtNyO3wW1WvoRftRqFZbsV0Gxfx62dz9sXikdd/ASB1L1sRZDZIbI+rnZ9EG0/XMymBb
+         KZBfqwhwxJr8aYDHtzQtUEfFWfHO1wlD0LkQTbHMw4VzQsF5VSYTJmEdS3SSw2piwW4k
+         ycFzR4VLGkym8+V/W9fAcwyh6mE6fYV8emuMmqIs5f6xH0ROMyVffgfXoV/efgS9/Bmc
+         2LWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789614190; x=1790218990;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bEiJ73gdk+1H2UniqJzXdx9Ojg0hZPLKGrnSs4IPJHI=;
-        b=N8w/DzvIA+5GlgQuPRSp0vmqX6kZ/8WxzVbl9SBGIiKI8e+Bc6kP5DTJkxeB1AMGaN
-         BRxN+gcwdlIpCtj+EbrDjGW4DbLlylPCcX7I6Bod2katO8g/+kpJGCS7uUFhg6uyZQ0S
-         K85GxtB2vbAL/iqMv+ra8n4Ora0RGK9fH0s5uuKvie9IdOii5/SEI8J/85pS2NZrA8dE
-         3cQNczu0A+ASvFz5O5DRtaogvuiK0D83DYXpZlYhQaV2mIH0RctBppnWg7ey6Pmza4CI
-         qGCgWJQtFr8bIuS7jJ7V18++Xc/pvKGM2lXgoekFsBW8Md2tkpcgPK9dVQUqDl4FFa7F
-         tioA==
-X-Forwarded-Encrypted: i=1; AKwUvBx3NrAoLWFVxZPZUlhR+3brvDwB9+i5gCid3V6w+2XPQ+gIF+kOo5w3Lt0m4SLYV9SqXCyGv14=@vger.kernel.org
-X-Gm-Message-State: AFuF++kPAY7iuINv02sG2r7lQ6lfMyCYS7msMQZbUOTdqMimpAhvSrp3
-	/k5wBwe6nOMAyTkJLdRr1piedP7bPWMYW87Y7qzTmvifva0IR9JlljWYzWq1s2DcQ/0f
-X-Gm-Gg: AYBFou08m7KrtV3KtnPGpXtHTYFqJKm2EVU9a0i4pA6vmBOURn9Yp0hmRUVCzeuaNEI
-	vd3CRgDB7D9jO4PY+/O/ZNelf0yAKlieElXb51UHBxPuF3izppP5dO4fCXoSsLpCsaxtBWN+5cd
-	SbKFTuegAyMgmYyqD8PcaDlRIilsVwIbSYV0fPmUFjETVNOxq8P6yJOvXM8DcxtfzUSjrlL+7Jw
-	cpBXTs0/aSvcSzepLANGLtcxDETpzJp9fkAqO6aPk1hGLAfl+yMTt93nO5C8tcaFKr/ppXHZG6w
-	TX8PifVtiO+MKJGbpNk2lamkYkpiPIpxRNv43uXNAa2YCW8TCoYj4QAn2DOeCGF1Pn6WmTWEtpf
-	6+KQ1kiXYiWtHnPPCj/o5UZ7sV0LF0l45l3IbVf0C3Z0CDcEN/eys3s7VzcsketBmPELvDXK+Ak
-	hThw7pkglWVrw3eeKpC30/NBEetmYDgzCQHPz+7WPRUP47rEFK/gxXOka7AhjWXP7EccnbR07Ti
-	zzZzZXDv7gSSmQ90EtJZg2SPQndOoT0RaDx5Ypp
-X-Received: by 2002:a17:902:ebc3:b0:2d7:107c:917b with SMTP id d9443c01a7336-2dd8ccaa304mr114450195ad.0.1789614190034;
-        Wed, 16 Sep 2026 20:03:10 -0700 (PDT)
-Received: from b6ad5085b32f.. ([122.51.212.64])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd89f1b862sm19167845ad.71.2026.09.16.20.03.06
+        d=1e100.net; s=20260707; t=1789614346; x=1790219146;
+        h=content-disposition:content-type:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=GmKX7x8Mi0sQYSQi5uPWAMNZJvojTYX1qQ+b3jxypgs=;
+        b=Eh1ColaXjeYqlKETkhkWZpCwLRmL4yCDWN3L0v2GYNb9qasqqO1iJw78pXWsGtJH1n
+         g29rkh105GMAV1AslxSvlgokQXYDXiM7VCv7CDKIBr/h8i6XhjGAIUx/Yl/UiRawrS00
+         zmTSXve177mihXMXptetvcmW0FN5gnYM8jxBOMDjl69YLmVYu24rRs/i0sDpYunp0nAr
+         MIczdkrsML+Re7ekajit7nbE1UKfgM54pZFLto7k9kAa2FuXVVkmiZQ4oSWVgzun9i6u
+         WEanUolK6juCpWetcPK1lYIcShIBpm7tI5V8p3RIg9QQCJ0hXLAZVd6WzzABtZG5fKJ7
+         Qv5g==
+X-Forwarded-Encrypted: i=1; AKwUvBy43IfzFwqiZ4whcGEULP1Bx3g+TbBKstd3gkLT3V3WDhNTeG4SeYfNg+pOr+uOFbQ4/XP+XH4=@vger.kernel.org
+X-Gm-Message-State: AFuF++lHSxLZKf5IEVLaOA8Wv6cg3alinzKNwho/49vA0wDqhcv5gQ9t
+	T4YlUNETqk8aJWLJpUBM8YKF9c9wAlhI+zF/vIAjHBsro2vGKoInm3lC
+X-Gm-Gg: AYBFou3N8I1MMJu3CYE3ZwSxBXfvanwv0grd4+oZYknVexfuguJep2u4JKynMo1Jwah
+	zYzXKPQ18emqbdJudn15KqD68MAbDYBzQ8BuAAfrk7SlnQjusWVYll2d7c14Sowo4+BLz5JyiqK
+	j4qOrIFNkATh5QpnAl7k2kDin6bNVMCjriIPRuqedNOV3nxccYfrredJvOnl12FLEuQZm300tUv
+	HrWIPF7aa/4ZZ7i4aDK3WzaTm2T4hxjUJ7Gm4nVCYMNn5tTnqKBQRU+lcqolJ901Wc4N8ztH45B
+	VGFOPzAk3UBElMAkd/yiAPfmXilzbXrJfMn6uincyolU+cMl2OGwZwgzCtX4+hh83J0Eqy52Z2k
+	aljI7c0AAjY1zZ6XaOxkFvjZXtLHQnniOJD67P93hmzZ3GXtoG4HKCQ2048yG23zGvRYzdXMkWS
+	OXZKACdw6Lv1GpaSh3PgEQSObOF7zjihwoiiW8LWpfv31wpkegUzIfnbcvjstcXaE=
+X-Received: by 2002:a05:6a00:17a3:b0:85d:84a5:b7bb with SMTP id d2e1a72fcca58-87238f95d56mr10734722b3a.18.1789614346316;
+        Wed, 16 Sep 2026 20:05:46 -0700 (PDT)
+Received: from hhost ([2409:8a55:316c:2b80:7367:4ccd:ebdb:9a0])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-871febde2e1sm2104957b3a.7.2026.09.16.20.05.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 20:03:09 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
-To: Simon Horman <horms@verge.net.au>
-Cc: Julian Anastasov <ja@ssi.bg>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
+        Wed, 16 Sep 2026 20:05:45 -0700 (PDT)
+Date: Thu, 17 Sep 2026 11:05:10 +0800
+From: Xingyuan Mo <hdthky0@gmail.com>
+To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	lvs-devel@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	linux-kernel@vger.kernel.org,
-	Zihan Xi <zihanx@nebusec.ai>
-Subject: [PATCH net v2 2/2] ipvs: reject FTP control ports as data ports
-Date: Thu, 17 Sep 2026 03:02:52 +0000
-Message-ID: <20260917030301.5502-2-zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1789435989.git.zihanx@nebusec.ai>
-References: <cover.1789435989.git.zihanx@nebusec.ai>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: "open list:SCTP PROTOCOL" <linux-sctp@vger.kernel.org>,
+	"open list:NETWORKING [GENERAL]" <netdev@vger.kernel.org>,
+	Xingyuan Mo <hdthky0@gmail.com>
+Subject: [PATCH v3] sctp: reject forged cookie peer_addr with unknown address
+ family
+Message-ID: <20260917030505.4176635-1-hdthky0@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email 2.43.0
 
-ip_vs_ftp_out() creates a wildcard data connection from the
-server-advertised passive port. If that port is one of the configured FTP
-control ports, ip_vs_conn_new() binds the FTP helper to the new connection
-again. A subsequent wildcard lookup can then extend a controlled-connection
-chain.
+When cookie authentication is disabled, COOKIE-ECHO peer_addr is
+attacker-controlled. An invalid sa_family made sctp_get_af_specific()
+return NULL and crash in sctp_transport_init() on
+af_specific->sockaddr_len. Validate it with af->addr_valid() in
+sctp_unpack_cookie(), which also rejects a mismatched family, e.g.
+an AF_INET6 peer_addr on an IPv4 socket that would later crash in
+sctp_v6_get_dst() on inet6_sk(sk)->opt. Validate a copy of peer_addr,
+since addr_valid() rewrites a v4-mapped v6 address in
+place and the cookie still lives in the received skb, which is not
+guaranteed to be unshared.
 
-Reject zero and configured control ports before creating passive
-connections. For active mode, reject a zero client port and a data port
-derived from a configured control port.
+For that, sctp_v6_addr_valid() has to return 0 when it is called with
+a socket that is not PF_INET6, so that IPv6 addresses are never used
+on IPv4 sockets. As addr_valid() now also checks sk_family and
+ipv6_only_sock, simplify the address handling in sctp_process_param()
+with it, as it additionally filters out non-unicast addresses. As a
+side effect, a v4-mapped address in an IPv6 address parameter is now
+normalised to AF_INET before the transport is created, matching what
+the socket API paths already do.
+
+Also add the missing !af check in sctp_process_init(), as
+sctp_get_af_specific(AF_INET6) returns NULL on CONFIG_IPV6=n builds.
+
+  BUG: KASAN: null-ptr-deref in sctp_transport_new+0xa7/0x350
+  Read of size 4 at addr 00000000000000b4 by task poc/682
+  Call Trace:
+   <IRQ>
+   sctp_transport_new+0xa7/0x350
+   sctp_assoc_add_peer+0x153/0x850
+   sctp_process_init+0xf9/0x1180
+   sctp_sf_do_5_1D_ce+0x464/0xbc0
+   sctp_do_sm+0x114/0x2990
+   sctp_endpoint_bh_rcv+0x280/0x430
+   sctp_inq_push+0xdd/0x100
+   sctp_rcv+0x17f5/0x1ae0
+   sctp4_rcv+0x2b/0x40
+   ip_protocol_deliver_rcu+0x25b/0x270
+   ip_local_deliver+0xd1/0xe0
+   </IRQ>
+  Kernel panic - not syncing: Fatal exception in interrupt
 
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: LLM
-Co-developed-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+Assisted-by: opencode:deepseek-v4
+Signed-off-by: Xingyuan Mo <hdthky0@gmail.com>
 ---
-changes in v2:
-  - Reject the data port derived from a configured control port in
-    ip_vs_ftp_in() to cover the active-mode bypass.
-  - v1 Link:
-    https://lore.kernel.org/all/cover.1789110326.git.zihanx@nebusec.ai/
+v2: https://lore.kernel.org/netdev/20260913113522.2674588-1-hdthky0@gmail.com/
+- validate the forged cookie peer_addr with af->addr_valid() instead of
+  a family whitelist, and make sctp_v6_addr_valid() reject non-PF_INET6
+  sockets, so a forged AF_INET6 cookie can no longer crash an IPv4
+  socket in sctp_v6_get_dst() (found by Sashiko)
+- simplify sctp_process_param() address handling with addr_valid(), as
+  addr_valid() now also checks sk_family and ipv6_only_sock
+- add the missing !af check in sctp_process_init() for CONFIG_IPV6=n
+  builds (suggested by Xin Long)
 
- net/netfilter/ipvs/ip_vs_ftp.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+v3: https://lore.kernel.org/netdev/20260915212917.3775248-1-hdthky0@gmail.com/
+- drop the sctp_transport_new() check
+- merge the !af checks into the conditions they guard with ||
+- drop the comment above the sctp_unpack_cookie() check
 
-diff --git a/net/netfilter/ipvs/ip_vs_ftp.c b/net/netfilter/ipvs/ip_vs_ftp.c
-index 9e3e005a82635..4822a1a75212d 100644
---- a/net/netfilter/ipvs/ip_vs_ftp.c
-+++ b/net/netfilter/ipvs/ip_vs_ftp.c
-@@ -62,6 +62,17 @@ static unsigned short ports[IP_VS_APP_MAX_PORTS] = {21, 0};
- module_param_array(ports, ushort, &ports_count, 0444);
- MODULE_PARM_DESC(ports, "Ports to monitor for FTP control commands");
- 
-+static bool is_control_port(u16 port)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < ports_count; i++) {
-+		if (ports[i] == port)
-+			return true;
-+	}
-+	return false;
-+}
-+
- 
- static char *ip_vs_ftp_data_ptr(struct sk_buff *skb, struct ip_vs_iphdr *ipvsh)
+ net/sctp/ipv6.c          |  3 +++
+ net/sctp/sm_make_chunk.c | 23 ++++++++++++-----------
+ 2 files changed, 15 insertions(+), 11 deletions(-)
+
+diff --git a/net/sctp/ipv6.c b/net/sctp/ipv6.c
+index ef26878f1282..c45ac15f3b79 100644
+--- a/net/sctp/ipv6.c
++++ b/net/sctp/ipv6.c
+@@ -734,6 +734,9 @@ static int sctp_v6_addr_valid(union sctp_addr *addr,
  {
-@@ -319,6 +330,10 @@ static int ip_vs_ftp_out(struct ip_vs_app *app, struct ip_vs_conn *cp,
- 		return 1;
- 	}
+ 	int ret = ipv6_addr_type(&addr->v6.sin6_addr);
  
-+	/* Do not redirect data to control ports */
-+	if (!port || is_control_port(ntohs(port)))
++	if (sp && sctp_opt2sk(sp)->sk_family != PF_INET6)
 +		return 0;
 +
- 	/* Now update or create a connection entry for it */
- 	{
- 		struct ip_vs_conn_param p;
-@@ -529,6 +544,9 @@ static int ip_vs_ftp_in(struct ip_vs_app *app, struct ip_vs_conn *cp,
- 		return 1;
+ 	/* Support v4-mapped-v6 address. */
+ 	if (ret == IPV6_ADDR_MAPPED) {
+ 		/* Note: This routine is used in input, so v4-mapped-v6
+diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+index 84a4c97d0f75..20c093894884 100644
+--- a/net/sctp/sm_make_chunk.c
++++ b/net/sctp/sm_make_chunk.c
+@@ -1732,7 +1732,9 @@ struct sctp_association *sctp_unpack_cookie(
+ 	struct sctp_cookie *bear_cookie;
+ 	struct sctp_chunkhdr *ch;
+ 	unsigned int len, chlen;
++	union sctp_addr paddr;
+ 	enum sctp_scope scope;
++	struct sctp_af *af;
+ 	ktime_t kt;
+ 
+ 	/* Header size is static data prior to the actual cookie, including
+@@ -1841,6 +1843,11 @@ struct sctp_association *sctp_unpack_cookie(
+ 		goto fail;
  	}
  
-+	if (!port || is_control_port(ntohs(cp->vport) - 1))
-+		return 0;
++	paddr = bear_cookie->peer_addr;
++	af = sctp_get_af_specific(paddr.sa.sa_family);
++	if (!af || !af->addr_valid(&paddr, sctp_sk(ep->base.sk), NULL))
++		goto malformed;
 +
- 	/* Passive mode off */
- 	cp->app_data = (void *) IP_VS_FTP_ACTIVE;
- 
+ 	/* Make a new base association.  */
+ 	scope = sctp_scope(sctp_source(chunk));
+ 	retval = sctp_association_new(ep, ep->base.sk, scope, gfp);
+@@ -2381,8 +2388,8 @@ int sctp_process_init(struct sctp_association *asoc, struct sctp_chunk *chunk,
+ 		    (param.p->type == SCTP_PARAM_IPV4_ADDRESS ||
+ 		     param.p->type == SCTP_PARAM_IPV6_ADDRESS)) {
+ 			af = sctp_get_af_specific(param_type2af(param.p->type));
+-			if (!af->from_addr_param(&addr, param.addr,
+-						 chunk->sctp_hdr->source, 0))
++			if (!af || !af->from_addr_param(&addr, param.addr,
++							chunk->sctp_hdr->source, 0))
+ 				continue;
+ 			if (sctp_cmp_addr_exact(sctp_source(chunk), &addr))
+ 				src_match = 1;
+@@ -2554,17 +2561,11 @@ static int sctp_process_param(struct sctp_association *asoc,
+ 	 */
+ 	switch (param.p->type) {
+ 	case SCTP_PARAM_IPV6_ADDRESS:
+-		if (PF_INET6 != asoc->base.sk->sk_family)
+-			break;
+-		goto do_addr_param;
+-
+ 	case SCTP_PARAM_IPV4_ADDRESS:
+-		/* v4 addresses are not allowed on v6-only socket */
+-		if (ipv6_only_sock(asoc->base.sk))
+-			break;
+-do_addr_param:
+ 		af = sctp_get_af_specific(param_type2af(param.p->type));
+-		if (!af->from_addr_param(&addr, param.addr, htons(asoc->peer.port), 0))
++		if (!af || !af->from_addr_param(&addr, param.addr,
++						htons(asoc->peer.port), 0) ||
++		    !af->addr_valid(&addr, sctp_sk(asoc->base.sk), NULL))
+ 			break;
+ 		scope = sctp_scope(peer_addr);
+ 		if (sctp_in_scope(net, &addr, scope))
 -- 
 2.43.0
 
