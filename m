@@ -1,126 +1,114 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E5C3264D8
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 11:36:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5060E4D2ED8;
+	Thu, 17 Sep 2026 11:37:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789645021; cv=none; b=Z1hJnlTsNhQebclDSvEpnWcj9pIgFaAu1fqfXpMPID8aRIyXZs8OaGHaF/yqUT0KY+7NXe4aKVMTbDZ21ZJ4YQlzI0+r/5gU5kqawWiO9PJ0UeyaGctIx2X+nu9R3zo7Bs0Af9kUL6VuZojs7a3985zVlqLkOVTfVMmhuGAw6l8=
+	t=1789645032; cv=none; b=M8V6iGbOCiRVV3xI0mL7Pe85mjDEtknBfKVVrUYaVWW4NKf5IF7t0Y7ovRVoTk7Z5LHo9kqf9AYYJ9Ein0/+BO5kC89UE7Fo+lnzgCkJUbKeP3JjRl+gYRTbfzVgFe74ZNoGOXFr3oZegHqGXeG4eNS1zeFG1ZVijVywioooBoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789645021; c=relaxed/simple;
-	bh=+57GokJSDCGHNK+3MmnA4CvC0wmbFmdFo5bfAjRf2FE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TCKxaL9C5RsOpwZTpXs85kBIMLIKoJ8iGlvdTkbQ576KqKwGe5LldVCt4BYcgxVNaom8G8ycp2yYTggUWuMCwr+fuB86uCvCFL5jgvU/Vd8g7npAcQyEvbHEpZoI16C4VKcUk58kYLT+eBmW13jJ5nqS5uQWSV0X87fe7lKSY2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KZzDZqA+; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=PUAb3a0f; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KZzDZqA+";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="PUAb3a0f"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789645018;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fXxnUzgjG7VZuYAvI0ebZRvmp+LpupVUuSh13S/t1W4=;
-	b=KZzDZqA+ecw/+Hnx47y1a0giag5hMOzqizZIw1z3MoNQTYxKOSvMijRdZ9vVCw2N7Cs50V
-	SNAivmDuHnIZkF9GirwrtWIfNygBE42XKkAl7o5kKYgz511maGUY0hEUN/ITVI7EdPYqic
-	AAvGW9uTx1a1IYLdHQcEgGXsNZsyTUk=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-171-2oE_KiIPPMaoiCVoxekOcA-1; Thu, 17 Sep 2026 07:36:57 -0400
-X-MC-Unique: 2oE_KiIPPMaoiCVoxekOcA-1
-X-Mimecast-MFC-AGG-ID: 2oE_KiIPPMaoiCVoxekOcA_1789645016
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49d156c917cso4168225e9.1
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 04:36:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789645016; x=1790249816; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fXxnUzgjG7VZuYAvI0ebZRvmp+LpupVUuSh13S/t1W4=;
-        b=PUAb3a0fig00Dp4jbo0hJ4s5DPOweOFGwkrTSRbiz/bZ4j2snkf5GiRtVS1bmwXWAb
-         WsX3bSiiG9f5wo36Ohe20oLRlh1mKTfuDuZc3pevveWqDWtlYve9F1FUKEGvhpn+5ooo
-         ScBH9bhyviWgHvaxiyVL7WYlTLX9DfeGy9EhR6liRQDgURDkdDIdlnOKHjv2aObLqxgb
-         WzzXx3XcxwzYBw/DcFkTC8g+zARrlytzxogoUS6b3L9k16lv0AFyhAaXPyH1F0MEyBtt
-         RAOHMjRWhDdmcQAxpoM6M7jdaDfYG6TiSkeEG6CyvjsuS6YD5yL2adAPU3jnbGkqdQ9Q
-         wV6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789645016; x=1790249816;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fXxnUzgjG7VZuYAvI0ebZRvmp+LpupVUuSh13S/t1W4=;
-        b=hxy+6MZen+GUIbB1e97QebnombZa2kTkRBntsI3QrgDFWd8STvtgXp/ICULGTAFIaS
-         fsX7/K61HeBIhiEnc0uPYaHhx9Jgw231FnDxT1vMPu37PhIq1tN7x9mGLQHVF4Nv0oMl
-         RInMPtyp57KHknd8xdwlGk40z4ZTTTIGAzJKsCiygCeCZQZZS20VaiZbEEWBaREZUKmr
-         MLmM7fhss1Y2ftBp+M88vtcQDc+xlOT5RjdfSShiR5O0SXoczrpKH4PzIJJLhKhxlROi
-         t4zbzQZ+DZRCIdkil87IDvjFQyItJ0pL28x2wIAIG5RqRFcMYUuEXJMXWZV3AoeJqsqv
-         vPKw==
-X-Gm-Message-State: AFuF++nvdYoBGosAGLrRSEm46DlCZ3btwSQn8HALcHtvDoNkdpIWL5AS
-	gcuYGqz+/sZ3qtdES2gROSCfvSvfFfgNHuq9UaEDU+aLr+jbr9KjJYnAwi3Q4rUkB7yeAjzIYPD
-	gSzDTQe3NEx0v9rXngb3/rcG8gHvmqgeJxKgyiplmQs73FDhiVQ9wN6sgkQ==
-X-Gm-Gg: AYBFou3nk/hu3yx7gYFdUrOCgJxtebUgVVrOO8tyPxSWMp2BR13INUPZgWKO/1kjDJm
-	ncXxDkUjdgimE5vh5bxVcl4b2qtZ6e8eOVubCtWpcUj2Wu1Jj4mr6L1zkpQJPyleqp6Lhvy/ziY
-	///B5lDdkOMD+C2IcSQ/f03KovZwGFiSeWJsq4oZVNh5y1uEs0YGkXdPMxyBzi2uOXEqPoCE7zT
-	aABelZZTUU/qwSMI5NqaKyV8MHx4xRyTNjinJVKDU5s0JUJOQ+nN0HmnCZXN5310UxcAMNqmpij
-	HQnBULQB2FXwwtNeEDWFvJa/59+G3YX0UmTCgpCYcVTCf8RqRC6FOiu83a+SExbxUsfm3nGWYeX
-	nhQ6cvb7SBEzKG9Yy1e18FUpa2TxfGvn8yVcvNChTT/+cyRUpPnxORlVT5hykar2xrw4t9mUM8w
-	==
-X-Received: by 2002:a05:600c:c490:b0:49c:e37e:4389 with SMTP id 5b1f17b1804b1-49fbd1b7e82mr41476825e9.4.1789645016120;
-        Thu, 17 Sep 2026 04:36:56 -0700 (PDT)
-X-Received: by 2002:a05:600c:c490:b0:49c:e37e:4389 with SMTP id 5b1f17b1804b1-49fbd1b7e82mr41476525e9.4.1789645015716;
-        Thu, 17 Sep 2026 04:36:55 -0700 (PDT)
-Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fbbd83e39sm97196385e9.4.2026.09.17.04.36.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Sep 2026 04:36:54 -0700 (PDT)
-Message-ID: <1ca84bcb-016a-4dce-b80f-66b9fcdb9173@redhat.com>
-Date: Thu, 17 Sep 2026 13:36:54 +0200
+	s=arc-20240116; t=1789645032; c=relaxed/simple;
+	bh=Wcr4n+AA427t8C01cZCI3uB+FbcFP5+u2Cp3I9g9a+I=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=p1wghx7w2TomDkegUUp0nH4KDHmpqIRIyUa5lq6/ipziZrZH85hUVl4a9vUSC+WnZG/dl9TIz+D3zAvNFh6hbue0fwTZSAqdefSNM8vOo0HH+WYIH4jmgZVXU+IAoQoFLHXqNJgzPBZaK/Y0nT8gUoFEiEeFhia/YbjN7HZYhgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
+	by APP-05 (Coremail) with SMTP id zQCowAAHKkPW0Ktqj7F_CA--.42390S2;
+	Thu, 17 Sep 2026 19:36:54 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: alexandre.torgue@foss.st.com
+Cc: andrew+netdev@lunn.ch,
+	clabbe.montjoie@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	jernej.skrabec@gmail.com,
+	kuba@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-sunxi@lists.linux.dev,
+	mcoquelin.stm32@gmail.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	samuel@sholland.org,
+	wens@kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] net: stmmac: dwmac-sun8i: Fix EPHY clock leak in get_ephy_nodes()
+Date: Thu, 17 Sep 2026 11:36:54 +0000
+Message-Id: <20260917113654.2149268-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v15 net-next 1/2] octeontx2: use atomic bitops for PF/VF
- and rep flags
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-Cc: network dev <netdev@vger.kernel.org>
-References: <20260911105521.689565-1-rkannoth@marvell.com>
- <20260911105521.689565-2-rkannoth@marvell.com>
- <20260912105628.B3E251F000FF@smtp.kernel.org>
- <aqdmy0GU7pV6wryi@rkannoth-OptiPlex-7090>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <aqdmy0GU7pV6wryi@rkannoth-OptiPlex-7090>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowAAHKkPW0Ktqj7F_CA--.42390S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7ZF45tF4rKFW8AFW8Jry5Jwb_yoW8Aryfpr
+	Z7uFyYv34fArWSg3Z8tr1UZF98Zay2qF4rGr1ftan3Canayayjv34a9Fy5XFn8AF4rWa4a
+	qr48G3Z3C3WDArUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUPvb7Iv0xC_KF4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
+	cIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2
+	AK021l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v2
+	6F4j6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxV
+	W0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
+	7VC0I7IYx2IY67AKxVWUtVWrXwAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x0Yz7
+	v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0E0s8F02x267IIx4CEVc8vx2IErcIFxwAC
+	I402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrw
+	CF04k20xvE74AGY7Cv6cx26r48ZrWUJr1UMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E
+	5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZV
+	WrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY
+	1x0267AKxVWxJVW8Jr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14
+	v26r4UJVWxJr1lIxAIcVC2z280aVCY1x0267AKxVW0oVCq3bIYCTnIWIevJa73UjIFyTuY
+	vjxUVpBTUUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRINA2qrq016GgAAsS
 
-On 9/14/26 05:15, Ratheesh Kannoth wrote:
-> On 2026-09-12 at 16:26:28, sashiko-bot@kernel.org (sashiko-bot@kernel.org) wrote:
->> Thank you for your contribution! Sashiko AI review found 4 potential issue(s) to consider:
->>
->> Pre-existing issues:
->> - [High] TC offload setup on representors corrupts the shared physical function (PF) device state by locklessly overwriting its netdev and clobbering its flags via a non-atomic bitwise sync loop.
->> - [High] Inverted logic in `otx2_tc_del_flow()` prematurely disables TC MARK hardware offload when any single mark rule is deleted.
->> - [High] Missing cancellation of `stats_wrk` leads to a Use-After-Free during representor teardown.
->> - [High] `rvu_rep_mcam_flow_init()` interacts with the mailbox without acquiring its lock and executes an unbalanced `mutex_unlock()`.
->> --
-> 
-> I will address these in separate follow-up patches to the 'net' tree once this series is merged.
+get_ephy_nodes() stores the clock returned by of_clk_get() directly in
+gmac->ephy_clk before the reset control is obtained. When the reset
+lookup fails, the loop continues or returns without releasing that
+clock, and sun8i_dwmac_probe() then jumps to dwmac_remove, which does
+not call clk_put(). Keep the clock in a local variable and release it
+on the error paths.
 
-Note that the relevant sashiko instance for netdev is:
+Fixes: 634db83b8265 ("net: stmmac: dwmac-sun8i: Handle integrated/external MDIOs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-https://netdev-ai.bots.linux.dev/sashiko/
-
-Findings from such instance include the public ones, cross validates 
-with additional LLM models. You can look exclusively to the nipa one.
-
-/P
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+index 48c52eb96233..38d7e71de925 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
+@@ -783,18 +783,22 @@ static int get_ephy_nodes(struct stmmac_priv *priv)
+ 
+ 	/* Seek for internal PHY */
+ 	for_each_child_of_node_scoped(mdio_internal, iphynode) {
+-		gmac->ephy_clk = of_clk_get(iphynode, 0);
+-		if (IS_ERR(gmac->ephy_clk))
++		struct clk *ephy_clk;
++
++		ephy_clk = of_clk_get(iphynode, 0);
++		if (IS_ERR(ephy_clk))
+ 			continue;
+ 		gmac->rst_ephy = of_reset_control_get_exclusive(iphynode, NULL);
+ 		if (IS_ERR(gmac->rst_ephy)) {
+ 			ret = PTR_ERR(gmac->rst_ephy);
++			clk_put(ephy_clk);
+ 			if (ret == -EPROBE_DEFER) {
+ 				of_node_put(mdio_internal);
+ 				return ret;
+ 			}
+ 			continue;
+ 		}
++		gmac->ephy_clk = ephy_clk;
+ 		dev_info(priv->device, "Found internal PHY node\n");
+ 		of_node_put(mdio_internal);
+ 		return 0;
+-- 
+2.34.1
 
