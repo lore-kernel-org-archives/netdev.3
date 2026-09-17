@@ -1,124 +1,333 @@
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E636E3F5BC7
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 22:05:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.204
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789682729; cv=pass; b=DxXKwoa02/+NDgKAxj/JR+PWpbcfvnOz1Jd8KNPmfvUJEqOHORcjkDECQttv6ehiBtlMV9bCOoLMYF/1/PiA1G4PE9n8/WMLPfTNxbtp52eBHl2MPG/b2tvFJYVBQT07IFWJJiUXvFvHtaH9RSimd+A4BfTDlFToiPy1EYG8njM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789682729; c=relaxed/simple;
-	bh=M/G3T9rnVSPx6HC6z/zLA2iuwCt7IDG5Tz2AaPMOYdE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Cua4USOzLqMEXdH7wqhUOpOYzWXZkAO/FImhQEhtqZNPqx+7TxBaH7x9F4q7nLQOSOI8Xi+NOh73nKjaUHYHtEfCyOauf7Rr/x2wbgyoRzoveteUC6XWilVOCvRrGMBcU2z/4XOlCHn3hiSy8N4jfB/DL8Xr+ISWMk/l9egN+7o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b9lem2jR; arc=pass smtp.client-ip=74.125.230.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E53F488763
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 22:12:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789683126; cv=none; b=NvVzsgS0dj4jABPDF57VSZ16kIRfOLsEjGnnCatV9ZMf5l4O6hNejuW0EcZiXyKSyhGabO52gErdFPI1FGAVzcfk6zI9cYTwSWefcihmwgmQQeF4mGj1yDY0sz0mPL8svtl47mD1QNMGAWgQgJmDQZjjFgPOuUYzqfALQ+Uqj2w=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789683126; c=relaxed/simple;
+	bh=HIQv8brNzmzp6oSH9RiU8HsN+vHnBSGXSN47a34QNM0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=UVUSSRtNwcN29zHrmDljg0a2vsuGNR8quik0t6TzCjlpnAqTAwcrFln03THJJyhePcgO3oHaGQaVCQYhfyKdV0aR5BkWTijyeQd7jBHmAG3Bizkct0J02BhxrSp9od2j5aR1n0UD4NRon7cwQkxdqhWyI44+DKopT9E5/dKKdIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ngs1+vCU; arc=none smtp.client-ip=209.85.215.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b9lem2jR"
-Received: by mail-qk2-f12.google.com with SMTP id af79cd13be357-93910c9ff1cso8150785a.3
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 15:05:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789682727; cv=none;
-        d=google.com; s=arc-20260327;
-        b=NNinV5bpCw+ZNY3cSLjgS27l3ioJxrZT73sVt7kqDRGaNkZW82XGwEFUeNAa7hPuRV
-         Tu3MiB2DGr8q6PWNpXCsSxlv7IoJrzUunWxpfOch8wq7YY7yfzUo5R0N5S1qWrdtjxYk
-         XRcm/Z/erDpUPIHOmgbBdsC/54l2rXGzc0Rfhlzj15tIQ5Y2oHvUIPjgHY3LjUbVP9rT
-         JSV4l5GXYa4y2gYEt1HXmWQwYzqnqjWkitUaVmQUOn+UOyDQKzx4q/5UAr0TKnD7Qn+r
-         dZCz7Mp/5l1ySZkzDhdyug294g+y3tA/7Gm3TwjvAyrJdUbx5jcZPh3CXTu0cSB7aS3c
-         P1LA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=L1caQE/GddzF2POA3lrIPiiJqtABGBhiQ4joZPVEJNQ=;
-        fh=RwVhDxjvyk2001G5fwk0z+snjopFhFTf3NhChk8ifuc=;
-        b=B/ts9QnNFpNCZhIOaL7r/ZrBNSqzLnq81tOpWDE+p/ufO6TtRkKKivV9H/3z286i04
-         kPjG8i3X4jx+c87uylVcke3nsBnmItdxMFBYUBowU5UG7o5nMRR6v6j3VvtkvI+Jf3Zo
-         vObqRdr2evM0c36dVpbgpg7zGHflRga1geeDlw0Qxy7vIsOy9XakMNLZ211yk98qNiVO
-         IVPSqlTbtZh804nF0aVv1r/zI2ZTliJ4PGNOFnXY9uGsAI4fGTCd23SxuSSXxGVVqfvy
-         We5FlUQDRlyfyy9Qfm3i+RXuM1Ge9oX7rRYPaeScXq/G4+z8hVxlmyl57QQfvxea0d2M
-         ltXw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ngs1+vCU"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cbb92868263so24438a12.2
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 15:12:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789682727; x=1790287527; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1789683124; x=1790287924; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=L1caQE/GddzF2POA3lrIPiiJqtABGBhiQ4joZPVEJNQ=;
-        b=b9lem2jRBN4Tl59NqLjmFeqGQjdFcSzfQT0Q8pJLGSeQCHkRUpgQnbbxcBJSYfqQOX
-         cA7DcfIeQgPDn9h7Tg8N9SNygCESvEYudPAneU1AlZ/mEgWnWCthSPnu6TpNvP8kOFhn
-         lbPSHDJ7b9S+dzzaFTAKrGroKc9nX7+EjtwxPQ/SikVu5BRl8NzYnexT7lv3Y4+JX4oX
-         RQf3wRQU01CY5iezwrSS/pgRDOLWncWkv8kiceTf/iZRUDW+GMXE7PAWe+qhNGA7o3V9
-         WrwF4WM+OXPsDWmoQhjweTCUZqc/ykeTrSjdo4MES0SMvU0KpjF4IuwlCnNWlMVVh5aF
-         k90g==
+        bh=2UYG2SrtB6EM+yhFk5h2ElEYvfaND8nBdx6rM334GIk=;
+        b=ngs1+vCUWAaSiKuqwx09P1mHvPmabxs6PXwmUIfC41QNA234bkxVrswHB8SqQ7pR+C
+         NNQXUEcKJrVPKwj/0pHTbO0HJ14RJFcx1+hsPzbpmzwEq6Dg+gQ29LNLamhdEMRScVD6
+         cmxO1TsEK7Gno9flHvUjy0yWhGAt+CPErwHB4wW19BYV3lRyS2G/vUSnnFl3lBn/Nb2q
+         fp7/AJ3uvFWz5wTtnHWTORr/a9vXYn8VoX2DDi7hDCgDUxXYiP7v3tC5a9T2XTeD2phX
+         3ama0780iQY6ZpDdALFHFuLYsg+AtwUMKkR0/NjLr5fMzTnCptZRiw9NMsD1zcvJ1eFj
+         XrRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789682727; x=1790287527;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=L1caQE/GddzF2POA3lrIPiiJqtABGBhiQ4joZPVEJNQ=;
-        b=0zfov9UhB+ZHtFkkW8zv8Z8GflrFRM37OB6yFS+YwwwC2RzuLq9ed939bU76m5aqLm
-         IztyKHmbU8tJULoXh9nBObgNl5OLBORr+lvMmqM7xvEghODIkp7/JsP/Aj1tU/99JEtk
-         mmcHxuLaFFlwkSlajgiOOiDQgIK4V5QN+Ggtvws1odIDWjaZo/+tHv0aVcDgCpkZTFKJ
-         YCL9Kan35+BK34Rc3x8w5u+wlqUcTHUbm9o6b6rd1nGbaXrv2Ic3te3QBILq9kag9gC1
-         LxMO2LxPrJMNXXqa3YivSKgd+Z8OTjrPtTttOIdHnZyhUpaUKSQECjXFoU1eyfsi0vdN
-         tZiQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwrZJmx02ZydJghhz7YlhwvXVQe1DRTyPjh5YNTLR1o2fQRfLzaJsL81PnfO0Lf+oY6CBYNAvg=@vger.kernel.org
-X-Gm-Message-State: AFuF++l1kJJG9/lw65B6k/8vXGAPa5lD7Jz25mUi/L6PnRyrRvTVK5cl
-	JrcLXxm8qzwp+yUwYElcx29qf+7mQnnLYTDyUfQm46wL005TRchlqzSG57ufUc5fogaxW25P5VV
-	WToEVUlUUGdIyqCHzOIu/QTqwmrezO/0=
-X-Gm-Gg: AYBFou2y1qPDC/8nlk/pkIE+vhGG1hZ5uT92cRg795DWzaCyJUMDNHUpRCOZnhthryi
-	RGrNmZmZPTUXYx8ppkGH/egIUFKAGFVrLD+XXBeCWS4poBbpJmY64k64zYd2FA55J2NDPrwcMqN
-	37ta9lYbqawidig/lSCM0/hb4zLlXLPs8cOBOas+5qpS6sa+Lpxe+6tH9VNt0lpfKL0KmRAsRuv
-	CYHum9mf1pHj57uCc8EmiD0emOIcS4iD4oiUVcpvjN+TB7wk/WBN8Q7dQk+Wru5J/8yREhGH8Jo
-	m4kFt6F44ANajn3/p1u7uyKbpPiA9coqIBfXErjgZXvbCo6ob4AeWZOpDzoCw0Wbu3Jw6KBURhK
-	dmk3E5xGt96CQww==
-X-Received: by 2002:a05:620a:1a03:b0:93b:d7ed:ff66 with SMTP id
- af79cd13be357-93bdc8b4b75mr58597785a.58.1789682726891; Thu, 17 Sep 2026
- 15:05:26 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1789683124; x=1790287924;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2UYG2SrtB6EM+yhFk5h2ElEYvfaND8nBdx6rM334GIk=;
+        b=B+iZsCIThrI8kCkYdIuBBoAEmHvBnpqazbHQLVrTlkwtzB49v8JXaS70TyiGr8A+GE
+         zmCE4cGBD/BW5I6bQ7EeczBXO+P28StMnSmbTorDYVzHfGdXLa07gDD1FOp5KKEIXgUJ
+         ZBd7rE5RQzq+EJZlggoxw6PjzXrNFPCSATmjV+8RLRw6U8JxUPaXKjBiZS9FizPscush
+         rXY8srm477Iuh2jICcGTU9S69o12GXdrom5hsmUawscFYVAc9BOJlgB5qOpkfmtLeB9j
+         LlqJmn0nipn1EW/N0xN/z6o/AJL9gOM63Nb8JD0eIdau8uJ+FgV20a+/OYdXU2tKGo5H
+         kq5Q==
+X-Forwarded-Encrypted: i=1; AKwUvBw9pSzApJO2J3tARix3eeVOVDTFmSvMu8w1nCG65RFIt9L1AKAicamXWGhM8ooR/fVw+c4xQRs=@vger.kernel.org
+X-Gm-Message-State: AFuF++lq8I1RYn2inIeFiux0ziRQcMbVO6IVfhktMqVTS6+9P5kHq3dl
+	2CwGSxAbDBMhkmybGegQU4dSJdf+4d89LT2i3pFMHSAt897Fe1rLlNNSFVeVyYCPfje4EqNDki1
+	AF4tYFA==
+X-Received: from pgbj4-n1.prod.google.com ([2002:a05:6a02:61c4:10b0:cc4:c4f7:5c56])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:b8b:b0:3d3:adbf:7780
+ with SMTP id adf61e73a8af0-3dd8c41a009mr673980637.21.1789683123594; Thu, 17
+ Sep 2026 15:12:03 -0700 (PDT)
+Date: Thu, 17 Sep 2026 22:10:22 +0000
+In-Reply-To: <20260917-hash-bucket-route-lists-v3-0-30493a37b6eb@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260914-ynl-robustness-v2-1-c6125003b21e@gmail.com> <m2ecesp96s.fsf@gmail.com>
-In-Reply-To: <m2ecesp96s.fsf@gmail.com>
-From: tmbates12 <tmbates12@gmail.com>
-Date: Thu, 17 Sep 2026 18:05:14 -0400
-X-Gm-Features: AcwNN1UTcZtpgBWu-l9JcuTibvJTD2u0xKrtDq6SchAt3r9hDKLxzygEQyk7zds
-Message-ID: <CAC4WM+xhyTLcRMvrW-=Zmu0+=5dFpoZn7-oye7qcVPuk_2GvaQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v2] netlink: specs: fix duplicate if/then keys in
- netlink-raw schema
-To: Donald Hunter <donald.hunter@gmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jiri Pirko <jiri@resnulli.us>, Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Mime-Version: 1.0
+References: <20260917-hash-bucket-route-lists-v3-0-30493a37b6eb@cloudflare.com>
+X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
+Message-ID: <20260917221203.1811779-1-kuniyu@google.com>
+Subject: Re: [PATCH net-next v3 0/3] net: hash uncached route lists by device
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: carges@cloudflare.com
+Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
+	horms@kernel.org, idosch@nvidia.com, kernel-team@cloudflare.com, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	shuah@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 17 Sep 2026 09:35:07 +0100, Donald Hunter wrote:
-> Good catch. We have a lint check on the specs but not the schemas. Maybe
-> need to add that.
+From: Chris J Arges <carges@cloudflare.com>
+Date: Thu, 17 Sep 2026 14:38:21 -0500
+> We have observed hung tasks blocked on rtnl_mutex while network namespaces
+> were being removed. The namespaces contained many network devices, and the
+> host had accumulated a large population of entries on the global per-CPU
+> uncached route lists. A perf profile collected during one incident
+> attributed most of the cleanup worker's samples to rt_flush_dev():
+> 
+> ```
+> 99.92% kworker/u384:3-  worker_thread
+>   `-88.71% process_one_work
+>       `-81.02% cleanup_net
+>           `-81.00% unregister_netdevice_many_notify
+>               `-79.42% notifier_call_chain
+>                   `-78.05% fib_netdev_event
+>                       `-77.92% rt_flush_dev
+> ```
+> 
+> For each device, rt_flush_dev() visits every possible CPU and scans the
+> global uncached route population while its caller holds rtnl_mutex. If N is
+> the number of devices, C the number of possible CPUs, and R the number of
+> uncached routes, the cost is O(N * (C + R)).
+> 
+> During namespace cleanup, other processes that issue RTNETLINK operations
+> requiring the RTNL lock can stall until cleanup releases the lock.
+> 
+> A minimal reproducer is available here:
+> https://github.com/arges/linux-reproducers/tree/main/rtnl-flush-storm
+> 
+> This series replaces each per-CPU uncached route list with a hash table
+> using the network device as its key. Each table uses 64 buckets.
 
-Agreed, there definitely is a gap there, as tools/net/ynl/Makefile is
-only pulling in yaml from the specs dir:
+This sounds a bit overkill.  Also, this series still leaves
+O(N * C) loops.
 
-  SPECDIR=../../../Documentation/netlink/specs
-  lint:
-      yamllint $(SPECDIR)
+Given unregistering a single device is less common than
+destroying netns, I think the right approach should be to
+make the route flush once in cleanup_net() + outside RTNL.
 
-The default profile is rather noisy on the schemas, with both errors
-and warnings, mostly brackets, line-length and truthy. With this patch
-applied:
+Could you try this change ? (only compile-tested)
 
-  $ yamllint -f parsable Documentation/netlink/*.yaml | wc -l
-  460
-  $ yamllint -f parsable Documentation/netlink/*.yaml | grep -c '\[error\]'
-  386
-
-So it'd be worth having a .yamllint config scoped just for the schemas
-so we're not chasing a bunch of smaller things, while still checking
-for any structure breaking ones (such as the one addressed in this
-patch). I'd be happy to put this together as a follow-up if that
-sounds useful.
+---8<---
+diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
+index 46b4c67e2966..d8ce7dc0fbdc 100644
+--- a/include/net/net_namespace.h
++++ b/include/net/net_namespace.h
+@@ -489,6 +489,7 @@ struct pernet_operations {
+ 	 */
+ 	int (*init)(struct net *net);
+ 	void (*pre_exit)(struct net *net);
++	void (*pre_exit_batch)(struct list_head *net_exit_list);
+ 	void (*exit)(struct net *net);
+ 	void (*exit_batch)(struct list_head *net_exit_list);
+ 	/* Following method is called with RTNL held. */
+diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+index da5f881fbd3b..7fc9bf45f3b6 100644
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -160,6 +160,9 @@ static void ops_pre_exit_list(const struct pernet_operations *ops,
+ 		list_for_each_entry(net, net_exit_list, exit_list)
+ 			ops->pre_exit(net);
+ 	}
++
++	if (ops->pre_exit_batch)
++		ops->pre_exit_batch(net_exit_list);
+ }
+ 
+ static void ops_exit_rtnl_list(const struct list_head *ops_list,
+diff --git a/net/ipv4/fib_frontend.c b/net/ipv4/fib_frontend.c
+index 8a3dc04e8cac..b8d76b6279e1 100644
+--- a/net/ipv4/fib_frontend.c
++++ b/net/ipv4/fib_frontend.c
+@@ -1685,6 +1685,11 @@ static void __net_exit fib_net_pre_exit(struct net *net)
+ 	nl_fib_lookup_exit(net);
+ }
+ 
++static void __net_exit fib_net_pre_exit_batch(struct list_head *net_exit_list)
++{
++	rt_flush_dev(NULL);
++}
++
+ static void __net_exit fib_net_exit_rtnl(struct net *net,
+ 					 struct list_head *dev_kill_list)
+ {
+@@ -1704,6 +1709,7 @@ static void __net_exit fib_net_exit(struct net *net)
+ static struct pernet_operations fib_net_ops = {
+ 	.init = fib_net_init,
+ 	.pre_exit = fib_net_pre_exit,
++	.pre_exit_batch = fib_net_pre_exit_batch,
+ 	.exit_rtnl = fib_net_exit_rtnl,
+ 	.exit = fib_net_exit,
+ };
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index d7da2f1acbb5..d35b66b33bbc 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -1554,14 +1554,28 @@ struct uncached_list {
+ 
+ static DEFINE_PER_CPU_ALIGNED(struct uncached_list, rt_uncached_list);
+ 
++static void rt_replace_uncached_list(struct rtable *rt)
++{
++	struct net_device *dev = dst_dev(&rt->dst);
++
++	rcu_assign_pointer(rt->dst.dev_rcu, blackhole_netdev);
++	netdev_ref_replace(dev, blackhole_netdev,
++			   &rt->dst.dev_tracker, GFP_ATOMIC);
++}
++
+ void rt_add_uncached_list(struct rtable *rt)
+ {
+ 	struct uncached_list *ul = raw_cpu_ptr(&rt_uncached_list);
+ 
+-	rt->dst.rt_uncached_list = ul;
+-
+ 	spin_lock_bh(&ul->lock);
+-	list_add_tail(&rt->dst.rt_uncached, &ul->head);
++
++	if (!check_net(dst_dev_net_rcu(&rt->dst))) {
++		rt_replace_uncached_list(rt);
++	} else {
++		rt->dst.rt_uncached_list = ul;
++		list_add_tail(&rt->dst.rt_uncached, &ul->head);
++	}
++
+ 	spin_unlock_bh(&ul->lock);
+ }
+ 
+@@ -1587,6 +1601,9 @@ void rt_flush_dev(struct net_device *dev)
+ 	struct rtable *rt, *safe;
+ 	int cpu;
+ 
++	if (dev && !check_net(dev_net(dev)))
++		return;
++
+ 	for_each_possible_cpu(cpu) {
+ 		struct uncached_list *ul = &per_cpu(rt_uncached_list, cpu);
+ 
+@@ -1595,11 +1612,11 @@ void rt_flush_dev(struct net_device *dev)
+ 
+ 		spin_lock_bh(&ul->lock);
+ 		list_for_each_entry_safe(rt, safe, &ul->head, dst.rt_uncached) {
+-			if (rt->dst.dev != dev)
++			if (rt->dst.dev != dev &&
++			    (dev || check_net(dev_net(rt->dst.dev))))
+ 				continue;
+-			rcu_assign_pointer(rt->dst.dev_rcu, blackhole_netdev);
+-			netdev_ref_replace(dev, blackhole_netdev,
+-					   &rt->dst.dev_tracker, GFP_ATOMIC);
++
++			rt_replace_uncached_list(rt);
+ 			list_del_init(&rt->dst.rt_uncached);
+ 		}
+ 		spin_unlock_bh(&ul->lock);
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 7535b09068a0..28233197e1e1 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -135,14 +135,35 @@ struct uncached_list {
+ 
+ static DEFINE_PER_CPU_ALIGNED(struct uncached_list, rt6_uncached_list);
+ 
++static void rt6_uncached_list_replace(struct rt6_info *rt)
++{
++	struct net_device *dev = dst_dev(&rt->dst);
++	struct inet6_dev *rt_idev = rt->rt6i_idev;
++
++	if (rt_idev) {
++		rt->rt6i_idev = in6_dev_get(blackhole_netdev);
++		in6_dev_put(rt_idev);
++	}
++
++	rcu_assign_pointer(rt->dst.dev_rcu, blackhole_netdev);
++	netdev_ref_replace(dev, blackhole_netdev,
++			   &rt->dst.dev_tracker,
++			   GFP_ATOMIC);
++}
++
+ void rt6_uncached_list_add(struct rt6_info *rt)
+ {
+ 	struct uncached_list *ul = raw_cpu_ptr(&rt6_uncached_list);
+ 
+-	rt->dst.rt_uncached_list = ul;
+-
+ 	spin_lock_bh(&ul->lock);
+-	list_add_tail(&rt->dst.rt_uncached, &ul->head);
++
++	if (!check_net(dst_dev_net_rcu(&rt->dst))) {
++		rt6_uncached_list_replace(rt);
++	} else {
++		rt->dst.rt_uncached_list = ul;
++		list_add_tail(&rt->dst.rt_uncached, &ul->head);
++	}
++
+ 	spin_unlock_bh(&ul->lock);
+ }
+ 
+@@ -161,6 +182,9 @@ static void rt6_uncached_list_flush_dev(struct net_device *dev)
+ {
+ 	int cpu;
+ 
++	if (dev && !check_net(dev_net(dev)))
++		return;
++
+ 	for_each_possible_cpu(cpu) {
+ 		struct uncached_list *ul = per_cpu_ptr(&rt6_uncached_list, cpu);
+ 		struct rt6_info *rt, *safe;
+@@ -172,23 +196,17 @@ static void rt6_uncached_list_flush_dev(struct net_device *dev)
+ 		list_for_each_entry_safe(rt, safe, &ul->head, dst.rt_uncached) {
+ 			struct inet6_dev *rt_idev = rt->rt6i_idev;
+ 			struct net_device *rt_dev = rt->dst.dev;
+-			bool handled = false;
+ 
+-			if (rt_idev && rt_idev->dev == dev) {
+-				rt->rt6i_idev = in6_dev_get(blackhole_netdev);
+-				in6_dev_put(rt_idev);
+-				handled = true;
++			if (dev) {
++				if (rt_dev != dev &&
++				    (!rt_idev || rt_idev->dev != dev))
++					continue;
++			} else if (check_net(dev_net(rt_dev))) {
++				continue;
+ 			}
+ 
+-			if (rt_dev == dev) {
+-				rt->dst.dev = blackhole_netdev;
+-				netdev_ref_replace(rt_dev, blackhole_netdev,
+-						   &rt->dst.dev_tracker,
+-						   GFP_ATOMIC);
+-				handled = true;
+-			}
+-			if (handled)
+-				list_del_init(&rt->dst.rt_uncached);
++			rt6_uncached_list_replace(rt);
++			list_del_init(&rt->dst.rt_uncached);
+ 		}
+ 		spin_unlock_bh(&ul->lock);
+ 	}
+@@ -6795,6 +6813,11 @@ static int __net_init ip6_route_net_init(struct net *net)
+ 	goto out;
+ }
+ 
++static void __net_exit ip6_route_net_pre_exit_batch(struct list_head *net_exit_list)
++{
++	rt6_uncached_list_flush_dev(NULL);
++}
++
+ static void __net_exit ip6_route_net_exit(struct net *net)
+ {
+ 	kfree(net->ipv6.fib6_null_entry);
+@@ -6833,6 +6856,7 @@ static void __net_exit ip6_route_net_exit_late(struct net *net)
+ 
+ static struct pernet_operations ip6_route_net_ops = {
+ 	.init = ip6_route_net_init,
++	.pre_exit_batch = ip6_route_net_pre_exit_batch,
+ 	.exit = ip6_route_net_exit,
+ };
+ 
+---8<---
