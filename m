@@ -1,235 +1,169 @@
-Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80D630100E
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 00:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.141
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789604519; cv=pass; b=iBAKhO80j4Ibq5d7Ldc3VmPF1VBGHYjCdZ4niRlEknQqH8CIFy2D/P1afHqPFVPYBa8cedGo7bh3tXqKoCO7jUDcVCdGLTh4xia/YB3M4GGJ2pjf9Yvc2pIn1NocSl1OLeC9HB0QqXB5NbP/Gcegu9qE8JFRReSTayEieJt0sqk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789604519; c=relaxed/simple;
-	bh=eE/70tI5lHBfiicghCy5PNB/8uOoQM6gLV3a2ZfYFM4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cEAzWUrhKtRLOANMuz28BbjWHCpvTra8zM8PvA5BXafO8SbelDLcImGTRm1sWRs25RpOas+aa5KtVyv4SaVyabvvScWPYFUJGFscPONQOJlUNATPG0alEwbmnlyTxYpR/J888A/kzFUoTgd0krJ3TKaMA2jZm5KEdNcekIirkEU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XAf0Hcwx; arc=pass smtp.client-ip=74.125.224.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8422030594E;
+	Thu, 17 Sep 2026 00:24:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789604695; cv=none; b=MhZBZlu+AraoI1EX7SLcIv4iVLGlUjx2kDAx/FTZfllDwXFk/aFv5CSzo4ayu0WEv5ZIwj6blo8J1tW7V+d8gs6uR0F24qSHI6mKQaJG3iKP855a3sw60MjA3bjgBajPrgAtQJ/0hXI+0liK0PW2m1rJnkRYdNX8wGTYXtoitkg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789604695; c=relaxed/simple;
+	bh=5qz+sS7mC18t17f2GbV+JzJ6dja2oPZFU5/+qXA9LLU=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=D9ofcjXTPM8p2gSzxYMyQ0h/wNoQgSejCEh9MwqeuG5hZr7BB59g6ZXGTtkvQtIvwWev9rCC2mCSAveHKe9PEOYM0fp3TIEo+CLLZ79GSxnds8ZuIXHeWzlvRUosmb6nOraxv5xZN7uIHLFfmycnARu1wosb7PVouZ2Jb1OJRPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DnUgvymp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XAf0Hcwx"
-Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66e56a1b327so256074d50.0
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 17:21:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789604517; cv=none;
-        d=google.com; s=arc-20260327;
-        b=NBjoWP5OWewLipCe/V+MTr8DnbNc/4us70hS1F527u3shghRI9dx9FW+0GBFC0r5B1
-         tOl6eVnkIOgpCfFJ7Bt13wpHEhuiepkW6TAYp824Bhh4/tHQdNoOQPkIYH2DoSGmhGuX
-         WCd9kRiiKvEqCbM2e0KTSk/nCB80didxiUXYGyBEsERcZVBYEsJj2or1GLfp9KNrtCi3
-         QAQ4eqj+XpGzpv26igux1ZPx82R5nUji2EcV/QYEEFOhEuUcG0NqfkJ8s/wxck3X/nSP
-         Xe48Z/rNDc57JorS+jEH09BKxncLUt7nEY9Lq/atV/PizcoClT3BhhG6hXe1nz795TOq
-         IGGA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=MDCyJ4TOKuXbazw0rOc/QKvMAz2VNlILsoPCMfyFwJ8=;
-        fh=y00pNY1hFzywtEm5AJ+zySy1+ok3PTgxx32tFjNhvOk=;
-        b=Nh7SqVkLjgHvHSxP7GYEeGcsHXGt3sBhj7mtxWKhMQk+V9MV3Wkov4Cg43bJtopG3x
-         5yXcrIY7lzIg4UoiV4m952N1cjTtXmZlON0tkhcbTIPjshkXkXJQaFwsYRJzhY/67b4x
-         gBY0IT2g+Ui71qTb79r7ZOVXYYAaz15QVVeSvSpeHwEjGKt/J52zkdD3qBncUGY0JGV3
-         ovUZQJ4agdwb/AsqW+Gt+ATMW3AUqS5wp5+khSMFooZ846bIrDmLJnX76gcZHXib16Of
-         cp6iOjZIFsdXEWiIfzlzK4MO4YmKpdq8Vlh/+W7Z0Io7a2qyqZCdLGZBugWnLxB6OQLx
-         D1gQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789604517; x=1790209317; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=MDCyJ4TOKuXbazw0rOc/QKvMAz2VNlILsoPCMfyFwJ8=;
-        b=XAf0Hcwx0wGX1R/eahcYqcItKUB+ei7e0KMV4GnR24CdTGYaMdKYGr7mf9+AX8iSql
-         RsVuoQ1OMmJ6BlqV3PChQ5GsQGV+4MdUdbl05Z5IS7iOAeZNpG7J8rvBRLMzSirKsiuc
-         oIz4uKvI4TwBNsD8scJjk/PuQ1KRH85sa8azl6DDM7iEcBKkO1WkdNVUe+yyrmbzXyhd
-         WEAgdtsKRdce4nk3PZ4WBsAw0+Innm2tSA2AJbqZDfeHb2o/cc33xjc+NElVB8ZsdtC+
-         +9UkmcFZR37wrgVIf+wREgrwOMYnR596/rq8UFF17EfpGQnfK8Qn8XHE2DUE+lU/jHmN
-         gbig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789604517; x=1790209317;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MDCyJ4TOKuXbazw0rOc/QKvMAz2VNlILsoPCMfyFwJ8=;
-        b=uuP3vMMsabpMsoZemRqZY+dgjKuJ0wCrSe6Y9SUMzrgIjdLMN5UKZnzct5cuiHFJuq
-         0VZsPdOHNhKUP1HU3lqONeClkLx7pzn5ylwfTvfpiGrdLR5oaie1JtR9ldGrxTd3EmZY
-         6NLcoXlqqH89S0EA8QYB4Ij2rLK/hSVXgErT7Ylg6UpYU++XT3zoU8P1EHgWhhlxhlcr
-         n+SmVQprFJE8+kY9dhIHama2vtfkU3tNFQNCio08qeIywTB2UF3XH4JDBNre1cGFrwhP
-         vvrmKJ9LHQZzxoR2UjCPYLTvhLQo+rHyL/ODunFpB7R0P07V70sn+VVkgE+vLepvc+41
-         fPoA==
-X-Forwarded-Encrypted: i=1; AKwUvBwqRj9vollIX8nvr8uyDxCXSsvRoJ8fqul4Q/1VNvDC94WIxpKms0K5B/nanvVJriN7C+MrZT0=@vger.kernel.org
-X-Gm-Message-State: AFuF++n3QL9E1NJtI2AfcOiRncbe0FQtSpRuQ3dROlErEkxa1nKl9yy6
-	jhBcBLF87viY0lhUDlAcFxoLQOS1dhZWcxnr1SfYmKa83Jo3VvPxGNavTBpNUgpdS+Hki3wDIoT
-	JOGpXBKwgI5jIpVR6d1b3DJyIdhnSJpHHtA==
-X-Gm-Gg: AYBFou0lGi3W203AKZTqMrdF3W3LBiHHPNAxWTfxKFOFWmlwRK/5uZBRnJLHVJ/w4J5
-	14EwYJS+dUZYkgEGErNbSrAXwgZvW/XiAYPmx8Gx4qIZ8/r9NBBTCnFTfk5SpOM2vQk1WrRL84J
-	UZxLOcj/aGY13902o4P7Na2cNYiqGMqRUK/B0Unx+JQZBuC8P0wU07lcykYIlcQF2Xjd7e+dmel
-	2mGBDXNoXuSY054axrJVNGz+UKNABnHjmOXfq/rTUPkUgBD7ZZ/LR1+JcfIehmxUTOYrT45sr6u
-	7RGuOTAvgReLNZWa6HHvSq5jNnS+8etkc0SW1kduKes+7V+rUzwVh4ol
-X-Received: by 2002:a53:d016:0:b0:671:4c1c:d571 with SMTP id
- 956f58d0204a3-671632c9f51mr1604029d50.43.1789604516779; Wed, 16 Sep 2026
- 17:21:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DnUgvymp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 648E21F000FF;
+	Thu, 17 Sep 2026 00:24:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789604694;
+	bh=BK543tMrE/YgjQmqF2LPnVo5G74ZNutS7/2Y0dU3VkQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=DnUgvympQHCXXIEOs8nmCKM0+ooaq6EGOq7sOhBRrw97WQ2QDMj6X05Ng8+7RA5t3
+	 fC7bnJmukkaHhu4H7lp3vQYdRHUlb4YJ+/WL6fz4STVbo0EdaNWDXvb7WYdttgu7XI
+	 W09+ZyB2uCnbxIyi6lbaxqhwHNv7WLsD3QwlzUAN89UL4UbCwrZEJptGHzU64bIbf6
+	 WrNGZhgsK31RWhaZZ0lneBD1ywU/1G909vQHCfos9NF5bo2N8EqqxHD2nxxfqrSnbY
+	 tDzj9sOaDBrCGCZLN7RF3f89pOgmI1YiEQxLYpMpanxj9b197Ovd5xnNbUC6hEzO2a
+	 fndvE+SkobnSg==
+Subject: Re: [PATCH net-next v2] net: usb: asix: reject a truncated Data
+ header in rx_fixup
+From: netdev-bot+sashiko@kernel.org
+To: elb12345@hotmail.co.uk
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, dev@lynxeye.de,
+ andriy.shevchenko@linux.intel.com, kartikey406@gmail.com,
+ enelsonmoore@gmail.com, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Thu, 17 Sep 2026 00:24:52 +0000
+Message-ID: <178960469295.22033.14261478886981268855@kernel.org>
+In-Reply-To: =?utf-8?q?=3CAS8P251MB000193C798F98A11C73C3E9DC8BB2=40AS8P251MB?=
+ =?utf-8?q?0001=2EEURP251=2EPROD=2EOUTLOOK=2ECOM=3E?=
+References: =?utf-8?q?=3CAS8P251MB000193C798F98A11C73C3E9DC8BB2=40AS8P251MB0?=
+ =?utf-8?q?001=2EEURP251=2EPROD=2EOUTLOOK=2ECOM=3E?=
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260915-psp-ktls-fix-v2-1-0eedc3b148ec@gmail.com>
- <178960039456.22033.8739239860645875280@kernel.org> <DLH4YA9CBAOR.302OMMH65TVUD@gmail.com>
-In-Reply-To: <DLH4YA9CBAOR.302OMMH65TVUD@gmail.com>
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Date: Wed, 16 Sep 2026 20:21:09 -0400
-X-Gm-Features: AcwNN1U4GDt9jigbNmv_Nr_CFF1szcdzklC14Mom0RTgeef43I5aY0c4jLpwzWQ
-Message-ID: <CAF=yD-K2d4i2Jgc3v5okzuGy3GPLXD+E490r0FYBcW7+Rg1fxA@mail.gmail.com>
-Subject: Re: [PATCH net v2 1/2] net: psp: avoid conflicts with skb->decrypted
- and sk_validate_xmit_skb()
-To: Daniel Zahka <daniel.zahka@gmail.com>
-Cc: netdev-bot+sashiko@kernel.org, edumazet@google.com, ncardwell@google.com, 
-	kuniyu@google.com, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
-	horms@kernel.org, andrew+netdev@lunn.ch, shuah@kernel.org, willemb@google.com, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 16, 2026 at 7:39=E2=80=AFPM Daniel Zahka <daniel.zahka@gmail.co=
-m> wrote:
->
-> On Wed Sep 16, 2026 at 7:13 PM EDT, netdev-bot+sashiko wrote:
-> > Thank you for your contribution! Sashiko AI review found 1 potential
-> > issue(s) to consider:
-> >
-> > Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 0 =C2=B7 Low: 1
-> >
-> > - [Low] The patch adds a new, user-visible restriction to two already-
-> >   shipped interfaces without updating Documentation/networking/psp.rst:=
-=E2=80=A6
-> >
-> > --
-> >
-> > net: psp: avoid conflicts with skb->decrypted and sk_validate_xmit_skb(=
-)
-> >
-> > This makes PSP and TCP ULPs mutually exclusive, since PSP and TLS both =
-use
-> > skb->decrypted and sk->sk_validate_xmit_skb(). A new helper
-> > sk_has_decrypt_user() is added and checked from both __tcp_set_ulp() an=
-d
-> > psp_sock_assoc_set_rx().
-> >
-> >> diff --git a/net/core/sock.c b/net/core/sock.c
-> >> index fa60b7494c586..9489d9c479493 100644
-> >> --- a/net/core/sock.c
-> >> +++ b/net/core/sock.c
-> >
-> > [ ... ]
-> >
-> >> @@ -2670,6 +2671,12 @@ void sk_setup_caps(struct sock *sk, struct dst_=
-entry *dst)
-> >>  }
-> >>  EXPORT_SYMBOL_GPL(sk_setup_caps);
-> >>
-> >> +bool sk_has_decrypt_user(const struct sock *sk)
-> >> +{
-> >> +    return psp_sk_assoc(sk) ||
-> >> +           (sk_is_inet(sk) && inet_csk_has_ulp(sk)); /* for tls */
-> >> +}
-> >> +
-> >>  /*
-> >>   *  Simple resource managers for sockets.
-> >>   */
-> >> diff --git a/net/ipv4/tcp_ulp.c b/net/ipv4/tcp_ulp.c
-> >> index 2aa442128630e..b58045df101e5 100644
-> >> --- a/net/ipv4/tcp_ulp.c
-> >> +++ b/net/ipv4/tcp_ulp.c
-> >> @@ -136,6 +136,10 @@ static int __tcp_set_ulp(struct sock *sk, const s=
-truct tcp_ulp_ops *ulp_ops)
-> >>      if (icsk->icsk_ulp_ops)
-> >>              goto out_err;
-> >>
-> >> +    err =3D -EINVAL;
-> >> +    if (sk_has_decrypt_user(sk))
-> >> +            goto out_err;
-> >> +
-> >>      if (sk->sk_socket)
-> >>              clear_bit(SOCK_SUPPORT_ZC, &sk->sk_socket->flags);
-> >>
-> >> diff --git a/net/psp/psp_sock.c b/net/psp/psp_sock.c
-> >> index 1a2a6b7516b0f..e9b53eedf8dba 100644
-> >> --- a/net/psp/psp_sock.c
-> >> +++ b/net/psp/psp_sock.c
-> >> @@ -143,6 +143,10 @@ int psp_sock_assoc_set_rx(struct sock *sk, struct=
- psp_assoc *pas,
-> >>              NL_SET_ERR_MSG(extack, "Socket already has PSP state");
-> >>              err =3D -EBUSY;
-> >>              goto exit_unlock;
-> >> +    } else if (sk_has_decrypt_user(sk)) {
-> >> +            NL_SET_ERR_MSG(extack, "Socket has incompatible state");
-> >> +            err =3D -EINVAL;
-> >> +            goto exit_unlock;
-> >>      }
-> >
-> > [Severity: Low]
-> > Should Documentation/networking/psp.rst be updated along with this?
-> >
-> > Two already-shipped interfaces grow a new failure mode here:
-> > psp_sock_assoc_set_rx() now returns -EINVAL for the rx-assoc netlink
-> > command, and __tcp_set_ulp() now returns -EINVAL for
-> > setsockopt(TCP_ULP).
-> >
-> > The "Securing a connection" section enumerates the restrictions of the
-> > rx-assoc/tx-assoc sequence:
-> >
-> >       PSP encryption is currently only supported for TCP connections.
-> >       Rx and Tx keys are allocated separately. First the ``rx-assoc``
-> >       Netlink command needs to be issued, specifying a target TCP socke=
-t.
-> >
-> > but does not mention that a socket with a ULP attached is now rejected.
-> >
-> > The "User facing API" section also suggests a TLS-then-PSP bootstrap:
-> >
-> >       The expectation is that higher layer protocols will take care of
-> >       protocol and key negotiation. For example one may use TLS key exc=
-hange,
-> >       announce the PSP capability, and switch to PSP if both endpoints
-> >       are PSP-capable.
-> >
-> > and "Kernel implementation notes" says PSP "follows the TLS offload mor=
-e
-> > closely ... and the use of skb->decrypted", with nothing stating that k=
-TLS
-> > and PSP can no longer share a socket.
-> >
-> > One more thing worth spelling out in the docs: the check is not restric=
-ted
-> > to TLS. inet_csk_has_ulp() only tests icsk_ulp_ops, so any registered T=
-CP
-> > ULP blocks rx-assoc, which is broader than the subject line suggests. T=
-he
-> > commit message explains this is intentional, but nothing in-tree tells
-> > userspace about it.
-> >
-> > The follow-up patch in the series ("selftests: drv-net: psp: test PSP a=
-nd
-> > TCP ULP mutual exclusion") adds tests for both directions but does not
-> > touch Documentation/, so the gap remains at the end of the series.
->
-> I can incorporate some changes to psp.rst into a v3 if others think
-> that improves the quality of this patch and the PSP code. Personally, I
-> don't think this suggestion is worth while. What this code prevents is
-> something I would be surprised if a user were to try without heavily
-> inspecting both the implementations of PSP and TLS ULP first, at which
-> point I don't know if using up words in this doc is worth it.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-Doesn't seem worthwhile to me either
+Critical: 0 · High: 1 · Medium: 0 · Low: 0 (1)
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+- [High] The fix is incomplete: the sibling four-byte Data-header read in
+  the same function is still allowed to read one byte past skb->len,…
+
+Pre-existing issues:
+- [Low] Missing lower bound on the device-supplied frame length in
+  asix_rx_fixup_internal() (drivers/net/usb/asix_common.c:190-214).
+
+--
+
+net: usb: asix: reject a truncated Data header in rx_fixup
+
+This adds a bounds check in asix_rx_fixup_internal() before the four-byte
+Data header read in the "start a new frame" branch, so a three-byte tail
+no longer pushes offset past skb->len and wraps the copy_length clamp.
+On a short header the parser state is reset and the URB skb is dropped.
+
+> diff --git a/drivers/net/usb/asix_common.c b/drivers/net/usb/asix_common.c
+> index 4f03f4e57655d..8c5f863efe7d6 100644
+> --- a/drivers/net/usb/asix_common.c
+> +++ b/drivers/net/usb/asix_common.c
+> @@ -179,6 +179,13 @@ int asix_rx_fixup_internal(struct usbnet *dev, struct sk_buff *skb,
+>  				rx->split_head = false;
+>  				offset += sizeof(u16);
+>  			} else {
+> +				if (offset + sizeof(u32) > skb->len) {
+> +					netdev_err(dev->net, "asix_rx_fixup() Short Data header, offset %d, len %d\n",
+> +						   offset, skb->len);
+> +					reset_asix_rx_fixup_info(rx);
+> +					return 0;
+> +				}
+> +
+
+[Severity: High]
+This guard only covers the header read inside the loop.  Does the other
+four-byte header read in the same function, the resynchronisation read
+before the loop, still go one byte past skb->len under the same
+device-supplied odd skb->len?
+
+drivers/net/usb/asix_common.c:asix_rx_fixup_internal() {
+	if (rx->remaining && (rx->remaining + sizeof(u32) <= skb->len)) {
+		offset = ((rx->remaining + 1) & 0xfffe);
+		rx->header = get_unaligned_le32(skb->data + offset);
+		offset = 0;
+	...
+}
+
+The predicate uses the unrounded rx->remaining, but the read happens at
+the even-rounded offset.  For odd rx->remaining that offset is
+rx->remaining + 1, so the read consumes bytes
+[rx->remaining + 1 .. rx->remaining + 4].
+
+With rx->remaining == 5 and a following URB of skb->len == 9 the test
+passes (5 + 4 <= 9), offset becomes 6, and bytes 6..9 are read while the
+last valid index is 8.
+
+Is odd rx->remaining reachable?  rx->remaining is set to
+size - copy_length with copy_length = skb->len - offset, and offset only
+ever advances by sizeof(u16), sizeof(u32) or (copy_length + 1) & 0xfffe,
+so an odd-sized frame spanning a URB boundary leaves an odd remainder.
+
+The byte that gets read past the data then feeds the size versus
+complement verdict that decides whether the in-flight rx->ax_skb is kept
+or thrown away, so a good partial frame can be discarded or a real
+desynchronisation accepted.
+
+Would matching the two sites be enough here, e.g.
+
+	if (rx->remaining &&
+	    (((rx->remaining + 1) & 0xfffe) + sizeof(u32) <= skb->len)) {
+
+so that the pre-loop predicate describes the offset the read actually
+uses?
+
+>  				rx->header = get_unaligned_le32(skb->data +
+>  								offset);
+>  				offset += sizeof(u32);
+
+[Severity: Low]
+This is a pre-existing issue and not something this patch introduces, but
+while looking at the header validation just below this read: is there a
+lower bound on the device-supplied frame length?
+
+drivers/net/usb/asix_common.c:asix_rx_fixup_internal() {
+	size = (u16)(rx->header & 0x7ff);
+	if (size != ((~rx->header >> 16) & 0x7ff)) {
+	...
+	if (size > dev->net->mtu + ETH_HLEN + VLAN_HLEN) {
+	...
+	rx->ax_skb = netdev_alloc_skb_ip_align(dev->net, size);
+	rx->remaining = size;
+}
+
+A header of 0x07FF0000 gives size == 0 and (~header >> 16) & 0x7ff == 0,
+so the complement test passes and only the upper bound is checked.  Any
+size in 1..13 passes too.
+
+The resulting runt ax_skb goes straight to usbnet_skb_return(), and since
+asix sets FLAG_MULTI_PACKET the skb->len < ETH_HLEN filter in rx_process()
+is not applied, so eth_type_trans() -> eth_skb_pull_mac() dereferences
+(struct ethhdr *)skb->data and takes h_dest and h_proto from bytes that
+were never written.
+
+For the record, this does not hang the parser: offset already advances by
+sizeof(u32) (or sizeof(u16) in the split-head path) in the same iteration
+that reads the header, so a size == 0 stream still terminates the loop.
+
+Would a size < ETH_HLEN rejection alongside the existing upper-bound check
+be appropriate?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/AS8P251MB000193C798F98A11C73C3E9DC8BB2%40AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
