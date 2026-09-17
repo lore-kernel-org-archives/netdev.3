@@ -1,128 +1,187 @@
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9DF414435
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 19:05:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.198
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789671932; cv=none; b=rg/uAigoXgmIEM2oF/pe1kkhdJmMsHtHwmo8x1cKss/GFEjz2qOwVpnkDfU4FjRtY2j1XzUZrlMxWbo5vdxj8n17V7DsqNAClI05MYs48z2oGD3eJCQv8a/zdnCuMId4PC7Zxk6brhRtQdn4wOaYAjYxbymrOwqxKjGJ8w+ni/Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789671932; c=relaxed/simple;
-	bh=NFC6A1PqQ0KTK08j7X2WsHo8KiPkcsZRIJtjp7H7XGc=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=gF/JAswYMkCyhsuwxBkNvIkHG61AGNOxB22VefTo3kJRrtR3thPoZYPHOcnT21/EXS3cCs5SZ8MxNpCvi7D/t/qdbgs2GvZNBFgH37lhqDKmOyPTTh4roQhzGT/FGnDrwec1TK3d9pabRerOv5w2F/HT+iMUh3W11llWBlqinQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4b28deb7ee3so46325b6e.0
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 12:05:30 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 524573F8250
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 19:06:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.140
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789672016; cv=pass; b=hHS/e+WH+6kpOLtBqfgnTGzlNl6+os6qo8y4WRo9dqMTwXaaw8jOj9+GwJmurBUvZg+wHMvTag8Xur9YSIo/3pZjbTnZ6i9FahCCD86ExJt6sr+lzj3MyViaK5SNLkjRSGMCMdJGWJ+jpOHVo1c24AszDVpoJG/Za2s+JfV4jN0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789672016; c=relaxed/simple;
+	bh=qqBrqtVZFn6NsXxcXXIMtlSWkhWESw0qIbjgWLUJZHc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=t29KvH4lnv2TfoNmM26u2RNBxYsZStIvIGb7/tBhOuEdkls5MmjY71hTq1bqlMpPMBaHsrac5SiB0BiPpMJ1kv8IpkHz/ivVxDb61dE+UOrUju6HIShXba2azLx4Wo8DCVD8uZbUYwxk6zqzEoPtO32agiXTi7iSSF8Oiq0I8VM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IycoU3EF; arc=pass smtp.client-ip=74.125.227.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IycoU3EF"
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccb652d7so22278a91.0
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 12:06:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789672014; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZR11XbBxsRSi65138hAOSjffW+7JHcR/nQGCcEFUZNCtnx3T2D8I2cGkDCsgSy0zSJ
+         ac0wUu0kNv4kReekObn1vW5BQ5CYBfqrQxoAgmgcGIOQs0SGDq9WwzNkNk1erVgPnFGH
+         FzmCHRTXdLsir+GAlCUuGFN7ErbRor0hd1G/flfX/1qaqjd6neHMuWto++nX+EhQ4kjD
+         QKsHQ22CKr+4DAKJdM/3NT++Nfx0iycs6ewAtU2gtKLcmO4fHbW4WyCSvhXD/6H/DUmr
+         VYAwYh467J+RtWkWRTfwTMaSEpfb8+xbrM0PkBtPDCuXTxF91m3XKeBCTFZmDRxeP47R
+         zzVQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=AJdmTMqYmE/7xu/8ItFmggn+Kr8BDXFZhgiN1tzQfFI=;
+        fh=yCPfumwcs9Q4doBfkuY1oIM/O2XZUdUdU8vVG1SnHjQ=;
+        b=POiZCwaemKlh4FxK0UdpNrQ/Rg4QhlQDlGWwPWMjPlwAPUpWeeonXU4GewLFi/+MBI
+         BqVQszqH0QYv5ENBDqwqFZNioSXamC7Z6Y9TVqYFhMJOa9cUK3BKUyaoyiOGjHUgykZ0
+         pd7zgYefQVvHx06ZAFxZgm/F5HFSmVeHBF6ul7n1N0q4ccRhZJPCOjYohPy80dwlNRoU
+         7rweW1WZ+r/U/lyrO89nuq6mitbOKFC6wHNXll7mnp5oK+0NlQfQQp8ycw23pJ6TswwJ
+         OOAuBvHBQ+cQnY1bYrA8a1txxK0shfRRZIp4Hi6h3N0UYf89kJ4S+GCJZ3a1eq44k/Zv
+         j9tA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789672014; x=1790276814; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=AJdmTMqYmE/7xu/8ItFmggn+Kr8BDXFZhgiN1tzQfFI=;
+        b=IycoU3EFALTx1858ujT4tsuxDZ8tn271nr0x3R95A4/sbG16/g5jI1VlOID8w0K79G
+         06o6MMxQnyuwyrngxy4KLpkr2jw4k6HXreNVITiaczRMXqxng+adySA3g14sFWpg2X51
+         Dkfda3ArcnrZI5RGq28QTnWB+Zs2WHCICpCuuLpVntAc77gCmenmCC7T4M6OozsuTuEz
+         lrRV8a8hMr8SqdqsCwenhAIU+cTA4MJE+1pcbC76E8rXuy/J5VmYcb55g/qBIgorYrjy
+         ybns6tXE3N3LBYDCcrVyOJxFuCaTnumJkopyJXFEhnOHVEia6Y3rxR1ib5IF55G0Epvt
+         5b4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789671929; x=1790276729;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=p5qDeDiQvi7JB3lCbbE8oeHw7QmOFls+FtasUuSp6mg=;
-        b=gjAUBHIv7CFKoBVrQiQL5TXJy6Ynqr0ipYOnX4mkvxcviE3g6tAuvux5c+05AAcwR3
-         vJ0lJ/Bq29LdUzDZhYBJCJkJaKxrZviKCo65sov+ArT0+lefYYwhKPJ4Q8stJHqqjKux
-         5dCrN0xvbnnzXXyAmIX/rxn7vnzAWlOcDCRhILH1YqBCMFaNORRnCoPr8JFtWuLdr4U+
-         8OOC8Px3GTaDNd3EARZ+7m9IyVa8aXphfdLJLkDyM8jo69a2TjeeKHtTlKCOFT5Q6WBf
-         j+Z+KUoQazkheW61a7q3NZgo7w/Lpkwv8t7jvKnyV0jcxUmJz+K1eYu1Q04rMB9n+YAn
-         ++jQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwJo2l8SYP5+6ydoUy5x+H3xtkH2GRlIoAZYEFVwd9zCFraDJ6F05szCoUEwgOhLnrCOgKZh4c=@vger.kernel.org
-X-Gm-Message-State: AFuF++m1jbLaJpLPCSqz/guH81kovwoWfkPcAi8JBbnSMO+Vb3en9dzM
-	kAvmG5eyRq6cC6qCjXGPNjDvNyR6mb1j4Z1DSlxR0SeJ4spQrH7nSrJ6K4apCm0kyKq52llaTPK
-	FQul+AsowswIaX+2zMvqlbhLQKmJTtC/FKCW9ozLUVUZacxTG+rB60w7FDsE=
+        d=1e100.net; s=20260707; t=1789672014; x=1790276814;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=AJdmTMqYmE/7xu/8ItFmggn+Kr8BDXFZhgiN1tzQfFI=;
+        b=owu65ijn6zALe9zkWWXrolKuJkQwsfgYRYdUG8don+WXLvef4Y8gm12+KAVRezwvlM
+         qWv9Rf3GhDz+R+83ilD4NVXLozErTvObf40JURdMiMZYsDdkCnUTfopLWQjR/BFjTiPM
+         gShOuyuFAiU73ipJzdx1mzi0pZBoAuhozIHBNRSDnDg2O59QTdRO8QJNYTOe8GN6HhlZ
+         x5v9HUKDmhc1ksWdkUtS5niHHASpEEu4ed4GO88HOmp42gkNT4cOJvDvNzrnVPEipjot
+         +R+ZuTkpUN/MDiRYLyaBaIpyjVJ3bCsBaB0y+MNc/3BC2Vl+JdRL8dbl/jSSss9mNLz2
+         ViNA==
+X-Forwarded-Encrypted: i=1; AKwUvBx0kV0+6h1gJzzAZgUd7ITQUoxwXBHj6KXxNdLQuC3Zc7l00smhDFWHkYqIavlhds3+jaz4Qws=@vger.kernel.org
+X-Gm-Message-State: AFuF++n79yr4JWmrV83IoRW6eUTkVgHNRIJrTaC+PwHxXG5IzB0S+Rhi
+	45Q+RuOW983pxXtw0CHZJB9SHSBjy8OuYfE0+PIbCfUsStKJsCpfpbvxwgX3DJFqauhoUvXPtNa
+	Xl+Tbweqidaq7N7ctrr2RwEK7Q8RcQYlR8aI4JBqd
+X-Gm-Gg: AYBFou2m7OK2AiZI/F2xuMa2Z9/EBEnRz/YBh0VzFx7bSj8NwuHyadAT6boSY3RbjX/
+	+kROcfKPD3VOX93QeFtWuJmbmRU/KsPCbZqbjHZUEnik87JL1qOP3lsAhluoVMLfixXh8aPTQrz
+	CdUJpDk3JSTA30ltMi2oqDHzFBnIKy32KrboS4kQF/JwOGfv/FgraoKW4sQ1Tec2OfIKnYSgSqp
+	/1EIKElH4tEj84Seow+qMCjRTCoS0D9YNFn0ge2gTik7uEqJ3HWcuB6VLI5uHFJP1dWVAZ0DsHb
+	p+QBFqf7F5lNb7Q3K5+5ON1UMvC6A2hDLnThj7nVRdqQWfDqIgzgOU/T/N7dBRieFoAfVabv9QK
+	ZWsLGVgSByrSCglR5jjJxT9m4WYPFsgoYEybZSIY46Ui+EXCkVgc+gLoxOvChvQwMHfu2Wgzm5o
+	RAwqFGTCEqDqleU4+27PIY8aKWZQ==
+X-Received: by 2002:a17:90b:54c4:b0:39e:4c7f:7308 with SMTP id
+ 98e67ed59e1d1-39e55071981mr225580a91.31.1789672013089; Thu, 17 Sep 2026
+ 12:06:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:c18b:b0:4a3:3108:866a with SMTP id
- 5614622812f47-4ccf6b742dbmr231447b6e.17.1789671929698; Thu, 17 Sep 2026
- 12:05:29 -0700 (PDT)
-Date: Thu, 17 Sep 2026 12:05:29 -0700
-In-Reply-To: <6aa7c510.4c28b7d0.c1bba.0017.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6aac39f9.71f81b7d.278072.0020.GAE@google.com>
-Subject: Re: [syzbot] [wpan?] WARNING in hwsim_hw_xmit
-From: syzbot <syzbot+adb0bf16414b8bb2d799@syzkaller.appspotmail.com>
-To: alex.aring@gmail.com, andrew@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	linux-wpan@vger.kernel.org, miquel.raynal@bootlin.com, netdev@vger.kernel.org, 
-	pabeni@redhat.com, stefan@datenfreihafen.org, syzkaller-bugs@googlegroups.com
+References: <CADvbK_dHPkHjkPwu0RepYgDsHs5reHepprRHU9hDFBxQM9_RGw@mail.gmail.com>
+ <20260916234654.420056-1-kuniyu@google.com> <CADvbK_df5X=Szsd-d8=0gndhoBSHJhnEqSh826iYUW6=Ce_xEw@mail.gmail.com>
+In-Reply-To: <CADvbK_df5X=Szsd-d8=0gndhoBSHJhnEqSh826iYUW6=Ce_xEw@mail.gmail.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Thu, 17 Sep 2026 12:06:41 -0700
+X-Gm-Features: AcwNN1Vf1Dgl1Yuz1331KMxjXrgwRsS9uLrWePJOZIUaTVSoZLWo_yT69Va3HQo
+Message-ID: <CAAVpQUCRcBQOS4H5zJBOoYeCgsQBiGyu8gjhXaocDXDw9jqTOg@mail.gmail.com>
+Subject: Re: [PATCH net-next v15 15/15] quic: add packet parser base
+To: Xin Long <lucien.xin@gmail.com>
+Cc: aahringo@redhat.com, alibuda@linux.alibaba.com, 
+	andrew.gospodarek@broadcom.com, chuck.lever@oracle.com, daniel@haxx.se, 
+	davem@davemloft.net, dhowells@redhat.com, dreibh@simula.no, 
+	edumazet@google.com, hare@suse.de, hepengtao@xiaomi.com, horms@kernel.org, 
+	illiliti@protonmail.com, jbaron@akamai.com, jlayton@kernel.org, 
+	kernel-tls-handshake@lists.linux.dev, kuba@kernel.org, linkinjeon@kernel.org, 
+	linux-cifs@vger.kernel.org, mail@johnericson.me, marcelo.leitner@gmail.com, 
+	matttbe@kernel.org, mbuhl@openbsd.org, mef@scarletmail.rutgers.edu, 
+	metze@samba.org, netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org, 
+	pabeni@redhat.com, paul@jakma.org, pc@manguebit.org, quic@lists.linux.dev, 
+	sd@queasysnail.net, steved@redhat.com, tfanelli@redhat.com, tom@talpey.com, 
+	xiyou.wangcong@gmail.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-syzbot has found a reproducer for the following issue on:
+On Thu, Sep 17, 2026 at 6:38=E2=80=AFAM Xin Long <lucien.xin@gmail.com> wro=
+te:
+>
+> On Wed, Sep 16, 2026 at 7:46=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.=
+com> wrote:
+> >
+> > From: Xin Long <lucien.xin@gmail.com>
+> > Date: Wed, 16 Sep 2026 14:08:22 -0400
+> > > > > +struct sock *quic_listen_sock_lookup(struct sk_buff *skb, union =
+quic_addr *sa,
+> > > > > +                                  union quic_addr *da, struct so=
+ck *usk,
+> > > > > +                                  struct quic_data *alpns)
+> > > > > +{
+> > > >
+> > > > [ ... ]
+> > > >
+> > > > > +out:
+> > > > > +     if (sk && sk->sk_reuseport)
+> > > > > +             sk =3D reuseport_select_sock(sk, quic_addr_hash(net=
+, da), skb, 1);
+> > > >
+> > > > [Severity: Medium]
+> > > > Should the hdr_len argument be 0 rather than 1 here?
+> > > >
+> > > > quic_udp_rcv() already did skb_pull(skb, sizeof(struct udphdr)) bef=
+ore
+> > > > quic_packet_rcv() is reached, so skb->data points at the QUIC paylo=
+ad, and
+> > > > reuseport_select_sock() documents hdr_len as how far the pointer mu=
+st advance
+> > > > to reach the payload.
+> > > >
+> > > > With a classic SO_ATTACH_REUSEPORT_CBPF program, run_bpf_filter() d=
+oes:
+> > > >
+> > > > net/core/sock_reuseport.c:
+> > > >         if (unlikely(!pskb_may_pull(skb, hdr_len)))
+> > > >                 return -EINVAL;
+> > > >         ...
+> > > >         pskb_pull(skb, hdr_len);
+> > > >         ...
+> > > >         __skb_push(skb, hdr_len);
+> > > >
+> > > > so the filter would see the datagram starting one byte into the QUI=
+C header:
+> > > > all its offsets are shifted and the first byte (form/fixed/type bit=
+s) is
+> > > > invisible, which can select the wrong socket in the reuseport group=
+.
+> > > >
+> > > > [ ... ]
+> > > >
+> > > True:
+> > >
+> > > BPF programs may need to access the QUIC header, so I will pass 0 to
+> > > reuseport_select_sock() to ensure the full QUIC packet is visible.
+> >
+> > Why do you use reuseport_select_sock() here ?
+>
+> Because QUIC socket supports SO_REUSEPORT and allows multiple sockets
+> listening on the same addr/port/ALPNs:
+>
+> https://github.com/lxin/quic/blob/main/modules/net/quic/socket.c#L724
 
-HEAD commit:    4982d3552a3b Merge tag 'sound-7.3-rc4' of git://git.kernel..
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-console output: https://syzkaller.appspot.com/x/log.txt?x=158afbf9580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=84649d3ff8d550cb
-dashboard link: https://syzkaller.appspot.com/bug?extid=adb0bf16414b8bb2d799
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13fa7bf9580000
+Okay, I was wondering how it was supposed to work without
+reuseport_add_sock() etc.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+adb0bf16414b8bb2d799@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-current_phy->suspended
-WARNING: drivers/net/ieee802154/mac802154_hwsim.c:266 at hwsim_hw_xmit+0xcbf/0x1540 drivers/net/ieee802154/mac802154_hwsim.c:266, CPU#0: syz-executor682/6038
-Modules linked in:
-CPU: 0 UID: 0 PID: 6038 Comm: syz-executor682 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:hwsim_hw_xmit+0xcbf/0x1540 drivers/net/ieee802154/mac802154_hwsim.c:266
-Code: 48 c7 c2 40 3f c0 8c be 52 03 00 00 48 c7 c7 a0 3f c0 8c c6 05 8f 23 c6 09 01 e8 7c 1b 80 fa e9 c6 f8 ff ff e8 52 5a a5 fa 90 <0f> 0b 90 e9 11 f4 ff ff e8 44 5a a5 fa e8 1f 0a 89 fa 31 ff 89 c5
-RSP: 0018:ffffc90003a0f650 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffff88802a808d20 RCX: 0000000000000202
-RDX: ffff8880295e8000 RSI: ffffffff8766c55e RDI: ffff8880295e8000
-RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000001 R12: ffffffff8766b8a0
-R13: 1ffff92000741ed4 R14: ffff88802a808720 R15: 0000000000000053
-FS:  00007f554300f6c0(0000) GS:ffff8880d5b59000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f554300eff8 CR3: 0000000022b9e000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- drv_xmit_async net/mac802154/driver-ops.h:16 [inline]
- ieee802154_tx.isra.0+0x29f/0x570 net/mac802154/tx.c:89
- ieee802154_subif_start_xmit+0xc8/0xf0 net/mac802154/tx.c:239
- __netdev_start_xmit include/linux/netdevice.h:5429 [inline]
- netdev_start_xmit include/linux/netdevice.h:5438 [inline]
- xmit_one net/core/dev.c:3937 [inline]
- dev_hard_start_xmit+0x121/0x760 net/core/dev.c:3953
- sch_direct_xmit+0x1b2/0xc70 net/sched/sch_generic.c:372
- qdisc_restart net/sched/sch_generic.c:437 [inline]
- __qdisc_run+0x52d/0x1b20 net/sched/sch_generic.c:445
- qdisc_run include/net/pkt_sched.h:121 [inline]
- qdisc_run include/net/pkt_sched.h:118 [inline]
- __dev_xmit_skb net/core/dev.c:4272 [inline]
- __dev_queue_xmit+0x18b9/0x4970 net/core/dev.c:4884
- dev_queue_xmit include/linux/netdevice.h:3461 [inline]
- dgram_sendmsg+0xa0d/0xf50 net/ieee802154/socket.c:689
- sock_sendmsg_nosec net/socket.c:800 [inline]
- __sock_sendmsg net/socket.c:815 [inline]
- __sys_sendto+0x48b/0x4e0 net/socket.c:2281
- __do_sys_sendto net/socket.c:2288 [inline]
- __se_sys_sendto net/socket.c:2284 [inline]
- __x64_sys_sendto+0xe0/0x1c0 net/socket.c:2284
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f554306749e
-Code: 08 0f 85 f5 e2 ff ff 49 89 fb 48 89 f0 48 89 d7 48 89 ce 4c 89 c2 4d 89 ca 4c 8b 44 24 08 4c 8b 4c 24 10 4c 89 5c 24 08 0f 05 <c3> 90 41 57 41 56 4d 89 c6 41 55 4d 89 cd 41 54 55 53 48 83 ec 08
-RSP: 002b:00007f554300f168 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 00007f554300f6c0 RCX: 00007f554306749e
-RDX: 0000000000000040 RSI: 00007f554300f1d0 RDI: 0000000000000004
-RBP: 0000000000000021 R08: 00007f55430e5b10 R09: 0000000000000014
-R10: 0000000000000000 R11: 0000000000000246 R12: ffffffffffffffd0
-R13: 000000000000000b R14: 00007ffdf0e50d30 R15: 00007ffdf0e50e18
- </TASK>
+reuseport_select_sock() should be moved to a later patch.
 
 
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+>
+> The client Initial packet can select the listening socket based on the
+> packet's source address and port, or by a BPF program that can inspect
+> the QUIC packet.
+>
+> Thanks.
