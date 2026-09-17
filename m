@@ -1,645 +1,234 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748234E4C25
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 18:52:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC993DD85E;
+	Thu, 17 Sep 2026 18:54:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789671152; cv=none; b=fNpCsRyUTyYnIeWZg72hDLFA/x49cH7rvswLrFagN9vdNaXVx37w+7snWAodSXdse8+b8oX/zhftIOGeAYWUmTj7QTQ7BGx3Q3sUsAZ+4bSCFtlhG4qnUiHzAWI2+VUR3z1ScYnIoAye9ajPMZIKkvuFa0lUUQH1wuWZf2A1MVw=
+	t=1789671281; cv=none; b=FPTrk3P/uX/0F9UXXecdaT6E3KlVYUpPToW5EzfIY9WNrIcqYij8DvMCcCvFDSU7Q0L0E/ApUv5YxMK+O6uqd9QH/wi0Ghp2+c+VX9/CmdjQ/cZRduQaTb/q3KnneI4l6SQ/nnKBa6ZiX8MMsqKV70QtRwzczsOxEScgxeZvFQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789671152; c=relaxed/simple;
-	bh=1hlNjyF8SXq8T2VEhZOinsSQXTDMM3SEtYXYjTKDS3g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pymRsjOKRUQmBsm68fwHxQJh90Wh0JXhuDiH1YI9BAmddqQO+vQ8/1DvuOdbumYDx+05B4kHita7dJsKb3jQb76baQT5Jvx1i9gL8AMFN/reGZf3fCn3Sl2sPfjNfL6yon2WP7sKL4+djnEFiyGTTK1N0vaRwb6w+/nRy01XLvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cPfte0Nu; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789671281; c=relaxed/simple;
+	bh=OP1o+RrmeyvU+HSJQ8IRj1SJPj8axc+6JLEBsxG9pOI=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=d6eqN87N5e1FkcFr5KuZPXlDvlJSp2uPklGwtHZY9HzPwuIhS2ep9/xZTNvh4XzAai33RqMxUeETZzYizndFj2gj6lt+0n+e36WlnWMtUGc1ngOTMttTYrkFRDDu9QsGL+ekS/6JBIGnov/dBGpWtJMZLmXs4/ANvcVAKayxApk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=VqYt8mPw; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cPfte0Nu"
-Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d747ec6188so8931535ad.3
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 11:52:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789671148; x=1790275948; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Dv3ZuFRjU/rlwi5dKwkijyUjNb5XS0/4Nz5RmIwxYkk=;
-        b=cPfte0Nu1L9SW6fwt/kf3OQd+qx28HGMZ6eZmbdBoXYGMZyng0l9y2I6Nf01jE54Ld
-         vWPKgaT4O0BI2c13D8Ae/P71fNlA1ZDRFgnliwYjk5iDBsr+hXjMWWDmU0yYordD0oK8
-         wcTkNUGxOfvyb2+ilGQgyRzOZtnd78CiyoO1Jm0pcMYSzcJ015J55Qes3onMMHtiByLu
-         La/mRP5ZIRka/0blRIVcAiUY4d0EpZwY0xUDNKGiZJKVH5yi3+1r7+w45rxDws8LTck7
-         xkqwpcaMVqDMASZ+qplwqn6h6wQWsEs2GtHrR9ln7dmeS4+uOlOXks4SgEMtND4xklJK
-         vJCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789671148; x=1790275948;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Dv3ZuFRjU/rlwi5dKwkijyUjNb5XS0/4Nz5RmIwxYkk=;
-        b=vmot+neQTgz6y4+jnTuNeruib3chBITJOQLL1drncwmuD8dMXJK7H5ZO4wk5nME4q0
-         CZHo8J/9+ERKl73hqCgLPl36KBfYNepfbxKmQJ95LNhiho15rPSBM1fH5bioNnGrSNIb
-         IQ1h5dY1wTyAGp4PTmfmWNS6S0vXNustJIKQCkHlG/vdaJKWAFbmteOeFG+HwNgAzw58
-         JYmF0s32ywALDKd/8KmWSdqKVeFXeN+zVs+LzUBn7jhWg5j8SSfmgLbWq7omNFPAjzTR
-         QKv21qLPcDvNO/GxuLEKSWzGHk3NuOhCNX4kChzwBZVAqcfUxI/Q4x7exLaObLLUP1Af
-         orjA==
-X-Gm-Message-State: AFuF++mCfGwWi3xr7i1IkSlyBgHHvzJk4XFUW51FzpXo7nWlYX7QxCLv
-	HfL26ZKiWFvrQdx5pvvLVHCTkTEhYGTs3DBF+cdNOy9A3DPgtnNGE0lkdppzuVTB
-X-Gm-Gg: AYBFou0tQLDX0ioBpItB6t0fkKErv8gPHBp5jpb7A0oNArXmzJxAaugDzVVRelqMabv
-	n2inCa7FPqVM3GZMe/VneBSYL9DupjiogoXkoM9nspBD93g05/sHnTJFFebMuO/vAAnEWuZBSPD
-	cfeE0uwnnVupMJWj17B+jhxXfASHQYFlOGQmFsgjykcSCmaK/sv/diykkCRmsYjNLcqXHacI/d0
-	nexHwaO43vacBBhwBBbR3bgsRNxa2yr9fifVxgTX7xdBx6btF3i3dJICRq434ZaHFO5znrtbBer
-	Poi14tnN7NsfT/VHRuvr4qVK0qTGHlwlksn2YcYkqL0oHRU8mdnBf/bq9b4QuPyVzWd9gwXthFU
-	3+dDrIyULHzq4fzhT7cAUOUxwAiTpGKtV764uKSefesxG6/vep6QLh4H8gaZfxQepVsMftLEtC5
-	6UGB5zJ1T4WgDJd4l2Y38K3Dz7iaFygESg/Fp1Zjd8Q158sPmC3zR8OgwXBVHc463On/Pi0la0O
-	s2ZKgf4LFZWLHpZPGN/MX6apQ==
-X-Received: by 2002:a17:902:ce8d:b0:2dd:ad74:ac30 with SMTP id d9443c01a7336-2ddb1baedf4mr2290305ad.25.1789671147971;
-        Thu, 17 Sep 2026 11:52:27 -0700 (PDT)
-Received: from d.home.yangfl.dn42 ([2a09:bac5:661a:1232::1d0:c5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd89f331b7sm31032655ad.82.2026.09.17.11.52.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 11:52:27 -0700 (PDT)
-From: David Yang <mmyangfl@gmail.com>
-To: netdev@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3 8/8] net: dsa: motorcomm: Add SerDes PCS
-Date: Fri, 18 Sep 2026 02:49:55 +0800
-Message-ID: <20260917185010.3189199-9-mmyangfl@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260917185010.3189199-1-mmyangfl@gmail.com>
-References: <20260917185010.3189199-1-mmyangfl@gmail.com>
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="VqYt8mPw"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=zAd9mOo2epPXqMF6KJpulztJE0NFhCZeoEFYB3U8NWo=; b=VqYt8mPw/GsN5Du//YN3WrhHBr
+	9PGQ4s+hy22N9tR329Nt8SsFB+Ixc+QprV5pTrowtHyBG861m5/lUmsERpKMRCVuoPLXm+uVhN55D
+	kv7TCbCJQOJEmSklSgZ2O51Cg0LA5gcA7W22eRoZ4QqQC5FUMvNp14ZkZPQawxz7JnXFTIhdukRoB
+	YdE4uIalucxB7+RYKPzvOodkaZ8/UXfi0TZ++9js3os35H3BUjWtFowpW36pJK7sEOiBE0dIaoQ/+
+	Hd4kduKYwpyWtIwChYuUmDfeMbkLvrBiH0tNkL81ouFic+4mNY45MIWju4tixkrK7YlCxgft1AK6j
+	MifDisjA==;
+Received: from sslproxy07.your-server.de ([78.47.199.104])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1x7HFi-0009rh-0x;
+	Thu, 17 Sep 2026 20:54:34 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy07.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1x7HFh-000HX2-03;
+	Thu, 17 Sep 2026 20:54:33 +0200
+Message-ID: <97695bef-507a-403a-84ae-c2e222b3dc65@iogearbox.net>
+Date: Thu, 17 Sep 2026 20:54:32 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] bpf: clear stale IPv4 options after LWT encapsulation
+From: Daniel Borkmann <daniel@iogearbox.net>
+To: Weiming Shi <bestswngs@gmail.com>, Alexei Starovoitov <ast@kernel.org>,
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
+ Emil Tsalapatis <emil@etsalapatis.com>,
+ Ihor Solodrai <ihor.solodrai@linux.dev>,
+ John Fastabend <john.fastabend@gmail.com>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, Peter Oskolkov <posk@google.com>,
+ Xiang Mei <xmei5@asu.edu>, stable@vger.kernel.org
+References: <20260916170406.1280954-2-bestswngs@gmail.com>
+ <48990076-414c-4196-99b9-86fce41b8054@iogearbox.net>
+Content-Language: en-US
+Autocrypt: addr=daniel@iogearbox.net; keydata=
+ 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
+In-Reply-To: <48990076-414c-4196-99b9-86fce41b8054@iogearbox.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28126/Thu Sep 17 08:24:16 2026)
 
-Support in-band negotiation of the SerDes ports.
+On 9/17/26 8:24 PM, Daniel Borkmann wrote:
+> On 9/16/26 7:04 PM, Weiming Shi wrote:
+>> bpf_lwt_push_ip_encap() rebases the network header after prepending an IP
+>> header, but leaves IPCB(skb)->opt describing the inner IPv4 header.  An
+>> ingress LWT route can consequently make an ICMP error interpret an
+>> inner-header byte as an option length and copy 255 bytes into 40 bytes of
+>> stack storage.  The trace decoded with scripts/decode_stacktrace.sh is:
+>>
+>>    BUG: KASAN: stack-out-of-bounds in __ip_options_echo
+>>    Write of size 255
+>>    Call Trace:
+>>     <IRQ>
+>>     __asan_memcpy (mm/kasan/shadow.c:106)
+>>     __ip_options_echo (net/ipv4/ip_options.c:96)
+>>     __icmp_send (net/ipv4/icmp.c:949)
+>>     ip_forward (net/ipv4/ip_forward.c:176)
+>>     lwtunnel_input (net/core/lwtunnel.c:465)
+>>     ip_rcv (net/ipv4/ip_input.c:612)
+>>     __netif_receive_skb_one_core (net/core/dev.c:6264)
+>>     process_backlog (net/core/dev.c:6728)
+>>     __napi_poll (net/core/dev.c:7787)
+>>     net_rx_action (net/core/dev.c:8007)
+>>     handle_softirqs (kernel/softirq.c:645)
+>>     do_softirq.part.0 (kernel/softirq.c:546)
+>>     </IRQ>
+>>     <TASK>
+>>     __local_bh_enable_ip (kernel/softirq.c:473)
+>>     __dev_queue_xmit (net/core/dev.c:4961)
+>>     packet_sendmsg (net/packet/af_packet.c:3143)
+>>     __sys_sendto (net/socket.c:2281)
+>>     __x64_sys_sendto (net/socket.c:2288)
+>>     do_syscall_64 (arch/x86/entry/syscall_64.c:84)
+>>     entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+>>     </TASK>
+>>
+>> A helper-only reset can be restored by bpf_prog_run_save_cb(), while a
+>> program without ctx->cb[] access can clone-redirect the skb before a
+>> return-only reset.  Track active LWT runs and their control-block family
+>> in the BPF network context.  When the control block is not BPF scratch
+>> space, save its original contents and reset it immediately so clones see
+>> the new-family layout.  After the program returns, restore that snapshot
+>> when the verdict continues through the original protocol callback, then
+>> invalidate the stale header metadata.  Verdicts that reroute or redirect
+>> keep the new-family layout.
+>>
+>> Preserve the state across nested runs and retain the ingress interface and
+>> L3-slave state when the protocol family changes.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 52f278774e79 ("bpf: implement BPF_LWT_ENCAP_IP mode in bpf_lwt_push_encap")
+>> Reported-by: Xiang Mei <xmei5@asu.edu>
+>> Assisted-by: LLM
+>> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+>> ---
+>> v2:
+>> - Save the incoming protocol control block for programs without ctx->cb[]
+>>    access.
+>> - Restore that snapshot before a verdict continues through the original
+>>    protocol callback, then invalidate the rebased header metadata.
+>> - Keep the eager new-family reset for clones and final reroute/redirect
+>>    consumers.
+>> - Add Cc: stable@vger.kernel.org.
+>> - Correct the patch author and reporter attribution.
+>> v1:
+>> - https://lore.kernel.org/bpf/20260915170147.3943392-2-bestswngs@gmail.com/
+> 
+> Hm, this is way too much fragile churn for a feature which I'm not sure is much
+> used (?). Can't we just save/restore the skb->cb when the BPF prog runs? Roughly
+> sth along these lines (untested) :
+> 
+> diff --git a/net/core/lwt_bpf.c b/net/core/lwt_bpf.c
+> index da49364ec63d..9cf04b44ecc1 100644
+> --- a/net/core/lwt_bpf.c
+> +++ b/net/core/lwt_bpf.c
+> @@ -36,10 +36,24 @@ static inline struct bpf_lwt *bpf_lwt_lwtunnel(struct lwtunnel_state *lwt)
+>   #define NO_REDIRECT false
+>   #define CAN_REDIRECT true
+> 
+> +static void bpf_lwt_reset_cb(struct sk_buff *skb)
+> +{
+> +    if (skb->protocol == htons(ETH_P_IP)) {
+> +        memset(IPCB(skb), 0, sizeof(*IPCB(skb)));
+> +        IPCB(skb)->iif = skb->skb_iif;
+> +    } else if (skb->protocol == htons(ETH_P_IPV6)) {
+> +        memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
+> +        IP6CB(skb)->iif = skb->skb_iif;
+> +        IP6CB(skb)->nhoff = offsetof(struct ipv6hdr, nexthdr);
+> +    }
+> +}
+> +
+>   static int run_lwt_bpf(struct sk_buff *skb, struct bpf_lwt_prog *lwt,
+>                  struct dst_entry *dst, bool can_redirect)
+>   {
+>       struct bpf_net_context __bpf_net_ctx, *bpf_net_ctx;
+> +    bool encap = skb->encapsulation;
+> +    u8 cb_saved[BPF_SKB_CB_LEN];
+>       int ret;
+> 
+>       /* Disabling BH is needed to protect per-CPU bpf_redirect_info between
+> @@ -48,7 +62,12 @@ static int run_lwt_bpf(struct sk_buff *skb, struct bpf_lwt_prog *lwt,
+>       local_bh_disable();
+>       bpf_net_ctx = bpf_net_ctx_set(&__bpf_net_ctx);
+>       bpf_compute_data_pointers(skb);
+> +
+> +    memcpy(cb_saved, bpf_skb_cb(skb), sizeof(cb_saved));
+>       ret = bpf_prog_run_save_cb(lwt->prog, skb);
+> +    memcpy(bpf_skb_cb(skb), cb_saved, sizeof(cb_saved));
 
-Signed-off-by: David Yang <mmyangfl@gmail.com>
----
- drivers/net/dsa/motorcomm/Makefile   |   1 +
- drivers/net/dsa/motorcomm/chip.c     |  83 +++++++---
- drivers/net/dsa/motorcomm/chip.h     |   6 +
- drivers/net/dsa/motorcomm/mdio_bus.c |  31 +++-
- drivers/net/dsa/motorcomm/mdio_bus.h |  15 ++
- drivers/net/dsa/motorcomm/pcs-921x.c | 235 +++++++++++++++++++++++++++
- drivers/net/dsa/motorcomm/pcs.h      |  13 ++
- 7 files changed, 355 insertions(+), 29 deletions(-)
- create mode 100644 drivers/net/dsa/motorcomm/pcs-921x.c
- create mode 100644 drivers/net/dsa/motorcomm/pcs.h
+... also needs BPF selftests obviously; dropping the memcpy and a closer look wrt
+freplace, whether we should reuse & propagate ->cb_access=1 also from there.
 
-diff --git a/drivers/net/dsa/motorcomm/Makefile b/drivers/net/dsa/motorcomm/Makefile
-index f7cce7eabbb8..1d2c1b3064c4 100644
---- a/drivers/net/dsa/motorcomm/Makefile
-+++ b/drivers/net/dsa/motorcomm/Makefile
-@@ -3,4 +3,5 @@ obj-$(CONFIG_NET_DSA_YT921X) += yt921x.o
- yt921x-objs := chip.o
- yt921x-$(CONFIG_NET_DSA_YT921X_LEDS) += leds.o
- yt921x-objs += mdio_bus.o
-+yt921x-objs += pcs-921x.o
- yt921x-objs += smi.o
-diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-index 491ba1edfa3c..530bea77ac70 100644
---- a/drivers/net/dsa/motorcomm/chip.c
-+++ b/drivers/net/dsa/motorcomm/chip.c
-@@ -28,6 +28,7 @@
- #include "chip.h"
- #include "leds.h"
- #include "mdio_bus.h"
-+#include "pcs.h"
- #include "smi.h"
- 
- struct yt921x_mib_desc {
-@@ -3511,6 +3512,10 @@ yt921x_port_up(struct yt921x_priv *priv, int port, unsigned int mode,
- 	if (ps == YT921X_SPEED_NUM)
- 		return -EINVAL;
- 
-+	mask = YT921X_PORT_SPEED_M | YT921X_PORT_TX_MAC_EN |
-+	       YT921X_PORT_RX_MAC_EN | YT921X_PORT_TX_PAUSE |
-+	       YT921X_PORT_RX_PAUSE | YT921X_PORT_DUPLEX_FULL |
-+	       YT921X_PORT_CTRL_LINK_AN;
- 	ctrl = YT921X_PORT_SPEED(ps);
- 	if (duplex == DUPLEX_FULL)
- 		ctrl |= YT921X_PORT_DUPLEX_FULL;
-@@ -3519,7 +3524,9 @@ yt921x_port_up(struct yt921x_priv *priv, int port, unsigned int mode,
- 	if (rx_pause)
- 		ctrl |= YT921X_PORT_RX_PAUSE;
- 	ctrl |= YT921X_PORT_RX_MAC_EN | YT921X_PORT_TX_MAC_EN;
--	res = yt921x_reg_write(priv, YT921X_PORTn_CTRL(port), ctrl);
-+	if (pp->serdes && pp->inband)
-+		ctrl |= YT921X_PORT_CTRL_LINK_AN;
-+	res = yt921x_reg_update_bits(priv, YT921X_PORTn_CTRL(port), mask, ctrl);
- 	if (res)
- 		return res;
- 
-@@ -3539,7 +3546,8 @@ yt921x_port_up(struct yt921x_priv *priv, int port, unsigned int mode,
- 		if (rx_pause)
- 			ctrl |= YT921X_SERDES_RX_PAUSE;
- 		mask |= YT921X_SERDES_LINK;
--		ctrl |= YT921X_SERDES_LINK;
-+		if (!pp->inband)
-+			ctrl |= YT921X_SERDES_LINK;
- 		res = yt921x_reg_update_bits(priv, YT921X_SERDESn(port),
- 					     mask, ctrl);
- 		if (res)
-@@ -3570,7 +3578,6 @@ yt921x_port_config(struct yt921x_priv *priv, int port, unsigned int mode,
- 	struct yt921x_port *pp = &priv->ports[port];
- 	struct device *dev = to_device(priv);
- 	u32 mask;
--	u32 ctrl;
- 	int res;
- 
- 	if (BIT(port) & info->internal_mask) {
-@@ -3598,28 +3605,6 @@ yt921x_port_config(struct yt921x_priv *priv, int port, unsigned int mode,
- 		if (res)
- 			return res;
- 
--		mask = YT921X_SERDES_MODE_M;
--		switch (interface) {
--		case PHY_INTERFACE_MODE_SGMII:
--			ctrl = YT921X_SERDES_MODE_SGMII;
--			break;
--		case PHY_INTERFACE_MODE_100BASEX:
--			ctrl = YT921X_SERDES_MODE_100BASEX;
--			break;
--		case PHY_INTERFACE_MODE_1000BASEX:
--			ctrl = YT921X_SERDES_MODE_1000BASEX;
--			break;
--		case PHY_INTERFACE_MODE_2500BASEX:
--			ctrl = YT921X_SERDES_MODE_2500BASEX;
--			break;
--		default:
--			return -EINVAL;
--		}
--		res = yt921x_reg_update_bits(priv, YT921X_SERDESn(port),
--					     mask, ctrl);
--		if (res)
--			return res;
--
- 		/* The order is quite arbitrary - we can't return to a safe
- 		 * state on IO errors.
- 		 */
-@@ -3637,6 +3622,29 @@ yt921x_port_config(struct yt921x_priv *priv, int port, unsigned int mode,
- 	return -EINVAL;
- }
- 
-+static struct phylink_pcs *
-+yt921x_phylink_mac_select_pcs(struct phylink_config *config,
-+			      phy_interface_t interface)
-+{
-+	struct dsa_port *dp = dsa_phylink_to_port(config);
-+	struct yt921x_priv *priv = to_yt921x_priv(dp->ds);
-+	const struct yt921x_info *info = priv->info;
-+	int port = dp->index;
-+
-+	if (!(BIT(port) & info->serdes_mask))
-+		return NULL;
-+
-+	switch (interface) {
-+	case PHY_INTERFACE_MODE_SGMII:
-+	case PHY_INTERFACE_MODE_100BASEX:
-+	case PHY_INTERFACE_MODE_1000BASEX:
-+	case PHY_INTERFACE_MODE_2500BASEX:
-+		return &priv->ports[port].pcs;
-+	default:
-+		return NULL;
-+	}
-+}
-+
- static void
- yt921x_phylink_mac_link_down(struct phylink_config *config, unsigned int mode,
- 			     phy_interface_t interface)
-@@ -4224,6 +4232,11 @@ static int yt921x_chip_setup(struct yt921x_priv *priv)
- 	if (res)
- 		return res;
- 
-+	res = yt921x_reg_clear_bits(priv, YT921X_SERDES_CTRL,
-+				    YT921X_SERDES_CTRL_TEST);
-+	if (res)
-+		return res;
-+
- 	return 0;
- }
- 
-@@ -4233,6 +4246,8 @@ static int yt921x_dsa_setup(struct dsa_switch *ds)
- 	struct device *dev = to_device(priv);
- 	struct device_node *np = dev->of_node;
- 	struct device_node *child;
-+	unsigned long mask;
-+	int port;
- 	int res;
- 
- 	mutex_lock(&priv->reg_lock);
-@@ -4266,6 +4281,23 @@ static int yt921x_dsa_setup(struct dsa_switch *ds)
- 		return -ENODEV;
- 	}
- 
-+	mask = priv->info->serdes_mask;
-+	for_each_set_bit(port, &mask, YT921X_PORT_NUM) {
-+		struct yt921x_port *pp = &priv->ports[port];
-+
-+		pp->pcs.ops = &yt921x_phylink_pcs_ops;
-+		pp->pcs.poll = true;
-+
-+		__set_bit(PHY_INTERFACE_MODE_SGMII,
-+			  pp->pcs.supported_interfaces);
-+		__set_bit(PHY_INTERFACE_MODE_100BASEX,
-+			  pp->pcs.supported_interfaces);
-+		__set_bit(PHY_INTERFACE_MODE_1000BASEX,
-+			  pp->pcs.supported_interfaces);
-+		__set_bit(PHY_INTERFACE_MODE_2500BASEX,
-+			  pp->pcs.supported_interfaces);
-+	}
-+
- 	mutex_lock(&priv->reg_lock);
- 	res = yt921x_chip_setup(priv);
- 	mutex_unlock(&priv->reg_lock);
-@@ -4283,6 +4315,7 @@ static int yt921x_dsa_setup(struct dsa_switch *ds)
- }
- 
- static const struct phylink_mac_ops yt921x_phylink_mac_ops = {
-+	.mac_select_pcs	= yt921x_phylink_mac_select_pcs,
- 	.mac_link_down	= yt921x_phylink_mac_link_down,
- 	.mac_link_up	= yt921x_phylink_mac_link_up,
- 	.mac_config	= yt921x_phylink_mac_config,
-diff --git a/drivers/net/dsa/motorcomm/chip.h b/drivers/net/dsa/motorcomm/chip.h
-index c1b5f29eb0fa..0cbb54834fff 100644
---- a/drivers/net/dsa/motorcomm/chip.h
-+++ b/drivers/net/dsa/motorcomm/chip.h
-@@ -910,6 +910,8 @@ struct yt921x_port {
- 
- 	/* SerDes in use */
- 	bool serdes:1;
-+	/* Link from in-band status (PHYLINK_PCS_NEG_INBAND) */
-+	bool inband:1;
- 	/* BR_HAIRPIN_MODE */
- 	bool hairpin:1;
- 	/* BR_ISOLATED */
-@@ -929,8 +931,12 @@ struct yt921x_port {
- 
- 	struct yt921x_led *leds[YT921X_LED_GROUP_NUM];
- #endif
-+
-+	struct phylink_pcs pcs;
- };
- 
-+#define pcs_to_yt921x_port(_pcs) container_of((_pcs), struct yt921x_port, pcs)
-+
- struct yt921x_reg_ops {
- 	int (*read)(void *context, u32 reg, u32 *valp);
- 	int (*write)(void *context, u32 reg, u32 val);
-diff --git a/drivers/net/dsa/motorcomm/mdio_bus.c b/drivers/net/dsa/motorcomm/mdio_bus.c
-index ba70343f3f33..1a3f3cc68275 100644
---- a/drivers/net/dsa/motorcomm/mdio_bus.c
-+++ b/drivers/net/dsa/motorcomm/mdio_bus.c
-@@ -19,8 +19,7 @@ static int yt921x_intif_wait(struct yt921x_priv *priv)
- 			       &val);
- }
- 
--static int
--yt921x_intif_read(struct yt921x_priv *priv, int port, int reg, u16 *valp)
-+int yt921x_intif_read(struct yt921x_priv *priv, int port, int reg, u16 *valp)
- {
- 	struct device *dev = to_device(priv);
- 	u32 mask;
-@@ -58,8 +57,7 @@ yt921x_intif_read(struct yt921x_priv *priv, int port, int reg, u16 *valp)
- 	return 0;
- }
- 
--static int
--yt921x_intif_write(struct yt921x_priv *priv, int port, int reg, u16 val)
-+int yt921x_intif_write(struct yt921x_priv *priv, int port, int reg, u16 val)
- {
- 	u32 mask;
- 	u32 ctrl;
-@@ -86,6 +84,31 @@ yt921x_intif_write(struct yt921x_priv *priv, int port, int reg, u16 val)
- 	return yt921x_intif_wait(priv);
- }
- 
-+int
-+yt921x_intif_modify_changed(struct yt921x_priv *priv, int port, int reg,
-+			    u16 mask, u16 val)
-+{
-+	int res;
-+	u16 v;
-+	u16 u;
-+
-+	res = yt921x_intif_read(priv, port, reg, &v);
-+	if (res)
-+		return res;
-+
-+	u = v;
-+	u &= ~mask;
-+	u |= val;
-+	if (u == v)
-+		return 0;
-+
-+	res = yt921x_intif_write(priv, port, reg, u);
-+	if (res)
-+		return res;
-+
-+	return 1;
-+}
-+
- static int yt921x_mbus_int_read(struct mii_bus *mbus, int port, int reg)
- {
- 	struct yt921x_priv *priv = mbus->priv;
-diff --git a/drivers/net/dsa/motorcomm/mdio_bus.h b/drivers/net/dsa/motorcomm/mdio_bus.h
-index ae5792b8da24..e79b725d435b 100644
---- a/drivers/net/dsa/motorcomm/mdio_bus.h
-+++ b/drivers/net/dsa/motorcomm/mdio_bus.h
-@@ -33,6 +33,21 @@
- 
- struct yt921x_priv;
- 
-+int yt921x_intif_read(struct yt921x_priv *priv, int port, int reg, u16 *valp);
-+int yt921x_intif_write(struct yt921x_priv *priv, int port, int reg, u16 val);
-+int yt921x_intif_modify_changed(struct yt921x_priv *priv, int port, int reg,
-+				u16 mask, u16 val);
-+
-+static inline int
-+yt921x_intif_modify(struct yt921x_priv *priv, int port, int reg, u16 mask,
-+		    u16 val)
-+{
-+	int res;
-+
-+	res = yt921x_intif_modify_changed(priv, port, reg, mask, val);
-+	return res >= 0 ? 0 : res;
-+}
-+
- int yt921x_mbus_int_init(struct yt921x_priv *priv, struct device_node *mnp);
- int yt921x_mbus_ext_init(struct yt921x_priv *priv, struct device_node *mnp);
- 
-diff --git a/drivers/net/dsa/motorcomm/pcs-921x.c b/drivers/net/dsa/motorcomm/pcs-921x.c
-new file mode 100644
-index 000000000000..dcf7397cd241
---- /dev/null
-+++ b/drivers/net/dsa/motorcomm/pcs-921x.c
-@@ -0,0 +1,235 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Copyright (c) 2026 David Yang
-+ */
-+
-+#include "chip.h"
-+#include "mdio_bus.h"
-+#include "pcs.h"
-+#include "smi.h"
-+
-+#define to_device(priv) ((priv)->ds.dev)
-+
-+static int
-+yt921x_serdes_config(struct yt921x_priv *priv, int port, unsigned int neg_mode,
-+		     phy_interface_t interface,
-+		     const unsigned long *advertising, bool permit_pause_to_mac)
-+{
-+	bool inband = neg_mode & PHYLINK_PCS_NEG_INBAND;
-+	struct yt921x_port *pp = &priv->ports[port];
-+	bool changed = false;
-+	u16 bmcr;
-+	u32 mask;
-+	u32 ctrl;
-+	u16 val;
-+	int adv;
-+	int res;
-+
-+	switch (interface) {
-+	case PHY_INTERFACE_MODE_SGMII:
-+		ctrl = YT921X_SERDES_MODE_SGMII;
-+		break;
-+	case PHY_INTERFACE_MODE_100BASEX:
-+		ctrl = YT921X_SERDES_MODE_100BASEX;
-+		break;
-+	case PHY_INTERFACE_MODE_1000BASEX:
-+		ctrl = YT921X_SERDES_MODE_1000BASEX;
-+		break;
-+	case PHY_INTERFACE_MODE_2500BASEX:
-+		ctrl = YT921X_SERDES_MODE_2500BASEX;
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	res = yt921x_reg_update_bits(priv, YT921X_SERDESn(port),
-+				     YT921X_SERDES_MODE_M, ctrl);
-+	if (res)
-+		return res;
-+
-+	mask = YT921X_PORT_CTRL_LINK_AN | YT921X_PORT_CTRL_PAUSE_AN;
-+	ctrl = 0;
-+	if (inband)
-+		ctrl |= YT921X_PORT_CTRL_LINK_AN;
-+	if (neg_mode == PHYLINK_PCS_NEG_INBAND_ENABLED && permit_pause_to_mac)
-+		ctrl |= YT921X_PORT_CTRL_PAUSE_AN;
-+	res = yt921x_reg_update_bits(priv, YT921X_PORTn_CTRL(port), mask, ctrl);
-+	if (res)
-+		return res;
-+
-+	if (inband) {
-+		res = yt921x_reg_clear_bits(priv, YT921X_SERDESn(port),
-+					    YT921X_SERDES_LINK);
-+		if (res)
-+			return res;
-+	}
-+
-+	adv = phylink_mii_c22_pcs_encode_advertisement(interface, advertising);
-+	if (adv >= 0) {
-+		res = yt921x_intif_modify_changed(priv, port, MII_ADVERTISE,
-+						  U16_MAX, adv);
-+		if (res < 0)
-+			return res;
-+
-+		changed = !!res;
-+	}
-+
-+	res = yt921x_intif_read(priv, port, MII_BMCR, &val);
-+	if (res)
-+		return res;
-+
-+	bmcr = val;
-+	if (neg_mode == PHYLINK_PCS_NEG_INBAND_ENABLED)
-+		bmcr |= BMCR_ANENABLE;
-+	else
-+		bmcr &= ~BMCR_ANENABLE;
-+
-+	/* If the ANENABLE bit was changed, the PHY will restart negotiation,
-+	 * so we don't need to flag a change to trigger its own restart.
-+	 */
-+	if (bmcr != val)
-+		changed = false;
-+
-+	bmcr &= ~BMCR_ISOLATE;
-+	res = yt921x_intif_write(priv, port, MII_BMCR, bmcr);
-+	if (res)
-+		return res;
-+
-+	pp->inband = inband;
-+	return changed;
-+}
-+
-+static unsigned int
-+yt921x_phylink_pcs_inband_caps(struct phylink_pcs *pcs,
-+			       phy_interface_t interface)
-+{
-+	return LINK_INBAND_DISABLE | LINK_INBAND_ENABLE;
-+}
-+
-+static void
-+yt921x_phylink_pcs_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
-+			     struct phylink_link_state *state)
-+{
-+	struct yt921x_port *pp = pcs_to_yt921x_port(pcs);
-+	struct yt921x_priv *priv = yt921x_port_to_priv(pp);
-+	struct device *dev = to_device(priv);
-+	int port = pp->index;
-+	u16 bmsr;
-+	u16 lpa;
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+
-+	res = yt921x_intif_read(priv, port, MII_BMSR, &bmsr);
-+	if (res)
-+		goto out;
-+
-+	res = yt921x_intif_read(priv, port, MII_LPA, &lpa);
-+
-+out:
-+	mutex_unlock(&priv->reg_lock);
-+
-+	if (res) {
-+		dev_err(dev, "Failed to %s PCS port %d: %i\n", "get state of",
-+			port, res);
-+		state->link = false;
-+		return;
-+	}
-+
-+	phylink_mii_c22_pcs_decode_state(state, neg_mode, bmsr, lpa);
-+}
-+
-+static void yt921x_phylink_pcs_an_restart(struct phylink_pcs *pcs)
-+{
-+	struct yt921x_port *pp = pcs_to_yt921x_port(pcs);
-+	struct yt921x_priv *priv = yt921x_port_to_priv(pp);
-+	struct device *dev = to_device(priv);
-+	int port = pp->index;
-+	u16 val;
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+
-+	res = yt921x_intif_read(priv, port, MII_BMCR, &val);
-+	if (res)
-+		goto end;
-+
-+	val |= BMCR_ANRESTART;
-+	res = yt921x_intif_write(priv, port, MII_BMCR, val);
-+
-+end:
-+	mutex_unlock(&priv->reg_lock);
-+
-+	if (res)
-+		dev_err(dev, "Failed to %s PCS port %d: %i\n", "restart",
-+			port, res);
-+}
-+
-+static void yt921x_phylink_pcs_disable(struct phylink_pcs *pcs)
-+{
-+	struct yt921x_port *pp = pcs_to_yt921x_port(pcs);
-+	struct yt921x_priv *priv = yt921x_port_to_priv(pp);
-+	struct device *dev = to_device(priv);
-+	int port = pp->index;
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+	res = yt921x_intif_modify(priv, port, MII_BMCR, BMCR_PDOWN, BMCR_PDOWN);
-+	mutex_unlock(&priv->reg_lock);
-+
-+	if (res)
-+		dev_err(dev, "Failed to %s PCS port %d: %i\n", "power down",
-+			port, res);
-+}
-+
-+static int yt921x_phylink_pcs_enable(struct phylink_pcs *pcs)
-+{
-+	struct yt921x_port *pp = pcs_to_yt921x_port(pcs);
-+	struct yt921x_priv *priv = yt921x_port_to_priv(pp);
-+	int port = pp->index;
-+	u16 val;
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+
-+	res = yt921x_intif_read(priv, port, MII_BMCR, &val);
-+	if (res)
-+		goto end;
-+
-+	val &= ~BMCR_PDOWN;
-+	val |= BMCR_ANRESTART;
-+	res = yt921x_intif_write(priv, port, MII_BMCR, val);
-+
-+end:
-+	mutex_unlock(&priv->reg_lock);
-+
-+	return res;
-+}
-+
-+static int
-+yt921x_phylink_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
-+			  phy_interface_t interface,
-+			  const unsigned long *advertising,
-+			  bool permit_pause_to_mac)
-+{
-+	struct yt921x_port *pp = pcs_to_yt921x_port(pcs);
-+	struct yt921x_priv *priv = yt921x_port_to_priv(pp);
-+	int port = pp->index;
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+	res = yt921x_serdes_config(priv, port, neg_mode, interface,
-+				   advertising, permit_pause_to_mac);
-+	mutex_unlock(&priv->reg_lock);
-+
-+	return res;
-+}
-+
-+const struct phylink_pcs_ops yt921x_phylink_pcs_ops = {
-+	.pcs_inband_caps	= yt921x_phylink_pcs_inband_caps,
-+	.pcs_get_state		= yt921x_phylink_pcs_get_state,
-+	.pcs_an_restart		= yt921x_phylink_pcs_an_restart,
-+	.pcs_disable		= yt921x_phylink_pcs_disable,
-+	.pcs_enable		= yt921x_phylink_pcs_enable,
-+	.pcs_config		= yt921x_phylink_pcs_config,
-+};
-diff --git a/drivers/net/dsa/motorcomm/pcs.h b/drivers/net/dsa/motorcomm/pcs.h
-new file mode 100644
-index 000000000000..42426558086a
---- /dev/null
-+++ b/drivers/net/dsa/motorcomm/pcs.h
-@@ -0,0 +1,13 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Copyright (c) 2026 David Yang
-+ */
-+
-+#ifndef _YT_PCS_H
-+#define _YT_PCS_H
-+
-+#include <linux/phylink.h>
-+
-+extern const struct phylink_pcs_ops yt921x_phylink_pcs_ops;
-+
-+#endif
--- 
-2.53.0
+> +    if (!encap && skb->encapsulation)
+> +        bpf_lwt_reset_cb(skb);
+> 
+>       switch (ret) {
+>       case BPF_OK:
 
