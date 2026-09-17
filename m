@@ -1,156 +1,158 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010007.outbound.protection.outlook.com [52.101.46.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa2-f17.google.com (mail-oa2-f17.google.com [74.125.231.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694184E5333
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 17:54:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789667673; cv=fail; b=cjdFHnWH9hlTeF32bMynShhhG6vGIVKGtHmkY5YZXQQh34X/ZcMZKFfNrtR4TsCyISIm/qjR8BZdV2NmIZs+YWKzwaN68YDBMtpykzcBioQNxus/esAs4fEuiEsKx7AuKq3gMLbAAEGUYU9RkCtyQbTow+zOjVXUYA1rZBJoFTI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789667673; c=relaxed/simple;
-	bh=HMPJ6p2srMaYJzkLylL0+sZ0iIInJhiDNe8ggy4ChHA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=fBMY46eLVja/e9VIlFu8Hne2AwWXlnSKb/dYXBaXWJIV8IbDZz7JXp7zCF5YjcPuoiYiKcRdPG0WrBNMekAEARMThlueiJvgHL9jUZhJwt69D6PvV3KtXRP5sHfaZ+qss3qIsHFiAuGBzVrLi1vns3br4vaK6e43Ky/AP9fZHLA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=JCgQPlDE; arc=fail smtp.client-ip=52.101.46.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0013F4F7CD7
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 17:55:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.81
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789667723; cv=none; b=WlXAhouYxgQVSTtKupirDZT6PFkxq7WqHRjOuCfxZMJW5o8hBGBPQlEFq2SGAU9cQLjSrQhp35SKmVHQ1U3R9CkT2VS4L97TGcsOS0pLJ3QFKxk58yDy5FwDxfzQfi30Z3PDPjwJRmgJPxTv2KJJKDEExhS6WKDDbwdaOTQ09hk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789667723; c=relaxed/simple;
+	bh=V3VlQ/ggAL7FMDjaee6fyKxwwR97SAVyTjtCuxfkY6c=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=EqqmGJ6clrs0DJpLOyeCDM6LMRZ4j/gZRhxUuuJ5g0VDIsYMiotFPBcyXoFyrPGKyVxGqo8Akm5T1JMa+Jjk6AXxzwQ2HCVSKoZ9HyRy+AZnWHqpp0pwSgdpFdDXnxnnn2Ao1g3n4KNeRIeRTrJ3FJEGWhGucTLAgTov8lu0QzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qnqiZVU1; arc=none smtp.client-ip=74.125.231.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="JCgQPlDE"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UA3zNv3TviPpAl22i/tzPwgZkgzoHrDKSPey9tSyyDcWTz7eeFH2ZKJvQ4A4ALj5tPRDgbUM0WfyAMpfhneZ30MXCYnmiNuwcKByy1UBpUWkbWAg0h5MocYoYw/9z9zLUYUNvZEYnBBhTox7YjaHetVy2O84kNR20k3WD21iZalA9PlXSuOeNta++mPCGDDk8xNt96URCZDoYExXsi3XROc9r/OEZb92sC/hCUw86eiwItOCHUB2tLQRN5zvPLXMAJjcPQ6LUdTUsVHGRkesTflVbO+dvWGMgniB0C8uIXtM5TiROOFjgDO7l26QkXpdQyawxiKhdm3EmnLaFh4AcA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hjWude0W83J2Ovp7kFmL4rouL3lRwloW/aysGhOnEh4=;
- b=aMx1C8+2mnLY5L5oo6zzVtxf53uQeGcITPnhE6b97x3wtSfyoS3sfjR0JxzcN9z1j5DNHnqrrrgQL1vkbwrNgKjR0n5bHD49lfs2oFqPbX/Gnz9DJClzmz98cN0blbOgd7y2hCq0iMDYhSlX3H1wfGnTs7p8RW1mhwaQ5h4CmHy7TasjugcxEC2nJJrgbRiIEeQCWpLVRUEeJHpYkgrDKI+RDQe7SJ3xSWyMBmsBxK/CBWNdi8Hi7Papt7OjIFjUk6bgNh9piMURmEz4Bs9caJctjTybkbScHN3a4YjYMhtJpE8ka22ZlTdJp/41W4AtDU+MY12iLjPuO4ygxRIixg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hjWude0W83J2Ovp7kFmL4rouL3lRwloW/aysGhOnEh4=;
- b=JCgQPlDEQVsDwdRKBPkygXBSeGgluuUwS4VbakW/JdAFnMmG3t8dCpkfre0htSMBY3ucKpN2xDdrtJmTKbVZbIifise7FIyK0bRxYBAhtRt/+j1zb6/gPkzr3GeC9i2TZR7QduRzI/nYUHeyRkqsHpbLkW2UY8m75L8oB/lJPftxQP3ZrVSnqCofV83X0AXEFsX/4JzJ4dFHytBnKKMOIUS9dj4H5ENru7YuiObPSkNkJzlfK8VKDuYTiYlsEnUSrP94QNlGnpTMkzxuhMQjaWLBEEi9EgrFI23AIpJEjSfunpgxDoO2fhvXVhjVjVN8r8GIN2gbGr4LOFBLU21Kwg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH1PR12MB9647.namprd12.prod.outlook.com (2603:10b6:610:2b0::10)
- by SJ2PR12MB9244.namprd12.prod.outlook.com (2603:10b6:a03:574::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Thu, 17 Sep
- 2026 17:54:24 +0000
-Received: from CH1PR12MB9647.namprd12.prod.outlook.com
- ([fe80::228c:766a:191d:77b2]) by CH1PR12MB9647.namprd12.prod.outlook.com
- ([fe80::228c:766a:191d:77b2%3]) with mapi id 15.21.0428.011; Thu, 17 Sep 2026
- 17:54:24 +0000
-Message-ID: <be27a1e3-6ed1-45ea-9158-479c3358f304@nvidia.com>
-Date: Thu, 17 Sep 2026 19:54:19 +0200
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [TEST] CX7 timeouts on reconfig w/ page pool failure injection
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Nimrod Oren <noren@nvidia.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-References: <20260804094518.53b56d24@kernel.org>
- <7caf12fd-f63b-46f0-a5bd-e9887cb25f9d@nvidia.com>
- <20260811080433.26f404dd@kernel.org>
- <8aa8c49b-736c-42b3-92d3-26bdfeb90a22@nvidia.com>
- <20260811103832.28e5c8d4@kernel.org>
- <2d2aab62-a4fe-48eb-94e6-c8a0ec910ee9@nvidia.com>
- <20260812095947.3d0e6ca6@kernel.org>
- <a0b4e051-546a-4950-8dba-03391bcded70@nvidia.com>
- <20260812154101.72b64936@kernel.org>
- <1c767f25-fa23-44aa-b8d7-b1374627fc9a@nvidia.com>
- <20260917094101.0115277f@kernel.org>
-Content-Language: en-US
-From: Dragos Tatulea <dtatulea@nvidia.com>
-In-Reply-To: <20260917094101.0115277f@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR3P281CA0099.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a1::16) To CH1PR12MB9647.namprd12.prod.outlook.com
- (2603:10b6:610:2b0::10)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qnqiZVU1"
+Received: by mail-oa2-f17.google.com with SMTP id 586e51a60fabf-466cc88a0d7so623343fac.2
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 10:55:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789667721; x=1790272521; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=rtt5XejF/bWF3GOuFvls4LbhkcGw1Hah+9I1v10tav4=;
+        b=qnqiZVU1xk2ci0JununmEKYH498dXr6yEVWpzQbyXyygkr+YPeNSI34rderpBDAaQ5
+         soZ2FITYXg9D9ENk+ijlqDQ5Je5hXT/jhmgNLlft1U8rd6TbaipRQRMNI8vEFWFL6FC6
+         xQTrFVEiruWbziLrrb36yEu638j+HIopMO0hp3xe8EHIbZLziGcGnju4g2gNxpOfDi03
+         wPjGBG3wiaNqfbW2UkqmjLht6FuS8xA08y9mnMLY+exkD7+jyCLLqywdqkx2kW+6I2Iu
+         UNJlCo6mL3Cs+qBSiZa5buBgK6xrUYDNJy7N9eaYMEHppW9Tu/rjPI25fke4txXO72I2
+         WdwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789667721; x=1790272521;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=rtt5XejF/bWF3GOuFvls4LbhkcGw1Hah+9I1v10tav4=;
+        b=yEDk+qlsYO8zmkHsdKrs495c/1eDZDncj9V2/hzjySXrKqyIu3X2Xu+38/Nb4RkeR6
+         7e3JaU6PJKgHNj3GkN+rIuDEPL8yCLZoV5w7RH2/V6VRCb6dt2Fu5bd7AitVtXVczE87
+         o6yipIdGgxjh+xcFn4ZuyEs+o/j/I8RuAJO+vLwASMvuk3F1+cqiP3BM/6e7BNyzaudH
+         T5Np8V9yHa04yFRBnUGkxsZhoP1ijMMwUodm5EF5GB/oHozBO5Bn1x9gJkqgPDRIkieP
+         Lu0TEP8njjqs1zWipgfJYcDSuDoXRpImojwHtWbi5sVocWYfHEHZl3TcEhBoHQL1G0lV
+         6XzQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwiCaHzpFvuz+0H/OPKI8tvdi8yw0008MblV5gTY/ALiJ2DLbnZ8Bh6APprU28abRI/C7tudjQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++njTMTLpOUz4z7/FeG8NCg59pq4YyT91GMt5G2pu4POdVWZ5g/1
+	pqImBV+tMtw+qrHl3Zg1R74T9jA+bOq07eeF2zy9WGU15j2ptyOixc6i
+X-Gm-Gg: AYBFou3BVCPkbvwTuSu9kfPkWriSzpyWyZqRo8/C6IZpxJZCMnMy5chPhuvqI11xRW9
+	Q/93GEQwa4ZhnyVGfPbaRkabh9glwk/w0narGCqBIqZgNww8fS+Zr194Ibu3UeCOJvOTiJWW5Fg
+	04cHqprsiCQGSIV1BJkCLdmIOCaoE8YQixveL17dw2m64fgofYEKa/J3eIB/6SOCkTC6Njyj77Q
+	Xb3NMnq27y8RVZKKZZ7ZmcTNQ8V2iw1vmM4QzN+mgFSXeywhYXaxQj2DZ8wZJE9MchtmOhmy6/e
+	ZR8TbbrFAswvip3ogSROUoW3rD8I8GQVSzwmif/QDqFNWc9sxn8pIF79J+v4xW2Uw5KJmGeeoz3
+	T8Zpgi2Nx5uzHrGtdZ0LzzMsHEimYulyuce//5b3EATVjlrOuHquUN7E4XGIJ3oXh+Vcm0IsiZK
+	Y5oRDJPgFh8B4YljXfaLWiRy5otqOC76e/bq+74/4fDPAuKNG2W8FP/r6+V1rQHu7yYfY9QSPXC
+	WMqN1+BpZidyjr2x6DIKs0HSOMjUYJxifiNb3/T1u2yh6OVYmw5XsyBjeLy2N3dOWaqwADQCFpd
+	ZI6jkRm/+PCEH2WY1PKkLLbxN5mEiR07rIDzWOCHvZxxjPwiWzjD1q2G8JT2Eymdkm2Es0Oa+KD
+	TtRx5+o/ZZewxF4iBbURj
+X-Received: by 2002:a05:6870:41d2:b0:475:a1ec:9613 with SMTP id 586e51a60fabf-48476c61b11mr7860909fac.21.1789667720572;
+        Thu, 17 Sep 2026 10:55:20 -0700 (PDT)
+Received: from [127.0.1.1] (174-29-1-49.hlrn.qwest.net. [174.29.1.49])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-486ab6c1f31sm578446fac.10.2026.09.17.10.55.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2026 10:55:20 -0700 (PDT)
+From: James Hilliard <james.hilliard1@gmail.com>
+Subject: [PATCH net-next v3 0/3] net: stmmac: add Allwinner H616 EMAC1
+ support
+Date: Thu, 17 Sep 2026 11:55:11 -0600
+Message-Id: <20260917-submit-h616-emac1-v1-v3-0-62cb8316e19b@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH1PR12MB9647:EE_|SJ2PR12MB9244:EE_
-X-MS-Office365-Filtering-Correlation-Id: 23b7596a-f9bf-426e-af65-08df14e4b54f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|376014|366016|6133799003|18002099003|22082099003|4143699003|10067099003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	+RsUES8V9ASt11rrOK5fWdrpS4O9sjGwGRxYbTGVeAsYH+rRWvtYTX2f8O+6aqG95Dj9AHaIHRlQ5abt+VE8o+nCTnxCHqH3IcuF76cQ6BZRNfXKtI59AXIAsQst2c+PToxLztEsaJfUZtq+1UZjETQNX0I1/xAfSaGXm22wGjXgruRnmgYXEPQDVeMMrqStkLy3w/paPEQHXd+pFSNBKRwV7eeaEC1VsHo1F7Cg/3awqwSOpf5MjokPsl6uNqlPBbILAzwdmfnZ94R/Q9aRNK9uknFmLvU4mxbP9kICqg6kbl5aSSRRru2YHGRU44+LZWlSo6LKVvoR3xExznIe6cSgm2/x3bnkBP2//Hkd14OOZhq04PLtizVYeW2A+rLOs4ZDkZq2zbU4TmOJUtk0DBrYbnMy3QuVt4dc025Zaze0D5zVxd8CpjrCGzqtseeFs4MY43Mvig0dnrk4+OVdrU6fCXeEpJVrck6MMLqGXVyYgh2N9ewD0xhAofRLOXfhw8AviKsej2YpILwwpcMseYYT4kibE9f/9d23JCUgcqzoOses2pCReLVuV+Az8ArERzHxDw2sd9rpq88AUwf/ksivKG1MkBTdYStv/DAf9M8P+coQ1wEti6MtTKvXGsf3+PPs8VKLeQMag3foeCHsuR1GLGncgwitFpfLCfluHCc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH1PR12MB9647.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(366016)(6133799003)(18002099003)(22082099003)(4143699003)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?STB5Q0hreEpxOU5GbHlwZGFHZ0E3SEZaNGpZLzFCZEQ3c3ZLeVRaNzdoSTlM?=
- =?utf-8?B?V0d0a1VtekxhNDIycW5RaVpHai9DL3RCQ1pRN1ozb3VlU0dEQkV2d3BHZUZN?=
- =?utf-8?B?SWd2VWNJckpCRnR6OTBBcmUrMnRROTZ3ZnM1ck9QSmZONkNPUUxjdmE3OGxJ?=
- =?utf-8?B?ZFVqdzFOVW40RmtOMXVMYWRTa1BhUXQ2RUR1QTREbUkrZzNDZ0YvRXY5dm42?=
- =?utf-8?B?VHBzSERyQzBuRmhwdFM3MURFa04yTFR6UHJNMk9NWE82WkJGKzlDZHU5WEtn?=
- =?utf-8?B?dEhMcURFUUdWS3ZaT01YYkZhejlJbm56WGtYN0hLSFg1bnVJWk5vN0hUR0Nu?=
- =?utf-8?B?c09QanRqNS9DdzRPSkhDKzBQYVBwODRwU21FaVVrZjFScEc1WlU4cTQ3SWFa?=
- =?utf-8?B?ZHNyYVI4RWRNTWNJN0FNL3oxTXI5ai9nankzUXhaOU42ei9JQmFxeEdwZ1RZ?=
- =?utf-8?B?WnJwL21YRTQ2SDVqREFyTUp1dmJlQlhSQ2gvMWRpeE8zNVZ0UVpMTTIyamM5?=
- =?utf-8?B?YTJ1ZjZrdmhsbXBzZkIveG85Z2RYV3FIbTFKTFhmYjVHbitNYXhvQUhBOHVY?=
- =?utf-8?B?VXh4aSt2eGFkMkMxODJKNWR3b1dySktTMWFmUFFCTWZqSzc1VmJTMVZGcThV?=
- =?utf-8?B?V2FscmdMVFMxVXo2V3NSWHJWVFZVREZFbHZTWU9tWHVkYUlGSkoxdEdXNjdF?=
- =?utf-8?B?MVBwM25Rbzc3UWcyRGIrZEdGZXFBcFAyMUN3aTkzeVNvcGlUZlhjdm9COWdI?=
- =?utf-8?B?azNkK3UwQjkyVUZWOE92R0RDbm9VNU1TQ3RZRFExdnc1RFRDRDZLdnFVeEdp?=
- =?utf-8?B?Y1p1QlJrV0EydEpMZW92NFJSMXJ4c0xOZks2UWtpNlBrQTZkUVlwaVNGanFE?=
- =?utf-8?B?WWdCUU5zWDJYdnVBQ2c2YlFyT1NmaTJPWW1iTExLSmhVTWR1TFVMRFBTd21j?=
- =?utf-8?B?TVRYcU8xOTRha09lUkZTdDhRdzIrbXR6cXZxc28zL3MrZjdJR1E3ZnVHK1VN?=
- =?utf-8?B?bUUvaExyZndzOGhWQ1IrT2tWRlhkMGhsSmpaOGRVMWFqbC9NK3UrWUV2MGRt?=
- =?utf-8?B?Z0RZYUpCdlN1QUJiS3gyWE5WbWloUFVpb0ZoNzVvYjEyS2NGVkxqYVpzb0hT?=
- =?utf-8?B?eXhGWVRrSExjMUhhRGUxYmQ2QmFQZldLMjZHZHptSFMrWFhFSk5OalhHRk5O?=
- =?utf-8?B?SkJIMmFmK1RRNjZtbGorSzJHSlJ1ZytsNDRLbWt1amFQSXNrbDQySmlJT2VD?=
- =?utf-8?B?N2pNbVora3p0MTg5R3pra2F6QXpldWM3VS9xcGVhMFRGcWY0R21FR1Y3VTVp?=
- =?utf-8?B?OHU3MW5CN1JFY0tHdm9mUHRERlQ5NXIxa3BlWFhaQlJienRUVXk2eE1YYXZu?=
- =?utf-8?B?QTZhM0hiSUNnWmE4Snh2NlZ0K1RBZXQwWTBtNkNmU0ZyMkR0MzcxRzErK29t?=
- =?utf-8?B?Lys1OHZ3cm90NExadkluRitGQmc0NFVrbkwzT2ZzeHhKV3NTVkVlSUF6d3c4?=
- =?utf-8?B?V0ExTXRPQUVOVWRaVHRMTjBLditqQklqVUg3dThiaGV3d0FnU1UvakhzZVZR?=
- =?utf-8?B?K2xlc0RTM2ZwQWZvdHVLY3J2Z2tHTVRBbVJEaG9QVWZBQmFQeWhRdWlzdXNs?=
- =?utf-8?B?UDFNeVlGWWpiT29DL2Nnc0dmYzAxcHVGdlpRS29GNk1aUFRiVWR6bkFhWWlj?=
- =?utf-8?B?YVA2T05GYisxZDgzcXRiNHJqcmhReWNLTmJoSEpZSnY5N21sWGQzSWRCc01w?=
- =?utf-8?B?eGtkcy9UTHBlaWJWSlJJZHhpVHJTWjNiVkJXcmg1MjhKUisxUHRSeE93bktj?=
- =?utf-8?B?ZzdFa2IxMUtRTlRmZWFlelI2TXJKbzIzZWhKekw1eGFPYnBKZEZiemlISGhv?=
- =?utf-8?B?LzY4TVEwRWh1OUt1dCtGbHJ2NDVuNlR4THBxc1h3VHoyOUU1eHhYOVRzNE1t?=
- =?utf-8?B?ZStJcDBTd0hRalcrWjYwRVZZWmtmM1NKc2hxZHlUOHU4VHEzUE95bnd4Ynl3?=
- =?utf-8?B?K2J0cHVpemVPbDhjNzlTQmtzdm1mWU9VU3FIM1BSVmU0K2NaeHJ6N3dTdU1Z?=
- =?utf-8?B?MmJWbm5vTnF4ZGs5ZDJzNk1aWTVkWDI1U2FmbnR0b0pKRVJhR1gwZkJpMW1Q?=
- =?utf-8?B?ZXJrdXVOUk50OHJZZmFBN0lkNEJqS2dZaGE1VVRhTVlkeFFZcXNEOHVxMGVa?=
- =?utf-8?B?OXBKZ0ZmSU1QV2czK2ZUankxK0Zyb2V4RUw0NmlRb1lRYTZ4U3B0V0orLzZk?=
- =?utf-8?B?TlpSMTJQTlJmQmdZNnhrajBBMXJSMHpsZy9lK1VabHk5MkI4Z2hjcTAzWE1o?=
- =?utf-8?B?UHorNGJjM3ZYajJzUlJpYllMRjVucTAyb051R0ZwOHlabnJsdkx2QT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 23b7596a-f9bf-426e-af65-08df14e4b54f
-X-MS-Exchange-CrossTenant-AuthSource: CH1PR12MB9647.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 17:54:24.0433
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QcPlRjrtRivyv6fUzA5vdbNOOtIhWCbkwX9puyrcF8UTW5SlPGVJZxP3Yc/yvISKWs/PJazzZFer7z7gWdu1ig==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9244
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/42Oyw6CMBBFf4V0bU1fILjyP4yLtgxQI8W0tcEQ/
+ t1SXbhwYTKbm5l7zizIgzPg0bFYkINovJlsCnxXID1I2wM2bcqIEVaRhgrsH2o0AQ8VrTCMUlM
+ cKaaCHwivBZNKoVS9O+jMnLFnZCFgC3NAl/cmEa6gw0bdbgfjw+Se+YNIc+MjK3/L0hBMm7IFo
+ hTtannqR2luez2NWRHZPxCWIJwxxRkIAqr5hqzr+gK92Q3iGQEAAA==
+X-Change-ID: 20260914-submit-h616-emac1-v1-143703842abb
+To: Richard Genoud <richard.genoud@bootlin.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+ Jose Abreu <joabreu@synopsys.com>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc: Maxime Ripard <mripard@kernel.org>, 
+ Alastair D'Silva <alastair@d-silva.org>, netdev@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ James Hilliard <james.hilliard1@gmail.com>
+X-Mailer: b4 0.15.2
 
+The H616 secondary EMAC supports RMII at 10/100 Mbps and uses a separate
+system-control clock register at offset 0x34. Add its binding and a
+sun8i stmmac variant using that register. A distinct compatible without
+an older fallback prevents the driver from using EMAC0's clock register.
 
+EMAC1 connects internally to the co-packaged AC200 or AC300 EPHY and has
+no external PHY pins. Leave PHY initialization to the PHY driver instead
+of using the H3 internal-PHY controls. The RMII-only variant does not
+expose the RGMII clock-delay properties.
 
-On 17.09.26 18:41, Jakub Kicinski wrote:
-> Hi!
-> 
-> Sorry to re-heat an old thread but FWIW I enabled HW-GRO recently,
-> to get the zero-copy tests to work, finally(?) And it increased
-> the reconfig time by ~2x :(
-Yes this is a known issue: each ZC ndo queue cycle triggers setup and
-teardown of all queues. We want to improve that eventually.
- 
-I think in this particular case it is due to ncdevmem which takes half
-of the queues during probe.
+First move the MAC software reset from probe to the DMA reset callback,
+after PHY initialization. This lets the MAC and its MDIO bus remain
+registered when the PHY driver or one of its suppliers is not ready yet.
+Keep the separate H3 MDIO-mux reset sequence unchanged.
 
-Thanks,
-Dragos
+The AC200/AC300 EPHY driver and package bindings are already in
+net-next. This series separates the H616 EMAC1 MAC driver and binding
+support from the earlier combined series. PWM, MFD and device-tree
+enablement are being handled separately.
+
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+---
+Changes in v3:
+- Add a prerequisite fix moving the MAC software reset to the DMA reset
+  callback, after PHY initialization, so delayed module loading and
+  deferred PHY probes do not tear down the MAC and its MDIO bus.
+- Preserve the H3 MDIO-mux reset and propagate hardware-reset failures
+  through the normal stmmac hardware-setup error path.
+- Add Alastair D'Silva to Cc and rebase onto current net-next.
+- Link to v2: https://patch.msgid.link/20260915-submit-h616-emac1-v1-v2-0-322b32e40eb9@gmail.com
+
+Changes in v2:
+- Drop EMAC1 TX/RX clock-delay property support and keep the existing
+  RGMII-only delay descriptions unchanged, as requested by Maxime Ripard.
+- Clarify that EMAC1 connects internally to a co-packaged PHY, not an
+  external PHY or the H3-style internal-PHY controls.
+- Rebase onto current net-next.
+- Link to v1: https://patch.msgid.link/20260915-submit-h616-emac1-v1-v1-0-195de0bb1f8a@gmail.com
+
+---
+James Hilliard (3):
+      net: stmmac: sun8i: reset the MAC after PHY initialization
+      dt-bindings: net: allwinner: add H616 EMAC1
+      net: stmmac: sun8i: add support for Allwinner H616 EMAC1
+
+ .../bindings/net/allwinner,sun8i-a83t-emac.yaml    | 13 +++++
+ .../devicetree/bindings/net/snps,dwmac.yaml        |  2 +
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c  | 66 +++++++++++++---------
+ 3 files changed, 55 insertions(+), 26 deletions(-)
+---
+base-commit: 26ee8cd69d46a14b37ba5e512084fe80d730127a
+change-id: 20260914-submit-h616-emac1-v1-143703842abb
+
+Best regards,
+--  
+James Hilliard <james.hilliard1@gmail.com>
+
