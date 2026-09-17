@@ -1,73 +1,118 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B225F483BF8
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 21:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C70B400DE8;
+	Thu, 17 Sep 2026 21:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789679724; cv=none; b=qaLfljaZ13Ij8Te3Mqa6hkBGEPLOD92OLS5hESnjTIXIZiZ3+6Dlb2EbQ+Q6QBcx2M3IuDHdtV/p5VWK2SAWWcE2ADd0eibnJym5FY6Ed0IwSiA7zLye7hVJLJzJdICc1p8NCg125zZMbNmkZLSzRugYcJEVWjBmzdSOIfLQ/IA=
+	t=1789679775; cv=none; b=dk/wanf5OHvhA35+lgGIGoLQcNrxz8eChIUenAR6zjKlzaJXmVJP4trlc3/WkP0COIFV+H+yEjOU2kU3sCpWXLn84yHxFzWV2xNuhGIR4SgLc90CN3lz+gT8D5Vv35Bcc1Zh5y2Aar9ST0kZMvxt4OEoz78hLmREwTyfn1cYQLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789679724; c=relaxed/simple;
-	bh=ojkgX1nspCMPdymsx+evHfxf1O3aHgw+gXlsdj87X6U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qHbZN7kEFeYpQDMoA2cNkOixg7lMiUnM1K8bJ1HJIRtniabu1D0k3U9xyltnnmoDMuzQGdo/Y4dVt/5dRbapzMaV/q+1g61wk9ZE5EOIkDvFMG6EAUD15TGGzJqXEzF9ngaWysRJE3E13661l5qJtstpha+4goOHZOAavRXqtBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VZ+1NesM; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789679775; c=relaxed/simple;
+	bh=hpFcFaJzqru2JXdgMfr1/g1V1NYDhtgHkXHKQpXWWm8=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=YAif2Z0FDNrdf7u5HUpe/Eg3q549l2Qe4D7tQRLTTuqjmjyqPXUt42neSbEyX4dUgGWg8yGk8fdK1JRGDVUpT6NlXf7XqzWcks4XCGPGc8b3WRHhDpG5nAeoMk7CFs4xecMsP97m5O24I2UZ8YIfTSoy7XT2fMTF1aWOCpnLeho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TiD+1OtQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VZ+1NesM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A7F1F00898
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 21:15:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TiD+1OtQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A4F1F000FF;
+	Thu, 17 Sep 2026 21:16:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789679723;
-	bh=K90pTk13k05ePY/n1kZ8tY0YMwNaVlZEhLkDT7Q1q2U=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=VZ+1NesMej6r2LCg9BBVBSc8avCCOnwAZsb4TxhoXvMPVMTTyUPuQaWzFKtsH/UZj
-	 7FwYW9uuaiR6+v3t46LgsXi3QGIQ7JpxBJZZj5Ag1dBhlvfAUajEpezllITmMOfa9R
-	 ytDzal12HKJbVHR1Cltar/KEUy/GAjVvDFcpPXaqAhJRm54xJ+K85OR5JCXpDWSoBp
-	 p/r6kBp72+aHVHy83cR9kdy/1n5ITAm/onawJ6Wy5Ubih0wUfRA5gmfyCz9JGA1flh
-	 nhdP1iZxAyOd3RtDMhR07mlk0fmpSirzEni9u+XGCKGjjAlhm2JUsrg8uxOPxOJeDo
-	 XBO5dMnZedJfg==
-Received: by mail-lf2-f13.google.com with SMTP id 2adb3069b0e04-5b88dc3bc02so55663e87.1
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 14:15:23 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBw4gfwMLaAeI9IzrC0Dp7xWBnPti/QzLTZ5rofWMIjIiMNPJO3RIQUhTblsE+K1uxmQMfI9ixw=@vger.kernel.org
-X-Gm-Message-State: AFuF++kE86eC7TVAQfnjSUAO9Zdgb3CL3sBrMUGWhv1e9u4mpRHemBEt
-	8aUH1JkDAZXSr5s43zo2xub9cDpX/hXNnnw/w3y6taiPGYrgPXpdhjHKlHXnZNbBm3lmEcjRGG/
-	MqBZSKuKmBmMBl4qIDTbkbfiiVEgL6RY=
-X-Received: by 2002:a05:6512:31c2:b0:5ae:b91d:b2ec with SMTP id
- 2adb3069b0e04-5b8c18137ebmr53644e87.3.1789679722005; Thu, 17 Sep 2026
- 14:15:22 -0700 (PDT)
+	s=k20260515; t=1789679772;
+	bh=WC+7rsLj4fYl82XgvSqRMlxe1PP22x0bb+mbKZXjHWU=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=TiD+1OtQwYm+pRvtFLKAZDZ2XqmG+V8V+/VhGroahRs79TPotpVSnqcIKZDcEQswC
+	 U3UPR59XD7P4PKcrc59c3XUnASe4hx8pxBhsI6aqVut2ZWOIK8KPzIGIfxOF0CMJD4
+	 thd+ovNN70h41IDRUf9RklmkHjcMbPj5N+lrXLvhh0Qy8OWW+RD0TB216DrAvy/E15
+	 WjCfmBvPuOdo+oIsS096zB/X+RePaSffCYWL15m/8vXB8erDTUXCvP0cy0CRztjkGL
+	 CxQCrGZFrITUTMsT/BsbV98pPOTk+zpEVyUDwOVZMvLgi8Irdn9Lj3NpN5Wkp0rdxG
+	 XLHGnsiuGE6kA==
+Content-Type: multipart/mixed; boundary="===============3478063305945732436=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260916-ks8995-to-ksz8-v15-1-8825ff5fd4be@kernel.org> <178965134577.22033.16045801715665480170@kernel.org>
-In-Reply-To: <178965134577.22033.16045801715665480170@kernel.org>
-From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 17 Sep 2026 23:15:08 +0200
-X-Gmail-Original-Message-ID: <CAD++jLn+Ap3E18C_N0cmn4W+-gyNMh2qioijS8EBcyzYsP=W-w@mail.gmail.com>
-X-Gm-Features: AcwNN1UzTAYPKQLw7ECwF_lD00TrsbMLJtzSjQJXu2i_h7_bzAZUxDUmLcoOJY0
-Message-ID: <CAD++jLn+Ap3E18C_N0cmn4W+-gyNMh2qioijS8EBcyzYsP=W-w@mail.gmail.com>
-Subject: Re: [PATCH net-next v15 1/4] dt-bindings: net: dsa: microchip: Add KSZ8995XA
-To: netdev-bot+sashiko@kernel.org
-Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch, 
-	olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	marex@denx.de, horms@kernel.org, linux@armlinux.org.uk, nb@tipi-net.de, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-Id: <86dea9c47b45beb40c970a6365549f6013993d7b4b4b26c92ee7c4ecedf21dbc@mail.kernel.org>
+In-Reply-To: <20260917200542.3689605-4-ameryhung@gmail.com>
+References: <20260917200542.3689605-4-ameryhung@gmail.com>
+Subject: Re: [PATCH bpf-next v4 03/15] bpf: Add bpf_struct_ops accessor helpers
+From: bot+bpf-ci@kernel.org
+To: ameryhung@gmail.com,bpf@vger.kernel.org
+Cc: netdev@vger.kernel.org,alexei.starovoitov@gmail.com,andrii@kernel.org,daniel@iogearbox.net,eddyz87@gmail.com,memxor@gmail.com,martin.lau@kernel.org,shakeel.butt@linux.dev,roman.gushchin@linux.dev,kuniyu@google.com,kerneljasonxing@gmail.com,ameryhung@gmail.com,kernel-team@meta.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Thu, 17 Sep 2026 21:16:11 +0000 (UTC)
 
-On Thu, Sep 17, 2026 at 3:22=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
-te:
+--===============3478063305945732436==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 0 =C2=B7 Low: 1
+> diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+> index 1198404885c86..90ab467d25a27 100644
+> --- a/include/linux/bpf.h
+> +++ b/include/linux/bpf.h
+> @@ -2290,6 +2290,11 @@ u32 bpf_struct_ops_id(const void *kdata);
+>  int bpf_struct_ops_for_each_prog(const void *kdata,
+>  				 int (*cb)(struct bpf_prog *prog, void *data),
+>  				 void *data);
+> +void *bpf_struct_ops_map_kdata(struct bpf_map *map);
+> +void *bpf_struct_ops_map_cfi_stubs(struct bpf_map *map);
+> +bool bpf_struct_ops_valid_to_reg(struct bpf_map *map);
+> +int bpf_struct_ops_link_update_check(struct bpf_map *new_map, struct bpf_map *old_map,
+> +				     struct bpf_map *expected_old_map);
 >
-> - [Low] Concern (validated as a FALSE POSITIVE, retained only because
->   requires_validation=3Dtrue): the new compatible `microchip,ksz8995xa`=
-=E2=80=A6
+>  #ifdef CONFIG_NET
+>  /* Define it here to avoid the use of forward declaration */
+> @@ -2354,6 +2359,28 @@ static inline void bpf_map_struct_ops_info_fill(struct bpf_map_info *info, struc
+>  static inline void bpf_struct_ops_desc_release(struct bpf_struct_ops_desc *st_ops_desc)
+>  {
+>  }
+> +static inline u32 bpf_struct_ops_id(void *kdata)
+                                          ^^^^
 
-OK so a non-issue, that's an OK then I guess.
+Does this stub match the real prototype? The declaration at line 2290 above
+has:
 
-Yours,
-Linus Walleij
+  u32 bpf_struct_ops_id(const void *kdata);
+
+and the definition in kernel/bpf/bpf_struct_ops.c also carries the const
+qualifier. The four other stubs added in this hunk (bpf_struct_ops_map_kdata,
+bpf_struct_ops_map_cfi_stubs, bpf_struct_ops_valid_to_reg,
+bpf_struct_ops_link_update_check) match their prototypes exactly.
+
+When CONFIG_BPF_JIT is disabled, a caller passing const void * would see a
+-Wdiscarded-qualifiers warning (an error under CONFIG_WERROR).
+
+> +{
+> +	return 0;
+> +}
+> +static inline void *bpf_struct_ops_map_kdata(struct bpf_map *map)
+> +{
+> +	return NULL;
+> +}
+> +static inline void *bpf_struct_ops_map_cfi_stubs(struct bpf_map *map)
+> +{
+> +	return NULL;
+> +}
+> +static inline bool bpf_struct_ops_valid_to_reg(struct bpf_map *map)
+> +{
+> +	return false;
+> +}
+> +static inline int bpf_struct_ops_link_update_check(struct bpf_map *new_map,
+> +						   struct bpf_map *old_map,
+> +						   struct bpf_map *expected_old_map)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+>
+>  #endif
+
+[ ... ]
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/35271288839
+--===============3478063305945732436==--
