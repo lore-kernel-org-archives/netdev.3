@@ -1,119 +1,145 @@
-Received: from mail-oi2-f43.google.com (mail-oi2-f43.google.com [74.125.231.235])
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA524E432D
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 12:10:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B81148E0FC
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 12:13:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789647068; cv=none; b=RZFSGWDBrSovsHtMC8WQ/nlfvzWvBLLR3fhX83cwPR1IZN/kHHyvFygBfGHZaY+M2RuleyX1drTvMr8ZnsP/eleUcdPXlNdvnbj1JwBKEe7Y2k6fvPgXcPt/WFuhDsHPSNQadaJuLxU2omTXZtta6eiGdghZf6InEbc/ASu/GVE=
+	t=1789647197; cv=none; b=bT9B6IfJQbyFfsYy0cXXaNy+RnPSI4K/AY4PzIj4MsJWCR+f1uoKr4LXiFwlRICzfiN2kVWBgHHeM2gZGSg+PN8PoDmy/wequRJ8BGUO40Lw6Eyw9qgeXYmrzatxxolZMzpychyIZahjHMkLebkjP1RErdtQhkFjUpaN5/zU0PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789647068; c=relaxed/simple;
-	bh=2IuuBesuhtQABZX5aTgcPIV5cqFrtbm6oW8Rke4nfe0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dRMdF6+GVXYfmHwjD5HuKUgxui920dm1ZYqMNWmxmaI2rb4LzRHRK6tuzFeIyYPX5ihYGH3UqQ+bLEFsmmWk1XXYomft6ZOOVrBXwwE6GwO1XV5dV/lq/nKH7PrJZ1GIhCV2mxwVBmf4MODxLGDL3pX0ohpyZpx2G1Tt5XlcTLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ieee.org; spf=pass smtp.mailfrom=ieee.org; dkim=pass (1024-bit key) header.d=ieee.org header.i=@ieee.org header.b=KGZi5e8S; arc=none smtp.client-ip=74.125.231.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ieee.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ieee.org
+	s=arc-20240116; t=1789647197; c=relaxed/simple;
+	bh=MeFrqAQYQIVbUicP9V8M34hZDEv+igpvOZgFQMA9wWk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cvum7ONN35qQYDnILAJgjuSDPr1jWmULJksFffS2LhCUcNiraYk0PtMkBCt/OJzO1zLxyQtF0rAeGcAWS5D3WZLk1iPWQ9vh0P93Ci/gK/cJLi6PUORNruJ5sakWIyxyONAVrXtgUt8rsk0h53irJVnyzzGU7J9zNUvkvvxel/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hldM+NdY; arc=none smtp.client-ip=74.125.225.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ieee.org header.i=@ieee.org header.b="KGZi5e8S"
-Received: by mail-oi2-f43.google.com with SMTP id 46e09a7af769-7fcb425fc2bso483110a34.3
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 05:10:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hldM+NdY"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-4843c3ea1f6so388008f8f.0
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 05:13:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ieee.org; s=google; t=1789647049; x=1790251849; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HHax/jJrt/1XwwtW9NMv6p1y2gNa0xD70FHoF7NK73g=;
-        b=KGZi5e8Srbkk19d0xhNeSKueOlytHXJn2Mnb1IgZJcFBE63RE7LSz5Zq1kSQjuS1qg
-         h5n3EU2zFAEv+PLOPQnr4ff9LN33FG6GUXiLB5TpEz3QATMvIF9l8MFFE93aD2DHHfGj
-         x3G1ckFmdbMIUdluJFQvViAKg8mohr5QEmxOc=
+        d=gmail.com; s=20251104; t=1789647189; x=1790251989; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=GuXqc4H5dE+MDL7nEDkrFd3PYvzEZhNj1KGCmYesUCs=;
+        b=hldM+NdYBLI0o/EhICZGfzfijLBESqtB0wOlWYxnuDGTxVPwmkBpTpCXZp3zsCAlbW
+         TDl/9Dg4ZyVn5bZVMtxx9n1d7HG7hy5GeAiOe/fW6uLcoYfWCFIZeMVFKf9TGsOFJQnP
+         0GKfBaigFnwqg3Opb1o5YAwoaKbydsPniUJ6syVn8mvLFRG3kSPJbMh6rN//zrSHApMr
+         ltf0qWQ+XWsy3QphoThzBnvKcLLNkutwOwNgYjUldXa5TprYYkXK3EcOwm0eibcUgjMZ
+         iu1E2OObvcKj3K7VshB+Rof3+j/ATQQldBBPUi+KLOZEyZdusLK05qxZ2zg+P2uMl8/2
+         3OVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789647049; x=1790251849;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1789647189; x=1790251989;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=HHax/jJrt/1XwwtW9NMv6p1y2gNa0xD70FHoF7NK73g=;
-        b=lhNnP1Cw6VhQcgsAXXe3LucT/gZ5Ufx2rPCIlIOipIIvkAlaFS9AjAjWrlW6rjS0wI
-         Aq3FkCwqH2IRceEyVP9W7MqyMDOWHdWiaiN6sZex8sg2ShOsqNMW+iEZE6CBmR/n6rzc
-         lTnKz3IUyABNeW9ZDHS0syIjK7QWEhn2K/GPh9D5gOjzmfP7pBLbWtIuNLeCCeGi+57A
-         2gSYQC57nqleRoC0S8Zz8m0kpdaHawcUGZWWs4qdo0e0O4RW7mlPJSnxnO3cniLOWyuM
-         mP29iYboWO+JxGTN3xgqQ1dPCcyJtdrtCIJ6WIlT8eUzQzLiZx44/JXpgqVb3l2F2U9m
-         w+Vw==
-X-Forwarded-Encrypted: i=1; AKwUvBzeVFHheviRsxZPttweljPWhZjyzHl+lzwRTbhztV8avAg5mok3Bj5U34HMvqCeT9ABrpz28PQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++lzu9uicfFO735QomSAhAD6e8aVfMeShevGW5rB37LijwMEPeiH
-	cMOOdBf+SWxl5p46g9/cJPcSpmv9tCJM3wz+X8bsNQVyFfkF/CaKHoGFzgGqsx2MX/sUS6+5iWP
-	hVhHEGQ==
-X-Gm-Gg: AYBFou2BvOSNxAZWrU+WMBA4M+1UeteRaZCbHAJWJjV4k1JjfhqBG1Mp3RQlypIcRu8
-	u/admjoWRI4bUWY84ER2DJwJzhZsZ0Kcci3+BjK8CwMBvyr52mHaf641jzolnEs92ClDuqI8STB
-	RdzH0WLpDOEmuRcC9N5UG6JaQlLvX7bgy0XHazQTSdAGuTHwWKLMzlFIHdqYDq0IifLDVGP3qSN
-	BA3t278udXjSaD270fZaGsd7pfvCT4TfSF83hJpa2GsF2ExtldGZe+ja1NQZv4oEOkiaOWh/jJC
-	HLyZHekkRnuAUXjly9DXIcjAGv9JvPGoabc4P8Q6p2NUbXYhxq+5k8TjrhdWTW8B8cInI1GgVOd
-	6fXWEfaVP28ZVuYqa//xr823uC+YoJ/BMUmRc0BcDYMBh+PxWgC8/WVdYy9++75zBkvFuBPS+wV
-	HLL422rtwgmtnswlSY6wpCTFwQ5+RXZIwdVgeCq+iyDw7k7CEUcAw4cTT8oBy+S7dVAg==
-X-Received: by 2002:a05:6830:640c:b0:7fa:5c49:5258 with SMTP id 46e09a7af769-80b2eb61acdmr7602954a34.31.1789647049145;
-        Thu, 17 Sep 2026 05:10:49 -0700 (PDT)
-Received: from [172.22.22.28] ([73.62.185.64])
-        by smtp.googlemail.com with ESMTPSA id 46e09a7af769-80c466a2e6fsm2510405a34.14.2026.09.17.05.10.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Sep 2026 05:10:48 -0700 (PDT)
-Message-ID: <7509f005-709d-46d5-8554-b9d2fd0cd218@ieee.org>
-Date: Thu, 17 Sep 2026 07:10:47 -0500
+        bh=GuXqc4H5dE+MDL7nEDkrFd3PYvzEZhNj1KGCmYesUCs=;
+        b=yFVfcDBytmyFZo9a6ygF5xVzCaTO/U7CsqUAPFnTegoRZphhyUDl+rzP25l1gT1iLI
+         4ocJoVOe8/wVsBYeSUv2e57Nf28n4QWBxoB+JCwd7xPwQrd/VRW8tFOQYn9myGno94KT
+         rBJuMpjTWvw+J8vxdr2AsEBSoFpF3hWbAAqxyvPDMeSQwO34XhqdulMc2tsDZ3N390YO
+         /AIjzQdkVnCJIZyHKri418pxy1puRKpIFxQSXJXSpGLfqcLjjVTo6Zd6VHBY/d8WKq2R
+         Nl07mT9vp85Plzfdo2373UNa35ipNSRAxLxaJhSDBEXVONpUBr0OyEV0PhWTVRvwi1KE
+         7NDA==
+X-Forwarded-Encrypted: i=1; AKwUvBybLzeTna3lPpcNal+unrDWC1pIYWD78vcgEu0O4dxAV/8lAILdZtFkMO08cxgVFqxbakW3o1U=@vger.kernel.org
+X-Gm-Message-State: AFuF++l3gf79tYtcK57TrOQoejnIlPbKD2TuetRTkRIUh6bxFYQoeKDB
+	KFIq7IMlgn160qSkOG5zlj0xeW3sNtVSHU/Sp6ZGCLOjE2gg1IhbQ9he
+X-Gm-Gg: AYBFou1DlAwvwXYwCE2Z/2DgcwLwoXo+PUpkC2L5vv/y5JbhIZTwu3JiiwD1Gi+Z9+Y
+	o9EVjJ0lKz+Nic5LiEYS47gZVVWZExU/ol3VbwTGkJ+xBUX2wgL/PM+0uVG+tL+k+wQmt3rlauJ
+	cJBQAgaOSypZjCkrEISWv4SBzetXNNqaXuz2JXkRoy3ypB9xxvOj5sGMaXpx0cXSsvn1/8DhAAD
+	FDWILaJMreuMbtQjQ6JQAbvMhTJTe0qsc5xQyx3CLg1mG8G7n6CxjdWJnY2Ru7MvdoKVJ/VVphU
+	E8nKv+ZMg4lNG9D2KSFaTXfzeZTCqSZiqoKW2sD7ibYIBDvha/DwNcGDcg7lFve6yFVPLCXzbfo
+	6eWqZPmOYBTjiqKWcMhW4urh/gfGx5jsN4Ecb9O8sAT4dBkhv6lVOlZk9oKIe1R64RdJnClKIv9
+	VPbnteUEJtwZdb5eUYAmLZStsT157sKkQpaEaCIxz5zLWH7gwbFxDq+esamdgl5IjQ7zOAQ9Oo6
+	POGvKQd3U5a+XqN2g55ozBpdLkAB/fa+Obsj5t1
+X-Received: by 2002:a05:600c:1986:b0:49c:fa20:cc04 with SMTP id 5b1f17b1804b1-49eb732e404mr79422515e9.27.1789647188967;
+        Thu, 17 Sep 2026 05:13:08 -0700 (PDT)
+Received: from fedora-tap.advaoptical.com ([82.166.23.19])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fbd204c1asm70146675e9.4.2026.09.17.05.13.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2026 05:13:08 -0700 (PDT)
+From: Sagi Maimon <maimon.sagi@gmail.com>
+To: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Sagi Maimon <maimon.sagi@gmail.com>
+Subject: [PATCH net] net: axienet: restart the TX queue after a DMA error reset
+Date: Thu, 17 Sep 2026 15:13:06 +0300
+Message-ID: <20260917121306.23499-1-maimon.sagi@gmail.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: ipa: Fix runtime PM reference leak in ipa_remove()
-To: Wentao Liang <vulab@iscas.ac.cn>, andrew+netdev@lunn.ch
-Cc: davem@davemloft.net, edumazet@google.com, elder@kernel.org,
- kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- pabeni@redhat.com, stable@vger.kernel.org
-References: <20260917115115.2149796-1-vulab@iscas.ac.cn>
-Content-Language: en-US
-From: Alex Elder <elder@ieee.org>
-In-Reply-To: <20260917115115.2149796-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/17/26 6:51 AM, Wentao Liang wrote:
-> ipa_remove() takes a runtime PM reference with pm_runtime_get_sync() and
-> is supposed to release it at the out_power_put label. If the modem fails
-> to stop, the function returns early and never drops that reference, so
-> the device usage counter stays elevated forever. Release the reference
-> before returning.
-> 
-> Fixes: cdf2e9419dd9 ("soc: qcom: ipa: main code")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
->   drivers/net/ipa/ipa_main.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/net/ipa/ipa_main.c b/drivers/net/ipa/ipa_main.c
-> index 788dd99af2a4..aab38fea91c6 100644
-> --- a/drivers/net/ipa/ipa_main.c
-> +++ b/drivers/net/ipa/ipa_main.c
-> @@ -975,6 +975,7 @@ static void ipa_remove(struct platform_device *pdev)
->   			 */
->   			dev_err(dev, "Failed to stop modem (%pe), leaking resources\n",
->   				ERR_PTR(ret));
-> +			pm_runtime_put_noidle(dev);
->   			return;
->   		}
->   
+axienet_dma_err_handler() resets the DMA engine, frees every TX
+descriptor and sets lp->tx_bd_ci and lp->tx_bd_tail back to 0, but it
+never restarts the transmit queue.
 
-This issue has already been fixed.  See:
-   6b9eaa61ff2df net: ipa: balance runtime PM reference on remove error
+If the queue was stopped by axienet_start_xmit() because the ring was
+full - __QUEUE_STATE_DRV_XOFF - it stays stopped.  The only
+queue-state clearing the handler does is netdev_reset_queue(), which
+touches __QUEUE_STATE_STACK_XOFF and does nothing at all when
+CONFIG_BQL is disabled.  The remaining wake in axienet_tx_poll() is
+reached only when axienet_free_tx_chain() returns a non-zero packet
+count, which cannot happen after the handler has cleared the status
+word of every descriptor, and the wake in axienet_start_xmit() cannot
+run while the queue is stopped.
 
-How did you find this problem?  that commit indicates a static
-analysis checker was used.  If you benefited from any tools like
-that you should probably explain that.
+The transmit timestamp is not refreshed either, so on a kernel with a
+TX timeout handler the watchdog condition stays true and the reset can
+be retried indefinitely.  axienet_device_reset(), the driver's other
+reset path, already calls netif_trans_update() for this reason.
 
-Thanks.
+Wake the queue and refresh the timestamp at the end of the handler.
+The descriptor ring has just been reinitialised at that point, so it is
+ready to accept transmits.
 
-					-Alex
+Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
+Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
+---
+Compile-tested only; the board I found this on is not available to me
+for about a month.  The BQL/STACK_XOFF case was exercised on hardware on
+2026-08-26 and did recover, which is why the gap went unnoticed - see the
+discussion on the TX timeout patch.  The DRV_XOFF case is reasoned from
+the code, not measured.
+
+axienet_dma_err_handler() also tears down the TX ring without excluding
+axienet_start_xmit().  That is a separate pre-existing problem and needs
+a separate patch; I would rather send it once I can test it.
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 782f903d318f..b6440c06f260 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -2778,6 +2778,15 @@ static void axienet_dma_err_handler(struct work_struct *work)
+ 	napi_enable(&lp->napi_rx);
+ 	napi_enable(&lp->napi_tx);
+ 	axienet_setoptions(ndev, lp->options);
++
++	/* The ring is empty again, so let the stack transmit.  The queue may
++	 * have been stopped by axienet_start_xmit(); netdev_reset_queue()
++	 * above clears only __QUEUE_STATE_STACK_XOFF, and nothing at all
++	 * without CONFIG_BQL.  Refresh the transmit timestamp first, or the
++	 * watchdog fires again on the next tick.
++	 */
++	netif_trans_update(ndev);
++	netif_wake_queue(ndev);
+ }
+ 
+ /**
+-- 
+2.47.0
 
