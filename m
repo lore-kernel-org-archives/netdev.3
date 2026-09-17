@@ -1,67 +1,67 @@
-Received: from mail-oa2-f35.google.com (mail-oa2-f35.google.com [74.125.231.99])
+Received: from mail-oa2-f34.google.com (mail-oa2-f34.google.com [74.125.231.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5344A33F6
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 22:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06590248881
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 22:45:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789685142; cv=none; b=PsPpx/qAFqwfbr8HKzEKlv9k2YgV9RqFQemGApEvBKNTJd3IInEbrtK/ZL9nLZxACkKzXJsN6IlahqGdtwDn7qyWCh2lVUmHf+hVGrRoxu8WFFa6VJ489JWTg29wANYhgbLOpDgDnidZ1gpAECcJ4t0y0l/72pzOXWKvKX7fbWo=
+	t=1789685149; cv=none; b=AngBAVY57XvAfyrkY2Kbp0NldklV7FUYQaL9JVQ14pWe98hnWhBeIp6rjE3LNxY9nAc30Rxoy+ujW2RfT4h5PdY9mxAAcpRAnO58vLJkxTsCe2GjS5RaACEHfx02VaRrGNgn3wJ3k9S9fiXHQFgf6J+eYzCtiKMrQd48p4xx0Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789685142; c=relaxed/simple;
-	bh=zzRo565KQ7+wLrCBU86/yHtYwUloqXK7QvurHoZ+wTg=;
+	s=arc-20240116; t=1789685149; c=relaxed/simple;
+	bh=B5DN+eGGTY8dL7H7lJNO1wrDusvbctciuRDTujptsWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eN6Gap5aEA0BJzfCnEsTsAgLferIGYcfeb17n3Mzbl0jgttTLLRnrrTEyDMJw7sc59YuyurYJI+Vh7hM0UvIZcoEISKF9OxVKES4jdwe4O7MLqv5jVt3Ka++KTtghiM4GAfuWjygjo92PKlUprkudAc65tYZsjOq38SoQIAGY3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=pass smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=FG8Cci4J; arc=none smtp.client-ip=74.125.231.99
+	 MIME-Version; b=aZRD0JRJgDZc1TImfL5hJs+VijZmb0An/F9Lk5wdh6MUr5hQEE6z992PubQYpWyGWK4WMCO5GUl6euiV2ku/FzEhnQMS9nhme9PdZku6WGI0vMtc9tuuZEQEY9pfuljQXxaQyJj5ahbftTWzMS+VxAfUW4mPvtqkhWsUhlYU5m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=pass smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=Xj5iBGAM; arc=none smtp.client-ip=74.125.231.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="FG8Cci4J"
-Received: by mail-oa2-f35.google.com with SMTP id 586e51a60fabf-4693691fc81so119507fac.3
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 15:45:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="Xj5iBGAM"
+Received: by mail-oa2-f34.google.com with SMTP id 586e51a60fabf-466ccde2ad9so161631fac.1
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 15:45:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1789685138; x=1790289938; darn=vger.kernel.org;
+        d=purestorage.com; s=google2022; t=1789685145; x=1790289945; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=UOOiiBZ4P4FBgvVdSz/6BojdFn7u/ToWn57MgqQCV3Y=;
-        b=FG8Cci4JfwwRiBGzGzDTZ8US/jQ1BH2/gMsKwaZq8hG6H7vrI7RA9nJ+vzmtLdNXr1
-         48Na+BMQm8ivr4toYwOO+LGlPbA0JlrnyoZ1WHrkbX9gJYE2jkZ9sUZ0jDweFg0Zsb1d
-         f5s5NjsZcEuFQZ6Jo8C0EN4yETQjIvZ9ziNtXK9VsNW0wvApJz+YsOu5zpcWsGbajhPH
-         cz/NXx81sqM6iodjRbpjDj/uziBARIHffr8c4l+yZtpl3NyaMLBD6FjSXkDHLC2RGiLX
-         7DzvoIJ+61Gb5+6/7XH1uPfjLi6G9aIWeFHqgIXMeynjuZN0DHxTKhWHNBXkhFkdbPwN
-         lozQ==
+        bh=978dASIfIhQu1Ol7j5JKz97rGSQGc2WM2h0wAtRRXjw=;
+        b=Xj5iBGAMCwYO7HiMDymna/ep+ylHqM304xaXuxMl1LISlKxuqO7fAXiQae0fQU7K4j
+         ykxYRwN+o38MnoxZJKgcVzsKPCw4GLMOyoWdX02ftvMvEzlGyAozl22BdXLN8Y5LE3cR
+         RHOe8acuF2CBP5jA2sVlBaPPDk3eQM9EUDf4GQ6gpuzjQSBbrcUe8ZAJyG/jc2WGg+20
+         sE0OV6B6J8UrAuswe7wQDBEL+TEQYB07+/p5dLC+cacBSVdBWOsjWIgfEg9OEV+twyfI
+         Fd71eY3X9zBUBetMNs65bCHlG7L++WudPYFcRlh4x0ijZ9LjzfJ1Exws+5mfTnM+e7oA
+         h9sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789685138; x=1790289938;
+        d=1e100.net; s=20260707; t=1789685145; x=1790289945;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UOOiiBZ4P4FBgvVdSz/6BojdFn7u/ToWn57MgqQCV3Y=;
-        b=j9L1E45kDgjq3OnfaJ/E0CoFu5yXAekNmNT9FqZmHF5SlDEmDE5SGIjtlkd9BZbPOS
-         O2qi924r2/FVF4ktsaVOlke3d1IXuhY9qnBJjwOa6b1EEDFzOT1YfcczIijKTHsWKVmg
-         5U6nQGg+ZHUjeN2hXztcq2koNCqVpSqXby1dmTwoNJfcmL0YQn5o9cyXaoFv49Y/HkMG
-         cCsu4OILtUviwz5ySq49L5YGsPVgquxtawY74UIm3t47ANNG5AYw2b57eTU5ZS+UXqU3
-         cr463k9ilvurQvA5dLHiVIw8Za/TBnJYX+wh7Fg8Osb0TR5Qd7lnKHUnAdj929XIM8vC
-         wNHA==
-X-Gm-Message-State: AFuF++mmauV9hKhkZ1ZXeMNs4wHmnhi4JES+8Ialfapu4VAICuBoXsxb
-	AZnz2qmHByGx26JlZcCmC6i0Rg+FMkX1XvDtuZBY3IgWTHDtlmV0UbMvIxUwNE7oOWaliRi4T91
-	NWTB5gSOYOZrHlWC7M2EAm/VPyqUk+oo4eLGdQYquWQ164eMMEfap+XUTLJtdgaBerYS2I720MV
-	GVPDfTX2jVsEi5av74BV32/d4VgxOouA275vH/od10F7rcwXo=
-X-Gm-Gg: AYBFou3DnBBYySQFBTWcM86an48jgsVIjd7Oj1wZ1HI9D7plyZ3fIEYF1rfCzClQHh+
-	zL5CKWPPKbjzE3+mYBUX32AXFsPJSXdNldiiCku8/vYDobquKIwwrQwn3pnFxEJW4LIaCMgbnfE
-	BqI2hxG312pTaLHFxqHjRjUSW0OTj3LxkGuMjGxtlSc3x/aLUPWDhuOKeS7jCRK/DCjTFA1HUP0
-	F+yaf93B91HlcnQQ86Hk2vz3LIyZ2tkdLbbnjiTjGomBqQIewqkaIWCgcfta8Ig8KdUccQM0iI6
-	PqO5iUbYUQmfAvhDRrQR7BI+hqOmm8VmmkIl3ugf4QOjcd35HkcoKsMV1IaZG18UWfTbRqaTeni
-	+gTyWQ5RjFZeQee460bKjyb1hXA2P/ZSjcZ+qhADWr4fet/BqBiECRjGGjk7hQDj+QRqzQgydNb
-	sB9f3i/2wI+OdVjmTsSMdaxAoJrKDs/94SDCFXA57tgpN6rGGNfkDEwPB4756FEVMHYQMTnBw9l
-	dGR+vSNTIWIIIbl71PHnkdeXGv7LTaCSOPzSrFlk/c5AkvUcYR+blsqlqPg/e+Nc03xr0yUJ5/I
-	9LI5Z8gGCE9+qFFBAHd8NXjq/E8+K9pJLnRya82TyJgtTS14+fgq4cdSqfBmEV8v+lM//V6FtZ0
-	asAhpZZiYxd0WEN7DZg==
-X-Received: by 2002:a05:6870:4409:b0:475:a1ec:9622 with SMTP id 586e51a60fabf-486e79508cfmr591011fac.36.1789685138106;
-        Thu, 17 Sep 2026 15:45:38 -0700 (PDT)
+        bh=978dASIfIhQu1Ol7j5JKz97rGSQGc2WM2h0wAtRRXjw=;
+        b=gaox+VsBI68B+uIROQVEAk1WMW/MrRglV2VdY2fGvACtre35VuQYLrHLSc7kKNXT83
+         3XiCMbW7nZCB0UmM0RfSyUC+btqhuN33HRnQCnXqU9D1nH79v0irnGv19ZK0ZmNTNWfU
+         Zllq9dsd4EV83VpP8hcReH0EcmINE9livGbkI9m0RigqEXviZ6fcAkjx2lHPlm94EeAp
+         YDlKeY8KA+ZoeOVvQxy1JdzhESX+fgpZr2Z4rkrAFFkdvAV6GV/ZAqOTnH8iM/fQo/nK
+         oNOVvkrFSeosbSQa/eGLhwO4qClpYrj1Y6JOusVFPoDsZx/15JEFMvbfaQoVnStVbEcs
+         YECw==
+X-Gm-Message-State: AFuF++nUzxI7I4lDRvVy0FSdoH30Ci4Izak4pedduOaHbaRhNcUbztd4
+	6p/wAOPdEBDga1N/Ad30cKHIh4fQll/6B6G1XR2A8lD53KmMQlAVXQ7YnhHING7cC92jSkwZb7T
+	oE16SBHXvzw5YcPUQjAgwIZkRHqc8LpF+UpNKB0fTnbV0YRlEI2/ME8jdMQll2GCmDEeELFV3bL
+	ZIWF0nInMWwwmzZPI13Cwmv4wGCLs/6Xr81IS59adTMiV/tCs=
+X-Gm-Gg: AYBFou1AJd8481YBLNDuLPH3PkpX7MqY5RdMpgpYClDYJgGdqamAZY9Uosk6IV/YcjB
+	JY7fTbQtj1W94qaU0B7V3nA/8wqx0jbRMhA7NnmyaTFRcB3v4J2QG5TABi2AqdSgCvllYaF1WDT
+	XZZu5kxW31A2+KXIUodZBmx3xlC5SBRreXHs8Cr/ldIANSEJPH5Dbvr4I+phopBDzoMlxh4wGGz
+	tFdmVIWQ4qb2vGJnXSfYMxIgJzwP8iGoQ/NzlooF/HNrMyWD8V4NPk+AHHp7TYc/G6HHEh4x+hk
+	3tDyoN3gS7cePXunhAEhzRw/Udj7BMYMwgqlM73voGLwceDxOZ+eVQThkEEIBE6bxqEae/q97qF
+	Bc0MZzKqqKWLJtpBDY+dd4I9i6d1VEeTSdxA7Pfgtze6PkH7B6R2zVeasAEoSXaYi2Gn+Nnu6W2
+	JGFwVL8OgYMI8J22KN+KHWCKnrTzMehhUoRTZy4Kk+SsQ4blWZGakowBkmcm3lD8O7PafO2T/xD
+	iX/sJndPP+wyNpFE9OFsevwpK9y7FcCr4yiAxqVEPttU702xvaDkD3fQP5iVIYNuLGJYhmMN+72
+	0zjzqWktgrlyM6U0FWPWVsDOI8cB+7L2vkPiqZgNmdn6WTXGzihgohGDbRUudQC0REf5zb0HMl5
+	1DxsjRjfsZVR/D6CZfA==
+X-Received: by 2002:a05:6870:3356:b0:485:d31b:775b with SMTP id 586e51a60fabf-486e6de49c8mr640294fac.25.1789685144324;
+        Thu, 17 Sep 2026 15:45:44 -0700 (PDT)
 Received: from dev-rjethwani.dev.purestorage.com ([208.88.159.129])
-        by smtp.googlemail.com with ESMTPSA id 586e51a60fabf-4870ac16ec0sm88605fac.5.2026.09.17.15.45.36
+        by smtp.googlemail.com with ESMTPSA id 586e51a60fabf-4870ac16ec0sm88605fac.5.2026.09.17.15.45.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 15:45:37 -0700 (PDT)
+        Thu, 17 Sep 2026 15:45:43 -0700 (PDT)
 From: Rishikesh Jethwani <rjethwani@purestorage.com>
 To: netdev@vger.kernel.org
 Cc: saeedm@nvidia.com,
@@ -77,9 +77,9 @@ Cc: saeedm@nvidia.com,
 	leon@kernel.org,
 	andrew.gospodarek@broadcom.com,
 	Rishikesh Jethwani <rjethwani@purestorage.com>
-Subject: [PATCH net-next v17 13/15] tls: device: add tracepoints for the KeyUpdate path
-Date: Thu, 17 Sep 2026 16:35:24 -0600
-Message-ID: <20260917224355.2288021-14-rjethwani@purestorage.com>
+Subject: [PATCH net-next v17 15/15] tls: document TLS 1.3 hardware offload rekey handling
+Date: Thu, 17 Sep 2026 16:35:26 -0600
+Message-ID: <20260917224355.2288021-16-rjethwani@purestorage.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260917224355.2288021-1-rjethwani@purestorage.com>
 References: <20260917224355.2288021-1-rjethwani@purestorage.com>
@@ -91,264 +91,277 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add five trace events covering the rekey state machine in
-tls_device.c:
+Document TLS 1.3 support in the hardware offload path.
 
-  tls_device_rekey_start: rekey accepted, inflight=1 marks a
-                          drain window where old-key data is still
-                          queued and dev_add is deferred, whether
-                          this rekey opened the window or landed
-                          behind a still-draining prior one.
-                          inflight=0 means the key was hot-swapped
-                          with no drain; nic_boundary is then the
-                          candidate receive frontier, not a stored
-                          boundary.
-  tls_device_rekey_reencrypt: old-key undo pass for a boundary
-                              record
-  tls_device_rekey_done: a drain window's boundary was crossed and
-                         old_aead_recv freed, either by a record
-                         arriving past old_nic_boundary or by a new
-                         rekey superseding a prior one whose era had
-                         already drained. deferred dev_add is issued
-                         if pending.
-  tls_device_complete_rekey_retry: TX rekey completion hit the
-                                   transient -EAGAIN retry in sendmsg,
-                                   the next sendmsg retries.
-  tls_device_complete_rekey_fail: TX rekey completion gave up and
-                                  fell back to SW encryption. Emitted
-                                  from the fallback path itself, since
-                                  the sendmsg call site only sees the
-                                  transient retry.
+In Documentation/networking/tls-offload.rst, replace the stale note that
+offload does not support TLS 1.3 with a description of the KeyUpdate
+handling on both TX and RX, including how old-key records in flight are
+bridged in software: each record is classified relative to the boundary at
+which the NIC stopped using the old key, and partially transformed (mixed)
+records are re-encrypted with the old key. In a mixed record the fragments
+the NIC transformed but could not authenticate carry skb->decrypt_failed; a
+non-mixed record with that flag was not transformed and is decrypted
+directly.
 
-These are independent event markers, not a paired begin/end span. A
-rekey_start is not 1:1 with a rekey_done: a rekey that lands behind a
-still-draining prior one reports inflight=1 without opening a window of
-its own, so several starts can map to a single window and a single done.
-The invariant is per-window - each drain window that is opened closes
-with exactly one rekey_done. A window can also be abandoned without a
-done when a rekey is aborted (tls_sw_ctx_init() failing after the window
-opened, or the socket being torn down mid-drain, the latter counted by
-TLSRXREKEYABORTED); those paths are not traced.
+In Documentation/networking/tls.rst, add the per-namespace rekey counters:
+TlsCurrTxRekey/TlsCurrRxRekey for sessions currently in a deferred rekey,
+TlsTxRekeyFallback/TlsRxRekeyFallback for rekeys that could not be
+offloaded and fell back to software cryptography, and
+TlsTxRekeyAborted/TlsRxRekeyAborted for deferred rekeys still pending when
+the socket was destroyed.
 
 Signed-off-by: Rishikesh Jethwani <rjethwani@purestorage.com>
 ---
- net/tls/tls_device.c |  36 ++++++++++++-
- net/tls/trace.h      | 118 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 152 insertions(+), 2 deletions(-)
+ Documentation/networking/tls-offload.rst | 175 +++++++++++++++++++++--
+ Documentation/networking/tls.rst         |  17 +++
+ 2 files changed, 183 insertions(+), 9 deletions(-)
 
-diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
-index ac09f356cff9..5f45c097bad3 100644
---- a/net/tls/tls_device.c
-+++ b/net/tls/tls_device.c
-@@ -866,8 +866,16 @@ int tls_device_sendmsg(struct sock *sk, struct msghdr *msg, size_t size)
- 	lock_sock(sk);
+diff --git a/Documentation/networking/tls-offload.rst b/Documentation/networking/tls-offload.rst
+index e5802bcd4d22..cdf84f4b817a 100644
+--- a/Documentation/networking/tls-offload.rst
++++ b/Documentation/networking/tls-offload.rst
+@@ -99,9 +99,8 @@ at the end of kernel structures (see :c:member:`driver_state` members
+ in ``include/net/tls.h``) to avoid additional allocations and pointer
+ dereferences.
  
- 	/* Old-key records all ACKed; switch back to HW. */
--	if (test_bit(TLS_TX_REKEY_READY, &tls_ctx->flags))
--		tls_device_complete_rekey(sk, tls_ctx, true, msg->msg_flags);
-+	if (test_bit(TLS_TX_REKEY_READY, &tls_ctx->flags)) {
-+		rc = tls_device_complete_rekey(sk, tls_ctx, true, msg->msg_flags);
-+		/* Non-zero here is the transient -EAGAIN retry,
-+		 * the next sendmsg retries. Hard failures return 0 after
-+		 * falling back to SW and emit tls_device_complete_rekey_fail
-+		 * from the fallback path.
-+		 */
-+		if (rc)
-+			trace_tls_device_complete_rekey_retry(sk);
-+	}
+-When the offloaded connection is destroyed the core calls
+-the :c:member:`tls_dev_del` callback so the driver can release per-direction
+-state:
++The core calls the :c:member:`tls_dev_del` callback so the driver can release
++per-direction state:
  
- 	if (tls_device_tx_uses_sw(tls_ctx)) {
- 		rc = tls_sw_sendmsg_locked(sk, msg, size);
-@@ -1430,10 +1438,15 @@ int tls_device_decrypted(struct sock *sk, struct tls_context *tls_ctx)
- 				return 0;
- 			}
+ .. code-block:: c
  
-+			trace_tls_device_rekey_reencrypt(sk, rec_start_seq,
-+							 ctx->rekey.old_nic_boundary);
-+
- 			return tls_device_reencrypt_old_key(sk, ctx,
- 							    sw_ctx, tls_ctx);
- 		}
+@@ -109,7 +108,14 @@ state:
+ 			    struct tls_context *ctx,
+ 			    enum tls_offload_ctx_dir direction);
  
-+		trace_tls_device_rekey_done(sk, rec_start_seq,
-+					    ctx->rekey.old_nic_boundary);
- 		crypto_free_aead(ctx->rekey.old_aead_recv);
- 		ctx->rekey.old_aead_recv = NULL;
+-``tls_dev_del`` is mandatory whenever ``tls_dev_add`` is provided.
++``tls_dev_del`` is called either when the offloaded connection is destroyed or,
++for a TLS 1.3 connection, when the old key is retired during a rekey (see the
++`Rekey`_ section). It operates on a single ``direction``, so the driver must
++release only the state for that direction and must not free state shared
++between directions or the socket as a whole. After a rekey ``tls_dev_del``,
++``tls_dev_add`` may be called again for the same socket and direction to
++install the new key. ``tls_dev_del`` is mandatory whenever ``tls_dev_add`` is
++provided.
  
-@@ -1890,6 +1903,13 @@ static int tls_device_complete_rekey(struct sock *sk, struct tls_context *ctx,
- 	TLS_DEC_STATS(sock_net(sk), LINUX_MIB_TLSCURRTXDEVICE);
- 	TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLSCURRTXSW);
+ The third TLS device callback is :c:member:`tls_dev_resync`, called by the core
+ to synchronize the TCP stream with the record boundaries:
+@@ -205,7 +211,10 @@ Upon reception of a TLS offloaded packet, the driver sets
+ the :c:member:`decrypted` mark in :c:type:`struct sk_buff <sk_buff>`
+ corresponding to the segment. Networking stack makes sure decrypted
+ and non-decrypted segments do not get coalesced (e.g. by GRO or socket layer)
+-and takes care of partial decryption.
++and takes care of partial decryption. A segment the device processed but
++could not authenticate may instead carry the :c:member:`decrypt_failed`
++mark; see the `Error handling`_ section for what the mark implies about
++the payload.
  
-+	/* Hard failure: HW rekey gave up and the connection is now pinned to
-+	 * SW encryption. The call site only sees the transient -EAGAIN retry
-+	 * (rc is not propagated here), so emit the trace from the fallback
-+	 * path itself; rc still holds the originating error.
-+	 */
-+	trace_tls_device_complete_rekey_fail(sk, rc);
-+
- 	return 0;
- }
+ Resync handling
+ ===============
+@@ -404,8 +413,121 @@ records, then after 4 records, after 8, after 16... up until every
+ Rekey
+ =====
  
-@@ -2195,11 +2215,21 @@ int tls_set_device_offload_rx(struct sock *sk, struct tls_context *ctx,
- 			 * is installed once drain_start crosses rekey.old_nic_boundary.
- 			 */
- 			context->dev_add_pending = 1;
-+			trace_tls_device_rekey_start(sk, drain_start,
-+						     context->rekey.old_nic_boundary,
-+						     true);
- 		} else {
- 			struct tcp_sock *tp = tcp_sk(sk);
- 			u32 nic_end;
+-Offload does not currently support TLS 1.3, therefore key rotation
+-is not a concern for offloaded connections at this point.
++TLS 1.3 allows traffic keys to be updated mid-connection using the
++KeyUpdate message. Offloaded TLS 1.3 connections must therefore switch
++keys without tearing down the offload. The device cannot simply be given
++the new key because records encrypted (TX) or transformed (RX) with the
++old key may still be in flight. The stack retains the necessary old-key
++state and bridges the transition in software.
++
++TX
++--
++
++On TX, the new key is installed in a temporary software context, and
++sendmsg is routed through the software path. If no hardware-offloaded
++records remain unacknowledged, the switch completes inline during
++setsockopt. Otherwise the rekey is left pending and is completed later,
++on the sender's next ``sendmsg()`` after all old-key records have been
++ACKed (see `Completing a deferred rekey`_). Completion calls
++:c:func:`tls_dev_del` for the old key and reinstalls hardware offload
++with the new key at the current TCP write sequence. If reinstallation
++fails, the connection keeps encrypting in software with the new key; the
++next KeyUpdate re-arms the transition and retries the hardware
++installation.
++
++Unlike the software path, a ``TLS_TX`` setsockopt on an offloaded
++connection first flushes the open and partially sent hardware records to
++TCP before installing the new key. It therefore behaves like a blocking
++``send()`` of that record: it may wait for send buffer space (bounded by
++``SO_SNDTIMEO``), and on a non-blocking socket it fails with ``-EAGAIN``
++and must be retried once the socket is writable. The new key is not
++installed until the call succeeds; the connection keeps using the old key
++in the meantime.
++
++Completing a deferred rekey
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++A deferred rekey is completed by the sender, not by the ACK path. When
++the last old-key record is acknowledged the stack only marks the rekey
++as ready; the device is not touched. The switch itself,
++:c:func:`tls_dev_del` of the old key followed by :c:func:`tls_dev_add`
++of the new one, runs at the start of the next ``sendmsg()`` on the
++socket, and that ``sendmsg()`` is the first to be encrypted by hardware
++again. No other event completes it: ``splice_eof()``, write-space
++wakeups, retransmissions and pure ACKs all leave the connection on the
++software path.
++
++This is intentional. Completion has to flush the software context's
++open record to TCP and may sleep for send buffer space, which rules out
++the ACK and write-space paths. Beyond that, the stack only switches when
++it has new data to hand to the device: the software path is fully
++correct with the new key, so deferring the switch costs host CPU but
++nothing else, and it keeps the device from being programmed for a
++connection that may never send again.
++
++Two consequences follow. A connection that stops sending after a
++KeyUpdate stays in the deferred state until it is closed: it is
++encrypted in software with the new key, it is counted in
++``TlsCurrTxRekey``, and at close it is reported as
++``TlsTxRekeyAborted``. That counter therefore includes senders that
++simply had nothing more to send, not only sockets torn down
++mid-transition, and is not by itself an error indication. And the return
++to hardware is delayed by at least one ACK round trip after the last
++old-key record, plus however long the application waits before its next
++``sendmsg()``. A sender that wants the hardware path back promptly can
++issue a small ``sendmsg()`` once its old data has been acknowledged.
++
++Completion can fail transiently or permanently. If the software flush
++cannot get send buffer space (``-EAGAIN``, or a signal on a blocking
++socket) the rekey stays pending, the ``sendmsg()`` proceeds in software,
++and the next ``sendmsg()`` retries; the ``tls_device_complete_rekey_retry``
++tracepoint fires. A hard failure (:c:func:`tls_dev_add` rejected, or the
++netdev gone) is terminal for this KeyUpdate: the connection is pinned to
++software encryption with the new key, counted in ``TlsTxRekeyFallback``
++and moved from ``TlsCurrTxDevice`` to ``TlsCurrTxSw``; the
++``tls_device_complete_rekey_fail`` tracepoint fires. The next ``TLS_TX``
++setsockopt re-arms the transition and retries.
++
++The decision to defer is taken at the start of the ``TLS_TX``
++setsockopt, before the open hardware record is flushed to TCP. That
++flush may block for send buffer space, and old-key records acknowledged
++while it sleeps do not change the decision: the rekey is still deferred
++and completes on a following ``sendmsg()`` rather than inline. This is
++conservative, not a correctness issue. The boundary is fixed at the
++write sequence after the flush, so the acknowledgment of the flushed
++record itself arms completion; the cost is one more ACK round trip and
++one more ``sendmsg()``. Applications should not expect an inline switch
++whenever the socket has unacknowledged data at the time of the
++setsockopt.
++
++RX
++--
++
++On RX, the NIC may already have transformed in-flight records with the
++old key before the peer's KeyUpdate is parsed. When the KeyUpdate is
++decoded, the stack removes the old key from the NIC but retains the old
++AEAD, IV, and record sequence in the software offload context.
++
++Each record is classified by the TCP sequence of its first byte relative
++to the boundary at which the NIC stopped using the old key. Records
++starting after that boundary carry new-key wire encryption, so the old
++software AEAD state can be released. Records before the boundary that
++remain fully encrypted are passed to the software path. Records that
++were partially transformed by the NIC are re-encrypted with the old key
++to restore the new-key ciphertext, allowing the software AEAD to decrypt
++them with the new key.
++
++If old-key records are still queued, installation of the new key through
++:c:func:`tls_dev_add` is deferred until those records have been consumed;
++otherwise it occurs immediately. When the NIC cannot authenticate a record
++processed during the transition, the affected fragments are delivered with
++``skb->decrypt_failed`` set, following the contract described in the
++`Error handling`_ section. In a mixed record such a fragment was
++transformed (XORed) with the old key, and the re-encrypt path uses this to
++undo the transform on those fragments with the old key while leaving
++untouched fragments intact. A non-mixed record carrying
++``skb->decrypt_failed`` was not transformed; it is still wire ciphertext
++and is decrypted directly by the software AEAD under the new key.
  
- 			if (context->rekey.old_aead_recv) {
-+				/* Prior rekey's era already drained (drain_start is
-+				 * past old_nic_boundary), so retiring its key here
-+				 * is a boundary crossing, same as the free in
-+				 * tls_device_decrypted(); mark it done.
-+				 */
-+				trace_tls_device_rekey_done(sk, drain_start,
-+							    context->rekey.old_nic_boundary);
- 				crypto_free_aead(context->rekey.old_aead_recv);
- 				context->rekey.old_aead_recv = NULL;
- 			}
-@@ -2247,6 +2277,8 @@ int tls_set_device_offload_rx(struct sock *sk, struct tls_context *ctx,
- 				context->dev_add_pending = 0;
- 				retired_pending = true;
- 			}
-+			trace_tls_device_rekey_start(sk, drain_start, nic_end,
-+						     before(drain_start, nic_end));
- 		}
- 	}
+ Error handling
+ ==============
+@@ -442,8 +564,43 @@ to the host's stack as it was on the wire (recovering original packet in the
+ driver if device provides precise error is sufficient).
  
-diff --git a/net/tls/trace.h b/net/tls/trace.h
-index 2d8ce4ff3265..5b9c1f86d82d 100644
---- a/net/tls/trace.h
-+++ b/net/tls/trace.h
-@@ -192,6 +192,124 @@ TRACE_EVENT(tls_device_tx_resync_send,
- 	)
- );
+ The Linux networking stack does not provide a way of reporting per-packet
+-decryption and authentication errors, packets with errors must simply not
+-have the :c:member:`decrypted` mark set.
++decryption and authentication errors. A packet with errors must not have
++the :c:member:`decrypted` mark set. In addition, the driver may set the
++:c:member:`decrypt_failed` mark on a segment the device matched to an
++offloaded connection and processed but could not authenticate. The two
++marks are mutually exclusive.
++
++The stack interprets :c:member:`decrypt_failed` per record, relative to the
++:c:member:`decrypted` mark of the other segments making up the same record.
++Coalescing (GRO, socket layer) and record classification are keyed on
++:c:member:`decrypted` alone, so :c:member:`decrypt_failed` segments may be
++merged with unmarked ones. A driver setting the mark must therefore honour
++the following contract:
++
++ * In a record none of whose segments carry :c:member:`decrypted`, every
++   segment, including one with :c:member:`decrypt_failed` set, must hold
++   the payload exactly as it was on the wire. This is the general rule
++   above: if the device did not successfully decrypt any part of a record
++   it must hand the whole record over untouched. The stack passes such a
++   record to software decryption directly and does not consult
++   :c:member:`decrypt_failed`.
++
++ * In a record where some segments carry :c:member:`decrypted` (a mixed
++   record), a segment with :c:member:`decrypt_failed` set must hold payload
++   the device has already transformed (XORed with the cipher keystream) but
++   failed to authenticate, and a segment with neither mark must hold the
++   payload as it was on the wire. The stack re-encrypts the
++   :c:member:`decrypted` and :c:member:`decrypt_failed` segments to restore
++   the ciphertext, leaves the unmarked segments intact, and authenticates
++   the whole record in software.
++
++A transformed segment delivered without :c:member:`decrypt_failed`, or an
++untransformed segment of a mixed record delivered with it, is restored
++incorrectly and the record fails software authentication. A device which
++cannot tell the driver whether a failed segment was transformed must
++recover the original packet before handing it to the stack, as described
++above, and leave both marks clear. During a TLS 1.3 rekey the mark also
++tells the stack which key the device applied; see the `Rekey`_ section.
  
-+TRACE_EVENT(tls_device_rekey_start,
-+
-+	TP_PROTO(struct sock *sk, u32 copied_seq, u32 nic_boundary,
-+		 bool inflight),
-+
-+	TP_ARGS(sk, copied_seq, nic_boundary, inflight),
-+
-+	TP_STRUCT__entry(
-+		__field(	struct sock *,	sk		)
-+		__field(	u32,		copied_seq	)
-+		__field(	u32,		nic_boundary	)
-+		__field(	bool,		inflight	)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->sk = sk;
-+		__entry->copied_seq = copied_seq;
-+		__entry->nic_boundary = nic_boundary;
-+		__entry->inflight = inflight;
-+	),
-+
-+	TP_printk(
-+		"sk=%p copied_seq=%u nic_boundary=%u inflight=%d",
-+		__entry->sk, __entry->copied_seq, __entry->nic_boundary,
-+		__entry->inflight
-+	)
-+);
-+
-+TRACE_EVENT(tls_device_rekey_reencrypt,
-+
-+	TP_PROTO(struct sock *sk, u32 tcp_seq, u32 nic_boundary),
-+
-+	TP_ARGS(sk, tcp_seq, nic_boundary),
-+
-+	TP_STRUCT__entry(
-+		__field(	struct sock *,	sk		)
-+		__field(	u32,		tcp_seq		)
-+		__field(	u32,		nic_boundary	)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->sk = sk;
-+		__entry->tcp_seq = tcp_seq;
-+		__entry->nic_boundary = nic_boundary;
-+	),
-+
-+	TP_printk(
-+		"sk=%p tcp_seq=%u nic_boundary=%u",
-+		__entry->sk, __entry->tcp_seq, __entry->nic_boundary
-+	)
-+);
-+
-+TRACE_EVENT(tls_device_rekey_done,
-+
-+	TP_PROTO(struct sock *sk, u32 tcp_seq, u32 nic_boundary),
-+
-+	TP_ARGS(sk, tcp_seq, nic_boundary),
-+
-+	TP_STRUCT__entry(
-+		__field(	struct sock *,	sk		)
-+		__field(	u32,		tcp_seq		)
-+		__field(	u32,		nic_boundary	)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->sk = sk;
-+		__entry->tcp_seq = tcp_seq;
-+		__entry->nic_boundary = nic_boundary;
-+	),
-+
-+	TP_printk(
-+		"sk=%p tcp_seq=%u nic_boundary=%u",
-+		__entry->sk, __entry->tcp_seq, __entry->nic_boundary
-+	)
-+);
-+
-+TRACE_EVENT(tls_device_complete_rekey_fail,
-+
-+	TP_PROTO(struct sock *sk, int rc),
-+
-+	TP_ARGS(sk, rc),
-+
-+	TP_STRUCT__entry(
-+		__field(	struct sock *,	sk	)
-+		__field(	int,		rc	)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->sk = sk;
-+		__entry->rc = rc;
-+	),
-+
-+	TP_printk(
-+		"sk=%p rc=%d",
-+		__entry->sk, __entry->rc
-+	)
-+);
-+
-+TRACE_EVENT(tls_device_complete_rekey_retry,
-+
-+	TP_PROTO(struct sock *sk),
-+
-+	TP_ARGS(sk),
-+
-+	TP_STRUCT__entry(
-+		__field(	struct sock *,	sk	)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->sk = sk;
-+	),
-+
-+	TP_printk(
-+		"sk=%p",
-+		__entry->sk
-+	)
-+);
-+
- #endif /* _TLS_TRACE_H_ */
+ A packet should also not be handled by the TLS offload if it contains
+ incorrect checksums.
+diff --git a/Documentation/networking/tls.rst b/Documentation/networking/tls.rst
+index 980c442d7161..cf05543260d8 100644
+--- a/Documentation/networking/tls.rst
++++ b/Documentation/networking/tls.rst
+@@ -314,6 +314,11 @@ TLS implementation exposes the following per-namespace statistics
+   number of TX and RX sessions currently installed where NIC handles
+   cryptography
  
- #undef TRACE_INCLUDE_PATH
++- ``TlsCurrTxRekey``, ``TlsCurrRxRekey`` -
++  number of TX and RX sessions currently undergoing a deferred rekey,
++  i.e. a rekey which could not be applied immediately and is waiting for
++  in-flight records to drain before the new key is installed in hardware
++
+ - ``TlsTxSw``, ``TlsRxSw`` -
+   number of TX and RX sessions opened with host cryptography
+ 
+@@ -344,3 +349,15 @@ TLS implementation exposes the following per-namespace statistics
+ - ``TlsRxRekeyReceived`` -
+   number of received KeyUpdate handshake messages, requiring userspace
+   to provide a new RX key
++
++- ``TlsTxRekeyFallback``, ``TlsRxRekeyFallback`` -
++  number of rekeys on existing sessions for TX and RX which could not be
++  offloaded to the NIC and fell back to software cryptography
++
++- ``TlsTxRekeyAborted``, ``TlsRxRekeyAborted`` -
++  number of deferred rekeys for TX and RX which were still pending when
++  the socket was destroyed, and so never completed. For TX hardware
++  offload this includes senders that sent nothing further after the
++  KeyUpdate, since the switch back to hardware only happens on
++  ``sendmsg()`` (see the Rekey section of
++  Documentation/networking/tls-offload.rst)
 -- 
 2.50.1
 
