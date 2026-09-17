@@ -1,88 +1,88 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D8942A14D
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 08:29:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2D043B3F6
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 08:29:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789633790; cv=none; b=BBKTNFYPYIQyIhDCy/RbnKMXrbo9+FEwBhY11EnhgEI8CN83yjo4X9QyeziFLyVA6pj3MJf1pOBq2bDFgB2nlwx7awDx7qvBFvx/g0T+MnnaXWccHGPnFVOrxpwPbUYsFZmqRatZW0dXNVinUKKJBhT6M2piSKyqGzbMiT8LQTw=
+	t=1789633794; cv=none; b=GBr9Mcf1u97hD/QdmKcGYyKJCyr+E+Fm7Z5xskJ+YRDVQQ0EUCyG3d5E4Cg305pgv6HYDvfNwRUExl07VYwtWIJa4HT4tqDpyvyJULlglKixUKDiENBU8naysRnC3BkeuGE2qJaie0IJfjMX7EqOq9KRhbMUXHF0mFfFknkl+dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789633790; c=relaxed/simple;
-	bh=CFRrn4x6ponRYhQFZSF7DOt0uGwt2i4dOTnusXvOQb0=;
+	s=arc-20240116; t=1789633794; c=relaxed/simple;
+	bh=rNxxPYZvvS0xziEix65HCNH7tYsfMS2iHJ3mRY5rHkU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZOmFuhIvcH5hRbQ0WNDFkKrKyVFUJcnBmBpJCzfcehNvqlBPUHlJZmALYMNxG7QODve8WQyAeYB9iVGatzJYSd3NPkZ0QT/kxU263n37iiASahLhjCLQ9VeX877rWN+kmpPE6/Wi/3z8PgrrWtPNOPYezYsdrzG5kXSkcYjqPOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Nep53tXD; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=eqbmLGoO; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:To:Cc; b=SL6zZBPRS/mp4a4uW3GGHJ1+ebdIDmt+6Lvj++76P6inyl+o1UeceBFDv/qvlMtRclkLcNu2YOEFhLT9xM/IDx4OuxdZbYwZ5SSMaZ7DacAilZj/LOOVPUkfcAvYl52K4VFK/Mpz4AoIYz5GVgZlXx8QVZR8S34Wi9Trnnq2Z5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=pvEhesEH; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=doeRefQX; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Nep53tXD";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="eqbmLGoO"
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68H7xMWS396668
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 08:29:39 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="pvEhesEH";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="doeRefQX"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68H60vg1902044
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 08:29:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	LoFiFadfWvsKDJXbfNr3lKGOOeQeasFcKWql2l4h94M=; b=Nep53tXDRmyvNxjO
-	UdWe3HxdJMbHkxJkXsLVuZgfX4eyf9bbheqRvNPFp1RGyxHD1Mrcwdn7hlHpmhWE
-	dqSHFmXhutcfrZk//Ta6XX59KUTDmLRH/TX5ORBhjVWFvp1od9Eu7VMu02absITx
-	s0TnbZTvccHYtrHjbltIQof8xB5955cCCWa+fT60Z37oaLcQO+3xYO5+wKcg82ds
-	VJcu95N/z/F/I8sx/UScBqv1joVb60ZlJbn5TiIwhHigBe1d33CRFgZEIvCP8IwK
-	yyeW/LUg4/v3iyPF+W7az8ueIUOTxId8dPdSCcj1MGVNipmDDq7K4FYxjR7NgVga
-	DDiN5w==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4grca0r3ur-1
+	xCN7YOfm7t7aL8aoNmpZZk363y9KqRhIlG7E2MGmIUk=; b=pvEhesEH16daytUF
+	hgc/XtxMR6ux0LJ1wqd1P51KlXzWGVVWu9JXv4ngu2hDIdiMmHuhjlCbeCSDK1DO
+	2L0L6ZYfwydOK2/YPnKVeJMyxffyVU+wC+6sjUH8zAVKXIcw9V/tI3jRvLd/4Hj2
+	UoApT70qZA/RVZfsyZyZFn+oRzedx7qygUtPi+t/1tgTdhUfbx6gh8BhHRyFrCpF
+	s433e/k/nh0u2bIXoZJPrCdJOISUqlKxTcgAMZjed0vS0AGrZxOPS/Ee/NaXtZmo
+	meOWN+yy9hZie7fGd5M+papQcye1PUjPb/ZCzecTH/INABNc88lFvO3Z+E17X8Ve
+	tiI/qw==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gqy2d3dns-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 08:29:39 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-939f925ba4eso143102885a.3
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 01:29:39 -0700 (PDT)
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 08:29:43 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93909014c85so103690285a.0
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 01:29:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1789633779; x=1790238579; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1789633782; x=1790238582; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=LoFiFadfWvsKDJXbfNr3lKGOOeQeasFcKWql2l4h94M=;
-        b=eqbmLGoOB7K+4rSeccq8QnX8Mcb+3Pttj3qmit4Dl4eG2UjYpKNyrpG4EgzRX4M7B8
-         l/XdlivywPNwwjp/WFqoEXzGh6Wg/xf6+59aPOJNAbuDEcd9hFF9Zm9dAStp6ql/77vO
-         g50PTyxddE81LJG5xDganX3FBIzL0PZJCEbacR/QM/vQ8DX9sRx7yVgWJPZs3Ve0rlT5
-         noDjFYw8PZiRQvofLheR1/H8ZeDZE+kHg32iP4feevnuY08/WL8CKQsjaYqmt8w5Mft9
-         NKiyvl0AnpdnMa0/1X7N7nONgHhogdK3ZyE3fwiTsP9JbTiCtYjhnt+/cibpNyrF+7o+
-         FeHQ==
+        bh=xCN7YOfm7t7aL8aoNmpZZk363y9KqRhIlG7E2MGmIUk=;
+        b=doeRefQX3x8nif67EB2o0618VeAOE6GNmxTkQITpPlQJNlRiW0gx5OgjdP+dCgHv8c
+         8oXZ1gTkZq1Tl9Gzef2oDMNFno19Dxnfl88dZ1oeKD50VZmURPLgR8Kpfc4NqhWXML2R
+         SJsoYgREYrc5WCuAqnymzqocg3bf2FnXrPYx1S4goRui8WoIEOIXQWNszFJEPe6mrit0
+         ReIEVGyn7Ifv33aNbiEnD9yVfTcP2WEA3odc0K2EFVRuQZGXqjOig+0NhJHsHNXWEBeY
+         k65DnwQA8Ka0+ARfvw4Z+9Fs5NQTPTR3GCyaKXKqCGaPhcl0Q1RLKXGOr+IVkkTHzNNR
+         dedA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789633779; x=1790238579;
+        d=1e100.net; s=20260707; t=1789633782; x=1790238582;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=LoFiFadfWvsKDJXbfNr3lKGOOeQeasFcKWql2l4h94M=;
-        b=yrIFAENAm2d4eVNzMtJsTLfPGnPuDORrjppJQUrPS8R4cJCVQS8ofK0Dp5dymphuf0
-         kDdec5ODRyp1kwwJrGiAPasiHhWgLGJzSGoABb2pjucH2i6NBaRPkdAtCq1u7VtM3aLQ
-         JzQD/WECZj1Iw7GdTLDZVsrstgNNpDyTjtFaQioBftVpkiZtsQwtpj6OjYtCCfIfdDg5
-         ZMdOo5BvFQ0MU/sI5M5TXFIABsj6jD9vRpdwVF13tAlab0LkjcPsHeQhZw/Xqbu5V990
-         BOrFE1Eu4vdjDNDI4vGxTjgSvby0a15RtPQwgvFg7i4x3KMkaSA74n76XkgIOylL0yg2
-         mILg==
-X-Forwarded-Encrypted: i=1; AKwUvBxbHX7SDmIPsJiH/A9xGLS7S+ZdJRcVjGOLEJ1lVOdOZ+oIKbvN8WxuRwFRQ2a13Ih6LA281Ns=@vger.kernel.org
-X-Gm-Message-State: AFuF++lx3Q6MAFnsrCd7aLJToLntgm9m3Gh1rwGqYwOjdngE/w5zyQRN
-	3+p6+HuPMSaXLfpOXttRo1TiOmccs431A4YNsojy058NWafqB9bDAsZdHqh3lp1VvOP98NJXsif
-	8U6qoQclPaniSRYGs5o7rP/3YwYsBaZeqTfdOO90/LE6+LFYzFUZ5VdwV1Yw=
-X-Gm-Gg: AYBFou2SjKabtKseZiXspX0RbJkO5jMmNHzpy91y5pZ54N8Xi0rv6R4d9xGU67SECX7
-	+V3918hlZ2pfZXm09YfO7O+otoaOuknNrU30ROR9zH/QmaWDGeIi5miG9UelUuu0w12v0bGjV8x
-	PnhEdcZBQTr4rUX1+1EdoJ2sNuqTRPxkyodRXgEwfTfbbxalZSPuLrDrWsRGf3Waw/1kxKQyUJk
-	U39fnOGInx+qmdg/R5idQZHdJmc9ffXz5JnLmxumpCwhTUX439QHnBX+jZerca/Vk5APBYlAYN1
-	/w0iArkrCvZINATCXbdm5Sl/9GDx6xiw7ZT+m64uAViyuQbneE9EI0pwwKsWtrAkiKL7vJix9Jn
-	zCYGgsJOHMfpAug==
-X-Received: by 2002:a05:620a:7018:b0:938:fc91:91ce with SMTP id af79cd13be357-93bb771e83cmr987990385a.20.1789633778991;
-        Thu, 17 Sep 2026 01:29:38 -0700 (PDT)
-X-Received: by 2002:a05:620a:7018:b0:938:fc91:91ce with SMTP id af79cd13be357-93bb771e83cmr987985585a.20.1789633778521;
-        Thu, 17 Sep 2026 01:29:38 -0700 (PDT)
+        bh=xCN7YOfm7t7aL8aoNmpZZk363y9KqRhIlG7E2MGmIUk=;
+        b=IMwR3y+f8JTL6CpqNnSsl/C3x5OVmK4qqjm/y5SrAEkPbVce+4RKU6p5BnOmC9cgpE
+         fkM/F0wJ3jkSkCGAvRXagAAlF1hY7gbbNloi+DYi8ormtB9v2gXjnADOTUjMl7ewreXM
+         gPNlX4McNycQXP5qJ6CAPHLRPed/x2JXqq0ygcnuuoD4gqgs8H8FMVqDfA+wu9M0g9Gm
+         Dc77dNPSSXc5BGCyLccOxOLlV8WW2P+f8CtyFZeuLsYXFQYaTHlm6MU3wfGyPN/8Yubg
+         CKlAetsRjq+HQqcXuojdzZgrlFiSCjp7f+3kqQ8KBir2Xch7VT/dJlTcbH7GatdsFEjT
+         OEQw==
+X-Forwarded-Encrypted: i=1; AKwUvBwU4HKJ13NtOEE6KSAqeL/t8LTNBP4qc231pLZ1EhMOJBILvSDk3Earlj71y9u8BeZnM4O8Mwc=@vger.kernel.org
+X-Gm-Message-State: AFuF++mMUnUwLGmbK4g+Ccca7nZ185M5FuRX/eaGUwtF3ZaF7YaZnrSQ
+	2jiryb8bqcAV7H9sN07Gs6f95TM0fMXU3ybUTJDFkYZDCWJgdZOp2qrweplACvzek+96Mw5QAT1
+	o1jAcNpwa1VcQoNeiLc8ThRhl9gX3mze4qbuq3Lg5ErEOSBtDnkF17Kxevjk=
+X-Gm-Gg: AYBFou3Q/tDJvi3g1MArS1svuNQQjuJYYkTVGpvs5bXRdN3PfUO+YP0Gd0ZpUjMd3sV
+	tAbjW88tbcuQ3CocLoHY+rgjgdFszEVhc3QdiV9RxdzjUK7du/v/ArlAenRbLv3DHHRuyP6tZrH
+	OapMvcvmmr5M4aGpOMYVT38sRPSidK5GP5Y+zhUs3fOhBZfnOPI9lm6U+Bz+7WdP++e9ZIFtfcF
+	gJON8BatjuGgbYEdD4H7iFwk7Sm/no90kM+TxKVJ1CMhWywf2kAWv5wXbzWrObYCHXWi4GGgzUz
+	yWgytHW3B3PfN93dpgdip9iaunlJHtjPpHBbQKLdPwYqbPObvttu7OQegGebVCmbyHRRVK2tycg
+	CF9M9QovWNBWEwg==
+X-Received: by 2002:a05:620a:890b:b0:93a:2ea6:4c6e with SMTP id af79cd13be357-93bb794cb7cmr1057577485a.45.1789633781947;
+        Thu, 17 Sep 2026 01:29:41 -0700 (PDT)
+X-Received: by 2002:a05:620a:890b:b0:93a:2ea6:4c6e with SMTP id af79cd13be357-93bb794cb7cmr1057575085a.45.1789633781560;
+        Thu, 17 Sep 2026 01:29:41 -0700 (PDT)
 Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4870bf27198sm13477625f8f.15.2026.09.17.01.29.37
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fbd32c5e1sm82617415e9.5.2026.09.17.01.29.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 01:29:37 -0700 (PDT)
+        Thu, 17 Sep 2026 01:29:40 -0700 (PDT)
 From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Date: Thu, 17 Sep 2026 10:29:08 +0200
-Subject: [PATCH nf-next v3 2/6] net: netfilter: nf_flow_table: set inner
- protocol when popping tunnel header
+Date: Thu, 17 Sep 2026 10:29:10 +0200
+Subject: [PATCH nf-next v3 4/6] net: netfilter: add encap_proto to
+ flow_offload_tunnel
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -91,7 +91,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260917-nf-flowtable-sw-accel-ip6ip-sit-preliminary-v3-2-fd2ea96fac7d@oss.qualcomm.com>
+Message-Id: <20260917-nf-flowtable-sw-accel-ip6ip-sit-preliminary-v3-4-fd2ea96fac7d@oss.qualcomm.com>
 References: <20260917-nf-flowtable-sw-accel-ip6ip-sit-preliminary-v3-0-fd2ea96fac7d@oss.qualcomm.com>
 In-Reply-To: <20260917-nf-flowtable-sw-accel-ip6ip-sit-preliminary-v3-0-fd2ea96fac7d@oss.qualcomm.com>
 To: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
@@ -101,64 +101,142 @@ To: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
         Andrew Lunn <andrew+netdev@lunn.ch>, David Ahern <dsahern@kernel.org>,
         Ido Schimmel <idosch@nvidia.com>
 Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        netdev@vger.kernel.org,
+        netdev@vger.kernel.org, Lorenzo Bianconi <lorenzo@kernel.org>,
         Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Proofpoint-ORIG-GUID: 8Yr4kvfs9lgeqU5oAQmokzVtzeYO667F
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE3MDExNSBTYWx0ZWRfXwbPPOyia5cwT
- jiJEgwaJtJa3NVwl8pQb7AToQYwNHaW4DL6uNJos3tJVIscnz/vin7wmKX6Y9oG3swEoFM1cK9m
- wzHgMMRKt92zLgNA7Xm0NhMXw/QgQDQ=
-X-Proofpoint-GUID: 8Yr4kvfs9lgeqU5oAQmokzVtzeYO667F
-X-Authority-Analysis: v=2.4 cv=dOQzC+Zb c=1 sm=1 tr=0 ts=6aaba4f3 cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
+X-Proofpoint-ORIG-GUID: 3vKVo2956R-SBCDi7yxE7r7Ex0zHgQ-l
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE3MDExNSBTYWx0ZWRfXxtQxE4se/KK5
+ sx1zpv/nKpDDiCRthyaAxG6todCq6vU5LKMeREsrX760C11RpcW4jr6xirteajOzxATb87lHl7T
+ X/+dPAW4MKduF1lBWIenUBiEYHMbPps=
+X-Authority-Analysis: v=2.4 cv=HbeB3SE8 c=1 sm=1 tr=0 ts=6aaba4f7 cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
  a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
- a=EUspDBNiAAAA:8 a=gKarwEfFoU5_EcFYj1IA:9 a=QEXdDO2ut3YA:10
- a=PEH46H7Ffwr30OY-TuGO:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE3MDExNSBTYWx0ZWRfX+d8RgcXZhs0d
- cFsPCFLp9/CVilu4QEORjOMhbiQ2mpbxPXMAJXzddpFN525NCKsKnAQjYoOLZfCTtievZiOe5dx
- wfxqNtLkwO9yOgpwBVav4CW9PeOJ1mKeUtBa13pb2gJv8ga3ZwJQMlDbRXqUMLKcycFiOftGmIG
- 9siHQOF4N06cja+i+yXB7vSjNCme7EgAAvQZGA9zLfyKVc+nm9KbfAJpKjfr/9gsqNqjaCsHbOO
- BeCeSNMtwVK+m6eFw/ncrySbji3Mj7Pd0Lkj4wEW8Qdn0FA+4U86MZKAI4QjG270G83n2e2cK9l
- IyRkWmxa1VFdFeIPh0PzhJuX4B85TnmsQS3WsnO51acb/HECp4pgL3JmGounaY1gQEvn7nWDqex
- KrF6RiXEYgOImJAswLS/BdeMT1tj799YMyrkLD8bbf/qTsIi4FKSYYQojScIIKY58ReJvfUIDHl
- HtRumFj+bYRDYOqiRug==
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=EiAgCLLKtgnx6EotJx8A:9 a=QEXdDO2ut3YA:10
+ a=NFOGd7dJGGMPyQGDc5-O:22
+X-Proofpoint-GUID: 3vKVo2956R-SBCDi7yxE7r7Ex0zHgQ-l
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE3MDExNSBTYWx0ZWRfXxamAAxkMiKEY
+ PUDlay+kHlFyJFW5ZA5vdE6NiwyLDx3wSGdJqkKrvk6zc2k07rxArcfyt9KdmVwsSwN4L7l/9s0
+ mla8Uk9cDsjO6f60Rsm8Mv5ZXizhrFdY5pFXzjEwzzQFrkhPuu99teoxvgNzmapqGg4OU+qwjPD
+ MawDWena1ARKnytMhCCAy19UW33BoINB2+wDt1R0Utn/w3tFdJj6XuJtEAPOYEvAdC1B+HBQsZc
+ GTg2P63JmQQaMZ3IkQ6exl48dZkRM7bMkRTMfgigwTEx84hc0Ibrt27k/a8p8qqkUcpFmxPMRI8
+ Ai0KE8rjWF1u+M0UE37aIE9iHWK1yFQk4WuJuDbNFIsCwNLYAX/7SvhT588hbRbB7IuOJ3vAnym
+ OctrOY6uNAIPxTKK+qx8a7NwRGzAO7kbfpYcFHaSEtRAkRWFE2kvTHRmeBrRXjF4nCW5+JUrOvR
+ P3UBCEu9pPrVdSmmoIg==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-17_01,2026-09-16_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 suspectscore=0 malwarescore=0 priorityscore=1501 phishscore=0
- spamscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0 adultscore=0
+ impostorscore=0 priorityscore=1501 bulkscore=0 spamscore=0 adultscore=0
+ suspectscore=0 malwarescore=0 phishscore=0 clxscore=1015 lowpriorityscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609170115
 
-Pop the outer tunnel header and set skb->protocol to the inner protocol
-derived from ctx->tun.inner_proto in nf_flow_ip_tunnel_pop(), instead of
-bailing out unless the tunnel carries IP-in-IP or IPv6-in-IPv6.
-This is a preliminary patch to support IPv4 over IPv6 and SIT tunnel
-flowtable offload.
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+
+Add encap_proto (AF_INET or AF_INET6) to struct flow_offload_tunnel
+to allow its use as part of the hash table key during flowtable entry
+lookup.
+This is a preliminary change to support IPv4 over IPv6 tunneling via
+the flowtable infrastructure for software acceleration.
 
 Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 ---
- net/netfilter/nf_flow_table_ip.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/linux/netdevice.h             | 1 +
+ include/net/netfilter/nf_flow_table.h | 1 +
+ net/ipv4/ipip.c                       | 1 +
+ net/ipv6/ip6_tunnel.c                 | 1 +
+ net/netfilter/nf_flow_table_ip.c      | 2 ++
+ net/netfilter/nf_flow_table_path.c    | 2 ++
+ 6 files changed, 8 insertions(+)
 
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 1f0710eef185..1feebe423c66 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -910,6 +910,7 @@ struct net_device_path {
+ 			};
+ 
+ 			u8	inner_proto;
++			u8	encap_proto;
+ 		} tun;
+ 		struct {
+ 			enum {
+diff --git a/include/net/netfilter/nf_flow_table.h b/include/net/netfilter/nf_flow_table.h
+index f2e2771f188f..306e7d9ec3ec 100644
+--- a/include/net/netfilter/nf_flow_table.h
++++ b/include/net/netfilter/nf_flow_table.h
+@@ -118,6 +118,7 @@ struct flow_offload_tunnel {
+ 	};
+ 
+ 	u8	inner_proto;
++	u8	encap_proto;
+ };
+ 
+ struct flow_offload_tuple {
+diff --git a/net/ipv4/ipip.c b/net/ipv4/ipip.c
+index 2ffe64e736e0..15189e1fa068 100644
+--- a/net/ipv4/ipip.c
++++ b/net/ipv4/ipip.c
+@@ -379,6 +379,7 @@ static int ipip_fill_forward_path(struct net_device_path_ctx *ctx,
+ 	path->tun.src_v4.s_addr = tiph->saddr;
+ 	path->tun.dst_v4.s_addr = tiph->daddr;
+ 	path->tun.inner_proto = IPPROTO_IPIP;
++	path->tun.encap_proto = AF_INET;
+ 	path->tun.dst = &rt->dst;
+ 	path->dev = ctx->dev;
+ 
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index d5ff50a2ac01..64a184bca467 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -1868,6 +1868,7 @@ static int ip6_tnl_fill_forward_path(struct net_device_path_ctx *ctx,
+ 		path->tun.src_v6 = fl6.saddr;
+ 		path->tun.dst_v6 = fl6.daddr;
+ 		path->tun.inner_proto = IPPROTO_IPV6;
++		path->tun.encap_proto = AF_INET6;
+ 		path->tun.dst = dst;
+ 		path->dev = ctx->dev;
+ 		ctx->dev = dst->dev;
 diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
-index 42e8de696474..cd636b4cf74b 100644
+index a53393f8eda0..1b9360d54dfc 100644
 --- a/net/netfilter/nf_flow_table_ip.c
 +++ b/net/netfilter/nf_flow_table_ip.c
-@@ -372,6 +372,11 @@ static void nf_flow_ip_tunnel_pop(struct nf_flowtable_ctx *ctx,
- 
- 	skb_pull(skb, ctx->tun.hdr_size);
- 	skb_reset_network_header(skb);
-+
-+	if (ctx->tun.inner_proto == IPPROTO_IPIP)
-+		skb->protocol = htons(ETH_P_IP);
-+	else
-+		skb->protocol = htons(ETH_P_IPV6);
- }
- 
- static bool nf_flow_skb_encap_protocol(struct nf_flowtable_ctx *ctx,
+@@ -199,12 +199,14 @@ static void nf_flow_tuple_encap(struct nf_flowtable_ctx *ctx,
+ 		tuple->tun.dst_v4.s_addr = iph->daddr;
+ 		tuple->tun.src_v4.s_addr = iph->saddr;
+ 		tuple->tun.inner_proto = ctx->tun.inner_proto;
++		tuple->tun.encap_proto = AF_INET;
+ 		break;
+ 	case htons(ETH_P_IPV6):
+ 		ip6h = (struct ipv6hdr *)(skb_network_header(skb) + offset);
+ 		tuple->tun.dst_v6 = ip6h->daddr;
+ 		tuple->tun.src_v6 = ip6h->saddr;
+ 		tuple->tun.inner_proto = ctx->tun.inner_proto;
++		tuple->tun.encap_proto = AF_INET6;
+ 		break;
+ 	default:
+ 		break;
+diff --git a/net/netfilter/nf_flow_table_path.c b/net/netfilter/nf_flow_table_path.c
+index 1e55644f2edb..90360406d11e 100644
+--- a/net/netfilter/nf_flow_table_path.c
++++ b/net/netfilter/nf_flow_table_path.c
+@@ -135,6 +135,7 @@ static int nft_dev_path_info(struct net_device_path_stack *stack,
+ 				info->tun.dst_v6 = path->tun.dst_v6;
+ 				info->tun.inner_proto = path->tun.inner_proto;
+ 				info->tun_dst = path->tun.dst;
++				info->tun.encap_proto = path->tun.encap_proto;
+ 				info->num_tuns++;
+ 			} else {
+ 				if (info->num_encaps >= NF_FLOW_TABLE_ENCAP_MAX)
+@@ -246,6 +247,7 @@ static int nft_dev_forward_path(const struct nft_pktinfo *pkt,
+ 		route->tuple[!dir].in.tun.src_v6 = info.tun.dst_v6;
+ 		route->tuple[!dir].in.tun.dst_v6 = info.tun.src_v6;
+ 		route->tuple[!dir].in.tun.inner_proto = info.tun.inner_proto;
++		route->tuple[!dir].in.tun.encap_proto = info.tun.encap_proto;
+ 		route->tuple[!dir].in.num_tuns = info.num_tuns;
+ 		dst_release(route->tuple[dir].dst);
+ 		route->tuple[dir].dst = info.tun_dst;
 
 -- 
 2.55.0
