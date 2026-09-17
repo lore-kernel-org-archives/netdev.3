@@ -1,45 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6706B4908DD;
-	Thu, 17 Sep 2026 12:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25BA4F55DA;
+	Thu, 17 Sep 2026 12:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789646902; cv=none; b=GwRVGuxapG7dp+GPvmRYV7ZNy9U1cTZU+5rSKTrfqVPQ5fBHtuAUne0L29jejPjal6Vfh98yUOhvZh5GTlVE3a//ERl7gEP1OiK89VHYHqu+xzqQScVrc0uQOfFFxMA17jMTLbnKN50f+OXsyk/hwWaIBCmxljfkli45bB4kqKY=
+	t=1789646914; cv=none; b=Ym4+hydWRpQXWE8Z1TfFDgZ/sYQ5VhEwEjd839f2bSLJLXRzYpJhtt4lrJJhhl64c24Ya4XzoEJNzNzftGMkt2oGxXPh3H+mO+XwbQirfO5PP8Z9UWc66S/v9LkqjMNYscf29uxTfQ2+FBCTnd4R6YMK8tbLXkBAF4iyYlqgUSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789646902; c=relaxed/simple;
-	bh=hHbT27kuqIlaiO3SIpprZ1HphhUZk1g6+IqTfKx3SBA=;
+	s=arc-20240116; t=1789646914; c=relaxed/simple;
+	bh=FZsdvWQFJ1GgHIyPu07rN60LuIicHhed3AlRLarvfxI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KPO4jUglovVyuZSiqXdNSWYb71EiuP9eYcolM+CKarjRosMmzXClxjbuQbUTlEaT5/PPyuZzTsChBVmmx19oKeJELB8+aIZvJnzojnj+j/Iw/UHyARQ9lMUNGcPwZTzadgyALTTdkS0wjLRFYGYuLkhmR557ksd/3f1/PGvx3zI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O9nwaMKM; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=i1pFZyt91SrZrKSnaWxaMDjNJ41KfKV/3/KLa23eCztICN/tFwqJKtzkrgQxCD6vy4zJr1eBjd07Bzsjg4+iL4CQtLVmgb7RecmMK6kmtw31FLrrnI3+EvPQuoQom0XuAkxJB+cRQP+8jrHz7w8AbOtvRTsfAtr9iIoAV4pCDbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mj7/Xadm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O9nwaMKM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DCF81F00893;
-	Thu, 17 Sep 2026 12:08:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mj7/Xadm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B50C1F000FF;
+	Thu, 17 Sep 2026 12:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789646886;
-	bh=ciOPc2jXkTRT4hhA5/7H/iIkZ4KsJ0K0tjd6lWke+pc=;
+	s=k20260515; t=1789646899;
+	bh=KuzN7+adFVVihVcZ1qWllq0YX4TYIzhAkBl9u1gApZ8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=O9nwaMKMeejQMy2k3h2s5MBhthv5N1sEW8K2ITD7Xj+cEzyjPjEar2Gbva2Kc2dpk
-	 qvAtEVhUEfGm1wcPAJwn+foOcfbQzUL/td3mO4FaONtQt7Ju1ntPSbozhEoMpASv+L
-	 xFZETbQIBRPMJXJ5jszyU9TDlLFDv2rIsO4wMl8GTR6L17UKKesrF8/htwK0rQhjl6
-	 29BrSUHzDF5TYEROX/y1fjJcO1jfSLZa7u0kt6pr0MQLCNjtHBnKF0I5Js9WzM6+Ei
-	 VI0ks2vfYuAA7a0VMwttU9DO7s4FV2803kwo7SjJR0RO4j9VHb/xoR7BsJ1ovhd4RN
-	 QZnYRzkDZXY5Q==
-Date: Thu, 17 Sep 2026 13:08:01 +0100
+	b=Mj7/XadmTyOjQj+jXV9nDdv42Nx0WNrWaoGcBK9G1mutdVCe7CFpkys/fYhHRoh+z
+	 AAt4PrTVq11PNSP7O4y7WAlOOQFdiW84bnOvfEEpNUAlShH7FSa2tqLj14GaPZWgIg
+	 MvZbJYIAmjSyPJSUXq2o42wUjrZo2e2qdvHa5X9iK6uUfObv80kbSBfWCY7bYA+Rgf
+	 81vr3zwZVaq0yk3wwjFK7lbf1GCDdgZXqgj5NsFu9af4pCRzYzHH6n7xFZZzdrcEcY
+	 XQLz03wtpsyuce4i9SARSBZCQRGdZwCoxogelX8Rc8XXbZ83rfYOislvRmIs62Dgvw
+	 znHKmaiTqJ3Zw==
+Date: Thu, 17 Sep 2026 13:08:14 +0100
 From: Simon Horman <horms@kernel.org>
 To: Jamal Hadi Salim <jhs@mojatatu.com>
 Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Alexandre Ferrieux <alexandre.ferrieux@gmail.com>,
-	stable@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>,
+	Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
 	Victor Nogueira <victor@mojatatu.com>, hybris <hybris@mojatatu.ai>
-Subject: Re: [PATCH net 1/2] net/sched: cls_u32: fix manual hash table handle
- IDR aliasing
-Message-ID: <20260917120801.GA51261@horms.kernel.org>
+Subject: Re: [PATCH net 2/2] selftests/tc-testing: add u32 manual table
+ handle IDR tests
+Message-ID: <20260917120814.GB51261@horms.kernel.org>
 References: <QDISC-LQFE.v1.20260911041746.1@mojatatu.com>
+ <QDISC-LQFE.v1.20260911041746.2@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,43 +48,19 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <QDISC-LQFE.v1.20260911041746.1@mojatatu.com>
+In-Reply-To: <QDISC-LQFE.v1.20260911041746.2@mojatatu.com>
 
-On Wed, Sep 16, 2026 at 06:01:14AM -0400, Jamal Hadi Salim wrote:
-> A u32 hash table created with an explicit handle ('tc filter add ...
-> handle 801: u32 divisor N') keys its IDR entry on the raw handle, while
-> the destroy paths free it under handle2id(handle). The two key domains
-> disagree for handles in the 0x800..0xFFF htid range:
-> handle2id() folds them back into the auto-allocated id space (1..0x7FF).
+On Wed, Sep 16, 2026 at 06:01:15AM -0400, Jamal Hadi Salim wrote:
+> 35fc: create a manual table with handle 801:, then add an auto-allocated
+> table. Before the fix, the auto allocation reuses id 1 and hands out the
+> same handle 0x80100000, aliasing the manual table; the test requires the
+> manual 801: handle to keep exactly one entry in the dump.
 > 
-> A manual table therefore leaves its raw-keyed IDR entry unreachable on
-> delete (a permanent leak), and its delete can drop the idr entry of an
-> unrelated live auto table. A later auto allocation can then hand out a
-> handle that aliases the live manual table; u32_lookup_ht() first-match
-> routes lookups and TCA_U32_LINK for that htid to the wrong table.
+> a6e8: with a live u32 table keeping the tc_u_common alive, add and delete
+> a manual table with handle 901:, then re-add it. Unpatched, the delete
+> leaks the raw-keyed IDR entry and the re-add fails with -ENOSPC; the
+> test requires the re-add to succeed.
 > 
-> Key the divisor-path alloc on handle2id(handle) so allocation and
-> removal share one key domain. A manual handle that maps onto an id
-> already in use is rejected with -ENOSPC, and auto allocation skips ids
-> held by live manual tables.
-> 
-> Conditions to recreate:
->   ip link add test0 type dummy
->   tc qdisc add dev test0 clsact
->   tc filter add dev test0 ingress protocol ip pref 1 \
->           handle 801: u32 divisor 16
->   tc filter add dev test0 ingress protocol ip pref 2 u32 divisor 16
->   tc -d filter show dev test0 ingress | grep 'fh 801:'
->   # unpatched: two live tables with handle 0x80100000 (the pref 2 root
->   # hnode is auto-allocated id 1); patched: the auto hnode takes id 2.
-> 
-> Also tested with a poc with a live u32 table on the block, add/delete a manual
-> table 'handle 901: u32 divisor 1' twice; unpatched, the re-add fails with
-> -ENOSPC because the raw key leaked on the first delete.
-> 
-> Fixes: 73af53d82076 ("net: sched: cls_u32: Fix u32's systematic failure to free IDR entries for hnodes.")
-> Reported-by: Sashiko (gemini + nipa) <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20260822222049.114526-1-jhs@mojatatu.com
 > Reviewed-by: Victor Nogueira <victor@mojatatu.com>
 > Tested-by: hybris <hybris@mojatatu.ai>
 > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
