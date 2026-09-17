@@ -1,95 +1,96 @@
-Received: from mail-ua2-f15.google.com (mail-ua2-f15.google.com [74.125.226.207])
+Received: from mail-ua2-f12.google.com (mail-ua2-f12.google.com [74.125.226.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954124A2633
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 22:49:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.226.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA144A4F17
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 22:49:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.226.204
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789685345; cv=pass; b=RhGxFQFlKVvbqxkZVirk+dgzrMmM6T0GzptbIQUtz48rJIzyhIL3h5Q2U1Xo4sVuE6Lhkm6j3tVaOfOO6X5dJe751mQIrcLbAOaspDSI2CuHUJaiiZoc9pt7uR5alzXODG1GLGB7sp1ohxoNylAeBNTuxP/C/8aFnp8HSAVyQxc=
+	t=1789685386; cv=pass; b=s97RUCQrStOx5iF37Vq5+4+zXm/FfOxpZjzqLUqSMtRTfMjyJprxwM8E+8xqKvKrmtHYMyJVt3+kczPucqiKUieHx8ZA4O9g/py3LBdqsuerxuN1FjTaPjV6QloObo4Ly5RA2CiEV6HYFFvG5h8IaH58YoVY4YZf9cCYrY/fno8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789685345; c=relaxed/simple;
-	bh=xGox2TSbccGn0rU3WVlrmi/F7M1SnXxQfREwUPrWvZo=;
+	s=arc-20240116; t=1789685386; c=relaxed/simple;
+	bh=g1y2S3ScLNqMokaua6sHRpGqfvZQebFLnNN6s3pO3co=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=chuRbltwT2jcovCnGIft430ThLPkYE9hEmInRofJQgjaqXbSstzpDAxbYHLazteqIB0NQ1C1SGBOFuXT+5UB4wBdedecSZleCPkU90OPNzstb4VtA7fq76rtH5DcYivELwXnB9vJA0YtOLbbCujUdF3MRACrfpEuviNQbpiZKlU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com; spf=pass smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=everpuredata.com header.i=@everpuredata.com header.b=DR8P0SIK; arc=pass smtp.client-ip=74.125.226.207
+	 To:Cc:Content-Type; b=IQUUOvNl+3oXSalhYlWkWrC68LI2r5ZoSPVkA8mGBxSHn+kUzjA8+PVku6pKxFJFBtTGZufNdv2v+vbF9D1/ceHeCb3lH422HLazEsS4NTKN9LmYqCJc1LXuAAg2YP3vXeZscpUZrT/0ht5W3jOYkEV2K9HhrDstho6SfEi90po=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com; spf=pass smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=everpuredata.com header.i=@everpuredata.com header.b=zlV+Y/K0; arc=pass smtp.client-ip=74.125.226.204
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=everpuredata.com header.i=@everpuredata.com header.b="DR8P0SIK"
-Received: by mail-ua2-f15.google.com with SMTP id a1e0cc1a2514c-97e7c7b4ed2so46567241.2
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 15:49:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789685342; cv=none;
+	dkim=pass (2048-bit key) header.d=everpuredata.com header.i=@everpuredata.com header.b="zlV+Y/K0"
+Received: by mail-ua2-f12.google.com with SMTP id a1e0cc1a2514c-97e97e2c7b3so56306241.0
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 15:49:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789685383; cv=none;
         d=google.com; s=arc-20260327;
-        b=gcUYtys/PMgtOorsKQ2wDfpDqo2y3RdU4ryfU3a2aTEgRA1Ui/Ry4Wv2VAd5ocA0y9
-         Xw6kj1Aibbi566QkqwlYiMGA5ibLv82FYM4+9ikpIUU1ij0dSYW9I4Ufi6gt1LVqqdCF
-         xG9xznVSAIX89jJ0sHCnZsZURnwD0MqAfP+tEypzq/RThTHudrC4Js9aTxWTou4I3RTe
-         rqFQQ1UdnO8P5ajan3UlwJYhj0ucnbP6Ekq36BhmEaZw5cm4hb/kzfUcJOzlOK80rZXs
-         oWpQA3gf153ts+HCFDqZlrffI9/c7gkT5mr7aPfYEQttPrn9DStHrM4+sVIJpA6wKpe9
-         QaWw==
+        b=amkO929RnWy601FEQ1k5irzebEJrGky1gu0QxQg7zvxB168fPImtv4T7rxfw6cZ4q1
+         iEp6RuI7BQpMoI8CLlmXhBPQgb+/k91MQ+/c0zUXXy1osdxdIZxRFkkhmItmFdnVUrl5
+         LKMIgy9AJ4Te6RdnH939ecKwwSocZ8E1Wlu7DJ58HaUVUsheNW/ljdYGfS/OFnFbEPED
+         AoAqvInMAa/SlZ6aOKRN/1IZHJefaYquVsyys44JJMawPBhH8Y+J9ykpW/QIR0NkJc6u
+         NICUEqamCSNtF4KaG7GE8Rq62l42wT5iLm/3EolpXYMPFT9DrY7aUWAUaylbGtGSKyux
+         Fyhg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=VLdP63bUcDLsKLfapMeCNDEcc2sx3WP8LGQTKNs6yu8=;
+        bh=gMnz9tKs4f0Xfd9UUmRoba4haQbv4Z/vBZCuMSGDjfo=;
         fh=KDPEyLFrx0IaPdgkSonKsexwzLCh01ZOslfJI1v3q8w=;
-        b=gZtp2pEyi9P9v00hu98cN4XuHkr8i5drtmMM3iVM0yKceQ6Ehjl+6Q3v+Fl6T8pSxP
-         1e17OwH8wxmJuuiUnpua0ThQ30nrjQpMfKNAvn/2HwsjfbWxQbypzUCFvi28C70jFqXa
-         Fr8XkIgqO5ZJt/8mf/wyqCU86ljaWlL0RUathwwPUD6cTTKTbbpYnuF/C5Rn7REXRW8Y
-         nyXFVa2EH23Y5r9YOeR0hdW+6FfLZRhbqhyffCYqjpNYYc0LKOyIVSAiq+KJB4fhCuSU
-         1JjtTCwBevUFhuzyfaiW66vfXuRDb8XoHtZmX9Xl72lcjFBkBfSmeVcxCO97whbGJXJ7
-         +IbA==;
+        b=kP1wrHFhsTmVCbYKVqN50FcsbxFhVOqXAgDfct+aQ7BQQ8e7ab1iCRvShhZViwG3F7
+         XePKaTsH59+MUbm6vB7vMA8IB9d4+ULPSmpIp4MeKt4FDGf35JWhCz9HC5MR88XVWfSz
+         pZZ+QotHJIo0RgM9FiySJn1Qd1+URI3OJK59/Y99IiY+XC1HVrXChH17gvYAmaDVqo3r
+         NXm8eRsPhHGMf1RxUaL/+EtBgTLqqMzZI57t+i1O6msJGiA0WtbqIQWbB+nKuFjNeKYM
+         imhgL/+tHSfi1i5wWJPpLEhy1jq9l+10xB9xqUSM5+H9VuhyYExSxI3T63ZuefoRjFc0
+         Gd4A==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=everpuredata.com; s=google; t=1789685342; x=1790290142; darn=vger.kernel.org;
+        d=everpuredata.com; s=google; t=1789685383; x=1790290183; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=VLdP63bUcDLsKLfapMeCNDEcc2sx3WP8LGQTKNs6yu8=;
-        b=DR8P0SIKsvvenehlOe3xtoUsI+/DC+TdB7Bx4GuyjsyRGTGTyzRHXzqcYzEeT85X8h
-         gKgK7F6rUrZZcote9Ayi+dZZD/gDEuTW7hluY6LztOyKdrhmjhoIoivSXoUm55VXtg7V
-         DFEtR0Zj7jbqsAB5Ycbr9fpDjdhQS0F3da0gxFUD4j3AcAI87SsR/CVdyDeoXCkREY90
-         jginKIAe+dKsNXsq2Cc0Y9+lq/PopKrQPoN9n4wS8vxVY6DQpz3OFOrXNxFMsyBudLuJ
-         +8f0ClGdnkFmj1b2ZAKgtPr3U1ZsfOG2IuM/N0KRDau6lWqXAR2nevv6LEYsrOpKYvTP
-         GunQ==
+        bh=gMnz9tKs4f0Xfd9UUmRoba4haQbv4Z/vBZCuMSGDjfo=;
+        b=zlV+Y/K0HOwmRNmD+pQL5F8C312OqQBXz/48ekPNarEjPNT3Ey1WgB6dU0ZR0wpcsB
+         8+LN/xuyYKLu2mciktYBLsc2aURwXg6Dmra7LvUVmEx1ikk99hPs9pCTikQxF203iXKE
+         lDmz7iqO76O+gamGzGWapJ5NZPsftn/rNIIh60IbK6/gZdPUbkHynTSLkivXDrQEiuir
+         CThs+xe7/eam/Waax8FXm+zrFggT7V9f/+angIZhrjVnalgne44b0tb9Ka94lzy6QieP
+         dhwUlKvNHru+dtFRytUb2D9YT9j+G3eyCT7XXYmpG02z/s0WQ5ObWfqs94KwIJr597+V
+         gLWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789685342; x=1790290142;
+        d=1e100.net; s=20260707; t=1789685383; x=1790290183;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=VLdP63bUcDLsKLfapMeCNDEcc2sx3WP8LGQTKNs6yu8=;
-        b=Z+TW6dV1Grwee47WgTUp0CUN6q28sfbzdMyxieaRaYN0Y0vtnlApi3/zeXACjOMVOc
-         PKJ3AlfH5Jml33FmGxdBCggdn/5/LHPJ+e81ZTzSDzI+1VDOkgwqPzcgjBB3b7Gaxy2G
-         XENGb1VGO1YYtJyc+rKKrRMMqNrhxhNsG0FMvkqvxPyAqV1x8Yb8dueS16d0TAzpqXaf
-         57vW1YPg4s+c0PCdRkwSF+FYJWab0V3BWhZriCbRrhTyCstCfmH8JI9RSRZNxVNQpjbP
-         XHAV2Mj2N6ZJoLiAarF2oade6nMYYllrQMUi/uuusewh5E/p8qKtYIZ8FCf96sOfai+K
-         Ig3A==
-X-Gm-Message-State: AFuF++m4xVYrBouw8NL6LB0yaEcFedHVF3UansmsidD/sMCUADxk+Wum
-	9YliIQ19Ku30ztYVDBEjW6mXa0Z6ke79Y89tPkelBBTwe4hNrxXm9ztqSkfo2lfDehz6lFAmJ4Q
-	nDgvPoVTm/AkDbqBU+xE9a+EZMX9VNtAKipJlpV10uQ==
-X-Gm-Gg: AYBFou1PWp6EO9827XIv4KVQlhPl49+QOC2shYNA0Pz+4PTTipfngY5Jn+gBJBthjO4
-	tBaSerlNDvs2Ol+c+ERzRqfJ2Urshc1sD+mC3fXnrpKxCsfOcr+bd7PAoz6MXq/PKM3oU2eMzo3
-	yWw9j9LbI2EQJiroNUZ+YIbrz4vkTC48AerdJdcFCy58/8dav1BL3gtzGo5XDYJ2p6Q4MFGposQ
-	DJaSNqFOlivYgKpsrmAIvaJde/0Kvf/RRIquOaWvxfHB6ROTafwZPX2uyFp4giWzCAWiVk6zN4d
-	ag+1i7EbJTrwTb8scw7LtTQm7kJ5XZCqQW0yIs2FaCWrxS+t0wrzewIU09EwJ7+r4GscLlPycyI
-	rHsrVRRpM0zOtpEVUfxQHi956sxqWe3W/fQBfFvur9qxTn2aNClEJRd/e1pN/fgr+hqhktN4IVL
-	uumNlvIskQGQ94s+2FeXaf0y7tT+szmr8057k61s0E
-X-Received: by 2002:a05:6102:370c:b0:7a2:568f:815d with SMTP id
- ada2fe7eead31-7a55c2891a3mr317777137.18.1789685342125; Thu, 17 Sep 2026
- 15:49:02 -0700 (PDT)
+        bh=gMnz9tKs4f0Xfd9UUmRoba4haQbv4Z/vBZCuMSGDjfo=;
+        b=VUYAAsRFEB6wHJZ62cEu9732aYxUp4cjzWrntCpEXhJlR0YAErmQBVEIAYwX0GYgSS
+         PmAOzqj6QKj5+ZbnV+GxmK7CiZwwmA5QOOkFRZYDKZ74QBUvFp9qHxOhq8vE3cJ0mMGi
+         u936VatuBGQ7tHFfs33LxgRkg9j9HjOHseGcD870nGQzyLcmfUsY0flRa7IMe5+4ONUt
+         7MPxdFawNv0XDvOiMoZx7swT5P/FdKPZRkowy0CXu3vCFYgY6jWC4Q41hPCTb84gqs0r
+         2qaG3zLtsU5B7Ww3IQadg32QQKyn7kUXQnXk4Mj6vkNSbn6kAZS7iJzSIcCq5atQ9EKv
+         +wqg==
+X-Gm-Message-State: AFuF++mk5b/thu1ocRX2bfsow7npN0hGD1W/msCjOC4os8HiKb8vCq49
+	KxV9PWPSWm0vHsmcBJn6WCwNwuld6zyf0iCvvhPV8eIxMrVfnkR5GcX56EKp1PUzpcWrv66WoDh
+	jpQ81g6AP3UZBdkcKfXoDvRTJqlOI6UbrQU67YGRbLI2E4q/F5nW7MTQ=
+X-Gm-Gg: AYBFou1YzMCpAzKuEBrmZVE/HY5HDwQHy3JOLkMsLVLBDDiy8C6Niidr6bQAX76syta
+	GjdLrQzGhfa+eDI4mQcRotx0/OqGUM9p/BC9jYzVmF0OvtpcM/8RuoqXQF5INGXTXzsLrYUkbkd
+	+sF6XTzAK2FasZh1JunAEnHTPnNRbGZrsk2X+KeDmuwM1KHX6dFn9htHSvL1FLJoKDd+iWT6idy
+	kAePyuJ9px4VyM1OADaYNKgc5z84Q30DOfmsCgaoZLjmPahAb145jQq2YWXV+dffEMCmsVEFlRO
+	hunvRQzP6KZUxFkuxsDvxm4ARwci7quoBK8TXEbQjZ90LASiiMGHYKbL+GPEzikyoj3zVPJ6Jp9
+	/9NkkwDKMZLgaW+msPi/SrkY4QBYe+wrCoHe7bi2uVAKFiIXji6gv5CkPBjQaL+u7LblKUUBWx0
+	g0BbEj0s+rYs906cFpWDPUKm5zE0b1K1ak0WtqUCTq
+X-Received: by 2002:a05:6102:e12:b0:7a4:ebdb:cc0c with SMTP id
+ ada2fe7eead31-7a55a72b4d1mr307255137.6.1789685382649; Thu, 17 Sep 2026
+ 15:49:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260807183853.2288959-5-rjethwani@purestorage.com> <20260817221128.3666336-1-kuba@kernel.org>
-In-Reply-To: <20260817221128.3666336-1-kuba@kernel.org>
+References: <20260807183853.2288959-6-rjethwani@purestorage.com> <20260817221141.3666393-1-kuba@kernel.org>
+In-Reply-To: <20260817221141.3666393-1-kuba@kernel.org>
 From: Rishikesh Jethwani <rjethwani@everpuredata.com>
-Date: Thu, 17 Sep 2026 15:48:50 -0700
-X-Gm-Features: AcwNN1UofpS2qeV6grFcARfb7kApnfjOHa-hT6jMiORZuSa1M899a68RRLZ5OjY
-Message-ID: <CAKaoeS2J_8BviCpkf2qoNKWkmiXUAfdwtPpqUsBhdy5zH7j2BQ@mail.gmail.com>
-Subject: Re: [PATCH v16 04/10] tls: add TLS 1.3 hardware offload support
+Date: Thu, 17 Sep 2026 15:49:30 -0700
+X-Gm-Features: AcwNN1VdPLRzjL3LMeMbWl1DlTVo4J639WuRy6NrMJDEJ6TRFiz5Bn6zB5dPz0w
+Message-ID: <CAKaoeS1f3O=0+yM7KTbfjot+V4kzX3OcurKAEMfak9c8KEBa9w@mail.gmail.com>
+Subject: Re: [PATCH v16 05/10] tls: split tls_set_sw_offload into init and
+ finalize stages
 To: Jakub Kicinski <kuba@kernel.org>
 Cc: netdev@vger.kernel.org, saeedm@nvidia.com, tariqt@nvidia.com, 
 	mbloch@nvidia.com, borisp@nvidia.com, john.fastabend@gmail.com, 
@@ -104,231 +105,219 @@ ote:
 > This is an AI-generated review of your patch. The human sending this
 > email has considered the AI review valid, or at least plausible.
 > ---
->     tls: add TLS 1.3 hardware offload support
+> tls: split tls_set_sw_offload into init and finalize stages
 >
-> This drops the TLS_1_2_VERSION gates in tls_set_device_offload() and
-> tls_set_device_offload_rx(), teaches tls_device_record_close() to append
-> the TLS 1.3 content_type byte along with the tag, and switches the
-> device fallback encryption path to prot->prepend_size / prot->aad_size
-> so the 1.3 layouts work.  tls_device_init() also pre-populates
-> dummy_page with an identity byte map.
+> This splits tls_set_sw_offload() into tls_sw_ctx_init(), which allocates
+> the SW contexts and sets up the AEAD transform, and tls_sw_ctx_finalize()=
+,
+> which copies the salt/IV/record sequence into the live cipher context.
+> tls_set_device_offload_rx() is converted to call the two halves separatel=
+y.
 >
-> A few questions below.
+> A couple of questions below.
 >
+> > diff --git a/net/tls/tls.h b/net/tls/tls.h
+> > index 60a37bdaaa25..5a6ee1ea00f8 100644
+> > --- a/net/tls/tls.h
+> > +++ b/net/tls/tls.h
+> > @@ -147,6 +147,10 @@ void tls_strp_abort_strp(struct tls_strparser *str=
+p, int err);
+> >  int init_prot_info(struct tls_prot_info *prot,
+> >                  const struct tls_crypto_info *crypto_info,
+> >                  const struct tls_cipher_desc *cipher_desc);
+> > +int tls_sw_ctx_init(struct sock *sk, int tx,
+> > +                 struct tls_crypto_info *new_crypto_info);
+> > +void tls_sw_ctx_finalize(struct sock *sk, int tx,
+> > +                      struct tls_crypto_info *new_crypto_info);
+>
+> [Severity: Low]
+> Would it be worth documenting the pairing contract of these two helpers
+> here?  As written, tls_sw_ctx_finalize() may only be called after a
+> tls_sw_ctx_init() that returned 0, with the same tx value, the same
+> new_crypto_info pointer, and an unchanged crypto_info->cipher_type.  Sinc=
+e
+> finalize() returns void it cannot report a violation, and the tx /
+> new_crypto_info selection logic is now duplicated in both halves.
+>
+I'll document the pairing contract above the declarations in net/tls/tls.h
+
+> >  int tls_set_sw_offload(struct sock *sk, int tx,
+> >                      struct tls_crypto_info *new_crypto_info);
+> >  void tls_update_rx_zc_capable(struct tls_context *tls_ctx);
 > > diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
-> > index 37bb06a8e8f5..bbb1aa733500 100644
+> > index bbb1aa733500..cf67e1f6c5f4 100644
 > > --- a/net/tls/tls_device.c
 > > +++ b/net/tls/tls_device.c
-> > @@ -317,25 +317,34 @@ static void tls_device_record_close(struct sock *=
-sk,
-> >                                   unsigned char record_type)
-> >  {
-> >       struct tls_prot_info *prot =3D &ctx->prot_info;
-> > -     struct page_frag dummy_tag_frag;
-> > -
-> > -     /* append tag
-> > -      * device will fill in the tag, we just need to append a placehol=
-der
-> > -      * use socket memory to improve coalescing (re-using a single buf=
-fer
-> > -      * increases frag count)
-> > -      * if we can't allocate memory now use the dummy page
-> > +     int tail =3D prot->tag_size + prot->tail_size;
-> > +
-> > +     /* Append tail: tag for TLS 1.2, content_type + tag for TLS 1.3.
-> > +      * Device fills in the tag, we just need to append a placeholder.
-> > +      * Use socket memory to improve coalescing (re-using a single buf=
-fer
-> > +      * increases frag count); if allocation fails use dummy_page
-> > +      * (offset =3D record_type gives correct content_type byte via
-> > +      * identity mapping)
-> >        */
-> > -     if (unlikely(pfrag->size - pfrag->offset < prot->tag_size) &&
-> > -         !skb_page_frag_refill(prot->tag_size, pfrag, sk->sk_allocatio=
-n)) {
-> > -             dummy_tag_frag.page =3D dummy_page;
-> > -             dummy_tag_frag.offset =3D 0;
-> > -             pfrag =3D &dummy_tag_frag;
-> > +     if (unlikely(pfrag->size - pfrag->offset < tail) &&
-> > +         !skb_page_frag_refill(tail, pfrag, sk->sk_allocation)) {
-> > +             struct page_frag dummy_pfrag =3D {
-> > +                     .page =3D dummy_page,
-> > +                     .offset =3D record_type,
-> > +             };
-> > +             tls_append_frag(record, &dummy_pfrag, tail);
->
-> [Severity: Medium]
-> Here record_type is used directly as an offset into the shared global
-> dummy_page, and tail =3D prot->tag_size + prot->tail_size bytes are appen=
-ded
-> starting from that offset.  tls_device_init() only writes the first 256
-> bytes of the page, and the page comes from a plain alloc_page(GFP_KERNEL)=
-,
-> so the rest is not zeroed.
->
-> With AES-GCM (tag_size 16) and TLS 1.3 (tail_size 1), a record_type of 24=
-0
-> or above makes the appended frag cover dummy_page bytes
-> [256, record_type + 17), which are never initialized.
->
-> record_type is taken verbatim from the user cmsg; tls_process_cmsg() in
-> tls_main.c checks only cmsg_len and MSG_MORE:
->
->         case TLS_SET_RECORD_TYPE:
->                 if (cmsg->cmsg_len < CMSG_LEN(sizeof(*record_type)))
->                         return -EINVAL;
->                 if (msg->msg_flags & MSG_MORE)
->                         return -EINVAL;
->                 ...
->                 *record_type =3D *(unsigned char *)CMSG_DATA(cmsg);
->
-> so all 256 offsets are reachable from an unprivileged process.  Can this
-> put uninitialized page contents into the tag placeholder area of the
-> record?  Would zeroing the page (__GFP_ZERO), initializing
-> 256 + max tag bytes, or bounding the offset be preferable?
->
-> Related to this, the comment added in tls_device_init() says "By populati=
-ng
-> all 256 values, we avoid needing to validate record_type at runtime", but
-> the identity map only covers the content_type byte, not the tag portion o=
-f
-> the tail that follows it.
->
-> > +     } else {
-> > +             if (prot->tail_size) {
-> > +                     char *content_type_addr =3D page_address(pfrag->p=
-age) +
-> > +                                               pfrag->offset;
-> > +                     *content_type_addr =3D record_type;
-> > +             }
-> > +             tls_append_frag(record, pfrag, tail);
-> >       }
-> > -     tls_append_frag(record, pfrag, prot->tag_size);
-
-I'll fix this by allocating the page with __GFP_ZERO, which keeps the
-trailing placeholder
-bytes defined for every reachable offset while the identity map still cover=
-s the
-content_type byte.
-
-> [Severity: High]
-> This isn't a bug introduced by this patch, but the else branch now
-> dereferences pfrag->page one step earlier than before, and pfrag->page is
-> never checked for NULL.
->
-> Consider the state skb_page_frag_refill() leaves behind on failure in
-> net/core/sock.c:
->
->         pfrag->offset =3D 0;
->         ...
->         pfrag->page =3D alloc_page(gfp);
->         if (likely(pfrag->page)) {
->                 pfrag->size =3D PAGE_SIZE;
->                 return true;
->         }
->         return false;
->
-> offset is zeroed and page is NULL, but size keeps its previous non-zero
-> value, so pfrag->size - pfrag->offset is at least PAGE_SIZE and the
-> "< tail" guard here is false.  The dummy_page fallback is skipped and the
-> else branch runs.
->
-> Can tls_device_record_close() then be reached with that pfrag?  In
-> tls_push_data(), with an already-open record (record->len >
-> prot->prepend_size, e.g. after a previous MSG_MORE sendmsg),
-> tls_do_allocation() takes the sk_page_frag_refill(sk, pfrag) path; on
-> allocation failure it returns -ENOMEM, sk_stream_wait_memory() returns
-> non-zero (immediately -EAGAIN for MSG_DONTWAIT), and control does:
->
->         } else if (record->len > prot->prepend_size) {
->                 goto last_record;
->         }
->
-> which sets done =3D true and calls tls_device_record_close(sk, tls_ctx,
-> record, pfrag, record_type).
->
-> For TLS 1.3 (prot->tail_size =3D=3D 1) that computes page_address(NULL) +=
- 0 and
-> stores record_type through it, then tls_append_frag() does get_page(NULL)=
-.
-> The pre-patch code took the same false branch and crashed in
-> tls_append_frag(), so the NULL deref itself is older, but should this tes=
-t
-> pfrag->page (or reset pfrag->size on refill failure) so the dummy_page
-> fallback that exists for exactly this situation is actually used?
->
+> > @@ -1235,7 +1235,7 @@ int tls_set_device_offload_rx(struct sock *sk, st=
+ruct tls_context *ctx)
+> >       context->resync_nh_reset =3D 1;
 > >
-> >       /* fill prepend */
-> >       tls_fill_prepend(ctx, skb_frag_address(&record->frags[0]),
-> > -                      record->len - prot->overhead_size,
-> > +                      record->len - prot->overhead_size + prot->tail_s=
-ize,
-> >                        record_type);
-> >  }
+> >       ctx->priv_ctx_rx =3D context;
+> > -     rc =3D tls_set_sw_offload(sk, 0, NULL);
+> > +     rc =3D tls_sw_ctx_init(sk, 0, NULL);
+> >       if (rc)
+> >               goto release_ctx;
 > >
+> > @@ -1249,6 +1249,7 @@ int tls_set_device_offload_rx(struct sock *sk, st=
+ruct tls_context *ctx)
+> >               goto free_sw_resources;
+> >
+> >       tls_device_attach(ctx, sk, netdev);
+> > +     tls_sw_ctx_finalize(sk, 0, NULL);
+>
+> [Severity: Low]
+> The commit message describes this as separating "cipher context
+> initialization from key material finalization", but this hunk also change=
+s
+> the order of operations in tls_set_device_offload_rx().
+>
+> Before the patch, tls_set_sw_offload(sk, 0, NULL) filled in ctx->rx.iv an=
+d
+> ctx->rx.rec_seq before netdev->tlsdev_ops->tls_dev_add() programmed the N=
+IC
+> and before tls_device_attach() published the context on tls_device_list a=
+nd
+> swapped sk->sk_destruct.  Now ctx->rx stays zeroed across both of those
+> calls and is only committed afterwards.
+>
+> The split by itself could have been done with tls_sw_ctx_finalize() invok=
+ed
+> at exactly the point where the old copy happened, so the new ordering loo=
+ks
+> like a deliberate choice.  Could the commit message say why finalize() ha=
+s
+> to run after tls_dev_add() and tls_device_attach()?
+>
+> For what it is worth, the window looks harmless at this commit: the whole
+> function runs under lock_sock() and down_read(&device_offload_lock), the =
+RX
+> data path is only armed later by tls_sw_strparser_arm(), the RX tls_dev_a=
+dd()
+> call is passed &ctx->crypto_recv.info rather than ctx->rx, and no in-tree
+> tls_dev_add() implementation reads the SW cipher_context.  A note in the
+> changelog would still help reviewers and anyone backporting this.
+
+I'll modify the commit message
+
+> >       up_read(&device_offload_lock);
+> >
+> >       dev_put(netdev);
+> > diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+> > index 62d46736e24b..63c83247f9a3 100644
+> > --- a/net/tls/tls_sw.c
+> > +++ b/net/tls/tls_sw.c
 >
 > [ ... ]
 >
-> > @@ -1091,11 +1100,6 @@ int tls_set_device_offload(struct sock *sk)
-> >       }
-> >
-> >       crypto_info =3D &ctx->crypto_send.info;
-> > -     if (crypto_info->version !=3D TLS_1_2_VERSION) {
-> > -             rc =3D -EOPNOTSUPP;
-> > -             goto release_netdev;
-> > -     }
-> > -
-> >       cipher_desc =3D get_cipher_desc(crypto_info->cipher_type);
-> >       if (!cipher_desc || !cipher_desc->offloadable) {
-> >               rc =3D -EINVAL;
-
-I'll fix this by adding !pfrag->page || guard
-
-> [Severity: Low]
-> Should Documentation/networking/tls-offload.rst be updated along with thi=
-s?
-> Its Rekey section still says:
->
->         Offload does not currently support TLS 1.3, therefore key rotatio=
-n
->         is not a concern for offloaded connections at this point.
->
-> Removing the version gates here and in tls_set_device_offload_rx() makes
-> the first half untrue, and the later patches in the series ("tls: device:
-> add TX KeyUpdate support", "tls: device: add RX KeyUpdate support") make
-> the second half untrue.  No patch in the series touches that file, so the
-> sentence is still there at the end of the series.
->
-> >
-> > @@ -1410,12 +1411,22 @@ static struct notifier_block tls_dev_notifier =
-=3D {
-> >
-> >  int __init tls_device_init(void)
-> >  {
-> > -     int err;
-> > +     unsigned char *page_addr;
-> > +     int err, i;
-> >
-> >       dummy_page =3D alloc_page(GFP_KERNEL);
-> >       if (!dummy_page)
-> >               return -ENOMEM;
-> >
-> > +     /* Pre-populate dummy_page with identity mapping for all byte val=
-ues.
-> > +      * This is used as fallback for TLS 1.3 content type when memory
-> > +      * allocation fails. By populating all 256 values, we avoid needi=
-ng
-> > +      * to validate record_type at runtime.
-> > +      */
-> > +     page_addr =3D page_address(dummy_page);
-> > +     for (i =3D 0; i < 256; i++)
-> > +             page_addr[i] =3D (unsigned char)i;
+> > @@ -2650,3 +2631,55 @@ int tls_set_sw_offload(struct sock *sk, int tx,
+> >  out:
+> >       return rc;
+> >  }
 > > +
-> >       destruct_wq =3D alloc_workqueue("ktls_device_destruct", WQ_PERCPU=
-, 0);
-> >       if (!destruct_wq) {
-> >               err =3D -ENOMEM;
-> --
-> pw-bot: cr
+> > +void tls_sw_ctx_finalize(struct sock *sk, int tx,
+> > +                      struct tls_crypto_info *new_crypto_info)
+> > +{
+> > +     struct tls_crypto_info *crypto_info, *src_crypto_info;
+> > +     const struct tls_cipher_desc *cipher_desc;
+> > +     struct tls_context *ctx =3D tls_get_ctx(sk);
+> > +     struct cipher_context *cctx;
+> > +     char *iv, *salt, *rec_seq;
+> > +
+> > +     if (tx) {
+> > +             crypto_info =3D &ctx->crypto_send.info;
+> > +             cctx =3D &ctx->tx;
+> > +     } else {
+> > +             crypto_info =3D &ctx->crypto_recv.info;
+> > +             cctx =3D &ctx->rx;
+> > +     }
+> > +
+> > +     src_crypto_info =3D new_crypto_info ?: crypto_info;
+> > +     cipher_desc =3D get_cipher_desc(src_crypto_info->cipher_type);
+> > +
+> > +     iv =3D crypto_info_iv(src_crypto_info, cipher_desc);
+> > +     salt =3D crypto_info_salt(src_crypto_info, cipher_desc);
+> > +     rec_seq =3D crypto_info_rec_seq(src_crypto_info, cipher_desc);
+> > +
+> > +     memcpy(cctx->iv, salt, cipher_desc->salt);
+> > +     memcpy(cctx->iv + cipher_desc->salt, iv, cipher_desc->iv);
+> > +     memcpy(cctx->rec_seq, rec_seq, cipher_desc->rec_seq);
+>
+> [Severity: Low]
+> Should this repeated get_cipher_desc() lookup be NULL checked?
+>
+> get_cipher_desc() returns NULL for a cipher_type outside
+> [TLS_CIPHER_MIN, TLS_CIPHER_MAX], and here the result is dereferenced
+> straight away by crypto_info_iv() / crypto_info_salt() /
+> crypto_info_rec_seq() (which read cipher_desc->*_offset) and by
+> cipher_desc->salt / ->iv / ->rec_seq in the memcpy() calls.
+>
+> The sibling stage still guards the identical lookup:
+>
+> net/tls/tls_sw.c:tls_sw_ctx_init() {
+>         ...
+>         cipher_desc =3D get_cipher_desc(src_crypto_info->cipher_type);
+>         if (!cipher_desc) {
+>                 rc =3D -EINVAL;
+>                 goto free_priv;
+>         }
+>         ...
+> }
+>
+> Today both callers reach finalize() only after an init() that validated t=
+he
+> same cipher_type (tls_set_sw_offload() returns early on error, and
+> tls_set_device_offload_rx() checks rc from tls_sw_ctx_init()), and
+> do_tls_setsockopt_conf() rejects unknown cipher_type before that, so this
+> does not look reachable.  Since the helper is now exported module-wide as
+> void, though, would re-checking cipher_desc (or at least a comment statin=
+g
+> the assumption) be preferable?
 
-I'll create a document commit
+I'll add the comment stating the assumption.
+
+> > +
+> > +     if (new_crypto_info) {
+> > +             unsafe_memcpy(crypto_info, new_crypto_info,
+> > +                           cipher_desc->crypto_info,
+> > +                           /* size was checked in do_tls_setsockopt_co=
+nf */);
+>
+> [Severity: Low]
+> The retained justification comment names only do_tls_setsockopt_conf(), b=
+ut
+> tls_set_device_offload_rx() is now also a caller of this code.  Should th=
+e
+> comment be extended to cover the device path as well?
+
+The comment names where the length was validated, not the immediate caller,
+so it stays correct for the device path too. Both offload paths receive
+new_crypto_info from do_tls_setsockopt_conf(), which checks
+if (optlen !=3D cipher_desc->crypto_info)
+before filling the buffer, and then hands that same validated crypto_info t=
+o
+either tls_set_device_offload_rx() or tls_set_sw_offload(). So the
+unsafe_memcpy() length is guaranteed regardless of which offload path we ca=
+me
+through. I'd rather leave the comment as-is than risk implying there's a
+second, separate check on the device path.
+
+> Separately, finalize() commits crypto_info, the IV and the record sequenc=
+e
+> into the live socket context, and calls tls_finish_key_update() for RX,
+> without any indication that the crypto_aead_setkey() in the init stage
+> succeeded.  Is the caller expected to guarantee that ordering?
+>
+> > +             memzero_explicit(new_crypto_info, cipher_desc->crypto_inf=
+o);
+> > +
+> > +             if (!tx)
+> > +                     tls_finish_key_update(sk, ctx);
+> > +     }
+> > +}
+
+Yes, that's the contract of the init/finalize split: tls_sw_ctx_init() is t=
+he
+fallible stage (setkey is deliberately its last failable operation), and
+tls_sw_ctx_finalize() is the infallible commit. Every caller runs init, che=
+cks
+its return, and only calls finalize on success
