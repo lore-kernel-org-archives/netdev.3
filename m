@@ -1,141 +1,123 @@
-Received: from mail-oo1-f80.google.com (mail-oo1-f80.google.com [209.85.161.80])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9100C4E50AB
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 08:16:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA23390CAA;
+	Thu, 17 Sep 2026 08:16:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789632990; cv=none; b=SitzcJZPljw18kemwGAlfSCt8lFTLD2eoNTB72mFk6JkZixLg1JrgxjGoEy3YPHFe09Z69NE5ERsW+QaCQTGQiV2hk3/0POsl6iU7TwVxpNKCEIQh0kMlhzHAT9+VDYZ0J2CCAB1ZIp/wYlYeJZt3T/fzypP0JMJgmzZjbGFyV0=
+	t=1789633004; cv=none; b=SlIN2k1CaPbCrozlivgPxkjVE1wBYrTCdXf1a8OgL5/zP7tcQ2FnyOqWq9xhl4BkAqL4rKMgknERt7dt/ahhg0/lHux0oPVJVOfNQrtC+xYptJYmPt8B1qMH3gjeC/q5YV36Do8ANrRy+AGbfW5tbmye5YQtlCDifEGXWMPs+w8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789632990; c=relaxed/simple;
-	bh=4KRL2qc0w59AU+HOu4vPCuUcUVvwOd96+NDA2zGB1bc=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=iMsJyg4AZP1h6w2o32jzdG1xv9pyrzYVaasEK/U8rkAMn63KsO4W7vlIWpSjPVythOww+TAdEXON5SdeUivg35UC6p1lNYRfw2oTQEik+FbL7vdx4Y2hY34CkzvbRHVTXEcv200z0zkLTXIDmPDwDU+okk2tofr51M+JXCTrhVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f80.google.com with SMTP id 006d021491bc7-6c2c5c1f843so650359eaf.1
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 01:16:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789632985; x=1790237785;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=wSAY2aklFodNsFGu4dsV57NG7NuAkAQ4W9NTcOSTLCU=;
-        b=q2FxRHX0YIazFr4l7WOJXfNLbs23juTXmyZcWePz682EW1jFemzpgxCjfeG7Olny2F
-         b+FMGquW6s6ofcmwYENGG2yzFCgm0UkcxQKtHDg3ZTlpljamuYaUdZDoMisjn55OkwOb
-         +3jvUH0XDF5PNwhMB8Lxqxevi8xUeN3H99B3pZObYhOH8IdQ2ePxM/Di5hgR3tSxMN7y
-         CjYphWmj1NSEE/bX/7ELLCmL/OdUsXlYC2spGqcbc5V6K5KJZK2gLevppM/xBZIHaV5Q
-         oNgGirlVtO2f4bOgwvyEprTNPML4APsdaeKJkXSKo41wdYIiUPegOQKeQNUHYNHsg0c4
-         3ewg==
-X-Forwarded-Encrypted: i=1; AKwUvBxSuMsIYcmNwMYUKdjO//toJEidzFcDBnTyRhFZkm7HmTtkNfAgA9lp9ahbt9TePZ4N2lm898M=@vger.kernel.org
-X-Gm-Message-State: AFuF++kK7vR14aOMgd+qXYSVIxFZ9jqQ83VrHzsB3Oj0nt8Z+bhKh3W5
-	I4T3JaOBEgxezW82eHXAjBF/SfoUQYEKU5nCALN2+AUy9Zroz+bsYIykNIvcshEeZcJRAj0EvB9
-	aB4/Tj6htgdnSKvDR9OpHAYF6fUeF9XsU7l8esIhn2Ml8CGXAh+uELvSCZw4=
+	s=arc-20240116; t=1789633004; c=relaxed/simple;
+	bh=b+JjD7EjqJWEW6UbTeDdSkVfA1qMIVzboLqxTAHiKi0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KzJQIs1gNVYHCogkZ9XXt1+fDRdsVA+Ao4FkTWptQBZsiZCeA2eys8ptTT5466iTHTfRATpjrbx1ZubFfO12dDyrVUQyiAoiFqzr6jgPET8wjR4AOoZmvFTI43VdqSUzcJaxbrBeI20DCPWWjjVJoolK7L2UlYysZeOGCT8ONHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lipxGimk; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lipxGimk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44AF41F000FF;
+	Thu, 17 Sep 2026 08:16:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789632998;
+	bh=XsxJHlaX6GD89exnhV0hjrgOEGC6zExrW4yhpXaG5Z4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=lipxGimkYhMgRR6E8rEv3gjIb5hgJe8Y7nXno47AijAue1TjIU19QSmw/xSubU6fw
+	 c1eR99wu1Gh5ko6Qo/SlN3sau8Gy8FLCfPx1TEvXz0KCCR45FxJEAq6ztEStJLebL+
+	 yNqTiT+tBmLou0g5Ui3hpsstk14l9LmlLf7LLNNDMg5M+h7tIfMIsJKulehvWAPevI
+	 WMRRO0cSyY+DjmknK11Jo0aJsf4H1Yy/zPzG1OyygrcFd/UXfJ/kUcbqoQuWIttafv
+	 8ZXmtaWMYoJBe0CVLzVAp9AvRETWcj1b2fZhETuFHsaWFi+EWEm7EmjwnY4AWLWWEs
+	 pwaRRnvkCMVdw==
+Date: Thu, 17 Sep 2026 09:16:32 +0100
+From: Simon Horman <horms@kernel.org>
+To: Quanye Yang <quanyeyang@proton.me>
+Cc: Eric Dumazet <edumazet@google.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3] tcp: annotate lockless access to sk->sk_err
+Message-ID: <20260917081632.GW51261@horms.kernel.org>
+References: <20260912-mptcp-sk-err-net-v3-1-c41383878bde@proton.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:f48:b0:6b5:ec2f:3571 with SMTP id
- 006d021491bc7-6c8feeece48mr1854166eaf.34.1789632985100; Thu, 17 Sep 2026
- 01:16:25 -0700 (PDT)
-Date: Thu, 17 Sep 2026 01:16:25 -0700
-In-Reply-To: <6aa5e2ac.6e6c5f9e.28f11f.0052.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6aaba1d9.71f81b7d.278072.001a.GAE@google.com>
-Subject: Re: [syzbot] [net?] WARNING in tcf_ct_flow_table_process_conn
-From: syzbot <syzbot+6cc37aba98dac721c415@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
-	jhs@mojatatu.com, jiri@resnulli.us, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	ngocthang2710.1999@gmail.com, pabeni@redhat.com, paulb@mellanox.com, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260912-mptcp-sk-err-net-v3-1-c41383878bde@proton.me>
 
-syzbot has found a reproducer for the following issue on:
+On Sat, Sep 12, 2026 at 11:43:34PM +0800, Quanye Yang wrote:
+> BUG: KCSAN: data-race in do_recvmmsg / mptcp_recvmsg
+> 
+> read-write (marked) to 0xffff8880134d391c of 4 bytes by task 2619 on cpu 1:
+>  instrument_atomic_read_write include/linux/instrumented.h:113 [inline]
+>  sock_error include/net/sock.h:2565 [inline]
+>  do_recvmmsg+0x50c/0x580 net/socket.c:3049
+>  __sys_recvmmsg net/socket.c:3144 [inline]
+>  __do_sys_recvmmsg net/socket.c:3167 [inline]
+>  __se_sys_recvmmsg net/socket.c:3160 [inline]
+>  __x64_sys_recvmmsg+0x161/0x180 net/socket.c:3160
+>  x64_sys_call+0x19c7/0x1ca0 arch/x86/include/generated/asm/syscalls_64.h:300
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+>  do_syscall_64+0xde/0x3d0 arch/x86/entry/syscall_64.c:84
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> 
+> read to 0xffff8880134d391c of 4 bytes by task 2620 on cpu 0:
+>  tcp_recv_should_stop include/net/tcp.h:3086 [inline]
+>  mptcp_recvmsg+0x54d/0xd50 net/mptcp/protocol.c:2466
+>  inet_recvmsg+0x204/0x210 net/ipv4/af_inet.c:894
+>  sock_recvmsg_nosec net/socket.c:1151 [inline]
+>  sock_recvmsg+0x11a/0x140 net/socket.c:1173
+>  ____sys_recvmsg+0x14b/0x3c0 net/socket.c:2933
+>  ___sys_recvmsg+0x116/0x160 net/socket.c:2975
+>  __sys_recvmsg net/socket.c:3008 [inline]
+>  __do_sys_recvmsg net/socket.c:3014 [inline]
+>  __se_sys_recvmsg net/socket.c:3011 [inline]
+>  __x64_sys_recvmsg+0xeb/0x160 net/socket.c:3011
+>  x64_sys_call+0x1319/0x1ca0 arch/x86/include/generated/asm/syscalls_64.h:48
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+>  do_syscall_64+0xde/0x3d0 arch/x86/entry/syscall_64.c:84
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> 
+> value changed: 0x0000006b -> 0x00000000
+> 
+> Reported by Kernel Concurrency Sanitizer on:
+> CPU: 0 UID: 0 PID: 2620 Comm: syz.2.33 Not tainted 7.2.0-g39d4f32c5d53 #76 PREEMPT(full)
+> Hardware name: QEMU Ubuntu 26.04 PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1ubuntu1 04/01/2014
+> 
+> do_recvmmsg() and getsockopt(SO_ERROR) call sock_error() without the
+> socket lock. sock_error() clears sk_err with xchg(), which races with
+> unmarked loads of the same field.
+> 
+> KCSAN reported the unmarked peek in tcp_recv_should_stop(). The same
+> lockless writer races with the other plain sk_err reads on the
+> TCP/MPTCP send, recv and splice paths.
+> 
+> Annotate those peeks with READ_ONCE(). No extra ordering is needed:
+> the value is only used to decide whether I/O should stop. This does
+> not consume sk_err; the check-then-sock_error() TOCTOU on the no-data
+> paths is a separate issue.
+> 
+> Suggested-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> Link: https://lore.kernel.org/netdev/8bbee583-6f21-4817-bfeb-2d60057380a3@linux.dev/
+> Reported-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/632
+> Signed-off-by: Quanye Yang <quanyeyang@proton.me>
+> ---
+> Changes in v3:
+> - drop the Fixes tag and retarget to net-next
+> - annotate the remaining unmarked sk_err peeks on the TCP/MPTCP
+>   send, recv and splice paths
+> - Link to v2: https://patch.msgid.link/20260909-mptcp-sk-err-net-v2-1-5044abecac90@proton.me
+> 
+> Changes in v2:
+> - add Reported-by and Closes for the MPTCP syzkaller report
+> - Link to v1: https://patch.msgid.link/20260908-mptcp-sk-err-net-v1-1-da71aaec9afd@proton.me
 
-HEAD commit:    238650ef6c7c Merge tag 'powerpc-7.3-4' of git://git.kernel..
-git tree:       upstream
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=15663bf9580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=5e4e3a0e188a497e
-dashboard link: https://syzkaller.appspot.com/bug?extid=6cc37aba98dac721c415
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=160653f9580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14cbebf9580000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/78c78695c277/disk-238650ef.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/ed193a418b0f/vmlinux-238650ef.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/f7a21c8aa010/bzImage-238650ef.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+6cc37aba98dac721c415@syzkaller.appspotmail.com
-
-RDX: 000000000000001c RSI: 0000200000000500 RDI: 0000000000000003
-RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000200000000500
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-------------[ cut here ]------------
-1
-WARNING: net/sched/act_ct.c:437 at tcf_ct_flow_table_add net/sched/act_ct.c:437 [inline], CPU#0: syz-executor278/6366
-WARNING: net/sched/act_ct.c:437 at tcf_ct_flow_table_process_conn+0x449/0x7c0 net/sched/act_ct.c:513, CPU#0: syz-executor278/6366
-Modules linked in:
-CPU: 0 UID: 0 PID: 6366 Comm: syz-executor278 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-RIP: 0010:tcf_ct_flow_table_add net/sched/act_ct.c:437 [inline]
-RIP: 0010:tcf_ct_flow_table_process_conn+0x449/0x7c0 net/sched/act_ct.c:513
-Code: 85 81 02 00 00 41 0f b7 2f 31 ff 89 ee e8 2f 67 e9 f7 85 ed 0f 84 7c 01 00 00 e8 e2 62 e9 f7 e9 e0 01 00 00 e8 d8 62 e9 f7 90 <0f> 0b 90 e9 b2 01 00 00 e8 ca 62 e9 f7 4d 89 f7 40 84 ed 74 27 e8
-RSP: 0018:ffffc900042d6ef8 EFLAGS: 00010293
-RAX: ffffffff89de6f88 RBX: ffff888070202000 RCX: ffff888028c90000
-RDX: 0000000000000000 RSI: ffffffff8c6da060 RDI: ffffffff8c6da020
-RBP: 0000000000000000 R08: 00000000ffffffff R09: 1ffffffff1dd5cfe
-R10: dffffc0000000000 R11: fffffbfff1dd5cff R12: dffffc0000000000
-R13: 1ffff1100e04041e R14: ffff8880702020c0 R15: 0000000000000001
-FS:  000055556fc09400(0000) GS:ffff888124cd1000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffe25dff4c8 CR3: 0000000079ba6000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- tcf_ct_act+0x2a75/0x4050 net/sched/act_ct.c:1123
- tc_act include/net/tc_wrapper.h:131 [inline]
- tcf_action_exec+0x185/0x8d0 net/sched/act_api.c:1162
- tcf_exts_exec include/net/pkt_cls.h:361 [inline]
- basic_classify+0x1b2/0x2d0 net/sched/cls_basic.c:54
- tc_classify include/net/tc_wrapper.h:198 [inline]
- __tcf_classify net/sched/cls_api.c:1779 [inline]
- tcf_classify+0x43d/0x1160 net/sched/cls_api.c:1875
- tc_run+0x42d/0x750 net/core/dev.c:4463
- sch_handle_ingress net/core/dev.c:4538 [inline]
- __netif_receive_skb_core+0x1443/0x30c0 net/core/dev.c:6115
- __netif_receive_skb_one_core net/core/dev.c:6262 [inline]
- __netif_receive_skb net/core/dev.c:6377 [inline]
- netif_receive_skb_internal net/core/dev.c:6463 [inline]
- netif_receive_skb+0x1fe/0xbf0 net/core/dev.c:6522
- tun_rx_batched+0x1de/0x790 drivers/net/tun.c:1571
- tun_get_user+0x2be0/0x44d0 drivers/net/tun.c:2045
- tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:2091
- new_sync_write fs/read_write.c:595 [inline]
- vfs_write+0x612/0xba0 fs/read_write.c:687
- ksys_write+0x150/0x270 fs/read_write.c:739
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f6c0bc30879
-Code: c0 79 93 eb d5 48 8d 7c 1d 00 eb 99 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 d8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffff5b95668 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00007ffff5b95690 RCX: 00007f6c0bc30879
-RDX: 000000000000001c RSI: 0000200000000500 RDI: 0000000000000003
-RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000200000000500
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-
-
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+Reviewed-by: Simon Horman <horms@kernel.org>
