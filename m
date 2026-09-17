@@ -1,95 +1,95 @@
-Received: from mail-vs2-f12.google.com (mail-vs2-f12.google.com [74.125.227.12])
+Received: from mail-vs2-f42.google.com (mail-vs2-f42.google.com [74.125.227.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8B846A604
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 22:50:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E16248881
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 22:50:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789685414; cv=pass; b=OX+3bjm2tM/NUrM4i3hna3R9zE7FMzKCGsPiy7PdLNRPOd2XbY0cmcZanvwbf3f6sjcc332vFx9XdnZj2en2mQ549kW4baaxnDreRn2tNi6ZIEXBXD6kS+pcIXK60JfK/SpMJ9n3cAHIQlse5xECe4lNB0GsQp3Q1UxOi993niw=
+	t=1789685456; cv=pass; b=jkOE1k/uu5OzZl16+GvldcVSMAmkFaMlaGDYLLe9id4ebBZU0OMR8xDK1LKKXAu21ABwkkD0bGVk++lfFl2+kBZ0DA7aIjT5KcRqwihrfh/zLZtRwavFDx2hYjeLKaMn8p6yzZF0M+qKKMiaHM83OGd+0HNMNUeKMuAU5EtSy+I=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789685414; c=relaxed/simple;
-	bh=12lfKPHLAxW3uCyPQXDQdHAdDjXHeujlF9MBEb+IKCU=;
+	s=arc-20240116; t=1789685456; c=relaxed/simple;
+	bh=9zeiOctv/oDwLgnhTEh7NGGPyDhzrBKnGLL9H/D8ra0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qrAO6fn0X0z8rhgocD3Ueof6JV/Mh5AQx8twpC1FbpNs2au/ugjqn98VMfK8mYqc2UeacLs3urpjN7Wv6S0zZ9N9j4JrYFadaRVxCgTGp+z3CQBqlo0gl8FCy8zACeRamoHvUvwHC8TodChxfPzCPkWEMl10/RHNVr9X/e1B0Gs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com; spf=pass smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=everpuredata.com header.i=@everpuredata.com header.b=MPavCeFQ; arc=pass smtp.client-ip=74.125.227.12
+	 To:Cc:Content-Type; b=iPem9wfTa9zP06s5D2VJ+L4QcsrGJlaRkdPNCPoQsk3x9ErxR7T1/1o5mYiDi4WZSLcxX+VPXloZ0yhZdu+kvecmo/O+64BVZ8Me80KWxADVUddAob6hv9WMy5OB4jOKDLM8DsZWL+u/rbNygGKW3oWFKMpmHsk7pHpCMtZEQXc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com; spf=pass smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=everpuredata.com header.i=@everpuredata.com header.b=b7lEqdcW; arc=pass smtp.client-ip=74.125.227.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=everpuredata.com header.i=@everpuredata.com header.b="MPavCeFQ"
-Received: by mail-vs2-f12.google.com with SMTP id 71dfb90a1353d-5c67e5059faso33135e0c.0
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 15:50:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789685412; cv=none;
+	dkim=pass (2048-bit key) header.d=everpuredata.com header.i=@everpuredata.com header.b="b7lEqdcW"
+Received: by mail-vs2-f42.google.com with SMTP id 71dfb90a1353d-5c67e2ff27bso55081e0c.1
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 15:50:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789685454; cv=none;
         d=google.com; s=arc-20260327;
-        b=a6X/xaDFD2Nift0LBd7K8ShjyTSFJTGpjTGRoVinHyaarAZdQZJSGhviciEJxlGmok
-         s6NBcYVhVX88FxYI2Rb0B6oH4rShmphIiG/adK0+vDq9uPqLMfknmEjk9/RQ6AYBqi9K
-         ivuUMw/U7XB6NKGsBY+2e8H1/isc2ZENdl3ZSg1JaCB9yX3LsZK4A83txU6dG5zlP/kJ
-         DPyJHeYqV4sLtiztlT4Rum3JYt3LrGrSM5VI6B8naKBYhlLTbIgn1xl7D8IIZNGFDuMI
-         OwVr8B3PoAuCw+jEpbFi2OQ10lw3IMuoomeZabstHASfeMS21NJX08v3i0DXbnMTuiXh
-         IVqw==
+        b=J/7XeeoK+nn1pIuGWPldKmKd5nlM8BvhDiVlRbIxg1NUfJjocpV9KbfWeBwTbEQWJN
+         gUMVcasu27G8UtRpyj4EEoMOR/VSIWL7c+QN6ezshCWvknyQsu5XIJmnlVEpUxBaSqUU
+         n7cDwmYiQrZzSdXXzHrWnh7tMU6R1LWP4ULN+FmOoqZUHgGwo7bg5m6d3b9d0XXghT5m
+         yHu+IG2i1vUpxI9jxtedtotDzqKWX+YDNwcCWw9hUzn7DDFoPPm7M1TKNH7kYC9YKSzu
+         rFQ0TtIAXHOpI4/psJXPwmta06XP6h9f9UiwYsgkwNCSbJSFg3JctWYdGa+z5PCHewsH
+         mUnw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=qSa4NqJ6axEWMZ1NzQsiUSKmmrF06OVnALAb0fFoCc8=;
+        bh=HELBCvyToCkWOYDLD1irlMxcH1TgKtopLF4Pt3KBQrU=;
         fh=KDPEyLFrx0IaPdgkSonKsexwzLCh01ZOslfJI1v3q8w=;
-        b=HlonVm9r4IIAI+K7PxNwizi0xaS+gnai/xlsr9Ckkx/8wKzfN8NW4fCtmhbK3mM8V+
-         7g/pQAt6PxbIR0N5UUeZUWJa2gABvZ1ig+sjoLQQMId0BJN4SFkNVmgw61dAD7h8eSB9
-         7j+Xx4aZJWUNxDcQdgMlmtNl7JGxv2jiBg+/WQINEZBB2VfUDZiARsembRiS/aLUCvHv
-         0SBAHzr+6vGIOGAZXxqZOTAIKH9Kt1np6PS1qjmZ5hwamWzPx/PKhXhvyOIyB6wbAwTh
-         1ZIvh2e2ShtjcBFkoW0qMCsUo0ffo4JVCOeWL2wdk/WsfboVwSQ6ZVapZU0N0Kg1Yydq
-         ufoQ==;
+        b=cvvtsGc+Qpzsyv7kgd8pumBnVfKZ2iVSTz1+buvYsCI9QUEpZ1jvdqy1QYLGNq7dgc
+         6dUP83plj6jOMDiJe+QLpPfCIlUlkW/dUUqDm20soGc6DvSpoV6z6ME9EJwfKv6I2p93
+         44NranFwg+KwA6HGBlZqhixgVOJMMv3/V0rJrpxI6FgkzzjjZv5C/atakf9ZaDeApPgR
+         OygXnqYUOjz1XbHuvU28tmeYUJDGHTOsxg/8kHC1uhu+lgra4nzNzpOAOBmiVxT4a64g
+         0i/qPiH4IbqEwbakry4JiN79JEuB5mijPAXmKgbSpGkkluFb+OK2L0Y7HYaC5FNPwStZ
+         mHzA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=everpuredata.com; s=google; t=1789685412; x=1790290212; darn=vger.kernel.org;
+        d=everpuredata.com; s=google; t=1789685453; x=1790290253; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=qSa4NqJ6axEWMZ1NzQsiUSKmmrF06OVnALAb0fFoCc8=;
-        b=MPavCeFQHztKA8Z9IuPtJNReq32efUnUEHpoXjvhXYvHHtObzo5eTCuyIlwCmdqVKe
-         sxJO3QxQ52pYBNH+w45R8U0TbL5Mg8u+L3/zHhgY2PMpJsmi/ynxwjnPwVSnCxv8jB73
-         9Mrr+PqS40IDPp3JfaKLcZKZJ+RStM/c2q7gnsV6wBcjMCr7QQUDmAznRxftQXSG3MSP
-         ToGq8nBZRDu805DyUd9GATGyR5RxC/M7TvJY0uuRe/m7akUMNoyMtV1mp8U5NWmhcapH
-         M+UY9yKtpXkbCut2n6uKFb4tFx0ZNKExbLb1+1cP2Td283n3nMeMOPiOkQwHjkwzVLMa
-         kuwQ==
+        bh=HELBCvyToCkWOYDLD1irlMxcH1TgKtopLF4Pt3KBQrU=;
+        b=b7lEqdcWi4WPMBOKv75pFj9zPSMGDaSeHSbx2aAJ9QFwDD5MRmjgjbdQXwo8PR+/ak
+         hDE8O/JIvuEpdzjN7iEi3WpL1T8XkUZW065qAHoxTVEeQM++L69likHUbkl10hHwfddA
+         ANNqPg62Su+utG0fzgDgmLPu3MDAzPYSp9rfVinwqHXywfxlN0NQ2nDPIFlPo6Tiva51
+         5h32v1IYuHPeSW6mWlcGbhMbDOBK4k1BYQYjrZ6anUFfgeqNMU0mMwZ1fjn66I1TNJqn
+         rQvW2RDF9YqaP5ipmeakNXTlcgWScRGgH3XOZIN0xV7XK8s1TZS1oI/zpVMiOwWfRr8i
+         TuzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789685412; x=1790290212;
+        d=1e100.net; s=20260707; t=1789685453; x=1790290253;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=qSa4NqJ6axEWMZ1NzQsiUSKmmrF06OVnALAb0fFoCc8=;
-        b=e6icER6/KZCk1lLmJFSN7o2UDhSXAg8swmx+3PwyIdvHuNUJJpQfoiDMpNCaGhl9bv
-         CjuP4hDP5me/Ec3QsU7StFy8DP3fSNSZdQsHyabNH5csJ+gA4lZQ5MPk1tL8v+iQuFli
-         qIZXvbygnMbI5CE2Y99edQQCC4OpS8v2NHaoHgcp1qhdsdpZxE1pPe6UFBRS/qWWdl8D
-         3DJnKF3+G0yha8w1yKdX0kwLTJvG1A/iwsvryXF4aMxt0p1+cezMphnfOYjZApNl4NHK
-         J31VQWl+7HxgGzu8wWQzdRFBmzJWfLsg3szHIKHAxCy70e7AT+6vZChPmX4fUN2i6xhb
-         ygXw==
-X-Gm-Message-State: AFuF++npnuyNViQ+6DK5+L6OngTBkLxam4ivNwJ/txMGHmGv2MDCka+1
-	tyE+7dCl9ZOqQLWN1Tf7C9ahqMlGNkAL7hHiP+61on+lXITkBiw4EGVpdaKKoSCe8hYTTU5XSuO
-	fvBS/0Bp6P4r3ZU1Hp3fSpp1s5bi9TED48905gEMxFw==
-X-Gm-Gg: AYBFou0RBM35DYOOgFSYhUiScfi+cLnqrFIU0yjwMc1VFugpROZDzY+mTARcNy3nN9H
-	O/ncRIuZ45T5b81JQQdn1F8aHlfzYEGB5zPK1Njj93AtnUU1qC+oHcA55bi4qCyin29fw1hwl3l
-	WTOqqlccgJF3pnzZ65WQz2o466yO/VXBQfgOQwbnUIw2ORxX2bgqHESwJUi9BqKcnJFy56MJjOm
-	OheG+op0xJWobm8E5Mhpgq+4ACHlYGu9gsEbzsGQZNotB+BEVQnnMkJFtcaE5G9d8AlZRSmtvHE
-	z328Rhc/VDAWfUJ4d6QYU4KTyZg2QY3ToEtG7u7qnfoj4Eu/sXwnhj9yWUCSl251GBIXLK7Oyqi
-	UfrcXzJTVf8v9DT4sxB96Nj88Ppixvk0M9q6B9x2FgsfHv6OkuEBCLPCgRML2R8+S8nmK7wF61Q
-	iIPC8rb2960RzNb9SlUhhNoOoddtH5cEBAe9Zpj48x
-X-Received: by 2002:a05:6102:1090:b0:7a5:71a3:5556 with SMTP id
- ada2fe7eead31-7a571a36387mr107394137.24.1789685411694; Thu, 17 Sep 2026
- 15:50:11 -0700 (PDT)
+        bh=HELBCvyToCkWOYDLD1irlMxcH1TgKtopLF4Pt3KBQrU=;
+        b=Yw5KuVm8B0efzynjbN43WlojEMpuf2UHtepHQdcPZBegOeqb4ECGCcOc9AaWqjnv6Q
+         r0ogyQdKZ7pqOW6e/WlCD6g7Bg9IyCnG6hUKnwsV8wSOVNo5FmqrusAwGdapn3c/lNuo
+         JN6SG0Z1iYSYI1UaFoNN4Sl6Viz7pJcKqJYOwIUVeg4IMIc0L2NjkKcheBLm0IHHNQCv
+         3uoDCRmI5o+e1dzWPrW8RrpQecpyeWLSWH19FK4H3gVBAc1KZOUAYvv/ZFlgIl/PLWEC
+         h0tjOcrMPjS2w3yT20WHxqO/WQ/0CmCXaJQDBzIihYq5liJ4uLT7yi8V6lv3gLBP7Juj
+         KjlQ==
+X-Gm-Message-State: AFuF++mb9R7/eY6FX311Uff1+HpeAIVr90xkesozIQl15OHIP4DTQI5h
+	zBth2ETU5pUaBj75t/QqIlXxds3saBwPVs2vfdR2agzXa+9TXZ3Uwa6hzLydBuRgRjG6wS0V+Oi
+	LyGu5zycCw4whghjjNgabQPIfQxJ5vbhckZV9m7/YpA==
+X-Gm-Gg: AYBFou03QxIXibWcVJNF5ErthmqZ6iytlnnak31md4Zzyl8mh7Swi0rh4E0qqCrEfwc
+	sC8uPXbvKykttvf42ftFbwktz+3ZU5vLlzXwI/ArdRIJM1pQPWVc5xcViWqS+vffnr8ocbk6yx+
+	i7yceESIkuIzysSPCQaDI5Pw3dhB+UgTrvK0xW9tcsKmd7cGGykC/If62aBJEPG0whcrKEnkSvS
+	oiAh3R6wUucO/Wb8Zytt5J0t3hWfF133768vqFe20DnbS+Z/3/bNf1A407nKfHnbKhKAhxhhPJa
+	B7+QR/RT2eIvi0fjAsAIKf6W+Mo3ybrMcahdGv1rti9gk+JL6m2j0rN9K8hNLN92OGnJzTFRwgF
+	qsDYhDByJ4tjA3rM+YUp/vbV3sxFG0OLdYL7UKyw1MEwG6A57QV2p2ji/kq2/qKOQGbDZDVC78a
+	XUQ3Eav/MBdpS99gDFWAFn3/Ka4Ev66mCeY7cFsJv/nwX/hxNTtf8=
+X-Received: by 2002:a05:6102:5e8e:b0:7a5:1d40:8d1c with SMTP id
+ ada2fe7eead31-7a55781ca8dmr350401137.0.1789685453258; Thu, 17 Sep 2026
+ 15:50:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260807183853.2288959-7-rjethwani@purestorage.com> <20260817221142.3666425-1-kuba@kernel.org>
-In-Reply-To: <20260817221142.3666425-1-kuba@kernel.org>
+References: <20260807183853.2288959-10-rjethwani@purestorage.com> <20260817221146.3666526-1-kuba@kernel.org>
+In-Reply-To: <20260817221146.3666526-1-kuba@kernel.org>
 From: Rishikesh Jethwani <rjethwani@everpuredata.com>
-Date: Thu, 17 Sep 2026 15:50:00 -0700
-X-Gm-Features: AcwNN1UE_0AQBNS6s7cGsN7tb4uW1ZRk0xQ4mpMMRaT-Na2T-m11eicf5FShjck
-Message-ID: <CAKaoeS26+P1e6CKo=vwq70dd4fUXbdoZs3BV41eUFrV+p2cbAw@mail.gmail.com>
-Subject: Re: [PATCH v16 06/10] tls: prep helpers and refactors for HW offload KeyUpdate
+Date: Thu, 17 Sep 2026 15:50:42 -0700
+X-Gm-Features: AcwNN1UZR8jWdMYQHhPVEhCjpz7Aa8fps7WmJrJpQp4TvqMpBDa1BcCSuwsYXp0
+Message-ID: <CAKaoeS2n-5vnn4KH6yGkr1C5WX3cjWZTtxXoMoHTxRjTtmhO8A@mail.gmail.com>
+Subject: Re: [PATCH v16 09/10] tls: device: add tracepoints for the KeyUpdate path
 To: Jakub Kicinski <kuba@kernel.org>
 Cc: netdev@vger.kernel.org, saeedm@nvidia.com, tariqt@nvidia.com, 
 	mbloch@nvidia.com, borisp@nvidia.com, john.fastabend@gmail.com, 
@@ -104,239 +104,236 @@ ote:
 > This is an AI-generated review of your patch. The human sending this
 > email has considered the AI review valid, or at least plausible.
 > ---
-> tls: prep helpers and refactors for HW offload KeyUpdate
+> tls: device: add tracepoints for the KeyUpdate path
 >
-> This patch hoists cipher_context / tls_crypto_context above
-> tls_offload_context_tx, adds a tls_tx_cipher_ctx() accessor plus a
-> tls_sw_ctx_tx_init() helper, splits tls_set_device_offload() and factors =
-out
-> tls_device_dev_add_tx() / tls_device_commit_start_marker(), and moves
-> crypto_aead_setauthsize() into the !*aead block.  It is described as no
-> functional change.
+> This adds four trace events to net/tls/trace.h and wires them into the
+> RX and TX rekey paths in net/tls/tls_device.c. The events are intended to
+> let an operator follow the KeyUpdate state machine: rekey start, the
+> old-key reencrypt pass, boundary crossing, and TX rekey completion
+> failure in sendmsg.
 >
-> No Link: tags present in the commit header.
->
-> > diff --git a/include/net/tls.h b/include/net/tls.h
-> > index e57bef58851e..eb258bcd62bc 100644
-> > --- a/include/net/tls.h
-> > +++ b/include/net/tls.h
->
-> [ ... ]
->
-> > @@ -392,6 +392,12 @@ static inline struct tls_sw_context_tx *tls_sw_ctx=
-_tx(
-> >       return (struct tls_sw_context_tx *)tls_ctx->priv_ctx_tx;
-> >  }
+> > diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+> > index c34268cd9531..9a4c121dbebb 100644
+> > --- a/net/tls/tls_device.c
+> > +++ b/net/tls/tls_device.c
+> > @@ -760,8 +760,14 @@ int tls_device_sendmsg(struct sock *sk, struct msg=
+hdr *msg, size_t size)
+> >       lock_sock(sk);
 > >
-> > +static inline struct cipher_context *tls_tx_cipher_ctx(
-> > +             const struct tls_context *tls_ctx)
-> > +{
-> > +     return (struct cipher_context *)&tls_ctx->tx;
-> > +}
-> > +
+> >       /* Old-key records all ACKed; switch back to HW. */
+> > -     if (test_bit(TLS_TX_REKEY_READY, &tls_ctx->flags))
+> > -             tls_device_complete_rekey(sk, tls_ctx, true);
+> > +     if (test_bit(TLS_TX_REKEY_READY, &tls_ctx->flags)) {
+> > +             rc =3D tls_device_complete_rekey(sk, tls_ctx, true);
+> > +             /* On failure the READY bit is left set; the next sendmsg
+> > +              * retries.
+> > +              */
+> > +             if (rc)
+> > +                     trace_tls_device_complete_rekey_fail(sk, rc);
+> > +     }
 >
 > [Severity: Low]
+> Can this event ever fire for an actual HW rekey failure?
 >
-> The commit message says this accessor exists "so the TX path can redirect=
- to
-> a temporary SW context during rekey", but only some TX-side users are
-> converted here.  Is the remaining set intentional?
+> tls_device_complete_rekey() has only one non-zero return, the drain at
+> the top:
 >
-> tls_fill_prepend() in net/tls/tls.h still reads the explicit nonce straig=
-ht
-> from ctx->tx:
+> net/tls/tls_device.c:tls_device_complete_rekey() {
+>         ...
+>         rc =3D tls_sw_drain_tx(sk, ctx);
+>         if (rc)
+>                 return rc;
+>         ...
+> }
 >
->         if (prot->version !=3D TLS_1_3_VERSION &&
->             prot->cipher_type !=3D TLS_CIPHER_CHACHA20_POLY1305) {
->                 pkt_len +=3D iv_size;
+> Every other failure (netdev gone, crypto_alloc_aead(),
+> crypto_aead_setkey(), crypto_aead_setauthsize(), tls_device_dev_add_tx())
+> goes to release_lock and then rekey_fail, which returns success:
 >
->                 memcpy(buf + TLS_NONCE_OFFSET,
->                        ctx->tx.iv + prot->salt_size, iv_size);
->         }
+> net/tls/tls_device.c:tls_device_complete_rekey() {
+> rekey_fail:
+>         ...
+>         set_bit(TLS_TX_REKEY_FAILED, &ctx->flags);
+>         ...
+>         return 0;
+> }
 >
-> and on the HW TX side tls_device.c's tls_push_record() advances
-> &ctx->tx while tls_device_resync_tx() reads tls_ctx->tx.rec_seq directly.
-> tls_sw_ctx_finalize() and do_tls_getsockopt_conf() also still use &ctx->t=
-x.
+> So the case that permanently drops the connection to SW encryption emits
+> nothing, while the case that does emit the event named _fail is
+> tls_sw_drain_tx() returning -EAGAIN:
 >
-> Walking the paths, none of these look reachable while the accessor points
-> somewhere else: do_tls_setsockopt_conf() rejects a second crypto info for
-> anything but TLS 1.3 with -EBUSY, so the TLS 1.2 nonce branch above canno=
-t
-> run during a rekey, and the device record/resync paths are entered from
-> tls_push_data(), which the later series patch diverts to the SW helpers w=
-hile
-> the rekey-pending flag is set.  So there does not appear to be a live
-> mismatch today.
+> net/tls/tls_sw.c:tls_sw_drain_tx() {
+>         if (rc < 0 || tls_is_partially_sent_record(ctx) ||
+>             tls_is_pending_open_record(ctx))
+>                 return rc < 0 ? rc : -EAGAIN;
+> }
 >
-> Would it be worth a short comment on tls_fill_prepend()'s ctx->tx.iv use
-> noting that it is safe because rekey is TLS 1.3 only, so a future reader
-> does not have to redo this reasoning?
+> which is a transient retry rather than a failure. Should the tracepoint
+> be emitted from the rekey_fail path instead, or in addition?
 
-Your analysis is correct; there's no live mismatch.
+I'll split the two conditions into distinct tracepoints so both are
+observable and neither is misnamed:
 
-I'd rather not add the comment on tls_fill_prepend() though: it's a
-generic helper shared by 1.2/1.3 and SW/HW that predates rekey, and
-the guard is one line above the read. A rekey-specific note there
-would imply the accessor was meant to be threaded through, when the
-branch is structurally 1.2-only. The invariant that matters, rekey =E2=87=
-=92
-TLS 1.3, is enforced and documented at the setsockopt gate.
+- tls_device_complete_rekey_retry(sk): new event at the call site, for
+the transient -EAGAIN (old-key records not yet fully ACKed; READY bit
+left set, next sendmsg retries). No rc field since it's always
+-EAGAIN.
+- tls_device_complete_rekey_fail(sk, rc): now emitted from the
+rekey_fallback path, where rc still holds the originating error, i.e.
+the actual hard failure that pins the connection to SW.
 
-> > diff --git a/net/tls/tls.h b/net/tls/tls.h
-> > index 5a6ee1ea00f8..e8b552c2f4fb 100644
-> > --- a/net/tls/tls.h
-> > +++ b/net/tls/tls.h
-> > @@ -157,7 +157,10 @@ void tls_update_rx_zc_capable(struct tls_context *=
-tls_ctx);
-> >  void tls_sw_strparser_arm(struct sock *sk, struct tls_context *ctx);
-> >  void tls_sw_strparser_done(struct tls_context *tls_ctx);
-> >  int tls_sw_sendmsg(struct sock *sk, struct msghdr *msg, size_t size);
-> > +void tls_sw_ctx_tx_init(struct sock *sk, struct tls_sw_context_tx *sw_=
-ctx);
-> > +int tls_sw_push_pending_record(struct sock *sk, int flags);
-> >  void tls_sw_splice_eof(struct socket *sock);
-> > +void tls_sw_splice_eof_locked(struct socket *sock);
+>
+> > @@ -1267,6 +1273,9 @@ int tls_device_decrypted(struct sock *sk, struct =
+tls_context *tls_ctx)
+> >                               return 0;
+> >                       }
+> >
+> > +                     trace_tls_device_rekey_reencrypt(sk, rec_start_se=
+q,
+> > +                                                      ctx->rekey.old_n=
+ic_boundary);
+> > +
+> >                       /* rekey_fixup sets decrypted flags in case the N=
+IC clears
+> >                        * decrypted flags on auth failure
+> >                        */
+> > @@ -1277,6 +1286,8 @@ int tls_device_decrypted(struct sock *sk, struct =
+tls_context *tls_ctx)
+> >                                                           sw_ctx, tls_c=
+tx);
+> >               }
+> >
+> > +             trace_tls_device_rekey_done(sk, rec_start_seq,
+> > +                                         ctx->rekey.old_nic_boundary);
+> >               crypto_free_aead(ctx->rekey.old_aead_recv);
+> >               ctx->rekey.old_aead_recv =3D NULL;
+> >
+> > @@ -1923,6 +1934,8 @@ int tls_set_device_offload_rx(struct sock *sk, st=
+ruct tls_context *ctx,
+> >                                       netdev->tlsdev_ops->tls_dev_rx_re=
+key_fixup;
+> >                               context->dev_add_pending =3D 1;
+> >                       }
+> > +                     trace_tls_device_rekey_start(sk, copied_seq, rcv_=
+nxt,
+> > +                                                  before(copied_seq, r=
+cv_nxt));
+> >               }
+> >       }
 >
 > [Severity: Low]
+> Is this the only arm that should be traced?
 >
-> The changelog lists five refactors, but two of the changes here are not a=
-mong
-> them.  Could the commit message be extended to cover them?
+> The call sits inside the else arm of the RX rekey branch. The other arm
+> in tls_set_device_offload_rx() also accepts a rekey and defers dev_add,
+> and emits nothing:
 >
-> tls_sw_push_pending_record() loses static and becomes a global symbol, an=
-d
-> tls_sw_splice_eof() is split into a new externally visible
-> tls_sw_splice_eof_locked() plus a locking wrapper.  Neither appears in th=
-e
-> bullet list.
+> net/tls/tls_device.c:tls_set_device_offload_rx() {
+>                 if (context->rekey.old_aead_recv &&
+>                     before(copied_seq, context->rekey.old_nic_boundary)) =
+{
+>                         /* Previous rekey still draining. ... */
+>                         context->dev_add_pending =3D 1;
+>                 } else {
+>                         ...
+>                         trace_tls_device_rekey_start(...);
+>                 }
+> }
 >
-> tls_sw_splice_eof_locked() also gains an entry contract that is not writt=
-en
-> down anywhere: the caller must already hold tls_ctx->tx_lock and the sock=
-et
-> lock, and is expected to have checked ctx->open_rec.  Would a comment abo=
-ve
-> it, or a lockdep assertion, be worth adding?
+> That first arm is the "old-key data is still queued, dev_add deferred"
+> state the commit message attributes to inflight=3D1. Since
+> tls_device_decrypted() emits trace_tls_device_rekey_done() for any
+> non-NULL ctx->rekey.old_aead_recv, wouldn't a second KeyUpdate arriving
+> while the previous one is still draining produce a rekey_done with no
+> preceding rekey_start?
+>
+> Also, inside the traced arm the event fires even when
+> before(copied_seq, rcv_nxt) is false, in which case no old-key state is
+> created and rcv_nxt is never stored into ctx->rekey.old_nic_boundary.
+> Does the reported nic_boundary describe anything in that case?
 
-I'll modify the commit message to include the two missing changes.
-For the entry contract, I'll add a comment above the retry loop in
-tls_sw_splice_eof_locked().
-One small correction: the caller isn't actually expected to have
-checked ctx->open_rec, the function handles the no-record case itself.
+On balance: start/done bracket the drain window, not each KeyUpdate. A wind=
+ow
+is opened in one place (old_aead_recv set) and torn down in one place
+(old_aead_recv freed in tls_device_decrypted()), so every rekey_done still =
+pairs
+1:1 with an inflight=3D1 rekey_start. The "still draining" arm keeps the pr=
+ior
+window untouched, so it can't orphan a done, but you're right it emitted
+nothing, hiding a KeyUpdate deferred behind a drain. Added a rekey_start th=
+ere
+with the existing old_nic_boundary, inflight=3D1.
 
-> >  void tls_sw_cancel_work_tx(struct tls_context *tls_ctx);
-> >  void tls_sw_release_resources_tx(struct sock *sk);
-> >  void tls_sw_free_ctx_tx(struct tls_context *tls_ctx);
+On inflight=3D0: intentional and flagged by the inflight field. nic_boundar=
+y is
+rcv_nxt, the flushed receive frontier that would have become the boundary h=
+ad a
+drain been needed, not a read-back of old_nic_boundary. Clarified that in t=
+he
+commit message.
+
+> [Severity: Low]
+> Are the start and done events meant to pair up?
 >
-> > diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-> > index 63c83247f9a3..7b6ab992c86e 100644
-> > --- a/net/tls/tls_sw.c
-> > +++ b/net/tls/tls_sw.c
-> > @@ -555,11 +555,11 @@ static int tls_do_encryption(struct sock *sk,
-> >               break;
-> >       }
+> trace_tls_device_rekey_start() is emitted here, before the rekey can
+> still be aborted. If the following tls_sw_ctx_init() fails, the
+> release_ctx path undoes the state that was just traced:
+>
+> net/tls/tls_device.c:tls_set_device_offload_rx() {
+> release_ctx:
+>         ...
+>                 context->dev_add_pending =3D was_dev_add_pending;
+>                 if (moved_aead_recv) {
+>                         ...
+>                         sw_ctx->aead_recv =3D context->rekey.old_aead_rec=
+v;
+>                         context->rekey.old_aead_recv =3D NULL;
+>                 }
+> }
+>
+> so a rekey_start is recorded for a rekey that did not take effect, with
+> no cancelling event.
+>
+> In the other direction, rekey_done is emitted only at the free site in
+> tls_device_decrypted(). old_aead_recv is also freed because the boundary
+> was already crossed here:
+>
+> net/tls/tls_set_device_offload_rx() {
+>                         if (context->rekey.old_aead_recv) {
+>                                 crypto_free_aead(context->rekey.old_aead_=
+recv);
+>                                 context->rekey.old_aead_recv =3D NULL;
+>                         }
+> }
+>
+> and on the RX teardown and context-free paths, none of which emit
+> rekey_done. Should those sites emit the event too, or should the commit
+> message avoid describing the events as a start/done pair?
+
+I'll add rekey_done at the supersede free in
+tls_set_device_offload_rx() and modify the commit message.
+
+
+> > diff --git a/net/tls/trace.h b/net/tls/trace.h
+> > index 2d8ce4ff3265..2a90b77d75e8 100644
+> > --- a/net/tls/trace.h
+> > +++ b/net/tls/trace.h
+> > @@ -192,6 +192,104 @@ TRACE_EVENT(tls_device_tx_resync_send,
+> >       )
+> >  );
 > >
-> > -     memcpy(&rec->iv_data[iv_offset], tls_ctx->tx.iv,
-> > +     memcpy(&rec->iv_data[iv_offset], tls_tx_cipher_ctx(tls_ctx)->iv,
-> >              prot->iv_size + prot->salt_size);
-> >
-> >       tls_xor_iv_with_seq(prot, rec->iv_data + iv_offset,
-> > -                         tls_ctx->tx.rec_seq);
-> > +                         tls_tx_cipher_ctx(tls_ctx)->rec_seq);
-> >
-> >       sge->offset +=3D prot->prepend_size;
-> >       sge->length -=3D prot->prepend_size;
->
-> [ ... ]
->
-> > @@ -676,7 +676,7 @@ static int tls_push_record(struct sock *sk, int fla=
-gs,
-> >       sg_chain(rec->sg_aead_out, 2, &msg_en->sg.data[i]);
-> >
-> >       tls_make_aad(rec->aad_space, msg_pl->sg.size + prot->tail_size,
-> > -                  tls_ctx->tx.rec_seq, record_type, prot);
-> > +                  tls_tx_cipher_ctx(tls_ctx)->rec_seq, record_type, pr=
-ot);
-> >
-> >       tls_fill_prepend(tls_ctx,
-> >                        page_address(sg_page(&msg_en->sg.data[i])) +
->
-> [ ... ]
->
-> > @@ -712,7 +712,7 @@ static int bpf_exec_tx_verdict(struct sk_msg *msg, =
-struct sock *sk,
-> >       return err;
-> >  }
-> >
-> > -static int tls_sw_push_pending_record(struct sock *sk, int flags)
-> > +int tls_sw_push_pending_record(struct sock *sk, int flags)
-> >  {
-> >       struct tls_context *tls_ctx =3D tls_get_ctx(sk);
-> >       struct tls_sw_context_tx *ctx =3D tls_sw_ctx_tx(tls_ctx);
->
-> [ ... ]
->
-> > @@ -1028,7 +1028,7 @@ int tls_sw_sendmsg(struct sock *sk, struct msghdr=
- *msg, size_t size)
-> >  /*
-> >   * Handle unexpected EOF during splice without SPLICE_F_MORE set.
-> >   */
-> > -void tls_sw_splice_eof(struct socket *sock)
-> > +void tls_sw_splice_eof_locked(struct socket *sock)
-> >  {
-> >       struct sock *sk =3D sock->sk;
-> >       struct tls_context *tls_ctx =3D tls_get_ctx(sk);
-> > @@ -1039,21 +1039,15 @@ void tls_sw_splice_eof(struct socket *sock)
-> >       bool retrying =3D false;
-> >       int ret =3D 0;
-> >
-> > -     if (!ctx->open_rec)
-> > -             return;
-> > -
-> > -     mutex_lock(&tls_ctx->tx_lock);
-> > -     lock_sock(sk);
-> > -
-> >  retry:
-> >       /* same checks as in tls_sw_push_pending_record() */
-> >       rec =3D ctx->open_rec;
->
-> [ ... ]
->
-> >       /* Transmit if any encryptions have completed */
-> >       if (test_and_clear_bit(BIT_TX_SCHEDULED, &ctx->tx_bitmask)) {
-> >               cancel_delayed_work(&ctx->tx_work.work);
-> >               tls_tx_records(sk, 0);
-> >       }
-> > +}
+> > +TRACE_EVENT(tls_device_rekey_start,
 > > +
-> > +void tls_sw_splice_eof(struct socket *sock)
-> > +{
-> > +     struct sock *sk =3D sock->sk;
-> > +     struct tls_context *tls_ctx =3D tls_get_ctx(sk);
-> > +     struct tls_sw_context_tx *ctx =3D tls_sw_ctx_tx(tls_ctx);
-> >
-> > -unlock:
-> > +     if (!ctx->open_rec)
-> > +             return;
+> > +     TP_PROTO(struct sock *sk, u32 copied_seq, u32 nic_boundary,
+> > +              bool inflight),
 > > +
-> > +     mutex_lock(&tls_ctx->tx_lock);
-> > +     lock_sock(sk);
-> > +     tls_sw_splice_eof_locked(sock);
-> >       release_sock(sk);
-> >       mutex_unlock(&tls_ctx->tx_lock);
-> >  }
+> > +     TP_ARGS(sk, copied_seq, nic_boundary, inflight),
+> > +
+> > +     TP_STRUCT__entry(
+> > +             __field(        struct sock *,  sk              )
+> > +             __field(        u32,            copied_seq      )
+> > +             __field(        u32,            nic_boundary    )
+> > +             __field(        bool,           inflight        )
+> > +     ),
 >
-> Both observations are documentation level; the code changes themselves lo=
-ok
-> equivalent to the previous behaviour.
-
-Agreed, both are pure refactors:
-
-- tls_ctx->tx -> tls_tx_cipher_ctx(): rekey.cipher_ctx is never armed in
-  this patch (only later, on the HW path), so it always resolves to
-  &tls_ctx->tx.
-- splice_eof split: pre-check preserved, every "goto unlock" -> "return"
-in the helper; the wrapper drops both locks on exit. Locking is unchanged.
-
-I'll tighten the tls_sw_splice_eof_locked() comments
+> [ ... ]
