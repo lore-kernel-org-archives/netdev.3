@@ -1,125 +1,125 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB177448BB5
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 06:47:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D473769E4
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 06:55:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789627668; cv=none; b=UDedXuDgYZkYMcuSLIZ7vKQcDRBRwIF7ZY2aKdjQ/hDez85QIoF26dHRxG6FBggAikzgWO2DbGcdYWnF1Gjxjubji1nMUVN3PQ0jNOKFuFZMRLygZ8vgmQ55Jc9utTxqIxSfoWDDo6+FZHlZMwAJQs0dQzRdt2KYNrjSPmibYuk=
+	t=1789628126; cv=none; b=qj/d2bWjJf5r/bJADTuwauLnbC2NIxR0tq7PMhPUSJ50i+ESYrpgvmyt9E6f32o/8IAKsuXcYHqNeJWSs/3B9Wwz2afle2aDK944ejKHaMXPUKZI55uYHPJXmKhm0xiTohUc11jDukRQEWSNP36cXJBC/EMmYrIXPMGRls7xagU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789627668; c=relaxed/simple;
-	bh=3AdI/BQYPg6y23Mk+YkLKGWL7iI3glitB+qiS7zTldk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZPtlJy2L/N4+5EMq+R33//zWgsADdqVSARIOCeuUOB+9heVVfxWuwknmHA9i3NQKiUh3teeCLxNBd0awvw9vMf+4q8FBFv1J4SWEcaNT/nysVzTN9pitCiFLtR2ikr0dn8ubv/vM/CbNeQzYtREh4F3OMexQ5qa+6JJajxHNeTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OTD4+RoM; arc=none smtp.client-ip=74.125.225.141
+	s=arc-20240116; t=1789628126; c=relaxed/simple;
+	bh=J7emkB9A/GBF554pJGWYB0X8xAbrySJveNGfoOUE0tQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version:
+	 In-Reply-To:References; b=hv+0ei0XYP8c+t+ZfAgHOVdzn9dARnB8HA46r0cGSxkOv+79Y2s7lAl5OpbRdhVRFXkSP22oH7wqbOBXqXY/xK5uP1Ydj7Jk/TN4/U249+lIdOyUR7vBBEOjWiQ6y6SoIW4dx0jWo8QwuPGfprqt44SKD19WXjOq0I60zspGgzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VYZN1wiy; arc=none smtp.client-ip=74.125.228.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OTD4+RoM"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b965f447cso3711325e9.3
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 23:47:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VYZN1wiy"
+Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cea4bfd1so343019a12.0
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 23:55:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789627664; x=1790232464; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=y3wbvAbBWnutdIwHnF3F6m/7uEF6jqU2B+avYv0omNg=;
-        b=OTD4+RoM5uTERP3mOlPQntz1c/c6k9oR7kAwKmVnnSEeUVZh0AXJ7rR2JE3mw7v5Ts
-         JksLeD1O37XZWAITYjFxSdcfSWknGG9MV2xnWMsdtDg/P4fwM6adS/y5LETFkn31gLAc
-         kFGkB8OpXiTo70mDlI+DWVUAeshK5lUC9zIrjHszqLM+HL7ogoFk2fjqpKsdAMDBClKu
-         ThjsBWFcpI4P4RwdfE1NxpRJG1nnA88KCIdoz3HXf+6zktfMyQbnZPiaoePBk2M3tDkg
-         wCKaFdZmpIEwtn48SLfezt30nJQIE/l3/ETu9I+IslMkRl8+2g17ZhgRBWRNTAFwAe4x
-         tWAQ==
+        d=gmail.com; s=20251104; t=1789628123; x=1790232923; darn=vger.kernel.org;
+        h=references:in-reply-to:mime-version:content-type:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CUm8IylK3V7lcVuZn2ulYwmszlPFrNkvTKkjAabL9nQ=;
+        b=VYZN1wiyohjDlcQ25L1rn159eGo7efw2phuqsRnsVuJvahr1E2mHo+JIQoR2g3NDdW
+         YPST6Z82S4IybDmJTUZEDawHg2tcaCqUTSZfAlaVQToXDZvzH+pUGlac3bcCgvHilGrw
+         thv6nP0m0QUz4wClCxjC+T03vEg+wzKo7vGXnHe0UFUWo1BpbulXb6VZGWPaGlOm/Y7S
+         aBdFjQkOlmPHMT0KxEBxXIg3Ec3Z8AbCiRWWslWlRFdh7ft0aGHkMN0BuOo8bgp89XTH
+         0GMk8RcEVh895/T4DgzXDvEctJWj3h1Yr8B49Gd8II7NUHHXzVMUS2NSGoy8uJlm1mnk
+         sxsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789627664; x=1790232464;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=y3wbvAbBWnutdIwHnF3F6m/7uEF6jqU2B+avYv0omNg=;
-        b=en4v4UibwYstmi2k7GaexITeunCvOc+/CnF19KY2vWvCPFJHzSv6fSImJq6eYMjNgg
-         qz8HVq0ar4fIjDqabWQX3Eyyp+dIwoJSo6XquUToXkbUibhyYZF5nlmcqe7EFzoR9rnJ
-         q2PFP5SLGvdAb4UO7H0e2XB9j/FQ1VxXJUIsoVD7bheLemLTXE1vfnWNqZ+eRtNfx3HY
-         5NWGw3JvWVzJqa385B+6Gec0AMmOUjO7RcfK6KpSSR5X0Qfb9m8joXKrL6mrT0ZA7hbD
-         zc2oh/ej3n9xUNLUV/VHu556glmyBHVIxbXzJJbQI9Fu3BDVMMiV7YS2mzQFT7gvtf4t
-         INkQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz1K9p5KOKzILStPc7211CB5kl2bPdahlt7U7mwm3xY03saIUktmWEIkvtFi3qj+5fgCfe+9qI=@vger.kernel.org
-X-Gm-Message-State: AFuF++lZRvib90nGZoYY5QSpzN+3OB3D82QR1pBfCIcB50Pj0q/1zsCR
-	2G3e5WwXzmKE5XR3irf8t5O+tkpc4A9LgRpK/mHLKfhmW0p4DW1JcGeH
-X-Gm-Gg: AYBFou06jxAmjeBM1lWcPhvNXT6Wm8xOPtNGSw1DmBaGhqOhcCJ6SSOM/LQzZ3Wry+N
-	G6HMmhEGWYDlL9vTQEbX7UuPzlEPhOi78rmFKKwisSn+JTgrk4YRdPen3ykXMiK8AcKHtXvDxy7
-	Z9fFd1i2arrXW364AI5fZGqnBg2Zp7/ZPsWffPUMchiigccAS86LJ//u7XvnZvlCbRLTBgUcF5R
-	UJirNbdOKV77bS4blsgFncACv5GHXzVrzOPdGfwVJNw4P5/8PhaR2CObNk8ZKSkhELVoQFVUFt5
-	zx++Tg0yS+ZxEkieqqb1/9xHjoRFYYfBJ2yX/b0pzwv19Miz5J7faBjMxjszqRXc1XosVnxcxEY
-	pfHRMR5SJppO6iHtzn82ZknpHibewK9wOdPuwvUU9hWd6/UTXoEoX6XXEWprj0IFHbKksOyjFuS
-	lXPjET/cV8oCBz0aVN97Ltk3/HqRb8pLO+v0Ffb5HvB23ceAozCrwqn5/JbgGwP2vTAFeb8G+CQ
-	Y2REA1Wtw9s6WwQSvxerXf8sWv8OnNjDI0ECpGWfkRfK0zRy2RSWES67AsAx5LwdwVGUmInDAKv
-	lrHOnBKoSYg0bIe818STkkp1zuRtxRZbLo5Mp59B/8v7DrSTyhhyieyWWnAakd7cWZUT69ef8Gg
-	A
-X-Received: by 2002:a05:600c:8b17:b0:49c:fa20:cc0a with SMTP id 5b1f17b1804b1-49eb7339522mr57916485e9.33.1789627663778;
-        Wed, 16 Sep 2026 23:47:43 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-2a02-3100-9dc6-c001-54ee-4741-4927-0a28.310.pool.telefonica.de. [2a02:3100:9dc6:c001:54ee:4741:4927:a28])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4870bf438fbsm13129266f8f.36.2026.09.16.23.47.42
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 16 Sep 2026 23:47:43 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Steen Hegelund <Steen.Hegelund@microchip.com>,
-	Daniel Machon <daniel.machon@microchip.com>,
-	UNGLinuxDriver@microchip.com
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-arm-kernel@lists.infradead.org,
-	netdev@vger.kernel.org,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <david@davidgow.net>,
-	Rae Moar <raemoar63@gmail.com>,
-	linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: microchip: vcap: Stop selecting DEBUG_FS for KUnit tests
-Date: Thu, 17 Sep 2026 08:47:36 +0200
-Message-Id: <20260917064736.77354-1-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+        d=1e100.net; s=20260707; t=1789628123; x=1790232923;
+        h=references:in-reply-to:mime-version:content-type:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=CUm8IylK3V7lcVuZn2ulYwmszlPFrNkvTKkjAabL9nQ=;
+        b=FeMuTmlj8SuQxMUq/m3ONKwZNrQONWWxmtJP4btzMLR4Gms9pkrTlGNHsFceHEgG2g
+         cLNqIwvkAkshGLmjTMnYDGZlOEE7J78xfxKA8ds/SSyPnh7KzNsAyRHKVQ9eSx0c4a8M
+         SYp+CmdF1+OrhtFisvp8Js/lEaKaETgHg/R3fNIozIKDwJaQtuniXyN1yIHpMTJ9dlNd
+         HFQUrPC1UmbbTj1JLYe34ipNcidALFxA0mBR9+wjaji8zpReNtqmheM6PJM+XnPa6fQL
+         QNHmXjsqwBVvHOdFCADAA3+yZlIF/5BG74kJqsNJ55jjt1MoIj8jZc2Zx+3Ccz4BT8KA
+         6mAA==
+X-Forwarded-Encrypted: i=1; AKwUvBx5SAPe5Vs+y6fLyD5eeMCDBMyyM1GtNAFiPT32SaSYMR9og3O9v9NJ3KHO3K/t4GHoctwNOxs=@vger.kernel.org
+X-Gm-Message-State: AFuF++lC2zRO85FK/tFHwZ5Y9ppZUGI4lVOXeX56gbQ0tsrLGtkROAXt
+	D9wDxHfEAnlkumaNGlWsM1iLJsHK4Uc5rGNlZtzGQi9JXxrNbzovAms0
+X-Gm-Gg: AYBFou2+AX4oYLrR3a6mfjLLSyA+k+6hE7JkFbCjRWlZ2DiqwNLvQrKuJ+rrX/CsgCm
+	X03ORlDI/ufHKbkn+I//tfRZLINPTmVs5NwA371Q9d9ujSAEmPtcmQcyR1kWz66t1BavSQy6u/N
+	WLkC6ELiZy5l3vxabf/CUVzgVEFUxV5rZIWHJ9SE/aCdWYpSJbXIyMlLntQ5PoOLu4MP1fwIfmO
+	OmouklZFtdIrF+1lBK77tWAJZcYCEJ7Orc7VmciicMV3aDn/SPJGN6t7A+URP6aNcEcYnr+Qfmc
+	cTsB44QN9N72hlQ3x2yadyBQZLj3rPnw2FsCkKoATZ3dMuse5w6VfEUE9hB95KrccbZktiT5hpc
+	+/wSfEOaRH0/6iHlb9/BU4qTqzTJ+qrqL4tY/LElNpvsZYPoygNw7QLeYp+z0DWiDPfTXW83U1K
+	PqM58ZGktV2PLOe5gJ7/bZSFdPnM8efI0+mYwf7lEEDibz6scv9j02gcvmKyeUSlMJUTXDZd88t
+	+Y=
+X-Received: by 2002:a17:90b:4ece:b0:39d:ba21:fd90 with SMTP id 98e67ed59e1d1-39e1e491176mr18804302a91.16.1789628123381;
+        Wed, 16 Sep 2026 23:55:23 -0700 (PDT)
+Received: from [127.0.1.1] ([47.253.114.73])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e35def1f2sm3334653a91.5.2026.09.16.23.55.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Sep 2026 23:55:23 -0700 (PDT)
+From: Wayen Yan <win847@gmail.com>
+To: Guangshuo Li <lgs201920130244@gmail.com>
+Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH] net: mediatek: fix PPE resource leak on remove
+Date: Thu, 17 Sep 2026 14:55:11 +0800
+Message-ID: <178962811102.1264013.13698060411191875408@gmail.com>
+Content-Type: text/plain; charset=utf-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260916051618.2904439-1-lgs201920130244@gmail.com>
+References: <20260916051618.2904439-1-lgs201920130244@gmail.com>
 
-VCAP_KUNIT_TEST enables DEBUG_FS even when the kernel configuration
-leaves it disabled. Remove the selection, following the dependency rule
-in Documentation/dev-tools/kunit/style.rst.
+Hi Guangshuo,
 
-The debugfs implementation and its tests are already built only with
-DEBUG_FS. The other VCAP tests can run without it.
+Thanks for the patch. Calling mtk_ppe_deinit() from the remove path is
+the right direction, since the probe error path already tears PPE down
+but the successful remove path currently does not.
 
-Fixes: 552b7d131aa0 ("net: microchip: sparx5: Add VCAP debugfs KUNIT test")
-Assisted-by: LLM
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
----
-Validation on net c9151088f167: x86_64 LLVM builds and QEMU runs
-with DEBUG_FS disabled and enabled. The other VCAP suites pass in both
-configurations. The debugfs suite is present only with DEBUG_FS=y and
-all four cases pass.
+However, I think the cleanup is still incomplete.
 
- drivers/net/ethernet/microchip/vcap/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+mtk_ppe_deinit() currently only destroys the per-PPE l2_flows
+rhashtable:
 
-diff --git a/drivers/net/ethernet/microchip/vcap/Kconfig b/drivers/net/ethernet/microchip/vcap/Kconfig
-index 97f43fd4473f..1af30a358a15 100644
---- a/drivers/net/ethernet/microchip/vcap/Kconfig
-+++ b/drivers/net/ethernet/microchip/vcap/Kconfig
-@@ -40,7 +40,6 @@ config VCAP_KUNIT_TEST
- 	bool "KUnit test for VCAP library" if !KUNIT_ALL_TESTS
- 	depends on KUNIT
- 	depends on KUNIT=y && VCAP=y && y
--	select DEBUG_FS
- 	default KUNIT_ALL_TESTS
- 	help
- 	  This builds unit tests for the VCAP library.
+    rhashtable_destroy(&eth->ppe[i]->l2_flows);
 
-base-commit: c9151088f1674fd29ff26a20f5fc687acf53a2f0
+This only destroys the hash table itself. It does not free any entries
+that may still be stored in it. In this driver, L2 offload entries are
+struct mtk_flow_entry objects allocated by mtk_flow_offload_replace()
+and inserted into eth->flow_table, and bridge/L2 entries are also
+indexed from ppe->l2_flows via mtk_foe_entry_commit_l2().
+
+There is also a lifetime mismatch for eth->flow_table:
+mtk_eth_offload_init() initializes it, but I do not see a matching
+destroy/free on the remove path.
+
+So I think remove should first drain the offload flow entries, using the
+same per-entry teardown as mtk_flow_offload_destroy():
+
+    mtk_foe_entry_clear(...)
+    mtk_wed_flow_remove(...) when needed
+    kfree(entry)
+
+and then destroy eth->flow_table and the per-PPE l2_flows tables.
+rhashtable_free_and_destroy() with a small callback would probably fit
+this better than plain rhashtable_destroy().
+
+While touching mtk_ppe_deinit(), it would also be better to use continue
+instead of return for missing PPE instances, so later PPE instances are
+not skipped.
+
+One more minor cleanup issue: mtk_ppe_debugfs_init() creates the ppe%d
+debugfs directory, but the PPE teardown path does not remove it.
+
+So I agree with the fix direction, but I think this should be respun as
+a complete PPE/offload cleanup rather than only adding mtk_ppe_deinit()
+to mtk_remove().
+
+Thanks,
+Wayen
+
