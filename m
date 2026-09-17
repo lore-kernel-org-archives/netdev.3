@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0112C2E7375;
-	Thu, 17 Sep 2026 20:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDB83783A1;
+	Thu, 17 Sep 2026 20:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789677953; cv=none; b=KDccr3Um9Y2/mXqckkofakWM24iqipfM12NNhroIUyF5Amuz1pkZe2cXSzym+zpnx+8pj9HeEVp5Di6IbxgiyAuO0shdPU9eADlRv3aDKh3Y3UKm5nUxoQ/oE61gh8N3tM5Dvmkzgxkq+oPY/8VAKwryzsxA2vP8dTJFG9sxMCU=
+	t=1789677953; cv=none; b=kTIuXJh51QeaD8rAPy3iMQFzNtWvvKfYmhg/fNCm0cXf8sQv80+zeyc0pTxkN7wprto6dnnxo/XwqYg7s7N+VN3VzVwG7EUeCVFjjTiwjiIwItzgNZyViAYlaq2YfU/V9WeGA4rrBLLZuUDF/YUr+qudZOjHuwyOa6PenQ1PdT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789677953; c=relaxed/simple;
-	bh=BEK8Ojge3HpQp+cSaYN3l45bIgW26xVVmokqy2TfbyM=;
+	bh=hKu9dHpd7qhuyVkSs7yLAHU238kUTum8f0CONaGpWls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WeKqi8T7Z4JnmnZXEcjKtvrdfu+JgyLmm0TzeDJ0r8Cpx9RsLOVAKhqiaT/DoBZr6VxPXTDbx6vRv/UH89CyZjJuE2hfarBmNz8keYEal0D6bW14Ufx01j16nda/M5jGVlRnn5GSu7INkVydqKCSy78mW0W4X2/p7pFeheewphE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KGC1A87g; arc=none smtp.client-ip=192.198.163.11
+	 MIME-Version; b=CgiKf6+Qe6Wvmt9bj2GoxJRDlfq6D+YtfpeOVZpEwuJD6dO1j7wWkt+8KW0XBZeq1ULu3lteP+wHpTOKnBAdn3Uk3xrF5y8mn3FQvba0YGJj0TlXp+kWFapDtzwMOPNTZEFaoKseLym5TGGsTI8k0bZX/LhV2kGJqaptGKGyqD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=flXpAbKV; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KGC1A87g"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="flXpAbKV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789677951; x=1821213951;
+  t=1789677952; x=1821213952;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=BEK8Ojge3HpQp+cSaYN3l45bIgW26xVVmokqy2TfbyM=;
-  b=KGC1A87gKBYI5chbFRjIsJuygHErXYhKNtxsKygqyquLMXr+1bIBVr+q
-   Dn1HlKuwqEzXEyP/25bvMBNLwfF/eE8W0o8sVupgsGHuzHO4azR8LnLXw
-   skwJX8A7SfsZHq+04XdxQ1J07npROvcf0P2/S/ur/1olRZeqvPtUWWRHE
-   KfkTA/GzfYgxndNYjmMnSkk/jvLNVgpUCVR1kXUDBJSfYF7pbEhz9hlRD
-   A204P7ozoPlPuGvbiAXXH/m2KKzLNN9q6FC2kSBjKcQA95OrUL9ydCM3v
-   9wgdCd7kzf7o9stDKLZEIhMBKOVof2ZWq36+UDMv5u74Vfbr1Lad5YM8L
-   g==;
-X-CSE-ConnectionGUID: dCwGsBvATyKdJwuv5G6FVA==
-X-CSE-MsgGUID: sLwk513gS5OPgxycrnfgVg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="100739290"
+  bh=hKu9dHpd7qhuyVkSs7yLAHU238kUTum8f0CONaGpWls=;
+  b=flXpAbKVssAVQwpHczYkW5kc97mzRSJ2spvqEbUPxfe4K9Oghs3+OKho
+   6Fy8kc+noQyoOzqJZwnCQkplz1Wt6s5tbPJxhxSLaN6+I4Iv2Y6N+mKqj
+   4TxFFszkc4CScyn0FBpJ5VbA4e3DRIV+1BIjlMxoV+zBNw3utrZPOIGPg
+   D3QQjXA+5HdsPWhpHTFjSgavdNKa8VqimSRL2A6Wo4QfYYiY8j2peer4O
+   51oonEwvHDcsN7HTXria7KYdjXEAUweYF8z7dMNxyP5oAruaHWZrp9Ya8
+   dBMGqpYxJ+kcT617n9hbkOaW77a7P+oXMMyvIS8+eWfZP0i/vw53q+WWA
+   A==;
+X-CSE-ConnectionGUID: YelcRy6XSa2bre9rtZJtVg==
+X-CSE-MsgGUID: XY4vZH2cSfi22shfhfjrjA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="100739301"
 X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="100739290"
+   d="scan'208";a="100739301"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
   by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 13:45:49 -0700
-X-CSE-ConnectionGUID: cc3P8GvtSqGq6i0q0UjCAg==
-X-CSE-MsgGUID: 0UkJuVPQRvaIzO46WEOtVg==
+X-CSE-ConnectionGUID: nfGwwvWLSO+HvXG1GFd1oA==
+X-CSE-MsgGUID: eqPhctAgQnqG+z0dyvbEhQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="297502059"
+   d="scan'208";a="297502062"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by fmviesa002.fm.intel.com with ESMTP; 17 Sep 2026 13:45:49 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -60,9 +60,9 @@ Cc: Mohammad Heib <mheib@redhat.com>,
 	rdunlap@infradead.org,
 	linux-doc@vger.kernel.org,
 	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH net-next 1/3] i40e: move ATR sample rate from ring to PF level
-Date: Thu, 17 Sep 2026 13:45:38 -0700
-Message-ID: <20260917204541.3072415-2-anthony.l.nguyen@intel.com>
+Subject: [PATCH net-next 2/3] i40e: add devlink parameter for Flow Director ATR sample rate
+Date: Thu, 17 Sep 2026 13:45:39 -0700
+Message-ID: <20260917204541.3072415-3-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260917204541.3072415-1-anthony.l.nguyen@intel.com>
 References: <20260917204541.3072415-1-anthony.l.nguyen@intel.com>
@@ -76,109 +76,119 @@ Content-Transfer-Encoding: 8bit
 
 From: Mohammad Heib <mheib@redhat.com>
 
-The ATR sample rate is currently stored per-ring and initialized when each
-TX ring is configured. Since the sample rate is a global policy that
-applies uniformly across all rings, it makes more sense to store it at
-the PF level.
+The i40e driver uses Flow Director ATR to periodically update flow
+steering information for active TCP flows. The update frequency is
+currently controlled by I40E_DEFAULT_ATR_SAMPLE_RATE and is fixed at
+driver build time.
 
-Move atr_sample_rate from struct i40e_ring to struct i40e_pf and initialize
-it once during i40e_sw_init(). Update i40e_atr() to reference the PF-level
-field. Change atr_count from u8 to u32 to match the sample rate type.
+On systems with a large number of queues and high-rate TCP workloads,
+the default sampling interval can result in frequent Flow Director
+reprogramming for long-lived flows.
+
+The amount of TCP packet reordering observed on some systems is
+sensitive to the ATR sampling interval. Increasing the interval reduces
+Flow Director programming activity and can significantly reduce the
+associated reordering.
+
+Since the optimal sampling interval depends on the workload and system
+configuration, a single fixed value is not suitable for all deployments.
+
+Add a devlink parameter to allow administrators to tune the ATR sample
+rate at runtime without rebuilding the driver or disabling ATR
+functionality entirely.
 
 Signed-off-by: Mohammad Heib <mheib@redhat.com>
 Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/i40e/i40e.h      | 1 +
- drivers/net/ethernet/intel/i40e/i40e_main.c | 9 +++------
- drivers/net/ethernet/intel/i40e/i40e_txrx.c | 6 ++++--
- drivers/net/ethernet/intel/i40e/i40e_txrx.h | 3 +--
- 4 files changed, 9 insertions(+), 10 deletions(-)
+ Documentation/networking/devlink/i40e.rst     | 20 +++++++++++
+ .../net/ethernet/intel/i40e/i40e_devlink.c    | 36 +++++++++++++++++++
+ 2 files changed, 56 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
-index 1b6a8fbaa648..88eb40ee45f0 100644
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -487,6 +487,7 @@ struct i40e_pf {
- 	u16 rss_size_max;          /* HW defined max RSS queues */
- 	u16 fdir_pf_filter_count;  /* num of guaranteed filters for this PF */
- 	u16 num_alloc_vsi;         /* num VSIs this driver supports */
-+	u32 atr_sample_rate;
- 	bool wol_en;
+diff --git a/Documentation/networking/devlink/i40e.rst b/Documentation/networking/devlink/i40e.rst
+index 51c887f0dc83..2cea98b631ba 100644
+--- a/Documentation/networking/devlink/i40e.rst
++++ b/Documentation/networking/devlink/i40e.rst
+@@ -40,6 +40,26 @@ Parameters
  
- 	struct hlist_head fdir_filter_list;
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index abbc71e815ae..0a4272e1ab07 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -3458,12 +3458,7 @@ static int i40e_configure_tx_ring(struct i40e_ring *ring)
- 		ring->xsk_pool = i40e_xsk_pool(ring);
+         The default value is ``0`` (internal calculation is used).
  
- 	/* some ATR related tx ring init */
--	if (test_bit(I40E_FLAG_FD_ATR_ENA, vsi->back->flags)) {
--		ring->atr_sample_rate = I40E_DEFAULT_ATR_SAMPLE_RATE;
--		ring->atr_count = 0;
--	} else {
--		ring->atr_sample_rate = 0;
--	}
-+	ring->atr_count = 0;
- 
- 	/* configure XPS */
- 	i40e_config_xps_tx_ring(ring);
-@@ -12740,6 +12735,8 @@ static int i40e_sw_init(struct i40e_pf *pf)
- 		}
- 	}
- 
-+	pf->atr_sample_rate = I40E_DEFAULT_ATR_SAMPLE_RATE;
++.. list-table:: Driver specific parameters implemented
++    :widths: 5 5 90
 +
- 	if ((pf->hw.func_caps.fd_filters_guaranteed > 0) ||
- 	    (pf->hw.func_caps.fd_filters_best_effort > 0)) {
- 		set_bit(I40E_FLAG_FD_ATR_ENA, pf->flags);
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-index 7f68adb5109b..e045f9c71c94 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-@@ -2871,6 +2871,7 @@ static void i40e_atr(struct i40e_ring *tx_ring, struct sk_buff *skb,
- 	struct tcphdr *th;
- 	unsigned int hlen;
- 	u32 flex_ptype, dtype_cmd;
-+	u32 sample_rate;
- 	int l4_proto;
- 	u16 i;
++    * - Name
++      - Mode
++      - Description
++    * - ``atr_sample_rate``
++      - runtime
++      - Controls how frequently Flow Director ATR updates flow steering
++        information for active TCP flows.
++
++        ATR programs Flow Director entries based on sampled transmitted
++        packets. The sampling interval is specified as the number of
++        transmitted packets between ATR updates.
++
++        Lower values increase Flow Director programming activity, while
++        higher values reduce the update frequency.
++
++        Setting to ``0`` disables ATR sampling (no filters will be programmed)
++        The default value is ``20``.
  
-@@ -2882,7 +2883,8 @@ static void i40e_atr(struct i40e_ring *tx_ring, struct sk_buff *skb,
- 		return;
+ Info versions
+ =============
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_devlink.c b/drivers/net/ethernet/intel/i40e/i40e_devlink.c
+index 229179ccc131..6df7eb217073 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_devlink.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_devlink.c
+@@ -33,12 +33,48 @@ static int i40e_max_mac_per_vf_get(struct devlink *devlink,
+ 	return 0;
+ }
  
- 	/* if sampling is disabled do nothing */
--	if (!tx_ring->atr_sample_rate)
-+	sample_rate = READ_ONCE(pf->atr_sample_rate);
-+	if (!sample_rate)
- 		return;
++static int i40e_atr_sample_rate_set(struct devlink *devlink,
++				    u32 id,
++				    struct devlink_param_gset_ctx *ctx,
++				    struct netlink_ext_ack *extack)
++{
++	struct i40e_pf *pf = devlink_priv(devlink);
++	u32 sample_rate = ctx->val.vu32;
++
++	WRITE_ONCE(pf->atr_sample_rate, sample_rate);
++	return 0;
++}
++
++static int i40e_atr_sample_rate_get(struct devlink *devlink,
++				    u32 id,
++				    struct devlink_param_gset_ctx *ctx,
++				    struct netlink_ext_ack *extack)
++{
++	struct i40e_pf *pf = devlink_priv(devlink);
++
++	ctx->val.vu32 = READ_ONCE(pf->atr_sample_rate);
++
++	return 0;
++}
++
++enum i40e_dl_param_id {
++	I40E_DEVLINK_PARAM_ID_BASE = DEVLINK_PARAM_GENERIC_ID_MAX,
++	I40E_DEVLINK_PARAM_ID_ATR_SAMPLE_RATE,
++};
++
+ static const struct devlink_param i40e_dl_params[] = {
+ 	DEVLINK_PARAM_GENERIC(MAX_MAC_PER_VF,
+ 			      BIT(DEVLINK_PARAM_CMODE_RUNTIME),
+ 			      i40e_max_mac_per_vf_get,
+ 			      i40e_max_mac_per_vf_set,
+ 			      NULL),
++	DEVLINK_PARAM_DRIVER(I40E_DEVLINK_PARAM_ID_ATR_SAMPLE_RATE,
++			     "atr_sample_rate",
++			     DEVLINK_PARAM_TYPE_U32,
++			     BIT(DEVLINK_PARAM_CMODE_RUNTIME),
++			     i40e_atr_sample_rate_get,
++			     i40e_atr_sample_rate_set,
++			     NULL),
+ };
  
- 	/* Currently only IPv4/IPv6 with TCP is supported */
-@@ -2934,7 +2936,7 @@ static void i40e_atr(struct i40e_ring *tx_ring, struct sk_buff *skb,
- 	if (!th->fin &&
- 	    !th->syn &&
- 	    !th->rst &&
--	    (tx_ring->atr_count < tx_ring->atr_sample_rate))
-+	    (tx_ring->atr_count < sample_rate))
- 		return;
- 
- 	tx_ring->atr_count = 0;
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.h b/drivers/net/ethernet/intel/i40e/i40e_txrx.h
-index bb741ff3e5f2..be587f804e7a 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_txrx.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.h
-@@ -372,8 +372,7 @@ struct i40e_ring {
- 	u16 next_to_clean;
- 	u16 xdp_tx_active;
- 
--	u8 atr_sample_rate;
--	u8 atr_count;
-+	u32 atr_count;
- 
- 	bool ring_active;		/* is ring online or not */
- 	bool arm_wb;		/* do something to arm write back */
+ static void i40e_info_get_dsn(struct i40e_pf *pf, char *buf, size_t len)
 -- 
 2.47.1
 
