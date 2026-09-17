@@ -1,95 +1,95 @@
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
+Received: from mail-ua2-f15.google.com (mail-ua2-f15.google.com [74.125.226.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB7D490BE0
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 22:47:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954124A2633
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 22:49:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.226.207
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789685276; cv=pass; b=ky29MKUVWyhNkt1Pr1511MOspoTIX3bXBUD+8AKObvYhv0Ac5PlsQBBgX2IE6XGz2mdzjXzI4yV3+J4l32Fbw2a3UdqUsPFcRv1hsO70IJSuc6iP9felCP0colB0g8J+Wpwhr5b5PIPCypc5Eq2x6noFcqIjxQQDbVZUaFhMWkg=
+	t=1789685345; cv=pass; b=RhGxFQFlKVvbqxkZVirk+dgzrMmM6T0GzptbIQUtz48rJIzyhIL3h5Q2U1Xo4sVuE6Lhkm6j3tVaOfOO6X5dJe751mQIrcLbAOaspDSI2CuHUJaiiZoc9pt7uR5alzXODG1GLGB7sp1ohxoNylAeBNTuxP/C/8aFnp8HSAVyQxc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789685276; c=relaxed/simple;
-	bh=n1H9CabcKbPZiNwLqArVcOUm9mYAEuL4r2RtjaWBSw0=;
+	s=arc-20240116; t=1789685345; c=relaxed/simple;
+	bh=xGox2TSbccGn0rU3WVlrmi/F7M1SnXxQfREwUPrWvZo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qDPo/yTaF8CZyuN1rLg6KXcw8Ae0ZEETB8TxKyPvWCMOoZ0fq/2dbGaqV1QWlUvfTTqG7SipUrWg67QKO9AyazYeSH7ovG0H38a22qvD+C1C/zw6MtxasKnEcZLsS4v7+NlvdxhILCpjxw2+2UEWDs01vfIonpN/c/arX7+wmKM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com; spf=pass smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=everpuredata.com header.i=@everpuredata.com header.b=3EaqK7dx; arc=pass smtp.client-ip=209.85.221.171
+	 To:Cc:Content-Type; b=chuRbltwT2jcovCnGIft430ThLPkYE9hEmInRofJQgjaqXbSstzpDAxbYHLazteqIB0NQ1C1SGBOFuXT+5UB4wBdedecSZleCPkU90OPNzstb4VtA7fq76rtH5DcYivELwXnB9vJA0YtOLbbCujUdF3MRACrfpEuviNQbpiZKlU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com; spf=pass smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=everpuredata.com header.i=@everpuredata.com header.b=DR8P0SIK; arc=pass smtp.client-ip=74.125.226.207
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=everpuredata.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=everpuredata.com header.i=@everpuredata.com header.b="3EaqK7dx"
-Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-5c671456e25so124730e0c.1
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 15:47:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789685272; cv=none;
+	dkim=pass (2048-bit key) header.d=everpuredata.com header.i=@everpuredata.com header.b="DR8P0SIK"
+Received: by mail-ua2-f15.google.com with SMTP id a1e0cc1a2514c-97e7c7b4ed2so46567241.2
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 15:49:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789685342; cv=none;
         d=google.com; s=arc-20260327;
-        b=EMkO3bM30i7p9pbc5DQFL0ynJAClJK8yLJsHtVDA+8ScFPUQ6WIdjLafxGENgQKBPB
-         /LKX9dn5/oCEwg9h7h3L2+WPUywuVD7Y2+zhkMmLSRIolPWxc/vMnvw02oYnLzaSiRCR
-         a29ZyU/b4x+eYcdYHOaul2m5eq/qfbsjhLFM6YHyKmFJzXOxcy2pRi5J/OuzEtReKD1u
-         tfPSA97+bFcBOTUTfSvOY/j/Sj+BbR7GSf35EoX8p8DOWwOvl78DZA8kmXC/3FCSSJg/
-         c0vaMLcAig9Qecy/yEiOBzt4CHzA1whdKUbBhN9skkU8vhJJldytmZbwcGut56SbBCXZ
-         lzRQ==
+        b=gcUYtys/PMgtOorsKQ2wDfpDqo2y3RdU4ryfU3a2aTEgRA1Ui/Ry4Wv2VAd5ocA0y9
+         Xw6kj1Aibbi566QkqwlYiMGA5ibLv82FYM4+9ikpIUU1ij0dSYW9I4Ufi6gt1LVqqdCF
+         xG9xznVSAIX89jJ0sHCnZsZURnwD0MqAfP+tEypzq/RThTHudrC4Js9aTxWTou4I3RTe
+         rqFQQ1UdnO8P5ajan3UlwJYhj0ucnbP6Ekq36BhmEaZw5cm4hb/kzfUcJOzlOK80rZXs
+         oWpQA3gf153ts+HCFDqZlrffI9/c7gkT5mr7aPfYEQttPrn9DStHrM4+sVIJpA6wKpe9
+         QaWw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=4z0abcM6GBsrn42q0U/9c4khs0MJrBujpW+sABB1Mtc=;
+        bh=VLdP63bUcDLsKLfapMeCNDEcc2sx3WP8LGQTKNs6yu8=;
         fh=KDPEyLFrx0IaPdgkSonKsexwzLCh01ZOslfJI1v3q8w=;
-        b=ARiMaQh5xJaGM9d7Ch/QPyPR6meo2nTVak9QzeL7F0tgIChfnSQpgwPHJcnavYrkFU
-         zhIULQjyulxOt61iV+kthlDhuxg+VZiSZqIiOCex/t6HTdl//fG7ZUWhTpCkHLOuUeN3
-         loxbDoAxBwCtk3ko9taal8D/0w9qBWelxImyx2fSlhlzdOL/APgtl2ne4XfRdbaM8Vtm
-         v2TDrtQP28fQ7JRIzspmazggV0Rr1ZmCFzCm1BzheXDZXBkq2ReN3a8+0rcO9fLBLsls
-         B4VJBwM2A/48a/8o0vtjZtElOmXX2PhXa5ASq4PfEfQUuP/odgdjCAMzOH24mL33yY1M
-         hHVw==;
+        b=gZtp2pEyi9P9v00hu98cN4XuHkr8i5drtmMM3iVM0yKceQ6Ehjl+6Q3v+Fl6T8pSxP
+         1e17OwH8wxmJuuiUnpua0ThQ30nrjQpMfKNAvn/2HwsjfbWxQbypzUCFvi28C70jFqXa
+         Fr8XkIgqO5ZJt/8mf/wyqCU86ljaWlL0RUathwwPUD6cTTKTbbpYnuF/C5Rn7REXRW8Y
+         nyXFVa2EH23Y5r9YOeR0hdW+6FfLZRhbqhyffCYqjpNYYc0LKOyIVSAiq+KJB4fhCuSU
+         1JjtTCwBevUFhuzyfaiW66vfXuRDb8XoHtZmX9Xl72lcjFBkBfSmeVcxCO97whbGJXJ7
+         +IbA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=everpuredata.com; s=google; t=1789685272; x=1790290072; darn=vger.kernel.org;
+        d=everpuredata.com; s=google; t=1789685342; x=1790290142; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=4z0abcM6GBsrn42q0U/9c4khs0MJrBujpW+sABB1Mtc=;
-        b=3EaqK7dx2ULViAHfTU2jTSJNLoff3e3iW8Ejf2ZNbdF9A0JSrnPKLAjECbgyADJx/h
-         A9mQGzg+DXOcOp/QiKBKC/VFfZ236Jboh5Gx3iVie3QJca1COnVejS9pef2R1+05Tbwf
-         aUYZJt9QItxbeWPBkleTjIU77mZIJC/2dFW3V0GS2KPZzVO5/5JQLYHFrPscwPcuX7m5
-         V9ib5CuCAgb75L6uUeLLC2P8w34wTKaSTzUDmmZHvecMWvccALNLZf0zPhYzlTzpxqQB
-         BJkpOZEM+jicjljZwDdp3S3FUr6Mbj3K6fVZjCNEu/pl4JiNE31eWXcCoEe4CwF74/jS
-         azHg==
+        bh=VLdP63bUcDLsKLfapMeCNDEcc2sx3WP8LGQTKNs6yu8=;
+        b=DR8P0SIKsvvenehlOe3xtoUsI+/DC+TdB7Bx4GuyjsyRGTGTyzRHXzqcYzEeT85X8h
+         gKgK7F6rUrZZcote9Ayi+dZZD/gDEuTW7hluY6LztOyKdrhmjhoIoivSXoUm55VXtg7V
+         DFEtR0Zj7jbqsAB5Ycbr9fpDjdhQS0F3da0gxFUD4j3AcAI87SsR/CVdyDeoXCkREY90
+         jginKIAe+dKsNXsq2Cc0Y9+lq/PopKrQPoN9n4wS8vxVY6DQpz3OFOrXNxFMsyBudLuJ
+         +8f0ClGdnkFmj1b2ZAKgtPr3U1ZsfOG2IuM/N0KRDau6lWqXAR2nevv6LEYsrOpKYvTP
+         GunQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789685272; x=1790290072;
+        d=1e100.net; s=20260707; t=1789685342; x=1790290142;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=4z0abcM6GBsrn42q0U/9c4khs0MJrBujpW+sABB1Mtc=;
-        b=ZIlIjfJlkb4nv7cEwR4pkcO+7zsL1z46wf7e74b5i/8LKnsLspIPydloN5wR0pHtUm
-         /ukBwHzkQE3kVbhFjXbiAa2c/qQrnQnJRo4wHgTs+wIrWeTVauunPF+dV7X3V19zfVak
-         lafadia1BDaAUrk/Pp/a0tkEGUDeGgJH8cqPnAdJFrxb7aWjCcAStDkoRyaGaZ9FE+K1
-         cRLHPFozZh+k39gWxTjqDPUvWykw2EDZFP7kda5TCxBOmU0PUsOahDPozk5wHSNK1vOA
-         Re5RuuC1lcausRKcfvtXrRbym6wFzVPEDMvKlFxPsSZRM/PFETvgJU45SMmLdpNagsJN
-         QQnQ==
-X-Gm-Message-State: AFuF++l86MVA/SGF989+Ipi0r092ACWDGkBxtUFgdQuQTNtC48nzZYHb
-	cJ66SKzvkFa/k8dDKN27WcZBm7oD86qe27V7myyq2Yi2uRAxMcZLfy0OTYKlOdpSrUqjX8pbxtQ
-	QRaPPWhjIosXt/54jvybgKRoGkpW6ufsipPSlQbupkA==
-X-Gm-Gg: AYBFou0vYmwqbLuzd1fRpCInckCdMgIqvptC05rZnF7Ci6qHoTfRAnwJz7wgZOqrXk/
-	UyxtSunNcYKhUjM4TNIwbldGs0TDTCl1vsa/dKXzeU5XjM/p7B2qoi6JwsbUfJHDQqBBRnBqdTn
-	yECaAr9oU0ImcFQSbaUdXyvr8pVh08LoxjN8r3C08LZeE1dOClR90Yjg0SmKV7Kx0H1de6aNxPB
-	t99NRAQnYiU2Z5DXlHi5uiseZN+hqG5YM1MINy1fxW8Rm6g0fzMaupVH0zyvp9bc3sDb2tQ3P0g
-	2/ImnUpRXTyViezUNRLORdeRbAkk40CVQmvLiMCVi3j5RVQInfOzajXGNxUncfNKJID09nMOY/P
-	gof7Yye/XCEw9wu9aaesI/Paqt90NYhWpmB1bW3tchUt3dSCLq3AgOZaWXaVw3IwEvoBUnChJhz
-	d4leLqoJgXyFfbpgg4I61oXPSJFGZu7391QSGjNNh6L6nml3KXNN0=
-X-Received: by 2002:a05:6122:6d02:b0:5c7:dcaa:980d with SMTP id
- 71dfb90a1353d-5c9a559bbdamr1503780e0c.1.1789685271851; Thu, 17 Sep 2026
- 15:47:51 -0700 (PDT)
+        bh=VLdP63bUcDLsKLfapMeCNDEcc2sx3WP8LGQTKNs6yu8=;
+        b=Z+TW6dV1Grwee47WgTUp0CUN6q28sfbzdMyxieaRaYN0Y0vtnlApi3/zeXACjOMVOc
+         PKJ3AlfH5Jml33FmGxdBCggdn/5/LHPJ+e81ZTzSDzI+1VDOkgwqPzcgjBB3b7Gaxy2G
+         XENGb1VGO1YYtJyc+rKKrRMMqNrhxhNsG0FMvkqvxPyAqV1x8Yb8dueS16d0TAzpqXaf
+         57vW1YPg4s+c0PCdRkwSF+FYJWab0V3BWhZriCbRrhTyCstCfmH8JI9RSRZNxVNQpjbP
+         XHAV2Mj2N6ZJoLiAarF2oade6nMYYllrQMUi/uuusewh5E/p8qKtYIZ8FCf96sOfai+K
+         Ig3A==
+X-Gm-Message-State: AFuF++m4xVYrBouw8NL6LB0yaEcFedHVF3UansmsidD/sMCUADxk+Wum
+	9YliIQ19Ku30ztYVDBEjW6mXa0Z6ke79Y89tPkelBBTwe4hNrxXm9ztqSkfo2lfDehz6lFAmJ4Q
+	nDgvPoVTm/AkDbqBU+xE9a+EZMX9VNtAKipJlpV10uQ==
+X-Gm-Gg: AYBFou1PWp6EO9827XIv4KVQlhPl49+QOC2shYNA0Pz+4PTTipfngY5Jn+gBJBthjO4
+	tBaSerlNDvs2Ol+c+ERzRqfJ2Urshc1sD+mC3fXnrpKxCsfOcr+bd7PAoz6MXq/PKM3oU2eMzo3
+	yWw9j9LbI2EQJiroNUZ+YIbrz4vkTC48AerdJdcFCy58/8dav1BL3gtzGo5XDYJ2p6Q4MFGposQ
+	DJaSNqFOlivYgKpsrmAIvaJde/0Kvf/RRIquOaWvxfHB6ROTafwZPX2uyFp4giWzCAWiVk6zN4d
+	ag+1i7EbJTrwTb8scw7LtTQm7kJ5XZCqQW0yIs2FaCWrxS+t0wrzewIU09EwJ7+r4GscLlPycyI
+	rHsrVRRpM0zOtpEVUfxQHi956sxqWe3W/fQBfFvur9qxTn2aNClEJRd/e1pN/fgr+hqhktN4IVL
+	uumNlvIskQGQ94s+2FeXaf0y7tT+szmr8057k61s0E
+X-Received: by 2002:a05:6102:370c:b0:7a2:568f:815d with SMTP id
+ ada2fe7eead31-7a55c2891a3mr317777137.18.1789685342125; Thu, 17 Sep 2026
+ 15:49:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260807183853.2288959-11-rjethwani@purestorage.com> <20260817221148.3666558-1-kuba@kernel.org>
-In-Reply-To: <20260817221148.3666558-1-kuba@kernel.org>
+References: <20260807183853.2288959-5-rjethwani@purestorage.com> <20260817221128.3666336-1-kuba@kernel.org>
+In-Reply-To: <20260817221128.3666336-1-kuba@kernel.org>
 From: Rishikesh Jethwani <rjethwani@everpuredata.com>
-Date: Thu, 17 Sep 2026 15:47:39 -0700
-X-Gm-Features: AcwNN1WecKQF2gIqrcHibEN6h9kgdF91fr08h3B2Y30DMfXP7SJo8BkBXEdt-5E
-Message-ID: <CAKaoeS0goM2Hzq5oFPORHuVQX9eGO6fbAMK9s=u7KM8855zERg@mail.gmail.com>
-Subject: Re: [PATCH v16 10/10] selftests: net: add TLS hardware offload test
+Date: Thu, 17 Sep 2026 15:48:50 -0700
+X-Gm-Features: AcwNN1UofpS2qeV6grFcARfb7kApnfjOHa-hT6jMiORZuSa1M899a68RRLZ5OjY
+Message-ID: <CAKaoeS2J_8BviCpkf2qoNKWkmiXUAfdwtPpqUsBhdy5zH7j2BQ@mail.gmail.com>
+Subject: Re: [PATCH v16 04/10] tls: add TLS 1.3 hardware offload support
 To: Jakub Kicinski <kuba@kernel.org>
 Cc: netdev@vger.kernel.org, saeedm@nvidia.com, tariqt@nvidia.com, 
 	mbloch@nvidia.com, borisp@nvidia.com, john.fastabend@gmail.com, 
@@ -104,393 +104,231 @@ ote:
 > This is an AI-generated review of your patch. The human sending this
 > email has considered the AI review valid, or at least plausible.
 > ---
-> selftests: net: add TLS hardware offload test
+>     tls: add TLS 1.3 hardware offload support
 >
-> This adds a two-node kTLS hardware offload selftest: a C helper acts as
-> either TLS client or server, and a Python harness drives it over
-> NetDrvEpEnv and checks the /proc/net/tls_stat counters.  It covers TLS
-> 1.2/1.3, AES-GCM-128/256, rekey with several buffer sizes, and burst
-> variants that stress TX and RX rekey.
+> This drops the TLS_1_2_VERSION gates in tls_set_device_offload() and
+> tls_set_device_offload_rx(), teaches tls_device_record_close() to append
+> the TLS 1.3 content_type byte along with the tag, and switches the
+> device fallback encryption path to prot->prepend_size / prot->aad_size
+> so the 1.3 layouts work.  tls_device_init() also pre-populates
+> dummy_page with an identity byte map.
 >
-> A few questions about the helper and the harness below.
+> A few questions below.
 >
-> > diff --git a/tools/testing/selftests/drivers/net/hw/tls_hw_offload.c b/=
-tools/testing/selftests/drivers/net/hw/tls_hw_offload.c
-> > new file mode 100644
-> > index 000000000000..1882e2f073ad
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/drivers/net/hw/tls_hw_offload.c
-> > @@ -0,0 +1,975 @@
->
-> [ ... ]
->
-> > +static int do_client(void)
-> > +{
->
-> [ ... ]
->
-> > +             n =3D send(csk, buf, this_size, 0);
-> > +             if (n !=3D this_size) {
-> > +                     printf("FAIL: send failed: %s\n", strerror(errno)=
-);
-> > +                     goto out;
-> > +             }
+> > diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+> > index 37bb06a8e8f5..bbb1aa733500 100644
+> > --- a/net/tls/tls_device.c
+> > +++ b/net/tls/tls_device.c
+> > @@ -317,25 +317,34 @@ static void tls_device_record_close(struct sock *=
+sk,
+> >                                   unsigned char record_type)
+> >  {
+> >       struct tls_prot_info *prot =3D &ctx->prot_info;
+> > -     struct page_frag dummy_tag_frag;
+> > -
+> > -     /* append tag
+> > -      * device will fill in the tag, we just need to append a placehol=
+der
+> > -      * use socket memory to improve coalescing (re-using a single buf=
+fer
+> > -      * increases frag count)
+> > -      * if we can't allocate memory now use the dummy page
+> > +     int tail =3D prot->tag_size + prot->tail_size;
 > > +
-> > +             if (!burst_mode) {
-> > +                     printf("Sent %zd bytes (iteration %d)\n", n, i);
-> > +                     if (client_recv_echo(csk, buf, echo_buf, n) < 0)
-> > +                             goto out;
+> > +     /* Append tail: tag for TLS 1.2, content_type + tag for TLS 1.3.
+> > +      * Device fills in the tag, we just need to append a placeholder.
+> > +      * Use socket memory to improve coalescing (re-using a single buf=
+fer
+> > +      * increases frag count); if allocation fails use dummy_page
+> > +      * (offset =3D record_type gives correct content_type byte via
+> > +      * identity mapping)
+> >        */
+> > -     if (unlikely(pfrag->size - pfrag->offset < prot->tag_size) &&
+> > -         !skb_page_frag_refill(prot->tag_size, pfrag, sk->sk_allocatio=
+n)) {
+> > -             dummy_tag_frag.page =3D dummy_page;
+> > -             dummy_tag_frag.offset =3D 0;
+> > -             pfrag =3D &dummy_tag_frag;
+> > +     if (unlikely(pfrag->size - pfrag->offset < tail) &&
+> > +         !skb_page_frag_refill(tail, pfrag, sk->sk_allocation)) {
+> > +             struct page_frag dummy_pfrag =3D {
+> > +                     .page =3D dummy_page,
+> > +                     .offset =3D record_type,
+> > +             };
+> > +             tls_append_frag(record, &dummy_pfrag, tail);
+>
+> [Severity: Medium]
+> Here record_type is used directly as an offset into the shared global
+> dummy_page, and tail =3D prot->tag_size + prot->tail_size bytes are appen=
+ded
+> starting from that offset.  tls_device_init() only writes the first 256
+> bytes of the page, and the page comes from a plain alloc_page(GFP_KERNEL)=
+,
+> so the rest is not zeroed.
+>
+> With AES-GCM (tag_size 16) and TLS 1.3 (tail_size 1), a record_type of 24=
+0
+> or above makes the appended frag cover dummy_page bytes
+> [256, record_type + 17), which are never initialized.
+>
+> record_type is taken verbatim from the user cmsg; tls_process_cmsg() in
+> tls_main.c checks only cmsg_len and MSG_MORE:
+>
+>         case TLS_SET_RECORD_TYPE:
+>                 if (cmsg->cmsg_len < CMSG_LEN(sizeof(*record_type)))
+>                         return -EINVAL;
+>                 if (msg->msg_flags & MSG_MORE)
+>                         return -EINVAL;
+>                 ...
+>                 *record_type =3D *(unsigned char *)CMSG_DATA(cmsg);
+>
+> so all 256 offsets are reachable from an unprivileged process.  Can this
+> put uninitialized page contents into the tag placeholder area of the
+> record?  Would zeroing the page (__GFP_ZERO), initializing
+> 256 + max tag bytes, or bounding the offset be preferable?
+>
+> Related to this, the comment added in tls_device_init() says "By populati=
+ng
+> all 256 values, we avoid needing to validate record_type at runtime", but
+> the identity map only covers the content_type byte, not the tag portion o=
+f
+> the tail that follows it.
+>
+> > +     } else {
+> > +             if (prot->tail_size) {
+> > +                     char *content_type_addr =3D page_address(pfrag->p=
+age) +
+> > +                                               pfrag->offset;
+> > +                     *content_type_addr =3D record_type;
 > > +             }
->
-> [Severity: Medium]
-> Can echo (non-burst) mode deadlock for large payloads?
->
-> do_client() issues one blocking send() of the whole payload and only
-> calls client_recv_echo() afterwards, so it does not read anything from
-> the socket while the send is outstanding.
->
-> On the other side, do_server() reads one record with recv_flags =3D=3D 0 =
-and
-> then blocks inside server_echo_send() before it returns to recv():
->
->         for (sent =3D 0; sent < n; sent +=3D ret) {
->                 ret =3D send(fd, buf + sent, n - sent, 0);
->
-> Once the echo direction fills up (server send buffer plus client receive
-> buffer, which cannot autotune because the client never copies data out),
-> the server blocks in send() and stops draining the forward direction.
-> The client then blocks in its own send().  Neither side sets
-> SO_SNDTIMEO/SO_RCVTIMEO, uses non-blocking I/O, or has a second reader,
-> so is there anything that breaks the cycle?
+> > +             tls_append_frag(record, pfrag, tail);
+> >       }
+> > -     tls_append_frag(record, pfrag, prot->tag_size);
 
-I'll  fix this by sizing the socket buffers so a full payload always
-fits in the peer's receive window, the forward send() then completes
-without requiring the peer to drain concurrently, and arming
-SO_SNDTIMEO/SO_RCVTIMEO as a safety net so any future imbalance fails
-loudly with EAGAIN instead of hanging.
+I'll fix this by allocating the page with __GFP_ZERO, which keeps the
+trailing placeholder
+bytes defined for every reachable offset while the identity map still cover=
+s the
+content_type byte.
 
-> The large_buf rekey variant drives this path with 2 MiB per iteration:
+> [Severity: High]
+> This isn't a bug introduced by this patch, but the else branch now
+> dereferences pfrag->page one step earlier than before, and pfrag->page is
+> never checked for NULL.
 >
->     KsftNamedVariant("large_buf", 10, 2097152),
+> Consider the state skb_page_frag_refill() leaves behind on failure in
+> net/core/sock.c:
 >
-> With initial tcp_wmem[1]/tcp_rmem[1] defaults only a few hundred KiB can
-> be in flight per direction, well below 2 MiB.  The client cmd() then
-> times out (cmd_timeout is 10 for non-burst runs) and the variant is
-> reported as a TLS offload counter failure rather than as a hang.  Would
-> a bounded per-iteration payload in echo mode, or a socket timeout, be
-> preferable here?
->
-> [Severity: Low]
-> Should this send() loop over the remainder instead of treating a short
-> count as fatal?  Every other transfer in this file loops:
-> client_recv_echo() uses "while (total < len)" and server_echo_send()
-> uses "for (sent =3D 0; sent < n; sent +=3D ret)".
->
-> A blocking SOCK_STREAM send() can return a short count without setting
-> errno, so "FAIL: send failed: %s" would print a stale strerror(errno)
-> value.  In burst mode a short send also breaks the framing contract that
-> the server's MSG_WAITALL recv() relies on, since server_verify_burst()
-> expects exactly send_size bytes per iteration.
-
-I'll hoist the loop into a shared send_all() used by both the client
-payload send and the server echo; only a negative return will be
-fatal.
-
-> [ ... ]
->
-> > diff --git a/tools/testing/selftests/drivers/net/hw/tls_hw_offload.py b=
-/tools/testing/selftests/drivers/net/hw/tls_hw_offload.py
-> > new file mode 100755
-> > index 000000000000..b8f5a3314030
-> > --- /dev/null
-> > +++ b/tools/testing/selftests/drivers/net/hw/tls_hw_offload.py
-> > @@ -0,0 +1,295 @@
->
-> [ ... ]
->
-> > +# Burst variants push hundreds of MB and perform many rekeys; the
-> > +# default cmd() timeout (5s) is too short.
-> > +BURST_TIMEOUT_S =3D 180
->
-> [Severity: Low]
-> Is the "(5s)" in this comment correct?  tools/testing/selftests/net/lib/p=
-y/utils.py
-> declares the default as 20 s in both places:
->
->     def __init__(self, comm, shell=3DNone, fail=3DTrue, expect_fail=3DFal=
-se, ns=3DNone,
->                  background=3DFalse, host=3DNone, timeout=3D20, ksft_read=
-y=3DNone,
->                  ksft_wait=3DNone):
-> ...
->     def process(self, terminate=3DTrue, fail=3DNone, expect_fail=3DFalse,=
- timeout=3D20):
->
-> Following the 5 s premise, run_tls_test() sets "cmd_timeout =3D
-> BURST_TIMEOUT_S if burst else 10", which lowers the non-burst client
-> timeout below the library default.
->
-> Also, BURST_TIMEOUT_S is only passed to the client cmd().  bkg takes no
-> timeout argument and bkg.__exit__() calls self.process() without one, so
-> the background server that handles the same "hundreds of MB" is drained
-> with communicate(timeout=3D20).  If it needs longer after the client exit=
-s,
-> subprocess.TimeoutExpired escapes bkg.__exit__() rather than producing a
-> test failure.
-
-You're right that the (5s) was wrong; the library default is 20s. I've
-fixed the comment and changed the non-burst client timeout from 10 to
-20 to match the library default instead of undercutting it.
-
-On the background server drain: the concern is valid but I don't think
-the failure mode is reachable here, so I've left the bkg path as-is.
-Reasoning:
-
-BURST_TIMEOUT_S is only wired to the foreground client cmd(). The
-server runs under bkg(..., exit_wait=3DTrue), and bkg takes no timeout,
-on block exit, __exit__() calls self.process() with the default, so
-the server is drained with communicate(timeout=3D20). So yes, the server
-handling the same bulk transfer gets 20s, not BURST_TIMEOUT_S, and a
-subprocess.TimeoutExpired there would escape as an unhandled exception
-rather than a clean ksft failure.
-
-However, the server is always on the receiving side of the burst
-(DUT-as-server for burst_rx*, remote-as-server for burst_tx*). TCP
-flow control means the client's cmd() can't return until the server
-has been draining the socket, so by the time we leave the with bkg
-block the server has already ingested the data and only needs to
-finish its final read loop and exit, comfortably within 20s. It never
-has to absorb hundreds of MB cold inside that window.
-
-> > +def check_tls_support(cfg):
-> > +    try:
-> > +        cmd("test -f /proc/net/tls_stat")
-> > +        cmd("test -f /proc/net/tls_stat", host=3Dcfg.remote)
-> > +    except CmdExitFailure as e:
-> > +        raise KsftSkipEx(f"kTLS not supported: {e}")
->
-> [Severity: Medium]
-> Does this check actually test for kTLS support, or only for the tls
-> module already being loaded?
->
-> /proc/net/tls_stat is created from the module's pernet registration path:
->
-> net/tls/tls_proc.c:tls_proc_init() {
->         if (!proc_create_net_single("tls_stat", 0444, net->proc_net,
+>         pfrag->offset =3D 0;
 >         ...
-> }
+>         pfrag->page =3D alloc_page(gfp);
+>         if (likely(pfrag->page)) {
+>                 pfrag->size =3D PAGE_SIZE;
+>                 return true;
+>         }
+>         return false;
 >
-> reached via module_init(tls_register) -> register_pernet_subsys(&tls_proc=
-_ops).
-> With the common CONFIG_TLS=3Dm the module is autoloaded on the first
-> TCP_ULP=3D"tls" setsockopt, so on a freshly booted DUT or peer the file
-> does not exist yet and check_tls_support() raises KsftSkipEx("kTLS not
-> supported") from main() before ksft_run(), skipping all variants on a
-> machine that fully supports offload.
+> offset is zeroed and page is NULL, but size keeps its previous non-zero
+> value, so pfrag->size - pfrag->offset is at least PAGE_SIZE and the
+> "< tail" guard here is false.  The dummy_page fallback is skipped and the
+> else branch runs.
 >
-> Would a modprobe, or probing an actual TLS ULP socket first, be more
-> reliable?
+> Can tls_device_record_close() then be reached with that pfrag?  In
+> tls_push_data(), with an already-open record (record->len >
+> prot->prepend_size, e.g. after a previous MSG_MORE sendmsg),
+> tls_do_allocation() takes the sk_page_frag_refill(sk, pfrag) path; on
+> allocation failure it returns -ENOMEM, sk_stream_wait_memory() returns
+> non-zero (immediately -EAGAIN for MSG_DONTWAIT), and control does:
+>
+>         } else if (record->len > prot->prepend_size) {
+>                 goto last_record;
+>         }
+>
+> which sets done =3D true and calls tls_device_record_close(sk, tls_ctx,
+> record, pfrag, record_type).
+>
+> For TLS 1.3 (prot->tail_size =3D=3D 1) that computes page_address(NULL) +=
+ 0 and
+> stores record_type through it, then tls_append_frag() does get_page(NULL)=
+.
+> The pre-patch code took the same false branch and crashed in
+> tls_append_frag(), so the NULL deref itself is older, but should this tes=
+t
+> pfrag->page (or reset pfrag->size on refill failure) so the dummy_page
+> fallback that exists for exactly this situation is actually used?
+>
+> >
+> >       /* fill prepend */
+> >       tls_fill_prepend(ctx, skb_frag_address(&record->frags[0]),
+> > -                      record->len - prot->overhead_size,
+> > +                      record->len - prot->overhead_size + prot->tail_s=
+ize,
+> >                        record_type);
+> >  }
+> >
+>
+> [ ... ]
+>
+> > @@ -1091,11 +1100,6 @@ int tls_set_device_offload(struct sock *sk)
+> >       }
+> >
+> >       crypto_info =3D &ctx->crypto_send.info;
+> > -     if (crypto_info->version !=3D TLS_1_2_VERSION) {
+> > -             rc =3D -EOPNOTSUPP;
+> > -             goto release_netdev;
+> > -     }
+> > -
+> >       cipher_desc =3D get_cipher_desc(crypto_info->cipher_type);
+> >       if (!cipher_desc || !cipher_desc->offloadable) {
+> >               rc =3D -EINVAL;
 
-I'll fix by explicitly loading the module before probing.
+I'll fix this by adding !pfrag->page || guard
 
-> > +def read_tls_stats(host=3DNone):
-> > +    stats =3D defaultdict(int)
-> > +    output =3D cmd("cat /proc/net/tls_stat", host=3Dhost)
->
 > [Severity: Low]
-> These are per-netns counters (TLS_INC_STATS(sock_net(sk), ...) exposed
-> through net->mib.tls_statistics), and these tests run in the host
-> namespace on a real NIC via NetDrvEpEnv(__file__, nsim_test=3DFalse).  An=
-y
-> other kTLS user in the same namespace during the before/after window
-> perturbs the deltas that check_eq_sum() and check_zero() require to
-> match exactly.
+> Should Documentation/networking/tls-offload.rst be updated along with thi=
+s?
+> Its Rekey section still says:
 >
-> There is also a harness-internal path for this.  When
-> cmd(client_cmd, timeout=3Dcmd_timeout) times out, utils.py does:
+>         Offload does not currently support TLS 1.3, therefore key rotatio=
+n
+>         is not a concern for offloaded connections at this point.
 >
->         if terminate:
->             self.proc.terminate()
->         stdout, stderr =3D self.proc.communicate(timeout=3Dtimeout)
+> Removing the version gates here and in tls_set_device_offload_rx() makes
+> the first half untrue, and the later patches in the series ("tls: device:
+> add TX KeyUpdate support", "tls: device: add RX KeyUpdate support") make
+> the second half untrue.  No patch in the series touches that file, so the
+> sentence is still there at the end of the series.
 >
-> For a foreground cmd() the child is not killed on TimeoutExpired, so the
-> orphaned client keeps running and its eventual socket teardown can bump
-> TlsTxRekeyAborted or TlsDecryptError inside a later variant's
-> measurement window.  Can one timeout (for example the large_buf hang
-> above) cascade into counter failures in unrelated variants?
+> >
+> > @@ -1410,12 +1411,22 @@ static struct notifier_block tls_dev_notifier =
+=3D {
+> >
+> >  int __init tls_device_init(void)
+> >  {
+> > -     int err;
+> > +     unsigned char *page_addr;
+> > +     int err, i;
+> >
+> >       dummy_page =3D alloc_page(GFP_KERNEL);
+> >       if (!dummy_page)
+> >               return -ENOMEM;
+> >
+> > +     /* Pre-populate dummy_page with identity mapping for all byte val=
+ues.
+> > +      * This is used as fallback for TLS 1.3 content type when memory
+> > +      * allocation fails. By populating all 256 values, we avoid needi=
+ng
+> > +      * to validate record_type at runtime.
+> > +      */
+> > +     page_addr =3D page_address(dummy_page);
+> > +     for (i =3D 0; i < 256; i++)
+> > +             page_addr[i] =3D (unsigned char)i;
+> > +
+> >       destruct_wq =3D alloc_workqueue("ktls_device_destruct", WQ_PERCPU=
+, 0);
+> >       if (!destruct_wq) {
+> >               err =3D -ENOMEM;
+> --
+> pw-bot: cr
 
-I'll fix orphaned client bug by starting the client in the background
-so we keep a handle, then reaping it in a finally, killing it within
-this variant's window if it's still alive.
-
-Regarding the per-netns counters: agreed, and it's the harder half.
-The test needs the real NIC in the host namespace for HW offload, so I
-can't easily isolate the counters in a fresh netns. The orphan was the
-only self-inflicted source of interference, which the above removes;
-genuinely concurrent kTLS in the same namespace remains an inherent
-limitation of HW-offload selftesting on a shared host. I'll call that
-assumption out in a comment near read_tls_stats().
-
-> > +def check_path(before, after, direction, role, require_hw):
-> > +    """On the DUT, require HW offload; on the remote, HW or SW is fine=
-."""
-> > +    dev =3D stat_diff(before, after, f'Tls{direction}Device')
-> > +    sw =3D stat_diff(before, after, f'Tls{direction}Sw')
-> > +    if require_hw:
-> > +        if dev < 1:
-> > +            ksft_pr(f"FAIL: {role} {direction}: HW offload not engaged=
- "
-> > +                    f"(Device=3D{dev}, Sw=3D{sw})")
-> > +            return 1
->
-> [Severity: Low]
-> Does a TlsTxDevice/TlsRxDevice delta of at least 1 show that the device
-> actually performed record crypto?
->
-> Those MIBs are bumped once per socket at setsockopt() time only:
->
-> net/tls/tls_main.c:do_tls_setsockopt_conf() {
->                 if (!rc) {
->                         if (!update) {
->                                 TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLS=
-TXDEVICE);
->                                 TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLS=
-CURRTXDEVICE);
->                         }
->         ...
-> }
->
-> so they record that tls_dev_add() accepted the connection, not that any
-> record was encrypted or decrypted in hardware.  A socket whose RX
-> offload later degrades to software still satisfies dev >=3D 1, since
-> TLS_RX_DEV_DEGRADED is set at runtime:
->
-> net/tls/tls_device.c:tls_device_down() {
->                 /* Start skipping the RX resync logic completely. */
->                 set_bit(TLS_RX_DEV_DEGRADED, &ctx->flags);
->         ...
-> }
->
-> For the non-rekey variants (expected_rekeys =3D=3D 0) check_path() is the
-> only assertion that runs, so is the central premise of a test placed
-> under drivers/net/hw verified at all there?
-
-I'll add a DUT-side check on the driver's per-record counters via
-'ethtool -S', which increment once per record the NIC encrypts or decrypts.
-
-> [ ... ]
->
-> > +    if expected_rekeys > 0:
-> > +        if with_tx:
->
-> [ ... ]
->
-> > +            errors +=3D check_eq_sum(stats_before, stats_after,
-> > +                                   ['TlsTxRekeyOk', 'TlsTxRekeyAborted=
-'],
-> > +                                   expected_rekeys, role)
-> > +            errors +=3D check_zero(stats_before, stats_after,
-> > +                                 'TlsTxRekeyError', role)
-> > +            errors +=3D check_zero(stats_before, stats_after,
-> > +                                 'TlsTxRekeyFallback', role)
->
-> [Severity: Medium]
-> Should TlsTxRekeyFallback and TlsRxRekeyFallback be required to stay at
-> zero?  Those counters are the kernel's accounting for intentional,
-> graceful degradation to software when a device key (re)install fails,
-> and the fallback path returns success:
->
-> net/tls/tls_device.c:tls_device_complete_rekey() {
-> rekey_fail:
->         ...
->         TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLSTXREKEYFALLBACK);
->         TLS_DEC_STATS(sock_net(sk), LINUX_MIB_TLSCURRTXDEVICE);
->         TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLSCURRTXSW);
->
->         return 0;
-> }
->
-> The RX side does the same on a failed rekey dev_add:
->
->         } else if (is_rekey) {
->                 set_bit(TLS_RX_DEV_DEGRADED, &tls_ctx->flags);
->                 set_bit(TLS_RX_DEV_CLOSED, &tls_ctx->flags);
->                 TLS_INC_STATS(sock_net(sk), LINUX_MIB_TLSRXREKEYFALLBACK)=
-;
->
-> A NIC has a bounded pool of TLS contexts and a rekey needs a fresh one
-> while the old is retired, and the burst variants rekey very aggressively
-> on a single connection (burst_tx_rekey_every_1 does 50 rekeys, one per
-> 64 KiB send; burst_rx_rekey_every_10 does 20 RX rekeys).  If a device
-> falls back, check_zero('TlsTxRekeyFallback') fails and the exact
-> check_eq_sum(Ok + Aborted =3D=3D N) fails at the same time, giving two
-> failures with nothing to distinguish "device out of contexts" from a
-> kernel rekey bug.  A TX fallback also leaves the socket in software for
-> good, so one transient failure affects every remaining rekey on that
-> connection.
-
-You're right that Fallback is a legitimate success path, not a bug, so
-asserting it to zero is wrong. I've fixed it.
-
-One correction to the underlying model: a fallback isn't terminal. On
-the next KeyUpdate the connection re-attempts HW offload,
-tls_device_start_rekey() clears TLS_TX_REKEY_FAILED (RX clears
-TLS_RX_DEV_DEGRADED/CLOSED in tls_device_dev_add_rx()), so it climbs
-back onto HW. That means each KeyUpdate still produces exactly one
-terminal outcome, and the exact invariant is just:
-
-Ok + Aborted + Fallback =3D=3D N
-
-So rather than dropping the strict accounting, I'll fold Fallback into
-the check_eq_sum() and replaces check_zero(Fallback) with a NOTE.
-TlsTxRekeyError/TlsRxRekeyError and the Curr* gauges stay strict at
-zero. A fallback now yields one clear NOTE instead of two simultaneous
-FAILs, while a real rekey-state-machine regression still fails via
-Error or a sum mismatch.
-
-> > +            errors +=3D check_zero(stats_before, stats_after,
-> > +                                 'TlsTxRekeyInProgress', role)
-> > +        if with_rx:
->
-> [ ... ]
->
-> > +            errors +=3D check_eq_sum(stats_before, stats_after,
-> > +                                   ['TlsRxRekeyOk', 'TlsRxRekeyAborted=
-'],
-> > +                                   expected_rekeys, role)
-> > +            errors +=3D check_min(stats_before, stats_after,
-> > +                                'TlsRxRekeyReceived', expected_rekeys,=
- role)
->
-> [Severity: Low]
-> These strict rekey assertions also run for the remote peer
-> (is_dut=3DFalse); only the hardware-vs-software path check is relaxed
-> there.  Rekey support and the Tls*Rekey* MIB names are recent additions,
-> and read_tls_stats() builds a defaultdict(int), so a peer kernel that
-> does not export them yields 0 and produces a hard failure such as
-> "expected =3D=3D 1, got 0" instead of a skip.  The only peer-side gate is
-> the /proc/net/tls_stat existence check.
->
-> This also does not match the run_tls_test() docstring, which says the
-> remote "may run any kernel without HW offload".  Should the peer-side
-> rekey checks be gated on the counters being present?
->
-> [ ... ]
-
-The docstring overclaims for the rekey variants. I'll fix it.
-
-The failing window is narrow, though: the base rekey counters
-(TlsRxRekeyReceived, Tls{Rx,Tx}RekeyOk) shipped with SW KeyUpdate in
-v6.14, while the ones this series adds (Aborted/Fallback/Curr*Rekey)
-only increment on the HW path in tls_device.c. So a v6.14 peer without
-this series already passes, it's only missing device-only counters the
-SW peer never bumps, and the defaultdict 0 is their correct value. The
-"got 0" failure only hits a pre-v6.14 peer, which also can't follow
-the rotation (breaks the data path anyway).
-
-So rather than gate individual checks (dead code for the device MIBs,
-masking real interop failures for the base ones), I added an up-front
-probe: for rekey > 0, skip the variant with KsftSkipEx if the peer's
-/proc/net/tls_stat lacks TlsRxRekeyReceived. That's a reliable "peer
-predates KeyUpdate" probe and only affects the rekey/burst variants.
-Docstring updated to note they need a v6.14+ peer.
+I'll create a document commit
