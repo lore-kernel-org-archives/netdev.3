@@ -1,32 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32094A5C39;
-	Thu, 17 Sep 2026 22:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A1741A510;
+	Thu, 17 Sep 2026 22:35:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789684505; cv=none; b=BZBYSXMCFEl6srkYGrQ1hvoRFVaILBMU2FKOvk6lW6jaP/sZctiykNphAKpq4Jy9jFAu3cSGvJwfs9iol7sOyT9H/kt2rntAatnsd3774QDLK2tvdDwwD8KGqr899+tE6dRGsY21/Mt2+8eqCmmDB2yL8qsnqVLHIwGd6/FQMwk=
+	t=1789684507; cv=none; b=aY6ofrLaqxY/k0sloVTfryGRDjVZCSaGUWYqYnLQmiZi+CRXgboCCgYUDa260cByyIEr6Wr+OHiV5Mtt3twjo9VDa1Ku2VoMxD+cAJjoyDXBPoo3L1POAcUXgazUavdokOtMPlcUlb5yzrFEj3J3mTzQdQ6WAPO9Nxj1aSfHCKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789684505; c=relaxed/simple;
-	bh=R60oJ5sMn8RX7w7vrBx1lUtRWzaG/omclbKuwAusJx4=;
+	s=arc-20240116; t=1789684507; c=relaxed/simple;
+	bh=vehJn0Pp7Ti7F/IElivQRtLN40ggjKoFsOGitbaM8ic=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=izj4PviwYls5ZNox9hXspMfZBsRgXBaRqviDsWrYl22qNPp3T7BZjhAF1UmiXV33rU91v7/Ru8i4aU8nS0x3G+bTfZ69B18/5PZmdmq2YDP9MzECAdoCp1of3XJLmKlizYJpai7qJJ3rgnBdRZ25ZUw1o7V6ckeqCfgNtXA7/cU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zz5hSICS; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=UMwknAGPJsXe9F5JKCA+H8ttfzP9P9aVt7+4+YBB1qT0b288Y/9DjRzvkf53xIhIojIWcEJY9TijPmayFQh/7WzkzZPjaBm9E1dLkC/MlYWUpZYVQPXxUmVfhXORS+ryiHrGYnsv7JmYEYsQ/WfPamKszm5iAGGKXpTZKcilr8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cl+9ADnl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zz5hSICS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EF4E1F000FF;
-	Thu, 17 Sep 2026 22:35:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cl+9ADnl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED1661F00893;
+	Thu, 17 Sep 2026 22:35:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789684503;
-	bh=syuoXHc1STCidK2at4f5/BtpItQ2zu3/4URIf6fmz6s=;
+	s=k20260515; t=1789684504;
+	bh=SiTPsjnjHLa2pmSfZ88k/q9a7BTNwXm7EW67cIgOE0I=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Zz5hSICS5LdwlFcoF+a8mcX0mWWbJBmnhecfq+CSDDybW+ESXNRyELQjlYI9mJnxC
-	 4TaMkUYL7ue4UGtZIwx8CMmX0Pl7sKv2xnAYvZbbbtTsYqdYE/OiJK6CQlVeS3o5ZG
-	 LwVBDQwRA3o1tm3zD5Z5fmKmZpZRfbwWRTInl7t8bt1zEPDz48h/r94WM9B0Twtz/E
-	 ieUeUTK4GvWBeS8b/m18O4goVCDpRxUL0tj6u35RcuhTLguJurMvyzkYQdc+CeHK4+
-	 MwhT8fBugkRjUFxZCgX4iRoEddGgufWNBZUPg4XPcC9E5FLxsIctq8M4L9knOS5P1A
-	 2vfNpLC9tebog==
-Subject: Re: [PATCH v28 net-next 03/10] net/nebula-matrix: add channel layer
+	b=Cl+9ADnlMbWMMoGsJ1qWAIE9F1/ul/z7Jv//i5Lh+WhGDreGyiamCUsQA/7P5KPi6
+	 wiGCCMg4Eiaq0cEH4OaUnhUB0zFIMeFgwxEwDRmDskcePqk8KYklC1Zb1GETzjOn4N
+	 6Tyna39TkiV1HE6JEna0GkIfim0X9mgGqXY7E9MCPO6O/JnodWO4CM1KF0Jmpd5dZA
+	 KXxRHkHXnu2xKxRFpajaUT0NbJAZ3u1iGFhXjSeeIfB4Pa5FFWr8mXJG3tJwa+K/pq
+	 PsaNzUoi7qL5/BGHg5vCAP+18O4vPEpDUh12Sl/dORDPGcwGJlnEQYmKono4xuzTW8
+	 96wWnXpnt8XOQ==
+Subject: Re: [PATCH v28 net-next 04/10] net/nebula-matrix: add common resource
+ implementation
 From: netdev-bot+sashiko@kernel.org
 To: illusion.wang@nebula-matrix.com
 Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
@@ -35,11 +36,11 @@ Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
  pabeni@redhat.com, vadim.fedorenko@linux.dev, lukas.bulwahn@redhat.com,
  edumazet@google.com, enelsonmoore@gmail.com, skhan@linuxfoundation.org,
  hkallweit1@gmail.com, linux-kernel@vger.kernel.org
-Date: Thu, 17 Sep 2026 22:35:01 +0000
-Message-ID: <178968450187.22033.978316452717622419@kernel.org>
-In-Reply-To: <20260914123429.56596-4-illusion.wang@nebula-matrix.com>
-References: <20260914123429.56596-4-illusion.wang@nebula-matrix.com>
-X-sashiko-severity: High
+Date: Thu, 17 Sep 2026 22:35:03 +0000
+Message-ID: <178968450348.22033.3494276717606346180@kernel.org>
+In-Reply-To: <20260914123429.56596-5-illusion.wang@nebula-matrix.com>
+References: <20260914123429.56596-5-illusion.wang@nebula-matrix.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,343 +50,128 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 12 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 2 · Medium: 3 · Low: 7
+Critical: 0 · High: 0 · Medium: 0 · Low: 2
 
-- [High] nbl_chan_quiesce_and_reclaim_tx() calls hw_ops->flush_write()
-  unconditionally from the generic channel layer.
-- [High] In the interrupt-driven ACK wait of nbl_chan_send_msg(), when
-  wait_event_timeout() returns 0 the code takes pending_lock and only…
-- [Medium] The commit message justifies leaving the mailbox BAR2 register
-  path unlocked with the invariant "the multi-dword QINFO config…
-- [Medium] nbl_chan_teardown_queue() converts a failed inflight-TX drain
-  into a return value (-ETIMEDOUT) but continues the teardown…
-- [Medium] nbl_chan_teardown_queue() never acquires chan_info->txq_lock;
-  it relies solely on atomic_read(&chan_info->inflight_tx_cnt) == 0 for…
-- [Low] Reported concern: nbl_chan_setup_queue() re-allocates all
-  ring/wait/buffer memory (dmam_alloc_coherent + devm_kcalloc, ~2 MiB of…
-- [Low] Reported concern: at this commit none of the published channel
-  ops (setup_queue, teardown_queue, send_msg, send_ack,…
-- [Low] Reported concern: the exported ops do not validate
-  chan_info->active, so a send before (or after a failed)…
-- [Low] Reported concern: nbl_common_get_hash_node() returns the handler
-  data pointer after dropping the per-bucket spinlock and…
-- [Low] Reported concern: nbl_chan_remove_common() never asserts
-  QUEUE_RST, so the mailbox TX/RX queues could stay enabled (QUEUE_EN)…
-- [Low] Reported concern: chan_info->active/shutdn and the state bitmap
-  are documented as guarded by state_lock, but…
-- [Low] Reported concern: in nbl_chan_update_txqueue()'s external-buffer
-  path (arg_len > NBL_CHAN_TX_DESC_EMBEDDED_DATA_LEN) the payload copy…
+- [Low] Misleading comment and (at this commit) write-only shared state
+  in nbl_res_ctrl_dev_sriov_info_init(): the comment asserts that…
+- [Low] Dead state in struct nbl_eth_info:
+  nbl_res_ctrl_dev_setup_eth_info() (drivers/net/ethernet/nebula-…
 
 --
 
-net/nebula-matrix: add channel layer
+net/nebula-matrix: add common resource implementation
 
-This adds the generic mailbox channel layer for the Nebula Matrix adapter:
-message handler hash table, TX/RX descriptor ring setup and teardown, the
-synchronous send-and-wait-for-ACK path, and a small hardware abstraction
-layer for the mailbox registers.  A few questions below, mostly around the
-TX timeout recovery path and the interrupt-driven ACK wait.
+This patch adds the chip-independent resource layer for the nbl driver,
+including PF-count validation from the firmware k_pf_mask, per-PF BDF and
+VSI base-id tables, eth port discovery, and the VSI/func/eth/PF conversion
+helpers.  All of the table setup runs only on the control PF during probe.
 
->From the changelog:
+Two small observations below, both about state that has no reader at this
+point in the series.
 
-> - Mailbox BAR2 register access is intentionally left unlocked: single
-> dword mailbox writes are atomic, and the multi-dword QINFO config
-> sequence (config_mailbox_txq/rxq, stop_mailbox_txq/rxq) only runs
-> during queue setup/teardown when chan_info->active is false, with no
-> concurrent producers.
-
-[Severity: Medium]
-Does the code still match this description?
-
-nbl_chan_quiesce_and_reclaim_tx() runs stop_mailbox_txq() followed by the
-full 4-dword config_mailbox_txq() sequence (through nbl_chan_config_queue())
-from the TX timeout path of nbl_chan_kick_tx_ring(), which is only reachable
-from nbl_chan_send_msg() on a channel where active is true.
-
-nbl_chan_teardown_queue() also calls nbl_chan_stop_queue() while active is
-still true; it is cleared only afterwards.
-
-Should the changelog also describe the new TX timeout recovery behaviour?
-nbl_chan_quiesce_and_reclaim_tx() resets next_to_use, next_to_clean and
-tail_ptr to 0 on a live queue and re-enables it, which is not mentioned
-anywhere in the commit message.
-
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
 > new file mode 100644
-> index 0000000000000..090a17b00dbbe
+> index 0000000000000..46180522295a3
 > --- /dev/null
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c
-> @@ -0,0 +1,1331 @@
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
+> @@ -0,0 +1,335 @@
 
 [ ... ]
 
-> +static int nbl_chan_teardown_queue(struct nbl_channel_mgt *chan_mgt,
-> +				   u8 chan_type)
-> +{
-
-[ ... ]
-
-> +	ret = wait_event_timeout(chan_info->inflight_wait,
-> +				 atomic_read(&chan_info->inflight_tx_cnt) == 0,
-> +				 msecs_to_jiffies(5000));
-> +
-> +	if (!ret) {
-> +		dev_warn(chan_mgt->common->dev,
-> +			 "teardown: inflight tx drain timeout\n");
-> +		ret = -ETIMEDOUT;
-> +	} else {
-> +		ret = 0;
+> +	/*
+> +	 * Any subset of valid bitmap bits is accepted (e.g. 0/1, 0/2,
+> +	 * 1/3, etc.).  Firmware only needs to report the correct count
+> +	 * of active ports; no hard-coded fixed bit positions required.
+> +	 */
+> +	for (i = 0; i < NBL_MAX_ETHERNET; i++) {
+> +		if ((1 << i) & eth_bitmap) {
+> +			set_bit(i, eth_info->eth_bitmap);
+> +			eth_info->eth_id[eth_num] = i;
+> +			eth_info->logic_eth_id[i] = eth_num;
+> +			eth_num++;
+> +		}
 > +	}
 > +
-> +	/* After all TX drained, stop hardware queue */
-> +	nbl_chan_stop_queue(chan_mgt);
-> +
-> +	/* All send paths drained, safely cancel cleanup work */
-> +	if (task)
-> +		cancel_work_sync(task);
-> +	WRITE_ONCE(chan_info->active, false);
-> +	return ret;
-> +}
-
-[Severity: Medium]
-When the drain times out, teardown continues anyway: it stops the hardware,
-cancels the cleanup work and clears active even though inflight_tx_cnt is
-still non-zero.
-
-The comment above this wait says "callers must not access queue resources
-while an inflight sender may still be active", but is there anything that
-enforces it?  Later in the series the only caller,
-nbl_dev_remove_chan_queue() from nbl_dev_remove_common_dev(), discards the
-return value and the remove path proceeds to detach, where devres releases
-the dmam_alloc_coherent() descriptor rings and buffers and the
-devm_kcalloc() wait array.
-
-A surviving sender is still polling that memory:
-
-nbl_chan_kick_tx_ring()
-	if (le16_to_cpu(READ_ONCE(tx_desc->flags)) &
-	    BIT(NBL_CHAN_TX_DESC_USED))
-
-and nbl_chan_send_msg() still reads wait_head->acked / ack_data_len.  Can
-this end up as a use-after-free of the coherent ring and the wait array,
-with the device still writing into freed pages?
-
-[Severity: Medium]
-A second question about the same path: teardown never takes
-chan_info->txq_lock, it relies only on inflight_tx_cnt reaching zero.  After
-the drain timeout, can this interleave?
-
-CPU0, in nbl_chan_send_msg() holding txq_lock:
-	nbl_chan_kick_tx_ring()
-	  /* 100 polling iterations expired */
-	  nbl_chan_quiesce_and_reclaim_tx()
-	    hw_ops->stop_mailbox_txq(hw_priv);
-	    ...
-	    nbl_chan_config_queue(chan_mgt, chan_info, true); /* QUEUE_EN=1 */
-
-CPU1, in nbl_chan_teardown_queue() after the 5s wait expired:
-	nbl_chan_stop_queue(chan_mgt);          /* no txq_lock */
-	WRITE_ONCE(chan_info->active, false);
-
-If CPU1's stop lands before CPU0's re-config, does the mailbox TX queue end
-up armed again after teardown declared the channel inactive, pointing at
-rings that devres is about to free?  This is also two concurrent writers of
-the same BAR2 QINFO block, which is the case the changelog says cannot
-occur.
-
-> +static int nbl_chan_setup_queue(struct nbl_channel_mgt *chan_mgt, u8 chan_type)
-> +{
-> +	struct nbl_chan_info *chan_info = chan_mgt->chan_info[chan_type];
-> +	struct nbl_hw_ops *hw_ops = chan_mgt->hw_ops_tbl->ops;
-> +	struct nbl_common_info *common = chan_mgt->common;
-> +	struct nbl_chan_ring *rxq = &chan_info->rxq;
-> +	int err;
-> +
-> +	if (READ_ONCE(chan_info->active)) {
-> +		dev_warn(common->dev, "channel already active, reject duplicate setup\n");
-> +		return -EBUSY;
+> +	for (i = 0; i < res_mgt->common->max_pf; i++) {
+> +		eth_id = eth_info->eth_id[i];
+> +		eth_info->pf_bitmap[eth_id] |= BIT(i);
 > +	}
-> +	nbl_chan_init_queue_param(chan_info, NBL_CHAN_QUEUE_LEN,
-> +				  NBL_CHAN_QUEUE_LEN, NBL_CHAN_BUF_LEN,
-> +				  NBL_CHAN_BUF_LEN);
-> +	err = nbl_chan_init_queue(common, chan_info);
-> +	if (err)
-> +		return err;
-> +	err = nbl_chan_alloc_all_bufs(chan_mgt, chan_info);
-> +	if (err)
-> +		return err;
 
 [Severity: Low]
-This isn't reachable today, but the one-shot lifecycle the changelog
-describes ("DMA buffers are allocated once in probe phase ... dynamic
-runtime queue reinit is not supported") does not seem to be enforced by
-anything except the active flag.
+This isn't a bug, but are eth_info->eth_bitmap, eth_info->logic_eth_id[]
+and eth_info->pf_bitmap[] ever read?
 
-nbl_chan_teardown_queue() releases none of the dmam_alloc_coherent() or
-devm_kcalloc() allocations and only clears active, so a
-setup -> teardown -> setup sequence on the same chan_info would redo every
-allocation (roughly 2 MiB of coherent DMA) and orphan the previous set until
-device detach.  Would it be worth making teardown_queue refuse to re-open
-the setup path, or documenting the constraint in the ops prototypes?
+Grepping the driver with the whole series applied, the only appearances of
+these three members are the writes above plus the declaration in struct
+nbl_eth_info.  eth_info->eth_id[] is the only member of the three tables
+that gets consumed, via nbl_res_get_eth_id().
 
-[ ... ]
+The commit message describes this as building "the per-PF eth_id /
+logic_eth_id lookup tables", but nbl_res_get_eth_id() recomputes the
+logical id instead of reading the table it just built:
 
-> +static void nbl_chan_quiesce_and_reclaim_tx(struct nbl_channel_mgt *chan_mgt,
-> +					    struct nbl_chan_info *chan_info)
+	*eth_num = eth_info->eth_num;
+	*eth_id = eth_info->eth_id[rel_pf_id];
+	*logic_eth_id = rel_pf_id;
+
+The two derivations agree for every layout the code accepts, because
+max_pf == eth_num is enforced earlier, so the values are identical today.
+Would it be clearer to either return eth_info->logic_eth_id[*eth_id] here,
+or drop the unused members and the loops that fill them until a consumer
+shows up?
+
+> +static int nbl_res_ctrl_dev_sriov_info_init(struct nbl_resource_mgt *res_mgt)
 > +{
-> +	struct nbl_hw_ops *hw_ops = chan_mgt->hw_ops_tbl->ops;
-> +	struct nbl_hw_mgt *hw_priv = chan_mgt->hw_ops_tbl->priv;
-> +	struct nbl_chan_ring *txq = &chan_info->txq;
-> +	struct nbl_chan_tx_desc *tx_desc;
-> +
-> +	/* Assert QUEUE_RST to stop hardware fetching new descriptors */
-> +	hw_ops->stop_mailbox_txq(hw_priv);
-> +	hw_ops->flush_write(hw_priv);
-
-[Severity: High]
-Is this flush_write() safe on functions other than PF0?
-
-flush_write() is nbl_flush_writes(), which reads NBL_HW_DUMMY_REG
-(0x1300904, about 19.9 MiB into BAR0):
-
-drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
-/*
- * Only call this when has_ctrl=true, which maps enough space
- * (bar_len - 8192) to cover NBL_HW_DUMMY_REG (0x1300904).
- * The flow/design guarantees this is only called in the
- * has_ctrl path.
- */
-static inline void nbl_flush_writes(struct nbl_hw_mgt *hw_mgt)
-{
-	nbl_hw_rd32(hw_mgt, NBL_HW_DUMMY_REG);
-}
-
-But nbl_hw_init_leonis() only maps 8 KiB of BAR0 when has_ctrl is clear:
-
-	hw_size = NBL_REG_NET_ONLY_LEN;
-	hw_mgt->hw_addr = pcim_iomap(pdev, NBL_MEMORY_BAR, hw_size);
-
-and nbl_get_func_param() sets has_ctrl only for
-PCI_FUNC(pdev->devfn) == 0 && !pdev->is_virtfn.
-
-So on PF1..PF3 (which do send mailbox messages later in the series), does
-nbl_chan_send_msg() -> nbl_chan_kick_tx_ring() -> quiesce path perform a
-readl() roughly 20 MiB past the end of the ioremap mapping when the device
-fails to set NBL_CHAN_TX_DESC_USED within NBL_CHAN_TX_WAIT_TIMES iterations
-(around 10 ms)?  That is exactly the precondition the comment on
-nbl_flush_writes() states.
-
-Should flush_write() be gated on common->has_ctrl, or bounds-checked the way
-nbl_hw_write_mbx_regs() already checks mailbox_bar_size?
 
 [ ... ]
 
-> +		retry_count++;
-> +		if (retry_count == max_retries) {
-> +			msg_type = le16_to_cpu(READ_ONCE(tx_desc->msg_type));
-> +			dev_err_ratelimited(dev, "chan send msg type: %d timeout\n",
-> +					    msg_type);
-> +			/*
-> +			 * Device failed to complete this descriptor.
-> +			 * Quiesce the queue, reclaim the timed-out
-> +			 * descriptor, and re-enable so future sends can
-> +			 * proceed instead of stalling the ring full.
-> +			 */
-> +			nbl_chan_quiesce_and_reclaim_tx(chan_mgt,
-> +							chan_info);
-> +			return -ETIMEDOUT;
-> +		}
+> +	res_mgt->resource_info->sriov_info = sriov_info;
+> +	/*
+> +	 * common->hw_bus supplies bus number for channel mailbox QINFO mapping.
+> +	 * Execution order guarantee: this assignment runs before
+> +	 * cfg_chan_qinfo_map_table(), only executed
+> +	 * on control PF path.
+> +	 */
+> +	common->hw_bus = hw_bus;
+
+[Severity: Low]
+Can this comment be verified at this point in the series?
+
+At this commit nothing reads common->hw_bus outside of the loop just below,
+and cfg_chan_qinfo_map_table() has no caller yet, so the ordering contract
+the comment documents cannot be checked against the tree here.  The readers
+do arrive in the later patches of the series (nbl_res_intr_cfg_msix_map()
+passes common->hw_bus to cfg_msix_map(), and nbl_dev_setup_chan_qinfo()
+passes it to cfg_chan_qinfo_map_table()), and nbl_core_init() does call
+nbl_res_init_leonis() before nbl_disp_init() and nbl_dev_init(), so the
+ordering claim holds once the series is complete.
+
+Would it make sense to move this comment to the patch that adds the
+cfg_chan_qinfo_map_table() call, so the referenced consumer exists in the
+same commit?
+
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
+> new file mode 100644
+> index 0000000000000..a3bc7b3aecdea
+> --- /dev/null
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
+> @@ -0,0 +1,72 @@
 
 [ ... ]
 
-> +		while (!READ_ONCE(wait_head->acked)) {
+> +struct nbl_eth_info {
+> +	DECLARE_BITMAP(eth_bitmap, NBL_MAX_ETHERNET);
+> +	u8 pf_bitmap[NBL_MAX_ETHERNET];
+> +	u8 eth_num;
+> +	u8 resv[3];
+> +	u8 eth_id[NBL_MAX_ETHERNET];
+> +	u8 logic_eth_id[NBL_MAX_ETHERNET];
+> +};
 
 [ ... ]
-
-> +			if (ret == 0) {
-> +				mutex_lock(&chan_info->pending_lock);
-> +				if (READ_ONCE(wait_head->status) ==
-> +				    NBL_MBX_STATUS_WAITING) {
-> +					WRITE_ONCE(wait_head->status,
-> +						   NBL_MBX_STATUS_TIMEOUT);
-> +					WRITE_ONCE(wait_head->acked, 0);
-> +					WRITE_ONCE(wait_head->ack_data, NULL);
-> +					WRITE_ONCE(wait_head->ack_data_len, 0);
-> +					/*
-> +					 * Ensure all status/ack slot
-> +					 * updates are visible before subsequent
-> +					 * readers observe acked == 0
-> +					 */
-> +					smp_wmb();
-> +				}
-> +				mutex_unlock(&chan_info->pending_lock);
-> +				dev_err_ratelimited(dev,
-> +						    "Channel waiting ack failed, message type: %d, msg id: %u\n",
-> +						    chan_send->msg_type, msgid);
-> +				ret = -ETIMEDOUT;
-> +				/*
-> +				 * TIMEOUT slots can be reused by another
-> +				 * sender. The current sender no longer
-> +				 * owns the slot after transitioning it to
-> +				 * TIMEOUT.
-> +				 */
-> +				goto out_clean_inflight;
-> +			}
-
-[Severity: High]
-What happens to the wait slot when the ACK arrives just as the 3s
-wait_event_timeout() expires?
-
-wait_event_timeout() returns 0 only after its last condition check saw
-acked == 0.  Between that check and the pending_lock acquisition here,
-nbl_chan_recv_ack_msg() can take pending_lock and publish:
-
-	WRITE_ONCE(wait_head->acked, 1);
-	WRITE_ONCE(wait_head->status, NBL_MBX_STATUS_ACKD);
-
-The sender then sees status == NBL_MBX_STATUS_ACKD, skips the WAITING-only
-fixup, sets ret = -ETIMEDOUT and jumps to out_clean_inflight, so
-out_clear_wait_slot / nbl_chan_reset_wait_head() is never reached for that
-slot.
-
-nbl_chan_get_msg_id() only hands out slots in IDLE or TIMEOUT state:
-
-	if (status == NBL_MBX_STATUS_IDLE ||
-	    status == NBL_MBX_STATUS_TIMEOUT) {
-
-Does that leak the slot permanently out of the 256-entry pool, so repeated
-occurrences eventually make every synchronous send return -EAGAIN?  The
-caller also gets -ETIMEDOUT for a request whose ACK payload was already
-copied into its response buffer.
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
-> index e281109f502e6..795f29bfb47a9 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
-
-[ ... ]
-
-> +/*
-> + * Only call this when has_ctrl=true, which maps enough space
-> + * (bar_len - 8192) to cover NBL_HW_DUMMY_REG (0x1300904).
-> + * The flow/design guarantees this is only called in the
-> + * has_ctrl path.
-> + */
-> +static inline void nbl_flush_writes(struct nbl_hw_mgt *hw_mgt)
-> +{
-> +	nbl_hw_rd32(hw_mgt, NBL_HW_DUMMY_REG);
-> +}
-
-See the question above at nbl_chan_quiesce_and_reclaim_tx(): the new
-unconditional flush_write() call comes from the generic channel layer, which
-runs on every PF, so the has_ctrl precondition stated here no longer holds.
-
-Thanks for looking at these.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260914123429.56596-1-illusion.wang%40nebula-matrix.com
