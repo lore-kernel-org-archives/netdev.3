@@ -1,38 +1,36 @@
 Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 130974A1DE6;
-	Thu, 17 Sep 2026 10:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5D44AF9D8;
+	Thu, 17 Sep 2026 10:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789642181; cv=none; b=Zk2zd8f+hP0YHDEzaksjdhbJQ6zmBrxhaD58n3Iw5dqkHfSjE5uo1tbDt+S8JBGEjod8FwLJs72jR/iWyh5IFRPak0wzSKrEI8Q48qGYIngzieIvfO0zjYiJ5OupfrqAq4+wPTf8EMYwe1w7F1GLu7U+pQ+qWwTu/cc+KDz+/2M=
+	t=1789642295; cv=none; b=HOYBkQS93PXADPhgAdbW66ByPhiproafRODjGuACHSdSeoruwMiQXpZ62wEAz7EUf4EPKqxaMsHm7+8kMYR+Wrr3+lrMcHR+ZJHJLaYYYWOlrFMDkho6Op00PtWBqiBExCYF8IB/KiOiBB0Ld8Sl+9JMQ8WxRp8CKELOq2WFSEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789642181; c=relaxed/simple;
-	bh=iSQaqQpju7/eJCnj3v12vexOzggjQmqb57hg0K4Bnps=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HjEjPfl10UcmZdc90Ab3bCyZle4rNjjNDINxhirYt+9Fy4gvLCU/5RphDWMyPUD3pEBexM6an5lzb47GiUF9uiEzcoagp/6RqJRUACCuqD5AJhpHhtCB+bCvW4QxsN1gGa3JDtB4zB48asxcLmdkgzqSCyo2VkXgmUx9NGNQaiA=
+	s=arc-20240116; t=1789642295; c=relaxed/simple;
+	bh=VdTPJyVCO26D0ME9c3UkWlcovgq8+DrvUMuLM8iRBNw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aThfLfNwNyiMs2bzFuixy3YbhhjJAucRx3v08z51ZJBNAzgNcTneeNaoqAWraSy+cAI9cztCdl9rtAg3BkNZUgX4azUbHoqi2NSqU76wFX6Ngof4VS4ST8N5Zulpk+1HVvpxfkkFsRqLxRDaI+Ms8zGhFV5aATJW2uhsGLo2n88=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-05 (Coremail) with SMTP id zQCowAD3J0KwxatqjfR+CA--.42028S2;
-	Thu, 17 Sep 2026 18:49:20 +0800 (CST)
+	by APP-05 (Coremail) with SMTP id zQCowAB3pkAYxqtqgft+CA--.1014S2;
+	Thu, 17 Sep 2026 18:51:05 +0800 (CST)
 From: Wentao Liang <vulab@iscas.ac.cn>
-To: andrew@lunn.ch
+To: andrew+netdev@lunn.ch
 Cc: davem@davemloft.net,
 	edumazet@google.com,
-	f.fainelli@gmail.com,
 	kuba@kernel.org,
-	linusw@kernel.org,
 	linux-kernel@vger.kernel.org,
+	mchan@broadcom.com,
 	netdev@vger.kernel.org,
-	olteanv@gmail.com,
 	pabeni@redhat.com,
-	paweldembicki@gmail.com,
+	pavan.chebbi@broadcom.com,
 	Wentao Liang <vulab@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] net: dsa: vitesse-vsc73xx: Fix SPI device reference leak in vsc73xx_spi_probe()
-Date: Thu, 17 Sep 2026 10:49:20 +0000
-Message-Id: <20260917104920.2147568-1-vulab@iscas.ac.cn>
+Subject: [PATCH] tg3: Fix peer device double put in tg3_find_peer()
+Date: Thu, 17 Sep 2026 10:51:04 +0000
+Message-Id: <20260917105104.2147646-1-vulab@iscas.ac.cn>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -41,11 +39,11 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAD3J0KwxatqjfR+CA--.42028S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Kw1fXFy3KF18KFy5Xr4kCrg_yoW8GFW8pF
-	WUXFZ5CF98Gr4DGa1xJws5W3W3Ga18ZFyS939xG3Wru3yrZFyUJFyUXayj9F45GFW8Ka1r
-	CasFvr1rur4fZr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPvb7Iv0xC_Kw4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
+X-CM-TRANSID:zQCowAB3pkAYxqtqgft+CA--.1014S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Cry5JFykXFW5AFW7Kw45ZFb_yoW8Jw13pa
+	nxJa4j9ry8Grn0ya18Ja1fXFn09a97t345WrW7C34rZFW5Za45Cr9YkFZ0qrn5ArZ3XF12
+	vw1jvanxurs0kaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUPmb7Iv0xC_KF4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
 	cIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2
 	AK021l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v2
 	6r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI
@@ -56,54 +54,44 @@ X-Coremail-Antispam: 1UD129KBjvJXoW7Kw1fXFy3KF18KFy5Xr4kCrg_yoW8GFW8pF
 	1l42xK82IY6x8ErcxFaVAv8VW8GFyrJr1UJwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s02
 	6c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw
 	0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvE
-	c7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14
-	v26r4UJVWxJr1lIxAIcVC2z280aVCY1x0267AKxVW0oVCq3bIYCTnIWIevJa73UjIFyTuY
-	vjxUqdHjUUUUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgkNA2qrq3ZcCQAAsI
+	c7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67
+	AKxVW8Jr0_Cr1UMIIF0xvEx4A2jsIEc7CjxVAFwI0_GcCE3sUvcSsGvfC2KfnxnUUI43ZE
+	Xa7IU8rR65UUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgINA2qrq3ZdKgAAsh
 
-spi_dev_get() takes a reference on the SPI device, but neither the
-probe error paths nor vsc73xx_spi_remove() ever release it, so the
-spi_device can never be freed after the driver has been unbound.
+pci_get_slot() returns a device with its reference count incremented.
+When the loop ends on tp->pdev (which happens when the adapter sits at
+PCI function 7 and no other function is present) that reference has
+already been dropped inside the loop, but the trailing pci_dev_put()
+drops it a second time, underflowing the refcount of tp->pdev.
 
-Release the reference on both probe error paths and in remove().
+Treat a loop end on tp->pdev as single-port mode, just like the
+existing !peer case.
 
-Fixes: 95711cd5f0b4 ("net: dsa: vsc73xx: Split vsc73xx driver")
+Fixes: 16fe9d74f14e ("[TG3]: Fix 5704 single-port mode")
 Cc: stable@vger.kernel.org
 Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- drivers/net/dsa/vitesse-vsc73xx-spi.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/tg3.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/vitesse-vsc73xx-spi.c b/drivers/net/dsa/vitesse-vsc73xx-spi.c
-index 85b9a0f51dd8..7b784320c41e 100644
---- a/drivers/net/dsa/vitesse-vsc73xx-spi.c
-+++ b/drivers/net/dsa/vitesse-vsc73xx-spi.c
-@@ -153,10 +153,15 @@ static int vsc73xx_spi_probe(struct spi_device *spi)
- 	ret = spi_setup(spi);
- 	if (ret < 0) {
- 		dev_err(dev, "spi setup failed.\n");
-+		spi_dev_put(vsc_spi->spi);
- 		return ret;
+diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
+index 73a4b569b03e..57669a22c036 100644
+--- a/drivers/net/ethernet/broadcom/tg3.c
++++ b/drivers/net/ethernet/broadcom/tg3.c
+@@ -16122,9 +16122,10 @@ static struct pci_dev *tg3_find_peer(struct tg3 *tp)
+ 		pci_dev_put(peer);
  	}
- 
--	return vsc73xx_probe(&vsc_spi->vsc);
-+	ret = vsc73xx_probe(&vsc_spi->vsc);
-+	if (ret)
-+		spi_dev_put(vsc_spi->spi);
-+
-+	return ret;
- }
- 
- static void vsc73xx_spi_remove(struct spi_device *spi)
-@@ -167,6 +172,8 @@ static void vsc73xx_spi_remove(struct spi_device *spi)
- 		return;
- 
- 	vsc73xx_remove(&vsc_spi->vsc);
-+
-+	spi_dev_put(vsc_spi->spi);
- }
- 
- static void vsc73xx_spi_shutdown(struct spi_device *spi)
+ 	/* 5704 can be configured in single-port mode, set peer to
+-	 * tp->pdev in that case.
++	 * tp->pdev in that case. The loop can also end on tp->pdev
++	 * itself, whose reference was already dropped above.
+ 	 */
+-	if (!peer) {
++	if (!peer || peer == tp->pdev) {
+ 		peer = tp->pdev;
+ 		return peer;
+ 	}
 -- 
 2.34.1
 
