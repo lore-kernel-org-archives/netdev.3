@@ -1,23 +1,23 @@
-Received: from out28-171.mail.aliyun.com (out28-171.mail.aliyun.com [115.124.28.171])
+Received: from out28-100.mail.aliyun.com (out28-100.mail.aliyun.com [115.124.28.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97E03F88A2;
-	Thu, 17 Sep 2026 08:22:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813273D9522;
+	Thu, 17 Sep 2026 08:22:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789633377; cv=none; b=gKfZyr3v1P1OaNGshVlpdhe5yAa/K6Uy1i1BNgWFhzt35tPwRi7sk3JIN+G10vRX3g4x7Eswlg18wSDTSQzY4QjCw6vamLbv9d5By3IsJfuewTDxWB6WxFRaLq4xad+ABhT9WHN8bVC0lOqhugljN94Z9k5shJhQB/9NmpobeXM=
+	t=1789633377; cv=none; b=uYRnF79cnbP0i6LsLTB8NrmYsJhKA0JeUlEjVaWfl8y57QjYzRD0yv2IRvXrVffEGgpg5NWiSriRNF85EZi9zfjrtljrKZadS1cCtMfqjAo4XsvhSi1popGKeOizXP0+TSeuqYN4g7tR+EQZtWNvWg9OVvCHU4YRjgwjaQxAJa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789633377; c=relaxed/simple;
-	bh=+e7CJrl2YOVp8zKLBMYMaD2iyZgMvk4gu+w1vhQu5AU=;
+	bh=WeNUryqENxUdN0/GJ8JSQ9740c7W4KbTzDQXGBuy2rM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=E9ieZsXT9kcnv3wcOinDQ33swFSRfnf6J1nzWHTlATRg27l266Oy7W9L06Zt2divFv+weVIEngJA+v3cnl/U98upw36P6eHBKvIYWE91C8rrvJ2NYjILpKGAapWxypbyMy6mljPWEhjMCyQ3Kqy4dWNd2DLy2p2JmwY4K5/3Co4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.171
+	 MIME-Version; b=cU1mUrU/UNujOqu56+AnxxNdNzKWGfoKpFfL4YhWnYhTmA7kdF8K2slo8S4GVdc7BmpWFQ1wf8JWzwyOZohSUnN8AsdiKWjXo/AHRRjg6g7nRq35G/KASKwC8BPvp7zelkeJF79x8nPd5qr/oylD6YgorvAafa0fjx+IP6Yt9uY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.100
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.1613805|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.220266-0.00123502-0.778499;FP=9472818642626854528|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037026024;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=16;RT=16;SR=0;TI=SMTPD_---.jFhn6-r_1789633365;
-Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jFhn6-r_1789633365 cluster:ay29)
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.09768533|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0201756-0.000204846-0.97962;FP=12282503508463752868|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033023018039;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=16;RT=16;SR=0;TI=SMTPD_---.jFhn6-._1789633364;
+Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jFhn6-._1789633364 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Thu, 17 Sep 2026 16:22:46 +0800
+          Thu, 17 Sep 2026 16:22:45 +0800
 From: Kyle Switch <kyle.switch@motor-comm.com>
 To: andrew@lunn.ch,
 	olteanv@gmail.com,
@@ -35,9 +35,9 @@ Cc: ming.xu@motor-comm.com,
 	jianmin.wang@motor-comm.com,
 	wei.zhang@gl-inet.com,
 	sijia.huang@gl-inet.com
-Subject: [PATCH net-next v8 4/6] net: dsa: motorcomm: move mib stop from remove() to teardown()
-Date: Thu, 17 Sep 2026 16:22:34 +0800
-Message-Id: <20260917082236.3427168-5-kyle.switch@motor-comm.com>
+Subject: [PATCH net-next v8 3/6] net: dsa: motorcomm: move mib start from probe() to dsa_setup()
+Date: Thu, 17 Sep 2026 16:22:33 +0800
+Message-Id: <20260917082236.3427168-4-kyle.switch@motor-comm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260917082236.3427168-1-kyle.switch@motor-comm.com>
 References: <20260917082236.3427168-1-kyle.switch@motor-comm.com>
@@ -49,45 +49,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This change ensures symmetry with the MIB start operation,
-which is already invoked in the setup(). Additionally, it
-consolidates per-switch operation into the appropriate DSA ops,
-improving code organization and maintainability.
+Move the delayed work initialization of the per-port MIB polling
+from yt921x_mdio_probe() into the DSA .setup() callback, changing
+its lifetime from once per probe() to once per DSA .setup().
 
 Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
 ---
- drivers/net/dsa/motorcomm/chip.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/net/dsa/motorcomm/chip.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-index 167b20835771..2412fe2f696f 100644
+index 2156230a78aa..167b20835771 100644
 --- a/drivers/net/dsa/motorcomm/chip.c
 +++ b/drivers/net/dsa/motorcomm/chip.c
-@@ -4233,6 +4233,11 @@ static void yt921x_dsa_teardown(struct dsa_switch *ds)
- #if IS_ENABLED(CONFIG_NET_DSA_YT921X_LEDS)
- 	yt921x_leds_remove(priv);
- #endif
-+	for (size_t i = ARRAY_SIZE(priv->ports); i-- > 0; ) {
+@@ -4553,6 +4553,14 @@ static int yt921x_dsa_setup(struct dsa_switch *ds)
+ 	struct device_node *child;
+ 	int res;
+ 
++	/* mib polling init */
++	for (size_t i = 0; i < ARRAY_SIZE(priv->ports); i++) {
 +		struct yt921x_port *pp = &priv->ports[i];
 +
-+		disable_delayed_work_sync(&pp->mib_read);
++		pp->index = i;
++		INIT_DELAYED_WORK(&pp->mib_read, yt921x_poll_mib);
 +	}
- }
++
+ 	mutex_lock(&priv->reg_lock);
+ 	res = yt921x_chip_reset(priv);
+ 	mutex_unlock(&priv->reg_lock);
+@@ -4805,13 +4813,6 @@ static int yt921x_mdio_probe(struct mdio_device *mdiodev)
+ 	priv->reg_ops = &yt921x_reg_ops_mdio;
+ 	priv->reg_ctx = mdio;
  
- static int yt921x_chip_detect(struct yt921x_priv *priv)
-@@ -4763,12 +4768,6 @@ static void yt921x_mdio_remove(struct mdio_device *mdiodev)
- 	if (!priv)
- 		return;
- 
--	for (size_t i = ARRAY_SIZE(priv->ports); i-- > 0; ) {
+-	for (size_t i = 0; i < ARRAY_SIZE(priv->ports); i++) {
 -		struct yt921x_port *pp = &priv->ports[i];
 -
--		disable_delayed_work_sync(&pp->mib_read);
+-		pp->index = i;
+-		INIT_DELAYED_WORK(&pp->mib_read, yt921x_poll_mib);
 -	}
 -
- 	dsa_unregister_switch(&priv->ds);
- 
- 	for (unsigned int i = 0; i < ARRAY_SIZE(priv->acl_blks); i++) {
+ 	ds = &priv->ds;
+ 	ds->dev = dev;
+ 	ds->priv = priv;
 -- 
 2.25.1
 
