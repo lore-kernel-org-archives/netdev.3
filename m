@@ -1,123 +1,207 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA23390CAA;
-	Thu, 17 Sep 2026 08:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8403A3B1016;
+	Thu, 17 Sep 2026 08:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789633004; cv=none; b=SlIN2k1CaPbCrozlivgPxkjVE1wBYrTCdXf1a8OgL5/zP7tcQ2FnyOqWq9xhl4BkAqL4rKMgknERt7dt/ahhg0/lHux0oPVJVOfNQrtC+xYptJYmPt8B1qMH3gjeC/q5YV36Do8ANrRy+AGbfW5tbmye5YQtlCDifEGXWMPs+w8=
+	t=1789633150; cv=none; b=aKGw4H34gTllna7+CWgWF5q5O1UK2omfaT+HgCw6Z+BBPi2MbRUeziig6J62Id4S5AOeJpCv0JSKeC75gQnEihcFUbo2cC5Egp8jxDaxIX2OHtvCoXrJCvv1sPg2qCYp4XFSUkz5MwOVyC4wP+u1XK/MS8/DeI705xmgQNXCRwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789633004; c=relaxed/simple;
-	bh=b+JjD7EjqJWEW6UbTeDdSkVfA1qMIVzboLqxTAHiKi0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KzJQIs1gNVYHCogkZ9XXt1+fDRdsVA+Ao4FkTWptQBZsiZCeA2eys8ptTT5466iTHTfRATpjrbx1ZubFfO12dDyrVUQyiAoiFqzr6jgPET8wjR4AOoZmvFTI43VdqSUzcJaxbrBeI20DCPWWjjVJoolK7L2UlYysZeOGCT8ONHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lipxGimk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789633150; c=relaxed/simple;
+	bh=OOomfKftFBRnz+rSNUtws033tSlDbkznMVxKX8gkal0=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ISdQ8CIOmZcUsOQSShrTr1oTS6hLS5Lhf5IIkAfUaZxmx2+860gZiS+ICFFKiPOa4TkSdxvBA0r02FDSnnkXPRr9gKr3eHn6DFO0jZSQBVFIwMYAqcjKYOxvAtUUg1ko2u9gBAaZLnkVB8NVTGdgbvtlOqHwGhm8mKMSb9p/vSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CJn7AYvy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lipxGimk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44AF41F000FF;
-	Thu, 17 Sep 2026 08:16:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CJn7AYvy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C7311F000FF;
+	Thu, 17 Sep 2026 08:19:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789632998;
-	bh=XsxJHlaX6GD89exnhV0hjrgOEGC6zExrW4yhpXaG5Z4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lipxGimkYhMgRR6E8rEv3gjIb5hgJe8Y7nXno47AijAue1TjIU19QSmw/xSubU6fw
-	 c1eR99wu1Gh5ko6Qo/SlN3sau8Gy8FLCfPx1TEvXz0KCCR45FxJEAq6ztEStJLebL+
-	 yNqTiT+tBmLou0g5Ui3hpsstk14l9LmlLf7LLNNDMg5M+h7tIfMIsJKulehvWAPevI
-	 WMRRO0cSyY+DjmknK11Jo0aJsf4H1Yy/zPzG1OyygrcFd/UXfJ/kUcbqoQuWIttafv
-	 8ZXmtaWMYoJBe0CVLzVAp9AvRETWcj1b2fZhETuFHsaWFi+EWEm7EmjwnY4AWLWWEs
-	 pwaRRnvkCMVdw==
-Date: Thu, 17 Sep 2026 09:16:32 +0100
-From: Simon Horman <horms@kernel.org>
-To: Quanye Yang <quanyeyang@proton.me>
-Cc: Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3] tcp: annotate lockless access to sk->sk_err
-Message-ID: <20260917081632.GW51261@horms.kernel.org>
-References: <20260912-mptcp-sk-err-net-v3-1-c41383878bde@proton.me>
+	s=k20260515; t=1789633147;
+	bh=TLhhUntP2UZd7usambWoY0dwKj1ntPIBjjB55O/+Cfo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=CJn7AYvy9IBI2JLMN/hlKubM4BWIpnkD5dgJ/udfIJGEmK2hMH2R7FWZkRHzLhPv4
+	 Ltgp6qlU5FKFa8R0v4Bv2rWrZOkjOSgJ/RlTpXSjQ68jVO/RyfWXLCkhUiURZJILnY
+	 A5jT0iNk/ZNUh8kDHI2tCuDB7Kn5pvHrRpgpQel9FDeWhnM6XvH42lHJNY8+2ZT3/A
+	 DZPdimsp2A/NeQKdoxBTqcWgMazI6VDHvM2VJYbGj8a3sMrvDUxzTWn8cXzY+DOUeF
+	 aAOJExkVKAJirw04SnxV2bCBkiiQoI8Eg0mlOhaGdp31o70i69dyfK4ncApxcRQ2DA
+	 v+yf3HzFoJGCw==
+Subject: Re: [PATCH] net: mediatek: fix PPE resource leak on remove
+From: netdev-bot+sashiko@kernel.org
+To: lgs201920130244@gmail.com
+Cc: nbd@nbd.name, lorenzo@kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ stable@vger.kernel.org
+Date: Thu, 17 Sep 2026 08:19:05 +0000
+Message-ID: <178963314597.22033.1751942424673544030@kernel.org>
+In-Reply-To: <20260916051618.2904439-1-lgs201920130244@gmail.com>
+References: <20260916051618.2904439-1-lgs201920130244@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260912-mptcp-sk-err-net-v3-1-c41383878bde@proton.me>
 
-On Sat, Sep 12, 2026 at 11:43:34PM +0800, Quanye Yang wrote:
-> BUG: KCSAN: data-race in do_recvmmsg / mptcp_recvmsg
-> 
-> read-write (marked) to 0xffff8880134d391c of 4 bytes by task 2619 on cpu 1:
->  instrument_atomic_read_write include/linux/instrumented.h:113 [inline]
->  sock_error include/net/sock.h:2565 [inline]
->  do_recvmmsg+0x50c/0x580 net/socket.c:3049
->  __sys_recvmmsg net/socket.c:3144 [inline]
->  __do_sys_recvmmsg net/socket.c:3167 [inline]
->  __se_sys_recvmmsg net/socket.c:3160 [inline]
->  __x64_sys_recvmmsg+0x161/0x180 net/socket.c:3160
->  x64_sys_call+0x19c7/0x1ca0 arch/x86/include/generated/asm/syscalls_64.h:300
->  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
->  do_syscall_64+0xde/0x3d0 arch/x86/entry/syscall_64.c:84
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> read to 0xffff8880134d391c of 4 bytes by task 2620 on cpu 0:
->  tcp_recv_should_stop include/net/tcp.h:3086 [inline]
->  mptcp_recvmsg+0x54d/0xd50 net/mptcp/protocol.c:2466
->  inet_recvmsg+0x204/0x210 net/ipv4/af_inet.c:894
->  sock_recvmsg_nosec net/socket.c:1151 [inline]
->  sock_recvmsg+0x11a/0x140 net/socket.c:1173
->  ____sys_recvmsg+0x14b/0x3c0 net/socket.c:2933
->  ___sys_recvmsg+0x116/0x160 net/socket.c:2975
->  __sys_recvmsg net/socket.c:3008 [inline]
->  __do_sys_recvmsg net/socket.c:3014 [inline]
->  __se_sys_recvmsg net/socket.c:3011 [inline]
->  __x64_sys_recvmsg+0xeb/0x160 net/socket.c:3011
->  x64_sys_call+0x1319/0x1ca0 arch/x86/include/generated/asm/syscalls_64.h:48
->  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
->  do_syscall_64+0xde/0x3d0 arch/x86/entry/syscall_64.c:84
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> value changed: 0x0000006b -> 0x00000000
-> 
-> Reported by Kernel Concurrency Sanitizer on:
-> CPU: 0 UID: 0 PID: 2620 Comm: syz.2.33 Not tainted 7.2.0-g39d4f32c5d53 #76 PREEMPT(full)
-> Hardware name: QEMU Ubuntu 26.04 PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1ubuntu1 04/01/2014
-> 
-> do_recvmmsg() and getsockopt(SO_ERROR) call sock_error() without the
-> socket lock. sock_error() clears sk_err with xchg(), which races with
-> unmarked loads of the same field.
-> 
-> KCSAN reported the unmarked peek in tcp_recv_should_stop(). The same
-> lockless writer races with the other plain sk_err reads on the
-> TCP/MPTCP send, recv and splice paths.
-> 
-> Annotate those peeks with READ_ONCE(). No extra ordering is needed:
-> the value is only used to decide whether I/O should stop. This does
-> not consume sk_err; the check-then-sock_error() TOCTOU on the no-data
-> paths is a separate issue.
-> 
-> Suggested-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-> Link: https://lore.kernel.org/netdev/8bbee583-6f21-4817-bfeb-2d60057380a3@linux.dev/
-> Reported-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/632
-> Signed-off-by: Quanye Yang <quanyeyang@proton.me>
-> ---
-> Changes in v3:
-> - drop the Fixes tag and retarget to net-next
-> - annotate the remaining unmarked sk_err peeks on the TCP/MPTCP
->   send, recv and splice paths
-> - Link to v2: https://patch.msgid.link/20260909-mptcp-sk-err-net-v2-1-5044abecac90@proton.me
-> 
-> Changes in v2:
-> - add Reported-by and Closes for the MPTCP syzkaller report
-> - Link to v1: https://patch.msgid.link/20260908-mptcp-sk-err-net-v1-1-da71aaec9afd@proton.me
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Critical: 0 · High: 2 (1) · Medium: 0 · Low: 0
+
+- [High] mtk_remove() now calls mtk_ppe_deinit(eth)
+  (drivers/net/ethernet/mediatek/mtk_eth_soc.c:5409) *before*…
+- [High] The patch closes only half of the leak it claims to fix.
+
+Pre-existing issues:
+- [High] mtk_ppe_init() registers per-PPE debugfs entries via
+  mtk_ppe_debugfs_init() (mtk_ppe.c:934), which creates a top-level…
+
+--
+
+net: mediatek: fix PPE resource leak on remove
+
+This adds a mtk_ppe_deinit(eth) call to mtk_remove() so that the l2_flows
+rhashtables allocated by mtk_ppe_init() are released on device removal, the
+way the probe error unwind already does.  A few questions about the placement
+and the completeness of the teardown below.
+
+> diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+> index fd7a49ae88d01..903dac36ccf10 100644
+> --- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+> +++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+> @@ -5406,6 +5406,7 @@ static void mtk_remove(struct platform_device *pdev)
+>  
+>  	netif_napi_del(&eth->tx_napi);
+>  	netif_napi_del(&eth->rx_napi);
+> +	mtk_ppe_deinit(eth);
+
+[Severity: High]
+Can this destroy ppe[i]->l2_flows while the netdevs are still registered and
+their flow offload callbacks are still live?
+
+mtk_ppe_deinit() only calls rhashtable_destroy(), which frees the bucket
+table and leaves ht->tbl dangling, while eth->ppe[i] stays non-NULL:
+
+drivers/net/ethernet/mediatek/mtk_ppe.c:mtk_ppe_deinit() {
+	for (i = 0; i < ARRAY_SIZE(eth->ppe); i++) {
+		if (!eth->ppe[i])
+			return;
+		rhashtable_destroy(&eth->ppe[i]->l2_flows);
+	}
+}
+
+The unregister_netdev() calls only happen afterwards, in mtk_cleanup() ->
+mtk_unreg_dev(), and unregistering a device with offloaded flower rules
+replays the removals back into the driver:
+
+unregister_netdev() -> dev_shutdown() -> tcf_block_offload_unbind() ->
+tcf_block_unbind() -> tcf_block_playback_offloads(..., add=false) ->
+fl_reoffload()
+
+net/sched/cls_flower.c:fl_reoffload() {
+		cls_flower.command = add ?
+			FLOW_CLS_REPLACE : FLOW_CLS_DESTROY;
+
+For an MTK_FLOW_TYPE_L2 (bridge) entry that lands back in the already
+destroyed table:
+
+mtk_eth_setup_tc_block_cb() -> mtk_flow_offload_cmd() ->
+mtk_flow_offload_destroy() -> mtk_foe_entry_clear() ->
+
+drivers/net/ethernet/mediatek/mtk_ppe.c:__mtk_foe_entry_clear() {
+	if (entry->type == MTK_FLOW_TYPE_L2) {
+		rhashtable_remove_fast(&ppe->l2_flows, &entry->l2_node,
+				       mtk_flow_l2_ht_params);
+
+Is there anything preventing a concurrent FLOW_CLS_REPLACE from reaching
+mtk_foe_entry_commit_l2() -> rhashtable_lookup_get_insert_fast() on the same
+freed table?  mtk_remove() holds neither rtnl nor mtk_flow_offload_mutex.
+
+The same applies to eth->reset.monitor_work and eth->pending_work, which are
+only cancelled later, inside mtk_cleanup():
+
+drivers/net/ethernet/mediatek/mtk_eth_soc.c:mtk_cleanup() {
+	mtk_sgmii_destroy(eth);
+	mtk_unreg_dev(eth);
+	mtk_free_dev(eth);
+	cancel_work_sync(&eth->pending_work);
+	cancel_delayed_work_sync(&eth->reset.monitor_work);
+
+If those re-run mtk_open()/napi_enable(), the receive path reaches
+mtk_ppe_check_skb() -> rhashtable_lookup_fast(&ppe->l2_flows) on the freed
+table.
+
+The probe unwind orders this the other way around:
+
+err_unreg_netdev:
+	mtk_unreg_dev(eth);
+err_deinit_ppe:
+	mtk_ppe_deinit(eth);
+
+Would placing mtk_ppe_deinit(eth) after mtk_cleanup(eth) match that order?
+
+[Severity: High]
+Does this leave eth->flow_table leaked?
+
+mtk_probe() initializes two rhashtables per PPE index: l2_flows inside
+mtk_ppe_init(), and eth->flow_table inside mtk_eth_offload_init():
+
+drivers/net/ethernet/mediatek/mtk_ppe_offload.c:mtk_eth_offload_init() {
+	if (!eth->ppe[id] || !eth->ppe[id]->foe_table)
+		return 0;
+	return rhashtable_init(&eth->flow_table, &mtk_flow_ht_params);
+}
+
+The only two rhashtable_destroy() call sites in
+drivers/net/ethernet/mediatek/ are both on ppe->l2_flows, in mtk_ppe_init()'s
+error path and in mtk_ppe_deinit(), so eth->flow_table's bucket table is
+never freed on unbind either before or after this patch.  Should
+mtk_ppe_deinit() (or the remove path) also destroy eth->flow_table?
+
+Two related observations on eth->flow_table:
+
+Only rhashtable_free_and_destroy() does cancel_work_sync(&ht->run_work), so a
+pending deferred rehash work item stays pointing into struct mtk_eth, which
+is devm_kzalloc'ed in mtk_probe() and freed on detach.
+
+eth->flow_table is a single per-device field, but mtk_eth_offload_init() is
+called once per PPE index in the mtk_probe() loop, and ppe_num is 2 on
+mt7986/mt7981 and 3 on mt7988.  Does re-running rhashtable_init() on the same
+object overwrite and leak the previously allocated bucket table already at
+probe time?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but since mtk_ppe_deinit() is now
+the PPE teardown for the remove path: it has no counterpart for the debugfs
+entries created during init.
+
+mtk_ppe_init() ends with mtk_ppe_debugfs_init(ppe, index), and that creates a
+top level directory plus two files whose private data is the devm_kzalloc'ed
+struct mtk_ppe:
+
+drivers/net/ethernet/mediatek/mtk_ppe_debugfs.c:mtk_ppe_debugfs_init() {
+	root = debugfs_create_dir(ppe->dirname, NULL);
+	debugfs_create_file("entries", S_IRUGO, root, ppe, &mtk_ppe_debugfs_foe_all_fops);
+	debugfs_create_file("bind", S_IRUGO, root, ppe, &mtk_ppe_debugfs_foe_bind_fops);
+
+The root dentry is not stored anywhere and there is no debugfs_remove() for
+the PPE in the driver (the only debugfs_remove() in
+drivers/net/ethernet/mediatek/ is in mtk_wed.c, which does keep
+hw->debugfs_dir).  With CONFIG_DEBUG_FS=y, does reading
+/sys/kernel/debug/ppe0/entries after unbind dereference the freed struct
+mtk_ppe and its freed dmam-allocated foe_table, and does a re-probe collide
+with the stale ppe0 directory?  Would adding the debugfs teardown to
+mtk_ppe_deinit() be appropriate here?
+
+>  	mtk_cleanup(eth);
+>  	free_netdev(eth->dummy_dev);
+>  	mtk_mdio_cleanup(eth);
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260916051618.2904439-1-lgs201920130244%40gmail.com
