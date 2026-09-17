@@ -1,87 +1,66 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013053.outbound.protection.outlook.com [40.93.196.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F42576ECA
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 14:04:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789653844; cv=none; b=OdxKoqe48MyBgRZoiehtpoz+iBfbCGWqLmxlYB63yx34io9e1Xtd1Wot7rQc+q9zxJCExwfk36w8zWkEha4GCetT1Yi8CoMavEx3dscr1vVC6mWXUGX+VJUlX3oeuoBWDO+ebmqc5UrbaWYLXV68kDFq4zhg1EoWPE+25bnzP48=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789653844; c=relaxed/simple;
-	bh=f9gthdtnme5r9zbQ0ZXVQ9FPlaeOnLAuBmtzjScta00=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HO+e/do93fpKXu+DpXC87Anzf/zJya+PWZZWzUtSw2FOy6Jn+75gGhlaKz3oVWaK/ndZm5jOhorksIlPtb/porYXICrJRXpbLJPmwpDhnDiXGeOoya+P/KtLq1xE8nR5jm+1BbCStlPEfuTmcjGD3styWihxZt2rqu+1Ln2aNh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GYBwqiHT; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=FF5lma6k; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09073579821;
+	Thu, 17 Sep 2026 14:04:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789653889; cv=fail; b=YrUgoEjTA5BU+D2+Tm1hbvPx7f/ONPuLDntygtEJg9IdlPYsEPSnaK4xkiLBBLqmFWRJ4fXweK4jDtPnIH4tu+8Cz6rg18o/jEy/nYyXak+CiY78tcovITWBw5fVpcAEBKHq13GM+XZtiDemHcewvNMbmUvo5JDiRLbsRDqs2zU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789653889; c=relaxed/simple;
+	bh=gWRtqLMFIa1YTqQSnBJgleZXKLwEWQo36GrMNmV0DeQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=D7FgjDbvGqGQ7GfIbsjQ0n9IFeOPrSUAvklAZG7IvHwduGQDrW8U1f/u1KsH2zcSDbk6rnlDyvdDP0DHYIc8QXGsPWz5xTRqOxdal8aBs4q9BcKzj40CjgYXd44hsUmUSEdv/3Y7FqkcbehPKo69Kh5ZII/PyE30Hf1eXK6AWls=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=I9rRQux3; arc=fail smtp.client-ip=40.93.196.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GYBwqiHT";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="FF5lma6k"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789653841;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ejWaldWT3exFP5sFeb/13xiPg0X16ooDhRq9dyD2Rdk=;
-	b=GYBwqiHTQxPF4olYGPDZcX0T1AwD6e0Y1azIcXPyQx9XC/avUbRxK3F9H7s9qTbyGpPs6r
-	IjRIkITBahERsxx8G3g0MfqnjNJ6FIS+sohpd5vh+qp0T7TM+Pu4GsWD3IhpOYeMLKswjo
-	pD1idfiFT/Tg5U0PWwifoTTqB0pEZ+8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-180-K7fDedE-MFuKKkdolF9NXw-1; Thu, 17 Sep 2026 10:04:00 -0400
-X-MC-Unique: K7fDedE-MFuKKkdolF9NXw-1
-X-Mimecast-MFC-AGG-ID: K7fDedE-MFuKKkdolF9NXw_1789653839
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49cd83ca361so11797095e9.1
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 07:04:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789653839; x=1790258639; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ejWaldWT3exFP5sFeb/13xiPg0X16ooDhRq9dyD2Rdk=;
-        b=FF5lma6kV68U+aYbP5UwLyAkvdRrHgufQVHODNd93INvICR3QmxBtdMkRPFXyhs70a
-         S9AOoW/ep8BsHtGahqLiKWeRV353WXpLXGUQFgxFMPx4XUXJDu/2JN6Mz7erYMSupv0O
-         daMU5E7aU3OhWYp1VUacyXnB14nLMO3p3stBxjMzeLxqIoXe/4cBwbncS2JEST+0tD/p
-         6Gf1AG+GgSvkLXvwL5YB0t+Gier4onLOeJ15KrH1cf05c/3nfW+WHHDMBFqKDDjxcomc
-         X+tw9K4o0pnaPFO9VETtq+55kTIWngtjtIDo+W8IEsp3s6S2ICeOMcWenL4kD/C5/j57
-         nPoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789653839; x=1790258639;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ejWaldWT3exFP5sFeb/13xiPg0X16ooDhRq9dyD2Rdk=;
-        b=sr643TNlB8zvWh2/puemRSS3agi/1wI7lK4F3GrQZg2Kj12lvjefexC9rkQrp3IPvZ
-         XoxfoxfMizgJhBIXwGq4btV3/yuRI6FVlnWkQNpbsvnsZ+LYtz0LVUGZFkKcZ4COv0Tw
-         pr6HE1mREI8r4Irz9IbphKa3OcpjVbRztoV/4XFpesb65CmJc+kOn1xd7oPkOlfD0BXG
-         IdTBZ+R3ESrAePVgV82zM20w+uTtQm2OKgUfWe2ybDBK20y6XnufO6RnEToP+UrKkZQ5
-         Dpj0Zk6d/G0xQA7jW7mmaZaHXe8iJB7cj0jE2gzxH5cAhkX8D0g71pROhRDQDsyLxh6y
-         L2Bw==
-X-Forwarded-Encrypted: i=1; AKwUvBxooUP9+5oFhaljYHHY0QEgpuVVWc61dzc1CZlDCECBMzy2uBGEBr7gZ5ecAs6wXe0oekzKHxg=@vger.kernel.org
-X-Gm-Message-State: AFuF++nzyaPbqFNA2/q8GGyVmdaKckTO3Kwfoi4SCMAb2vdKJ0ql4WA7
-	YnZiZcYYaPbeTmPJemNI2aqGteKeJBvINk3qmXS+80ALjCgnWhjQY2kdU5zigTxGqgMauzWmbMb
-	Ujx0CbU6/jyOvoOkVwrk78efvItD6T25h53KgdavK+wzldns60FzTkjDKjw==
-X-Gm-Gg: AYBFou3VSNJqYhozaNs5kJLTL09TzEFr9jE99RtJ9T+Gxzfl3kKqzAkJDwR9pUv83DJ
-	0DGi0ZiUhUi2amKM5/VlOW3i5407TND/6OGdKVV3672Na5JEvT62kHQQMfz9CpdceeWEQRNYP6M
-	QUtr6hbFZoUi0l3RG03fMK5rbE0PmSnCvtZpAlubN+SaiHH4w4J3Qdr0iki3VG+Myo8Wh2tz3Sn
-	9GjQXySA7S42aP0ZACQkCXu4K0pUA42kiCMK0u0DirRiQ4oiqNzJ1ZGGQ4PROAFSomEPKyCYbqi
-	TvDFefoOuFfIZblrL4xoPkYOlcUp6lG8JO2mhbc8vzTSKSZaFKpetKIygZBQr+A5uVpn/wYmjeg
-	DEwL5zp7dhBBo7/aY6ClUjryyGGf0VFk0MxHYL3xWC5VelZY6QUW+UIMpO2fQlSyyocmNvjew1g
-	==
-X-Received: by 2002:a05:600c:c4a6:b0:49e:799a:8969 with SMTP id 5b1f17b1804b1-49eb7345a16mr82457015e9.30.1789653839067;
-        Thu, 17 Sep 2026 07:03:59 -0700 (PDT)
-X-Received: by 2002:a05:600c:c4a6:b0:49e:799a:8969 with SMTP id 5b1f17b1804b1-49eb7345a16mr82456345e9.30.1789653838600;
-        Thu, 17 Sep 2026 07:03:58 -0700 (PDT)
-Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4870bf438fbsm16394895f8f.36.2026.09.17.07.03.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Sep 2026 07:03:58 -0700 (PDT)
-Message-ID: <cf94f386-71ef-4be9-9a44-10cb91c74b4a@redhat.com>
-Date: Thu, 17 Sep 2026 16:03:56 +0200
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="I9rRQux3"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RlaaKyyuBsSwUN8dEZoxnKQHuw1u5kadwKfJQ3eEyyTAxwYIug3M3KzkWVIu32ZtRrCTrA1p7L6L/OhCUsAz9YjVhRT6Cu4qg4Ta/DwFaxcjBkevu70RmtMJR7V8VBz74uCmqvReW0wI4gwQt/5cQrutk1VxN6oGcw2I5I8VGRY8uiVIW1c9gEuNtpO/xC0MfNCLnoGKb1L1GsD2jlLHPmgM1rzrJCzIqXkdGaSu3FA4w1pr2esSaCJX8EY+xaG6pEX8NFsQ/en4QDkMUD3D0Z591VxDU4LtZS35yhBk1lEFbxJLkCP6LZ/+QcXZnbcrm3AJ+op5SlXWl+VEnuMpAA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oqact/i0Y0qXZ05PIWE1jO5BZ30WI4iM3Lc542IZ+gg=;
+ b=QxUs4ToBGWiwRBd9De4l3X9//OlQSHH9CPhDy+puYRud8RUOiDBsQzP+kNmuCkG5E/bA+YhvIm7ukwwz8YH0X/Swq/WJRgDMatdg3V0r5wUnvQ3QA8dZ7mYOV6tA2G+/cimqOvsvw+IO8qhdCh1umrZhudePYEPLe0p45vm2luk27oHfPQNSzzdoKfAn2F/O0eaFrLL3OcADjAtFVPX6OKXiqQX52ewL4wTeJiwUZUnMOMRESn3tZq5qw70Xg4WI7C6Uun66bcNRkEwhKmK4reCizhY0UyrXZ8++I2yEmLBABtZsAS5MM9mx1/tcJCnK2Dl1hVzcJi6jZgivVoUtxg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=iscas.ac.cn smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=oqact/i0Y0qXZ05PIWE1jO5BZ30WI4iM3Lc542IZ+gg=;
+ b=I9rRQux3RhuCEB2qWH+Xy1Yd37sF3NHM0g6bAaBPTpE3eMibPAPjX1rMc0uSYKhRQG9Gd3doLQEr2bcUqiKEfdLLb0cBbMp8bmSZ/xW25ENMfMLd5QmYpqkUh5eIJNjgCaeyoAqyimBViwfZwmeBB1TnMv6U7FcTk2TFGNU6nkgyn03w+tzbYiZUpaDnuFq4O1noTamGs6GrzYGTp5RyPol3kqkrI13hbifN/axtYhDu4pM8YfpFnpErlBCe+RZQfYdBjPv9AIKu8tYj689hKaybjZ3iAxqloVho39WD9BdfGyQlEFMJIEqNg2ieoRp9uH8Lab8js6boEzP27d2RuA==
+Received: from DS1PR05CA0009.namprd05.prod.outlook.com (2603:10b6:8:457::6) by
+ DM6PR12MB4436.namprd12.prod.outlook.com (2603:10b6:5:2a3::20) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.428.9; Thu, 17 Sep 2026 14:04:41 +0000
+Received: from BL02EPF00021F6F.namprd02.prod.outlook.com
+ (2603:10b6:8:457:cafe::46) by DS1PR05CA0009.outlook.office365.com
+ (2603:10b6:8:457::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.8 via Frontend Transport; Thu, 17
+ Sep 2026 14:04:41 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BL02EPF00021F6F.mail.protection.outlook.com (10.167.249.11) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.451.8 via Frontend Transport; Thu, 17 Sep 2026 14:04:39 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 17 Sep
+ 2026 07:03:57 -0700
+Received: from [10.242.158.215] (10.126.231.37) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 17 Sep
+ 2026 07:03:53 -0700
+Message-ID: <c23774ed-f6f3-4f11-921b-59aa9a06e1fe@nvidia.com>
+Date: Thu, 17 Sep 2026 17:03:51 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -89,137 +68,109 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 net] net: skbuff: do not leave stale header offsets
- after pskb_carve()
-To: netdev-bot+sashiko@kernel.org, edumazet@google.com
-Cc: davem@davemloft.net, kuba@kernel.org, horms@kernel.org,
- netdev@vger.kernel.org, eric.dumazet@gmail.com,
- syzbot+586af68eb819833c2d91@syzkaller.appspotmail.com,
- xuanqiang.luo@linux.dev, achender@kernel.org, rds-devel@oss.oracle.com
-References: <20260915130423.3956471-1-edumazet@google.com>
- <178956393100.22033.7676411417898444402@kernel.org>
+Subject: Re: [PATCH] net/mlx5: Fix ent use-after-free in cmd_work_handler()
+To: Wentao Liang <vulab@iscas.ac.cn>, <agoldberger@nvidia.com>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <leon@kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, <mbloch@nvidia.com>, <netdev@vger.kernel.org>,
+	<pabeni@redhat.com>, <saeedm@nvidia.com>, <tariqt@nvidia.com>,
+	<stable@vger.kernel.org>
+References: <20260917112900.2148932-1-vulab@iscas.ac.cn>
 Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <178956393100.22033.7676411417898444402@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: Moshe Shemesh <moshe@nvidia.com>
+In-Reply-To: <20260917112900.2148932-1-vulab@iscas.ac.cn>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF00021F6F:EE_|DM6PR12MB4436:EE_
+X-MS-Office365-Filtering-Correlation-Id: 61b6f270-cb86-4c32-2fc5-08df14c49d1c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|23010399003|36860700016|82310400026|1800799024|56012099006|11063799006|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	atcDo4MyX6TE85KuRqgveahuUQY3REqd1FfFb+Y5WkgqwjcJA2BwyLcGYtwmLIht26QxLFtcHQEtTSETLrAtc7YM+TS3RajvMCtepLLhbIc2eNgyEHOtIpTh5XA2msVs+reg1u0bV0uXyQfjVDvZdZ8ngCbgkuUJBMJ2Vdxt/zLC0QsMqr2FndLA7GznMjF9qC+VIBTzmTiwFfpppvnfcbgnl7Yr1XZ8CvzKroanfcIfdYd3aB9EcRrd7aUuT7NXCsxDYvsGcvKdtfFNtvQhsBLikFg/+FIjoQafjWpWmuxh7/vdxr6buOpELHy/OYdecwK1I6ln1izFP2fb2rmAeb8pGq/SkLJZLDj4XYd9FJZ9P3X0PI+mEFBXJMTpcVCwYsIgoEF4axiAvXwmTvupxQioVQrTR8L1uQreawuhNL5v6M9xC0dj9lGNKOAJWveFBCqgoFsd1ry+GMLNN2AVIuQlYVIGkA6Dp31jk5kp7KPHsRaY+SXlx+qYeMo3o4WbTdvWaZIfeEo9uPJYmF+TrGEnUNGN70Dg69KhCx98OFqff6fq8Zk7Lz/3NtRagoZa2yH/No5vxl3ZXOBWzG1TLGLtZAZUC38mW1f03g7cwsV5LfYnhjGNK8Kyrm6coJBatns6H7aKWBKvsyxK52Uo6GnRXhGOKHOXSnzfW8pao2NiZGi1kBJnyJy2AntVsjFrYqfxTD+3B+16ICYPnqNVMA==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(36860700016)(82310400026)(1800799024)(56012099006)(11063799006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	BXANJK6zL+iqOgvJUIs6Vmm5tJe7ttKK9tPS/QWpchiDAYYWYD/dbmGydmSPnaB3riUnpdH/bdJRq59+7FUiYcumLtiNp8aw8DqXMnq8CXVNzBMsgWPyp94lhc2GmkAiJ5DApxoel4PneI63EI564xDlG/UxdXB0+dBd+gCUtKn/XxVycbyCIeEc4CD4r2BCA1IdMRrBia4Xoogt6SuXEI2jSVQ6LaoooFPeGdzEsiQWFLoXgj1FByhcHIZxkRpEekJw3bW1WzCjQVJvViUMg5B9LsawyH+YXd7Y8ZXfni4TvCffz+uD+YYfj5iO+XZVAvov5CXUvNKJmz+AIAPaIqbrPJnCrFHe1d+mvxDiusyQnSjnZkOf9iYjTnPBp0mbUjTORrHCjtxNVEr/LywUGwaJ3fmzd8Sf1lucfOYfODmKVmxebzeW7lbtU1hoOUW3
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 14:04:39.0060
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 61b6f270-cb86-4c32-2fc5-08df14c49d1c
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF00021F6F.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4436
 
-On 9/16/26 15:05, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider:
+
+
+On 9/17/2026 2:29 PM, Wentao Liang wrote:
 > 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 0
+> In the two command slot acquisition error paths, cmd_ent_put() can drop
+> the last reference and free the command entry, and complete(&ent->slotted)
+> is then called on that freed entry.  Signal the slotted completion before
+> dropping the reference so that the waiter in wait_func() is woken while
+> the entry is still allocated and the entry is not touched after it has
+> been freed.
+
+
+This is already fixed upstream by
+commit 02896a7fa4cd ("net/mlx5: Reorder completion before putting 
+command entry in cmd_work_handler").
+
+Thanks, Moshe.
+
 > 
-> - [Medium] Incomplete invalidation of checksum metadata in the new
->    skb_carve_reset_headers() (net/core/skbuff.c:6842).
+> Fixes: 485d65e13571 ("net/mlx5: Add a timeout to acquire the command queue semaphore")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+> ---
+>   drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+> index c89417c1a1f9..2dac131c5f86 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+> @@ -998,6 +998,7 @@ static void cmd_work_handler(struct work_struct *work)
+>                  if (down_timeout(&cmd->vars.sem, timeout)) {
+>                          mlx5_core_warn(dev, "%s(0x%x) timed out while waiting for a slot.\n",
+>                                         mlx5_command_str(ent->op), ent->op);
+> +                       complete(&ent->slotted);
+>                          if (ent->callback) {
+>                                  ent->callback(-EBUSY, ent->context);
+>                                  mlx5_free_cmd_msg(dev, ent->out);
+> @@ -1007,12 +1008,12 @@ static void cmd_work_handler(struct work_struct *work)
+>                                  ent->ret = -EBUSY;
+>                                  complete(&ent->done);
+>                          }
+> -                       complete(&ent->slotted);
+>                          return;
+>                  }
+>                  alloc_ret = cmd_alloc_index(cmd, ent);
+>                  if (alloc_ret < 0) {
+>                          mlx5_core_err_rl(dev, "failed to allocate command entry\n");
+> +                       complete(&ent->slotted);
+>                          if (ent->callback) {
+>                                  ent->callback(-EAGAIN, ent->context);
+>                                  mlx5_free_cmd_msg(dev, ent->out);
+> @@ -1023,7 +1024,6 @@ static void cmd_work_handler(struct work_struct *work)
+>                                  complete(&ent->done);
+>                          }
+>                          up(&cmd->vars.sem);
+> -                       complete(&ent->slotted);
+>                          return;
+>                  }
+>          } else {
 > --
+> 2.34.1
 > 
-> net: skbuff: do not leave stale header offsets after pskb_carve()
-> 
-> The two pskb_carve() helpers used to call skb_headers_offset_update(skb, 0),
-> which left mac/network/transport offsets describing bytes that were just
-> removed. This patch adds skb_carve_reset_headers() to unset the mac and
-> transport headers, reset the network header, clear mac_len, zero the inner
-> header state, and downgrade CHECKSUM_PARTIAL to CHECKSUM_NONE.
-> 
-> Closes: https://lore.kernel.org/netdev/6aa3e9d3.f2639fcc.29487d.0028.GAE@google.com/
-> 
->> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
->> index cc3b4b70288b4..609f2c7f4a47a 100644
->> --- a/net/core/skbuff.c
->> +++ b/net/core/skbuff.c
->> @@ -6832,6 +6832,34 @@ struct sk_buff *alloc_skb_with_frags(unsigned long header_len,
->>   }
->>   EXPORT_SYMBOL(alloc_skb_with_frags);
->>   
->> +/* pskb_carve_inside_header() and pskb_carve_inside_nonlinear()
->> + * remove the first bytes of a packet and reallocate skb->head.
->> + *
->> + * Whatever headers were present before the operation are gone,
->> + * we must not leave stale offsets, otherwise users of this skb
->> + * (skb_dump(), drop_monitor, taps, ...) would read or pull garbage.
->> + */
->> +static void skb_carve_reset_headers(struct sk_buff *skb)
->> +{
->> +	skb_unset_mac_header(skb);
->> +	skb_unset_transport_header(skb);
->> +	skb_reset_network_header(skb);
->> +	skb->mac_len = 0;
->> +
->> +	/* Inner offsets have no "unset" marker, zero them so that
->> +	 * skb_inner_network_header_was_set() becomes false and no
->> +	 * consumer mistakes them for a real (and long gone) header.
->> +	 */
->> +	skb->inner_mac_header = 0;
->> +	skb->inner_network_header = 0;
->> +	skb->inner_transport_header = 0;
->> +	skb->inner_protocol = 0;
->> +	skb->encapsulation = 0;
->> +
->> +	if (skb->ip_summed == CHECKSUM_PARTIAL)
->> +		skb->ip_summed = CHECKSUM_NONE;
->> +}
-> 
-> [Severity: Medium]
-> The changelog says the goal is that "all the header state is invalidated in
-> one place".  Is the checksum state fully invalidated here?
-> 
-> skb_carve_reset_headers() only rewrites ip_summed, while skb->csum,
-> skb->csum_valid, skb->csum_complete_sw, skb->csum_level and
-> skb->csum_not_inet keep the values they had before the bytes were removed.
-> 
-> For the CHECKSUM_PARTIAL case, the syzbot dump quoted in the changelog shows
-> the incoming skb already has valid=1:
-> 
->    csum(0x100120 start=288 offset=16 ip_summed=3 complete_sw=0 valid=1 level=0)
-> 
-> After the downgrade this becomes ip_summed=CHECKSUM_NONE with csum_valid
-> still 1, and skb_csum_unnecessary() in include/linux/skbuff.h returns true on
-> csum_valid alone:
-> 
->    static inline int skb_csum_unnecessary(const struct sk_buff *skb)
->    {
-> 	return ((skb->ip_summed == CHECKSUM_UNNECESSARY) ||
-> 		skb->csum_valid ||
-> 		(skb->ip_summed == CHECKSUM_PARTIAL &&
-> 		 skb_checksum_start_offset(skb) >= 0));
->    }
-> 
-> Can a consumer of the carved skb then believe the payload was already
-> verified, even though the bytes the checksum covered are gone?  A leftover
-> csum_not_inet would similarly still claim CRC32c semantics, and skb_dump()
-> would print the contradictory "ip_summed=0 ... valid=1".
-> 
-> Should csum_valid, csum_complete_sw, csum_level and csum_not_inet be cleared
-> in the same helper?
-> 
-> The CHECKSUM_COMPLETE case looks untouched as well.  Unlike
-> skb_pull_rcsum()/skb_postpull_rcsum(), the carve path never subtracts the off
-> bytes removed from the front from skb->csum, and pskb_extract() trims the tail
-> with plain pskb_trim() rather than pskb_trim_rcsum():
-> 
->    net/core/skbuff.c:pskb_extract() {
-> 	...
-> 	if (pskb_carve(clone, off, gfp) < 0 ||
-> 	    pskb_trim(clone, to_copy)) {
-> 	...
->    }
-> 
-> So a CHECKSUM_COMPLETE skb keeps a whole-packet checksum that no longer
-> matches its contents.  Would it make sense to also drop or fix up
-> CHECKSUM_COMPLETE in skb_carve_reset_headers(), or to use pskb_trim_rcsum()
-> in pskb_extract()?
-> 
-> The only in-tree user of pskb_extract() is RDS, which copies the queued data
-> to userspace and never calls a checksum validation helper, so there is no
-> functional failure visible today; the concern is the trust bits left on a
-> generic exported helper.
-
-Given the last paragraph all the above is IMHO material for eventual future
-cleanups.
-
-/P
-
-
 
