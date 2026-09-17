@@ -1,91 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D93514775;
-	Thu, 17 Sep 2026 13:06:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056B9479868;
+	Thu, 17 Sep 2026 13:13:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789650390; cv=none; b=k+tjXv3FwrpiHYHFRGWqNgHRMS8PMcZIcDTICRjfB68zYCK7fy2/XUCOBxTbI++MWyJNRIIQdmVhAFTJLGo1ttaMTqZ1gt88nLpCBlgjsWaQ6xvJTDTjVK5wxfbwXHVmYRIo3ycZuuUvCqH3pi0r3oRrXHXlMav/W96bQvQ6els=
+	t=1789650826; cv=none; b=loJPxZgSA7Ke1g9vUTqbn5Zje7/+uD2i3/bSfKgPSoyc/4mevz5NxFnTQGtdMhtvBjd3zB7cl4B1v1PWdOAlm2kUxokwsQV0l4UKzIko7HWBSoP2UY+8pwh71stvo83c+HSITGWGNm2olWiuXeEcnwui1FYEqIR99qLdhWHDgH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789650390; c=relaxed/simple;
-	bh=YvY8L1roEAhWvwCvpso0WcPH5j2XlLAVWe//WqcF0zA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LUwZrJk4OktI3bNmCym2KhgGIbBtDYjc8ILCKbsTiRu+iRsux6KyKdEFYxHkYsaMcnoKuMKz/X76x0YUzhxkJl98UXzhKcllijCCw9lP6cNJC5ooUh4zzYKSQ5WV3MQYaHta0qKuRelUtm7c3CkGAXLi/LrXzGEjhnZwfrIF22o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CfKRyw+z; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789650826; c=relaxed/simple;
+	bh=AsIX/9dM1yA7XH5iU69igPdBuumeRN44Fa0t2k7vTjQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dr3BI9WhuiXC4HPajYEJ2x+gCQfOfRLoksRgPdEeQcw7+d+G5w50Gj+vfhAA1V1zTkbn2TUUTWpdamz5GbqEbJX8USSN1uhW1McBeBn/x36XzEgEKUbnZ+PLGe/EXDvrR2A2+hAHPKFJqyBJWMeL6cCzYKbYzC/ewquLiUCMUfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=QpfbabbT; arc=none smtp.client-ip=117.135.210.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CfKRyw+z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F071F00899;
-	Thu, 17 Sep 2026 13:06:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789650379;
-	bh=vc7qfZCRUlMpAR7yCuZ/u0K6XBb5KY58zoxdAw8kDtI=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=CfKRyw+zBetItN6A0QtrT9RpgGI7mVoCr0j8fRccdMAjj57Q4mORQaRN77Mg/YXiO
-	 WiZUP65EF+/N6YPoVnNKv7VbTon903/cvFmKwzqwunxRIpUqjNZsrIvZXts5LxV5iY
-	 aD+yQiPn5vsxMF7Pe+Qc78lNPD5SN7O+py9k8YE074jVBFDiYogWI0EtalmMh8DEtz
-	 MXmbnG+GRlgbg09ROVO9XXo3P6m0fm15w9o+vxYiu9kSXm/PotH8KETluXHTUE3/5G
-	 PIL+yd5hSXt9J92UTe2ifrlgzobpyPviVattXD+UpVj6r22iKc8TkWafaaXUNxLNvQ
-	 Bpo5pJSIf1pDA==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Thu, 17 Sep 2026 15:05:59 +0200
-Subject: [PATCH net v2 3/3] mptcp: fix bad accounting in
- __mptcp_subflow_push_pending()
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="QpfbabbT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=0K
+	czUTT4pZjvn6++/hJJmxB3shK0qpHFg6zLRVauhpc=; b=QpfbabbTZkCwDzEnji
+	P/YGDYIXN2PHrAgiAiifICcVq8iZQ9BQhbU62wexvvBsuAp19SfTzgsddgzyjcnU
+	Plv5P7acDWSt/qMyUOXfn3FGFo7PU4qy1G+d/X+PHwbtLKIlZlNupp5WvWZR2x4p
+	GbVMHykVRFKu6bV8TNr2m8SOo=
+Received: from localhost.localdomain (unknown [])
+	by gzsmtp4 (Coremail) with SMTP id PykvCgD3N1VF56tq0unFHw--.22915S2;
+	Thu, 17 Sep 2026 21:12:39 +0800 (CST)
+From: Linkui Xiao <xiaolinkui@126.com>
+To: maxime.chevallier@bootlin.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com
+Cc: netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Linkui Xiao <xiaolinkui@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH net] net: stmmac: ethtool: validate TX coalesce before reprogramming RX
+Date: Thu, 17 Sep 2026 21:12:35 +0800
+Message-Id: <20260917131235.1360959-1-xiaolinkui@126.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260917-net-mptcp-misc-fixes-7-3-rc4-v2-3-0cf5c72667c8@kernel.org>
-References: <20260917-net-mptcp-misc-fixes-7-3-rc4-v2-0-0cf5c72667c8@kernel.org>
-In-Reply-To: <20260917-net-mptcp-misc-fixes-7-3-rc4-v2-0-0cf5c72667c8@kernel.org>
-To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=941; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=SgypPxpJWWqrPzXbB0Ymof8bd1pKOxlUAs4CVycduFE=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGLJWPz0Y4XrtmCa/hIKUjqXjQ441bOJqcXeT3t45x9xto
- d6X2OveUcrCIMbFICumyCLdFpk/83kVb4mXnwXMHFYmkCEMXJwCMJEAPYa/Yu/lLKSz+jrnOO3O
- 3FIuq5y/4WKvrt2vlW4n76xunLP8GcNfAfnJx5Vbu+98/Z++9amO4swHhRU9czcuUrt6k3mpwCs
- mRgA=
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PykvCgD3N1VF56tq0unFHw--.22915S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxGF4xXrW7XFW8uF1rtrWrZrb_yoW5XryDpr
+	WkGFZavryDJr43Jw1DJw48uFy5t397tFZxX348J34fuF45GFyFqr1aqryrWFnFkrWxZrWa
+	gr4qva4Dua98A3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UYzuZUUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlQeQZ2qr50eIyQAA3F
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Linkui Xiao <xiaolinkui@kylinos.cn>
 
-If __subflow_push_pending() errors out we should avoid updating the
-copied byte counters, to avoid mismatch push call later on.
+__stmmac_set_coalesce() applies the RX part of the request first and
+only afterwards checks the TX parameters. The RX path already calls
+stmmac_rx_watchdog() and stores rx_riwt[] and rx_coal_frames[], so when
+the TX check rejects the request the driver returns -EINVAL after having
+silently changed the hardware. A following ethtool -c then reports the
+new RX values even though the command failed.
 
-Fixes: 0fa1b3783a17 ("mptcp: use get_send wrapper")
+This became easy to hit once the per-queue interface was added.
+__stmmac_get_coalesce() reports tx-usecs and tx-frames as 0 for a queue
+index that is RX-only, and ethtool applies per-queue coalesce by reading
+the current values first and sending them straight back. The next set is
+therefore guaranteed to trip the test for both TX fields being zero,
+right after the RX watchdog has been reprogrammed.
+
+Move both TX checks in front of the RX block so a request is either
+applied completely or rejected without touching the device.
+
+Fixes: db2f2842e6f5 ("net: stmmac: add per-queue TX & RX coalesce ethtool support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
 ---
- net/mptcp/protocol.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../ethernet/stmicro/stmmac/stmmac_ethtool.c  | 21 ++++++++++++-------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 577d0134b9ec..e89a69ab927c 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1854,7 +1854,8 @@ static void __mptcp_subflow_push_pending(struct sock *sk, struct sock *ssk, bool
- 			ret = __subflow_push_pending(sk, ssk, &info);
- 			if (ret <= 0)
- 				keep_pushing = false;
--			copied += ret;
-+			else
-+				copied += ret;
- 		}
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+index 154cc0c7623d..325db062f72a 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+@@ -850,6 +850,19 @@ static int __stmmac_set_coalesce(struct net_device *dev,
+ 	else if (queue >= max_cnt)
+ 		return -EINVAL;
  
- 		mptcp_for_each_subflow(msk, subflow) {
-
++	/* Check the TX parameters before anything is applied: the RX part
++	 * below already writes to the hardware, so rejecting the request
++	 * afterwards would leave the device with only half of the settings
++	 * the caller asked for while reporting a failure.
++	 */
++	if (ec->tx_coalesce_usecs == 0 &&
++	    ec->tx_max_coalesced_frames == 0)
++		return -EINVAL;
++
++	if (ec->tx_coalesce_usecs > STMMAC_MAX_COAL_TX_TICK ||
++	    ec->tx_max_coalesced_frames > STMMAC_TX_MAX_FRAMES)
++		return -EINVAL;
++
+ 	if (priv->use_riwt) {
+ 		rx_riwt = stmmac_usec2riwt(ec->rx_coalesce_usecs, priv);
+ 
+@@ -875,14 +888,6 @@ static int __stmmac_set_coalesce(struct net_device *dev,
+ 		}
+ 	}
+ 
+-	if ((ec->tx_coalesce_usecs == 0) &&
+-	    (ec->tx_max_coalesced_frames == 0))
+-		return -EINVAL;
+-
+-	if ((ec->tx_coalesce_usecs > STMMAC_MAX_COAL_TX_TICK) ||
+-	    (ec->tx_max_coalesced_frames > STMMAC_TX_MAX_FRAMES))
+-		return -EINVAL;
+-
+ 	if (all_queues) {
+ 		int i;
+ 
 -- 
-2.55.0
+2.25.1
 
