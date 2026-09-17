@@ -1,232 +1,276 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4EF50AC38
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 17:10:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B76D3D0927;
+	Thu, 17 Sep 2026 17:12:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789665043; cv=none; b=c0MPx0VswAGZfg1CQWVKox3VDFI5cKxyQZwYN9BHnysW/0fSdszB/Ui7PydSeiyCXUPaIBJtSPuUJzGzaVCUUQOqOTtOU1ZcTwe4Yt+kk6InqmNgOyws4t4bi+UUAEyBVG81+32qMnsRane+vi61Bhbx+QEZ/B2KJPZASBhDCEc=
+	t=1789665143; cv=none; b=dwE11kKhYIaxeFgLu5X2/7GNgaQy9fXuNbPN+Mx0Uki6ZxOovsDrcZ1bO8pTJ9ulmU7SYUjsFq0VYP/8JZzxIFVmeYVRyt6Vk4yPmvHwp4yZy1ghungxPSbqXdPvVOi4eesllf4DtLGa4u0cFBJusCiqyjdf488/pZhtuyEsWjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789665043; c=relaxed/simple;
-	bh=dIYPq5sFKIxLtUGNP/CZRmD+OSboHKnYdjiQqfxygwI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oaJ/97esIRYFt3hUMh1YnBjgI4vEprbifYcTlupblfj7OrN8FIiJo578TNnUtc6dLoGqDHTPR5LHxMejqQTYLkgrW8A0ry/nq+FsqOIX4ejvcdC9jzfLxie4Udr+90NNUyHj74pgW+esq/E3HoAYtVSKaqBRjweHbE46+dOU1Bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ADMf4+X0; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=DIJJI/bQ; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1789665143; c=relaxed/simple;
+	bh=j7dTLukPSxP8xyqMMxwbI5yqmWYOvJmF32Gzz6iG+58=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=kF+fbxeuN4QC0QgZHp3ftvN19D9t68BWjbsqrmq/jDwPwpHnTBjNUx3KZyGvY8X18rV/gyan5z5pFTSJfcB/1fxqyAp27IMUhAaMjO/eYz2+5+6DNoTy+lY7IVwkS+Vh1aMkz1SrdRYdMyqo8nv3c+yggjAfWmGKU8vjftwiLgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WSSGZKJ7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ADMf4+X0";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="DIJJI/bQ"
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68HH5LSn1007382
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 17:10:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	UOIfBhA40d1n8PGVV7JnUyBrJvf/oegeKL4mbK8Sj08=; b=ADMf4+X0VvIg4+cY
-	qhFgvhbSF2+YOJgeDEkgfW/y63HwFyW4u4joRNohoaYUKHcjP56NMONMo9PKl/Dn
-	btkNJjvOGRR2bIz+jYyJJerhy5I11WW39CxkcAzs5RRsrRWUS95QNE5BqJidIgEA
-	vZIou+/eNHJT5XqVWIETRD4oAbGGwIZRUSLTRRhm3zJP6dJQXQclNGxW8Np3stCI
-	Z8a34uWaEhytiLJZdqAOxjbBv2OlcXEf1xUTkn5eFYeS0f5Tdb9fwcVLJ5kl4s2+
-	M6KBOvQpjwm0buH2Gu6ogijiIy4swqB5cUwJtmigVVBJnzTA/vVXdrL1pYm5Gd4f
-	EBkeNg==
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4grjttrgrr-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 17:10:40 +0000 (GMT)
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-39de4e72b33so1872450a91.2
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 10:10:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1789665040; x=1790269840; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UOIfBhA40d1n8PGVV7JnUyBrJvf/oegeKL4mbK8Sj08=;
-        b=DIJJI/bQN481uSuoyKlVig2qT5cSU/fJb8y1ZpYRxjbXnb+MV/QJWzIRxNCrgGPHGn
-         M4H83T3EUDJMUpIm1cZj7NXCViYPbgAluNodXV72hTjb5m04kzeEGf9KPK4tJvDh4uK9
-         3z3rIgFMT+NWFBpJvD0I+8oc4GOYbF0ud0Vx+v3QYKUGDFwy9NJPcYOhUDKxu4J8zfrF
-         ShnQ+H+RBiL144sfauKGFOpqvtm6HAFWDT5iLSDqo/xq67aF0jktQsBZxT8F9HH/2729
-         ejrm/ZWSy7FSV+r5EQdBs4HAY6TBe6Tq04kyQCUc9yQ6mW/YK7hJ/zXusS5Numtkv28L
-         cN0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789665040; x=1790269840;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=UOIfBhA40d1n8PGVV7JnUyBrJvf/oegeKL4mbK8Sj08=;
-        b=X97vC11oTxzgwAFOQrYMr6augD9XAOuaRj4qOUbLY7Iux5VA+JBD37SGgydl32Snhm
-         sjSa62oYeyyedWvVxuEt70z0rsu8WvF9GABCl3WF+DBpueI1N2oXfrAutvJlWFjfxSil
-         A2Cj/UvxsdyfzOYtDJ/QVYzpKYYaACZSUOwfYzI6qht/QN0M0AIiFyzlWF/WrKx/gYxO
-         NFIET8Nt7IhQug2PG1YRXscyRtJsVgqZxQ129X92GsxmlqDimAHcvVubJmd9Yq6BR1Av
-         /jhzIvM3xRMumNQYRj6n5RM56aitDfmoWfTcKmylEwHVRTXsJj0FIEp8hOFdlDir1X/o
-         fA2A==
-X-Forwarded-Encrypted: i=1; AKwUvBzfhctmftYUmVL8+UIRkst20mnp2pa1QMS+5SHxYzDgtpwZVHuai1hek+hg5UR5/TdJcTN5Vjw=@vger.kernel.org
-X-Gm-Message-State: AFuF++mjPF9k8oLWBWWgGp05Cv46fPPp3gWn01YONW3eENkbYQIZV1+v
-	epiz76kRu+hdell4STQd/hty/6Cw2rqhLe58DO4SqBGSmEwsDNLlXyMPqKACEzjdD34VvKXr9Y2
-	C37/EeOGnwqkhfsB4+DEXXsh8gTt/EFvzQX0gqBpE/KUw7w9h+BlhK51yyC8=
-X-Gm-Gg: AYBFou111bDbzSsjtkZYhlunyW58bgumg4oAFDR3WU6orLThI3EaILa/t00eUjjq5Nn
-	qE2p/iwYPfe1nErpLA5aIYnFoO54I56xCcsJ6/3GlBkhdHIMgkMo+Cvs8XMpqjWxKqQ9+uh56VW
-	gP5rpG7sso5PXg8tSHRe5L2s9btGJbfJ7oeq87nT2JU4ed3pJA2LEH2U0axBfaajzvfCph/v/hx
-	kmeu9t8ZI1j189diuWDrHPn88Ok8eqRr9IYDmdpAY15RbawFt+ptfDu/MDdnhggBGUNnzdu0Nx9
-	word0tt74h0q9Nnfexo3DMgqFDtDehYeLN03HP3pVUqA3KAsyHdh5de5tdIu+oep/9iYadLRND2
-	530U4lnWbz347
-X-Received: by 2002:a17:90b:4f81:b0:39d:febe:7460 with SMTP id 98e67ed59e1d1-39e1e4e354cmr15686544a91.22.1789665039953;
-        Thu, 17 Sep 2026 10:10:39 -0700 (PDT)
-X-Received: by 2002:a17:90b:4f81:b0:39d:febe:7460 with SMTP id 98e67ed59e1d1-39e1e4e354cmr15686474a91.22.1789665039322;
-        Thu, 17 Sep 2026 10:10:39 -0700 (PDT)
-Received: from oss.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e35df479fsm6065347a91.6.2026.09.17.10.10.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 10:10:38 -0700 (PDT)
-Date: Thu, 17 Sep 2026 22:40:29 +0530
-From: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-To: netdev-bot+sashiko@kernel.org
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WSSGZKJ7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A7501F000FF;
+	Thu, 17 Sep 2026 17:12:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789665141;
+	bh=fniPcj8dhly2IjcdzAeZ7tDhgMSq36SfLh6HCLrSIR4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=WSSGZKJ7w4bWzJ5V/S3LwPCMEr63Q3So2HhtHDis7AHNPNPSs+Kmx+SnlWpLGz5nT
+	 LaEMwKcuTEpIBupCMmJiR2khjOBmg2RF6x463ZqGBFVOyp/7ZLikZZzKiE9KeX17F1
+	 cFNm/GQ4bYJVve9IIKYyv73yMc3qj8hl6rXOHNbECibQhEG6LcJhMnRM1JgMMRpmg1
+	 obsDkep5GJqgwAwjMNwZOp7cj/qgyDZPmKfgq1F/G11y9YukZd5IRmEzCyQDm8RnKQ
+	 HBUTsP7Yf8olPT8EX6EP98CdwiDrmCztsfijzqCVBwcenKkmFUM84OI5CI85SIlcSS
+	 I14WvbZ9QMNyw==
+Subject: Re: [PATCH] net: lantiq: fix netdev leak on remove
+From: netdev-bot+sashiko@kernel.org
+To: lgs201920130244@gmail.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
-        krzk+dt@kernel.org, conor+dt@kernel.org, afd@ti.com, andrew@lunn.ch,
-        hkallweit1@gmail.com, linux@armlinux.org.uk, richardcochran@gmail.com,
-        andersson@kernel.org, konradybcio@kernel.org,
-        alexandre.torgue@foss.st.com, peppe.cavallaro@st.com,
-        joabreu@synopsys.com, maxime.chevallier@bootlin.com,
-        mcoquelin.stm32@gmail.com, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH net-next v2 6/9] net: stmmac: qcom-ethqos: warn about
- legacy RGMII PHY modes
-Message-ID: <aqwfBZmJehXB8d8U@oss.qualcomm.com>
-References: <20260908-shikra_ethernet-v2-6-bbe3389d0652@oss.qualcomm.com>
- <178912591683.219967.17377991068527504766@kernel.org>
+ kuba@kernel.org, pabeni@redhat.com, john@phrozen.org, ralph.hempel@lantiq.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Thu, 17 Sep 2026 17:12:20 +0000
+Message-ID: <178966514017.22033.13065360500867909863@kernel.org>
+In-Reply-To: <20260916020930.2606675-1-lgs201920130244@gmail.com>
+References: <20260916020930.2606675-1-lgs201920130244@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <178912591683.219967.17377991068527504766@kernel.org>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE3MDI0NSBTYWx0ZWRfX44ZL398R5Vta
- XCFsdQjpafOnEkd0OCo5a+J/i5N174DkjX1pwM55t6CVPFg+9wJLbQcauv2mhsdvYT6YhFP8RGd
- 3rRM2cdraqF8EsvxpPKBep87o6lWhjdx7lfD7A3aF8BEDdjQBifzn77ilrKCDhkQidY6wdRWhUT
- vV2LIXIqgYqwo/a/v4YnrniHEOPj7zxBjcU+5+ug8P1PsJL+vtErRFFQQgbDnCGc0MWdtRcBSw7
- OsSn1PZK2yep8JEDORUQe+PHqleUNFSPYFyb3lcBzfFX0jiP1QhQLQwjoI521KdemISZHrmKcle
- o3fGaVR1GWf57k+ZVkGuosXOmFBy7wjJPONVE6aYUHC9HC6FfQxXBME+biTRGxg0isBrZMGkpBF
- wemKhMt0Q3ECEwxhBdvuWqEYddihldWFlUXgWUPyfgeSNrS3qnBBSIeJxyBKTb6mElEpXhNGnTM
- lQNppv6/KgVp15X1BEg==
-X-Proofpoint-ORIG-GUID: leFZ2GfUKtl6hWEpdYNHTb79avv6zywq
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE3MDI0NSBTYWx0ZWRfX2XzOYjnumODI
- Ew52La/oDvuAyfdZtcb0TLq+C+k32QtZZ6rcDNYlMiskUrDJUs/V4KZLlxzebNqSdV8r9mPbURl
- TmLpf/MUvtrn2ea05zU9jcEZwCXqves=
-X-Authority-Analysis: v=2.4 cv=IP2XmQvG c=1 sm=1 tr=0 ts=6aac1f10 cx=c_pps
- a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
- a=VwQbUJbxAAAA:8 a=bzSRg-MVb8Bu9kwduOYA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=uKXjsCUrEbL0IQVhDsJ9:22
-X-Proofpoint-GUID: leFZ2GfUKtl6hWEpdYNHTb79avv6zywq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-17_04,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0 priorityscore=1501 suspectscore=0 malwarescore=0
- adultscore=0 lowpriorityscore=0 impostorscore=0 spamscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609170245
 
-On Fri, Sep 11, 2026 at 11:25:16AM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider:
-> 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 1
-> 
-> - [Medium] Unactionable boot-time warning on every in-tree qcom ethqos
->   platform: the new dev_warn() in qcom_ethqos_probe() (dwmac-qcom-…
-> - [Low] Commit message / code mismatch: the changelog of "net: stmmac:
->   qcom-ethqos: warn about legacy RGMII PHY modes" states that "existing…
-> 
-> --
-> 
-> net: stmmac: qcom-ethqos: warn about legacy RGMII PHY modes
-> 
-> This adds a probe-time dev_warn() in qcom_ethqos_probe() when the ethernet
-> node uses one of the older RGMII phy-mode values, suggesting a move to
-> "rgmii-id" with PHY-provided delays.  PHY_INTERFACE_MODE_RGMII_ID is split
-> out of the shared case group so that it does not warn.
-> 
-> > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> > index 53fb9de4d92c7..a92bf4a6a2dbd 100644
-> > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> > @@ -764,9 +764,11 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
-> >  	ethqos->phy_mode = plat_dat->phy_interface;
-> >  	switch (ethqos->phy_mode) {
-> >  	case PHY_INTERFACE_MODE_RGMII:
-> > -	case PHY_INTERFACE_MODE_RGMII_ID:
-> >  	case PHY_INTERFACE_MODE_RGMII_RXID:
-> >  	case PHY_INTERFACE_MODE_RGMII_TXID:
-> > +		dev_warn(dev, "legacy RGMII phy-mode detected; consider upgrading to a newer DTB\n");
-> 
-> [Severity: Low]
-> The changelog says:
-> 
->     However, existing DTBs use "rgmii" and "rgmii-txid" and must remain
->     supported for backwards compatibility.
-> 
->     Warn when either of these legacy PHY modes is used [...]
-> 
-> but the warning in qcom_ethqos_probe() is attached to a group of three case
-> labels, so PHY_INTERFACE_MODE_RGMII_RXID also warns.
-> 
-> Is "rgmii-rxid" intended to be declared legacy as well?  The driver does
-> treat these modes differently, for example in ethqos_rgmii_macro_init():
-> 
-> 	if (ethqos->phy_mode == PHY_INTERFACE_MODE_RGMII_TXID)
-> 		phase_shift = 0;
-> 	else
-> 		phase_shift = RGMII_CONFIG2_TX_CLK_PHASE_SHIFT_EN;
-> 
-> so which phy-modes are being deprecated seems worth stating exactly in the
-> commit message.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-I will make this clearer in v3 that all non RGMII-ID modes are being
-deprecated.
+Critical: 0 · High: 1 (1) · Medium: 0 (1) · Low: 0
 
-> 
-> [Severity: Medium]
-> Is there an upstream DTB that this warning can point people at?  No in-tree
-> device tree for this driver uses "rgmii-id", and this series does not touch
-> arch/ at all, so every in-tree board hits the new warning on each probe:
-> 
->   arch/arm64/boot/dts/qcom/qcs404-evb-4000.dts	phy-mode = "rgmii";
->   arch/arm64/boot/dts/qcom/sa8155p-adp.dts	phy-mode = "rgmii";
->   arch/arm64/boot/dts/qcom/sa8540p-ride.dts	phy-mode = "rgmii-txid";  (both MACs)
-> 
-> The binding example in Documentation/devicetree/bindings/net/qcom,ethqos.yaml
-> also still uses:
-> 
->       phy-mode = "rgmii";
-> 
-> and the binding carries no phy-mode deprecation note, so the documented ABI
-> still recommends what the driver now calls legacy.
-> 
-> Converting those device trees is also the only way the advocated
-> PHY-provided-delay path gets exercised, since ethqos_set_clk_tx_rate() stops
-> doubling the link clock only for PHY_INTERFACE_MODE_RGMII_ID.  Would it make
-> sense to convert the in-tree DTs (and the binding example/text) in the same
-> series, or to hold off on the warning until a migration target exists?
-> 
-> > +		fallthrough;
-> > +	case PHY_INTERFACE_MODE_RGMII_ID:
-> >  		plat_dat->fix_mac_speed = ethqos_fix_mac_speed_rgmii;
-> >  		break;
-> >  	case PHY_INTERFACE_MODE_2500BASEX:
-> 
+- [High] ltq_etop_remove() (drivers/net/ethernet/lantiq_etop.c:710-714)
+  tears resources down in inverted order: netif_tx_stop_all_queues();…
 
-The plan is to convert the current DTs to use "rgmii-id" after this
-patch series.
+Pre-existing issues:
+- [High] ltq_etop_init() is registered as .ndo_init
+  (drivers/net/ethernet/lantiq_etop.c:667), so it runs from inside…
+- [Medium] In ltq_etop_remove() the PPE power domain is gated off by
+  ltq_etop_hw_exit() (ltq_pmu_disable(PMU_PPE),…
 
-	Ayaan
+--
+
+net: lantiq: fix netdev leak on remove
+
+The patch adds a free_netdev() call to ltq_etop_remove() so that the
+net_device allocated by alloc_etherdev_mq() in ltq_etop_probe() is released
+on driver removal, matching the free_netdev() already present on the probe
+failure path.
+
+> diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
+> index 83ce3bfefa5c2..ecf2f3cbf4d9d 100644
+> --- a/drivers/net/ethernet/lantiq_etop.c
+> +++ b/drivers/net/ethernet/lantiq_etop.c
+> @@ -711,6 +711,7 @@ static void ltq_etop_remove(struct platform_device *pdev)
+>  		ltq_etop_hw_exit(dev);
+>  		ltq_etop_mdio_cleanup(dev);
+>  		unregister_netdev(dev);
+> +		free_netdev(dev);
+
+[Severity: High]
+
+Should the teardown order in ltq_etop_remove() be corrected before the
+free_netdev() is added here?
+
+netif_tx_stop_all_queues() does not clear IFF_UP and does not disable NAPI
+(napi_enable() is in ltq_etop_open(), napi_disable() only in
+ltq_etop_stop()), so the device is still up and NAPI is still enabled when
+the PHY and the DMA rings are torn down.
+
+First, does ltq_etop_mdio_cleanup() leave dev->phydev NULL for the later
+close?
+
+drivers/net/ethernet/lantiq_etop.c:ltq_etop_mdio_cleanup() {
+	phy_disconnect(dev->phydev);
+	mdiobus_unregister(priv->mii_bus);
+	mdiobus_free(priv->mii_bus);
+}
+
+phy_disconnect() -> phy_detach() does:
+
+drivers/net/phy/phy_device.c:phy_detach() {
+	...
+		phydev->attached_dev->phydev = NULL;
+	...
+}
+
+unregister_netdev() then closes the still-up device:
+
+net/core/dev.c:unregister_netdevice_many_notify() {
+	...
+		if (!(dev->flags & IFF_UP))
+			continue;
+	...
+	netif_close_many(&close_head, true);
+	...
+}
+
+which calls ndo_stop == ltq_etop_stop():
+
+drivers/net/ethernet/lantiq_etop.c:ltq_etop_stop() {
+	netif_tx_stop_all_queues(dev);
+	phy_stop(dev->phydev);
+	...
+}
+
+and phy_stop() dereferences its argument immediately:
+
+drivers/net/phy/phy.c:phy_stop() {
+	struct net_device *dev = phydev->attached_dev;
+	...
+}
+
+Does removing the driver while the interface is up therefore oops in
+phy_stop(NULL) under RTNL, and does that also mean the free_netdev() added
+here is never reached in exactly the case the commit message is about?
+
+Second, can a pending NAPI poll now touch freed memory? ltq_etop_hw_exit()
+-> ltq_etop_free_channel() runs with NAPI still enabled:
+
+drivers/net/ethernet/lantiq_etop.c:ltq_etop_free_channel() {
+	ltq_dma_free(&ch->dma);
+	if (ch->dma.irq)
+		free_irq(ch->dma.irq, priv);
+	...
+}
+
+ltq_dma_free() releases the descriptor ring:
+
+arch/mips/lantiq/xway/dma.c:ltq_dma_free() {
+	ltq_dma_close(ch);
+	dma_free_coherent(ch->dev, LTQ_DESC_NUM * LTQ_DESC_SIZE,
+		ch->desc_base, ch->phys);
+	...
+}
+
+free_irq() waits for an in-flight hardirq but not for an already scheduled
+poll, and both ltq_etop_poll_rx() and ltq_etop_poll_tx() dereference
+&ch->dma.desc_base[ch->dma.desc], ch->skb[] and priv->lock. With the new
+free_netdev() the private area holding priv->ch[].napi, priv->lock and
+ch->skb[] is freed too, so does this turn the stale descriptor access into a
+use-after-free of the netdev private data?
+
+Would the sequence unregister_netdev() (which closes the device and runs
+napi_disable() while the PHY and rings are still valid), then
+ltq_etop_mdio_cleanup(), then ltq_etop_hw_exit(), then free_netdev() avoid
+both of these?
+
+[Severity: Medium]
+
+This is a pre-existing ordering problem rather than something introduced
+here, but it affects whether the new free_netdev() is reached: does
+ltq_etop_hw_exit() gate the power domain that the subsequent MDIO and close
+paths still need?
+
+drivers/net/ethernet/lantiq_etop.c:ltq_etop_hw_exit() {
+	ltq_pmu_disable(PMU_PPE);
+	...
+}
+
+ltq_etop_hw_init() establishes the dependency by calling
+ltq_pmu_enable(PMU_PPE) before touching LTQ_ETOP_CFG and
+LQ_PPE32_ENET_MAC_CFG, and LTQ_ETOP_MDIO lives in the same block.
+
+After the domain is gated, ltq_etop_mdio_cleanup() -> phy_disconnect() ->
+phy_detach() -> phy_suspend() still issues a BMCR write, and
+mdiobus_unregister() drives further PHY accesses, all through the
+timeout-free accessors:
+
+drivers/net/ethernet/lantiq_etop.c:ltq_etop_mdio_rd() {
+	while (ltq_etop_r32(LTQ_ETOP_MDIO) & MDIO_REQUEST)
+		;
+	...
+}
+
+If MDIO_REQUEST never clears with the block powered down, does the unbind or
+rmmod thread spin here forever and never reach the free_netdev() added by
+this patch? Note that phy_detach()/phy_suspend() run even when the interface
+was never brought up. Would moving ltq_etop_hw_exit() after
+unregister_netdev() and after the MDIO cleanup, so the domain is gated last,
+address this?
+
+>  	}
+>  }
+>  
+
+One more observation about a path that this patch does not touch, but which
+interacts with the free_netdev() being added:
+
+[Severity: High]
+
+This isn't a bug introduced by this patch, but ltq_etop_init() is installed
+as .ndo_init in ltq_eth_netdev_ops, so it runs from inside
+register_netdevice() with RTNL held and dev->reg_state ==
+NETREG_UNINITIALIZED, while its error label performs the core's unwind
+itself:
+
+drivers/net/ethernet/lantiq_etop.c:ltq_etop_init() {
+	...
+	err = ltq_etop_mdio_init(dev);
+	if (err)
+		goto err_netdev;
+	return 0;
+
+err_netdev:
+	unregister_netdev(dev);
+	free_netdev(dev);
+err_hw:
+	ltq_etop_hw_exit(dev);
+	return err;
+}
+
+Does unregister_netdev() here re-acquire RTNL via rtnl_net_dev_lock() and
+deadlock the probing thread?
+
+If it did not, free_netdev() takes the kvfree(dev) path for an
+UNINITIALIZED device, and control then falls through to err_hw, where
+ltq_etop_hw_exit() dereferences netdev_priv(dev) and walks priv->ch[] on
+the freed allocation.
+
+Finally, register_netdevice() propagates the ndo_init error to
+ltq_etop_probe():
+
+net/core/dev.c:register_netdevice() {
+	...
+		ret = dev->netdev_ops->ndo_init(dev);
+		if (ret) {
+			if (ret > 0)
+				ret = -EIO;
+			goto err_free_name;
+		}
+	...
+}
+
+drivers/net/ethernet/lantiq_etop.c:ltq_etop_probe() {
+	...
+	err = register_netdev(dev);
+	if (err)
+		goto err_free;
+	...
+err_free:
+	free_netdev(dev);
+	...
+}
+
+so is the same net_device freed a second time? The driver sets neither
+needs_free_netdev nor a priv_destructor, so neither free looks conditional.
+The path appears reachable: ltq_etop_mdio_init() returns -ENXIO when
+mdiobus_register() fails or when ltq_etop_mdio_probe() finds no PHY, and
+-ENOMEM when mdiobus_alloc() fails. Should the unregister_netdev() and
+free_netdev() calls in ltq_etop_init() simply be dropped and the cleanup
+left to the core plus probe?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260916020930.2606675-1-lgs201920130244%40gmail.com
