@@ -1,77 +1,83 @@
-Received: from mail-yx2-f42.google.com (mail-yx2-f42.google.com [74.125.224.170])
+Received: from mail-pj2-f26.google.com (mail-pj2-f26.google.com [74.125.227.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272B64CA292
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 10:52:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841FD4B826E
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 10:52:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789642346; cv=none; b=bmZlbezK4S32FL1wkGLIanLH/ahgH/hNIH4RMSPE52vcFOEg01FvpiTRjHi1Qlm+uS7OXPuEmyDhiNqPqGGXt73ID1NmGAwqbRMvJWbh8Cs4j6cspllolDO/8cCVpQnuMshyCHBD0YJMjNx4SFbenIJZvynMovV8xrJ1IKAjW7g=
+	t=1789642349; cv=none; b=o4+ixO1Fd/DXph4eU6JWhMovs6FFD7PZTGO5DiFaHJNPYiLzHSox6UWOK3pOITLZvork64d0PlAGImYKrm/9i2lijH7lOmoemQKlFJ+sH/LrQq3EUN+yc+1Z4/Jj+BP8JGiLUxmyYS/qTz6fSFqSM0DAV8VsikEEM+RX+G+oF/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789642346; c=relaxed/simple;
-	bh=JdCRFDcolkURErydh36AhWOM371Zu8e2GX2loPhofOE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qVLhYURaQLIAlIt1AH1R9dZrjhkovcqi+RR0cLvWUcj83DXwAhsVMA8ik4y7+mPbLeT06W3YAYEA50BXY/UciX2jDy/DdeFgp/zSiyaNaCqnanx7CEFN4tU2kLDdKptUBi+pZCyyBrt3NfB92ew7CZLitN2DGQtqUOjMAkuNlAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s9MSFhF/; arc=none smtp.client-ip=74.125.224.170
+	s=arc-20240116; t=1789642349; c=relaxed/simple;
+	bh=jnlMS060wqhxZJ7cpUrVQDrI82clt1wMbT+Jiwai1E8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=s4cTxXkvqDR6hYEo9HW/yMz105tFvmdVyUCPvqWRB0Wkm0TNg23Lunlfo3oKTVERXQOREOpzPGC90NgJHcQKyxqE+J/xG3D2CtEzpG5JSM1vXSx3C+TOcw3+xARPAxlIcUNHHXGkqaMGUSGjP0JsbP/UMcCT6PquD4hZ9sD1hVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ARZ4ELn8; arc=none smtp.client-ip=74.125.227.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s9MSFhF/"
-Received: by mail-yx2-f42.google.com with SMTP id 00721157ae682-895fd505832so1270847b3.3
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 03:52:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ARZ4ELn8"
+Received: by mail-pj2-f26.google.com with SMTP id d9443c01a7336-2d8fb334e72so6579905ad.1
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 03:52:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789642332; x=1790247132; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Q+A3V8/x5c21vazgS32hcx7O6vB4HwRW8LEwa4hezrA=;
-        b=s9MSFhF/vfOf7N0h+ty6KzNX+m2iEVRxzV061KtYyQ7ytdPF82TgislepHJNCEk6e0
-         XcZLYrt+xVYiOjbCT65Qu5zKCM7Nq0p+NRGtVFxE88ZXYjdNZNAahcDUPgHoo5j3XoqL
-         i8kdbfDSPd2VvQf/wYK7mG+WB7vwQ7zwkSpbrWXS/kMYq/PntVOMBX0OHAn4UMIK3DCP
-         P16hQ5kkYczSD2743uMORDnwCZQ/YVD+D9A5WWa3bUrsGC1q1S+u69RWBsHXsfLvFpG9
-         8fn2CS8k1zk39S3VyJ9lmU8iesJmC/Zvwqw5FpYhawM0zBk5geQ9rPBNe2q+4orZ2INk
-         HFnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789642332; x=1790247132;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1789642337; x=1790247137; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Q+A3V8/x5c21vazgS32hcx7O6vB4HwRW8LEwa4hezrA=;
-        b=RDDbU2rBB3SXgAgFSiaF3QoPSIcq50Xgz9uiTpjyddd4TPRyd9UJUQujygOWQoIAk+
-         DyHzlN37k2Pr8lXM2D2B4oNitN2B0+dOpY4XNv3CQMouPQLWqcoqWzAbM6CvWbtCZDIH
-         CrUqgqOa2AsD1o8mqHC3qDk3rhoAP6CKMP+zHqf2grmE75qJpE467RDmVFr2f7gWBSr7
-         cpjie4Dma5JZtt3EbSnNOrQXTNUNPW80VOe69rdt8zeyBHggcPo7kav4aLGUbFMvwibw
-         KN75ADtczyn37GAFyBBA+BaRqXGb9yhHvR67P3RH8MgQRgjKNLWUGNF06tSFwhP/5vQr
-         pCzg==
-X-Gm-Message-State: AFuF++mZUh75/b6tHidDx1LlBj+w5alYtR3o2W+uhRNKSQfggcmIXgk9
-	BUQhqNTMFYR77wIzSpeVbjEIMDZfyiiBXko0qD/JRneiTFIOl0UlP5jj
-X-Gm-Gg: AYBFou0dZg1Kf6iTvBCpiEmnAcGvw7Z/ce9iNVghTFMMEfBzGu5zdx/dEn37oL9BlgC
-	Srr7VFwOL4xstkc4Vao5L97iIJl0A5B6JzzoHn7xw9FBIC2g0Yx+zOWx3HLygFLul+hkgWi+cZm
-	YBV6PLGUdGwe2Q/T5kZp1VJ6L+E6ChvPQFT+F0SkB+k4JRniG6UIsQRf1kpBJqp3OzXNdg3yCBw
-	wneeR0AKGtgHjOZPUL1Mu+EIYLcE6t2Y51KZhcrppbRurd78nokCeyjTgxBgSntBA7AHWDCXis5
-	gvENBgCwce6h/3DI5j7tRfZ9Fye2/FiPmfDN4ezegPpZG/TnQtia1y0tG12MHQhA3cgynqpghlk
-	bL7ZzkkgCCB/B9ZK2raHXS2EN/2fTaNS9oXTgKHCUB+x6iDzvpQkY86Dqox6haerD9PT7CfgPG8
-	aUkn3kohpIXGY+JI0tVrzkxOhs0UKAFIHwItOHf49osDhRIWtYzLw/GgzvB0M7AA==
-X-Received: by 2002:a05:690c:c50d:b0:87e:2404:444d with SMTP id 00721157ae682-892264eedcemr20325507b3.59.1789642331820;
-        Thu, 17 Sep 2026 03:52:11 -0700 (PDT)
-Received: from devobuntu.lan ([2600:6c5c:6b00:316::23])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8928ff17829sm13960517b3.40.2026.09.17.03.52.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 03:52:11 -0700 (PDT)
-From: Matt Vollrath <tactii@gmail.com>
+        bh=JeUTZ5Xfmu3CX5ZC/fWVdot1MmSWPUPNS4TQoJ0nO2A=;
+        b=ARZ4ELn8esES6m+jJWJpRfUeTM+9adKFQV0cdEUaSYsBYS9fuToLXZtO+IK3AIH3la
+         Vy+h24WrzRKy3L2adTljpDUCPB/ZXaDyaT36f2F/cFlxmR1D1MXmNlb95SIoLfi/6w5t
+         9703O6l43RET/RJcR/8+i5bvYlfXGU4RcGHpsbhxWG60pR52uZvPjA5Tp2a1y5meOMfX
+         Go8EHWWPMjVt9FQ8jkMP9dqiZTJZez3VuGTvhxi/eiOsJNk+WPUyB2yJr23WaNTv5/jS
+         fLcd8XKGHYlwBEmsLeg7Xe2Z8+9vHjkzRa5aKocls9/3FKrryO1YY7V4nP07j9eqlOoH
+         yrgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789642337; x=1790247137;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=JeUTZ5Xfmu3CX5ZC/fWVdot1MmSWPUPNS4TQoJ0nO2A=;
+        b=0XNI3AGem8n76sfzc6gZlYC3ERgLq+IHma3doS+IRdHoQynO5AmNVWWv1twxWyNbVm
+         NlDUmr8jvDL9gYaVbmZhySUIurRjmVGRnyaSRpWlut/jnBGyLzoY05WI4oQe4cD9CP5U
+         7NnxGT+OTro8DobKqK01LPZlAosnYTw/13q0kFvV8jLdpDJ53HOBnkt9jwizakbkR4Cn
+         tcI5USgHtvi1lDb+HM/qzOn+AlJA6F/jhtIEGMi8X5SUn0WrFviI1RwTGElXVaDxm7fC
+         o4YzVyqbtKuCLB+ahnmkPLXz8ZvO7/9D4w+ml4cBxdpxPuL2ATnBPABz3CrTkJILw2dA
+         5fXA==
+X-Gm-Message-State: AFuF++nJ+aSLAsxVkB/H/BjQz7XYsj6LA/+hE+kwqDD/PCZXYH9/Pu4g
+	6+Rt2UxIXJk06Kw5E8s6KNYCk3Oma5IG0486dovq5cxEpk2Aq5/TuROa
+X-Gm-Gg: AYBFou0PZAB6vvRDmkU/+8U8X1Cgrs9YaGaJSi7jM5vU2axkMpR1Ii2pXy6btcRDq1k
+	YY2FDjOokMaD5yAxEQloYFF9Yl4A7XprliPvEbA7aTRao2sGKkeEt9jW4NdFRkd/8HKWF+Bvheo
+	yUvvePfb/N9GnLuwD9BNr1G0d1XhVOEtpzcRchgdDjoT2gn8UleinnLPxY8vmLtZ/FzQQ5FuM4F
+	dvTzJlNq7/syoVdrvoH8shC40KFYtZjVK0PYpuCH3aRZ+c4jYzS4miFEyzkDDi2W5j9IsFRjDH9
+	00sakZoysWl+tqB/SR7Y6QNlkh0eI9j3XanyPGYBQ8u1D32EplrHbJXQ/QJERSmoz/+U/cXUmNT
+	IQI0+8YubPNsdoQWsSAWCcfg4mGcumyGRDeMP1r75CxCGkE7YgJ6KxT1RBmQ6KmjWi9IdSqpgGV
+	bEr3KUGXw6IIU4mH9PI5f7LnEkcK8xWHWt7EtqeAMMWhADh2u7U8Ei4QVDRKzaKG/n5mkrnJMIk
+	pXnTgpmZKI2MEZjsEiFthGMz29uTTODWHUH2AmNCHi5s57wMPmnphRPzX8EdZdlNKzzsE0clKGs
+	NPI=
+X-Received: by 2002:a17:90b:3c41:b0:39d:fe64:5733 with SMTP id 98e67ed59e1d1-39e1e5612demr22035813a91.24.1789642337227;
+        Thu, 17 Sep 2026 03:52:17 -0700 (PDT)
+Received: from C9P9279WY4.bytedance.net (21.186.101.34.bc.googleusercontent.com. [34.101.186.21])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e361b8e1asm4486019a91.12.2026.09.17.03.52.12
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 17 Sep 2026 03:52:15 -0700 (PDT)
+From: Tian Xun Ng <luckilystar08@gmail.com>
 To: intel-wired-lan@lists.osuosl.org
 Cc: netdev@vger.kernel.org,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Ben Greear <greearb@candelatech.com>,
-	Matt Vollrath <tactii@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH iwl-net v2] e1000e: fix NETIF_F_RXALL buffer overrun
-Date: Thu, 17 Sep 2026 06:51:44 -0400
-Message-ID: <20260917105144.11308-1-tactii@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	aleksander.lobakin@intel.com,
+	emil.s.tantilov@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	Tian Xun Ng <tianxun.ng@bytedance.com>
+Subject: [PATCH iwl-net 1/2] idpf: keep the mailbox up while tearing down vports on shutdown
+Date: Thu, 17 Sep 2026 18:52:04 +0800
+Message-ID: <20260917105205.37561-2-luckilystar08@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260917105205.37561-1-luckilystar08@gmail.com>
+References: <20260917105205.37561-1-luckilystar08@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,102 +86,111 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When SBP is set, the card may deliver frames which would otherwise be
-filtered out by LPE being unset. This would allow the device to write
-up to 526 bytes beyond the skb's data allocation: over its own shinfo,
-and beyond. This bug is reachable only when MTU <= 1500 and
-NETIF_F_RXALL is set by ethtool.
+From: Tian Xun Ng <tianxun.ng@bytedance.com>
 
-To reproduce, build a kernel with CONFIG_SLUB_DEBUG=y and boot with
-slub_debug=FZP. Enable RXALL with 'ethtool -K <iface> rx-all on'. Leave
-MTU at 1500. Directly link with a remote machine and set the remote
-link to MTU 9000. Send oversized frames from the remote machine with
-'ping -f -M do -s 8972 -p 00'. Unload e1000e on the machine under test.
-Observe slub_debug faults in 'dmesg'. If IOMMU is enabled, you may also
-see IOMMU faults during pings.
+Since commit 4c9106f4906a ("idpf: fix adapter NULL pointer dereference
+on reboot"), idpf_shutdown() calls idpf_vc_core_deinit() directly instead
+of idpf_remove(), so IDPF_REMOVE_IN_PROG is not set on shutdown.
+idpf_vc_core_deinit() uses that flag to decide when to shut the virtchnl
+transaction manager down. Without it, libie_ctlq_xn_shutdown() runs
+before idpf_deinit_task() tears the vports down, so every message sent
+during that teardown (disable vport, disable queues, destroy vport)
+fails at once. The device is never told to stop its queues and keeps
+them enabled, with the ring addresses of the kernel that is going away.
 
-Fix this by ensuring that buffers are large enough for an entire 2048
-byte chunk when NETIF_F_RXALL is set. Do this by moving final
-rx_buffer_len determination to one place, right before RCTL.BSIZE is
-determined. This will correctly re-evaluate every time the adapter is
-configured, not just on MTU change.
+After a warm reboot, the first queue reconfiguration of a port that has
+not been opened yet (udev setting the MTU) sends VIRTCHNL2_OP_DEL_QUEUES.
+The device then drains the queues it still considers live and writes
+SW_MARKER TX completions (qid_comptype_gen 0x2800 / 0xa800) to the
+previous kernel's completion rings. With the IOMMU translating, those
+writes fault on every such boot:
 
-Signed-off-by: Matt Vollrath <tactii@gmail.com>
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Assisted-by: Claude:claude-5-1-fable
-Fixes: cf955e6c96cb ("e1000e: Support RXALL feature flag.")
+  arm-smmu-v3 arm-smmu-v3.17.auto: event: F_TRANSLATION client: 0016:01:00.0 sid: 0x30100 ssid: 0x0 iova: 0xffb70000 ipa: 0x0
+  arm-smmu-v3 arm-smmu-v3.17.auto: unpriv data write s1 "Input address caused fault" stag: 0x0
+
+In IOMMU pass-through mode they land on pages the new kernel has already
+reused. With page_poison=1 that shows as "pagealloc: memory corruption"
+on most boots. Without it, nodes crash in unrelated code, e.g.:
+
+  Unable to handle kernel NULL pointer dereference at virtual address 000000000000a830
+  pc : __tlb_remove_table_free+0x48/0x118
+  Call trace:
+   __tlb_remove_table_free
+   tlb_remove_table_rcu
+   rcu_do_batch
+
+or with a slab free pointer that decodes from a slot holding 0x2800:
+
+  Unable to handle kernel paging request at virtual address 002613b73e862c6e
+  pc : kmem_cache_alloc_noprof+0xc0/0x3d0
+
+The early shutdown exists to avoid waiting for transaction timeouts when
+the mailbox is already gone. That is the hard reset case, where
+idpf_vc_event_task() shuts the transaction manager down and sets
+IDPF_HR_RESET_IN_PROG before idpf_init_hard_reset() calls
+idpf_vc_core_deinit(). Key the early shutdown on a hard reset being in
+progress or detected instead of on remove, so that both remove and
+shutdown keep the mailbox up until the vports are gone.
+
+Hard reset behaviour is unchanged. Remove is unchanged unless a hardware
+reset has been detected, in which case it no longer waits for message
+timeouts. Shutdown now delivers the teardown messages; if the device
+stops responding without a detectable reset, shutdown can wait for the
+transaction timeouts, as remove already does.
+
+Tested on arm64 (64K pages) servers with two idpf functions, with this
+change and the next patch backported to a 6.17 kernel: no stray device
+writes in 151 warm reboots across IOMMU translated and pass-through
+modes, against stray writes after 20 of 20 warm reboots without them.
+
+Fixes: 4c9106f4906a ("idpf: fix adapter NULL pointer dereference on reboot")
 Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Tian Xun Ng <tianxun.ng@bytedance.com>
 ---
-v2:
-* Don't make a new function for setting rx_buffer_len.
-* Rewording.
-* Add steps to reproduce.
----
- drivers/net/ethernet/intel/e1000e/netdev.c | 41 +++++++++++-----------
- 1 file changed, 20 insertions(+), 21 deletions(-)
+ .../net/ethernet/intel/idpf/idpf_virtchnl.c    | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index 844f31ab37ad..f31dd5886b09 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -3094,6 +3094,23 @@ static void e1000_setup_rctl(struct e1000_adapter *adapter)
- 		e1e_wphy(hw, 22, phy_data);
- 	}
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index 1caf52706..646b6e074 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -3197,14 +3197,22 @@ int idpf_vc_core_init(struct idpf_adapter *adapter)
+  */
+ void idpf_vc_core_deinit(struct idpf_adapter *adapter)
+ {
+-	bool remove_in_prog;
++	bool reset_in_prog;
  
-+	/* NOTE: netdev_alloc_skb reserves 16 bytes, and typically NET_IP_ALIGN
-+	 * means we reserve 2 more, this pushes us to allocate from the next
-+	 * larger slab size.
-+	 * i.e. RXBUFFER_2048 --> size-4096 slab
-+	 * However with the new *_jumbo_rx* routines, jumbo receives will use
-+	 * fragmented skbs
+ 	if (!test_bit(IDPF_VC_CORE_INIT, adapter->flags))
+ 		return;
+ 
+-	/* Avoid transaction timeouts when called during reset */
+-	remove_in_prog = test_bit(IDPF_REMOVE_IN_PROG, adapter->flags);
+-	if (!remove_in_prog)
++	/* Shut the transaction manager down early only when the mailbox is
++	 * already gone, i.e. a hard reset is in progress or has been detected,
++	 * to avoid waiting for transaction timeouts. On remove and on shutdown
++	 * the mailbox still works and must stay up until the vports are torn
++	 * down. Otherwise the disable and destroy messages never reach the
++	 * device, which keeps its queues enabled with ring addresses from this
++	 * kernel after a warm reboot.
 +	 */
-+	if (adapter->max_frame_size <= 2048)
-+		adapter->rx_buffer_len = 2048;
-+	else
-+		adapter->rx_buffer_len = 4096;
-+
-+	/* adjust allocation if LPE protects us, and we aren't using SBP */
-+	if (adapter->max_frame_size <= (VLAN_ETH_FRAME_LEN + ETH_FCS_LEN) &&
-+	    !(adapter->netdev->features & NETIF_F_RXALL))
-+		adapter->rx_buffer_len = VLAN_ETH_FRAME_LEN + ETH_FCS_LEN;
-+
- 	/* Setup buffer sizes */
- 	rctl &= ~E1000_RCTL_SZ_4096;
- 	rctl |= E1000_RCTL_BSEX;
-@@ -6079,30 +6096,12 @@ static int e1000_change_mtu(struct net_device *netdev, int new_mtu)
++	reset_in_prog = test_bit(IDPF_HR_RESET_IN_PROG, adapter->flags) ||
++			idpf_is_reset_detected(adapter);
++	if (reset_in_prog)
+ 		libie_ctlq_xn_shutdown(adapter->xnm);
  
- 	pm_runtime_get_sync(netdev->dev.parent);
+ 	idpf_ptp_release(adapter);
+@@ -3213,7 +3221,7 @@ void idpf_vc_core_deinit(struct idpf_adapter *adapter)
+ 	idpf_rel_rx_pt_lkup(adapter);
+ 	idpf_intr_rel(adapter);
  
--	if (netif_running(netdev))
-+	if (netif_running(netdev)) {
- 		e1000e_down(adapter, true);
--
--	/* NOTE: netdev_alloc_skb reserves 16 bytes, and typically NET_IP_ALIGN
--	 * means we reserve 2 more, this pushes us to allocate from the next
--	 * larger slab size.
--	 * i.e. RXBUFFER_2048 --> size-4096 slab
--	 * However with the new *_jumbo_rx* routines, jumbo receives will use
--	 * fragmented skbs
--	 */
--
--	if (max_frame <= 2048)
--		adapter->rx_buffer_len = 2048;
--	else
--		adapter->rx_buffer_len = 4096;
--
--	/* adjust allocation if LPE protects us, and we aren't using SBP */
--	if (max_frame <= (VLAN_ETH_FRAME_LEN + ETH_FCS_LEN))
--		adapter->rx_buffer_len = VLAN_ETH_FRAME_LEN + ETH_FCS_LEN;
--
--	if (netif_running(netdev))
- 		e1000e_up(adapter);
--	else
-+	} else {
- 		e1000e_reset(adapter);
-+	}
+-	if (remove_in_prog)
++	if (!reset_in_prog)
+ 		libie_ctlq_xn_shutdown(adapter->xnm);
  
- 	pm_runtime_put_sync(netdev->dev.parent);
- 
+ 	cancel_delayed_work_sync(&adapter->serv_task);
 -- 
-2.43.0
+2.50.1 (Apple Git-155)
 
