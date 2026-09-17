@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA00437C908
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 02:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88153876A4;
+	Thu, 17 Sep 2026 02:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789611682; cv=none; b=GnQ4Sh5RUunabHwmCbYL1NQ0vMwTUdpF37OAHh2QJZ7nHMFRmu3zvz4vSEKDfS34jsAFTqZjViqYmSX2G8hR3uxZG14rBDTFFdTKsEfN8gHrBKqzkUkvM8cY/XvTHHpiWqoF5xSSb+laVqqJMziu8dS0RrAI1Pr8DJJk1v0cR94=
+	t=1789611685; cv=none; b=SoMnknThYQY3vUE7Vy/YFxfUyk4qBrWpjE6UzgfoP3gpBORGoNVuNMZNtW8OR5V5VC7IHLTxQ7GK7CcnKdaexuzvgmgLpPYJPAk3uSkSYZjGcIWBc3MZOXkNswyTbAjglUCOK6n0VNZsDe5+pEdCxJ7WcHFE2Ud2gJxV5J4cy48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789611682; c=relaxed/simple;
-	bh=Yn/fYfDnrR3kRYTE0BXWIbIbSDRCFYpa68P+x1m6HAQ=;
+	s=arc-20240116; t=1789611685; c=relaxed/simple;
+	bh=TMTLMJgYpu75whksZYhSn9D284Ba43NK99sQDZEwjWo=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=I+wlRiDOEzJoiInqEY1aEjxlJpZzkaMuycROs9DM1XLTsuY8ZKOUjsPfBxuedBqEPHefl97mLo3UuPL8E3JA3qpEq0tHUwxCjfPwvB/skz2SAg6uYEGA1Ii9MNIRJmFbGZJqU8axR6iHSWXAT9fXqkBiYp5JUyT+EQYZijQ6TTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jJFg83k/; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=eNPrjxxhSngdbKfatFIXLK4XXLBTXLP5LySJRN8WTWpCrWsdLFw5IdG1pDk8OFmGqVJ3O5LyFoZVn4DHBwHc7nPKuvNl5AqplLuuPtGu4yASLQKwDUyYsscLmefJt1k+sp41F/LANzTVXivBDJS9FDQbmj0njUf9lULwLXNfYE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qwh35LbE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jJFg83k/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 847D01F000FF;
-	Thu, 17 Sep 2026 02:21:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qwh35LbE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C08C51F000FF;
+	Thu, 17 Sep 2026 02:21:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789611680;
-	bh=li15oYlICv8i8lV73C2z5ZeiWResEhyWp7ANMJzmvVw=;
+	s=k20260515; t=1789611683;
+	bh=oedx0g+V54T/knjUwd3YCijW3tao+D2pCgS2oci+/fg=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=jJFg83k/QimEjwIwIdCO3QX3CR6n8s7nMOdUg42L7OhXQkihh9KQNbM7IN7/cgShB
-	 Wj8hPRIL+aftxB9QkeihBOstPqdcNkS0grc5Cl8i/AXWvajOe7GQ7ToRw9Dd/If1Ay
-	 2jziUUU0zVVbFSkygAD7tYpvPuSHHoCe1o2SZkNJvI0BO7pf7OuQZ1Ke3R9QPovSFX
-	 jq088U6pYWRZpWS/Gnn1Q0DBc/IS3v1RVQXQxzU6mlRf9Vht/2U4ctdFDz/UGfDRT3
-	 d7LZCcF2TlaqPJmmMiPqvWeSUqCcXr6GgT+oQFLehufYRnLf1Z8/KRAMdNlh24cDyQ
-	 jZhfdwz1pyKVg==
+	b=Qwh35LbENrVmavqflH5zutH//M4ydm45QIijTYfgKBHnS5C+Qz+ojGREyQjGLrSB+
+	 lKWyCScUE2JCI3fqiIdIesvbtp0hC0g+vM38eQT0rugY/p1pHgQKfuJt4ZnlZw1cMp
+	 1wwqB9t1OgoXW3Fj0ateDogO5j8qOppPsl7yn7PDXfZtA8hiza2P0Ejqg5X8NFlnEf
+	 1i//FiOFz3fzJTMPBKGWkjesnml8W58mAsSo8yY2Zhzpphifuc/qy4sQSWQQ3WFLXz
+	 OyhXbtPI3RCy0qKSbwiFvZZis8cxD3NNXvmvrk1Q/ufOV3Nz1NIm//qAmG9zdGwQwt
+	 Ud9qd7da9+3Nw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93C2A39E9609;
-	Thu, 17 Sep 2026 02:20:15 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A3739E9609;
+	Thu, 17 Sep 2026 02:20:18 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,46 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3 0/2] net: stmmac: restore previous state if
- tc_setup_dwmac510_mqprio() fails
+Subject: Re: [PATCH net] selftests: net: gro: fix OOB access when
+ under-coalescing
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178961161438.3379718.7817224106290688172.git-patchwork-notify@kernel.org>
-Date: Thu, 17 Sep 2026 02:20:14 +0000
-References: 
- <20260911-stmmac-tc_setup_dwmac510_mqprio-error-path-v3-0-a76b1e2547c1@oss.qualcomm.com>
-In-Reply-To: 
- <20260911-stmmac-tc_setup_dwmac510_mqprio-error-path-v3-0-a76b1e2547c1@oss.qualcomm.com>
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, 0x1207@gmail.com,
- olteanv@gmail.com, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
+ <178961161737.3379718.8594184186847332667.git-patchwork-notify@kernel.org>
+Date: Thu, 17 Sep 2026 02:20:17 +0000
+References: <20260916010029.50911-1-narcisav.kernel@gmail.com>
+In-Reply-To: <20260916010029.50911-1-narcisav.kernel@gmail.com>
+To: Narcisa Vasile <narcisav.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, kuba@kernel.org, daniel.zahka@gmail.com,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org, shuah@kernel.org, willemb@google.com, petrm@nvidia.com,
+ anubhavsinggh@google.com, richardbgobert@gmail.com, lixiaoyan@google.com,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 11 Sep 2026 10:58:28 +0200 you wrote:
-> Restore previous mqprio qdisc configuration if
-> tc_setup_dwmac510_mqprio() fails running the following configuration:
+On Tue, 15 Sep 2026 18:00:29 -0700 you wrote:
+> When more packets than expected are received, num_pkt
+> could index beyond the end of the array. Add a check to prevent
+> OOB access.
 > 
->   $tc qdisc add dev eth0 root handle 1: mqprio queues 2@0 2@2
->   $tc qdisc replace dev eth0 root handle 2: mqprio queues 2@0 2@2 fp E P
-> 
-> Propagate FPE preemption-class mapping errors in
-> tc_setup_dwmac510_mqprio() and tc_taprio_configure().
+> Continue receiving until the FIN is received to obtain
+> the total packet count. This helps diagnose issues by
+> distinguishing the cases where no coalescing happened from
+> the partial-coalescing cases that didn't meet the test check.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3,1/2] net: stmmac: propagate FPE preemption-class mapping errors
-    https://git.kernel.org/netdev/net/c/90e4b849dfa6
-  - [net,v3,2/2] net: stmmac: preserve real_num_tx_queues on mqprio setup failure
-    https://git.kernel.org/netdev/net/c/02fffd1939f6
+  - [net] selftests: net: gro: fix OOB access when under-coalescing
+    https://git.kernel.org/netdev/net-next/c/7bc21b740291
 
 You are awesome, thank you!
 -- 
