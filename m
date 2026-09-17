@@ -1,97 +1,168 @@
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from sender6-of-o52.zoho.com (sender6-of-o52.zoho.com [165.173.180.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5108A4D0CC6;
-	Thu, 17 Sep 2026 11:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789643177; cv=none; b=K2z8VMclJbGCn3IX3Ntm7QxKBwlDjqBkmpEFVWXpaFzYvqokXhQDeTWwnfxFV+IGc5L6fCwIEFyFJhZeEWhdkHPr30x6LRm0NrQxTkhW+yzNPoAD1e6yCQDN1rWwXj7NVu+WAG9/P0vnH26lzrKsHOYnLXuoonVSeTPQR0+4RC8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789643177; c=relaxed/simple;
-	bh=gSClzTFNpD/qCzeEwfCnrVD1VXkso6K+4DyfErUMGTM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jHT9Fr927/esw7MijW9QT1JE29FUZWZgKpgCScF73lZlV+vRW3fR+ABgNMQvL8Z1GwqaJ4rrFlwJrMJsGgWA0OVsUmZwjoAz9ZofIo6WwluaktGHTbH8znCAT7svUfjGL4UtNQj7FwspnIYdbZ+plPr582Y5nnDIhECGfkU3yhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-05 (Coremail) with SMTP id zQCowACnFD+SyatqLjR_CA--.1286S2;
-	Thu, 17 Sep 2026 19:05:55 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: andrew+netdev@lunn.ch
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	madalin.bucur@nxp.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	sean.anderson@linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] net: dpaa: Fix tbidev reference leak in dtsec_initialization()
-Date: Thu, 17 Sep 2026 11:05:54 +0000
-Message-Id: <20260917110554.2148240-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26842451992;
+	Thu, 17 Sep 2026 11:07:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.180.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789643254; cv=pass; b=dLxFu0aQ9WSo5PqQalg76Vt87hPbgdqFdnqGFiaCUJtxYoIMRC8LpRAiggHitMwAuk/WJUr7ftfzCzp/RzhhOAO3WKDNBrGZll366CzZi8tyTO6PAyta4weVyDzRm7nyf8zA+nuhurveKB1IZ4abuY4oV5yiSZj01npW6vpF00k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789643254; c=relaxed/simple;
+	bh=41xDYFQQpziqncNzQ0S4/AEnmyQN67a4Es40OByesrQ=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=gA9uYF9amI0XTtXeMov4nXXNbonjq/XCk0io1q1Bi5hyJK0rlMoJeIYrqn2xpDE2ML0YCpezdN48iIeMyF+26SaKmUVLEYDolUi7TXai8ANtNa5QTx8ZV9r8mWJVNgOwgFPV8Ed0zDWYoLSkQfHnhddEVRVrCYi8/66a21EJzU0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mpiricsoftware.com; spf=pass smtp.mailfrom=mpiricsoftware.com; dkim=fail (0-bit key) header.d=mpiricsoftware.com header.i=kalpan.jani@mpiricsoftware.com header.b=cx+4F74d reason="key not found in DNS"; arc=pass smtp.client-ip=165.173.180.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mpiricsoftware.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mpiricsoftware.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=mpiricsoftware.com header.i=kalpan.jani@mpiricsoftware.com header.b="cx+4F74d"
+ARC-Seal: i=1; a=rsa-sha256; t=1789643207; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=DNhOUAo1jlLUwd02itr2IC9/qEoshkkTg5q/bVmOFU4XdxD9q2qwZY8TRcwfpsJQfNDEo7oznARWc5S8PYWDMMy8H0sM+mAGAQIQmWORZkBHJO+PlJKi5YvORnVwDCM92K6ozp9hR7oGMecfu6iYnqJUtQjJGi5ganGYS6NBtoo=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1789643207; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=Z3q7s9EkdzfJ7kZtJqAQ2XTDo7/rlMeQle/Z1w4CZ80=; 
+	b=LKp6I1bIqSg8QGNSljTD5GfubvRBYXnT0f3IHMqP9Di8yLqzPtSwSVcEIHXYMemEruGpPOBojYbiNw6WT+iSvVkOqMzRC/P71HLL2DRtBgV6LeJQZ3CekDt1cHtRxk0ONxJVqgZ0OlidZl4zXwxwOuicJdz9gbbLf19FkcZy1Qo=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=mpiricsoftware.com;
+	spf=pass  smtp.mailfrom=kalpan.jani@mpiricsoftware.com;
+	dmarc=pass header.from=<kalpan.jani@mpiricsoftware.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1789643207;
+	s=mpiric; d=mpiricsoftware.com; i=kalpan.jani@mpiricsoftware.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=Z3q7s9EkdzfJ7kZtJqAQ2XTDo7/rlMeQle/Z1w4CZ80=;
+	b=cx+4F74dSU/bo4Pxw3BLUrMwMFbk2b2ecyo8ZgNAHkZWIjqdQUOChlds6s8kmKxn
+	R+et3e8K/fiXTC4vm5hI030I2JmBkpQdFgJJWEeh6qXA2//QeNwmlCK+t6flsbe+7Wc
+	+hUqzKDzfuwUvn1cLNwL6rk3KcI7XAwtTzEvEfUc=
+Received: from mail.zoho.com by mx.zohomail.com
+	with SMTP id 1789643207468545.0938849369105; Thu, 17 Sep 2026 04:06:47 -0700 (PDT)
+Received: from mail.zoho.com by mx.zohomail.com
+	with SMTP id 17896432040711007.7801553990827; Thu, 17 Sep 2026 04:06:44 -0700 (PDT)
+Date: Thu, 17 Sep 2026 16:36:44 +0530
+From: Kalpan Jani <kalpan.jani@mpiricsoftware.com>
+To: "Matthieu Baerts" <matttbe@kernel.org>
+Cc: "Jiayuan Chen" <jiayuan.chen@linux.dev>, "bpf" <bpf@vger.kernel.org>,
+	"mptcp" <mptcp@lists.linux.dev>, "VEGA" <vega@nebusec.ai>,
+	"Alexei Starovoitov" <ast@kernel.org>,
+	"Daniel Borkmann" <daniel@iogearbox.net>,
+	"John Fastabend" <john.fastabend@gmail.com>,
+	"Andrii Nakryiko" <andrii@kernel.org>,
+	"Eduard Zingerman" <eddyz87@gmail.com>,
+	"Kumar Kartikeya Dwivedi" <memxor@gmail.com>,
+	"Martin KaFai Lau" <martin.lau@linux.dev>,
+	"Song Liu" <song@kernel.org>,
+	"Yonghong Song" <yonghong.song@linux.dev>,
+	"Jiri Olsa" <jolsa@kernel.org>,
+	"Emil Tsalapatis" <emil@etsalapatis.com>,
+	"Ihor Solodrai" <ihor.solodrai@linux.dev>,
+	"Shuah Khan" <shuah@kernel.org>,
+	"Mat Martineau" <martineau@kernel.org>,
+	"Geliang Tang" <geliang@kernel.org>,
+	"Matt Bobrowski" <mattbobrowski@google.com>,
+	"Tejun Heo" <tj@kernel.org>,
+	"linux-kernel" <linux-kernel@vger.kernel.org>,
+	"linux-kselftest" <linux-kselftest@vger.kernel.org>,
+	"netdev" <netdev@vger.kernel.org>, "Paolo Abeni" <pabeni@redhat.com>
+Message-ID: <1a0af0c25d8.352950d2114190.972790069861537729@mpiricsoftware.com>
+In-Reply-To: <18f86b06-7477-4750-b57e-094df4310e4a@kernel.org>
+References: <20260917081209.361367-1-jiayuan.chen@linux.dev> <18f86b06-7477-4750-b57e-094df4310e4a@kernel.org>
+Subject: Re: [PATCH bpf v1 1/2] mptcp, bpf: reject bpf_sk_release() on msk
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowACnFD+SyatqLjR_CA--.1286S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Kr4kCFy3JFWUXw1kCw1fXrb_yoW8GrWfpa
-	yUCFW7AF18Jw1rCa1DXw40gryY9a1Iy34rGrySyws3Wr1Fkry2vrWUXay8Wr42vFWkCFW2
-	vw17Aa1rZrn8t3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPmb7Iv0xC_KF4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
-	cIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2
-	AK021l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v2
-	6r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI
-	0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2Wl
-	Yx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r4UJVWxJr1lOx8S6xCaFVCjc4
-	AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq62Iq12xI8VA0II8E6IAqYI8I648v4I1l
-	FIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr4
-	1l42xK82IY6x8ErcxFaVAv8VW8GFyrJr1UJwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s02
-	6c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw
-	0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvE
-	c7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67
-	AKxVW8Jr0_Cr1UMIIF0xvEx4A2jsIEc7CjxVAFwI0_GcCE3sUvcSsGvfC2KfnxnUUI43ZE
-	Xa7IU8rR65UUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRMNA2qrq01npgAAsy
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
 
-dtsec_initialization() takes a reference on the PCS mdio device with
-of_mdio_find_device(), but only releases it in dtsec_free(), which is
-called from the error paths. The successful path returns without
-dropping it, leaking the reference.
+Hi Matt, Jiayuan,
 
-Release the reference once the PCS has been set up. The device stays
-registered for as long as the FMan device, which mac_dev holds a
-reference to.
+Thanks for looping me in, and thanks Jiayuan for catching this.
 
-Fixes: 5d93cfcf7360 ("net: dpaa: Convert to phylink")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/net/ethernet/freescale/fman/fman_dtsec.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+This is a separate bug from what I was fixing. My patch hardens the
+lockless read of ->conn (the NULL-deref/UAF from #622) with
+rcu_dereference()/acquire-release/SOCK_RCU_FREE, but that doesn't
+touch the helper's return-value ownership contract, so the refcount
+mismatch you're describing exists independently of whether the read
+itself is safe. Hardening the read fixes my bug; it doesn't and can't
+fix this one.
 
-diff --git a/drivers/net/ethernet/freescale/fman/fman_dtsec.c b/drivers/net/ethernet/freescale/fman/fman_dtsec.c
-index fe35703c509e..2a503bc5bc28 100644
---- a/drivers/net/ethernet/freescale/fman/fman_dtsec.c
-+++ b/drivers/net/ethernet/freescale/fman/fman_dtsec.c
-@@ -1492,6 +1492,12 @@ int dtsec_initialization(struct mac_device *mac_dev,
- 	dev_info(mac_dev->dev, "FMan dTSEC version: 0x%08x\n",
- 		 ioread32be(&dtsec->regs->tsec_id));
- 
-+	/* The PCS device is registered as long as the FMan device, of which
-+	 * mac_dev holds a reference, so the reference taken above is not
-+	 * needed anymore.
-+	 */
-+	put_device(&dtsec->tbidev->dev);
-+
- 	goto _return;
- 
- _return_fm_mac_free:
--- 
-2.34.1
+Given that, I think Paolo's original suggestion (dropping the helper
+from tracing_prog_func_proto()) is the right call. I don't see a way
+to fix the refcounting issue while keeping the helper's current shape
+(returning a different object than the input, with no reference taken)
+without a bigger rework of what it hands back to a BPF program.
+
+I checked which prog types can actually chain bpf_skc_lookup_tcp()
+into bpf_skc_to_mptcp_sock() - it's broader than just tracing.
+sock_addr, tc_cls_act, xdp, and sk_msg all have bpf_skc_lookup_tcp()
+available and fall through to bpf_sk_base_func_proto(), which is
+where bpf_skc_to_mptcp_sock() is registered, so the same pattern
+Jiayuan showed is reachable from all four of them, not only from
+tracing programs. sock_ops doesn't register bpf_skc_lookup_tcp() at
+all, and cg_skb has the lookup helper but doesn't fall through to
+bpf_sk_base_func_proto(), so neither of those two can chain into it
+this way. I haven't traced the verifier's reference-tracking closely
+enough to rule out some other path I'm not aware of.
+
+I don't have visibility into whether any real tracing (or TC/XDP/etc.)
+programs use this helper today. If that's a live concern for anyone,
+I'll defer to whoever has that visibility.
+
+I can send a version that drops bpf_skc_to_mptcp_sock() from
+tracing_prog_func_proto() as Paolo suggested. Given what Jiayuan found
+also applies to the non-tracing paths above, should that patch just
+remove the BPF_FUNC_skc_to_mptcp_sock case from
+bpf_sk_base_func_proto() as well, rather than leaving it there for
+sock_addr/tc/xdp/sk_msg?
+
+Cheers,
+Kalpan Jani
+
+
+From: Matthieu Baerts <matttbe@kernel.org>
+To: "Jiayuan Chen"<jiayuan.chen@linux.dev>, <bpf@vger.kernel.org>, <mptcp@lists.linux.dev>
+Cc: "VEGA"<vega@nebusec.ai>, "Alexei Starovoitov"<ast@kernel.org>, "Daniel Borkmann"<daniel@iogearbox.net>, "John Fastabend"<john.fastabend@gmail.com>, "Andrii Nakryiko"<andrii@kernel.org>, "Eduard Zingerman"<eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi"<memxor@gmail.com>, "Martin KaFai Lau"<martin.lau@linux.dev>, "Song Liu"<song@kernel.org>, "Yonghong Song"<yonghong.song@linux.dev>, "Jiri Olsa"<jolsa@kernel.org>, "Emil Tsalapatis"<emil@etsalapatis.com>, "Ihor Solodrai"<ihor.solodrai@linux.dev>, "Shuah Khan"<shuah@kernel.org>, "Mat Martineau"<martineau@kernel.org>, "Geliang Tang"<geliang@kernel.org>, "Matt Bobrowski"<mattbobrowski@google.com>, "Tejun Heo"<tj@kernel.org>, <linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>, <netdev@vger.kernel.org>, "Kalpan Jani"<kalpan.jani@mpiricsoftware.com>, "Paolo Abeni"<pabeni@redhat.com>
+Date: Thu, 17 Sep 2026 15:09:13 +0530
+Subject: Re: [PATCH bpf v1 1/2] mptcp, bpf: reject bpf_sk_release() on msk
+
+ > Hi Jiayuan,
+ > 
+ > +Cc Kalpan, Paolo.
+ > 
+ > On 17/09/2026 10:11, Jiayuan Chen wrote:
+ > > A bpf prog can do this today:
+ > > 
+ > >     subflow = bpf_skc_lookup_tcp(...);
+ > >     msk = bpf_skc_to_mptcp_sock(subflow);
+ > >     bpf_sk_release(msk);
+ > > 
+ > > bpf_skc_to_mptcp_sock() returns subflow->conn without taking any
+ > > reference, so bpf_sk_release() drops a refcount nobody took on the msk,
+ > > and the subflow reference is leaked:
+ > Thank you for looking at this!
+ > 
+ > Note that Kalpan was looking at this [1], and Paolo suggested removing
+ > the helper [2] (but we failed to review the last version so far, sorry
+ > about that...)
+ > 
+ > I don't know if there are progs already using it. If yes, I guess your
+ > approach is better (but I'm not comfortable reviewing verifier's code).
+ > 
+ > @Kalpan, WDYT?
+ > 
+ > [1] https://lore.kernel.org/20260818120437.3949686-1-kalpan.jani@mpiricsoftware.com
+ > [2] https://lore.kernel.org/e039e866-fe7e-41ef-ad41-92a76a123713@redhat.com
+ > 
+ > Cheers,
+ > Matt
+ > -- 
+ > Sponsored by the NGI0 Core fund.
+ > 
+ > 
+
 
