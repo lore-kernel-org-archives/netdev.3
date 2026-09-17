@@ -1,77 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD554DA9D3
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 12:21:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E134AD7DD;
+	Thu, 17 Sep 2026 12:21:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789647675; cv=none; b=tQ+cv5TJaecl3ZKNCxulQa8Ch16TLHUxUmQQgZAd1l84M0mrm6X1oIUtLg+btfy7m8hQnSuYowJiN3ZU5xkQy1vqn7iP+nmOIuVtMIrodG+KLjmnDOkKYqfldYbtyyn4Ul93K6e7JDh26b5Pmr7QhFYovWb/HRsgdSoFfkbO/cU=
+	t=1789647679; cv=none; b=Y+FNyvblXVIAU6rZi/QEi609eff6SdWjraGK83jyIFzV1iOUdeNyPSIaYH/bvIAFrAWdgB7GGQtBpQ+zlHNYIJyn0De8qxNZ9emTLALkIrGoVRHQnt23fE7NctLJgb7ICAXLNJslsaazzUhtbFMV/lYFwnG+c6aaU0fG6ggURnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789647675; c=relaxed/simple;
-	bh=NdR/u/tnrvig5CMc5o43UbF076rVFCIblJIau620RUE=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=JbjSxqfl37CbMkyBIgJKBSvfTG+gZHPQcV1uO+Jp9aVxfpgZ0gunlKn+hRrJid64KAa7q4RnO80nnjoZlJLkZzwTmv3/kI8z9u3iG5GCQ5aITsk5ZjsjtZm10T8EAWybe6fhqOOOTnePx5WMU4xeyp20H2S9NTMYwwqFqzTgizI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BKrb46xR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789647679; c=relaxed/simple;
+	bh=6zF090TyhNqrzqDjjcqv/wAA8N8uOlGnIDN6kkNUsmc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pw5BWOMt6ZUkGR01ck+RYqQa2y1cb7havB4XKQ0Wt2mvol6zVD5E6zA0bjdnf8ShkIUfyDkI4U/f2CQz9UF9EHRfE5ASYYbRDSTOT8U9ZpSaTtGxqS7UXc2gksZmdOj+Jf1kFOIowbyuxSJLJ23VGJMSX3A8dUG4IW6PwJJGNfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=eeD25FhG; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BKrb46xR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4CE21F000FF;
-	Thu, 17 Sep 2026 12:21:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789647670;
-	bh=vIhN4S0w8PzVihg1kc0vc+hqAwtJhWnvUOqboT8hXTY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=BKrb46xRKqBEG/fe82CFjnrDaAvV+66ubxRtyIo5fQJ7QgX1Uflr30MCzyz8krrdQ
-	 Mv0lWw0Ng+YbkIdKT61UeLWP5JTYsHN52MMd9mn+f6frRND+/RO0TZdpsQJKwU173l
-	 hO5XNnXcK82yAU5DoiplwgMPFgHCZfOwRwLm0fGJbT1ZlaF13DrsdvXvxQsYhYjrsU
-	 DlEq/WlmKD5Jp3HG+XzeUKEd0Pz0edq4IyESCqpVujHqi1jd+MctmCTOx0oks4d+ZX
-	 vVXOQi9aHPtpX8v3tULzZFvlfdQqV5Tm+Fe3XK5LhlE+yEJkhhVKFxmgglDnaJ1hdm
-	 qhKF2IOpjHSRA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A7538111DB;
-	Thu, 17 Sep 2026 12:20:05 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="eeD25FhG"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=wk3cgC/VX0GZYaINFo0t0rF3qUtW+UZ3H1uFlf0guNE=; b=eeD25FhGJ7FMikiedVPkpCtsPY
+	WgGhTkZJHltnxp4v1jpJEc68Mt5558OdBTadc3dC8O0pXRIVAAI80wCqN+FT6dehrACUWVf98u8Et
+	sc1B2tW/D6MPRezOQ1aD0XMnlqDP8LSgaKOUq6D3fHFea/JDvhjfnxMkecJ3cTHJZWhg=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x7B6q-005fec-Ux; Thu, 17 Sep 2026 14:21:00 +0200
+Date: Thu, 17 Sep 2026 14:21:00 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Wentao Liang <vulab@iscas.ac.cn>
+Cc: davem@davemloft.net, edumazet@google.com, f.fainelli@gmail.com,
+	kuba@kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, olteanv@gmail.com, pabeni@redhat.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] net: dsa: dsa_loop: Fix netdev leak in
+ dsa_loop_drv_probe()
+Message-ID: <498210cb-ea19-4753-9620-48006bd0354e@lunn.ch>
+References: <20260917104629.2147418-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2] openvswitch: raise internal port TSO limit
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178964760440.3610434.14071440897470610889.git-patchwork-notify@kernel.org>
-Date: Thu, 17 Sep 2026 12:20:04 +0000
-References: <20260916065844.1380155-1-wang.zhan@smartx.com>
-In-Reply-To: <20260916065844.1380155-1-wang.zhan@smartx.com>
-To: Wang Zhan <wang.zhan@smartx.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, keyong.sun@smartx.com,
- i.maximets@ovn.org, aconole@redhat.com, echaudro@redhat.com,
- dev@openvswitch.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260917104629.2147418-1-vulab@iscas.ac.cn>
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Wed, 16 Sep 2026 14:58:44 +0800 you wrote:
-> Set the internal port TSO limit to GSO_MAX_SIZE (512 KB), as for
-> loopback and veth. This allows the admin/user to set a GSO limit up to
-> this value, to use BIG TCP for traffic routed through the internal port.
+On Thu, Sep 17, 2026 at 10:46:29AM +0000, Wentao Liang wrote:
+> In dsa_loop_drv_probe(), a reference to the configured network device
+> is taken with dev_get_by_name().  This reference is dropped in
+> dsa_loop_drv_remove() on success, but if dsa_register_switch() fails,
+> the probe returns without releasing it, leaking the reference.
 > 
-> Only the capability limit changes: the IPv4 and IPv6 GSO and GRO limits
-> remain at 64 KiB until changed by the administrator.
+> Fix this by dropping the reference with dev_put() when
+> dsa_register_switch() fails.
 > 
-> [...]
+> Fixes: 98cd1552ea27 ("net: dsa: Mock-up driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+> ---
+>  drivers/net/dsa/dsa_loop.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/net/dsa/dsa_loop.c b/drivers/net/dsa/dsa_loop.c
+> index 7058faf23592..b6b6fcffb406 100644
+> --- a/drivers/net/dsa/dsa_loop.c
+> +++ b/drivers/net/dsa/dsa_loop.c
+> @@ -389,6 +389,8 @@ static int dsa_loop_drv_probe(struct mdio_device *mdiodev)
+>  	if (!ret)
+>  		dev_info(&mdiodev->dev, "%s: 0x%0x\n",
+>  			 pdata->name, pdata->enabled_ports);
+> +	else
+> +		dev_put(ps->netdev);
+>  
+>  	return ret;
 
-Here is the summary with links:
-  - [net-next,v2] openvswitch: raise internal port TSO limit
-    https://git.kernel.org/netdev/net-next/c/859e40055c19
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Please turn the condition around to make it fit the usual error handling pattern
 
 
+       ret = dsa_register_switch(ds);
+       if (ret)
+		dev_put(ps->netdev);
+       else
+  		dev_info(&mdiodev->dev, "%s: 0x%0x\n",
+  			 pdata->name, pdata->enabled_ports);
+
+    Andrew
+
+---
+pw-bot: cr
