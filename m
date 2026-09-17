@@ -1,218 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f9.google.com (mail-pz2-f9.google.com [74.125.228.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDD74C10CA;
-	Thu, 17 Sep 2026 17:31:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1895372E3
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 17:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789666271; cv=none; b=o1gcGoquJTYF7DNMWscwHWpK4MJUjbMRaNTsccAo20Dv5VFGdUjzlp9GnRL6rQEw4UpBDTx950P3Uu5sB1U3xNrffNvXJbPZ562bqRGHbkLMaUD5ziOdjtQxQT2E30OJUuHR/fyWwhDaPSY3CLeogXGZMwG5vzksu/IkoRLLC1E=
+	t=1789666340; cv=none; b=UaVCQQift8yCkJUx4QYnYEdWViDIEbOUNXlnQlwU4BYzfbAcCeq9v3/ZoCas7lT/REsWv0X/bq9fVxz1NeNPqPC+QhsqD/AOjicPi/1Ge472OPtuKLzmnOH66FjPRMe5ousWz3p57gGuhSgd9YLmIZStOBvkFeVN2X5AWQxZUMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789666271; c=relaxed/simple;
-	bh=TYcvdafd8HgHwSOKIsLyAciRDxl8Fs3Zzj6+2B2/nTY=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Hcw9/M3jwbbuakTOe6/nVN/M1BUrIhBzfPY8/VWtN2x02wqeg+3oVor54Eln3Q6MtYkalCQyW45DL73r/+ZkmyjK3eJFOb/UWN6ZEM403EC9iJjDUuWndbOpR5ef3N8jkZOaa778h7vNgbwnTpTifhvx8mMA9mNdUv9201puLFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G4iK4azk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789666340; c=relaxed/simple;
+	bh=AUxsR9+Q30j7A8KTn2nOOxy8tNIwmuhqtluI/wLUA40=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y0hcGabheMM5U/iyZ6a1tnbqujRIn14Ghhz/aVkjBFu3LXd7O/Vyw7r31PzUaN9tNX3zdqFLI4FQ6MNNRb52g1/S1bTEb4GNTh7yJM9l42i7tmR4UMxvFuX+HRtY+iwO4NWSZN5qTpKIDM6SqHLE/Kutx0yZS4+KP92zZtUNiKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eVTxc9QB; arc=none smtp.client-ip=74.125.228.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G4iK4azk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9E5B1F000FF;
-	Thu, 17 Sep 2026 17:31:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789666269;
-	bh=ITKt7qSYJh0Ams1mBnoZPY+2GMW0TGf7MafFP4Osdns=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=G4iK4azkT45+GiEIl1+afwL0bCkoD/DWlI24v7uOLcQMBignq7I66Z7OMsVY/DeKx
-	 ebWQVIo39HY/GS1S3lpbu7o/ywkjb/cg7PqpOXtRKrQtdcxaNR3UQ+0IdrXdOssrrk
-	 T7W29cPoVFqDio/1Y85kTp7eT/SKpjG6rqs9o45GPnb6cSwcMZerZI5nafFQbhlSEO
-	 bq7bFhw6yyay0IF4zxoQ1BOaeMgsYKC9TkzY8/60Iao8D9iqcPTfcZuqIPEhtucGQE
-	 Y86XGNc+4l/gqlkPCH0wjz9vlPUsA/058k7E4O0SflW4Ui70OuM37ejfLO0gFCMOOC
-	 jq6pE9IOMAvtQ==
-Subject: Re: [PATCH] net: ena: fix PHC cleanup on probe failure
-From: netdev-bot+sashiko@kernel.org
-To: lgs201920130244@gmail.com
-Cc: akiyano@amazon.com, darinzon@amazon.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- ekffu200098@gmail.com, niklas.soderlund+renesas@ragnatech.se,
- dawei.feng@seu.edu.cn, amitbern@amazon.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Thu, 17 Sep 2026 17:31:08 +0000
-Message-ID: <178966626828.22033.11993324516511047736@kernel.org>
-In-Reply-To: <20260916022954.2690322-1-lgs201920130244@gmail.com>
-References: <20260916022954.2690322-1-lgs201920130244@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eVTxc9QB"
+Received: by mail-pz2-f9.google.com with SMTP id 41be03b00d2f7-cc1631a57d2so552216a12.0
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 10:32:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789666338; x=1790271138; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=tmSH5NHQUw7amQNSN6+eO65bUS5munkLsHOJPnnYVio=;
+        b=eVTxc9QBFvzIBl1WVawBp1hTceELY3djkOUpapBgbtgPZ79XXg8KD+Hi3OZNmlvbJS
+         zNsf3Pb9p+AfpGOpr6uouP0B7XIUqiElT7GKsbSM2uO67uFFvkbCJvojEr/7IHZqAiyY
+         gm6Do/ar2M7bZKYXNVB41soyHo+0ITpoXaC7nszymrOHf+uHWNCBjsyMhrZmrxDY+7eZ
+         rmSe8znEJSIhH5N1tj6hWUAP3Dg309a/DiTkOxAyjHIK30tSwYEJ74Xv8zYduFzeW90L
+         VzvmSP34mpwbxGerQkJbR/OMgyD04ATluZXA/z1d5AjiWj5pqxEgx9hKO1rNxlB1A6Xo
+         Tryg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789666338; x=1790271138;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tmSH5NHQUw7amQNSN6+eO65bUS5munkLsHOJPnnYVio=;
+        b=auHUMHRZYwh7VzLRy3lqNsimkXpiyMcBOL9YWW1Tdk1lBhqKqeYuyQTuvhZ6JWYTjv
+         ftAFB7qSGDf4YOcI2GSJpVytoSH4xkVRHIKQr5olJJjCQ/AiRY/Cg85WaZOEdKgmalcR
+         kzd9sDpwfznV0e95ehEfM280qWBywpO42i3zx8ERqxsso1z6KIJDuvc01Fv0MpPXgn4F
+         fbRSL/msHvQhgCkxKdmOIE18E6VtXHjX4iAfStWvV0bbDSF0fTbCh0hcej6jVVUI3iJ8
+         lKFQHhxZQe46EzO5+JmPvDrQK8O4P2vur2/eKCez9tTL21hDOrePU3COBAWasWJ3Jx2Y
+         Crrg==
+X-Forwarded-Encrypted: i=1; AKwUvByJ+fnRnNahmVgkSPnNCq8BLfIYsI4tDGznv+IPZP2tAy7mGFTrygDlxDsMHUQI7E/CpWEUKp4=@vger.kernel.org
+X-Gm-Message-State: AFuF++kE/ef/Jiqxd+2NCngRnU0/fN5FjC3VHe6obPU6npw1kQ9eL5Lw
+	qQ5IPzGQsXv19YefwfY6g2HbjmCgOB4WslJFJmr7U/KRKp73Pxb2CLmf
+X-Gm-Gg: AYBFou0IGVD1h2c/9D/PKNW0l9oLNcvOc02hkKYoLfI/cTlGAl+F+0aT0vMNLiv91hV
+	v4h7OmWBcH9/RCukkZPoDsbmysaGG8pGNRU9TDIjKVdpzKuVRKkmgBOJbPnMB90+pznmF8rHMnz
+	zbxEjQ43bqVSCDmpq2+ambW0u9zWMtqaro0OygyuJ/+dINPBK3iWWAMBu+ZHsHd3rI1FzigD6hi
+	4wYDc7LzwsXuOYmNVG8jZ7RzYcaanoCZ2mmX5qQ4u7vh/8u3mO0fP5TsGXlglwNPzAXDAENLNwV
+	Ihn5B063gbFqPtGmZOIh5A1AWXPQ6ij/y0Kb56niw7xInCkYYJRrTS57YHKALKlfrZCPmQq6Bw4
+	B588bh9BYYkh/ao2imWuxkd9lj9WahQidW8ULEwZf9SfLRziWDCg+P6ewY9pUNFFLO/eu64ckwp
+	CEq0i7dKkHx35G2Pfaw/sltRAZ41RrhRxrSas6bto647TuKb13WxtIsaLoxGz3J6lT
+X-Received: by 2002:a05:6a00:66da:b0:873:1d5b:278c with SMTP id d2e1a72fcca58-8731d5b421fmr8838431b3a.23.1789666337605;
+        Thu, 17 Sep 2026 10:32:17 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:74::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-872025db965sm3240288b3a.59.2026.09.17.10.32.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2026 10:32:17 -0700 (PDT)
+Date: Thu, 17 Sep 2026 10:32:10 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: bestswngs@gmail.com
+Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
+	eddyz87@gmail.com, memxor@gmail.com, bpf@vger.kernel.org, netdev@vger.kernel.org, 
+	martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev, jolsa@kernel.org, 
+	emil@etsalapatis.com, ihor.solodrai@linux.dev, davem@davemloft.net, kuba@kernel.org, 
+	hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me, xmei5@asu.edu, 
+	stable@vger.kernel.org, co+ac0a8c41de69121d@bugs.sh
+Subject: Re: [PATCH bpf] bpf: reject dev-bound-only programs on other devices
+Message-ID: <aqwjutKiee-W4k1T@devvm7509.cco0.facebook.com>
+References: <20260917161335.1020405-2-bestswngs@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260917161335.1020405-2-bestswngs@gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
+On 09/18, bestswngs@gmail.com wrote:
+> From: Weiming Shi <bestswngs@gmail.com>
+> 
+> __bpf_offload_dev_match() falls back to comparing offdev pointers after an
+> exact netdev mismatch.  Bound-only programs normally have NULL offdevs, so
+> unrelated netdevs compare equal; one loaded on an offload-registered netdev
+> can instead inherit a real offdev and match a sibling port.  An attacker
+> can use bpf(BPF_LINK_CREATE) with a different target ifindex to run
+> metadata kfuncs specialized for the bound driver on the target driver's
+> xdp_buff.  Running a veth-bound program on tun reads beyond tun's bare
+> stack xdp_buff as a veth_xdp_buff.
+> 
+>   Oops: general protection fault, probably for non-canonical address
+>   KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
+>   RIP: 0010:veth_xdp_rx_timestamp (drivers/net/veth.c:1673)
+>   Call Trace:
+>    ...
+>    tun_build_skb (drivers/net/tun.c:1739)
+>    tun_get_user (drivers/net/tun.c:1856)
+>    tun_chr_write_iter (drivers/net/tun.c:2091)
+>    vfs_write (fs/read_write.c:595 fs/read_write.c:687)
+>    ksys_write (fs/read_write.c:739)
+>    do_syscall_64 (arch/x86/entry/syscall_64.c:84)
+>    entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+>   Kernel panic - not syncing: Fatal exception in interrupt
+> 
+> Restrict non-offloaded programs to exact netdev matches and retain the
+> shared-offdev fallback only for genuinely offloaded multi-port programs.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0 (1)
+Any chance you can also add a testcase for this under
+tools/testing/selftests/net/bpf_offload.py?
 
-- [Medium] ena_probe() error unwind still omits
-  ena_com_mmio_reg_read_request_destroy(), leaking the DMA-coherent…
-- [Medium] The commit message's premise is not reachable: during an
-  initial ena_probe(), PHC is always disabled, so no PTP clock and no…
+> Cc: stable@vger.kernel.org
+> Fixes: 2b3486bc2d23 ("bpf: Introduce device-bound XDP programs")
+> Reported-by: <co+ac0a8c41de69121d@bugs.sh>
+> Assisted-by: LLM
+> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+> ---
+>  kernel/bpf/offload.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/kernel/bpf/offload.c b/kernel/bpf/offload.c
+> index 0d6f55695..8c91d00d4 100644
+> --- a/kernel/bpf/offload.c
+> +++ b/kernel/bpf/offload.c
+> @@ -698,11 +698,14 @@ static bool __bpf_offload_dev_match(struct bpf_prog *prog,
+>  		return false;
+>  	if (offload->netdev == netdev)
+>  		return true;
+> +	if (!bpf_prog_is_offloaded(prog->aux))
+> +		return false;
+>  
+>  	ondev1 = bpf_offload_find_netdev(offload->netdev);
+>  	ondev2 = bpf_offload_find_netdev(netdev);
 
-Pre-existing issues:
-- [Low] ena_probe()'s err_worker_destroy label calls
-  timer_delete(&adapter->timer_service)…
+[..]
+ 
+> -	return ondev1 && ondev2 && ondev1->offdev == ondev2->offdev;
+> +	return ondev1 && ondev2 && ondev1->offdev &&
+> +	       ondev1->offdev == ondev2->offdev;
+>  }
+>  
+>  bool bpf_offload_dev_match(struct bpf_prog *prog, struct net_device *netdev)
 
---
-
-net: ena: fix PHC cleanup on probe failure
-
-This adds a call to ena_phc_destroy() to the err_device_destroy label in
-ena_probe(), so the probe error path mirrors the ena_destroy_device()
-teardown before ena_phc_free() runs.
-
-A couple of questions about the changelog and the error path below.
-
->     The normal removal path calls ena_phc_destroy() through
->     ena_destroy_device() before ena_phc_free(). However, if probe fails
->     after ena_device_init() succeeds, the error path reaches ena_phc_free()
->     without unregistering the PTP clock or destroying the device PHC
->     resources.
-
-[Severity: Medium]
-Is there actually a registered PTP clock or allocated device PHC resource
-at that point during an initial probe?
-
-Following the state that PHC has when ena_device_init() returns 0:
-
-ena_phc_alloc() vzalloc()s phc_info, so phc_info->enabled is false, and
-ena_devlink_configure_params() seeds the driverinit ENABLE_PHC value from
-that state:
-
-	value.vbool = ena_phc_is_enabled(adapter);
-	devl_param_driverinit_value_set(devlink,
-					DEVLINK_PARAM_GENERIC_ID_ENABLE_PHC,
-					&value);
-
-ena_device_init() -> ena_devlink_params_get() then reads that value back
-and calls ena_phc_enable(adapter, false), so ena_phc_init() takes:
-
-	if (!ena_phc_is_enabled(adapter)) {
-		netdev_dbg(netdev, "PHC feature is not enabled by the kernel\n");
-		goto err_ena_com_phc_init;
-	}
-
-which skips ena_com_phc_init() (phc->virt_addr stays NULL) and
-ena_phc_register() (phc_info->clock stays NULL).
-
-Userspace cannot flip the param earlier either, since devlink netlink
-lookup rejects instances that are not registered yet
-(devlink_get_from_attrs_lock() requires devl_is_registered()), and ENA
-only calls ena_devlink_register() at the successful end of ena_probe().
-
-So on every path that can reach the new call, ena_phc_unregister()
-returns immediately via ena_phc_is_active() and ena_com_phc_destroy()
-returns immediately on !phc->virt_addr. The only path where PHC can
-really be active on failure is ena_restore_device(), which already calls
-ena_phc_destroy().
-
-Given that, are the Fixes: tag and Cc: stable warranted here, or would
-describing this as hardening for symmetry be more accurate?
-
-> diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-> index ea89619039d89..5f0864d16dd3c 100644
-> --- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
-> +++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-> @@ -4122,6 +4122,7 @@ static int ena_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
->  err_device_destroy:
->  	ena_com_delete_host_info(ena_dev);
->  	ena_com_admin_destroy(ena_dev);
-> +	ena_phc_destroy(adapter);
-
-[Severity: Medium]
-Does this label still leak the mmio read-less response buffer allocated
-by ena_com_mmio_reg_read_request_init()?
-
-ena_device_init() calls ena_com_mmio_reg_read_request_init()
-unconditionally, which does:
-
-	mmio_read->read_resp = dma_alloc_coherent(ena_dev->dmadev, sizeof(*mmio_read->read_resp),
-						  &mmio_read->read_resp_dma_addr, GFP_KERNEL);
-
-and programs that address into the device via
-ena_com_mmio_reg_read_request_write_dev_addr(). It is only released
-inside ena_device_init() itself, at its err_mmio_read_less label.
-
-The teardown sequence this patch is modelled on does three steps:
-
-drivers/net/ethernet/amazon/ena/ena_netdev.c:ena_destroy_device() {
-	...
-	ena_com_admin_destroy(ena_dev);
-
-	ena_phc_destroy(adapter);
-
-	ena_com_mmio_reg_read_request_destroy(ena_dev);
-	...
-}
-
-and ena_restore_device()'s error path pairs them the same way:
-
-	ena_phc_destroy(adapter);
-	ena_com_mmio_reg_read_request_destroy(ena_dev);
-
-The new code adds the middle step but not the last one, so once
-ena_device_init() has returned 0, any later probe failure walks
-err_device_destroy -> ena_devlink_free() ->
-ena_com_delete_customer_metrics_buffer() -> ena_phc_free() ->
-free_netdev() -> vfree(ena_dev) with mmio_read.read_resp still
-allocated. After vfree(ena_dev) the pointer and DMA handle are gone, and
-the device's ENA_REGS_MMIO_RESP_LO/HI registers keep the stale address,
-since only ena_com_mmio_reg_read_request_destroy() zeroes them:
-
-	writel(0x0, ena_dev->reg_bar + ENA_REGS_MMIO_RESP_LO_OFF);
-	writel(0x0, ena_dev->reg_bar + ENA_REGS_MMIO_RESP_HI_OFF);
-
-	dma_free_coherent(ena_dev->dmadev, sizeof(*mmio_read->read_resp), mmio_read->read_resp,
-			  mmio_read->read_resp_dma_addr);
-
-Reachable failures include max_num_io_queues == 0 (which also does no
-ena_com_dev_reset()), ena_com_init_interrupt_moderation() failure,
-ena_enable_msix_and_set_admin_interrupts() failure,
-ena_rss_init_default() failure and register_netdev() failure.
-
-Should ena_com_mmio_reg_read_request_destroy(ena_dev) be added right
-after the new ena_phc_destroy(adapter) here?
-
->  ena_devlink_destroy:
->  	ena_devlink_free(devlink);
->  err_metrics_destroy:
->  	ena_com_delete_customer_metrics_buffer(ena_dev);
-
-[Severity: Low]
-This is a pre-existing issue and was not introduced by this patch, but
-while looking at the labels just above the changed one: does
-err_worker_destroy call timer_delete() on an uninitialized timer?
-
-	err_worker_destroy:
-		timer_delete(&adapter->timer_service);
-
-timer_service is only ever set up after register_netdev() succeeds:
-
-	timer_setup(&adapter->timer_service, ena_timer_service, 0);
-	mod_timer(&adapter->timer_service, round_jiffies(jiffies + HZ));
-
-and there is no failure goto after that point, so every path that lands
-on err_worker_destroy (MSI-X setup failure, ena_rss_init_default()
-failure falling through err_free_msix, register_netdev() failure falling
-through err_rss) runs before timer_setup(). The memory is the zeroed
-netdev private area from alloc_etherdev_mq().
-
-With CONFIG_DEBUG_OBJECTS_TIMERS, __timer_delete() starts with
-debug_assert_init(timer), and timer_is_static_object() requires
-entry.next == TIMER_ENTRY_STATIC while the zeroed timer has
-entry.next == NULL, so debug_print_object() issues an "assert_init"
-warning before timer_fixup_assert_init() installs a stub. Without that
-option, timer_pending() is false and the call is a no-op, so this only
-shows up as a splat on debug kernels during an already-failing probe.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260916022954.2690322-1-lgs201920130244%40gmail.com
+Why also have a null check here? Why doing !bpf_prog_is_offloaded above is not
+enough?
