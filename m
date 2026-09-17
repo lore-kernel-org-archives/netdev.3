@@ -1,167 +1,269 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A89952D2A2
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 13:22:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94492519905;
+	Thu, 17 Sep 2026 13:24:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789651369; cv=none; b=bgc+EZTRTZdapoqdpwJYpyx1t3TOfm4G8s8WGz90WBXLifc03i4yTHbyFEcgwOo1NhFJK7YzTRrVuj+8U45xxAp3ovxVnW4ngzi9eMXbzvkgxIh1XK8jWrQfmNJUdByo1IyMO6S5wBdyYq72tXIk8xMzjIB/cqM7LCb3c07lF4E=
+	t=1789651480; cv=none; b=ZlMY4PkPGkorJrKcT36+NfWOeCQWQOBCf5zRodD+vUt9lI1CIQn5+8dgZcjvA9Ruy3+pTTU17qQ5IBR8guwOIclCPGoPeVwGx7QgZzaBSt7LvEe4+y48jfTiq3bdec5GoNSDDZy43bbGOWhB78OJ23wXblfBvLtrGqUtw8BY9Fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789651369; c=relaxed/simple;
-	bh=eUFZj7HdiNssWy2NTZ7R6ChYmtk7obu+WhbPxWvm/oE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=E4e5QJonSWT7/sX1EEfoHGlQCKoVpP2het/+HlAMcwFRt3KrHJExEEUIPwFtMmSeEv2mftLJckxf/v1GNlMhMiXD0pPgMYmtK+rmy+kelIIhUBQVbW8TRILo6aCh7LIN5CJDx83aFafRut1SteUgr/R2ipNmzS9dbEvGdhax+TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=L/Feg6bt; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=GhELq6YW; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1789651480; c=relaxed/simple;
+	bh=8SYrna0h7hy9G1HhESG+hr0L2dZ6q55slGve/8iQ1F4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B4ZOox0DugpfIY/gftyE6liLeUNicvJ0jGy1bUmXDtMs2IhxKYdmsnt5WiJJyG91rWT9XkneJW70HhmtZMPmNi7bhE8+u2YZ2VGRZMol7mWU7nW2rzxg7vMxCZY5sqcgwamA9o0xtAUrps3RICYg7ugQWamldBNoGBoHV3W2Z2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dXVdw/s1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="L/Feg6bt";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="GhELq6YW"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68H9Zac3746566
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 13:22:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=CflkOAT9fCKQ7PMjFcNJ2k
-	iw8Vw7bCScxaeZQVMpyoI=; b=L/Feg6btTKnpBE/i54fr0iB++Wii5prBd4wavK
-	v0hHE1w+YXFsJGJQ1LGTrWFImyruaOyg3i3/XJSGWJrzDtPxdM/weFsTF9wnDMS5
-	GnF08wEQA6AWs/IeuMFc26b9VU5E/DM8oCEb3VdtVD07jORrIVSmTlWYQNVoYqvB
-	fvrDb0R5g5rylkV880t6BIjBFKjKVXYqQzrB1gyfzHwFeG2q9LNrRM3ga//nvhVi
-	8sKh9ULVAd3DnqIsFDhjR+wogdfQVMQWeAkv95FHLCpBo8hLscWMezqns034noNG
-	WfwO0u35pVXo1sDTGXRNv7EFSsHzmFrBxMHvD4YnFOvS7Hkw==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4grcra97e7-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 13:22:47 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-939f3426a7cso159415085a.0
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 06:22:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1789651366; x=1790256166; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=CflkOAT9fCKQ7PMjFcNJ2kiw8Vw7bCScxaeZQVMpyoI=;
-        b=GhELq6YWBstNI1XS8HiMOn6JmM/WmeRtXMscrY+RiOoJUMi314M8J40pcF6peZnNM+
-         0lSTIkNDO7TPFa6Sd6qTp/thBprhvq+tYM894opxgs48vwil/TGY8pKapqGRhlK0uVGw
-         YMcMLemOcyvH+8eK5Hqu3Yye0uTzvKCHlNDXZN4MZ+qqZOm3VR04EdFt8Fsm+I/Kn6Av
-         W5nXKBT2/gIKgJE1OvPwHwqeILOx+p34jvgrOgff/Ckf9KxxrNTEuHb4tEf2sLoQGfUc
-         Rv7tYBsxvWCGsLn30rzGZB3myPBzyKog7Z3PJeExALFYtuZ2foIJt8+gOj+SbbDJAgmO
-         VY1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789651366; x=1790256166;
-        h=cc:to:message-id:content-transfer-encoding:content-type
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=CflkOAT9fCKQ7PMjFcNJ2kiw8Vw7bCScxaeZQVMpyoI=;
-        b=PjUb10066wtoLMUreR+/H6ecdQXwvrbiJlZTH/IVhQy18NqY2Ltmw/HzS/9ND6J/Su
-         +Whx9xXvkZQFzxUe7WfRlsasBMoedNZIUtjMMRL/z6aFUAo6aAultQny5v/JUiduvLHz
-         fRWgPGziBB1vhP6lmnlUxRN7KsqwI+kY4Lw8kr6VE8qYyqUYHqkatpN7fMy1F4E5V0up
-         m1ADmi/NPrC31zteJ5+2YT9n1/LhY52zfwy1gzmMi5Dy60bKWXjci5EpUOxKJwx+vOEl
-         oyatCOSS7W8oMlLs55KRbFxopEwBBzfU4WGBMXsPRAXhaBQAfxadR+h8UgCBOjESn02m
-         mybQ==
-X-Gm-Message-State: AFuF++lE1IVQGAEKsYjovzQT29VcJ2wXHweK5z6YC0WOKHJr5a8hNhKZ
-	WMOKm9dZINGFGMn/m91YekhosTmZseHXYmBiyz2/yWB5PWiRr/sm32ipjO72rZrd5QRhYy0YiuZ
-	hpwD9rdugd1oyZuc2rpOwHnTytnMEMri2jkc3BZt5LDkgI0O0UpmP4etQm4o=
-X-Gm-Gg: AYBFou2ZuHtcoA9WnfXOfXfY1W6n/e5IxfwyaHL1qZ8xFdWQjYqh66RsRjjuCWBhFvq
-	XSVF26wW2bFc4Q6t2bwuDyw7HCMjkccQmx3rSQwIvEWcJgs7gzbsfnO4D9CK6D6nB38lzb3SAWo
-	pS9t6Sra/bai5LKsBM0wXtWi2IPgPosf+MmmCnNPmhic/Y589CsAMODRJgm5lfFMvOGB1b8U2Ov
-	qnTmdCbz3L6xycSkU5+6roiR924q0W7nwUKVODj9MXPQCUhnzrt13bSt2m7DQRNksZK/svw08w8
-	2/ls6+WDag86HfGkeyBkb8TG7UNjs8jDIwlUt+REBkIgghApw9WEpuHiPlVS8Erg20XmI/P67i4
-	KCRERa6OAkU6hmA==
-X-Received: by 2002:a05:620a:7087:b0:93b:d7a0:d9ea with SMTP id af79cd13be357-93bd7a0f070mr53259685a.68.1789651366490;
-        Thu, 17 Sep 2026 06:22:46 -0700 (PDT)
-X-Received: by 2002:a05:620a:7087:b0:93b:d7a0:d9ea with SMTP id af79cd13be357-93bd7a0f070mr53253985a.68.1789651365901;
-        Thu, 17 Sep 2026 06:22:45 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fbd23f4e6sm91451705e9.8.2026.09.17.06.22.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 06:22:45 -0700 (PDT)
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Date: Thu, 17 Sep 2026 15:22:29 +0200
-Subject: [PATCH net-next] net: mvneta: rely on napi_build_skb() in
- mvneta_swbm_build_skb()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dXVdw/s1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 017B41F000FF;
+	Thu, 17 Sep 2026 13:24:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789651478;
+	bh=XVpEaO5zQhrxqsYxXWhqnm9w9AUITsTWiX4MH0lZy7I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dXVdw/s1F4/q5VXDtCvo6NbprcH8bzPeUqgvZptvXozgx5JMBoGFdN9EVcz0kCf1H
+	 SEBI/lm43Q70HsAA+zcGxiSHMtKETUrB6BnQSVbybzMPRy95AQGfqDtLTjEJ1ksA/q
+	 AePTZl0ZpzB0zdM3NBp19SbQnwax/sqRwPlx1zgxn1zRxiAMoEgbOR+sYludXOp+5l
+	 lH9pjOGgVUynoFBvOkCv5PRAvpr84bTmbyoq6PBhAz785ya0AtZPMAw22shz5RszH8
+	 NdnOJlCCoyYjeAzLHRXGd03EegjcJIcZYRNQKp8TbamrVdSJ5oKTm39xveM66TTJh/
+	 h1QDbdz5I2Z2w==
+Date: Thu, 17 Sep 2026 14:24:33 +0100
+From: Simon Horman <horms@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: liuc63@xiaopeng.com, david@ixit.cz, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	ilane@ti.com, linville@tuxdriver.com, oe-linux-nfc@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] nfc: nci: avoid unbounded skb allocation when
+ max_pkt_payload_len is zero
+Message-ID: <20260917132433.GE51261@horms.kernel.org>
+References: <20260913101309.891633-1-liuc63@xiaopeng.com>
+ <178938411495.22033.4311942083485691702@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260917-mvneta-napi-poll-v1-1-fb57604932d3@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MwQ5AMBAFf0X2bJNyQP2KOBQPm7CaVkQi/l3jO
- MnMPBQRBJHa7KGAS6IcmqDIMxpXpwtYpsRUmrIytqh5vxSnY3Ve2B/bxraphwbWYTaglPmAWe5
- /2VFyWXGf1L/vBy4pxyJsAAAA
-X-Change-ID: 20260917-mvneta-napi-poll-987b8e9aef0e
-To: Marcin Wojtas <marcin.s.wojtas@gmail.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Stanislav Fomichev <sdf@fomichev.me>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE3MDE4NyBTYWx0ZWRfX/u1D7IEb1y80
- yDNq+7jlQGc8eawo4cQnlLvPj1hPefIQM75rPYWfPtX4UANaxsv1yPk08BKBkfITfJclNfWe00+
- TZKrpXSsVFIjWbpXSK2ZRFevFhrBemc=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE3MDE4NyBTYWx0ZWRfX2m9ricYolRyj
- 9G4ryt/wUaDtijVtI/N85MpA1aWQuxPhsE7Y50EpNrMsocLJpiqwJLKn/UmCDTjg1gCZhjY/fl0
- hGNrC70awxMm0TL7GboGlSKld6ncNX/dpErG39913YW7WNOkilTsNacYfCYf3NphxrnpOEfnpeR
- Yy/YZNt/z8CJmPGvPYH1RLJHvWZjQeES1kjb8LQA43JEJwTq8e/x+tHNccCxodZ6FYnwcd2/cdp
- OusOGoGp8rS67+eHfRj6wMeOLeSiVob07Tc4wm6OHXUlLWVBLrIHgxmU+ywRQRNEEcMlprDIhvt
- sfeJPiNscPqY4mD21RJkqTn+ID9UCzhcYNpa+d2LOcsmMc4o0e2Q/1qh5SOWf+KuBHNvVY6T8Id
- DJWFOezPiJ5ecj6fvw7vxp6Du1SZwRwMjn5kA2HJuv3v0JsBuocN+u1Irfn0wv94Cd8qifPtdCm
- Zi3VtqdsI13VqCB2DjA==
-X-Authority-Analysis: v=2.4 cv=WL/qzXsR c=1 sm=1 tr=0 ts=6aabe9a7 cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
- a=EUspDBNiAAAA:8 a=wB1r_q1jRA9oiTqnZLwA:9 a=QEXdDO2ut3YA:10
- a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-GUID: trN5B8KwmOKGElzsCK7riFmurfrgrvXJ
-X-Proofpoint-ORIG-GUID: trN5B8KwmOKGElzsCK7riFmurfrgrvXJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-17_02,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 lowpriorityscore=0 clxscore=1015
- malwarescore=0 bulkscore=0 phishscore=0 priorityscore=1501 spamscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609170187
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <178938411495.22033.4311942083485691702@kernel.org>
 
-mvneta_swbm_build_skb() is only invoked from mvneta_poll(), the NAPI
-poll routine, so it always runs in NAPI context. Use napi_build_skb()
-instead of build_skb() to source the skb head from the per-CPU NAPI
-cache, avoiding a per-packet kmem_cache_alloc() of the skb head.
+On Mon, Sep 14, 2026 at 11:08:34AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider:
+> 
+> Critical: 0 · High: 2 (1) · Medium: 0 · Low: 0
 
-Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
----
- drivers/net/ethernet/marvell/mvneta.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hi Lin,
 
-diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
-index 543e566425c1..c2b1098d8d1d 100644
---- a/drivers/net/ethernet/marvell/mvneta.c
-+++ b/drivers/net/ethernet/marvell/mvneta.c
-@@ -2403,7 +2403,7 @@ mvneta_swbm_build_skb(struct mvneta_port *pp, struct page_pool *pool,
- 	if (unlikely(xdp_buff_has_frags(xdp)))
- 		num_frags = sinfo->nr_frags;
- 
--	skb = build_skb(xdp->data_hard_start, PAGE_SIZE);
-+	skb = napi_build_skb(xdp->data_hard_start, PAGE_SIZE);
- 	if (!skb)
- 		return ERR_PTR(-ENOMEM);
- 
+There is an expectation that AI-generated reviews forwarded to
+the netdev ML are responded to. That can take a variety of forms
+including an email response that agrees with or refutes the review,
+or an updated version of the patch with an appropriate changelog.
 
----
-base-commit: 859e40055c19ceb8b8215f3269e57075023b72b4
-change-id: 20260917-mvneta-napi-poll-987b8e9aef0e
+The expectation is the patch author or submitter handles this.
+But let me try to help by taking a stab at the first approach.
 
-Best regards,
--- 
-Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+> - [High] Incomplete fix: a controller-supplied
+>   `conn_info->max_pkt_payload_len` of 0 (or 1) is still consumed…
+> - [High] TOCTOU: the new guard reads `conn_info->max_pkt_payload_len`
+>   once (net/nfc/nci/data.c:117) but the fragmentation loop re-reads the…
 
+It seems to me that both of the above are actually a pre-existing issues
+that are not made worse by this patch.
+
+> 
+> Pre-existing issues:
+> - [High] Use-after-free of `struct nci_conn_info`:
+>   `nci_get_conn_info_by_conn_id()` (net/nfc/nci/core.c:43-54) walks…
+
+It seems to me that although this is a pre-existing issue it may
+actually be made worse than this patch.
+
+Overall, my view is that bug fixes for NFC improve it's quality,
+moving things in the right direction. I lean towards none of
+the above warranting blocking the progress of this patch.
+But I would appreciate your input.
+
+> 
+> --
+> 
+> nfc: nci: avoid unbounded skb allocation when max_pkt_payload_len is zero
+> 
+> This adds a check in nci_queue_tx_data_frags() that rejects a
+> conn_info->max_pkt_payload_len of zero with -EPROTO, so the fragmentation
+> loop cannot spin forever allocating skbs.  The commit message explains why
+> the check was placed in the fragmentation path instead of at the two
+> assignment sites in ntf.c and rsp.c.
+> 
+> A few questions below about the placement of the check and about how the
+> field is read.
+> 
+> > diff --git a/net/nfc/nci/data.c b/net/nfc/nci/data.c
+> > index 4253edea5c8db..b549cef7dc2e4 100644
+> > --- a/net/nfc/nci/data.c
+> > +++ b/net/nfc/nci/data.c
+> > @@ -114,6 +114,11 @@ static int nci_queue_tx_data_frags(struct nci_dev *ndev,
+> >  		goto exit;
+> >  	}
+> >  
+> > +	if (!conn_info->max_pkt_payload_len) {
+> > +		rc = -EPROTO;
+> > +		goto exit;
+> > +	}
+> > +
+> 
+> [Severity: High]
+> The commit message says:
+> 
+>   "nci_queue_tx_data_frags() is the only place that loops"
+> 
+> Is that accurate?  nci_hci_send_data() in net/nfc/nci/hci.c also loops over
+> the same field, and it runs before nci_send_data() gets a chance to reject
+> anything:
+> 
+> net/nfc/nci/hci.c:nci_hci_send_data() {
+> 	skb = nci_skb_alloc(ndev, conn_info->max_pkt_payload_len +
+> 			    NCI_DATA_HDR_SIZE, GFP_ATOMIC);
+> 	...
+> 	skb_reserve(skb, NCI_DATA_HDR_SIZE + 2);
+> 	*(u8 *)skb_push(skb, 1) = data_type;
+> 
+> 	do {
+> 		/* If last packet add NCI_HFP_NO_CHAINING */
+> 		if (i + conn_info->max_pkt_payload_len -
+> 		    (skb->len + 1) >= data_len) {
+> 			cb |= NCI_HFP_NO_CHAINING;
+> 			len = data_len - i;
+> 		} else {
+> 			len = conn_info->max_pkt_payload_len - skb->len - 1;
+> 		}
+> 
+> 		*(u8 *)skb_push(skb, 1) = cb;
+> 
+> 		if (len > 0)
+> 			skb_put_data(skb, data + i, len);
+> 
+> 		r = nci_send_data(ndev, conn_info->conn_id, skb);
+> 	...
+> }
+> 
+> skb->len is unsigned int, so i + max_pkt_payload_len - (skb->len + 1) is
+> evaluated unsigned.  With max_pkt_payload_len == 0, i == 0 and skb->len == 1
+> that is 0 - 2 == 0xfffffffe, which is >= any realistic data_len, so the
+> "last packet" branch is always taken and len becomes the whole payload.  The
+> same underflow happens for max_pkt_payload_len == 1.
+> 
+> The skb was only sized for 0 + NCI_DATA_HDR_SIZE plus tx_headroom/tx_tailroom,
+> so the usable tailroom is just the kmalloc/SKB_DATA_ALIGN slack.  Can
+> skb_put_data() then run past skb->end and hit skb_over_panic() -> BUG()
+> before the new check in nci_queue_tx_data_frags() is ever consulted?
+> 
+> The value fed into that arithmetic is stored verbatim in
+> nci_core_conn_create_rsp_packet():
+> 
+> net/nfc/nci/rsp.c:nci_core_conn_create_rsp_packet() {
+> 	...
+> 	if (ndev->cur_params.id == ndev->hci_dev->nfcee_id)
+> 		ndev->hci_dev->conn_info = conn_info;
+> 
+> 	conn_info->conn_id = rsp->conn_id;
+> 	conn_info->max_pkt_payload_len = rsp->max_ctrl_pkt_payload_len;
+> 	...
+> }
+> 
+> and the payload length on the other side is user controlled:
+> nfc_genl_se_io() takes NFC_ATTR_SE_APDU as NLA_BINARY with no maximum, and
+> st_nci_se_io() -> nci_hci_send_event() -> nci_hci_send_data() carries it
+> straight into the loop above.  nci_hci_cmd_received() also calls
+> nci_hci_send_data() directly from the rx work.
+> 
+> Would it make more sense to validate at the assignment sites
+> (nci_core_conn_create_rsp_packet() and nci_rf_intf_activated_ntf_packet()),
+> or to additionally fix the arithmetic in nci_hci_send_data()?  A plain
+> != 0 test would still leave the max_pkt_payload_len == 1 underflow in place.
+> 
+> [Severity: High]
+> The new check reads conn_info->max_pkt_payload_len once, but the loop below
+> re-reads the same field on every iteration:
+> 
+> net/nfc/nci/data.c:nci_queue_tx_data_frags() {
+> 	...
+> 	while (total_len) {
+> 		frag_len =
+> 			min_t(int, total_len, conn_info->max_pkt_payload_len);
+> 	...
+> }
+> 
+> The field is a plain __u8 with no READ_ONCE/WRITE_ONCE, no atomic and no
+> lock, and it is written from the rx workqueue with controller-supplied data
+> in nci_rf_intf_activated_ntf_packet() and nci_core_conn_create_rsp_packet().
+> 
+> The reader side is rawsock_tx_work -> nfc_data_exchange() -> nci_transceive()
+> -> nci_send_data() -> nci_queue_tx_data_frags(); the only lock it holds is
+> device_lock(&dev->dev), plus ndev->tx_q.lock after the loop.  The writer side
+> is nci_rx_work() -> nci_ntf_packet()/nci_rsp_packet() -> the assignments, and
+> neither takes device_lock.
+> 
+> CPU0 (rawsock_tx_work)                        CPU1 (nci_rx_work)
+> conn_info = nci_get_conn_info_by_conn_id()
+> if (!conn_info->max_pkt_payload_len)  /* nonzero, passes */
+> frag_len = min_t(int, total_len,
+> 		 conn_info->max_pkt_payload_len);
+>                                               conn_info->max_pkt_payload_len = 0;
+> /* next iteration */
+> frag_len = 0 -> total_len never decreases
+> 
+> Can the store land between the check and a later re-read, leaving the loop in
+> exactly the unbounded nci_skb_alloc(GFP_ATOMIC) state the commit describes?
+> 
+> Would snapshotting the field into a local, e.g.
+> 
+> 	u8 max_len = READ_ONCE(conn_info->max_pkt_payload_len);
+> 
+> and using that for both the validation and the min_t() close the window?
+> 
+> [Severity: High]
+> This isn't a bug introduced by this patch, but the conn_info pointer that the
+> new check dereferences has no lifetime guarantee.
+> nci_get_conn_info_by_conn_id() walks the list with no lock, no RCU and no
+> lockdep assertion:
+> 
+> net/nfc/nci/core.c:nci_get_conn_info_by_conn_id() {
+> 	list_for_each_entry(conn_info, &ndev->conn_info_list, list) {
+> 		if (conn_info->conn_id == conn_id)
+> 			return conn_info;
+> 	}
+> 
+> 	return NULL;
+> }
+> 
+> while the rx work frees the same object immediately, with no grace period:
+> 
+> net/nfc/nci/rsp.c:nci_core_conn_close_rsp_packet() {
+> 	if (status == NCI_STATUS_OK) {
+> 		conn_info = nci_get_conn_info_by_conn_id(ndev,
+> 							 ndev->cur_conn_id);
+> 		if (conn_info) {
+> 			list_del(&conn_info->list);
+> 			if (conn_info == ndev->rf_conn_info)
+> 				ndev->rf_conn_info = NULL;
+> 			devm_kfree(&ndev->nfc_dev->dev, conn_info->dest_params);
+> 			devm_kfree(&ndev->nfc_dev->dev, conn_info);
+> 		}
+> 	}
+> 	...
+> }
+> 
+> nci_rsp_packet() dispatches CORE_CONN_CLOSE_RSP without checking that a
+> matching command was outstanding, and the tx path holds only
+> device_lock(&dev->dev), which the rx worker never takes.  Can an unsolicited
+> CORE_CONN_CLOSE_RSP with status OK for ndev->cur_conn_id free the conn_info
+> while nci_queue_tx_data_frags() is still reading
+> conn_info->max_pkt_payload_len, both in the new check and in the min_t() in
+> the loop?  The list walk itself can also follow a freed node's linkage.
+> 
+> -- 
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260913101309.891633-1-liuc63%40xiaopeng.com
