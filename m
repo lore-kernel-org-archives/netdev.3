@@ -1,68 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904DD4CDDE8
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 19:09:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FDF39DBD4
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 19:15:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789672153; cv=none; b=GfWxGogN0xqQSS4vkOfc4FvbYuqmPcnkrrwSwcgEj8e0h43d7pY1e4D36/NUfvEoQOjuqoe36VnqWD50YUeqaIvgcWW1aSUKkxuf0QITOM2V33b1Bd27adl9EygMPFTa9k4Fx/OzijzX+fE3AVWi9fc8iNprJETbUSVQ9f/MFhY=
+	t=1789672558; cv=none; b=nJNx63eeFmKOZ/kD0QlAZqDOwv5guQbCiye7KouuC2G80rk9nFIKuggXwburqADJG063Q6R0ywI0Rsmy1lAnQOjtWc/YUJGNaAkhAbQwCuwzYpjJjJhZ+WhtYitT/sPG87WoaLS4ZNhKO5avqYSfyRmulFmweFJO/4XPwj8F5io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789672153; c=relaxed/simple;
-	bh=Q4fDDhH3Z8JgN71X9oU7Qq69MFEH2EgdxOXf9uD2UtU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ov3TExPwBglxchUMn57JjNy/5oaawCw6D+Uw8jEWyfdQdiJUK4F0M5+xFliox0k83yz6n11Kwsv27dY33890RO7Q/d82KReLP6gjU4WavJnD6ZBgP6VlXCssV4vhtGKmti3cNRORbWOtcof0mbzybEQWc8VmWii/QxqjvDxyGEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MpP9aaAp; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789672558; c=relaxed/simple;
+	bh=IhpYp9bSD9+qcUWdk7OxxcwkjkDt/T2GPtPd1Y6rWt8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=UYWQYfyf+cN9vIl3LmJr+U5g7mdcbTU+AoDCmh9ASAHKI2Z8/udmypfQ+mF29B547zYR4F3klM10tkWLhgl1DZBHErqPOwMvd7m32k/EcDHWBy+ktLBXRXNrYf4aSa6RszO7U/WFBP4fef6Dodhy+hzyAjwjEUV+v4s50fjqL0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nnsdd8i5; arc=none smtp.client-ip=209.85.215.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MpP9aaAp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8ED51F000FF;
-	Thu, 17 Sep 2026 19:09:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789672151;
-	bh=9bmUONqwyUlmKEcE3poN+tvONnv1emUWwYoOD5jclLk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=MpP9aaApxQb8t1XTIu1Ng/3Dg1QJBbNcnuc3vjKNDrkG48yX4ygFso4D7CQRx9ncd
-	 yVB8h/W305LrcHGzZ4X2ejxuBvux/Yw/+/vmudhf9DU1YkRmv9IMfjXUEpQ+zgVKB4
-	 mcS8+yUsSDMdUzw4TOJTakL6gdsP940a0PccztEjb4g1vrElSPbGpYiSOBJj6XgBP6
-	 7MtRiBSewjRRUN7sgMC5tZJHNWaGgbJ5tcd7aTfbgRYNjHKli3FWSDxySDVMHWCemb
-	 DZGj4Wu0+CnnwhcnrY9BZ1sREt2dkfMi40p1JTUxkbWPXNxRozV1fhWycFRMo1+24k
-	 NFroeAY4aocww==
-Message-ID: <58147155-1763-4e10-a3af-f8751c1505d5@kernel.org>
-Date: Thu, 17 Sep 2026 13:09:10 -0600
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nnsdd8i5"
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc1a439db36so1054152a12.2
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 12:15:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789672556; x=1790277356; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qCo3Yxfb1GBbpyMMD1mPaT+L/Vwg6/7E5KU2l5EPNws=;
+        b=nnsdd8i5Tiw8YWFeTtLY4HnBI1gk82fL5UCmVQ0zrqln1BapP0M4yhXxzIZsKWFRJS
+         kCRql0taQy0B6ibA+DXeELR5S3705fZjMcrSiujtpFEOqWzHNN1CS8fdEGIfa+8rpOb1
+         b4TXrCdaLoJoIIQL05JrxUs5ixA4Rv+PTLwyaCEFq1g4/GFMW5l7pT3rJWBmAFop2htn
+         H/UcNUGx0SIelbXTfoQq/omzHgYWvGD/GrTKXc77B0Fp+F+MoFlf9xvTyUDoxgwyENby
+         kWhBJS/z6XYzugaf2HbKgXFmd/5tdsl/UnskLJb9+TBSFrlp+zL/NDfXW4Fbyn5y4EQA
+         hBZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789672556; x=1790277356;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qCo3Yxfb1GBbpyMMD1mPaT+L/Vwg6/7E5KU2l5EPNws=;
+        b=xFYoOoU5rz29oosfWxcZznCVG2tKTf8yGwL2GX66qaOTsKDk8u/P2mkXKeo2zYgVYl
+         gnDJIuVDWh4W5oH4WbD+eKS0KU6DyC9eJEdzcTEp5p8XmyZOaQzKZwR6pudGuh7gWBCt
+         bLGeUUTLNHTDqbw9MlQG5FjYjzdE1cY3wJ2llti+fV8EJ1wvNSicn1C0zw3uY5CQ0atD
+         Uqi/IOikgEHZ9Ir5z3scQdkP+vOb+aVXH3PNX33hIMEvbNHcHJBB89uHoqrbOy3EHGHh
+         5BYPYUMpYbh07GhBCbJkOjFefX1jsm9tPpmxd+V41F7NnLUcqwom4kKF06yVTFxFD04t
+         vUDg==
+X-Forwarded-Encrypted: i=1; AKwUvBzX5WnSSt/Tzd63u/vASfqqjwADUShMQ4xH1xbNpySbitdFiByKg0YezXfk/NE/CfAJVW8PCpk=@vger.kernel.org
+X-Gm-Message-State: AFuF++liCX/MSjTJiokf7HqpX9kbD9Cq+J6m2B5UzXweiy1GZBRNk8m5
+	B3r5VpoSSiKL1LX5FE8wjVpPOPYu4C7vxiol4HoJ8Z/ycdTRl+4IkN2TyW7gJUj7VC6aEq+uC/e
+	zs5Sa2A==
+X-Received: from pgah2.prod.google.com ([2002:a05:6a02:4e82:b0:cbe:e0a7:536b])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:430e:b0:3d1:66cb:d49
+ with SMTP id adf61e73a8af0-3dd5f4066femr19236190637.4.1789672556163; Thu, 17
+ Sep 2026 12:15:56 -0700 (PDT)
+Date: Thu, 17 Sep 2026 19:15:52 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/1] ovpn: avoid caching stale IPv6 dst after FIB
- changes
-Content-Language: en-US
-To: Ralf Lici <ralf@mandelbit.com>, netdev@vger.kernel.org
-Cc: Antonio Quartulli <antonio@openvpn.net>,
- Sabrina Dubroca <sd@queasysnail.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>
-References: <cover.1789639346.git.ralf@mandelbit.com>
- <65f8ed83f2aa154b985731c10c6c6b20060dd198.1789639346.git.ralf@mandelbit.com>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <65f8ed83f2aa154b985731c10c6c6b20060dd198.1789639346.git.ralf@mandelbit.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
+Message-ID: <20260917191554.1600494-1-kuniyu@google.com>
+Subject: [PATCH v1 net-next] tcp: Set unhashed_state in inet_twsk_hashdance_schedule().
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Neal Cardwell <ncardwell@google.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	Daniel Zahka <daniel.zahka@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 9/17/26 4:09 AM, Ralf Lici wrote:
-> diff --git a/drivers/net/ovpn/udp.c b/drivers/net/ovpn/udp.c
-> index 7f69e8890b5b..a28974cc36e8 100644
-> --- a/drivers/net/ovpn/udp.c
-> +++ b/drivers/net/ovpn/udp.c
-> @@ -250,7 +252,11 @@ static int ovpn_udp6_output(struct ovpn_peer *peer, struct ovpn_bind *bind,
->  		dst_cache_reset(cache);
->  	}
->  
-> -	dst = ip6_dst_lookup_flow(sock_net(sk), sk, &fl, NULL);
-> +	gen0 = rt_genid_ipv6(net);
+inet_unhash() sets inet_csk(sk)->unhashed_state only when the
+socket is hashed because tcp_set_state(sk, TCP_CLOSE) could be
+called multiple times, e.g. tcp_abort() calls it directly and
+tcp_done_with_error().
 
-this detail about routes should not be buried here. rt_genid_ipv6 really
-should be local to net/ipv6/route.c
+However, inet_twsk_hashdance_schedule() also unhashes a socket
+when replacing it with twsk, allowing the socket to bypass
+checks for inet_csk(sk)->unhashed_state.
+
+Let's update inet_csk(sk)->unhashed_state there as well.
+
+Fixes: 8cc3aef0cb19 ("tcp: Do not allow buggy transitions between ehash and lhash2.")
+Reported-by: Daniel Zahka <daniel.zahka@gmail.com>
+Closes: https://lore.kernel.org/netdev/DLHLRA8GVI5B.2Q1IRQG5BVJNZ@gmail.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+---
+ net/ipv4/inet_timewait_sock.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/net/ipv4/inet_timewait_sock.c b/net/ipv4/inet_timewait_sock.c
+index d4c781a0667f..a1d86026aefb 100644
+--- a/net/ipv4/inet_timewait_sock.c
++++ b/net/ipv4/inet_timewait_sock.c
+@@ -105,10 +105,12 @@ void inet_twsk_hashdance_schedule(struct inet_timewait_sock *tw,
+ 				  struct inet_hashinfo *hashinfo,
+ 				  int timeo)
+ {
+-	const struct inet_sock *inet = inet_sk(sk);
+-	const struct inet_connection_sock *icsk = inet_csk(sk);
+ 	spinlock_t *lock = inet_ehash_lockp(hashinfo, sk->sk_hash);
++	struct inet_connection_sock *icsk = inet_csk(sk);
+ 	struct inet_bind_hashbucket *bhead, *bhead2;
++	const struct inet_sock *inet = inet_sk(sk);
++
++	icsk->unhashed_state = sk->sk_state;
+ 
+ 	/* Put TW into bind hash. Original socket stays there too.
+ 	 * Note, that any socket with inet->num != 0 MUST be bound in
+-- 
+2.55.0.1082.g2b9226bbc0-goog
 
