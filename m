@@ -1,80 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E2643D51E;
-	Thu, 17 Sep 2026 08:31:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742ED442B15
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 08:32:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789633886; cv=none; b=UHdxhFZxv1+QVAhzWAeUPCYlO9wGCF7t0XLD60yMoQWMzEFfRqrYuyMIYI0xqR22sdBP8tFfW1nvr1dYWFsNQrWhOYtZv0QNiT2CZBa8TC/DiVIjmsVPNhsKgVz2er0ZiMx4S4NbT+3gVDgC+H4FN9d4bf9iWXZui3ltLaNJPSA=
+	t=1789633956; cv=none; b=LPT8Gkre0pdcNCcJgu8qr+n+iqdVqPPtM3Vuu5txbdGtoKXTkZeYK6Q7dqcjxTz/y3LJ8gC/+/MEPIS0rD3QwUq9boKtxe5jcRUIT7Ldm/xkxvURmqg9QFXUPabxfALyJ8+KRiP+udhOqBx7MsEreIaUsZfUp+1u1XMPgiICmSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789633886; c=relaxed/simple;
-	bh=sZgkRwiRrlqYyrfJRMGp3n0c5/aSEtnD8nXpMVOL6gU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=T+caDJt7c1TnlOU4kTZfp/A0ndCqHcaMmQODLgIaJmUSimebjutnQ6tjxgOppG0tklhZWIpF4SkvOt3DPv7GR0/ZIgoimaoTFLGDgSrpLEFfAf06X0j+H6FV0VMJtoRqqsIyb2AIYP4JF6ACFhpOu7ZoQV7H1hJl5PzeeQPWF9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fcTU/q7R; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789633956; c=relaxed/simple;
+	bh=WXcytrduSDyZbNBnkmeB8QbyMLvLzr0igBdZRT3L+uI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ghySOk4CO1bhE8AjqPeRxF/OfM0IRxLIPKZdugVNpc4wX1zb0HWBVyjg300PrKF0N2p4x3qzJv+tFC9DpapTEAHpw7OJAtAI9nKMqWxFZcj3ZkUVWYckmxc2ayqhbiCgqGvkPyl7JdUqc+um4ejBRanwWx5Sd9J2yC+RCCr8xOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SBJBrp3R; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fcTU/q7R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B731F00898;
-	Thu, 17 Sep 2026 08:31:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789633870;
-	bh=LO9eaufMm0duk8wGY4ihfDIzUgYxdIMkz6Fmb6I1oSE=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=fcTU/q7RIlFTHV3pFT2K65KSjMm5NJG3KeZ+tZCez/13nwMjXCT5gwW9wGtXwlvJd
-	 FqXBZBRtexw++vnpEEmmUeoSa/VUDaAdDxennNWOG9CKP/Et8dRC39Oac/L27kh9Op
-	 z0siz+kDI+bJHA3ViwI3aKCdtgOddfYAXZdDPEpdHdGWydW7lN1n8juimcSuRn9UWz
-	 r1e5noqygU2uv/97R16HBE4TZEvo63HosOvEYm+guGH2srl5Wiys8oAbSiCIkw2Zh9
-	 grRX8/SzsZOrjo4oIkK0UPxcm9M65rGyotFo+ucr+VSnViJ3bCms/NuaoE/N756cZs
-	 ZTEvFVLo1mOqA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A60380CFEC;
-	Thu, 17 Sep 2026 08:30:05 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SBJBrp3R"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789633942;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=k6/VwDElwAs3PwRk14GGcfVXoVq4w63AF8VBRTlZK50=;
+	b=SBJBrp3RTlm85ZJELmlt6x0IZYddc4GGpmkP4Wz/GzbFqvYfwGZHmbeRSCTBYAbAj7j9+J
+	HTEybAn11n2KJo8k6cr0cr11wrtArQW4g89APpIbFG6393g/CV2ol7kD5YD2xAcPqnRR/C
+	i0bJkf+/Zw86a9sqtxg0DisvggR30X4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-354-eG0WPGb-OJGAfgRklY_LzA-1; Thu,
+ 17 Sep 2026 04:32:18 -0400
+X-MC-Unique: eG0WPGb-OJGAfgRklY_LzA-1
+X-Mimecast-MFC-AGG-ID: eG0WPGb-OJGAfgRklY_LzA_1789633936
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2C73E195DE32;
+	Thu, 17 Sep 2026 08:32:16 +0000 (UTC)
+Received: from [100.90.87.156] (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D164A30001A2;
+	Thu, 17 Sep 2026 08:32:12 +0000 (UTC)
+Message-ID: <dd42a0bc-2a7f-4e7e-90e1-dc29a0745422@redhat.com>
+Date: Thu, 17 Sep 2026 10:32:11 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 net-next] ppp_synctty: Use common error handling code
- in
- ppp_sync_txmunge()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178963380438.3497657.12392153187415676873.git-patchwork-notify@kernel.org>
-Date: Thu, 17 Sep 2026 08:30:04 +0000
-References: <15f151c7-58c8-4116-8a03-e985fd132b0f@web.de>
-In-Reply-To: <15f151c7-58c8-4116-8a03-e985fd132b0f@web.de>
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: linux-ppp@vger.kernel.org, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- jirislaby@kernel.org, pabeni@redhat.com, qingfang.deng@linux.dev,
- tparkin@katalix.com, linux-kernel@vger.kernel.org, kees@kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] dpll: reject a reference sync pin which is not on the
+ pin's dpll
+To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, vadim.fedorenko@linux.dev,
+ arkadiusz.kubalewski@intel.com, jiri@resnulli.us, milena.olech@intel.com,
+ przemyslaw.kitszel@intel.com
+References: <20260915213047.1352286-1-kuba@kernel.org>
+ <20260916163700.1fc4d654@kernel.org>
+Content-Language: en-US
+From: Ivan Vecera <ivecera@redhat.com>
+In-Reply-To: <20260916163700.1fc4d654@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Tue, 15 Sep 2026 11:23:01 +0200 you wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Tue, 15 Sep 2026 10:48:11 +0200
+On 9/17/26 1:37 AM, Jakub Kicinski wrote:
+> On Tue, 15 Sep 2026 14:30:47 -0700 Jakub Kicinski wrote:
+>> CC: vadim.fedorenko@linux.dev
+>> CC: arkadiusz.kubalewski@intel.com
+>> CC: jiri@resnulli.us
+>> CC: ivecera@redhat.com
 > 
-> Use an additional label so that a bit of exception handling can be better
-> reused at the end of this function implementation.
-> 
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> 
-> [...]
+> How many maintainers does it take to get one ack? :/
 
-Here is the summary with links:
-  - [v2,net-next] ppp_synctty: Use common error handling code in ppp_sync_txmunge()
-    https://git.kernel.org/netdev/net-next/c/063510768490
+Sorry, Jakub; I've been a bit busy these past few days since returning
+from vacation.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Reviewed few minutes ago.
 
+Thanks,
+Ivan
 
