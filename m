@@ -1,89 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4077D497393;
-	Thu, 17 Sep 2026 15:55:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3273A5E7D;
+	Thu, 17 Sep 2026 15:57:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789660527; cv=none; b=o981iqZ7W/TINj4ywTKhsogIPFWaD0+pVXoBWnvQ37DQfxv8veih1p62FqvpGnTLkmkwB6g9syqnccqDHZBW/ajSiPDRoFfaxybS9V3qbSAzOAzUj7KjWP8fikexvyT/vHBnv2l47L8D5FnKIvQhDYIS9cg/mkVJUSUz2uM7uIM=
+	t=1789660639; cv=none; b=c+Dlr9xpwfG2yyyBvLzSlkPdpWGfM6kFejWXZ3l5dsl8ynwVRVjocwISJLRo6+bYkxLE+WSXwo2shUCc/EA1KTD2qHqVsrKWgSNecgAIH4DfrClAjf3Y3d8ctpl+TLdG89XNx6BpM7E0tDiCbrwIFRw7NPaopeA7DfzUMPuD1Ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789660527; c=relaxed/simple;
-	bh=L38sj/oPF+SgDEJj8vtcGsboNoDf1hlyZ8xrE1I0Of8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ikYDUFt5gDbHJQSmfi2cHs4g1FbrN5LJy25ep/sCzEjANkFx8lc2T9UMENKxaU8aEI9FwjW+HsDJU6DAW1MU2c4Vbv35GLV/BakgKMyGeU42zHOTjI8U923mqLPYS9pqCQasZE6uFp5LVCsj/7H7WNOJDcOXOLuh6vdQQx3wxdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DyvGmeKm; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789660639; c=relaxed/simple;
+	bh=3KmAjvg1/hWZ+RG2HDHxrZoYH3ofhurQj02rtKQ4h7A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QOb/KaEPspe9qgKd9g/5PqadEmmxIxBNZ3wCMfCudXJdfIyYLDfmt+Zy1wP5X45wKhZPFJIRQ6uTu/8hm/vY4J9oTXHUwcdssUXWbvlWAy23xNS4GT7b//YVXZYafbeUBL9b7ufj8j07LE8GtV8UNbBK07s9tK/rp7nTHOc86oM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=paun6XS5; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DyvGmeKm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2971F000FF;
-	Thu, 17 Sep 2026 15:55:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789660524;
-	bh=4tT0hSQZzT4nABmz0hTt14V/U2PpBkIFPgyrWbrbsOw=;
-	h=From:To:Cc:Subject:Date;
-	b=DyvGmeKmYJajnlOvIQqkzKyuLf9eqb/aCoiYdYNKCP8LV7Ym+3cnIN3+D65zqawUZ
-	 0+p9uBtYyuhJNEppGew/ClGTLip+XLM6Y5ta+nQ7+LHUblUnM2Jybfp1Ag3881XH0Y
-	 fxsgltWXsu+y3DOhbVEEvuMMOx+3HpQmWUKXlAwdc/6kOMRnCVgx6mIO8EDSnBsCfj
-	 1x/EBb34cbrzAcUGB2lfQqYjp3g1Fa/Z/mrc+Py/zMtYd79MPZPMOndLyDyGIDgjTE
-	 a9As5u/vBb6Hu/fmkh3NIThtt0O3RoaWYwjb9e8alnAXTnKpi5HZji097RWdecXRjw
-	 k1LOW3EOr+bWg==
-From: Arnd Bergmann <arnd@kernel.org>
-To: Edward Cree <ecree.xilinx@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Dan Williams <djbw@kernel.org>,
-	Alejandro Lucero <alucerop@amd.com>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	netdev@vger.kernel.org,
-	linux-net-drivers@amd.com,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] sfc: fix CONFIG_CXL_MEM dependency
-Date: Thu, 17 Sep 2026 17:55:11 +0200
-Message-ID: <20260917155519.2121486-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="paun6XS5"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 6B4B0C5CD7B;
+	Thu, 17 Sep 2026 15:57:59 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E8E9460580;
+	Thu, 17 Sep 2026 15:57:14 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 93FC111C7B064;
+	Thu, 17 Sep 2026 17:57:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789660630; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=ZTDf8OaqeURgLMZ5E+W4mtiF63QZY3UkbGUJHnDdviI=;
+	b=paun6XS5Aa9eJQnGmxIRzXfeJlkaE4A483QIplkcNV7R5hp21OPfaI3+6zrq34NqxcAkvi
+	3TqBGWME9WLNnUXeCcrIw2eriPYueyAfq4FW6RFAhZjAI/PFy4YApsteu87IVD/UqxU25i
+	ckLkWvN1n+Yu5Otscq8IgYw2CjqLShDM216p4aQ9ghNblLehpYoUERkcX+LE+ylXvF/MFE
+	bf9CSw0gIESSUIV7kSixB1WezuN7ZKvx49STCl+LzJJ3g5B2Do28l/7XujP4BTJ0SW8HRi
+	DZ1Chg2OuOvJ2Hm9mDFAqznKw1+c5gULQUsBo7kIlgpRmWjt8zXBQoYTYxB8NA==
+Message-ID: <b521308c-34b8-40dc-831a-757a163902d6@bootlin.com>
+Date: Thu, 17 Sep 2026 17:57:02 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: stmmac: fix the invalid VID programmed by VLAN
+ perfect filtering
+To: Linkui Xiao <xiaolinkui@126.com>, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Linkui Xiao <xiaolinkui@kylinos.cn>, stable@vger.kernel.org
+References: <20260917122245.1338365-1-xiaolinkui@126.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260917122245.1338365-1-xiaolinkui@126.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Arnd Bergmann <arnd@arndb.de>
+Hi,
 
-A recent patch introduced a call to devm_cxl_probe_mem(), which is only
-available when CXL_MEM is enabled. If CXL_MEM is in a loadable module,
-this causes a link failure for a builtin driver:
++Ovidiu
 
-s390-linux-ld: drivers/net/ethernet/sfc/efx_cxl.o: in function `efx_cxl_init':
-efx_cxl.c:(.text+0x156): undefined reference to `devm_cxl_probe_mem'
+On 9/17/26 14:22, Linkui Xiao wrote:
+> From: Linkui Xiao <xiaolinkui@kylinos.cn>
+> 
+> for_each_set_bit() leaves its iterator equal to the bitmap size once the
+> loop terminates, so the 'vid' read after the loop in stmmac_vlan_update()
+> is always VLAN_N_VID (4096) and never the last VLAN ID that was found.
+> 
+> Cores that do not support VLAN hash filtering (dma_cap.vlhash == 0) fall
+> back to the single VID perfect match filter and hand that value straight
+> to the MAC. vlan_update_hash() therefore programs MAC_VLAN_Tag with
+> VID 4096, a value that can never match an incoming 802.1Q tag, so the
+> perfect filter ends up discarding all VLAN tagged traffic. Both
+> stmmac_test_vlanfilt_perfect() and stmmac_test_dvlanfilt_perfect() walk
+> this path and fail as a result.
+> 
+> Remember the VID while iterating so that the last active VLAN ID is the
+> one passed to the perfect match filter. When hash filtering is available
+> 'hash' is non-zero as soon as at least one VID is active, so
+> vlan_update_hash() keeps ignoring 'pmatch' and nothing changes there.
+> 
+> Fixes: c7ab0b8088d7 ("net: stmmac: Fallback to VLAN Perfect filtering if HASH is not available")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
 
-Adapt the dependency to require CXL_MEM instead of CXL_BUS, which
-we know is available when CXL_MEM is.
+Thank you for proposing this fix, however this code is currently being removed :
 
-Fixes: 0418860ef2ca ("sfc: obtain and map cxl range using devm_cxl_probe_mem")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/net/ethernet/sfc/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+https://lore.kernel.org/r/20260908164309.59282-1-ovidiu.panait.rb@renesas.com
 
-diff --git a/drivers/net/ethernet/sfc/Kconfig b/drivers/net/ethernet/sfc/Kconfig
-index 979f2801e2a8..e2898ec2e6e9 100644
---- a/drivers/net/ethernet/sfc/Kconfig
-+++ b/drivers/net/ethernet/sfc/Kconfig
-@@ -68,7 +68,7 @@ config SFC_MCDI_LOGGING
- 	  a sysfs file 'mcdi_logging' under the PCI device.
- config SFC_CXL
- 	bool "Solarflare SFC9100-family CXL support"
--	depends on SFC && CXL_BUS >= SFC
-+	depends on SFC && CXL_MEM >= SFC
- 	default SFC
- 	help
- 	  This enables SFC CXL support if the kernel is configuring CXL for
--- 
-2.53.0
+So no need for this patch :)
+
+Maxime
 
