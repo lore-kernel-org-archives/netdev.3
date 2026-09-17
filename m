@@ -1,118 +1,389 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2DA472092
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 07:22:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B5D4446F5;
+	Thu, 17 Sep 2026 07:27:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789629773; cv=none; b=Wi3EgaQjB101WhhwzuXxxDlR8pSs8LAlAWXZ46rVpiYuqP7BqKCPUbEm+WKwgtZp64/5K/1rcHCZe3H7NXUts9sIFj/6E9o+186SIdkRSVlaJPI+2J2VwXAOI4QTepBB382e+U0CTbC/hi19Z1GFeOPxEO2kEOExjdcQg3Orc4w=
+	t=1789630075; cv=none; b=d34zy7jVNz3p0A+THh/Xw8iK2FOq6cfOUCppBghTsaQYejECGZhFjzNarePUT9MHDEtt+2uYyMw2t3l5Ayc5SFJBPBWNc3TygCWmdQVXFaBtZMygAyeg0rOxCde0TcGNIUc6wDOgzVm30Mm/S21QvRBZ8OuvdKBG3gP5XzHFPyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789629773; c=relaxed/simple;
-	bh=cYbK+iFcA/rHB+b8Sla87g88LXLMoRAm5V1nqvPUbZ8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eFwGdMDtcBk3aptsZFxx+5dzFT1VymdhO79GP8EXdqLFD0VmamDu7DMaLUfSIXfJE/NzYxAKHAtkLDoadiZomGuHo2Nl3NXsjhBCZ9tgNyfE7U7+/qArhLlMScIcEc9j/wCw0AomEndkOnN+BE8amddGFE7b7K/R5jqpHr5gQ4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jl7Qevi0; arc=none smtp.client-ip=74.125.228.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789630075; c=relaxed/simple;
+	bh=+kmAWEDpZ+DQcoked+ubtlBLMqbXPTX1uiakG8sx/v8=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=aGEFTbu1mEyktmcKLcbkgqdQ4d7t4b0thXlR+4iorB9gyM/9Hde+jofSmm4qAYta3uArIomqCCS77dUgzkIFO7oXpzY4snqgh5lO2xTfYCiMWNnhBLLvoC61tXaHQMTvvFA2qlSCzi0apojglq0DUqAwmaALAHTKV/P7l5DlLdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kSW9v30A; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jl7Qevi0"
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc4c034a769so43842a12.2
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 00:22:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789629767; x=1790234567; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LEz5AHj50hXRMoOhzaQCHtJ4fdUwgfjyyc+kMNRjsig=;
-        b=jl7Qevi0ZZA6Yuhq1qJ/n4RadUjYtKfXsiMwDOTDg1rsxka5X7JJfsk/RzpAT3mvXS
-         ZLEj8YMBAK7PrulF5VFq2FMV1GqR8PXhRVcLunqrwRj2VN5/4qB2294RmPNy7KUSVdEm
-         Jw7HU5LoIHRWk1SugUPLdfgYCXHhBWEi6TujTRMaNnBSBn2I+85i+ayb5ml9utjkYutb
-         kWD59fYSg8MvYK0nibKkn2zgCtazNPubWiMAcSomvmackn0n2WD90/fxy49jXf9ASSnU
-         HsStYYx51EoQDhPUr0PWuqG5fvvDe23bcLxrQz4EgMoLfJBmLJ1Wlpl3nTGBg/vmZKzh
-         CMqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789629767; x=1790234567;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LEz5AHj50hXRMoOhzaQCHtJ4fdUwgfjyyc+kMNRjsig=;
-        b=Ci1Mt+nwB+vMyLq71qevUXIPx7wOH1iZzlYb+JOan8TeGJ0xXAX2PWfj9Ys/n7nRwn
-         A6/rci8gM6h5tDbtAZWV9X9qwRKzK7Bei6khTbCytaHIgkX/LdokrXQkk6sO2rY2idPp
-         ErOfyQlT2EpFlYMwW11sTCNWq13xfKJZt4V02tuxJYHMx3EP7sosN6gtr98j4v7EaNiQ
-         ceYoXYIMWReyPtsb74xMXCC9v9MzRAs/02rMKlLquC4yvJ8CzGxCL8xvgPMOyAfux0YF
-         h6v4DSgv8P1IKqsK5QLzUlKukMOtQzrVEyX9Ralbly2hk8+wf2LHzDXQtDUgsRrTqP5q
-         katw==
-X-Gm-Message-State: AFuF++l2ivbh77ad4RfQWStXUOeNasXX86L/fio1E1EGHXFQKOUIQIrN
-	byyaQ3/WpACQe1DxSwtfJFSfxQmev4XDErwmQwa0sTliWZHxOrkpLReK+6rovA==
-X-Gm-Gg: AYBFou2aADoxXajNKIWgZ9Al8XbalfdgvvS04GfG8Qd7D0Sk2K6QYG10rqVz+JczU54
-	fyF4kEPxlywxow1n9LD7YmLA5b7eCg4bYb6bbPb+wmNrqecuuiV94Vaegrcjfvhk7HGHs749gI4
-	BLJ/AItFCZJ+L0N13Bygkvh8+ecI8bi+JlgpcVMNapHh7YWkXHyTL9RiuYANV7nHnRdOZ2s1YYB
-	TLuYp963mbUNXo7j+hZWKFr0qKf7UFGeOPvrLaZ5KWUvjCS426hGcHYxMXKw/kH3JHStXV2Zs4t
-	oh6ycL7htwLRb48j9fqHXnTCL9WrugiuZux7P9cEUvikyiz0XcqQmjKeJX0NJGyMeOBYPToGXHy
-	8fsTYb/f4HajRqpH2K1Tcu+DR3MQidLjQldSDVGTYGaLYtzoICnovIW0Alqpo+sSJrT3QorUyQ4
-	3i2Nkdf/BQjbaOVZwL31YPqR7SXrNbCgYc1ie/nVWIblHr2j1+T5NYyIvFH1FKmag6I3lmpAQyC
-	pnp5OJPiZQEf8oFTD5VseRJyFfidZjs7fGbvkWGKLWTeLw4Cr2DgvSENEs/aw==
-X-Received: by 2002:a05:6a00:7110:b0:871:3a50:638f with SMTP id d2e1a72fcca58-872367ed514mr5780054b3a.1.1789629766747;
-        Thu, 17 Sep 2026 00:22:46 -0700 (PDT)
-Received: from localhost.localdomain ([139.159.170.86])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87200d4cb44sm2463091b3a.13.2026.09.17.00.22.41
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 17 Sep 2026 00:22:46 -0700 (PDT)
-From: Qihang <q.h.hack.winter@gmail.com>
-To: netdev@vger.kernel.org
-Cc: steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au,
-	Qihang <q.h.hack.winter@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] xfrm: validate ihl in xfrm4_transport_output()
-Date: Thu, 17 Sep 2026 15:22:26 +0800
-Message-ID: <20260917072226.80788-1-q.h.hack.winter@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kSW9v30A"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340F91F000FF;
+	Thu, 17 Sep 2026 07:27:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789630074;
+	bh=QH2HYp3RnzjQwnN4aXpIjNR1GnmarzzCfjmzCQbJAsQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=kSW9v30AwM+vkCJgXGlN6CskVUeH+HCRzD888qt0p9N9kH9uDweU1v1SkPnINSbps
+	 6faYqijB/P8n+pTENNPL2zrEcnIbDoQ5y5fR1FzHJV0usTFPE579i+NUDV4y09zbhV
+	 sFDLwmWvOvTrsdDq8pqVa66x03uc5ybWvBklDzvOgeRiF5L97v3vtMNSLYmJYZj2wz
+	 KzuRB9575rrM4FjxCN+dED8VRAT7foVZwtMSeRFq/sGaQK+4BbTxFblQ5NLik3fczd
+	 /9FbJK5QRsQ2Ji7Vu7ew9sCh7VSw4wCI29qssTDA8Of/lBgIWTINW6EvI6G4mDlm6S
+	 Tc3AqYXFk47BQ==
+Subject: Re: [PATCH nf-next v5 2/3] netfilter: flowtable: teardown direct xmit
+ flows when the fdb entry moves
+From: netdev-bot+sashiko@kernel.org
+To: julius@bairaktaris.de
+Cc: netfilter-devel@vger.kernel.org, pablo@netfilter.org, fw@strlen.de,
+ kadlec@netfilter.org, phil@nwl.cc, horms@kernel.org, davem@davemloft.net,
+ razor@blackwall.org, ericwouds@gmail.com, dqfext@gmail.com,
+ netdev@vger.kernel.org, coreteam@netfilter.org,
+ linux-kselftest@vger.kernel.org, kuba@kernel.org
+Date: Thu, 17 Sep 2026 07:27:52 +0000
+Message-ID: <178963007270.22033.13091123590004831521@kernel.org>
+In-Reply-To: <20260914072541.897040-3-julius@bairaktaris.de>
+References: <20260914072541.897040-3-julius@bairaktaris.de>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-xfrm4_transport_output() reads the IPv4 header length (ihl) from the
-packet and uses it for __skb_pull() and memmove() without checking it
-against skb->len, so a frame with ihl * 4 > skb->len underflows skb->len
-to a huge value.
+Thank you for your contribution! Sashiko AI review found 6 potential
+issue(s) to consider:
 
-Packets injected into an xfrm interface (e.g. AF_PACKET on an xfrmi
-device) reach xfrm output without the pskb_may_pull(ihl * 4) check that
-ip_rcv_core() applies to received traffic.  The underflowed length then
-flows into esp_output() and the crypto scatterlist setup, where every
-length in the underflow window ends in a fatal fault (BUG_ON in
-__skb_to_sgvec(), or a wild scatterlist access in the crypto layer).
-This is a deterministic local denial of service reachable by an
-unprivileged user through a user and network namespace.
+Critical: 0 · High: 2 · Medium: 3 · Low: 1
 
-xfrm6_transport_output() bounds the header length via
-xfrm6_hdr_offset() and the IPv4 tunnel/BEET paths use the constant
-XFRM_MODE_SKB_CB(skb)->ihl; only IPv4 transport uses the live,
-unvalidated value.  Reject the packet when ihl exceeds skb->len.
+- [High] The new fdb-move teardown is wired exclusively to the switchdev
+  atomic notifier chain, but the sole emitter of…
+- [High] nf_flow_table_switchdev_event() unconditionally does one
+  kzalloc_obj(GFP_ATOMIC) + netdev_hold() + queue_work() for *every*…
+- [Medium] The teardown assumes SWITCHDEV_FDB_DEL_TO_DEVICE always
+  precedes an fdb move, but br_switchdev_fdb_notify()…
+- [Medium] The invalidator listens only for SWITCHDEV_FDB_DEL_TO_DEVICE,
+  but two bridge fdb paths move an existing entry to a different port…
+- [Medium] The teardown of matching direct-xmit flows is deferred to a
+  workqueue, but the bridge emits SWITCHDEV_FDB_DEL_TO_DEVICE *before*…
+- [Low] The commit fixes a user-visible forwarding failure (a direct-xmit
+  flow keeps sending to the stale bridge port after a host roams, and is…
 
-Fixes: b59f45d0b2878 ("[IPSEC] xfrm: Abstract out encapsulation modes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qihang <q.h.hack.winter@gmail.com>
----
- net/xfrm/xfrm_output.c | 3 +++
- 1 file changed, 3 insertions(+)
+--
 
-diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
---- a/net/xfrm/xfrm_output.c
-+++ b/net/xfrm/xfrm_output.c
-@@ -66,6 +66,9 @@ static int xfrm4_transport_output(struct xfrm_state *x, struct sk_buff *skb)
- 	struct iphdr *iph = ip_hdr(skb);
- 	int ihl = iph->ihl * 4;
- 
-+	if (ihl > skb->len)
-+		return -EINVAL;
-+
- 	if (!skb->inner_protocol)
- 		skb_set_inner_transport_header(skb,
- 					       skb_transport_offset(skb));
+netfilter: flowtable: teardown direct xmit flows when the fdb entry moves
+
+The patch stores the bridge port ifindex in the direct xmit flow tuple and
+registers a switchdev notifier that queues a work item on
+SWITCHDEV_FDB_DEL_TO_DEVICE. The work item walks all flowtables in the
+namespace and tears down flows whose bridge port, vid and destination
+address match the deleted fdb entry.
+
+[Severity: Low]
+There is no Fixes: tag and no statement about the intended tree.
+
+The commit message describes a user-visible forwarding failure with no
+workaround, since the peer's retransmissions keep refreshing the stale
+flow. The stale bridge path came in with FLOW_OFFLOAD_XMIT_DIRECT in
+commit 7a27f6ab4135 ("netfilter: flowtable: use dev_fill_forward_path() to
+obtain egress device"), whose message already mentioned that moving a peer
+to another bridge port leaves the connection on the old path until timeout,
+and suggested snooping fdb updates.
+
+Would a 'Fixes: 7a27f6ab4135 ("netfilter: flowtable: use
+dev_fill_forward_path() to obtain egress device")' tag be appropriate here,
+or is this intended as nf-next material because it adds new infrastructure
+(a dedicated workqueue plus a global switchdev notifier)? As submitted it
+is hard to tell which tree is targeted.
+
+> diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
+> index b308fb627640..e6e55a1cadaf 100644
+> --- a/net/netfilter/nf_flow_table_core.c
+> +++ b/net/netfilter/nf_flow_table_core.c
+
+[ ... ]
+
+> @@ -761,6 +765,94 @@ void nf_flow_table_cleanup(struct net_device *dev)
+>  }
+>  EXPORT_SYMBOL_GPL(nf_flow_table_cleanup);
+>  
+> +static struct workqueue_struct *nf_flow_fdb_del_wq;
+> +
+> +struct nf_flow_fdb_del_work {
+> +	struct work_struct	work;
+> +	struct net_device	*dev;
+> +	netdevice_tracker	dev_tracker;
+> +	u16			vid;
+> +	u8			addr[ETH_ALEN];
+> +	bool			found;
+> +};
+> +
+> +static bool nf_flow_tuple_fdb_match(const struct flow_offload_tuple *tuple,
+> +				    const struct nf_flow_fdb_del_work *fw)
+> +{
+> +	return tuple->xmit_type == FLOW_OFFLOAD_XMIT_DIRECT &&
+> +	       tuple->out.bridge_ifidx == fw->dev->ifindex &&
+> +	       tuple->out.bridge_vid == fw->vid &&
+> +	       ether_addr_equal(tuple->out.h_dest, fw->addr);
+> +}
+> +
+> +static void nf_flow_table_do_fdb_del(struct nf_flowtable *flow_table,
+> +				     struct flow_offload *flow, void *data)
+> +{
+> +	struct nf_flow_fdb_del_work *fw = data;
+> +
+> +	if (nf_flow_tuple_fdb_match(&flow->tuplehash[0].tuple, fw) ||
+> +	    nf_flow_tuple_fdb_match(&flow->tuplehash[1].tuple, fw)) {
+> +		flow_offload_teardown(flow);
+> +		fw->found = true;
+> +	}
+> +}
+> +
+> +static void nf_flow_table_fdb_del_work(struct work_struct *work)
+> +{
+> +	struct nf_flow_fdb_del_work *fw;
+> +	struct nf_flowtable *flowtable;
+> +
+> +	fw = container_of(work, struct nf_flow_fdb_del_work, work);
+> +
+> +	mutex_lock(&flowtable_lock);
+> +	list_for_each_entry(flowtable, &flowtables, list) {
+> +		if (!net_eq(read_pnet(&flowtable->net), dev_net(fw->dev)))
+> +			continue;
+> +
+> +		fw->found = false;
+> +		nf_flow_table_iterate(flowtable, nf_flow_table_do_fdb_del, fw);
+> +		if (fw->found)
+> +			mod_delayed_work(system_power_efficient_wq,
+> +					 &flowtable->gc_work, 0);
+> +	}
+> +	mutex_unlock(&flowtable_lock);
+> +
+> +	netdev_put(fw->dev, &fw->dev_tracker);
+> +	kfree(fw);
+> +}
+
+[Severity: High]
+How much work can a bridged segment generate through this path? Every
+fdb deletion produces one work item, and each work item takes the global
+flowtable_lock in nf_flow_table_fdb_del_work() across a full
+nf_flow_table_iterate() walk of every flowtable in the namespace, plus an
+immediate extra gc walk via mod_delayed_work(..., 0) on a match.
+
+Bridge fdb deletions are data-plane driven. Aging notifies for every
+learned entry:
+
+net/bridge/br_fdb.c:br_fdb_cleanup() {
+	...
+		if (!hlist_unhashed(&f->fdb_node))
+			fdb_delete(br, f, true);
+	...
+}
+
+and a source-MAC port move notifies too:
+
+net/bridge/br_fdb.c:br_fdb_update() {
+	...
+			br_switchdev_fdb_notify(br, fdb, RTM_DELNEIGH);
+			WRITE_ONCE(fdb->dst, source);
+	...
+}
+
+Both reach nf_flow_table_switchdev_event() through fdb_notify() ->
+br_switchdev_fdb_notify() -> call_switchdev_notifiers().
+
+So a MAC flood or MAC flap from a host on the bridged segment turns cheap
+frames into (fdb deletions) x (flow entries) of walking under one global
+mutex. Since flowtable_lock is a single static mutex shared by all
+namespaces, does this also stall flowtable creation and teardown in other
+netns? Each pending item also pins a netdev reference until the walk
+finishes, which delays unregistration.
+
+Would it help to filter before allocating, the way
+dsa_user_switchdev_event() only handles devices it owns, and to coalesce
+or bound the number of in-flight items?
+
+> +
+> +/* The bridge notifies the old port before it moves an fdb entry. Flows
+> + * sending directly to that port are torn down. Skipping the teardown on
+> + * allocation failure leaves the flow to age out, the same as a missed fdb
+> + * update does for a switchdev driver.
+> + */
+> +static int nf_flow_table_switchdev_event(struct notifier_block *nb,
+> +					 unsigned long event, void *ptr)
+> +{
+> +	struct switchdev_notifier_fdb_info *fdb_info = ptr;
+> +	struct nf_flow_fdb_del_work *fw;
+> +
+> +	if (event != SWITCHDEV_FDB_DEL_TO_DEVICE || fdb_info->is_local)
+> +		return NOTIFY_DONE;
+
+[Severity: Medium]
+Is SWITCHDEV_FDB_DEL_TO_DEVICE always emitted when an fdb entry moves?
+br_switchdev_fdb_notify() drops it for two entry classes:
+
+net/bridge/br_switchdev.c:br_switchdev_fdb_notify() {
+	...
+	if (test_bit(BR_FDB_LOCKED, &fdb->flags))
+		return;
+	...
+	if (test_bit(BR_FDB_ADDED_BY_USER, &fdb->flags) &&
+	    !test_bit(BR_FDB_STATIC, &fdb->flags) &&
+	    !test_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags))
+		return;
+	...
+}
+
+br_fdb_update() still calls br_switchdev_fdb_notify(br, fdb, RTM_DELNEIGH)
+and then commits WRITE_ONCE(fdb->dst, source) for those entries, so the
+move happens but the request is swallowed inside the callee. That covers
+locked-port entries and entries added with "bridge fdb add ... master
+dynamic".
+
+Flow creation does not exclude those entries either:
+
+net/bridge/br_device.c:br_fill_forward_path() {
+	...
+	f = br_fdb_find_rcu(br, ctx->daddr, path->bridge.vlan_id);
+	if (!f)
+		return -1;
+
+	dst = READ_ONCE(f->dst);
+	...
+}
+
+so a direct xmit flow can be created against a locked or user-added
+dynamic entry and then never torn down. Is a fallback trigger needed for
+those cases?
+
+[Severity: Medium]
+Are the add-only fdb move paths covered? fdb_add_entry() changes the port
+of an existing entry and reports it as a new entry:
+
+net/bridge/br_fdb.c:fdb_add_entry() {
+	...
+		if (READ_ONCE(fdb->dst) != source) {
+			WRITE_ONCE(fdb->dst, source);
+			modified = true;
+		}
+	...
+	fdb_notify(br, fdb, RTM_NEWNEIGH, true);
+}
+
+br_fdb_external_learn_add() does the same when an externally learned entry
+changes port, overwriting fdb->dst and then calling fdb_notify(br, fdb,
+RTM_NEWNEIGH, swdev_notify).
+
+For a static entry that arrives as SWITCHDEV_FDB_ADD_TO_DEVICE, which the
+filter above ignores, so a flow created while the entry pointed at the old
+port keeps its stale bridge_ifidx and h_dest. Should the handler also act
+on the add notification when the port changed, for example via "bridge fdb
+replace ... master static" or a switchdev/VXLAN driver relearning the
+entry?
+
+> +
+> +	fw = kzalloc_obj(*fw, GFP_ATOMIC);
+> +	if (!fw)
+> +		return NOTIFY_DONE;
+> +
+> +	INIT_WORK(&fw->work, nf_flow_table_fdb_del_work);
+> +	fw->dev = fdb_info->info.dev;
+> +	netdev_hold(fw->dev, &fw->dev_tracker, GFP_ATOMIC);
+> +	fw->vid = fdb_info->vid;
+> +	ether_addr_copy(fw->addr, fdb_info->addr);
+> +	queue_work(nf_flow_fdb_del_wq, &fw->work);
+> +
+> +	return NOTIFY_DONE;
+> +}
+
+[Severity: Medium]
+Can a flow created concurrently with the move escape the teardown walk?
+The notification is sent before the new port is committed:
+
+net/bridge/br_fdb.c:br_fdb_update() {
+	...
+			br_switchdev_fdb_notify(br, fdb, RTM_DELNEIGH);
+			WRITE_ONCE(fdb->dst, source);
+	...
+}
+
+so this is an "about to move" hint. Meanwhile a flow being set up on
+another CPU resolves the port from the old dst:
+
+net/netfilter/nf_flow_table_path.c:nft_dev_path_info() {
+	...
+		info->bridge_ifidx = stack->path[i + 1].dev->ifindex;
+	...
+}
+
+and publishes the flow in flow_offload_add() with rhashtable_insert_fast(),
+which does not take flowtable_lock. If the work item's walk completes
+between the notification and that insertion, the stale flow is never seen.
+
+br_fdb_update() only notifies when source != fdb->dst, so no further
+SWITCHDEV_FDB_DEL_TO_DEVICE is generated for that host, and a later aging
+DEL carries the new port, which cannot match tuple->out.bridge_ifidx.
+Does the flow then persist for as long as return traffic refreshes it?
+
+The reverse interleaving looks possible too: the work item carries no
+event generation, so a delayed DEL can tear down a flow that was just
+created against the new port after the address was relearned there.
+
+> +
+> +static struct notifier_block nf_flow_table_switchdev_nb = {
+> +	.notifier_call = nf_flow_table_switchdev_event,
+> +};
+> +
+>  void nf_flow_table_free(struct nf_flowtable *flow_table)
+>  {
+>  	mutex_lock(&flowtable_lock);
+> @@ -838,6 +930,16 @@ static int __init nf_flow_table_module_init(void)
+>  	if (ret)
+>  		goto out_offload;
+>  
+> +	nf_flow_fdb_del_wq = alloc_workqueue("nf_flow_fdb_del", WQ_UNBOUND, 0);
+> +	if (!nf_flow_fdb_del_wq) {
+> +		ret = -ENOMEM;
+> +		goto out_wq;
+> +	}
+> +
+> +	ret = register_switchdev_notifier(&nf_flow_table_switchdev_nb);
+> +	if (ret)
+> +		goto out_switchdev;
+> +
+
+[Severity: High]
+What happens in a CONFIG_NET_SWITCHDEV=n build? The only emitter of the
+bridge fdb notification is compiled out there:
+
+net/bridge/Makefile:
+	bridge-$(CONFIG_NET_SWITCHDEV) += br_switchdev.o
+
+and net/bridge/br_private.h supplies an empty stub instead:
+
+static inline void
+br_switchdev_fdb_notify(struct net_bridge *br,
+			const struct net_bridge_fdb_entry *fdb, int type)
+{
+}
+
+On this side register_switchdev_notifier() is also a stub returning 0 when
+CONFIG_NET_SWITCHDEV=n, so nf_flow_table_module_init() sees success,
+creates the "nf_flow_fdb_del" unbound workqueue and installs a notifier
+block that can never be called.
+
+The roaming station scenario in the commit message needs no switchdev
+hardware, so a plain software bridge router with CONFIG_BRIDGE=y,
+CONFIG_NF_FLOW_TABLE=m and CONFIG_NET_SWITCHDEV=n still keeps sending to
+the old port. config NF_FLOW_TABLE in net/netfilter/Kconfig depends only on
+NETFILTER_INGRESS, NF_CONNTRACK and NF_TABLES, so nothing expresses the new
+dependency. Should this get a depends on NET_SWITCHDEV, an IS_ENABLED()
+guard around the workqueue and notifier, or a bridge level notification
+instead?
+
+>  	ret = nf_flow_register_bpf();
+>  	if (ret)
+>  		goto out_bpf;
+
+[ ... ]
+
 -- 
-2.46.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260914072541.897040-1-julius%40bairaktaris.de
