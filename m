@@ -1,89 +1,76 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012050.outbound.protection.outlook.com [52.101.53.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f4.google.com (mail-pj2-f4.google.com [74.125.227.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339D94F93C4;
-	Thu, 17 Sep 2026 18:11:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789668678; cv=fail; b=Qpv7h/Luju/vYNkJO4cPP8s0OZkIOuShNJWTy2Vs4dIGr6rLztavO0NBKxNwQJ6m+bZRPGSRRsCmBjDJLVJLwRqQqhz8hamq5nHYIQlqJ7Z93/5CqeaXQJTWTlbRyFHYKkd6KQHiHt9yZ8/bkRhrCOI+2KB8w1o7uD9rajvdqzk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789668678; c=relaxed/simple;
-	bh=wRjnL6V9v3iKoWkgYcBRozar8i5dAVNoj+x0xmDE9aw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qc09nkcTmsvQ+JsChp5HBQmFHlOw/kyVz6cX61Dasm0PL8XW9eLVdW5+KfdbLB1gRg9tlHXG92dAevMzbK48Q9LaU7E8QCpCwD4ZePzoXeVwq5N7HRaE0x6l8YwfHSzZELCfYRKm10zy7IDLBxGWvEwh8ztd1VS1oN+9HfAbqMY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=BPkwmgSv; arc=fail smtp.client-ip=52.101.53.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B30F49E5DD
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 18:11:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.132
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789668680; cv=none; b=k/yAQHqvmZOmjvSLY/iQPClZQdrEgm2sXyGYsrbU9VUoRH+DURCZu+G5HYr/N+TgO5CIb3ke/kzHat1zHx4Czzm4lJz/qfz8M195Q11esWo7hVbcPJ1FRI8pAnq6H8MSjBHyIPbaEyoGU1YWdtBS0g1Jn6Pvoin+QL7Ygyzgo4A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789668680; c=relaxed/simple;
+	bh=iBKmB6XVbw2VzxW2s/DhdbL/zmmCm2V2XhWA9HVlSgI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nL87EFR/HUqKJARexvmmb8Rx36/quN2mGcYwteycxfJEo7wK+Ct4BqJE6D+m1sZKwdc3u46QR1punDpX8fU+8eKH7rb/sy0k9SLwi7esRLKX6j9CKpIbXv1bhFVkOhso6J8CBqXwXLuozRjmwfT9wCP7+dGtWVHwhvYcwifRtBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P2b/i9ag; arc=none smtp.client-ip=74.125.227.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="BPkwmgSv"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YBdNv2IlK+i/rLLr7cyLsVl8zqeZE85R+aWlP48DmisgXbgbUpAR+vcg83GjHluw+wWSpvvaSQcgvMrHUOgFqRw2n0PQQVIFQ0a/aY3kUOmqnXSKUjnH8e4ThFb1NcfXVZS0+AARsC9iK7vmpu4RCCe8P+4XbOW7Ncq37i1hMoLZPdeDugWxQAZjTgRhkrpcrIgY+bx1s8uAfIdnoJmVdGBWqkAcXOxsMoXOHgC6qi413mduFwZcXeGtwnIFhe015IWifeJ4nD3wSHrbFnTZCxHvlHmoD+TOxP297vNOarTO4oykn3I5Ld/5LiFoWL5oKXSVFz70OuT7mEOj4U+NNg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LvLXZunHvYl2GT7QyEqEC0eoCQqHBTtaPy291Z5VHyQ=;
- b=ULRjf+Uq9b3BRZ5DkVjbLbpNqgwPnLJMLNKdAvPAxV6gLQ6QuXH4WteTtUvGwFGyaniDYErEuYLd9/Quf0sQ/sHRVgppyS4AQVeIu9UwWlqyfrpVrYKNxXkgk6EAWrF//meCJCdGok+F1PhVAHEUI5lYA+gIlgRZL0tVKnudm4q2eHt2ERAQlpaiAN3u/GEY3JCu6EOyCeJJJtC6ZuXK7hU5gbbzlJdhbL+iMrvs3aock2KvR3Zlrs6GSWvaoUhuVI6rZD+EgP2+6UPYjgPIewitM0qDHY0NGDlKYskHpKWlT/2bK4Hhly3amGYiozA/rn0937syC1xwxmTuXHw+dA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LvLXZunHvYl2GT7QyEqEC0eoCQqHBTtaPy291Z5VHyQ=;
- b=BPkwmgSvGnKST2mj7Cpxjf8+K4kVWEepW/61MfxYQWse35IZkpKYpYsZjTPwmnFipCDP1ael/j5nS7+u5PVtIsFTJLlJ2Wsfizv4Li3ePIto6iac485lCWzouKP5vbYzKqZS3CiVnOxt/8vfi7PbbaRmvWyFYXIMWYgM1rFB/bRs5fbONCo5l01xuZSwVj8cT+Q7C+kE5UUHrlxDs4sR5dxidYI0eY7inuWKFHbiRcUVLHjVYCjTGP6Y6s+WKLF6XgLy80JIuzmTf+lTFOCCgPQA7aBlAGMSYQH9hBv0aq9p0wk/XVJ1ZtBO9socrRMx5EvS21wQTMjMPpl8j6o1Hg==
-Received: from CH0PR03CA0216.namprd03.prod.outlook.com (2603:10b6:610:e7::11)
- by IA0PR12MB8327.namprd12.prod.outlook.com (2603:10b6:208:40e::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.12; Thu, 17 Sep
- 2026 18:11:06 +0000
-Received: from BL6PEPF00020E61.namprd04.prod.outlook.com
- (2603:10b6:610:e7:cafe::2e) by CH0PR03CA0216.outlook.office365.com
- (2603:10b6:610:e7::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.12 via Frontend Transport; Thu,
- 17 Sep 2026 18:11:06 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BL6PEPF00020E61.mail.protection.outlook.com (10.167.249.22) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.451.8 via Frontend Transport; Thu, 17 Sep 2026 18:11:05 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 17 Sep
- 2026 11:10:36 -0700
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 17 Sep
- 2026 11:10:35 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.6)
- with Microsoft SMTP Server id 15.2.2562.49 via Frontend Transport; Thu, 17
- Sep 2026 11:10:29 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Sabrina Dubroca <sd@queasysnail.net>
-CC: Boris Pismenny <borisp@nvidia.com>, Carolina Jubran <cjubran@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>, Daniel Zahka <daniel.zahka@gmail.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>, Emeel Hakim <ehakim@nvidia.com>, "Gal
- Pressman" <gal@nvidia.com>, Jianbo Liu <jianbol@nvidia.com>, Leon Romanovsky
-	<leon@kernel.org>, open list <linux-kernel@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, Lior Nahmanson <liorna@nvidia.com>, Mark Bloch
-	<mbloch@nvidia.com>, Parav Pandit <parav@nvidia.com>, Raed Salem
-	<raeds@nvidia.com>, Rahul Rameshbabu <rrameshbabu@nvidia.com>, Roi Dayan
-	<roid@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Steffen Klassert
-	<steffen.klassert@secunet.com>, Tariq Toukan <tariqt@nvidia.com>
-Subject: [PATCH net 6/7] net/mlx5e: Serialize TC and IPsec offload exclusion counters
-Date: Thu, 17 Sep 2026 20:54:32 +0300
-Message-ID: <20260917175433.4090878-7-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20260917175433.4090878-1-tariqt@nvidia.com>
-References: <20260917175433.4090878-1-tariqt@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P2b/i9ag"
+Received: by mail-pj2-f4.google.com with SMTP id 98e67ed59e1d1-3896ccc93b5so333411a91.1
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 11:11:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789668677; x=1790273477; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=HWFtSmWZB00VeRuG33e5z2FRH2nwFCEJMuVCaDQLlH8=;
+        b=P2b/i9agi8HXVey8XMA8Z/RD62JPOYQLmEzOWigD/WDNSTq51GetAdC46PneGJz0LN
+         pABkpPwQp0chn2gHPPqJ0AY4IZ/Bk1Z9ql6Mv2bvqFYMnQr8YRug2o6HZPIYOaKy34qm
+         jfqu/fSAnBr++JbyBRzZz7yxT5hNk5DaW3OxbSUMq8F/Wu2NNt7no/xw6cLVezDGSZTq
+         Tlsn6HmCJ8SiOOcGU9g5tvu+LZr14LC/xfj5MnGqJQkjyQwjlh+iOofdXD4xcdvaL3at
+         AFNd1zSlZDt3uFb98OTx3GO26bH0TCp73udiH64jIU6pY9ZCcLY8gzP2ybjTrATeDhyM
+         RtUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789668677; x=1790273477;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=HWFtSmWZB00VeRuG33e5z2FRH2nwFCEJMuVCaDQLlH8=;
+        b=ryv4r/PWDjdUKqGzG/Gg/t5CplSrfvJU52nRI2Nm6ak19ZLXh26+eyTE96hmqZdmqZ
+         jLruDXLvvU09+nWc3t+PADtUpKCvre0riwHe59R/E3dbCNlcKIdlGUPA0IRle/LN4bT5
+         mjmyzhDWRRor+9G88vty/96inB0h/lgnJjxSXg97/g/5mqBOILBULdDxGf6gZ0eGDmwW
+         592t8K8QZufCTG+fhTWw1q2RLaUTAIuXAQ4alIHJhKQF+joqKZ1DaLDKF+qr8Dr5jibr
+         xsbs9xmkvUGzkLorCwSqafkbB75h29R21z0VzigqI83eV5pTWqG2Y3bUP29QZB3Kip6H
+         HEsw==
+X-Gm-Message-State: AFuF++nXuR/9xIszpYgTE1JxfnmRtWCr+7YNrt5fj00hlrnMxx6NQw2C
+	rf+cDoxAxcuZ+CdLaAb0a8hg0TwbJvJcRW2phFcXjYjnOtmSY/xP4tIyGdMJZRrc
+X-Gm-Gg: AYBFou2OwacdP2rrbSDzYx3P1gOiA6EBI9oG7xbrTIvmx4Do4O8O56ZcZfpWSW0AGs2
+	umO7Wx1PkK7+QMI/Cd5PtnZsh8jGqqX5Xmm20FXNXQVleu0usVyqEHwJbnZ6RU8hSrmfhpKRERr
+	L4IoM8Oz555u61/39E/LE3j6csqCl7V+FSeskWTdm4TDERSFUvZsZUe55xLWIO0EHq72OtaavVk
+	Vh1nudW6vPnHOa6xyO7YMbn1+8Andr7HKintj5+UB6sihMqmQIvv3I1ZSufoU+6/NBny/PNM6tS
+	ST9aSePk/jtNqiH5eB7EfRoG3YoHq0VXgrRtaKf1mpUM0P6z40tu2WIMP6/BcmFnXm1PJHeOBd2
+	+Eggi6NUuEBsNEFGgxfnuL5xmUH+gyxz7FAQdHgAtUtFKDpTot2rVj765Oyw3MPB16lX7akkr+8
+	yBwdf/0AiZhrN5Z28iMS08WPAkzA4ULX48/Jf+ezmUtDJVUVbQLPJtzBLFaoi8xqq2xg==
+X-Received: by 2002:a17:90b:4b90:b0:39e:4c81:6c62 with SMTP id 98e67ed59e1d1-39e54d65a40mr16963a91.29.1789668677248;
+        Thu, 17 Sep 2026 11:11:17 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:4c::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e361168c4sm6297189a91.4.2026.09.17.11.11.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2026 11:11:16 -0700 (PDT)
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+X-Google-Original-From: Stanislav Fomichev <sdf@fomichev.me>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	sdf@fomichev.me,
+	bobbyeshleman@meta.com,
+	almasrymina@google.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v3 0/3] net: devmem: remove gen_pool from dma-buf allocations
+Date: Thu, 17 Sep 2026 11:11:13 -0700
+Message-ID: <20260917181116.3319017-1-sdf@fomichev.me>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -91,252 +78,155 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF00020E61:EE_|IA0PR12MB8327:EE_
-X-MS-Office365-Filtering-Correlation-Id: b8ba8505-92a9-426e-f338-08df14e70aab
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|23010399003|376014|7416014|1800799024|56012099006|10067099003|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	6GJlxSoq7MRJl7iRgEq0oaL443vvyn9ceUKXgh9tHOSwEn3JiGy5kM1sUUiuqaH9TbAqop6IHUH2imK++qevPBlkGGmgOHaR4VvhjcfGurY9AhpdBc73HIEm1idPVS9qb5S8MRabn7z2sZQFekQLczGSyeSL1blzDKvaOr/mWSv/dOBobEjRHpKXv/LjJi44SBpFzzz7DHQKq4WAaosjaSJc57s2NLkhzapcGl0MOmlYqaGPH+gAKEUULeF76tsmDtOaPBnfs9Xz3S4+KE2ptEYmvtwLFfHNdD6Vw51OmsYCrxm+ZYg3wdWLkxBye+6Qz1D1wGyp7Pl1ZMvPc0jMn62iPOU4+IBo22xiugbEkyNUlAB2LqZtO3f5jaQShvToidihns9Sdt/joRWSZ1/nCNQrBX97ZzoAiS1cl+0fSkJARt7WPPMIT7lgwUWe2ibTIm6xibJhoccmbGk4VT0434vtGODyc9u+WPcB/rOR90QrY8HeXuC0u0TSub5qBX3yFG0OUiA57EAsvK9odY7L+EkTZgzgoj0E3U0upj6t2T41GFHzB3WYKXCi/PF1/MOk3q6vYhbOBGu9ZPhCLuYZSBf5ZnNaCgqrD2T0s7eQLVXewktK+Pse5RpL3TELLEcCJbEqxv4B4d5fBu7l85wz6UR77lwSYi1Pz2etZ3liSqofycMNuaCm12rp/Fi72E2WEX3QL/9Y0oBv1w2BcyeiVg==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(23010399003)(376014)(7416014)(1800799024)(56012099006)(10067099003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	ekK8epkDQbXR9py2GDULjTfjAi18uKvbs0BQAEx10IKcfif6SWMJqN6R8fMpmChAJSB8bUiPTKAGz9KprfJAhcIsjSc6EUFYmcuFZ3e8pdYorsI9tpxHb+G/cVx56HvA/NAV/VzSOLlZ5/Lx/EMMifbHxocSoljId5VECan7zp4vliT8NJARLwF1pN08zJViWKMzkvQR+o1vigHmE4J4zpxo+npHcWtEm8mI9pLBs5jHq5MS1pP37d22q4V6Kjnr6mQvrcUCK/RstaS7f1dUHq3SIRn5fywemFWS5wHUzVZWS309cecNol/cjcrIAQ7PHAV9O7I/C76RVTZBYGO28Hqspr/QRKcmhBB3D5mY61uHHSNqVgHFZivPyC1fMO+FJuy6ACjry26cTB63fNyXjlrlWY5MX4fP8QlNphc0xpJPj9UQjeJoxTpqqU8ptj5n
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 18:11:05.6939
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b8ba8505-92a9-426e-f338-08df14e70aab
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF00020E61.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8327
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+Replace devmem's gen_pool based fixed-size allocator with a binding-level
+freelist similar to the one used by io_uring zero-copy receive.
 
-The counters enforcing TC and IPsec packet offload mutual exclusion are
-not consistently serialized. The IPsec add path conditionally takes the
-eswitch write lock, but neither release path takes it. The TC add path
-only holds the eswitch read lock, and devices without an eswitch cannot
-rely on that lock at all.
+This is motivated by allocation latency observed in the NAPI receive path:
 
-Concurrent read-modify-write operations on the same counter can lose an
-update. A stale nonzero count can keep rejecting offload requests after
-the last user has gone, while an undercount can allow conflicting
-offloads to coexist.
+  [ 1036.228913]  ? gen_pool_create+0x90/0x90
+  [ 1036.228915]  net_devmem_alloc_dmabuf+0x1f/0x60
+  [ 1036.228918]  mp_dmabuf_devmem_alloc_netmems+0x17/0x80
+  [ 1036.228920]  mlx5e_post_rx_mpwqes+0xdbe/0xdd0
+  [ 1036.228926]  mlx5e_napi_poll+0x113/0x830
+  [ 1036.228928]  ? sched_clock+0x5/0x10
+  [ 1036.228931]  ? wake_up_process+0x778/0x14b0
+  [ 1036.228933]  net_rx_action+0x15d/0x570
+  [ 1036.228934]  ? update_rq_clock+0x31/0x240
+  [ 1036.228937]  ? __napi_schedule+0x55/0xa0
+  [ 1036.228938]  ? mlx5_eq_comp_int+0x137/0x230
+  [ 1036.228940]  ? atomic_notifier_call_chain+0x36/0x90
+  [ 1036.228943]  ? sched_clock+0x5/0x10
+  [ 1036.228944]  ? sched_clock_cpu+0xc/0x170
+  [ 1036.228947]  irq_exit_rcu+0x12b/0x370
+  [ 1036.228950]  common_interrupt+0x85/0x90
 
-Move the counters into mdev->offload_block and protect all checks,
-increments and decrements with a dedicated mutex. Keep the
-opposing-counter check and reservation in the same critical section,
-independent of eswitch availability. Initialize the lock for the core
-device lifetime and add warnings for unbalanced releases. Remove the
-now-unused mlx5_esw_lock() helper.
+udmabuf can create a very large number of SG entries. In the worst case,
+devmem ends up adding one gen_pool chunk for each net_iov allocation
+unit backed by those entries. The gen_pool allocation path then has to
+traverse a linked list that can become too long for this hot path.
 
-Fixes: c8e350e62fc5 ("net/mlx5e: Make TC and IPsec offloads mutually exclusive on a netdev")
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
----
- .../mellanox/mlx5/core/en_accel/ipsec_fs.c    | 43 ++++++-------------
- .../net/ethernet/mellanox/mlx5/core/en_tc.c   | 18 +++++---
- .../net/ethernet/mellanox/mlx5/core/eswitch.c | 12 ------
- .../net/ethernet/mellanox/mlx5/core/eswitch.h |  1 -
- .../net/ethernet/mellanox/mlx5/core/main.c    |  3 ++
- include/linux/mlx5/driver.h                   |  7 ++-
- 6 files changed, 32 insertions(+), 52 deletions(-)
+Patch 1 removes the gen_pool and replaces it with a simple freelist of
+net_iov pointers protected by the same spin_lock_bh() pattern used by
+io_uring zcrx. Patch 2 removes the now-unnecessary chunk owner wrapper by
+embedding the net_iov_area directly in the dma-buf binding. Patch 3
+batches freelist allocations.
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
-index 5c72656c623f..2b856d0db917 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
-@@ -2574,45 +2574,26 @@ void mlx5e_accel_ipsec_fs_read_stats(struct mlx5e_priv *priv, void *ipsec_stats)
- 	}
- }
- 
--#ifdef CONFIG_MLX5_ESWITCH
- static int mlx5e_ipsec_block_tc_offload(struct mlx5_core_dev *mdev)
- {
--	struct mlx5_eswitch *esw = mdev->priv.eswitch;
--	int err = 0;
--
--	if (esw) {
--		err = mlx5_esw_lock(esw);
--		if (err)
--			return err;
--	}
--
--	if (mdev->num_block_ipsec) {
--		err = -EBUSY;
--		goto unlock;
--	}
-+	int ret = 0;
- 
--	mdev->num_block_tc++;
--
--unlock:
--	if (esw)
--		mlx5_esw_unlock(esw);
--
--	return err;
--}
--#else
--static int mlx5e_ipsec_block_tc_offload(struct mlx5_core_dev *mdev)
--{
--	if (mdev->num_block_ipsec)
--		return -EBUSY;
-+	mutex_lock(&mdev->offload_block.lock);
-+	if (mdev->offload_block.num_block_ipsec)
-+		ret = -EBUSY;
-+	else
-+		mdev->offload_block.num_block_tc++;
-+	mutex_unlock(&mdev->offload_block.lock);
- 
--	mdev->num_block_tc++;
--	return 0;
-+	return ret;
- }
--#endif
- 
- static void mlx5e_ipsec_unblock_tc_offload(struct mlx5_core_dev *mdev)
- {
--	mdev->num_block_tc--;
-+	mutex_lock(&mdev->offload_block.lock);
-+	if (!WARN_ON_ONCE(!mdev->offload_block.num_block_tc))
-+		mdev->offload_block.num_block_tc--;
-+	mutex_unlock(&mdev->offload_block.lock);
- }
- 
- int mlx5e_accel_ipsec_fs_add_rule(struct mlx5e_ipsec_sa_entry *sa_entry)
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-index 44fc421e7b8c..89463d18880c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-@@ -4856,16 +4856,19 @@ static bool is_tc_ipsec_order_check_needed(struct net_device *filter, struct mlx
- static int mlx5e_tc_block_ipsec_offload(struct net_device *filter, struct mlx5e_priv *priv)
- {
- 	struct mlx5_core_dev *mdev = priv->mdev;
-+	int ret = 0;
- 
- 	if (!is_tc_ipsec_order_check_needed(filter, priv))
- 		return 0;
- 
--	if (mdev->num_block_tc)
--		return -EBUSY;
--
--	mdev->num_block_ipsec++;
-+	mutex_lock(&mdev->offload_block.lock);
-+	if (mdev->offload_block.num_block_tc)
-+		ret = -EBUSY;
-+	else
-+		mdev->offload_block.num_block_ipsec++;
-+	mutex_unlock(&mdev->offload_block.lock);
- 
--	return 0;
-+	return ret;
- }
- 
- static void mlx5e_tc_unblock_ipsec_offload(struct net_device *filter, struct mlx5e_priv *priv)
-@@ -4873,7 +4876,10 @@ static void mlx5e_tc_unblock_ipsec_offload(struct net_device *filter, struct mlx
- 	if (!is_tc_ipsec_order_check_needed(filter, priv))
- 		return;
- 
--	priv->mdev->num_block_ipsec--;
-+	mutex_lock(&priv->mdev->offload_block.lock);
-+	if (!WARN_ON_ONCE(!priv->mdev->offload_block.num_block_ipsec))
-+		priv->mdev->offload_block.num_block_ipsec--;
-+	mutex_unlock(&priv->mdev->offload_block.lock);
- }
- 
- int mlx5e_configure_flower(struct net_device *dev, struct mlx5e_priv *priv,
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-index 0b48cc7a6734..989ca26e8851 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-@@ -3028,18 +3028,6 @@ int mlx5_esw_try_lock(struct mlx5_eswitch *esw, bool check_users)
- 	return esw->mode;
- }
- 
--int mlx5_esw_lock(struct mlx5_eswitch *esw)
--{
--	down_write(&esw->mode_lock);
--
--	if (esw->eswitch_operation_in_progress) {
--		up_write(&esw->mode_lock);
--		return -EBUSY;
--	}
--
--	return 0;
--}
--
- /**
-  * mlx5_esw_unlock() - Release write lock on esw mode lock
-  * @esw: eswitch device.
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-index 4a9a1656f6db..d52146cff496 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-@@ -947,7 +947,6 @@ void mlx5_esw_release(struct mlx5_core_dev *dev);
- void mlx5_esw_get(struct mlx5_core_dev *dev);
- void mlx5_esw_put(struct mlx5_core_dev *dev);
- int mlx5_esw_try_lock(struct mlx5_eswitch *esw, bool check_users);
--int mlx5_esw_lock(struct mlx5_eswitch *esw);
- void mlx5_esw_unlock(struct mlx5_eswitch *esw);
- 
- void esw_vport_change_handle_locked(struct mlx5_vport *vport);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-index 5f28d906c35b..46b34c80c458 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -1810,6 +1810,7 @@ int mlx5_mdev_init(struct mlx5_core_dev *dev, int profile_idx)
- 	lockdep_register_key(&dev->lock_key);
- 	mutex_init(&dev->intf_state_mutex);
- 	lockdep_set_class(&dev->intf_state_mutex, &dev->lock_key);
-+	mutex_init(&dev->offload_block.lock);
- 	mutex_init(&dev->mlx5e_res.uplink_netdev_lock);
- 	mutex_init(&dev->wc_state_lock);
- 
-@@ -1901,6 +1902,7 @@ int mlx5_mdev_init(struct mlx5_core_dev *dev, int profile_idx)
- 	mutex_destroy(&priv->alloc_mutex);
- 	mutex_destroy(&priv->bfregs.wc_head.lock);
- 	mutex_destroy(&priv->bfregs.reg_head.lock);
-+	mutex_destroy(&dev->offload_block.lock);
- 	mutex_destroy(&dev->intf_state_mutex);
- 	lockdep_unregister_key(&dev->lock_key);
- 	return err;
-@@ -1928,6 +1930,7 @@ void mlx5_mdev_uninit(struct mlx5_core_dev *dev)
- 	mutex_destroy(&priv->bfregs.reg_head.lock);
- 	mutex_destroy(&dev->wc_state_lock);
- 	mutex_destroy(&dev->mlx5e_res.uplink_netdev_lock);
-+	mutex_destroy(&dev->offload_block.lock);
- 	mutex_destroy(&dev->intf_state_mutex);
- 	lockdep_unregister_key(&dev->lock_key);
- }
-diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
-index 83d0a83bbfbc..4e207bf49c31 100644
---- a/include/linux/mlx5/driver.h
-+++ b/include/linux/mlx5/driver.h
-@@ -788,8 +788,11 @@ struct mlx5_core_dev {
- 	u32                      vsc_addr;
- 	struct mlx5_hv_vhca	*hv_vhca;
- 	struct mlx5_hwmon	*hwmon;
--	u64			num_block_tc;
--	u64			num_block_ipsec;
-+	struct {
-+		struct mutex lock;
-+		u64 num_block_tc;
-+		u64 num_block_ipsec;
-+	} offload_block;
- #ifdef CONFIG_MLX5_MACSEC
- 	struct mlx5_macsec_fs *macsec_fs;
- 	/* MACsec notifier chain to sync MACsec core and IB database */
+= Performance:
+
+kperf/client ... \
+        --num-rx-queues 4 \
+        --dmabuf-rx-size-mb 2048 \
+        --dmabuf-tx-size-mb 2048 \
+        --validate no \
+        --time 60 \
+        --read-size 67108864 \
+        --write-size 67108864 \
+        --num-connections 4 \
+        --tcp-cc dctcp \
+        --pin-off 4 \
+        --devmem-rx \
+        --devmem-tx \
+        --devmem-rx-memory cuda \
+        --devmem-tx-memory cuda
+
+With 4 queues, 4 flows, 2GB BB, cuda for both rx and tx I see no difference
+in throughput or cpu utilization (see selective runs below).
+
+== Before
+
+10 runs: 206.031 243.546 293.931 319.015 319.923 323.189 324.321 325.499 327.134 349.450 Gbps
+
+Sample:
+client: == Source <redacted>
+client:   Tx 48.170 Gbps (361716776960 bytes in 60072872 usec)
+client:   Tx101.256 Gbps (760343429120 bytes in 60072872 usec)
+client:   Tx101.077 Gbps (759001251840 bytes in 60072872 usec)
+client:   Tx 69.440 Gbps (521435873280 bytes in 60072872 usec)
+client:   Rx  0.000 Gbps (0 bytes in 60072872 usec)
+client:   Rx  0.000 Gbps (0 bytes in 60072872 usec)
+client:   Rx  0.000 Gbps (0 bytes in 60072872 usec)
+client:   Rx  0.000 Gbps (0 bytes in 60072872 usec)
+client: == Target <redacted>
+client:   Tx  0.000 Gbps (0 bytes in 60074846 usec)
+client:   Tx  0.000 Gbps (0 bytes in 60074846 usec)
+client:   Tx  0.000 Gbps (0 bytes in 60074846 usec)
+client:   Tx  0.000 Gbps (0 bytes in 60074846 usec)
+client:   Rx 48.158 Gbps (361638901920 bytes in 60074846 usec)
+client:   Rx101.253 Gbps (760343429120 bytes in 60074846 usec)
+client:   Rx101.074 Gbps (759001251840 bytes in 60074846 usec)
+client:   Rx 69.438 Gbps (521435873280 bytes in 60074846 usec)
+client:   net CPU  1: usr: 0.00% sys: 0.01% idle:39.42% iow: 0.00% irq: 0.64% sirq:59.91%
+client:   app CPU  5: usr: 1.21% sys:97.71% idle: 0.09% iow: 0.00% irq: 0.24% sirq: 0.71%
+client:   net CPU  2: usr: 0.00% sys: 0.00% idle:38.19% iow: 0.00% irq: 0.84% sirq:60.96%
+client:   app CPU  6: usr: 1.24% sys:97.73% idle: 0.04% iow: 0.00% irq: 0.24% sirq: 0.71%
+client:   net CPU  0: usr: 0.05% sys: 0.27% idle:69.92% iow: 0.00% irq: 7.71% sirq:22.04%
+client:   app CPU  4: usr: 1.78% sys:80.71% idle:16.79% iow: 0.00% irq: 0.38% sirq: 0.32%
+client:   net CPU  3: usr: 0.00% sys: 0.00% idle: 0.00% iow: 0.00% irq: 0.39% sirq:99.60%
+client:   app CPU  7: usr: 0.21% sys: 6.64% idle:90.75% iow: 0.00% irq: 0.05% sirq: 2.32%
+
+== After
+
+10 runs: 213.032 226.471 235.052 257.113 323.233 331.597 342.893 348.188 351.866 354.311 Gbps
+
+Sample:
+client: == Source <redacted>
+client:   Tx104.829 Gbps (786515886080 bytes in 60022934 usec)
+client:   Tx105.455 Gbps (791213506560 bytes in 60022934 usec)
+client:   Tx 61.717 Gbps (463051161600 bytes in 60022934 usec)
+client:   Tx 51.430 Gbps (385875968000 bytes in 60022934 usec)
+client:   Rx  0.000 Gbps (0 bytes in 60022934 usec)
+client:   Rx  0.000 Gbps (0 bytes in 60022934 usec)
+client:   Rx  0.000 Gbps (0 bytes in 60022934 usec)
+client:   Rx  0.000 Gbps (0 bytes in 60022934 usec)
+client: == Target <redacted>
+client:   Tx  0.000 Gbps (0 bytes in 60058283 usec)
+client:   Tx  0.000 Gbps (0 bytes in 60058283 usec)
+client:   Tx  0.000 Gbps (0 bytes in 60058283 usec)
+client:   Tx  0.000 Gbps (0 bytes in 60058283 usec)
+client:   Rx104.767 Gbps (786515886080 bytes in 60058283 usec)
+client:   Rx105.393 Gbps (791213506560 bytes in 60058283 usec)
+client:   Rx 61.673 Gbps (462998508768 bytes in 60058283 usec)
+client:   Rx 51.400 Gbps (385875968000 bytes in 60058283 usec)
+client:   net CPU  0: usr: 0.01% sys: 0.21% idle:65.30% iow: 0.00% irq: 9.15% sirq:25.29%
+client:   app CPU  4: usr: 1.19% sys:98.00% idle: 0.03% iow: 0.00% irq: 0.21% sirq: 0.54%
+client:   net CPU  2: usr: 0.00% sys: 0.00% idle: 0.03% iow: 0.00% irq: 0.44% sirq:99.51%
+client:   app CPU  6: usr: 2.14% sys:77.48% idle:19.92% iow: 0.00% irq: 0.36% sirq: 0.07%
+client:   net CPU  3: usr: 0.00% sys: 0.00% idle:43.01% iow: 0.00% irq: 0.69% sirq:56.28%
+client:   app CPU  7: usr: 2.03% sys:71.04% idle:26.45% iow: 0.00% irq: 0.37% sirq: 0.08%
+client:   net CPU  1: usr: 0.00% sys: 0.01% idle:46.66% iow: 0.00% irq: 0.56% sirq:52.75%
+client:   app CPU  5: usr: 0.05% sys: 0.08% idle:99.21% iow: 0.00% irq: 0.03% sirq: 0.61%
+
+== Comparison, over 10 runs
+
+Median Target RX:  321.556 Gbps vs 327.415 Gbps
+Mean Target RX: 303.204 Gbps vs 298.376 Gbps
+Range: 206.031-349.450 Gbps vs 213.032-354.311 Gbps
+
+v3:
+- fix 32-bit build (NIPA)
+- clarify the teardown warning (Mina)
+- make the freelist RX-only (Mina)
+- derive net_iov count from dma-buf size and fold the SG walks (Mina)
+- remove redundant total_niovs state (Mina)
+- remove redundant freelist slot clearing (Mina)
+- simplify net_devmem_iov_binding() (Mina)
+
+v2:
+- xmas tree (Jakub)
+- batching (Mina)
+- perf numbers (Mina & Jakub)
+
+Stanislav Fomichev (3):
+  net: devmem: replace gen_pool with freelist
+  net: devmem: embed net_iov_area in binding
+  net: devmem: batch net_iov allocations into the page_pool cache
+
+ net/Kconfig       |   1 -
+ net/core/devmem.c | 216 ++++++++++++++++++++--------------------------
+ net/core/devmem.h |  44 +++-------
+ 3 files changed, 104 insertions(+), 157 deletions(-)
+
 -- 
-2.44.0
+2.53.0-Meta
 
