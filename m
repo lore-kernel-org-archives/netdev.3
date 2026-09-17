@@ -1,123 +1,119 @@
-Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
+Received: from mail-oi2-f43.google.com (mail-oi2-f43.google.com [74.125.231.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E9A4DAFBD
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 12:10:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.230.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA524E432D
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 12:10:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789647069; cv=none; b=R3a9BrYTViow3LHkZzKdChHzOnlEDuseK1vzNeNOludFx9KOCL4rxrK1TiQs84MlPdiiylseh0pBkzx+qgGt+MesrkuealOQGakYVgyv5qsVwovCMLU8vRofGG0dxhLVy11/3B7cJ4sWeQru17WmghraOuKbTAVvuhLC1CBv9OQ=
+	t=1789647068; cv=none; b=RZFSGWDBrSovsHtMC8WQ/nlfvzWvBLLR3fhX83cwPR1IZN/kHHyvFygBfGHZaY+M2RuleyX1drTvMr8ZnsP/eleUcdPXlNdvnbj1JwBKEe7Y2k6fvPgXcPt/WFuhDsHPSNQadaJuLxU2omTXZtta6eiGdghZf6InEbc/ASu/GVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789647069; c=relaxed/simple;
-	bh=R/LUprRLLIwHn62Aa6X+Qeen23stIshNt80hL1nPc3A=;
-	h=To:Cc:Message-Id:References:Date:Mime-Version:Content-Type:From:
-	 Subject:In-Reply-To; b=WomwKxp/hFlR5eVnTpUQjuCxy7w7THPD05R6qRpcYhM+OaoSEjecJJKpvICP34kF78FD876RWsX2dvq7HkV/IwZhPdrC/FywHUAFqLR7wJvJLziwCVjEjOUhM7v/9WGQ+JK17JAhJZQ7I8ejFDTAwZKpJJvMTFoclbqKc15kwko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=eiYvEvni; arc=none smtp.client-ip=209.127.230.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+	s=arc-20240116; t=1789647068; c=relaxed/simple;
+	bh=2IuuBesuhtQABZX5aTgcPIV5cqFrtbm6oW8Rke4nfe0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dRMdF6+GVXYfmHwjD5HuKUgxui920dm1ZYqMNWmxmaI2rb4LzRHRK6tuzFeIyYPX5ihYGH3UqQ+bLEFsmmWk1XXYomft6ZOOVrBXwwE6GwO1XV5dV/lq/nKH7PrJZ1GIhCV2mxwVBmf4MODxLGDL3pX0ohpyZpx2G1Tt5XlcTLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ieee.org; spf=pass smtp.mailfrom=ieee.org; dkim=pass (1024-bit key) header.d=ieee.org header.i=@ieee.org header.b=KGZi5e8S; arc=none smtp.client-ip=74.125.231.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ieee.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ieee.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="eiYvEvni"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1789647046; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=/M6XW7TajI5wGVtKhZBxGWB0mPjI/XpBYPgZ/W1nlaQ=;
- b=eiYvEvniDk/QnafpoHOXZg2e8cRAS7+or5s6fQLVpUw52Drmwxw+4BDEWuejbElHLkFggy
- LPjCXo8AQ34r3KqsAYHppkX/kEebXDzFvKSr/TWCzxIYrdZyRNos6oRqLUUANzTFOPmk1X
- aHi2D1EXcY9IeXTQN/y6T4JRWhUIlzkNh8DTHN5zFjfuzsoSxultY3rQuN3RR1QxKO6ba6
- Onx/Ecmb+y5LxWlB6La+TpLB6EOVojFauEL5XJ6UGVmcG0t61zDIUgebTCiCDKb6bw4s/X
- di30M59xD036NKOwoBxBJkg9LKXfc4vBLqU00gYgSIEtQkAXJdx+hhPGZdOG3A==
-To: <bpf@vger.kernel.org>
-Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<john.fastabend@gmail.com>, <jakub@cloudflare.com>, 
-	<jiayuan.chen@linux.dev>, <edumazet@google.com>, <kuniyu@google.com>, 
-	<pabeni@redhat.com>, <willemb@google.com>, <davem@davemloft.net>, 
-	<kuba@kernel.org>, <horms@kernel.org>, <daniel@iogearbox.net>, 
-	"Zhao Gongyi" <zhaogongyi@BYTEDANCE.COM>
-Message-Id: <20260917121016.48171-1-zhaogongyi@bytedance.com>
-References: <20260915071743.29394-1-zhaogongyi@bytedance.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-Date: Thu, 17 Sep 2026 20:10:16 +0800
+	dkim=pass (1024-bit key) header.d=ieee.org header.i=@ieee.org header.b="KGZi5e8S"
+Received: by mail-oi2-f43.google.com with SMTP id 46e09a7af769-7fcb425fc2bso483110a34.3
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 05:10:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ieee.org; s=google; t=1789647049; x=1790251849; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HHax/jJrt/1XwwtW9NMv6p1y2gNa0xD70FHoF7NK73g=;
+        b=KGZi5e8Srbkk19d0xhNeSKueOlytHXJn2Mnb1IgZJcFBE63RE7LSz5Zq1kSQjuS1qg
+         h5n3EU2zFAEv+PLOPQnr4ff9LN33FG6GUXiLB5TpEz3QATMvIF9l8MFFE93aD2DHHfGj
+         x3G1ckFmdbMIUdluJFQvViAKg8mohr5QEmxOc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789647049; x=1790251849;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=HHax/jJrt/1XwwtW9NMv6p1y2gNa0xD70FHoF7NK73g=;
+        b=lhNnP1Cw6VhQcgsAXXe3LucT/gZ5Ufx2rPCIlIOipIIvkAlaFS9AjAjWrlW6rjS0wI
+         Aq3FkCwqH2IRceEyVP9W7MqyMDOWHdWiaiN6sZex8sg2ShOsqNMW+iEZE6CBmR/n6rzc
+         lTnKz3IUyABNeW9ZDHS0syIjK7QWEhn2K/GPh9D5gOjzmfP7pBLbWtIuNLeCCeGi+57A
+         2gSYQC57nqleRoC0S8Zz8m0kpdaHawcUGZWWs4qdo0e0O4RW7mlPJSnxnO3cniLOWyuM
+         mP29iYboWO+JxGTN3xgqQ1dPCcyJtdrtCIJ6WIlT8eUzQzLiZx44/JXpgqVb3l2F2U9m
+         w+Vw==
+X-Forwarded-Encrypted: i=1; AKwUvBzeVFHheviRsxZPttweljPWhZjyzHl+lzwRTbhztV8avAg5mok3Bj5U34HMvqCeT9ABrpz28PQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++lzu9uicfFO735QomSAhAD6e8aVfMeShevGW5rB37LijwMEPeiH
+	cMOOdBf+SWxl5p46g9/cJPcSpmv9tCJM3wz+X8bsNQVyFfkF/CaKHoGFzgGqsx2MX/sUS6+5iWP
+	hVhHEGQ==
+X-Gm-Gg: AYBFou2BvOSNxAZWrU+WMBA4M+1UeteRaZCbHAJWJjV4k1JjfhqBG1Mp3RQlypIcRu8
+	u/admjoWRI4bUWY84ER2DJwJzhZsZ0Kcci3+BjK8CwMBvyr52mHaf641jzolnEs92ClDuqI8STB
+	RdzH0WLpDOEmuRcC9N5UG6JaQlLvX7bgy0XHazQTSdAGuTHwWKLMzlFIHdqYDq0IifLDVGP3qSN
+	BA3t278udXjSaD270fZaGsd7pfvCT4TfSF83hJpa2GsF2ExtldGZe+ja1NQZv4oEOkiaOWh/jJC
+	HLyZHekkRnuAUXjly9DXIcjAGv9JvPGoabc4P8Q6p2NUbXYhxq+5k8TjrhdWTW8B8cInI1GgVOd
+	6fXWEfaVP28ZVuYqa//xr823uC+YoJ/BMUmRc0BcDYMBh+PxWgC8/WVdYy9++75zBkvFuBPS+wV
+	HLL422rtwgmtnswlSY6wpCTFwQ5+RXZIwdVgeCq+iyDw7k7CEUcAw4cTT8oBy+S7dVAg==
+X-Received: by 2002:a05:6830:640c:b0:7fa:5c49:5258 with SMTP id 46e09a7af769-80b2eb61acdmr7602954a34.31.1789647049145;
+        Thu, 17 Sep 2026 05:10:49 -0700 (PDT)
+Received: from [172.22.22.28] ([73.62.185.64])
+        by smtp.googlemail.com with ESMTPSA id 46e09a7af769-80c466a2e6fsm2510405a34.14.2026.09.17.05.10.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Sep 2026 05:10:48 -0700 (PDT)
+Message-ID: <7509f005-709d-46d5-8554-b9d2fd0cd218@ieee.org>
+Date: Thu, 17 Sep 2026 07:10:47 -0500
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Lms-Return-Path: <lba+26aabd8c4+6b47c4+vger.kernel.org+zhaogongyi@bytedance.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: ipa: Fix runtime PM reference leak in ipa_remove()
+To: Wentao Liang <vulab@iscas.ac.cn>, andrew+netdev@lunn.ch
+Cc: davem@davemloft.net, edumazet@google.com, elder@kernel.org,
+ kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ pabeni@redhat.com, stable@vger.kernel.org
+References: <20260917115115.2149796-1-vulab@iscas.ac.cn>
+Content-Language: en-US
+From: Alex Elder <elder@ieee.org>
+In-Reply-To: <20260917115115.2149796-1-vulab@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Original-From: Zhao Gongyi <zhaogongyi@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-From: "Zhao Gongyi" <zhaogongyi@bytedance.com>
-Subject: [PATCH bpf v2] bpf, sockmap: reject max_entries > INT_MAX in sock_map_alloc
-In-Reply-To: <20260915071743.29394-1-zhaogongyi@bytedance.com>
 
-From: Zhao Gongyi <zhaogongyi@BYTEDANCE.COM>
+On 9/17/26 6:51 AM, Wentao Liang wrote:
+> ipa_remove() takes a runtime PM reference with pm_runtime_get_sync() and
+> is supposed to release it at the out_power_put label. If the modem fails
+> to stop, the function returns early and never drops that reference, so
+> the device usage counter stays elevated forever. Release the reference
+> before returning.
+> 
+> Fixes: cdf2e9419dd9 ("soc: qcom: ipa: main code")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+> ---
+>   drivers/net/ipa/ipa_main.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/net/ipa/ipa_main.c b/drivers/net/ipa/ipa_main.c
+> index 788dd99af2a4..aab38fea91c6 100644
+> --- a/drivers/net/ipa/ipa_main.c
+> +++ b/drivers/net/ipa/ipa_main.c
+> @@ -975,6 +975,7 @@ static void ipa_remove(struct platform_device *pdev)
+>   			 */
+>   			dev_err(dev, "Failed to stop modem (%pe), leaking resources\n",
+>   				ERR_PTR(ret));
+> +			pm_runtime_put_noidle(dev);
+>   			return;
+>   		}
+>   
 
-sock_map_alloc() only rejects max_entries == 0 and otherwise allows any
-u32 value.  sock_map_free() then walks the sks[] array with a signed int
-iterator:
+This issue has already been fixed.  See:
+   6b9eaa61ff2df net: ipa: balance runtime PM reference on remove error
 
-	int i;
-	for (i = 0; i < stab->map.max_entries; i++)
-		struct sock **psk = &stab->sks[i];
+How did you find this problem?  that commit indicates a static
+analysis checker was used.  If you benefited from any tools like
+that you should probably explain that.
 
-When a SOCKMAP is created with max_entries = 0xffffffff (UINT_MAX), the
-allocation of 32 GiB can succeed on large-memory hosts.  During free the
-counter reaches 0x80000000, wraps to INT_MIN, is sign-extended by movslq
-and turned into a ~16 GiB negative offset from stab->sks, pointing far
-below the allocation.
+Thanks.
 
-The faulting access is an xchg() write in sock_map_free().  Without
-KASAN, the same out-of-bounds write can fault on an unmapped vmalloc page
-or corrupt an unrelated allocation if that vmalloc address is populated.
-On a KASAN kernel with CONFIG_KASAN_VMALLOC=y, the shadow check for that
-address hits an unmapped shadow page and oopses first:
+					-Alex
 
-  BUG: unable to handle page fault for address: fffff521b59c5a00
-  RIP: 0010:kasan_check_range+0x107/0x190
-  Call Trace:
-   sock_map_free+0x93/0x190
-   map_create+0x68d/0xb30
-   __sys_bpf+0x21e/0x2e70
-
-Vmcore confirmed stab->map.max_entries == 0xffffffff, stab->sks ==
-0xffffc911ace2d000, and the faulting address sks + (s64)INT_MIN * 8
-exactly at 0xffffc90dace2d000.  The same buggy path is reached on the
-normal close()/bpf_map_free_deferred() path whenever such a map is
-destroyed.
-
-sock_map_alloc() used to bound its allocation size through
-bpf_map_charge_init(), but the bound was dropped when rlimit-based memory
-accounting was removed.  Reject max_entries > INT_MAX at creation time so
-the signed iterator in sock_map_free() never sees a value that would
-overflow.
-
-Triggered by syzkaller and reproduced on both a 6.6-based KASAN kernel
-and the upstream v7.3-rc2 kernel.
-
-Fixes: 0d2c4f964050 ("bpf: Eliminate rlimit-based memory accounting for sockmap and sockhash maps")
-Signed-off-by: Zhao Gongyi <zhaogongyi@BYTEDANCE.COM>
----
-v2:
-- Correct the Fixes tag to the commit that removed the allocation-size
-  bound.
-- Clarify that the bug is an out-of-bounds write reachable without KASAN.
-- Add Daniel Borkmann to Cc.
-
- net/core/sock_map.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/net/core/sock_map.c b/net/core/sock_map.c
-index ca49bc7f8..38df84284 100644
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -41,6 +41,7 @@ static struct bpf_map *sock_map_alloc(union bpf_attr *attr)
- 	struct bpf_stab *stab;
- 
- 	if (attr->max_entries == 0 ||
-+	    attr->max_entries > INT_MAX ||
- 	    attr->key_size    != 4 ||
- 	    (attr->value_size != sizeof(u32) &&
- 	     attr->value_size != sizeof(u64)) ||
--- 
-2.39.5 (Apple Git-154)
