@@ -1,98 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C492DB7BE
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 15:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91294E73D9;
+	Thu, 17 Sep 2026 15:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789658261; cv=none; b=PL0zsGYfuptVYDW+WpysGtsWd1YDM97WMLNQuGl5S5vWUDZ5WkdMVoXbjAzIvGtWtZ59EDNlFs8fJVNxZOf7qcal13ls2dLIcQ+FANFGu17seTyRKh9QpkX3b7Re9TPgdZGLreWnY30dN8PKU9KRvt60FUTVB885CBjTat4AmqU=
+	t=1789658499; cv=none; b=Rd2SY7OpUgREXG4Su5xqebgnH6OxJgqmubHBpB82MwLdMx2WFUca2dLq3b9V1GLSYRh+yOItwJI9PjECQrgEF3IyDAVHWI4ORGciak0Ih7EF0ZBKd3BO7HNZP6/Eo/2IQsGkwa4kCCz5WJ9VHVNVGVotYN4r/rtKNEOB6ENeQZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789658261; c=relaxed/simple;
-	bh=yokcjFoYaQjb2AXJXwiS2CgA9icNw4hd0m3OmDjYLh0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WZDZLP8z5wm+a4iOCcoadRq3rB9RumxYlEo9GRvTeIs+ndUFoGq0PfpyAh4jD9DCed//fzqg5fj1zr72m8ZgUV94RqJ91xLF60DuvH34MBizVArJOz746UsdRNVReULj+0ZVDMzUGZ+f3l1/46P4AxoFkshgjhPD/uUnZsMQzyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=baYHiQhL; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789658499; c=relaxed/simple;
+	bh=EoDQYcmlmzYWhQ14Ug8v9jjj2b1NvYIykJ/2zcRxV8I=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=dbWygP6akxXwIY1BouRYvXKXIzgUpNembCHGG06Y4UuNo+EzCi52JjQ8z+TNhS1H32uf1mdTy6/ri9xjeg/bUmftrDpSf9hgd3PPV0CChIrT29WVpKxdjIdPG9LFBwdHVWv+MBgfGPZsAwZ53CFSfLJPAJd7DX8yVssvjYH/8P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T1xurqCX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="baYHiQhL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA711F0089A
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 15:17:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T1xurqCX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D741F000FF;
+	Thu, 17 Sep 2026 15:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789658230;
-	bh=yokcjFoYaQjb2AXJXwiS2CgA9icNw4hd0m3OmDjYLh0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=baYHiQhLKHIXv5JcbsYM8h8jWAIdy60s6NhCh0ZGU54W95BOiAuC94Ol2AcpHo47g
-	 xOJkjhXStRdOshTWhG385se+mN0mwxSalEgzP9JG2PQIOLJ/oHEIVw0zHQeJ6cCyxv
-	 qfvHypAZ4Aa+PBTDs1xGLwk8gxllOPs9TBclUTaLcaptPXVE/nH6o6dNw9fmKr/Ga+
-	 euX0r0XKcn50B8jtWh1/A5rkcHzzpSCbjKD97mWUlLgkoyhoofyCpgqfsFLMmV7xqx
-	 ARc5Jnmu7agtqFNmn3zlh9R+1V4XybdteMzm34GCd9fCbp5oeKdHFvfY4O6Spsy5NH
-	 56pQ+Rtftr60g==
-Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a996c8adf3so1647094a12.1
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 08:17:10 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBylFUcc9QzvaFgDYkPPjYppjHjwl0R2K2ThaEbLg16mvyUgEHuNORN8T3v+2ydIldpbu4L/l54=@vger.kernel.org
-X-Gm-Message-State: AFuF++kDssQDqXU+bHXYP9xfYoUV5uS0i5pE01pqiQGBON5nNeCcJZ5Z
-	3FwcgmsTit6sRZQf5RcUAo0skdmoKXLNlRG3nRStV8RONB0c003E0xwyRRE35xHdNqjZZc1Uq2j
-	h1+/u7iBeHOYF05UufcqTJpIElumhgg==
-X-Received: by 2002:a05:6402:460c:b0:6a6:8dd:c76b with SMTP id
- 4fb4d7f45d1cf-6aa22247992mr11552271a12.1.1789658228391; Thu, 17 Sep 2026
- 08:17:08 -0700 (PDT)
+	s=k20260515; t=1789658485;
+	bh=ZAUtXlQuc8YNeon2C/KLEgN1HKZv6V7DhtdVbe3voOk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=T1xurqCX8DQMbCMfPSg+KcUQyB9VUGVVpW1G39zeJI/O0C0c6aNiq7U+qDhlx9kUG
+	 o7L/LRzhGdlbOxRml74p/vzDhNrBQvrJHLBdqvWj+NqR57/ZkWqq+YlAOMLgmW+bAC
+	 8psP/9FUlSMjybp5p7TlaBm3j9MXZ2moIZYZaDrYNhQzqH+kEvWSuP7+h9pn354VIg
+	 jJKlWT2kC/5p4L8cnNr0/Ha53kqbKocYhD0pZNzLUbUJjyQYfSqn5ZSzxrgIWGZWIp
+	 kTAc2tfjt/Infew3hLo2z5vp0lkBvsPTLJmf0XPPRiiAxEgRcGuYmE7ufGP4ZvpLiP
+	 9J80QnlfZjgxw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A073811976;
+	Thu, 17 Sep 2026 15:20:19 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260917144134.459819-1-matyasdaniel006@gmail.com>
-In-Reply-To: <20260917144134.459819-1-matyasdaniel006@gmail.com>
-From: Rob Herring <robh@kernel.org>
-Date: Thu, 17 Sep 2026 10:16:56 -0500
-X-Gmail-Original-Message-ID: <CAL_JsqLyPK2rJVAyzCtGtrBSTwOKRZ_EAmE1Xd++9DFaxrrmDw@mail.gmail.com>
-X-Gm-Features: AcwNN1WrkKsI-hJClnXnbb72poP7rLqVHTc23ccK3T-HSnvYyjsVzuH4L2tWH2Y
-Message-ID: <CAL_JsqLyPK2rJVAyzCtGtrBSTwOKRZ_EAmE1Xd++9DFaxrrmDw@mail.gmail.com>
-Subject: Re: [PATCH] dt-bindings: Expand flow lists to block lists
-To: Daniel Matyas <matyasdaniel006@gmail.com>
-Cc: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>, Baojun Xu <baojun.xu@ti.com>, 
-	Sen Wang <sen@ti.com>, Peter Huewe <peterhuewe@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Chunfeng Yun <chunfeng.yun@mediatek.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Wim Van Sebroeck <wim@linux-watchdog.org>, Dharma Balasubiramani <dharma.b@microchip.com>, 
-	Jeff LaBundy <jeff@labundy.com>, Simon Glass <sjg@chromium.org>, Linus Walleij <linusw@kernel.org>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
-	Jose Abreu <joabreu@synopsys.com>, Atish Patra <atishp@rivosinc.com>, 
-	Shawn Guo <shawn.guo@linaro.org>, Dmitry Osipenko <digetx@gmail.com>, 
-	Ibrahim Tilki <Ibrahim.Tilki@analog.com>, Okan Sahin <Okan.Sahin@analog.com>, 
-	devicetree@vger.kernel.org, linux-rtc@vger.kernel.org, 
-	Ricard Wanderlof <ricardw@axis.com>, patches@opensource.cirrus.com, 
-	Lukas Wunner <lukas@wunner.de>, Eugen Hristev <ehristev@kernel.org>, mfd@lists.linux.dev, 
-	linux-samsung-soc@vger.kernel.org, linux-mmc@vger.kernel.org, 
-	linux-mtd@lists.infradead.org, linux-amlogic@lists.infradead.org, 
-	netdev@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, linux-phy@lists.infradead.org, 
-	linux-tegra@vger.kernel.org, linux-sound@vger.kernel.org, 
-	linux-integrity@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-watchdog@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2 0/3] mptcp: misc fixes for v7.3-rc4
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178965841863.3702673.15491935848418424018.git-patchwork-notify@kernel.org>
+Date: Thu, 17 Sep 2026 15:20:18 +0000
+References: 
+ <20260917-net-mptcp-misc-fixes-7-3-rc4-v2-0-0cf5c72667c8@kernel.org>
+In-Reply-To: 
+ <20260917-net-mptcp-misc-fixes-7-3-rc4-v2-0-0cf5c72667c8@kernel.org>
+To: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev, stable@vger.kernel.org,
+ xinyang@anthropic.com, shardul.b@mpiricsoftware.com
 
-On Thu, Sep 17, 2026 at 9:41=E2=80=AFAM Daniel Matyas <matyasdaniel006@gmai=
-l.com> wrote:
->
-> Running dt_bindings_check returned:
-> [error] string value is redundantly quoted with any quotes (quoted-string=
-s)
->
+Hello:
 
-That false positive is fixed in newer versions of yamllint since at
-least a year and a half ago. There's also some other quoting checks
-I'd like to turn on, but that bumps the minimum version since unknown
-checks are an error in yamllint.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> The files used quotation marks in flow lists because the strings had
-> commas and these commas were interpreted as separators. Convert flow
-> style lists to block style lists, so that there is no problems with the
-> commas.
+On Thu, 17 Sep 2026 15:05:56 +0200 you wrote:
+> Here are two unrelated fixes:
+> 
+> - Patch 1: avoid unneeded actions on subflow reset. A fix for another
+>   fix introduced in v6.12 and targeting a commit from v5.7.
+> 
+> - Patch 2: close a possible race when scheduling a closing path. A fix
+>   for another fix introduced in v6.0 and targeting v5.10.
+> 
+> [...]
 
-If we wanted to fix like this, we should probably just require block
-style everywhere, but I don't think we should do that.
+Here is the summary with links:
+  - [net,v2,1/3] mptcp: avoid unneeded actions on subflow reset
+    https://git.kernel.org/netdev/net/c/2b0f561f21b2
+  - [net,v2,2/3] mptcp: close race between scheduler and state change
+    https://git.kernel.org/netdev/net/c/42064de57fb8
+  - [net,v2,3/3] mptcp: fix bad accounting in __mptcp_subflow_push_pending()
+    https://git.kernel.org/netdev/net/c/f3ef03357396
 
-Rob
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
