@@ -1,159 +1,80 @@
-Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDF95221CD
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 13:28:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A255523798;
+	Thu, 17 Sep 2026 13:31:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789651740; cv=none; b=I12RdCjGbWhjnKNojF6o9phhnQiRIkQQdI9JnCP8ag8jRjk+bK+QfIjnat+8YBkgf6Z6mWcvCDWmdl+SbS+dD1M/mtaAuQdWhJD56/HC3PEscsqoMVuDMBCRg/O1LCn7DK7rxm7AlKCHjceLwccY0RkeUMvZn1h8tCsl1HRR2xo=
+	t=1789651896; cv=none; b=GuUcGDfI4so/f3gyAa6htFe1DBBMPbvgj02oWIHgmts0Lru0OvAVkUbCM0T+StPTjXITmrBH+flu5nGo/FZ9yv7TgOC5KMUcIThiECcaLgjFdjJGSKbTvGPiUuNoULToMvdGkbiy8zOksoikUgeqpwZxv5XT2YbkoHKjf0iKZuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789651740; c=relaxed/simple;
-	bh=NAsObRyll4WV6QYy9rKgLDobFjajI231zXddko/aXE8=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=pKAHJ6tK/dOsMxPLrPilxK1Y3neDb2CY1O4GCgfDj5faQM7hSrzj+3fCccwRJJmpwZGnZyGjSVquEMowm5TE6u5zYKz51TKHrGZ/mFGBGkbQolsnc/hkAXRvS9ww7sgTHmWLBhjlo6liU/8y9htv2VLCh48A3T30wNcGZ885Gig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AIzwt6Da; arc=none smtp.client-ip=74.125.224.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789651896; c=relaxed/simple;
+	bh=lJhhl7rqp0R+kTEn3u7cXqS0lMDRNpKykndKN5Xbdss=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=cByTFhMz9Nb0+XzMIicUnl5i8ZRbNcRncYaTaOD7mNcrk3f5/z5xpPbvL4dvotSMWwvvlEpdbQvyLg/rlUdVPUcXtVvl0deu2YjU92i0UjFIrs1TWAkMzAt1om6L5cJNgAo7/fXyUYUDB0HMbxvvxeOVT7/AmztIBMJOjlqyNjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X3VQzBW2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AIzwt6Da"
-Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66e4ab222dfso772814d50.0
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 06:28:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789651737; x=1790256537; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=sAeZPfLxO8gIQtw5sZuH3fSTsOPDUndxs0gC4xI6QHw=;
-        b=AIzwt6DaGWdkrsP+WPfMtXn+lcvGLyBCfA/tMUdWSveQy62wAGF6NDg11ujcOhHKbM
-         b0+EKsHVGdCOKHc7SMrNPPqgmoAoqYHLnPtCHfhCXByPYW61VX5aMEGiUVBsz/dtAuUK
-         uwyjUQ6tr9GD/B/UHylM6JlocVwx+D/YhHjg2gIS6yHMn8ZI0EgiuEgBqY+Z9F0OaJke
-         S3yvGj+kIoKTlriPwv2XCRIEvHOvxUtIDqHvEahHBPTfQ/uI7egMScd43UDJVjQYizjv
-         9ZtuRvuVNTwAXIhT9xDYHKuUJC1ZRqTnksVChrldtyX58Vll8NYnlzqvMifWQvT4Kp8i
-         DWQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789651737; x=1790256537;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sAeZPfLxO8gIQtw5sZuH3fSTsOPDUndxs0gC4xI6QHw=;
-        b=bV4Aknx0I3PTGj/6Uhkevotcg81KA1sh5zBTkRY1UixSKZBzXj9rKzhftglDmlc8k+
-         LlQ5FZzZ3ZiI38dCU3Omg5qG4IOoRLNXWvLSkS8GNkQLUPytBKBjkfAD3XrzSF7G3CK/
-         eVz3od/BFNzLcGlFC+G+/XyZvwQB1i8fo7VAkru68YDnkz2BnKeLsJAAbVyBajtNDCDO
-         8vRIMmtekrflsxXif3py8evhqiOKx7r3Q55ZTrY/uv6fFbs37v9zueVafyu/VdYnStj/
-         /z9hHfRoaPBBFyGMR8stYf7PuyPbxBL9zQKcmPv7zN9A7Lec6AJbW4FqulaO1w1vrXVr
-         6DuA==
-X-Forwarded-Encrypted: i=1; AKwUvBydx01P9IuORN8DTScSgpCeNcglf2ZksUjU2CBrU7Ww0i79HMPQynvKm4od/U0btIfHfr3JXYs=@vger.kernel.org
-X-Gm-Message-State: AFuF++m/fvFAKjNcMfo9db7pGUB4HuvI+g+kOXoEo+2HFIntX+EER7gY
-	lOWotrKZLP//eN60cYoixBuRvr0/ohA32vEuW6MoV4Kw8myHcUnvfoQM
-X-Gm-Gg: AYBFou0H82I4QHVXY/VZnWouYHdIeNiwak45ohI8l0cAAaDqsVCOq38sWST2NkJIWM2
-	zRKV2fgejM/GmDbu5SG3Lm+Pc2QnSISi/L7HWhgnSFf/BTCetTPvJz52Ndmlm3N4YW+S8sXZEaP
-	4iYn6RP+Kp8OpIWV6hy0DgZwA5HOnXhi/rSwhsVmIlLGlNoAQMOm9LIMOBkV33whv+N2a2TdR09
-	9FGfC0r1i+UCwKgonRI7FCp/x5HjSFnQzS/9YtXAELAj2l0qxKrKEJMq3JRr25ga6c12qp3WCRO
-	cWGRB/75FMDZAlDaPBOw5uCc+Mvip+3Up2IEvL0nSz9TFlgwLbrn6huN/ggV8ENXOYdwInehUYm
-	X5dU6wEph133bdxl6ICJkeQEDfGBX4z3xAuOTUqJlS7N8kNq28xZlMFKsuShrLHvsf3lDF6RTik
-	2GFIpu0uNAjzcmb/rRt0Lry5Lsmx9zbnyVWQWHgKMnm6jxShnLpG28pkhESM96ynKb1B45GFzE8
-	wgl5LShlcFkBs+YH/TDJZW6A3VXaJwCeSXh3uJb8vatsbSCdAwp
-X-Received: by 2002:a05:690e:11ce:b0:66f:c719:616a with SMTP id 956f58d0204a3-671631be447mr2244247d50.3.1789651737398;
-        Thu, 17 Sep 2026 06:28:57 -0700 (PDT)
-Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6715f79a963sm2544539d50.20.2026.09.17.06.28.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 06:28:56 -0700 (PDT)
-Date: Thu, 17 Sep 2026 09:28:55 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Paolo Abeni <pabeni@redhat.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- netdev@vger.kernel.org
-Cc: davem@davemloft.net, 
- kuba@kernel.org, 
- edumazet@google.com, 
- horms@kernel.org, 
- andrew+netdev@lunn.ch, 
- Willem de Bruijn <willemb@google.com>, 
- Katherine Leaver <kleaver@janestreet.com>, 
- Bjoern Doebel <doebel@amazon.de>, 
- stable@vger.kernel.org, 
- kylebot@openai.com
-Message-ID: <willemdebruijn.kernel.217ba36e55cae@gmail.com>
-In-Reply-To: <a0b83186-7399-4d79-8226-ff43611184d7@redhat.com>
-References: <20260914214229.1674102-1-willemdebruijn.kernel@gmail.com>
- <20260914214229.1674102-3-willemdebruijn.kernel@gmail.com>
- <a0b83186-7399-4d79-8226-ff43611184d7@redhat.com>
-Subject: Re: [PATCH net 2/2] packet: use ubuf_info completion for TX_RING
- packets
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X3VQzBW2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D221F000FF;
+	Thu, 17 Sep 2026 13:31:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789651886;
+	bh=d+xMAagAIt0peOBIqSsZ+vAYsCvSqqqp7DxtScD872M=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=X3VQzBW2/pH1w01pGHJUniIITmoUTlatUz6fhgtsefZalRbxXXWo6oUX9STUNXRtk
+	 nX5wd3ZetQ8fxA7DKoJSnU4P+P5UUZu27d7RSaUzNwsMmcDkWBeeFUCywetw0W1fIK
+	 KmdaQqVJuvXDpKig2x2BIlQqOZ4QNL9mSPMKj7UFu9HPSa9Dxw+/WP7OjcOGjeROa/
+	 BN2YlI7ak33F2bRS7cuOkz2/N2QZ7yYnmQ/lKjVCpgW4oZ1MEkPBjvUbqOLWg+8hCJ
+	 gP9Q4/pjGS/8I4SPKtaKoUEinRKj8VIEfJyz71pVrpE/DscTYBTzuWzeuWRCOW6UlY
+	 4E9RAoz4GTN0Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A663811957;
+	Thu, 17 Sep 2026 13:30:20 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3 0/2] tcp: exclude old ACKs from fast path
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178965181963.3645898.3635212098501972895.git-patchwork-notify@kernel.org>
+Date: Thu, 17 Sep 2026 13:30:19 +0000
+References: <20260914090408.1435080-1-inbal.lipshtat@mail.huji.ac.il>
+In-Reply-To: <20260914090408.1435080-1-inbal.lipshtat@mail.huji.ac.il>
+To: Inbal Schussheim <inbal.lipshtat@mail.huji.ac.il>
+Cc: netdev@vger.kernel.org, edumazet@google.com, ncardwell@google.com,
+ kuniyu@google.com, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, shuah@kernel.org, linux-kselftest@vger.kernel.org,
+ amit.klein@mail.huji.ac.il
 
-Paolo Abeni wrote:
-> On 9/14/26 23:37, Willem de Bruijn wrote:
-> > From: Willem de Bruijn <willemb@google.com>
-> > 
-> > tpacket_snd sends skbs with frags pointing into its ring slots. Slots
-> > are released when skb->destructor is called.
-> > 
-> > A call to skb_orphan calls skb->destructor before the skb is freed.
-> > This can cause the slot to be reused while still linked into the skb.
-> > 
-> > Switch to standard zerocopy completion (ubuf_info) so the slot is only
-> > released once all references to the payload are freed or copied.
-> > Restore skb->destructor to standard sock_wfree.
-> > 
-> > To prevent userspace from aliasing in-flight state on shared ring
-> > slots, allocate tpacket_uarg per packet, rather than per slot. This
-> > adds a small allocation to the transmit path. Use standard kmalloc to
-> > allow backporting to stable kernels.
-> > 
-> > The uarg holds an sk_wmem_alloc reference, rather than an sk_refcnt
-> > reference. packet_free_tx_ring waits on sk_wmem_alloc before freeing
-> > the ring pages.
-> > 
-> > As a result a slot is released when its payload is copied, which can
-> > be before transmission (e.g., in skb_orphan_frags_rx). Any slot
-> > timestamp then reflects the time of copy, rather than of transmit
-> > (or skb_orphan).
-> > 
-> > Revert the now unused previous skb_zcopy_.._nouarg infra.
-> > 
-> > Reported-by: Katherine Leaver <kleaver@janestreet.com>
-> > Reported-by: Bjoern Doebel <doebel@amazon.de>
-> > Closes: https://lore.kernel.org/netdev/20260909085542.3370986-1-doebel@amazon.de/
-> > Fixes: 5cd8d46ea156 ("packet: copy user buffers before orphan or clone")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Willem de Bruijn <willemb@google.com>
+Hello:
 
-> FTR both the 'high prio' sashiko finding here and the mid one on the 
-> previous patch are IMHO worth addressing.
+This series was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Absolutely, agreed.
+On Mon, 14 Sep 2026 12:04:06 +0300 you wrote:
+> Exclude ACKs outside [SND.UNA, SND.NXT] from TCP header prediction so
+> that they fall through to the slow path, where ACK
+> validation is applied.
+> 
+> Add a packetdrill test for a data segment carrying an
+> excessively old ACK. The test fails on the unpatched kernel and passes
+> with the fix.
+> 
+> [...]
 
-I hadn't gotten around to responding to the bot yet, sorry. Was still
-reviewing the options.
+Here is the summary with links:
+  - [net,v3,1/2] tcp: exclude old ACKs from tcp fast path
+    https://git.kernel.org/netdev/net/c/f81e6c3fb063
+  - [net,v3,2/2] selftests: net: packetdrill: test exclusion of old ACK from TCP fast path
+    https://git.kernel.org/netdev/net/c/d841cd7513f3
 
-Simplest is to enable the deferred worker that Kyle also for page
-backed rings.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-As the commit says, I'd rather send something much simpler to stable,
-but after exploring many paths did not found any with fewer risks or
-obvious regressions.
- 
-> Also I'm wondering if the extra alloc/free is visible in perf figures?
-
-It should not, compared to the skb alloc. But I don't have hard data
-on that.
-
-> Out of sheer ignorance, can't the ubuf be carved out of the ring?
-
-It can, I actually had that first. But that has more risk. Userspace
-can overwrite the ring header status to TP_STATUS_AVAILABLE,
-possibly corrupting uarg->ubuf.refcnt. It might be fixable, by
-incrementing refcnt rather than initializing to 1. But that is less
-obvious(ly correct).
 
