@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFCB4B0E4B;
-	Thu, 17 Sep 2026 09:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC5E4B1D02;
+	Thu, 17 Sep 2026 09:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789637946; cv=none; b=FH83/NDe8D5MtAOMTzgLlbT3JjdnaVHhwAejkRoZVDxQkG+W22IDsbnYeyXWikaDHYFwkMK5Iea5xOBFBna74FyDbtaEiPUJLMgrDRp9Lh1ojQDbus9tCx4jtYY6OKIIP593b/5E4w9C05FG5s4QrAB/kUv8fNf+kjZc23OAtDI=
+	t=1789637948; cv=none; b=N1QZ+hZvv9xaofL8r1iKkyyJzfBSPV9Sn0Dr3nJIU7zyRBIN9X+VO5TAtOcUTBRovk6w7DGcdGBNITcsCs///06RNxvcNGK95uiu9qIqpNy8EFzrpSvAqP6uZbrPxyIiOjJ0IeGcDhIrUBBWAiuhsr0LraRw5AGUqWkNa9L1Ilw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789637946; c=relaxed/simple;
-	bh=FxhoFcbhZDKmpSsynxflff6bW2o6rVTWbN05Xf5OjX4=;
+	s=arc-20240116; t=1789637948; c=relaxed/simple;
+	bh=0/xIJ2PC1luNEknXYOZeyRegAcIzvE2K5ydNh0QOO78=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=B1+UbqbP68MfVzD5GdCoU0xFcy8euc2RLwCLF/DBd/ZudQUJON5osVZRPnnkVrcbz92+Xt2sZuOA47L24qyAh4sk+jDSkREPloqL84q9VSY/mJLIl4vMHHkPm/NjMd5y/cIPUytbKzyBC5qAv3TNCGAnj9Bin6DjTi3g4JI3PDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ApP/XBOB; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=iebVgp/MJeJtm4tXWVPuTcikJ6mxvRomOb0VWSq+9uMyke4xK8mXAz/18ZWYHB/O3tEuZ3pEpafTJG/EVJICJpSeo8O77xzZrem5llFEif44tC9Wpy3eLuSvmcFkULJJNGDNZPAZk+26AeRb9TRfAVL9m6jJKdHAuboxzMusnyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JucnDvoF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ApP/XBOB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B8E1F00898;
-	Thu, 17 Sep 2026 09:38:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JucnDvoF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A051F0089E;
+	Thu, 17 Sep 2026 09:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789637919;
-	bh=ryfklCT3IZu/1eHfiBMVcn3OEBjePUksi02oWbg/a40=;
+	s=k20260515; t=1789637927;
+	bh=nN14hTmK5LuYaXitAioo0ZaIgaszsocaSLcFffuNb1o=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ApP/XBOB6Uz/ik/YAqoAkjHi0HdjRuuAl0BmFcsMJ43wOM85md7AYZEn+OW7oSZ2/
-	 t/iCIpoUkZX6kgAfSsA0VSjDz4fuOHYeY7WpOQ+DXXCU+6jlhMlN8G+isuFq43ons4
-	 zuyk5tGLk6FPjZ6aYR5joeIhZJhNduknIhiGPeJuUPVEbKsj+zIsLvL4l2FyUS7VgW
-	 MBpmRwsxWF24j+MxKiZh9g+5kDgQTWWhNnHI0Vm4FiTNHUKSdc054DqBJzQmmwge0Q
-	 3VUVxzIgcPdGi/8L11tfY8Or4oTUvuX/IN63feh1TDhI0v0OXg95Q67YgLrHXJ0zY6
-	 u4pSwTxLckVWA==
-Subject: Re: [PATCH net-next v3 02/13] net/rds: free every path's transport
- data on the passive create paths
+	b=JucnDvoFG49OIrvt+41J3/CUrpRP2mQMciGPgfHoiMHK7UmhjoeukKTWpegU3CPpn
+	 5js84BCmbon2Ip8AWIYT+p/RUHDqQdxqMqpGd8gnN1/lXq0c48aChcwIMStn2uhEjb
+	 oVmbenFGrrvxlJiJ1PkyKPRVZMBEWvE5n5MZPjTA8zXyiTlw+F02X5D53aKj3iwGCW
+	 e4zlAlFbeFghjebepFQpDmJNKV1VCvQrlkKE2CA5f/WAstxXfRxWquOCEb1iWE7SH/
+	 ChPM1+XlLIjExl2J6nKpmWDB+KuM5+rrUn3iawy0DzCzrFX1KSc0LjZxHsko1KHjb2
+	 KJfMIdYAmC7Bg==
+Subject: Re: [PATCH net-next v3 09/13] net/rds: refuse to queue a message on a
+ connection being destroyed
 From: netdev-bot+sashiko@kernel.org
 To: achender@kernel.org
 Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com,
  edumazet@google.com, kuba@kernel.org, horms@kernel.org, nicoyip.dev@gmail.com
-Date: Thu, 17 Sep 2026 09:38:38 +0000
-Message-ID: <178963791883.22033.13301745054394804139@kernel.org>
-In-Reply-To: <20260914033719.138057-3-achender@kernel.org>
-References: <20260914033719.138057-3-achender@kernel.org>
-X-sashiko-severity: Medium
+Date: Thu, 17 Sep 2026 09:38:46 +0000
+Message-ID: <178963792614.22033.732461810986657356@kernel.org>
+In-Reply-To: <20260914033719.138057-10-achender@kernel.org>
+References: <20260914033719.138057-10-achender@kernel.org>
+X-sashiko-severity: Critical
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -46,248 +46,337 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 (2) · Medium: 1 · Low: 0
+Critical: 1 · High: 2 · Medium: 1 · Low: 1
 
-- [Medium] The commit message of "net/rds: free every path's transport
-  data on the passive create paths" claims that the passive-creation…
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the patch
-  encodes the correct create-time path count on the rollback exits while…
-- [High] This problem wasn't introduced by this patch, but the patch
-  extends the same wrong ordering to every path: on both rollback exits…
+- [Critical] rds_conn_path_quiesce() keeps
+  BUG_ON(!list_empty(&rm->m_sock_item)) (net/rds/connection.c:633) while…
+- [High] The new comment in rds_conn_path_quiesce()
+  (net/rds/connection.c:622-627) claims that after the cp_lock-protected…
+- [High] The rds_destroy_pending() refusal is nested inside `if
+  (rs->rs_snd_bytes < rds_sk_sndbuf(rs))` (net/rds/send.c:932, check at…
+- [Medium] The changelog ("a message added after the purge sits on the
+  queue of a quiesced connection holding the connection reference…
+- [Low] This patch repairs a regression created by the immediately
+  preceding patch of the same series, "net/rds: hold connection…
 
 --
 
-net/rds: free every path's transport data on the passive create paths
+net/rds: refuse to queue a message on a connection being destroyed
 
-This moves the per-path cp_transport_data free loop out of the
-lost-creation-race exit of __rds_conn_create() into a new helper,
-rds_conn_free_transport_data(), and calls that helper from both the
-passive-creation exit and the lost-race exit.
+This splices cp_send_queue away under cp_lock in rds_conn_path_quiesce()
+rather than walking it unlocked, and makes rds_send_queue_rm() test
+rds_destroy_pending() under cp_lock before it queues a message.  On
+refusal *queued is set to -EAGAIN and rds_sendmsg() returns that to the
+caller.
 
-A few questions about the change and about the surrounding code below.
+No Link: tags are present in the commit header.
+
+A few questions on this one.
+
+[Severity: Low]
+
+> rds_conn_path_quiesce() tears down cp_send_queue by walking it with no
+> lock held.  That was tolerable while a connection could only be
+> destroyed with no sender in flight, but a sender now holds a
+> reference across rds_sendmsg(), and rds_conn_destroy() can quiesce
+> the connection underneath it.
+
+The "now" here refers to the immediately preceding patch of this series,
+"net/rds: hold connection references in lookup, sockets and c_passive",
+which adds the rds_conn_get() that keeps the connection alive across
+rds_sendmsg().
+
+If that is right, then applying the series up to that commit leaves
+rds_conn_path_quiesce() walking cp_send_queue unlocked while a referenced
+sender can be adding to it under cp_lock, and a bisect landing there sees
+the list corruption described above.
+
+Would it make sense to fold this change into that patch, or to carry a
+Fixes: tag or an explicit dependency note?
+
+> diff --git a/net/rds/connection.c b/net/rds/connection.c
+> index 7ef6fb9d352b..e5a8534c23cf 100644
+> --- a/net/rds/connection.c
+> +++ b/net/rds/connection.c
+> @@ -606,6 +606,8 @@ void rds_conn_shutdown(struct rds_conn_path *cp)
+>  static void rds_conn_path_quiesce(struct rds_conn_path *cp)
+>  {
+>  	struct rds_message *rm, *rtmp;
+> +	unsigned long flags;
+> +	LIST_HEAD(purge);
+>  
+>  	if (!cp->cp_transport_data)
+>  		return;
+> @@ -617,10 +619,16 @@ static void rds_conn_shutdown(struct rds_conn_path *cp)
+>  	rds_conn_path_drop(cp, true);
+>  	flush_work(&cp->cp_down_w);
+>  
+> -	/* tear down queued messages */
+> -	list_for_each_entry_safe(rm, rtmp,
+> -				 &cp->cp_send_queue,
+> -				 m_conn_item) {
+> +	/* Tear down queued messages.  Take the queue under cp_lock:
+> +	 * a sender that still holds a reference can be inside
+> +	 * rds_send_queue_rm() right now, and it tests
+> +	 * rds_destroy_pending() under the same lock, so after this
+> +	 * splice nothing is added behind our back.
+> +	 */
+> +	spin_lock_irqsave(&cp->cp_lock, flags);
+> +	list_splice_init(&cp->cp_send_queue, &purge);
+> +	spin_unlock_irqrestore(&cp->cp_lock, flags);
+
+[Severity: High]
+
+Is "nothing is added behind our back" true for the other producer of
+cp_send_queue?  rds_send_probe() takes cp_lock and adds unconditionally,
+with no rds_destroy_pending() test before the add:
+
+net/rds/send.c:rds_send_probe() {
+	...
+	spin_lock_irqsave(&cp->cp_lock, flags);
+	list_add_tail(&rm->m_conn_item, &cp->cp_send_queue);
+	set_bit(RDS_MSG_ON_CONN, &rm->m_flags);
+	rds_message_addref(rm);
+	rm->m_inc.i_conn = cp->cp_conn;
+	rm->m_inc.i_conn_path = cp;
+	...
+	spin_unlock_irqrestore(&cp->cp_lock, flags);
+
+	/* schedule the send work on cp_wq */
+	rcu_read_lock();
+	if (!rds_destroy_pending(cp->cp_conn))
+		queue_delayed_work(cp->cp_wq, &cp->cp_send_w, 1);
+	rcu_read_unlock();
+	...
+}
+
+The destroy test there runs after the message is already linked, and only
+suppresses the work that could have drained it.
+
+This is reachable from the syscall being hardened here.  rds_sendmsg()
+calls rds_send_ping() -> rds_send_probe() for an mp-capable connection
+whose path 0 is down, before its own rds_destroy_pending() check:
+
+net/rds/send.c:rds_sendmsg() {
+	...
+	if (conn->c_trans->t_mp_capable &&
+	    !rds_conn_path_up(&conn->c_path[0])) {
+		...
+		rds_send_ping(conn, 0);
+	}
+	...
+	if (rds_destroy_pending(conn)) {
+		ret = -EAGAIN;
+		goto out;
+	}
+
+rds_send_pong() reaches the same code from the receive path.
+
+Since the quiesce splices once and never purges again, can a probe that
+lands after the splice sit on cp_send_queue forever with no worker to
+drain it?  That would leak the rds_message whose reference the queue
+holds, and leave rm->m_conn_item and rm->m_inc.i_conn_path pointing into
+the c_path array that rds_conn_destroy_fini() kfree()s.
+
+At the end of this series rds_send_probe() also takes rds_conn_get(), so
+would the same window then leak a connection reference and leave
+rds_conn_wait_conns_freed() waiting for a count that never drops, blocking
+transport unload?
+
+> +	list_for_each_entry_safe(rm, rtmp, &purge, m_conn_item) {
+>  		list_del_init(&rm->m_conn_item);
+>  		BUG_ON(!list_empty(&rm->m_sock_item));
+              ^^^^^^
+
+[Severity: Critical]
+
+Can this BUG_ON() fire in exactly the interleaving the changelog says is
+now handled ("A sender that gets there first has its message purged")?
+
+Every message rds_send_queue_rm() puts on cp_send_queue is linked on the
+socket send queue in the same critical section:
+
+net/rds/send.c:rds_send_queue_rm() {
+	...
+		list_add_tail(&rm->m_sock_item, &rs->rs_send_queue);
+		set_bit(RDS_MSG_ON_SOCK, &rm->m_flags);
+	...
+		list_add_tail(&rm->m_conn_item, &cp->cp_send_queue);
+		set_bit(RDS_MSG_ON_CONN, &rm->m_flags);
+}
+
+m_sock_item is emptied only by the ack path via
+rds_send_remove_from_sock(), or by rds_send_drop_to() / rds_release().
+Nothing in the destroy path does it.  rds_conn_path_quiesce() itself runs
+rds_conn_path_drop(cp, true) and flush_work(&cp->cp_down_w) first, and
+rds_conn_shutdown() -> rds_conn_path_reset() -> rds_send_path_reset()
+puts still socket-linked messages back on cp_send_queue:
+
+net/rds/send.c:rds_send_path_reset() {
+	...
+	list_splice_init(&cp->cp_retrans, &cp->cp_send_queue);
+	...
+}
+
+So an unacked message reaches this loop with a non-empty m_sock_item and
+panics the kernel.
+
+Independent of the panic, the loop drops the conn-side reference with
+list_del_init(&rm->m_conn_item) + rds_message_put(), but never clears
+RDS_MSG_ON_CONN and never undoes the socket-side state (the rs_snd_bytes
+charge, RDS_MSG_ON_SOCK, the extra rds_message_addref() and the
+sock_hold()).
+
+Because the flag stays set, does a later rds_send_drop_to() still pass
+here and issue a second put for the reference already released?
+
+net/rds/send.c:rds_send_drop_to() {
+	...
+		if (!test_and_clear_bit(RDS_MSG_ON_CONN, &rm->m_flags)) {
+			spin_unlock_irqrestore(&cp->cp_lock, flags);
+			continue;
+		}
+		list_del_init(&rm->m_conn_item);
+	...
+}
+
+That is a refcount_t underflow on rm->m_refcount and a premature free.
+And since that path holds cp_lock while the quiesce walks its private
+purge list with no lock at all, it can also list_del_init() an entry
+living on the purge list, so does the splice really establish the
+exclusive ownership the new comment claims?
+
+Should the purge clear RDS_MSG_ON_CONN under cp_lock and detach the
+message from its socket queue the way rds_send_drop_to() and
+rds_send_remove_from_sock() do, instead of asserting m_sock_item is empty?
+
+>  		rds_message_put(rm);
+>  	}
+
+> diff --git a/net/rds/send.c b/net/rds/send.c
+> index 1ae1f24c24e8..94d6ac174dde 100644
+> --- a/net/rds/send.c
+> +++ b/net/rds/send.c
+> @@ -928,6 +928,19 @@ static int rds_send_queue_rm(struct rds_sock *rs, struct rds_connection *conn,
+>  	 * and poll() now knows no more data can be sent.
+>  	 */
+>  	if (rs->rs_snd_bytes < rds_sk_sndbuf(rs)) {
+> +		/* rds_conn_path_quiesce() empties cp_send_queue under
+> +		 * cp_lock once the connection's destroy has begun.  Test
+> +		 * for that under the same lock, before touching either
+> +		 * queue: a message added after the purge would hold a
+> +		 * connection reference nothing ever drops.
+> +		 */
 
 [Severity: Medium]
 
->     The passive-connection
->     exit right above it, taken when a loopback parent already has its
->     c_passive twin, frees only path 0 and leaks the transport data of
->     paths 1..npaths-1.  RDS/TCP loopback is exactly a multipath passive
->     connection, so this is reachable.
+Does the connection reference this comment describes exist yet?  The same
+claim is in the changelog:
 
-Can the passive-creation exit actually be reached with npaths > 1 on this
-tree?
+> Worse, a message added after the purge sits on
+> the queue of a quiesced connection holding the connection reference
+> rds_send_queue_rm() took for it: the reference is only dropped when
+> the message is freed, the message is only freed when the queue is
+> torn down, and the queue is only torn down by the destroy that has
+> already run.  The connection would never be freed, and with it the
+> transport could never unload.
 
-parent is only ever assigned in __rds_conn_create() here:
+At this commit rds_send_queue_rm() takes only a message reference:
 
-	conn = rds_conn_lookup(net, head, laddr, faddr, trans, tos, dev_if);
-	if (conn &&
-	    conn->c_loopback &&
-	    conn->c_trans != &rds_loop_transport &&
-	    ipv6_addr_equal(laddr, faddr) &&
-	    !is_outgoing) {
-		parent = conn;
-		conn = parent->c_passive;
-	}
+net/rds/send.c:rds_send_queue_rm() {
+	...
+		rds_message_populate_header(&rm->m_inc.i_hdr, sport, dport, 0);
+		rm->m_inc.i_conn = conn;
+		rm->m_inc.i_conn_path = cp;
+		rds_message_addref(rm);
+	...
+}
 
-rds_conn_lookup() only matches conn->c_trans == trans, and npaths comes
-from that same trans:
+and rds_message_put() goes rds_message_purge() -> rds_message_free()
+without touching rm->m_inc.i_conn, so nothing here pins the connection.
+The rds_conn_get() with the "put in rds_message_put()" annotation only
+appears with the last patch of the series, "net/rds: hold a connection
+reference from struct rds_incoming".
 
-	int npaths = (trans->t_mp_capable ? RDS_MPATH_WORKERS : 1);
+The damage from a post-purge add in this tree state looks like a leaked
+rds_message plus a list linkage dangling into the c_path array that
+rds_conn_destroy_fini() kfree()s, not a connection that can never be
+freed.
 
-rds_tcp_transport is the only transport with t_mp_capable = 1, and it also
-sets t_prefer_loopback = 1, so a hash-resident conn with
-c_trans == &rds_tcp_transport and c_loopback == 1 does not seem
-constructible:
+Could the changelog and the comment be adjusted for the tree state they
+land in, or this patch ordered after the incoming-reference patch?
 
-	loop_trans = rds_trans_get_preferred(net, faddr, conn->c_dev_if);
-	if (loop_trans) {
-		rds_trans_put(loop_trans);
-		conn->c_loopback = 1;
-		if (trans->t_prefer_loopback) {
-			if (likely(is_outgoing)) {
-				trans = &rds_loop_transport;
-			} else {
-				...
-				conn = ERR_PTR(-EOPNOTSUPP);
-				goto out;
-			}
-		}
-	}
+> +		spin_lock(&cp->cp_lock);
+> +		if (rds_destroy_pending(conn)) {
+> +			spin_unlock(&cp->cp_lock);
+> +			*queued = -EAGAIN;
+> +			goto unlock;
+> +		}
+> +
 
-For the outgoing case the stored conn's c_trans becomes the loop transport,
-which the parent predicate explicitly excludes, and the incoming case never
-creates a conn at all.  IB sets neither flag, so an IB parent gives
-npaths == 1.
+[Severity: High]
 
-If that reasoning holds, the patched exit only ever runs with npaths == 1
-and the new loop is equivalent to the single trans->conn_free() it
-replaces.  Should the changelog describe this as hardening for future
-multipath passive transports rather than a reachable leak, and should the
-Fixes: 1c5113cf796b tag be dropped so this is not pulled into stable as a
-leak fix?
+The refusal is nested inside if (rs->rs_snd_bytes < rds_sk_sndbuf(rs)),
+so it only fires when send room exists.  Does that leave the blocked
+sender, the one the changelog is about, still waiting forever?
 
-> diff --git a/net/rds/connection.c b/net/rds/connection.c
-> index b6c4beb50eaf0..a96569a3ee9ad 100644
-> --- a/net/rds/connection.c
-> +++ b/net/rds/connection.c
-> @@ -161,6 +161,22 @@ static void __rds_conn_path_init(struct rds_connection *conn,
->  	cp->cp_flags = 0;
->  }
+With the send buffer full, rds_send_queue_rm() falls through and returns
+0, and rds_sendmsg() re-arms the wait with timeo == MAX_SCHEDULE_TIMEOUT
+on a blocking socket:
+
+net/rds/send.c:rds_sendmsg() {
+	...
+		timeo = wait_event_interruptible_timeout(*sk_sleep(sk),
+					rds_send_queue_rm(rs, conn, cpath, rm,
+							  rs->rs_bound_port,
+							  dport,
+							  &queued),
+					timeo);
+		...
+		if (timeo > 0 || timeo == MAX_SCHEDULE_TIMEOUT)
+			continue;
+	...
+}
+
+rs_snd_bytes is decremented only by rds_send_sndbuf_remove() from the ack
+path via rds_send_remove_from_sock(), or from rds_send_drop_to().  After
+the connection is quiesced no acks arrive, and the purge in
+rds_conn_path_quiesce() calls neither rds_send_sndbuf_remove() nor
+rds_wake_sk_sleep() - it only drops the conn-side message reference.
+
+So the wake condition can never become non-zero, and the new
+if (queued < 0) exit below is never evaluated.  Should the destroy test
+move outside the sndbuf-room branch, and should the purge release the
+sndbuf accounting and wake sk_sleep()?
+
+>  		rs->rs_snd_bytes += len;
 >  
-> +/* Undo trans->conn_alloc(): it may have allocated transport data for
-> + * every path of a multipath connection, not just for path 0.
-> + */
-> +static void rds_conn_free_transport_data(struct rds_connection *conn,
-> +					 int npaths)
-> +{
-> +	struct rds_conn_path *cp;
-> +	int i;
-> +
-> +	for (i = 0; i < npaths; i++) {
-> +		cp = &conn->c_path[i];
-> +		if (cp->cp_transport_data)
-> +			conn->c_trans->conn_free(cp->cp_transport_data);
+>  		/* let recv side know we are close to send space exhaustion.
+> @@ -951,7 +964,6 @@ static int rds_send_queue_rm(struct rds_sock *rs, struct rds_connection *conn,
+>  		rm->m_inc.i_conn_path = cp;
+>  		rds_message_addref(rm);
+>  
+> -		spin_lock(&cp->cp_lock);
+>  		rm->m_inc.i_hdr.h_sequence = cpu_to_be64(cp->cp_next_tx_seq++);
+>  		list_add_tail(&rm->m_conn_item, &cp->cp_send_queue);
+>  		set_bit(RDS_MSG_ON_CONN, &rm->m_flags);
+
+[ ... ]
+
+> @@ -1474,6 +1487,11 @@ int rds_sendmsg(struct socket *sock, struct msghdr *msg, size_t payload_len)
+>  			ret = -ETIMEDOUT;
+>  		goto out;
+>  	}
+> +	/* rds_send_queue_rm() refused: the connection is being destroyed */
+> +	if (queued < 0) {
+> +		ret = queued;
+> +		goto out;
 > +	}
-> +}
-> +
 
-[Severity: High]
-
-This isn't a bug introduced by this patch, but while the rollback exits now
-consistently use the create-time npaths, the teardown side still derives its
-own count from conn->c_trans, which may no longer be the transport npaths
-was computed from.
-
-Creation computes npaths from the caller-supplied trans and allocates one
-ordered workqueue per path:
-
-	int npaths = (trans->t_mp_capable ? RDS_MPATH_WORKERS : 1);
-	...
-	for (i = 0; i < npaths; i++) {
-		__rds_conn_path_init(conn, &conn->c_path[i], is_outgoing);
-		conn->c_path[i].cp_index = i;
-		conn->c_path[i].cp_wq = alloc_ordered_workqueue(...);
-
-but for an outgoing RDS/TCP connection to a local address trans is replaced
-before conn->c_trans is stored:
-
-	if (trans->t_prefer_loopback) {
-		if (likely(is_outgoing)) {
-			trans = &rds_loop_transport;
-
-rds_conn_destroy() then recomputes:
-
-	int npaths = (conn->c_trans->t_mp_capable ? RDS_MPATH_WORKERS : 1);
-
-rds_loop_transport is not t_mp_capable, so npaths is 1 there while 8 paths
-and 8 workqueues were created.  rds_conn_path_destroy() is the only caller
-of
-
-	if (cp->cp_wq != rds_wq) {
-		destroy_workqueue(cp->cp_wq);
-		cp->cp_wq = NULL;
-	}
-
-so does this leak the 7 remaining workqueue_structs (and their
-pool_workqueues) before kfree(conn->c_path), and also skip the per-path
-WARN_ON(delayed_work_pending())/BUG_ON(!list_empty(&cp->cp_retrans))
-checks?
-
-The reported trigger is: bind an RDS socket to a non-127 local address on
-lo (so rds_trans_get_preferred() picks rds_tcp_transport), sendmsg to that
-same address, then delete the netns so rds_loop_kill_conns() ->
-rds_conn_destroy() runs.  Cycling namespaces repeats it.
-
-rds_conn_message_info_cmn() derives the count the same way
-
-	npaths = (conn->c_trans->t_mp_capable ?
-		  RDS_MPATH_WORKERS : 1);
-
-so does it also under-report paths for these connections?  Would it be
-better to store the create-time path count in the connection (c_npaths)
-and have all consumers use that?
-
-> @@ -316,7 +332,7 @@ static struct rds_connection *__rds_conn_create(struct net *net,
->  	if (parent) {
->  		/* Creating passive conn */
->  		if (parent->c_passive) {
-> -			trans->conn_free(conn->c_path[0].cp_transport_data);
-> +			rds_conn_free_transport_data(conn, npaths);
->  			free_cp = conn->c_path;
->  			kmem_cache_free(rds_conn_slab, conn);
->  			conn = parent->c_passive;
-
-[Severity: High]
-
-This is a pre-existing ordering issue, but the patch now applies it to
-every path on both exits, so it seems worth asking about here.
-
-Both rollback exits free the transport data and the conn first, and the
-per-path workqueues are only destroyed later at out:
-
-	rds_conn_free_transport_data(conn, npaths);
-	free_cp = conn->c_path;
-	kmem_cache_free(rds_conn_slab, conn);
-	...
-out:
-	if (free_cp) {
-		for (i = 0; i < npaths; i++)
-			if (free_cp[i].cp_wq != rds_wq)
-				destroy_workqueue(free_cp[i].cp_wq);
-		kfree(free_cp);
-	}
-
-destroy_workqueue() drains work already queued on those workqueues, and the
-drained handlers dereference cp->cp_conn and cp->cp_transport_data, both
-already freed.  Can work be pending at that point?
-
-trans->conn_alloc() publishes the transport data on a transport-global list
-before the creation race is resolved:
-
-net/rds/ib_cm.c:rds_ib_conn_alloc() {
-	...
-	spin_lock_irqsave(&ib_nodev_conns_lock, flags);
-	list_add_tail(&ic->ib_node, &ib_nodev_conns);
-	spin_unlock_irqrestore(&ib_nodev_conns_lock, flags);
-}
-
-and an IB device add walks that list:
-
-net/rds/ib.c:rds_ib_nodev_connect() {
-	spin_lock(&ib_nodev_conns_lock);
-	list_for_each_entry(ic, &ib_nodev_conns, ib_node)
-		rds_conn_connect_if_down(ic->conn);
-	spin_unlock(&ib_nodev_conns_lock);
-}
-
-For a conn still inside __rds_conn_create(), cp_state is RDS_CONN_DOWN,
-cp_flags is 0 and rds_destroy_pending() is false, so
-rds_conn_path_connect_if_down() queues immediately:
-
-	if (rds_conn_path_state(cp) == RDS_CONN_DOWN &&
-	    !test_and_set_bit(RDS_RECONNECT_PENDING, &cp->cp_flags))
-		queue_delayed_work(cp->cp_wq, &cp->cp_conn_w, 0);
-
-If the creating thread then loses the race and takes one of these exits,
-destroy_workqueue() drains cp_conn_w and rds_connect_worker() reads
-conn = cp->cp_conn from the freed slab object and calls
-conn->c_trans->conn_path_connect(cp) through it.
-
-Would it be safer to destroy (and thereby drain) the per-path workqueues
-before freeing the transport data and the conn, so the order becomes
-destroy_workqueue() -> conn_free() -> kmem_cache_free()?
-
-Unlike rds_ib_destroy_nodev_conns() and rds_tcp_destroy_conns(), which are
-ordered by set_unloading plus synchronize_rcu(), and
-rds_tcp_sysctl_reset(), which skips conns with tc->t_sock == NULL,
-rds_ib_nodev_connect() has neither an RCU barrier nor a state filter that
-would exclude a mid-creation conn.  Is there something else that keeps it
-out of that list walk?
+Thanks for looking at these.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260914033719.138057-1-achender%40kernel.org
