@@ -1,601 +1,600 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E594516174
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 16:11:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789661505; cv=none; b=K2tpZ5hHqDnysuGHz8vxSWWMUF8/fZKuGni7sOKrpKO49X8+FQIWd2VC8oB0DNrCfFyhmLjk1CaOSI3ImvA6II1BcqM8mWGaMKOPiSZWhEr0mvCxoYuEPIHAUROZmcuD0umAn9F8kJwWKOfDjH38gDq9uTBvmDbALYgULtOW1BI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789661505; c=relaxed/simple;
-	bh=MAgHPugn9Mlm7BgzvpvgPqx3rEl1axLfGpnTHt/jbiE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=I9+O/g0B7YCkxsgFV0jfFoEJhXDVnvm20IIPPDu5r5ice72nv562/RA1BughmL6Ifzw5Mz8VLYS/2y8/ghnxxVuTVd5GSI6X5R6xsmzOL0npl02k+7E3KD11ETLzcYAtZ7lVqY5fF0d4ehE4MjPLnmhQi+utup6BnWYFQLqdnfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fdM+MhJK; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705274F4CEF
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 16:13:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.6
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789661641; cv=fail; b=ETrMLwgGWlvjiylTFEXkqPGxFlO+QvOsUdQSS1o5ntf1TmFA1e3fg3W/JBlcuB6oRWTTK8kf4MybwKYOiLDyClOILeisGl01rVPi85zbKHWcYG9/y0LNnso0FyKiry41y3AeCmpOxoJFZe+d4PzOXivGBw9R0suqjxtwGtOGilE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789661641; c=relaxed/simple;
+	bh=GrKOhBLU9BmxFgkHz/9Y7wOHpJQRV184UrB/a0yjrSw=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=o9fK+Aazd3ZkmmrVX/DRo2Qk2bBnw0+GPCVeH05KDl469gRlbUSJXAXN1GuB4wEdm1NM8NtKeBDQUSs+RKKAJ5dsiAB8yaLsYQLnEbi4Grc5n+2m7awhR99aUnPRJv0+ePeSB5Ohm6Wqw6qNLIU5dz6HcZL3u+RyjODYad71cas=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a6pO1Hfs; arc=fail smtp.client-ip=192.198.163.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fdM+MhJK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789661500;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=AA6ytuyu8e9Ag5D0RaaEukKBqabr/aQPMXklGmI2Eik=;
-	b=fdM+MhJKh/s/gecO3SHaCe1qcqg0n1BeWH3GQzmH7/Pts6W7EhfkMY/BifFgSfY3tB314I
-	JQf54d0DHjJPOB3K9CCFhIYbZS8bkEO9vdkzyEmO/nNzLyd6vXCXCRK55aGyuy687P8Ge8
-	YtTRRwLOxvDXKv60vt2mOtufBKo5ALk=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-676-BQ5JQ_usOLmv8vGo4VuQGw-1; Thu,
- 17 Sep 2026 12:11:36 -0400
-X-MC-Unique: BQ5JQ_usOLmv8vGo4VuQGw-1
-X-Mimecast-MFC-AGG-ID: BQ5JQ_usOLmv8vGo4VuQGw_1789661495
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2DD481802557;
-	Thu, 17 Sep 2026 16:11:35 +0000 (UTC)
-Received: from pabeni-thinkpadp1gen8.rmtit.csb (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3399B1800586;
-	Thu, 17 Sep 2026 16:11:32 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: torvalds@linux-foundation.org
-Cc: kuba@kernel.org,
-	davem@davemloft.net,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Networking for v7.3-rc4
-Date: Thu, 17 Sep 2026 18:11:23 +0200
-Message-ID: <20260917161123.383876-1-pabeni@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a6pO1Hfs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789661638; x=1821197638;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=GrKOhBLU9BmxFgkHz/9Y7wOHpJQRV184UrB/a0yjrSw=;
+  b=a6pO1HfsKCktmmk7VHcTx1R5mUTepdoUV6j/sGOHCZ4xMtiGOXHLOz4s
+   VkMOP1hsxiJ8Mde7pIHlkN+Q8y0Wa62ySO3is1sXb/7t0H4aaj+7AARbH
+   7FwzpLSRBV3w/P/Z3huG2WgfxidH65kxtYyM39FKi8qQVSLS6dsugMneE
+   VGC8fNaN2ZQ04MwXgdWhL4X7WoxCWXDjKF4eQ8ksjxCfnlBvwB475SY/z
+   FDKH409uLEddtHdX6Y0UGXfFTYynkDKVMFVkiTbA03Y+3tMOr1BW24D0V
+   liCNzBpLjWtgnwbNnc5U3DahlMsumiob1WEKJd3fjof/MABLNzZMQ8vNO
+   Q==;
+X-CSE-ConnectionGUID: l5Emqg2nTTWyvkk5voKoEw==
+X-CSE-MsgGUID: oWG0MTAUR0aeHvE+rl7fEQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="610622"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="610622"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+  by fmvoesa116.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 09:13:57 -0700
+X-CSE-ConnectionGUID: udVvj1IHRnKgFEKsuUxp0w==
+X-CSE-MsgGUID: vyZvk+YrSnKvZMSS5CurBg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="2085643"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa011.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 09:13:57 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Thu, 17 Sep 2026 09:13:54 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Thu, 17 Sep 2026 09:13:54 -0700
+Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.26) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Thu, 17 Sep 2026 09:13:53 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cR9MT4Jlh0M/4GwinroeVbw0ALvafkWmotm4b6Z9eZdQArp1bTaEe6UeENSqCn3BsOl96A4rceu+Saj3dd6h9diamHRlBbs8GcZdQy0CRJRcoHZG6uApKH+pDULrJYTmHNftUGJgLxElo/XqxNPRiO2go3fO7dJAM5YP4+7xvYUe7CHQB3/x8nAhIcp4uyfqiTFhS1KzRLr13sq6fu16LbVOQA1EHHvoGRWAzG4ky8i7+GRTlxgB7uRUYzdYhr4eyRr1Xmie8S4RF7iTlL0gXeUjszFkN18oQ2PTUxkm9JlsKmJyTaZiXS0ruSd+uO82NOkcGJ/zILcd+uzWKMrW2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FDUzzdUgHWhZjgDWE9lDumm5z9lP1rfww/uPJ2HhXx4=;
+ b=IHdfbKoVkyZqGYmZ+2+DYcJXiZcnPPZRUjlvqRKKTKn4c4AZ7PIZS0WyBEeMqJxOXvV5dmzqCAOMmRMk7mRHdgBZW1oQrRfT8TfwQcdksyLKpW1Ob3E7YDUhGo52pMtXjo8SNc46SZ9rbRFpDYc4FsD6PI8bdt9xsOdNaU/i/oF6k9tQIPfGY/7x04Y5Al2xdM2JNGntyxXOY2+WZxB/6ygDhjEk1++FXC5Sn6TDT0la+HKoDd70nkND8UpXevO8RR1qVuJ/7LM2FHAHyeMZS11FR62NAcj+C9VXCNwpLG7p4jPpDZqrUl9d97GV5xPooJxT/B3HxI4a6ZK8HLT6rQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com (2603:10b6:8:134::14)
+ by PH7PR11MB6882.namprd11.prod.outlook.com (2603:10b6:510:201::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Thu, 17 Sep
+ 2026 16:13:42 +0000
+Received: from DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58]) by DS0PR11MB7381.namprd11.prod.outlook.com
+ ([fe80::4c39:dfe6:d6dc:6f58%6]) with mapi id 15.21.0406.007; Thu, 17 Sep 2026
+ 16:13:41 +0000
+Message-ID: <5fbaadd4-9da0-4075-9fcd-476ec054e6f1@intel.com>
+Date: Thu, 17 Sep 2026 09:13:38 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 01/15] ice: use reference counting and RCU for PTP
+ port access
+To: Jakub Kicinski <kuba@kernel.org>, <anthony.l.nguyen@intel.com>
+CC: <davem@davemloft.net>, <pabeni@redhat.com>, <edumazet@google.com>,
+	<andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>,
+	<maciej.machnikowski@intel.com>, <przemyslaw.korba@intel.com>,
+	<grzegorz.nitka@intel.com>, <sergey.temerkhanov@intel.com>,
+	<arkadiusz.kubalewski@intel.com>, <poros@redhat.com>,
+	<richardcochran@gmail.com>, <horms@kernel.org>, <pmenzel@molgen.mpg.de>,
+	<aleksandr.loktionov@intel.com>, <alexander.nowlin@intel.com>
+References: <20260911003430.3386340-2-anthony.l.nguyen@intel.com>
+ <20260916011211.1632220-1-kuba@kernel.org>
+From: Jacob Keller <jacob.e.keller@intel.com>
+Content-Language: en-US
+In-Reply-To: <20260916011211.1632220-1-kuba@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR03CA0075.namprd03.prod.outlook.com
+ (2603:10b6:303:b6::20) To DS0PR11MB7381.namprd11.prod.outlook.com
+ (2603:10b6:8:134::14)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-
-Hi Linus!
-
-The following changes since commit 78445023439506ebd83b86d40b1e428a3b309d4a:
-
-  Merge tag 'net-7.3-rc3' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2026-09-10 14:07:48 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git net-7.3-rc4
-
-for you to fetch changes up to 3b95a04eb5f95bf6a016a1bb9ff37d3eee48de63:
-
-  Merge branch 'mptcp-misc-fixes-for-v7-3-rc4' (2026-09-17 08:14:39 -0700)
-
-----------------------------------------------------------------
-Including fixes from Netfilter, Bluetooth, IPSec and WiFi.
-
-Previous releases - regressions:
-
-  - netfilter: hold reference on ct until flow is released
-
-  - bridge:
-    - move switchdev call outside rcu
-    - vlan: fix bugs caused by switchdev deletion errors
-
-  - wifi:
-    - mac80211: reset state when starting AP fails
-    - cfg80211: don't free driver-owned scan requests
-
-  - tcp: don't call skb_clone_and_charge_r() for close()d listener in tcp_v6_do_rcv().
-
-  - mptcp: return sk_wait_data() errors from recvmsg()
-
-  - xfrm: serialize state GC with device state flush
-
-  - drop_monitor: synchronize tracepoint unregistration on error path
-
-  - bluetooth:
-    - eir: validate service data length before reading UUID
-    - hci_sync: serialize local codec list cleanup
-    - RFCOMM: avoid socket lock inversion in listener cleanup
-
-  - eth: lan743x: fix RX checksum use-after-free
-
-  - eth: mvpp2: prevent buffer overflow in page_pool allocation
-
-Previous releases - always broken:
-
-  - core: lock the socket in sock_gettstamp()
-
-  - neighbour: enforce min/max to NDTPA_INTERVAL_PROBE_TIME_MS.
-
-  - sched: codel: bound the dropping loop per dequeue call
-
-  - wifi: mac80211: include TIM bitmap control for buffered S1G mcast traffic
-
-  - psp: avoid conflicts with skb->decrypted and sk_validate_xmit_skb()
-
-  - xfrm: fix stack OOB read in iptfs_skb_reset_frag_walk()
-
-  - bluetooth: hci_qca: do not write to the serial port after it is closed
-
-  - dsa: mxl862xx: disable the stats poll on teardown
-
-  - eth: stmmac: fix TSO header length truncation
-
-  - eth: ip_tunnel: initialize `options_len` before referencing options
-
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-
-----------------------------------------------------------------
-Aamir Ahmed (1):
-      Bluetooth: eir: validate service data length before reading UUID
-
-Ahmed Naseef (1):
-      net: phy: mediatek: do not report link and per-speed LED rules together
-
-Aleksandr Nogikh (1):
-      xfrm: add missing RCU read lock in xfrm_send_migrate_state()
-
-Ali Ahmet Memis (1):
-      wifi: wilc1000: fix out-of-bounds read in P2P public action frames
-
-Andrea Mayer (1):
-      seg6: set IPSKB_L3SLAVE from IP6SKB_L3SLAVE on IPIP decapsulation
-
-Aohan Mei (1):
-      rds: ib: use rds_conn_drop() on protocol version mismatch
-
-Bogdan Nicolae (1):
-      wifi: brcmfmac: cyw: pass PMKID to firmware if present
-
-Cen Zhang (Microsoft Security FORGE Labs) (1):
-      xfrm: hold net_device reference under RCU in bundle creation
-
-Chandrashekar Devegowda (1):
-      Bluetooth: btintel_pcie: validate TX skb length in send_sync
-
-Chengfeng Ye (2):
-      xfrm: serialize state GC with device state flush
-      Bluetooth: hci_sync: Serialize local codec list cleanup
-
-Chris Lu (2):
-      Bluetooth: btmtk: fix wrong status for short WMT FUNC_CTRL events
-      Bluetooth: btmtksdio, btmtkuart: validate WMT event length before struct access
-
-Chunfeng Song (1):
-      rust: net: phy: fix off-by-one bit positions in device status accessors
-
-Daehyeon Ko (1):
-      wifi: libipw: reject TKIP frames without a full MIC
-
-Daniel Golle (1):
-      net: dsa: mxl862xx: disable the stats poll on teardown
-
-Daniel Zahka (2):
-      net: psp: avoid conflicts with skb->decrypted and sk_validate_xmit_skb()
-      selftests: drv-net: psp: test PSP and TCP ULP mutual exclusion
-
-Devin Wittmayer (1):
-      wifi: mac80211: refuse to make a monitor active when it has no queue
-
-Dmitriy Okunev (1):
-      net: mvpp2: prevent buffer overflow in page_pool allocation
-
-Dong Chenchen (1):
-      ipv4: icmp: reject RTN_UNREACHABLE input routes in icmp_route_lookup
-
-Doruk Tan Ozturk (1):
-      wifi: mwifiex: bound the pairwise-cipher OUI walk to the IE length
-
-Eric Dumazet (10):
-      xfrm: add missing rcu_read_lock(), skb_dst_force() and dev_hold() for xfrm_trans_reinject()
-      tcp: do not let tcp_rmem be set below 4096
-      pppoatm: ensure a writable skb header and linear data
-      drop_monitor: synchronize tracepoint unregistration on error path
-      drop_monitor: use timer_shutdown_sync() to prevent timer rearming during teardown
-      drop_monitor: use raw_cpu_ptr() in tracepoint probes
-      drop_monitor: fix out-of-bounds write in reset_per_cpu_data()
-      netlink: do not free nlk->groups while lockless readers can use it
-      net: lock the socket in sock_gettstamp()
-      net: skbuff: do not leave stale header offsets after pskb_carve()
-
-Fan Wu (1):
-      wifi: wcn36xx: Fix potential use-after-free in TX ack timer teardown
-
-Farhad Alemi (1):
-      net: remove WARN_ON_ONCE() from the dev_fill_forward_path() loop check
-
-Fernando Fernandez Mancera (1):
-      netfilter: nf_tables: fix device name and prefix match in hook lookup
-
-Gris Ge (1):
-      net: ip_tunnel: initialize `options_len` before referencing options
-
-Guanglei Zhu (3):
-      net: wwan: mhi_wwan_mbim: guard against a cyclic NDP chain
-      net: wwan: mhi_wwan_mbim: check skb_copy_bits() return value
-      net: wwan: t7xx: validate the netif index in t7xx_ccmni_recv_skb()
-
-Henry Martin (1):
-      xfrm: iptfs: fix runt reassembly panic from short inner tot_len
-
-Hohyun Sim (1):
-      net: fddi: skfp: fix NULL deref when setting the MAC address while down
-
-Ibrahim Abdelkader (1):
-      Bluetooth: hci_qca: Do not write to the serial port after it is closed
-
-Inbal Schussheim (2):
-      tcp: exclude old ACKs from tcp fast path
-      selftests: net: packetdrill: test exclusion of old ACK from TCP fast path
-
-Ivan Pustogarov (1):
-      wifi: mac80211: avoid out-of-bounds read for empty PREQ elements
-
-Jakub Kicinski (13):
-      Merge branch 'neighbour-small-fixes-for-rtm_-get-set-neightbl'
-      Merge tag 'nf-26-09-11' of git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf
-      Merge tag 'for-net-2026-09-15' of git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth
-      Merge branch 'af_unix-fix-inconsistent-scc_index'
-      Merge branch 'net-sched-fix-action-batch-deletion-cleanup'
-      Merge branch 'net-drop_monitor-fix-concurrency-issues-preemption-warning-and-buffer-overrun'
-      Merge tag 'ipsec-2026-09-16' of git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec
-      Merge tag 'wireless-2026-09-16' of https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless
-      eth: fbnic: ring the doorbell if a burst ends in a drop
-      Merge branch 'net-stmmac-restore-previous-state-if-tc_setup_dwmac510_mqprio-fails'
-      Merge branch 'net-psp-avoid-conflicts-with-skb-decrypted-and-sk_validate_xmit_skb'
-      dpll: reject a reference sync pin which is not on the pin's dpll
-      Merge branch 'mptcp-misc-fixes-for-v7-3-rc4'
-
-Jamal Hadi Salim (4):
-      net/sched: hhf: cap hh_flows_limit at change time
-      selftests/tc-testing: add hhf hh_limit cap tests
-      net/sched: codel: bound the dropping loop per dequeue call
-      selftests/tc-testing: add codel/fq_codel interval boundary cases
-
-James Clark (1):
-      net: macb: fix ordering around PTP timestamp read
-
-Jiangshan Yi (2):
-      wifi: libertas_tf: fix UAF in lbtf_free_adapter()
-      wifi: brcmsmac: fix UAF in brcms_free_timer()
-
-Johannes Berg (35):
-      .get_maintainer.ignore: add myself
-      wifi: cfg80211: don't get the radio mask for netdev-less wdevs
-      wifi: cfg80211: check IP header size in cfg80211_classify8021d()
-      wifi: cfg80211: don't free driver-owned scan requests
-      wifi: cfg80211: only group hidden BSSes with beacon entries
-      wifi: cfg80211: don't filter by BSS type when removing stale entries
-      wifi: cfg80211: ibss: ref BSS entry for joined event
-      wifi: cfg80211: fix NAN regulatory enforcement
-      wifi: cfg80211: reduce RTNL holding in regulatory enforcement
-      wifi: mac80211: don't apply peer rates to off-channel frames
-      wifi: mac80211: don't drop scan probe requests for lack of peer rates
-      wifi: mac80211: don't start a ROC while scanning
-      wifi: mac80211: don't warn when an IBSS has no channel to scan
-      wifi: mac80211: don't offload TC setup on AP_VLAN interfaces
-      wifi: mac80211: suppress chanctx warning for debugfs reset
-      wifi: mac80211: abort chanswitch when leaving a mesh
-      wifi: mac80211: reset state when starting AP fails
-      wifi: mac80211: reset the LED state when ifup fails
-      wifi: mac80211: only operate on TDLS peers in the TDLS code
-      wifi: cfg80211: restore netns_immutable on failures
-      wifi: cfg80211: undo netns switch if renaming the wiphy fails
-      wifi: mac80211: unlist vifs when their netdev is unregistered
-      wifi: cfg80211: get the wiphy out of a dying network namespace
-      wifi: mac80211_hwsim: don't hand frames to mac80211 while stopping
-      wifi: mac80211: don't allow injecting frames wider than the chanctx
-      wifi: mac80211: reset the AP_VLAN tailroom counter on ifdown
-      wifi: mac80211: require a peer station for TDLS setup confirm
-      wifi: mac80211: don't allow link changes when iface is down
-      wifi: mac80211: don't RCU-dereference the mesh CSA settings we just set
-      wifi: mac80211: don't access the TSF of a down interface
-      wifi: mac80211: add HE 6 GHz capability in the scan elems len
-      wifi: mac80211: mesh: reset the CSA state when leaving
-      wifi: mac80211: mesh: release the channel if start fails
-      wifi: mac80211: set up the TX info early to fix failure paths
-      Merge tag 'ath-current-20260914' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath
-
-Juan Perdomo (1):
-      Bluetooth: RFCOMM: avoid socket lock inversion in listener cleanup
-
-Karl Mehltretter (1):
-      wifi: brcmfmac: fix lost 802.1x TX completion wakeup
-
-Krzysztof Kozlowski (1):
-      wifi: ath12k: ahb: Revert undocumented ABI and dead code
-
-Kuniyuki Iwashima (7):
-      neighbour: Add missing RCU annotation for neightbl_dump_info().
-      neighbour: Enforce min/max to NDTPA_INTERVAL_PROBE_TIME_MS.
-      neighbour: Don't render blackhole_netdev via RTM_GETNEIGHTBL.
-      neighbour: Skip default parms when resumed in neightbl_dump_info().
-      tcp: Don't call skb_clone_and_charge_r() for close()d listener in tcp_v6_do_rcv().
-      af_unix: Unify scc_index when finalising SCC in __unix_walk_scc().
-      selftest: af_unix: Add test case with mixed lowpoint in scm_rights.c.
-
-Kyle Zeng (1):
-      xfrm: fix compat ALLOCSPI request use-after-free
-
-Lachlan Hodges (1):
-      wifi: mac80211: include TIM bitmap control for buffered S1G mcast traffic
-
-Laxman Acharya Padhya (1):
-      Bluetooth: hci_codec: validate vendor codec count length
-
-Linmao Li (1):
-      wifi: mwifiex: prevent authentication frame length truncation
-
-Linus Walleij (1):
-      net: ethernet: cortina: Ack RX overrun interrupt correctly
-
-Lorenzo Bianconi (4):
-      net: stmmac: fix TSO header length truncation
-      net: stmmac: do not overwrite phc_index when no PTP clock is registered
-      net: stmmac: propagate FPE preemption-class mapping errors
-      net: stmmac: preserve real_num_tx_queues on mqprio setup failure
-
-Luiz Augusto von Dentz (2):
-      Bluetooth: ISO: Fix parent socket leak in iso_conn_ready()
-      Bluetooth: ISO: set BT_LISTEN before requesting a BIG sync
-
-Maher Azzouzi (1):
-      esp: downgrade zerocopy managed frags before mutating skb frags
-
-Mariano Baragiola (1):
-      wifi: virt_wifi: free skb when disconnected
-
-Mark Amirkan (4):
-      net: lan743x: fix RX checksum use-after-free
-      net/packet: clear RX owner on VNET header error
-      mptcp: return sk_wait_data() errors from recvmsg()
-      net/packet: avoid truncating TPACKET_V3 private size
-
-Nicolai Buchwitz (1):
-      net: bcmgenet: restore the hardware filters on open
-
-Nicolas Escande (1):
-      wifi: ath11k: cleanup arsta in ath11k_mac_peer_cleanup_all()
-
-Nicolas Thibert (1):
-      Bluetooth: btusb: fix NXP IW610 composite device handling
-
-Nikolay Aleksandrov (2):
-      net: bridge: mst: move switchdev call outside rcu
-      net: bridge: vlan: fix bugs caused by switchdev deletion errors
-
-Pablo Neira Ayuso (2):
-      netfilter: nf_nat: unregister and release hooks on error
-      netfilter: flowtable: hold reference on ct until flow is released
-
-Paolo Abeni (4):
-      Merge branch 'tcp-exclude-old-acks-from-fast-path'
-      mptcp: avoid unneeded actions on subflow reset
-      mptcp: close race between scheduler and state change
-      mptcp: fix bad accounting in __mptcp_subflow_push_pending()
-
-Peng Hao (1):
-      wifi: mwifiex: fix IRQ leak using wrong index in MSI-X error path
-
-Pengpeng Hou (1):
-      wifi: mwifiex: validate scan response extents
-
-Radek Podgorny (2):
-      Bluetooth: put the peer's on-air address on air when we cannot resolve
-      Bluetooth: keep dst_type with dst when reusing an LE connection
-
-Rik van Riel (1):
-      wifi: mac80211: avoid WARN in set_bitrate_mask when sdata not in driver
-
-Roshan Kumar (1):
-      xfrm: iptfs: fix stack OOB read in iptfs_skb_reset_frag_walk()
-
-Runyu Xiao (1):
-      wifi: wlcore: release runtime PM ref on regdomain config failure
-
-Sai Teja Aluvala (1):
-      Bluetooth: btintel_pcie: fix off-by-one bounds check in RX submit
-
-Shengzhuo Wei (2):
-      wifi: p54: validate curve data length in the calibration curve converters
-      wifi: p54: require a full exp_if record in PDR_INTERFACE_LIST
-
-Shmulik Cohen (3):
-      wifi: libipw: reject too-short beacon and probe responses
-      wifi: libipw: reject too-short association responses
-      wifi: ipw2x00: bound management frame length to the receive buffer
-
-Siwei Zhang (1):
-      xfrm: use hlist_del_init_rcu for state_cache and state_cache_input
-
-Slawomir Stepien (4):
-      wifi: cfg80211: verify if AP_VLAN belongs to the correct AP
-      wifi: cfg80211: do not support direct add of station to AP_VLAN interfaces
-      wifi: cfg80211: move link_id validation earlier in nl80211_new_station()
-      wifi: cfg80211: check if AP has been started or joined a mesh before adding new station
-
-Stanislaw Gruszka (1):
-      wifi: iwlegacy: fix broadcast stations deallocation
-
-ThangNN99 (1):
-      Bluetooth: hci_core: Fix queuing tx_work after workqueue is drained
-
-Theodor Arsenij Larionov Trichkine (1):
-      netfilter: nft_nat: fully initialise new_addr in netmap setup
-
-Tianchu Chen (2):
-      wifi: rsi: fix heap OOB write on key removal
-      wifi: wilc1000: fix RX buffer OOB-write in wilc_wlan_handle_isr_ext()
-
-Tzung-Bi Shih (1):
-      Bluetooth: btmtksdio: Fix PM runtime reference leak in shutdown
-
-Weiming Shi (1):
-      Bluetooth: coredump: Quiesce dump work on unregister
-
-Wyatt Feng (1):
-      net: xfrm: reject unrepresentable espintcp transport headers
-
-Xuanqiang Luo (2):
-      net/sched: act_api: release tail references on DELACTION failure
-      selftests: tc-testing: test action batch deletion failure cleanup
-
-Yige Jiang (1):
-      net: netsec: fix device_node reference leak on phy_np
-
-Zhao Li (1):
-      wifi: mwifiex: validate action frame fixed fields
-
-Zhiling Zou (3):
-      ipv6: xfrm: use full sockets in local error paths
-      xfrm: save input state data before secpath resets
-      openvswitch: avoid reallocating confirmed conntrack labels
-
-Zihan Xi (1):
-      wifi: virt_wifi: don't transfer operstate before register
-
- .get_maintainer.ignore                             |   2 +
- Documentation/netlink/specs/rt-neigh.yaml          |   3 +
- Documentation/networking/ip-sysctl.rst             |   4 +-
- drivers/bluetooth/btintel_pcie.c                   |   8 +-
- drivers/bluetooth/btmtk.c                          |   7 +-
- drivers/bluetooth/btmtksdio.c                      |  24 +++-
- drivers/bluetooth/btmtkuart.c                      |  20 +++-
- drivers/bluetooth/btusb.c                          |  17 +++
- drivers/bluetooth/hci_qca.c                        |  14 ++-
- drivers/dpll/dpll_netlink.c                        |  17 ++-
- drivers/net/dsa/mxl862xx/mxl862xx.c                |  23 ++--
- drivers/net/ethernet/broadcom/genet/bcmgenet.c     |  19 ++-
- drivers/net/ethernet/cadence/macb_ptp.c            |   9 ++
- drivers/net/ethernet/cortina/gemini.c              |   2 +-
- drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c    |   3 +-
- drivers/net/ethernet/meta/fbnic/fbnic_txrx.c       |  42 +++++--
- drivers/net/ethernet/meta/fbnic/fbnic_txrx.h       |   9 +-
- drivers/net/ethernet/microchip/lan743x_main.c      |   2 +-
- drivers/net/ethernet/socionext/netsec.c            |   2 +
- drivers/net/ethernet/stmicro/stmmac/hwif.h         |   2 +-
- .../net/ethernet/stmicro/stmmac/stmmac_ethtool.c   |   2 -
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  |   6 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c    |  99 +++++++++++-----
- drivers/net/fddi/skfp/skfddi.c                     |   3 +-
- drivers/net/phy/mediatek/mtk-phy-lib.c             |  27 +++--
- drivers/net/wireless/ath/ath11k/mac.c              |  25 ++--
- drivers/net/wireless/ath/ath12k/wifi7/ahb.c        |  51 +-------
- drivers/net/wireless/ath/wcn36xx/dxe.c             |   2 +-
- .../wireless/broadcom/brcm80211/brcmfmac/core.c    |   2 +
- .../broadcom/brcm80211/brcmfmac/cyw/core.c         |   5 +-
- .../broadcom/brcm80211/brcmsmac/mac80211_if.c      |   4 +
- drivers/net/wireless/intel/ipw2x00/ipw2100.c       |   4 +-
- drivers/net/wireless/intel/ipw2x00/ipw2200.c       |   9 ++
- .../wireless/intel/ipw2x00/libipw_crypto_tkip.c    |  12 +-
- drivers/net/wireless/intel/ipw2x00/libipw_rx.c     |   6 +
- drivers/net/wireless/intel/iwlegacy/common.c       |   2 +-
- drivers/net/wireless/intersil/p54/eeprom.c         |  22 +++-
- drivers/net/wireless/marvell/libertas_tf/main.c    |   2 +-
- drivers/net/wireless/marvell/mwifiex/cfg80211.c    |  12 +-
- drivers/net/wireless/marvell/mwifiex/pcie.c        |   2 +-
- drivers/net/wireless/marvell/mwifiex/scan.c        |  54 ++++++---
- drivers/net/wireless/marvell/mwifiex/util.c        |  10 +-
- drivers/net/wireless/microchip/wilc1000/cfg80211.c |  14 +++
- drivers/net/wireless/microchip/wilc1000/wlan.c     |   9 ++
- drivers/net/wireless/rsi/rsi_91x_mgmt.c            |   2 -
- drivers/net/wireless/ti/wlcore/main.c              |   4 +-
- drivers/net/wireless/virtual/mac80211_hwsim_main.c |  39 ++++---
- drivers/net/wireless/virtual/virt_wifi.c           |   4 +-
- drivers/net/wwan/mhi_wwan_mbim.c                   |  28 +++--
- drivers/net/wwan/t7xx/t7xx_netdev.c                |   4 +
- include/linux/ieee80211-mesh.h                     |   4 +-
- include/net/bluetooth/coredump.h                   |   2 +
- include/net/codel.h                                |   5 +
- include/net/codel_impl.h                           |  16 ++-
- include/net/mac80211.h                             |   5 +-
- include/net/sock.h                                 |   2 +
- net/atm/pppoatm.c                                  |  42 +++----
- net/bluetooth/coredump.c                           |  65 +++++++----
- net/bluetooth/eir.c                                |  10 +-
- net/bluetooth/hci_codec.c                          |  36 +++---
- net/bluetooth/hci_conn.c                           |  21 ++++
- net/bluetooth/hci_core.c                           |  18 ++-
- net/bluetooth/hci_sync.c                           |   2 +
- net/bluetooth/iso.c                                |  53 +++++++--
- net/bluetooth/rfcomm/sock.c                        |  13 ++-
- net/bridge/br_mst.c                                |  20 ++--
- net/bridge/br_vlan.c                               |  31 +++--
- net/core/dev.c                                     |   2 +-
- net/core/drop_monitor.c                            |  18 +--
- net/core/neighbour.c                               |  35 ++++--
- net/core/skbuff.c                                  |  32 ++++-
- net/core/sock.c                                    |  16 ++-
- net/ipv4/esp4.c                                    |   6 +
- net/ipv4/icmp.c                                    |  17 +--
- net/ipv4/ip_tunnel_core.c                          |  16 ++-
- net/ipv4/sysctl_net_ipv4.c                         |   4 +-
- net/ipv4/tcp_input.c                               |   3 +-
- net/ipv4/tcp_ulp.c                                 |   4 +
- net/ipv6/esp6.c                                    |   6 +
- net/ipv6/seg6_local.c                              |   3 +
- net/ipv6/tcp_ipv6.c                                |   3 +-
- net/ipv6/xfrm6_output.c                            |  10 +-
- net/mac80211/cfg.c                                 |  18 ++-
- net/mac80211/debugfs.c                             |   2 +-
- net/mac80211/debugfs_netdev.c                      |   9 ++
- net/mac80211/ieee80211_i.h                         |   2 +-
- net/mac80211/iface.c                               |  39 ++++++-
- net/mac80211/main.c                                |   4 +
- net/mac80211/mesh.c                                |  34 ++++--
- net/mac80211/offchannel.c                          |   7 ++
- net/mac80211/pm.c                                  |   8 +-
- net/mac80211/rate.c                                |   8 ++
- net/mac80211/scan.c                                |   2 +-
- net/mac80211/tdls.c                                |  40 ++++---
- net/mac80211/tx.c                                  | 115 +++++++++++-------
- net/mptcp/protocol.c                               |  13 ++-
- net/mptcp/protocol.h                               |   3 +-
- net/mptcp/subflow.c                                |  11 ++
- net/netfilter/nf_flow_table_core.c                 |  12 +-
- net/netfilter/nf_nat_core.c                        |  46 +++++---
- net/netfilter/nf_tables_api.c                      |  22 ++--
- net/netfilter/nft_nat.c                            |   2 +-
- net/netlink/af_netlink.c                           |  42 +++++--
- net/netlink/diag.c                                 |  20 +++-
- net/openvswitch/conntrack.c                        |   2 +-
- net/packet/af_packet.c                             |   4 +-
- net/packet/internal.h                              |   2 +-
- net/psp/psp_sock.c                                 |   4 +
- net/rds/ib_cm.c                                    |   2 +-
- net/sched/act_api.c                                |  11 +-
- net/sched/sch_hhf.c                                |   9 +-
- net/unix/garbage.c                                 |  17 +--
- net/wireless/core.c                                | 129 +++++++++++++--------
- net/wireless/core.h                                |  18 ++-
- net/wireless/ibss.c                                |  36 +++---
- net/wireless/nl80211.c                             |  64 ++++++----
- net/wireless/rdev-ops.h                            |   3 +
- net/wireless/reg.c                                 |  52 +++++++--
- net/wireless/reg.h                                 |  16 +++
- net/wireless/scan.c                                |  43 +++++--
- net/wireless/util.c                                |  38 ++++--
- net/xfrm/espintcp.c                                |   6 +-
- net/xfrm/xfrm_input.c                              |  22 +++-
- net/xfrm/xfrm_iptfs.c                              |  12 +-
- net/xfrm/xfrm_policy.c                             |  20 +++-
- net/xfrm/xfrm_state.c                              |   9 +-
- net/xfrm/xfrm_user.c                               |  18 +--
- rust/kernel/net/phy.rs                             |  38 +++---
- tools/testing/selftests/drivers/net/config         |   1 +
- tools/testing/selftests/drivers/net/psp.py         |  46 ++++++++
- tools/testing/selftests/net/af_unix/scm_rights.c   |  17 +++
- .../net/packetdrill/tcp_rfc5961_reject-old-ack.pkt |  29 +++++
- .../tc-testing/tc-tests/actions/batch-delete.json  | 115 ++++++++++++++++++
- .../tc-testing/tc-tests/qdiscs/codel.json          |  72 ++++++++++++
- .../tc-testing/tc-tests/qdiscs/fq_codel.json       |  72 ++++++++++++
- .../tc-tests/qdiscs/hhf_flows_limit.json           | 128 ++++++++++++++++++++
- 136 files changed, 2059 insertions(+), 669 deletions(-)
- create mode 100644 tools/testing/selftests/net/packetdrill/tcp_rfc5961_reject-old-ack.pkt
- create mode 100644 tools/testing/selftests/tc-testing/tc-tests/actions/batch-delete.json
- create mode 100644 tools/testing/selftests/tc-testing/tc-tests/qdiscs/hhf_flows_limit.json
-
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7381:EE_|PH7PR11MB6882:EE_
+X-MS-Office365-Filtering-Correlation-Id: 34ecf47d-9796-4f2b-d6f2-08df14d6a3a0
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|376014|1800799024|7416014|366016|56012099006|18002099003|6133799003|22082099003|4143699003|11063799006|10067099003|5023799004;
+X-Microsoft-Antispam-Message-Info: QXnNgPddaTWjwJnmOap+guOuH69DGVBNLCqyJdKlnn29RLnbCLyTI/5kyCu0sGDShj0ixENED2gYqhOMbILn/IAGCmgB07S+eeQ1AsnHY2nj+GGLSkKOa3fePxaAV5TqkWUZzizCN96A4LGVOAXVEwrtL+uiJK91bhuTEj4G2AifuNk8aIlUUFyfYnc21Y3v+DHjjET7We1jC+vKXlFAGZ5Y6Xp0VAaEHm2VATbF7L8tkxVi6TRQIXqLZ2Rxa6jgzCa4jCXD59n+jTC8Tuu9ymQ5ZEJ+7bedZ+FZTbovqC/WvVDAtman0Wbbfib4vQlIvja7hqgdnhBg5pf9a0d2x33cahY0p/Q/jxz8xMlYm6f8bwU8CeW5Agz7UXkiwlAp33WxU3Z3mznxKkRs1VA6AnbvtzZP+wKlWTBz+8r/ruLvjo8OuCAtt+UpuEwKrCsbOky1Z86kayHYHsD88TXWAQmkFYvu4D9efidbPRtjvnI0VxrMXTGuu7Ndoq5oyXwdJTb5wkmtSBW46c7lCyy3BVD/XJxCrzdhxCk5V44Py4zA+QUnhDUKAO9s/f5mxHJAfMamVDn1Tv62bCWMqNE3qRZ/7oXIKlhezfKR2FLglFM0s5fIMZhGn71lRrheWTKcwQM8xXXWl5zGh+rzXd0ktdckr+PMtJqIkS1lvMRkZFs=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7381.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(7416014)(366016)(56012099006)(18002099003)(6133799003)(22082099003)(4143699003)(11063799006)(10067099003)(5023799004);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TzZobC9DemRUVWxIRzgvdlNkSVFDUHM5K3B1bHRIZ1JwNEVjMmFLMzVEZ3c1?=
+ =?utf-8?B?QkxwZjlIc09pODB5WXBxODkrYWJpclg4Sm4vYTdUUVNyT2VkYmdOS2ZsREVu?=
+ =?utf-8?B?WW5iMmpKbDlpTldIYUJrUmgxNDNHa2RjdjdSaHJjNXpUL3Q2bHFaWGNrZ29R?=
+ =?utf-8?B?V3Bjc05GNzB4SVpqNEJHOFJKMGRBOHdNYUhnSFFrWWs1T0cvb1hKcmFxeWln?=
+ =?utf-8?B?QS9GTUREajBGNUJ2Y3Y4aU9IQmU5L0hmRXVKR2kvS0hPMDFLRnZENWZVbFVl?=
+ =?utf-8?B?czN4em5yTW1lbWVnR2JkVytmdkpoeFYzdFJNWGlOZVAwQy8yMDYzb2RuaXBl?=
+ =?utf-8?B?MkpOWFJHdU5WTmxhWDQzMzBic1ZHbEkvQmlNNUpRV3N2b1NkMDNlRmdmSkcz?=
+ =?utf-8?B?VGc4YTdNK01Pd0JTR3kwbFFWL0M0Q0MwS1NHSTB2L3AvWXgvYzdURWN5ZTBo?=
+ =?utf-8?B?czQxc2hyMnBIWlo5WlQxNnJRelFkWUs2VzlKcjM3NExhelJmT2R6Qng2QWp5?=
+ =?utf-8?B?OVRNT0VuUTVrcFA5dmgwRXlLWG1jNkRmWkdMWExZU2wzYmw1MDJRR245aEVG?=
+ =?utf-8?B?YW5UNjNvM2JmUWpvbGtSWWZHbDZKZDQvTHZ3L0pIMWJ3TnJINEFSV0xBaGxk?=
+ =?utf-8?B?VFJGNjVTenJWaUh6TXR0Z0hPTXYvVFJkZjM5SGJxRlI2Y1JaQVlmbHltZVNZ?=
+ =?utf-8?B?cVdjcnRFNjF0bmphS3FKVlZoT1lkMG9YNzVEMllFVXBVTTZZTlFLL05CeWZj?=
+ =?utf-8?B?VkxFVlBvZ0NHYW5sZkNZTk5aU3l0WVRHOEJvcjF5NlZuVnQ2L1A1OXVkQVpC?=
+ =?utf-8?B?WlhvL3cyUEc5clNjTkw3WGJ4SS80ZnNRcU9XbWJZcFZTaTJNQlRuRWZPM0w3?=
+ =?utf-8?B?OE1NS2RsWUlwRVQ4RGROZjBlVE1ja2dxUjI4T0lwT3lpWUorVTgwbFpZYjhR?=
+ =?utf-8?B?SmZmZUkzKzVJaFZ3eEZEejVDZ1YyWTV1OUFsRnBkYlJmODNHUktOZjBvZnBT?=
+ =?utf-8?B?bFVXMGMyNExNYkFTQ0xweUhNb2wyQXRCVHZMdTVtaUUwYS9UREdjandnQ2Vj?=
+ =?utf-8?B?Qjl2M2sxN01pUTNnT0dLOWdZakovbGFDZGZWZ215eUhCYlhMKzJaZmFxZWJo?=
+ =?utf-8?B?REtsWkgyR0tKU3hLdW5XdHROSUpET1ova1EvZVNsTWpwSWZONEZkbnB2Ritz?=
+ =?utf-8?B?S044SmdoRXl6TzNlSWVuN2c2NDlRTzlIVkh3Rmx0WGdoeC9WU3F2czR0S3NJ?=
+ =?utf-8?B?SkxQQUtYNitlUXROMWxSWDhtcHhqMmx6aVdwLzk3Z3pqMUlNNTdQZ0xlQ3Vm?=
+ =?utf-8?B?eGJ3S1U2Mk1WRm9nb1dDMWFuY3pSZndCemhCOWM0L24wWlBDdHc1YmtUdW14?=
+ =?utf-8?B?RHFZSzB0UVV2aG5ONCtZY0xNeGxmRFpGaUVKdy8zTkpuL2hTTDc3elUyRURZ?=
+ =?utf-8?B?Z3lORjFjS1VvdExXbDhUUlh6SmpNT0IzNkJLSUV5bzJLeDRTcjUrZkxRSUJN?=
+ =?utf-8?B?UE4zdE54dFR1NFNCZlFnZWovamtwSHcyMUtqT1ZTSHdHVHBJOWo4MXNOVjdh?=
+ =?utf-8?B?MVdpSUtqWlBUVkxhbFJ2QmxReHVIcnMybnBCV1Eydzlzc2ZWbjRIU2o1Y3k2?=
+ =?utf-8?B?NGMvbWdIOUIzWi9NMFBIUHlKSEJTMklyWFJOSFpTVU1yVzVCTWR5TEIrRFYx?=
+ =?utf-8?B?MWJmUWVROU53ai8zVUt4bUwzbFpyQ0EzWmdUczlxcVQ2MFQxUy9HeldpVHp2?=
+ =?utf-8?B?UTdWSkVlU2RtbDkybzhXc2dlcnkvOUl1YkRKOUxmVm5ySlhvVnhROFJmNUNX?=
+ =?utf-8?B?V0V4TVZsazcrbk43bkJoWVJUY29yeTdXK3pTeDlObWZMb1piRTEwUlNML29C?=
+ =?utf-8?B?WkRDU1pDZUdkcjU5clJROGtDd25Ud1ZteTErMWhXRXRpbEdIQk9XaWZVZElS?=
+ =?utf-8?B?OUszbW0vT0ZhUTlnU0kxbmY3SXBZWjRJZHkvNHdLVDZucnhKZmVUL2FVK1dW?=
+ =?utf-8?B?anJVNlRCSFR6T0lGUkxyZ2x3ZjA2aVEzeTNWS0N4UE0vVEp4V1d1VDVBQ3BZ?=
+ =?utf-8?B?MnVQZXpNWWlBL21JaWc5c040MTZUMFF3eUVpdEtYRWNXV0hkTjdTdEZXS0R6?=
+ =?utf-8?B?RjZoeEprSzJpam5YcjZQZjEzM0hZV3N4OVR2cWtWeHRMM1NSWXZib0JBVTFy?=
+ =?utf-8?B?SmNCekJGdmxXTUdkdUlQWHhWL2dLYUQxNVpMcXh1NWVrcHpLNkJrVkVoUDRl?=
+ =?utf-8?B?OTltQXdKOGNzSE56aW5IR2dzMFNCa0R3TFNFanloRVljRDR1NjFXMm5IckFr?=
+ =?utf-8?B?NGtPYnBLWGU0WGNxU1lzaCtHWFVLc0tEVVhRQk5OZHpFdEtSNDFkTGlaRWxF?=
+ =?utf-8?Q?MtDjGszPixYa6Oh4=3D?=
+X-Exchange-RoutingPolicyChecked: zd0l8U0VBrXDVivcxGOSDzGd4qayQV6f3J8SQmK0EPIhMwp94dwZOi/VlJ1yR5i/M8+89JOL7EMFAkN7cQvXThoaNjmGw4RuVEs+JIBLGY0NbXuYmdW9oV6T7/lcV1VGXjT6Ja/u4msTIBGMLDAjzgKSlhzoSRVVXqPzzSl6NQtie7X+xjPxBYdPK0l9otgQy7lh1xYbYImo+vJH8rJxUM28zIukKj3O2uPbW20Appn3xaeNERKwlkhyVgipvRjE4OVdyOS+ijhNH+vUCh0xsscHnyKqc/FxZUeppq3ikAF0ZA72jygMZjsQvpaE1xI+PqXQ8p5if2xNOjwNyMl3TA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 34ecf47d-9796-4f2b-d6f2-08df14d6a3a0
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7381.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 16:13:41.2864
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5mTANt2vY8ibdh0/ZzlDOYliqsZtnaGNSW9to2gcOvS8oFVU1/xp323Zsa0fAoLU2515xqi63q6P3RwRvjK0katpvf2BWSE6G8I+r8cViwI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6882
+X-OriginatorOrg: intel.com
+
+On 9/15/2026 6:12 PM, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> ice: use reference counting and RCU for PTP port access
+> 
+> The adapter-wide PTP port list is converted from a mutex-protected list to
+> an RCU list plus a kref on each struct ice_ptp_port. Iterators either stay
+> inside a single RCU read section, or take a reference and drop RCU across
+> the per-port work. PF teardown unlinks the port, drops the primary
+> reference, waits (with a 15 second timeout) for the remaining references,
+> and then calls synchronize_rcu().
+> 
+> A couple of questions below about the new iteration pattern and about a
+> few lifetime claims in the commit message.
+> 
+>> The kref reference counter ensures that we can
+>> safely acquire pointers with a guarantee of their lifetime, ensuring the
+>> associated PF will not be removed until the reference is released.
+> 
+> [Severity: High]
+> 
+> This isn't a bug introduced by this patch, but does that sentence read
+> wider than the change actually is?  The new kref covers the port list
+> only; the other cross-PF pointer on the adapter is still unprotected:
+> > drivers/net/ethernet/intel/ice/ice_ptp.c:
+> static void ice_ptp_setup_adapter(struct ice_pf *pf)
+> {
+> 	pf->adapter->ctrl_pf = pf;
+> }
+> 
+> drivers/net/ethernet/intel/ice/ice.h:
+> static inline struct ice_pf *ice_get_ctrl_pf(struct ice_pf *pf)
+> {
+> 	return !pf->adapter ? NULL : pf->adapter->ctrl_pf;
+> }
+> 
+> grep over drivers/net/ethernet/intel/ice/ finds exactly one assignment of
+> ctrl_pf and no site that ever clears it.
+> 
+> If the clock owner PF is unbound while a sibling PF of the same adapter
+> stays bound, the ice_adapter survives on the sibling's refcount, but
+> ctrl_pf still points at the freed struct ice_pf.  Can a later tx-clk
+> change then dereference it?
+> 
+> drivers/net/ethernet/intel/ice/ice_txclk.c:ice_txclk_set_clk()
+> 	mutex_lock(&ctrl_pf->dplls.lock);
+> 	clk_in_use = ice_txclk_any_port_uses(ctrl_pf, phy, clk);
+> 
+> The IS_ERR_OR_NULL(ctrl_pf) checks in that file cannot detect a stale
+> non-NULL pointer.  Would it be worth stating in the commit message that
+> the new reference counting is scoped to the port list, so that ctrl_pf
+> isn't assumed to be covered?
+> 
+
+Yes, I'll update it. We have another developer working on fixing ctrl_pf.
+
+>> diff --git a/drivers/net/ethernet/intel/ice/ice_adapter.h b/drivers/net/ethernet/intel/ice/ice_adapter.h
+>> index 4f695f32da3d8..39923dedd534e 100644
+>> --- a/drivers/net/ethernet/intel/ice/ice_adapter.h
+>> +++ b/drivers/net/ethernet/intel/ice/ice_adapter.h
+>> @@ -19,13 +19,13 @@ struct ice_pf;
+>>   *
+>>   * This structure contains data used to maintain a list of adapter ports
+>>   *
+>> - * @ports: list of ports
+>> + * @list: list of ports
+>>   * @lock: protect access to the ports list
+>>   */
+>>  struct ice_port_list {
+>> -	struct list_head ports;
+>> +	struct list_head list;
+>>  	/* To synchronize the ports list operations */
+>> -	struct mutex lock;
+>> +	spinlock_t lock;
+>>  };
+> 
+> [Severity: Low]
+> 
+> This isn't a bug, but should the kernel-doc be updated along with the
+> locking model?  After this patch, ports.lock is taken only around
+> list_add_rcu() in ice_ptp_setup_pf() and list_del_rcu() in
+> ice_ptp_cleanup_pf(); all five traversal sites in ice_ptp.c use
+> rcu_read_lock() plus list_for_each_entry_rcu() and never take the lock.
+> 
+> The comments still say "@lock: protect access to the ports list" and "To
+> synchronize the ports list operations", which reads as if holding the lock
+> were required (or sufficient) for iteration.  Would it help to note that
+> the list is RCU-protected for readers, and that readers which leave the
+> RCU section must hold a port reference?
+> 
+
+Yep, I'll update this.
+
+>> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+>> index eaec36ab6ae3f..b12181b8c8434 100644
+>> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
+>> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+> 
+> [ ... ]
+> 
+>> @@ -673,20 +675,33 @@ static void ice_ptp_process_tx_tstamp(struct ice_ptp_tx *tx)
+>>  	pf->ptp.tx_hwtstamp_good += tstamp_good;
+>>  }
+>>  
+>> +static void ice_ptp_release_port_rcu(struct kref *ref)
+>> +{
+>> +	wake_up_var(ref);
+>> +}
+>> +
+>>  static void ice_ptp_tx_tstamp_owner(struct ice_pf *pf)
+>>  {
+>>  	struct ice_ptp_port *port;
+>>  
+>> -	mutex_lock(&pf->adapter->ports.lock);
+>> -	list_for_each_entry(port, &pf->adapter->ports.ports, list_node) {
+>> +	rcu_read_lock();
+>> +	list_for_each_entry_rcu(port, &pf->adapter->ports.list, list_node) {
+>>  		struct ice_ptp_tx *tx = &port->tx;
+>>  
+>> -		if (!tx || !tx->init)
+>> +		if (!tx->init)
+>>  			continue;
+>>  
+>> +		if (!kref_get_unless_zero(&port->ref))
+>> +			continue;
+>> +
+>> +		rcu_read_unlock();
+>> +
+>>  		ice_ptp_process_tx_tstamp(tx);
+>> +
+>> +		rcu_read_lock();
+>> +		kref_put(&port->ref, ice_ptp_release_port_rcu);
+>>  	}
+>> -	mutex_unlock(&pf->adapter->ports.lock);
+>> +	rcu_read_unlock();
+>>  }
+> 
+> [Severity: High]
+> 
+> Is the loop advance still safe here?  The kref is held on the current port
+> only, and the for-loop advance reads port->list_node.next after the RCU
+> read section has been reopened.  list_del_rcu() only updates the
+> neighbours, so the removed entry's next pointer keeps pointing at its old
+> successor, and ice_ptp_cleanup_pf() unlinks before it drains references:
+> 
+> 	spin_lock(&pf->adapter->ports.lock);
+> 	list_del_rcu(&ptp->port.list_node);
+> 	spin_unlock(&pf->adapter->ports.lock);
+> 
+> 	ref = &ptp->port.ref;
+> 	kref_put(ref, ice_ptp_release_port_rcu);
+> 
+> Can this sequence happen with two functions of the same adapter, where
+> port B follows port A in the list?
+> 
+> CPU0 (clock owner, ice_ptp_tx_tstamp_owner())
+> 	kref_get_unless_zero(&portA->ref);
+> 	rcu_read_unlock();
+> 	ice_ptp_process_tx_tstamp(&portA->tx);   /* long PHY access */
+> 
+> CPU1 (unbind of the PF owning port B)
+> 	ice_ptp_cleanup_pf()
+> 	  list_del_rcu(&portB->list_node);
+> 	  kref_put(&portB->ref, ...);            /* refcount reaches 0 */
+> 	  wait_var_event_timeout(...)            /* returns immediately */
+> 	  synchronize_rcu();                     /* CPU0 holds no RCU lock */
+> 	... struct ice_pf of B (which embeds portB) is freed
+> 
+> CPU0
+> 	rcu_read_lock();
+> 	kref_put(&portA->ref, ice_ptp_release_port_rcu);
+> 	/* loop advance: */
+> 	pos = list_entry_rcu(portA->list_node.next, ...);  /* freed portB */
+> 	if (!tx->init)                        /* read of freed memory */
+> 	kref_get_unless_zero(&portB->ref)     /* cmpxchg on freed memory */
+> 
+> The same drop-RCU-inside-the-loop pattern appears in
+> ice_ptp_flush_all_tx_tracker(), ice_ptp_restart_all_phy() and
+> ice_ptp_prepare_rebuild_sec() below, and the windows there are wide
+> (ice_ptp_port_phy_restart() takes ps_lock and reprograms the PHY).
+> 
+> Note that ice_ptp_tx_tstamp_owner() previously held ports.lock across the
+> entire iteration, so this particular hazard is new for that function.
+> Would taking a reference on the next entry before dropping RCU, or keeping
+> the whole iteration inside one RCU read section, close this?
+> 
+
+I'm switching to SRCU to allow holding the RCU critical section over the
+entire sequences instead. We can't use regular rcu_read_lock() for that
+because operations sleep.
+>>  /**
+>> @@ -808,8 +823,16 @@ ice_ptp_flush_all_tx_tracker(struct ice_pf *pf)
+>>  {
+>>  	struct ice_ptp_port *port;
+>>  
+>> -	list_for_each_entry(port, &pf->adapter->ports.ports, list_node)
+>> +	rcu_read_lock();
+>> +	list_for_each_entry_rcu(port, &pf->adapter->ports.list, list_node) {
+>> +		if (!kref_get_unless_zero(&port->ref))
+>> +			continue;
+>> +		rcu_read_unlock();
+>>  		ice_ptp_flush_tx_tracker(ptp_port_to_pf(port), &port->tx);
+>> +		rcu_read_lock();
+>> +		kref_put(&port->ref, ice_ptp_release_port_rcu);
+>> +	}
+>> +	rcu_read_unlock();
+>>  }
+> 
+> [Severity: Medium]
+> 
+> This is a pre-existing issue, not something this patch introduces, but
+> does the new port reference also cover the Tx tracker allocations reached
+> through the port?  At this commit a peer reset frees them while the port
+> stays linked in the list:
+> 
+> ice_ptp_prepare_for_reset()
+> 	ice_ptp_release_tx_tracker(pf, &pf->ptp.port.tx);
+> 
+
+Thats actually a bug that is fixed in this series, as we modified the
+reset flow to avoid needing to release the tracker but accidentally
+forgot to remove this cleanup.
+
+> ice_ptp_release_tx_tracker()
+> 	synchronize_irq(pf->oicr_irq.virq);
+> 	ice_ptp_flush_tx_tracker(pf, tx);
+> 	kfree(tx->tstamps);
+> 
+> The synchronize_irq() is on the peer's own OICR vector, which does not
+> exclude the clock owner's IRQ thread in ICE_PTP_TX_INTERRUPT_ALL mode, and
+> the owner samples port->tx.init without tx->lock before calling
+> ice_ptp_process_tx_tstamp() or ice_ptp_flush_tx_tracker() on that peer
+> port.  Since the port is never unlinked in this path, the kref drain in
+> ice_ptp_cleanup_pf() does not apply.
+> 
+> The triggering call is removed later in the series by "ice: fix removal of
+> PTP timestamp tracker during reset", after which
+> ice_ptp_release_tx_tracker() only runs from ice_ptp_release() once
+> ice_ptp_cleanup_pf() has unlinked the port and drained references.
+> 
+
+Yep this is correct. We could re-order the series I suppose but I think
+its ok as-is.
+
+>>  /**
+> 
+> [ ... ]
+> 
+>> @@ -1424,16 +1453,21 @@ static void ice_ptp_reset_phy_timestamping(struct ice_pf *pf)
+>>   */
+>>  static void ice_ptp_restart_all_phy(struct ice_pf *pf)
+>>  {
+>> -	struct list_head *entry;
+>> +	struct ice_ptp_port *port;
+>>  
+>> -	list_for_each(entry, &pf->adapter->ports.ports) {
+>> -		struct ice_ptp_port *port = list_entry(entry,
+>> -						       struct ice_ptp_port,
+>> -						       list_node);
+>> +	rcu_read_lock();
+>> +	list_for_each_entry_rcu(port, &pf->adapter->ports.list, list_node) {
+>> +		if (!kref_get_unless_zero(&port->ref))
+>> +			continue;
+>> +		rcu_read_unlock();
+>>  
+>>  		if (port->link_up)
+>>  			ice_ptp_port_phy_restart(port);
+>> +
+>> +		rcu_read_lock();
+>> +		kref_put(&port->ref, ice_ptp_release_port_rcu);
+>>  	}
+>> +	rcu_read_unlock();
+>>  }
+> 
+> [ ... ]
+> 
+>> @@ -2890,14 +2924,16 @@ void ice_ptp_queue_work(struct ice_pf *pf)
+>>  static void ice_ptp_prepare_rebuild_sec(struct ice_pf *pf, bool rebuild,
+>>  					enum ice_reset_req reset_type)
+>>  {
+>> -	struct list_head *entry;
+>> +	struct ice_ptp_port *port;
+>>  
+>> -	list_for_each(entry, &pf->adapter->ports.ports) {
+>> -		struct ice_ptp_port *port = list_entry(entry,
+>> -						       struct ice_ptp_port,
+>> -						       list_node);
+>> +	rcu_read_lock();
+>> +	list_for_each_entry_rcu(port, &pf->adapter->ports.list, list_node) {
+>>  		struct ice_pf *peer_pf = ptp_port_to_pf(port);
+>>  
+>> +		if (!kref_get_unless_zero(&port->ref))
+>> +			continue;
+>> +		rcu_read_unlock();
+>> +
+> 
+> [ ... ]
+> 
+>> @@ -3086,11 +3126,11 @@ static int ice_ptp_setup_pf(struct ice_pf *pf)
+>>  		return -ENODEV;
+>>  
+>>  	INIT_LIST_HEAD(&ptp->port.list_node);
+>> -	mutex_lock(&pf->adapter->ports.lock);
+>> +	kref_init(&ptp->port.ref);
+>>  
+>> -	list_add(&ptp->port.list_node,
+>> -		 &pf->adapter->ports.ports);
+>> -	mutex_unlock(&pf->adapter->ports.lock);
+>> +	spin_lock(&pf->adapter->ports.lock);
+>> +	list_add_rcu(&ptp->port.list_node, &pf->adapter->ports.list);
+>> +	spin_unlock(&pf->adapter->ports.lock);
+> 
+> [Severity: Medium]
+> 
+> This isn't introduced by this patch, but is every successful
+> ice_ptp_setup_pf() matched by an ice_ptp_cleanup_pf() at this commit?  In
+> ice_ptp_init():
+> 
+> 	ptp->state = ICE_PTP_READY;
+> 
+> 	err = ice_ptp_init_work(pf, ptp);
+> 	if (err)
+> 		goto err_exit;
+> 	...
+> err_clean_pf:
+> 	mutex_destroy(&ptp->port.ps_lock);
+> 	ice_ptp_cleanup_pf(pf);
+> err_exit:
+> 	...
+> 	ptp->state = ICE_PTP_UNINIT;
+> 
+> The err_exit path skips ice_ptp_cleanup_pf() and leaves the state at
+> ICE_PTP_UNINIT, and ice_ptp_release() then does:
+> 
+> 	if (pf->ptp.state == ICE_PTP_UNINIT)
+> 		return;
+> 
+> So if kthread_run_worker() in ice_ptp_init_work() fails, does the port stay
+> linked on adapter->ports.list with its primary reference held, inside
+> memory that is freed at PF removal?  That would also leave
+> kref_get_unless_zero() succeeding on freed memory for every peer iterating
+> the list, and should trip WARN_ON(!list_empty(&adapter->ports.list)) in
+> ice_adapter_free().
+> 
+> This is fixed later in the series by "ice: call PTP link change only from
+> link events", which moves ice_ptp_init_work() before the state assignment
+> and sends its failure path to err_clean_pf.
+> 
+>>  
+>>  	/* Seed the per-PHY Tx reference clock usage map for this port.
+>>  	 * Only meaningful on E825 (other MAC types don't expose tx-clk
+>> @@ -3113,12 +3153,32 @@ static int ice_ptp_setup_pf(struct ice_pf *pf)
+>>  static void ice_ptp_cleanup_pf(struct ice_pf *pf)
+>>  {
+>>  	struct ice_ptp *ptp = &pf->ptp;
+>> +	struct kref *ref;
+>>  
+>> -	if (pf->hw.mac_type != ICE_MAC_UNKNOWN) {
+>> -		mutex_lock(&pf->adapter->ports.lock);
+>> -		list_del(&ptp->port.list_node);
+>> -		mutex_unlock(&pf->adapter->ports.lock);
+>> -	}
+>> +	if (pf->hw.mac_type == ICE_MAC_UNKNOWN)
+>> +		return;
+>> +
+>> +	/* The PF cannot be removed until there are no more remaining
+>> +	 * outstanding references to the PTP port. To make sure this is true,
+>> +	 * first remove the port from the list, then drop the primary
+>> +	 * reference this PF holds on the port. Once done, wait until all
+>> +	 * existing references are dropped. Finally, synchronize_rcu() to
+>> +	 * ensure that all RCU critical sections that might attempt to
+>> +	 * dereference the port are finished.
+>> +	 */
+> 
+> [Severity: Low]
+> 
+> The commit message describes the 15 second timeout and the tradeoff it
+> accepts, but this comment says the PF "cannot be removed until there are no
+> more remaining outstanding references" and that the code will "wait until
+> all existing references are dropped".  Should the comment mention the
+> timeout, since teardown continues after the dev_WARN_ONCE() with a nonzero
+> reference count?
+> 
+
+I can update the comment.
+
+>> +
+>> +	spin_lock(&pf->adapter->ports.lock);
+>> +	list_del_rcu(&ptp->port.list_node);
+>> +	spin_unlock(&pf->adapter->ports.lock);
+>> +
+>> +	ref = &ptp->port.ref;
+>> +	kref_put(ref, ice_ptp_release_port_rcu);
+>> +
+>> +	dev_WARN_ONCE(ice_pf_to_dev(pf),
+>> +		      !wait_var_event_timeout(ref, !kref_read(ref), 15 * HZ),
+>> +		      "Timed out waiting for port references to release. Continuing to unload anyways.");
+>> +
+>> +	synchronize_rcu();
+>>  }
+> 
+> [Severity: Low]
+> 
+> This is a pre-existing ordering issue, not something this patch changes,
+> but now that ice_ptp_cleanup_pf() is the reference/RCU barrier, would it
+> make sense to call it before destroying port members?  Both teardown paths
+> currently do the opposite:
+> 
+> ice_ptp_init():
+> err_clean_pf:
+> 	mutex_destroy(&ptp->port.ps_lock);
+> 	ice_ptp_cleanup_pf(pf);
+> 
+> ice_ptp_release():
+> 	if (pf->ptp.state != ICE_PTP_READY) {
+> 		mutex_destroy(&pf->ptp.port.ps_lock);
+> 		ice_ptp_cleanup_pf(pf);
+> 
+> In that window the port is still published on adapter->ports.list with its
+> primary reference held, so a peer in ice_ptp_restart_all_phy() or
+> ice_ptp_prepare_rebuild_sec() can take a reference and reach
+> mutex_lock(&ptp_port->ps_lock) on the destroyed mutex.  With
+> CONFIG_DEBUG_MUTEXES that is a DEBUG_LOCKS_WARN_ON splat rather than
+> corruption, since mutex_destroy() only clears lock->magic, but swapping the
+> two calls would keep cleanup_pf() as the single teardown point.
+> 
+> [ ... ]
+
+Yes that makes sense. Will fix.
