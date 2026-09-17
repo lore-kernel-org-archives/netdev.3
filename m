@@ -1,318 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C739440DB49;
-	Thu, 17 Sep 2026 20:50:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192523F58E9;
+	Thu, 17 Sep 2026 20:55:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.135.140.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789678209; cv=none; b=ZNyjrn4a+BEebkk3UAx+FEkZ+DxJcJ7Ga007hFLA9LaHJgGfGXnuBVE+zpRmzmXIHqBJaZOvtqhRq6YPnoRa0ckZN4RSQINVJk//ymANcx6RwZqeFonGsSPVbdriWNKPzVJtn+jN2YHZ44BHzRRacR8sMs+WNIkMQ5NBoKk3E+c=
+	t=1789678506; cv=none; b=h1BQMSe//wzBZe3+n+n12LxHJYMI2B6ON9NYfRV5knvuOzL8UqW6gN3nt1x9/06fMuV7MeDTdbrMc9gZ99CBfO1mS0Ilya+alW2vtqzU9dU5xiRdcQYYpNrWBFsrkFtHWJv5FmUvg5KQMlLjXMm1u7D8x3IoWkDCK1ATn/mglEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789678209; c=relaxed/simple;
-	bh=3I67ru3zQ6JSYfl7FI9SD3hBhP7MbAKufd5kUe3hRFM=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=br2E9Whc2R2n9SCCV7N2Cnok93rX36FzZadSXgu/VB8VaqNStPckwpXdtrHXhcTsn95+8nTk1Fnp8gPc0Q4r57CdCzlLI0Rsu9jZFGEInwwNzqz+bRIYRsUfwg5zdBiIjzzM/bFmnkADcBWxFGS8ZgokDncof0ugxSLrReEGy14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gUihnvQo; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789678506; c=relaxed/simple;
+	bh=enyDOQeYSkPasbMj0OxVLJZTXTL7rrrFME0koTlQWQ8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n33v+t6Bnn7wg/qBMTktqKABaohlEVzOmtmfNbgGwZ9JiCPiffJ+k+b+mxSxkvFELcCl1poTyYUHOS6XEL7JMKKrA9La9Prk7eCypKimMKRPM62JP1DUFHcj8p2j+SkhirKq3xux/UKuEvUw9A6NpJ7PQMAfDRtQQqLFHv+15os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=none smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=L8OXyVb1; arc=none smtp.client-ip=5.135.140.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cjdns.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gUihnvQo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85AB81F00893;
-	Thu, 17 Sep 2026 20:50:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789678206;
-	bh=nTkTs7INuJGhkrArkZI4GklS4lL5iFoE1EJCsFhI22E=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=gUihnvQoUCYhNeNds6EwHbtB6HXVklmR2OeRHtpnRQWqk4qcpQO3+5dJYVC6AO8Q5
-	 UHmyPGu//gdn31QNMqDUj2aek87axpqE02Nw799+bge9/ka2Ff2YpIpwpBEAMWsoAn
-	 Ze4OrhZtSW0dx6gfRbsfFprhxrHNexNgQV0OMbObCtjlRzZWobQCJvhS72abWfBaQ8
-	 8dY+WIAhPQ446WRVaMk9i1edeZNWUKfQU8dxUUYoAL0iPO15US1efPefSSliNH6AVd
-	 ttZjxVREsjYD366cEBy9VXc4weIJrnLzt7SddR/y7s6c15phbcDQjdL11bln3UA+ly
-	 GRehBBBToAO9Q==
-Subject: Re: [PATCH] net: sxgbe: dispose IRQ mappings on device removal
-From: netdev-bot+sashiko@kernel.org
-To: lgs201920130244@gmail.com
-Cc: bh74.an@samsung.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- siva.kallam@samsung.com, vipul.pandya@samsung.com, ks.giri@samsung.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Thu, 17 Sep 2026 20:50:05 +0000
-Message-ID: <178967820509.22033.14956659662376868592@kernel.org>
-In-Reply-To: <20260916054841.2908429-1-lgs201920130244@gmail.com>
-References: <20260916054841.2908429-1-lgs201920130244@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="L8OXyVb1"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 88CBD4CDF79;
+	Thu, 17 Sep 2026 22:54:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
+	t=1789678500; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=/zXG8zjcLwtXi03aCja2HV2NYr13r4XXU/kOwJzkeS8=;
+	b=L8OXyVb1k1J3R5VFFs5O4XCf57OuErk3xA8ezm9OQWBzgBam/ttJMdq3v70gen92xF1e4+
+	catSQc3qCk2476V48vyIs4GkCscql7LiFPunWI6APEBCrybHzRnpDR13VO3ZaYX0vV3qIu
+	MpPC1P8dg4WI2xALxE5qVipzOr3DumNu+WC1HXZ6BhAE0FrZEPYgP4Nmo0L6f93sstr5Oo
+	BdEEMyL8hJJW7IjG5ZU9hIcJGzG4spttIXF9nvRdzkOMlaZOuINco8bx/Fm8eKm4EezyaV
+	eE/hF99EUx2pTBAiK8bzJBwBkooUkHpGsVwZTb9ZqhSwyUUicyYRkfLVYOJwDg==
+Message-ID: <89252048-b0d9-4fe3-97c0-92bcd083c751@cjdns.fr>
+Date: Thu, 17 Sep 2026 22:54:48 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v5 net-next] net: phy: mediatek: support MT7530 PHYs on
+ EN71221 MCM
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: netdev@vger.kernel.org, dqfext@gmail.com, SkyLake.Huang@mediatek.com,
+ andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ Matheus Sampaio Queiroga <srherobrine20@gmail.com>
+References: <20260915113427.113296-1-cjd@cjdns.fr>
+ <aqkwYd5dTmHDCIW9@makrotopia.org>
+ <2a7edfd0-b784-4b60-b9f9-769fe00286b7@cjdns.fr>
+ <aqv92pZsobVEdipZ@makrotopia.org>
+ <95202df5-fdbb-4325-b77b-5f45ac8b1732@cjdns.fr>
+ <aqw9ptzAZBmdHy1S@makrotopia.org>
+Content-Language: en-US
+From: Caleb James DeLisle <cjd@cjdns.fr>
+In-Reply-To: <aqw9ptzAZBmdHy1S@makrotopia.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider:
 
-Critical: 0 · High: 0 (2) · Medium: 1 (1) · Low: 2
+On 17/09/2026 21:21, Daniel Golle wrote:
+> On Thu, Sep 17, 2026 at 05:11:50PM +0200, Caleb James DeLisle wrote:
+>> On 17/09/2026 16:48, Daniel Golle wrote:
+>>> On Tue, Sep 15, 2026 at 02:01:29PM +0200, Caleb James DeLisle wrote:
+>>>> On 15/09/2026 13:47, Daniel Golle wrote:
+>>>>> On Tue, Sep 15, 2026 at 11:34:27AM +0000, Caleb James DeLisle wrote:
+>>>>>> @@ -135,6 +199,23 @@ static struct phy_driver mtk_gephy_driver[] = {
+>>>>>>     		 */
+>>>>>>     		.config_intr	= genphy_no_config_intr,
+>>>>>>     		.handle_interrupt = genphy_handle_interrupt_no_ack,
+>>>>>> +		.match_phy_device = mt7530_phy_match,
+>>>>>> +		.suspend	= genphy_suspend,
+>>>>>> +		.resume		= genphy_resume,
+>>>>>> +		.read_page	= mtk_phy_read_page,
+>>>>>> +		.write_page	= mtk_phy_write_page,
+>>>>>> +	},
+>>>>>> +	{
+>>>>>> +		PHY_ID_MATCH_EXACT(MTK_GPHY_ID_MT7530),
+>>>>> I'd suggest to actually use phy_id and phy_id_mask assigned by the
+>>>>> PHY_ID_MATCH_EXACT macro by calling genphy_match_phy_device() in your
+>>>>> match functions above instead of open-coding the ID match.
+>>>>> Or drop PHY_ID_MATCH_EXACT from *both* drivers.
+>>>> I suppose the latter is easier because then I don't have to re-think
+>>>> mt7530_is_gphy() which would be lying if it wasn't actually checking ID is
+>>>> MTK_GPHY_ID_MT7530.
+>>>>
+>>> I would have preferred to call genphy_match_phy_device() in your match
+>>> functions instead of open-coding phy_id_compare() which is best
+>>> reached via genphy_match_phy_device() in this situation -- that would
+>>> express the code intent in the most obvious way imho.
+>>
+>> I did it this way because the name mt7530_is_gphy() implies "Is this an
+>> MT7530 gigabit PHY?" which if it doesn't match on MTK_GPHY_ID_MT7530 then
+>> that's not what it does so there's a little bit more thought involved.
+>>
+>>
+>> If I'd have known this was really your preference I'd have done that, but I
+>> already just sent v6 so I guess I can send v7 tomorrow.
+> It's also fine for me like it is now, just a light preference, not
+> worth a resend just for that.
+>
+> However, I'd also still like to see the OF parent walk replaced by
+> register evidence, which requires that you dump the registers more
+> than once to understand if any difference are things like counters or
+> temperature, or actually identify the PHY variant.
+>
+> It can of course be that the actual silicon is really the exact same
+> MT7530 MCM as eg. on MT7623, just driven by a different clock
+> frequency and the observable register differences are things like
+> clock devidors -- if we manage to understand that and just apply the
+> resulting tuning accordingly, even better.
 
-- [Medium] The devres ordering guarantee claimed by the commit message
-  can be violated by a probe/open race.
-- [Low] Coding-style defects in the new code in sxgbe_platform_probe():
-  the RX-queue devm_add_action_or_reset() call has a misaligned…
-- [Low] All four newly added devm_add_action_or_reset() call sites in
-  sxgbe_platform_probe() store the helper's return value in `ret` and…
 
-Pre-existing issues:
-- [High] Use-after-free window at unbind: every IRQ handler is installed
-  with devm_request_irq(priv->device /* == &pdev->dev */, ...) in…
-- [High] Unbalanced IRQ acquire/release across open/close: sxgbe_open()
-  acquires all IRQs with devm_request_irq() but sxgbe_release()…
-- [Medium] DT binding vs. driver mismatch for the LPI interrupt:
-  Documentation/devicetree/bindings/net/samsung-sxgbe.txt documents…
+I just tried removing the remaining phy_write commands and it still 
+seems to work. It seems that the thing that really made this driver not 
+work on EcoNet was the EEE which Vladislav Karmanov removed in 
+ccbe7540e4aad earlier this month. So at this point I guess I could send 
+a patch which does nothing except check MII_ESTATUS & ESTATUS_1000_TFULL 
+so it doesn't get confused with the FE driver.
 
---
 
-net: sxgbe: dispose IRQ mappings on device removal
+I'm not sure if this is a good plan to deviate from what the vendor code 
+was, but the values are not wildly different. If you think it's smart, I 
+can send this and we'll see how it goes.
 
-This converts the open-coded irq_dispose_mapping() unwind in
-sxgbe_platform_probe() into a devres action registered right after each
-irq_of_parse_and_map() call, so the common, TX, RX and LPI mappings are also
-disposed when the device is removed after a successful probe.
 
-A few questions on the new code and on the surrounding IRQ lifetime.
+Thanks,
 
-> diff --git a/drivers/net/ethernet/samsung/sxgbe/sxgbe_platform.c b/drivers/net/ethernet/samsung/sxgbe/sxgbe_platform.c
-> index e4701b29e1a0f..cd8d39a1afff2 100644
-> --- a/drivers/net/ethernet/samsung/sxgbe/sxgbe_platform.c
-> +++ b/drivers/net/ethernet/samsung/sxgbe/sxgbe_platform.c
+Caleb
 
-[ ... ]
 
-> @@ -116,6 +123,11 @@ static int sxgbe_platform_probe(struct platform_device *pdev)
->  		goto err_drv_remove;
->  	}
->  
-> +	ret = devm_add_action_or_reset(dev, sxgbe_irq_dispose_mapping,
-> +				       (void *)(unsigned long)priv->irq);
-> +	if (ret)
-> +		goto err_drv_remove;
-> +
 
-[Severity: Low]
-
-Is ret read anywhere after these assignments?  All four new
-devm_add_action_or_reset() call sites in sxgbe_platform_probe() store the
-return value and then jump to err_drv_remove, which falls through to:
-
-err_drv_remove:
-	sxgbe_drv_remove(priv->dev);
-err_out:
-	return -ENODEV;
-
-devm_add_action_or_reset() returns -ENOMEM when the devres node cannot be
-allocated, so a transient allocation failure is reported to the driver core
-as -ENODEV, which is the same value used for an unparsable DT interrupt.
-
-Would it make sense to return ret on the new paths?
-
->  	/* Get MAC address if available (DT) */
->  	of_get_ethdev_address(node, priv->dev);
->  
-> @@ -124,38 +136,43 @@ static int sxgbe_platform_probe(struct platform_device *pdev)
->  		priv->txq[i]->irq_no = irq_of_parse_and_map(node, chan++);
->  		if (priv->txq[i]->irq_no <= 0) {
->  			dev_err(dev, "sxgbe tx irq parsing failed\n");
-> -			goto err_tx_irq_unmap;
-> +			goto err_drv_remove;
->  		}
-> +		ret = devm_add_action_or_reset(dev, sxgbe_irq_dispose_mapping,
-> +					       (void *)(unsigned long)
-> +					       priv->txq[i]->irq_no);
-> +		if (ret)
-> +			goto err_drv_remove;
->  	}
->  
->  	for (i = 0; i < SXGBE_RX_QUEUES; i++) {
->  		priv->rxq[i]->irq_no = irq_of_parse_and_map(node, chan++);
->  		if (priv->rxq[i]->irq_no <= 0) {
->  			dev_err(dev, "sxgbe rx irq parsing failed\n");
-> -			goto err_rx_irq_unmap;
-> +			goto err_drv_remove;
->  		}
-> +		ret = devm_add_action_or_reset(dev, sxgbe_irq_dispose_mapping,
-> +					       (void *)(unsigned long)
-> +				       priv->rxq[i]->irq_no);
-                                 ^^^^^^^^^^^^^^^^^^^^^^
-
-[Severity: Low]
-
-This isn't a bug, but the continuation line carrying priv->rxq[i]->irq_no is
-indented with less whitespace than the identical TX call just above and does
-not line up with the open parenthesis, so checkpatch reports "Alignment
-should match open parenthesis" here.
-
-In the hunk below, the blank line that separated the LPI interrupt handling
-from platform_set_drvdata() is also dropped, so the new if (ret) goto
-err_drv_remove; runs straight into platform_set_drvdata().
-
-> +		if (ret)
-> +			goto err_drv_remove;
->  	}
->  
->  	priv->lpi_irq = irq_of_parse_and_map(node, chan);
->  	if (priv->lpi_irq <= 0) {
->  		dev_err(dev, "sxgbe lpi irq parsing failed\n");
-> -		goto err_rx_irq_unmap;
-> +		goto err_drv_remove;
->  	}
-
-[Severity: Medium]
-
-This is a pre-existing disagreement and not something this patch introduces,
-but since the LPI error path is being rewritten here it may be worth a look.
-
-Documentation/devicetree/bindings/net/samsung-sxgbe.txt describes the
-interrupts property as:
-
-  index 1 to 25 - 8 variable transmit interrupts, variable 16 receive interrupts
-  and 1 optional lpi interrupt.
-
-A DT that follows that wording and omits the 26th specifier makes
-irq_of_parse_and_map(node, chan) return 0, so probe logs "sxgbe lpi irq
-parsing failed", calls sxgbe_drv_remove() and fails with -ENODEV.
-
-sxgbe_open() on the other hand is written to cope with the LPI line not
-being distinct:
-
-	if (priv->lpi_irq != dev->irq) {
-
-Which of the two is right, the binding or the mandatory treatment in probe?
-
-> -
-> +	ret = devm_add_action_or_reset(dev, sxgbe_irq_dispose_mapping,
-> +				       (void *)(unsigned long)priv->lpi_irq);
-> +	if (ret)
-> +		goto err_drv_remove;
-
-[Severity: Medium]
-
-Can the ordering guarantee in the changelog be broken by a probe/open race?
-
-register_netdev() runs inside sxgbe_drv_probe(), which sxgbe_platform_probe()
-calls before any of this IRQ setup:
-
-	ret = register_netdev(ndev);
-	if (ret) {
-		pr_err("%s: ERROR %i registering the device\n", __func__, ret);
-		goto error_mdio_unregister;
-	}
-
-So the interface is visible to userspace while the mappings and these new
-dispose actions are still being registered.
-
-If userspace brings the interface up in that window, sxgbe_open()'s
-devm_request_irq() nodes land in the &pdev->dev devres list before the
-still-pending dispose actions.  release_nodes() unwinds in reverse insertion
-order:
-
-list_for_each_entry_safe_reverse(dr, tmp, todo, node.entry)
-
-which would run irq_dispose_mapping() for those IRQs before the devm
-free_irq() that removes and synchronizes the handler on them.
-
-In the same window, a failing devm_add_action_or_reset() immediately runs the
-dispose action, tearing down a mapping on which a racing open may already
-have installed a handler.
-
-Would moving register_netdev() after the IRQ setup remove the need to rely on
-devres insertion order here?
-
->  	platform_set_drvdata(pdev, priv->dev);
->  
->  	pr_debug("platform driver registration completed\n");
->  
->  	return 0;
->  
-> -err_rx_irq_unmap:
-> -	while (i--)
-> -		irq_dispose_mapping(priv->rxq[i]->irq_no);
-> -	i = SXGBE_TX_QUEUES;
-> -err_tx_irq_unmap:
-> -	while (i--)
-> -		irq_dispose_mapping(priv->txq[i]->irq_no);
-> -	irq_dispose_mapping(priv->irq);
->  err_drv_remove:
->  	sxgbe_drv_remove(priv->dev);
->  err_out:
-
-[Severity: High]
-
-This isn't a bug introduced by this patch, but it sits in the same IRQ
-lifetime the changelog reasons about, so does the handler-versus-netdev
-ordering also need attention?
-
-sxgbe_open() installs every handler on the platform device with
-device-lifetime devres, using the netdev or the queue structures as dev_id:
-
-	ret = devm_request_irq(priv->device, priv->irq, sxgbe_common_interrupt,
-			       IRQF_SHARED, dev->name, dev);
-
-There is no free_irq() or devm_free_irq() anywhere in the driver, and
-sxgbe_release() (ndo_stop) only stops the PHY, DMA and MTL.  The handlers
-therefore stay installed until devres_release_all(), which the driver core
-runs from device_unbind_cleanup() after .remove has returned:
-
-drivers/base/dd.c:device_unbind_cleanup() {
-	...
-	devres_release_all(dev);
-	...
-}
-
-By then sxgbe_platform_remove() -> sxgbe_drv_remove() has already done:
-
-	kfree(priv->hw);
-
-	free_netdev(ndev);
-
-and priv, priv->txq[] and priv->rxq[] live in the netdev private area.  An
-interrupt taken on one of those still-registered lines in that window (the
-common and LPI lines are IRQF_SHARED, so a co-tenant device on the same line
-is enough) enters:
-
-	struct sxgbe_priv_data *priv = netdev_priv(netdev);
-	int status;
-
-	status = priv->hw->mac->host_irq_status(priv->ioaddr, &priv->xstats);
-
-which reads priv->hw and writes priv->xstats in freed memory.  Should the
-driver free and synchronize the IRQs before free_netdev()?
-
-[Severity: High]
-
-This is also pre-existing rather than something this patch changes, but it
-follows from the same asymmetry: can the interface be brought up more than
-once per bind?
-
-sxgbe_open() requests the TX and RX DMA interrupts with flags 0:
-
-		ret = devm_request_irq(priv->device,
-				       (priv->txq[queue_num])->irq_no,
-				       sxgbe_tx_interrupt, 0,
-				       dev->name, priv->txq[queue_num]);
-
-sxgbe_release() does not free them, and devres entries are only released at
-unbind, so a second open re-requests a virq the driver already owns and
-__setup_irq() takes the mismatch path:
-
-kernel/irq/manage.c:__setup_irq() {
-	...
-		if (!((old->flags & new->flags) & IRQF_SHARED) ||
-		    (oldtype != (new->flags & IRQF_TRIGGER_MASK)))
-			goto mismatch;
-	...
-}
-
-so ip link set dev X down followed by ip link set dev X up returns -EBUSY,
-after the shared common and LPI handlers have been installed a second time
-as extra devres nodes.  Would releasing the IRQs in ndo_stop fix both this
-and the free_netdev() ordering above?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260916054841.2908429-1-lgs201920130244%40gmail.com
