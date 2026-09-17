@@ -1,70 +1,60 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D3537C926;
-	Thu, 17 Sep 2026 01:56:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB364381E95;
+	Thu, 17 Sep 2026 02:03:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789610206; cv=none; b=E5sIta7bANoTcq3v6GNSvxnG0Ebq9+aMqhGfgGW8rvitWpLbR2QzPLIlX9vPeS6hSAJFtRSxxtQ7FyWKBdtoskAnMQnpFGpCQZQzMQDmR2H7YPVr0Bey3N+Ln3eAM+NGAR+FErisHn2Yd/xR8OQRcCdehOu93NbDS9p28nfHiwY=
+	t=1789610619; cv=none; b=nWLpUWB3FHGtlivMuSXVtiJffFTphAovenq9u89EEoaH81dgznGdBRzYaJEeMsrwZzvPu8Y8Bxbbn2Emq5LKy8audRzXyZ8a8ET1WGc/HLHyhGbMnGQRacGFhVwWnsjHel9yu01GchLmg+5WBfnExlblrp2Vm5R3K/K6SsvMtWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789610206; c=relaxed/simple;
-	bh=g8aKfI8ofYXh0JrV5QcxvrY6yNVT+H+GWcGmFV4iq2I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZBoDjOEsyzww1h+54T18ZJIc6JlYPAcDqBA0D/i+oLyepEOGUfyaoSFUxL4NwXfijs0YxJ6/KlDARi1MCoUJp4M4vyvnKJsCH3W728oZZSAA85abzQeqFAOEF5xQ/o6bURu4WLj9aTKdNBglx+G1lVRCPDI703lbE8/yuwtoKPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=5iLOYODN; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1789610619; c=relaxed/simple;
+	bh=enWAOudfzXD8gjSzSTZoVJI3Y0wcSZdzpIZYlvg1oLY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=idf57L8J/OkAicfqe3nYq+cmP6llfNANGJj49vB27mIeU7ACdgRCRHFSrV1tJy4YM4A9plUD//nMf6xtinmPQJIR1zai49q9jL9aoxewwcu25mxJJi0Zj7hsvnV/0iyI1AFadMYeM1PjD698sRxnjxlGXXfsZw0Ks3dAEb31q5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gZTN/Zat; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="5iLOYODN"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=pxKVKahFL4XhN7C/p73Dfil3k8M5EG8zN/hEhL5DFGA=; b=5iLOYODNTkR9t3xwJFLrOm6VKF
-	Ch+MmF21SNA4I02uax4Smm+Xp52Va8391xLpQ4wvvWuEpN2ZgGkkIYZhrB3GsJVmyDQdCLqBd2y7p
-	pFGMYv8C8TN3t5kmoMP6KJi/ryK8WmT29FVAYo86pLbqAe29T2ESc0mcK+5gOMxMbwHE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x71MX-005aCN-Ie; Thu, 17 Sep 2026 03:56:33 +0200
-Date: Thu, 17 Sep 2026 03:56:33 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Weiting Lee <weiting.lee@airoha.com>
-Cc: netdev@vger.kernel.org, hkallweit1@gmail.com, linux@armlinux.org.uk,
-	davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
-	pabeni@redhat.com, linux-kernel@vger.kernel.org, bjorn@mork.no,
-	ericwouds@gmail.com, frank-w@public-files.de, joseph.lin@airoha.com,
-	wenshin.chung@airoha.com, lucien.jheng@airoha.com,
-	albert-al.lee@airoha.com
-Subject: Re: [PATCH] net: phy: air_en8811h: add dedicated suspend callback
- for AN8811HB
-Message-ID: <d9ec8019-0603-4884-9bbc-d20153dba204@lunn.ch>
-References: <20260917012102.3103131-1-weiting.lee@airoha.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gZTN/Zat"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CACD1F00893;
+	Thu, 17 Sep 2026 02:03:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789610617;
+	bh=vhXpPKM6RKinXGV1u0BDzpb9tv924NcbS9GLdFnncKs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=gZTN/ZattszFI+QIlTOg2byqzLdKg4twg2Gn2BpFCnJcI3A4a2MZn67RaftqfwHs7
+	 ulc+dnvN27mfVsZ6EhzOmcLwYwObc6eDHVt1zLVfUuYFfzdIulHexeXukQVzfJKqUZ
+	 qKLYzkWcXiuVRhnCo/uPIAuMTRd+eWQkdubSdM2PdSs4iOp5Vgy26ScBaOICUhkgPc
+	 DH5paOxYEeotL1SQ03VLolTn/3EXqF7EwlFBIFKPGHnUgau8dsnzPRGXbd4kI4hWgl
+	 HTE2TXdk9QIIHsZTosLAzLvJ8UJuR9AjQgw68bLs+gtO4pR5E4v2j+Ic7OL1lLLkYi
+	 wuuPrS/B+FJfw==
+Date: Wed, 16 Sep 2026 19:03:36 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Subrat Pandey <subratp@marvell.com>
+Cc: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+ <pabeni@redhat.com>, <edumazet@google.com>, <davem@davemloft.net>,
+ <andrew+netdev@lunn.ch>, <sbhatta@marvell.com>, <rkannoth@marvell.com>,
+ <gakula@marvell.com>, <sgoutham@marvell.com>
+Subject: Re: [PATCH net v6 0/2] octeontx2: Misc fixes for RVU drivers
+Message-ID: <20260916190336.1115e38d@kernel.org>
+In-Reply-To: <20260910062657.3712256-1-subratp@marvell.com>
+References: <20260910062657.3712256-1-subratp@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260917012102.3103131-1-weiting.lee@airoha.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 17, 2026 at 09:21:02AM +0800, Weiting Lee wrote:
-> The AN8811HB hardware requires a re-negotiation sequence before
-> entering power-down to correctly restore the link upon resume.
-> Add an8811hb_suspend() to handle this.
+On Thu, 10 Sep 2026 11:56:55 +0530 Subrat Pandey wrote:
+> Changes in v6:
+>  - None. Rebased onto latest net tree.
 
-Is there an errata for this? Please mention it in the commit message.
+Could you please add the links to the previous posting in the lore
+archive going forward? Eg
+https://lore.kernel.org/all/20260910062657.3712256-1-subratp@marvell.com/
+for this posting? (just starting from this posting, you don't have to
+dig out the full history)
 
-> +static int an8811hb_suspend(struct phy_device *phydev)
-> +{
-> +	int ret;
-> +
-> +	clk_save_context();
-> +
-> +	ret = phy_modify(phydev, MII_BMCR, 0, BMCR_ANRESTART);
-
-Why use phy_modify() if you are going to pass a mask of 0?
-
-	Andrew
+It's useful for checking if AI comments have already been replied to,
+if not the review itself.
