@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74E24AD4B9;
-	Thu, 17 Sep 2026 22:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC784AF17B;
+	Thu, 17 Sep 2026 22:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789684511; cv=none; b=Kvlrs0DayV1ZQ4fh8S68DkYgmTDxyyGlsKD3CKWTC+rX5Vg/LPAodjs911A65ujkjynyCXunfnle7z56Rv5dkQZb0El4Y1NAg8+9srBAFc2QIdpGV41XuFtDKHh+EQnAmPX8AfqpCHmkgrSDmiERud3uySazx64IkJFnMMaWaA8=
+	t=1789684514; cv=none; b=ijAR/G8KJCcpz9JcwTSskqMgbPnw/U6flly8dkikXTjhDStXbSkt25lYtsUeeNV4PGSPypkBC70aD5ffhYiCA2FgPNUxqWvQ3POPbWqcTSTQ2UYC007z1qa8zqRhsSYmd011HU4zF2/KwfcckC8fhcREqKMsBAdFMyM9KhODPP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789684511; c=relaxed/simple;
-	bh=hR5hj8DimGux2UkyfJU5xup7cKsjTAaM3m2a3h2Sg9w=;
+	s=arc-20240116; t=1789684514; c=relaxed/simple;
+	bh=rG3E32V/+pWPmqc2dH99Op45V6sLo8VgLDZkyz3c9QA=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Ch60HkLaaX+4i9RqJp7ntCdbiduKbTii5n+DlD9zIBS34+aWG496/eKmq8mJnEjyi4tAInUXRkDyPgT5tTyNqKy7R55/JjscJppx4nQA+q3fTJb9BFhiky5lc045CR6hZN5SK8JziHI7YAHRA/dq34TpXt/wUTs7Lav2+ZUlHXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FGlppGJo; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=pF6c1MphzQ9GBeM4OAYkrJg6C7PGLnED1GeXPrrvzspC9IdKugMY/eL9lFfhQUcwGmJL1g60EDSvSzxlZlEFHwlCiDxxDRpI3SEzKbbY3LbnnsyQ4uhU4+1m5lCqlp8qCISgeBM8I5CDErvGaD8lleQKogcln/+7QAOL3eAmcd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MyBNxYDz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FGlppGJo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E9A1F00893;
-	Thu, 17 Sep 2026 22:35:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MyBNxYDz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61B1E1F00898;
+	Thu, 17 Sep 2026 22:35:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789684509;
-	bh=D+Dh7AyQ97qaZaPUqCJ2Ld1gyA02Gt7EcV2bV1X5oXM=;
+	s=k20260515; t=1789684511;
+	bh=jkxDlFfxEhdJ63HXqqZnaj64ZTVHrIpWh0bTKzEFhao=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=FGlppGJo3gKgG/2hwluZjnMFJYxmMbW0PEK3wRMU/AFik3s8VvskPrseApnBIh3Uo
-	 N0wsthl2UGdtUtyWMgz0+B8Oq+ibtnY/xxncr9jwt+ZhGjS/CAQo0L1lrP9pGljZ30
-	 jzO887y3OWXWU08NUHLHCG7vZTBcmseVQSs0odAwEEqV7VFbRaA7DccSnSFaxLkFu3
-	 ymeQVwuJvXiNXpkVO7BYj3n/8mhKvvdnu9u790f3maI9WxM95jpNk7gpOXjSj8VekD
-	 tr+bEP85hQdBKUt0pkLj0I610dVmK0UdcOe08J/7G5ZzYi25TOsOsVQN+dR09ipLS/
-	 STbPC8xjnXucA==
-Subject: Re: [PATCH v28 net-next 07/10] net/nebula-matrix: dispatch: add
- control-level routing core infrastructure
+	b=MyBNxYDz/xtb3pB3YiwcVmm920md42Eb5CM+rk3T+/vaLsHbdsNhyYnCn1ohZVcyA
+	 JnY+SYm6QJmGI/eIysNAZPVbkvP9AN0kK5GbSvZ4aqoQW0nZG+C9ec3UR8Oermu01Z
+	 RCfJipu59wBC4Sp4QpyhI1Sw1t9/7GrlqQGTGpZ1MuDr94aSceTkDSdnPsXycoXTdI
+	 L1XafDTN2nSB6OpzYn9DcAdnCOs/fUDoYAPt5+D7hj/MJQWHlNKXubSGMlu2WbzyTc
+	 zEYOCV/GPWATSuLu1K/9/CWFVcDz6w3ClIIcMnERB/wh30UWnvjGpkYqIHqVWs++no
+	 JR2D3KBlScBLg==
+Subject: Re: [PATCH v28 net-next 08/10] net/nebula-matrix: dispatch: implement
+ channel RPC framework and serialize hardware ops
 From: netdev-bot+sashiko@kernel.org
 To: illusion.wang@nebula-matrix.com
 Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
@@ -36,11 +36,11 @@ Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
  pabeni@redhat.com, vadim.fedorenko@linux.dev, lukas.bulwahn@redhat.com,
  edumazet@google.com, enelsonmoore@gmail.com, skhan@linuxfoundation.org,
  hkallweit1@gmail.com, linux-kernel@vger.kernel.org
-Date: Thu, 17 Sep 2026 22:35:08 +0000
-Message-ID: <178968450819.22033.4902172279323184978@kernel.org>
-In-Reply-To: <20260914123429.56596-8-illusion.wang@nebula-matrix.com>
-References: <20260914123429.56596-8-illusion.wang@nebula-matrix.com>
-X-sashiko-severity: Medium
+Date: Thu, 17 Sep 2026 22:35:09 +0000
+Message-ID: <178968450992.22033.17621055123292475841@kernel.org>
+In-Reply-To: <20260914123429.56596-9-illusion.wang@nebula-matrix.com>
+References: <20260914123429.56596-9-illusion.wang@nebula-matrix.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,166 +50,265 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Critical: 0 · High: 1 · Medium: 1 · Low: 2
 
-- [Medium] New channel response enum (NBL_CHAN_RESP_OK/ERR/UNIMPLEMENTED,
-  extended with PERM_DENY later in the series) uses positive wire…
-- [Low] The comment in the (empty) nbl_disp_remove() bases dispatch
-  teardown safety on facts that do not exist at this commit: it says…
+- [High] The five new mailbox responders in nbl_dispatch.c perform no
+  authorization of the requesting function, contradicting the commit…
+- [Medium] The five new request helpers switch on chan_ops->send_msg()'s
+  return value as if it were a positive NBL_CHAN_RESP_* wire status, but…
+- [Low] Claim: nbl_disp_setup_msg() registers five mailbox responders
+  with no matching unregistration, and nbl_disp_remove() is empty, so in…
+- [Low] Claim: the NBL_CHAN_MSG_MAILBOX_SET_IRQ RPC reprograms the
+  requesting function's own mailbox MSI-X routing on the responder side…
 
 --
 
-net/nebula-matrix: dispatch: add control-level routing core infrastructure
+net/nebula-matrix: dispatch: implement channel RPC framework and serialize hardware ops
 
-This adds the dispatch layer skeleton: allocation of the dispatch
-management structure and ops table, init_module/deinit_module wrappers
-around the resource ops, and a ctrl_lvl bitmask that enables the MGT
-level on the Control PF only.  It also adds forward declarations of
-channel wire structures and a channel response enum for a later RPC
-framework.
+This adds bidirectional mailbox RPC to the dispatch layer for five
+operations (configure_msix_map, destroy_msix_map, set_mailbox_irq,
+get_vsi_id, get_eth_id), resolving the dispatch ops at probe time
+depending on whether the PF is the control PF or a net-only PF.  It also
+introduces disp_mgt->ops_mutex_lock to serialize the mutable hardware
+ops and extends the wire protocol with new message types and
+NBL_CHAN_RESP_PERM_DENY.
 
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
-> index 61dd97c779ef6..58a9fa97fbf39 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
-> @@ -7,12 +7,19 @@
->  #define _NBL_DEF_CHANNEL_H_
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
+> index b7f404b319fac..7254ed10d478f 100644
+> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
+> @@ -3,9 +3,192 @@
+>   * Copyright (c) 2026 Nebula Matrix Limited.
+>   */
+>  #include <linux/device.h>
+> +#include <linux/mutex.h>
+>  #include <linux/pci.h>
+>  #include "nbl_dispatch.h"
 >  
->  #include <linux/types.h>
-> +#include <linux/build_bug.h>
->  
->  struct nbl_channel_mgt;
->  struct nbl_adapter;
->  
->  typedef void (*nbl_chan_resp)(void *, u16, u16, void *, u32);
->  
-> +enum {
-> +	NBL_CHAN_RESP_OK = 0,
-> +	NBL_CHAN_RESP_ERR = 1,
-> +	NBL_CHAN_RESP_UNIMPLEMENTED = 2,
-> +};
+> +static int nbl_disp_chan_get_vsi_id_req(struct nbl_dispatch_mgt *disp_mgt,
+> +					u16 type, u16 *vsi_id)
+> +{
+> +	struct nbl_channel_ops *chan_ops = disp_mgt->chan_ops_tbl->ops;
+> +	struct nbl_common_info *common = disp_mgt->common;
+> +	struct nbl_chan_param_get_vsi_id result = { 0 };
+> +	struct nbl_chan_param_get_vsi_id param = { 0 };
+> +	struct nbl_chan_send_info chan_send = {0};
+> +	int ret;
 > +
+> +	param.type = cpu_to_le16(type);
+> +
+> +	nbl_chan_fill_send_info(&chan_send, common->mgt_pf,
+> +				NBL_CHAN_MSG_GET_VSI_ID,
+> +				&param, sizeof(param), &result,
+> +				sizeof(result), 1);
+> +	ret = chan_ops->send_msg(disp_mgt->chan_ops_tbl->priv, &chan_send);
+> +	if (ret < 0)
+> +		return ret;
+> +	switch (ret) {
+> +	case NBL_CHAN_RESP_OK:
+> +		break;
+> +	case NBL_CHAN_RESP_UNIMPLEMENTED:
+> +		return -EOPNOTSUPP;
+> +	case NBL_CHAN_RESP_ERR:
+> +		return -EREMOTEIO;
+> +	case NBL_CHAN_RESP_PERM_DENY:
+> +		return -EPERM;
+> +	default:
+> +		return -EREMOTEIO;
+> +	}
 
 [Severity: Medium]
-Can these positive response codes ever be observed by a sender?  The ACK
-receive path in nbl_chan_recv_ack_msg() rewrites any positive remote
-status:
+Can this switch ever observe a value other than 0?
 
-drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c:
+nbl_chan_send_msg() returns READ_ONCE(wait_head->ack_err), and
+nbl_chan_recv_ack_msg() clamps every positive wire status before storing
+it:
+
+nbl_channel.c:nbl_chan_recv_ack_msg() {
 	raw_err = (s32)le32_to_cpu(*(__le32 *)&payload[NBL_CHAN_ACK_RET_POS]);
 	if (raw_err > 0 || raw_err < -MAX_ERRNO)
 		raw_err = -EREMOTEIO;
 
 	WRITE_ONCE(wait_head->ack_err, raw_err);
+}
 
-nbl_chan_send_msg() returns exactly that clamped value, so a caller can
-only ever see 0 or a negative errno, never NBL_CHAN_RESP_ERR (1) or
-NBL_CHAN_RESP_UNIMPLEMENTED (2).
+The responders put the raw positive status on the wire unchanged
+(nbl_chan_send_ack() does tmp[NBL_CHAN_ACK_RET_POS] =
+cpu_to_le32(chan_ack->err)), so NBL_CHAN_RESP_ERR(1),
+NBL_CHAN_RESP_UNIMPLEMENTED(2) and NBL_CHAN_RESP_PERM_DENY(3) all arrive
+as -EREMOTEIO and are consumed by the preceding "if (ret < 0) return
+ret;".
 
-The follow-up patch in the series ("net/nebula-matrix: dispatch:
-implement channel RPC framework and serialize hardware ops") both puts
-these codes on the wire via nbl_disp_chan_*_resp() ->
-nbl_chan_fill_ack_info(..., err, ...) and then switches on them after
-send_msg(), for example in nbl_disp_chan_get_eth_id_req():
+That would make the UNIMPLEMENTED / ERR / PERM_DENY arms here (and the
+identical arms in nbl_disp_chan_get_eth_id_req(),
+nbl_disp_chan_cfg_msix_map_req(), nbl_disp_chan_destroy_msix_map_req()
+and nbl_disp_chan_set_mailbox_irq_req()) unreachable.
 
-	ret = chan_ops->send_msg(disp_mgt->chan_ops_tbl->priv, &chan_send);
-	if (ret < 0)
-		return ret;
-	switch (ret) {
-	case NBL_CHAN_RESP_OK:
-		break;
-	case NBL_CHAN_RESP_UNIMPLEMENTED:
-		return -EOPNOTSUPP;
-	case NBL_CHAN_RESP_ERR:
-		return -EREMOTEIO;
-	case NBL_CHAN_RESP_PERM_DENY:
-		return -EPERM;
+The commit message states:
 
-Are all the non-OK arms dead code, given "if (ret < 0) return ret;"
-fires first for the clamped -EREMOTEIO?  A peer answering "unimplemented"
-or "permission denied" would then be reported to the requester as
--EREMOTEIO instead of -EOPNOTSUPP / -EPERM.
+  "Request-side helpers translate channel wire status codes to standard
+   Linux errnos: OK->0, UNIMPLEMENTED->-EOPNOTSUPP, ERR->-EREMOTEIO,
+   PERM_DENY->-EPERM."
 
-Would it make sense to either encode these response codes as
-non-positive values (or in a dedicated payload field), or to let the
-clamp in nbl_chan_recv_ack_msg() pass the defined response codes
-through?
+Does that translation actually happen, given the clamp above?  A remote
+UNIMPLEMENTED (returned whenever a res_ops pointer is NULL) would surface
+as -EREMOTEIO rather than -EOPNOTSUPP.
 
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
-> new file mode 100644
-> index 0000000000000..b7f404b319fac
-> --- /dev/null
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
-> @@ -0,0 +1,124 @@
-
-[ ... ]
-
-> +void nbl_disp_remove(struct nbl_adapter *adapter)
-> +{
-> +	/*
-> +	 * All dispatch objects are allocated via devm.
-> +	 * Dispatch message handlers are not explicitly unregistered here.
-> +	 * Safety relies on dev layer shutting down mailbox channel queue
-> +	 * before nbl_res_remove_leonis(), so responders cannot run after
-> +	 * resource layer is torn down. Channel layer nbl_chan_remove_common()
-> +	 * finalizes cleanup at device teardown.
-> +	 */
+> +	if (chan_send.ack_len != sizeof(result)) {
+> +		dev_err(disp_mgt->common->dev,
+> +			"get_vsi_id: short ACK, ack_len=%u expected %zu\n",
+> +			chan_send.ack_len, sizeof(result));
+> +		return -EREMOTEIO;
+> +	}
+> +	*vsi_id = le16_to_cpu(result.vsi_id);
+> +	return 0;
 > +}
-
-[Severity: Low]
-This isn't a bug, but does this comment describe code that exists at this
-commit?
-
-There is no dev layer yet (no nbl_core/nbl_dev.o in the Makefile and no
-nbl_dev_init()/nbl_dev_remove() call in nbl_main.c), so nothing shuts
-down the mailbox channel queue before nbl_res_remove_leonis().
-
-This patch also registers no channel handlers at all (no
-chan_ops->register_msg() call in nbl_dispatch.c), so there are no
-responders that the "not explicitly unregistered here" sentence could
-refer to.
-
-Both premises do hold at the end of the series, where nbl_core_remove()
-calls nbl_dev_remove() first and nbl_dev_remove_common_dev() tears down
-the mailbox queue before the resource layer, and nbl_disp_setup_msg()
-registers the responders.  Would it be clearer to move this comment to
-the patch that actually registers the handlers?
-
-Related to the same staging question: nbl_disp_refresh_ctrl_ops()
-installs init_module/deinit_module
-
-> +	if (test_bit(NBL_DISP_CTRL_LVL_MGT, disp_mgt->ctrl_lvl)) {
-> +		disp_ops->init_module = nbl_disp_init_module;
-> +		disp_ops->deinit_module = nbl_disp_deinit_module;
+> +
+> +static void nbl_disp_chan_get_vsi_id_resp(void *priv, u16 src_id, u16 msg_id,
+> +					  void *data, u32 data_len)
+> +{
+> +	struct nbl_dispatch_mgt *disp_mgt = (struct nbl_dispatch_mgt *)priv;
+> +	struct nbl_channel_ops *chan_ops = disp_mgt->chan_ops_tbl->ops;
+> +	struct nbl_resource_ops *res_ops = disp_mgt->res_ops_tbl->ops;
+> +	struct nbl_resource_mgt *p = disp_mgt->res_ops_tbl->priv;
+> +	struct device *dev = disp_mgt->common->dev;
+> +	struct nbl_chan_param_get_vsi_id result = { 0 };
+> +	struct nbl_chan_param_get_vsi_id param = { 0 };
+> +	struct nbl_chan_ack_info chan_ack;
+> +	int err = NBL_CHAN_RESP_OK;
+> +	u16 vsi_id = 0;
+> +	u32 rel_pf_id;
+> +	int ret;
+> +
+> +	ret = nbl_common_func_id_to_rel_pf_id(disp_mgt->common, src_id,
+> +					      &rel_pf_id);
+> +	if (ret) {
+> +		err = NBL_CHAN_RESP_PERM_DENY;
+> +		goto ack_out;
 > +	}
 
-but is there any caller of these ops at this commit?  The first callers,
-nbl_dev_setup_ctrl_dev() and nbl_dev_remove_ctrl_dev(), arrive with the
-later dev-layer patch, so the "dispatch management flow" the commit
-message mentions appears inert here.
+[Severity: High]
+Can this gate ever reject anything?  The commit message says:
+
+  "Every responder validates:
+   - src_id against common->max_pf at runtime; rejects VF and
+     out-of-range function IDs with PERM_DENY;"
+
+but the helper only does a lower-bound test and then throws the result
+away:
+
+nbl_common.c:nbl_common_func_id_to_rel_pf_id() {
+	if (!rel_pf_id)
+		return -EINVAL;
+
+	if (pf_id < common->mgt_pf)
+		return -EINVAL;
+	*rel_pf_id = pf_id - common->mgt_pf;
+	return 0;
+}
+
+With common->mgt_pf = 0 (nbl_core_init() in nbl_main.c hard-codes it),
+"pf_id < common->mgt_pf" is never true for the unsigned src_id, so the
+helper always returns 0.  rel_pf_id is then unused, and there is no
+comparison against common->max_pf in any of the five responders.
+
+Should these responders carry the same rejection that the other caller of
+this helper, nbl_res_func_id_to_bdf() in nbl_resource.c, performs?
+
+	if (rel_pf_id >= common->max_pf) {
+		dev_err(common->dev,
+			"func_id=%u rel_pf_id=%u exceeds max_pf=%u, VF BDF unsupported\n",
+			pfid, rel_pf_id, common->max_pf);
+		return -EOPNOTSUPP;
+	}
+
+As written, can NBL_CHAN_RESP_PERM_DENY be produced by any responder in
+this patch?
+
+> +	if (data_len < sizeof(param)) {
+> +		err = NBL_CHAN_RESP_ERR;
+> +		goto ack_out;
+> +	}
+> +	memcpy(&param, data, sizeof(param));
 
 [ ... ]
 
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-> index 1aafed2d46d71..5d5c0bbf418c8 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-> @@ -59,6 +66,7 @@ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
->  
->  void nbl_core_remove(struct nbl_adapter *adapter)
->  {
-> +	nbl_disp_remove(adapter);
->  	nbl_res_remove_leonis(adapter);
->  	nbl_chan_remove_common(adapter);
->  	nbl_hw_remove_leonis(adapter);
+> +static void nbl_disp_chan_destroy_msix_map_resp(void *priv, u16 src_id,
+> +						u16 msg_id, void *data,
+> +						u32 data_len)
+> +{
 
-Here the channel layer is removed after the resource layer, which is the
-opposite order from the one the nbl_disp_remove() comment relies on.
+[ ... ]
+
+> +	ret = nbl_common_func_id_to_rel_pf_id(disp_mgt->common, src_id,
+> +					      &rel_pf_id);
+> +	if (ret) {
+> +		err = NBL_CHAN_RESP_PERM_DENY;
+> +		goto ack_out;
+> +	}
+> +	if (res_ops->destroy_msix_map) {
+> +		mutex_lock(&disp_mgt->ops_mutex_lock);
+> +		ret = res_ops->destroy_msix_map(p, src_id);
+> +		mutex_unlock(&disp_mgt->ops_mutex_lock);
+
+[Severity: High]
+Following on from the missing max_pf rejection above, src_id is forwarded
+here as func_id with no PF/VF distinction.  The downstream ops do not add
+one either:
+
+nbl_res_intr_destroy_msix_map() only rejects func_id >= NBL_MAX_FUNC
+(520), and __nbl_res_intr_set_mailbox_irq() in the en_msix == false case
+writes mailbox routing for any func_id below that:
+
+nbl_interrupt.c:__nbl_res_intr_set_mailbox_irq() {
+	if (!en_msix) {
+		hw_ops->set_mailbox_irq(res_mgt->hw_ops_tbl->priv,
+					func_id, false, 0);
+		hw_ops->flush_write(res_mgt->hw_ops_tbl->priv);
+		return 0;
+	}
+
+Should a VF function id (8..519) be able to reach destroy_msix_map and
+set_mailbox_irq on the control PF?
+
+There is also a cost per message here: __nbl_res_intr_destroy_msix_map()
+sleeps unconditionally, even when the function had nothing configured:
+
+nbl_interrupt.c:__nbl_res_intr_destroy_msix_map() {
+	ret = __nbl_res_intr_prepare_destroy_msix_map(res_mgt, func_id);
+	if (ret)
+		return ret;
+	mutex_unlock(&intr_mgt->lock);
+	usleep_range(NBL_MSIX_DMA_SYNC_MIN_US, NBL_MSIX_DMA_SYNC_MAX_US);
+	mutex_lock(&intr_mgt->lock);
+
+Since this runs from the mailbox RX work item with
+disp_mgt->ops_mutex_lock held, does each unauthorized
+NBL_CHAN_MSG_DESTROY_MSIX_MAP message hold up the cross-PF control path
+for a millisecond?
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
+> index 58a9fa97fbf39..6f8fc14a51f0e 100644
+> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
+> @@ -18,6 +18,7 @@ enum {
+>  	NBL_CHAN_RESP_OK = 0,
+>  	NBL_CHAN_RESP_ERR = 1,
+>  	NBL_CHAN_RESP_UNIMPLEMENTED = 2,
+> +	NBL_CHAN_RESP_PERM_DENY = 3,
+>  };
+
+[Severity: Medium]
+Given the clamp in nbl_chan_recv_ack_msg() and the always-succeeding
+authorization helper, is this new enumerator reachable in either
+direction - can a responder set it, and can a requester ever see it?
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260914123429.56596-1-illusion.wang%40nebula-matrix.com
