@@ -1,145 +1,105 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3AF4A8438;
-	Thu, 17 Sep 2026 09:22:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07C64A3F37
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 09:22:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789636923; cv=none; b=KqQ+i4qwAwkUox97V1ZhfZDOTvd8FAae73zKgLOVCq/CKdOX1Jym2kYLRcKOJ1vNZSXi68aCW7ZnIThXYWaw3EsPToadEf6/K+3y2vUKEQyHWUPK+wL78j4Rh02FgrCcXq/hXrm10mdqGY7zfr+cteJZj3yV73kMrmH5Ip8hKnA=
+	t=1789636936; cv=none; b=sIiBd6ig95q3qvPirN+7O4n8Q1lhelNsd94wgKuDMJWtYGcIRZC9xAJvbEk3RD7O0Qa2HCkUQKLQJh7vg2zfWPf+1ZShiL9UWtbkZsZk7dFdUyo7Hfnl3vjxb6Vq8eQISb8EKDtUfsp/a/ofv8AVIZmyipH65sU/TXiY3pHpHBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789636923; c=relaxed/simple;
-	bh=Nk0j+dgBYsStc9vpRTyL0WR/JxUM8VjdwJ3S9rVxXCQ=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Q3IhY9+RzUVOrm5AI+0CkE+DoHMvke6cUleyfANRDkT6UsmVchcFYJ46/0mP5qjyVv2wIBt4eRbXCSndFR0O/RgpwcuzwEPYJLaUiO7UqgPwXQMk+q4eTCE329KXRryuCVHM0iKeDyfpVSqKj6yAjBH3AXfZnkgR1U/99MF+KSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dXaNVEGT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789636936; c=relaxed/simple;
+	bh=XizrKC03PF6PblcGiGCjeGlG2cS3W1oVronU2P/cWf4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=f3lDPMB8keTb+CycnwLDbs+PfVX6DjTXatqtk9hgdgidjF6bcLjkWcgFMShxRfaxCcS6uXNiJOQs4XjlXjbqX34uq2jzNx6JHaeI2AibN9I4RyNWdF5HwTtbZBW7T0xrjDYOGnLeP9u8chMAhnIQTbpSzyneXVBdj6rQZSIxfRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dCGdc1lX; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dXaNVEGT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F281F000FF;
-	Thu, 17 Sep 2026 09:22:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789636921;
-	bh=8YWpnH8IbdMwhsJsF7hY+uJ8SswyuZ3cWpTMar8JdEo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=dXaNVEGTLIx6WD1q9hQSFDlyEE4Tn4wfGD05ZJlzzA0s6imOBgLH3d9cuZo9qqxj7
-	 uELo3otxvhjASRjT5cgjvNqfcAjixCbKfs4rAGo6p6uZ2ROPiOfbWGL+YHsBmwYlVv
-	 7Lo5XZWzEEhbpnjVU8R4kp2n7o3iacTEWuzEHEfgy0RYlAcPpoVcP0RM/DoSSRUAjx
-	 I3+HpMJJue4HhfpxqC+f1sE6FitE2ctJsdwuepeD6cFWMNuSJxyI3OLacdKQryA5Jl
-	 rKE18NYmeO+1rSYu93U1oNXPYZo0NU2Og5ZC/PfOpNKwu9cltZ4/3KdCi2BCG6p97U
-	 1LO5PEU8p7Cjw==
-Subject: Re: [PATCH net v2] selftests/net: run tun tests in a dedicated
- network namespace
-From: netdev-bot+sashiko@kernel.org
-To: edoardo.canepa@canonical.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
- xudu@redhat.com, po-hsu.lin@canonical.com, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Thu, 17 Sep 2026 09:22:00 +0000
-Message-ID: <178963692060.22033.17689197531256265922@kernel.org>
-In-Reply-To: <20260914211921.3786609-1-edoardo.canepa@canonical.com>
-References: <20260914211921.3786609-1-edoardo.canepa@canonical.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dCGdc1lX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789636934; x=1821172934;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=XizrKC03PF6PblcGiGCjeGlG2cS3W1oVronU2P/cWf4=;
+  b=dCGdc1lXCUUavfS4jKM6/yF7FHt5JB8ud5mHNvRi1LzXtBOPXVcRnIXA
+   AYiP0aE1jYjZRt5vEdnfr5ERqOA0c17v4HHfW+nJgPzZdzFB3iVCJc7qb
+   21MKVp1k//rzNhbbgegtn5osQYDd5G92KeZlVq9LThre3yKaCA4rL+Kza
+   m9k2TrVsE28CLaJiH1sZiu60deNEr1xWXR9sxFAu5AbzCFvq/mVYqjzBu
+   zHay0tiI2NT4H8SlIpAuBe6xPwZNeoR2VFpgJ9N7JYrhaS5Nj/j+P2BVh
+   oiA02faSPHQca3pOyX54eDJNAjdVbf1ojdy7ckDxDtvYXq9RV2CM/kev7
+   g==;
+X-CSE-ConnectionGUID: yZC0pugcRfmxAhZx7zWuXA==
+X-CSE-MsgGUID: zXDRBhIlRcufvN5Nc2P0HQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="92549912"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="92549912"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 02:22:14 -0700
+X-CSE-ConnectionGUID: zIvLWTLTRlWGA3o8oVBj0A==
+X-CSE-MsgGUID: tUC/x3aLRY+kYzd5R0F8aw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="267451472"
+Received: from linux.intel.com ([10.54.29.200])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 02:22:14 -0700
+Received: from [10.102.89.17] (soc-5CG4396XFD.clients.intel.com [10.102.89.17])
+	by linux.intel.com (Postfix) with ESMTP id 86CA020B5708;
+	Thu, 17 Sep 2026 02:22:12 -0700 (PDT)
+Message-ID: <7df5cf3e-b4f7-407f-8da4-c0abdc7752ce@linux.intel.com>
+Date: Thu, 17 Sep 2026 11:22:11 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwl-net v2 2/3] ice: fix autoneg disable when link partner
+ doesn't support AN
+To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+ intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com
+Cc: netdev@vger.kernel.org, Konrad Knitter <konrad.knitter@intel.com>
+References: <20260915125529.3975723-1-aleksandr.loktionov@intel.com>
+ <20260915125529.3975723-3-aleksandr.loktionov@intel.com>
+Content-Language: pl
+From: Tomasz Lichwala <tomasz.lichwala@linux.intel.com>
+In-Reply-To: <20260915125529.3975723-3-aleksandr.loktionov@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-- [Medium] The commit message's closing note ("Note that without the fix
-  a failure is not self-contained: the fixture setup aborts before…
-- [Low] The commit message uses `Assisted-by: Claude:claude-opus-5` while
-  the v2 changelog claims "Use the Assisted-by: format documented in…
+On 15.09.2026 14:55, Aleksandr Loktionov wrote:
 
---
+> +static bool ice_autoneg_disable_allowed(struct ice_port_info *p)
+> +{
+> +	u8 an_info = p->phy.link_info.an_info;
+> +
+> +	if (an_info & ICE_AQ_AN_COMPLETED)
+> +		return true;
+> +	/* ICE_AQ_LP_AN_ABILITY is only valid when link is up */
+> +	return (p->phy.link_info.link_info & ICE_AQ_LINK_UP) &&
+> +	       !(an_info & ICE_AQ_LP_AN_ABILITY);
 
-selftests/net: run tun tests in a dedicated network namespace
+When link is down and AN hasn't completed, this still silently no-ops the disable request (unchanged from before). Worth confirming that's the intended UX, or returning -EINVAL here too.
 
-The tun and tun_vnet_udptnl fixtures now call unshare(CLONE_NEWNET) in
-their setup so each forked test process gets a private network namespace,
-which keeps systemd-udevd's RTM_SETLINK (MACAddressPolicy=persistent) from
-flushing the NUD_PERMANENT neighbor entry the test installs.  If unshare()
-fails the test is reported with SKIP() instead of aborting.
+> +}
+> +
+>  /**
+>   * ice_setup_autoneg
+>   * @p: port info
+> @@ -2539,8 +2561,8 @@ ice_setup_autoneg(struct ice_port_info *p, struct ethtool_link_ksettings *ks,
+>  			}
+>  		}
+>  	} else {
+> -		/* If autoneg is currently enabled */
+> -		if (p->phy.link_info.an_info & ICE_AQ_AN_COMPLETED) {
+> +		/* If autoneg completed or link partner does not support AN */
+> +		if (ice_autoneg_disable_allowed(p)) {
+>  			/* If autoneg is supported 10GBASE_T is the only PHY
+>  			 * that can disable it, so otherwise return error
+>  			 */
 
-Closes: https://bugs.launchpad.net/bugs/2158217
-
-Both observations below are about the commit message only, so the diff
-hunks are snipped.
-
-[ ... ]
-
->     Note that without the fix a failure is not self-contained: the fixture
->     setup aborts before FIXTURE_TEARDOWN runs, so the tap and geneve
->     devices are left behind in the init netns and every later run fails
->     right away in geneve_create().  Running in a private namespace also
->     removes that, since the namespace is torn down with the test process.
-
-[Severity: Medium]
-Does this paragraph describe the same failure the message quotes earlier?
-
-The quoted diagnostics
-
-  tun.c:947:send_gso_packet:Expected ret (0) == variant->data_size (1423)
-  tun.c:948:send_gso_packet:Expected r_num_mss (0) == variant->r_num_mss (2)
-
-map (with the nine lines this patch adds above them) to the two checks at
-the end of TEST_F(tun_vnet_udptnl, send_gso_packet):
-
-	ret = receive_gso_packet_from_tunnel(self, variant, &r_num_mss);
-	EXPECT_EQ(ret, variant->data_size);
-	EXPECT_EQ(r_num_mss, variant->r_num_mss);
-
-That is after FIXTURE_SETUP(tun_vnet_udptnl) has completed, not an abort
-during setup.  EXPECT_EQ only records KSFT_FAIL and continues, so the test
-body returns normally and __TEST_F_IMPL in kselftest_harness.h has already
-cleared no_teardown and then calls the teardown unconditionally:
-
-			*_metadata->no_teardown = false; \
-			fixture_name##_##test_name(_metadata, self, variant->data); \
-			_metadata->teardown_fn(false, _metadata, self, variant->data); \
-
-FIXTURE_TEARDOWN(tun_vnet_udptnl) then does run:
-
-	ret = ip_link_del(param_dev_geneve_name);
-	EXPECT_EQ(ret, 0);
-
-	ret = tun_delete(self->ifname);
-	EXPECT_EQ(ret, 0);
-
-A harness timeout does not look like the mechanism either: udp_socket_open()
-sets SO_RCVTIMEO to TIMEOUT_SEC (10 s) and receive_gso_packet_from_tun()
-select()s with the same 10 s bound, both under TEST_TIMEOUT_DEFAULT (30 s).
-The tap is also opened without IFF_PERSIST, so it goes away when the child
-closes its fd.
-
-Could the leftover geneve1 and tap devices that were observed have come from
-a different abort or setup-failure path than the neighbor flush described
-here?  Since the v2 measurement methodology ("with the tap and geneve devices
-removed between iterations") is justified by this paragraph, it would help to
-either identify that path or drop the claim.
-
->     Assisted-by: Claude:claude-opus-5
-
-[Severity: Low]
-This isn't a bug, but the v2 changelog says "Use the Assisted-by: format
-documented in Documentation/process/coding-assistants.rst", and that
-document specifies:
-
-  Assisted-by: LLM [TOOL1] [TOOL2]
-
-* ``[TOOL1] [TOOL2]`` are optional specialized analysis tools used
-  (e.g., coccinelle, sparse, smatch, clang-tidy)
-
-The literal LLM token is required and the optional trailing fields are
-analysis tools rather than a vendor or model name, so the trailer as written
-does not match either part.  Should this read "Assisted-by: LLM"?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260914211921.3786609-1-edoardo.canepa%40canonical.com
+Thanks,
+Tomasz
