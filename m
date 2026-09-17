@@ -1,102 +1,95 @@
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-wm2-f11.google.com (mail-wm2-f11.google.com [74.125.225.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D78E4A4F00;
-	Thu, 17 Sep 2026 10:58:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A05D4D0CF7
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 10:59:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789642747; cv=none; b=q61MJZ8CmieObDXegmjLml6lRZV/fkT1K8qOEqwpgo2yRwejBi5tW9g8eeehm2Bkxedc0QS2NzldFpNf5cMQCAzq4ZO3BAf2eEvBRja6BPOUwBlZ7Lb4kYugJAm6Cr+tgUyX5in6ZTc7enLJJgOX7LU9pbI/hOqt9JoofsnsCrk=
+	t=1789642798; cv=none; b=Tm1rRzMOYFz8JgkVVtj/tYkjzS8qu2y1aoJHX05YY6X7jWfpIJ0+yVRUlCvG/LlpNYmg90+lL1w6arMN5lu+UIf0AIWCpo+5hE53jcz6rMjPBGlPnO3NYoM9YoG/f9M3E4Pehk+aC4LJZf2XfPzFTCetbClZf1UNrBuv1cpyTkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789642747; c=relaxed/simple;
-	bh=sdUBXHXhyU/BIPuoV44D1DHJ8bJOufyy5HHk6/9LY3k=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VFyaQaay0bEWsNnPydZon+4CzK+1mgwsqC4RnDi8tBY/twW7CcGqb8e/uGVXSVGk9/Is7w0pkxeO80XHyHtSvdMYt4FGceIZPoYJeyfCSbTyRC14dkFebnWxK9er6H38V1dK9vcyw1+43VqivcoR5AvD6lYLFvCOlAdtmVafLbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-05 (Coremail) with SMTP id zQCowAC3Hzrmx6tqChl_CA--.1287S2;
-	Thu, 17 Sep 2026 18:58:46 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: andrew+netdev@lunn.ch
-Cc: ayush.sawal@chelsio.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	rohitm@chelsio.com,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] chtls: Fix skb reference leak in chtls_send_reset()
-Date: Thu, 17 Sep 2026 10:58:46 +0000
-Message-Id: <20260917105846.2147976-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1789642798; c=relaxed/simple;
+	bh=8e8Ah+7WlZHbhtXBLLlQRSAvSloayfN47Xg8BoeWzkI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=jpdeATmrIkBKN5E/+hg8JjjG6VJmkFA0SilZYP5C/KCEwxietkl5RfFz51ponUPTvcX/UZ95RdgoghIBDFtTIS0rb/c7VvY9Pr6NTCFng1hFTBI9Vo0I/71zTBQVKbEcot+yuZc//6fpVxYe8gEu6BchUwsvHiwRKvLPyeu75rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d/6iZZCo; arc=none smtp.client-ip=74.125.225.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d/6iZZCo"
+Received: by mail-wm2-f11.google.com with SMTP id 5b1f17b1804b1-49e78a58e17so2761555e9.0
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 03:59:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789642772; x=1790247572; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=h0M7opCWPOuxBFEuwAzPAI3fMW+G/LVbMC9tyOg7hDc=;
+        b=d/6iZZCoppIIVZl9QpIgklFXZXZoKkLRQJryB2oLdVbShfOhnrYe7qEzJKAGHg9Fhs
+         9HaGUP3r3/vT4HfOI0wARNf9i3EP9pCxoUekepUKAPKHN4ZUo/fDlMBbPZFk4NuMEtpZ
+         jEscfmibdxyykCl82IEkOU5qwoCXV9jQaErqKObXxE6udizhFIcWIRq+bO7BgB++Pixf
+         //EcCX2xtTEmJksO8NE9/8ozoG8X1ZxHLDh+UTwkgVZLA+06A1Rrmdab6x9Shl7mnLuD
+         bEdRFB7oiOeClRwahH7eXIsFmpiJL+daucAfypDOcx7MdGLbpe6CdPnEBNCwYZ47Nzxk
+         jqxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789642772; x=1790247572;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=h0M7opCWPOuxBFEuwAzPAI3fMW+G/LVbMC9tyOg7hDc=;
+        b=t4rk0Yw0U1pJ58b/+TlkMy6a/k9uNBXqlnyUp4qUzpaPOgkyUkRIXGOU0iS3mN+wNE
+         FaYo1Vglqq4boX1Qw/sXrnXvlMygY+CVb2A6M0oq4eyy1wK7+SKxMO+sU05NY+9bDxdI
+         qrHv+Mvz97qBMB9Od7Uq32/inb7DjELRPK3TyPcHd+vIre8QQ19H2PspcbEjaZ1VM5EY
+         Cv0nz843Sbh+s3BOrgHs9CWI4GLY7MTuz+dcxdd+hRbIM1srTGcBSIQdAP3ZLV3xqOsJ
+         GSsCoWcYDYKtD0cFhc5yxoafmajLi0LCIkQVayd26KC0UfrRGWScIS7MGaNVB94zhCob
+         x1BQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxIc92XeqEB3m5cwC1xVm5fiY7epPue+58mZqnZlR4xDP9XeokBcwTMuZ/jf9Dn8fJ7z+yrbj8=@vger.kernel.org
+X-Gm-Message-State: AFuF++k1e0Qruj57KvWK/YTE8W/PdMdQaJDxHhY5CNLcZTwP9pmf2G4y
+	35U90aflVVYHeLdYYgs7mZHa11/fP4dYx5Ix1ibC0ddZGl6+aYPIALE7
+X-Gm-Gg: AYBFou3hQuWKQbZSt9j6997E8KU+dYI5qXMbHYcXFuQyNs+LDm+3hV6Hx6fI+LbqcZl
+	KkPL0QMreu/nY+VXgmc1owL76MM9dfWoT7/jYiTOk7D6hL1YroCcHlfzoAYJ2SHPzqYuhFYVxnP
+	J6NIzehrfNDDSH8LSpMXlwuGnFizDCucHbr+/jx2LVirg41tHpcaEypBqgw4yv1omP5KGlcL7pF
+	0YhdRXphNRSoVBOINrcrNAVwvkqN1GAeaLr+zF2JwlFy4RvzyHYAEl/p3k1Hne9A4ZGC2I4R1GQ
+	B4u2GFEVX68nch5WHZTyE9kAF0WGXgXNFIVByRxgosMSydcbaSbAHl6lh79wtBlMMa7rhwFCTyt
+	pgkuHqgH4uYdS/m6DLy4NA4DZa02UVEbwhXSgsatfjwtIsNTAzWGrosxTlqCXi1KrgMQ+A/GENg
+	OiZC3foCWfKlnX3RPI4UmkeiglQEIjxKITg5ZxRs7qO/i+vMDRZFRz4jmaeCqXE1JGpWd1G8hPJ
+	aojVuHqCQ1kBaVn3GT6ZdABF0iHdLa7b1QSGfZwPAHnAYmGJvho16M8y3uglNujf1fDf97pkQfv
+	GjAa5qXtSsDhEnAd2rUly4/RgaqlCKXTuywNSlU=
+X-Received: by 2002:a05:600c:4e0a:b0:49e:8238:6feb with SMTP id 5b1f17b1804b1-49eb73088c2mr72472075e9.14.1789642771777;
+        Thu, 17 Sep 2026 03:59:31 -0700 (PDT)
+Received: from localhost (nat-icclus-192-26-29-3.epfl.ch. [192.26.29.3])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4870bf1fa70sm14454462f8f.9.2026.09.17.03.59.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Sep 2026 03:59:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAC3Hzrmx6tqChl_CA--.1287S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7ArWDCF47ArWfAr43CFyUZFb_yoW8Wr13pw
-	4xJFy2k3yDtayrJayxJ3s5ZFW5u3sYyry5KFy8Gw1fXFnxJr4xJF9xGF1jqrWDAF4xGFZI
-	vr4kAanYgFn8ArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPlb7Iv0xC_Kw4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
-	cIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2
-	AK021l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v2
-	6r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI
-	0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2Wl
-	Yx0E2Ix0cI8IcVAFwI0_Jw0_WrylYx0Ex4A2jsIE14v26r4UJVWxJr1lOx8S6xCaFVCjc4
-	AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq62Iq12xI8VA0II8E6IAqYI8I648v4I1l
-	FIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr4
-	1l42xK82IY6x8ErcxFaVAv8VW8GFyrJr1UJwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s02
-	6c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw
-	0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvE
-	c7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aV
-	AFwI0_Gr1j6F4UJwCI42IY6I8E87Iv6xkF7I0E14v26rxl6s0DYxBIdaVFxhVjvjDU0xZF
-	pf9x07befHbUUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwMNA2qrrRlXLAAAsE
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 17 Sep 2026 12:59:30 +0200
+Message-Id: <DLHJEZ0K0FV1.SCQLJJQNS1ES@gmail.com>
+From: "Kumar Kartikeya Dwivedi" <memxor@gmail.com>
+To: "Mark Brown" <broonie@kernel.org>, "Daniel Borkmann"
+ <daniel@iogearbox.net>, "Alexei Starovoitov" <ast@kernel.org>, "Andrii
+ Nakryiko" <andrii@kernel.org>, "bpf" <bpf@vger.kernel.org>, "Networking"
+ <netdev@vger.kernel.org>, "Eduard Zingerman" <eddyz87@gmail.com>
+Cc: <linux-kernel@vger.kernel.org>, <linux-next@vger.kernel.org>
+Subject: Re: Missing signoff in the bpf tree
+X-Mailer: aerc 0.21.0
+References: <aqvBPVcN__UX8P85@sirena.org.uk>
+In-Reply-To: <aqvBPVcN__UX8P85@sirena.org.uk>
 
-chtls_send_reset() is given a skb holding one reference, to be sent as
-CPL_ABORT_REQ. It consumes that reference on every path except the
-TCP_SYN_RECV one: there it sends a TCB field reply built from a freshly
-allocated skb and never releases the passed-in one.
++To Eduard
 
-This leaks the reference taken by reset_listen_child(), which resets
-half-open children in TCP_SYN_RECV found on the SYN queue.
-
-Release the skb on the TCP_SYN_RECV path as well.
-
-Fixes: 8ad2a970d201 ("cxgb4/chtls: Fix tid stuck due to wrong update of qid")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c b/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c
-index 0e3e5cf52c2c..a363f20452fa 100644
---- a/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c
-+++ b/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c
-@@ -265,12 +265,14 @@ static void chtls_send_reset(struct sock *sk, int mode, struct sk_buff *skb)
- 	chtls_purge_write_queue(sk);
- 
- 	csk_set_flag(csk, CSK_ABORT_SHUTDOWN);
--	if (sk->sk_state != TCP_SYN_RECV)
-+	if (sk->sk_state != TCP_SYN_RECV) {
- 		chtls_send_abort(sk, mode, skb);
--	else
-+	} else {
- 		chtls_set_tcb_field_rpl_skb(sk, TCB_T_FLAGS_W,
- 					    TCB_T_FLAGS_V(TCB_T_FLAGS_M), 0,
- 					    TCB_FIELD_COOKIE_TFLAG, 1);
-+		kfree_skb(skb);
-+	}
- 
- 	return;
- out:
--- 
-2.34.1
+On Thu Sep 17, 2026 at 12:30 PM CEST, Mark Brown wrote:
+> Commits
+>
+>   4499609f99fd5 ("selftests/bpf: Test global subprog callback contexts")
+>   3506b9a2f1085 ("bpf: Verify global subprogs in each sleepability contex=
+t")
+>
+> are missing a Signed-off-by from their committers
 
