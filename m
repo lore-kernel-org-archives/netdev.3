@@ -1,106 +1,245 @@
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163FE4418D7;
-	Thu, 17 Sep 2026 06:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F334F35C699;
+	Thu, 17 Sep 2026 06:58:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789628247; cv=none; b=CJ10kx2mpopgCKYMrn+KMsylxkOF3mhD7Gm/nvfR9gtf+XDKkoo/RSWv4K/vZBg1+q+4e17KI4Wd5WWRePMOKOv4meiBC0o8yMGSjLHewE43wW+gTBGXiR7ADaYOGbKQoB9ENuf8I5KUSu36J9Gy8PYx1a5+GOYopjy+vVvqrD0=
+	t=1789628314; cv=none; b=QRG3zwV8Dx3FDm3QxrdqXGbYcJKTvx1BIkkrW2bkflUqaHlMBd+P2BZGc6TucYYUeuiF+oPpAoZN+8qZG2jaejSO/LBuhKB6YxETqJRU9jPmRzvb0/ABkjznulb38KnhNHKc7MeEqp9mpHmkyXYAtgAuBY1Q+DJrd85iE7cPGXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789628247; c=relaxed/simple;
-	bh=NDmjBfPXqUCwb0277MkB74yRPXjYVJcqmLzIrjedTz8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gG/o2Xc9sP0gF6O7HZeWLLwgt5wTGMlRjhua5ckoJtZuExBD2gAql8aErFvG6CfdfRX9ftrBh63Dz4LHZOcXdorHjluFqCqbUOa6MNNMvJi344RSPSHN485rCd2yOCFoyQn6CYeNh5yUdM8wZ+j23VeCU+NbLSke0LGB7RiVF1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=Wq/xXMiK; arc=none smtp.client-ip=117.135.210.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	s=arc-20240116; t=1789628314; c=relaxed/simple;
+	bh=CDopQ9UzvZ21VLsVKOFMM1Ke8E0jk0aBARoid+WepFk=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=kEagiBzs2dGAo3Df88DL/V51pgUuPCkJkkKZtd+es6jndrhbjpPf++JfSsKeS+HPy8cYYSjTGj1cDK/qU91+wXAv+sLQjPmCRAdWFSRXG+HjmKKJN/3sjwDXmqMj/Et2R/H40hdTgRyw6axys9Uo8dt9WWnp/xUxbqiyqkvBSuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LGBa6DIq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="Wq/xXMiK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=9+
-	5aItjV8sXRWYQrSBqF5NevwNFZO4i/q6ItO4H3KNM=; b=Wq/xXMiKny4jxdC7cg
-	EWDIOZIGCdT5CPUUUXVIvFNpCj8Kh6btEmSIoM6vfcHbmi8xgH5vgtLwVQNOGfHK
-	Tbh1gSadALv11LCQxCLgQcDrRoeySgmtv0UeKOsG3t9lcQkBUnJEE0xXpyELlhaN
-	lTIrVVuBKfWaU+1GE/8ER9Ijs=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD3X7IAj6tqQTSDBQ--.47835S2;
-	Thu, 17 Sep 2026 14:56:00 +0800 (CST)
-From: Linkui Xiao <xiaolinkui@126.com>
-To: anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	jedrzej.jagielski@intel.com,
-	kees@kernel.org,
-	aleksandr.loktionov@intel.com
-Cc: intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Linkui Xiao <xiaolinkui@kylinos.cn>
-Subject: [Intel-wired-lan] [PATCH net v2 1/2] ixgbe: do not busy wait in ixgbe_devlink_reload_empr_finish()
-Date: Thu, 17 Sep 2026 14:54:35 +0800
-Message-Id: <20260917065436.1181073-1-xiaolinkui@126.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LGBa6DIq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CACD81F000FF;
+	Thu, 17 Sep 2026 06:58:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789628311;
+	bh=CLWg4sL7FNW2rDlFnqytZS83Y8S4Uj0MO5EXiiPHF8s=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=LGBa6DIqAizDZ1bFoLiWZEl0unBIpybIlbDaE/bu+zdL8cIpgW2S+bvd0nKKaZoFE
+	 Bi1NZQkLUSrIB5sapuD77goPfgXesOmwONY2dhQNVfSwRXmLZK4Cm4OiEjWaGzBjxR
+	 ce9lLXF0hiCgIW6MPw+t2D6Xm6lg+RJs1S+ezw51smLTjXcyYWXnVWqQ75lZpkLfqK
+	 Up+eZNAGRbU/qP+V28EwpvIJl6QC3SVoJ0YEnAUk9dxMxR65sZ1QPjfELG+D2uyjd2
+	 xaPQoYfbq33dMrKQWVwWBxSaaExyVrdR1W+Ke+Cijn/ce6rijO2NxCxjYVI7LmHtaS
+	 s5RZOAVZkHvpQ==
+Subject: Re: [PATCH net-next] net: axienet: add a TX timeout handler to
+ recover a lost DMA interrupt
+From: netdev-bot+sashiko@kernel.org
+To: maimon.sagi@gmail.com
+Cc: radhey.shyam.pandey@amd.com, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ michal.simek@amd.com, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Date: Thu, 17 Sep 2026 06:58:30 +0000
+Message-ID: <178962831034.22033.349240265456808212@kernel.org>
+In-Reply-To: <20260915065534.102249-1-maimon.sagi@gmail.com>
+References: <20260915065534.102249-1-maimon.sagi@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3X7IAj6tqQTSDBQ--.47835S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7trW7AryUuw13JF1rAryUGFg_yoW8Zr1DpF
-	WUWF93Jw4xXr4Fg34jqa18uasxX3WYg3y5WFySkrZ5Z3ZYyr1Dtr1Utr1fKr1UArZ8Kr1S
-	qFn09rsxAFs8Cw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07ULVysUUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqQBpQGqrjwDwYgAA3c
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-ixgbe_devlink_reload_empr_finish() is the .reload_up devlink operation,
-so it always runs in process context with the devlink instance lock held.
-Its polling loop delays with mdelay(500), i.e. it spins the CPU for half
-a second per iteration and, because the loop bound is 20 iterations, for
-up to ten seconds. That keeps a CPU fully occupied while the firmware
-performs the EMP reset, and on CONFIG_PREEMPT_NONE it also makes the
-loop non-preemptible for that whole window. The loop does not need to be
-atomic and holds no spinlock.
+Critical: 0 · High: 1 (1) · Medium: 0 · Low: 0
 
-Use msleep() instead.
+- [High] The new .ndo_tx_timeout handler (axienet_tx_timeout(),
+  drivers/net/ethernet/xilinx/xilinx_axienet_main.c:1907-1913) only…
 
-Fixes: c9e563cae19e ("ixgbe: add support for devlink reload")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
----
-v1:https://lore.kernel.org/all/20260914092626.263886-1-xiaolinkui@126.com/
+Pre-existing issues:
+- [High] axienet_dma_err_handler()
+  (drivers/net/ethernet/xilinx/xilinx_axienet_main.c:2727-2810) tears…
 
-v2:
-  - Reworded the commit message: mdelay() does not mask interrupts or
-    disable preemption, and the ~10 s window is below the soft lockup /
-    RCU stall thresholds.  State the actual rationale instead.
-  - Split the macro rename into a separate patch.
-  - The mdelay() -> msleep() change itself is unchanged, so the
-    Reviewed-by tag is kept.
+--
 
- drivers/net/ethernet/intel/ixgbe/devlink/devlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+net: axienet: add a TX timeout handler to recover a lost DMA interrupt
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-index cf8908b82f8a..781f13240a0d 100644
---- a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-+++ b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-@@ -460,7 +460,7 @@ static int ixgbe_devlink_reload_empr_finish(struct devlink *devlink,
- 		 * may be not cleared yet, so begin the loop with the delay
- 		 * in order to not check the not updated register.
- 		 */
--		mdelay(500);
-+		msleep(500);
- 
- 		fwsm = IXGBE_READ_REG(hw, IXGBE_FWSM(hw));
- 
+This adds an .ndo_tx_timeout handler to axienet_netdev_ops that queues
+lp->dma_err_task, so the netdev watchdog can reach the existing DMA reset
+path without depending on a DMA interrupt.  watchdog_timeo is set to 5 * HZ
+in the legacy DMA branch of axienet_probe().
+
+> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> index 782f903d318f3..b5927e979c341 100644
+> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+
+[ ... ]
+
+> @@ -1884,6 +1888,30 @@ axienet_get_stats64(struct net_device *dev, struct rtnl_link_stats64 *stats)
+>  	} while (read_seqcount_retry(&lp->hw_stats_seqcount, start));
+>  }
+>  
+> +/**
+> + * axienet_tx_timeout - Driver TX timeout callback
+> + * @ndev:	Pointer to net_device structure
+> + * @txqueue:	Index of the transmit queue that stalled
+> + *
+> + * Called by the netdev watchdog when a transmit queue has made no progress for
+> + * @ndev->watchdog_timeo.  axienet_dma_err_handler() is the driver's only reset
+> + * path, and it is otherwise scheduled solely from axienet_tx_irq() and
+> + * axienet_rx_irq() - so a completion interrupt that is never delivered leaves
+> + * the queue stopped with descriptors unreclaimed and no way back short of
+> + * unloading the driver.  Schedule the reset from here as well, so a lost
+> + * interrupt is recoverable.
+> + *
+> + * This runs from a timer, so it only queues the work; the reset itself happens
+> + * in process context in axienet_dma_err_handler().
+> + */
+> +static void axienet_tx_timeout(struct net_device *ndev, unsigned int txqueue)
+> +{
+> +	struct axienet_local *lp = netdev_priv(ndev);
+> +
+> +	netdev_err(ndev, "TX queue %u stalled, resetting DMA\n", txqueue);
+> +	schedule_work(&lp->dma_err_task);
+> +}
+
+[Severity: High]
+Does the queue actually get restarted after this reset?
+
+dev_watchdog() only calls ndo_tx_timeout for a queue that is already
+stopped:
+
+net/sched/sch_generic.c:dev_watchdog() {
+	...
+			if (!netif_xmit_stopped(txq))
+				continue;
+	...
+			dev->netdev_ops->ndo_tx_timeout(dev, i);
+}
+
+In the scenario the changelog describes (lost TX completion, descriptors
+unreclaimed) the stop bit is __QUEUE_STATE_DRV_XOFF, set here:
+
+drivers/net/ethernet/xilinx/xilinx_axienet_main.c:axienet_start_xmit() {
+	...
+	if (axienet_check_tx_bd_space(lp, MAX_SKB_FRAGS + 1)) {
+		netif_stop_queue(ndev);
+	...
+}
+
+axienet_dma_err_handler() then resets DMA, zeroes every TX BD, sets
+lp->tx_bd_ci = lp->tx_bd_tail = 0, re-enables NAPI and returns.  The only
+queue-state clearing it does is netdev_reset_queue(), which touches
+STACK_XOFF only, and nothing at all without CONFIG_BQL:
+
+include/linux/netdevice.h:netdev_tx_reset_queue() {
+#ifdef CONFIG_BQL
+	clear_bit(__QUEUE_STATE_STACK_XOFF, &q->state);
+	dql_reset(&q->dql);
+#endif
+}
+
+There is no netif_wake_queue()/netif_tx_wake_all_queues() and no
+netif_trans_update() anywhere in axienet_dma_err_handler().  The remaining
+wake site in axienet_tx_poll() is gated on packets:
+
+drivers/net/ethernet/xilinx/xilinx_axienet_main.c:axienet_tx_poll() {
+	packets = axienet_free_tx_chain(lp, lp->tx_bd_ci, lp->tx_bd_num, false,
+					&size, budget);
+
+	if (packets) {
+	...
+		if (!axienet_check_tx_bd_space(lp, MAX_SKB_FRAGS + 1))
+			netif_wake_queue(ndev);
+	}
+}
+
+Can axienet_free_tx_chain() ever return non-zero after the handler cleared
+cur_p->status for every descriptor?  And the wake in axienet_start_xmit()
+cannot run while the queue is stopped.
+
+If DRV_XOFF survives the reset, and txq->trans_start is never refreshed,
+doesn't dev_watchdog()'s time_after(jiffies, trans_start + watchdog_timeo)
+stay true, so the timeout path re-fires every 5 seconds, re-running
+napi_disable() / axienet_dma_stop() / __axienet_device_reset() /
+axienet_dma_start() and printing netdev_crit + netdev_err indefinitely
+while the interface still cannot transmit?
+
+The driver's other reset path does refresh the timestamp:
+
+drivers/net/ethernet/xilinx/xilinx_axienet_main.c:axienet_device_reset() {
+	...
+	netif_trans_update(ndev);
+}
+
+Would adding netif_trans_update() plus a wake of the TX queue at the tail
+of axienet_dma_err_handler() be needed for the recovery claimed in the
+changelog ("the watchdog fires and the interface resumes passing traffic")
+to hold for the DRV_XOFF case rather than only for a BQL-only stop?
+
+[Severity: High]
+This is a pre-existing issue and not introduced by this patch, but the new
+trigger makes it much easier to reach: axienet_dma_err_handler() tears down
+the TX ring with no exclusion against axienet_start_xmit().
+
+The worker calls napi_disable() (which only excludes axienet_tx_poll()),
+axienet_dma_stop(), then re-enables transmission for a BQL-only stop before
+it starts freeing descriptors:
+
+drivers/net/ethernet/xilinx/xilinx_axienet_main.c:axienet_dma_err_handler() {
+	axienet_dma_stop(lp);
+	netdev_reset_queue(ndev);	/* clears __QUEUE_STATE_STACK_XOFF */
+
+	for (i = 0; i < lp->tx_bd_num; i++) {
+		cur_p = &lp->tx_bd_v[i];
+		if (cur_p->cntrl) {
+			dma_addr_t addr = desc_get_phys_addr(lp, cur_p);
+
+			dma_unmap_single(lp->dev, addr, ..., DMA_TO_DEVICE);
+		}
+		if (cur_p->skb)
+			dev_kfree_skb_irq(cur_p->skb);
+	...
+	lp->tx_bd_ci = 0;
+	lp->tx_bd_tail = 0;
+
+	axienet_dma_start(lp);
+}
+
+It never takes the per-queue _xmit_lock and never calls
+netif_tx_disable()/netif_device_detach(), and the core unfreezes the queues
+as soon as ndo_tx_timeout() returns, long before the work runs:
+
+net/sched/sch_generic.c:dev_watchdog() {
+			netif_freeze_queues(dev);
+			dev->netdev_ops->ndo_tx_timeout(dev, i);
+			netif_unfreeze_queues(dev);
+}
+
+So while the teardown loop is running, can a transmit on another CPU enter
+
+drivers/net/ethernet/xilinx/xilinx_axienet_main.c:axienet_start_xmit() {
+	...
+	WRITE_ONCE(lp->tx_bd_tail, new_tail_ptr);
+	netdev_sent_queue(ndev, skb->len);
+
+	/* Start the transfer */
+	axienet_dma_out_addr(lp, XAXIDMA_TX_TDESC_OFFSET, tail_p);
+}
+
+and write cur_p->cntrl/phys/skb into a descriptor the worker is about to
+unmap and clear?  The outcomes look like an skb freed by the worker and
+then re-referenced, a DMA mapping released while a fresh buffer is being
+programmed into the same descriptor, and lp->tx_bd_tail/tx_bd_ci rewound to
+0 out of step with the hardware tail pointer written by axienet_start_xmit().
+
+Since this new .ndo_tx_timeout makes the reset a routine event (and, per the
+comment above, potentially every 5 seconds), should the reset path be made
+to exclude the xmit path, for example with netif_tx_disable() around the
+descriptor teardown?
+
+[ ... ]
+
 -- 
-2.25.1
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260915065534.102249-1-maimon.sagi%40gmail.com
