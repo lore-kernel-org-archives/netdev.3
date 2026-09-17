@@ -1,179 +1,404 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo2-f40.google.com (mail-oo2-f40.google.com [74.125.231.168])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6EB14E5338
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 17:18:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8065172D5
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 17:20:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789665494; cv=none; b=r0YAzm+aj5fjtK5tGlmo4YiVK8aCmywT+piBNgo5QOQguiItIpG9LHR0OWQzQDWKG/UbBFhxnqTwA44/UGMUnxSK8Frrj5N8oazxeq9JEKVjNtZsNrx1PfxOZ9iboSuTv+IVf7Y6tgjew7ZTUaOhqWm6VJGqsvFxZROwZSorPUA=
+	t=1789665661; cv=none; b=BHZlvhNcOQiBsQ8gaykqQcr/iHvmwhZKdwXZv0OVTjMFq8tZa2dHmEO49vktr3+0uU4OVhO2YX7o3nzJguUBuLPd3rDh915m7UfZBX4a9gWE7Jwv7RSNgaKrQ/8Jhy0bEUk1cPecdQe3jy6UzujdFPM1QFkkuajGtHUaJQeNVHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789665494; c=relaxed/simple;
-	bh=JSrGIbjkM8d0NQvST/BovBGlv6xJHhXtQq99el/iQKc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QvZkcJRokimDBMaiEOEuQ07chFpjiAMNgTdC8Y+Y13Ivf3jzHiIPHSR5rMttOInbc6194WjTGcvRqz//CKX24ey/aPVOCHnV/S+zdEFGX5kFYzyw8AFhEDowxE1Ogo/WMEw0jdLxe0xbr6SyDn18I6S1i3eUctQD1bK4olHrCoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YudlXxSM; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=cLTib6XH; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1789665661; c=relaxed/simple;
+	bh=nw/J8VcrReR5owald09pjVvypGmieOinjLIHRZM4tdk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VcvHyd/+q1B77+RlMPy2tKjaekaiJQzg9ToLx6tARnlDCX/sN58mzRdU4Ptzo50Qx9LGqK4tLtdgZNnXrJ20/Nfu+3E92vZeC/BTpId9oO2eceZfFkvwdN3RKhSlwgcF12nwHKyX6cjR+7E+qVA9LWSuMkPLgu0ftZo8tICwcjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20251104.gappssmtp.com header.i=@davidwei-uk.20251104.gappssmtp.com header.b=kFMKOhT7; arc=none smtp.client-ip=74.125.231.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=davidwei.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="YudlXxSM";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="cLTib6XH"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68HH5if92553418
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 17:18:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=UU3OPZ+AZXcwBF+ykx1YfK6Z
-	7ZZ5v6mM/Pmv+b1riFA=; b=YudlXxSMbVq1R/3U+hw0kCNdYy6DO5XxrXM66HYC
-	eUxrlmQryFDx1VW/AMcLRuUorMWLDwcYkHz2JgXJtOYXT0SnhUROWP+gbSG9nzLQ
-	UmSmuetkRbCqUqZqO1hoRPRnNpjtKOlTep8dsEQQXIfztW+YAABQmNAq6psXU67K
-	k4HfRon9RnjzSDkjKsRcudzzSvpgi4gKLPdHMOYuohzZQ2D+iKCVTJlf6ATa9Zmm
-	IiNg56w8fXBpgyIQYO/uvX9NwJ20KbtcGDOafBluYlIHZmtivJGe/t0y14bvukbt
-	gJG34CRLYpDFgBhIYiwBJqKyfPwqGVj+KfRiy3jyKur6Mw==
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4grfu41jq8-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 17:18:11 +0000 (GMT)
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-39e3dad7ab3so1174309a91.2
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 10:18:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=davidwei-uk.20251104.gappssmtp.com header.i=@davidwei-uk.20251104.gappssmtp.com header.b="kFMKOhT7"
+Received: by mail-oo2-f40.google.com with SMTP id 006d021491bc7-6c2613d80fbso706248eaf.1
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 10:20:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1789665490; x=1790270290; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UU3OPZ+AZXcwBF+ykx1YfK6Z7ZZ5v6mM/Pmv+b1riFA=;
-        b=cLTib6XHpom/q/6450SOAP+x4+9f2kskf/XFnsNW/MuFZQtoCC5bYkkwZ6Y/EEYygM
-         uPR+ZUzow4GJMQlAYE7fhF39XaTx3VC/04n2mkF7Itr+w/3D36KkcgQr+zAToK3dV4yS
-         HQ0wySiylDSxtlpfmYJAb7mJJTrunlaxQEf+5Wklnf54XrTfs90Lvg8zoYqv79xshivm
-         dayDoTgheey+7yeIefI13H6oh3wNO8f0GuLRquP6OgIXyd31vhK39ncExqaj4IMHQxOu
-         er1WfXGJTTlnC4iwnn8mLPy5yfx+NNVNoPYzt/2s7rQrTzJmD3SNbHrT9R+vUvjnupn8
-         /kMQ==
+        d=davidwei-uk.20251104.gappssmtp.com; s=20251104; t=1789665656; x=1790270456; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=R8vkCTDwduZBUtVdBbRq+qNyuVRxzowW3egmXOkgxJ4=;
+        b=kFMKOhT7rXGu4MCDGVq45NIpzfI2jGF0kZGnQIKVoVr94XQ9ZXsXwHtVSHoTJhfHZK
+         F7dSEP7vJWwI/bBajyC8R/hw8F/3DHlZqh7T/+1cIQ9y9lkZFZJmn0MaCJ3jQL3sGtyG
+         w4bHEpKOdODtfqtCF469vdcSiO0kdBidq3/oF35M/317FEvAawxseebzU1AkmXCxbR90
+         KPaL+8DPWF8XaVQV3o5VcFroTJQDgjrhGLO4pdKgjBhgq1qtriu1JajDSBG8UiumDStQ
+         AQhwJhxpIlXwoCXLFJ6kb/UEo6IVXY8P25JwNiftadalfiN0T4vMJVikoxsHBU3zeotz
+         ND5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789665490; x=1790270290;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UU3OPZ+AZXcwBF+ykx1YfK6Z7ZZ5v6mM/Pmv+b1riFA=;
-        b=m2dB1nhKYbDZo7qjG6XpjxXGgaw8VFQ8i8aay8jnpTRs+4coOKg7iajPIqdS7MqCPz
-         glIYeK/UGekezIDAF7WWwgCcHPWI+vY3fNtkbeYOwQ4k2/YVt0WhwDLn7xif1mXU9/AA
-         XZyGPBxVE9sxl24o4f6wwznL47dq8wy3pknE5XXllHKLJ1d/8m9YYDbm7Evm8DYThK6e
-         6Gh5iel5beDEvYUfLobgsPRDRpXemw/qLWPg6M7iB4Q3+inPE8VogqlYu96m2LSdsRpZ
-         VvnP7+GtsGhwMvpypA2kPSHR3+eI0DS5wefWDzBFDCgiU7nFzTfaq4bQdO8eNpiU9nVO
-         QNnA==
-X-Forwarded-Encrypted: i=1; AKwUvBzICU6JfGw9X5AwsyoJXpvjIDk8GBVnIO+RwASmkuzc615o0wnJrlhx9em97RDmm37H0HoxPvY=@vger.kernel.org
-X-Gm-Message-State: AFuF++nRF7q+jK//9n21lwIRzRCFF+ebplqt9lsPiVbt5+UsOVDuV7U/
-	uLZf4MfLfB3/ZWmdVS6/zI1zsldU0yZ4v0t7fV5h8015HX6h+7gmGRH+j49hqnPcs0q9+4kpQu4
-	1AcCVubCcObujSkOAmCWuJSdjt2tIdgxlu8JdZK4MOCHqV6hXIRp4OGM3My8=
-X-Gm-Gg: AYBFou11x7J0nX1WtDIN9xJ9XrDoZKXIPDWjxZP2lpxNMFgbVX/TP+rgAMXMGc7lMQI
-	KD13lKGc7Us5hVOc3ugr5VaY/fY0wfSWA3Ve/oRv7SiLMBt/nYp/iiRvNB/RNegbcfPebIU7y39
-	lFGpzXC+AqG1pBVLfpq20kDSjWlsdirKcmA2GBuOt7gV6MxsvOtQnWqPm7JEK3xh8rrtRaK+avG
-	IvNRcadffUNBp5W5iMplv/QWGSHv38V18cOYdKKCssxEwWGBkFSf7tQ3MkGpnjoboRD1J/fzOTv
-	XMsQBqN9tIEWq86tL+FB+kKT2h7oo3trcYa62L1E/xmvzRf3VYKfKuz4WczsHh1YL7ECOYe8pZU
-	OrODDaQqyQ3dooA==
-X-Received: by 2002:a17:90b:4c0d:b0:39e:464d:ebc3 with SMTP id 98e67ed59e1d1-39e464df3a0mr4120360a91.12.1789665490382;
-        Thu, 17 Sep 2026 10:18:10 -0700 (PDT)
-X-Received: by 2002:a17:90b:4c0d:b0:39e:464d:ebc3 with SMTP id 98e67ed59e1d1-39e464df3a0mr4120256a91.12.1789665489670;
-        Thu, 17 Sep 2026 10:18:09 -0700 (PDT)
-Received: from oss.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e35df6112sm6159114a91.7.2026.09.17.10.18.02
+        d=1e100.net; s=20260707; t=1789665656; x=1790270456;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=R8vkCTDwduZBUtVdBbRq+qNyuVRxzowW3egmXOkgxJ4=;
+        b=eNfFKMKwlKDNjsYJsc675+UlpqR2ZCkWMlCWm6/KK6Rtrw/aORqj2KicGKlgDlaI/I
+         8vzhLourbB+oIyP3sRvGgKBnr5C5X8zSpNTSO1QPXrM4pIWQYpUWKfN2+yvT8eB1IaJ2
+         bhIHvoInZ5K78DjSKVhT2BhlbEH2xEEqnXTZyJQ0gGh+fM4u88xow/oSkz1yxODHpES5
+         1lXmvmbYuZJ5W6dJeDxhphd0JOZgT1uEKuRBc9HtImRTvOo8gHKbjr37V25THwOU5x9A
+         9j252xQz72TpN+wyRYb00CzWowkiXOX6ApQFNYaYJDiiTpYvDa8VJ0w6C/PcPf6Nv9/r
+         k6xw==
+X-Gm-Message-State: AFuF++m4K7G8ug9p0HlOtXLlZ96+TYz+eW8FFb4zfYCYTEZsJqYO/KXh
+	q50WqzS+4sXaYyjhhpi/aLucEMkW4im2kJICoMcG+dCScxNuhuw3OvKeknoCCI08V4iqiCnm90t
+	lElIA
+X-Gm-Gg: AYBFou1/3VRbanxLxHtR2jhdajhJtRxnzuiMuGGjkn7Fj1i7kwdy7ObrvfatENxC7fZ
+	5MEOOAVKP35dQ8YLLhaqlvStemiOIEkYBOSwD/FT3v7JdAPa7oSheZiyWjkvrw84GbjN2Eqd28U
+	VjJ2okEV9je2/dY+uoSPPT5xmWW1I85JVRAv0aARdD4dh6WXvpOLIQ2Mhr9MBxLFtH1/WHGYKdV
+	K5H3ddezdpQ6uwmMZrbT2Yw8W6Vai35PMq0MkNaeBugdT52U/vm98vGTVSe6YLs7ognXa+Q2mlo
+	yPC7fs+elYReDkAe55wqO79+Q0FLwNI/MR7LuWO6Ghv0EEoArqYfDvHtqkJfB32xWQm4ntT9QhH
+	qQC/8wIYT5YAyJxfaXcPOWqRfBVx2x1C3dlbHAjGqjQ0G+Xvw81knv5t1p0KeUAcoGf0KIYUfXS
+	/BER08BMNq+2AfgOA8L2Pe0HPODW/FXEqHAGosz88OU3rpZgWGmVfKNXbhF1RikL0NwvufVJPRt
+	HINvCEmhp1fmIK2jg==
+X-Received: by 2002:a05:6820:c2c1:10b0:6c8:fb02:527e with SMTP id 006d021491bc7-6c8fb025440mr3198729eaf.39.1789665656434;
+        Thu, 17 Sep 2026 10:20:56 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:19::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-486abe0e884sm442239fac.15.2026.09.17.10.20.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 10:18:09 -0700 (PDT)
-Date: Thu, 17 Sep 2026 22:47:59 +0530
-From: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Andrew Davis <afd@ti.com>,
-        Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH net-next v2 8/9] net: stmmac: qcom-ethqos: add
- per-platform NOC clock voting
-Message-ID: <aqwgx/ZpgKG/7Sw7@oss.qualcomm.com>
-References: <20260908-shikra_ethernet-v2-0-bbe3389d0652@oss.qualcomm.com>
- <20260908-shikra_ethernet-v2-8-bbe3389d0652@oss.qualcomm.com>
- <aqGp1D6ySJpTK1fB@lore-desk>
+        Thu, 17 Sep 2026 10:20:55 -0700 (PDT)
+From: David Wei <dw@davidwei.uk>
+To: netdev@vger.kernel.org,
+	bpf@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Willem de Bruijn <willemb@google.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Martin Karsten <mkarsten@uwaterloo.ca>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>
+Subject: [PATCH net v2] tcp: prevent stale tx timestamp keys on rtx fallback
+Date: Thu, 17 Sep 2026 10:20:50 -0700
+Message-ID: <20260917172050.2191062-1-dw@davidwei.uk>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aqGp1D6ySJpTK1fB@lore-desk>
-X-Proofpoint-GUID: K6TvEOvzw0jodvk3X9EWd-u_1ICQ8ExW
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE3MDI0NiBTYWx0ZWRfXyyJWA9Klevir
- jmO77F2/pfngwqx1ERZhcqP/oPulD9oJU7v0sDXCqhaqD4aHwc/FnZFatEs1XGOOut77HtcM9kk
- /vbmBH+C2/A12T4qRDYNrjXiimgs8to=
-X-Proofpoint-ORIG-GUID: K6TvEOvzw0jodvk3X9EWd-u_1ICQ8ExW
-X-Authority-Analysis: v=2.4 cv=LbipeTfi c=1 sm=1 tr=0 ts=6aac20d3 cx=c_pps
- a=vVfyC5vLCtgYJKYeQD43oA==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
- a=oHFBo8UbpOLoADWG0oYA:9 a=CjuIK1q_8ugA:10 a=rl5im9kqc5Lf4LNbBjHf:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE3MDI0NiBTYWx0ZWRfX588UWpT3E1dW
- u61KMluaxT2oJlaHW6oAZ2VMPvH73gNeZ4Bbd5rFhR8ZiLhtd9nubhURixMQ2noxe2b3IVy6PJC
- NINXg+Tsu2h36WOicjjsHW8ABYCJiW1MRqDwTMixNhhPYd9mp0PaCA4mX6RwrOX9M1nvSWN5V9Z
- 5NejiLKkX9a/p7OwN0sKn3diooQcZ/iKO49C8G8SVZqWoQ4fZQ94/axWDUf4ratGQINYZ7ugzvD
- sY34gzfnIZF9OGnf/tIMFYYxLiBhavK2LW5Q6IaPN6PoNqmVF5fvmrb1YSugZH695SoIHO3BjWB
- DXUTdROuQR5uWbYaCQkaX+vUEspfoP2uprzswHvtaDOS2v715tNB6aLcNCJnyD5Nw/nmVQbYO3K
- M67mvGkYwc3yJaBmk491hlblu/sjQPhiNwOkAsmyXHwW+qWItITEbSj6RXhFU8Tr3KSUpibuCs5
- 3v6nK/lZhSolxxHUYJg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-17_04,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 suspectscore=0 spamscore=0 priorityscore=1501 adultscore=0
- clxscore=1015 impostorscore=0 phishscore=0 lowpriorityscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609170246
+Content-Transfer-Encoding: 8bit
 
-Hi Lorenzo,
+tcp_tx_timestamp() can select skbs from the rtx queue when all the
+copied data has been sent in tcp_sendmsg_locked(). These skbs may be
+already cloned, sharing the same shinfo, and handed off into the lower
+tx layers.
 
-On Wed, Sep 09, 2026 at 08:47:48PM +0200, Lorenzo Bianconi wrote:
-> >  	if (enabled) {
-> > +		if (ethqos->num_noc_clks) {
-> > +			ret = dev_pm_opp_set_rate(&ethqos->pdev->dev,
-> > +						  ethqos->noc_clk_rates[0]);
-> 
-> assuming the first clock is always an OPP device seems a bit fragile to me.
-> Can we find a way to enforce it? (e.g. have a dedicated clk_bulk_data struct
-> for it).
-> 
+tcp_tx_timestamp() sets tx_flags before setting skb tskey, racing with
+any reader of both. It is possible to observe a valid tx_flag, but an
+uninitialized tskey, which produces a large underflow after subtracting
+the socket tskey.
 
-As Konrad also pointed out in patch 9, the opp table support needs to be
-fixed. I will fix it for v3.
+Reorder the writes in tcp_tx_timestamp() and
+bpf_sock_ops_enable_tx_tstamp() to write the tskey first, followed by
+publishing tx_flags via store-release.
 
-> >  static int qcom_ethqos_probe(struct platform_device *pdev)
-> >  {
-> >  	struct device_node *np = pdev->dev.of_node;
-> > @@ -795,6 +895,12 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
-> >  	ethqos->has_emac_ge_3 = data->has_emac_ge_3;
-> >  	ethqos->needs_sgmii_loopback = data->needs_sgmii_loopback;
-> >  
-> > +	if (data->num_noc_clks) {
-> 
-> I guess you can drop this check since it is already done in
-> qcom_ethqos_init_noc_clks(), right?
-> 
+Readers perform a symmetric load-acquire on the tx_flags, followed by a
+relaxed read of tskey.
 
-Yes, this can be removed.
+Fixes: 838eb9687691 ("tcp: tcp_tx_timestamp() must look at the rtx queue")
+Assisted-by: LLM
+Signed-off-by: David Wei <dw@davidwei.uk>
+---
+v2:
+ - switch from pre-setting tskey to reordering tskey/tx_flag
 
-	Ayaan
+ include/linux/skbuff.h |  3 ++-
+ include/net/tcp.h      |  6 ++++++
+ net/core/dev.c         |  2 +-
+ net/core/filter.c      |  8 ++++++--
+ net/core/skbuff.c      | 27 ++++++++++++++++-----------
+ net/ipv4/tcp.c         | 11 +++++++----
+ net/ipv4/tcp_offload.c | 16 ++++++++++++----
+ net/ipv4/tcp_output.c  |  6 ------
+ net/socket.c           |  4 ++--
+ 9 files changed, 52 insertions(+), 31 deletions(-)
 
+diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+index 421f6fc45451..489eeb4eb390 100644
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -4776,7 +4776,8 @@ void skb_tstamp_tx(struct sk_buff *orig_skb,
+ static inline void skb_tx_timestamp(struct sk_buff *skb)
+ {
+ 	skb_clone_tx_timestamp(skb);
+-	if (skb_shinfo(skb)->tx_flags & (SKBTX_SW_TSTAMP | SKBTX_BPF))
++	if (READ_ONCE(skb_shinfo(skb)->tx_flags) &
++	    (SKBTX_SW_TSTAMP | SKBTX_BPF))
+ 		skb_tstamp_tx(skb, NULL);
+ }
+ 
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 5e5f5f9b89a3..cc7f78b5cca3 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -1159,6 +1159,12 @@ struct tcp_skb_cb {
+ 
+ #define TCP_SKB_CB(__skb)	((struct tcp_skb_cb *)&((__skb)->cb[0]))
+ 
++static inline bool tcp_has_tx_tstamp(const struct sk_buff *skb)
++{
++	return TCP_SKB_CB(skb)->txstamp_ack ||
++		(READ_ONCE(skb_shinfo(skb)->tx_flags) & SKBTX_ANY_TSTAMP);
++}
++
+ extern const struct inet_connection_sock_af_ops ipv4_specific;
+ 
+ #if IS_ENABLED(CONFIG_IPV6)
+diff --git a/net/core/dev.c b/net/core/dev.c
+index ecfbd72d5d1a..172ebab5d38f 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -4828,7 +4828,7 @@ int __dev_queue_xmit(struct sk_buff *skb, struct net_device *sb_dev)
+ 	skb_reset_mac_header(skb);
+ 	skb_assert_len(skb);
+ 
+-	if (unlikely(skb_shinfo(skb)->tx_flags &
++	if (unlikely(READ_ONCE(skb_shinfo(skb)->tx_flags) &
+ 		     (SKBTX_SCHED_TSTAMP | SKBTX_BPF)))
+ 		__skb_tstamp_tx(skb, NULL, NULL, skb->sk, SCM_TSTAMP_SCHED);
+ 
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 61940e753552..ed6396704e11 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -12602,7 +12602,9 @@ __bpf_kfunc int bpf_sk_assign_tcp_reqsk(struct __sk_buff *s, struct sock *sk,
+ __bpf_kfunc int bpf_sock_ops_enable_tx_tstamp(struct bpf_sock_ops_kern *skops,
+ 					      u64 flags)
+ {
++	struct skb_shared_info *shinfo;
+ 	struct sk_buff *skb;
++	u8 tx_flags;
+ 
+ 	if (skops->op != BPF_SOCK_OPS_TSTAMP_SENDMSG_CB)
+ 		return -EOPNOTSUPP;
+@@ -12611,9 +12613,11 @@ __bpf_kfunc int bpf_sock_ops_enable_tx_tstamp(struct bpf_sock_ops_kern *skops,
+ 		return -EINVAL;
+ 
+ 	skb = skops->skb;
+-	skb_shinfo(skb)->tx_flags |= SKBTX_BPF;
++	shinfo = skb_shinfo(skb);
++	WRITE_ONCE(shinfo->tskey, TCP_SKB_CB(skb)->seq + skb->len - 1);
+ 	TCP_SKB_CB(skb)->txstamp_ack |= TSTAMP_ACK_BPF;
+-	skb_shinfo(skb)->tskey = TCP_SKB_CB(skb)->seq + skb->len - 1;
++	tx_flags = READ_ONCE(shinfo->tx_flags);
++	smp_store_release(&shinfo->tx_flags, tx_flags | SKBTX_BPF);
+ 
+ 	return 0;
+ }
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 9648782fe8cb..25ca82eb6cdb 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -5601,7 +5601,7 @@ static void __skb_complete_tx_timestamp(struct sk_buff *skb,
+ 	serr->opt_stats = opt_stats;
+ 	serr->header.h4.iif = skb->dev ? skb->dev->ifindex : 0;
+ 	if (READ_ONCE(sk->sk_tsflags) & SOF_TIMESTAMPING_OPT_ID) {
+-		serr->ee.ee_data = skb_shinfo(skb)->tskey;
++		serr->ee.ee_data = READ_ONCE(skb_shinfo(skb)->tskey);
+ 		if (sk_is_tcp(sk))
+ 			serr->ee.ee_data -= atomic_read(&sk->sk_tskey);
+ 	}
+@@ -5652,6 +5652,8 @@ void skb_complete_tx_timestamp(struct sk_buff *skb,
+ 	 */
+ 	if (likely(refcount_inc_not_zero(&sk->sk_refcnt))) {
+ 		*skb_hwtstamps(skb) = *hwtstamps;
++		/* Order the tskey read after observing timestamp flags. */
++		(void)smp_load_acquire(&skb_shinfo(skb)->tx_flags);
+ 		__skb_complete_tx_timestamp(skb, sk, SCM_TSTAMP_SND, false);
+ 		sock_put(sk);
+ 		return;
+@@ -5663,19 +5665,20 @@ void skb_complete_tx_timestamp(struct sk_buff *skb,
+ EXPORT_SYMBOL_GPL(skb_complete_tx_timestamp);
+ 
+ static bool skb_tstamp_tx_report_so_timestamping(struct sk_buff *skb,
++						 u8 tx_flags,
+ 						 struct skb_shared_hwtstamps *hwtstamps,
+ 						 int tstype)
+ {
+ 	switch (tstype) {
+ 	case SCM_TSTAMP_SCHED:
+-		return skb_shinfo(skb)->tx_flags & SKBTX_SCHED_TSTAMP;
++		return tx_flags & SKBTX_SCHED_TSTAMP;
+ 	case SCM_TSTAMP_SND:
+-		return skb_shinfo(skb)->tx_flags & (hwtstamps ? SKBTX_HW_TSTAMP_NOBPF :
+-						    SKBTX_SW_TSTAMP);
++		return tx_flags & (hwtstamps ? SKBTX_HW_TSTAMP_NOBPF :
++						      SKBTX_SW_TSTAMP);
+ 	case SCM_TSTAMP_ACK:
+ 		return TCP_SKB_CB(skb)->txstamp_ack & TSTAMP_ACK_SK;
+ 	case SCM_TSTAMP_COMPLETION:
+-		return skb_shinfo(skb)->tx_flags & SKBTX_COMPLETION_TSTAMP;
++		return tx_flags & SKBTX_COMPLETION_TSTAMP;
+ 	}
+ 
+ 	return false;
+@@ -5718,20 +5721,23 @@ void __skb_tstamp_tx(struct sk_buff *orig_skb,
+ 	struct sk_buff *skb;
+ 	bool tsonly, opt_stats = false;
+ 	u32 tsflags;
++	u8 tx_flags;
+ 
+ 	if (!sk)
+ 		return;
+ 
+-	if (skb_shinfo(orig_skb)->tx_flags & SKBTX_BPF)
++	tx_flags = smp_load_acquire(&skb_shinfo(orig_skb)->tx_flags);
++	if (tx_flags & SKBTX_BPF)
+ 		skb_tstamp_tx_report_bpf_timestamping(orig_skb, hwtstamps,
+ 						      sk, tstype);
+ 
+-	if (!skb_tstamp_tx_report_so_timestamping(orig_skb, hwtstamps, tstype))
++	if (!skb_tstamp_tx_report_so_timestamping(orig_skb, tx_flags,
++						  hwtstamps, tstype))
+ 		return;
+ 
+ 	tsflags = READ_ONCE(sk->sk_tsflags);
+ 	if (!hwtstamps && !(tsflags & SOF_TIMESTAMPING_OPT_TX_SWHW) &&
+-	    skb_shinfo(orig_skb)->tx_flags & SKBTX_IN_PROGRESS)
++	    tx_flags & SKBTX_IN_PROGRESS)
+ 		return;
+ 
+ 	tsonly = tsflags & SOF_TIMESTAMPING_OPT_TSONLY;
+@@ -5760,9 +5766,8 @@ void __skb_tstamp_tx(struct sk_buff *orig_skb,
+ 		return;
+ 
+ 	if (tsonly) {
+-		skb_shinfo(skb)->tx_flags |= skb_shinfo(orig_skb)->tx_flags &
+-					     SKBTX_ANY_TSTAMP;
+-		skb_shinfo(skb)->tskey = skb_shinfo(orig_skb)->tskey;
++		skb_shinfo(skb)->tx_flags |= tx_flags & SKBTX_ANY_TSTAMP;
++		skb_shinfo(skb)->tskey = READ_ONCE(skb_shinfo(orig_skb)->tskey);
+ 	}
+ 
+ 	if (hwtstamps)
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 562752352afe..ec4ee5e5d2de 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -483,18 +483,21 @@ static void tcp_tx_timestamp(struct sock *sk, struct sockcm_cookie *sockc)
+ 	struct sk_buff *skb = tcp_write_queue_tail(sk);
+ 	u32 tsflags = sockc->tsflags;
+ 
+-	if (unlikely(!skb))
++	if (unlikely(!skb)) {
+ 		skb = skb_rb_last(&sk->tcp_rtx_queue);
++		if (skb && tcp_has_tx_tstamp(skb))
++			return;
++	}
+ 
+ 	if (tsflags && skb) {
+ 		struct skb_shared_info *shinfo = skb_shinfo(skb);
+ 		struct tcp_skb_cb *tcb = TCP_SKB_CB(skb);
+ 
+-		sock_tx_timestamp(sk, sockc, &shinfo->tx_flags);
++		if (tsflags & SOF_TIMESTAMPING_TX_RECORD_MASK)
++			WRITE_ONCE(shinfo->tskey, tcb->seq + skb->len - 1);
+ 		if (tsflags & SOF_TIMESTAMPING_TX_ACK)
+ 			tcb->txstamp_ack |= TSTAMP_ACK_SK;
+-		if (tsflags & SOF_TIMESTAMPING_TX_RECORD_MASK)
+-			shinfo->tskey = TCP_SKB_CB(skb)->seq + skb->len - 1;
++		sock_tx_timestamp(sk, sockc, &shinfo->tx_flags);
+ 	}
+ 
+ 	if (cgroup_bpf_enabled(CGROUP_SOCK_OPS) &&
+diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+index e74d99ca9fac..73344cdf8e16 100644
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -16,13 +16,20 @@
+ static void tcp_gso_tstamp(struct sk_buff *skb, struct sk_buff *gso_skb,
+ 			   unsigned int seq, unsigned int mss)
+ {
+-	u32 flags = skb_shinfo(gso_skb)->tx_flags & SKBTX_ANY_TSTAMP;
+-	u32 ts_seq = skb_shinfo(gso_skb)->tskey;
++	struct skb_shared_info *shinfo = skb_shinfo(gso_skb);
++	u32 ts_seq;
++	u8 flags;
+ 
++	/* Pair with timestamp request publication before copying tskey. */
++	flags = smp_load_acquire(&shinfo->tx_flags) & SKBTX_ANY_TSTAMP;
++	if (!flags)
++		return;
++
++	ts_seq = READ_ONCE(shinfo->tskey);
+ 	while (skb) {
+ 		if (before(ts_seq, seq + mss)) {
+-			skb_shinfo(skb)->tx_flags |= flags;
+ 			skb_shinfo(skb)->tskey = ts_seq;
++			skb_shinfo(skb)->tx_flags |= flags;
+ 			return;
+ 		}
+ 
+@@ -198,7 +205,8 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
+ 	th = tcp_hdr(skb);
+ 	seq = ntohl(th->seq);
+ 
+-	if (unlikely(skb_shinfo(gso_skb)->tx_flags & SKBTX_ANY_TSTAMP))
++	if (unlikely(READ_ONCE(skb_shinfo(gso_skb)->tx_flags) &
++		     SKBTX_ANY_TSTAMP))
+ 		tcp_gso_tstamp(segs, gso_skb, seq, mss);
+ 
+ 	newcheck = ~csum_fold(csum_add(csum_unfold(th->check), delta));
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 00417a429222..7bab67f5d327 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -1795,12 +1795,6 @@ static void tcp_adjust_pcount(struct sock *sk, const struct sk_buff *skb, int de
+ 	tcp_verify_left_out(tp);
+ }
+ 
+-static bool tcp_has_tx_tstamp(const struct sk_buff *skb)
+-{
+-	return TCP_SKB_CB(skb)->txstamp_ack ||
+-		(skb_shinfo(skb)->tx_flags & SKBTX_ANY_TSTAMP);
+-}
+-
+ static void tcp_fragment_tstamp(struct sk_buff *skb, struct sk_buff *skb2)
+ {
+ 	struct skb_shared_info *shinfo = skb_shinfo(skb);
+diff --git a/net/socket.c b/net/socket.c
+index c05d86e63abf..d16e1f491f15 100644
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -766,7 +766,7 @@ EXPORT_SYMBOL(sock_release);
+ 
+ void __sock_tx_timestamp(__u32 tsflags, __u8 *tx_flags)
+ {
+-	u8 flags = *tx_flags;
++	u8 flags = READ_ONCE(*tx_flags);
+ 
+ 	if (tsflags & SOF_TIMESTAMPING_TX_HARDWARE)
+ 		flags |= SKBTX_HW_TSTAMP_NOBPF;
+@@ -780,7 +780,7 @@ void __sock_tx_timestamp(__u32 tsflags, __u8 *tx_flags)
+ 	if (tsflags & SOF_TIMESTAMPING_TX_COMPLETION)
+ 		flags |= SKBTX_COMPLETION_TSTAMP;
+ 
+-	*tx_flags = flags;
++	smp_store_release(tx_flags, flags);
+ }
+ EXPORT_SYMBOL(__sock_tx_timestamp);
+ 
+-- 
+2.53.0-Meta
 
