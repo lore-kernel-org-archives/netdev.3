@@ -1,81 +1,89 @@
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013012.outbound.protection.outlook.com [40.107.201.12])
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828C7445AF2;
-	Thu, 17 Sep 2026 11:15:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789643722; cv=fail; b=EOfRrWmP++CLgQwWJdm5ZM63RrUxvP02RiAcDp0ZuIekIpRbC7sf34DKwg01E4Prmj09VBMM1qsg/v30KX/vCj8Aah/ZRm97QbqFTyTlhyfpPcrk/jrCogv2j3xv2aLKot0mZvBGyasNdhvZJyVWTGk7UssfK7UZE4MrcSTGKYw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789643722; c=relaxed/simple;
-	bh=CR65iGfRmTz1UFSQXCX1w7C6iCKRvSE6jzCoPjaSy9I=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eL0ihuR8FNF+FTjS+Zjg7q2z0thiw16ba/Qyogjyzs7nlSP1mUqf65GvO1cu30ayVLXSSA9Zvh0VOfW5OjTZtoD+hF27HgIK2XQ5mv0JTK9YlxRtugcr5t3ak1JoyJs2Ke6jSTy4KlKdn3OkuQREAuleS9Ia6FDDF8pAXXk/6Uo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=J4x+NScM; arc=fail smtp.client-ip=40.107.201.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EFB34D0CCD
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 11:15:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789643738; cv=none; b=ULQ6ozgml+iugc1gCJWKNJVTBYAYDCoQSXGTVl39i3Hahm9MJgGZUmphRoPYWdqvRX8KdCNiH3bYZ9cN6IhF50kiM+wZNW2TcnG7A2BtplzwdWAoJKGnqn2744U03z6NCckjDI7tzqTuK5eRZAIU4ZXEfSSC6+3tBCzpkPL1fZQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789643738; c=relaxed/simple;
+	bh=AJ5mMe8CMyMMvu5opXwqf0CvLKRMqW+UoSHD9baNOoM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hJ+hM0Fgs13fkhdfZFiq52haoJ0pdsWNnQb4W8+XqJMijWzkS6tptHqgnjtG6Dsd6nCmbR/YIrAu1elF7iSlu6w+hfRqfRELAtnZa51RF6KPxyftLpRvN3eS4aJKKcYwitVZwvM1+Rwnx5B4busnwdKXB1yDIpedKWw2SjFGtGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=mP4TE9si; arc=none smtp.client-ip=185.125.188.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="J4x+NScM"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YPhgUD8oL+HJGiiLhH5AEo7WmFqEfHrWBlAqS6Q9mvoZlh2CWuI93dAQ48/A7OzdleIhs30kHJ5BIE/YDDt2n/3eWJfKJhchS9VC0st12Re4KwOp6qzSwwiLmcdRqKARMBRs+A3mPhpjvjtDGaMweAP8WOEohb6/CnqrvyauRKG4xONfn2EN0yO4ayeGCuKBTA5i27l0Qb3/JDsjdNX0Zx2MzyNUvtbj2kmYToPiSEcUaIgcqwcHVG3Zai3zIVVQLlzJ0w1bsy+9uGFnSSGg9IA7V+p8+MSxH49FIhIIJmjKB+O6twDPVbCK32tnDNoyOU1PQEyAOwyUQkuZQEHPEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tIPFNSajlJPOTRNJN4X0yg07Ss8O28fgThYg/NGe9jk=;
- b=PHpmtas8Bv9IXgJLwaT9DvfDfDqLUFqP9XvAshnzVd3GmBlX7FbJRj8aDWIM3IcpU42ocVzBRx/np7N6LN1AnQQ/bYoG3qmuLSFtRGJLy7WPSqBcpbK/nFfhRyHRlILM/QhyFAU/xmcWOXjfwER75iqIno9nStMqXwxUPt85SHfnrJM4Hkx293+sr97v87aYdDiYXMmlDxPEOoyxyaT8tNC74n2eyldp2o3CnJUHeTlbKWDIXRkSGB3WDwF0AaYVK2AnhQyBEoh9nf6RnrvH0Q/Rp392H2qyrnIbeYS8pAlZxZuLZaR2EiB6SwEa7rY0WCgKbQBxvvi9SpzG+Cge2g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tIPFNSajlJPOTRNJN4X0yg07Ss8O28fgThYg/NGe9jk=;
- b=J4x+NScMrxvv3++Uj3jjL0HSARXcB3ZODwEOjv3sqbz9BIy74Wd/6xgs0Ax/fIO1PvR3vPEH3n9bWjF5eRLQ1++f2BKbjRkAL2oRbPAOz48BOA+72oiZKhlL9oOK32EtL8FhAxm/hO7gXafoJ5fNnui8HGfziRJMUEk4gUH/rAKgUTqUTlAbTMQ0JdzXQTbJHMAZEMoqBEfY7WNbbe2joPN1VQjIGw3NydY1Gz/96fyDHB945Evuwy7Jxg5+OwE4zUvbBYj2JVCYb4pN+nocWX8a3lyc6b1cesp8xx4CdY+nT2i6k37XwSjYvhwKdeFmm4a6uNGdbWVDmbhy0RcBqQ==
-Received: from CH5P220CA0013.NAMP220.PROD.OUTLOOK.COM (2603:10b6:610:1ef::27)
- by SJ0PR12MB6736.namprd12.prod.outlook.com (2603:10b6:a03:47a::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.12; Thu, 17 Sep
- 2026 11:15:11 +0000
-Received: from CH3PEPF00000010.namprd04.prod.outlook.com
- (2603:10b6:610:1ef:cafe::2d) by CH5P220CA0013.outlook.office365.com
- (2603:10b6:610:1ef::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.12 via Frontend Transport; Thu,
- 17 Sep 2026 11:15:10 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- CH3PEPF00000010.mail.protection.outlook.com (10.167.244.41) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.451.8 via Frontend Transport; Thu, 17 Sep 2026 11:15:10 +0000
-Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 17 Sep
- 2026 04:15:00 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 17 Sep 2026 04:14:55 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Thu, 17 Sep 2026 04:14:51 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Leon Romanovsky <leon@kernel.org>, <linux-rdma@vger.kernel.org>, "Mark
- Bloch" <mbloch@nvidia.com>, <netdev@vger.kernel.org>, Saeed Mahameed
-	<saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>, Cosmin Ratiu <cratiu@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>, Dragos Tatulea
-	<dtatulea@nvidia.com>, Eric Dumazet <edumazet@google.com>, Gal Pressman
-	<gal@nvidia.com>, Jakub Kicinski <kuba@kernel.org>, Jason Gunthorpe
-	<jgg@ziepe.ca>, Leon Romanovsky <leonro@nvidia.com>, open list
-	<linux-kernel@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH mlx5-next 00/10] mlx5: Move data direct infrastructure to mlx5_core
-Date: Thu, 17 Sep 2026 14:14:12 +0300
-Message-ID: <20260917111422.4054862-1-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
+	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="mP4TE9si"
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id CAC693FA7A
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 11:15:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20251003; t=1789643722;
+	bh=bd10M+bix5UlEXeH9BMOYOfhizghQyBfU2z5WWgogyc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
+	b=mP4TE9si7YEmNK+Kl+nZ4R54ZZD2gK6BBN/03rTJrQFEgbFBBL9lrGRZhIxNZENxC
+	 O1InBbRC1hsjymkQXhfvQOGAu8sbF6Bubm1by/lniFWc92fvYssnDMtESSw/N9/HnS
+	 J0fakDtN3te9x4sMOaohdAcUBaKScv2FeicK+PIT/O8p3VU47oMBMdHtqJ0UWw+D01
+	 9dpFWoK+3mmyImUwOIyMXrFtZB0+LuuXxAjfmcxCMWJa1XjZrqdYYN9Lc2932bnJKa
+	 rYGJccglK3lnh6szL08RVppb81eYbIivGZJBmawBkKX43hx1x/Kb8BVTLzi9ynVw4V
+	 hNM7hQ5zl3pO66CKuKqAJVlchINSnsViifYKEeos8+9jdsF8exY0CHxDuFs44MXGpZ
+	 xVkf5NzQIbgvln/CBkX/FrIlA+KIjSBABcQcQHyLUwMdrQjkSb5aDOOPtakLLVHEdB
+	 LfgQhDRpVHMxQI0EeUn2fimAeGTC1dxa0/Z57ash+llyMAEcxu3ToOKmz4CtDalJzK
+	 qD6jQwogeYhOeKxI0aWonygLCpRwwLvg9JslnroapqBpav/09ZYANwOrp2YG+EuNXf
+	 prNERExivtQdrd8T6mYaHeFwcGJ9daPUZWIUhmLmDyKzhC/M3wBgUWLZ0JkVWjahEV
+	 eYCA221HehuWQabmbmznPDOs=
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49e69e694c9so128865e9.1
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 04:15:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789643722; x=1790248522;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=bd10M+bix5UlEXeH9BMOYOfhizghQyBfU2z5WWgogyc=;
+        b=M2Mp05uLGKMujFFxx7BlcWyMENtCKnLTaLcpQ3e/IS9d4SLLeqqs49sIN/yH2CsD9d
+         +cZlWJjs04psEMuKZZIvDM/D30YVRaApgWTunXJe9vhgB2rRSMvIqh3t4me7Nbq7it0Y
+         fWR1HKpb10iN089aqTXeHdc0YXS2Apn6sGI5fZEmlGDwyFToaPxZTJdxQaWlDbyuQhwy
+         WvHvgKMTSdbTfwhPgcXpekbHY5SeaLB70UY9B17f3azroGELIzSkcoExXYL3TFc+mbfS
+         RZQ22DBZZKwAGddDYZ0gqL2q0tXxU0IA/9vpDnIwI0MlLphHVh98Kc37v3X3OuDYVdlg
+         1FHw==
+X-Gm-Message-State: AFuF++m2b6iYshEaGRBgUUCMQUbH0UYyZipKdJdOOK+oHynJoOB0u+yT
+	ur/Wv4FimbWXutM/iukUMEN+0oJ8VdP9hbbma5bjwGQfJIcrTm//Pni92/VVanTibmQxAczdNH3
+	PaqCTqGvpQe4PtWqcWZAYRh6V5Q+JKw8kx6HbLMXRPOKsdU1rLSmpc9nRoluDcmmGzuloH9V/hT
+	3zBAQ08aQ3
+X-Gm-Gg: AYBFou30zkfjttANgGHASDu87q1/EaQraETrxQzxnc0awQ9s6B4zP7R+qlcbKC1nqLO
+	ZYZz/B6Wyo7GRLL5nV9Zs3jFpdEBUM/PEesdItcRoL69fEFUPc0PqeuNlMLoFkR6y+6Tvs01ibQ
+	2IGf/zlCHDf5qu+WRUPkPWX8UUTd01I6PP+3CzmvSEJndyIqS7bPOKPlB4VNygj72LXmLMPjNK6
+	C9y5PecYLUMlGFMLoi3B6cH5UhrHLA1YWhKbyzmPXf0EOYSyWpX0d+MfD0w+ZyrgOZTVr0Q540m
+	CdyZ9yv+9RYCqfC2IozFNmpkE8Y6Z4UsxRvPj/wfR1/KAkJQXIti9zM+clJ0z//nqHPR3PRvEwj
+	9+e0Yi/ohwDLuBtC/hRxm5R0Q+W0gRQH1QVxYNpndUGBTR+B5Dvdb
+X-Received: by 2002:a05:600c:4e48:b0:49e:7186:f36e with SMTP id 5b1f17b1804b1-49eb731c39emr77445255e9.1.1789643722162;
+        Thu, 17 Sep 2026 04:15:22 -0700 (PDT)
+X-Received: by 2002:a05:600c:4e48:b0:49e:7186:f36e with SMTP id 5b1f17b1804b1-49eb731c39emr77444985e9.1.1789643721803;
+        Thu, 17 Sep 2026 04:15:21 -0700 (PDT)
+Received: from localhost (host-79-46-33-118.retail.telecomitalia.it. [79.46.33.118])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fbf415058sm42111315e9.0.2026.09.17.04.15.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2026 04:15:20 -0700 (PDT)
+From: Edoardo Canepa <edoardo.canepa@canonical.com>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Xu Du <xudu@redhat.com>,
+	Po-Hsu Lin <po-hsu.lin@canonical.com>,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v3] selftests/net: run tun tests in a dedicated network namespace
+Date: Thu, 17 Sep 2026 13:15:20 +0200
+Message-ID: <20260917111520.2614448-1-edoardo.canepa@canonical.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,99 +91,137 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PEPF00000010:EE_|SJ0PR12MB6736:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4392205f-9508-45cb-1f0f-08df14acf019
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|82310400026|7416014|376014|1800799024|23010399003|56012099006|11063799006|10067099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	u33CHcSu4lF9A91DpJYjbrqtJv7jJjbAyqvlPKlrz4BlW7lsERM/vQosw4nKNQ7dzi9ScDR5FJqC2SieNVxyV779ZxbECZ6MnmCCBOjlyiWDQNOIRV8tBIA2XVLNUw0ZxORD9ZlmUVSpQrlHmHkVNPJbvZqMM434RkhfCJ0mPbF9SYhG2h9yuwVGWmY3IeH8GKxLOJZFSj5AjH3B9Jd3EcJ/Sjva99pVdAH4R1bGFXA2vhU+pH7NsU0MC4KOuCnPLmzVvZLZDiTRcWVBfCxiRpJYXtaUqOmhJ+bDYBEcKqsPVtylKDGEz6lNoDP7IOCcRugyBre4xk2L/zHRvcXaHgBhCnMNaDehzWvTS6hjplv2yTHkV/bQcm8LLSqfFvFjuMqQjNBk0Pqmf3DD1t1a1aMyAvnm8Dxyry0fE0F4+XrvX36lVO6AOb3bW3dfYAvAuxZVdToSU3TxoJN+Yc8iOTosL/xQJBq5jGrJYdEgsoTPQq4tCqAHkD5o3Hj0Gq1FU3mwenz6QU3ov4mnBC1NtsMz/lcGKFf7mrnTAQcMxOllWw/aMSSdJHy4h/f/69Hx1GXjRqCMz4xlm7C1rJ1Qapu3xZdsEqbLN/jqt8M7fbk1bfFE4GN+6nQlKuna4+I8udttzNve8XkTB7/oJk55GPt2cO1WQqKhx2uia/c9nJnYB2JP4yoAj1FS9zn6ym9UebRRDgQ+5rxa+vOda/ggDg==
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(7416014)(376014)(1800799024)(23010399003)(56012099006)(11063799006)(10067099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	uc+SjkI5edrSkqsRgC2hyPc3pZMWVGYeSbCaNzeXTidW+u99gSKL0fBRX48dju0T1yqOjuj+0cpINBj69vtNoDJoaBXAyKKzvLDSNCIvncUiLzJEcBRUR7wYwRdb0uNFJ1y3wEkDLKk/k/qBBd7buFjIf7CRuw6kYN8ug+C9pKxxtT+sNSa6g+svNCkUcbHJ4BOCOfOv/hXkn230kUSyK4Nu46I0lAfMQxefKxIQw/xz8+NyrTL7G7jNOaKmFI97sYhSuN0hI8iXvHcSr5CyXAG0ieYyeXBkNvbbuJNYUZX8QiPHOSrE4L6GiRVJhExc5pXzcW2aWGaO9zWHzrCgfXnBGyjaSBMLyVMX7aUDyGBjFuGuBTc9qsMPdn1rqmUvKIkcPKD/f6RjvmSUTIpQTvcNEbcnDiwI1xWemiqcpXhmaQ/P7jUYvpzdyTZW/PQF
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 11:15:10.3503
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4392205f-9508-45cb-1f0f-08df14acf019
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH3PEPF00000010.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6736
 
-Hi,
+The tun_vnet_udptnl fixture creates a fresh tap device, assigns it a
+fixed MAC address and installs the outer neighbor entry as
+NUD_PERMANENT.  On systems where systemd-udevd is running and a systemd
+.link file sets
 
-Data direct support currently lives in mlx5_ib, which owns the data
-direct PCI driver, device matching and resource management. To prepare
-for data direct support in netdev, move this infrastructure to mlx5_core
-and provide a common interface for its consumers.
+    MACAddressPolicy=persistent
 
-The series first replaces the direct IB unbind callback with a blocking
-notifier chain, allowing multiple consumers to receive unbind events.
-It then separates consumer registration from initialization,
-consolidates the per-device state and resources, and keeps IB-specific
-locking and MR teardown in mlx5_ib.
+(the default shipped by systemd in 99-default.link, so this is what
+most systemd-based hosts inherit), systemd-udevd's net_setup_link
+builtin asynchronously sends an RTM_SETLINK to reassign the freshly
+created tap device's MAC to a machine-persistent value.  When that
+lands after the fixture has configured the device, both directions
+break:
 
-With these preparations in place, the final patch moves the shared
-implementation and PCI driver to mlx5_core. Data direct initialization
-and resource creation run during core load, before consumers attach;
-cleanup runs during core unload, after consumers detach.
+- recv_gso_packet transmits through the tap, and the address change
+  flushes the neighbor entry the fixture installed:
 
-The data direct PCI driver is also explicitly named "mlx5_dd", replacing
-the previous "mlx5_ib" name derived from KBUILD_MODNAME.
+    do_setlink
+    -> netif_set_mac_address
+       -> call_netdevice_notifiers(NETDEV_CHANGEADDR)
+          -> ndisc_netdev_event (arp_netdev_event for an IPv4 outer)
+             -> neigh_changeaddr
+                -> neigh_flush_dev(tbl, dev, /* skip_perm = */ false)
 
-This series by Dragos prepares the shared infrastructure for netdev
-support.  The netdev consumer will follow in a separate series.
+  so the packet hits __neigh_create() and waits on neighbor resolution
+  that never completes.
 
-Regards,
-Tariq
+- send_gso_packet writes frames addressed to the MAC the fixture
+  assigned.  Once the tap has a different address, eth_type_trans()
+  marks them PACKET_OTHERHOST and the IP receive path drops them.
 
-Dragos Tatulea (10):
-  RDMA/mlx5: Notify data direct users via a notifier chain on unbind
-  RDMA/mlx5: Add mlx5_data_direct_supported() helper
-  RDMA/mlx5: Make the data direct VUID query self-contained
-  RDMA/mlx5: Give the data direct PCI driver a proper name
-  RDMA/mlx5: Move and rename data direct resource functions
-  RDMA/mlx5: Add new registration stage for data direct users
-  RDMA/mlx5: Extract IB specific lock out of data direct
-  RDMA/mlx5: Consolidate data direct state into one object
-  RDMA/mlx5: Pull data_direct resource creation in init phase
-  mlx5: Move data direct implementation to mlx5_core
+Either way nothing arrives before the receive timeout, and the test
+fails with, for example:
 
- drivers/infiniband/hw/mlx5/Makefile           |   1 -
- drivers/infiniband/hw/mlx5/cmd.c              |  21 -
- drivers/infiniband/hw/mlx5/cmd.h              |   2 -
- drivers/infiniband/hw/mlx5/data_direct.c      | 227 ----------
- drivers/infiniband/hw/mlx5/data_direct.h      |  23 -
- drivers/infiniband/hw/mlx5/main.c             | 144 +------
- drivers/infiniband/hw/mlx5/mlx5_ib.h          |  18 +-
- drivers/infiniband/hw/mlx5/mr.c               |   7 +-
- drivers/infiniband/hw/mlx5/odp.c              |   2 +-
- drivers/infiniband/hw/mlx5/std_types.c        |   3 +-
- drivers/infiniband/hw/mlx5/umr.c              |  11 +-
- .../net/ethernet/mellanox/mlx5/core/Makefile  |   2 +-
- .../ethernet/mellanox/mlx5/core/data_direct.c | 402 ++++++++++++++++++
- .../net/ethernet/mellanox/mlx5/core/main.c    |  15 +
- .../ethernet/mellanox/mlx5/core/mlx5_core.h   |   5 +
- include/linux/mlx5/data_direct.h              |  47 ++
- include/linux/mlx5/driver.h                   |   8 +
- 17 files changed, 517 insertions(+), 421 deletions(-)
- delete mode 100644 drivers/infiniband/hw/mlx5/data_direct.c
- delete mode 100644 drivers/infiniband/hw/mlx5/data_direct.h
- create mode 100644 drivers/net/ethernet/mellanox/mlx5/core/data_direct.c
- create mode 100644 include/linux/mlx5/data_direct.h
+  tun.c:947:send_gso_packet:Expected ret (0) == variant->data_size (1)
+  tun.c:948:send_gso_packet:Expected r_num_mss (0) == variant->r_num_mss (1)
+  tun.c:962:recv_gso_packet:Expected ret (0) == variant->data_size (1)
 
+The failure is non-deterministic and reproduces on a plain
+systemd-based VM with no containers.
 
-base-commit: 36b1d3299d0b6aa51485cc9a79b8d94948d5f3d4
+Fix by calling unshare(CLONE_NEWNET) from both fixture setups.  The
+harness runs each test in its own forked process, so every test gets a
+private network namespace that is torn down with it, and all tap and
+geneve devices are created in a namespace that systemd-udevd (running
+in the init netns) does not watch, so its RTM_SETLINK never fires
+against them.
+
+Creating a network namespace needs CAP_SYS_ADMIN in the current user
+namespace and CONFIG_NET_NS=y, neither of which the tests required
+before.  Where they are unavailable the unshare() is reported with
+SKIP() rather than aborting, so the binary still emits a full TAP
+stream and a runner can tell "network namespaces unavailable" apart
+from a real tun/tap regression.
+
+Verified on a plain systemd-based VM running the affected kernel.
+Without the fix, 1000 sequential invocations of
+
+  tun -r tun_vnet_udptnl.4in6_nogsosz_1byte.recv_gso_packet
+
+fail 10 times, and 2 out of 20 full runs of the test binary fail.  With
+the fix there are no failures in either case.
+
+Reported-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
+Closes: https://bugs.launchpad.net/bugs/2158217
+Fixes: 24e59f26eef2 ("selftest: tun: Add helpers for GSO over UDP tunnel")
+Assisted-by: LLM
+Signed-off-by: Edoardo Canepa <edoardo.canepa@canonical.com>
+---
+v3:
+  - Drop the claim that a failure leaves the tap and geneve devices
+    behind.  The failing checks are EXPECT_EQ()s in the test body, so
+    FIXTURE_TEARDOWN still runs (Sashiko).
+  - Explain the send_gso_packet failure correctly: its frames are
+    dropped as PACKET_OTHERHOST once the tap's MAC changes.  The
+    neighbor flush only affects recv_gso_packet.
+  - Redo the measurements on a freshly booted host.  The v2 numbers
+    were taken in an unclean environment.  The v1 numbers were fine,
+    and the v2 entry saying otherwise was wrong.
+  - Go back to "Assisted-by: LLM", the current format in
+    Documentation/process/coding-assistants.rst.  v2 followed an older
+    copy of that document (Sashiko).
+v2: https://lore.kernel.org/netdev/20260914211921.3786609-1-edoardo.canepa@canonical.com/
+  - Add the unshare(CLONE_NEWNET) to FIXTURE_SETUP(tun) and
+    FIXTURE_SETUP(tun_vnet_udptnl) instead of replacing
+    TEST_HARNESS_MAIN with a hand-written main() (Jakub).
+  - Report an unshare() failure with SKIP() instead of aborting the
+    binary before the harness starts (Sashiko).
+  - Mention the new CAP_SYS_ADMIN / CONFIG_NET_NS prerequisite in the
+    commit message (Sashiko).
+  - Change the Assisted-by: format (reverted in v3).
+  - Redo the measurements (redone again in v3).
+v1: https://lore.kernel.org/netdev/20260905085318.3416670-1-edoardo.canepa@canonical.com/
+ tools/testing/selftests/net/tun.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/tools/testing/selftests/net/tun.c b/tools/testing/selftests/net/tun.c
+index abe488bac50b..6db21dad0efe 100644
+--- a/tools/testing/selftests/net/tun.c
++++ b/tools/testing/selftests/net/tun.c
+@@ -4,6 +4,7 @@
+ 
+ #include <errno.h>
+ #include <fcntl.h>
++#include <sched.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+@@ -488,6 +489,10 @@ FIXTURE(tun)
+ 
+ FIXTURE_SETUP(tun)
+ {
++	if (unshare(CLONE_NEWNET))
++		SKIP(return, "Cannot create network namespace: %s",
++		     strerror(errno));
++
+ 	memset(self->ifname, 0, sizeof(self->ifname));
+ 
+ 	self->fd = tun_alloc(self->ifname);
+@@ -732,6 +737,10 @@ FIXTURE_SETUP(tun_vnet_udptnl)
+ 	struct sockaddr_storage ssa, dsa;
+ 	void *sip, *dip, *smac, *dmac;
+ 
++	if (unshare(CLONE_NEWNET))
++		SKIP(return, "Cannot create network namespace: %s",
++		     strerror(errno));
++
+ 	flags = (variant->is_tap ? IFF_TAP : IFF_TUN) | IFF_VNET_HDR |
+ 		IFF_MULTI_QUEUE | IFF_NO_PI;
+ 	features = TUN_F_CSUM | TUN_F_UDP_TUNNEL_GSO |
 -- 
-2.44.0
+2.53.0
 
