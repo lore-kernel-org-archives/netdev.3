@@ -1,60 +1,87 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9924436998A;
-	Thu, 17 Sep 2026 07:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE3B396D25
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 08:10:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789631141; cv=none; b=a0ZaKIjYAd6AIg6SlQfdmEmTF9t89zFvgKWuzMG8taP1hyMdTjHiPHjcbDeeRtHX8ZEgyE46SOHiPy84rVabTVLzD1n1waFk8EBqOmWKgdpZEGUQmwAthVUf4zYj4YL1rHqVp2ab1kvXtbTII8Oqe7sq3WdOCNzcdFixQ/MP9Dk=
+	t=1789632605; cv=none; b=R+gTiwJhlogOR59qrtY9pTVGNQE1O/sTVKNCYsMdOcq0hEnaoNfwLWLIyacJ/b9Vq+p5EkTfIbyQ5FJ2JlvQH9/qYYH2VNvIMzFRan4CQEJd4K1n/R1r+uDQQtUgLdSg/5Rj6v6UigXH7hgOebPNxOP16Smi0sXrwkg6EPw98zU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789631141; c=relaxed/simple;
-	bh=wYkVLRiQ/c8MB//VxSE/MH0TtIiIl3SvJq4VmgGj5t4=;
+	s=arc-20240116; t=1789632605; c=relaxed/simple;
+	bh=zTBX4uJ2je0sZHFIO4v5F3vRjCpVCYmo9zYr4T5Pizo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gCXFZ/K/cdZxz4NVd5lqZd4cRMmvJonku+j50V2dJ6w3cWE8wRzRPhZnQzG1Sd8T9G8WRbpb90EhqTzNMFAXuR0PCHDOKlsW82n7Ml8E6DUIy9U05B4X5d6z4hxF+/cSxNpImqDEw1N1LsbVo/IZmN+gIV59pkD8TVSGoMf8yAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Jb/r0kgl; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type; b=mbKSkbbBB1OBjgUamn09RXNCrR8p9HRz1ca87mPwQiSffSZovHmTZCdiArBR3AdX/OiXRHtXSpLoS3E+Qx/X1ODum7r0i/qw1EV/K0j1RVLFiMxbZYKgwCWZrsGXcKG3VIKUpo1oKURuNAQqWCelGCsCwiJrMTI7aBocQXvh4o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TuytHM4N; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=J1QB0+Hc; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Jb/r0kgl"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68H61mxh1559933;
-	Thu, 17 Sep 2026 07:45:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=nAEyfe
-	y+ndQVH7m7O565seyFo2OqhDD94WA1hj34nrk=; b=Jb/r0kglmoovYY1ytIqVrK
-	/eZMVpkEHv/lkr+acaCSBgbkLzUQaQMvOA83SQB/MFjT3fmjit0Gh+9SsJFps39J
-	rbZjSPecS78kwsLk4o+3l9QFreKzDWz29SGDYwbtAZsTrV3Gg3hOUSLMTchhIFDV
-	Ob+Duj1TbzGFOx5mU0H8bwIQWv7lGiQKDqUTYj7CtEfZSi0/E5R9XuZELvWxnSUI
-	nkYw/OMUj8RRql+2mOhFsMoqWLFspvB+fl1qxJq2N49q2XRdIEl6iHDdBmUHKdH6
-	qDcL5Dmfg3btoYYgupnKQ0jWB8/xwzFOEOktvaVH37VjRdU83GrIWX9kxUpMgG6A
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TuytHM4N";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="J1QB0+Hc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789632602;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uxpwaWgqlb3l6AI1MIqjUVNiDYcws9hnLKUyrIEJE2Q=;
+	b=TuytHM4N5vxx1sK390bPleroBqMOd8qGfzwTD5prDRCIqb2xlC75OXAT95WRwVhj3EmFeB
+	mmYvK8oZhyRgx1r3fk8b50D12ux58uKRgTdlJl7+wqawLQt6GacqSaURIdcvsylYlHrlf6
+	u1NoFBKXGiKTns2kxDSDn4v/TgKehao=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-441-CWrE0nQzMYWGlFj4YInSmw-1; Thu, 17 Sep 2026 04:10:01 -0400
+X-MC-Unique: CWrE0nQzMYWGlFj4YInSmw-1
+X-Mimecast-MFC-AGG-ID: CWrE0nQzMYWGlFj4YInSmw_1789632600
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49e65bee41aso3686805e9.0
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 01:10:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1789632600; x=1790237400; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uxpwaWgqlb3l6AI1MIqjUVNiDYcws9hnLKUyrIEJE2Q=;
+        b=J1QB0+Hcn38E+Q29javUrajdxaCiCO75PNfX5FdW9DEzGGSuvfajFIUgNaqPsce1fd
+         wgAZAVxBCB4mndB43aG236sr1pYCgYPdNoWrYimWkQbDxKMTVokwe6eLkcvUPGdHl2Z2
+         TVhGbksqXqRnFltjtuTSTOuGk8KIW9B74liKyU9qIpl7Z8UtQwj0BGEWNOmOC49v+Ea+
+         Ube4X7VoWi2LeKLB+gP3OWI5PoGoC3XqIfRqIfD53GFR2Jp0tE3dTtQGcPZqOXiOOQ6K
+         ry0BcGIHpDSJV+jr++sCweZ+q7ktwrTxu7B8eHQBiljlzwMA6Zv6ogBxiNKWz+c9s/lr
+         eoJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789632600; x=1790237400;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=uxpwaWgqlb3l6AI1MIqjUVNiDYcws9hnLKUyrIEJE2Q=;
+        b=pCxSqFn89Yh7jtw2uirb4I4MKj1OMoHyFq0KtMZaT/tX2DceWh1WBrJuxErqA35Bbe
+         sJytBrGmhVY1yrkeve/ESPaakUNAIzuzun8H5aXw3VPH/FM251ys5BTtpO8sFcWWzKBv
+         TD4u+zDGleUCzJmJbT12lXVNTJjAtHJdYAe7u9PYpznD/cDnyryLZ4PoWCJjVIRanG+M
+         BIczS0Z703QLy8bshvGDx67xY2x31cTWanCHQehlGYqZQNUlkk57eE+s2ZfqRpGp9io6
+         h1uBySIApEFXMqc5BTeCjoNSfpYQ4dfmK642xYwmvTvpPG6lm51MjdZCOe5qbvPb2CUR
+         kliQ==
+X-Forwarded-Encrypted: i=1; AKwUvByuD2hV8DkJf8U6wfUMKGoqw6o47rfE9QN50v+WNyQsfQRZJ2hac/PCDpjkHFNu1T56SlKMfA8=@vger.kernel.org
+X-Gm-Message-State: AFuF++nxou5I6ODd8eVieAeDCik3n+Anl5AK6UZ5mqyh+d4C4J0G429t
+	WAgRPzTEtfT3z0Y7N+3mJkZ1KfpHveHjMK7HmwDy2/oHeYagAFWRpERkoEGtqGH/FNa75ai5CC0
+	dyIhWpYNa32kieCwHzrg6OV1LxCSmkXFg95MHe4zbwLbnNwnMvcXNg1dIEA==
+X-Gm-Gg: AYBFou39uZqapJPu+s0wwEN43dSknhp8powhu3DGlZBm3tNAZvYPzAPhPJHL34Rk1Am
+	gDnILrJa2jFJLlumDM+b00xJz+FhfX66T0TJe9AtSIrzhds92DySsqgl3vhK+znCh5wiS6rH0xR
+	AgSl6TOhepJ0m1MUfyL6abpQQ3dqJvrBRExqla3zQgbonUdCBiSRHeHiWMrXN1Y/K6D0nzZ+zuh
+	BkX4t7h8DZ6KENwKL7pPHot46NeHYMLugYdFzKsVg8Zh+ZhaNQywQMBbioQ7kfcwdla0im/XDWw
+	N3qdGpX6P4kpWNZmVzVk3mKWPNMI72mnBT79CZqPe4gutxEZLFc4FdWo/JbFFY6wRQw0ZiTndNN
+	8UK57VNdbqdpJa8ML39c1ilnbTaRYdMhze0/IPYNOdfwi2Zxhy+WcfR+vZzjFMis6VOdACjBgsQ
 	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gmv5j0wfy-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 17 Sep 2026 07:45:32 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68H653I42660566;
-	Thu, 17 Sep 2026 07:45:31 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gr5fjhcgp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 17 Sep 2026 07:45:31 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68H7jUr417695392
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 17 Sep 2026 07:45:30 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7AF795805A;
-	Thu, 17 Sep 2026 07:45:30 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 40E495805F;
-	Thu, 17 Sep 2026 07:45:25 +0000 (GMT)
-Received: from [9.111.206.205] (unknown [9.111.206.205])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 17 Sep 2026 07:45:24 +0000 (GMT)
-Message-ID: <2111df0c-33b1-4330-8adf-ac5a0f1de451@linux.ibm.com>
-Date: Thu, 17 Sep 2026 13:15:23 +0530
+X-Received: by 2002:a05:600d:8643:20b0:49e:7c8c:bc77 with SMTP id 5b1f17b1804b1-49fbd1c9005mr22472725e9.7.1789632599800;
+        Thu, 17 Sep 2026 01:09:59 -0700 (PDT)
+X-Received: by 2002:a05:600d:8643:20b0:49e:7c8c:bc77 with SMTP id 5b1f17b1804b1-49fbd1c9005mr22472315e9.7.1789632599375;
+        Thu, 17 Sep 2026 01:09:59 -0700 (PDT)
+Received: from [192.168.188.234] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fbd17051fsm57323325e9.0.2026.09.17.01.09.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Sep 2026 01:09:58 -0700 (PDT)
+Message-ID: <126c1419-0df6-49b5-9cef-cb9f45c716c0@redhat.com>
+Date: Thu, 17 Sep 2026 10:09:56 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,181 +89,134 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v4] net/smc: fix lgr/lnk lifetime vs diag reader race
-To: dust.li@linux.alibaba.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        alibuda@linux.alibaba.com, sidraya@linux.ibm.com
-Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
-        guwen@linux.alibaba.com, hidayath@linux.ibm.com,
-        stable@vger.kernel.org, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
-References: <20260911090906.1949163-1-mjambigi@linux.ibm.com>
- <aqlgtaEk3kNcg-Yp@linux.alibaba.com>
- <69676c38-3d68-41db-8b26-3e589d7477d5@linux.ibm.com>
- <aqq0rnQjiKymR3TM@linux.alibaba.com>
+Subject: Re: [PATCH net] tipc: reject invalid and unexpected GRP_ACK_MSG to
+ prevent bc_ackers underflow
+To: edumazet@google.com, tung.quang.nguyen@est.tech
+Cc: davem@davemloft.net, kuba@kernel.org, horms@kernel.org,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com, jamesburton@meta.com,
+ stable@vger.kernel.org, security@1seal.org, jmaloy@redhat.com,
+ netdev-bot+sashiko@kernel.org
+References: <20260913044233.193927-1-edumazet@google.com>
+ <178936156410.22033.16977639465746131797@kernel.org>
 Content-Language: en-US
-From: Mahanta Jambigi <mjambigi@linux.ibm.com>
-In-Reply-To: <aqq0rnQjiKymR3TM@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE3MDEwMSBTYWx0ZWRfX2Vh33YTUFRpW
- lg79GYxSOA9gzJpwFRSC3JGMoOJ5PKeGlcWz7Dc6umn+gdJy2z4v3Jf1tp8SIcDR5OV5CuSpD4u
- f/VX2RzB9T1fPE3RmAbznO5Zt6qA3uzKbtrr2t7LwXOiD6b2dQMVc95So+eYpd0HD5VuaNhj99G
- caL+ek0ckxtHjLek7fhJp38v3YD/gPm0L1h3Twns1ZoKQSdZO40NW60d+5+jwxHKs5uf2FGVB+t
- OgoEobYQm7x99FR7AyFU3NBw0AZeuQtPaF66Krbbpkgo4HqUe8sC/ufD8Dnd7z4P/xtmCg9X0GU
- 1twmpdNFL8oZUzMjhvUUjzSHWqHnW7E7yeghXsg6xLcxEw+vs11bz1k02dc7idpim0Jt3CUOTWA
- b9NEB+aUS30L/oS0IFIRpDRLqYoaqS2KoLDCokiWrFlj3OFcY6GRBKKH3SBe1maab1c5oo3eQob
- WE0g1ReRf/Xd4bLVSxg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE3MDEwMSBTYWx0ZWRfX+P2LiH6QFWqx
- CPNN5YIb1cNl+WZwNbrp3YdaPSuDg7JKLt1xzNnC5dbPWnwiTpsj8lcVVxMu0ka8F1D6CbipkQ6
- 8Wp9A1Y7fzh+A5n0DD8+4eELxdOkY9c=
-X-Authority-Analysis: v=2.4 cv=Zsx4uN7G c=1 sm=1 tr=0 ts=6aab9a9c cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=QkDZmhBQ68RLb4DUF7UA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: q1TGGz4qSp8bUxx6jNB4qirvIDmrWbc2
-X-Proofpoint-GUID: 9MaHmtlYCeCaXkrNZ-tQkj2zwHgoZ5kc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-17_01,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 impostorscore=0 clxscore=1015 priorityscore=1501
- lowpriorityscore=0 bulkscore=0 adultscore=0 phishscore=0 spamscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609170101
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <178936156410.22033.16977639465746131797@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-
-
-On 16/09/26 8:54 pm, Dust Li wrote:
-> On 2026-09-16 14:04:42, Mahanta Jambigi wrote:
->>
->>
->> On 15/09/26 8:43 pm, Dust Li wrote:
->>> On 2026-09-11 11:09:06, Mahanta Jambigi wrote:
->>>> The diag dump walks the socket hash table under a read_lock and
->>>> dereferences conn->lgr and conn->lnk.  Two terminal teardown paths
->>>> drop those references via smc_conn_free() while the socket is still
->>>> hashed:
->>>>
->>>> - smc_conn_kill() -> smc_close_active_abort() -> smc_conn_free() -
->>>> smc_close_passive_work() -> smc_conn_free()
->>>>
->>>> This allows the diag reader to dereference a freed lgr or lnk.
->>>>
->>>> Fix it by unhashing the socket before smc_conn_free() is called at
->>>> each of these two sites.  Any socket visible to the diag reader
->>>> under the hash read_lock then has valid conn->lgr and conn->lnk
->>>> pointers.
->>>>
->>>> Fixes: f16a7dd5cf27 ("smc: netlink interface for SMC sockets") Fixes:
->>>> 9dbe086c69b8 ("net/smc: fix invalid link access in dumping SMC-R
->>>> connections") Signed-off-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
->>>> --- Changes in v4: - dropped smc_conn_unhash() wrapper, conn-
->>>>> unhashed flag, and all changes to af_smc.c, smc.h, smc_core.c and
->>>> smc_core.h; smc_unhash_sk() is already idempotent via sk_hashed(),
->>>> so direct calls at the two teardown sites in smc_close.c are
->>>> sufficient - dropped the __smc_release() hunk: it needs no change
->>>> since the subsequent unhash there is already a safe no-op - fixed
->>>> premature-unhash issue present in v3: smc_conn_free() must not unhash
->>>> because smc_conn_abort() calls it before smc_switch_to_fallback() in
->>>> both smc_listen_decline() and smc_connect_rdma() error paths; unhashing
->>>> there would make live fallback sockets invisible to smcss -
->>>> likewise, the ISM/RDMA retry loops (smc_find_ism_v2_device_serv(), 
->>>> smc_find_rdma_v2_device_serv()) call smc_conn_abort() on a failed attempt
->>>> and then smc_conn_create() on the next device; unhashing in 
->>>> smc_conn_free() would permanently hide the established connection
->>>> from smc_diag since smc_conn_create() does not re-hash the socket
->>>
->>> Hi Mahanta,
->>>
->>> This version looks clean. And you explained why we can't call unhash
->>> in smc_conn_abort() well. But smc_conn_abort() still calls
->>> smc_conn_free(), when the smc_sk is still hashed, is there still a
->>> race window with dump ?
->>
->> Hi Dust,
->>
->> Thank you for catching this corner case!
->>
->> During early handshake setup (when sk_state is *SMC_INIT*),
->> smc_conn_abort() can be called on connection failure/fallback and
->> invokes smc_conn_free() while the socket remains hashed, leaving a
->> window where a concurrent diag dump could evaluate smc_conn_lgr_valid()
->> and dereference conn->lgr / conn->lnk.
->>
->> Since sockets in *SMC_INIT* are in a transient embryonic handshake phase
->> and userspace (smcss) *skips displaying link-group, DMB, and connection
->> details for INIT state sockets anyway*, we could have __smc_diag_dump()
->> skip inspecting connection/link-group extensions when r->diag_state ==
->> SMC_INIT:
->>
->> diff --git a/net/smc/smc_diag.c b/net/smc/smc_diag.c
->> --- a/net/smc/smc_diag.c
->> +++ b/net/smc/smc_diag.c
->> @@ -90,6 +90,9 @@ static int __smc_diag_dump(struct sock *sk, struct
->> sk_buff *skb,
->> 	r->diag_state = sk->sk_state;
->> +	if (r->diag_state == SMC_INIT)
->> +		return 0;
->> +
->> 	if (smc->use_fallback)
->> 		r->diag_mode = SMC_DIAG_MODE_FALLBACK_TCP;
->> 	else if (smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd)
->>
->> Together with unhashing before smc_conn_free() in smc_close.c for
->> established and closing sockets, this cleanly closes the race window
->> across all socket states without touching the hash table mechanics
->> during fallback/retry.
->>
->> Does this approach look good to you? If you agree, I will prepare and
->> submit v5 with this change. Please let me know if you have any other
->> suggestions or alternative approaches, and I'll be happy to look into them.
+On 9/14/26 06:52, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider:
 > 
-> What about this path ?
+> Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
 > 
-> smc_listen_decline() -> smc_listen_out_err(), where smc_conn_abort() has
-> already run, and the sock state is then changed from SMC_INIT to SMC_CLOSED.
+> - [Medium] Incomplete ACK accounting in tipc_group_proto_rcv()
+>    (net/tipc/group.c:799-808): the new validation gates the decrement of…
+> 
+> Pre-existing issues:
+> - [Medium] Pre-existing (not introduced or claimed by this patch): in
+>    tipc_send_group_bcast() (net/tipc/socket.c:1131-1137) the packets…
+> 
+> --
+> 
+> tipc: reject invalid and unexpected GRP_ACK_MSG to prevent bc_ackers underflow
+> 
+> This tightens the GRP_ACK_MSG path in tipc_group_proto_rcv() so that the
+> message is dropped when grp->bc_ackers is zero, and so that only an ACK
+> whose value equals grp->bc_snd_nxt (and which is not a repeat of the
+> member's own last ACK) is allowed to decrement grp->bc_ackers.
+> 
+>> diff --git a/net/tipc/group.c b/net/tipc/group.c
+>> index 14e6732624e28..74f6d3dac0784 100644
+>> --- a/net/tipc/group.c
+>> +++ b/net/tipc/group.c
+>> @@ -797,10 +797,10 @@ void tipc_group_proto_rcv(struct tipc_group *grp, bool *usr_wakeup,
+>>   		tipc_group_open(m, usr_wakeup);
+>>   		return;
+>>   	case GRP_ACK_MSG:
+>> -		if (!m)
+>> +		if (!m || !grp->bc_ackers)
+>>   			return;
+>>   		acked = msg_grp_bc_acked(hdr);
+>> -		if (less_eq(acked, m->bc_acked))
+>> +		if (acked != grp->bc_snd_nxt || m->bc_acked == acked)
+>>   			return;
+>>   		m->bc_acked = acked;
+>>   		if (--grp->bc_ackers)
+> 
+> [Severity: Medium]
+> The new test gates the decrement on the sequence value and on per-member
+> duplication.  Does it also need to check that the acking member was one of
+> the members actually counted into grp->bc_ackers for the current round?
+> 
+> tipc_group_update_bc_members() counts and re-arms receivers only:
+> 
+> net/tipc/group.c:tipc_group_update_bc_members() {
+> 	u16 prev = grp->bc_snd_nxt - 1;
+> 	...
+> 	for (n = rb_first(&grp->members); n; n = rb_next(n)) {
+> 		m = container_of(n, struct tipc_member, tree_node);
+> 		if (tipc_group_is_receiver(m)) {
+> 			tipc_group_update_member(m, len);
+> 			m->bc_acked = prev;
+> 			ackers++;
+> 		}
+> 	}
+> 
+> 	/* Mark number of acknowledges to expect, if any */
+> 	if (ack)
+> 		grp->bc_ackers = ackers;
+> 	grp->bc_snd_nxt++;
+> }
+> 
+> A member in MBR_JOINING or MBR_LEAVING is therefore neither summed into
+> ackers nor re-armed, so it keeps a stale m->bc_acked.  The same holds for a
+> member created after the round was published, since
+> tipc_group_create_member() sets:
+> 
+> 	m->bc_acked = grp->bc_snd_nxt - 1;
+> 
+> In both cases m->bc_acked differs from grp->bc_snd_nxt, so a GRP_ACK_MSG
+> from that member passes both new conditions and still executes
+> --grp->bc_ackers although it contributed no increment.  The lookup on this
+> path, tipc_group_find_member(), applies no state filter.
+> 
+> Can that let grp->bc_ackers reach zero while a counted receiver still owes
+> an ACK?  The number of accepted decrements per round looks bounded by
+> grp->member_cnt rather than by the counted acker set.
+> 
+> If bc_ackers is cleared early, tipc_group_bc_cong() stops reporting
+> congestion:
+> 
+> net/tipc/group.c:tipc_group_bc_cong() {
+> 	/* If prev bcast was replicast, reject until all receivers have acked */
+> 	if (grp->bc_ackers) {
+> 		*grp->open = false;
+> 		return true;
+> 	}
+> 
+> so the sender releases the next group broadcast while the previous replicast
+> round is still outstanding, which is the ordering guarantee from
+> 2f487712b893, one of the Fixes tags on this patch.  The zero-transition
+> branch also runs list_del_init(&m->small_win) and *m->group->open = true for
+> the acking member, which need not be a receiver, and the genuine acker's
+> later ACK is then swallowed by the new !grp->bc_ackers guard, so its
+> small_win / tipc_group_update_member() bookkeeping never runs.
+> 
+> The commit message states that "each member can acknowledge at most once per
+> round" - that part holds per member, but does it cover members that were
+> never counted for the round?
+> 
+> Would a per-round marker set in tipc_group_update_bc_members(), or accepting
+> only members whose m->bc_acked == grp->bc_snd_nxt - 2, close the remaining
+> gap?
+> 
+> The u16 wrap to 65535 itself does look closed by the new !grp->bc_ackers
+> guard, so what is left here is the premature clearing of the counter that
+> item 2 of the commit message also mentions.
 
-Hi Dust,
+My reading of the above is that it's a slightly different problem, that 
+could/should deserve a separate patch. WDYT?
 
-Good catch on the smc_listen_out_err() path as well!
-
-In smc_listen_decline() -> smc_listen_out_err(), the server socket fails
-handshake and is transitioned to SMC_CLOSED while remaining in the hash
-table until smc_accept_dequeue() runs.
-
-Since userspace (smcss) skips displaying all connection, link-group, and
-DMB details for both SMC_INIT and SMC_CLOSED sockets (smcss.c:186 and
-smcss.c:199), we can update __smc_diag_dump() to check for both states:
-
-diff --git a/net/smc/smc_diag.c b/net/smc/smc_diag.c
---- a/net/smc/smc_diag.c
-+++ b/net/smc/smc_diag.c
-@@ -90,6 +90,9 @@ static int __smc_diag_dump(struct sock *sk, struct
-sk_buff *skb,
- 	r->diag_state = sk->sk_state;
-+	if (r->diag_state == SMC_INIT || r->diag_state == SMC_CLOSED)
-+		return 0;
-+
- 	if (smc->use_fallback)
- 		r->diag_mode = SMC_DIAG_MODE_FALLBACK_TCP;
- 	else if (smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd)
-
-This guarantees that __smc_diag_dump() never attempts to inspect
-connection or link-group fields for sockets that are either still in
-embryonic setup (SMC_INIT) or have aborted/closed (SMC_CLOSED).
-
-Combined with unhashing before smc_conn_free() in smc_close.c for
-established connections during active/passive close, this cleanly closes
-the race window across all tear-down and abort paths.
-
-Does this approach look good to you? If you agree, I will prepare and
-submit v5 with this update.
-
-Best regards,
-Mahanta
+/P
 
