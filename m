@@ -1,78 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754634B66FB;
-	Thu, 17 Sep 2026 09:45:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9144AA03B
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 09:50:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789638342; cv=none; b=H/hIarR+onv8hDkaPykxMrZ85lRjIUz+zY/ERqOBoMfIX5SInLqAfGvzVCtQ95NiqIbTrXujxnNNtRp2snPtjSoEl0wg8CcmjJ9GyvOQtDxcMBY43VYFIgNJc8vjvyhVz+x0SAoEksXHAHKKAOPQBh+EU7ikuG7z2VlzN6whicI=
+	t=1789638642; cv=none; b=PoZCTYGos18OsR1LG1/X8rGwiYx7yRztot21mqh9ePmbtvhtH9U1ikzaa9+rqb6gZaLLH22GRqTtsGzCU8hG6T3rDvsDyM/h5aH/xuI817JssudBs06KjVbGeU0Kq1E74VBnlV3/7sOa95h3kNYgq+hH1Xnv+6A2Lc11A9QhpMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789638342; c=relaxed/simple;
-	bh=JTJNv6iHD/56X33Pk+RbiScJ1WGchFvt9lpLotbWIpI=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=t81PYkHd258HulYw0gQnCxs++cO6cuT2ahAJkp/3uiHxYNgU/9aiSEhcFCSY2ASDszJSU0gqNn8+zVo/mLkY14OxQn6lUmxsRMrgy++/l9kphYfF1Vlzr6MhKgSZyadqsYcz5AO/dWiCP9tjx342RGoSu/jstnxRtqjX2HQ2kHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TekKEYFk; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789638642; c=relaxed/simple;
+	bh=zCGjskzC6nt6OCJ7w5ms6NErauf5y//QMc9iiBz8jkU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sZZzGK78j26EN+905F3yLULBgAcoMuxCZmKOrCH1xGzrcDJ3sq0xVh3zbvtp+6h936pPhNZxJ7K6y1SeDuK96P9S4V5sJPk/aGR2bFh5I6SUXeIvUxd0BuE8nuZ+zWEn1+dBPW10TcanLJ3Ax9bIupvJm3aLRT55PGxRt7Xmt78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=giWMazIY; arc=none smtp.client-ip=91.218.175.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TekKEYFk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59D8F1F0089A;
-	Thu, 17 Sep 2026 09:45:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789638323;
-	bh=JTJNv6iHD/56X33Pk+RbiScJ1WGchFvt9lpLotbWIpI=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=TekKEYFk1jJ3i2AocI9dPE4D4bIBWs0FDoU9LxAwH9ZBzILJgeiZvmLBPBTDk5MiY
-	 T3pSjCcLZT1j41tyFNL0Cb18F5mY66hnIr8+dnlLhP4IXnMoBv5a0Kt6tmQHJS8RBr
-	 UIrk+wvcgq6YeP2mHNhY00JZIEI+u/QQY3iv88E4WtnaQiIFe3Zl0vnypMqILXiSdB
-	 nTdw5C45DyouX9XqMWuuIPL9btnKzdD3mqZr6FZN6f03OamtmlNaiJTjWFYuc6SyjX
-	 gHgLIHwayeax3NysXxMPnW/Pc2IF5GdDeWEoHxSCHWHuerw6XGye8JQBwP6y+jZOPW
-	 LhIf2ADMBpUpw==
-Content-Type: multipart/mixed; boundary="===============1968874701090499589=="
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="giWMazIY"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=zCGjskzC6nt6OCJ7w5ms6NErauf5y//QMc9iiBz8jkU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789638634; v=1; x=1790243434;
+ b=giWMazIYdTMKFwpnuaHxE1HMOZtAZyL+9ImGEKRuIseq9EgcBFl8djlxfQQVt081tfPt/Yfc
+ WU+l4WaC8P0oDIC6XM9VwwDqpkrsL3I7XT+wAx2VXawlfhh2TLTLmheDbuFC27tQUAe88Xn4EC5
+ YFEY5xd0b4EdBzWKKnM7eI34=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 74eb9895368bae3b;
+	Thu, 17 Sep 2026 09:50:34 +0000
+X-Mizu-Trace-ID: 74eb9895368bae3b
+X-Migadu-Flow: FLOW_OUT
+From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+To: netdev@vger.kernel.org
+Cc: dsahern@kernel.org,
+	idosch@nvidia.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	tgraf@suug.ch,
+	pshelar@nicira.com,
+	linux-kernel@vger.kernel.org,
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Subject: [PATCH net v1] ip_gre: Reject enabling collect metadata through changelink
+Date: Thu, 17 Sep 2026 17:50:16 +0800
+Message-ID: <20260917095016.71937-1-xuanqiang.luo@linux.dev>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <b39121f2d0860a81719fb0b3f9b16bde9157bc043d7cc918497afc6d896877de@mail.kernel.org>
-In-Reply-To: <85d9a0f138fa024354edde023a05f9d07b6ac87a.1789633546.git.tanggeliang@kylinos.cn>
-References: <85d9a0f138fa024354edde023a05f9d07b6ac87a.1789633546.git.tanggeliang@kylinos.cn>
-Subject: Re: [PATCH bpf-next v3] bpf: drop duplicate check_app_limited in tcp_bpf_push
-From: bot+bpf-ci@kernel.org
-To: geliang@kernel.org,john.fastabend@gmail.com,jakub@cloudflare.com,jiayuan.chen@linux.dev,edumazet@google.com,ncardwell@google.com,kuniyu@google.com,davem@davemloft.net,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,matttbe@kernel.org,martineau@kernel.org
-Cc: tanggeliang@kylinos.cn,netdev@vger.kernel.org,bpf@vger.kernel.org,mptcp@lists.linux.dev,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Thu, 17 Sep 2026 09:45:22 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 
---===============1968874701090499589==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-> bpf: drop duplicate check_app_limited in tcp_bpf_push
->
-> Before commit c5c37af6ecad9 ("tcp: Convert do_tcp_sendpages() to use
-> MSG_SPLICE_PAGES"), do_tcp_sendpages() did not call
-> tcp_rate_check_app_limited() internally, so callers needed an explicit
-> tcp_rate_check_app_limited() to cover it. That commit replaced
-> do_tcp_sendpages() with direct tcp_sendmsg_locked() calls, which perform
-> the check on every path that queues data. The outer call became redundant
-> but was left in place.
+ipgre_netlink_parms() can enable collect_md on an existing GRE, GRETAP
+or ERSPAN device. Unlike newlink, changelink does not enforce metadata
+tunnel uniqueness. Converting a non-metadata device can therefore
+replace the metadata receive entry for another device of the same type
+in the same netns. Deleting either device then clears the shared entry,
+breaking metadata receive lookup for the surviving device.
 
-This isn't a bug, but would it be clearer to cite ebf2e8860eea ("tcp_bpf:
-Inline do_tcp_sendpages as it's now a wrapper around tcp_sendmsg") as the
-commit that left the outer tcp_rate_check_app_limited() in tcp_bpf_push(),
-with c5c37af6ecad9 mentioned as the commit that moved the check inside
-do_tcp_sendpages()?
+If parameter validation fails after collect_md is set, deleting the
+modified device can also clear an entry it never owned.
 
-Looking at the git history, c5c37af6ecad9 only touched net/ipv4/tcp.c and
-turned do_tcp_sendpages() into a wrapper that calls tcp_sendmsg_locked().
-The direct tcp_sendmsg_locked() call in tcp_bpf_push() was introduced by
-ebf2e8860eea, which kept the outer tcp_rate_check_app_limited(sk) while
-inlining the wrapper.
+Reject enabling metadata mode in both changelink callbacks before any
+encapsulation or tunnel parameters are modified. Allow requests that
+repeat the metadata attribute on an existing metadata device.
 
-
+Fixes: 2e15ea390e6f ("ip_gre: Add support to collect tunnel metadata.")
+Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 ---
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+The state change on failure can be reproduced without an existing
+metadata tunnel (output abbreviated):
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/35203307255
---===============1968874701090499589==--
+  # ip link add g1 type gre local 192.0.2.1 remote 192.0.2.2
+  # ip -d link show g1
+      link/gre 192.0.2.1 peer 192.0.2.2 ...
+      gre remote 192.0.2.2 local 192.0.2.1 ...
+
+  # ip link set g1 type gre external
+  RTNETLINK answers: Invalid argument
+
+  # ip -d link show g1
+      link/none c0:00:02:01 peer c0:00:02:02 ...
+      gre external remote 192.0.2.2 local 192.0.2.1 ...
+
+  # ip link del g1
+
+The request fails, but collect_md and the device type have already
+changed.
+
+If another metadata tunnel exists, deleting this device can clear its
+collect_md_tun entry. A successful conversion can overwrite that entry.
+
+ net/ipv4/ip_gre.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index 82309efd417e0..7b1b0f17f60b9 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -1464,6 +1464,9 @@ static int ipgre_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	if (!rtnl_dev_link_net_capable(dev, t->net))
+ 		return -EPERM;
+ 
++	if (data && data[IFLA_GRE_COLLECT_METADATA] && !t->collect_md)
++		return -EOPNOTSUPP;
++
+ 	err = ipgre_newlink_encap_setup(dev, data);
+ 	if (err)
+ 		return err;
+@@ -1496,6 +1499,9 @@ static int erspan_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	if (!rtnl_dev_link_net_capable(dev, t->net))
+ 		return -EPERM;
+ 
++	if (data && data[IFLA_GRE_COLLECT_METADATA] && !t->collect_md)
++		return -EOPNOTSUPP;
++
+ 	err = ipgre_newlink_encap_setup(dev, data);
+ 	if (err)
+ 		return err;
+
+base-commit: c9151088f1674fd29ff26a20f5fc687acf53a2f0
+-- 
+2.43.0
