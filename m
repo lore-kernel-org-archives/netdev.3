@@ -1,153 +1,103 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-wr2-f9.google.com (mail-wr2-f9.google.com [74.125.225.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A5A3E9F9E
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 11:24:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789644258; cv=pass; b=V3ONQOpuMrGQmu3JkBPgQsfh2K2v/B4PWrgaODUcdXnqIR9lxA1pxYbyAHqYk7TM123ckgm17Qog5XoBwqTtD7P9upDjTkvfhjhDIFxyP9SYEQk82wvLF7xo8daSHNcdAiIaP+pKkj04oSjJlENvuGRcyWnje3V7qls55/FkyD0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789644258; c=relaxed/simple;
-	bh=jOV5xkXWixShmGZ4KByXLEK1raOaOSri7iKmC2Hzfy0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uBOJIUWD0WIoUxESlvCRqm1fWK8j8ATPQ/GXaMIIGLkxHf/EObzV0I9yqL6vINdIrcZLlf+5sNQAQYUK8PWe7I7kt2yBFCh+WlYjfztEHDy2hB/dO0Ipt7wvPISeRwLupbm/pm8mWpXD6EC/7PWGbAimSQelJSadF1tttap8cbk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=n47LG+2I; arc=pass smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78404D5971
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 11:27:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.73
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789644425; cv=none; b=IkzjLp4OvdmacYBqjKjKZyQWhQnlWiDqVxJ6YfZpL1zN7QVtcSNg00CWk7kYhKzPmBXw6tyL7V/OkiTUFjjn4Av/vBsUnuvZuXcWlCdedT6SojVtRr0jyIHtnmoiMU9p5qNl8/joRT1dBDjHzOEWAWXhrFo58eXnFcsk7YP/MH8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789644425; c=relaxed/simple;
+	bh=j1yYjfdvtN71lnQb1RuDzx0cffgVcRVRBV6mc2dIWJE=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=L+qUvGv+syDcyrFUeZIPGaEHM07mwsv6laL432DLgeNv/2utrYXGjbKouJQ/LpVRDr+cQCMfc+dymD868Z+1LoMawB+7z8ZUUr8y/fATcCmHGPSaInSPU7GAj/6d48tVnAUoZwXBtdXLpq6koRTMIt1L4Ow1OJ92VmuMetz+O5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=p4a1R3/a; arc=none smtp.client-ip=74.125.225.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="n47LG+2I"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-86ec25cf7ecso611525b3a.1
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 04:24:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789644256; cv=none;
-        d=google.com; s=arc-20260327;
-        b=YjiMO9AvaqY2AbTu1E7NIC8/K5VK21txHabpOW8H3jZ3GrPzWOJs8+BaZJ29G15fwQ
-         jUNhZCpRXjf7yi5bBQX/O47wtfJBvZSutGAhX8k+SAahLSvu02+sbzkyK/bxHLfiyF0B
-         TeJTWa0i+RkaP1OwDzUpaHvS8P7J3Ueg+JWqvzTHbc4WnuKl7QOzIxckeC5/Rk27EiKx
-         R8MTN+EQbywERenGoYis7su9yeRtx5dy6ctV1KQO4Zf74iVpJVYmDYba3yS+k9gLBvih
-         jUYMYn/7pSFzuhaC8Mc0tyqHJ8niplEwJ6j/7wfYX1iQ9/Q+zOA9Ef/Z4GeEg/FkdxzG
-         QMCA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/5GuyYmurDA/V1rcZQlZGT+C/hvfrRvjcxLhT2PJiC8=;
-        fh=/zN73WG5IhYHPVPNHCwOL0hywHeiEwTx/khvRoIEHnk=;
-        b=fToMPqG+BZIgpW5O1xG4xflFPTjF0dINZN94ikZ5RzSM5vz52EbZ7UNkFYFe9XHQG8
-         wapcrAFl7zp8EiAgBAvYvYabV6pito7T7I5VjM0fovD0uQLI/Oz8SM6xIs57V367Dxvi
-         FPNHlsAkk532Yb6Wn7txp/Gy6q6FLYnn68ReMOlGeCmIf5VUD8/NQ9jKgCLJy4NrZVcF
-         a7/ZrpsRkkthL67iXkpbiX5I3htQJCMPAJXS06nKpPvBEau8huohA+HfiYY45roCtiOO
-         XQGxQZxsH/W0CSjXIrIr3hZrNoWlwW3uVfM3qhOJD2j0eLBVTVXozfaGNn0stVCy5db0
-         cZKQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="p4a1R3/a"
+Received: by mail-wr2-f9.google.com with SMTP id ffacd0b85a97d-485850cf4deso269459f8f.1
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 04:27:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1789644256; x=1790249056; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/5GuyYmurDA/V1rcZQlZGT+C/hvfrRvjcxLhT2PJiC8=;
-        b=n47LG+2IjZ9tKhF2xW9t87CYqFA33W8tstB6xqhSbo5x7R6IYT5AEAnTKror6e3QoP
-         lW09c1aJB8Jk5KKIO2srJT3XmI8iynImiMqjf26PbyIonTlKI/Okq8x0bPv5QBzjcAaD
-         BxhyIBp9B06B5MFaJT3M7hFCIIGAskiKRwIvY=
+        d=gmail.com; s=20251104; t=1789644422; x=1790249222; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=j1yYjfdvtN71lnQb1RuDzx0cffgVcRVRBV6mc2dIWJE=;
+        b=p4a1R3/a44085P/wLAXM889aehNxu6Q6YHRFlbV82l3cEMA0Rrcz1bsHcDAGQPhyxl
+         ol99zdBsbGdghXYBnsjW1jQrVFhB8UX53Ai0qcfvO2iW8C4vVWE+20Fcx567hMT9DVVJ
+         RfSD9oHjJvKlSznmkMKIGllovBfWEbEWQpwW7rp2NwWqpMNpCa4sv6wiaVBFi+z+9tCu
+         DaJCJVWljQlAEcE1R3vzB1pLI07qD4pNtMyrC1ZYslHsRiVCuIZ9oWL8WTKsujCO1MRw
+         uJcC1btV3ekp1KWbHMMNmhHrKNxIQ41PT9COLXpF1nllk/VAXbIF6qi5pZiUhf2dI9+n
+         oZVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789644256; x=1790249056;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1789644422; x=1790249222;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/5GuyYmurDA/V1rcZQlZGT+C/hvfrRvjcxLhT2PJiC8=;
-        b=K5Xe7UDOQ6+ou8rse8wcgwVPobiLk0YNcp2XGSLbReaCPs0GED9QYOJ0ALeVGrowKG
-         t64Pc4aIWrph9SZUVKzuyU+p+5XRj0cwii8LkJXW2vzHcZ/SeY5V+ZEkufOgLjnHclD2
-         lFVf9bV4Kqz427RzuSWeJhGBH6K4/748vi23no8u9s2ZpmW1unyHFXUjgEEvC6vt46fw
-         PLizTv+OxgiuUGG4uVwoDVi71x8f9IOlhQee7tPEuNlP0qGJMTR4hln1ANMDE20IOLo1
-         yoxMNL4WdWGV5pN6k+hGlHo17r2wuYWG4iS7Ln/BrNw8wYxA4eN/xPfyREPuTePyPrlk
-         ojCw==
-X-Forwarded-Encrypted: i=1; AKwUvBwJNqC/mKB6NVd6KlnAzCJxnD/d7EIGHGK9IEsbqeHAMqSZ9RUkAKrBE+lZqzITFVbmeEIj9vE=@vger.kernel.org
-X-Gm-Message-State: AFuF++llHk9eGOecF6gmA+LE6PJ8H6nUmw5aK+ycLV9mvipziHDP2CLA
-	6k/JCf9YKVQOp9YMPxi2J0iqazFgyq9TlgG+nFMXJk9Si/qZ211i6h0SGI6rn9BMB88CIx5pwBa
-	dMTzDD5Z0KkY7bDOoSCpRMLYFfqoizSFL0mv4M6Us
-X-Gm-Gg: AYBFou2hgnRO1Niu9pbJ6q1NDf9AyAmWbxWyHzF/lbn3Cp4Q7Kulf/VU0UDnRjo2gJC
-	jL9VJkk4szcj48JU09+KY+pW968M7Pe30Awra0VBB70GqavRBiMTmeiuhDcDaaAxX+8tpCRuF2C
-	QjalB3INwVRN7mfPO9dqs6OOAw+wcDtdU9lAYIwtmCOCtTjpdGBtRM5cTXzctSJFZ9USSYB2+2v
-	+ufViHr7jg8OcqEkTglwVlT1ZTUvH+RYglJlf5BrlFa7UiVOIhxt1dF+1J42TxN3V3GoIoAYSDJ
-	XSsbn0HSUyFZ2GTz/+JhJksAtBOO6vWpQSOE4lgoEDR4qngvmZGNEQOxjZY67Ikx6eyr24lWJhw
-	/tdfZXp31nvDy6GPm10DJdQLWueiX9ZPqJgoFhKYqSfJc
-X-Received: by 2002:a05:6a00:140e:b0:845:cad1:d691 with SMTP id
- d2e1a72fcca58-87340f8b157mr4518381b3a.5.1789644256073; Thu, 17 Sep 2026
- 04:24:16 -0700 (PDT)
+        bh=j1yYjfdvtN71lnQb1RuDzx0cffgVcRVRBV6mc2dIWJE=;
+        b=xkuxMKvvY/s8xMvyMT3AN/x+u5RO5byVgDUkKFqdDGxDI/xoN3HOcTJJcOno3KsA28
+         xcnKAtpMxRP0jtUpOijJpFVVJLwUMFUJzzTyPF7LUG4Lm495iMKOyfnyRGwK2JC6RFLJ
+         C+a5j8FTjabg+uuAv/+sRoILcYaGrGC083ib7sCnXiODc+lPS18PK4Z/2hlnuhxdb7qm
+         PsdLsk9CaiZHqGVCxX0/JCruiLy3VAdGiGiifrS8oGF+ULVV8Tcr5l4fOgcABmWb2RFn
+         CBrP8ATMrstKuywkFoU+taCoq6lSrEvdF1A1bC/zAqnuPr8ZOuE9KHr89TPgYgD3JGJ6
+         jtjw==
+X-Forwarded-Encrypted: i=1; AKwUvBz5Xx9nQ8Y4ZesFikTu5bj1jm3XnB1q4WSQ4mbcYQ7ozCVnKFipOcJ47/kzy5v4EJqePomLtvo=@vger.kernel.org
+X-Gm-Message-State: AFuF++l81u4E6lASTMI+o8ZwH0JA7FkJBtqWfpiMhsGRfub05mgj16Jr
+	U2CH8VyFhn/XpgBH0rSumGZoSYIPy374yzJhWCno1l3CGfPSHImGd6fY
+X-Gm-Gg: AYBFou0hsr3AMUOLt/toAkhBIShIsfanU9eaWUXcZoguyYDQAyjSVHueOXCwcT2n+Fq
+	xXMB2R2EFVMDQBu7BfmMEooA9Oibt+aztR6QUsVG++y/8VXuOqscskz9VgsTpYfrn4XEsCLkkZR
+	Dnot1+5zISh61BYqUmfbmocTf58LmtHSj/GC2p6zjgXceLqXbVynd+mxpIqnrzkIHNAmdb0Kvkl
+	/eZYl7WCnpKSG5bM1ze1Nf2gUvz04TU862Dt23zf35FZRA9muoIxevdFnKZUppcIJ3NImEUf0Vt
+	kuX4MrEZFoXJ9PfufDn0xUaWTSj3PLkFAJ5kAgZ1mCdZaLI+M3vkou2vZg3SzL9wWgm+EP9HQWa
+	CwX5mY5Zc6ZcI8FM9iXBpCDV6GXNcL6s6qgq+kx4qaEL7SPMZTyGOA+XAz3yFruCvX4jESlOsc5
+	5FzfgkUgXp+oO8dAPcaq7tTxh3MeQmB6pRlBexAdKvndkLRa0UPbIhF+JL40/ugXjiLnSVSBd/P
+	O4/ABrg2ZCABm0TSdQmgHkJ5yPUn68b0INLkT30OBKvvoy4YgcQauePxQ4ywAKZP4DEmqhM/U/3
+	vtcJ7g5cVD4zqKrYPfsMePkteiQNXX+ej3YSqw==
+X-Received: by 2002:a05:6000:27cd:b0:487:d8f:27a0 with SMTP id ffacd0b85a97d-4870d8f282amr5317777f8f.32.1789644421948;
+        Thu, 17 Sep 2026 04:27:01 -0700 (PDT)
+Received: from localhost (nat-icclus-192-26-29-3.epfl.ch. [192.26.29.3])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4870bf1fe7esm15118417f8f.6.2026.09.17.04.27.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Sep 2026 04:27:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260911133146.3440982-1-victor@mojatatu.com> <20260914191108.55a1a4f1@kernel.org>
- <CAM0EoMk7CZA2qAPEfvZ_+tUDkcUYF5nanaxER1soLJQZqMuXxQ@mail.gmail.com>
- <20260915085304.775a829a@kernel.org> <CAM0EoMmiw_kVnK4RjTT_dkquw0YLSB5VgO_7EoV2WT_pQXbCYw@mail.gmail.com>
- <20260916170425.1c7a7cbe@kernel.org>
-In-Reply-To: <20260916170425.1c7a7cbe@kernel.org>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Thu, 17 Sep 2026 07:24:05 -0400
-X-Gm-Features: AcwNN1U0-vZIN_n2YJY2Z_wRcHVhBYRR8u5CPoBC8AlvvmsI5deaoctwLClJBWQ
-Message-ID: <CAM0EoMn1SkkC0goKD3-OreQtEwYbfr3zYJdmfrDf8HTdHWrNjg@mail.gmail.com>
-Subject: Re: [PATCH net] net/sched: Avoid quadratic handle scan in qdisc_alloc_handle
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Victor Nogueira <victor@mojatatu.com>, davem@davemloft.net, edumazet@google.com, 
-	pabeni@redhat.com, jiri@resnulli.us, horms@kernel.org, vega@nebusec.ai, 
-	netdev@vger.kernel.org, Yuan Tan <yuantan098@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 17 Sep 2026 13:27:01 +0200
+Message-Id: <DLHK013DCY3J.19Y8X3Z0RTWCI@gmail.com>
+Cc: "Daniel Borkmann" <daniel@iogearbox.net>, "Alexei Starovoitov"
+ <ast@kernel.org>, "Andrii Nakryiko" <andrii@kernel.org>, "bpf"
+ <bpf@vger.kernel.org>, "Networking" <netdev@vger.kernel.org>, "Eduard
+ Zingerman" <eddyz87@gmail.com>, <linux-kernel@vger.kernel.org>,
+ <linux-next@vger.kernel.org>
+Subject: Re: Missing signoff in the bpf tree
+From: "Kumar Kartikeya Dwivedi" <memxor@gmail.com>
+To: "Mark Brown" <broonie@kernel.org>
+X-Mailer: aerc 0.21.0
+References: <aqvBPVcN__UX8P85@sirena.org.uk>
+ <DLHJEZ0K0FV1.SCQLJJQNS1ES@gmail.com>
+ <66d3f5cd-12df-4000-8459-360ba57cea12@sirena.org.uk>
+ <DLHJUSTDSQ05.28VUGOV7YPS6V@gmail.com>
+ <ec2acd16-40e3-46b7-b120-ce9eec70e942@sirena.org.uk>
+In-Reply-To: <ec2acd16-40e3-46b7-b120-ce9eec70e942@sirena.org.uk>
 
-On Wed, Sep 16, 2026 at 8:04=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
+On Thu Sep 17, 2026 at 1:23 PM CEST, Mark Brown wrote:
+> On Thu, Sep 17, 2026 at 01:20:11PM +0200, Kumar Kartikeya Dwivedi wrote:
+>> On Thu Sep 17, 2026 at 1:09 PM CEST, Mark Brown wrote:
 >
-> On Wed, 16 Sep 2026 06:34:57 -0400 Jamal Hadi Salim wrote:
-> > > IMO any attack from containers / user ns is hardening. If it leads
-> > > to a crash we take it via net _because it's a crash_ not because
-> > > user ns can trigger it.
-> > >
-> >
-> > Ok - will review the pending ones with this in mind.
-> >
-> > FWIW, here are the rules we have been using:
-> >
-> > It is net if: Regression (worked before, broke) or always-triggerable
-> > crash/UAF/leak/lockup
-> > This specific bug could potentially cause a soft lockup but it wasnt
-> > consistently...
-> >
-> > It goes to net-next if:
-> > a) Never worked (adds a cap, validation, accounting, or enforcement
-> > that never existed, e.g. memcg-class)
-> > b) Doc/comment
-> > c) tests - although the exception we currently make is if we create a
-> > tdc test for a net patch then it goes to net just dont cc stable on
-> > it.
-> >
-> > > > Since we have a few similar "grey" issues in our pending queue - so
-> > > > where's the line for net/net-next?
-> >  [...]
-> >
-> > Given the flood, here are the priority rules we are using:
-> > 1) submit net before net-next
-> > 2) All bugs must be reproducible by our (semi-automated) system
-> > (hybris). I dont even look at issues unless they are reproducible
-> > (hence my nagging "do you have a PoC?" ;->)
-> > 3) Assign a priority to each bug and submit the highest priority ones
-> > first. The priorities are assigned as follows:
-> > - base (reproduced, ACCURATE) +1
-> > - Crash (oops/panic/NULL-deref/OOM/corruption) +2
-> > - UAF +2
-> > - Lockup (soft lockup/livelock/infinite loop) +1
-> > - leak +1
-> > - simple-trigger (plain tc/tdc, no special PoC) +1
-> > - privilege required: (root) +1 / (unshare -Urn) +2
+>> > Does the contacts list for the BPF trees need to be updated?
 >
-> nice system :)
-> no distinction between control path-trigger an packet trigger?
+>> Well, he's the committer, so makes sense to put him in the recipients as=
+ well :).
+>> Once he gets to this he can probably force push to correct it, I guess.
 >
+> Do you have a full list of the current committers, I guess there's been
+> more bitrot than just this?
 
-At the moment we dont make a distinction - the existing point system
-would still work, I think. Do you see it differently?
-
-cheers,
-jamal
+It's me and Eduard, apart from Alexei, Daniel, and Andrii.
