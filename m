@@ -1,96 +1,136 @@
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1084AC156;
-	Thu, 17 Sep 2026 11:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16414A689C;
+	Thu, 17 Sep 2026 11:14:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789643615; cv=none; b=bHsD2yZ3BL21AJHz3iXEcb8MgneiEbUZ0e5GT26Dsz2srZBs2M21ef/ZtAt9o8/bgirMTVKvNafTCAlUygZUJbJIh1Qj2d8mfc+qlwzKNSmvlZ8v00i4uSgGq5GfPbjv1yjGi+4/lG/IOuc5tutDm8wQIWES8NV0uBM4hmDaY/M=
+	t=1789643667; cv=none; b=lSMMsivScx6joBPQh43dBYt7gkHhZBMIelROx2S+626w8AQkiMv4UXbs+wdHwS2xB6wPuj3MU/jJpK5i2pGbuQB4Cm4Q8BNMZrN3mjCp1CWRmBGUnlN4RGIGOV0aOQ6kXjwfp9/pfxwxzzM9KkYxrZqAZ1oMxQOKdEFHqD3bE6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789643615; c=relaxed/simple;
-	bh=eouKk0qWlc161hhFKqiVOFPV89ASqR7w2m/KKgZrmVc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iPqLsG7jyjIeP+zmBHRNGwbmK+ejxEIQENH/m2pMTWCy2ClZFkQd0freFB/M07W5wCkSMYrLwsruZZWSscSqYN8dw0tqdzFNsMZtsSDwc0XZL1foMnztg/CS5Uft+di/6WrGDtSnt/CNVFx5pMCxmEOU2UnkPkHHudKkWYoBP8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-05 (Coremail) with SMTP id zQCowACnFD9Ny6tqSlF_CA--.1399S2;
-	Thu, 17 Sep 2026 19:13:17 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: andrew+netdev@lunn.ch
-Cc: anthony.l.nguyen@intel.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	intel-wired-lan@lists.osuosl.org,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	przemyslaw.kitszel@intel.com,
-	sln@onemain.com,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] ixgbe: fix xfrm_state reference leak in ixgbe_ipsec_rx()
-Date: Thu, 17 Sep 2026 11:13:17 +0000
-Message-Id: <20260917111317.2148568-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1789643667; c=relaxed/simple;
+	bh=Eh1kp7Vh9u2XwfP67rB8hZGCjl701FbziCDAThPuEg0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jI1ZW7ElEL4RRTq9c0P5x33YDmAsNgkAHUkuSfut4psrsf2/td6UE5kHvf13JnVsAQvnPp1bD0MsD/3OcrRDhNdRgo3qq4ZRYqeyvF6rqoz3KuQqzGlLDPcrkcp8YAphUEBgvZsmlxDzxmq+X3zWgM/oChQJMlWa6deWCpApI0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=KgxfjJ+i; arc=none smtp.client-ip=117.135.210.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="KgxfjJ+i"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=ugkZvHY8M4baNm0OaUOuPZx4bPzR30VWOKhrqoA5hX0=;
+	b=KgxfjJ+iEtCX4qom4lWLCyTIaSTYcPC9+BlixsqhbCdTu/CD6kmAkeXuFiPd7h
+	MT8pi2rch9R1FnlLOrRhroD3sMYjHiaHTNDdam/WauIXrUCzroGVBckyHjp9x5cr
+	NNuDJbrLFwf3/16EuLO3aQSlZ8Fm2Un4aCKUXAyFBBhtA=
+Message-ID: <44959d96-2572-4dd7-a79b-493110cc002e@126.com>
+Date: Thu, 17 Sep 2026 19:13:04 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH net v2 1/2] ixgbe: do not busy wait in
+ ixgbe_devlink_reload_empr_finish()
+To: Paul Menzel <pmenzel@molgen.mpg.de>, Linkui Xiao <xiaolinkui@kylinos.cn>
+Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ jedrzej.jagielski@intel.com, kees@kernel.org, aleksandr.loktionov@intel.com,
+ intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260917065436.1181073-1-xiaolinkui@126.com>
+ <7107796a-a233-4ddf-9106-460de575f29b@molgen.mpg.de>
+Content-Language: en-US
+From: Linkui Xiao <xiaolinkui@126.com>
+In-Reply-To: <7107796a-a233-4ddf-9106-460de575f29b@molgen.mpg.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowACnFD9Ny6tqSlF_CA--.1399S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrKr43XFy8XF43tFW5Jr4fKrg_yoWDtFgEk3
-	48ZF4fJw15KrWFyF4rKrWxua9agFs8XryxX3yIyFy3try7JF1xJ39I9rnxJrsrXrWrWFyU
-	AFy7GryIya4YqjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbgkYjsxI4VWDJwAYFVCjjxCrM7CY07I20VC2zVCF04k26cxKx2IY
-	s7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4
-	kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_
-	Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxV
-	W0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
-	7VC0I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x0Yz7
-	v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0E0s8F02x267IIx4CEVc8vx2IErcIFxwAC
-	I402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrw
-	CF04k20xvE74AGY7Cv6cx26r48ZrWUJr1UMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E
-	5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtV
-	W8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY
-	1x0267AKxVWxJVW8Jr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14
-	v26r4UJVWxJr1lIxAIcVC2z280aVCY1x0267AKxVW0oVCq3bIYCTnIWIevJa73UjIFyTuY
-	vjxU7H7KDUUUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwUNA2qrrRlfVAABsz
+X-CM-TRANSID:PikvCgD3v5xBy6tqbW4wIA--.23370S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXr4UtF43tr1rGw1kAw48Xrb_yoW5Ar4DpF
+	WUWFn8Aws7Xr1Fg34Iva18ZasIva1Ig3yYgFyftrZ8Zas5Arn8tr1Utr4Sg348Zrs8Ww10
+	vF4Y9rs3AF45AFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UZeOXUUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqAKIX2qry0JfIgAA3I
 
-ixgbe_ipsec_find_rx_state() returns the state with an extra reference,
-which is handed over to the secpath on the success path. When
-secpath_set() fails, the state has not been stored anywhere yet and the
-reference is dropped on the floor.
 
-Release it before returning.
 
-Fixes: 92103199f10a3 ("ixgbe: process the Rx ipsec offload")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+On 2026/9/17 15:09, Paul Menzel wrote:
+> Dear Linkui,
+> 
+> 
+> Thank you for your patch.
+> 
+> Am 17.09.26 um 08:54 schrieb Linkui Xiao:
+>> From: Linkui Xiao <xiaolinkui@kylinos.cn>
+>>
+>> ixgbe_devlink_reload_empr_finish() is the .reload_up devlink operation,
+>> so it always runs in process context with the devlink instance lock held.
+>> Its polling loop delays with mdelay(500), i.e. it spins the CPU for half
+>> a second per iteration and, because the loop bound is 20 iterations, for
+>> up to ten seconds. That keeps a CPU fully occupied while the firmware
+>> performs the EMP reset, and on CONFIG_PREEMPT_NONE it also makes the
+>> loop non-preemptible for that whole window. The loop does not need to be
+>> atomic and holds no spinlock.
+>>
+>> Use msleep() instead.
+> 
+> Should you resend, please document the commands how to test this, for 
+> example, how to trigger .reload.
+Hi Paul,
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c
-index bd397b3d7dea..e44d5eed9ab5 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ipsec.c
-@@ -1197,8 +1197,10 @@ void ixgbe_ipsec_rx(struct ixgbe_ring *rx_ring,
- 		return;
- 
- 	sp = secpath_set(skb);
--	if (unlikely(!sp))
-+	if (unlikely(!sp)) {
-+		xfrm_state_put(xs);
- 		return;
-+	}
- 
- 	sp->xvec[sp->len++] = xs;
- 	sp->olen++;
--- 
-2.34.1
+Thanks for the review and the Reviewed-by.
+
+I don't have an E610 adapter available to actually exercise the devlink
+reload path, so I can't provide a tested-by or a verified test log. The
+change is a mechanical mdelay() -> msleep() conversion in a sleepable
+process-context loop; the rationale stands on its own, but I understand
+if you'd prefer to wait for someone with the hardware to run it.
+
+If you'd still like the test commands documented for reference, I can
+add them to the changelog, but I want to be clear that I have not run
+them myself.
+
+Thanks,
+Linkui
+> 
+>> Fixes: c9e563cae19e ("ixgbe: add support for devlink reload")
+>> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+>> Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+>> ---
+>> v1:https://lore.kernel.org/all/20260914092626.263886-1-xiaolinkui@126.com/
+>>
+>> v2:
+>>    - Reworded the commit message: mdelay() does not mask interrupts or
+>>      disable preemption, and the ~10 s window is below the soft lockup /
+>>      RCU stall thresholds.  State the actual rationale instead.
+>>    - Split the macro rename into a separate patch.
+>>    - The mdelay() -> msleep() change itself is unchanged, so the
+>>      Reviewed-by tag is kept.
+>>
+>>   drivers/net/ethernet/intel/ixgbe/devlink/devlink.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c 
+>> b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
+>> index cf8908b82f8a..781f13240a0d 100644
+>> --- a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
+>> +++ b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
+>> @@ -460,7 +460,7 @@ static int ixgbe_devlink_reload_empr_finish(struct 
+>> devlink *devlink,
+>>            * may be not cleared yet, so begin the loop with the delay
+>>            * in order to not check the not updated register.
+>>            */
+>> -        mdelay(500);
+>> +        msleep(500);
+>>           fwsm = IXGBE_READ_REG(hw, IXGBE_FWSM(hw));
+> 
+> 
+> Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+> 
+> 
+> Kind regards,
+> 
+> Paul
 
