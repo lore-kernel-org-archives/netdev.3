@@ -1,104 +1,98 @@
-Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EAC4D4884;
-	Thu, 17 Sep 2026 15:12:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.135.140.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C492DB7BE
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 15:17:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789657971; cv=none; b=ZmYGdrbpxAbx/0bE0us+2Z69dJJ6WvLzzmWXQK05ghuVAo5CV2zuvq2dH9m9f8Vt5aHZacYR6GYN8+X0xTplmDLT6Xw8p7qR7ROj9ZYhv2Hbq+bfo3zJcNmVRA12DJ0vKAdIFisbs3+8WGeA7/zJABcf87M9QjnIWKMep3mUX9Q=
+	t=1789658261; cv=none; b=PL0zsGYfuptVYDW+WpysGtsWd1YDM97WMLNQuGl5S5vWUDZ5WkdMVoXbjAzIvGtWtZ59EDNlFs8fJVNxZOf7qcal13ls2dLIcQ+FANFGu17seTyRKh9QpkX3b7Re9TPgdZGLreWnY30dN8PKU9KRvt60FUTVB885CBjTat4AmqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789657971; c=relaxed/simple;
-	bh=MU1bN7FoveAYVzgvWXqpr3G4LDwEGMOhXhVWYa3VoGw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ERRSNRWovJyyr3jAjevF8HZ60oYwF9cIwsBRehGzOF94Gfmik1HwylfpJQiRU04vKZEnz8CBXOQ6+1oHZ9iLlln0eMkyIWBxc3dsfyLdoha9ZaucRQeU5ViAT0TKh1yKfvA/KX923wnb7VYnv9hLvIOry43ynlhd6q5bbxGn8Hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=none smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=Av195hmA; arc=none smtp.client-ip=5.135.140.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cjdns.fr
+	s=arc-20240116; t=1789658261; c=relaxed/simple;
+	bh=yokcjFoYaQjb2AXJXwiS2CgA9icNw4hd0m3OmDjYLh0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WZDZLP8z5wm+a4iOCcoadRq3rB9RumxYlEo9GRvTeIs+ndUFoGq0PfpyAh4jD9DCed//fzqg5fj1zr72m8ZgUV94RqJ91xLF60DuvH34MBizVArJOz746UsdRNVReULj+0ZVDMzUGZ+f3l1/46P4AxoFkshgjhPD/uUnZsMQzyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=baYHiQhL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="Av195hmA"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 802EF4C301B;
-	Thu, 17 Sep 2026 17:11:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
-	t=1789657928; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=DqWR7hYROWy/62+C7c2MOHPyBP86rK/9sHBnklMxuv4=;
-	b=Av195hmAG2se1bBc2mVvC49xtmKl9Yp5Oas2Ym7ZMeqIeDJJuFVeOSOCrZHVqDsaPpd1Pq
-	NmlAu0x+lthIV2wgWo5QoIh82AnoABImmODhDYqZURjLUaK9+EVnxzZmOIMBCujizfLdIB
-	T9m8U+jHAq7FNAWnwq109d2A2LJw8ix6SLBZ1McjkUbZUurQLlmRVmgaNVPCUDpWVFIUJI
-	Z9D6p6MuuchHb7bYL17q5HzeEIEwaf7y69GXZrnH+336B6l32ERRNoBhSRZ2ki1/Atm84x
-	ub/ATHK8HrNGbtju02el2Y9T0e65+6qBlqv/Dd7QydfFkqlo/k5Jl6n9NDKjIA==
-Message-ID: <95202df5-fdbb-4325-b77b-5f45ac8b1732@cjdns.fr>
-Date: Thu, 17 Sep 2026 17:11:50 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="baYHiQhL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA711F0089A
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 15:17:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789658230;
+	bh=yokcjFoYaQjb2AXJXwiS2CgA9icNw4hd0m3OmDjYLh0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=baYHiQhLKHIXv5JcbsYM8h8jWAIdy60s6NhCh0ZGU54W95BOiAuC94Ol2AcpHo47g
+	 xOJkjhXStRdOshTWhG385se+mN0mwxSalEgzP9JG2PQIOLJ/oHEIVw0zHQeJ6cCyxv
+	 qfvHypAZ4Aa+PBTDs1xGLwk8gxllOPs9TBclUTaLcaptPXVE/nH6o6dNw9fmKr/Ga+
+	 euX0r0XKcn50B8jtWh1/A5rkcHzzpSCbjKD97mWUlLgkoyhoofyCpgqfsFLMmV7xqx
+	 ARc5Jnmu7agtqFNmn3zlh9R+1V4XybdteMzm34GCd9fCbp5oeKdHFvfY4O6Spsy5NH
+	 56pQ+Rtftr60g==
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a996c8adf3so1647094a12.1
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 08:17:10 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBylFUcc9QzvaFgDYkPPjYppjHjwl0R2K2ThaEbLg16mvyUgEHuNORN8T3v+2ydIldpbu4L/l54=@vger.kernel.org
+X-Gm-Message-State: AFuF++kDssQDqXU+bHXYP9xfYoUV5uS0i5pE01pqiQGBON5nNeCcJZ5Z
+	3FwcgmsTit6sRZQf5RcUAo0skdmoKXLNlRG3nRStV8RONB0c003E0xwyRRE35xHdNqjZZc1Uq2j
+	h1+/u7iBeHOYF05UufcqTJpIElumhgg==
+X-Received: by 2002:a05:6402:460c:b0:6a6:8dd:c76b with SMTP id
+ 4fb4d7f45d1cf-6aa22247992mr11552271a12.1.1789658228391; Thu, 17 Sep 2026
+ 08:17:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH v5 net-next] net: phy: mediatek: support MT7530 PHYs on
- EN71221 MCM
-To: Daniel Golle <daniel@makrotopia.org>
-Cc: netdev@vger.kernel.org, dqfext@gmail.com, SkyLake.Huang@mediatek.com,
- andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- Matheus Sampaio Queiroga <srherobrine20@gmail.com>
-References: <20260915113427.113296-1-cjd@cjdns.fr>
- <aqkwYd5dTmHDCIW9@makrotopia.org>
- <2a7edfd0-b784-4b60-b9f9-769fe00286b7@cjdns.fr>
- <aqv92pZsobVEdipZ@makrotopia.org>
-Content-Language: en-US
-From: Caleb James DeLisle <cjd@cjdns.fr>
-In-Reply-To: <aqv92pZsobVEdipZ@makrotopia.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20260917144134.459819-1-matyasdaniel006@gmail.com>
+In-Reply-To: <20260917144134.459819-1-matyasdaniel006@gmail.com>
+From: Rob Herring <robh@kernel.org>
+Date: Thu, 17 Sep 2026 10:16:56 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqLyPK2rJVAyzCtGtrBSTwOKRZ_EAmE1Xd++9DFaxrrmDw@mail.gmail.com>
+X-Gm-Features: AcwNN1WrkKsI-hJClnXnbb72poP7rLqVHTc23ccK3T-HSnvYyjsVzuH4L2tWH2Y
+Message-ID: <CAL_JsqLyPK2rJVAyzCtGtrBSTwOKRZ_EAmE1Xd++9DFaxrrmDw@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: Expand flow lists to block lists
+To: Daniel Matyas <matyasdaniel006@gmail.com>
+Cc: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>, Baojun Xu <baojun.xu@ti.com>, 
+	Sen Wang <sen@ti.com>, Peter Huewe <peterhuewe@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Chunfeng Yun <chunfeng.yun@mediatek.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Wim Van Sebroeck <wim@linux-watchdog.org>, Dharma Balasubiramani <dharma.b@microchip.com>, 
+	Jeff LaBundy <jeff@labundy.com>, Simon Glass <sjg@chromium.org>, Linus Walleij <linusw@kernel.org>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+	Jose Abreu <joabreu@synopsys.com>, Atish Patra <atishp@rivosinc.com>, 
+	Shawn Guo <shawn.guo@linaro.org>, Dmitry Osipenko <digetx@gmail.com>, 
+	Ibrahim Tilki <Ibrahim.Tilki@analog.com>, Okan Sahin <Okan.Sahin@analog.com>, 
+	devicetree@vger.kernel.org, linux-rtc@vger.kernel.org, 
+	Ricard Wanderlof <ricardw@axis.com>, patches@opensource.cirrus.com, 
+	Lukas Wunner <lukas@wunner.de>, Eugen Hristev <ehristev@kernel.org>, mfd@lists.linux.dev, 
+	linux-samsung-soc@vger.kernel.org, linux-mmc@vger.kernel.org, 
+	linux-mtd@lists.infradead.org, linux-amlogic@lists.infradead.org, 
+	netdev@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-phy@lists.infradead.org, 
+	linux-tegra@vger.kernel.org, linux-sound@vger.kernel.org, 
+	linux-integrity@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-watchdog@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Sep 17, 2026 at 9:41=E2=80=AFAM Daniel Matyas <matyasdaniel006@gmai=
+l.com> wrote:
+>
+> Running dt_bindings_check returned:
+> [error] string value is redundantly quoted with any quotes (quoted-string=
+s)
+>
 
-On 17/09/2026 16:48, Daniel Golle wrote:
-> On Tue, Sep 15, 2026 at 02:01:29PM +0200, Caleb James DeLisle wrote:
->> On 15/09/2026 13:47, Daniel Golle wrote:
->>> On Tue, Sep 15, 2026 at 11:34:27AM +0000, Caleb James DeLisle wrote:
->>>> @@ -135,6 +199,23 @@ static struct phy_driver mtk_gephy_driver[] = {
->>>>    		 */
->>>>    		.config_intr	= genphy_no_config_intr,
->>>>    		.handle_interrupt = genphy_handle_interrupt_no_ack,
->>>> +		.match_phy_device = mt7530_phy_match,
->>>> +		.suspend	= genphy_suspend,
->>>> +		.resume		= genphy_resume,
->>>> +		.read_page	= mtk_phy_read_page,
->>>> +		.write_page	= mtk_phy_write_page,
->>>> +	},
->>>> +	{
->>>> +		PHY_ID_MATCH_EXACT(MTK_GPHY_ID_MT7530),
->>> I'd suggest to actually use phy_id and phy_id_mask assigned by the
->>> PHY_ID_MATCH_EXACT macro by calling genphy_match_phy_device() in your
->>> match functions above instead of open-coding the ID match.
->>> Or drop PHY_ID_MATCH_EXACT from *both* drivers.
->> I suppose the latter is easier because then I don't have to re-think
->> mt7530_is_gphy() which would be lying if it wasn't actually checking ID is
->> MTK_GPHY_ID_MT7530.
->>
-> I would have preferred to call genphy_match_phy_device() in your match
-> functions instead of open-coding phy_id_compare() which is best
-> reached via genphy_match_phy_device() in this situation -- that would
-> express the code intent in the most obvious way imho.
+That false positive is fixed in newer versions of yamllint since at
+least a year and a half ago. There's also some other quoting checks
+I'd like to turn on, but that bumps the minimum version since unknown
+checks are an error in yamllint.
 
+> The files used quotation marks in flow lists because the strings had
+> commas and these commas were interpreted as separators. Convert flow
+> style lists to block style lists, so that there is no problems with the
+> commas.
 
-I did it this way because the name mt7530_is_gphy() implies "Is this an 
-MT7530 gigabit PHY?" which if it doesn't match on MTK_GPHY_ID_MT7530 
-then that's not what it does so there's a little bit more thought involved.
+If we wanted to fix like this, we should probably just require block
+style everywhere, but I don't think we should do that.
 
-
-If I'd have known this was really your preference I'd have done that, 
-but I already just sent v6 so I guess I can send v7 tomorrow.
-
-
-Thanks,
-
-Caleb
-
-
+Rob
