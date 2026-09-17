@@ -1,165 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C881A1A6836;
-	Thu, 17 Sep 2026 18:24:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789669499; cv=none; b=BQziwqBM/w79T4CmNoTsXUlPGZdIu5fx7JxFYaQ3MKvJrk2v8/hA1xAde8XjL2hSF8SLGfEsvJ09n+2OLucAglE2pfANzYC2XRE4NAdp4a8SvG3zfULAJUnJfZGa1h1ew1nDkbRv67KRylmxFNN5XwXaroYenyZOWqcq3YrAWUk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789669499; c=relaxed/simple;
-	bh=8e1dPrUTnLBwBwEMbNEttt1Sx4JtLkqfdrr17FZAlwI=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fZQDTMJKhmzDLTZIIxcZB1QSyM8J46JnvRMk4E5iGiktIZfOZMxv0jELD8sjfwjAY1ZLyjreDr7S8MrC8lTwvK7sfyMTjjOUmBYIvqnrsGUHa26fsrP6rkYi7MOobgme7UY29MQ2s4sG8w6ELGX8tIc5FajXuq/7OkZ0wVdMxF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vtm1mn3R; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6952D3D7A18
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 18:31:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.140
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789669870; cv=pass; b=PbqacP2J/6ESK55FP8UCBCncPClAi7AcZLgE5TxEORHUd0T78Xn42DRFhiRKcVdrecEcK2xTTywZP2odZ1cohu4TgFE44Lh2waYZeJn69mwDBDY2ta5pSp/McTx1hZYbYE4S7F8XqDtvbW4C3w/vmdlF0NkqBA+XdLhE+Klcpko=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789669870; c=relaxed/simple;
+	bh=138OEEzPVhW7R6poFclN2lrh07EbWFqx3lenQ5fTUck=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jYaGkLrR272uVqR1A0dIDIIm1hKNuJYHv36w1M1G0rimV93gTpJI3BGGNfahiNk3yFZLI/OLR4hIMTDrqbeFQv3hAq+IoeQN4B8zcRRX7bb3kUsoiPP1JH8r6pKt3ZLYqCMdfOnlId06ZaMMCr6xeiCxQyZ/Mq/QBaEv6Bdt2EQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pP1HzVky; arc=pass smtp.client-ip=74.125.228.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vtm1mn3R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0F81F000FF;
-	Thu, 17 Sep 2026 18:24:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789669497;
-	bh=/nY8RO6WqJu16RviD7GM6BbJ+XOyelc15xIa8cC6knU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Vtm1mn3RUlAp2U07ZczmrXLCSDXQMZtSQ3K4WAObvkQ0baY8AkT4RAcgcmANVCPrT
-	 2JTyUlvmgZPJPZC2tOkulAFfYX/KP+hJiY7uEM8YIQBWtyMJyNY17v7RBSiMckWCVA
-	 qPBKisLLo1tAcC0dTHMEYziUf8jdXwXBushLbOEpKesD3ZNnZk4IpjmXmt99aqHIZZ
-	 i9UbiyTZIMgUZjM3JtaIUwNJV7Md1q71K+5eB0YkRyZhvG7hwfAImgtcEXFIpTuxlT
-	 lVcuAW7VnyKXqU8Tf7O0OWUOm05q2G8uFO/slhFWLlxHDjbyVGd6doXUQbEANZwVAe
-	 yKo5cNzAV8RDg==
-Subject: Re: [PATCH] net: hinic3: unregister event callback on remove
-From: netdev-bot+sashiko@kernel.org
-To: lgs201920130244@gmail.com
-Cc: gongfan1@huawei.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, gur.stavi@huawei.com,
- guoxin09@huawei.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Date: Thu, 17 Sep 2026 18:24:56 +0000
-Message-ID: <178966949630.22033.16226469760988787498@kernel.org>
-In-Reply-To: <20260916032427.2899987-1-lgs201920130244@gmail.com>
-References: <20260916032427.2899987-1-lgs201920130244@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pP1HzVky"
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f9f0b1fso199051266b.2
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 11:31:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789669866; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mZbTde/Kg/+GWq+ZQTCu0niVL6r8HQjqDLOXjFDoafai9/9JANyyxa0Q7dYV/xcGZB
+         hHo4fZFtLFMFfifqsno+nQtWk52DrDZiTFckoba6tOR06le30ff8gZx9dVKwAoELDxmS
+         7rYlqsIfs8UhYw2aKgsJBB2GFn9SpcmZ4Gr5trNaAhMP1WVx70+U5+ST153+nkOL5yqS
+         yJhRVV/vOsD4pCqdLKBSgxODBkh7Gey/J3NwRxOvJUo6g1fyzjV/C+NyJFry8+H+BRWB
+         7R84pMSxaOpdmj4YOYufFQ5xTqueV1VdOz4Z/dKrXowtsTZ4peT/Ysx9sPHB9PBi4SGN
+         LIRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8RPolM8OKTa75H3M3WcXwbohWQYOO0ChjLhp3KZb1ss=;
+        fh=9qs7J2ij9l1jwcrECCkxzrXUjTRTgACkgSN7OSp4xq4=;
+        b=IFwj+0h6FFBNHyfrzZg59ZPX5pwsAOLXDEg9qMTvyOCcCa6B/p1Oh+OfTB8pyNCP/c
+         og4R8xK3X9CEZMNzm8x2vMTC9GC6Ny2dRsMub7KVPWoA/ojBSO0PiPjkpgM5586tE61b
+         GX6bgF1BvUggXFL2n7AXbi+JQ1wMCoucL6J94f8iCg0pHJdvL8yKmfuRoE8/QoDUZdtX
+         s4wpAvXUNiDCs2VtJmQp+eFBXWiC0xZVSXHWQaV3ajjYFmH4EgCWl6N6FgezFsNbvgsG
+         5Ctjh082qfLo5KjfzIoGbUiNcjPhvbz8FaJuZRi56tgEVFlqv8GSAWxF3w8uWW9+zcYL
+         HsFQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789669866; x=1790274666; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8RPolM8OKTa75H3M3WcXwbohWQYOO0ChjLhp3KZb1ss=;
+        b=pP1HzVkyRxlQOnPuchG3cd3D/zWIrCa844olT4ZWSYL1w4NVL/oh0GOpPIXTn2NByF
+         7zwj7chJyK99OJsWmaA/M3M7bKXlDrE99budWY9RwxI/F11chrS0RKGweouHIT4SFb1J
+         H0PxOLsNfkUfIrPXJB/pqfP4hEbAHdB/5lr+Qaef3ICed96RW0xj0FZn8oEhCTPvWZ6v
+         o7LOQtiHuaI9cuy6VkeTyLm+glzmyI9Y7xZ80QxlzpGsyvXhrd2ZjyxEWTq72Tdr8i0i
+         sGabUHu/2vZbuAhUspflSjAlQYhrmeLnXawQmO1OGNKiT84KFEm/lSwIYZOYUiLHVvoR
+         P4Ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789669866; x=1790274666;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8RPolM8OKTa75H3M3WcXwbohWQYOO0ChjLhp3KZb1ss=;
+        b=rj6KaJJKns2FZ2MnJ7Ewj4goAwVcVJgPVhdqq7NNHodo5SV+9olVoc37yWmO4Kt5se
+         FZ3RO7cuG21NF52pYym8a4/eX0pieZh+ds3O0GLolnM2CqCvLmi0ZXPG9T1JNrg8vdgt
+         2wwvze7mbuNvulQ6BNuHCJlPTeHGxT6v5gnAvkwZjeTbcqkFg0Ozfbho3V8maAkIZdtc
+         v5f7bYZ0atpfA9GStIz5LNmEekOLGCAJ2VfjyKw2ZzjQb0arKccJqBV39SJ8wmJTRr/k
+         2OW01NBo2jyEIYp0e7xn+C5V/mZkMiNTGxQpw1MJwzx1IT7dLpgwweYgJyTwkH9CMOPh
+         6XnA==
+X-Gm-Message-State: AFuF++n5DO/AvNllnGlryZVdlbUECoyEBiD20eDEA8su4RE0PiPjm3p3
+	pgR88ESOvRDD/jgXC9yjSKPlTlDN90gY55l2ENtN2Pd+pXSiBgYceuvwDPpCCAXImB/30T7eW/r
+	fpgvaUUVLjbV/lPGfsvbVDMeBolkpIjk=
+X-Gm-Gg: AYBFou0GjMkrQVyYU7NSmzbFHYS1jHLSFf6klmnwuHWFaJz7r174HAk5vncSdzC3qbV
+	JGdYUpvjMBa1PpSLUOhuSj4T9WRs/aFAV36m0gKT0rpn5g742tYK2rYRhA/XmwVyjb0NdnHcgoR
+	gPUvRctWoMbJacSQEVDSBXBW+2k0n4/wM27PDs0ykmNozaHDeUzvGvI9Tict/VnAiiifJ/thnks
+	OZp53GLDKA3tqRHCCJU4w9t5HBWa4fxc2MqSyg+lNvFytE8hKJavaqLS32lHV+q27AZ2kYmvmQC
+	8icWeCW4Srd4HF5Mqa8mo1AjYVLHL3SULwl6Lrph1Wzktmme28bKON1SrElMKZTCc7ze7lzUGtQ
+	sw2TEkC7Hdl2NSc8msW2yhAZhS2sjBiKYEvf0GZJrsRvih0YxhNgQVFJuYsWtHMheA9HFK3b8PT
+	OV950wdMgh05dudkKl00yyMjCuonAYVAyY/Oy7dyizTKPu04/9SY13S8rWknX2HVVbTA==
+X-Received: by 2002:a17:907:970d:b0:c29:f0ec:1c15 with SMTP id
+ a640c23a62f3a-c2a156a3620mr7949566b.6.1789669866497; Thu, 17 Sep 2026
+ 11:31:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260916223228.271815-1-rosenp@gmail.com> <1ce3192c-d052-4936-9567-8a1d9b13f54a@lunn.ch>
+In-Reply-To: <1ce3192c-d052-4936-9567-8a1d9b13f54a@lunn.ch>
+From: Rosen Penev <rosenp@gmail.com>
+Date: Thu, 17 Sep 2026 11:30:55 -0700
+X-Gm-Features: AcwNN1XeGBT2LML3tEiiSJsMDp-S3xnIEwQ82RWKi_fw7MBqF0hA3sGeCNcQuM4
+Message-ID: <CAKxU2N-=0UiY6COZ7pAa-q-iBLT5nq-AosedqaUYC79jvtdA-g@mail.gmail.com>
+Subject: Re: [PATCHv2 net-next] net: fec_mpc52xx: remove dead resource size check
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
-
-Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
-
-- [Medium] The commit message asserts a live use-after-free ("If an event
-  is delivered after the NIC private data has been released, the…
-
-Pre-existing issues:
-- [Medium] hinic3_del_one_adev()
-  (drivers/net/ethernet/huawei/hinic3/hinic3_lld.c:94-113) implements…
-
---
-
-net: hinic3: unregister event callback on remove
-
-This adds a hinic3_adev_event_unregister() call at the start of
-hinic3_nic_remove() so the auxiliary device event callback is cleared before
-the NIC device is torn down, matching what the probe failure paths already
-do.
-
-> diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_main.c b/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
-> index 0a888fe4c975b..42e2ad179a9f5 100644
-> --- a/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
-> +++ b/drivers/net/ethernet/huawei/hinic3/hinic3_main.c
-> @@ -499,6 +499,8 @@ static void hinic3_nic_remove(struct auxiliary_device *adev)
->  	if (!hinic3_support_nic(nic_dev->hwdev))
->  		return;
->  
-> +	hinic3_adev_event_unregister(adev);
-> +
-
-[Severity: Medium]
-Is there an event delivery path in this tree that can actually reach
-hinic3_nic_event()?
-
-The commit message says:
-
-    If an event is delivered after the NIC private data has been released,
-    the callback may dereference the freed nic_dev and netdev objects.
-
-Grepping drivers/net/ethernet/huawei/hinic3/ shows the only accesses to
-struct hinic3_adev::event are the two assignments:
-
-  hinic3_lld.c:hinic3_adev_event_register() {
-	hadev = container_of(adev, struct hinic3_adev, adev);
-	hadev->event = event_handler;
-  }
-
-  hinic3_lld.c:hinic3_adev_event_unregister() {
-	hadev = container_of(adev, struct hinic3_adev, adev);
-	hadev->event = NULL;
-  }
-
-Nothing loads and calls hadev->event.  The hardware event paths that do
-exist dispatch through aeqs->aeq_cb[] / ceqs->ceq_cb[] in hinic3_eqs.c, and
-hinic3_nic_event() is referenced only as the argument to the
-hinic3_adev_event_register() call in hinic3_nic_probe().
-
-If that is correct, then this change restores register/unregister symmetry
-but does not close a reachable failure.  Should the Fixes: tag for
-17fcb3dc12bb and the Cc: stable@vger.kernel.org be dropped, and the message
-reworded as a symmetry or cleanup change?  Alternatively, could the concrete
-dispatch path that makes the dereference reachable be named in the message?
-
-One further note for whenever a dispatcher is added: clearing a plain
-function pointer gives no barrier against a call that is already in flight,
-so the symmetry alone would not be sufficient there either.
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the event-versus-teardown
-exclusion that this ordering change leans on is a hand-rolled bit lock in
-hinic3_del_one_adev():
-
-  hinic3_lld.c:hinic3_del_one_adev() {
-	timeout = read_poll_timeout(test_and_set_bit, state, !state,
-				    HINIC3_EVENT_POLL_SLEEP_US,
-				    HINIC3_EVENT_POLL_TIMEOUT_US,
-				    false, svc_type, &pci_adapter->state);
-
-	hadev = pci_adapter->hadev[svc_type];
-	auxiliary_device_delete(&hadev->adev);
-	auxiliary_device_uninit(&hadev->adev);
-	pci_adapter->hadev[svc_type] = NULL;
-	if (!timeout)
-		clear_bit(svc_type, &pci_adapter->state);
-  }
-
-The bit svc_type of pci_adapter->state is set on entry and cleared on exit
-to guard a code region, which is invisible to lockdep and provides no
-ordering or fairness guarantees.
-
-Does this loop also fail open?  On -ETIMEDOUT the bit was never acquired,
-yet auxiliary_device_delete() / auxiliary_device_uninit() run anyway, which
-drives hinic3_nic_remove() and free_netdev() while, by the code's own
-assumption, another context still owns the bit.
-
-On that same timeout path clear_bit() is skipped, so the bit stays set for
-that service type.  Would every later add or delete of that service then
-burn the full HINIC3_EVENT_POLL_TIMEOUT_US poll and fail open again?
-
-Since the callers already hold pci_adapter->pdev_mutex, could that mutex
-plus a synchronous flush or cancel of the event source replace the bit
-entirely?
-
-Today the only accesses to pci_adapter->state are the test_and_set_bit and
-clear_bit above, so the first test_and_set_bit always observes the bit clear
-and the timeout branch is not reachable, but that changes as soon as event
-dispatch is added.
-
->  	netdev = nic_dev->netdev;
->  	unregister_netdev(netdev);
+On Thu, Sep 17, 2026 at 7:56=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
 >
+> On Wed, Sep 16, 2026 at 03:32:28PM -0700, Rosen Penev wrote:
+> > The check bails out if the FEC register resource is smaller than
+> > sizeof(struct mpc52xx_fec), but every in-tree device tree describes
+> > the FEC node as a 0x400 byte region, which is exactly the size of the
+> > struct, so the condition can never be true.
+>
+> We generally don't fully trust DT blobs.
+>
+> Does this test do any actual harm in its current state?
+> Why remove it?
+Previous discussion:
 
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260916032427.2899987-1-lgs201920130244%40gmail.com
+https://lore.kernel.org/netdev/20260518044047.1002235-1-rosenp@gmail.com/
+>
+>         Andrew
