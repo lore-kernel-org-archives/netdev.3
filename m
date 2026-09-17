@@ -1,67 +1,67 @@
-Received: from mail-oa2-f12.google.com (mail-oa2-f12.google.com [74.125.231.76])
+Received: from mail-oo2-f40.google.com (mail-oo2-f40.google.com [74.125.231.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331E6361940
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 22:45:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723A33921C1
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 22:45:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789685120; cv=none; b=qLYuwl3s6c0IzRYMEORdl+LqZyY1iO3/BrzNYyanNL7Efq2EtfzEFQFGKh3C8Y/epDaHwvhfteJf53I0uGFRrFuqX6pKkR1jhdlRZJgQFvAbfM+x9fDOLnMahSM5EUi19NfKD9DU5Qqx+9INCkIWS8k4MLcPwoeEeJYx8peOVG0=
+	t=1789685122; cv=none; b=RqNMB4iyow7g/dBWd0Za5EU/gE+giiSybxYm8ouSggpVWCSIg0O+andBnGqUHmp7u2x7BEBM4hKk4p1fcQxL2r3h9qFjjfIV710g8sQjkd+sZ9GeL3hgh5CG0vPxsqtKiqVZ65vKRrjuVgO1/Uz2VFhjUhtRfGF1pIqqVD5ir40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789685120; c=relaxed/simple;
-	bh=I8RWe4q5MO9zPETh9+2kBCF6oXc9g9yJMLj7u3wvRVg=;
+	s=arc-20240116; t=1789685122; c=relaxed/simple;
+	bh=ByNVme2n1YIrWNZOiFK9pNsKeYC3XAo0/8a2iUQH42g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=InLAK/mBCAthqL5nXLuu9alaBqqGEwUQ99H9kiAjdPq3qLdrtKwOmkHjJqlfT+cjw0Rp/UxROjgfz6MobsdVzzRjSihjnFHuRZ8SGYONS9eYV4Kj6aArtswaTQHjRhW0Z5fY/DygdnZEB+Pim3PISWL9goX2FhFQazaCwyByQ2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=pass smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=bnUL9Kes; arc=none smtp.client-ip=74.125.231.76
+	 MIME-Version; b=ScAsZcU7tMARHWiVmvXeMHrwg7m7eU4R7JUYR1YRAEknw8qgNcy3+Dc+uI+Jbtt3TqF7pSecXf7S+USzVxgIozwWzVg/RRXOQx9ImBZnLxbijhkRJXmjOCjVWxkfG6AHdyFHXHD+myZ1yB/xVyA9auLhel1uGbRPGro5tyyGb74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com; spf=pass smtp.mailfrom=purestorage.com; dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b=Ts3xFlDA; arc=none smtp.client-ip=74.125.231.168
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=purestorage.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="bnUL9Kes"
-Received: by mail-oa2-f12.google.com with SMTP id 586e51a60fabf-466cc88a9baso157204fac.1
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 15:45:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=purestorage.com header.i=@purestorage.com header.b="Ts3xFlDA"
+Received: by mail-oo2-f40.google.com with SMTP id 006d021491bc7-6b1ae6b2010so80707eaf.0
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 15:45:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1789685117; x=1790289917; darn=vger.kernel.org;
+        d=purestorage.com; s=google2022; t=1789685119; x=1790289919; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=LqxfWzZFAI1DRpQFPS4qFP89LRNCmhZAUy7Ea6RPwb8=;
-        b=bnUL9KesMMTuzkEBDvIzlpw56y6HX8RNYdAuNXzp+uo3ph1rLn5HBSXuC6ZAotIDmz
-         gYmRSjzOrX/WJ0EA9ioOL3nQURX0/6uH0xsXT6nVhwOTD3Qj1vuK+vkIcrVjUIeCB9sC
-         QT81T9Pfrqh8AsYpunNyR/qg+1hbtireDJUji6eluRhZNBlwxua7vXY1fGn/bmFRrAre
-         gb5gqwK5oyhLCxVy0FbyGhqBANunDNpwNQLqNVkNqSK/PztUDgrGWmUKn0RDLtwF/e69
-         dBePtbBqEi8PQqV5NVobsGoTk8TM8PcOVTukzW1Vfi/n1W9oA9Glmt2XrrzXj7QlUbOp
-         rmQQ==
+        bh=OR6BZf25moQTcEwWthRT++90nK2WUH6jPtrZrKwJB6Q=;
+        b=Ts3xFlDAW90foZVXeSmhNLXT5Yz5pMLP9JETzLiHrz8Frn6DpTvYktChbBEv8IGXy/
+         pBVWt8BvUQRF1M4UJhz/D4wndSpthLteDK75fL+3gbzS3qo5SzMtMyDse2+AgZYtoko+
+         yFPN7K6SfQM32Sb3Ys7z2UQLQO8s2/0bcWTTdbv37BHYdCCCHyhwMP1+483WoPRfHM9q
+         gCVfRIsUZYXDTFsWjh3NOLeQif+LIsX/Ochs3Mlt1wt9XmwS9qCQ/Q9bd7x6S5C4uhVv
+         9wQt6DInKw3KRHOf0vTR7T9lwW2cVTZD9fau+JPcyO5SzfKnwcumaJdJ3I3pQ47+BHOB
+         /+GQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789685117; x=1790289917;
+        d=1e100.net; s=20260707; t=1789685119; x=1790289919;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LqxfWzZFAI1DRpQFPS4qFP89LRNCmhZAUy7Ea6RPwb8=;
-        b=1ixL+C6sf6FMTejI+PZccpdLvV3h/oQ0Z5ZQQJID50xm/v2UDoXQJNiSF2NQF4HCfJ
-         QyToF7HHxCioZfHt/uCAtTKXbYVRns8tvHXOeZIOixFHpeTmqizfGZh7Kh4b5/NKFr/8
-         QpCzSwSPaXRS2kTP0RMt7Mgb2gZKEh+Beqdw68vyBpe7idtW1LoV7kpZWOETBtI+FRQC
-         DKya7QDfO3YFEPDazV1FnTxq22D0tK1+v7t5d11+L9amedrs4DFKLXjHS3SIevyOY2fX
-         uBkOP/OBqPbUA+dlljxg5flKn/CuW4cj8DSC7Hi8GUsu3QuUJZn/hjD0C+1djdrS+Y4k
-         KIUA==
-X-Gm-Message-State: AFuF++lOfR42JgP4bhtq+WahhAew4tN3A2p9ITIlNn/MXCsVB0nB6CbG
-	pgDcVLQeTDjeeYOwKprVaUbT4by1yiWxPYjgvls8l5w74PXuo/Nkff+HUri+2APm0f/Yv2cP2ez
-	3g7Vm8HZxBG5j0WN0ikMcvzlC3Yr0Hu0haLBhpEUNLJKhBRnd+DCilmI1n55Cu7Ydy63QVu7CD/
-	t5hlwkits1EoigMjwFTNi6RShU+EE3/Hwii4FjVJmMT5PJgME=
-X-Gm-Gg: AYBFou37hGiBeuS3YVoRXH3kknblma+HZEhx1ikg1n/JPABd5QBz77fcCiIT5PuZS7f
-	uD9HJ63kYEf2sUp6VUpirXutT84nXKs5nYa/UPuW14Mopz/z26B0j7sXf7RehhBhudIq/xhKgt6
-	fMyOfYOTPqayrmY00DQ56s5H3ho2OduX9Qlvz78Sb+GP3LKm5Sghd0qIDADaSWCFSuZOg5bK4Vs
-	e/T02yh9IFEt4OxMoEGDoEwsG4cyR64FPqgxPgrBFoVBsir8ucJIiI1Uk4+vL/RAmcwzinmQ+su
-	DpewZ2m8pwBh889yQ9L98LQ4jXf1yQTageqBO1qcnGlFN4y+vdo20z5gDGtLwKSPvqgBwUDddZK
-	OZaLxES5m7r8iOla77OUANghjzR3srPTxetBebHrtAemZMTv+wN1HqkCyRuRlgmmzcRMrTKnyX/
-	RVF+PTXE6z8Zd9/hXFAKV1W+Vkzu5q665zpXv3dlRRKMSPN3R9NrGps1UKJvPHnLfFI3Zbhzo22
-	+Vi8UZvKeMDfIYPBeDA80js+lRkjhXf0LOC0XHiOBj/sw9ce9bOnYEouzaZLq4wpzCfs8cD+wla
-	/SglprnzsUZrnT6HR32PoZCu0x+zRjbJZW70bG8awFRmAU62270BlbHN0HIxiHi8tV4l5ipAWeG
-	fyQxUGUNoeMXmha4F8Q==
-X-Received: by 2002:a05:6870:207:b0:475:e235:8f9 with SMTP id 586e51a60fabf-486e7208581mr576573fac.23.1789685116488;
-        Thu, 17 Sep 2026 15:45:16 -0700 (PDT)
+        bh=OR6BZf25moQTcEwWthRT++90nK2WUH6jPtrZrKwJB6Q=;
+        b=o41U/hQVhbO2auyZPe+1Kl7X7K4p4SR5ojo0O+h/tRukB4V+Pbz0C0x6B309amGGNs
+         Ufwii4MyoatxgqgC45wLJpMz4zc410Z/vky+1iWDfKleIgQIQlvfSnyrhtHV7qw2C5ti
+         eDoHGYZHJlgacwXTZHFdh/JGuWxALmdSfIoCcuFIUf21MiDxFRMNOD4X5VbLBvd8V2+r
+         YkTHZttMsK/XblgVaBNTlNtyqZzpqoTYmAA99MrxKnL54p90TKEqDPFguKEhSKPX0P/t
+         PADa4Ty3E4IWUNelGDeoArI5zeR/f/q/kmu3rEdwjhnbZqzmXTNXIp+wjknWqHZO5VUY
+         bAwQ==
+X-Gm-Message-State: AFuF++lUUZoOAQZFypveOD1H9AqRDeJre494LXbs9Xn9oeZk3gnMLf70
+	ztTvRdRgdbe8AaO418KTLvAJJQqgdT5TcPOmM2byEO05ptutdvEBn7wq8qo/1zdjh1z5m4fgH6C
+	45JUIqTtRUr8+wA6HO6EL6oyklcXnz66o1aI3VObCHY5Nax7M/Oap6lJLXpI0QEVFpQeiNQQCwc
+	CpHh5GZDbW74XgLDqMCP/1PHhGiCSlqwQy+LmxfwpHEskkd3c=
+X-Gm-Gg: AYBFou0O543cIke9eg9BOOhAII4UJd9arGD9uVHWZOCDO9yTgfA9WvahfLbpm6PoNOg
+	Nr/peAmcdsnavWRcGWh0S4mikMB/JG6tus7WVigxUM+8rqgDofc7HmpRVZWKrHB2BVu5c6aoFI8
+	Bw5slh2hDw7PRMV9luUVnkfceUw+u8LQHAjRB5N3dCnpvu6vZnggkhWTe+ajpGqTc670CK7XOrT
+	i3b62klOuvBLdqfw3bSEfd+rsr15QwG4cxMvEJnca+Xu0436urbLBWUO4mV49F+ifm+3dyneNsp
+	uKYYW7il1EOYlHjSZ8d+4zEcR1JC7xI0nO8zttwYvvnEH3FijZhITMS9EVrmmOcNty6v5XQmqc6
+	9hwYGI+E9MjU9KeGr5nkmDSyTOq0WYcK3CTENGY8jTAGxFEMvno95jHvsylW742AttzqlTeaWcX
+	kKe8JFV4cycH88EuqardXmuX77g033+hq7GrTe65VB3U1U6yXO+3X6QHqufY35ddz7lEoUsTy5q
+	SXf3aHHg2Kk4FbEt0QkRN+Vnde5s1qEmKhpl8m/zdyB0YpOz7jSMl6mChijZBx5eu85+cNYeKf3
+	j+Nv+bH/D92PNjYDHrnE+KTSNvKQsDBevy+lzKQqnFJw2fHoxOTWqOYy4BCNxxIihLYBBe4zBlL
+	GvgYwFoHfwhwzKwvoUQ==
+X-Received: by 2002:a05:6820:f029:b0:6b7:46fa:169d with SMTP id 006d021491bc7-6ca9c84e6admr588976eaf.50.1789685119118;
+        Thu, 17 Sep 2026 15:45:19 -0700 (PDT)
 Received: from dev-rjethwani.dev.purestorage.com ([208.88.159.129])
-        by smtp.googlemail.com with ESMTPSA id 586e51a60fabf-4870ac16ec0sm88605fac.5.2026.09.17.15.45.14
+        by smtp.googlemail.com with ESMTPSA id 586e51a60fabf-4870ac16ec0sm88605fac.5.2026.09.17.15.45.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 15:45:15 -0700 (PDT)
+        Thu, 17 Sep 2026 15:45:18 -0700 (PDT)
 From: Rishikesh Jethwani <rjethwani@purestorage.com>
 To: netdev@vger.kernel.org
 Cc: saeedm@nvidia.com,
@@ -77,9 +77,9 @@ Cc: saeedm@nvidia.com,
 	leon@kernel.org,
 	andrew.gospodarek@broadcom.com,
 	Rishikesh Jethwani <rjethwani@purestorage.com>
-Subject: [PATCH net-next v17 07/15] net: sched: re-validate parked decrypted skbs on requeue
-Date: Thu, 17 Sep 2026 16:35:18 -0600
-Message-ID: <20260917224355.2288021-8-rjethwani@purestorage.com>
+Subject: [PATCH net-next v17 08/15] tcp: fence collapse against rtx-queue tail when write queue is empty
+Date: Thu, 17 Sep 2026 16:35:19 -0600
+Message-ID: <20260917224355.2288021-9-rjethwani@purestorage.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260917224355.2288021-1-rjethwani@purestorage.com>
 References: <20260917224355.2288021-1-rjethwani@purestorage.com>
@@ -91,41 +91,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A still-cleartext skb of a crypto-offloaded socket was validated against
-that socket's offload state (sk->sk_validate_xmit_skb) at the time it was
-enqueued. That state can change while the skb is parked on the qdisc,
-e.g. a TLS key update or offload teardown, so re-validate it on
-requeue, letting the current callback decide how it reaches the wire
-instead of emitting now-unencrypted plaintext.
+tcp_write_collapse_fence() marks the current write-queue tail as
+end-of-record so a later tcp_retrans_try_collapse() / tcp_shift_skb_data()
+does not merge across the fence. When nothing is queued for transmit the
+write queue is empty, and the last skb of the current state is the
+retransmit-queue tail (its end_seq == snd_nxt == write_seq); fence that
+instead. Otherwise the boundary is left unmarked and a later collapse can
+merge it with the first skb of the next state across the fence, since
+those paths test only the tail's EOR, not skb->decrypted.
 
-This is a prerequisite for TLS 1.3 device-offload KeyUpdate support,
-which swaps the offload state of a live connection.
+This is a critical fix for both TLS device offload and PSP (PSP Security
+Protocol). Both use skb->decrypted to mark encrypted/transformed packets:
+pre-key skbs stay decrypted=0, post-key skbs are decrypted=1. A collapse
+can merge a post-key skb into a pre-key skb, whose decrypted=0 causes the
+driver to send the post-key payload in cleartext.
 
+The write-queue-empty case is the common state at the time encryption
+keys are installed (tls_set_device_offload() setsockopt and
+psp_sock_set_tx_key() in PSP), when the previous handshake or request
+has just finished and nothing is being sent. The existing fence is a
+no-op there (write_queue_tail is NULL), leaving the boundary unmarked.
+A later retransmit of the final pre-key handshake record can then
+collapse against new post-key data via tcp_retrans_try_collapse() or
+SACK-driven tcp_shift_skb_data(), leaking the post-key payload in
+cleartext.
+
+This fix makes tcp_write_collapse_fence() fence the rtx-queue tail when
+the write queue is empty, blocking the merge. TLS 1.3 device-offload
+KeyUpdate additionally relies on this behavior to keep old-key and
+new-key records in distinct skbs for re-encryption on RX.
+
+Fixes: 1be68a87ab33 ("tcp: add a helper for setting EOR on tail skb")
 Signed-off-by: Rishikesh Jethwani <rjethwani@purestorage.com>
 ---
- net/sched/sch_generic.c | 9 +++++++++
+ include/net/tcp.h | 9 +++++++++
  1 file changed, 9 insertions(+)
 
-diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-index 6f6a6f0d5eb0..fc8ef0d13f5e 100644
---- a/net/sched/sch_generic.c
-+++ b/net/sched/sch_generic.c
-@@ -285,6 +285,15 @@ static struct sk_buff *dequeue_skb(struct Qdisc *q, bool *validate,
- 		*validate = false;
- 		if (xfrm_offload(skb))
- 			*validate = true;
-+		/* A still-cleartext skb of a crypto-offloaded socket was validated
-+		 * against that socket's offload state at the time. That state
-+		 * (sk->sk_validate_xmit_skb) can change while the skb is parked here
-+		 * e.g. a TLS key update or offload teardown, so re-validate it,
-+		 * letting the current callback decide how it reaches the wire instead
-+		 * of emitting now-unencrypted plaintext.
-+		 */
-+		if (skb_is_decrypted(skb))
-+			*validate = true;
- 		/* check the reason of requeuing without tx lock first */
- 		txq = skb_get_tx_queue(txq->dev, skb);
- 		if (!netif_xmit_frozen_or_stopped(txq)) {
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 5e5f5f9b89a3..8c6d90e962c4 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -2340,6 +2340,15 @@ static inline void tcp_write_collapse_fence(struct sock *sk)
+ {
+ 	struct sk_buff *skb = tcp_write_queue_tail(sk);
+ 
++	/* When nothing is queued for transmit, the last skb of the current
++	 * state is the rtx queue tail (its end_seq == snd_nxt == write_seq).
++	 * Fence that instead, otherwise the boundary is left unmarked and a
++	 * later tcp_retrans_try_collapse()/tcp_shift_skb_data() can merge it
++	 * with the first skb of the next state across the fence (they only test
++	 * the tail's EOR, not skb->decrypted).
++	 */
++	if (!skb)
++		skb = tcp_rtx_queue_tail(sk);
+ 	if (skb)
+ 		TCP_SKB_CB(skb)->eor = 1;
+ }
 -- 
 2.50.1
 
