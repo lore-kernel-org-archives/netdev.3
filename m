@@ -1,74 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C415037C934;
-	Thu, 17 Sep 2026 01:55:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC33937F00D;
+	Thu, 17 Sep 2026 01:56:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.117.225.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789610102; cv=none; b=QzJUEBnGR4JwPjEUdgmQUeWLBZykyATBc0BFcKtfdiDGZUpCvIRt2w9dkbMzTmZ1nLON7PVHVwGpZUrN+8cFvr2qDQUvtu+5/6IHt4wSVR6gk93XpfDloRCLgtTNNa+zZ4BJdYUxD7FJVjlLioEBEua9GcWIzln8wEoHv6Jn+qM=
+	t=1789610182; cv=none; b=ERMfYSIVP5AJVNsQTMe2FOUfMz9wQ8lmYdzyRyeMZugiPKSJfEg0ErKctM644qtW8YIMshy2HABR3THbmcVf2dJUBKdqg6VYE+ZlncoGJLzKqkrHqUW6VM0VgIgY17IKrE/F4ZZuuEVbeUUGdhQ4ctuSHUbnywc7frC4wDdY4K8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789610102; c=relaxed/simple;
-	bh=2RJBx2RXmlO46GbKTUWo9mRYxlCy9WbMUTYFRRqKNQk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UTlj8UKYpfRoRkmUhnU1FacfaVb8U9sXXCZiz6D5tTCQDY3aCX8ursuwT37TuRBIjMIIhN0KkATQse/8qOuYU+nA081LbgGkk3EIV/xfIs5th1Fe6IbhleWt7MEgubdACD35ONifZh6pyoCl9UYJumJVKHVe5fiqLpRVSguX+s8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hS77RQRK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789610182; c=relaxed/simple;
+	bh=6aLvv26gzfe7p4DZyMFH38kkHLGlcFACYahQlzHunJc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j+Uq0lbaODWnfrUHOdhWeQB1n4skKa5Lvy2Wt2dLjfU3S1SUDBId2tWyTpp72K5JsMA4tLeFlvxeSeYcNmCjEnFOVoK3+HCAgDCWuatOkPynGOe970YI9IYqV0AVZZ8yzhWM1j3w+ELFcSA+RA5eO+wTSBU1aE8TwbLY/DlMN2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=BaYtfOlA; arc=none smtp.client-ip=130.117.225.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hS77RQRK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D95471F000FF;
-	Thu, 17 Sep 2026 01:55:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789610101;
-	bh=AeRGnSVo/pZSPEvEnD0WVt6yfxZXDWoj6fvjGiYK9Fs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=hS77RQRKPAPLL2kh/QY/7xBRrQA6JqaP6YPFbl9l8kOx6IbmmJXE8OBduRqruJJlf
-	 pJPA3T3XOt8sfkYdcNVnIn/214eTYsHwcwDr4ZZtTFLuKIrrPDu5Cgp4mvSPY5S1BT
-	 ZfJgzWhucsJQOXYnoEnCpIMg7mrcrGlhE5I0qXhTROR3kiH1IV3XTsjK99G8eCwfs6
-	 Z+BfWu0bV4GzVl0eQQOsqE+Ldov4VLfC3aM3Y3ulReYyCbBNPrVzPtoq5hA1+pPo/l
-	 vjjTdBvukQVM1X95Oady4tAIzEYGy2LEcrTV41wi4Og2BcidJZHYhmSDOFR/8Gt8JF
-	 f8WcNbm2HDdOg==
-Date: Wed, 16 Sep 2026 18:55:00 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Farhad Alemi <farhad.alemi@berkeley.edu>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, falemi@asu.edu,
- Simon Horman <horms@kernel.org>, Pablo Neira Ayuso <pablo@netfilter.org>,
- Florian Westphal <fw@strlen.de>, Lorenzo Bianconi <lorenzo@kernel.org>,
- Xuanqiang Luo <xuanqiang.luo@linux.dev>, netfilter-devel@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] net: remove WARN_ON_ONCE() from the
- dev_fill_forward_path() loop check
-Message-ID: <20260916185500.1cfbf67e@kernel.org>
-In-Reply-To: <CA+0ovCgKDOk+Bg6Gh5Lwx94u_jJjQ30-vY1JcY2BYfhnWJJbPA@mail.gmail.com>
-References: <CA+0ovCgKDOk+Bg6Gh5Lwx94u_jJjQ30-vY1JcY2BYfhnWJJbPA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="BaYtfOlA"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
+	Content-Type; bh=6q44N/SKdwH/k3pKemR1sT2b8ZYcaux/puC2YbKuY7o=; b=BaYtfOlAm39h
+	sz4v1iuM6ti+7bEIjqPZkicwkZNX6bNO28WfXzyELaODXb6cdYkd6+WpDQZUQV2DbFRQMvDtPMYYe
+	Ob9C1Aq4QfzGmtwgfu+zIzkOJ2rnn8XrrjgMieHP+XA/fzdMWDt9hMqgAHCpmh4FkNsx1pjK1rnkw
+	HLkbYAIDDQoamwQ/45AsVUjheunHi/Pn2Rw0sBi/8VsEXP9fV//AXkLPPujjGcLTzh8zZH95u0GZi
+	ocz22IwKRJXZi6ivbnT5pcxRwciAoEE+hBn/dxAxInAXgJfcMZUnPIl1mAK/Vu7b+kSXl2KOeV0Ba
+	54D1VAF6sU1egHrlTwo/tw==;
+Received: from ch-vpn.virtuozzo.com ([130.117.225.6] helo=LekKit-T14)
+	by relay.virtuozzo.com with esmtp (Exim 4.96)
+	(envelope-from <eva.kurchatova@virtuozzo.com>)
+	id 1x71JN-00132Z-0u;
+	Thu, 17 Sep 2026 03:56:07 +0200
+From: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Shuah Khan <shuah@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	Eva Kurchatova <eva.kurchatova@virtuozzo.com>,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH 1/2] selftests: bpf: run test_xdp_features in its own netns
+Date: Thu, 17 Sep 2026 04:55:56 +0300
+Message-ID: <20260917015605.2464043-1-eva.kurchatova@virtuozzo.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Sat, 12 Sep 2026 07:40:09 +0000 Farhad Alemi wrote:
-> ipip_fill_forward_path() and ip6_tnl_fill_forward_path() look up the
-> route to the tunnel's remote endpoint and set ctx->dev to its device,
-> which is the tunnel itself when that route resolves back to the tunnel.
-> dev_fill_forward_path() then makes no progress and trips
-> WARN_ON_ONCE(last_dev == ctx->dev) as soon as a flowtable tries to
-> offload a flow through the tunnel. That routing loop is a configuration
-> any CAP_NET_ADMIN user can set up, and ip_tunnel_xmit() and
-> ip6_tnl_xmit() already treat it as a tx error, so remove the warning and
-> just fail the walk, as commit 008e7a7c293b ("net: remove WARN_ON_ONCE
-> when accessing forward path array") did for the path stack overflow.
-> 
-> Fixes: ab427db17885 ("netfilter: flowtable: Add IPIP rx sw acceleration")
-> Fixes: d98103575dcd ("netfilter: flowtable: Add IP6IP6 rx sw acceleration")
-> Closes: https://lore.kernel.org/all/CA+0ovCgaRvbd0Udj70b2xxG8Cx3CaCpNhnf1V4RWQuDveZYZhA@mail.gmail.com/
-> Suggested-by: Pablo Neira Ayuso <pablo@netfilter.org>
-> Assisted-by: Claude:claude-opus-5 syzkaller
-> Signed-off-by: Farhad Alemi <farhad.alemi@berkeley.edu>
+The test creates its devices in the namespace it is started in and binds
+an IPv6 socket to talk between the two ends. Both are unnecessary
+demands on the host it runs on.
 
-Applied as 150dba2c69e933 in net, thanks
+The device name is fixed, v1, so a host that already has a device by
+that name cannot run the test at all. The IPv6 control socket depends on
+the host's firewall rules, and where those reject ICMPv6 or the port the
+test picks, the two ends never meet:
+
+  Failed connecting to the Device Under Test control socket
+
+Cleanup is trapped for signals only, not for a normal exit, so a run
+that fails leaves both the device and the namespace behind. Every later
+run then stops in setup, before it prints anything.
+
+Re-exec in a new network namespace, where the device name is free and no
+rule of the host applies, and everything the test made goes away with
+the namespace when it exits.
+
+Signed-off-by: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
+---
+ tools/testing/selftests/bpf/test_xdp_features.sh | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/tools/testing/selftests/bpf/test_xdp_features.sh b/tools/testing/selftests/bpf/test_xdp_features.sh
+index 0aa71c4455c0..1f6be4af6718 100755
+--- a/tools/testing/selftests/bpf/test_xdp_features.sh
++++ b/tools/testing/selftests/bpf/test_xdp_features.sh
+@@ -1,6 +1,19 @@
+ #!/bin/bash
+ # SPDX-License-Identifier: GPL-2.0
+ 
++# The device under test listens on the veth address of the namespace this
++# script runs in and the tester connects to it, so a firewall on the
++# machine can refuse the control connection:
++#   Failed connecting to the Device Under Test control socket
++# That side of the pair is also always called v1, and cleanup only runs
++# on a signal, so a failed run leaves the device behind and every later
++# run stops in setup.  A namespace of our own has no such rules, and
++# takes the leftovers with it when the test ends.
++if [ -z "${XDP_FEATURES_NETNS:-}" ]; then
++	XDP_FEATURES_NETNS=1 export XDP_FEATURES_NETNS
++	exec unshare -n sh -c 'ip link set lo up; exec "$0" "$@"' "$0" "$@"
++fi
++
+ readonly NS="ns1-$(mktemp -u XXXXXX)"
+ readonly V0_IP4=10.10.0.11
+ readonly V1_IP4=10.10.0.1
 -- 
-pw-bot: accept
+2.55.0
+
