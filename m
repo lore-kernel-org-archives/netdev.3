@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A255523798;
-	Thu, 17 Sep 2026 13:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157474E2F2F;
+	Thu, 17 Sep 2026 13:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789651896; cv=none; b=GuUcGDfI4so/f3gyAa6htFe1DBBMPbvgj02oWIHgmts0Lru0OvAVkUbCM0T+StPTjXITmrBH+flu5nGo/FZ9yv7TgOC5KMUcIThiECcaLgjFdjJGSKbTvGPiUuNoULToMvdGkbiy8zOksoikUgeqpwZxv5XT2YbkoHKjf0iKZuU=
+	t=1789651896; cv=none; b=fSqqxppXVXEkGpl/B/mfqEJQt1/gpBtv75Pb4MvrNKyshaN9uJY7+wt08wH88bvCRh5kJvnTaFYjVRE+NuskLepohLVKhEh1J4gv6OFMWLaArjjAnFVc8+WCtEegcnuc0cssMjDmhZygw1vPYks9XiAsIwJn5sucKIM09YWa6Dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789651896; c=relaxed/simple;
-	bh=lJhhl7rqp0R+kTEn3u7cXqS0lMDRNpKykndKN5Xbdss=;
+	bh=i5uaSfZYqlS11eYJVyqCN9B5ccyOW07hnRC8OC1Bnzg=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=cByTFhMz9Nb0+XzMIicUnl5i8ZRbNcRncYaTaOD7mNcrk3f5/z5xpPbvL4dvotSMWwvvlEpdbQvyLg/rlUdVPUcXtVvl0deu2YjU92i0UjFIrs1TWAkMzAt1om6L5cJNgAo7/fXyUYUDB0HMbxvvxeOVT7/AmztIBMJOjlqyNjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X3VQzBW2; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=lKSGyV5FBFXX+tRGnzDveZ0IRKueXw2OxY5giYcTrAPVCrIoVAOwPsswPjawjawY9vNeBbLUkuAAWnTySqnsKJMPn5mM9+Pl/C8tKXRUAju5plcze7EnZYpd2oy3ejD9MxKC4lTtNzZ2KIcWFESQmK8eLexAiUR+Nu+TD39LAw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hQiUWzP4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X3VQzBW2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D221F000FF;
-	Thu, 17 Sep 2026 13:31:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hQiUWzP4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00EE61F00893;
+	Thu, 17 Sep 2026 13:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789651886;
-	bh=d+xMAagAIt0peOBIqSsZ+vAYsCvSqqqp7DxtScD872M=;
+	s=k20260515; t=1789651889;
+	bh=iV41gm6PLDRfgNm3s3my3eM4HlRSjdmg/UlK/6kwJyE=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=X3VQzBW2/pH1w01pGHJUniIITmoUTlatUz6fhgtsefZalRbxXXWo6oUX9STUNXRtk
-	 nX5wd3ZetQ8fxA7DKoJSnU4P+P5UUZu27d7RSaUzNwsMmcDkWBeeFUCywetw0W1fIK
-	 KmdaQqVJuvXDpKig2x2BIlQqOZ4QNL9mSPMKj7UFu9HPSa9Dxw+/WP7OjcOGjeROa/
-	 BN2YlI7ak33F2bRS7cuOkz2/N2QZ7yYnmQ/lKjVCpgW4oZ1MEkPBjvUbqOLWg+8hCJ
-	 gP9Q4/pjGS/8I4SPKtaKoUEinRKj8VIEfJyz71pVrpE/DscTYBTzuWzeuWRCOW6UlY
-	 4E9RAoz4GTN0Q==
+	b=hQiUWzP4lmsIf7J8NZFlb658gqr5bTiX7JXaxhP1Pc2rnC4Kh6TuloYaJUJ9zkPGV
+	 UzSLthpwjErBqO6CP6nbl5lOoFwtVM+Zb/jFx53LD3xDdw7llD1kq2FuulK8hiegfM
+	 mBdAydaH/q4pZPlOfHwea1OMNNDnb2U1wCYkZLCK64BgfsBayebVIy/ZMRl2heyvHi
+	 wwp9oH1cIZhRIXmWQ4DbfG0zdKla8ocZMxpYTnlBvmgaB4Q6dqUapt2oydFWA3xBxS
+	 TXYZp6OkxlBsk41rX2tFlS0lhEOiGob/sIk7AkqnuWqTeB0cmxyDpQKv1Vm8eubRU6
+	 ShTTalBIkRn9g==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A663811957;
-	Thu, 17 Sep 2026 13:30:20 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0B033811957;
+	Thu, 17 Sep 2026 13:30:23 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3 0/2] tcp: exclude old ACKs from fast path
+Subject: Re: [PATCH net-next v2] ipv6: make IPV6_FREEBIND and IPV6_TRANSPARENT
+ setsockopt lockless
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178965181963.3645898.3635212098501972895.git-patchwork-notify@kernel.org>
-Date: Thu, 17 Sep 2026 13:30:19 +0000
-References: <20260914090408.1435080-1-inbal.lipshtat@mail.huji.ac.il>
-In-Reply-To: <20260914090408.1435080-1-inbal.lipshtat@mail.huji.ac.il>
-To: Inbal Schussheim <inbal.lipshtat@mail.huji.ac.il>
-Cc: netdev@vger.kernel.org, edumazet@google.com, ncardwell@google.com,
- kuniyu@google.com, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, shuah@kernel.org, linux-kselftest@vger.kernel.org,
- amit.klein@mail.huji.ac.il
+ <178965182237.3645898.15101514552764203031.git-patchwork-notify@kernel.org>
+Date: Thu, 17 Sep 2026 13:30:22 +0000
+References: <20260912134040.215664-1-xuanqiang.luo@linux.dev>
+In-Reply-To: <20260912134040.215664-1-xuanqiang.luo@linux.dev>
+To: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+Cc: netdev@vger.kernel.org, edumazet@google.com, dsahern@kernel.org,
+ idosch@nvidia.com, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, linux-kernel@vger.kernel.org, luoxuanqiang@kylinos.cn
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Mon, 14 Sep 2026 12:04:06 +0300 you wrote:
-> Exclude ACKs outside [SND.UNA, SND.NXT] from TCP header prediction so
-> that they fall through to the slow path, where ACK
-> validation is applied.
+On Sat, 12 Sep 2026 21:40:40 +0800 you wrote:
+> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 > 
-> Add a packetdrill test for a data segment carrying an
-> excessively old ACK. The test fails on the unpatched kernel and passes
-> with the fix.
+> IPV6_FREEBIND and IPV6_TRANSPARENT still take the socket lock despite
+> using inet_assign_bit() to update the flags shared with IP_FREEBIND
+> and IP_TRANSPARENT. IPv6 TCP and UDP sockets can already update these
+> flags without the lock through the corresponding SOL_IP options.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3,1/2] tcp: exclude old ACKs from tcp fast path
-    https://git.kernel.org/netdev/net/c/f81e6c3fb063
-  - [net,v3,2/2] selftests: net: packetdrill: test exclusion of old ACK from TCP fast path
-    https://git.kernel.org/netdev/net/c/d841cd7513f3
+  - [net-next,v2] ipv6: make IPV6_FREEBIND and IPV6_TRANSPARENT setsockopt lockless
+    https://git.kernel.org/netdev/net-next/c/546f109fdbbc
 
 You are awesome, thank you!
 -- 
