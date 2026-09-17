@@ -1,69 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25BA4F55DA;
-	Thu, 17 Sep 2026 12:08:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E9A4DAFBD
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 12:10:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.230.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789646914; cv=none; b=Ym4+hydWRpQXWE8Z1TfFDgZ/sYQ5VhEwEjd839f2bSLJLXRzYpJhtt4lrJJhhl64c24Ya4XzoEJNzNzftGMkt2oGxXPh3H+mO+XwbQirfO5PP8Z9UWc66S/v9LkqjMNYscf29uxTfQ2+FBCTnd4R6YMK8tbLXkBAF4iyYlqgUSs=
+	t=1789647069; cv=none; b=R3a9BrYTViow3LHkZzKdChHzOnlEDuseK1vzNeNOludFx9KOCL4rxrK1TiQs84MlPdiiylseh0pBkzx+qgGt+MesrkuealOQGakYVgyv5qsVwovCMLU8vRofGG0dxhLVy11/3B7cJ4sWeQru17WmghraOuKbTAVvuhLC1CBv9OQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789646914; c=relaxed/simple;
-	bh=FZsdvWQFJ1GgHIyPu07rN60LuIicHhed3AlRLarvfxI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i1pFZyt91SrZrKSnaWxaMDjNJ41KfKV/3/KLa23eCztICN/tFwqJKtzkrgQxCD6vy4zJr1eBjd07Bzsjg4+iL4CQtLVmgb7RecmMK6kmtw31FLrrnI3+EvPQuoQom0XuAkxJB+cRQP+8jrHz7w8AbOtvRTsfAtr9iIoAV4pCDbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mj7/Xadm; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789647069; c=relaxed/simple;
+	bh=R/LUprRLLIwHn62Aa6X+Qeen23stIshNt80hL1nPc3A=;
+	h=To:Cc:Message-Id:References:Date:Mime-Version:Content-Type:From:
+	 Subject:In-Reply-To; b=WomwKxp/hFlR5eVnTpUQjuCxy7w7THPD05R6qRpcYhM+OaoSEjecJJKpvICP34kF78FD876RWsX2dvq7HkV/IwZhPdrC/FywHUAFqLR7wJvJLziwCVjEjOUhM7v/9WGQ+JK17JAhJZQ7I8ejFDTAwZKpJJvMTFoclbqKc15kwko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=eiYvEvni; arc=none smtp.client-ip=209.127.230.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mj7/Xadm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B50C1F000FF;
-	Thu, 17 Sep 2026 12:08:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789646899;
-	bh=KuzN7+adFVVihVcZ1qWllq0YX4TYIzhAkBl9u1gApZ8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Mj7/XadmTyOjQj+jXV9nDdv42Nx0WNrWaoGcBK9G1mutdVCe7CFpkys/fYhHRoh+z
-	 AAt4PrTVq11PNSP7O4y7WAlOOQFdiW84bnOvfEEpNUAlShH7FSa2tqLj14GaPZWgIg
-	 MvZbJYIAmjSyPJSUXq2o42wUjrZo2e2qdvHa5X9iK6uUfObv80kbSBfWCY7bYA+Rgf
-	 81vr3zwZVaq0yk3wwjFK7lbf1GCDdgZXqgj5NsFu9af4pCRzYzHH6n7xFZZzdrcEcY
-	 XQLz03wtpsyuce4i9SARSBZCQRGdZwCoxogelX8Rc8XXbZ83rfYOislvRmIs62Dgvw
-	 znHKmaiTqJ3Zw==
-Date: Thu, 17 Sep 2026 13:08:14 +0100
-From: Simon Horman <horms@kernel.org>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
-	Victor Nogueira <victor@mojatatu.com>, hybris <hybris@mojatatu.ai>
-Subject: Re: [PATCH net 2/2] selftests/tc-testing: add u32 manual table
- handle IDR tests
-Message-ID: <20260917120814.GB51261@horms.kernel.org>
-References: <QDISC-LQFE.v1.20260911041746.1@mojatatu.com>
- <QDISC-LQFE.v1.20260911041746.2@mojatatu.com>
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="eiYvEvni"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1789647046; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=/M6XW7TajI5wGVtKhZBxGWB0mPjI/XpBYPgZ/W1nlaQ=;
+ b=eiYvEvniDk/QnafpoHOXZg2e8cRAS7+or5s6fQLVpUw52Drmwxw+4BDEWuejbElHLkFggy
+ LPjCXo8AQ34r3KqsAYHppkX/kEebXDzFvKSr/TWCzxIYrdZyRNos6oRqLUUANzTFOPmk1X
+ aHi2D1EXcY9IeXTQN/y6T4JRWhUIlzkNh8DTHN5zFjfuzsoSxultY3rQuN3RR1QxKO6ba6
+ Onx/Ecmb+y5LxWlB6La+TpLB6EOVojFauEL5XJ6UGVmcG0t61zDIUgebTCiCDKb6bw4s/X
+ di30M59xD036NKOwoBxBJkg9LKXfc4vBLqU00gYgSIEtQkAXJdx+hhPGZdOG3A==
+To: <bpf@vger.kernel.org>
+Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<john.fastabend@gmail.com>, <jakub@cloudflare.com>, 
+	<jiayuan.chen@linux.dev>, <edumazet@google.com>, <kuniyu@google.com>, 
+	<pabeni@redhat.com>, <willemb@google.com>, <davem@davemloft.net>, 
+	<kuba@kernel.org>, <horms@kernel.org>, <daniel@iogearbox.net>, 
+	"Zhao Gongyi" <zhaogongyi@BYTEDANCE.COM>
+Message-Id: <20260917121016.48171-1-zhaogongyi@bytedance.com>
+References: <20260915071743.29394-1-zhaogongyi@bytedance.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+Date: Thu, 17 Sep 2026 20:10:16 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <QDISC-LQFE.v1.20260911041746.2@mojatatu.com>
+Mime-Version: 1.0
+X-Lms-Return-Path: <lba+26aabd8c4+6b47c4+vger.kernel.org+zhaogongyi@bytedance.com>
+Content-Transfer-Encoding: 7bit
+X-Original-From: Zhao Gongyi <zhaogongyi@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+From: "Zhao Gongyi" <zhaogongyi@bytedance.com>
+Subject: [PATCH bpf v2] bpf, sockmap: reject max_entries > INT_MAX in sock_map_alloc
+In-Reply-To: <20260915071743.29394-1-zhaogongyi@bytedance.com>
 
-On Wed, Sep 16, 2026 at 06:01:15AM -0400, Jamal Hadi Salim wrote:
-> 35fc: create a manual table with handle 801:, then add an auto-allocated
-> table. Before the fix, the auto allocation reuses id 1 and hands out the
-> same handle 0x80100000, aliasing the manual table; the test requires the
-> manual 801: handle to keep exactly one entry in the dump.
-> 
-> a6e8: with a live u32 table keeping the tc_u_common alive, add and delete
-> a manual table with handle 901:, then re-add it. Unpatched, the delete
-> leaks the raw-keyed IDR entry and the re-add fails with -ENOSPC; the
-> test requires the re-add to succeed.
-> 
-> Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-> Tested-by: hybris <hybris@mojatatu.ai>
-> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Zhao Gongyi <zhaogongyi@BYTEDANCE.COM>
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+sock_map_alloc() only rejects max_entries == 0 and otherwise allows any
+u32 value.  sock_map_free() then walks the sks[] array with a signed int
+iterator:
 
+	int i;
+	for (i = 0; i < stab->map.max_entries; i++)
+		struct sock **psk = &stab->sks[i];
+
+When a SOCKMAP is created with max_entries = 0xffffffff (UINT_MAX), the
+allocation of 32 GiB can succeed on large-memory hosts.  During free the
+counter reaches 0x80000000, wraps to INT_MIN, is sign-extended by movslq
+and turned into a ~16 GiB negative offset from stab->sks, pointing far
+below the allocation.
+
+The faulting access is an xchg() write in sock_map_free().  Without
+KASAN, the same out-of-bounds write can fault on an unmapped vmalloc page
+or corrupt an unrelated allocation if that vmalloc address is populated.
+On a KASAN kernel with CONFIG_KASAN_VMALLOC=y, the shadow check for that
+address hits an unmapped shadow page and oopses first:
+
+  BUG: unable to handle page fault for address: fffff521b59c5a00
+  RIP: 0010:kasan_check_range+0x107/0x190
+  Call Trace:
+   sock_map_free+0x93/0x190
+   map_create+0x68d/0xb30
+   __sys_bpf+0x21e/0x2e70
+
+Vmcore confirmed stab->map.max_entries == 0xffffffff, stab->sks ==
+0xffffc911ace2d000, and the faulting address sks + (s64)INT_MIN * 8
+exactly at 0xffffc90dace2d000.  The same buggy path is reached on the
+normal close()/bpf_map_free_deferred() path whenever such a map is
+destroyed.
+
+sock_map_alloc() used to bound its allocation size through
+bpf_map_charge_init(), but the bound was dropped when rlimit-based memory
+accounting was removed.  Reject max_entries > INT_MAX at creation time so
+the signed iterator in sock_map_free() never sees a value that would
+overflow.
+
+Triggered by syzkaller and reproduced on both a 6.6-based KASAN kernel
+and the upstream v7.3-rc2 kernel.
+
+Fixes: 0d2c4f964050 ("bpf: Eliminate rlimit-based memory accounting for sockmap and sockhash maps")
+Signed-off-by: Zhao Gongyi <zhaogongyi@BYTEDANCE.COM>
+---
+v2:
+- Correct the Fixes tag to the commit that removed the allocation-size
+  bound.
+- Clarify that the bug is an out-of-bounds write reachable without KASAN.
+- Add Daniel Borkmann to Cc.
+
+ net/core/sock_map.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/net/core/sock_map.c b/net/core/sock_map.c
+index ca49bc7f8..38df84284 100644
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -41,6 +41,7 @@ static struct bpf_map *sock_map_alloc(union bpf_attr *attr)
+ 	struct bpf_stab *stab;
+ 
+ 	if (attr->max_entries == 0 ||
++	    attr->max_entries > INT_MAX ||
+ 	    attr->key_size    != 4 ||
+ 	    (attr->value_size != sizeof(u32) &&
+ 	     attr->value_size != sizeof(u64)) ||
+-- 
+2.39.5 (Apple Git-154)
