@@ -1,118 +1,60 @@
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2E64D1789;
-	Thu, 17 Sep 2026 16:40:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF42554145E
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 16:41:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789663206; cv=none; b=EGGgj7+knmt+BJIGQ5sEl47763g/Q0stfIm4DimJtYTkCK4kFKTTKyabKVh7Ns7XlXgrt4/YgThsRecDvvXr6n6/y8qlikJmpNQq1EjAjmsZI+p2ZMP9lJ/yujH186hBIntCI/wiAuH2+GgEE7sN6WgWxc+J+ZreTL19S87TGH4=
+	t=1789663264; cv=none; b=pgGQYCR5DnLJeShDKjC8UvXJ/tX4hXeV46hyMaQgnHAIPpIB8pkD2+l7hL//2o4PsQMP2UceqY0sdyV0piHCrLUWTBxgm9devokx398DIlEV2K3/pbyyBOhaXwqsKKEYCsjTJEHRrAt15p5pWhse5v04aruu3YXRFdin1qwwhVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789663206; c=relaxed/simple;
-	bh=z2M5maiT2WCx5mP6DoUrxCg3RRCltBcb2kG2YlhRQAw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bpG7sB7RJX1hHaAGHidh2TVpWC2tII+6s559Awlq90ptTuM/qyRYqUmFq3HZMlCSnhALi9nIEZ3kijzXhJdzPibmXBHJO/SDHVzyTGdbeKFAowVxuEwvgN51Qa5ePDMUVoZzpNYoTm2AI3P4G1fALajo37bICsPboCRaE1QKgt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-05 (Coremail) with SMTP id zQCowAAHcTvcF6xqFqiECA--.649S2;
-	Fri, 18 Sep 2026 00:39:57 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: alibuda@linux.alibaba.com
-Cc: davem@davemloft.net,
-	dust.li@linux.alibaba.com,
-	edumazet@google.com,
-	guwen@linux.alibaba.com,
-	horms@kernel.org,
-	kgraul@linux.ibm.com,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	mjambigi@linux.ibm.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	sidraya@linux.ibm.com,
-	tonylu@linux.alibaba.com,
-	wenjia@linux.ibm.com,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] net/smc: Fix socket use-after-free in smc_shutdown()
-Date: Thu, 17 Sep 2026 16:39:56 +0000
-Message-Id: <20260917163956.2162779-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1789663264; c=relaxed/simple;
+	bh=YAKO41wLQ3RQbu8qg/keeeTTdlwsdvYntzTV4RWRFFg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=U9vBAzNBG45fM5LbyziGRb/N5i9r7pYIeCO+0J0UwYWR01r+Nj+dfCA/+5Hofx1K8pHEnoBHfuo4n6ylWKOeanH/kJfrDCkrCO2Z+plzsILcRDoiekOJa6Lpi4IbPGH/JpGGgLNAQ/owP5Mu2IBTO38N3eZlRjk7tf/0TRnFBC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fQezgzv7; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fQezgzv7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6267D1F00893;
+	Thu, 17 Sep 2026 16:41:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789663262;
+	bh=YAKO41wLQ3RQbu8qg/keeeTTdlwsdvYntzTV4RWRFFg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=fQezgzv7/zxxUoQti6zzujqi6F1R17qEsMew2QwJCAXSU1atJHuqxX/j7xGTr31cr
+	 gYNL+9ilTgKqsf/+Qp5X6TKf0SR3heHL9k1xLqtGGmizfFYbceb7+lIJzSsC+R9YAS
+	 63j2wgQNayGeoc1THZNlPSl0Bit3yXEZFR59/0y+Rqb58DBEv5UXHd6Yf4XZHoyA0G
+	 laxK5GI6ZCi1c5USOAKAI8jtzHAzKvfn5D58OX+IaKiZ4zhZaT5HExRpy0aJuloPZk
+	 VJHAuYOOuWDgjB8NwriamgqEHWgLV83qu3MK16SdQHH73Jg1SdzEcrT3Pwwe0IQlM7
+	 x3JG/EznVuXlA==
+Date: Thu, 17 Sep 2026 09:41:01 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Dragos Tatulea <dtatulea@nvidia.com>
+Cc: Nimrod Oren <noren@nvidia.com>, "netdev@vger.kernel.org"
+ <netdev@vger.kernel.org>
+Subject: Re: [TEST] CX7 timeouts on reconfig w/ page pool failure injection
+Message-ID: <20260917094101.0115277f@kernel.org>
+In-Reply-To: <1c767f25-fa23-44aa-b8d7-b1374627fc9a@nvidia.com>
+References: <20260804094518.53b56d24@kernel.org>
+	<7caf12fd-f63b-46f0-a5bd-e9887cb25f9d@nvidia.com>
+	<20260811080433.26f404dd@kernel.org>
+	<8aa8c49b-736c-42b3-92d3-26bdfeb90a22@nvidia.com>
+	<20260811103832.28e5c8d4@kernel.org>
+	<2d2aab62-a4fe-48eb-94e6-c8a0ec910ee9@nvidia.com>
+	<20260812095947.3d0e6ca6@kernel.org>
+	<a0b4e051-546a-4950-8dba-03391bcded70@nvidia.com>
+	<20260812154101.72b64936@kernel.org>
+	<1c767f25-fa23-44aa-b8d7-b1374627fc9a@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAAHcTvcF6xqFqiECA--.649S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7ZFyDCFyfXw1DJryUGFy5CFg_yoW8XFWrpF
-	4DCF43ArnxXr1xXFs3JFs5uF1vv3WFyr4fC345K3WfC392grWrJryqqay2va1UCrZY9F47
-	Aw1kWa98Xr43ArDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBY1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-	IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2
-	z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4UJVWxJr1le2I262IYc4
-	CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_
-	Jw0_WrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x
-	0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7Cj
-	xVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l42xK82IY6x8ErcxFaVAv8VW8GFyrJr
-	1UJwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
-	Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7
-	IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK
-	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I
-	0E14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7sRE-BMtUUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwMNA2qr9thOWQAAsy
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-In the fallback path, smc_shutdown() drops the passive closing
-reference on the socket with sock_put() and then still uses the socket
-by calling release_sock() at the out label. If that reference is the
-last one, for example because the passive closing reference was
-already consumed by an abort of the active link group, the socket is
-freed while it is still in use.
+Hi!
 
-Move the sock_put() after release_sock() so the socket is only dropped
-once it is no longer used.
-
-Fixes: 1a74e9932374 ("net/smc: Fix sock leak when release after smc_shutdown()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- net/smc/af_smc.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index dffbd529762d..420701762c8d 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -2943,6 +2943,7 @@ int smc_shutdown(struct socket *sock, int how)
- {
- 	struct sock *sk = sock->sk;
- 	bool do_shutdown = true;
-+	bool passive_close = false;
- 	struct smc_sock *smc;
- 	int rc = -EINVAL;
- 	int old_state;
-@@ -2980,7 +2981,7 @@ int smc_shutdown(struct socket *sock, int how)
- 		if (sk->sk_shutdown == SHUTDOWN_MASK) {
- 			sk->sk_state = SMC_CLOSED;
- 			sk->sk_socket->state = SS_UNCONNECTED;
--			sock_put(sk);
-+			passive_close = true;
- 		}
- 		goto out;
- 	}
-@@ -3011,6 +3012,8 @@ int smc_shutdown(struct socket *sock, int how)
- 		sock->state = SS_DISCONNECTING;
- out:
- 	release_sock(sk);
-+	if (passive_close)
-+		sock_put(sk); /* passive closing */
- 	return rc ? rc : rc1;
- }
- 
--- 
-2.34.1
-
+Sorry to re-heat an old thread but FWIW I enabled HW-GRO recently,
+to get the zero-copy tests to work, finally(?) And it increased
+the reconfig time by ~2x :(
