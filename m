@@ -1,73 +1,76 @@
-Received: from mail-ua1-f99.google.com (mail-ua1-f99.google.com [209.85.222.99])
+Received: from mail-pl1-f227.google.com (mail-pl1-f227.google.com [209.85.214.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B24E4E50A0
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 06:46:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C36440A19
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 06:46:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789627562; cv=none; b=C7KvERpLNROwIpDIAYBTYkbrdoe85tVaGZ1krX9qqUN2soC8SGfZil/61Bc52aQe5n7roTODJIgJJrP7VYymWvSL45cIJM9wWXnCnFgeNMcvPO3WkbfgsWZtTqug3vm0CSqR6EtuSO3qacowpnlC0LpEwvwlxQaA/v84ot7++Bs=
+	t=1789627571; cv=none; b=CT1P9IF4s8va31XYIW+9WqGAqwVpDZLq2jk8rd/TD2lc26y60rVgkr+bU6+BqBXrLaoM57X9ncWP7rShyqHr1F3p16DGNSGpDD9JrQ5ODvWchL1IgS5jBCWluKZXPz8FyiLOs2JC7EqY0vo2KNZxhaexS6aNcE0mQLO8ANI9Hzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789627562; c=relaxed/simple;
-	bh=/UrTQiKP0ibGSC02CQR9xfmG9rEJrn04OlPMGKCo5VE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ni3vavxf5aImL9gAwDWEpZ05yPu47UGnHa2NgJOoCpPPpQQ/LVO7ngiWjJnv5bxc2hoipVmJzFlw7SFdteCuvWLeNbGRFBHIdYHiL3YYxA9ORrFJAAD9QaPHk1tXkyc5NAefnxD8YTJ5F70IkJ+sqiw0KiCCAt4XQEsdgTPYohg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=PwSoyhXm; arc=none smtp.client-ip=209.85.222.99
+	s=arc-20240116; t=1789627571; c=relaxed/simple;
+	bh=7CTJlmlkpUV75kzLCWq5iYzg6XYHKDImSoSt4OPBDWY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YVYk4WC2+OMxugBC5pCvo0qQ+r3erTOG4L8r0TbLfmB1vM6BZZ62P8Gp4o/D4JVhG9ZD0yG7KhxDgeQj3jVNt41jNx9afZjjc99MXNVIxmFRXTLyhbaFPKJdpsT2svF2kdLlvwlC8LPmy5GWz7APv7t6I3dI+rubQfxy+K6tfpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=a9d6kqpW; arc=none smtp.client-ip=209.85.214.227
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="PwSoyhXm"
-Received: by mail-ua1-f99.google.com with SMTP id a1e0cc1a2514c-98089686ee7so135923241.0
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 23:46:00 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="a9d6kqpW"
+Received: by mail-pl1-f227.google.com with SMTP id d9443c01a7336-2db710396ffso3331215ad.1
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 23:46:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789627559; x=1790232359;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=VJRXW9HWWl052ti3LILT2PBsoHZ9dSMO5khZPdV6FEI=;
-        b=mz5xbQ1AhqMAqDGaszh8kBPpqMl3sgSPNLsIhP5EzydQ0qfY9AMxHEtN8AOStWQvtk
-         74S1Z5OzXsBhwhmXc9apQNQ4gbNdBz+zjgmYpZQXqDooP0nfavG7l63KvmHGpx3t3fhL
-         VbjeNPc7yNRcgTP/FIpy+i+ZeYNsTwA5u3CsiJSgNx1iN7y1FNyMCAuSPBu3a7ybatS8
-         +pax/ibH4AIIVGrlbh6kR27CPRtNuTSCk6wph+E686AfrACpTqs/P3+dLxPHnFKmNqPA
-         rlOx1nplzU2llrb8VsWzWdjn9GlT9PAEerfLUcn/RLdkAUQuDTUVM6Wn6Ql4r8ULSHQN
-         1LeA==
-X-Gm-Message-State: AFuF++lE9pxflBbguVQPI8IDzkR+F8i9ShXbDVgYecALAi1MH58Lhdce
-	DMZzaRv0LrklTUGeCaIa7hbZL4PTCf7KY2HOx/v43if+srGu9Bn5QN278GBZ6nBj1MmgbtpRlS4
-	kfUVjHN00ccxYqGTWbCsiehK+FkenjX88CvXxc5/Kgi1/4JogeUrrTbiTiZo/1fzkiQHe2Lrsyj
-	bH1fZJ7u97l1DGCDQJ2FexCpfJRCOmL6rv+8Oic2O8jRHKC4lRQwr2OqBqH74jo5r1MiHqytrQc
-	knRIcOLsg==
-X-Gm-Gg: AYBFou2oJpfGSddDmozVLHHAjOpD0yjAcMf1sU4lTjUCVUfVA14e1RQlHrOZi77tKWf
-	rvrSLEuAcPOXNHJl+6Cc0+fPwXT9nyBMTo5nhrnJZdEf6W5UEPemmMqLKrJavVcBQhhTI/6COuX
-	KMusK8CV5MrTZkAGuHZwkZ8eEVxiW87DbNi6kqpAaNNdf80/jfB4HNl61kT3ev1QKjecOxSMU/1
-	gUmAeR0ftN6PREU5M8CerB3zLqcbSEIhG7Lnsw2OKfIvpLwwsq4LGbH28TCoF+JmqdUNVLP0pFm
-	oNzIBPRKZTbNucbczpJeCkM/Maii1tg/XyK19gKYjoE0JFe04oVHEDT35/cbFO/EFSMKM44X648
-	JQfCTiRtDTBSbo5mvcCMWi+UjKiYOeTYVEqFES3uqCD9+3BMrEJyxdK7RlLWHwATJLRBm0wBst4
-	YV0qsQCYanIetIpKjLixdVwBv3ihU4GwzoJA==
-X-Received: by 2002:a05:6102:84da:10b0:7a0:eb10:79b5 with SMTP id ada2fe7eead31-7a0eb2f16c8mr4332659137.10.1789627559336;
-        Wed, 16 Sep 2026 23:45:59 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-29.dlp.protect.broadcom.com. [144.49.247.29])
-        by smtp-relay.gmail.com with ESMTPS id ada2fe7eead31-7a1e2f4ba47sm102962137.23.2026.09.16.23.45.59
+        d=1e100.net; s=20260707; t=1789627566; x=1790232366;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=SMSuN4WTt6I7qMCgUb4Qu38XrQnC03P67hyi5FUJGKw=;
+        b=xploV8saogab6Eusy+YP2NO8iqp7Bnh12R2dmfMReiBrbwqZkj+sfA3O2lc+pSmgKC
+         shByMHCJdqqXS0cV9raGAJi7ipKHXb/pkmH0kUeroX9uUiJ/2m3Lr3B8KDj9yduQ0Ahh
+         Bml3IrTyjdmtTm1VyF/h9GaWNXwW/rM1oKvZJmM90Gooq1KbAzbrf+In6GQCj5/nSmhU
+         5d7nF8CJfYZ6SiNI1QtLVka9U16hXKTytsXnsKHX0L6x8gyyzxAtNwS83dVXt9XQBGex
+         kGT1MXBcxz0yDnnmRD2lUYeNnLHXA75I24S48mL+IJME/2yNQxO5jeLwqersSqrkIWQ3
+         SF0w==
+X-Gm-Message-State: AFuF++koSS4HbLY40DCWEWKn3YNr8diHQbuXfWJvBIX0Xm7NXglirD1G
+	6cBMYI5ZWlFaeDFU2GcLzNeG6UC7NuD9ZPEcogdDGOST4ITLT8Qb3TAYydj57WHr6Ke3E/t1fDs
+	HsEUjOB5iSVELyBJryzpamXvGGZACC80u8ZtGjPKUCzJlTsOzHUPyG6saEaKXcoiIgDA7/FiZdL
+	vbnHiOlDOTCIShVL09pbL8k1HP8uEUXeEUeSI3bGJzkdy6rdvFGMxjDNnhthjP/c500fIGwlF76
+	toyKVVGZw==
+X-Gm-Gg: AYBFou1/cSKGrteVETF+9TC5LN9nvc+UmDMuMA4aZLFBwJ/bNm8rt8n7UUQEMXR1Px7
+	QPOmMKQKKQhL40OMXaBtNwrhLLOB3to/9unScSqzkHipCzXSzoxxl1zVNYBIB0tg3jdy4g8CQJO
+	wCT/nX4BObKDhX+1T2Rav04LQIcMImDOJbyMESlMREfhIIhF6Xtct81x1w3tGddulh3bSoHfDt2
+	f5vAEiqLmqJQVs+JeA0VRJA0/esTJYmOzD4c4uxTLwRqUEaZD1RYDDtbCpWiDaXGN8gC0hXQZZK
+	boCDLPD1Ta63REh1fAHmKAg5VlJobFkQMo1UThYuYKBB1imqHwzwNT9l7r+/sMsuXUNBV4FM2ml
+	RVOMAYRWSd3IpM0/OaFq7MmWSDb4A064U8qN4DeO0LwWuUa7g5CX+zHC9SHxGCvJo6LTXwIdl1K
+	uFnq9ZjRJuRod+/wHy+KO4RJMbIC88uGoxTQ==
+X-Received: by 2002:a17:90b:3f87:b0:39e:252b:86c5 with SMTP id 98e67ed59e1d1-39e35daaabdmr3323501a91.1.1789627566205;
+        Wed, 16 Sep 2026 23:46:06 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-98.dlp.protect.broadcom.com. [144.49.247.98])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-39e35d7bc01sm1064978a91.1.2026.09.16.23.46.05
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 16 Sep 2026 23:45:59 -0700 (PDT)
+        Wed, 16 Sep 2026 23:46:06 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc4b524ce78so379418a12.2
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 23:45:59 -0700 (PDT)
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cbedbd182f5so446557a12.1
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 23:46:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1789627558; x=1790232358; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VJRXW9HWWl052ti3LILT2PBsoHZ9dSMO5khZPdV6FEI=;
-        b=PwSoyhXmGYaTq7Ng5/y3R4dDf6VDqn44pZkXBy4Ppop9LjK7i2rHHNOdV31ldIdbkX
-         7C8KHvQ/r1SbrJvrudyDV2L4YGWn5JUa3CYbMKjJj+2fI+fQTdMAL39BddL0B+M+QzdZ
-         8C3vyHUSOGIBI8sBALc0zfjdLKX80J3E66Ebk=
-X-Received: by 2002:a05:6a21:4d0c:b0:3d3:b00a:6f03 with SMTP id adf61e73a8af0-3dd5f7dac4dmr15018564637.28.1789627558200;
-        Wed, 16 Sep 2026 23:45:58 -0700 (PDT)
-X-Received: by 2002:a05:6a21:4d0c:b0:3d3:b00a:6f03 with SMTP id adf61e73a8af0-3dd5f7dac4dmr15018507637.28.1789627557772;
-        Wed, 16 Sep 2026 23:45:57 -0700 (PDT)
+        d=broadcom.com; s=google; t=1789627564; x=1790232364; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=SMSuN4WTt6I7qMCgUb4Qu38XrQnC03P67hyi5FUJGKw=;
+        b=a9d6kqpWtL8f3xL+pcNvBpp/Weaiqlufri4Yy8whZ6Nd2YUWHRkFDAYOtCs2zktuu6
+         ub20IFHF7NNTWK3sgoLoM7E9zVjbAB+oc2UUM9igWP9nlWsPLCbSU1vXJk1wIpdJcrlR
+         WQJqQDwOWUo8W/dLmi3sNZUzwilnFizQPbqkQ=
+X-Received: by 2002:a05:6a21:e8a:b0:3dd:65a5:a33 with SMTP id adf61e73a8af0-3dd725dca83mr3849717637.10.1789627564511;
+        Wed, 16 Sep 2026 23:46:04 -0700 (PDT)
+X-Received: by 2002:a05:6a21:e8a:b0:3dd:65a5:a33 with SMTP id adf61e73a8af0-3dd725dca83mr3849663637.10.1789627563900;
+        Wed, 16 Sep 2026 23:46:03 -0700 (PDT)
 Received: from H5S1 ([192.19.203.250])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc50ab960edsm2754293a12.20.2026.09.16.23.45.52
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc50ab960edsm2754293a12.20.2026.09.16.23.45.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 23:45:57 -0700 (PDT)
+        Wed, 16 Sep 2026 23:46:03 -0700 (PDT)
 From: Vikas Gupta <vikas.gupta@broadcom.com>
 To: davem@davemloft.net,
 	edumazet@google.com,
@@ -84,10 +87,12 @@ Cc: netdev@vger.kernel.org,
 	dharmender.garg@broadcom.com,
 	ajit.khaparde@broadcom.com,
 	Vikas Gupta <vikas.gupta@broadcom.com>
-Subject: [net-next, v3 00/11] add features to bnge
-Date: Thu, 17 Sep 2026 12:15:37 +0530
-Message-ID: <20260917064548.773334-1-vikas.gupta@broadcom.com>
+Subject: [net-next, v3 01/11] bnge: update HSI
+Date: Thu, 17 Sep 2026 12:15:38 +0530
+Message-ID: <20260917064548.773334-2-vikas.gupta@broadcom.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260917064548.773334-1-vikas.gupta@broadcom.com>
+References: <20260917064548.773334-1-vikas.gupta@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -97,84 +102,183 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Hi,
+Update HSI to support future patches implementing multi-RSS and
+NTUPLE-related features.
 
-This series adds ntuple filter, RSS context, and flow steering
-support to bnge driver.
-Patch 2 is a pure refactor (no functional change) that relocates the
-filter and VNIC related code into the appropriate files. Patch 7 drops
-the refcount usage from L2 filters, also with no functional change.
-The subsequent patches then add the ethtool commands for configuring 
-ntuple flows and RSS contexts.
+Signed-off-by: Vikas Gupta <vikas.gupta@broadcom.com>
+Reviewed-by: Dharmender Garg <dharmender.garg@broadcom.com>
+---
+ include/linux/bnge/hsi.h | 136 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 135 insertions(+), 1 deletion(-)
 
-Thanks,
-Vikas
-
-v2->v3:
-   - Build fix.
-   - Addressed comments from Sashiko
-    https://sashiko.dev/#/patchset/20260908093053.2596020-1-vikas.gupta%40broadcom.com
-    Below Sashiko comments are not valid:
-     Patch-8: 
-                Comment under bnge_toeplitz().
-                 Explanation: bnge_toeplitz() is not used for aRFS.
-     Patch-9:
-                Comment regarding bnge_clear_usr_fltrs().
-                 Explanation:
-                  Both bnge_clear_usr_fltrs() (only invoked while the
-                  interface is down) and bnge_grxclsrule() execute
-                  under the netdev instance lock, so they are
-                  serialized and never touch the filter list at the 
-                  same time.
-      Patch-10: 
-                Comment "Does this direct dereference of the MAC
-                header need a linearization ...".
-                 Explanation: ndo_rx_flow_steer runs on the RX path
-                after eth_type_trans(), which already accesses and
-                pulls the Ethernet header.
-
-                Comment Related to bnge_cfg_ntp_filters().
-                 Explanation:
-                   bnge_cfg_ntp_filters() runs from bnge_sp_task(),
-                   which holds the netdev instance lock while executing.
-v1->v2:
-   - Build fixes.
-   - Addressed comments from Sashiko
-   https://sashiko.dev/#/patchset/20260814011435.194631-1-vikas.gupta%40broadcom.com
-
-Vikas Gupta (11):
-  bnge: update HSI
-  bnge: restructure VNIC and filter code
-  bnge: add NTUPLE/ARFS VNIC
-  bnge: add helper functions for multi RSS contexts
-  bnge: add RXFH ethtool support
-  bnge: add ethtool support to manage RSS contexts
-  bnge: remove refcount from L2 filter
-  bnge: add NTUPLE filter infrastructure
-  bnge: add NTUPLE filter support in ethtool
-  bnge: add aRFS flow steering ndo support
-  bnge: add cpu_rmap support for IRQ affinity
-
- drivers/net/ethernet/broadcom/bnge/Makefile   |    4 +-
- drivers/net/ethernet/broadcom/bnge/bnge.h     |   20 +-
- .../net/ethernet/broadcom/bnge/bnge_ethtool.c | 1030 +++++++++++++++++
- .../net/ethernet/broadcom/bnge/bnge_filter.c  |  684 +++++++++++
- .../net/ethernet/broadcom/bnge/bnge_filter.h  |  123 ++
- .../ethernet/broadcom/bnge/bnge_hwrm_lib.c    |  155 ++-
- .../ethernet/broadcom/bnge/bnge_hwrm_lib.h    |   10 +
- .../net/ethernet/broadcom/bnge/bnge_netdev.c  |  420 ++++---
- .../net/ethernet/broadcom/bnge/bnge_netdev.h  |   91 +-
- .../net/ethernet/broadcom/bnge/bnge_resc.c    |  115 +-
- .../net/ethernet/broadcom/bnge/bnge_resc.h    |    1 +
- .../net/ethernet/broadcom/bnge/bnge_vnic.c    |  284 +++++
- .../net/ethernet/broadcom/bnge/bnge_vnic.h    |   91 ++
- include/linux/bnge/hsi.h                      |  136 ++-
- 14 files changed, 2868 insertions(+), 296 deletions(-)
- create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_filter.c
- create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_filter.h
- create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_vnic.c
- create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_vnic.h
-
+diff --git a/include/linux/bnge/hsi.h b/include/linux/bnge/hsi.h
+index 1f7bd96415a5..d4fe662d60b1 100644
+--- a/include/linux/bnge/hsi.h
++++ b/include/linux/bnge/hsi.h
+@@ -8607,6 +8607,7 @@ struct hwrm_cfa_l2_filter_alloc_input {
+ 	#define CFA_L2_FILTER_ALLOC_REQ_ENABLES_MIRROR_VNIC_ID      0x10000UL
+ 	#define CFA_L2_FILTER_ALLOC_REQ_ENABLES_NUM_VLANS           0x20000UL
+ 	#define CFA_L2_FILTER_ALLOC_REQ_ENABLES_T_NUM_VLANS         0x40000UL
++	#define CFA_L2_FILTER_ALLOC_REQ_ENABLES_RFS_RING_TBL_IDX    0x80000UL
+ 	u8	l2_addr[6];
+ 	u8	num_vlans;
+ 	u8	t_num_vlans;
+@@ -8663,7 +8664,8 @@ struct hwrm_cfa_l2_filter_alloc_input {
+ 	#define CFA_L2_FILTER_ALLOC_REQ_PRI_HINT_MIN          0x4UL
+ 	#define CFA_L2_FILTER_ALLOC_REQ_PRI_HINT_LAST        CFA_L2_FILTER_ALLOC_REQ_PRI_HINT_MIN
+ 	u8	unused_5;
+-	__le32	unused_6;
++	__le16	rfs_ring_tbl_idx;
++	__le16	unused_6;
+ 	__le64	l2_filter_id_hint;
+ };
+ 
+@@ -8900,6 +8902,95 @@ struct hwrm_cfa_tunnel_filter_free_output {
+ 	u8	valid;
+ };
+ 
++/* hwrm_cfa_ntuple_filter_alloc_input (size:1024b/128B) */
++struct hwrm_cfa_ntuple_filter_alloc_input {
++	__le16	req_type;
++	__le16	cmpl_ring;
++	__le16	seq_id;
++	__le16	target_id;
++	__le64	resp_addr;
++	__le32	flags;
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_FLAGS_LOOPBACK              0x1UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_FLAGS_DROP                  0x2UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_FLAGS_METER                 0x4UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_FLAGS_DEST_FID              0x8UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_FLAGS_ARP_REPLY             0x10UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_FLAGS_DEST_RFS_RING_IDX     0x20UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_FLAGS_NO_L2_CONTEXT         0x40UL
++	__le32	enables;
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_L2_FILTER_ID         0x1UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_ETHERTYPE            0x2UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_TUNNEL_TYPE          0x4UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_SRC_MACADDR          0x8UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_IPADDR_TYPE          0x10UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_SRC_IPADDR           0x20UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_SRC_IPADDR_MASK      0x40UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_DST_IPADDR           0x80UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_DST_IPADDR_MASK      0x100UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_IP_PROTOCOL          0x200UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_SRC_PORT             0x400UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_SRC_PORT_MASK        0x800UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_DST_PORT             0x1000UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_DST_PORT_MASK        0x2000UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_PRI_HINT             0x4000UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_NTUPLE_FILTER_ID     0x8000UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_DST_ID               0x10000UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_MIRROR_VNIC_ID       0x20000UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_DST_MACADDR          0x40000UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_RFS_RING_TBL_IDX     0x80000UL
++	__le64	l2_filter_id;
++	u8	src_macaddr[6];
++	__be16	ethertype;
++	u8	ip_addr_type;
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_IP_ADDR_TYPE_UNKNOWN 0x0UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_IP_ADDR_TYPE_IPV4    0x4UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_IP_ADDR_TYPE_IPV6    0x6UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_IP_ADDR_TYPE_LAST   CFA_NTUPLE_FILTER_ALLOC_REQ_IP_ADDR_TYPE_IPV6
++	u8	ip_protocol;
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_IP_PROTOCOL_UNKNOWN 0x0UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_IP_PROTOCOL_TCP     0x6UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_IP_PROTOCOL_UDP     0x11UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_IP_PROTOCOL_ICMP    0x1UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_IP_PROTOCOL_ICMPV6  0x3aUL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_IP_PROTOCOL_RSVD    0xffUL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_IP_PROTOCOL_LAST   CFA_NTUPLE_FILTER_ALLOC_REQ_IP_PROTOCOL_RSVD
++	__le16	dst_id;
++	__le16	rfs_ring_tbl_idx;
++	u8	tunnel_type;
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_NONTUNNEL    0x0UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_VXLAN        0x1UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_NVGRE        0x2UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_L2GRE        0x3UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_IPIP         0x4UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_GENEVE       0x5UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_MPLS         0x6UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_STT          0x7UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_IPGRE        0x8UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_VXLAN_V4     0x9UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_IPGRE_V1     0xaUL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_L2_ETYPE     0xbUL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_VXLAN_GPE_V6 0xcUL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_VXLAN_GPE    0x10UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_ANYTUNNEL    0xffUL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_LAST        CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_ANYTUNNEL
++	u8	pri_hint;
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_PRI_HINT_NO_PREFER 0x0UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_PRI_HINT_ABOVE     0x1UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_PRI_HINT_BELOW     0x2UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_PRI_HINT_HIGHEST   0x3UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_PRI_HINT_LOWEST    0x4UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_PRI_HINT_LAST     CFA_NTUPLE_FILTER_ALLOC_REQ_PRI_HINT_LOWEST
++	__be32	src_ipaddr[4];
++	__be32	src_ipaddr_mask[4];
++	__be32	dst_ipaddr[4];
++	__be32	dst_ipaddr_mask[4];
++	__be16	src_port;
++	__be16	src_port_mask;
++	__be16	dst_port;
++	__be16	dst_port_mask;
++	__le64	ntuple_filter_id_hint;
++};
++
+ /* hwrm_cfa_ntuple_filter_alloc_output (size:192b/24B) */
+ struct hwrm_cfa_ntuple_filter_alloc_output {
+ 	__le16	error_code;
+@@ -9014,6 +9105,49 @@ struct hwrm_cfa_ntuple_filter_cfg_output {
+ 	u8	valid;
+ };
+ 
++/* hwrm_cfa_adv_flow_mgnt_qcaps_input (size:256b/32B) */
++struct hwrm_cfa_adv_flow_mgnt_qcaps_input {
++	__le16	req_type;
++	__le16	cmpl_ring;
++	__le16	seq_id;
++	__le16	target_id;
++	__le64	resp_addr;
++	__le32	unused_0[4];
++};
++
++/* hwrm_cfa_adv_flow_mgnt_qcaps_output (size:128b/16B) */
++struct hwrm_cfa_adv_flow_mgnt_qcaps_output {
++	__le16	error_code;
++	__le16	req_type;
++	__le16	seq_id;
++	__le16	resp_len;
++	__le32	flags;
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_FLOW_HND_16BIT_SUPPORTED                     0x1UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_FLOW_HND_64BIT_SUPPORTED                     0x2UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_FLOW_BATCH_DELETE_SUPPORTED                  0x4UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_FLOW_RESET_ALL_SUPPORTED                     0x8UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_NTUPLE_FLOW_DEST_FUNC_SUPPORTED              0x10UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_TX_EEM_FLOW_SUPPORTED                        0x20UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_RX_EEM_FLOW_SUPPORTED                        0x40UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_FLOW_COUNTER_ALLOC_SUPPORTED                 0x80UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_RFS_RING_TBL_IDX_SUPPORTED                   0x100UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_UNTAGGED_VLAN_SUPPORTED                      0x200UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_XDP_SUPPORTED                                0x400UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_L2_HEADER_SOURCE_FIELDS_SUPPORTED            0x800UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_NTUPLE_FLOW_RX_ARP_SUPPORTED                 0x1000UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_RFS_RING_TBL_IDX_V2_SUPPORTED                0x2000UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_NTUPLE_FLOW_RX_ETHERTYPE_IP_SUPPORTED        0x4000UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_TRUFLOW_CAPABLE                              0x8000UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_L2_FILTER_TRAFFIC_TYPE_L2_ROCE_SUPPORTED     0x10000UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_LAG_SUPPORTED                                0x20000UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_NTUPLE_FLOW_NO_L2CTX_SUPPORTED               0x40000UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_NIC_FLOW_STATS_SUPPORTED                     0x80000UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_NTUPLE_FLOW_RX_EXT_IP_PROTO_SUPPORTED        0x100000UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_RFS_RING_TBL_IDX_V3_SUPPORTED                0x200000UL
++	u8	unused_0[3];
++	u8	valid;
++};
++
+ /* hwrm_tunnel_dst_port_alloc_input (size:192b/24B) */
+ struct hwrm_tunnel_dst_port_alloc_input {
+ 	__le16	req_type;
 -- 
 2.52.0
 
