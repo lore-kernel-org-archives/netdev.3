@@ -1,113 +1,114 @@
-Received: from mta0.migadu.com (out-152.mta0.migadu.com [91.218.175.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.inf.ufrgs.br (smtp.inf.ufrgs.br [143.54.11.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C126E37F8CA
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 02:17:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF2630E85D;
+	Thu, 17 Sep 2026 02:19:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=143.54.11.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789611447; cv=none; b=NKGlDFwRq/rQ2JyYNyYkmPtebtQ+uePLIe41xFXmaI2Kjqnv1XSdnKo4n77htPbwxSDIHDqXL7FvcU3hk6fZdOMod8BgUwbmLdAEPpFLbZ7qoV0hCOOpe+V/8sRBynllU8hNazykQFVxmKcPnRWut/lNQHXCYedUxBs2pDE7vQ4=
+	t=1789611547; cv=none; b=rsAgCuzVV/FzCinG9qYK7ofd5N4/Sn7K0zYnOKj6X1wKVWL4S06abOEY18We0N25E0YSh91Gg1INh6MGndpsdOl3UWVw2Nx894YXz8v7DbWX365Mw+CBh1jtkM+ee3s8/Cjx658E+ZSjTvYFJkj08tK8eRD5btq6A6XU7wiwfmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789611447; c=relaxed/simple;
-	bh=6ZKkVFe30ui4+BMavPMekwCbHs+/Mni0LzTbLyfg8Zg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=BO1HZLXMZnTB/xclruX9kbiPorskSpKrhD/HAJwBR3C2QyfAGFWcxr9O+9rrvSLDSXrhngAfmgL1fJZZ/T1ToM4s7E3hMMQ3sLnkAOA6AiM4NP3MDCcoC0TmXEE0NkkCmEaH87+jv/NYY8ksQPNH02uEpRmlR/6npncuOM+M1g0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=SH/T9r2C; arc=none smtp.client-ip=91.218.175.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1789611547; c=relaxed/simple;
+	bh=DV7IrZzhW0ZJOvw4MA4FduMyWNZzIwGfbg+jo4e5oKQ=;
+	h=MIME-Version:Content-Type:Date:From:To:Cc:Subject:In-Reply-To:
+	 References:Message-ID; b=ZiR4vGyGuBfQBhJp1HnqDy05Unwbg2ENHuWcGdOk8mFa9ox8ELT3zHpa4UEmMZsL/0a/jJzEozAHngLb2FzSREkodZPvgFornFm8ubUOJlXXkRxub91f2qpkr5BmQ/nizNKJ4aBZocSD0WiOKHCJXuwBBmdhVrUmcKkWerEF6bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inf.ufrgs.br; spf=pass smtp.mailfrom=inf.ufrgs.br; dkim=pass (2048-bit key) header.d=inf.ufrgs.br header.i=@inf.ufrgs.br header.b=QWz9KlBI; arc=none smtp.client-ip=143.54.11.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inf.ufrgs.br
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inf.ufrgs.br
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="SH/T9r2C"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=6ZKkVFe30ui4+BMavPMekwCbHs+/Mni0LzTbLyfg8Zg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789611443; v=1; x=1790216243;
- b=SH/T9r2CxIow3ov2kN79+LbKILtiqFRpSuWnKadHcVqQ+45wpm3b6pVZP9mlVOxE1G02TS2s
- 8OCDj9gxTjmyuwzegZEFwOs7GHhAJ7cXHuQsnDmPPrdkMZadvfW2LxmSvsdBbakznlYfbNMlk24
- 05d8PInjJlaW53waTDdslLQs=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id a56a1f4abc55b453;
-	Thu, 17 Sep 2026 02:17:23 +0000
-X-Mizu-Trace-ID: a56a1f4abc55b453
-X-Migadu-Flow: FLOW_OUT
-From: Hangbin Liu <hangbin.liu@linux.dev>
-Date: Thu, 17 Sep 2026 10:17:01 +0800
-Subject: [PATCH net] selftests: net: update netfilter netlink config
+	dkim=pass (2048-bit key) header.d=inf.ufrgs.br header.i=@inf.ufrgs.br header.b="QWz9KlBI"
+Received: from webmail.inf.ufrgs.br (webmail.inf.ufrgs.br [143.54.11.45])
+	by smtp.inf.ufrgs.br (Postfix) with ESMTPSA id 4E8C012025C;
+	Wed, 16 Sep 2026 23:19:00 -0300 (-03)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=inf.ufrgs.br;
+	s=dkim2026; t=1789611540;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=m4LJ6JTQUP6RLFPqNwfrGT1IcCZq1bI1TRPH/KCzkZ4=;
+	b=QWz9KlBISBRi07H1qGFRuzmtt6YlXS44hBRUR87hlGReT3cu9nQlKx32TzJp7z38Nmstjd
+	ru1gpYYeQ1kBoWMtnAkKcCg9dOUAzLgX7M9lfdZUp7WNkGElKVi57at6I7ZqGpdsACB0nz
+	bbgsfDGbVhFK7bmf+450zpRKQqyekQaM1etqE7CLgTcZyPai3LA9qCOoWGErlrHJcRmMti
+	jcplFRczC0OO4I/Nr3kS+2fn7Pxpj34w+HvnSukIQEQbDMuc3UrZUw6OMqje5H5xF5cboH
+	ctp1mFMt2ecew1obuB4e08rwxdtyIIW2AQiCTkixRHeqMlAZ46vdX9hibvKMCA==
+Received: from 186-210-028-117.xd-dynamic.algarnetsuper.com.br
+ ([186.210.28.117])
+ by webmail.inf.ufrgs.br
+ with HTTP (HTTP/1.1 POST); Wed, 16 Sep 2026 23:19:00 -0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260917-selftest_config-v1-1-bf25ccbfb18e@kylinos.cn>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MTQqAIBBA4avIrBNqiP6uEhGpYw2EhSMRRHdPW
- n6L9x4QikwCg3og0sXCR8ioCgV2W8JKml02YIlN2VetFtp9IkmzPYLnVWPXGOfq2iAayNUZyfP
- 9H0cIlGB63w8i6rrnZgAAAA==
-X-Change-ID: 20260917-selftest_config-286bdd44b22b
-To: Matthieu Baerts <matttbe@kernel.org>, 
- Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
- Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>, 
- Phil Sutter <phil@nwl.cc>, Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
- mptcp@lists.linux.dev, Hangbin Liu <liuhangbin@kylinos.cn>
-X-Mailer: b4 0.14.3
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date: Wed, 16 Sep 2026 23:19:00 -0300
+From: Matheus Alves de Almeida <matheus.aalmeida@inf.ufrgs.br>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 3/3] r8169: release firmware on application
+ failure
+In-Reply-To: <fcaf8c8c-f6df-46c0-ac9d-7924c732283c@lunn.ch>
+References: <20260916152444.167196-1-matheus.aalmeida@inf.ufrgs.br>
+ <20260916152444.167196-4-matheus.aalmeida@inf.ufrgs.br>
+ <fe23c6bb-2cdf-4641-aae8-25b03b38be42@lunn.ch>
+ <4ee3cd8a9a299d504fc95ba86a3f387a@inf.ufrgs.br>
+ <fcaf8c8c-f6df-46c0-ac9d-7924c732283c@lunn.ch>
+Message-ID: <cc15edcbf76e8e70c89dd5ef5d838c3a@inf.ufrgs.br>
+X-Sender: matheus.aalmeida@inf.ufrgs.br
+User-Agent: Roundcube Webmail/0.9.5
 
-From: Hangbin Liu <liuhangbin@kylinos.cn>
+On 2026-09-16 19:02, Andrew Lunn wrote:
+> On Wed, Sep 16, 2026 at 06:15:00PM -0300, Matheus Alves de Almeida wrote:
+>> > If the firmware cannot be written, is the device dead? Should this
+>> > return an error, so the caller can abort the probe?
+>> 
+>> A timeout while applying firmware could indeed indicate a PHY access
+>> problem. However, firmware loading failures are already non-fatal,
+>> and the callers of r8169_apply_firmware() do not propagate errors
+>> either. Making firmware application failures fatal would require
+>> broader changes to several r8169 PHY initialization paths.
+> 
+> But you are making such changes, returning errors up the call chain.
+> Why are you making these changes? We either assume nothing can fail,
+> so we throw away the return code, or we should assume everything can
+> fail, and propagate the errors.
+> 
+> If we assume error can happen, if there is an error in firmware
+> download, isn't that fatal? Should we even care about care about PHY
+> read/write errors if firmware download has failed? And since firmware
+> download is probably the first thing to happen, if anything is likely
+> to fair, i would expect firmware download is what is going to fail.
+> 
+>    Andrew
 
-Since commit d4349ba9872d ("netfilter: allow nfnetlink built-in only"),
-NETFILTER_NETLINK was changed to a bool. Use 'y' instead of 'm'.
-Otherwise the build emits:
+Looking at this more in depth, I am leaning towards keeping the old
+non-fatal behavior.
 
-  .config:5688:warning: symbol value 'm' invalid for NETFILTER_NETLINK
+Right now, firmware application failures are ignored, so the device
+can keep going even if applying the firmware fails. The TODO also
+specifically says to release the firmware on failure, which seems to
+imply that continuing without it was the intended behavior, and that
+releasing it was mainly meant to prevent retrying the same failed
+firmware application later.
 
-Fixes: d4349ba9872d ("netfilter: allow nfnetlink built-in only")
-Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
----
-This is a simple update addressing the same issue, so I’d like to post it
-directly to netdev instead of bothering two separate subsystems
-(mptcp and netfilter).
----
- tools/testing/selftests/net/mptcp/config     | 2 +-
- tools/testing/selftests/net/netfilter/config | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Making firmware application failures fatal also creates a state problem.
+If we release tp->rtl_fw after a failure, later initialization attempts
+will see no firmware and continue without retrying it. Avoiding that
+would require tracking the failure separately or keeping the firmware
+loaded, which would no longer follow what the TODO suggests.
 
-diff --git a/tools/testing/selftests/net/mptcp/config b/tools/testing/selftests/net/mptcp/config
-index 59051ee2a986..bb9c4c97c620 100644
---- a/tools/testing/selftests/net/mptcp/config
-+++ b/tools/testing/selftests/net/mptcp/config
-@@ -18,7 +18,7 @@ CONFIG_NET_CLS_ACT=y
- CONFIG_NET_CLS_FW=m
- CONFIG_NETFILTER=y
- CONFIG_NETFILTER_ADVANCED=y
--CONFIG_NETFILTER_NETLINK=m
-+CONFIG_NETFILTER_NETLINK=y
- CONFIG_NETFILTER_XTABLES=m
- CONFIG_NETFILTER_XTABLES_LEGACY=y
- CONFIG_NETFILTER_XT_MATCH_BPF=m
-diff --git a/tools/testing/selftests/net/netfilter/config b/tools/testing/selftests/net/netfilter/config
-index c3c121b6f300..629b2b29ed1a 100644
---- a/tools/testing/selftests/net/netfilter/config
-+++ b/tools/testing/selftests/net/netfilter/config
-@@ -44,7 +44,7 @@ CONFIG_NET_CLS_U32=m
- CONFIG_NETDEVSIM=m
- CONFIG_NETFILTER=y
- CONFIG_NETFILTER_ADVANCED=y
--CONFIG_NETFILTER_NETLINK=m
-+CONFIG_NETFILTER_NETLINK=y
- CONFIG_NETFILTER_NETLINK_QUEUE=m
- CONFIG_NETFILTER_SYNPROXY=m
- CONFIG_NETFILTER_XTABLES=m
+At that point this becomes a larger behavior change and could possibly
+break hardware where firmware application failures are currently
+tolerated.
 
----
-base-commit: 1dd85662fee6e2ac580b1c4f9a0c0a7ae6e31f0e
-change-id: 20260917-selftest_config-286bdd44b22b
+Because of that, I am leaning towards keeping the existing behavior:
+detect the failure, release the firmware as the TODO says, and continue
+without it.
 
-Best regards,
--- 
-Hangbin Liu <liuhangbin@kylinos.cn>
-
+What do you think?
