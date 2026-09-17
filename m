@@ -1,99 +1,89 @@
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1734CE68C;
-	Thu, 17 Sep 2026 11:08:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBC74A689C;
+	Thu, 17 Sep 2026 11:10:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789643362; cv=none; b=ZTsOVQoyRlYyrYytUEOhxB4+VU0Y3oRX6V/3kXk+sEuKcbBiYDsyubLr/eOZ2f1ddOs/97thoySLOUBqMQy1Q0Ajt7Ng9YAqytmg5viAIm0q+JSsYLVI1TWKXFnc1C2FPkcz0cRAoKTgJO2yUUh8+iQGWHEi1rBiQeCo8m+nQRw=
+	t=1789643417; cv=none; b=SrkP+hJVf1y57ngi3ljIXOY8HkY6oSYUkya8pgQPAc6jeh5xL7kyaG6TMBofMUkK/bvAEgesPOWl7pGWcxn+HvXBJwJotrGwY2CVx+eXLkJPMWCOy+cHbfatwbnp706ApYKaH7vj7gdPMupmhqjC929AMqakgP1RkXCrxcxGEsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789643362; c=relaxed/simple;
-	bh=gwlogt7+m0h6M4onIExIRqwFvP7/KJwudStmW4pG7BY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=thzTCzV9a4wpTb5gWnfyLaqBXZEDJP3NxevjLEXQuf39PqXAmEMW6MV0yikvQzlM98m35WgTTI0y2U+IHm81dokT3KJATP6xz4LBBGCY4F/T4yM4ywXB0MFMY+uk4EcKh7OLeFi8AiSVmEyf+I3Szdr0Fy8tZi9lNNc5WTJLbCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [36.110.52.2])
-	by APP-05 (Coremail) with SMTP id zQCowACX_zksyqtqnz5_CA--.1376S2;
-	Thu, 17 Sep 2026 19:08:28 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: Yisen.Zhuang@huawei.com
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	shenjian15@huawei.com,
-	yankejian@huawei.com,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] net: hisilicon: hns_dsaf_mac: fix mdio device leak in hns_mac_register_phy()
-Date: Thu, 17 Sep 2026 11:08:28 +0000
-Message-Id: <20260917110828.2148390-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1789643417; c=relaxed/simple;
+	bh=OGDQ8ynfqxt5lNBYV+TAbNLh05ICfM1VlxEtmEMdb8g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=djOzoOAww5R/g5LWZyQPSkqAt5wUTcerC7XXW7UPlYbqmQ4QLyFyb/GjsA3S5jkyzDXrxX/MJZgwJDtXaxsIbs3T6eAaNwysnfHpERCNvYzXMsmBr6DdgZPap9blucuOUk6xfzWNFBqa3ZGQYQtrPA+KlR4SskOatjzKW2Y/Kog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JnJ/tiIE; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JnJ/tiIE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34E121F00893;
+	Thu, 17 Sep 2026 11:10:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789643402;
+	bh=RcYu9/NQTxeEVmvwuEoqrceL82UZmeHCQKFB0n6cDO4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=JnJ/tiIE9hcYG6DGK+tSmWyPSsIOacbTl3TbB1HRRpMgyxbVRKh9UMOvOfHmtsWQy
+	 O+m96uEUG1Mk31qGhgHRl4L3xHSvwXVgCiTe5337Wublwj5QNMl6DhJIyikulPNA2T
+	 8uhLzlbIw7aq9IhxNw6GFQphSPaRUsvl2pNc996mz12lYXpl3w2eo3CvUi3ylJfQvy
+	 VLulRleuBS3P5EHWbinwN+IUNnb6yHP0axDYpwB00eeZYRB9HU7dOOodnIRgfc0PIz
+	 AbDTGAFy1LHVef/ldaoja/3ckTqsJK/ag0HLZ/SsjEwJRyANGCgpv+Nf+ANeNCARHG
+	 gBAhqTA3a1Kmg==
+Date: Thu, 17 Sep 2026 12:09:57 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Cc: Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>, bpf <bpf@vger.kernel.org>,
+	Networking <netdev@vger.kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>, linux-kernel@vger.kernel.org,
+	linux-next@vger.kernel.org
+Subject: Re: Missing signoff in the bpf tree
+Message-ID: <66d3f5cd-12df-4000-8459-360ba57cea12@sirena.org.uk>
+References: <aqvBPVcN__UX8P85@sirena.org.uk>
+ <DLHJEZ0K0FV1.SCQLJJQNS1ES@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowACX_zksyqtqnz5_CA--.1376S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7uw1DKry8Cw1fKr45ZF1fZwb_yoW8Jw1xpr
-	s8Gay2grn5Xr42qay7Wa12qFZ5Ca17t3sYgF45Aa4Fv3ZYvrW7ZrWUXFWrZF48trZ7CF1Y
-	qw12yws5uwnrA3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPmb7Iv0xC_Zr1lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
-	cIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2
-	AK021l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v2
-	6r4UJVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI
-	0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2Wl
-	Yx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r4UJVWxJr1lOx8S6xCaFVCjc4
-	AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq62Iq12xI8VA0II8E6IAqYI8I648v4I1l
-	FIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr4
-	1l42xK82IY6x8ErcxFaVAv8VW8GFyrJr1UJwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s02
-	6c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw
-	0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvE
-	c7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67
-	AKxVW8Jr0_Cr1UMIIF0xvEx4A2jsIEc7CjxVAFwI0_GcCE3sUvcSsGvfC2KfnxnUUI43ZE
-	Xa7IU84E_tUUUUU==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwQNA2qrrRldZgAAsD
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="KW/2zglwFVpeSqOo"
+Content-Disposition: inline
+In-Reply-To: <DLHJEZ0K0FV1.SCQLJJQNS1ES@gmail.com>
+X-Cookie: Whip it, whip it good!
 
-hns_dsaf_find_platform_device() returns the mdio platform device with its
-reference count incremented. hns_mac_register_phy() never drops that
-reference, so the mdio device can not be released.
 
-Release the reference on both the deferred probe and the normal path.
+--KW/2zglwFVpeSqOo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: 1d1afa2ebf82 ("net: hns: register phy device in each mac initial sequence")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c | 3 +++
- 1 file changed, 3 insertions(+)
+On Thu, Sep 17, 2026 at 12:59:30PM +0200, Kumar Kartikeya Dwivedi wrote:
+> +To Eduard
+>=20
+> On Thu Sep 17, 2026 at 12:30 PM CEST, Mark Brown wrote:
+> > Commits
+> >
+> >   4499609f99fd5 ("selftests/bpf: Test global subprog callback contexts")
+> >   3506b9a2f1085 ("bpf: Verify global subprogs in each sleepability cont=
+ext")
+> >
+> > are missing a Signed-off-by from their committers
 
-diff --git a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
-index bc6b269be299..f1cb6d56e4b9 100644
---- a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
-+++ b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
-@@ -793,6 +793,7 @@ static int hns_mac_register_phy(struct hns_mac_cb *mac_cb)
- 		dev_err(mac_cb->dev,
- 			"mac%d mdio is NULL, dsaf will probe again later\n",
- 			mac_cb->mac_id);
-+		put_device(&pdev->dev);
- 		return -EPROBE_DEFER;
- 	}
- 
-@@ -801,6 +802,8 @@ static int hns_mac_register_phy(struct hns_mac_cb *mac_cb)
- 		dev_dbg(mac_cb->dev, "mac%d register phy addr:%d\n",
- 			mac_cb->mac_id, addr);
- 
-+	put_device(&pdev->dev);
-+
- 	return rc;
- }
- 
--- 
-2.34.1
+Does the contacts list for the BPF trees need to be updated?
 
+--KW/2zglwFVpeSqOo
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmqryoQACgkQJNaLcl1U
+h9AePAf/S/yl7NuzOMj/l5SB1hq9XFGYxwtGBIwdfw70FydwwKyWxUhNqZZghurd
+PvAGZ722ZCI5wgorSHWLisJPEuX+T7PY/z9S2yir1+81yDwuJuGmnhlb7mHJ3bf/
+1N0gefa/XpCIQQi7Pk7aHDoMdI77uEq94oQD0s6H7BFBnr8iWLsONXOhxFJZB/kO
+9maCQBLs+c02EyZhiEfe1DN5khPWGXdi6N9zZ09BKLXIxUCioDYSuypchdZLQ8Lz
+EPhNouBjKgSImnrwTMxNr/RzEFujhoWRF7Nev/9EuYVpGdqjSA7sXxi03/U/FQUJ
+I7fyhy1piiwR6ARM4XnR24SURATK7Q==
+=HCSJ
+-----END PGP SIGNATURE-----
+
+--KW/2zglwFVpeSqOo--
