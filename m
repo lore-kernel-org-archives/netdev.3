@@ -1,122 +1,138 @@
-Received: from mout-b-112.mailbox.org (mout-b-112.mailbox.org [195.10.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.avm.de (mail.avm.de [212.42.244.94])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDC94E4314;
-	Thu, 17 Sep 2026 12:27:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC9C4FC8E5;
+	Thu, 17 Sep 2026 12:29:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.94
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789648088; cv=none; b=tF5DR3Kc9TIrWJweC55HFwD3fKn0NivLI1XHv3rgjrkYQyGXJ8i65w/53+wm2yUjGoaO06jXJPIAmRi/69sqc1DeHmFbVTsYbUpyE6QJw71G5EFmf3UYCOdLVeRVkbWi53sEYPcw8kxqm2o7NrQPZ1Armw2bXVlf+OTq9DgE4bc=
+	t=1789648198; cv=none; b=lPmT3WG29JphU3QDwyfBLN/TCdvvHi2lb+xgAp9rMUXEgk7wWeoDcFKBdBwT/90asImIutxPzuamwxsMl/2YVuRh9p60BVCUs8YmFL25vDIOCJ8BpryXnvSxF+oLLMNhQgyLZ6tbj+4+KI0ww0rY3XyEtebyPqeRe/Wmu/Q7Pnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789648088; c=relaxed/simple;
-	bh=/uqgZPPn4hNbKiFhEuoJhBmLAX3/qowM+46x249WfEc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DxFam8d4YDkT5K8s6crCwELYtlXSsoXXF9QL1S3q5iMn3Mc7jDtMgJCoGQTP8Rk1jW16FtY6WA9sdVbVVzKhbcZIGVo7ayLaf+T5YuFyi9ZYlALAZNyUaO+GbzD0ElBWDO3p3wAgsXpmnkVJ4Ui6vIv1N10zgLPv74DEr3FMdXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=cjQu6+B4; arc=none smtp.client-ip=195.10.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
+	s=arc-20240116; t=1789648198; c=relaxed/simple;
+	bh=hE4YXXq9f/kz4Pqfu90t6YgBCb4aMDtxvj+Ig7ZfgOY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=jow+quWj47L4p/UwoRglY26zRZy6Se8v/GIcrJPIIfhuBPKsRTGCR6XVK3GZQ1mJLhnRUbl2OuxSuIqh7kJWqETGXWILd6UONod90AjGyf/Tdb258PzwpTZxPGo36MLfmp9gvKaxBl8sgMV8/d+2DSRrCHfqj0x6lLGyQe+6eRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com; spf=pass smtp.mailfrom=fritz.com; dkim=pass (2048-bit key) header.d=fritz.com header.i=@fritz.com header.b=Nn3/gwWe; arc=none smtp.client-ip=212.42.244.94
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fritz.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="cjQu6+B4"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-b-112.mailbox.org (Postfix) with ESMTPS id 4hlw4s1r72z5xBW;
-	Thu, 17 Sep 2026 14:27:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1789648061;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=IDxh/p8SFg2ydcVJyonwxD2khfmofoSAkIYRAIVB6h8=;
-	b=cjQu6+B4MJnt5Nt3yLAvFKi3C5w3z9aYKFVGXMT6Vgs7dQm0JS16xmEOKxjf2+l39PXHVV
-	x7dz7NF/vLtt09sm2ZIPQtKUXFJ1lSXl83eTGZkagvhIlCoJ/WtpbVHC/IPaoCdnz5fBeV
-	2evFVyMgBjpg6AryQJwHLwbtJCuixmYBknXREGd4MSrrIq4FLmqkZ04t4Zo4EIxnXCMCl5
-	a/0KfQhQgxTivslviaJ5oyh4FXVz3oIUtZBtd2M/16+LWKijpOKGGI9mtt6baBnMx0k1sw
-	oMLqNURB2ukbSU3uklY0Y3uVjEQ252cdLXSnmF0uts+NGA8Z7zk+x0citzXgNA==
-From: Ralf Lici <ralf@mandelbit.com>
-To: Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	netdev@vger.kernel.org
-Cc: Leon Romanovsky <leon@kernel.org>,
-	Boris Pismenny <borisp@nvidia.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Emeel Hakim <ehakim@nvidia.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH net v3] net/mlx5e: advertise MACsec offload only when supported
-Date: Thu, 17 Sep 2026 14:27:23 +0200
-Message-ID: <20260917122724.654639-1-ralf@mandelbit.com>
+	dkim=pass (2048-bit key) header.d=fritz.com header.i=@fritz.com header.b="Nn3/gwWe"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fritz.com; s=mail;
+	t=1789648177; bh=hE4YXXq9f/kz4Pqfu90t6YgBCb4aMDtxvj+Ig7ZfgOY=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=Nn3/gwWemPcdz6OqIU+M4WARBgHgjNI8+RMG204vZBoH/x5d/b5UgnOGS/ag0RgZ6
+	 xDYSgDbAS0vjfGyb216frHmT8j5+L/5Ag1Xkd/OUY6LQOzdvsqh4z5NyfHHkICoKNj
+	 RFPzGSn2Mc2WpdlpBiRv/diuVpmoZ9znEk1lbNDJJFRSAPEiiwyTladJbgQMFYxxfA
+	 MFiV8z2ZkK0jzDLrfDnpP1+kUO619KC1YXezfPJHjBjhc37+hWX47xoTXgngSBODAM
+	 HfeYlkTf/PJ8Hh1pyuSCa/6VQwyfS2RUrdZ5ANVA1+6sjLXkz384DRtvLMKqnmiUz4
+	 tWcV19FkbgOmQ==
+Received: from [2001:bf0:244:244::71] (helo=mail.avm.de)
+	by mail.avm.de with ESMTP (eXpurgate 4.57.1)
+	(envelope-from <t.martitz@fritz.com>)
+	id 6aabdd31-6dc7-7f0000032729-7f000001b6c2-1
+	for <multiple-recipients>; Thu, 17 Sep 2026 14:29:37 +0200
+Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [IPv6:2001:bf0:244:244::71])
+	by mail.avm.de (Postfix) with ESMTPS;
+	Thu, 17 Sep 2026 14:29:37 +0200 (CEST)
+Message-ID: <d17cbd3e-d373-452c-9a7d-dd6d5a413565@fritz.com>
+Date: Thu, 17 Sep 2026 14:29:31 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v5 0/1] macvlan: allow source mode devices along with
+ passthru
+To: Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>
+References: <20260917100258.2582568-1-t.martitz@fritz.com>
+Content-Language: de-DE
+From: Thomas Martitz <t.martitz@fritz.com>
+In-Reply-To: <20260917100258.2582568-1-t.martitz@fritz.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-purgate-ID: 149429::1789648177-014BE0BC-FC2C784A/0/0
+X-purgate-type: clean
+X-purgate-size: 3232
+X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
+X-purgate: clean
+X-pfmilter: host: postfix-mx-03  mail-id: 8B5ACA0422  external: no
 
-Commit 339ccec8d43d ("net/mlx5: Enable MACsec offload feature for VLAN
-interface") added NETIF_F_HW_MACSEC unconditionally to vlan_features so
-that VLAN devices could inherit MACsec offload support.
+Hello,
 
-mlx5e_build_nic_netdev subsequently copies vlan_features into
-hw_features and features. As a result, all mlx5e NIC netdevices
-advertise MACsec hardware offload, even when the firmware does not
-support it and the driver does not install macsec_ops.
+Apologize for forgetting a changelog entry. I'm adding it inline and hopefully don't
+forget include it in the next posting (if any).
 
-Set the MACsec feature bits in mlx5e_macsec_build_netdev, after device
-capabilities have been validated. This preserves MACsec-over-VLAN
-support and the ethtool feature control on capable devices, without
-advertising either on unsupported hardware.
+BTW: I'll be attending at LPC in Prague. Would be great to have a chat with your guys there.
 
-Fixes: 339ccec8d43d ("net/mlx5: Enable MACsec offload feature for VLAN interface")
-Cc: stable@vger.kernel.org
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Ralf Lici <ralf@mandelbit.com>
+Am 17.09.26 um 12:02 schrieb Thomas Martitz:
+> Hello,
+> 
+> we're trying to solve a use case on our devices where two SoC are
+> connected on the same board, using the only available high-speed interface.
+> 
+> One SoC runs the main Linux system including the full routing stack
+> (FRITZ!OS) and the other SoC implements most of the GPON ONT side.
+> 
+> The high-speed interface is of course also used for the user traffic.
+> Therefore we must tell the inter-SoC traffic apart from the user traffic.
+> 
+> We achieve this by matching the well-known MAC address of the ONT SoC.
+> The user traffic passes through the ONT SoC without modifying MAC headers.
+> Now we would like to use macvlan (with source mode devices) on the main
+> SoC side for this but our routing stack requires the rx_handler to be
+> available. Therefore macvlan is currently not an option.
+> 
+> With this patch macvlan becomes an option because the current limitation
+> of either "one passthru device" or "any other configuration" is relaxed
+> for the combination of passthru and any number of source mode devices.
+> 
+> This allows us to configure a source mode device for the other SoC and
+> register an rx_handler for further processing on the passthru device.
+> 
+> Thanks in advance!
+> 
 ---
-Changes since v2 https://lore.kernel.org/netdev/1b7ebced14243c1b342923a25bcc44ec77c45907.1787086511.git.ralf@mandelbit.com/
-- Rebase onto the latest net/main.
-- Add Reviewed-by tag from Tariq.
+Changes in v5
+- Properly respect "macvlan_addr_busy()" again for non-passthru  interfaces (and avoid calling anymore for passthru interfaces)
+- Guard NETDEV_CHANGEADDR from messing with the lower device
+  address during passthru interface removal
+- restore unicast address (dev_add_uc/_del_uc) handling> Changes in v4
+> - Prevent macvlan_restore_mac() from changing the MAC address
+>   of remaining source mode interfaces.
+> - Set MACVLAN_F_PASSTHRU on the macvlan_port only after adding
+>   the passthru interface truly succeeds.
+> - Changing existing interfaces to passthru mode shouldn't become
+>   allowed.
+> 
+> Changes in v3
+> - fix passthru port removal caused by passing the wrong 
+>   device to macvlan_port_release_mac(). This was also
+>   detected by syzbot.
+> - macvlan_port_release_mac() is now named macvlan_restore_mac()
+>   and gets passed a "struct macvlan_port" directly.
+> - Link to v2: https://lore.kernel.org/netdev/20260709100512.1383421-1-t.martitz@fritz.com/
+> 
+> Changes in v2:
+> - changed several port-wide checks (macvlan_passthru()) to 
+>   per-interface checks (vlan->mode == vlan->mode == MACVLAN_MODE_PASSTHRU)
+> - correctly handle removing the passthru interface when there are still
+>   source interfaces
+> - Link to initial posting: https://lore.kernel.org/netdev/20260612092345.2352255-1-t.martitz@fritz.com/
+> ---
+> 
+> Thomas Martitz (1):
+>   macvlan: allow source mode devices along with passthru
+> 
+>  drivers/net/macvlan.c | 107 ++++++++++++++++++++++++++++--------------
+>  1 file changed, 73 insertions(+), 34 deletions(-)
+> 
 
-Changes since v1 https://lore.kernel.org/netdev/0a27c8b7308121fd00c528fc99fc3866782d3990.1786783174.git.ralf@mandelbit.com/
-- Set NETIF_F_HW_MACSEC in hw_features as well, preserving ethtool
-  configurability and restoration after an eswitch mode cycle (Sashiko).
+Best regards
 
- drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c | 2 ++
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c         | 1 -
- 2 files changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-index daff53ba7d09..38a3415acf7a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-@@ -1724,6 +1724,8 @@ void mlx5e_macsec_build_netdev(struct mlx5e_priv *priv)
- 	mlx5_core_dbg(priv->mdev, "mlx5e: MACsec acceleration enabled\n");
- 	netdev->macsec_ops = &macsec_offload_ops;
- 	netdev->features |= NETIF_F_HW_MACSEC;
-+	netdev->hw_features |= NETIF_F_HW_MACSEC;
-+	netdev->vlan_features |= NETIF_F_HW_MACSEC;
- 	netif_keep_dst(netdev);
- }
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index fc110a7d16e8..4c6060d54fbe 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -5851,7 +5851,6 @@ static void mlx5e_build_nic_netdev(struct net_device *netdev)
- 
- 	netdev->vlan_features    |= NETIF_F_SG;
- 	netdev->vlan_features    |= NETIF_F_HW_CSUM;
--	netdev->vlan_features    |= NETIF_F_HW_MACSEC;
- 	netdev->vlan_features    |= NETIF_F_GRO;
- 	netdev->vlan_features    |= NETIF_F_TSO;
- 	netdev->vlan_features    |= NETIF_F_TSO6;
-
-base-commit: c9151088f1674fd29ff26a20f5fc687acf53a2f0
 -- 
-2.55.0
+Thomas Martitz <t.martitz@fritz.com>
+FRITZ! Technology GmbH, Berlin (Germany)
