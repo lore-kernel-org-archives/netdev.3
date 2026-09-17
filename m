@@ -1,182 +1,221 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA55476CF7;
-	Thu, 17 Sep 2026 07:07:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53741471263
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 07:08:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789628865; cv=none; b=hHL4Be6So8/XSbWCD8IMfeQF7SlFL+vbvyx0wWUeutwU/3shdjEGABvABGwclh8uY4AKpAO0oIbgXlWsCYyGrqQG0e4TXPNTN+HX063hqypv1LedTVGnw7kigcTtnLYkDyIw/2AuqAWcYd10yCvVMOQknVoc2HT3QMi44obY4HU=
+	t=1789628915; cv=none; b=LQjtUOwLw+PAY6Z6xbB3NIyvaXlxlhihFfli1VCrlI4KppRr1HrzdqBl6+bq9tM5SenG+NdnzElFH0eXFPvWtHQeTl6rNAhkA2bot+EaOaWELsUVZ5fVq+56vZgW2hB/bm61FlrhgSe7ljorHRa65V3EPCN7cjFuTot0IXJX8G8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789628865; c=relaxed/simple;
-	bh=8HSF+LrOlvT0k5flvlCc9IPHOrpQnuowms4Y/Lxxaz4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lBJxeSFfwAXfF3jYFMgFGGmgRtkwS048GMBFD93SSBtqxpwLplrw6UxMBzVOIbdrlNBF2tH43OZbW/dVC058u0frOkysl/uTxTuEhBlo7Y6gOHQiJkzMLAkchUsGB5tzdIu+4aPNT5kndwJojPo3pkovIvMz2FvPGDNdAe8xktA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=jjc3v8Im; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=e2NjjuV1; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=n+XMeo1n; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=X/KXqiqy; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1789628915; c=relaxed/simple;
+	bh=bQpyWWf0ixjdyQaCnGf5ZG1l5eO2Zpqv28M7Mk0RN38=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Xc0SJPUCgtxbAOvHomR9UpMEAjgV+KQX7OCDQRjTinqQ4XHJLmlFvDx/Wrm5xV/qVjO1fxiDlLEmgabOthe4c3dHPMD+3pWOkozLoPxZ2kpQY3nzYQLSI7LSwYS/SsOZlZtnTKY8EjQiZHgqn/pT0Xj8Bexg0RMBl7b0ArqoP4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=EkQOHSg/; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=h2ejTdgi; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="jjc3v8Im";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="e2NjjuV1";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="n+XMeo1n";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="X/KXqiqy"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 05D2B21D70;
-	Thu, 17 Sep 2026 07:07:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1789628858; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kjvcZvmqEPMRF/LhXJIRs4s3bEudB5Jl4m8qJV2Wu9c=;
-	b=jjc3v8Im+QznQHTfpETVxbLzdwbn66ZxeLS+slepvGG71PY68L8mGhA4e3y6aaw0yonVan
-	6r37fyI8QLtFcrrMF7CScPYfZIE/x/VS33aVWqNuiCBdR8Drz6l3kY0V4BIN7le40CWMIo
-	8WldHXQfo12Y5SZ2rO3LI5a+lx5iPsU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1789628858;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kjvcZvmqEPMRF/LhXJIRs4s3bEudB5Jl4m8qJV2Wu9c=;
-	b=e2NjjuV1H2CD9Lzxd2acRiVhAoOK+Il5RWy8Hy8LWAOu0Q0tffD4TY8vO+I8dEymOyFEyA
-	Iy7/EqwCyw9bEUAA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1789628854; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kjvcZvmqEPMRF/LhXJIRs4s3bEudB5Jl4m8qJV2Wu9c=;
-	b=n+XMeo1njqwW4rBjHQ5AWI6m0SMaGEfUbAGFDiheonChgXMKnJuMxdY81cQR4v30GUehCM
-	R85SwqWTJmi5GNfoxd1X/0xBNJWQymabL+cJGEpNgghBfhjPBsxqDgIyXSW0+c3FO+4PFb
-	ZtNw/JrSYru4Bxcyv6DDlcdbP0uWQMY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1789628854;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kjvcZvmqEPMRF/LhXJIRs4s3bEudB5Jl4m8qJV2Wu9c=;
-	b=X/KXqiqyecFWWd8CAP7aMBf1OFjZw2VEQe97l6lpFTg5iFvU/uOTb2qTBGLZ50DE1DQh0V
-	S7UEp3klHc7BJ+Dg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D81D8134B3;
-	Thu, 17 Sep 2026 07:07:32 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id MOz5KLSRq2rfCwAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Thu, 17 Sep 2026 07:07:32 +0000
-Message-ID: <f557e44a-86b6-4ebb-ad35-d7bc5902929a@suse.de>
-Date: Thu, 17 Sep 2026 09:06:48 +0200
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="EkQOHSg/";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="h2ejTdgi"
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68H61UCx776722
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 07:08:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=ugnBwGxUNdaet2N+HXZfUK
+	GYcaM40W+Na3+4iM6a2ds=; b=EkQOHSg/oi2bDhXKDpdG1bkrW6b/E8TeywLjIT
+	20bieRJ4CUSwHXHoX1E34qVF4c9KbvLfmXnQeq25KwVHI8I3wsiMxS01t8ZbX7fX
+	y6A18bPRekVvfP9dxzP/R5EbkNwDt6gkFJCCrB6Eri2zroQk0qzbBYzaJ7+mITTC
+	ANzUHqCiT41VIzmqjdu/joW7kCdl6TfTJx5xqaDWC71+uHL5KPZ6HlG0mlrGGma5
+	GzetvzaeHOAA8DHEd6EXQWrjAySwPE+LIVcXaujy4AvXd9yg0vMnMCUCVQ2ybXGr
+	sa8Ssb/nueo1xYjq9FCCgWMprE2hGKvFBLCMvXgsKHqautlA==
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gquw2uym4-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 07:08:31 +0000 (GMT)
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc2229450b4so477355a12.1
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 00:08:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1789628910; x=1790233710; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=ugnBwGxUNdaet2N+HXZfUKGYcaM40W+Na3+4iM6a2ds=;
+        b=h2ejTdgi+bG1Wc2oFFYyGZmRHAQPsTLgJZCn2HiSw+nBFxqfrQKpIF5AbvgCRkkoNh
+         n48WrZG9Z79JzEqZCqD/pvY+MIENFvQRHxVPdLWD8CHPp+BZld9mE9dNreUmdvffvPKU
+         zjKMp/Ue/ZiZuDPm/znaPMLxmY6IWjKQ0b+NSttMrRmzu0efHSGct5Zg9MVMwv9D7I+i
+         ZU7tMf6lzHJomgtAgtJ8iee4BeXC03hFL1ZBdQaYKHWfOaO+R2CJbjkMTNTYeQZtHEaC
+         sWcgOKWNv8CFUFOEnhfaUCVunhIcQrg3y/UUnwRjPuL//gz9yzkna2vZWNlTpKi8okx4
+         Au6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789628910; x=1790233710;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=ugnBwGxUNdaet2N+HXZfUKGYcaM40W+Na3+4iM6a2ds=;
+        b=0/nCw/hdrc+gcTpJOBXiXxo6QnFKiJMRJCGb3OjsSAGTuep/za9joa/scFQBXyvo//
+         sLj/Yqd1l+6ndBeBOkICLhvtDcUytgO0YXrvFIIo+MZ+Ciz21QCGjy6iTDgZKcelBjRh
+         7BJ2dg5W3mHy8JGLWATvtAZWUWAyaPDfDxF2oJcGdbkhNQOh607gjUyXb6xHpr5Q1gfk
+         B5tdJVS5su6wlQ9cIuVI9yDqqP1pMQ28cHtCbJzTSO06beJdMONwnxKS7LInmn33JybK
+         LvAIpZ1v/DP53JDpLQsq9Eqmp1j6Ca5+c9baJ6Xi5fH1Xw+AU6aDO8nkWoeutznqFZQ4
+         scuw==
+X-Forwarded-Encrypted: i=1; AKwUvByM2TASuszhW+ONDfNAs7B2RA8z3TvfM52Li4T+rgtqm9qxUvFxtTVbed/PC6Ms70xP377FpiQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++kwe5rrzqhN5qwm/otO+R+s62xGwQ0Qqe7Puvem1i9Ra0d9YNEj
+	B0V3bp/q8/MwPC3KA0nAqKG6tcBCSS0iNm+JArXDyxwgBfbHDtWAAGbIfZPagUQpv94ZprzFylY
+	x7Xnfayr2+PgJymWCNAng++ZEY15Od5KN8E1PePPMnjqCCZ2M73viN1Hq9dA=
+X-Gm-Gg: AYBFou2qJEEs3O+g7J6q1+y/OJqiA5N4hng2Rp9WB+RjS24yRe0Nh9DaeOZoAapENm8
+	kY3Y5cIndc3kH8giu67jhkqbSouQ9x/zrWZaKWyinFt9hFFo/i3b+giUH9NTFKzmIj8VBbXdu6T
+	fwrGL3ZCCdMCcm1OaTH/UPMQjaT2mcWAMx/8kzoGpdMIIHJZWQgsQ7io1kzDqhzrH6Il8u6qGYB
+	mnPj96Px8m7RqczR5lg4b0gb0tHiRxGqPNkF8Mnac8+yPWVw/1ijPQoaE0GRN/DkyQ2qQ2COusv
+	VTmjaGcDC68Izu4A+sI+aAvXKUlRql14UAyU+p39N3ywVNLqUenmOESebSzOH5lGy+iyYonB4OY
+	hafmoHAtIskmjF1U4MDFckIliq/w4KLK9XUg=
+X-Received: by 2002:a05:6300:6698:b0:3d3:adbf:7779 with SMTP id adf61e73a8af0-3dd5f716752mr14365852637.21.1789628909966;
+        Thu, 17 Sep 2026 00:08:29 -0700 (PDT)
+X-Received: by 2002:a05:6300:6698:b0:3d3:adbf:7779 with SMTP id adf61e73a8af0-3dd5f716752mr14365766637.21.1789628909429;
+        Thu, 17 Sep 2026 00:08:29 -0700 (PDT)
+Received: from hu-krichai-hyd.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33bf5e40494sm13280835eec.15.2026.09.17.00.08.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2026 00:08:27 -0700 (PDT)
+From: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Subject: [PATCH v3 0/6] bus: mhi: host: mhi_phc: Add support for PHC over
+ MHI
+Date: Thu, 17 Sep 2026 12:38:01 +0530
+Message-Id: <20260917-tsc_timesync-v3-0-6826d5d2d527@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] selftests: net: update netfilter netlink config
-To: Hangbin Liu <hangbin.liu@linux.dev>, Matthieu Baerts
- <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>,
- Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Shuah Khan <shuah@kernel.org>, Pablo Neira Ayuso <pablo@netfilter.org>,
- Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, mptcp@lists.linux.dev,
- Hangbin Liu <liuhangbin@kylinos.cn>
-References: <20260917-selftest_config-v1-1-bf25ccbfb18e@kylinos.cn>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <20260917-selftest_config-v1-1-bf25ccbfb18e@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -4.30
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.997];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,kylinos.cn:email]
-X-Spam-Flag: NO
+X-B4-Tracking: v=1; b=H4sIANGRq2oC/3WMwQ6CMBAFf4Xs2ZLSIqWc/A9DDNZWNpFWu0gkp
+ P9u5e7lJfOSmQ3IRrQEXbFBtAsSBp9BHgow4+DvluEtMwguGl5XFZvJXGacLK3eMNcqNXCpa6k
+ lZOUZrcPPnjv3mUekOcR1ry/i9/4JLYJx1jhxdEroVl3lKRCVr/fwMGGayjzQp5S+2N1ZDK8AA
+ AA=
+X-Change-ID: 20260411-tsc_timesync-f877a0394393
+To: Manivannan Sadhasivam <mani@kernel.org>,
+        Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+        Richard Cochran <richardcochran@gmail.com>
+Cc: mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+        Vivek Pernamitta <vivek.pernamitta@oss.qualcomm.com>,
+        Sivareddy Surasani <sivareddy.surasani@oss.qualcomm.com>,
+        Taniya Das <taniya.das@oss.qualcomm.com>,
+        Imran Shaik <imran.shaik@oss.qualcomm.com>,
+        Vivek Pernamitta <quic_vpernami@quicinc.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789628904; l=3787;
+ i=krishna.chundru@oss.qualcomm.com; s=20230907; h=from:subject:message-id;
+ bh=bQpyWWf0ixjdyQaCnGf5ZG1l5eO2Zpqv28M7Mk0RN38=;
+ b=o6BXg5Eg9W/++7VUIM0anu11IwwwEykHm6bnIUSsnJCQZuk+k9be9VtOxAXB7Jju2eEav+nu4
+ 66Iy8+Lz9uHDE2cxbV3qnMn20F1Uahp78Vv8DXVvZ7M+9JhsCADU5jQ
+X-Developer-Key: i=krishna.chundru@oss.qualcomm.com; a=ed25519;
+ pk=10CL2pdAKFyzyOHbfSWHCD0X0my7CXxj8gJScmn1FAg=
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE3MDA5NCBTYWx0ZWRfXwgsA1VOT1Sg4
+ 9sL+2EEtKSl47eu/KOuVk8JX85UoQqxEw5LCG/Mo5SnqHgFADBfySULTr0BY5VPj8u8Toh9v+Hk
+ UOBgQr99SaOTGOUK3gH9kxfyq/ce1G4=
+X-Proofpoint-GUID: 63-s49EOpJl4IBHHLByedTbjM_KXzMEf
+X-Authority-Analysis: v=2.4 cv=N4m8hG9B c=1 sm=1 tr=0 ts=6aab91ef cx=c_pps
+ a=rz3CxIlbcmazkYymdCej/Q==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=pGLkceISAAAA:8 a=UUeChs24tHZU6zr2FsUA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=bFCP_H2QrGi7Okbo017w:22
+X-Proofpoint-ORIG-GUID: 63-s49EOpJl4IBHHLByedTbjM_KXzMEf
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE3MDA5NCBTYWx0ZWRfX/TFUYmKZPS1L
+ 7wn1N7hrOW6iG0ANls9UQ0sHbABS4/Fn+jj0/u0rsStZUyt1ijCw0Cy5sALo+EJQLQ8ri6JVoev
+ MEz6RhRRECjajfYF8igiq/Fejx7ZiR7RvxVh0lbaNm9+ZytKLd58TOppkldgDEY/eOm+3EJWDxx
+ XI/k2OFbWgIEqVlrST4oTk28LvdCUsNPjpG9tIL3Mgab1Jw57aXOr/9xS/cs1t8Ur2v57qUlZPN
+ r4HBv5IhiGVGdo5TFFgZ3UTGMcEORaj0Ur0iX4ShKsjePG8hx1mP8Pn3cM/LbrzOb75Ijf/YtlP
+ IZvQ/bTtnaKJfMe369l8WcKePh9uqjVQNrFdarWomfk0olvtcUdgaieis2oXoCq7X1LngILYYiC
+ NVzg49o2nOgDet/R92dDbNvarxDnNCs0JPDZUgTbaJiLnn8RQ9s2KAFSEi26+Ir6sGsiC+yx6Rc
+ O/uffPZUX9/eHBinhYg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-17_01,2026-09-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 priorityscore=1501 impostorscore=0 suspectscore=0 malwarescore=0
+ lowpriorityscore=0 clxscore=1015 phishscore=0 adultscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609170094
 
-On 9/17/26 4:17 AM, Hangbin Liu wrote:
-> From: Hangbin Liu <liuhangbin@kylinos.cn>
-> 
-> Since commit d4349ba9872d ("netfilter: allow nfnetlink built-in only"),
-> NETFILTER_NETLINK was changed to a bool. Use 'y' instead of 'm'.
-> Otherwise the build emits:
-> 
->    .config:5688:warning: symbol value 'm' invalid for NETFILTER_NETLINK
-> 
-> Fixes: d4349ba9872d ("netfilter: allow nfnetlink built-in only")
-> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+This series adds support for exposing the device-side timestamp provided
+by the MHI TSC Timesync capability as a PTP Hardware Clock (PHC).
+ 
+The series introduces an MHI PHC driver that registers a PTP clock and
+uses the TSC Timesync capability to retrieve device timestamps. These
+timestamps are exposed through the Linux PTP framework, enabling host
+and device clock correlation using standard userspace PTP interfaces.
+ 
+To support efficient timestamp retrieval, the series also adds generic
+64-bit MHI register access support and capability discovery APIs used by
+the PHC driver.
 
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+The following diagram illustrates the architecture and data flow:
 
-Thanks!
+ +---------------+  +----------------------+  +----------------+
+ | Userspace App |  | Kernel PTP framework |  | MHI PHC Driver |
+ +---------------+  +----------------------+  +----------------+
+                                                       |
+                                                       v
+                                            +--------------------+
+                                            |  Endpoint Device   |
+                                            | (Timestamp source) |
+                                            +--------------------+
 
-> ---
-> This is a simple update addressing the same issue, so I’d like to post it
-> directly to netdev instead of bothering two separate subsystems
-> (mptcp and netfilter).
-> ---
->   tools/testing/selftests/net/mptcp/config     | 2 +-
->   tools/testing/selftests/net/netfilter/config | 2 +-
->   2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/net/mptcp/config b/tools/testing/selftests/net/mptcp/config
-> index 59051ee2a986..bb9c4c97c620 100644
-> --- a/tools/testing/selftests/net/mptcp/config
-> +++ b/tools/testing/selftests/net/mptcp/config
-> @@ -18,7 +18,7 @@ CONFIG_NET_CLS_ACT=y
->   CONFIG_NET_CLS_FW=m
->   CONFIG_NETFILTER=y
->   CONFIG_NETFILTER_ADVANCED=y
-> -CONFIG_NETFILTER_NETLINK=m
-> +CONFIG_NETFILTER_NETLINK=y
->   CONFIG_NETFILTER_XTABLES=m
->   CONFIG_NETFILTER_XTABLES_LEGACY=y
->   CONFIG_NETFILTER_XT_MATCH_BPF=m
-> diff --git a/tools/testing/selftests/net/netfilter/config b/tools/testing/selftests/net/netfilter/config
-> index c3c121b6f300..629b2b29ed1a 100644
-> --- a/tools/testing/selftests/net/netfilter/config
-> +++ b/tools/testing/selftests/net/netfilter/config
-> @@ -44,7 +44,7 @@ CONFIG_NET_CLS_U32=m
->   CONFIG_NETDEVSIM=m
->   CONFIG_NETFILTER=y
->   CONFIG_NETFILTER_ADVANCED=y
-> -CONFIG_NETFILTER_NETLINK=m
-> +CONFIG_NETFILTER_NETLINK=y
->   CONFIG_NETFILTER_NETLINK_QUEUE=m
->   CONFIG_NETFILTER_SYNPROXY=m
->   CONFIG_NETFILTER_XTABLES=m
-> 
-> ---
-> base-commit: 1dd85662fee6e2ac580b1c4f9a0c0a7ae6e31f0e
-> change-id: 20260917-selftest_config-286bdd44b22b
-> 
-> Best regards,
+- User space applications use the standard Linux PTP interface.
+- The PTP subsystem routes IOCTLs to the MHI PHC driver.
+- The PHC driver communicates with the MHI device to get the time data.
+
+Signed-off-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+---
+Changes in v3:
+- Use mutex instead of spinlock & couple of nits (Jie).
+- Move all tsc timesync to mhi_phc.c (Mani). Moved the init part also as
+  it is easy to control from controller without mhi core dependency.
+- Couple of nits & de-register ptp driver in case of syserror and enable
+  back in mission mode (Mani)
+- use PTP_SYS_OFFSET_EXTENDED to read multiple samples and also support
+multiple clock ids by using ptp_read_system_prets & ptp_read_system_postts (Vadim Fedorenko)
+
+- Link to v2: https://lore.kernel.org/r/20260411-tsc_timesync-v2-0-6f25f72987b3@oss.qualcomm.com
+
+Changes in V2:
+- Rebases to the latest code.
+- Patch 1 (bus: mhi: host: Add support to read MHI capabilities) which
+is dependent change was brought it here as the series which this patch
+is part need to re-designed and will take time https://lore.kernel.org/all/CAFEp6-0ik4B20cRyid9w0f+UgibGciPof9HCWTJ=uBOPvHG35Q@mail.gmail.com/.
+- Link to v1: https://lore.kernel.org/all/20250818-tsc_time_sync-v1-0-2747710693ba@oss.qualcomm.com/
+
+---
+Krishna Chaitanya Chundru (5):
+      bus: mhi: host: mhi_phc: Add support for PHC over MHI
+      bus: mhi: host: Add support for 64bit register reads and writes
+      bus: mhi: pci_generic: Add support for 64 bit register read & write
+      bus: mhi: host: Export mhi_read_reg
+      bus: mhi: host: mhi_phc: Update the Time sync logic to read 64 bit register value
+
+Vivek Pernamitta (1):
+      bus: mhi: host: Add support to read MHI capabilities
+
+ drivers/bus/mhi/common.h           |  15 ++++
+ drivers/bus/mhi/host/Kconfig       |   9 +++
+ drivers/bus/mhi/host/Makefile      |   2 +
+ drivers/bus/mhi/host/init.c        |  65 +++++++++++++++
+ drivers/bus/mhi/host/internal.h    |  35 ++++++++
+ drivers/bus/mhi/host/main.c        |  14 ++++
+ drivers/bus/mhi/host/mhi_phc.c     | 161 +++++++++++++++++++++++++++++++++++++
+ drivers/bus/mhi/host/mhi_phc.h     |  21 +++++
+ drivers/bus/mhi/host/pci_generic.c |  29 +++++++
+ include/linux/mhi.h                |  11 +++
+ 10 files changed, 362 insertions(+)
+---
+base-commit: 238650ef6c7c7cca08e032527329424c9fbd70e5
+change-id: 20260411-tsc_timesync-f877a0394393
+
+Best regards,
+--  
+Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
 
