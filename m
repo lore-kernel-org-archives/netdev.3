@@ -1,202 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BAC3438024;
-	Thu, 17 Sep 2026 21:53:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828964A0157
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 21:53:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789682019; cv=none; b=oNcofWVj2lNzh1keLu+JoC1VHigZaH604lmj1kn7VU1ZOX8xQ58P4ypMFmqlR+MWEZ1VOYyz4U8So2HIBVIb4McyrOr86sVx9zihpxqV95xe2WAGl7YuCKop0cx/OSzwNNhYjYIikfrtV/5YREe32tuMD6uHp7k70bUyI8mFYBc=
+	t=1789682044; cv=none; b=ikWzDBMGVBOqamQlny10QnEjTeYSvQrS30msz3zL6thrVYOhSVXOG4g/u58izVLaYj3sfwaRB2D91Vkmts/Nq8JZOPb797wBPu2ypU7blF9erwaIi8kfNv3ZM0mOM9q2MkMYS+EDh5TDyV86xyqIZVnHIFiCraFbzllmIW4NcdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789682019; c=relaxed/simple;
-	bh=H8XrNH+fUEw3blgIV6Nt1R8Z2HHWIsq9siATBTEbpTY=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RWdoEN7n7Au84lcieQxzwMI6tsQSNIDAubLEyglLI7WlsL3e0iOF9G4430RTUHTp/eY3sJmjz8YBFGPvSsNmKl9eKYGZHgvq4kXLymd7MU8ELNcNuZzEAvyzGiINTmAjE7zkdRR1js0M/dgQ+xUbAfDaIVydhCdHnP5yey2g2pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UKn6Iv5B; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789682044; c=relaxed/simple;
+	bh=zXfio3jMRHBUYw+Fdw5tP+v4c9gAYSeRHAFZp54ZXEg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=knqMiKmfWJI2vYSfKRRmnf6VmGCyj2kIMthRtTvjh4YVNBnKioGcW2r0ZAElDhMW87j/I+Q3qEsvOdWQD3jVuy8mjEJVIBQLJ+5LOk5sizX7pd6lw9Y4mbZ2vCxjuhOtdingUZ3UQsUJnbSfOwRBimKipxkssX23nNkCJinwV4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=B/cHhhav; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UKn6Iv5B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 085721F000FF;
-	Thu, 17 Sep 2026 21:53:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789682017;
-	bh=dCWk4QMDYulxz3+qDqgM4HuxE6fTIAdbdD6Bq6SUqgg=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=UKn6Iv5BVX8PfBPi5k0SDAZm7wjh4UDyXyUyzn2iILVn+5gAfHAVz/NKeXFiOjU2H
-	 bAiasjZW0/9uGsTY5AEUqfkDVyWl2fja8NmGz1+b/ovS/MHyUTcodWMpQVMQ9YekQD
-	 ju3/VsoRiSFksyuzSPgqZxB4MV8DMCQLIlSjV0L+yEqVuygFhbCSPZF38fmGEpcHhT
-	 hMZsnaosYCqqSyG4xie9Yog7zSbu41Vk4A5V2Joeb4YF4F3y9S7tDLRcesYoA9/69/
-	 YZXqtIUllsgXv8vQnxqPSfBPVqlDiTRSKRMUcWtWpnm35kempbLVWW55+IfYwj0lUp
-	 rDToDfoUfXvIQ==
-Subject: Re: [PATCH] net: wan: fsl_ucc_hdlc: release resources on remove
-From: netdev-bot+sashiko@kernel.org
-To: lgs201920130244@gmail.com
-Cc: qiang.zhao@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Thu, 17 Sep 2026 21:53:36 +0000
-Message-ID: <178968201650.22033.96357301509901132@kernel.org>
-In-Reply-To: <20260916065136.2926089-1-lgs201920130244@gmail.com>
-References: <20260916065136.2926089-1-lgs201920130244@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="B/cHhhav"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 9C3CB4E407BD;
+	Thu, 17 Sep 2026 21:53:57 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 518DC5FF03;
+	Thu, 17 Sep 2026 21:53:57 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A0EBE11C7B078;
+	Thu, 17 Sep 2026 23:53:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789682035; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=RVssTxQ5vgUrZLRLdaleGA3EAw+f1WjUsfJeu7ykFSQ=;
+	b=B/cHhhavaDQz18JaBzY8BKWcyyfggNcvB1vpabYphY86oewjFYhyrWdV1fWuzz6yYqrvkJ
+	LiJoYKR73JqD6ThakxMp98/1eUPJ3RgEAvFdo6q8hqm73enC7LFYmI9CZ+zrBDgNqQu+KJ
+	LB/etemXNhdzNtMZS09ujspMPwlYQYjibwlwompwISFghhij5a9hOgBQQOyt+DinDhfay9
+	Nh7Dbsnr/1sPJBX5Df+YMD1pbLipQbT7JiDgQZ/AMi+4i3OGhQOZzHbuKFRBNE6df4jrS1
+	dDx/xytRzB1mvjUmZ1VoYHypGIiJPRLH53SLbZPRYish9BrA5Xlk/ung5S9PlQ==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Emil Renner Berthing <kernel@esmil.dk>,
+	Minda Chen <minda.chen@starfivetech.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Jan Petrous <jan.petrous@oss.nxp.com>,
+	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
+	Jose.Abreu@synopsys.com,
+	Nicolai Buchwitz <nb@tipi-net.de>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	PKneuper@dspace.de,
+	David Laight <david.laight.linux@gmail.com>
+Subject: [PATCH net v4 0/7] net: stmmac: More selftest-related fixes
+Date: Thu, 17 Sep 2026 23:53:31 +0200
+Message-ID: <20260917215339.2022523-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
+Hi everyone,
 
-Critical: 0 · High: 1 · Medium: 0 (1) · Low: 1 (1)
+This is V4 of stmmac selftest fixes, addressing Sashiko's issues over
+the MTU patch. This lead to the introduction of a new one. The
+dev_add_pack races have been addressed, however the double-vlan issue
+stayed there. Ovidiu is actively working on it, let's wait for his work
+to land before fixing that.
 
-- [High] Teardown ordering defect in the new code: ucc_hdlc_remove()
-  calls unregister_hdlc_device(priv->ndev) as its first action.
-- [Low] Coding style in the new code: the added
-  unregister_hdlc_device(priv->ndev) is inserted directly after the…
+Nicolai, I took the liberty of keeping your review tags on affected
+patches, let me know if this isn't ok.
 
-Pre-existing issues:
-- [Medium] Probe error-unwind asymmetry: the labels reached after
-  uhdlc_init() has already succeeded ('free_dev:' at…
-- [Low] ucc_hdlc_probe() creates a virq mapping with
-  'ut_info->uf_info.irq = irq_of_parse_and_map(np, 0);'…
+This is another round of stmmac selftest fixes, mostly about the selftests
+themselves but a few things were discovered w.r.t MTU and buffer size
+handling, see patch 5 anf 6.
 
---
+After this is merged, I consider the selftests to be now reliable enough
+to run them nightly on every stmmac series that's sent, and I'll be requiring
+clean selftests for new glue drivers.
 
-net: wan: fsl_ucc_hdlc: release resources on remove
+Since V3, the testing farm grew ! I've been running this on :
 
-The patch makes ucc_hdlc_remove() unregister the HDLC netdev, free the
-netdev after the hardware teardown, and free the separately allocated
-struct ucc_tdm before freeing the private data.  A few questions about the
-ordering and about the surrounding teardown paths below.
+ - Altera CycloneV (dwmac-socfpga, dwmac1000 IP, v3.70a)
+ - NXP imx8mp (dwmac-imx, dwmac4, v5.10a)
+ - Allwinner H2S (dwmac-sun8i, dwmac1000)
+ - Amlogic S905X3 (dwmac-meson8b, dwmac1000, v3.70a)
+ - STM32mp157a (dwmac-stm32, dwmac4, v4.20a)
+ - SiFive JH7110 (dwmac-starfive, dwmac4, v5.20)
+ - Motorcomm YT8061 (PCIe, dwmac-motorcomm, dwmac4)
+ - Qualcomm IPQ8064 (dwmac-ipq806x, dwmac1000)
+ - Altera AgileX5 (dwmac-socfpga, dwxgmac2 !) (NEW)
+ - Generic dwmac1000 (Loongson 2K0300, dwmac 3.70a) (NEW)
+ - Rockchip RK3566 (dwmac-rk, dwmac4) (NEW)
 
-> diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
-> index 809f21fb93f56..ffc8b989e33a7 100644
-> --- a/drivers/net/wan/fsl_ucc_hdlc.c
-> +++ b/drivers/net/wan/fsl_ucc_hdlc.c
-> @@ -1254,6 +1254,7 @@ static int ucc_hdlc_probe(struct platform_device *pdev)
->  static void ucc_hdlc_remove(struct platform_device *pdev)
->  {
->  	struct ucc_hdlc_private *priv = dev_get_drvdata(&pdev->dev);
-> +	unregister_hdlc_device(priv->ndev);
+It's becoming cumbersome to list the test results here, they can be
+found, updated daily, here :
 
-[Severity: High]
-Can uhdlc_close() be skipped here when the interface is administratively
-up at unbind time?
+https://minimaxwell.github.io/stmmac-ci/
 
-unregister_hdlc_device() in drivers/net/wan/hdlc.c detaches the protocol
-before unregistering the netdevice:
+Thanks,
 
-void unregister_hdlc_device(struct net_device *dev)
-{
-	rtnl_lock();
-	detach_hdlc_protocol(dev);
-	unregister_netdevice(dev);
-	rtnl_unlock();
-}
+Maxime
 
-detach_hdlc_protocol() ends with hdlc_setup_dev(), which assigns
-dev->flags directly:
+V4:
+ - Move the dev_add_pack later, to avoid potential races (sashiko)
+ - Add one more MTU fix for 8K buffer selection
+ - Ditch an extra SKB padding in patch 5.
 
-	dev->flags		 = IFF_POINTOPOINT | IFF_NOARP;
+V3:
+https://lore.kernel.org/netdev/20260911212028.1497613-1-maxime.chevallier@bootlin.com/
+ - Bail out of the EEE test if LPI is over 5 seconds
 
-That clears IFF_UP.  netif_close_many() in net/core/dev.c then drops the
-device from the close list:
+V2:
+https://lore.kernel.org/r/20260910151404.976753-1-maxime.chevallier@bootlin.com
+ - Snapshot before sending the frame for EEE, in case we immediately
+   enter LPI
+ - Also return -ETIMEDOUT instead of EINVAL
 
-	list_for_each_entry_safe(dev, tmp, head, close_list)
-		if (!(dev->flags & IFF_UP))
-			list_del_init(&dev->close_list);
+V1: https://lore.kernel.org/lkml/20260909074740.1247762-1-maxime.chevallier@bootlin.com/
 
-so ndo_stop (uhdlc_close()) is not called during unregistration.  Since
-uhdlc_close() is the only place that does:
+Maxime Chevallier (7):
+  net: stmmac: selftests: Support running selftests on DSA conduits
+  net: stmmac: selftests: Validate EEE based on the actual LPI timer
+    value
+  net: stmmac: selftests: Check the dev->features for S-TAG offload
+    testing
+  net: stmmac: selftests: Capture all packets for vlan checks
+  net: stmmac: dwmac4: Use the correct bufzise when the len is exactly
+    8K
+  net: stmmac: size the RX buffers from the frame length, not the MTU
+  net: stmmac: selftests: Account for alignment shift on dwmac1000 for
+    Jumbo test
 
-	napi_disable(&priv->napi);
-	...
-	free_irq(priv->ut_info->uf_info.irq, priv);
-
-does that leave ucc_hdlc_irq_handler() still installed on the virq, with
-dev_id == priv, while the code below frees the DMA rings, the netdev and
-priv?  The handler starts with:
-
-	struct ucc_hdlc_private *priv = (struct ucc_hdlc_private *)dev_id;
-	struct net_device *dev = priv->ndev;
-
-Would it be safer to close the device through the networking core (while
-IFF_UP and hdlc->proto are still intact) before calling
-unregister_hdlc_device()?  A related side effect is that the
-request_irq()/free_irq() pair stays unbalanced, so a re-bind would get
--EBUSY from request_irq() in uhdlc_open() on the same non-shared virq.
-
-Reproducer would be: attach a protocol via SIOCWANDEV, ip link set hdlc0
-up, then unbind the platform device via sysfs.
-
-[Severity: Low]
-This isn't a bug, but the new call sits directly after the declaration of
-priv with no blank line between the declaration and the first statement,
-which checkpatch.pl flags as "Missing a blank line after declarations".
-
->  
->  	uhdlc_memclean(priv);
->  
-> @@ -1266,6 +1267,8 @@ static void ucc_hdlc_remove(struct platform_device *pdev)
->  		iounmap(priv->utdm->siram);
->  		priv->utdm->siram = NULL;
->  	}
-> +	free_netdev(priv->ndev);
-> +	kfree(priv->utdm);
->  	kfree(priv);
-
-[Severity: Medium]
-This isn't a problem introduced by this patch, but while the two teardown
-sites are being brought into agreement: the probe error labels reached
-after uhdlc_init() has already succeeded never call uhdlc_memclean():
-
-free_dev:
-	free_netdev(dev);
-undo_uhdlc_init:
-	if (utdm)
-		iounmap(utdm->siram);
-unmap_si_regs:
-	if (utdm)
-		iounmap(utdm->si_regs);
-free_utdm:
-	if (uhdlc_priv->tsa)
-		kfree(utdm);
-free_uhdlc_priv:
-	kfree(uhdlc_priv);
-
-If alloc_hdlcdev() returns NULL or register_hdlc_device() fails, does the
-kfree(uhdlc_priv) drop the only handles to what uhdlc_init() allocated,
-i.e. the two coherent BD rings, the coherent RX/TX data buffer, the QE
-MURAM parameter area plus the riptr/tiptr MURAM allocations, the
-ucc_fast_private from ucc_fast_init(), and the rx_skbuff/tx_skbuff
-arrays?
-
-The commit message says:
-
-    The probe failure paths release these resources, but the remove path
-    does not.
-
-Is that accurate only for the netdev and the ucc_tdm struct?  The label
-name undo_uhdlc_init suggests it undoes uhdlc_init(), while the code
-under it does not call uhdlc_memclean().
-
-[Severity: Low]
-This is a pre-existing asymmetry rather than something added here, but
-ucc_hdlc_probe() creates the virq mapping with:
-
-	ut_info->uf_info.irq = irq_of_parse_and_map(np, 0);
-
-and neither the probe error labels nor ucc_hdlc_remove() call
-irq_dispose_mapping().  Should the mapping acquired at probe time be
-disposed in the remove path being completed here, given that
-request_irq()/free_irq() are balanced by uhdlc_open()/uhdlc_close() but
-the mapping itself is not?
-
->  
->  	dev_info(&pdev->dev, "UCC based hdlc module removed\n");
+ .../ethernet/stmicro/stmmac/dwmac4_descs.c    |   4 +-
+ drivers/net/ethernet/stmicro/stmmac/hwif.h    |   2 +-
+ .../net/ethernet/stmicro/stmmac/ring_mode.c   |   4 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c |  20 +--
+ .../stmicro/stmmac/stmmac_selftests.c         | 153 ++++++++++++++----
+ 5 files changed, 139 insertions(+), 44 deletions(-)
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260916065136.2926089-1-lgs201920130244%40gmail.com
+2.55.0
+
