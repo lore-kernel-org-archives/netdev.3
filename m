@@ -1,187 +1,82 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB4B4908DB
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 20:26:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983E94E9C24;
+	Thu, 17 Sep 2026 20:30:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789676804; cv=none; b=LrdAuACR0CshYYSWwTyZplCzNHjtLN/kDV8g6hxGPayTCWN30u6TPRdg243H0aWTpbVrV9Lcqk+AURD8/oym3ymUkqTgJzRLdFc+0bFhnjvcajVbl0Cp5RFHvH30RH9RIVU2KIxjE9PL3Z2yzC1OG8InPbp4vnpUTIvH0k7yrKA=
+	t=1789677054; cv=none; b=Y1XSKoi8tBPbbcu/ZVtwxd2BM5WlbNjC6Aj4pbTpEcNT2Cm0Q3ikYYwkFPgHsIJ+cU010hKxn92av42HZQGVEfoL/pds9UqHsykKSPBR504yjcHTt4VVWx0zsiLETAWAhLbzWJo7Nd6FUqgGu8o9MXdwsPsbdrt1hT8Nf87T2M8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789676804; c=relaxed/simple;
-	bh=/wm6upxZhNKjCNldD9EE0n5yIdNuPgK9lrIwGU6QUEc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=lNsLj7UzrpoAQqh8JP+KreZXPNGB3R1u2Q/hS20OUzoSpnHVIo8I2WlmzPec9WmmmrntRTCmClbzQD4rZBDtTpg00v6TScUNJT5YVIyy1xzNJRzcZOgCatsiJ93d6FIUZLjWuqq0mmb61XA57t4w+aKtiGAZ5QU/HEepoafb7kQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yi6MDRhJ; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789677054; c=relaxed/simple;
+	bh=qelcaST8Tkos00jpvGeJ3BcBVENjhyvUIOgwPGd2rfQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EXdJgvHYD1WuSowPE6Y5mydckrfc3MLgoo6HBsgGMKvkd6rRasxVzkt4K3EWhnZjr7uaJS2TbtJjZh0WMsN8Af3YFJc9rwRUzhFzb7U4gbjUehjXw+3lGM3hqDrGWfWxlm1X2vChyohylEF9JZ+XlMJRRnz0e0E34Gi83+TwCIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=J2R/sIpp; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yi6MDRhJ"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2caced6038eso11358265ad.0
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 13:26:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789676802; x=1790281602; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=cSGFqbf3XjQKoM9IeVQurnJH7q0lWkBYjjfyEjg57UQ=;
-        b=Yi6MDRhJ9LrvWVAkj858t/31R0nZadrF8vfYStOZG6VVyMneMCehw1cRw5T1Ukg2If
-         c6/LHD1Rt9lbG6IlNFhtXa69i8tWPEYRQxfT2z4DrU1AKEejkn9mlVbRUADkQno0ixiD
-         zHCMLkudWX7+7bM1IroDrKu9LWJlrr4tO7+P7xZDnVnfQwB+qJAl9oE5GLtk4RkaEK2P
-         dTn27ty04JD/u5DcpT0EE39WRj9GQG0QeRw008o8tJuL6aCMbJv9G8aai/sH0NZpO142
-         51QUNNOYC5rwN42gTi8hK8/HWiRsgmalboFahfbRy/h9m/EiDCVKWC6U6mjXdkEgkjET
-         vgIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789676802; x=1790281602;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=cSGFqbf3XjQKoM9IeVQurnJH7q0lWkBYjjfyEjg57UQ=;
-        b=zdYkPRARK3LEiPckQ8z3q6cL6Z3dea9YgCQkn7jaJRZ0a/fap9jYs0drDYjNnin+q9
-         KE8G2KZXPpq65pq7g+FrqU4oBfwFdO0vScEhY+/rnQBcFVkWgsFxiNsrUrgb2xtaftq0
-         iCFVINN7dq0Ib63zsfd6+FlhljoMPLUppaJT8UE9QEK3/xVBu8wFF/Cvk5cZ6DttTuWC
-         S0OWxHzxmAsokq9Q9FmapOSTbucirIcBgk9h230jYluMqrcsMbh8Ha1x5rdB6rGjgm6P
-         s1gFNCglXQbf794vEig1CvPUzRmBdZjj3G7Elbzz4n+rdsa3pvrvyGDCuVevcWRan6NX
-         pSXQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzzx1wJ7geMFG87HP0Uv+1AfsmhKgyQzc0xUSIgtI4UKprwo7H2XPBMyhB7T2486jQqedW/HwQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++l7WHm848YR+XLbCV2y9fQ+W08HR/CObkGrIZGrD9qlaD+TXaVS
-	Tm3P4VVEjpijJENXat1rqUHoTr6csHZCqSDkyzH4etaGu/wzmzEQIO7Q
-X-Gm-Gg: AYBFou3/TlOnpxb0RC1/WirhCgcXhtbNWq6SjE0pGpJq80jd+iellsrBRXUm4WFvIXe
-	rp4XxKet0rp8B8v78P5Y2dz2CjX5ulP7vbSmpJCzf6PMXvYIrAMIBpl6gAWN1z1+IWBkonxPevG
-	yTGxz38FCZvDR/ey13xDBpsKnoMc/slzYWrq28b2EkU/JmJq7UUamtxaIAKTEWDVxiROtbIDr14
-	kc4UzweCVORGehqKC9hnPF+C1CdbkMwLx0cWdqCILApE45M1FDqomYD6lnTbVHcDNMGykk54t2a
-	ZiHWvgJ0075BtKy7D4EmOeZroHtzmx/ZXXklqXoS2HC1aAxBI5mdVtiK7kkikGcKlURr7U1J4ny
-	NdwvWOwuvkI2WgYdVBqtXxlxdwgHJQ3PD8jUTX5bFrh7cQeT4D809YEclq+848TXsSthj2FAZ0P
-	qMrZc2lqSVjXBcIpFtBqiMqvJoBVym+Wi3wjbmmXUoL8DBeibfbYV3aGnv3F1wy4895sJatkd7P
-	OZ5q/V8r2zDtlrf19r4p57j0fcSD4BmOhSEnA==
-X-Received: by 2002:a17:903:1a4e:b0:2d8:d4d2:d13a with SMTP id d9443c01a7336-2dd9ca3f373mr62050225ad.22.1789676801756;
-        Thu, 17 Sep 2026 13:26:41 -0700 (PDT)
-Received: from localhost ([13.93.150.60])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33bf5a93f1fsm17829614eec.11.2026.09.17.13.26.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Sep 2026 13:26:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="J2R/sIpp"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id AF61F1A093E;
+	Thu, 17 Sep 2026 20:30:48 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 76C7D5FF03;
+	Thu, 17 Sep 2026 20:30:48 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2C72011C7B078;
+	Thu, 17 Sep 2026 22:30:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789677047; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=7y6mSAFwBW+yGS75IelSE+K+pLmoiMZHEY9lXNLdO58=;
+	b=J2R/sIppRxvsfwzwlXqBtbmCj2+YopQCzgtdwbrcIe2w+iyJOJMJlw2Y1DofPriWrWOJmx
+	ALmlZo1uPRy9PT1tRfmJNkdVKQ1o2TNSxEPRUdBFh1nDSbwGuDxf///6kjg7TD8oMqVu09
+	nB5VNoIYoopvJ8SkOxEa5SY0qvd1NhgUKGtFSQFmepz/T6VgpivG1kF8dC1QWBQkEOdRjC
+	459hTJ5bY2xBLyVjKQ7yCUtf5MgYTff4S8QHiHv0fj+euWXsTG6a5FtMz5+ZXS0PiF5LKs
+	k9XYLw1NXostLonKG6Gz55F/YKw4jqIvES8aIcjWovmqbFwBGJNBBgSY+8by4w==
+Message-ID: <65b2eff4-6818-4cfa-a0e7-d48729e0cd9e@bootlin.com>
+Date: Thu, 17 Sep 2026 22:30:43 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: phy: reject attach while the PHY driver is in
+ transition
+To: Aleksei Sviridkin <f@lex.la>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260914204200.2743251-1-f@lex.la>
+ <6e82dc04-a68d-4c54-a6f0-a13c04fa2eef@bootlin.com>
+ <20260917183345.37604-1-f@lex.la>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260917183345.37604-1-f@lex.la>
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 17 Sep 2026 20:26:39 +0000
-Message-Id: <DLHVH7E0GSI7.EEUHJ5ZOUYIM@gmail.com>
-Cc: <dsahern@kernel.org>, <idosch@nvidia.com>, <davem@davemloft.net>,
- <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
- <horms@kernel.org>, <rdunlap@infradead.org>, <netdev@vger.kernel.org>,
- <aajith@arista.com>, <roopa@nvidia.com>, <jhpark1013@gmail.com>,
- <corbet@lwn.net>, <skhan@linuxfoundation.org>, <shuah@kernel.org>,
- <linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <alex.aring@gmail.com>,
- <linux-wpan@vger.kernel.org>, <linux-bluetooth@vger.kernel.org>
-Subject: Re: [PATCH net-next v2 1/2] ipv6: update NUD_FAILED neighbors from
- NA messages
-From: "Lawrence Lee" <lfqlee314@gmail.com>
-To: <netdev-bot+sashiko@kernel.org>
-X-Mailer: aerc 0.17.0
-References: <6596966f734f3d416bfa83722f7a595149bcc3f8.1789448374.git.lfqlee314@gmail.com> <178966456087.22033.11671220306303617581@kernel.org>
-In-Reply-To: <178966456087.22033.11671220306303617581@kernel.org>
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu Sep 17, 2026 at 5:02 PM UTC,  wrote:
+Hi,
 
-> > diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
-> > index 90cd5d8525698..84d70c09205a2 100644
-> > --- a/net/ipv6/ndisc.c
-> > +++ b/net/ipv6/ndisc.c
->
-> [ ... ]
->
-> > @@ -972,14 +982,18 @@ static enum skb_drop_reason ndisc_recv_ns(struct =
-sk_buff *skb)
-> > =20
-> >  static int accept_untracked_na(struct inet6_dev *idev, struct in6_addr=
- *saddr)
-> >  {
-> > +    /* For any given neighbor IP address, consider it an untracked nei=
-ghbor if
-> > +     * it is absent from the neighbor cache or if it has a NUD_FAILED =
-entry in
-> > +     * the neighbor cache
-> > +     */
->         ^^^^
->
-> [Severity: Low]
-> This isn't a bug, but this comment block in accept_untracked_na() is
-> indented with spaces while the switch statement right below it uses tabs,
-> so checkpatch reports "ERROR: code indent should use tabs where possible"=
-.
->
-> The comment also describes what the caller considers "untracked", based o=
-n
-> the neighbour cache, but accept_untracked_na() only reads the sysctl valu=
-e
-> and never sees the neighbour entry. Would it fit better next to
->
-> 	neigh_untracked =3D !neigh || neigh_failed;
->
-> in ndisc_recv_na(), where the RFC 9131 decision table already documents t=
-he
-> same concept?
-This comment will be removed as per maintainer feedback.
+On 9/17/26 20:33, Aleksei Sviridkin wrote:
+> Fine, v2 will target net-next.
+> 
+> Out of curiosity, since I will run into this again: is the line
+> "needs instrumentation to reproduce -> net-next" about the window
+> being unreachable in practice, or about nobody having reported it?
 
+Well there are lots of patches recently that fix bugs that are never
+seen, and only show-up if some oddball error path is taken, under
+conditions almost impossible to encounter in real life or even
+reproduce without instrumenting the code to force these conditions.
 
-> [Severity: Low]
-> Is the new FAILED handling covered by an in-tree test at this point in th=
-e
-> series? As of this commit, ndisc_unsolicited_na_test.sh and
-> arp_ndisc_untracked_subnets.sh only seed absent entries, so the whole
-> FAILED to STALE half of the knob, including the mode 2 same-subnet
-> qualification, would still pass if it were broken.
->
-> For the record, this looks resolved later in the same series: the follow-=
-up
-> patch "selftests: net: test untracked NA recovery of FAILED neighbors"
-> (7be3b5fcfd3f9adb7489aff8013c6d4beacbf20c) seeds entries with
->
-> 	ip neigh replace ... nud failed extern_learn
->
-> and adds the failed combinations covering every row of the new table,
-> including the in-prefix and out-of-prefix mode 2 cases. Mentioning it her=
-e
-> only for completeness.
->
-The tests are added in the next patch of this series
+> The crash itself came from a real board; the msleep() only made the
+> race deterministic instead of occasional.
 
-> [Severity: Medium]
-> Why does the gateway address handed to rt6_clean_tohost() now depend on t=
-he
-> previous NUD state of the entry? Before this patch the same "router to
-> host" event always flushed routes keyed by saddr.
->
-> fib6_clean_tohost() in net/ipv6/route.c matches the argument against the
-> gateway of RA-installed routes and against cached exceptions:
->
-> 	if (((rt->fib6_flags & RTF_RA_ROUTER) =3D=3D RTF_RA_ROUTER) &&
-> 	    nh->fib_nh_gw_family && ipv6_addr_equal(gateway, &nh->fib_nh_gw6))
-> 		return -1;
->
-> so it expects the address of the node that stopped being a router, which =
-is
-> unrelated to whether the cache entry happened to be in NUD_FAILED.
->
-> When saddr differs from msg->target, and that is allowed since RFC 4861 4=
-.4
-> only requires the NA source to be an address of the sending interface (a
-> router advertising a global target from its link-local source, or the pro=
-xy
-> NA case handled a few lines above via pneigh_lookup()), the FAILED recove=
-ry
-> path flushes routes keyed by msg->target while every other path flushes
-> routes keyed by saddr. Can both be right for the identical event?
->
-> If saddr was the wrong key all along, would it make sense to fix that
-> separately for all cases, with a Fixes: tag, rather than changing it only
-> for the FAILED path? The changelog describes only the FAILED to STALE
-> transition and does not mention this change of key.
-This change will be removed in the next version of the series as=20
-discussed in another thread:=20
-https://lore.kernel.org/all/DLHV5GF21AY4.3GAK241ZI2UR8@gmail.com/
+This is something you should say in the commit log then, it's important
+to know this was seen in real life. If that's the case, then yes it's
+'net' material instead of 'net-next'.
+
+Maxime
