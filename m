@@ -1,346 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB0E5AA66F;
-	Thu, 17 Sep 2026 15:02:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CA635DA41;
+	Thu, 17 Sep 2026 15:03:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789657359; cv=none; b=gAVWEfyfmFlvZwUIzmRvltEjBrMjJVkKDB7cC2U5DbWZzfavKmf10u60Ncw7jUmVI+7ZAuF5qFQMBiGyQQFqHIXQ/0o45sKVvCbvL3/Yvlb+77vBc77nu84luQYY+4U5cXsBhfyOWyY6RzFwnqj3UjeqEbvbGaKffA8BqUPpju8=
+	t=1789657407; cv=none; b=rfcZaDftXYbCOwLlveOpEfQ8z90ib6cZ0ejaJ6XBJchdtqPx44MUECBb9kwM/9IQHuJjQLuvI+sAgGL9LLlr6kN8s+zAWfwN16pnB4YAhXaCoJ7KK2+ecbdKB4T+CtzjMFJEduPGlyQl5Xw5agpIhTog15LMj521JlwnLsO2DRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789657359; c=relaxed/simple;
-	bh=D4UV4jtkrbeudSFJf50Yj968Ng6RK3L/H77z9dKW5KI=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nlcLdXTLP0bdJ5E5cnJu54fmpQSDg14DpaUBz46Qe31WTev4fGUO5Yo2uRdispxHqA7WgSMxeFH/NWhJ8z+eg0zBb0baEsWULrnFOiaMonsqoVLk+ueRW1Tj0nsa6ocbOzkPwtIa4VFPn8m8xoz8CRxuetAo7G2ZK2gBfM4VKYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=egGN8BF/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789657407; c=relaxed/simple;
+	bh=xP8KOV9mibGmwWpNu4BvT0HthivXKZNQ8gu5RcidnzA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=DOzBrLzsDHqTAP2RMu6FsUAmcWur7zZJkG8PLUpgBzVuUWCEwUW3Bgxr2G8ovqOzoti51U0xtqyIXI5SxIl3Fu4XQ3DD8a7r9eBxY67bRkhHq9hPd0ETpg9hgQP9KOIHx7tWTsLH+6EN5Zd68eurY1ssLZIdHk93vTlVrQBbvqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=XzhyC205; arc=none smtp.client-ip=101.71.155.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="egGN8BF/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68C4F1F000FF;
-	Thu, 17 Sep 2026 15:02:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789657322;
-	bh=siVLCPf9p0DYKKUBIgL95NVPIdDHjBjG/65Rszfi3fE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=egGN8BF//xBV45NlsnJyRMixpLIjN2ER99xRVRv1lY0Sld0sj8SfcbtNfMVfB6Ebq
-	 431oGqXWb1GM5QmzIkQ2APjwKMunnd0T3V69Ejq+inup7j2c3ADpT0/IgNPrqcAzqL
-	 DUUiXrDteL4E/6lK/B90e0ex6vqie8weKs7Wrt0iasoDroWkQeCvY2gW7cYAfNScZ3
-	 URlvvdYNYLhPrBu2IiTV+ptO3u/xyEnOdD08DyltLGQyUR3hQApUDFbZJePKStVhSe
-	 yJIObowHrv/1150FoD3av1cEZoU+vrbT20GKhuAuGVn9Y8e2SfIx6nRYqeg/jIBzfk
-	 rWvcYfeATkyOQ==
-Subject: Re: [PATCH net-next v9 15/15] dpll: sit9531x: allow the device tree
- to override two board facts
-From: netdev-bot+sashiko@kernel.org
-To: arouhi@sitime.com
-Cc: jiri@resnulli.us, vadim.fedorenko@linux.dev,
- arkadiusz.kubalewski@intel.com, ivecera@redhat.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, cjubran@nvidia.com,
- pabeni@redhat.com, Oleg.Zadorozhnyi@devoxsoftware.com,
- devicetree@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kuba@kernel.org
-Date: Thu, 17 Sep 2026 15:02:00 +0000
-Message-ID: <178965732099.22033.18013891704186374305@kernel.org>
-In-Reply-To: <20260915000015.80480-16-arouhi@sitime.com>
-References: <20260915000015.80480-16-arouhi@sitime.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="XzhyC205"
+Received: from PC-202605011814.localdomain (unknown [222.191.246.242])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 4e2966651;
+	Thu, 17 Sep 2026 23:02:56 +0800 (GMT+08:00)
+From: Runyu Xiao <runyu.xiao@seu.edu.cn>
+To: anthony.l.nguyen@intel.com
+Cc: alessio.bogani@elettra.eu,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	richardcochran@gmail.com,
+	horms@kernel.org,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	runyu.xiao@seu.edu.cn,
+	jianhao.xu@seu.edu.cn
+Subject: [PATCH net v2] igb: initialize PTP state before registering PHC
+Date: Thu, 17 Sep 2026 23:02:47 +0800
+Message-Id: <20260917150247.2562991-1-runyu.xiao@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cd12af33-ed01-4eca-88e3-703b59c05453@intel.com>
+References: <cd12af33-ed01-4eca-88e3-703b59c05453@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0aa0afe464bc03a1kunmedc4fb9b36b0e0
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZSh9DVhpDSB8YGB4YSB8YTFYeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVUJCSU
+	5LVUpLS1VKQktCWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=XzhyC205B32Mf5pmI+JBcc79zrNKxHnWA4LYoiFwnF/aeRxZa8X/houtANseOcnJRLeobbzXLSdIv6cw6dfTyruIm1O542KeZIvzaykMYQVxbVuCY8CSZs6Ie3fG2sisR7QklGdmDbm7DVZ9fU7btJpwAmvUdql4uUJuae7Kl0w=; c=relaxed/relaxed; s=default; d=seu.edu.cn; v=1;
+	bh=CVA/CWhw4JetoLTPs+u2MtnfUXnMQ1sROVyIw6FlqyI=;
+	h=date:mime-version:subject:message-id:from;
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider:
+igb_ptp_init() currently initializes the PTP lock, work items,
+timestamp configuration, and timecounter after ptp_clock_register().
+The PHC is published by that call, so PTP callbacks and timestamp
+interrupts can run before those objects are ready.
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 1 (1)
+Initialize the complete PTP state before registering the PHC. Skip the
+setup when CONFIG_PTP_1588_CLOCK is disabled, since the PTP registration
+helper is then a no-op. If PHC registration fails, cancel the work items
+queued by igb_ptp_reset() or a timestamp interrupt before returning.
 
-- [High] The new parse-time band check in sit9531x_parse_board_config()
-  (drivers/dpll/sit9531x/core.c:3912-3921, via sit9531x_fvco_in_band()…
-- [Medium] sit9531x_parse_board_config()
-  (drivers/dpll/sit9531x/core.c:3934-3964) pre-fills out_pll_map[] with…
-- [Low] sit9531x_parse_board_config() reads `sitime,pll-fvco` with a
-  fixed count (device_property_read_u64_array(..., SIT9531X_NUM_PLLS) at…
+Fixes: b888c510f7b3 ("igb: Avoid starting unnecessary workqueues")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/netdev/20260830154912.2712900-1-runyu.xiao@seu.edu.cn/
+Assisted-by: LLM
+Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
 
-Pre-existing issues:
-- [Low] The kernel-doc-style header of sit9531x_get_fvco()
-  (drivers/dpll/sit9531x/core.c:1488-1500) describes the function as…
+---
+v2:
+- Restore all PTP state initialization before PHC registration.
+- Skip PTP setup when CONFIG_PTP_1588_CLOCK is disabled.
+- Cancel both PTP work items when PHC registration fails.
+---
+ drivers/net/ethernet/intel/igb/igb_ptp.c | 31 +++++++++++++++---------
+ 1 file changed, 19 insertions(+), 12 deletions(-)
 
---
-
-dpll: sit9531x: allow the device tree to override two board facts
-
-This adds sit9531x_parse_board_config(), which lets a board state its
-per-PLL VCO frequency via sitime,pll-fvco and its output-to-PLL routing
-via sitime,output-pll-map, both optional, plus a per-PLL band check on
-the supplied Fvco values.  The parser is called from sit9531x_dev_probe()
-just after the reset GPIO is taken.
-
-> diff --git a/drivers/dpll/sit9531x/core.c b/drivers/dpll/sit9531x/core.c
-> index b15859890caa7..51f7d8a4ea445 100644
-> --- a/drivers/dpll/sit9531x/core.c
-> +++ b/drivers/dpll/sit9531x/core.c
-> @@ -3862,6 +3862,108 @@ static u64 sit9531x_derive_clock_id(struct sit9531x_dev *sitdev)
->  	return clkid;
->  }
->  
-> +/*
-> + * Does an Fvco fall in the band the given PLL runs in?
-> + *
-> + * The two bands are disjoint, and which one applies is fixed per PLL, so a
-> + * single envelope from the bottom of the low band to the top of the high
-> + * one would accept both the ~1 GHz gap between them and a rate belonging to
-> + * the other PLL's band.
-> + */
-> +static bool sit9531x_fvco_in_band(u8 pll_idx, u64 fvco)
-> +{
-> +	if (pll_idx == 1 || pll_idx == 3)
-> +		return fvco >= SIT9531X_FVCO_HIGHBAND_MIN &&
-> +		       fvco <= SIT9531X_FVCO_HIGHBAND_MAX;
-> +
-> +	return fvco >= SIT9531X_FVCO_LOWBAND_MIN &&
-> +	       fvco <= SIT9531X_FVCO_LOWBAND_MAX;
-> +}
-> +
-> +/*
-> + * Board-config overrides for fixed efuse/blob routing the chip registers do
-> + * not describe unambiguously.  Absent properties leave pll_fvco[] zeroed
-> + * (derive from DIVN) and out_pll_map_valid false (use the OUT_MAP registers).
-> + */
-> +static void sit9531x_parse_board_config(struct sit9531x_dev *sitdev)
-> +{
-> +	u32 map[SIT9531X_MAX_OUTPUTS];
-> +	int n, i, rc;
-> +
-> +	if (device_property_present(sitdev->dev, "sitime,pll-fvco")) {
-> +		rc = device_property_read_u64_array(sitdev->dev,
-> +						    "sitime,pll-fvco",
-> +						    sitdev->pll_fvco,
-> +						    SIT9531X_NUM_PLLS);
-
-[Severity: Low]
-
-Is an oversized sitime,pll-fvco silently truncated here?  This is a
-fixed-count read and only the return value is checked, so for
-device-tree firmware it reaches of_property_read_u64_array() with
-sz_min = 4 and sz_max = 0, and of_find_property_value_of_size() only
-rejects a too-long property when max is non-zero:
-
-	if (max && prop->length > max)
-		return ERR_PTR(-EOVERFLOW);
-
-A property with five or more cells then returns success, the first four
-are applied and the surplus is dropped without a diagnostic.  A short
-array is correctly rejected with -EOVERFLOW, so only the long case goes
-unreported.  Would device_property_count_u64() plus a count check be
-more consistent with the map path below, which does validate the count,
-and with the comment that mentions guarding against a wrong cell count?
-
-[Severity: Low]
-
-This isn't a bug introduced by this patch, but once pll_fvco[] can be
-populated from DT, the header of sit9531x_get_fvco() no longer describes
-what the function does.  It says:
-
- * Fvco = Fref * DIVN, where DIVN comes from sit9531x_divn_static() and
- * Fref = xtal_freq << doubler.  DIVN is the steady-state Fvco/Fref
- * target programmed by the NVM blob and is authoritative in both
- * free-run and sync modes.
-
-while the first branch of the body returns the override without reading
-DIVN at all:
-
-	if (pll_idx < SIT9531X_NUM_PLLS && sitdev->pll_fvco[pll_idx]) {
-		*fvco = sitdev->pll_fvco[pll_idx];
-		return 0;
-	}
-
-Both the header and that branch predate this commit, which only adds the
-parser that fills pll_fvco[].  Could the header mention the override
-while the surrounding comments are being touched anyway?
-
-> +		if (rc) {
-> +			dev_warn(sitdev->dev,
-> +				 "invalid sitime,pll-fvco (%d), ignoring\n",
-> +				 rc);
-> +			memset(sitdev->pll_fvco, 0, sizeof(sitdev->pll_fvco));
-> +		}
-> +
-> +		/*
-> +		 * The override is used verbatim by the divider math, so an
-> +		 * implausible value (units typo, wrong cell count worked
-> +		 * around with zeros) must not silently misprogram DIVO.
-> +		 * Anything outside both VCO bands is dropped with a warning
-> +		 * rather than trusted.
-> +		 */
-> +		for (i = 0; i < SIT9531X_NUM_PLLS; i++) {
-> +			u64 f = sitdev->pll_fvco[i];
-> +
-> +			if (f && !sit9531x_fvco_in_band(i, f)) {
-> +				dev_warn(sitdev->dev,
-> +					 "PLL%c Fvco override %llu Hz is outside the band that PLL runs in, ignoring\n",
-> +					 'A' + i, f);
-> +				sitdev->pll_fvco[i] = 0;
-> +			}
-> +		}
-> +	}
-
-[Severity: High]
-
-Does this check reject the value in the binding's own example?
-sit9531x_fvco_in_band() fixes PLLA and PLLC to the low band, whose top
-is SIT9531X_FVCO_LOWBAND_MAX (5898240000), and
-Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml has:
-
-            sitime,pll-fvco = /bits/ 64 <6900000000 0 0 0>;
-
-Index 0 is PLLA, so f = 6900000000 fails sit9531x_fvco_in_band(0, f) and
-this loop sets pll_fvco[0] = 0 after only a dev_warn.  A device tree
-copied from the documentation then gets the register-derived path
-instead of the override.
-
-Zeroing the entry does not mean "ignore the property" in the consumers,
-it means "derive from DIVN".  sit9531x_get_fvco() falls through to
-sit9531x_divn_static() and returns -ENODATA when DIVN is unprogrammed,
-and sit9531x_output_divo_calc() turns that into -ENODEV:
-
-	rc = sit9531x_get_fvco(sitdev, pll_idx, &fvco);
-	if (rc)
-		return rc == -ENODATA ? -ENODEV : rc;
-	if (!sitdev->pll_fvco[pll_idx]) {
-		if (fvco < fvco_min)
-			fvco = fvco_min;
-		else if (fvco > fvco_max)
-			fvco = fvco_max;
-	}
-
-So for the documented example the free-run case the commit message
-describes either fails with -ENODEV or falls back to a DIVN-derived rate
-clamped to at most 5.89824 GHz, and DIVO is then computed from
-5.89824e9 rather than 6.9e9 (roughly 17 percent off) while the write is
-reported as success.
-
-The two consumer comments added earlier in the series state the opposite
-intent.  sit9531x_get_fvco() says:
-
-	 * DT board-config override: some configs (e.g. an INTSYNC PLL)
-	 * run a VCO that Fref*DIVN does not reproduce.  When the board
-	 * supplies the measured VCO, use it verbatim.
-
-and sit9531x_output_divo_calc() says the override is the source of truth
-"e.g. a chip variant that runs out of the documented band" and therefore
-skips the band clamp in that case, which after this patch can never
-happen.
-
-Should the band check warn but keep the board value, or should the
-binding example, the per-index schema constraints and those two consumer
-comments be corrected in the same patch?  As it stands the case the
-property exists for is the one case that is dropped.
-
-> +
-> +	if (!device_property_present(sitdev->dev, "sitime,output-pll-map"))
-> +		return;
-> +
-> +	/*
-> +	 * Any 1..MAX_OUTPUTS length is accepted so the 8-output SiT95317 need
-> +	 * not pad to 12; variant detection has not run yet and entries past
-> +	 * the detected num_outputs are never indexed.  Trailing entries of a
-> +	 * short map must read as unmapped rather than 0 (== PLLA), which
-> +	 * would mark unrouted outputs active in sit9531x_out_state_fetch().
-> +	 */
-> +	memset(sitdev->out_pll_map, SIT9531X_OUT_PLL_UNMAPPED,
-> +	       sizeof(sitdev->out_pll_map));
-> +
-> +	n = device_property_count_u32(sitdev->dev, "sitime,output-pll-map");
-> +	if (n <= 0 || n > SIT9531X_MAX_OUTPUTS ||
-> +	    device_property_read_u32_array(sitdev->dev, "sitime,output-pll-map",
-> +					   map, n)) {
-> +		dev_warn(sitdev->dev,
-> +			 "invalid sitime,output-pll-map, ignoring\n");
-> +		return;
-> +	}
-
-[Severity: Medium]
-
-Can a map shorter than the part's output count silently remove DPLL
-output pins?  The only length test is n <= 0 || n > SIT9531X_MAX_OUTPUTS,
-and out_pll_map_valid is then set unconditionally, so entries from n to
-num_outputs - 1 stay at 0xFF and are trusted as real routing
-information.
-
-sit9531x_out_state_fetch() takes the unmapped branch and returns before
-the OUT_MAP_LO/HI scan that would have found the routing:
-
-	if (sitdev->out_pll_map_valid) {
-		u8 m = sitdev->out_pll_map[index];
-
-		if (m < SIT9531X_NUM_PLLS) { ... } else {
-			out->pll_idx = 0;
-			out->routed = false;
-			out->enabled = false;
-		}
-		return 0;
-	}
-
-and sit9531x_dpll_pin_is_registrable() then refuses the pin:
-
-	return sitdev->out[index].pll_idx == sitdpll->id &&
-	       sitdev->out[index].routed;
-
-So an accidentally truncated map (8, or even 1, entry on the 12-output
-SiT95316) drops those pins with no diagnostic, while a bad per-entry
-value below is rejected loudly.
-
-The binding also states a different contract for the same property.
-Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml declares
-minItems: 8 / maxItems: 12, then maxItems: 8 for sitime,sit95317 and
-minItems: 12 for sitime,sit95316, i.e. an exact length per variant,
-while the comment above says any 1..MAX_OUTPUTS length is accepted.  In
-the other direction a 12-entry map on a SiT95317 is accepted and entries
-8..11 are ignored without comment.
-
-Would it work to move the sit9531x_parse_board_config() call after
-sit9531x_match_variant() and require n == info->num_outputs (or warn),
-so the per-variant length the binding specifies can actually be checked?
-
-> +
-> +	/*
-> +	 * The binding allows only 0-3 and 255 per entry.  A stray value
-> +	 * would silently unroute an output (m >= SIT9531X_NUM_PLLS reads
-> +	 * as unmapped in sit9531x_out_state_fetch()), so reject the whole
-> +	 * property loudly instead.
-> +	 */
-> +	for (i = 0; i < n; i++) {
-> +		if (map[i] >= SIT9531X_NUM_PLLS &&
-> +		    map[i] != SIT9531X_OUT_PLL_UNMAPPED) {
-> +			dev_warn(sitdev->dev,
-> +				 "sitime,output-pll-map entry %d is %u (must be 0-3 or 255), ignoring map\n",
-> +				 i, map[i]);
-> +			return;
-> +		}
-> +	}
-> +
-> +	for (i = 0; i < n; i++)
-> +		sitdev->out_pll_map[i] = map[i];
-> +	sitdev->out_pll_map_valid = true;
-> +}
-> +
->  int sit9531x_dev_probe(struct sit9531x_dev *sitdev)
->  {
->  	struct clk *xtal_clk;
-> @@ -3906,6 +4008,8 @@ int sit9531x_dev_probe(struct sit9531x_dev *sitdev)
->  	if (sitdev->reset_gpio)
->  		fsleep(10000);	/* internal boot after release */
->  
-> +	sit9531x_parse_board_config(sitdev);
-> +
->  	rc = sit9531x_read_variant_id(sitdev, &variant_id);
->  	if (rc)
->  		return rc;
-
-Nothing between this call and sit9531x_match_variant() appears to consume
-the parsed data, so is there a reason the parse cannot run after
-sitdev->info is known?
-
+diff --git a/drivers/net/ethernet/intel/igb/igb_ptp.c b/drivers/net/ethernet/intel/igb/igb_ptp.c
+index 638d8242b..1c5581451 100644
+--- a/drivers/net/ethernet/intel/igb/igb_ptp.c
++++ b/drivers/net/ethernet/intel/igb/igb_ptp.c
+@@ -1307,6 +1307,9 @@ void igb_ptp_init(struct igb_adapter *adapter)
+ 	struct e1000_hw *hw = &adapter->hw;
+ 	struct net_device *netdev = adapter->netdev;
+ 
++	if (!IS_ENABLED(CONFIG_PTP_1588_CLOCK))
++		return;
++
+ 	switch (hw->mac.type) {
+ 	case e1000_82576:
+ 		snprintf(adapter->ptp_caps.name, 16, "%pm", netdev->dev_addr);
+@@ -1378,27 +1381,31 @@ void igb_ptp_init(struct igb_adapter *adapter)
+ 		return;
+ 	}
+ 
++	spin_lock_init(&adapter->tmreg_lock);
++	INIT_WORK(&adapter->ptp_tx_work, igb_ptp_tx_work);
++
++	if (adapter->ptp_flags & IGB_PTP_OVERFLOW_CHECK)
++		INIT_DELAYED_WORK(&adapter->ptp_overflow_work,
++				  igb_ptp_overflow_check);
++
++	adapter->tstamp_config.rx_filter = HWTSTAMP_FILTER_NONE;
++	adapter->tstamp_config.tx_type = HWTSTAMP_TX_OFF;
++
++	igb_ptp_reset(adapter);
++
+ 	adapter->ptp_clock = ptp_clock_register(&adapter->ptp_caps,
+ 						&adapter->pdev->dev);
+ 	if (IS_ERR(adapter->ptp_clock)) {
++		if (adapter->ptp_flags & IGB_PTP_OVERFLOW_CHECK)
++			cancel_delayed_work_sync(&adapter->ptp_overflow_work);
++		cancel_work_sync(&adapter->ptp_tx_work);
++
+ 		adapter->ptp_clock = NULL;
+ 		dev_err(&adapter->pdev->dev, "ptp_clock_register failed\n");
+ 	} else if (adapter->ptp_clock) {
+ 		dev_info(&adapter->pdev->dev, "added PHC on %s\n",
+ 			 adapter->netdev->name);
+ 		adapter->ptp_flags |= IGB_PTP_ENABLED;
+-
+-		spin_lock_init(&adapter->tmreg_lock);
+-		INIT_WORK(&adapter->ptp_tx_work, igb_ptp_tx_work);
+-
+-		if (adapter->ptp_flags & IGB_PTP_OVERFLOW_CHECK)
+-			INIT_DELAYED_WORK(&adapter->ptp_overflow_work,
+-					  igb_ptp_overflow_check);
+-
+-		adapter->tstamp_config.rx_filter = HWTSTAMP_FILTER_NONE;
+-		adapter->tstamp_config.tx_type = HWTSTAMP_TX_OFF;
+-
+-		igb_ptp_reset(adapter);
+ 	}
+ }
+ 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260915000015.80480-1-arouhi%40sitime.com
+2.34.1
