@@ -1,158 +1,561 @@
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2128.outbound.protection.partner.outlook.cn [139.219.17.128])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-169.mta0.migadu.com [91.218.175.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BFCE2652B2;
-	Thu, 17 Sep 2026 05:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.128
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789624159; cv=fail; b=rRiMXxNQe7dRlFj4JDcujS5e2U1a45G/I3Fdx/pmgxr4Y/Ybsacyowc7rp5yFXTU8rVs3HK5WLZ4KGHWcfK5pJG3OxQlJogpgm9iWdruhB4Gldel0JHfID1lReVUUm8h6fFhxuSicGgpUobhttbHqXegS+LkM5OLZk+O9K+928Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789624159; c=relaxed/simple;
-	bh=NtxyLXQARf+x/yd9iXwQ8HfaVEXwhQhNHREwAfOQTcE=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=fZ72cFWrGHnqxLPW03N7jBpcA4tCcxXPoY6f8zm6uiZ6bcBDvOGa8DOig6dzGphOkpxUu/jKVPeXl04PhGPUFJvYQPE+uMYfKbGZnvUIjmo2qFPi3lPr9BynFLmq5e5AXLkufOVtuhQIB+SfO9bpbYVNYZqyhbNgGPWVkcHCiX8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XbFfpFIlskgE1iBiJh4ep3+E1byBW2oH1pSlVnF/vbhizL9Iobq1n4asuhFtnIQZAKwO1T0O/c3YYkrphBrgO850SDni6PkQprtKdhqR4sJqk1pWc+5okJ88ewxURhGiraZZVOLw4GZbOzSihYNZTmEOdMc5qohFpNiCPqMATi++Ui67lfrzc/40GbK5Qrllt3svuxgJP8FPSdV40JClEGK+VzcLYgFPYDNOxU1HiSPhfuIWFHkUmbOUF7VXu+o2s8Xe8oAGCP+c3YCnOgci3yogQ7FBIBpe/NMs98HFtCs9QYbe86z5sy9jzZYvD1XEHIlY4pEyHVWNJmo45NsodQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ochUMtHqBGkG0CbURIK5GLurAtjJrKZU8gnEdanMn3E=;
- b=gpfCcQiz2htmcJgvwT2XMlmsTThpRnGnO+Et7Oub2F/A+83JHlJJXOHJZzlUOaRkTfw/IlhiT9WXy8ne9CUImSsjCcQTnJTvDB5AsUnPGWn8kxnLmLTOPitXowJOtIcYUk6LBiQO7AlmiIB+if6suSb6AuoxyoobnWOD4Ir1K/siNuw2/tfI05e7ggTjd3+D+Ui+m9Zdc+lGcZinPCOzNzydRKW+rrtNuX6IGw+8dvrzdTx2LYu9eBHkN4FLH/eNe7zwUCq7bqL7CpTJ7rfLVPdr9RxqkNfAmy/1BPNzZ5m/vMiRCXk16vtqzPzzPYpMSTWRqjeHzd+Dfzq5TB9yRA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Received: from NT0PR01MB1102.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c510:7::10) by NT0PR01MB1024.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c510:d::5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.12; Thu, 17 Sep
- 2026 05:49:03 +0000
-Received: from NT0PR01MB1102.CHNPR01.prod.partner.outlook.cn
- ([fe80::be4a:d29e:5188:b37e]) by
- NT0PR01MB1102.CHNPR01.prod.partner.outlook.cn ([fe80::be4a:d29e:5188:b37e%3])
- with mapi id 15.21.0428.009; Thu, 17 Sep 2026 05:49:03 +0000
-From: Hal Feng <hal.feng@starfivetech.com>
-To: Changhuang Liang <changhuang.liang@starfivetech.com>, Michael Turquette
-	<mturquette@baylibre.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Stephen Boyd
-	<sboyd@kernel.org>, Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt
-	<palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti
-	<alex@ghiti.fr>, Philipp Zabel <p.zabel@pengutronix.de>, Emil Renner Berthing
-	<kernel@esmil.dk>, Kees Cook <kees@kernel.org>, "Gustavo A . R . Silva"
-	<gustavoars@kernel.org>, Richard Cochran <richardcochran@gmail.com>
-CC: "linux-clk@vger.kernel.org" <linux-clk@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-	"linux-hardening@vger.kernel.org" <linux-hardening@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: RE: [PATCH v3 13/22] clk: starfive: Expand the storage of clock
- parent index
-Thread-Topic: [PATCH v3 13/22] clk: starfive: Expand the storage of clock
- parent index
-Thread-Index: AQHdJmARC5U5bYDm0EiYYowQaOBBp7bSgr2g
-Date: Thu, 17 Sep 2026 05:49:03 +0000
-Message-ID:
- <NT0PR01MB11020A74DD7395B6E8C8DBFBE6B82@NT0PR01MB1102.CHNPR01.prod.partner.outlook.cn>
-References: <20260807112923.191627-1-changhuang.liang@starfivetech.com>
- <20260807112923.191627-14-changhuang.liang@starfivetech.com>
-In-Reply-To: <20260807112923.191627-14-changhuang.liang@starfivetech.com>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: NT0PR01MB1102:EE_|NT0PR01MB1024:EE_
-x-ms-office365-filtering-correlation-id: 4b74b102-d229-4159-72b1-08df147f6140
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|7416014|23010399003|1800799024|376014|38070700021|921020|56012099006|4143699003|10067099003|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- tDOm9vF5Gjy/fJ1SB1srm3Rk/Sfz5iCEutnI0wto11TQ725LdIJ+r6LyfQ9KA/fqN2GNQzLoWh7p0/iTBNqZIot0TUOWSrcQLsSO7+aLYY15YduhNTxcwo/oe8u8k0qoIhDZAMMICXI+niSXo9+gjGe7FANIJN7KvxCFN6lbCEJCY0liTuZjlYeadgOuyha1smudFYKHXcPnW7VKRDfC4jMfDCYNp2nhhfQcbdImgKne0I6x0MLff2Osq0zpuWxgcNJCPf8oG7GXLuWG/A8Mz08jSnNN68eCg4aB7T+DQj5uP/V/WEMm7bDNvxxLPKCIFRQEVEj7jnzZx6XncU4xglAzAtkUM1XTTwynxWfwuEBRALDZA39F1CLD+D84L89Ui6iJKr3F5kZqYIRqkUVj2OO0jhwx76IK7i9brruKNWvfWiFQuH9vkSTAqgFDr/OFM/OFwgP5QBTR+J3Iv8duhy8YB4z6LkmPA1xD3yCcR8xnmVQvG/9ylHrRQhYINsXmny/+pmqZ4jVAtkEzQZxlRoaSj7P2IjIfUzoUNYBBVxmIXaXn+Yigp/8Gz69BcdoPrEvWcZNvA0OC+ZWra2n0rg==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:NT0PR01MB1102.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(23010399003)(1800799024)(376014)(38070700021)(921020)(56012099006)(4143699003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?Bxv9XK6Yz9UHMhZFzB2va09+FepkC6DpIf6Afn2cLquKm/ak8YAgtLr1Qv2V?=
- =?us-ascii?Q?m+yJRsgDdUFwXIPsmOUkgxZWsp9ox78aRcbg0Tf900pNlN7jkrrpwvWPKckl?=
- =?us-ascii?Q?Md2YLIQJWWr421K7LiI2Phxcq2V03tJyeHqnVRzG3fVQiOPxVoEFpfw5qsIg?=
- =?us-ascii?Q?Z/PzSKIuMVLL5N6JIVhvhXTKy1xEO1V+fANoK/XbfIgnV2wxcc4yaGNr98Bo?=
- =?us-ascii?Q?tTPNaRYxzXJ39JLL+H3DaUuHVDP3bah7DtouDSt2/Z4jfBuAwJ/2LSAtcP1U?=
- =?us-ascii?Q?71AGAIYX50ZKmQdfJ17fng6k9CgUeNuaobm8A6Q2/KBX+AYFFiFEsTazIK7R?=
- =?us-ascii?Q?MAmezXrqwH2ojgzrV7i7tvVpNy5sAtFv3ouFQvqLMFCUbDLxmW+y5v5uY6x+?=
- =?us-ascii?Q?rfKscOAipt+aUpzQKlZq2r+1X9ZRCdeAJgfgwho2PMrbnr8bMoj1y+70PiJN?=
- =?us-ascii?Q?IxeNmgBriIZWVq85W+/0YmkkiW+BXyf4jy8CvSPAgfqoJPypZk2ennnRsT2B?=
- =?us-ascii?Q?+is/WcZoUfltHmSiO6APeIyp/jYvDy0MwvWPaFdW0laQwxiykwpBswQKGdE5?=
- =?us-ascii?Q?/BV/NBb3I+gTmVrtiJXBsIkBRwqihoOiDQSq6/mCGztuilB3X/YmQMaM5KUh?=
- =?us-ascii?Q?IhFHrkZsu6oX2JE5NHQiqVrneFimAooPmSS2LqEpEl1z+YcBauf7SPfgOp02?=
- =?us-ascii?Q?ONCTlFwlpYuC18NrDF55NB+an3x4NEzJ3A2idO5fugyyVVpA3TPzZs3LWmzK?=
- =?us-ascii?Q?cnXNk1LVtODJcue++VMT4DOOpljB3lgck5YQPgXO4MLch47r2GE9KAi306LW?=
- =?us-ascii?Q?DBRKuq/4b86SHLN3DsFjAAjvcwrY9/aI5AvFu8eUe2duGU08//ZpwMkvpAkJ?=
- =?us-ascii?Q?Xxp0XtlybceP0E1I2DvyWvQRM6fTLNp8ifCBDQ4AEZ1I+HkBJYd++PPXFgRo?=
- =?us-ascii?Q?JrXaVeKyAo5abdmawuArB2otPBURPm54k5aWc4PQwKhgTb/ORXqsZuLPDLyx?=
- =?us-ascii?Q?G5+tj1X7n2oqaOeDwHLA5T14LbxpZ2dJpQwA225dAAOeqn0TZprk0Oad5E7+?=
- =?us-ascii?Q?fe2fIgPpd5mSsmjRYEJDVdcnhBsYRPq1BuhkDRiyZGuTXxDal7CeRtowSpK5?=
- =?us-ascii?Q?upEVqp1g4WZ9ot43ZR2O0y/XMwGOvUv1gvVfNpEoWlgNSbt5ARw075nPyTmd?=
- =?us-ascii?Q?TK3KgzMlU5Ad7fqjYnBwP/GSXQgo1X15QSNc1puewC6wlbSTNr3A237UzpBC?=
- =?us-ascii?Q?OLHbHC5Sr7n6WXVgb1MVRY9NqVQ+RH61I18Pek4joAwp6j9npoxFXLeLuXN9?=
- =?us-ascii?Q?kWacWcc7PiNpVP22KYychQHIMUGUnSa/1Nc+WScM1b6GaS6zHCBmf6Qv8021?=
- =?us-ascii?Q?VVGZj/KnyZJln8kxB5ChHtY9dq0YYkYsrqqOX3LqOKkE2XZZ+VqAMwogNs60?=
- =?us-ascii?Q?3D7prpmjYiPjfk0QnYKh8ZrJQKVfp2ITh4wBXqyySr0Cm2zAxFXyjaYU44qo?=
- =?us-ascii?Q?hqvtFwaA+b9U0we9MOBuXlBZgJwj6C4XK8SGcnfl0KEWuDn6PgSQ/eu9hErA?=
- =?us-ascii?Q?0XC14TyGwGizIfIsxg966XbJwTvBPDdu/BIoJ3GKb4PgJQrLdjYC2GvCfYEt?=
- =?us-ascii?Q?k3iWE80A3qIVeRUpLa9J0h0+lKXuF18XZnO2UbGNn+DHfhdd4I5uG5ZD2wVz?=
- =?us-ascii?Q?L5UETXbTAlqd69++inuRCnW2qI50gsYeTMIizlV3QTw7lRQBXt1oAgjMbI3h?=
- =?us-ascii?Q?j0jlZ6vbNQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D692277818
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 05:55:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789624520; cv=none; b=qWx+8lWjYVg1pLDboVQuxLHu2pwAO6CnHrR9l07VuAmLhdN43tcJKPGVwUKTbFq4i0/8MilaWCUyBtC8uPExufaUTsHlTKXgioRxgQycHBMCU/MfmQPWk2OKDFgu2owf8Ka1N8gKtkjseeYmohdZaU0tzA29vPWMna9of7lXbAo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789624520; c=relaxed/simple;
+	bh=rAMn+AwKQg5avnohVCGy+gayqVDevV2oqwmJa5FKfCU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iv/CB5A11aIR0RIS14NNXc66P7aokLgELQQeCZ2XyLpEuYZ02GINtoxgI+8Fg52qEaNPMO3VhlIdHtQhrWx53rClDyX3cZk3c1zRH/gzYCvsNFOJtEMPv9vKiBi/ywBxeF5tlttGv5IWVji2T/VZq1z41VITcMXQyUsuUVjl9eM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fZgLHTfE; arc=none smtp.client-ip=91.218.175.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fZgLHTfE"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=rAMn+AwKQg5avnohVCGy+gayqVDevV2oqwmJa5FKfCU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789624515; v=1; x=1790229315;
+ b=fZgLHTfEVC1cdah+BOBAUmrBiXMOPT2OPBeumy8eFNNyjjnIPQ66mdqrpVh1n9XTsqROtX57
+ rr6AK7pzM5pvsXK2OoTX2bD4kEhd5k6S7FoyQ+39pdjK4KyQJMsyKRbAd62BhWoglG9LY38UU2R
+ Xz5JHdIy2bQj7McA/coz5Xxg=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta12.migadu.com with ESMTPS id 288ad2f68a05b6fb;
+	Thu, 17 Sep 2026 05:55:13 +0000
+X-Mizu-Trace-ID: 288ad2f68a05b6fb
+X-Migadu-Flow: FLOW_OUT
+Date: Thu, 17 Sep 2026 13:54:58 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, shuah@kernel.org,
+	dsahern@kernel.org, idosch@nvidia.com, andrea.mayer@uniroma2.it,
+	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, liuhangbin@kylinos.cn
+Subject: Re: [PATCH net-next v3] selftests: net: move log_test to lib file
+ and remove duplicate code
+Message-ID: <aquAskZZZartTYfH@fedora>
+References: <20260915-self_log_test-v3-1-a17728176334@kylinos.cn>
+ <178961184152.22033.9267194009793243294@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: NT0PR01MB1102.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4b74b102-d229-4159-72b1-08df147f6140
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Sep 2026 05:49:03.4663
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: E9Q1ARG2gPhWC2l0bxO19XsIU6oynw3lNc2dI6VSTFuBU8XhZnhPVWOFLFFGKeaJVMkCZSHV4IFBE+v9Ic81KMa01INiBmMgpx8oDVmtH84=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: NT0PR01MB1024
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <178961184152.22033.9267194009793243294@kernel.org>
 
-> On 26.08.07 19:29, Changhuang Liang wrote:
-> Expand the storage of clock parent index for per0 domain, which parent in=
-dex
-> over 255. So change u8 to u16.
->=20
-> Signed-off-by: Changhuang Liang <changhuang.liang@starfivetech.com>
-> ---
->  drivers/clk/starfive/clk-starfive-common.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/clk/starfive/clk-starfive-common.h
-> b/drivers/clk/starfive/clk-starfive-common.h
-> index fd9d13735896..f80bd51b391d 100644
-> --- a/drivers/clk/starfive/clk-starfive-common.h
-> +++ b/drivers/clk/starfive/clk-starfive-common.h
-> @@ -27,7 +27,7 @@ struct starfive_clk_data {
->  	const char *name;
->  	unsigned long flags;
->  	u32 max;
-> -	u8 parents[4];
-> +	u16 parents[4];
->  };
->=20
->  #define STARFIVE_GATE(_idx, _name, _flags, _parent)				\
+Hi,
 
-Reviewed-by: Hal Feng <hal.feng@starfivetech.com>
+Thanks for the review. Since this patch is too long. I will reply the comments
+in the summary part.
 
-Best regards,
-Hal
+On Thu, Sep 17, 2026 at 02:24:01AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 5 potential
+> issue(s) to consider:
+> 
+> Critical: 0 · High: 1 · Medium: 1 (2) · Low: 3
+> 
+> - [High] SKIP-to-FAIL regression in fib_nexthops.sh, based on a factually
+>   false claim in the commit message.
+
+In patch v1, sashiko suggested to take the SKIP/XFAIL arms when "expected"
+itself is ksft_skip/ksft_xfail? Which would looks like
+
+  log_test $rc ksft_xfail.
+
+But ksft_xfail is 2. I'm afraid some test may expect rc=2 and should report
+PASS. So I dropped both skip/xfail arms in the function.
+
+Adding a specific handler for fib_nexthops.sh specific seem a little over.
+I'd prefer to drop the fib_nexthops.sh change since this is the only
+test that covers ksft_xfail in log_test.
+
+> - [Medium] log_test_expected() in lib.sh unconditionally executes
+>   `ret=$(ksft_exit_status_merge "$ret" "$ksft_fail")` on the failure…
+
+Ack, I will init ret in case some test not using it.
+
+> - [Low] The commit message states "Two callers compared against exit code
+>   2 are left as-is since code 2 correctly counts as a failure in the…
+
+sashiko suggested to add a changelog. I will drop the fib_nexthops.sh
+changes, so no need to bother.
+
+> - [Low] The migration path advertised in the changelog does not work.
+
+Ack, the fib_nexthops.sh change will be dropped to avoid this.
+
+> - [Low] The changelog justifies a change with a rationale that cannot
+>   hold: "On failure, ret is set via ksft_exit_status_merge() instead of…
+
+Ack, I will use ret=1 directly.
+> 
+> Pre-existing issues:
+> - [Medium] fdb_flush.sh, fib-onlink-tests.sh and l2tp.sh can print [FAIL]
+>   subtests while exiting with status 0, because they never consume the…
+
+Not update in this patch.
+
+> - [Medium] fib_tests.sh uses the same global `ret` that the shared helper
+>   treats as cumulative exit status as per-test scratch storage, so a…
+
+Ack, I will add this on my todo list and fix it separately.
+
+Thanks
+Hangbin
+> 
+> --
+> 
+> selftests: net: move log_test to lib file and remove duplicate code
+> 
+> This adds a shared log_test_expected() helper to
+> tools/testing/selftests/net/lib.sh and replaces the near-identical
+> per-script log_test() implementations in 32 net selftests with a thin
+> wrapper around it. A few scripts also start sourcing lib.sh instead of
+> defining ksft_skip locally.
+> 
+> Link: https://lore.kernel.org/r/20260831-self_log_test-v2-1-eda2e8490cf9@kylinos.cn
+> Link: https://lore.kernel.org/r/20260813-self_log_test-v1-1-f88b1107842e@kylinos.cn
+> 
+> A few questions about the conversion below.
+> 
+> > diff --git a/tools/testing/selftests/net/fdb_flush.sh b/tools/testing/selftests/net/fdb_flush.sh
+> > index 9931a1e36e3db..4965e52d5ef54 100755
+> > --- a/tools/testing/selftests/net/fdb_flush.sh
+> > +++ b/tools/testing/selftests/net/fdb_flush.sh
+> > @@ -67,40 +67,7 @@ run_cmd()
+> >  
+> >  log_test()
+> >  {
+> > -	local rc=$1
+> > -	local expected=$2
+> > -	local msg="$3"
+> > -	local nsuccess
+> > -	local nfail
+> > -	local ret
+> > -
+> > -	if [ ${rc} -eq ${expected} ]; then
+> > -		printf "TEST: %-60s  [ OK ]\n" "${msg}"
+> > -		nsuccess=$((nsuccess+1))
+> > -	else
+> > -		ret=1
+> > -		nfail=$((nfail+1))
+> > -		printf "TEST: %-60s  [FAIL]\n" "${msg}"
+> > -		if [ "$VERBOSE" = "1" ]; then
+> > -			echo "    rc=$rc, expected $expected"
+> > -		fi
+> > -
+> > -		if [ "${PAUSE_ON_FAIL}" = "yes" ]; then
+> > -		echo
+> > -			echo "hit enter to continue, 'q' to quit"
+> > -			read a
+> > -			[ "$a" = "q" ] && exit 1
+> > -		fi
+> > -	fi
+> > -
+> > -	if [ "${PAUSE}" = "yes" ]; then
+> > -		echo
+> > -		echo "hit enter to continue, 'q' to quit"
+> > -		read a
+> > -		[ "$a" = "q" ] && exit 1
+> > -	fi
+> > -
+> > -	[ "$VERBOSE" = "1" ] && echo
+> > +	log_test_expected "$1" "$2" "$3"
+> >  }
+> 
+> [Severity: Medium]
+> The changelog notes that fdb_flush.sh "used local ret, nsuccess, and nfail,
+> which are not used outside the function", but this script has no global ret
+> either.  A grep for '\bret\b' in fdb_flush.sh, fcnal-test.sh,
+> fib-onlink-tests.sh and l2tp.sh at this commit returns no matches.
+> 
+> The failure path of the new helper reads ret unconditionally:
+> 
+> lib.sh:log_test_expected() {
+> 	...
+> 	ret=$(ksft_exit_status_merge "$ret" "$ksft_fail")
+> 
+> With ret unset, the empty first operand ends up as an associative array
+> subscript in the merge helper:
+> 
+> lib.sh:__ksft_status_merge() {
+> 	...
+> 	if [[ ${weights[$a]} -ge ${weights[$b]} ]]; then
+> 
+> Does bash not print "bad array subscript" here for every failing subtest in
+> those four scripts?  The merged value still comes out as 1 because the empty
+> expansion evaluates as 0, so the visible effect is stderr noise from inside
+> lib.sh, one line per failure (fcnal-test.sh has a lot of subtests).
+> 
+> Would it make sense for the shared helper to default the variable, e.g.
+> : "${ret:=0}" before the merge, rather than relying on each caller having
+> defined it?  Also worth noting the copy of this line that previously lived in
+> test_bridge_neigh_suppress.sh carried a "# shellcheck disable=SC2154" marker
+> for exactly this referenced-but-not-assigned case, and that marker was
+> dropped when the code moved into lib.sh.
+> 
+> > diff --git a/tools/testing/selftests/net/fib-onlink-tests.sh b/tools/testing/selftests/net/fib-onlink-tests.sh
+> > index e0d45292a2983..a26075abf7d27 100755
+> > --- a/tools/testing/selftests/net/fib-onlink-tests.sh
+> > +++ b/tools/testing/selftests/net/fib-onlink-tests.sh
+> > @@ -85,23 +85,7 @@ PBR_TABLE=101
+> >  
+> >  log_test()
+> >  {
+> > -	local rc=$1
+> > -	local expected=$2
+> > -	local msg="$3"
+> > -
+> > -	if [ ${rc} -eq ${expected} ]; then
+> > -		nsuccess=$((nsuccess+1))
+> > -		printf "    TEST: %-50s  [ OK ]\n" "${msg}"
+> > -	else
+> > -		nfail=$((nfail+1))
+> > -		printf "    TEST: %-50s  [FAIL]\n" "${msg}"
+> > -		if [ "${PAUSE_ON_FAIL}" = "yes" ]; then
+> > -			echo
+> > -			echo "hit enter to continue, 'q' to quit"
+> > -			read a
+> > -			[ "$a" = "q" ] && exit 1
+> > -		fi
+> > -	fi
+> > +	log_test_expected "$1" "$2" "$3"
+> >  }
+> 
+> [Severity: Medium]
+> This isn't a bug introduced by this patch, but it is worth noting while the
+> failure bookkeeping is being centralised: fib-onlink-tests.sh, l2tp.sh and
+> fdb_flush.sh never consume the status the helper records.
+> 
+> fib-onlink-tests.sh ends with:
+> 
+> 	if [ "$TESTS" != "none" ]; then
+> 		printf "\nTests passed: %3d\n" ${nsuccess}
+> 		printf "Tests failed: %3d\n"   ${nfail}
+> 	fi
+> 
+> l2tp.sh ends with the same two printf lines, and fdb_flush.sh ends with:
+> 
+> 	for t in $TESTS
+> 	do
+> 		setup; $t; cleanup;
+> 	done
+> 
+> None of the three does exit $ret or derives an exit code from nfail, so can
+> these scripts print [FAIL] subtests and still report success to the kselftest
+> runner?  Since this patch is what makes ret the shared failure accumulator,
+> would adding exit $ret to those scripts fit here?
+> 
+> > diff --git a/tools/testing/selftests/net/fib_nexthops.sh b/tools/testing/selftests/net/fib_nexthops.sh
+> > index 431d7bed76224..d0d979e8e438b 100755
+> > --- a/tools/testing/selftests/net/fib_nexthops.sh
+> > +++ b/tools/testing/selftests/net/fib_nexthops.sh
+> > @@ -70,44 +70,7 @@ nsid=100
+> >  
+> >  log_test()
+> >  {
+> > -	local rc=$1
+> > -	local expected=$2
+> > -	local msg="$3"
+> > -
+> > -	if [ ${rc} -eq ${expected} ]; then
+> > -		printf "TEST: %-60s  [ OK ]\n" "${msg}"
+> > -		nsuccess=$((nsuccess+1))
+> > -	else
+> > -		if [[ $rc -eq $ksft_skip ]]; then
+> > -			[[ $ret -eq 0 ]] && ret=$ksft_skip
+> > -			nskip=$((nskip+1))
+> > -			printf "TEST: %-60s  [SKIP]\n" "${msg}"
+> > -		else
+> > -			ret=1
+> > -			nfail=$((nfail+1))
+> > -			printf "TEST: %-60s  [FAIL]\n" "${msg}"
+> > -		fi
+> 
+> [Severity: High]
+> The changelog states:
+> 
+>   "this test checked for ksft_skip (exit code 4) inside log_test(),
+>    but no test in the file produces that code."
+> 
+> Are these two call sites not producing exactly that code?
+> 
+> fib_nexthops.sh:ipv6_grp_fcnal() {
+> 	...
+> 	run_cmd "$IP nexthop add id 103 group 62,1000"
+> 	if [[ $? == 0 ]]; then
+> 		local GRP="id 103 group 62,254/63,255/64,256/65,257/66,65535"
+> 		run_cmd "$IP nexthop replace $GRP"
+> 		check_nexthop "id 103" "$GRP"
+> 		rc=$?
+> 	else
+> 		rc=$ksft_skip
+> 	fi
+> 
+> 	$IP nexthop flush >/dev/null 2>&1
+> 
+> 	log_test $rc 0 "16-bit weights"
+> }
+> 
+> ipv6_res_grp_fcnal() has the same shape with "group 62,1000 type resilient
+> buckets 32".
+> 
+> The else branch is taken whenever iproute2 is too old to accept 16-bit
+> nexthop group weights.  After this change, log_test_expected() gets rc=4
+> against expected 0, so both subtests take the failure branch: [FAIL] is
+> printed, nfail is incremented and ret is merged with $ksft_fail.
+> 
+> Combined with exit $ret at the end of the script, does a run on such a host
+> change from two [SKIP] lines and exit status 4 to two [FAIL] lines and exit
+> status 1?
+> 
+> The changelog suggests "callers that need to report a skip should use
+> log_test_skip() instead", but neither of these two callers was converted.
+> 
+> > -
+> > -		if [ "$VERBOSE" = "1" ]; then
+> > -			echo "    rc=$rc, expected $expected"
+> > -		fi
+> > -
+> > -		if [ "${PAUSE_ON_FAIL}" = "yes" ]; then
+> > -		echo
+> > -			echo "hit enter to continue, 'q' to quit"
+> > -			read a
+> > -			[ "$a" = "q" ] && exit 1
+> > -		fi
+> > -	fi
+> > -
+> > -	if [ "${PAUSE}" = "yes" ]; then
+> > -		echo
+> > -		echo "hit enter to continue, 'q' to quit"
+> > -		read a
+> > -		[ "$a" = "q" ] && exit 1
+> > -	fi
+> > -
+> > -	[ "$VERBOSE" = "1" ] && echo
+> > +	log_test_expected "$1" "$2" "$3"
+> >  }
+> >  
+> >  run_cmd()
+> > @@ -1258,7 +1221,7 @@ ipv6_fcnal_runtime()
+> >  		run_cmd "ip netns exec $me ping -c1 -w$PING_TIMEOUT 2001:db8:101::1"
+> >  		log_test $? 0 "Ping - group blackhole replaced with gateways"
+> >  	else
+> > -		log_test 2 0 "Ping - multipath failed"
+> > +		log_test $rc 0 "Ping - multipath failed"
+> >  	fi
+> 
+> [Severity: Low]
+> The changelog says:
+> 
+>   "Two callers compared against exit code 2 are left as-is since code 2
+>    correctly counts as a failure in the previous log_test()."
+> 
+> These are the two callers in question, in ipv6_fcnal_runtime() and
+> ipv4_fcnal_runtime(), and they are changed rather than left as-is.  Could the
+> changelog be updated to describe the substitution?
+> 
+> The change itself looks harmless: run_cmd() assigns rc=$? without declaring
+> it local, so under bash dynamic scoping it writes into the caller's local rc,
+> and the else branch is only reached when that value is non-zero, so the
+> subtest still reports [FAIL] with the same message.
+> 
+> >  
+> >  	#
+> > @@ -1915,7 +1878,7 @@ ipv4_fcnal_runtime()
+> >  		run_cmd "ip netns exec $me ping -c1 -w$PING_TIMEOUT 172.16.101.1"
+> >  		log_test $? 0 "Ping - group blackhole replaced with gateways"
+> >  	else
+> > -		log_test 2 0 "Ping - multipath failed"
+> > +		log_test $rc 0 "Ping - multipath failed"
+> >  	fi
+> >  
+> >  	#
+> > @@ -2729,7 +2692,6 @@ done
+> >  if [ "$TESTS" != "none" ]; then
+> >  	printf "\nTests passed: %3d\n" ${nsuccess}
+> >  	printf "Tests failed: %3d\n"   ${nfail}
+> > -	printf "Tests skipped: %2d\n"  ${nskip}
+> >  fi
+> >  
+> >  exit $ret
+> 
+> [Severity: High]
+> With the skip counter line removed and no skip branch left in the shared
+> helper, is there any remaining way for this script to report a skipped
+> subtest?  The two 16-bit weight probes above are the only producers of
+> ksft_skip and they are now counted in nfail.
+> 
+> > diff --git a/tools/testing/selftests/net/fib_tests.sh b/tools/testing/selftests/net/fib_tests.sh
+> > index b338bfb196a27..7df967a2d6697 100755
+> > --- a/tools/testing/selftests/net/fib_tests.sh
+> > +++ b/tools/testing/selftests/net/fib_tests.sh
+> > @@ -24,31 +24,7 @@ which ping6 > /dev/null 2>&1 && ping6=$(which ping6) || ping6=$(which ping)
+> >  
+> >  log_test()
+> >  {
+> > -	local rc=$1
+> > -	local expected=$2
+> > -	local msg="$3"
+> > -
+> > -	if [ ${rc} -eq ${expected} ]; then
+> > -		printf "    TEST: %-60s  [ OK ]\n" "${msg}"
+> > -		nsuccess=$((nsuccess+1))
+> > -	else
+> > -		ret=1
+> > -		nfail=$((nfail+1))
+> > -		printf "    TEST: %-60s  [FAIL]\n" "${msg}"
+> 
+> [Severity: Medium]
+> This is a pre-existing issue, but it interacts with making ret a shared
+> cumulative status in lib.sh: fib_tests.sh also uses the same global ret as
+> per-test scratch storage.
+> 
+> fib_carrier_unicast_test() starts with an unconditional:
+> 
+> 	ret=0
+> 
+> and fib6_notify_test()/fib_notify_test() do:
+> 
+> 	if [ -z "$err" ];then
+> 		ret=0
+> 	else
+> 		ret=1
+> 	fi
+> 
+> 	log_test $ret 0 "ipv6 route add notify"
+> 
+> None of these declare ret local, and the script finishes with exit $ret.  If
+> an earlier subtest failed and a later function assigns ret=0 and then passes,
+> does the script exit 0 despite the printed [FAIL] lines?  Should these
+> functions use a local variable now that the helper owns ret?
+> 
+> > -		if [ "${PAUSE_ON_FAIL}" = "yes" ]; then
+> > -		echo
+> > -			echo "hit enter to continue, 'q' to quit"
+> > -			read a
+> > -			[ "$a" = "q" ] && exit 1
+> > -		fi
+> > -	fi
+> > -
+> > -	if [ "${PAUSE}" = "yes" ]; then
+> > -		echo
+> > -		echo "hit enter to continue, 'q' to quit"
+> > -		read a
+> > -		[ "$a" = "q" ] && exit 1
+> > -	fi
+> > +	log_test_expected "$1" "$2" "$3"
+> >  }
+> >  
+> >  setup()
+> 
+> [ ... ]
+> 
+> > diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
+> > index d46d2cec89e45..f698fa3d2bd5f 100644
+> > --- a/tools/testing/selftests/net/lib.sh
+> > +++ b/tools/testing/selftests/net/lib.sh
+> > @@ -454,6 +454,39 @@ log_test_xfail()
+> >  	RET=$ksft_xfail retmsg= log_test "$@"
+> >  }
+> >  
+> > +# Log test result with expected return value
+> > +log_test_expected()
+> > +{
+> > +	local rc=$1
+> > +	local expected=$2
+> > +	local msg="$3"
+> > +
+> > +	if [ "${rc}" -eq "${expected}" ]; then
+> > +		nsuccess=$((nsuccess+1))
+> > +		printf "    TEST: %-60s  [ OK ]\n" "${msg}"
+> > +	else
+> 
+> [Severity: Low]
+> The changelog points callers at log_test_skip() as the replacement for the
+> removed ksft_skip handling.  Can that helper work in the converted scripts?
+> It dispatches through log_test:
+> 
+> lib.sh:log_test_skip() {
+> 	RET=$ksft_skip retmsg= log_test "$@"
+> }
+> 
+> and every script touched here defines its own log_test() after sourcing
+> lib.sh:
+> 
+> fib_nexthops.sh:log_test() {
+> 	log_test_expected "$1" "$2" "$3"
+> }
+> 
+> so the local definition shadows lib.sh's log_test().  A call like
+> log_test_skip "16-bit weights" would then reach log_test_expected with
+> rc="16-bit weights", expected="" and msg="", i.e.:
+> 
+> 	[ "16-bit weights" -eq "" ]
+> 
+> which is an "integer expression expected" error landing in the failure
+> branch and printing [FAIL] with an empty test name.  There are no callers
+> today, so nothing breaks right now, but should the wrapper names be
+> reworked so the suggested migration actually works?
+> 
+> > +		ret=$(ksft_exit_status_merge "$ret" "$ksft_fail")
+> 
+> [Severity: Low]
+> The changelog gives this as the reason for the change:
+> 
+>   "On failure, ret is set via ksft_exit_status_merge() instead of ret=1,
+>    so we can propagate ksft_xfail status correctly."
+> 
+> Is that achievable here?  ksft_exit_status_merge() orders the operands as:
+> 
+> lib.sh:ksft_exit_status_merge() {
+> 	...
+> 	__ksft_status_merge "$a" "$b" \
+> 		$ksft_xfail $ksft_pass $ksft_skip $ksft_fail
+> }
+> 
+> so xfail=0, pass=1, skip=2, fail=3, and the operand with the higher weight
+> wins.  Since $ksft_fail is always passed as the second operand and carries
+> the maximum weight, doesn't the result come out as $ksft_fail regardless of
+> the previous value of ret, including $ksft_xfail?  That makes this line
+> equivalent to the old ret=1.
+> 
+> > +		nfail=$((nfail+1))
+> > +		printf "    TEST: %-60s  [FAIL]\n" "${msg}"
+> > +		if [ "$VERBOSE" = "1" ]; then
+> > +			echo "    rc=$rc, expected $expected"
+> > +		fi
+> > +
+> > +		pause_on_fail
+> > +	fi
+> > +
+> > +	if [ "${PAUSE}" = "yes" ]; then
+> > +		echo
+> > +		echo "hit enter to continue, 'q' to quit"
+> > +		read -r a
+> > +		[ "$a" = "q" ] && exit 1
+> > +	fi
+> > +
+> > +	[ "$VERBOSE" = "1" ] && echo
+> > +
+> > +	return 0
+> > +}
+> > +
+> >  log_info()
+> >  {
+> >  	local msg=$1
+> 
+> [ ... ]
+> 
+> -- 
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260915-self_log_test-v3-1-a17728176334%40kylinos.cn
