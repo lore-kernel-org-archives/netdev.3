@@ -1,44 +1,45 @@
 Received: from sender6-of-o54.zoho.com (sender6-of-o54.zoho.com [165.173.180.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802384A3F32;
-	Thu, 17 Sep 2026 09:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95AD73914FA;
+	Thu, 17 Sep 2026 09:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.180.54
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789637180; cv=pass; b=aUmJ4AaNvZ0JHXcCbYz9xTJHW5a3fFgptIKfaCjq58zHkakVxordPcfODFRTbWC70zMFc4s4su9uiqh4XClHa/Q/SGgU55MwplJ64+T2hBQ4trKQt0Z49zt5grRu7cJzE64bExEXBgpqYgphAcNVHzwlHpmu8SK7HgJoJuoqPQA=
+	t=1789637206; cv=pass; b=G7VIS6lNRLRkvVate8GsDp0dLu1MAsiIESt6hHxacKtvpEsCzSbdypTRhbUSEGpmDYoL+hs6FP/yucWuQg2fek1nS3kw88mkgOLf4bGgiT+lQG9n0orUzzhR5nC347n/BTtzyw1BXEXj96UBy8glHnTidV7HiJfF6ahZ6R+0sYA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789637180; c=relaxed/simple;
-	bh=bCRwsjIX7WaxgJ7GNM72qg0VF76uTMEtzqR9zjyg9cA=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=q4WE9MN8tLy/YxfK62a5DZ5RVGia/PXQXqwDPcBIzAkqwahV96lOca/ryyeWH1fUQxhxUvlny/4MwhIYrHsMrSz1fn/oO4930aMkXrBYBq3J3AE5xTgAfn1YOybZdelNwT9WrxmgvYC6fQB68oE6pEVk6NYdxWYaaqrD1ldPhJs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mpiricsoftware.com; spf=pass smtp.mailfrom=mpiricsoftware.com; dkim=fail (0-bit key) header.d=mpiricsoftware.com header.i=shardul.b@mpiricsoftware.com header.b=fUZ/QP1E reason="key not found in DNS"; arc=pass smtp.client-ip=165.173.180.54
+	s=arc-20240116; t=1789637206; c=relaxed/simple;
+	bh=Nq0pPKVX0rq4ZaB7Npr7GBIZ8LKGFla9qXq/w5+Ut0A=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=J4WnYofuwEu6hzkdXXBeYdRczcrA2otnEonlfjCIXzDXT4l3k4/MXbQCmIHwCYPwBhEIPEypi1TRWg1pN5Zn2Yle/D0pXgnh5FWiUBkFGjhL3sQGNvGCF0EWvgygjLuQBk2LHIA+lIQimay2FZpXmFPOOqMNFLMU3mfgYjlix98=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mpiricsoftware.com; spf=pass smtp.mailfrom=mpiricsoftware.com; dkim=fail (0-bit key) header.d=mpiricsoftware.com header.i=shardul.b@mpiricsoftware.com header.b=IpOsqbUk reason="key not found in DNS"; arc=pass smtp.client-ip=165.173.180.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mpiricsoftware.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mpiricsoftware.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=mpiricsoftware.com header.i=shardul.b@mpiricsoftware.com header.b="fUZ/QP1E"
-ARC-Seal: i=1; a=rsa-sha256; t=1789637151; cv=none; 
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=mpiricsoftware.com header.i=shardul.b@mpiricsoftware.com header.b="IpOsqbUk"
+ARC-Seal: i=1; a=rsa-sha256; t=1789637157; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=bxdvY0wxrVa9HYz3ZEXGfCZkhJh5Dv+UAFyS88JylcZeTY/3X6aJq8ivnGl3RBuqyHoehQVVpaaSqKJ3SKPlVddt60yEJxiMzW55xSYaDA5uhjC396JMXDYcD64Zzvm2lRReOZczuILxa2U3D9+tO2PcltRs3HbnznBnghCaFB8=
+	b=NFpRg4Bhwbpxefzd4PdnHe7rESwq+LKnFtAkQYEu2d7PLd6Y5ZP9tS+y0PolzBEaR/nekTaj69AQHekBwSXcjHj7McHBj0KG96LtotH7Pb3QHv2uOTqZAYNC2I7nT0Eg0LUg9ij5YyfAGnnyeK+gozMpLCidfpTOpR+9SyqW8oo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1789637151; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=UBzcHJxTK1fmt5BfFvOXeDsJtIo/3Y1KYBhtxqii7go=; 
-	b=D/qRsUkrPM7QQIC+cvPKGsUGq2v6WtGPctP4qP8u4NOadAGC7Tqx6myxYrbyKnjd7IUzo5hVYUtfgQgMD9+6aoEnq3veqRWSUSGXSc2kwy77zCSbCDF/MuEIzgaYf3tDXIkkwi6Fxn8wed7l3YO2p1PxTOtRFS2SRJht32xPU60=
+	t=1789637157; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=l/ze8mgPcus8w05kTS+A3L1pCu9LxOEtnHesogqfgaM=; 
+	b=AHt6JC6SbBZ7+5fAWOQTXQJWdRunjThCmpXngge9ljqhS2h41jUAi0LVrZMf4AWP93oPG3aZA0RdyBXJVsvlZl3dF/FRNhroVtFmB9TqopU/xPyAQizPQDVQeS5cQVaHFKIOrfqRmpY3xaZdJRecSGUSa7nN8JxTC9VgCDbrFfc=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=mpiricsoftware.com;
 	spf=pass  smtp.mailfrom=shardul.b@mpiricsoftware.com;
 	dmarc=pass header.from=<shardul.b@mpiricsoftware.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1789637151;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1789637157;
 	s=mpiric; d=mpiricsoftware.com; i=shardul.b@mpiricsoftware.com;
-	h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
-	bh=UBzcHJxTK1fmt5BfFvOXeDsJtIo/3Y1KYBhtxqii7go=;
-	b=fUZ/QP1ErygIPzBqDhLGximVz+lQ02AW+SNQ0+8rgmLVoxuXNKMg19hztLrrXEm8
-	LYCtAYAuHfzDEQ1aRtQu8kaxQ9IYa1QFoHSGA/4ifiZ2qkNF4OzEG/qbkvNo4mkfO3W
-	TqqypK11PJPQFzrKqTfM72pEjr6Qz72pdJaJY6JI=
-Received: by smtp.zohomail.com with SMTPS id 1789637150402869.8423370487822;
-	Thu, 17 Sep 2026 02:25:50 -0700 (PDT)
+	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:In-Reply-To:To:To:Cc:Cc:Reply-To;
+	bh=l/ze8mgPcus8w05kTS+A3L1pCu9LxOEtnHesogqfgaM=;
+	b=IpOsqbUky6rpp1bEbQQL9pJv3uvfVnO2E95XGOwXmNeA74KitsKasV/WJ7Xy+y5P
+	H75GjxYieACsskbsz1V63znKqmZYD/Us+h2J3+yhCU/XA7gDlnrytSkZHR2HD/AtQ0P
+	rZbQ/u6JuKdGJDo2Kt8aBtnTkgoP1tS8aYczhIms=
+Received: by smtp.zohomail.com with SMTPS id 1789637157030744.6273114838676;
+	Thu, 17 Sep 2026 02:25:57 -0700 (PDT)
 From: Shardul Bankar <shardul.b@mpiricsoftware.com>
-Subject: [PATCH net 0/2] udp: two fixes for the 4-tuple hash table
-Date: Thu, 17 Sep 2026 14:55:31 +0530
-Message-Id: <20260917-udp_hash4_fix_v1-v1-0-718891af0d7a@mpiricsoftware.com>
+Date: Thu, 17 Sep 2026 14:55:32 +0530
+Subject: [PATCH net 1/2] udp: relocate a connected socket in the 4-tuple
+ hash table on re-connect
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,10 +48,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAuyq2oC/yWM0QrCMBAEf6Xss4FLKGr9FZEQk9OcD7Hk2lIo/
- XejPs4uMxuUq7Di0m2ovIjKuzSwhw4xh/JkI6kxHLkjDdaaOY0+B829f8jqF2tCPDE5Sj2dBzR
- trNyeX/KKwhNu/1Hn+4vj9I1h3z98gb5OeQAAAA==
-X-Change-ID: 20260911-udp_hash4_fix_v1-ac7e020d4089
+Message-Id: <20260917-udp_hash4_fix_v1-v1-1-718891af0d7a@mpiricsoftware.com>
+References: <20260917-udp_hash4_fix_v1-v1-0-718891af0d7a@mpiricsoftware.com>
+In-Reply-To: <20260917-udp_hash4_fix_v1-v1-0-718891af0d7a@mpiricsoftware.com>
 To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -66,98 +66,84 @@ Cc: Kuniyuki Iwashima <kuniyu@google.com>,
 X-Mailer: b4 0.15.2
 X-ZohoMailClient: External
 
-Two ways a UDP socket ends up in the wrong place in the 4-tuple hash table.
-The patches are independent, with different Fixes: tags and no dependency
-between them.
+A connected UDP socket that connects again to a different peer is not
+re-filed in the 4-tuple hash table:
 
-Patch 1: a socket that connects a second time is not relocated, so it stays
-filed under its first peer's hash and packets for it fall back to scoring
-the hash2 chain for its address and port.
+    sk binds to 127.0.0.1:21001
+    sk connects to 127.0.0.2:20001	// filed under hash(sk, peer1)
+    sk connects to 127.0.0.3:20002	// still filed under hash(sk, peer1)
+    packet from 127.0.0.3:20002		// hash(sk, peer2) misses, so the
+					// lookup falls back to scoring the
+					// hash2 chain for this address
+					// and port
 
-Patch 2: a socket bound to a specific address and port is not taken out of
-the table when it disconnects, because __udp_disconnect() only does that
-via ->rehash() or ->unhash() and neither runs for it.
+udp_lib_hash4() returns early when the socket is already hashed, assuming
+->rehash() relocates it. ->rehash() runs from __ip{4,6}_datagram_connect()
+only while the receive address is unset, which a second connect never is:
+the first connect assigns it, whether the socket was bound to a specific
+address or to the wildcard. commit 644f9108f3a5 ("udp: Make rehash4
+independent in udp_lib_rehash()") added that early return and named
+connect(AF_UNSPEC) as the way around it. That workaround does not help a
+socket with both SOCK_BINDADDR_LOCK and SOCK_BINDPORT_LOCK set, because
+__udp_disconnect() skips ->rehash() for the first and ->unhash() for the
+second.
 
-Both are in code shared by IPv4 and IPv6.
+Delivery is correct either way.
 
-Patch 1's cost, with N sockets sharing a port and one of them misfiled,
-200k packets sent to its 4-tuple:
+Relocate the socket when the hash it is filed under differs from the one
+requested, which is what commit 78c91ae2c6de ("ipv4/udp: Add 4-tuple hash
+for connected socket") did before the early return became unconditional. It
+is done here under hslot->lock, which that version did not take, to match
+udp_lib_rehash() and udp_lib_unhash(). hslot2 is unchanged, so hash4_cnt
+needs no adjustment, as in udp_lib_rehash(). A first connect is unaffected,
+and IPv6 shares the code.
 
-	N	without		with
-	200	1,061,652	2,093,259 pps
-	500	  522,553	2,055,078 pps
-	1000	  279,729	2,136,606 pps
+With 500 sockets on the port, a re-connected socket measured 522,553 pps
+without this change and 2,055,078 with it. The UDP side was noted as
+remaining work in [1].
 
-Correctly filed sockets measure ~2.1M pps throughout, so the cost scales
-with the number of sockets on the port, as the fallback scan does. For
-comparison, commit 78c91ae2c6de ("ipv4/udp: Add 4-tuple hash for connected
-socket") measured 290,860 pps without the table and 1,889,658 with it at
-500 connected sockets.
-
-Patch 2's cost is not in throughput. Its stale entry keeps hash4_cnt raised
-for the life of the socket, so every packet for that address and port is
-sent through the 4-tuple lookup first; on IPv6 the entry is also matchable,
-because __udp_disconnect() does not clear sk_v6_daddr. That last one is a
-separate defect, which I will send on its own.
-
-Neither patch has a selftest. Nothing in tree reports which 4-tuple bucket
-a socket is filed under, so a test can only measure the cost indirectly.
-What I did instead was add pr_info() to the hash4 paths and a knob that
-dumps bucket occupancy, then run the same scenarios on two kernels
-differing only by these patches; that is where the numbers above come from.
-The instrumentation, the reproducers and the benchmark are at [1]. If
-exposing the bucket through diag would be welcome, that would make both
-defects testable in tree and I am glad to do it for net-next.
-
-Removing the connect(AF_UNSPEC) limitation described in 644f9108f3a5 is a
-side effect of patch 1 fixing the general case. I can make it narrower if
-you would rather that limitation stayed.
-
-Tooling, per Documentation/process/generated-content.rst: this series was
-developed in an assisted session with an LLM. The assistant did most of
-the code reading, wrote the instrumentation and reproducers behind [1],
-drafted these changelogs, and ran the A/B builds and the regression
-suites below. Every claim in these messages was checked against the
-source, and the IPv6 behaviour described in patch 2 was confirmed at
-runtime.
-
-Tested on x86-64, IPv4 and IPv6. No regressions across reuseport_bpf,
-reuseport_bpf_cpu, reuseport_addr_any.sh, reuseport_dualstack,
-udpgso_bench.sh, udpgro_bench.sh and socket.
-
-[1] https://github.com/shardulsdk-mpiric/linux/tree/udp-hash4-fix-verification
-
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: "David S. Miller" <davem@davemloft.net>
-To: Eric Dumazet <edumazet@google.com>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-To: Simon Horman <horms@kernel.org>
-To: Philo Lu <lulie@linux.alibaba.com>
-To: Fred Chen <fred.cc@alibaba-inc.com>
-To: Yubing Qiu <yubing.qiuyubing@alibaba-inc.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Willem de Bruijn <willemb@google.com>
-Cc: Cambda Zhu <cambda@linux.alibaba.com>
-Cc: Janak Bhatt <janak@mpiric.us>
-Cc: Kalpan Jani <kalpan.jani@mpiricsoftware.com>
-Cc: Shardul Bankar <shardulsb08@gmail.com>
-Cc: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-
+Link: https://lore.kernel.org/netdev/apnHqmYZQ4yzOP4N@v4bel/ [1]
+Fixes: 644f9108f3a5 ("udp: Make rehash4 independent in udp_lib_rehash()")
+Assisted-by: LLM
 Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
 ---
-Shardul Bankar (2):
-      udp: relocate a connected socket in the 4-tuple hash table on re-connect
-      udp: remove a disconnected socket from the 4-tuple hash table
+ net/ipv4/udp.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
- net/ipv4/udp.c | 42 +++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 37 insertions(+), 5 deletions(-)
----
-base-commit: c9151088f1674fd29ff26a20f5fc687acf53a2f0
-change-id: 20260911-udp_hash4_fix_v1-ac7e020d4089
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index bb8cfc62cb00..0fa3cdbdcc21 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -617,14 +617,23 @@ void udp_lib_hash4(struct sock *sk, u16 hash)
+ 	struct net *net = sock_net(sk);
+ 	struct udp_table *udptable;
+ 
+-	/* Connected udp socket can re-connect to another remote address, which
+-	 * will be handled by rehash. Thus no need to redo hash4 here.
++	udptable = net->ipv4.udp_table;
++	hslot = udp_hashslot(udptable, net, udp_sk(sk)->udp_port_hash);
++
++	/* A connected socket can re-connect to another address. rehash()
++	 * relocates it, but only runs when the local address changes, so a
++	 * socket bound to a specific address would stay filed under the
++	 * previous peer's hash. Move it here.
+ 	 */
+-	if (udp_hashed4(sk))
++	if (udp_hashed4(sk)) {
++		if (udp_sk(sk)->udp_lrpa_hash != hash) {
++			spin_lock_bh(&hslot->lock);
++			udp_rehash4(udptable, sk, hash);
++			spin_unlock_bh(&hslot->lock);
++		}
+ 		return;
++	}
+ 
+-	udptable = net->ipv4.udp_table;
+-	hslot = udp_hashslot(udptable, net, udp_sk(sk)->udp_port_hash);
+ 	hslot2 = udp_hashslot2(udptable, udp_sk(sk)->udp_portaddr_hash);
+ 	hslot4 = udp_hashslot4(udptable, hash);
+ 	udp_sk(sk)->udp_lrpa_hash = hash;
 
-Best regards,
---  
-Shardul Bankar <shardul.b@mpiricsoftware.com>
+-- 
+2.34.1
 
