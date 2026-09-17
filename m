@@ -1,50 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32CCB2931D5;
-	Thu, 17 Sep 2026 01:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C415037C934;
+	Thu, 17 Sep 2026 01:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789610049; cv=none; b=oLb7enX+jvbJgZ+UsCqCrZuPJ/NMZpb122Os3LEhJbdjAVbKu09bSHN4GEzbWJDA/AptPVu5zW5Gii5aOG87VUm2WH3UO4/vm9kvCQSf7T/He/O9s4KJDzDcdkyU3BAqWhcuOBQLtIgIMD0OfMEKtRS3rUrezuEJcVDFYCLNr88=
+	t=1789610102; cv=none; b=QzJUEBnGR4JwPjEUdgmQUeWLBZykyATBc0BFcKtfdiDGZUpCvIRt2w9dkbMzTmZ1nLON7PVHVwGpZUrN+8cFvr2qDQUvtu+5/6IHt4wSVR6gk93XpfDloRCLgtTNNa+zZ4BJdYUxD7FJVjlLioEBEua9GcWIzln8wEoHv6Jn+qM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789610049; c=relaxed/simple;
-	bh=dCBNkgH0hkvfOkKcTvYLGNdkN7fzD2uXSOMAehd0UMc=;
+	s=arc-20240116; t=1789610102; c=relaxed/simple;
+	bh=2RJBx2RXmlO46GbKTUWo9mRYxlCy9WbMUTYFRRqKNQk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f6H0Pa576FUk109Obl8/rIf4kEfpWXLnm+R5W7h+MrdAJ1xHDm58HLzbZ5emuklvAUCJdGD4YI4UB039YPQplK5WJfAL/SycsvQPk316N42pgzT9nXdAMZPLt9KDDYYFKUutFFHajkOsDfrbvwKy7M9K/dG/yaNKNE1NY0ORc68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cYdQMABl; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=UTlj8UKYpfRoRkmUhnU1FacfaVb8U9sXXCZiz6D5tTCQDY3aCX8ursuwT37TuRBIjMIIhN0KkATQse/8qOuYU+nA081LbgGkk3EIV/xfIs5th1Fe6IbhleWt7MEgubdACD35ONifZh6pyoCl9UYJumJVKHVe5fiqLpRVSguX+s8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hS77RQRK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cYdQMABl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4FCE1F000FF;
-	Thu, 17 Sep 2026 01:54:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hS77RQRK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D95471F000FF;
+	Thu, 17 Sep 2026 01:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789610047;
-	bh=lJgZZsakuZqXW/oddZR8VQa35CTe8PRxmIQUO7sOKWE=;
+	s=k20260515; t=1789610101;
+	bh=AeRGnSVo/pZSPEvEnD0WVt6yfxZXDWoj6fvjGiYK9Fs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=cYdQMABloJWtbJ2B/fSHJAPMA8LJWkpn6fZqRjEpGXoTe+o6RyveYUUoFOwWZ2BPZ
-	 cr2iPbwxEBG58wE3ostpVUM6h+HrV3A6gaOFmKxz6JDe/CXEtN539ydQVa08kGCzMu
-	 58vPJpublJaKsVybjqyizLxgp7V0HAEMRhrLA1txpHaBvD+1QR6QXVxKzjA+kgdtjX
-	 +wVft6iQsiBeZxqhS3wCjndGIoVX5FaCcQKhiP9VJe/VjF6VECLaFV+6KUx0j+OWOR
-	 F7IRsT2nis4e4JkQXhsooy3AxYUDcNk8gyTpbDv/2kb7GVBELYs4zoKIQ54rh86DOS
-	 AX4u3ut4VtyBA==
-Date: Wed, 16 Sep 2026 18:54:05 -0700
+	b=hS77RQRKPAPLL2kh/QY/7xBRrQA6JqaP6YPFbl9l8kOx6IbmmJXE8OBduRqruJJlf
+	 pJPA3T3XOt8sfkYdcNVnIn/214eTYsHwcwDr4ZZtTFLuKIrrPDu5Cgp4mvSPY5S1BT
+	 ZfJgzWhucsJQOXYnoEnCpIMg7mrcrGlhE5I0qXhTROR3kiH1IV3XTsjK99G8eCwfs6
+	 Z+BfWu0bV4GzVl0eQQOsqE+Ldov4VLfC3aM3Y3ulReYyCbBNPrVzPtoq5hA1+pPo/l
+	 vjjTdBvukQVM1X95Oady4tAIzEYGy2LEcrTV41wi4Og2BcidJZHYhmSDOFR/8Gt8JF
+	 f8WcNbm2HDdOg==
+Date: Wed, 16 Sep 2026 18:55:00 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Yuyang Huang <sigefriedhyy@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, Donald Hunter
- <donald.hunter@gmail.com>, Eric Dumazet <edumazet@google.com>, Ido Schimmel
- <idosch@nvidia.com>, Jacob Keller <jacob.e.keller@intel.com>, Kuniyuki
- Iwashima <kuniyu@google.com>, Nicolas Dichtel <nicolas.dichtel@6wind.com>,
- Nikolaos Gkarlis <nickgarlis@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
- Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>, Simon
- Horman <horms@kernel.org>, Stanislav Fomichev <sdf.kernel@gmail.com>,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- netdev@vger.kernel.org
-Subject: Re: [PATCH net-next v5 4/4] selftests: net: test AF_PACKET
- multicast dumps
-Message-ID: <20260916185405.2ccc6aa3@kernel.org>
-In-Reply-To: <20260914014539.5015-5-sigefriedhyy@gmail.com>
-References: <20260914014539.5015-1-sigefriedhyy@gmail.com>
-	<20260914014539.5015-5-sigefriedhyy@gmail.com>
+To: Farhad Alemi <farhad.alemi@berkeley.edu>
+Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, falemi@asu.edu,
+ Simon Horman <horms@kernel.org>, Pablo Neira Ayuso <pablo@netfilter.org>,
+ Florian Westphal <fw@strlen.de>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ Xuanqiang Luo <xuanqiang.luo@linux.dev>, netfilter-devel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2] net: remove WARN_ON_ONCE() from the
+ dev_fill_forward_path() loop check
+Message-ID: <20260916185500.1cfbf67e@kernel.org>
+In-Reply-To: <CA+0ovCgKDOk+Bg6Gh5Lwx94u_jJjQ30-vY1JcY2BYfhnWJJbPA@mail.gmail.com>
+References: <CA+0ovCgKDOk+Bg6Gh5Lwx94u_jJjQ30-vY1JcY2BYfhnWJJbPA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,23 +50,25 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 14 Sep 2026 10:45:39 +0900 Yuyang Huang wrote:
-> +        try:
-> +            addresses = rtnl.getmulticast(
-> +                {"ifa-family": socket.AF_PACKET, "ifa-index": dev_idx},
-> +                dump=True)
-> +        except NlError as e:
-> +            if e.error == errno.EOPNOTSUPP:
-> +                raise KsftSkipEx(
-> +                    "kernel does not support AF_PACKET multicast dump")
+On Sat, 12 Sep 2026 07:40:09 +0000 Farhad Alemi wrote:
+> ipip_fill_forward_path() and ip6_tnl_fill_forward_path() look up the
+> route to the tunnel's remote endpoint and set ctx->dev to its device,
+> which is the tunnel itself when that route resolves back to the tunnel.
+> dev_fill_forward_path() then makes no progress and trips
+> WARN_ON_ONCE(last_dev == ctx->dev) as soon as a flowtable tries to
+> offload a flow through the tunnel. That routing loop is a configuration
+> any CAP_NET_ADMIN user can set up, and ip_tunnel_xmit() and
+> ip6_tnl_xmit() already treat it as a tx error, so remove the warning and
+> just fail the walk, as commit 008e7a7c293b ("net: remove WARN_ON_ONCE
+> when accessing forward path array") did for the path stack overflow.
+> 
+> Fixes: ab427db17885 ("netfilter: flowtable: Add IPIP rx sw acceleration")
+> Fixes: d98103575dcd ("netfilter: flowtable: Add IP6IP6 rx sw acceleration")
+> Closes: https://lore.kernel.org/all/CA+0ovCgaRvbd0Udj70b2xxG8Cx3CaCpNhnf1V4RWQuDveZYZhA@mail.gmail.com/
+> Suggested-by: Pablo Neira Ayuso <pablo@netfilter.org>
+> Assisted-by: Claude:claude-opus-5 syzkaller
+> Signed-off-by: Farhad Alemi <farhad.alemi@berkeley.edu>
 
-What's the point of catching this exception?
-The error for ENOPNOTSUPP will be both very rare (not sure I understand
-where you expect it to come from TBH), and also about as meaningful as 
-the skip. Just let the exception propagate, it's fine.
-
-Otherwise Pylint complains:
-W0707: Consider explicitly re-raising using 'raise KsftSkipEx('kernel does not support AF_PACKET multicast dump') from e' (raise-missing-from)
-
-
-> +            raise
+Applied as 150dba2c69e933 in net, thanks
+-- 
+pw-bot: accept
