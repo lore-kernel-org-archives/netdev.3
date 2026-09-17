@@ -1,59 +1,55 @@
-Received: from mout-b-110.mailbox.org (mout-b-110.mailbox.org [195.10.208.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.avm.de (mail.avm.de [212.42.244.94])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257E7388E44
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 10:10:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9EA1A9F8C;
+	Thu, 17 Sep 2026 10:10:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.94
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789639824; cv=none; b=PExxLJ8DetrnC+jX9B86D4H6/6NxeS2U4rNyHzI55nRZbAOBeyh82m6fAS+JXromf0NK2nTMTFwXqVKSZBO8sryMFrKqy/JKf/SJv5zL7MQeLbvhzGWNEIT6h/INeha8zqcp9C1GsYgJNJ9Of6t3cU+7BgZ892xjWGF5AUj96jU=
+	t=1789639854; cv=none; b=P9oueXI/QrWIKCj5MuPJJfCSTGOklRhVE62ccVR4NwJ9NxYKSw+WAlVwjrf1UhV85XnR/bszDg+/oKxxt8uV7nmcOdj8ENdMszkYhPS62XLaAmZUyfqNxPsSB3pfcajFf7JNObzyDHG2gpMIcNkhjvOyDljuzRGkL/MWYY86364=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789639824; c=relaxed/simple;
-	bh=oNzE2NffAFkLZYsxNZ5fQjm1Sqcdr0SOLol4fBRIriQ=;
+	s=arc-20240116; t=1789639854; c=relaxed/simple;
+	bh=2YIieptIapOpd8zs8eRHGxCpIXTbo3WJ10JESG4Dv2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TX9Cf75tsW1Bliq3r66Ybs7lzg+AH26I6U7sTSvj8+K0nhaCcYA8c8l6boJqKQadu6Cihrgjts2eKoYkWaI+ywHSecInfePoTcYkBSZlx/p1Foj/kfFDIk4I/fu83mPZ2EZweKd5AQNOF518Qv/yBVykKMV+BWCjDsjlGR5ubYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=Z4ZHaapB; arc=none smtp.client-ip=195.10.208.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
+	 MIME-Version; b=fJjsfVZ4vRMR/fvV6GaXMWbRPJJDSjRSgmvGkENyvwYa7zLFhmy5D8kWoyy7bwHbfz9Ib5lnxPhmWYSzgCuAvSLKm0SY4rzxorhCgfmI2F/Pv3/45Gf7QZgzLfV06AWyxZVRcPi1yMdiPeWZU0aVZDjwqC/6CjYgLdqCJXOTNFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com; spf=pass smtp.mailfrom=fritz.com; dkim=pass (2048-bit key) header.d=fritz.com header.i=@fritz.com header.b=PXYKBIni; arc=none smtp.client-ip=212.42.244.94
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fritz.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fritz.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="Z4ZHaapB"
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-b-110.mailbox.org (Postfix) with ESMTPS id 4hls2C4SL0zNlsT;
-	Thu, 17 Sep 2026 12:10:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
-	s=MBO0001; t=1789639811;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IURLXFO3MKgUgMKLwNK2sKMAPrC4AqwHGkFor+aBr0I=;
-	b=Z4ZHaapBDOZWv9/DYOTK+kdy5S5AxmdLL5QKm1LfIH0HXksdXEbNGtqrLG5oS9MszbMdgi
-	2snH9ipsCqHXBk7k+lD9W0ojRspxmAKnjpbxqIEH+eAqO8gfgC/BZeSP/+U2krMFc8bxpX
-	4lJ0HSF8SCZID/Tq2wre5joGaUDPbxo+nTVoseY0iEx2Z0CQppRbCb9uzX+xMRh2oxLyNX
-	Wp9iHu9Suh/vABySHlNIw6HCMLgOLcYVgG1dxUTQ33sNqzWdq/8xrnDZuMH1WTeK0+J36X
-	HM8LndT9sRvSKlGDw6ir5c8tDGHHJeL5iOeI0yW1VUTLDKwZJabpysmA/ebElA==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=none;
-	spf=pass (outgoing_mbo_mout: domain of ralf@mandelbit.com designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=ralf@mandelbit.com
-From: Ralf Lici <ralf@mandelbit.com>
-To: netdev@vger.kernel.org
-Cc: Antonio Quartulli <antonio@openvpn.net>,
-	Sabrina Dubroca <sd@queasysnail.net>,
+	dkim=pass (2048-bit key) header.d=fritz.com header.i=@fritz.com header.b="PXYKBIni"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fritz.com; s=mail;
+	t=1789639847; bh=2YIieptIapOpd8zs8eRHGxCpIXTbo3WJ10JESG4Dv2A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=PXYKBIni952Ub2euFFnVpgtLBR8oNyXbhnLRtvAtU6Huzt7sWF0Q4tYLaJpFO+AmN
+	 i8xkH85SyPDoWHF4gi34xs4P1sOtvjaBfUH3lUsBrXCErYIqiWuhO/aX0PlI62/Fg0
+	 cVWuajy75HTTOFxHXtwZVNK0JJqfwVZYkZtE1DqNbbYE//he2EIR9h7o0J3lmd/7op
+	 XTm4HkhK5rtaT31XmhVv7Dp8bEL18FMCXq1z61FPuR5HnciG4+iGhllsW//KFgMRma
+	 EnWkXUrWrPh0LNU4vWh5Umbe9WB933KVVWymM7dJ8CRFxDlpxyPjweRlypzt6JAF4j
+	 sxvjrqSA3Hyrw==
+Received: from [212.42.244.71] (helo=mail.avm.de)
+	by mail.avm.de with ESMTP (eXpurgate 4.57.1)
+	(envelope-from <t.martitz@fritz.com>)
+	id 6aabbca7-6dc7-7f0000032729-7f000001e660-1
+	for <multiple-recipients>; Thu, 17 Sep 2026 12:10:47 +0200
+Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
+	by mail.avm.de (Postfix) with ESMTPS;
+	Thu, 17 Sep 2026 12:10:47 +0200 (CEST)
+From: Thomas Martitz <t.martitz@fritz.com>
+To: Simon Horman <horms@kernel.org>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>
-Subject: [PATCH net 1/1] ovpn: avoid caching stale IPv6 dst after FIB changes
-Date: Thu, 17 Sep 2026 12:09:54 +0200
-Message-ID: <65f8ed83f2aa154b985731c10c6c6b20060dd198.1789639346.git.ralf@mandelbit.com>
-In-Reply-To: <cover.1789639346.git.ralf@mandelbit.com>
-References: <cover.1789639346.git.ralf@mandelbit.com>
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+	linux-kernel@vger.kernel.org (open list)
+Cc: Thomas Martitz <t.martitz@fritz.com>,
+	netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v5 1/1] macvlan: allow source mode devices along with passthru
+Date: Thu, 17 Sep 2026 12:10:43 +0200
+Message-ID: <20260917101044.2654867-1-t.martitz@fritz.com>
+In-Reply-To: <20260917100258.2582568-1-t.martitz@fritz.com>
+References: <20260917100258.2582568-1-t.martitz@fritz.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,148 +57,293 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4hls2C4SL0zNlsT
+X-purgate-ID: 149429::1789639847-184801FC-B5A4951B/0/0
+X-purgate-type: clean
+X-purgate-size: 10055
+X-Notice: Whitelisted
+X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
+X-purgate: clean
+X-pfmilter: host: postfix-mx-03  mail-id: A955DA0197  external: no
 
-ovpn stores the IPv6 route used for UDP transmission in a per-peer dst
-cache. IPv6 dst validation uses a cookie derived from the route itself,
-or, for routes without their own sernum, from the associated fib6 node.
+This allows for configurations where there are a few
+known senders in the system (e.g. multiple SoCs on the same
+board) along with unlimited external senders.
 
-If the IPv6 FIB changes after ip6_dst_lookup_flow returns but before
-dst_cache_set_ip6 reads the cookie, ovpn can store an old dst with a new
-cookie. Later dst_cache_get_ip6 can then consider that stale dst valid
-because the stored cookie matches the updated fib6 node sernum.
+The source mode devices represent the known senders while
+all external senders terminate on passthru device.
 
-Sample the IPv6 FIB generation before and after route lookup, and only
-populate ovpn's peer dst cache if the generation did not change while
-the lookup was in flight. Also add a dst_cache helper that stores a
-caller-provided IPv6 cookie, so the cached dst carries the cookie
-sampled from the lookup result instead of one read after a concurrent
-FIB update.
+Although you can still receive packets on the lower device
+without the need for the passthru vlan device, there
+are use cases where you need additional packet processing
+in the pipeline that hooks via rx_handler. With this the
+rx_handler can be attached to the passthru device while
+macvlan itself remains attached to the lower device.
 
-The current packet may still be transmitted with the route returned by
-the lookup if the FIB changes before TX completion. This patch only
-prevents that potentially stale route from being preserved in ovpn's
-peer dst cache and reused for later packets.
+We use this to use the same physical link for inter-SoC
+networking and external networking. Some of our chips
+have no other viable link for inter-SoC traffic.
 
-Fixes: 08857b5ec5d9 ("ovpn: implement basic TX path (UDP)")
-Link: https://lore.kernel.org/netdev/20260901122501.482920-1-ralf@mandelbit.com/
-Signed-off-by: Ralf Lici <ralf@mandelbit.com>
+Signed-off-by: Thomas Martitz <t.martitz@fritz.com>
 ---
- drivers/net/ovpn/udp.c  | 20 +++++++++++++++++---
- include/net/dst_cache.h | 13 +++++++++++++
- net/core/dst_cache.c    | 19 +++++++++++++++----
- 3 files changed, 45 insertions(+), 7 deletions(-)
+ drivers/net/macvlan.c | 133 +++++++++++++++++++++++++++---------------
+ 1 file changed, 85 insertions(+), 48 deletions(-)
 
-diff --git a/drivers/net/ovpn/udp.c b/drivers/net/ovpn/udp.c
-index 7f69e8890b5b..a28974cc36e8 100644
---- a/drivers/net/ovpn/udp.c
-+++ b/drivers/net/ovpn/udp.c
-@@ -220,8 +220,10 @@ static int ovpn_udp6_output(struct ovpn_peer *peer, struct ovpn_bind *bind,
- 			    struct dst_cache *cache, struct sock *sk,
- 			    struct sk_buff *skb)
- {
-+	struct net *net = sock_net(sk);
- 	struct dst_entry *dst;
--	int ret;
-+	int gen0, gen1, ret;
-+	u32 cookie;
- 
- 	struct flowi6 fl = {
- 		.saddr = bind->local.ipv6,
-@@ -250,7 +252,11 @@ static int ovpn_udp6_output(struct ovpn_peer *peer, struct ovpn_bind *bind,
- 		dst_cache_reset(cache);
- 	}
- 
--	dst = ip6_dst_lookup_flow(sock_net(sk), sk, &fl, NULL);
-+	gen0 = rt_genid_ipv6(net);
-+	/* keep the unordered initial generation read before the FIB lookup */
-+	smp_rmb();
-+
-+	dst = ip6_dst_lookup_flow(net, sk, &fl, NULL);
- 	if (IS_ERR(dst)) {
- 		ret = PTR_ERR(dst);
- 		net_dbg_ratelimited("%s: no route to host %pISpc: %d\n",
-@@ -258,7 +264,15 @@ static int ovpn_udp6_output(struct ovpn_peer *peer, struct ovpn_bind *bind,
- 				    &bind->remote.in6, ret);
- 		goto err;
- 	}
--	dst_cache_set_ip6(cache, dst, &fl.saddr);
-+
-+	cookie = rt6_get_cookie(dst_rt6_info(dst));
-+
-+	/* keep the FIB and cookie reads before the final generation read */
-+	smp_rmb();
-+	gen1 = rt_genid_ipv6(net);
-+
-+	if (likely(gen0 == gen1))
-+		dst_cache_set_ip6_cookie(cache, dst, &fl.saddr, cookie);
- 
- transmit:
- 	/* user IPv6 packets may be larger than the transport interface
-diff --git a/include/net/dst_cache.h b/include/net/dst_cache.h
-index 1961699598e2..5f9cc4fe926c 100644
---- a/include/net/dst_cache.h
-+++ b/include/net/dst_cache.h
-@@ -45,6 +45,19 @@ void dst_cache_set_ip4(struct dst_cache *dst_cache, struct dst_entry *dst,
- 
- #if IS_ENABLED(CONFIG_IPV6)
- 
-+/**
-+ *	dst_cache_set_ip6_cookie - store ipv6 dst with caller-provided cookie
-+ *	@dst_cache: the cache
-+ *	@dst: the entry to be cached
-+ *	@saddr: the source address to be stored inside the cache
-+ *	@cookie: the route validation cookie to store with @dst
-+ *
-+ *	local BH must be disabled.
-+ */
-+void dst_cache_set_ip6_cookie(struct dst_cache *dst_cache,
-+			      struct dst_entry *dst,
-+			      const struct in6_addr *saddr, u32 cookie);
-+
- /**
-  *	dst_cache_set_ip6 - store the ipv6 dst into the cache
-  *	@dst_cache: the cache
-diff --git a/net/core/dst_cache.c b/net/core/dst_cache.c
-index 9ab4902324e1..76c9fc1b0acf 100644
---- a/net/core/dst_cache.c
-+++ b/net/core/dst_cache.c
-@@ -117,8 +117,9 @@ void dst_cache_set_ip4(struct dst_cache *dst_cache, struct dst_entry *dst,
- EXPORT_SYMBOL_GPL(dst_cache_set_ip4);
- 
- #if IS_ENABLED(CONFIG_IPV6)
--void dst_cache_set_ip6(struct dst_cache *dst_cache, struct dst_entry *dst,
--		       const struct in6_addr *saddr)
-+void dst_cache_set_ip6_cookie(struct dst_cache *dst_cache,
-+			      struct dst_entry *dst,
-+			      const struct in6_addr *saddr, u32 cookie)
- {
- 	struct dst_cache_pcpu *idst;
- 
-@@ -128,11 +129,21 @@ void dst_cache_set_ip6(struct dst_cache *dst_cache, struct dst_entry *dst,
- 	local_lock_nested_bh(&dst_cache->cache->bh_lock);
- 
- 	idst = this_cpu_ptr(dst_cache->cache);
--	dst_cache_per_cpu_dst_set(idst, dst,
--				  rt6_get_cookie(dst_rt6_info(dst)));
-+	dst_cache_per_cpu_dst_set(idst, dst, cookie);
- 	idst->in6_saddr = *saddr;
- 	local_unlock_nested_bh(&dst_cache->cache->bh_lock);
+diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
+index afad90b9222a2..76c11e5260334 100644
+--- a/drivers/net/macvlan.c
++++ b/drivers/net/macvlan.c
+@@ -83,6 +83,11 @@ static inline void macvlan_set_passthru(struct macvlan_port *port)
+ 	port->flags |= MACVLAN_F_PASSTHRU;
  }
-+EXPORT_SYMBOL_GPL(dst_cache_set_ip6_cookie);
-+
-+void dst_cache_set_ip6(struct dst_cache *dst_cache, struct dst_entry *dst,
-+		       const struct in6_addr *saddr)
-+{
-+	if (!dst_cache->cache)
-+		return;
-+
-+	dst_cache_set_ip6_cookie(dst_cache, dst, saddr,
-+				 rt6_get_cookie(dst_rt6_info(dst)));
-+}
- EXPORT_SYMBOL_GPL(dst_cache_set_ip6);
  
- struct dst_entry *dst_cache_get_ip6(struct dst_cache *dst_cache,
++static inline void macvlan_clear_passthru(struct macvlan_port *port)
++{
++	port->flags &= ~MACVLAN_F_PASSTHRU;
++}
++
+ static inline bool macvlan_addr_change(const struct macvlan_port *port)
+ {
+ 	return port->flags & MACVLAN_F_ADDRCHANGE;
+@@ -217,8 +222,7 @@ static bool macvlan_addr_busy(const struct macvlan_port *port,
+ 	 * currently in use by the underlying device or
+ 	 * another macvlan.
+ 	 */
+-	if (!macvlan_passthru(port) && !macvlan_addr_change(port) &&
+-	    ether_addr_equal_64bits(port->dev->dev_addr, addr))
++	if (ether_addr_equal_64bits(port->dev->dev_addr, addr))
+ 		return true;
+ 
+ 	if (macvlan_hash_lookup(port, addr))
+@@ -637,7 +641,7 @@ static int macvlan_open(struct net_device *dev)
+ 	struct net_device *lowerdev = vlan->lowerdev;
+ 	int err;
+ 
+-	if (macvlan_passthru(vlan->port)) {
++	if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
+ 		if (!(vlan->flags & MACVLAN_FLAG_NOPROMISC)) {
+ 			err = dev_set_promiscuity(lowerdev, 1);
+ 			if (err < 0)
+@@ -712,7 +716,7 @@ static int macvlan_stop(struct net_device *dev)
+ 	dev_uc_unsync(lowerdev, dev);
+ 	dev_mc_unsync(lowerdev, dev);
+ 
+-	if (macvlan_passthru(vlan->port)) {
++	if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
+ 		if (!(vlan->flags & MACVLAN_FLAG_NOPROMISC))
+ 			dev_set_promiscuity(lowerdev, -1);
+ 		goto hash_del;
+@@ -737,17 +741,18 @@ static int macvlan_sync_address(struct net_device *dev,
+ 	struct macvlan_dev *vlan = netdev_priv(dev);
+ 	struct net_device *lowerdev = vlan->lowerdev;
+ 	struct macvlan_port *port = vlan->port;
++	bool passthru_dev = vlan->mode == MACVLAN_MODE_PASSTHRU;
+ 	int err;
+ 
+ 	if (!(dev->flags & IFF_UP)) {
+ 		/* Just copy in the new address */
+ 		eth_hw_addr_set(dev, addr);
+ 	} else {
+-		/* Rehash and update the device filters */
+-		if (macvlan_addr_busy(vlan->port, addr))
+-			return -EADDRINUSE;
++		if (!passthru_dev) {
++			/* Rehash and update the device filters */
++			if (macvlan_addr_busy(vlan->port, addr))
++					return -EADDRINUSE;
+ 
+-		if (!macvlan_passthru(port)) {
+ 			err = dev_uc_add(lowerdev, addr);
+ 			if (err)
+ 				return err;
+@@ -757,7 +762,7 @@ static int macvlan_sync_address(struct net_device *dev,
+ 
+ 		macvlan_hash_change_addr(vlan, addr);
+ 	}
+-	if (macvlan_passthru(port) && !macvlan_addr_change(port)) {
++	if (passthru_dev && !macvlan_addr_change(port)) {
+ 		/* Since addr_change isn't set, we are here due to lower
+ 		 * device change.  Save the lower-dev address so we can
+ 		 * restore it later.
+@@ -979,7 +984,26 @@ static void macvlan_uninit(struct net_device *dev)
+ 
+ 	macvlan_flush_sources(port, vlan);
+ 	port->count -= 1;
+-	if (!port->count)
++
++	if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
++		/* If the lower device address has been changed by passthru
++		 * macvlan, put it back.
++		 *
++		 * Caution: This triggers NETDEV_CHANGEADDR on
++		 * the lower device. But we're in the green because
++		 * the passthru interface is already off the list.
++		 */
++		if(!ether_addr_equal(port->dev->dev_addr, port->perm_addr)) {
++			struct sockaddr_storage ss;
++
++			ss.ss_family = port->dev->type;
++			memcpy(&ss.__data, port->perm_addr, port->dev->addr_len);
++			dev_set_mac_address(port->dev, &ss, NULL);
++		}
++		macvlan_clear_passthru(port);
++	}
++
++	if (port->count == 0)
+ 		macvlan_port_destroy(port->dev);
+ }
+ 
+@@ -1054,7 +1078,7 @@ static int macvlan_fdb_add(struct ndmsg *ndm, struct nlattr *tb[],
+ 	/* Support unicast filter only on passthru devices.
+ 	 * Multicast filter should be allowed on all devices.
+ 	 */
+-	if (!macvlan_passthru(vlan->port) && is_unicast_ether_addr(addr))
++	if (vlan->mode != MACVLAN_MODE_PASSTHRU && is_unicast_ether_addr(addr))
+ 		return -EOPNOTSUPP;
+ 
+ 	if (flags & NLM_F_REPLACE)
+@@ -1079,7 +1103,7 @@ static int macvlan_fdb_del(struct ndmsg *ndm, struct nlattr *tb[],
+ 	/* Support unicast filter only on passthru devices.
+ 	 * Multicast filter should be allowed on all devices.
+ 	 */
+-	if (!macvlan_passthru(vlan->port) && is_unicast_ether_addr(addr))
++	if (vlan->mode != MACVLAN_MODE_PASSTHRU && is_unicast_ether_addr(addr))
+ 		return -EOPNOTSUPP;
+ 
+ 	if (is_unicast_ether_addr(addr))
+@@ -1310,18 +1334,6 @@ static void macvlan_port_destroy(struct net_device *dev)
+ 		kfree_skb(skb);
+ 	}
+ 
+-	/* If the lower device address has been changed by passthru
+-	 * macvlan, put it back.
+-	 */
+-	if (macvlan_passthru(port) &&
+-	    !ether_addr_equal(port->dev->dev_addr, port->perm_addr)) {
+-		struct sockaddr_storage ss;
+-
+-		ss.ss_family = port->dev->type;
+-		memcpy(&ss.__data, port->perm_addr, port->dev->addr_len);
+-		dev_set_mac_address(port->dev, &ss, NULL);
+-	}
+-
+ 	kfree(port);
+ }
+ 
+@@ -1523,15 +1535,6 @@ int macvlan_common_newlink(struct net_device *dev,
+ 	}
+ 	port = macvlan_port_get_rtnl(lowerdev);
+ 
+-	/* Only 1 macvlan device can be created in passthru mode */
+-	if (macvlan_passthru(port)) {
+-		/* The macvlan port must be not created this time,
+-		 * still goto destroy_macvlan_port for readability.
+-		 */
+-		err = -EINVAL;
+-		goto destroy_macvlan_port;
+-	}
+-
+ 	vlan->lowerdev = lowerdev;
+ 	vlan->dev      = dev;
+ 	vlan->port     = port;
+@@ -1544,12 +1547,31 @@ int macvlan_common_newlink(struct net_device *dev,
+ 	if (data && data[IFLA_MACVLAN_FLAGS])
+ 		vlan->flags = nla_get_u16(data[IFLA_MACVLAN_FLAGS]);
+ 
++	/* Only 1 macvlan device can be created in passthru mode. There may be
++	 * additional source mode devices but nothing else at the moment.
++	 *
++	 * First check if adding a source mode device to an existing passthru vlan.
++	 */
++	if (macvlan_passthru(port) && vlan->mode != MACVLAN_MODE_SOURCE) {
++		/* The macvlan port must be not created this time,
++		 * still goto destroy_macvlan_port for readability.
++		 */
++		err = -EINVAL;
++		goto destroy_macvlan_port;
++	}
++
++	/* Now check if adding a passthru device to an existing set of source mode
++	 * devices.
++	 */
+ 	if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
+-		if (port->count) {
+-			err = -EINVAL;
+-			goto destroy_macvlan_port;
++		struct macvlan_dev *p;
++
++		list_for_each_entry(p, &port->vlans, list) {
++			if (p->mode != MACVLAN_MODE_SOURCE) {
++				err = -EINVAL;
++				goto destroy_macvlan_port;
++			}
+ 		}
+-		macvlan_set_passthru(port);
+ 		eth_hw_addr_inherit(dev, lowerdev);
+ 	}
+ 
+@@ -1581,7 +1603,12 @@ int macvlan_common_newlink(struct net_device *dev,
+ 	if (err)
+ 		goto unregister_netdev;
+ 
+-	list_add_tail_rcu(&vlan->list, &port->vlans);
++	/* macvlan_handle_frame expects the (one and only) passthru device first. */
++	if (vlan->mode == MACVLAN_MODE_PASSTHRU) {
++		macvlan_set_passthru(port);
++		list_add_rcu(&vlan->list, &port->vlans);
++	} else
++		list_add_tail_rcu(&vlan->list, &port->vlans);
+ 	update_port_bc_queue_len(vlan->port);
+ 	netif_stacked_transfer_operstate(lowerdev, dev);
+ 	linkwatch_fire_event(dev);
+@@ -1652,19 +1679,23 @@ static int macvlan_changelink(struct net_device *dev,
+ 	if (data && data[IFLA_MACVLAN_MODE]) {
+ 		set_mode = true;
+ 		mode = nla_get_u32(data[IFLA_MACVLAN_MODE]);
+-		/* Passthrough mode can't be set or cleared dynamically */
+-		if ((mode == MACVLAN_MODE_PASSTHRU) !=
+-		    (vlan->mode == MACVLAN_MODE_PASSTHRU))
+-			return -EINVAL;
+-		if (vlan->mode == MACVLAN_MODE_SOURCE &&
+-		    vlan->mode != mode)
+-			macvlan_flush_sources(vlan->port, vlan);
++		if (mode != vlan->mode) {
++			/* Passthrough mode can't be set or cleared dynamically,
++			 * regardless of existing source interfaces. Furthermore, source
++			 * interfaces can't switch modes within a passhtrough port.
++			 */
++			if (vlan->mode == MACVLAN_MODE_PASSTHRU ||
++			    macvlan_passthru(vlan->port))
++				return -EINVAL;
++			if (vlan->mode == MACVLAN_MODE_SOURCE)
++				macvlan_flush_sources(vlan->port, vlan);
++		}
+ 	}
+ 
+ 	if (data && data[IFLA_MACVLAN_FLAGS]) {
+ 		__u16 flags = nla_get_u16(data[IFLA_MACVLAN_FLAGS]);
+ 		bool promisc = (flags ^ vlan->flags) & MACVLAN_FLAG_NOPROMISC;
+-		if (macvlan_passthru(vlan->port) && promisc) {
++		if (vlan->mode == MACVLAN_MODE_PASSTHRU && promisc) {
+ 			int err;
+ 
+ 			if (flags & MACVLAN_FLAG_NOPROMISC)
+@@ -1897,8 +1928,14 @@ static int macvlan_device_event(struct notifier_block *unused,
+ 		vlan = list_first_entry_or_null(&port->vlans,
+ 						struct macvlan_dev,
+ 						list);
+-
+-		if (vlan && macvlan_sync_address(vlan->dev, dev->dev_addr))
++		/* Validate the interface mode again because we're potentially
++		 * triggered upon removal of the passthru interface. In which
++		 * case it is already off the list (and has restored the lower
++		 * device mac already).
++		 */
++		if (!vlan || vlan->mode != MACVLAN_MODE_PASSTHRU)
++			return NOTIFY_DONE;
++		if (macvlan_sync_address(vlan->dev, dev->dev_addr))
+ 			return NOTIFY_BAD;
+ 
+ 		break;
 -- 
 2.55.0
 
