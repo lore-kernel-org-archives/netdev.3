@@ -1,45 +1,51 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7458C4D5978
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 12:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41484E4314;
+	Thu, 17 Sep 2026 12:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789646719; cv=none; b=Bd+cChAvpKhSL9ubu9wG7pQIyrEMH9mhCjcy8m5bQrNw+hvV0nOqih3/cQbgaMfE8YQythLcwMLSKHP16nYQGQSW5ZWxCODuxCLI+U/gVtY9dV/e98m2K0H9CZkbV75tLHqfyr4ElGMuTZfLza3lNX8+aPadWxCLEI9c+u4CWYU=
+	t=1789646839; cv=none; b=a1Jup0vwIzFsYr4z/J7cdC3/Tk6pNJ/0pvUopPjK7KnXPDzsFXDNDCnJTc1N5NgVI/pG8N2jbQi6YzOrq/g3BeJUd7Ne4hkUqz9oN/xPaD348HS/BKBqhep5E7zl3wYXO/mRGTVU6qHe5NLB2b600FG3hHSM0DWgGv5+zNXJbr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789646719; c=relaxed/simple;
-	bh=aL1TXjKT7OgSEOA2sXOhkLZ237cr35l311mpkZv6VDY=;
+	s=arc-20240116; t=1789646839; c=relaxed/simple;
+	bh=+N/xA6uppH+jcnCFHQTy2mmbhw5VGAyrd3eBpNbthIk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lFYW35ytB+dMkhQkU0ny0vkxNUuVyxF3+XlL61Wosb19k3Oq+VehOS/Yc6TXvIvMms/9kARUVuIZ5P92r226nB36+e79iCpZteQSOuVyiUTNCRCvem7uIVSePN//Levf4ZRa508tysPc1gGla7dzdOQ1sBHSN1kaTG9lNQ8rCNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=rHhu6lXM; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=TEelBngQEtwOGZBFMygwKuwD2RMyPxkYb+vpYaugiiDw8GVoiMBmQI4v3WeqOGM+84R8q0xDSu/Ll3VG9h1LYC+zGkF7BjhFGCtiY858nZ6cBRV/GWWIBMVRXeC2G6oWUY5RLA1etlQhY7DvpaegNS0I5XxgnqkvCyzFEMJKE1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Cje0W705; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="rHhu6lXM"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Cje0W705"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=cuaMvaud2oNe86oe51jqV4FImvoU0ZaFYwgB/i0yYlc=; b=rHhu6lXMuYGVNmK1oYHS2KhAGH
-	Ija3g5kfbk6RcZ/Hhn5pqQnrHSJYbDBeRr2PCHj4YKOIRkBHRdtlOWW3idGSXd31hX5E30ajUt3Fx
-	xKUCo1X4VFzMnBMxN4Ss3rsia9l7BIOSB5JLf4tqqEXuhFhKnld/TtdnNiIXlYAJStsw=;
+	bh=DH0OYKtGSUlylYcDmv61Bdop+K5RL/tkGG+cpn5RDUI=; b=Cje0W705n30oEkgLv9O91hfRxU
+	Kvx1U1ZvIjcrwycRguaBZUmBDmo7+T8hsSLepWkInQtsvMl95IJ+Z58Ieh6xHfdJD87nSH5dSsNQB
+	WjlDxnFHTQbaY0Gqw3ZX4ypNQFZgqj1uVXYeYJLmLxFawhBfhIkSAhc8idYt+S2l0OoM=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1x7ArD-005fMt-U0; Thu, 17 Sep 2026 14:04:51 +0200
-Date: Thu, 17 Sep 2026 14:04:51 +0200
+	id 1x7At7-005fOp-91; Thu, 17 Sep 2026 14:06:49 +0200
+Date: Thu, 17 Sep 2026 14:06:49 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Chenguang Zhao <chenguang.zhao@linux.dev>
-Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	netdev@vger.kernel.org, Chenguang Zhao <zhaochenguang@kylinos.cn>,
-	syzbot+694b49f41098a5df4fd7@syzkaller.appspotmail.com
-Subject: Re: [PATCH net] net: phy: allow phy_detach() before netdev
- registration
-Message-ID: <20980b7a-7076-46e7-bb7c-16d1f93502f4@lunn.ch>
-References: <20260916021505.238990-1-chenguang.zhao@linux.dev>
- <d523dec3-7075-47d9-8ac2-6b3c9d6cec3d@lunn.ch>
- <20260917070559.GA85254@pc>
+To: Yoshihisa Yamamoto <yoshihisa.yamamoto.xn@renesas.com>
+Cc: =?iso-8859-1?Q?Cl=E9ment_L=E9ger?= <clement.leger@bootlin.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	"linux-renesas-soc@vger.kernel.org" <linux-renesas-soc@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net v2] net: pcs: rzn1-miic: Reset PRCMD state before
+ unprotect sequence
+Message-ID: <f896b55f-ca21-4885-a2f3-5807184cf959@lunn.ch>
+References: <TYCPR01MB748139F059DF2459B9813416A4B92@TYCPR01MB7481.jpnprd01.prod.outlook.com>
+ <TYCPR01MB748157ECB6B92D8E3FFD433BA4B82@TYCPR01MB7481.jpnprd01.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,43 +54,18 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260917070559.GA85254@pc>
+In-Reply-To: <TYCPR01MB748157ECB6B92D8E3FFD433BA4B82@TYCPR01MB7481.jpnprd01.prod.outlook.com>
 
-On Thu, Sep 17, 2026 at 03:06:46PM +0800, Chenguang Zhao wrote:
-> On Wed, Sep 16, 2026 at 02:12:27PM +0200, Andrew Lunn wrote:
-> > On Wed, Sep 16, 2026 at 10:15:05AM +0800, Chenguang Zhao wrote:
-> > > From: Chenguang Zhao <zhaochenguang@kylinos.cn>
-> > > 
-> > > phylink_connect_phy() may be called from probe without RTNL while the
-> > > net_device is still NETREG_UNINITIALIZED. If PHY bring-up fails,
-> > > phy_detach() uses rtnl_dereference(dev->hwprov) and lockdep reports
-> > > suspicious RCU usage.
-> > 
-> > What do you mean by PHY bring-up?
-> > 
-> >      Andrew
-> Hi Andrew
+On Thu, Sep 17, 2026 at 02:49:29AM +0000, Yoshihisa Yamamoto wrote:
+> On RZ/T2H MIIC, writing 0x0000 to PRCMD resets the command state
+> machine to the IDLE state.
 > 
-> PHY bring-up refers to phylink_bringup_phy(). The call chain is as follows:
+> Reset PRCMD before issuing the unprotect sequence so that it always
+> starts from a known state, regardless of any previous PRCMD activity.
 > 
-> usbnet_probe
->   -> ax88772_bind
->        -> ax88772_init_phy
->             -> phylink_connect_phy
->                  -> phylink_attach_phy / phy_attach_direct   // suceess 
->                  -> phylink_bringup_phy                      // fail 
->                  -> phy_detach                               // No RTNL
->                       -> rtnl_dereference(dev->hwprov)       // lockdep warning
-> 
-> Because RTNL is not held when phy_detach() is called, rtnl_dereference() triggers a lockdep warning.
+> Signed-off-by: Yoshihisa Yamamoto <yoshihisa.yamamoto.xn@renesas.com>
 
-Lets zoom out and look at the big picture....
+Please start a new thread for each version of the patchset. The CI
+system does not always see the patches when linked to an old version.
 
-Why is phy_detach() not symmetric with phy_attach()?
-
-Why is phy_detach() touching dev->hwprov, when phy_attach() does not?
-
-Where is dev->hwprov set and why is the mirror function not dealing
-with this?
-
-     Andrew
+       Andrew
