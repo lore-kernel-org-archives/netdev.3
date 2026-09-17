@@ -1,77 +1,81 @@
 Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE4D4AE8D2
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 23:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E544B1467
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 23:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789687956; cv=none; b=ZXFl2YPpZpc5x9CMkhz7BxFwOCnujKbosMIOsvxFT0kmJBhUtybsQiJpuzjdNNdUDI0OG2BWHAACuUjAVBX1u62FMwHVfoB4MerFgYvdR7GBVnSM8zVcLW8SjtvLOp+klhQUPSihcd1iRYAqi4LfwQ2owNrlGRLP691MpsL+g94=
+	t=1789687958; cv=none; b=Q7Y5Vu2HDiNAd/ioXAmrGD4Qp22TR963vK/sEwww6WgtJ+ktDbiOjKF54nT4/mzkgPBnEsqsPZFU6Sul7fchtnuuvOH906ZSn16Y8epc55AAcrYAxwYoQwfpDkK/bAuk2RvwB7dSrXSeyMKg+PpAy6qZ8JhI9FGgs8tZW2i5rEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789687956; c=relaxed/simple;
-	bh=nGDdOwWMYJjfnr0JCWRYvyMk7PP3RND/O85c6KvmNJc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W5W3RdMANvQxClg74t9Yfwbx+AA0RFSWoCJZ9Kda+kLgC45ooyWKHULNAw2mo4xP75+LKlyco46GtnxFk7F1ZHg38xb5nOoJi5ga74i5WSVIicU7hnGFMG3t0BAYFNLFAt6yiZdqFRrdR6zggqXPyNw8jV0KVErZNzV+m5ds87Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=XZc8tDSu; arc=none smtp.client-ip=74.125.227.171
+	s=arc-20240116; t=1789687958; c=relaxed/simple;
+	bh=i5EAoq1Xc8k5Nb96NUryR385FSoC/JKqS1uOw/t3FNk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=M6qOHv6JymPgz7r+l1c9qsjSD4q9w1AgUaHIfIKpKe7Jj6gip2CINw5T8S7SMbcCjtNgUHR3b3C9tvL4c90Gai0/EFDNlOwLM6O4QlK7KBpwvudnTjVRsKF8Dn0bvanxlDZIWe0tRP6vPizgufsYEsPAv+4Oo/DNIf9IkFeliE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=g7sHcvFL; arc=none smtp.client-ip=74.125.227.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="XZc8tDSu"
-Received: by mail-pj2-f43.google.com with SMTP id d9443c01a7336-2d9004a1ac0so864855ad.3
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 16:32:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="g7sHcvFL"
+Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-398a147688bso189907a91.1
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 16:32:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1789687953; x=1790292753; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=6A5k5usHjrN+hp1LkAKDZkjDqSyyAO/UVA2C1Chkli8=;
-        b=XZc8tDSutiRTjLxnrM6ZUGPQyb32A8Mdqgs593dCH1nAf37ypyEPE5iKrmtJyesDiO
-         KMGCsuIlQyW5v0uBXlS/REhe7nCYmlBKwUCriRYRCZ+mrX6l/E7F9fVz65wjF2xUfsne
-         zCDK2g7xaDY7G4CXIj8RBt68U3jCzx1ldShDuyibW1utKw0z0qi3CedVEaEphCeGIUAF
-         ydMtttusVqebH9+6acE270qnDE1/lszJkCY1MllDhrVj/oBQrgazFmActDuf7Ks4VncR
-         xIa+tfRf/zhwBW4JBPW5Qjf9DExtDC0Cuf59nTyzsTK/900B4am4w+8/FYH7zdngViuh
-         m80g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789687953; x=1790292753;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1789687955; x=1790292755; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=6A5k5usHjrN+hp1LkAKDZkjDqSyyAO/UVA2C1Chkli8=;
-        b=EcNNEsuVjtX+kXbPc9EXHPKKyG+0wAuMhjt2BO4PjpTBRqJG+8f7iHUOGgjSGs3Kfh
-         dXjjlMqOo7m//oezJw2t0V+RrcY0jxT2JV8MYm4WTUyepahOcsbRh+mSnaTsPsU4v4bh
-         FckzQ8+y+pJBogZgn52xBptktwwtsdfZsnPd8vHpB8XEKi5zUIVcG2fcrDzNYTxmdEsv
-         a0KsMpdfdRq3N7kHld/55FRhRJq4kfRnjF4oA9LnEZyTHm5nDhlxpJElbeYW7zCV4WNb
-         ctlblm0M0wmdxuKNJLDahHEWGuSuXFJVlJ0V/gW9ouGesoKepqbJnoSECYI2CsGgjkKR
-         cgqA==
-X-Gm-Message-State: AFuF++mQspcub4ofmzHiXuAU/KLMNYk3hFOlgmw31b3zSOpzo2zXaJw9
-	Uz7Khek16wW4Drgeku/V7XuS+O3J4j/WoAIQQXyH+WC7i1OV3MYu/VWvMNGwC2dQ2OxLRfnFiT1
-	0ddKE
-X-Gm-Gg: AYBFou01xuIo1cZOLWlJXj3hO9/bymYyQn30q1VS/kjKlMDi57nWctSNpDtLVEOBNaS
-	jbEKpQz8Q7fkOznKjE5FUVaitk3OI12BAzEPd5EoggOLFJjzVxtkV6gLL3Fu7sLu/QrbaNLLVuW
-	WtASBiIJtbtTaUEWIWSn8fjAvBU1GRDlSixAwGLdTUTNybmC6NnluQwOjG0xzCVTPK7GHmtE++M
-	2oAktXGdRhqU3KMD7Icfrm3zbo0OFDaJU57LmC14u/s0vUydzKasQqqf1KzxVSuxy7LU13K9c0H
-	wVaqVYcDiIJj5f80eiNx4x6jcBiFwjfMnwtmw2NeNLQuBpzg+yLli57PnCaqG2elZ7fKOWQgJO9
-	xiFSEmSznN4wFopcT8nyarZdeoQbftmM5gJ7iTMZQlYrNp+De3nS6jf42FWRhatrbcq278ton3G
-	jeOWQEd2CkZehJf6fa/JJsgbHBqs0hKsMC1mhrhSUByJbaMh2S
-X-Received: by 2002:a17:90b:1e0d:b0:39d:fcbe:fdcf with SMTP id 98e67ed59e1d1-39e54af3671mr1433773a91.1.1789687953140;
-        Thu, 17 Sep 2026 16:32:33 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e35e732d6sm7402936a91.11.2026.09.17.16.32.31
+        bh=CLY3UmOqZzZ3us+Px/eqBPnv/fx2lVKt8ROnyv5E4d8=;
+        b=g7sHcvFLN0JS/LhPhg5kNsY64AISQkLDazaArtEVQyvOnkdwjLtuquk2u3vzHLzdG5
+         cIyL1MdVQAfh9j84LgLJcxsVk3zEMZr8T7/Yka73oCHu7XH9w9W5edSV5CdffHZCFWUv
+         M4RWgYqh0TdmIRb5CPCIJpwDqq/8+7TPHJBwnJ+dfj+rpgkY/jbvFW452kWSxKG+zJkS
+         jh/45NDRMX4rh8jPsBFsTho6LS7JW34zZA/ZD801rTjdfpB83mQz6UyNTivS3YX+oK5l
+         H/TjLQjbkC271Y3XI6acIXrYZBMG346r4joIcwrCjCeMt3/OqwE5yiyvKoulN1omTLFf
+         9B3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789687955; x=1790292755;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=CLY3UmOqZzZ3us+Px/eqBPnv/fx2lVKt8ROnyv5E4d8=;
+        b=0mhG49VP4lRv916gz0F2kMmYX0Qk4MlfT6JxXaxVOhor4s8r1c+9VirSFgtMjSB3pP
+         8raPkERVPFLNcLw5OmUkw6gXnmU8QOJI4ijS1SKlji9N1NDmrjzUuOYsliH2oYyDP5xX
+         hEj9KIZ/GBhWFMD3hil0XD8AJ11bMI8KchxJJ+LBjIgoQbUQb4OYbgmyXDMZyIJ1RAy6
+         k7X1DFS78oZJzToz2sybJa8SAuLU0TZCb39g7NrlLgtdnQVbZRzYZbnhx5fAMnN7//U5
+         gk1zS8GJaNgCZSGsNOaU3bHImx0ssMwbJhFlGETHbtn3tjvgKxzAJ99C158lmqOO9Lvv
+         yWYA==
+X-Gm-Message-State: AFuF++lTMvZKr1PTj7k7Q8tHFnH+okL4GsDXUAoWv9l8NZ6bGaykYqSI
+	NoRsNOpwWF5b6tEOEbq3vbNIryTCjbH32uk3cv2QbQ30/qSncpML8lb++zg66C9LvaGlLJa7HAU
+	wJGrp
+X-Gm-Gg: AYBFou1WeljO+PU8gEjOUBw3AuvS9NNbNWsKk9f5K3Ku4nr0bNsMFAm7pHU7DkRZdGd
+	qFewqcG5lnVl/0NWUDqiy+JE5/iD1twBvpRKSkwn02Fl0TFAINDdxmtX2Kc6UL2g5YOOMDGqw4m
+	SayBqRrraOOGx07eaNa7bcj0BA9LQzSqxDmypwDtIGLk8jOKZHauvmY26Z6ZqpidogX+SML5cWa
+	8tqdU2jcvt6tKO+4r2F57CLIWHsBjr3tPVWMX+pSScwWiODMQHAHgvQUGo/yfzB7wSDhg/ZNuLD
+	grCXUtNOBe+Lnu9uo9sMoClu3/IxpkMDBjTGqts4Ml2wA6IAzf8lb7fGcEdXVtmLSmfxb0IMcKQ
+	L1ooRYpKQ0r6GMCQ4as1M/R8vrbQF826RZip9zvfoVTzUiKqT11cATJuG4iNtjoYp7HPwonTsHn
+	Su3aJRoQ3AOXa7s2WsSdGOPhlovAT58p75lfxaB9z9k8CLmpCRm1hn
+X-Received: by 2002:a17:90b:4e85:b0:398:b1eb:136c with SMTP id 98e67ed59e1d1-39e54d185a6mr1369298a91.9.1789687955043;
+        Thu, 17 Sep 2026 16:32:35 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:47::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e35d9869csm7412912a91.4.2026.09.17.16.32.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 16:32:31 -0700 (PDT)
+        Thu, 17 Sep 2026 16:32:34 -0700 (PDT)
 From: Joe Damato <joe@dama.to>
-To: netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com,
+To: netdev@vger.kernel.org,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: horms@kernel.org,
 	linux-kernel@vger.kernel.org,
 	Joe Damato <joe@dama.to>
-Subject: [RFC net-next 0/2] bnxt_en: Recover from failed TX RING_FREE
-Date: Thu, 17 Sep 2026 16:32:13 -0700
-Message-ID: <20260917233218.1160001-1-joe@dama.to>
+Subject: [RFC net-next 1/2] bnxt_en: return status from bnxt_hwrm_tx_ring_free
+Date: Thu, 17 Sep 2026 16:32:14 -0700
+Message-ID: <20260917233218.1160001-2-joe@dama.to>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260917233218.1160001-1-joe@dama.to>
+References: <20260917233218.1160001-1-joe@dama.to>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,82 +84,53 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Greetings:
+hwrm_ring_free_send_msg() already reports failure to its caller,
+returning -EIO when the firmware rejects HWRM_RING_FREE or never
+answers it. bnxt_hwrm_tx_ring_free() discards that value.
 
-This series makes a failed TX HWRM_RING_FREE recoverable instead of silently
-releasing ring memory the FW might still own to address a use after free I
-noticed on a production system.
+Return it instead. No caller acts on it yet, so there is no functional
+change; this only makes the failure observable so that the next patches
+can recover from it.
 
-I'm posting this as an RFC because:
-  - I am not sure if patch 2 is correct. Maybe Broadcom can let me know ?
-  - I am not sure if this is a Fixes or not. I guess if it was always like
-    this then this is net-next material?
+Signed-off-by: Joe Damato <joe@dama.to>
+---
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-The core issue is that bnxt_hwrm_tx_ring_free discards the return value of
-hwrm_ring_free_send_msg and sets fw_ring_id = INVALID_HW_RING_ID
-unconditionally. When a TX RING_FREE sent over a completion ring times out,
-the driver logs:
-
-  hwrm_ring_free type 1 failed. rc:fffffff0 err:0
-  Resp cmpl intr err msg: 0x51
-
-and then __bnxt_close_nic() calls bnxt_free_mem(), unmapping ring memory that
-the FW was never told to release.
-
-bnxt_queue_stop mentions something about this in a comment:
-
-  "HWRM_RING_FREE completion is handled in NAPI to guarantee no more DMA
-   on that ring after seeing the completion."
-
-But... if the completion ring is dead, the completion never arrives.
-
-This is reachable on production systems today:
-
-  - TX completions stop
-  - netdev watchdog fires
-  - reset closes the device
-  - every RING_FREE routed through that dead completion ring times out
-  - ring memory freed by the driver but still in use by the FW
-
-The result on an IOMMU host is IO_PAGE_FAULT or DMAR fault against freed
-pages.
-
-I tried to test the code in patch 2 on a BCM57504 with FW 235.1.208.0/pkg
-235.1.208.0.
-
-I hacked something together to inject a failure to test the reset paths on my
-device. It seems like HWRM_RING_RESET ring_type=TX is accepted by thte FW and
-the polled RING_FREE also succeeds, but in my testing the TX ring was idle. I
-never tested a reset against a ring with descriptors in flight. Which leads me
-to my questions.....
-
-1. Does HWRM_RING_RESET with ring_type=TX cause the FW to abandon work already
-outstanding on that ring and stop DMA ? If not .... then this code is wrong :(
-and maybe see question (3) below.
-
-2. Is a TX ring reset supposed to post a completion ring entry? In my testing
-it seemed like the FW may have written success into the response DMA buffer
-but never posted the entry, so the request times out with -EBUSY even though
-it succeeded. Is that intentional? If so, maybe only polled transport mode
-works on this FW?
-
-3. Maybe the TX reset isn't necessary at all? Maybe instead the code should
-retry the RING_FREE over polled transport and that's good enough? This depends
-on the answer to question (1) above, but I guess it would simplify the code if
-a polled RING_FREE is enough?
-
-Thanks,
-Joe
-
-Joe Damato (2):
-  bnxt_en: return status from bnxt_hwrm_tx_ring_free
-  bnxt_en: recover a failed TX RING_FREE with a ring reset
-
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 55 ++++++++++++++++++++---
- 1 file changed, 49 insertions(+), 6 deletions(-)
-
-
-base-commit: 5ccdfb2c3203207deb17e7c5b0db8c7f475639a7
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index ca99f4b1a63c..ac7716dbf88d 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -7660,21 +7660,23 @@ static int hwrm_ring_free_send_msg(struct bnxt *bp,
+ 	return 0;
+ }
+ 
+-static void bnxt_hwrm_tx_ring_free(struct bnxt *bp,
+-				   struct bnxt_tx_ring_info *txr,
+-				   bool close_path)
++static int bnxt_hwrm_tx_ring_free(struct bnxt *bp,
++				  struct bnxt_tx_ring_info *txr,
++				  bool close_path)
+ {
+ 	struct bnxt_ring_struct *ring = &txr->tx_ring_struct;
+ 	u32 cmpl_ring_id;
++	int rc;
+ 
+ 	if (ring->fw_ring_id == INVALID_HW_RING_ID)
+-		return;
++		return 0;
+ 
+ 	cmpl_ring_id = close_path ? bnxt_cp_ring_for_tx(bp, txr) :
+ 		       INVALID_HW_RING_ID;
+-	hwrm_ring_free_send_msg(bp, ring, RING_FREE_REQ_RING_TYPE_TX,
+-				cmpl_ring_id);
++	rc = hwrm_ring_free_send_msg(bp, ring, RING_FREE_REQ_RING_TYPE_TX,
++				     cmpl_ring_id);
+ 	ring->fw_ring_id = INVALID_HW_RING_ID;
++	return rc;
+ }
+ 
+ static void bnxt_hwrm_rx_ring_free(struct bnxt *bp,
 -- 
 2.53.0-Meta
 
