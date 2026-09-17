@@ -1,126 +1,159 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8AC9524AF8
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 13:27:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDF95221CD
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 13:28:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789651679; cv=none; b=FfcsMZNIvmuFwM47goW+TGYFBNTes74Vqr1EzofRsMNFnrKsVCTgKTjteZ7aRCuGQByvSsMjBJ7B++yx+p6J62S7u9GrFFEDDr/azRzmrQ+sjwX+AwJD7/c3sPtVj7FhSa60suP/T6/J9k6eD3MFrH/tBSDVxn8kqv+0d2WXmzk=
+	t=1789651740; cv=none; b=I12RdCjGbWhjnKNojF6o9phhnQiRIkQQdI9JnCP8ag8jRjk+bK+QfIjnat+8YBkgf6Z6mWcvCDWmdl+SbS+dD1M/mtaAuQdWhJD56/HC3PEscsqoMVuDMBCRg/O1LCn7DK7rxm7AlKCHjceLwccY0RkeUMvZn1h8tCsl1HRR2xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789651679; c=relaxed/simple;
-	bh=Eob4RWArHDo+PHxn0aEMYjCuHAJp1sOmVwhY0bAQdJc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=S+E2BErS70Xumv93UAcyb9m9T8pr2JeoycxP4uZOZfH28lUEv66aMRj1pMoH2CrUq4+2ocqT+z7wpMnY3oLQlCyWYlUh6W2WewgPW061cq5tIkiFrxvHhU0XxMZpUd1J0NWwNbuNiHHWZE4aYjU+kKMcIG6bO1BGurGdqRyX15o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KAnRN1me; arc=none smtp.client-ip=74.125.227.141
+	s=arc-20240116; t=1789651740; c=relaxed/simple;
+	bh=NAsObRyll4WV6QYy9rKgLDobFjajI231zXddko/aXE8=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=pKAHJ6tK/dOsMxPLrPilxK1Y3neDb2CY1O4GCgfDj5faQM7hSrzj+3fCccwRJJmpwZGnZyGjSVquEMowm5TE6u5zYKz51TKHrGZ/mFGBGkbQolsnc/hkAXRvS9ww7sgTHmWLBhjlo6liU/8y9htv2VLCh48A3T30wNcGZ885Gig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AIzwt6Da; arc=none smtp.client-ip=74.125.224.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KAnRN1me"
-Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2d747f05ffcso5856555ad.0
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 06:27:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AIzwt6Da"
+Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66e4ab222dfso772814d50.0
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 06:28:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789651671; x=1790256471; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KjHh8s+2p8mSvr65TwmkHMyg1/3Jw00nb+l12vdUW04=;
-        b=KAnRN1meSh9zyXJ2NeCxry4baRUOEa5hqIdtd6zXXdq9rs5KdB7+ezk3+gD1OeQmaZ
-         0KhTnZldHfv88diBp9azOJwGjhuFeg9N2RO4LQ1Wb0xylXO7yTv90egf52ytgzM9x9pZ
-         GmsdweWtTII+SSh4UuWvNpkjBUcqIbw+B9/HlhoMgW99r7gHVSuyeIBzDuCTNiTY2du2
-         4fg6JwshJLPDFfVRYH2wu0YkzYOkDijoiHEfvjVOpVsT17fZRuWgzEoqM6jx3nYwM4jL
-         YejJ+T1BIET8FT2KgmzjeD/sxlwaaU14DK2rqaRiwLFuzQQpygGhWw2vXY5RtQv0wGup
-         p/0Q==
+        d=gmail.com; s=20251104; t=1789651737; x=1790256537; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=sAeZPfLxO8gIQtw5sZuH3fSTsOPDUndxs0gC4xI6QHw=;
+        b=AIzwt6DaGWdkrsP+WPfMtXn+lcvGLyBCfA/tMUdWSveQy62wAGF6NDg11ujcOhHKbM
+         b0+EKsHVGdCOKHc7SMrNPPqgmoAoqYHLnPtCHfhCXByPYW61VX5aMEGiUVBsz/dtAuUK
+         uwyjUQ6tr9GD/B/UHylM6JlocVwx+D/YhHjg2gIS6yHMn8ZI0EgiuEgBqY+Z9F0OaJke
+         S3yvGj+kIoKTlriPwv2XCRIEvHOvxUtIDqHvEahHBPTfQ/uI7egMScd43UDJVjQYizjv
+         9ZtuRvuVNTwAXIhT9xDYHKuUJC1ZRqTnksVChrldtyX58Vll8NYnlzqvMifWQvT4Kp8i
+         DWQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789651671; x=1790256471;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KjHh8s+2p8mSvr65TwmkHMyg1/3Jw00nb+l12vdUW04=;
-        b=WivnWExo3GMDsEyYzoFyYEz2+GKR0GYaTR1vw1sREyVkZgT47Z03+iNtxHaB52UlQ5
-         sRr316zUZz6AsS70lFgKlj4hwB3SZlZaswsBCVKOrBjSnepkFmMl3fye7wnS10S//1o0
-         NinAtUtGQB6HUk3Sx/4fJRPy5W2y1RrMN9uRq3lU6zYeNhRNvlV2Wf+FiKNnC2Upyd5f
-         cWXNhXFSSt0vMtiqWcWL6jckX7ebbOdo2Q9J5NnEwKWLHn+HgnUpeq5Cv0oTPZaPLKGj
-         svjo5mUp6BP+QQfxMaGA98XyFZDF7Mg8J+DFddC357zCPCMP3BhNLxBePi2GSS/pV47u
-         WZvQ==
-X-Gm-Message-State: AFuF++nJLbZoeXKouF7OT7A5UMI9v+y0I9jLb6RnxX3DHLCgtJphGmwn
-	oJnsve4CIh3HyYm5HNvmw13/7PJ2OTOSA1PAu0N4OemnOucbUFfvUs9e
-X-Gm-Gg: AYBFou3ZTX+/IMvIsuChAkBw03pOKAFMl4jOUwXvYNla2daIy+2cJCS6no3ubWFaS98
-	Ya3epDF0iUJhFG9PbWohUKAh5aEFhjMVNGpX6Zwx2DIy2wE5EOf8Q3A64dNff7CbJ6AAIwwHf04
-	WLD5kPcmRg3FH7C6fAQg2nWWVk8yP9z/PzqB9WmUilDPQnbhd57+YmDkypGP3HClrJ7gSRuJLbZ
-	xwsZ1OctM/AhzQK1GjfLqBlloiA2HE6rgSB4fnrSn90BI7cdtoh8mnNwnV2wTycSY26ecn2NbHr
-	Jd3U+j8Zg6DXCuUlS2zWkB+/3JPNqXZpOQccO6cjUoOoFd58Ilv80BtJkCNKcPJGCTQzZfxHJL7
-	oMI70YVMoboiTPQ2pfThWmZ3RAmfkndX/+ZyWa8dc0K6azdnHCo3Gdtbko3Bff1NXtbYo9uc/OG
-	/ZyZGLapJ4YYG5K+xdK9/4CfMvYs7ELM7NagsUP/ZhZCnfBa4m0PZKOwhb+XBwKk1EOg7t2TQg+
-	vGAB0POFmEBMf9emS+lQ+AS9S+SiVZMK98dwvykfqFzaa6xWfwQt28k2Vn2BiSe8hsKaVgU+Zqp
-	6nim/N+Dx7awzo7RMe6PL6pWZBhI+O7tgUBA7iTp8/SZuYCkyfms/T5u9dNasQ==
-X-Received: by 2002:a17:902:da85:b0:2d9:1dee:43e3 with SMTP id d9443c01a7336-2dd8e6373e1mr137519945ad.18.1789651670872;
-        Thu, 17 Sep 2026 06:27:50 -0700 (PDT)
-Received: from KERNELXING-MB0.tencent.com ([114.253.38.195])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd89f34921sm26873345ad.84.2026.09.17.06.27.47
+        d=1e100.net; s=20260707; t=1789651737; x=1790256537;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sAeZPfLxO8gIQtw5sZuH3fSTsOPDUndxs0gC4xI6QHw=;
+        b=bV4Aknx0I3PTGj/6Uhkevotcg81KA1sh5zBTkRY1UixSKZBzXj9rKzhftglDmlc8k+
+         LlQ5FZzZ3ZiI38dCU3Omg5qG4IOoRLNXWvLSkS8GNkQLUPytBKBjkfAD3XrzSF7G3CK/
+         eVz3od/BFNzLcGlFC+G+/XyZvwQB1i8fo7VAkru68YDnkz2BnKeLsJAAbVyBajtNDCDO
+         8vRIMmtekrflsxXif3py8evhqiOKx7r3Q55ZTrY/uv6fFbs37v9zueVafyu/VdYnStj/
+         /z9hHfRoaPBBFyGMR8stYf7PuyPbxBL9zQKcmPv7zN9A7Lec6AJbW4FqulaO1w1vrXVr
+         6DuA==
+X-Forwarded-Encrypted: i=1; AKwUvBydx01P9IuORN8DTScSgpCeNcglf2ZksUjU2CBrU7Ww0i79HMPQynvKm4od/U0btIfHfr3JXYs=@vger.kernel.org
+X-Gm-Message-State: AFuF++m/fvFAKjNcMfo9db7pGUB4HuvI+g+kOXoEo+2HFIntX+EER7gY
+	lOWotrKZLP//eN60cYoixBuRvr0/ohA32vEuW6MoV4Kw8myHcUnvfoQM
+X-Gm-Gg: AYBFou0H82I4QHVXY/VZnWouYHdIeNiwak45ohI8l0cAAaDqsVCOq38sWST2NkJIWM2
+	zRKV2fgejM/GmDbu5SG3Lm+Pc2QnSISi/L7HWhgnSFf/BTCetTPvJz52Ndmlm3N4YW+S8sXZEaP
+	4iYn6RP+Kp8OpIWV6hy0DgZwA5HOnXhi/rSwhsVmIlLGlNoAQMOm9LIMOBkV33whv+N2a2TdR09
+	9FGfC0r1i+UCwKgonRI7FCp/x5HjSFnQzS/9YtXAELAj2l0qxKrKEJMq3JRr25ga6c12qp3WCRO
+	cWGRB/75FMDZAlDaPBOw5uCc+Mvip+3Up2IEvL0nSz9TFlgwLbrn6huN/ggV8ENXOYdwInehUYm
+	X5dU6wEph133bdxl6ICJkeQEDfGBX4z3xAuOTUqJlS7N8kNq28xZlMFKsuShrLHvsf3lDF6RTik
+	2GFIpu0uNAjzcmb/rRt0Lry5Lsmx9zbnyVWQWHgKMnm6jxShnLpG28pkhESM96ynKb1B45GFzE8
+	wgl5LShlcFkBs+YH/TDJZW6A3VXaJwCeSXh3uJb8vatsbSCdAwp
+X-Received: by 2002:a05:690e:11ce:b0:66f:c719:616a with SMTP id 956f58d0204a3-671631be447mr2244247d50.3.1789651737398;
+        Thu, 17 Sep 2026 06:28:57 -0700 (PDT)
+Received: from gmail.com (111.46.245.35.bc.googleusercontent.com. [35.245.46.111])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-6715f79a963sm2544539d50.20.2026.09.17.06.28.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 06:27:49 -0700 (PDT)
-From: Jason Xing <kerneljasonxing@gmail.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	willemb@google.com,
-	kuniyu@google.com
-Cc: netdev@vger.kernel.org,
-	Jason Xing <kerneljasonxing@gmail.com>
-Subject: [PATCH net v2] tcp: preserve timestamps across receive queue collapse
-Date: Thu, 17 Sep 2026 21:27:42 +0800
-Message-Id: <20260917132742.87117-1-kerneljasonxing@gmail.com>
-X-Mailer: git-send-email 2.33.0
+        Thu, 17 Sep 2026 06:28:56 -0700 (PDT)
+Date: Thu, 17 Sep 2026 09:28:55 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Paolo Abeni <pabeni@redhat.com>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ netdev@vger.kernel.org
+Cc: davem@davemloft.net, 
+ kuba@kernel.org, 
+ edumazet@google.com, 
+ horms@kernel.org, 
+ andrew+netdev@lunn.ch, 
+ Willem de Bruijn <willemb@google.com>, 
+ Katherine Leaver <kleaver@janestreet.com>, 
+ Bjoern Doebel <doebel@amazon.de>, 
+ stable@vger.kernel.org, 
+ kylebot@openai.com
+Message-ID: <willemdebruijn.kernel.217ba36e55cae@gmail.com>
+In-Reply-To: <a0b83186-7399-4d79-8226-ff43611184d7@redhat.com>
+References: <20260914214229.1674102-1-willemdebruijn.kernel@gmail.com>
+ <20260914214229.1674102-3-willemdebruijn.kernel@gmail.com>
+ <a0b83186-7399-4d79-8226-ff43611184d7@redhat.com>
+Subject: Re: [PATCH net 2/2] packet: use ubuf_info completion for TX_RING
+ packets
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-When tcp_collapse() rebuilds skbs under memory pressure, the copy
-process doesn't include the right tstamp and hwtstamp from the
-old skb. And memcpy(nskb->cb, skb->cb, ...) copies has_rxtstamp,
-but nskb->tstamp and hwtstamps are left at zero, so
-tcp_recv_timestamp() ends up emitting no cmsg at all.
+Paolo Abeni wrote:
+> On 9/14/26 23:37, Willem de Bruijn wrote:
+> > From: Willem de Bruijn <willemb@google.com>
+> > 
+> > tpacket_snd sends skbs with frags pointing into its ring slots. Slots
+> > are released when skb->destructor is called.
+> > 
+> > A call to skb_orphan calls skb->destructor before the skb is freed.
+> > This can cause the slot to be reused while still linked into the skb.
+> > 
+> > Switch to standard zerocopy completion (ubuf_info) so the slot is only
+> > released once all references to the payload are freed or copied.
+> > Restore skb->destructor to standard sock_wfree.
+> > 
+> > To prevent userspace from aliasing in-flight state on shared ring
+> > slots, allocate tpacket_uarg per packet, rather than per slot. This
+> > adds a small allocation to the transmit path. Use standard kmalloc to
+> > allow backporting to stable kernels.
+> > 
+> > The uarg holds an sk_wmem_alloc reference, rather than an sk_refcnt
+> > reference. packet_free_tx_ring waits on sk_wmem_alloc before freeing
+> > the ring pages.
+> > 
+> > As a result a slot is released when its payload is copied, which can
+> > be before transmission (e.g., in skb_orphan_frags_rx). Any slot
+> > timestamp then reflects the time of copy, rather than of transmit
+> > (or skb_orphan).
+> > 
+> > Revert the now unused previous skb_zcopy_.._nouarg infra.
+> > 
+> > Reported-by: Katherine Leaver <kleaver@janestreet.com>
+> > Reported-by: Bjoern Doebel <doebel@amazon.de>
+> > Closes: https://lore.kernel.org/netdev/20260909085542.3370986-1-doebel@amazon.de/
+> > Fixes: 5cd8d46ea156 ("packet: copy user buffers before orphan or clone")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Willem de Bruijn <willemb@google.com>
 
-In net timestamping case, if such an skb happens to be the last
-one consumed in a recvmsg() call, the application receives no RX
-timestamp for that call.
+> FTR both the 'high prio' sashiko finding here and the mid one on the 
+> previous patch are IMHO worth addressing.
 
-Fix this by copying both tstamp and hwtstamp to the new skb right
-after the initialization.
+Absolutely, agreed.
 
-Fixes: 98aaa913b4ed ("tcp: Extend SOF_TIMESTAMPING_RX_SOFTWARE to TCP recvmsg")
-Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
----
-V2
-Link: https://lore.kernel.org/all/20260916124153.43457-1-kerneljasonxing@gmail.com/
-1. add one sentence in commit log from Eric's reply
-2. use the same semantic as tcp_add_backlog which is to sync the
-   last skb (Eric)
----
- net/ipv4/tcp_input.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+I hadn't gotten around to responding to the bot yet, sorry. Was still
+reviewing the options.
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 0f60a1dbf927..81d587654d3d 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -5854,6 +5854,12 @@ tcp_collapse(struct sock *sk, struct sk_buff_head *list, struct rb_root *root,
- 				if (skb_copy_bits(skb, offset, skb_put(nskb, size), size))
- 					BUG();
- 				TCP_SKB_CB(nskb)->end_seq += size;
-+				if (TCP_SKB_CB(skb)->has_rxtstamp) {
-+					TCP_SKB_CB(nskb)->has_rxtstamp = true;
-+					nskb->tstamp = skb->tstamp;
-+					skb_hwtstamps(nskb)->hwtstamp =
-+						skb_hwtstamps(skb)->hwtstamp;
-+				}
- 				copy -= size;
- 				start += size;
- 			}
--- 
-2.43.5
+Simplest is to enable the deferred worker that Kyle also for page
+backed rings.
+
+As the commit says, I'd rather send something much simpler to stable,
+but after exploring many paths did not found any with fewer risks or
+obvious regressions.
+ 
+> Also I'm wondering if the extra alloc/free is visible in perf figures?
+
+It should not, compared to the skb alloc. But I don't have hard data
+on that.
+
+> Out of sheer ignorance, can't the ubuf be carved out of the ring?
+
+It can, I actually had that first. But that has more risk. Userspace
+can overwrite the ring header status to TP_STATUS_AVAILABLE,
+possibly corrupting uarg->ubuf.refcnt. It might be fixable, by
+incrementing refcnt rather than initializing to 1. But that is less
+obvious(ly correct).
 
