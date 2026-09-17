@@ -1,79 +1,80 @@
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7D33D890D
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 18:33:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997843DAAC2
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 18:33:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789670027; cv=none; b=a09j74hyR87dHrcLtyZVhQCE5VYCHuJ4S0I4n6/Y0JVJWhgHgDlvtflRBNegXq1o0VfEZ38pGAvAjh/gPEkGSiNDMS8IodZxkfdc1pwxFiVL+Le/xJXuL8o0JWjC7lEkqdcBS719lDu6duZ3lS7PH5mwnrgiTQGfPJG/QU7VN34=
+	t=1789670034; cv=none; b=iCANwoUKBu79ewdgsUX6vBC04+Rul7/JbVvXjfmhmbF4yjDNJGKtY5PZmVWbWRFZsDUB9tl3csrbUCzMdPnmEdMf6KVw42ARPXYK1jAHom8c9jlZGcgdnxDQTN+/0R55ofSjHWAwaBCIX8DM0UGSyJV3RpE+cdNakNSNaD7bj/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789670027; c=relaxed/simple;
-	bh=3MiKQQRDEWCPyTH/4jWGYGvYiNpYurGnuiVLNI24DTM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SpVmkKlx7rjPE63D5fJV8B3PvdYmhYqH28Kbte00vjO1LD0AeoTF76z2A7Rx9FYZsw9Xak4HUZHNpH6Gt6XUxHbwAF/f12PBTw9YT7ex+zYNDuZDzqg9uZDQFrbe378swZqWNYC++GU907x8dlLBlzlxInyf2w1O7go2WFapQXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o9QgaJsC; arc=none smtp.client-ip=74.125.230.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789670034; c=relaxed/simple;
+	bh=Z2wh3hX4GTbMSEzBSVlaN0sCaPeudxONGvzONywFAB0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=BI6vRbw7oy/KmzoOnHaSIHG+ovBPnexYKqGX10kDY2WqEnogo7+X3RaipEcxzby6SvhIdvpy/DzK5FNIy3s2Dyvpi6IC3ZYZlManA4SJCcqA5/ZgSlUvFpxZmPjjLkxk57eqKhjyJk3NX9s0hbKTeEI9zL1RbYeAvWwO0Fu6N28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=BHYwpIwU; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o9QgaJsC"
-Received: by mail-qk2-f12.google.com with SMTP id af79cd13be357-93910cadeb0so75555385a.3
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 11:33:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="BHYwpIwU"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e721b5503so10865985e9.0
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 11:33:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789670025; x=1790274825; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wDvVoV5ROG1mKn3iD6+o1D5ZDgbS9tQ3bJGaaKaossQ=;
-        b=o9QgaJsClCi4Dhc2Kudb9avQgNUWHDP4pSS6nZuxFYiuTfIin9/1wlOnvHg9vetYP8
-         djd5neqJmX8AkPXopw+OTeOzQ31ARbXn22QT2elR09LvZEzZuHUlSfrcC7px/fHyEBS7
-         K5tNOalo7QYynZyo5Zzy8snfK2O+4yq82BopPqjFTij3rPfWqGdDBd5lY1bOTeDj9nk4
-         xKW0maAxZbXiUt/Uo7gkhMwE57KYjANB1/cA3QuEHlZwyGbM0xcjV5j/G0WWye5Ha7/y
-         wDniZOk/FUZupRJTVFL6hTiVjjAx5PwDI3ibR8KkVylxCmyU7H368rH+TJULVzcZuzx/
-         NyVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789670025; x=1790274825;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=lex.la; s=google; t=1789670031; x=1790274831; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=wDvVoV5ROG1mKn3iD6+o1D5ZDgbS9tQ3bJGaaKaossQ=;
-        b=AuybMimGtgxug0bDFu9vv6yY38FhyGJjOOpiCiyatcK7YpssFF4Jl3k7lgu61PBnvR
-         jLGAaNGKhpiKs3fW3FhSDIQY7YBvDj5wIkoVlBfsxgpivR+WIqLeML7VLhmy7YmHSdYu
-         MLFYO9SoW+1Ja/YGUWIKoWzu/HKPiuVSw94frTCzu1ZI5OWWzXSKTVZlqdb1qbB/scVk
-         hAop8bk5oNj1uhy86CQl59OBUbzdR8pufK5FTh4c8cQEu8/7xM1zO2ldwqYNztRkGlhP
-         vJTj4/s8IVAjjHD8+jojW+oxlEw4qFP2ZjTOTIFYQBPC2n576+MuXDohxMRSV07dzgrv
-         WTFw==
-X-Forwarded-Encrypted: i=1; AKwUvBxrlEgVTJO2thTSxfR/MU9Y9RvtzidkUtj3bnabF/2x/aBmT24pXFM8lqZzXcGwTquDe9q/A/A=@vger.kernel.org
-X-Gm-Message-State: AFuF++mfp87bhznZkVyrQMuEpyULSQjQp0UJF5tkLhjQ/DKHqRlxp2am
-	Opcbmv2tVq3OFzkZA9bUwbZ6ubksN4W21AXz8dMzpSFCQiu29CHeN7Y=
-X-Gm-Gg: AYBFou30Xls/7jt0iY3Fi01lP2TAlFKNZLIx/ByUbEnM30su6E9zH0t9pY+1vyUho/5
-	R6krJuNksDyT6Zp+YfAaKjgXweuDmF16n9ZJfgq5MTUBe0nIhhOVCGIoAogrZl/f/p84k90iiZr
-	gopd07PD0IQCVsHGLFTZfyGpq6OB2754x9/3voNlvpxuk45h75wzd02pU90DTPFVjw7cXZpKXCy
-	nODtCzjoZsR6Fic7jCeJnNKCxNjqjjhbGCbotkRtkr5+ulWfPMKyndNz4PWYsmLjYQO/c+UsEOb
-	EIv6WgwAZ81S+n80gpQePDum/QP7FF6rpm31AixAy+MIx1xQXE+9L5MrIpkO/6wwIDETKBhrzRW
-	rmf+APnL31BaER8zL+ZJDLgLf9SlXVw97eERaAWC/onmupTNnmHAcFQz2MPf1bhLT4gh4zt2SuR
-	YHpoNOQPbim+zoQg1A4ZFsuXR+FpLqcK4vBiDzhZNx5jZnx5Kogxh8mHYdGt2kMk+JaFoYPmwsh
-	MjLStupUDRXBiPzcNPW94zP4HbJ8dKsp2W/AjteDpN33i01bYK8tMBGGVHlf65qITSKvQH8aPTD
-	PAE/YJ1cBsPDFZbmFYR9fSqVkRpT26s91uSq
-X-Received: by 2002:a05:620a:691a:b0:938:e23a:2ce9 with SMTP id af79cd13be357-93bb773f0cbmr1416387785a.16.1789670024810;
-        Thu, 17 Sep 2026 11:33:44 -0700 (PDT)
-Received: from localhost.localdomain ([104.39.169.225])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93b7821d231sm529710885a.21.2026.09.17.11.33.43
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 17 Sep 2026 11:33:44 -0700 (PDT)
-From: Myeonghun Pak <mhun512@gmail.com>
-To: Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Michael Chan <mchan@broadcom.com>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+        bh=Z2wh3hX4GTbMSEzBSVlaN0sCaPeudxONGvzONywFAB0=;
+        b=BHYwpIwU5XLCkTaVff96GO8IQrYo2UJY0v6FESNtLB+TLNwGAqQuOJmuNRX+ZUZ7ce
+         UQUJdYD81N8+YVqXw7C/pTA+r/CLISa2ysPizRM3Cr6hItcrjN0TqiUlqKhj6nBUfWjq
+         raaKOl02w7kGHTIX3Wb7hCnuDL5kbVCN/3EyhOm9w0jp1C5kLEiVbf4n57yIpPrKDLId
+         2htod2ekRYJ8gx48YXUaFjE3f3td17JSdLVbN5zl4IgQFL8fOROCqDlW4Kqh4BMRW8OO
+         ftZdYgnhpqCLmbXLjRb7MSB9zY3OSP7a4rUcU2Gf2emEmVHiIwOMz5p1KanU+DIuqavc
+         ANrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789670031; x=1790274831;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Z2wh3hX4GTbMSEzBSVlaN0sCaPeudxONGvzONywFAB0=;
+        b=PhEWoGileVN2sL4tLZYZxhIG+vM968w3WZ7J51ZGHiqWvSpLa/kyV7fYH/Ri/Lj0TU
+         pYHu+N45Jliati4gkC+h4pE5gmsZO+9RAvhcsOZkRTRcf/5ADc67SeDmodd0xcEl/4yc
+         3QhD+ri+ky24DftdgLuYECYVJ0KIOXsSx1sz08a+6e3VzPpV9eo6PqjonLAx9NlPBeKW
+         owq9Lt8CwTR1wMz7jofwBVjE+2c3qM9UZQ5+JAmYx13tFGC6EWLZlsBdwRxMYeZD2bts
+         /ppSpRb6dNeF9ssBxjY1Vw6jf7+g9X367iJoBafwG9DaFkcsIKO05lAKQM27gU9QS5wO
+         /8hA==
+X-Forwarded-Encrypted: i=1; AKwUvBzUsdx9D/iLxE0sme8mA8SmvEZVMrwnZb4kWJ+9TZ1KR3onDNPzLxe2V1diY21sQuTxlMTYukA=@vger.kernel.org
+X-Gm-Message-State: AFuF++n0Iw6gnXApj9rHmyZvUzQkTcGxEtfHNlj6JrjJdRpbk5lDmk33
+	Iip5gVcpm9FxXKPCgHLkPC1S4hceO9Y2zva1nIZFKXPqPEEeoTqMq6LXU6oJ11P/X+A=
+X-Gm-Gg: AYBFou3wNbo9iVL4ImTvxp65kM9e/C58yLNe8tbvy8eXXaoSK0T5Ov1xbnpUTKZMCLC
+	ebb8ss6MVoxD5P/WxaWZXQOmOawnrmP27LZvbGB8Z3Qh8/bllw40+y/QNkXRhWazzKzN68Mnnrj
+	nu3tkMTiuAUxSQPGK6v9A1TcaC1W2pN6RfA1Vd/cpWp+gDd4CVofxgfWo01rkTQtaEGQkCVIeml
+	fU83tQAcw1+xK3c/gy2ampAercGPpcILmcwh3QpCIP4+4RKqED5jgjX8TjrHLRfiIYeEYGsRrSk
+	3mbCRPTziN5mdMqK+jqpXbR/YyXbYa+tn16Z7tCYSHxuVE852k72cYJJpdwWJ1rYBDRn+g779rA
+	qfHzi68TXo4otU3bMS+n/8CsLo7MRLRM9of9+eBX2A0FA8NIVp5sFS8gEleLl18cfWHmRqM99RE
+	d5iVbhs2/01SarR/dVPpx4Itlnfl4C2GBC0pbe9hHg/wWB4Vhd9w==
+X-Received: by 2002:a05:600c:8b8a:b0:49e:799a:8951 with SMTP id 5b1f17b1804b1-49eb72fc61emr120382075e9.11.1789670030653;
+        Thu, 17 Sep 2026 11:33:50 -0700 (PDT)
+Received: from remote-01 ([84.17.55.229])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fbd225898sm102190195e9.9.2026.09.17.11.33.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2026 11:33:50 -0700 (PDT)
+From: Aleksei Sviridkin <f@lex.la>
+To: maxime.chevallier@bootlin.com
+Cc: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ijae Kim <ae878000@gmail.com>
-Subject: [PATCH v3] tg3: clean up PHYLIB resources on probe failure
-Date: Thu, 17 Sep 2026 14:33:36 -0400
-Message-ID: <20260917183336.36239-1-mhun512@gmail.com>
-X-Mailer: git-send-email 2.47.1
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: phy: reject attach while the PHY driver is in transition
+Date: Thu, 17 Sep 2026 21:33:45 +0300
+Message-ID: <20260917183345.37604-1-f@lex.la>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <6e82dc04-a68d-4c54-a6f0-a13c04fa2eef@bootlin.com>
+References: <20260914204200.2743251-1-f@lex.la> <6e82dc04-a68d-4c54-a6f0-a13c04fa2eef@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,51 +83,10 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-tg3_get_invariants() can register an MDIO bus and connect a PHY for
-USE_PHYLIB devices. If tg3_init_one() later fails, its common error path
-releases the mappings and netdev without undoing those PHYLIB resources.
+Fine, v2 will target net-next.
 
-Disconnect the PHY and unregister the MDIO bus before the remaining
-teardown. Guard PHY cleanup with USE_PHYLIB to match tg3_phy_init(), and
-call tg3_mdio_fini() unconditionally to match tg3_mdio_init(). The existing
-IS_CONNECTED and MDIOBUS_INITED flags make both helpers safe when
-initialization only completed partially.
-
-This issue was identified during our ongoing static-analysis research while
-reviewing kernel code.
-
-Fixes: 158d7abdae85 ("tg3: Add mdio bus registration")
-Assisted-by: OpenAI:GPT-5.6
-Co-developed-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
----
-Changes in v3:
-- Restore the USE_PHYLIB guard around tg3_phy_fini() to match
-  tg3_phy_init(), while keeping tg3_mdio_fini() unconditional, as
-  clarified by Andrew Lunn.
-
-Changes in v2:
-- Removed the USE_PHYLIB guard around both cleanup calls. This
-  misinterpreted Andrew Lunn's feedback and is corrected in v3.
-
- drivers/net/ethernet/broadcom/tg3.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index 73a4b569b..caa7a6caa 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -18047,6 +18047,10 @@ static int tg3_init_one(struct pci_dev *pdev,
- 	return 0;
- 
- err_out_apeunmap:
-+	if (tg3_flag(tp, USE_PHYLIB))
-+		tg3_phy_fini(tp);
-+	tg3_mdio_fini(tp);
-+
- 	if (tp->aperegs) {
- 		iounmap(tp->aperegs);
- 		tp->aperegs = NULL;
--- 
-2.47.1
+Out of curiosity, since I will run into this again: is the line
+"needs instrumentation to reproduce -> net-next" about the window
+being unreachable in practice, or about nobody having reported it?
+The crash itself came from a real board; the msleep() only made the
+race deterministic instead of occasional.
