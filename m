@@ -1,220 +1,167 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011005.outbound.protection.outlook.com [52.101.70.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3568A3812DB
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 03:51:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.5
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789617083; cv=fail; b=CGvpM4yBs4rdwr2Y+xc7wA3lgMXmdwNcI2yKa4gzMIVNycHY/kg6gL0+RJdi1rRZK8C5BB6FTHBPD7xHNaXmiktcPrkQOPoe1AUPDoaFzVLdSOEEjaDklJ4dPWFM6iBMruj4tz8ROYA3PlYALR4jqCPGaqOj1C/yHLILjchWC3c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789617083; c=relaxed/simple;
-	bh=E4FNfxVt1qnAY3lmmp5iEPaV2vqBFp2/KB4Rx6b75aU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=UMQWEN6q6HBJ9axA+DNk8PrjGHqq1alLQINnpqVFQ7l6xaouruIQN1Skoy4FdsL2CXLBxh/dNGqXHJPUubMHaY0C+dXXmG88zlEkFSbPFacOvWYhRwygI2tLaES0/9SH86aOe0BfZemeRN0vFwRrN/hkHrNmLBTGyb0/7t2gnoo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech; spf=pass smtp.mailfrom=est.tech; dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b=CteivQ1X; arc=fail smtp.client-ip=52.101.70.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=est.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=est.tech
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CDA3B7765
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 04:00:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789617616; cv=none; b=K4ircMHbptuWnbFhc6I6WKo7EgBV306BdDrfxN64tEMLlA2jl0nSA9vY5Mbcpn4wT7ez3Cm5hZqXDlqIQwKXAQkr79cVja7Ch/SNOdmlqJ0CHfoxToXuSZ9PhRfkG78/3Rro+Ju2f2a6PviRF4KRQGurxzzxqOg2TW3H8aDcr5o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789617616; c=relaxed/simple;
+	bh=J/bZaVCssFw0vW7xv0YPZK10RdXKVFgMBVYfQvPz70I=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=TGge5V3MxIxWSFn6dwTr39UDrPLoYX7iSRdz5XGbDYPQZ36Ao1UUha7p7KG3i2RK/9V0kJMGrxOVhDaYOTNrOuePUi8naGuxwaMdHagDUOYl+sP6mPJaYI2MsLAfDq1ph0x8NPX2BcUHkGDk6pvVAwx8OZX9epF/eDEQbbogqL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OY93VsRB; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=est.tech header.i=@est.tech header.b="CteivQ1X"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=F3SA3qdFKra6ecp1qxddK7WU8Jugvccacd9xm+n0/iXYKxtZP+RcXY+8hgCioIsRv3QQotGA+zrP3xDSNAvNqO5TCvd+5TyhQrBAPdLd3+KrQY4czlBkQ+lphCzmwsmSQ/ItDBp5tfLQoNi0vQ+gH19lRQ+P+k6F3z4uaRNpTwz2e6os0Nem2cPoS5t9t2GBdFJcQctYQSte1o2IxfmOGJBwpLjjXRo3jf0f8Iygelijpb9yaRM0Nv0hBIinhL5sF3WHF5jeG5bz7JW5wPPQjX7+rVayT9ne+ha1vHtEoDfnpj6u3GFmURZVSyCjuqlrwsB3CHxCgg1+S6hQycTX1Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IoBhch4itqzYx0SmiDkiNQmsW5jBesztx9ZGkDd7IRY=;
- b=tuL1Y098IO4nzFwV8BPJG9pLj7ApCqncuhYKtAMncI0l2qNro+XFA9ZLk4ivXLJkswZn/9ODchRDg8FeLILCQWgHZ2JqoEy7g7t9AZIrLJHGxfucnn038fg3b7ZLhHhLoJdKNIXD74GGHdPQeBzc/LUkBKq2ajSq4kHNLxEB3Unk9gxBMx0Ktc6xef6Iqjv5YpgXVrTOn5r2wy7XmGy0Yh7qyGWqObaCBklcRXDxZtf8krwqMKWta9mJEOk00usSV441LEBQKfmQIwJshUNmpJaNNxB9E45uWHYqUdFZYT89f/5Il3qqBJF4h6wOQVsY1lXfCussPQ0JW4DTYH+kKg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=est.tech; dmarc=pass action=none header.from=est.tech;
- dkim=pass header.d=est.tech; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=est.tech; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IoBhch4itqzYx0SmiDkiNQmsW5jBesztx9ZGkDd7IRY=;
- b=CteivQ1Xcc6xe8ylAIHrPANncMy5rD+P+qArnSKyhCmtDVDhATwpS9Jjj7oa4hKfLNJlsWM8mhcdM4NO+gimiVaDK1hTgCJ9kGQ+inf1BvWo25SXYGIcaS0yFLDJIrAweB7WjO4Q2GYY+k7CXUoBCSrI8QRaKJ3YNeTGZqb480mPDSTON9bbvxzA7WKyZOHkkw4nbClSvtiXcAsAnijacvynLgidyNI4QqpX2iZmtiKn6dLdygb2b9kA4U0kTmkd2VjOPaYGaEYktHS30NCXNjaZFn5SeRzlMyLqChViskHhxMvtQadjIwumrXlH7RxSOgezEaLb6Ly2ai3OH4G/3A==
-Received: from GV4P189MB3732.EURP189.PROD.OUTLOOK.COM (2603:10a6:150:2eb::17)
- by AM7P189MB0806.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:119::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.12; Thu, 17 Sep
- 2026 03:51:17 +0000
-Received: from GV4P189MB3732.EURP189.PROD.OUTLOOK.COM
- ([fe80::b76b:e0a5:9be0:fb34]) by GV4P189MB3732.EURP189.PROD.OUTLOOK.COM
- ([fe80::b76b:e0a5:9be0:fb34%4]) with mapi id 15.21.0428.011; Thu, 17 Sep 2026
- 03:51:16 +0000
-From: Tung Quang Nguyen <tung.quang.nguyen@est.tech>
-To: "xiaoshoukui@gmail.com" <xiaoshoukui@gmail.com>
-CC: "edumazet@google.com" <edumazet@google.com>, "w@1wt.eu" <w@1wt.eu>,
-	"jmaloy@redhat.com" <jmaloy@redhat.com>, "tung.quang.nguyen@dektech.com.au"
-	<tung.quang.nguyen@dektech.com.au>, "xiaoshoukui@ruijie.com.cn"
-	<xiaoshoukui@ruijie.com.cn>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-Subject: RE: [PATCH net] tipc: fix memory leaks in bundle and fragment paths
-Thread-Topic: [PATCH net] tipc: fix memory leaks in bundle and fragment paths
-Thread-Index: AQHdRaM/5s16wXYOHEyHInlRwNizWbbSEy6Q
-Date: Thu, 17 Sep 2026 03:51:16 +0000
-Message-ID:
- <GV4P189MB37321B67712A8B2906F2DC2DC6B82@GV4P189MB3732.EURP189.PROD.OUTLOOK.COM>
-References: <20260916061220.798324-1-xiaoshoukui@gmail.com>
-In-Reply-To: <20260916061220.798324-1-xiaoshoukui@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=est.tech;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV4P189MB3732:EE_|AM7P189MB0806:EE_
-x-ms-office365-filtering-correlation-id: da611885-484d-45b6-b308-08df146eed03
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|56012099006|11063799006|3023799007|22082099003|18002099003|10067099003|38070700021;
-x-microsoft-antispam-message-info:
- 9y5bpt8Hd81+MI85fRyfqSckLz1ZQBqdHksk+naloxX+DRvPjcJ7D0CnfXcPUI6RmpUBk+H60Y179bAbhUQoKqccImlcpgFHRNlA035VaM8/qFclssDpLoa6AayTrl7LHHZyN/84g61Qsa9kwbp/fqnPAXeDvmEMMxaR10XoJ7bb/4W26ZClN6trcg5M5fYr/+pM17ktUilU7V9AiLE6lBnAsvxSGejcVq6vscSb5otMa/dYUEICyWtQyKKQWMe9ykf/fhlGrbxcYMGXaHWAX4ajiQCjrtWZWepKfdQNtDy/IN10egT19am5Dq362QVqGAOC2hvqhwJn4UdlVfaR2JjI37KxOyNmDhBlhPHm5/Tps/TqZZtvbmbHgy+zKy10Z+/XkmFMM1eQniqc5yenmEovz8M5/jxk34Vfy+2Li/BrQso6CtA6B74BjAnKK2LR52S1KzetwsXKYB2EGbJJd1r9J5RPEl0wwkA2NqQEQ5HOtwYyxQ/1ioDfPSBuo+sh9VmJ1naRFyAhy/j8ElFtmC1i0wUQLIURSBO/qe2WpkgyPulf5+HUY1TW11m23ykXtnXp9+ZujF0+Q5N2GstnG1Dd3+3yPN9NuH4AE2RLBItTbzACrlbzWLlYQRbKp65UTMKMK7u5oXxPyj8IbiP7GgU4wTQzuAYjA3pAmNnxAcs=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV4P189MB3732.EURP189.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(56012099006)(11063799006)(3023799007)(22082099003)(18002099003)(10067099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?qR/SmnRyA2mOXuNLrQCGjyjd0Hd6PvnvHWlKaoPw16WVQoJl75Gp36Yk5AES?=
- =?us-ascii?Q?vCWKXCKTbDmFj1hsbzIj+OxjhrfG/S/RkaQHsU+Z5PbbYmpu+lvyRoNZM8bi?=
- =?us-ascii?Q?hjxmfI6/UUVneT9jUcR2hmCmRBk8PaSGo3ehdL0c4E+Yf7j5mAvsJkKBdpci?=
- =?us-ascii?Q?DcugGl83B/PW7usaNgVzlio+QrxoWwi5orhwv7YgUUjN1nuM8NeVCKAA3hE5?=
- =?us-ascii?Q?zp7f0bI40HD4uZzmiUndtUPvfgwY+jCWYDma2VRGt4NwUxwOFtxl2fmvPzjz?=
- =?us-ascii?Q?iQgJpjn7HkBqiblfVBt1yD9P+nVu3irl8e4TS/D3MHO3ANq/+rnjClZNSYrr?=
- =?us-ascii?Q?D7i913xP3O2t/QOV0lMJC2h944WxWcBwXz1bs8qqH1UWaqEi4KRNxxdLY/zL?=
- =?us-ascii?Q?oRjlrvjqfGAAATEZx8gy3+L/S2qPKHVFCeOmRU7kRqoFau0E1uUcbsGrHk1R?=
- =?us-ascii?Q?W43i7AfVk6ue8IB5C0nzqI4t3YsCNvFqKKnd7lSzWxQXTWQaGa1hwUXC2MSD?=
- =?us-ascii?Q?dqLasUn5JM2YdhHorq7VvM6ttDaYdnMjsW6PupEiFbS8KTn2z+S9C6EoH6W2?=
- =?us-ascii?Q?R6yNHyQn36h1tHmRmPmICjqMvYDohFFQagzSysrrnVUUm3rCphq7/syuO8kF?=
- =?us-ascii?Q?lK+wqKrisB9SCTIDcIXXMusGEFmwKwBGnMUXNiKHAD1FLAX4N/TokQCh1jyB?=
- =?us-ascii?Q?bi5lrPWsAGTbZHugmxZplHwY//equgZsR4wBBhIbaO9a64VVk9rUtMGYlGaN?=
- =?us-ascii?Q?ZeFj72TRhcTvS8mzzfIw3j7dq8rRqQsAeMnkXrdoh06LLjZP2AH87VfdyT7u?=
- =?us-ascii?Q?484NgDsAjmRXMFs4kYrvHXNjcB4wNfxaCcofaCzAtNW+q6Ann1s7i2YA6SSP?=
- =?us-ascii?Q?AKVkw5muYXZVbomXizyUdudtbaJP9ExeQF5+GzT5lnAziKUyCYIhrJjE/Xum?=
- =?us-ascii?Q?qPq0xZEfix66lCrIFpIvDVLWJB8r3/J1x3xMb/0tb2t3qrksr+bHdF70v85T?=
- =?us-ascii?Q?05TB3mwGd9IglDnDvTSonTPW0zXyis831XwU/oG3ckqIdJdAiYW7iKFTu6Se?=
- =?us-ascii?Q?lJVfIGbfJwrNfKOnCSA7BUgL+yjiYIGS+P8e1qtHaWxwk/s5Rc808SU/rv28?=
- =?us-ascii?Q?KGLnXVW54NzbRuoeOThqjdXZptvUZ0PN9dvK/1il88XLbY84wV7u+ZPaydKr?=
- =?us-ascii?Q?qdA+lU0CZouFU0TzXN0c0xuoLDHDw+o2k/27DBNHOZ/P6MoR3CPUo6/tI2eX?=
- =?us-ascii?Q?snbIMP0nF7hzyYW60vPSmkxAU2Pj85qrnb9v+u276p5B5nT766HuOALuWrpi?=
- =?us-ascii?Q?bEksL97Divs9GrjAuI0d/EpkvGLllGBNh+gJp+BI5TH3+JQf+2UfYlkFyzK6?=
- =?us-ascii?Q?ix1C4LGuazbQ7/Hsocmzm486WGgRDE4sP9xqxgsqMRcJAWDOh8t3gSyVQiEb?=
- =?us-ascii?Q?pGxleqKB7TA/ldY6fhWv3iwNTqXfjx1QZiBFNEVs+U3oFqMlv/LbXlr36c51?=
- =?us-ascii?Q?NMIU6DrV+HOSFEupukPfvYjeIXD7fWr8n99haHBGX6GElZlRyyx14Kze2p1n?=
- =?us-ascii?Q?tc5IsHTlVbPc4lGeoVSHhiwnP9JUOW7wFCMDrlj89F0fMUZoTNiqO3mXzgOZ?=
- =?us-ascii?Q?R9wwI57O76TZRgmNgs9M3U2Vvgn57tAPEg5Gc2m7qZHjr3Nj4/EhZmyKdGuH?=
- =?us-ascii?Q?7PS2XKMnxkBE+AkNsykYgKrI5/ZXypYFnG0B9YvyW3hxhsfDC3c8vpxGe++o?=
- =?us-ascii?Q?UhZsA1NDqw=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OY93VsRB"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b965f447cso2815975e9.3
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 21:00:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789617613; x=1790222413; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Hq+RhWH5t3rOMXgtP2JnH29EHWf8ckfy/YyUirWvEQo=;
+        b=OY93VsRB9RWb+uma3Sd056ZLFElfVyWZBfpjfAVHs827XE92RXKIrNAA7WZUnmTVnp
+         4ef8EebmYT4RH99cLk24bXUkzkuV6SFc/9aU5EYckyaQZtPqZPrkcaVJ2EDng8J21duO
+         jaE14Rvmh7NR/vrxl7VXjmTMELtrlLcTAzQbBD/GHe7Dr+6OTTv/hDC9hF3QwRa+he28
+         8gJWTW2WX9be3otjZhGy11ujarNC/dw2aIeTSculsa8TSI0jTfa9YIuUg/EG5d4dtrQ/
+         DZsXEGeLLbU+YwuSr5YLo5/cHi5Xy4sljiVD8VH+FYU5nIA2o1wqeMSj8QNOuag2sgqL
+         MReA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789617613; x=1790222413;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Hq+RhWH5t3rOMXgtP2JnH29EHWf8ckfy/YyUirWvEQo=;
+        b=L0c7UvLU86cQQTG8zV3koDDzXuTztW13lY0U/7+uQAegAIGtTWwCdQruKNyd/heyWl
+         g73GUax16Q7EL/YfgTFfMllvTJSKSvXRZBpBKeu6a3P0sqwPdgSNdLWJt6kmEVnMNvBa
+         4jw0XCg7Wu0TGfIlIRDzzm0TOtkUByzoTpuniFUU+mJam8c3aTR43ujur+31cdB8jmER
+         zdzaYHnFqPHKHxa4wIz+l9z2GgoI3fJWHy9tY6TLk2ENFfctYcomZLeD57JeTZg+kFg2
+         NlKhjnYswaFLN4MdbovbWpSR+ZGKMQf3TN9QZn060pjU3QitxZZPv2o6HLqeNWCGcyNf
+         6mQA==
+X-Forwarded-Encrypted: i=1; AKwUvBweFWVvusc3/Oc923trKUdgph5dkzQTryTN8rfbTRlwR2U9lD9OFxXFsCZ9YvuOYIH+5mrsX54=@vger.kernel.org
+X-Gm-Message-State: AFuF++mao6eMXf1R02UT4oC4VBpTv/+8EXLIB7EUVzkZ9V+JNfxrAhEb
+	aqycnbPlAApy80BP0b8cRa3PUg5moG2OhVteUkHdcUCB7RWf0wM+RQ2h
+X-Gm-Gg: AYBFou3FXZJvArxmw2JP9hokGJeh3pogByYzcJI5I6yt9QHJkWDLyGvqI3v1U1PrWCz
+	5dujJI/7SVyVBMB6Bvh6yo0kexWINVnghyfOLwq5KY2gyn1ihbvNkAfmsDlKIA8ax7vgrt092Tu
+	gxfCZNpyPdZoOy81BMCEkesYETsPjV+yG/cCk1jCUvzedYfitpHUCK7nBvDSxhhFY8uqRTqh1oh
+	ZFUUOys1bqifQoRmswoLU/B7030bX5rxhVmS1xy4FgePPP9Zvp5sx4ScVGU+KRdhh9NhpHkLhNH
+	qifpqP6sZ8KdCdvxuZD3q95WtVsO7RgKPBnk5Wm5psw9pwGXwTT32O9fRsf9XHpmiILIEozJeiE
+	4KVut8PoZFhEIzyX2VIPiKfudyDN4Qcv4F7AnGgXw8QaNS4uI3b6cuyFlQkudtyzomLSavHqsOY
+	fOjke4Y1cUCTOEuiXsYJsgmtWH/T3jS6lfZiF8XfRFSdhbraHVTGJ1yJFIbLKGpOb5vBoEnPIEF
+	dL2V8XlAwwkY+XHnsCvpS6J219K26wAIqGQpIVDfp27XuF4L7g0F5yBvN+j8AvyITEBZLRuo+3K
+	FP7RY15O8y9cUy9OW+nZrzZO4nMy1yKgjQ3YYs1yJfH9w5drD4a3RL0kic90Kd0TDlvvD9ow5Mf
+	o
+X-Received: by 2002:a05:600c:4e48:b0:49c:fa20:cc00 with SMTP id 5b1f17b1804b1-49eb732d38emr61576605e9.23.1789617612631;
+        Wed, 16 Sep 2026 21:00:12 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a02-3100-9dc6-c001-54ee-4741-4927-0a28.310.pool.telefonica.de. [2a02:3100:9dc6:c001:54ee:4741:4927:a28])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fbfd935cfsm6880015e9.0.2026.09.16.21.00.11
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 16 Sep 2026 21:00:12 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: stable@vger.kernel.org
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	luiz.dentz@gmail.com,
+	luiz.von.dentz@intel.com,
+	marcel@holtmann.org,
+	johan.hedberg@gmail.com,
+	eadavis@qq.com,
+	pav@iki.fi,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev,
+	syzbot+b7f6f8c9303466e16c8a@syzkaller.appspotmail.com
+Subject: [PATCH 5.15.y 0/2] Bluetooth: L2CAP: fix connectionless receive path
+Date: Thu, 17 Sep 2026 06:00:02 +0200
+Message-Id: <20260917040004.21041-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20260913202907.3100-1-kmehltretter@gmail.com>
+References: <20260912065526.833703348@linuxfoundation.org> <20260912065546.976652519@linuxfoundation.org> <20260913202907.3100-1-kmehltretter@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: est.tech
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV4P189MB3732.EURP189.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: da611885-484d-45b6-b308-08df146eed03
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Sep 2026 03:51:16.4927
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: d2585e63-66b9-44b6-a76e-4f4b217d97fd
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Acqz7CkQk0zRwTJXNqUqoOfCK68yipsPage8S5TnGJUScoVDJCVew/jI/cpweWHjG3nRc8Lo6doODB99yD089VwXs2GtrTse/aA0oogEGro=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7P189MB0806
+Content-Transfer-Encoding: 8bit
 
->Subject: [PATCH net] tipc: fix memory leaks in bundle and fragment paths
->
->From: xiaoshoukui <xiaoshoukui@gmail.com>
->
->tipc_data_input() returns false when an extracted inner skb or reassembled
->fragment is not consumed (e.g. unhandled protocol user types).
->
->The bundle extraction loop and fragment reassembly path in
->tipc_link_input() both ignore this return value, leaving unconsumed skbs
->unreachable and leaking SLUB memory.
-This cannot occur because the sending side already does sanity check to mak=
-e sure that no invalid protocol type exists in bundled and fragmented messa=
-ges.
-This only occurs when you create fake TIPC messages or tampering with exist=
-ing messages. This is an invalid use case because TIPC is being used in an =
-insecure
-environment. In such environment, IPSec or TIPC encryption must be used as =
-mentioned here https://datatracker.ietf.org/doc/html/draft-maloy-tipc-01.tx=
-t#section-6
+5.15.y has two problems on the L2CAP connectionless receive path. The first
+comes from a backport that landed without its prerequisite, the second from
+a fix that never landed at all. Upstream contains both fixes.
 
->
->Fix this by freeing unconsumed skbs with kfree_skb_reason() and setting th=
-e
+1) c531e63871c0 ("Bluetooth: l2cap: always unlock channel in
+   l2cap_conless_channel()") was backported as 5caf0ffaf915 without
+   f1a8f402f13f ("Bluetooth: L2CAP: Fix deadlock"), which is what adds the
+   matching lock. l2cap_conless_channel() therefore calls
+   l2cap_chan_unlock() on a mutex it never acquired, and
+   l2cap_sock_recv_cb() runs with no chan->lock at all on that path.
+   Patch 1 applies the l2cap_core.c hunks of f1a8f402f13f, which supply
+   the lock.
 
-This approach can break user applications as explained below.
+2) 89e856e124f9 ("bluetooth/l2cap: sync sock recv cb and release") never
+   landed here, so l2cap_sock_recv_cb() has no NULL check on chan->data,
+   while l2cap_sock_destruct() still sets it to NULL. Closing a receiving
+   socket while L2CAP data is inbound gives lock_sock(NULL). Patch 2
+   restores that guard in the form the commit has after f1a8f402f13f, that
+   is without the channel locking that caused the recursive chan->lock
+   deadlock.
 
->drop reason to SKB_DROP_REASON_UNHANDLED_PROTO.
->
->Fixes: c637c1035534 ("tipc: resolve race problem at unicast message
->reception")
->Signed-off-by: xiaoshoukui <xiaoshoukui@gmail.com>
->---
-> net/tipc/link.c | 9 ++++++---
-> 1 file changed, 6 insertions(+), 3 deletions(-)
->
->diff --git a/net/tipc/link.c b/net/tipc/link.c index 49dfc098d89b..3278a55=
-9347b
->100644
->--- a/net/tipc/link.c
->+++ b/net/tipc/link.c
->@@ -1306,15 +1306,18 @@ static int tipc_link_input(struct tipc_link *l, st=
-ruct
->sk_buff *skb,
-> 		skb_queue_head_init(&tmpq);
-> 		l->stats.recv_bundles++;
-> 		l->stats.recv_bundled +=3D msg_msgcnt(hdr);
->-		while (tipc_msg_extract(skb, &iskb, &pos))
->-			tipc_data_input(l, iskb, &tmpq);
->+		while (tipc_msg_extract(skb, &iskb, &pos)) {
->+			if (!tipc_data_input(l, iskb, &tmpq))
+89e856e124f9 is the fix for CVE-2024-41062. It went to 6.1.101, 6.6.42,
+6.9.11 and 6.10 in July 2024 and to 5.10.270 this month. 5.15.y has never
+carried it.
 
-This check is redundant because bundled messages do not contain message typ=
-es that can make tipc_data_input() return false. The only exception is tamp=
-ering with TIPC messages.
-If that is the case, a fake valid message type can be inserted into the bun=
-dle message and tipc_data_input() returns true but user applications are br=
-oken by corrupt messages.
+On why patch 1 is only part of f1a8f402f13f: as posted, that patch touched
+only net/bluetooth/l2cap_core.c and net/bluetooth/l2cap_sock.c.
 
->+				kfree_skb_reason(iskb,
->SKB_DROP_REASON_UNHANDLED_PROTO);
+  https://lore.kernel.org/linux-bluetooth/20240624134637.3790278-1-luiz.dentz@gmail.com/
 
-Compiling  warnings: https://netdev-ctrl.bots.linux.dev/logview.html?f=3D/l=
-ogs/build/1166117/14820384/checkpatch/stdout
+The hci_core.c, hci_sync.c and hci_sync.h changes in the merged commit come
+from a separate patch that was squashed into it while the pull request was
+prepared. The author noted this when the AUTOSEL backport came up in 2024
+and said that for stable it would be better to unmerge them:
 
->+		}
-> 		tipc_skb_queue_splice_tail(&tmpq, inputq);
-> 		return 0;
-> 	} else if (usr =3D=3D MSG_FRAGMENTER) {
-> 		l->stats.recv_fragments++;
-> 		if (tipc_buf_append(reasm_skb, &skb)) {
-> 			l->stats.recv_fragmented++;
->-			tipc_data_input(l, skb, inputq);
->+			if (!tipc_data_input(l, skb, inputq))
+  https://lore.kernel.org/linux-bluetooth/CABBYNZLzf2x6cScmjGv2Rxk-i3F9=QKVWosrSEBgmHBdHqOWtg@mail.gmail.com/
 
-This check is redundant because fragmented messages do not contain message =
-types that can make tipc_data_input() return false. The only exception is t=
-ampering with TIPC messages.
-If that is the case:
-- dropping the invalid fragmented message will cause the reassembled messag=
-e corrupt (For example: sending a 65KB message but dropping/truncating 1500=
- bytes). As a result, user
-  applications receive corrupt messages.
-- a fake fragmented message can ben sent and tipc_data_input() returns true=
- but user applications are broken by corrupt messages.
+Of the two posted files, only the l2cap_core.c side applies here, because
+l2cap_sock_recv_cb() in 5.15.y has no channel locking to remove.
 
->+				kfree_skb_reason(skb,
->SKB_DROP_REASON_UNHANDLED_PROTO);
-> 		} else if (!*reasm_skb && !link_is_bc_rcvlink(l)) {
-> 			pr_warn_ratelimited("Unable to build fragment
->list\n");
-> 			return tipc_link_fsm_evt(l, LINK_FAILURE_EVT);
->--
->2.34.1
->
+Tested in QEMU with two virtual BR/EDR controllers, PROVE_LOCKING,
+DEBUG_MUTEXES and KASAN. Three runs of each variant:
 
+  v5.15.221 as released   bad unlock balance, and a fatal NULL dereference
+                          in l2cap_sock_recv_cb() from hci_rx_work, 3/3
+  + patch 1               unbalanced unlock gone, NULL deref remains 3/3
+  + patch 1 and 2         clean 3/3 over 300 socket close cycles
+
+  BUG: kernel NULL pointer dereference, address: 000000000000008c
+  Workqueue: hci0 hci_rx_work
+    lock_sock_nested
+    l2cap_sock_recv_cb+0x36/0xf0
+    l2cap_recv_frame
+
+BlueZ l2cap-tester, rfcomm-tester, smp-tester, bnep-tester, sco-tester and
+hci-tester give identical results before and after.
+
+Also on a Raspberry Pi 400 with a second board as the L2CAP peer, each test
+from its own boot so lockdep was armed for each. The released kernel
+reproduced the connectionless lockdep warning, and both it and the
+patch-1-only kernel died under teardown stress. With both patches, 300
+receiver close cycles against 25,877 peer datagram floods completed with no
+warning and debug_locks still 1. Connected L2CAP and A2DP playback showed
+no regression on any of the three. The hardware crashes left no readable
+trace, so the attributed NULL dereference above is from QEMU.
+
+The 5.10.y fix has a different shape and was sent separately as
+20260916193454.9996-1-kmehltretter@gmail.com. That tree still has
+89e856e124f9, so both L2CAP hunks of f1a8f402f13f apply there unchanged and
+one patch covers it.
+
+base-commit: 0248c33e835ecbec3a591f93fdaae53f7b90a4d6
