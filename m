@@ -1,257 +1,119 @@
-Received: from mail-ua2-f33.google.com (mail-ua2-f33.google.com [74.125.226.225])
+Received: from mail-qk2-f43.google.com (mail-qk2-f43.google.com [74.125.230.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19524E2F06
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 12:47:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.226.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF8121254B
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 12:49:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789649265; cv=none; b=l5h/Srfs/l8npfufivVFSWk2udVigvA0yLlJQMvfaAYHOVsCl5GAkNLLKZHP2uBOuBPrcRJrOwEiy8N4yLNg04DdRgGTTsFFj9IBzt7zHmkT3kD1ouA5r7Rp/CBpE33GvZBuhvPWm+p8T89toFyxogJxjEHPmTRXZ7tgMGpIoBo=
+	t=1789649393; cv=none; b=CiiaICend2BebsS4fC/ep790Yxpl+MkqqinUb/SjWBwrEX0pVIxH/ljE2ZwK4zIBKax6eLHrQ3VDjCl/RDnfgPTrFNdIWCiEjz80QAN5lvf/tTZq1FIYsN5c/5NRXqoAHr9jqiiE+LB5gFgTOZPTBSSP2gPDpiqPyzoPm3dJC0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789649265; c=relaxed/simple;
-	bh=bMDV+aessESUwhQfKi3pWkJ1krvBva5WnJ3XGNN39fI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bh15z9gFYAWfn30lkLCRh4PLkkbkrPvFWj2Oe6cWY2Wh747RRbah2xPN3jDdTCS9y7bgu3BSfDS8EtCoeNxooaDgvlyIFeuoWXFIxrpBfF2+o2To75pSokKH5hw/KbkZ4g6fBPLPxQlJd8+4R/oDIHKd1LvLmnDjnRxsW/1B+QI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=aV0xGYf9; arc=none smtp.client-ip=74.125.226.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	s=arc-20240116; t=1789649393; c=relaxed/simple;
+	bh=3wGB5TLUAM2lyPDgiHa7uRZvLdJWnflmXZw3/JXr6zU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=AkVvPdfJLQVW56d/Pey6gBIJsSLF25Y9CpTOTPvCOJn1KJ6qXT4gIfE6Zs8XYzb4Jk9nLqSru8HNkd/VIC1+6AW83fAAYQ70JEDP821dM57tnwe6wpLuGiWNJ7JAGFRWi7QZpfjfvR0VkYnn5NVEBYfljOjkWchTBE8qOz0Nslo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TiEqYifK; arc=none smtp.client-ip=74.125.230.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="aV0xGYf9"
-Received: by mail-ua2-f33.google.com with SMTP id a1e0cc1a2514c-982db8d3b79so196056241.1
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 05:47:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TiEqYifK"
+Received: by mail-qk2-f43.google.com with SMTP id d75a77b69052e-52fb76543e2so2681531cf.1
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 05:49:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1789649253; x=1790254053; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZOKCPjVVxhJCScnWP1aWyJNWUyV//M5rxXE3nntZ5TA=;
-        b=aV0xGYf9R/VXb3wHzMqzZPndZdCwZNaPulfk1ki1iavidZZYI3Lpd+4jyl0MQe6NPT
-         NhDdO/Ff0HrsjENq0DIiuHGb9kagnWxGp4xrC/mydZ0+7SxbbQOF2nRI6r8dpd8Cw2Fe
-         z2itLeXYFj8XKwDy22jAmP8Vwb3MSUuQY5ZPc=
+        d=gmail.com; s=20251104; t=1789649379; x=1790254179; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=B3RcLmLF2sXIevnZJMdQPOiyO2wTIg0xWGGUTEuoGdM=;
+        b=TiEqYifKFNNp5GHeaYLhztdQjzfSez5JmH/3xTh5MwepleJH7sLGckLdXm6LYILSy+
+         R212Bbh6Q0t+yzh2JA/ixm4GYxn+4DMaIhLWoZivu6cZDEDevGBdWfcWWvKxeyP20w60
+         M0io3UQSjym9WANTM9vdu+E9OO8Of2HA9Dd7TSoOGX0wdvdhls5Usd6aduxiWFGZOWcu
+         +3newBVOo7piMiZkqTJdgwX2MYHCvo6sKI4vOUwXw9vtYaPkR7ovW1E30z9BbKVynftz
+         BBedxiqADNwzzDlGuvpRzMEqht3FIzbPZjQxFQrpc89j3wcMKjNs79XiNgjv7n9X2D8X
+         wXNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789649253; x=1790254053;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZOKCPjVVxhJCScnWP1aWyJNWUyV//M5rxXE3nntZ5TA=;
-        b=Q0SiPILlrTySknvW8FALR4NJJ+90o4MpkUxIpc/vH6VQGjVYUHCkH3oljeHogCPOPc
-         TQ/e4sjMA0TkcK7nWbXrbI0j76+g5PONUlL3B9C7NsYBMY6qJJgh8zVMDCTLgmt0Tazn
-         JjUw5Bj3qgB6HYH/mMjZZIlNRXo1roLbq61EiTjMFaje5EtPmr3v17QHALGJvs+nHO0H
-         shfrynSqo0kg0YM/2abDTQMpxHDIEaLYBIou7ssH0RHaBJ9tMvV2RB91w87moGaDTfAg
-         lKALJqpY3SnLMrNsnebWgHv28TMB7KUCz1fJTp3FPvbrizDxvSFKqbr2jAmp6S26Ov/M
-         pcSA==
-X-Forwarded-Encrypted: i=1; AKwUvBzadGjjuFoF2xDaBtFPFcA09/QLv1MtRTjuL9FLFgsTGQwvcmzSHCR/kbNbcRwV72ORN+zOfBY=@vger.kernel.org
-X-Gm-Message-State: AFuF++kGqCmDXRRNO1bJHkMRjftsEDlLbAc//QjUn3sDyCp0FpUMpiO7
-	yEX1Qu1DexYNEsK8Y5k98KJdvx727jkceIgpFFvsX1fYR+NcXjAEIbjNtvwf6Majfw==
-X-Gm-Gg: AYBFou2V+zvsiVpGbv3zLtWsnCLlwderx+DicLkpH4ZUgxCK96kCYTYdOtaianltO47
-	1YRICHI2tmn5M//sMdiP9DjVhnfu9QYb94MQlL5xYfoR2gVXCYpk6507+E3k8uyLNZkLtcJxgkk
-	9oPCbiXnuJ9UvN+OHaCJ0VwJyyYZVZQnst1azIlhvnrpfWu9GYG9QeSHPZ0lMoJjzo75murbkhv
-	D5ycjjvLL82WnAaBW31ZxDEco+aNyq3m/63GiBzmNaUzPzRmxx9W4lE2tPFZtiDGkOdoSI6FzBE
-	go4Mt13+EFdq7yYfoyOIip7cywj0ad/9QYK0NAb8PByJSKioLI0GIAfQ7L7sKC575Ad/zY8rhdZ
-	uAXb7G9zhNsOJwTZDD1LVxsOVNh4rigEKDzP4mhL4/a2KcQyGoBDz2HeV38mtUfeINZz3I88Yfn
-	EQo8X0BMLpCI0bFZDHoxf7g73+IgGXGAJSrTktpTk7P3Hfba43txxX7g==
-X-Received: by 2002:a05:6102:5493:b0:789:5f54:2367 with SMTP id ada2fe7eead31-7a026088a71mr6392237137.4.1789649253137;
-        Thu, 17 Sep 2026 05:47:33 -0700 (PDT)
-Received: from exu-caveira ([2804:14d:5c54:4d67::2000])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-98323524dafsm2895358241.7.2026.09.17.05.47.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 05:47:32 -0700 (PDT)
-From: Victor Nogueira <victor@mojatatu.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	jhs@mojatatu.com,
-	jiri@resnulli.us
-Cc: horms@kernel.org,
-	vega@nebusec.ai,
-	netdev@vger.kernel.org
-Subject: [PATCH net-next v2] net/sched: Avoid quadratic handle scan in qdisc_alloc_handle
-Date: Thu, 17 Sep 2026 09:47:25 -0300
-Message-ID: <20260917124725.4127273-1-victor@mojatatu.com>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20260707; t=1789649379; x=1790254179;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=B3RcLmLF2sXIevnZJMdQPOiyO2wTIg0xWGGUTEuoGdM=;
+        b=vV7zFdCcU0YN0TqGtG5+Bv5DkCf+LV5eZD03+6yYtc6XrqduaTalGJRWHw8SL3AvkJ
+         qoEeGhii1Sc8XawEwX/DDbfbw55dFy/ZvCqCrGBcS6KN5cuVun/21kYR988NnRkXcu/W
+         vgAwkLC2/ZatOvGT35g0XoqVQErIwZWbM6EmN7AL3iJppFAkSMuC8lq6kVGc300L1+kg
+         YJJnPP959LLKOLsi4rp6eNy2e64p7cnDnZ062eSA4p1Pkass3u07nD5bQJmea2TkKw+6
+         pXo+hi5tRNeFNFglUciOgu57+Qr6VViFTuLyrfOas96pGmzY6pQCHvMc7Qgrd2EEjDhc
+         cMbw==
+X-Forwarded-Encrypted: i=1; AKwUvByflcYUD4q+QIH+kSoeeRXhKKT2nrYlZPvRsi4710hTeSN0fJsZuwhVOTBUBQcKdYbUi+C/yys=@vger.kernel.org
+X-Gm-Message-State: AFuF++mc19cbmlccyB+lKptcEB5eefXsVKO9/aLoGmKhaQerQ9FzAN1T
+	WbELN9ZoAxRuj04uDqMFvFemsrMyxkH5AZxEez+Ph9BgFNvfOR8xYV83
+X-Gm-Gg: AYBFou1g6OcZNXm6jfh0LsYodYOPIta0tdfBI69E3zgg1fU3i3NSUtwe8aBiZWqt3yV
+	3JRrJSG4XCDyv4lUcU4J58laPLOPraDLONol8ckvunIjLOZJonjGAH5Gvt6d6Z2MXz49tdeYUWU
+	sO8sJbZylr4i/VW22BHjiVvN2lP5B3xKOCd+40ua3HVXIUIdGnaI/oDDZnYQFEednRDipH/ZEjc
+	/dQhgzpC9PDzRjZt2vf6ET3V0X4ZOupm2bVq7DS2fHGvFEjClebRVAS36TQj4MjTKdK7lBaz1e4
+	v6uax7AZeiwL+ioTt+heEDbYsgDUQvIeZ2srx0a3Z2ruMOrUcG+wyMzOI5LjauhScYs+SKiZGOJ
+	LuiVKKw7kwD7FAJQQOb8Eo8QPy76lJzK1gzhGXhReif94UvWOBNuuZol6AlG2PvAU10yKA5tAAK
+	ShuNDE2chFxW/1go68ZqpShZcfgOf4yR8fXu0zZE0NHgO1dAjYAY39CULV26dcL9FBORKdAui60
+	Ft0DMSo+5ZhjtA=
+X-Received: by 2002:ac8:5ad2:0:b0:530:d0b1:76dd with SMTP id d75a77b69052e-5328cfc03b2mr49321791cf.23.1789649379226;
+        Thu, 17 Sep 2026 05:49:39 -0700 (PDT)
+Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5326204ad36sm48656621cf.18.2026.09.17.05.49.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Sep 2026 05:49:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 17 Sep 2026 08:49:37 -0400
+Message-Id: <DLHLRA8GVI5B.2Q1IRQG5BVJNZ@gmail.com>
+Cc: "Simon Horman" <horms@kernel.org>, "Kuniyuki Iwashima"
+ <kuni1840@gmail.com>, <netdev@vger.kernel.org>, "Kyle Zeng"
+ <kylebot@openai.com>, "Michal Luczaj" <mhal@rbox.co>, "Hyunwoo Kim"
+ <imv4bel@gmail.com>
+Subject: Re: [PATCH v1 net-next 1/2] tcp: Do not allow buggy transitions
+ between ehash and lhash2.
+From: "Daniel Zahka" <daniel.zahka@gmail.com>
+To: "Kuniyuki Iwashima" <kuniyu@google.com>, "David S . Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Neal
+ Cardwell" <ncardwell@google.com>, "Willem de Bruijn" <willemb@google.com>,
+ "David Ahern" <dsahern@kernel.org>, "Ido Schimmel" <idosch@nvidia.com>
+X-Mailer: aerc 0.21.0-threadmapfix
+References: <20260904033543.2635540-1-kuniyu@google.com>
+ <20260904033543.2635540-2-kuniyu@google.com>
+In-Reply-To: <20260904033543.2635540-2-kuniyu@google.com>
 
-qdisc_alloc_handle scans for a free auto-handle by probing the
-per-device qdisc hash one handle at a time. With the 16-bucket hash
-populated by tens of thousands of qdiscs, the failing scan is O(N^2)
-under rtnl_lock. Each failing add holds RTNL for 0.6-0.9 s on a
-production kernel and about 1.7 s with KASAN and lock debugging, and it
-can be repeated back to back, stalling network administration in every
-namespace.
+On Thu Sep 3, 2026 at 11:35 PM EDT, Kuniyuki Iwashima wrote:
+> The following state transitions have long been a playground for
+> syzbot, and recently AI joined in, reporting a lot more bugs.
+>
+>   * listen() + shutdown() + connect()
+>   * connect() + connect(AF_UNSPEC) + listen()
 
-First try the handle after the rotating cursor with one qdisc_lookup,
-as the first iteration of the current loop does; that handle is
-normally free. Only when it is taken, build a bitmap of the occupied
-auto-handle majors in one pass over the hash and pick the first free
-major from the cursor. The scan is cyclic over all 0x7FFF majors
-starting from the same autohandle + 1 position as the current loop, so
-it returns the same handle for the same device state and fails only
-when all 0x7FFF majors are taken.
+Hi there. Thanks for closing these. I'm wondering if connect() ->
+listen() via timewait is intentionally left open?
 
-The root qdisc is seeded separately because qdisc_hash_add skips
-parent == TC_H_ROOT.
+    0 socket(..., SOCK_STREAM, IPPROTO_TCP) =3D 3
+ +.01...0.011 connect(3, ..., ...) =3D 0
+   +0 > S 0:0(0) <...>
+   +0 < S. 0:0(0) ack 1 win 32000 <mss 1460,nop,wscale 7>
+   +0 > . 1:1(0) ack 1
 
-When the next handle is free, only the single qdisc_lookup of the
-current loop's first iteration runs; when it is taken, one O(N) walk
-follows.
+   +0 shutdown(3, SHUT_WR) =3D 0
+   +0 > F. 1:1(0) ack 1
+   +0 < .  1:1(0) ack 2 win 257
 
-Measured as tc wall time on a defconfig kernel in a 2-vCPU guest, with
-an HTB root holding 32768 classes and all 32767 auto-handles in use (a
-no-op tc command takes 5-6.5 ms):
+   +0 < F. 1:1(0) ack 2 win 257
+   +0 > .  2:2(0) ack 2
 
-                                    unpatched     patched
-  failing add, space exhausted      613-749 ms    8-10 ms
-  add after a mid-range delete      572-573 ms    9 ms
+   +0 connect(3, AF_UNSPEC, ...) =3D 0
+   +0 listen(3, 1) =3D 0
 
-The failure path returns -ENOMEM (bitmap allocation) or -ENOSPC (space
-exhausted) through a handle out-parameter instead of the overloaded 0
-return. Since either error is now possible, the extack message changes
-from "Maximum number of qdisc handles was exceeded" to "Failed to
-allocate a qdisc handle".
-
-This is a less intrusive fix meant for backporting; a cleaner approach that
-uses a per-device IDA over all qdisc handles is planned for net-next.
-
-Conditions to recreate the bug:
-  - unshare -Urn (Level 2, namespace-local CAP_NET_ADMIN)
-  - classful qdisc (e.g. HTB) with many classes
-  - attach ~32767 auto-handle child qdiscs to fill the handle space
-  - the final tc qdisc add with no explicit handle scans the full space
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Vega <vega@nebusec.ai>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Co-developed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
----
-v1 -> v2:
-- Retarget from net to net-next - Jakub
-- No code changes
-v1: https://lore.kernel.org/netdev/20260911133146.3440982-1-victor@mojatatu.com
----
- net/sched/sch_api.c | 86 ++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 70 insertions(+), 16 deletions(-)
-
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index 463ededcdcfe..f36c41224bcc 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -21,6 +21,7 @@
- #include <linux/proc_fs.h>
- #include <linux/seq_file.h>
- #include <linux/kmod.h>
-+#include <linux/bitmap.h>
- #include <linux/list.h>
- #include <linux/hrtimer.h>
- #include <linux/slab.h>
-@@ -770,22 +771,75 @@ void qdisc_class_hash_remove(struct Qdisc_class_hash *clhash,
- }
- EXPORT_SYMBOL(qdisc_class_hash_remove);
- 
--/* Allocate an unique handle from space managed by kernel
-- * Possible range is [8000-FFFF]:0000 (0x8000 values)
-+#define QDISC_AUTO_HANDLE_BASE	0x8000	/* first auto-handle major */
-+#define QDISC_AUTO_HANDLE_END	0xFFFE	/* last auto-handle major */
-+#define QDISC_AUTO_HANDLE_COUNT	(QDISC_AUTO_HANDLE_END - \
-+				 QDISC_AUTO_HANDLE_BASE + 1)
-+
-+/* Allocate a unique handle from space managed by kernel
-+ * Possible range is [8000-FFFE]:0000 (0x7FFF values); 0xFFFF is the
-+ * TC_H_ROOT/ingress major.
-  */
--static u32 qdisc_alloc_handle(struct net_device *dev)
-+static int qdisc_alloc_handle(struct net_device *dev, u32 *handlep)
- {
--	int i = 0x8000;
- 	static u32 autohandle = TC_H_MAKE(0x80000000U, 0);
-+	unsigned long start, bit;
-+	unsigned long *bitmap;
-+	struct Qdisc *q;
-+	u32 handle, maj;
-+	int b;
-+
-+	start = ((autohandle >> 16) - QDISC_AUTO_HANDLE_BASE + 1) %
-+		QDISC_AUTO_HANDLE_COUNT;
-+
-+	/* The cursor moves past every handle it hands out, so the next
-+	 * handle is normally free: try it with one hashed lookup before
-+	 * walking the whole hash.
-+	 */
-+	handle = (start + QDISC_AUTO_HANDLE_BASE) << 16;
-+	if (!qdisc_lookup(dev, handle)) {
-+		autohandle = handle;
-+		*handlep = handle;
-+		return 0;
-+	}
- 
--	do {
--		autohandle += TC_H_MAKE(0x10000U, 0);
--		if (autohandle == TC_H_MAKE(TC_H_ROOT, 0))
--			autohandle = TC_H_MAKE(0x80000000U, 0);
--		if (!qdisc_lookup(dev, autohandle))
--			return autohandle;
--		cond_resched();
--	} while	(--i > 0);
-+	bitmap = bitmap_zalloc(QDISC_AUTO_HANDLE_COUNT, GFP_KERNEL);
-+	if (!bitmap)
-+		return -ENOMEM;
-+
-+	/* Mark the occupied auto-handle majors: the hash holds all
-+	 * qdiscs except root and ingress ones, and the root can carry
-+	 * an auto-range handle.
-+	 */
-+	q = rtnl_dereference(dev->qdisc);
-+	maj = TC_H_MAJ(q->handle) >> 16;
-+	if (!(q->flags & TCQ_F_BUILTIN) && !TC_H_MIN(q->handle) &&
-+	    maj >= QDISC_AUTO_HANDLE_BASE && maj <= QDISC_AUTO_HANDLE_END)
-+		set_bit(maj - QDISC_AUTO_HANDLE_BASE, bitmap);
-+
-+	hash_for_each(dev->qdisc_hash, b, q, hash) {
-+		maj = TC_H_MAJ(q->handle) >> 16;
-+		if (maj >= QDISC_AUTO_HANDLE_BASE &&
-+		    maj <= QDISC_AUTO_HANDLE_END && !TC_H_MIN(q->handle))
-+			set_bit(maj - QDISC_AUTO_HANDLE_BASE, bitmap);
-+	}
-+
-+	bit = find_next_zero_bit(bitmap, QDISC_AUTO_HANDLE_COUNT, start);
-+	if (bit >= QDISC_AUTO_HANDLE_COUNT) {
-+		bit = find_first_zero_bit(bitmap, start);
-+		if (bit >= start)
-+			bit = QDISC_AUTO_HANDLE_COUNT;
-+	}
-+
-+	if (bit >= QDISC_AUTO_HANDLE_COUNT) {
-+		bitmap_free(bitmap);
-+		return -ENOSPC;
-+	}
-+
-+	handle = (bit + QDISC_AUTO_HANDLE_BASE) << 16;
-+	autohandle = handle;
-+	bitmap_free(bitmap);
-+	*handlep = handle;
- 
- 	return 0;
- }
-@@ -1308,10 +1362,10 @@ static struct Qdisc *qdisc_create(struct net_device *dev,
- 		handle = TC_H_MAKE(TC_H_INGRESS, 0);
- 	} else {
- 		if (handle == 0) {
--			handle = qdisc_alloc_handle(dev);
--			if (handle == 0) {
--				NL_SET_ERR_MSG(extack, "Maximum number of qdisc handles was exceeded");
--				err = -ENOSPC;
-+			err = qdisc_alloc_handle(dev, &handle);
-+			if (err) {
-+				NL_SET_ERR_MSG(extack,
-+					       "Failed to allocate a qdisc handle");
- 				goto err_out3;
- 			}
- 		}
--- 
-2.55.0
-
+For PSP, this allows us to end up with a listen socket with PSP state,
+because we don't clear it out in tcp_disconnect(). I'm planning a series
+to remove PSP on listen sockets, and closing this would make that a lot
+easier.
