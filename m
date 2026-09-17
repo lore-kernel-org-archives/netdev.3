@@ -1,411 +1,180 @@
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f99.google.com (mail-ua1-f99.google.com [209.85.222.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665094432E4
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 06:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B24E4E50A0
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 06:46:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789627526; cv=none; b=W93d1ef05neoIMqhzWRbDRXNbQAy8aiGeGncX1hAHnL1gSC9kWb1Cp/vO7Hjwpzmmi0wMOKuXxQ/s83Qj5qHmfpFSb8iMjGxurR4jQ+djzbOS5jqpDEQd/14SvSQVHc8ik9FJHeHPkPq+BAKK0+mA+VYeNfo55nN4xPYIn6r6vg=
+	t=1789627562; cv=none; b=C7KvERpLNROwIpDIAYBTYkbrdoe85tVaGZ1krX9qqUN2soC8SGfZil/61Bc52aQe5n7roTODJIgJJrP7VYymWvSL45cIJM9wWXnCnFgeNMcvPO3WkbfgsWZtTqug3vm0CSqR6EtuSO3qacowpnlC0LpEwvwlxQaA/v84ot7++Bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789627526; c=relaxed/simple;
-	bh=MWAPs8qBqwLHMORmwD4NZ7u5laojwl8fHchhfOY4UyM=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=lFXq4cdzJklwPCu5hlDPW4PsnKH/qvCTftt2wH8ALkBBZyYj66GBAsCE2jCKaqAbv2p5w/gMa/SMyCpztlnxyOZOvLhfUe3x69U5UWWediYLNNq676FxrrMECmf+xGjrQNF57c4eXHVyvbQj1Mo/7ViTTYgJKGomXORN1v+DytM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.206.16.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: zesmtpsz8t1789627417t6c8cae62
-X-QQ-Originating-IP: a/3fcY3QGFK+g/VDrjjGhDlnBLWSvxHNUI4ZivQsf9c=
-Received: from smtpclient.apple ( [122.233.172.177])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 17 Sep 2026 14:43:34 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 11232726126545815307
-EX-QQ-RecipientCnt: 13
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1789627562; c=relaxed/simple;
+	bh=/UrTQiKP0ibGSC02CQR9xfmG9rEJrn04OlPMGKCo5VE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ni3vavxf5aImL9gAwDWEpZ05yPu47UGnHa2NgJOoCpPPpQQ/LVO7ngiWjJnv5bxc2hoipVmJzFlw7SFdteCuvWLeNbGRFBHIdYHiL3YYxA9ORrFJAAD9QaPHk1tXkyc5NAefnxD8YTJ5F70IkJ+sqiw0KiCCAt4XQEsdgTPYohg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=PwSoyhXm; arc=none smtp.client-ip=209.85.222.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="PwSoyhXm"
+Received: by mail-ua1-f99.google.com with SMTP id a1e0cc1a2514c-98089686ee7so135923241.0
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 23:46:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789627559; x=1790232359;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=VJRXW9HWWl052ti3LILT2PBsoHZ9dSMO5khZPdV6FEI=;
+        b=mz5xbQ1AhqMAqDGaszh8kBPpqMl3sgSPNLsIhP5EzydQ0qfY9AMxHEtN8AOStWQvtk
+         74S1Z5OzXsBhwhmXc9apQNQ4gbNdBz+zjgmYpZQXqDooP0nfavG7l63KvmHGpx3t3fhL
+         VbjeNPc7yNRcgTP/FIpy+i+ZeYNsTwA5u3CsiJSgNx1iN7y1FNyMCAuSPBu3a7ybatS8
+         +pax/ibH4AIIVGrlbh6kR27CPRtNuTSCk6wph+E686AfrACpTqs/P3+dLxPHnFKmNqPA
+         rlOx1nplzU2llrb8VsWzWdjn9GlT9PAEerfLUcn/RLdkAUQuDTUVM6Wn6Ql4r8ULSHQN
+         1LeA==
+X-Gm-Message-State: AFuF++lE9pxflBbguVQPI8IDzkR+F8i9ShXbDVgYecALAi1MH58Lhdce
+	DMZzaRv0LrklTUGeCaIa7hbZL4PTCf7KY2HOx/v43if+srGu9Bn5QN278GBZ6nBj1MmgbtpRlS4
+	kfUVjHN00ccxYqGTWbCsiehK+FkenjX88CvXxc5/Kgi1/4JogeUrrTbiTiZo/1fzkiQHe2Lrsyj
+	bH1fZJ7u97l1DGCDQJ2FexCpfJRCOmL6rv+8Oic2O8jRHKC4lRQwr2OqBqH74jo5r1MiHqytrQc
+	knRIcOLsg==
+X-Gm-Gg: AYBFou2oJpfGSddDmozVLHHAjOpD0yjAcMf1sU4lTjUCVUfVA14e1RQlHrOZi77tKWf
+	rvrSLEuAcPOXNHJl+6Cc0+fPwXT9nyBMTo5nhrnJZdEf6W5UEPemmMqLKrJavVcBQhhTI/6COuX
+	KMusK8CV5MrTZkAGuHZwkZ8eEVxiW87DbNi6kqpAaNNdf80/jfB4HNl61kT3ev1QKjecOxSMU/1
+	gUmAeR0ftN6PREU5M8CerB3zLqcbSEIhG7Lnsw2OKfIvpLwwsq4LGbH28TCoF+JmqdUNVLP0pFm
+	oNzIBPRKZTbNucbczpJeCkM/Maii1tg/XyK19gKYjoE0JFe04oVHEDT35/cbFO/EFSMKM44X648
+	JQfCTiRtDTBSbo5mvcCMWi+UjKiYOeTYVEqFES3uqCD9+3BMrEJyxdK7RlLWHwATJLRBm0wBst4
+	YV0qsQCYanIetIpKjLixdVwBv3ihU4GwzoJA==
+X-Received: by 2002:a05:6102:84da:10b0:7a0:eb10:79b5 with SMTP id ada2fe7eead31-7a0eb2f16c8mr4332659137.10.1789627559336;
+        Wed, 16 Sep 2026 23:45:59 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-29.dlp.protect.broadcom.com. [144.49.247.29])
+        by smtp-relay.gmail.com with ESMTPS id ada2fe7eead31-7a1e2f4ba47sm102962137.23.2026.09.16.23.45.59
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 16 Sep 2026 23:45:59 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc4b524ce78so379418a12.2
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 23:45:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1789627558; x=1790232358; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=VJRXW9HWWl052ti3LILT2PBsoHZ9dSMO5khZPdV6FEI=;
+        b=PwSoyhXmGYaTq7Ng5/y3R4dDf6VDqn44pZkXBy4Ppop9LjK7i2rHHNOdV31ldIdbkX
+         7C8KHvQ/r1SbrJvrudyDV2L4YGWn5JUa3CYbMKjJj+2fI+fQTdMAL39BddL0B+M+QzdZ
+         8C3vyHUSOGIBI8sBALc0zfjdLKX80J3E66Ebk=
+X-Received: by 2002:a05:6a21:4d0c:b0:3d3:b00a:6f03 with SMTP id adf61e73a8af0-3dd5f7dac4dmr15018564637.28.1789627558200;
+        Wed, 16 Sep 2026 23:45:58 -0700 (PDT)
+X-Received: by 2002:a05:6a21:4d0c:b0:3d3:b00a:6f03 with SMTP id adf61e73a8af0-3dd5f7dac4dmr15018507637.28.1789627557772;
+        Wed, 16 Sep 2026 23:45:57 -0700 (PDT)
+Received: from H5S1 ([192.19.203.250])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc50ab960edsm2754293a12.20.2026.09.16.23.45.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Sep 2026 23:45:57 -0700 (PDT)
+From: Vikas Gupta <vikas.gupta@broadcom.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bhargava.marreddy@broadcom.com,
+	rahul-rg.gupta@broadcom.com,
+	vsrama-krishna.nemani@broadcom.com,
+	rajashekar.hudumula@broadcom.com,
+	dharmender.garg@broadcom.com,
+	ajit.khaparde@broadcom.com,
+	Vikas Gupta <vikas.gupta@broadcom.com>
+Subject: [net-next, v3 00/11] add features to bnge
+Date: Thu, 17 Sep 2026 12:15:37 +0530
+Message-ID: <20260917064548.773334-1-vikas.gupta@broadcom.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH net-next] net: libwx: Add ethtool -L support for VF
- drivers
-From: "mengyuanlou@net-swift.com" <mengyuanlou@net-swift.com>
-In-Reply-To: <CAEAWyHfFYryMvtb+9XRY-hjjDpxiZUjfKX9ShK4My7Wtz-Dj2w@mail.gmail.com>
-Date: Thu, 17 Sep 2026 14:43:14 +0800
-Cc: netdev@vger.kernel.org,
- jiawenwu@trustnetic.com,
- duanqiangwen@net-swift.com,
- linglingzhang@net-swift.com,
- andrew+netdev@lunn.ch,
- davem@davemloft.net,
- edumazet@google.com,
- kuba@kernel.org,
- pabeni@redhat.com,
- jacob.e.keller@intel.com,
- przemyslaw.kitszel@intel.com,
- u.kleine-koenig@baylibre.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <5151C867-ACED-4B65-A4FC-184CC432F3B2@net-swift.com>
-References: <20260915093714.18815-1-mengyuanlou@net-swift.com>
- <CAEAWyHfFYryMvtb+9XRY-hjjDpxiZUjfKX9ShK4My7Wtz-Dj2w@mail.gmail.com>
-To: Harshitha Ramamurthy <hramamurthy@google.com>
-X-Mailer: Apple Mail (2.3864.600.51.1.1)
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
-X-QQ-XMAILINFO: MuaVFG6ep5hsV1nCrAEw5SDCeGz7j/o9T8mNGf9YfKD17Ba7IaTrRVS1
-	kuhy5YJQJsE8LdGyzJFWlayWqjOG37YzQ8rv6ClOKomS2a5B4oMZEIP4Xdj0S55SH9zeAov
-	u51jMqqfDcqBdcNalkHPApznzpJTAGdcsMF4pCc58AT2pv0lQFc3dLmV9/njRrrMbsyBrqq
-	S1rcJb30izG2aKYw6UnxwLh/+TkPb4J+z2iGed895FDamnhg1Mm1HYO7fr0hxEetFgdjsVF
-	EevGpnH9nUsjpvLzUSY81JW+BC++KpBk1lab0ph37c9geKqHSFJCMivxN7aNXBx4pfndE8V
-	2XgHBbodYR103N27FZeVjQVd6NFgPl6lyDorWpvli+lmHSdrKMdoVryuHiTJHnbFreXi0cR
-	mB+jJ5gs6PTGAqoUkBTUt9uzwW3eunKgtKrIVOKyNTFeNiVODvlCzIL+qQQjvtv+l+0WcbK
-	t/iuNCF/0HGM7LAWrDdcryw+3u8HrRnrWauGXe1JPQjqqA1zn3n1daoqf3LJwO2t2vzyF1U
-	hG7Xk+1n6KotfG1gLRvEsu0twHa6ppceJo6AFBbuUgjBeAYed5TYHIxFJcMDSCJd6+wxQBi
-	JX3+7EbJJOVQM0jXZ5tF0t2d8GW48ObuyG6pKFAwy40kCHdLlYOmYOCcGgkjXuYbrv02VQv
-	8Yts071G6VP0YkrrRDc/SBNhWbq8auIPB3++8v9jiYmp5Tp2ekp7C0uqfsfTWl4zUvByfkz
-	q0Y4azNzSHl8BQLLdfoBb924tDUg3di/vQwElVBcA9ulWe/Dz8YAIxg6OG8Jjtp1bxl167J
-	jkISXjrFcGcm4xl2iGnCs6BtWqD3QAZb7q/qZVDs6rch31/5Z+PhEW5v5/fikgTlpTXcj1b
-	lWOmvalIdkuSeduIGhzxAppSUgjeBbWX1Ujfz9tC3NEv7H/2U+IkUYPHGkb5mnYLAtWor7I
-	mF4VFx3bRjneiGnjrAPFTr0OYhV4ewXHTs2fnTinfSY5zPI/wrSACq1mo5R/M0unctrFQsc
-	b4+eZ/XXfKFLXZp4y1lgrWsYFYEe4SLgDyFnxM93r7xp8T45C+dLDauO5UCkV0Okbml+aqk
-	/moQCVSEhH5dR5ujZywpESjDRIaTrlIm3qhddOwvbAp
-X-QQ-XMRINFO: Nq+8W0+stu50DoRqCCgK95c9ineS5lb9CA==
-X-QQ-RECHKSPAM: 0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
+Hi,
 
+This series adds ntuple filter, RSS context, and flow steering
+support to bnge driver.
+Patch 2 is a pure refactor (no functional change) that relocates the
+filter and VNIC related code into the appropriate files. Patch 7 drops
+the refcount usage from L2 filters, also with no functional change.
+The subsequent patches then add the ethtool commands for configuring 
+ntuple flows and RSS contexts.
 
-> 2026=E5=B9=B49=E6=9C=8816=E6=97=A5 03:19=EF=BC=8CHarshitha Ramamurthy =
-<hramamurthy@google.com> =E5=86=99=E9=81=93=EF=BC=9A
->=20
-> On Tue, Sep 15, 2026 at 3:18=E2=80=AFAM Mengyuan Lou =
-<mengyuanlou@net-swift.com> wrote:
->>=20
->> Implement get_channels and set_channels ethtool operations for =
-Wangxun
->> VF net_device instances in libwx.
->>=20
->> This allows users to query and dynamically reconfigure the number of =
-RX/TX
->> channels on VF interfaces via `ethtool -l/ -L`.
->>=20
->> Specifically:
->> - Add wx_get_channels_vf() and wx_set_channels_vf() to report and =
-update
->>  channel limits and combined queue counts.
->> - Re-evaluate RSS limits in txgbevf_set_num_queues() based on user =
-settings
->>  stored in wx->ring_feature[RING_F_RSS].limit.
->> - Adjust VF MRQC RSS hash mask logic in wx_setup_vfmrqc_vf() to =
-correctly
->>  match queue configuration thresholds.
->>=20
->> Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
->> ---
->> .../net/ethernet/wangxun/libwx/wx_ethtool.c   | 64 =
-+++++++++++++++++++
->> .../net/ethernet/wangxun/libwx/wx_vf_lib.c    |  2 +-
->> .../ethernet/wangxun/txgbevf/txgbevf_main.c   |  3 +
->> 3 files changed, 68 insertions(+), 1 deletion(-)
->>=20
->> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c =
-b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
->> index 940d2e59876c..d24370790941 100644
->> --- a/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
->> +++ b/drivers/net/ethernet/wangxun/libwx/wx_ethtool.c
->> @@ -564,6 +564,68 @@ int wx_set_channels(struct net_device *dev,
->> }
->> EXPORT_SYMBOL(wx_set_channels);
->>=20
->> +static void wx_get_channels_vf(struct net_device *dev,
->> +                              struct ethtool_channels *ch)
->> +{
->> +       struct wx *wx =3D netdev_priv(dev);
->> +
->> +       /* report maximum channels */
->> +       ch->max_combined =3D wx->mac.max_rx_queues;
->> +
->> +       ch->max_other =3D 1;
->> +       ch->other_count =3D 1;
->> +
->> +       /* record current channels */
->> +       ch->combined_count =3D wx->num_rx_queues;
->> +}
->> +
->> +static int wx_set_channels_vf(struct net_device *dev,
->> +                             struct ethtool_channels *ch)
->> +{
->> +       struct wx *wx =3D netdev_priv(dev);
->> +       u16 rss_limit;
->> +       int ret;
->> +
->> +       rss_limit =3D wx->ring_feature[RING_F_RSS].limit;
->> +
->> +       /* verify other_count has not changed */
->> +       if (ch->other_count !=3D 1)
->> +               return -EINVAL;
->> +
->> +       /* verify the number of channels does not exceed hardware =
-limits */
->> +       if (ch->combined_count > wx->mac.max_rx_queues)
->> +               return -EINVAL;
->> +
->> +       /* if device is resetting, do nothing */
->> +       if (test_bit(WX_STATE_RESETTING, wx->state))
->> +               return -EBUSY;
->> +
->> +       wx->ring_feature[RING_F_RSS].limit =3D ch->combined_count;
->> +
->> +       if (netif_running(dev))
->> +               wxvf_close(dev);
->=20
-> The precedent has been for some time now that drivers are required to
-> pre-allocate resources for the new queue counts before tearing down
-> the existing ones. So that the driver doesn't knock itself out if
-> something fails when attempting to apply the new configuration.
->=20
-> Look at the nfp_net_ring_config() or gve_adjust_config() for examples:
-> both try to allocate memory for the new config first.
+Thanks,
+Vikas
 
-Thanks for the feedback.
+v2->v3:
+   - Build fix.
+   - Addressed comments from Sashiko
+    https://sashiko.dev/#/patchset/20260908093053.2596020-1-vikas.gupta%40broadcom.com
+    Below Sashiko comments are not valid:
+     Patch-8: 
+                Comment under bnge_toeplitz().
+                 Explanation: bnge_toeplitz() is not used for aRFS.
+     Patch-9:
+                Comment regarding bnge_clear_usr_fltrs().
+                 Explanation:
+                  Both bnge_clear_usr_fltrs() (only invoked while the
+                  interface is down) and bnge_grxclsrule() execute
+                  under the netdev instance lock, so they are
+                  serialized and never touch the filter list at the 
+                  same time.
+      Patch-10: 
+                Comment "Does this direct dereference of the MAC
+                header need a linearization ...".
+                 Explanation: ndo_rx_flow_steer runs on the RX path
+                after eth_type_trans(), which already accesses and
+                pulls the Ethernet header.
 
-I understand that pre-allocating resources before tearing down existing =
-queues
-("prepare-then-commit") is the ideal pattern used by drivers like NFP =
-and GVE
-to ensure zero-downtime or graceful failure recovery during queue =
-reconfigurations.
+                Comment Related to bnge_cfg_ntp_filters().
+                 Explanation:
+                   bnge_cfg_ntp_filters() runs from bnge_sp_task(),
+                   which holds the netdev instance lock while executing.
+v1->v2:
+   - Build fixes.
+   - Addressed comments from Sashiko
+   https://sashiko.dev/#/patchset/20260814011435.194631-1-vikas.gupta%40broadcom.com
 
-However, adopting the NFP/GVE pre-allocation model is not technically =
-feasible
-for WangXun VF without closing the device first.
+Vikas Gupta (11):
+  bnge: update HSI
+  bnge: restructure VNIC and filter code
+  bnge: add NTUPLE/ARFS VNIC
+  bnge: add helper functions for multi RSS contexts
+  bnge: add RXFH ethtool support
+  bnge: add ethtool support to manage RSS contexts
+  bnge: remove refcount from L2 filter
+  bnge: add NTUPLE filter infrastructure
+  bnge: add NTUPLE filter support in ethtool
+  bnge: add aRFS flow steering ndo support
+  bnge: add cpu_rmap support for IRQ affinity
 
-1. MSI-X Vector Lifecycle Constraints
-	Unlike NFP (which can dynamically manage dual sets of MSI-X =
-vectors) or GVE
-(which pre-allocates all possible MSI-X vectors at probe time and only =
-resizes
-queues afterwards), WangXun VF acquires its MSI-X vectors in a single =
-lump sum
-via pci_alloc_irq_vectors_affinity().
-    =E2=80=A2 To change the vector count or reconfigure queue-to-vector =
-mappings, Linux
-	PCI architecture requires freeing all active vectors via =
-pci_free_irq_vectors()
-	before requesting new ones.
-    =E2=80=A2 Freeing active MSI-X vectors requires teardown of the =
-current interrupt scheme,
-	which cannot be safely done while the interface remains RUNNING.
-2. NAPI Registration Constraints (netif_napi_add)
-	Each queue vector allocates a struct wx_q_vector and registers a =
-NAPI instance via
-netif_napi_add().
-    =E2=80=A2 In the WangXun driver architecture, NAPI instances are =
-tightly bound to the
-	queue/vector layout.
-    =E2=80=A2 Allocating new q_vectors and invoking netif_napi_add() =
-while the driver is running
-	risks duplicate NAPI registrations or corrupted polling state. =
-Therefore, the
-	device must be down (wxvf_close) before cleaning up old NAPI =
-instances and
-	instantiating new ones.
+ drivers/net/ethernet/broadcom/bnge/Makefile   |    4 +-
+ drivers/net/ethernet/broadcom/bnge/bnge.h     |   20 +-
+ .../net/ethernet/broadcom/bnge/bnge_ethtool.c | 1030 +++++++++++++++++
+ .../net/ethernet/broadcom/bnge/bnge_filter.c  |  684 +++++++++++
+ .../net/ethernet/broadcom/bnge/bnge_filter.h  |  123 ++
+ .../ethernet/broadcom/bnge/bnge_hwrm_lib.c    |  155 ++-
+ .../ethernet/broadcom/bnge/bnge_hwrm_lib.h    |   10 +
+ .../net/ethernet/broadcom/bnge/bnge_netdev.c  |  420 ++++---
+ .../net/ethernet/broadcom/bnge/bnge_netdev.h  |   91 +-
+ .../net/ethernet/broadcom/bnge/bnge_resc.c    |  115 +-
+ .../net/ethernet/broadcom/bnge/bnge_resc.h    |    1 +
+ .../net/ethernet/broadcom/bnge/bnge_vnic.c    |  284 +++++
+ .../net/ethernet/broadcom/bnge/bnge_vnic.h    |   91 ++
+ include/linux/bnge/hsi.h                      |  136 ++-
+ 14 files changed, 2868 insertions(+), 296 deletions(-)
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_filter.c
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_filter.h
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_vnic.c
+ create mode 100644 drivers/net/ethernet/broadcom/bnge/bnge_vnic.h
 
-
-
-%%{init: =
-{'theme':'base','themeVariables':{'primaryColor':'#dd6b20','edgeLabelBackg=
-round':'#fff','clusterBkg':'#fff5f5','clusterBorder':'#fdba74'}}}%%
-graph TD
-    %% --------------------------------------------------------------
-    %% Entry & parameter checks
-    %% --------------------------------------------------------------
-    A[wx_set_channels_vf(dev, ch)]
-    A --> B[if (ch->other_count !=3D 1)  =E2=86=92  -EINVAL]
-    B --> C[if (ch->combined_count > wx->mac.max_rx_queues)  =E2=86=92  =
--EINVAL]
-    C --> D[if (test_bit(WX_STATE_RESETTING, wx->state))  =E2=86=92  =
--EBUSY]
-
-    %% --------------------------------------------------------------
-    %% Must stop the VF first if it is running
-    %% --------------------------------------------------------------
-    D -->|netif_running(dev)| E[wxvf_close(dev)   // stop Tx/Rx, disable =
-NAPI, free resources]
-    D -->|!netif_running(dev)| F[(skip) ]
-
-    %% --------------------------------------------------------------
-    %% Completely clear the current interrupt scheme (including MSI=E2=80=91=
-X)
-    %% --------------------------------------------------------------
-    E --> G[wx_clear_interrupt_scheme(wx)]
-    subgraph G[wx_clear_interrupt_scheme(wx) details]
-        direction TB
-        G1[wx_free_q_vectors(wx)                 // free q_vectors only]
-        G2[wx_reset_interrupt_capability(wx)    // free MSI=E2=80=91X =
-vectors (pci_free_irq_vectors)]
-        G1 --> G2
-    end
-
-    %% --------------------------------------------------------------
-    %% Re=E2=80=91initialize the whole interrupt scheme (allocate =
-MSI=E2=80=91X, q_vectors, rings)
-    %% --------------------------------------------------------------
-    G --> H[wx_init_interrupt_scheme(wx)]
-    subgraph H[wx_init_interrupt_scheme(wx) details]
-        direction TB
-        H1[wx_set_num_queues(wx)                 // recompute =
-num_tx/num_rx/num_q_vectors]
-        H2[wx_set_interrupt_capability(wx)       // request MSI=E2=80=91X =
-vectors (pci_alloc_irq_vectors)]
-        H3[wx_alloc_q_vectors(wx)               // allocate q_vector =
-structs and rings (netif_napi_add)]
-        H4[wx_cache_ring_rss(wx)                 // compute RSS reg_idx =
-and program hardware]
-        H5[set_bit(WX_STATE_DOWN, wx->state)]
-        H1 --> H2 --> H3 --> H4 --> H5
-    end
-
-    %% --------------------------------------------------------------
-    %% If the device was running before, open it again
-    %% --------------------------------------------------------------
-    H -->|netif_running(dev) after re=E2=80=91init| I[wxvf_open(dev)   =
-// re=E2=80=91enable NAPI, wake Tx/Rx]
-    H -->|!netif_running(dev) after re=E2=80=91init| J[return 0]
-
-    I --> K[return 0  // success]
-    J --> K
-
-    %% --------------------------------------------------------------
-    %% Error path =E2=80=93 restore old RSS limit and return error
-    %% --------------------------------------------------------------
-    H -->|ret !=3D 0| L[restore original RSS limit & return error]
-
-    %% --------------------------------------------------------------
-    %% Conflict points (why we cannot =E2=80=9Cprepare=E2=80=91first, =
-close=E2=80=91later=E2=80=9D)
-    %% --------------------------------------------------------------
-    classDef note fill:#fffae6,color:#333,stroke:#ffa726;
-
-
-    N1[**Conflict=E2=80=AF1**: MSI=E2=80=91X vectors are allocated only =
-once (wx_set_interrupt_capability) =E2=80=93 a new allocation requires =
-pci_free_irq_vectors(), which can be done only after the old vectors are =
-released (i.e. after the device is closed).]:::note
-    N2[**Conflict=E2=80=AF2**: netif_napi_add() (called inside =
-wx_alloc_q_vectors) must be executed while the device is not RUNNING; =
-otherwise double=E2=80=91registration of NAPI leads to bugs.]:::note
-    N3[**Conflict=E2=80=AF3**: Hardware register mapping (reg_idx, RSS =
-tables) must be programmed before the device is opened; changing them =
-while the hardware is running causes race=E2=80=91conditions.]:::note
-
-    N1 -.-> H2
-    N2 -.-> H3
-    N3 -.-> H4
-
-
-
-
-
- |
-|------|----------|----------|
-| **NFP** | `nfp_net_set_channels()` =E2=86=92 `nfp_net_ring_reconfig()`
-
-**GVE** | `gve_set_channels()` =E2=86=92 `gve_adjust_queues()` =E2=86=92 =
-`gve_adjust_config()`
-
-NFP
- * struct nfp_net_dp - NFP network device datapath data structure
-
-gve
-   struct gve_tx_alloc_rings_cfg tx_alloc_cfg =3D {0};
-   struct gve_rx_alloc_rings_cfg rx_alloc_cfg =3D {0};
-
-The allocation of interrupt resources and ring resources can be =
-separated
-which Wangxun vf can not do it.
-
-
-
-
-
-
-
->=20
->> +
->> +       wx_clear_interrupt_scheme(wx);
->> +
->> +       ret =3D wx_init_interrupt_scheme(wx);
->> +       if (ret)
->> +               goto err_out;
->> +
->> +       if (netif_running(dev)) {
->> +               ret =3D wxvf_open(dev);
->> +               if (ret)
->> +                       goto err_close;
->> +       }
->> +
->> +       return 0;
->> +
->> +err_close:
->> +       wx_clear_interrupt_scheme(wx);
->> +err_out:
->> +       wx->ring_feature[RING_F_RSS].limit =3D rss_limit;
->> +       return ret;
->> +}
->> +
->> u32 wx_rss_indir_size(struct net_device *netdev)
->> {
->>        struct wx *wx =3D netdev_priv(netdev);
->> @@ -852,6 +914,8 @@ static const struct ethtool_ops wx_ethtool_ops_vf =
-=3D {
->>        .set_coalesce           =3D wx_set_coalesce,
->>        .get_ts_info            =3D ethtool_op_get_ts_info,
->>        .get_link_ksettings     =3D wx_get_link_ksettings_vf,
->> +       .get_channels           =3D wx_get_channels_vf,
->> +       .set_channels           =3D wx_set_channels_vf,
->> };
->>=20
->> void wx_set_ethtool_ops_vf(struct net_device *netdev)
->> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c =
-b/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c
->> index 7325b475ee10..6fec3ab5e4e4 100644
->> --- a/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c
->> +++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_lib.c
->> @@ -237,7 +237,7 @@ void wx_setup_vfmrqc_vf(struct wx *wx)
->>=20
->>        vfmrqc |=3D WX_VXMRQC_RSS_EN;
->>=20
->> -       if (wx->num_rx_queues > 3)
->> +       if (wx->num_rx_queues >=3D 3)
->>                vfmrqc |=3D WX_VXMRQC_RSS_HASH(2);
->>        else if (wx->num_rx_queues > 1)
->>                vfmrqc |=3D WX_VXMRQC_RSS_HASH(1);
->> diff --git a/drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c =
-b/drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c
->> index 8b16b900820a..6e8659082051 100644
->> --- a/drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c
->> +++ b/drivers/net/ethernet/wangxun/txgbevf/txgbevf_main.c
->> @@ -72,6 +72,9 @@ static void txgbevf_set_num_queues(struct wx *wx)
->>                queue =3D min_t(u16, wx->mac.max_rx_queues, =
-wx->mac.max_tx_queues);
->>                rss =3D min_t(u16, queue, rss);
->>=20
->> +               if (wx->ring_feature[RING_F_RSS].limit)
->> +                       rss =3D min_t(u16, rss, =
-wx->ring_feature[RING_F_RSS].limit);
->> +
->>                if (wx->vfinfo->vf_api >=3D wx_mbox_api_13) {
->>                        wx->num_rx_queues =3D rss;
->>                        wx->num_tx_queues =3D rss;
->> --
->> 2.30.1
->>=20
->>=20
->>=20
->=20
->=20
+-- 
+2.52.0
 
