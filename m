@@ -1,93 +1,100 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mout-b-203.mailbox.org (mout-b-203.mailbox.org [195.10.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E134AD7DD;
-	Thu, 17 Sep 2026 12:21:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761A74DBD8E;
+	Thu, 17 Sep 2026 12:21:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789647679; cv=none; b=Y+FNyvblXVIAU6rZi/QEi609eff6SdWjraGK83jyIFzV1iOUdeNyPSIaYH/bvIAFrAWdgB7GGQtBpQ+zlHNYIJyn0De8qxNZ9emTLALkIrGoVRHQnt23fE7NctLJgb7ICAXLNJslsaazzUhtbFMV/lYFwnG+c6aaU0fG6ggURnI=
+	t=1789647687; cv=none; b=fxyrhJ29TbHINtkJRUqirhSG4K0qiFprMLbU8a42MJq+sB8gcQwkDvDBEV+WcLda3wzA6se+Fo4SQPCTP/V6fTUVmDdzzJBMOryTN8WLjX7DcMU7wBzMxpSmQvP+jdWfSPbDPGRVSzsB39O7LIf+ehOamaYd1MF6L+qYYD+ibZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789647679; c=relaxed/simple;
-	bh=6zF090TyhNqrzqDjjcqv/wAA8N8uOlGnIDN6kkNUsmc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pw5BWOMt6ZUkGR01ck+RYqQa2y1cb7havB4XKQ0Wt2mvol6zVD5E6zA0bjdnf8ShkIUfyDkI4U/f2CQz9UF9EHRfE5ASYYbRDSTOT8U9ZpSaTtGxqS7UXc2gksZmdOj+Jf1kFOIowbyuxSJLJ23VGJMSX3A8dUG4IW6PwJJGNfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=eeD25FhG; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1789647687; c=relaxed/simple;
+	bh=vXk/zZP/rWzL+je4XD16y2NHbePPEt5x3tRFzHbdslo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=sh1rPH4JTf4vt+Q2SnLCByI6xXmbox1OWSQ2mKpEIWj/OZPAc/xCA9IgIE2JTA+fPbnLoeZ+JUqhQTAtihH84tX912uRCZZWGwQ6GyCU6FkQvZ4wTtCFrbfZaOYrks9z8MXhxQ1Tdu1OD0B9Y0gMiragSLSB97SkPapsUtP4OHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=eTyZvLH4; arc=none smtp.client-ip=195.10.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="eeD25FhG"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=wk3cgC/VX0GZYaINFo0t0rF3qUtW+UZ3H1uFlf0guNE=; b=eeD25FhGJ7FMikiedVPkpCtsPY
-	WgGhTkZJHltnxp4v1jpJEc68Mt5558OdBTadc3dC8O0pXRIVAAI80wCqN+FT6dehrACUWVf98u8Et
-	sc1B2tW/D6MPRezOQ1aD0XMnlqDP8LSgaKOUq6D3fHFea/JDvhjfnxMkecJ3cTHJZWhg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x7B6q-005fec-Ux; Thu, 17 Sep 2026 14:21:00 +0200
-Date: Thu, 17 Sep 2026 14:21:00 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: davem@davemloft.net, edumazet@google.com, f.fainelli@gmail.com,
-	kuba@kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, olteanv@gmail.com, pabeni@redhat.com,
+	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="eTyZvLH4"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA512)
+	(No client certificate requested)
+	by mout-b-203.mailbox.org (Postfix) with ESMTPS id 4hlvpS6jM7zLlyB;
+	Thu, 17 Sep 2026 14:15:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
+	s=MBO0001; t=1789647313;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QVr6iAiRxKKwQhGkwIFRC/NuWDqPv9xW8VN1yGPgEBg=;
+	b=eTyZvLH4EygpTa2sVyxL3GcvLsQAThfPUXbXiEqM9i6G39A9xd0xPJXPVRfgpxY6d5CPZQ
+	zcAgPa+0E2VVb5FGPJ89oei4oJmfUciMxXRAq84gcAAsCpaC/SCsmB78o0ZBXDFq74ZwxB
+	tyGzaye0imdbo9KIs/Gq5AgEiiGvWe8FUzrpSH2tDvTw7E8jtQJex47uVKyDOWsBlJtWyg
+	OEkQix9ArtiwumuFmkJ5vfdtPFrkU9JcsnsFpXLZrFvwAlzQtCVRoVyoHAD8GeUoHMzGqG
+	ytbbulKlvhd5snqOjGUMwXOR0RxDmDBCYrg/go1vefSTL+V41eFCCAc8xxb4fg==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of ralf@mandelbit.com designates 2001:67c:2050:b231:465::202 as permitted sender) smtp.mailfrom=ralf@mandelbit.com
+From: Ralf Lici <ralf@mandelbit.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: Saeed Mahameed <saeedm@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	netdev@vger.kernel.org,
+	Leon Romanovsky <leon@kernel.org>,
+	Boris Pismenny <borisp@nvidia.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Emeel Hakim <ehakim@nvidia.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Simon Horman <horms@kernel.org>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] net: dsa: dsa_loop: Fix netdev leak in
- dsa_loop_drv_probe()
-Message-ID: <498210cb-ea19-4753-9620-48006bd0354e@lunn.ch>
-References: <20260917104629.2147418-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH net v2] net/mlx5e: advertise MACsec offload only when supported
+Date: Thu, 17 Sep 2026 14:14:57 +0200
+Message-ID: <20260917121457.636792-1-ralf@mandelbit.com>
+In-Reply-To: <f7678a37-4dd6-4219-bcef-34a2d74783a6@nvidia.com>
+References: <f7678a37-4dd6-4219-bcef-34a2d74783a6@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260917104629.2147418-1-vulab@iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4hlvpS6jM7zLlyB
 
-On Thu, Sep 17, 2026 at 10:46:29AM +0000, Wentao Liang wrote:
-> In dsa_loop_drv_probe(), a reference to the configured network device
-> is taken with dev_get_by_name().  This reference is dropped in
-> dsa_loop_drv_remove() on success, but if dsa_register_switch() fails,
-> the probe returns without releasing it, leaking the reference.
-> 
-> Fix this by dropping the reference with dev_put() when
-> dsa_register_switch() fails.
-> 
-> Fixes: 98cd1552ea27 ("net: dsa: Mock-up driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
->  drivers/net/dsa/dsa_loop.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/net/dsa/dsa_loop.c b/drivers/net/dsa/dsa_loop.c
-> index 7058faf23592..b6b6fcffb406 100644
-> --- a/drivers/net/dsa/dsa_loop.c
-> +++ b/drivers/net/dsa/dsa_loop.c
-> @@ -389,6 +389,8 @@ static int dsa_loop_drv_probe(struct mdio_device *mdiodev)
->  	if (!ret)
->  		dev_info(&mdiodev->dev, "%s: 0x%0x\n",
->  			 pdata->name, pdata->enabled_ports);
-> +	else
-> +		dev_put(ps->netdev);
->  
->  	return ret;
+On Thu, 17 Sep 2026 13:45:44 +0300, Tariq Toukan <tariqt@nvidia.com> wrote:
+>
+>
+> On 17/09/2026 10:10, Ralf Lici wrote:
+> > Hi,
+> > 
+> > Gentle ping on this patch in case it got lost in the queue.
+> > 
+> > Please let me know if there are any comments or if you'd prefer a
+> > respin.
+> > 
+> > Thanks.
+> > 
+>
+> Hi,
+> Sorry for the delay, it was missed during August vacations.
+>
+> Patch LGTM, you can re-send it yourself and add my tag:
+> Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+>
+> I can also do that, let me know.
+>
 
-Please turn the condition around to make it fit the usual error handling pattern
+No problem, thanks for the review. I'll take care of the resend.
 
+Cheers!
 
-       ret = dsa_register_switch(ds);
-       if (ret)
-		dev_put(ps->netdev);
-       else
-  		dev_info(&mdiodev->dev, "%s: 0x%0x\n",
-  			 pdata->name, pdata->enabled_ports);
-
-    Andrew
-
----
-pw-bot: cr
+-- 
+Ralf Lici
+Mandelbit Srl
