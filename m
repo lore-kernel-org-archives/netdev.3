@@ -1,147 +1,158 @@
-Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C5B4E06C6;
-	Thu, 17 Sep 2026 12:56:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.8
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789649781; cv=none; b=gm65gnK/oQ6SYux62DOvYFqnb4rqr31UIyE153zNFaHLjeZcqZ8ne8n5AxC1jWgHCh3zBcGVJXtd5ayCyJWaWBXb7cdVlT3bV8r9O20fdL3/0cVXH1vK3BhXsB5DZML3jDGbuJ58Fh37EsHzK1WUUMCqp2JBHQRUL/MnKR8Q3gM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789649781; c=relaxed/simple;
-	bh=lVvkric4bqsjm9teFQ57eswVhdVnbnIoi61jxqHHKt4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iDtqQsKM0Uku2S6BtmDsT+1Cm8f18+HbcdIYjX8pw+jgviO/2SmTNQIp0fKgYldzm7EXbKPUwKE0O89qU9HtE4Whw6U2MrLLzE3ZsNFWjKdXuRM3LcM+98out+B75suwGpLFVEFtGJBPxU9bw2z/88wc/xEQ3leR5bx+A96Vx00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=UpCd+nEF; arc=none smtp.client-ip=117.135.210.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7947A4D0A06
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 12:57:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.141
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789649848; cv=pass; b=EZYVe0VOpqUsP7AyhyAaaXJWqakV17NKe2UlGT/SUH11QmHPkARtOcfWYQMwTBynXkpuq9bFRHn+52j6B2b1ATX2k2NkxqzaQmM4ySBpSvy3+NwMx3kc/+oTN4P0ttN5MB32cj8+AP9jwSgsjRoWx4ggB6JvQIsuBqJ3SkuA6KA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789649848; c=relaxed/simple;
+	bh=PLRC+YPuVdiOsxFxhTAyruBDsU02Q6zb8qiNkV7CRZo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FYvKz4z2lNjKr4IOQPGORyOSU7aawqvVfIkpg4n2pU038HSNfvuL9mh5vmgYcNdQKWbscgruDxPDowE7ILilad+SQt8jk36osKY1XhGalbDEUiKqI13jzAbHAsZ6TiLCNlMPADviZQ25G8jI4uq7ZgVOn2kI1r/yiyR4Hyz7AaI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=JjHPZRms; arc=pass smtp.client-ip=74.125.224.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="UpCd+nEF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Xj
-	vrR6q3G+2JmmkCKiYy4LR76MiqgTrB4foZPd0p2Zg=; b=UpCd+nEFMsKK4Opo4v
-	hfoPaKkZ2gCgDaMK1q704AZyxZV110Dc+WrViDOlgo5OrLSxt4hoMrCW8e7G9Jkm
-	mbKPn8MoAGuPGuf+LTNjO4sYD+u9IZxTI5RIlulwxL9qY9NKoIW8FcOJhzUbZ4OW
-	G7PzNXdJS/A4C0QFw94Ew309U=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wDn_8Qj46tqab0kBg--.26898S2;
-	Thu, 17 Sep 2026 20:54:59 +0800 (CST)
-From: Linkui Xiao <xiaolinkui@126.com>
-To: maxime.chevallier@bootlin.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com
-Cc: netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Linkui Xiao <xiaolinkui@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: stmmac: request the MDIO reset GPIO only once
-Date: Thu, 17 Sep 2026 20:54:57 +0800
-Message-Id: <20260917125457.1353718-1-xiaolinkui@126.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="JjHPZRms"
+Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66e4ab19127so799825d50.1
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 05:57:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789649840; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mmb1C1dJhhYpGaEv4hzwdNkW/TGTabtgwd7yk73TC6yp1rH7O1I5fNxRKZGuWeJAw1
+         wcvlFyXDhptLd37qFS9CUW4RIT+QIfQec9Td7mpPHlM6+lGfkz9ZJRQkAXmvunsn56vP
+         4Z2gE5tVcV6pDoQPJJ/RGnEdexduGgxSnfUY0ELdY0z0Gg4ojKXfcUxu3ywOdylbPB9L
+         a5kE0v9IXBufyYUuNfpF+PDSDP3C5TskdQxRA1KGEPwMjMWbwh3UMHRHbpUyG9VLnOHy
+         zmfWiITrFZF86u4FEcofQ2p9A4D8+F8iA3xvd7221nhi2clC+ADjg9uFCIuOEgCZz0iJ
+         Ec1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=zdi5btpvw9YiPIa5m0HyVrwEa9ZxlyRkGCQ687PghRc=;
+        fh=D4Kt8AA/9rfOcRfy+nQYG8YFGSb9SK5nt0pJXY6iW7Y=;
+        b=aUmsxkdIbEW3BXdt7h0YjK0cMBB+e55NUOEasQNTVuHoWOQT0m/pNgdvOjqyzfmPUf
+         ac+11aU/rcohRoiwvnhOot9I5NO2hZsxwzaZZecXaEUqmb0bGwfXcuRq4j2FuYcFbZ4h
+         4fh2tMt0HvwjGhc8vIO9mYeqT5bvQzYPSfJY2zQzNDE/TuaNVcN7dAe2ApZzFztRwAQA
+         VIYqxGSUEhsNHTc3ELw2ffvUuJogf1dBKkixIrfUAoQ09SX6K3WLgLcxX/VZaTIhCBuC
+         LcHf9WN3eBw4ACrDQSf0a4Q5xozLwy5WBrF09Rj3bNve62cZj+9B94ssEVZP7OkLMpmV
+         K7wg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1789649840; x=1790254640; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zdi5btpvw9YiPIa5m0HyVrwEa9ZxlyRkGCQ687PghRc=;
+        b=JjHPZRmsmqIqBLPQt8B9Yz6g/KvVJTqsn5s9TPH4WterJrAVcqYTqu6QxAh8R6FQ1d
+         +pWk33E3U5HqWuJU5AI9OG8n+BaB1tL18TtDw4/7NrIxg9BHkNcth7Wp44ueWOZUMzQN
+         oLecbPYIpqHv9R879ibETdO64g8BUff07CZmY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789649840; x=1790254640;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zdi5btpvw9YiPIa5m0HyVrwEa9ZxlyRkGCQ687PghRc=;
+        b=GCc0vOClTULT/asoaRiXj9h85eMwk5VX8iASojjpN/iIUkCiMT9Zx7jmFJD8DaBfr4
+         kd0W/Z1Oj6SREsk+0NgMA1pjEeFgNevOYWV5rASyrUjzsRzE8aj3faCNLb7Qgji75Z6k
+         TpGhv/533M8ssmWzANchMZKMBzT7at5Z++PasQ3MwooBnykdUpY6DNy54m13sFOBH/TO
+         TUC4xEj2k/iV8vb8sILE8w/b9TMKtBZ7RmnxIj8d9J0aRXHCGbai4pXW/OBWbZqzSBH+
+         kiRkeV0evGGrOq1uvBqY7TJDe8Hjm8wLADQAmjtoIk0DC0ZuFZr7pWfq8BR0J0wDZi3R
+         MRSg==
+X-Forwarded-Encrypted: i=1; AKwUvBy10ehrYcR10kIdZvYwuA+ucP94rvVv3Sn4//ZrSxSn2aauRHeFlEfEnikNTxtSQa4rpF4Dj/4=@vger.kernel.org
+X-Gm-Message-State: AFuF++nQQ0YDdsZH8x7m5gg46DL6UWhR/vwIp78qtpzeFzNRTuATqG0C
+	v2o/e2lcczzp3ai5F9dTjo1vNv1JoP1VVuRHldLW32bgXcDcW9HU+ePHbGRtxZIYG7jwdms/IuC
+	udCQ9J8/+Ii7QzyJoPFJYQybaZu5oQWoquCc+Xu8n
+X-Gm-Gg: AYBFou3DVb4oW725PSwjW99zCWKqE4hI/CIxvkLp91ElcKC+qbfDOPZrhm84hJj5Xmk
+	Dbw2POkqhvDJZs6Ot9jdFcSErNTQ2W45qpbLfuAyDdOCSEPKcoHdGuNewnG7+IaZcE5vrvGip8u
+	/5yafUeRsGO7FDoGSX8bBykUfYnYWr9UldyP6HtoQKuWVetxwKskyl9EjiaTX4py7qmuffxH3TU
+	ETtzDcDSRi0+bmf5BiAYUqJJb/ryvw9xN/b0akuoZHviDDiXrfmElD626g/C3OgaN9uT6KRGOdM
+	owvirOMEMURHmQj/NkHlnt8hwV7eofe5dm///8ZOmdN3ekbxpkbY1CnAcXgsIrbodSDITQ==
+X-Received: by 2002:a05:690e:144b:b0:662:89c8:4a62 with SMTP id
+ 956f58d0204a3-671631fe492mr2200601d50.18.1789649840369; Thu, 17 Sep 2026
+ 05:57:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDn_8Qj46tqab0kBg--.26898S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxGFW8XFyfWr1ruFWUCry8Zrb_yoWrJr45p3
-	y7Zay5Ar1kJr4xXw4kJw48ZF98Aay3tr4UGw1I93yS9F4UtrWYvryaqFy5ZFy7KryUuFya
-	qr4Uu3WDu3WvyaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UYiiDUUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlQOGXWqr4yNcaQAA35
+References: <20260917124725.4127273-1-victor@mojatatu.com>
+In-Reply-To: <20260917124725.4127273-1-victor@mojatatu.com>
+From: Victor Nogueira <victor@mojatatu.com>
+Date: Thu, 17 Sep 2026 09:57:09 -0300
+X-Gm-Features: AcwNN1XIoM3UDdLma2qmD-soYXkUuXkoclqf2Wnzoi90BoRGPkG3wnf9IbSQ5b8
+Message-ID: <CA+NMeC_c_3iDnvx+esQSYiOnirXqbihXnw0WE=6xz1Ss5iBMgw@mail.gmail.com>
+Subject: Re: [PATCH net-next v2] net/sched: Avoid quadratic handle scan in qdisc_alloc_handle
+To: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, jhs@mojatatu.com, jiri@resnulli.us
+Cc: horms@kernel.org, vega@nebusec.ai, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
+On Thu, Sep 17, 2026 at 9:47=E2=80=AFAM Victor Nogueira <victor@mojatatu.co=
+m> wrote:
+>
+> qdisc_alloc_handle scans for a free auto-handle by probing the
+> per-device qdisc hash one handle at a time. With the 16-bucket hash
+> populated by tens of thousands of qdiscs, the failing scan is O(N^2)
+> under rtnl_lock. Each failing add holds RTNL for 0.6-0.9 s on a
+> production kernel and about 1.7 s with KASAN and lock debugging, and it
+> can be repeated back to back, stalling network administration in every
+> namespace.
+>
+> First try the handle after the rotating cursor with one qdisc_lookup,
+> as the first iteration of the current loop does; that handle is
+> normally free. Only when it is taken, build a bitmap of the occupied
+> auto-handle majors in one pass over the hash and pick the first free
+> major from the cursor. The scan is cyclic over all 0x7FFF majors
+> starting from the same autohandle + 1 position as the current loop, so
+> it returns the same handle for the same device state and fails only
+> when all 0x7FFF majors are taken.
+>
+> The root qdisc is seeded separately because qdisc_hash_add skips
+> parent =3D=3D TC_H_ROOT.
+>
+> When the next handle is free, only the single qdisc_lookup of the
+> current loop's first iteration runs; when it is taken, one O(N) walk
+> follows.
+>
+> Measured as tc wall time on a defconfig kernel in a 2-vCPU guest, with
+> an HTB root holding 32768 classes and all 32767 auto-handles in use (a
+> no-op tc command takes 5-6.5 ms):
+>
+>                                     unpatched     patched
+>   failing add, space exhausted      613-749 ms    8-10 ms
+>   add after a mid-range delete      572-573 ms    9 ms
+>
+> The failure path returns -ENOMEM (bitmap allocation) or -ENOSPC (space
+> exhausted) through a handle out-parameter instead of the overloaded 0
+> return. Since either error is now possible, the extack message changes
+> from "Maximum number of qdisc handles was exceeded" to "Failed to
+> allocate a qdisc handle".
+>
+> This is a less intrusive fix meant for backporting; a cleaner approach th=
+at
+> uses a per-device IDA over all qdisc handles is planned for net-next.
+>
+> Conditions to recreate the bug:
+>   - unshare -Urn (Level 2, namespace-local CAP_NET_ADMIN)
+>   - classful qdisc (e.g. HTB) with many classes
+>   - attach ~32767 auto-handle child qdiscs to fill the handle space
+>   - the final tc qdisc add with no explicit handle scans the full space
+>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reported-by: Vega <vega@nebusec.ai>
+> Reviewed-by: Simon Horman <horms@kernel.org>
+> Co-developed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> Signed-off-by: Victor Nogueira <victor@mojatatu.com>
 
-stmmac_mdio_reset() calls devm_gpiod_get_optional() every time it runs.
-A GPIO line can only be requested once per consumer, so from the second
-call on gpiod_request_commit() returns -EBUSY. devm_gpiod_get_optional()
-only turns -ENOENT into NULL, hence the error is passed straight back
-and stmmac_mdio_reset() bails out before pulsing "snps,reset" and before
-running the STE101P MDC workaround.
+Sorry, -ENOCOFFEE.
+Forgot to remove the fixes tag.
+I will send a v3 fixing this after the 24-hour period.
 
-The first call, made by mdiobus_register(), succeeds, so the failure is
-only visible later on: every resume that does not use WoL goes through
-stmmac_resume() -> stmmac_mdio_reset() and returns without resetting the
-PHY. Boards needing a hard PHY reset after power down then come back
-with a dead or badly negotiated link, and nothing reports it because
-both callers ignore the return value.
-
-The descriptor used to be cached in stmmac_mdio_bus_data::reset_gpio so
-that it was requested exactly once. Commit ae26c1c6cb9b ("stmmac: fix
-PHY reset during resume") relies on that cache to reuse the line on
-every call. Dropping the cache removed the protection without replacing
-it and reintroduced the very bug it had been fixed for.
-
-Cache the descriptor in struct stmmac_priv instead and only look it up
-while it is still unknown. It is devm-managed against the platform
-device, so it stays valid for the whole lifetime of the driver.
-
-Fixes: 7e770b252a62 ("net: stmmac: drop the reset GPIO from struct stmmac_mdio_bus_data")
-Cc: stable@vger.kernel.org
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac.h  |  2 ++
- .../net/ethernet/stmicro/stmmac/stmmac_mdio.c | 20 ++++++++++++++-----
- 2 files changed, 17 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-index 7582fca63741..986fb43db45f 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-@@ -25,6 +25,7 @@
- #include <net/xdp.h>
- #include <uapi/linux/bpf.h>
- 
-+struct gpio_desc;
- struct stmmac_pcs;
- 
- struct stmmac_resources {
-@@ -287,6 +288,7 @@ struct stmmac_priv {
- 
- 	unsigned int pause_time;
- 	struct mii_bus *mii;
-+	struct gpio_desc *mdio_reset_gpio;
- 
- 	struct stmmac_pcs *integrated_pcs;
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-index afe98ff5bdcb..5f99d7db39f7 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-@@ -389,11 +389,21 @@ int stmmac_mdio_reset(struct mii_bus *bus)
- 		struct gpio_desc *reset_gpio;
- 		u32 delays[3] = { 0, 0, 0 };
- 
--		reset_gpio = devm_gpiod_get_optional(priv->device,
--						     "snps,reset",
--						     GPIOD_OUT_LOW);
--		if (IS_ERR(reset_gpio))
--			return PTR_ERR(reset_gpio);
-+		/* Request the reset line only once and reuse the descriptor
-+		 * afterwards. A second request of the very same line makes
-+		 * gpiolib fail with -EBUSY, which devm_gpiod_get_optional()
-+		 * passes through because it only filters out -ENOENT. The
-+		 * reset would then abort early and leave the PHY un-reset.
-+		 */
-+		if (!priv->mdio_reset_gpio) {
-+			priv->mdio_reset_gpio =
-+				devm_gpiod_get_optional(priv->device,
-+							"snps,reset",
-+							GPIOD_OUT_LOW);
-+			if (IS_ERR(priv->mdio_reset_gpio))
-+				return PTR_ERR(priv->mdio_reset_gpio);
-+		}
-+		reset_gpio = priv->mdio_reset_gpio;
- 
- 		device_property_read_u32_array(priv->device,
- 					       "snps,reset-delays-us",
--- 
-2.25.1
-
+pw-bot: cr
