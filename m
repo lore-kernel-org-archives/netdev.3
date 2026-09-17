@@ -1,104 +1,106 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f43.google.com (mail-yx2-f43.google.com [74.125.224.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FB74DEC39;
-	Thu, 17 Sep 2026 19:21:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D339154705C
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 19:26:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789672884; cv=none; b=fPK4Y5czqTeykqqwIDdFte1JPcODtn7ciyDyanvJPN2wC/Arnw6aULXLQw++fEGxOzmKhxXTC3DthjIYsGEOa8tfQDBcTOWkDTsSlVbaJSHLf/wDcc4aEuWHv+NZNn8nm3RDLKg382jMNkjADh0tkXQITPgyf2cWRp2OLYbC8WU=
+	t=1789673174; cv=none; b=GrgNLocwGCkthg3aHeH/nyYidKNclY11egndG4URqEWNF8nWAL9e9S7D+1hq6Ar16W06YMgeXqfOn3vQ7Sdp94agYBcz+3uQkDGvNajIRmoSAqZi41sRGD98eM/LVEb701fRPhjMJT9hmlRcFIBrVtYDZwwa6z4jCavb4R2K0+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789672884; c=relaxed/simple;
-	bh=uSEumnYFunQQnmUN6qo3BBiP8xYeDXP6NosN8NmzVYI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bu8K2v6Vv4JktLEAn4CVApMdWARBuh+gIPKALuAynD/XFwDRdHaoA5PVAXq4EQ5o3ZUNrjGrTYrqmpo8zhHLqiKU7+AanF4xJNyh2koC9nT/fVRhr7ztPDfDJefmhHXy9fxGD1aK4h93ZK8YUZprQHe4xt9lFqoGwAWpnRsZ8Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256:X25519MLKEM768)
-	 (Exim 4.100)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1x7HfV-000000001Pv-3V9V;
-	Thu, 17 Sep 2026 19:21:13 +0000
-Date: Thu, 17 Sep 2026 20:21:10 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: Caleb James DeLisle <cjd@cjdns.fr>
-Cc: netdev@vger.kernel.org, dqfext@gmail.com, SkyLake.Huang@mediatek.com,
-	andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Matheus Sampaio Queiroga <srherobrine20@gmail.com>
-Subject: Re: [PATCH v5 net-next] net: phy: mediatek: support MT7530 PHYs on
- EN71221 MCM
-Message-ID: <aqw9ptzAZBmdHy1S@makrotopia.org>
-References: <20260915113427.113296-1-cjd@cjdns.fr>
- <aqkwYd5dTmHDCIW9@makrotopia.org>
- <2a7edfd0-b784-4b60-b9f9-769fe00286b7@cjdns.fr>
- <aqv92pZsobVEdipZ@makrotopia.org>
- <95202df5-fdbb-4325-b77b-5f45ac8b1732@cjdns.fr>
+	s=arc-20240116; t=1789673174; c=relaxed/simple;
+	bh=ZA4eQurhZTue/lbCbH0Y5YU902PcRfa2St/zYVv9wDg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=taAJAcPBcsEbulr1q5njs94qy8uWTKA5OoJHCKxZ1JYCxUpKuaOm1GdvcSMhHlZCB/INr4V+Dg3n0qmndCh9xDFT7FYNXB3yCnFPVqxlW9AEbK/K1PjaK1qIY9S9ZU8llQS1cawSZ6UeEPMiU9mZ3vFXFhIox9PlQCajCs/IQLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pHRQiPkZ; arc=none smtp.client-ip=74.125.224.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pHRQiPkZ"
+Received: by mail-yx2-f43.google.com with SMTP id 00721157ae682-85d46e4cdccso8812607b3.1
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 12:26:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789673172; x=1790277972; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=ZA4eQurhZTue/lbCbH0Y5YU902PcRfa2St/zYVv9wDg=;
+        b=pHRQiPkZU9zQqJ9UFKQ7jxuwdVQG/hMzGWA2CveN4ErSAYF9D1OHNOtc6fJvA6b4vn
+         p2TDsIqLrc9KnuBp/tJY/e7aiX5MNzlEKfOS76y4TAvFUEuCRzDNTSAR+6TVt8C3o6Me
+         15mFSuru7umZ8bRYwQdXhOWCvtJ8Jyx4PzbHa33trMIqlft+8GsIaZnLorbbEaTlqPyA
+         Q6gWPkDh97gSEdXR5j0aw41EON/Yb1rrNqjNs3gBowlFG51udoagwqm4ejIPCKn36v6/
+         nIBLYT55rhMD4z1CVQC455RvQAPZan+uvq/I5PjF/2a2MflgVwiA2/gucv4jePiO4umi
+         uXdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789673172; x=1790277972;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZA4eQurhZTue/lbCbH0Y5YU902PcRfa2St/zYVv9wDg=;
+        b=lIZyiasfz2N4UA3YLcrz4gyWeyzysuz+UVlh7FuxV5dPHlGlAmfFvQg3rZz5Yzqe8J
+         ewrMgBgT52KZq1uNxRGSV4QBOtmNuXniBXuUAU6mLpFJs6AKGerGgKnEpqWkCq0MA5pT
+         qePygLk/QIf8fLYCQ3aWNtX5gzeLggBFG4R0rCeCD8MDi6IOadlS0SoMr203QLVu9zjG
+         YQZ+gQa/vXEY3RFWafIl+cu99/IxTX2HxxuWyJfZ9jcalihabgTgbjio1Be9BFdXaiqR
+         u2lmgIZ5HpoujXc+9n+qIlaA/sOa2rkpf+pkBv25lCoyyZMC505OD4Q4I0c2YiYm8+3n
+         G6kg==
+X-Forwarded-Encrypted: i=1; AKwUvByMWyeFnjMgZOmJQXOnU+FjRNaOI/DFxpkppHlZoI7gsNULEjCc+69uc26DnfFP0+qCige4ogw=@vger.kernel.org
+X-Gm-Message-State: AFuF++kxhGV65f7iLx4KC8JBlZmGsB0ngFkihUnc9s5Sx1l7j27lKI0E
+	lrqAEaOadIAZ4u5UZRiM9RNApZYxHQ+3Tk2xFvodNJXCBGj12cdrYwOT
+X-Gm-Gg: AYBFou2ok78HVlyN996v/ln+4Ym5PYRTpuYPoVLT16fXWXdawvbvJjqzGWOzKUKFMGy
+	YJjU8rRSm+XpavDLR4WGXm43anjhWpQroqWzQUGQs8sImQxgDx7tRCe10qi04zLMScaeT1dk2Xl
+	xvmL3DLNa/pNkdp3NoPVn7FtWykiTkzLyl3R3tHh4XFk7+k5ZFP+FVSUwHQjobynNBZQCqluSBK
+	9FGSR2+NaSLefmXSCa5D8Za0l8/hYP+tNleq1ImNHloP4PD01C6eumNOD7gECCpXLK5qwppdnhn
+	V7rdNUGydalinVl+DMU6BK96q+9ok9tOyzeMUe9fIfqAIT1Nol3BC6aPWrHKR+zx/C2f8wNTuXK
+	fpaDMNIeiTUoW/IMxAsjRJI8NY1sXK0xahWvXBWVy4QYegBZ1mW8d1PGHUWE9T2ChZWNUAAL6fC
+	A6R0pLFb9zj0NsW5bWm5BA5vUM1cecHlfxj+BCbu5ZTpFT3QDMNhbYOc72lA==
+X-Received: by 2002:a05:690c:e3ef:b0:882:1d1e:d763 with SMTP id 00721157ae682-897318ac33bmr982787b3.9.1789673171679;
+        Thu, 17 Sep 2026 12:26:11 -0700 (PDT)
+Received: from localhost ([2620:10d:c091:500::4:5cf2])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-896c948150fsm2772037b3.10.2026.09.17.12.26.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Sep 2026 12:26:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <95202df5-fdbb-4325-b77b-5f45ac8b1732@cjdns.fr>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 17 Sep 2026 15:26:09 -0400
+Message-Id: <DLHU6VYMGPI0.GFOTZBK209C6@gmail.com>
+From: "Daniel Zahka" <daniel.zahka@gmail.com>
+To: "Kuniyuki Iwashima" <kuniyu@google.com>, "David S. Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Neal
+ Cardwell" <ncardwell@google.com>
+Cc: "Simon Horman" <horms@kernel.org>, "Kuniyuki Iwashima"
+ <kuni1840@gmail.com>, <netdev@vger.kernel.org>, "Daniel Zahka"
+ <daniel.zahka@gmail.com>
+Subject: Re: [PATCH v1 net-next] tcp: Set unhashed_state in
+ inet_twsk_hashdance_schedule().
+X-Mailer: aerc 0.21.0-threadmapfix
+References: <20260917191554.1600494-1-kuniyu@google.com>
+In-Reply-To: <20260917191554.1600494-1-kuniyu@google.com>
 
-On Thu, Sep 17, 2026 at 05:11:50PM +0200, Caleb James DeLisle wrote:
-> 
-> On 17/09/2026 16:48, Daniel Golle wrote:
-> > On Tue, Sep 15, 2026 at 02:01:29PM +0200, Caleb James DeLisle wrote:
-> > > On 15/09/2026 13:47, Daniel Golle wrote:
-> > > > On Tue, Sep 15, 2026 at 11:34:27AM +0000, Caleb James DeLisle wrote:
-> > > > > @@ -135,6 +199,23 @@ static struct phy_driver mtk_gephy_driver[] = {
-> > > > >    		 */
-> > > > >    		.config_intr	= genphy_no_config_intr,
-> > > > >    		.handle_interrupt = genphy_handle_interrupt_no_ack,
-> > > > > +		.match_phy_device = mt7530_phy_match,
-> > > > > +		.suspend	= genphy_suspend,
-> > > > > +		.resume		= genphy_resume,
-> > > > > +		.read_page	= mtk_phy_read_page,
-> > > > > +		.write_page	= mtk_phy_write_page,
-> > > > > +	},
-> > > > > +	{
-> > > > > +		PHY_ID_MATCH_EXACT(MTK_GPHY_ID_MT7530),
-> > > > I'd suggest to actually use phy_id and phy_id_mask assigned by the
-> > > > PHY_ID_MATCH_EXACT macro by calling genphy_match_phy_device() in your
-> > > > match functions above instead of open-coding the ID match.
-> > > > Or drop PHY_ID_MATCH_EXACT from *both* drivers.
-> > > I suppose the latter is easier because then I don't have to re-think
-> > > mt7530_is_gphy() which would be lying if it wasn't actually checking ID is
-> > > MTK_GPHY_ID_MT7530.
-> > > 
-> > I would have preferred to call genphy_match_phy_device() in your match
-> > functions instead of open-coding phy_id_compare() which is best
-> > reached via genphy_match_phy_device() in this situation -- that would
-> > express the code intent in the most obvious way imho.
-> 
-> 
-> I did it this way because the name mt7530_is_gphy() implies "Is this an
-> MT7530 gigabit PHY?" which if it doesn't match on MTK_GPHY_ID_MT7530 then
-> that's not what it does so there's a little bit more thought involved.
-> 
-> 
-> If I'd have known this was really your preference I'd have done that, but I
-> already just sent v6 so I guess I can send v7 tomorrow.
+On Thu Sep 17, 2026 at 3:15 PM EDT, Kuniyuki Iwashima wrote:
+> inet_unhash() sets inet_csk(sk)->unhashed_state only when the
+> socket is hashed because tcp_set_state(sk, TCP_CLOSE) could be
+> called multiple times, e.g. tcp_abort() calls it directly and
+> tcp_done_with_error().
+>
+> However, inet_twsk_hashdance_schedule() also unhashes a socket
+> when replacing it with twsk, allowing the socket to bypass
+> checks for inet_csk(sk)->unhashed_state.
+>
+> Let's update inet_csk(sk)->unhashed_state there as well.
+>
+> Fixes: 8cc3aef0cb19 ("tcp: Do not allow buggy transitions between ehash a=
+nd lhash2.")
+> Reported-by: Daniel Zahka <daniel.zahka@gmail.com>
+> Closes: https://lore.kernel.org/netdev/DLHLRA8GVI5B.2Q1IRQG5BVJNZ@gmail.c=
+om/
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> ---
 
-It's also fine for me like it is now, just a light preference, not
-worth a resend just for that.
-
-However, I'd also still like to see the OF parent walk replaced by
-register evidence, which requires that you dump the registers more
-than once to understand if any difference are things like counters or
-temperature, or actually identify the PHY variant.
-
-It can of course be that the actual silicon is really the exact same
-MT7530 MCM as eg. on MT7623, just driven by a different clock
-frequency and the observable register differences are things like
-clock devidors -- if we manage to understand that and just apply the
-resulting tuning accordingly, even better.
+Reviewed-by: Daniel Zahka <daniel.zahka@gmail.com>
