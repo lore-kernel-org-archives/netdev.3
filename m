@@ -1,834 +1,200 @@
-Received: from mail-oi2-f13.google.com (mail-oi2-f13.google.com [74.125.231.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F399A4ED183
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 20:06:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDF04E3769;
+	Thu, 17 Sep 2026 20:08:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789675586; cv=none; b=sTNOzwpTUSPcHQDMyvjUo+2CPF6XrPPpOTwptLffsiSYrlQlbkIX0S8MtOGl1a875/C30UujRAnXCv/YXN2YKXhP7P1ccx6QLkd6TWtwdjEGr5LrGhhPo17jygLdMDlhTkNEO0nV9WIrZSb5T4NnEL8WCV4lmSMCCezDrAktqIg=
+	t=1789675733; cv=none; b=brfWTq3hhacHTtdnpEsQ7cDoq6fq3o1G7wWf32G/vTItXSL2YvmFhXXWed5cMo+/PqV07SdhYBO52B0Zfh2r+iTiOOYoTfH5Oqs8Kd5rEHjjf42c8PFECRnOHuRy1x4+0BJBKElkDbsJnJb0r1Fptj/eAWcRgzNiJ+nVfE6V8FU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789675586; c=relaxed/simple;
-	bh=L3OltNVgtx9dAiihghrnQLsCPr6Yyt0BX9ZRTB7Ch6E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bXsXtYKYzr27w9YLXiv1sJ6PxCVGZqEJK1ACHob13RZ8Nd9h0klYSQUAXe8H5G+V8WGmS83F5cbn0haUVX44PfAgKLEJg4L/1dX8S0KTgszNOoS5fOO17cqKLTcDpsIX0gpeAbxKoNHpuXA92mq5M7yHWmAiTacboe6gChyz2Y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WzrulzUv; arc=none smtp.client-ip=74.125.231.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789675733; c=relaxed/simple;
+	bh=IIsV1U6PauBbsTaBCTwAkycnPPPdpJTtWKCHAFfVjgE=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=kY1pjApaWSfZVYU4Nh9xnIejvMJnKFGEnUn6NSIFDuakgNJw7H4NqqDBEP//HPlH9QYOS6I3zGkX9H7N9V9fHNJXBBFZj7dB+9WYep+zTYVfY+jxEJiDuBfq4SSMai6S2mj6pdsMhKEKQVcaSkFuY1tNUw6T96eN1hOxZlnqRV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GaVmBZBG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WzrulzUv"
-Received: by mail-oi2-f13.google.com with SMTP id 5614622812f47-4c13f35cc24so19267b6e.0
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 13:06:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789675574; x=1790280374; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=2iVx5cxvgsjMP0439P1WEVCMwy9nmDg+A2reEJ2qZCU=;
-        b=WzrulzUvtE6T1IwB9nk2KtdzwK1qKyV/jnlNh7eFYLKd6ejCuTYC0QVfmWJ9gg/6j7
-         TsQQRWAjhwj7irJm32VRm10X5nPopAN1y1ZeY/gnOaALTgFdCtP6RevwewDFou3MXJHS
-         zQFGSuH5j3JFef+Q9O2nS2WmMq84doOA864IP0+gS7cej+pnqoBtQFWQQHSDAKNGlL+w
-         i4g36Ga8XuXiGEYttOELPwUAUIPzv/tWvwxire2UmmBNF6oNR/dnsy7XXlVhnsr7ymAW
-         TuLBDG7RCuee4OXIequW8W3rTshjAhvDCY2nSWvMutSatrZNu4ozYPpFcTN9+PnHN1aW
-         T4+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789675574; x=1790280374;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2iVx5cxvgsjMP0439P1WEVCMwy9nmDg+A2reEJ2qZCU=;
-        b=j0QpP1Yq9cs9oSe9Zi/Nbxdrg9M6A4Y/6wdEzpeuoOELleUT+9KaeQ4culHe075SGd
-         l5/4KuQtQFPmsdX6zqVD62lR9X41z/rj/9dlaQkhezQ4mLrNeaN/1iNsNA+eaZfjbdAh
-         DdhkpzDZ4mrc9T4kVt2Vik6p+uxJKpiBIKJ+zBRHieuODRpoiI+I9u2COypM7PMx5D9t
-         wd93Ytc1CjQB0rGNdAu7i8umLd846PuQYPLG0zt1NnAOs2LrFdCyYiB6PPVmh6EKSudU
-         VXbK3QvA0NeE2b/0FByg4NdcLN+Ay+vlT+Gau49C6oq/QTj9m8rY1ufctoG9CUgGLmVf
-         Uqkg==
-X-Gm-Message-State: AFuF++mPOFNJKR0zGeI3BQP3wll2rsWACYHNI7+xvwhs0AW5NpryKq6A
-	BcLQ3DoqXsBygcG046ZJya6YO1VOiieC4D1uqHfftP/0D9BqeR7jgGZl
-X-Gm-Gg: AYBFou2P3KCf/cdxws+a4mjDqqC8MqAIgn+PMYKPCuIrrYmZwLcJ+iKhKtEK2zXpfsA
-	Lmzxlc/cfFu5LvJb02eFdEtatYHYnoaRs3z4WEHJVFaZczedzkxD+xuJriaY3KuUgZCZErHqrC8
-	y7rQ6YnQr+/WIp/retUtS0oRhfVafl63eQ3i0mYbXI+lL8u3H+AsznIX25jQ4S7gjUOXIBiAEpM
-	6+gPc1Wpnzz+FthQSET+NjWPsP6NGHOhNqVQoKgGzpZ4+tlC5LcXXFxVnlpm3klHFK8pMsXsXHH
-	mSstB3l2z44fE3L+FKzMgjhfhTv+bJC+63yB2Jn84AOQI59KfTRWfMMKVMmiCpjtb6Ie3wtnsjv
-	656c538Y10wit153oFhoKZPX049nCi3QH3IxcKyfx49UExtMs4BXHIiimBBFk5yPx+3XUVaD75e
-	Rsajjve35+PYIcYNDAcgpj5BGcdCpZJZgYhIludevmT0Z/2RgsCeJTIqpXskT8rA==
-X-Received: by 2002:a05:6808:1a1c:b0:4b3:3e1:499b with SMTP id 5614622812f47-4ccfe773abdmr212074b6e.6.1789675573803;
-        Thu, 17 Sep 2026 13:06:13 -0700 (PDT)
-Received: from localhost ([2a03:2880:ff:51::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4cb6c80c7cdsm3817501b6e.4.2026.09.17.13.06.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 13:06:13 -0700 (PDT)
-From: Amery Hung <ameryhung@gmail.com>
-To: bpf@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	alexei.starovoitov@gmail.com,
-	andrii@kernel.org,
-	daniel@iogearbox.net,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	martin.lau@kernel.org,
-	shakeel.butt@linux.dev,
-	roman.gushchin@linux.dev,
-	kuniyu@google.com,
-	kerneljasonxing@gmail.com,
-	ameryhung@gmail.com,
-	kernel-team@meta.com
-Subject: [PATCH bpf-next v4 14/15] selftests/bpf: Test attaching struct_ops to a cgroup
-Date: Thu, 17 Sep 2026 13:05:40 -0700
-Message-ID: <20260917200542.3689605-15-ameryhung@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260917200542.3689605-1-ameryhung@gmail.com>
-References: <20260917200542.3689605-1-ameryhung@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GaVmBZBG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05A981F000FF;
+	Thu, 17 Sep 2026 20:08:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789675730;
+	bh=//NLXZkiBLVTK0DM7831/W9LL24+RBN8sB0Du64xfc0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=GaVmBZBGjJ6FI1R6xrcYjVGvZXVd9APwwC2nYYtwun/LD/RMYMsg8H95cwR7YdHkm
+	 RXiSQ1gkGqkml/gNox2tTvKMiiKVoc2PdVk/Q0DRuZx7duF9Fb1GlzdcMKIobtGnRF
+	 C4E3tfb17gK9INpV2oRI41u9p7hHsCWaOJs8z6aWgRQZNmqarx4i7NXxoEyAExcW9n
+	 IECpo7IzFln+vkvJMualU7Ds96uDEvJQb2UyFQoU7cuM199Pn28omAhU7wRQKz3/9l
+	 zSEchSLkiIevUlqTQh9AjfTWXDXIT8SHF/Cob9ZhCrgAunzAaCs6tkyHjhXHQ+5wPe
+	 gA271o8fM4dLA==
+Subject: Re: [PATCH net-next v8 1/3] dt-bindings: net: wiznet,w5100: convert
+ to DT schema
+From: netdev-bot+sashiko@kernel.org
+To: arthur@marmottus.net
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, arnd@arndb.de, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 17 Sep 2026 20:08:49 +0000
+Message-ID: <178967572953.22033.7825853149442957564@kernel.org>
+In-Reply-To: <20260915-wiznet-link-gpio-v8-1-d173622474cc@marmottus.net>
+References: <20260915-wiznet-link-gpio-v8-1-d173622474cc@marmottus.net>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
-Exercise attaching the bpf_tcp_ops struct_ops to cgroups via the generic
-cgroup link infrastructure. The struct_ops instances record their
-execution order and the previous return value to validate correctness.
+Critical: 0 · High: 0 · Medium: 0 · Low: 2
 
-Subtests:
-- query:        BPF_F_QUERY_EFFECTIVE and attached query return the maps
-- order:        BPF_F_PREORDER vs attach order within a cgroup
-- before_after: BPF_F_BEFORE/BPF_F_AFTER relative positioning
-- update:       bpf_link__update_map swaps a link's map, keeping its slot
-- retval:       int return value chained across timeout_init progs of
-                multiple bpf_tcp_ops attached to a cgroup
-- hierarchy:    parent and child attachments merge in the child's
-                effective array (descendant before ancestor)
-- inherit:      a child created after the attach inherits the parent's
-                prog
+- [Low] In Documentation/devicetree/bindings/net/wiznet,w5100.yaml the
+  new schema applies one global `spi-max-frequency: maximum: 80000000`…
+- [Low] This patch is not a pure format conversion: the removed
+  Documentation/devicetree/bindings/net/wiznet,w5x00.txt explicitly…
 
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Amery Hung <ameryhung@gmail.com>
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
----
- .../selftests/bpf/prog_tests/bpf_tcp_ops.c    | 560 ++++++++++++++++++
- .../testing/selftests/bpf/progs/bpf_tcp_ops.c | 141 +++++
- 2 files changed, 701 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/bpf_tcp_ops.c
- create mode 100644 tools/testing/selftests/bpf/progs/bpf_tcp_ops.c
+--
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/bpf_tcp_ops.c b/tools/testing/selftests/bpf/prog_tests/bpf_tcp_ops.c
-new file mode 100644
-index 000000000000..6435ed1c2cf6
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/bpf_tcp_ops.c
-@@ -0,0 +1,560 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (c) 2026 Meta Platforms, Inc. and affiliates. */
-+
-+#include <test_progs.h>
-+#include <network_helpers.h>
-+#include <bpf/btf.h>
-+#include "cgroup_helpers.h"
-+#include "bpf_tcp_ops.skel.h"
-+
-+#define CGROUP_PATH	"/bpf_tcp_ops"
-+#define TEST_NETNS	"bpf_tcp_ops"
-+
-+static __s32 get_bpf_tcp_ops_type_id(void)
-+{
-+	struct btf *vmlinux_btf;
-+	__s32 type_id;
-+
-+	vmlinux_btf = btf__load_vmlinux_btf();
-+	if (!ASSERT_OK_PTR(vmlinux_btf, "load_vmlinux_btf"))
-+		return -1;
-+
-+	type_id = btf__find_by_name_kind(vmlinux_btf, "bpf_tcp_ops", BTF_KIND_STRUCT);
-+	btf__free(vmlinux_btf);
-+
-+	ASSERT_GT(type_id, 0, "find_bpf_tcp_ops");
-+	return type_id;
-+}
-+
-+static void reset_order(struct bpf_tcp_ops *skel)
-+{
-+	memset(skel->bss->listen_order, 0, sizeof(skel->bss->listen_order));
-+	memset(skel->bss->connect_order, 0, sizeof(skel->bss->connect_order));
-+	skel->bss->listen_cnt = 0;
-+	skel->bss->connect_cnt = 0;
-+}
-+
-+static void do_listen_connect(int family)
-+{
-+	const char *addr = family == AF_INET ? "127.0.0.1" : "::1";
-+	int server_fd, client_fd;
-+
-+	server_fd = start_server(family, SOCK_STREAM, addr, 0, 0);
-+	if (!ASSERT_GE(server_fd, 0, "start_server"))
-+		return;
-+
-+	client_fd = connect_to_fd(server_fd, 0);
-+	if (ASSERT_OK_FD(client_fd, "connect_to_fd"))
-+		close(client_fd);
-+
-+	close(server_fd);
-+}
-+
-+/*
-+ * Attach ops1 and ops2 normally (in that order), then ops3 with
-+ * BPF_F_PREORDER. Expected execution order: [3, 1, 2] — ops3 runs
-+ * first despite being attached last, ops1 before ops2 by attach order.
-+ */
-+static void test_order(int cgroup_fd, struct bpf_tcp_ops *skel, int family)
-+{
-+	LIBBPF_OPTS(bpf_cgroup_opts, preorder_opts, .flags = BPF_F_PREORDER);
-+	struct bpf_link *link1 = NULL, *link2 = NULL, *link3 = NULL;
-+
-+	link1 = bpf_map__attach_cgroup_opts(skel->maps.tcp_ops1, cgroup_fd, NULL);
-+	if (!ASSERT_OK_PTR(link1, "attach_ops1"))
-+		goto done;
-+
-+	link2 = bpf_map__attach_cgroup_opts(skel->maps.tcp_ops2, cgroup_fd, NULL);
-+	if (!ASSERT_OK_PTR(link2, "attach_ops2"))
-+		goto done;
-+
-+	link3 = bpf_map__attach_cgroup_opts(skel->maps.tcp_ops3, cgroup_fd,
-+					    &preorder_opts);
-+	if (!ASSERT_OK_PTR(link3, "attach_ops3_preorder"))
-+		goto done;
-+
-+	reset_order(skel);
-+	do_listen_connect(family);
-+
-+	ASSERT_EQ(skel->bss->listen_cnt, 3, "listen_cnt");
-+	ASSERT_EQ(skel->bss->listen_order[0], 3, "listen_order[0]");
-+	ASSERT_EQ(skel->bss->listen_order[1], 1, "listen_order[1]");
-+	ASSERT_EQ(skel->bss->listen_order[2], 2, "listen_order[2]");
-+
-+	ASSERT_EQ(skel->bss->connect_cnt, 3, "connect_cnt");
-+	ASSERT_EQ(skel->bss->connect_order[0], 3, "connect_order[0]");
-+	ASSERT_EQ(skel->bss->connect_order[1], 1, "connect_order[1]");
-+	ASSERT_EQ(skel->bss->connect_order[2], 2, "connect_order[2]");
-+
-+done:
-+	bpf_link__destroy(link3);
-+	bpf_link__destroy(link2);
-+	bpf_link__destroy(link1);
-+}
-+
-+static void run_order_subtest(void)
-+{
-+	struct bpf_tcp_ops *skel = NULL;
-+	struct netns_obj *ns = NULL;
-+	int cgroup_fd;
-+
-+	cgroup_fd = test__join_cgroup(CGROUP_PATH);
-+	if (!ASSERT_GE(cgroup_fd, 0, "join_cgroup"))
-+		return;
-+
-+	ns = netns_new(TEST_NETNS, true);
-+	if (!ASSERT_OK_PTR(ns, "netns_new"))
-+		goto done;
-+
-+	skel = bpf_tcp_ops__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		goto done;
-+
-+	test_order(cgroup_fd, skel, AF_INET);
-+	test_order(cgroup_fd, skel, AF_INET6);
-+
-+done:
-+	bpf_tcp_ops__destroy(skel);
-+	netns_free(ns);
-+	close(cgroup_fd);
-+}
-+
-+/*
-+ * Position a new attachment relative to an existing one. Attach ops1, then
-+ * ops2 with BPF_F_BEFORE ops1, then ops3 with BPF_F_AFTER ops2. Expected
-+ * execution order: [2, 3, 1]. For struct_ops, relative_fd refers to a link
-+ * fd, so BPF_F_LINK must be set.
-+ */
-+static void test_before_after(int cgroup_fd, struct bpf_tcp_ops *skel)
-+{
-+	LIBBPF_OPTS(bpf_cgroup_opts, opts);
-+	struct bpf_link *link1 = NULL, *link2 = NULL, *link3 = NULL;
-+
-+	link1 = bpf_map__attach_cgroup_opts(skel->maps.tcp_ops1, cgroup_fd, NULL);
-+	if (!ASSERT_OK_PTR(link1, "attach_ops1"))
-+		goto done;
-+
-+	opts.flags = BPF_F_BEFORE | BPF_F_LINK;
-+	opts.relative_fd = bpf_link__fd(link1);
-+	link2 = bpf_map__attach_cgroup_opts(skel->maps.tcp_ops2, cgroup_fd, &opts);
-+	if (!ASSERT_OK_PTR(link2, "attach_ops2_before"))
-+		goto done;
-+
-+	opts.flags = BPF_F_AFTER | BPF_F_LINK;
-+	opts.relative_fd = bpf_link__fd(link2);
-+	link3 = bpf_map__attach_cgroup_opts(skel->maps.tcp_ops3, cgroup_fd, &opts);
-+	if (!ASSERT_OK_PTR(link3, "attach_ops3_after"))
-+		goto done;
-+
-+	reset_order(skel);
-+	do_listen_connect(AF_INET6);
-+
-+	ASSERT_EQ(skel->bss->listen_cnt, 3, "listen_cnt");
-+	ASSERT_EQ(skel->bss->listen_order[0], 2, "listen_order[0]");
-+	ASSERT_EQ(skel->bss->listen_order[1], 3, "listen_order[1]");
-+	ASSERT_EQ(skel->bss->listen_order[2], 1, "listen_order[2]");
-+
-+done:
-+	bpf_link__destroy(link3);
-+	bpf_link__destroy(link2);
-+	bpf_link__destroy(link1);
-+}
-+
-+static void run_before_after_subtest(void)
-+{
-+	struct bpf_tcp_ops *skel = NULL;
-+	struct netns_obj *ns = NULL;
-+	int cgroup_fd;
-+
-+	cgroup_fd = test__join_cgroup(CGROUP_PATH);
-+	if (!ASSERT_GE(cgroup_fd, 0, "join_cgroup"))
-+		return;
-+
-+	ns = netns_new(TEST_NETNS, true);
-+	if (!ASSERT_OK_PTR(ns, "netns_new"))
-+		goto done;
-+
-+	skel = bpf_tcp_ops__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		goto done;
-+
-+	test_before_after(cgroup_fd, skel);
-+
-+done:
-+	bpf_tcp_ops__destroy(skel);
-+	netns_free(ns);
-+	close(cgroup_fd);
-+}
-+
-+static void test_query(int cgroup_fd, struct bpf_tcp_ops *skel)
-+{
-+	LIBBPF_OPTS(bpf_prog_query_opts, query_opts);
-+	struct bpf_map_info info = {};
-+	__u32 info_len = sizeof(info);
-+	struct bpf_link *link1 = NULL, *link2 = NULL;
-+	__u32 map1_id, map2_id, map_ids[2] = {};
-+	__s32 type_id;
-+
-+	type_id = get_bpf_tcp_ops_type_id();
-+	if (type_id <= 0)
-+		return;
-+
-+	bpf_map_get_info_by_fd(bpf_map__fd(skel->maps.tcp_ops1), &info, &info_len);
-+	map1_id = info.id;
-+
-+	bpf_map_get_info_by_fd(bpf_map__fd(skel->maps.tcp_ops2), &info, &info_len);
-+	map2_id = info.id;
-+
-+	link1 = bpf_map__attach_cgroup_opts(skel->maps.tcp_ops1, cgroup_fd, NULL);
-+	if (!ASSERT_OK_PTR(link1, "attach_ops1"))
-+		goto done;
-+
-+	link2 = bpf_map__attach_cgroup_opts(skel->maps.tcp_ops2, cgroup_fd, NULL);
-+	if (!ASSERT_OK_PTR(link2, "attach_ops2"))
-+		goto done;
-+
-+	/* query effective: expect 2 entries in attachment order */
-+	query_opts.type_id = type_id;
-+	query_opts.prog_ids = map_ids;
-+	query_opts.count = ARRAY_SIZE(map_ids);
-+	query_opts.query_flags = BPF_F_QUERY_EFFECTIVE;
-+	ASSERT_OK(bpf_prog_query_opts(cgroup_fd, BPF_STRUCT_OPS, &query_opts),
-+		  "query_effective");
-+	ASSERT_EQ(query_opts.count, 2, "query_effective_count");
-+	ASSERT_EQ(map_ids[0], map1_id, "map_ids[0]");
-+	ASSERT_EQ(map_ids[1], map2_id, "map_ids[1]");
-+
-+	/* query attached (non-effective): expect 2 entries */
-+	memset(map_ids, 0, sizeof(map_ids));
-+	query_opts.query_flags = 0;
-+	query_opts.count = ARRAY_SIZE(map_ids);
-+	ASSERT_OK(bpf_prog_query_opts(cgroup_fd, BPF_STRUCT_OPS, &query_opts),
-+		  "query_attached");
-+	ASSERT_EQ(query_opts.count, 2, "query_attached_count");
-+	ASSERT_EQ(map_ids[0], map1_id, "attached_map_ids[0]");
-+	ASSERT_EQ(map_ids[1], map2_id, "attached_map_ids[1]");
-+
-+done:
-+	bpf_link__destroy(link2);
-+	bpf_link__destroy(link1);
-+}
-+
-+static void run_query_subtest(void)
-+{
-+	struct bpf_tcp_ops *skel = NULL;
-+	struct netns_obj *ns = NULL;
-+	int cgroup_fd;
-+
-+	cgroup_fd = test__join_cgroup(CGROUP_PATH);
-+	if (!ASSERT_GE(cgroup_fd, 0, "join_cgroup"))
-+		return;
-+
-+	ns = netns_new(TEST_NETNS, true);
-+	if (!ASSERT_OK_PTR(ns, "netns_new"))
-+		goto done;
-+
-+	skel = bpf_tcp_ops__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		goto done;
-+
-+	test_query(cgroup_fd, skel);
-+
-+done:
-+	bpf_tcp_ops__destroy(skel);
-+	netns_free(ns);
-+	close(cgroup_fd);
-+}
-+
-+/* Must match progs/bpf_tcp_ops.c */
-+#define OPS_RETVAL1	11
-+#define OPS_RETVAL2	22
-+
-+/*
-+ * Attach three struct_ops implementing timeout_init to the same cgroup; they
-+ * run in attach order [retval1, retval2, retval3]. timeout_init's return value
-+ * is chained: the first prog reads the kernel seed via bpf_get_retval() (0,
-+ * since no legacy sockops prog is attached) and returns OPS_RETVAL1; each
-+ * subsequent prog must then observe the previous prog's return value. This
-+ * proves the trampoline inherits the retval across an array of struct_ops.
-+ */
-+static void test_retval(int cgroup_fd, struct bpf_tcp_ops *skel)
-+{
-+	struct bpf_link *link1 = NULL, *link2 = NULL, *link3 = NULL;
-+
-+	skel->bss->retval_saw1 = -1;
-+	skel->bss->retval_saw2 = -1;
-+	skel->bss->retval_saw3 = -1;
-+
-+	link1 = bpf_map__attach_cgroup_opts(skel->maps.tcp_ops_retval1, cgroup_fd, NULL);
-+	if (!ASSERT_OK_PTR(link1, "attach_retval1"))
-+		goto done;
-+
-+	link2 = bpf_map__attach_cgroup_opts(skel->maps.tcp_ops_retval2, cgroup_fd, NULL);
-+	if (!ASSERT_OK_PTR(link2, "attach_retval2"))
-+		goto done;
-+
-+	link3 = bpf_map__attach_cgroup_opts(skel->maps.tcp_ops_retval3, cgroup_fd, NULL);
-+	if (!ASSERT_OK_PTR(link3, "attach_retval3"))
-+		goto done;
-+
-+	do_listen_connect(AF_INET6);
-+
-+	/* First prog inherits the kernel seed (no legacy sockops -> 0). */
-+	ASSERT_EQ(skel->bss->retval_saw1, 0, "retval_saw1");
-+	/* Each subsequent prog inherits the previous prog's return value. */
-+	ASSERT_EQ(skel->bss->retval_saw2, OPS_RETVAL1, "retval_saw2");
-+	ASSERT_EQ(skel->bss->retval_saw3, OPS_RETVAL2, "retval_saw3");
-+
-+done:
-+	bpf_link__destroy(link3);
-+	bpf_link__destroy(link2);
-+	bpf_link__destroy(link1);
-+}
-+
-+static void run_retval_subtest(void)
-+{
-+	struct bpf_tcp_ops *skel = NULL;
-+	struct netns_obj *ns = NULL;
-+	int cgroup_fd;
-+
-+	cgroup_fd = test__join_cgroup(CGROUP_PATH);
-+	if (!ASSERT_GE(cgroup_fd, 0, "join_cgroup"))
-+		return;
-+
-+	ns = netns_new(TEST_NETNS, true);
-+	if (!ASSERT_OK_PTR(ns, "netns_new"))
-+		goto done;
-+
-+	skel = bpf_tcp_ops__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		goto done;
-+
-+	test_retval(cgroup_fd, skel);
-+
-+done:
-+	bpf_tcp_ops__destroy(skel);
-+	netns_free(ns);
-+	close(cgroup_fd);
-+}
-+
-+/*
-+ * bpf_link__update_map() swaps the struct_ops map backing an attached link.
-+ * The link keeps its position, including BPF_F_PREORDER, across the update.
-+ * Attach ops1 (normal) and ops2 (preorder): order [2, 1]. Update the normal
-+ * link to ops3 -> [2, 3]; update the preorder link to ops1 -> [1, 3].
-+ */
-+static void test_update(int cgroup_fd, struct bpf_tcp_ops *skel)
-+{
-+	LIBBPF_OPTS(bpf_cgroup_opts, preorder_opts, .flags = BPF_F_PREORDER);
-+	struct bpf_link *link = NULL, *link_pre = NULL;
-+
-+	link = bpf_map__attach_cgroup_opts(skel->maps.tcp_ops1, cgroup_fd, NULL);
-+	if (!ASSERT_OK_PTR(link, "attach_ops1"))
-+		goto done;
-+
-+	link_pre = bpf_map__attach_cgroup_opts(skel->maps.tcp_ops2, cgroup_fd,
-+					       &preorder_opts);
-+	if (!ASSERT_OK_PTR(link_pre, "attach_ops2_preorder"))
-+		goto done;
-+
-+	reset_order(skel);
-+	do_listen_connect(AF_INET6);
-+	ASSERT_EQ(skel->bss->listen_cnt, 2, "cnt_initial");
-+	ASSERT_EQ(skel->bss->listen_order[0], 2, "order0_initial");
-+	ASSERT_EQ(skel->bss->listen_order[1], 1, "order1_initial");
-+
-+	/* Update the normal link's map (ops1 -> ops3); position is unchanged. */
-+	if (!ASSERT_OK(bpf_link__update_map(link, skel->maps.tcp_ops3), "update_normal"))
-+		goto done;
-+
-+	reset_order(skel);
-+	do_listen_connect(AF_INET6);
-+	ASSERT_EQ(skel->bss->listen_order[0], 2, "order0_after_normal");
-+	ASSERT_EQ(skel->bss->listen_order[1], 3, "order1_after_normal");
-+
-+	/* Update the preorder link's map (ops2 -> ops1); it stays first. */
-+	if (!ASSERT_OK(bpf_link__update_map(link_pre, skel->maps.tcp_ops1), "update_preorder"))
-+		goto done;
-+
-+	reset_order(skel);
-+	do_listen_connect(AF_INET6);
-+	ASSERT_EQ(skel->bss->listen_order[0], 1, "order0_after_preorder");
-+	ASSERT_EQ(skel->bss->listen_order[1], 3, "order1_after_preorder");
-+
-+done:
-+	bpf_link__destroy(link_pre);
-+	bpf_link__destroy(link);
-+}
-+
-+static void run_update_subtest(void)
-+{
-+	struct bpf_tcp_ops *skel = NULL;
-+	struct netns_obj *ns = NULL;
-+	int cgroup_fd;
-+
-+	cgroup_fd = test__join_cgroup(CGROUP_PATH);
-+	if (!ASSERT_GE(cgroup_fd, 0, "join_cgroup"))
-+		return;
-+
-+	ns = netns_new(TEST_NETNS, true);
-+	if (!ASSERT_OK_PTR(ns, "netns_new"))
-+		goto done;
-+
-+	skel = bpf_tcp_ops__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		goto done;
-+
-+	test_update(cgroup_fd, skel);
-+
-+done:
-+	bpf_tcp_ops__destroy(skel);
-+	netns_free(ns);
-+	close(cgroup_fd);
-+}
-+
-+/*
-+ * Two-level hierarchy. Attach ops1 to the parent and ops2 to the child, then
-+ * trigger from a socket in the child. Descendant progs run before ancestor
-+ * progs, so the order is [2 (child), 1 (parent)].
-+ */
-+static void test_hierarchy(int parent_fd, int child_fd, struct bpf_tcp_ops *skel)
-+{
-+	struct bpf_link *plink = NULL, *clink = NULL;
-+
-+	plink = bpf_map__attach_cgroup_opts(skel->maps.tcp_ops1, parent_fd, NULL);
-+	if (!ASSERT_OK_PTR(plink, "attach_parent"))
-+		goto done;
-+
-+	clink = bpf_map__attach_cgroup_opts(skel->maps.tcp_ops2, child_fd, NULL);
-+	if (!ASSERT_OK_PTR(clink, "attach_child"))
-+		goto done;
-+
-+	reset_order(skel);
-+	do_listen_connect(AF_INET6);
-+
-+	ASSERT_EQ(skel->bss->listen_cnt, 2, "listen_cnt");
-+	ASSERT_EQ(skel->bss->listen_order[0], 2, "listen_order[0]");
-+	ASSERT_EQ(skel->bss->listen_order[1], 1, "listen_order[1]");
-+
-+done:
-+	bpf_link__destroy(clink);
-+	bpf_link__destroy(plink);
-+}
-+
-+static void run_hierarchy_subtest(void)
-+{
-+	struct bpf_tcp_ops *skel = NULL;
-+	struct netns_obj *ns = NULL;
-+	int parent_fd, child_fd = -1;
-+
-+	parent_fd = test__join_cgroup(CGROUP_PATH);
-+	if (!ASSERT_GE(parent_fd, 0, "join_parent_cgroup"))
-+		return;
-+
-+	child_fd = create_and_get_cgroup(CGROUP_PATH "/child");
-+	if (!ASSERT_GE(child_fd, 0, "create_child_cgroup"))
-+		goto done;
-+
-+	if (!ASSERT_OK(join_cgroup(CGROUP_PATH "/child"), "join_child_cgroup"))
-+		goto done;
-+
-+	ns = netns_new(TEST_NETNS, true);
-+	if (!ASSERT_OK_PTR(ns, "netns_new"))
-+		goto done;
-+
-+	skel = bpf_tcp_ops__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		goto done;
-+
-+	test_hierarchy(parent_fd, child_fd, skel);
-+
-+done:
-+	bpf_tcp_ops__destroy(skel);
-+	netns_free(ns);
-+	if (child_fd >= 0) {
-+		close(child_fd);
-+		join_cgroup(CGROUP_PATH);
-+		remove_cgroup(CGROUP_PATH "/child");
-+	}
-+	close(parent_fd);
-+}
-+
-+/*
-+ * Attach ops1 to the parent, then create and join the child cgroup. The child
-+ * is created after the attach, so it must inherit the parent's effective progs
-+ * via cgroup_bpf_inherit(). A socket in the child runs the parent's prog.
-+ */
-+static void test_inherit(int parent_fd, struct bpf_tcp_ops *skel)
-+{
-+	struct bpf_link *plink = NULL;
-+	int child_fd = -1;
-+
-+	plink = bpf_map__attach_cgroup_opts(skel->maps.tcp_ops1, parent_fd, NULL);
-+	if (!ASSERT_OK_PTR(plink, "attach_parent"))
-+		goto done;
-+
-+	child_fd = create_and_get_cgroup(CGROUP_PATH "/child");
-+	if (!ASSERT_GE(child_fd, 0, "create_child_cgroup"))
-+		goto done;
-+
-+	if (!ASSERT_OK(join_cgroup(CGROUP_PATH "/child"), "join_child_cgroup"))
-+		goto done;
-+
-+	reset_order(skel);
-+	do_listen_connect(AF_INET6);
-+
-+	ASSERT_EQ(skel->bss->listen_cnt, 1, "listen_cnt");
-+	ASSERT_EQ(skel->bss->listen_order[0], 1, "listen_order[0]");
-+
-+done:
-+	if (child_fd >= 0) {
-+		close(child_fd);
-+		join_cgroup(CGROUP_PATH);
-+		remove_cgroup(CGROUP_PATH "/child");
-+	}
-+	bpf_link__destroy(plink);
-+}
-+
-+static void run_inherit_subtest(void)
-+{
-+	struct bpf_tcp_ops *skel = NULL;
-+	struct netns_obj *ns = NULL;
-+	int parent_fd;
-+
-+	parent_fd = test__join_cgroup(CGROUP_PATH);
-+	if (!ASSERT_GE(parent_fd, 0, "join_parent_cgroup"))
-+		return;
-+
-+	ns = netns_new(TEST_NETNS, true);
-+	if (!ASSERT_OK_PTR(ns, "netns_new"))
-+		goto done;
-+
-+	skel = bpf_tcp_ops__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		goto done;
-+
-+	test_inherit(parent_fd, skel);
-+
-+done:
-+	bpf_tcp_ops__destroy(skel);
-+	netns_free(ns);
-+	close(parent_fd);
-+}
-+
-+void test_bpf_tcp_ops(void)
-+{
-+	if (test__start_subtest("order"))
-+		run_order_subtest();
-+	if (test__start_subtest("before_after"))
-+		run_before_after_subtest();
-+	if (test__start_subtest("query"))
-+		run_query_subtest();
-+	if (test__start_subtest("retval"))
-+		run_retval_subtest();
-+	if (test__start_subtest("update"))
-+		run_update_subtest();
-+	if (test__start_subtest("hierarchy"))
-+		run_hierarchy_subtest();
-+	if (test__start_subtest("inherit"))
-+		run_inherit_subtest();
-+}
-diff --git a/tools/testing/selftests/bpf/progs/bpf_tcp_ops.c b/tools/testing/selftests/bpf/progs/bpf_tcp_ops.c
-new file mode 100644
-index 000000000000..94a7f52573d5
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/bpf_tcp_ops.c
-@@ -0,0 +1,141 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Copyright (c) 2026 Meta Platforms, Inc. and affiliates. */
-+
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
-+
-+#define MAX_CGROUP_OPS 8
-+
-+/* Call order for listen and connect, indexed by call sequence */
-+u32 listen_order[MAX_CGROUP_OPS];
-+u32 listen_cnt;
-+
-+u32 connect_order[MAX_CGROUP_OPS];
-+u32 connect_cnt;
-+
-+static void record_listen(int id)
-+{
-+	u32 idx = listen_cnt;
-+
-+	if (idx < MAX_CGROUP_OPS) {
-+		listen_order[idx] = id;
-+		listen_cnt = idx + 1;
-+	}
-+}
-+
-+static void record_connect(int id)
-+{
-+	u32 idx = connect_cnt;
-+
-+	if (idx < MAX_CGROUP_OPS) {
-+		connect_order[idx] = id;
-+		connect_cnt = idx + 1;
-+	}
-+}
-+
-+/* struct_ops instance 1 */
-+
-+SEC("struct_ops")
-+void BPF_PROG(tcp_ops1_listen, struct sock *sk)
-+{
-+	record_listen(1);
-+}
-+
-+SEC("struct_ops")
-+void BPF_PROG(tcp_ops1_connect, struct sock *sk)
-+{
-+	record_connect(1);
-+}
-+
-+SEC(".struct_ops.link")
-+struct bpf_tcp_ops tcp_ops1 = {
-+	.listen  = (void *)tcp_ops1_listen,
-+	.connect = (void *)tcp_ops1_connect,
-+};
-+
-+/* struct_ops instance 2 */
-+
-+SEC("struct_ops")
-+void BPF_PROG(tcp_ops2_listen, struct sock *sk)
-+{
-+	record_listen(2);
-+}
-+
-+SEC("struct_ops")
-+void BPF_PROG(tcp_ops2_connect, struct sock *sk)
-+{
-+	record_connect(2);
-+}
-+
-+SEC(".struct_ops.link")
-+struct bpf_tcp_ops tcp_ops2 = {
-+	.listen  = (void *)tcp_ops2_listen,
-+	.connect = (void *)tcp_ops2_connect,
-+};
-+
-+/* struct_ops instance 3 */
-+
-+SEC("struct_ops")
-+void BPF_PROG(tcp_ops3_listen, struct sock *sk)
-+{
-+	record_listen(3);
-+}
-+
-+SEC("struct_ops")
-+void BPF_PROG(tcp_ops3_connect, struct sock *sk)
-+{
-+	record_connect(3);
-+}
-+
-+SEC(".struct_ops.link")
-+struct bpf_tcp_ops tcp_ops3 = {
-+	.listen  = (void *)tcp_ops3_listen,
-+	.connect = (void *)tcp_ops3_connect,
-+};
-+
-+#define OPS_RETVAL1	11
-+#define OPS_RETVAL2	22
-+#define OPS_RETVAL3	33
-+
-+int retval_saw1;
-+int retval_saw2;
-+int retval_saw3;
-+
-+SEC("struct_ops")
-+int BPF_PROG(tcp_ops_retval1_timeout_init, struct sock *sk, struct request_sock *req)
-+{
-+	retval_saw1 = bpf_get_retval();
-+	return OPS_RETVAL1;
-+}
-+
-+SEC(".struct_ops.link")
-+struct bpf_tcp_ops tcp_ops_retval1 = {
-+	.timeout_init = (void *)tcp_ops_retval1_timeout_init,
-+};
-+
-+SEC("struct_ops")
-+int BPF_PROG(tcp_ops_retval2_timeout_init, struct sock *sk, struct request_sock *req)
-+{
-+	retval_saw2 = bpf_get_retval();
-+	return OPS_RETVAL2;
-+}
-+
-+SEC(".struct_ops.link")
-+struct bpf_tcp_ops tcp_ops_retval2 = {
-+	.timeout_init = (void *)tcp_ops_retval2_timeout_init,
-+};
-+
-+SEC("struct_ops")
-+int BPF_PROG(tcp_ops_retval3_timeout_init, struct sock *sk, struct request_sock *req)
-+{
-+	retval_saw3 = bpf_get_retval();
-+	return OPS_RETVAL3;
-+}
-+
-+SEC(".struct_ops.link")
-+struct bpf_tcp_ops tcp_ops_retval3 = {
-+	.timeout_init = (void *)tcp_ops_retval3_timeout_init,
-+};
-+
-+char _license[] SEC("license") = "GPL";
+dt-bindings: net: wiznet,w5100: convert to DT schema
+
+This converts the Wiznet w5x00 SPI Ethernet controller binding from plain
+text to a YAML schema covering wiznet,w5100, wiznet,w5200 and wiznet,w5500,
+and adds a MAINTAINERS entry for the new file.
+
+> diff --git a/Documentation/devicetree/bindings/net/wiznet,w5100.yaml b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
+> new file mode 100644
+> index 0000000000000..25098308eb6e5
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
+> @@ -0,0 +1,68 @@
+
+[ ... ]
+
+> +allOf:
+> +  - $ref: /schemas/net/ethernet-controller.yaml#
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - wiznet,w5100
+> +      - wiznet,w5200
+> +      - wiznet,w5500
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +    description: Main interrupt (INT pin on the device).
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency:
+> +    description:
+> +      According to the datasheets, w5500 and w5200 allow a maximum of 80 MHz
+> +      while w5100 is reported by users to allow a maximum of 14 MHz. However,
+> +      board designs may need to limit this value.
+> +    maximum: 80000000
+
+[Severity: Low]
+The description says the 14 MHz limit applies only to w5100 while 80 MHz
+applies to w5200/w5500, but the single maximum: 80000000 is applied to all
+three compatibles.  Should the w5100 limit be expressed as a conditional so
+dt_binding_check can enforce it?
+
+With this schema as written, a node like:
+
+    ethernet@0 {
+        compatible = "wiznet,w5100";
+        reg = <0>;
+        spi-max-frequency = <80000000>;
+        ...
+    };
+
+passes validation even though it is roughly 5.7x the documented w5100
+ceiling.  Would something like this in the allOf block match the intent of
+the description?
+
+    allOf:
+      - if:
+          properties:
+            compatible:
+              contains:
+                const: wiznet,w5100
+        then:
+          properties:
+            spi-max-frequency:
+              maximum: 14000000
+
+Per-compatible spi-max-frequency constraints are already expressed this way
+in other net bindings, for example
+Documentation/devicetree/bindings/net/nfc/marvell,nci.yaml and
+Documentation/devicetree/bindings/net/nfc/st,st-nci.yaml.
+
+The same unconditional maximum: 80000000 is still present at the end of the
+series (commit ebaf57af, "w5100: detect carrier state using link status bit
+and optional interrupt"), so no later patch adjusts this.
+
+[ ... ]
+
+> +        ethernet@0 {
+> +            compatible = "wiznet,w5500";
+> +            reg = <0>;
+> +            pinctrl-names = "default";
+> +            pinctrl-0 = <&eth1_pins>;
+> +            interrupt-parent = <&gpio>;
+> +            interrupts = <25 IRQ_TYPE_LEVEL_LOW>;
+
+[Severity: Low]
+This changes the recommended trigger type from IRQ_TYPE_EDGE_FALLING in the
+removed .txt binding to IRQ_TYPE_LEVEL_LOW, and the deleted text also
+claimed "w5x00 natively generates falling edge interrupts".  Could the
+commit message mention this correction?
+
+The new value agrees with the driver, which requests the device interrupt
+level-low in w5100_probe():
+
+    err = request_threaded_irq(priv->irq, NULL, w5100_interrupt,
+                               IRQF_TRIGGER_LOW | IRQF_ONESHOT,
+                               netdev_name(ndev), ndev);
+
+The commit message body only says the binding is converted from plain text
+to DT schema.  The only record of the trigger change is the v8 changelog
+line "Change edge-falling to level-low" below the --- separator, which git
+does not keep.
+
+Would a Fixes: 0114214eca21 ("dt-bindings: net: wiznet: add w5x00 support")
+tag be appropriate here as well?
+
+> +            spi-max-frequency = <30000000>;
+> +            local-mac-address = [ a0 b0 c0 d0 e0 f0 ];
+> +        };
+> +    };
+> +...
+
+> diff --git a/Documentation/devicetree/bindings/net/wiznet,w5x00.txt b/Documentation/devicetree/bindings/net/wiznet,w5x00.txt
+> deleted file mode 100644
+> index e9665798c4be6..0000000000000
+> --- a/Documentation/devicetree/bindings/net/wiznet,w5x00.txt
+> +++ /dev/null
+> @@ -1,50 +0,0 @@
+
+[ ... ]
+
+> -- interrupts: Specify the interrupt index within the interrupt controller (referred
+> -              to above in interrupt-parent) and interrupt type. w5x00 natively
+> -              generates falling edge interrupts, however, additional board logic
+> -              might invert the signal.
+
+[ ... ]
+
+> -		interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
+
+[ ... ]
+
 -- 
-2.52.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260915-wiznet-link-gpio-v8-0-d173622474cc%40marmottus.net
