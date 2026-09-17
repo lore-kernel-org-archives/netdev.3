@@ -1,52 +1,55 @@
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27CD03B42C0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A803A8FEE;
 	Thu, 17 Sep 2026 07:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789628842; cv=none; b=iTHmOYGZkmF3Bjo0Sis3zCJXome3d+vtcNCfyofbLVgc16cq5SVo+fvlZyunq/9z5FeRIraJvS2QUnut2l4nM77mu+jKHVatEhDuhR4x+tclKC/CSfxGQEBYXVR/bOtIDSCZKTKdXXYFSHG1wK3WMm7LR/hT63t11JkN87P3ldA=
+	t=1789628843; cv=none; b=Tu4hy9yzxm3DpGfieuBaT3ap794W0go+/rIXy8D6wGqSZhzeAe0tTBMDmhKogYT4hND9YFLvcl7DE2cjml4XyM/cnY259zbUiwNkGt5iwVrJ71efJmd1F+regkyd+z5EXEwkRPzzkjE+l+qylYbpciVWCYaJ4oKvk+020vtFyTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789628842; c=relaxed/simple;
-	bh=RDMU4mbu0LOGMrjEt5vcBCei63cRi2qDbffY6mMq374=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hZGuWJcaI1ZefMfc7HRZc32fQ0gDwASSMJ1YqLor8VINJOG24eTlfViKuscuy7ft8FaP7Uxs2be0oeLvk03VrXUxLsqxUoPqS0dCGSze4boDXCQkS9YLp4+66W+M1M9FZMmyT2l0Lg/lTVS9esepYoDC4Ax+P7i6i8iNkbmq9jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=W9dBdNhk; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1789628843; c=relaxed/simple;
+	bh=xpzrVwfK1EYltZWz79nB8WT6KFHKLxZ1EM2u1yjtlq0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XO3rMLBZ8BAN6M5so8uHleJpboOKNhi5c/0d44CxaaKlj1XZ//ZBnJHuHADyp+DCulkJxQK0NyVnMUZYkBBrG/zU4aTq9CuixF4qWsq6BrHKSGZeNoBzRpUxa5IykJkeFnkdUvOYpsE1DtfZ5bcguoS1nuluzmBn2pKWROiPKaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b=bj+fUpfk; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="W9dBdNhk"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 68H76ec363094124, This message is accepted by code: ctloc85258
+	dkim=pass (2048-bit key) header.d=realtek.com header.i=@realtek.com header.b="bj+fUpfk"
+X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 68H76hc363094124, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realtek.com; s=dkim;
-	t=1789628801; bh=H0c6+qp7TAZT0jYDw3Sqn73cMGZPrQHEZ6PRx22wm/I=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=W9dBdNhk2DjPzg3/qoektkE9h83uisKFLbduD+d2dN0p7ixquq9yVRmpPtCjJ1KNT
-	 sg/EoLyfS6YGj8+ZZVX2Lx8UBbw7DDIeohbtYZQ0iWC8QbnI7h4kge5lkzLNdABy8L
-	 jhbTD5ckeQR6cQpd+vv7x2XvwN6P31U55/wVLzUkPDq3RUamqGbgxoQ8cEOgMiGp/g
-	 /mq3go1JvoyALEnnNU1jrTtWVKZ9TKOSYUN+Dedw03qBynjdChmsSSKDA2Dbhv9/SV
-	 RkUqYudzID74crC4Ur6N9t/BoYqpScWTHCSzCZjn4COGXnx+w6wlkrMoUr2+y0laHb
-	 /f2P8SCBgbM+Q==
+	t=1789628803; bh=DZ+2MbGQA9uK6Sfqxt5UEkSrl1Z4DVL4OP6swk2hx+U=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Transfer-Encoding:Content-Type;
+	b=bj+fUpfk6d6ZQczgi+s6J4Qh2mDWjRcmsnMNXH73IHgyur1cjB/tQ72fwZ1cugLP6
+	 rdS2LlNt/x7DOdVlKdWmCmJiD3RmlmsT4fCMaBru6s6w/FQDDobEn/ynFSWz0HbQbM
+	 huKE6E2vFsWKEz7ygemLv0MSFZIrzV5mcmUo9iTzGxwWVu6DkHaKcd9qOyARa8Lgts
+	 zPzU0fyf9B/1kENpSW3BK9EjrxN5nejzdxGeBeGfPV7Vhz8r5h8Io6AhyeXGh7+4o9
+	 NKVHaPSEDxkvndDxBQbS/8Ijdg0nppUkCYwWsRIVl/v3A4F2QN1eiJBBp/AlYhSx6h
+	 LN4iQVWMyxk0g==
 Received: from mail.realtek.com (rtkexhmbs02.realtek.com.tw[172.21.6.41])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 68H76ec363094124
+	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 68H76hc363094124
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 17 Sep 2026 15:06:40 +0800
+	Thu, 17 Sep 2026 15:06:43 +0800
 Received: from RTKEXHMBS04.realtek.com.tw (10.21.1.54) by
  RTKEXHMBS02.realtek.com.tw (172.21.6.41) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 17 Sep 2026 15:06:39 +0800
+ 15.2.2562.49; Thu, 17 Sep 2026 15:06:41 +0800
 Received: from fc44.realtek.com.tw (172.22.241.7) by
  RTKEXHMBS04.realtek.com.tw (10.21.1.54) with Microsoft SMTP Server id
- 15.2.2562.49 via Frontend Transport; Thu, 17 Sep 2026 15:06:39 +0800
+ 15.2.2562.49 via Frontend Transport; Thu, 17 Sep 2026 15:06:41 +0800
 From: Chih Kai Hsu <hsu.chih.kai@realtek.com>
 To: <davem@davemloft.net>, <kuba@kernel.org>
 CC: <netdev@vger.kernel.org>, <nic_swsd@realtek.com>,
 	<linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
 	<edumazet@google.com>, <bjorn@mork.no>, <pabeni@redhat.com>,
 	<hsu.chih.kai@realtek.com>, <andrew+netdev@lunn.ch>
-Subject: [PATCH net-next v4 0/8] r8152: refactor and extend RTL8157/8159 support
-Date: Thu, 17 Sep 2026 15:06:29 +0800
-Message-ID: <20260917070637.62827-1-nic_swsd@realtek.com>
+Subject: [PATCH net-next v4 8/8] r8152: enable UPS for RTL8157 and RTL8159 QFN68
+Date: Thu, 17 Sep 2026 15:06:37 +0800
+Message-ID: <20260917070637.62827-9-nic_swsd@realtek.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260917070637.62827-1-nic_swsd@realtek.com>
+References: <20260917070637.62827-1-nic_swsd@realtek.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,54 +59,210 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-RTL8157 and RTL8159 have different init, enable, up/down, hw_phy_cfg,
-and PHY access sequences from RTL8156.  This series splits the shared
-callbacks into per-chip variants and adds the missing RTL8157/8159
-functionality: dedicated unload and change_mtu callbacks, TGPHY register
-access via phy_read/phy_write pointers in struct rtl_ops, flow control
-patch support through rtl_fc_pause_pkt_en(), and UPS support via
-r8157_ups_en().
+RTL8157 and RTL8159 QFN68 support UPS, but rtl8157_runtime_enable()
+never toggled it on runtime suspend/resume, and r8156_ups_flags()
+used the older per-chip EEE/lite_mode encoding instead of the
+per-speed EEE flags their UPS firmware expects. RTL8159 QFN100 does
+not support UPS.
 
-v4:
-- Patch #1: make wait_autoload_done() bail out immediately on
-  RTL8152_INACCESSIBLE instead of waiting out the full 10 second
-  timeout.
-- Patch #6: propagate PHY access failures instead of ignoring them.
-  ocp_reg_read()/ocp_reg_write() and every helper built on top of them
-  (sram_read/write, sram2_read/write, the ocp_reg_*_bits and MDIO bit
-  helpers) now return int and stop silently operating on stale data
-  when a TGPHY access times out.
+Add r8157_ups_en(), mirroring r8156_ups_en(), and call it from
+rtl8157_runtime_enable() for VER_16/QFN68 only; QFN100 keeps its
+existing no-UPS behaviour there. Use r8157_ups_en(tp, false) in
+r8157_init()/r8159_init() in place of r8156_ups_en(tp, false).
 
-v3:
-Rebase on top of latest net-next to resolve merge conflicts.
+Extend r8156_ups_flags() with per-speed EEE flags
+(UPS_FLAGS_EN_100M_EEE/1000M_EEE/2500M_EEE/5000M_EEE/10G_EEE) and
+skip the lite_mode bits[6:5] encoding for VER_16/QFN68. Add
+ups_flags_speed() entries 10 and 11 for NWAY_5000M_FULL and
+NWAY_10000M_FULL, previously unmapped.
 
-v2:
-- For patch #1, use read_poll_timeout() to replace the manual
-  for-loop polling.
-- For patch #2 and #3, rewrite the commit message.
+Add the USB_FW_USE_VER register (0xcfd7), used by the new
+r8157_ups_en() disable path.
 
-v1:
-RTL8157 and RTL8159 have different init, enable, up/down, hw_phy_cfg,
-and PHY access sequences from RTL8156.  This series splits the shared
-callbacks into per-chip variants and adds the missing RTL8157/8159
-functionality: dedicated unload and change_mtu callbacks, TGPHY register
-access via phy_read/phy_write pointers in struct rtl_ops, flow control
-patch support through rtl_fc_pause_pkt_en(), and UPS support via
-r8157_ups_en().
+Signed-off-by: Chih Kai Hsu <hsu.chih.kai@realtek.com>
+---
+ drivers/net/usb/r8152.c | 110 +++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 98 insertions(+), 12 deletions(-)
 
-Chih Kai Hsu (8):
-  r8152: split r8156_init per chip and add missing init writes
-  r8152: split RTL_VER_17 into QFN68 and QFN100 package variants
-  r8152: split rtl8156_enable/up/down into per-chip-family functions
-  r8152: split r8157_hw_phy_cfg into RTL8157 and RTL8159 variants
-  r8152: add rtl8157_unload and rtl8157_change_mtu
-  r8152: add TGPHY register access for RTL8157 and RTL8159
-  r8152: extract rtl_fc_pause_pkt_en() and apply it to RTL8156/8157/8159
-  r8152: enable UPS for RTL8157 and RTL8159 QFN68
-
- drivers/net/usb/r8152.c | 1655 ++++++++++++++++++++++++++++++---------
- 1 file changed, 1306 insertions(+), 349 deletions(-)
-
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 05b2b79ab3e31..ebe9cc9322b3c 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -132,6 +132,7 @@
+ #define USB_BURST_SIZE		0xcfc0
+ #define USB_FW_FIX_EN0		0xcfca
+ #define USB_FW_FIX_EN1		0xcfcc
++#define USB_FW_USE_VER          0xcfd7
+ #define USB_LPM_CONFIG		0xcfd8
+ #define USB_ECM_OPTION		0xcfee
+ #define USB_CSTMR		0xcfef	/* RTL8153A */
+@@ -619,6 +620,11 @@
+ #define UPS_FLAGS_250M_CKDIV		BIT(2)
+ #define UPS_FLAGS_EN_ALDPS		BIT(3)
+ #define UPS_FLAGS_CTAP_SHORT_DIS	BIT(4)
++#define UPS_FLAGS_EN_100M_EEE		BIT(9)
++#define UPS_FLAGS_EN_1000M_EEE		BIT(10)
++#define UPS_FLAGS_EN_2500M_EEE		BIT(11)
++#define UPS_FLAGS_EN_5000M_EEE		BIT(12)
++#define UPS_FLAGS_EN_10G_EEE		BIT(13)
+ #define UPS_FLAGS_SPEED_MASK		(0xf << 16)
+ #define ups_flags_speed(x)		((x) << 16)
+ #define UPS_FLAGS_EN_EEE		BIT(20)
+@@ -4244,8 +4250,27 @@ static void r8156_ups_flags(struct r8152 *tp)
+ 	if (tp->ups_info.aldps)
+ 		ups_flags |= UPS_FLAGS_EN_ALDPS;
+ 
+-	if (tp->ups_info.eee)
+-		ups_flags |= UPS_FLAGS_EN_EEE;
++	if (tp->ups_info.eee) {
++		switch (tp->version) {
++		case RTL_VER_17_QFN68:
++			if (tp->eee_adv & MDIO_EEE_10GT)
++				ups_flags |= UPS_FLAGS_EN_10G_EEE;
++			fallthrough;
++		case RTL_VER_16:
++			if (tp->eee_adv & MDIO_EEE_100TX)
++				ups_flags |= UPS_FLAGS_EN_100M_EEE;
++			if (tp->eee_adv & MDIO_EEE_1000T)
++				ups_flags |= UPS_FLAGS_EN_1000M_EEE;
++			if (tp->eee_adv2 & MDIO_EEE_2_5GT)
++				ups_flags |= UPS_FLAGS_EN_2500M_EEE;
++			if (tp->eee_adv2 & MDIO_EEE_5GT)
++				ups_flags |= UPS_FLAGS_EN_5000M_EEE;
++			break;
++		default:
++			ups_flags |= UPS_FLAGS_EN_EEE;
++			break;
++		}
++	}
+ 
+ 	if (tp->ups_info.flow_control)
+ 		ups_flags |= UPS_FLAGS_EN_FLOW_CTR;
+@@ -4296,20 +4321,33 @@ static void r8156_ups_flags(struct r8152 *tp)
+ 	case NWAY_2500M_FULL:
+ 		ups_flags |= ups_flags_speed(9);
+ 		break;
++	case NWAY_5000M_FULL:
++		ups_flags |= ups_flags_speed(10);
++		break;
++	case NWAY_10000M_FULL:
++		ups_flags |= ups_flags_speed(11);
++		break;
+ 	default:
+ 		break;
+ 	}
+ 
+-	switch (tp->ups_info.lite_mode) {
+-	case 1:
+-		ups_flags |= 0 << 5;
+-		break;
+-	case 2:
+-		ups_flags |= 2 << 5;
++	switch (tp->version) {
++	case RTL_VER_16:
++	case RTL_VER_17_QFN68:
+ 		break;
+-	case 0:
+ 	default:
+-		ups_flags |= 1 << 5;
++		switch (tp->ups_info.lite_mode) {
++		case 1:
++			ups_flags |= 0 << 5;
++			break;
++		case 2:
++			ups_flags |= 2 << 5;
++			break;
++		case 0:
++		default:
++			ups_flags |= 1 << 5;
++			break;
++		}
+ 		break;
+ 	}
+ 
+@@ -4484,6 +4522,35 @@ static void r8156_ups_en(struct r8152 *tp, bool enable)
+ 	}
+ }
+ 
++static void r8157_ups_en(struct r8152 *tp, bool enable)
++{
++	if (enable) {
++		r8156_ups_flags(tp);
++
++		ocp_byte_set_bits(tp, MCU_TYPE_USB, USB_POWER_CUT,
++				  UPS_EN | USP_PREWAKE | PHASE2_EN);
++
++		ocp_byte_set_bits(tp, MCU_TYPE_USB, USB_MISC_2,
++				  UPS_FORCE_PWR_DOWN);
++	} else {
++		ocp_byte_clr_bits(tp, MCU_TYPE_USB, USB_POWER_CUT,
++				  UPS_EN | USP_PREWAKE);
++
++		ocp_byte_clr_bits(tp, MCU_TYPE_USB, USB_MISC_2,
++				  UPS_FORCE_PWR_DOWN);
++
++		if (ocp_read_word(tp, MCU_TYPE_USB, USB_MISC_0) & PCUT_STATUS) {
++			/* clear USB fw_ver_reg */
++			ocp_write_byte(tp, MCU_TYPE_USB, USB_FW_USE_VER, 0);
++
++			tp->rtl_ops.hw_phy_cfg(tp);
++
++			rtl8152_set_speed(tp, tp->autoneg, tp->speed,
++					  tp->duplex, tp->advertising);
++		}
++	}
++}
++
+ static void r8153_power_cut_en(struct r8152 *tp, bool enable)
+ {
+ 	if (enable)
+@@ -4642,9 +4709,28 @@ static void rtl8157_runtime_enable(struct r8152 *tp, bool enable)
+ 		r8153b_u1u2en(tp, false);
+ 		r8157_u2p3en(tp, false);
+ 		rtl_runtime_suspend_enable(tp, true);
++
++		switch (tp->version) {
++		case RTL_VER_16:
++		case RTL_VER_17_QFN68:
++			r8157_ups_en(tp, true);
++			break;
++		default:
++			break;
++		}
+ 	} else {
+ 		r8153_queue_wake(tp, false);
+ 		rtl_runtime_suspend_enable(tp, false);
++
++		switch (tp->version) {
++		case RTL_VER_16:
++		case RTL_VER_17_QFN68:
++			r8157_ups_en(tp, false);
++			break;
++		default:
++			break;
++		}
++
+ 		r8157_u2p3en(tp, true);
+ 		if (tp->udev->speed >= USB_SPEED_SUPER)
+ 			r8153b_u1u2en(tp, true);
+@@ -9111,7 +9197,7 @@ static void r8157_init(struct r8152 *tp)
+ 	ocp_write_word(tp, MCU_TYPE_USB, USB_U1U2_TIMER, 500);
+ 
+ 	r8157_power_cut_en(tp, false);
+-	r8156_ups_en(tp, false);
++	r8157_ups_en(tp, false);
+ 	r8153_queue_wake(tp, false);
+ 	rtl_runtime_suspend_enable(tp, false);
+ 
+@@ -9221,7 +9307,7 @@ static void r8159_init(struct r8152 *tp)
+ 	ocp_write_word(tp, MCU_TYPE_USB, USB_U1U2_TIMER, 500);
+ 
+ 	r8157_power_cut_en(tp, false);
+-	r8156_ups_en(tp, false);
++	r8157_ups_en(tp, false);
+ 	r8153_queue_wake(tp, false);
+ 	rtl_runtime_suspend_enable(tp, false);
+ 
 -- 
 2.34.1
 
