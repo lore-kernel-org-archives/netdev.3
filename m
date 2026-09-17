@@ -1,275 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160AD343893;
-	Thu, 17 Sep 2026 23:10:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE4D4AE8D2
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 23:32:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789686621; cv=none; b=YvYxVui3MyUdV3qmNp+Bpb9KSEm0+3/MKqL5lvmlUGGVzBsialpDhGtyIioicSBFC9sUasMdwnCVDNfPg48YFsiBR9inN04cDDnwaoNOi2gBDFu/mgjJfdHBOnzs7TC3ULkk/IEVuc9ueJsWIQtTeRy6Vl0v3SdBdm/6NxlwZes=
+	t=1789687956; cv=none; b=ZXFl2YPpZpc5x9CMkhz7BxFwOCnujKbosMIOsvxFT0kmJBhUtybsQiJpuzjdNNdUDI0OG2BWHAACuUjAVBX1u62FMwHVfoB4MerFgYvdR7GBVnSM8zVcLW8SjtvLOp+klhQUPSihcd1iRYAqi4LfwQ2owNrlGRLP691MpsL+g94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789686621; c=relaxed/simple;
-	bh=3jyM1EWDFF6E/Am67mfIEhODV3GM6/r28TRHUrOMzko=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jMBDr1hbEjbg+7T50Sxgtedf43o168kSOpCHMRTPF/ygbBuQWDhG0Ologx7AudqJb+nUeaqR94e6TJp5KtV9WEEu/fJFSgTEfTn8rapqC+pz/j4LJJ/UDEko1vdvM6TWi9k0YAAGUvVYR0NK+5VPaCvPXeqZl11sc72gPCSAyG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JZVKPc5R; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789687956; c=relaxed/simple;
+	bh=nGDdOwWMYJjfnr0JCWRYvyMk7PP3RND/O85c6KvmNJc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W5W3RdMANvQxClg74t9Yfwbx+AA0RFSWoCJZ9Kda+kLgC45ooyWKHULNAw2mo4xP75+LKlyco46GtnxFk7F1ZHg38xb5nOoJi5ga74i5WSVIicU7hnGFMG3t0BAYFNLFAt6yiZdqFRrdR6zggqXPyNw8jV0KVErZNzV+m5ds87Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=XZc8tDSu; arc=none smtp.client-ip=74.125.227.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JZVKPc5R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED531F000FF;
-	Thu, 17 Sep 2026 23:10:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789686608;
-	bh=xIGrAGe/P/RCIwrYkEWKwTAtXfVDVt4zZuCvCF6I428=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=JZVKPc5RKfuo4hWfYA1ibLSLBS7jAb+/kYYrR3NqhmEt09vJ1UU7lML49jzbzkqfd
-	 VmXhjVSJoscrcGg/1Pko+/bSlT7PxWGtb4qZbR0mX87LHx31lJG+PWKh8PALa35pnY
-	 HUla4jRb6+WnJKXxp8bNmcM7mumqfdKi7k1fz+BKVN+cUSZDbs32juzOy22LdFH8EE
-	 oF8bqa2lC2gHjXLr+8pPduy2n31GCC5959J/rCfgaU+yiYl/6ktMI7yedys8EXSdoT
-	 RuuiBQ9Gtts0VbIhBC2bNBaD/bbv6J4pczaUOSkNf+ubwVrXBNJbTMNV1BjTlbqoLn
-	 lt5efyTzs2ZIg==
-Subject:
- Re: [PATCH net] sctp: don't re-register a removed transport as last_data_from
-From: netdev-bot+sashiko@kernel.org
-To: ljp1205831794@gmail.com
-Cc: netdev@vger.kernel.org, linux-sctp@vger.kernel.org,
- marcelo.leitner@gmail.com, lucien.xin@gmail.com, imv4bel@gmail.com,
- henrymei@tencent.com, corvus@tencent.com, stable@vger.kernel.org,
- kuba@kernel.org
-Date: Thu, 17 Sep 2026 23:10:07 +0000
-Message-ID: <178968660727.22033.2420657272100663531@kernel.org>
-In-Reply-To: <20260916080955.1019050-1-ljp1205831794@gmail.com>
-References: <20260916080955.1019050-1-ljp1205831794@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="XZc8tDSu"
+Received: by mail-pj2-f43.google.com with SMTP id d9443c01a7336-2d9004a1ac0so864855ad.3
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 16:32:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1789687953; x=1790292753; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=6A5k5usHjrN+hp1LkAKDZkjDqSyyAO/UVA2C1Chkli8=;
+        b=XZc8tDSutiRTjLxnrM6ZUGPQyb32A8Mdqgs593dCH1nAf37ypyEPE5iKrmtJyesDiO
+         KMGCsuIlQyW5v0uBXlS/REhe7nCYmlBKwUCriRYRCZ+mrX6l/E7F9fVz65wjF2xUfsne
+         zCDK2g7xaDY7G4CXIj8RBt68U3jCzx1ldShDuyibW1utKw0z0qi3CedVEaEphCeGIUAF
+         ydMtttusVqebH9+6acE270qnDE1/lszJkCY1MllDhrVj/oBQrgazFmActDuf7Ks4VncR
+         xIa+tfRf/zhwBW4JBPW5Qjf9DExtDC0Cuf59nTyzsTK/900B4am4w+8/FYH7zdngViuh
+         m80g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789687953; x=1790292753;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6A5k5usHjrN+hp1LkAKDZkjDqSyyAO/UVA2C1Chkli8=;
+        b=EcNNEsuVjtX+kXbPc9EXHPKKyG+0wAuMhjt2BO4PjpTBRqJG+8f7iHUOGgjSGs3Kfh
+         dXjjlMqOo7m//oezJw2t0V+RrcY0jxT2JV8MYm4WTUyepahOcsbRh+mSnaTsPsU4v4bh
+         FckzQ8+y+pJBogZgn52xBptktwwtsdfZsnPd8vHpB8XEKi5zUIVcG2fcrDzNYTxmdEsv
+         a0KsMpdfdRq3N7kHld/55FRhRJq4kfRnjF4oA9LnEZyTHm5nDhlxpJElbeYW7zCV4WNb
+         ctlblm0M0wmdxuKNJLDahHEWGuSuXFJVlJ0V/gW9ouGesoKepqbJnoSECYI2CsGgjkKR
+         cgqA==
+X-Gm-Message-State: AFuF++mQspcub4ofmzHiXuAU/KLMNYk3hFOlgmw31b3zSOpzo2zXaJw9
+	Uz7Khek16wW4Drgeku/V7XuS+O3J4j/WoAIQQXyH+WC7i1OV3MYu/VWvMNGwC2dQ2OxLRfnFiT1
+	0ddKE
+X-Gm-Gg: AYBFou01xuIo1cZOLWlJXj3hO9/bymYyQn30q1VS/kjKlMDi57nWctSNpDtLVEOBNaS
+	jbEKpQz8Q7fkOznKjE5FUVaitk3OI12BAzEPd5EoggOLFJjzVxtkV6gLL3Fu7sLu/QrbaNLLVuW
+	WtASBiIJtbtTaUEWIWSn8fjAvBU1GRDlSixAwGLdTUTNybmC6NnluQwOjG0xzCVTPK7GHmtE++M
+	2oAktXGdRhqU3KMD7Icfrm3zbo0OFDaJU57LmC14u/s0vUydzKasQqqf1KzxVSuxy7LU13K9c0H
+	wVaqVYcDiIJj5f80eiNx4x6jcBiFwjfMnwtmw2NeNLQuBpzg+yLli57PnCaqG2elZ7fKOWQgJO9
+	xiFSEmSznN4wFopcT8nyarZdeoQbftmM5gJ7iTMZQlYrNp+De3nS6jf42FWRhatrbcq278ton3G
+	jeOWQEd2CkZehJf6fa/JJsgbHBqs0hKsMC1mhrhSUByJbaMh2S
+X-Received: by 2002:a17:90b:1e0d:b0:39d:fcbe:fdcf with SMTP id 98e67ed59e1d1-39e54af3671mr1433773a91.1.1789687953140;
+        Thu, 17 Sep 2026 16:32:33 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e35e732d6sm7402936a91.11.2026.09.17.16.32.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2026 16:32:31 -0700 (PDT)
+From: Joe Damato <joe@dama.to>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com,
+	linux-kernel@vger.kernel.org,
+	Joe Damato <joe@dama.to>
+Subject: [RFC net-next 0/2] bnxt_en: Recover from failed TX RING_FREE
+Date: Thu, 17 Sep 2026 16:32:13 -0700
+Message-ID: <20260917233218.1160001-1-joe@dama.to>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
+Greetings:
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+This series makes a failed TX HWRM_RING_FREE recoverable instead of silently
+releasing ring memory the FW might still own to address a use after free I
+noticed on a production system.
 
-- [High] Incomplete fix: the patch only sanitizes the two
-  `asoc->peer.last_data_from` re-registration sites, but leaves the…
-- [Medium] The new use-after-free guard reads `transport->dead`, which is
-  bit 0 of an unlocked, non-atomically updated `__u32` bitfield in…
+I'm posting this as an RFC because:
+  - I am not sure if patch 2 is correct. Maybe Broadcom can let me know ?
+  - I am not sure if this is a Fixes or not. I guess if it was always like
+    this then this is net-next material?
 
---
+The core issue is that bnxt_hwrm_tx_ring_free discards the return value of
+hwrm_ring_free_send_msg and sets fw_ring_id = INVALID_HW_RING_ID
+unconditionally. When a TX RING_FREE sent over a completion ring times out,
+the driver logs:
 
-sctp: don't re-register a removed transport as last_data_from
+  hwrm_ring_free type 1 failed. rc:fffffff0 err:0
+  Resp cmpl intr err msg: 0x51
 
-This patch stops sctp_assoc_bh_rcv() and sctp_endpoint_bh_rcv() from storing
-a transport into asoc->peer.last_data_from when that transport has already
-been marked dead, which happens when an earlier chunk of the same packet
-removes the transport the packet arrived on. The intent is to preserve the
-redirection that sctp_assoc_rm_peer() performed, so last_data_from is not
-left pointing at a transport that gets RCU-freed at the end of sctp_rcv().
+and then __bnxt_close_nic() calls bnxt_free_mem(), unmapping ring memory that
+the FW was never told to release.
 
-A couple of questions below.
+bnxt_queue_stop mentions something about this in a comment:
 
-> diff --git a/net/sctp/associola.c b/net/sctp/associola.c
-> index c0512c827d0f5..e14fd88e69d6b 100644
-> --- a/net/sctp/associola.c
-> +++ b/net/sctp/associola.c
-> @@ -1030,11 +1030,19 @@ static void sctp_assoc_bh_rcv(struct work_struct *work)
->  			continue;
->  
->  		/* Remember where the last DATA chunk came from so we
-> -		 * know where to send the SACK.
-> +		 * know where to send the SACK.  chunk->transport may have
-> +		 * been removed while processing an earlier chunk of this
-> +		 * same packet (e.g. a stale-cookie ERROR chunk queues
-> +		 * SCTP_CMD_DEL_NON_PRIMARY, which removes the non-primary
-> +		 * transport this packet arrived on), so never register a
-> +		 * dead transport; otherwise last_data_from would be left
-> +		 * dangling once the receive reference is dropped and the
-> +		 * transport is freed.
->  		 */
-> -		if (sctp_chunk_is_data(chunk))
-> -			asoc->peer.last_data_from = chunk->transport;
-> -		else {
-> +		if (sctp_chunk_is_data(chunk)) {
-> +			if (!chunk->transport || !chunk->transport->dead)
-> +				asoc->peer.last_data_from = chunk->transport;
-> +		} else {
+  "HWRM_RING_FREE completion is handled in NAPI to guarantee no more DMA
+   on that ring after seeing the completion."
 
-[Severity: High]
+But... if the completion ring is dead, the completion never arrives.
 
-Is guarding only the last_data_from store enough here?  After the earlier
-chunk removed the arrival transport, the rest of this same loop iteration in
-sctp_assoc_bh_rcv() still uses the dead transport:
+This is reachable on production systems today:
 
-	if (chunk->transport)
-		chunk->transport->last_time_heard = ktime_get();
+  - TX completions stop
+  - netdev watchdog fires
+  - reset closes the device
+  - every RING_FREE routed through that dead completion ring times out
+  - ring memory freed by the driver but still in use by the FW
 
-	error = sctp_do_sm(net, SCTP_EVENT_T_CHUNK, subtype,
-			   state, ep, asoc, chunk, GFP_ATOMIC);
+The result on an IOMMU host is IO_PAGE_FAULT or DMAR fault against freed
+pages.
 
-so chunk->transport is handed to the state machine for every remaining chunk
-of the packet, and other sinks copy it into association-lifetime state.
+I tried to test the code in patch 2 on a BCM57504 with FW 235.1.208.0/pkg
+235.1.208.0.
 
-The redirection in sctp_assoc_rm_peer() looks like a one-shot snapshot:
+I hacked something together to inject a failure to test the reset paths on my
+device. It seems like HWRM_RING_RESET ring_type=TX is accepted by thte FW and
+the polled RING_FREE also succeeds, but in my testing the TX ring was idle. I
+never tested a reset against a ring with descriptors in flight. Which leads me
+to my questions.....
 
-	if (asoc->peer.last_data_from == peer)
-		asoc->peer.last_data_from = transport;
-	...
-	list_for_each_entry(ch, &asoc->outqueue.control_chunk_list, list)
-		if (ch->transport == peer)
-			ch->transport = NULL;
+1. Does HWRM_RING_RESET with ring_type=TX cause the FW to abandon work already
+outstanding on that ring and stop DMA ? If not .... then this code is wrong :(
+and maybe see question (3) below.
 
-Only references that already exist at removal time are rewritten, so any
-reference created by a later chunk of the same packet is never cleaned,
-because the transport is already unhashed and off the transport list.
+2. Is a TX ring reset supposed to post a completion ring entry? In my testing
+it seemed like the FW may have written success into the response DMA buffer
+but never posted the entry, so the request times out with -EBUSY even though
+it succeeded. Is that intentional? If so, maybe only polled transport mode
+works on this FW?
 
-One such later reference is in sctp_cmd_setup_t2(), which has no dead test:
+3. Maybe the TX reset isn't necessary at all? Maybe instead the code should
+retry the RING_FREE over polled transport and that's good enough? This depends
+on the answer to question (1) above, but I guess it would simplify the code if
+a polled RING_FREE is enough?
 
-	if (chunk->transport)
-		t = chunk->transport;
-	...
-	asoc->shutdown_last_sent_to = t;
-	asoc->timeouts[SCTP_EVENT_TIMEOUT_T2_SHUTDOWN] = t->rto;
+Thanks,
+Joe
 
-sctp_sf_t2_timer_expire() later does SCTP_CMD_STRIKE on
-asoc->shutdown_last_sent_to, and sctp_do_8_2_transport_strike() reads and
-writes the transport from timer context, after the receive reference is gone.
+Joe Damato (2):
+  bnxt_en: return status from bnxt_hwrm_tx_ring_free
+  bnxt_en: recover a failed TX RING_FREE with a ring reset
 
-Is that path reachable mid-packet?  sctp_assoc_rm_peer() is also called from
-sctp_assoc_update() on the COOKIE-ECHO restart path, and that leaves the
-association ESTABLISHED for the following bundled chunks, so a bundled
-[COOKIE ECHO][SHUTDOWN] appears to reach sctp_sf_do_9_2_shutdown() and then
-SCTP_CMD_SETUP_T2 with the removed transport.
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 55 ++++++++++++++++++++---
+ 1 file changed, 49 insertions(+), 6 deletions(-)
 
-A second sink is the reply chunks, for example sctp_make_heartbeat_ack():
 
-	if (chunk)
-		retval->transport = chunk->transport;
-
-The same assignment exists in sctp_make_op_error(), sctp_make_abort*(),
-sctp_make_shutdown*(), sctp_make_cookie_echo() and sctp_make_cwr().  Such a
-chunk is queued on asoc->outqueue.control_chunk_list after
-sctp_assoc_rm_peer() already sanitized that list, so it is not covered by the
-redirection.
-
-Can that chunk outlive the packet?  In sctp_outq_flush_ctrl() a one_packet
-control chunk that returns SCTP_XMIT_PMTU_FULL is put back:
-
-			if (status != SCTP_XMIT_OK) {
-				/* put the chunk back */
-				list_add(&chunk->list, &ctx->q->control_chunk_list);
-
-and the src_out_of_asoc_ok branch skips non-ASCONF chunks:
-
-		if (ctx->asoc->src_out_of_asoc_ok && chunk->chunk_hdr->type != SCTP_CID_ASCONF)
-			continue;
-
-sctp_packet_will_fit() returns PMTU_FULL for an oversized control chunk once
-the packet is non-empty, and the peer controls the HEARTBEAT payload size.
-On the next flush, sctp_outq_select_transport() reads new_transport->state
-with no dead check, keeps the transport for HEARTBEAT/HEARTBEAT_ACK/
-ASCONF_ACK, then writes into it and links it into the live list:
-
-		if (list_empty(&ctx->transport->send_ready))
-			list_add_tail(&ctx->transport->send_ready, &ctx->transport_list);
-		sctp_packet_config(ctx->packet, ...);
-		sctp_transport_burst_limited(ctx->transport);
-
-That is the same read/write plus live-list linking the commit message
-describes for the reported case.
-
-This also seems to go against the policy the commit message cites from commit
-03a9d10ecf71, where sctp_inq_push() frees such a chunk outright:
-
-	if (chunk->rcvr->dead ||
-	    (chunk->transport && chunk->transport->dead)) {
-		sctp_chunk_free(chunk);
-		return;
-	}
-
-Would discarding the remaining chunks of the packet, or clearing
-chunk->transport when the arrival transport is removed mid-packet, be more
-consistent with that and cover the other sinks too?  Note that the ASCONF
-DEL-IP path already refuses to remove the arrival transport at all:
-
-	if (peer == asconf->transport)
-		return SCTP_ERROR_REQ_REFUSED;
-
-Related to that, the commit message says the fix works because "both
-re-registration sites (the association and the endpoint backlog paths) can
-simply skip it, keeping the redirection done by sctp_assoc_rm_peer() in
-effect".  Is that accurate for anything other than last_data_from?  The
-sctp_cmd_setup_t2() and reply-chunk references above are created after
-sctp_assoc_rm_peer() has run and are not redirected by it.
-
-> diff --git a/net/sctp/endpointola.c b/net/sctp/endpointola.c
-> index a15b599b20b76..f1e2acf8d9bcb 100644
-> --- a/net/sctp/endpointola.c
-> +++ b/net/sctp/endpointola.c
-> @@ -396,11 +396,13 @@ static void sctp_endpoint_bh_rcv(struct work_struct *work)
->  			continue;
->  
->  		/* Remember where the last DATA chunk came from so we
-> -		 * know where to send the SACK.
-> +		 * know where to send the SACK.  As in sctp_assoc_bh_rcv(),
-> +		 * never register a dead (already removed) transport.
->  		 */
-> -		if (asoc && sctp_chunk_is_data(chunk))
-> -			asoc->peer.last_data_from = chunk->transport;
-> -		else {
-> +		if (asoc && sctp_chunk_is_data(chunk)) {
-> +			if (!chunk->transport || !chunk->transport->dead)
-> +				asoc->peer.last_data_from = chunk->transport;
-> +		} else {
-
-[Severity: Medium]
-
-Can the dead bit read by this new guard, in both sctp_endpoint_bh_rcv() and
-sctp_assoc_bh_rcv(), be lost to a concurrent bitfield update?  In
-struct sctp_transport the flag shares one storage unit with the others:
-
-	__u32	dead:1,
-		rto_pending:1,
-		hb_sent:1,
-		pmtu_pending:1,
-		dst_pending_confirm:1,
-		sack_generation:1;
-
-The two writers of that word do not share a lock.  sctp_transport_free()
-does transport->dead = 1, reached in the scenario of this commit from
-sctp_assoc_bh_rcv() -> sctp_do_sm() -> sctp_cmd_del_non_primary() ->
-sctp_assoc_rm_peer().  When that runs from backlog processing,
-__release_sock() has already dropped sk->sk_lock.slock before calling
-sk_backlog_rcv(), so only the owned flag is held.
-
-Meanwhile sctp_icmp_frag_needed(), from sctp_v4_err()/sctp_v6_err() in
-softirq, holds only bh_lock_sock() and writes another bit of the same word,
-in exactly the branch taken when a process-context owner is running:
-
-	if (sock_owned_by_user(sk)) {
-		atomic_set(&t->mtu_info, pmtu);
-		asoc->pmtu_pending = 1;
-		t->pmtu_pending = 1;
-		return;
-	}
-
-sctp_err_lookup() holds a transport reference from
-__sctp_lookup_association(), so both CPUs can legitimately be touching the
-same object.  A single-bit assignment compiles to a non-atomic
-read-modify-write of the containing byte or word, so the softirq store can
-write back a copy loaded before dead = 1 became visible.
-
-If dead is reset that way, this guard evaluates to true, the removed
-transport is re-registered in asoc->peer.last_data_from, and the
-use-after-free is back; the existing sctp_inq_push() drop on the same flag
-would be defeated the same way.  The neighbouring atomic_set() on t->mtu_info
-suggests this field is already known to be touched cross-context.
-
-Would putting dead in its own word with WRITE_ONCE()/READ_ONCE(), or a fix
-that does not read the flag at all (clearing chunk->transport when the
-arrival transport is removed mid-packet), avoid depending on this?
-
+base-commit: 5ccdfb2c3203207deb17e7c5b0db8c7f475639a7
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260916080955.1019050-1-ljp1205831794%40gmail.com
+2.53.0-Meta
+
