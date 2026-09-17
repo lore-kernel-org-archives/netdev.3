@@ -1,170 +1,100 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565AA4B0482;
-	Thu, 17 Sep 2026 09:32:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464DA4AE8CB
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 09:33:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789637582; cv=none; b=e/PHDrRHmKxF9cGdRZebC/1e98UI3plOcOfxF0YPVsUthmr83KgnQ4aiJIxUTNaygDO2LvtS/1BX9rwheb1ghKkEHiZv1ygcbdBoBtOdxaRHgDOGNF3h0EeAU9WzTPQFywVedABpZ2s7KIS3+HpXPzIlt95o0PfVqQnzWMeeJwI=
+	t=1789637594; cv=none; b=djZQEi0UfOtl1q0LfRZQEpsP+pauOocQRJ73zGdGU2XpXWcCkLnpBv84ivcjz4icMWrCMIRm5PWNw3AaRVosG5JBjjaPmvFU+9pV3YJ6iaAJDLNlirKCV3qjJM+AuFN9REH/68PbPPrXDPOcqcoIHGsbvM1wuNDAWr9iNRR2fu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789637582; c=relaxed/simple;
-	bh=pBuZZ0HQh+WEJNfbYm+ILmuef4dwzhvlfrzvBo6lJEQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=mOo6jGGMZbLkvCSLBW+MaQL46FPKTegcftk0VVxipeawDuAAiauA6w4Z5iBi/2Z4vzhB9r++DiV0H5p5sm5kX6EmH26XG8U92BHl3B2NnXybOexnrVuHYx5EN5OkZ2ZEQ6T2wlY9UuFxbRl+zwMs8Cn2diS5H4cJvbjTtzHKbB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=gdFAUY5l; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1789637594; c=relaxed/simple;
+	bh=3XVhvX9FaSzMPLV1sM5AoC9g2JGZvqkXTdE0PlcL4z4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=vAX2t+ewrpi5k3nKe6zRBRg+SP2+hBNvtBQGACSAA5oNAe6y9xTLyX3PR1mzCGdxJ7ve6f4fsRFtnPU2g+evXj6TZG7O2uEBZHTjW32LRcZsYCLkRwSDhMnXZcEScFyJb90nd30DWmkSRR53eakpVMEoYvEwAA71Gxrsx5HMPbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lGGXzoSX; arc=none smtp.client-ip=209.85.221.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="gdFAUY5l"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id C84AF1A0923;
-	Thu, 17 Sep 2026 09:32:54 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 92DE55FAA3;
-	Thu, 17 Sep 2026 09:32:54 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 929F011C7B02B;
-	Thu, 17 Sep 2026 11:32:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789637573; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=F+AuMvlP2aZ6ARS7QsZ5Sy4iA/uLE9FjF/8Q1FhDY5M=;
-	b=gdFAUY5lMJw0XyutlfXh8U8s/eVRDv5RWsh08tKa003+w2TEXy0qg9g1BVBGgHQuPJ7rSw
-	mL+Dsjc7MxS0mfNtvXjhI+B00QZpXrMt5D1Y7vBBDppzLjjgwd8qtIEprpxsKbcgGnAXmn
-	UidriZnbuAPoKI8n+9nMyO/9kpiiuZtAdsp45lL0+UTrkLO/xAM5lBFbcGmNASU178h+29
-	Sno8YU4VKUerjDq6xM41koVUpOUBn09O6Y53qxMK5oA4IIH4kSzW/Vh98KJf92RronBmYI
-	GN7l729X6TYycAkclw48YiBXb7b0fCKHf/fcqxrjbHAnGL10/3GRDalkvpS+BQ==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lGGXzoSX"
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-4870ee5618aso369222f8f.1
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 02:33:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789637579; x=1790242379; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XLg+WWoCYgCGUuXdz7tNXtS+CEP4a258vdZIA6xLWNg=;
+        b=lGGXzoSXKH956DfJfYojBwngDmyfsAWeIjw9eDgLPuna31En2aIho92UypPv7am1VR
+         /USN+ShizLse5PNckQZFarPLialVznoEsDQrHu+2N1yHx3TLjCxb8Fvqsjvvh6NwRtAx
+         COe6GXAR8xkxfaEV2dNnAEJ1cI1DsXhHdM45rkjrsogrGJHYrLTA7GbU7y8lBY/Zl2tn
+         f1X8rkzedCG5cm2dsBwVlFFPRLQTt43tRTHsFiOKEnH/AuJHGlYFrSMkIn+5vqnCeGWC
+         F6T8Ytk84w5vDdr69jvEhkhTFVaSEbUonbOWlkGXm2vRZFDwKU1VrtPtJLpPnLNMqmmF
+         4dvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789637579; x=1790242379;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XLg+WWoCYgCGUuXdz7tNXtS+CEP4a258vdZIA6xLWNg=;
+        b=fXCJ4dSYmlrCFcW6CQLI8sOSUtUE86KmGhrhwz/uTdDUNd8UAxUEyxYn3Guw9PYca9
+         Ty1MEMS9OWC0O8worh3v7R0PJHvP7gZII1aFNe4ckaNO7who+Erv1rH9LWyPDagu9uUc
+         rJAiqJ9Ez78MUu4MA6BsTKtgVy0vVEJh99tBPmhxJva2v9rsWt+N4VjUxyj6AbRpWu80
+         XuFq5xvVT97NeLmD7Ud2CrMTZtMjsxZq1c6Ki8mF4JV8bR0nwCL9zdRIEiPD2N19D1Og
+         Q+eaPlwJqAmCf6FWtngw24Ax2Tb6SIgYeDwUrXEVMj4WIOnHXQHcnCU9JQLpWTQAhQG4
+         CyUQ==
+X-Forwarded-Encrypted: i=1; AKwUvByT0XxquWZmtodwCxVgPJcwaiPWPk1todEaq8QSE6wGy9EG8tovyV6M2s/1g5MDea7nYMgb3dE=@vger.kernel.org
+X-Gm-Message-State: AFuF++nzQRszDxkArnS7uXn8K6fFPNFTSSlFhFL+545MW+Xz5l+wV9+h
+	UIhDJE+1M9NzucxzPE4zxv90rU3zqxxJfb6tDbjCVVztQ5BZwiswxEqxwjvbvjjfH5tTxXI7P+V
+	Nk+UHJbqEDP+1whZO7A==
+X-Received: from wmwb12-n2.prod.google.com ([2002:a05:600d:444c:20b0:49e:eb51:f8fb])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600d:1b:b0:49b:9105:cdaf with SMTP id 5b1f17b1804b1-49f1d516a12mr138409325e9.8.1789637579365;
+ Thu, 17 Sep 2026 02:32:59 -0700 (PDT)
+Date: Thu, 17 Sep 2026 09:32:58 +0000
+In-Reply-To: <20260915144231.31932-1-sagartaunk@proton.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 17 Sep 2026 11:32:50 +0200
-Message-Id: <DLHHKM7ZOTWD.1W25GJL8Z0G7Q@bootlin.com>
-Cc: <git@amd.com>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-To: "Vineeth Karumanchi" <vineeth.karumanchi@amd.com>,
- <conor.dooley@microchip.com>, <andrew+netdev@lunn.ch>,
- <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
- <pabeni@redhat.com>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH net-next v2 4/4] net: macb: Add TSN CBS TC offload
- support
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260909142056.1433875-1-vineeth.karumanchi@amd.com>
- <20260909142056.1433875-5-vineeth.karumanchi@amd.com>
-In-Reply-To: <20260909142056.1433875-5-vineeth.karumanchi@amd.com>
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20260915144231.31932-1-sagartaunk@proton.me>
+Message-ID: <aquzyg0T67vu43T3@google.com>
+Subject: Re: [PATCH v3] rust: net: netlink: Migrate to zerocopy's IntoBytes
+From: Alice Ryhl <aliceryhl@google.com>
+To: Sagar Taunk <sagartaunk@proton.me>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	"Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-Hello Vineeth,
+On Tue, Sep 15, 2026 at 02:42:44PM +0000, Sagar Taunk wrote:
+> Replace the kernel's own `transmute::FromBytes` and `AsBytes` traits
+> with their zerocopy equivalents. Specifically, this updates
+> `GenlMsg::put` to rely on `IntoBytes` for converting attributes into
+> byte slices.
+> 
+> Also, add `Immutable` trait bound on `GenlMsg::put` as zerocopy
+> splits the `no interior mutability` guarantee that `AsBytes` bundled
+> together.
+> 
+> Link: https://github.com/Rust-for-Linux/linux/issues/1241
+> Signed-off-by: Sagar Taunk <sagartaunk@proton.me>
+> Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
 
-On Wed Sep 9, 2026 at 4:20 PM CEST, Vineeth Karumanchi wrote:
-> Add Credit-Based Shaper (CBS/IEEE 802.1Qav) TC offload support for
-> time-sensitive networking on GEM hardware. CBS is restricted to the
-> two highest-priority queues: Queue A (num_queues - 1) and Queue B
-> (num_queues - 2), matching hardware capability.
->
-> Validate that idleslope is positive and does not exceed the link
-> speed, preventing negative values from bypassing the bounds check
-> due to signed-to-unsigned promotion.
->
-> The idle slope register value is computed differently based on hardware
-> variant:
->
->   High-speed GEM: scale idleslope linearly to the full 32-bit register
->   range relative to link speed.
->
->   Standard MACB: convert the kbps idleslope into the register's native
->   unit, which depends on the interface width:
->     - 1G (8-bit GMII):    bytes/sec,   scale kbps by 1000/8 (125)
->     - 10/100M (4-bit MII): nibbles/sec, scale kbps by 1000/4 (250)
->
-> Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
-> ---
-> Changes in v2:
-> - macb_cbs_get_queue_params() now returns the idleslope register offset
->   (u32 *idleslope_reg) instead of a bool flag, and the idleslope is
->   programmed via bp->macb_reg_writel(), dropping the per-queue if/else
->   that open-coded gem_writel(CBS_IDLESLOPE_Q_A/Q_B).
-> - Expanded the idleslope kbps-to-hardware-unit conversion comment.
-> - Zero-initialize kset in macb_cbs_add() so an unpopulated link speed
->   reads as 0 and is rejected; reorder locals to keep the declarations
->   in reverse-christmas-tree order.
-> - Rebased on net-next, which renamed the struct net_device pointer to
->   "netdev" (was "dev"/"ndev").
->
->  drivers/net/ethernet/cadence/macb.h      |   9 ++
->  drivers/net/ethernet/cadence/macb_main.c | 116 +++++++++++++++++++++++
->  2 files changed, 125 insertions(+)
->
-[...]
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ether=
-net/cadence/macb_main.c
-> index 67150ff03066..00c1c619dea8 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
-> +static int macb_cbs_add(struct net_device *netdev,
-> +			struct tc_cbs_qopt_offload *qopt)
-> +{
-[...]
-> +	scoped_guard(spinlock_irqsave, &bp->lock) {
-> +		/* Disable CBS for the queue before updating idleslope */
-> +		ctrl =3D gem_readl(bp, CBS_CONTROL) & ~enable_bit;
-> +		gem_writel(bp, CBS_CONTROL, ctrl);
-> +		/* Update idleslope for the queue */
-> +		bp->macb_reg_writel(bp, idleslope_reg, idleslope);
-> +		/* Re-enable CBS for the queue with new idleslope */
-> +		gem_writel(bp, CBS_CONTROL, ctrl | enable_bit);
-> +	}
-> +
-> +	netdev_dbg(netdev, "CBS: Configured queue %d with idleslope 0x%x\n",
-> +		   qopt->queue, idleslope);
-> +
-> +	return 0;
-> +}
-> +
-> +static void macb_cbs_destroy(struct net_device *netdev, u8 queue_num)
-> +{
-> +	struct macb *bp =3D netdev_priv(netdev);
-> +	u32 enable_bit, idleslope_reg;
-> +
-> +	if (macb_cbs_get_queue_params(bp, queue_num, &enable_bit, &idleslope_re=
-g))
-> +		return;
-> +
-> +	scoped_guard(spinlock_irqsave, &bp->lock) {
-> +		gem_writel(bp, CBS_CONTROL, gem_readl(bp, CBS_CONTROL) & ~enable_bit);
-> +		bp->macb_reg_writel(bp, idleslope_reg, 0);
-> +	}
-> +
-> +	netdev_dbg(netdev, "CBS: Disabled queue %d\n", queue_num);
-> +}
+Thanks, this change is ok with me.
 
-So we write cbs_control/0x04BC only on ndo_setup_tc(TC_SETUP_QDISC_CBS)
-callback. As Sashiko pointed how I think that causes an issue with HW
-resets & suspend:
- - what if configured then link down then link up?
- - what if configured before link up?
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-Also when not using CBS we hope tx_sched_ctrl/0x0580 is at its reset
-value (0b00, fixed priority) for all queues. I would expect an
-unconditional writel tx_sched_ctrl/0x0580 in macb_init_hw(). This
-solves the down/up issue, the speed change and also ensures we don't
-inherit CBS or DWRR from the boot stages (super unlikely though).
+Can you send this to the net folks? Please update your patch title to 
+[PATCH net-next vX] according to the guidelines outlined in:
 
-Also, it might be simpler to always use tx_sched_ctrl/0x0580 rather than
-sometimes tx_sched_ctrl/0x0580 and sometimes cbs_control/0x04BC, which
-are aliases.
+Documentation/process/maintainer-netdev.rst
 
-What do you think?
-
-[...]
-
-Thanks,
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+Alice
