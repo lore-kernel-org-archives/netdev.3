@@ -1,98 +1,87 @@
-Received: from mail-vs1-f100.google.com (mail-vs1-f100.google.com [209.85.217.100])
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81AF6448B83
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 06:47:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB177448BB5
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 06:47:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789627628; cv=none; b=FA2UALhaGrKwDVimZXUlrJ+Cuu/htjUU23wb41naxL3Gxr5o+aEeZSLRFpu3MwmrQi0RH7oDMZPVawOl/pZsY2Mt12kSQ1aMwJxeABFCkXqEe/kiiX1jHReUZifaB/4LV3qs5aVaFU4+iom2Wwh2e3ITxeV4Nq80ZSoAi6mhtf4=
+	t=1789627668; cv=none; b=UDedXuDgYZkYMcuSLIZ7vKQcDRBRwIF7ZY2aKdjQ/hDez85QIoF26dHRxG6FBggAikzgWO2DbGcdYWnF1Gjxjubji1nMUVN3PQ0jNOKFuFZMRLygZ8vgmQ55Jc9utTxqIxSfoWDDo6+FZHlZMwAJQs0dQzRdt2KYNrjSPmibYuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789627628; c=relaxed/simple;
-	bh=6s8I+G2QOuBgIACke0ae7iObsMaEdu7VrkAqPRa3J4A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uDKlrkMwAHm++RLlhJNqRU5jDyfvNfsS0DUdLNu5UULO1PDUVJGPjw/ajxNOXF5bWrur0STvPsaDYZvquPy2UzwAO1UeglE889xgrIF5w6wSXuFPhHGYG9mSfFsvVInV2GKDjHHgxD/O21yCjNSsbYcMmG/igRQ7NvJj4dcofAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=fpFi9SrD; arc=none smtp.client-ip=209.85.217.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1789627668; c=relaxed/simple;
+	bh=3AdI/BQYPg6y23Mk+YkLKGWL7iI3glitB+qiS7zTldk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZPtlJy2L/N4+5EMq+R33//zWgsADdqVSARIOCeuUOB+9heVVfxWuwknmHA9i3NQKiUh3teeCLxNBd0awvw9vMf+4q8FBFv1J4SWEcaNT/nysVzTN9pitCiFLtR2ikr0dn8ubv/vM/CbNeQzYtREh4F3OMexQ5qa+6JJajxHNeTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OTD4+RoM; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="fpFi9SrD"
-Received: by mail-vs1-f100.google.com with SMTP id ada2fe7eead31-7a38a281ea5so9285137.2
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 23:47:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789627625; x=1790232425;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dl0Y03iDyMlH0hydD0ToKowhkdZ6P1fZNzzLnbF2C34=;
-        b=gg8Iq0uGudSaOkl4U/Q5YnNHvGk04iXO/xNbDEB33T8MD+NQOYgRgaQDaaSJyjFYfL
-         xXXR3uO7tQaqDB81/85Y6ldeVP/wzeeQM69wCrDupC+N8EM+GA+Sh0iiqs0Iyhoy/4pD
-         fvqIpumyH49uKWgiTIXHXC2FqIOgJu0/CTV9nuZ3H2s2coJKcrRJNCV5xSJk6tmK/119
-         HtNQoqYcPJ641ETCSg8oLug5d3HbzvlP8jbOP+ayXRg0v2QCwJB/VZU3czOsneI/zBUF
-         hxXRKvDB1OMVJ9lvhHixU/0w9RrFX/XdEDvFCFezB0gOS+NkTzApVyCGCGorIMex/NSA
-         A1QQ==
-X-Gm-Message-State: AFuF++nlxlH2ErUw+Xcl9oSLOvW2M8HkUhsAwwTIe1EluczdRRD8k+57
-	gNu2Ut11AUDECziQ5VXsKzyH/RQwbSG8DAqpZHt1X4udfzEWc8jqZd64KeZiK6oqQ14s5qsAzrR
-	rwrd7WUbg0NaZ4EATtOuQaiCztLwKSs3P7VHh1D3khxt8cJcuahZ6i+h96m6gI+DK9xHvT+Skm7
-	JcXKze8dwbtXmM8cFC7clgfrom4mKL5Ddcq9knmX7Ai0OktQ0S+1pEVVk3MrWMHd/wlZNYP72xe
-	4n/+a6iXQ==
-X-Gm-Gg: AYBFou1BgPq8kwdsKra2VL3OAnlJT8Ns0e6KuDM6oOMhR25PcKzWxVo1C0XXj2ZzwLu
-	BgqjMR8Hpt/M/nRV8YMyDlarFkBZ6gq/OjSDiUXScuz+p/zuV0mEPuPJvNuTfSfexcxGqhLrHZn
-	9HZIgb3neH4lMabm2HIA4Z/8hjvKgK0WOso1aizHxUqiCIkG4NzO6jFOZGiMqlw+FYstyB01xTq
-	pUeY+UJH4RNUHMuDgo/bLoft6bwyVA/4FmooGV8IxYuTqUO/NQt2rXsPMVBWbYfujaY3p7J3yzY
-	hESLfuUGlnuDEToK3/Z/hD++zJ4as3gMFnDq1F2mDQb8/wSukO1FsFaZUBPw45LgV8V6MlZihOz
-	3cKFMbNqYNoSYHuHJopqoAX5V59OHb1IUndnSWpYgdSpgTP6MxiVDSh318cEnB3mNB7Ub8FceRI
-	ow0ptK6NEnSbkjRVzIff4UoodwjsnZdpmW1Q==
-X-Received: by 2002:a05:6102:688a:b0:7a1:f7c3:3a42 with SMTP id ada2fe7eead31-7a1f7c3870bmr1462139137.15.1789627625369;
-        Wed, 16 Sep 2026 23:47:05 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-25.dlp.protect.broadcom.com. [144.49.247.25])
-        by smtp-relay.gmail.com with ESMTPS id a1e0cc1a2514c-9832887b05fsm197445241.4.2026.09.16.23.47.05
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 16 Sep 2026 23:47:05 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-86ab8302b54so673331b3a.1
-        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 23:47:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OTD4+RoM"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b965f447cso3711325e9.3
+        for <netdev@vger.kernel.org>; Wed, 16 Sep 2026 23:47:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1789627624; x=1790232424; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1789627664; x=1790232464; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=y3wbvAbBWnutdIwHnF3F6m/7uEF6jqU2B+avYv0omNg=;
+        b=OTD4+RoM5uTERP3mOlPQntz1c/c6k9oR7kAwKmVnnSEeUVZh0AXJ7rR2JE3mw7v5Ts
+         JksLeD1O37XZWAITYjFxSdcfSWknGG9MV2xnWMsdtDg/P4fwM6adS/y5LETFkn31gLAc
+         kFGkB8OpXiTo70mDlI+DWVUAeshK5lUC9zIrjHszqLM+HL7ogoFk2fjqpKsdAMDBClKu
+         ThjsBWFcpI4P4RwdfE1NxpRJG1nnA88KCIdoz3HXf+6zktfMyQbnZPiaoePBk2M3tDkg
+         wCKaFdZmpIEwtn48SLfezt30nJQIE/l3/ETu9I+IslMkRl8+2g17ZhgRBWRNTAFwAe4x
+         tWAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789627664; x=1790232464;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=dl0Y03iDyMlH0hydD0ToKowhkdZ6P1fZNzzLnbF2C34=;
-        b=fpFi9SrD9v2U5Y9Ys60MRnUp24XGij9P85IwpwXXOe3zW0WaQYb8IQkWTAcLl1fWnE
-         Pn6K7pc+04eR+a5MuUPdHrlOVEhsuOFYjZV6vMj+f9aMjzfxkS7Ty58slhzfFC4ZPpXu
-         RKd5KDJjsjCTBHHOX+dd5Yk+fs0r/qO2xfD5o=
-X-Received: by 2002:a05:6a20:918e:b0:3d3:b00a:7082 with SMTP id adf61e73a8af0-3dd5f7b25d9mr14104568637.28.1789627624203;
-        Wed, 16 Sep 2026 23:47:04 -0700 (PDT)
-X-Received: by 2002:a05:6a20:918e:b0:3d3:b00a:7082 with SMTP id adf61e73a8af0-3dd5f7b25d9mr14104523637.28.1789627623735;
-        Wed, 16 Sep 2026 23:47:03 -0700 (PDT)
-Received: from H5S1 ([192.19.203.250])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc50ab960edsm2754293a12.20.2026.09.16.23.46.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Sep 2026 23:47:03 -0700 (PDT)
-From: Vikas Gupta <vikas.gupta@broadcom.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bhargava.marreddy@broadcom.com,
-	rahul-rg.gupta@broadcom.com,
-	vsrama-krishna.nemani@broadcom.com,
-	rajashekar.hudumula@broadcom.com,
-	dharmender.garg@broadcom.com,
-	ajit.khaparde@broadcom.com,
-	Vikas Gupta <vikas.gupta@broadcom.com>
-Subject: [net-next, v3 11/11] bnge: add cpu_rmap support for IRQ affinity
-Date: Thu, 17 Sep 2026 12:15:48 +0530
-Message-ID: <20260917064548.773334-12-vikas.gupta@broadcom.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260917064548.773334-1-vikas.gupta@broadcom.com>
-References: <20260917064548.773334-1-vikas.gupta@broadcom.com>
+        bh=y3wbvAbBWnutdIwHnF3F6m/7uEF6jqU2B+avYv0omNg=;
+        b=en4v4UibwYstmi2k7GaexITeunCvOc+/CnF19KY2vWvCPFJHzSv6fSImJq6eYMjNgg
+         qz8HVq0ar4fIjDqabWQX3Eyyp+dIwoJSo6XquUToXkbUibhyYZF5nlmcqe7EFzoR9rnJ
+         q2PFP5SLGvdAb4UO7H0e2XB9j/FQ1VxXJUIsoVD7bheLemLTXE1vfnWNqZ+eRtNfx3HY
+         5NWGw3JvWVzJqa385B+6Gec0AMmOUjO7RcfK6KpSSR5X0Qfb9m8joXKrL6mrT0ZA7hbD
+         zc2oh/ej3n9xUNLUV/VHu556glmyBHVIxbXzJJbQI9Fu3BDVMMiV7YS2mzQFT7gvtf4t
+         INkQ==
+X-Forwarded-Encrypted: i=1; AKwUvBz1K9p5KOKzILStPc7211CB5kl2bPdahlt7U7mwm3xY03saIUktmWEIkvtFi3qj+5fgCfe+9qI=@vger.kernel.org
+X-Gm-Message-State: AFuF++lZRvib90nGZoYY5QSpzN+3OB3D82QR1pBfCIcB50Pj0q/1zsCR
+	2G3e5WwXzmKE5XR3irf8t5O+tkpc4A9LgRpK/mHLKfhmW0p4DW1JcGeH
+X-Gm-Gg: AYBFou06jxAmjeBM1lWcPhvNXT6Wm8xOPtNGSw1DmBaGhqOhcCJ6SSOM/LQzZ3Wry+N
+	G6HMmhEGWYDlL9vTQEbX7UuPzlEPhOi78rmFKKwisSn+JTgrk4YRdPen3ykXMiK8AcKHtXvDxy7
+	Z9fFd1i2arrXW364AI5fZGqnBg2Zp7/ZPsWffPUMchiigccAS86LJ//u7XvnZvlCbRLTBgUcF5R
+	UJirNbdOKV77bS4blsgFncACv5GHXzVrzOPdGfwVJNw4P5/8PhaR2CObNk8ZKSkhELVoQFVUFt5
+	zx++Tg0yS+ZxEkieqqb1/9xHjoRFYYfBJ2yX/b0pzwv19Miz5J7faBjMxjszqRXc1XosVnxcxEY
+	pfHRMR5SJppO6iHtzn82ZknpHibewK9wOdPuwvUU9hWd6/UTXoEoX6XXEWprj0IFHbKksOyjFuS
+	lXPjET/cV8oCBz0aVN97Ltk3/HqRb8pLO+v0Ffb5HvB23ceAozCrwqn5/JbgGwP2vTAFeb8G+CQ
+	Y2REA1Wtw9s6WwQSvxerXf8sWv8OnNjDI0ECpGWfkRfK0zRy2RSWES67AsAx5LwdwVGUmInDAKv
+	lrHOnBKoSYg0bIe818STkkp1zuRtxRZbLo5Mp59B/8v7DrSTyhhyieyWWnAakd7cWZUT69ef8Gg
+	A
+X-Received: by 2002:a05:600c:8b17:b0:49c:fa20:cc0a with SMTP id 5b1f17b1804b1-49eb7339522mr57916485e9.33.1789627663778;
+        Wed, 16 Sep 2026 23:47:43 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a02-3100-9dc6-c001-54ee-4741-4927-0a28.310.pool.telefonica.de. [2a02:3100:9dc6:c001:54ee:4741:4927:a28])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4870bf438fbsm13129266f8f.36.2026.09.16.23.47.42
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 16 Sep 2026 23:47:43 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Steen Hegelund <Steen.Hegelund@microchip.com>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	UNGLinuxDriver@microchip.com
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-arm-kernel@lists.infradead.org,
+	netdev@vger.kernel.org,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <david@davidgow.net>,
+	Rae Moar <raemoar63@gmail.com>,
+	linux-kselftest@vger.kernel.org,
+	kunit-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] net: microchip: vcap: Stop selecting DEBUG_FS for KUnit tests
+Date: Thu, 17 Sep 2026 08:47:36 +0200
+Message-Id: <20260917064736.77354-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -100,103 +89,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-When CONFIG_RFS_ACCEL is enabled, allocate and populate a cpu_rmap
-for the RX IRQ vectors so that the kernel's aRFS infrastructure can
-correctly map flows to the RX queues serviced by the nearest CPU.
+VCAP_KUNIT_TEST enables DEBUG_FS even when the kernel configuration
+leaves it disabled. Remove the selection, following the dependency rule
+in Documentation/dev-tools/kunit/style.rst.
 
-This ensures that NTUPLE rules created by the kernel steer packets
-to the optimal queue based on CPU/IRQ affinity.
+The debugfs implementation and its tests are already built only with
+DEBUG_FS. The other VCAP tests can run without it.
 
-Signed-off-by: Vikas Gupta <vikas.gupta@broadcom.com>
-Reviewed-by: Bhargava Chenna Marreddy <bhargava.marreddy@broadcom.com>
-Reviewed-by: Dharmender Garg <dharmender.garg@broadcom.com>
+Fixes: 552b7d131aa0 ("net: microchip: sparx5: Add VCAP debugfs KUNIT test")
+Assisted-by: LLM
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
 ---
- .../net/ethernet/broadcom/bnge/bnge_netdev.c  | 35 ++++++++++++++++++-
- 1 file changed, 34 insertions(+), 1 deletion(-)
+Validation on net c9151088f167: x86_64 LLVM builds and QEMU runs
+with DEBUG_FS disabled and enabled. The other VCAP suites pass in both
+configurations. The debugfs suite is present only with DEBUG_FS=y and
+all four cases pass.
 
-diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-index 9021a73ae613..cc7c854864e2 100644
---- a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-+++ b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-@@ -18,6 +18,7 @@
- #include <net/ip.h>
- #include <linux/skbuff.h>
- #include <net/page_pool/helpers.h>
-+#include <linux/cpu_rmap.h>
- 
- #include "bnge.h"
- #include "bnge_hwrm.h"
-@@ -2441,10 +2442,23 @@ static int bnge_setup_interrupts(struct bnge_net *bn)
- {
- 	struct net_device *dev = bn->netdev;
- 	struct bnge_dev *bd = bn->bd;
-+	int rc;
- 
- 	bnge_setup_msix(bn);
- 
--	return netif_set_real_num_queues(dev, bd->tx_nr_rings, bd->rx_nr_rings);
-+	rc = netif_set_real_num_queues(dev, bd->tx_nr_rings, bd->rx_nr_rings);
-+	if (rc)
-+		return rc;
-+
-+#ifdef CONFIG_RFS_ACCEL
-+	if (bn->priv_flags & BNGE_NET_EN_NTUPLE) {
-+		dev->rx_cpu_rmap = alloc_irq_cpu_rmap(bd->rx_nr_rings);
-+		if (!dev->rx_cpu_rmap)
-+			return -ENOMEM;
-+	}
-+#endif
-+
-+	return rc;
- }
- 
- static void bnge_hwrm_resource_free(struct bnge_net *bn, bool close_path)
-@@ -2460,6 +2474,11 @@ static void bnge_free_irq(struct bnge_net *bn)
- 	struct bnge_irq *irq;
- 	int i;
- 
-+#ifdef CONFIG_RFS_ACCEL
-+	free_irq_cpu_rmap(bn->netdev->rx_cpu_rmap);
-+	bn->netdev->rx_cpu_rmap = NULL;
-+#endif
-+
- 	for (i = 0; i < bd->nq_nr_rings; i++) {
- 		int map_idx = bnge_cp_num_to_irq_num(bn, i);
- 
-@@ -2479,6 +2498,7 @@ static void bnge_free_irq(struct bnge_net *bn)
- 
- static int bnge_request_irq(struct bnge_net *bn)
- {
-+	struct cpu_rmap *rmap = NULL;
- 	struct bnge_dev *bd = bn->bd;
- 	int i, rc;
- 
-@@ -2487,10 +2507,23 @@ static int bnge_request_irq(struct bnge_net *bn)
- 		netdev_err(bn->netdev, "bnge_setup_interrupts err: %d\n", rc);
- 		return rc;
- 	}
-+
-+#ifdef CONFIG_RFS_ACCEL
-+	rmap = bn->netdev->rx_cpu_rmap;
-+#endif
-+
- 	for (i = 0; i < bd->nq_nr_rings; i++) {
- 		int map_idx = bnge_cp_num_to_irq_num(bn, i);
- 		struct bnge_irq *irq = &bd->irq_tbl[map_idx];
- 
-+		if (IS_ENABLED(CONFIG_RFS_ACCEL) &&
-+		    rmap && bn->bnapi[i]->rx_ring) {
-+			rc = irq_cpu_rmap_add(rmap, irq->vector);
-+			if (rc)
-+				netdev_warn(bn->netdev,
-+					    "failed adding irq rmap for ring %d\n", i);
-+		}
-+
- 		rc = request_irq(irq->vector, irq->handler, 0, irq->name,
- 				 bn->bnapi[i]);
- 		if (rc)
--- 
-2.52.0
+ drivers/net/ethernet/microchip/vcap/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
+diff --git a/drivers/net/ethernet/microchip/vcap/Kconfig b/drivers/net/ethernet/microchip/vcap/Kconfig
+index 97f43fd4473f..1af30a358a15 100644
+--- a/drivers/net/ethernet/microchip/vcap/Kconfig
++++ b/drivers/net/ethernet/microchip/vcap/Kconfig
+@@ -40,7 +40,6 @@ config VCAP_KUNIT_TEST
+ 	bool "KUnit test for VCAP library" if !KUNIT_ALL_TESTS
+ 	depends on KUNIT
+ 	depends on KUNIT=y && VCAP=y && y
+-	select DEBUG_FS
+ 	default KUNIT_ALL_TESTS
+ 	help
+ 	  This builds unit tests for the VCAP library.
+
+base-commit: c9151088f1674fd29ff26a20f5fc687acf53a2f0
