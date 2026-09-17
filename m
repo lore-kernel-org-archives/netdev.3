@@ -1,118 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-191.mta0.migadu.com [91.218.175.191])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BBB1F4631;
-	Thu, 17 Sep 2026 10:04:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6EEA4B95CD
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 10:04:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789639470; cv=none; b=GamU/uujxuHkHgpB2oUd/07NkTJH3/ldRXr0ZS1q5V+4Uz6RQ3nvdBHhpAwqnT17++C8dboLu86HnRjqgqVVyiUi0dO9S20KHY2Tz6QKJSSPwXr17SxP0YCPe4mCuUcJd1f4QQwaOUC8HDeGRxVa3sRw4b9SppbyWUilObVvrK0=
+	t=1789639491; cv=none; b=Y3y9xoH7r8lW2NfHSBuSErC1V+8ZHzooLrKLeI6Jbq+QMEKhG3+i4+Ev7fN+qityX9rz/AYuO1wHugDHHjmOlgNOpbV77K5QlcP7EM+xmAux3zxf4qd/kLbPV8jfg3/nuhUop4Qj4sLcQvD8WPidYri0GqGgWP3sFLzI3MbVG+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789639470; c=relaxed/simple;
-	bh=tqUsQnVQ6+0AGejYyjS3eeE+jYuqzZYYt2aVEmhleFk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=biJS5UPZaPbpaKY1L3fgWBv/Hql80NBYbRd6VqFGCDqy3QHzSbcRwZ/prBM8muMh2UJm1DvXo6UItFxKySMDzrf8IGT9hp99sJ8h0ZwfheId6FQTt3TnKIQ817HM7veDTrVy86RVPBv2sfJW6AA02DMvguJLOUX9pXwltE3rSeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oCWO23E7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789639491; c=relaxed/simple;
+	bh=PfSPfdA29QNftKronz+oB+BrYg40uYjBrvjokpDGwaU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=D/wdGMcRX2UU/r82aJeGqEnDt+RFziO6Keg01bGdWviCrlFu2B/w3M5HjIZ7BYjsF8q/qrdcXBnyxBLfF7ZW+WSJkym8FKUjzypRlpuWAEwTrPeRPkb657BsphlcNiGItrasMNWUzTYn4kFSMcsz0WcTMf1ks/uzSS4bL1sHu8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=S/XL19qu; arc=none smtp.client-ip=91.218.175.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oCWO23E7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C3A81F000FF;
-	Thu, 17 Sep 2026 10:04:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789639456;
-	bh=9RJR2h0qHtxMiw9TYA3+iKS1eMqprIRMDs4v7Dy4PLg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=oCWO23E7KxKz8qfc36onezw+s4uvcvZKbFDjGYlDb9R8zOZq2Hpb9UHIJDysoVhuK
-	 rz5Nsh6zw8RPtmNi4ZbevYC/BPq2HOe2kyarxeIDM6bFM4zfJsOM8CnjwICuA+Vd70
-	 yVM8iugGHOZRDzsjPJG9BEdSgRnrm1F0riet0B7I7FEdjLl3HgAVAtX82w7NXooGoS
-	 CZx/02xumAQgM7OfTNzbyol1MS0eBVrEB278ZG5Y52zpsoTIQUkqVajQ7VwBbqGLqu
-	 rx0/XdbHnk5wOkjOC12XSxkvoM32sXzukSLanuBifqEhpFD9Yd2Ura6A/iAReeFK0K
-	 MV4p5XuYiPHdA==
-Date: Thu, 17 Sep 2026 12:04:12 +0200
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Arthur Crepin Leblond <arthur@marmottus.net>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Arnd Bergmann <arnd@arndb.de>, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v8 2/3] dt-bindings: net: wiznet,w5100: add link
- status interrupt
-Message-ID: <20260917-sexy-quixotic-ermine-138eab@quoll>
-References: <20260915-wiznet-link-gpio-v8-0-d173622474cc@marmottus.net>
- <20260915-wiznet-link-gpio-v8-2-d173622474cc@marmottus.net>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="S/XL19qu"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=PfSPfdA29QNftKronz+oB+BrYg40uYjBrvjokpDGwaU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789639472; v=1; x=1790244272;
+ b=S/XL19quJ5w4BP3O3tOd+6xeK1sunrN45Yp2pPc+JaA0sQexJiWu9YwZJIpFvw5/GWTd8hK2
+ Fyq42qLii3v/Cqo0xDjvmYGewkFHldPKOZ0FPsbdqqyGeICbf7zrIi0joLhr2nx7xkTycmTRjfn
+ GC6NzGoaY5hs9klgiXQG/zqs=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 651d09faf20df484;
+	Thu, 17 Sep 2026 10:04:32 +0000
+X-Mizu-Trace-ID: 651d09faf20df484
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <a48cbcfa-5b33-4584-a9fe-9fbb3c4d3039@linux.dev>
+Date: Thu, 17 Sep 2026 18:04:20 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260915-wiznet-link-gpio-v8-2-d173622474cc@marmottus.net>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3] tcp: annotate lockless access to sk->sk_err
+To: quanyeyang@proton.me, Eric Dumazet <edumazet@google.com>,
+ Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+ Geliang Tang <geliang@kernel.org>, Mat Martineau <martineau@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260912-mptcp-sk-err-net-v3-1-c41383878bde@proton.me>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20260912-mptcp-sk-err-net-v3-1-c41383878bde@proton.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Sep 15, 2026 at 10:06:03AM +0200, Arthur Crepin Leblond wrote:
-> Add an optional link status interrupt which can be connected to the
-> LINKLED pin on the device to detect link status changes. This second
-> interrupt is only supported on wiznet,w5500.
-> 
-> Signed-off-by: Arthur Crepin Leblond <arthur@marmottus.net>
-> ---
-> v8:
->  - Remove Krzysztof Kozlowski reviewed-by tag after Sashiko review
->    changes
->   - Make the interrupts property conditional
-> 
-> v7:
->  - No changes
-> 
-> v6:
->  - Fix DT error: use minItems
->  - Remove conditional properties
-> 
-> v5:
->  - Make the DT interrupts property dynamic from the compatible one
->  - Fix DT bindings errors
-> 
-> v4:
->  - Update interrupts in DT bindings
-> 
-> v3:
->  - Fix DT binding errors
-> 
-> v2:
->  - Convert device tree binding to YAML
-> ---
->  .../devicetree/bindings/net/wiznet,w5100.yaml      | 38 ++++++++++++++++++----
->  1 file changed, 31 insertions(+), 7 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/wiznet,w5100.yaml b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
-> index 25098308eb6e..da03f4e07f29 100644
-> --- a/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
-> +++ b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
-> @@ -12,10 +12,6 @@ maintainers:
->  description: |
->    This is a standalone 10/100 MBit Ethernet controller with SPI interface.
->  
-> -allOf:
-> -  - $ref: /schemas/net/ethernet-controller.yaml#
-> -  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> -
->  properties:
->    compatible:
->      enum:
-> @@ -24,8 +20,11 @@ properties:
->        - wiznet,w5500
->  
->    interrupts:
-> -    maxItems: 1
 
-Broadest constraints always stay here.
+On 9/12/26 11:43 PM, Quanye Yang via B4 Relay wrote:
+> From: Quanye Yang <quanyeyang@proton.me>
+>
+> BUG: KCSAN: data-race in do_recvmmsg / mptcp_recvmsg
+>
+> read-write (marked) to 0xffff8880134d391c of 4 bytes by task 2619 on cpu 1:
+>   instrument_atomic_read_write include/linux/instrumented.h:113 [inline]
+>   sock_error include/net/sock.h:2565 [inline]
+>   do_recvmmsg+0x50c/0x580 net/socket.c:3049
+>   __sys_recvmmsg net/socket.c:3144 [inline]
+>   __do_sys_recvmmsg net/socket.c:3167 [inline]
+>   __se_sys_recvmmsg net/socket.c:3160 [inline]
+>   __x64_sys_recvmmsg+0x161/0x180 net/socket.c:3160
+>   x64_sys_call+0x19c7/0x1ca0 arch/x86/include/generated/asm/syscalls_64.h:300
+>   do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+>   do_syscall_64+0xde/0x3d0 arch/x86/entry/syscall_64.c:84
+>   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>
+> read to 0xffff8880134d391c of 4 bytes by task 2620 on cpu 0:
+>   tcp_recv_should_stop include/net/tcp.h:3086 [inline]
+>   mptcp_recvmsg+0x54d/0xd50 net/mptcp/protocol.c:2466
+>   inet_recvmsg+0x204/0x210 net/ipv4/af_inet.c:894
+>   sock_recvmsg_nosec net/socket.c:1151 [inline]
+>   sock_recvmsg+0x11a/0x140 net/socket.c:1173
+>   ____sys_recvmsg+0x14b/0x3c0 net/socket.c:2933
+>   ___sys_recvmsg+0x116/0x160 net/socket.c:2975
+>   __sys_recvmsg net/socket.c:3008 [inline]
+>   __do_sys_recvmsg net/socket.c:3014 [inline]
+>   __se_sys_recvmsg net/socket.c:3011 [inline]
+>   __x64_sys_recvmsg+0xeb/0x160 net/socket.c:3011
+>   x64_sys_call+0x1319/0x1ca0 arch/x86/include/generated/asm/syscalls_64.h:48
+>   do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+>   do_syscall_64+0xde/0x3d0 arch/x86/entry/syscall_64.c:84
+>   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>
+> value changed: 0x0000006b -> 0x00000000
+>
+> Reported by Kernel Concurrency Sanitizer on:
+> CPU: 0 UID: 0 PID: 2620 Comm: syz.2.33 Not tainted 7.2.0-g39d4f32c5d53 #76 PREEMPT(full)
+> Hardware name: QEMU Ubuntu 26.04 PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1ubuntu1 04/01/2014
+>
+> do_recvmmsg() and getsockopt(SO_ERROR) call sock_error() without the
+> socket lock. sock_error() clears sk_err with xchg(), which races with
+> unmarked loads of the same field.
+>
+> KCSAN reported the unmarked peek in tcp_recv_should_stop(). The same
+> lockless writer races with the other plain sk_err reads on the
+> TCP/MPTCP send, recv and splice paths.
+>
+> Annotate those peeks with READ_ONCE(). No extra ordering is needed:
+> the value is only used to decide whether I/O should stop. This does
+> not consume sk_err; the check-then-sock_error() TOCTOU on the no-data
+> paths is a separate issue.
+>
+> Suggested-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> Link: https://lore.kernel.org/netdev/8bbee583-6f21-4817-bfeb-2d60057380a3@linux.dev/
+> Reported-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/632
+> Signed-off-by: Quanye Yang <quanyeyang@proton.me>
 
-I already asked for proper syntax here:
-https://lore.kernel.org/all/688f57cd-a098-4904-b8cd-965470a89386@kernel.org/
 
-https://elixir.bootlin.com/linux/v6.11-rc6/source/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml#L127
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-Best regards,
-Krzysztof
-
+There are a lot of pre-existing issues, though.
