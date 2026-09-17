@@ -1,78 +1,95 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7CF43A1684;
-	Thu, 17 Sep 2026 14:49:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123543939A4;
+	Thu, 17 Sep 2026 14:54:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789656579; cv=none; b=KfV9a76cub7ZnD+Bd2JG0ODAsxvK4GN3hxjHPfyndMEo8QrW5kT1excT6Ns7uUUipkKfcXNpRSPi1WfQrvQdGJUR5qu8+kjlLQEMJMAssK2XRr/BASqxunhBozPX4QnfdP87T/Cmxp/kQ8BQy/gPy7jd30aHNwiZDuIox0tFKsA=
+	t=1789656872; cv=none; b=rS66Kai/SnYEInZ+mMXKDDubWg2WJbLoljtufxm4qgYbz8n7hAArKK89nRaAxRwvGXdj2okahaWgCSoh7VGxAGynUIkUU06Kt6uDPgbbz7BM1oXZ16oWrAT03VzdTOi6QTiArvvM3W5Slrrc+ox4Dcu7+u0rwkrgJ+eydcxKP10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789656579; c=relaxed/simple;
-	bh=Bm97bs0tZCtN5NkrXaGPV6koqm+2fuz4r/vQ0Sg6b80=;
+	s=arc-20240116; t=1789656872; c=relaxed/simple;
+	bh=neXxLjLm07T/5uBNw3MIaIA4Z7Fgm8FkKivipIur184=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lFhv75JJ4X+K2tNzFQcCQSAECb4vmdbfN37T3OTtGIZcAOgYPqXwPt/8v12ZpZzm9Yj8eWLy053IyrF/kyVhIG8qQmS7xAZemk36kTyu/sJNBxTOpA6zJwAD9oTHtiwr2RuNVcrAudAmNPXNPXq6QLiGLKEXiU6xSVSeiI0nPPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256:X25519MLKEM768)
-	 (Exim 4.100)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1x7DQ5-000000008HR-1vZr;
-	Thu, 17 Sep 2026 14:49:01 +0000
-Date: Thu, 17 Sep 2026 15:48:58 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: Caleb James DeLisle <cjd@cjdns.fr>
-Cc: netdev@vger.kernel.org, dqfext@gmail.com, SkyLake.Huang@mediatek.com,
-	andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Matheus Sampaio Queiroga <srherobrine20@gmail.com>
-Subject: Re: [PATCH v5 net-next] net: phy: mediatek: support MT7530 PHYs on
- EN71221 MCM
-Message-ID: <aqv92pZsobVEdipZ@makrotopia.org>
-References: <20260915113427.113296-1-cjd@cjdns.fr>
- <aqkwYd5dTmHDCIW9@makrotopia.org>
- <2a7edfd0-b784-4b60-b9f9-769fe00286b7@cjdns.fr>
+	 Content-Type:Content-Disposition:In-Reply-To; b=oWo94n9ulXwkWUVabavbWrNcDnBNoDiVzVntBG/WSz/wihIk2XrqRFBdueiDltCM5zQvTocIr1YyGmb4VlM3p7YjYLdLXHtrLgsV+uAgTSPJKv4iMjtiqxk6j2PSMLQPsHgtPJirCXPBCj0lOBdxhcCQyRyBH304CibhffXqBXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=dfB2KTNt; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="dfB2KTNt"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=A67JsCta3pDpgt91UwwATGFxcmWXa4GKAYCKCqCfNGM=; b=df
+	B2KTNtQm2y1vfPsKWRY3hu6XBsKBZt2AntbCPnuYQvrvYtp8pcgyCGPbYFsiEPWAm67wiW5/Hm9V6
+	34HrLVvW+orTF4naFU99gXstv08S+lOzoqWJSaW9K4WnqN4GZw8bEsjtcJSkKBoShPu+6OvQdgf3i
+	4jddyEWkkZUzZNs=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x7DUt-005hAF-QU; Thu, 17 Sep 2026 16:53:59 +0200
+Date: Thu, 17 Sep 2026 16:53:59 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next] net: fec: gate MPC52xx driver on PPC_MPC52xx
+Message-ID: <f29b58c2-1d11-42e9-b920-2272d2c21ed4@lunn.ch>
+References: <20260916220931.262932-1-rosenp@gmail.com>
+ <CAKxU2N-T3urb8Wv3sW1=YaT6AjoicgJ95msTDA8cdsivkiR5vg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <2a7edfd0-b784-4b60-b9f9-769fe00286b7@cjdns.fr>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKxU2N-T3urb8Wv3sW1=YaT6AjoicgJ95msTDA8cdsivkiR5vg@mail.gmail.com>
 
-On Tue, Sep 15, 2026 at 02:01:29PM +0200, Caleb James DeLisle wrote:
-> On 15/09/2026 13:47, Daniel Golle wrote:
-> > On Tue, Sep 15, 2026 at 11:34:27AM +0000, Caleb James DeLisle wrote:
-> > > @@ -135,6 +199,23 @@ static struct phy_driver mtk_gephy_driver[] = {
-> > >   		 */
-> > >   		.config_intr	= genphy_no_config_intr,
-> > >   		.handle_interrupt = genphy_handle_interrupt_no_ack,
-> > > +		.match_phy_device = mt7530_phy_match,
-> > > +		.suspend	= genphy_suspend,
-> > > +		.resume		= genphy_resume,
-> > > +		.read_page	= mtk_phy_read_page,
-> > > +		.write_page	= mtk_phy_write_page,
-> > > +	},
-> > > +	{
-> > > +		PHY_ID_MATCH_EXACT(MTK_GPHY_ID_MT7530),
-> > I'd suggest to actually use phy_id and phy_id_mask assigned by the
-> > PHY_ID_MATCH_EXACT macro by calling genphy_match_phy_device() in your
-> > match functions above instead of open-coding the ID match.
-> > Or drop PHY_ID_MATCH_EXACT from *both* drivers.
-> 
-> I suppose the latter is easier because then I don't have to re-think
-> mt7530_is_gphy() which would be lying if it wasn't actually checking ID is
-> MTK_GPHY_ID_MT7530.
-> 
+On Wed, Sep 16, 2026 at 03:29:25PM -0700, Rosen Penev wrote:
+> On Wed, Sep 16, 2026 at 3:09 PM Rosen Penev <rosenp@gmail.com> wrote:
+> >
+> > The FEC MPC52xx driver only applies to the MPC52xx family of SoCs,
+> > but only depended on PPC_BESTCOMM. Restrict the driver to MPC52xx
+> > platforms so it is not offered if COMPILE_TEST is applied to
+> > PPC_BESTCOMM. Otherwise the following errors happen during linking:
+> >
+> > ERROR: modpost: drivers/net/ethernet/freescale/fec_mpc52xx.ko: symbol 'mpc5xxx_fwnode_get_bus_frequency' undefined!
+> > ERROR: modpost: drivers/net/ethernet/freescale/fec_mpc52xx_phy.ko: symbol 'mpc5xxx_fwnode_get_bus_frequency' undefined!
+> >
+> > Assisted-by: LLM
+> > Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> > ---
+> >  drivers/net/ethernet/freescale/Kconfig | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/net/ethernet/freescale/Kconfig b/drivers/net/ethernet/freescale/Kconfig
+> > index b34c0fcfddea..d81984fcec64 100644
+> > --- a/drivers/net/ethernet/freescale/Kconfig
+> > +++ b/drivers/net/ethernet/freescale/Kconfig
+> > @@ -38,7 +38,7 @@ config FEC
+> >
+> >  config FEC_MPC52xx
+> >         tristate "FEC MPC52xx driver"
+> > -       depends on PPC_BESTCOMM
+> > +       depends on PPC_BESTCOMM && PPC_MPC52xx
 
-I would have preferred to call genphy_match_phy_device() in your match
-functions instead of open-coding phy_id_compare() which is best
-reached via genphy_match_phy_device() in this situation -- that would
-express the code intent in the most obvious way imho.
+> oh this is against local changes. Please ignore.
+
+https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html#updating-patch-status
+
+  pw-bot: changes-requested
+
+  As a result the bot will set the entire series to Changes
+  Requested. This may be useful when author discovers a bug in their
+  own series and wants to prevent it from getting applied.
+
+    Andrew
+
+---
+pw-bot: cr
