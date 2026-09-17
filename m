@@ -1,201 +1,116 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C64739D6DA
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 22:01:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6DF43C8719
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 22:02:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789682501; cv=none; b=By61dg+2zEaG5Rg2U8dqmniezPiZGyR8hmwGdGrYc6nI7afHgHWHjugChcTuyjvllgVXcWNO9uoz+yyhJUVNOjtV0PPMAHVppPHw/6mPHaQO6cAVgBMLYGkw3aDbgfF/nLgdIaFIG1ar/uucVwyGrcikYKMo4F9aau8hAA6Pvtk=
+	t=1789682524; cv=none; b=FqJTaFhWYEQUeACgB4Dq7YJdWcY3P0AwYGeC8oueKEWEk1VOgV/sbtXBNFfJsx2OMzOGi5QktVpliWZmWVQMyvHiWKY44e+fiKGd64fyn9nGFv9d/ofDbcQspybJhT5xWy04Lx2r65twurw3cEc4Et5OXg89aGYO1PG9IUf5fpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789682501; c=relaxed/simple;
-	bh=3FbVHQnTkGovq9MgVS1AQASJkqVSWyehhrk2OYOMakI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EknRuDjhSc/+ibnp1qd4cGK4Umt1JejsQntKMwuVlfX6F5dEQxMo6jhHFQlhdUuwwhAPSJYnEJH9OzB1tNnUl87npYNwu6w9uUvtfNlknhLjXBQ0Qw95wtMzfZGQx90hN+Q6PK1PerQiyx7uPASF6CWsA5S0Oe9gMFLFwgf33Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=p1mutKsU; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789682524; c=relaxed/simple;
+	bh=QVy/c3lL0T2G0QS0X5UQ0e+4FGDESG9uqf0mPCrckvo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=o27OM5D6WW4kE8/sO6LSSeuk8JhWgegHnSVfxMKZp4iDPOdmaMZLzEVMk+GA5+z89mE/7SoJ6/eWF9Y0dlcGdG7fwetppaSY00dhKryblz4dLHNgJI7RtGuCvQM2nQvToU8dHwfFd7mmdjKO581PmpWuFrB0FcD0XCQkYyYl6JY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isec.pl; spf=pass smtp.mailfrom=isec.pl; dkim=pass (2048-bit key) header.d=isec.pl header.i=@isec.pl header.b=Y6/eCdhz; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=isec.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isec.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="p1mutKsU"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccafb74fso137867a91.3
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 15:01:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=isec.pl header.i=@isec.pl header.b="Y6/eCdhz"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b965f447cso864695e9.3
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 15:02:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789682500; x=1790287300; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=s26IKeArHLYvAsw8SAUC36S/S5ndCgDyvi2cfvHZSzE=;
-        b=p1mutKsUJfYS5DICIzP1SbGJtbXs6bFz50GqM6/1fpxp6XCMpmNA4+uHR7YVV/NTYh
-         wprRa08STJaxRoeBO/3JzSLB0YM7dZTkOZ/odqIeKfQNnMxMcMLAlIRh07Z5M46fRiTI
-         WuE1hIaUOaHvVkc+vWJTU2z2VwsACDPCU+cLFumui28cxLbgNTiZFWL5BGB6iWfWvdUI
-         AlplhNZdXvZ2N/3+S02EdoQPbA5RSrG56lZl+Ei93fHoONjBiXAlAhdym4++DcxR0Mn3
-         95mdWWJc4/lFnMK2L93IBIkLPRnJW4MqCsgz2UJihk1Cg0vb5Vd7o+EmjnDbswaOgrSl
-         ytDw==
+        d=isec.pl; s=google; t=1789682521; x=1790287321; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BSXvhhtGESzI8UKfdlYrqnmXXZ2KSc85lByA5Tdkzb4=;
+        b=Y6/eCdhzByIEr8UL7XE/BqM8RugkBpEfFydGDrY1jNK3+STmAaxSJ6qtlMqa34E65q
+         0Cu3+7PQ/c4ci9HVsdxfvScqdZQ5svLUuKvguTpvrB4Re9xZx2ZJcg4k/gJjM1HUO9qE
+         P+8RvGvdX4r17LbqhS4dZlZmM5eNl50xoX6gN6fKJIj+/lnpwwtypcEIMMwlcwPsChWZ
+         3uSuyh6MJGPS32SL8xv14VJyXucWMs928Z4C9gnqTJZjwbiL3axQ1wnZbG2BNfdzpAVy
+         R5LYeMrtx+LC1gSd1ldruQU+t2vNABVcmYf/I09r7ihr1uSG1+sTD8sJNi2HMcSt0eP8
+         czUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789682500; x=1790287300;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=s26IKeArHLYvAsw8SAUC36S/S5ndCgDyvi2cfvHZSzE=;
-        b=mIqi+vcXMlIPBvmiLnt0kEXzPv1qRssArKkc1k4OM4SMdrLNx7HVa4y/yzXTddhPx9
-         J4rzieEOGdDpg2ealydbM3sNlxb/GiGGyMNZaDiBBjWYtXa+w5thZRsgEtzl73+EzP4q
-         oIiPhBCW8TwkuvkNosN5PVU40Q/gDS6lYdRL2pc003hGXRtqy/KJkIN/eDk5udIcpbEy
-         d9r7ijAg4xvbNZqv48iYL4nOro4T/vJAN6uAeCs4bxAW19iSXWMA4xrCLbfWMopfi6jf
-         dVbJW+pE9cpUSt5lWlmoLsDQTCeq5/4iKK66BjGrUyjDGJNHZgxuMAuN2w5Cuo4ZI004
-         d4Ag==
-X-Gm-Message-State: AFuF++nem8/QTNkZeN9+yfTyLlwkHnc0UNsZGsH2uAAI8tCyuwYNpyyt
-	oU6cy/Cf4//6yc4IsGJYeeYLmxJ7KRiv7zc5gVMP8aj7zKXZQblWreFD7JIjbA==
-X-Gm-Gg: AYBFou3LO2cA/LqzRaSWfGtIcCtMksbmIFTHFW2JeXpAEzqy2ehQgRU+c+r3Vu8rFB/
-	M24GqRq4kNWod6caMIkVs+NDYh6fLzt+vfqtWlpoas88OyL4KoGiXMk/npfpDabGt0wr3+GN/xM
-	QJwyvsgDzm9e/Vy/nYqgsZ1kM/1PQGLi3DRRygqCpG/TX+G/UuoeRaOhP+RW534zpx8StXgZskU
-	7XKcMEHxN5rMg1htD8c35LTnt04qe2b6K8z5HQCSn2ZsiixiKrMmJN6OF08fdSAY4TXACDePys+
-	4b+4VYfb6DQenF79B3JkBINV4LSUw//OfJtMmabySx1d9twswgTuhde9kC6nCnUBUGDoJ/pcele
-	Mlc3ZUy+3gm4oYh/qPN/dDLsiT7ksReTU9Mq/2GwqSPBQbM0ATWE0zH4cJJBqy4kESHelrB1UY8
-	zNvhXnyWFkb4+lXMa/Au7lBcOLKE1cqUeko90XuQMNzJEhzeIlj//r/A9iN4EV0VNWwuP1QS+7M
-	axKh0ODkeh2mtiDgnTyLic448XqMh97L0nLPV3w9j18Cv9gdJ+rSy5DTByCKXRLe+UdcgipUXRi
-	AcFNM6UBsoaM7hsbbtDkg7OJX7r7DK1JwWyVR3eDN+61DzaQyWEeGK4QM4I=
-X-Received: by 2002:a17:90b:380b:b0:39e:4fec:d6e5 with SMTP id 98e67ed59e1d1-39e550707e6mr1200498a91.16.1789682499730;
-        Thu, 17 Sep 2026 15:01:39 -0700 (PDT)
-Received: from ryzen.lan ([2601:644:8000:7a86::e34])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14395cfb0b1sm14235004c88.5.2026.09.17.15.01.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 15:01:38 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Michael Stapelberg <michael@stapelberg.de>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net] net: phy: marvell: keep WOL_EIE across interrupt reconfiguration
-Date: Thu, 17 Sep 2026 15:01:36 -0700
-Message-ID: <20260917220136.97017-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.55.0
+        d=1e100.net; s=20260707; t=1789682521; x=1790287321;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=BSXvhhtGESzI8UKfdlYrqnmXXZ2KSc85lByA5Tdkzb4=;
+        b=FH8wVvdtGR/APBGQw9UWZLvvqxS0PT3pzRFSzJF+zWzezCP/+K4vES5ExWL2H2kIk+
+         dF0N6pSXxVrR/zChoVYhqMSvu+CAHL6i8gCGKY0ILaM+hQIYs16jbIWO14RpHXtXMXZ5
+         vgx8v58VoNn0fVP1avbZn/S1sBURLOIHYfYz3A/ItNfgd2lfRSqH0hvW9ck36yNfnsru
+         1uYxeKhMmDozzG5nsflxA4WzEDbhsnMEH3lWNtInm8swYLCha6V8dQw2maJagTH1I0ja
+         cvMwvNu0RPza9oyEGr/zYV+c+bGawY5S1JqgswMzppkn9awrObgTCBJ7bheutuhKHuFq
+         TMFw==
+X-Forwarded-Encrypted: i=1; AKwUvBxIEGySO9k4X+U+Wx2PTFEnjXnrB7gqvJatHs5QumiJDQBfFOYB3P9fSIR4s6PjKRIs6f3xBiw=@vger.kernel.org
+X-Gm-Message-State: AFuF++k0k7Y9rAagMNgcdbaRI19nhE7dibK6eoN1ZMmnd3tlcRitG3Li
+	ACUDveLAdC3QFcsdZNUcfKDIfU9k4VoFksvdPFTVAC7F1guYy7gOO5G9vGhaypPD+yk=
+X-Gm-Gg: AYBFou3DidWsBHkCZmrPe87vhzixVdV52/Je/KtknJAn6X9VyuIhjgtRTuEJpEYxkSa
+	y11hAJRg1YAJr5cujcr6EJYD1nGPflbH14tRFyrJHpFl2XtYV8kJovkkTY0SGsu3ISqL3FaEByX
+	nfe8XRae3jePEsI9z4SvhmguVGGwNfFRRb+dl5dRTRF73lDFSmmaiOG1MxQW0ONOF7LU6Z4faS5
+	aab8LvJlIA4LWW/1SXw2FIF7rhbdY2UT0GmgjacsenHlly7A3OGN9Al5YJ6uRrAfVdtFvUpz+lp
+	4TSzsnmfCO+OdWm6+RkmPDKLqIF2VpDvvJHJLuLEh1CoRM7xbPT6/luDca8XaqZIszRF48QUDqO
+	at2rw0ykj5VnrqKgJb/M8ROxQJRvqOSspLUfCzURVhYYdZ0sSGo/fDDYUOLhJ8qDttVBfhpGy/T
+	Ju6cz7Paxv04y6VH1qVlYV5TOfmBZtrlnLTitOtyQ3pws38jonTrBM/yGu95elkgc7Z59E98iIM
+	ckyzKwFYQmfv6b7UukSfmJIlfKqgcAFWkJnZa1rdFLBc9E=
+X-Received: by 2002:a05:600c:c48e:b0:49c:dcec:bd27 with SMTP id 5b1f17b1804b1-49fc5687122mr2528885e9.8.1789682520862;
+        Thu, 17 Sep 2026 15:02:00 -0700 (PDT)
+Received: from localhost.localdomain ([2a02:a318:80b3:9080:744c:a1ba:d233:283a])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4870bf344fcsm19794436f8f.26.2026.09.17.15.01.59
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 17 Sep 2026 15:02:00 -0700 (PDT)
+From: =?UTF-8?q?Bart=C5=82omiej=20Dmitruk?= <bartlomiej.dmitruk@isec.pl>
+To: Dexuan Cui <decui@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K . Y . Srinivasan" <kys@microsoft.com>
+Cc: linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>
+Subject: [PATCH] vsock/hv_sock: reject incoming connections when the listener is being released
+Date: Fri, 18 Sep 2026 00:01:54 +0200
+Message-ID: <20260917220156.56015-1-bartlomiej.dmitruk@isec.pl>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On the 88E1318S/88E1510, copper page register 0x12 is both the
-MII_M1011_IMASK interrupt mask used by marvell_config_intr() and the
-CSIER register in which m88e1318_set_wol() arms the WoL interrupt
-(MII_88E1318S_PHY_CSIER_WOL_EIE). marvell_config_intr() rewrote the
-whole register, so any interrupt reconfiguration (for example the
-phy_disable_interrupts() on link down behind mvneta) silently cleared
-WOL_EIE: m88e1318_get_wol() still reported WAKE_MAGIC, but a matched
-magic packet was no longer routed to INTn and the board did not wake.
+hvs_open_connection() only checks sk_state == TCP_LISTEN and
+sk_acceptq_is_full() before creating a child and calling
+vsock_enqueue_accept().  __vsock_release() sets sk->sk_shutdown =
+SHUTDOWN_MASK and flushes the accept queue while leaving sk_state ==
+TCP_LISTEN, so a host channel offer that races close() of the listener
+passes both checks and enqueues a child onto the already-flushed queue.
+That child socket (and the VMBUS channel opened for it) is never accepted
+or cleaned up and leaks.
 
-Give these two PHYs a dedicated config_intr that preserves WOL_EIE with
-a read-modify-write, and a handle_interrupt that also claims the WoL
-event mirrored in the interrupt status register. Other Marvell PHYs keep
-the plain marvell_config_intr()/marvell_handle_interrupt().
+The virtio transport guards exactly this case in
+virtio_transport_recv_listen(); hv_sock lacks the equivalent guard.
+hv_sock holds lock_sock(sk) across hvs_open_connection(), so the check is
+race-free.
 
-Fixes: 3871c3876f80 ("mv643xx_eth with 88E1318S: support Wake on LAN")
-Assisted-by: LLM
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Signed-off-by: Bartłomiej Dmitruk <bartlomiej.dmitruk@isec.pl>
 ---
- drivers/net/phy/marvell.c | 70 ++++++++++++++++++++++++++++++++++++---
- 1 file changed, 66 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/phy/marvell.c b/drivers/net/phy/marvell.c
-index f71cffa88406..0897cfcd6ab7 100644
---- a/drivers/net/phy/marvell.c
-+++ b/drivers/net/phy/marvell.c
-@@ -425,6 +425,68 @@ static irqreturn_t marvell_handle_interrupt(struct phy_device *phydev)
- 	return IRQ_HANDLED;
- }
+diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
+--- a/net/vmw_vsock/hyperv_transport.c
++++ b/net/vmw_vsock/hyperv_transport.c
+@@ -324,6 +324,14 @@
  
-+/*
-+ * On the 88E1318S/88E1510, copper page register 0x12 serves two
-+ * masters: it is the MII_M1011_IMASK interrupt mask for the generic
-+ * Marvell interrupt handling, and m88e1318_set_wol() sets the WoL
-+ * interrupt enable bit (MII_88E1318S_PHY_CSIER_WOL_EIE) in it. The
-+ * interrupt routines below therefore preserve that bit, so reconfiguring
-+ * the PHY interrupts cannot disarm Wake-on-LAN behind the user's back.
-+ */
-+static int m88e1318_config_intr(struct phy_device *phydev)
-+{
-+	int val, err;
+ 	if (conn_from_host) {
+ 		if (sk_acceptq_is_full(sk))
++			goto out;
 +
-+	val = phy_read(phydev, MII_88E1318S_PHY_CSIER);
-+	if (val < 0)
-+		return val;
-+
-+	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
-+		err = marvell_ack_interrupt(phydev);
-+		if (err < 0)
-+			return err;
-+
-+		err = phy_write(phydev, MII_88E1318S_PHY_CSIER,
-+				MII_M1011_IMASK_INIT |
-+				(val & MII_88E1318S_PHY_CSIER_WOL_EIE));
-+	} else {
-+		/* Disable the PHY interrupts, but keep WOL_EIE set so an
-+		 * armed magic packet still asserts INTn while the
-+		 * interface is down or the machine is suspended.
++		/* __vsock_release() may have already flushed the accept queue
++		 * and set sk_shutdown = SHUTDOWN_MASK while leaving sk_state ==
++		 * TCP_LISTEN.  Enqueuing a child now would leak the child socket
++		 * and its VMBUS channel.  Mirror virtio_transport_recv_listen().
 +		 */
-+		err = phy_write(phydev, MII_88E1318S_PHY_CSIER,
-+				val & MII_88E1318S_PHY_CSIER_WOL_EIE);
-+		if (err < 0)
-+			return err;
-+
-+		err = marvell_ack_interrupt(phydev);
-+	}
-+
-+	return err;
-+}
-+
-+static irqreturn_t m88e1318_handle_interrupt(struct phy_device *phydev)
-+{
-+	int irq_status;
-+
-+	irq_status = phy_read(phydev, MII_M1011_IEVENT);
-+	if (irq_status < 0) {
-+		phy_error(phydev);
-+		return IRQ_NONE;
-+	}
-+
-+	/* Claim events from the IMASK_INIT set as well as the WoL event
-+	 * mirrored from WOL_EIE in the enable register.
-+	 */
-+	if (!(irq_status & (MII_M1011_IMASK_INIT |
-+			    MII_88E1318S_PHY_CSIER_WOL_EIE)))
-+		return IRQ_NONE;
-+
-+	phy_trigger_machine(phydev);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int marvell_set_polarity(struct phy_device *phydev, int polarity)
- {
- 	u16 val;
-@@ -3817,8 +3879,8 @@ static struct phy_driver marvell_drivers[] = {
- 		.config_init = m88e1318_config_init,
- 		.config_aneg = m88e1318_config_aneg,
- 		.read_status = marvell_read_status,
--		.config_intr = marvell_config_intr,
--		.handle_interrupt = marvell_handle_interrupt,
-+		.config_intr = m88e1318_config_intr,
-+		.handle_interrupt = m88e1318_handle_interrupt,
- 		.get_wol = m88e1318_get_wol,
- 		.set_wol = m88e1318_set_wol,
- 		.resume = genphy_resume,
-@@ -3925,8 +3987,8 @@ static struct phy_driver marvell_drivers[] = {
- 		.config_init = m88e1510_config_init,
- 		.config_aneg = m88e1510_config_aneg,
- 		.read_status = marvell_read_status,
--		.config_intr = marvell_config_intr,
--		.handle_interrupt = marvell_handle_interrupt,
-+		.config_intr = m88e1318_config_intr,
-+		.handle_interrupt = m88e1318_handle_interrupt,
- 		.get_wol = m88e1318_get_wol,
- 		.set_wol = m88e1318_set_wol,
- 		.resume = m88e1510_resume,
--- 
-2.55.0
-
++		if (sk->sk_shutdown == SHUTDOWN_MASK)
+ 			goto out;
+ 
+ 		new = vsock_create_connected(sk);
