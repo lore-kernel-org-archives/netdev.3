@@ -1,121 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C4543CE59;
-	Thu, 17 Sep 2026 08:42:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E1EA438038
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 08:43:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789634550; cv=none; b=mhua1MTNdfx2KsIxIW6bu5hcFGGKAXxdsUUN/sRrPEylCt8boub2CdvFIfPK6lCp2otEHZuhuks2EUklBTR5YaI6zYl0EHzEC6/YyweEcLOvn3iUpGLJsSJCyGC++sBq57zxC9AeL3yPj1FB2zheZ0q3i1KVj1ZeGoj/Z2omvxY=
+	t=1789634593; cv=none; b=YqXwpjbDv3RBK5EDYyqBWkd1a/TR8JYVjjfJvXj1m5HqIun7EpR5UNcnBgdnXVY1uSOeOtn6K3vqbD9IOZ/xL44qzOh9NTXei7Si22iRb/JHj1ATko8jqhC/AJnA7J+4EF0fRItA59XzAXBMZyUNunKAX/FsQ7iHhzJsilUsobw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789634550; c=relaxed/simple;
-	bh=q6HKl5LtjKuaoZ6SXHAUMkZedUXZ9cKfXJ+5gvF4DIM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O98QCkFBoqH3SYvuflDey6ptrfdoS+ZrOquvvAFUtTVf6QL7Bh5rpLHbe3ST6wO8t4cXUH78Yf0aUUIoCEZc86BgPVACA5l/yUJRHN6tHT0IV8N8Tje78N8wETKWiRpKdt8v1Y/KZqFinGdoLU/gcidZNuSkzageyleH3kUpxdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nOLy/ev3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789634593; c=relaxed/simple;
+	bh=xZ3JSj8oevdfblevZOGxIZ7GwtEyzSx++6y/65fyjlg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TL1dG+Pmhb8IA9PfvvDfmJew7PJlHMe3IKgkgAJYSjjhIiGKDfIllNSiFIlxmU416bjgOtovjCM6SLljSYWvtJOqmBlqWb8qIeZ72OoxwvCiHUOzLsSh7+H6HshAzRvZD2xZT/N5cFc7J+VbohVYUa4olEnzUX/apeH74LP95IM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=N2wRNW45; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nOLy/ev3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38CEA1F00893;
-	Thu, 17 Sep 2026 08:42:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789634541;
-	bh=veuI4Ecxd1GG/nHtTshN78zjGaDMSwbi+RzbA2u15EM=;
-	h=From:To:Cc:Subject:Date;
-	b=nOLy/ev3hCOesGlqpGnWMsTpdorPVis0ELdts6LYNqiKmmKWjJ9taVNzUGI2XDBl7
-	 Q1Ilz8BZMZJmuqjto1s93REbULq9LdKsJ4XpF8OcQ0PzyjhHWy02jLMc23G5tR8CzH
-	 zTBH8ExlZ2L5HmAKSlKiC/BEUyMh6MEFFUmZ0nuiro8+w4J0lkb900/26xWUPlaWKm
-	 ln2jyAQ9I3bFPQZaX5LQLCJ15PSnGDmA8kdQYVrXkWM4NZ6ARM/v816q5s+DW647L7
-	 PR+5hnxyqFiGdLxXb/9MaZzChrODyyC02af8BrsJ2m5wLCxgXBWGRL2Bohen7+wOI2
-	 ePeTyr/3U9IAA==
-From: Geliang Tang <geliang@kernel.org>
-To: John Fastabend <john.fastabend@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: Geliang Tang <tanggeliang@kylinos.cn>,
-	netdev@vger.kernel.org,
-	mptcp@lists.linux.dev
-Subject: [PATCH net-next v3] tls: drop duplicate check_app_limited in tls_push_sg
-Date: Thu, 17 Sep 2026 16:42:06 +0800
-Message-ID: <5bc803abb4e27054eaffc8b26db7812e6347b0dd.1789634247.git.tanggeliang@kylinos.cn>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="N2wRNW45"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789634578;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Qnj5bGFt5q5vW3x1crtWWx2Ui97eiSoKFvsTpuZ4ym8=;
+	b=N2wRNW45491cN03EKdoJz3QTf4HtD6w/dQws7i1I010RdSbmWZVlzYfqGtuvzDXgr7OzqJ
+	OZmkVjwS+sVuKQbo1+wuQAMIC9fSG/GIWbsdqE/DY6usSH0R1cQbyH3V4QHyHgsE5ByPPK
+	BGxfhrUtxXcwrJfJFKV/K65OAslY96o=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-558-Nye_faDPOGKCA8dwMkPHsw-1; Thu,
+ 17 Sep 2026 04:42:55 -0400
+X-MC-Unique: Nye_faDPOGKCA8dwMkPHsw-1
+X-Mimecast-MFC-AGG-ID: Nye_faDPOGKCA8dwMkPHsw_1789634573
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7131519540C9;
+	Thu, 17 Sep 2026 08:42:52 +0000 (UTC)
+Received: from [100.90.87.156] (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 25A921977588;
+	Thu, 17 Sep 2026 08:42:48 +0000 (UTC)
+Message-ID: <371bb5ad-ecdd-48ce-9288-8f9209b8ffdf@redhat.com>
+Date: Thu, 17 Sep 2026 10:42:47 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v9 03/15] dpll: add basic SiTime SiT9531x support
+To: Ali Rouhi <arouhi@sitime.com>, "jiri@resnulli.us" <jiri@resnulli.us>
+Cc: "vadim.fedorenko@linux.dev" <vadim.fedorenko@linux.dev>,
+ "arkadiusz.kubalewski@intel.com" <arkadiusz.kubalewski@intel.com>,
+ "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+ <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+ "cjubran@nvidia.com" <cjubran@nvidia.com>,
+ "pabeni@redhat.com" <pabeni@redhat.com>,
+ "Oleg.Zadorozhnyi@devoxsoftware.com" <Oleg.Zadorozhnyi@devoxsoftware.com>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260915000015.80480-1-arouhi@sitime.com>
+ <20260915000015.80480-4-arouhi@sitime.com>
+Content-Language: en-US
+From: Ivan Vecera <ivecera@redhat.com>
+In-Reply-To: <20260915000015.80480-4-arouhi@sitime.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+On 9/15/26 2:00 AM, Ali Rouhi wrote:
+> From: Oleg Zadorozhnyi <Oleg.Zadorozhnyi@devoxsoftware.com>
+> 
+> The SiT9531x is an I2C clock generator with four independent PLLs, up to
+> eight input clocks and up to twelve outputs.  Later patches register the
+> PLLs with the DPLL subsystem and expose the clocks as pins; this one adds
+> only what is needed to reach the device.
+> 
+> The register space is paged: 32 pages of 256 registers, selected by
+> writing the page number to offset 0xFF, which is present in every page.
+> A regmap range configuration describes that window, so the rest of the
+> driver addresses a register as a page and an offset and never touches the
+> selector itself.  Pages come in pairs for the PLLs (0x0A/0x1A for PLLA,
+> and so on).
+> 
+> Probe reads the rate of the crystal feeding XIN, since every frequency
+> the driver later computes derives from it; takes the optional reset line
+> and leaves it deasserted, because the device configuration comes from
+> efuse or from a blob applied before probe and a reset would discard it;
+> then identifies the variant from the single byte at page 0 offset 0x02
+> and refuses to bind on anything unknown.
+> 
+> Signed-off-by: Oleg Zadorozhnyi <Oleg.Zadorozhnyi@devoxsoftware.com>
+> Assisted-by: Claude:claude-4-opus [chat]
+> Signed-off-by: Ali Rouhi <arouhi@sitime.com>
+> ---
+>   MAINTAINERS                    |   1 +
+>   drivers/dpll/Kconfig           |   2 +
+>   drivers/dpll/Makefile          |   1 +
+>   drivers/dpll/sit9531x/Kconfig  |  17 +++
+>   drivers/dpll/sit9531x/Makefile |   4 +
+>   drivers/dpll/sit9531x/core.c   | 272 +++++++++++++++++++++++++++++++++
+>   drivers/dpll/sit9531x/core.h   |  91 +++++++++++
+>   drivers/dpll/sit9531x/regs.h   |  56 +++++++
+>   8 files changed, 444 insertions(+)
+>   create mode 100644 drivers/dpll/sit9531x/Kconfig
+>   create mode 100644 drivers/dpll/sit9531x/Makefile
+>   create mode 100644 drivers/dpll/sit9531x/core.c
+>   create mode 100644 drivers/dpll/sit9531x/core.h
+>   create mode 100644 drivers/dpll/sit9531x/regs.h
+> 
+> ...
+> +
+> +#define SIT9531X_RANGE_OFFSET  SIT9531X_PAGE_SIZE
+> +
+> +static const struct regmap_range_cfg sit9531x_regmap_range = {
+> +       .range_min      = SIT9531X_RANGE_OFFSET,
+> +       .range_max      = SIT9531X_RANGE_OFFSET +
+> +                         (SIT9531X_NUM_PAGES * SIT9531X_PAGE_SIZE) - 1,
+> +       .selector_reg   = SIT9531X_PAGE_SEL,
+> +       .selector_mask  = GENMASK(7, 0),
+> +       .selector_shift = 0,
+> +       .window_start   = 0,
+> +       .window_len     = SIT9531X_PAGE_SIZE,
+> +};
+> +
+> +const struct regmap_config sit9531x_regmap_config = {
+> +       .reg_bits       = 8,
+> +       .val_bits       = 8,
+> +       .max_register   = SIT9531X_RANGE_OFFSET +
+> +                         (SIT9531X_NUM_PAGES * SIT9531X_PAGE_SIZE) - 1,
+> +       .ranges         = &sit9531x_regmap_range,
+> +       .num_ranges     = 1,
+> +       .cache_type     = REGCACHE_NONE,
+> +};
 
-Before commit c5c37af6ecad9 ("tcp: Convert do_tcp_sendpages() to use
-MSG_SPLICE_PAGES"), do_tcp_sendpages() did not call
-tcp_rate_check_app_limited() internally, so callers needed an explicit
-tcp_rate_check_app_limited() to cover it. That commit replaced
-do_tcp_sendpages() with direct tcp_sendmsg_locked() calls, which perform
-the check on every path that queues data. The outer call became redundant
-but was left in place.
+Couldn't it be useful to cache at least page selector register or is it
+volatile? I remember from zl3073x history that page selector caching
+helped a lot to reduce number of i2c transactions.
 
-The site changed here, tls_push_sg(), holds the socket lock and invokes
-tcp_sendmsg_locked() on every iteration. The early-return paths in
-tcp_sendmsg_locked() that skip tcp_rate_check_app_limited() -- the
-MSG_ZEROCOPY allocation failure and MSG_FASTOPEN branches -- return
-without queueing any MSG_SPLICE_PAGES data, so there is no functional
-consequence from omitting the outer check.
 
-A potential benefit of this change is that it facilitates future reuse of
-tls_push_sg() for KTLS support in protocols beyond TCP, such as MPTCP.
-Since tcp_rate_check_app_limited() is TCP-specific while sendmsg_locked()
-is a generic interface in struct proto_ops, this change allows us to switch
-to different protocols via sk->sk_socket->ops->sendmsg_locked() without
-carrying protocol-specific assumptions.
-
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
----
-Note:
-
-The patch benefits my ongoing "MPTCP KTLS support" work [1]. In patch 9
-of that series, I had defined a check_app_limited() interface in struct
-tls_prot_ops, but this interface is unnecessary if we can drop this
-redundant call.
-
-v3:
- - send this patch separately to net-next as Jakub suggested.
- - update the commit log.
-
-v2:
- - drop the "Fixes" tags and update the prefixes and commit logs as Jiayuan
-   suggested.
- - https://patchwork.kernel.org/project/netdevbpf/cover/cover.1789469930.git.tanggeliang@kylinos.cn/
-
-v1:
- - https://patchwork.kernel.org/project/netdevbpf/cover/cover.1789368148.git.tanggeliang@kylinos.cn/
-
-[1]
-MPTCP KTLS support
-https://lore.kernel.org/netdev/cover.1782123118.git.tanggeliang@kylinos.cn/
----
- net/tls/tls_main.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
-index fbb274287aa5..8bdb78718a8d 100644
---- a/net/tls/tls_main.c
-+++ b/net/tls/tls_main.c
-@@ -185,8 +185,6 @@ int tls_push_sg(struct sock *sk,
- 
- 	ctx->splicing_pages = true;
- 	while (1) {
--		/* is sending application-limited? */
--		tcp_rate_check_app_limited(sk);
- 		p = sg_page(sg);
- retry:
- 		bvec_set_page(&bvec, p, size, offset);
--- 
-2.53.0
+Thanks,
+Ivan
 
