@@ -1,62 +1,62 @@
-Received: from mail-oo2-f40.google.com (mail-oo2-f40.google.com [74.125.231.168])
+Received: from mail-oo2-f43.google.com (mail-oo2-f43.google.com [74.125.231.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380B34EB870
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 20:06:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.168
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86AFC4E36CE
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 20:06:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789675581; cv=none; b=uaUiWddhoq375BCFmDJwKxF/uUEGwxkY7+SQfKHm7Sf0w5fJjmikszLKLjxCRJMZE0YMHegsZC6dfNW4Y92QTVUvNI7YLmy9nH9V/PQ+9BZdDC6OvA0dB0VBDGTExrZHC4xCD9ov5Ji0qa6KdJ9leqAvcHGCSBYalY6thBjJu/k=
+	t=1789675577; cv=none; b=Sorw6rEES5FH1CpXfDmGM3CrOhPrIrQMakk+vzOqxBV9vMKiQmBhVs+x5ozpuZtL7Dx/Tz2tSrpw78PiUXdHy2JO2QNWn6x+XV/h3I3BWhtd3px/0o/LnIy+j4jrUa+OQN9HyQyoyrK/70tdpUNDcyWy6a9o8lHtZvJ7jJdYM9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789675581; c=relaxed/simple;
-	bh=RC2+tW4VR4DAhhKfFjUFIbMmCAIhkkge84EG8Fe5/X0=;
+	s=arc-20240116; t=1789675577; c=relaxed/simple;
+	bh=KWV6aWQYmH4deDnVX82coMiZxImTQreqd6fjSuI1h10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WZGQV0/U18JTGI+mtDxS7ExNQuejLB84aNfCrr7NL3KFVkEOle7M6G7hnmYYASaaUqDqcftWfS34eHQMx1C+rRrMxyEVa1iV5S0ej//POThoxRIJ7K38LOiKoaMI/vPqZrfLBeykpMBlTIAsR/E+nNaog42InTdTUKGa1uyTrVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dHzJKrPF; arc=none smtp.client-ip=74.125.231.168
+	 MIME-Version; b=Tccyz5x7TmuhgiqGyp7CIqV9tLxOLjef9UEpIv/5SbqCm4EtTzOf+NQzuy7n+uyga9sgwCXROAC0sewbFUoOkJDzYKMX5MGSRVVtMW6upFm42WKcUSlUgkqLJcggQp9bvP3yhPXGGJv447DJc/xEwok+rIA/0DL/myfkPZaMZWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iPJC6Ysv; arc=none smtp.client-ip=74.125.231.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dHzJKrPF"
-Received: by mail-oo2-f40.google.com with SMTP id 006d021491bc7-6b1ae6c9b72so2529eaf.0
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 13:06:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iPJC6Ysv"
+Received: by mail-oo2-f43.google.com with SMTP id 006d021491bc7-6b1ae7089c1so651124eaf.2
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 13:06:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789675572; x=1790280372; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789675567; x=1790280367; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=vL9wP24mFmHeGwvfZtLCTzrcqEIhTjmWJiDIIo2LIVs=;
-        b=dHzJKrPF4/dtFSy5u9+VM5HIkHb51pvV+1LIIueWpw6dcIVIyM7S/6XIQcKcW7YX6T
-         uJum6DJ0opSqitBESPJYDA3loh6Bjs8zc9rD4VKk8+tV3QxBGrEhnFlx05tTM88mvpM0
-         l5cXI5jfVxdjeMXQid//H8xPAVTGEMHgg9aVX4ju2Lt1G9bBTDNKZJRsc39DGHsk+/9s
-         5tTAavJDMmlhR2MwcZR3mG93LfM0uZ/PVgrqEqDSSX/p99r+SX+dKQu9+FWvQvz8oHz/
-         BlGFToUF5RNPfURLHvonaY/O8iVmKMlvX/a+EagT+Hl882AdHw8Do2Pfryk+nLqcrDkY
-         GuuA==
+        bh=9OLuSfUhJFvayd43S3ln5vAMWoBx4ysBdw/1W1WxYpU=;
+        b=iPJC6YsvlxiCl4gTV0RpIFPlgccU/0sTFOa+aDPuHUPBkTopw/MfjHSnuySxpxWUTf
+         h1vN/4tAevEmr3PrdonJgRW8EnnZaFnn+38A85fTz1qIwjPyePVkF/04zTo7WXXrxI7h
+         cS1gQxRk/W0kUg2fkERPKhRXb9t9yNqvykhOjqN303ltei9v0lTR+LcJgzOcfowvt1uJ
+         by0pY6SETKOzHwbvDJ9Yo2DYDbZ5EhS7RyDXxhC6xm8/ErFwQcFM9JcTGtbRsJTlgqCf
+         kVvGut+OGf87aHlih9PZyc6+ZXidS+7+6Zg8v7ZJSNSYHeJY1CNtaL6kBZ26h4+uEegf
+         iM/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789675572; x=1790280372;
+        d=1e100.net; s=20260707; t=1789675567; x=1790280367;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vL9wP24mFmHeGwvfZtLCTzrcqEIhTjmWJiDIIo2LIVs=;
-        b=rSYYuA7xPfKa9LADpwWdScu/FalXOLQYGc57oqJBluQAnOxO8Dx3c5BM+ZapGZeRxX
-         PbJzM+It3JSODuRJ0JvT0018/W8i7QnfxWkP3zr6WhTCcwBNXINqvr/tpG2z6fhbII+P
-         8+FfNuMaVrIhM63Th20ruqLoShMV9Orq+MB4nc2B2rPlhyJhBVl0VtQRXMUeeN0EAnQ5
-         GQcuIwsIx1A59VUG772jFFSFkREBeYHiXUgu28vmi3r2KKCVFNsXkWDOnaYGXgGNz09E
-         1aqStOVQGV8xqk/ypIkrjDGzI/95n5hB9yqS0Cu57ug8cazG9POAHCKVaThNZ2YSifEE
-         tVXg==
-X-Gm-Message-State: AFuF++nD6J/HrykRjMv92IpyFgqtnCT9feP8dZdHSFkw8+3E+HRy7OpV
-	bPbyPyTS+pP5ZKXCmqzSOHfDAcD/BdtwjfV8PPXAqqSrFjl7U8nlMswa
-X-Gm-Gg: AYBFou3DKxLCKtzzbn4Drn/lLCrwl23WnDql6Ud7xHpkDObrSk5c7yQknX1gBnz4EK5
-	WgKefGH+5msWlCjG9gHZmF40zYAtMfIAmpCfojHQe144j4rHABFhZ9Nqmv4v1n+N3JRZCg7yNAJ
-	EYu9Wi/S2CpQGClLaG/taPkmIjHwcl8vyuqFCaFLFaoFMZm/ZFjbW017VJRmokQmplkcfh3uaIu
-	QivSg3ctWxhQaqJqjmnT1PwC743h756DW8/IBJcFB8lpx2CCcK9WCcU+AIYTX8akPScRlmYuAJZ
-	xLf/zlO5QyQmzooFzcPAutjOF/spESUqJn3SOViP1BABR1vOHxNEtBobq6/ydyMpQlZpe4XkAcV
-	QSPBnpfLbAFltezkeTED1pirdhgI/wTc65R8FPfTjtBypBEFmUIsh8stvaT35kZLg5zz7NTxeyG
-	nTatxf9sPcJLHIrdmyyalDkq8VJ8G7F2T7qJCuLQc2NLTkU18tZSBkJvbNdOSJGw==
-X-Received: by 2002:a05:6820:4c0e:b0:6bd:b927:672f with SMTP id 006d021491bc7-6ca90d95792mr202275eaf.9.1789675572080;
-        Thu, 17 Sep 2026 13:06:12 -0700 (PDT)
-Received: from localhost ([2a03:2880:ff:52::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6c8f641b56bsm4156757eaf.7.2026.09.17.13.06.11
+        bh=9OLuSfUhJFvayd43S3ln5vAMWoBx4ysBdw/1W1WxYpU=;
+        b=prC0cRH777lXWONs/owKr2aXlVJH8NMdoaNa0h71eS0Vde4fRvyLCPDv8FSIrLSryX
+         QYcJ10FirbHfJgywLBVElGh7UuN5Sw/m8XmKa+8h8RPvKsb3MC/jDTVAcRHG5eNewizl
+         nUROTFLBfHEufZZFzKBeBDPWlZ0LPRnUB95zVR6FNhd8WykW82pHK/31y6luUEZ6sh0u
+         fTWjDkeuMKC/v6en3Tbq6ZpOd8BS51EtuYGlPjKjzIUlG7e7F/Szpyuddt336bhwFqhO
+         xy7OtjOlxSnzidE0vKQuNuQt//ocnltm5xCdSaSJktW91MyJ3LSoiFdX/muAkD4oZDkV
+         XQuA==
+X-Gm-Message-State: AFuF++nDxs2cO69bZFgDXZNeSd3p3l/k9WCUHotAArtV++Ekdn+YSFV9
+	3l2IwMiRGFvnAsIHLVZSlnhkxgfL63Tldm32rJ8XicMAV87i71GsXxOg
+X-Gm-Gg: AYBFou1qBA3t9MIsiIXUdp+bitCBEhUJKdh4dgeAI62OrrphvOjqWZRo1Ty+TspfX1l
+	19VIZIJzfSSB4ScE/DrsER9MsSDDBcSP29TrrFxYtxHrR3BkgMN8MLzIeWBL+0gFX6Fh+WIwNfg
+	EDeyPRpFkRuFcR/0uphCdW2XTixtfVWASrwywZyIKMG0hfvo+plyJKtV0tB/HXvVqp1Ix31v1Gw
+	98/prnCBNrHc4h1O5YUplBHHXVhrjkoah9Qd7C0YZnXQed/s+xfi5aRfTJM/seBOoHVAa33TzOx
+	kRPwr2MKfieGCOSxh3nnaXeObnm5dMmHRGPYd7WD+FlHBH25Tc+ZZw7xR39RKJNOay2zcM6B5k3
+	wjYp+Z3yhqdGCM10ZRFMfkr3LgKRuiG0P7M3e9PM5pfTDM8tRvo48Vai2BKbopxGO/zfTnCP1l7
+	KPFFZHxjbkuqx1T9oLn6jfsLkZrFCcj9jauqLcmz4QoXC/vUyH4ut3fF1R5MHIpg==
+X-Received: by 2002:a05:6820:4c15:b0:6c8:dccc:eb1d with SMTP id 006d021491bc7-6ca9cb58461mr89553eaf.55.1789675567532;
+        Thu, 17 Sep 2026 13:06:07 -0700 (PDT)
+Received: from localhost ([2a03:2880:ff:53::])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6c8f727fe99sm3378877eaf.12.2026.09.17.13.06.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 13:06:11 -0700 (PDT)
+        Thu, 17 Sep 2026 13:06:06 -0700 (PDT)
 From: Amery Hung <ameryhung@gmail.com>
 To: bpf@vger.kernel.org
 Cc: netdev@vger.kernel.org,
@@ -72,9 +72,9 @@ Cc: netdev@vger.kernel.org,
 	kerneljasonxing@gmail.com,
 	ameryhung@gmail.com,
 	kernel-team@meta.com
-Subject: [PATCH bpf-next v4 13/15] libbpf: Support attaching struct_ops to a cgroup
-Date: Thu, 17 Sep 2026 13:05:39 -0700
-Message-ID: <20260917200542.3689605-14-ameryhung@gmail.com>
+Subject: [PATCH bpf-next v4 10/15] bpf: Allow all struct_ops to use bpf_dynptr_from_skb()
+Date: Thu, 17 Sep 2026 13:05:36 -0700
+Message-ID: <20260917200542.3689605-11-ameryhung@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260917200542.3689605-1-ameryhung@gmail.com>
 References: <20260917200542.3689605-1-ameryhung@gmail.com>
@@ -86,163 +86,65 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+bpf_dynptr_from_skb() was only made available to bpf_qdisc, so far the
+only struct_ops type that needs to read an skb. The upcoming bpf_tcp_ops
+header-option hooks (parse_hdr/write_hdr_opt) also want to access the TCP
+options of an skb through a dynptr.
 
-Add bpf_map__attach_cgroup_opts() to attach a struct_ops map to a cgroup
-through a BPF link.
+All struct_ops programs share BPF_PROG_TYPE_STRUCT_OPS, so register
+bpf_kfunc_set_skb (which holds bpf_dynptr_from_skb) for that program type
+once, instead of per struct_ops. This makes bpf_dynptr_from_skb()
+available to bpf_tcp_ops and any future struct_ops.
 
-Also extend struct bpf_prog_query_opts with a type_id field so a
-BPF_STRUCT_OPS query on a cgroup can select the struct_ops type to
-enumerate.
+With the kfunc now provided to all of struct_ops, the bpf_qdisc-specific
+registration becomes redundant and is dropped: bpf_qdisc_kfunc_filter()
+only constrains kfuncs listed in qdisc_kfunc_ids, so removing
+bpf_dynptr_from_skb from that set (and from qdisc_common_kfunc_set) lets
+it fall through the filter unchanged, and bpf_qdisc keeps access via the
+generic struct_ops registration.
 
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Amery Hung <ameryhung@gmail.com>
+Widening the registration is safe: a struct_ops that does not receive an
+skb in its context has nothing to pass to the helper.
+
 Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Signed-off-by: Amery Hung <ameryhung@gmail.com>
 ---
- tools/lib/bpf/bpf.c      |  2 ++
- tools/lib/bpf/bpf.h      |  3 +-
- tools/lib/bpf/libbpf.c   | 64 ++++++++++++++++++++++++++++++++++++++++
- tools/lib/bpf/libbpf.h   |  3 ++
- tools/lib/bpf/libbpf.map |  1 +
- 5 files changed, 72 insertions(+), 1 deletion(-)
+ net/core/filter.c     | 1 +
+ net/sched/bpf_qdisc.c | 2 --
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tools/lib/bpf/bpf.c b/tools/lib/bpf/bpf.c
-index 96819c082c77..a9de7f107cf7 100644
---- a/tools/lib/bpf/bpf.c
-+++ b/tools/lib/bpf/bpf.c
-@@ -934,6 +934,7 @@ int bpf_link_create(int prog_fd, int target_fd,
- 	case BPF_CGROUP_GETSOCKOPT:
- 	case BPF_CGROUP_SETSOCKOPT:
- 	case BPF_LSM_CGROUP:
-+	case BPF_STRUCT_OPS:
- 		relative_fd = OPTS_GET(opts, cgroup.relative_fd, 0);
- 		relative_id = OPTS_GET(opts, cgroup.relative_id, 0);
- 		if (relative_fd && relative_id)
-@@ -1056,6 +1057,7 @@ int bpf_prog_query_opts(int target, enum bpf_attach_type type,
- 	attr.query.attach_type		= type;
- 	attr.query.query_flags		= OPTS_GET(opts, query_flags, 0);
- 	attr.query.count		= OPTS_GET(opts, count, 0);
-+	attr.query.type_id		= OPTS_GET(opts, type_id, 0);
- 	attr.query.prog_ids		= ptr_to_u64(OPTS_GET(opts, prog_ids, NULL));
- 	attr.query.link_ids		= ptr_to_u64(OPTS_GET(opts, link_ids, NULL));
- 	attr.query.prog_attach_flags	= ptr_to_u64(OPTS_GET(opts, prog_attach_flags, NULL));
-diff --git a/tools/lib/bpf/bpf.h b/tools/lib/bpf/bpf.h
-index 7534a593edae..490e8cb4ba53 100644
---- a/tools/lib/bpf/bpf.h
-+++ b/tools/lib/bpf/bpf.h
-@@ -637,9 +637,10 @@ struct bpf_prog_query_opts {
- 	__u32 *link_ids;
- 	__u32 *link_attach_flags;
- 	__u64 revision;
-+	__u32 type_id;
- 	size_t :0;
- };
--#define bpf_prog_query_opts__last_field revision
-+#define bpf_prog_query_opts__last_field type_id
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 61940e753552..47b7a8f73069 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -12887,6 +12887,7 @@ static int __init bpf_kfunc_init(void)
+ 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_LWT_SEG6LOCAL, &bpf_kfunc_set_skb);
+ 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_NETFILTER, &bpf_kfunc_set_skb);
+ 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_TRACING, &bpf_kfunc_set_skb);
++	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_STRUCT_OPS, &bpf_kfunc_set_skb);
+ 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_SCHED_CLS, &bpf_kfunc_set_skb_meta);
+ 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_SCHED_ACT, &bpf_kfunc_set_skb_meta);
+ 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_XDP, &bpf_kfunc_set_xdp);
+diff --git a/net/sched/bpf_qdisc.c b/net/sched/bpf_qdisc.c
+index 098ca02aed89..5691c13781a8 100644
+--- a/net/sched/bpf_qdisc.c
++++ b/net/sched/bpf_qdisc.c
+@@ -280,7 +280,6 @@ BTF_KFUNCS_START(qdisc_kfunc_ids)
+ BTF_ID_FLAGS(func, bpf_skb_get_hash)
+ BTF_ID_FLAGS(func, bpf_kfree_skb, KF_RELEASE)
+ BTF_ID_FLAGS(func, bpf_qdisc_skb_drop, KF_RELEASE)
+-BTF_ID_FLAGS(func, bpf_dynptr_from_skb)
+ BTF_ID_FLAGS(func, bpf_qdisc_watchdog_schedule)
+ BTF_ID_FLAGS(func, bpf_qdisc_init_prologue)
+ BTF_ID_FLAGS(func, bpf_qdisc_reset_destroy_epilogue)
+@@ -290,7 +289,6 @@ BTF_KFUNCS_END(qdisc_kfunc_ids)
+ BTF_SET_START(qdisc_common_kfunc_set)
+ BTF_ID(func, bpf_skb_get_hash)
+ BTF_ID(func, bpf_kfree_skb)
+-BTF_ID(func, bpf_dynptr_from_skb)
+ BTF_SET_END(qdisc_common_kfunc_set)
  
- /**
-  * @brief **bpf_prog_query_opts()** queries the BPF programs and BPF links
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 613afae26519..247ee90d151a 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -14169,6 +14169,70 @@ struct bpf_link *bpf_map__attach_struct_ops(const struct bpf_map *map)
- 	return &link->link;
- }
- 
-+struct bpf_link *bpf_map__attach_cgroup_opts(const struct bpf_map *map, int cgroup_fd,
-+					     const struct bpf_cgroup_opts *opts)
-+{
-+	LIBBPF_OPTS(bpf_link_create_opts, link_create_opts);
-+	struct bpf_link_struct_ops *link;
-+	__u32 relative_id, zero = 0;
-+	int err, fd, relative_fd;
-+
-+	if (!OPTS_VALID(opts, bpf_cgroup_opts))
-+		return libbpf_err_ptr(-EINVAL);
-+
-+	if (!bpf_map__is_struct_ops(map)) {
-+		pr_warn("map '%s': can't attach non-struct_ops map\n", map->name);
-+		return libbpf_err_ptr(-EINVAL);
-+	}
-+
-+	if (map->fd < 0) {
-+		pr_warn("map '%s': can't attach BPF map without FD (was it created?)\n", map->name);
-+		return libbpf_err_ptr(-EINVAL);
-+	}
-+
-+	if (!(map->def.map_flags & BPF_F_LINK)) {
-+		pr_warn("map '%s': can't attach to cgroup without BPF_F_LINK\n", map->name);
-+		return libbpf_err_ptr(-EINVAL);
-+	}
-+
-+	relative_id = OPTS_GET(opts, relative_id, 0);
-+	relative_fd = OPTS_GET(opts, relative_fd, 0);
-+
-+	if (relative_fd && relative_id) {
-+		pr_warn("map '%s': relative_fd and relative_id cannot be set at the same time\n",
-+			map->name);
-+		return libbpf_err_ptr(-EINVAL);
-+	}
-+
-+	link_create_opts.cgroup.expected_revision = OPTS_GET(opts, expected_revision, 0);
-+	link_create_opts.cgroup.relative_fd = relative_fd;
-+	link_create_opts.cgroup.relative_id = relative_id;
-+	link_create_opts.flags = OPTS_GET(opts, flags, 0);
-+
-+	link = calloc(1, sizeof(*link));
-+	if (!link)
-+		return libbpf_err_ptr(-ENOMEM);
-+
-+	err = bpf_map_update_elem(map->fd, &zero, map->st_ops->kern_vdata, 0);
-+	if (err && err != -EBUSY) {
-+		free(link);
-+		return libbpf_err_ptr(err);
-+	}
-+
-+	link->link.detach = bpf_link__detach_struct_ops;
-+
-+	fd = bpf_link_create(map->fd, cgroup_fd, BPF_STRUCT_OPS, &link_create_opts);
-+	if (fd < 0) {
-+		free(link);
-+		return libbpf_err_ptr(fd);
-+	}
-+
-+	link->link.fd = fd;
-+	link->map_fd = map->fd;
-+
-+	return &link->link;
-+}
-+
- /*
-  * Swap the back struct_ops of a link with a new struct_ops map.
-  */
-diff --git a/tools/lib/bpf/libbpf.h b/tools/lib/bpf/libbpf.h
-index 48266e752223..026932f20962 100644
---- a/tools/lib/bpf/libbpf.h
-+++ b/tools/lib/bpf/libbpf.h
-@@ -960,6 +960,9 @@ bpf_program__attach_cgroup_opts(const struct bpf_program *prog, int cgroup_fd,
- struct bpf_map;
- 
- LIBBPF_API struct bpf_link *bpf_map__attach_struct_ops(const struct bpf_map *map);
-+LIBBPF_API struct bpf_link *bpf_map__attach_cgroup_opts(const struct bpf_map *map,
-+							int cgroup_fd,
-+							const struct bpf_cgroup_opts *opts);
- LIBBPF_API int bpf_link__update_map(struct bpf_link *link, const struct bpf_map *map);
- 
- struct bpf_iter_attach_opts {
-diff --git a/tools/lib/bpf/libbpf.map b/tools/lib/bpf/libbpf.map
-index a811a1b3a085..7a84dd00ce95 100644
---- a/tools/lib/bpf/libbpf.map
-+++ b/tools/lib/bpf/libbpf.map
-@@ -458,6 +458,7 @@ LIBBPF_1.7.0 {
- 
- LIBBPF_1.8.0 {
- 	global:
-+		bpf_map__attach_cgroup_opts;
- 		bpf_program__add_flags;
- 		bpf_program__attach_tracing_multi;
- 		bpf_program__clear_flags;
+ BTF_SET_START(qdisc_enqueue_kfunc_set)
 -- 
 2.52.0
 
