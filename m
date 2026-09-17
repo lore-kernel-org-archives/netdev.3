@@ -1,219 +1,157 @@
 Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC674B0E21
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 10:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AEB4A99A2
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 10:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789639893; cv=none; b=e1V1M9PQsIPmF/sPV3KzWg6TWc8aO1pt7mHGq8M1+y4etAlt/w/xoJrGLJfMvrrsj2yc6sOveC+ylmYIm6IOxQDnp/oOLzf08H7kyNRiCWqSBlD4nFMs4gk7OnZmFKTkL4olA6gZ/bLtSvjK8XIEUPk9+IDmptKKzeLWCXGT5/M=
+	t=1789639937; cv=none; b=Y5MoNsMR5mfM/QHXj2OrsbnN/oSnvvj8erwjwzVHdqhC9rhQkjqGri/n4ifvlPOTTTFcZF6+X5kz27K1ql/g78heDPYXNmW2uM8rtpkXXZ0vnSHPYBKNCtuxs+4WtYMuz+HKOe5T7yWzIlGDJlCHp9gY6jowhIGCGAelkY6Pu/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789639893; c=relaxed/simple;
-	bh=Khdn0yNASJVEvDKFWl2nzuYWJwtntVVgAPJPaEFV7fo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rStkTjM6nRWMFy2xXvCHGdsL6b2UL0N5E6bQWdku0+skMgeOoHszgCGVPzPAU0dEaaHl5TSSlRXztxDESUb4UcLz2BQo8SSUcSd2PcbyYaA1NM33z9c7m7R6rFsWrsDqbv3L9j5vE1Z6YBJNqOEkC4+i+P5DvFzO1HEOAe2PPzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B2/64C10; arc=none smtp.client-ip=74.125.225.141
+	s=arc-20240116; t=1789639937; c=relaxed/simple;
+	bh=qtKtKBO61OoCe8lbDkcmUG8lBmk30/Jv2wDq64SQZuI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qK03x48XCEhUWUtUahS4+aAAnQO+yZgMBqnJ2OW3ahHl15RaQkIX4qLMfQdEciW5Sp0GLP8YzYazQzqnbihNR0u7i2mfUeyaujLpEGcHFGij7VdDT+jjFnATdjrgnTqMMcI0NGotYq4iV3KyVaeBwTaOBhNDKs/YsTXOBMqaiOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nTgPfqKH; arc=none smtp.client-ip=74.125.225.141
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B2/64C10"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49cd5462b69so3800005e9.1
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 03:11:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nTgPfqKH"
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b912d822dso4844915e9.2
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 03:12:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789639890; x=1790244690; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+j9x/TYoYdCBQA+hpYRUNFOKzVf0y/0bQ3U7CD1aFBI=;
-        b=B2/64C10PvceXRv9EmHXZ4hpJBA4MVCJ2lVktRzIbQZzDkGzU99sBvsz/JcqIHPD1c
-         PA7PjWUaqYUg+sWW/X/9EkHkbxl83WBg3yn2u/Sr5VdGyaCJxwdvX66dGBp0NikOs3HC
-         NVDWVpuTJr/HCHJSZx7/f05woBDsoQOWoum6iMrJohQe60WN5oKSEpURO3TMHAieI1PA
-         rxB6GII9ScFiJ5X3G40ytdrY87uW1deaH5SgnlXvQ01n80IsR1b5tzMKKXJ200nygakU
-         rWXx8QfLtgEArd/dIjym+P4zzBhbBVwagCnNZFNXmt+zcrLluGm0B74yJ6Cm2X1DUVlo
-         mUkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789639890; x=1790244690;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1789639933; x=1790244733; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=+j9x/TYoYdCBQA+hpYRUNFOKzVf0y/0bQ3U7CD1aFBI=;
-        b=1qv4QRY4+b49BUrANIG62QxTHy8eQVUjRWj5w3oLxOnjkRRz9lugllGLvMff/4Bngn
-         uD/fFyHEq8u/jgMzrM3mM322tvh2ZDmVEkCDGBFEfnYfRLTH6jTtAsqzgSMRhwLWrSB4
-         Oa9KriqyDBNW8xkDwdHwedtxS5EcZE3zv5yo2cfDpeUEaDKzjecAamNLs6GdgToHArzW
-         gssbyvGhPjkwx8EytiOzFJGDHfzoE2PWMnB4V4kD/oCywNln+vkhRrEClMg5kG6O9uGD
-         yIQPe+X7eqHmwZmT0efRYXV/XUA57R6qTKShOgAo53LakUXMGO2RaRilLutV/GJz18vR
-         HA2g==
-X-Gm-Message-State: AFuF++kURHRmFvWiYmVY9oJFBnVQBkexVS5RIV8rlUItv7zxIkwOhFr+
-	UGkfwl2OrV2MN2PFwyzfgVND4hAj4KOs0NRXsysrbDoNbNwamWjduCfE
-X-Gm-Gg: AYBFou3XuUS6bcjnWJkppENRKGbEVX2p0VTmO31o5GPXbdPphsXI67Y6bPvIi5g4RKt
-	5UqWPFBA6DgasWJAcyBwx7IM7ceIDQ2qDXQwt0vJTPf8jeWIGZNAYohYgRs4pIVkH0reGMxgSHl
-	VjKstpiqmm3oHwJkQHSeej3CfvkzKBeQm+epcTThH53vrysGkh04+VX1JPi/WOfBcRYhfy/iYQz
-	bjKq142nn4PupViyKd43Dm4HUfvl7AiQy1k3RWnifHNHAiQttiqYP3af3xYooRKDBcoFWApVlUR
-	herfp6X88y6jPpjF9/aFbC11VzanU4dqRhNv7k0JGW5LfkPRcdqUZKtKubZR/aH8QOwuFCUCbPv
-	3/bLDvmQMqQb0cWzrsg+VSKcbL0oUxjgTJY2+pHmd+XNYVUZBA/HfWPbok2j2yJurwQwDkMyKlm
-	0QxLM7QFURtzAkyZqQVS1nPsF6WeHSdmWgdnTpGT3+aEBQVHdZc0fuEzob6XF/ZqL/1te2XqJfZ
-	/+C2FAlnf/FOQn+kdP1g4lTlM/ErH0m8Eij8w==
-X-Received: by 2002:a05:600c:524e:b0:49f:c2ef:cfb9 with SMTP id 5b1f17b1804b1-49fc2efcfbcmr892015e9.4.1789639889542;
-        Thu, 17 Sep 2026 03:11:29 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fbd6f24c7sm23288715e9.1.2026.09.17.03.11.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 03:11:28 -0700 (PDT)
-Date: Thu, 17 Sep 2026 11:11:27 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: vladimir.oltean@nxp.com
-Cc: netdev@vger.kernel.org, Zefir Kurtisi <zefir.kurtisi@westermo.com>,
- Claudiu Manoil <claudiu.manoil@nxp.com>, Wei Fang <wei.fang@nxp.com>, Clark
- Wang <xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Alexei
- Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend
- <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, Simon
- Horman <horms@kernel.org>, Richard Cochran <richardcochran@gmail.com>,
- Yangbo Lu <yangbo.lu@nxp.com>, Ioana Ciornei <ioana.ciornei@nxp.com>,
- imx@lists.linux.dev, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH v3 net 4/7] net: enetc: pad short frames in software
-Message-ID: <20260917111127.577d344b@pumpkin>
-In-Reply-To: <20260915222735.1016937-5-vladimir.oltean@nxp.com>
-References: <20260915222735.1016937-1-vladimir.oltean@nxp.com>
-	<20260915222735.1016937-5-vladimir.oltean@nxp.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        bh=jXd66g/TmmiGHEM82GWIsMZ57cUtyZBBMLPotbvyTAU=;
+        b=nTgPfqKHOpWdTeEDbKrvIUgX6y+oMWwgmkTWBTc0Ipjn2WJpuBFkeCNr7zV/U1i4qC
+         +XcI6hAAsMEjK6E/F7gqSCvy8+wnCo8pCmbuRBdpAGVloVPtQrdM7JLo/RlEOlYwq4iB
+         zO+kJYrmEZD1RCh3PnN2NvHtx9EAl9KqIbBKzjP552B99w0Fvm2VPaIYDtaXA4thsMlI
+         XDA7F0pO+/SkAE6xkyzZ0FZta/Sck9EWyJrnroKT2gWLlljAWWpLUqrs313V63ePfpRf
+         kSmSmdyazoL0EK0ztjFUqQQLGYJfPCFAclYVTibdtaQkbFVPEHjhRllpbkccr1lGvbp8
+         f8bQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789639933; x=1790244733;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=jXd66g/TmmiGHEM82GWIsMZ57cUtyZBBMLPotbvyTAU=;
+        b=mjEMCNvEef7g4ar50Ax92gZjT8og83aW60Zya59WPCJeePkaQ0iczQm4fuX3wgRCcl
+         k1a/3A13dbyMrDqaeBfmHRObfdDZeN2nsFCQg4wn3BLL0v0vz0SzPOAgln6Q21w5bN2J
+         AbTs0UjEbRAA+XkMLw83h3XsAcci/U62uBXYCNcSAFCd/3tJS6bt2EC7DKFxPyND63OY
+         xavlXDAEKaayOSnF+qr5kPYNPKyqaaj9cnQbMjWFGFT1+3SKRYlkGPRKd4sqboCDyi9v
+         vjeIRDgbpd+ZKTJuexXi0Q7rqckqyKOzc996q6K9tA8BxgSbjKMqN6Eubc/bOYboRpsF
+         awpg==
+X-Gm-Message-State: AFuF++ls8z/XuvmbFvYmhurS8k/o0+8y+DEu6cm5i2WOni46ZPRkGr8K
+	OEyqIZgEoV4ChM3H2w7VjgI/CKfGUR9nHv559bnc4N27nmNTNuUP3N6I
+X-Gm-Gg: AYBFou0QjXYmVZHz6il5yQOQjS7b83opadTBP48yu0/FuNHxHlfPCRqfJWP9MZb57OS
+	fA1iFJxehXaPdzxtTvH/H0pczRV6pxtIzpLjRQv9M5BRdOvuIEVeZidtR8UByLX2H4ArKuni+Mv
+	f9Bgz4PerGrjiRg/vR7ZUW8zkIMYzoFhnjlA5AZ2NUaQQodjieQK27y7fHlRd1MwBgpnx50RDjG
+	Nn6kw3KsjDzau763yWAdSrlYE0umn/eH8gnvtf/uCzBgifFviTBZ5/W6cDU4+JCqeLQUdDD0y51
+	jvHlkccgW1YdcVzww7eeE4lRemQZ8mz46W9OH2J1nUONNIxP7Seej6km/GV9x7QzYlM/ugq45s8
+	LehtVAuzF1fA1vrFc+aVSDaX+gi0+Ug2mqBkMRCQ7LhIgE+m7oYs0mkBoT8wVVB6uYfwvy9+kee
+	tsCXVA+NZV7SPkpw1Q/F2/yyjsniXhalP+5eRXQG2RhCs+iP4AMA59g2R0svWOCfeFqBlwpxIWF
+	HCeXWSk/+XF6O/GXoxZiE3zt8ACSQSJd1IVZSJFdSxD2f2LKWKB
+X-Received: by 2002:a05:600c:34c2:b0:49e:6c27:d093 with SMTP id 5b1f17b1804b1-49eb72f7043mr68451005e9.15.1789639933119;
+        Thu, 17 Sep 2026 03:12:13 -0700 (PDT)
+Received: from ?IPV6:2a02:a03f:a75e:9a00:d1c6:8f88:e273:c9da? ([2a02:a03f:a75e:9a00:d1c6:8f88:e273:c9da])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fbd226ef3sm63094115e9.1.2026.09.17.03.12.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Sep 2026 03:12:12 -0700 (PDT)
+Message-ID: <fd0ffc06-f1c5-42d6-ae16-b592208c6d69@gmail.com>
+Date: Thu, 17 Sep 2026 12:12:11 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] seg6: keep room for the mac header when growing the
+ headroom
+To: Yuya Kusakabe <yuya.kusakabe@gmail.com>,
+ Andrea Mayer <andrea.mayer@uniroma2.it>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260917-seg6-maclen-headroom-v1-1-02ccec50f096@gmail.com>
+Content-Language: en-US
+From: Justin Iurman <justin.iurman@gmail.com>
+In-Reply-To: <20260917-seg6-maclen-headroom-v1-1-02ccec50f096@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Wed, 16 Sep 2026 01:27:31 +0300
-vladimir.oltean@nxp.com wrote:
-
-> The ENETC does not support BUF_LEN or FRM_LEN in TX buffer descriptors
-> less than 16. This is written in the reference manual of all SoCs
-> supported by the driver: LS1028A, i.MX943, i.MX95 etc.
+On 9/16/26 23:38, Yuya Kusakabe wrote:
+> __seg6_do_srh_inline(), __seg6_do_srh_encap() and
+> seg6_do_srh_encap_red() all grow the headroom with skb_cow_head(), push
+> the new headers into it, and then rebuild the mac header below them with
+> skb_mac_header_rebuild().  The headroom left after the push has to be at
+> least skb->mac_len for that rebuild, but the three requests ask for the
+> pushed length plus dst_dev_overhead(), which leaves LL_RESERVED_SPACE()
+> of the egress device, 16 bytes for plain Ethernet.
 > 
->   Frames must not have a FRM_LEN that is less than 16 bytes. Frames of
->   0-15 bytes are not supported.
->   (...)
->   The first descriptor in a chain must not have a BUFF_LEN that is less
->   than 16 bytes.
+> Where the mac header is longer than that, as it is on ingress through a
+> VLAN device with reorder_hdr off, the rebuild runs out of room:
+> skb_set_mac_header(skb, -skb->mac_len) computes a negative offset,
+> stores it unchecked in the u16 skb->mac_header, and the memmove that
+> follows writes skb->mac_len bytes about 64 KB past skb->head.
+> Forwarding plain ping6 traffic through such a device reproduces it on
+> all five encapsulation modes; skb->mac_header comes back as 65534 on a
+> 704-byte head.
 > 
-> I don't think proper attention was paid to this during development, we
-> found the text at the end of a bug investigation. Therefore, the driver
-> does not enforce this.
+> Ask for whichever of the two is larger.  These requests carried
+> skb->mac_len until the egress overhead took its place rather than
+> joining it.
 > 
-> But the frame length is out of the driver's control, and the network
-> stack can actually send packets with skb->len smaller than that. The
-> result is unpleasant, as will be explained below, so for simplicity
-> sake, we just pad anything shorter than ETH_ZLEN.
-> 
-> Zefir Kurtisi found a case where transmitting L2 WNM keep-alive frames
-> through ENETC would soft-lockup the host through an IRQ storm. He later
-> distilled this into a small enetc-killer.c user space program which
-> sends a packet with MAC DA, MAC SA and EtherType IPv4 (14 octets in
-> length) through an AF_PACKET raw socket.
-> 
-> The IRQ storm is actually a curious effect of a chain of events.
-> 
-> The hardware behaviour, when an invalid BD is put in its TX ring, is
-> that it would transmit the packet as normal, update counters, raise
-> completion interrupt as normal, but it would just not advance the
-> consumer index of the ring (TBaCIR) to signify that the BD has been
-> consumed and is available for software to free. The ring will also get
-> its TBaSR[BUSY] bit persistently set to 1 afterwards.
-> 
-> It deserves an explanation why the behaviour above would lead to an
-> IRQ storm, since ENETC interrupts are message-based (MSI-X), and an
-> unhandled interrupt would typically just be lost rather than retrigger
-> itself as a wired interrupt would.
-> 
-> NAPI processing in ENETC has 3 steps:
-> 
-> I. the enetc_msix() hardirq handler disables RBaIER, TBaIER and sets
->    softirq processing to the 'pending' state.
-> 
-> II. the enetc_poll() softirq handler for the IRQ vector walks through
->     the TX rings affine to that vector, checks which ones have a TBCIR
->     updated since last time - enetc_bd_ready_count() - processes those
->     completed frames, and clears pending interrupts in these updated TX
->     rings by writing to TBaIDR. (I've excluded RX processing due to it
->     being irrelevant).
-> 
-> III. After the softirq handler does its round of checking all RX and TX
->      rings for updates, it re-enables all interrupts in RBaIER and
->      TBaIER that were previously disabled by the hardirq handler, and
->      exits.
-> 
-> Because the TX ring with the short frame is skipped at step II (TBCIR
-> wasn't updated as part of HW malfunction), its pending IRQ is not
-> cleared in TBaIDR by enetc_clean_tx_ring().
-> 
-> But because enetc_msix() disables TBaIER at step I and re-enables it at
-> step III, another MSI will be fired upon re-enabling it. This is what
-> completes the cycle and the driver goes back to step I.
-> 
-> So the driver misinterprets the mixed signals it's getting from the
-> hardware, and ends up causing a software-amplified IRQ storm.
-> 
-> Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
-> Reported-by: Zefir Kurtisi <zefir.kurtisi@westermo.com>
-> Closes: https://lore.kernel.org/netdev/b3d9136c-2803-4203-b1ea-1f9e62de80a1@gmail.com/
-> Tested-by: Zefir Kurtisi <zefir.kurtisi@westermo.com>
-> Reviewed-by: Wei Fang <wei.fang@nxp.com>
-> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+> Fixes: 40475b63761a ("net: ipv6: seg6_iptunnel: mitigate 2-realloc issue")
+> Assisted-by: LLM
+> Signed-off-by: Yuya Kusakabe <yuya.kusakabe@gmail.com>
 > ---
-> v1->v3: none
-> ---
->  drivers/net/ethernet/freescale/enetc/enetc.c | 13 +++++++++++++
->  drivers/net/ethernet/freescale/enetc/enetc.h |  2 ++
->  2 files changed, 15 insertions(+)
+>   net/ipv6/seg6_iptunnel.c | 9 ++++++---
+>   1 file changed, 6 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-> index 0216f7d08e19..bbad942041f5 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-> @@ -1077,6 +1077,19 @@ netdev_tx_t enetc_xmit(struct sk_buff *skb, struct net_device *ndev)
->  	u8 udp, msgtype, twostep;
->  	u16 offset1, offset2;
->  
-> +	/* Hardware does not support transmit buffer descriptors with a total
-> +	 * length of less than 16 bytes, or a first buffer size of less than
-> +	 * 16 bytes.
-> +	 */
-> +	if (unlikely(skb_headlen(skb) < ENETC_MIN_BUFF_SIZE &&
-> +		     skb_linearize(skb))) {
+> diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+> index 61c6a27bf202..0e60bbca19ca 100644
+> --- a/net/ipv6/seg6_iptunnel.c
+> +++ b/net/ipv6/seg6_iptunnel.c
+> @@ -153,7 +153,8 @@ static int __seg6_do_srh_encap(struct sk_buff *skb, struct ipv6_sr_hdr *osrh,
+>   	hdrlen = (osrh->hdrlen + 1) << 3;
+>   	tot_len = hdrlen + sizeof(*hdr);
+>   
+> -	err = skb_cow_head(skb, tot_len + dst_dev_overhead(cache_dst, skb));
+> +	err = skb_cow_head(skb, tot_len + max(skb->mac_len,
+> +					      dst_dev_overhead(cache_dst, skb)));
+>   	if (unlikely(err))
+>   		return err;
+>   
+> @@ -255,7 +256,8 @@ static int seg6_do_srh_encap_red(struct sk_buff *skb,
+>   
+>   	tot_len = red_hdrlen + sizeof(struct ipv6hdr);
+>   
+> -	err = skb_cow_head(skb, tot_len + dst_dev_overhead(cache_dst, skb));
+> +	err = skb_cow_head(skb, tot_len + max(skb->mac_len,
+> +					      dst_dev_overhead(cache_dst, skb)));
+>   	if (unlikely(err))
+>   		return err;
+>   
+> @@ -351,7 +353,8 @@ static int __seg6_do_srh_inline(struct sk_buff *skb, struct ipv6_sr_hdr *osrh,
+>   
+>   	hdrlen = (osrh->hdrlen + 1) << 3;
+>   
+> -	err = skb_cow_head(skb, hdrlen + dst_dev_overhead(cache_dst, skb));
+> +	err = skb_cow_head(skb, hdrlen + max(skb->mac_len,
+> +					     dst_dev_overhead(cache_dst, skb)));
+>   	if (unlikely(err))
+>   		return err;
 
-Isn't it only necessary to pull a few bytes into the linear region?
+Overall, LGTM, thanks. However, I think we'd need a v2 with the followings:
 
-> +		dev_kfree_skb_any(skb);
-> +		return NETDEV_TX_OK;
-> +	}
-> +
-> +	if (eth_skb_pad(skb))
-> +		return NETDEV_TX_OK;
+- use max_t(unsigned int, skb->mac_len, dst_dev_overhead(cache_dst, 
+skb)) instead of max()
+- apply the same changes to ioam6_iptunnel and rpl_iptunnel (all in one 
+patch is fine)
 
-That could be inside the (skb_headlen(skb) < ENETC_MIN_BUFF_SIZE) test.
-
-David
-
-> +
->  	/* Mark tx timestamp type on enetc_cb->flag if requires */
->  	if ((skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) &&
->  	    (priv->active_offloads & ENETC_F_TX_TSTAMP_MASK))
-> diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h b/drivers/net/ethernet/freescale/enetc/enetc.h
-> index d1e9d9130057..a4e76060e94b 100644
-> --- a/drivers/net/ethernet/freescale/enetc/enetc.h
-> +++ b/drivers/net/ethernet/freescale/enetc/enetc.h
-> @@ -22,6 +22,8 @@
->  #define ENETC_MAX_MTU		(ENETC_MAC_MAXFRM_SIZE - \
->  				(ETH_FCS_LEN + ETH_HLEN + VLAN_HLEN))
->  
-> +#define ENETC_MIN_BUFF_SIZE	16
-> +
->  #define ENETC_CBD_DATA_MEM_ALIGN 64
->  
->  #define ENETC_MADDR_HASH_TBL_SZ	64
-
+Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
