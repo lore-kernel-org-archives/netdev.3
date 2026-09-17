@@ -1,276 +1,255 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B76D3D0927;
-	Thu, 17 Sep 2026 17:12:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 304FE51DB1E
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 17:13:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789665143; cv=none; b=dwE11kKhYIaxeFgLu5X2/7GNgaQy9fXuNbPN+Mx0Uki6ZxOovsDrcZ1bO8pTJ9ulmU7SYUjsFq0VYP/8JZzxIFVmeYVRyt6Vk4yPmvHwp4yZy1ghungxPSbqXdPvVOi4eesllf4DtLGa4u0cFBJusCiqyjdf488/pZhtuyEsWjs=
+	t=1789665236; cv=none; b=RhPhJmPLcE7Kbq/UFHIQgAv5/pImybjBSgnsLb+rHri5lsYNXRPXn5toHmzSKanXLjVLu444Q9J6exhJtjAG00XEjnOJYSPmE3Mv7YOZBdH5vk4TaylzYhBCcv+8qmDZMYu+jcj3hVMb+vPaKxqYR2I6JQq2Yc3V/HXdDfG/BF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789665143; c=relaxed/simple;
-	bh=j7dTLukPSxP8xyqMMxwbI5yqmWYOvJmF32Gzz6iG+58=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kF+fbxeuN4QC0QgZHp3ftvN19D9t68BWjbsqrmq/jDwPwpHnTBjNUx3KZyGvY8X18rV/gyan5z5pFTSJfcB/1fxqyAp27IMUhAaMjO/eYz2+5+6DNoTy+lY7IVwkS+Vh1aMkz1SrdRYdMyqo8nv3c+yggjAfWmGKU8vjftwiLgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WSSGZKJ7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789665236; c=relaxed/simple;
+	bh=Okxe09XM/plBGMCS8GFDVV/XQAWZHkbxabHUnX0rDjk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kq4LcWtdXwNSt46dp3dWEQICX/90sHTTjstmBo8K7XLKI0IcKlalcW5CpSrebdcPPJTjX/Lki9ALB4XqO0YfYXKYL4Vlcd0v9babiWsTPGyKkabHaBNo0TRen428uS5P7RpN/mdLS790sWZSf9cutsDUXHRGo1jVjwCursrWrV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=KRTjoDGv; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=S36ujVj+; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WSSGZKJ7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A7501F000FF;
-	Thu, 17 Sep 2026 17:12:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789665141;
-	bh=fniPcj8dhly2IjcdzAeZ7tDhgMSq36SfLh6HCLrSIR4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=WSSGZKJ7w4bWzJ5V/S3LwPCMEr63Q3So2HhtHDis7AHNPNPSs+Kmx+SnlWpLGz5nT
-	 LaEMwKcuTEpIBupCMmJiR2khjOBmg2RF6x463ZqGBFVOyp/7ZLikZZzKiE9KeX17F1
-	 cFNm/GQ4bYJVve9IIKYyv73yMc3qj8hl6rXOHNbECibQhEG6LcJhMnRM1JgMMRpmg1
-	 obsDkep5GJqgwAwjMNwZOp7cj/qgyDZPmKfgq1F/G11y9YukZd5IRmEzCyQDm8RnKQ
-	 HBUTsP7Yf8olPT8EX6EP98CdwiDrmCztsfijzqCVBwcenKkmFUM84OI5CI85SIlcSS
-	 I14WvbZ9QMNyw==
-Subject: Re: [PATCH] net: lantiq: fix netdev leak on remove
-From: netdev-bot+sashiko@kernel.org
-To: lgs201920130244@gmail.com
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="KRTjoDGv";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="S36ujVj+"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68HH5guA2413197
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 17:13:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	dwwsd9n1Ie2Evql/hn9vxy0s0eRY7/6wy2UffO1bNKo=; b=KRTjoDGvYXJB7K/x
+	f/r06SUdeaALn6zlkn46sCke4cdJvM81SCTy0Rl6LtfqSjE960aKcQdxrkvKxlqj
+	uqlyCyRZQwQMQXzxs+PmxO8QnSbJdE4eIBdcb+WdFWx4xIVLIyrkHbZJCcbpfW1u
+	a1oNfwkPnajMjJNdv5fM8c2xSA88fz7GYY/vnW8jojl/gWL3oxHKBmAnnbd0Fzfs
+	7cpJIb04tsvu9oA0P2InXQUxycpbRrdeQeMJx7G3lIe2S0MDJiMGDIef0xMP1UlI
+	v/oZb7LMfz+Jy6BS4rTpFOSI5dAmy2kMq1Zo/Vr0kTbrGvkamdG/DB/48FfvECAq
+	SLXYmw==
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4grgu5h835-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 17:13:52 +0000 (GMT)
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38ecc48b3c2so2435688a91.1
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 10:13:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1789665230; x=1790270030; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dwwsd9n1Ie2Evql/hn9vxy0s0eRY7/6wy2UffO1bNKo=;
+        b=S36ujVj+p2JNlsHG8oCzAkDW6QVK50jctqvkZnJtyqKiwqb6FwsPQtwamJHoPx3thF
+         Y6WrNzOzXqYuL4MDvN1DvPQUgi7yxWhK5XgjZDFFK5BcsfAHnBBw2soOELhwZm/0BxVy
+         St4KZfO3h0vDjsOeBig9IpzpTw4uYmvSp2UJr/SnTClJ8GMsE9D5JnWwgSTsu2fzuDuo
+         w29neWFifM/4swbhw88zVPR7h5PAZyiHscK9n2/Xsp0S54M6YBPHkctSWW/UIfo8NvbA
+         d2gb6y+LJqtqWVA7l4XjqzM1lH6jdrxOQrEWB1UMRx5JXQzzPPA7NLEcpXLXeMsSFBIs
+         MNeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789665230; x=1790270030;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=dwwsd9n1Ie2Evql/hn9vxy0s0eRY7/6wy2UffO1bNKo=;
+        b=GN2Zx1cIkghoFvneomxBySHiPfaRCwdaRiL1hWlV0j0aiHzmC31KJfug9ZnJGF/0+O
+         YqScTFeduulu81XmunWYRMBqRgFIN3RlEM05JWur8tyx7CIfyLOgVR6LOiflQzAheC0j
+         0C1Y7EKsmYRrIjhW053QYuXmRxJP4Ie8ma4AS0FX+Rbnn1yCoRXKLa655iSgwJyqBnxR
+         ufdE3gj2fr2hWmT3wuvEcL7WmCxXHRKiBEhdfIrC50yvZb4s+91nV7Yhub2TfW15zUkH
+         aUMmyz7Yyj1wRg6tUAYuxsL5NRs98PqL430Pw1jH3Vf+gED8NuLQ1wpMlTEcEt3yAl7T
+         swfQ==
+X-Forwarded-Encrypted: i=1; AKwUvByoCBPEtgTkbogGAGixzLWCcUbXefvY5CxAKqH+emhYZ3RvZBuLsw5VGlJoBCY1RgYY3UOE5ss=@vger.kernel.org
+X-Gm-Message-State: AFuF++nquuAMJsNdRHNqclcIyLRhzfdI6w648dzCiv4PsF19IcJRLChd
+	vF6KV2AXpZrNtniFDzpzbi6vrIwPcXmf+l1AMINQkA7x8F93x0NM8i7Jurhv5SZCZ/hVCL8oPt4
+	noSd3sqKH9Rxj5PwwaI0w6jqQildEDYmX6P8m/VCnAoDn0GSivROxATxOBxw=
+X-Gm-Gg: AYBFou1o9gv+AJ2/uJwgaryMnNb/K487EW9wGWdQsf6DSuW7Fc/1/fbhmhEhn3LJB6m
+	ToDZzthgn5V4izg1P5Rs2ITykxAESGvig4qiZFopEUpoyyBxB/5aHe1TEwsFYC2hmdN1UaLKfur
+	ALTCIEZxUQVTQJRS9a3B1YlD5b5Icmm7qu6qjQHpQXq23XzturoLCb3ezLeuC1F31d7XsP74T29
+	OMz2z6lcl8cSCX2b7QnFj56SQV8DCT/3DP79a/+JxwD3Ypu1F7TPDvxAZleCatTh3wmOmA/NeTI
+	yj5DmZv8a0CoNq68Aj7CHoXOjlWPp6Sfylj02AShrKyTjdi0tECYcUr4nDC0VnsWJW90RWrYNLp
+	HVu/VqT0D9StyLQ==
+X-Received: by 2002:a17:90b:4fcf:b0:39d:e54c:a28a with SMTP id 98e67ed59e1d1-39e1e2d7580mr15919841a91.8.1789665229869;
+        Thu, 17 Sep 2026 10:13:49 -0700 (PDT)
+X-Received: by 2002:a17:90b:4fcf:b0:39d:e54c:a28a with SMTP id 98e67ed59e1d1-39e1e2d7580mr15919812a91.8.1789665229347;
+        Thu, 17 Sep 2026 10:13:49 -0700 (PDT)
+Received: from oss.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e360ddfc2sm5976254a91.16.2026.09.17.10.13.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2026 10:13:48 -0700 (PDT)
+Date: Thu, 17 Sep 2026 22:43:39 +0530
+From: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+To: netdev-bot+sashiko@kernel.org
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, john@phrozen.org, ralph.hempel@lantiq.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Thu, 17 Sep 2026 17:12:20 +0000
-Message-ID: <178966514017.22033.13065360500867909863@kernel.org>
-In-Reply-To: <20260916020930.2606675-1-lgs201920130244@gmail.com>
-References: <20260916020930.2606675-1-lgs201920130244@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+        krzk+dt@kernel.org, conor+dt@kernel.org, afd@ti.com, andrew@lunn.ch,
+        hkallweit1@gmail.com, linux@armlinux.org.uk, richardcochran@gmail.com,
+        andersson@kernel.org, konradybcio@kernel.org,
+        alexandre.torgue@foss.st.com, peppe.cavallaro@st.com,
+        joabreu@synopsys.com, maxime.chevallier@bootlin.com,
+        mcoquelin.stm32@gmail.com, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net-next v2 7/9] net: stmmac: qcom-ethqos: set initial
+ RGMII link clock to lowest speed
+Message-ID: <aqwfw2sqhjkKl+7H@oss.qualcomm.com>
+References: <20260908-shikra_ethernet-v2-7-bbe3389d0652@oss.qualcomm.com>
+ <178912591910.219967.8208494265030276950@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <178912591910.219967.8208494265030276950@kernel.org>
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE3MDI0NSBTYWx0ZWRfXwNAkMAOqFjmd
+ lJgLycqwhf3akGcN0mWNjuwOVjv0KFwe8sWUyFxRRGmo3SYF9vE661UnIQjEaX30Q7LUbkqKOgh
+ g+H4JEKBhK3rE7RweZQSw1e4O1M0ZDY=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE3MDI0NSBTYWx0ZWRfX5ZVGGAkMI1wd
+ wLPEaN0WYY4E84PSqpaZ6yxF5dlZHQab9XiOoB0bCidgGhUvQ+phD95S4tzDykIJRkV6rT8ZRcu
+ H6bpW8QAUPrvG6djltqtlUU0If395CtGcoPmT+gUaYG9e41kaZFVA0u++zvS65CSAAKlP+IiJZY
+ ZeEQlP07sEUB4QY27+lAQGpe8HKDHSBV82caEUMO1q0h+5ZTgQC34mkpHvOfX09auxggz470oTn
+ VTeGAr2C5izKL6efPhUtt3CX4QBSqEHc7VLsIq5z3DB5QRlSfJyq5QFgQeDIE+xl1skzPShIBw2
+ KE3qrBILc0z/Vo74JSg9Hg6UlohGEmIG4DrLlbJtCQMTuPXcYjT+fY9DSRoWZLPfdZo29WvI58U
+ Kpd37va9ChfJ8cRmE83KGNz9YRJWJohtP00spkOGRLqd6OyfIogtMskYi5On6r8nnbSHQCZOLtB
+ NXUUaTH5gzlPBIar/8g==
+X-Proofpoint-GUID: Eh_DEBNybaOVuS-91QzwsiGZDh40hS7a
+X-Authority-Analysis: v=2.4 cv=GvbXaU1C c=1 sm=1 tr=0 ts=6aac1fd0 cx=c_pps
+ a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=VwQbUJbxAAAA:8 a=WqyH3TuB9VRS23WEE1oA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=uKXjsCUrEbL0IQVhDsJ9:22
+X-Proofpoint-ORIG-GUID: Eh_DEBNybaOVuS-91QzwsiGZDh40hS7a
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-17_04,2026-09-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 phishscore=0 adultscore=0 spamscore=0 impostorscore=0
+ bulkscore=0 clxscore=1015 suspectscore=0 lowpriorityscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609170245
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+On Fri, Sep 11, 2026 at 11:25:19AM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider:
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 1
+> 
+> - [Medium] For legacy RGMII phy-modes (rgmii, rgmii-rxid, rgmii-txid) the
+>   RGMII IO-macro DLL is programmed and its lock polled inside…
+> - [Low] Commit message names the wrong callback: it states "fix_mac_speed
+>   updates the rate once a link is established", but neither…
+> 
+> --
+> 
+> net: stmmac: qcom-ethqos: set initial RGMII link clock to lowest speed
+> 
+> The probe-time call to ethqos_set_clk_tx_rate() is changed from SPEED_1000
+> to SPEED_10 so the RGMII link clock is not left at 250 MHz while no link is
+> up.  Two questions below, one about the changelog wording and one about the
+> first link-up path.
+> 
+> > net: stmmac: qcom-ethqos: set initial RGMII link clock to lowest speed
+> >
+> > On probe the RGMII link clock is initialised at SPEED_1000, which
+> > translates to a 250 MHz source clock even when no PHY link is present,
+> > drawing unnecessary power.
+> >
+> > Initialise at SPEED_10 instead; fix_mac_speed updates the rate once
+> > a link is established.
+> 
+> [Severity: Low]
+> Is "fix_mac_speed updates the rate once a link is established" the right
+> callback name here?  Neither ethqos_fix_mac_speed_rgmii() nor
+> ethqos_fix_mac_speed_sgmii() calls clk_set_rate() on ethqos->link_clk; the
+> only clk_set_rate(ethqos->link_clk, ...) in the file is in
+> ethqos_set_clk_tx_rate(), which probe installs as
+> plat_dat->set_clk_tx_rate.
+> 
+> stmmac_mac_link_up() invokes the two as separate callbacks, fix_mac_speed()
+> first and set_clk_tx_rate() later:
+> 
+> 	if (priv->plat->fix_mac_speed)
+> 		priv->plat->fix_mac_speed(priv->plat->bsp_priv, interface,
+> 					  speed, mode);
+> 	...
+> 	if (priv->plat->set_clk_tx_rate) {
+> 		ret = priv->plat->set_clk_tx_rate(priv->plat->bsp_priv,
+> 						priv->plat->clk_tx_i,
+> 						interface, speed);
+> 
+> Could the changelog name set_clk_tx_rate instead, so the ordering is not
+> hidden?
 
-Critical: 0 · High: 1 (1) · Medium: 0 (1) · Low: 0
+Ack, the commit message can mention set_clk_tx_rate instead of
+fix_mac_speed.
 
-- [High] ltq_etop_remove() (drivers/net/ethernet/lantiq_etop.c:710-714)
-  tears resources down in inverted order: netif_tx_stop_all_queues();…
+> 
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+> > index a92bf4a6a2dbd..2471871562ed9 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+> > @@ -814,7 +814,7 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
+> >  				     "Failed to get serdes phy\n");
+> >  
+> >  	ethqos_set_clk_tx_rate(ethqos, NULL, plat_dat->phy_interface,
+> > -			       SPEED_1000);
+> > +			       SPEED_10);
+> 
+> [Severity: Medium]
+> Does the first 1000 Mbps link-up now run the SDCC DLL bring-up with the
+> probe-time 10 Mbps clock rate?
+> 
+> For the legacy rgmii / rgmii-rxid / rgmii-txid modes,
+> ethqos_fix_mac_speed_rgmii() enables the DLL and polls for lock:
+> 
+> 	if (speed != SPEED_100 && speed != SPEED_10) {
+> 		/* Set DLL_EN */
+> 		rgmii_setmask(ethqos, SDCC_DLL_CONFIG_DLL_EN,
+> 			      SDCC_HC_REG_DLL_CONFIG);
+> 		...
+> 		/* wait for DLL LOCK */
+> 		if (read_poll_timeout_atomic(rgmii_readl, val,
+> 					     val & SDC4_STATUS_DLL_LOCK,
+> 					     1000, 1000000, true,
+> 					     ethqos, SDC4_STATUS))
+> 			dev_err(dev, "Timeout while waiting for DLL lock\n");
+> 	}
+> 
+> and stmmac_mac_link_up() calls fix_mac_speed() before set_clk_tx_rate(), so
+> at that point ethqos->link_clk is still at the rate programmed at probe.
+> With SPEED_10 that is rgmii_clock(SPEED_10) = 2500000, doubled to 5 MHz for
+> the non-rgmii-id modes by ethqos_set_clk_tx_rate(), where it used to be
+> 250 MHz:
+> 
+> 	/* Clock Rate Requirements:
+> 	 * MAC added delay: 250/50/5 Mhz for 1G/100M/10M
+> 	 * No MAC delay (DLL bypass): 250/25/2.5 Mhz for 1G/100M/10M
+> 	 */
+> 
+> If the DLL cannot lock at that input rate, the poll busy-waits its full 1 s
+> budget in the link-up path and then continues with an unlocked DLL, since
+> fix_mac_speed() is not re-run after set_clk_tx_rate() raises the rate to
+> 250 MHz.
+> 
+> Note the driver itself skips the DLL enable/lock for SPEED_10 and
+> SPEED_100, which suggests the block is expected to see the rate matching
+> the negotiated speed.  Is a minimum DLL input frequency involved here, and
+> if so should the probe-time rate stay high, or should the clock be raised
+> before fix_mac_speed() runs?
+> 
 
-Pre-existing issues:
-- [High] ltq_etop_init() is registered as .ndo_init
-  (drivers/net/ethernet/lantiq_etop.c:667), so it runs from inside…
-- [Medium] In ltq_etop_remove() the PPE power domain is gated off by
-  ltq_etop_hw_exit() (ltq_pmu_disable(PMU_PPE),…
+From what I have seen, the clock rate does not affect the DLL lock. Even
+in the existing code, a switch between speeds would end up attempting
+the DLL lock at the old speed's clock rate while the new clock rate gets
+set later on.
 
---
-
-net: lantiq: fix netdev leak on remove
-
-The patch adds a free_netdev() call to ltq_etop_remove() so that the
-net_device allocated by alloc_etherdev_mq() in ltq_etop_probe() is released
-on driver removal, matching the free_netdev() already present on the probe
-failure path.
-
-> diff --git a/drivers/net/ethernet/lantiq_etop.c b/drivers/net/ethernet/lantiq_etop.c
-> index 83ce3bfefa5c2..ecf2f3cbf4d9d 100644
-> --- a/drivers/net/ethernet/lantiq_etop.c
-> +++ b/drivers/net/ethernet/lantiq_etop.c
-> @@ -711,6 +711,7 @@ static void ltq_etop_remove(struct platform_device *pdev)
->  		ltq_etop_hw_exit(dev);
->  		ltq_etop_mdio_cleanup(dev);
->  		unregister_netdev(dev);
-> +		free_netdev(dev);
-
-[Severity: High]
-
-Should the teardown order in ltq_etop_remove() be corrected before the
-free_netdev() is added here?
-
-netif_tx_stop_all_queues() does not clear IFF_UP and does not disable NAPI
-(napi_enable() is in ltq_etop_open(), napi_disable() only in
-ltq_etop_stop()), so the device is still up and NAPI is still enabled when
-the PHY and the DMA rings are torn down.
-
-First, does ltq_etop_mdio_cleanup() leave dev->phydev NULL for the later
-close?
-
-drivers/net/ethernet/lantiq_etop.c:ltq_etop_mdio_cleanup() {
-	phy_disconnect(dev->phydev);
-	mdiobus_unregister(priv->mii_bus);
-	mdiobus_free(priv->mii_bus);
-}
-
-phy_disconnect() -> phy_detach() does:
-
-drivers/net/phy/phy_device.c:phy_detach() {
-	...
-		phydev->attached_dev->phydev = NULL;
-	...
-}
-
-unregister_netdev() then closes the still-up device:
-
-net/core/dev.c:unregister_netdevice_many_notify() {
-	...
-		if (!(dev->flags & IFF_UP))
-			continue;
-	...
-	netif_close_many(&close_head, true);
-	...
-}
-
-which calls ndo_stop == ltq_etop_stop():
-
-drivers/net/ethernet/lantiq_etop.c:ltq_etop_stop() {
-	netif_tx_stop_all_queues(dev);
-	phy_stop(dev->phydev);
-	...
-}
-
-and phy_stop() dereferences its argument immediately:
-
-drivers/net/phy/phy.c:phy_stop() {
-	struct net_device *dev = phydev->attached_dev;
-	...
-}
-
-Does removing the driver while the interface is up therefore oops in
-phy_stop(NULL) under RTNL, and does that also mean the free_netdev() added
-here is never reached in exactly the case the commit message is about?
-
-Second, can a pending NAPI poll now touch freed memory? ltq_etop_hw_exit()
--> ltq_etop_free_channel() runs with NAPI still enabled:
-
-drivers/net/ethernet/lantiq_etop.c:ltq_etop_free_channel() {
-	ltq_dma_free(&ch->dma);
-	if (ch->dma.irq)
-		free_irq(ch->dma.irq, priv);
-	...
-}
-
-ltq_dma_free() releases the descriptor ring:
-
-arch/mips/lantiq/xway/dma.c:ltq_dma_free() {
-	ltq_dma_close(ch);
-	dma_free_coherent(ch->dev, LTQ_DESC_NUM * LTQ_DESC_SIZE,
-		ch->desc_base, ch->phys);
-	...
-}
-
-free_irq() waits for an in-flight hardirq but not for an already scheduled
-poll, and both ltq_etop_poll_rx() and ltq_etop_poll_tx() dereference
-&ch->dma.desc_base[ch->dma.desc], ch->skb[] and priv->lock. With the new
-free_netdev() the private area holding priv->ch[].napi, priv->lock and
-ch->skb[] is freed too, so does this turn the stale descriptor access into a
-use-after-free of the netdev private data?
-
-Would the sequence unregister_netdev() (which closes the device and runs
-napi_disable() while the PHY and rings are still valid), then
-ltq_etop_mdio_cleanup(), then ltq_etop_hw_exit(), then free_netdev() avoid
-both of these?
-
-[Severity: Medium]
-
-This is a pre-existing ordering problem rather than something introduced
-here, but it affects whether the new free_netdev() is reached: does
-ltq_etop_hw_exit() gate the power domain that the subsequent MDIO and close
-paths still need?
-
-drivers/net/ethernet/lantiq_etop.c:ltq_etop_hw_exit() {
-	ltq_pmu_disable(PMU_PPE);
-	...
-}
-
-ltq_etop_hw_init() establishes the dependency by calling
-ltq_pmu_enable(PMU_PPE) before touching LTQ_ETOP_CFG and
-LQ_PPE32_ENET_MAC_CFG, and LTQ_ETOP_MDIO lives in the same block.
-
-After the domain is gated, ltq_etop_mdio_cleanup() -> phy_disconnect() ->
-phy_detach() -> phy_suspend() still issues a BMCR write, and
-mdiobus_unregister() drives further PHY accesses, all through the
-timeout-free accessors:
-
-drivers/net/ethernet/lantiq_etop.c:ltq_etop_mdio_rd() {
-	while (ltq_etop_r32(LTQ_ETOP_MDIO) & MDIO_REQUEST)
-		;
-	...
-}
-
-If MDIO_REQUEST never clears with the block powered down, does the unbind or
-rmmod thread spin here forever and never reach the free_netdev() added by
-this patch? Note that phy_detach()/phy_suspend() run even when the interface
-was never brought up. Would moving ltq_etop_hw_exit() after
-unregister_netdev() and after the MDIO cleanup, so the domain is gated last,
-address this?
-
->  	}
->  }
->  
-
-One more observation about a path that this patch does not touch, but which
-interacts with the free_netdev() being added:
-
-[Severity: High]
-
-This isn't a bug introduced by this patch, but ltq_etop_init() is installed
-as .ndo_init in ltq_eth_netdev_ops, so it runs from inside
-register_netdevice() with RTNL held and dev->reg_state ==
-NETREG_UNINITIALIZED, while its error label performs the core's unwind
-itself:
-
-drivers/net/ethernet/lantiq_etop.c:ltq_etop_init() {
-	...
-	err = ltq_etop_mdio_init(dev);
-	if (err)
-		goto err_netdev;
-	return 0;
-
-err_netdev:
-	unregister_netdev(dev);
-	free_netdev(dev);
-err_hw:
-	ltq_etop_hw_exit(dev);
-	return err;
-}
-
-Does unregister_netdev() here re-acquire RTNL via rtnl_net_dev_lock() and
-deadlock the probing thread?
-
-If it did not, free_netdev() takes the kvfree(dev) path for an
-UNINITIALIZED device, and control then falls through to err_hw, where
-ltq_etop_hw_exit() dereferences netdev_priv(dev) and walks priv->ch[] on
-the freed allocation.
-
-Finally, register_netdevice() propagates the ndo_init error to
-ltq_etop_probe():
-
-net/core/dev.c:register_netdevice() {
-	...
-		ret = dev->netdev_ops->ndo_init(dev);
-		if (ret) {
-			if (ret > 0)
-				ret = -EIO;
-			goto err_free_name;
-		}
-	...
-}
-
-drivers/net/ethernet/lantiq_etop.c:ltq_etop_probe() {
-	...
-	err = register_netdev(dev);
-	if (err)
-		goto err_free;
-	...
-err_free:
-	free_netdev(dev);
-	...
-}
-
-so is the same net_device freed a second time? The driver sets neither
-needs_free_netdev nor a priv_destructor, so neither free looks conditional.
-The path appears reachable: ltq_etop_mdio_init() returns -ENXIO when
-mdiobus_register() fails or when ltq_etop_mdio_probe() finds no PHY, and
--ENOMEM when mdiobus_alloc() fails. Should the unregister_netdev() and
-free_netdev() calls in ltq_etop_init() simply be dropped and the cleanup
-left to the core plus probe?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260916020930.2606675-1-lgs201920130244%40gmail.com
+	Ayaan
