@@ -1,90 +1,125 @@
-Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B0349AA42
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 08:48:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0561E4562BD;
+	Thu, 17 Sep 2026 08:55:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789634935; cv=none; b=IkpsgAhYS8t7Zrb5HEN3BScTGB39SGtkv4+qKvxLhWt0PBNszsUqdyORMKufUD159qRyJ919oUvdt9F5jty4mONJNbfShxsqHFAS9B1TAmPZxufLBTI2KvCN+Y6taliOiuNE/SCpnyvVFG22n1TDbB40fGhUogWEY3MO1xpch/4=
+	t=1789635316; cv=none; b=LuB2hCX19ORY8+g2zdSES08DFMTd0O3qdEVPLeqAv9lehxYuoZJoZ13Yiwu2e79O29jzfQYvU+JDrtNtz/ThnvgzrTJTXCZWUGgxUlMZn+g1KHrXYRqtbYvBElsfHvO/nEs7ELfGxG/fXwRV0W6MEl/QfwNf7DTV33CyvqB11FY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789634935; c=relaxed/simple;
-	bh=mOJQt2vsWvrLdsJ2aAlHSWLo42eJ2H0/jIjEjOIaHAE=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=FAfEL4Nn2TiYhb7BRQp1YHt66m98jrT08UpWsK1VsylFCLNkOWGu5yDlB4+hsPseCgARv4uOV5+Hmnu1TTQ+66AU0FCZQZeNtKeikcfHLjxfmD4pSiY8Bd0APmA0EEBqH/1tNuUfTZxfzFLgNglo7sa6njwvOFRZI5Bb0Rl3lwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z4t42vmb; arc=none smtp.client-ip=74.125.228.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789635316; c=relaxed/simple;
+	bh=vn31ij5EjMpSY4fNULl9mNiHva1/BB4PcHzqjFUIWVM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q4DZOt8IBiKZrMu54PXTXb6+KjEvPzUtx+fuO5Dvl7xrdrzDzrrEgnwHJbanKnbDOE10xoQ3+pSCYh5/3SXpfBwsUojkoypKWSgO6K0RoW9zB3IoY2qU6m324cO4ZeHioxtake93xa7ejPQuKxmZk/53DY/qJFzYxIf2mhvtVoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=E24bQLqZ; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z4t42vmb"
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f55eff0so87704466b.0
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 01:48:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789634920; x=1790239720; darn=vger.kernel.org;
-        h=content-type:mime-version:user-agent:references:message-id:date
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=mOJQt2vsWvrLdsJ2aAlHSWLo42eJ2H0/jIjEjOIaHAE=;
-        b=Z4t42vmb92hSSVClm8ybubh8P4qrx+xmGFBUExvsKVsFgomiSLtdosDxVHrRP1nMzG
-         /+Mb/Ng6okHzVpJ93bmULRZBMRqLWziVE2eWt44+mwkqvyOsGgm3i0gqUg3hX65dLPNW
-         M5WCIrqeEEXU3RZDZupJBz9ns9Shlxw6Ju0hjCH+Ne8AZJzKx/h5B5J9t/GJS18EnYdz
-         NokKJ6MuExf5OagnCjBdKEZXMoCdI5Z83ulJao3dE7KbAzImOBPO+ykKBOJh3bP52SQp
-         zGTYWxY5ltlQvIFyNjxFA2yAqhu9WGvEvEzwLkmxLr+voWXww/JcogY0T256VHk9E0Dm
-         aYHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789634920; x=1790239720;
-        h=content-type:mime-version:user-agent:references:message-id:date
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=mOJQt2vsWvrLdsJ2aAlHSWLo42eJ2H0/jIjEjOIaHAE=;
-        b=BxEc2l45cpel9KzNCmzEAqpa8FYZfchGqz/3fQvWdPRnGkxoWGeR0kG4RTc41Rcxzl
-         BvPSm+TnOIZ0fWveShwByPHKWay6FlA2+FFwR27rGU7d4/x/D34LcDqCT+f89mUMTxtE
-         Kdf9q7nULVXmrPrLcEiQTz055RkfXQ8BXp3k1XgReaxi6mg2JWfgbElnKpU6fCoaY1Lf
-         LGDr1rCX0ItJGfrMHDYP+s5ur6l+BzuzarDRO1bUTLrSykyeNgs6kgVm9scr5K2YpqZj
-         rkigNz7EYkCkR9fOFW93Xu2uJr3dyF5qCntV3lG0PrazpPk4SKLDOkwxYcIOyXaabc7V
-         n9kQ==
-X-Forwarded-Encrypted: i=1; AKwUvBylJbmetd3nbLZVGhK6gpfoqT8qkqwKzJxhLCRJJrHMzGgNf5K1Lxz1MSNpSODjGP5jfO+J1OU=@vger.kernel.org
-X-Gm-Message-State: AFuF++nlzzBF5yvbZMtnEgmQlMuBZSRmet8K5sH2IaCz/hqEWM7e8jBx
-	Yn62wwjglEFasB2z5tMOxV3/bygYQedjGS5Wt/LIC2E0Mju2PqKMAWGi
-X-Gm-Gg: AYBFou0TR003Vnbzv8GO74gzF314OR9DS+qVFMhn8oczRLFb6hImpK/L1vg+XOvUaPm
-	E+qqIJIQrQfH+NH9CIlyk8RAtw4tLPLpuPcDOOC9LVlAI2+V9UTTb63E1YkTlII/fNw0oC5RNDV
-	YCmcQGjBcCxKUNHNMVY/SGlI2aMszNXyWg8QjlEgtDNpGq9iVpjkREeSy1TF63+cwdC5QRAsxc6
-	o7K0KVn60GN5Z4Y32IUdPf8mWsgVGkQbaLnhN1ovt88z0hG2ChkSsMk2SWN7bdOMpY3+D6DxlCd
-	DX/OU63w2cZV6jZKks/VXfIVmCWePIuKUe2FZ90LGI5Jpijy1DAcPuUh4tQujxTTT//bLHzvoSP
-	l2cZWec43m8AEm+QLJ1WpBDUoHDbiWSVONwm9GCZ9E+ywvm6huuE7GeIg2CwWAsjrr0CBuDaLRH
-	Kdb4VljwC9tMUpLIksZuHNv7neQ18PbRrwYnd7qcG0eFSbeY4U9yq8P3RD3G5G4QNaDEkDUb7FJ
-	2GJyVQm
-X-Received: by 2002:a17:907:1c91:b0:c25:2cbe:edeb with SMTP id a640c23a62f3a-c29e521b5bcmr397397166b.21.1789634919601;
-        Thu, 17 Sep 2026 01:48:39 -0700 (PDT)
-Received: from imac ([150.228.9.167])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c29de68fdbcsm245938866b.59.2026.09.17.01.48.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 01:48:38 -0700 (PDT)
-From: Donald Hunter <donald.hunter@gmail.com>
-To: Ayananta Paul <ayanantapaul@gmail.com>
-Cc: kuba@kernel.org,  davem@davemloft.net,  edumazet@google.com,
-  pabeni@redhat.com,  horms@kernel.org,  netdev@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  linux-doc@vger.kernel.org
-Subject: Re: [PATCH] Documentation: netlink: fix spelling in tcp_metrics.yaml
-In-Reply-To: <20260729034147.6970-1-ayanantapaul@gmail.com>
-Date: Wed, 29 Jul 2026 10:27:21 +0100
-Message-ID: <m2cxw6i1s6.fsf@gmail.com>
-References: <20260729034147.6970-1-ayanantapaul@gmail.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="E24bQLqZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1789635308;
+	bh=VyrNncgMjLTsBvabQF8/YlHLzKKib3TBgXLmZZSfKgQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=E24bQLqZqCbhYofFpFX5C/Yn90lZRe1Y1Sl92lkL5j5M0O9HmOV/qfTuszP+xhHMZ
+	 PHgtIrJLt1Cmp9zNstWDEva8MV+TOpfIOOGS3+ge9KpPnCGTwcnq0yz+rlsZ1KlMyp
+	 +vq4s4VZYDlux6eyjR9b7eMbj375oF+kgQXvTWbHA4pkLKuOhr3fom7iTZp0KNyE9I
+	 yLDpyxv8KzYcp9FiUJju60ACYct+BWomEPCeqvjhM4j6ErtuYmYPrZsZMCAArGhFau
+	 4xUQE97+l1D5vk3XmZBUshNUkKbwXKerlMtqkh4AKdD0+Nr95zNzHgTT4DuGfneKfl
+	 cbtKQePrSd1nA==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 9A1346005F;
+	Thu, 17 Sep 2026 10:55:08 +0200 (CEST)
+Date: Thu, 17 Sep 2026 10:55:05 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Fernando Fernandez Mancera <fmancera@suse.de>
+Cc: Hangbin Liu <hangbin.liu@linux.dev>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org, mptcp@lists.linux.dev,
+	Hangbin Liu <liuhangbin@kylinos.cn>
+Subject: Re: [PATCH net] selftests: net: update netfilter netlink config
+Message-ID: <aquq6fEQiDq5Ey59@chamomile>
+References: <20260917-selftest_config-v1-1-bf25ccbfb18e@kylinos.cn>
+ <f557e44a-86b6-4ebb-ad35-d7bc5902929a@suse.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f557e44a-86b6-4ebb-ad35-d7bc5902929a@suse.de>
 
-Ayananta Paul <ayanantapaul@gmail.com> writes:
+On Thu, Sep 17, 2026 at 09:06:48AM +0200, Fernando Fernandez Mancera wrote:
+> On 9/17/26 4:17 AM, Hangbin Liu wrote:
+> > From: Hangbin Liu <liuhangbin@kylinos.cn>
+> > 
+> > Since commit d4349ba9872d ("netfilter: allow nfnetlink built-in only"),
+> > NETFILTER_NETLINK was changed to a bool. Use 'y' instead of 'm'.
+> > Otherwise the build emits:
+> > 
+> >    .config:5688:warning: symbol value 'm' invalid for NETFILTER_NETLINK
+> > 
+> > Fixes: d4349ba9872d ("netfilter: allow nfnetlink built-in only")
+> > Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+> 
+> Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
 
-> Correct the spelling of "reordering" which was incorrectly
-> written as "reodering" on lines 113 and 115.
->
-> Issues identified using `codespell -D - -S "*.bin,*.o,*.a,*.so,*.ko,*.gz,*.png,*.jpg" Documentation/`
->
-> Signed-off-by: Ayananta Paul <ayanantapaul@gmail.com>
+Acked-by: Pablo Neira Ayuso <pablo@netfilter.org>
 
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Thanks.
+
+> Thanks!
+> 
+> > ---
+> > This is a simple update addressing the same issue, so I’d like to post it
+> > directly to netdev instead of bothering two separate subsystems
+> > (mptcp and netfilter).
+> > ---
+> >   tools/testing/selftests/net/mptcp/config     | 2 +-
+> >   tools/testing/selftests/net/netfilter/config | 2 +-
+> >   2 files changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/tools/testing/selftests/net/mptcp/config b/tools/testing/selftests/net/mptcp/config
+> > index 59051ee2a986..bb9c4c97c620 100644
+> > --- a/tools/testing/selftests/net/mptcp/config
+> > +++ b/tools/testing/selftests/net/mptcp/config
+> > @@ -18,7 +18,7 @@ CONFIG_NET_CLS_ACT=y
+> >   CONFIG_NET_CLS_FW=m
+> >   CONFIG_NETFILTER=y
+> >   CONFIG_NETFILTER_ADVANCED=y
+> > -CONFIG_NETFILTER_NETLINK=m
+> > +CONFIG_NETFILTER_NETLINK=y
+> >   CONFIG_NETFILTER_XTABLES=m
+> >   CONFIG_NETFILTER_XTABLES_LEGACY=y
+> >   CONFIG_NETFILTER_XT_MATCH_BPF=m
+> > diff --git a/tools/testing/selftests/net/netfilter/config b/tools/testing/selftests/net/netfilter/config
+> > index c3c121b6f300..629b2b29ed1a 100644
+> > --- a/tools/testing/selftests/net/netfilter/config
+> > +++ b/tools/testing/selftests/net/netfilter/config
+> > @@ -44,7 +44,7 @@ CONFIG_NET_CLS_U32=m
+> >   CONFIG_NETDEVSIM=m
+> >   CONFIG_NETFILTER=y
+> >   CONFIG_NETFILTER_ADVANCED=y
+> > -CONFIG_NETFILTER_NETLINK=m
+> > +CONFIG_NETFILTER_NETLINK=y
+> >   CONFIG_NETFILTER_NETLINK_QUEUE=m
+> >   CONFIG_NETFILTER_SYNPROXY=m
+> >   CONFIG_NETFILTER_XTABLES=m
+> > 
+> > ---
+> > base-commit: 1dd85662fee6e2ac580b1c4f9a0c0a7ae6e31f0e
+> > change-id: 20260917-selftest_config-286bdd44b22b
+> > 
+> > Best regards,
+> 
