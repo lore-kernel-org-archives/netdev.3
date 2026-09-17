@@ -1,101 +1,99 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com [209.85.218.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB6AE3CB8F4
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 09:35:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C77141A508
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 09:35:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789637748; cv=none; b=gMdgf2ym3xOhWj6cisD+GR5A57hu2DDpT2qDVB1zqQIolYSZRcyhdKvXQF/ngjwo1BocHm8GisATGXiLTAvst/gVtP1V8k+9MqTxxG8K4DWYblHo8lE/kI79qOf+yzjtdh+vJDTlslXI9AVsKTWOb8R/uUhOzSj/n7l/EBeYPvo=
+	t=1789637769; cv=none; b=DJWH12Ufe1qjaXZhrxls6bKQhOrHPl4nOdTXFaS5SP8jKfzd1NHLuJrDB+OBkc9ka4BeXOktyt37fGY1N161BcbUSh/swRVjblWyBUPTded8OrtlyHjsuylCsViCLFOx4Cc1+WxNCZD3gk7DrG5sBJLK15htF8c949gZHL9smDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789637748; c=relaxed/simple;
-	bh=AV1TJBNzs8Rx6IDeXsnEOhbgxjuLcvQpuzTJRUwdisw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N9bztQ9bA1GCGoxQW53HHtc+qhOToJKv0jDAxRKJ2W7l0jyYuN9LCf1dmEPK8izfIIE5+TTIVZ801OeubUSRGm3zsmSy8uhIBQmFcAnIb7Z8+XiaGjeUw4G5OO/plSKF24BTwT5ZiaswKfn6JxKsEdA1MWJgdsVRCXvTOCX/z9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CNMeTN48; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1789637769; c=relaxed/simple;
+	bh=Oz8G4IOR6Gmqkd7yD6cQD3SSfjx7S8ayJRM3R9p6+sQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=cJQUtNSSlT4MoqcGvw5ErF0Bxpo3OYk4C3aACIYJCw99huoKhWvr2SeUy3EX6ZBGmRXybDW6gr5t+ScQFUcky9d95cbh3gBmYaGyYSLzEQZvIxAw6bJmc3yh10Ybxv8ZQLMyQAXk0+uGb4LMBDcMm1Dkk4MavQ6W8ZI3Co7eouc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oxhzcLRD; arc=none smtp.client-ip=209.85.218.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CNMeTN48"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789637737; x=1821173737;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=AV1TJBNzs8Rx6IDeXsnEOhbgxjuLcvQpuzTJRUwdisw=;
-  b=CNMeTN48IVea1iWQTJ84mHerBZq/N4n5boACbeNDEKmda0nnLv5IX5qF
-   r15HTW6YDzAra1kTCkavwYdG+aXcc8i2MiWZB8Iaf5e/zhdL5VQKxlSHi
-   kN8A5z20ziHGU3FLTYzTbDZUIOvjTKF0oVcOf5u2MNuZqoudUo40Nvs66
-   q3yqDD49PPG0SNSiOyW4K8m0vLumG83XPwca17YeF8egZAdaxKY66sM08
-   o7zHukLKc3TtQh9ziqd1jwUC8P5uMFOgm09OqEJZMDr9uuiZ5KUaVnviv
-   S2ik6Jcv7Mh2xNe+gjIm9FUiBptBFSQsrQxbuKPgdlG1DXV6ctc0VLLOU
-   A==;
-X-CSE-ConnectionGUID: JI2u1a/qQ5aTHZLiBPJu8w==
-X-CSE-MsgGUID: iPFHScRSTB6O5/55NRz8jg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="107548509"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="107548509"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 02:35:32 -0700
-X-CSE-ConnectionGUID: j2D/QbbVTk69Xysud5NNTg==
-X-CSE-MsgGUID: efBg71spTW2HiZMM7PbkKg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="298764816"
-Received: from linux.intel.com ([10.54.29.200])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 02:35:32 -0700
-Received: from [10.102.89.17] (soc-5CG4396XFD.clients.intel.com [10.102.89.17])
-	by linux.intel.com (Postfix) with ESMTP id 293B120B5708;
-	Thu, 17 Sep 2026 02:35:29 -0700 (PDT)
-Message-ID: <5ffcee35-e44e-4c54-978b-42bb79601c3f@linux.intel.com>
-Date: Thu, 17 Sep 2026 11:35:29 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oxhzcLRD"
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c294442d71dso83539166b.2
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 02:35:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789637745; x=1790242545; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vsyxKzqLMpsUXo8Lic/w3Wn8v7CPcrVQjEJhvbshmVE=;
+        b=oxhzcLRDRuX/gBo8vy0TKlSVL5ziY2v+kKlqu6Lb/KuleKdEBO8I3J+wv6nkrJbiXQ
+         vbPNjpLX6bQLTKGZWCcQjw+9UEF6Xceakc1L5R//WszwchnJB+34Kfq2zKLRpFpilLRS
+         XW3gYnxLFUCAIukeJNtZ4ZwgTu/nLrv6P3G3hl5IwEShcVD/890hy3mqAr7C6yjA0GYR
+         dCPh4LJvm5+AfZoxU/A2h9IahBGWAYbu7NMBY4q5FWV8jKAoYQqx7BzjkHjY1k++s3BR
+         2vhkWj9NyFIdj5Rzwr+mfEFi3b/fKWbehFFLktr0aqRSp7teY4QhtgT9zYwzhclfGIy4
+         MIPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789637745; x=1790242545;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vsyxKzqLMpsUXo8Lic/w3Wn8v7CPcrVQjEJhvbshmVE=;
+        b=rxctsDD1ZTGB6hs6eK3PGeLm8VwinPap6aKMq9LzWYj7PdAlB02hBncwWn+TLWlt4r
+         U3VdX/K7tg6PnMm/U9TPcFs4VZkIdNvUf6lyIOWp0sSIbYhrhcUuTnC/vpQj/EGmnhjk
+         uogY1h4wei7j3cn0dSt7dwoptrGIjSWVx0tjZoOf0OwEu009nZ9Haoqpb3USwT3ude7o
+         2nQYrStjqRBHJ8nNwyFz1yRDrNWhZTP2xIhIcOxvKFLGpZvvNDf3sBvMxOkKjzemrZWk
+         fN0LHkFYtvT/EtiQxMWGaM441iFdl74qkCP7gULiGGk7m6BQrh4SDUb2mtS9ybct98RN
+         vCBw==
+X-Forwarded-Encrypted: i=1; AKwUvBy2BQFy2PFe/0Zy1MhQDCeMSWylpsM/DjNhMtbesNcKg8iNz/ZhnutviAwUtzZoV1m0l6s/Dxg=@vger.kernel.org
+X-Gm-Message-State: AFuF++nwxsvQJKXzgirCWRZ0kDdDD8Hm4Ki49dr/vlJZn+O8h01PX7Ng
+	Cbv/x23TAB9is6VGRPHiGQsazlxyjkRgfnmAIcXteXYxm/gQrs03bJyLBCIqZYLBMaMFfxmV1Ja
+	q6EiXM2ranpbGEEzBqA==
+X-Received: from ejoy22.prod.google.com ([2002:a17:906:4496:b0:c29:c42c:f427])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:9343:b0:c29:5712:a420 with SMTP id a640c23a62f3a-c29e51dc1e5mr387979866b.5.1789637744642;
+ Thu, 17 Sep 2026 02:35:44 -0700 (PDT)
+Date: Thu, 17 Sep 2026 09:35:43 +0000
+In-Reply-To: <20260915164000.124340-1-sagartaunk@proton.me>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-net v2 3/3] ice: support RDMA on 4+-port E830 devices
-To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
- intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com
-Cc: netdev@vger.kernel.org, Lukasz Czapnik <lukasz.czapnik@intel.com>
-References: <20260915125529.3975723-1-aleksandr.loktionov@intel.com>
- <20260915125529.3975723-4-aleksandr.loktionov@intel.com>
-Content-Language: pl
-From: Tomasz Lichwala <tomasz.lichwala@linux.intel.com>
-In-Reply-To: <20260915125529.3975723-4-aleksandr.loktionov@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260915164000.124340-1-sagartaunk@proton.me>
+Message-ID: <aqu0bzgMAUQe_LZ6@google.com>
+Subject: Re: [PATCH v2] rust: net: netlink: validate attribute length before
+ casting to `c_int`
+From: Alice Ryhl <aliceryhl@google.com>
+To: Sagar Taunk <sagartaunk@proton.me>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
+	"Onur =?utf-8?B?w5Z6a2Fu?=" <work@onurozkan.dev>, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
+On Tue, Sep 15, 2026 at 04:40:10PM +0000, Sagar Taunk wrote:
+> `put()` trusted an unchecked `as` cast from `usize` to `c_int`.
+> When the length exceeds `i32::MAX` that cast wraps around to a
+> negative value.
+> 
+> This ultimately resulted in a kernel panic when the reinterpreted
+> value via `__nla_reserve()` and `skb_put()` became enormous.
+> 
+> Validate payload and header both fit together in a `u16`, rejecting
+> any payload that wouldn't leave room for `NLA_HDRLEN`.
+> 
+> Signed-off-by: Sagar Taunk <sagartaunk@proton.me>
 
+This should include a Fixes: tag if it leads to a kernel panic.
 
-On 15.09.2026 14:55, Aleksandr Loktionov wrote:
+Can you also update the subject to [PATCH net vX] according to the
+guidelines in: Documentation/process/maintainer-netdev.rst
 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
-> index ef1ce10..d53307b 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_common.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_common.c
-> @@ -2507,7 +2507,7 @@ ice_recalc_port_limited_caps(struct ice_hw *hw, struct ice_hw_common_caps *caps)
->  		caps->maxtc = 4;
->  		ice_debug(hw, ICE_DBG_INIT, "reducing maxtc to %d (based on #ports)\n",
->  			  caps->maxtc);
-> -		if (caps->rdma) {
-> +		if (caps->rdma && hw->mac_type != ICE_MAC_E830) {
->  			ice_debug(hw, ICE_DBG_INIT, "forcing RDMA off\n");
->  			caps->rdma = 0;
->  		}
+The patch itself LGTM.
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-
-		/* print message only when processing device capabilities
-		 * during initialization.
-		 */
-		if (caps == &hw->dev_caps.common_cap)
-			dev_info(ice_hw_to_dev(hw), "RDMA functionality is not available with the current device configuration.\n");
-
-
-This message is still printed whenever num_funcs > 4, regardless of the new mac_type != ICE_MAC_E830 check above it. On E830 devices with more than 4 ports, RDMA now stays enabled but this log line still claims it's unavailable. Please gate it on the same condition used to actually disable caps->rdma.
-
-
-Thanks,
-Tomasz
-
+Alice
