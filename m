@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA9443746C;
-	Thu, 17 Sep 2026 20:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC2B40B0EC;
+	Thu, 17 Sep 2026 20:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789678203; cv=none; b=XR46o/FyZ3fvRfz4Jp1lJQA5rq6QSeQ1jgHBS9HUJ9lnvHkh39A/q9Tix5W1l+VvjR1Fqiz415HOAXvgUCcm0bSbxkXQmNsWUbq6dFkRBNPpZ5JcDSvyrrOXgNuG3U9hFkkO6TwYEHZyqLppsV7PtqznCAXaYrwehwdRPVZK6V8=
+	t=1789678205; cv=none; b=PU43jNGUcB+3251kmYqTCN3rq4cgXpLaXChF0n4ND0OVoR0/Zl0GVJBBR1iJ38TLrglMKVN05drWSKZc26TrzLnhVhmk92zKMXxVdsouvW47eORkLGXFrWnGDEwVyYmQeCAr7zLYvCrOiJ5H/hDjJNWmcfpUoNZ2C4Uduww4QQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789678203; c=relaxed/simple;
-	bh=fuQco83bl15CfDy1wpQJvOT5+FtZheSGX0bXdxOD9U0=;
+	s=arc-20240116; t=1789678205; c=relaxed/simple;
+	bh=tATHDU3HrcesJEJqzIqEMQQbVjuF5L06ze10pOunSWE=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=seVxKAp5cu65oR8OoQvbItm/rnM/d4LH0Esirr5aJv1IsBgua0e8GrOuGJBOAfaa4eQeIm7F3aCTgf9Qw04WenywHjAmc0A28AHnW9n0B32XU9ls8XBvdgwrrJKs1xfMp/UcbnorbFd+qnjhnh/WmDd6jv7OhCwMdIIUdmxVFiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ixvWSlaM; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=uZwl5VYwsbsbEKpzVi5buD3FRFMCMaY8DSmH5gGVHgixZPma6J13ZXi7P4ckM27iRJ/TRHLtKW27rqOMg6nde7WXM5Tp5yepOAondcTbzwvePaU9Bpg5/pbSNNe9BVa/Yb12X8aZGfobeovepp29iCrfH4K2MQRalYph8Ght4Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xsti3UDi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ixvWSlaM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A071F00893;
-	Thu, 17 Sep 2026 20:49:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xsti3UDi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF2641F000FF;
+	Thu, 17 Sep 2026 20:50:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789678200;
-	bh=iuoGPrrZdOKTVtHeSmHr2Z1LALwPrg6c5CLObaN4P0g=;
+	s=k20260515; t=1789678202;
+	bh=9SgyiGf32A0qCeIe4MMlsFd2r4nEIcNL3uAUmFwBb1s=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ixvWSlaMzecyaxyEAHkILlW8Xdtai6VLclFxY0CbrlWMfFGLFHlz1upcytsMAwEDF
-	 1kFwiIWZ/NgxnbZt1L75ByYl9KkifTUr+PnbMGXJLlEQEgzPgciQhqreqMsb8hBpIN
-	 M2J7AVRV0GHXrizzObt2BBH6yYwUXU9PrJMLfy34G/B+dxqCq6OFlvhSInUpSHGCfK
-	 0/5Gh472d18pKwPSf19lWQLKcDv/EenXnEwrx3CNc6f2jrvOEcYcJk9w+AL7i0dLOz
-	 cAski/L4f+2WEPs7uBlpdR7aSu+GkA3GDt5V4raytFMQWgNbulTqbFhxC5eDb6V88y
-	 q5fZYRdR2RNog==
-Subject: Re: [PATCH v2 net-next 5/7] net: dsa: mediatek: support MDIO switch
- downstream of MMIO switch
+	b=Xsti3UDiKxUYtVjuLq32KnFTerEA7bHL/81vPf1hPanNvpBkZXOmKU0kPDfZR4DkF
+	 K6RsPWcez5NDlVLMlsEQ0d9RD8ZbWxJ2PCqwvjk3TcwehBzr+PkILT0zcgBqbtPJ07
+	 yYlCVkzzfHcG8l7ymzSVKfsS2XO280M0GtsRdD1ZdT9gOls3a2StanaPi8xoLYq1Nb
+	 m2wc/IVaaEoRh8vhAYXTX63uccp/P4MBB/oP/6avUmvLB94bawkmtizwqHbTrTV77l
+	 R9FyiWgctkZbWfKgxOO2TZK6BLQg7DtveMPj05YJ+gbFZ/GDWXE2N3JEsJy/kVQnAn
+	 IZcw9+8v7ybvw==
+Subject: Re: [PATCH v2 net-next 6/7] dt-bindings: net: dsa: mediatek,mt7530:
+ add econet,en751221
 From: netdev-bot+sashiko@kernel.org
 To: cjd@cjdns.fr
 Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
@@ -39,10 +39,10 @@ Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
  sean.wang@mediatek.com, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-mediatek@lists.infradead.org, naseefkm@gmail.com, b.larsson@gmx.com
-Date: Thu, 17 Sep 2026 20:49:58 +0000
-Message-ID: <178967819865.22033.9450437798313929397@kernel.org>
-In-Reply-To: <20260915174643.253660-6-cjd@cjdns.fr>
-References: <20260915174643.253660-6-cjd@cjdns.fr>
+Date: Thu, 17 Sep 2026 20:50:00 +0000
+Message-ID: <178967820050.22033.18093714968849770785@kernel.org>
+In-Reply-To: <20260915174643.253660-7-cjd@cjdns.fr>
+References: <20260915174643.253660-7-cjd@cjdns.fr>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -56,303 +56,316 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 7 potential
 issue(s) to consider:
 
-Critical: 0 · High: 3 · Medium: 3 · Low: 1
+Critical: 0 · High: 1 · Medium: 4 · Low: 2
 
-- [High] Moving mt7530_setup_mdio_irq() from mt7530_setup_mdio() (where
-  it ran *before* devm_of_mdiobus_register()) to mt753x_setup()…
-- [High] mt7988_probe() (drivers/net/dsa/mt7530-mmio.c:69-71) calls
-  mt7530_setup_mdio(priv) and discards its int return value, then…
-- [High] The early MDIO enumeration added to mt7988_probe() still cannot
-  reach a downstream switch when any preceding PHY child of the switch's…
-- [Medium] mt7530_setup_mdio() is now invoked from mt7988_probe() right
-  after dsa_register_switch().
-- [Medium] mt7530_setup_mdio() is now reachable from mt7988_probe() with
-  no lock held, whereas every previous invocation ran from…
-- [Medium] mt7988_probe() now registers the switch's MDIO bus - and
-  therefore probes the PHYs/devices on it - before mt753x_setup() ->…
-- [Low] The submission has no Fixes: tag although it removes a user-
-  visible limitation of the MMIO switch driver introduced by commit…
+- [High] net: dsa: lockless child_bus access causes MDIO race condition
+- [Medium] The new switch-device compatible `econet,en751221`
+  (mediatek,mt7530.yaml line 126) is the identical string already…
+- [Medium] The new `econet,en751221` conditional (mediatek,mt7530.yaml
+  lines 369-377) applies only `$ref: "#/$defs/mt7530-passthrough-dsa-…
+- [Medium] The series patch "net: dsa: mediatek: support MDIO switch
+  downstream of MMIO switch" moved `mt7530_setup_mdio_irq()` out of…
+- [Medium] In passthrough mode `mt753x_cpu_port_enable()` (added by the
+  series patch "net: dsa: mediatek: add support for passthrough mode")…
+- [Low] The paragraph added to the binding description
+  (mediatek,mt7530.yaml lines 32-36) states that "EcoNet EN751221 SoCs…
+- [Low] Concern that neither `econet,en751221-switch` nor
+  `econet,en751221` has any consumer: at this commit…
 
 --
 
-net: dsa: mediatek: support MDIO switch downstream of MMIO switch
+dt-bindings: net: dsa: mediatek,mt7530: add econet,en751221
 
-This makes mt7530_setup_mdio() idempotent, exports it, and calls it from
-mt7988_probe() right after dsa_register_switch() so that a switch sitting
-on the MMIO switch's own MDIO bus can register and complete the DSA tree.
-The PHY interrupt setup previously done inside mt7530_setup_mdio() is moved
-to mt753x_setup().
+This adds two compatible strings to the MT7530 binding: econet,en751221-switch
+for the memory mapped switch built into the EcoNet EN751221 SoC, and
+econet,en751221 for the MT7530 multi-chip module that some EN751221 packages
+attach to port 5 of the on-die switch via TRGMII. A new $defs block constrains
+the DSA link port of the multi-chip module.
 
-No Link: tags in the commit header.
+A few questions on the schema below, plus two observations about other
+patches in the same series.
+
+> diff --git a/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml b/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
+> index e29fb86934981..106c4087528d7 100644
+> --- a/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
+> +++ b/Documentation/devicetree/bindings/net/dsa/mediatek,mt7530.yaml
+> @@ -29,6 +29,12 @@ description: |
+>    and the switch registers are directly mapped into SoC's memory map rather than
+>    using MDIO. The DSA driver currently doesn't support MT7620 variants.
+>  
+> +  EcoNet EN751221 SoCs have a memory mapped MT7530 with 3x 10/100 PHYs and 1x
+                                                          ^^^^
 
 [Severity: Low]
-This isn't a bug, but there is no Fixes: tag on the submission even though
-it lifts a user-visible limitation of the MMIO path added by commit
-110c18bfed41 ("net: dsa: mt7530: introduce driver for MT7988 built-in
-switch").  Is a Fixes: tag intended here, or is this considered new
-functionality rather than a fix (the MMIO driver never claimed to support a
-switch behind the switch's own MDIO bus)?
+Should this be 4x 10/100 PHYs?  The commit message of this patch says
+"ports 0..3 are 10/100 only, port 4 has a gigabit PHY", which is four fast
+ethernet PHYs, and en751221_mac_port_get_caps() in the later driver patch of
+this series agrees:
 
-> diff --git a/drivers/net/dsa/mt7530-mmio.c b/drivers/net/dsa/mt7530-mmio.c
-> index cf3bdb23a2d54..f387190a95391 100644
-> --- a/drivers/net/dsa/mt7530-mmio.c
-> +++ b/drivers/net/dsa/mt7530-mmio.c
-> @@ -61,7 +61,14 @@ mt7988_probe(struct platform_device *pdev)
->  	if (IS_ERR(priv->regmap))
->  		return PTR_ERR(priv->regmap);
+	/* EN751221 ports 0..3 are connected to the integrated FE PHYs. */
+	case 0 ... 3:
+		__set_bit(PHY_INTERFACE_MODE_INTERNAL, config->supported_interfaces);
+		config->mac_capabilities |= MAC_10 | MAC_100;
+
+Since there is no in-tree EN751221 switch DTS yet, this paragraph is the only
+port reference a DT author has.
+
+> +  gigabit PHY. Some EN751221 chips such as EN7513G and EN7526G have a multi-chip
+> +  module implementation of the MT7530 as well as the on-die switch. In these
+> +  packages, the multi-chip module is connected to port 5 of the on-die switch
+> +  via a TRGMII link.
+> +
+>    There is only the standalone version of MT7531.
 >  
-> -	return dsa_register_switch(priv->ds);
-> +	ret = dsa_register_switch(priv->ds);
+>    Port 5 on MT7530 supports various configurations:
+> @@ -111,6 +117,14 @@ properties:
+>            Built-in switch of the EcoNet EN7528 SoC
+>          const: econet,en7528-switch
+>  
+> +      - description:
+> +          Built-in switch of EcoNet EN751221 SoC
+> +        const: econet,en751221-switch
 > +
-> +	if (ret)
-> +		return ret;
+> +      - description:
+> +          Multi-chip module MT7530 in EN751221 SoC
+> +        const: econet,en751221
+
+[Severity: Medium]
+Can this string collide with the existing SoC compatible?  econet,en751221 is
+already documented as the EN751221 root node compatible in
+Documentation/devicetree/bindings/mips/econet.yaml:
+
+  properties:
+    $nodename:
+      const: '/'
+
+    compatible:
+      oneOf:
+        - description: Boards with EcoNet EN751221 family SoC
+          items:
+            - enum:
+                - smartfiber,xp8421-b
+            - const: econet,en751221
+
+and arch/mips/boot/dts/econet/en751221.dtsi uses it on the root node:
+
+  / {
+	compatible = "econet,en751221";
+
+dtschema derives the select clause of a binding from the strings enumerated
+under properties:compatible, so after this patch mediatek,mt7530.yaml is also
+selected for that root node.  The switch schema has required: [compatible,
+reg], unevaluatedProperties: false, and via the new conditional below also
+required: [mediatek,mcm] (which in turn pulls in resets and reset-names).  Does
+make dtbs_check on arch/mips/boot/dts/econet/en751221_smartfiber_xp8421-b.dtb
+now report the root node as an invalid MT7530 switch node?
+
+The reverse direction looks affected too: a switch@... node carrying
+compatible = "econet,en751221" is selected by mips/econet.yaml and fails its
+$nodename: const: '/' and its two-entry board/SoC compatible list.
+
+The analogous MT7621 case does not collide because the SoC root uses
+mediatek,mt7621-soc.  Since the SoC compatible is already released, would a
+distinct string for the switch, e.g. econet,en751221-mcm-switch, work here?
+
 > +
-> +	mt7530_setup_mdio(priv);
+>    reg:
+>      maxItems: 1
+>  
+
+[ ... ]
+
+> @@ -223,6 +237,20 @@ $defs:
+>                  phy-mode:
+>                    const: internal
+>  
+> +  mt7530-passthrough-dsa-port:
+> +    patternProperties:
+> +      "^(ethernet-)?ports$":
+> +        patternProperties:
+> +          "^(ethernet-)?port@[0-6]$":
+> +            if:
+> +              required: [ link ]
+> +            then:
+> +              properties:
+> +                reg:
+> +                  const: 6
+> +                phy-mode:
+> +                  const: trgmii
 > +
-> +	return 0;
->  }
+>    mt7530-dsa-port:
+>      patternProperties:
+>        "^(ethernet-)?ports$":
+> @@ -330,6 +358,7 @@ allOf:
+>              - airoha,en7581-switch
+>              - airoha,an7583-switch
+>              - econet,en7528-switch
+> +            - econet,en751221-switch
+>      then:
+>        $ref: "#/$defs/builtin-dsa-port"
+>        properties:
+> @@ -337,6 +366,16 @@ allOf:
+>          mediatek,mcm: false
+>          reset-names: false
+>  
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          enum:
+> +            - econet,en751221
+> +    then:
+> +      $ref: "#/$defs/mt7530-passthrough-dsa-port"
+> +      required:
+> +        - mediatek,mcm
 
 [Severity: High]
-Should the return value of mt7530_setup_mdio() be checked here?
+One more observation about another patch in this series, so there is
+no hunk to quote for it either.
 
-mt7530_setup_mdio() returns -ENOMEM from devm_mdiobus_alloc() and
-propagates devm_of_mdiobus_register() failures, including -EPROBE_DEFER,
-after clearing priv->child_bus:
+In "net: dsa: mediatek: support PLL setup on MMIO MT7530", is the MDIO
+bus lock lost for the new child_bus path?  core_write() and core_rmw()
+now do:
 
-drivers/net/dsa/mt7530.c:mt7530_setup_mdio() {
-	ret = devm_of_mdiobus_register(dev, bus, mnp);
-	if (ret) {
-		priv->child_bus = NULL;
-		dev_err(dev, "failed to register MDIO bus: %d\n", ret);
-		...
-	}
-}
+	if (!bus)
+		bus = priv->child_bus;
 
-The other caller, mt753x_setup(), propagates that value:
+	if (WARN_ON_ONCE(!bus))
+		return;
+
+	mt7530_mutex_lock(priv);
+
+	/* Write the desired MMD Devad */
+	ret = bus->write(bus, ctl_phy, MII_MMD_CTRL, MDIO_MMD_VEND2);
+
+but mt7530_mutex_lock() only knows about priv->bus:
+
+	if (priv->bus)
+		mutex_lock_nested(&priv->bus->mdio_lock, MDIO_MUTEX_NESTED);
+
+On an MMIO switch priv->bus is NULL, so the guard makes
+mt7530_mutex_lock()/mt7530_mutex_unlock() a no-op while the following
+bus->write()/bus->read() calls are raw driver callbacks issued on
+child_bus without child_bus->mdio_lock held.  The indirect MMD sequence
+(MII_MMD_CTRL devad, MII_MMD_DATA address, then the data phase) is not
+atomic on the wire, so a concurrent mdiobus_read()/mdiobus_write() on
+the same child bus - phylib polling the downstream MT7530 PHYs, or a
+regmap access from the mt7530 MDIO path - can interleave and leave the
+MMD devad/address latch pointing somewhere else, giving a read or write
+to the wrong core register.  This is reachable from mt7530_setup_port6()
+and the PLL setup path whenever a port changes state, i.e. during normal
+operation, and the missing lock is invisible to lockdep because nothing
+is taken at all.
+
+Should mt7530_mutex_lock()/mt7530_mutex_unlock() fall back to
+priv->child_bus->mdio_lock the same way core_write()/core_rmw() do, or
+would it be cleaner for the child_bus path to call mdiobus_write()/
+mdiobus_read() (which take the lock themselves) instead of the raw
+bus->write()/bus->read() callbacks?  Either way the two places that
+pick the bus should agree on which lock protects it.
+
+[Severity: Medium]
+Are the MT7530 per-port interface-mode constraints intentionally dropped for
+this compatible?  The commit message says the multi-chip module "is similar to
+the MT7621 multi-chip module", and the mediatek,mt7621 conditional in the same
+allOf applies:
+
+      $ref: "#/$defs/mt7530-dsa-port"
+      required:
+        - mediatek,mcm
+
+A JSON-Schema object can only carry one $ref, so referencing
+mt7530-passthrough-dsa-port here means $defs/mt7530-dsa-port (port 5:
+gmii/mii/rgmii, other ports: rgmii/trgmii) is never evaluated.  A DT giving
+this multi-chip module an ethernet (CPU) port with phy-mode = "sgmii",
+"2500base-x" or "internal" would then pass dtbs_check and only fail later in
+mt7530_mac_config()/phylink.
+
+Related to that, the new $defs/mt7530-passthrough-dsa-port rule is gated on:
+
+            if:
+              required: [ link ]
+
+so a node with no DSA link port gets no port validation at all, and ports
+carrying ethernet are unconstrained.
+
+On the on-die side, econet,en751221-switch is only added to the builtin enum,
+whose $defs/builtin-dsa-port rule keys off required: [ ethernet ].  Nothing
+pins the cascade port to port 5 with trgmii as the added description states, so
+link can be declared on port@0..port@4, which en751221_mac_port_get_caps()
+wires to the internal FE/GE PHYs and which offers TRGMII on port 5 only.
+
+Should an example be added for the new on-die plus multi-chip module topology?
+Without one, the new $def, the required mediatek,mcm and the implied
+resets/reset-names combination are never exercised by dt_binding_check.
+
+> +
+>  unevaluatedProperties: false
+>  
+>  examples:
+
+Two further observations concern other patches in the same series, so there are
+no hunks to quote here.
+
+[Severity: Medium]
+In "net: dsa: mediatek: support MDIO switch downstream of MMIO switch", is the
+new call site of mt7530_setup_mdio_irq() too late?  It used to run inside
+mt7530_setup_mdio() before devm_of_mdiobus_register(), and now runs in
+mt753x_setup() after mt7530_setup_mdio() has returned:
 
 	ret = mt7530_setup_mdio(priv);
 	if (ret)
 		return ret;
 
-With the error dropped, mt7988_probe() returns 0 while no child MDIO bus
-exists.  Since the DSA tree can only be completed once that bus registers
-the downstream switch, mt753x_setup() never runs and nothing retries the
-bus, so the board stays without networking.  Note also that the failure
-path clears priv->child_bus but leaves ds->user_mii_bus pointing at the
-never-registered devm bus, so a later mt753x_setup() would allocate a
-second mii_bus.
+	if (priv->irq_domain && ds->user_mii_bus)
+		mt7530_setup_mdio_irq(priv);
 
-[Severity: High]
-Can this call actually reach the downstream switch node on a DT shaped like
-arch/arm64/boot/dts/mediatek/mt7988a.dtsi, where the PHY children of the
-switch's mdio node use the switch itself as their interrupt provider?
+Bus registration creates the phy_devices, and phy_device_create() copies the
+IRQ once at creation time:
 
-	switch@15020000 {
-		interrupt-controller;
-		#interrupt-cells = <1>;
-		mdio {
-			gsw_phy0: ethernet-phy@0 {
-				reg = <0>;
-				interrupts = <0>;
+	dev->irq = bus->irq[addr];
 
-At probe time priv->irq_domain does not exist yet, because
-mt7530_setup_irq() only runs from mt753x_setup():
-
-mt753x_setup()
-    mt7530_setup_irq()		<- creates priv->irq_domain
-    mt7530_setup_mdio()
-
-so of_irq_get() on gsw_phy0 finds no host for the switch node and returns
--EPROBE_DEFER, which is forwarded during boot:
-
-drivers/net/mdio/fwnode_mdio.c:fwnode_mdiobus_phy_device_register() {
-	rc = fwnode_irq_get(child, 0);
-	if (rc == -EPROBE_DEFER)
-		rc = driver_deferred_probe_check_state(&phy->mdio.dev);
-	if (rc == -EPROBE_DEFER)
-		return rc;
-}
-
-and __of_mdiobus_parse_phys() then aborts child enumeration on that error,
-after which __of_mdiobus_register() unregisters the bus.  Wouldn't that
-mean the downstream switch node is never registered, the tree never
-completes, and the IRQ domain that the PHY children need is never created,
-i.e. the prerequisite loop the patch aims to break is still there?
+mdiobus_alloc_size() pre-fills bus->irq[i] = PHY_POLL, so the internal PHYs are
+created with phydev->irq == PHY_POLL and the later
+ds->user_mii_bus->irq[p] = irq_create_mapping(...) writes an array that is not
+read again.  Does this leave every MT7530/MT7531 board that declares
+interrupt-controller on the switch node and has no mdio child node (binding
+examples 3 to 7, MT7621 boards) on polled link detection instead of the
+switch PHY link-change interrupt?  The ordering is unchanged at the end of the
+series.
 
 [Severity: Medium]
-Is it safe to probe the MDIO bus here, before the switch bring-up in
-mt7988_setup() has run?
+In "net: dsa: mediatek: add support for passthrough mode", is the egress tag
+setting for the upstream port immediately overwritten?
+mt753x_cpu_port_enable() programs:
 
-In the incomplete-tree case this patch targets, dsa_register_switch()
-returns without invoking ds->ops->setup, so the reset and PHY power-up
-sequence has not executed when devm_of_mdiobus_register() synchronously
-probes the MDIO children:
+	if (priv->is_passthrough) {
+		/* Disable parsing of the DSA tag ... */
+		regmap_write(priv->regmap, MT7530_PVC_P(port),
+			     VLAN_ATTR(MT7530_VLAN_TRANSPARENT) |
+			     PVC_EG_TAG(MT7530_VLAN_EG_DISABLED));
 
-drivers/net/dsa/mt7530.c:mt7988_setup() {
-	/* Reset the switch */
-	reset_control_assert(priv->rstc);
-	usleep_range(20, 50);
-	reset_control_deassert(priv->rstc);
-	usleep_range(20, 50);
-	...
-	/* Reset the switch PHYs */
-	regmap_write(priv->regmap, MT7530_SYS_CTRL, SYS_CTRL_PHY_RST);
-}
+but both callers, mt7530_setup() and mt7531_setup_common(), do this in the same
+loop iteration right after the call:
 
-Can the PHY ID reads issued from probe through mt7531_ind_c22_phy_read()
-return 0xffff or time out in the MT7531_PHY_IAC poll loop on an un-reset
-and (on AN7583, before the AN7583_CSR_PHY_CORE_REG_CLK_SEL /
-AN7583_CSR_ETHER_AFE_PWD handling) unclocked block?  And when the reads do
-succeed, does the later reset_control_assert()/deassert() plus
-SYS_CTRL_PHY_RST reset the MDIO master and integrated PHYs underneath the
-mdio/phy devices that were already bound during probe, including any
-transaction in flight from the freshly probed downstream switch?
+		if (dsa_is_upstream_port(ds, i)) {
+			mt753x_cpu_port_enable(ds, i);
+		} else {
+			...
+		}
+		/* Enable consistent egress tag */
+		regmap_update_bits(priv->regmap, MT7530_PVC_P(i),
+				   PVC_EG_TAG_MASK,
+				   PVC_EG_TAG(MT7530_VLAN_EG_CONSISTENT));
 
-> diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-> index b152b73315d50..fe93be1ece7d7 100644
-> --- a/drivers/net/dsa/mt7530.c
-> +++ b/drivers/net/dsa/mt7530.c
-
-[ ... ]
-
-> @@ -2414,6 +2414,10 @@ mt7530_setup_mdio(struct mt7530_priv *priv)
->  	static int idx;
->  	int ret = 0;
->  
-> +	/* Already done */
-> +	if (priv->child_bus)
-> +		return 0;
-> +
->  	mnp = of_get_child_by_name(np, "mdio");
-
-[Severity: Medium]
-What serializes this check now that mt7530_setup_mdio() is also reachable
-from mt7988_probe()?
-
-Every previous invocation came from mt753x_setup() under dsa2_mutex, but
-the new call runs after the lock has been dropped:
-
-net/dsa/dsa.c:dsa_register_switch() {
-	mutex_lock(&dsa2_mutex);
-	err = dsa_switch_probe(ds);
-	dsa_tree_put(ds->dst);
-	mutex_unlock(&dsa2_mutex);
-}
-
-So the probe thread can run mt7530_setup_mdio(priv) unlocked while another
-switch of the same tree drives, under dsa2_mutex:
-
-dsa_register_switch()
-    dsa_tree_setup()
-        dsa_tree_setup_switches()
-            dsa_switch_setup(this ds)
-                mt753x_setup()
-                    mt7530_setup_mdio(same priv)
-
-Can both observe priv->child_bus == NULL and both allocate and register an
-mii_bus for the same switch?  priv->child_bus is only published just before
-devm_of_mdiobus_register() and unconditionally cleared on failure, so a
-losing racer can clear a pointer that mt753x_phy_read_c22() and
-mt753x_phy_write_c22() dereference.  The non-atomic "static int idx"
-increment used for bus->id is also no longer under any lock, so can two
-buses end up with the same KBUILD_MODNAME-%d id?
-
-Related, in the single-threaded case: the downstream switch probed from
-inside devm_of_mdiobus_register() completes the tree and re-enters
-mt753x_setup() for this same priv, where this guard returns 0 while the
-outer registration is still in flight further down the stack.  Is that
-intended?
-
-> @@ -2438,9 +2442,6 @@ mt7530_setup_mdio(struct mt7530_priv *priv)
->  	bus->parent = dev;
->  	bus->phy_mask = ~ds->phys_mii_mask;
-        ^^^^^^^^^^^^^^
-
-[Severity: Medium]
-When called from mt7988_probe(), is ds->phys_mii_mask initialized yet?
-
-The mask is set by the DSA core, and it is skipped entirely for an
-incomplete tree:
-
-net/dsa/dsa.c:dsa_tree_setup() {
-	complete = dsa_tree_setup_routing_table(dst);
-	if (!complete)
-		return 0;
-	...
-}
-
-net/dsa/dsa.c:dsa_switch_setup() {
-	/* Initialize ds->phys_mii_mask before registering the user MDIO bus
-	 * driver and before ops->setup() has run, ...
-	 */
-	ds->phys_mii_mask |= dsa_user_ports(ds);
-}
-
-With phys_mii_mask still 0, bus->phy_mask becomes ~0.  If the switch node
-has no "mdio" child, devm_of_mdiobus_register() does not override the mask:
-
-drivers/net/mdio/of_mdio.c:__of_mdiobus_register() {
-	if (!np)
-		return __mdiobus_register(mdio, owner);
-	...
-}
-
-so does __mdiobus_register() end up skipping every address, leaving
-ds->user_mii_bus pointing at a bus with no PHYs?  The new
-"if (priv->child_bus) return 0;" guard then makes the later call from
-mt753x_setup(), where phys_mii_mask is correct, a no-op, so the ~0 mask
-looks permanent, and dsa_switch_setup() will not build its own user mii bus
-either because ds->user_mii_bus is already set.
-
-> -	if (priv->irq_domain && !mnp)
-> -		mt7530_setup_mdio_irq(priv);
-> -
->  	priv->child_bus = bus;
->  
->  	ret = devm_of_mdiobus_register(dev, bus, mnp);
-
-[Severity: High]
-Does moving this to mt753x_setup() make the per-PHY IRQ assignment take
-effect too late?
-
-Before the change the order was:
-
-mt7530_setup_mdio()
-    mt7530_setup_mdio_irq()		<- fills ds->user_mii_bus->irq[p]
-    devm_of_mdiobus_register()
-        __mdiobus_register()
-            phy_device_create()
-                dev->irq = bus->irq[addr];
-
-After the change, mt753x_setup() calls mt7530_setup_mdio() first and only
-then mt7530_setup_mdio_irq(), so the writes in
-
-	irq = irq_create_mapping(priv->irq_domain, p);
-	ds->user_mii_bus->irq[p] = irq;
-
-happen after phy_device_create() has already latched phydev->irq from
-bus->irq[addr], which mdiobus_alloc_size() initialized to PHY_POLL.
-Nothing re-reads bus->irq[] afterwards, so do the internal PHYs silently
-fall back to polling while the virqs from irq_create_mapping() end up
-referenced by nothing?
-
-This is the case the old "priv->irq_domain && !mnp" condition selected, and
-it matches in-tree DTs that have "interrupt-controller" on the switch node
-and no "mdio" child, for example switch@1f in
-arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts and switch@31 in
-arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts.  The commit
-message does not mention this behaviour change; is it intended?
-
-> @@ -3285,6 +3287,9 @@ mt753x_setup(struct dsa_switch *ds)
->  	if (ret)
->  		return ret;
->  
-> +	if (priv->irq_domain && ds->user_mii_bus)
-> +		mt7530_setup_mdio_irq(priv);
-> +
->  	/* Initialise the PCS devices */
->  	for (i = 0; i < priv->ds->num_ports; i++) {
->  		priv->pcs[i].pcs.ops = priv->info->pcs_ops;
+MT7530_VLAN_EG_DISABLED is 0 and MT7530_VLAN_EG_CONSISTENT is 1 in
+drivers/net/dsa/mt7530.h, so the field really changes.  The downstream DSA link
+port is re-programmed to PVC_EG_TAG(MT7530_VLAN_EG_DISABLED) later in
+mt7530_port_enable(), but with priv->is_passthrough set the upstream port takes
+neither the user port branch nor the dsa_port_is_dsa(dp) && dp->index !=
+upstream_pt branch there, so there is no later write for it.  Is the write in
+mt753x_cpu_port_enable() then dead, or should the EG_CONSISTENT update be
+skipped for the upstream port in passthrough mode?  The commit message of that
+patch states both ports end up at MT7530_VLAN_EG_DISABLED.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260915174643.253660-1-cjd%40cjdns.fr
