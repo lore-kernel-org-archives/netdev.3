@@ -1,69 +1,76 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED954D487C
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 18:39:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3695A768EA
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 18:52:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789670393; cv=none; b=A6+BnSYgY5zZ6I2sooGJwim12Qd0QNpiJXYoXcuPIU+mQqcB6NY2Tt2D0pG92kZR4criV5usZkD8YNHWLHR2Tbec0iURTUMlTQhGW0G/1n3RNr4ReSMTqGLaTTaaoTILb8gQgkf8CWPDAeDPuTwIedv2sMDpLJOa66ze1AbEnTA=
+	t=1789671123; cv=none; b=jrj1ymhvZXmYHaL8Xim+NerRr90fLylMk76U5S1HZbZG+pVvMbv2efmeAHcNVq30kegLa2N1HD0SofSA5heosKlrbVCnQFHS/54pEYaDUT3H9L+za/697Qi5TR/78CELgNhNip778VBqT+zGs7UUjcSM0NBJYOLOIxskHOUJWPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789670393; c=relaxed/simple;
-	bh=7RVplSQjawVM9VOWuoJGni1lEB/PnBuc+YTn/GU6LIc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HZ7loxnDptWE01ji21FiO9WSMRCKpOeT3R7qrjSvD54qBBLeT06t+GpH13Dyt1witpmYHHkUf9metb2ZlBLwpOU8juqI9GoPx/SU/VG2NaTsve56x7ROqbNJH48H5JqpSXUtbvuTFtqWLFVYTYKhES37NWKF0OroBpI3HIfjMS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vfo3iayF; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1789671123; c=relaxed/simple;
+	bh=OG82Jxj0msnRfSdpEsWnvtGSGZhhQK5dbyKLNfGJnPw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QJISiwhH2jwEONrR4xvhYbOX47IGV0SEUMRKw3CqA7m5vJztyfZvK9VQFzt5uuooMnu0A200YysbR3cvdkUd65eEArhnSByLvdA50B0tFAvWtsQAp6iMRuMGrJHa7sg3Nvgx99cund2J4y+fFc1PZGPpcMqftPsQmEBWKMpDcFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SilCDE4N; arc=none smtp.client-ip=74.125.227.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vfo3iayF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789670391; x=1821206391;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=7RVplSQjawVM9VOWuoJGni1lEB/PnBuc+YTn/GU6LIc=;
-  b=Vfo3iayFF57HhVOrC+i1nIsphW/Qmk4/g7deMK4eGO+Y2nMt0rs4OHy+
-   F+nElmxyRwxcjCbRbKssZ0qrJUDCfQW+NdKd6F3muRwyqeFMiaO6c4QDA
-   9vIhxutsX3RuXEVF3lq1wNnA0+BKFZPmswONmKlKuUHqukkhVLjUCLjst
-   CsO0PmaAANyX6T19oG/0Y5AcOl1c4s/PUW9dmRURn4WqB8kTDZmsQf0HV
-   THybKlT75N4Kx+eZ8I40k1RSHlP/K7OqsHTet84kQ2XUp7E7uDnTUoAch
-   1slZjg3dYJiwDzubs1kBjlj+UiTYq+FrXe2oDELpC8CWewYXr7FPFAvUN
-   w==;
-X-CSE-ConnectionGUID: U63zbZOfQ6CMbPdt8Xziuw==
-X-CSE-MsgGUID: ALMc4eWtRb+pB6BZqhfBAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="100722138"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="100722138"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 11:39:40 -0700
-X-CSE-ConnectionGUID: WYt1tyTbQIectMfL5BPeBA==
-X-CSE-MsgGUID: cLs1s7a+S7urCTxn5Sj6fw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="267728781"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa009.fm.intel.com with ESMTP; 17 Sep 2026 11:39:40 -0700
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Lukasz Czapnik <lukasz.czapnik@intel.com>,
-	anthony.l.nguyen@intel.com,
-	marcin.szycik@linux.intel.com,
-	aleksandr.loktionov@intel.com,
-	sandeep.penigalapati@intel.com,
-	ananth.s@intel.com,
-	alexander.duyck@gmail.com,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH net-next v2 12/12] ice: use ACL for ntuple rules that conflict with FDir
-Date: Thu, 17 Sep 2026 11:39:24 -0700
-Message-ID: <20260917183927.2692068-13-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20260917183927.2692068-1-anthony.l.nguyen@intel.com>
-References: <20260917183927.2692068-1-anthony.l.nguyen@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SilCDE4N"
+Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2db18fe433fso10547275ad.2
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 11:52:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789671122; x=1790275922; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=K5m8l+7VKRFbWFY6ZRBtl/OLyMFvN+m0132oJVHA/W8=;
+        b=SilCDE4NY9AVRKuyT4SXl3Qsnymi2jt5IU4h0wRq8GDKPAv5wNid379sU9kbnM0LnI
+         Ls2Mj68iJGjM8mc6pFJxiySpyd26UIgaZfhcpUpVbAhSYEZs68BfzvPahPR7YzVAwepE
+         YSK7DJFEXYDBRFjtFr6jcYAsSgA8nfTnlZAUtdKdalC1E3X5e3A6cBfR5ijomn+G499b
+         nqgQHSgP9UW9kTN3CisdgVxWfUnGSzQJGmnJvXjhFyLw7pZgF/0npCQm693+xrsOXp89
+         lSr5B2yzv2c7sBAszElEAGFj+uKQrx5vl2bA9uclqryAW0yen9uK7GtIQj8OcT+BUAs7
+         FlJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789671122; x=1790275922;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=K5m8l+7VKRFbWFY6ZRBtl/OLyMFvN+m0132oJVHA/W8=;
+        b=RCYFwPfS9chwFdUjJvUYvtvRx7q/Bqz7buqV0CG2KjCxiu7aof08YpqtIBOZsyuem3
+         smGHqCsgz3hikeXsxytU58ivB0VJa2c8lRtrSmJ9d/2FjTcVrlD4J4YvYoiW4Ph4kpr1
+         EdM+2CAMNsxUFZaEFOwMSFIYfSMjrv0jKq691VetKIybS3sIrERB/1Ri/k/8owg7S589
+         20NmPu7cgOdbY6BOT2oWjwnkzraZ1xVR48TyO8LuKlEQDPepRbK9eXAQItk+Xzu19FtS
+         3+YfgBGjyX6uD16Ut/iWfH+h6+b/qQshnTRELOswJtushiyyVelKZMo75JSOye9hpiH2
+         j08w==
+X-Gm-Message-State: AFuF++kDLwe4QHkRNlpFTjWow96dJBDKmjWUUQ9k1CSe03ES9eD2hLP7
+	2/t4dqC/WpqV5w2fe+0Ni5I4mTvu2EYTlb9LHWN/6NJ8HWlanjlxGiljhL9yyRRT
+X-Gm-Gg: AYBFou1gJERZIPcEbzLt2adejgBTmvUhCkOYeD6k6gUXsMb9XbjbBYeKgrbKEDuj4Tp
+	l3Wvc+ef1WoVMD5ukF3hRKzvuoiMPhGf3kevaRxz1CAAt71CP2L2vwzz9PIIlVfvP4LByixg+IT
+	jECQEGhrDRkIZ3dheRjAauTWTWfB1jUD7Rhk2o9rBKR167wEksEbHEM/xO2Qmr59W9OMa5+5AN/
+	iPBdPkHkYhaticrOkJJe7oGVs+2hPaE9rOUvTEsjNoeK9aNkoRyyziu3XMPiTDLn/EvLvw50SmJ
+	MzmzDAJj4OoRsWV5kdK5mYkD75khIHF6E594eMr8jki/YHRotRw+mhAFy/axa50gMSwF4LdBy8q
+	KTjeqU/klVvWx9nuN8QW7pBz5o6OyXlsJb659Xlktoe547i8VjAhmdUf4CuY/VYI6nZz2LGVhhk
+	t0VXakFVQtzb2TGEDLMqSV5sLSx8S600Y4YoR5iKUUj/NOXUvDDM5gIU46dq8z6SWiP2Jz0FXuP
+	OPriWYPEbTOJAzLR4QkKgzA8g==
+X-Received: by 2002:a17:903:3586:b0:2dd:ad74:6d12 with SMTP id d9443c01a7336-2ddb1b9e495mr2575525ad.24.1789671121625;
+        Thu, 17 Sep 2026 11:52:01 -0700 (PDT)
+Received: from d.home.yangfl.dn42 ([2a09:bac5:661a:1232::1d0:c5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd89f331b7sm31032655ad.82.2026.09.17.11.51.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2026 11:52:01 -0700 (PDT)
+From: David Yang <mmyangfl@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v3 0/8] net: dsa: motorcomm: Add SerDes PCS
+Date: Fri, 18 Sep 2026 02:49:47 +0800
+Message-ID: <20260917185010.3189199-1-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -72,253 +79,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Lukasz Czapnik <lukasz.czapnik@intel.com>
+Support in-band negotiation of the SerDes ports.
 
-Flow Director can keep only one input set per flow type. After ACL support
-was added for ethtool ntuple rules, the driver still only selected ACL for
-rules with partial masks.
+v3:
+  - fix build error
+v2: https://lore.kernel.org/r/20260916164310.3168269-1-mmyangfl@gmail.com
+  - Remove YT921X_PORT_MASK_* macros
+  - code style nits
+  - unconditionally write BMCR_ANRESTART
+v1: https://lore.kernel.org/r/20260909190541.466476-1-mmyangfl@gmail.com
 
-That leaves a gap for rules with full masks that still require a different
-input set than the one already programmed for Flow Director. Such rules go
-through the FDir path, build a different extraction sequence and then fail
-because the existing FDir profile cannot be reused.
+David Yang (8):
+  net: dsa: motorcomm: Remove YT921X_PORT_MASK_* macros
+  net: dsa: motorcomm: Split xMII and SERDES port masks
+  net: dsa: motorcomm: Check port type with runtime info
+  net: dsa: motorcomm: Fix register bit field names
+  net: dsa: motorcomm: Introduce yt921x_speed
+  net: dsa: motorcomm: Hoist port_to_priv helper into chip.h
+  net: dsa: motorcomm: Split MDIO bus module
+  net: dsa: motorcomm: Add SerDes PCS
 
-Detect this case before programming the rule. Build the candidate IP flow
-segment, compare it with the active non-tunneled FDir profile and, when the
-input sets differ, offload the rule through ACL if ACL is available.
+ drivers/net/dsa/motorcomm/Makefile   |   2 +
+ drivers/net/dsa/motorcomm/chip.c     | 525 ++++++---------------------
+ drivers/net/dsa/motorcomm/chip.h     | 106 +++---
+ drivers/net/dsa/motorcomm/leds.c     |  14 +-
+ drivers/net/dsa/motorcomm/mdio_bus.c | 301 +++++++++++++++
+ drivers/net/dsa/motorcomm/mdio_bus.h |  54 +++
+ drivers/net/dsa/motorcomm/pcs-921x.c | 235 ++++++++++++
+ drivers/net/dsa/motorcomm/pcs.h      |  13 +
+ 8 files changed, 793 insertions(+), 457 deletions(-)
+ create mode 100644 drivers/net/dsa/motorcomm/mdio_bus.c
+ create mode 100644 drivers/net/dsa/motorcomm/mdio_bus.h
+ create mode 100644 drivers/net/dsa/motorcomm/pcs-921x.c
+ create mode 100644 drivers/net/dsa/motorcomm/pcs.h
 
-Refactor the IP flow segment setup into a helper so the same logic can be
-used both by the extraction-sequence configuration path and by the conflict
-check.
-
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
-Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
----
- .../ethernet/intel/ice/ice_ethtool_ntuple.c   | 189 +++++++++++++-----
- 1 file changed, 140 insertions(+), 49 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c b/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
-index fef8640d23fb..691b4500e6be 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
-@@ -1484,6 +1484,120 @@ ice_set_fdir_vlan_seg(struct ice_flow_seg_info *seg,
- 	return 0;
- }
- 
-+/**
-+ * ice_set_fdir_ip_flow_seg - set IP flow segment based on ethtool flow type
-+ * @fsp: pointer to ethtool Rx flow specification
-+ * @seg: flow segment for programming
-+ * @perfect_fltr: valid on success; returns true if perfect fltr, false if not
-+ *
-+ * Return: 0 on success and errno in case of error.
-+ */
-+static int ice_set_fdir_ip_flow_seg(struct ethtool_rx_flow_spec *fsp,
-+				    struct ice_flow_seg_info *seg,
-+				    bool *perfect_fltr)
-+{
-+	switch (fsp->flow_type & ~FLOW_EXT) {
-+	case TCP_V4_FLOW:
-+		return ice_set_fdir_ip4_seg(seg, &fsp->m_u.tcp_ip4_spec,
-+					    ICE_FLOW_SEG_HDR_TCP, perfect_fltr);
-+	case UDP_V4_FLOW:
-+		return ice_set_fdir_ip4_seg(seg, &fsp->m_u.tcp_ip4_spec,
-+					    ICE_FLOW_SEG_HDR_UDP, perfect_fltr);
-+	case SCTP_V4_FLOW:
-+		return ice_set_fdir_ip4_seg(seg, &fsp->m_u.tcp_ip4_spec,
-+					    ICE_FLOW_SEG_HDR_SCTP,
-+					    perfect_fltr);
-+	case IPV4_USER_FLOW:
-+		return ice_set_fdir_ip4_usr_seg(seg, &fsp->m_u.usr_ip4_spec,
-+						perfect_fltr);
-+	case TCP_V6_FLOW:
-+		return ice_set_fdir_ip6_seg(seg, &fsp->m_u.tcp_ip6_spec,
-+					    ICE_FLOW_SEG_HDR_TCP, perfect_fltr);
-+	case UDP_V6_FLOW:
-+		return ice_set_fdir_ip6_seg(seg, &fsp->m_u.tcp_ip6_spec,
-+					    ICE_FLOW_SEG_HDR_UDP, perfect_fltr);
-+	case SCTP_V6_FLOW:
-+		return ice_set_fdir_ip6_seg(seg, &fsp->m_u.tcp_ip6_spec,
-+					    ICE_FLOW_SEG_HDR_SCTP,
-+					    perfect_fltr);
-+	case IPV6_USER_FLOW:
-+		return ice_set_fdir_ip6_usr_seg(seg, &fsp->m_u.usr_ip6_spec,
-+						perfect_fltr);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+/**
-+ * ice_fdir_has_input_set_conflict - Check conflict with existing FD filters
-+ * @pf: PF structure
-+ * @fsp: pointer to ethtool Rx flow specification
-+ * @user: user-defined data parsed from flow specification
-+ *
-+ * Checks if adding this filter to Flow Director would cause an input set
-+ * mismatch with existing filters for the same flow type by building
-+ * the segment and comparing with existing profiles.
-+ *
-+ * Return: true if there's a conflict (use ACL), false otherwise (can use FD)
-+ */
-+static bool
-+ice_fdir_has_input_set_conflict(struct ice_pf *pf,
-+				struct ethtool_rx_flow_spec *fsp,
-+				const struct ice_rx_flow_userdef *user)
-+{
-+	struct ice_flow_seg_info *test_seg, *old_seg;
-+	bool perfect_fltr = false, conflict = false;
-+	struct ice_fd_hw_prof *hw_prof;
-+	struct ice_hw *hw = &pf->hw;
-+	enum ice_fltr_ptype flow;
-+	int err;
-+
-+	if ((fsp->flow_type & ~FLOW_EXT) == ETHER_FLOW)
-+		return false;
-+
-+	flow = ice_ethtool_flow_to_fltr(fsp->flow_type & ~FLOW_EXT);
-+	if (flow >= ICE_FLTR_PTYPE_MAX || !hw->fdir_prof ||
-+	    !hw->fdir_prof[flow]) {
-+		return false;
-+	}
-+
-+	hw_prof = hw->fdir_prof[flow];
-+	old_seg = hw_prof->fdir_seg[ICE_FD_HW_SEG_NON_TUN];
-+
-+	/* A profile with no ethtool FDir filters (fdir_fltr_cnt == 0) may
-+	 * still be locked by aRFS perfect (4-tuple) filters, which keep their
-+	 * own active counters separate from fdir_fltr_cnt.
-+	 */
-+	if (!old_seg || (hw->fdir_fltr_cnt[flow] == 0 &&
-+			 !ice_is_arfs_using_perfect_flow(hw, flow)))
-+		return false;
-+
-+	test_seg = kzalloc_obj(*test_seg);
-+	if (!test_seg)
-+		return false;
-+
-+	err = ice_set_fdir_ip_flow_seg(fsp, test_seg, &perfect_fltr);
-+
-+	if (err) {
-+		kfree(test_seg);
-+		return false;
-+	}
-+
-+	if (user && user->flex_fltr)
-+		ice_flow_add_fld_raw(test_seg, user->flex_offset,
-+				     ICE_FLTR_PRGM_FLEX_WORD_SIZE,
-+				     ICE_FLOW_FLD_OFF_INVAL,
-+				     ICE_FLOW_FLD_OFF_INVAL);
-+
-+	/* Compare the test segment with the existing segment */
-+	if (memcmp(old_seg, test_seg, sizeof(*test_seg)) != 0)
-+		conflict = true;
-+
-+	kfree(test_seg);
-+
-+	return conflict;
-+}
-+
- /**
-  * ice_cfg_fdir_xtrct_seq - Configure extraction sequence for the given filter
-  * @pf: PF structure
-@@ -1514,57 +1628,16 @@ ice_cfg_fdir_xtrct_seq(struct ice_pf *pf, struct ethtool_rx_flow_spec *fsp,
- 		return -ENOMEM;
- 	}
- 
--	switch (fsp->flow_type & ~FLOW_EXT) {
--	case TCP_V4_FLOW:
--		ret = ice_set_fdir_ip4_seg(seg, &fsp->m_u.tcp_ip4_spec,
--					   ICE_FLOW_SEG_HDR_TCP,
--					   &perfect_filter);
--		break;
--	case UDP_V4_FLOW:
--		ret = ice_set_fdir_ip4_seg(seg, &fsp->m_u.tcp_ip4_spec,
--					   ICE_FLOW_SEG_HDR_UDP,
--					   &perfect_filter);
--		break;
--	case SCTP_V4_FLOW:
--		ret = ice_set_fdir_ip4_seg(seg, &fsp->m_u.tcp_ip4_spec,
--					   ICE_FLOW_SEG_HDR_SCTP,
--					   &perfect_filter);
--		break;
--	case IPV4_USER_FLOW:
--		ret = ice_set_fdir_ip4_usr_seg(seg, &fsp->m_u.usr_ip4_spec,
--					       &perfect_filter);
--		break;
--	case TCP_V6_FLOW:
--		ret = ice_set_fdir_ip6_seg(seg, &fsp->m_u.tcp_ip6_spec,
--					   ICE_FLOW_SEG_HDR_TCP,
--					   &perfect_filter);
--		break;
--	case UDP_V6_FLOW:
--		ret = ice_set_fdir_ip6_seg(seg, &fsp->m_u.tcp_ip6_spec,
--					   ICE_FLOW_SEG_HDR_UDP,
--					   &perfect_filter);
--		break;
--	case SCTP_V6_FLOW:
--		ret = ice_set_fdir_ip6_seg(seg, &fsp->m_u.tcp_ip6_spec,
--					   ICE_FLOW_SEG_HDR_SCTP,
--					   &perfect_filter);
--		break;
--	case IPV6_USER_FLOW:
--		ret = ice_set_fdir_ip6_usr_seg(seg, &fsp->m_u.usr_ip6_spec,
--					       &perfect_filter);
--		break;
--	case ETHER_FLOW:
-+	if ((fsp->flow_type & ~FLOW_EXT) == ETHER_FLOW) {
- 		ret = ice_set_ether_flow_seg(dev, seg, &fsp->m_u.ether_spec);
- 		if (!ret && (fsp->m_ext.vlan_etype || fsp->m_ext.vlan_tci)) {
--			if (!ice_fdir_vlan_valid(dev, fsp)) {
-+			if (!ice_fdir_vlan_valid(dev, fsp))
- 				ret = -EINVAL;
--				break;
--			}
--			ret = ice_set_fdir_vlan_seg(seg, &fsp->m_ext);
-+			else
-+				ret = ice_set_fdir_vlan_seg(seg, &fsp->m_ext);
- 		}
--		break;
--	default:
--		ret = -EINVAL;
-+	} else {
-+		ret = ice_set_fdir_ip_flow_seg(fsp, seg, &perfect_filter);
- 	}
- 	if (ret)
- 		goto err_exit;
-@@ -2368,9 +2441,27 @@ int ice_add_ntuple_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc *cmd)
- 		return -ENOSPC;
- 	}
- 
--	/* ACL filter */
--	if (pf->hw.acl_tbl && ice_is_acl_filter(fsp))
-+	/* ACL filter, or this filter would cause an input set conflict with
-+	 * existing FD filters
-+	 */
-+	if (pf->hw.acl_tbl &&
-+	    (ice_is_acl_filter(fsp) ||
-+	     ice_fdir_has_input_set_conflict(pf, fsp, &userdata))) {
-+		/* The ACL programming path does not honor flex byte
-+		 * (user-def) constraints. Routing a flex filter to ACL would
-+		 * silently drop the flex match and offload a much broader
-+		 * rule than requested, so reject it explicitly instead.
-+		 */
-+		if (userdata.flex_fltr) {
-+			dev_info(dev, "Failed to add filter. Flex byte (user-def) filters cannot be offloaded to ACL.\n");
-+			return -EOPNOTSUPP;
-+		}
-+
-+		dev_dbg(dev, "ntuple filter at location %d offloaded to ACL instead of Flow Director\n",
-+			fsp->location);
-+
- 		return ice_acl_add_rule_ethtool(vsi, cmd);
-+	}
- 
- 	/* Only fdir filters below */
- 	if (!test_bit(ICE_FLAG_FD_ENA, pf->flags))
 -- 
-2.47.1
+2.53.0
 
