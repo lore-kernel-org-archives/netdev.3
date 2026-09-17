@@ -1,63 +1,200 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi2-f12.google.com (mail-oi2-f12.google.com [74.125.231.204])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74AE64E0B98;
-	Thu, 17 Sep 2026 19:34:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255084DEC3E
+	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 19:38:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789673702; cv=none; b=kDxwwTZwMZFtM3/qAF+13AYw/TD4rq2wJMhrfoaYkD6tFXap9+qp79UgSYhU4x2ZnDsKMc3aA8BcFqbxjU0KVt1zyxesOP1pP8Cq8JqwApQ9IIpajAsffPvYc/f+T2GGkRH3OGCx8jmKIMiPBS/NPY18ucMackDkz4h9UEfmDUM=
+	t=1789673914; cv=none; b=fm3e+1UdRwMRydK8AC3blrM5vJVsdstxY4H1YQKgDjuSXBipQXxuCW7c88cIddmu9tbY9QvKXFsbxAwRzhkqQXjGQdUCmtBHKm0B8SsFJJvrepQZJfMujQI0pM2FgZj/1FuyzV+A0MCcZsi7PgN5mf4F9vJs3Uqh4UeQbHs1ACg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789673702; c=relaxed/simple;
-	bh=bZj1mdoc1FNcPy1u2VVFAA7PFdDt+6yGbsfzU/UQFhM=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=gVR96N7OALKIClIASa9xmSFvaebwjLAGMKVznFFiJtzMSr+5zFmbHeIfJATvH/IrMxAjM8VrfaV5Lhd0ELwZw/SMI3rwzwiLoIeCyG3a9ww+SKunqlmZyDWIocR0sXTQ8oNFYbHpjy0bjCqgg8/3IOICIHGG697NEELTDdmfyvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bSOdK/zX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789673914; c=relaxed/simple;
+	bh=zMyTB6Pk5b27ZnL2vF9K0ITpxhdU9JZ/t/JUCeV7Lmk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=iahmg5nULwyzul3aCI6LMiBpl/GfN5U9Ap294NeigtzxeRTgNfCYqEFio8ke2/zLxBSohMpzqkKPLeaaMyhGCSvDVWWxg1V5gioMGrsxA/X7+lmKPVOfVKuEr2rYGt7bM9wb98HOX5A03YIBYZiCSadzu5FfsfSw4rhotXv1T/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=PRAnqO3K; arc=none smtp.client-ip=74.125.231.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bSOdK/zX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C4581F000FF;
-	Thu, 17 Sep 2026 19:34:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789673697;
-	bh=a65zZrUMSOQwgUdi65oStTixYiDq1SXmCWvj/21Zp4w=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc;
-	b=bSOdK/zX+2qPjQfxtiPE+ce3Gia98e5k+3cmLtOuHeGNBi4LzQ6CoS6cWDcNk8EXv
-	 XfCd3pCp0idvM4z/stg/FGWKNcZnnbk5s37P8bNb4DbxE9tlxGY9wQTjCKUmvoI6j6
-	 lo0FyXCE6olWj6/D3EJOMIwFWyosqTu/RXNziLRRl/PZPfLF7AWHp/LyzbEXsGTiAG
-	 zQ84OJ3MBfNGeS0Y2pgXndr6xz7/WsoaMl3YLM3orKeZBKCtN/5WNabz2TS6+VAlzL
-	 XOqrimIcArzfyrWz0FQ9b1eqytDbP0HsqEtTLjGs9UOak9yv9AyG8QOWVl5kjWGZmx
-	 M+IG0FWM04H+A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0F4138119C0;
-	Thu, 17 Sep 2026 19:33:51 +0000 (UTC)
-Subject: Re: [GIT PULL] Networking for v7.3-rc4
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20260917161123.383876-1-pabeni@redhat.com>
-References: <20260917161123.383876-1-pabeni@redhat.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20260917161123.383876-1-pabeni@redhat.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git net-7.3-rc4
-X-PR-Tracked-Commit-Id: 3b95a04eb5f95bf6a016a1bb9ff37d3eee48de63
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: b5a051f6b840d48f159166ef073d3021989bfb50
-Message-Id: <178967363038.3838120.15352241771512304414.pr-tracker-bot@kernel.org>
-Date: Thu, 17 Sep 2026 19:33:50 +0000
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: torvalds@linux-foundation.org, kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="PRAnqO3K"
+Received: by mail-oi2-f12.google.com with SMTP id 5614622812f47-4b37a2ffef2so14046b6e.3
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 12:38:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1789673911; x=1790278711; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=1Eu5cwpkNfx0VymMp7XzXaTIYyguHpWthmES2p8y0Do=;
+        b=PRAnqO3KaB4eHlLVau06K/pZX4onYwDn2tH34jniv+JchTn56vPNeDdkak4hhQJb5i
+         7wZqq6gZAYZB1zhne2p2zaspxGqepH7qy4y4VDq5W1p7uY39vEikZlv15a4oDqV+boDE
+         ww138g/7ZirSH7XlOjUKCfVcgvQ65EgMBUDN/ShV7lrlQAX+DqFJIhhcxA2Yj3A5DjSw
+         /z/T1nV6JRuhoErEfPVPcoCB+9RsqLRJV2HnDkmmebu7lT048rEwYgdTKpFPenzp34Zh
+         dJqe/XP1cLZUphjV3R+5+lXf7GVCu8FKSHJ3mwi4mqb5rhetuJ//4MZ8dI+A9EefWUoo
+         8kmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789673911; x=1790278711;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=1Eu5cwpkNfx0VymMp7XzXaTIYyguHpWthmES2p8y0Do=;
+        b=FhdbllkYbW0clIiaEuc7Aj3neiMNnZixhOcxqcWHC0AyL29Si6Adtunvad9K+NukfW
+         bLU2FX7RrIwnPpcWD+anrMdP1VnpitI8jaBuZ6LeJMhYvMNT1TnOTAlrB+pnaAUV37mh
+         bKT9Hv4yB/HrYyqzADnLF+EgOx3Z4RTNkyoEi727S9vXP8rx+UZU09gjx8cUhd44q/cP
+         hUgOAo6aTMc/+YlAFKXwfJ7UvsbqoHTPktjD6AcdIqeeXWaPE1OLL3rEQWVheG1IqTC9
+         Fm6+eBuEiF9dbU+Cta+P/09gCxxfwO8Q5OZwScWFmiYlmAMZR+MRH2dZBzoIudKicBql
+         CqsA==
+X-Gm-Message-State: AFuF++mkwIe32j5nzlc2riMdvEy9PQRlb5NhSIYxwYbeU6RPqQCFriNR
+	1I6Nmi74DwcKJGXMiv08p9lSyjmPqUkoPmf1SFWtbKPSmv0bVnGnH2+6d/y+0j5DOOkvTEsMJDl
+	/tK8Rk1j4rA==
+X-Gm-Gg: AYBFou3EfiykECmQ9E+lSXiCu27SoS2PCFnxRFuQa9P0EpS8gYKAbpqvXhSZqqxQKiY
+	npYO0/tX+unxHtFdYF9n3uazrMED6FhSIIhGdWJJjAqBaZWCryCS8m1bbKdlQjPDoa+vmEjFy1h
+	Z9qAWQu5YXVJ+sqN9aoB8V+VaPb9rY8T/RqNmv+KwLof4dc2E0dxL1/Hvuz0n3QxqzmM2kXyS+5
+	5jN0tbSsFBjOWGxTaBbrmJtL+FnxYbqhOZcOq8Zf01KRSsVRgvrBD0xrq/FxmnCIKUP/G2RLArY
+	ubaK94opnGfOFBvgEaDC7py3Bo9toAsNI/gh7NlAWLnDeZpdnlUTC8ZoDO8CS4p4FA3hnBbuTSK
+	G6KfelmWhNWnEim7plVNSn+7SSXRT8H/h5XOFsUDBjC8VzDpnQ4pFgrSTLfaVJZ+h/8sc/s7uM6
+	NZ+RKUNheD4UPYThtN0mnqEynlYGjHJ/Q3z9RD/ZqDUPZVorgNC9FEQF5W38k=
+X-Received: by 2002:a05:6808:5143:b0:4b9:e5fa:8a23 with SMTP id 5614622812f47-4ccf999a345mr258526b6e.40.1789673910696;
+        Thu, 17 Sep 2026 12:38:30 -0700 (PDT)
+Received: from [127.0.1.1] ([2a09:bac6:bf21:2632::3ce:23])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4cb6d267495sm3576435b6e.12.2026.09.17.12.38.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2026 12:38:29 -0700 (PDT)
+From: Chris J Arges <carges@cloudflare.com>
+Subject: [PATCH net-next v3 0/3] net: hash uncached route lists by device
+Date: Thu, 17 Sep 2026 14:38:21 -0500
+Message-Id: <20260917-hash-bucket-route-lists-v3-0-30493a37b6eb@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAK1BrGoC/3WOyw7CIBBFf8WwFkPpE1f+h3EB08GitRigTU3Tf
+ 5dWExemy5u595yZiEdn0JPjbiIOB+ON7WJI9zsCjeyuSE0dM+GMF6zijDbSN1T1cMdAne0D0tb
+ 44KmqAHgJUOcpkLh+OtRmXMln0sVyh2Mgl8/F9+qGEBbw0m0iwbrX+sSQrIuvr9j0DQllVEuhh
+ E4ZqjI7QWv7WrfS4QHsY1UN/AcTSbYN4xHGhS64KOtK5vIPNs/zG+wAEu0sAQAA
+X-Change-ID: 20260820-hash-bucket-route-lists-b8cc27ccd53c
+To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, kernel-team@cloudflare.com, 
+ Chris J Arges <carges@cloudflare.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openssh-sha256; t=1789673908; l=4671;
+ i=carges@cloudflare.com; h=from:subject:message-id;
+ bh=zMyTB6Pk5b27ZnL2vF9K0ITpxhdU9JZ/t/JUCeV7Lmk=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgaxY1IIT5oTohBZJmhnVgJo2HsM7Sv
+ 9I0LdJCgpeGX6gAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QBToa1kNsgFjuMhcDZwtGPLybvhKU60PK5pXR+TXJ2QqxsEPX00q/hQNKL227WsN7PU38SJHgT2
+ qmzyY4gTGDw4=
+X-Developer-Key: i=carges@cloudflare.com; a=openssh;
+ fpr=SHA256:Cun99EBiH0EV7wvmfTBF9eDrld2NJx+aD4ScWZ45Q5M
 
-The pull request you sent on Thu, 17 Sep 2026 18:11:23 +0200:
+We have observed hung tasks blocked on rtnl_mutex while network namespaces
+were being removed. The namespaces contained many network devices, and the
+host had accumulated a large population of entries on the global per-CPU
+uncached route lists. A perf profile collected during one incident
+attributed most of the cleanup worker's samples to rt_flush_dev():
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git net-7.3-rc4
+```
+99.92% kworker/u384:3-  worker_thread
+  `-88.71% process_one_work
+      `-81.02% cleanup_net
+          `-81.00% unregister_netdevice_many_notify
+              `-79.42% notifier_call_chain
+                  `-78.05% fib_netdev_event
+                      `-77.92% rt_flush_dev
+```
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/b5a051f6b840d48f159166ef073d3021989bfb50
+For each device, rt_flush_dev() visits every possible CPU and scans the
+global uncached route population while its caller holds rtnl_mutex. If N is
+the number of devices, C the number of possible CPUs, and R the number of
+uncached routes, the cost is O(N * (C + R)).
 
-Thank you!
+During namespace cleanup, other processes that issue RTNETLINK operations
+requiring the RTNL lock can stall until cleanup releases the lock.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+A minimal reproducer is available here:
+https://github.com/arges/linux-reproducers/tree/main/rtnl-flush-storm
+
+This series replaces each per-CPU uncached route list with a hash table
+using the network device as its key. Each table uses 64 buckets.
+IPv6 routes need additional handling because dst.dev and
+rt6i_idev->dev can refer to different devices. Routes are keyed by
+rt6i_idev->dev when available. Device teardown scans one bucket for
+ordinary devices and all buckets for loopback and L3 master devices.
+
+We measured user-visible RTNL latency on a 192-CPU x86-64 host. The test
+added approximately 80,000 uncached routes across 256 devices simulating a
+distribution we saw in production with 6 devices having 4k to 20k routes,
+and all others holding ~100 routes. The devices being removed owned none
+of these routes.
+
+During asynchronous namespace cleanup, the test repeatedly sends an
+idempotent RTM_NEWLINK request that requires RTNL. It then records the
+worst request-to-acknowledgment latency in each observation window.
+
+Results from this test show the median latency for the RTM_NEWLINK request
+to complete after waiting for unregsiter batch show between 68-75%
+reduction in latency when using the patch.
+
+We also measured end-to-end route insertion cost separately on the same
+machine. The test inserted 100,000 routes per round for 30 rounds after
+three warmups, while pinned to one CPU. Median insertion cost was
+2,069 ns/op without hashing and 2,066 ns/op with hashing. This test found
+no measurable insertion regression.
+
+The hash approach adds no per-route fields. On x86-64, the tables add
+approximately 3 KiB per possible CPU with 64 buckets.
+
+Patch 1 hashes IPv4 uncached routes by network device.
+Patch 2 applies the hashing design to IPv6 and handles routes whose device
+references differ.
+Patch 3 adds a selftest for the IPv6 case.
+
+Signed-off-by: Chris J Arges <carges@cloudflare.com>
+---
+Changes in v3:
+- Remove IPv4 and IPv6 Kconfig options; use fixed 64-bucket tables.
+- Use rcu_assign_pointer in rt6_uncached_list_flush
+- Key IPv6 routes by rt6i_idev and scan all buckets for loopback/VRF
+- RCT all the things
+- Link to v2: https://patch.msgid.link/20260914-hash-bucket-route-lists-v2-0-29f6297d8a5a@cloudflare.com
+
+Changes in v2:
+- Add IPv4 and IPv6 Kconfig options for the uncached-route hash size.
+- Keep 64 buckets as the default and document the per-CPU memory tradeoff.
+- Link to v1: https://patch.msgid.link/20260826-hash-bucket-route-lists-v1-0-fa9b9f30eb74@cloudflare.com
+
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Simon Horman <horms@kernel.org>
+To: David Ahern <dsahern@kernel.org>
+To: Ido Schimmel <idosch@nvidia.com>
+To: Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-kselftest@vger.kernel.org
+
+---
+Chris J Arges (3):
+      ipv4: hash uncached routes by device
+      ipv6: hash uncached routes by device
+      selftests: net: cover IPv6 uncached route device mismatch
+
+ net/ipv4/route.c                              |  36 +++++++--
+ net/ipv6/route.c                              | 101 ++++++++++++++++++--------
+ tools/testing/selftests/net/vrf-xfrm-tests.sh |  35 +++++++++
+ 3 files changed, 133 insertions(+), 39 deletions(-)
+---
+base-commit: 26ee8cd69d46a14b37ba5e512084fe80d730127a
+change-id: 20260820-hash-bucket-route-lists-b8cc27ccd53c
+
+Best regards,
+--  
+Chris J Arges <carges@cloudflare.com>
+
