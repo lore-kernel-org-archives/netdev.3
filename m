@@ -1,85 +1,72 @@
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010010.outbound.protection.outlook.com [40.93.198.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A53C4AD4D1
-	for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 10:05:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789639539; cv=none; b=DYRZsbRRx4EHwtpcljjajyZgGb5eGAGywlMpgE+SEc6WhxU/A/5AEXAOA2k1aVhejA/7OVVA9eoKXOdyzsepMWFJ+paMO9s+adkj5un929YwpvACXAgIVbrwmB2fimyy5Hu1uTcg9YPPGUzOtbh1oAVONP6wZYxQqhFSuw+1B+4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789639539; c=relaxed/simple;
-	bh=/ZcoGQU7+HpSLRmFfBGWL0azsSfivXUGNCssuK3UNyU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LsZgjeEZpxjgzxcnnImrS8mjCJsj3yAqauUjvWIauTjMCwb6Lir9aQZcuaKd8n1xy+i8iAngCU+uwbhyVEv+tZYeQ/9n+2XWiXqbLW7Xx1KIDtGoaJvmKEy9+b/YbEtTUNbFXb77REhmYEdW9VCrUiyAm4HbY3sqNsLmRlgKXjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=iF0sJQ6l; arc=none smtp.client-ip=74.125.227.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC984BB26B;
+	Thu, 17 Sep 2026 10:05:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789639541; cv=fail; b=rnF6p6xk0cv7jP1YqHNIUqOSI5UXDQEZoZWFZoi/HaiFXOrZ8eHqzLy4MUkXUkWu9GTVFp1q2J9lAgqyE7YbN+AsWGW2fhoAH/KSYyFffzCpnLa3aF1DntoosiJmgXjVsnaGewlEm35SH0x2GtGz8rQavV6382WHUVQ1LNVZT8I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789639541; c=relaxed/simple;
+	bh=0phmTjiU0H27lk1MqROc31j9JtOd6/cybR56w/wNHfw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=X4kDT2VlHJydd1Y7PPFhC6/IxGC1QUVMBGy2Yf+dM1zRIwH4vIWWgurNtQccqZgV/j5268JJoDD1ELYZnNgQ+jrVJBDvCevUclh0ZxKOO3QoBV49N3ivDYyJtR4geIt6S8uJ1XjG2yVgWjDTgs4yLjMnVrTD5Fid0+/FldAkHFo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=VifTluwi; arc=fail smtp.client-ip=40.93.198.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="iF0sJQ6l"
-Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-398a147688bso573258a91.1
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 03:05:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1789639532; x=1790244332; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=E/4WSHuLHoAStKDHNH/RtkvNpdrgiXRCApKgg1BxoNE=;
-        b=iF0sJQ6leoPaWGdLghiLpHAyvGIcPGwvlESAHJ/LCseEe2ke3L3fnpg34xxig8SgAz
-         5fBso/JdXmiWqJFPBrn1deh4H7Kk13P45HuhqvipD8MHdF0apOVtOJs+n+3q1QsOxMSr
-         MGASUS3AE1klrpbBI3ewLwHxxCUikFt8mRtmeqvQ1IFbbVTBtK/GXc6FtK9lS7UMszGV
-         5aPh9NncgxuToPmKl6UqrbbEWbtstCWrZowzrsjRShJmTXWBhUUSwVwZyeCS1/fKx0WR
-         Qc1vq2IGwx4fYFRWZw9/2dGhyfiGSSDPPKai7Tu42IvZ+ZeE3hyyvyQRRvctVGKdG0Kj
-         lwMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789639532; x=1790244332;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=E/4WSHuLHoAStKDHNH/RtkvNpdrgiXRCApKgg1BxoNE=;
-        b=0CvNIDJ8QTalTzSFhKklH1kfdiQAw4W7DQUR9U8H5MrIgV0zeiG2EI2a8Wqxw8gXY5
-         pL6TuAHnccFUYgHjiYca7iCxGRwngSbkRvjLRnQhKCwdN+pqUTDqRZkKaL9ixe8u/6qY
-         l848a4osVusTvGwfpcyOi/ihoYKaP/cvLQpqy9wMOfIvCrUoR7BNCNqELICDJq082FEU
-         tGEr0JpwfyCd/6eQ/TdmVAlG4T+lLVtiy89VqgseddBGiZLxQ9NlR1FCUjVan40Al1LN
-         vdtUuuDuhw9Wi61gJfukH/o5AUzNHn9JzaBrPdGL5Z4iYKrwmnOgfsTNNnJ37YacFPQb
-         k4RQ==
-X-Forwarded-Encrypted: i=1; AKwUvBynQxGpDhV2if/w4gFDZWsF18fxFz7bE2ywRQC6Lx8u9ZUkNUGSFN0nMEM5hRT5BRVs6fzon94=@vger.kernel.org
-X-Gm-Message-State: AFuF++lSam3eK7uKf5ttheKwLH9NCwfic1Yz2LTFdj/NUacDvmYF829t
-	FLWpc6pqtZSDwPqGRB1XuDYYR/LqSgZt+RiqON7QIOLuLNNBoKZAMADVik/xerkXUPMk
-X-Gm-Gg: AYBFou1LrEnEHUkdNPjFgw83neGfcT3D3AR2Esd7aDdjJ9S9jM/wXdLVslfoiTBeVEe
-	FGhCFfk+8cSXdBYqasfbQdEcgCpXsbldyC+Oz/wK3AuwUKpi1nHaxNAPnCxqktrlC0MjksLkJ/U
-	XGKQQK0gdklqDdxNWTFc1elIwaxLX5TRjZYvCvh7v3dzbthyYOLB7RxrXRF8lAJZbXzmP2NUdz2
-	kD9vdF08ANaXk/6PHMukO2plPX/m9oHq/0O5AZ0ID22u2e/m7IY0WZWcI/ochBmIWr6qEWkwP23
-	W4CiQxML0PXFlvgQbCl2pTTG6ROBdoPQJFg+Mymfap+kC8v3+WI+1C8WrZzT2foms4rnqQwMeFq
-	Uz4fd8TuW7DSLxzvvpVd6JxsgfjtrLlBNLKt2VG6YW15V7fHaigoRkHRZmpSxl1R6GZlSBN+yC9
-	Rj05cP6bl5v7aBhxBM8Ro16Whw0gn8qwD4d+KrHtGzsXDFdvXvf+gdNQdPo4qAharS1LLCras2U
-	xoAmUinz8E2V1kcKYB9s9fseY8AJAJd05ZrAadI
-X-Received: by 2002:a17:90b:2f47:b0:39e:2f57:67c7 with SMTP id 98e67ed59e1d1-39e2f5848damr9551873a91.3.1789639531771;
-        Thu, 17 Sep 2026 03:05:31 -0700 (PDT)
-Received: from b6ad5085b32f.. ([122.51.212.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e390c2984sm1019445a91.0.2026.09.17.03.05.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 03:05:30 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
-To: dhowells@redhat.com,
-	marc.dionne@auristor.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: horms@kernel.org,
-	linux-afs@lists.infradead.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	zihanx@nebusec.ai,
-	stable@vger.kernel.org,
-	Vega <vega@nebusec.ai>,
-	Luxing Yin <root@tr0jan.top>
-Subject: [PATCH net v6 1/1] rxrpc: fix encap_rcv skb accounting exhaustion
-Date: Thu, 17 Sep 2026 10:05:09 +0000
-Message-ID: <fd9449f2d394828609e81f6178608ea91344bbfd.1789608558.git.zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1789608557.git.zihanx@nebusec.ai>
-References: <cover.1789608557.git.zihanx@nebusec.ai>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="VifTluwi"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uj9CXSmz0z1FlCGh9XRU/nUqAK1eSf9UVZt5hJocih2Pxc64p8u5fgxhV9b+/JEhmkhkDuqF7dIGE5ozi7rtqY2XbSKevzYBgZaHfYFfEDMU5eAf0Al950D9wsFaQa4Von6xfwOFGyDt17KlXFF6rRcJ3LtxzCd03UOshZ92yRiCoGoT+oE3nEOtcBiHXpQcC67Y0MOhT7TnsdY99I+aJJmTdIb8WT2pn8yigsFjhXI+nWftlzmVkqIRQcdAAQiK8YLlntmt1qo1VPTz/pG+Nk4L8e/95PC1sXWj0sMNZqrqiIIps4AIdl0anTycnOmXhvsxqTqChbox+lhFnIeHPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HYP+JJbTwiiywbiVz0a+yBLv0Q156v+PDNkFJvDV15o=;
+ b=Tb1gBDzJM88JWqB2KqIn6Ex5cn52AWhpYfSgrE/R66GbpNHqo3a1XGBzcu5d+WA9ccNCoYgUkuF7xsk3fuFK1zFdijxOokcB1VkmVj701jBtua2NlyfUVN//uw71iShqcTm/goAzUyW/O+Dye8Dn4qAx0TJFPDbRPVVefZmYur58MHkOB2fbOnv5Ggh9N41FFRmPMy2el8DOqVWhBfDmmk/BFIgv1ULuwxnDy5En8Y3S79pb8cnG4Mg1Qq51Pk9JfBbSxSy4l01DK0eOeLrI48SPFGoJNh2N842upMjQ5jPuAL6RhbTEQ1L55otFt55T0/jEec8Vf3qFjXbopN16jg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lunn.ch smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HYP+JJbTwiiywbiVz0a+yBLv0Q156v+PDNkFJvDV15o=;
+ b=VifTluwi+sXq3Vm34bj+G3Y3CJxg3FYUIzOqLxXN6bKDWtlbPUmJzCPyaO9eE0FIrORD+1kk7xxYTeVGUR/PeK+Ap17hdb18G/xjzOqbvHuASMx8uqBWMHhi9NaPcHKpGg11WdVMxjPbcp9BH+uQPzxw1kHzh/rMyCzv2liaXCM=
+Received: from BN9P222CA0007.NAMP222.PROD.OUTLOOK.COM (2603:10b6:408:10c::12)
+ by PH7PR12MB9223.namprd12.prod.outlook.com (2603:10b6:510:2f2::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.9; Thu, 17 Sep
+ 2026 10:05:30 +0000
+Received: from BN2PEPF0000A994.namprd04.prod.outlook.com
+ (2603:10b6:408:10c:cafe::7c) by BN9P222CA0007.outlook.office365.com
+ (2603:10b6:408:10c::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.11 via Frontend Transport; Thu,
+ 17 Sep 2026 10:05:30 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN2PEPF0000A994.mail.protection.outlook.com (10.167.248.136) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.451.8 via Frontend Transport; Thu, 17 Sep 2026 10:05:29 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 17 Sep
+ 2026 05:05:28 -0500
+Received: from xhdsuragupt40.xilinx.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
+ Transport; Thu, 17 Sep 2026 05:05:25 -0500
+From: Suraj Gupta <suraj.gupta2@amd.com>
+To: <radhey.shyam.pandey@amd.com>, <andrew+netdev@lunn.ch>,
+	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <michal.simek@amd.com>
+CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH net v2] net: xilinx: axienet: Free outstanding DMA buffers on dmaengine stop
+Date: Thu, 17 Sep 2026 15:35:25 +0530
+Message-ID: <20260917100525.250952-1-suraj.gupta2@amd.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,295 +74,183 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF0000A994:EE_|PH7PR12MB9223:EE_
+X-MS-Office365-Filtering-Correlation-Id: fe3d6617-a221-49d5-f7c6-08df14a333eb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|23010399003|82310400026|36860700016|1800799024|13003099007|3023799007|10067099003|11063799006|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	uaFHMSY49pHiYmJKYeujMJY91I3MLwFkYWZpuS8ijF5toGANPRNusOn6XirFK85lwo3iWVaapZDpP0GM6N/aqSRSHQctNv3VJcLSeCd1ZyDRf2mVwJ7zf+MEaM+F4mqrWpb3nGuN6jV1vnh1pxg6IMEvGbAEZogiTGQ30OwvPPgYgFyMQlBDiYemoJK3z+IBbe1Sx9gHqUWIVZl72RnVKHkJZZrYQHtKcrqzKm/T1cwwoyPH2NhSx//Klb/5E+89MJ7Wf1GWEB0MI3L515vh2X46o/EVdT/5Rp171UbaC7+VsSgbJyWNwiLSp2s2nBDZK9Bxd9whhPCLvgo06ABXg9F8rKWtFEGYqiT+p6ZXv41GW7EwxoSvfbioWttfEx3eC/hWSvnXfNRFV+fCRqUTZVWytrgQ5JERH/fTL/y+DVky3Ws0nKxGjddsFPbrZQ19JG65lqBD9bd9H74OtQpz248v6ZyMitU7iizbLLJAy4ZFFLGeSBB+Ylu+oHPeqdPy2yW1314HCpfOIA1RYAS+Fdi/gn/KGtY4UlzEijJ8PZbHwRO7tCAkNlAOZ7k4dGecq0nyxGrTa7gU3scfN84QE3QWMPyg+Sw9BRdellbVxY+QjWdXcIOWO+u/YOArNIEuHC62XAWQJvTv6EmJDWKK1zaMgyvRVST8mYRoKQ9LS0aeEenTfCUsVPSIxUhy5mtmoW7FnEGHRcuO1il83VmbEg==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(23010399003)(82310400026)(36860700016)(1800799024)(13003099007)(3023799007)(10067099003)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	jBMJbwguj4Kso2gv16+f/G1oCHQMty+7LUV3prF8YqRaW6q9CAR3Ugn5ASMql77oqhUHyJ43YTspTuDp2DL7/WXgp0UrVL79cBDoOjoh1hyv6uMJCHjF1w8F/kmL872TRP4Z/3HH/hLT8CaDTgxqwHYxzKaBvyOLoRAAdGZ8TbssGO7wfilmeX9oQVFPoqYWHaug6wKQm5K18oq/bjLOAtVPT8Yj4vxKi/2CWM2lVBm6H3Wzkmt9EiIuZKI5MHRQeoC94jy1k2ikZQbBJ7fXAJDDrMwb1DN6+ksYCix/qTY7sAlEG3Sm8DLQdiGkvRXTlQ+oZ5bjbOaFOjUyT6pSvjmq9994fLhdWa6NKiRPT6z4YI4MeNnTjq2KQ0uPcIVwPuMeng3CEFq6txqnZw4Dx4gpw5LVQ1iWwz7X1q+1Ganq+vvARgEI5oLoqo4pxZXl
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2026 10:05:29.2810
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: fe3d6617-a221-49d5-f7c6-08df14a333eb
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF0000A994.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9223
 
-rxrpc_encap_rcv() queues encapsulated UDP packets on the RxRPC local
-queue without charging them to the UDP socket. If the I/O thread cannot
-keep up, the queue can therefore grow without bound.
+In the dmaengine path the driver pre-submits RX buffers and holds
+in-flight TX buffers whose SKBs are DMA-mapped by the driver and freed
+only in the completion callbacks. On ndo_stop() the driver calls
+dmaengine_terminate_sync(), which aborts these descriptors without
+running their callbacks, and then frees only the ring shells with
+kfree(). Every SKB still owned by the engine, and its DMA mapping, is
+thus leaked on each ifdown. With 128 RX buffers pre-posted per channel,
+the mapping leak can eventually exhaust a limited IOMMU aperture.
 
-Charge each packet against the tunnel socket before queueing it, while
-holding sk_receive_queue.lock, and drop it when socket rmem or protocol
-memory accounting fails. Size the socket from the advertised RxRPC
-receive window, retain headroom for control and error packets, and
-refresh the cap when the window grows without shrinking an existing
-buffer. The lock also serializes sk_forward_alloc updates with the
-destructor path.
+Clear the slot's skb pointer in the TX and RX callbacks so a non-NULL
+skb marks a slot that still owns a live, DMA-mapped buffer, and on stop
+unmap and free every such buffer.
 
-Orphan charged PACKET skbs under the same lock when the I/O thread
-dequeues them. Keep the existing destructor for error skbs, clear
-skb->dev, drop the dst, and account drops with the corresponding UDP
-statistics and reasons.
+axienet_dma_rx_cb() re-arms the RX ring on every completion, so a
+completion racing with axienet_stop() could resubmit a buffer after the
+terminate that the teardown then frees while the engine still owns it.
+Set @stopping before terminating and check it in the callback to fence
+resubmission, and release the channels before freeing the rings so a
+late completion cannot touch a freed ring.
 
-Since skb_set_owner_r() does not hold a socket reference, clear
-sk_user_data under RCU and release the socket only after purging the
-local queues.
-
-Fixes: 446b3e14525b ("rxrpc: Move packet reception processing into I/O thread")
+Fixes: 6a91b846af85 ("net: axienet: Introduce dmaengine support")
 Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: LLM
-Co-developed-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
 ---
-changes in v6:
-  - refresh the tunnel socket receive-buffer cap when
-    rxrpc_rx_window_size increases, without shrinking an existing
-    socket
-  - distinguish socket receive-buffer exhaustion from protocol memory
-    accounting failures in the drop reason and UDP statistics
-  - cap the window-derived value at sysctl_rmem_max and only grow an
-    existing sk_rcvbuf; avoid the unexported sysctl_rmem_default
-  - v5 Link: https://lore.kernel.org/all/cover.1789273347.git.zihanx@nebusec.ai/
-changes in v5:
-  - size the tunnel sk_rcvbuf to one advertised window of ordinary
-    DATA (RXRPC_JUMBO(1)), doubled for typical 2-4KiB skb truesize,
-    plus 25% for ACKs/ICMP, capped by sysctl_rmem_max
-  - leave ICMP/error-queue headroom in the DATA rmem check
-  - count UDP RCVBUFERRORS/INERRORS and drop with
-    SKB_DROP_REASON_SOCKET_RCVBUFF
-  - drop the dst instead of skb_dst_force(); keep skb->dev = NULL
-  - refresh the cover crash log from the latest unfixed net/main
-    run; record the panic as a sender-path OOM, not an I/O-thread
-    allocation
-  - note that sk_rcvbuf is sized at socket open and is not updated
-    if rxrpc_rx_window_size later changes
-  - v4 Link: https://lore.kernel.org/all/cover.1788878590.git.zihanx@nebusec.ai/
-changes in v4:
-  - serialise UDP rmem charge/uncharge with sk->sk_receive_queue.lock
-  - use spin_lock() in encap_rcv() (BH) and spin_lock_bh() around
-    skb_orphan() in the I/O thread
-  - do not enqueue encapsulated skbs on the UDP receive queue
-  - orphan only PACKET skbs charged in encap_rcv(); leave error-queue
-    skb ownership alone
-  - restore the unprivileged namespace reproducer and document the
-    AFS callback listener
-  - clarify in the cover that the recorded panic is a downstream OOM
-    after extra I/O-thread contention, not the unprivileged flood
-    alone
-  - include the full OOM Mem-Info in the cover crash log
-  - v3 Link: https://lore.kernel.org/all/cover.1788539302.git.zihanx@nebusec.ai/
-changes in v3:
-  - orphan the skb when the I/O thread dequeues it from the local
-    queue so UDP rmem ownership does not follow packets onto
-    call/conn queues
-  - mention both io_thread.c and local_object.c in the cover opening
-  - distinguish the unprivileged flood from extra steps used to
-    record the panic
-  - attribute the OOM to skbuff growth rather than incoming-call
-    setup
-  - describe the recorded panic as a downstream OOM after I/O-thread
-    contention, not as an allocation at the encap_rcv enqueue site
-  - v2 Link: https://lore.kernel.org/all/cover.1785339953.git.zihanx@nebusec.ai/
-changes in v2:
-  - switch the drop path from atomic_inc(&udp_sk->sk_drops) to
-    sk_drops_inc(udp_sk)
-  - retarget Fixes to 446b3e14525b, the first boundary where encap_rcv
-    queued the skb onto local->rx_queue for later I/O-thread consumption
-  - rebase onto current net/main
-  - refresh the cover crash log from an unfixed 7.3.0-rc1+ net/main run
-    and include the decoded stack
-  - explain in the cover why packetdrill was not used
-  - document the actual flood command in the cover
-  - v1 Link: https://lore.kernel.org/all/cover.1784742007.git.zihanx@nebusec.ai/
----
- net/rxrpc/ar-internal.h  |  1 +
- net/rxrpc/io_thread.c    | 77 ++++++++++++++++++++++++++++++++++++++--
- net/rxrpc/local_object.c | 24 +++++++++++--
- 3 files changed, 98 insertions(+), 4 deletions(-)
+Changes in v2:
+- Fence RX descriptor resubmission in axienet_dma_rx_cb() against a stop
+  in progress via the existing @stopping flag, and release the DMA
+  channels before freeing the rings (Jakub Kicinski).
+- Drop the redundant dmaengine_synchronize() calls that followed
+  dmaengine_terminate_sync(), which already ends with a synchronize
+  (Jakub Kicinski).
+- Expand the commit message to describe the race fix.
 
-diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
-index 865f05fe37ab9..b079ec98aaa74 100644
---- a/net/rxrpc/ar-internal.h
-+++ b/net/rxrpc/ar-internal.h
-@@ -1323,6 +1323,7 @@ void rxrpc_send_version_request(struct rxrpc_local *local,
-  * local_object.c
-  */
- void rxrpc_local_dont_fragment(const struct rxrpc_local *local, bool set);
-+void rxrpc_adjust_rcvbuf(struct sock *sk);
- struct rxrpc_local *rxrpc_lookup_local(struct net *, const struct sockaddr_rxrpc *);
- struct rxrpc_local *rxrpc_get_local(struct rxrpc_local *, enum rxrpc_local_trace);
- struct rxrpc_local *rxrpc_get_local_maybe(struct rxrpc_local *, enum rxrpc_local_trace);
-diff --git a/net/rxrpc/io_thread.c b/net/rxrpc/io_thread.c
-index dc5184a2fa9d1..fa6cfd603548b 100644
---- a/net/rxrpc/io_thread.c
-+++ b/net/rxrpc/io_thread.c
-@@ -7,12 +7,55 @@
+v1: https://lore.kernel.org/netdev/20260910141946.3017164-1-suraj.gupta2@amd.com/
+---
+ drivers/net/ethernet/xilinx/xilinx_axienet.h  |  5 +-
+ .../net/ethernet/xilinx/xilinx_axienet_main.c | 50 +++++++++++++++----
+ 2 files changed, 44 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet.h b/drivers/net/ethernet/xilinx/xilinx_axienet.h
+index fcd3aaef27fc..7c75e313dd33 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet.h
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet.h
+@@ -523,8 +523,9 @@ struct skbuf_dma_descriptor {
+  * @stats_work: Work for reading the hardware statistics counters often enough
+  *              to catch overflows.
+  * @dma_err_task: Work structure to process Axi DMA errors
+- * @stopping:   Set when @dma_err_task shouldn't do anything because we are
+- *              about to stop the device.
++ * @stopping:   Set when we are about to stop the device: makes @dma_err_task
++ *              a no-op (legacy DMA path) and fences RX descriptor
++ *              resubmission in axienet_dma_rx_cb() (dmaengine path).
+  * @tx_irq:	Axidma TX IRQ number
+  * @rx_irq:	Axidma RX IRQ number
+  * @eth_irq:	Ethernet core IRQ number
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 782f903d318f..36a487f791a2 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -881,6 +881,7 @@ static void axienet_dma_tx_cb(void *data, const struct dmaengine_result *result)
+ 	u64_stats_update_end(&lp->tx_stat_sync);
+ 	dma_unmap_sg(lp->dev, skbuf_dma->sgl, skbuf_dma->sg_len, DMA_TO_DEVICE);
+ 	dev_consume_skb_any(skbuf_dma->skb);
++	skbuf_dma->skb = NULL;
+ 	netif_txq_completed_wake(txq, 1, len,
+ 				 CIRC_SPACE(lp->tx_ring_head, lp->tx_ring_tail, TX_BD_NUM_MAX),
+ 				 2);
+@@ -1171,6 +1172,7 @@ static void axienet_dma_rx_cb(void *data, const struct dmaengine_result *result)
+ 						       &meta_max_len);
+ 	dma_unmap_single(lp->dev, skbuf_dma->dma_address, lp->max_frm_size,
+ 			 DMA_FROM_DEVICE);
++	skbuf_dma->skb = NULL;
  
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 	if (IS_ERR(app_metadata)) {
+ 		if (net_ratelimit())
+@@ -1193,6 +1195,12 @@ static void axienet_dma_rx_cb(void *data, const struct dmaengine_result *result)
+ 	u64_stats_update_end(&lp->rx_stat_sync);
  
-+#include <net/udp.h>
-+
- #include "ar-internal.h"
- 
- static int rxrpc_input_packet_on_conn(struct rxrpc_connection *conn,
- 				      struct sockaddr_rxrpc *peer_srx,
- 				      struct sk_buff *skb);
- 
-+/*
-+ * Drop UDP rmem ownership for packets charged in encap_rcv().
-+ * sk_forward_alloc is serialised by sk_receive_queue.lock.
-+ */
-+static void rxrpc_skb_orphan_udp(struct sk_buff *skb)
-+{
-+	struct sock *sk = skb->sk;
-+
-+	if (!sk)
+ rx_submit:
++	/* Do not re-arm the RX ring while a stop is in progress, or the
++	 * teardown could free a buffer still handed to the engine.
++	 */
++	if (READ_ONCE(lp->stopping))
 +		return;
 +
-+	spin_lock_bh(&sk->sk_receive_queue.lock);
-+	skb_orphan(skb);
-+	spin_unlock_bh(&sk->sk_receive_queue.lock);
-+}
+ 	for (i = 0; i < CIRC_SPACE(lp->rx_ring_head, lp->rx_ring_tail,
+ 				   RX_BUF_NUM_DEFAULT); i++)
+ 		axienet_rx_submit_desc(lp->ndev);
+@@ -1541,6 +1549,7 @@ static int axienet_init_dmaengine(struct net_device *ndev)
+ 	lp->tx_ring_head = 0;
+ 	lp->rx_ring_tail = 0;
+ 	lp->rx_ring_head = 0;
++	lp->stopping = false;
+ 	lp->tx_skb_ring = kzalloc_objs(*lp->tx_skb_ring, TX_BD_NUM_MAX);
+ 	if (!lp->tx_skb_ring) {
+ 		ret = -ENOMEM;
+@@ -1752,20 +1761,43 @@ static int axienet_stop(struct net_device *ndev)
+ 		free_irq(lp->rx_irq, ndev);
+ 		axienet_dma_bd_release(ndev);
+ 	} else {
++		struct skbuf_dma_descriptor *skbuf_dma;
 +
-+static void rxrpc_encap_rcv_drop(struct sock *udp_sk, struct sk_buff *skb,
-+				 enum skb_drop_reason reason)
-+{
-+	struct net *net = sock_net(udp_sk);
-+
-+	sk_drops_inc(udp_sk);
-+#if IS_ENABLED(CONFIG_IPV6)
-+	if (skb->protocol == htons(ETH_P_IPV6)) {
-+		if (reason == SKB_DROP_REASON_SOCKET_RCVBUFF)
-+			__UDP6_INC_STATS(net, UDP_MIB_RCVBUFERRORS);
-+		else
-+			__UDP6_INC_STATS(net, UDP_MIB_MEMERRORS);
-+		__UDP6_INC_STATS(net, UDP_MIB_INERRORS);
-+	} else
-+#endif
-+	{
-+		if (reason == SKB_DROP_REASON_SOCKET_RCVBUFF)
-+			__UDP_INC_STATS(net, UDP_MIB_RCVBUFERRORS);
-+		else
-+			__UDP_INC_STATS(net, UDP_MIB_MEMERRORS);
-+		__UDP_INC_STATS(net, UDP_MIB_INERRORS);
-+	}
-+	sk_skb_reason_drop(udp_sk, skb, reason);
-+}
-+
- /*
-  * handle data received on the local endpoint
-  * - may be called in interrupt context
-@@ -28,6 +71,9 @@ int rxrpc_encap_rcv(struct sock *udp_sk, struct sk_buff *skb)
- 	struct sk_buff_head *rx_queue;
- 	struct rxrpc_local *local = rcu_dereference_sk_user_data(udp_sk);
- 	struct task_struct *io_thread;
-+	enum skb_drop_reason reason;
-+	unsigned int headroom;
-+	unsigned int rcvbuf;
++		WRITE_ONCE(lp->stopping, true);
+ 		dmaengine_terminate_sync(lp->tx_chan);
+-		dmaengine_synchronize(lp->tx_chan);
+ 		dmaengine_terminate_sync(lp->rx_chan);
+-		dmaengine_synchronize(lp->rx_chan);
+-
+-		for (i = 0; i < TX_BD_NUM_MAX; i++)
+-			kfree(lp->tx_skb_ring[i]);
+-		kfree(lp->tx_skb_ring);
+-		for (i = 0; i < RX_BUF_NUM_DEFAULT; i++)
+-			kfree(lp->rx_skb_ring[i]);
+-		kfree(lp->rx_skb_ring);
  
- 	if (unlikely(!local)) {
- 		kfree_skb(skb);
-@@ -41,8 +87,6 @@ int rxrpc_encap_rcv(struct sock *udp_sk, struct sk_buff *skb)
- 	if (skb->tstamp == 0)
- 		skb->tstamp = ktime_get_real();
- 
--	skb->mark = RXRPC_SKB_MARK_PACKET;
--	rxrpc_new_skb(skb, rxrpc_skb_new_encap_rcv);
- 	rx_queue = &local->rx_queue;
- #ifdef CONFIG_AF_RXRPC_INJECT_RX_DELAY
- 	if (rxrpc_inject_rx_delay ||
-@@ -52,9 +96,35 @@ int rxrpc_encap_rcv(struct sock *udp_sk, struct sk_buff *skb)
- 	}
- #endif
- 
-+	headroom = SKB_TRUESIZE(RXRPC_JUMBO(1)) * 2;
-+	spin_lock(&udp_sk->sk_receive_queue.lock);
-+	rxrpc_adjust_rcvbuf(udp_sk);
-+	rcvbuf = READ_ONCE(udp_sk->sk_rcvbuf);
-+	if ((unsigned int)atomic_read(&udp_sk->sk_rmem_alloc) +
-+	    skb->truesize + headroom >= rcvbuf) {
-+		reason = SKB_DROP_REASON_SOCKET_RCVBUFF;
-+		goto drop;
-+	}
-+	if (!sk_rmem_schedule(udp_sk, skb, skb->truesize)) {
-+		reason = SKB_DROP_REASON_PROTO_MEM;
-+		goto drop;
-+	}
++		/* Release the channels before freeing the rings, so the DMA is
++		 * fully torn down before the memory its descriptors reference is
++		 * freed.
++		 */
+ 		dma_release_channel(lp->rx_chan);
+ 		dma_release_channel(lp->tx_chan);
 +
-+	skb->dev = NULL;
-+	skb_set_owner_r(skb, udp_sk);
-+	spin_unlock(&udp_sk->sk_receive_queue.lock);
-+	skb_dst_drop(skb);
++		/* Unmap and free any buffer the terminate did not reclaim, so it
++		 * is not leaked; a non-NULL skb marks such a slot.
++		 */
++		for (i = 0; i < TX_BD_NUM_MAX; i++) {
++			skbuf_dma = lp->tx_skb_ring[i];
++			if (skbuf_dma && skbuf_dma->skb) {
++				dma_unmap_sg(lp->dev, skbuf_dma->sgl,
++					     skbuf_dma->sg_len, DMA_TO_DEVICE);
++				dev_kfree_skb_any(skbuf_dma->skb);
++			}
++			kfree(skbuf_dma);
++		}
++		kfree(lp->tx_skb_ring);
 +
-+	skb->mark = RXRPC_SKB_MARK_PACKET;
-+	rxrpc_new_skb(skb, rxrpc_skb_new_encap_rcv);
- 	skb_queue_tail(rx_queue, skb);
- 	wake_up_process(io_thread);
- 	return 0;
-+
-+drop:
-+	spin_unlock(&udp_sk->sk_receive_queue.lock);
-+	rxrpc_encap_rcv_drop(udp_sk, skb, reason);
-+	return 0;
- }
- 
- /*
-@@ -471,6 +541,9 @@ int rxrpc_io_thread(void *data)
- 		/* Distribute packets and errors. */
- 		while ((skb = __skb_dequeue(&rx_queue))) {
- 			struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
-+
-+			if (skb->mark == RXRPC_SKB_MARK_PACKET)
-+				rxrpc_skb_orphan_udp(skb);
- 			switch (skb->mark) {
- 			case RXRPC_SKB_MARK_PACKET:
- 				skb->priority = 0;
-diff --git a/net/rxrpc/local_object.c b/net/rxrpc/local_object.c
-index 169f9dfdaa77f..f519a93059244 100644
---- a/net/rxrpc/local_object.c
-+++ b/net/rxrpc/local_object.c
-@@ -22,6 +22,19 @@
- 
- static void rxrpc_local_rcu(struct rcu_head *);
- 
-+void rxrpc_adjust_rcvbuf(struct sock *sk)
-+{
-+	u32 rcvbuf, old_rcvbuf;
-+
-+	rcvbuf = READ_ONCE(rxrpc_rx_window_size) *
-+		SKB_TRUESIZE(RXRPC_JUMBO(1)) * 2;
-+	rcvbuf += rcvbuf / 4;
-+	rcvbuf = min_t(u32, rcvbuf, READ_ONCE(sysctl_rmem_max));
-+	old_rcvbuf = READ_ONCE(sk->sk_rcvbuf);
-+	if (rcvbuf > old_rcvbuf)
-+		WRITE_ONCE(sk->sk_rcvbuf, rcvbuf);
-+}
-+
- /*
-  * Handle an ICMP/ICMP6 error turning up at the tunnel.  Push it through the
-  * usual mechanism so that it gets parsed and presented through the UDP
-@@ -198,6 +211,9 @@ static int rxrpc_open_socket(struct rxrpc_local *local, struct net *net)
- 
- 	/* set the socket up */
- 	usk = local->socket->sk;
-+	spin_lock_bh(&usk->sk_receive_queue.lock);
-+	rxrpc_adjust_rcvbuf(usk);
-+	spin_unlock_bh(&usk->sk_receive_queue.lock);
- 	usk->sk_error_report = rxrpc_error_report;
- 
- 	switch (srx->transport.family) {
-@@ -437,8 +453,8 @@ void rxrpc_destroy_local(struct rxrpc_local *local)
- 	if (socket) {
- 		local->socket = NULL;
- 		kernel_sock_shutdown(socket, SHUT_RDWR);
--		socket->sk->sk_user_data = NULL;
--		sock_release(socket);
-+		rcu_assign_sk_user_data(socket->sk, NULL);
-+		synchronize_rcu();
++		for (i = 0; i < RX_BUF_NUM_DEFAULT; i++) {
++			skbuf_dma = lp->rx_skb_ring[i];
++			if (skbuf_dma && skbuf_dma->skb) {
++				dma_unmap_single(lp->dev, skbuf_dma->dma_address,
++						 lp->max_frm_size, DMA_FROM_DEVICE);
++				dev_kfree_skb_any(skbuf_dma->skb);
++			}
++			kfree(skbuf_dma);
++		}
++		kfree(lp->rx_skb_ring);
  	}
  
- 	/* At this point, there should be no more packets coming in to the
-@@ -448,6 +464,10 @@ void rxrpc_destroy_local(struct rxrpc_local *local)
- 	rxrpc_purge_queue(&local->rx_delay_queue);
- #endif
- 	rxrpc_purge_queue(&local->rx_queue);
-+
-+	if (socket)
-+		sock_release(socket);
-+
- 	rxrpc_purge_client_connections(local);
- 	page_frag_cache_drain(&local->tx_alloc);
- }
+ 	netdev_reset_queue(ndev);
 -- 
-2.43.0
+2.25.1
 
