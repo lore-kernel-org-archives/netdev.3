@@ -1,132 +1,113 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6A019B5A3;
-	Fri, 18 Sep 2026 22:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B7B397928
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 22:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789770189; cv=none; b=ccILrvbLF9jDgkwh16PnWRBsDIaQ92OV3A7haY+bNRfp65neSKJXtv8I9n5XpuGKMd/SrcO1afO+p8VZAAEeEWRVxGv14TSWtPkxbabYpFg0daBkvza+jU0MW6cNMWeZ6VNsNWBUAsVxtLXfvM9731Fq9jhYvxHNB6j6LWtrBN8=
+	t=1789770595; cv=none; b=EIlCDNESl0gIeNvPTBrkDz2l6BZcHEXgx5yZUVUQBdKHX0lX2I+6yq+CKd0JbEzX5AF2D4Q6GcPZMZnVzMmNkZHpnYfnRW86siXS8ZbU3nnWUX910LfKtncz67a2xWboz8qWWp8Un3hJ0HrpCE02dJFefMMW1eXmUFTJxQeCFgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789770189; c=relaxed/simple;
-	bh=nucvwISXMCDKMHV4jkfXUTO7Xx/vX5jFdJJQOxsGeFM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=JYUFIoEM49fQGKHlVrbvOUEXJpc6hV75g+yaNMuxA3Jq4KSwEgBu0u8wJ/FRjGdI+q6rY6dlx82UM1bymyz/yZdSNe/M7IpSDmWQdVX1jZyHeMCKTJvBOL7Rzy/+Ejhmrg6M+/r6gZaEQ/MinjN3OENrhJ2BhYwa1fdnHDYt82s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OPbZz5ah; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789770595; c=relaxed/simple;
+	bh=dJqjqt8xq7eWjcwBJiAeMSvAX8L7HTjNthfU/hda/Kc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LmZYAbDGbngdS3L40+UZ+7IVXxYf2dE6OFBQWFAD5WW/GL8sJcRMHecSd/UAErlac13Hvq0+V9UVHj6+rc7WAzOdRjicVNld88fD3rzCQu0s7v5ufw+/2+Jg/mWu2FfsIMvDmBF5yOCkQhyu+qCCNKuW30ePCHV/Me6j3JrvpUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S+wFmM5i; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OPbZz5ah"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B611F000FF;
-	Fri, 18 Sep 2026 22:23:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S+wFmM5i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3FEF1F000FF;
+	Fri, 18 Sep 2026 22:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789770187;
-	bh=aadCeXW0ciM6vLWCVdfuHHJvH4AslTQpNsGe5hz/Ry8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=OPbZz5ahJ9sLLgQIf3lt69hzVr8HxIVnxzlqzjY2Hh0MMVxgKiBqp3vEk6IxtayRw
-	 Zxld/ydvwMA06F6xDGgfftaTE2mJZ3IbVG843iflMfUHO4k7bfA5hoEG3OaKxwsMGT
-	 7Dt6plr9ZCHB/xI8GxvHppVsMlVcL5z4iTHMKd09h+KftaHvR15nd+K8sOQg2rxboH
-	 jAli1JZhQwsnL4iKNeWn6SRtnsubRZ9E0Y9SjFC65iaqc7nKrLwgWRFcaraz2EYkKP
-	 +e6X2ZatVAFEI2fn+BeukdDAzce0WX2ewUQMLICcu+xsy534pvf38+Mw6EWijg+6je
-	 5oCjPFj42A/UQ==
-Date: Fri, 18 Sep 2026 17:23:05 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Josh Perry <josh@6bit.com>
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>, bhelgaas@google.com,
-	Mario Limonciello <mario.limonciello@amd.com>, hkallweit1@gmail.com,
-	nic_swsd@realtek.com, rafael@kernel.org, linux-pci@vger.kernel.org,
-	netdev@vger.kernel.org, regressions@lists.linux.dev
-Subject: Re: [REGRESSION 6.16] r8169 =?utf-8?Q?RTL8?=
- =?utf-8?Q?168h=2F8111h_fails_to_probe_=E2=80=94_=22Unable_to_change_power?=
- =?utf-8?Q?_state_from_D3cold_to_D0=22_=E2=80=94?= bisected to 4d4c10f763d7
-Message-ID: <20260918222305.GA1200870@bhelgaas>
+	s=k20260515; t=1789770591;
+	bh=Du2Y1WRMuj6HRiuhuOJdZ3e7lv1yZMaOrtExWFTJZws=;
+	h=From:To:Cc:Subject:Date;
+	b=S+wFmM5is/fbUy4QOcFexSqfIDmFFj7/BvHZPM0wO+VLkqcRnKfiuLyFS9Pbp/ZOZ
+	 8fgXBS5crhQUe6/IXM43jizhULNicVILLCObQL/S50O/GXi6j+IhaEAHD37MlSOCku
+	 vfMIMt/k1lSgueaRKrSbCR6uKenYY3uYKndIycbUN1RwsfYpuQlvtr1FJw0d0YNQtQ
+	 XZ8HZKiznp0vulOMikIOEO2sOBEzIwb8m1YzOgHOH7qsj3XqdqV0PNYl0KDVfqz+nr
+	 iT3ya6/7SKVoOqSrcc5UwreB538MG6cVXXVyWAPmbkQHZSF6aLfqeuxcUss7u49+hE
+	 HmB6+AkaszgdA==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH net 1/2] genetlink: report the real command id for dump-only ops in policy dumps
+Date: Fri, 18 Sep 2026 15:29:48 -0700
+Message-ID: <20260918222949.4190284-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1ad46724-18a6-4cc1-9c40-f34fbf0f0b7c@amd.com>
 
-On Sun, Jun 21, 2026 at 12:24:42PM -0700, Mario Limonciello wrote:
-> On 6/17/26 01:32, Thorsten Leemhuis wrote:
-> > On 6/12/26 03:07, Josh Perry wrote:
-> > > #regzbot introduced: 4d4c10f763d7
-> > > 
-> > > Since v6.16 one of two onboard RTL8168h/8111h NICs on this board fails
-> > > to probe on boot; the device drops to D3cold and the driver can't bring
-> > > it back:
-> > 
-> > FWIW, that commit is 4d4c10f763d780 ("PCI: Explicitly put devices into
-> > D0 when initializing") [v6.16-rc1] from Mario, who is already CCed, but
-> > looks like might be on holiday or something due to inactivity on the
-> > lists in the recent days. So it might take a few days before this moves on.
-> > 
-> > Josh, this is not my area of expertise, but there are two things I guess
-> > might be helpful:
-> > 
-> > * retry with 7.1
-> > * upload "dmesg" and "sudo lspci -vvv" output from working and broken
-> > kernels somewhere (like bugzilla.kernel.org).
-> 
-> Yes; please retry with mainline.  We already had multiple regressions from
-> that commit fixed, so if you bisected down to this commit then it's
-> plausible that there is already a fix.
+The op-to-policy map a CTRL_CMD_GETPOLICY dump returns is the only way
+for userspace to find out which policy index belongs to which command.
+ctrl_dumppolicy_put_op() tags the nest with doit->cmd, but an op which
+only has a dumpit has no doit and every path which fills the split ops
+in zeroes it out, so those entries all claim to be command 0.  nlctrl's
+own CTRL_CMD_GETPOLICY and NETDEV_CMD_QSTATS_GET are both in that group:
 
-Thanks a lot for your bisection and detailed report, Josh.  Can you
-verify whether this is still a problem?
+  [{'family-id': 16, 'op-policy': {'do': 0, 'dump': 0, 'op-id': 3}},
+   {'family-id': 16, 'op-policy': {'dump': 1, 'op-id': 0}},
 
-The only commit that claims to fix 4d4c10f763d7 ("PCI: Explicitly put
-devices into D0 when initializing") is 907a7a2e5bf4 ("PCI/PM: Set up
-runtime PM even for devices without PCI PM"), and you already verified
-that it did not fix the problem (both appeared in v6.16).
+ctrl_fill_info() gets this right - it uses the iterator's cmd for
+CTRL_ATTR_OP_ID - so the two introspection interfaces of the same family
+contradict each other today.
 
-c855c9921da7 ("PCI/ASPM: Don't reconfigure ASPM entering low-power
-state"), which appeared in v7.2-rc1, mentions a similar symptom
-("Unable to change power state from D3hot to D0, device inaccessible") 
-so it's possible that it would fix the issue.
+Pass the command in rather than reconstructing it from
+doit->cmd | dumpit->cmd inside the helper, both callers already have it.
 
-> > >    r8169 0000:02:00.0 eth0: RTL8168h/8111h, 00:2b:67:48:40:01, XID 541,
-> > > IRQ 137
-> > >    r8169 0000:04:00.0: Unable to change power state from D3cold to D0,
-> > > device inaccessible
-> > >    r8169 0000:04:00.0: Mem-Wr-Inval unavailable
-> > >    r8169 0000:04:00.0: error -EIO: PCI read failed
-> > >    r8169 0000:04:00.0: probe with driver r8169 failed with error -5
-> > > 
-> > > The board has two identical RTL8168h NICs (both XID 541): 0000:02:00.0
-> > > and 0000:04:00.0. Only 04:00.0 fails — its sibling 02:00.0, on a
-> > > different root port, probes and works normally on the very same kernel
-> > > and boot. The failing NIC then does not appear (no enp4s0), taking the
-> > > machine's WAN offline. This strongly suggests the problem is port/
-> > > topology-specific rather than device- or driver-specific: the upstream
-> > > port behind 04:00.0 is placed in D3cold and the endpoint cannot be
-> > > resumed to D0.
-> > > 
-> > > Hardware: RTL8168h/8111h, XID 541, PCI 04:00.0 (onboard 1GbE).
-> > > Platform: Lenovo ThinkCentre M90n-1 (11AHS0B200), BIOS M2AKT49A
-> > > (2026-03-25, latest available). Firmware is current, so this is not a
-> > > platform-firmware issue.
-> > > 
-> > > Bisection: v6.15 good, v6.16 bad (verified by booting both). I then
-> > > reverted 4d4c10f763d7 ("PCI: Explicitly put devices into D0 when
-> > > initializing") together with its follow-up 907a7a2e5bf4 ("PCI/PM: Set up
-> > > runtime PM even for devices without PCI PM") on top of 6.16.7: the NIC
-> > > probes and links at 1Gbps/Full normally, with no workaround:
-> > > 
-> > >    r8169 0000:04:00.0 eth1: RTL8168h/8111h, 00:2b:67:48:40:02, XID 541,
-> > > IRQ 138
-> > >    r8169 0000:04:00.0 enp4s0: Link is Up - 1Gbps/Full - flow control rx/tx
-> > > 
-> > > Workaround: booting an unmodified v6.16+ kernel with pcie_port_pm=off
-> > > also restores the NIC, which is consistent with the upstream port being
-> > > placed in D3cold and the device failing to resume to D0 after the
-> > > explicit-D0 init change.
-> > > 
-> > > The follow-up 907a7a2e5bf4 does not fix this resume case: v6.18.33 is
-> > > still affected (retested today on current firmware).
-> > > 
-> > > Happy to test patches or provide full dmesg / lspci.
-> > > 
-> > 
-> 
+Fixes: 26588edbef60 ("genetlink: support split policies in ctrl_dumppolicy_put_op()")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+ net/netlink/genetlink.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
+index 41d37442f186..5cc1037d4917 100644
+--- a/net/netlink/genetlink.c
++++ b/net/netlink/genetlink.c
+@@ -1656,7 +1656,7 @@ static void *ctrl_dumppolicy_prep(struct sk_buff *skb,
+ }
+ 
+ static int ctrl_dumppolicy_put_op(struct sk_buff *skb,
+-				  struct netlink_callback *cb,
++				  struct netlink_callback *cb, u32 cmd,
+ 				  struct genl_split_ops *doit,
+ 				  struct genl_split_ops *dumpit)
+ {
+@@ -1677,7 +1677,7 @@ static int ctrl_dumppolicy_put_op(struct sk_buff *skb,
+ 	if (!nest_pol)
+ 		goto err;
+ 
+-	nest_op = nla_nest_start(skb, doit->cmd);
++	nest_op = nla_nest_start(skb, cmd);
+ 	if (!nest_op)
+ 		goto err;
+ 
+@@ -1721,7 +1721,8 @@ static int ctrl_dumppolicy(struct sk_buff *skb, struct netlink_callback *cb)
+ 						      &doit, &dumpit)))
+ 				return -ENOENT;
+ 
+-			if (ctrl_dumppolicy_put_op(skb, cb, &doit, &dumpit))
++			if (ctrl_dumppolicy_put_op(skb, cb, ctx->op,
++						   &doit, &dumpit))
+ 				return skb->len;
+ 
+ 			/* done with the per-op policy index list */
+@@ -1730,6 +1731,7 @@ static int ctrl_dumppolicy(struct sk_buff *skb, struct netlink_callback *cb)
+ 
+ 		while (ctx->dump_map) {
+ 			if (ctrl_dumppolicy_put_op(skb, cb,
++						   ctx->op_iter->cmd,
+ 						   &ctx->op_iter->doit,
+ 						   &ctx->op_iter->dumpit))
+ 				return skb->len;
+-- 
+2.55.0
+
