@@ -1,65 +1,55 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.4])
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2C33DC857;
-	Fri, 18 Sep 2026 04:54:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1633137C10D;
+	Fri, 18 Sep 2026 05:00:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789707249; cv=none; b=Jwrec02wC9BLXzkkeBCDv81h3EHxOdXOK2I6gWR0TmfSdKO5iOH1lgQgQxd23BQlUOaSBjip86bHIGUaaqF8FLaWVzVUP1icOfQweqdMUDs713GD8DIERVUQ5WRWKWifs4T0UNfftdW9Y+p6LAnykkYCPwxM5b/7LN8Mv2OeFf8=
+	t=1789707662; cv=none; b=vAgmJ5IRqLmx9oYFNJP50sfm8QAzr9VXmxWDAd/OXiyLps6Bug0Gd/eVE5xYQ1oDH7c8w0S3HDeFuaofItgPZPR5gHZmxc8bvqJVSEAXJA+J02l9dAtX6l/ms4GoQNuW9z4lC24ILYxJxaic5FPPjlpNGFLjNMEW+PqMTXnG/tQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789707249; c=relaxed/simple;
-	bh=rFLnT4ixhIXXDQ8Ami7C64ucmDIFkvzEFio9TdNSY9I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KhQs8aQd++dJS4NaJt691jE8Uaj7H5ShoWbCRIrUWbJJ83Q8C6QdCNhSXSMiW3OzTWu7vlfKjYaEWU6bA0JvmxesLSPRPsAGTLlZEuOa1s4Xxqmv4g429RQ88AvajuTeV7niVsuioMvtWeVJ7k4+akKOnjbSqcr/MWmImdKtVlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CLZr0xrl; arc=none smtp.client-ip=192.198.163.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1789707662; c=relaxed/simple;
+	bh=O0NPVRfCjRCUKCHcxapoM9IMG/3qkBBGTmmLKX2ZSmk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=E/IRUjp1boe8h2E8iLrDKeeJkaBoRhyNZfG8+lkGBNwEVNUBF0vPVifmuGcHt2gT2RpAvrJd87jqbusmdxVCHUNR1ZEZpwtSWYPyjXSrYC6zyvZB00u87LVYLbwwEYE9cqog09irVtvuIifIUby2HNzKX4mo81oTHZHUabtNCQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=ieG4WlCR; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CLZr0xrl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789707248; x=1821243248;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=rFLnT4ixhIXXDQ8Ami7C64ucmDIFkvzEFio9TdNSY9I=;
-  b=CLZr0xrlrbC6DtS28dTL24syxHI6X+juJb+oPuBvIpCtfNjzGOikHcIp
-   3Gpa7mD/5ucEpiTEEk/++r4p7k2NYFiCtQz9z3Al6OS+2i1Uain3uOfLB
-   2DiUZ7OaZ0Lmp2AdpJabKA25qChmPvm0/gbLNIALDrTDP0zqcEQKKiby/
-   bP9s7aM5dPpoyRkpkvKSenR+Uhg4Wim8QVHvHR3aaO2a0cuMw+dZ5ZhWm
-   HWzWXz/XCkpYLEE2PQ0qcuLYwGdv9mEvPUyEIW6wFYowIsUv3+oX/16kB
-   KPlgLYchWE6tNk9UYO0opO+A/ocATPXOpLr4stam9wU8cjORqQLC3h0pM
-   A==;
-X-CSE-ConnectionGUID: 6MobfpCfQGCB6oel3bWJ3A==
-X-CSE-MsgGUID: hqKzws1RQ8+RjVaxuuYuZA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="696946"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="696946"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa114.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 21:54:07 -0700
-X-CSE-ConnectionGUID: Ze/B+emsQNusqVZ5mhd/Bg==
-X-CSE-MsgGUID: IfUTt0c0Qyqg1htGQpJnfw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="270888943"
-Received: from junjie-desk-dev.bj.intel.com ([10.238.152.71])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 21:54:03 -0700
-From: Junjie Cao <junjie.cao@intel.com>
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	guangguan.wang@linux.alibaba.com,
-	alibuda@linux.alibaba.com,
-	dust.li@linux.alibaba.com,
-	sidraya@linux.ibm.com,
-	mjambigi@linux.ibm.com,
-	tonylu@linux.alibaba.com,
-	guwen@linux.alibaba.com,
-	linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	netdev@vger.kernel.org,
-	"David S . Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1.y] net/smc: check v2_ext_offset/eid_cnt/ism_gid_cnt when receiving proposal msg
-Date: Fri, 18 Sep 2026 12:53:53 +0800
-Message-ID: <20260918045353.686837-1-junjie.cao@intel.com>
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="ieG4WlCR"
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68I3PWZA2584031;
+	Thu, 17 Sep 2026 22:00:38 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=ap2qG+f5XkHT87ePrzkmDB1
+	q3IAQJelU4se4bQLwMNw=; b=ieG4WlCR07VCZR/k+3K83J8Ek/XqoLoMeiEiUc+
+	ulVC/F1Ru27PTTnXdGZKroddaWIQkQqfGAaMG3YRGhbYwZFwLkQ9Dn/Hkxd+WXlH
+	HmzcTZJg/r1VFZkwc+almii33JrEbN7G4TDEnvwBQji2D4SaD12KGLNvhN8mRdH8
+	1j/KkiNo2owazJTkagD1Ob7H01L1cG6FV+uPXukkP3yeqKmGtLUPu7YHMn/7Uqtq
+	IYchTB+MF6G9V9kyN/Owoph1stJfXV+388uMb4dSuO0O3xBhJDxjyydbNkeB8N2g
+	cMScpHOoni/5S8W9vbGM8nJkOppK9AosEfE8gbFnn3Rv5Vg==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4grwcjrcr9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 17 Sep 2026 22:00:37 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Thu, 17 Sep 2026 22:00:37 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Thu, 17 Sep 2026 22:00:37 -0700
+Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with ESMTP id 4EBE83F7098;
+	Thu, 17 Sep 2026 22:00:34 -0700 (PDT)
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
+        "Ratheesh
+ Kannoth" <rkannoth@marvell.com>
+Subject: [PATCH net-next] octeontx2-af: Representor devlink id and port mapping
+Date: Fri, 18 Sep 2026 10:30:21 +0530
+Message-ID: <20260918050021.1359606-1-rkannoth@marvell.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -68,109 +58,275 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE4MDA2MyBTYWx0ZWRfX9+B9GKuLg1jT
+ dXSfikBgu+91FZLP2Jqc9g3XLEalzS8/6m4+DPZ5QahjOULgviQIPESBW8x0XLstD8Ophxz1W02
+ QgKhYAAo4MPffxSW2kzLDHjHTMfoR6dVHoBypERndQrjq94w775YN6I6HlyTV3c/BJw6oS4Huim
+ IKveE748yqPIl6UpwMxi+9+c7zn2OflQ7LAwXw83zFqbenIXOfHOt1E69PKIFSm8iEAmFLhoBhD
+ SXUcbTcH8WhNW4fGYUpF+7f9TpO+vcrlWHXZ2b3bzAMebTLcqWSo1J7tw0AYOrYu1JHgc645Luw
+ GIMDMCx97NVjatlOCLXOLWbKvkiTCQqafX4cpozOYLltv12hzGRFFobRog+QbygkH8+4X1prIZ5
+ f8lwAlQOoohSSx/PX87hvOCpZgJ0rtsWxLAQc2XxH94hT7iKH9P1P80wNUfAKybeso548UK3GO1
+ 2IqKc5Zwq+XFjF3piaw==
+X-Authority-Analysis: v=2.4 cv=bYr+w+PB c=1 sm=1 tr=0 ts=6aacc575 cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=EAYMVhzMl8SCOHhVQcBL:22 a=M5GUcnROAAAA:8 a=5BIeNoMRWAjfrFRditUA:9
+ a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE4MDA2MyBTYWx0ZWRfX/ofjN3u4Za+P
+ oMfIhMH6leNU+aPJCMNU7kZLBWYmDrNCmRoeBEdUgmTxQsxVeVsEQd8uZ1fheoAurYSjUzF6KLn
+ JM0zea9yOB1z38vs9Poet6w1uMmI77U=
+X-Proofpoint-ORIG-GUID: L2yYt5uaq4NdbHSHNzzBWh_qwFAKqitN
+X-Proofpoint-GUID: L2yYt5uaq4NdbHSHNzzBWh_qwFAKqitN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-18_01,2026-09-16_02,2025-10-01_01
 
-From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+Extend ESW_CFG with a devlink-derived physical ID and copy it into
+the AF representor configuration. Add a representor port id helper
+and export rvu_rep_get_vlan_id().
 
-commit 7863c9f3d24ba49dbead7e03dfbe40deb5888fdf upstream.
-
-When receiving proposal msg in server, the fields v2_ext_offset/
-eid_cnt/ism_gid_cnt in proposal msg are from the remote client
-and can not be fully trusted. Especially the field v2_ext_offset,
-once exceed the max value, there has the chance to access wrong
-address, and crash may happen.
-
-This patch checks the fields v2_ext_offset/eid_cnt/ism_gid_cnt
-before using them.
-
-Fixes: 8c3dca341aea ("net/smc: build and send V2 CLC proposal")
-Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
-Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
-Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-[ jcao: SMCD_CLC_MAX_V2_GID_ENTRIES does not exist in 6.1;
-  SMC_MAX_ISM_DEVS is the same limit (8) under its pre-b40584d14570 name ]
-Signed-off-by: Junjie Cao <junjie.cao@intel.com>
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 ---
-Backport of the CVE-2024-49568 fix to 6.1.y. The CNA record lists
-6.6.68, 6.12.7 and 6.13 as fixed and nothing for 6.1; the affected
-code (v2 CLC proposal parsing) dates from 5.10. The other five fixes
-from the same series are in 6.1.y since v6.1.122; this is the only
-one missing.
+ .../net/ethernet/marvell/octeontx2/af/mbox.h  | 20 +++++
+ .../net/ethernet/marvell/octeontx2/af/rvu.h   |  8 ++
+ .../ethernet/marvell/octeontx2/af/rvu_rep.c   | 78 +++++++++++++++----
+ .../net/ethernet/marvell/octeontx2/nic/rep.c  | 10 +++
+ 4 files changed, 102 insertions(+), 14 deletions(-)
 
-The upstream commit cherry-picks cleanly onto v6.1.188 but does not
-build there because SMCD_CLC_MAX_V2_GID_ENTRIES does not exist yet;
-6.1 names the same limit SMC_MAX_ISM_DEVS (6.6.y has the new name
-only because b40584d14570, a 12-file virtual-ISM change, went in as
-v6.6.66). net/smc builds on x86_64 with CONFIG_SMC=m, W=1 clean.
-
-5.15.y and 5.10.y are in the affected range as well; the commit
-conflicts in af_smc.c there and needs a separate backport.
-
- net/smc/af_smc.c  | 3 ++-
- net/smc/smc_clc.c | 8 +++++++-
- net/smc/smc_clc.h | 8 +++++++-
- 3 files changed, 16 insertions(+), 3 deletions(-)
-
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 6713296fffd99..89fa7295275ca 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -2225,7 +2225,8 @@ static void smc_find_rdma_v2_device_serv(struct smc_sock *new_smc,
- 		goto not_found;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+index cece197d1074..cafb92b5d57c 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
+@@ -1784,10 +1784,30 @@ struct get_rep_cnt_rsp {
+ 	u64 rsvd;
+ };
  
- 	smc_v2_ext = smc_get_clc_v2_ext(pclc);
--	if (!smc_clc_match_eid(ini->negotiated_eid, smc_v2_ext, NULL, NULL))
-+	if (!smc_v2_ext ||
-+	    !smc_clc_match_eid(ini->negotiated_eid, smc_v2_ext, NULL, NULL))
- 		goto not_found;
++/*
++ * MBOX_MSG_ESW_CFG wire format.
++ *
++ * Transaction shape: the representor driver issues exactly one mailbox
++ * message per sync on this path.  rvu_eswitch_config() in nic/rep.c
++ * allocates only struct esw_cfg_req, then calls otx2_sync_mbox_msg()
++ * without enqueueing any other message IDs.  The AF handles one request
++ * per dispatch for this doorbell.
++ *
++ * Layout extensions are therefore confined to this message: fields cannot
++ * be confused with a batched successor because the representor driver
++ * never batches ESW_CFG with other messages.  otx2_mbox_alloc_msg_rsp()
++ * does advance hdr.next_msgoff cumulatively when multiple messages share
++ * a sync, but that API usage does not occur on the ESW_CFG caller path.
++ *
++ * PF and AF implementations are updated together in-tree; both sides
++ * must agree on the struct size carried by MBOX_MSG_ESW_CFG.
++ */
+ struct esw_cfg_req {
+ 	struct mbox_msghdr hdr;
+ 	u8 ena;
+ 	u64 rsvd;
++	unsigned char switch_id[MAX_PHYS_ITEM_ID_LEN];
++	u8 switch_id_len;
+ };
  
- 	/* prepare RDMA check */
-diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
-index ad1120a43dbd9..762e50354e11f 100644
---- a/net/smc/smc_clc.c
-+++ b/net/smc/smc_clc.c
-@@ -352,7 +352,6 @@ static bool smc_clc_msg_prop_valid(struct smc_clc_msg_proposal *pclc)
- 	struct smc_clc_msg_hdr *hdr = &pclc->hdr;
- 	struct smc_clc_v2_extension *v2_ext;
+ struct rep_evt_data {
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+index fb4870cd18e9..d1a9be6e4ac1 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+@@ -570,6 +570,7 @@ struct npc_kpu_profile_adapter {
+ };
  
--	v2_ext = smc_get_clc_v2_ext(pclc);
- 	pclc_prfx = smc_clc_proposal_get_prefix(pclc);
- 	if (!pclc_prfx ||
- 	    pclc_prfx->ipv6_prefixes_cnt > SMC_CLC_MAX_V6_PREFIX)
-@@ -369,6 +368,13 @@ static bool smc_clc_msg_prop_valid(struct smc_clc_msg_proposal *pclc)
- 			sizeof(struct smc_clc_msg_trail))
- 			return false;
- 	} else {
-+		v2_ext = smc_get_clc_v2_ext(pclc);
-+		if ((hdr->typev2 != SMC_TYPE_N &&
-+		     (!v2_ext || v2_ext->hdr.eid_cnt > SMC_CLC_MAX_UEID)) ||
-+		    (smcd_indicated(hdr->typev2) &&
-+		     v2_ext->hdr.ism_gid_cnt > SMC_MAX_ISM_DEVS))
-+			return false;
-+
- 		if (ntohs(hdr->length) !=
- 			sizeof(*pclc) +
- 			sizeof(struct smc_clc_msg_smcd) +
-diff --git a/net/smc/smc_clc.h b/net/smc/smc_clc.h
-index 0f6102cd5de17..cdba392b6ec9c 100644
---- a/net/smc/smc_clc.h
-+++ b/net/smc/smc_clc.h
-@@ -347,8 +347,14 @@ static inline struct smc_clc_v2_extension *
- smc_get_clc_v2_ext(struct smc_clc_msg_proposal *prop)
+ #define RVU_SWITCH_LBK_CHAN	63
++#define RVU_SW_INVALID_PORT_ID	((u32)~0U)
+ 
+ struct rvu_switch {
+ 	struct mutex switch_lock; /* Serialize flow installation */
+@@ -577,6 +578,11 @@ struct rvu_switch {
+ 	u16 *entry2pcifunc;
+ 	u16 mode;
+ 	u16 start_entry;
++	unsigned char switch_id[MAX_PHYS_ITEM_ID_LEN];
++	u8 switch_id_len;
++#define RVU_SWITCH_FLAG_FW_READY BIT_ULL(0)
++	u64 flags;
++	u16 pcifunc;
+ };
+ 
+ struct rep_evtq_ent {
+@@ -1199,4 +1205,6 @@ int rvu_rep_install_mcam_rules(struct rvu *rvu);
+ void rvu_rep_update_rules(struct rvu *rvu, u16 pcifunc, bool ena);
+ int rvu_rep_notify_pfvf_state(struct rvu *rvu, u16 pcifunc, bool enable);
+ int npc_mcam_verify_entry(struct npc_mcam *mcam, u16 pcifunc, int entry);
++u16 rvu_rep_get_vlan_id(struct rvu *rvu, u16 pcifunc);
++u32 rvu_sw_port_id(struct rvu *rvu, u16 pcifunc);
+ #endif /* RVU_H */
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
+index a2781e0f504e..0e2d02b38b60 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
+@@ -6,6 +6,7 @@
+  */
+ 
+ #include <linux/bitfield.h>
++#include <linux/stddef.h>
+ #include <linux/types.h>
+ #include <linux/device.h>
+ #include <linux/module.h>
+@@ -189,16 +190,41 @@ int rvu_mbox_handler_nix_lf_stats(struct rvu *rvu,
+ 	return 0;
+ }
+ 
+-static u16 rvu_rep_get_vlan_id(struct rvu *rvu, u16 pcifunc)
++u16 rvu_rep_get_vlan_id(struct rvu *rvu, u16 pcifunc)
  {
- 	struct smc_clc_msg_smcd *prop_smcd = smc_get_clc_msg_smcd(prop);
-+	u16 max_offset;
++	u16 *map = READ_ONCE(rvu->rep2pfvf_map);
++	u16 cnt = READ_ONCE(rvu->rep_cnt);
+ 	int id;
  
--	if (!prop_smcd || !ntohs(prop_smcd->v2_ext_offset))
-+	max_offset = offsetof(struct smc_clc_msg_proposal_area, pclc_v2_ext) -
-+		     offsetof(struct smc_clc_msg_proposal_area, pclc_smcd) -
-+		     offsetofend(struct smc_clc_msg_smcd, v2_ext_offset);
+-	for (id = 0; id < rvu->rep_cnt; id++)
+-		if (rvu->rep2pfvf_map[id] == pcifunc)
++	if (!map || !cnt)
++		return 0;
 +
-+	if (!prop_smcd || !ntohs(prop_smcd->v2_ext_offset) ||
-+	    ntohs(prop_smcd->v2_ext_offset) > max_offset)
- 		return NULL;
++	for (id = 0; id < cnt; id++)
++		if (map[id] == pcifunc)
+ 			return id;
+ 	return 0;
+ }
  
- 	return (struct smc_clc_v2_extension *)
++u32 rvu_sw_port_id(struct rvu *rvu, u16 pcifunc)
++{
++	u16 rep_id, *map, cnt;
++
++	map = READ_ONCE(rvu->rep2pfvf_map);
++	cnt = READ_ONCE(rvu->rep_cnt);
++	if (!map || !cnt)
++		return RVU_SW_INVALID_PORT_ID;
++
++	for (rep_id = 0; rep_id < cnt; rep_id++) {
++		if (map[rep_id] != pcifunc)
++			continue;
++
++		return FIELD_PREP(GENMASK_ULL(31, 16), rep_id) |
++		       FIELD_PREP(GENMASK_ULL(15, 0), pcifunc);
++	}
++
++	return RVU_SW_INVALID_PORT_ID;
++}
++
+ static int rvu_rep_tx_vlan_cfg(struct rvu *rvu,  u16 pcifunc,
+ 			       u16 vlan_tci, int *vidx)
+ {
+@@ -429,6 +455,7 @@ int rvu_rep_pf_init(struct rvu *rvu)
+ 	return 0;
+ }
+ 
++/* MBOX_MSG_ESW_CFG arrives as the sole message in its sync; see esw_cfg_req. */
+ int rvu_mbox_handler_esw_cfg(struct rvu *rvu, struct esw_cfg_req *req,
+ 			     struct msg_rsp *rsp)
+ {
+@@ -436,6 +463,13 @@ int rvu_mbox_handler_esw_cfg(struct rvu *rvu, struct esw_cfg_req *req,
+ 		return 0;
+ 
+ 	rvu->rep_mode = req->ena;
++	memset(rvu->rswitch.switch_id, 0, sizeof(rvu->rswitch.switch_id));
++	rvu->rswitch.switch_id_len = 0;
++	if (req->switch_id_len && req->switch_id_len <= MAX_PHYS_ITEM_ID_LEN) {
++		memcpy(rvu->rswitch.switch_id, req->switch_id,
++		       req->switch_id_len);
++		rvu->rswitch.switch_id_len = req->switch_id_len;
++	}
+ 
+ 	if (!rvu->rep_mode)
+ 		rvu_npc_free_mcam_entries(rvu, req->hdr.pcifunc, -1);
+@@ -447,31 +481,47 @@ int rvu_mbox_handler_get_rep_cnt(struct rvu *rvu, struct msg_req *req,
+ 				 struct get_rep_cnt_rsp *rsp)
+ {
+ 	int pf, vf, numvfs, hwvf, rep = 0;
+-	u16 pcifunc;
++	u16 pcifunc, rep_cnt;
++	u16 *map;
+ 
+-	rvu->rep_pcifunc = req->hdr.pcifunc;
+-	rsp->rep_cnt = rvu->cgx_mapped_pfs + rvu->cgx_mapped_vfs;
+-	rvu->rep_cnt = rsp->rep_cnt;
++	mutex_lock(&rvu->rsrc_lock);
++
++	if (rvu->rep2pfvf_map) {
++		rsp->rep_cnt = rvu->rep_cnt;
++		for (rep = 0; rep < rvu->rep_cnt; rep++)
++			rsp->rep_pf_map[rep] = rvu->rep2pfvf_map[rep];
++		mutex_unlock(&rvu->rsrc_lock);
++		return 0;
++	}
+ 
+-	rvu->rep2pfvf_map = devm_kzalloc(rvu->dev, rvu->rep_cnt *
+-					 sizeof(u16), GFP_KERNEL);
+-	if (!rvu->rep2pfvf_map)
++	rep_cnt = rvu->cgx_mapped_pfs + rvu->cgx_mapped_vfs;
++	map = devm_kzalloc(rvu->dev, rep_cnt * sizeof(u16), GFP_KERNEL);
++	if (!map) {
++		mutex_unlock(&rvu->rsrc_lock);
+ 		return -ENOMEM;
++	}
+ 
+ 	for (pf = 0; pf < rvu->hw->total_pfs; pf++) {
+ 		if (!is_pf_cgxmapped(rvu, pf))
+ 			continue;
+ 		pcifunc = rvu_make_pcifunc(rvu->pdev, pf, 0);
+-		rvu->rep2pfvf_map[rep] = pcifunc;
++		map[rep] = pcifunc;
+ 		rsp->rep_pf_map[rep] = pcifunc;
+ 		rep++;
+ 		rvu_get_pf_numvfs(rvu, pf, &numvfs, &hwvf);
+ 		for (vf = 0; vf < numvfs; vf++) {
+-			rvu->rep2pfvf_map[rep] = pcifunc |
+-				((vf + 1) & RVU_PFVF_FUNC_MASK);
+-			rsp->rep_pf_map[rep] = rvu->rep2pfvf_map[rep];
++			map[rep] = pcifunc | ((vf + 1) & RVU_PFVF_FUNC_MASK);
++			rsp->rep_pf_map[rep] = map[rep];
+ 			rep++;
+ 		}
+ 	}
++
++	rvu->rep_pcifunc = req->hdr.pcifunc;
++	WRITE_ONCE(rvu->rep2pfvf_map, map);
++	WRITE_ONCE(rvu->rep_cnt, rep_cnt);
++	rsp->rep_cnt = rep_cnt;
++
++	mutex_unlock(&rvu->rsrc_lock);
++
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
+index 0f5d5642d3f7..97581d786abd 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
+@@ -399,8 +399,12 @@ static void rvu_rep_get_stats64(struct net_device *dev,
+ 
+ static int rvu_eswitch_config(struct otx2_nic *priv, u8 ena)
+ {
++	struct devlink_port_attrs attrs = {};
+ 	struct esw_cfg_req *req;
+ 
++	rvu_rep_devlink_set_switch_id(priv, &attrs.switch_id);
++
++	/* Sole message in this sync; see esw_cfg_req in af/mbox.h. */
+ 	mutex_lock(&priv->mbox.lock);
+ 	req = otx2_mbox_alloc_msg_esw_cfg(&priv->mbox);
+ 	if (!req) {
+@@ -408,6 +412,12 @@ static int rvu_eswitch_config(struct otx2_nic *priv, u8 ena)
+ 		return -ENOMEM;
+ 	}
+ 	req->ena = ena;
++	req->switch_id_len = attrs.switch_id.id_len;
++	if (req->switch_id_len > MAX_PHYS_ITEM_ID_LEN) {
++		mutex_unlock(&priv->mbox.lock);
++		return -EINVAL;
++	}
++	memcpy(req->switch_id, attrs.switch_id.id, req->switch_id_len);
+ 	otx2_sync_mbox_msg(&priv->mbox);
+ 	mutex_unlock(&priv->mbox.lock);
+ 	return 0;
 -- 
 2.43.0
 
