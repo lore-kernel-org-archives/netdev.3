@@ -1,173 +1,218 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011014.outbound.protection.outlook.com [52.101.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221554B8260;
-	Fri, 18 Sep 2026 10:28:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789727282; cv=fail; b=rWEHStQor27fWS6tioqRfaPFw80t6+wqbOJz8C+og1x8AwTzctW+ALFx3sk93DD9SlhNHmO/w8f6QRejsCiG3uv5zE8bDY/+iYb6DgFMPcz89QjxhqrmDhmj5avHebOpfksk1DTLrIgikljUbV9ZgZ+9ByqYALO0avk/93nO6DE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789727282; c=relaxed/simple;
-	bh=i5e4X0k80/c2oXVOuRnk9BVbrSAwXartdWC4PtoIt94=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=chHMrCAslYpe/JoaBdu2FJ9zuSE0rCbnW5JhMjpmqmBxT2WqAefSysBXs+/OizLbwAA28I+enpwz+lVcohOZkwOX7CREUyR85W/SaYIAtDrD1ApEqx6KnLhqL6eG8hZbqv+evJPQMAf2oHCxq6F0Eu9dewl5/y6TXYu0p2Rrzo4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=nT6uGigX; arc=fail smtp.client-ip=52.101.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F1A2F7F02;
+	Fri, 18 Sep 2026 10:31:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789727482; cv=none; b=AAnWBJLlmGvbE8YcJNBE4F1PsI0ufICZMjNNg6EAI5vyab/cuGvho0NRjsqhsST48fZWb3dvxWVcdwhRvkpUvTseIYW7OErUQHoSDEwnZB3q41AJaeZqI4nfzMh2uhNxe67Qx9naRqnhiyLtBxwnIY5ChMeAutpJyBHmpFvHwxk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789727482; c=relaxed/simple;
+	bh=ZqqA2okcK9T9B21cSdzuy9gaf0TwWn4UjOnK9Ss/Hyc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dc1/3v/7+tfhoSl7XzGUgPTES0vQPeaGzg2IAeMoOOGkNDcmXw2u/pv/3au1EuFvsmb+P+8Mn1PVWJQfM3cZTEmw/mou8NDO3fzminrx6vwC/ie4XG5bSwF18BKfzKbxJhWE1bYVFTHVDb/U3xxTKJUun3cEpWpuDRW6quhl1RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YfEUuJyi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="nT6uGigX"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PtXorcjUfqeF1Do6KmOSF0LeIAarYoAEK5BFmQT6sEq2gbcFHWmvcDZ2WLVl7eSpSoMwtsOeeDRNYIz2iJAHSK7SqyxIBtAIiRB+hCBmim6Vtqs2n6br/3TnRBiLqQw0cv4q3YtUV2IJweSNpWCsTheFQ0pD60SNYlUQwjh1lWbQPdtGfYsaY61FYSwF0BRVkpWzh/E8ZRNl9gmtllgtlL/87rWH96wq1OOIINC/IDxfItQcy8jUq+bHChDgSAe9rH2tb7Z7DYrMeLKbVtFFB4LLeGO0+qbQAerUnGkj1TGpkYBPN1IwgWM1sihdFxvJhdX67bTq43Vg79bpStf3BA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Q1hHKRgr6ZGR2fBVBBRbv+RT7nII1T2pZjWiW64cWRY=;
- b=iT8q4F40fqkni0vL3hLjKjNkJIVE4xafFJGSN4FG+IvT3KRnkncXwGxK3tLT7F7eAJzcuQ5OP7f2Go6VtLaqSqXW20mYR/NZGV7M195qL6Of0Lz9uQxrMxtbpAikj8HnD/jOAcnu6SxDCixMzn49hVTfhb0KWSuAgT+36ZRdleX0XSVsiFK/hSa8qGBAJa6sVr07CYO13yQ5IA9IfWbIDkyVyLQjZVmHk19hsixeV4YHnaGpLlG8ZdwD2gmWIH0sjOpBjXu2AnXzPhsS4U1TCY+O7drTTcxdHynwhHqazNbFyfW7gZ/GP3Ut/5WojCDb1Yfzs1apnclImvd0xyLeLg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Q1hHKRgr6ZGR2fBVBBRbv+RT7nII1T2pZjWiW64cWRY=;
- b=nT6uGigXT5EXDoZr/4CSG1L/trJCrQbg/UQd6Ff68NOGIrmxiEFXdQgz7RHR0zefn/rcAXFqWc1A0Xke9yQbqetJriikOxf/lsiKRAXEBfxpRIULm59zYoUSr8qi0wKAy5UU2ohUjheF3gbJJhKVXyqdP/gcoKHEz8FQB9ym0kjrH4BcNmhLYfyv089ZR1WV4jdq7wxrvuIZIHnZxsKc2YdGo01xhiTq0nOJrrpZ8pO2SVUL1p+KdFo6TnQdtYAySgX6hBZGoEVCUp56fdg9DQ+Jks2fIXZKi8QZLOT1Cca6rIxF8sv494BCOsQlwlD4zguVFY0/1kpzHA1SZDxOHA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
- by AM9PR04MB8857.eurprd04.prod.outlook.com (2603:10a6:20b:408::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.11; Fri, 18 Sep
- 2026 10:27:57 +0000
-Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
- ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0428.011; Fri, 18 Sep 2026
- 10:27:57 +0000
-Date: Fri, 18 Sep 2026 13:27:53 +0300
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	Zefir Kurtisi <zefir.kurtisi@westermo.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Simon Horman <horms@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	"Y.B. Lu" <yangbo.lu@nxp.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	"imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"bpf@vger.kernel.org" <bpf@vger.kernel.org>
-Subject: Re: [PATCH v3 net 1/7] net: enetc: consistenly track dropped frames
- in enetc_xdp_xmit()
-Message-ID: <20260918102753.kjxfgmediwq5erba@skbuf>
-References: <20260915222735.1016937-1-vladimir.oltean@nxp.com>
- <20260915222735.1016937-2-vladimir.oltean@nxp.com>
- <GV2PR04MB11739B011069410AB4B517A6188B92@GV2PR04MB11739.eurprd04.prod.outlook.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <GV2PR04MB11739B011069410AB4B517A6188B92@GV2PR04MB11739.eurprd04.prod.outlook.com>
-X-ClientProxiedBy: VIVP296CA0139.AUTP296.PROD.OUTLOOK.COM
- (2603:10a6:800:359::10) To AM0PR04MB6900.eurprd04.prod.outlook.com
- (2603:10a6:208:17d::10)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YfEUuJyi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE641F00893;
+	Fri, 18 Sep 2026 10:31:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789727480;
+	bh=F8/sHQW/v/sgH0s98jk5354G9LroilOQ1TMryG6E6Vc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=YfEUuJyi3QzYdXpyRS1qS3GydgPvYn3JKC7qQExY3U4TiGgXYof05zLbRm1hxTtjm
+	 PYrmp4/ZpjnNOL2kzUrNb8rcn4MaMpuw7Vfs63toREJU9KWxZr3S49rP5cAOLz3Mf8
+	 IpA74hNXyqrDo3zu9AoW+hpUTWZed2XjOm6/n1Rw/rGXZNO478E9mry7xI+2jnrcZx
+	 FqhFA0rRnlWcnpdea2yxNJbVu/MmZxCi/W4J7iN8HhUt90Y4QD5atV+8Tx1XsqkJHI
+	 DGmKN2BOKmY1skj+YRPa0jhnkhrRa3aIJHbaUZVm0UMuBrglQRzGtGSnLcN9UHdL/A
+	 wOB5cyY1pwr4w==
+Subject: Re: [PATCH net] octeontx2-af: nix: Fix TX vtag upper bits programming
+From: netdev-bot+sashiko@kernel.org
+To: rkannoth@marvell.com
+Cc: kuba@kernel.org, linux-kernel@vger.kernel.org, naveenm@marvell.com,
+ netdev@vger.kernel.org, sgoutham@marvell.com, vattunuru@marvell.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, sbhatta@marvell.com
+Date: Fri, 18 Sep 2026 10:31:19 +0000
+Message-ID: <178972747903.22033.9265631093980831113@kernel.org>
+In-Reply-To: <20260915073058.992915-1-rkannoth@marvell.com>
+References: <20260915073058.992915-1-rkannoth@marvell.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|AM9PR04MB8857:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1e9f4a18-c1b8-4d6e-0ae1-08df156f8184
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|19092799006|366016|23010399003|10070799003|4143699003|10067099003|22082099003|11063799006|56012099006|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	FEHYZwN1G6iKDlbQI6/T9N4KkCjZpZxcv1eU6dkSZIRFYIaneil3O78BKprZNF2kDxGYfLe8XfmHcBQ5I8QZa5vfG3iyB2Xf7wXotpYPEd7C4AawuMfAFWc1/Zst6Bm5WvInLKOvA71Tib4QGp+8hp+trJeARv3/9RVPUExS65t53EubsIaKHPt6N6KpmYHJ5nei9xfU6OLod8H7Jnif+TtU70q9ReKVeJ+ST+YHkcvPT+vJvW7Nl0CWslkGI+B6c8Fs2+dST93lEvaxsOLZcfKFsZBll/lPlp4fb+fj82tB/GFALSenhpAMTBlOjPgLRJ5SCTEOBik75Zeg0RmTMG3hMl6OMRJY92oaFmkx+CyMgqT7ieVes5TQgCyzGhymR9T4MSwaWSv45FlGvNOX4Slsphd3CY9d7RMuXnzy3w54gR78kVQv89kMD+p7t4VsxyPZ3xmrpJBRcRU4/oM+W2KSKDVjmmrGiOa9pwqBUbBrTppHlTjcA8xnbcGYsHM8csOtGF8jKxKO9bC9u2ORVOw4VcBEoABm0KWckzRh0jlTbSaKKaM872qUPgrlbk3VIktYpuWKGCwhM6BlEZ4AJblJnQIgfK4u0kyUPARp7gZvg0cX73wHGuFeRFf5fl9z7451THndDX+xNUCei9Yn5qI4d3nc44oxZgQtuzJtbMk=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(19092799006)(366016)(23010399003)(10070799003)(4143699003)(10067099003)(22082099003)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?7HDpgM75qazLtCaHBent5o/+ecIi0yNcimfFFHxKsR6jk6+EXm2/lvT2X+qH?=
- =?us-ascii?Q?rQTv1aTZfKo6V+MkAneXkGGvZbSJGQtQcMPFtiKjLIOUcQ1XQRJyrh0Oi+uX?=
- =?us-ascii?Q?3LnH4EY+MqQDscWm1gan+OhJFsYhgMbcaiRWFAFqMWKDn10+tjIzgNfTMHhJ?=
- =?us-ascii?Q?E+bpNYy+vj7s6vYkx/LP4uQAS6u61GzmCulFfZUeYWw1xT+82I1hzYsyeaPI?=
- =?us-ascii?Q?TwF8S6N4Hcza6BwHYlpmbXtkdPGdM+j6nkyXrPMED41n2HaLW9qE3BlPIuIC?=
- =?us-ascii?Q?W3GfeEOISrrKqvmprPUvAPUP3ySQ4L6m3WDYBa8SqfmFt7ektJ9tW0dIH/M5?=
- =?us-ascii?Q?XraVm8CF+71iGe+VAuF4dSgGeBGVLgQdo1Q3U5QziCSmr+H6LARySWNrbUnT?=
- =?us-ascii?Q?D8PI4gUUuGNnCxj95TDPef9mwSQ6UxF7gkuQSVISJvArNjNCI7tb6UlN4eu+?=
- =?us-ascii?Q?tKJxM/8/SzaX+ZlDq9KJyp/o37wrdnbHXyT36sEfjnxlWqGUt0rOG68YDWTW?=
- =?us-ascii?Q?CDpodkug7F9CWiEpMEL4FVKILLMTP7o5GC4R6ojwBlmQ/LWD4aMJaIA7grdX?=
- =?us-ascii?Q?bmrkaPyCZSwoz07xsCS8WU8JOYo8HH/MqPTUSSsCdLx/2rS7z8iSpvCpbua9?=
- =?us-ascii?Q?vblDzEaZlpP9k4l9PrWnV6uoFGM2q+nOT48UcyBPkAtYQwVZu0TuqnQ6qisk?=
- =?us-ascii?Q?YF3IhCWPBJiaoT9/HX0ejr888Q2ve52HGefKw2JDpx2/LNyTZFcgUExXLMTl?=
- =?us-ascii?Q?yyWEfTUAEd7ZgxH/7RIpnltAK5F4hPqjQ+qnfUhiHXM/lZlHJGkEgTkxCjao?=
- =?us-ascii?Q?I1fANAZ2AGeTK5JBY0akWPj27tWcmDkA3AuIDJSatrXDK1wYaF/a2ujz0Zt7?=
- =?us-ascii?Q?Ul+u0JwQdMs5Qnbsk8q0aA2p2/eGx+ZbkxR2a0Q1AiegYRUmxE6e/x+d5izE?=
- =?us-ascii?Q?GT5jVsB26OoPaIhWx+CLFDBgvoTLts5q/mNs8Mtl396NoVIDLBChLBfKYcqK?=
- =?us-ascii?Q?+kN/EjsGkRatgSd7WVuAEcBrRm03gufHiWVdyDeE0pA/2Cm+mFt4G4o1zfYI?=
- =?us-ascii?Q?Vy0zH/JI5er7p1T/ezPWappVYTpFTkniYvYSOxkNl+FpcjXTQ6DRWeAIAydC?=
- =?us-ascii?Q?e9CMedClsXtZZfluHC+wpAdT+7Ts6S8ilEqymKdmkHmecQ74orNdogmgWFZg?=
- =?us-ascii?Q?SL9mrkEyx9MQAy038VIlm0ndge8MyyYHufE8JY6O+rJWk9RzwOEA17Vx3Ie+?=
- =?us-ascii?Q?c8t1tHl+M95GpRwdZ3W71nMrX2nMuUW9DEWq9wpvLSYn9hNofSJCwo671qo5?=
- =?us-ascii?Q?5N0fkaSID7vNERf8J3mv37Vk965ZKpvMP6YQoARLdUDlh+1B5YKqGxaVFOkR?=
- =?us-ascii?Q?tkEjsVwbEYsHKQSlWQvUpilcTmU2YYOUkZXO1RjWwnjHDhPWsuFGvJkvl//c?=
- =?us-ascii?Q?k2YaaTztbZHyC/o1i0E/ZWKlfR4bu/NPml38p8GLdWPg0YuzRCVn8DILCgX+?=
- =?us-ascii?Q?lufVl71pr19Mlw+yB6A5He3ZMiprb3yyVZ8r9WDR7BZz0xryHuGyZfx/RAE5?=
- =?us-ascii?Q?lmhSPx0iRvJLAKjkv2xwVL1Y3BFwZstIxnGVOUczO+MuLX//kb5w0MxlvfHv?=
- =?us-ascii?Q?5XoOsx8WfkcL/xs1Z5vHLjBj+t/ph5Q2T67KAjt13j5nhSCEke8FgM4iPypW?=
- =?us-ascii?Q?B1KhZ408H+xoyi5EeTdhTRCI588IUEKCmbTyfzMKoozK8OdonrjcHHac6QQP?=
- =?us-ascii?Q?eLWC3ga0/4zzB7woZtTCO+Cn7CV6iGqOIYAEcGytnPoNFT8GSkzmGh9HtE0M?=
-X-MS-Exchange-AntiSpam-MessageData-1: RaDnngzSun6YISP+I5lFMwpE/4IsKJ2OgY8=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1e9f4a18-c1b8-4d6e-0ae1-08df156f8184
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2026 10:27:57.6746
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1emmFyhzB+k/vUQqVcgTYHjkmsyN4ywkPHw8LJ4efYx2u4xHHr4+VnFqtLinZlpZfM8W5BdF7K5xty8GSn08Cw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8857
 
-On Wed, Sep 16, 2026 at 05:16:28AM +0300, Wei Fang wrote:
-> > diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c
-> > b/drivers/net/ethernet/freescale/enetc/enetc.c
-> > index 80f0082f6c63..e7ecdf8ef67c 100644
-> > --- a/drivers/net/ethernet/freescale/enetc/enetc.c
-> > +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-> > @@ -1843,7 +1843,6 @@ int enetc_xdp_xmit(struct net_device *ndev, int
-> > num_frames,
-> >  			for (i = 0; i < xdp_tx_bd_cnt; i++)
-> >  				enetc_unmap_tx_buff(tx_ring,
-> >  						    &xdp_redirect_arr[i]);
-> > -			tx_ring->stats.xdp_tx_drops++;
-> >  			break;
-> >  		}
-> > 
-> > @@ -1854,6 +1853,7 @@ int enetc_xdp_xmit(struct net_device *ndev, int
-> > num_frames,
-> >  		enetc_update_tx_ring_tail(tx_ring);
-> > 
-> >  	tx_ring->stats.xdp_tx += xdp_tx_frm_cnt;
-> > +	tx_ring->stats.xdp_tx_drops += num_frames - xdp_tx_frm_cnt;
-> > 
-> >  	enetc_unlock_mdio();
-> > 
-> > --
-> > 2.43.0
-> 
-> Reviewed-by: Wei Fang <wei.fang@nxp.com>
->
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-Thanks for the review, but I'm not picking up your tag because I need to
-expand the patch to also cover the situation uncovered by Sashiko (the
--ENETDOWN case not incrementing the drop counters).
+Critical: 0 · High: 1 (2) · Medium: 0 · Low: 0
+
+- [High] The statement added by this patch in nix_tx_vtag_alloc()
+  (drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c:3110), `regval |=…
+
+Pre-existing issues:
+- [High] In the same TX-VTAG mailbox path this patch modifies, the error
+  path of nix_tx_vtag_cfg() (rvu_nix.c:3191-3193) calls…
+- [High] In the same TX-VTAG mailbox path this patch touches, the free
+  path uses a fully caller-controlled signed index from the mailbox…
+
+--
+
+octeontx2-af: nix: Fix TX vtag upper bits programming
+
+This adds one statement to nix_tx_vtag_alloc() so that the vtag bits above
+bit 47 also end up in NIX_AF_TX_VTAG_DEFX_DATA, with the aim of fixing TX
+VLAN tag insertion when the extended vtag fields are used.
+
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+> index 153eb57bad067..091ef8dac7c94 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+> @@ -3107,6 +3107,7 @@ static int nix_tx_vtag_alloc(struct rvu *rvu, int blkaddr,
+>  	mutex_unlock(&vlan->rsrc_lock);
+>  
+>  	regval = size ? vtag : vtag << 32;
+> +	regval |= (vtag & ~GENMASK_ULL(47, 0)) << 48;
+
+[Severity: High]
+Is this new term always zero?
+
+~GENMASK_ULL(47, 0) is 0xffff000000000000, so the mask keeps bits 63:48
+where they already are, and the following << 48 shifts them out of the
+64-bit word:
+
+	regval |= (vtag & 0xffff000000000000ULL) << 48;   /* == 0 */
+
+If that is right, the value handed to rvu_write64() below is bit for bit
+the same as before the patch, and the condition described in the changelog
+("The upper bits of the vtag value above bit 47 were not written to
+NIX_AF_TX_VTAG_DEFX_DATA") is still present.
+
+The in-tree producer of those upper bits is rvu_rep_tx_vlan_cfg() in
+rvu_rep.c, which packs the EtherType at vtag0[63:48] and asks for
+VTAGSIZE_T4:
+
+	req.vtag_size = VTAGSIZE_T4;
+	req.cfg_type = 0; /* tx vlan cfg */
+	req.tx.cfg_vtag0 = true;
+	req.tx.vtag0 = FIELD_PREP(NIX_VLAN_ETYPE_MASK, etype) | vlan_tci;
+
+with NIX_VLAN_ETYPE_MASK defined in rvu_reg.h as GENMASK_ULL(63, 48).
+Since the field is already at its final register position, and since
+size == 0 makes nix_tx_vtag_alloc() compute regval = vtag << 32 and drop
+everything above bit 31, doesn't the representor path still program
+EtherType 0 while the NIX_VTAG_CFG mailbox returns success?
+
+Would something like this be the intended expression instead?
+
+	regval |= vtag & NIX_VLAN_ETYPE_MASK;
+
+>  
+>  	rvu_write64(rvu, blkaddr,
+>  		    NIX_AF_TX_VTAG_DEFX_DATA(index), regval);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but while looking at the same
+TX VTAG mailbox path: is the error path of nix_tx_vtag_cfg() missing
+vlan->rsrc_lock?
+
+	err_free:
+		if (req->tx.cfg_vtag0)
+			nix_tx_vtag_free(rvu, blkaddr, pcifunc, rsp->vtag0_idx);
+
+Every other caller holds the mutex around it, for example
+nix_tx_vtag_decfg():
+
+	mutex_lock(&vlan->rsrc_lock);
+
+	if (req->tx.free_vtag0) {
+		err = nix_tx_vtag_free(rvu, blkaddr, pcifunc, idx0);
+
+and nix_free_tx_vtag_entries() does the same.
+
+nix_tx_vtag_free() ends in rvu_free_rsrc(), which is a non-atomic
+read-modify-write:
+
+	void rvu_free_rsrc(struct rsrc_bmap *rsrc, int id)
+	{
+		if (!rsrc->bmap)
+			return;
+
+		__clear_bit(id, rsrc->bmap);
+	}
+
+and rvu_alloc_rsrc() pairs find_first_zero_bit() with __set_bit() on the
+same word. AF mailbox work items for different PF/VFs can run at the same
+time (rvu_mbox_init() allocates the workqueue with max_active == num), so
+can this interleaving lose an allocation?
+
+CPU0 (nix_tx_vtag_cfg err_free, no lock)
+	reads bitmap word
+
+CPU1 (nix_tx_vtag_alloc, holds rsrc_lock)
+	__set_bit(index, bmap)
+
+CPU0
+	writes back the stale word, clearing CPU1's bit
+
+The same index could then be handed out twice, letting two PF/VFs share one
+NIX_AF_TX_VTAG_DEFX_DATA/CTL entry, or the entry could be leaked in the
+opposite interleaving. The ownership store
+vlan->entry2pfvf_map[rsp->vtag0_idx] = pcifunc also happens outside the
+lock, i.e. not atomically with the bitmap allocation done under it.
+
+[Severity: High]
+This is a pre-existing issue too, but in the deconfiguration side of the
+same path: are the mailbox-supplied indices ever range checked?
+
+nix_tx_vtag_decfg() takes them straight from the request, as signed int
+fields of struct nix_vtag_config, and dereferences the map with them:
+
+	int idx0 = req->tx.vtag0_idx;
+	int idx1 = req->tx.vtag1_idx;
+	...
+	if (req->tx.free_vtag0 && req->tx.free_vtag1)
+		if (vlan->entry2pfvf_map[idx0] != pcifunc ||
+		    vlan->entry2pfvf_map[idx1] != pcifunc)
+			return NIX_AF_ERR_PARAM;
+
+Note that comparison only runs when both free flags are set. With just
+free_vtag0 set, the index reaches nix_tx_vtag_free() unchecked:
+
+	vlan = &nix_hw->txvlan;
+	if (vlan->entry2pfvf_map[index] != pcifunc)
+		return NIX_AF_ERR_PARAM;
+
+entry2pfvf_map is a devm_kcalloc'd array of vlan->rsrc.max entries
+(NIX_TX_VTAG_DEF_MAX is 0x400), so does this read out of bounds for a
+negative or too-large index? And if the sampled u16 happens to equal the
+sender's pcifunc, execution continues to:
+
+	rvu_write64(rvu, blkaddr,
+		    NIX_AF_TX_VTAG_DEFX_DATA(index), 0x0ull);
+	rvu_write64(rvu, blkaddr,
+		    NIX_AF_TX_VTAG_DEFX_CTL(index), 0x0ull);
+
+	vlan->entry2pfvf_map[index] = 0;
+	rvu_free_rsrc(&vlan->rsrc, index);
+
+where the register offset is 0x1A10 | (index) << 16, the map store is an
+out-of-bounds write, and rvu_free_rsrc() does __clear_bit() outside the
+bitmap.
+
+rvu_mbox_handler_nix_vtag_cfg() only validates the flag combination before
+dispatching:
+
+		if (req->tx.free_vtag0 || req->tx.free_vtag1)
+			return nix_tx_vtag_decfg(rvu, blkaddr, req);
+
+Should nix_tx_vtag_decfg() reject indices outside [0, vlan->rsrc.max)
+before using them?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260915073058.992915-1-rkannoth%40marvell.com
