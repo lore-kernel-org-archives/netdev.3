@@ -1,148 +1,156 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A01454FD7B4;
-	Fri, 18 Sep 2026 13:47:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A08953DD849
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 13:49:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789739271; cv=none; b=gwZo3lyMIXXTr1cMD+9YyWJrnY23FN3sAMgQHy9Q7QmU56l5UbF+v4SZA3X48XLmBtffEsxaJzu1Q3EIZIEjKKyuT3arS5lqVUZj0wD9ACaVNyFMjw05utBIcmmqfRt205WF3cZSMeyry8W2YpUJMqtWLe0WII/FNWo2c7WzCa0=
+	t=1789739377; cv=none; b=RReRKUfWAP4uS4Cbpzr9G84H9v8v4kHR2aFbHXW6gUjKhcpsB0lJYGT0jm6tGXUsw1z4gdd1MjPFdeEi0DJIoHr1P6zu33oZHHICZRdfqBLuR1ip9BujpNJn4oBIQYM3+2b0u+AEBE3NsoLiAHiICdF9lLRM3PKLIgqfAioPyB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789739271; c=relaxed/simple;
-	bh=6JT85z7VBQuVxTsS2FhpPNP1G7Luj+25ReTRMe0j4Eo=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=fiWYE7ko3tuP0bQ21yrDqnfg/oMrFNkx7ngcRe+Ng/8h8e4VRVQeRgXuVRzGkAGfMBQo20ufx+1qnPPCiI625GLgL5bT5Iq8qGICeDzrRLrioZ7DzMv4+gPSTiMHszuLXQwSEzgFgCPRYoU+tU26ibDVSbE58dIeLZ2qCk98bTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=nEjX0kLY; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1789739377; c=relaxed/simple;
+	bh=Ep+wq/i2umiA8YS7Pl1zPbiNgVmnMR53naO/aGKJnfw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ZTVobsSAoIJ6Xqa0NrgsC8pIjnlDPxyy0AVyAPvy4PC/zAaSF1A/XjKehry+iSzUCI8IlDF/R+xgJSVw6gaeg+TB6M6tjTI+/JOAnIYe0XAdPF6FLRuPFudtVvzRF15xJ6Oua2QujFZOV2vTESKcTM9SwoCPBszTp66/9Hy9JI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dHTR+nNn; arc=none smtp.client-ip=74.125.228.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="nEjX0kLY"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1D990A50C5;
-	Fri, 18 Sep 2026 15:47:32 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1789739263; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=6JT85z7VBQuVxTsS2FhpPNP1G7Luj+25ReTRMe0j4Eo=;
-	b=nEjX0kLYWLtbkvv3h8Ih+GECcXAr10XaBlncO0DDvSlF+B6im55NTRoUMtVAI0M0M5nZcq
-	D1uuysQ1Kxv0pNFVz0uD1FTFLLEVdmwn3a25a0s9I5v3MqxAbwrvqSEMQdDfhoxVmn2q87
-	dQJEsepuf4GSzehM7WdaW8bhjEsI5twEG27B+iK0khs1s2kjGfLao3sZICR+a98diDUEnp
-	r19TtwjbaOTFKxwFjac/5i9qiLaJv0ur+Uxlx2rKGeG1SL3PD0T6ZoqSQOJyOVba233vjo
-	edlujib3h22l5mofpgk5GFQLFhc8S3AWOSxNEdeot00bJsDMqy8kfkLBloqpKg==
-Date: Fri, 18 Sep 2026 15:47:32 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
- Heiner Kallweit <hkallweit1@gmail.com>,
- =?ISO-8859-1?Q?Alexis_Lothor=E9?= <alexis.lothore@bootlin.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Emil Renner Berthing <kernel@esmil.dk>,
- Minda Chen <minda.chen@starfivetech.com>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Jan Petrous <jan.petrous@oss.nxp.com>,
- Ovidiu Panait <ovidiu.panait.rb@renesas.com>, Jose.Abreu@synopsys.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- thomas.petazzoni@bootlin.com, linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, PKneuper@dspace.de,
- David Laight <david.laight.linux@gmail.com>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_net_v4_5/7=5D_net=3A_stmmac=3A_dwmac4=3A_Use?=
- =?US-ASCII?Q?_the_correct_bufzise_when_the_len_is_exactly_8K?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <fd937877-306e-48c1-8b14-e8dc62986420@bootlin.com>
-References: <20260917215339.2022523-1-maxime.chevallier@bootlin.com> <20260917215339.2022523-6-maxime.chevallier@bootlin.com> <4b3c26c482ac1d26f39b53fea072e4d1@tipi-net.de> <fd937877-306e-48c1-8b14-e8dc62986420@bootlin.com>
-Message-ID: <DB73CA16-1F9F-4680-A7BD-B5E043F3A20A@tipi-net.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dHTR+nNn"
+Received: by mail-pz2-f42.google.com with SMTP id d2e1a72fcca58-86e6d007703so689607b3a.0
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 06:49:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789739374; x=1790344174; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=FZ2x5YA1Wkn+XLaTMl1C5PiwQkP5R3MNLqBp+wmPsGk=;
+        b=dHTR+nNnvAj0ZAW1rFW/ydcNrcY/lehNv6RPuL0etSjAiewifT6Oyh+vEVj+ctkwRm
+         0iLCr5H+j1zj3p4EPRcEUvGh2bQbS7dZKSJTHtRgnoTFd13dbjyK8g6mnOfeCbdl5HCH
+         D8zWjgMHagCOuxt6Pxlal48PBlV2gL3d+tbSbNLN0ir48NzKC1E5sOXkOd4EQxITV0fe
+         pbsVvB+3tKBfyaxZy2JeFscNlkuj4PoayAQdoH3qI/pkVllPNIrBtA6nN50OeUUDGpTj
+         xOi6A1fTSJQx/Ltih73tOvKHRQOzCBJ11kwAvyMZD55LmN8oe5TeYvrtIF5mWfGZXDzo
+         qbOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789739374; x=1790344174;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=FZ2x5YA1Wkn+XLaTMl1C5PiwQkP5R3MNLqBp+wmPsGk=;
+        b=ocyIgvcoFBpsj27X7BBkLanKMZ9ulNi3xQK6DWwUaBTyK7B0Pg2+o0+FKiEFWFksRe
+         MQo8FHytSi3Ee3znuAQYutLmD2vg6VHmcyu6bLOBOZj80zV2rLZKTmSL4B9OF21tCrUq
+         ff8Td3MegBiwyhzDUGb7XoSLGFQe7TRPaiI4/DnJEfUIMXhHz9XSEoPMFrgKwNHuRulw
+         d9y02S65pxqN775wzvaPp8xae8dMRZYuB0NGv0XERLqMipNv5xRACQArQdL55jlBHabp
+         9V/SqAk0St8nTNuroJMktHl9KQaN6hhQLuSLFPlkWULAeDCRjwH2GGGlvPbsbMfT6IK2
+         LrZw==
+X-Forwarded-Encrypted: i=1; AKwUvByjWF3Ttus6m4xNqAzD8fYzTMpA88flz9DzWNNARzFqGOAYCbhu8K6WDqv+P3a2iY2qikYAWTs=@vger.kernel.org
+X-Gm-Message-State: AFuF++nlvKeRljpgS099JfHcV/m7jGC82oRKY58xG3LoAJlxLBS1Keot
+	8Wlgr1sOqI5B8LSCzQ+ntgRg6YAfuYBjtdGy2LpEkBGdfO1NX4V7YynX
+X-Gm-Gg: AYBFou0m/QBB/s/L6eHjaHQT0orZ82q+ekCIY+acypU3xfyT1ovTHQTewG8cuaB5O3O
+	PmIu/n9XF2que/AfsAGxsAqlZjK7NYLoWDmFpWFv6o8Qu/EO9A5cPdt7d/h5a94oLbpTnFmwaWX
+	+KIl/sNgPcGbx72TG6U0CpnAjRBUbjsu/2m8qSW0l3DbdZjdrku9tk+dwc+EEUEnzn2XAv/I2dI
+	MpgZeNi/Q+IEe4R6+emFxpUt8U0kvhMV58tzz5vQHovu5wrN2bKCT95SMZz5M7FEFCm9cEiq1EF
+	sy2kMTRYmC8KUwBQTyHGW34O+vD2PfXcfZRfEgWBWYb/MVo02g0RxleL4yovqls8eHJi71eKU1X
+	rkNzlids14FZ/Uxts9lopft3CQjrRIpFWXQy/ztr/32h226aXgGETrwp6lu67e2slUiFYCV+E4S
+	4ETwWdRrk6lTtXyC0i4je8Ub2ef1ufaRe+enqvB/+N8K6eCqTDKw7U5rxDZq4S2uKgecwhd5ztf
+	JTiOfFxLw==
+X-Received: by 2002:a05:6a00:2d26:b0:857:72f8:dc99 with SMTP id d2e1a72fcca58-874dddfd214mr5511344b3a.26.1789739373932;
+        Fri, 18 Sep 2026 06:49:33 -0700 (PDT)
+Received: from [163.43.103.131] ([163.43.103.131])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-875cf12d57bsm888878b3a.1.2026.09.18.06.49.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Sep 2026 06:49:33 -0700 (PDT)
+From: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+Date: Fri, 18 Sep 2026 22:49:30 +0900
+Subject: [PATCH net] selftests: net: fix CONFIG_SYSCTL sort order in
+ configs
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260918-selftests-net-config-sort-v1-1-968ea6e8c1b7@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAGpBrWoC/yWM0QrCMBAEf6XcswdNLGr9FemDJpt6IonkThFK/
+ 92oj7PszEKKKlA6dgtVvESl5AZu01G4nvMMltiYfO93/egOrLgng5pyhnEoOcnMWqrxEN0W0aV
+ h9Htq/qMiyfvXPlE70/Qf9Xm5Idi3Suv6AeYWqSyCAAAA
+X-Change-ID: 20260918-selftests-net-config-sort-4d13ed1f4927
+To: "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+ Oleg Nesterov <oleg@redhat.com>, Joel Granados <joel.granados@kernel.org>, 
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Yuya Kusakabe <yuya.kusakabe@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1797;
+ i=yuya.kusakabe@gmail.com; h=from:subject:message-id;
+ bh=Ep+wq/i2umiA8YS7Pl1zPbiNgVmnMR53naO/aGKJnfw=;
+ b=owEBbQKS/ZANAwAIASrX0XUqXRtNAcsmYgBqrUFr4VG06BZEuZlW16iTbpLGKfNzDeuCZJWZ8
+ h0XS22oePeJAjMEAAEIAB0WIQTaB7usAfxNKMeqa6Yq19F1Kl0bTQUCaq1BawAKCRAq19F1Kl0b
+ TbH3D/4vwDjKgb51jQAQukW1Lr1H3sYEgNU2J4cJ5vAJctFgsT8JFa3uwrQl9iMWVZJgLPtfyeX
+ Co8L1xtmER6SdKxVhJaRQFbnI6plvU6ESGuthghGbw02CuSd+e8GmrplFDl6UL10bZLatncJF7M
+ 9NPAGQuaZP738D7UmRhzqlZCNjij7temifArHwwwkpobD9z1yqe9IuqUNlaNgzYW8J24GGlEQij
+ RzYTaoOy/9rW5leTuMSc+N4rG1KM7YAADRbURMvhjNDsf4154KeYRwHHkDI7EpWbvo9gBw59ER6
+ kxV+yodMa7NyXegA1gcsGjHO49e48ZalxKjjFYZnXFCe7ndcVCYoS3ImQSIIpUlSgJp3N1B/3tv
+ eaksZQ7bUlzer483RJkc+Gsz5OklacaiiCzKC4zqBO8HIYeetpWrBbF/U3ZcXUPT+HKjO61cxHi
+ 5y7ymRKsFQxT96iLf2eN8z4zPAkdSVfC9DfRMb00z/7xGJexzrWBLUwD1Nh7MUzjpGqsx/Yb5UX
+ 4C0YR5kenl6Dxux7HP0UlxIwJ0U0paaquE8ImVCnPDXG6D5g1vgxPAqR08R5H9O0ot+GkvGEpqs
+ G581Ei+zYX56lGE5N55pAQnpJ7gPdsqBcP4sQn0fcdu008iwVI1D6I2GC0NwsjIdd/MJFK6fQvv
+ nThWWOF3UQOtDyw==
+X-Developer-Key: i=yuya.kusakabe@gmail.com; a=openpgp;
+ fpr=DA07BBAC01FC4D28C7AA6BA62AD7D1752A5D1B4D
 
+Commit 8d75c338f0bc ("sysctl: remove CONFIG_PROC_SYSCTL, it just mirrors
+CONFIG_SYSCTL") renamed CONFIG_PROC_SYSCTL to CONFIG_SYSCTL in place,
+which left the entry out of alphabetical order in the net and
+packetdrill configs. The netdev CI check for sorted selftest configs
+now fails for every patch that touches either file.
 
+Fixes: 8d75c338f0bc ("sysctl: remove CONFIG_PROC_SYSCTL, it just mirrors CONFIG_SYSCTL")
+Assisted-by: LLM
+Signed-off-by: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+---
+ tools/testing/selftests/net/config             | 2 +-
+ tools/testing/selftests/net/packetdrill/config | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-On September 18, 2026 2:45:10 PM GMT+02:00, Maxime Chevallier <maxime=2Ech=
-evallier@bootlin=2Ecom> wrote:
->
->
->On 9/18/26 14:25, Nicolai Buchwitz wrote:
->> Hi Maxime
->>=20
->> On 17=2E9=2E2026 23:53, Maxime Chevallier wrote:
->>> DMA bufsize selection isn't made on the MTU but the actual frame lengt=
-h,
->>> so including the L2 header=2E On DWMAC4, if the len is exactly BUF_SIZ=
-E_8KiB,
->>> the next larger size is incorrectly selected=2E
->>>
->>> Lets fix the comparison and while at it, rename the parameter from len
->>> to mtu=2E
->>=20
->> Isn't it "[=2E=2E=2E] from mtu to len"?
->
->:(
->
->Bah, if respin is required I'll fix this
->
->>>
->>> Fixes: c3efed5ad1b0 ("net: stmmac: Enable dwmac4 jumbo frame more than=
- 8KiB")=2E
->>> Signed-off-by: Maxime Chevallier <maxime=2Echevallier@bootlin=2Ecom>
->>> ---
->>> =C2=A0drivers/net/ethernet/stmicro/stmmac/dwmac4_descs=2Ec | 4 ++--
->>> =C2=A0drivers/net/ethernet/stmicro/stmmac/hwif=2Eh=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 2 +-
->>> =C2=A0drivers/net/ethernet/stmicro/stmmac/ring_mode=2Ec=C2=A0=C2=A0=C2=
-=A0 | 4 ++--
->>> =C2=A03 files changed, 5 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac4_descs=2Ec b/dr=
-ivers/net/ethernet/stmicro/stmmac/dwmac4_descs=2Ec
->>> index 2994df41ec2c=2E=2Ec6a8f8d73501 100644
->>> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac4_descs=2Ec
->>> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac4_descs=2Ec
->>> @@ -474,11 +474,11 @@ static void dwmac4_set_sarc(struct dma_desc *p, =
-u32 sarc_type)
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sarc_type))=
-;
->>> =C2=A0}
->>>
->>> -static int set_16kib_bfsize(int mtu)
->>> +static int set_16kib_bfsize(int len)
->>> =C2=A0{
->>> =C2=A0=C2=A0=C2=A0=C2=A0 int ret =3D 0;
->>>
->>> -=C2=A0=C2=A0=C2=A0 if (unlikely(mtu >=3D BUF_SIZE_8KiB))
->>> +=C2=A0=C2=A0=C2=A0 if (unlikely(len > BUF_SIZE_8KiB))
->>=20
->> Should we drop set_16kib_bfsize() instead?
->>=20
->> After 6/7 it looks to me like the same test as the first branch of
->> stmmac_set_bfsize()=2E The caller ends up there anyway when it returns =
-0
->> and chain_mode_ops doesn't have it at all=2E
->
->True yeah :) however maybe we can wait for this to be merged and have the
->cleanup in net-next ?
->
->Sashiko is getting crazy with the "pre-existing issues" everytime we touc=
-h
->stmmac, cleanups are long overdue and this could be included in there :(
->
+diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
+index 30d5fcb09a83..737e7e6327b3 100644
+--- a/tools/testing/selftests/net/config
++++ b/tools/testing/selftests/net/config
+@@ -118,10 +118,10 @@ CONFIG_NFT_NAT=m
+ CONFIG_NUMA=y
+ CONFIG_OPENVSWITCH=m
+ CONFIG_PAGE_POOL_STATS=y
+-CONFIG_SYSCTL=y
+ CONFIG_PSAMPLE=m
+ CONFIG_RPS=y
+ CONFIG_SYN_COOKIES=y
++CONFIG_SYSCTL=y
+ CONFIG_SYSFS=y
+ CONFIG_TAP=m
+ CONFIG_TCP_CONG_DCTCP=y
+diff --git a/tools/testing/selftests/net/packetdrill/config b/tools/testing/selftests/net/packetdrill/config
+index 83dde525c53c..b7df8bf30920 100644
+--- a/tools/testing/selftests/net/packetdrill/config
++++ b/tools/testing/selftests/net/packetdrill/config
+@@ -4,8 +4,8 @@ CONFIG_IPV6=y
+ CONFIG_NET_NS=y
+ CONFIG_NET_SCH_FIFO=y
+ CONFIG_NET_SCH_FQ=y
+-CONFIG_SYSCTL=y
+ CONFIG_SYN_COOKIES=y
++CONFIG_SYSCTL=y
+ CONFIG_TCP_CONG_CUBIC=y
+ CONFIG_TCP_MD5SIG=y
+ CONFIG_TUN=y
 
-Totally fine with me=2E Maybe the commit message can be fixed up on merge?=
-=20
+---
+base-commit: 46bc52d13594848023e681860df8700c8db14354
+change-id: 20260918-selftests-net-config-sort-4d13ed1f4927
 
->Maxime
->
->
-FWIW
+Best regards,
+--  
+Yuya Kusakabe <yuya.kusakabe@gmail.com>
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net=2Ede>
