@@ -1,54 +1,35 @@
-Received: from mta-65-226.siemens.flowmailer.net (mta-65-226.siemens.flowmailer.net [185.136.65.226])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0643B05BA
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 22:49:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B5334B43F;
+	Fri, 18 Sep 2026 22:51:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789771830; cv=none; b=URGelCvHcT65594IhqTm6P31UWT3tfyxZ4athII2UkebgzhYDr1AyNP7+MTCjl/EcoNg6Cu2B8tDB6Wa1eHGhZuI1KLt0aAcc7Zr9NF9E0IK2rJSlW12XTtA3hJcsklUbhQaLG5XEDfH9PefPaOLBVqRS3tmjfTysty+iGtBrGo=
+	t=1789771880; cv=none; b=VD9Y2UA/MJ3LFrqsiCyBpqH84sInhQerqHQVVscdb6b6jrzUQGJ9deaz7bvsUwGqPEmNV5+Qit5k2jbP5Fr1iju5vURlfKZkoocH2jVrhtTJYcjb0TR0L4gvQDPzdsuO56oAPUd3AJm9YtV4OccgSLpeGnXfCHUWwo7dVstoq0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789771830; c=relaxed/simple;
-	bh=uw82mll65bTvKzCTwjKzaIYqZeOU3m/+yhAHHPZKu74=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IK3bpvMwnZAFFXpExh+x8udVf/FIk9EhVQACBn8uA3hsRNkx9YbpTPWI2NpRrLO8XB9qmxpnGPp6VFmgwRg6ygSDdEo2xtZ4PInqIzPHZ/g69hT7Z2OGo5q6WQ2kVOw4UVPZB5SlLhGCpsSRNA12/eCEueXeoqsJ5rvLvphGMEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alessandro.zini@siemens.com header.b=Hci2iJwI; arc=none smtp.client-ip=185.136.65.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+	s=arc-20240116; t=1789771880; c=relaxed/simple;
+	bh=CYvxgUfRHtd1RGEfXAVNRd+x/rjaLTfMf3D61vB6lYY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=N28dsV1QSNAj7X5JZVwNtyV5e5pFp4H0r65tHrjVBbv/ZdQ6jV4pkZGrLamPJune98xWm0clmx288AppfVQr6TKqa0gHn5yJIH+FVdcLhk8JofV0xScUyL/EJ4BCg3xVxIFDP9toMjSU7vsS6dtW2ehWPbaBAHmdLEdcHMXVqYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mkRPGKA7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=alessandro.zini@siemens.com header.b="Hci2iJwI"
-Received: by mta-65-226.siemens.flowmailer.net with ESMTPSA id 20260918224947df0cc919f20002072c
-        for <netdev@vger.kernel.org>;
-        Sat, 19 Sep 2026 00:49:47 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=alessandro.zini@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc:References:In-Reply-To;
- bh=4reDCX1VDOlA3cZ+v+SR+ZwaoIZgUjeFcXMbzfav0Y8=;
- b=Hci2iJwImNDDccqgW75zl+AR5BiLMY1fOb8cNROQ82TiNksyM4dYruNLPB0+kz4RYwuCbb
- 0r0GBC2M0jaWWPPJM5qnPecFNnsEEbDUL4KcVxGywQpq2cAgpGId4q8GZPg4iYhAxtyNvfCo
- 0A36nyuCRF7OaOmv0I3u+q5XttQ9KdL7grZqhfBTkNsYra4k5aDGh+U4cDxfSe7fV8YPJwtC
- NF22jppQF2VccsYtMWFe7HAjzhBlEBIAPwe+vA4fhKviDRT2t8gJeoCkgmkoKhGLsmt78qoX
- l+8rcgDcuQq3M+DNX74fSlnmlJmhlhBy5K7T3dhfXInZmRtlW+6hSAXw==;
-From: Alessandro Zini <alessandro.zini@siemens.com>
-To: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Ciprian Regus <ciprian.regus@analog.com>,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Alessandro Zini <alessandro.zini@siemens.com>
-Subject: [PATCH net-next v3 2/4] dt-bindings: net: adi,ad3306: add reset-gpios property
-Date: Sat, 19 Sep 2026 00:49:32 +0200
-Message-ID: <20260918224934.51998-3-alessandro.zini@siemens.com>
-In-Reply-To: <20260918224934.51998-1-alessandro.zini@siemens.com>
-References: <20260918224934.51998-1-alessandro.zini@siemens.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mkRPGKA7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB9F1F000FF;
+	Fri, 18 Sep 2026 22:51:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789771878;
+	bh=DvTBMI5YdXqSHeNB5tBT7OLO6g8e1o+wjsXAG11+soI=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=mkRPGKA78UhIxtvwAY6iTRMYXZukhAahfEhetKYNQZbIT5e+IR+q69RqEZXwW2zcd
+	 4xGouS/ljqLJVf6Rb9V3DVeeZwtj6rJxFWxJCLVQ0U637ruoScCaO99/cv8NV/B8wm
+	 2vW3qKVriAAdW5PitvCqQYf+3NgWc8Kor9EFandXpf1geG+yCh8f5lKr1eE/sqOd9i
+	 53LDhx24EaARGN3ESpO0T0Fm3UpCAbGeKmGrfF/ElQHJ6VwxBikmcci55JwzXyllOh
+	 8Qw8oNH4+ic0QjaqKbnVwRY7AxM6jmsQrbfuv/eyXwmPEIGbNHw47bdBa7eT/3sfxD
+	 foIV1+tBseZEA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19CFE381196A;
+	Fri, 18 Sep 2026 22:50:13 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,41 +37,49 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-1327013:519-21489:flowmailer
+Subject: Re: [PATCH net] tipc: reject invalid and unexpected GRP_ACK_MSG to
+ prevent bc_ackers underflow
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178977181170.1178488.789081349546153625.git-patchwork-notify@kernel.org>
+Date: Fri, 18 Sep 2026 22:50:11 +0000
+References: <20260913044233.193927-1-edumazet@google.com>
+In-Reply-To: <20260913044233.193927-1-edumazet@google.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com, jamesburton@meta.com,
+ stable@vger.kernel.org, security@1seal.org, tung.quang.nguyen@est.tech,
+ jmaloy@redhat.com
 
-The ADIN1140/AD3306 MAC-PHY has an active-low hardware reset pin, and the
-driver binds to the common OA TC6 library which is gaining support for an
-optional reset GPIO. As the schema uses "unevaluatedProperties: false", a
-board description using the property would otherwise be rejected.
+Hello:
 
-Add the optional reset-gpios property to describe the connection to that
-pin.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Signed-off-by: Alessandro Zini <alessandro.zini@siemens.com>
----
-Changes in v3:
-- New patch, so that a board using reset-gpios with the adi,adin1140 /
-  adi,ad3306 compatibles is not rejected by dt_binding_check.
- Documentation/devicetree/bindings/net/adi,ad3306.yaml | 5 +++++
- 1 file changed, 5 insertions(+)
+On Sun, 13 Sep 2026 04:42:33 +0000 you wrote:
+> Commit 48a5fe38772b ("tipc: fix bc_ackers underflow on duplicate
+> GRP_ACK_MSG") rejected duplicate/stale ACKs in tipc_group_proto_rcv()
+> by returning early when less_eq(acked, m->bc_acked).
+> 
+> However, that check remains incomplete in two ways:
+> 
+> 1. When grp->bc_ackers is zero (e.g. on a quiet group, when replicast
+>    ACKs were not requested, or after all expected members have already
+>    acknowledged), an unexpected GRP_ACK_MSG with acked > m->bc_acked
+>    passes less_eq() and unconditionally decrements grp->bc_ackers.
+>    Because bc_ackers is a u16, this wraps to 65535, causing
+>    tipc_group_bc_cong() to permanently report congestion and blocking
+>    all future group broadcasts on the socket.
+> 
+> [...]
 
-diff --git a/Documentation/devicetree/bindings/net/adi,ad3306.yaml b/Documentation/devicetree/bindings/net/adi,ad3306.yaml
-index 785d05c995dbb..8eb72562459f2 100644
---- a/Documentation/devicetree/bindings/net/adi,ad3306.yaml
-+++ b/Documentation/devicetree/bindings/net/adi,ad3306.yaml
-@@ -42,6 +42,11 @@ properties:
-     description: Interrupt from the MAC-PHY for receive data available
-       and error conditions
- 
-+  reset-gpios:
-+    description:
-+      GPIO connected to the active-low RESET_N pin of the MAC-PHY.
-+    maxItems: 1
-+
- required:
-   - compatible
-   - reg
+Here is the summary with links:
+  - [net] tipc: reject invalid and unexpected GRP_ACK_MSG to prevent bc_ackers underflow
+    https://git.kernel.org/netdev/net/c/99cc2a62e07a
+
+You are awesome, thank you!
 -- 
-2.55.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
