@@ -1,75 +1,77 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+Received: from mail-pz2-f40.google.com (mail-pz2-f40.google.com [74.125.228.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791B138B14B
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 03:29:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D1617D6
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 03:39:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.40
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789702196; cv=none; b=fuaUDmrCfVhD8cujjymPq5FJmy9w+G8jCzJZ6Mhakvd6Jz9eLsNqB6wFrmfqQt9VSPmWkNni246hiYAmyKOJS3Veqrf7oP/A8uFnJVoVJemEaPGf3taU62Z0b321Emm0y7DGfXK/+E6YPz7ef0xoFZ8IWY02ziVLgju2u9Bgo0c=
+	t=1789702771; cv=none; b=b5TfBz3rfCfWNTx3ntfPsaTPHf42/zDLyc3/VYq1wE8c1viKruFU3ibrhD4eGw2F/t4jLoQVSfx5VJroocjYu5sraNCkLeSE7/OsatwFTTaCmXId4hzB05L6IxEtPhREumoDTpxg3oUlVa8Xu2C8SmoRHIaqaN8wZWyqYZP85sU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789702196; c=relaxed/simple;
-	bh=OrS6U01+iuao8UmR3n3HuiCLZRiCE5UJWbtnDDZt3zc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Eftuteo3hMgixFO1owvD2KXc57ZiaPXqLGE+323ibHty/cS8vElPtFZiu8/q3CisEX0sjm0IUGFaXJfQPDiPo6IXya42gsSTF67pj7FvpN4JNDYwMiHT5Nsgh16Zg2atOw+qqEdBI9hkJtZL73FsfGzCBsnrfYd/XpADflA5dfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nbi73fqX; arc=none smtp.client-ip=74.125.227.140
+	s=arc-20240116; t=1789702771; c=relaxed/simple;
+	bh=fZjGGfzjD+e67lahGDJ1EAc/Am9Wz2vBr6GU6aH3PVU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dypFebROKQt1YItSysyfxli405Het82/xo98nJjniCnuR/oYbNtOWiQmTYy4LdWb62BlNHK0PfhS/wNWrnwNep9ihobEYT3Q3qnfJNJ6GKXfKyghGiDc4R7xitydnJLqLt0RNxDnQkWVSp895D9ehfJdhiqfo4XxVlcZUXTmoIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qgg3hUgG; arc=none smtp.client-ip=74.125.228.40
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nbi73fqX"
-Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d747ed9866so2308495ad.2
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 20:29:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qgg3hUgG"
+Received: by mail-pz2-f40.google.com with SMTP id 41be03b00d2f7-cc5121bcf1aso172485a12.1
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 20:39:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789702195; x=1790306995; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789702769; x=1790307569; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YMfMBVGtPSJljFVAV+D5AOSbTsYVYsLFP8jVbT0c8EY=;
-        b=nbi73fqX0OZBZeppzXw6XrogpyDRJR4XW0M5fmaSlyRjK37/Ptci2CsEikuXN7RC+N
-         ssX7W+XXDRVaVo6nADqimOg3D38DoTy14WUj0WljX7tNa5Eza0Ak9DGKMLzoksByfRLZ
-         jSEbesvJyOAZuzX2Z9jfMmvqiliJgseU1pfJ/oNmhAVSB8hgeTCP7OOZx3mUf0dfHjS9
-         oAgbSJag96AAulbrLEaKzLJXC9goaf+seuk5bze9tDzMnf5lLQkQX+CEI7F878gX5s3U
-         OFcY2TwaaTVfP7y4GF59jLE1IJzs4opPxGo4JGVhU1zDnVQT73h+ms7z4Y9ttR4Wc9bh
-         HsyQ==
+        bh=v9YKjnadMhV6kY6CH7XzaeiUdpmUgyn3iCQMQXyXjxw=;
+        b=Qgg3hUgG+Sx+R2dllZ83l2bnEibvCo8HZCVkTfnKssidm5AUCumNY/XZlTsY0nFbGn
+         BlxJQPmEURnkwns5i0CUyNtByEq9Zjvtl/+4SfNokO/KUCqvADJrtDwa82Fr0e1wyMcy
+         onVe09P7yyZQcgqcsk4V6RQ3NfYcItYCrLPSyrBpaQtNMQdZkz/sjVQKuq0nYv1mpeCb
+         2MUbquKssowxJlNERUt6apVtGaxfIfftR5q+QDlPphVt2LfuD5tUslqp1F2MWqsY9yY9
+         1KR6CEo2tFYvWediqWmTBXxPeZII6d2YTqtfAFYtgJUKiqUhY+X93rQ8o6lj48ovMLC2
+         UoNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789702195; x=1790306995;
+        d=1e100.net; s=20260707; t=1789702769; x=1790307569;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=YMfMBVGtPSJljFVAV+D5AOSbTsYVYsLFP8jVbT0c8EY=;
-        b=1G3Jvxt7pOOFLyZKacyk1Zl3phM2LUQg0orA/lKZq7JM5j/agiH3fOwlY2fi0bZOxH
-         Y2YcFXD5bZYTRPCsz7971TvPTAlEf1t6MEaV2ikEyKX9ZX2ZUugZnJ862gshVHbABAUL
-         OT6LNQvGsREgdWRNembUEA1H8YF3h5TzivHtC/J9hEGvzkZZG2Le4QhfTtqBxLvwr0GA
-         xqBZvIqQnd4JkcxjGVV8uQcMauQn2hfDZxuLAnLckLeJec3g+K/+b7a5EvHoEMfmwc8m
-         FHDZmOloY1SlRmH46EGiqOL4ReN9Ct/Qb2hHgmopc9YKcFWlfE67EX0P1d9dbudA/sh3
-         UlXQ==
-X-Gm-Message-State: AFuF++l0G3luFDtcZa15aRa7cqZIAjqR39ihJpOueu5IOvxtbljgxn3z
-	iLScvg3S71uMJylDSW3o8m3390J9wXr36IMeLujJNkHpsdbAaGaTCyrz4kXMBvof
-X-Gm-Gg: AYBFou2Z6ncpjYJaJPYIFb669cLVm5JGkrGl/VhqHOrzO5bDmmPGT31lWRNtjt/CUDI
-	z8l4nyvUwhWVYc30b5yEGFnFj5qtxaeOCuvvkP1PQUa7kq05UqVV44X2uWXyZmWpaoJBEs0Btm9
-	SF9vXHO3fhX+zTDu5N30Ps4em8oqSGFiMXF/YqV4QwwLEprlng2TBZNdadrSRJv3gWTIfGGn9+k
-	plFSdjUVef5mXH0symOFnJgOtUlOVvs9u8KDGenwa4Axef2We66auAB+UiprImYWzwRXjTI5Jhi
-	lfRYhz3FdRmsLDETvMac0Txtih0JSf84o32Muh+pdSJmAQZbuwrfdSKrEFb4VR5dBH9AXkYfH69
-	oF8nS8bCdI08hmedYVGXnsT8SAatW8cVwA9vcMCh9mhXyXiz94sZqk50cmdRqXdwvssfrkaskrh
-	8mDMX+k4aKZ7lRQ1Ftcs+eJ8xZdeC/UC5HOCIPZNuimCkg5/ybnh5/fPIpZQDsOSOBW8f5GhsEr
-	q2e+A39+R/nRiKiyUTSQZO+kgq/e/c8Iu2QByjKMxFIQ+zyiPJ0hRxMyl/203OFIMgREj1P6g==
-X-Received: by 2002:a17:903:4b03:b0:2dd:ad73:c937 with SMTP id d9443c01a7336-2ddb1b989dfmr26313645ad.24.1789702194774;
-        Thu, 17 Sep 2026 20:29:54 -0700 (PDT)
-Received: from secrnd-cstp.tailb7f510.ts.net ([125.131.91.97])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ddb757b22esm1033265ad.50.2026.09.17.20.29.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Sep 2026 20:29:54 -0700 (PDT)
-From: Sanghyun Park <sanghyun.park.cnu@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Sanghyun Park <sanghyun.park.cnu@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+        bh=v9YKjnadMhV6kY6CH7XzaeiUdpmUgyn3iCQMQXyXjxw=;
+        b=YGIeXiwy1xrh4wcxpNHQVcotNmG9htqNDVrK0DmiWbXG/4bDjMlmTM/ZWiYNkmeCuL
+         6QYdwH4mNagSGVBPavDuod7zVGQ+pn7K5Wfj0FjrcNm3ltGtTqe6+nNXnD5Qy/O+V3DS
+         Mmr5BrZnAuHt6aDMBfq2iORdewg5bb0lE+ZzezihGX0GPfjJnxVzpoLb87spjU60qFro
+         FfY7F9fdP6/m6CkrViPkFC6baYbc3UdgkcAwnyIcBNP1kEIeBCbpy73yHPvopZwkh1xG
+         EK1N1feGN2z8GF8uVV1rPSqyK9Jaj/efuEM+wht9b40U7lH0Ln1T41WVHdkk+bhsmOZO
+         3ONQ==
+X-Forwarded-Encrypted: i=1; AKwUvBz4yK9R2dZNoBqafg3RMkEUd+WVfg8bqk07RwxDsEMN7SCMV9rnjLyziY0QS/5eU46BWqWe4uE=@vger.kernel.org
+X-Gm-Message-State: AFuF++lm82N3p+S+aAZXT9t9jxF5kDj3qzWrzqf0j2reQJO2RATrE3w2
+	jxV5NTpkizPwVgdM7YoObm/uO5fZ+iqaO2Ebc9H3mb3J91FKCy8ilNC4o8KGew7nIY21yw==
+X-Gm-Gg: AYBFou2dTUsphFI7dVj0ziTX5pHHrubKCn0pZoU4lY8nYIjtnIT68xx5QSByht84MB2
+	l/ugTpoC9hHHeLWqwZm6WxjxKnbddd+cJcraj3aZzqT6Oas5G/Hvv+lfP+6tTtxNX+MIrW4vU4+
+	Rh6uoBDyPlS+JaxA0Vjyxe7lZjuMN9ZkNADKTsMW8GwOegkFOSsHArZ+b1xwbMp/Eb/KmZ3p1HH
+	hX3oFSccVp1/kYAYWeGnWM7h3SZO95LXojXuwpiT3K2YpntG7VQ5T0VSnSmVSZ38u6JGWhrujZq
+	BPLXlieYZt5nAj1V5pFI2Ur3THltVtn7AU40bWLkg0fs0AlM+pXMlNs11O/tIzA9DgtC8yKgqRu
+	0HOm+6WEr3FD0z8fhXBZf3lKmO+pgD1yonnb4UIHJgJAYxMJdv5WGB4HzgVqZQSwK3nru8C4CMg
+	BEZI3oNB9hQGSbaIk+mZ87R5vY36jUhnP5FXngTFHVvSK8yKIPAqk5D+b/wAm+AdqrjBek9LXp8
+	PwwsdM+IZm6BwQjZsD4+FHI+csInFhK/45LXoph5MGjEvBFVQ==
+X-Received: by 2002:a05:6300:4049:b0:3da:c10c:6aa6 with SMTP id adf61e73a8af0-3dd8c2dc837mr2488298637.1.1789702768516;
+        Thu, 17 Sep 2026 20:39:28 -0700 (PDT)
+Received: from localhost.localdomain ([2409:8a1e:2e81:7320:79da:8b9b:16b2:8431])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-144cdfe957asm1039280c88.7.2026.09.17.20.39.25
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 17 Sep 2026 20:39:27 -0700 (PDT)
+From: Yuchao Zhang <ndaugoing@gmail.com>
+To: David Heidelberg <david@ixit.cz>
+Cc: "David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	David Stevens <dlstevens@us.ibm.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2] vxlan: use one headroom snapshot for neighbour replies
-Date: Fri, 18 Sep 2026 12:26:58 +0900
-Message-ID: <20260918032842.502409-2-sanghyun.park.cnu@gmail.com>
-X-Mailer: git-send-email 2.48.1
+	Simon Horman <horms@kernel.org>,
+	oe-linux-nfc@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yuchao Zhang <ndaugoing@gmail.com>
+Subject: [PATCH 0/1] nfc: llcp: reject connect() on sockets not in LLCP_CLOSED state
+Date: Fri, 18 Sep 2026 11:39:19 +0800
+Message-ID: <20260918033920.85025-1-ndaugoing@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,59 +80,52 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-vxlan_na_create() samples LL_RESERVED_SPACE() to size the reply skb and then
-samples it again to reserve headroom. A concurrent vxlan_changelink() can
-update needed_headroom between the two reads, creating a TOCTOU race. The
-second value can exceed the allocation and make the Ethernet header write out
-of bounds.
+This patch addresses a socket state validation gap in NFC LLCP socket
+connection logic where connect() can be invoked on sockets in the
+LLCP_BOUND (or LLCP_LISTEN) state.
 
-The race is reproducible on the unpatched kernel. It occurred when
-vxlan_na_create() generated a neighbour reply while vxlan_changelink() changed
-the link headroom. KASAN caught a four-byte write two bytes beyond a 704-byte
-skbuff_small_head allocation.
+Historical background and context:
+Earlier patches addressing CVE-2020-25670 / CVE-2020-25673 added an
+explicit check for the LLCP_CONNECTING state in llcp_sock_connect() to
+prevent duplicate in-flight connection requests on non-blocking sockets
+from linking the socket multiple times into local->connecting_sockets.
 
-Snapshot the headroom once and use that value for both allocation and
-reservation.
+However, that check implicitly assumed that any socket that was neither
+LLCP_CONNECTED nor LLCP_CONNECTING was in LLCP_CLOSED. It omitted the
+possibility that a socket had already been bound via llcp_sock_bind(),
+which transitions the socket to LLCP_BOUND and adds it to local->sockets.
 
-Fixes: 4b29dba9c085 ("vxlan: fix nonfunctional neigh_reduce()")
-Signed-off-by: Sanghyun Park <sanghyun.park.cnu@gmail.com>
----
-v2:
-  - Improve the v1 changelog
-v1: https://lore.kernel.org/r/20260831054614.2069896-2-sanghyun.park.cnu@gmail.com
+Vulnerability impact:
+When connect() is called on an already bound socket:
+1. llcp_sock_connect() overwrites llcp_sock->dev and llcp_sock->local
+   without dropping the original references, causing refcount and memory
+   leaks (service_name).
+2. The socket is added to local->connecting_sockets while still remaining
+   linked in local->sockets.
+3. Upon receiving connection confirmation (CC), nfc_llcp_recv_cc() unlinks
+   the socket from connecting_sockets and links it into local->sockets.
+   Because the head of local->sockets still pointed to the socket itself,
+   hlist_add_head() links the node to itself (node->next = node), forming
+   an infinite loop. Subsequent traversals of local->sockets (e.g. during
+   lookup or release) loop indefinitely under spinlock, leading to kernel
+   soft-lockups and RCU stalls.
+4. If connect() targets a different device index, the socket becomes linked
+   across two different NFC devices, causing cross-device socket confusion.
 
- drivers/net/vxlan/vxlan_core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Fix:
+Enforce that sockets must be in LLCP_CLOSED before initiating a connection,
+returning -EBADFD otherwise, aligning with the state check behavior in
+llcp_sock_bind() and llcp_raw_sock_bind().
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index c1d54339fa2b..3390e341d1e5 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -1958,13 +1958,15 @@ static struct sk_buff *vxlan_na_create(struct sk_buff *request,
- 	struct ipv6hdr *pip6;
- 	u8 *daddr;
- 	int na_olen = 8; /* opt hdr + ETH_ALEN for target */
-+	int headroom;
- 	int ns_olen;
- 	int i, len;
- 
- 	if (dev == NULL || !pskb_may_pull(request, request->len))
- 		return NULL;
- 
--	len = LL_RESERVED_SPACE(dev) + sizeof(struct ipv6hdr) +
-+	headroom = LL_RESERVED_SPACE(dev);
-+	len = headroom + sizeof(struct ipv6hdr) +
- 		sizeof(*na) + na_olen + dev->needed_tailroom;
- 	reply = alloc_skb(len, GFP_ATOMIC);
- 	if (reply == NULL)
-@@ -1972,7 +1974,7 @@ static struct sk_buff *vxlan_na_create(struct sk_buff *request,
- 
- 	reply->protocol = htons(ETH_P_IPV6);
- 	reply->dev = dev;
--	skb_reserve(reply, LL_RESERVED_SPACE(request->dev));
-+	skb_reserve(reply, headroom);
- 	skb_push(reply, sizeof(struct ethhdr));
- 	skb_reset_mac_header(reply);
- 
+Tested and confirmed style-compliant with checkpatch.pl
+(0 errors, 0 warnings).
+
+Yuchao Zhang (1):
+  nfc: llcp: reject connect() on sockets not in LLCP_CLOSED state
+
+ net/nfc/llcp_sock.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
 -- 
-2.48.1
+2.53.0
+
