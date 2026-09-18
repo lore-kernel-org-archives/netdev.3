@@ -1,103 +1,150 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C9E4A6CF7
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 08:20:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE403C3442;
+	Fri, 18 Sep 2026 08:20:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789719638; cv=none; b=e+xnfGSLxaeAh6bNlTzYVwwDiRO7s5BPJw5rH9iBIpAnqKbzCgWJFRYFOvY3WIreD+4LsmbXLDgcXoRMDDOC7YzkfdFiY2FZdEd/y2Hgusay3ECoJXefylZ82GJrMlmV4nzLQkX8fNCYP4It3ReVMMQ/L70LF2+//wRR0u9ZmUQ=
+	t=1789719661; cv=none; b=S7aXdlEhB9IUmYokFfNn1hRRiewBQxY3lLa0GoHBFjPQ33JQOsATub97nhTdVFkat56JxPeYdM3N0QWLUoyCXWYwjlLf4GgkB4nwnV1KvBsgXNgQq0++l7uXInkz9G9dpNdu/9K/B2MdK39q16MToMfhGZa/KO5ZpgxhIBXDws4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789719638; c=relaxed/simple;
-	bh=1xmHYRYfu8OtSUWgblAltZ1bFJ3q1HsG+ndUjgkwz9E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fObBoQglXTm++5RrE3asLTqKZG8/5RjLYaq2keYV1dbOnTsHD3c2V+AuvjhHC2oOlKuFmmiuqCu+Tv/UZFS6wQNx4nhdVqKCQNdx75esFD5SGWe9QL32IPzn2GBNZd/kl0cWAgtFCfShq2zjNGR0+wg7+UPrlFSd02nHBl3R7KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=MqTlVkAH; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
+	s=arc-20240116; t=1789719661; c=relaxed/simple;
+	bh=xQpX9a/Y+WR/DhECYzGFApAZQWD9dvBUby6YXXmyt0g=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=q3HrnSgxxv+vesgncpVG1S6Zqxm0/M8IOIru5M2w9Xh04xFM+d8MXeQLnIvVFHkd5xDxfGS1k+nb9TT3i6jg16+qZN09KIFTSJfm460Bmj5pMTbuknfwC0b0L5lfGqCx4C8eH//1gHtRSL9v2KRqrdYwzelBjwQY/HU/+FRN9Fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=f4yZzFxY; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="MqTlVkAH"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e7d2bb404so1308415e9.1
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 01:20:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1789719635; x=1790324435; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zyAJTSS0FYPcMnF0dBpTcj4/kVFflzNqQUPg7P0ugms=;
-        b=MqTlVkAHV+vcGIyVV/gubrZD5cQb5ZO2NzDRgzd0pZay1bRLCXYHPs+awil6T+tRUX
-         Yav2u6bd09J2OEMKwR2FzweIkBEIxg0x6HJxl1plhXk7I4Mu74F3rABYx+TDIFrr1+3N
-         79X52T7qVy7lMSBR29GbeN4CY0EEPrUt289vUnrUMBseg3H5ibjhDS/Fk4Oi0Pz9Cuwp
-         CsdopwJWmoEEHRqEK1FCf0ni5rV1fsVSPS8OuMok1ynSnR/KhVeYtrNrRlZ4+HjaO6kA
-         5KDgwt+1PgUwvWgSod9e94aBTsHVkXHqaRCsfLcjzKTfsc3icyBmsTZ2EdCzy/4gL0aZ
-         v3/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789719635; x=1790324435;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zyAJTSS0FYPcMnF0dBpTcj4/kVFflzNqQUPg7P0ugms=;
-        b=Hd/nIZmzhBkOHHnuQMR7SMfUehheAr0cJpeMyFHUIZFKrIWemR4WJmZljyzxHM+3x3
-         D1A7FBSVr5JlKL2WXq0lSL8NarRhJC+h6Xt09B4IGzOEgatFogo+5QspOQNeF9U+gXRM
-         VL0BvoSO2CDQfcj7wgutxCWGQy5MKEwKvNT/ezB1yzB1AKOaAL84GRdJ5OGWqaABpROI
-         gNsy10vRl095gNjaWMSb/ZLPEJCEU/Kkma4qs67ixeQlt4ONd0jxt+PH8BZueJH0RVuB
-         zWANDPkFzjDv8qTv6saW2m1be+lTsCZMgyDFiqSpHXcEFO03zPE5Y0xVKJXEdtF+xA5i
-         uYcw==
-X-Gm-Message-State: AFuF++mG7uKUoil1lWodx84peIdsxr0WHcFsRKgyMeLzl0sB7c7ebAs8
-	lnC5glFS/CwDPdyGmDHQntHAZZW0i5f0L9iKKx3d+9cBxDfPpLJq6FvEGsmyzOlfPM8=
-X-Gm-Gg: AYBFou0HQHH4kc1IYofM6X6CB7klk1XXPYUIQkz5yEG0pZUfXy2htEdtWxKaFXqJsVM
-	OY14MoSoqZ7v6xDd0r3Yg7GiLyEtJIv+z2vXPQiZ61NQ9vcwhW9cn+y0H7CBIDWxVX/jMjruh+S
-	Iq9foCvysvyQfqch7IpWwXVet2YzG4PGI/8FSHZwUt3H7I6s5Slz4kpAutchacc2ZcTPV7FT/rO
-	kWxVj28GNqgjW/0efv+4sqVMC+xMriY1PfMWzXYBvxaRxraXtzD/Sp+3fQig9N9S2Zqzn+GTv70
-	zHPgr1zeSqi0Z50jUHfl4YFMYQbSCQ7Yl8dftEQfATSRfVl/cP/4qwAoIK8Nt7qyIdUEn3VzUzY
-	59AVbPaNe1TUJwduuwu8rbRbpMDeGLcHx60og4lFTLihUCLWkmx2a8JAdCcOd3PnvY/siLv7Sla
-	ePDxR6oIYvrffQn3/j6gbCAFx8pvLDGMu4Oce9fcKh/5EgHj6rNA==
-X-Received: by 2002:a05:600c:1389:b0:49d:2936:8ad1 with SMTP id 5b1f17b1804b1-49fc4f71c7dmr23237335e9.1.1789719634695;
-        Fri, 18 Sep 2026 01:20:34 -0700 (PDT)
-Received: from remote-01 ([84.17.55.229])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fc8dde38fsm21914985e9.1.2026.09.18.01.20.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 01:20:34 -0700 (PDT)
-From: Aleksei Sviridkin <f@lex.la>
-To: andrew@lunn.ch
-Cc: netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	olteanv@gmail.com,
-	Thangaraj.S@microchip.com,
-	UNGLinuxDriver@microchip.com,
-	steve.glendinning@shawell.net,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v8 2/4] net: usb: smsc95xx: register the PHY interrupt with the MDIO bus
-Date: Fri, 18 Sep 2026 11:20:32 +0300
-Message-ID: <20260918082032.2697732-1-f@lex.la>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <6e14d6b7-2a5a-40e2-920e-fc69a6e85173@lunn.ch>
-References: <20260918015029.2518425-1-f@lex.la> <20260918015029.2518425-3-f@lex.la> <6e14d6b7-2a5a-40e2-920e-fc69a6e85173@lunn.ch>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="f4yZzFxY"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E6ACEA5677;
+	Fri, 18 Sep 2026 10:20:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1789719647; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=pEQBosxIJ+26bEDv/S9l9I/X3ieDbLMvxda8fO8kJpI=;
+	b=f4yZzFxYUpeGFkgQ8l6/hdizr2bfKea5Y2iCXu+18GPahWP7uSqeYSgIg8HOWfuitqKAYd
+	GxBhz132JKg4quj1fqQMMt1iGI6pfdR70XwxjHzjK4Mn9CvoMiclpjtMaIX0I47ynKvH73
+	2gmrESRPPVKJbPqs4mUZ8ijfcFbVWyjT6tJtDVeRY3NzOHWXqq5f6KVIthXZAufLVF+zZ+
+	lRtlVWkNzauccF5sIolOmYWuCfun5mS7hp8iG5mwUOQ0Zs+HiYGyhgGzEBpLtZ78fpVONM
+	LW+5z5szvJaR4EusrLXRtuWvq1GcxNEuJCgepF0a/5KizRHnjHFHwSDA47AE3g==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Fri, 18 Sep 2026 10:20:43 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: James Clark <jjc@jclark.com>
+Cc: Doug Berger <opendmb@gmail.com>, Florian Fainelli
+ <florian.fainelli@broadcom.com>, netdev@vger.kernel.org, Broadcom internal
+ kernel review list <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, linux-kernel@vger.kernel.org, Vadim Fedorenko
+ <vadim.fedorenko@linux.dev>, Richard Cochran <richardcochran@gmail.com>,
+ Kory Maincent <kory.maincent@bootlin.com>
+Subject: Re: [PATCH net] net: bcmgenet: add hwtstamp callbacks to restore PHY
+ timestamping
+In-Reply-To: <20260918030149.80398-1-jjc@jclark.com>
+References: <20260918030149.80398-1-jjc@jclark.com>
+Message-ID: <fe0a80d1f1f6aa553c1ea838cea52c18@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-> > +	pdata->mdiobus->irq[pdata->phydev->mdio.addr] = phy_irq;
-> >  	pdata->phydev->irq = phy_irq;
->
-> Looking at just the information here it looks like this line can be
-> deleted?
+Hi James
 
-Yes, once the table is filled before mdiobus_register() instead of
-after phy_find_first(): phy_device_create() seeds phydev->irq from the
-table at scan time, and as written that still happens with PHY_POLL in
-it. phy_irq exists before the bus is even allocated, so v9 moves the
-fill ahead of the registration, for every address since the PHY's
-address is not known until the scan, and deletes this line. Same shape
-in 1/4.
+On 18.9.2026 05:01, James Clark wrote:
+> Hardware timestamp configuration fails with EOPNOTSUPP on BCMGENET
+> interfaces connected to a timestamp-capable PHY. On a Raspberry Pi
+> CM4, "hwstamp_ctl -i eth0 -t 1 -r 12" fails with "SIOCSHWTSTAMP failed:
+> Operation not supported", preventing ptp4l from using hardware
+> timestamping.
+> 
+> Commit 5062245a5a7f ("net: remove legacy way to get/set HW timestamp
+> config") removed the legacy ioctl fallback, assuming that all MAC
+> drivers supporting hardware timestamping implement ndo_hwtstamp_get()
+> and ndo_hwtstamp_set(), even when timestamping is provided only by
+> an attached PHY. BCMGENET does not implement these callbacks, so the
+> core rejects timestamp configuration requests before they reach
+> the PHY.
+> 
+> Add ndo_hwtstamp_get() and ndo_hwtstamp_set() callbacks so the core
+> can dispatch timestamp configuration requests through its phylib
+> helpers. Both callbacks return -EOPNOTSUPP because the MAC itself
+> does not support hardware timestamping; requests for the PHY are
+> handled by the core without invoking these callbacks.
+
+I've tested with and without your patch and can reproduce the issue / 
+fix.
+IMHO the commit message should mention that 'get' isn't restored - it 
+was
+already broken as the legacy path through phy_mii_ioctl() only handled
+SIOCSHWTSTAMP.
+
+> 
+> Fixes: 5062245a5a7f ("net: remove legacy way to get/set HW timestamp 
+> config")
+> Assisted-by: LLM
+> Signed-off-by: James Clark <jjc@jclark.com>
+> ---
+>  drivers/net/ethernet/broadcom/genet/bcmgenet.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c 
+> b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> index a2305e642..8ead37ff9 100644
+> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+> @@ -3712,6 +3712,19 @@ static int bcmgenet_change_carrier(struct 
+> net_device *dev, bool new_carrier)
+>  	return 0;
+>  }
+> 
+> +static int bcmgenet_hwtstamp_get(struct net_device *dev,
+> +				 struct kernel_hwtstamp_config *cfg)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+> +static int bcmgenet_hwtstamp_set(struct net_device *dev,
+> +				 struct kernel_hwtstamp_config *cfg,
+> +				 struct netlink_ext_ack *extack)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+
+The check that rejects the request is in dev_set_hwtstamp():
+
+         if (!ops->ndo_hwtstamp_set)
+                 return -EOPNOTSUPP;
+
+It runs before dev_set_hwtstamp_phylib() checks 
+phy_is_default_hwtstamp()
+and nothing about this is specific to bcmgenet. Personally, I think this 
+should
+be better handled by the core than adding -EOPNOTSUPP stubs to the 
+drivers.
+
+I will send a patch for this.
+
+> +
+>  static const struct net_device_ops bcmgenet_netdev_ops = {
+>  	.ndo_open		= bcmgenet_open,
+>  	.ndo_stop		= bcmgenet_close,
+> @@ -3723,6 +3736,8 @@ static const struct net_device_ops 
+> bcmgenet_netdev_ops = {
+>  	.ndo_set_features	= bcmgenet_set_features,
+>  	.ndo_get_stats64	= bcmgenet_get_stats64,
+>  	.ndo_change_carrier	= bcmgenet_change_carrier,
+> +	.ndo_hwtstamp_get	= bcmgenet_hwtstamp_get,
+> +	.ndo_hwtstamp_set	= bcmgenet_hwtstamp_set,
+>  };
+> 
+>  /* GENET hardware parameters/characteristics */
+
+Thanks,
+Nicolai
