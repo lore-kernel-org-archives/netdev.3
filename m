@@ -1,142 +1,211 @@
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013065.outbound.protection.outlook.com [40.93.196.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B84F51815D;
-	Fri, 18 Sep 2026 16:39:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B65850EBE6;
+	Fri, 18 Sep 2026 16:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.65
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789749584; cv=pass; b=kxILnmgvqpawalEawahE3EiHXyGiIRmZNFE5nKexrMzPyUHwzOdQ691a3sb48THBpOyemgoB1djBreHpdjubFhzHTlu45UQO5w2vThbHR51kxm0tcZD2ferVbqAF6VOkWAq87tFcXPeq494edx/vf7y2lliNeW8u+fhFiRKnJIw=
+	t=1789749615; cv=fail; b=MoGU/AUcakR+7oGm5P3esGNxuEkxXweYdgNk2rj7DDefMy/fzdzqP5HTygGZ0RLRCIWuK+epVjxVd1kiFJJzE6w6kQ/O0j7070yuUrqAstw6fOqKHsXr6W7vLyYYCOgLgGSUauRVIKOcQPAq1rpod1yMf1TpmRnY/1W5FtAe4CM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789749584; c=relaxed/simple;
-	bh=OaTupvPSXjV4tcDSKwkLoCMZSghlDqaDma0/VaD1crE=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=TuY6sZOS9PVHVk0ju8nXWqBniaY/5ITlRdfuJDXOIg5H4Snv9wUoYi3AUB7kbzicGy6BIyn3OE5OQVZ4BLTB45nAyAMUPCOKnYHoBzfiXFvtwiQCGmSbxd1Gk32zpQcfL+0UB0SciDgr0T3sWVF5mZeK+NYC6F1bqTVvKQmTHio=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=iAEFtWQN; arc=pass smtp.client-ip=185.185.170.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+	s=arc-20240116; t=1789749615; c=relaxed/simple;
+	bh=s05+1eA7Jp/WCw3CLdye5o6GrNjvGaScisApD5nU6Ug=;
+	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lMEaMJZrpKL2+WVxYdW1tDQSbINHwkOx6Kx48CFMgS9lkwxL01UWt9Dg0OG+qt9Lbeq8lJuvLtUsjx6icptTNms/iug8MDKYNAV4IGJIkSX9Ri7bhCQaR5UtnD4/P0sF5HFtGZS+/mpK0JwZ5xmE7dFSHLONPFI1CsEZMFE8vKo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MJlJUtpc; arc=fail smtp.client-ip=40.93.196.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="iAEFtWQN"
-Received: from fauth-c2-smtp.messagingengine.com (fauth-c2-smtp.messagingengine.com [204.75.18.201])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: jmtilli)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4hmdd20yJjz4BKJ0;
-	Fri, 18 Sep 2026 19:39:34 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1789749575;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2bX1EKHp0Quhk+gq7adxCGKb0B+LghpMlLP0cmw2Iew=;
-	b=iAEFtWQNRz7ZhG0NW3u+R5nf2yCYlC6GZiGfIQSHWWikVd3BZEqvKiRqhkh8xqUAfeQQ8y
-	vmYlo7mGFhy8yItjoLXC/GEaimZBLEVl62C7j4SZtkru0inNfCNZEtCEOX9sYmFnlrQrxe
-	MyfzN8/hkhCvuZnI3ClS3aASNu1UDw4zgoAByyeQoimHj0wNfZk1s4t7sXAndb9ozQikEo
-	TgHdb5T6t4Ml8sdO1U0Z0tfO+UAL1qPeSk1hwdyhrbCZ3pOEsB3ygaFpfFJGCvI2WcS2hM
-	W/LrWXTcoTDxGsn/sPRcZm8y5OTRZXfhqqyOxVXKMLT3e+Z86zCPXs6KKakxFw==
-ARC-Seal: i=1; a=rsa-sha256; d=iki.fi; s=lahtoruutu; cv=none; t=1789749575;
-	b=ow1e5bWZPlMwdxa3zBgMYZhowt0Jx9TW5u/7uukf+bC0uJWdfPMtRJq+lxs9jUiU2/L5mv
-	QeuEps9tcxD6cLxQdMvnsPgbK9AxsGhWiI6FDR5cOFvSAsCiRD/rY7VIn0rBfOs3dBGvd/
-	IlZu7atuc3GOeh9KRyla6aUnKjuzcOvVWEYUoP9uy8lOacjAgy9+c3LDhSDfxjaS7wR/Hm
-	IrZxTsl8uYmPudTl+AkB4lxAX/iBY/LYpS/otik+fY0zwGm4R/D9AON4K05f2BCPqet+ph
-	Re3xfOrCNNXjqC1ORaMsrcP/oOiTmjD5TRHMKihcAgSDA7hvxtslYvMt81NXPQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1789749575;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2bX1EKHp0Quhk+gq7adxCGKb0B+LghpMlLP0cmw2Iew=;
-	b=WZyOtIptY4USOulG5yJ42VHC0cu4JnzGVlYmpfvh4ikc52IMOTDDo0gpZfwpgAGbitKg2/
-	qLm4InJeHJ7c72H8ipq2Gt69rZpbUJdWyHU/XbWs0wjSm3g4FSrzzjDUHGHeCfLDPxikID
-	GggWBmom+ZcKK4PSpabH3eV7UdTDB4IGbLmrJh53npLgrWK8rRIU6LxFUfCx9p2pV2rq8R
-	GLbXsjJ8mN1YZttRYT6z45B0Ef31TerdQP1ueVW6MsS/X4umaL5YKCyMNt+cJ9v/rQaJW4
-	Rl6PJRd6W9pEkQjc/85nq03QdB9XgmqX2vk7e4W5G7VZb8SON1F6pcx36yGBCw==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=jmtilli smtp.mailfrom=juha-matti.tilli@iki.fi
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 3F094198005C;
-	Fri, 18 Sep 2026 12:39:33 -0400 (EDT)
-Received: from ams-imap-13 ([10.64.2.33])
-  by ams-compute-02.internal (MEProxy); Fri, 18 Sep 2026 12:39:33 -0400
-X-ME-Sender: <xms:QmmtaqeMMcYIM05pprdBHW9q_Dsel74suD6rURye1JW5lr8UZ7Icfw>
-    <xme:QmmtavDA-T64SwNcJBHTzegN1wUuft2p04NrdSjTH2Td-COBf2tNbcCPW0wO7cy0_
-    UvUUQfwIMd4W9XgByOhx8sOjRsMJ9QtOpMQ8_iL-HDUJLRWdTjGgavI>
-X-ME-Proxy-Cause: dmFkZTGgrfBZdGn7M8WQTKUJaj1D8vr0/YFLGS6Y6O+RkC9rVsC5GJqpFn3Fe27jJ2IIue
-    BBwj5693w5e8/4dplpgmEgLTfKlZju/Afuw2j/G5cDlzUYKQ3m1oRScdb9OKSPnEhdLAQv
-    vpSNDMP7t/mrrwfZsInHg6rHRdnv38WFBMZlvGNP27WkU/7TxW+HNM/1bFvB+hF9h7pjSo
-    u9rYWBkuhh6evLdJzeJEoEvusgi4E+MZxzPs6D0ZOp8TjeawU0BAKo4Z3c1e7tL+bjgkmi
-    XHW2GyJCOw/5cUEGDbOFwxooi7CDeA4mLH2M8Lk3GHU3YaoYR3qIFwQpN55RY3qksOyaYj
-    nJw8H0/I9oejv3/Wi8kTthvEAA7X0iz5qV/jphCnaX5S18R4bOouTM6MF6o4ElUX0VeCle
-    bGIFVWYuNkXCM8jOrOuL3CII5M4mksxH0+XcHGcxAy09OzKH0dO8DqIeabpCij9QyJ9UfM
-    DvbyRLw2ehOK+viHPEazsWsS5HG7t3EIZDQOGRVF2mJT0YsJlKABGbK4xmKYOBEIyjh9oo
-    ZtBT+VVvspCLCNZEhdLGi7BAM4CEomN5EX06KpCw9vTfJCASjgZxru+3FwZOfn9TaP4npj
-    4LDBn0mqjcWQ8pigmvosMMS68S+gTztclQigXTr6Ez6Bc1WIx1ZWRxeNOEHg
-X-ME-Proxy: <xmx:RWmtarOH03taGg0WXK9V0sd3CNzZ_fFd4j_VjgWortLKjD3xiDhqOA>
-    <xmx:RWmtagdBu8KwNJc95xcn6wihEDHA_xfRXCVPxKAPLfJdgcRsIHUPtw>
-    <xmx:RWmtanOXwHDGhX4MDbwUJmp2meJgvjutV7YIhbK_py5ANs81odKH2A>
-    <xmx:RWmtaiaVgn3sM9-jss19ME0I9SOYvYH2D9oecZCuVehoSAsZzGjsLw>
-    <xmx:RWmtarvoXwp5XTmR_ukN9c5jTfCAquAaPFysOWg11WiUVMfRdIP420h8>
-Feedback-ID: i02414972:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 7CDCEF80089; Fri, 18 Sep 2026 12:39:30 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MJlJUtpc"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=X607xOM3P7fRZNfDBbLkEkgLpuEtsyi+wdXNu39yDkc6/GvDnjWhq46tw/0sE//pdSC1T//gB6IQp3+14zrDJLTMV6r3JgkvqoalgKvKtQdRYmR8rt3lPeLObyqsr6pfxUAKbE4v3AkYibqvt0T9i3kO7+g1yDQYxZtUDf6yKjQgext14N7x2biCfbjWORcK4b9qX/RiwkgeqPooewC7EQo/ZmQmqG2CLFj+G5Ti4QrGtJQJKj5XIFzzSfsXvrbO4lNwW03SeFec2HFNQqIcsnIxoJNNrIam6qnCJwbvfMPGpCrpf8fI7xIzuMn9vGhJGeSTRIyI7fe0ZFe8SLmueQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sNb9wH1onmBaewpoHesqOYaCFR72oQrV+R3Fbe4Unz0=;
+ b=U0TyzMJvyC/PhD5xQfK0IWGZ0/3PhITM06E1mlG+BcHmH4jXK+2pw4EOwcYAgVKndhS+wGazmWFMRi8voEVTBKilaCujUhGbTQjH1TL1Wf6likLE3u6yubplcVWO3Z1tbsPCaHxNvzj7VyjNOr6UVNF5Yl9Zf6L10cIJm9kfy+dP7ncb0vKIYmzB7g9edjAISdyFyowOvBbsAHQofB4vBmxWyrbkL12MtOBMKxTDHyeHEebEJPdncDKNy/FavmXBB4ljuUqQr+nlvFtZKuECwYpN2Dq5z5pBh7rJs2pnPPf6cz3JZ27yXbHOk5uaxikpJAbQHymRG4Zmfchc9C9enQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sNb9wH1onmBaewpoHesqOYaCFR72oQrV+R3Fbe4Unz0=;
+ b=MJlJUtpcArlh4M5u17m5W3QgUXTBXoCqQeOjnn8QaYB5bvlMBuNxqP38w0iaxiMvQ4Egijo0sNKnbe7TgzH3tPBrzKf3wokxOapB6gJZmbUiJC3h9FDkaOVW0c8wGRqpuZ4cG4xgH1BT9d5Ni67vsFZHFHex94shHDDzuYZIPMTQYjfvMEn6jIJhZtZKv+SW/40gI2kdQsrQ7ojMnrMNNWbfQhwTgLvsO2+Q73uoyvkSRDVkB00oPzBRUkefekjUaQmwOGCh/yIlmS47KabPwDg/QQbZp48CYUy1QhjXxppQMDbaibVNqh/G8Uk2NgoI64uef4vdlfqfES64CF/afA==
+Received: from BN9PR03CA0089.namprd03.prod.outlook.com (2603:10b6:408:fc::34)
+ by CYYPR12MB8890.namprd12.prod.outlook.com (2603:10b6:930:c7::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Fri, 18 Sep
+ 2026 16:40:09 +0000
+Received: from BN3PEPF00022BC2.namprd05.prod.outlook.com
+ (2603:10b6:408:fc:cafe::10) by BN9PR03CA0089.outlook.office365.com
+ (2603:10b6:408:fc::34) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.15 via Frontend Transport; Fri,
+ 18 Sep 2026 16:40:09 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BN3PEPF00022BC2.mail.protection.outlook.com (10.167.248.213) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.451.8 via Frontend Transport; Fri, 18 Sep 2026 16:40:09 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Fri, 18 Sep
+ 2026 09:39:43 -0700
+Received: from tuxedo (10.126.230.37) by rnnvmail201.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Fri, 18 Sep
+ 2026 09:39:37 -0700
+From: Petr Machata <petrm@nvidia.com>
+To: Wentao Liang <vulab@iscas.ac.cn>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<idosch@nvidia.com>, <kuba@kernel.org>, <linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <pabeni@redhat.com>, <petrm@nvidia.com>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH] mlxsw: spectrum_flower: Fix port range register leak
+In-Reply-To: <20260917113236.2149095-1-vulab@iscas.ac.cn> (Wentao Liang's
+	message of "Thu, 17 Sep 2026 11:32:36 +0000")
+References: <20260917113236.2149095-1-vulab@iscas.ac.cn>
+User-Agent: mu4e 1.12.15; emacs 30.2
+Date: Fri, 18 Sep 2026 18:39:32 +0200
+Message-ID: <87pkyawm2j.fsf@pmachata.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AbqzItSRZteg
-Date: Fri, 18 Sep 2026 19:39:09 +0300
-From: "Juha-Matti Tilli" <juha-matti.tilli@iki.fi>
-To: "Manivannan Sadhasivam" <manivannan.sadhasivam@oss.qualcomm.com>,
- "Manivannan Sadhasivam" <mani@kernel.org>,
- "David S . Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
- "Jeff Johnson" <jjohnson@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
- ath11k@lists.infradead.org, ath12k@lists.infradead.org,
- "Bjorn Andersson" <andersson@kernel.org>,
- "Chris Lew" <christopher.lew@oss.qualcomm.com>,
- "Deepak Kumar Singh" <deepak.singh@oss.qualcomm.com>,
- "Raj Kumar Bhagat" <raj.bhagat@oss.qualcomm.com>,
- "Jeff Hugo" <jeff.hugo@oss.qualcomm.com>
-Message-Id: <da0421b8-bf31-43d1-8d71-520753c8344c@app.fastmail.com>
-In-Reply-To: <20260918-qrtr-multi-ep-v1-3-8a06caa368d3@oss.qualcomm.com>
-References: <20260918-qrtr-multi-ep-v1-0-8a06caa368d3@oss.qualcomm.com>
- <20260918-qrtr-multi-ep-v1-3-8a06caa368d3@oss.qualcomm.com>
-Subject: Re: [PATCH 3/4] wifi: ath11k: Connect to the QMI server belonging to the
- device owned by this driver
 Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF00022BC2:EE_|CYYPR12MB8890:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2bb786a0-3001-4066-10f0-08df15a380db
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|23010399003|376014|36860700016|10067099003|11063799006|56012099006|6133799003|22082099003|18002099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	ql+bBZLzb4NYs6zFYqgu/ReFry1ch1cz1Ejlz0o1ocpbY16xG0n8jgSNOBRiIdwMFjASQnLJ8hyAriuUWjPMAGRX6jUtQAH0EzV5qBOBpMoQ77rgKBF8M1iRQXwz9xTRscRoCGrXwgOPFxervudske2WuA+xJFnuGjiFcMuxKA0x9w5CHhcojsZoQbuKJgyNPkZIryDQChcPOhXW15wf0NAElBaFjj/1mGBNYHZ8+p76shO2i08TZDHvQokx1XaXuHvCD8fO6BgvfQVyHCv0Yn3riIvNwxwH3ch3hoj5yeGRCl4q881P20z/qmJSs+/X0GDnWcG7FJvrKVqtaEffpmzEz2sDdnHHBX3M97f1+5ZxxEqYt2IRhtAqasds6OZqJRYKZWrj2k6sw9GZCWHiVGaIS4aTM7EsjRrCgBbPnBgAeGGJY6RVsV8IW66D8ScREKTQeKPHk/J+rEjcOS3ZdKS4szKzU6zwP39h6dZ9tzBrs7dvmFKHDeO2/LdQehW9TNftx4JlU9ikabVJpVl7n3c0XuZ8Vx30KaiE0lxqOcKhPN+3vajBlHI9FIwBQMVfckhIlQqYRBlQMRwLvr+6PPKkdqVYLg5vCUJ0LAObba6yxcigSHYnlMkLAj0UTJk8OtGyuVJXu7VIggJmy+oMJy3jgA28CBprMzARVhncuIte5sroYk0D6VM0LyILYPxLnJggmsbeodlseQx3oXKhag==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(23010399003)(376014)(36860700016)(10067099003)(11063799006)(56012099006)(6133799003)(22082099003)(18002099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	RSXn3EowF7uzkFd4ci6x+9ZbV0G3lxjjAcZvZEK1KjkH4VsicyM9gJ37+Wf2stJOsYkDU08qj3hCUS68pVINSyAWX3c+8MmZycH5ik+OrJDFXo5BT4xZP/v3+692ZPyb+ZTcY/c5EohdYduMUzk6ZR4LxZUYaJ1NPGP3+FBkoWwLhbcOi8rE8qJeO5TBBMdPmeKLRYYGpBhC9b4ssAEqJGma2a4wJXA3cdzxaXcefVvFHDyOHf1EsbQguiMQ+MVYegok+QogkPhSonNrDEfFv5XjuLD9UxTzVDdwM08J2nDuBw7/Ak7y6cqPo42DwBT87K+uj2Ho/7LoLodx1xKDUmzFkDuImZRuTipy5TAu9nyZAIoSudIdusv6dYpftFb74Xy3Rn6Ipo0ss6JeoZEo5MXXJdJCy9g6Y6sWMyIoL3qGn/aLhTXSjpUMJHyzpjLK
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2026 16:40:09.3240
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2bb786a0-3001-4066-10f0-08df15a380db
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF00022BC2.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8890
 
-On Fri, Sep 18, 2026, at 19:28, Manivannan Sadhasivam via B4 Relay wrote:
-> From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-> 
-> When two identical ath11k PCIe devices are connected to the same host, both
-> advertise the WLFW service with the same service and instance id. The QMI
-> lookup reports both servers to each device, so a device may connect to the
-> firmware running on the other device.
-> 
-> But now, QRTR provides each MHI endpoint a unique node id which is
-> different from the node id announced by the device. So use the same id to
-> pick the correct server. Add a get_qrtr_node_id() HIF callback that returns
-> the node id derived from the MHI controller index and zero for transports
-> that do not assign one. In the new_server callback, skip any service whose
-> node id does not match. A node id of zero disables the check, so transports
-> that do not assign one keep their current behavior.
-> 
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Wentao Liang <vulab@iscas.ac.cn> writes:
 
-Tested-by: Juha-Matti Tilli <juha-matti.tilli@iki.fi>
-Tested-on: 2x WCN6855 hw2.1 PCI WLAN.HSP.1.1-04685-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
+> mlxsw_sp_flower_parse_ports_range() acquires the source port range
+> register before the destination one.  If the destination lookup then
+> fails, the source register reference is left behind in a partially
+> filled rule info, and callers that pass a stack allocated rule info
+> never release it.  Release the source register before returning the
+> error so that the reference is not leaked.
 
-(assuming the patch is the same and hasn't been updated since 17.9:
-https://github.com/Mani-Sadhasivam/linux/commits/qrtr-multi-ep/ )
+I think this is fixing the wrong issue in fact.
 
-BR, Juha-Matti
+This does fix something, namely the issue of trying to add a new tc
+chain filter with both src_port and dst_port ranges in a situation where
+only one resource is left. Before the fix, we end up with full resource
+allocation even as the offload fails, because the register for the
+src_port range is not released. After the fix, the src_port register is
+correctly released.
+
+But look:
+
+# tc qdisc add dev swp1 ingress
+# tc chain add dev swp1 ingress chain 90 protocol ip flower ip_proto udp src_port 100-9000 dst_port 200-9000
+# devlink -j resource show pci/0000:06:00.0  | jq '.resources.[][] | select(.name == "port_range_registers") | .occ'
+2
+# tc chain del dev swp1 ingress chain 90
+# devlink -j resource show pci/0000:06:00.0  | jq '.resources.[][] | select(.name == "port_range_registers") | .occ'
+2
+
+So it's much more broken than just this cleanup path edge case.
+(Notably, 'tc filter' cleans up properly, it is really just 'tc
+template' that triggers it.)
+
+I.e. let's not have this.
+
+
+I think this is the fix that we need, and it fixes the cleanup path
+issue as well.
+
+modified   drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
+@@ -862,14 +862,24 @@ int mlxsw_sp_flower_tmplt_create(struct mlxsw_sp *mlxsw_sp,
+ 	memset(&rulei, 0, sizeof(rulei));
+ 	err = mlxsw_sp_flower_parse(mlxsw_sp, block, &rulei, f);
+ 	if (err)
+-		return err;
++		goto out;
++
+ 	ruleset = mlxsw_sp_acl_ruleset_get(mlxsw_sp, block,
+ 					   f->common.chain_index,
+ 					   MLXSW_SP_ACL_PROFILE_FLOWER,
+ 					   &rulei.values.elusage);
+ 
+ 	/* keep the reference to the ruleset */
+-	return PTR_ERR_OR_ZERO(ruleset);
++	err = PTR_ERR_OR_ZERO(ruleset);
++
++out:
++	if (rulei.src_port_range_reg_valid)
++		mlxsw_sp_port_range_reg_put(mlxsw_sp,
++					    rulei.src_port_range_reg_index);
++	if (rulei.dst_port_range_reg_valid)
++		mlxsw_sp_port_range_reg_put(mlxsw_sp,
++					    rulei.dst_port_range_reg_index);
++	return err;
+ }
+ 
+ void mlxsw_sp_flower_tmplt_destroy(struct mlxsw_sp *mlxsw_sp,
+
+The template parser just needs to figure out which keys are used (the
+rulei.values.elusage), it doesn't need to allocate any registers, but it
+neglects to make the appropriate cleanups.
+
+I'll test the above fix some more and send it sometime next week.
+
+> Fixes: fe22f7410527 ("mlxsw: spectrum_flower: Add ability to match on port ranges")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+> ---
+>  drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
+> index 353fd9ca89a6..4cad6c46b07e 100644
+> --- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
+> +++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_flower.c
+> @@ -486,8 +486,14 @@ mlxsw_sp_flower_parse_ports_range(struct mlxsw_sp *mlxsw_sp,
+>  
+>  		err = mlxsw_sp_port_range_reg_get(mlxsw_sp, &range,
+>  						  f->common.extack, &prr_index);
+> -		if (err)
+> +		if (err) {
+> +			if (rulei->src_port_range_reg_valid) {
+> +				mlxsw_sp_port_range_reg_put(mlxsw_sp,
+> +							    rulei->src_port_range_reg_index);
+> +				rulei->src_port_range_reg_valid = false;
+> +			}
+>  			return err;
+> +		}
+>  
+>  		rulei->dst_port_range_reg_index = prr_index;
+>  		rulei->dst_port_range_reg_valid = true;
