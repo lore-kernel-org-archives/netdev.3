@@ -1,56 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-80.mta0.migadu.com [91.218.175.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B86C3876B2;
-	Fri, 18 Sep 2026 01:09:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7663342509
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 01:14:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789693755; cv=none; b=n1ja+3BfHFSZ9JT6iDSeoIvEOF9xxLAsNF8CFg7hzYvt5691Pt/UBNevoLZGuudDAEJ9VmPR/9sfURY+XOHoh86pDgKcYDYubTW4i/w1XZmX7FUW2zA3uGEh2+lLSC2yTouWlPxkSgrhMaUjkbvw3E5iwKkHcvalgs4mpyXMlAA=
+	t=1789694058; cv=none; b=QWZXayl6ddLmEU0PjS43pZZsOifzGg2B5CdgAVnhofGbXSRQu4iAMJVj3+VVGkMKvOICOaE4wszMtBwPuAKR2JMyN/C6FXHlCgCbP4K5gMhwETUyvD99WRG2ceSKFCi6qv4sXrk50UECK6Aa3WokNcFTajg7Wr0VlREGXt7U+sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789693755; c=relaxed/simple;
-	bh=gS7z4w5LjU2D4ToiUYGi0O15to3mkDTtyfRHe0JpZMg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=deiCZw9aJM6uGNdMXokZSlFdXore7MuqaUBYdF50QZEBzXfIQsDCq7nNsjWIPtGIUlQEn2hZM5jChFqq/LeWmv9JSH52fj7AmyGpB3ledN44naXzfs3iAjl5Um+DOwmNt7ROESVPc6L4ysRvIG1MOd8AQ8duButkfAtwPajII0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I1XO07WF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789694058; c=relaxed/simple;
+	bh=xd3HLoWCvqAvLmFf1rcOFjGuOS7Rbqozm40WR+knmgo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lezJSuWceDv/ONtUi+mt0Er6OwEprzs48WrVEku7e3ueXWhqcuaJex2Vjt3e1DcKItFaY9zpLly+VBaT5r4LiojTkpPA5rKPUxupcjZCXS50ZhKA+GJfWhkjfuNHGUeFTv+r3Own5RikXxFixbetHzsdPmeWgAoWESYXnzuupXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MgD/1O1n; arc=none smtp.client-ip=91.218.175.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I1XO07WF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A61F1F000FF;
-	Fri, 18 Sep 2026 01:09:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789693750;
-	bh=iYi7HJ090xbSuBoaZRaeaTvNsSxvODBQTAfYNT4R6Ww=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=I1XO07WFH2WyMNEKuS/VCG8zbNtPkpXT5LndC3QOIVUnHP4wpSDE35tbXM38DHVOe
-	 FfktB9CybfNjhWZ6PKvomV9FUlaGoif6L+6oRg2l/sbLs8wex2wTnEhV9Qwg90NgN9
-	 hrQHJ9u8AlnsYwttVV4ZciI+KZJpB+N+HAVaQr+gVGLzvtZjZWjPpxiAcOUsU1FbAk
-	 ln9fQNG0MYLY76P08kZP2rm5cBsaX97tOTkI889hIUi++EFDfCI/26HJXvpifBOC+n
-	 rbqQNKXslUOqhCsIttJSK2nKdddm2efeLMyVxal6UrBQh00qw6GGzj1HOK7DHVCGmp
-	 KZT1e27X0J41g==
-Date: Thu, 17 Sep 2026 18:09:09 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: haseebulhaq55@gmail.com, sd@queasysnail.net, andrew+netdev@lunn.ch,
- horms@kernel.org, hangbin.liu@linux.dev, felix.walter@cloudandheat.com,
- netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com,
- syzbot+f2f6312ad1b5a0bfe316@syzkaller.appspotmail.com, davem@davemloft.net,
- pabeni@redhat.com, edumazet@google.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] macsec: initialize SecY before registering the
- netdevice
-Message-ID: <20260917180909.566fb795@kernel.org>
-In-Reply-To: <178951752525.22033.8547704610100726932@kernel.org>
-References: <20260911-fix-macsec-net-v1-1-c82aa58ae741@gmail.com>
-	<178951752525.22033.8547704610100726932@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MgD/1O1n"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=xd3HLoWCvqAvLmFf1rcOFjGuOS7Rbqozm40WR+knmgo=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789694053; v=1; x=1790298853;
+ b=MgD/1O1nHCFy5UJMXRpRv9e/PAXTgqh7zpohvNNOBzry2FJlKlJfjv8VUVfOEF2AIJnKTAkH
+ wjEVosSIUK7TKL78dpu5NRwPrAsHq2okpd4JD2X3TDGDQrCOuGzlLucMusyd3OaxW9mIOBKLlzN
+ SxQEu9jWVK31SsKLkTv49sJI=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta11.migadu.com with ESMTPS id 1ba77223abdbd243;
+	Fri, 18 Sep 2026 01:14:03 +0000
+X-Mizu-Trace-ID: 1ba77223abdbd243
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 18 Sep 2026 09:13:47 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: Andrea Mayer <andrea.mayer@uniroma2.it>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	dsahern@kernel.org, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	idosch@nvidia.com, alex.aring@gmail.com, justin.iurman@gmail.com,
+	bestswngs@gmail.com, stefano.salsano@uniroma2.it, xmei5@asu.edu,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v3] ipv6: rpl: fix NULL dereference of idev in
+ ipv6_rpl_srh_rcv()
+Message-ID: <aqyQS7knJ2SwKxPG@fedora>
+References: <20260817132644.2223-1-andrea.mayer@uniroma2.it>
+ <aqjflqdySFG51YEa@fedora>
+ <aqk49jT8tGsqn61d@fedora>
+ <20260917194128.c078117a13eca6f3c97e3dde@uniroma2.it>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260917194128.c078117a13eca6f3c97e3dde@uniroma2.it>
 
-On Wed, 16 Sep 2026 00:12:05 +0000 netdev-bot+sashiko@kernel.org wrote:
-> - [Medium] Incomplete fix: the registration-time RTM_NEWLINK notification
->   that this patch makes succeed now carries a bogus IFLA_MACSEC_SCI = 0.
+Hi Andrea,
+On Thu, Sep 17, 2026 at 07:41:28PM +0200, Andrea Mayer wrote:
+> On Tue, 15 Sep 2026 20:24:22 +0800
+> Hangbin Liu <hangbin.liu@linux.dev> wrote:
+> 
+> > On Tue, Sep 15, 2026 at 02:03:12PM +0800, Hangbin Liu wrote:
+> > > Hi Andrea,
+> > > 
+> > > While reviewing the SRv6 code, I noticed you added an `idev` check in
+> > > `ipv6_rthdr_rcv()`. I’m wondering whether it makes sense to also halt
+> > > processing for `IPV6_SRCRT_TYPE_2` when `!idev`, given that IPv6 is
+> > > disabled on that device.
+> > > 
+> > > If so, could we drop the skb early at the entry point of `ipv6_rthdr_rcv()`?
+> > > The downside is that subsequent processing and `__IP6_INC_STATS()` would be
+> > > skipped.
+> > 
+> > Oh, another behavior change. At present, if !idev, we can still process the
+> > IPV6_SRCRT_TYPE_2 message. And the process will be skipped if we return early.
+> > I'm not sure if this kind of change is acceptable or not in kernel.
+> > 
+> > But on the other hand, is it correct to accept and forward SRCRT Type 2
+> > packets on device that IPv6 is disabled?
+> > 
+> > Thanks
+> > Hangbin
+> 
+> Hi Hangbin,
+> 
+> One case is when IPv6 is already disabled as the packet arrives:
+> ip6_rcv_core() drops the packet before ipv6_rthdr_rcv().
+> The other is the transient window: dev->ip6_ptr can be cleared after
+> that check, and ipv6_rthdr_rcv() can then find idev NULL.
+> In that window the TYPE_2 path can run without idev. ipv6_srh_rcv() and
+> ipv6_rpl_srh_rcv() cannot: they read idev->cnf. That is why the check
+> sits before those two calls.
 
-Looks legit
+Thanks for your reply. So in fact, if IPv6 is disabled on an interface,
+*all* SRCRT types get dropped in ip6_rcv_core(). The idev check inside
+ipv6_rthdr_rcv() exists to close this transient window.
+
+> 
+> On the counters: __IP6_INC_STATS() goes through _DEVINC(), which skips
+> the per-device bump when idev is NULL and still increments the per-net one.
+> Stopping TYPE_2 in that window as well is a behaviour change, and I think
+> it would need a reason of its own.
+
+My understanding is that handling TYPE_2 within that window is also mismatched
+with ip6_rcv_core(), theoretically it should not be processed.
+
+However, since there is no harm for TYPE_2 with the current code. We can
+retain the existing behavior unless someone reports issues, or until I have
+time to restructure this function.
+
+Thanks
+Hangbin
