@@ -1,168 +1,119 @@
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+Received: from mail-pz2-f40.google.com (mail-pz2-f40.google.com [74.125.228.40])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040E82931C0
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 04:21:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8772331EB0
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 04:28:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.40
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789705273; cv=none; b=ehoraViC9OHmVBGOrcVl83u2MtD5XHotc5od89eq0TQjM50UwNMEiYfKLL2FCd8PUYcTcZ5VzPTJdKcQ04Pias+SuoqmOhOHHvjt9becILn+RhFNRbj7+U4yjWCLA3MtLbAX+sbXbfWcpCPueIlgSnDft4MPL3Y8KcFuPV7SPbo=
+	t=1789705705; cv=none; b=NZyGARw3vnlViCOQ/oK+qm0pe7OvN+m4PxvyyBJOloR7s+KazVd6SqG0papgrqGv2UDxoIRNalpvNjXYjQg3ugN+w7M8eYOjNm9NSHtOVeQQEkhR4ordFY6+kKpRHun8PH0EdTFmCQzdPiI5q7bXhPNa52t3dtXIsGgzVCg2pjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789705273; c=relaxed/simple;
-	bh=HgVChyUTOcyzNCJwiIdYVGsxrb9H5tsBkHG9/o032Ug=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VQfnfE9qIVMvjD9N5h+O5wOFnx2aJ+mKBkVtOOIQ9pMIvoZhEjpEHzRJYVBln3Em7WN3xw/V73D9OisAQ+FplDE5JYhg0mNvHDVxqrDF/hzoL3M788B20Kk33fgVErbWcm+zi/J8QefAkDzXl0ZkNaWYRzH2n9H80PJ1eLVwx10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rFF1wZq+; arc=none smtp.client-ip=209.85.216.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	s=arc-20240116; t=1789705705; c=relaxed/simple;
+	bh=gGqMfb0mZ00dpgEGGq3pBv+M6NbKCtJNRN37oILdpbs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d20ffdFyB7DjtgEy/EzOoyQjb3v60ZzZko+bbUy3TD2JtXs0NnVLYBDYB6hk2v8TOH57awSBovSZbE3RaZQkXac32s4o5L11tfkiZOC/DUNVHHJEFtqRbBvU9qvr1ASHHQqMEQ19xrESyT5sAefqFGt+Ip2U0A/Rx4OBoTKiB/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rJ61Aidt; arc=none smtp.client-ip=74.125.228.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rFF1wZq+"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-39e087a17dfso697175a91.3
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 21:21:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rJ61Aidt"
+Received: by mail-pz2-f40.google.com with SMTP id 41be03b00d2f7-cc515bef69dso161405a12.2
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 21:28:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789705271; x=1790310071; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hUGgKz+5IFwH2YryveMVo1XtdCg84f8FM+ky5NHRSuI=;
-        b=rFF1wZq+KDghNBSpohUmaU7OByFEy8a67nK+0lVUXTjHsJPX60nvuog6AUa0uhohnQ
-         D5Uv/LA6nWkd+TlxDGYUY5qE6fJZJt7wn3KBNASREAXdyouNfA6QkSZX8+dGUVk5iPlr
-         U9IU3SKuDyQAwt83Ai4+KnNTKPNutcG9lUxBGDYKurTyNEt3yyLVm8a6u7XFU/uhkdfD
-         N9mH9HYwcmYddokx4+HNnfc71MQWxlq5HjLeJsCNbYFVYhiXkaUBNIaUX9JGVkuMXCs5
-         0gjWJhdYzNhoFLMYg6ypW0k6ppz41B3ky6DdXu1jcKzlecxu3CjmFhWsCYMVErbMhH8v
-         2QkA==
+        d=gmail.com; s=20251104; t=1789705703; x=1790310503; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=YTJNZFQzN8h55ADSd3YdqRemM2GmjoMFnZirfF3PNDs=;
+        b=rJ61Aidtg3CD/rJxjVYtToJn73tkPidw5Fevt9+xku+gPusIK+XEy7W77tyk3aoX4Z
+         Ga/Omdz8VAWjtWqPJDd9KbNKMnI7a1LBWU1XmX0WZWdSqVNpybaFZVeohiXQVvXxi4jX
+         WZ+dijLMqNn/32girLMoXvHgwrdZM01NpTr4JwSDwI+7hHFsbe8HeeHZZMzDBKQlkZTE
+         EFppCfYmoO3flcYV9/CVuhQjmlsDm3eRZKaWVzE0y87qHic41eZMsVq7T6ScdkdGIKzX
+         WqbgZ0kmv6COBUGjdmt+DhvEJE9wrDZGaO1ok+v37SFMPsFiK8kUK8V9H1B1wm3k348G
+         Vhkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789705271; x=1790310071;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1789705703; x=1790310503;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=hUGgKz+5IFwH2YryveMVo1XtdCg84f8FM+ky5NHRSuI=;
-        b=vMlAJrJ/94BcV6OW/EGt4VZJI09n9QDaRzaMxGl6d4B+9K4w/AxA0TR7cLo93vKV80
-         TE3mFpAk7jQyROqmiG6vMD/Jnd+m7dEPwAhsYpO5E12Mzbq67H5GJSdlHOYk02rZLB/h
-         p+4xcApdRIW9wjPXwb+0WwHw6ZwagholEWUGwGnMYVVI3jRGlGzf0/RuJtMM27JYB0mi
-         eTUhEtUw0NWNcHQrEJ/dQ/HLGKcjEPnmPotF3iOg03qgQIQ2INfO4DKTolvbqpFO/MrZ
-         ZK+VO6q3yjIR1p5y+A/7ust0W5oBFs2XKaOZuy6KNZ/jpcCPv9wHEcHL0w6cQPUR4cvA
-         lkgg==
-X-Forwarded-Encrypted: i=1; AKwUvByxTwwTuJc00ND3HuSsUC74e4gBT64Xf6ioMM0hyv36IItpr7KxdNQJi9x5lUAoG09EVLnqTV0=@vger.kernel.org
-X-Gm-Message-State: AFuF++m/xydaL4FZiOnoL8nDasPmbIIhyXKU9zTHI7ky97mlIT0/Msc8
-	oXpncq4Z6lyeWG6XYgXoQj1zjgCbb7ThzciBLoOrkvu31fB1NN2ovzxeso0Ob+yg70FcIlqQ3O3
-	ftUbjpQ==
-X-Received: from pjut11.prod.google.com ([2002:a17:90a:d50b:b0:39b:7adc:45e1])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d410:b0:39d:f024:c7e2
- with SMTP id 98e67ed59e1d1-39e54cb099bmr2855960a91.4.1789705271176; Thu, 17
- Sep 2026 21:21:11 -0700 (PDT)
-Date: Fri, 18 Sep 2026 04:19:34 +0000
-In-Reply-To: <aqyIEE5bRoxRyrFZ@20HS2G4>
+        bh=YTJNZFQzN8h55ADSd3YdqRemM2GmjoMFnZirfF3PNDs=;
+        b=wquiIOtPXM5H/uuU0jR+mpsNzyfdtn9r/7DvkWbCp9X3Afpjji9gLIbnO8K/hROsis
+         OYLC3IJxDTZbB8l4us2qFd/KEWijIe/d4F62RhTtLdVY4rlX90K1KF671MmMy+nhu/mP
+         Pb8AFoJ6wK0rGnQDMu8xsVHMHXhxZX1fs+5RO4HegoVkR0/7H2Ez0v15t7PX6rTI0arS
+         SyMLrkex1Btotlrg+LHxJGXIFUEh2rmCco0C4EajntEJgxE9uC5L6eSLqq3FUPu/3PLg
+         cXn+Tf/tci6W5xVCI7gm1fLUy1AM3oJn2g9fpnCTjIU6nx5UiwSf4Kgn6Xzse50vaIG5
+         mI6A==
+X-Forwarded-Encrypted: i=1; AKwUvByvNNUdTJek15GEcQ48TfhTie0oQhSclgaO8UjaLaKSYEyfCrhXTdkaP4VrAMLUOBXJHbzxqfo=@vger.kernel.org
+X-Gm-Message-State: AFuF++neuBIm7+cZwfUxCXXI4/QHb3Bpp8a1O5u0sKi4bNici+BklVgf
+	Oo9ZM343aMHKxFQl/RNg7Se4dz8giz9aar0nK6OEHmkTs+9ELo7Up8a7
+X-Gm-Gg: AYBFou2p6KYCviALla2/5xlzpWPWbFu6eyWUmRW0cggqi9WdT7cZreH8Q9hPnV3GSox
+	t9LFM4McVYdVc8W0o1Dvera41BviDNVZ/ELvNvd2VBuPgl2dH4D1JXwomTzXqmKd8n+dfBAL67j
+	SNqxZTJ4xPjzX6trXKu3BMF3HZ2kut9YBN8UEe6uJQxqTPVtMoK7RNldP0/zB/CmdtqOHyElHkJ
+	LthVidtF47IeHfz4ur5S10preRtXtJnaMv5zsPVSR4yWHniBbnNdBDP3LU7YbDopfpAUK3qiRs4
+	odJsMuQJ0nCnolHF59hN7YN/sNiGgip1/xHxQjQpTl4OqoG4mBUo1B8rFwIyLABiCEHz3UMK945
+	vEX7RQBeHST7lOCb4qQM1ZS/P+TFOBzyxonpjeyegcxE8VZFEW0zL5Vzyeq1wbqYvlkHivntQQe
+	wLfBjGbkmcT7Zdm/p6itVWTU98IAvBEP5kIX0hcnCvbNv8YqZoi+mynzOnxSMGQ0tVaZ6uMPaIn
+	nSSAtusG/BsmJHI27uBpYzbBktlT5VlLPFFtarPTK6e8KIBDAaToB1Gvx2s5ggQdvump4KWUo07
+	amkfK1htXFrsv0XG81TRWBwWDw==
+X-Received: by 2002:a17:90b:548d:b0:398:c3ca:1ebc with SMTP id 98e67ed59e1d1-39e54d11d8dmr2910601a91.18.1789705703042;
+        Thu, 17 Sep 2026 21:28:23 -0700 (PDT)
+Received: from phuc-desktop.. ([183.91.15.56])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e361b8e1asm8119606a91.12.2026.09.17.21.28.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2026 21:28:22 -0700 (PDT)
+From: phucduc.bui@gmail.com
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Jacob Keller <jacob.e.keller@intel.com>,
+	David Yang <mmyangfl@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Nishanth Menon <nm@ti.com>,
+	Wingman Kwok <w-kwok2@ti.com>,
+	m-karicheri2@ti.com,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	bui duc phuc <phucduc.bui@gmail.com>
+Subject: [PATCH net] net: ethernet: ti: netcp: fix pm_runtime usage counter leak on error
+Date: Fri, 18 Sep 2026 11:28:04 +0700
+Message-ID: <20260918042804.13101-1-phucduc.bui@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <aqyIEE5bRoxRyrFZ@20HS2G4>
-X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260918042110.2581679-1-kuniyu@google.com>
-Subject: Re: [PATCH net-next v3 0/3] net: hash uncached route lists by device
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: carges@cloudflare.com
-Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
-	horms@kernel.org, idosch@nvidia.com, kernel-team@cloudflare.com, 
-	kuba@kernel.org, kuniyu@google.com, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
-	shuah@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-From: Chris Arges <carges@cloudflare.com>
-Date: Thu, 17 Sep 2026 19:38:40 -0500
-> On 2026-09-17 22:10:22, Kuniyuki Iwashima wrote:
-> > From: Chris J Arges <carges@cloudflare.com>
-> > Date: Thu, 17 Sep 2026 14:38:21 -0500
-> > > We have observed hung tasks blocked on rtnl_mutex while network namespaces
-> > > were being removed. The namespaces contained many network devices, and the
-> > > host had accumulated a large population of entries on the global per-CPU
-> > > uncached route lists. A perf profile collected during one incident
-> > > attributed most of the cleanup worker's samples to rt_flush_dev():
-> > > 
-> > > ```
-> > > 99.92% kworker/u384:3-  worker_thread
-> > >   `-88.71% process_one_work
-> > >       `-81.02% cleanup_net
-> > >           `-81.00% unregister_netdevice_many_notify
-> > >               `-79.42% notifier_call_chain
-> > >                   `-78.05% fib_netdev_event
-> > >                       `-77.92% rt_flush_dev
-> > > ```
-> > > 
-> > > For each device, rt_flush_dev() visits every possible CPU and scans the
-> > > global uncached route population while its caller holds rtnl_mutex. If N is
-> > > the number of devices, C the number of possible CPUs, and R the number of
-> > > uncached routes, the cost is O(N * (C + R)).
-> > > 
-> > > During namespace cleanup, other processes that issue RTNETLINK operations
-> > > requiring the RTNL lock can stall until cleanup releases the lock.
-> > > 
-> > > A minimal reproducer is available here:
-> > > https://github.com/arges/linux-reproducers/tree/main/rtnl-flush-storm
-> > > 
-> > > This series replaces each per-CPU uncached route list with a hash table
-> > > using the network device as its key. Each table uses 64 buckets.
-> > 
-> > This sounds a bit overkill.  Also, this series still leaves
-> > O(N * C) loops.
-> > 
-> > Given unregistering a single device is less common than
-> > destroying netns, I think the right approach should be to
-> > make the route flush once in cleanup_net() + outside RTNL.
-> > 
-> > Could you try this change ? (only compile-tested)
-> > 
-> Excellent, I'll test this and report back.
+From: bui duc phuc <phucduc.bui@gmail.com>
 
-I found a pre-existing issue, which affects the previous
-diff, so on top of it, please apply this patch
+pm_runtime_get_sync() leaves the runtime PM usage counter incremented even
+when it fails, but the error path in netcp_probe() does not call
+pm_runtime_put_noidle() to balance it, leaking a reference each time
+resume fails.
 
-  https://lore.kernel.org/netdev/20260918041439.2575935-1-kuniyu@google.com/T/#u
+Use pm_runtime_resume_and_get() instead, which automatically drops the
+usage counter on failure, fixing the leak.
 
-and this diff :
+Fixes: 84640e27f230 ("net: netcp: Add Keystone NetCP core ethernet driver")
+Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
+---
+ drivers/net/ethernet/ti/netcp_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
----8<---
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index d35b66b33bbc..c12e20e07749 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -1567,12 +1567,13 @@ void rt_add_uncached_list(struct rtable *rt)
- {
- 	struct uncached_list *ul = raw_cpu_ptr(&rt_uncached_list);
+diff --git a/drivers/net/ethernet/ti/netcp_core.c b/drivers/net/ethernet/ti/netcp_core.c
+index eb8fc2ed05f4..4f9e20468bbb 100644
+--- a/drivers/net/ethernet/ti/netcp_core.c
++++ b/drivers/net/ethernet/ti/netcp_core.c
+@@ -2225,7 +2225,7 @@ static int netcp_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
  
-+	rt->dst.rt_uncached_list = ul;
-+
- 	spin_lock_bh(&ul->lock);
- 
- 	if (!check_net(dst_dev_net_rcu(&rt->dst))) {
- 		rt_replace_uncached_list(rt);
- 	} else {
--		rt->dst.rt_uncached_list = ul;
- 		list_add_tail(&rt->dst.rt_uncached, &ul->head);
- 	}
- 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 6cffe8440b44..f22793abbbb8 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -155,12 +155,13 @@ void rt6_uncached_list_add(struct rt6_info *rt)
- {
- 	struct uncached_list *ul = raw_cpu_ptr(&rt6_uncached_list);
- 
-+	rt->dst.rt_uncached_list = ul;
-+
- 	spin_lock_bh(&ul->lock);
- 
- 	if (!check_net(dst_dev_net_rcu(&rt->dst))) {
- 		rt6_uncached_list_replace(rt);
- 	} else {
--		rt->dst.rt_uncached_list = ul;
- 		list_add_tail(&rt->dst.rt_uncached, &ul->head);
- 	}
- 
----8<---
+ 	pm_runtime_enable(&pdev->dev);
+-	ret = pm_runtime_get_sync(&pdev->dev);
++	ret = pm_runtime_resume_and_get(&pdev->dev);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to enable NETCP power-domain\n");
+ 		pm_runtime_disable(&pdev->dev);
+-- 
+2.43.0
 
-Thanks !
