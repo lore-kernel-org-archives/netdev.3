@@ -1,129 +1,285 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF2F347C0F1
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 17:56:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3DF4611C2
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 17:59:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789754166; cv=pass; b=P1M5u+WrRq13qrkmAGoSVLfnamMjIcbgefEvWJK6kD4JJA/yhQRUT+l2t3EjSSIqZykwIoB472zLVx0YVDUSjmvaywzkvZ9kfuxhdVnDrHfzTx0OJ4QDdvY2fRqPGUqyP12Z7vsfZISsBijLfDeyyTE0YyIO8rXxUEpWv7qU5w4=
+	t=1789754393; cv=fail; b=te1bmSLdnv7+x7Fdd+RX1JSeSl6lg2TLGldO2Ysaxjh8s1ML0cSae4+VfsHD3bbB54VpFDbw/OeiFFe4Zo7Pf2ZmqHKQTUTie1NMuaBhTiV8fAa+9bj0CP4fyz1hFYIaKziIyKNCJnUTQoqZlYtumxqFIXZQ3Vyqjum38MN2sYg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789754166; c=relaxed/simple;
-	bh=K2wCVeSuchgF+6YBCtVhNSkh+TZ7w975CTM84EpU5d0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tApYxX9VQSF5D5OpCCMpxHv2tBX+Ih94vzODmABm2NS/4wP6fgpyO+r2GQQ0ZXMwcoeOBp63fvbfKocziFleZObkHX21hGFCnoC5xWaCIrAdNP759KOH6JrZHPL/Gv5TGDjNN6AnMRBBLcVeGMh7jiiKJl6zCM1I4nLzG0qj0IE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WDMDFFXJ; arc=pass smtp.client-ip=74.125.228.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1789754393; c=relaxed/simple;
+	bh=Q1sHwzVeg2uzi+BLKCa1kWVlD8aZGZ2e8+edZzJYaW0=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=tQP+HnpcckN/ycWUB9vqRg0/9xwLVxX8vRb7RZ6X+6Sk5HQ7DJPUqUwt3zlxlucRc41fmpF+JWA10AmvwsPuxPmWceJMXqLBv9oJGyQkau5N8STB2DAU7Knp8WyED/q9VXY5JUYi59sJUR5zTTmCWMpQdWjKUjLyR/KpOzYKdsE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I7Q+Mzg5; arc=fail smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WDMDFFXJ"
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cebad4afso773957a12.0
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 10:56:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789754162; cv=none;
-        d=google.com; s=arc-20260327;
-        b=pivDJTqpOfm4cxTdh0qTUc2D1krW3+lvlG9ou657VugDejsgjvwI4VuXFY5HABJ9CC
-         Pe3w/Bbu1utQ3OlGO/1BPdgghR3H/l1c3mTC3/ftqnFtA28q8nCY34PumdnGtQD78Ps7
-         2NtavFNOts+ghiYl6gda07m9f6R4QOMlljMZI6HChcIb6213ciY347VntiXCrR13aNMo
-         IE/LsSMky39Qi7Zx/3pbbxSIQyp5Zxrn5XpCMq5DkYW+zn9vkHGI6xJbDD+DwxezxN0u
-         8nQi5gx0lAAdUZBF9D1sV/V0IoiLandxcstL5i36sojYHTa6M9UOiifrTwTI97eSy+Ey
-         pX0w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=K2wCVeSuchgF+6YBCtVhNSkh+TZ7w975CTM84EpU5d0=;
-        fh=y+oUv6YIAlBhIW/4ppDL2lONj7DAJgMpP3TJ2zZFBi4=;
-        b=cagO4m/pNR2bFgzem9rdXVj3U0B8eiK/pSDcUKnZmYHH75YdGoGmzV+9dtOt42BPUq
-         rvtTkVyFrJJ9xY/LC1FtGpg6TCa4/6SvNXV04VRbbuhiRC3h4drT0GoGIIJE4NOYNJa1
-         iprIYhwBILIDuW6fWDPYyjDyATABTt/3Pr834u5SjeEFslUmAvod7jjLHVKLD6lrqAWW
-         wbyICcCF/VkUH5vhIxwbjOErU0BTxC/VZIiEY+1tq6ZaMP1UNmCseKaG8HinG4nh4nwk
-         3l7RZ0qaSmIuilTOHlCgsu5meyQZ+BMr3UW2IninQELwvCA6KH15AfsCUiN+8BrgPFX1
-         YIXw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789754162; x=1790358962; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=K2wCVeSuchgF+6YBCtVhNSkh+TZ7w975CTM84EpU5d0=;
-        b=WDMDFFXJJ6GyYsFRoPt2FYWUxc0Bnp5s2QYAbajuLMFWSGwnf+lDXYi7ttp3i2aPkI
-         78DbjrMFNiE0VKZ/w6kLuSubFsCOU1Vm7iY6DB9xittkk8Wx1iFi8gRnlee3Xxsm5CwX
-         LD1STote2VgVca56xRaeFevMiPIDZ5UKgqMtqF6Ue410jExndN1vgy5SAsEXr4vA8O+C
-         rjH+d1K95Ij+NyG/I1WsKCEvkhXfOmtnyAdbrMN1JCLq4Ox/p32KI5Zy/u/BI5Ty9flf
-         sGqP83Tt96tqnMOdW0DOlzxPlLiQWGvE0HO65yjyqHYvN/12L9s74EtdojFKwTuClZWP
-         AK9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789754162; x=1790358962;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=K2wCVeSuchgF+6YBCtVhNSkh+TZ7w975CTM84EpU5d0=;
-        b=JoOWGrjaJcO05XavMFWTkzD7/JsnlNux+yOKAsQd2LJ1Y/stb1hvLnwntN5HMm/JTu
-         1PhOtLSS+vYYA3Oa+5dKnzAwd0jyuXe2V/nH/l++i6uNPwF/KuLINTbdAvcxZpAhgwF5
-         fWIxiodt6ArbhURZGcAQGlSqBZue5ZKWeB4t2QhQq3+/4cCUAmMCcJluPFOVz9ghy5jc
-         p9RdvUKdnz3BX3zaLUIkfQripymUaYWQMhuJ41VSCs+Y8l6pP+8qz4BN/kc55kTqqMZx
-         XsIEqPDMiMRwteM28RTHvGf5tuedc7mFoW49XB7K8hR5mtUdUgkwhUhUnJfjyl4JMn3T
-         R1mA==
-X-Forwarded-Encrypted: i=1; AKwUvBwb0q9q7fCH0b2UOluqcikb/Z42aHjfCeLqPF9CI9PdQThFVjFvqBkI5G0t30vQXjPBw2LMdhM=@vger.kernel.org
-X-Gm-Message-State: AFuF++mZ9XXZDXnPBhVgitgV4qD+SdlM+uKd2Z7BwTnWn3c+iEM4NsTR
-	XT1DIC3VO/M0LFGK9MW1rWXTBpmRjcd1ldzaP6+jZB48YGbPROtP4rdZG2I4ifWjYvidcUQy9gA
-	+4lwlnQEvshU31aoR2SLOricfYfcDl+c9iJVUf5HM
-X-Gm-Gg: AYBFou0jeDckfoNzvxvDK2dfVEOZDauVWnI6mPfS9hn7yRb8Whf/Vb75By1t5C9Hoid
-	eQxBZVW+WK7+9z2tTzcmEPTZ+l/FCA6Pmcu+0BLwzwxFwFIfHEhaW3267lGj68azdlWo87zQYi2
-	4yjHIHoceWbzl+oN8B/q/12voK2Pop71oaBFdUdN7DycFhPr+vxKiq1szMILO4tFhkG/DpENTgR
-	X4rCJM+rXPUH0THSKtYzp4ODXuFRbXHDVzfbH59nG9iRwNb51Y/ooTZZjPCCn7m51OJe7On0o1S
-	lA/oRMUWx12pdhf0vTK0NldvrMhHDf5PcsmpQI9hlwnFAkMdGeOsBxB+aRFytrBZtUI1SfUIlP1
-	Raj9BBKx5FYqdAfBz722/B3ru9Sl0tUbqgYs2YkUugAJR/zqoGOHzJ15t5xkziy8vkaZosSYzud
-	HwEh7a/WRjx1w3kqSrrZtNSyDAc6Km0MS3
-X-Received: by 2002:a17:90b:57e8:b0:39e:6c69:7774 with SMTP id
- 98e67ed59e1d1-39e6c697961mr979973a91.29.1789754161489; Fri, 18 Sep 2026
- 10:56:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I7Q+Mzg5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789754390; x=1821290390;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=Q1sHwzVeg2uzi+BLKCa1kWVlD8aZGZ2e8+edZzJYaW0=;
+  b=I7Q+Mzg5ZNWzZLIAj2VEWOqCj+I80lp2rvOCQUGy/b2WceFONznFLS79
+   cwPwxHKumul5RSWmTPgzD1K21x7eRiLTTmVwXYfZihll7QGF/6tbhuHkR
+   gOhzoiTMxnz+joTq2YPYUb6gr0NYZgTajo+J3p6bnnWXsXPcJ6bpD4FVX
+   4XRhUMFYYzApf7xFuj8xKYi1K25xaaIJaQlUGZA8wRmecfx97N22KkCZ2
+   /O+WG8Uy6tfGBQCtpxA2GMJXMpEjGlLzTgNh1Q1NDPjvBrEBzlpxO7RbC
+   Bkr/j3kHa51MQQz5L4EisEVTQv9rk4CdSlNgI5SqioshZZo2eArTE9dlO
+   w==;
+X-CSE-ConnectionGUID: KYc1yz26QC65HCRVC2WWFQ==
+X-CSE-MsgGUID: 5z9DcX+VRoS7GH6pppySwg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11909"; a="115809934"
+X-IronPort-AV: E=Sophos;i="6.27,109,1787036400"; 
+   d="scan'208";a="115809934"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 10:59:47 -0700
+X-CSE-ConnectionGUID: bbMjl34ISbmjgZ34ALa0aQ==
+X-CSE-MsgGUID: WBgsZEeTQZmXgMKQurXddg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,109,1787036400"; 
+   d="scan'208";a="271846483"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 10:59:47 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Fri, 18 Sep 2026 10:59:47 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Fri, 18 Sep 2026 10:59:47 -0700
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.1) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Fri, 18 Sep 2026 10:59:46 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jwh8dN0LVsLxuqO4HFHEfkZCNv5u6+xr/Z8bPPH2v+k/CsZ6Ky3WDEd4sB33DNEUAWR7T57VVbEm4AOs8OMY0aD3bOQN5UpP6X2sv0EPzodzFU1pnQTSlMWauzvaMNO1qd+MjSBf5WzIT4yEjTB6qe0u97aD7TNdmKrRcGnicGaGzIFyqapbYAAItkgldZx5OYGbjmEsIxI+6T85dDV0K5A70SEubLddCX7wAdyCSRREp9IVXSCSciBUDsL2Rm1WZU+wfXcrTMPEeg4H+GmPhAqd9DGRAl9+D8Vk8k3vsCiDDujpjEqVLX6G7+ypYwOWEpcCPRkdJTAfdIxt/eod7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RVwlzK4CFQGiWw3/kzTWjj0z5xLezSFnnRxaZjwrBf0=;
+ b=aPU49eksPUHgH3g0VKDHDgvEtVNBlAzl7iTG6V55LNGMsvjppTOv1xClojfergU6ociafpDattAeww+rXL5NRn8LiyF8csMIRzA8Mh+EkJXLBTfyVZQiSCAVRKzJbFaIDgoxXJ/giRa9attD7jQPw67bbkCw7N0A1U9smFtKlTJ7I3d1o9nQrGDg2tPlkVrOJkYxjp/GC7KiQfE1bhv73QowZjRKQgV2fFEtrdgwuRJzmR98ZrYyPEBxTn/8ITEFBlWFaqwhQolOm2BOYxIF7oDbrwrln+1/dKrRSR5W7PdHH8r3Rn3K0fK5JQDEJQTJHdHRqJKktiD/TQ3/mgFu7g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SA3PR11MB186312.namprd11.prod.outlook.com
+ (2603:10b6:806:595::5) by CY5PR11MB6283.namprd11.prod.outlook.com
+ (2603:10b6:930:21::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Fri, 18 Sep
+ 2026 17:59:44 +0000
+Received: from SA3PR11MB186312.namprd11.prod.outlook.com
+ ([fe80::fbe8:9ba6:fcd0:f0b]) by SA3PR11MB186312.namprd11.prod.outlook.com
+ ([fe80::fbe8:9ba6:fcd0:f0b%6]) with mapi id 15.21.0428.011; Fri, 18 Sep 2026
+ 17:59:44 +0000
+Message-ID: <45ffbd03-653c-46fc-b500-07e9b99f295f@intel.com>
+Date: Fri, 18 Sep 2026 10:59:41 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwl-net 1/2] idpf: keep the mailbox up while tearing down
+ vports on shutdown
+To: Tian Xun Ng <luckilystar08@gmail.com>, <intel-wired-lan@lists.osuosl.org>
+CC: <netdev@vger.kernel.org>, <anthony.l.nguyen@intel.com>,
+	<przemyslaw.kitszel@intel.com>, <aleksander.lobakin@intel.com>,
+	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, Tian Xun Ng
+	<tianxun.ng@bytedance.com>
+References: <20260917105205.37561-1-luckilystar08@gmail.com>
+ <20260917105205.37561-2-luckilystar08@gmail.com>
+Content-Language: en-US
+From: "Tantilov, Emil S" <emil.s.tantilov@intel.com>
+In-Reply-To: <20260917105205.37561-2-luckilystar08@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4P222CA0009.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:303:114::14) To SA3PR11MB186312.namprd11.prod.outlook.com
+ (2603:10b6:806:595::5)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260918153604.579277-1-mbaragiola@linux.com> <CAAVpQUAmGAACd1rBomaY-B2vRiE-VX9u4JRCteVB-940RhRtbg@mail.gmail.com>
- <20260918170042.609084-1-mbaragiola@linux.com>
-In-Reply-To: <20260918170042.609084-1-mbaragiola@linux.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Fri, 18 Sep 2026 10:55:50 -0700
-X-Gm-Features: AcwNN1XB-YqU5k_r2rnPCRh-SjsxnReIoR_iBjfhUznrMsSgjovAPq_0TRW9qgs
-Message-ID: <CAAVpQUCnoHDvP4eK_jRHMDS3EaFaKi7XJB9k=xGjGVbkvwrB0w@mail.gmail.com>
-Subject: Re: [PATCH net] udp: resubmit encap packets for secondary mcast sockets
-To: Mariano Baragiola <mbaragiola@linux.com>
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Anton Danilov <littlesmilingcloud@gmail.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR11MB186312:EE_|CY5PR11MB6283:EE_
+X-MS-Office365-Filtering-Correlation-Id: 87cc0f4e-8f7d-468b-756d-08df15ae9ec4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|56012099006|11063799006|4143699003|6133799003|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: TIHtCYNHS4dsTKw9hV0QKuXZ+RdVtDp8fviVQy6K9VBIaR3MWPzFxGh+CprfjvMOmCV+EegYTOeiV7eW0EHENZo6rvMdl26ZzxlfPnA4oz1/vpzs6IY8YY0Jpvf6O+McUZBWhF5aCi35kpZEqsc5+WT2oZGBlwJEQxu4DWw9l3YHULNvoi6c3L0PTYEK5CRDjTXIyVF7roJFIF9sjJ9sg53uxBltmw1svxPpASKYE59q18jeXC93wa2YYUh70vUzkyIGZNmVmaESCaeSP0rSFE3qQPkfxLH7jvKUdIOG0OfFf4ciXGfz6LOl6ChceKjwVkpRIjLQPEPmURXq6cZRVHl43/4Z5cIZM8U/B2rCCQyCjDzCS3wtCZZfwx5dYTeuoctZ0NaxPT+AMEqEnKQVM1h2KcgXYHYJ1UhV1ODI/dWSUXYaC5abPHOU/w7t1kDBX8l2Xn5Uif5fqBND7LiZbnvqzyNoKm+m9Po5SVf9JftpJ93DMyhV9irsk6E+VA5o+TdAFk2GLV9hXxK9RJe/FXqCXF2OvahigLMSxHm4C3Zn7Jgl9Be6nlGWk0+IoVE0CAcX77ATF/h991d9Nkr8fz2/mFKOY7nuC67WpCk20C0c/yRjJG31UV2y8mdvtP5B5d0jF1yTwcIT28qYGiU9II9B0KIUST/5JqBLxuwc32Q=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR11MB186312.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(56012099006)(11063799006)(4143699003)(6133799003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bU1OU1VQRmp0NzNNQmdwd1prUFBXQ2s4Q0dINU1LTk9uUnNNNnpwVGYyK3g2?=
+ =?utf-8?B?N2t6a3RBVGN4YlpuWXh2R0tWNGgzNzIvbTZ6ekFLaGFmQllmOXNsMWVOS1lh?=
+ =?utf-8?B?emhPLytKcVdmQ25zdy9IeFlqODdoUDdrcWNCY0pxQWh5Ukd2Sndoa212Y205?=
+ =?utf-8?B?a1NOam9oRHFxQW5OZ0ZFa0xLN2Fwa3g4L1kzUWFvY3pjQ2RhUm1WblMrMStY?=
+ =?utf-8?B?OWgwUzR2OU43VXM5aVNTS1lKNkhzeUdybW9RMnFMeTFhYnFhQVR6bkR3Y0Fo?=
+ =?utf-8?B?TFEyLzMyekNoT1NyYWZnK2VTTk92bVZTQURTWmRKRTdZUlprNVliVjJ2QjhM?=
+ =?utf-8?B?bWNFQ3paVVl0czlDZjNyOUVnT0JIZVV4UHptSzVZWUFFSFcrQllWR3Z4SEFa?=
+ =?utf-8?B?L0dkN2twKzZpWHVaUTFyMTg0cHZrcmVYaWh6OHI4TWhnSVp5L3Z2VDdHekE3?=
+ =?utf-8?B?anRrS1lOVU9ONGo4R3dKR1VteG1vU0l5U3lweHZGNEpVSm1oN1g4cVdrcXRs?=
+ =?utf-8?B?NGh2VXJiM290R3RsSjByYUFSUVhWUWVDUlN1VGpKRFdhbGovcTVzMzN1M0tZ?=
+ =?utf-8?B?dnZTRUh6cWdjVUJKb0FpRzlHalc2dkVOMzBkREh1SEd1ZmlYai9NeGpnajgz?=
+ =?utf-8?B?WFFpbitudVJ6T2hUK0dacmZncStrY0dIeFVadUt1WGRDQWVnY3RZbUZiakJM?=
+ =?utf-8?B?QzlJVmtaVTcxdHZZSksrTzVqQUord05wY0pNVjlKZHNtZm5lTHF6N3RxRDNY?=
+ =?utf-8?B?ZG4rMDIvZXk2RWhCMVhmUXE1aGtSWmR0cDV3azNlY1JEblpQNjhZcTdWc1Zq?=
+ =?utf-8?B?dXZtc0dTTDBQQkZiTlI3OUVTNmxGci8vK2tNL2hybUZiRDU0eldLeFJ2aW14?=
+ =?utf-8?B?akhuVnVLZmZ2L052azdkZUdsbjZ0eHBBenVlU3FJTDJqdXdGa0F4OWJOSEYx?=
+ =?utf-8?B?OU5BK0NaWmVRNEQ1WTFSdEF1MkJnT2VUVHEvUlBMdEV3d0t4eWl6Rk1TMTVI?=
+ =?utf-8?B?NE90NVIvR25LMXhzMlJBb284YnlWa2ZiQ1Z0bnkwMzhISENpcmZWa052WXlP?=
+ =?utf-8?B?QlZWeDk3cW1jK2N3aG5Td3VvQVRrTStiZHdGUGQreXBNTnNOQnRrTitzRVMw?=
+ =?utf-8?B?VzdIU1ppZXY4QTQyVnhteTFrSjZuVGdzdU50aUk1T0orRDNzRE5zVjU0MjBP?=
+ =?utf-8?B?UmdyaUp2bXhGZTFkT053Nllmeit2cTRpUlNQdm5ZdnAzRVYwcVBoYmJJVERw?=
+ =?utf-8?B?WmlWdDQ4YVFIV2g0cklaaWM1dEQ4UHpNR1IzRkw1YUFRR2ZWcEllL1I3aHZ5?=
+ =?utf-8?B?djEvbUVZeFlsOVcvdWMzS1pIc0wwUlhManozSkE3YzZPcVNUaFl3bkVVVWpq?=
+ =?utf-8?B?VitQblVYb1NJNWdhMTdud1V6a2VtbkNBb2daYldBVnhEWHBSMlp1MVU4ZDZC?=
+ =?utf-8?B?M1NncE9RVDRFaHB3NUxDd1loUWNUenJsRENxYjVOeHFqNnZiZThJMUYxS0Zx?=
+ =?utf-8?B?MUVRck1yRkNkVVNzTERiKzBVTkJ6WmxLYlN4MGtPVU9IWWd3c1M0ZUtZUUpU?=
+ =?utf-8?B?NU1hMnZEeThTZ0dFSmxSQysyUzBVZnk2eXBsVmVzZjI5MWZhaVZlcnd6c3Fh?=
+ =?utf-8?B?ZTlNcDRqeUNsemdJQ2ljZkc2dXJZbDZBclFOcmRtV3BSSXQwUy9VMVZNalR2?=
+ =?utf-8?B?QlVCSFNKck43VUxxTms1cDdpRzI1OE1MbkJYK0toTjBnVnYweHBNZStLNFdB?=
+ =?utf-8?B?UmxoZ0RHYkkwc05Xc09FNDZ6b1pydjNhQmF0UXRRT3QrM29WbnRyRmZLVy9x?=
+ =?utf-8?B?ZVRKaDZtbTVpS1JDWXlmbnFlVnhVUWw4YVJ1MFZhbjVlU1Vxa2hkWHBjMmU5?=
+ =?utf-8?B?NENHb3psa0xJakx1UFhEYndTRlpLTmFpK09IUmJvazAzVEFmYW9HMGdmQm1E?=
+ =?utf-8?B?bXpZRW5UVFpiMkRueVJTNVRjUXV1Q3NadDEvSzVYUkRKdTE0RUY1OGFjMnU4?=
+ =?utf-8?B?czQ3TGZUaTA1M3B1OXJQd2JEWjE1MndtajBRemNhL0NVazVleG9OelFtNWg0?=
+ =?utf-8?B?Tno3SnZzdkIrRTlXTG96VDgwQ2gvbWxaZjVEdnpHNHp5b1V6azBsZW9INmNI?=
+ =?utf-8?B?TkFGY0dJV0QrdUlDWnM5aGd0MlV4Rk14cHN2aHYydEQ1bGZiVzRMdUlNRzQw?=
+ =?utf-8?B?dXpPejhDaUNyN2JqUS90d3RGWC9WRzRyN1pVN2VhZmhSczI2UzNQTzZZMGMv?=
+ =?utf-8?B?UDNJbE5yUW43QUllOHhYZzBqMDB2c0lzQTFzejcxL2p0cDV3K2F2UHpyOEZZ?=
+ =?utf-8?B?aTVxb1F4VU9EMHRJN1hJdzBVSy9HMlBvTmkvT1hBTHVxV0ZONVRXMGdTQkli?=
+ =?utf-8?Q?2O1pYM2AptHIhcio=3D?=
+X-Exchange-RoutingPolicyChecked: 5cqNN5PagCkLl/rcydfywMacHq/+CaVVGQMkQ9qlJHlGZcFqUzLcHGjv/9ddGbgYEvrIGEMqGZ+fgMGnMjAcNmqUvfgXvMqdlFZhR/kRTDTpBoN6mZkFu9eT1AFQLkRWpRbbNQD4q0UEZyDwpW1TTHPBzqSeDLHL+AJKjHMc+DagZUr6eDroBtq6tqkKLAjTgG+vFm/VLr8ASF5LeQHO8Th9mLxQ2KpNf9Aj4eA0bzGF6h7W2SCCM9JQg1g5PelFMByMVuXthH97MIY1cTxotGAGXjm1ZrHOu4P3Qum+8/meqn8XSZil+8uNPKgvPJAa1rif4A4ZMmXZdb+SIsatqA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 87cc0f4e-8f7d-468b-756d-08df15ae9ec4
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR11MB186312.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2026 17:59:44.3103
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Bfnv9/58EWZ2YZiS8DRRLfDCnC9bcIDrwIDTrHQKFvkV+S36rNyUb1FxIQhaqNeZD6aFipRWHN4lc8lolfDyvijZvi5aC+PCp+nri+i+jGc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6283
+X-OriginatorOrg: intel.com
 
-On Fri, Sep 18, 2026 at 10:00=E2=80=AFAM Mariano Baragiola <mbaragiola@linu=
-x.com> wrote:
->
-> On Fri, Sep 18, 2026 at 9:21 AM Kuniyuki Iwashima <kuniyu@google.com> wro=
-te:
-> > Did you see a real problem or is this triggered by an AI report?
-> >
-> > https://lore.kernel.org/netdev/20260415203624.4057135-1-kuniyu@google.c=
-om/
->
-> Hi Kuniyuki,
->
-> To be completely transparent: this was identified during a code audit fol=
-lowing
-> commit 3cb8d4b9bfeb, not from a production crash report.
->
-> I recognize that standard FOU configurations do not typically have multip=
-le listeners
-> on the same port (returning -EADDRINUSE), so this primarily affects
-> multi-socket/SO_REUSEPORT encapsulation scenarios. If you consider this a=
-n
-> edge case not worth touching, I am completely fine dropping the patch.
 
-Since the patch adds ip_protocol_deliver_rcu(), syzbot will find a
-way to trigger stack overflow, so I think it's not worth a fix unless
-there is a real use case.
+
+On 9/17/2026 3:52 AM, Tian Xun Ng wrote:
+> From: Tian Xun Ng <tianxun.ng@bytedance.com>
+> 
+> Since commit 4c9106f4906a ("idpf: fix adapter NULL pointer dereference
+> on reboot"), idpf_shutdown() calls idpf_vc_core_deinit() directly instead
+> of idpf_remove(), so IDPF_REMOVE_IN_PROG is not set on shutdown.
+> idpf_vc_core_deinit() uses that flag to decide when to shut the virtchnl
+> transaction manager down. Without it, libie_ctlq_xn_shutdown() runs
+> before idpf_deinit_task() tears the vports down, so every message sent
+> during that teardown (disable vport, disable queues, destroy vport)
+> fails at once. The device is never told to stop its queues and keeps
+> them enabled, with the ring addresses of the kernel that is going away.
+> 
+> After a warm reboot, the first queue reconfiguration of a port that has
+> not been opened yet (udev setting the MTU) sends VIRTCHNL2_OP_DEL_QUEUES.
+> The device then drains the queues it still considers live and writes
+> SW_MARKER TX completions (qid_comptype_gen 0x2800 / 0xa800) to the
+> previous kernel's completion rings. With the IOMMU translating, those
+> writes fault on every such boot:
+> 
+>    arm-smmu-v3 arm-smmu-v3.17.auto: event: F_TRANSLATION client: 0016:01:00.0 sid: 0x30100 ssid: 0x0 iova: 0xffb70000 ipa: 0x0
+>    arm-smmu-v3 arm-smmu-v3.17.auto: unpriv data write s1 "Input address caused fault" stag: 0x0
+> 
+> In IOMMU pass-through mode they land on pages the new kernel has already
+> reused. With page_poison=1 that shows as "pagealloc: memory corruption"
+> on most boots. Without it, nodes crash in unrelated code, e.g.:
+> 
+>    Unable to handle kernel NULL pointer dereference at virtual address 000000000000a830
+>    pc : __tlb_remove_table_free+0x48/0x118
+>    Call trace:
+>     __tlb_remove_table_free
+>     tlb_remove_table_rcu
+>     rcu_do_batch
+> 
+> or with a slab free pointer that decodes from a slot holding 0x2800:
+> 
+>    Unable to handle kernel paging request at virtual address 002613b73e862c6e
+>    pc : kmem_cache_alloc_noprof+0xc0/0x3d0
+> 
+> The early shutdown exists to avoid waiting for transaction timeouts when
+> the mailbox is already gone. That is the hard reset case, where
+> idpf_vc_event_task() shuts the transaction manager down and sets
+> IDPF_HR_RESET_IN_PROG before idpf_init_hard_reset() calls
+> idpf_vc_core_deinit(). Key the early shutdown on a hard reset being in
+> progress or detected instead of on remove, so that both remove and
+> shutdown keep the mailbox up until the vports are gone.
+> 
+> Hard reset behaviour is unchanged. Remove is unchanged unless a hardware
+> reset has been detected, in which case it no longer waits for message
+> timeouts. Shutdown now delivers the teardown messages; if the device
+> stops responding without a detectable reset, shutdown can wait for the
+> transaction timeouts, as remove already does.
+
+Actually we can't wait on shutdown. If the MBX is defunct, like CP is 
+down or unresponsive, the shutdown will hang for a very long time. This 
+is the reason why we wanted to avoid communication on shutdown. Have you 
+tested the shutdown after stopping the control plane?
+
+> 
+> Tested on arm64 (64K pages) servers with two idpf functions, with this
+> change and the next patch backported to a 6.17 kernel: no stray device
+> writes in 151 warm reboots across IOMMU translated and pass-through
+> modes, against stray writes after 20 of 20 warm reboots without them.
+> 
+> Fixes: 4c9106f4906a ("idpf: fix adapter NULL pointer dereference on reboot")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Tian Xun Ng <tianxun.ng@bytedance.com>
+> ---
+>   .../net/ethernet/intel/idpf/idpf_virtchnl.c    | 18 +++++++++++++-----
+>   1 file changed, 13 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+> index 1caf52706..646b6e074 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+> @@ -3197,14 +3197,22 @@ int idpf_vc_core_init(struct idpf_adapter *adapter)
+>    */
+>   void idpf_vc_core_deinit(struct idpf_adapter *adapter)
+>   {
+> -	bool remove_in_prog;
+> +	bool reset_in_prog;
+>   
+>   	if (!test_bit(IDPF_VC_CORE_INIT, adapter->flags))
+>   		return;
+>   
+> -	/* Avoid transaction timeouts when called during reset */
+> -	remove_in_prog = test_bit(IDPF_REMOVE_IN_PROG, adapter->flags);
+> -	if (!remove_in_prog)
+> +	/* Shut the transaction manager down early only when the mailbox is
+> +	 * already gone, i.e. a hard reset is in progress or has been detected,
+> +	 * to avoid waiting for transaction timeouts. On remove and on shutdown
+> +	 * the mailbox still works and must stay up until the vports are torn
+> +	 * down. Otherwise the disable and destroy messages never reach the
+> +	 * device, which keeps its queues enabled with ring addresses from this
+> +	 * kernel after a warm reboot.
+> +	 */
+> +	reset_in_prog = test_bit(IDPF_HR_RESET_IN_PROG, adapter->flags) ||
+> +			idpf_is_reset_detected(adapter);
+> +	if (reset_in_prog)
+>   		libie_ctlq_xn_shutdown(adapter->xnm);
+
+This logic already exists in the reset handling, there should be no need 
+to replicate it here. Do you have a trace and/or exact scenario that 
+leads to remove being called while in a reset, but MBX is still alive?>
+>   	idpf_ptp_release(adapter);
+> @@ -3213,7 +3221,7 @@ void idpf_vc_core_deinit(struct idpf_adapter *adapter)
+>   	idpf_rel_rx_pt_lkup(adapter);
+>   	idpf_intr_rel(adapter);
+>   
+> -	if (remove_in_prog)
+> +	if (!reset_in_prog)
+>   		libie_ctlq_xn_shutdown(adapter->xnm);
+>   
+>   	cancel_delayed_work_sync(&adapter->serv_task);
+
