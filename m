@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B7B397928
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120E03D4119
 	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 22:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789770595; cv=none; b=EIlCDNESl0gIeNvPTBrkDz2l6BZcHEXgx5yZUVUQBdKHX0lX2I+6yq+CKd0JbEzX5AF2D4Q6GcPZMZnVzMmNkZHpnYfnRW86siXS8ZbU3nnWUX910LfKtncz67a2xWboz8qWWp8Un3hJ0HrpCE02dJFefMMW1eXmUFTJxQeCFgM=
+	t=1789770596; cv=none; b=mamzvF/Yg9mx/cg3XXXF2YxYGGrNSYAYppmWLt5u/VTtUVEaK/shntYBdv111CsvVAbmM3qqvaQb6eh3xcALqa7F+PJB9iZgatpFJXxG8a8AKMaYUcUFKz6OAiatDd7wGniBSYKDUU+7EwLCtTwTByXyUIPdS52C1i+1//JtUrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789770595; c=relaxed/simple;
-	bh=dJqjqt8xq7eWjcwBJiAeMSvAX8L7HTjNthfU/hda/Kc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LmZYAbDGbngdS3L40+UZ+7IVXxYf2dE6OFBQWFAD5WW/GL8sJcRMHecSd/UAErlac13Hvq0+V9UVHj6+rc7WAzOdRjicVNld88fD3rzCQu0s7v5ufw+/2+Jg/mWu2FfsIMvDmBF5yOCkQhyu+qCCNKuW30ePCHV/Me6j3JrvpUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S+wFmM5i; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789770596; c=relaxed/simple;
+	bh=92dQhlBzWQsewmwJcNk7DV+NQgbagynAnpL/bCd1URI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pzgfE9hivhOI23R5tJ6gh30IeIQzOBfRsgfZ1/zsbxQUo/HUrgwf1kAiAlA2/Gnn8ichwvymSj/W/tbdiBuT/wlwfBNSo2heKIJ3/dNXTf+Q5xS4xJu5iq6mLuTXIexieNPJZkNJQA0W+B5mmk4L1AP16d+9/hXOV2Qx1Azujio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l/kH6e6P; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S+wFmM5i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3FEF1F000FF;
-	Fri, 18 Sep 2026 22:29:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l/kH6e6P"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1599A1F00898;
+	Fri, 18 Sep 2026 22:29:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789770591;
-	bh=Du2Y1WRMuj6HRiuhuOJdZ3e7lv1yZMaOrtExWFTJZws=;
-	h=From:To:Cc:Subject:Date;
-	b=S+wFmM5is/fbUy4QOcFexSqfIDmFFj7/BvHZPM0wO+VLkqcRnKfiuLyFS9Pbp/ZOZ
-	 8fgXBS5crhQUe6/IXM43jizhULNicVILLCObQL/S50O/GXi6j+IhaEAHD37MlSOCku
-	 vfMIMt/k1lSgueaRKrSbCR6uKenYY3uYKndIycbUN1RwsfYpuQlvtr1FJw0d0YNQtQ
-	 XZ8HZKiznp0vulOMikIOEO2sOBEzIwb8m1YzOgHOH7qsj3XqdqV0PNYl0KDVfqz+nr
-	 iT3ya6/7SKVoOqSrcc5UwreB538MG6cVXXVyWAPmbkQHZSF6aLfqeuxcUss7u49+hE
-	 HmB6+AkaszgdA==
+	s=k20260515; t=1789770592;
+	bh=LxVTvFAb+58oW39esFCfuZ3f5OW1us54GclQWcYhfDI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=l/kH6e6PQfjJXEAKjy/xV1PCYxL04Y6OlAWMhBWr731P+gvlFMbwq3XfR+Uml4Qk1
+	 FKFcF/PgmzO4trTsWijTT+KBEBA0XBQolmP4CLfdYeMGstyCtYvwvJT/g3wYRTiOcX
+	 977ru9HvtcYG5QJDgpFD7iFjfs6AiRkNtJr4fOQVFHnX3zAVbZsEmFz5L7K/dJgQpn
+	 g82fbD9jZuIbnHCbeXSnP0WwskcQkgDm1HavbTFQjy36sAyzqzdBblM8hWD2sutnt5
+	 lPaEDn7mQltHcc8TF6jLUZfIKe5iaQiMbcftwQkevriOmroO5AS6sxx1lKVN4cxAZH
+	 DRJHlzntOKETA==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -33,10 +34,12 @@ Cc: netdev@vger.kernel.org,
 	andrew+netdev@lunn.ch,
 	horms@kernel.org,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net 1/2] genetlink: report the real command id for dump-only ops in policy dumps
-Date: Fri, 18 Sep 2026 15:29:48 -0700
-Message-ID: <20260918222949.4190284-1-kuba@kernel.org>
+Subject: [PATCH net 2/2] selftests: net: nl_nlctrl: check the op ids in the policy map
+Date: Fri, 18 Sep 2026 15:29:49 -0700
+Message-ID: <20260918222949.4190284-2-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260918222949.4190284-1-kuba@kernel.org>
+References: <20260918222949.4190284-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,69 +48,171 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The op-to-policy map a CTRL_CMD_GETPOLICY dump returns is the only way
-for userspace to find out which policy index belongs to which command.
-ctrl_dumppolicy_put_op() tags the nest with doit->cmd, but an op which
-only has a dumpit has no doit and every path which fills the split ops
-in zeroes it out, so those entries all claim to be command 0.  nlctrl's
-own CTRL_CMD_GETPOLICY and NETDEV_CMD_QSTATS_GET are both in that group:
+Validate that the op map in the policy dump is correct.
 
-  [{'family-id': 16, 'op-policy': {'do': 0, 'dump': 0, 'op-id': 3}},
-   {'family-id': 16, 'op-policy': {'dump': 1, 'op-id': 0}},
-
-ctrl_fill_info() gets this right - it uses the iterator's cmd for
-CTRL_ATTR_OP_ID - so the two introspection interfaces of the same family
-contradict each other today.
-
-Pass the command in rather than reconstructing it from
-doit->cmd | dumpit->cmd inside the helper, both callers already have it.
-
-Fixes: 26588edbef60 ("genetlink: support split policies in ctrl_dumppolicy_put_op()")
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- net/netlink/genetlink.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/nl_nlctrl.py | 116 +++++++++++++++++++----
+ 1 file changed, 99 insertions(+), 17 deletions(-)
 
-diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
-index 41d37442f186..5cc1037d4917 100644
---- a/net/netlink/genetlink.c
-+++ b/net/netlink/genetlink.c
-@@ -1656,7 +1656,7 @@ static void *ctrl_dumppolicy_prep(struct sk_buff *skb,
- }
+diff --git a/tools/testing/selftests/net/nl_nlctrl.py b/tools/testing/selftests/net/nl_nlctrl.py
+index fe1f66dc9435..237b3d273260 100755
+--- a/tools/testing/selftests/net/nl_nlctrl.py
++++ b/tools/testing/selftests/net/nl_nlctrl.py
+@@ -9,40 +9,86 @@ from lib.py import ksft_run, ksft_exit
+ from lib.py import ksft_eq, ksft_ge, ksft_true, ksft_in, ksft_not_in
+ from lib.py import NetdevFamily, EthtoolFamily, NlctrlFamily
  
- static int ctrl_dumppolicy_put_op(struct sk_buff *skb,
--				  struct netlink_callback *cb,
-+				  struct netlink_callback *cb, u32 cmd,
- 				  struct genl_split_ops *doit,
- 				  struct genl_split_ops *dumpit)
- {
-@@ -1677,7 +1677,7 @@ static int ctrl_dumppolicy_put_op(struct sk_buff *skb,
- 	if (!nest_pol)
- 		goto err;
++# Families we can expect to always be around, and which between them
++# cover ops with a do, with a dump, and with both.
++FAMILIES = ('nlctrl', 'netdev')
  
--	nest_op = nla_nest_start(skb, doit->cmd);
-+	nest_op = nla_nest_start(skb, cmd);
- 	if (!nest_op)
- 		goto err;
+-def getfamily_do(ctrl) -> None:
+-    """Query a single family by name and validate its ops."""
+-    fam = ctrl.getfamily({'family-name': 'netdev'})
+-    ksft_eq(fam['family-name'], 'netdev')
++
++def _get_ops(ctrl, name):
++    """Get the ops of a family, keyed by command id."""
++    fam = ctrl.getfamily({'family-name': name})
++    ksft_eq(fam['family-name'], name)
+     ksft_true(fam['family-id'] > 0)
  
-@@ -1721,7 +1721,8 @@ static int ctrl_dumppolicy(struct sk_buff *skb, struct netlink_callback *cb)
- 						      &doit, &dumpit)))
- 				return -ENOENT;
+     # The format of ops is quite odd, [{$idx: {"id"...}}, {$idx: {"id"...}}]
+     # Discard the indices and re-key by command id.
+     ops_by_id = {v['id']: v for op in fam['ops'] for v in op.values()}
+-    ksft_eq(len(ops_by_id), len(fam['ops']))
++    ksft_eq(len(ops_by_id), len(fam['ops']),
++            comment=f"{name} lists a command twice")
++    return ops_by_id
  
--			if (ctrl_dumppolicy_put_op(skb, cb, &doit, &dumpit))
-+			if (ctrl_dumppolicy_put_op(skb, cb, ctx->op,
-+						   &doit, &dumpit))
- 				return skb->len;
+-    # All ops should have a policy (either do or dump has one)
+-    for op in ops_by_id.values():
+-        ksft_in('cmd-cap-haspol', op['flags'],
+-                comment=f"op {op['id']} missing haspol")
++
++def _get_policy_map(ctrl, req):
++    """
++    The policy map in the Netlink replies looks like this:
++
++         [{'family-id': 16, 'op-policy': {'do': 0, 'dump': 0, 'op-id': 3}},
++          {'family-id': 16, 'op-policy': {'dump': 1, 'op-id': 4}}, ...]
++
++    Return the mapping:
++
++         {3:{'do','dump'}, 4:{'dump'}}
++
++    The policy itself is discarded here, only return which command has policy.
++    """
++    pol_map = {}
++    for msg in ctrl.getpolicy(req, dump=True):
++        if 'op-policy' not in msg:
++            continue
++        modes = dict(msg['op-policy'])
++        cmd = modes.pop('op-id')
++        ksft_not_in(cmd, pol_map, comment=f"command {cmd} reported twice")
++        pol_map[cmd] = set(modes.keys())
++    return pol_map
++
++
++def getfamily_do(ctrl) -> None:
++    """Query single families by name and validate their ops."""
++    ops = {name: _get_ops(ctrl, name) for name in FAMILIES}
++
++    for name, ops_by_id in ops.items():
++        for op in ops_by_id.values():
++            # All ops in nlctrl and netdev have a policy
++            ksft_in('cmd-cap-haspol', op['flags'],
++                    comment=f"{name} op {op['id']} missing haspol")
++            ksft_true(op['flags'] & {'cmd-cap-do', 'cmd-cap-dump'},
++                      comment=f"{name} op {op['id']} has no handler")
++
++    # nlctrl getfamily (id 3) does both, getpolicy (id 10) is dump-only
++    ksft_in('cmd-cap-do', ops['nlctrl'][3]['flags'])
++    ksft_in('cmd-cap-dump', ops['nlctrl'][3]['flags'])
++    ksft_not_in('cmd-cap-do', ops['nlctrl'][10]['flags'])
++    ksft_in('cmd-cap-dump', ops['nlctrl'][10]['flags'])
++
++    netdev = ops['netdev']
  
- 			/* done with the per-op policy index list */
-@@ -1730,6 +1731,7 @@ static int ctrl_dumppolicy(struct sk_buff *skb, struct netlink_callback *cb)
+     # dev-get (id 1) should support both do and dump
+-    ksft_in('cmd-cap-do', ops_by_id[1]['flags'])
+-    ksft_in('cmd-cap-dump', ops_by_id[1]['flags'])
++    ksft_in('cmd-cap-do', netdev[1]['flags'])
++    ksft_in('cmd-cap-dump', netdev[1]['flags'])
  
- 		while (ctx->dump_map) {
- 			if (ctrl_dumppolicy_put_op(skb, cb,
-+						   ctx->op_iter->cmd,
- 						   &ctx->op_iter->doit,
- 						   &ctx->op_iter->dumpit))
- 				return skb->len;
+     # qstats-get (id 12) is dump-only
+-    ksft_not_in('cmd-cap-do', ops_by_id[12]['flags'])
+-    ksft_in('cmd-cap-dump', ops_by_id[12]['flags'])
++    ksft_not_in('cmd-cap-do', netdev[12]['flags'])
++    ksft_in('cmd-cap-dump', netdev[12]['flags'])
+ 
+     # napi-set (id 14) is do-only and requires admin
+-    ksft_in('cmd-cap-do', ops_by_id[14]['flags'])
+-    ksft_not_in('cmd-cap-dump', ops_by_id[14]['flags'])
+-    ksft_in('admin-perm', ops_by_id[14]['flags'])
++    ksft_in('cmd-cap-do', netdev[14]['flags'])
++    ksft_not_in('cmd-cap-dump', netdev[14]['flags'])
++    ksft_in('admin-perm', netdev[14]['flags'])
+ 
+     # Notification-only commands (dev-add/del/change-ntf etc.) must
+     # not appear in the ops list since they have no do/dump handlers.
+     for ntf_id in [2, 3, 4, 6, 7, 8]:
+-        ksft_not_in(ntf_id, ops_by_id,
++        ksft_not_in(ntf_id, netdev,
+                     comment=f"ntf-only cmd {ntf_id} should not be in ops")
+ 
+ 
+@@ -103,6 +149,41 @@ from lib.py import NetdevFamily, EthtoolFamily, NlctrlFamily
+             comment="linkinfo-set should not have a dump policy")
+ 
+ 
++def getpolicy_op_map(ctrl) -> None:
++    """Check the op-to-policy map consistency. Each op with 'haspol' flag
++    has to have a policy. The policy back-references must name only
++    real ops that exist, have given modes (do vs dump) and have 'haspol'.
++    """
++    for name in FAMILIES:
++        ops_by_id = _get_ops(ctrl, name)
++        haspol = {cmd for cmd, op in ops_by_id.items()
++                  if 'cmd-cap-haspol' in op['flags']}
++
++        pol_map = _get_policy_map(ctrl, {'family-name': name})
++        ksft_eq(set(pol_map), haspol,
++                comment=f"{name} policy map does not match the op list")
++
++        # Walk the op list rather than the map, the map may be missing
++        # the very op we are after. Asking for a command the family does
++        # not have is an error, so it must not come from the map either.
++        for cmd in sorted(haspol):
++            modes = pol_map.get(cmd, set())
++
++            # The kernel only reports a mode the op actually has.
++            if 'do' in modes:
++                ksft_in('cmd-cap-do', ops_by_id[cmd]['flags'],
++                        comment=f"{name} cmd {cmd} has no do")
++            if 'dump' in modes:
++                ksft_in('cmd-cap-dump', ops_by_id[cmd]['flags'],
++                        comment=f"{name} cmd {cmd} has no dump")
++
++            # Asking for one op builds the map in a different place in
++            # the kernel, it has to report what the full dump did.
++            single = _get_policy_map(ctrl, {'family-name': name, 'op': cmd})
++            ksft_eq(single, {cmd: modes},
++                    comment=f"{name} cmd {cmd} policy differs from the dump")
++
++
+ def getpolicy_by_op(_ctrl) -> None:
+     """Query policy for specific ops, check attr names are resolved."""
+     ndev = NetdevFamily()
+@@ -122,6 +203,7 @@ from lib.py import NetdevFamily, EthtoolFamily, NlctrlFamily
+     ksft_run([getfamily_do,
+               getfamily_dump,
+               getpolicy_dump,
++              getpolicy_op_map,
+               getpolicy_by_op],
+              args=(ctrl, ))
+     ksft_exit()
 -- 
 2.55.0
 
