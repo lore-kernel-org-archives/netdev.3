@@ -1,190 +1,182 @@
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+Received: from mail-pl1-f227.google.com (mail-pl1-f227.google.com [209.85.214.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F04E51C04D
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 17:34:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43049516161
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 17:39:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789752879; cv=none; b=HF4EwhNbNb6Gf9sWFnVv5EInAFiR/kns9IICTUK4T7Da3CmKf/fjzmmQ0yUm30s3/u2LMPRlmymEn2PDnOZis7t8ardykCN9rYx+k2laHWobPAZ/1Uhm9lU3Ih/fHqeGmP78qxCFsZfHBmIBLN5m1wH5+g9SLRYtgtv5OeubA/Q=
+	t=1789753149; cv=none; b=FOuwsXO0cCKMke750HD+W7GSOuC+xV2U2YYYMpj45jiy4ChuUDK+k0wVcVPS8YVM+AVHILfFD/53K0QWGFO4zo+Fuf86K7VzjKW3qkp5Nl87zHZEx7Y3U2x6oxTHPuc9BEquGu2us4X4jICnQMmdPW9y9Idq+1IIUx+WfEKM5tE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789752879; c=relaxed/simple;
-	bh=0/XPLyNXFdmG/2rLT7tRv7BIlIWTa5xqE/HKbfeGTlw=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=kbLzbcdH3KTem5t43N1WthQOHqRDFNPmHUzwOYAcyYMtEv46/PkN7naKca1oj8w1quUEbeZixI004Y9tlQZjE7QcRvxW4ZGO+bL9yxf2+yP1JgI7QIAY4dChuM39qhQTzPT58U9UVIEqVPoi8DOaQcwW806rimGaO9JlgkoLoZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--namangulati.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SMCDCopD; arc=none smtp.client-ip=209.85.222.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--namangulati.bounces.google.com
+	s=arc-20240116; t=1789753149; c=relaxed/simple;
+	bh=b68SMbhqEPsGIKJhflr4X1Z6aga2qlXGVURaZgut1Po=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NWvcJx+n52j3Una+1LfUWJbHYDIVydjjPioFXD7dIE0paUEkp8CnStPNSI7vk7ge9jKVozLUHJt9VG6Q4idfghCMutLo/hSB0V9jKCeaf8q0XRv3Jg0mg5aPab1aGg+DEVAyhHyOezI3Rhj2uifkUeij1yiLSNtK/iA0FjbULAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Lh9gX65v; arc=none smtp.client-ip=209.85.214.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SMCDCopD"
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-93a1b824e84so198761385a.2
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 10:34:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789752868; x=1790357668; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=C6AEc4cXydGQr/Exrh5t746/leuXeKYVLsE6wKQpIs4=;
-        b=SMCDCopDTtHput4Zhi2tNQBr0wIcHetsRp48qWRHEgU5zmf2iPj+9EhZcxakNqjMml
-         1d3w4hTyI+MHAn7otG9wOab92nBdiBNu0pw3URAA5ZZL7flXLyJseOIXGBnxkC49lQp3
-         qmxkSWfJJkRN2lG3PEcnrzryJ7SmwjwTjdrCqPPCFSkp/DtYoFZ2C/I8Iw/XGCnLPhFo
-         +QTs6eKXE/Su0BPVCEDRJiF5XGMInpI+gk1MifpraNn+E/wGSyvUdvb3YBtoQ2bGSL6P
-         jo1MZ1dNrkzPvneTm5VXWfWdHlXeO9+W81z99m4shjNc2NH12ATnEllbbOiY+cSl+eFh
-         2Xjw==
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Lh9gX65v"
+Received: by mail-pl1-f227.google.com with SMTP id d9443c01a7336-2d942c7cc2fso2985015ad.3
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 10:39:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789752868; x=1790357668;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=1e100.net; s=20260707; t=1789753147; x=1790357947;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=sncqGjwoZ2ISwzGsUBmcxEN97dqN/iEU1rIWLc2X1fQ=;
+        b=E9QlZqf1o6zCPcaeq587S8jmqkTvg03u2H6vYPzbZmEEnbIKKpFgN4Ymjgp4ODFhk/
+         pAlkWiUKHrF9019Zhqy352lym0hDcTtQqmZ5uKtUi9A86PHan03F6Nkbr8RlTthXm24D
+         VqeekmVJtUzC5Ikksu8lfZBO6P2xyvx8NuISIJWeI97i8cvn791kmipxtoYpdfSnv44F
+         s2muzIob4SYLjMIEptpLKH5cAO/8/bvZ9oHevF3QGeoGpYsrO0/omCx4Pnt+dPwKAGI8
+         QwRWDK5Uop27Qu2eVGbnWpgtbcRPhffsVnUef27CBp8Rtxlo3wDQFRozBDGxcxhXienI
+         SnVA==
+X-Gm-Message-State: AFuF++nJDmMdtwpa6U0bCSrtV76IMNjwtP9UJ90k4da3hdPTTTf5iTpJ
+	OT79/mDa+vooUI9qD268ZmFCRs3PstTBT5w0a5olgH52SiOORro9OLAPcy735/DkX+KqDQjuLiv
+	5ymlZ6H4JQaLy29nVQQv93/W6BkBztMlDFD4eUvm6Kbd5USxnqlMxo+HE3Vercr0FTOI8C6bTKZ
+	+AKkp7SuOICk4hkx0PnSRMRMnSwWF+FLGd76L9zlU7Lex5eoQCfPY9IKMGBtO6uhcDBBw6AqyHy
+	i9ZEZZ0GSM5Un4e
+X-Gm-Gg: AYBFou3CrFfRzV58msMRIWVxVwDOW//SPOZn3gIR+Q+NcK7+ooIJFpJxmnuazMBRi2e
+	u6DAyt+rIkt7lPEaky52UZ/9YztX+YN0H28EeLmOzIwLQ8z5OSDoGwA1oSooDcsMokSi1nhJvRm
+	T12y2HBBdco6OY2DG1NSyxM8KQ2Tk+iF4D+L/qtrAj+cz+ef60IowNkMcZtbq1cHpT4XIQWYMxw
+	QCAPtU9kbRzLCumfUWYkEKFK64I9Lf4B58uqZDqaOzrxLLYW6qKDYoZHu/sb4K+pxPjNt8OGtnQ
+	BnjV5S4kLuU12EZvYPjsfIA/KpKs8JlnSAu1FtRK/k59jmuFmo77LXWydiq5+9MM01w9y0c8QRg
+	AyWW0oIS11vbFSOC853ncQI/672TEmnyPputuzBIQT5qd2X6Tl9NyeNHfmeCr7rVEK5HoimTMqb
+	TqOTlEjSfYHYq0tBBxunMxYPtMaCzjLbAzU8ZwQkpaMdo=
+X-Received: by 2002:a17:90b:5305:b0:39e:4c81:6c64 with SMTP id 98e67ed59e1d1-39e54dbeb52mr6546535a91.31.1789753146511;
+        Fri, 18 Sep 2026 10:39:06 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-125.dlp.protect.broadcom.com. [144.49.247.125])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-39e6573e104sm119841a91.2.2026.09.18.10.39.06
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 18 Sep 2026 10:39:06 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-530f5e827c6so21666001cf.0
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 10:39:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1789753145; x=1790357945; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=C6AEc4cXydGQr/Exrh5t746/leuXeKYVLsE6wKQpIs4=;
-        b=a+BZQVpOhGMriA0oXCn2CvySlu2mwdguIeTYim/xhes7tBq3hs2Qho0MUj2KkxIXyQ
-         +t4okZsgs3ZvvzcZFsgTlqrjIFqVudiMb6eaqK+uiKh+mF9VkPmTZatf7E16lv+4DM7p
-         FIMzCcFYDL0FJqwo8p5fEBVVKJ70NwUW1xCXsj7GIP0EgEQ+aq6pLJIZOmNyYvUpclOx
-         z+78chlY9gHzA7JmpyEYBOqW1lLmbNWrySGRl42zyAFk3RnnDah1RCXyEhdSH0oSBCyk
-         vpolLABAhZiHPgEpadPOj92fwaqniVaqz6/Nz7EOpnOxxL6CFIJX5+r6VGGntL9JO7s7
-         Ub5g==
-X-Gm-Message-State: AFuF++nkYvXU3wjDtJ61DoBE1d4hvc3uknhjVsE+U55eRipV46UIfEll
-	mDdfFqmog+MndipXxwQa7ZqdNgdJsG6T35SJCXe9E941RCBTUEDlh3lCwZmQv77desUhSq2vms6
-	n0Yq2AqeeNMBWwrW7kEBy+vXJwT0nS5kvqLT56WLCwwJYjZxbnIVI9URuFQDqOZy0F4bCXLbcfi
-	fqyPkX9AEVtcxIdos/K30aih5FXJe8bOZh+c11FfH5TVJ9h1l5qt6DwptxK6DS+30=
-X-Received: from qknxx24.prod.google.com ([2002:a05:620a:5d98:b0:939:eccf:df56])
- (user=namangulati job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:4148:b0:93a:5d6:9ef2 with SMTP id af79cd13be357-93bdc70b23emr475000685a.36.1789752867495;
- Fri, 18 Sep 2026 10:34:27 -0700 (PDT)
-Date: Fri, 18 Sep 2026 17:34:13 +0000
+        bh=sncqGjwoZ2ISwzGsUBmcxEN97dqN/iEU1rIWLc2X1fQ=;
+        b=Lh9gX65v2zTZJb3HEeTyPjzCBcBOhuiz3FJVHcI8y3i6w70vdhMaCb36UJ4GaIS+YU
+         X2ISn0xntpQ58ia9onwMl7a8FcEKB6XCLOEw48sxdq/NFSHYtfg+sFGOOgQR8lmdFm5I
+         Qbqrm0WN+2v8b3c2/GcNcu1i0ot48PASqwElY=
+X-Received: by 2002:a05:622a:30a:b0:532:84d3:ac7 with SMTP id d75a77b69052e-5329e47ff64mr57465731cf.41.1789753145287;
+        Fri, 18 Sep 2026 10:39:05 -0700 (PDT)
+X-Received: by 2002:a05:622a:30a:b0:532:84d3:ac7 with SMTP id d75a77b69052e-5329e47ff64mr57465261cf.41.1789753144786;
+        Fri, 18 Sep 2026 10:39:04 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532ae76d5a7sm1954151cf.27.2026.09.18.10.39.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 18 Sep 2026 10:39:04 -0700 (PDT)
+Message-ID: <06a2be46-7ea1-4ffd-a6d7-95ae4d94ca84@broadcom.com>
+Date: Fri, 18 Sep 2026 10:39:00 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260918173413.3222413-1-namangulati@google.com>
-Subject: [PATCH net] net: gro_cells: prevent enabling threaded NAPI on gro_cells
-From: Naman Gulati <namangulati@google.com>
-To: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
-Cc: bigeasy@linutronix.de, kuniyu@google.com, 
-	syzbot+f0661448aa9511ce744a@syzkaller.appspotmail.com, 
-	Naman Gulati <namangulati@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 4/8] net: bcmgenet: clean up RX NAPI on
+ bcmgenet_init_rx_queues failure
+To: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: netdev@vger.kernel.org, Cursor <cursoragent@cursor.com>,
+ Doug Berger <opendmb@gmail.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Zak Kemble <zakkemble@gmail.com>,
+ Simon Horman <horms@kernel.org>, Ryo Takakura <ryotkkr98@gmail.com>,
+ linux-kernel@vger.kernel.org
+References: <20260918000732.276506-1-florian.fainelli@broadcom.com>
+ <20260918000732.276506-5-florian.fainelli@broadcom.com>
+ <d8b67a2402ec38f7cb374c5b223afb81@tipi-net.de>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <florian.fainelli@broadcom.com>
+Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
+ xsBNBFPAG8ABCAC3EO02urEwipgbUNJ1r6oI2Vr/+uE389lSEShN2PmL3MVnzhViSAtrYxeT
+ M0Txqn1tOWoIc4QUl6Ggqf5KP6FoRkCrgMMTnUAINsINYXK+3OLe7HjP10h2jDRX4Ajs4Ghs
+ JrZOBru6rH0YrgAhr6O5gG7NE1jhly+EsOa2MpwOiXO4DE/YKZGuVe6Bh87WqmILs9KvnNrQ
+ PcycQnYKTVpqE95d4M824M5cuRB6D1GrYovCsjA9uxo22kPdOoQRAu5gBBn3AdtALFyQj9DQ
+ KQuc39/i/Kt6XLZ/RsBc6qLs+p+JnEuPJngTSfWvzGjpx0nkwCMi4yBb+xk7Hki4kEslABEB
+ AAHNMEZsb3JpYW4gRmFpbmVsbGkgPGZsb3JpYW4uZmFpbmVsbGlAYnJvYWRjb20uY29tPsLB
+ IQQQAQgAywUCZWl41AUJI+Jo+hcKAAG/SMv+fS3xUQWa0NryPuoRGjsA3SAUAAAAAAAWAAFr
+ ZXktdXNhZ2UtbWFza0BwZ3AuY29tjDAUgAAAAAAgAAdwcmVmZXJyZWQtZW1haWwtZW5jb2Rp
+ bmdAcGdwLmNvbXBncG1pbWUICwkIBwMCAQoFF4AAAAAZGGxkYXA6Ly9rZXlzLmJyb2FkY29t
+ Lm5ldAUbAwAAAAMWAgEFHgEAAAAEFQgJChYhBNXZKpfnkVze1+R8aIExtcQpvGagAAoJEIEx
+ tcQpvGagWPEH/2l0DNr9QkTwJUxOoP9wgHfmVhqc0ZlDsBFv91I3BbhGKI5UATbipKNqG13Z
+ TsBrJHcrnCqnTRS+8n9/myOF0ng2A4YT0EJnayzHugXm+hrkO5O9UEPJ8a+0553VqyoFhHqA
+ zjxj8fUu1px5cbb4R9G4UAySqyeLLeqnYLCKb4+GklGSBGsLMYvLmIDNYlkhMdnnzsSUAS61
+ WJYW6jjnzMwuKJ0ZHv7xZvSHyhIsFRiYiEs44kiYjbUUMcXor/uLEuTIazGrE3MahuGdjpT2
+ IOjoMiTsbMc0yfhHp6G/2E769oDXMVxCCbMVpA+LUtVIQEA+8Zr6mX0Yk4nDS7OiBlvOwE0E
+ U8AbwQEIAKxr71oqe+0+MYCc7WafWEcpQHFUwvYLcdBoOnmJPxDwDRpvU5LhqSPvk/yJdh9k
+ 4xUDQu3rm1qIW2I9Puk5n/Jz/lZsqGw8T13DKyu8eMcvaA/irm9lX9El27DPHy/0qsxmxVmU
+ pu9y9S+BmaMb2CM9IuyxMWEl9ruWFS2jAWh/R8CrdnL6+zLk60R7XGzmSJqF09vYNlJ6Bdbs
+ MWDXkYWWP5Ub1ZJGNJQ4qT7g8IN0qXxzLQsmz6tbgLMEHYBGx80bBF8AkdThd6SLhreCN7Uh
+ IR/5NXGqotAZao2xlDpJLuOMQtoH9WVNuuxQQZHVd8if+yp6yRJ5DAmIUt5CCPcAEQEAAcLB
+ gQQYAQIBKwUCU8AbwgUbDAAAAMBdIAQZAQgABgUCU8AbwQAKCRCTYAaomC8PVQ0VCACWk3n+
+ obFABEp5Rg6Qvspi9kWXcwCcfZV41OIYWhXMoc57ssjCand5noZi8bKg0bxw4qsg+9cNgZ3P
+ N/DFWcNKcAT3Z2/4fTnJqdJS//YcEhlr8uGs+ZWFcqAPbteFCM4dGDRruo69IrHfyyQGx16s
+ CcFlrN8vD066RKevFepb/ml7eYEdN5SRALyEdQMKeCSf3mectdoECEqdF/MWpfWIYQ1hEfdm
+ C2Kztm+h3Nkt9ZQLqc3wsPJZmbD9T0c9Rphfypgw/SfTf2/CHoYVkKqwUIzI59itl5Lze+R5
+ wDByhWHx2Ud2R7SudmT9XK1e0x7W7a5z11Q6vrzuED5nQvkhAAoJEIExtcQpvGagugcIAJd5
+ EYe6KM6Y6RvI6TvHp+QgbU5dxvjqSiSvam0Ms3QrLidCtantcGT2Wz/2PlbZqkoJxMQc40rb
+ fXa4xQSvJYj0GWpadrDJUvUu3LEsunDCxdWrmbmwGRKqZraV2oG7YEddmDqOe0Xm/NxeSobc
+ MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
+ 7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
+ 95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
+In-Reply-To: <d8b67a2402ec38f7cb374c5b223afb81@tipi-net.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-gro_cells allocates a per-CPU struct gro_cell with per-CPU queues
-(cell->napi_skbs), per-CPU local_lock_t (cell->bh_lock), and per-CPU
-napi_struct (cell->napi). On !CONFIG_PREEMPT_RT, local_lock_t only
-provides lockdep annotation (and is a complete no-op when
-CONFIG_DEBUG_LOCK_ALLOC is disabled), relying on per-CPU locality and
-disabled BH context for mutual exclusion; it does not provide cross-CPU
-synchronization.
+On 9/18/26 03:43, Nicolai Buchwitz wrote:
+> Hi Florian
+> 
+> On 18.9.2026 02:07, Florian Fainelli wrote:
+>> bcmgenet_init_rx_ring() registers a NAPI instance for each RX ring via
+>> netif_napi_add(). If bcmgenet_init_rx_queues() fails while initializing
+>> subsequent rings, bcmgenet_init_dma() frees the RX buffers and page pools
+>> but fails to clean up already registered NAPI instances with
+>> bcmgenet_fini_rx_napi(). This leaves stale NAPI structs on the net_device
+>> napi_list.
+>>
+>> Call bcmgenet_fini_rx_napi() in the error handling path of
+>> bcmgenet_init_dma() when bcmgenet_init_rx_queues() fails.
+>>
+>> Fixes: 1c1008c793fa ("net: bcmgenet: add main driver file")
+>> Assisted-by: LLM
+>> Co-authored-by: Cursor <cursoragent@cursor.com>
+>> Change-Id: I45982e0e198a44f3f56b1300f462870462b81108
+>> ---
+>>  drivers/net/ethernet/broadcom/genet/bcmgenet.c | 1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/ 
+>> net/ethernet/broadcom/genet/bcmgenet.c
+>> index bfb74dca55d6..ef155a170fa6 100644
+>> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+>> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+>> @@ -3167,6 +3167,7 @@ static int bcmgenet_init_dma(struct 
+>> bcmgenet_priv *priv, bool flush_rx)
+>>      ret = bcmgenet_init_rx_queues(priv->dev);
+>>      if (ret) {
+>>          netdev_err(priv->dev, "failed to initialize Rx queues\n");
+>> +        bcmgenet_fini_rx_napi(priv);
+> 
+> 
+> napi->dev is still NULL here, bcmgenet_init_rx_ring() only fails before
+> netif_napi_add().  netif_napi_del() does netdev_lock(napi->dev), so this
+> oopses on -ENOMEM at first open.
+> 
+> rx_queues is 0 in all hw_params anyway, so there is nothing to clean up.
+> Drop this one?
 
-When threaded NAPI is enabled on a device backed by gro_cells (e.g.
-gre0, vxlan, geneve) via sysfs or Netlink, unbound kernel threads are
-created for each per-CPU NAPI. When gro_cells_receive() on CPU A
-enqueues a packet to cell_A and calls napi_schedule(&cell_A->napi)
-while holding cell_A->bh_lock, the woken kthread can run concurrently
-on remote CPU B.
-
-When CPU B runs gro_cell_poll(&cell_A->napi) and calls
-__local_lock_nested_bh(&cell_A->bh_lock), lockdep detects that the lock
-is already held by CPU A's task and triggers a warning:
-
-  WARNING: CPU: 1 PID: 377 at net/core/gro_cells.c:66 gro_cell_poll
-  DEBUG_LOCKS_WARN_ON(l->owner)
-  CPU: 1 UID: 0 PID: 377 Comm: napi/gre0-0 Not tainted 7.3.0-rc2
-  Call Trace:
-   <TASK>
-   __local_lock_nested_bh include/linux/local_lock_internal.h:92
-   gro_cell_poll+0x5aa/0x6c0 net/core/gro_cells.c:66
-   napi_threaded_poll+0x39b/0x600 net/core/dev.c:7048
-   kthread+0x71e/0x870 kernel/kthread.c:464
-   ret_from_fork+0x5d/0x90 arch/x86/kernel/process.c:167
-   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:264
-   </TASK>
-
-On !CONFIG_PREEMPT_RT kernels without lockdep, concurrent execution of
-__skb_queue_tail() on CPU A and __skb_dequeue() on CPU B without
-cross-CPU locks leads to silent queue corruption.
-
-Virtual per-CPU NAPIs cannot support unbound threaded NAPI. Just as
-gro_cells sets NAPI_STATE_NO_BUSY_POLL because virtual NAPIs cannot
-support busy polling, introduce NAPI_STATE_NO_THREADED to indicate that
-threaded mode is not supported.
-
-Set NAPI_STATE_NO_THREADED in gro_cells_init(), and fail early with
--EOPNOTSUPP when trying to enable threaded napi on gro_cells netdevs.
-
-Fixes: 25718fdcbdd2 ("net: gro_cells: Use nested-BH locking for gro_cell")
-Reported-by: syzbot+f0661448aa9511ce744a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6aad6d7b.0c43d342.320d00.0001.GAE@google.com
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Signed-off-by: Naman Gulati <namangulati@google.com>
----
- include/linux/netdevice.h | 2 ++
- net/core/gro_cells.c      | 1 +
- net/core/net-sysfs.c      | 4 +++-
- net/core/netdev-genl.c    | 3 +++
- 4 files changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 87cafc932e9e..951734bc8b36 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -433,6 +433,7 @@ enum {
- 	NAPI_STATE_SCHED_THREADED,	/* Napi is currently scheduled in threaded mode */
- 	NAPI_STATE_HAS_NOTIFIER,	/* Napi has an IRQ notifier */
- 	NAPI_STATE_THREADED_BUSY_POLL,	/* The threaded NAPI poller will busy poll */
-+	NAPI_STATE_NO_THREADED,		/* Threaded mode is not supported */
- };
- 
- enum {
-@@ -448,6 +449,7 @@ enum {
- 	NAPIF_STATE_SCHED_THREADED	= BIT(NAPI_STATE_SCHED_THREADED),
- 	NAPIF_STATE_HAS_NOTIFIER	= BIT(NAPI_STATE_HAS_NOTIFIER),
- 	NAPIF_STATE_THREADED_BUSY_POLL	= BIT(NAPI_STATE_THREADED_BUSY_POLL),
-+	NAPIF_STATE_NO_THREADED		= BIT(NAPI_STATE_NO_THREADED),
- };
- 
- enum gro_result {
-diff --git a/net/core/gro_cells.c b/net/core/gro_cells.c
-index d8c0a2867120..9f8884d56f59 100644
---- a/net/core/gro_cells.c
-+++ b/net/core/gro_cells.c
-@@ -92,6 +92,7 @@ int gro_cells_init(struct gro_cells *gcells, struct net_device *dev)
- 		local_lock_init(&cell->bh_lock);
- 
- 		set_bit(NAPI_STATE_NO_BUSY_POLL, &cell->napi.state);
-+		set_bit(NAPI_STATE_NO_THREADED, &cell->napi.state);
- 
- 		netif_napi_add(dev, &cell->napi, gro_cell_poll);
- 		napi_enable(&cell->napi);
-diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
-index 352173df7578..296fdc007862 100644
---- a/net/core/net-sysfs.c
-+++ b/net/core/net-sysfs.c
-@@ -743,9 +743,11 @@ static ssize_t threaded_show(struct device *dev,
- 
- static int modify_napi_threaded(struct net_device *dev, unsigned long val)
- {
-+	struct napi_struct *napi;
- 	int ret;
- 
--	if (list_empty(&dev->napi_list))
-+	napi = list_first_entry_or_null(&dev->napi_list, typeof(*napi), dev_list);
-+	if (!napi || test_bit(NAPI_STATE_NO_THREADED, &napi->state))
- 		return -EOPNOTSUPP;
- 
- 	if (val != 0 && val != 1)
-diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-index cb18db681640..661f87e2f015 100644
---- a/net/core/netdev-genl.c
-+++ b/net/core/netdev-genl.c
-@@ -334,6 +334,9 @@ netdev_nl_napi_set_config(struct napi_struct *napi, struct genl_info *info)
- 	if (info->attrs[NETDEV_A_NAPI_THREADED]) {
- 		int ret;
- 
-+		if (test_bit(NAPI_STATE_NO_THREADED, &napi->state))
-+			return -EOPNOTSUPP;
-+
- 		threaded = nla_get_uint(info->attrs[NETDEV_A_NAPI_THREADED]);
- 		ret = napi_set_threaded(napi, threaded);
- 		if (ret)
+Yes, that's a good point, thanks!
 -- 
-2.55.0.1082.g2b9226bbc0-goog
-
+Florian
