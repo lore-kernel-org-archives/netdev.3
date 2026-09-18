@@ -1,340 +1,217 @@
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5D63B42F1
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 14:23:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C031D3AF662
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 14:27:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789741396; cv=none; b=ocEfInJ58rDbSl1tNrhEBFEhFJ0BkJy9C/Nc6cq6cHvS/VSq8UAZIzucokd55uhzyP5ctiXNoH7X/01jVk8Pe0q8jMD7oWdX/DuvSeQpKTbz0R9ECcXsWdJcHvQDFW/Wmbl1SMPI+mWgvGOkXH54bl6J37sxFofbu5CiUV3LbPQ=
+	t=1789741682; cv=none; b=M4WQw0JGmlsepV5p5tYTW+P1kiJhl4NlkxqJFK6/KRiPy78Ybu+MwKf5o+5Fhac0d1ksawQP1XUmhGWdh60akvQSRZbmyvzUJMYcCshFfRxC36vIqr+vMs1Lqd1i+l2oqrANZkjV3paRvHLpPOW+jZVCM0FKt+dKSpCldaTBpyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789741396; c=relaxed/simple;
-	bh=P25xDoU7/1mf3eN1kegDER1cfqBSsDHQXiE+UJt2nQs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HGRveh5haiEZ5KSnF+8ETaCXM/yzqy2hG08fiTqBdV42wj1AZsdjq6Bzi3+h8m0br6hB7hVr0nZQwF0lNav087kBfdJfLMv4HT3Z/KaGAf6s1baow8sMlWnD58T22GBl1njRaFACuOe7yiflSwLuuAQAMYy0JgiqgqR1N224/Fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=iit.org.ua; spf=pass smtp.mailfrom=iit.org.ua; dkim=pass (2048-bit key) header.d=iit.org.ua header.i=@iit.org.ua header.b=Ou8mGzpt; arc=none smtp.client-ip=74.125.225.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=iit.org.ua
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iit.org.ua
+	s=arc-20240116; t=1789741682; c=relaxed/simple;
+	bh=qWPM8mEcQAiZiBe5wIuy4aqUTDeswnrEyUyg1zkQHi0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ph2fqyOVDIgSxJ2z8BrCBHQkl5AwySveJPsFHhR7j0ZQow6E3Uw+ZgUGOfzUsODCr4d0jXqzZOr4Nu6z8NiUKdomVETBJuYkbFUeVSIvPTlzsd3VdXxxzH4Snxj8Zr95kTUaWfjqJ9+lJktBsr2BwHf2xx57x1CUQoYTx8XZC9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LpgSBRZ5; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=U61/uDEf; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iit.org.ua header.i=@iit.org.ua header.b="Ou8mGzpt"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-48437356d60so421044f8f.3
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 07:23:13 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LpgSBRZ5";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="U61/uDEf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789741678;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tzy4rg64m2nfrHznucdcUVmAGxkvGHwxFBaPQdjr128=;
+	b=LpgSBRZ5zdBjIaf01/O6nqV4COH0L6BRAtehULdDUHkfislYaW/gOFzNMJVj6ZVEIjft0x
+	YKLKYKpHApQ1dFcDNfdKpflF/X4pMo0GkfluBT8lY11gClwZx7Do68oUAP/eY3Vka0hDbv
+	koa+7oFHnnNJWpAgVr98EjPSQdn8LJY=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-617-YA-aihrCPuC_JXhHyFfJkA-1; Fri, 18 Sep 2026 10:27:54 -0400
+X-MC-Unique: YA-aihrCPuC_JXhHyFfJkA-1
+X-Mimecast-MFC-AGG-ID: YA-aihrCPuC_JXhHyFfJkA_1789741674
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4955e865174so5008445e9.3
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 07:27:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=iit.org.ua; s=google; t=1789741392; x=1790346192; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7EAmXw7Fnj7MpFoFAOhsQZQdEvNv2Y9tK2i+FbtsLBI=;
-        b=Ou8mGzptFbZCU8GXDMPlPk6rQonvOGBwvtlGt1ODSn2YonBs/FtmE5f4f0AinccfEc
-         Na2TZjxel6yzjhiV7WYlHd8o4Z0e+ZTBJ9Nu8LAMr6yrHe5AwtscsIorIRTVi+VDkK6j
-         J9JEv+LnX3yTLztC9/sQoU1NU04YKcZQ6Z8QCBaw5Q9gXUQG2NFBV/dO0hiqmB3vEZ+3
-         INNhhzfJBgpOO1GzZmcyHG3XF4WZOf0CwH7YN39GttQmjLHsbcdxagivF6K6GV+fHowF
-         oV/VR+XSwFX4W/tUFqSPqWhyvRHfBEj+7xG7LMmbUv60UVzjBGj3u6O8uxl1+GGzKQ5G
-         X5Cw==
+        d=redhat.com; s=google; t=1789741673; x=1790346473; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Tzy4rg64m2nfrHznucdcUVmAGxkvGHwxFBaPQdjr128=;
+        b=U61/uDEffANFsZZwQ12ed6ezA26j+XuCSfi2k6R6pCeFf+udfNWqqwi5PV4yUJcCZW
+         URWJPGwhanmZUy48UFPgiHQ2NlzDejnLaswR6bd6CnVC3D1l2I1FA8q9xQNGYcz2mAYr
+         jSdgLj20iJLb8VpY6FO/JRx09deYgEs6QsJFqYq4PxLugNGcex7n4qY8lFApIZLvMIhz
+         cWwe6z7ySjxtCMZF9aZmfinAcNcg2GtnTtCoHe3GtE02es8GWeRk8gxeHAS7b9SST3d9
+         SqeKkXdUo1t0R78rNYuJAei2dyF8KdSQ0Mw6a5LzQbu1+RCCqIpQ68bK/C+AJVGmkKMw
+         ypsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789741392; x=1790346192;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7EAmXw7Fnj7MpFoFAOhsQZQdEvNv2Y9tK2i+FbtsLBI=;
-        b=Fe+LxX5Fejhbm7nt73T9D3Bqje4TuFdir/SPM/7MTfGpVfCuJdKFVV/dAHEUt19yvE
-         QRzcpg4xy0TB+DcH+0YS11cIuIUvJTZ85jHvEvt2QgKm+zBTo+rOs02H/mEwNBufPzqe
-         s0yHfBvAlfS672lfNKpW/LZreZ4KUHbp+tZukqS6UqtHq6WjviyQP9ziIqAYX6H8s+2h
-         4Vyr+I0DJ+ijEbJYEGIzULDxxrsUGET8LMpJWGrO2lc40kJHtcWAvP0E5msQuGUBr3JC
-         6ef3QYHPL349YUU/mlC9IZEqLl6gJIOjF6D/Sml+epXDgYVp5RM3oes6DGdBCnL9kUHb
-         FGtA==
-X-Forwarded-Encrypted: i=1; AKwUvByZpDnhBA+B0FIcZ3H0LsQJvywirZJ4VCg10y9y/Rwz9lcUhB3zfn+vXvvHwQK4EF68OXOv830=@vger.kernel.org
-X-Gm-Message-State: AFuF++lGPNYhKa9sEXgJK5TSHamR10hhWuroGR1jsrG8TPkp7Ar4/SZu
-	XwSLFg5ki7ZlRosw6/oZvNiUitJrNed1ZMWk5xOH8Uk54IeY1y1AUbJrFu0kdMdgiZY=
-X-Gm-Gg: AYBFou0UUZD/XAl60ZCcLsPvKhX++fFfIN7HFD4qaE6Rkkwg59pBl7FxBKCNLokO+sM
-	q/tvXTveDzGQ5Wp/AeRZluMGKT8b+liQiG7TFhg53OTxPtyb29N7zxrJHtE0cXSI0Mp9p/8gdRF
-	lyo6HxF+IltLGYDtbqct5Y4ARlc7zd+z7O/Qy47GVGE28Y+pl/o2e5emV8Qzg7MlI0MkbqLpTgv
-	lg/aWo29cV64MFagNkR8zRXy4G+f/i0ZeNOeaaeCWZGGtxSvYKdJs+zyZt9C7IBjflgVrvAlhhb
-	rBv3SF291AZa3kdgPEyjjFvhl0eVA2SopaoMNaowjFtIWHSMKgNXR4yMjHtkeuoB3l/E2OF/uyU
-	WUPqHaHpI0I8//j7uycqwM1WEX9k8jgNQMrSi5TdwptTdrIjd5OrleCl8k/f2VcEsiwzaxG/AoW
-	+sNmDNZnVlRim/RJbKxdcu/xBOHg/5SWIPYqZ1i7B8Ec9FXLCpvhNV7YOa4VuvhMIH5TPajSLlC
-	Hk=
-X-Received: by 2002:a5d:5f41:0:b0:47f:e377:8d61 with SMTP id ffacd0b85a97d-4871e215994mr4806967f8f.11.1789741391505;
-        Fri, 18 Sep 2026 07:23:11 -0700 (PDT)
-Received: from archbtw ([212.1.106.18])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4871feb5d9asm4597901f8f.2.2026.09.18.07.23.10
+        d=1e100.net; s=20260707; t=1789741673; x=1790346473;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Tzy4rg64m2nfrHznucdcUVmAGxkvGHwxFBaPQdjr128=;
+        b=lSGsz4NLRdHt213KyH4+Yq9NflPJkjqBQjKVA/a5di2lglG4rAhoXj6VLp6KITMVkG
+         sKFzC/BI6KXAM24bVb3Mljni0W0Q2jSQS/+eMluV/4FD+e4kwCYbX/CLS7yWREL0A1Kz
+         OcB1A0jeeEVIjbsNX3dupSDgBMXObz4zzLTQtGg1tSDa/SQItRS37JRXZVuq/RLMCdxl
+         S1xEB28acG4Q2/7Jc4w3LaUFjM1zKNF8U3FlvfRsGlLe9D77ZabKx/9UGLiLduzyQt1I
+         thhnrsX8eF/gPAqquGQ9oHcvInV3MATHVYnqLVNx7uFFxR/Te/1aqmLQpKRMr3zvuSyo
+         XdkA==
+X-Forwarded-Encrypted: i=1; AKwUvByujS0lqeuep+RJ25vt4g8+za0uXFyPHXYE+QuTP18KAm0SAKcrkS7DkxDIkCuDxauDdp/OUVs=@vger.kernel.org
+X-Gm-Message-State: AFuF++kRn2jgtmSY7TqCdrcFqgbz5/umxKA2c5YY1BCKNDYc2sHvvm3V
+	mHlbqy5zGkERWRMNx7T2VjENq+MkS0RvlZlqLSWktJnu+ZVkSngEXNQjrJechFACN9gozF8C3NY
+	7Hn5aJd+loJGvAkq6FYwji6o5XSvg5k6tQhCA/MLWP38VKtV1pVON2lJcdA==
+X-Gm-Gg: AYBFou1eklkYuQ1RDpiunlT2ziIaC/i0qNvbhLfpsGaMMDdnL4u2kWjw6VEQMWDRCmh
+	nkzBGb6exVBRi5tXO6MGuD15cpHgI8/NdivWvHfFd3PMruuSiLbHgq4q+/HJtOVKywDLtXPzqVz
+	X9+S0ApTL0rd+S4POKYBshEkA6nEbJwqXZWWeG0eSNCdyXNunRUHsnaFfohbHdO+DwCKyv8WX4p
+	eT+2bpTFtbQalv0t7AhHWpvB6VCB4tSx1hIk0EJiHk8jtRSqSrvOZc4obX4ZgzOn+WSfXnAFjmz
+	0q5QdQ8Z8D2t0WlZpMcVg3y8n3igipTeB//vRRUNVQlOvCAitSjqCFNCwHHaDrMjwJOGd+DiH14
+	0oGKLd1NjJQG5cbB0NbM+IbbI24qKnu1/oNrzvWbQarKjkQ==
+X-Received: by 2002:a05:600d:4449:10b0:49f:cc2a:f73a with SMTP id 5b1f17b1804b1-49fcc2af743mr10053735e9.25.1789741673578;
+        Fri, 18 Sep 2026 07:27:53 -0700 (PDT)
+X-Received: by 2002:a05:600d:4449:10b0:49f:cc2a:f73a with SMTP id 5b1f17b1804b1-49fcc2af743mr10053175e9.25.1789741672904;
+        Fri, 18 Sep 2026 07:27:52 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-53-30-11.retail.telecomitalia.it. [79.53.30.11])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48720081426sm4196721f8f.33.2026.09.18.07.27.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 07:23:11 -0700 (PDT)
-From: Stepan Svatenko <ssvatenko@iit.org.ua>
-To: kuba@kernel.org
-Cc: PrashanthKumar.K.R@amd.com,
-	Raju.Rangoju@amd.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	stable@vger.kernel.org,
-	Stepan Svatenko <ssvatenko@iit.org.ua>,
-	Claude Sonnet 5 <noreply@anthropic.com>
-Subject: [PATCH v2] amd-xgbe: fix comm_ownership mutex deadlock on SFP module removal
-Date: Fri, 18 Sep 2026 17:22:38 +0300
-Message-ID: <20260918142238.191589-1-ssvatenko@iit.org.ua>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260903024059.2957610-1-kuba@kernel.org>
-References: <20260903024059.2957610-1-kuba@kernel.org>
+        Fri, 18 Sep 2026 07:27:52 -0700 (PDT)
+Date: Fri, 18 Sep 2026 16:27:46 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Jason Wang <jasowangio@gmail.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, sargun@sargun.me, jlinbox@meta.com, 
+	Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next 2/6] vsock: add IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS
+Message-ID: <aq1D1S9p9vRl7eV_@sgarzare-redhat>
+References: <20260902-vsock-guest-ns-v1-0-9995383e9a8b@meta.com>
+ <20260902-vsock-guest-ns-v1-2-9995383e9a8b@meta.com>
+ <aqlTlFvQL34-WViB@sgarzare-redhat>
+ <aqmTYoCMmzx1BM1v@devvm29614.prn0.facebook.com>
+ <aqqPXr2LNJUM4yMW@sgarzare-redhat>
+ <aqsI5BXRB96dkIHm@devvm29614.prn0.facebook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <aqsI5BXRB96dkIHm@devvm29614.prn0.facebook.com>
 
-xgbe_phy_sfp_detect() acquires xgbe_phy_comm_lock (via
-xgbe_phy_get_comm_ownership()) and holds it across calls that can end
-up freeing the external PHY device:
+On Wed, Sep 16, 2026 at 02:23:48PM -0700, Bobby Eshleman wrote:
+>On Wed, Sep 16, 2026 at 02:57:43PM +0200, Stefano Garzarella wrote:
+>> On Tue, Sep 15, 2026 at 11:50:10AM -0700, Bobby Eshleman wrote:
+>> > On Tue, Sep 15, 2026 at 05:28:25PM +0200, Stefano Garzarella wrote:
+>> > > On Wed, Sep 02, 2026 at 04:00:48PM -0700, Bobby Eshleman wrote:
+>> > > > From: Bobby Eshleman <bobbyeshleman@meta.com>
+>> > > >
+>> > > > Namespaces let a host isolate a VM's vsock traffic to a specific
+>> > > > namespace, but in a guest vsock traffic cannot be isolated to a
+>> > > > namespace. The vsock device is hardcoded to global mode and can't be
+>> > > > moved into a local-mode namespace.
+>> > > >
+>> > > > Introduce ioctl IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS on /dev/vsock that
+>> > >
+>> > > We already discussed about netlink, but I'm not sure how much work can
+>> > > take, here just another alternative, what about adding
+>> > > /proc/sys/net/vsock/g2h_owner sysctl that can be read/write where:
+>> > > 0 - no owner
+>> > > 1 - owner
+>> > >
+>> > > 0 -> 1 transition, move the device in the new nets
+>> > > 1 -> 0 transition, reset back to init_ns
+>> >
+>> > That seems reasonable, but if multi-device support ever lands, this
+>> > might be harder to adapt cleanly?
+>>
+>> I see, but maybe we can have a dev0/ dev1/ subfolders in that case.
+>>
+>> >
+>> > >
+>> > > > gives userspace a way to move the device to the calling pid's namespace.
+>> > > > The call requires CAP_NET_ADMIN in the root user namespace. A privileged
+>> > > > user wishing to "unassign" the device can move it to the init_netns,
+>> > > > which is hardcoded to global mode (so no unassign call is necessary).
+>> > > >
+>> > > > A getter to read the current assignment back was considered, returning
+>> > > > either the namespace's net_cookie or its nsfs inode number, but neither
+>> > > > seemed useful enough to bake into the uAPI now. It can be added later if
+>> > > > a user turns up that needs it.
+>> > > >
+>> > > > Add a transport hook to indicate support for guest namespacing, so that
+>> > > > transports may opt in/out. A transport that opts out keeps the
+>> > > > reachability rules it had before this ioctl existed.
+>> > > >
+>> > > > Sockets are reset when the underlying device moves to a different
+>> > > > namespace, so as to prevent reachability from the previous and now
+>> > > > disallowed namespace.
+>> > > >
+>> > > > Following the approach of netdevs, the device returns to init_net when
+>> > > > its namespace is removed. Care is taken to not break flows when the
+>> > > > device is inside a global namespace that is being torn down and alive
+>> > > > sockets are in a different global namespace. In this scenario, the
+>> > > > device's netns getter pre-emptively falls back to the init_net (always
+>> > > > global) so that these flows are not disrupted. If init_netns ever
+>> > > > supports local-mode in the future, this logic will have to be changed.
+>> > > >
+>> > > > Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+>> > > > Link: https://lore.kernel.org/all/20200427142518.uwssa6dtasrp3bfc@steredhat/
+>> > > > Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+>> > > > ---
+>> > > > Documentation/admin-guide/sysctl/net.rst |  18 +++
+>> > > > include/net/af_vsock.h                   |   7 ++
+>> > > > include/uapi/linux/vm_sockets.h          |   6 +
+>> > > > net/vmw_vsock/af_vsock.c                 | 198 ++++++++++++++++++++++++++++++-
+>> > > > 4 files changed, 228 insertions(+), 1 deletion(-)
+>> > > >
+>>
+>> [...]
+>>
+>> >
+>> > One thing I realized when answering your uAPI questions and looking at
+>> > the code is that IOCTL_VM_SOCKETS_GET_LOCAL_CID is not namespace aware,
+>> > but I think it probably should be? I remember for host ns we strived for
+>> > truly strong isolation.
+>>
+>> Can you elabore a bit more?
+>>
+>
+>I'm wondering if IOCTL_VM_SOCKETS_GET_LOCAL_CID should not reveal the
 
-  xgbe_phy_sfp_detect()
-    xgbe_phy_get_comm_ownership()                  <- mutex_lock
-    xgbe_phy_sfp_mod_absent() / xgbe_phy_sfp_read_eeprom() (SFP changed)
-      xgbe_phy_free_phy_device()
-        phy_detach()
-          phy_suspend()
-            genphy_suspend()
-              xgbe_phy_mii_read_c22()               <- mii_bus->read
-                xgbe_phy_get_comm_ownership()       <- mutex_lock again
+Okay, I see now, too many IOCTL_VM_SOCKETS involved and I didn't get you 
+were referring to the GET_LOCAL_CID xD
 
-xgbe_phy_comm_lock is a plain, non-recursive mutex. phy_detach() ends
-up calling back into this driver's own MDIO bus callbacks
-(xgbe_phy_mii_read_c22()/xgbe_phy_mii_write_c22(), reached via
-genphy_suspend() during phy_detach()), which independently acquire the
-same lock, so the second acquisition deadlocks the task tearing down
-the SFP module.
+>CID of the g2h device if the device has been moved to an inaccessible
+>namespace? In this case, fallback to the results of h2g/local and
+>through to returning VMADDR_CID_ANY if neither of those transports are
+>loaded.
 
-This is reliably reproducible by removing an SFP module while an
-external PHY is attached: the removal handler hangs forever inside
-xgbe_phy_free_phy_device(), confirmed via /proc/<pid>/stack and the
-kernel hung-task detector (blocked 368s+). Reproduced on a SolidRun
-Bedrock V3000 (AMD Ryzen Embedded V3C48).
+Yeah, I agree. I'm not 100% sure if it's really an issue if we reveal it 
+to any workspace, but I also don't see why we should do that. So, yeah, 
+if possible we should reveal it only in the namespace assigned to the 
+G2H.
 
-There were two call paths into xgbe_phy_free_phy_device() while the
-mutex was held: the module-absent path, and a second one inside
-xgbe_phy_sfp_read_eeprom() when the EEPROM contents change (e.g. a
-module swap).
+>
+>I also considered whether or not /dev/vsock should even be visible from
+>within an inaccessible namespace in order to not leak even the mere
+>presence of the vsock device, but it seems to me that /dev/vsock's
+>presence doesn't leak anything besides the presence of the vsock module.
+>
 
-Fix this by never calling xgbe_phy_free_phy_device() (directly, or via
-xgbe_phy_sfp_mod_absent()) while holding xgbe_phy_comm_lock.
-xgbe_phy_sfp_read_eeprom() no longer frees the PHY device itself; it
-only records that the SFP changed. xgbe_phy_sfp_detect() releases the
-mutex before calling xgbe_phy_sfp_mod_absent() or
-xgbe_phy_free_phy_device(), and re-acquires it only around the
-remaining raw I2C access in xgbe_phy_sfp_external_phy(). Neither
-xgbe_phy_sfp_mod_absent() nor xgbe_phy_sfp_parse_eeprom()/
-xgbe_phy_sfp_phy_settings() touch hardware directly, so they don't
-need the mutex held.
+Will this break userspace doing IOCTL_VM_SOCKETS_GET_LOCAL_CID on 
+loopback, etc. ?
 
-phy_detach()/phy_device_remove() additionally require RTNL to be held
-by the caller. The callers here run from the service workqueue with no
-lock held, and a plain rtnl_lock() cannot be used: xgbe_stopdev()
-(system workqueue) takes rtnl_lock() and then calls
-flush_workqueue(pdata->dev_workqueue) inside xgbe_stop(), which would
-block waiting for this very (dev_workqueue) work item to finish, while
-that work item is blocked waiting to reacquire RTNL from
-xgbe_stopdev() - an ABBA deadlock. Use a non-blocking rtnl_trylock()
-instead: on contention, skip the teardown for this poll and let the
-next service poll (100ms-1s later) retry it; if the interface is going
-down concurrently, xgbe_phy_stop() (phy_impl.stop) frees the PHY
-itself under RTNL already held by its own caller, so nothing is lost
-by skipping here.
-
-Taking RTNL around the free also closes a second, independent race:
-xgbe does not opt into the newer per-netdevice instance lock
-(netdev_need_ops_lock() in include/net/netdev_lock.h checks
-dev->request_ops_lock / dev->queue_mgmt_ops / dev->netdev_ops->
-net_shaper_ops, none of which this driver sets), so __dev_ethtool()
-computes need_rtnl = true and takes rtnl_lock() before calling into
-this driver's set_link_ksettings()/set_pauseparam(), which dereference
-phy_data->phydev without any lock of their own. Before this change,
-xgbe_phy_free_phy_device() could free phy_data->phydev out from under
-those ethtool paths with nothing serializing the two. With the free
-now gated on rtnl_trylock(), it only proceeds while holding RTNL, so
-it is properly excluded from any ethtool_ops call on this device: a
-concurrent ethtool call either already holds RTNL (the trylock loses
-and the free is retried later) or is blocked waiting to acquire it
-(behind the still-held lock from the free side).
-
-Finally, if re-acquiring comm ownership for xgbe_phy_sfp_external_phy()
-fails after a new SFP's EEPROM has already been parsed, fall back to
-the "no module" state (same as the existing xgbe_phy_sfp_read_eeprom()
-failure path) instead of leaving sfp_changed/sfp_eeprom/sfp_base
-updated for a module whose sfp_phy_avail was never actually set.
-
-Fixes: abf0a1c2b26a ("amd-xgbe: Add support for SFP+ modules")
-Cc: stable@vger.kernel.org
-Signed-off-by: Stepan Svatenko <ssvatenko@iit.org.ua>
-Assisted-by: Claude Code:claude-sonnet-5 [Bash] [Read] [Edit]
-Co-authored-by: Claude Sonnet 5 <noreply@anthropic.com>
-
----
-Changes since v1:
- - Use rtnl_trylock() instead of leaving the PHY teardown unguarded,
-   closing both the ABBA deadlock against xgbe_stopdev()'s
-   flush_workqueue(pdata->dev_workqueue) under RTNL, and a
-   use-after-free race against the ethtool_ops paths
-   (set_link_ksettings()/set_pauseparam()) that dereference
-   phy_data->phydev without their own locking (both reported in
-   review).
- - Handle the case where re-acquiring comm_ownership after parsing a
-   new SFP's EEPROM fails, instead of leaving stale/incomplete SFP
-   state in place (reported in review).
----
- drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c | 94 ++++++++++++++++++---
- 1 file changed, 83 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-index 59a074ed312a..8c625a0340c4 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-@@ -11,6 +11,7 @@
- #include <linux/mdio.h>
- #include <linux/phy.h>
- #include <linux/ethtool.h>
-+#include <linux/rtnetlink.h>
- 
- #include "xgbe.h"
- #include "xgbe-common.h"
-@@ -1218,7 +1219,13 @@ static int xgbe_phy_sfp_read_eeprom(struct xgbe_prv_data *pdata)
- 		goto put;
- 	}
- 
--	/* Check for an added or changed SFP */
-+	/* Check for an added or changed SFP. Freeing any existing external
-+	 * PHY device is deferred to the caller: xgbe_phy_free_phy_device()
-+	 * can end up calling back into this driver's MDIO read/write
-+	 * routines (via phy_detach() -> phy_suspend()), which take the
-+	 * comm ownership mutex themselves, and that mutex is held across
-+	 * this call.
-+	 */
- 	if (memcmp(&phy_data->sfp_eeprom, &sfp_eeprom, sizeof(sfp_eeprom))) {
- 		phy_data->sfp_changed = 1;
- 
-@@ -1226,8 +1233,6 @@ static int xgbe_phy_sfp_read_eeprom(struct xgbe_prv_data *pdata)
- 			xgbe_phy_sfp_eeprom_info(pdata, &sfp_eeprom);
- 
- 		memcpy(&phy_data->sfp_eeprom, &sfp_eeprom, sizeof(sfp_eeprom));
--
--		xgbe_phy_free_phy_device(pdata);
- 	} else {
- 		phy_data->sfp_changed = 0;
- 	}
-@@ -1268,9 +1273,47 @@ static void xgbe_phy_sfp_mod_absent(struct xgbe_prv_data *pdata)
- 
- 	phy_data->sfp_mod_absent = 1;
- 	phy_data->sfp_phy_avail = 0;
-+	phy_data->sfp_changed = 0;
- 	memset(&phy_data->sfp_eeprom, 0, sizeof(phy_data->sfp_eeprom));
- }
- 
-+/* phy_detach()/phy_device_remove(), called from xgbe_phy_free_phy_device()
-+ * below, require RTNL to be held by the caller (phy_detach() itself uses
-+ * rtnl_dereference() and phy_link_topo_del_phy()). The callers below run
-+ * from the service workqueue with no lock held, so a plain rtnl_lock()
-+ * cannot be used here: xgbe_stopdev() (system workqueue) takes rtnl_lock()
-+ * and then calls flush_workqueue(pdata->dev_workqueue) inside xgbe_stop(),
-+ * which would block waiting for this very (dev_workqueue) work item to
-+ * finish - while it is blocked waiting to reacquire RTNL from
-+ * xgbe_stopdev(). That is an ABBA deadlock, the same class of bug this
-+ * driver just fixed elsewhere.
-+ *
-+ * Use a non-blocking rtnl_trylock() instead: on contention, skip the
-+ * teardown for this poll and let the next service poll (100ms-1s later)
-+ * retry it. If the interface is going down concurrently, xgbe_phy_stop()
-+ * (phy_impl.stop) frees the PHY itself, under RTNL already held by its
-+ * own caller - so nothing is lost by skipping here.
-+ */
-+static void xgbe_phy_sfp_mod_absent_safe(struct xgbe_prv_data *pdata)
-+{
-+	if (!rtnl_trylock())
-+		return;
-+
-+	xgbe_phy_sfp_mod_absent(pdata);
-+
-+	rtnl_unlock();
-+}
-+
-+static void xgbe_phy_free_phy_device_safe(struct xgbe_prv_data *pdata)
-+{
-+	if (!rtnl_trylock())
-+		return;
-+
-+	xgbe_phy_free_phy_device(pdata);
-+
-+	rtnl_unlock();
-+}
-+
- static void xgbe_phy_sfp_reset(struct xgbe_phy_data *phy_data)
- {
- 	phy_data->sfp_rx_los = 0;
-@@ -1296,26 +1339,55 @@ static void xgbe_phy_sfp_detect(struct xgbe_prv_data *pdata)
- 	/* Read the SFP signals and check for module presence */
- 	xgbe_phy_sfp_signals(pdata);
- 	if (phy_data->sfp_mod_absent) {
--		xgbe_phy_sfp_mod_absent(pdata);
--		goto put;
-+		/* xgbe_phy_sfp_mod_absent() calls xgbe_phy_free_phy_device(),
-+		 * which can call back into this driver's MDIO read/write
-+		 * routines via phy_detach() -> phy_suspend(). Those routines
-+		 * take the comm ownership mutex themselves, so it must be
-+		 * released before making this call.
-+		 */
-+		xgbe_phy_put_comm_ownership(pdata);
-+		xgbe_phy_sfp_mod_absent_safe(pdata);
-+		goto settings;
- 	}
- 
- 	ret = xgbe_phy_sfp_read_eeprom(pdata);
-+	xgbe_phy_put_comm_ownership(pdata);
- 	if (ret) {
- 		/* Treat any error as if there isn't an SFP plugged in */
- 		xgbe_phy_sfp_reset(phy_data);
--		xgbe_phy_sfp_mod_absent(pdata);
--		goto put;
-+		xgbe_phy_sfp_mod_absent_safe(pdata);
-+		goto settings;
- 	}
- 
-+	/* Same reasoning as above: this must run without the comm
-+	 * ownership mutex held.
-+	 */
-+	if (phy_data->sfp_changed)
-+		xgbe_phy_free_phy_device_safe(pdata);
-+
- 	xgbe_phy_sfp_parse_eeprom(pdata);
- 
--	xgbe_phy_sfp_external_phy(pdata);
-+	/* Re-acquire ownership for the external PHY access below; it talks
-+	 * to the SFP over I2C directly and needs the mutex held again.
-+	 */
-+	ret = xgbe_phy_get_comm_ownership(pdata);
-+	if (!ret) {
-+		xgbe_phy_sfp_external_phy(pdata);
-+		xgbe_phy_put_comm_ownership(pdata);
-+	} else {
-+		/* Could not finish bringing up the new module: sfp_changed,
-+		 * sfp_eeprom and sfp_base/sfp_speed were already updated
-+		 * above for it, but external_phy() (and thus sfp_phy_avail)
-+		 * never ran. Fall back to "no module" state instead of
-+		 * committing to a half-initialized one - same pattern as
-+		 * the read_eeprom() failure path above.
-+		 */
-+		xgbe_phy_sfp_reset(phy_data);
-+		xgbe_phy_sfp_mod_absent_safe(pdata);
-+	}
- 
--put:
-+settings:
- 	xgbe_phy_sfp_phy_settings(pdata);
--
--	xgbe_phy_put_comm_ownership(pdata);
- }
- 
- static int xgbe_phy_module_eeprom(struct xgbe_prv_data *pdata,
--- 
-2.55.0
+Thanks,
+Stefano
 
