@@ -1,166 +1,142 @@
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi2-f4.google.com (mail-oi2-f4.google.com [74.125.231.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FE651A73C;
-	Fri, 18 Sep 2026 16:56:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6013A51A146
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 16:57:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789750594; cv=none; b=GeFkE5IdhiRXS8K9xQaykqz5jGgL1jwlh49tju9plZX0LANnY+6iKaFkgCnaoSJp3am/KUVCBUcSmIlldGAZBAYiVyM4K0xdjNA78P0bb6ozOdbzfOlAhZ1ZKh/rUf9wQmSkPI3a8T4WlCQlMTRYcD+xHXZKx8AFTAGX7Hq99Wo=
+	t=1789750654; cv=none; b=MDnyc9/T1/MVYe2WNZdWFhebkYEZUe8kA1jFf7VgxVNLvkaNOCENjJSf4k5ncklFDyeQlIZdGuzAR4uVxSqTsAcqAcLnTJK1A7suslZq9NGpl+LkQcz/t15IeWKfN1VP+6JOuxcXbCVRDhMtL89PV3TBdEZz6io7FRI4ITvsQ+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789750594; c=relaxed/simple;
-	bh=XojK1aH6MJS/F4EwychKrgpBrWRhiK+a+PkzJpETGJc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lAqAz0RQ/PUnTAcxrK9m2fJokEC/GDpmtGeifdQT053896hqNHIa+WsRpnev37RWsn3SJtH+Dl4KhbuGpK6AWHYuVuJHcWoGpxup17IYwaMb5c2IGUuBCgh0ZlQZtDBaXf9u+jJ9ti4PPD1qI2mdizJvx4MeCekstEfLO8ESvwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=JHtwdE0R; arc=none smtp.client-ip=188.68.63.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="JHtwdE0R"
-Received: from mors-relay-2501.netcup.net (localhost [127.0.0.1])
-	by mors-relay-2501.netcup.net (Postfix) with ESMTPS id 4hmf0X0NG9z6LmM;
-	Fri, 18 Sep 2026 18:56:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1789750588;
-	bh=XojK1aH6MJS/F4EwychKrgpBrWRhiK+a+PkzJpETGJc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JHtwdE0Ro0nfZfESGhetZliNaMXZJlll83bNUMjUk4Uw4qgzTCRrDobrFfkNphgdU
-	 ORz9sK3Zfphhcu5iCUeCSCvf1zYJYB6yL40lHI5/WiYa83NoTOFeigJhJcCN8w7qfW
-	 hSWJSDbl6vbZfVondy0HpnOcnPH3Tx9wt+xKnrWfQsQO/5ZqhDJPtBJ5LwY6x86X/i
-	 t+LIdy6668sHd4ghJjC1X0PFXM9GNJ1f0ZwH9t60rnn7L/wZ4zuKOLs0JVYdpws79m
-	 Y4SEtHkNLdJX29PQ4dWUBcsudlK9Na5eu74aqiG0QaNTq78lap/ezdpeuNRd1hWkR1
-	 nOKOvtkTcocvA==
-Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay-2501.netcup.net (Postfix) with ESMTPS id 4hmf0W6ksVz4y71;
-	Fri, 18 Sep 2026 18:56:27 +0200 (CEST)
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4hmf0V3cJ5z8svY;
-	Fri, 18 Sep 2026 18:56:26 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id E7D6A5FA75;
-	Fri, 18 Sep 2026 18:56:20 +0200 (CEST)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=linux@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <85c50e6f-a270-4755-8576-c4ba2b961e26@leemhuis.info>
-Date: Fri, 18 Sep 2026 18:56:19 +0200
+	s=arc-20240116; t=1789750654; c=relaxed/simple;
+	bh=piFmg08jBzDbsIbUC3WwJeFjDPZ9iW0yY4qSaomnAf0=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=i8o93Idhuh1vpwrfYHEBI75/PgoJpLSq4hAkYf4Rv3l7K3qTKISmMHd6m3GgL46vaOldOQvCzValXtqvQXL641ZnDHz62yLrp5p2KrKwe+UXbCfsLPCxjltpNhra8T2wduZ/ykxKVo8/ejsZ5kvyMScMJT0OGdAz2IabWGE9WJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi2-f4.google.com with SMTP id 5614622812f47-4ab2d72ff13so347915b6e.0
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 09:57:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789750651; x=1790355451;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VIbWEfl3OtcfF59p74qQH96pu9ARO/UXROO0S4ZFQM8=;
+        b=ydhDIvURrlotMpr8CTtWs0KVFtUj7YrtroCxfwzQHVCj1xfo69XgBMUwxH9+9K3YR7
+         rN7L8eocT2sSJD6ClfuJKr9Qq8Ilz/wxZo8AMTNbRe0mztjX+eYWASsWoMsMykx8V9OH
+         7lg+q5edIl+RF2ZTEc5m8v5I/6TpS7R91LZe7A6xvRR1l9VqTPIxE5nLiaL4gm8g0vn0
+         VBvoozJNRVb8bcF60e/hcdL0RBX398Y+FZeroBwi4/wEYyq5nLtPhFYKpM27gWQdvGbd
+         KNU2Pk4D+6d8eVMCDkXBOuFOrQvmSxZrqmp71sChcHBnXhMMmrQ3Ti+lsuAMUES3EDHN
+         KCVA==
+X-Forwarded-Encrypted: i=1; AKwUvByzHJ8JwI9sc9w3jmZtAaoJNllTXHDQuuQwHavw03XQfC0XJ4NLTpVYot8gSGYhwlTgEeoa9SI=@vger.kernel.org
+X-Gm-Message-State: AFuF++mzHh5aU3ggRCj/v/UnMBkI8LZotmMT4/845VAsJUwbEkAeAMVg
+	Zy6fMo1CfXxswn8X6DiznAumX6JlJfyxpJ+DM8qYjgQj84BomNrpuLPoUw7poBz2f64fL/l4fVr
+	tXyOw26e9bz2Oe8xL7papFhT9xoVKvN+zBfgl6UTzxH4og+aBHjKnUu+aowQ=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] Revert "net: qrtr: Send HELLO message on endpoint
- register"
-To: Manivannan Sadhasivam <mani@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, linux-arm-msm@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- regressions@lists.linux.dev, Chris Lew <christopher.lew@oss.qualcomm.com>,
- Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>,
- Pranav Mahesh Phansalkar <pranav.phansalkar@oss.qualcomm.com>,
- Daniel J Blueman <daniel@quora.org>, Takashi Iwai <tiwai@suse.de>,
- Vlastimil Babka <vbabka@suse.com>,
- Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-References: <20260918101621.2848322-1-linux@leemhuis.info>
- <lgyho3avi65edtr4xggbsrja47cjhqbamrnmchnfh4blmyygd6@bhotovqqqubj>
-From: Thorsten Leemhuis <linux@leemhuis.info>
-Content-Language: de-DE, en-US
-Autocrypt: addr=linux@leemhuis.info; keydata=
- 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 MEK4
-In-Reply-To: <lgyho3avi65edtr4xggbsrja47cjhqbamrnmchnfh4blmyygd6@bhotovqqqubj>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-PPP-Message-ID: <178975058160.2895271.1887392753712195921@mxe9fb.netcup.net>
-X-Rspamd-Server: rspamd-worker-8404
-X-Rspamd-Queue-Id: E7D6A5FA75
-X-NC-CID: JT6oaaAe5xXcb6MDvAu5WoBsYUw6B6puDrFY4xUydwv4Kb1OK3k=
+X-Received: by 2002:a4a:e910:0:b0:6be:46f4:2908 with SMTP id
+ 006d021491bc7-6ca9c750b0bmr3004262eaf.55.1789750651100; Fri, 18 Sep 2026
+ 09:57:31 -0700 (PDT)
+Date: Fri, 18 Sep 2026 09:57:31 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6aad6d7b.0c43d342.320d00.0001.GAE@google.com>
+Subject: [syzbot] [net?] WARNING in gro_cell_poll
+From: syzbot <syzbot+f0661448aa9511ce744a@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 9/18/26 18:37, Manivannan Sadhasivam wrote:
-> On Fri, Sep 18, 2026 at 12:16:21PM +0200, Thorsten Leemhuis wrote:
->> This reverts commit 544d85de4dc22c01badfd8cefa59829ce35c4858.
->>
->> It causes suspend and resume problems for numerous people, including
->> maintainers and developers of ath wifi drivers. A fix was proposed[1],
->> but did not get any traction, so go for a revert instead.
->>
->> Cc: Chris Lew <christopher.lew@oss.qualcomm.com>
->> Cc: Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
->> Cc: Pranav Mahesh Phansalkar <pranav.phansalkar@oss.qualcomm.com>
->> Reported-by: Daniel J Blueman <daniel@quora.org>
->> Link: https://lore.kernel.org/all/20260909055846.16539-1-daniel@quora.org/ [1]
->> Reported-by: Takashi Iwai <tiwai@suse.de>
->> Link: https://lore.kernel.org/all/87a4plsg4w.wl-tiwai@suse.de/
->> Reported-by: Vlastimil Babka <vbabka@suse.com>
->> Link: https://lore.kernel.org/all/ab1491bb-cca5-4145-ac7d-31c966abf7b4@suse.com/
->> Reported-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
->> Link: https://lore.kernel.org/all/6257c447-788d-4362-851e-0d552bcf7c56@oss.qualcomm.com/
->> Signed-off-by: Thorsten Leemhuis <linux@leemhuis.info>
->> ---
->>
->> I'm not affected by this, but due to all those reporters mentioned above
->> it seems it would be good to get this fixed for 7.3-rc4, as Linus' rule
->> of thumb wrt to fixing regressions is "generally be 'within a week',
->> preferably before the next rc". Which is why I currently plan to ask
->> Linus to pull this directly. If this is a bad idea, just tell me.
->>
->> The patch from Daniel linked above[1] could have fixed the problem, but
->> none of the developers of the culprit or the maintainers for this area
->> commented on it within a week
-> 
-> Really?
-> https://lore.kernel.org/all/hcr4woicsnz3pbhzlguuwjlego7yli3znhjmsx4cdz66xa74zd@wjtle2yslc4b/
+Hello,
 
-Apologies, I had forgotten about that one.
-> FWIW, I don't mind a revert too, but the comment was misleading.
-Just tell me what you would prefer, you are likely the best one to judge
-here. I just think it would be great to get this resolved for -rc4 and
-your option would really help there. Sounds like you would prefer that
-fix, is that right?
+syzbot found the following issue on:
 
-Ciao, Thorsten
+HEAD commit:    08df884136f1 Merge tag 'thermal-7.3-rc3' of git://git.kern..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=13b88905580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=19560cab9a915237
+dashboard link: https://syzkaller.appspot.com/bug?extid=f0661448aa9511ce744a
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/607f53d96d3b/disk-08df8841.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/af77b44e9d7f/vmlinux-08df8841.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/ebeacfa9027e/bzImage-08df8841.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+f0661448aa9511ce744a@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+DEBUG_LOCKS_WARN_ON(l->owner)
+WARNING: ./include/linux/local_lock_internal.h:47 at local_lock_acquire include/linux/local_lock_internal.h:47 [inline], CPU#1: napi/gre0-0/11827
+WARNING: ./include/linux/local_lock_internal.h:47 at gro_cell_poll+0x5aa/0x6c0 net/core/gro_cells.c:66, CPU#1: napi/gre0-0/11827
+Modules linked in:
+CPU: 1 UID: 0 PID: 11827 Comm: napi/gre0-0 Tainted: G             L      syzkaller #0 PREEMPT(full) 
+Tainted: [L]=SOFTLOCKUP
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/05/2026
+RIP: 0010:local_lock_acquire include/linux/local_lock_internal.h:47 [inline]
+RIP: 0010:gro_cell_poll+0x5b1/0x6c0 net/core/gro_cells.c:66
+Code: 8d 3d f3 aa 9a 07 48 c7 c6 40 c7 3c 8d 67 48 0f b9 3a e9 59 fe ff ff e8 dd 5e 52 f8 48 8d 3d e6 aa 9a 07 48 c7 c6 00 c7 3c 8d <67> 48 0f b9 3a eb be 31 db e9 88 fd ff ff 48 8b 7c 24 20 e8 97 a2
+RSP: 0018:ffffc900033c7b70 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000200
+RDX: ffff8880284e0000 RSI: ffffffff8d3cc700 RDI: ffffffff91544100
+RBP: ffffe8ffffc37198 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: dffffc0000000000
+R13: ffffffff9b99e5c0 R14: 0000000000000000 R15: 0000000000000000
+FS:  0000000000000000(0000) GS:ffff888123c59000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b32617ff8 CR3: 000000005d244000 CR4: 0000000000350ef0
+Call Trace:
+ <TASK>
+ __napi_poll.constprop.0+0xaf/0x450 net/core/dev.c:7787
+ napi_threaded_poll_loop+0x52f/0x870 net/core/dev.c:7907
+ napi_threaded_poll+0x3a8/0x4b0 net/core/dev.c:7962
+ kthread+0x373/0x450 kernel/kthread.c:436
+ ret_from_fork+0x730/0xd60 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	8d 3d f3 aa 9a 07    	lea    0x79aaaf3(%rip),%edi        # 0x79aaaf9
+   6:	48 c7 c6 40 c7 3c 8d 	mov    $0xffffffff8d3cc740,%rsi
+   d:	67 48 0f b9 3a       	ud1    (%edx),%rdi
+  12:	e9 59 fe ff ff       	jmp    0xfffffe70
+  17:	e8 dd 5e 52 f8       	call   0xf8525ef9
+  1c:	48 8d 3d e6 aa 9a 07 	lea    0x79aaae6(%rip),%rdi        # 0x79aab09
+  23:	48 c7 c6 00 c7 3c 8d 	mov    $0xffffffff8d3cc700,%rsi
+* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
+  2f:	eb be                	jmp    0xffffffef
+  31:	31 db                	xor    %ebx,%ebx
+  33:	e9 88 fd ff ff       	jmp    0xfffffdc0
+  38:	48 8b 7c 24 20       	mov    0x20(%rsp),%rdi
+  3d:	e8                   	.byte 0xe8
+  3e:	97                   	xchg   %eax,%edi
+  3f:	a2                   	.byte 0xa2
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
