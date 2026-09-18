@@ -1,142 +1,98 @@
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE9348E0DE
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 06:24:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789712686; cv=pass; b=iicGiP4TqzYkGTDoqSDjf7l5xnQkEzI9aYzLUBEWACmos1uz8Q2fFDJUrjf7sKMt/WNKWwmSbPusi1CDR5bXNDr9okmKJO3yzWu81O26qSJx9iz4BYH+ta3cGULa+F+gviuaXc+SyAdGCYT+8nlWAZNzgQ/ZAPtAEUDzslvWF/s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789712686; c=relaxed/simple;
-	bh=MgYRcqrrPR+pmr4ZfrOx8DSOTQ2aU6Q8fwh6LPUstbg=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=nHGNmkcAB+Hc//0TKGfQwVdChxzfNrWKQ0KbfcG+/Nq7/cnXh5KI863M9yOX+86qcF6Ki4lxbg8ttmeUYlxXB+5RyhYSX5vDxHfyC1YknU4JP+Fz3aUO0tK5xa1oDvzEgJIzyWA6LtOEOfTsOY2NYVt55wUEP69q45SBGvC3kOc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=CvRPGbeE; arc=pass smtp.client-ip=185.185.170.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C2D48C3F5;
+	Fri, 18 Sep 2026 06:25:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789712731; cv=none; b=I92bgtw981fJ89HqVJ6gMz7p3e8ELnKngRQmOcyzFMEEl0pzVd2NOSeDBxwIjuLwuA3AJXt9hTex8vypIAtZxxKg+lcMxLma3HwFWwyu6BelFZhkUZN5T9tMTru/xBLz3LophLkQfT0QmnZ6DJsRNdAYkwaID6BsobSE2BN3UEM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789712731; c=relaxed/simple;
+	bh=jImsgr15XMp4QK3U0ppSsjvKouHpc2EyU9H1C0JcARQ=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eNwArbYADxrmoe7lXgExXgsvP5D8qfyYRoAwRujhXqeFJcARIYYYWBfYEvF921Zb6vuVihS0c/NxtDNVbkvUVT1HhMix6kvQeXSOpSgeievqGGerQRrTqCeyGUpY+kgsWgOOSJ9UF08vQWIVqj5nnIkZNJHi+rI6aL6/pdeVWu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=kyLXTwPh; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="CvRPGbeE"
-Received: from fauth-c1-smtp.messagingengine.com (fauth-c1-smtp.messagingengine.com [204.75.18.200])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: jmtilli)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4hmMzL4Wmzz49Q3t;
-	Fri, 18 Sep 2026 09:24:30 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1789712672;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Utn4YPDnwDWDiEHtSEYn9vYIonNp3xKbLi0xHIMoSJw=;
-	b=CvRPGbeE1vKd9tp3OU0jbvRRMPboP/bYqBhibfU9KtE1QM2Ic/dd12bfLWwiN6XHYTyqLt
-	gGnvhvc7gszXEkD82AzGc8rA84sAAP3jXxHdkj/X/Wf0J1A7g74a7y50h0KjrR8V3FHaYx
-	/29vtqRhu5qWjBXe+zJGtM4r3dVeUqNAHRbY8XS+gaF0vEWp8+hL+2Gi2zE/Dan8XdCqex
-	JmvSHoqWLZqZAXk2MVIaQ2TNNrLRi9GA2N2MCYfKsWaHmJzq/omnCk3El4ye1hogzg3/9w
-	zokc2zeVH7ZS+sglQ+MWx2Xi2xxtB9roXr7K5LAcBrad0A3LM49pvbOIkN/6/A==
-ARC-Seal: i=1; a=rsa-sha256; d=iki.fi; s=lahtoruutu; cv=none; t=1789712672;
-	b=Cyfh124r8cdgUZGqHjcFQ6BOI3gCpy9AIn1WrygNGIMvnl0wibU7R2+VsP2Lq6jWR+0E51
-	xeQnUHga1I7hdXbpkkmHvXRYKDLSkoPq7jDWr/oq4bIqKafEdxse1mNw6md6DkKLLO6apy
-	cvjWxFMkJN0bdJUFZvXuV644LCxT74x1x45M2a0lLR19BXklhp55FnGi+2LU7LQpKVZkCT
-	khDT5LI/5ieX5CIyVi+r+0WHLPUdbAdDhQwHPSxrIEFBZiFxGWU2M5cIzCz2LrIUynHotr
-	F9V39USFqTMh1hxfcefekIqd7ruV2rcwgYjsw4D4yCD3IZADPhcM8YjHQyfA3g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1789712672;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Utn4YPDnwDWDiEHtSEYn9vYIonNp3xKbLi0xHIMoSJw=;
-	b=VHX7dzSqA5RKvUlSLzJIIWRikqrrQv8+FUzwSbVqdtLXXUz2Djrx/tW5DVyGSYQaZrhqFi
-	BmMe9bnYwO+0PVzsV/ebGsAu0vQeWYPybIbW94iiB1T2ZKHDPvgRaqcMB/yyLhAD5o00B4
-	bOsDlaSj6T4H9SMh8sUqgn5fOlwq2Vhg6NA6XpupWO5kDU2Jf4DdOsqCPOot5d+InGJ99l
-	bE/wNxenQ0ROcz8dyT+UMKXgmNPNbDnFOtbYUJCRvq57XCQioKcWg51yJCFoAw8NHcaUFh
-	D9mj1qnUGOGqE8lzEx8rZ0u9vZv2qwEq92+q6j2nFHTPfBJ2YLvUtbg4XxEW5g==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=jmtilli smtp.mailfrom=juha-matti.tilli@iki.fi
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfauth.ams.internal (Postfix) with ESMTP id ECEDB198003A;
-	Fri, 18 Sep 2026 02:24:29 -0400 (EDT)
-Received: from ams-imap-13 ([10.64.2.33])
-  by ams-compute-02.internal (MEProxy); Fri, 18 Sep 2026 02:24:29 -0400
-X-ME-Sender: <xms:GtmsasZSldZjBkFz_WJVQZEs5UjywjLFU2n1E4XPlW4cAkZf2LKxNA>
-    <xme:GtmsaiP2CGTsUN2CnwzkVB-KDUJM1YNv1W92IFFG9_Eq_yrSd8QJXFnh3v86Vwwni
-    CNkPdtLIovqk6M6HpgOYLr_7iAZkx063K6sjfMyDmjb7QA9CTfgt_kC>
-X-ME-Proxy-Cause: dmFkZTGSQzkLHL20dI75v5KezdrR4/54n/FI7hF+bC7Q1yK6wOtpVo6TuJQUEPuDh31dsb
-    1ffrVC9rw69TEmxHIkji76ul0+KSPvDqPDDlixfmostS9mk/hXKpw9WgeghXAiMxb9iFEI
-    6wK0BpZhd/9VrFcYBUf0tiLPFrYEk/e0Kt0Q2/or9cMoOT9ndhwCtauEfcfEdGU7BPXx8A
-    Kfr/3Jcso5z7tfdqDqQ1uPpEp3muBglFn8fmUd41iqOXFr+hR6O1NU8YHpFBanA0ZwHhqf
-    Qm2UlHYgwBOfDwRJNVQCiIVwgqqLvOXS/eqrKqEJzm+qFrdWJtEOCEV7D5LhNwHCyfPWYd
-    LWxQTl5tJYZE0SwZ0LmJefWEgd+7eWTcnKEjrEf1alX99BTOcDzMDvLXJ0gGoQpNmfIMDi
-    WIEVg8HZzPFdx8kRudDCnNQcVnR0AlipijaAty0J27ZagaJoDMjBEa8s5++ZU27p9vBWqx
-    Y/HYB/moUWPwyh7rIf73gwCHoKTs5x38FEaZKJyApyd2tw0/qEJ6cw2RqPoVmATYF5zRwx
-    Y6egJAysP2b4e39DA8rmIsKqikL6IKpDayj+TofjQxtohllnUZxW/dDr6PaJ3n9UmnP5zD
-    4Sh8yHaCRd9BGAg+CmiUYFXmPqIN9wh4sx5k0pXkwEfwSDzlzbm0qfF4pPRg
-X-ME-Proxy: <xmx:Hdmsarh1TLmd2g4qin5IG6Bb8x7s9IJ0jMQ7jCqKbry52eP7LdUr0g>
-    <xmx:HdmsajeBOqx1e5YPWdeP7o-v_kc8s3FI6XiFpc-zsGabUBFxB9WcjA>
-    <xmx:HdmsapyUpQUUemavGFRAsE82BNgLQPhZn4ooxQuSXPjS2QEbNPLOCA>
-    <xmx:HdmsaladdsvHVav1idVfoZ2Zvfb8UA76u-hR6tvQS_Zj1pLzkVb4IQ>
-    <xmx:HdmsavKNbvouncS0j1xMW34rey0AGVqSY4Uu0Oy1Ywr1MopH7FtvHpz8>
-Feedback-ID: i02414972:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 6B303F8008E; Fri, 18 Sep 2026 02:24:26 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="kyLXTwPh"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68I60LS82609464;
+	Thu, 17 Sep 2026 23:25:19 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=jImsgr15XMp4QK3U0ppSsjvKo
+	uHpc2EyU9H1C0JcARQ=; b=kyLXTwPhldVAVvHJwfn69O1+niLQ+u/3/uqu+nmLP
+	8UgeWUZdKswsYdLN9J3Dq0sEXAXE0B1vhhzC1HOiSKupNF75eWHAzPtg+Y7zo9B1
+	ZDCPVzLCfcrkyvXl6UtdP8+tLmdd0Zhpa9SO3KnTHcubUD46Y/M6UMLqOQjRE6IL
+	sA61puLPFzkyaiAVpCgMjC71P1uDkR9H2frABkZF4vewFNcV3ECOOMxGSK2UHSnu
+	chVU4tvnvj/7FhKY98GRZ/bkR1dt06ku0BjQZr4cH5ccjUU5wgvxTB8271rV7EO6
+	lATSryrqLV21vnlig2UDkQNm7OHEIWJoxmQ9dt5o4Sehg==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4grkjw4dvu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 17 Sep 2026 23:25:19 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Thu, 17 Sep 2026 23:25:17 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Thu, 17 Sep 2026 23:25:17 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id 553AB3F70BC;
+	Thu, 17 Sep 2026 23:25:14 -0700 (PDT)
+Date: Fri, 18 Sep 2026 11:55:08 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: Aryan Sinha <sinha.aryan03@gmail.com>
+CC: Sunil Goutham <sgoutham@marvell.com>,
+        Geetha sowjanya
+	<gakula@marvell.com>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        Andrew Lunn
+	<andrew+netdev@lunn.ch>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] octeontx2-af: remove duplicate SCTP port flags
+Message-ID: <aqzZRG5WcSZYGu6M@rkannoth-OptiPlex-7090>
+References: <20260918060323.53860-1-sinha.aryan03@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: A0bevnK5BUW7
-Date: Fri, 18 Sep 2026 09:22:40 +0300
-From: "Juha-Matti Tilli" <juha-matti.tilli@iki.fi>
-To: "Jakub Kicinski" <kuba@kernel.org>
-Cc: "Manivannan Sadhasivam" <mani@kernel.org>, linux-arm-msm@vger.kernel.org,
- "Jeff Hugo" <jeff.hugo@oss.qualcomm.com>,
- "Jeff Johnson" <jjohnson@kernel.org>,
- "Bjorn Andersson" <andersson@kernel.org>,
- "Konrad Dybcio" <konradybcio@kernel.org>,
- "Eric Dumazet" <edumazet@google.com>,
- "Kuniyuki Iwashima" <kuniyu@google.com>, "Paolo Abeni" <pabeni@redhat.com>,
- "Willem de Bruijn" <willemb@google.com>,
- "David S . Miller" <davem@davemloft.net>, "Simon Horman" <horms@kernel.org>,
- "Mihai Moldovan" <ionic@ionic.de>, "Denis Kenzior" <denkenz@gmail.com>,
- "Marcel Holtmann" <marcel@holtmann.org>, "Andy Gross" <agross@kernel.org>,
- linux-kernel@vger.kernel.org, mhi@lists.linux.dev,
- linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
- ath12k@lists.infradead.org, netdev@vger.kernel.org
-Message-Id: <9837273a-c62f-456e-9aa0-567b0d3a6f29@app.fastmail.com>
-In-Reply-To: <da6003cf-515b-4d97-8059-3f4553d0251d@app.fastmail.com>
-References: <20260915054207.2513877-1-juha-matti.tilli@iki.fi>
- <20260915154705.67cfb94f@kernel.org>
- <da6003cf-515b-4d97-8059-3f4553d0251d@app.fastmail.com>
-Subject: Re: [PATCH v7 00/15] QRTR Multi-endpoint support
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260918060323.53860-1-sinha.aryan03@gmail.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE4MDA4NSBTYWx0ZWRfX17ASLssgw8G5
+ Gdk5IqQEIKXH7B5Bf9LPX7R8NicohkRFTNShcvN4Vv6eRdZYzK8P7Bj2cfBp9RHiY20+Kp3k5/i
+ IVjxPDtyJUvfApr0FKFWnJZv6E7gaJsncADw8vuPv5A6u1ewWWz7tX6yfrjvD8wBFZCU8XogOFa
+ UKj/y8UTNrM21YCaVQ/q9WtoXJ/tn/hMJIyevZ64mWNijDnZxPpZ+qRf8sgt9dZt4fP+QInoFlc
+ YytOiR+PZMBu7QdM5A1yb35QuV7saYsZ7GNBNN0q+Qq1QhXuetQS/OfXAFH9e6E+Xfa4L2TSaEN
+ I3EIg2yp/+vvw296hCID/1poB4WdIILmNYjS0O07LvVV2OkYflNnBKjytnMUwiS79r9BczrHEMn
+ YoHXZ1vMe2/4+sWDQHfLJWvYvlrda9l3aRx0ZG1Wc6qOd7dclGVqtu7VDFDMhACnDLMs6U1Dovc
+ OXi3KqNiCOX0dSAqlZg==
+X-Proofpoint-ORIG-GUID: hhvLpnNQsVR5MJDzOV0Rob6yucQjkt6U
+X-Proofpoint-GUID: hhvLpnNQsVR5MJDzOV0Rob6yucQjkt6U
+X-Authority-Analysis: v=2.4 cv=Zqx4uN7G c=1 sm=1 tr=0 ts=6aacd94f cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22 a=pGLkceISAAAA:8
+ a=hCOowHWDANwyy3v7PEAA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE4MDA4NSBTYWx0ZWRfX79MqUh/uDbXn
+ AFyYpaSHx85uJbFHMAcDnLKGRC6/lx+zjRRij0+2mrlv043cgSpIRszCiuhkgLIJUkR/g95U+C2
+ MF22e83DPLPzl2sDdCAkb2A6ufXEeuQ=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-18_02,2026-09-16_02,2025-10-01_01
 
-On Wed, Sep 16, 2026, at 08:53, Juha-Matti Tilli wrote:
-> On Wed, Sep 16, 2026, at 01:47, Jakub Kicinski wrote:
-> > On Tue, 15 Sep 2026 08:41:52 +0300 Juha-Matti Tilli wrote:
-> > > Subject: [PATCH v7 00/15] QRTR Multi-endpoint support
-> > 
-> > qrtr usually goes via core networking tree.
-> > Please make sure you base your patches on net-next/main
-> 
-> https://github.com/jmtilli/linux/tree/netnextmain_multi_qrtr_v8_multi_ath11k_ath12k_v5
-> 
-> That will be the next version. I'll wait for a while to see if other
-> review comments pop up for v7, then I'll post v8. At least the
-> current v8+v5 QRTR works just fine on my multi-card setup.
-
-Hello,
-
-Some positive news. There will be no next version, as Qualcomm is going
-to provide a superior patchset that I tested. It's easier to backport,
-cleaner design, fewer lines changed, has 1 author as opposed to 3, and
-most importantly, it worked just fine on my 2x card setup. 
-
-Thus, I'm going to abandon this patchset.
-
-BR, Juha-Matti
+On 2026-09-18 at 11:33:19, Aryan Sinha (sinha.aryan03@gmail.com) wrote:
+> proto_flags ORs BIT_ULL(NPC_SPORT_SCTP) and BIT_ULL(NPC_DPORT_SCTP)
+> are present twice. Both fields are already covered by the first pair, so the second
+> one has no effect.
+>
+> Drop it. No functional change.
+>
+> Signed-off-by: Aryan Sinha <sinha.aryan03@gmail.com>
+Isn't this a fix? Please include the appropriate Fixes tag:
