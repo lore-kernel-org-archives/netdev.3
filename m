@@ -1,209 +1,98 @@
-Received: from mail-pz2-f41.google.com (mail-pz2-f41.google.com [74.125.228.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F3948593D
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 05:52:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9227123E334;
+	Fri, 18 Sep 2026 05:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789710776; cv=none; b=dCxUcDVTD7oMpjVwUshPvAcLwDXO1Xl0cuGZtivmnjsiwnsk65VJCdQBnhiWu42Xo0sy1LLqujhVD5N8S4OG3ntjX+749Gm2weZk2HuGTEKcVT5AjLHu8sXz6E+l6xkpiQzTf+zvJ6rmQBaQzgSDbUMITZ86eMycNQ41Fa+YegU=
+	t=1789710967; cv=none; b=b2G32Xtiz9OudgNCPx5jCzvNcfJ3wunQQ2G0dUo3YHxf3eFLXpX2mIApbK8Hhhq1z5djvBP0EKGLXXyTm0vwr3120buVdipHM3lgrIrVgVAbIMNsYgLnoylasITErywiTzFuI+XC014WlVMKgt3rsv7j49D7mjWIo1aktgaQGe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789710776; c=relaxed/simple;
-	bh=V99jLj2gEYsH462fTqhUwsqP0GqMQkk41b67V5dynz0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=cew8uqL0VC+yJppy+LUc/UBdnxNjOnqEXY8Ig2/VNtUUO/3Vwk5s9dF9msqe/n4+bmVGLQoaNjnJnXO/b63LswpjR3crlhQ1mEbCsAIuLmHkceGcsEcqrCKtPRge+MXUFbqByB0qT1liyMddxEntq5Hs6tVGGx9Rc3IbeOcxh8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LH1/Yndx; arc=none smtp.client-ip=74.125.228.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789710967; c=relaxed/simple;
+	bh=KCFGA4rDMcZIHlBCko152R4ud+YTFm/tOcNyS3NmT/0=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BGnDOc1xMtV1F7DXxU7DNYnGsx/p/m4MXNvbfqzGnxla7VzOt9ygztz0SXsWF8cJsv+peltlph/DUBo9mxzOB3pDolOMMocBgRgarLMmMWlffktRpBW18FNP8cMCd5E8tlXu45iavR4917++tOAzN/i/Ex/UfSbx8FVk9MorUDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=QyOoXlrc; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LH1/Yndx"
-Received: by mail-pz2-f41.google.com with SMTP id 41be03b00d2f7-cc50b9e8a45so148738a12.2
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 22:52:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789710773; x=1790315573; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=RoqQBX0V764x0A/v/amZwGuN9suY1fEbdmSCiYW1k5w=;
-        b=LH1/YndxdKdTqJTRoOSlt0kiCmgEVtwTVWQ2dNzfDSEY9XCp7y4XkQQsRQsO5sGLdv
-         u4MsRZUs9PrK9+cdV4t88JtvJCAHyKi7lNtx55zWSiC5jvb5+vGABqO1ZZumgYbJtFfJ
-         hY4c6wdKEssCOyGYKh06SJaa/wuFCT8ZXM07tBmeEZ8bfCdXgVdRoxZk4hnY9hIbiwDQ
-         KzveBiurcVwDtjShw5SNupSOCA/2HmuyCAD/Gc8sxGi23g7IZ1kBi4MTd8At3tM73xaK
-         AAeJV9jgE6XlxjBVIofS387c2mof0UM1QiHLKWeCk3NUhc00RRKMxAcZyHpxohn3BaN7
-         XU9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789710773; x=1790315573;
-        h=in-reply-to:references:cc:to:from:subject:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RoqQBX0V764x0A/v/amZwGuN9suY1fEbdmSCiYW1k5w=;
-        b=A6bWhdgsOAGx8gUUg6lQeOo4We1sm0pSUKjqyNqPAwl3g6ONhrObb7XuNMRAOI9Zn3
-         EF1/suBDrbFD36RnoyVxGV6kMP5aMqCubBUJYTXTQX2rnHUDtca4So3DjkZoJ1j/nqS5
-         CSVO+B5WcwuEDUxRHoLVkc5aWJNKj78uNFD3fjVAfD/Stl6eNq5AKB6Q4ZtGQzmiELOJ
-         7z2qoCgvEgimoNsGXieIq0MkG5IaLK5wInIJLvtyidz2Ofi9VeCcxtuG5t82WRBtpQdb
-         eg0KU6K22rd+OV5I3s6fGFGIw8gtehjaDVRpXoBFtEyZxenoef21BjqWGIi8JwzrxKBY
-         BoCA==
-X-Forwarded-Encrypted: i=1; AKwUvByiQ9Ygfg6U5DO8If7OmMNKPBIFEHVDgQm3Qne9Hv8tgAy6W5k+Q+UzSM16/3V8gMJLwLmc4JI=@vger.kernel.org
-X-Gm-Message-State: AFuF++n3Mrx3eMVGAExWCstnC+amKDBfvuh+lGH60Z4XhDG/HG9mEQph
-	kmXrr46E0Pff6fiF5/9q8KB8pQSYShGEXpoKZfR04TvJ8lHvI6Bty4Kt
-X-Gm-Gg: AYBFou3pOnhcA+z9aFvt9kIqg+9j6E/mncBe/gq7Fu4pyz20awXYoxtvft3QRXDLNWN
-	AJyi6i+R2U/r8u0wtAkH8RFXJvBX8uMHXMvTRvQ8NjBBdkUkdCMJDiwQ2/8UxnqMoIhdAVyaf7T
-	mxTpVfR0Mli728hb2PJ6r0E3SPXrPMsqr9FfE2qY8y1LKJE/URUO9drxEgbztyX6B03KmhgHxGp
-	Mg2D7HlCmLa4LgcM8NFe7yv2zjc97atJ5qKgcxXl52xl1jaYCJFc6YdAZSjWiSJ848ziYd956ir
-	rMS2s0QCAjfhm+d2jy1YacjtPz1/0mjGjoJzrQrNqtstMti0I27k2tBnM1xsCZDdhX0G3RUZPHW
-	HQ9aWuVhOAQI08DW7j6DGJ6umA7Gq6FuuelyKbrllTW2jv7mb3E4lyE0cEM9jKUyDUlIwgmZKV+
-	1/2sFxLlg1v0zuRsTFqfLNVE/Ni+7bBvodSHcAc6jnAzzBUAy23YXF7U5xT/YV5Ze8LDoDtidqs
-	LelZH8ORfFWHokl2HjcO9ggqw==
-X-Received: by 2002:a05:6a21:9e0f:b0:3dd:85a8:caca with SMTP id adf61e73a8af0-3dd8c47d1c6mr2792351637.33.1789710773192;
-        Thu, 17 Sep 2026 22:52:53 -0700 (PDT)
-Received: from localhost ([13.93.150.60])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33c28721895sm1518873eec.13.2026.09.17.22.52.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Sep 2026 22:52:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="QyOoXlrc"
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68I3PU3Q2583830;
+	Thu, 17 Sep 2026 22:55:57 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=r
+	We8Si240QbrqgFU1KotVBvNd4i388rrhWqARcyxb1c=; b=QyOoXlrcGlu4EOBNC
+	WBgMnTbi2M8fwU6KPZHasUkD/x3BuUG2b2cVkzcGE/2A7MQWmqnVYEMai32CUBN5
+	Phuk5ZlsOcMMc7kAK69G0TyLQwYRbeHINaIIvffGQhl12+QpmCf+vp3snvFO6fYP
+	IYKu70HOIFgB+mYPo+km3r3JwNoKgFVatrsztbGP84t8Sxevtnez7UpC5msw4AYK
+	rtUShQsSAysaFu4za/Gi3t/pqNDuN5378gHUPcGx/7HOhBzltigoGfeJycbNm/AW
+	8pvDouALAw81wsHrudVsd00VTZIglyA0bd3QVP1y8POBp73lOUxPI7B702yGnFKC
+	7t5hg==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4grwcjrjsd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 17 Sep 2026 22:55:57 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Thu, 17 Sep 2026 22:55:56 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Thu, 17 Sep 2026 22:55:56 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with ESMTP id B7F8B3F7055;
+	Thu, 17 Sep 2026 22:55:52 -0700 (PDT)
+Date: Fri, 18 Sep 2026 11:25:46 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <netdev-bot+sashiko@kernel.org>
+CC: <davem@davemloft.net>, <gakula@marvell.com>, <lcherian@marvell.com>,
+        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <sgoutham@marvell.com>, <andrew+netdev@lunn.ch>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <saikrishnag@marvell.com>
+Subject: Re: [PATCH net] octeontx2-af: guard is_pf_cgxmapped() when PF to CGX
+ map is absent
+Message-ID: <aqzSYu6KduRWM42T@rkannoth-OptiPlex-7090>
+References: <20260915022952.886639-1-rkannoth@marvell.com>
+ <178970941782.22033.17901214089531533321@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 18 Sep 2026 05:52:50 +0000
-Message-Id: <DLI7IPF4DIYX.3BAFFWR52DHUY@gmail.com>
-Subject: Re: [PATCH net-next v2 2/2] selftests: net: test untracked NA
- recovery of FAILED neighbors
-From: "Lawrence Lee" <lfqlee314@gmail.com>
-To: <netdev-bot+sashiko@kernel.org>
-Cc: <dsahern@kernel.org>, <idosch@nvidia.com>, <davem@davemloft.net>,
- <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
- <horms@kernel.org>, <rdunlap@infradead.org>, <netdev@vger.kernel.org>,
- <aajith@arista.com>, <roopa@nvidia.com>, <jhpark1013@gmail.com>,
- <corbet@lwn.net>, <skhan@linuxfoundation.org>, <shuah@kernel.org>,
- <linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <alex.aring@gmail.com>,
- <linux-wpan@vger.kernel.org>, <linux-bluetooth@vger.kernel.org>
-X-Mailer: aerc 0.17.0
-References: <3f33052571409614b953a3dc7778114c51c43669.1789448374.git.lfqlee314@gmail.com> <178966456270.22033.8952247046783062389@kernel.org>
-In-Reply-To: <178966456270.22033.8952247046783062389@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <178970941782.22033.17901214089531533321@kernel.org>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE4MDA3NyBTYWx0ZWRfXxvRfNTULVq7+
+ +pFCrNiUDIe16hXwXYj7PijQi6WW9mH7g+/WDp1wfe0iE7k8QqaCjytHzBdBfAuTqj76UYPL8aM
+ xoR/LHJdktiP0en59M8nOJyfpW0TegLsq8DoQRrGkQU86oSkf1s9Im3ct//6PU2CgMX5urk1SSI
+ fqInAykHyYqVD7lj5goLjJZrVdxzg88ixd6fHxBTB7rUr5R9v7nUvgO3W0PqNkz9Bl2IqKRjzUE
+ VDJhu244k1J48m8hhBidn4w4a+cNMd4dL7cNWeO/cU4c/sD6ELkTp99vCMgCvYUN9qsEqGQNqV9
+ PHLjMwp6j6zVcfnYhVC3jb/Qc6u5UNdPo9zsb9Z57dMFIg+VakKzds7hTDRcZzG5GlTTxNTVB0g
+ bt75SVOPNSqxYlN1D1fRwKeYidnzt4o7aszpGcNWW2Y6qELhkye01vJClZVqz31X/dIFf6ttA8V
+ zxWptuhqJqkyf4nY6wQ==
+X-Authority-Analysis: v=2.4 cv=bYr+w+PB c=1 sm=1 tr=0 ts=6aacd26d cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=EAYMVhzMl8SCOHhVQcBL:22 a=VwQbUJbxAAAA:8
+ a=8DdJMXqlxYccBHa1dKUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE4MDA3NyBTYWx0ZWRfXxpMTYLin0o90
+ eqoyD3BEKLgnqL349bc6dkdg1BfytjfcA+BDH9KXeTYxXfjLwzISJvTsRwmT6Y9P2kVzB3kIIqr
+ 3MCFFeSSUhQuMDdQJX3RMoCBscFxKCA=
+X-Proofpoint-ORIG-GUID: t2Ey05JUBUVkElddBAblltZQilMwb48Q
+X-Proofpoint-GUID: t2Ey05JUBUVkElddBAblltZQilMwb48Q
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-18_01,2026-09-16_02,2025-10-01_01
 
-> [Severity: Low]
-> Should verify_ndisc() also check the link-layer address that the
-> advertisement carried?
+On 2026-09-18 at 11:00:17, netdev-bot+sashiko@kernel.org (netdev-bot+sashiko@kernel.org) wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider:
 >
-> The seed in test_unsolicited_na_common() deliberately creates the entry
-> without one:
+> Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
 >
-> 	${IP_ROUTER} neigh replace "${HOST_ADDR}" dev "${ROUTER_INTF}" \
-> 		nud failed extern_learn
->
-> while the recovery path in net/ipv6/ndisc.c:ndisc_recv_na() pulls the tar=
-get
-> link-layer address out of the options and passes it down:
->
-> 	lladdr =3D ndisc_opt_addr_data(ndopts.nd_opts_tgt_lladdr, dev);
-> 	...
-> 	__ndisc_update(dev, neigh, lladdr,
-> 		       new_state, update_flags, neigh_failed,
-> 		       NDISC_NEIGHBOUR_ADVERTISEMENT, &ndopts);
->
-> Since the only assertions here are the state substring and extern_learn,
-> would a change that moves FAILED -> STALE but installs no lladdr, or an
-> incorrect one, still report OK?  Comparing the resulting lladdr against t=
-he
-> host veth MAC would close that gap.
->
-I will update the tests to verify the lladdr
-
-
-> [Severity: Low]
-> Can this switch actually isolate the mode 2 in-prefix gate?
->
-> Moving HOST_ADDR from 2000:20::2 to 2000:21::2 changes the source address=
- of
-> the advertisement, its target address, and the key of the seeded neighbou=
-r
-> entry all at once, while the router keeps 2000:20::1/64.
->
-> The advertisement under test comes from addrconf_dad_completed(), and
-> ndisc_send_na() uses the same address for both fields when it is local:
->
-> net/ipv6/ndisc.c:ndisc_send_na() {
-> 	ifp =3D ipv6_get_ifaddr(dev_net(dev), solicited_addr, dev, 1);
-> 	if (ifp) {
-> 		src_addr =3D solicited_addr;
-> 	...
-> 		.target =3D *solicited_addr,
-> }
->
-> so saddr =3D=3D target for every packet this test generates.  The kernel =
-gate is
-> source based:
->
-> net/ipv6/ndisc.c:accept_untracked_na() {
-> 	case 2:
-> 		return !!ipv6_chk_prefix(saddr, idev->dev);
-> }
->
-> and Documentation/networking/ip-sysctl.rst describes mode 2 in terms of "=
-the
-> source IP address".  Would a change that tested msg->target instead of sa=
-ddr
-> leave both new mode 2 rows green?  Keeping HOST_ADDR fixed and instead
-> varying the prefix configured on the router side would exercise the gate
-> without also moving the target and the entry key.
->
-Will update the tests to cover one source address outside the prefix and=20
-one inside.
-
-> [Severity: Medium]
-> The comment says "add a delay to ensure neighbour processing is done", bu=
-t
-> link_up, start_tcpdump and verify_ndisc run back to back with no sleep an=
-d no
-> retry.  Where is the delay?
->
-> start_tcpdump() blocks on:
->
-> 	${IP_ROUTER_EXEC} timeout 15s \
-> 		tcpdump --immediate-mode -tpni ${ROUTER_INTF} -c 1 \
-> 		"icmp6 && icmp6[0] =3D=3D 136 && src ${HOST_ADDR}"
->
-> but the AF_PACKET tap that satisfies -c 1 is fed from ptype_all delivery =
-in
-> __netif_receive_skb_core(), which runs ahead of the state change the test
-> looks at:
->
-> ipv6_rcv() -> icmpv6_rcv() -> ndisc_recv_na() -> __ndisc_update() ->
-> neigh_update()
->
-> Does tcpdump exiting really order against that update, given verify_ndisc=
-()
-> takes a single un-retried snapshot of ip neigh show?
->
-> There is a second effect for the new rows.  In the four expect-FAILED=20
-> cases:
->
-> 	test_unsolicited_na_combination 0 0 1 failed
-> 	test_unsolicited_na_combination 0 1 0 failed
-> 	test_unsolicited_na_combination 1 1 1 failed
-> 	test_unsolicited_na_combination 0 2 1 failed 0
->
-> the expected value FAILED is exactly the state the entry was seeded with,=
- so
-> "still FAILED" and "the advertisement was never processed" look identical=
-.
-> Would a bounded poll for the expected state, or an explicit settle, make
-> these rows able to distinguish the two?
->
-> Related question on ordering of the capture: tcpdump is started after
-> link_up, so can the single unsolicited advertisement emitted at DAD
-> completion be missed if the fork and exec are slow?  In that case timeout
-> exits 124 while set -e is in effect inside start_tcpdump, which aborts th=
-e
-> whole script rather than failing one row.  Would arming the capture befor=
-e
-> link_up avoid that?
->
-Will change the tests to start the capture prior to bringing up the host=20
-side
-
+> - [Medium] The added `if (!rvu->pf2cgxlmac_map) return false;` in
+>   `is_pf_cgxmapped()`…
+Will modify the commit message and will post v2 to net-next as a hardening patch.
