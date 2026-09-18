@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13EDA518158
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 16:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A143E515979
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 16:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789748112; cv=none; b=ON+15/VYeF/22mNVm+AllSVkWU2uPzkzZmbJhvay+TkgWR+s+f2fIWlID68FkDDysPn/eduu9hWAZ/7mXC2sL3tr0HIq2K9UIP/ES503SASPSY9bms9TQ/d/h+QtSh6UA5C/wH8nOvL7ThzoFxqkZDzDIu1OHJZF3i05hQZ6L2w=
+	t=1789748138; cv=none; b=JcDrhJG8WQDCH0tu4d4Ejn8hNOg7t6z6RQBcj6eVd3gTyXQiXwwg1qV2sPSQliKls2Ko2mJDVJ1temuU9OyKdA5xXPr5RGZoqmB87b2sC+qBYgMFQrx/5ZHMZIp124NdXsIpC8RFVnTOdN/OrY+3HtCrZY4eiiuXG7BHOGrFVuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789748112; c=relaxed/simple;
-	bh=bwYTVxpNzg+ky561EwzugH9LgPm+uj11vHIeD/B9b90=;
+	s=arc-20240116; t=1789748138; c=relaxed/simple;
+	bh=qL2DsK3iIAkxnuzj84HK3kh3SaEQKy0LjipLQU8ZDPE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bPQB60OlkG4I4Jv1MNa0FemG4JSZ8a4GDM8f4/nOLLX+C7jiR2oaGMGA2i8O0ZVJA8D4ZguEe72YClLjPXGoUFJZehwNYxD2nLSK7klAQiyxFX8RuEVsf9G69pAATUmm7AJx1BFvqMHczVMW3jCVEq7Wp0hwwTNrZOZkLbvx1Rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dKaA2ifV; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=KaVQBi+l4QjArJWNPxNXS+No1DBvLpx3ggf8Ddmhm4f7ofG3fWgO0rSjW8sxFbl8jQykrGeXVm6S1GWp21IbSkQK5CJ7GyQjCU75w2qsy1+NFYZ0vvJ312tiv5F/q7w/yU2VAtlGGjI+HjBWPIkWB8wQedyC72OQXfKP6M7yCVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UDOQHXfL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dKaA2ifV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3267C1F00899;
-	Fri, 18 Sep 2026 16:15:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UDOQHXfL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0704C1F00899;
+	Fri, 18 Sep 2026 16:15:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789748110;
-	bh=RSVhNQB1WVcgRlS40BiRzBVR5Sa57x7VLJhqga6yMeY=;
+	s=k20260515; t=1789748131;
+	bh=Hl/qrTfNVThcHDtkWLidd7kTkVp5iYgAlxNzRrRRJ9s=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dKaA2ifV4EOP4q8A1bjTB25wu01Lwpm7SpBwqEsx0Ofw0Y9go9qcYENg7fPtixt0H
-	 0rSAQZlmXQUMvVpNpceRhF9ePCDvJsaYcLjEKDAqzK+37bN9S03UvGqBJaY8npXQVr
-	 uLNxV+jBshEyNFzMWkuTueJ09khNpOKh/ym+zFhrv1410RnuK1x+Qq6FAyKBRkXdsa
-	 kl5e5fACiNUFAWDBqoCTRNSp2NpKm1fopIB3TN4KLBtd7BRL5Odo5vnt5m6ZQi7G2h
-	 9XUFqow53YztHwG5abVc+SS1o+eew0+OdsnXQ2x6Iu4EjKhUujtChvDPHjWWq41xig
-	 flDMVe963tC3w==
-Date: Fri, 18 Sep 2026 17:15:07 +0100
+	b=UDOQHXfL28fjer5Mfclv343LKQjOARc0N6PhFsqadOlAKKV63CtepH7EdE7Kpy+vI
+	 d2Xc6xQJYC4ilp86rFOTgQbC/JmuUvgvmFJgWyBJkYUceN1w81zfHnvFULDLlnwPnQ
+	 D/Cj0oP/4wm4+qB6EpIVUlYgF8zl7lXPxIFrRMBTHfToS85A0usua0EcaBrLq0iOw5
+	 YkgGdeNXvYyJKxxupiBMLTKpBsSEJQ1r5HstMjJZDJKZz3gncTVagF0XcgHv89M24Y
+	 ldfUQNRXMYz2qn6CdA4znf9waOgf7ZbVBfoShyRJtRD1YloR/EHMK8YiWfoxysW36T
+	 BehML6t7TNaFQ==
+Date: Fri, 18 Sep 2026 17:15:26 +0100
 From: Simon Horman <horms@kernel.org>
 To: Alexander Duyck <alexander.duyck@gmail.com>
 Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -34,11 +34,11 @@ Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	kernel-team@meta.com
-Subject: Re: [net PATCH v2 4/6] eth: fbnic: reset num_napi when the napi
- vectors are freed
-Message-ID: <20260918161507.GT51261@horms.kernel.org>
+Subject: Re: [net PATCH v2 5/6] eth: fbnic: Set AW_FLUSH_MODE alongside
+ AW_FLUSH when flushing the mailbox
+Message-ID: <20260918161526.GU51261@horms.kernel.org>
 References: <178941996343.7700.9376081102002673062.stgit@ahduyck-xeon-server.home.arpa>
- <178942021809.7700.10804028989308077839.stgit@ahduyck-xeon-server.home.arpa>
+ <178942022583.7700.11050671998277309744.stgit@ahduyck-xeon-server.home.arpa>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,39 +47,32 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <178942021809.7700.10804028989308077839.stgit@ahduyck-xeon-server.home.arpa>
+In-Reply-To: <178942022583.7700.11050671998277309744.stgit@ahduyck-xeon-server.home.arpa>
 
-On Mon, Sep 14, 2026 at 02:10:18PM -0700, Alexander Duyck wrote:
+On Mon, Sep 14, 2026 at 02:10:25PM -0700, Alexander Duyck wrote:
 > From: Alexander Duyck <alexanderduyck@fb.com>
 > 
-> fbn->num_napi is the count of live napi vectors, each of which owns an
-> IRQ.  The PM path had freed them without clearing the count.
-> fbnic_pm_suspend() tears the datapath down via ndo_stop() and frees the
-> IRQs, but leaves netif_running() true so resume knows to re-open.  Resume
-> rebuilds the datapath in __fbnic_pm_resume() and fbnic_reset_queues() sets
-> num_napi and __fbnic_open() re-allocates the vectors.
+> When tearing down the FW mailbox Rx ring, fbnic_mbx_reset_desc_ring()
+> writes AW_CFG with FLUSH set and everything else, BME included, cleared.
+> Clearing BME halts the device's writes to the host but leaves the staged
+> requests parked in the PUL write pipeline rather than draining them, so
+> on the write path FLUSH alone never terminates the outstanding requests
+> and the flush the firmware waits on never completes.
 > 
-> When the datapath is torn down but never rebuilt, num_napi is left
-> pointing at freed vectors under 2 different scenarios:
->  - a PCIe error recovery that fails (fbnic_err_slot_reset() ->
->    __fbnic_pm_resume() returns an error -> PCI_ERS_RESULT_DISCONNECT), so
->    .resume never runs; or
->  - an __fbnic_open() that fails partway on resume and unwinds, freeing
->    the vectors after fbnic_reset_queues() has already set num_napi.
+> Add the FLUSH_MODE definition and set both bits so the staged writes
+> drain out of the pipeline on their own. BME stays cleared, so nothing
+> lands on the host; it is restored later in fbnic_mbx_init_desc_ring()
+> when the ring is rebuilt, once the outstanding writes are gone.
 > 
-> The netdev is then running with num_napi > 0 but napi[] freed, and the
-> eventual remove/unbind close re-enters fbnic_down() -> fbnic_dbg_down()
-> and dereferences the freed vectors:
->   BUG: kernel NULL pointer dereference, address: 0000000000000210
->   RIP: fbnic_dbg_down+0x28
+> The read path is unaffected. AR_CFG has no equivalent mode bit and
+> AR_FLUSH terminates the outstanding reads by itself, so it is left as
+> is.
 > 
-> Clear num_napi when the vectors are freed: in the suspend teardown (a
-> good resume re-establishes it before __fbnic_open()) and on the resume
-> open failure.  A redundant ndo_stop() then walks an empty napi[].  The
-> normal ndo_stop() down/up cycle is untouched and keeps num_napi for the
-> next ndo_open().
+> Both writes remain plain stores rather than read-modify-writes. That is
+> deliberate: the matching write in fbnic_mbx_init_desc_ring() restores
+> BME and the TLP attributes, and clears both flush bits as a side effect.
 > 
-> Fixes: bc6107771bb4 ("eth: fbnic: Allocate a netdevice and napi vectors with queues")
+> Fixes: 3b12f00ddd08 ("fbnic: Gate AXI read/write enabling on FW mailbox")
 > Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
 
 Reviewed-by: Simon Horman <horms@kernel.org>
