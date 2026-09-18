@@ -1,110 +1,94 @@
-Received: from mta0.migadu.com (out-137.mta0.migadu.com [91.218.175.137])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E883C872A
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 02:23:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.137
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B8239CD0B;
+	Fri, 18 Sep 2026 02:25:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789698220; cv=none; b=qelwhZL4EM5IQJP3l5TqoUS/CjS/anFblY0Sh/S/35W3TOSi/4anB2Wuzl8NNKUDDWX6jrYPjyf9K3S8IwMmGnjGZdfITyaOSOWKldNv/CKFO/bTIKBTK1scHxzc0/EwTXqy9h38Nl6Hqo4enabeK5Me3DGytYsAycOPhVfj7j8=
+	t=1789698347; cv=none; b=qGM+zpEXDo9GLNJjWAVFpYO6DHzsZN8wv7k/NXQWXydelhbhEOwNBnHzJ+AthQoRlXQcoQ5m1XFRf3c3/gMMKuwpZGm/hLfIsQcXPsz18uzZvoLCrqzAd/OuLelElwKVljj521VXhWw6O9HnYMvAWtRtD0Au5BxbrRm9Rrcmnho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789698220; c=relaxed/simple;
-	bh=SK7qn15tIjq6+Yb9VJvc+sI3qcbb2mDtAAmJCsPN/iM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=U4vM/6VGjcsZ1KPz0OsTBpQffeBWYYEIglT/er1PFlFpxWAe5+tvL27u2Ih2Lccj+T+PZjW1NdStQ80FskyJ+ZtZ8b4ObA3tZv1wmTCE0p2jVwf4/pPC2oKgAoEF9+K8dvY2w7qMl59KmmqB+Db3i1L9qYscJZtjjczf6rYD14c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=gDLV9Mqc; arc=none smtp.client-ip=91.218.175.137
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1789698347; c=relaxed/simple;
+	bh=rnBDPcGlj+LrAnuJz05A7DBaULFm86bRQJ8vu89HduI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZnAFeaDlU3aYRMytKcDYQXsv02eozReEClY0fqi5hKvlkilTdoqRAmneLwL+s3aIpSL4o0cLJiXyhABeZRcF6ZEfbk1PsIKCqokl4TLgkPdFlgruvOrlhxiLg5Rp/WQIzDA9rZT85GMFAihBSwZ+UR3NVXmnIiAWHwq4NJ52Azo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=0I4Od2P7; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="gDLV9Mqc"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=SK7qn15tIjq6+Yb9VJvc+sI3qcbb2mDtAAmJCsPN/iM=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789698206; v=1; x=1790303006;
- b=gDLV9MqcsN9OcdCxwIfOGFi5LiCaN6AJJ/ezuVKMkpUPzp1q2YdiblTTPKUIuleG0qklo+NE
- 1+hi1QXnFYHgy5eEF13K4ldWilrw4HAEs9OnDhcwxnd/c5RUv5mNh6UrUcALAJo/K0CBbCG78iB
- Mg0cOGsaUo3J8JYWINZURa78=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 304ce3a29e7bae13;
-	Fri, 18 Sep 2026 02:23:16 +0000
-X-Mizu-Trace-ID: 304ce3a29e7bae13
-X-Migadu-Flow: FLOW_OUT
-From: Chenguang Zhao <chenguang.zhao@linux.dev>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	chenguang.zhao@linux.dev,
-	Chenguang Zhao <zhaochenguang@kylinos.cn>,
-	syzbot+694b49f41098a5df4fd7@syzkaller.appspotmail.com
-Subject: [PATCH net v2] net: phy: allow phy_detach() before netdev registration
-Date: Fri, 18 Sep 2026 10:23:16 +0800
-Message-Id: <20260918022316.237646-1-chenguang.zhao@linux.dev>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0I4Od2P7"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=x8K01hB9IqojhMRbfuKM/v1NjQHIp8XOxCYzKeUDVEY=; b=0I4Od2P71Pb5TnrRdr40GJaEgQ
+	TAgGQRxwXvSWBVB5Xoch+LXg5QPggOi0cDcuaaYnS8npdLv8DitZIpqjkRzLrzqOOwR2FyePsqC7K
+	mLVxQUn6rGk4svREL2jJZkjdJB+o+2nXWum2iVsP9wl4FTIRyLXBkStFiOb8FwGaSMEA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x7OIA-005mqx-SV; Fri, 18 Sep 2026 04:25:34 +0200
+Date: Fri, 18 Sep 2026 04:25:34 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Myeonghun Pak <mhun512@gmail.com>
+Cc: Linus Walleij <linusw@kernel.org>,
+	Hans Ulli Kroll <ulli.kroll@googlemail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Ijae Kim <ae878000@gmail.com>
+Subject: Re: [PATCH] net: gemini: Free the shared queue after removing the
+ ports
+Message-ID: <e544a2bc-79ed-4067-9be8-59453d25acb3@lunn.ch>
+References: <20260917192835.58126-1-mhun512@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260917192835.58126-1-mhun512@gmail.com>
 
-From: Chenguang Zhao <zhaochenguang@kylinos.cn>
+> Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
+> Assisted-by: LLM
+> Co-developed-by: Ijae Kim <ae878000@gmail.com>
+> Signed-off-by: Ijae Kim <ae878000@gmail.com>
+> Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+> ---
+>  drivers/net/ethernet/cortina/gemini.c |    6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+> index 4c762229ce42..e493d495f2ef 100644
+> --- a/drivers/net/ethernet/cortina/gemini.c
+> +++ b/drivers/net/ethernet/cortina/gemini.c
+> @@ -2364,7 +2364,6 @@ static void gemini_port_remove(struct gemini_ethernet_port *port)
+>  		unregister_netdev(port->netdev);
+>  	}
+>  	clk_disable_unprepare(port->pclk);
+> -	geth_cleanup_freeq(port->geth);
+>  }
+>  
+>  static void gemini_ethernet_init(struct gemini_ethernet *geth)
+> @@ -2656,7 +2655,10 @@ static void gemini_ethernet_remove(struct platform_device *pdev)
+>  {
+>  	struct gemini_ethernet *geth = platform_get_drvdata(pdev);
+>  
+> -	geth_cleanup_freeq(geth);
+> +	devm_of_platform_depopulate(&pdev->dev);
 
-phylink_connect_phy() may be called from probe without RTNL while the
-net_device is still NETREG_UNINITIALIZED. If phylink_bringup_phy()
-fails, phy_detach() uses rtnl_dereference(dev->hwprov) and lockdep
-reports suspicious RCU usage.
+This seems wrong. If you have to call devm_of_platform_depopulate()
+why are you using devm?
 
-hwprov cannot have been assigned before register_netdevice(). Relax the
-RCU check for that state only; registered devices still require RTNL.
+> +	writel(0, geth->base + GLOBAL_INTERRUPT_ENABLE_4_REG);
+> +	if (geth->freeq_ring)
+> +		geth_cleanup_freeq(geth);
 
-Fixes: 35f7cad1743e ("net: Add the possibility to support a selected hwtstamp in netdevice")
-Reported-by: syzbot+694b49f41098a5df4fd7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=694b49f41098a5df4fd7
+gemini_ethernet_remove() is supposed to do the opposite of
+gemini_ethernet_probe(). What is the opposite of geth_cleanup_freeq()?
+Where is it called in gemini_ethernet_probe()?
 
-Signed-off-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
----
-v2:
- phy_attach() does not set dev->hwprov. It is only written by ethtool
- TSCONFIG after register_netdevice(). when calling phy_detach(), we
- need to check whether hwprov is NULL to clean up dangling pointers.
-
- This patch uses `NETREG_UNINITIALIZED` as a flag. When PHY registration
- fails, TSCONFIG remains unset; hence `dev->hwprov` should not be accessed.
-
-v1:
- https://lore.kernel.org/all/20260916021505.238990-1-chenguang.zhao@linux.dev/
-
- drivers/net/phy/phy_device.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 94b2e85e00a3..a3a7d5c75970 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1941,11 +1941,13 @@ void phy_detach(struct phy_device *phydev)
- 		/* hwprov may technically be protected by ops lock but
- 		 * not for devices with a phydev, see phy_link_topo_add_phy()
- 		 */
--		hwprov = rtnl_dereference(dev->hwprov);
--		/* Disable timestamp if it is the one selected */
--		if (hwprov && hwprov->phydev == phydev) {
--			rcu_assign_pointer(dev->hwprov, NULL);
--			kfree_rcu(hwprov, rcu_head);
-+		if (dev->reg_state != NETREG_UNINITIALIZED) {
-+			hwprov = rtnl_dereference(dev->hwprov);
-+			/* Disable timestamp if it is the one selected */
-+			if (hwprov && hwprov->phydev == phydev) {
-+				rcu_assign_pointer(dev->hwprov, NULL);
-+				kfree_rcu(hwprov, rcu_head);
-+			}
- 		}
- 
- 		phydev->attached_dev->phydev = NULL;
--- 
-2.25.1
-
+	Andrew
