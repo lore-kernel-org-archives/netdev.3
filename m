@@ -1,281 +1,173 @@
-Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011014.outbound.protection.outlook.com [52.101.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD444BA1D6;
-	Fri, 18 Sep 2026 10:23:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789726997; cv=none; b=ULkuB23ALrnnzq/UKVD53k+nrFHWvn0Cgkunddml3fYOYbnweqORS8L7nRLLu+Fro9XpURRhwC7vMLNiGiWGK8+wNdOZhvl3OFlMTFoCoEuF5LKpNAAZFFRJaVUzlLlxVAa35AEme2LXZhPPAR1KkPVuwdvR3Mwl4kwrLgucutc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789726997; c=relaxed/simple;
-	bh=C+8SSJ5aqX/922hSjxdyNjybXQl8gOdQl6SYYoWWU+I=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=EoyYQXf085aHTRTraF10KwwZfuW9c1rMf8Gqe7qewHzEsyCcTNaqdvObwYs1l6PxvrZ6w8CTG8eqMmzieShlbPBYAkQBUWE4w9l02xntDDVuVZpWKEV3FF+IeeBUEyDZNL/EHcWn3QWMgimEkhinl/Uf051r5o6Rl2ZeBOqcQDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=1TSNnXUc; arc=none smtp.client-ip=193.238.174.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221554B8260;
+	Fri, 18 Sep 2026 10:28:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789727282; cv=fail; b=rWEHStQor27fWS6tioqRfaPFw80t6+wqbOJz8C+og1x8AwTzctW+ALFx3sk93DD9SlhNHmO/w8f6QRejsCiG3uv5zE8bDY/+iYb6DgFMPcz89QjxhqrmDhmj5avHebOpfksk1DTLrIgikljUbV9ZgZ+9ByqYALO0avk/93nO6DE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789727282; c=relaxed/simple;
+	bh=i5e4X0k80/c2oXVOuRnk9BVbrSAwXartdWC4PtoIt94=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=chHMrCAslYpe/JoaBdu2FJ9zuSE0rCbnW5JhMjpmqmBxT2WqAefSysBXs+/OizLbwAA28I+enpwz+lVcohOZkwOX7CREUyR85W/SaYIAtDrD1ApEqx6KnLhqL6eG8hZbqv+evJPQMAf2oHCxq6F0Eu9dewl5/y6TXYu0p2Rrzo4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=nT6uGigX; arc=fail smtp.client-ip=52.101.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="1TSNnXUc"
-Received: from mx.ssi.bg (localhost [127.0.0.1])
-	by mx.ssi.bg (Potsfix) with ESMTP id 706C3217C1;
-	Fri, 18 Sep 2026 13:23:06 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
-	:content-type:content-type:date:from:from:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
-	 bh=1k1ovmlJLtcH4ClE6SSwD5Brkz6u+PNb3FnANbOQITg=; b=1TSNnXUc48B+
-	ygEVETQ0V11WcSc7DgDCj+hqShZIyg8cusGRmObGTCTPXwrCjMsdSedl2AWyzgl+
-	p19ZRXKA7hqu/ofC4GT+eFwYdVVqUhGCM/XgiNPqL9p1lCVFO2lc2sAQCsgZ8Nja
-	J1zBQF64YGLG73uXugNCE4BWb7upg8Qf+AIc4KSLrmnmBw6l0Bv4dyMfu9lrDg0h
-	2RFbWOUQBy/Qn1cqP8rHyskj5uC52MJPUGZYL3vHiLrVsIvmCpl6Pkf5D/IMQAAL
-	hWsBYAhC4Z69gbzvCEf9P49PHiKnKidsFdHgqMbndyRII08uZMxchuJPXpAxIzeZ
-	2+gTwJUnpuNx3F4g3TumPUbEcm/EVufBKdILX4C/cx/dHO/UsRrqKKG4InWxMuQv
-	mmw9tSnP3z6TJHy24/sPqe0PLRrQx3aucmXRYuRRBMi7Pi5LgXIqOnXfabCngjfv
-	5zbwmTmIi6LzsO48w1N8p1j5AZBVFpIvwofx/0oty47Aw+BG3XhqR6UVTvFxKcZN
-	eimZVP/Z/OZ+iv5GDZIt4r976hQyKOn5yL19aILq/uUz6QwroyGOpEelV3nvmEoB
-	v+ytl0dPn17pcA3GcDBzWQj626JGM79DjTzcLLluxhPYuAJiGfMLTI8zVODMTss1
-	+sJ+G8+LDcgDJZGYXVAHnrEUklGLp0o=
-Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
-	by mx.ssi.bg (Potsfix) with ESMTPS;
-	Fri, 18 Sep 2026 13:23:06 +0300 (EEST)
-Received: from ja.ssi.bg (unknown [213.16.62.126])
-	by box.ssi.bg (Potsfix) with ESMTPSA id 772A060087;
-	Fri, 18 Sep 2026 13:23:08 +0300 (EEST)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 68IAN2L8032556;
-	Fri, 18 Sep 2026 13:23:02 +0300
-Date: Fri, 18 Sep 2026 13:23:02 +0300 (EEST)
-From: Julian Anastasov <ja@ssi.bg>
-To: Jakub Kicinski <kuba@kernel.org>
-cc: pablo@netfilter.org, netfilter-devel@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        pabeni@redhat.com, edumazet@google.com, horms@kernel.org, fw@strlen.de,
-        Axel Mierczuk <axel.mierczuk@1password.com>
-Subject: Re: [PATCH net 07/10] ipvs: filter some flags received in the backup
- server
-In-Reply-To: <20260918020411.3513416-1-kuba@kernel.org>
-Message-ID: <7f71f3cc-7261-f603-835b-f6f9fab0b8c0@ssi.bg>
-References: <20260916231652.127456-8-pablo@netfilter.org> <20260918020411.3513416-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="nT6uGigX"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PtXorcjUfqeF1Do6KmOSF0LeIAarYoAEK5BFmQT6sEq2gbcFHWmvcDZ2WLVl7eSpSoMwtsOeeDRNYIz2iJAHSK7SqyxIBtAIiRB+hCBmim6Vtqs2n6br/3TnRBiLqQw0cv4q3YtUV2IJweSNpWCsTheFQ0pD60SNYlUQwjh1lWbQPdtGfYsaY61FYSwF0BRVkpWzh/E8ZRNl9gmtllgtlL/87rWH96wq1OOIINC/IDxfItQcy8jUq+bHChDgSAe9rH2tb7Z7DYrMeLKbVtFFB4LLeGO0+qbQAerUnGkj1TGpkYBPN1IwgWM1sihdFxvJhdX67bTq43Vg79bpStf3BA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Q1hHKRgr6ZGR2fBVBBRbv+RT7nII1T2pZjWiW64cWRY=;
+ b=iT8q4F40fqkni0vL3hLjKjNkJIVE4xafFJGSN4FG+IvT3KRnkncXwGxK3tLT7F7eAJzcuQ5OP7f2Go6VtLaqSqXW20mYR/NZGV7M195qL6Of0Lz9uQxrMxtbpAikj8HnD/jOAcnu6SxDCixMzn49hVTfhb0KWSuAgT+36ZRdleX0XSVsiFK/hSa8qGBAJa6sVr07CYO13yQ5IA9IfWbIDkyVyLQjZVmHk19hsixeV4YHnaGpLlG8ZdwD2gmWIH0sjOpBjXu2AnXzPhsS4U1TCY+O7drTTcxdHynwhHqazNbFyfW7gZ/GP3Ut/5WojCDb1Yfzs1apnclImvd0xyLeLg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Q1hHKRgr6ZGR2fBVBBRbv+RT7nII1T2pZjWiW64cWRY=;
+ b=nT6uGigXT5EXDoZr/4CSG1L/trJCrQbg/UQd6Ff68NOGIrmxiEFXdQgz7RHR0zefn/rcAXFqWc1A0Xke9yQbqetJriikOxf/lsiKRAXEBfxpRIULm59zYoUSr8qi0wKAy5UU2ohUjheF3gbJJhKVXyqdP/gcoKHEz8FQB9ym0kjrH4BcNmhLYfyv089ZR1WV4jdq7wxrvuIZIHnZxsKc2YdGo01xhiTq0nOJrrpZ8pO2SVUL1p+KdFo6TnQdtYAySgX6hBZGoEVCUp56fdg9DQ+Jks2fIXZKi8QZLOT1Cca6rIxF8sv494BCOsQlwlD4zguVFY0/1kpzHA1SZDxOHA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB6900.eurprd04.prod.outlook.com (2603:10a6:208:17d::10)
+ by AM9PR04MB8857.eurprd04.prod.outlook.com (2603:10a6:20b:408::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.11; Fri, 18 Sep
+ 2026 10:27:57 +0000
+Received: from AM0PR04MB6900.eurprd04.prod.outlook.com
+ ([fe80::7fda:8431:ca1b:b023]) by AM0PR04MB6900.eurprd04.prod.outlook.com
+ ([fe80::7fda:8431:ca1b:b023%4]) with mapi id 15.21.0428.011; Fri, 18 Sep 2026
+ 10:27:57 +0000
+Date: Fri, 18 Sep 2026 13:27:53 +0300
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	Zefir Kurtisi <zefir.kurtisi@westermo.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Simon Horman <horms@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	"Y.B. Lu" <yangbo.lu@nxp.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>
+Subject: Re: [PATCH v3 net 1/7] net: enetc: consistenly track dropped frames
+ in enetc_xdp_xmit()
+Message-ID: <20260918102753.kjxfgmediwq5erba@skbuf>
+References: <20260915222735.1016937-1-vladimir.oltean@nxp.com>
+ <20260915222735.1016937-2-vladimir.oltean@nxp.com>
+ <GV2PR04MB11739B011069410AB4B517A6188B92@GV2PR04MB11739.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <GV2PR04MB11739B011069410AB4B517A6188B92@GV2PR04MB11739.eurprd04.prod.outlook.com>
+X-ClientProxiedBy: VIVP296CA0139.AUTP296.PROD.OUTLOOK.COM
+ (2603:10a6:800:359::10) To AM0PR04MB6900.eurprd04.prod.outlook.com
+ (2603:10a6:208:17d::10)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB6900:EE_|AM9PR04MB8857:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1e9f4a18-c1b8-4d6e-0ae1-08df156f8184
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|19092799006|366016|23010399003|10070799003|4143699003|10067099003|22082099003|11063799006|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	FEHYZwN1G6iKDlbQI6/T9N4KkCjZpZxcv1eU6dkSZIRFYIaneil3O78BKprZNF2kDxGYfLe8XfmHcBQ5I8QZa5vfG3iyB2Xf7wXotpYPEd7C4AawuMfAFWc1/Zst6Bm5WvInLKOvA71Tib4QGp+8hp+trJeARv3/9RVPUExS65t53EubsIaKHPt6N6KpmYHJ5nei9xfU6OLod8H7Jnif+TtU70q9ReKVeJ+ST+YHkcvPT+vJvW7Nl0CWslkGI+B6c8Fs2+dST93lEvaxsOLZcfKFsZBll/lPlp4fb+fj82tB/GFALSenhpAMTBlOjPgLRJ5SCTEOBik75Zeg0RmTMG3hMl6OMRJY92oaFmkx+CyMgqT7ieVes5TQgCyzGhymR9T4MSwaWSv45FlGvNOX4Slsphd3CY9d7RMuXnzy3w54gR78kVQv89kMD+p7t4VsxyPZ3xmrpJBRcRU4/oM+W2KSKDVjmmrGiOa9pwqBUbBrTppHlTjcA8xnbcGYsHM8csOtGF8jKxKO9bC9u2ORVOw4VcBEoABm0KWckzRh0jlTbSaKKaM872qUPgrlbk3VIktYpuWKGCwhM6BlEZ4AJblJnQIgfK4u0kyUPARp7gZvg0cX73wHGuFeRFf5fl9z7451THndDX+xNUCei9Yn5qI4d3nc44oxZgQtuzJtbMk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6900.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(19092799006)(366016)(23010399003)(10070799003)(4143699003)(10067099003)(22082099003)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?7HDpgM75qazLtCaHBent5o/+ecIi0yNcimfFFHxKsR6jk6+EXm2/lvT2X+qH?=
+ =?us-ascii?Q?rQTv1aTZfKo6V+MkAneXkGGvZbSJGQtQcMPFtiKjLIOUcQ1XQRJyrh0Oi+uX?=
+ =?us-ascii?Q?3LnH4EY+MqQDscWm1gan+OhJFsYhgMbcaiRWFAFqMWKDn10+tjIzgNfTMHhJ?=
+ =?us-ascii?Q?E+bpNYy+vj7s6vYkx/LP4uQAS6u61GzmCulFfZUeYWw1xT+82I1hzYsyeaPI?=
+ =?us-ascii?Q?TwF8S6N4Hcza6BwHYlpmbXtkdPGdM+j6nkyXrPMED41n2HaLW9qE3BlPIuIC?=
+ =?us-ascii?Q?W3GfeEOISrrKqvmprPUvAPUP3ySQ4L6m3WDYBa8SqfmFt7ektJ9tW0dIH/M5?=
+ =?us-ascii?Q?XraVm8CF+71iGe+VAuF4dSgGeBGVLgQdo1Q3U5QziCSmr+H6LARySWNrbUnT?=
+ =?us-ascii?Q?D8PI4gUUuGNnCxj95TDPef9mwSQ6UxF7gkuQSVISJvArNjNCI7tb6UlN4eu+?=
+ =?us-ascii?Q?tKJxM/8/SzaX+ZlDq9KJyp/o37wrdnbHXyT36sEfjnxlWqGUt0rOG68YDWTW?=
+ =?us-ascii?Q?CDpodkug7F9CWiEpMEL4FVKILLMTP7o5GC4R6ojwBlmQ/LWD4aMJaIA7grdX?=
+ =?us-ascii?Q?bmrkaPyCZSwoz07xsCS8WU8JOYo8HH/MqPTUSSsCdLx/2rS7z8iSpvCpbua9?=
+ =?us-ascii?Q?vblDzEaZlpP9k4l9PrWnV6uoFGM2q+nOT48UcyBPkAtYQwVZu0TuqnQ6qisk?=
+ =?us-ascii?Q?YF3IhCWPBJiaoT9/HX0ejr888Q2ve52HGefKw2JDpx2/LNyTZFcgUExXLMTl?=
+ =?us-ascii?Q?yyWEfTUAEd7ZgxH/7RIpnltAK5F4hPqjQ+qnfUhiHXM/lZlHJGkEgTkxCjao?=
+ =?us-ascii?Q?I1fANAZ2AGeTK5JBY0akWPj27tWcmDkA3AuIDJSatrXDK1wYaF/a2ujz0Zt7?=
+ =?us-ascii?Q?Ul+u0JwQdMs5Qnbsk8q0aA2p2/eGx+ZbkxR2a0Q1AiegYRUmxE6e/x+d5izE?=
+ =?us-ascii?Q?GT5jVsB26OoPaIhWx+CLFDBgvoTLts5q/mNs8Mtl396NoVIDLBChLBfKYcqK?=
+ =?us-ascii?Q?+kN/EjsGkRatgSd7WVuAEcBrRm03gufHiWVdyDeE0pA/2Cm+mFt4G4o1zfYI?=
+ =?us-ascii?Q?Vy0zH/JI5er7p1T/ezPWappVYTpFTkniYvYSOxkNl+FpcjXTQ6DRWeAIAydC?=
+ =?us-ascii?Q?e9CMedClsXtZZfluHC+wpAdT+7Ts6S8ilEqymKdmkHmecQ74orNdogmgWFZg?=
+ =?us-ascii?Q?SL9mrkEyx9MQAy038VIlm0ndge8MyyYHufE8JY6O+rJWk9RzwOEA17Vx3Ie+?=
+ =?us-ascii?Q?c8t1tHl+M95GpRwdZ3W71nMrX2nMuUW9DEWq9wpvLSYn9hNofSJCwo671qo5?=
+ =?us-ascii?Q?5N0fkaSID7vNERf8J3mv37Vk965ZKpvMP6YQoARLdUDlh+1B5YKqGxaVFOkR?=
+ =?us-ascii?Q?tkEjsVwbEYsHKQSlWQvUpilcTmU2YYOUkZXO1RjWwnjHDhPWsuFGvJkvl//c?=
+ =?us-ascii?Q?k2YaaTztbZHyC/o1i0E/ZWKlfR4bu/NPml38p8GLdWPg0YuzRCVn8DILCgX+?=
+ =?us-ascii?Q?lufVl71pr19Mlw+yB6A5He3ZMiprb3yyVZ8r9WDR7BZz0xryHuGyZfx/RAE5?=
+ =?us-ascii?Q?lmhSPx0iRvJLAKjkv2xwVL1Y3BFwZstIxnGVOUczO+MuLX//kb5w0MxlvfHv?=
+ =?us-ascii?Q?5XoOsx8WfkcL/xs1Z5vHLjBj+t/ph5Q2T67KAjt13j5nhSCEke8FgM4iPypW?=
+ =?us-ascii?Q?B1KhZ408H+xoyi5EeTdhTRCI588IUEKCmbTyfzMKoozK8OdonrjcHHac6QQP?=
+ =?us-ascii?Q?eLWC3ga0/4zzB7woZtTCO+Cn7CV6iGqOIYAEcGytnPoNFT8GSkzmGh9HtE0M?=
+X-MS-Exchange-AntiSpam-MessageData-1: RaDnngzSun6YISP+I5lFMwpE/4IsKJ2OgY8=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e9f4a18-c1b8-4d6e-0ae1-08df156f8184
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6900.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2026 10:27:57.6746
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1emmFyhzB+k/vUQqVcgTYHjkmsyN4ywkPHw8LJ4efYx2u4xHHr4+VnFqtLinZlpZfM8W5BdF7K5xty8GSn08Cw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8857
 
+On Wed, Sep 16, 2026 at 05:16:28AM +0300, Wei Fang wrote:
+> > diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c
+> > b/drivers/net/ethernet/freescale/enetc/enetc.c
+> > index 80f0082f6c63..e7ecdf8ef67c 100644
+> > --- a/drivers/net/ethernet/freescale/enetc/enetc.c
+> > +++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+> > @@ -1843,7 +1843,6 @@ int enetc_xdp_xmit(struct net_device *ndev, int
+> > num_frames,
+> >  			for (i = 0; i < xdp_tx_bd_cnt; i++)
+> >  				enetc_unmap_tx_buff(tx_ring,
+> >  						    &xdp_redirect_arr[i]);
+> > -			tx_ring->stats.xdp_tx_drops++;
+> >  			break;
+> >  		}
+> > 
+> > @@ -1854,6 +1853,7 @@ int enetc_xdp_xmit(struct net_device *ndev, int
+> > num_frames,
+> >  		enetc_update_tx_ring_tail(tx_ring);
+> > 
+> >  	tx_ring->stats.xdp_tx += xdp_tx_frm_cnt;
+> > +	tx_ring->stats.xdp_tx_drops += num_frames - xdp_tx_frm_cnt;
+> > 
+> >  	enetc_unlock_mdio();
+> > 
+> > --
+> > 2.43.0
+> 
+> Reviewed-by: Wei Fang <wei.fang@nxp.com>
+>
 
-	Hello,
-
-On Thu, 17 Sep 2026, Jakub Kicinski wrote:
-
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> ipvs: filter some flags received in the backup server
-> 
-> This adds ip_vs_sync_validate_flags() to the backup receive path so that
-> sync records carrying the NO_CPORT+TEMPLATE combination or ONE_PACKET are
-> dropped, and it also applies IP_VS_CONN_F_BACKUP_MASK to the flags taken
-> from version 0 messages for consistency with version 1.
-> 
-> A few questions about the new validation below.
-
-	I'll explain them before sending v2...
-
-> 
-> > diff --git a/net/netfilter/ipvs/ip_vs_sync.c b/net/netfilter/ipvs/ip_vs_sync.c
-> > index 5383aeafb0aed..69dc28153ec12 100644
-> > --- a/net/netfilter/ipvs/ip_vs_sync.c
-> > +++ b/net/netfilter/ipvs/ip_vs_sync.c
-> > @@ -949,6 +949,21 @@ static void ip_vs_proc_conn(struct netns_ipvs *ipvs, struct ip_vs_conn_param *pa
-> >  	ip_vs_conn_put(cp);
-> >  }
-> >  
-> > +/* Check for incompatible flags */
-> > +static bool ip_vs_sync_validate_flags(u32 flags)
-> > +{
-> > +	/* We do not expect NO_CPORT, especially to allow lookups
-> > +	 * to hit templates
-> > +	 */
-> 
-> [Severity: Low]
-> This isn't a bug, but does the comment describe what the code does?  The
-> text reads as an unconditional statement that NO_CPORT is not expected,
-> while the code below only rejects it when TEMPLATE is set, and both call
-> sites then keep the bit:
-> 
-> 	flags &= IP_VS_CONN_F_BACKUP_MASK;
-> 
-> IP_VS_CONN_F_BACKUP_MASK in include/uapi/linux/ip_vs.h is documented as
-> "Initial bits allowed in backup server" and it lists
-> IP_VS_CONN_F_NO_CPORT, so bare NO_CPORT is expected here.  It is also
-> needed: ip_vs_conn_new() accounts NO_CPORT entries in
-> ipvs->no_cport_conns[] and ip_vs_conn_in_get() relies on that counter for
-> the cport-zero retry used by the FTP/persistence connections referenced by
-> the Fixes: tag.
-> 
-> Could the comment be reworded to say that it is the NO_CPORT+TEMPLATE
-> combination that is not expected?
-
-	This is one of the things I want to explain. It is
-ip_vs_sync_conn_needed() in the master that does not send
-sync messages for TCP conn before it is established, so we do
-not expect to see NO_CPORT on the wire. But we prefer not to
-disable receiving NO_CPORT with cport=0 for normal connections.
-It is nothing special to wait for initial SYN from unknown cport.
-
-> 
-> > +	if (flags & IP_VS_CONN_F_NO_CPORT) {
-> > +		if (flags & IP_VS_CONN_F_TEMPLATE)
-> > +			return false;
-> > +	}
-> 
-> [Severity: High]
-> Does this close the case described in the changelog as "the NO_CPORT+TEMPLATE
-> combination allows lookups for normal connections to hit template"?
-> 
-> A record with IP_VS_CONN_F_TEMPLATE set, NO_CPORT clear and a non-zero
-> cport passes this test, survives flags &= IP_VS_CONN_F_BACKUP_MASK (TEMPLATE
-> is part of that mask) and reaches ip_vs_proc_conn() -> ip_vs_conn_new() with
-> the cport taken from the wire (ip_vs_conn_fill_param_sync() copies
-> s->v4.cport, ip_vs_process_message_v0() copies s->cport).
-
-	This will be solved in separate patchset from
-Axel Mierczuk.
-
-> ip_vs_conn_hash() hashes templates into the same dir-0 key space as normal
-> connections, and __ip_vs_conn_in_get() has no TEMPLATE test:
-> 
-> net/netfilter/ipvs/ip_vs_conn.c:__ip_vs_conn_in_get() {
-> 	...
-> 			if (p->cport == cp->cport &&
-> 			    p->vport == cp->vport && cp->af == p->af &&
-> 			    ip_vs_addr_equal(p->af, p->caddr, &cp->caddr) &&
-> 			    ip_vs_addr_equal(p->af, p->vaddr, &cp->vaddr) &&
-> 			    (!p->cport ^
-> 			     (!(cp->flags & IP_VS_CONN_F_NO_CPORT))) &&
-> 			    p->protocol == cp->protocol) {
-> 	...
-> }
-> 
-> For a packet whose client port matches the injected cport, the XOR term is
-> (0 ^ 1), so the template is returned as if it were a normal connection.
-> Legitimate templates never hit this only because ip_vs_sched_persist()
-> always creates them with cport == 0 and without NO_CPORT, which is the
-> invariant this helper does not enforce.
-> 
-> Once that happens, ip_vs_in() has no template guard, so live traffic is
-> forwarded through the template's packet_xmit and daddr/dport, and
-> set_tcp_state() then adjusts dest->activeconns:
-> 
-> net/netfilter/ipvs/ip_vs_proto_tcp.c:set_tcp_state() {
-> 	...
-> 		if (dest) {
-> 			if (!(cp->flags & IP_VS_CONN_F_INACTIVE) &&
-> 			    !tcp_state_active(new_state)) {
-> 				atomic_dec(&dest->activeconns);
-> 	...
-> }
-> 
-> while ip_vs_bind_dest() counted that entry under persistconns and
-> ip_vs_unbind_dest() only decrements persistconns for templates, so
-> dest->activeconns stays skewed and affects lc/wlc scheduling for the real
-> service.  The timeout is taken from the message (bounded only by
-> MAX_SCHEDULE_TIMEOUT / HZ in ip_vs_proc_conn()), so the bogus template can
-> be long lived.
-> 
-> Would rejecting TEMPLATE records with a non-zero cport, or excluding
-> templates in __ip_vs_conn_in_get(), be needed for the stated goal to hold?
-
-	Yep, the above problems will be solved...
-
-> [Severity: Low]
-> This is a pre-existing issue and not introduced by this patch, but since
-> the helper is the new place where flag combinations are screened: a record
-> with NO_CPORT set and a non-zero cport is still accepted, because only the
-> flags word is inspected and never cross-checked against the record's cport.
-> 
-> ip_vs_conn_new() hashes such an entry under the non-zero cport and bumps
-> ipvs->no_cport_conns[af]:
-> 
-> net/netfilter/ipvs/ip_vs_conn.c:ip_vs_conn_new() {
-> 	...
-> 	if (unlikely(flags & IP_VS_CONN_F_NO_CPORT)) {
-> 		int af_id = ip_vs_af_index(cp->af);
-> 
-> 		atomic_inc(&ipvs->no_cport_conns[af_id]);
-> 	}
-> 	...
-> }
-> 
-> The entry can then never be matched: the direct lookup fails the
-> (!p->cport ^ !(cp->flags & IP_VS_CONN_F_NO_CPORT)) test, and the cport-zero
-> retry in ip_vs_conn_in_get() hashes a different bucket than the one the
-> entry sits in, so ip_vs_conn_fill_cport() never runs and the counter stays
-> elevated until the entry expires.  While one such entry exists, every
-> conn-table miss in that address family does a second full hash lookup.
-> 
-> Is it worth also requiring cport == 0 when NO_CPORT is set?
-
-	It is harmsless but better to check it.
-
-> 
-> > +	if (flags & IP_VS_CONN_F_ONE_PACKET)
-> > +		return false;
-> > +	return true;
-> > +}
-> 
-> [Severity: Low]
-> The changelog says:
-> 
->   "2. ONE_PACKET: it is not sent by master, so we do not expect it in
->   backup."
-> 
-> Is that accurate for controller connections?  ip_vs_sync_conn() tests
-> ONE_PACKET only for the connection it is entered with, and the test sits
-> above the sloop label:
-> 
-> net/netfilter/ipvs/ip_vs_sync.c:ip_vs_sync_conn() {
-> 	...
-> 	/* Do not sync ONE PACKET */
-> 	if (cp->flags & IP_VS_CONN_F_ONE_PACKET)
-> 		goto control;
-> sloop:
-> 	...
-> 	s->v4.flags = htonl(cp->flags & ~IP_VS_CONN_F_HASHED);
-> 	...
-> control:
-> 	/* synchronize its controller if it has */
-> 	cp = cp->control;
-> 	if (!cp)
-> 		return;
-> 	...
-> 	goto sloop;
-> }
-> 
-> The controller path re-enters below the ONE_PACKET test and the serializer
-> clears only IP_VS_CONN_F_HASHED, so a controller carrying ONE_PACKET is
-> sent on the wire with that bit.  A persistence template can carry it:
-> ip_vs_bind_dest() strips the dest ONE_PACKET only for non-UDP and for
-> SYNC-created entries, and IP_VS_CONN_F_DEST_MASK includes
-> IP_VS_CONN_F_ONE_PACKET, which the legacy setsockopt path copies verbatim.
-> 
-> For a UDP persistent service configured that way, the master emits a
-> TEMPLATE|ONE_PACKET record which the backup now drops with retc = 25
-> instead of masking ONE_PACKET off and creating or refreshing the template,
-> so that template is no longer replicated.  The practical effect looks small
-> since ip_vs_conn_hash() returns early for ONE_PACKET on the master too, and
-> only the single record is skipped, but could the changelog wording be
-> adjusted, or the controller be masked in ip_vs_sync_conn()?
-
-	Templates with ONE_PACKET will not be hashed. But before that
-we can attach such template as controlling connection to some
-data connection. Such template will be invisible (not hashed)
-and will expire when its data connection expires. But it is better
-to disallow ONE_PACKET for templates. Will post a patch for this.
-
-Regards
-
---
-Julian Anastasov <ja@ssi.bg>
-
+Thanks for the review, but I'm not picking up your tag because I need to
+expand the patch to also cover the situation uncovered by Sashiko (the
+-ENETDOWN case not incrementing the drop counters).
