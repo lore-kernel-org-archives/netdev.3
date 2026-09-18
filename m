@@ -1,62 +1,64 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 970B34973BF
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 11:43:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46664C957B
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 11:43:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789731822; cv=none; b=qbOsZ6xjuwU6l9ZuSIZ7rPrN+aUm5kTVkM6ahQB/aHka91pOGfX/MJ1D6FF9VOkh6/KuwF7wEO/sB+eJnT1Im4ZLjhdHmPj5LpMQEsUJECqDjnE3garFpKWEJMXu952IFSjlL8eLWr6SK+qOQEuzkrU4xmYxvmRQ19rsAuBkVwA=
+	t=1789731829; cv=none; b=p5MsAPmOJ39hGfXk0ZbT1TaQoDxCACPfaEr9ZnwxnndxaMrJS1Zk1jUZ47tbMths2AkxFEhlmks4w5ZdZw5iRUhR/aw/45v8+DiyQfoCcduwKuqnD8pY32Q+teNJSKCSrOyzRldwPHk5P46koJxnBwzrVTUaL8bKvweA8FYkqc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789731822; c=relaxed/simple;
-	bh=SRUumQAnpSXniW/sFyv72eCyMKi1jXmk9Oim8IA3bpM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iZZBcWHPBMjpVzQ8naz3BG5VzW4tniVdre68InUUk6sUQ+Tfa+ubObg+tMVwdO6Suoa73+v0YhJNHfz0XFj0lwaSHBOzLLrnDd7y4Pu8gVqfAosGuAlnwelcAYWbD+zUz3QILUbPWk5VIDnw5dv4gLhd39lUS0dGsUdOqJNuzkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SVpiQgRt; arc=none smtp.client-ip=74.125.227.140
+	s=arc-20240116; t=1789731829; c=relaxed/simple;
+	bh=O0OEtypMq54rxogZfM3UcR62WCFrWh4lapIYJp+uHnQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MQBtPXGJuYK/eop0y59HsbmWADDfS4LjqcXyVT1Kc9K4wgm7At131FYqJ1DJkEyKmC5e8k5M/XbEmyY/u/N9sFE1Y6fuJuMmYPho11e71h/k0PpGX3+6q0BuokCEdeM41Ir2qkEPiaTEJbrK09gimyinM3mQL64cqLliBeVb8tY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rOsiKaA+; arc=none smtp.client-ip=74.125.228.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SVpiQgRt"
-Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d747eb79f7so4072555ad.1
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 04:43:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rOsiKaA+"
+Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469d249c5so535748b3a.3
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 04:43:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789731820; x=1790336620; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/mchxmlE1Z6JjIT7JJbaPsbpmSkFR757IQABr8XiljQ=;
-        b=SVpiQgRtq68ATnKe2vHL3UWY+Vb3iZLDqAQdZ+3vE5dSguAlGbK7L7kwIt0XzdFTfv
-         5k9jMu600AHPaAt3r8ch4mrvsvl1Lzlo4pdnHw51pTpH17X5AfSOVJfUZsQ8AJMS/Dmn
-         4M7MsfDrFZ8J2s4mYk/X/9Y2fOQVGOrQNs0i7VVTeqpwn4k3HOzdof8iQYUptWjV1RQZ
-         52V+wvzHhDdonyA3zQtXoUoVq5Jh5JPIK9BXU11jXjnx/x6AAegMkQuYwDuE0sXrhvWp
-         n8k9Lp/by+wWOgGkW5S0RgLBQdypBrviumcm280xK7FjUfNEHwBawRf8wX+ClXNXYkpB
-         eOIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789731820; x=1790336620;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1789731827; x=1790336627; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=/mchxmlE1Z6JjIT7JJbaPsbpmSkFR757IQABr8XiljQ=;
-        b=gnlXMdca+RGO3/H7MzJM6C7VE5NMuUNWfWKHSiinuDjWxI2E4/0H/gsaY80x1Jla5R
-         EptPo/sfCg3gYvoBpVmb6dB4BntowiU1drVxAOnnwv/h/j0I9CKevJk1Ejq93h9JUBl3
-         PGqTEr8vhb3/+yYiq93Bm4Z9IJFg89e+3NGTPnWsXxYk0hogljLPGpJcxmlrr6RvJIsJ
-         ppkIv8oS6+1ypFPdDU0tG+5pR23Lz2Bz8nCh98JG9vi1CZilJWY2cCe+3oEY423dis4V
-         rKyQLAUr+jDgL8WZpvCmlk1ea7Vrg9jFR7CzRbQEKJ9vERVqE2it39IoiQyOvrTU933x
-         G92Q==
-X-Forwarded-Encrypted: i=1; AKwUvBxEZyX6LyqcGqw+VcVc/pD1wzmOqU1o4ffLICyT4MQ55k68dCzEUitN1D+8wJQHn5G7ngmEvQ8=@vger.kernel.org
-X-Gm-Message-State: AFuF++ksSJ6YUS8RN3SbTqifgQj0qYlw0SeODzOrKnt6lG5ck8Fp+K3q
-	y9dqjh5SrwSN1pR0OItknjEfEw9MtbTmDv4evOGMuibyZxkwfs1vFTB9FtN0mgBZLUE+qQ==
-X-Gm-Gg: AYBFou3Hpvdp/eYCiDlk0KM1MfN/+kX99LslHHqv6/TqLNBHVI77pgXhulthacES8t0
-	7llDOhhwGSn+xchNvxL4Hfm7qo98YVdAI6ya+6o8hurHyKH+g8EXABkQzoRO0eLd2H+swTSgisu
-	ObYogwHLJydck2VpKIcOcHtdtImT/AKkY5oSmSHZJGRiWzmmiKPCNDPwznyOhxCRPMyqMwOtKPt
-	yMBa9QOdcpGroPpB+w99kVVL7qZsmSpMPyUPHhDJf+TuAsQFE/vYdTZxqCPmq+IqdDXEJzuJHrD
-	byCB8wYJ0dgN/WqegWoDn3/AmNlSOGlA1xew2GhKTmIyEXyN9YVx8LKzhEiMOk1dIDNqnQg6GWe
-	W2FDvkonO20fk0vaBNbMvTV8j5O04f3RgtZEptjRBFYtcqGwU5qMLzA++8UVYu1d4NlXZRD4NHO
-	6Na2WpRuab4WA4qUvntnYAC2YClYBo63GyPmvLGVVFXnquntmEHS6sywsZdc0CjDJsAgi9iXbSy
-	aRqFuWH2CQ=
-X-Received: by 2002:a17:903:3246:b0:2d6:fec3:bd57 with SMTP id d9443c01a7336-2ddb1af3398mr44813025ad.14.1789731819907;
-        Fri, 18 Sep 2026 04:43:39 -0700 (PDT)
+        bh=J1EVpGe5SDF/ZJpxR+ovxzDRHCXm4vVTGo/7vHZ+L1Y=;
+        b=rOsiKaA+rBEZwd5JMDFanQ5FkGbbcfs3IMyJjjnqhlMEiH6K78An1iSF3PdDjLLLhx
+         sAmRN2auaiLGm/TRBnVeNIUA8/dpVODzi7W1DVRlYp/sPrev9eojnWBiwWjmCcYxN3I7
+         qWpyBbVIXWHSC/6WHbHMkyoIzQ4jV6BZCfg/CgGpXlBeqQWDg/ayt8VfonO57731qXKN
+         NjXgT/qFxlvm9abfv5OYSx50QtzxiPpDB/jbZ0BvKwpAkH2G/Y0v42wnsMHcR8L1zBAw
+         uJ4Hm8vkHRHNBs3EH56f0gQ6AD2zyi9o91qfHtcCqWL12bZp8fOXn6oPSx973zX31T1N
+         pqtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789731827; x=1790336627;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=J1EVpGe5SDF/ZJpxR+ovxzDRHCXm4vVTGo/7vHZ+L1Y=;
+        b=nqsUXpG50N8ne4Jz82U8YDcqGrMgoCHUw1edjdjbqtydVQw3HZCVPYSIBIfUwTgaz2
+         higoiMRskMhw1X4mqm1MbDJsa00rVu8/hXasdDHD/zKIJPV39L6z5uuQzzxsfj7TgsLk
+         AdM+kyMgPJZdx/ZNH4nIJ00Noq1kGvgcvZU/aempwgYWwk/ngjQv9mYFOXLqv+z3rIdE
+         7Asei/3+UYSuPFVJvRFVyXlRt2Xkd7YnlGGs1SVIUser9SLwLB4AmgfSYFhmZDqCm52a
+         EprYvVDY8LwPmU6pJbcK04IGyonG0nXWpQRXPf1c1eQ+vN2Bytqt/wzib9ismbyhlTg9
+         3JrA==
+X-Forwarded-Encrypted: i=1; AKwUvBz49Q4SKYcKv1J0cZEjfA74d3rtYRb8zGtgtO5jm7S9l0l93DpBce855gEPlplOGDO/nlichpg=@vger.kernel.org
+X-Gm-Message-State: AFuF++k54kw8Nf+gvbU5SSycgNKB0eJBpRt7DHEEJHijQNBxi7Es1bk7
+	iJBBBvvXoa8j0STeI9ZN5Xl3edvhv9YJgkLK4ym7oEGMFjh9VAqfSdtu+K5BjARqyW/Q4g==
+X-Gm-Gg: AYBFou02YKSC9fHBmG9BmsCb69bni4GlO27v0NdTj9WxlJmbSa/oRb3qR+rfFZ7pjKO
+	bpUfdGPuYYuLjGMFrvgj8kb/jFRbNzIj8bNMUhS8BR0o73W6/Xqw432Ra0JmY0nbbSpeZbcvbKy
+	qaEF9MQGqTnt3V4a4SnQhGAtJ11aX0DLYmh58E7hKXKq6Dmt2S/7j/RSP/HIT3zHDnqY/AWID95
+	eFOZSNhzgyEqdbd3Pom1N69Igs+vEG0C3+JBXjU0cVJye5zZAV+LsKDeawbn5l0l905qLzscIC5
+	2xVLZK8CjrrMfwRJQqfuKt3PQj1SN62n24xUQB1ivm7UNn4mG6Ipv7KICTbTXi26tHTm/pZKj5H
+	cklCqoml+88eU5+C7MIcBksQwMO8pxw4VjXfUIHk8xtcYlHUAikz/atvcFvva2RJE8UL86ttd0p
+	QK/Wf0DmIq1+CDyd5BCHlnKNXK1/oQ0rnuooKyEahYLaA3xG4EJLv6wHJAgoNm7FUoILWHRiPly
+	Ao6Oj8KdYk=
+X-Received: by 2002:a05:6a20:3d07:b0:3d3:aec2:4dcd with SMTP id adf61e73a8af0-3dd8c48ee7amr5158956637.25.1789731827040;
+        Fri, 18 Sep 2026 04:43:47 -0700 (PDT)
 Received: from 73ebd4c7787b ([183.194.144.114])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33c284ac724sm4794739eec.2.2026.09.18.04.43.34
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33c284ac724sm4794739eec.2.2026.09.18.04.43.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 04:43:39 -0700 (PDT)
+        Fri, 18 Sep 2026 04:43:46 -0700 (PDT)
 From: Yuchao Zhang <ndaugoing@gmail.com>
 To: Donald Hunter <donald.hunter@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>
@@ -66,11 +68,14 @@ Cc: "David S . Miller" <davem@davemloft.net>,
 	Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Yuchao Zhang <ndaugoing@gmail.com>
-Subject: [PATCH 0/1] net: netdev-genl: add missing uns-admin-perm flag to BIND_TX
-Date: Fri, 18 Sep 2026 19:43:28 +0800
-Message-ID: <20260918114329.3659849-1-ndaugoing@gmail.com>
+	Yuchao Zhang <ndaugoing@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/1] net: netdev-genl: add missing uns-admin-perm flag to BIND_TX operation
+Date: Fri, 18 Sep 2026 19:43:29 +0800
+Message-ID: <20260918114329.3659849-2-ndaugoing@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260918114329.3659849-1-ndaugoing@gmail.com>
+References: <20260918114329.3659849-1-ndaugoing@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,51 +84,56 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi Jakub, Donald, and netdev maintainers,
+The NETDEV_CMD_BIND_RX operation correctly carries GENL_UNS_ADMIN_PERM
+(uns-admin-perm in the YAML spec), requiring CAP_NET_ADMIN within the
+caller's network namespace before a process may bind a DMA-BUF to a net
+device's RX queues.
 
-During static inspection of the netdev generic netlink family and devmem
-TCP operations, we noticed an inconsistency in permission checks between
-the BIND_RX and BIND_TX operations.
+The companion NETDEV_CMD_BIND_TX operation for netmem TX support was
+merged without any permission flag in both the YAML specification
+(Documentation/netlink/specs/netdev.yaml) and the generated C code
+(net/core/netdev-genl-gen.c).  As a result, any unprivileged local
+process can invoke BIND_TX to bind an arbitrary DMA-BUF file descriptor
+to the TX path of a netmem-TX-capable device, bypassing the access
+control that protects the equivalent RX operation.
 
-Problem:
+Fix by adding the uns-admin-perm flag to the bind-tx entry in the YAML
+spec and the corresponding GENL_UNS_ADMIN_PERM flag to the generated
+ops table, making BIND_TX consistent with BIND_RX.
 
-The NETDEV_CMD_BIND_RX command requires CAP_NET_ADMIN within the caller's
-network namespace (uns-admin-perm in netdev.yaml, mapping to
-GENL_UNS_ADMIN_PERM in netdev-genl-gen.c). This ensures that only
-privileged processes in the netns can bind DMA-BUFs to network receive
-queues.
-
-In contrast, NETDEV_CMD_BIND_TX was specified without any permission
-flags in Documentation/netlink/specs/netdev.yaml. Consequently, the
-generated C code in net/core/netdev-genl-gen.c only sets GENL_CMD_CAP_DO,
-and netdev_nl_bind_tx_doit() performs no capability checks.
-
-This allows any unprivileged local process to issue NETDEV_CMD_BIND_TX
-requests to attach arbitrary DMA-BUFs as netmem TX buffers on any device
-with netmem TX support, bypassing network namespace access controls.
-
-Note that upstream deliberately relaxed bind-rx to uns-admin-perm for
-non-init user namespaces in commit e302aa3d ("net: devmem: allow
-bind-rx from non-init user namespaces"), while bind-tx was added in
-commit 8802087d20c0 ("net: devmem: TCP tx netlink api") without any
-permission flag.  This looks like an oversight in the TX API.
-
-Fix:
-
-Add flags: [uns-admin-perm] to the bind-tx definition in netdev.yaml,
-and update netdev-genl-gen.c with GENL_UNS_ADMIN_PERM | GENL_CMD_CAP_DO,
-aligning BIND_TX with the permission model of BIND_RX.
-
-Best regards,
-Yuchao Zhang
-
-Yuchao Zhang (1):
-  net: netdev-genl: add missing uns-admin-perm flag to BIND_TX operation
-
+Fixes: 8802087d20c0 ("net: devmem: TCP tx netlink api")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yuchao Zhang <ndaugoing@gmail.com>
+---
  Documentation/netlink/specs/netdev.yaml | 1 +
  net/core/netdev-genl-gen.c              | 2 +-
  2 files changed, 2 insertions(+), 1 deletion(-)
 
+diff --git a/Documentation/netlink/specs/netdev.yaml b/Documentation/netlink/specs/netdev.yaml
+index 3e3f03bd5c29..3e38ffc39219 100644
+--- a/Documentation/netlink/specs/netdev.yaml
++++ b/Documentation/netlink/specs/netdev.yaml
+@@ -851,6 +851,7 @@ operations:
+       name: bind-tx
+       doc: Bind dmabuf to netdev for TX
+       attribute-set: dmabuf
++      flags: [uns-admin-perm]
+       do:
+         request:
+           attributes:
+diff --git a/net/core/netdev-genl-gen.c b/net/core/netdev-genl-gen.c
+index f83790341eae..e243fba64312 100644
+--- a/net/core/netdev-genl-gen.c
++++ b/net/core/netdev-genl-gen.c
+@@ -241,7 +241,7 @@ static const struct genl_split_ops netdev_nl_ops[] = {
+ 		.doit		= netdev_nl_bind_tx_doit,
+ 		.policy		= netdev_bind_tx_nl_policy,
+ 		.maxattr	= NETDEV_A_DMABUF_FD,
+-		.flags		= GENL_CMD_CAP_DO,
++		.flags		= GENL_UNS_ADMIN_PERM | GENL_CMD_CAP_DO,
+ 	},
+ 	{
+ 		.cmd		= NETDEV_CMD_QUEUE_CREATE,
 -- 
 2.53.0
 
