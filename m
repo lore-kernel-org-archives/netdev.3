@@ -1,58 +1,57 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC108513540
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 13:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4109D51477D
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 13:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789738361; cv=none; b=ek+6irD9B6j1W9edWV1F94YH40OxC1QJdXbV23CMaWS91KTQszqo+MUVTVhld5qq4Wj48rKeff3Z6SldGT1lg0bGN4txut42+fe/wmgh1Z4EkAXgNwIxVfoTipf4bJo7y1Woko/CPpadc/Yug4Kexmaf0OmTWbsaPUtNABIpEJA=
+	t=1789738363; cv=none; b=rlqViaqYaooseTTp/JZAH9VWdck/1oLnMTpTfqYK+QqNkHCWuva88kyXpwcyvgaqrrh2k4zMMWo/20pFfRXSyWBn2x0mRI9VPJl4ZJkEoxlw4/qaQmF+xMeDkc2Ggz3DiQBgDZzpz6WS80mHk8DVhIqAmqzrv/0KTArAAzS1FAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789738361; c=relaxed/simple;
-	bh=obzIt/8/SPc/HlGDlPOusLf41Nts5aDL0HrOu18ivq4=;
+	s=arc-20240116; t=1789738363; c=relaxed/simple;
+	bh=BtwOBXqZ/1rbZ6xusRjG+PNwnS2FdwGYUBsaWILvJCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X/B3Qwcv3V+FAFT1rXvkBGTXkf8xSxAIt5GdydVmhCuaGa0yzWawScccUzuFD03AiP5Cz3R7y74TjnIOodVSl1Wu5eNoG6wo4qXLQscQhs3TkfLw16w8iBloKIHTHKiK7bgVvfoIPaq9obE7D/loFhqyuNmDRoxbalgwQ6t5Uh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R4QahaTk; arc=none smtp.client-ip=192.198.163.7
+	 MIME-Version; b=C43oOzjDxYwTHOexaCDVEOiTHrJ0eLiMk94NJCGtZ8Qsbi5RHPrcJuPco0I391RePw73AA29Sm4boo91tXjOAjo30afy2L1cdvaNBaBy/OF5Lm8dP9bsTpQwFiObiZgS3jj0s/tYyPPz87kNrzhyv8kaE3Xv2PwC5gRDazLoGrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F2JVOfsH; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R4QahaTk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F2JVOfsH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789738360; x=1821274360;
+  t=1789738361; x=1821274361;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=obzIt/8/SPc/HlGDlPOusLf41Nts5aDL0HrOu18ivq4=;
-  b=R4QahaTkQV8dxPwOYrVsWb66Eqk4BS9wXI4VablXgvyLVEbEvN84FqqO
-   35wW7106NFU2ax5/7zof8H3PXUnpkFjU/f8Dub3cKEC2zMtUlY36T9mS4
-   S7uQyAW8wd51H4xZW0OfQq1P88yLP5nHa0YaYB+9rNu10Pyl10cTRWZMM
-   KcIDFsnuZNwPkND5mDXt4cyXTbDYYw8OPTZawwVWdC6CvnBTMV3VNEAwN
-   rd6oVX55aRMBgigWuxrXQXHlm2LTQzMd0KLoFIcTEEcqd6587zQIJJrEt
-   ET1ilHEALPe/apJ9iugGgG5pPTXyi/kJrWvlwIkYT+wlArBrRp85EgPQn
+  bh=BtwOBXqZ/1rbZ6xusRjG+PNwnS2FdwGYUBsaWILvJCc=;
+  b=F2JVOfsHMvpvQeJ40ZPL1Jx5Enx1BOBxsXlIZawARO8ooBaud2Z0PlLv
+   7Vm/+R899lOk91eFAZ7mcecDucdJVd5+gwV0NZ5DYajbDb6jEhcofM/9D
+   edywagGKs2B86tIDEf4h6CUzKkm7Ef7KYO8uezOvQyX2lkH/iCaK7oQqE
+   aMqkIM5R6AS0WlNHdS0XhnfDCJzB2x0LUjJxgPqxFVEjoAjmGkWvlQK6n
+   OCpjB6MVRyDL5ElxRXariDdt5/qnRmCe329sdAOI5Pe7YoVBZx6OHXccD
+   jdpMB2Q6qWO8fHoQ3YRPfrGluaeh2vYLceKWD0Ym58Nrm/VGhsBpYBikb
    A==;
-X-CSE-ConnectionGUID: j3rDcJf/T6CFqKKUFEuBkA==
-X-CSE-MsgGUID: SpCrAg1IQBquGLMfp6bV6g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11908"; a="115776416"
+X-CSE-ConnectionGUID: sZyFK4GCRreOkAkEP/K1pw==
+X-CSE-MsgGUID: EO3Y9/DxSNqXZn4neCnW3g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11908"; a="115776419"
 X-IronPort-AV: E=Sophos;i="6.27,109,1787036400"; 
-   d="scan'208";a="115776416"
+   d="scan'208";a="115776419"
 Received: from fmviesa013.fm.intel.com ([10.60.135.153])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 06:32:40 -0700
-X-CSE-ConnectionGUID: 8akHuPLWQYC4xmWaesgv0w==
-X-CSE-MsgGUID: GAuhM++uRkSURtjY+FmRkg==
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 06:32:41 -0700
+X-CSE-ConnectionGUID: FkIJlOAET6CCW+QR4Aw3YQ==
+X-CSE-MsgGUID: IuzPXyZUT5ywZmvuHW07tA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,109,1787036400"; 
-   d="scan'208";a="2835249"
+   d="scan'208";a="2835252"
 Received: from amlin-019-225.igk.intel.com ([10.102.19.225])
-  by fmviesa013.fm.intel.com with ESMTP; 18 Sep 2026 06:32:38 -0700
+  by fmviesa013.fm.intel.com with ESMTP; 18 Sep 2026 06:32:40 -0700
 From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 To: intel-wired-lan@lists.osuosl.org,
 	anthony.l.nguyen@intel.com,
 	aleksandr.loktionov@intel.com
 Cc: netdev@vger.kernel.org,
-	Konrad Knitter <konrad.knitter@intel.com>,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH iwl-net v3 2/3] ice: fix autoneg disable when link partner doesn't support AN
-Date: Fri, 18 Sep 2026 15:32:33 +0200
-Message-ID: <20260918133234.4169074-3-aleksandr.loktionov@intel.com>
+	Lukasz Czapnik <lukasz.czapnik@intel.com>
+Subject: [PATCH iwl-net v3 3/3] ice: support RDMA on 4+-port E830 devices
+Date: Fri, 18 Sep 2026 15:32:34 +0200
+Message-ID: <20260918133234.4169074-4-aleksandr.loktionov@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260918133234.4169074-1-aleksandr.loktionov@intel.com>
 References: <20260918133234.4169074-1-aleksandr.loktionov@intel.com>
@@ -64,72 +63,54 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Konrad Knitter <konrad.knitter@intel.com>
+From: Lukasz Czapnik <lukasz.czapnik@intel.com>
 
-Disabling autonegotiation was silently ignored when autoneg had not yet
-completed (ICE_AQ_AN_COMPLETED was not set), leaving the configuration
-unchanged with no error. This could prevent link from forming if the
-link partner requires non-autoneg mode.
+E810 and E82X devices do not support RDMA on configurations with more
+than 4 ports. This limitation does not apply to E830 devices, which
+have a different hardware design and support RDMA regardless of the
+port count.
 
-Extend the condition to also allow disabling autoneg when the link
-partner reports no AN ability (ICE_AQ_LP_AN_ABILITY clear). Gate the
-ICE_AQ_LP_AN_ABILITY check on the link being up so that stale or
-zeroed an_info when link is down does not produce a false positive.
-Introduce the helper ice_autoneg_disable_allowed() to make the check
-explicit.
+Narrow the RDMA capability disable condition to skip E830 devices.
+Move the 'RDMA functionality is not available' notice inside that same
+condition so it is only printed when RDMA is actually being disabled,
+instead of unconditionally whenever num_funcs > 4 -- otherwise E830
+would log a spurious warning even though RDMA stays enabled.
 
-Fixes: f1a4a66d2310 ("ice: fix set pause param autoneg check")
-Signed-off-by: Konrad Knitter <konrad.knitter@intel.com>
+Fixes: ba1124f58afd ("ice: Add E830 device IDs, MAC type and registers")
+Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
 Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ethtool.c | 26 ++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_common.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index a257b7d..4ce198f 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -2501,6 +2501,28 @@ ice_ksettings_find_adv_link_speed(const struct ethtool_link_ksettings *ks)
- 	return adv_link_speed;
+diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
+index 0463310..1c4421f 100644
+--- a/drivers/net/ethernet/intel/ice/ice_common.c
++++ b/drivers/net/ethernet/intel/ice/ice_common.c
+@@ -2510,16 +2510,16 @@ ice_recalc_port_limited_caps(struct ice_hw *hw, struct ice_hw_common_caps *caps)
+ 		caps->maxtc = 4;
+ 		ice_debug(hw, ICE_DBG_INIT, "reducing maxtc to %d (based on #ports)\n",
+ 			  caps->maxtc);
+-		if (caps->rdma) {
++		if (caps->rdma && hw->mac_type != ICE_MAC_E830) {
+ 			ice_debug(hw, ICE_DBG_INIT, "forcing RDMA off\n");
+ 			caps->rdma = 0;
+-		}
+ 
+-		/* print message only when processing device capabilities
+-		 * during initialization.
+-		 */
+-		if (caps == &hw->dev_caps.common_cap)
+-			dev_info(ice_hw_to_dev(hw), "RDMA functionality is not available with the current device configuration.\n");
++			/* print message only when processing device
++			 * capabilities during initialization.
++			 */
++			if (caps == &hw->dev_caps.common_cap)
++				dev_info(ice_hw_to_dev(hw), "RDMA functionality is not available with the current device configuration.\n");
++		}
+ 	}
  }
  
-+/**
-+ * ice_autoneg_disable_allowed - check if autoneg can be disabled
-+ * @p: port info
-+ *
-+ * Check if autonegotiation can be disabled based on link state.
-+ * ICE_AQ_LP_AN_ABILITY is only valid when the link is up; gate that
-+ * check accordingly to avoid false positives from stale link data.
-+ *
-+ * Return: true if autoneg has completed, or if the link is up and the
-+ *         link partner does not advertise autonegotiation capability.
-+ */
-+static bool ice_autoneg_disable_allowed(struct ice_port_info *p)
-+{
-+	u8 an_info = p->phy.link_info.an_info;
-+
-+	if (an_info & ICE_AQ_AN_COMPLETED)
-+		return true;
-+	/* ICE_AQ_LP_AN_ABILITY is only valid when link is up */
-+	return (p->phy.link_info.link_info & ICE_AQ_LINK_UP) &&
-+	       !(an_info & ICE_AQ_LP_AN_ABILITY);
-+}
-+
- /**
-  * ice_setup_autoneg
-  * @p: port info
-@@ -2539,8 +2561,8 @@ ice_setup_autoneg(struct ice_port_info *p, struct ethtool_link_ksettings *ks,
- 			}
- 		}
- 	} else {
--		/* If autoneg is currently enabled */
--		if (p->phy.link_info.an_info & ICE_AQ_AN_COMPLETED) {
-+		/* If autoneg completed or link partner does not support AN */
-+		if (ice_autoneg_disable_allowed(p)) {
- 			/* If autoneg is supported 10GBASE_T is the only PHY
- 			 * that can disable it, so otherwise return error
- 			 */
 -- 
 2.52.0
 
