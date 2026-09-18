@@ -1,100 +1,79 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4673A321F2D;
-	Fri, 18 Sep 2026 11:00:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CCC64718C8;
+	Fri, 18 Sep 2026 11:03:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789729261; cv=none; b=AFHNMKV5T2Y29peKFQqJuSUGBrJJKpluAfyX5hITPZOK1VmB3O53e/iMCj7onYYrzwal+FX5WzdieF1uCnhMEUAGbZYxRbimSPVUnFTV8Zn+xWo0eIkY0vaaL2UvuimxW/aeN9Hp/kn2fODYXs5yseLhg3uN1cLfhK34dARLrPc=
+	t=1789729410; cv=none; b=b0JAr91KL1lkkD9ILDHVJ8yjiMEO3hQdV4KiGPi7peaaSTEtEMFtyONkRFKW8e6aRd348BnPFddt4wFVntJ5KHkc9AreNpYuFWm54vM8zUrXR0G9UGsubk1ugHqkTv7xDulQbR3LBGxNtggxdCTyBYUOHkcCNPLT11hW3EkA2EE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789729261; c=relaxed/simple;
-	bh=Wp3TFky2uNK5PTWjiy/pNmvT4Oi/y6Cs1lQC6pbNI/k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RN8fvh+Lv7EwfVJEEMvPBhjUIGv0B/ERnOrYQEg0CN+72C11w3m7g2WzJ+e9ouErpQhVN1N357JT3CfHJ5WZ7U/A0NVU1Xh9bI8SbhHge4pLu1GZqfNxxiIVnQbrC13J65MUtBkyeD3AcGvdpCXqZ+hbP4MZxjVepGS0SJxIoVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=G3rJwNUz; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	s=arc-20240116; t=1789729410; c=relaxed/simple;
+	bh=qyOPOd/o5xBiMydRvhMSeFu+XRuaOlVfnx3x0Z8RAlE=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=PtZtMxVcs52pj0HNrGb3I+HlX6cpl5inAbMubU0RC2C1YKSIerJVi6vMSsRu5PhIjxFFxwiiEFIze3XaclCrUg/PagLqIHM4m+FaJdNFLWa7pGZBSKCoIyL2i/LRwPXczO+XQ51QqtPto/MBmTfujIzTpDvMesw72JWptM5GppA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=gkYK7+qG; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="G3rJwNUz"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=xqxfznjQhqd8ZZuMM/AbiOa2L3kpLFZavpwb+Neo3fk=; b=G3rJwNUz16jEDw1nJJESpWlAcj
-	3qybsqkBa8Mxr9xW+HgLE9StdDDLpVDU/rDxo22cL5A172YYRtC/RkTz2/CL5xEhKCKGAj0aOA5Ul
-	f3QHebSc2FtqMZW7av5rEKSY02ZxZM6eGF541+b6wbKlP8Tqxc75dV1GoxHv/TUsjeSCEFtfSw/6J
-	xkyU2WIIYuBaeXUYYNY0d3OSQPnqK9ERZZl1hIQz77XEh8zpnO4vqpDsSXOrdeC21xepNiUm6edzJ
-	PSSMc0QVu6kmziqulbucbC4cEMCjh/Bh5xEHrhnVi/ScCcBgBvgLmamgD1cAj+uY64uaIy+RLxqm3
-	Rm+gmokA==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1x7WKa-006fhI-1s;
-	Fri, 18 Sep 2026 11:00:36 +0000
-Date: Fri, 18 Sep 2026 04:00:31 -0700
-From: Breno Leitao <leitao@debian.org>
-To: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-Cc: Alexander Duyck <alexanderduyck@fb.com>, 
-	Jakub Kicinski <kuba@kernel.org>, kernel-team@meta.com, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org, 
-	Mohsin Bashir <mohsin.bashr@gmail.com>, "Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>, 
-	Simon Horman <horms@kernel.org>, Mina Almasry <almasrymina@google.com>, 
-	linux-kernel@vger.kernel.org, Sashiko <netdev-bot+sashiko@kernel.org>
-Subject: Re: [PATCH net] eth: fbnic: Keep real queue counts synchronized
-Message-ID: <aq0ZiAEBNWWrLgms@gmail.com>
-References: <20260915180859.4157646-1-bjorn@kernel.org>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="gkYK7+qG"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C755CA9005;
+	Fri, 18 Sep 2026 13:03:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1789729407; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=lTpEsWsb9+oKcpQwEQIYDKkpYyRVoNg1PAwiUAvnoVw=;
+	b=gkYK7+qGYQ6SLSLDsCVvXLpO5bB0T+80FZ0bw3uTZu09h28rO9+hWHJGYbZ30a4dGs4HA5
+	+iuDIrZWult9sYXLuxboadlKAqAwjIzXmcJWfX+ZlN92o7zigiVzzBNFfupVNwANZ0oZUO
+	sjMLLe5bS8UlqQdlG7FoW+L/HQfxEe50+UIa1haMzuBbnWaS9cqWJlhINE+xCgWhcFC19/
+	sV9QO+Ba+YuDcP8+9vf5GhD9fwaaeicEb6y0i7ngzsSvP2jkgnVoxRlWzLEKTDItaVHyj7
+	TA+GYOZ95DkZ0/QXT3sn9yfEAWR7/McYr+smK2z0tzAxtDMPZ4Xi4SS7bV+XnQ==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260915180859.4157646-1-bjorn@kernel.org>
-X-Debian-User: leitao
+Date: Fri, 18 Sep 2026 13:03:25 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: netdev@vger.kernel.org, Cursor <cursoragent@cursor.com>, Doug Berger
+ <opendmb@gmail.com>, Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Zak Kemble <zakkemble@gmail.com>, Simon Horman
+ <horms@kernel.org>, Ryo Takakura <ryotkkr98@gmail.com>,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 7/8] net: bcmgenet: zero-initialize Transmit Status
+ Block in bcmgenet_add_tsb
+In-Reply-To: <20260918000732.276506-8-florian.fainelli@broadcom.com>
+References: <20260918000732.276506-1-florian.fainelli@broadcom.com>
+ <20260918000732.276506-8-florian.fainelli@broadcom.com>
+Message-ID: <f8918542ababe3af39ce6f2f5ee55948@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Sep 15, 2026 at 08:08:57PM +0200, Björn Töpel wrote:
-> alloc_etherdev_mq() initializes the real queue counts to the
-> allocation maximum. fbnic selects smaller defaults and can change its
-> private queue counts while the device is down, but does not publish
-> either value until the next open.
-> 
-> Resume can also allocate fewer IRQs and silently clamp the private
-> queue counts. Queues can share NAPI vectors, so changing the
-> configured queue counts is unnecessary.
-> 
-> These mismatches can expose an inactive queue for memory-provider
-> binding or hide an existing binding. A later channel expansion can
-> allocate the queue without recognizing its memory provider.
-> 
-> Publish default and offline channel counts immediately. Reset RSS
-> indirection whenever the queue-count helper runs. Preserve queue
-> counts across resume and share the remaining NAPI vectors when fewer
-> IRQs are available. The RSS table remains valid because it indexes RX
-> queues rather than NAPI vectors.
-> 
-> Fixes: da43127a8edc ("eth: fbnic: support queue ops / zero-copy Rx")
-> Reported-by: Sashiko <netdev-bot+sashiko@kernel.org>
-> Link: https://lore.kernel.org/netdev/178915061000.219967.7726187707862333281@kernel.org/
-> Signed-off-by: Björn Töpel <bjorn@kernel.org>
+Hi Florian
 
-Reviewed-by: Breno Leitao <leitao@debian.org>
+On 18.9.2026 02:07, Florian Fainelli wrote:
+> bcmgenet_add_tsb() pushes 64 bytes of headroom onto the skb to form the
+> Transmit Status Block (TSB) but only assigns status->tx_csum_info when
+> skb->ip_summed == CHECKSUM_PARTIAL. For packets without checksum 
+> offload,
+> or for other fields within struct status_64, the status block contains
+> uninitialized stack/heap memory from previous skb operations.
 
-> +	/* Preserve queue counts, as RX queues may have memory providers bound.
-> +	 * The RSS table indexes RX queues and remains valid. Rebuild only the
-> +	 * NAPI layout, sharing vectors if fewer IRQs are available.
-> +	 */
-> +	max_napis = fbd->num_irqs - FBNIC_NON_NAPI_VECTORS;
-> +	max_queues = max(fbn->num_tx_queues, fbn->num_rx_queues);
-> +	fbn->num_napi = min(max_queues, max_napis);
+The MAC only reads tx_csum_info when the descriptor has DMA_TX_DO_CSUM,
+and bcmgenet_xmit() sets that only for CHECKSUM_PARTIAL.
+The stale value seems to be never used?
 
-It seems the comment does not match the code.  num_napi is recomputed
-unconditionally from max(num_tx, num_rx), which is not what num_napi
-was, so isn't the NAPI layout is rebuilt even when the IRQ count is
-unchanged?
+Did you hit an actual failure?  Otherwise this would be a 64 byte memset
+on every transmitted packet.
 
---breno
+> [...]
+
+Thanks,
+Nicolai
