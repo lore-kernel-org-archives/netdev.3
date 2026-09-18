@@ -1,217 +1,158 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C031D3AF662
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 14:27:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA51E385D97;
+	Fri, 18 Sep 2026 14:33:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789741682; cv=none; b=M4WQw0JGmlsepV5p5tYTW+P1kiJhl4NlkxqJFK6/KRiPy78Ybu+MwKf5o+5Fhac0d1ksawQP1XUmhGWdh60akvQSRZbmyvzUJMYcCshFfRxC36vIqr+vMs1Lqd1i+l2oqrANZkjV3paRvHLpPOW+jZVCM0FKt+dKSpCldaTBpyI=
+	t=1789741993; cv=none; b=i0OAL5UnUdTLI50GRXFOF9VhSWO6z/Gr59lK2vzNCLOyNzXA1b888W/+Spn9gZCXD25tThFih4GC/onIXH4jvGumm+C0BsPctUXSGbM8IKFzoTudKMXslSlusmZ54LrovANPLVOzgqwQlimAfewb4K/vSlZamcAJ4s/1jdeCIug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789741682; c=relaxed/simple;
-	bh=qWPM8mEcQAiZiBe5wIuy4aqUTDeswnrEyUyg1zkQHi0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ph2fqyOVDIgSxJ2z8BrCBHQkl5AwySveJPsFHhR7j0ZQow6E3Uw+ZgUGOfzUsODCr4d0jXqzZOr4Nu6z8NiUKdomVETBJuYkbFUeVSIvPTlzsd3VdXxxzH4Snxj8Zr95kTUaWfjqJ9+lJktBsr2BwHf2xx57x1CUQoYTx8XZC9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LpgSBRZ5; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=U61/uDEf; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789741993; c=relaxed/simple;
+	bh=Exv/yeEofEFRA2/+sHId8lKouBXG84ImNPAWx0i4UnI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tAmiorfEaBOSM8lZsOKxOrNfbQBcwpwLLxxEDORBXY6Wt7Zp9hSmr/epMEtER1VxY27/RRZtVixbOq/pzSxJ7FPdG9PVsq44MTHRp8AZAUEPjCoJAfNlS7M67F2SKqL9co6Qe7MokgAQSsQPlPYpaTl/o4dpq3LGZe/RKcVlpJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=ShAprVe+; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LpgSBRZ5";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="U61/uDEf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789741678;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Tzy4rg64m2nfrHznucdcUVmAGxkvGHwxFBaPQdjr128=;
-	b=LpgSBRZ5zdBjIaf01/O6nqV4COH0L6BRAtehULdDUHkfislYaW/gOFzNMJVj6ZVEIjft0x
-	YKLKYKpHApQ1dFcDNfdKpflF/X4pMo0GkfluBT8lY11gClwZx7Do68oUAP/eY3Vka0hDbv
-	koa+7oFHnnNJWpAgVr98EjPSQdn8LJY=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-617-YA-aihrCPuC_JXhHyFfJkA-1; Fri, 18 Sep 2026 10:27:54 -0400
-X-MC-Unique: YA-aihrCPuC_JXhHyFfJkA-1
-X-Mimecast-MFC-AGG-ID: YA-aihrCPuC_JXhHyFfJkA_1789741674
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4955e865174so5008445e9.3
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 07:27:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789741673; x=1790346473; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Tzy4rg64m2nfrHznucdcUVmAGxkvGHwxFBaPQdjr128=;
-        b=U61/uDEffANFsZZwQ12ed6ezA26j+XuCSfi2k6R6pCeFf+udfNWqqwi5PV4yUJcCZW
-         URWJPGwhanmZUy48UFPgiHQ2NlzDejnLaswR6bd6CnVC3D1l2I1FA8q9xQNGYcz2mAYr
-         jSdgLj20iJLb8VpY6FO/JRx09deYgEs6QsJFqYq4PxLugNGcex7n4qY8lFApIZLvMIhz
-         cWwe6z7ySjxtCMZF9aZmfinAcNcg2GtnTtCoHe3GtE02es8GWeRk8gxeHAS7b9SST3d9
-         SqeKkXdUo1t0R78rNYuJAei2dyF8KdSQ0Mw6a5LzQbu1+RCCqIpQ68bK/C+AJVGmkKMw
-         ypsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789741673; x=1790346473;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Tzy4rg64m2nfrHznucdcUVmAGxkvGHwxFBaPQdjr128=;
-        b=lSGsz4NLRdHt213KyH4+Yq9NflPJkjqBQjKVA/a5di2lglG4rAhoXj6VLp6KITMVkG
-         sKFzC/BI6KXAM24bVb3Mljni0W0Q2jSQS/+eMluV/4FD+e4kwCYbX/CLS7yWREL0A1Kz
-         OcB1A0jeeEVIjbsNX3dupSDgBMXObz4zzLTQtGg1tSDa/SQItRS37JRXZVuq/RLMCdxl
-         S1xEB28acG4Q2/7Jc4w3LaUFjM1zKNF8U3FlvfRsGlLe9D77ZabKx/9UGLiLduzyQt1I
-         thhnrsX8eF/gPAqquGQ9oHcvInV3MATHVYnqLVNx7uFFxR/Te/1aqmLQpKRMr3zvuSyo
-         XdkA==
-X-Forwarded-Encrypted: i=1; AKwUvByujS0lqeuep+RJ25vt4g8+za0uXFyPHXYE+QuTP18KAm0SAKcrkS7DkxDIkCuDxauDdp/OUVs=@vger.kernel.org
-X-Gm-Message-State: AFuF++kRn2jgtmSY7TqCdrcFqgbz5/umxKA2c5YY1BCKNDYc2sHvvm3V
-	mHlbqy5zGkERWRMNx7T2VjENq+MkS0RvlZlqLSWktJnu+ZVkSngEXNQjrJechFACN9gozF8C3NY
-	7Hn5aJd+loJGvAkq6FYwji6o5XSvg5k6tQhCA/MLWP38VKtV1pVON2lJcdA==
-X-Gm-Gg: AYBFou1eklkYuQ1RDpiunlT2ziIaC/i0qNvbhLfpsGaMMDdnL4u2kWjw6VEQMWDRCmh
-	nkzBGb6exVBRi5tXO6MGuD15cpHgI8/NdivWvHfFd3PMruuSiLbHgq4q+/HJtOVKywDLtXPzqVz
-	X9+S0ApTL0rd+S4POKYBshEkA6nEbJwqXZWWeG0eSNCdyXNunRUHsnaFfohbHdO+DwCKyv8WX4p
-	eT+2bpTFtbQalv0t7AhHWpvB6VCB4tSx1hIk0EJiHk8jtRSqSrvOZc4obX4ZgzOn+WSfXnAFjmz
-	0q5QdQ8Z8D2t0WlZpMcVg3y8n3igipTeB//vRRUNVQlOvCAitSjqCFNCwHHaDrMjwJOGd+DiH14
-	0oGKLd1NjJQG5cbB0NbM+IbbI24qKnu1/oNrzvWbQarKjkQ==
-X-Received: by 2002:a05:600d:4449:10b0:49f:cc2a:f73a with SMTP id 5b1f17b1804b1-49fcc2af743mr10053735e9.25.1789741673578;
-        Fri, 18 Sep 2026 07:27:53 -0700 (PDT)
-X-Received: by 2002:a05:600d:4449:10b0:49f:cc2a:f73a with SMTP id 5b1f17b1804b1-49fcc2af743mr10053175e9.25.1789741672904;
-        Fri, 18 Sep 2026 07:27:52 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-53-30-11.retail.telecomitalia.it. [79.53.30.11])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48720081426sm4196721f8f.33.2026.09.18.07.27.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 07:27:52 -0700 (PDT)
-Date: Fri, 18 Sep 2026 16:27:46 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Bobby Eshleman <bobbyeshleman@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowangio@gmail.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Shuah Khan <shuah@kernel.org>, 
-	Randy Dunlap <rdunlap@infradead.org>, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, sargun@sargun.me, jlinbox@meta.com, 
-	Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: Re: [PATCH net-next 2/6] vsock: add IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS
-Message-ID: <aq1D1S9p9vRl7eV_@sgarzare-redhat>
-References: <20260902-vsock-guest-ns-v1-0-9995383e9a8b@meta.com>
- <20260902-vsock-guest-ns-v1-2-9995383e9a8b@meta.com>
- <aqlTlFvQL34-WViB@sgarzare-redhat>
- <aqmTYoCMmzx1BM1v@devvm29614.prn0.facebook.com>
- <aqqPXr2LNJUM4yMW@sgarzare-redhat>
- <aqsI5BXRB96dkIHm@devvm29614.prn0.facebook.com>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="ShAprVe+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1789741992; x=1821277992;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Exv/yeEofEFRA2/+sHId8lKouBXG84ImNPAWx0i4UnI=;
+  b=ShAprVe+803nGWg5Oxv5SGZPw50+dMdDBJH5yogHb9CMVZFnU8c0Yl+W
+   OzWuDntg4fR9IjdysRZi7G8cT8V3HLOwCjH1PfnO3PqQMQ/IQ3qpa0UkY
+   4ZdVa/CEv3W8Zc2FwfGy+grnARcSPE7OsiFwwBWksj6WM4ISd7mWfe/WA
+   2uFkeZLG3t46diWq6TTFW8E6+Hm8eVe2CuV1eoODiOqpk5hSeLdWX3UXI
+   d7ptPmIHM51dUWIwZO7qwpvVV9I0kAylPcFpJUp63/JjqT9MJ60MlV8wu
+   jM10KknLy9FVAVp7AfHzgQf0i3Oi1eYYwf9uZYVRLb5HPmw3LL/VJ1dFq
+   g==;
+X-CSE-ConnectionGUID: +WvFQnlfSruB6SEpUOv/mw==
+X-CSE-MsgGUID: 5DQToxvdTiWgTePzFzPMoQ==
+X-IronPort-AV: E=Sophos;i="6.27,109,1787036400"; 
+   d="scan'208";a="63811288"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 07:33:11 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
+ chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.49; Fri, 18 Sep 2026 07:33:10 -0700
+Received: from che-ll-i17164.microchip.com (10.10.85.11) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Fri, 18 Sep 2026 07:33:06 -0700
+From: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <hkallweit1@gmail.com>,
+	<linux@armlinux.org.uk>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<UNGLinuxDriver@microchip.com>, <Parthiban.Veerasooran@microchip.com>,
+	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
+Subject: [PATCH net-next v3 0/4] net: microchip_t1s: fix collision detection on PLCA status change
+Date: Fri, 18 Sep 2026 20:02:58 +0530
+Message-ID: <20260918143302.76909-1-parthiban.veerasooran@microchip.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <aqsI5BXRB96dkIHm@devvm29614.prn0.facebook.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Wed, Sep 16, 2026 at 02:23:48PM -0700, Bobby Eshleman wrote:
->On Wed, Sep 16, 2026 at 02:57:43PM +0200, Stefano Garzarella wrote:
->> On Tue, Sep 15, 2026 at 11:50:10AM -0700, Bobby Eshleman wrote:
->> > On Tue, Sep 15, 2026 at 05:28:25PM +0200, Stefano Garzarella wrote:
->> > > On Wed, Sep 02, 2026 at 04:00:48PM -0700, Bobby Eshleman wrote:
->> > > > From: Bobby Eshleman <bobbyeshleman@meta.com>
->> > > >
->> > > > Namespaces let a host isolate a VM's vsock traffic to a specific
->> > > > namespace, but in a guest vsock traffic cannot be isolated to a
->> > > > namespace. The vsock device is hardcoded to global mode and can't be
->> > > > moved into a local-mode namespace.
->> > > >
->> > > > Introduce ioctl IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS on /dev/vsock that
->> > >
->> > > We already discussed about netlink, but I'm not sure how much work can
->> > > take, here just another alternative, what about adding
->> > > /proc/sys/net/vsock/g2h_owner sysctl that can be read/write where:
->> > > 0 - no owner
->> > > 1 - owner
->> > >
->> > > 0 -> 1 transition, move the device in the new nets
->> > > 1 -> 0 transition, reset back to init_ns
->> >
->> > That seems reasonable, but if multi-device support ever lands, this
->> > might be harder to adapt cleanly?
->>
->> I see, but maybe we can have a dev0/ dev1/ subfolders in that case.
->>
->> >
->> > >
->> > > > gives userspace a way to move the device to the calling pid's namespace.
->> > > > The call requires CAP_NET_ADMIN in the root user namespace. A privileged
->> > > > user wishing to "unassign" the device can move it to the init_netns,
->> > > > which is hardcoded to global mode (so no unassign call is necessary).
->> > > >
->> > > > A getter to read the current assignment back was considered, returning
->> > > > either the namespace's net_cookie or its nsfs inode number, but neither
->> > > > seemed useful enough to bake into the uAPI now. It can be added later if
->> > > > a user turns up that needs it.
->> > > >
->> > > > Add a transport hook to indicate support for guest namespacing, so that
->> > > > transports may opt in/out. A transport that opts out keeps the
->> > > > reachability rules it had before this ioctl existed.
->> > > >
->> > > > Sockets are reset when the underlying device moves to a different
->> > > > namespace, so as to prevent reachability from the previous and now
->> > > > disallowed namespace.
->> > > >
->> > > > Following the approach of netdevs, the device returns to init_net when
->> > > > its namespace is removed. Care is taken to not break flows when the
->> > > > device is inside a global namespace that is being torn down and alive
->> > > > sockets are in a different global namespace. In this scenario, the
->> > > > device's netns getter pre-emptively falls back to the init_net (always
->> > > > global) so that these flows are not disrupted. If init_netns ever
->> > > > supports local-mode in the future, this logic will have to be changed.
->> > > >
->> > > > Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
->> > > > Link: https://lore.kernel.org/all/20200427142518.uwssa6dtasrp3bfc@steredhat/
->> > > > Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
->> > > > ---
->> > > > Documentation/admin-guide/sysctl/net.rst |  18 +++
->> > > > include/net/af_vsock.h                   |   7 ++
->> > > > include/uapi/linux/vm_sockets.h          |   6 +
->> > > > net/vmw_vsock/af_vsock.c                 | 198 ++++++++++++++++++++++++++++++-
->> > > > 4 files changed, 228 insertions(+), 1 deletion(-)
->> > > >
->>
->> [...]
->>
->> >
->> > One thing I realized when answering your uAPI questions and looking at
->> > the code is that IOCTL_VM_SOCKETS_GET_LOCAL_CID is not namespace aware,
->> > but I think it probably should be? I remember for host ns we strived for
->> > truly strong isolation.
->>
->> Can you elabore a bit more?
->>
->
->I'm wondering if IOCTL_VM_SOCKETS_GET_LOCAL_CID should not reveal the
 
-Okay, I see now, too many IOCTL_VM_SOCKETS involved and I didn't get you 
-were referring to the GET_LOCAL_CID xD
+In a 10BASE-T1S multidrop network, the PHY autonomously transitions
+between PLCA mode and CSMA/CD mode based on BEACON availability. The
+existing collision detection logic only adjusted on explicit ethtool
+PLCA changes, leaving it in the wrong state across these autonomous
+transitions.
 
->CID of the g2h device if the device has been moved to an inaccessible
->namespace? In this case, fallback to the results of h2g/local and
->through to returning VMADDR_CID_ANY if neither of those transports are
->loaded.
+This series fixes that gap, wires up the full interrupt path, and
+improves collision detection for LAN867X Rev.D0.
 
-Yeah, I agree. I'm not 100% sure if it's really an issue if we reveal it 
-to any workspace, but I also don't see why we should do that. So, yeah, 
-if possible we should reveal it only in the namespace assigned to the 
-G2H.
+Patch 1 adds a PLCA Status Changed (PSTC) interrupt handler for LAN86XX
+PHYs that dynamically enables/disables collision detection based on live
+PLCA status. The static CDEN write in lan86xx_plca_set_cfg() is kept as
+a baseline for PHYs without a routed interrupt.
 
->
->I also considered whether or not /dev/vsock should even be visible from
->within an inaccessible namespace in order to not leak even the mere
->presence of the vsock device, but it seems to me that /dev/vsock's
->presence doesn't leak anything besides the presence of the vsock module.
->
+Patch 2 delivers the in-band PHY interrupt from the OA TC6 MAC-PHY SPI
+driver to phylib as a nested virtual IRQ, gated by a new OA_TC6_PHY_INT
+quirk flag. This lets phylib drive the PHY driver's
+config_intr/handle_interrupt callbacks for PHYs with no dedicated
+interrupt line.
 
-Will this break userspace doing IOCTL_VM_SOCKETS_GET_LOCAL_CID on 
-loopback, etc. ?
+Patch 3 enables this virtual IRQ path for LAN865X, whose internal PHY
+has no dedicated interrupt line and relies entirely on the MAC-PHY SPI
+interface for interrupt delivery.
 
-Thanks,
-Stefano
+Patch 4 fixes collision detection for LAN867X Rev.D0 using its hardware
+CCMFC field, which gates collision forwarding to the MAC based on live
+PLCA_Status directly, removing the software CDEN toggling delay present
+on older revisions. It also accounts for Rev.D0's autonomous PLCA-to-
+CSMA/CD fallback (PRSCTL1), so the link status selection stays correct
+whether or not that fallback is configured.
+
+Note: Patches 1 and 3 both carry Fixes: 78341049fbcd. Patch 3 is
+required for the fix to take effect on LAN865X - without it,
+phydev->irq stays PHY_POLL and patch 1's interrupt handler never runs
+for that device. Patch 2 is a required prerequisite for patch 3 but
+fixes no bug on its own, so it carries no Fixes: tag. Please apply all
+three together.
+
+Changes in v3:
+Addresses Sashiko AI review feedback on v2.
+- Patch 1: Synchronize CDEN with live PLCA status before unmasking
+  PSTCM, closing a window where a status change could be silently
+  dropped. Use phy_interrupt_is_valid() instead of testing PHY_POLL
+  alone. Treat plca_cfg->enabled as tri-state so an ethtool call that
+  omits the enable attribute no longer disables collision detection.
+  Factor shared STS1/IMSK1 sequences into helpers reused by patch 4.
+- Patch 2: Replace dummy_irq_chip with a proper irq_chip implementing
+  mask/unmask via bus_lock/bus_sync_unlock, closing an interrupt-storm
+  risk. Select IRQ_DOMAIN in Kconfig. Defer PHY interrupt dispatch to a
+  workqueue so the chunk-processing thread stays independent of
+  phydev->lock.
+- Patch 3: Add Fixes: 78341049fbcd, since this patch is required for
+  the fix to take effect on LAN865X. Document that CDEN correctness
+  relies on the hardware reset default.
+- Patch 4: Give Rev.D0 its own config_intr() instead of branching
+  inside the shared one, so CCMFC-owned CDEN can never be touched by
+  the shared resync. Skip link-status updates when enabled == -1.
+  Correct the AN1760 -> AN1699 reference. Resync Rev.D0 link status on
+  interrupt (re-)enable, closing the same dropped-edge window as patch
+  1. Account for Rev.D0's autonomous PLCA-to-CSMA/CD fallback
+  (PRSCTL1): force semaphore mode when that fallback is enabled, since
+  PLCA_Status is meaningless once the PHY has already fallen back.
+
+Changes in v2:
+- Patch 2: Introduce OA_TC6_PHY_INT quirk flag to guard the virtual IRQ
+  infrastructure; PHYINT is optional per the OA TC6 standard. Move
+  oa_tc6_phy_irq_setup()/oa_tc6_phy_irq_teardown() into
+  oa_tc6_mdiobus_register()/oa_tc6_mdiobus_unregister(). Populate all
+  mii_bus->irq[] entries with the virtual IRQ before mdiobus_register()
+  so phy_device_create() picks it up regardless of the PHY's MDIO
+  address, keeping mii_bus->irq[] and phydev->irq consistent.
+- Patch 3 (new): Pass OA_TC6_PHY_INT quirk flag from the LAN865X driver
+  to enable the virtual IRQ infrastructure for LAN865X.
+
+
+Parthiban Veerasooran (4):
+  net: phy: microchip_t1s: fix collision detection on PLCA status change
+  net: ethernet: oa_tc6: deliver the PHY interrupt to phylib
+  microchip: lan865x: enable PHY interrupt via virtual IRQ
+  net: phy: microchip_t1s: fix collision detection for LAN867X Rev.D0
+
+ drivers/net/ethernet/Kconfig                  |   1 +
+ .../net/ethernet/microchip/lan865x/lan865x.c  |   4 +-
+ drivers/net/ethernet/oa_tc6.c                 | 145 ++++++++
+ drivers/net/phy/microchip_t1s.c               | 309 +++++++++++++++++-
+ include/linux/oa_tc6.h                        |   3 +
+ 5 files changed, 454 insertions(+), 8 deletions(-)
+
+
+base-commit: 4bb9710c6a68d35207f123aef55dcd50e7195ec5
+-- 
+2.43.0
 
