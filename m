@@ -1,128 +1,106 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63036492E5D;
-	Fri, 18 Sep 2026 06:48:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FDEC48E0F6;
+	Fri, 18 Sep 2026 06:50:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789714147; cv=none; b=UDacV62r7N+37JfrWsFO5xNksIpmhnRB6d6tl4xg4w1stuM6lzDR1WeyWqp/RMF2sR46jMFDh4bq9ah1tSwAGz77y+3K0ZltvVPdqfaDljBiyntcc7woWFxjFMBn0+k/NLR8ATWjc0gmZQdDrTB42x6EqNZOQ8sh1v3J9DfUoWY=
+	t=1789714249; cv=none; b=ZSdVR9+kIBBVxLklADys9j7u8+DyA+NHhbgFDai+h4U75UALgvditHl6hgVbOLv/rPMenYMpWQ58ufusJmZ4cNn9qCYLJqdyLpyVD/7Ys6eBBmzXQF+7UI0Pr8cBU4MsP/M5jLGgnnoq1+TyQ2htRcjoyPJbR8r+F23hMcQcCAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789714147; c=relaxed/simple;
-	bh=i890Ourl1qcXzdz90Xayde2jMF+U6S8vloI9S8dbH5M=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=Tfxi8BRSVdNB01ZCi+ZWqEIgTmxf6qhHch2zfTRXjzVcrUdYSsi3tMrplOYVxNneDlkZIB+QZffpWeAbJNxbi2OBZC1Lb0/IKC6wKVgEt6EWmUw8BPiiHutswrCp2ikcjegf5YukaZ5r6XyhNNZnJ+FELoauTJy4hS6opKEHNiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [123.138.236.242])
-	by gateway (Coremail) with SMTP id _____8AxXdLO3qxqa1QNAA--.39122S3;
-	Fri, 18 Sep 2026 14:48:46 +0800 (CST)
-Received: from [10.130.40.83] (unknown [123.138.236.242])
-	by front1 (Coremail) with SMTP id qMiowJAx3c7N3qxqmB8iAA--.7665S2;
-	Fri, 18 Sep 2026 14:48:45 +0800 (CST)
-Subject: Re: [PATCH net-next v1] net: stmmac: Default DWMAC_MOTORCOMM to m on
- MACH_LOONGSON64
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Yao Zi <me@ziyao.cc>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260915073206.6665-1-yangtiezhu@loongson.cn>
- <90a666a8-9f6a-4640-a219-731f3d551c66@bootlin.com>
- <f6b93b98-e0d3-9e28-e366-4df126e6ab5f@loongson.cn>
- <a10c8361-648e-476b-8b04-8716ad274fc4@lunn.ch>
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-Message-ID: <36a43b65-f94e-4836-b511-715fb136c10d@loongson.cn>
-Date: Fri, 18 Sep 2026 14:48:45 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1789714249; c=relaxed/simple;
+	bh=lzO27TDxIULlI2uv8uwh01ObA3Ym1uCEMM5Rkpb91pQ=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BgAfeQe8JcjbFkusO7MZ7ytdhbyPuKqfLEbFGVVRlZScYNp70Q9uIDxuUOkdkFhqS1CgGx+FFz1BdopLieuFw/e795w2pN3W+ZFj/CAgYGeGOrnEtwFAhQabJQ4G3BN6eE1cefr2Q63mlu6rLsWgav6LpjwsBV+EJO+op9KnAaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=JIpqf56G; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="JIpqf56G"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1789714247; x=1821250247;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lzO27TDxIULlI2uv8uwh01ObA3Ym1uCEMM5Rkpb91pQ=;
+  b=JIpqf56GGBA++2JNb8W68Q3MCTCvVb9/N8VK1dJZogxg6xtOHgs8cy0X
+   IYIEuuFZRjprXsriFO/KxRE9nJnTnyOoyUCUBIxZnpPOw7DXgxhT1PpeN
+   1AWZAeumufxzK439rUJrpYhXFxvMqPK9nhdIiiMH8Ldpgmj4DyClT57xJ
+   vvH1aBYzWsidWFpt6/xrBXSpzbHDx3LEl9VK3aCg0OIcCRJIjubxPCZut
+   Mcrc0uYH2Qf/Lh4N8bcEDIfjEjq8CAZrDV3Xo+UPDh07+2Wi1Q+hbpC7c
+   6PJuz34oXIuQlawPTXDw4ov9Jtk6gJH7HH+moh6Q3VXTyxmHMJfdaBRDt
+   Q==;
+X-CSE-ConnectionGUID: NjezbUk0SYGudewq8HMiog==
+X-CSE-MsgGUID: 1gxp3NzKSy++vdXcREIq4g==
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="73876652"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 17 Sep 2026 23:50:41 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Thu, 17 Sep 2026 23:50:40 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Thu, 17 Sep 2026 23:50:37 -0700
+Date: Fri, 18 Sep 2026 08:50:37 +0200
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+CC: Steen Hegelund <Steen.Hegelund@microchip.com>,
+	<UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	<linux-arm-kernel@lists.infradead.org>, <netdev@vger.kernel.org>, "Geert
+ Uytterhoeven" <geert@linux-m68k.org>, Brendan Higgins
+	<brendan.higgins@linux.dev>, David Gow <david@davidgow.net>, Rae Moar
+	<raemoar63@gmail.com>, <linux-kselftest@vger.kernel.org>,
+	<kunit-dev@googlegroups.com>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] net: microchip: vcap: Stop selecting DEBUG_FS for
+ KUnit tests
+Message-ID: <20260918065037.bs2mcha2laf5efg7@DEN-DL-M70577.microsemi.net>
+References: <20260917064736.77354-1-kmehltretter@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <a10c8361-648e-476b-8b04-8716ad274fc4@lunn.ch>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAx3c7N3qxqmB8iAA--.7665S2
-X-CM-SenderInfo: p1dqw3xlh2x3gn0dqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7uw48ZF1rAF4xZry5tFykCrX_yoW8KryDpr
-	45Ja48u3WIgF15G3WfZ348Cr98Jan7trW5Cr1xtw45X39Fk34DAw4ktF1xGr1jkFZrJF12
-	vr18uw12vFn0qwbCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
-	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y
-	6r17McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
-	1lc7I2V7IY0VAS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
-	JVW8JwCFI7km07C267AKxVWUXVWUAwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
-	vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IY
-	x2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26c
-	xKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAF
-	wI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8hiSPUUUUU==
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260917064736.77354-1-kmehltretter@gmail.com>
 
-On 2026/9/17 下午10:45, Andrew Lunn wrote:
->> Before moving forward, I'd like to share an alternative thought.
->> As noted in the earlier review, this network controller could be
->> used across multiple architectures. To avoid the redundant churn
->> in the defconfigs of every single architecture, I am wondering if
->> we could unconditionally set it to default m in the Kconfig instead.
+> VCAP_KUNIT_TEST enables DEBUG_FS even when the kernel configuration
+> leaves it disabled. Remove the selection, following the dependency rule
+> in Documentation/dev-tools/kunit/style.rst.
 > 
-> ~/linux/drivers/net/ethernet/stmicro/stmmac$ grep default Kconfig
-> 	default n
-> 	default y
-> 	default STMMAC_PLATFORM
-> 	default ARC
-> 	default MACH_INGENIC
-> 	default ARCH_QCOM
-> 	default ARCH_LPC18XX
-> 	default ARCH_MESON
-> 	default ARCH_MA35
-> 	default ARCH_QCOM
-> 	default ARCH_RENESAS
-> 	default ARCH_ROCKCHIP
-> 	default ARCH_RZN1
-> 	default ARCH_S32
-> 	default ARCH_INTEL_SOCFPGA
-> 	default m if ARCH_SOPHGO
-> 	default m if ARCH_SPACEMIT
-> 	default m if ARCH_STARFIVE
-> 	default ARCH_STI
-> 	default ARCH_STM32
-> 	default ARCH_SUNXI
-> 	default ARCH_SUNXI
-> 	default ARCH_SUNXI
-> 	default ARCH_MXC
-> 	default MACH_LOONGSON32
-> 	default ARCH_VISCONTI
-> 	default X86
-> 	default MACH_LOONGSON64
+> The debugfs implementation and its tests are already built only with
+> DEBUG_FS. The other VCAP tests can run without it.
 > 
-> No other glue driver does this. Why is this one special?
+> Fixes: 552b7d131aa0 ("net: microchip: sparx5: Add VCAP debugfs KUNIT test")
+> Assisted-by: LLM
+> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+> ---
+> Validation on net c9151088f167: x86_64 LLVM builds and QEMU runs
+> with DEBUG_FS disabled and enabled. The other VCAP suites pass in both
+> configurations. The debugfs suite is present only with DEBUG_FS=y and
+> all four cases pass.
+> 
+>  drivers/net/ethernet/microchip/vcap/Kconfig | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/microchip/vcap/Kconfig b/drivers/net/ethernet/microchip/vcap/Kconfig
+> index 97f43fd4473f..1af30a358a15 100644
+> --- a/drivers/net/ethernet/microchip/vcap/Kconfig
+> +++ b/drivers/net/ethernet/microchip/vcap/Kconfig
+> @@ -40,7 +40,6 @@ config VCAP_KUNIT_TEST
+>         bool "KUnit test for VCAP library" if !KUNIT_ALL_TESTS
+>         depends on KUNIT
+>         depends on KUNIT=y && VCAP=y && y
+> -       select DEBUG_FS
+>         default KUNIT_ALL_TESTS
+>         help
+>           This builds unit tests for the VCAP library.
+> 
+> base-commit: c9151088f1674fd29ff26a20f5fc687acf53a2f0
 
-If it is not proper to change Kconfig,
-I am fine to modify the arch-specific defconfig instead.
-
-But by the way, I noticed that there are the following code:
-
-$ grep -rnw "default m" drivers/net/ethernet/
-drivers/net/ethernet/stmicro/stmmac/Kconfig:221:	default m if ARCH_SOPHGO
-drivers/net/ethernet/stmicro/stmmac/Kconfig:233:	default m if ARCH_SPACEMIT
-drivers/net/ethernet/stmicro/stmmac/Kconfig:245:	default m if ARCH_STARFIVE
-drivers/net/ethernet/spacemit/Kconfig:21:	default m if ARCH_SPACEMIT
-drivers/net/ethernet/marvell/octeontx2/Kconfig:54:	default m
-drivers/net/ethernet/hisilicon/Kconfig:106:	default m
-drivers/net/ethernet/hisilicon/Kconfig:134:	default m
-drivers/net/ethernet/sun/Kconfig:77:	default m
-drivers/net/ethernet/sun/Kconfig:81:	default m
-drivers/net/ethernet/sun/Kconfig:89:	default m
-drivers/net/ethernet/mellanox/mlxsw/Kconfig:37:	default m
-drivers/net/ethernet/mellanox/mlxsw/Kconfig:47:	default m
-drivers/net/ethernet/mellanox/mlxsw/Kconfig:67:	default m
-drivers/net/ethernet/mellanox/mlxsw/Kconfig:86:	default m
-
-Thanks,
-Tiezhu
-
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
