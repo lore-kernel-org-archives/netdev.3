@@ -1,115 +1,147 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFE4370ADA
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 12:48:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6317A330D43
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 13:11:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789735682; cv=none; b=lxOiXcdImaGHHO0vMk4IInYCzePX7OEk5Lna7EtgvMFN0Bohtp8btEk9zT5toZcctUWffidGKFHjaB8SsNuV9SIUdzc0H5mS91uX09ZuOHaX5gqDTxzFvb57jB+JDot0u8kNXzsgnKoDcaoVrGYfXInEDfrNtik02j90OZOexVQ=
+	t=1789737106; cv=none; b=OkZRP13H4dQ4FCjvssz6Ay8zXXHfSxPxP0Hd5gXXRLYKCwqOnGv/lPPqyLoZBPBYNJl/JwTr90PJVgHqnRZdeVYvZBQSav+/995ppOZv+zLt+UpBfID1rSyH+bvCmuEyzv1fgyW/TJSFIf4KyXaUCXRobVJxMPI41gbuwOgs3PQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789735682; c=relaxed/simple;
-	bh=q9aV8UEMRbT/uR1gFd6YDDhJxj0IDZcbyD15EdPgcc0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=izTEpt9XNtYOXD1oaurz25W555lfoDSZmZqQKhpuY6v4SF3enH6U428eKVc8XbDHUCpSvz8/jUU8v0yqcU0f92jSoHICYsS7+8dm9rthJshlRuQVDhLk47nACa5TkENCr550ppeF0phLpMO2LUwRDCs04WN6Vn6NQDgDlQkc9oU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FLpa61C2; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=YhakHtRz; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789737106; c=relaxed/simple;
+	bh=OrsDueolDB48ZiSn/3OL7AJT7dY/bOm5zXfF8rvHKZo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NCgVJZUZ3IilQRIJ6uMkiaGsZYpn2jhboCDfCCU2u20/kHClZ3SdYbyYtU2KjrFsltMqO6CjeDzapMgABG8lkC2P41GRj+iFWVOx/N5Q3mhAzFQnOnVwuX9Em5zfY0dktr4qKcYtVpxuUqf2bhh7Kpbm+rkE629cJa/upgpzkVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=llEe6m1U; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FLpa61C2";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="YhakHtRz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789735679;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v+JaQ3C2cAyYFQJK2/l9R/7/otniBmov2ptyT3UUpaA=;
-	b=FLpa61C2G1npS71icky6TU6kqja4FX1q1xTeIAfM+eI65G05BaMN07T49Q8zd10XlNnNgu
-	ehY8lUBr+q+tXzQFzy6YZSZpIWbKNEdR7eOusjEHxP+9qf7Rw8Wi+sma1X4kO/42ilUCpe
-	FW6+Xsf3spdJqSuCwC2KNSyxlDLTExA=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-323-FuUib67dN-Cw9WUJgCdq9Q-1; Fri, 18 Sep 2026 08:47:58 -0400
-X-MC-Unique: FuUib67dN-Cw9WUJgCdq9Q-1
-X-Mimecast-MFC-AGG-ID: FuUib67dN-Cw9WUJgCdq9Q_1789735677
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49cd83ca361so5019675e9.1
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 05:47:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789735677; x=1790340477; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=v+JaQ3C2cAyYFQJK2/l9R/7/otniBmov2ptyT3UUpaA=;
-        b=YhakHtRzDg3AFAhi1m8zD/7L6U44YVEtLDLCl6RlFTwUl4Azw27op6Kk363YDZq74m
-         VrIhqEyAY32Y3vk99imElBMWb0zqMolGrHzTGEeLMb5HumtauqNMdlScUbYj5ahv9xR4
-         TEMHDF0n/bMWsN4B4hX9xQFB05WARj4/psUFp9bF/ebfg6EY0sTb3ooP9OKYFPM08HXQ
-         MoxCYGRSp1f17KHNaTjbQ/kE6hU6jzd25xah+a7ryCfzo06AJdMF86Lmt9dpZ0+gefQY
-         IyND+X/WYsZUF6Mf+wBGhXRCNrVSNDJ67MB0jvomZwfmlIdnEpneTna3a0Ap/wgYeDO1
-         jhNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789735677; x=1790340477;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=v+JaQ3C2cAyYFQJK2/l9R/7/otniBmov2ptyT3UUpaA=;
-        b=Fxw4BX6cfMvNpLoAam59N2ZFaJXzI5I8Wfy0D8VqolwyfzchkfoN5G+lTZt9Hzl9gt
-         HPCbDnr5qZDpyw7x3VuW4FxyY1EiZoo9Afh8q/C5EPzt/D3jtEc3pkM1fRlWn+jQmcnt
-         eovCBvQp3w/ii70INtSgygrTEWQqxZtGooXhWdOlrCcgRmH64RE/+vorVp0hnasRl8uz
-         F5nu1sJiS5BES6ebqbwXHjL7RASPcbR49FjNDujDwU/mgyUpHA53b3cv5F4Nq8FU7T+3
-         3WjVHuJp5RSt+v6e0A/Nu8qUibVBoIw9LSm810PotDF/Dq8erhpcQH9KP4H/BCx7B/JZ
-         CeLw==
-X-Forwarded-Encrypted: i=1; AKwUvBzWXD1L5ASPrdZwnb+a6gvCDKShBZGdmmt+9NJkl0fKuc8YWPTHsTcQRb6ZUJL4yBl++hMAnHY=@vger.kernel.org
-X-Gm-Message-State: AFuF++lGwKrj3z9kaqxtF8apTAC3hHsL21slo8gqJno0rLJuNbHh2yYp
-	4trlBK5XOOYmE+W3473Pd1g1StBtx5wFNVopMKRMmTkhVG0gCRaZytMjQKku2GGizjUeAaPn8pu
-	dgDubjFIfoCjtDLgis2Bkq68BWIF2ZiHla9JkhIDPevJw+fH9buNWZaPnXg==
-X-Gm-Gg: AYBFou0rVueHDRt2Bs9UO27GzZJMCnw5g1oyso+slTHMdXcFBqgzx4ashi0Vge8BGsw
-	jQR3+LMEkiURL9Mdb1fL5j4xGHoASC+ev3c5upizqmfm2bxt9V1sG+QX0S5VjpPTzeHBA7CfZBN
-	j0V4jtGAOTOVEPm2c2vKJmRMCnkRtuAXGuB9CUVcCIrYXeNI2tReVO2eHzl3+wUfHBMK9qvMM+Z
-	wtCgV0P40TpUtlo86qkdKZ7oeoKm8f97IXdfkAiJhEZ0W7JdzOf/eNcjUcleEoqpZtW9ZXI3g4y
-	egW27GRAxRDcuZtD5nZjttTEkxoKE2sz+VnGKS4KZnXrB1pFxce/7v2JLu8LaLTRWskg+FlFQET
-	CsKOurvaB2WWdEyOgZmGi6Ox2+X2KOg5lD2/7zvJO+IlW7g==
-X-Received: by 2002:a05:600c:1d99:b0:499:8ff5:8ecc with SMTP id 5b1f17b1804b1-49fc56dacbfmr35462205e9.15.1789735676769;
-        Fri, 18 Sep 2026 05:47:56 -0700 (PDT)
-X-Received: by 2002:a05:600c:1d99:b0:499:8ff5:8ecc with SMTP id 5b1f17b1804b1-49fc56dacbfmr35461105e9.15.1789735675472;
-        Fri, 18 Sep 2026 05:47:55 -0700 (PDT)
-Received: from sgarzare-redhat (host-79-53-30-11.retail.telecomitalia.it. [79.53.30.11])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fc58a1176sm39414825e9.2.2026.09.18.05.47.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 05:47:54 -0700 (PDT)
-Date: Fri, 18 Sep 2026 14:47:41 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Ivy Lopez <skunkolee@gmail.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org, 
-	decui@microsoft.com, longli@microsoft.com, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] vsock/hv_sock: fix socket/table leak when rescind races
- the delayed close
-Message-ID: <aq0ydoRGx4hq7BdR@sgarzare-redhat>
-References: <20260917220213.56102-1-bartlomiej.dmitruk@isec.pl>
- <20260918025650.15990-1-skunkolee@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="llEe6m1U"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789737104; x=1821273104;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=OrsDueolDB48ZiSn/3OL7AJT7dY/bOm5zXfF8rvHKZo=;
+  b=llEe6m1UY+d8AFmy1dWuaLNdAkBXbLZcVDgSBaHdvQgSqxx+oPI8ocuV
+   lEXkSpu1vxaeVJxLVTayfcXq5RYEmhfw0dD1/WEiZLTnGosb+Rq72QbAz
+   eC7kUVSTQUzSQzkNrDEd11M1MweDu9HGiyg/I8tfCnLA4KpkK9BFvz054
+   BMYMOdb4Vj+0pZ90Vo0V9QslvZhmvU+QN9vRNljilCTHOl1CPdzf7zcSO
+   SBHSKfl2sgl/vpqt5PSe3pB0zJRo+NLXMbN4w/1LyQ+4jM0xbVH6yuUyO
+   jNFTZtauJoziIubR6QUG+EtUNc0CBAOlhGvzVjpRxnujqibz5dRhsERo8
+   Q==;
+X-CSE-ConnectionGUID: gWxiLsiHT8ak7Ez/zJ9Jaw==
+X-CSE-MsgGUID: +Mgn2blGTkiJGKLbuZsHJg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11908"; a="89377241"
+X-IronPort-AV: E=Sophos;i="6.27,109,1787036400"; 
+   d="scan'208";a="89377241"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 06:11:43 -0700
+X-CSE-ConnectionGUID: Hk5X61dyT6+ZX9/9ZYRvrg==
+X-CSE-MsgGUID: Uyx18gd7SZKuT071NFmA0w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,109,1787036400"; 
+   d="scan'208";a="270092049"
+Received: from linux.intel.com ([10.54.29.200])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 06:11:43 -0700
+Received: from [10.246.40.5] (unknown [10.246.40.5])
+	by linux.intel.com (Postfix) with ESMTP id 688C120B5708;
+	Fri, 18 Sep 2026 06:11:41 -0700 (PDT)
+Message-ID: <da315e5f-b71f-4c8c-8705-94f530ff3f25@linux.intel.com>
+Date: Fri, 18 Sep 2026 15:11:39 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260918025650.15990-1-skunkolee@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+To: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+ intel-wired-lan@lists.osuosl.org, anthony.l.nguyen@intel.com
+Cc: netdev@vger.kernel.org, Przemek Kitszel <przemyslaw.kitszel@intel.com>
+References: <20260917094312.1567881-1-aleksandr.loktionov@intel.com>
+ <20260917094312.1567881-2-aleksandr.loktionov@intel.com>
+Content-Language: pl
+From: Tomasz Lichwala <tomasz.lichwala@linux.intel.com>
+In-Reply-To: <20260917094312.1567881-2-aleksandr.loktionov@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 17, 2026 at 08:56:50PM -0600, Ivy Lopez wrote:
->LGTM.
->
->Should this need a Fixes: tag and possibly a Cc: stable@vger.kernel.org?
->
 
-Yes, please.
 
-Also, if LLM was used, we should add also Assisted-by tag, see 
-https://docs.kernel.org/process/coding-assistants.html
+On 17.09.2026 11:43, Aleksandr Loktionov wrote:
+> diff --git a/drivers/net/ethernet/intel/ice/ice_nvm.c b/drivers/net/ethernet/intel/ice/ice_nvm.c
+> index 21f3b61..9ae7de2 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_nvm.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_nvm.c
+> @@ -1105,6 +1105,45 @@ static int ice_determine_css_hdr_len(struct ice_hw *hw)
+>  	return 0;
+>  }
+>  
+> +/**
+> + * ice_parse_erot_presence - detect eRoT and populate hw->erot_present
+> + * @hw: pointer to the HW struct
+> + *
+> + * Uses the device capability LIBIE_AQC_CAPS_EXTERNAL_PQC_ROT_PRESENT when
+> + * advertised by firmware, falling back to the eRoT Presence fuse only when
+> + * the capability is not advertised at all (older firmware).
+> + *
+> + * Priority:
+> + *  1. Device capability external_pqc_rot_present (advertised && == 1)
+> + *     => eRoT present
+> + *  2. Fuse BIT(0) set (only when capability not advertised)
+> + *     => eRoT present
+> + *  3. Otherwise => eRoT not present
+> + */
+> +void ice_parse_erot_presence(struct ice_hw *hw)
+> +{
+> +	u16 fuse = 0;
+> +	int err;
+> +
+> +	hw->erot_present = false;
+> +
+> +	if (hw->dev_caps.common_cap.external_pqc_rot_present) {
+> +		hw->erot_present = true;
+> +	} else if (!hw->dev_caps.common_cap.external_pqc_rot_present_cap_advertised) {
+> +		err = ice_read_sr_word(hw, ICE_SR_EROT_PRESENCE_FUSE, &fuse);
+> +		if (err)
 
-Stefano
+On a read failure the code assumes erot_present = false, i.e. fails open on a mechanism whose whole purpose is preventing bricking from partial updates. A transient SR read failure on real eRoT hardware silently disables the guard in patch 2. Consider treating a read failure as erot_present = true instead, or justify why fail-open is safe here.
+
+> +			dev_warn(ice_hw_to_dev(hw),
+> +				 "Unable to read eRoT presence fuse (SR 0x%04x), err %d; assuming eRoT not present\n",
+> +				 ICE_SR_EROT_PRESENCE_FUSE, err);
+> +		else if (fuse & ICE_EROT_PRESENCE_FUSE_PRESENT)
+> +			hw->erot_present = true;
+> +	}
+> +
+> +	if (hw->erot_present)
+> +		dev_info(ice_hw_to_dev(hw),
+> +			 "eRoT (external Root of Trust) present\n");
+> +}
+> +
+>  /**
+>   * ice_init_nvm - initializes NVM setting
+>   * @hw: pointer to the HW struct
+> diff --git a/drivers/net/ethernet/intel/ice/ice_nvm.h b/drivers/net/ethernet/intel/ice/ice_nvm.h
+> index e1d1a11..4b31dfc 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_nvm.h
+> +++ b/drivers/net/ethernet/intel/ice/ice_nvm.h
+> @@ -28,7 +28,12 @@ int ice_get_inactive_nvm_ver(struct ice_hw *hw, struct ice_nvm_info *nvm);
+>  int
+>  ice_get_inactive_netlist_ver(struct ice_hw *hw, struct ice_netlist_info *netlist);
+>  int ice_read_pba_string(struct ice_hw *hw, u8 *pba_num, u32 pba_num_size);
+> +/* eRoT Presence fuse SR offset; BIT(0) set means eRoT present */
+> +#define ICE_SR_EROT_PRESENCE_FUSE	0x1016
+> +#define ICE_EROT_PRESENCE_FUSE_PRESENT	BIT(0)
+
+Commit message and function doc describe the fuse as "bits[1:0]", but only bit 0 is checked/masked. Please confirm with the fuse spec whether bit 1 is truly unused, or whether this needs GENMASK(1,0) with a specific expected value.
+
+> +
+>  int ice_init_nvm(struct ice_hw *hw);
+> +void ice_parse_erot_presence(struct ice_hw *hw);
+>  int ice_read_sr_word(struct ice_hw *hw, u16 offset, u16 *data);
+>  int
+>  ice_aq_update_nvm(struct ice_hw *hw, u16 module_typeid, u32 offset,
+
 
