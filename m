@@ -1,88 +1,138 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7ED7370D69
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 06:36:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4ED8547050
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 06:38:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789713419; cv=none; b=h5g1C2sJrM1upXyyIrfs8ooVGnbcH4Fl89idWpl+SfmK2UP1ESW0xwqAmV3Cp3BrcwdkVwyEV2ImnUxtFtdikD8ECcAosN4ilCf8VDwXgGpFQvEVDJZE+3Iz3rD1HKhD1tdtJlQbBKooVlpe3Uf4t4owgYE7i2gY5fXva4T6z6U=
+	t=1789713510; cv=none; b=q7IyjyVb8izQ2k1HCHR3uls5OfBCHwDxgsHD6n0rzIa128T0R3lkaYTtKSTqPKY16QcfObA0QdQR8nA9vd25rVRCj4Bt0Io5F3HAD/CEI4DLw8nVL/ZKrUr9Kqj12C3uiqSKrikX72JbJ36W+sHd7dnhl8XQuyMDCtWUIK6yavg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789713419; c=relaxed/simple;
-	bh=O1huewYL1PNuCkIhyClw7hLbhunZb5skF7+0QTpYPQY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QQornRXCrBRX6Sy7VmyP2wzQimjhLQIywShbF/RfITMCIoyA3ME6qHjoKWMz/4HZcGtZoIWwBJbq+XLNU2LeRd40+V7so8m8qq4UNxv7EvOu/Pni8PxaS0nMBkOHqbvC4l40HekqwSdOLgZJ2DgNkbmmp68BHvUoJ5ZJSzzefYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=AQNRWxM8; arc=none smtp.client-ip=185.246.84.56
+	s=arc-20240116; t=1789713510; c=relaxed/simple;
+	bh=EvREG//rprTPwzkjU3xlpNpW9eqUNwyIliraATJKrZ0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Subject:Cc:From:
+	 References:In-Reply-To; b=R7eaSozksxjmyYMayEHbODLceNMtOkEbCuHDsqxYxHzN0pV38+7yLoforlOO7uqYzSn0b/1fH0FBx+Wcq7WaDXiT968yA4dQplM+0n+PDOkr3mWqFnH/ITHAo6Ae9hPCQDIi8GM8Ae0Xf55DTx81wNMDu5DgLYHjhehoD27ycoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jPH/TTPb; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="AQNRWxM8"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jPH/TTPb"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 0D6C91A0975;
-	Fri, 18 Sep 2026 06:36:56 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 8C358C5846A;
+	Fri, 18 Sep 2026 06:39:10 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C239260649;
-	Fri, 18 Sep 2026 06:36:55 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B918B11C7B021;
-	Fri, 18 Sep 2026 08:36:47 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C4D2960649;
+	Fri, 18 Sep 2026 06:38:25 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id AACCD11C7B021;
+	Fri, 18 Sep 2026 08:38:18 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789713414; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=b/kwg8xPzvU7ZBW6GaseA/nQW9nV0VK1cq3pTvwDMsI=;
-	b=AQNRWxM8MSps0slHhOxR5WAwPa4wIYOQiM7D/Z/E7cAcmFmQ06vOBeqH96ZAsj2QT6KAak
-	SVIa9tT/KfgEUoyBGjjgNCV0blH2+c/gYJg/GX3myRvkO/2M2UXyDV4cpMpEBqK15tB9hi
-	vhGELJV8XKPegOPsMzraCmFhnwrVaZJ2rCXqQJktbRj8h2URJsTPbE3FIlY5VzlaVtVqhh
-	L2uOHoiyES021YhiuDepdnZBuuqHZJSmX9gH7DrayLW9M0s9qhjG77e1pSZBlZOcP5NTam
-	Y8Dilcw/R/IkeukLXLMCJ7NCfMMDlNAvpNCv+9gtsW1nzklG5T/CbjX/5bSBHQ==
-Message-ID: <7023523b-fcca-401d-a876-18960a9d75fd@bootlin.com>
-Date: Fri, 18 Sep 2026 08:36:46 +0200
+	t=1789713504; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=RyoX66ARo1jdjaeeIXDPztqT4qPSKypJMdksTTMQhHc=;
+	b=jPH/TTPb9FOoRC5kvu6MMqiNDyg9OvecsolVYtmZiPny5z+PQmJ9B5g3grgQ2mluezmDxI
+	pl6eoQAlSEbRXNVjNgEgh8y0yb0/HntnH1eEZH5BDzqjY+czOGwL4cXp2SVmJJWh965kZ8
+	V02bAl8UTVmrWFad/eAMbHbA+7IRVeg8UufqosZd0N/H+Z3nNOMlarzCWwNmxyg6hz0G8L
+	m7ZeGkioDDOW1TrgGx+lut6d2AQmjBCAGNWwwmKpV2rm7LUfYMPTkCoYWKpPw4VRGzWykb
+	EOB+SCdbJ0Tta3pMAxAQG531DR/pGxvYwFb7Qd107TwYuqglFCptBMp3cLCLKw==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 0/3] net: stmmac: add Allwinner H616 EMAC1
- support
-To: Alastair D'Silva <alastair@d-silva.org>,
- James Hilliard <james.hilliard1@gmail.com>,
- Richard Genoud <richard.genoud@bootlin.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Giuseppe Cavallaro <peppe.cavallaro@st.com>,
- Jose Abreu <joabreu@synopsys.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Maxime Ripard <mripard@kernel.org>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20260917-submit-h616-emac1-v1-v3-0-62cb8316e19b@gmail.com>
- <9cd900993fc385ccffcf743f629e87071be9820a.camel@d-silva.org>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <9cd900993fc385ccffcf743f629e87071be9820a.camel@d-silva.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Fri, 18 Sep 2026 08:38:17 +0200
+Message-Id: <DLI8HIES5WAV.3A4W5G22Z6I1H@bootlin.com>
+To: "Madhav Khosla" <madhav.khoslaa@gmail.com>, <ast@kernel.org>,
+ <daniel@iogearbox.net>, <andrii@kernel.org>
+Subject: Re: [PATCH v2 bpf] selftests/bpf: Fix csum_partial() dropping
+ trailing byte on odd length
+Cc: <alexis.lothore@bootlin.com>, "Eduard Zingerman" <eddyz87@gmail.com>,
+ "Ihor Solodrai" <ihor.solodrai@linux.dev>, "Kumar Kartikeya Dwivedi"
+ <memxor@gmail.com>, "Martin KaFai Lau" <martin.lau@linux.dev>, "Song Liu"
+ <song@kernel.org>, "Yonghong Song" <yonghong.song@linux.dev>, "Jiri Olsa"
+ <jolsa@kernel.org>, "Emil Tsalapatis" <emil@etsalapatis.com>, "Shuah Khan"
+ <shuah@kernel.org>, "David S. Miller" <davem@davemloft.net>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Jesper Dangaard Brouer" <hawk@kernel.org>,
+ "John Fastabend" <john.fastabend@gmail.com>, "Stanislav Fomichev"
+ <sdf@fomichev.me>, "open list:BPF [SELFTESTS] (Test Runners &
+ Infrastructure)" <bpf@vger.kernel.org>, "open list:KERNEL SELFTEST
+ FRAMEWORK" <linux-kselftest@vger.kernel.org>, "open list"
+ <linux-kernel@vger.kernel.org>, "open list:XDP (eXpress Data
+ Path):Keyword:(?:b|_)xdp(?:b|_)" <netdev@vger.kernel.org>
+From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260916112554.413933-1-madhav.khoslaa@gmail.com>
+In-Reply-To: <20260916112554.413933-1-madhav.khoslaa@gmail.com>
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Alastair,
+Hi Madhav,
 
+On Wed Sep 16, 2026 at 1:25 PM CEST, Madhav Khosla wrote:
+> csum_partial() computes num_u16 =3D len >> 1 and only sums that many
+> 16-bit words, so the last byte of an odd-length buffer never gets
+> added to the checksum. RFC 1071 says it should be padded with a zero
+> byte and summed as one more word, not dropped.
+>
+> This backs build_ip_csum(), build_udp_v4_csum() and
+> build_udp_v6_csum(), used by flow_dissector_classification.c and
+> xdp_metadata.c to hand-build packets. No current caller builds an
+> odd-length payload, so nothing fails today, but a future one would
+> get a silently wrong checksum.
+>
+> Also bump flow_dissector_classification's TEST_PACKET_LEN from 100 to
+> 99 so this actually gets exercised instead of staying latent.
 
-> Confirmed working on the Mellow Fly C5 when brought in as a module and
-> backported to 6.18, tested in the Armbian environment, along with the
-> recommended PWM patch:
-> https://lore.kernel.org/all/20260804-h616-pwm-v8-v8-0-db37ab8624ae@gmail.com/T/
-> 
-Thanks a lot for testing, this is great :)
+Great, thanks for the update.
 
-Can you add you Tested-by tag ?
+> Without the fix and with TEST_PACKET_LEN=3D99, flow_dissector_classificat=
+ion
+> fails under vmtest.sh:
+>
+>     test_flow_dissector_classification:FAIL:test third port unexpected
+>     test third port: actual 0 !=3D expected 10
+>     #137/6   flow_dissector_classification/ipv6:FAIL
+>     #137     flow_dissector_classification:FAIL
+>     Summary: 1/0 PASSED, 0 SKIPPED, 1/6 FAILED
+>
+> Kernel just drops the packet over a bad checksum. With the fix, both
+> flow_dissector_classification and xdp_metadata pass.
+>
+> v1 -> v2:
+> - comment style: opening /* on its own line, per BPF selftests style
+> - Retarget the Fixes tag to bcc00987bc56. commit f4504af68575
+>   ("selftests/bpf: move ip checksum helper to network helpers") moved
+>   the helper, but sizeof(iphdr) is always a multiple of 32 bit words /
+>   4 Bytes (iph->ihl counts in 4-byte words), so the odd-length path
+>   was never reachable through build_ip_csum(). csum_partial() first
+>   gets called with a length that isn't guaranteed even in
+>   bcc00987bc56, via build_udp_v4_csum()/build_udp_v6_csum().
+> - TEST_PACKET_LEN 100 -> 99 so an existing test catches this instead
+>   of the bug staying unexercised
+
+Could you please move the patch changelog under --- so it does not end
+up in the commit once it is merged ? You can also drop the Link tag, one
+will automatically be added on the latest revision once it is merged.
+
+Up to some extent, you could also move the ./test_progs sample output in
+the comments under --- as well.
+
+> Fixes: bcc00987bc56 ("selftests/bpf: add network helpers to generate udp =
+checksums")
+
+You chose to use bcc00987bc56 rather than e2a46d54d7a1, but I guess it
+is ok.
+
+> Link: https://lore.kernel.org/bpf/DLG5TIIHIMC2.2YCCY0UX86YQF@bootlin.com/=
+T/#t
+> Signed-off-by: Madhav Khosla <madhav.khoslaa@gmail.com>
 
 Thanks,
 
-Maxime
+Alexis
+
+--=20
+Alexis Lothor=C3=A9, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
