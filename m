@@ -1,60 +1,57 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF1C5187CC
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 13:33:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530CA4F7CDD
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 13:34:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789738406; cv=none; b=QFMN/ydx/cfBwaPd62Sm/ADWxhaeyc77SFeo+vG3HhFfoSGCpp98RUSgRfBy5h2IS0Dgc9bK3gM0BSyWEKQzqroFPOs97Uo2nUVTLyEbZJxjl083fJ8w0gc9D8pQnWdaSR6UHFjb51cuiciHFRD7Vwpp777kvvzrAH+yDidC3Kc=
+	t=1789738494; cv=none; b=T2GpNyfA/B+alBXmsvP9AhAjdsji/aqz5933DUIKnbiLWZZtWqForGBNWSIjwAEnK8wsAEDOf/5ODrGO+X7Oiw7oozRvPAB9tWMHRwq+IUMNkYTyQ10WK3FHm+xiWHAo8sXNPqkoeQLg0vG0OmEy9+fcM3cz/97qjmAz/0pkqTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789738406; c=relaxed/simple;
-	bh=lGVnIQv9TtpdjxowxbaaH8QKjUMRQwGbViMg10Lb1h4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h/qFHsXi9Dal5EI8wPrtwHUfM0B8aoc4tKMbDfI73J4lKsg2HgxgsOBAljDuPiRb2JwwrF23IO0Dz4xnSHyCalYv8m8Dfs7PmisFih+5CckuibtEs10ehFj57jDQHASeDQZyX/ZzVy7H/TaIjecgm9vNW0J+l6c/l2+tX/r6Eb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WVSe3cG7; arc=none smtp.client-ip=192.198.163.10
+	s=arc-20240116; t=1789738494; c=relaxed/simple;
+	bh=alPd3jIpdS35on6zf2c81Y02DU9c1ZRoSXkBLUj8oEs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=opJTLvT/Q28urfguwOZgf8hkvcwg/pHREYx+u4x3XLL83SFSjKwrIgcKDCliTAen/45Ax09nGaexw5/nQVNRNF3BNpByuxx5V+01cV5N+grrqBeH0NiFnyBOHOobrdGdrUVqbGYGfXLog9lN46iGZGz0Pc698/H0MbI9LnK6jQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jyzswVPN; arc=none smtp.client-ip=192.198.163.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WVSe3cG7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jyzswVPN"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789738405; x=1821274405;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=lGVnIQv9TtpdjxowxbaaH8QKjUMRQwGbViMg10Lb1h4=;
-  b=WVSe3cG7b2265Oyif1xdxw90cHzxADW9bQHNaQXy8H3Iqx86KAw10iFU
-   xCTjo30g/NBFrhqX9SHcZnf+w6n5xFEv5WSXod3ezSSVWuZFoi6EG+y7X
-   mMaQDJVrGG/o/IVGHKb88A+Pv1vNAMbXCHu+tgLZ49gc46eq95EV95B1d
-   qfkbbcTiX6tpENedKryKJQaNza4USk1EoXZPM6kRlKWJ/ug2NZMP9EXk9
-   emwjlx4bK0n620BntwbHb+xCqbETH/mxus95sOjJ/eAJ9l1WwtQ0UpRd3
-   7frb0SHU/WKLPBw/EEzbLsU1PeO9ILRIYDjMGw72FVoUuvkm4M+sB5ZFo
+  t=1789738493; x=1821274493;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=alPd3jIpdS35on6zf2c81Y02DU9c1ZRoSXkBLUj8oEs=;
+  b=jyzswVPN7EldigBsfFqrAJUZoWHjLe2/Z+qaAcEpKij9ZPQ3Bw4PyF2x
+   7LvigYoCo1707ieaBofCY2zjxwdhKL1mZUEAHM5H2+juNUcrjM6gu38wd
+   gonOj9utSL7x5ac8FOdZuK1ZsaoGeAh5myLYTlZYpCEmof/rBf4WHw7+G
+   ESEXAgmnhzhbbVtjkOMl9rnuciUeawVah7m10ev0lnrCyg0Wt8ZN2AzFi
+   nTy4i+Ooa0g7F9esQRV7P5dshKWpoZCOiTMqnU9K4RGf0N0M+fUi4esLf
+   FBJFqk2M5acX5CqTGYY10UgdUxcaCLoKKRXaWxDWn1DVpENYR1IdmRlcq
    Q==;
-X-CSE-ConnectionGUID: KYGUeW90RW2MISegqkB9iQ==
-X-CSE-MsgGUID: 49/HUy0lS7WOn/FMF88Bbg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11908"; a="101592509"
+X-CSE-ConnectionGUID: Xg9dWTJIS9+XtYKYlxRK3w==
+X-CSE-MsgGUID: KU1VOlv1Q3+SYAFypOzy7g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11908"; a="744158"
 X-IronPort-AV: E=Sophos;i="6.27,109,1787036400"; 
-   d="scan'208";a="101592509"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 06:33:25 -0700
-X-CSE-ConnectionGUID: zBUIBspHSQWmHgiqL3WHCg==
-X-CSE-MsgGUID: Ucbo1cRqTXm8oqK9pU4tzg==
+   d="scan'208";a="744158"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa115.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 06:34:53 -0700
+X-CSE-ConnectionGUID: ZnUoGYpdRJiMkT+yZZOcag==
+X-CSE-MsgGUID: xEebdWUVSQKoVfaV1sak/A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,109,1787036400"; 
-   d="scan'208";a="270717993"
+   d="scan'208";a="299513973"
 Received: from amlin-019-225.igk.intel.com ([10.102.19.225])
-  by fmviesa010.fm.intel.com with ESMTP; 18 Sep 2026 06:33:23 -0700
+  by fmviesa001.fm.intel.com with ESMTP; 18 Sep 2026 06:33:33 -0700
 From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 To: intel-wired-lan@lists.osuosl.org,
 	anthony.l.nguyen@intel.com,
 	aleksandr.loktionov@intel.com
 Cc: netdev@vger.kernel.org,
 	Simon Horman <horms@kernel.org>
-Subject: [PATCH iwl-next v2 4/4] ixgbe: add IXGBE_ITR_ADAPTIVE_MASK_USECS constant
-Date: Fri, 18 Sep 2026 15:33:16 +0200
-Message-ID: <20260918133317.4169815-5-aleksandr.loktionov@intel.com>
+Subject: [PATCH iwl-next v2] ixgbe: remove ixgbe_ping_all_vfs() from link state change handlers
+Date: Fri, 18 Sep 2026 15:33:27 +0200
+Message-ID: <20260918133327.4170034-1-aleksandr.loktionov@intel.com>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260918133317.4169815-1-aleksandr.loktionov@intel.com>
-References: <20260918133317.4169815-1-aleksandr.loktionov@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,50 +60,96 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Alexander Duyck <alexander.h.duyck@intel.com>
+When multiple VFs are brought up simultaneously, a VF can receive a CTS
+(Clear To Send) mailbox message instead of the expected RESET | (N)ACK
+response, because the watchdog fires a gratuitous ping right as the VF
+mailbox transaction is in progress.
 
-ixgbe_set_itr() clears the mode flag (IXGBE_ITR_ADAPTIVE_LATENCY, bit 7)
-with the open-coded complement expression ~IXGBE_ITR_ADAPTIVE_LATENCY.
-This is equivalent to keeping only bits [6:0], i.e. the usecs sub-field.
+Remove the ixgbe_ping_all_vfs() call from both ixgbe_watchdog_link_is_up()
+and ixgbe_watchdog_link_is_down().  Both paths contain an identical call
+with the same race window during VF initialization: link-state changes
+(up or down) can arrive while VFs are mid-initialization, and the
+gratuitous ping from either direction collides with the VF mailbox state
+machine for the same reason.
 
-Add IXGBE_ITR_ADAPTIVE_MASK_USECS = IXGBE_ITR_ADAPTIVE_LATENCY - 1 =
-0x7F to name this mask explicitly and replace the open-coded AND-NOT
-operation with the cleaner AND form.  The two expressions are
-arithmetically identical; the change improves readability.
+Link-state changes are already communicated to VFs through the normal
+mailbox protocol; these extra pings are redundant on both paths.
 
-Signed-off-by: Alexander Duyck <alexander.h.duyck@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
+This removes the last two callers of ixgbe_ping_all_vfs(), so remove
+the now-unused function and its declaration as well.
+
+Suggested-by: Sebastian Basierski <sebastianx.basierski@intel.com>
 Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe.h      | 1 +
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+v1 -> v2: no code changes, resending to pick up Reviewed-by
+---
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c  |  6 ------
+ drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c | 14 --------------
+ drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.h |  1 -
+ 3 files changed, 21 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe.h b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-index 1a7fd90..594ccb2 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-@@ -478,6 +478,7 @@ static inline unsigned int ixgbe_rx_pg_order(struct ixgbe_ring *ring)
- #define IXGBE_ITR_ADAPTIVE_MAX_USECS	84
- #define IXGBE_ITR_ADAPTIVE_LATENCY	0x80
- #define IXGBE_ITR_ADAPTIVE_BULK		0x00
-+#define IXGBE_ITR_ADAPTIVE_MASK_USECS	(IXGBE_ITR_ADAPTIVE_LATENCY - 1)
- 
- struct ixgbe_ring_container {
- 	struct ixgbe_ring *ring;	/* pointer to linked list of rings */
 diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-index 7fb2ab4..8d3627c 100644
+index f918564..365acf8 100644
 --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
 +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-@@ -2962,7 +2962,7 @@ static void ixgbe_set_itr(struct ixgbe_q_vector *q_vector)
- 	new_itr = min(q_vector->rx.itr, q_vector->tx.itr);
+@@ -8181,9 +8181,6 @@ static void ixgbe_watchdog_link_is_up(struct ixgbe_adapter *adapter)
  
- 	/* Clear latency flag if set, shift into correct position */
--	new_itr &= ~IXGBE_ITR_ADAPTIVE_LATENCY;
-+	new_itr &= IXGBE_ITR_ADAPTIVE_MASK_USECS;
- 	new_itr <<= 2;
+ 	/* update the default user priority for VFs */
+ 	ixgbe_update_default_up(adapter);
+-
+-	/* ping all the active vfs to let them know link has changed */
+-	ixgbe_ping_all_vfs(adapter);
+ }
  
- 	if (new_itr != q_vector->itr) {
+ /**
+@@ -8214,9 +8211,6 @@ static void ixgbe_watchdog_link_is_down(struct ixgbe_adapter *adapter)
+ 
+ 	e_info(drv, "NIC Link is Down\n");
+ 	netif_carrier_off(netdev);
+-
+-	/* ping all the active vfs to let them know link has changed */
+-	ixgbe_ping_all_vfs(adapter);
+ }
+ 
+ static bool ixgbe_ring_tx_pending(struct ixgbe_adapter *adapter)
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
+index 431d77d..da641e9 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
+@@ -1515,20 +1515,6 @@ static inline void ixgbe_ping_vf(struct ixgbe_adapter *adapter, int vf)
+ 	ixgbe_write_mbx(hw, &ping, 1, vf);
+ }
+ 
+-void ixgbe_ping_all_vfs(struct ixgbe_adapter *adapter)
+-{
+-	struct ixgbe_hw *hw = &adapter->hw;
+-	u32 ping;
+-	int i;
+-
+-	for (i = 0 ; i < adapter->num_vfs; i++) {
+-		ping = IXGBE_PF_CONTROL_MSG;
+-		if (adapter->vfinfo[i].clear_to_send)
+-			ping |= IXGBE_VT_MSGTYPE_CTS;
+-		ixgbe_write_mbx(hw, &ping, 1, i);
+-	}
+-}
+-
+ /**
+  * ixgbe_set_all_vfs - update vfs queues
+  * @adapter: Pointer to adapter struct
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.h
+index bc4cab9..f755bfd 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.h
+@@ -18,7 +18,6 @@ void ixgbe_restore_vf_multicasts(struct ixgbe_adapter *adapter);
+ bool ixgbe_check_mdd_event(struct ixgbe_adapter *adapter);
+ void ixgbe_msg_task(struct ixgbe_adapter *adapter);
+ int ixgbe_vf_configuration(struct pci_dev *pdev, unsigned int event_mask);
+-void ixgbe_ping_all_vfs(struct ixgbe_adapter *adapter);
+ void ixgbe_set_all_vfs(struct ixgbe_adapter *adapter);
+ int ixgbe_ndo_set_vf_mac(struct net_device *netdev, int queue, u8 *mac);
+ int ixgbe_ndo_set_vf_vlan(struct net_device *netdev, int queue, u16 vlan,
 -- 
 2.52.0
 
