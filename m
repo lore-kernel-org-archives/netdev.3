@@ -1,248 +1,179 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3462F691D;
-	Fri, 18 Sep 2026 10:34:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F444A49B2;
+	Fri, 18 Sep 2026 10:34:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789727644; cv=none; b=RwlaOy6OZ8gyfOAJ22eufaPo3pGw9XH8I0AzpyZyNpz1dFxTKj7fUCdxXYqS7ewLqF+HqXGumI5IurO6pOzv2AWF44ydawcy6DzYUt7Sr6teNMmT8mRDCfGEMnqDosHZHqD/oQasIEsyhH+GScW1cTL6ihoXDMS0zHFmva/LGBc=
+	t=1789727664; cv=none; b=BIjG1tZZCKN6w1X0FaJlpTdtCNdM4KlQHQOxsZsHjbEDjG+SaRSPPMLMSIg40KIjTRbgXMqmVPlWfIhlH/yktvcxzOskPX5GUdDpZfuf7U9X7Ye9nBiEqaVhiLaN4Geg0tzpKHtDLXkEEPGyoZGaZ9v+FlR2BA27jO8ECAkbeA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789727644; c=relaxed/simple;
-	bh=yPPiKmEgVPTtLzJ8gL2slYXxyTkBBl+ccym/YTSazeU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=fMesoz4SJP1VmK8a3qEG5a6CmfuQ4BRJP5V8UmNgyg6G5/aQXrQQwR5IE5Gf1IjQ9jXP1bnX38hduy6EBlzU/FtBmmQKYOAv66EyjseX12Yvo17W39wV7K8lcO0RT+s7N6IaEcbZXj1Sw6qUuGcLauwOVVAPeudQUhjxYE4NbpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L8DuL/hD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789727664; c=relaxed/simple;
+	bh=u6XsNCelDRkK9eb5s39wI4hiOut0FxwgdIFI24z4NgI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kfxdC3dALcp+n0qaMhxWFMmzVuq9BkrgauUy1/pllXx3oAkpjq7iDvhV4uhPrfUYKtC6ojSfEb36cWfLH+hURzUTjYd+gIbQF7XuaLJ01X0cUk+AHcugYNlQzIMeJ5oV/2iRcXIxJgJsmZDNaVWCJ6hPyMp4hp8/EP+Nd7z7e8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=Mdj+wLod; arc=none smtp.client-ip=220.197.31.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L8DuL/hD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2DCC1F000FF;
-	Fri, 18 Sep 2026 10:34:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789727642;
-	bh=8Q1GCb3DTcT0ZyJdmbfyuteX4hmDxY6lziGNf/oQ+As=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=L8DuL/hD8UsIr9NprMVowh+2YjDqlx9+lxT7VWmJ1VUPpcFXdtTtrIDDptiLLRPsh
-	 P2CKnzMYK+NWeBx831O4jwtLO006y62NZxQv8M5JCMMca+GSSF1euGi10k3U+bvua6
-	 Oxgc/67Y8lmIES+VpgtV4qybi8pE2O+AX4oJ1d+M3CzX1cumDMgD+H0sExSKq27hdg
-	 Pqr4dn3YG2hKUwiBE2R3pu5VWVZRgpWzCGFIf20hAvTm+KR4ocdBPU389x5JkOz9vd
-	 8lFHS0BlCnpmOeu3gOL5xq4cDB4C1c1UWqUj72F7J3JBQZaZZDlT+VzxOYHNkxmSiZ
-	 SIyIf+maNEDeA==
-From: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: alexanderduyck@fb.com, kuba@kernel.org, kernel-team@meta.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, linux@armlinux.org.uk, netdev@vger.kernel.org,
- mohsin.bashr@gmail.com, mike.marciniszyn@gmail.com, leitao@debian.org,
- horms@kernel.org, almasrymina@google.com, linux-kernel@vger.kernel.org,
- netdev-bot+sashiko@kernel.org
-Subject: Re: [PATCH net] eth: fbnic: Keep real queue counts synchronized
-In-Reply-To: <178971186222.22033.14149428944925737019@kernel.org>
-References: <20260915180859.4157646-1-bjorn@kernel.org>
- <178971186222.22033.14149428944925737019@kernel.org>
-Date: Fri, 18 Sep 2026 12:33:58 +0200
-Message-ID: <87wlsirgq1.fsf@all.your.base.are.belong.to.us>
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="Mdj+wLod"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=o+oZnGlHZIGMyCuHE5hh6qyYk862NKFKTYCCieZ2ADg=;
+	b=Mdj+wLodmw30hc3o+5LCnBT1zwxAS4bhZq8B3ESj2ef5vZ9UbKE+ggW/FtnHtv
+	VY8pQMpDfaMEhTDPVPrhX/3c6bRL5gZV8PhXP7Q/MIhO2xRJgSiYWVW4zUP+YC9V
+	ox9SWy9QePhHw3+e86s3IcRL6vkJiKfVP0qdHLF0JTQR4=
+Message-ID: <62d9f679-68dd-45bc-9754-9e0ae931d2af@126.com>
+Date: Fri, 18 Sep 2026 18:32:53 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: stmmac: do not cache the new TSO MSS before it
+ reaches the DMA
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Linkui Xiao <xiaolinkui@kylinos.cn>, stable@vger.kernel.org
+References: <20260917124234.1348673-1-xiaolinkui@126.com>
+ <aqwlUWN3rAXfcaWr@lore-qca>
+Content-Language: en-US
+From: Linkui Xiao <xiaolinkui@126.com>
+In-Reply-To: <aqwlUWN3rAXfcaWr@lore-qca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:_____wDnNx9WE61q7PYEBg--.785S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXr1DGFW7ZFWkZry5Ww15Jwb_yoWrKFy8pF
+	WUAa90y395Jr4fZw4kCw40qa4rJay3tF4Yyw18Kr9xCw43tr9Ygry3KrW5Wa4Uur95Zr1S
+	ka1qka47CF4DZrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UZZ2-UUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqBfftmqtE1ckogAA3T
 
-netdev-bot+sashiko@kernel.org writes:
+Hi Lorenzo,
 
->> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c b/drivers/n=
-et/ethernet/meta/fbnic/fbnic_ethtool.c
->> index 0e47088ec44ba..bec6113873338 100644
->> --- a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
->> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
->> @@ -1626,6 +1626,13 @@ static int fbnic_set_channels(struct net_device *=
-netdev,
->>  		return -EINVAL;
->>=20=20
->>  	if (!netif_running(netdev)) {
->> +		unsigned int rx_count =3D ch->rx_count + ch->combined_count;
->> +		unsigned int tx_count =3D ch->tx_count + ch->combined_count;
->> +
->> +		err =3D netif_set_real_num_queues(netdev, tx_count, rx_count);
->> +		if (err)
->> +			return err;
->> +
->>  		fbnic_set_queues(fbn, ch, max_napis);
->>  		fbnic_reset_indir_tbl(fbn);
->>  		return 0;
->
-> [Severity: High]
->
-> This isn't a bug introduced by this patch, but while looking at
-> fbnic_set_channels() the validation just above this hunk seems to accept a
-> configuration that the NAPI allocator cannot build.
->
-> The check is:
->
-> 	if ((ch->rx_count && ch->tx_count && ch->combined_count) ||
-> 	    (standalone && standalone + ch->combined_count > max_napis) ||
->
-> so on a host where max_napis =3D=3D 128, ethtool -L eth0 rx 64 tx 64 comb=
-ined 0
-> passes (128 > 128 is false), and fbnic_set_queues() records
-> num_rx_queues=3D64, num_tx_queues=3D64, num_napi=3Dmin(128, 128)=3D128.
->
-> On the next open, fbnic_alloc_napi_vectors() skips its dedicated Tx/Rx
-> branch because of the strict comparison at num_napi =3D=3D FBNIC_MAX_TXQS:
->
-> 	if (num_napi < FBNIC_MAX_TXQS && num_napi =3D=3D num_tx + num_rx) {
->
-> The fallback pairing loop then allocates one Tx/Rx pair per vector
-> (tqpv =3D DIV_ROUND_UP(64, 128) =3D 1, rqpv =3D 1) and returns 0 after fi=
-lling
-> only fbn->napi[0..63].
->
-> fbnic_alloc_resources() still walks the configured count:
->
-> 	for (i =3D 0; i < fbn->num_napi; i++) {
-> 		err =3D fbnic_alloc_nv_resources(fbn, fbn->napi[i]);
->
-> and fbnic_alloc_nv_resources() dereferences the NULL entry at
-> for (i =3D 0; i < nv->txt_count; i++).
->
-> Can this oops on open?  fbnic_free_napi_vectors() guards with
-> if (fbn->napi[i]), which suggests partially populated arrays are expected,
-> while the alloc walk has no such guard.
+thanks for the review.
 
-Ya, this can oops. It is addressed by:
-  https://lore.kernel.org/netdev/178942020457.7700.13129750616387075931.stg=
-it@ahduyck-xeon-server.home.arpa/
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20
-The fix includes the 128-vector case in the standalone allocation path.
-=20=20=20
->> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c b/drivers/net/e=
-thernet/meta/fbnic/fbnic_pci.c
->> index 8b9bc9e8ea56c..4dda566d580f4 100644
->> --- a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
->> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
->> @@ -510,12 +511,17 @@ static int __fbnic_pm_resume(struct device *dev)
->>=20=20
->>  	fbn =3D netdev_priv(netdev);
->>=20=20
->> -	/* Reset the queues if needed */
->> -	fbnic_reset_queues(fbn, fbn->num_tx_queues, fbn->num_rx_queues);
->> -
->>  	rtnl_lock();
->>  	netdev_lock(netdev);
->>=20=20
->> +	/* Preserve queue counts, as RX queues may have memory providers bound.
->> +	 * The RSS table indexes RX queues and remains valid. Rebuild only the
->> +	 * NAPI layout, sharing vectors if fewer IRQs are available.
->> +	 */
->> +	max_napis =3D fbd->num_irqs - FBNIC_NON_NAPI_VECTORS;
->> +	max_queues =3D max(fbn->num_tx_queues, fbn->num_rx_queues);
->> +	fbn->num_napi =3D min(max_queues, max_napis);
->
-> [Severity: Medium]
->
-> The comment says vectors are shared "if fewer IRQs are available", and the
-> changelog says "share the remaining NAPI vectors when fewer IRQs are
-> available".  Does this code look at the previously configured
-> fbn->num_napi at all?
->
-> Take a standalone layout configured with ethtool -L eth0 rx 4 tx 4
-> combined 0.  fbnic_set_queues() records:
->
-> 	fbn->num_rx_queues =3D 4;
-> 	fbn->num_tx_queues =3D 4;
-> 	fbn->num_napi =3D min(4 + 4 + 0, max_napis) =3D 8;
->
-> After a suspend/resume that obtains exactly the same number of IRQs,
-> num_napi becomes min(max(4, 4), max_napis) =3D 4, so
-> fbnic_alloc_napi_vectors() no longer takes its one queue per vector
-> branch:
->
-> 	if (num_napi < FBNIC_MAX_TXQS && num_napi =3D=3D num_tx + num_rx) {
->
-> and fbnic_get_channels() then reports combined=3D4, rx=3D0, tx=3D0 instea=
-d of
-> the rx=3D4 / tx=3D4 that was configured, with half the interrupt contexts.
->
-> The collapse to max(tx, rx) matches what the removed
-> fbnic_reset_queues() call already computed, so the behaviour itself is not
-> new here, but the comment and changelog now describe something else.
-> Would min(fbn->num_napi, max_napis) implement what they describe?
->
-> [Severity: Medium]
->
-> Preserving asymmetric queue counts while lowering num_napi also seems to
-> make a state reachable that fbnic's own setter rejects.  Before this
-> change, fbnic_reset_queues() clamped both queue counts to max_napis and
-> then set num_napi =3D max(tx, rx), so num_napi >=3D num_rx_queues always =
-held
-> after resume.
->
-> Now consider rx_count=3D4, combined_count=3D4 set while max_napis >=3D 8,=
- so
-> num_rx_queues=3D8, num_tx_queues=3D4, num_napi=3D8.  If resume gets only =
-4 NAPI
-> IRQs, num_napi =3D min(8, 4) =3D 4, and fbnic_get_channels() takes this
-> branch:
->
-> 	if (fbn->num_rx_queues > fbn->num_napi ||
-> 	    fbn->num_tx_queues > fbn->num_napi)
-> 		ch->combined_count =3D min(fbn->num_rx_queues,
-> 					 fbn->num_tx_queues);
-> 	...
-> 	ch->rx_count =3D fbn->num_rx_queues - ch->combined_count;
-> 	ch->tx_count =3D fbn->num_tx_queues - ch->combined_count;
->
-> reporting combined=3D4, rx=3D4, tx=3D0, i.e. 8 channels while only 4 NAPI
-> vectors exist.  Feeding those same values back to fbnic_set_channels()
-> hits:
->
-> 	    (standalone && standalone + ch->combined_count > max_napis) ||
->
-> with 4 + 4 > 4 and returns -EINVAL.  Is it intended that ethtool -l output
-> can no longer be replayed through ethtool -L after such a resume, and that
-> it describes more channels than there are vectors?
->
-> One more observation outside the diff, in fbnic_alloc_qt_page_pools() in
-> drivers/net/ethernet/meta/fbnic/fbnic_txrx.c:
+On 2026/9/18 01:37, Lorenzo Bianconi wrote:
+>> From: Linkui Xiao <xiaolinkui@kylinos.cn>
+>>
+>> stmmac_tso_xmit() fills the MSS context descriptor and stores the new
+>> MSS in tx_q->mss right away, but the descriptor only gets its OWN bit
+>> much later, right before the frame is handed to the DMA. Every error
+>> path in between - the dma_map_single() of the linear part and the
+>> skb_frag_dma_map() of each fragment - returns with tx_q->mss already
+>> updated while the MAC is still programmed with the previous MSS; the
+>> abandoned context descriptor is later reclaimed by stmmac_tx_clean().
+>>
+>> The next skb carrying the same MSS then compares equal to the cached
+>> value, so no context descriptor is emitted and the hardware segments
+>> the TCP stream with a stale MSS, generating frames whose payload size
+>> does not match what the stack accounted for.
+>>
+>> Only update tx_q->mss once the context descriptor has been given to the
+>> DMA so that the cached value always describes what the hardware is
+>> actually programmed with.
+>>
+>> Fixes: f748be531d70 ("stmmac: support new GMAC4")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+>> ---
+>>   drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> index af2d38a2bb3d..a8f94cd6abb4 100644
+>> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> @@ -4563,7 +4563,6 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
+>>   			mss_desc = &tx_q->dma_tx[tx_q->cur_tx];
+>>   
+>>   		stmmac_set_mss(priv, mss_desc, mss);
+>> -		tx_q->mss = mss;
+>>   		tx_q->cur_tx = STMMAC_NEXT_ENTRY(tx_q->cur_tx,
+>>   						priv->dma_conf.dma_tx_size);
+>>   		WARN_ON(tx_q->tx_skbuff[tx_q->cur_tx]);
+>> @@ -4714,6 +4713,7 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
+>>   		 */
+>>   		dma_wmb();
+>>   		stmmac_set_tx_owner(priv, mss_desc);
+>> +		tx_q->mss = mss;
+> 
+> I think the issue is real. A couple of comments:
+> - do you think we should run stmmac_release_tx_desc() on mss descritpr in order
+>    to clean it up?
+> - I guess we should use the same approach used for data descriptor and advance
+>    tx_q->cur_tx when there are no other possible error condition. What do you
+>    think?
 
-Hmm, the resume path does indeed need some more thinking. I'll spin a v2
-of this patch!
+I started from your second suggestion, because that is the one that 
+makes the
+error handling consistent: tx_q->cur_tx is no longer advanced while the
+context descriptor is being filled, it moves past it together with the data
+descriptors, exactly like stmmac_xmit() does. On failure the ring index is
+therefore still where it was and there is nothing to unwind.
 
-> [Severity: High]
->
-> This is a pre-existing issue and not something this patch changes, but for
-> an Rx queue with an unreadable memory provider bound, the header pool is
-> stored in qt->sub0.page_pool and the local pp is then reused for the
-> payload pool.  When the second page_pool_create() fails, the error label
-> is reached with pp holding the ERR_PTR:
->
-> 	err_destroy_sub0:
-> 		page_pool_destroy(pp);
-> 		return PTR_ERR(pp);
->
-> page_pool_destroy() only checks for NULL:
->
-> 	void page_pool_destroy(struct page_pool *pool)
-> 	{
-> 		if (!pool)
-> 			return;
->
-> 		if (!page_pool_put(pool))
-> 			return;
->
-> so does this dereference the error pointer in page_pool_put()?  And does
-> the label also leak the header pool in qt->sub0.page_pool, which is never
-> destroyed here?  Should the label destroy qt->sub0.page_pool while still
-> returning PTR_ERR(pp)?
+That in turn makes your first suggestion mandatory rather than optional.
+stmmac_tx_clean() walks the ring until it reaches tx_q->cur_tx, and the
+context descriptor now sits exactly at the slot cur_tx points to, so the
+cleaner cannot reach it and a descriptor tagged with CTXT|TCMSSV would stay
+in the ring until the slot is reused. The error paths release it explicitly
+instead, using the same helper the cleaner uses for descriptors. OWN is 
+never
+granted on that descriptor on these paths, so zeroing des0-des3 cannot race
+with the DMA engine.
 
-Yes. This has been fixed by:
-  https://lore.kernel.org/netdev/20260915104917.3978113-1-bjorn@kernel.org/
+Concretely, v2:
 
+  - keeps tx_q->cur_tx untouched while the context descriptor is filled 
+and lets
+    it advance together with the data descriptors;
 
-Bj=C3=B6rn
+  - moves first_entry past the context slot, so the error_dma_unmap 
+unwind loop
+    does not call stmmac_free_tx_buffer() on a slot that has no skb 
+attached, and
+    is_last_segment = CIRC_CNT(tx_q->cur_tx, first_entry, ...) == 1 
+keeps the
+    correct value for single descriptor frames;
+
+  - updates tx_q->mss only after stmmac_set_tx_owner(mss_desc);
+
+  - releases the context descriptor at the common "error:" label, which 
+covers
+    both the dma_map_single() of the linear part and the 
+skb_frag_dma_map() of
+    every fragment.
+
+Nothing else changes. first_tx is sampled before the context descriptor is
+allocated, so the tx_packets accounting used by the coalescing logic is
+unaffected, and stmmac_tso_get_num_desc() already counts the context 
+descriptor,
+so the stmmac_tx_avail() check is unchanged as well. The
+WARN_ON(tx_q->tx_skbuff[tx_q->cur_tx]) that followed the old cur_tx 
+update is
+dropped: it checked the first data slot, which the WARN_ON on
+tx_q->tx_skbuff[entry] right after the first_entry assignment already 
+covers.
+
+v2 follows in a moment.
+
+Regards,
+Linkui
+
+> 
+> Regards,
+> Lorenzo
+> 
+>>   	}
+>>   
+>>   	if (netif_msg_pktdata(priv)) {
+>> -- 
+>> 2.25.1
+>>
+>>
+
