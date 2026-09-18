@@ -1,103 +1,92 @@
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.9])
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7688749D594;
-	Fri, 18 Sep 2026 07:12:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94077246788;
+	Fri, 18 Sep 2026 07:18:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789715547; cv=none; b=T7dCicBK0StFjPg367YCbdRrFGAcXMuG6a6VhlZ9JWzmPwzmhshYGyiOPNbFtkFAT0mTAQDeR5Ao92fl1stLgoJrlMSa4tnClF/aQfyK+cKD779c7ZTNTHbUrhBplKYapqnQjzvGEngJmhnZ5tTrCRskbxRPa9lOHqG/y+Fkcbs=
+	t=1789715891; cv=none; b=ruRyKl3ARYsKMC4k5Nh+FDbWWKVWOT6nE+rD2nzjsp7EmVTCLgOHTRgJ7uutlWnzuSiK+/TZu213EoQjjvIB0oNJgBL3Jn1nPpxHvbmUVMWDoJa1C7iAtsO9ik8V02sRjLWGdzkNFIGMjwO41nE1Pn2qd8niAg1NQ9QYhIBs+sY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789715547; c=relaxed/simple;
-	bh=qbeZlVy+5SBEKTSymSb/qxfJ9QW/jVvvGlezIyaiUGc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a71w0FohgVvHAy6mGbsxlopdMrW275rENXpTlQwUHpUmpx6vPJvpABm/DH0XmvXJ6SY1BCznl9v4n4YqZd08EFIwk+wq6mg1QAuGlKCPsqBbPgdh9coCLxtFJB0elFoOY/1dXjQqdAfm1/bbZLg4D0MW8cYksAjPhGQtc8g87ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=gxOCxE8s; arc=none smtp.client-ip=220.197.31.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	s=arc-20240116; t=1789715891; c=relaxed/simple;
+	bh=vcExdwYskntjQZFH0CJIvqJvt3cF0ureSfkjMoJf2jY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZzCV8p6Ftt2zp4gyu7gZkTcVvFueb2+A3sE++7FoTukgTL65qjj5AXfV2PlB6yaldEkILOWG8mwLi2GH1yzY5juBBMtksKBemF89uKwK6SvryF0KYzJgs9KnPZcTEquUV+As11+H71rx5t/40eSqmCsTIEDNigD/QNoUUM+Yxtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=DrDMPcu6; arc=none smtp.client-ip=217.70.183.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="gxOCxE8s"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=aBmuyDYC6BL0NuO22P/UKnyiVKMdfpL2R0mfPFPf/BQ=;
-	b=gxOCxE8sPuNKysXsbS8wQRqJ9f+QjQpyHrOrdCDl8Ov3ZIhrUFtKok2X5Zxagr
-	BeGM2ed0XtxHyPPWez4vSLRjhSSlfKeSJK+W1y4utwprJu87rWIRk4wopUndl/4Z
-	PCUpZ7SAtAna82fL8jlCahXOqn1RahLRZPuHlGDJFE1jQ=
-Message-ID: <6b00a649-8672-47c2-ab31-8b7d68ce1dcc@126.com>
-Date: Fri, 18 Sep 2026 15:10:45 +0800
+	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="DrDMPcu6"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 667903F09D;
+	Fri, 18 Sep 2026 07:17:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
+	s=gm1; t=1789715878; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:in-reply-to:in-reply-to:  references:references;
+	bh=9qUr1LV8CWjtdoDUyhqFtHVCDXB6fURXnL18iR4Q5iE=;
+	b=DrDMPcu6+VrSPkbnRj5PUfmgF9qWcYf39pVrau4IM/HPnsX/q5M4sfStQEZWagT+OYjv4+
+	cEpEvAEJdDtMxKCMRiyTknxchoU4/6evSAHBuUD1+BILs9y+ZwCxbzQ57pgidhWMPLpuay
+	5490lE4zBdziRSq/Ben6rYdmq/ue6w9Wo81leoeQ0wY2wqL5Vnc6h/ajEaNYMgzHtg0bl9
+	FSXbFRsgiTl63veRmLHsqiagQj0bQmbXaeeLb+sUIfDqqt3hlZLwFVfPv3+utCY9f6Nk3J
+	nNywIkUKCxUeSPru9N6FgDxQq9PORMokUMuwDePmSIS51Tc9W9cNm4RgXmkWXg==
+Date: Fri, 18 Sep 2026 09:17:54 +0200
+From: Arthur Crepin Leblond <arthur@marmottus.net>
+To: netdev-bot+sashiko@kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, arnd@arndb.de,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v8 2/3] dt-bindings: net: wiznet,w5100: add link
+ status interrupt
+Message-ID: <20260918071754.GA30413@marmottus.net>
+Reply-To: arthur@marmottus.net
+References: <20260915-wiznet-link-gpio-v8-2-d173622474cc@marmottus.net>
+ <178967573088.22033.12415855189978378014@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: stmmac: fix the invalid VID programmed by VLAN
- perfect filtering
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- Linkui Xiao <xiaolinkui@kylinos.cn>, stable@vger.kernel.org
-References: <20260917122245.1338365-1-xiaolinkui@126.com>
- <b521308c-34b8-40dc-831a-757a163902d6@bootlin.com>
-Content-Language: en-US
-From: Linkui Xiao <xiaolinkui@126.com>
-In-Reply-To: <b521308c-34b8-40dc-831a-757a163902d6@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:_____wD3H6z146xqSl3ZBQ--.23835S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7uFyrJF15tF45Xw45Jw1rXrb_yoW8AFyxpa
-	y3uFnakayqqr1fXFsFqF18X34jqw4fAr45KrZ8tFWUAw15C3saqFW8Ka95urW8ZF9Ygr1j
-	ywsFy343GayvqFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U4Vb9UUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlRb70mqs4-Z0FQAA3Y
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <178967573088.22033.12415855189978378014@kernel.org>
+X-GND-Sasl: arthur@marmottus.net
+X-GND-State: clean
+X-GND-Score: 0
+X-GND-Cause: dmFkZTGMeemy83JBcSmIIQa0nTbEB9WWvLbOiWJ1uNkZWW3E6pqDUT8rvnRUTg7tyjD0NtGnxgHfqdUlQNBxHo+Ym6+fbMHaEbIheP2FQ1MxV7H5UdFEFhdvsvWWLrT8QgtvLkOnBmLdCu6q3gxVETUhDVI/3GCMl8Zvapm8viYHdUjSj9La3U14THUCaVAfK2CI2pAPef4FMAD1ZfuTaj5rXR0AuDWkM1RkhjWvy4nmvMpmQfmVGmzqo9ORwHzN+vRViM9IU1eDEmXHPQPVeqIbsWKji8Yi+645IdkNIaEawtUQgqJZB5ugIc90th7LXlsSE+suk/psQuCAgEh/OUmTC6a2Y7mIhjNU/cxWBrpS5xmkUmscjR6NQl+2E7+CF8aLrcJV6JBMjdMJBkd5MU4ccGWV24IIaHoSogAETPs2g2XArM+bwZV5XYb35V4LOtuWtrnyG3OmRcH0Nl5B1Ua7ap6/l0yVmJ1dDqrPRIru2C+GxfD2Rcyhd/vGfJNtLxWZ3j1YBN84F0VO0nEhFYkAKtBhq47oAOTmedQD1zQ6zuMJPtrmcyuWPNLzML7B1tQ9QgXBdY0P2sUcaaQ3yQ6+CVnO7qYAA2PZKi9xUtvTb2gB2TI3jtvzNz0I+VXDPUsZCsvyn7B7ICvVWBtBL406gexCEWBd+IIhh5EcHT61wOS78Q
 
-Hi Maxime,
+On Thu, Sep 17, 2026 at 08:08:50PM +0000, netdev-bot+sashiko@kernel.org wrote:
+>[Severity: Low]
+>Is this else branch describing the hardware, or the current Linux driver?
+>
+>The LINKLED output exists on the w5100 and w5200 packages as well, so a
+>board that routes w5100/w5200 LINKLED to a host GPIO cannot be described
+>here:
+>
+>  compatible = "wiznet,w5200";
+>  interrupts = <25 IRQ_TYPE_LEVEL_LOW>, <24 IRQ_TYPE_EDGE_BOTH>;
+>
+>The second entry is rejected by maxItems: 1 during dt_binding_check.
+>
+>The only in-tree justification found for the w5500 restriction is the
+>driver gate added later in this series, in w5100_probe():
+>
+>  priv->link_irq = ops->chip_id == W5500 ?
+>                   fwnode_irq_get(dev_fwnode(dev), 1) : -EINVAL;
+>
+>which is a software limitation (register readback of link state via w5500
+>PHYCFGR) rather than absence of the pin.  Would it be preferable to allow
+>two interrupts for all three compatibles and note in the interrupts
+>description which parts can actually report link state, so this constraint
+>does not have to be relaxed later?
 
-On 2026/9/17 23:57, Maxime Chevallier wrote:
-> Hi,
-> 
-> +Ovidiu
-> 
-> On 9/17/26 14:22, Linkui Xiao wrote:
->> From: Linkui Xiao <xiaolinkui@kylinos.cn>
->>
->> for_each_set_bit() leaves its iterator equal to the bitmap size once the
->> loop terminates, so the 'vid' read after the loop in stmmac_vlan_update()
->> is always VLAN_N_VID (4096) and never the last VLAN ID that was found.
->>
->> Cores that do not support VLAN hash filtering (dma_cap.vlhash == 0) fall
->> back to the single VID perfect match filter and hand that value straight
->> to the MAC. vlan_update_hash() therefore programs MAC_VLAN_Tag with
->> VID 4096, a value that can never match an incoming 802.1Q tag, so the
->> perfect filter ends up discarding all VLAN tagged traffic. Both
->> stmmac_test_vlanfilt_perfect() and stmmac_test_dvlanfilt_perfect() walk
->> this path and fail as a result.
->>
->> Remember the VID while iterating so that the last active VLAN ID is the
->> one passed to the perfect match filter. When hash filtering is available
->> 'hash' is non-zero as soon as at least one VID is active, so
->> vlan_update_hash() keeps ignoring 'pmatch' and nothing changes there.
->>
->> Fixes: c7ab0b8088d7 ("net: stmmac: Fallback to VLAN Perfect filtering if HASH is not available")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
-> 
-> Thank you for proposing this fix, however this code is currently being removed :
-> 
-> https://lore.kernel.org/r/20260908164309.59282-1-ovidiu.panait.rb@renesas.com
-> 
-> So no need for this patch :)
+The LINKLED pin exists on w5100/w5200 but cannot be reliably used as a
+trigger to check the carrier state as it also blinks on RX/TX activity.
 
-Thanks for the heads-up. I'll drop this patch then.
+   Link LED
+     Low: Link (10/100M)
+     High: Un-Link
+     link: TX or RX state on Link
 
-Ovidiu, I'll keep an eye on your series. If the fallback path
-still needs a valid VID after the removal, feel free to ping me.
-
-Thanks,
-Linkui
-> 
-> Maxime
-
+Arthur
