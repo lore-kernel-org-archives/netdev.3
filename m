@@ -1,98 +1,100 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24134E01EC;
-	Fri, 18 Sep 2026 11:00:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4673A321F2D;
+	Fri, 18 Sep 2026 11:00:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789729219; cv=none; b=EatyC4Snxwd16NdqVa2HDg8XrwOiupiz98nUaquGfnP3nl30QjFDyLKCkVZD3fb0sCogjHGWCBBEf81VGa2FEzZIC9DYfa6CuS9Ek3XEW6cGyxSuvRUAmJ5FrvqA76t2H4bYjMMkNOO8m4/Sg3ju7rDUqDn7/9SkhmA1a9yquJs=
+	t=1789729261; cv=none; b=AFHNMKV5T2Y29peKFQqJuSUGBrJJKpluAfyX5hITPZOK1VmB3O53e/iMCj7onYYrzwal+FX5WzdieF1uCnhMEUAGbZYxRbimSPVUnFTV8Zn+xWo0eIkY0vaaL2UvuimxW/aeN9Hp/kn2fODYXs5yseLhg3uN1cLfhK34dARLrPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789729219; c=relaxed/simple;
-	bh=NS4fGbANKphK6JQB+dGaH5aA7OWUMehYWv+i5//7lQ8=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=hygMdFUAiCiOIeLF0O2Sbvl8n8H/QZLt/YkfX6YmvL0KafYJIY/9VV/ErBiiDkaoObV28fLZVkleeVs38HRCjybpiExgi2SAIdRRf4XpoZohQ2pP8+vsmEg1HqpkMslHWkMM3f8U+VToq8OA9wbDXYpFoRUGe/VbnL5bukyMvPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=sk2hkMkx; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1789729261; c=relaxed/simple;
+	bh=Wp3TFky2uNK5PTWjiy/pNmvT4Oi/y6Cs1lQC6pbNI/k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RN8fvh+Lv7EwfVJEEMvPBhjUIGv0B/ERnOrYQEg0CN+72C11w3m7g2WzJ+e9ouErpQhVN1N357JT3CfHJ5WZ7U/A0NVU1Xh9bI8SbhHge4pLu1GZqfNxxiIVnQbrC13J65MUtBkyeD3AcGvdpCXqZ+hbP4MZxjVepGS0SJxIoVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=G3rJwNUz; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="sk2hkMkx"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E66AEA9002;
-	Fri, 18 Sep 2026 13:00:13 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1789729214; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=B5bm9Lnqeni2x171qc2CycGUoE7qJlNcyPEqd/0tD/4=;
-	b=sk2hkMkxUM4pqO8H+ytYRovE0BWV0LQyUBWlWfaiLghNTJEX/T4vtqp5Q32X43gqLdV18z
-	gWGVNz+ClmrHP9uuOA4dTXtThUrAbC2cZFQuXJwjmVJRqE7SujsDE7NOJYIUuaBopXdWjS
-	tc8XmvRrdflTDIL258rJBLrsC1sSEqRWZ/E92CxGbNesleSW60qUTvQcmRfoEoLsFQLa+o
-	RbJI/ExHXwJV1V2f/pKicmvyagJ2i7pc/I7oMCdaARFMAvRU/y9mZDkavuMQ1sYfT6Y57R
-	uWz8Ov5y8HcvW6ccJJM+pObRF/R7aQylMJPRXfCXu4q4Mh2vqRSYDAbrKLUeWg==
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="G3rJwNUz"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=xqxfznjQhqd8ZZuMM/AbiOa2L3kpLFZavpwb+Neo3fk=; b=G3rJwNUz16jEDw1nJJESpWlAcj
+	3qybsqkBa8Mxr9xW+HgLE9StdDDLpVDU/rDxo22cL5A172YYRtC/RkTz2/CL5xEhKCKGAj0aOA5Ul
+	f3QHebSc2FtqMZW7av5rEKSY02ZxZM6eGF541+b6wbKlP8Tqxc75dV1GoxHv/TUsjeSCEFtfSw/6J
+	xkyU2WIIYuBaeXUYYNY0d3OSQPnqK9ERZZl1hIQz77XEh8zpnO4vqpDsSXOrdeC21xepNiUm6edzJ
+	PSSMc0QVu6kmziqulbucbC4cEMCjh/Bh5xEHrhnVi/ScCcBgBvgLmamgD1cAj+uY64uaIy+RLxqm3
+	Rm+gmokA==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1x7WKa-006fhI-1s;
+	Fri, 18 Sep 2026 11:00:36 +0000
+Date: Fri, 18 Sep 2026 04:00:31 -0700
+From: Breno Leitao <leitao@debian.org>
+To: =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+Cc: Alexander Duyck <alexanderduyck@fb.com>, 
+	Jakub Kicinski <kuba@kernel.org>, kernel-team@meta.com, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org, 
+	Mohsin Bashir <mohsin.bashr@gmail.com>, "Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>, 
+	Simon Horman <horms@kernel.org>, Mina Almasry <almasrymina@google.com>, 
+	linux-kernel@vger.kernel.org, Sashiko <netdev-bot+sashiko@kernel.org>
+Subject: Re: [PATCH net] eth: fbnic: Keep real queue counts synchronized
+Message-ID: <aq0ZiAEBNWWrLgms@gmail.com>
+References: <20260915180859.4157646-1-bjorn@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 18 Sep 2026 13:00:13 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: netdev@vger.kernel.org, Cursor <cursoragent@cursor.com>, Doug Berger
- <opendmb@gmail.com>, Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Zak Kemble <zakkemble@gmail.com>, Simon Horman
- <horms@kernel.org>, Ryo Takakura <ryotkkr98@gmail.com>,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 6/8] net: bcmgenet: validate Ethernet address in
- bcmgenet_set_mac_addr
-In-Reply-To: <20260918000732.276506-7-florian.fainelli@broadcom.com>
-References: <20260918000732.276506-1-florian.fainelli@broadcom.com>
- <20260918000732.276506-7-florian.fainelli@broadcom.com>
-Message-ID: <486f79b9a0435e4cb4ecf2f8657da262@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260915180859.4157646-1-bjorn@kernel.org>
+X-Debian-User: leitao
 
-On 18.9.2026 02:07, Florian Fainelli wrote:
-> bcmgenet_set_mac_addr() did not check whether the provided MAC address 
-> is a
-> valid Ethernet address before applying it. Userspace could configure an
-> invalid address (such as all zeroes or a multicast address) while the
-> interface is down.
+On Tue, Sep 15, 2026 at 08:08:57PM +0200, Björn Töpel wrote:
+> alloc_etherdev_mq() initializes the real queue counts to the
+> allocation maximum. fbnic selects smaller defaults and can change its
+> private queue counts while the device is down, but does not publish
+> either value until the next open.
 > 
-> Add a call to is_valid_ether_addr() and return -EADDRNOTAVAIL if the 
-> MAC
-> address is not valid.
+> Resume can also allocate fewer IRQs and silently clamp the private
+> queue counts. Queues can share NAPI vectors, so changing the
+> configured queue counts is unnecessary.
 > 
-> Fixes: 1c1008c793fa ("net: bcmgenet: add main driver file")
-> Assisted-by: LLM
-> Co-authored-by: Cursor <cursoragent@cursor.com>
-> Change-Id: I1cae9178ff2c9243510556f42a194058c10aea7e
-> ---
->  drivers/net/ethernet/broadcom/genet/bcmgenet.c | 3 +++
->  1 file changed, 3 insertions(+)
+> These mismatches can expose an inactive queue for memory-provider
+> binding or hide an existing binding. A later channel expansion can
+> allocate the queue without recognizing its memory provider.
 > 
-> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c 
-> b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> index 799da63e3a4e..90ca4f220cc7 100644
-> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-> @@ -3635,6 +3635,9 @@ static int bcmgenet_set_mac_addr(struct 
-> net_device *dev, void *p)
->  	if (netif_running(dev))
->  		return -EBUSY;
+> Publish default and offline channel counts immediately. Reset RSS
+> indirection whenever the queue-count helper runs. Preserve queue
+> counts across resume and share the remaining NAPI vectors when fewer
+> IRQs are available. The RSS table remains valid because it indexes RX
+> queues rather than NAPI vectors.
 > 
-> +	if (!is_valid_ether_addr(addr->sa_data))
-> +		return -EADDRNOTAVAIL;
-> +
->  	eth_hw_addr_set(dev, addr->sa_data);
-> 
->  	return 0;
+> Fixes: da43127a8edc ("eth: fbnic: support queue ops / zero-copy Rx")
+> Reported-by: Sashiko <netdev-bot+sashiko@kernel.org>
+> Link: https://lore.kernel.org/netdev/178915061000.219967.7726187707862333281@kernel.org/
+> Signed-off-by: Björn Töpel <bjorn@kernel.org>
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Reviewed-by: Breno Leitao <leitao@debian.org>
 
-Thanks,
-Nicolai
+> +	/* Preserve queue counts, as RX queues may have memory providers bound.
+> +	 * The RSS table indexes RX queues and remains valid. Rebuild only the
+> +	 * NAPI layout, sharing vectors if fewer IRQs are available.
+> +	 */
+> +	max_napis = fbd->num_irqs - FBNIC_NON_NAPI_VECTORS;
+> +	max_queues = max(fbn->num_tx_queues, fbn->num_rx_queues);
+> +	fbn->num_napi = min(max_queues, max_napis);
+
+It seems the comment does not match the code.  num_napi is recomputed
+unconditionally from max(num_tx, num_rx), which is not what num_napi
+was, so isn't the NAPI layout is rebuilt even when the IRQ count is
+unchanged?
+
+--breno
