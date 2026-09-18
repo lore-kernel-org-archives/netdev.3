@@ -1,83 +1,178 @@
-Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
+Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F9D503BC7;
-	Fri, 18 Sep 2026 16:47:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.135.140.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5FF519E0B;
+	Fri, 18 Sep 2026 16:50:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789750033; cv=none; b=bFJcA0Ck0QyqNZi9gE99Z4dEUYjV07HTN30Ailz0Id50PuV7Y9F8q8XaXk6QtqZM2MvDSTOKgriTsp3CXFTb+g5qeJMg6QE5xI5suezcIEVUBBail7LMGlcflyVZJsMk7Fo/f3cpSq9KOxMszO60F30S0uI6cndUqRrloWIgBWs=
+	t=1789750217; cv=none; b=NmwnvC0hsMM9bYCsHbC90NXarakAdRccjFdXOus3g+L64FCp0hq3ifETayuq95j09hVXizvGHa646YK+NTN7oLNfZLc7JHJKlZhmir+LRJHZkqt4mw3OKeawJ25Dg1Waah9c8IczYMzbdDwW8OYleKCRb0e5bJeNX0ZYZXEDHH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789750033; c=relaxed/simple;
-	bh=9dUsgZfaC5ynjRqR2mA+KiuUZWGt+cEcc7zD5LHnQ6M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pnfe4+SBJsfIbjtk9C1YPu1DYQjPofJzcxrBHZxWhHxk+eODA1WSd/NdxJKUltSb+dQOB2NDuAZ6s3Ew1HH8nGZn/3dpCvtoY5mDnOnSMRetykdHwz2XLg2JkG10/OJxYs/zhdgMtZdE5D0sARj/YPV0Vj+ENZUSzir1VoblnS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=none smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=vr5SqXfF; arc=none smtp.client-ip=5.135.140.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cjdns.fr
+	s=arc-20240116; t=1789750217; c=relaxed/simple;
+	bh=G3uymknwnCUX6QlaDxhK9oRLkJMvsnDoCJ+9BL3HgBc=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=Je91uI4jdQrfTm8aSxfDtbEvEy3DYDps59BVzHCbbWkL20yNU4vY0gfem9RxWBqFwCG8IumxaquJCWesCWX5cn23GEngzYVaSFH7GiKtEu2sqUuUTCIFURHuKrGo4RNLtTfgCnuESunUW1oq+PJwBlIYTp3NTnR9YhoULIY/iOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=0kpGbTwT; arc=none smtp.client-ip=193.238.174.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="vr5SqXfF"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 749D64E2238;
-	Fri, 18 Sep 2026 18:47:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
-	t=1789750028; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=UGJR71OzTgD+793duzAUbf0/RDM0BWmknQdjIdLI5eM=;
-	b=vr5SqXfF0KNC0ux6YFkuxs5vjPbJena3DLzmT+4x73Q2hVXk1qQ8w7dX052VRmll4vWq5s
-	a/bNS9bajAf0A9iBXzvkrKwpRqVSbFukRv6IQK4Vt9/bCKTzBgFNiJoEZoFWP0MaBa0Ca4
-	H+pGAW10l7scr+jBL9f6PD8w0WprFUy0lZBr/fLSRx7/TidEsvyjXLTCQh5cE3jyCgUcS3
-	6e200wqSoPwsbtWfzJOcWx+Ma4tjZVmk2kTcbYetHfLQSbsohSeo+D+bU1r0KXURGMAl0z
-	9/6EXSR9mxNiLCd1ITpa4ZHYaqxW71/e8vAURTik4Z7RNpK200NGwOUOj3dNGQ==
-Message-ID: <accc40a4-f447-498c-ab45-96d1f2d2cc33@cjdns.fr>
-Date: Fri, 18 Sep 2026 18:47:02 +0200
+	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="0kpGbTwT"
+Received: from mx.ssi.bg (localhost [127.0.0.1])
+	by mx.ssi.bg (Potsfix) with ESMTP id 9A979213A3;
+	Fri, 18 Sep 2026 19:50:02 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
+	:content-type:content-type:date:from:from:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
+	 bh=XW/GAKietqt6MAAjngo9iNxQ26sGvvnaGq/MzOwjy64=; b=0kpGbTwTLzoF
+	G/VpevEwIZnN+W+s2AP1UGCDd+D9zAILtscAfwRr2W2/o/N3azcrPSJl/SOcZUz8
+	gug/RrPgmnAI69Ihq78wKFdjv9YVvA+K7YMrebNLik0XlEZ3mWg7CbNrP4/Qhxlk
+	p7Aq4wvjwavAG9Crafwve52HL32GPvWBGbVEjkIjdSrPgmYVaAfg100XFLnbgows
+	OLquGCdVuYcd7MfBokXw/OU1fPYQrCp9fJ928kFfnJ2YUjfwq8uhVUdOyPTciCqB
+	2pY4iFX0Zj+b+Mz02wkT69VrD2t1UCn+iCp6KByAWZOLpS4lZg5TVvn+rOuZi95Y
+	Bn/60W7zkGMOjtPym3f2taKZClh4m7MWpvRCB4t7SDUB/ipV5NDHDMN1M9FPd/KR
+	/+5484b2ujbAYtAhrpG9MyX3Hmi3UaINNlq2GMhDoIicKSA037dPQ2W852moyHeb
+	1/kBcV9UsZ4UlEUWiedii73Own+Pzlma/r0GUYM3U7Gsd76XdibbTRotHfKekmIR
+	fQSfeweVzmn6W76Wd6DJHi/mx3K6kkhGEY2bMrPKPp9fJwz/Hvc1AP4+dbyQJgqv
+	3GKZIUJ/0W5oXYFz6xIJElgtjZy8dRYfp6UyUCIN6tWOjEjUrugxPkumyfspD7I4
+	uzg7yMBafrJYJ9LtJy0bgZXAILejUtg=
+Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
+	by mx.ssi.bg (Potsfix) with ESMTPS;
+	Fri, 18 Sep 2026 19:50:02 +0300 (EEST)
+Received: from ja.ssi.bg (unknown [213.16.62.126])
+	by box.ssi.bg (Potsfix) with ESMTPSA id 98F5560B6D;
+	Fri, 18 Sep 2026 19:50:04 +0300 (EEST)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 68IGnvX8069646;
+	Fri, 18 Sep 2026 19:49:59 +0300
+Date: Fri, 18 Sep 2026 19:49:57 +0300 (EEST)
+From: Julian Anastasov <ja@ssi.bg>
+To: Zihan Xi <zihanx@nebusec.ai>
+cc: Simon Horman <horms@verge.net.au>, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        lvs-devel@vger.kernel.org, netfilter-devel@vger.kernel.org,
+        coreteam@netfilter.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v2 1/2] ipvs: avoid stack overflow from recursive
+ connection expiration
+In-Reply-To: <20260917030301.5502-1-zihanx@nebusec.ai>
+Message-ID: <c104a8ee-eebc-1e80-c685-3e22f23ffbc8@ssi.bg>
+References: <cover.1789435989.git.zihanx@nebusec.ai> <20260917030301.5502-1-zihanx@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net-next] net: phy: mediatek: do not match MT7530 PHY if
- 10/100 only
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org, daniel@makrotopia.org, dqfext@gmail.com,
- SkyLake.Huang@mediatek.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-References: <20260918161156.377822-1-cjd@cjdns.fr>
- <4fe68c4b-b72e-4cbb-9a0e-2731ec68888c@lunn.ch>
-Content-Language: en-US
-From: Caleb James DeLisle <cjd@cjdns.fr>
-In-Reply-To: <4fe68c4b-b72e-4cbb-9a0e-2731ec68888c@lunn.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=US-ASCII
 
 
-On 18/09/2026 18:29, Andrew Lunn wrote:
-> On Fri, Sep 18, 2026 at 04:11:56PM +0000, Caleb James DeLisle wrote:
->> An EcoNet SoC 10/100 PHY uses the same ID as the MT7530 PHY, but a true
->> MT7530 PHY always has gigabit support so they can be distinguished by
->> the presence of the ESTATUS_1000_TFULL flag. Add a match_phy_device
->> which refuses to match if the PHY is not gigabit.
-> Don't you also need the opposite in mtk-fe-soc.c? Otherwise don't you
-> rely on the load order of the PHY drivers?
+	Hello,
 
-The collision is in econet-fe-soc.c of 
-https://lore.kernel.org/netdev/20260827065930.2618729-3-cjd@cjdns.fr/
+On Thu, 17 Sep 2026, Zihan Xi wrote:
 
-And I notice now that I did add it in that patchset as well, but this 
-implementation is better done and that patchset is probably going to 
-have a v2 so I think it's better to accept it here.
+> When a controlled IPVS connection expires, its controller may be expired
+> synchronously if it has no remaining controlled connections. A chain of
+> controlled connections can then cause recursive calls to
+> ip_vs_conn_expire() and exhaust the kernel stack during namespace cleanup.
+> 
+> Make ip_vs_conn_del_put() report whether it deleted the controller timer.
+> When it succeeds, continue expiration with the controller instead of
+> calling ip_vs_conn_expire() recursively. This keeps chain cleanup
+> synchronous while using one stack frame for the whole chain.
+> 
+> Fixes: f9200a52eedf ("ipvs: avoid expiring many connections from timer")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Assisted-by: LLM
+> Co-developed-by: Luxing Yin <root@tr0jan.top>
+> Signed-off-by: Luxing Yin <root@tr0jan.top>
+> Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
 
-Thanks,
+	Patch looks good to me for the nf tree, thanks!
 
-Caleb
+Acked-by: Julian Anastasov <ja@ssi.bg>
 
->
->      Andrew
->
+	Next time use "nf"/"nf-next" tag for the IPVS patches.
+
 > ---
-> pw-bot: cr
->
+> changes in v2:
+>   - Use a repeat path for controller cleanup so expiration stays
+>     synchronous without recursive calls or extra timer ticks.
+>   - v1 Link:
+>     https://lore.kernel.org/all/cover.1789110326.git.zihanx@nebusec.ai/
+> 
+>  net/netfilter/ipvs/ip_vs_conn.c | 17 ++++++++++++-----
+>  1 file changed, 12 insertions(+), 5 deletions(-)
+> 
+> diff --git a/net/netfilter/ipvs/ip_vs_conn.c b/net/netfilter/ipvs/ip_vs_conn.c
+> index 6fa3e1dc534c3..c7b88ce1765dc 100644
+> --- a/net/netfilter/ipvs/ip_vs_conn.c
+> +++ b/net/netfilter/ipvs/ip_vs_conn.c
+> @@ -1331,17 +1331,18 @@ static void ip_vs_conn_del(struct ip_vs_conn *cp)
+>  }
+>  
+>  /* Try to delete connection while holding reference */
+> -static void ip_vs_conn_del_put(struct ip_vs_conn *cp)
+> +static bool ip_vs_conn_del_put(struct ip_vs_conn *cp)
+>  {
+>  	if (timer_delete(&cp->timer)) {
+>  		/* Drop cp->control chain too */
+>  		if (cp->control)
+>  			cp->timeout = 0;
+>  		__ip_vs_conn_put(cp);
+> -		ip_vs_conn_expire(&cp->timer);
+> -	} else {
+> -		__ip_vs_conn_put(cp);
+> +		return true;
+>  	}
+> +
+> +	__ip_vs_conn_put(cp);
+> +	return false;
+>  }
+>  
+>  static void ip_vs_conn_expire(struct timer_list *t)
+> @@ -1349,6 +1350,7 @@ static void ip_vs_conn_expire(struct timer_list *t)
+>  	struct ip_vs_conn *cp = timer_container_of(cp, t, timer);
+>  	struct netns_ipvs *ipvs = cp->ipvs;
+>  
+> +repeat:
+>  	/*
+>  	 *	do I control anybody?
+>  	 */
+> @@ -1358,6 +1360,7 @@ static void ip_vs_conn_expire(struct timer_list *t)
+>  	/* Unlink conn if not referenced anymore */
+>  	if (likely(ip_vs_conn_unlink(cp))) {
+>  		struct ip_vs_conn *ct = cp->control;
+> +		bool next = false;
+>  
+>  		/* delete the timer if it is activated by other users */
+>  		timer_delete(&cp->timer);
+> @@ -1372,7 +1375,7 @@ static void ip_vs_conn_expire(struct timer_list *t)
+>  			    (!(ct->flags & IP_VS_CONN_F_TEMPLATE) ||
+>  			     !(ct->state & IP_VS_CTPL_S_ASSURED))) {
+>  				IP_VS_DBG(4, "drop controlling connection\n");
+> -				ip_vs_conn_del_put(ct);
+> +				next = ip_vs_conn_del_put(ct);
+>  			} else if (has_ref) {
+>  				__ip_vs_conn_put(ct);
+>  			}
+> @@ -1402,6 +1405,10 @@ static void ip_vs_conn_expire(struct timer_list *t)
+>  		else
+>  			call_rcu(&cp->rcu_head, ip_vs_conn_rcu_free);
+>  		atomic_dec(&ipvs->conn_count);
+> +		if (next) {
+> +			cp = ct;
+> +			goto repeat;
+> +		}
+>  		return;
+>  	}
+>  
+> -- 
+> 2.43.0
+
+Regards
+
+--
+Julian Anastasov <ja@ssi.bg>
+
