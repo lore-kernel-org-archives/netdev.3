@@ -1,144 +1,116 @@
-Received: from sender5-op-o15.zoho.com (sender5-op-o15.zoho.com [165.173.182.15])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B30139183C;
-	Fri, 18 Sep 2026 07:11:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.182.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789715465; cv=pass; b=H4wwUSonxlxgAUkvodYEZuxc6WulEAadA8KrgRKxa5ZrPNrr+fsJ1fHlda5KyxJsdws/ssap0G+1dJBwTjW1vCK0gTAwq87VwXY8hE/tFj4MmRys3iRCdtZZBsv+fodmrh2xiU6RVoY5ORFXBcLLi3MMauY6GA8UbY1471o/nQg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789715465; c=relaxed/simple;
-	bh=7U/kCA4miHLz0xj4Cu7jK4fk8l32fkZpHR/AcjmKD4A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=URBW6P+QLmoaPyxA2piE40t8Zq+4BbtTwSRMcjmww/SRC1FVmoTNtVo6BBIAyJnBTwvmHEIaKaupQLWaLuHiSIra16yQqkNcKRsyUyAPcfWmCntRa+X7+FKWxAVujjkh8SvOUeFveduPIe1hF9QEU1GqTa8zoFRgmNZN8ewZpKg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc; spf=pass smtp.mailfrom=ziyao.cc; dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b=WDfK1ije; arc=pass smtp.client-ip=165.173.182.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziyao.cc
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52299499F0C
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 07:11:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789715512; cv=none; b=DXyHb/ghjdmhozVKmlpZF4cW/wz3DVqmA3U7iYixAwTPaC/fm4y/8H/8qs7joY07PGA2fMKYYaz/e4IXmF6bu120qesVn73dj1/RZ824+6wDKkLJb1Fxmjn1yqGuGfhoNfq/qwmVV9/fgRz/p6Rv5He3cOFU8QZ8Az+EckVG8jo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789715512; c=relaxed/simple;
+	bh=RZtsoVxa1xJ+1U2wH9GbRQgtGgSK3nZ1kCLsz2PhByg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=m0nbzlzvPLcwt6LjPuGstRQziRokPKEb2Lv5sggeGpPy4/xcX7bj8sLQ2d1iovwWga336vpRu6+16Ie21Qke7Fo9U3UWkjMBAKtukDp942rVkdexHnMqMUPATbqfWfJkdgaybUaleruE8I38g9+Sku+SSH25KzdU7AxOPAkYafM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=BOn559NG; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b="WDfK1ije"
-ARC-Seal: i=1; a=rsa-sha256; t=1789715440; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=YVuKyn9COxc51SGwpyuncb2W6iNif1OXFlrIfpjEPLhQoE67LOVmNy7iWmKGmzc/mbgRca3f/LhEsqFNKxUstt9Hb36SjtDxUhGGPfuN4PI1cvFIjGEGwISz9x4QYSrPT8173f3xA573M3R1Spx4GdwSd+2wPoopEF1mR+vK+tc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1789715440; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=7bSGtsz29021YzshFZsgFv4CE1vnziRI1M9Rzcu5F50=; 
-	b=jSlUKChQ9afYK/5Kf1amEHHSmdTIzm+canKvosPpiqbTDbP0UsaeV4BRLQHwLD/g5YWd/3PDcSrFMNTd7RlSHPO9kUaCF2zLZ5mrNirLD8rnpeH+RqUbEQd/swhD5QH8KM8dD9tdFz5IiOZz3q7dPbyhd1ymljTv5Wws/M2V+x8=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=ziyao.cc;
-	spf=pass  smtp.mailfrom=me@ziyao.cc;
-	dmarc=pass header.from=<me@ziyao.cc>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1789715440;
-	s=zmail; d=ziyao.cc; i=me@ziyao.cc;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:Message-Id:Reply-To;
-	bh=7bSGtsz29021YzshFZsgFv4CE1vnziRI1M9Rzcu5F50=;
-	b=WDfK1ijeGV61VCWAGM0MX3bB//3TCE7xkJQUu10vHKAai6zMd0Jz2W1eLMya+8TI
-	E+VWJoSZCt5WoTG1DUPh/OETSR+GmKhPdsFagcVHFKJiOhAPMhP9dLQIyP5+zborDxK
-	3+xBZCmDMdui3+y7hMaVCMTvci5NXuaO9yqTv1sc=
-Received: by smtp.zohomail.com with SMTPS id 1789715438115870.2652817308559;
-	Fri, 18 Sep 2026 00:10:38 -0700 (PDT)
-Date: Fri, 18 Sep 2026 07:10:32 +0000
-From: Yao Zi <me@ziyao.cc>
-To: Tiezhu Yang <yangtiezhu@loongson.cn>, Andrew Lunn <andrew@lunn.ch>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Yao Zi <me@ziyao.cc>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v1] net: stmmac: Default DWMAC_MOTORCOMM to m on
- MACH_LOONGSON64
-Message-ID: <aqzj6CV_xl63JFeT@pie>
-References: <20260915073206.6665-1-yangtiezhu@loongson.cn>
- <90a666a8-9f6a-4640-a219-731f3d551c66@bootlin.com>
- <f6b93b98-e0d3-9e28-e366-4df126e6ab5f@loongson.cn>
- <a10c8361-648e-476b-8b04-8716ad274fc4@lunn.ch>
- <36a43b65-f94e-4836-b511-715fb136c10d@loongson.cn>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="BOn559NG"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 2D4211A0975;
+	Fri, 18 Sep 2026 07:11:45 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E270960649;
+	Fri, 18 Sep 2026 07:11:44 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8FDDB11C7B021;
+	Fri, 18 Sep 2026 09:11:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789715503; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=ONcQ26rozGTeYTFN4AmRp548glZjumb6wG79sSd/wGw=;
+	b=BOn559NGFM4JJTDaDZomXpW+HeR6L1FpzuDZcpegacC0EWH17CgOUh8GaZeLbsSQA+OKgI
+	YJqBv3xsMKPOjMOSHWrbzoJz6mPq8JbhfWjuIQhyAJOi23et+j6/9UkTWFXjrVbEo+DXBA
+	LAHVKlG8pvIOHGBjNnC8FqtxEt6J2+/6uHVGmb2y5eHgB1/ziSBondVCal7Tk1qz3mhkpx
+	roCnuoCqnGySL7UjrqsowJSlJEqVDnviYjtCb7Rt0e71lCmECtuljGFyXLbqKlKmp+HlbT
+	zlpmRCdB42oHn9bH3HrcRcJC6LclwNeN7n8bUBjVSUtQXqS+mt3VqKtAijKPrA==
+Message-ID: <986afd25-f69d-4b73-9e7d-f1403a1c6e6e@bootlin.com>
+Date: Fri, 18 Sep 2026 09:11:32 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <36a43b65-f94e-4836-b511-715fb136c10d@loongson.cn>
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-0.2.13.1.5.4/289.708.20
-X-ZohoMailClient: External
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 2/3] net: stmmac: advertise integrated PCS
+ interfaces to phylink
+To: Thomas Karpiniec <tom.karpiniec@outlook.com>, netdev@vger.kernel.org
+Cc: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+ Bartosz Golaszewski <brgl@kernel.org>, Coia Prant <coiaprant@gmail.com>,
+ linux-arm-msm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <SJ2PR11MB8401F5C3A075DE2A0013E063E4872@SJ2PR11MB8401.namprd11.prod.outlook.com>
+ <SJ2PR11MB8401D53F5519472525156BA9E4872@SJ2PR11MB8401.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <SJ2PR11MB8401D53F5519472525156BA9E4872@SJ2PR11MB8401.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, Sep 18, 2026 at 02:48:45PM +0800, Tiezhu Yang wrote:
-> On 2026/9/17 下午10:45, Andrew Lunn wrote:
-> > > Before moving forward, I'd like to share an alternative thought.
-> > > As noted in the earlier review, this network controller could be
-> > > used across multiple architectures. To avoid the redundant churn
-> > > in the defconfigs of every single architecture, I am wondering if
-> > > we could unconditionally set it to default m in the Kconfig instead.
-> > 
-> > ~/linux/drivers/net/ethernet/stmicro/stmmac$ grep default Kconfig
-> > 	default n
-> > 	default y
-> > 	default STMMAC_PLATFORM
-> > 	default ARC
-> > 	default MACH_INGENIC
-> > 	default ARCH_QCOM
-> > 	default ARCH_LPC18XX
-> > 	default ARCH_MESON
-> > 	default ARCH_MA35
-> > 	default ARCH_QCOM
-> > 	default ARCH_RENESAS
-> > 	default ARCH_ROCKCHIP
-> > 	default ARCH_RZN1
-> > 	default ARCH_S32
-> > 	default ARCH_INTEL_SOCFPGA
-> > 	default m if ARCH_SOPHGO
-> > 	default m if ARCH_SPACEMIT
-> > 	default m if ARCH_STARFIVE
-> > 	default ARCH_STI
-> > 	default ARCH_STM32
-> > 	default ARCH_SUNXI
-> > 	default ARCH_SUNXI
-> > 	default ARCH_SUNXI
-> > 	default ARCH_MXC
-> > 	default MACH_LOONGSON32
-> > 	default ARCH_VISCONTI
-> > 	default X86
-> > 	default MACH_LOONGSON64
-> > 
-> > No other glue driver does this. Why is this one special?
+Hello Thomas,
+
+On 9/18/26 06:50, Thomas Karpiniec wrote:
+> From: Thomas Karpiniec <tom@wendy.sh>
 > 
-> If it is not proper to change Kconfig,
-> I am fine to modify the arch-specific defconfig instead.
-
-I'm against both of the ideas. From the aspect of a distribution
-maintainer, there are too many stuff missing from architecture
-defconfigs, so only enabling one or two drivers by default doesn't even
-improve the situation much, costs (kernel) maintainers' time.
-
-From the aspect of a kernel developer, a bloated defconfig/default only
-further lengthen the compilation process, forcing ones that don't have a
-good enough machine to spend more time on turning off one and another
-options their platforms don't need.
-
-> But by the way, I noticed that there are the following code:
+> stmmac_phylink_setup() adds interfaces reported by platform
+> get_interfaces() and non-integrated PCS instances to
+> config->supported_interfaces, but omits the integrated PCS.
 > 
-> $ grep -rnw "default m" drivers/net/ethernet/
-> drivers/net/ethernet/stmicro/stmmac/Kconfig:221:	default m if ARCH_SOPHGO
-> drivers/net/ethernet/stmicro/stmmac/Kconfig:233:	default m if ARCH_SPACEMIT
-> drivers/net/ethernet/stmicro/stmmac/Kconfig:245:	default m if ARCH_STARFIVE
-> drivers/net/ethernet/spacemit/Kconfig:21:	default m if ARCH_SPACEMIT
-> drivers/net/ethernet/marvell/octeontx2/Kconfig:54:	default m
-> drivers/net/ethernet/hisilicon/Kconfig:106:	default m
-> drivers/net/ethernet/hisilicon/Kconfig:134:	default m
-> drivers/net/ethernet/sun/Kconfig:77:	default m
-> drivers/net/ethernet/sun/Kconfig:81:	default m
-> drivers/net/ethernet/sun/Kconfig:89:	default m
-> drivers/net/ethernet/mellanox/mlxsw/Kconfig:37:	default m
-> drivers/net/ethernet/mellanox/mlxsw/Kconfig:47:	default m
-> drivers/net/ethernet/mellanox/mlxsw/Kconfig:67:	default m
-> drivers/net/ethernet/mellanox/mlxsw/Kconfig:86:	default m
+> On qcom-ethqos with 2500BASE-X selected by firmware, this leaves SGMII
+> out of the supported interface bitmap, causing phylink to remove the
+> lower-speed modes of a switching PHY such as QCA8081.
 > 
-> Thanks,
-> Tiezhu
+> Add the integrated PCS interface bitmap to config->supported_interfaces.
 > 
+> Fixes: 68cff4fff61f ("net: stmmac: add BASE-X support to integrated PCS")
+> Cc: stable@vger.kernel.org # 7.0+
+> Assisted-by: LLM sparse
+> Signed-off-by: Thomas Karpiniec <tom@wendy.sh>
 
-Best regards,
-Yao Zi
+Looks good to me, thanks !
+
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+
+Maxime
+
+
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 1350e92943ac..f956e0d2ec64 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -1414,6 +1414,12 @@ static int stmmac_phylink_setup(struct stmmac_priv *priv)
+>  		__set_bit(priv->plat->phy_interface,
+>  			  config->supported_interfaces);
+>  
+> +	/* If we have an integrated PCS, add the interfaces it supports. */
+> +	if (priv->integrated_pcs)
+> +		phy_interface_or(config->supported_interfaces,
+> +				 config->supported_interfaces,
+> +				 priv->integrated_pcs->pcs.supported_interfaces);
+> +
+>  	/* If we have an xpcs, it defines which PHY interfaces are supported. */
+>  	if (priv->hw->xpcs)
+>  		pcs = xpcs_to_phylink_pcs(priv->hw->xpcs);
+
