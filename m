@@ -1,98 +1,171 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E78928488F;
-	Fri, 18 Sep 2026 07:33:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B1A31328E
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 07:51:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789716811; cv=none; b=tJTcmy9TlXntrJgZCzrB1x/gUMkDxyQBebTbA+C70Lyp6KcQ5gy+6o7cX5jHOABzDMYyWIurYxwK77Wr/wtReRhO4P2ynOfvn0eoqMyKDcztAaIVyhRvCEqUrV8DMOr1SA3CpsktKsCYBEFK8ll6wtKl8nEYBvG7FofgYcSK00U=
+	t=1789717910; cv=none; b=Lk9yU1t6zCHog5dX8B6j/pKCqsLoCCsJzu6L7QdiQhdmEYRRjfOpBVaskupnd8nf9463kZ0DrPyW/h5EL2PoAXLkoPxLIdC3A4SWmYvXZfJOu0/4IOWK7CO6at59o90eodQ8rAzSfnxCDQ5Bhmo+SwWb2CMFB2gzCscgooRjgK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789716811; c=relaxed/simple;
-	bh=PNOqakjCzlDHfhfP+JHYgpaT3NJXVdxW354nD1kuzUo=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GrD9hcnpYuQ7DT4HeUBXVEDk7CODRxhH0pwprnTHNmeAeldYAnkkpDbIxUSsrnV/cNetSvDeaIUt2ulWQqKhLM4jiqfz5ouUVUw6j2Wmy1FSXGFZLDGALN69BXZ6y4JzdShQ1yhlu2Ah0TyzmyT5IhtBtbMAtW+AkuQBW5XwYXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=HYZkraWh; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1789717910; c=relaxed/simple;
+	bh=vRqJ5yg9W8o95f36YRoXXQIb51GKlM15Je1cIirs4uU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R+zURMlLKL1PKwko2NdueAlNLEuxqOSb9fIXRo0NmVoWfO9KtC7UyxC3hDsKE3fNfBJS1u8HGMtv8lRxG0jCM9TPD2xKbg0GHFOyeuTUWlruBRSADO0Zzvktat2Wv0Fd3W6DZ/i4XqQkdhGK/sTZlF6tdz4eOSg+4wS/asR/sJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=djow2UH7; arc=none smtp.client-ip=91.218.175.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="HYZkraWh"
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68I60YYc2610016;
-	Fri, 18 Sep 2026 00:33:21 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=Y
-	jKa5d1ACYUoZN5k5LvXWNNY4cP4wUExQhul1U45cEY=; b=HYZkraWhkkyZ7V9lL
-	gvoy0R1l8nKtwwbjT05vXmTmmDqWNjM4I7xKHsm4NAIIsZV7Ql53Mrl+x+b7tIm2
-	yJXvKhNPYz7Gn72jbZTFcoYHNsi7cLH8L5gIs/1Ri5XGaQ/hOMoz23M8Oau/cB4f
-	0O1txu6Nh1O6AHp5300j6FquOFICZnTYXULQa2R8/EgIk2zYd8IGTNg7Sak+L83h
-	fxWg/vjyMfK7Zaljqsg/YEZskcSjQSVy/EsEOczHiUCPZXqSIZPLuSNDCRGd9pt8
-	oyXZBvvustfcXZ8czo0OpTFprpYGuglV+9pB5PW+KphvVEDYTqagNjGMDLF/3MD+
-	1dEWw==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4grkjw4pcu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 18 Sep 2026 00:33:21 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Fri, 18 Sep 2026 00:33:20 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Fri, 18 Sep 2026 00:33:20 -0700
-Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id C6EF03F705E;
-	Fri, 18 Sep 2026 00:33:16 -0700 (PDT)
-Date: Fri, 18 Sep 2026 13:03:10 +0530
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <netdev-bot+sashiko@kernel.org>
-CC: <davem@davemloft.net>, <gakula@marvell.com>,
-        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <sgoutham@marvell.com>, <andrew+netdev@lunn.ch>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <sbhatta@marvell.com>
-Subject: Re: [PATCH net] octeontx2-af: nix: Export CN10K admin queue enqueue
- mbox handler
-Message-ID: <aqzpNjAtWSoi7hX1@rkannoth-OptiPlex-7090>
-References: <20260915072357.980485-1-rkannoth@marvell.com>
- <178971638355.22033.14086854049232485813@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="djow2UH7"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=vRqJ5yg9W8o95f36YRoXXQIb51GKlM15Je1cIirs4uU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789717905; v=1; x=1790322705;
+ b=djow2UH7KwgEGy+w70P4X0O6Ho/4+fXIPYd11GSyF7oR3885NKWYcfoM8QuZ1F0Ouz1Qg11g
+ atZdB3fZxob5rqlAsk7kRSRzhSPGeTKdY8BNAeSHJ+cIk0FUDCowHl2HUoCVY283UD6mn/EJ7Dx
+ 3eno7p6KrOtCxr3RD21NsC64=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by mta12.migadu.com with ESMTPS id 963e1ddd0f01cd40;
+	Fri, 18 Sep 2026 07:51:45 +0000
+X-Mizu-Trace-ID: 963e1ddd0f01cd40
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 18 Sep 2026 15:51:40 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: sashiko-reviews@lists.linux.dev
+Cc: netdev@vger.kernel.org
+Subject: Re: [PATCH net-next 3/6] netlink: specs: rt-route: add lwtunnel
+ encap sub-message support
+Message-ID: <aqztjJazXlf-VT-d@fedora>
+References: <20260917-ynl_rt_encap-v1-0-fbbe6e680571@kylinos.cn>
+ <20260917-ynl_rt_encap-v1-3-fbbe6e680571@kylinos.cn>
+ <20260918063656.953941F00898@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <178971638355.22033.14086854049232485813@kernel.org>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE4MDEwMSBTYWx0ZWRfXy0rUHgQ/MqPl
- FVCdfxhkGpK8/DIrnuo2Z7geenQrg1wX0jZw7b/ksgcTp9O/rzmVHHL6+oM/5os3lumGzbAn9rO
- nqo9wysqx85Imi7FiapH/Ep7GF0ANibPzMDYkvBQ2SDAcl5osH2APamq0ssTRVTeS/ErUJo0NsK
- U1Xpoa4Qu+4dBtCD3tbgKC4kcRz5rluifF8QRUmWB1htlKMYbx0IAwrEws7dJ92/rTBPkz/gghO
- MFObj3asK/cJsfnkgfPAx8X26+iKYMx6r1x18RxHt6TO19PboL2AcaaQILVDJrfwVuRyrGFg9cU
- QnBYqYwDm2/uXCAb7++xBR+7sMa3nEdiIbfPso2omn6RdSnbd56ln3cN6033in4UXFPx5Tcpr+S
- k+sEvBl6E6xU4rtJFbvRl++bLyVPA0kWnLS33exvwI9RcXTfX3TdnFfh2yIX6cn/Be/nEWzIKbc
- E7YvHqwbTa1nqEVNJ2Q==
-X-Proofpoint-ORIG-GUID: zRUz3FWhwvSyWOKNOGLuX0TfUEOUq0uD
-X-Proofpoint-GUID: zRUz3FWhwvSyWOKNOGLuX0TfUEOUq0uD
-X-Authority-Analysis: v=2.4 cv=Zqx4uN7G c=1 sm=1 tr=0 ts=6aace941 cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22 a=VwQbUJbxAAAA:8
- a=QNIf5hWDA9SXPf2glzwA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE4MDEwMSBTYWx0ZWRfX4Wk+cccxuv7A
- kpc0mY9bxc5F8Sj0aLWzwqxQhpCIJf4JkaZbI8x0PaV0sANkf/PZ3pCBoXd0B3ZoHLb7ZOiKDPR
- wIy9sW44c7ie7iuGAmSYnIff283GIU4=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-18_02,2026-09-16_02,2025-10-01_01
+In-Reply-To: <20260918063656.953941F00898@smtp.kernel.org>
 
-On 2026-09-18 at 12:56:23, netdev-bot+sashiko@kernel.org (netdev-bot+sashiko@kernel.org) wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider:
->
-> Critical: 0 · High: 1 · Medium: 0 · Low: 0
->
-> - [High] New EXPORT_SYMBOL() with no in-tree consumer:
->   `EXPORT_SYMBOL(rvu_mbox_handler_nix_cn10k_aq_enq)` is added in…
-Can i post this patch to net-next as consumer is out of tree ?
+On Fri, Sep 18, 2026 at 06:36:56AM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] netlink: missing byte-order: big-endian in rt-route specs
+
+Thanks, I will fix all these byte order issue.
+
+> --
+> 
+> commit 18041b529d7678ae7bbdd8ee61a7fb4213ae6804
+> Author: Hangbin Liu <liuhangbin@kylinos.cn>
+> 
+> netlink: specs: rt-route: add lwtunnel encap sub-message support
+> 
+> This commit adds lwtunnel encapsulation sub-message support to the rt-route
+> netlink specs, defining various tunnel attribute sets such as mpls, ip, ip6,
+> seg6, bpf, etc. It updates the yaml spec for rt-route and adds necessary
+> headers to the Makefile dependencies.
+> 
+> > diff --git a/Documentation/netlink/specs/rt-route.yaml b/Documentation/netlink/specs/rt-route.yaml
+> > index 253037ea5176a..0e236da140dc5 100644
+> > --- a/Documentation/netlink/specs/rt-route.yaml
+> > +++ b/Documentation/netlink/specs/rt-route.yaml
+> [ ... ]
+> > @@ -277,6 +332,229 @@ attribute-sets:
+> >        -
+> >          name: fastopen-no-cookie
+> >          type: u32
+> [ ... ]
+> > +  -
+> > +    name: lwtunnel-ip
+> > +    name-prefix: lwtunnel-ip-
+> > +    header: linux/lwtunnel.h
+> > +    attributes:
+> > +      -
+> > +        name: id
+> > +        type: u64
+> 
+> [Severity: High]
+> Does this field need a byte-order: big-endian annotation? The kernel
+> reads LWTUNNEL_IP_ID as be64 using nla_get_be64(). Without the annotation,
+> YNL tools will byte-swap this on little-endian architectures, potentially
+> causing silent data corruption.
+> 
+> > +      -
+> > +        name: dst
+> > +        type: u32
+> > +        byte-order: big-endian
+> > +        display-hint: ipv4
+> > +      -
+> > +        name: src
+> > +        type: u32
+> > +        byte-order: big-endian
+> > +        display-hint: ipv4
+> > +      -
+> > +        name: ttl
+> > +        type: u8
+> > +      -
+> > +        name: tos
+> > +        type: u8
+> > +      -
+> > +        name: flags
+> > +        type: u16
+> 
+> [Severity: High]
+> Does this field also need a byte-order: big-endian annotation? The kernel
+> reads LWTUNNEL_IP_FLAGS as be16 using nla_get_be16().
+> 
+> [ ... ]
+> > +  -
+> > +    name: lwtunnel-ip6
+> > +    name-prefix: lwtunnel-ip6-
+> > +    header: linux/lwtunnel.h
+> > +    attributes:
+> > +      -
+> > +        name: id
+> > +        type: u64
+> 
+> [Severity: High]
+> Could this also be missing a byte-order: big-endian annotation? The kernel
+> reads LWTUNNEL_IP6_ID as be64.
+> 
+> [ ... ]
+> > +      -
+> > +        name: hoplimit
+> > +        type: u8
+> > +      -
+> > +        name: tc
+> > +        type: u8
+> > +      -
+> > +        name: flags
+> > +        type: u16
+> 
+> [Severity: High]
+> Could this also be missing a byte-order: big-endian annotation? The kernel
+> reads LWTUNNEL_IP6_FLAGS as be16.
+> 
+> [ ... ]
+> > +  -
+> > +    name: seg6-local
+> > +    name-prefix: seg6-local-
+> > +    header: linux/seg6_local.h
+> > +    attributes:
+> [ ... ]
+> > +      -
+> > +        name: table
+> > +        type: u32
+> > +      -
+> > +        name: nh4
+> > +        type: u32
+> > +        display-hint: ipv4
+> 
+> [Severity: High]
+> Does this field need a byte-order: big-endian annotation? SEG6_LOCAL_NH4 is
+> a raw IPv4 address and handled as a struct in_addr in the kernel, but here
+> it is typed as a native u32. This might cause YNL tools to silently
+> byte-swap the address on little-endian architectures.
+> 
+> -- 
+> Sashiko AI review � https://sashiko.dev/#/patchset/20260917-ynl_rt_encap-v1-0-fbbe6e680571@kylinos.cn?part=3
