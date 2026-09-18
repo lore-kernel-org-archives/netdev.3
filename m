@@ -1,285 +1,179 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3DF4611C2
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 17:59:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789754393; cv=fail; b=te1bmSLdnv7+x7Fdd+RX1JSeSl6lg2TLGldO2Ysaxjh8s1ML0cSae4+VfsHD3bbB54VpFDbw/OeiFFe4Zo7Pf2ZmqHKQTUTie1NMuaBhTiV8fAa+9bj0CP4fyz1hFYIaKziIyKNCJnUTQoqZlYtumxqFIXZQ3Vyqjum38MN2sYg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789754393; c=relaxed/simple;
-	bh=Q1sHwzVeg2uzi+BLKCa1kWVlD8aZGZ2e8+edZzJYaW0=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=tQP+HnpcckN/ycWUB9vqRg0/9xwLVxX8vRb7RZ6X+6Sk5HQ7DJPUqUwt3zlxlucRc41fmpF+JWA10AmvwsPuxPmWceJMXqLBv9oJGyQkau5N8STB2DAU7Knp8WyED/q9VXY5JUYi59sJUR5zTTmCWMpQdWjKUjLyR/KpOzYKdsE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I7Q+Mzg5; arc=fail smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83BC3E49EE;
+	Fri, 18 Sep 2026 18:00:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789754462; cv=none; b=llx2VLncML3fW6lHybkNVJq99Hz9X/hKieHbS6P1rdOT3NscwPopvQEHGrQ/EBeYiAJns4s+lSRLd7QiFirBU/5HH5rdNP1VHuQXHaZRApLf5nuH681CQ+aFNoJqxv073itMneMpQerTCL5jazrIFIurnriOpKTJCqSpzBL6mvQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789754462; c=relaxed/simple;
+	bh=rJyMtUJox/zyLLceCJ+E/9zig5jRcd6wrkw+gkeFTVk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=N1fS3SIA/uh+U/zW18qcMjjMHHpq0LUCqH1j2fqqzd08UYL274rYMddUYLDBsomjnd6H97Ae/KTcOj/wSQvTRN7oIpe42iP9LZ9+ezoCrcE0kiz6PmPsg2TvWrAR332ZVRJp44ixjwXc1gD/B3l2tb/K6Cj+ciVb1l0KcAhXiYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ah27XptP; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I7Q+Mzg5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789754390; x=1821290390;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=Q1sHwzVeg2uzi+BLKCa1kWVlD8aZGZ2e8+edZzJYaW0=;
-  b=I7Q+Mzg5ZNWzZLIAj2VEWOqCj+I80lp2rvOCQUGy/b2WceFONznFLS79
-   cwPwxHKumul5RSWmTPgzD1K21x7eRiLTTmVwXYfZihll7QGF/6tbhuHkR
-   gOhzoiTMxnz+joTq2YPYUb6gr0NYZgTajo+J3p6bnnWXsXPcJ6bpD4FVX
-   4XRhUMFYYzApf7xFuj8xKYi1K25xaaIJaQlUGZA8wRmecfx97N22KkCZ2
-   /O+WG8Uy6tfGBQCtpxA2GMJXMpEjGlLzTgNh1Q1NDPjvBrEBzlpxO7RbC
-   Bkr/j3kHa51MQQz5L4EisEVTQv9rk4CdSlNgI5SqioshZZo2eArTE9dlO
-   w==;
-X-CSE-ConnectionGUID: KYc1yz26QC65HCRVC2WWFQ==
-X-CSE-MsgGUID: 5z9DcX+VRoS7GH6pppySwg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11909"; a="115809934"
-X-IronPort-AV: E=Sophos;i="6.27,109,1787036400"; 
-   d="scan'208";a="115809934"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 10:59:47 -0700
-X-CSE-ConnectionGUID: bbMjl34ISbmjgZ34ALa0aQ==
-X-CSE-MsgGUID: WBgsZEeTQZmXgMKQurXddg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,109,1787036400"; 
-   d="scan'208";a="271846483"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 10:59:47 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Fri, 18 Sep 2026 10:59:47 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Fri, 18 Sep 2026 10:59:47 -0700
-Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.1) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Fri, 18 Sep 2026 10:59:46 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jwh8dN0LVsLxuqO4HFHEfkZCNv5u6+xr/Z8bPPH2v+k/CsZ6Ky3WDEd4sB33DNEUAWR7T57VVbEm4AOs8OMY0aD3bOQN5UpP6X2sv0EPzodzFU1pnQTSlMWauzvaMNO1qd+MjSBf5WzIT4yEjTB6qe0u97aD7TNdmKrRcGnicGaGzIFyqapbYAAItkgldZx5OYGbjmEsIxI+6T85dDV0K5A70SEubLddCX7wAdyCSRREp9IVXSCSciBUDsL2Rm1WZU+wfXcrTMPEeg4H+GmPhAqd9DGRAl9+D8Vk8k3vsCiDDujpjEqVLX6G7+ypYwOWEpcCPRkdJTAfdIxt/eod7A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RVwlzK4CFQGiWw3/kzTWjj0z5xLezSFnnRxaZjwrBf0=;
- b=aPU49eksPUHgH3g0VKDHDgvEtVNBlAzl7iTG6V55LNGMsvjppTOv1xClojfergU6ociafpDattAeww+rXL5NRn8LiyF8csMIRzA8Mh+EkJXLBTfyVZQiSCAVRKzJbFaIDgoxXJ/giRa9attD7jQPw67bbkCw7N0A1U9smFtKlTJ7I3d1o9nQrGDg2tPlkVrOJkYxjp/GC7KiQfE1bhv73QowZjRKQgV2fFEtrdgwuRJzmR98ZrYyPEBxTn/8ITEFBlWFaqwhQolOm2BOYxIF7oDbrwrln+1/dKrRSR5W7PdHH8r3Rn3K0fK5JQDEJQTJHdHRqJKktiD/TQ3/mgFu7g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SA3PR11MB186312.namprd11.prod.outlook.com
- (2603:10b6:806:595::5) by CY5PR11MB6283.namprd11.prod.outlook.com
- (2603:10b6:930:21::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Fri, 18 Sep
- 2026 17:59:44 +0000
-Received: from SA3PR11MB186312.namprd11.prod.outlook.com
- ([fe80::fbe8:9ba6:fcd0:f0b]) by SA3PR11MB186312.namprd11.prod.outlook.com
- ([fe80::fbe8:9ba6:fcd0:f0b%6]) with mapi id 15.21.0428.011; Fri, 18 Sep 2026
- 17:59:44 +0000
-Message-ID: <45ffbd03-653c-46fc-b500-07e9b99f295f@intel.com>
-Date: Fri, 18 Sep 2026 10:59:41 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-net 1/2] idpf: keep the mailbox up while tearing down
- vports on shutdown
-To: Tian Xun Ng <luckilystar08@gmail.com>, <intel-wired-lan@lists.osuosl.org>
-CC: <netdev@vger.kernel.org>, <anthony.l.nguyen@intel.com>,
-	<przemyslaw.kitszel@intel.com>, <aleksander.lobakin@intel.com>,
-	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, Tian Xun Ng
-	<tianxun.ng@bytedance.com>
-References: <20260917105205.37561-1-luckilystar08@gmail.com>
- <20260917105205.37561-2-luckilystar08@gmail.com>
-Content-Language: en-US
-From: "Tantilov, Emil S" <emil.s.tantilov@intel.com>
-In-Reply-To: <20260917105205.37561-2-luckilystar08@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4P222CA0009.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:303:114::14) To SA3PR11MB186312.namprd11.prod.outlook.com
- (2603:10b6:806:595::5)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ah27XptP"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=uW1VwXS9fnIR2k80j0oeOq/Eg+v68xwf0YIr/GHAino=; b=ah27XptPg/UpFLncJ2jfdOhvuY
+	S8VC3yxm6tvsaUu3uqutjN+mHpnnpZdDkT/s9QKcz64kM72p+CAXPI8QCZonnwxcAi7B8D/YHq8O0
+	dv0L36H9PSG2i56YRA0v7O9vjGO3079Q3N7CNBreE6vqJdeGgUkfSDhGXHWIcbjl84DqZZ2GWt8Uj
+	H2Zer9PzYvCDoVUqGoTHlk0AEF85SWrm8L/3yEXl4YxO5pFXFGEhPimv7YYy0lpjgafUJpmxBttTo
+	cJTsJW/LbtjM1OTB9lRQG5bTECs38ILBvqqOZSqnRvqXdnJbK1TvB2w1aq0XgmeVNpIsd6g8ezrN1
+	qbGffjlw==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x7ctK-0000000FF51-2Tyj;
+	Fri, 18 Sep 2026 18:00:54 +0000
+Message-ID: <8d635404-f85f-48fa-817a-88d3c1ecd344@infradead.org>
+Date: Fri, 18 Sep 2026 11:00:52 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR11MB186312:EE_|CY5PR11MB6283:EE_
-X-MS-Office365-Filtering-Correlation-Id: 87cc0f4e-8f7d-468b-756d-08df15ae9ec4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|23010399003|1800799024|376014|56012099006|11063799006|4143699003|6133799003|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: TIHtCYNHS4dsTKw9hV0QKuXZ+RdVtDp8fviVQy6K9VBIaR3MWPzFxGh+CprfjvMOmCV+EegYTOeiV7eW0EHENZo6rvMdl26ZzxlfPnA4oz1/vpzs6IY8YY0Jpvf6O+McUZBWhF5aCi35kpZEqsc5+WT2oZGBlwJEQxu4DWw9l3YHULNvoi6c3L0PTYEK5CRDjTXIyVF7roJFIF9sjJ9sg53uxBltmw1svxPpASKYE59q18jeXC93wa2YYUh70vUzkyIGZNmVmaESCaeSP0rSFE3qQPkfxLH7jvKUdIOG0OfFf4ciXGfz6LOl6ChceKjwVkpRIjLQPEPmURXq6cZRVHl43/4Z5cIZM8U/B2rCCQyCjDzCS3wtCZZfwx5dYTeuoctZ0NaxPT+AMEqEnKQVM1h2KcgXYHYJ1UhV1ODI/dWSUXYaC5abPHOU/w7t1kDBX8l2Xn5Uif5fqBND7LiZbnvqzyNoKm+m9Po5SVf9JftpJ93DMyhV9irsk6E+VA5o+TdAFk2GLV9hXxK9RJe/FXqCXF2OvahigLMSxHm4C3Zn7Jgl9Be6nlGWk0+IoVE0CAcX77ATF/h991d9Nkr8fz2/mFKOY7nuC67WpCk20C0c/yRjJG31UV2y8mdvtP5B5d0jF1yTwcIT28qYGiU9II9B0KIUST/5JqBLxuwc32Q=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR11MB186312.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(56012099006)(11063799006)(4143699003)(6133799003)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bU1OU1VQRmp0NzNNQmdwd1prUFBXQ2s4Q0dINU1LTk9uUnNNNnpwVGYyK3g2?=
- =?utf-8?B?N2t6a3RBVGN4YlpuWXh2R0tWNGgzNzIvbTZ6ekFLaGFmQllmOXNsMWVOS1lh?=
- =?utf-8?B?emhPLytKcVdmQ25zdy9IeFlqODdoUDdrcWNCY0pxQWh5Ukd2Sndoa212Y205?=
- =?utf-8?B?a1NOam9oRHFxQW5OZ0ZFa0xLN2Fwa3g4L1kzUWFvY3pjQ2RhUm1WblMrMStY?=
- =?utf-8?B?OWgwUzR2OU43VXM5aVNTS1lKNkhzeUdybW9RMnFMeTFhYnFhQVR6bkR3Y0Fo?=
- =?utf-8?B?TFEyLzMyekNoT1NyYWZnK2VTTk92bVZTQURTWmRKRTdZUlprNVliVjJ2QjhM?=
- =?utf-8?B?bWNFQ3paVVl0czlDZjNyOUVnT0JIZVV4UHptSzVZWUFFSFcrQllWR3Z4SEFa?=
- =?utf-8?B?L0dkN2twKzZpWHVaUTFyMTg0cHZrcmVYaWh6OHI4TWhnSVp5L3Z2VDdHekE3?=
- =?utf-8?B?anRrS1lOVU9ONGo4R3dKR1VteG1vU0l5U3lweHZGNEpVSm1oN1g4cVdrcXRs?=
- =?utf-8?B?NGh2VXJiM290R3RsSjByYUFSUVhWUWVDUlN1VGpKRFdhbGovcTVzMzN1M0tZ?=
- =?utf-8?B?dnZTRUh6cWdjVUJKb0FpRzlHalc2dkVOMzBkREh1SEd1ZmlYai9NeGpnajgz?=
- =?utf-8?B?WFFpbitudVJ6T2hUK0dacmZncStrY0dIeFVadUt1WGRDQWVnY3RZbUZiakJM?=
- =?utf-8?B?QzlJVmtaVTcxdHZZSksrTzVqQUord05wY0pNVjlKZHNtZm5lTHF6N3RxRDNY?=
- =?utf-8?B?ZG4rMDIvZXk2RWhCMVhmUXE1aGtSWmR0cDV3azNlY1JEblpQNjhZcTdWc1Zq?=
- =?utf-8?B?dXZtc0dTTDBQQkZiTlI3OUVTNmxGci8vK2tNL2hybUZiRDU0eldLeFJ2aW14?=
- =?utf-8?B?akhuVnVLZmZ2L052azdkZUdsbjZ0eHBBenVlU3FJTDJqdXdGa0F4OWJOSEYx?=
- =?utf-8?B?OU5BK0NaWmVRNEQ1WTFSdEF1MkJnT2VUVHEvUlBMdEV3d0t4eWl6Rk1TMTVI?=
- =?utf-8?B?NE90NVIvR25LMXhzMlJBb284YnlWa2ZiQ1Z0bnkwMzhISENpcmZWa052WXlP?=
- =?utf-8?B?QlZWeDk3cW1jK2N3aG5Td3VvQVRrTStiZHdGUGQreXBNTnNOQnRrTitzRVMw?=
- =?utf-8?B?VzdIU1ppZXY4QTQyVnhteTFrSjZuVGdzdU50aUk1T0orRDNzRE5zVjU0MjBP?=
- =?utf-8?B?UmdyaUp2bXhGZTFkT053Nllmeit2cTRpUlNQdm5ZdnAzRVYwcVBoYmJJVERw?=
- =?utf-8?B?WmlWdDQ4YVFIV2g0cklaaWM1dEQ4UHpNR1IzRkw1YUFRR2ZWcEllL1I3aHZ5?=
- =?utf-8?B?djEvbUVZeFlsOVcvdWMzS1pIc0wwUlhManozSkE3YzZPcVNUaFl3bkVVVWpq?=
- =?utf-8?B?VitQblVYb1NJNWdhMTdud1V6a2VtbkNBb2daYldBVnhEWHBSMlp1MVU4ZDZC?=
- =?utf-8?B?M1NncE9RVDRFaHB3NUxDd1loUWNUenJsRENxYjVOeHFqNnZiZThJMUYxS0Zx?=
- =?utf-8?B?MUVRck1yRkNkVVNzTERiKzBVTkJ6WmxLYlN4MGtPVU9IWWd3c1M0ZUtZUUpU?=
- =?utf-8?B?NU1hMnZEeThTZ0dFSmxSQysyUzBVZnk2eXBsVmVzZjI5MWZhaVZlcnd6c3Fh?=
- =?utf-8?B?ZTlNcDRqeUNsemdJQ2ljZkc2dXJZbDZBclFOcmRtV3BSSXQwUy9VMVZNalR2?=
- =?utf-8?B?QlVCSFNKck43VUxxTms1cDdpRzI1OE1MbkJYK0toTjBnVnYweHBNZStLNFdB?=
- =?utf-8?B?UmxoZ0RHYkkwc05Xc09FNDZ6b1pydjNhQmF0UXRRT3QrM29WbnRyRmZLVy9x?=
- =?utf-8?B?ZVRKaDZtbTVpS1JDWXlmbnFlVnhVUWw4YVJ1MFZhbjVlU1Vxa2hkWHBjMmU5?=
- =?utf-8?B?NENHb3psa0xJakx1UFhEYndTRlpLTmFpK09IUmJvazAzVEFmYW9HMGdmQm1E?=
- =?utf-8?B?bXpZRW5UVFpiMkRueVJTNVRjUXV1Q3NadDEvSzVYUkRKdTE0RUY1OGFjMnU4?=
- =?utf-8?B?czQ3TGZUaTA1M3B1OXJQd2JEWjE1MndtajBRemNhL0NVazVleG9OelFtNWg0?=
- =?utf-8?B?Tno3SnZzdkIrRTlXTG96VDgwQ2gvbWxaZjVEdnpHNHp5b1V6azBsZW9INmNI?=
- =?utf-8?B?TkFGY0dJV0QrdUlDWnM5aGd0MlV4Rk14cHN2aHYydEQ1bGZiVzRMdUlNRzQw?=
- =?utf-8?B?dXpPejhDaUNyN2JqUS90d3RGWC9WRzRyN1pVN2VhZmhSczI2UzNQTzZZMGMv?=
- =?utf-8?B?UDNJbE5yUW43QUllOHhYZzBqMDB2c0lzQTFzejcxL2p0cDV3K2F2UHpyOEZZ?=
- =?utf-8?B?aTVxb1F4VU9EMHRJN1hJdzBVSy9HMlBvTmkvT1hBTHVxV0ZONVRXMGdTQkli?=
- =?utf-8?Q?2O1pYM2AptHIhcio=3D?=
-X-Exchange-RoutingPolicyChecked: 5cqNN5PagCkLl/rcydfywMacHq/+CaVVGQMkQ9qlJHlGZcFqUzLcHGjv/9ddGbgYEvrIGEMqGZ+fgMGnMjAcNmqUvfgXvMqdlFZhR/kRTDTpBoN6mZkFu9eT1AFQLkRWpRbbNQD4q0UEZyDwpW1TTHPBzqSeDLHL+AJKjHMc+DagZUr6eDroBtq6tqkKLAjTgG+vFm/VLr8ASF5LeQHO8Th9mLxQ2KpNf9Aj4eA0bzGF6h7W2SCCM9JQg1g5PelFMByMVuXthH97MIY1cTxotGAGXjm1ZrHOu4P3Qum+8/meqn8XSZil+8uNPKgvPJAa1rif4A4ZMmXZdb+SIsatqA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 87cc0f4e-8f7d-468b-756d-08df15ae9ec4
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR11MB186312.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2026 17:59:44.3103
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Bfnv9/58EWZ2YZiS8DRRLfDCnC9bcIDrwIDTrHQKFvkV+S36rNyUb1FxIQhaqNeZD6aFipRWHN4lc8lolfDyvijZvi5aC+PCp+nri+i+jGc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6283
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 5/5] NFS: add a key type that reveals the namespace
+ .nfs keyring serial
+To: Chuck Lever <cel@kernel.org>, Trond Myklebust <trondmy@kernel.org>,
+ Anna Schumaker <anna@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Christian Brauner <brauner@kernel.org>, David Howells <dhowells@redhat.com>,
+ Sagi Grimberg <sagi@grimberg.me>
+Cc: linux-nfs@vger.kernel.org, keyrings@vger.kernel.org,
+ kernel-tls-handshake@lists.linux.dev, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org
+References: <20260918-nfs-mtls-identity-v1-0-197e568d78a7@kernel.org>
+ <20260918-nfs-mtls-identity-v1-5-197e568d78a7@kernel.org>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20260918-nfs-mtls-identity-v1-5-197e568d78a7@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+Hi,
 
-
-On 9/17/2026 3:52 AM, Tian Xun Ng wrote:
-> From: Tian Xun Ng <tianxun.ng@bytedance.com>
+On 9/18/26 7:05 AM, Chuck Lever wrote:
+> The per-namespace .nfs keyring is linked into no keyring that
+> userspace possesses, so a tool that provisions x509 credentials, or a
+> mount helper that searches for them, cannot reach it. Every keyring
+> operation from userspace takes a serial, and nothing hands this one
+> out.
 > 
-> Since commit 4c9106f4906a ("idpf: fix adapter NULL pointer dereference
-> on reboot"), idpf_shutdown() calls idpf_vc_core_deinit() directly instead
-> of idpf_remove(), so IDPF_REMOVE_IN_PROG is not set on shutdown.
-> idpf_vc_core_deinit() uses that flag to decide when to shut the virtchnl
-> transaction manager down. Without it, libie_ctlq_xn_shutdown() runs
-> before idpf_deinit_task() tears the vports down, so every message sent
-> during that teardown (disable vport, disable queues, destroy vport)
-> fails at once. The device is never told to stop its queues and keeps
-> them enabled, with the ring addresses of the kernel that is going away.
+> Register an "nfs_keyring" key type whose request_key handler runs in
+> the caller's context, without an upcall, and instantiates the key
+> with the serial of the caller's namespace .nfs keyring. Userspace
+> reads the serial with one request_key() and one keyctl_read().
 > 
-> After a warm reboot, the first queue reconfiguration of a port that has
-> not been opened yet (udev setting the MTU) sends VIRTCHNL2_OP_DEL_QUEUES.
-> The device then drains the queues it still considers live and writes
-> SW_MARKER TX completions (qid_comptype_gen 0x2800 / 0xa800) to the
-> previous kernel's completion rings. With the IOMMU translating, those
-> writes fault on every such boot:
+> A keyring search runs before the handler does, and a task keeps its
+> session keyring across setns(). The type carries KEY_TYPE_NET_DOMAIN
+> so a key instantiated in one namespace does not answer a request from
+> another. Its preparse accepts no payload but the caller's own serial,
+> so a key planted by add_key() cannot misdirect a later request.
 > 
->    arm-smmu-v3 arm-smmu-v3.17.auto: event: F_TRANSLATION client: 0016:01:00.0 sid: 0x30100 ssid: 0x0 iova: 0xffb70000 ipa: 0x0
->    arm-smmu-v3 arm-smmu-v3.17.auto: unpriv data write s1 "Input address caused fault" stag: 0x0
+> Register the type after register_pernet_subsys() has installed
+> nfs_net_id, and unregister it before the per-namespace state goes
+> away. unregister_key_type() waits for in-flight request_key() calls
+> to drain, so the handler never runs against a freed struct nfs_net.
 > 
-> In IOMMU pass-through mode they land on pages the new kernel has already
-> reused. With page_poison=1 that shows as "pagealloc: memory corruption"
-> on most boots. Without it, nodes crash in unrelated code, e.g.:
-> 
->    Unable to handle kernel NULL pointer dereference at virtual address 000000000000a830
->    pc : __tlb_remove_table_free+0x48/0x118
->    Call trace:
->     __tlb_remove_table_free
->     tlb_remove_table_rcu
->     rcu_do_batch
-> 
-> or with a slab free pointer that decodes from a slot holding 0x2800:
-> 
->    Unable to handle kernel paging request at virtual address 002613b73e862c6e
->    pc : kmem_cache_alloc_noprof+0xc0/0x3d0
-> 
-> The early shutdown exists to avoid waiting for transaction timeouts when
-> the mailbox is already gone. That is the hard reset case, where
-> idpf_vc_event_task() shuts the transaction manager down and sets
-> IDPF_HR_RESET_IN_PROG before idpf_init_hard_reset() calls
-> idpf_vc_core_deinit(). Key the early shutdown on a hard reset being in
-> progress or detected instead of on remove, so that both remove and
-> shutdown keep the mailbox up until the vports are gone.
-> 
-> Hard reset behaviour is unchanged. Remove is unchanged unless a hardware
-> reset has been detected, in which case it no longer waits for message
-> timeouts. Shutdown now delivers the teardown messages; if the device
-> stops responding without a detectable reset, shutdown can wait for the
-> transaction timeouts, as remove already does.
-
-Actually we can't wait on shutdown. If the MBX is defunct, like CP is 
-down or unresponsive, the shutdown will hang for a very long time. This 
-is the reason why we wanted to avoid communication on shutdown. Have you 
-tested the shutdown after stopping the control plane?
-
-> 
-> Tested on arm64 (64K pages) servers with two idpf functions, with this
-> change and the next patch backported to a 6.17 kernel: no stray device
-> writes in 151 warm reboots across IOMMU translated and pass-through
-> modes, against stray writes after 20 of 20 warm reboots without them.
-> 
-> Fixes: 4c9106f4906a ("idpf: fix adapter NULL pointer dereference on reboot")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Tian Xun Ng <tianxun.ng@bytedance.com>
+> Signed-off-by: Chuck Lever <cel@kernel.org>
 > ---
->   .../net/ethernet/intel/idpf/idpf_virtchnl.c    | 18 +++++++++++++-----
->   1 file changed, 13 insertions(+), 5 deletions(-)
+>  Documentation/filesystems/nfs/index.rst   |  1 +
+>  Documentation/filesystems/nfs/keyring.rst | 67 ++++++++++++++++++++++
+>  fs/nfs/inode.c                            | 94 ++++++++++++++++++++++++++++++-
+>  3 files changed, 161 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-> index 1caf52706..646b6e074 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-> +++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-> @@ -3197,14 +3197,22 @@ int idpf_vc_core_init(struct idpf_adapter *adapter)
->    */
->   void idpf_vc_core_deinit(struct idpf_adapter *adapter)
->   {
-> -	bool remove_in_prog;
-> +	bool reset_in_prog;
->   
->   	if (!test_bit(IDPF_VC_CORE_INIT, adapter->flags))
->   		return;
->   
-> -	/* Avoid transaction timeouts when called during reset */
-> -	remove_in_prog = test_bit(IDPF_REMOVE_IN_PROG, adapter->flags);
-> -	if (!remove_in_prog)
-> +	/* Shut the transaction manager down early only when the mailbox is
-> +	 * already gone, i.e. a hard reset is in progress or has been detected,
-> +	 * to avoid waiting for transaction timeouts. On remove and on shutdown
-> +	 * the mailbox still works and must stay up until the vports are torn
-> +	 * down. Otherwise the disable and destroy messages never reach the
-> +	 * device, which keeps its queues enabled with ring addresses from this
-> +	 * kernel after a warm reboot.
-> +	 */
-> +	reset_in_prog = test_bit(IDPF_HR_RESET_IN_PROG, adapter->flags) ||
-> +			idpf_is_reset_detected(adapter);
-> +	if (reset_in_prog)
->   		libie_ctlq_xn_shutdown(adapter->xnm);
 
-This logic already exists in the reset handling, there should be no need 
-to replicate it here. Do you have a trace and/or exact scenario that 
-leads to remove being called while in a reset, but MBX is still alive?>
->   	idpf_ptp_release(adapter);
-> @@ -3213,7 +3221,7 @@ void idpf_vc_core_deinit(struct idpf_adapter *adapter)
->   	idpf_rel_rx_pt_lkup(adapter);
->   	idpf_intr_rel(adapter);
->   
-> -	if (remove_in_prog)
-> +	if (!reset_in_prog)
->   		libie_ctlq_xn_shutdown(adapter->xnm);
->   
->   	cancel_delayed_work_sync(&adapter->serv_task);
+This might be a locale thing, but using serial as a noun here seems
+awkward to me.  Is this like "serial number" with the "number" omitted?
+
+Serial as a noun usually means a publication in a series (TV, comics, etc.).
+
+Or is this some special security-related usage of the word serial?
+
+> diff --git a/Documentation/filesystems/nfs/keyring.rst b/Documentation/filesystems/nfs/keyring.rst
+> new file mode 100644
+> index 000000000000..5b3d3d0f5f91
+> --- /dev/null
+> +++ b/Documentation/filesystems/nfs/keyring.rst
+> @@ -0,0 +1,67 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +
+> +====================================
+> +The per-namespace NFS client keyring
+> +====================================
+> +
+> +The NFS client holds one keyring, named ".nfs", per network
+> +namespace. An xprtsec=mtls mount presents the client certificate and
+> +private key named by its cert_serial= and privkey_serial= mount
+> +options, and the handshake links the mount's namespace .nfs keyring
+> +into tlshd before tlshd reads those keys. Keys placed on the .nfs
+> +keyring therefore need not grant user read permission: tlshd reaches
+> +them as a possessor, and a tlshd in another network namespace never
+> +possesses them.
+> +
+> +The keyring is owned by global root, with KEY_POS_ALL and KEY_USR_ALL
+> +less SETATTR. It is not charged to any quota. Keys added to it by
+> +userspace are charged to the user that adds them.
+> +
+> +Finding the keyring serial
+> +==========================
+> +
+> +The .nfs keyring is not linked into any keyring that userspace
+> +possesses, so a serial is the only way to name it. The NFS client
+> +registers a key type, "nfs_keyring", whose sole purpose is to hand
+> +that serial out. Its request_key handler runs in the caller's context
+> +and does not upcall to /sbin/request-key.
+> +
+> +To obtain the serial, request a key of type "nfs_keyring" with the
+> +description ".nfs" and read its payload::
+> +
+> +	id=$(keyctl request2 nfs_keyring .nfs "" @s)
+> +	serial=$(keyctl print $id)
+> +
+> +The contract of the key type is:
+> +
+> + * The description is the string ".nfs". Any other description is
+> +   rejected with EINVAL before a key is allocated.
+> +
+> + * The callout info must be present. request_key() with a NULL
+> +   callout_info never invokes a handler and returns ENOKEY when no
+> +   matching key exists, so use request_key() with an empty string, or
+> +   ``keyctl request2`` rather than ``keyctl request``. The content of
+> +   the callout info is ignored.
+> +
+> + * The payload is the keyring serial as decimal ASCII digits with no
+> +   terminating NUL. The return value of keyctl_read() gives the
+> +   length; a buffer of 12 bytes is sufficient.
+> +
+> + * add_key() with this type accepts only that payload. A key carrying
+> +   any other value is rejected with EINVAL, so a key found in the
+> +   caller's keyrings always holds the serial of the caller's namespace.
+> +
+> + * The key type carries KEY_TYPE_NET_DOMAIN. A key instantiated in one
+> +   network namespace does not answer a request made in another, so a
+> +   process that keeps its session keyring across setns() receives the
+> +   serial of the namespace it is in at the time of the request.
+> +
+> +The serial is not a secret. The keyring's own permissions decide what
+> +a caller can do with it.
+> +
+> +Provisioning credentials
+> +========================
+> +
+> +Add the client certificate and private key to the .nfs keyring as
+> +keys that grant no user read permission, then pass their serials as
+> +cert_serial= and privkey_serial= mount options.
+
+thanks.
+-- 
+~Randy
 
