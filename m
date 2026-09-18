@@ -1,61 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A9B4086A;
-	Fri, 18 Sep 2026 00:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7987D140E5F;
+	Fri, 18 Sep 2026 00:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789690014; cv=none; b=NLw5JDAfNeN+ku1Tbuw027rR8CX89D7oqh3kC3Pqdv/d9sj35dUEQRWatGgx7urG4wHEt97QYWpmp4gNw+2b51M98CVED2/5b71aLzcdkwnPNlYMbA7loqSmELqKJmvy5gmSoBqSMJI5ZRxnqmvoV5PnbjKD6Je5EHdIJKvOXW8=
+	t=1789690273; cv=none; b=I8kmQvY1zWmFs9m3XT3v7g+kmGWU4sHYkVB3vQgrAIC6OHDfild8JHzNH1nI8XF2CMVYuVPdXA2CsCVJ3K7E6T+sb2GGFKz2FPL7bzMyAIZTcnTPII1VhvRbirrYk1mobWgWgDKGEoXo4axL5FmDKP/gChphSe7MtMJwfDFu9+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789690014; c=relaxed/simple;
-	bh=A/V1IvITdPVEnXthdjdE9N0/38n9yb5KdPYC5oGf6pU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eo23C4C62kDeoanHT7JD4SvD08r6XbvOoHupe/d+kfzjkwFTaLbWxXQidqYipGVnINUk99zoc0QVpRm/yzW3UvX2sYn+EYENrmjbzRI8f1rxAsnuhbNwsfetjvYyLmfVwc+G3RDzfsNA3oqG5OouDBaMYq2Gyx9MknuwPFakubQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OmL3vaTN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789690273; c=relaxed/simple;
+	bh=QnHVE7/+jXfvLHKUeLIxfFVDN7S6avvCPrex7Sgj7yo=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=RAzExbwVi8yIYE04gK+2yEivbYeHIEIis5M5/w+7SgIRzFDGGTZPuA6BwXNJftcLz5x3xc8IW+uILfiOdJRTsyAJLBdz2T6heWNsOJkZMImWdekps1wYd5hhNxqph+o6bMwby9CfiCR6lgVlrTd/WUbCSXbJx6tTF7IK9zxDLTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BThgLsCC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OmL3vaTN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C255F1F00893;
-	Fri, 18 Sep 2026 00:06:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BThgLsCC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA4E71F00898;
+	Fri, 18 Sep 2026 00:11:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789690013;
-	bh=iPgw9tRhTGr3grza5tzXt2V01AODVDU/p+Xfj8rpR0M=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=OmL3vaTNvgJJhDL8VdfC3ElpSzJj+ko0u/NPvr5MvrgNyNjD2HTr2CDAuyJXVLfoI
-	 8yVxyfrmpVyIvdAnvbYVLi8BEiaBp2VXG3NtcWGgo80wRtS31fH0hD13bGJ9q0+E1A
-	 k6g0zT20wKgM88PBj2OB5uBbHdgbWBUnn96B+9yoXXTHqNUB2Fy4qdGdK3i6rTqUjR
-	 xjdqoRO15fOjwlFnrhxfLO/fdT4TfwslH3Hk1tqkxIEGydkIuYSKsyKEAyn/zo9ZJs
-	 pXlgR0slz3ro4juei0ThVuSrLjCiYcQRArB1Regr7x8ymdzr+VLfksZRO8aAyNGeEp
-	 6xKyUz56qsCGA==
-Date: Thu, 17 Sep 2026 17:06:51 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>, Sagar Taunk <sagartaunk@proton.me>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
- <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, "=?UTF-8?B?QmrDtnJu?= Roy
- Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
- Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>,
- Danilo Krummrich <dakr@kernel.org>, Daniel Almeida
- <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>,
- Alexandre Courbot <acourbot@nvidia.com>, "Onur =?UTF-8?B?w5Z6a2Fu?="
- <work@onurozkan.dev>, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] rust: net: netlink: Migrate to zerocopy's IntoBytes
-Message-ID: <20260917170651.393f4468@kernel.org>
-In-Reply-To: <aquzyg0T67vu43T3@google.com>
-References: <20260915144231.31932-1-sagartaunk@proton.me>
-	<aquzyg0T67vu43T3@google.com>
+	s=k20260515; t=1789690272;
+	bh=UaVKucp9ESmc7Y/Ub3lqEQtQxufHm5lPuwAfY1hSqNs=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=BThgLsCCT2mG2JBigxSL6JYW31N/IV3jFmgEi7Sjw1yQIAfJs82ACC2zEHuGh5TQ5
+	 47oip6papcOzai1gMO88g52OuKuY7/TCavFKO1+tVMXS0ri2pQ1ZhTZ6/PGpBTed1l
+	 Jbz4j3PXlazhtVf3kNr7v4kmqWwxZpfQ9rsQLgV3fGdGkGFhlGN4xJf28uOm7rghd0
+	 vj25TJb7kD9pohYXVwsYP8R4eU2K2I3qNRhpKmMcYVYgWRc+wPy3ws68Cal216ZrQH
+	 NkPF4WIiLqi8hCDVWf6EBSHyUIhWnbaAh4Ew+H2y3U8c0VMN1X+SwTGrC70ro/f08e
+	 gCl7HyoJ7wK8g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93CA9380820D;
+	Fri, 18 Sep 2026 00:10:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 1/2] net/sched: cls_u32: fix manual hash table handle
+ IDR
+ aliasing
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178969020513.191233.10717761906823039417.git-patchwork-notify@kernel.org>
+Date: Fri, 18 Sep 2026 00:10:05 +0000
+References: <QDISC-LQFE.v1.20260911041746.1@mojatatu.com>
+In-Reply-To: <QDISC-LQFE.v1.20260911041746.1@mojatatu.com>
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ alexandre.ferrieux@gmail.com, stable@vger.kernel.org, sashiko-bot@kernel.org,
+ victor@mojatatu.com, hybris@mojatatu.ai
 
-On Thu, 17 Sep 2026 09:32:58 +0000 Alice Ryhl wrote:
-> Can you send this to the net folks? Please update your patch title to 
-> [PATCH net-next vX] according to the guidelines outlined in:
+Hello:
 
-Good note, please remember that next time, no need to repost this one.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed, 16 Sep 2026 06:01:14 -0400 you wrote:
+> A u32 hash table created with an explicit handle ('tc filter add ...
+> handle 801: u32 divisor N') keys its IDR entry on the raw handle, while
+> the destroy paths free it under handle2id(handle). The two key domains
+> disagree for handles in the 0x800..0xFFF htid range:
+> handle2id() folds them back into the auto-allocated id space (1..0x7FF).
+> 
+> A manual table therefore leaves its raw-keyed IDR entry unreachable on
+> delete (a permanent leak), and its delete can drop the idr entry of an
+> unrelated live auto table. A later auto allocation can then hand out a
+> handle that aliases the live manual table; u32_lookup_ht() first-match
+> routes lookups and TCA_U32_LINK for that htid to the wrong table.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,1/2] net/sched: cls_u32: fix manual hash table handle IDR aliasing
+    https://git.kernel.org/netdev/net/c/0a5f5d9e94de
+  - [net,2/2] selftests/tc-testing: add u32 manual table handle IDR tests
+    https://git.kernel.org/netdev/net/c/960ab631f3d8
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
