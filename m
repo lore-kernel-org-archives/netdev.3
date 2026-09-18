@@ -1,207 +1,182 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525DA2836A6;
-	Fri, 18 Sep 2026 12:38:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADAB737C0E6
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 12:45:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789735117; cv=none; b=kw6tpJt2TPjpQlVM1fzzZcQiq6MqynF674xh/EzYfNUlS2rDAN0PRJ79ujxRMj8CE1zqHN5NonUQ4tKABh4SFdkyCTxYyYXym2jNIHVmqsLTxDx0IarTDjBgAXXyYVDit6HwJLXixZNbW5Iaudwg47bsyQ6Jdz7k3pClBZc4QrE=
+	t=1789735525; cv=none; b=ZeHWxVdvPUr3lTD0kVC9pJW1gQTUJ2Zlod3llxFXqxgtF4KWHy5aSt7zDeBUpMynYrIVlJda/fNJM9or7Lqxs3jsclQN/lgMjTavVVBMxldCS8RDwgwve34GBeIcl9aNt6pZ4Whd7pY2Y23kkAcwt2lAkruvX4iBH/peLCc7al4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789735117; c=relaxed/simple;
-	bh=iYeutQZD6Gk9hpc7D02W+Xmug8i3J61E0WyDI1nrRPA=;
+	s=arc-20240116; t=1789735525; c=relaxed/simple;
+	bh=EUXyf5mwwMyFeXqt+QNbeLD5iU2yeBaCs9BxvRnFt6U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HPOecKqFw8VGgRcHDefxejLaEqkfj/8lSNYcnMl2ykbM0zqzb9t1FG02I2FHOf/5ckZrbbCUmAcSELWZhxZrRtcm6JufvEE+Da0y7dzrv9ovhAkK7Hyl6OVMI6HVyjvNWvstgvEer2tRaF+9y0y6FtlAWwCkO8LINe4n+P/WVu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dgkelU60; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=u6duDGjhvFtlf2zza4yzM/oc39m++HvmkV3eD7A7Qv2kzDsERECiD2uLgvp/je8XcuS0EJu9SJGTeb/zX048G6nx3oL6+vDiIrxwx1ECbSYlFI7j5Q1A5MWD+Yd5vbdoML+mNeanaw/17QlYTkpKr4DZ85sYIOj9YlKhuSGV7Uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=R7e8O5QH; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tVM+PQ9O; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dgkelU60"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48DA21F000FF;
-	Fri, 18 Sep 2026 12:38:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789735116;
-	bh=DGlZyW22wJe57M3Ug03904sWsQaDF2JZcMWEjWw8WtQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dgkelU60004YG6IzlKdKWEjY1QsNBsqRM6/g+hO9vX0nM3L8IHILae7SY0OXlV2iB
-	 6sPwDa/5KLa5BRCwtAxjBROwyXokuCoAQN7ga7RD7IxXj0lOjG6LddIFY22diqYZ5Z
-	 Q5HhjC/lQa8GJwhnpfU78+ryylXNMNoQh6xum0f5syysExvbIsUjqCNBX4fCvIJLLX
-	 Uvusf5RavxZp90klCjUzKkyu0We8Q95OuUy4GR/dNROzuG5Yg6Y0xHFSnLOiDHJah0
-	 4Gn0206KZ0KCKk0f8l+5BZLhBuhLDbRivBUKC1Ne+CHiRUJczBgBIb6ONsLJc10be3
-	 Bqn1q6jDh5oag==
-Date: Fri, 18 Sep 2026 13:38:28 +0100
-From: Simon Horman <horms@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: liuc63@xiaopeng.com, david@ixit.cz, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	dan.carpenter@linaro.org, oe-linux-nfc@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] nfc: hci: add bounds checking in
- nfc_hci_create_pipe()
-Message-ID: <20260918123828.GI51261@horms.kernel.org>
-References: <20260912115720.530715-1-liuc63@xiaopeng.com>
- <178952042575.22033.9676833200303972344@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="R7e8O5QH";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tVM+PQ9O"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789735515;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gNHbAwEuVi2IzpLwoXGz7v+aIL/8hFsG5BvN11sltgw=;
+	b=R7e8O5QHLcw0ZmESRz2iqv4lrdIUbfHVEUlQ3uvDWBVu5SXmQuA0j9gx2lUyVRKEtJZTzB
+	Ty+iJITxGzzKE730EEejXHFrBzCUNvXlUtwlb7nGYa6baKns89zDBCdOO7EGttlpz7dVCx
+	pNpElBkkZBpC6vXajxuEpiT/2vbqlHg=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-219-2QgmC2YhPtC3a1Rj3SaFTQ-1; Fri, 18 Sep 2026 08:45:11 -0400
+X-MC-Unique: 2QgmC2YhPtC3a1Rj3SaFTQ-1
+X-Mimecast-MFC-AGG-ID: 2QgmC2YhPtC3a1Rj3SaFTQ_1789735511
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-486f18da958so460285f8f.0
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 05:45:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1789735511; x=1790340311; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=gNHbAwEuVi2IzpLwoXGz7v+aIL/8hFsG5BvN11sltgw=;
+        b=tVM+PQ9OjsvnYxvSjOUPDr7gVF3Z/Koz67jvUShUCOStcMESQu5qa+UQseoqwX7a9T
+         rCeF4wPbHwnNAk7z+ac4QwmKW0McjhiGiAoetSaC6bTzku9HhBToiMsjdVdQCxX6Bys7
+         F2kNrvQ/5kQdL4uUW82CbGNEc5HDVJTv64SSLk6IEoyESKBtoQmdcq/2g6yZXqNAsw+H
+         +fTO1ukFUKH7tKom87tHfzv4JKHv7HavIwmbXRecoLXzarFGoxpGXhVOW28ae1gTSAeu
+         +uRUDrRGFPe7TXJdsJFvNl8BXGqx70/UTzUIi4Nzu51VdcfOJ8W+NrlWfEn80xEXaQuq
+         KS1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789735511; x=1790340311;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=gNHbAwEuVi2IzpLwoXGz7v+aIL/8hFsG5BvN11sltgw=;
+        b=No9A/rS0Py/YNAUBcZFwgD21tQjOjbLbcgKv2swZOgQN9XLToIFnvdPuEGepxe2XLp
+         T5007DlPLywOyaf49FybyB3rx6p3XkyqOgmQlzPGkreyLvj+KJqIvW7YDhqdKM8QgyoT
+         2zZa6KzLLmUAkxWHkELA4RxuAOkHnj4C4mwShWFTWXRopavWUeD63OAGIwyR4pZlTfKv
+         pyrVCrz7KDhbdLsfasxSR4qSeXQ7xZwBD9ILT3x5QiQQG/6WCIFW3TQE7ZzOm4k4Jt4e
+         CPiGPX/jwYDSoPKN5Hit4Ai/hs1X9pn4LkPnEkkhCERtjfpPH9nmRDWRWDDMz0SzHy6y
+         L2og==
+X-Forwarded-Encrypted: i=1; AKwUvBwz2naYPT/rwLdiJ8XtSQqlV6gNRD3ivfPGtjMRnqojqqKT3+xpCShJ8PLx3u6cyI82Gc8GUY4=@vger.kernel.org
+X-Gm-Message-State: AFuF++lZ5/kAkjq61OUxR3M0hBiuYl9sqf4ZwvXuBqj1F8UKzHyiR4zZ
+	6YyLJpfD3oYnRDBH1IEBjGvHd92oX85SlR3KKjLRFPdLbG++E4FRPrWWRPFdcrPiFR4jVsDtO9f
+	NZbPJa9tHLHZ4aeAea4AIPqKTpGrVWaWXpUgok/Z/RCTlzbV/lSO8dlY+og==
+X-Gm-Gg: AYBFou1pIZ/E/HReN1M2B4FxHusTp2/Q5kE4ZIWW4vydwX2zcVdbVHUe7krjNeiFvsm
+	pH/CCsSThsHVAegIycoZbq43v2SiBvUekTVZuGULLaEkZWgPzmd+tJk2SFcDPVa2gaTR/XZVmgk
+	oO/61uCZe4woqGg9KAlYZjc9+eOf53Kps+i7YTSutfhO/FSOUYWE9pOVImFjrouk1TxG/I9VBrx
+	2N6/8SkCGhs4naIoRBUlkAUVC6FpgZFQhZxEXweL5DHsTE8j3j8bHLaF32nhMWzGfqr4gq9qOqe
+	r6iZuPVR+ibR0XBAkW2NoVCRyWSiqPsPOmKk913zKdtEgs4InGY51PtBg5Nu1rrgD9aXWzgxNPH
+	9fSoIrj48t3J96C70urc3NFf96MG3i8ooGnixU583YzU20A==
+X-Received: by 2002:a05:6000:40c9:b0:487:a87:24c9 with SMTP id ffacd0b85a97d-4871d98cc80mr4209369f8f.3.1789735510714;
+        Fri, 18 Sep 2026 05:45:10 -0700 (PDT)
+X-Received: by 2002:a05:6000:40c9:b0:487:a87:24c9 with SMTP id ffacd0b85a97d-4871d98cc80mr4209343f8f.3.1789735510256;
+        Fri, 18 Sep 2026 05:45:10 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-53-30-11.retail.telecomitalia.it. [79.53.30.11])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48720078bfcsm3821644f8f.28.2026.09.18.05.45.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Sep 2026 05:45:09 -0700 (PDT)
+Date: Fri, 18 Sep 2026 14:45:02 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: =?utf-8?Q?Bart=C5=82omiej?= Dmitruk <bartlomiej.dmitruk@isec.pl>
+Cc: Bryan Tan <bryan-bt.tan@broadcom.com>, 
+	Vishnu Dasa <vishnu.dasa@broadcom.com>, pv-drivers.linux@broadcom.com, netdev@vger.kernel.org, 
+	virtualization@lists.linux.dev, "Michael S . Tsirkin" <mst@redhat.com>, bobbyeshleman@meta.com
+Subject: Re: [PATCH] vsock/vmci: harden datagram receive access check (netns
+ bypass + cached_peer race)
+Message-ID: <aq0xcAKg1snndtdX@sgarzare-redhat>
+References: <20260917220225.56200-1-bartlomiej.dmitruk@isec.pl>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <178952042575.22033.9676833200303972344@kernel.org>
+In-Reply-To: <20260917220225.56200-1-bartlomiej.dmitruk@isec.pl>
 
-On Wed, Sep 16, 2026 at 01:00:25AM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider:
+On Fri, Sep 18, 2026 at 12:02:24AM +0200, Bartłomiej Dmitruk wrote:
+>vmci_transport_allow_dgram() gates delivery of incoming VMCI datagrams. It
+>has two problems, both in this one function, fixed together here.
+>
+>1. Namespace bypass: the send hook vmci_transport_dgram_allow() refuses
+>   datagrams when the socket's netns is not in global mode
+>   (vsock_net_mode_global()), but the receive path never checks it. A socket
+>   bound in a non-global (local) netns therefore receives datagrams from
+>   peers it could never send to, defeating namespace isolation.
 
-Hi Liu,
+Is the VMCI transport supporting namespaces? (CCing Bobby)
 
-There is an expectation that AI-generated reviews forwarded to
-the netdev ML are responded to. That can take a variety of forms
-including an email response that agrees with or refutes the review,
-or an updated version of the patch with an appropriate changelog.
+>
+>2. Data race / stale ACL: the decision was cached in vsock->cached_peer and
+>   vsock->cached_peer_allow_dgram with an unsynchronized check-then-set.
+>   The function is called both from the lockless receive tasklet
+>   (vmci_transport_recv_dgram_cb(), no socket lock) and from the lock_sock()
+>   send path; lock_sock() does not exclude bottom halves, so the two contexts
+>   race on those fields. An interleave can return a stale 'allow' for a
+>   VMCI_PRIVILEGE_FLAG_RESTRICTED peer (and it is a plain data race
+>   regardless). The in-code comment claiming the fields are never modified
+>   outside create/destruct is contradicted by the send path.
 
-The expectation is the patch author or submitter handles this.
-But in order to move things along, in this case I've taken a look over it.
+2 issues -> 2 fixes, no?
 
-> 
-> Critical: 0 · High: 1 (1) · Medium: 0 (1) · Low: 0
-> 
-> - [High] The patch validates the pipe id inside nfc_hci_create_pipe()
->   only, but the out-of-bounds store the commit message names as the…
-> 
-> Pre-existing issues:
-> - [High] Incomplete fix for the same bug class: the ST NFC drivers still
->   index hdev->pipes[NFC_HCI_MAX_PIPES] (128 entries) with a raw…
-> - [Medium] hdev->pipes[] and hdev->gate2pipe[] are mutated from two
->   contexts with no lock in common.
-> 
-> --
-> 
-> nfc: hci: add bounds checking in nfc_hci_create_pipe()
-> 
-> This adds a length check on the ADM_CREATE_PIPE response before casting it
-> to struct hci_create_pipe_resp, and rejects pipe ids at or above
-> NFC_HCI_MAX_PIPES in nfc_hci_create_pipe().  The result code is set so the
-> caller does not treat a rejected pipe as success.
-> 
-> > diff --git a/net/nfc/hci/command.c b/net/nfc/hci/command.c
-> > index af6bacb3ba986..9c8bcb98b9677 100644
-> > --- a/net/nfc/hci/command.c
-> > +++ b/net/nfc/hci/command.c
-> > @@ -225,10 +225,19 @@ static u8 nfc_hci_create_pipe(struct nfc_hci_dev *hdev, u8 dest_host,
-> >  	if (*result < 0)
-> >  		return NFC_HCI_INVALID_PIPE;
-> >  
-> > +	if (skb->len < sizeof(*resp)) {
-> > +		kfree_skb(skb);
-> > +		*result = -EPROTO;
-> > +		return NFC_HCI_INVALID_PIPE;
-> > +	}
-> >  	resp = (struct hci_create_pipe_resp *)skb->data;
-> >  	pipe = resp->pipe;
-> >  	kfree_skb(skb);
-> >  
-> > +	if (pipe >= NFC_HCI_MAX_PIPES) {
-> > +		*result = -EINVAL;
-> > +		return NFC_HCI_INVALID_PIPE;
-> > +	}
-> 
-> [Severity: High]
-> 
-> Does this placement actually cover the store named in the commit message?
-> The changelog says:
-> 
->   "A response carrying a pipe id above 127 makes the caller,
->    nfc_hci_connect_gate(), write past the end of hdev->pipes[]."
-> 
-> But nfc_hci_connect_gate() also receives a pipe id directly as an argument,
-> and in that case nfc_hci_create_pipe() is never called:
-> 
-> net/nfc/hci/command.c:nfc_hci_connect_gate() {
-> 	if (pipe == NFC_HCI_DO_NOT_CREATE_PIPE)
-> 		return 0;
-> 	...
-> 	if (pipe != NFC_HCI_INVALID_PIPE)
-> 		goto open_pipe;
-> 	...
-> open_pipe:
-> 	r = nfc_hci_open_pipe(hdev, pipe);
-> 	...
-> 	hdev->pipes[pipe].gate = dest_gate;
-> 	hdev->pipes[pipe].dest_host = dest_host;
-> 	hdev->gate2pipe[dest_gate] = pipe;
+In this case mainly to backport them properly, since for example we 
+added namespace support only recently.
+
+Please also add the right Fixes tag and all maintainers in CC.
+
+Stefano
+
+>
+>Add the symmetric net-mode check and drop the cache, evaluating the decision
+>on every datagram; there is no shared mutable state left to race. The now
+>unused cached_peer{,_allow_dgram} members can be removed in a follow-up.
+>
+>Signed-off-by: Bartłomiej Dmitruk <bartlomiej.dmitruk@isec.pl>
+>---
+>diff --git a/net/vmw_vsock/vmci_transport.c b/net/vmw_vsock/vmci_transport.c
+>--- a/net/vmw_vsock/vmci_transport.c
+>+++ b/net/vmw_vsock/vmci_transport.c
+>@@ -529,18 +529,25 @@
+> 	if (VMADDR_CID_HYPERVISOR == peer_cid)
+> 		return true;
+>
+>-	if (vsock->cached_peer != peer_cid) {
+>-		vsock->cached_peer = peer_cid;
+>-		if (!vmci_transport_is_trusted(vsock, peer_cid) &&
+>-		    (vmci_context_get_priv_flags(peer_cid) &
+>-		     VMCI_PRIVILEGE_FLAG_RESTRICTED)) {
+>-			vsock->cached_peer_allow_dgram = false;
+>-		} else {
+>-			vsock->cached_peer_allow_dgram = true;
+>-		}
+>-	}
+>+	/* Enforce the per-netns mode on the receive path, symmetrically with
+>+	 * the send hook vmci_transport_dgram_allow(): a socket in a non-global
+>+	 * (local) netns must not receive datagrams it could never send.
+>+	 */
+>+	if (!vsock_net_mode_global(vsock))
+>+		return false;
+>
+>-	return vsock->cached_peer_allow_dgram;
+>+	/* Evaluate on every datagram instead of caching the decision in
+>+	 * vsock->cached_peer{,_allow_dgram}: those fields were an
+>+	 * unsynchronized check-then-set shared between the lockless receive
+>+	 * tasklet and the lock_sock() send path, which could return a stale
+>+	 * 'allow' for a restricted peer.
+>+	 */
+>+	if (!vmci_transport_is_trusted(vsock, peer_cid) &&
+>+	    (vmci_context_get_priv_flags(peer_cid) &
+>+	     VMCI_PRIVILEGE_FLAG_RESTRICTED))
+>+		return false;
+>+
+>+	return true;
 > }
-> 
-> Only 0x81 (NFC_HCI_DO_NOT_CREATE_PIPE) returns early and 0x80
-> (NFC_HCI_INVALID_PIPE) falls into the create path, so any value in
-> 0x82..0xff takes the goto open_pipe branch and, once the controller ACKs
-> ANY_OPEN_PIPE, writes two bytes at offset 2 * pipe in the 256-byte
-> hdev->pipes[] array.
-> 
-> Can that argument hold an out-of-range value?  The ST driver stores the raw
-> controller byte into init_data:
-> 
-> drivers/nfc/st21nfca/core.c:st21nfca_hci_load_session() {
-> 	...
-> 	hdev->init_data.gates[j].pipe = pipe_info[2];
-> 	...
-> }
-> 
-> hdev->init_data is assigned once in nfc_hci_allocate_device() and is never
-> re-initialized, and the session-id-mismatch branch of
-> hci_dev_session_init() calls nfc_hci_disconnect_all_gates() (which resets
-> gate2pipe[], removing the -EADDRINUSE early return) before replaying those
-> ids:
-> 
-> net/nfc/hci/core.c:hci_dev_session_init() {
-> 	...
-> 	r = nfc_hci_disconnect_all_gates(hdev);
-> 	if (r < 0)
-> 		goto exit;
-> 
-> 	r = hci_dev_connect_gates(hdev, hdev->init_data.gate_count,
-> 				  hdev->init_data.gates);
-> 	...
-> }
-> 
-> net/nfc/hci/core.c:hci_dev_connect_gates() {
-> 	...
-> 	r = nfc_hci_connect_gate(hdev, NFC_HCI_HOST_CONTROLLER_ID,
-> 				 gates->gate, gates->pipe);
-> 	...
-> }
-> 
-> Would it be better to validate at the write site in nfc_hci_connect_gate(),
-> or in a single helper used by both paths, so the out-of-bounds store the
-> changelog describes is actually closed?
+>
+> static int
+>
 
-This does seem to be a valid concern and I suggest handling it by add
-validation to nfc_hci_connect_gate() rather than nfc_hci_create_pipe().
-
-> 
-> [Severity: High]
-> 
-> This isn't a bug introduced by this patch, but the same two defect classes
-> still exist in the ST NFC drivers, which index the same 128-entry
-> hdev->pipes[] array with a raw controller byte.
-
-I think that this is orthogonal to the purpose of this patch and
-should be treated as a separate issue; I don't think it needs
-to affect progress of this patch.
-
-...
-
-> [Severity: Medium]
-> 
-> This is a pre-existing issue and not something this patch changes, but
-> hdev->pipes[] and hdev->gate2pipe[] are updated from two contexts with no
-> lock in common, which is worth noting since the newly validated pipe id
-> feeds one of them.
-
-Ditto.
-
-...
-
--- 
-pw-bot: changes-requested
