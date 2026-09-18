@@ -1,218 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120E03D4119
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 22:29:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27AFF282F34
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 22:35:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789770596; cv=none; b=mamzvF/Yg9mx/cg3XXXF2YxYGGrNSYAYppmWLt5u/VTtUVEaK/shntYBdv111CsvVAbmM3qqvaQb6eh3xcALqa7F+PJB9iZgatpFJXxG8a8AKMaYUcUFKz6OAiatDd7wGniBSYKDUU+7EwLCtTwTByXyUIPdS52C1i+1//JtUrM=
+	t=1789770911; cv=none; b=WL0NXtyVMNuck7Qz7r3foVmG6OGJcVwcnw8DnYv0pwV1122KTpztPX6Ymh8QQnbPdN95aDy6ZnKYDm+tXpH5upq4dI4znNum+cKp+y043Ar8pg10oiGSFgSbml3guOIR4XUsiI1gs/HitvR/E9MjNaN25JtQ5T6r/83OdrOoJF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789770596; c=relaxed/simple;
-	bh=92dQhlBzWQsewmwJcNk7DV+NQgbagynAnpL/bCd1URI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pzgfE9hivhOI23R5tJ6gh30IeIQzOBfRsgfZ1/zsbxQUo/HUrgwf1kAiAlA2/Gnn8ichwvymSj/W/tbdiBuT/wlwfBNSo2heKIJ3/dNXTf+Q5xS4xJu5iq6mLuTXIexieNPJZkNJQA0W+B5mmk4L1AP16d+9/hXOV2Qx1Azujio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l/kH6e6P; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789770911; c=relaxed/simple;
+	bh=xb3is1fg4psSzmWQVGNvDz1BjKNyE4uEP1bxnTlEH8A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=alp64TKsqoL4wtZ8sN52oAzwp+mrd7KjfuJY3zJqNx3ZNN4hnHia6/mYFQNuI0WjA9e+E/E/p7L4cEgySLqtI+k1sVmejhbAoJo1x8+oKmhNKn1VHhJ77SleeqiUtJxqpXNwzfj+5XKyvE6WNt2uUMt+AWDhHQWe3CP1cMkrgDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o728Ieje; arc=none smtp.client-ip=74.125.227.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l/kH6e6P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1599A1F00898;
-	Fri, 18 Sep 2026 22:29:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789770592;
-	bh=LxVTvFAb+58oW39esFCfuZ3f5OW1us54GclQWcYhfDI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=l/kH6e6PQfjJXEAKjy/xV1PCYxL04Y6OlAWMhBWr731P+gvlFMbwq3XfR+Uml4Qk1
-	 FKFcF/PgmzO4trTsWijTT+KBEBA0XBQolmP4CLfdYeMGstyCtYvwvJT/g3wYRTiOcX
-	 977ru9HvtcYG5QJDgpFD7iFjfs6AiRkNtJr4fOQVFHnX3zAVbZsEmFz5L7K/dJgQpn
-	 g82fbD9jZuIbnHCbeXSnP0WwskcQkgDm1HavbTFQjy36sAyzqzdBblM8hWD2sutnt5
-	 lPaEDn7mQltHcc8TF6jLUZfIKe5iaQiMbcftwQkevriOmroO5AS6sxx1lKVN4cxAZH
-	 DRJHlzntOKETA==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net 2/2] selftests: net: nl_nlctrl: check the op ids in the policy map
-Date: Fri, 18 Sep 2026 15:29:49 -0700
-Message-ID: <20260918222949.4190284-2-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260918222949.4190284-1-kuba@kernel.org>
-References: <20260918222949.4190284-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o728Ieje"
+Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-396ccb1a98fso1177524a91.1
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 15:35:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789770909; x=1790375709; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=D06tmXj1uCfo6BIbxIXyOm4hxr/YiUTBkFpE3eRGCw0=;
+        b=o728Ieje85fiV2UpC+/ha0mSSzmSr50+AW4ZUZErNf8FkinKLRZfwibZUmlMw7KUMH
+         2rnZN0e0XHnZjgl3kr/Q9CF0ec0EqgYdTJfo3fZz97bF9Rfpp/QWtl3JKgdRZtKDSX/y
+         TOkJy0PBUAG+ef9FnN8Ww/NB+hHL/BeY7DJP3LjWTzE1I2x6wAGd2PAGEqwPF853Xa6L
+         8rqw+0RmaCIxDu2Oj5cYb/a+QiQlZEY75/y7kIDy5JpP92QF5J5+seI/Sp1B3P8QMANB
+         fZJwD1PsDUBARBND45bqZYwtDr31Luo4J4QtApXNuDzsrfakuC+zCB93XeeB6DWvAmye
+         QCdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789770909; x=1790375709;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=D06tmXj1uCfo6BIbxIXyOm4hxr/YiUTBkFpE3eRGCw0=;
+        b=W2iT/ROloONNEX8tFtmS/tHjFXKzrJtHLGwea6xSnhIMoJ/fLj5TnkbuLTAoa0zppa
+         pQ9eY7HFGjzUm6UiX54nSFuKlcUagTstmGfnTparmhGnnZXhZu0z78A9WJoMDM+XehQb
+         49alK2aPuuzUld3liHDXt3H0y6YzdTdMAAgl4eN227RuhOduuUYB2WR3J2RdfvIM8X7q
+         3kWVhG5GfwYd2Db3G7YU+pfU0g0qt+ydk/4fVNeE0VvH4Nc3X9ccgvG74faEfuhIhYHv
+         +WPmD3eChLZwxOWF3ORCI5BSM73jDKs5R0LHBn7GOZX5mOOXQ8IfDdOHzYbonEWY/d8Q
+         U39Q==
+X-Forwarded-Encrypted: i=1; AKwUvByEsnqD6aZtRTRpiOhoUg0fJTLi8AInehorycAPc8rkD0mUivsDiWsSj/wRCZ+8bBydE3vC5vE=@vger.kernel.org
+X-Gm-Message-State: AFuF++mAxYrItc06Nzdhwk4HZzxMt9sMBMTy1FcfZzfHqQjEYL3uRgGA
+	b5+rbiE7c+Jei0mg55X2En3g357+y7xG6XeL0d3pY5JdmtjelgXWXNvkwoM51w==
+X-Gm-Gg: AYBFou19U/Tl+6NHl3WgdkCoqdvtE6edHbfF9hPp16g17ydewc3E0ujLQ2rTUIdMWJh
+	JG1VbexUZfiSWWXDWO9Q6EknC7C66B2JC5VEYjpQeN5yy1tF0ZtWqGAp/CiaY+YiqNtPmwF7DSq
+	NMzars6/rjQDBHRNT/x708WRVmFSOfWNi4FmZVbc5IkiQfuVTucceIMD3ClBHFRY+OswfCM646S
+	KXo94xid7s19MxXD0t4DUvB3EuzSsXgrGRd94nJXFNbcZKI8fn309QR93HGarWrJVkk/VNbQ/P1
+	vsnfeCMsZZbBE0XILtxEyNotyuuATQZ8OVfsmuhT+JSzkZVT0+FKipzVBTkYEXhykDAIAkpnXJ3
+	vgoIjr4cKOuK8vTzn11iOy6ku/rbvlvxqcrZutAH40WUCzU9aZlJ7bKs69ikASTdKY5I5NVvds/
+	NOKeVhJ8kEz5pMSpglE0AsqmdhJKfTDFlGMITAD4SvbbPWvy+z7boLSjqOwEhnnsjDy5czNlB7k
+	pkwBgg/UQVRxdrtEw==
+X-Received: by 2002:a17:90b:134f:b0:39d:febe:7460 with SMTP id 98e67ed59e1d1-39e54d3651cmr7716214a91.22.1789770909387;
+        Fri, 18 Sep 2026 15:35:09 -0700 (PDT)
+Received: from v4bel ([58.123.110.97])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6c379c4bsm1375753a91.7.2026.09.18.15.35.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Sep 2026 15:35:09 -0700 (PDT)
+Date: Sat, 19 Sep 2026 07:35:05 +0900
+From: Hyunwoo Kim <imv4bel@gmail.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org,
+	imv4bel@gmail.com
+Subject: Re: [PATCH v1 net-next 0/2] net: Disallow buggy TCP transitions and
+ IPV6_ADDRFORM.
+Message-ID: <aq28mdNpi3ssjgXz@v4bel>
+References: <20260904033543.2635540-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260904033543.2635540-1-kuniyu@google.com>
 
-Validate that the op map in the policy dump is correct.
+On Fri, Sep 04, 2026 at 03:35:27AM +0000, Kuniyuki Iwashima wrote:
+> The following operations have recently received a lot of AI-driven
+> bug reports:
+> 
+>   * listen() + shutdown() + connect()
+>   * connect() + connect(AF_UNSPEC) + listen()
+> 
+>   * setsockopt(IPV6_ADDRFORM)
+> 
+> They are not worth fixing by churning the fast path, so this series
+> disallows the transitions and removes IPV6_ADDRFORM.
+> 
+>   https://lore.kernel.org/netdev/CANn89i+px52TtJy3S9=uHxGj3s-WueguRo1Z_4FxO=02KLmwmQ@mail.gmail.com/
+>   https://lore.kernel.org/netdev/5832ba17-c096-4f07-aa73-2e2bb6f79856@redhat.com/
+> 
+> I did not add Fixes tags, but if we want to backport, the tag
+> would be:
+> 
+>   Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- tools/testing/selftests/net/nl_nlctrl.py | 116 +++++++++++++++++++----
- 1 file changed, 99 insertions(+), 17 deletions(-)
+Hi netdev maintainers,
 
-diff --git a/tools/testing/selftests/net/nl_nlctrl.py b/tools/testing/selftests/net/nl_nlctrl.py
-index fe1f66dc9435..237b3d273260 100755
---- a/tools/testing/selftests/net/nl_nlctrl.py
-+++ b/tools/testing/selftests/net/nl_nlctrl.py
-@@ -9,40 +9,86 @@ from lib.py import ksft_run, ksft_exit
- from lib.py import ksft_eq, ksft_ge, ksft_true, ksft_in, ksft_not_in
- from lib.py import NetdevFamily, EthtoolFamily, NlctrlFamily
- 
-+# Families we can expect to always be around, and which between them
-+# cover ops with a do, with a dump, and with both.
-+FAMILIES = ('nlctrl', 'netdev')
- 
--def getfamily_do(ctrl) -> None:
--    """Query a single family by name and validate its ops."""
--    fam = ctrl.getfamily({'family-name': 'netdev'})
--    ksft_eq(fam['family-name'], 'netdev')
-+
-+def _get_ops(ctrl, name):
-+    """Get the ops of a family, keyed by command id."""
-+    fam = ctrl.getfamily({'family-name': name})
-+    ksft_eq(fam['family-name'], name)
-     ksft_true(fam['family-id'] > 0)
- 
-     # The format of ops is quite odd, [{$idx: {"id"...}}, {$idx: {"id"...}}]
-     # Discard the indices and re-key by command id.
-     ops_by_id = {v['id']: v for op in fam['ops'] for v in op.values()}
--    ksft_eq(len(ops_by_id), len(fam['ops']))
-+    ksft_eq(len(ops_by_id), len(fam['ops']),
-+            comment=f"{name} lists a command twice")
-+    return ops_by_id
- 
--    # All ops should have a policy (either do or dump has one)
--    for op in ops_by_id.values():
--        ksft_in('cmd-cap-haspol', op['flags'],
--                comment=f"op {op['id']} missing haspol")
-+
-+def _get_policy_map(ctrl, req):
-+    """
-+    The policy map in the Netlink replies looks like this:
-+
-+         [{'family-id': 16, 'op-policy': {'do': 0, 'dump': 0, 'op-id': 3}},
-+          {'family-id': 16, 'op-policy': {'dump': 1, 'op-id': 4}}, ...]
-+
-+    Return the mapping:
-+
-+         {3:{'do','dump'}, 4:{'dump'}}
-+
-+    The policy itself is discarded here, only return which command has policy.
-+    """
-+    pol_map = {}
-+    for msg in ctrl.getpolicy(req, dump=True):
-+        if 'op-policy' not in msg:
-+            continue
-+        modes = dict(msg['op-policy'])
-+        cmd = modes.pop('op-id')
-+        ksft_not_in(cmd, pol_map, comment=f"command {cmd} reported twice")
-+        pol_map[cmd] = set(modes.keys())
-+    return pol_map
-+
-+
-+def getfamily_do(ctrl) -> None:
-+    """Query single families by name and validate their ops."""
-+    ops = {name: _get_ops(ctrl, name) for name in FAMILIES}
-+
-+    for name, ops_by_id in ops.items():
-+        for op in ops_by_id.values():
-+            # All ops in nlctrl and netdev have a policy
-+            ksft_in('cmd-cap-haspol', op['flags'],
-+                    comment=f"{name} op {op['id']} missing haspol")
-+            ksft_true(op['flags'] & {'cmd-cap-do', 'cmd-cap-dump'},
-+                      comment=f"{name} op {op['id']} has no handler")
-+
-+    # nlctrl getfamily (id 3) does both, getpolicy (id 10) is dump-only
-+    ksft_in('cmd-cap-do', ops['nlctrl'][3]['flags'])
-+    ksft_in('cmd-cap-dump', ops['nlctrl'][3]['flags'])
-+    ksft_not_in('cmd-cap-do', ops['nlctrl'][10]['flags'])
-+    ksft_in('cmd-cap-dump', ops['nlctrl'][10]['flags'])
-+
-+    netdev = ops['netdev']
- 
-     # dev-get (id 1) should support both do and dump
--    ksft_in('cmd-cap-do', ops_by_id[1]['flags'])
--    ksft_in('cmd-cap-dump', ops_by_id[1]['flags'])
-+    ksft_in('cmd-cap-do', netdev[1]['flags'])
-+    ksft_in('cmd-cap-dump', netdev[1]['flags'])
- 
-     # qstats-get (id 12) is dump-only
--    ksft_not_in('cmd-cap-do', ops_by_id[12]['flags'])
--    ksft_in('cmd-cap-dump', ops_by_id[12]['flags'])
-+    ksft_not_in('cmd-cap-do', netdev[12]['flags'])
-+    ksft_in('cmd-cap-dump', netdev[12]['flags'])
- 
-     # napi-set (id 14) is do-only and requires admin
--    ksft_in('cmd-cap-do', ops_by_id[14]['flags'])
--    ksft_not_in('cmd-cap-dump', ops_by_id[14]['flags'])
--    ksft_in('admin-perm', ops_by_id[14]['flags'])
-+    ksft_in('cmd-cap-do', netdev[14]['flags'])
-+    ksft_not_in('cmd-cap-dump', netdev[14]['flags'])
-+    ksft_in('admin-perm', netdev[14]['flags'])
- 
-     # Notification-only commands (dev-add/del/change-ntf etc.) must
-     # not appear in the ops list since they have no do/dump handlers.
-     for ntf_id in [2, 3, 4, 6, 7, 8]:
--        ksft_not_in(ntf_id, ops_by_id,
-+        ksft_not_in(ntf_id, netdev,
-                     comment=f"ntf-only cmd {ntf_id} should not be in ops")
- 
- 
-@@ -103,6 +149,41 @@ from lib.py import NetdevFamily, EthtoolFamily, NlctrlFamily
-             comment="linkinfo-set should not have a dump policy")
- 
- 
-+def getpolicy_op_map(ctrl) -> None:
-+    """Check the op-to-policy map consistency. Each op with 'haspol' flag
-+    has to have a policy. The policy back-references must name only
-+    real ops that exist, have given modes (do vs dump) and have 'haspol'.
-+    """
-+    for name in FAMILIES:
-+        ops_by_id = _get_ops(ctrl, name)
-+        haspol = {cmd for cmd, op in ops_by_id.items()
-+                  if 'cmd-cap-haspol' in op['flags']}
-+
-+        pol_map = _get_policy_map(ctrl, {'family-name': name})
-+        ksft_eq(set(pol_map), haspol,
-+                comment=f"{name} policy map does not match the op list")
-+
-+        # Walk the op list rather than the map, the map may be missing
-+        # the very op we are after. Asking for a command the family does
-+        # not have is an error, so it must not come from the map either.
-+        for cmd in sorted(haspol):
-+            modes = pol_map.get(cmd, set())
-+
-+            # The kernel only reports a mode the op actually has.
-+            if 'do' in modes:
-+                ksft_in('cmd-cap-do', ops_by_id[cmd]['flags'],
-+                        comment=f"{name} cmd {cmd} has no do")
-+            if 'dump' in modes:
-+                ksft_in('cmd-cap-dump', ops_by_id[cmd]['flags'],
-+                        comment=f"{name} cmd {cmd} has no dump")
-+
-+            # Asking for one op builds the map in a different place in
-+            # the kernel, it has to report what the full dump did.
-+            single = _get_policy_map(ctrl, {'family-name': name, 'op': cmd})
-+            ksft_eq(single, {cmd: modes},
-+                    comment=f"{name} cmd {cmd} policy differs from the dump")
-+
-+
- def getpolicy_by_op(_ctrl) -> None:
-     """Query policy for specific ops, check attr names are resolved."""
-     ndev = NetdevFamily()
-@@ -122,6 +203,7 @@ from lib.py import NetdevFamily, EthtoolFamily, NlctrlFamily
-     ksft_run([getfamily_do,
-               getfamily_dump,
-               getpolicy_dump,
-+              getpolicy_op_map,
-               getpolicy_by_op],
-              args=(ctrl, ))
-     ksft_exit()
--- 
-2.55.0
+What is the plan for stable backports here? Does the uapi change rule
+this series out for stable?
 
+> 
+> 
+> Kuniyuki Iwashima (2):
+>   tcp: Do not allow buggy transitions between ehash and lhash2.
+>   ipv6: Remove IPV6_ADDRFORM.
+> 
+>  include/linux/net.h                |  2 +-
+>  include/net/inet_connection_sock.h |  1 +
+>  net/core/sock.c                    |  4 +-
+>  net/ipv4/af_inet.c                 |  3 --
+>  net/ipv4/inet_connection_sock.c    |  1 +
+>  net/ipv4/inet_hashtables.c         | 11 ++++
+>  net/ipv6/af_inet6.c                |  4 --
+>  net/ipv6/ipv6_sockglue.c           | 87 ------------------------------
+>  8 files changed, 15 insertions(+), 98 deletions(-)
+> 
+> -- 
+> 2.55.0.1003.g10538fe699-goog
+> 
+
+Best regards,
+Hyunwoo Kim
