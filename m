@@ -1,108 +1,110 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8507D4ACC9A;
-	Fri, 18 Sep 2026 08:41:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFAAB632;
+	Fri, 18 Sep 2026 08:42:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789720906; cv=none; b=q2yq+P0elo/koG73ESz2G/ym6yAhnX4iPoYv23YRZGophffyMcApcSr3WTWc2mUoC7/MS5xj+WBGEEHz9uOvMsON02hIeJ+YDQOx/LsAh540uWTimkpT5Z7LvgmS0owflw0QA5knhmlcx0WXh0npR490piX/reNaMq7wyaq+vk4=
+	t=1789720964; cv=none; b=IVMbY1N9dzmkU1K3JMHpmNlfJBkTKCwFxHlDgAtU4lLDEpGlOrbudao8cyBxXy4zm0J2FCvLtCNt7twc/j4zpLc98/HzEBPQGjsZ+nS0fvjQLG9F7D6sEm9EFLRju7nGJF9VRAqYRY9oh7V0NX3sbm0BI1EW3KtlE0Bb0Uk57U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789720906; c=relaxed/simple;
-	bh=GVYSUNom1POgP/Sk82oTd1LP02EaxE17oeIHbfRzLpM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NFByFVeW+O6qyXXhwFFLyWxjLEsIyhxqLhxNCSvp0VeZworgsco2IlfxUOUviHo1nC9wv6GtPGYeZlD363OlvDXUFjnJxzUMt4Ojydz55bZMEJNA3KKBGnxFBXdqcwQCkb2FlnXlZHOZtr8gHzGofYQLQj574MdMusIB6nv35H0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=OmB7xTVH; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1789720964; c=relaxed/simple;
+	bh=PzldztNMS5Cjgu3kblAv99hJJzzoSjGJ8ayBAiYY3I8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sm2ud4BIFPOdBENbwPd+ana+rqAYymL535Wwp87nx46a0bE84P6QwbIi3TzKxLYZZgqlMI2xISh1UL616EjJzKavlNGav3Y82t0qb1qmt0YDYWVZ54rXiT4yHmC+86KdrnrcLXVAAvibtLSYckFFUmtPMQvsAb9/+onhD++RcfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=WJXSZjZQ; arc=none smtp.client-ip=220.197.31.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="OmB7xTVH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1789720902;
-	bh=0l48oSRSzotLHGeddhB1onLUzq5S9m/hjAPvhHMilFM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OmB7xTVHjK3XsacV8NViuCcuCOFVZR2p/mrEyJjGnKGCxa3HJa8H4CNXc7xFQpK1m
-	 DNiX5YdbE9i6rTDIh5I3I5Ewg1PMpysUE83Ypu+s9KJQ+PDvK7ko6Vr74CyYexhaU2
-	 8fUxc7NE7uoofOxKQsHBVuRf35GCgVZmqYxuRqCW0Wu+Flq7z6xVTF1Xv4PhVrKATu
-	 Xt5nEgzcjJm2Mg+sOAIYJH4BY7KVMf1274uGqneqST9UuDo0lbivcDXmNTaqI0n2jm
-	 9ug+vqmPyVGMiQGl4E9kDZbw1l3QmGmcqDHX8kQcrJEpay1CHb4orKLrML0CbWBroU
-	 aaCFFiiv9pOAQ==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 5318E60076;
-	Fri, 18 Sep 2026 10:41:42 +0200 (CEST)
-Date: Fri, 18 Sep 2026 10:41:39 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
-	netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
-	horms@kernel.org, fw@strlen.de, ja@ssi.bg
-Subject: Re: [PATCH net 10/10] netfilter: nf_tables: skip expired catchall
- elements on insert and delete
-Message-ID: <aqz5Q45wjggB0YBN@chamomile>
-References: <20260916231652.127456-11-pablo@netfilter.org>
- <20260918020412.3513453-1-kuba@kernel.org>
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="WJXSZjZQ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=7+g8+UxJXbBTwX2N40/dzce93+bWOJpHxoj4kNEwGWQ=;
+	b=WJXSZjZQzxzO2WgIdscOrxkCYknvi3aF6qRYuiZt4MsL+/VuWUnKEWD/O5Q7z5
+	mUuj6ATRg+1lk/hBMV5EuKHBa11aQQuBwpd2i+slidDkf/Wmzu5oL5Visd85IEaO
+	e4Rj5Q8NqWMzJvmdAb0EW2wBOzrH7eYQx2XoywR3yuG3M=
+Message-ID: <514b0d85-c6b6-4e31-af41-5df45319e770@126.com>
+Date: Fri, 18 Sep 2026 16:41:16 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260918020412.3513453-1-kuba@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: stmmac: request the MDIO reset GPIO only once
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Linkui Xiao <xiaolinkui@kylinos.cn>, stable@vger.kernel.org
+References: <20260917125457.1353718-1-xiaolinkui@126.com>
+ <ff811e9f-4d4b-4b26-a0b5-84cb2eb52618@bootlin.com>
+Content-Language: en-US
+From: Linkui Xiao <xiaolinkui@126.com>
+In-Reply-To: <ff811e9f-4d4b-4b26-a0b5-84cb2eb52618@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:_____wD3V80s+axqJuOTBg--.3829S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7ury5WF45tr48GFy7tr4fKrg_yoW8AryUpr
+	4rXF45JF98A3yxtrWDXw4kuF9YyrnIyF4DGr1I9w4Ikwn8Xr4ftrWxtr15Xay2kryqk3ya
+	gr4xua4DuFyvyaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UcBMNUUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlA5PJmqs+S6tCQAA3G
 
-On Thu, Sep 17, 2026 at 07:04:12PM -0700, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> netfilter: nf_tables: skip expired catchall elements on insert and delete
-> 
-> This adds an expiry test to the catchall duplicate walk in
-> nft_setelem_catchall_insert() and to the delete-candidate walk in
-> nft_setelem_catchall_deactivate(), using the per-netns transaction
-> timestamp.  The stated goal is to make both control-plane walks agree with
-> the lookup and dump predicates.
-> 
-> A couple of questions on the new predicates and on the commit message.
-> 
-> > The delete path shows the same drift: nft_setelem_catchall_deactivate()
-> > picks the first active-next entry in the catchall list, so with an
-> > expired entry still pending GC it retires the stale entry instead of
-> > the fresh one, and it deactivates an element that userspace no longer
-> > sees instead of failing with -ENOENT.
-> 
-> [Severity: Low]
-> Is the first half of this paragraph reachable before this patch?  The
-> "expired entry still pending GC ... instead of the fresh one" wording
-> implies a stale active-next entry and a fresh active-next entry can coexist
-> in catchall_list.
-> 
-> Pre-patch nft_setelem_catchall_insert() rejected every entry that was
-> active in the next generation, expired or not:
-> 
-> 	list_for_each_entry(catchall, &set->catchall_list, list) {
-> 		ext = nft_set_elem_ext(set, catchall->elem);
-> 		if (nft_set_elem_active(ext, genmask)) {
-> 			*priv = catchall->elem;
-> 			return -EEXIST;
-> 		}
-> 	}
-> 
-> The other ways an entry leaves active-next all unlink it from
-> catchall_list (nft_trans_gc_catchall_sync(), the async GC completion) or
-> happen on an explicit delete, and the non-EXCL add refreshed the existing
-> element through nft_trans_elem_update() rather than linking a second one.
-> So the "wrong entry retired" state seems to first become reachable because
-> of the insert hunk in this same patch.
-> 
-> The second half (deactivating an element userspace no longer sees instead of
-> returning -ENOENT) does look pre-existing.
-> 
-> Since the two hunks are interdependent, could the message say so explicitly
-> so the stable backport is not split?
+Hi Maxime,
 
-No need to split this stable backport...
+Thanks for the review.
 
-> [Severity: High]
-> Should this predicate also test nft_set_elem_is_dead()?
+On 2026/9/18 00:10, Maxime Chevallier wrote:
+> Hello,
+> 
+>> @@ -389,11 +389,21 @@ int stmmac_mdio_reset(struct mii_bus *bus)
+>>   		struct gpio_desc *reset_gpio;
+>>   		u32 delays[3] = { 0, 0, 0 };
+>>   
+>> -		reset_gpio = devm_gpiod_get_optional(priv->device,
+>> -						     "snps,reset",
+>> -						     GPIOD_OUT_LOW);
+>> -		if (IS_ERR(reset_gpio))
+>> -			return PTR_ERR(reset_gpio);
+>> +		/* Request the reset line only once and reuse the descriptor
+>> +		 * afterwards. A second request of the very same line makes
+>> +		 * gpiolib fail with -EBUSY, which devm_gpiod_get_optional()
+>> +		 * passes through because it only filters out -ENOENT. The
+>> +		 * reset would then abort early and leave the PHY un-reset.
+>> +		 */
+>> +		if (!priv->mdio_reset_gpio) {
+>> +			priv->mdio_reset_gpio =
+>> +				devm_gpiod_get_optional(priv->device,
+>> +							"snps,reset",
+>> +							GPIOD_OUT_LOW);
+>> +			if (IS_ERR(priv->mdio_reset_gpio))
+>> +				return PTR_ERR(priv->mdio_reset_gpio);
+>> +		}
+>> +		reset_gpio = priv->mdio_reset_gpio;
+> 
+> The problem is real, but this isn't the correct approach to solve that.
+> 
+> Instead of requesting the reset gpio on-the-fly at reset time (good example
+> of when not to use devm_xxx) , let's request the gpio at probe time.
+> 
+> I suggest you move the devm_gpiod_get_optional() in stmmac_mdio_register(),
+> which is called at probe time. Here, it makes sense to use devm_xxx.
+> 
 
-Yes, originally this patch checked for the dead and it is indeed need.
+You're right, requesting the GPIO in the reset callback is the wrong
+place for devm_xxx.
+
+I'll send a v2 that moves the devm_gpiod_get_optional() call to
+stmmac_mdio_register(), which runs at probe time. stmmac_mdio_reset()
+will then just use the descriptor stored in stmmac_priv.
+
+Thanks,
+Linkui
+
+> Thanks :)
+> 
+> Maxime
+> 
+
