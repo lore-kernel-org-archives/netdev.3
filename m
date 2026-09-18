@@ -1,61 +1,83 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C73D83BFAEB
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 02:30:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04FA2274FE3;
+	Fri, 18 Sep 2026 02:31:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789698632; cv=none; b=RZ4hlLd3ZSyGpr5BISQGqbeCEULWXX93Q8I8iCIo8je4fdo8qb03zxsMbEXzBNAs7DvRC5XaPLfL9MjLVCprYkjIZjWFL1LdiVykQbAZ/0b5sZvM9BVnUPLCHdBRcefbkXgUKgs1rbbH/V32ukuWYiywbBkfyx3bFfM7ZD9zAg8=
+	t=1789698675; cv=none; b=QzLAAVSKY4PRK2bFadE04cgUqYKDwEACPSqmoMuNWTQ1Lp+0UBJCfZemBqvLuMq3Fh2G0bZHtu5yEjcl1YVDvGYd2h65gb8e22piBGUJBBM7Q9L/samosUba8fuD3LU/UspGf4y7B2q/hOb9+ZnnZJCmM1Iu8kfa7VyN/lSD9bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789698632; c=relaxed/simple;
-	bh=yHUivfFU7qlUaZppomgzcNlfw0RapaHanUo/BAzXze4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AF9AGbufjkmCaebBDFucATQToOFbJnbWDBHU6wBK+WofgrxBdzBEynpvPTpgTPAJVVw5TcIPa8iZLY8FC9nk7WsIlURYNty5VfSDQZ7xsB5UVuJm1gm/gPUuErZYKomj78Z813Bp+qv0AaBmS+7W9KCoT8UaAfCfN+CXj5r3C8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GNybPAbc; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1789698675; c=relaxed/simple;
+	bh=gGuZcpFkN8iV7wK0XE6yFOLGViBFy5OeY1cUbrexNJw=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=J+3hNjLuwonw9cW6n5oM6g+9tBTIIHzvPlTk/VEvaG2mkK5/JWFLnXgltNwyZnUaSXHCVbv0fOQ5Yaiv0YB/OJ+uht6D+fm44G/zVYTsfufZDQDZ7LzgJejiJNOcJRXdBzcCIQ9X3/jhTjWkFjy7bHR1yk5G+pnrCGgy9nSUj/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aYncmO1C; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GNybPAbc"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=u+WJMZPTdsBV3O8R/WKXRr4qtbJ4eOiMicexx5vtJKE=; b=GNybPAbcOE5C7MwaxEMafEr65K
-	xsk3YSWRabA0LwsEisRdvPqsmQjzO+eTadgYhaYASguaHcAmnsoYbUMsawxE9NJkyRJikRKZZ+6s1
-	74F5cCvxos5gCrAc8qD2VHZRjpXUZwhV25N9dLWpXornfx5eY00WkaVYhxum12Y01u0c=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x7OMh-005msj-Vy; Fri, 18 Sep 2026 04:30:15 +0200
-Date: Fri, 18 Sep 2026 04:30:15 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Ivan Delalande <colona@arista.com>
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, netdev@vger.kernel.org,
-	Vincent MORVAN <vinc@42.fr>,
-	Atharva Tiwari <atharvatiwarilinuxdev@gmail.com>
-Subject: Re: [PATCH net v3] tg3: use random MAC address when
- tg3_get_device_address fails
-Message-ID: <0cb5dcee-4b94-4779-ae4d-ebaa429bd21a@lunn.ch>
-References: <20260917223416.GA245819@visor>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aYncmO1C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A5281F00893;
+	Fri, 18 Sep 2026 02:31:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789698670;
+	bh=nnuDwb7ieaArIudOF1zZaOxpidCwiEEJUj9MbgAN8t8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=aYncmO1CJ2+gdksxu+fEqo3j9RIC0Lt4djIKO+Ih/vjisFc2fX2CsV16dRfSDbWbU
+	 Ht7K8nMcLCUWjOqeOOEXp8o7AFc3CXdFsV/EzinOkwwoBbvD+Q2vcE42e+TFOzQ+pb
+	 WVZqmRa/e2t1Z0F1ea2gdPFHsO6AOXoXPIE8T5BG4GDhtCXZQroXvAOfSlScVVIyeJ
+	 KHp8LxZwbRNrkEBNTyS5RGMHyeSeu0E9vRfLSvVL7Q8CjEAJdLwkvdJU3d4agrert9
+	 wFR13xZMWBPFU7upx3/tWmViJYAuE89R3G+QRigtl5Lt2/DKUbYrRMyUiS/JW9ZPUV
+	 98XrGWvd1sSYA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0AB4380820D;
+	Fri, 18 Sep 2026 02:30:04 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260917223416.GA245819@visor>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v6] tipc: replace deprecated strcpy with strscpy
+ in
+ tipc_bearer_get_name()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178969860364.236125.4397809874433283947.git-patchwork-notify@kernel.org>
+Date: Fri, 18 Sep 2026 02:30:03 +0000
+References: <20260915145641.2434403-1-ajithpv.linux@gmail.com>
+In-Reply-To: <20260915145641.2434403-1-ajithpv.linux@gmail.com>
+To: Ajith Parappalliyalil Venugopal <ajithpv.linux@gmail.com>
+Cc: tung.quang.nguyen@est.tech, jmaloy@redhat.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+ linux-kernel@vger.kernel.org
 
-> +	if (err == -EPROBE_DEFER) {
-> +		dev_err_probe(&pdev->dev, err, "ethernet address provider not ready\n");
+Hello:
 
-Please go read the documentation for dev_err_probe()
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue, 15 Sep 2026 14:56:41 +0000 you wrote:
+> The `strcpy()` function is deprecated and moving towards code-tree
+> elimination. Replacing it with `strscpy()` fixes potential buffer
+> overflow vectors by ensuring safe NULL-termination based on the
+> destination buffer size limit [1][2].
+> 
+> To make the interface safer and more robust for future callers, refactor
+> `tipc_bearer_get_name()` to accept a destination buffer length parameter.
+> Replace `strcpy()` with `strscpy()` and pass through any potential
+> `-E2BIG` truncation error code up to the caller. Update the existing
+> caller in `net/tipc/monitor.c` to pass its array size.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v6] tipc: replace deprecated strcpy with strscpy in tipc_bearer_get_name()
+    https://git.kernel.org/netdev/net-next/c/4bb9710c6a68
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-    Andrew
-
----
-pw-bot: cr
