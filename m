@@ -1,62 +1,132 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13165547070;
-	Fri, 18 Sep 2026 22:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6A019B5A3;
+	Fri, 18 Sep 2026 22:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789769726; cv=none; b=ZOW7ONHTolUfy7zBpkyc0K8+eWbIB/hOP/XGTaR+nfx8LjSTbKelnbJG/FRN0xpfpEeM+QvZB5O5uBHPPh1TI4skRjO2Y7/XUyKiC6+jrve+gT9yUhVZGv/oaHBCelAQNFnUXdTomvsysEgH4c19T1dfZjjDYuzZX44fFacM7Hk=
+	t=1789770189; cv=none; b=ccILrvbLF9jDgkwh16PnWRBsDIaQ92OV3A7haY+bNRfp65neSKJXtv8I9n5XpuGKMd/SrcO1afO+p8VZAAEeEWRVxGv14TSWtPkxbabYpFg0daBkvza+jU0MW6cNMWeZ6VNsNWBUAsVxtLXfvM9731Fq9jhYvxHNB6j6LWtrBN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789769726; c=relaxed/simple;
-	bh=fN8y45PXKcbM4yoj3xa94QofTBbmHJjgD4PwOWGEQuQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QqkZGquBsZcmMaOnOVBaLg5yGqytdELSkJBV0x35WfbSGJ3qA4HOulz5djYiipSCLVvVIsiUqQOe1wWZnzTq3sg/EAxw0zI6HVCiLb3MLpu0gj/fLwAXbSQ4j5IZ/4Kxhw+DgitALR7E5wPwlJjVOORincySYVvAYWGmV5Pj1rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LZoRtcau; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789770189; c=relaxed/simple;
+	bh=nucvwISXMCDKMHV4jkfXUTO7Xx/vX5jFdJJQOxsGeFM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=JYUFIoEM49fQGKHlVrbvOUEXJpc6hV75g+yaNMuxA3Jq4KSwEgBu0u8wJ/FRjGdI+q6rY6dlx82UM1bymyz/yZdSNe/M7IpSDmWQdVX1jZyHeMCKTJvBOL7Rzy/+Ejhmrg6M+/r6gZaEQ/MinjN3OENrhJ2BhYwa1fdnHDYt82s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OPbZz5ah; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LZoRtcau"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7E51F000FF;
-	Fri, 18 Sep 2026 22:15:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OPbZz5ah"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B611F000FF;
+	Fri, 18 Sep 2026 22:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789769724;
-	bh=2VX29fK22A0GVBgQXNalWm4RKvRMnao6Y7xCzTiKoOk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=LZoRtcauKQs2K3f+ieuSeR3XnFUXmDyfMeYVA4WCl0JsLSKVEJiVniSLrLIwYzatT
-	 /btFj6V9HlIXpqvFFWlCdShtfOkoBADNeHxF4H8M+FSFTP333NDz+R15ta4+4iqpKJ
-	 1SbNhQmMeq/8UkcBjlVqHqF1FTSq0p2CsjC4QUrR/exgi/hWUV7SOBeCekskGEcCtQ
-	 dB3+mfLf58v7Um07fPC4O7JJej5QyTPE2M8Ko8Z4P9B85ydmhrhD4t7GsNhUNx/V0Y
-	 q2KQCwb9JNHUWQoiH77UphAWr7wxoVOLIyrOrgkfRSJLCJ8pkHVvLcXlK/KBoIeUOU
-	 yTdGgYx41aYng==
-Date: Fri, 18 Sep 2026 15:15:23 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-Cc: Aryan Sinha <sinha.aryan03@gmail.com>, Sunil Goutham
- <sgoutham@marvell.com>, Geetha sowjanya <gakula@marvell.com>, Subbaraya
- Sundeep <sbhatta@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] octeontx2-af: remove duplicate SCTP port flags
-Message-ID: <20260918151523.2bf90e82@kernel.org>
-In-Reply-To: <aqzZRG5WcSZYGu6M@rkannoth-OptiPlex-7090>
-References: <20260918060323.53860-1-sinha.aryan03@gmail.com>
-	<aqzZRG5WcSZYGu6M@rkannoth-OptiPlex-7090>
+	s=k20260515; t=1789770187;
+	bh=aadCeXW0ciM6vLWCVdfuHHJvH4AslTQpNsGe5hz/Ry8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To;
+	b=OPbZz5ahJ9sLLgQIf3lt69hzVr8HxIVnxzlqzjY2Hh0MMVxgKiBqp3vEk6IxtayRw
+	 Zxld/ydvwMA06F6xDGgfftaTE2mJZ3IbVG843iflMfUHO4k7bfA5hoEG3OaKxwsMGT
+	 7Dt6plr9ZCHB/xI8GxvHppVsMlVcL5z4iTHMKd09h+KftaHvR15nd+K8sOQg2rxboH
+	 jAli1JZhQwsnL4iKNeWn6SRtnsubRZ9E0Y9SjFC65iaqc7nKrLwgWRFcaraz2EYkKP
+	 +e6X2ZatVAFEI2fn+BeukdDAzce0WX2ewUQMLICcu+xsy534pvf38+Mw6EWijg+6je
+	 5oCjPFj42A/UQ==
+Date: Fri, 18 Sep 2026 17:23:05 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Josh Perry <josh@6bit.com>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>, bhelgaas@google.com,
+	Mario Limonciello <mario.limonciello@amd.com>, hkallweit1@gmail.com,
+	nic_swsd@realtek.com, rafael@kernel.org, linux-pci@vger.kernel.org,
+	netdev@vger.kernel.org, regressions@lists.linux.dev
+Subject: Re: [REGRESSION 6.16] r8169 =?utf-8?Q?RTL8?=
+ =?utf-8?Q?168h=2F8111h_fails_to_probe_=E2=80=94_=22Unable_to_change_power?=
+ =?utf-8?Q?_state_from_D3cold_to_D0=22_=E2=80=94?= bisected to 4d4c10f763d7
+Message-ID: <20260918222305.GA1200870@bhelgaas>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1ad46724-18a6-4cc1-9c40-f34fbf0f0b7c@amd.com>
 
-On Fri, 18 Sep 2026 11:55:08 +0530 Ratheesh Kannoth wrote:
-> On 2026-09-18 at 11:33:19, Aryan Sinha (sinha.aryan03@gmail.com) wrote:
-> > proto_flags ORs BIT_ULL(NPC_SPORT_SCTP) and BIT_ULL(NPC_DPORT_SCTP)
-> > are present twice. Both fields are already covered by the first pair, so the second
-> > one has no effect.
-> >
-> > Drop it. No functional change.
-> >
-> > Signed-off-by: Aryan Sinha <sinha.aryan03@gmail.com>  
-> Isn't this a fix? Please include the appropriate Fixes tag:
+On Sun, Jun 21, 2026 at 12:24:42PM -0700, Mario Limonciello wrote:
+> On 6/17/26 01:32, Thorsten Leemhuis wrote:
+> > On 6/12/26 03:07, Josh Perry wrote:
+> > > #regzbot introduced: 4d4c10f763d7
+> > > 
+> > > Since v6.16 one of two onboard RTL8168h/8111h NICs on this board fails
+> > > to probe on boot; the device drops to D3cold and the driver can't bring
+> > > it back:
+> > 
+> > FWIW, that commit is 4d4c10f763d780 ("PCI: Explicitly put devices into
+> > D0 when initializing") [v6.16-rc1] from Mario, who is already CCed, but
+> > looks like might be on holiday or something due to inactivity on the
+> > lists in the recent days. So it might take a few days before this moves on.
+> > 
+> > Josh, this is not my area of expertise, but there are two things I guess
+> > might be helpful:
+> > 
+> > * retry with 7.1
+> > * upload "dmesg" and "sudo lspci -vvv" output from working and broken
+> > kernels somewhere (like bugzilla.kernel.org).
+> 
+> Yes; please retry with mainline.  We already had multiple regressions from
+> that commit fixed, so if you bisected down to this commit then it's
+> plausible that there is already a fix.
 
-The patch has no functional change, how could it be a fix?
+Thanks a lot for your bisection and detailed report, Josh.  Can you
+verify whether this is still a problem?
+
+The only commit that claims to fix 4d4c10f763d7 ("PCI: Explicitly put
+devices into D0 when initializing") is 907a7a2e5bf4 ("PCI/PM: Set up
+runtime PM even for devices without PCI PM"), and you already verified
+that it did not fix the problem (both appeared in v6.16).
+
+c855c9921da7 ("PCI/ASPM: Don't reconfigure ASPM entering low-power
+state"), which appeared in v7.2-rc1, mentions a similar symptom
+("Unable to change power state from D3hot to D0, device inaccessible") 
+so it's possible that it would fix the issue.
+
+> > >    r8169 0000:02:00.0 eth0: RTL8168h/8111h, 00:2b:67:48:40:01, XID 541,
+> > > IRQ 137
+> > >    r8169 0000:04:00.0: Unable to change power state from D3cold to D0,
+> > > device inaccessible
+> > >    r8169 0000:04:00.0: Mem-Wr-Inval unavailable
+> > >    r8169 0000:04:00.0: error -EIO: PCI read failed
+> > >    r8169 0000:04:00.0: probe with driver r8169 failed with error -5
+> > > 
+> > > The board has two identical RTL8168h NICs (both XID 541): 0000:02:00.0
+> > > and 0000:04:00.0. Only 04:00.0 fails — its sibling 02:00.0, on a
+> > > different root port, probes and works normally on the very same kernel
+> > > and boot. The failing NIC then does not appear (no enp4s0), taking the
+> > > machine's WAN offline. This strongly suggests the problem is port/
+> > > topology-specific rather than device- or driver-specific: the upstream
+> > > port behind 04:00.0 is placed in D3cold and the endpoint cannot be
+> > > resumed to D0.
+> > > 
+> > > Hardware: RTL8168h/8111h, XID 541, PCI 04:00.0 (onboard 1GbE).
+> > > Platform: Lenovo ThinkCentre M90n-1 (11AHS0B200), BIOS M2AKT49A
+> > > (2026-03-25, latest available). Firmware is current, so this is not a
+> > > platform-firmware issue.
+> > > 
+> > > Bisection: v6.15 good, v6.16 bad (verified by booting both). I then
+> > > reverted 4d4c10f763d7 ("PCI: Explicitly put devices into D0 when
+> > > initializing") together with its follow-up 907a7a2e5bf4 ("PCI/PM: Set up
+> > > runtime PM even for devices without PCI PM") on top of 6.16.7: the NIC
+> > > probes and links at 1Gbps/Full normally, with no workaround:
+> > > 
+> > >    r8169 0000:04:00.0 eth1: RTL8168h/8111h, 00:2b:67:48:40:02, XID 541,
+> > > IRQ 138
+> > >    r8169 0000:04:00.0 enp4s0: Link is Up - 1Gbps/Full - flow control rx/tx
+> > > 
+> > > Workaround: booting an unmodified v6.16+ kernel with pcie_port_pm=off
+> > > also restores the NIC, which is consistent with the upstream port being
+> > > placed in D3cold and the device failing to resume to D0 after the
+> > > explicit-D0 init change.
+> > > 
+> > > The follow-up 907a7a2e5bf4 does not fix this resume case: v6.18.33 is
+> > > still affected (retested today on current firmware).
+> > > 
+> > > Happy to test patches or provide full dmesg / lspci.
+> > > 
+> > 
+> 
