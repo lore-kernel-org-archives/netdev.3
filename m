@@ -1,79 +1,79 @@
-Received: from mail-pl1-f227.google.com (mail-pl1-f227.google.com [209.85.214.227])
+Received: from mail-pj1-f100.google.com (mail-pj1-f100.google.com [209.85.216.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43049516161
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 17:39:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.227
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9E043F0BB
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 17:40:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789753149; cv=none; b=FOuwsXO0cCKMke750HD+W7GSOuC+xV2U2YYYMpj45jiy4ChuUDK+k0wVcVPS8YVM+AVHILfFD/53K0QWGFO4zo+Fuf86K7VzjKW3qkp5Nl87zHZEx7Y3U2x6oxTHPuc9BEquGu2us4X4jICnQMmdPW9y9Idq+1IIUx+WfEKM5tE=
+	t=1789753253; cv=none; b=tR7gf62TZCRkunUkLuDawXpkpm3leIQkhtb3DUlndba3PvonKagWahG8S/cEs0//4wY4TM/26vMQFnqN1C+4cxpQSMe2Thu2sYEYpkUMi7w+hB5WyyBuVYV+hMepbQ/qKh3dczjMNM3s9ZbFq4Upot4ZD92tpGMlyftoQ1LkvZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789753149; c=relaxed/simple;
-	bh=b68SMbhqEPsGIKJhflr4X1Z6aga2qlXGVURaZgut1Po=;
+	s=arc-20240116; t=1789753253; c=relaxed/simple;
+	bh=DmNUWwz/nsHmjIa42SJBChbIdcVeCse5wNu4dk/5vIE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NWvcJx+n52j3Una+1LfUWJbHYDIVydjjPioFXD7dIE0paUEkp8CnStPNSI7vk7ge9jKVozLUHJt9VG6Q4idfghCMutLo/hSB0V9jKCeaf8q0XRv3Jg0mg5aPab1aGg+DEVAyhHyOezI3Rhj2uifkUeij1yiLSNtK/iA0FjbULAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Lh9gX65v; arc=none smtp.client-ip=209.85.214.227
+	 In-Reply-To:Content-Type; b=hkB54ubDhIWQMMD05Z09hs3kYYBtnT1b9brwJsk30M7S0wHjRE+NmTcjuU3hdrzZRweFvuVKVkYRxWNUrdVffJ9Ku/TucANFY2qBEnF0boMvr0O1rCJF0zBHi04Zl3qhjvuNZkqVtK86nlhUxZq5YIwvgsQ4kfgxfwMx/B7HBr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=e6c5HIXS; arc=none smtp.client-ip=209.85.216.100
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Lh9gX65v"
-Received: by mail-pl1-f227.google.com with SMTP id d9443c01a7336-2d942c7cc2fso2985015ad.3
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 10:39:07 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="e6c5HIXS"
+Received: by mail-pj1-f100.google.com with SMTP id 98e67ed59e1d1-38ec1402b05so254860a91.2
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 10:40:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789753147; x=1790357947;
+        d=1e100.net; s=20260707; t=1789753247; x=1790358047;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:dkim-signature:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=sncqGjwoZ2ISwzGsUBmcxEN97dqN/iEU1rIWLc2X1fQ=;
-        b=E9QlZqf1o6zCPcaeq587S8jmqkTvg03u2H6vYPzbZmEEnbIKKpFgN4Ymjgp4ODFhk/
-         pAlkWiUKHrF9019Zhqy352lym0hDcTtQqmZ5uKtUi9A86PHan03F6Nkbr8RlTthXm24D
-         VqeekmVJtUzC5Ikksu8lfZBO6P2xyvx8NuISIJWeI97i8cvn791kmipxtoYpdfSnv44F
-         s2muzIob4SYLjMIEptpLKH5cAO/8/bvZ9oHevF3QGeoGpYsrO0/omCx4Pnt+dPwKAGI8
-         QwRWDK5Uop27Qu2eVGbnWpgtbcRPhffsVnUef27CBp8Rtxlo3wDQFRozBDGxcxhXienI
-         SnVA==
-X-Gm-Message-State: AFuF++nJDmMdtwpa6U0bCSrtV76IMNjwtP9UJ90k4da3hdPTTTf5iTpJ
-	OT79/mDa+vooUI9qD268ZmFCRs3PstTBT5w0a5olgH52SiOORro9OLAPcy735/DkX+KqDQjuLiv
-	5ymlZ6H4JQaLy29nVQQv93/W6BkBztMlDFD4eUvm6Kbd5USxnqlMxo+HE3Vercr0FTOI8C6bTKZ
-	+AKkp7SuOICk4hkx0PnSRMRMnSwWF+FLGd76L9zlU7Lex5eoQCfPY9IKMGBtO6uhcDBBw6AqyHy
-	i9ZEZZ0GSM5Un4e
-X-Gm-Gg: AYBFou3CrFfRzV58msMRIWVxVwDOW//SPOZn3gIR+Q+NcK7+ooIJFpJxmnuazMBRi2e
-	u6DAyt+rIkt7lPEaky52UZ/9YztX+YN0H28EeLmOzIwLQ8z5OSDoGwA1oSooDcsMokSi1nhJvRm
-	T12y2HBBdco6OY2DG1NSyxM8KQ2Tk+iF4D+L/qtrAj+cz+ef60IowNkMcZtbq1cHpT4XIQWYMxw
-	QCAPtU9kbRzLCumfUWYkEKFK64I9Lf4B58uqZDqaOzrxLLYW6qKDYoZHu/sb4K+pxPjNt8OGtnQ
-	BnjV5S4kLuU12EZvYPjsfIA/KpKs8JlnSAu1FtRK/k59jmuFmo77LXWydiq5+9MM01w9y0c8QRg
-	AyWW0oIS11vbFSOC853ncQI/672TEmnyPputuzBIQT5qd2X6Tl9NyeNHfmeCr7rVEK5HoimTMqb
-	TqOTlEjSfYHYq0tBBxunMxYPtMaCzjLbAzU8ZwQkpaMdo=
-X-Received: by 2002:a17:90b:5305:b0:39e:4c81:6c64 with SMTP id 98e67ed59e1d1-39e54dbeb52mr6546535a91.31.1789753146511;
-        Fri, 18 Sep 2026 10:39:06 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-125.dlp.protect.broadcom.com. [144.49.247.125])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-39e6573e104sm119841a91.2.2026.09.18.10.39.06
+        bh=XvJ2uzQiITp0BmLWCz/dXZ+391cWZWj8DaoZe0xZarQ=;
+        b=pXaeuM0EhcxLkDlIpgdL4wGce3KCFkBv9KDlZIhN8G69LlzNqQ8Si4kOS51St5SUnK
+         zJO5a/bgpkGeQkUSbQlOVtnbiAV5pUKVuj7A3sxqgRyj/L76S6tEFu279Sab1IkmCCzT
+         5Ixx5cw0bgZUlAVTcha9JmxwFox16yU1tMAtS2ZabgSrn9iguWel9GYZLC5RtG7Ih1Pj
+         Z3rGMuYz58QFXD152vs37B/q4an5EJTC3o5bs92V9LHyHGPfbYrzVdo7f2iuMBQJr+uu
+         Q7jOMxdXhdFoAtFweLpEp3akAyoOXGoeW6bvguyp0PsCdRV+yljH67kitHXegfQtGvgS
+         qnHQ==
+X-Gm-Message-State: AFuF++nl/9+OubXMyY7J8gxzm0iWxHmDobKeug87JKjsxIPzBk8sCGN+
+	MgIJxc2twOlHQ+oFMm+AHuIV/IkXNwDiGz4YHV3fLIRbxhK3qMl3nf4DnipbRIDvFw66VwSgVpU
+	b6R9khdt475Kgf9ASd49K3nb6/mj08vT7c3yEoevV5FLApc6yFMUG9ecj4XNr+YhCSwcdPc6Y4o
+	yRPzAt2NIAAmjGVpaVUQE6S89/UTWbnPXlRY5WyEPnDDw37D78t4Y3FIGbgKl9TPSN9fMpbxd8w
+	Ho+BRcYmnWJDTZX
+X-Gm-Gg: AYBFou1GB4pAOrK87wktxXfhZBeG1CGOBjTCcQ4bC4TazRWJNz9QVFrsP2F86YbSZqv
+	17oadTptimRB4SMVdTPiqcdICLot6WffVyCI6f/CQE4S5TtVWDtIjKqkNKvVIYUuwgQJ7/ne02N
+	6MBvMuTSixyK5q/vyAqnHhGVAARe3+JxzczDHfPU7z7mcvsz06eZhxJLWOFosLWcu5pJzS2TezE
+	+BGDTc8iPhdOmIQDl5HbFILtrwjnMGDOQ/BnvAGMr3rF7g2hzoi6KCHVgBOQQ0ZHxxmTA5PxoRe
+	O1U2XZHwf/zZCcufYgLJ0f1xr+pE2vlZlTj9eUoBOKI2rUhyGqlMkY7QD5DCqpUoiGGP1JHWou4
+	6HLbAfE45bV7w4eFu3hOV15c+mRBxqsdYd89RmmV3aFuwms13o+W4t6kJadkKX8OaNQCHJE/N9I
+	heJhj+0758kmsmg3v/CV3iNyaXRUBhoY6nIwwPiCyV
+X-Received: by 2002:a17:90b:280c:b0:39e:6c6a:209b with SMTP id 98e67ed59e1d1-39e6c6a2338mr460069a91.60.1789753246956;
+        Fri, 18 Sep 2026 10:40:46 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-29.dlp.protect.broadcom.com. [144.49.247.29])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-39e6c895ae2sm148337a91.2.2026.09.18.10.40.46
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 18 Sep 2026 10:39:06 -0700 (PDT)
+        Fri, 18 Sep 2026 10:40:46 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-530f5e827c6so21666001cf.0
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 10:39:05 -0700 (PDT)
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-530f5e827c6so21701971cf.0
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 10:40:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1789753145; x=1790357945; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1789753246; x=1790358046; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=sncqGjwoZ2ISwzGsUBmcxEN97dqN/iEU1rIWLc2X1fQ=;
-        b=Lh9gX65v2zTZJb3HEeTyPjzCBcBOhuiz3FJVHcI8y3i6w70vdhMaCb36UJ4GaIS+YU
-         X2ISn0xntpQ58ia9onwMl7a8FcEKB6XCLOEw48sxdq/NFSHYtfg+sFGOOgQR8lmdFm5I
-         Qbqrm0WN+2v8b3c2/GcNcu1i0ot48PASqwElY=
-X-Received: by 2002:a05:622a:30a:b0:532:84d3:ac7 with SMTP id d75a77b69052e-5329e47ff64mr57465731cf.41.1789753145287;
-        Fri, 18 Sep 2026 10:39:05 -0700 (PDT)
-X-Received: by 2002:a05:622a:30a:b0:532:84d3:ac7 with SMTP id d75a77b69052e-5329e47ff64mr57465261cf.41.1789753144786;
-        Fri, 18 Sep 2026 10:39:04 -0700 (PDT)
+        bh=XvJ2uzQiITp0BmLWCz/dXZ+391cWZWj8DaoZe0xZarQ=;
+        b=e6c5HIXSZTXrpO/RFhc6nE4gu77Z2RQYiZSqjAlaCSqjfGnCLYeepF75UcP3Okqwb8
+         dcFYZry7vOj0k41zX4FBLKkMxpny6LZcteQYr3I0IdfnoIQi4k2ruyUCG5bvdwqcU8KW
+         3Xh8AY2S2NuJy+FXhAYr9e5G2InWZ8H7BAvQs=
+X-Received: by 2002:a05:622a:109:b0:532:8e31:d281 with SMTP id d75a77b69052e-5329e38ab0bmr52230861cf.17.1789753245755;
+        Fri, 18 Sep 2026 10:40:45 -0700 (PDT)
+X-Received: by 2002:a05:622a:109:b0:532:8e31:d281 with SMTP id d75a77b69052e-5329e38ab0bmr52230401cf.17.1789753245174;
+        Fri, 18 Sep 2026 10:40:45 -0700 (PDT)
 Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532ae76d5a7sm1954151cf.27.2026.09.18.10.39.01
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532ae618698sm2152411cf.16.2026.09.18.10.40.42
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Sep 2026 10:39:04 -0700 (PDT)
-Message-ID: <06a2be46-7ea1-4ffd-a6d7-95ae4d94ca84@broadcom.com>
-Date: Fri, 18 Sep 2026 10:39:00 -0700
+        Fri, 18 Sep 2026 10:40:44 -0700 (PDT)
+Message-ID: <90c88857-634c-4b2d-8a21-54c8d3ceb436@broadcom.com>
+Date: Fri, 18 Sep 2026 10:40:41 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -81,8 +81,8 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 4/8] net: bcmgenet: clean up RX NAPI on
- bcmgenet_init_rx_queues failure
+Subject: Re: [PATCH net 5/8] net: bcmgenet: acquire ring lock with BH disabled
+ in bcmgenet_dump_tx_queue
 To: Nicolai Buchwitz <nb@tipi-net.de>
 Cc: netdev@vger.kernel.org, Cursor <cursoragent@cursor.com>,
  Doug Berger <opendmb@gmail.com>,
@@ -94,8 +94,8 @@ Cc: netdev@vger.kernel.org, Cursor <cursoragent@cursor.com>,
  Simon Horman <horms@kernel.org>, Ryo Takakura <ryotkkr98@gmail.com>,
  linux-kernel@vger.kernel.org
 References: <20260918000732.276506-1-florian.fainelli@broadcom.com>
- <20260918000732.276506-5-florian.fainelli@broadcom.com>
- <d8b67a2402ec38f7cb374c5b223afb81@tipi-net.de>
+ <20260918000732.276506-6-florian.fainelli@broadcom.com>
+ <f00892b2a993b3cd333f54660c53632c@tipi-net.de>
 Content-Language: en-US, fr-FR
 From: Florian Fainelli <florian.fainelli@broadcom.com>
 Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
@@ -130,53 +130,23 @@ Autocrypt: addr=florian.fainelli@broadcom.com; keydata=
  MIlnaE6V0U8f5zNHB7Y46yJjjYT/Ds1TJo3pvwevDWPvv6rdBeV07D9s43frUS6xYd1uFxHC
  7dZYWJjZmyUf5evr1W1gCgwLXG0PEi9n3qmz1lelQ8lSocmvxBKtMbX/OKhAfuP/iIwnTsww
  95A2SaPiQZA51NywV8OFgsN0ITl2PlZ4Tp9hHERDe6nQCsNI/Us=
-In-Reply-To: <d8b67a2402ec38f7cb374c5b223afb81@tipi-net.de>
+In-Reply-To: <f00892b2a993b3cd333f54660c53632c@tipi-net.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-On 9/18/26 03:43, Nicolai Buchwitz wrote:
+On 9/18/26 03:57, Nicolai Buchwitz wrote:
 > Hi Florian
 > 
 > On 18.9.2026 02:07, Florian Fainelli wrote:
->> bcmgenet_init_rx_ring() registers a NAPI instance for each RX ring via
->> netif_napi_add(). If bcmgenet_init_rx_queues() fails while initializing
->> subsequent rings, bcmgenet_init_dma() frees the RX buffers and page pools
->> but fails to clean up already registered NAPI instances with
->> bcmgenet_fini_rx_napi(). This leaves stale NAPI structs on the net_device
->> napi_list.
->>
->> Call bcmgenet_fini_rx_napi() in the error handling path of
->> bcmgenet_init_dma() when bcmgenet_init_rx_queues() fails.
->>
->> Fixes: 1c1008c793fa ("net: bcmgenet: add main driver file")
->> Assisted-by: LLM
->> Co-authored-by: Cursor <cursoragent@cursor.com>
->> Change-Id: I45982e0e198a44f3f56b1300f462870462b81108
->> ---
->>  drivers/net/ethernet/broadcom/genet/bcmgenet.c | 1 +
->>  1 file changed, 1 insertion(+)
->>
->> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/ 
->> net/ethernet/broadcom/genet/bcmgenet.c
->> index bfb74dca55d6..ef155a170fa6 100644
->> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
->> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
->> @@ -3167,6 +3167,7 @@ static int bcmgenet_init_dma(struct 
->> bcmgenet_priv *priv, bool flush_rx)
->>      ret = bcmgenet_init_rx_queues(priv->dev);
->>      if (ret) {
->>          netdev_err(priv->dev, "failed to initialize Rx queues\n");
->> +        bcmgenet_fini_rx_napi(priv);
+>> bcmgenet_dump_tx_queue() is called from bcmgenet_timeout() in process or
+>> timer context and acquires ring->lock using spin_lock(). If a softirq
+>> such as TX NAPI (bcmgenet_tx_poll()) fires on the same CPU while the lock
+>> is held, it will deadlock trying to acquire ring->lock.
 > 
-> 
-> napi->dev is still NULL here, bcmgenet_init_rx_ring() only fails before
-> netif_napi_add().  netif_napi_del() does netdev_lock(napi->dev), so this
-> oopses on -ENOMEM at first open.
-> 
-> rx_queues is 0 in all hw_params anyway, so there is nothing to clean up.
-> Drop this one?
+> AFAIU bcmgenet_timeout() only runs from dev_watchdog(), so BH is already
+> disabled and no deadlock?
 
-Yes, that's a good point, thanks!
+Yes indeed, not sure what I was on with that.
 -- 
 Florian
