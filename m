@@ -1,192 +1,95 @@
-Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259F14ABBC3
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 08:22:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789719755; cv=pass; b=j/jm6gxS28weiGT1cqleeZW4o7j8VXKFnQdu+NfXafrrqYFo/MlXKpZfPN1sWyOIpampvoLQxfC26qNWnl50PEXIHdfSKiHEOnFhC6p5mbIeHAkvrmuVT2L2ojVTshDgfgK5Xy+Xgl+QiT9EB6OqTQ/GghGObPt2NmnYijA1uyM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789719755; c=relaxed/simple;
-	bh=caIY5SD5XMVlz9br5cyq8OQ2QzYvgdCKzRbGP9MjoRc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ppkP5Kl0CbZX224KWAN+nU9XqNre1zkecai1aJA+eQayowLnaP56DhpHNkbZFq3SKyghW5AWPNKqpoLFD6JYlzQ+f6j/avyt5WkG5Efu9Va8950twNj45JMALjwLvFkRyq/SUEArm4BoRgg9cMFx6E4460DQ9PsUlfab/bZh3mM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=jnHH+TwR; arc=pass smtp.client-ip=74.125.228.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266482E22B5;
+	Fri, 18 Sep 2026 08:38:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789720704; cv=none; b=LxxAVP3PFn7a4Pp9tjctAseh1CQe5KuoW91ShlS2JVKbESHJXnnpcOu68pQzshgZ6s7S/9YqCfaLSGLhwS7dUA7HBEQOSZFCHUPRI10h4us1gSzNpVGy4E2NuyrLFCWsAJAkqEhOWzBlvkNSRl95/9aFhOLrQTAtvx1pOR4RKVg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789720704; c=relaxed/simple;
+	bh=8ytEC02CBkAH1hD64m+2vvU6vsofHjKWGTI1Q8ujUXs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gtYzJ1NloxtYBxHa/liC3N4vYRTuXdImcrvFAbrplsrhnrcEVa7FuyJBXbNdY0gB0iGbvcPfRnjNP+qkfzY7aAXUO1LBvztXhW3aHJ/zHqmCy0AmueS4A0dnLJx5raFY8qdX/xKfuyv991mMQ7TMISNm4MIRrmQTyb0i/D+/06A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=AajHUbKd; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="jnHH+TwR"
-Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-85469e211a0so573716b3a.1
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 01:22:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789719753; cv=none;
-        d=google.com; s=arc-20260327;
-        b=k9wL/SDJEPpt81Ftfcj65AvME38F6p4nk4Gw1XQJ1dITHrcEqYV9DOI6tdakiudNoG
-         K5DI5hd2pKRT0cduuM+oqxn1y+YFFOIVmyNSjADeYwkutl+OxVNMuwyDGq2Z75zZNgQO
-         7eYeBueJiZOKvlpqCuwzOj3oJ3cif3ojMcPTzrzOG+XFJPdOa3Klv7MQiNU6lllgm8AG
-         pObo3hu2CEehe5Rjm6mfi3n1JhnwAMwmBARuj7edZlZILEG8vzmukZ6Ny7pZDa7v/SHJ
-         zlurTBm+ctI4R2jE/aE7echK6lhuTRRlhAibGWZTL61ZbqtREqNjGKn7tsPNI83pA3kJ
-         SMQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dfFd0zyH+HOjbziiDPWCPHKxOHER1oFd6/oxLP47/YQ=;
-        fh=EqHbxJwniRKsDtMTj/Nnp0bCBIMSWfwXZy23f0S2ea4=;
-        b=H5mTJmtcHU2lo82mzGQ5wuR4S/QmBMBsqt6G79qWHsARA41K7d5ozEUnIAxu0cs8yZ
-         378/vn2aYzS0Us2fzLhZVOL67s/1r5F4VNjSzuI5eMv8/P7Ty3CjySZkDBdfFyltn+cX
-         eFYqbJEJX5wwCayHTBUHsjqLuDP2GYMDk+TCPJzXcwE3+KZPXz/WtvOBp9zxcTSOL9iO
-         gmWK+AN1xYFNzW6So8d0fyumFCkTXd4i2btSf2ufeH4Y56K+Sw1l1ddAnJHcM46cy7K3
-         +twwFgEsAonO7i9lec5Hrl4nELcGm6n4tGvs12F6OxGJ2fHU4Ayi5R1ArNkDT6iuVPqL
-         tyIg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1789719753; x=1790324553; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dfFd0zyH+HOjbziiDPWCPHKxOHER1oFd6/oxLP47/YQ=;
-        b=jnHH+TwRDx8i6scEHeASTLHFTk2Dm8BDoHigfPTI5Zul4S5hAnJMWBFVhc9Pa3xXQC
-         nxLU0tbF3WMafBZJceyBLAWkAfNXY4m0Cv7Iq3ze0qCijcIa1aPBND8Pk9CAJCIfouCI
-         FGQJQxSXMyAwqlHGSpj7enVuTVuYbVho0F/bU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789719753; x=1790324553;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dfFd0zyH+HOjbziiDPWCPHKxOHER1oFd6/oxLP47/YQ=;
-        b=D1C6CCOmbmzW4YqeqTOWgbpo+HiaGGM164JSwZHNG5DLb4R9s6k56H9DH3t+ukV4q8
-         7cpTdnXsP6G2dClDd5dvnr00JLmq/Yr2Zfa9SHWyNaTXIHlyZkgn8nOOSmDb2mmUgGgK
-         FGhewWecU4s9fn2/x4cHQXicx93TS5trHrqBxPv+mJwjotb/RBlzSO8Ypi98E+cV4Xpd
-         Q0mhZnqS8WKBS5tOVJpj/Tm81/YUw7l/ypuMoKzYzLsYs6kyF9UXNSvRhfZqewdjLFbW
-         I0D6E0kAiTtHKH9nPud9acJbmFG4hZtU8ByEPFJMExBgvHWaA4TJSTHSXQ2+etZHzRaI
-         bnaQ==
-X-Forwarded-Encrypted: i=1; AKwUvBylVuFmRxoFDKyV8eAS063X4M813NMZlkyKu/XDFa+5c7bYrrxiZenNK0g/tYE8yVmfuKmqQyA=@vger.kernel.org
-X-Gm-Message-State: AFuF++lCGfgCscKzYSQCTCSGafJM38zeS1cDc+MZDpGBFyWT1MdRel0A
-	jGeB19bN+b0kZz1Iy3ATlDtUbtkh+FgKVqKqxyJse/WOBw2+3aIAB6hL6IdvdThzywVh5zE4ZpG
-	1GFrlq2beBYf+e297qK/7oJVP745z4LLWmzXQl04+TNQOjAF4Ua3I+RjI
-X-Gm-Gg: AYBFou0JR9MNWKiefRBR1mLzOV2WQdOuKketZmJPxjJ8sD4RzTh+PD9LdOZiuztNaxd
-	cxFmkWA6Ivh6ABgWg8UzwISpGF5m4dAdZWE6DspQCa0wJZyZQLt/AnrVzblNnJ7oMuGu36SzIVQ
-	HLY/X/GAqEdagIGoZvZGww6eA+brZj4ARDfZ7UaptwSG3e5s3h7/peoy9ejG+OtLE+TBn6jpq6p
-	U+Oo35qe5kX+u4BI4jLfIXogGu3Wcx0FXtOJ0Yq+wB4DjpsKlVj0/chjhf6Cw5Xyuc4/uAZfgSP
-	KHyNKAFlIV7iekerlogzymaYwbktNvwT+dwGfcziwpFGI318+0Wdh8Nn/MtF8OaKzOIvhLPb7jw
-	igertrDAUy/QYC1XqFfd0R0N4pRbl1og6cOkeHFEQoxfo
-X-Received: by 2002:a05:6a00:114e:b0:86f:5e14:2422 with SMTP id
- d2e1a72fcca58-874db7f1a53mr3581101b3a.1.1789719753310; Fri, 18 Sep 2026
- 01:22:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="AajHUbKd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1789720692;
+	bh=jVI9HVSyPXFgxlSH2ibKEir/RSIBCGwTHXBMxDn2af4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AajHUbKdTBZp5O7uXY0bgzNc+dzmhvAdT2g7fZrqcmmmxbKOWhawiTQPnp1VfCf+E
+	 t3pK1XBp66F0j+lXeac/reAM2XgKQrduVN6iirEvFhFz6JKjA8Dm7xS2VITty4/vJ9
+	 na7LIMCNrrG3LceELa9tYeSI4SV/TwIxcttr9uPAwW9u2x+1knS0PMdNYyiPDj12zM
+	 cr36aDZmuJRW1fmqacSgklzhtC2RLl/xA3RzYHJLy2wWKI9l2NnUN7H0vWoUo9LNkv
+	 WSCBBCwrOWhssmvEqPDyOtJYWrhsWnhZHZvjPkDsV141up0M/Z4HM9BlpwyuSMZwtM
+	 eS2/LF0ywiJaQ==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 38E8A60052;
+	Fri, 18 Sep 2026 10:38:12 +0200 (CEST)
+Date: Fri, 18 Sep 2026 10:38:09 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+	netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
+	horms@kernel.org, fw@strlen.de, ja@ssi.bg
+Subject: Re: [PATCH net 01/10] netfilter: flowtable: publish HW_DEAD after
+ worker is done
+Message-ID: <aqz4cRSbfcJI1Gvs@chamomile>
+References: <20260916231652.127456-2-pablo@netfilter.org>
+ <20260918020406.3513303-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <QDISC-LQFE.v1.20260911041746.1@mojatatu.com> <20260917120801.GA51261@horms.kernel.org>
- <CAKYWH0RMJ+sxMku8UGmmcujnO9fJBg3Ok_ofbvyh5eTJm=2uTQ@mail.gmail.com>
-In-Reply-To: <CAKYWH0RMJ+sxMku8UGmmcujnO9fJBg3Ok_ofbvyh5eTJm=2uTQ@mail.gmail.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Fri, 18 Sep 2026 04:22:21 -0400
-X-Gm-Features: AcwNN1VNKDMQQ1YJv2NJsWphPozLgYauN8fRo6TJ9YyGJPkWDG7ogpL7mhpSml4
-Message-ID: <CAM0EoM=uw-3EAVQBWWMtNSHJjzcS-ftfFYpbSX+BXJyx-gdjuQ@mail.gmail.com>
-Subject: Re: [PATCH net 1/2] net/sched: cls_u32: fix manual hash table handle
- IDR aliasing
-To: Alexandre Ferrieux <alexandre.ferrieux@gmail.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, stable@vger.kernel.org, 
-	Sashiko <sashiko-bot@kernel.org>, Victor Nogueira <victor@mojatatu.com>, 
-	hybris <hybris@mojatatu.ai>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260918020406.3513303-1-kuba@kernel.org>
 
-On Fri, Sep 18, 2026 at 1:37=E2=80=AFAM Alexandre Ferrieux
-<alexandre.ferrieux@gmail.com> wrote:
->
-> Le jeu. 17 sept. 2026 =C3=A0 14:08, Simon Horman <horms@kernel.org> a =C3=
-=A9crit :
-> >
-> > On Wed, Sep 16, 2026 at 06:01:14AM -0400, Jamal Hadi Salim wrote:
-> > > A u32 hash table created with an explicit handle ('tc filter add ...
-> > > handle 801: u32 divisor N') keys its IDR entry on the raw handle, whi=
-le
-> > > the destroy paths free it under handle2id(handle). The two key domain=
-s
-> > > disagree for handles in the 0x800..0xFFF htid range:
-> > > handle2id() folds them back into the auto-allocated id space (1..0x7F=
-F).
-> > >
-> > > A manual table therefore leaves its raw-keyed IDR entry unreachable o=
-n
-> > > delete (a permanent leak), and its delete can drop the idr entry of a=
-n
-> > > unrelated live auto table. A later auto allocation can then hand out =
-a
-> > > handle that aliases the live manual table; u32_lookup_ht() first-matc=
-h
-> > > routes lookups and TCA_U32_LINK for that htid to the wrong table.
-> > >
-> > > Key the divisor-path alloc on handle2id(handle) so allocation and
-> > > removal share one key domain. A manual handle that maps onto an id
-> > > already in use is rejected with -ENOSPC, and auto allocation skips id=
-s
-> > > held by live manual tables.
-> > >
-> > > Conditions to recreate:
-> > >   ip link add test0 type dummy
-> > >   tc qdisc add dev test0 clsact
-> > >   tc filter add dev test0 ingress protocol ip pref 1 \
-> > >           handle 801: u32 divisor 16
-> > >   tc filter add dev test0 ingress protocol ip pref 2 u32 divisor 16
-> > >   tc -d filter show dev test0 ingress | grep 'fh 801:'
-> > >   # unpatched: two live tables with handle 0x80100000 (the pref 2 roo=
-t
-> > >   # hnode is auto-allocated id 1); patched: the auto hnode takes id 2=
-.
-> > >
-> > > Also tested with a poc with a live u32 table on the block, add/delete=
- a manual
-> > > table 'handle 901: u32 divisor 1' twice; unpatched, the re-add fails =
-with
-> > > -ENOSPC because the raw key leaked on the first delete.
-> > >
-> > > Fixes: 73af53d82076 ("net: sched: cls_u32: Fix u32's systematic failu=
-re to free IDR entries for hnodes.")
-> > > Reported-by: Sashiko (gemini + nipa) <sashiko-bot@kernel.org>
-> > > Closes: https://sashiko.dev/#/patchset/20260822222049.114526-1-jhs@mo=
-jatatu.com
-> > > Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-> > > Tested-by: hybris <hybris@mojatatu.ai>
-> > > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-> >
-> > Reviewed-by: Simon Horman <horms@kernel.org>
-> >
->
-> Hi Jamal, Simon,
->
-> Thanks a lot for the fix.
-> One nit I'd like to pick is the "Fixes:" header.
-> Specifically, it mentions my patch:
->
->      Fixes: 73af53d82076 ("net: sched: cls_u32: Fix u32's systematic
-> failure to free IDR entries for hnodes.")
->
-> However, what this does fix is *not* a regression introduced by the
-> above patch,
+On Thu, Sep 17, 2026 at 07:04:06PM -0700, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> netfilter: flowtable: publish HW_DEAD after worker is done
+> 
+> The patch moves the NF_FLOW_HW_DEAD publication out of
+> flow_offload_work_del() into the common epilogue of
+> flow_offload_work_handler(), so that it happens after
+> clear_bit(NF_FLOW_HW_PENDING) rather than before it.  The stated goal is
+> to make setting HW_DEAD the last flow access performed by destroy work,
+> so garbage collection cannot free the flow while the worker is still
+> touching it.
+> 
+> > diff --git a/net/netfilter/nf_flow_table_offload.c b/net/netfilter/nf_flow_table_offload.c
+> > index 801a3dd9ceea3..6757fd89c1f1a 100644
+> > --- a/net/netfilter/nf_flow_table_offload.c
+> > +++ b/net/netfilter/nf_flow_table_offload.c
+> > @@ -995,7 +995,6 @@ static void flow_offload_work_del(struct flow_offload_work *offload)
+> >  	flow_offload_tuple_del(offload, FLOW_OFFLOAD_DIR_ORIGINAL);
+> >  	if (test_bit(NF_FLOW_HW_BIDIRECTIONAL, &offload->flow->flags))
+> >  		flow_offload_tuple_del(offload, FLOW_OFFLOAD_DIR_REPLY);
+> > -	set_bit(NF_FLOW_HW_DEAD, &offload->flow->flags);
+> >  }
+> >  
+> >  static void flow_offload_tuple_stats(struct flow_offload_work *offload,
+> > @@ -1059,6 +1058,12 @@ static void flow_offload_work_handler(struct work_struct *work)
+> >  	}
+> >  
+> >  	clear_bit(NF_FLOW_HW_PENDING, &offload->flow->flags);
+> > +	if (offload->cmd == FLOW_CLS_DESTROY) {
+> > +		/* Publish after the worker's last flow access. */
+> > +		smp_mb__before_atomic();
+> > +		set_bit(NF_FLOW_HW_DEAD, &offload->flow->flags);
+> > +	}
+> > +
+> 
+> [Severity: High]
+> Does this reordering close the whole use-after-free, or only the
+> FLOW_CLS_DESTROY part of it?
 
-This patch fixes the alloc/remove key-domain asymmetry introduced by
-73af53d82076
-Prior to your patch, the alloc/remove key domain was symmetric; you
-forgot to convert the "else {" part in your conversion, which this
-patch fixes. The comment tries to explain this detail.
-
-cheers,
-jamal
-
->but an age-old inconsistency between handle encodings.
-> So, It would be more accurate to mention an earlier commit:
->
->     Fixes: e7614370d6f0 ("net_sched: use idr to allocate u32 filter handl=
-es")
->
-> What do you think ?
->
-> -Alex
+This describes a pre-existing issue. I posted patches for this I have
+to pick up.
