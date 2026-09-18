@@ -1,105 +1,153 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A01252CCE8
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 21:44:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43DC135201B;
+	Fri, 18 Sep 2026 21:46:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789767859; cv=none; b=BRYP/zSN+xbtXfaB66bnLrxvSI7ukpcy4hb+3FvflIJ5uj4N+6tfZQuU6LvLgP9LKZ1YDxMkA2FMpVdve7/cX2S0flPilmmY2NAJile2O6dQILTgeS+TtaKBA1fRvKy2XTvwvBgvFVMFYlMToMVlNvOqWV+dVwfymKis2LXUtoA=
+	t=1789767993; cv=none; b=Fu1BBznx+D4s6gzaontxNzEpN5GTHTDBbryEsXkqyQAaxXlwvm+wXM4HsMSPcolpgBZcQ5rgrmdetUj1+vUyWPEITd1PSFF7ovG9ACnoSY0Ka9z1vJnqDb9tCFXjHoZhFNLJUvHk/yWK/N4A2/FZ5VZbJNa1Xj889WL4rfRM8z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789767859; c=relaxed/simple;
-	bh=xEBPhEeq9oIyw92up1JHuQVi5VVLp5xRLDKN4m/aAgY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p9M1lR1ImA9rRKGcdpLepbZ7Gk7RWG5t83KogbrV9nWkWfVu5jnlyv4OLzH4F3m/a3n+qQY/XZVvJlDNhlCuRWnmLVJtHHPNJ8cycL5nn6zsFbvzlDA6k7EdRcicYK4Yx0eZ01xxRz52/inPEq1A7pTRJTD+yCkb/C185YGcNYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tv5VxX0L; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789767993; c=relaxed/simple;
+	bh=n2nWGp/DtkyQvp3yejQb6P6ED3ksQYxrnI7Dx8zIsT8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pw4EbviDdK89DX75HjAP11DaZUeypSjFRUgWtQVIFjr1BSpB3v4rCIjYHKBciUisjifBSDf4bcJKJYwUXnstszXhRK4xqPRnjru+yuwk0u4zZc6DRjWza7N+enLbDC5AFC8UNvQZEqiyXWItX1QaRwoFT0q15HgTeMzvm6DiwBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jonasjelonek.de; spf=pass smtp.mailfrom=jonasjelonek.de; dkim=pass (2048-bit key) header.d=jonasjelonek.de header.i=jonas@jonasjelonek.de header.b=atNMC9h8; arc=none smtp.client-ip=212.227.126.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jonasjelonek.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jonasjelonek.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tv5VxX0L"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccb1a990so1069080a91.3
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 14:44:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789767857; x=1790372657; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=UNkshWsS0F5Oz3aZceFRS+hvRFwv7fBDO+z9tG8T+Z8=;
-        b=Tv5VxX0LwT50l0Z+Vdt1K2Ku72opxyzKCVPszVKkrYgU8LmmpoGWcXc/JKfhT07cGh
-         +0i8kS4p9E+7392QScRngjButO1HwxnSimrxXn4eP28o6OCGYuFW4a1tb3QSVcXUgaYB
-         NZMxot2HqM5wCduZFjjDSxtd55dYhTH9Zn2ZyPn+U06nYvgwAmsro7TlnL+mFaO4Qbl7
-         6q8NDj+dnuYg8Sj7qzZnP7DJ/xZ3dJ7ozsF4OrLLHNQfYar85TyPwZmUKR1ManSNMoGP
-         gl9wBOKfz0m8JaZUcDiy3VRRZelUXxIN65knOKP7mtAkkpqkMIpvkm61ZfmXVGGMogH6
-         JsTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789767857; x=1790372657;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UNkshWsS0F5Oz3aZceFRS+hvRFwv7fBDO+z9tG8T+Z8=;
-        b=oMW1hPdxjhG81EHc0hdnp4KMs8E5OiCewLmRZYGsqxa7ZSTLMX8KtEAR5iIeSYkcVM
-         0ThwVNav/w+2HqdrdRU0ReAxGLmbvJt1VPUYNXgNh39ZXqT8Gd98yV4RwapTm1RPOI19
-         3dqfLf4nHpVqRITlwNKgBLS/OhiDacqWkesRWn6wBxjnYdf0vCHlM4vLh5vXCkJLY8Qp
-         ey8SbYw8hDArSZKvajp/1AV8Gxp4Wq8dZbAAvpw0poQNli4qs4GbbAQDvP95E97MrQNg
-         dQwikg/fF0uvmcVZdDw4JYy70t/qluMUUvqpXZN+dS+LaYaCewVXWNwY3lt1pJLcasP5
-         vZwQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzm9/At00jV3K65CG9m9y77mrz0geOqrY+i98x3Nn0Ws4ZEhxu0Vv87tCZ8bLFYIwOdSVJGjdY=@vger.kernel.org
-X-Gm-Message-State: AFuF++n90iyWz0vuY77M0csl4agD8uj8KB6LwPIBglujFkXlp4ArwrcB
-	ma/RhqjfG7PbvGpEdWNGEJb/f03UztdXPMKfVklNk5TCVtvOYAHPD2eAKbTBrS42
-X-Gm-Gg: AYBFou3b4mlbVMCZE0HOSHYn/nh3LrzeMou2yOX7Xl47bPFPDTGjGTveWLNwN08Ph0a
-	EBTqZKMgWSCmjin54/d0tXW80R22MWc0KFJYNK4Ma89OnofO0OS2db/D0gzuzM7aMvy3gK/17Ui
-	9adGu02uxaGqohONYgtu76JTG74WHWW+iMe0rBqnwdxv44aAUtR+NZFUz+EIYbWKhWfc5i3NPky
-	65wrIt2YzpocriRIV604E2IoXHBbvpjgAH95CRdqYTKwGLjTgmMrlagnEHe1RmH0O5rO9H81GTX
-	8mPzKi7T7EBo+Pv6T8c8bLIygfcCDOjZ6felY6exEwILjCQ6Pa/2O0KXj1duMlwBVuyVprJdcvs
-	85i0WHOBfalwIAPNSs+ln3NTlldCRzOJviKdGZSIwaeMke5Z/Nap9MEgP0LHd2bJ3gSp4aOlWIs
-	hl21Pa1/J4MK6bY5Qnj+ZEmTwnPV0E/Ch+pOBs6VqBbYygZXUo+ZhAI0NoOWVB9Jqk
-X-Received: by 2002:a17:90b:390e:b0:39e:2e7c:d43c with SMTP id 98e67ed59e1d1-39e54b66b6cmr7243882a91.7.1789767857212;
-        Fri, 18 Sep 2026 14:44:17 -0700 (PDT)
-Received: from dev ([163.43.103.131])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39e6c61e2a7sm1201398a91.16.2026.09.18.14.44.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 14:44:16 -0700 (PDT)
-From: Yuya Kusakabe <yuya.kusakabe@gmail.com>
-To: stephen@networkplumber.org
-Cc: dsahern@kernel.org,
+	dkim=pass (2048-bit key) header.d=jonasjelonek.de header.i=jonas@jonasjelonek.de header.b="atNMC9h8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jonasjelonek.de;
+	s=s1-ionos; t=1789767989; x=1790372789; i=jonas@jonasjelonek.de;
+	bh=T7VjXcGLNEp/PsjeylEWb75dAKLZ6LRRe6ugNMaNiXc=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
+	 MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=atNMC9h8Xt6gHPSEDj9lp27CXVEHRxZ8M0GM88jLXzAaeJjRjFy5rdcrpW1F3vZl
+	 fEMtSoLQHD9U3+gumvo8FsBog+AR+kI64vccMkXGczzj/kg2J+m2pm0ZfxLxwBtlX
+	 VBDuJFoLOGxu9SqeiZVNC6x7btnEqO4l86QI2qGwRm+ngJvPIztaDJ9zfUGqKVxjk
+	 H8ulEYawObSITHVqpuAAE0AU8AHkRlAg8Y4t+5r7wYg2NDQRyM2ub9Nhjm34kqjEA
+	 Rae7/bsNJOWPY6va11+Rxpf75sYePr0Fn1vkB8XtU5hphMV42R3XrObUk2wq0STnS
+	 GNoIgR6MDz5N4mjNaQ==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from client.hidden.invalid by mrelayeu.kundenserver.de (mreue010
+ [213.165.67.97]) with ESMTPSA (Nemesis) id 1M6DnM-1x9svl2Wm8-00FJ5z; Fri, 18
+ Sep 2026 23:20:05 +0200
+From: Jonas Jelonek <jonas@jonasjelonek.de>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Markus Stockhausen <markus.stockhausen@gmx.de>,
 	netdev@vger.kernel.org,
-	andrea.mayer@uniroma2.it,
-	andrea@common-net.org
-Subject: Re: [PATCH RFC iproute2-next v3 2/2] seg6: add support for the End.MAP behavior under seg6mobile encap
-Date: Sat, 19 Sep 2026 06:44:04 +0900
-Message-ID: <20260918214405.2881597-1-yuya.kusakabe@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260917170154.2c8f50cf@phoenix.local>
-References: <20260917-seg6-mobile-end-map-v3-0-7fd02b8b0577@gmail.com> <20260917-seg6-mobile-end-map-v3-2-7fd02b8b0577@gmail.com> <20260917170154.2c8f50cf@phoenix.local>
+	linux-kernel@vger.kernel.org
+Cc: Jonas Jelonek <jonas@jonasjelonek.de>
+Subject: [PATCH net] net: mdio: realtek-rtl9300: fix RTL931x C22 extended page selection
+Date: Fri, 18 Sep 2026 21:19:55 +0000
+Message-ID: <20260918211955.3955777-1-jonas@jonasjelonek.de>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:6s+eZMirCmmbXGVkcVKDj9D5cbWlJQExptG3AHo5Ge9Gm5RpiDj
+ k9dF0MpZU2BAkBEdjoSkwhDsnuT9/Z/IFtubXtaGubGDP/qyvAgNftNORof5/kSc6AeSjz5
+ o8O0WPyEvJ0Nwnw+OjK1z3DDQ7fykvDrDIzvKUHa95dQpEHmXOPVOun4/QFXYeaPFi1hGRR
+ BbXZ/SDC62Haib+Z5irhQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:4hiqyQPUj4o=;fJcYdgt82Vsr7AcCxRibT05Bzip
+ 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
 
-On Wed, 17 Sep 2026 17:01:54 -0700
-Stephen Hemminger <stephen@networkplumber.org> wrote:
+The RTL931x indirect access engine has a separate nine-bit extended page
+field. The driver leaves it at zero, and otto_emdio_run_cmd() therefore
+programs extended page zero for every Clause 22 transaction. This
+overrides page selection made through PHY register 30, causing accesses
+to private PHY pages to hit extended page zero instead.
 
-> Please make the three agree. Since End.MAP is meaningless without a
-> mapped SID, I would keep the usage string as-is and follow seg6local's
-> convention in the man page, which spells the parameter as part of the
-> action description rather than as an optional token.
-Will do in v4: the synopsis drops the "[ SEG6_MOBILE_PARAM ]" token,
-which leaves the action list as the only place that names it.
+Set the field to its 0x1ff "do not change" value for RTL931x Clause 22
+reads and writes. This preserves extended page selection made through
+PHY register 30 and restores access to its private register pages.
 
-> 	if (action == SEG6_MOBILE_ACTION_END_MAP && !mapped_sid_ok) {
-> 		fprintf(stderr, "Missing mapped_sid for End.MAP\n");
-> 		exit(-1);
-> 	}
-Will add it as written.
+Fixes: 5ebdcac59aff ("net: mdio: realtek-rtl9300: Add support for RTL931x"=
+)
+Signed-off-by: Jonas Jelonek <jonas@jonasjelonek.de>
+=2D--
+ drivers/net/mdio/mdio-realtek-rtl9300.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-> iproute2-next takes uapi header syncs from accepted kernel commits, so
-> this cannot be applied until the kernel patches land in net-next.
-> Please cite the upstream commit id in 1/2's changelog when you repost.
-Understood.  This stays an RFC until the kernel side is in net-next,
-and the non-RFC repost will carry the commit id.
+diff --git a/drivers/net/mdio/mdio-realtek-rtl9300.c b/drivers/net/mdio/md=
+io-realtek-rtl9300.c
+index afd52a1cd7f8..9ce2b7807532 100644
+=2D-- a/drivers/net/mdio/mdio-realtek-rtl9300.c
++++ b/drivers/net/mdio/mdio-realtek-rtl9300.c
+@@ -88,6 +88,8 @@
+ #define RTL9310_SMI_INDRT_ACCESS_BC_PHYID_CTRL	0x0c14
+ #define   RTL9310_BC_PORT_ID			GENMASK(10, 5)
+ #define RTL9310_SMI_INDRT_ACCESS_CTRL_1		0x0c04
++#define   RTL9310_SMI_INDRT_EXT_PAGE		GENMASK(8, 0)
++#define   RTL9310_SMI_INDRT_EXT_PAGE_NO_CHANGE	0x1ff
+ #define RTL9310_SMI_INDRT_ACCESS_CTRL_2_LOW	0x0c08
+ #define RTL9310_SMI_INDRT_ACCESS_CTRL_2_HIGH	0x0c0c
+ #define RTL9310_SMI_INDRT_ACCESS_CTRL_3		0x0c10 /* I/O fields flipped */
+@@ -325,6 +327,8 @@ static int otto_emdio_9310_read_c22(struct mii_bus *bu=
+s, int port, int regnum, u
+ 		.broadcast	=3D FIELD_PREP(RTL9310_BC_PORT_ID, port),
+ 		.c22_data	=3D FIELD_PREP(RTL9310_PHY_CTRL_REG_ADDR, regnum) |
+ 				  FIELD_PREP(RTL9310_PHY_CTRL_MAIN_PAGE, RAW_PAGE(priv)),
++		.ext_page	=3D FIELD_PREP(RTL9310_SMI_INDRT_EXT_PAGE,
++					     RTL9310_SMI_INDRT_EXT_PAGE_NO_CHANGE),
+ 	};
+=20
+ 	return otto_emdio_read_cmd(bus, RTL9310_PHY_CTRL_TYPE_C22, &cmd_data,
+@@ -337,6 +341,8 @@ static int otto_emdio_9310_write_c22(struct mii_bus *b=
+us, int port, int regnum,
+ 	struct otto_emdio_cmd_regs cmd_data =3D {
+ 		.c22_data	=3D FIELD_PREP(RTL9310_PHY_CTRL_REG_ADDR, regnum) |
+ 				  FIELD_PREP(RTL9310_PHY_CTRL_MAIN_PAGE, RAW_PAGE(priv)),
++		.ext_page	=3D FIELD_PREP(RTL9310_SMI_INDRT_EXT_PAGE,
++					     RTL9310_SMI_INDRT_EXT_PAGE_NO_CHANGE),
+ 		.io_data	=3D FIELD_PREP(RTL9310_PHY_CTRL_INDATA, value),
+ 		.port_mask_high	=3D (u32)(BIT_ULL(port) >> 32),
+ 		.port_mask_low	=3D (u32)(BIT_ULL(port)),
 
-Thanks for the review.
+base-commit: 46bc52d13594848023e681860df8700c8db14354
+=2D-=20
+2.53.0
 
-Yuya
