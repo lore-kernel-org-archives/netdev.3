@@ -1,141 +1,192 @@
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com [209.85.216.72])
+Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99909547066
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 08:22:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.72
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789719734; cv=none; b=XRy5vVQjnB0McRONfJ6SKgk7cmXxPvII+CogXjrJTQVo1YckxtayUcSAqORwY47VGWbngN1BJiQK54OW8frS5ljS2JftkA5Dtp92eY5QWKP8g9FCfxYCbSzClxWs5f/1osP3+90oqFve4dBtZe7EiDClTCRKot0x7mNMPz+dhJA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789719734; c=relaxed/simple;
-	bh=gW/QEDiE6VLwH4UxdpiwjpAZeoyFLuxraN1v1LYGMtI=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=VrNuTg69cFYQ4BiH1bwR8KxmmPQAbEnHmGZP/sGY0gfCdWkpVFfQTCq28SlOz/tnnYBwU+cNe/TYRkEdB6pr2GiudMU/TDKcPRulaAy30Enbb0EaxZdv2BYEMiWkmWpZrqXPHM3h8MRgeAvGTs6HoCcVRR+HQxgIXzqGYR7BPVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rHi+XhXr; arc=none smtp.client-ip=209.85.216.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259F14ABBC3
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 08:22:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789719755; cv=pass; b=j/jm6gxS28weiGT1cqleeZW4o7j8VXKFnQdu+NfXafrrqYFo/MlXKpZfPN1sWyOIpampvoLQxfC26qNWnl50PEXIHdfSKiHEOnFhC6p5mbIeHAkvrmuVT2L2ojVTshDgfgK5Xy+Xgl+QiT9EB6OqTQ/GghGObPt2NmnYijA1uyM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789719755; c=relaxed/simple;
+	bh=caIY5SD5XMVlz9br5cyq8OQ2QzYvgdCKzRbGP9MjoRc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ppkP5Kl0CbZX224KWAN+nU9XqNre1zkecai1aJA+eQayowLnaP56DhpHNkbZFq3SKyghW5AWPNKqpoLFD6JYlzQ+f6j/avyt5WkG5Efu9Va8950twNj45JMALjwLvFkRyq/SUEArm4BoRgg9cMFx6E4460DQ9PsUlfab/bZh3mM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=jnHH+TwR; arc=pass smtp.client-ip=74.125.228.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rHi+XhXr"
-Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-39b6416441eso944174a91.1
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 01:22:12 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="jnHH+TwR"
+Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-85469e211a0so573716b3a.1
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 01:22:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789719753; cv=none;
+        d=google.com; s=arc-20260327;
+        b=k9wL/SDJEPpt81Ftfcj65AvME38F6p4nk4Gw1XQJ1dITHrcEqYV9DOI6tdakiudNoG
+         K5DI5hd2pKRT0cduuM+oqxn1y+YFFOIVmyNSjADeYwkutl+OxVNMuwyDGq2Z75zZNgQO
+         7eYeBueJiZOKvlpqCuwzOj3oJ3cif3ojMcPTzrzOG+XFJPdOa3Klv7MQiNU6lllgm8AG
+         pObo3hu2CEehe5Rjm6mfi3n1JhnwAMwmBARuj7edZlZILEG8vzmukZ6Ny7pZDa7v/SHJ
+         zlurTBm+ctI4R2jE/aE7echK6lhuTRRlhAibGWZTL61ZbqtREqNjGKn7tsPNI83pA3kJ
+         SMQQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=dfFd0zyH+HOjbziiDPWCPHKxOHER1oFd6/oxLP47/YQ=;
+        fh=EqHbxJwniRKsDtMTj/Nnp0bCBIMSWfwXZy23f0S2ea4=;
+        b=H5mTJmtcHU2lo82mzGQ5wuR4S/QmBMBsqt6G79qWHsARA41K7d5ozEUnIAxu0cs8yZ
+         378/vn2aYzS0Us2fzLhZVOL67s/1r5F4VNjSzuI5eMv8/P7Ty3CjySZkDBdfFyltn+cX
+         eFYqbJEJX5wwCayHTBUHsjqLuDP2GYMDk+TCPJzXcwE3+KZPXz/WtvOBp9zxcTSOL9iO
+         gmWK+AN1xYFNzW6So8d0fyumFCkTXd4i2btSf2ufeH4Y56K+Sw1l1ddAnJHcM46cy7K3
+         +twwFgEsAonO7i9lec5Hrl4nELcGm6n4tGvs12F6OxGJ2fHU4Ayi5R1ArNkDT6iuVPqL
+         tyIg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789719732; x=1790324532; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hMnObLzmte9hOLGSxUEe2hy2Vwd3bHyJ4siHx7UsLMU=;
-        b=rHi+XhXrii9TpxjtvRcessrt8Iqg36eiq0qC3LX2Jpe94RVkrqrJ+uQxzHezDzunx7
-         RhNFTNIdSMJS929f9gr5OgLybhl1rvIQxJZsiiEXC5F3ln/NZhGVrkDAx9R5WiHaagLa
-         wOe32E8ILu/p7o9xvhHzdxed6yxZU3mQOOxXpVQj2jje0LPWJFopaN1yOTd7GsUAlSme
-         ckmWftdQ3itWgnSgzEb/7SLtmqlVmFilaT4OKz9JPSbKdzZmtgCS343Xk5Ma+fk5884X
-         jDWnvfWAIbQ/+lqyw/DlybsvbzthoGQRx/GZ5mWpuNT2VYtuiux716uvdEZheFyn1tnu
-         4OXg==
+        d=mojatatu.com; s=google; t=1789719753; x=1790324553; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=dfFd0zyH+HOjbziiDPWCPHKxOHER1oFd6/oxLP47/YQ=;
+        b=jnHH+TwRDx8i6scEHeASTLHFTk2Dm8BDoHigfPTI5Zul4S5hAnJMWBFVhc9Pa3xXQC
+         nxLU0tbF3WMafBZJceyBLAWkAfNXY4m0Cv7Iq3ze0qCijcIa1aPBND8Pk9CAJCIfouCI
+         FGQJQxSXMyAwqlHGSpj7enVuTVuYbVho0F/bU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789719732; x=1790324532;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
+        d=1e100.net; s=20260707; t=1789719753; x=1790324553;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=hMnObLzmte9hOLGSxUEe2hy2Vwd3bHyJ4siHx7UsLMU=;
-        b=Yo9gLRmbpjm9rJJtgTuijfhRePmjTe2nKuJo3o/4wQurcU94gsVxU8NlRjXM+USRnv
-         acQ3bOuMpoBhu2sQ3WpI7d4hD73NvARU2ikrwt5UxctZ8zFt8Ni8pA9C1WEdJTobfUBl
-         WzbS/XieryIeOE5podoDGgF/Xwxbap1Fu9J6J7BAvbumH1mY4GOU+vVMUVLKyiU9Po29
-         7eugvtgDZZx+AspyZlmAIpKOfWC8T0vN2KMqVr6hxBx3PTThQ7+VqC6yDeJLkTbBenl6
-         Ut9pqx0McimiZR1ym93plteU+zgv2XuCkVnENk+1wcW/2QTDUN3wwuTzTkdj9gxlCw6C
-         dieQ==
-X-Forwarded-Encrypted: i=1; AKwUvByvEdWdkJIJzQnMoq3/I3wvKyx6H0QkVc6j5gjC9cpkVKMKgiJTps9+k1b2msD46VQNQQooHkM=@vger.kernel.org
-X-Gm-Message-State: AFuF++mlNOYOrQCYGm33FbawMJBMbrry0HZzp9ok9wMV6CdhoNL3+4mk
-	ZNDocZSvqQ3mLb/9XhR8X//oD06bDywxG2uBHmVJTsM4ZhXJn+dB4MOgUloOipEF7sHk9V/D/uV
-	40+lC0Q==
-X-Received: from pjqo22.prod.google.com ([2002:a17:90a:ac16:b0:39d:9b7b:e73b])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:574e:b0:39e:1fb6:9659
- with SMTP id 98e67ed59e1d1-39e54f0772fmr4283565a91.22.1789719731573; Fri, 18
- Sep 2026 01:22:11 -0700 (PDT)
-Date: Fri, 18 Sep 2026 08:22:05 +0000
+        bh=dfFd0zyH+HOjbziiDPWCPHKxOHER1oFd6/oxLP47/YQ=;
+        b=D1C6CCOmbmzW4YqeqTOWgbpo+HiaGGM164JSwZHNG5DLb4R9s6k56H9DH3t+ukV4q8
+         7cpTdnXsP6G2dClDd5dvnr00JLmq/Yr2Zfa9SHWyNaTXIHlyZkgn8nOOSmDb2mmUgGgK
+         FGhewWecU4s9fn2/x4cHQXicx93TS5trHrqBxPv+mJwjotb/RBlzSO8Ypi98E+cV4Xpd
+         Q0mhZnqS8WKBS5tOVJpj/Tm81/YUw7l/ypuMoKzYzLsYs6kyF9UXNSvRhfZqewdjLFbW
+         I0D6E0kAiTtHKH9nPud9acJbmFG4hZtU8ByEPFJMExBgvHWaA4TJSTHSXQ2+etZHzRaI
+         bnaQ==
+X-Forwarded-Encrypted: i=1; AKwUvBylVuFmRxoFDKyV8eAS063X4M813NMZlkyKu/XDFa+5c7bYrrxiZenNK0g/tYE8yVmfuKmqQyA=@vger.kernel.org
+X-Gm-Message-State: AFuF++lCGfgCscKzYSQCTCSGafJM38zeS1cDc+MZDpGBFyWT1MdRel0A
+	jGeB19bN+b0kZz1Iy3ATlDtUbtkh+FgKVqKqxyJse/WOBw2+3aIAB6hL6IdvdThzywVh5zE4ZpG
+	1GFrlq2beBYf+e297qK/7oJVP745z4LLWmzXQl04+TNQOjAF4Ua3I+RjI
+X-Gm-Gg: AYBFou0JR9MNWKiefRBR1mLzOV2WQdOuKketZmJPxjJ8sD4RzTh+PD9LdOZiuztNaxd
+	cxFmkWA6Ivh6ABgWg8UzwISpGF5m4dAdZWE6DspQCa0wJZyZQLt/AnrVzblNnJ7oMuGu36SzIVQ
+	HLY/X/GAqEdagIGoZvZGww6eA+brZj4ARDfZ7UaptwSG3e5s3h7/peoy9ejG+OtLE+TBn6jpq6p
+	U+Oo35qe5kX+u4BI4jLfIXogGu3Wcx0FXtOJ0Yq+wB4DjpsKlVj0/chjhf6Cw5Xyuc4/uAZfgSP
+	KHyNKAFlIV7iekerlogzymaYwbktNvwT+dwGfcziwpFGI318+0Wdh8Nn/MtF8OaKzOIvhLPb7jw
+	igertrDAUy/QYC1XqFfd0R0N4pRbl1og6cOkeHFEQoxfo
+X-Received: by 2002:a05:6a00:114e:b0:86f:5e14:2422 with SMTP id
+ d2e1a72fcca58-874db7f1a53mr3581101b3a.1.1789719753310; Fri, 18 Sep 2026
+ 01:22:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
-Message-ID: <20260918082209.2853582-1-kuniyu@google.com>
-Subject: [PATCH v1 net] ipv6: Prevent rt6_insert_exception() for dying fib6_info.
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+MIME-Version: 1.0
+References: <QDISC-LQFE.v1.20260911041746.1@mojatatu.com> <20260917120801.GA51261@horms.kernel.org>
+ <CAKYWH0RMJ+sxMku8UGmmcujnO9fJBg3Ok_ofbvyh5eTJm=2uTQ@mail.gmail.com>
+In-Reply-To: <CAKYWH0RMJ+sxMku8UGmmcujnO9fJBg3Ok_ofbvyh5eTJm=2uTQ@mail.gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Fri, 18 Sep 2026 04:22:21 -0400
+X-Gm-Features: AcwNN1VNKDMQQ1YJv2NJsWphPozLgYauN8fRo6TJ9YyGJPkWDG7ogpL7mhpSml4
+Message-ID: <CAM0EoM=uw-3EAVQBWWMtNSHJjzcS-ftfFYpbSX+BXJyx-gdjuQ@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] net/sched: cls_u32: fix manual hash table handle
+ IDR aliasing
+To: Alexandre Ferrieux <alexandre.ferrieux@gmail.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, Jiri Pirko <jiri@resnulli.us>, 
 	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Marc Harvey <marcharvey@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, stable@vger.kernel.org, 
+	Sashiko <sashiko-bot@kernel.org>, Victor Nogueira <victor@mojatatu.com>, 
+	hybris <hybris@mojatatu.ai>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Before the cited commit, fib6_nh_flush_exceptions() always set
-from->exception_bucket_flushed = 1 under rt6_exception_lock to
-prevent rt6_insert_exception() from inserting a new exception
-for a dying fib6_info.
+On Fri, Sep 18, 2026 at 1:37=E2=80=AFAM Alexandre Ferrieux
+<alexandre.ferrieux@gmail.com> wrote:
+>
+> Le jeu. 17 sept. 2026 =C3=A0 14:08, Simon Horman <horms@kernel.org> a =C3=
+=A9crit :
+> >
+> > On Wed, Sep 16, 2026 at 06:01:14AM -0400, Jamal Hadi Salim wrote:
+> > > A u32 hash table created with an explicit handle ('tc filter add ...
+> > > handle 801: u32 divisor N') keys its IDR entry on the raw handle, whi=
+le
+> > > the destroy paths free it under handle2id(handle). The two key domain=
+s
+> > > disagree for handles in the 0x800..0xFFF htid range:
+> > > handle2id() folds them back into the auto-allocated id space (1..0x7F=
+F).
+> > >
+> > > A manual table therefore leaves its raw-keyed IDR entry unreachable o=
+n
+> > > delete (a permanent leak), and its delete can drop the idr entry of a=
+n
+> > > unrelated live auto table. A later auto allocation can then hand out =
+a
+> > > handle that aliases the live manual table; u32_lookup_ht() first-matc=
+h
+> > > routes lookups and TCA_U32_LINK for that htid to the wrong table.
+> > >
+> > > Key the divisor-path alloc on handle2id(handle) so allocation and
+> > > removal share one key domain. A manual handle that maps onto an id
+> > > already in use is rejected with -ENOSPC, and auto allocation skips id=
+s
+> > > held by live manual tables.
+> > >
+> > > Conditions to recreate:
+> > >   ip link add test0 type dummy
+> > >   tc qdisc add dev test0 clsact
+> > >   tc filter add dev test0 ingress protocol ip pref 1 \
+> > >           handle 801: u32 divisor 16
+> > >   tc filter add dev test0 ingress protocol ip pref 2 u32 divisor 16
+> > >   tc -d filter show dev test0 ingress | grep 'fh 801:'
+> > >   # unpatched: two live tables with handle 0x80100000 (the pref 2 roo=
+t
+> > >   # hnode is auto-allocated id 1); patched: the auto hnode takes id 2=
+.
+> > >
+> > > Also tested with a poc with a live u32 table on the block, add/delete=
+ a manual
+> > > table 'handle 901: u32 divisor 1' twice; unpatched, the re-add fails =
+with
+> > > -ENOSPC because the raw key leaked on the first delete.
+> > >
+> > > Fixes: 73af53d82076 ("net: sched: cls_u32: Fix u32's systematic failu=
+re to free IDR entries for hnodes.")
+> > > Reported-by: Sashiko (gemini + nipa) <sashiko-bot@kernel.org>
+> > > Closes: https://sashiko.dev/#/patchset/20260822222049.114526-1-jhs@mo=
+jatatu.com
+> > > Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+> > > Tested-by: hybris <hybris@mojatatu.ai>
+> > > Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+> >
+> > Reviewed-by: Simon Horman <horms@kernel.org>
+> >
+>
+> Hi Jamal, Simon,
+>
+> Thanks a lot for the fix.
+> One nit I'd like to pick is the "Fixes:" header.
+> Specifically, it mentions my patch:
+>
+>      Fixes: 73af53d82076 ("net: sched: cls_u32: Fix u32's systematic
+> failure to free IDR entries for hnodes.")
+>
+> However, what this does fix is *not* a regression introduced by the
+> above patch,
 
-The flag was replaced with the FIB6_EXCEPTION_BUCKET_FLUSHED
-bit stored in nh->rt6i_exception_bucket.
+This patch fixes the alloc/remove key-domain asymmetry introduced by
+73af53d82076
+Prior to your patch, the alloc/remove key domain was symmetric; you
+forgot to convert the "else {" part in your conversion, which this
+patch fixes. The comment tries to explain this detail.
 
-The problem is that now the bit is only set when the bucket
-is not NULL and fib6_nh_flush_exceptions() is called from
-fib6_nh_release() after fib6_ref has already reached zero.
+cheers,
+jamal
 
-If rt6_insert_exception() is called while the target fib6_info
-is being removed via fib6_purge_rt(), a new exception could be
-created successfully because rt6_flush_exceptions() no longer
-sets the bit.
-
-This creates a reference cycle between the fib6_info and the
-exception route, leaking the fib6_info, its nexthop device,
-and all per-CPU routes in fib6_nh->rt6i_pcpu, which stalls netdev
-unregistration.
-
-[   34.680602] unregister_netdevice: waiting for gre6 to become free. Usage count = 68
-[   44.920675] unregister_netdevice: waiting for gre6 to become free. Usage count = 68
-[   55.176582] unregister_netdevice: waiting for gre6 to become free. Usage count = 68
-
-Let's call fib6_drop_pcpu_from() before rt6_flush_exceptions(),
-to set fib6_destroying before rt6_exception_lock, and check
-f6i->fib6_destroying in rt6_insert_exception().
-
-Note that FIB6_EXCEPTION_BUCKET_FLUSHED logic is dead and
-we can clean it up in net-next.
-
-Fixes: cc5c073a693f ("ipv6: Move exception bucket to fib6_nh")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
----
- net/ipv6/ip6_fib.c | 2 +-
- net/ipv6/route.c   | 5 +++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-index 9ea75703b38d..9ff761962b45 100644
---- a/net/ipv6/ip6_fib.c
-+++ b/net/ipv6/ip6_fib.c
-@@ -1043,8 +1043,8 @@ static void fib6_purge_rt(struct fib6_info *rt, struct fib6_node *fn,
- 	struct fib6_table *table = rt->fib6_table;
- 
- 	/* Flush all cached dst in exception table */
--	rt6_flush_exceptions(rt);
- 	fib6_drop_pcpu_from(rt);
-+	rt6_flush_exceptions(rt);
- 
- 	if (rt->nh) {
- 		spin_lock(&rt->nh->lock);
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index b18cd0d9148c..5c898bfc4bd9 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -1729,6 +1729,11 @@ static int rt6_insert_exception(struct rt6_info *nrt,
- 
- 	spin_lock_bh(&rt6_exception_lock);
- 
-+	if (f6i->fib6_destroying) {
-+		err = -ENOENT;
-+		goto out;
-+	}
-+
- 	bucket = rcu_dereference_protected(nh->rt6i_exception_bucket,
- 					  lockdep_is_held(&rt6_exception_lock));
- 	if (!bucket) {
--- 
-2.55.0.1082.g2b9226bbc0-goog
-
+>but an age-old inconsistency between handle encodings.
+> So, It would be more accurate to mention an earlier commit:
+>
+>     Fixes: e7614370d6f0 ("net_sched: use idr to allocate u32 filter handl=
+es")
+>
+> What do you think ?
+>
+> -Alex
