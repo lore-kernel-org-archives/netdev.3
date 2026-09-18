@@ -1,103 +1,84 @@
-Received: from smtp.inf.ufrgs.br (smtp.inf.ufrgs.br [143.54.11.23])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F69E2236FA;
-	Fri, 18 Sep 2026 00:46:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=143.54.11.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3523368B2
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 00:46:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789692365; cv=none; b=MNhFv7B8ggz6Fbf3Ip1u05MZnoyISc6R9t6FZJjxHHsegUixUXnRuoBYoXO38+do+d1RZlcj7J82kx9yyiXCv/MifRmDSRQPp1Q8/vzWdwvT5Op+VUIoUmmMbhDaKpA/v8sOF8cjU64RH4LA1P7LBgQK8cC7B5zml//T+R1fT8E=
+	t=1789692393; cv=none; b=bDzcADFqyF4dyWLLOBPt/uy/kF2UD+5YWgk/EnXdF+v0HcNzwy+F/PY4zMTcPk90M5iU30oZejXmpwQM3x6peT9CfDkS8TdTZuEF9przd4MlIRAsB34YoUWqt0NXkCCPQQkPCS1AkaLTFnkAX+wWZa+asUL6vN2bwOgD1gEM6V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789692365; c=relaxed/simple;
-	bh=ig6QWU/1cL+w9xP/m4RIBSgEmoa5JwTRCf1IkjOGQoA=;
-	h=MIME-Version:Content-Type:Date:From:To:Cc:Subject:In-Reply-To:
-	 References:Message-ID; b=Fcnj2mfd83tZ33Yi8m4BG/MALFTyBQpjmzuZRxQmCLwiymcvPVE4yCiNLGu+B4V6PlbM/hzVai9WzFhra6v6DxQz5y0xfP2WQpBuNBeg4EeZIpzZj9xKweaP6c7umh9s660DyLlXjdgYlncQc5HbN6axIC4br7XtP+r0V8Zehgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inf.ufrgs.br; spf=pass smtp.mailfrom=inf.ufrgs.br; dkim=pass (2048-bit key) header.d=inf.ufrgs.br header.i=@inf.ufrgs.br header.b=TUldHRtd; arc=none smtp.client-ip=143.54.11.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inf.ufrgs.br
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inf.ufrgs.br
+	s=arc-20240116; t=1789692393; c=relaxed/simple;
+	bh=y+KcGmpG4eIc5iIo0u/HkKgmSBIqucSdI/8b1DL2VLU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=V3R5+32hMokUbnpdSSvsGCQMjv8fFLriaNMGejCFhg9/HUN6ZnIVpYyPyaGHDAKDiygclD5OstY+LZsMY2joQB3FKBeN8rV9OcK78gat7b0jAVSER8xRG5lU4adoZnrP29bx0DlBM1v1ZEsn7OQUnlQCXv7M3Ash0apKnY7CiBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j03VaKIH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=inf.ufrgs.br header.i=@inf.ufrgs.br header.b="TUldHRtd"
-Received: from webmail.inf.ufrgs.br (webmail.inf.ufrgs.br [143.54.11.45])
-	by smtp.inf.ufrgs.br (Postfix) with ESMTPSA id 42C271202B5;
-	Thu, 17 Sep 2026 21:45:52 -0300 (-03)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=inf.ufrgs.br;
-	s=dkim2026; t=1789692352;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7noIVcernOgHWLvqEDePe5AAR99G2EpRfhDvZQY2pho=;
-	b=TUldHRtdRoorgkI4Uos7LUFcv+DTX4VuBJ97JO0Op+Z2u6mO4w8jmmIiXl9XPIO7tfc+1H
-	zjRd9uOlbyjYkuJvUnUjohkixfo1PC/l43shvENL2wBktCw0rFBeTreQCINMBU2BMALNH3
-	CgU1nxbSGs0usE80jy+aTlYc9cwQ8rOUQS0YwskhOv/Tp3SyNTFa8CCF6W+daSP1BgGw/B
-	WwiaP1UbZjqiibSPI+WipxWHqeYDkZV+Qr0rHDGMCsE7RoAo9vhNZ98+jqdFeYunbyeJe+
-	19NlViJzuTaI50i9wda3CZS8KfT5BER72hBjKpRKPagkQI3YRJpzJIQbzwZTGw==
-Received: from 186-210-025-76.xd-dynamic.algarnetsuper.com.br
- ([186.210.25.76])
- by webmail.inf.ufrgs.br
- with HTTP (HTTP/1.1 POST); Thu, 17 Sep 2026 21:45:52 -0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j03VaKIH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9111F000FF;
+	Fri, 18 Sep 2026 00:46:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789692392;
+	bh=y+KcGmpG4eIc5iIo0u/HkKgmSBIqucSdI/8b1DL2VLU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=j03VaKIHynUwjYg2Df2jGjP+Uf0e6NR5oUx4wpOh2+RW2sGXqcMiQGh1KfTo7Tw4w
+	 uXbn72igD+0apTEK9YW4thnCqNSLcRuz95A/0KohSg2I6oX40Nex2DVhSnu4rylkal
+	 tGyem2chyQiejadx7g12fkn3wNesT8sg7gZS9k3210Bkwzi7SW+YEvfGPTAUbbEgHI
+	 sOgReamtGnUROH2a8SgyiJ1aOpd1XydiqCYuHEcXVORq8oU07sMhT1u/f5VZad3SUE
+	 xnRl0eYJAnB8o+7zUv4qWriu8Miz+IgP0l+M60ZAu2cnTNYG0mqaCuefhV9SlM/MrM
+	 rMvo8XnUcSLrw==
+Date: Thu, 17 Sep 2026 17:46:31 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: Victor Nogueira <victor@mojatatu.com>, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, jiri@resnulli.us, horms@kernel.org,
+ vega@nebusec.ai, netdev@vger.kernel.org, Yuan Tan <yuantan098@gmail.com>
+Subject: Re: [PATCH net] net/sched: Avoid quadratic handle scan in
+ qdisc_alloc_handle
+Message-ID: <20260917174631.66cee526@kernel.org>
+In-Reply-To: <CAM0EoMn1SkkC0goKD3-OreQtEwYbfr3zYJdmfrDf8HTdHWrNjg@mail.gmail.com>
+References: <20260911133146.3440982-1-victor@mojatatu.com>
+	<20260914191108.55a1a4f1@kernel.org>
+	<CAM0EoMk7CZA2qAPEfvZ_+tUDkcUYF5nanaxER1soLJQZqMuXxQ@mail.gmail.com>
+	<20260915085304.775a829a@kernel.org>
+	<CAM0EoMmiw_kVnK4RjTT_dkquw0YLSB5VgO_7EoV2WT_pQXbCYw@mail.gmail.com>
+	<20260916170425.1c7a7cbe@kernel.org>
+	<CAM0EoMn1SkkC0goKD3-OreQtEwYbfr3zYJdmfrDf8HTdHWrNjg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date: Thu, 17 Sep 2026 21:45:52 -0300
-From: Matheus Alves de Almeida <matheus.aalmeida@inf.ufrgs.br>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com, Andrew
- Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 3/3] r8169: release firmware on application
- failure
-In-Reply-To: <0845552d-158b-4c46-b984-c0ea18237eed@lunn.ch>
-References: <20260916152444.167196-1-matheus.aalmeida@inf.ufrgs.br>
- <20260916152444.167196-4-matheus.aalmeida@inf.ufrgs.br>
- <fe23c6bb-2cdf-4641-aae8-25b03b38be42@lunn.ch>
- <4ee3cd8a9a299d504fc95ba86a3f387a@inf.ufrgs.br>
- <fcaf8c8c-f6df-46c0-ac9d-7924c732283c@lunn.ch>
- <cc15edcbf76e8e70c89dd5ef5d838c3a@inf.ufrgs.br>
- <0845552d-158b-4c46-b984-c0ea18237eed@lunn.ch>
-Message-ID: <714971be06fbb8d5c519d1d710d214fa@inf.ufrgs.br>
-X-Sender: matheus.aalmeida@inf.ufrgs.br
-User-Agent: Roundcube Webmail/0.9.5
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
->> Right now, firmware application failures are ignored, so the device
->> can keep going even if applying the firmware fails. The TODO also
->> specifically says to release the firmware on failure, which seems to
->> imply that continuing without it was the intended behavior, and that
->> releasing it was mainly meant to prevent retrying the same failed
->> firmware application later.
->> 
->> Making firmware application failures fatal also creates a state problem.
-> 
-> I don't know this driver in detail, but fatal errors generally don't
-> cause state problem. The probe method fails, so the device is
-> destroyed. Is firmware download not performed in probe?
-> 
-> This driver does support a number of different devices. How many do
-> you have for testing? If you artificially cause firmware download to
-> fail, is the device usable?
-> 
-> 	   Andrew
+On Thu, 17 Sep 2026 07:24:05 -0400 Jamal Hadi Salim wrote:
+> On Wed, Sep 16, 2026 at 8:04=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> =
+wrote:
+> > > Given the flood, here are the priority rules we are using:
+> > > 1) submit net before net-next
+> > > 2) All bugs must be reproducible by our (semi-automated) system
+> > > (hybris). I dont even look at issues unless they are reproducible
+> > > (hence my nagging "do you have a PoC?" ;->)
+> > > 3) Assign a priority to each bug and submit the highest priority ones
+> > > first. The priorities are assigned as follows:
+> > > - base (reproduced, ACCURATE) +1
+> > > - Crash (oops/panic/NULL-deref/OOM/corruption) +2
+> > > - UAF +2
+> > > - Lockup (soft lockup/livelock/infinite loop) +1
+> > > - leak +1
+> > > - simple-trigger (plain tc/tdc, no special PoC) +1
+> > > - privilege required: (root) +1 / (unshare -Urn) +2
+> >
+> > nice system :)
+> > no distinction between control path-trigger an packet trigger?
+>
+> At the moment we dont make a distinction - the existing point system
+> would still work, I think. Do you see it differently?
 
-In the r8169 case, the firmware is not applied during probe, but rather
-during rtl_open().
+Right, a bit of a murky call. In abstract packet trigger could mean
+remote attacker can crash a middlebox, that's _so_ much more serious.
+But in practice most of our packet level attacks are for some insanely
+pre-cooked skbs from AF_PACKET and such :/
 
-I got my hands on a machine with an RTL8105E. While it runs without
-firmware, partial firmware application causes the NIC to stop working
-unless the failure happens near the beginning or end of the application.
-
-At this point I think the TODO I was trying to solve is stale. The proper
-handling here would be, as you suggested, to fail rtl_open() on a firmware
-application failure, which would release the firmware through the existing
-rtl_open() error cleanup. That would instead turn this into broader
-initialization error handling, which I am not knowledgeable enough about
-the netdev and r8169 code yet to do confidently.
-
-If desired, I could send the iopoll patch separately, but I do not think
-I am going to continue with this series. Thanks for your help and patience.
-I am still new to Linux kernel development and trying to get the hang of it.
+It was just a thought.=20
