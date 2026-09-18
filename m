@@ -1,248 +1,164 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C880503919
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 15:30:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789745410; cv=none; b=AKDqH1v3LqWY+Q9C9onY9+vWI2BOv+DW4I4uNnDCGVMMfLfzvi+vIdpmpUD/jmatIet1w9iTLEN9PhMqIGmb/XUyrSWJ/FXFIZToaekW4leCqKrNbocOb+yV0nwSecDTyvVbaDzpAoGDm7A7HLn6UdhQJizeYQbKfIEoe2oNQbs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789745410; c=relaxed/simple;
-	bh=2EPOkJReona5TRx2q4HJ29Rjz2csI9JBpQqH0yD1h0s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SUniJacIF3xcpfgJmpkXTOE7ulK7goknxxiQTkRYH32yP11fG688B6Z8AV6hHBokbJtkq7ziSj2nu8bibrtBJyWuXL0+vLcYp55Q9ZHtOKNYE/Hp4b5fkJ7vwNwMIsNiNxDT0tIiIgRKXmZeF4uvdbhiKCdxdnHHIMEgTPxf5F8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=C0tJ37HW; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A69348C7B
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 15:32:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789745552; cv=pass; b=X6DC0vLFK491eWIIsipOTW5go6ytLs/g/QcVBJ9zk5h38Io9r9MOxoTyKDMyCaAH7LMyED9gxlObAJxRAHhICdKmlgBcN7s4/TJOCGyUlStR8xclSLQ8eAjHJnYIH+wrSjCjFGB8r2fz1TV0BP+vffzNON4lP26K1XcQ5MqxYLM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789745552; c=relaxed/simple;
+	bh=ymSNiHBv0rxNjhBEBzAQ3e5pEXSbhOPJPBVgbAV4qGc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cwje0ItC3rdatB0ZCU+48Bu8vpOvslKX2snm/IX5ten6c9974pgSA05a1QJ4jKjZxoMTnhs5mztpJ/ByexFvOgcYgxJ17I59quAh6ZsGDUzYSDq+G6UTSWvyvvBfAgVxLgUSeBYF3nvBbtLCa8HSZ6E7xJ2N2D+BRH6YGgnxYZo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y6O1VpwI; arc=pass smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="C0tJ37HW"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49ccfd61ecaso8529965e9.3
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 08:30:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y6O1VpwI"
+Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-8686f46e4adso795008b3a.0
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 08:32:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789745549; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Wie1GmbuQC58/9UVhenLAHKY704FzTQjLK0Vt54RSXCII3Cf/8TGrJIGW1YPt2/De6
+         S7eNB+dVZqchVXngK5NkBzolu6nQaHtYut55qq1KU6xWnzK67f0/R5LKF05ILloj3GTy
+         6nwAkk1NBqLVRB+3tnvBGrg4KmjBM+3GGOvOd8VGm1Wyn+v8y5QCnJo5pGjrqqEMpXDp
+         lHtndNKMoVS19ozVzrGz6CIzOYy5V2JUPw3gPLxAT4BvJKFlIc8zmvO80/Qv0ngtc8Rb
+         GF2f3V4cVdWIno6yNoFcUzahu9PMdnyxN5rytoYp0b4mLOv82OpqAqttM0duWxzrSA3G
+         fS8w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=W1ylXOncdQ/xqG+G6xMvP7qzdxs98+NQiLMh31Gq++0=;
+        fh=XlZDrSU5TY6a01AirO0srhCfaFtKDaDcuYL84HuIjq8=;
+        b=QNgb3p39slUdrDgOg5z8ZJvtsM6rSKg6QXVofBoA/lc2jG1kg/40g1gBoV23SF9G+d
+         A06R6waY8cQD9dB/Sm1OIq/9H0ohCMk1eYSn2vIxrTmgkqPjNL8UrWEgZpqxIdcUubnk
+         DNTc/1GR+PdbI+7FsZtJEXmSn7IhWlPqtGjqp3vu0f/MUwqeP2Ea3ofQVJdKz1FlFC/S
+         clQiqsspadqYOVMyiK1x7bjR6eiHqoXgFnsckw9xwQ/J0txGrTG6lLoVPboP/fFtgiqO
+         RXVtEWkrD8xC3XLn5ZXp//j19sF/2F1jhAhl1IUFRe00InIcs/EWXGU+kXa/0FmgkA1I
+         Y73Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1789745406; x=1790350206; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Qt8/dPuDVCuLlG8nkmLCpJqVQajFZPFEOjgY24MqgXY=;
-        b=C0tJ37HWoHruXYs3GUgEKhyHEKa3ZpimOrDCYga8owbZE30cle2oTo+pVqXkrOVps3
-         nsIfLJEmzyO+Wzof3CC3o0KcA/ECFF1GqnKgVSUwSZeK019f+3f31HRcWeEWyhECJQ55
-         Zyx4Dit/lrxARYw6sjqxoCJi+MvExyNaJH1o/TxhVI+3pRRFwgCUxcRNrH0Xg+ywqwGW
-         /2IyfYKwkizFFCRgOuScTyYZNCp/vQXcF7l0idKCi+qKiBDt/fr5KaGtLwHmeyCnixAA
-         tigF3a31wJT4UibCsxZImzqB4e3KoI7B7vTGgrzMfAED3Ei0EedTSLUzYsVFN4Q8jH0a
-         mJPQ==
+        d=gmail.com; s=20251104; t=1789745549; x=1790350349; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=W1ylXOncdQ/xqG+G6xMvP7qzdxs98+NQiLMh31Gq++0=;
+        b=Y6O1VpwI3Meq1JdZzi31TXfQpcpanZ4wlV9iuXpd5sjIig7phQgfCU47aWyfR6vo5k
+         fF5qI7YbZKJqfy+x8XAZFltiJon4GuQN8WBUzqUeSKaguTIN3WWM42KofwVy992IGB3D
+         A/KwLB5orHlmqbo35PsAsbVq8pWeMtHNIK0XxYEMlpSTBYYH6K1HR6U62pwvfxU6uZZJ
+         QX9pHkygNT6TFTQDXgl7UFGsE89L7ug/iJ1SDQBdIjMEx4okR95NWxfMUcFzo2x7Tnf3
+         0vdbG2BYhFcpGWJ8wwNFfDRQ8xHV1NJxG+crmfcpyiZ5BtlOGzbEKTHAhPTV/xTWj6Tu
+         LwWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789745406; x=1790350206;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Qt8/dPuDVCuLlG8nkmLCpJqVQajFZPFEOjgY24MqgXY=;
-        b=qFqSxdeSrgdj49sCGtGK//jegM7rGX3Fm/qLWKw5PnJ52TOVyV8+yvxb4Nya7RBVIx
-         mXrUmj+HMu/UOaBXwqm68waDN/M7t5nj6SFvt2vXfULfe/HWAqUDrtZKSgJRfR3qkNYq
-         ZUMoCbgU5tmp7azIEdCwdbi1uW6dL3WAxjFfd6epzzD92yeoM4mlfY/k+rVdtq+NmrfO
-         z2igJ04T2mIGT1Ut9O3ptd8A0aro6AiEkvjk/kDLFpW5C01fCgrZJplJrLicjx0GQK8H
-         7rb4RPvkOW8V42iQTNsjhDmKAX2X/gGdNM28HU/RLYfCzCGQi35fbhlxkdwCAm7Zjo1N
-         Qdpg==
-X-Gm-Message-State: AFuF++k9VkP0lXp/z1MiGevBpxK6jEGYpuAggHwvowaKSwpV8LO1i9lR
-	/3Tz8KlVgrhLlSmMdE2EqzckZ+EUj1XgXBzjKacAEZ8nEM68g30vi77TxS3F/9hALNrPpj2MhoA
-	GMZLB
-X-Gm-Gg: AYBFou2hkV2cp+vs3SbaxeGLVkgbtHs+aYvxw3KLeE5e4uKSsxCPCRjE0ZLvUo63Ml4
-	ZTxnnAX0uHxrtvh7t15Q2dYlFBwOMwn4uI9dCY44Vc+NO94Z3gj9wgJQnGiQXFTW22ftLp5PLOk
-	X9Z6M7SI1fLOF0YMysrv+S+8rmT4iERJxO94JGQw+LHFgM319d4+zCzTyQWVi+nerysX+3/MPDK
-	doL98NtoF7/gXhaT6V4hOfVF5ztugS5cW+TxGrMow4qIGJfIm/Rh/9tviTKr0kt97Ml1Fe1vJUR
-	BVJazq6nPEf9rTozSggZVmuOFHxut1s02rWDY9aqfHXEdNTrUeRF9B5JCWUZEXJ0iIoCCKouKju
-	EOefBZzAkhB1z9YSvsKCVCghFv9ItLu57/KrqY21cu5+umAfd4+AgJk5oYrE0jzK2OG2k3LORFx
-	K8LASrsX8Ba7E1U9AQ9AE6WYKHB0LQBpuF16goi1xk9IukFWMPXNWqbyaBGPohod+s6SRfvzMkn
-	zXYQgBcQlulwibD30LHWQ==
-X-Received: by 2002:a05:600c:34c3:b0:49c:fa21:e74a with SMTP id 5b1f17b1804b1-49fc5757f73mr40080095e9.32.1789745405745;
-        Fri, 18 Sep 2026 08:30:05 -0700 (PDT)
-Received: from localhost (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-49fcd0a8274sm103725e9.15.2026.09.18.08.30.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 08:30:05 -0700 (PDT)
-From: Nikolay Aleksandrov <razor@blackwall.org>
-To: netdev@vger.kernel.org
-Cc: idosch@nvidia.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	bridge@lists.linux.dev,
-	Nikolay Aleksandrov <razor@blackwall.org>
-Subject: [PATCH net-next 9/9] net: bridge: avoid VLAN lookups for flood neighbour suppression
-Date: Fri, 18 Sep 2026 18:29:50 +0300
-Message-ID: <20260918152950.1938259-10-razor@blackwall.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260918152950.1938259-1-razor@blackwall.org>
-References: <20260918152950.1938259-1-razor@blackwall.org>
+        d=1e100.net; s=20260707; t=1789745549; x=1790350349;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=W1ylXOncdQ/xqG+G6xMvP7qzdxs98+NQiLMh31Gq++0=;
+        b=0OWX1AcA7m2U+5OQ8AYJLOBOYOyH/k0JJg351LB4gAidiOfEsVea2hTF3fJl9rIIKq
+         fc+Q7RPDbddtppJcqlupl7qM+zt4FtsRaDvL/tUbZ2PRnW36T2quwDkp1K6CBu80pI5Q
+         kH753oXauG0i17d4hGsEt1PFko0uPau8Wu7Vdd+jSxKkwvczlTqv+W2fe8uYAZ1jAVC1
+         tlzIq2DKy7VCNrsW+MZwSEcfMiKFBUSbPXD8U0xMD7e/V9iEyI2y0ntN1KDD4FPoJGJx
+         BAqBfTUVB8tLE9p3ImKnDn3uqNbIM4QPV9rnE5QTA8t08iIvesXj84jd9MYJp41SNHRa
+         +S1Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxsPPFjMbUVSToLE6BLKgrcGw+Rjuleb7BNntknm7vn2iKqxY7sNVam6I8diT2T2SuUGDNx0X8=@vger.kernel.org
+X-Gm-Message-State: AFuF++lRq0ItG7/WTp4HdYghFPCCyNxYlbzBpkRq0XXxJh2aSUVyNPwK
+	aqMVHhGDY89W1Y5Lk+qsWlQIe8wRl2B5kPX9/DpesOljRipaItVFvDS541pR3hxYI2z2zpzvCRR
+	mr8NS/PUMisbouQBaxQjQsfrjyX4K6iQ=
+X-Gm-Gg: AYBFou38gTYauwoNvqJV6eAoGF2JRP0ku4vSMzEScFisJ/fKqjxKKvnfNutGufOvv67
+	q7HripBlSQuQUhj3ic4ZLiIGdvUw7IGwo6L4fhdFxppmr7EA78NhlOJF6RCePWP0qbIqu2I5SF0
+	x7HXTnoini5BY4PZlBd/41edH7EkhdYPXYAJpsTw5/52al/AmuWmtL8MpDDx//7EQZAnpgXa/Mi
+	eXd2srTXvZ795tdy6WP2TxEk80m48d4z6k4jHd/lg3WdjEJVBN7UYHYC/lKiXCvCy63N8lmFHih
+	LDw69XvePSp/whUSSeICUcg7TmN/6VSUz3pw9hYjMewKMyQOGdG5MkNAQPkSTYW/5HEKyMGOomn
+	nXQl5Xx+yo1Hr61MEjxNy4/kE2XlQp9HpjX1lCoDOO8Q7ImOyE0z2pumA
+X-Received: by 2002:a05:6a00:300c:b0:86f:394c:5c68 with SMTP id
+ d2e1a72fcca58-874dc0f8b8amr5619824b3a.13.1789745549406; Fri, 18 Sep 2026
+ 08:32:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260918033942.85061-1-ndaugoing@gmail.com> <20260918033942.85061-2-ndaugoing@gmail.com>
+In-Reply-To: <20260918033942.85061-2-ndaugoing@gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Fri, 18 Sep 2026 11:32:18 -0400
+X-Gm-Features: AcwNN1WmYHIGdIjR33SQlazp2k78HvrE9WOuXYfeYWpG_Q_w2uIVAZW-9f1-pjs
+Message-ID: <CADvbK_dQdro_x-=ma2=bRgosYf2cZfEaqrbpeg-8odoBHnzqVA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] sctp: check return value of sctp_get_af_specific in sctp_process_init
+To: Yuchao Zhang <ndaugoing@gmail.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, linux-sctp@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-We can remove more unnecessary VLAN lookups if we pass the port-VLAN
-entry to the neighbour suppression helpers so they can use it directly
-instead of resolving it again. Use a vid wrapper for callers which don't
-have the port-VLAN entry. This removes up to two additional VLAN hash
-lookups per flooded egress port for packets marked as proxy replied.
+On Thu, Sep 17, 2026 at 11:39=E2=80=AFPM Yuchao Zhang <ndaugoing@gmail.com>=
+ wrote:
+>
+> In sctp_process_init(), when matching the source address of a COOKIE
+> ECHO against the embedded address parameters of the INIT chunk carried
+> in the cookie, the address family handler is dereferenced without a
+> NULL check:
+>
+>         af =3D sctp_get_af_specific(param_type2af(param.p->type));
+>         if (!af->from_addr_param(&addr, param.addr,
+>                                  chunk->sctp_hdr->source, 0))
+>                 continue;
+>
+> On kernels built without IPv6 (CONFIG_IPV6=3Dn) sctp_af_v6_specific is
+> never registered and sctp_get_af_specific(AF_INET6) returns NULL.  A
+> remote peer can reach this path by completing a regular INIT/INIT ACK
+> exchange over IPv4 with an SCTP_PARAM_IPV6_ADDRESS parameter embedded
+> in its INIT (ignored at INIT time by the address family gate in
+> sctp_process_param(), but the cookie embeds the whole INIT chunk), and
+> then sending the COOKIE ECHO from a different source address, e.g. a
+> second interface of a multihomed peer.  sctp_unpack_cookie() does not
+> compare the packet source address against the peer address stored in
+> the cookie, so src_match is 0 and the walk dereferences the NULL af.
+>
+> This crashes the kernel with a NULL pointer dereference in softirq
+> context, remotely and without authentication.
+>
+> The other from_addr_param call sites of the same family already check
+> af (__sctp_rcv_init_lookup() and the ASCONF path in
+> sctp_process_param(), fixed by commit e40607cbe270 ("net: sctp: fix
+> NULL pointer dereference in af->from_addr_param on malformed packet")),
+> which missed this one.
+>
+> Fixes: 0c5dc070ff3d ("sctp: validate from_addr_param return")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yuchao Zhang <ndaugoing@gmail.com>
+> ---
+>  net/sctp/sm_make_chunk.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/net/sctp/sm_make_chunk.c b/net/sctp/sm_make_chunk.c
+> index 84a4c97d0f75..ff1c013e2575 100644
+> --- a/net/sctp/sm_make_chunk.c
+> +++ b/net/sctp/sm_make_chunk.c
+> @@ -2381,6 +2381,8 @@ int sctp_process_init(struct sctp_association *asoc=
+, struct sctp_chunk *chunk,
+>                     (param.p->type =3D=3D SCTP_PARAM_IPV4_ADDRESS ||
+>                      param.p->type =3D=3D SCTP_PARAM_IPV6_ADDRESS)) {
+>                         af =3D sctp_get_af_specific(param_type2af(param.p=
+->type));
+> +                       if (!af)
+> +                               continue;
+>                         if (!af->from_addr_param(&addr, param.addr,
+>                                                  chunk->sctp_hdr->source,=
+ 0))
+>                                 continue;
+> --
+> 2.53.0
+>
 
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
----
- net/bridge/br_arp_nd_proxy.c | 51 ++++++++++++++++++++----------------
- net/bridge/br_forward.c      |  5 ++--
- net/bridge/br_private.h      |  6 +++--
- 3 files changed, 35 insertions(+), 27 deletions(-)
+I think this is a dup of
+https://lore.kernel.org/netdev/20260917030505.4176635-1-hdthky0@gmail.com/
 
-diff --git a/net/bridge/br_arp_nd_proxy.c b/net/bridge/br_arp_nd_proxy.c
-index 9ce8f440e38f..da15f4d7c1ae 100644
---- a/net/bridge/br_arp_nd_proxy.c
-+++ b/net/bridge/br_arp_nd_proxy.c
-@@ -40,6 +40,23 @@ void br_recalculate_neigh_suppress_enabled(struct net_bridge *br)
- }
- 
- #if IS_ENABLED(CONFIG_INET)
-+static bool
-+br_is_neigh_suppress_enabled_vid(const struct net_bridge_port *p, u16 vid)
-+{
-+	const struct net_bridge_vlan *v = NULL;
-+
-+	if (p && vid && test_bit(BR_NEIGH_VLAN_SUPPRESS_BIT, &p->flags)) {
-+		struct net_bridge_vlan_group *vg;
-+
-+		vg = nbp_vlan_group_rcu(p);
-+		v = br_vlan_find(vg, vid);
-+		if (!v)
-+			return false;
-+	}
-+
-+	return br_is_neigh_suppress_enabled(p, v);
-+}
-+
- static void br_arp_send(struct net_bridge *br, struct net_bridge_port *p,
- 			struct net_device *dev, __be32 dest_ip, __be32 src_ip,
- 			const unsigned char *dest_hw,
-@@ -159,7 +176,7 @@ void br_do_proxy_suppress_arp(struct sk_buff *skb, struct net_bridge *br,
- 		return;
- 
- 	if (br_opt_get(br, BROPT_NEIGH_SUPPRESS_ENABLED)) {
--		if (br_is_neigh_suppress_enabled(p, vid))
-+		if (br_is_neigh_suppress_enabled_vid(p, vid))
- 			return;
- 		if (is_unicast_ether_addr(eth_hdr(skb)->h_dest) &&
- 		    parp->ar_op == htons(ARPOP_REQUEST))
-@@ -211,7 +228,7 @@ void br_do_proxy_suppress_arp(struct sk_buff *skb, struct net_bridge *br,
- 
- 			if ((p && test_bit(BR_PROXYARP_BIT, &p->flags)) ||
- 			    (dst && test_bit(BR_PROXYARP_WIFI_BIT, &dst->flags)) ||
--			    br_is_neigh_suppress_enabled(dst, vid)) {
-+			    br_is_neigh_suppress_enabled_vid(dst, vid)) {
- 				if (!vid)
- 					br_arp_send(br, p, skb->dev, sip, tip,
- 						    sha, ha, sha, 0, 0);
-@@ -424,7 +441,7 @@ void br_do_suppress_nd(struct sk_buff *skb, struct net_bridge *br,
- 	BR_INPUT_SKB_CB(skb)->proxyarp_replied = 0;
- 	BR_INPUT_SKB_CB(skb)->grat_arp = 0;
- 
--	if (br_is_neigh_suppress_enabled(p, vid))
-+	if (br_is_neigh_suppress_enabled_vid(p, vid))
- 		return;
- 
- 	if (is_unicast_ether_addr(eth_hdr(skb)->h_dest) &&
-@@ -486,7 +503,7 @@ void br_do_suppress_nd(struct sk_buff *skb, struct net_bridge *br,
- 			const struct net_bridge_port *dst = READ_ONCE(f->dst);
- 			bool replied = false;
- 
--			if (br_is_neigh_suppress_enabled(dst, vid)) {
-+			if (br_is_neigh_suppress_enabled_vid(dst, vid)) {
- 				if (vid != 0)
- 					br_nd_send(br, p, skb, n, ha,
- 						   skb->vlan_proto,
-@@ -509,35 +526,25 @@ void br_do_suppress_nd(struct sk_buff *skb, struct net_bridge *br,
- }
- #endif
- 
--bool br_is_neigh_suppress_enabled(const struct net_bridge_port *p, u16 vid)
-+bool br_is_neigh_suppress_enabled(const struct net_bridge_port *p,
-+				  const struct net_bridge_vlan *v)
- {
- 	if (!p)
- 		return false;
- 
--	if (vid && test_bit(BR_NEIGH_VLAN_SUPPRESS_BIT, &p->flags)) {
--		struct net_bridge_vlan_group *vg = nbp_vlan_group_rcu(p);
--		struct net_bridge_vlan *v;
--
--		v = br_vlan_find(vg, vid);
--		if (!v)
--			return false;
-+	if (v && test_bit(BR_NEIGH_VLAN_SUPPRESS_BIT, &p->flags))
- 		return !!(READ_ONCE(v->priv_flags) &
- 			  BR_VLFLAG_NEIGH_SUPPRESS_ENABLED);
--	}
-+
- 	return test_bit(BR_NEIGH_SUPPRESS_BIT, &p->flags);
- }
- 
--bool br_is_neigh_forward_grat_enabled(const struct net_bridge_port *p, u16 vid)
-+bool br_is_neigh_forward_grat_enabled(const struct net_bridge_port *p,
-+				      const struct net_bridge_vlan *v)
- {
--	if (vid && test_bit(BR_NEIGH_VLAN_SUPPRESS_BIT, &p->flags)) {
--		struct net_bridge_vlan_group *vg = nbp_vlan_group_rcu(p);
--		struct net_bridge_vlan *v;
--
--		v = br_vlan_find(vg, vid);
--		if (!v)
--			return false;
-+	if (v && test_bit(BR_NEIGH_VLAN_SUPPRESS_BIT, &p->flags))
- 		return !!(READ_ONCE(v->priv_flags) &
- 			  BR_VLFLAG_NEIGH_FORWARD_GRAT_ENABLED);
--	}
-+
- 	return test_bit(BR_NEIGH_FORWARD_GRAT_BIT, &p->flags);
- }
-diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
-index d89f1b7d6def..b5eece1ff9e8 100644
---- a/net/bridge/br_forward.c
-+++ b/net/bridge/br_forward.c
-@@ -244,7 +244,6 @@ static int br_flood_port(struct br_fwd_dst *prev,
- 			 enum br_pkt_type pkt_type, bool local_orig)
- {
- 	const struct net_bridge_port *p = fwd->port;
--	u16 vid = fwd->vlan ? fwd->vlan->vid : 0;
- 
- 	/* Do not flood unicast traffic to ports that turn it off, nor
- 	 * other traffic if flood off, except for traffic we originate
-@@ -275,9 +274,9 @@ static int br_flood_port(struct br_fwd_dst *prev,
- 		/* For gratuitous ARPs/NAs, check neigh_forward_grat.
- 		 * For regular ARPs/NDs, check only neigh_suppress.
- 		 */
--		if (br_is_neigh_suppress_enabled(p, vid) &&
-+		if (br_is_neigh_suppress_enabled(p, fwd->vlan) &&
- 		    (!BR_INPUT_SKB_CB(skb)->grat_arp ||
--		     !br_is_neigh_forward_grat_enabled(p, vid)))
-+		     !br_is_neigh_forward_grat_enabled(p, fwd->vlan)))
- 			return 0;
- 	}
- 
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index 7c0b1d3e7931..67117fb3dc88 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -2390,6 +2390,8 @@ void br_do_proxy_suppress_arp(struct sk_buff *skb, struct net_bridge *br,
- void br_do_suppress_nd(struct sk_buff *skb, struct net_bridge *br,
- 		       u16 vid, struct net_bridge_port *p, struct nd_msg *msg);
- struct nd_msg *br_is_nd_neigh_msg(struct sk_buff *skb);
--bool br_is_neigh_suppress_enabled(const struct net_bridge_port *p, u16 vid);
--bool br_is_neigh_forward_grat_enabled(const struct net_bridge_port *p, u16 vid);
-+bool br_is_neigh_suppress_enabled(const struct net_bridge_port *p,
-+				  const struct net_bridge_vlan *v);
-+bool br_is_neigh_forward_grat_enabled(const struct net_bridge_port *p,
-+				      const struct net_bridge_vlan *v);
- #endif
--- 
-2.47.3
-
+Thanks.
