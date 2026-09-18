@@ -1,366 +1,214 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E5A4EF131;
-	Fri, 18 Sep 2026 11:34:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789731298; cv=none; b=guVrE/2SriDVWzEHdJIG58CfHmbA/uMQUc+zy/7x3PJYLhBIljUqlvbQk1UJks8UA+WTQkmuPywIcjjrSs3zVtbmL3I4NBs0mxTFS+Jt72wO3QdMVlhlV3QyYaRhTI9OKDGlj4BSJE1w+hj7r4zGVA2y9z/CUk5S1xZoE38c/qk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789731298; c=relaxed/simple;
-	bh=Hw1jw7vklh3octQpMKtJiyC6Z92EKD2P4qF0N2HmBG8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=uMU3jX0IrfQAkQhgxW4lVnrFQn57tu3ogi2Tx2OA12z0hinycdThZoNwRukW/cgFDeMXngHZ0MjP+TfQXitIvJf4lJcIGcFZFfO0boratqd9PB/0jFM1T1/QZrf/NiTfTFQpTjQUtAo/MHhJm49w6UkSlAfH41as+JmXC+PDi2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=vic1SnaN; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E414EDCBC
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 11:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789731299; cv=fail; b=X+gDhsQXHNU92pDmp6kJUYYEVQKnib+bWmQCMHJ+mnP2C2aag+APu6jViUzQh/ORoLO5qJfdecXeyMu8yI/wZU1u7QIDO6TWOM+09DGc2+bNi61t+ccrQIqR7YkUoUt6n4zJXsdpUBjx7v2pX9mBNB5m/YIBlWLMIJCkMXuAqOI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789731299; c=relaxed/simple;
+	bh=ZhiPrYALwbuTJFHLi3F2XCLI1Fqeey/a8j+G1rHA1EM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=jofQ64LDaY1eNilHLHzxTAGcHzKrc8Meq8SEjOpCYu2jlaB2bOv6+Md6UkIKBx2Kc89DliPds/1caVpCV2spOKH2njsEXX4Aq1L9RXuPrglzN7QzJNQEk557qMm2B6Wl0S2vmLiPlhgLBoT5jswBpfCsA5wCss0oTu4MHAyVKXI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PmRf/TgI; arc=fail smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="vic1SnaN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PmRf/TgI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1789731296; x=1821267296;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=Hw1jw7vklh3octQpMKtJiyC6Z92EKD2P4qF0N2HmBG8=;
-  b=vic1SnaN6zNXFEAcAIbpWGQAA1MuS3Ohv5EPexxVDM4OhRYt2N2dyj5h
-   UXlcLcj9B0Ax+Xmmh9j1xSzmBE2TCniWpCFXdiuUmMdrNWaOkHwHy7p+h
-   +2Qw5XtW6okUwrWZQe5YYyRZPvHO6E+hffnUxN94AalGEwq+MDWHJ1gUF
-   3wt+Bwa+z43WGr2ruEnMTskJCTHDvVeYDTznju+Cc8ueaVaX4fX7RfCt8
-   0DmxWklIPDmsYc0/Npm9swMO93gT008/+3axkqLr+zJWOMTp1DqxuoI9z
-   bqB6Sh3kGrLVRtGurVAx983yvYlQKLeXeWYPoY1vq1Yrd7P2oQz0qYEiR
-   w==;
-X-CSE-ConnectionGUID: ByWczTdaQre4y72kOPgJ4Q==
-X-CSE-MsgGUID: qlKZdfFwRRmROSLG7ru/Jw==
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789731298; x=1821267298;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=ZhiPrYALwbuTJFHLi3F2XCLI1Fqeey/a8j+G1rHA1EM=;
+  b=PmRf/TgIc6zN2/A7U6MxFV4vLF/+xJa3DwT+piaJZt/CH1nCdhtM2hmO
+   av4YcvWNf/P7ByKCSaXVFHkg1/BBilwSj0Gd14Sy/L29ayqCNTPPiRiDJ
+   FcKkeGJTsTKSwFGVHhkPPL0NB9/afnT452OMigE4lLSCPv2wtfmnZYpXr
+   BJHyZk67yXTXqoburTYPrxGxsm53wICrE/II9IwH2RdkUuvh4EGt3E/5d
+   D/rnYJPljwSTnRbzN0kKn73slus0gqY7/ESn4KOl4hNQSTU+5Gv2NhkqX
+   Uoi/Oy/1CQ4PsivwHugnsodq3Q0kn47PhA1lt4paWlxrX5kkETcIp0N2G
+   g==;
+X-CSE-ConnectionGUID: /myCs29MR9awtghtAUERbw==
+X-CSE-MsgGUID: HMXXuy8LTAGayFaHCqJ8zQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11908"; a="107734050"
 X-IronPort-AV: E=Sophos;i="6.27,108,1787036400"; 
-   d="scan'208";a="64121002"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 04:34:55 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
- chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.49; Fri, 18 Sep 2026 04:34:55 -0700
-Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Fri, 18 Sep 2026 04:34:51 -0700
-From: Daniel Machon <daniel.machon@microchip.com>
-Date: Fri, 18 Sep 2026 13:34:03 +0200
-Subject: [PATCH net-next v7 11/14] net: lan966x: add PCIe FDMA MTU change
- support
+   d="scan'208";a="107734050"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 04:34:57 -0700
+X-CSE-ConnectionGUID: mBPcgenjTk+niouAjg+Qfw==
+X-CSE-MsgGUID: RGpOlWoPQ3uMHwDe0rDuyA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,108,1787036400"; 
+   d="scan'208";a="270674839"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 04:34:56 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Fri, 18 Sep 2026 04:34:56 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Fri, 18 Sep 2026 04:34:56 -0700
+Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.10) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Fri, 18 Sep 2026 04:34:54 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FIMmL4BkWZ2A4RTiY4F1qmJyCI2gttTeUdGoeUVMCqZupPUQohfrf3dkuWsCAvzKTRmfB5D/olMDmt+1XcZ4Eh+KXAUfiIbr5YE2a36P1wnS/AOpd3fLGdrun0dE+c3agQpozeBQ7Bu8bt6p91AG44WwEPxTCLAKmemoRjYcTuZqfbNUw53JHhdK0nDmEt0Veh4yxDjcgNqCXHFWFuOycpmCIArTUuMLpMxbsfTjRjx63g83SUpqOht2HvJUPOScfAJ1/ugvNSEooyzeLg4MMyXf7hqKuEjn9/e/RDoc1HtyxBgrT5jiUdAkv311O5CwJiUXIc9LXOgpZsyu9ErA7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wiWQtt/SSNIcRWCHMvL1xSQqxIVsz+KQbOJE0nOOjNg=;
+ b=uEai9wql/Do0c7fuFoygffJYj3UPF1mmc4D/RjRx/oB/XpwZbWkrEx/ftFRzht0eVDyBY94U+lVAQsP4kqh8V9577QteOLaTKIf7AFiG0ntTT91wXuBR4YetauXrLHDJTh2LMBZtr1xWOJuFLHJrBggBv3yF3h7I20nbsmWD4wGOxxYipHIyu3eeEd1B1q8oeT3raXzCKMsMYB4Rw1ejONo5YNuAhl0oppzX0UtNkB4AbGVUWiXWT634L2D8lfaf1yGYN+PrA8b/K3O/GWjnUAMreEumZm/HfJu519wG04S6q3UKAP0+W2dKAqoTcgmLHqa7VErNPBJrxijBaba2ww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB8985.namprd11.prod.outlook.com (2603:10b6:208:575::17)
+ by LVUPR11MB9787.namprd11.prod.outlook.com (2603:10b6:408:39b::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Fri, 18 Sep
+ 2026 11:34:47 +0000
+Received: from IA3PR11MB8985.namprd11.prod.outlook.com
+ ([fe80::355c:96ca:a45:dd5d]) by IA3PR11MB8985.namprd11.prod.outlook.com
+ ([fe80::355c:96ca:a45:dd5d%3]) with mapi id 15.21.0428.011; Fri, 18 Sep 2026
+ 11:34:47 +0000
+From: "Romanowski, Rafal" <rafal.romanowski@intel.com>
+To: Simon Horman <horms@kernel.org>, "Loktionov, Aleksandr"
+	<aleksandr.loktionov@intel.com>
+CC: "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+Subject: RE: [PATCH iwl-net v2] ice: fix bound parser hash offset before
+ reading packet data
+Thread-Topic: [PATCH iwl-net v2] ice: fix bound parser hash offset before
+ reading packet data
+Thread-Index: AQHdM8u8+Zv9K5UDEkCIlV8s7cJwI7a8wpAAgBeZMvA=
+Date: Fri, 18 Sep 2026 11:34:47 +0000
+Message-ID: <IA3PR11MB8985E72E458EF05B54E9095D8F872@IA3PR11MB8985.namprd11.prod.outlook.com>
+References: <20260824132248.3396788-1-aleksandr.loktionov@intel.com>
+ <20260903111216.GM396647@horms.kernel.org>
+In-Reply-To: <20260903111216.GM396647@horms.kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB8985:EE_|LVUPR11MB9787:EE_
+x-ms-office365-filtering-correlation-id: bb31e1fb-a0a3-418b-3622-08df1578d7ee
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|1800799024|376014|366016|10067099003|11063799006|6133799003|22082099003|18002099003|56012099006|4143699003|38070700021;
+x-microsoft-antispam-message-info: 0K/5CSdvqZBTWBhvwN7259JPPQPKJgRXChW02BnblrCQj6YTjzF2PE573/ujEZED/7s8pwsxH5qKsFcPPXl6TGbtoTwS1Sz96FoJZ4SWiKzWIoJAiuXR7xrNarVfbmVpkK93BOk8eG17VtHJ6irBH33cN7CSY8mrR4GnDtqf0WV+PaiuVrXcVTW3eriGSTIpknSduuzR0OPiEp5IakaR8UMcYMHeouNiisFAWk64h5+uNCOm0pr5uM89MCZAK6yBxwckLO9hbd5q+c1gusV4/yHel20I/UMb4cVOank73CnTbipO2bDhOLSQ+BXJJj0dJtaLb3xlcy3lNwW29Wc140V/FGc6Z0SOvlBJhKqJf5tHdJnEaJ+vw0bRGGT8sNuEdYg9H6gmGUCOh5tYO2QTNDkJVIPepGHpgG24mifIxdJ+a/rPvrWZQABpUUHhPv8qC5tTfd4c+NQmFPv0BALrkj4RYCUPuuIIROHo8aYlcdf0SVc4ZYnAsGyjulX5tkmq/8xBgsx2W8yZWVsBXVk1Wb01ZLkt7mvPvLu+KkcM74Lpx5BzmYZEo1l7ipNeJ3GO7gA2YL9LOcs8MNggcCpzXsC9pVt3ou+yTksnmp6/KzUKws+wyivY9RckbgibEbnmUTW6nXHdPoffBOHVXXmc9EGR0FEWujGgVWfM72kz4J0Vmv9aVExGQ0IwM5ieresWROsoB3NNCXqBpR4d2H/nuvucFRxZ4dQdP4+lgZ4b0Hs=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8985.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(366016)(10067099003)(11063799006)(6133799003)(22082099003)(18002099003)(56012099006)(4143699003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?jlfATbISHgG+cYdBwVWlK4PvFtzqExeSV1g7AXfbtanU5iliR5ahWJvVuvUZ?=
+ =?us-ascii?Q?m3gc5pYS5KqMz+uptiKr0ApfQRxTNDFoZgHmroADUOSHyEkYV4v2/1wBZ1z5?=
+ =?us-ascii?Q?OlbQ1OhtUdga8y2DwSUhhJmzhQXzHrV+/crluuBj5xpZpeIdoS1lQDeNmUhf?=
+ =?us-ascii?Q?rOc/1iAxwWVS6bfiNJM08riUslOELh1YdgSsIuK/QnV4DoAj3M72ko2Y9lzq?=
+ =?us-ascii?Q?IIM/5XHwK40Ief+Jih5e4VdIq5RvEpAHRbkA2IvmEFVQ+Nb0fxZBAtllPiKC?=
+ =?us-ascii?Q?Vv66Xk7ymfxFhkkkeMrgbl1paK4OEGERtml7Kq7yR4XWbz5b1YK4kggZ6cZz?=
+ =?us-ascii?Q?T1GBdcWx/GHe69F2HK7K9tUTmhbPOp3y20HgkirAD1c43UdQIg2WLGOwd8PC?=
+ =?us-ascii?Q?hH5IF81+kXu739tgPcrb3RYBftit9d3Y1q9T8jcDvMOsZ6AhhnJMVOxFq7RP?=
+ =?us-ascii?Q?/d87/MN1PwnAh8Wl3uaMc9AqroVvGya0Yby2JE/j83cL8Po3hiNriGje4VKk?=
+ =?us-ascii?Q?wy25pGW57yccmejEOGl9pYBj3UPVXQP04+4JQWB1achVDRHxrQUltV6v/oTR?=
+ =?us-ascii?Q?KIwHhPaZdH0b0hZ5z6O80tYfi/z9dBP+SH9Nfp++dSAYRw6CXJkWC10QPGmt?=
+ =?us-ascii?Q?pqK/OEd+3Lfj7LKWGLeqcXAhSriElDpF5cKJjLB6ujb7tynU0HMANMUPcgwm?=
+ =?us-ascii?Q?/wwg/3BzIGkU9wmJwlaI2LHwXXNpOu2tU7HA5XKHn+U6T0Ss/XLU+FpEWzcH?=
+ =?us-ascii?Q?O5pd0JDrHEyQuW5jKfNrCNZkkO4uUhmjz+8cakp6Kf0MIpJyDWUsN+sSL24A?=
+ =?us-ascii?Q?OFmEwTZqx/Beg83zI+jetIUIvzXKTRttl/uaMMuQNsmwzXU5fzL3lRqp7oOJ?=
+ =?us-ascii?Q?S4Kbj0JmWspoDGunEElfdtStAF34P/nU50fzHXeAsxHgzmbD9dN3pxkk73eO?=
+ =?us-ascii?Q?ot7efloB8jceTITN0u5I728ZHn1tZ3Rtt5KW4K3Qbw671lUWcy8L7oMnsQxZ?=
+ =?us-ascii?Q?aCb3jOj0yYl9dcIMt7wTCKywCnbf33bGJhUmh9C+4PrhB2Awc9ijILdPq5/R?=
+ =?us-ascii?Q?EHSaCtMzz+3wdQ73H9BzaCc9theDOF7sz6hLruexf3g43zPTD4EYbxsiVO5w?=
+ =?us-ascii?Q?VFT7qiHUwGPTKr6rUwP1LXrBoL342kcYQ87ptVQK9NamDrO1RCYWyYqR+yks?=
+ =?us-ascii?Q?5cwxDHTadWKXOTj3RD4/4gjJ7rwmIjADIeTIBw20AV0KbecnN0Qlx1eFGEaB?=
+ =?us-ascii?Q?3eUdwooe48G1ltggq+mnlgNTg1s8LH1sXXCvxP9ieLyyqxySFGzVSVy1ALGV?=
+ =?us-ascii?Q?wcX4Y3jJyQC4PyXxE52NRDmNnJAZ1Nub384h0rH+E/P9/PAb4xBQOHhxU/Pq?=
+ =?us-ascii?Q?o7P8zITA+pCMN1la2sfZsCl69fs2+7Lw5O4UwRe6YUltqcQ3MY4vVUHbBOK2?=
+ =?us-ascii?Q?Tg7YfyHP8XSkFL6mN5QGwvwTD3Nruiz66stu4HSo5hiYaUDTniyX6g9olrE8?=
+ =?us-ascii?Q?35d1uB/xZ6XfxL5dsPLHAoutH4ycCDpPvrsrXOPiwq1L5pL8dac5eHtcPZVj?=
+ =?us-ascii?Q?trlRUMvaHNgDzkZJRcN7l+C8I4swtxjk1JYgK0ORH3O7D5JpbLyWajrpCaxn?=
+ =?us-ascii?Q?8hDV6jMcKkSvbmCK5EbX9eE1qrEZTmaXm8jhizy4z317S8drwvrTfFmQHBpn?=
+ =?us-ascii?Q?M1NzbxzPJ2y/G/ld76ahN/xtjsnjobozznR06U5vUJ+sK8tA4vFeSUolJPYx?=
+ =?us-ascii?Q?e9z4y8tsyQ=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20260918-lan966x-pci-fdma-v7-11-0ecc179c8a2c@microchip.com>
-References: <20260918-lan966x-pci-fdma-v7-0-0ecc179c8a2c@microchip.com>
-In-Reply-To: <20260918-lan966x-pci-fdma-v7-0-0ecc179c8a2c@microchip.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Horatiu Vultur
-	<horatiu.vultur@microchip.com>, Steen Hegelund
-	<steen.hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>, "Alexei
- Starovoitov" <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
-	"Jesper Dangaard Brouer" <hawk@kernel.org>, John Fastabend
-	<john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, Herve
- Codina <herve.codina@bootlin.com>, Arnd Bergmann <arnd@arndb.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Mohsin Bashir
-	<mohsin.bashr@gmail.com>
-CC: Richard Cochran <richardcochran@gmail.com>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>
-X-Mailer: b4 0.14.3
+X-Exchange-RoutingPolicyChecked: X+LXzk+epSWUHO8Z8rLeYiRTex6wfZIB/00iTI0EYZbgEBST9qOXuBuWG3b0A1zL+xLQVFuN2iuxMs+rFxi8+qOT45U1HfkGkPGHGVaQaQmrn3tRe/aeuG3hOJ4p4CEEH0+RoJXMYR6eyirrtaCqzbUVrdomIzgPzIlwLpkbR4PzesluRAiqd76oxNQLE0J348Df7VXIk1yAv/ikk10b1s665lrVVaXzYNzTU9K4GBiP+HDfpiejoqW4hDEOCqalbSV/31EadFwXu+gAgwlctBOGaX7U6igg7VUbCHOcUug95zaTVLOwSQDL99kusaivYOuUVteHma/r45nvQM30dA==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8985.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bb31e1fb-a0a3-418b-3622-08df1578d7ee
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Sep 2026 11:34:47.2661
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 6hfRgw8ZDP+CYUKDKYl5scEYK3mKmh5UY+1q5wq6duTLptId5/i5NQhB4NVc2sV8v5G7v8+SrMdSpLYTfy2dNvyoT5aNX6GqHJlqy/FGuz0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LVUPR11MB9787
+X-OriginatorOrg: intel.com
 
-Add MTU change support for the PCIe FDMA path: on an MTU change, the
-contiguous ATU-mapped RX and TX buffers are reallocated at the new
-size, falling back to the existing buffers on failure.
+> -----Original Message-----
+> From: Simon Horman <horms@kernel.org>
+> Sent: Thursday, September 3, 2026 1:12 PM
+> To: Loktionov, Aleksandr <aleksandr.loktionov@intel.com>
+> Cc: intel-wired-lan@lists.osuosl.org; Nguyen, Anthony L
+> <anthony.l.nguyen@intel.com>; netdev@vger.kernel.org
+> Subject: Re: [PATCH iwl-net v2] ice: fix bound parser hash offset before =
+reading
+> packet data
+>=20
+> On Mon, Aug 24, 2026 at 03:22:48PM +0200, Aleksandr Loktionov wrote:
+> > ice_rt_ho_set() uses the HO register as the starting offset of an
+> > ICE_GPR_HV_SIZE-byte memcpy() out of rt->pkt_buf. Potentially HO can
+> > be advanced by user-controlled data reachable through
+> > ice_parse_raw_rss_pattern() -> ice_parser_run() ->
+> > ice_parser_rt_execute() -> ice_rt_gpr_set() -> ice_rt_ho_set(), i.e. a
+> > VF-supplied raw RSS pattern (virt/rss.c), with no bound against the
+> > size of pkt_buf.
+> >
+> > Clamp HO to the last offset from which ICE_GPR_HV_SIZE bytes can still
+> > be read out of pkt_buf, deriving the limit from sizeof(rt->pkt_buf) so
+> > it stays correct if the packet buffer layout changes.
+> >
+> > ice_parser_rt_pktbuf_set() stores the caller's raw pkt_len in
+> > rt->pkt_len, even though it only ever copies
+> > rt->min(ICE_PARSER_MAX_PKT_LEN,
+> > pkt_len) bytes into rt->pkt_buf. Both ice_parse_raw_rss_pattern() and
+> > ice_vc_fdir_parse_raw() pass a VF-supplied pkt_len of up to
+> > VIRTCHNL_MAX_SIZE_RAW_PACKET (1024), i.e. larger than
+> > ICE_PARSER_MAX_PKT_LEN (504). With HO now capped at 504, the "HO >=3D
+> > pkt_len" loop exit in ice_parser_rt_execute() would never be reached
+> > for such an oversized pkt_len. Store the already-clamped length
+> > instead, so rt->pkt_len always matches what was actually copied into
+> > rt->pkt_buf and the loop-exit check remains a valid bound regardless
+> > of the caller-supplied pkt_len.
+> >
+> > Fixes: 9a4c07aaa0f5 ("ice: add parser execution main loop")
+> > Cc: stable@vger.kernel.org
+> > Cc: horms@kernel.org
+> > Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> > ---
+> > v1 -> v2:
+> > - also clamp rt->pkt_len in ice_parser_rt_pktbuf_set() to the same
+> >   ICE_PARSER_MAX_PKT_LEN bound already used for the rt->pkt_buf copy,
+> >   so the "HO >=3D pkt_len" loop-exit in ice_parser_rt_execute() can't b=
+e
+> >   bypassed by an oversized pkt_len from the raw RSS/FDIR VF paths
+> >   (reported in review)
+> > - dropped Przemek's Reviewed-by since the patch changed
+>=20
+> Thanks for the update.
+>=20
+> Reviewed-by: Simon Horman <horms@kernel.org>
 
-Cap the PCIe DCB ring at 256 (FDMA_PCI_DCB_MAX): 512 DCBs would
-overflow MAX_PAGE_ORDER at jumbo MTU.
-
-The ring must fit one MAX_PAGE_ORDER block after ATU padding, and
-db_size is handed to the FDMA in the 16-bit DCB DATAL field.
-Advertise the resulting limit in dev->max_mtu (FDMA_PCI_MAX_MTU)
-when the FDMA is in use - a switch with no "fdma" interrupt named
-uses the unconstrained register-based path instead, so the cap is
-gated on lan966x->fdma, not lan966x_is_pci() alone. On a 4KB-page,
-MAX_PAGE_ORDER=10 build this is MTU 15498; the overhead is shared
-with lan966x_fdma_get_max_frame() via FDMA_OVERHEAD.
-
-Skip the resize until lan966x_fdma_pci_init() has built the rings;
-it runs after the netdevs register and sizes them from
-DEV_MAC_MAXLEN_CFG, already programmed by the caller.
-
-Tested-by: Herve Codina <herve.codina@bootlin.com>
-Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
----
- .../net/ethernet/microchip/lan966x/lan966x_fdma.c  |   6 +-
- .../ethernet/microchip/lan966x/lan966x_fdma_pci.c  | 153 ++++++++++++++++++++-
- .../net/ethernet/microchip/lan966x/lan966x_main.c  |   3 +-
- .../net/ethernet/microchip/lan966x/lan966x_main.h  |  28 ++++
- 4 files changed, 181 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-index 6fb2482eeb17..81103b94e36f 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c
-@@ -889,11 +889,7 @@ static int lan966x_fdma_reload(struct lan966x *lan966x, int new_mtu)
- 
- int lan966x_fdma_get_max_frame(struct lan966x *lan966x)
- {
--	return lan966x_fdma_get_max_mtu(lan966x) +
--	       IFH_LEN_BYTES +
--	       SKB_DATA_ALIGN(sizeof(struct skb_shared_info)) +
--	       VLAN_HLEN * 2 +
--	       XDP_PACKET_HEADROOM;
-+	return lan966x_fdma_get_max_mtu(lan966x) + FDMA_OVERHEAD;
- }
- 
- static int __lan966x_fdma_reload(struct lan966x *lan966x, int max_mtu)
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c
-index 5d6902459f20..940425beec2f 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_fdma_pci.c
-@@ -358,7 +358,7 @@ static int lan966x_fdma_pci_init(struct lan966x *lan966x)
- 	lan966x->rx.lan966x = lan966x;
- 	lan966x->rx.max_mtu = lan966x_fdma_get_max_frame(lan966x);
- 	rx_fdma->channel_id = FDMA_XTR_CHANNEL;
--	rx_fdma->n_dcbs = FDMA_DCB_MAX;
-+	rx_fdma->n_dcbs = FDMA_PCI_DCB_MAX;
- 	rx_fdma->n_dbs = FDMA_RX_DCB_MAX_DBS;
- 	rx_fdma->priv = lan966x;
- 	rx_fdma->db_size = FDMA_PCI_DB_SIZE(lan966x->rx.max_mtu);
-@@ -368,7 +368,7 @@ static int lan966x_fdma_pci_init(struct lan966x *lan966x)
- 
- 	lan966x->tx.lan966x = lan966x;
- 	tx_fdma->channel_id = FDMA_INJ_CHANNEL;
--	tx_fdma->n_dcbs = FDMA_DCB_MAX;
-+	tx_fdma->n_dcbs = FDMA_PCI_DCB_MAX;
- 	tx_fdma->n_dbs = FDMA_TX_DCB_MAX_DBS;
- 	tx_fdma->priv = lan966x;
- 	tx_fdma->db_size = FDMA_PCI_DB_SIZE(lan966x->rx.max_mtu);
-@@ -391,9 +391,156 @@ static int lan966x_fdma_pci_init(struct lan966x *lan966x)
- 	return 0;
- }
- 
-+/* Reset existing rx and tx buffers. */
-+static void lan966x_fdma_pci_reset_mem(struct lan966x *lan966x)
-+{
-+	struct lan966x_rx *rx = &lan966x->rx;
-+	struct lan966x_tx *tx = &lan966x->tx;
-+
-+	memset(rx->fdma.dcbs, 0, rx->fdma.size);
-+	memset(tx->fdma.dcbs, 0, tx->fdma.size);
-+
-+	fdma_dcbs_init(&rx->fdma,
-+		       FDMA_DCB_INFO_DATAL(rx->fdma.db_size - XDP_PACKET_HEADROOM),
-+		       FDMA_DCB_STATUS_INTR);
-+
-+	fdma_dcbs_init(&tx->fdma,
-+		       FDMA_DCB_INFO_DATAL(tx->fdma.db_size),
-+		       FDMA_DCB_STATUS_DONE);
-+
-+	lan966x_fdma_llp_configure(lan966x,
-+				   tx->fdma.atu_region->base_addr,
-+				   tx->fdma.channel_id);
-+	lan966x_fdma_llp_configure(lan966x,
-+				   rx->fdma.atu_region->base_addr,
-+				   rx->fdma.channel_id);
-+}
-+
-+/* Wake all TX queues on every port (undoes lan966x_fdma_tx_disable_netdev). */
-+static void lan966x_fdma_pci_wakeup_netdev(struct lan966x *lan966x)
-+{
-+	for (int i = 0; i < lan966x->num_phys_ports; ++i) {
-+		struct lan966x_port *port = lan966x->ports[i];
-+
-+		if (port)
-+			netif_tx_wake_all_queues(port->dev);
-+	}
-+}
-+
-+static int lan966x_fdma_pci_reload(struct lan966x *lan966x, int new_mtu)
-+{
-+	struct fdma tx_fdma_old = lan966x->tx.fdma;
-+	struct fdma rx_fdma_old = lan966x->rx.fdma;
-+	u32 old_mtu = lan966x->rx.max_mtu;
-+	int err;
-+
-+	napi_disable(&lan966x->napi);
-+	lan966x_fdma_tx_disable_netdev(lan966x);
-+	lan966x_fdma_rx_disable(&lan966x->rx);
-+	lan966x_fdma_tx_disable(&lan966x->tx);
-+
-+	lan966x->rx.max_mtu = new_mtu;
-+
-+	/* Must be NULL'ed in order to realloc them. */
-+	lan966x->rx.fdma.atu_region = NULL;
-+	lan966x->tx.fdma.atu_region = NULL;
-+
-+	lan966x->tx.fdma.db_size = FDMA_PCI_DB_SIZE(lan966x->rx.max_mtu);
-+	lan966x->tx.fdma.size = fdma_get_size_contiguous(&lan966x->tx.fdma);
-+	lan966x->rx.fdma.db_size = FDMA_PCI_DB_SIZE(lan966x->rx.max_mtu);
-+	lan966x->rx.fdma.size = fdma_get_size_contiguous(&lan966x->rx.fdma);
-+
-+	err = lan966x_fdma_pci_rx_alloc(&lan966x->rx);
-+	if (err)
-+		goto restore;
-+
-+	err = lan966x_fdma_pci_tx_alloc(&lan966x->tx);
-+	if (err) {
-+		fdma_free_coherent_and_unmap(lan966x->dma_dev,
-+					     &lan966x->rx.fdma);
-+		goto restore;
-+	}
-+
-+	/* Free and unmap old memory. */
-+	fdma_free_coherent_and_unmap(lan966x->dma_dev, &rx_fdma_old);
-+	fdma_free_coherent_and_unmap(lan966x->dma_dev, &tx_fdma_old);
-+
-+	/* Order matters: napi_enable() must precede the wakes, or a TX that
-+	 * completes first clears FDMA_INTR_DB_ENA with nothing scheduled to
-+	 * restore it, leaving RX dead until the next reload.
-+	 */
-+	napi_enable(&lan966x->napi);
-+	lan966x_fdma_rx_start(&lan966x->rx);
-+	lan966x_fdma_pci_wakeup_netdev(lan966x);
-+
-+	return err;
-+restore:
-+
-+	/* No new buffers are allocated at this point. Use the old buffers,
-+	 * but reset them before starting the FDMA again.
-+	 */
-+
-+	memcpy(&lan966x->tx.fdma, &tx_fdma_old, sizeof(struct fdma));
-+	memcpy(&lan966x->rx.fdma, &rx_fdma_old, sizeof(struct fdma));
-+
-+	lan966x->rx.max_mtu = old_mtu;
-+
-+	lan966x_fdma_pci_reset_mem(lan966x);
-+
-+	napi_enable(&lan966x->napi);
-+	lan966x_fdma_rx_start(&lan966x->rx);
-+	lan966x_fdma_pci_wakeup_netdev(lan966x);
-+
-+	return err;
-+}
-+
-+static int __lan966x_fdma_pci_reload(struct lan966x *lan966x, int max_mtu)
-+{
-+	int err;
-+	u32 val;
-+
-+	/* Disable the CPU port. */
-+	lan_rmw(QSYS_SW_PORT_MODE_PORT_ENA_SET(0),
-+		QSYS_SW_PORT_MODE_PORT_ENA,
-+		lan966x, QSYS_SW_PORT_MODE(CPU_PORT));
-+
-+	/* Flush the CPU queues. */
-+	readx_poll_timeout(lan966x_qsys_sw_status,
-+			   lan966x,
-+			   val,
-+			   !(QSYS_SW_STATUS_EQ_AVAIL_GET(val)),
-+			   READL_SLEEP_US, READL_TIMEOUT_US);
-+
-+	/* Add a sleep in case there are frames between the queues and the CPU
-+	 * port
-+	 */
-+	usleep_range(USEC_PER_MSEC, 2 * USEC_PER_MSEC);
-+
-+	err = lan966x_fdma_pci_reload(lan966x, max_mtu);
-+
-+	/* Enable back the CPU port. */
-+	lan_rmw(QSYS_SW_PORT_MODE_PORT_ENA_SET(1),
-+		QSYS_SW_PORT_MODE_PORT_ENA,
-+		lan966x, QSYS_SW_PORT_MODE(CPU_PORT));
-+
-+	return err;
-+}
-+
- static int lan966x_fdma_pci_resize(struct lan966x *lan966x)
- {
--	return -EOPNOTSUPP;
-+	int max_mtu;
-+
-+	/* Nothing to resize until fdma_pci_init() has built the rings; it
-+	 * sizes them from DEV_MAC_MAXLEN_CFG, which the caller already set.
-+	 */
-+	if (!lan966x->rx.lan966x)
-+		return 0;
-+
-+	max_mtu = lan966x_fdma_get_max_frame(lan966x);
-+	if (max_mtu == lan966x->rx.max_mtu)
-+		return 0;
-+
-+	return __lan966x_fdma_pci_reload(lan966x, max_mtu);
- }
- 
- static void lan966x_fdma_pci_deinit(struct lan966x *lan966x)
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-index c803619d83e2..2177e2bbfbd3 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-@@ -823,7 +823,8 @@ static int lan966x_probe_port(struct lan966x *lan966x, u32 p,
- 	port->chip_port = p;
- 	lan966x->ports[p] = port;
- 
--	dev->max_mtu = ETH_MAX_MTU;
-+	dev->max_mtu = lan966x_is_pci(lan966x) && lan966x->fdma ?
-+		       FDMA_PCI_MAX_MTU : ETH_MAX_MTU;
- 
- 	dev->netdev_ops = &lan966x_port_netdev_ops;
- 	dev->ethtool_ops = &lan966x_ethtool_ops;
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.h b/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
-index 16bc28c8f11f..1877f1916d71 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
-@@ -7,6 +7,7 @@
- #include <linux/etherdevice.h>
- #include <linux/if_vlan.h>
- #include <linux/jiffies.h>
-+#include <linux/mmzone.h>
- #include <linux/phy.h>
- #include <linux/phylink.h>
- #include <linux/ptp_clock_kernel.h>
-@@ -87,6 +88,33 @@
- #define FDMA_INJ_CHANNEL		0
- #define FDMA_DCB_MAX			512
- 
-+/* Ring must fit in one MAX_PAGE_ORDER DMA block; 512 DCBs overflows
-+ * at jumbo MTU.
-+ */
-+#define FDMA_PCI_DCB_MAX		256
-+
-+#define FDMA_OVERHEAD							\
-+	(IFH_LEN_BYTES +						\
-+	 SKB_DATA_ALIGN(sizeof(struct skb_shared_info)) +		\
-+	 VLAN_HLEN * 2 +						\
-+	 XDP_PACKET_HEADROOM)
-+
-+/* Largest db_size keeping the ATU-padded ring inside one MAX_PAGE_ORDER
-+ * block and within the 16-bit DCB DATAL field. Inverts ALIGN(x, R) <= L
-+ * into x <= ALIGN_DOWN(L, R) to bound x directly.
-+ */
-+#define FDMA_PCI_DB_SIZE_MAX						\
-+	MIN_T(u32,							\
-+	      (ALIGN_DOWN(PAGE_SIZE << MAX_PAGE_ORDER,			\
-+			  FDMA_PCI_ATU_REGION_ALIGN) -			\
-+	       FDMA_PCI_DCB_MAX * sizeof(struct fdma_dcb)) /		\
-+	      (FDMA_PCI_DCB_MAX * FDMA_RX_DCB_MAX_DBS),			\
-+	      ALIGN_DOWN(GENMASK(15, 0), FDMA_PCI_DB_ALIGN))
-+
-+#define FDMA_PCI_MAX_MTU						\
-+	(FDMA_PCI_DB_SIZE_MAX - FDMA_OVERHEAD -				\
-+	 (ETH_HLEN + ETH_FCS_LEN))
-+
- #define SE_IDX_QUEUE			0  /* 0-79 : Queue scheduler elements */
- #define SE_IDX_PORT			80 /* 80-89 : Port schedular elements */
- 
-
--- 
-2.34.1
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 
