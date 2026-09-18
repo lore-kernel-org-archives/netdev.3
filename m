@@ -1,95 +1,87 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266482E22B5;
-	Fri, 18 Sep 2026 08:38:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D2E64A2041
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 08:39:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789720704; cv=none; b=LxxAVP3PFn7a4Pp9tjctAseh1CQe5KuoW91ShlS2JVKbESHJXnnpcOu68pQzshgZ6s7S/9YqCfaLSGLhwS7dUA7HBEQOSZFCHUPRI10h4us1gSzNpVGy4E2NuyrLFCWsAJAkqEhOWzBlvkNSRl95/9aFhOLrQTAtvx1pOR4RKVg=
+	t=1789720763; cv=none; b=IXQ2KBu9IV5/pnH3omZ1iyKj5A6GDITXWCcCTYPpVAaikndkvSW+2Cscx22f66Of1JS7cOipdAFG560gEavKopu99QcUP+mgP0wJsXEk9ICV00iYo7Br8ip+bV4WGmVeEhj+hDvSoY6I9LqZMGhUXFNQLNF16vDIVXFE6QaWXdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789720704; c=relaxed/simple;
-	bh=8ytEC02CBkAH1hD64m+2vvU6vsofHjKWGTI1Q8ujUXs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gtYzJ1NloxtYBxHa/liC3N4vYRTuXdImcrvFAbrplsrhnrcEVa7FuyJBXbNdY0gB0iGbvcPfRnjNP+qkfzY7aAXUO1LBvztXhW3aHJ/zHqmCy0AmueS4A0dnLJx5raFY8qdX/xKfuyv991mMQ7TMISNm4MIRrmQTyb0i/D+/06A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=AajHUbKd; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1789720763; c=relaxed/simple;
+	bh=zsMpUP/mg9BVSWDGNZRyk0AJH29HIpIfT4obPwwxJ+w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JwxQ62Gk++zUYcmVocdMkq5lrI6m2FUMAUI8JjEXRGsvr9g/T7vg2XKZCh3JTnDL41+wikRhcPR5MrAbnC+Pi7sYdK+/40TEiZEqehd4A1pQVpsVuWBd1lkzXOHHdIZbkPtSj/U+e3zewBL7StmO3FkMmzoVgd8mIwTFaybIBqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hBDcD3hf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="AajHUbKd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1789720692;
-	bh=jVI9HVSyPXFgxlSH2ibKEir/RSIBCGwTHXBMxDn2af4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AajHUbKdTBZp5O7uXY0bgzNc+dzmhvAdT2g7fZrqcmmmxbKOWhawiTQPnp1VfCf+E
-	 t3pK1XBp66F0j+lXeac/reAM2XgKQrduVN6iirEvFhFz6JKjA8Dm7xS2VITty4/vJ9
-	 na7LIMCNrrG3LceELa9tYeSI4SV/TwIxcttr9uPAwW9u2x+1knS0PMdNYyiPDj12zM
-	 cr36aDZmuJRW1fmqacSgklzhtC2RLl/xA3RzYHJLy2wWKI9l2NnUN7H0vWoUo9LNkv
-	 WSCBBCwrOWhssmvEqPDyOtJYWrhsWnhZHZvjPkDsV141up0M/Z4HM9BlpwyuSMZwtM
-	 eS2/LF0ywiJaQ==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 38E8A60052;
-	Fri, 18 Sep 2026 10:38:12 +0200 (CEST)
-Date: Fri, 18 Sep 2026 10:38:09 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
-	netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
-	horms@kernel.org, fw@strlen.de, ja@ssi.bg
-Subject: Re: [PATCH net 01/10] netfilter: flowtable: publish HW_DEAD after
- worker is done
-Message-ID: <aqz4cRSbfcJI1Gvs@chamomile>
-References: <20260916231652.127456-2-pablo@netfilter.org>
- <20260918020406.3513303-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hBDcD3hf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD5FE1F008A1
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 08:39:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789720760;
+	bh=zsMpUP/mg9BVSWDGNZRyk0AJH29HIpIfT4obPwwxJ+w=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=hBDcD3hfiwvSH57FClY99ov2uc4BAeIAoOmmD2zOXzFCR0M4z+qOD98GWdYuYYrMI
+	 ZlW+cLUQggo56owN75M0ZZEJUEjc+1nwR3j65kZsHjH0V+Vf69TGYm9ruxiOhYUG06
+	 QgoprMRxnA2g/Ovb0azBbLYJPo38VAp92yjkztYD3slIyu5KMzhFfwyg4HZXA3hK6d
+	 Hw0xSkWsfgc9Adf0cLhJ4/lfMfVCgHASlMyUvMU5hcsXSoif+gG90W9EEpvauDPmNi
+	 KU0PElLaB6qST6dYaNq1kJAxJ3XB7IMAi1NqWyclZbRtJtLq9f3ZI54/pkf1vRWQs4
+	 Zw+XHMZYHfREA==
+Received: by mail-lf2-f13.google.com with SMTP id 2adb3069b0e04-5b8c3de61a3so152230e87.3
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 01:39:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBylXXYb444RXFbBXSXeNujdKXLXnyoSXtQsjntCyDt+Mknu77JNtwImeV8S4SjVDZoYoyBVa7Q=@vger.kernel.org
+X-Gm-Message-State: AFuF++nLFD7E6mVnpx0hDCs/hEELSbxzLmzQ+0EkXo8aZg/h8xyupOe1
+	A240zVsaY3YN0pT3uV+jn0slUjqWP6MC+izQXa6fN6Qi/BSFQsJlHS7XBaJFixLfgkQT0wmFZ5H
+	TTOk1Umzhl9YGRXEGVOHhAcS9PbLuPMM=
+X-Received: by 2002:a05:6512:3d14:b0:5b0:82d:e90e with SMTP id
+ 2adb3069b0e04-5b8c18429c1mr465853e87.19.1789720759430; Fri, 18 Sep 2026
+ 01:39:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260918020406.3513303-1-kuba@kernel.org>
+References: <20260917104920.2147568-1-vulab@iscas.ac.cn> <CAD++jLn8zuuBQKXTp_-Z9An2Qb-axBet5jwtyp+iecyUR_c0Og@mail.gmail.com>
+ <26e9c43d-74a8-4d70-ba71-f50c2ac77e65@lunn.ch>
+In-Reply-To: <26e9c43d-74a8-4d70-ba71-f50c2ac77e65@lunn.ch>
+From: Linus Walleij <linusw@kernel.org>
+Date: Fri, 18 Sep 2026 10:39:06 +0200
+X-Gmail-Original-Message-ID: <CAD++jLn11d+t7i6dpz5NnpiKwJKywOoqLbb86tEbpqdOvuqQ9g@mail.gmail.com>
+X-Gm-Features: AcwNN1XU7qBGncguGdfMfitY6zlKnJQaSupT-LXWndyDgyt4fGLUsBEs1OwT8NI
+Message-ID: <CAD++jLn11d+t7i6dpz5NnpiKwJKywOoqLbb86tEbpqdOvuqQ9g@mail.gmail.com>
+Subject: Re: [PATCH] net: dsa: vitesse-vsc73xx: Fix SPI device reference leak
+ in vsc73xx_spi_probe()
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Wentao Liang <vulab@iscas.ac.cn>, davem@davemloft.net, edumazet@google.com, 
+	f.fainelli@gmail.com, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, olteanv@gmail.com, pabeni@redhat.com, 
+	paweldembicki@gmail.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 17, 2026 at 07:04:06PM -0700, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> netfilter: flowtable: publish HW_DEAD after worker is done
-> 
-> The patch moves the NF_FLOW_HW_DEAD publication out of
-> flow_offload_work_del() into the common epilogue of
-> flow_offload_work_handler(), so that it happens after
-> clear_bit(NF_FLOW_HW_PENDING) rather than before it.  The stated goal is
-> to make setting HW_DEAD the last flow access performed by destroy work,
-> so garbage collection cannot free the flow while the worker is still
-> touching it.
-> 
-> > diff --git a/net/netfilter/nf_flow_table_offload.c b/net/netfilter/nf_flow_table_offload.c
-> > index 801a3dd9ceea3..6757fd89c1f1a 100644
-> > --- a/net/netfilter/nf_flow_table_offload.c
-> > +++ b/net/netfilter/nf_flow_table_offload.c
-> > @@ -995,7 +995,6 @@ static void flow_offload_work_del(struct flow_offload_work *offload)
-> >  	flow_offload_tuple_del(offload, FLOW_OFFLOAD_DIR_ORIGINAL);
-> >  	if (test_bit(NF_FLOW_HW_BIDIRECTIONAL, &offload->flow->flags))
-> >  		flow_offload_tuple_del(offload, FLOW_OFFLOAD_DIR_REPLY);
-> > -	set_bit(NF_FLOW_HW_DEAD, &offload->flow->flags);
-> >  }
-> >  
-> >  static void flow_offload_tuple_stats(struct flow_offload_work *offload,
-> > @@ -1059,6 +1058,12 @@ static void flow_offload_work_handler(struct work_struct *work)
-> >  	}
-> >  
-> >  	clear_bit(NF_FLOW_HW_PENDING, &offload->flow->flags);
-> > +	if (offload->cmd == FLOW_CLS_DESTROY) {
-> > +		/* Publish after the worker's last flow access. */
-> > +		smp_mb__before_atomic();
-> > +		set_bit(NF_FLOW_HW_DEAD, &offload->flow->flags);
-> > +	}
-> > +
-> 
-> [Severity: High]
-> Does this reordering close the whole use-after-free, or only the
-> FLOW_CLS_DESTROY part of it?
+On Fri, Sep 18, 2026 at 3:53=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
+> On Fri, Sep 18, 2026 at 12:22:12AM +0200, Linus Walleij wrote:
+> > On Thu, Sep 17, 2026 at 12:49=E2=80=AFPM Wentao Liang <vulab@iscas.ac.c=
+n> wrote:
+> >
+> > > spi_dev_get() takes a reference on the SPI device, but neither the
+> > > probe error paths nor vsc73xx_spi_remove() ever release it, so the
+> > > spi_device can never be freed after the driver has been unbound.
+> > >
+> > > Release the reference on both probe error paths and in remove().
+> > >
+> > > Fixes: 95711cd5f0b4 ("net: dsa: vsc73xx: Split vsc73xx driver")
+> > > Cc: stable@vger.kernel.org
+> >
+> > I think we don't set this on networking patches, the network maintainer
+> > decides himself what is stable material.
+>
+> That was true when DaveM did all the Maintainer work. But it is no
+> longer true. Please follow the normal stable rules.
 
-This describes a pre-existing issue. I posted patches for this I have
-to pick up.
+Aha! I didn't know that.
+
+Thanks Andrew.
+
+Yours,
+Linus Walleij
