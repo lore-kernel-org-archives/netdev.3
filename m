@@ -1,163 +1,352 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B873925783C;
-	Fri, 18 Sep 2026 06:14:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68851331EB0
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 06:18:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789712072; cv=none; b=RoDPmmf10q/T6bsFkz2InkC6vozsAOQtGs7DDabN5G3CguH9bdPjG87KEZQ8l/uZU32a2VAuppoCQmwQYj0G6nqm1l6/+jb+ytanU3vfTa5ghKMv2avgO6aqtUAc5deILoAFkkS9xapfjF/cZc4nTA7TpnKHXfYfaCjPQ/PbX6I=
+	t=1789712319; cv=none; b=Iz4Z1y8FcdcD1iZALvA//GJzVFQtTIhZNJ60dr7A34Am57u3o3NLSj344XFBv7OWy8DEKu4RgNAMQyu4bauYt/n+4Q7i+h7ryO9Ja/EZ1rmb8tVuzd8amSMxnHUOVA5p/e6hXMezootOexHk8YUNEq5zTS9oiKHa0ZHM9vA2/jI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789712072; c=relaxed/simple;
-	bh=EK2AHSZ8BENId800FO3a2AqmLSU1kHK/FpjeFLd2FD8=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=A01bhQuxnjeSfCOqloL0bqzuVyssv19/GqzJDkIy/ydmsD3071cBnaBgC2nD9SZm8EGeO/IHpn53sEv4XgqmJaISnzy4RDSwTc/Q7r08VjJRYvKe1EKKjeSLbZM5knQqVagWmuvoPOc4ZvVVtgAKMkzBFMxQpCQHchaHVfK1A5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oh14vswn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789712319; c=relaxed/simple;
+	bh=2iO+cYhu4TaBBMi5CLbsSD/Hs/ex+Tkf/xXQVg0s+g8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UDufV3vn0JVqehS2NRmnqPbr5TrZZW6QNy43L5B25FFbj4HUPdUMpTPewk1O37WsON6zlFbvGz5MefHq7ZGs64GgReu3O7LT3V9t28YfvDVTvCJHISwevKrm5JyulD3eYvfTaMlwLBr4InNcgCnn25LQ8L7dKCsU8sJ0uRqBQo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=momBS6tC; arc=none smtp.client-ip=74.125.227.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oh14vswn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE7D1F000FF;
-	Fri, 18 Sep 2026 06:14:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789712070;
-	bh=/vQTG5gemaY8/t4xYDs1UjQjmKMD4ZqF1G7e+0JF5fQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=oh14vswnzx4u99APsY5e/6yCS1jVF3j1r13yHsnUp+fj0u+UvYi2A/JjZtl/9oDhE
-	 aC/ftwVv6QRzRsB5TlevRC45/h6mWyPp3iYsgJkMZN/ZVLlC//Uo/UeZClhSIv70kE
-	 iUJcRBTnPQ8ERN2XUSS1VyhH+l7KBt60QHcRw7j1wzq5wL0QROaUeUcl6NbAnxk5fM
-	 J291a8oAkCKIAR8KQuF407UeQ+IifTlEgjkAKsL5mLNcViVnp59lfY3Lw2Fa/Bd2hL
-	 FV8EoYM3wZajpNLRSihgOFklNI3wOLVWIiQjxeaUIh3sdcQ8u7oS7liE3VN75OHUlV
-	 D1gM1uOchZiqQ==
-Subject: Re: [PATCH net] eth: fbnic: Avoid rounding zero ring sizes
-From: netdev-bot+sashiko@kernel.org
-To: bjorn@kernel.org
-Cc: alexanderduyck@fb.com, kuba@kernel.org, kernel-team@meta.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- mohsin.bashr@gmail.com, mike.marciniszyn@gmail.com, joe@dama.to
-Date: Fri, 18 Sep 2026 06:14:29 +0000
-Message-ID: <178971206933.22033.236948278674126701@kernel.org>
-In-Reply-To: <20260915181229.4159158-1-bjorn@kernel.org>
-References: <20260915181229.4159158-1-bjorn@kernel.org>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="momBS6tC"
+Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2db22383fe8so2150415ad.2
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 23:18:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789712318; x=1790317118; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vlH2FkH1P5oTFRvmo0HQX9xZlRE985ig8ruveN6rylQ=;
+        b=momBS6tC7doXBg3hzQ1Lcx0qLkyO6xM/kuANuZxGg3acF0yBDSQiPEMh1etq7/fyXp
+         iwZZBbkDPmSiEqrG8MzaHdidbDYz2Yoq81Ei3KU6C7Gboc4t4FmBBAyXJ1qp/wzb1tSJ
+         wfubIjXke8vEZ3+pz3XxBlaWExlyGE5pwWs2gwvFsAMKgXgjONqVgCa5Hum90x6LjIrv
+         52Aevee5YgDXzn1U/idLqEbcxsyeaB7YtT9KxrMBlFXTQS17uktR8xCyeyvd2enHM3Qu
+         UbYBwbWfLE7FFaO44Xk1reKPE4TwyKSJl98sxTEOn04vyvjIkqAUa48T6EsP+JzbmDfU
+         NxtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789712318; x=1790317118;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vlH2FkH1P5oTFRvmo0HQX9xZlRE985ig8ruveN6rylQ=;
+        b=v6dBZ1l1Ig24qOLTvYFJnogcCCCDqvOxetCxTqK5EUz8enmdbIolXaN2+GE0alhz7z
+         QRMreh6LGtM6Pl4AMHM9+bRyvl8p4jHVJFNiY4FlkbYwMvX0haIm6sNCr1qLhJARMaS6
+         /KE4BWtbyGWJlRu7YYAvO5WQhFcLpb34iPGbff3LP41v14Hdrpcl+Fg7Gq2WyFWQ0P0s
+         GEHXJSedgB1o1ycfQV42qzvoyvE3jPT77vjuDjgoEhZJFETkvnglufAWlWNR06u1uRZP
+         RQ9EnyO6fcvKeIoLia9u08QQ6d8RxM8hyEfATly/ilIA+BSGYAhgPRb9+ayZk6TXU4L6
+         u2Rw==
+X-Forwarded-Encrypted: i=1; AKwUvBz3ukGveSAyxf7kVAw6oWWIibin4qMO4g4rsoKR+x4zo/05vT6p37K6lZGmMW5pdXsBPtyD6+I=@vger.kernel.org
+X-Gm-Message-State: AFuF++l2S47ceLClLtmLHYVdaJeJzy/Bnd9DIScOdnWLXKiEdpJVHp9m
+	GY8VvOyoCg1gRK69SkzjdVICR9m0IEzrm2hcVX+apBjcHaXD8AClFIn3
+X-Gm-Gg: AYBFou2FCom4TDQIFvxRugFxAPuP7rhkSqT+T5ke/oCcoa5U9sqRCbVLl260cnJgMMC
+	zfmWKEc+If1Evi/SNPaBF8VUOH5ICOekSCqFI5Gf6MHumpTGwi6DyiohHoTL+djxUQTsxL2NPrO
+	1IMhXClqunmxJMhezA9KOtqpoCNbRH9ZcOBEDpj2LlTPYBfK/KQkGz+9UuFhZnbUNuTrIMQky1X
+	4NPrBfIyfkU94aowkTWp4qqO6FboaWqHcrbjwtyWrMlLzUhepFDXiKPvU8BHVniROvfLvuTR+/B
+	qgh0lAC7bqgudWWF2ZcKGFTaCxiuvb7K2b06aUHMBO14dOyH6OKQcOHDNKpy5PlvZaPkN/FFywA
+	h6XBDaDgkrr1ULNjALHCx+JttI08mta2WoX0N+uwkKUEC0YIfCwq3BIHvTgDbaukYHb4VrDLi9M
+	Kd5+dl6+zftixv3YNYx0JKUZuxoObFwIwZfWXWFdU6RnR35xXEwWYoSxfV+imZRQpZRJYKkjZ5U
+	LmBLWJo9g==
+X-Received: by 2002:a17:903:22cb:b0:2da:c09d:b5d2 with SMTP id d9443c01a7336-2ddb1ac96f8mr28382165ad.3.1789712317647;
+        Thu, 17 Sep 2026 23:18:37 -0700 (PDT)
+Received: from c79ofce.localdomain ([103.165.85.242])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ddb75bf3acsm2820125ad.62.2026.09.17.23.18.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2026 23:18:36 -0700 (PDT)
+From: Zhixing Chen <running910@gmail.com>
+To: Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Phil Sutter <phil@nwl.cc>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	Zhixing Chen <running910@gmail.com>
+Subject: [PATCH nf-next v5] netfilter: ip6tables: hotdrop malformed hbh/dst and srh headers
+Date: Fri, 18 Sep 2026 14:18:03 +0800
+Message-Id: <20260918061803.36372-1-running910@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+The hbh/dst and srh matches have paths that return false for malformed
+IPv6 extension headers without setting hotdrop.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+For hbh/dst, strict option parsing can stop when option data cannot be
+read or when the current option length exceeds the available header data.
+Treat these packets as malformed and set hotdrop. Apply the boundary check
+to the current option regardless of whether the rule asks for more
+options, so a malformed last requested option cannot be treated as a
+normal match result.
 
-- [Medium] In fbnic_set_ringparam()
-  (drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c), moving the minimum-…
+For srh, keep a missing SRH as a normal mismatch, but set hotdrop when
+header lookup fails for other reasons, when the SRH fixed header is not
+present, when the advertised SRH length exceeds the available skb data,
+when the SID list implied by first_segment exceeds the advertised SRH
+length, or when SID selector reads fail. Apply the SID-list length
+validation consistently to both revisions of the srh match.
 
---
+Returning false treats these malformed packets as rule mismatches. Set
+hotdrop so rule evaluation terminates and the packets are dropped instead.
 
-eth: fbnic: Avoid rounding zero ring sizes
+Signed-off-by: Zhixing Chen <running910@gmail.com>
+---
 
-The patch moves the roundup_pow_of_two() normalization of the requested
-ring sizes in fbnic_set_ringparam() to after the minimum-size checks, so
-that a zero ring size coming from userspace is rejected instead of being
-fed to roundup_pow_of_two().
+Changes in v5:
+- Rebase onto the latest nf-next tree.
+- Drop the ipv6header change because ipv6header_mt6() does not stop at
+  non-first fragments, so changing its short-header handling may affect
+  valid fragmented traffic and requires separate consideration.
+- Keep segments_left greater than first_segment as a normal mismatch,
+  since reduced SRHs may legitimately have segments_left equal to
+  first_segment plus one.
+- Apply the first_segment/SID-list length validation to both srh match
+  revisions to keep malformed-header handling consistent.
 
-> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-> index 0e47088ec44ba..8954fcd08cb31 100644
-> --- a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
-> @@ -334,11 +334,6 @@ fbnic_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
->  	struct fbnic_net *clone;
->  	int err;
->  
-> -	ring->rx_pending	= roundup_pow_of_two(ring->rx_pending);
-> -	ring->rx_mini_pending	= roundup_pow_of_two(ring->rx_mini_pending);
-> -	ring->rx_jumbo_pending	= roundup_pow_of_two(ring->rx_jumbo_pending);
-> -	ring->tx_pending	= roundup_pow_of_two(ring->tx_pending);
-> -
->  	/* These are absolute minimums allowing the device and driver to operate
->  	 * but not necessarily guarantee reasonable performance. Settings below
->  	 * Rx queue size of 128 and BDQs smaller than 64 are likely suboptimal
+Changes in v4:
+- Retarget to nf-next.
+- Do not turn ipv6header ptr overruns into hotdrop because ipv6header_mt6()
+  does not stop at non-first fragments.
+- Fix hbh/dst strict option parsing so a malformed last requested option
+  also sets hotdrop.
 
-[Severity: Medium]
-With the roundup moved below the checks, the minimum-size test in
-fbnic_set_ringparam() now compares the raw userspace request rather than
-the rounded value.  Does this reject nonzero sizes that used to be
-accepted?
+Changes in v3:
+- Remove the unused len variable from ipv6header_mt6().
+- Validate that the SID list implied by first_segment fits within the
+  advertised SRH length in srh1_mt6().
 
-The effective minimums all evaluate to 64:
+Changes in v2:
+- Use hotdrop labels for hbh and srh paths.
+- Mark SRH packets with segments_left greater than first_segment for
+  hotdrop.
+- Drop the redundant ipv6header length check before skb_header_pointer().
 
-drivers/net/ethernet/meta/fbnic/fbnic_txrx.h:
-    #define FBNIC_TX_DESC_MIN	roundup_pow_of_two(FBNIC_TX_DESC_WAKEUP)
-    #define FBNIC_RX_DESC_MIN	roundup_pow_of_two(FBNIC_MAX_RX_PKT_DESC * 2)
-    #define FBNIC_QUEUE_SIZE_MIN		64u
 
-FBNIC_RX_DESC_MIN is 16 and FBNIC_TX_DESC_MIN is 64 for the common
-MAX_SKB_FRAGS == 17, so max(FBNIC_QUEUE_SIZE_MIN, ...) is 64 in every
-case.
+v4: https://lore.kernel.org/netdev/20260807084559.63276-1-running910@gmail.com/T/ 
+v3: https://lore.kernel.org/netdev/20260724110111.18783-1-running910@gmail.com/T/ 
+v2: https://lore.kernel.org/netdev/20260714032124.7042-1-running910@gmail.com/T/ 
+v1: https://lore.kernel.org/netdev/20260709063012.33160-1-running910@gmail.com/T/ 
 
-Previously a request like "ethtool -G ethX tx 40" was rounded to 64 first
-and then passed the check, ending up with a 64-entry ring.  Now the check
-sees 40 and returns -EINVAL with "requested ring size too small".  The
-same applies to any rx, rx-mini or rx-jumbo value in 33..63.
+---
+ net/ipv6/netfilter/ip6t_hbh.c | 33 +++++++++++++-------------
+ net/ipv6/netfilter/ip6t_srh.c | 44 ++++++++++++++++++++++++++++-------
+ 2 files changed, 52 insertions(+), 25 deletions(-)
 
-The ethtool core does not enforce a minimum, it only validates the maxima:
+diff --git a/net/ipv6/netfilter/ip6t_hbh.c b/net/ipv6/netfilter/ip6t_hbh.c
+index 6008dcff8488..53fe8520a1f9 100644
+--- a/net/ipv6/netfilter/ip6t_hbh.c
++++ b/net/ipv6/netfilter/ip6t_hbh.c
+@@ -62,21 +62,18 @@ hbh_mt6(const struct sk_buff *skb, struct xt_action_param *par)
+ 			    NEXTHDR_HOP : NEXTHDR_DEST, NULL, NULL);
+ 	if (err < 0) {
+ 		if (err != -ENOENT)
+-			par->hotdrop = true;
++			goto hotdrop;
+ 		return false;
+ 	}
+ 
+ 	oh = skb_header_pointer(skb, ptr, sizeof(_optsh), &_optsh);
+-	if (oh == NULL) {
+-		par->hotdrop = true;
+-		return false;
+-	}
++	if (!oh)
++		goto hotdrop;
+ 
+ 	hdrlen = ipv6_optlen(oh);
+ 	if (skb->len - ptr < hdrlen) {
+-		/* Packet smaller than it's length field */
+-		par->hotdrop = true;
+-		return false;
++		/* Packet smaller than its length field */
++		goto hotdrop;
+ 	}
+ 
+ 	ret = (!(optinfo->flags & IP6T_OPTS_LEN) ||
+@@ -94,8 +91,8 @@ hbh_mt6(const struct sk_buff *skb, struct xt_action_param *par)
+ 				break;
+ 			tp = skb_header_pointer(skb, ptr, sizeof(_opttype),
+ 						&_opttype);
+-			if (tp == NULL)
+-				break;
++			if (!tp)
++				goto hotdrop;
+ 
+ 			/* Type check */
+ 			if (*tp != (optinfo->opts[temp] & 0xFF00) >> 8)
+@@ -107,12 +104,12 @@ hbh_mt6(const struct sk_buff *skb, struct xt_action_param *par)
+ 
+ 				/* length field exists ? */
+ 				if (hdrlen < 2)
+-					break;
++					goto hotdrop;
+ 				lp = skb_header_pointer(skb, ptr + 1,
+ 							sizeof(_optlen),
+ 							&_optlen);
+-				if (lp == NULL)
+-					break;
++				if (!lp)
++					goto hotdrop;
+ 				spec_len = optinfo->opts[temp] & 0x00FF;
+ 
+ 				if (spec_len != 0x00FF && spec_len != *lp)
+@@ -123,9 +120,9 @@ hbh_mt6(const struct sk_buff *skb, struct xt_action_param *par)
+ 				optlen = 1;
+ 			}
+ 
+-			if ((ptr > skb->len - optlen || hdrlen < optlen) &&
+-			    temp < optinfo->optsnr - 1)
+-				break;
++			if (ptr > skb->len || optlen > skb->len - ptr ||
++			    hdrlen < optlen)
++				goto hotdrop;
+ 
+ 			ptr += optlen;
+ 			hdrlen -= optlen;
+@@ -137,6 +134,10 @@ hbh_mt6(const struct sk_buff *skb, struct xt_action_param *par)
+ 	}
+ 
+ 	return false;
++
++hotdrop:
++	par->hotdrop = true;
++	return false;
+ }
+ 
+ static int hbh_mt6_check(const struct xt_mtchk_param *par)
+diff --git a/net/ipv6/netfilter/ip6t_srh.c b/net/ipv6/netfilter/ip6t_srh.c
+index db0fd64d8986..c89f5eb68926 100644
+--- a/net/ipv6/netfilter/ip6t_srh.c
++++ b/net/ipv6/netfilter/ip6t_srh.c
+@@ -27,20 +27,29 @@ static bool srh_mt6(const struct sk_buff *skb, struct xt_action_param *par)
+ 	struct ipv6_sr_hdr *srh;
+ 	struct ipv6_sr_hdr _srh;
+ 	int hdrlen, srhoff = 0;
++	int err;
+ 
+-	if (ipv6_find_hdr(skb, &srhoff, IPPROTO_ROUTING, NULL, NULL) < 0)
++	err = ipv6_find_hdr(skb, &srhoff, IPPROTO_ROUTING, NULL, NULL);
++	if (err < 0) {
++		if (err != -ENOENT)
++			goto hotdrop;
+ 		return false;
++	}
+ 	srh = skb_header_pointer(skb, srhoff, sizeof(_srh), &_srh);
+ 	if (!srh)
+-		return false;
++		goto hotdrop;
+ 
+ 	hdrlen = ipv6_optlen(srh);
+ 	if (skb->len - srhoff < hdrlen)
+-		return false;
++		goto hotdrop;
+ 
+ 	if (srh->type != IPV6_SRCRT_TYPE_4)
+ 		return false;
+ 
++	if (sizeof(*srh) +
++	    ((srh->first_segment + 1) * sizeof(struct in6_addr)) > hdrlen)
++		goto hotdrop;
++
+ 	if (srh->segments_left > srh->first_segment)
+ 		return false;
+ 
+@@ -111,6 +120,10 @@ static bool srh_mt6(const struct sk_buff *skb, struct xt_action_param *par)
+ 				!(srh->tag == srhinfo->tag)))
+ 			return false;
+ 	return true;
++
++hotdrop:
++	par->hotdrop = true;
++	return false;
+ }
+ 
+ static bool srh1_mt6(const struct sk_buff *skb, struct xt_action_param *par)
+@@ -121,20 +134,29 @@ static bool srh1_mt6(const struct sk_buff *skb, struct xt_action_param *par)
+ 	struct in6_addr _psid, _nsid, _lsid;
+ 	struct ipv6_sr_hdr *srh;
+ 	struct ipv6_sr_hdr _srh;
++	int err;
+ 
+-	if (ipv6_find_hdr(skb, &srhoff, IPPROTO_ROUTING, NULL, NULL) < 0)
++	err = ipv6_find_hdr(skb, &srhoff, IPPROTO_ROUTING, NULL, NULL);
++	if (err < 0) {
++		if (err != -ENOENT)
++			goto hotdrop;
+ 		return false;
++	}
+ 	srh = skb_header_pointer(skb, srhoff, sizeof(_srh), &_srh);
+ 	if (!srh)
+-		return false;
++		goto hotdrop;
+ 
+ 	hdrlen = ipv6_optlen(srh);
+ 	if (skb->len - srhoff < hdrlen)
+-		return false;
++		goto hotdrop;
+ 
+ 	if (srh->type != IPV6_SRCRT_TYPE_4)
+ 		return false;
+ 
++	if (sizeof(*srh) +
++	    ((srh->first_segment + 1) * sizeof(struct in6_addr)) > hdrlen)
++		goto hotdrop;
++
+ 	if (srh->segments_left > srh->first_segment)
+ 		return false;
+ 
+@@ -207,7 +229,7 @@ static bool srh1_mt6(const struct sk_buff *skb, struct xt_action_param *par)
+ 			  ((srh->segments_left + 1) * sizeof(struct in6_addr));
+ 		psid = skb_header_pointer(skb, psidoff, sizeof(_psid), &_psid);
+ 		if (!psid)
+-			return false;
++			goto hotdrop;
+ 		if (NF_SRH_INVF(srhinfo, IP6T_SRH_INV_PSID,
+ 				ipv6_masked_addr_cmp(psid, &srhinfo->psid_msk,
+ 						     &srhinfo->psid_addr)))
+@@ -222,7 +244,7 @@ static bool srh1_mt6(const struct sk_buff *skb, struct xt_action_param *par)
+ 			  ((srh->segments_left - 1) * sizeof(struct in6_addr));
+ 		nsid = skb_header_pointer(skb, nsidoff, sizeof(_nsid), &_nsid);
+ 		if (!nsid)
+-			return false;
++			goto hotdrop;
+ 		if (NF_SRH_INVF(srhinfo, IP6T_SRH_INV_NSID,
+ 				ipv6_masked_addr_cmp(nsid, &srhinfo->nsid_msk,
+ 						     &srhinfo->nsid_addr)))
+@@ -234,13 +256,17 @@ static bool srh1_mt6(const struct sk_buff *skb, struct xt_action_param *par)
+ 		lsidoff = srhoff + sizeof(struct ipv6_sr_hdr);
+ 		lsid = skb_header_pointer(skb, lsidoff, sizeof(_lsid), &_lsid);
+ 		if (!lsid)
+-			return false;
++			goto hotdrop;
+ 		if (NF_SRH_INVF(srhinfo, IP6T_SRH_INV_LSID,
+ 				ipv6_masked_addr_cmp(lsid, &srhinfo->lsid_msk,
+ 						     &srhinfo->lsid_addr)))
+ 			return false;
+ 	}
+ 	return true;
++
++hotdrop:
++	par->hotdrop = true;
++	return false;
+ }
+ 
+ static int srh_mt6_check(const struct xt_mtchk_param *par)
 
-net/ethtool/rings.c:ethnl_set_rings() {
-	...
-	/* ensure new ring parameters are within limits */
-	if (ringparam.rx_pending > ringparam.rx_max_pending)
-	...
-}
-
-and ethtool_set_ringparam() in net/ethtool/ioctl.c does the same, so those
-values do reach the driver unchanged.
-
->  	/* These are absolute minimums allowing the device and driver to operate
->  	 * but not necessarily guarantee reasonable performance. Settings below
->  	 * Rx queue size of 128 and BDQs smaller than 64 are likely suboptimal
->  	 * at best.
->  	 */
->  	if (ring->rx_pending < max(FBNIC_QUEUE_SIZE_MIN, FBNIC_RX_DESC_MIN) ||
->  	    ring->rx_mini_pending < FBNIC_QUEUE_SIZE_MIN ||
->  	    ring->rx_jumbo_pending < FBNIC_QUEUE_SIZE_MIN ||
->  	    ring->tx_pending < max(FBNIC_QUEUE_SIZE_MIN, FBNIC_TX_DESC_MIN)) {
->  		NL_SET_ERR_MSG_MOD(extack, "requested ring size too small");
->  		return -EINVAL;
->  	}
-
-> @@ -368,6 +363,11 @@ fbnic_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
->  		return -EINVAL;
->  	}
->  
-> +	ring->rx_pending	= roundup_pow_of_two(ring->rx_pending);
-> +	ring->rx_mini_pending	= roundup_pow_of_two(ring->rx_mini_pending);
-> +	ring->rx_jumbo_pending	= roundup_pow_of_two(ring->rx_jumbo_pending);
-> +	ring->tx_pending	= roundup_pow_of_two(ring->tx_pending);
-> +
-
-[Severity: Medium]
-Was the reorder needed to reach the stated goal?  The commit message says
-only:
-
-    Validate the requested sizes before rounding them so zero is rejected
-    deterministically.
-
-It does not mention that previously accepted non-power-of-two sizes below
-the 64-descriptor minimum now start failing with -EINVAL.  Since the patch
-carries a Fixes: tag and is therefore a stable-backport candidate, could
-the changelog spell out that user-visible change?
-
-Would an explicit rejection of zero, or clamping in place with
-max(min, roundup_pow_of_two(...)), address the undefined
-roundup_pow_of_two(0) without altering which nonzero requests are
-accepted?
-
->  	if (!netif_running(netdev)) {
->  		fbnic_set_rings(fbn, ring, kernel_ring);
->  		return 0;
-
+base-commit: 87b80c2f6b05cad9f0ff9136709c62a0f59923e3
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260915181229.4159158-1-bjorn%40kernel.org
+2.34.1
+
