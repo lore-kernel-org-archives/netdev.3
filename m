@@ -1,49 +1,73 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983F9233933;
-	Fri, 18 Sep 2026 09:55:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB17C439913
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 09:59:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789725362; cv=none; b=bD96DnAy3tnY8XkI5ULdoD0aKCyzdy8MOPTi96q8z6OzvdI7Opli/GfELsSdvTJsetMva65jb0KR6m7oObYYrlz9OVCd1TbaAqjR8oUdQaEqNkxc5wxy5f5Hureu96iuxrvx17KLqSHIG7QXBitL8Xkpctmj4TG8XmK3jmXGuH4=
+	t=1789725584; cv=none; b=TNYVG2vUunj6neM7a9EtjoNx/HtOIyr5Ag6/txOelfoTA3CWjBhTZV8r8Wq5peXCndLgbmsDMf+qKTvMxn0jzyDx5cpj6Gkzmzu9J4Jo0lFdRvpKXME3se9n67PwNiJDeQB7cNiawoKxC0oAKN3z+F9RYYMdT6Uv2FXcG8joyus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789725362; c=relaxed/simple;
-	bh=RloubzetdNOj3zTBg25Rv/u14MpkvCQNuwFPs/m9hxY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H3XkBYA4XlnavfVanVu9r3hHLKdNMUrYAVe4yx314FbWOKyS9vsWiZNbm2MwA+n3Zp2tRkdKJnUT5crUIWQAJacr3dgVvGNZIkwvuYUl8nUX4bftAwZsbj3OWnSujVTqb4NcUJla4vYTYLKVmxhtxyKKDL91kY6Q5aaABh7lMus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=IPIKaSh6; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1789725584; c=relaxed/simple;
+	bh=Ub5n60r5j3pkWXxQqVxfOxFizGkkEudyJe4nXJVkmRM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GYkzVfBMKKhxucVF1MJJnn4XnO4s8zNsZWF9o76McT8fYBl7vcm8m8F1JxICWgZVxSvg59QhKviUa81tfpdUeOG6370u4hBPI8hVklwdZsmHLbCDQVQylbJzggqnwDVomUBVYfagqXoV/xR5JTqv7W0phnSyMGwk6QKfbQVxMmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y6rKK/Au; arc=none smtp.client-ip=74.125.228.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="IPIKaSh6"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7FE6DA02D0;
-	Fri, 18 Sep 2026 11:55:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1789725345; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=fdr599RH+uTsb7aefNgR/cD0PKRqtTo+C8uj7tmQJ7o=;
-	b=IPIKaSh64fYTSmNViLLy94UAGJm0UZQS0g9nFgBe66v6NN+xxUIntI8KjzVwzL+wOSFLVu
-	4Kc50f5LD/DF/MFjfRFEnlmqlrBY9x1XDwqWj+x9/V5jmDbyZ5BQ7NmLKx3iY5AJDEwCrR
-	IUPIt7NTwJHqxUFj0cBBAYaESICxw85rj3OlIZYWZvt3OEZJvwiyAX15w99FMTVjWlzqAu
-	DgekQu0vAnuDuE6rkMjWR5eykSUXkCqTkwp9n+rdJfLQ7wgo8k/LxQ3WWNdh9NKHAYiV5v
-	/q/V5qw59SF4bh2tyeEGhRdXalZh6ZiXKeji0TehFl8kxAiwV14CLplCKspBmg==
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Cc: James Clark <jjc@jclark.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Doug Berger <opendmb@gmail.com>,
-	Nicolai Buchwitz <nb@tipi-net.de>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y6rKK/Au"
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254fa4c24cso80889066b.2
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 02:59:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789725581; x=1790330381; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZK2mEgoWupjXTRgi+Pjb5v5mVGfqqkUvX0U/KZzDAMc=;
+        b=Y6rKK/AuvGacfrnFzzxzRkGcbS7cwlRhXixj2UEoAiwqRZwZXEhQowsrMwOo1I1Bjl
+         gps19h0zRcZRy2KOBqVToVmU7lu1NtKYxClftF2UM/EFMOGFnUrLOq0ga+IgxyGlzLwe
+         4ihOfICqjPVV0StqGfueqKkcqgSbL+IjhFEKGneOqpxyTS+MgUO1EKmHMzxHX8Sxxngk
+         gcyc3yQ9UHIJkfEKwx8URoVG3fHJ2dwDWLN7GgCtCXF06QWtuovOfxcE2t1tjPsfUA0t
+         KI4YFwKky161e9KDjB1JxEiNNNFBzdw5CcDZwjFeuW8shO4tu4W8nUvObpwBvydKBmkV
+         clxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789725581; x=1790330381;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ZK2mEgoWupjXTRgi+Pjb5v5mVGfqqkUvX0U/KZzDAMc=;
+        b=w+tOg6JGFPNu9cIvAJFtPOX0P43qI4+eSCe3WUgEhG+KIFj8w/JohBX88NOcI9WqE4
+         jTr5Nc06BEYNKFlov4pKue8sF10/MPifO5BslOjxgCIlK1LVbha310Mrr8KGDzk+SCAI
+         UbUpqzlfCD4Zgt2BaJ2ghiX4Z3erbNNomdnX80LQHUqHmU4SJ7aO+raK/TcwX82a8+Ju
+         4rCdZ6QI92Bjbip1zspy0N0Ng4qTSmctmbVIDNGPnLEGwUtRHsYl6NLNrKnE2Y+FJs5R
+         cAV3i4wFgEkcHETy1llD/kKSkVyR4u9rz59S1z+5ocsduUeAxxQt2Wsx2L9WbXaAAYQJ
+         s48g==
+X-Forwarded-Encrypted: i=1; AKwUvBwMdwE1c7MOsAnvJ+5m9quFsmMosmEIJ7vlaDKwh0tpgetpjewcuz1EHF2SIYMIgF5vHnCGNJA=@vger.kernel.org
+X-Gm-Message-State: AFuF++njDEiRJ2aE7birX0Gbe+GH1VwfmqEAMqlxz/w9I3x4SNf754Cx
+	r9dltLcxed+pTrcaX9a5/PZx4aAA4gWjIjz01iszh8joowP1Kv0Rf9zV
+X-Gm-Gg: AYBFou3qKG84eP2LJpnjBIVglTbRmKvH0YJ87nltC2K5CVWEkn7/o5MIQiZH4A6/6Jk
+	MHQ5r4pmSNkdAkqSiOKOwAHBKXK8s4/VNq7wdEF3zpQIZ2ufVSPAHouHrdKpCcGFfYp9IcuFZJi
+	06eDMDP9pCtQIKquDfDkOaCjS4DFzm0Bb+NnedqKqEx9HkGraZdJYaSys2niyohiRYW+rOyBS9g
+	WRD66y8ixIYYxh/ksw/HE+OIO/k/RNHX7tXDGxIU9oRFBRWlhlPc8PwYBAc3sKASCzLmdS9YyyD
+	QbNt+PwDIKamKUy1UswHc8BRNuJVXS68JZDtaocfFIgLnJep5RnSZis1/y7XY2WhMEG99WyEsag
+	BQTHRDchTasCNVg+hdowFBS4jL9yv744JY4Wu1TUSaspo1b1BvdjeCnrWo6D8cAvShTvCZomboc
+	U0lqNpMw7zSfjaQ++5dPKxi1uqCQ6AFv3Zf6hXWkwiSVN4hfkgT8AA/RZKbKthVieUn6hyfDX4s
+	Y1oukCUUChb2w2LSvMblHAQIff9uJ4hvq8CKytm4wAyhEWEFiGwJxQM
+X-Received: by 2002:a17:907:3f1f:b0:c26:2ff1:cac2 with SMTP id a640c23a62f3a-c2a15cdc167mr226091966b.31.1789725580553;
+        Fri, 18 Sep 2026 02:59:40 -0700 (PDT)
+Received: from BERSOARE-M-K4D5.cisco.com ([2603:5004:20a0:100a:561b:120d:754d:a140])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2a1bbc6a99sm38313166b.59.2026.09.18.02.59.38
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 18 Sep 2026 02:59:39 -0700 (PDT)
+From: Bernardo Soares <bsoares.it@gmail.com>
+To: Mark Bloch <mbloch@nvidia.com>
+Cc: Daniel Borkmann <daniel@iogearbox.net>,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: don't require the hwtstamp NDOs when a PHY provides timestamping
-Date: Fri, 18 Sep 2026 11:55:40 +0200
-Message-ID: <20260918095540.34286-1-nb@tipi-net.de>
-X-Mailer: git-send-email 2.53.0
+	saeedm@nvidia.com,
+	Vlad Buslov <vladbu@nvidia.com>,
+	Bernardo Soares <bsoares.it@gmail.com>
+Subject: [PATCH net v4 0/2] net/mlx5: Bridge, fix remaining switchdev ownership gaps on merged eswitch
+Date: Fri, 18 Sep 2026 10:59:29 +0100
+Message-ID: <20260918095931.29792-1-bsoares.it@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,149 +75,50 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Removing the legacy ioctl fallback made both hwtstamp NDOs mandatory. A
-device that only timestamps in its PHY implements neither, so
-SIOCSHWTSTAMP fails with EOPNOTSUPP before anything looks at the PHY and
-PTP stops working there.
+v4 of "net/mlx5: Bridge, don't fail switchdev events of sibling
+eswitch ports" (5f324c5d1b12), addressing reviewer feedback on v3:
 
-The check only ever picked the legacy path. That path is gone, so drop it
-and test where the NDOs are actually called.
+ - The v3 commit message for patch 1 wrongly attributed the recursive
+   lower-device walk fix to LAG bond enslavement order. As pointed
+   out in review, mlx5_esw_bridge_lag_rep_get() already filters on
+   mlx5_esw_bridge_dev_same_esw() per candidate and cannot select a
+   sibling's rep. The actual bug is in the generic recursive walk
+   used when attribute changes are emitted against the bridge master
+   netdevice directly (a bridge with representors of more than one
+   eswitch instance enslaved, no LAG involved): the walk returns as
+   soon as any lower device yields a rep, and the underlying base
+   case only checks same-HW, not ownership. Commit message rewritten
+   to describe this correctly; no functional change from v3.
+ - The v3 commit message for patch 2 claimed a "replayed/duplicate"
+   NETDEV_CHANGEUPPER unlink as one of the reachable cases. As
+   pointed out in review, netdevice notifiers are not replayed, so
+   there is no such duplicate delivery. The actual (and only)
+   reachable case is a sibling instance whose bridge offload notifier
+   registers after a peer port was already enslaved, so it misses
+   the link event and never tracks the port, then genuinely receives
+   the later unlink event. Commit message rewritten accordingly; no
+   functional change from v3.
 
-SIOCGHWTSTAMP is new here, not restored. The old path went through
-phy_mii_ioctl(), which only handled SIOCSHWTSTAMP.
+Tested Patch 1 on a ConnectX-7 NIC (MT2910) on my single NIC system.
+Patch 2 requires a multiple eswitch instance setup, so I wasn't able
+to exercise its code paths.
 
-Such a device now returns -ENODEV while absent instead of -EOPNOTSUPP,
-like the ones that do implement the NDOs.
+Note: v1/v2 were sent From/Signed-off-by bersoare@isovalent.com; v3
+and v4 are sent from my personal address (bsoares.it@gmail.com)
+instead, for unrelated mail delivery reasons. Same author, same
+person.
 
-Fixes: 5062245a5a7f ("net: remove legacy way to get/set HW timestamp config")
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
----
-This is an alternative to James' patch, which adds -EOPNOTSUPP stubs to
-bcmgenet:
+Bernardo Soares (2):
+  net/mlx5: Bridge, don't fail switchdev events of sibling eswitch ports
+  net/mlx5: Bridge, don't fail unlink of untracked/unsupported peer
+    ports
 
-  https://lore.kernel.org/netdev/20260918030149.80398-1-jjc@jclark.com/
+ .../mellanox/mlx5/core/en/rep/bridge.c        | 45 +++++++++++++++----
+ .../ethernet/mellanox/mlx5/core/esw/bridge.c  | 15 +++++--
+ .../ethernet/mellanox/mlx5/core/esw/bridge.h  |  2 +
+ 3 files changed, 49 insertions(+), 13 deletions(-)
 
-A quick grep finds a few dozen more drivers pointing ndo_eth_ioctl at
-phylib without either NDO. So this is better fixed in the core than by
-adding the same stubs everywhere.
-
-Left the HWTSTAMP_SOURCE_NETDEV branch alone on purpose, because hwprov
-only gets installed by ethnl_set_tsconfig(), which already wants both NDOs.
-
-Tested on a Raspberry Pi CM4 (BCM54213PE, PHC from bcm-phy-ptp) with
-bcmgenet unmodified, get and set with tx_type 1 and rx_filter 12:
-
-  before 5062245a5a7f   get EOPNOTSUPP   set ok
-  without this patch    get EOPNOTSUPP   set EOPNOTSUPP
-  with this patch       get ok           set ok
-
-tsconfig keeps its own copy of the check, but that one is older than
-5062245a5a7f and never worked for these devices, so IMHO this is an
-extra patch for net-next.
-
- net/core/dev_ioctl.c | 25 +++++++++----------------
- 1 file changed, 9 insertions(+), 16 deletions(-)
-
-diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
-index a320e264eaaf..164643140a52 100644
---- a/net/core/dev_ioctl.c
-+++ b/net/core/dev_ioctl.c
-@@ -276,19 +276,18 @@ int dev_get_hwtstamp_phylib(struct net_device *dev,
- 	if (phy_is_default_hwtstamp(dev->phydev))
- 		return phy_hwtstamp_get(dev->phydev, cfg);
- 
-+	if (!dev->netdev_ops->ndo_hwtstamp_get)
-+		return -EOPNOTSUPP;
-+
- 	return dev->netdev_ops->ndo_hwtstamp_get(dev, cfg);
- }
- 
- static int dev_get_hwtstamp(struct net_device *dev, struct ifreq *ifr)
- {
--	const struct net_device_ops *ops = dev->netdev_ops;
- 	struct kernel_hwtstamp_config kernel_cfg = {};
- 	struct hwtstamp_config cfg;
- 	int err;
- 
--	if (!ops->ndo_hwtstamp_get)
--		return -EOPNOTSUPP;
--
- 	if (!netif_device_present(dev))
- 		return -ENODEV;
- 
-@@ -359,12 +358,18 @@ int dev_set_hwtstamp_phylib(struct net_device *dev,
- 	cfg->source = phy_ts ? HWTSTAMP_SOURCE_PHYLIB : HWTSTAMP_SOURCE_NETDEV;
- 
- 	if (phy_ts && dev->see_all_hwtstamp_requests) {
-+		if (!ops->ndo_hwtstamp_get)
-+			return -EOPNOTSUPP;
-+
- 		err = ops->ndo_hwtstamp_get(dev, &old_cfg);
- 		if (err)
- 			return err;
- 	}
- 
- 	if (!phy_ts || dev->see_all_hwtstamp_requests) {
-+		if (!ops->ndo_hwtstamp_set)
-+			return -EOPNOTSUPP;
-+
- 		err = ops->ndo_hwtstamp_set(dev, cfg, extack);
- 		if (err) {
- 			if (extack->_msg)
-@@ -390,7 +395,6 @@ int dev_set_hwtstamp_phylib(struct net_device *dev,
- 
- static int dev_set_hwtstamp(struct net_device *dev, struct ifreq *ifr)
- {
--	const struct net_device_ops *ops = dev->netdev_ops;
- 	struct kernel_hwtstamp_config kernel_cfg = {};
- 	struct netlink_ext_ack extack = {};
- 	struct hwtstamp_config cfg;
-@@ -413,9 +417,6 @@ static int dev_set_hwtstamp(struct net_device *dev, struct ifreq *ifr)
- 		return err;
- 	}
- 
--	if (!ops->ndo_hwtstamp_set)
--		return -EOPNOTSUPP;
--
- 	if (!netif_device_present(dev))
- 		return -ENODEV;
- 
-@@ -441,15 +442,11 @@ static int dev_set_hwtstamp(struct net_device *dev, struct ifreq *ifr)
- int generic_hwtstamp_get_lower(struct net_device *dev,
- 			       struct kernel_hwtstamp_config *kernel_cfg)
- {
--	const struct net_device_ops *ops = dev->netdev_ops;
- 	int err;
- 
- 	if (!netif_device_present(dev))
- 		return -ENODEV;
- 
--	if (!ops->ndo_hwtstamp_get)
--		return -EOPNOTSUPP;
--
- 	netdev_lock_ops(dev);
- 	err = dev_get_hwtstamp_phylib(dev, kernel_cfg);
- 	netdev_unlock_ops(dev);
-@@ -462,15 +459,11 @@ int generic_hwtstamp_set_lower(struct net_device *dev,
- 			       struct kernel_hwtstamp_config *kernel_cfg,
- 			       struct netlink_ext_ack *extack)
- {
--	const struct net_device_ops *ops = dev->netdev_ops;
- 	int err;
- 
- 	if (!netif_device_present(dev))
- 		return -ENODEV;
- 
--	if (!ops->ndo_hwtstamp_set)
--		return -EOPNOTSUPP;
--
- 	netdev_lock_ops(dev);
- 	err = dev_set_hwtstamp_phylib(dev, kernel_cfg, extack);
- 	netdev_unlock_ops(dev);
-
-base-commit: c9151088f1674fd29ff26a20f5fc687acf53a2f0
 -- 
-2.53.0
+2.43.0
 
