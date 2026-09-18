@@ -1,131 +1,334 @@
-Received: from mail-lr2-f11.google.com (mail-lr2-f11.google.com [74.125.230.75])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A823BA225
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 14:36:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39EB397691;
+	Fri, 18 Sep 2026 14:45:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789742199; cv=none; b=WrVFsBNLIYKy6Ce5+U1Qgsj3D8XASS+7vQvLKPPAVgDyn9wuCzv+Symiuj3HaWGoS04dTYyzB0iqxT6Ej+iVo0xAkuv9CJLBvrr8e6FTp5SDhUqJVjnN/epmcvIM83rgpdazLqw641F+hJ4ZKdOl4fC6Hg3mxAAvT1KioJcPmoM=
+	t=1789742720; cv=none; b=VHlLDpjpR6qkxUQxNVEu40czVi1sZxs3CX1IxrljgthEfNlV1lkoRTBY20qszwPsVSfNQdIzXJWditYTP0K8FFSkklriSvPS7TC412fZgRePRGSM44IINxqryZOkdxfCfn8seCCeXyDI5td85y2Rpl2Hjg7X9GRZpH5miC+wkl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789742199; c=relaxed/simple;
-	bh=LNSIAKB/LfKHM4jWjZllEh8pyKx290EXKu4c57L9ets=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ixaua5kQNZgsoqkyVOv6ynWOn2j72eUYV0vfXH9EvuW7XZq5Qve0Avdisd6SuVPAsQVVubZT9IsttnzmwLGtmY5aJG8WmqLOKMj/iPrgNLGUKAHCl56kpUjx6wx5J2mWErAJpN6lmRXYS7oRHPALroZGISkY7liAu6ZRQvZBmA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZG8nbHw6; arc=none smtp.client-ip=74.125.230.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789742720; c=relaxed/simple;
+	bh=rGTov9lEabDQJI6s0tqmkKQoMdfh7wPxKbbumW0fPwM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lLlnAbxhPaV+WxIshY2sw/ofmf+7mA4zZPkuNF/H8FkZf4tgsiUjh+eD7HHCya4c/Cx10rjdDMriklDbkPgZKLiDKD352t8QHs/vTikAEtR6qmiYDO969lub6iRSloWVlqKHwGzzCtdDRQ9QPQ2jLozV4f+RlRC1l0GtFWaPoHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Q+vDJ55Y; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=mffIaaZD; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=bqrgQVLA; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=k1xV1d6y; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZG8nbHw6"
-Received: by mail-lr2-f11.google.com with SMTP id 38308e7fff4ca-3a49e9e7cd8so5759431fa.1
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 07:36:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789742195; x=1790346995; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LOhMfXD0/BBBcEGxBgCARg4zRQIYPTh+PJcHIjkoFCo=;
-        b=ZG8nbHw63g6tsfb1KRT6C3GtJw+1TN/i3RVhFommchjBKT4KAdmWAL7CgqjTiA2QUG
-         Z2ELc4J6Z3WPB30jqiyqlceqmxFU0x+HXfPZCeO4GISGGnUW+Ye/f7Eo0gu5PSfS2Bk+
-         gdrAXfnmt44QIwj76/FSd6KNhssshpSikpjFwj+sFH5a/s9AokRiHzKQJeAUzdM42nQK
-         TgSJsZW0JOkpuaLAnWieJNxvQxd0ki8S+p8kksDGvQsmKtRLvZLoRxOq2EZcfOwO9nrf
-         AIy/RtKE5CAKvbpy5KPxzkfuOv8viKBHbzQgl0dYgiiSn0yQXi9DqaWfB38YcibIbUOJ
-         aPMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789742195; x=1790346995;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LOhMfXD0/BBBcEGxBgCARg4zRQIYPTh+PJcHIjkoFCo=;
-        b=vBnrOILlG7fnpmPEGf289K2z2GkpDF1oaAjsvSaMcyFrwgu6ZUNefRa7pWO+HgBXDo
-         pTUbw2JzLRekDT7vfLrO5VfhdaOO38cDy45mv39sKRxm6KuCBE4NT6BTxX69I/aS/FAU
-         uF8aBP1wpz010jyFr4iaswlPdFeL283o2XqeMT3VHJBaMXMhVvV7sqYwZRHYoVYoe2O+
-         RB7POIKM9AKRfN4msSMEBRrx3Nq5v0tYEBdPDX/3NY5jsgFo8WTojZZ+KWXIltJA6cDd
-         +z4v1CA68FsxPTn4yUL5qCxxcil/x3ZuEYjrLXJA0g7QsIpwVEUL77tpOrUU25kCqLjM
-         O/CQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzoM4dWkLqvFY1qCyarVb7JrVHKjme+aXwrNpcJgXmZ5xGWjB+quw1TYHAJVklYG0ou22hqrUQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++nTi6bF/zCPLn8xNNM2gNh1OuP2ztkiSlzNXRsRvzI9Zz958oJX
-	kBOH+d8Dmsw2kr+WTSichDAC5964qV4h7BtmIQ0zU4rzNmwZFoQ5M0iD
-X-Gm-Gg: AYBFou3roieMD7mBJN/QnFVHkFojgYq0/q5Js1S2NV4TpFot5Fq2VxXChQju0fczzR1
-	hVIsa/XFZC3VVTyYXcEq1Jer2ePc+dT/wUhIdv6D7vtHhl0wCICwaQ97P2MRbWJuCVKvcAZDhQy
-	EN+LGKezBQ34XCwiKxOWTzyBq/uASNhEenSAWv7r030nsthzzXHSQaGhgQ9F0HWa0GWLyyWzYSz
-	e+95YWrIwLV1Oa430hFCT8oMbTsLjtIuVwliJyocGX37aGSLZYSXLRZBmqG7uRkQhWK75LZJUew
-	f43vdncXkItY86Ymr0CBayQWRrORIul+WE9inoe+QI/xW62MGi6IOLlgOXLZf3xaiyDoEi/Sicw
-	0z2VVLsIlhKqd45Govu2MmkXwwsfoxj0LBfQtlqPsOC4PLx8JEYbcIOrPmwYwxpyFxMFWqnQCe/
-	YQtl5B8XyBu6a1RrsZZS7sa4ueoNvIGf7zvIfNqn7CZmuk79jwA+nrMc7VPjIftTlL2Vy8n1jum
-	U22rQ==
-X-Received: by 2002:a05:6512:3985:b0:5ae:bf3b:c98 with SMTP id 2adb3069b0e04-5b8c1813cc2mr949113e87.10.1789742195038;
-        Fri, 18 Sep 2026 07:36:35 -0700 (PDT)
-Received: from linux ([78.40.184.2])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b8c276dd43sm475819e87.83.2026.09.18.07.36.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 07:36:34 -0700 (PDT)
-From: Roman Demidov <roman.demidov.nn@gmail.com>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Roman Demidov <roman.demidov.nn@gmail.com>,
-	Kalle Valo <kvalo@codeaurora.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"John W. Linville" <linville@tuxdriver.com>,
-	Eugene Krasnikov <k.eugene.e@gmail.com>,
-	wcn36xx@lists.infradead.org,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Tristan Madani <tristan@talencesecurity.com>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10] wifi: wcn36xx: fix heap overflow from oversized firmware HAL response
-Date: Fri, 18 Sep 2026 17:36:25 +0300
-Message-ID: <20260918143627.97927-1-roman.demidov.nn@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Q+vDJ55Y";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="mffIaaZD";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="bqrgQVLA";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="k1xV1d6y"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id BE64221BDC;
+	Fri, 18 Sep 2026 14:45:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1789742711; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ouZbQb+FG4WGxOgRLBY+fRM/c3UqtSaByCtCgTRHDGs=;
+	b=Q+vDJ55YNjOd4xRkTSct8mvIAIz286//DXSG52djhT3qT7nRMhB9qKcEYXF34kRSi+Or0G
+	H5si3xlhbO40PgsXusH8ZLQmRhsoMaVtoq+gUMMC/slPHdpWUHa0D5Zv96+ecmS/xAT9r4
+	hdPhh3RHzep87R6CaOmyfnxKZRWSbA4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1789742711;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ouZbQb+FG4WGxOgRLBY+fRM/c3UqtSaByCtCgTRHDGs=;
+	b=mffIaaZDJcrfOHt6v5pYWxkUBw1NmqyBOaZHLvsVVUJsR0c2wFfk72or23kyIl/wwA9MHQ
+	YkVomXfDNMbydIDQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1789742707; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ouZbQb+FG4WGxOgRLBY+fRM/c3UqtSaByCtCgTRHDGs=;
+	b=bqrgQVLAfoGoh/zKY4bQi6Izfi+HO/zEIBNZHWIzo8P+T5OKdS+Sh7N549D5gMsVvalr1O
+	e0FFYe60G3wif6UONY9raOPUZSqOHttd2TAjpABdK+Efd3uMOoBEawNwNwgTYpselsmc52
+	Ox6HauardNJ3i9ys5P5/G0MYAgz6XN0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1789742707;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ouZbQb+FG4WGxOgRLBY+fRM/c3UqtSaByCtCgTRHDGs=;
+	b=k1xV1d6yvCtfFIzYLk86SicjuUHtiaF6YLf+Te52QyTIbU5lD1ehHaOjguztxsIfiw4G7O
+	L0cdKinsoPwFBDBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3031D133CF;
+	Fri, 18 Sep 2026 14:45:07 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id CsW5AXNOrWqUDwAAD6G6ig
+	(envelope-from <hare@suse.de>); Fri, 18 Sep 2026 14:45:07 +0000
+Message-ID: <bbc4ff6f-aa38-4862-96fe-518c3b4df4d6@suse.de>
+Date: Fri, 18 Sep 2026 16:44:50 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 2/5] NFS: allocate the .nfs keyring per network
+ namespace
+To: Chuck Lever <cel@kernel.org>, Trond Myklebust <trondmy@kernel.org>,
+ Anna Schumaker <anna@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>, Christian Brauner
+ <brauner@kernel.org>, David Howells <dhowells@redhat.com>,
+ Sagi Grimberg <sagi@grimberg.me>
+Cc: linux-nfs@vger.kernel.org, keyrings@vger.kernel.org,
+ kernel-tls-handshake@lists.linux.dev, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org
+References: <20260918-nfs-mtls-identity-v1-0-197e568d78a7@kernel.org>
+ <20260918-nfs-mtls-identity-v1-2-197e568d78a7@kernel.org>
+Content-Language: en-US
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <20260918-nfs-mtls-identity-v1-2-197e568d78a7@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Spam-Score: -4.30
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.996];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid,suse.de:email]
+X-Spam-Flag: NO
 
-From: Tristan Madani <tristan@talencesecurity.com>
+On 9/18/26 4:05 PM, Chuck Lever wrote:
+> Commit 87268f7a4f1f ("nfs: create a kernel keyring") allocates one
+> .nfs keyring at module load, and nothing in the NFS client reads it.
+> One module-wide keyring also cannot isolate x.509 credentials
+> between network namespaces. Each tlshd instance services the
+> handshake socket of one network namespace, so a credential
+> provisioned for that namespace's mounts has to be reachable by that
+> tlshd and by no other.
+> 
+> Allocate one .nfs keyring per network namespace in nfs_net_init()
+> and release it in nfs_net_exit(). tlshd finds a keyring by name
+> through /proc/keys, which is not namespace scoped, so each handshake
+> request has to carry the keyring serial instead. Allocate the
+> keyring under a kernel credential rather than that of the task
+> creating the namespace, so an LSM labels every namespace's keyring
+> the same way.
+> 
+> Signed-off-by: Chuck Lever <cel@kernel.org>
+> ---
+>   fs/nfs/inode.c | 81 +++++++++++++++++++++++++++++++---------------------------
+>   fs/nfs/netns.h |  2 ++
+>   2 files changed, 46 insertions(+), 37 deletions(-)
+> 
+> diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
+> index 832923be43a9..bd327fbb12d8 100644
+> --- a/fs/nfs/inode.c
+> +++ b/fs/nfs/inode.c
+> @@ -2641,11 +2641,50 @@ static int nfsiod_start(void)
+>   unsigned int nfs_net_id;
+>   EXPORT_SYMBOL_GPL(nfs_net_id);
+>   
+> +#ifdef CONFIG_KEYS
+> +static int nfs_init_keyring(struct nfs_net *nn)
+> +{
+> +	struct cred *cred;
+> +	struct key *keyring;
+> +
+> +	cred = prepare_kernel_cred(&init_task);
+> +	if (!cred)
+> +		return -ENOMEM;
+> +	keyring = keyring_alloc(".nfs", GLOBAL_ROOT_UID, GLOBAL_ROOT_GID, cred,
+> +				(KEY_POS_ALL & ~KEY_POS_SETATTR) |
+> +				(KEY_USR_ALL & ~KEY_USR_SETATTR),
+> +				KEY_ALLOC_NOT_IN_QUOTA, NULL, NULL);
+> +	put_cred(cred);
+> +	if (IS_ERR(keyring))
+> +		return PTR_ERR(keyring);
+> +	nn->nfs_keyring = keyring;
+> +	return 0;
+> +}
+> +
+> +static void nfs_exit_keyring(struct nfs_net *nn)
+> +{
+> +	key_put(nn->nfs_keyring);
+> +}
+> +#else
+> +static inline int nfs_init_keyring(struct nfs_net *nn)
+> +{
+> +	return 0;
+> +}
+> +
+> +static inline void nfs_exit_keyring(struct nfs_net *nn)
+> +{
+> +}
+> +#endif /* CONFIG_KEYS */
+> +
+>   static int nfs_net_init(struct net *net)
+>   {
+>   	struct nfs_net *nn = net_generic(net, nfs_net_id);
+>   	int err;
+>   
+> +	err = nfs_init_keyring(nn);
+> +	if (err)
+> +		return err;
+> +
+>   	nfs_clients_init(net);
+>   
+>   	if (!rpc_proc_register(net, &nn->rpcstats)) {
+> @@ -2663,14 +2702,18 @@ static int nfs_net_init(struct net *net)
+>   	rpc_proc_unregister(net, "nfs");
+>   err_proc_rpc:
+>   	nfs_clients_exit(net);
+> +	nfs_exit_keyring(nn);
+>   	return err;
+>   }
+>   
+>   static void nfs_net_exit(struct net *net)
+>   {
+> +	struct nfs_net *nn = net_generic(net, nfs_net_id);
+> +
+>   	rpc_proc_unregister(net, "nfs");
+>   	nfs_fs_proc_net_exit(net);
+>   	nfs_clients_exit(net);
+> +	nfs_exit_keyring(nn);
+>   }
+>   
+>   static struct pernet_operations nfs_net_ops = {
+> @@ -2680,35 +2723,6 @@ static struct pernet_operations nfs_net_ops = {
+>   	.size = sizeof(struct nfs_net),
+>   };
+>   
+> -#ifdef CONFIG_KEYS
+> -static struct key *nfs_keyring;
+> -
+> -static int __init nfs_init_keyring(void)
+> -{
+> -	nfs_keyring = keyring_alloc(".nfs",
+> -			     GLOBAL_ROOT_UID, GLOBAL_ROOT_GID,
+> -			     current_cred(),
+> -			     (KEY_POS_ALL & ~KEY_POS_SETATTR) |
+> -			     (KEY_USR_ALL & ~KEY_USR_SETATTR),
+> -			     KEY_ALLOC_NOT_IN_QUOTA, NULL, NULL);
+> -	return PTR_ERR_OR_ZERO(nfs_keyring);
+> -}
+> -
+> -static void nfs_exit_keyring(void)
+> -{
+> -	key_put(nfs_keyring);
+> -}
+> -#else
+> -static inline int nfs_init_keyring(void)
+> -{
+> -	return 0;
+> -}
+> -
+> -static inline void nfs_exit_keyring(void)
+> -{
+> -}
+> -#endif /* CONFIG_KEYS */
+> -
+>   /*
+>    * Initialize NFS
+>    */
+> @@ -2716,13 +2730,9 @@ static int __init init_nfs_fs(void)
+>   {
+>   	int err;
+>   
+> -	err = nfs_init_keyring();
+> -	if (err)
+> -		return err;
+> -
+>   	err = nfs_sysfs_init();
+>   	if (err < 0)
+> -		goto err_keyring;
+> +		return err;
+>   
+>   	err = register_pernet_subsys(&nfs_net_ops);
+>   	if (err < 0)
+> @@ -2779,8 +2789,6 @@ static int __init init_nfs_fs(void)
+>   	unregister_pernet_subsys(&nfs_net_ops);
+>   err_sysfs:
+>   	nfs_sysfs_exit();
+> -err_keyring:
+> -	nfs_exit_keyring();
+>   	return err;
+>   }
+>   
+> @@ -2796,7 +2804,6 @@ static void __exit exit_nfs_fs(void)
+>   	nfs_fs_proc_exit();
+>   	nfsiod_stop();
+>   	nfs_sysfs_exit();
+> -	nfs_exit_keyring();
+>   }
+>   
+>   /* Not quite true; I just maintain it */
+> diff --git a/fs/nfs/netns.h b/fs/nfs/netns.h
+> index 36658579100d..da0854510404 100644
+> --- a/fs/nfs/netns.h
+> +++ b/fs/nfs/netns.h
+> @@ -16,6 +16,7 @@ struct bl_dev_msg {
+>   	uint32_t major, minor;
+>   };
+>   
+> +struct key;
+>   struct nfs_netns_client;
+>   
+>   struct nfs_net {
+> @@ -36,6 +37,7 @@ struct nfs_net {
+>   #endif /* CONFIG_NFS_V4 */
+>   	struct nfs_netns_client *nfs_client;
+>   	spinlock_t nfs_client_lock;
+> +	struct key *nfs_keyring;
+>   	ktime_t boot_time;
+>   	struct rpc_stat rpcstats;
+>   #ifdef CONFIG_PROC_FS
+> 
+Curiously enough, I had been pondering a similar issue.
+Thing is, when running within a container (eg a docker one) access
+access to /proc/keys might be restricted, and from what I've
+gathered each container gets its own, _empty_ keyring.
+(certainly an empty session keyring ...).
+So I wonder what'll happen with the predefined keyrings (like the
+.nvme keyring); one possibility is surely to make them network
+namespace aware.
+But the alternative approach I'm exploring is to allow each container
+to create its own (.nvme) keyring; that would have the advantage of
+being more flexible and we wouldn't need to rely on 'magic' names.
 
-commit 88a240d86d3d64521f9194abe185ac71cc74d0bd upstream.
+Hmm?
 
-The firmware response dispatcher copies all synchronous HAL responses
-into the 4096-byte hal_buf without validating the response length. A
-response exceeding WCN36XX_HAL_BUF_SIZE causes a heap buffer overflow
-with firmware-controlled content.
+Cheers,
 
-Add a bounds check on the response length.
-
-Fixes: 8e84c2582169 ("wcn36xx: mac80211 driver for Qualcomm WCN3660/WCN3680 hardware")
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260421135018.352774-2-tristmd@gmail.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Roman Demidov <roman.demidov.nn@gmail.com>
----
-Backport fix for CVE-2026-74341
-
- drivers/net/wireless/ath/wcn36xx/smd.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/wcn36xx/smd.c b/drivers/net/wireless/ath/wcn36xx/smd.c
-index 900ee1e8ffdd..c02526468c9c 100644
---- a/drivers/net/wireless/ath/wcn36xx/smd.c
-+++ b/drivers/net/wireless/ath/wcn36xx/smd.c
-@@ -2835,6 +2835,10 @@ int wcn36xx_smd_rsp_process(struct rpmsg_device *rpdev,
- 	case WCN36XX_HAL_8023_MULTICAST_LIST_RSP:
- 	case WCN36XX_HAL_START_SCAN_OFFLOAD_RSP:
- 	case WCN36XX_HAL_STOP_SCAN_OFFLOAD_RSP:
-+		if (len > WCN36XX_HAL_BUF_SIZE) {
-+			wcn36xx_warn("HAL response too large: %d\n", len);
-+			break;
-+		}
- 		memcpy(wcn->hal_buf, buf, len);
- 		wcn->hal_rsp_len = len;
- 		complete(&wcn->hal_rsp_compl);
+Hannes
 -- 
-2.53.0
-
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
