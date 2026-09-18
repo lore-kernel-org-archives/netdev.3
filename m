@@ -1,67 +1,67 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178115038E4
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 15:44:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC92D50B407
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 15:45:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789746274; cv=fail; b=mBOWOyWOWIHsSkPhl1fNYcXhKFktD7l421Tgu9QmqvVwmmn5mMD3cyjNDfPCLvhhP2EvG7OF7aCMagu8HWOgvFbPEFn9NaGy0r6YkIy6BGBINc+xkxekpQYdQdGaEmm2Ty12YedEVgUqe6u/0fOkMVgwzFvTBcCIUsZb1zkkQ8Y=
+	t=1789746310; cv=fail; b=biHK0GbajwMaVURdWQgsJ1kq9fWoS7M/3ch/Me6OkZEQQ664CoGrOrTQ6uFpZZemGIunPxg2gycHYrhl/hNPGKsp7YsjdYOKR1wWblKxuy5paafcVZwH88oFma990Dao1Zveo08OdEQJk4N23X/X4hB7dPaZQZCUpsNLtbeHIMQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789746274; c=relaxed/simple;
-	bh=O2B/y+NHdufQUnfIqMfpXljeneTlP3PR8AcbsDeZel4=;
+	s=arc-20240116; t=1789746310; c=relaxed/simple;
+	bh=xC5cDiHJqBX1CVvfVDPRa5PoRJQ8zKYZUqbGK9l9em4=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=dTBQy1JNU12KfW5RS/QSBScC5Opz9zowxqWVcxqmzObkPnOuAIiOSYwjxkOFsCjdJ9RRiRfVkuWU38HvFbJ16sQyB5SrxQ5T+tK1O5WZQugCZi15eL4RM3JenT/6slY+aSwgGT4OVdz9+RS/lmNG7UkvIBcz6pmyoaRAgfiMu5k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mbmrzKth; arc=fail smtp.client-ip=192.198.163.10
+	 Content-Type:MIME-Version; b=Jnmfa29r32UZ//87geeLF2M0uA+41gMWoOYy5DhPfaViGTGcrcyOnrqV43d9pz2QSDjOB5lc5ogb5ZKe4RW7fwwJXQnJbQLvOyfr9aLQZbb/oVjGu+pMbRKRoDiQ14Yj2ERjurN/o8QhEzWV7lnC3HsXhj9usHiNU1/82l4+rwU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eZyd+CZ6; arc=fail smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mbmrzKth"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eZyd+CZ6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789746272; x=1821282272;
+  t=1789746308; x=1821282308;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=O2B/y+NHdufQUnfIqMfpXljeneTlP3PR8AcbsDeZel4=;
-  b=mbmrzKthObxep947+arRDcLHWuHILKsjD8RPXjfLfeoZAIMr61YGEj6A
-   VweQCH8caYiunhYFocX6h3z7xRjgyTkOJq+7KC0nqzFASxfTc1LMrvHTu
-   k+bMYqx8wpKcZazbiNaWLFWVIR31no5UN9jD3Kk8Iu38a/I37lplrdOmg
-   ubOuGJnKM3V0VrSpeBPwzOpQXti+J6PHlcm9iE7mOha5BJKjWG2tIlBeR
-   MilVY9GJOuzJNQrNrZGK5PfZlOQ38e5ZCRXXSX/VlATniK1EcRfKgXbYG
-   OzOlW3eM00M4uxTdyiOWc90o7kwt/kirZb7iVHqOSFac4KBVSniaYVRe9
-   Q==;
-X-CSE-ConnectionGUID: sQDjO9rWR3m78LQjaCIs8g==
-X-CSE-MsgGUID: SrTl1dYqRMSghkPafnVuLg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11909"; a="101612852"
+  bh=xC5cDiHJqBX1CVvfVDPRa5PoRJQ8zKYZUqbGK9l9em4=;
+  b=eZyd+CZ6g2gB/xK3tw/OzfrDHOkLnm6f2osoxZBFNFAglMzI2nna4h3P
+   v7C5PxSpYzpL49G7kg4pqQI38wPK8CncFyP3oDz7b/YIXgva1BygpMLk6
+   6uwGRf3WY2iaGof1u97IfKXrqZofd9iWIvgLgDkePY2q27uxGVZ+6sQrF
+   KAH6k+2+dBcnzP2lHKMYBLDAhGgJS/kD4bRlrCupU/nZW9k/fsYa5wQNY
+   ieHMzCQmsI8FVU+HszBJ1aae68ZBjWGG8BdRjVqdDQPLR+8jpPC8SKc35
+   Fs8nkBbcGRxmiIu+epn+T18CzDAj+utim33x60VBKpuUwaAQg644WU3M7
+   A==;
+X-CSE-ConnectionGUID: csxXR8mPTs2cGFGP3p/uow==
+X-CSE-MsgGUID: 21mb2ilWT8uvRdoptL3wew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11909"; a="77825104"
 X-IronPort-AV: E=Sophos;i="6.27,109,1787036400"; 
-   d="scan'208";a="101612852"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 08:44:31 -0700
-X-CSE-ConnectionGUID: aWtpx1WvRz2mIjL8LbTAPg==
-X-CSE-MsgGUID: l+Yp23xKTz6gQvnjgRY/DA==
+   d="scan'208";a="77825104"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 08:45:07 -0700
+X-CSE-ConnectionGUID: MlDMIPGfQdqbOCmu9sORxg==
+X-CSE-MsgGUID: j8UKAKH5TXKBQVWdrlXgfg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,109,1787036400"; 
-   d="scan'208";a="270156564"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 08:44:31 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+   d="scan'208";a="271129298"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 08:45:07 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Fri, 18 Sep 2026 08:44:30 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ 15.2.2562.46; Fri, 18 Sep 2026 08:45:06 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Fri, 18 Sep 2026 08:44:30 -0700
-Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.43) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ 15.2.2562.46 via Frontend Transport; Fri, 18 Sep 2026 08:45:06 -0700
+Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.28) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Fri, 18 Sep 2026 08:44:29 -0700
+ 15.2.2562.46; Fri, 18 Sep 2026 08:45:06 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=X2uwcmI0DplF6pyOuTLT7+/lgL5W4GctajzSu1DQAm2FHG7NqgOLJBQROYHLzDTnT2PFU+VHLZ2r0YLjzDCEfsH9SXo6nY7jiqbWCP1w1hXzSnk8tkhU4EPg4Y5lqpQ5kUTDcR1LFKLyFE2uFIaDQ6zYKMncFl9A5OtV5XMJfIP32KdyhIhx1mr8TF0d2ABNDgZHjhPw5w38sYuGGYnYm0s1yfE9Egj8YMqJizP1LR+lXNXw6Uve/hcI9ows91auRjIsmoHCE7UTu33LByn5tK7cxyPxAEh5GiNKfyLwHgLr5re+us/R+R2fkboZeb2ZZusVLTFIZpA1Q9PPqAAsZw==
+ b=snx9WR9Pm6OoEmYUzqDPi6HBi1/9mTEC8IlDhn6Nh19AlakLG592pJDlfSD3bDpcSaY9PZs+9IV7aLKfr2lVF7KDpsNS6sfnAm8vinuM86914nXpoBLGYa6U1vaKetpyhxgsCl7cpsbXm5T+/jKpkVF1LHxFJbQfJGPINFGHAa7xqRgW5lK1mANINIw8ZKlYU1zLu/zN1y/2LJ7VkPQpCyGKBRvcgMfYKY/C/m9+g1ft+cZS0AvWK/TSAzFCWDvy4Z6wKM20Ir71nkiKGhoJXcSQjV3SAoA+EqNXxJ8SDVj+pb1LkPKAXVS+SiGLL8iMJVR1uKkj3IayPvQBSlUcRw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QvgygobG73hy7zW6S9IQ2wrx0C/k/5jekklUxTpN/RU=;
- b=vVlcc5/Dpqz7CSPgRyZj0eJqcxpMi+n1iAoN7436POrmRQwGapcJBzdw8s3pBDbFsYxe0JzDvt5NG1wCyAHw+KQvWReSnykdqAfYOZ7hi/djx/DbY2/7gRbhzYFwkUzHgBOkCW4muNa5MWwl2aamlPWa/2autobyz31xUCSyL6pomkD1abVByRr0RS3+fUD7JsP90iwFh3IgohFP8iIUAliiOoehdCM5udU4UO64IEjb1w/XEJw64FMU3aROGdoU2se9phm6tpUDX7D3BUGqzJyWqAqdynjxbybk4nCKakqbP4vHw+QEJu9i7GTcH1HQMPsniWsqjgcF9OrUAY13vA==
+ bh=ojjcglf7/4UkX2MKeQCGcV9wHIpUzoZwJHOqiuCVnl0=;
+ b=V9TOByeXQo+CHsDfOpV8wavb0JbvIHH0oswJZeJoP7REuleoTEPID9s9E0j8jxfd9OcgZS/bVd8qJvDWQ6s00i60Km1wmmczd7WxrlDBkhuUDUyShkHCJeB4fLHU0qmLO25j0cOpNemdpKhLpIvBUhLaSCYJTLGyq8+B+D5wgeKFL8IlkrJr3IZAkuEG4oKwogcz+UZDTiOvESMfH/AYNzNefs8haCU+bJ84lw2/b/CA6wfG5D3XgfAI6lL2SODTJ5ZsXW0HeECj7ZGJ1druseqyFMmKL18Qaq4TdQwzOISf0v7jGCSdp9yaXs+DsREqREceEMtWkwbYY9BcMU2bgw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,31 +69,33 @@ Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
  by SJ5PPF8622363CD.namprd11.prod.outlook.com (2603:10b6:a0f:fc02::83c) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Fri, 18 Sep
- 2026 15:44:27 +0000
+ 2026 15:45:03 +0000
 Received: from IA3PR11MB8986.namprd11.prod.outlook.com
  ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
  ([fe80::e6f0:6afb:6ef9:ab5c%6]) with mapi id 15.21.0428.011; Fri, 18 Sep 2026
- 15:44:27 +0000
+ 15:45:03 +0000
 From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-To: "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "davem@davemloft.net"
-	<davem@davemloft.net>, "kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "edumazet@google.com"
-	<edumazet@google.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC: Marcin Szycik <marcin.szycik@linux.intel.com>, "Penigalapati, Sandeep"
-	<sandeep.penigalapati@intel.com>, "S, Ananth" <ananth.s@intel.com>,
-	"alexander.duyck@gmail.com" <alexander.duyck@gmail.com>, "Rinitha, SX"
-	<sx.rinitha@intel.com>
-Subject: RE: [PATCH net-next v2 10/12] ice: add ACL reset recovery and NTUPLE
- feature toggle
-Thread-Topic: [PATCH net-next v2 10/12] ice: add ACL reset recovery and NTUPLE
- feature toggle
-Thread-Index: AQHdRtPuxSsjGL0k7E+dg1YcwgP+YbbUe1Qg
-Date: Fri, 18 Sep 2026 15:44:27 +0000
-Message-ID: <IA3PR11MB8986B96B0927FE2CC4870E61E5872@IA3PR11MB8986.namprd11.prod.outlook.com>
-References: <20260917183927.2692068-1-anthony.l.nguyen@intel.com>
- <20260917183927.2692068-11-anthony.l.nguyen@intel.com>
-In-Reply-To: <20260917183927.2692068-11-anthony.l.nguyen@intel.com>
+To: Tian Xun Ng <luckilystar08@gmail.com>, "intel-wired-lan@lists.osuosl.org"
+	<intel-wired-lan@lists.osuosl.org>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Nguyen, Anthony L"
+	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, "Lobakin, Aleksander"
+	<aleksander.lobakin@intel.com>, "Tantilov, Emil S"
+	<emil.s.tantilov@intel.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, Tian Xun Ng
+	<tianxun.ng@bytedance.com>
+Subject: RE: [PATCH iwl-net 1/2] idpf: keep the mailbox up while tearing down
+ vports on shutdown
+Thread-Topic: [PATCH iwl-net 1/2] idpf: keep the mailbox up while tearing down
+ vports on shutdown
+Thread-Index: AQHdRr6ucef/9VtgoUmXjw86AmfVcLbUe8Tg
+Date: Fri, 18 Sep 2026 15:45:03 +0000
+Message-ID: <IA3PR11MB8986B87C6FD950C4AD69634CE5872@IA3PR11MB8986.namprd11.prod.outlook.com>
+References: <20260917105205.37561-1-luckilystar08@gmail.com>
+ <20260917105205.37561-2-luckilystar08@gmail.com>
+In-Reply-To: <20260917105205.37561-2-luckilystar08@gmail.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
@@ -102,43 +104,43 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|SJ5PPF8622363CD:EE_
-x-ms-office365-filtering-correlation-id: f2c3dcda-9998-4ad6-4588-08df159bb8ab
+x-ms-office365-filtering-correlation-id: ebfd2551-ff99-4bea-5f43-08df159bce47
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|23010399003|376014|366016|38070700021|11063799006|6133799003|5023799004|10067099003|4143699003|56012099006|22082099003|18002099003;
-x-microsoft-antispam-message-info: IK9ulc5mqim8ER8732G2kqaxx3TvABARCaX7OxkK9Vx3wux7HwU82gca6x6C8K0OnjsxwgLVUUNBMUii+8mABIpb85HnIP9MdhRTtnLCKWr2gj55W9vZ1eDDmLAFtO2JxB0E6IiV8bYrTM2t64m4xoi7dhPQ63A2e7HOqKARS/V0aEZbTq1KNmqaIovplxqL5h+jg09KmT/5GXklImZwlglBUAHvhZ5hElkTYcR1KH4C1PI+/sGQmh3G0OYI9snFiPpH5zHY4+0beZ2MzhJ2DXpM7ftZ8ewwRNtnnPgvBIVF4uPzEQ/a9tkT+tR98leZ5goqzW6kyqYtcjbaZtgrKdOnK6fUDRReZ9N6vL9dOCxhgD3hgkFacrw2bcBclpYBi2DZFsz4omd3V4wrtPt4F+E0Xalqeq/HytZ5yIjvlMQRwv/QG+HDg0B0GbtethQWgNMn1Ss0skpRsxgHbpVZ0qeqYv9AawrnUrv2y25yMOhJtEn7KCvwzkHo4Kn9Xm3Kbd1buVaLW0Am014AhpC+PTEw17k0AzTt+v7yk9UXfAMkHpqvlJ8ZtNeMX0y5dEq+AWoJIuJRyN4y0WPbQbhnnzO2WT/YxB/247GPb+XEi34cvP2b4U1UaYp5rxm/L2i9x1HRy7sIcrKMszjPr2/I3K6eJA4hzV3UpZDr9FAY4Hxx20k5MZB891W7waAhnLELH5DEsesJauoQ84lvs7iB959RKxQj51M/2Ko0xvAZeRA=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(366016)(38070700021)(11063799006)(6133799003)(5023799004)(10067099003)(4143699003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|23010399003|376014|366016|38070700021|11063799006|6133799003|10067099003|4143699003|56012099006|22082099003|18002099003;
+x-microsoft-antispam-message-info: mpOPjnmq82rm4/+NmaCBHfdZ4nHcsB9oTxQjboVYYwAYZpJutM46VVtrCAngaRlff1M9ME69IZDdgcfRqXVCzUOf9mxmKQyUMdkLNP2A2vqhbdR/OmqG3z4AXWXviNtuG8RSmjq00l4qLyxakOGPnW4yWvJ0Q0WxlllTl08Zxyve6MseY8bavUWu6gtQE3ZQUb7QXFfFMc+w2gUSgY5mRDrxuFgY4ox0gJqdDKSvvOPEf+qJYmPhcFtz0bFI1azlIs1qwmM4dizFEpKewvtsootVFbq1HNHkWS8d7ZPvNFZSsEcQjxVokHagDZ0uOVe0NCXGJIELH6TUi8697Xzu6/DCRWh68zcwXA3YUPrexiJYPqnwr/8Lby4qvfWxCFF4p6K9/sW8xyLSsw8+PGZUR66L8P1js5FXbC9LxDE/9u+ta40BVUdhPQXlAZPS2mA0Z0JGdE5eG45vw4FIdwrT87QMBna2w/+IVTR/+qk50QssXicLMRmZtgAvnVFDtpx65LkkAGe4A6iS0WCVFyJLNxglbpjFbaDaclhYJBO6fnzeW15rfIQMnWX87KAS05AVsrx1BiiP0ao/gCcpAuOsFSRHCGzuWNW9/rj/H+aXHHNBDFFoxh/SLW2YbKveQx+qnE6rN5ddlJH4WlxiUSoNyKDg0Yz559kl6rfbBmiI0cz3Kbe0OgO2fWCWQgmEAP2MohU3tdMM5j+qjxVYHpsMEhdWdtrNjVtqfyc4mBN5Dec=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(376014)(366016)(38070700021)(11063799006)(6133799003)(10067099003)(4143699003)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?fU0ieVHZ9cKkLO8Me/R3xnsEgi6e+Ujp9W5XV638i71N7koZiBmf5wJRGIZt?=
- =?us-ascii?Q?cFIXcF9mKXiy8eutE1PM52wuhTiUIeqABuqK3sXvIhdoc3jg/ZJHA2vj1fKb?=
- =?us-ascii?Q?Cd7HmfWfSEq+1gWYDeCYV1QWYCoe0l4RpaNVqzNzLV57qfAWEMQtkjy7fEoZ?=
- =?us-ascii?Q?OzBuLpeMXBWtm6JenNFwgAug611WkyTE6se3KcdhWVEFIIXsUvVycjdA3NXe?=
- =?us-ascii?Q?qO1MuzHA0jG2x6PWOOTlisaVKjK2bNn2+lIdPTEq/ny1vUEpMrZ1mjVKrn8P?=
- =?us-ascii?Q?kS+G7S3DWGf0l/7HN0IUhLcdLKmlc1StS0qe2QaMgNpL04x/Y3Q4zFkm34cs?=
- =?us-ascii?Q?xrdiiWiAeARCPEldl8jAnjJdFukjnu1xcJmRuoqZ1iiFnaTxRBG8Qyaw3fqf?=
- =?us-ascii?Q?ILRZ/zvHXonh+GQsjOZjnSjsoUm7mJhVnPtYHcKejq+VlsPuOadIHzGdq2pr?=
- =?us-ascii?Q?IwjF6qtP/FWEX1c/NpVxvLElaaRjr6xbH0qtTN4a67pmg2nBBC3GOiy8e51r?=
- =?us-ascii?Q?6p13iczsnEDzQwr1kdttcH0ENBF429+PAjOXqUyX1SiX72fjl5mBaE5GC2JD?=
- =?us-ascii?Q?FtMkeLy4xoHHDrskZG5uYRsPD/u09FbtcUxVMEuBpKgCDR2dH7AFKDobMrQe?=
- =?us-ascii?Q?Nm44BEmS4gOFNsjMBwfiNO/zdkJIizWFM4xAQnvOkuQZQMBzYTlsG4ImLORj?=
- =?us-ascii?Q?qmtqqFZOcNvXt6iz8z3Ie/s0wrBCRohistI5QzQkQv/5s4+vnxtOKEuUySlh?=
- =?us-ascii?Q?EnBFJK93nhzF9Nqr6f7eY0+8jChwhPKncAgT1JJwg3/yj3TQeKE0PrAz5cX3?=
- =?us-ascii?Q?0t21sbAIAILsQf866C4eiMW7R95Y6Avfb30c460dBZTLxhIrHJpbum9iWs4K?=
- =?us-ascii?Q?1c8FupLhvxnq14xQjNeu6WhKXVUwG9fljxKEYH6R/IwijWIF6PI2GlC9O+bL?=
- =?us-ascii?Q?ZhhREcqVMCueg7HaiN8G6V7dNKnJF39syC37vbj1IKlY03QybqZxMCPcbEm8?=
- =?us-ascii?Q?ff86bn1m+qaYCaSKzaw5QEOeMPd11kQO4JiD25VTUvuxW46Hn/eTsYTeNeh6?=
- =?us-ascii?Q?PcBFVvr2IzcAgLZooguZHOcka53AIv6big7gXiZPfh+xVBPRdfcDteCTALFm?=
- =?us-ascii?Q?KSv51oGR5YuaTIElyd6e+AWZVAYJLZHb51K+ilo9K3UJ7unJ6hMTHFGiElcV?=
- =?us-ascii?Q?n5z6VEz+iinETxu5seJNobjFXtNaaq1ZKsMizdsIEqsCgrrnElWoazO8xNKR?=
- =?us-ascii?Q?PMSuIxybEandJEpoHLNS6cq2Ncj0Y6FCqM2THAGUcgB7IUxwSc+3hsIupIqu?=
- =?us-ascii?Q?KkU29TRbvvDWkZqD/ah0FAjjNFKOMBTWsOWtJ9dM9wapviqU2YccR8/bAiye?=
- =?us-ascii?Q?MM53NLpxvD3sRELMAdjz+Jv6Ite+t7oej6E3N5dptySLjS7Y2beoO74FFuR/?=
- =?us-ascii?Q?kFKl6XrEf5Zrm/cJ9vzeT/8oY1NPqP31pbtgdXm87j4gP5MzroOCUCa5ZWpk?=
- =?us-ascii?Q?/Bye15oKz4uV+DdZJx4P2BHu8m/oa8c8g6CLw4KTLUmhCWQwQZho263zWza/?=
- =?us-ascii?Q?8cn5YSosPKarWK56iIv6tgALKB3i1GGNfKFaHHhXM+wYzzwDb0UIqsBBNkSN?=
- =?us-ascii?Q?V9tHhSmMcX568TiwZKuVHLDLRIpSoTZuBAfX/uzVRGpV/Lq7P8AwsqTPi7mm?=
- =?us-ascii?Q?p2j9tkj+gP5mOwIXzdEQKFpmpgPZ65uDcfP2S9AN4h625GLnk6mDQYPBwgK0?=
- =?us-ascii?Q?xnKtNRCRLJ2gqvS2m9x2hfq/P0VEiv4=3D?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?N0KqiJ2wTj4igBHO7JEkDve37DZgCkSA6WXN492h6Sm2Y3Q4lW8UQe7yR4Li?=
+ =?us-ascii?Q?a6H5vYKaPdA0bqHvOXzNwTIzr/xz836Bggg6nX+HXvG7ffhtGFCEKpCy4RnE?=
+ =?us-ascii?Q?rESz2t0QPRAY56YGQAp4phoethhGWnEJ3+s8AL12ExNO5k4tsZ1AzsxHbxqX?=
+ =?us-ascii?Q?hyEOi6uVSmGY/V5Ulg9fqTwHax/azPDTq1uqCrhshKhmj/TxEEAk41i7rYvR?=
+ =?us-ascii?Q?xE1gfv0sw97iZbuEc4vhTo0yU8KrN1/p+6CMr8buEm/D0VGaKar3G85NOpwn?=
+ =?us-ascii?Q?MoOK9UON+ok5IT2UlH3OQ/V7Gqrr6GZ/M6IfhJkU0dfNaeob70D0RGt/nmdv?=
+ =?us-ascii?Q?orff+01hH2IEJVxfvm08q6Kb5hOqf3X7iSiKC6QEJnjHqSKcbnAr53isLPoE?=
+ =?us-ascii?Q?gxbnRg5XUu1yc9tSGA5ztCAoDLLuybRalshCZl6Zah3es5w+2zs9cJ1yi18H?=
+ =?us-ascii?Q?xk4MlYtDim1sQDfaQMBq5Cbbg792yNijf0VU+aUMeXfJFY7EBnrSGT9BYI/h?=
+ =?us-ascii?Q?gS4vTxY0uT0nzYKwCaBHQWuThHKtHiGIrm15Kp6HZxqaJVZX/sz3xSD7X+xq?=
+ =?us-ascii?Q?V9WtlluRJkN21p1sJVI/KIf4x8x7o+5vBMYRGFbr7pmyyX6ogkkwaZrQW/RE?=
+ =?us-ascii?Q?VnJUOzS97+NrG3TciEZ6XJ38j19pO2J+cCycggz7OzHPv8OTv9ZkJaY8PLit?=
+ =?us-ascii?Q?eXrfD8YYfPh7pv1LZ8US/C7IRrk9F3YHoOqgX91pL8QMmBHNdmOptffLTYl8?=
+ =?us-ascii?Q?wU9yfIN6r2BV+cxZMgfPZRSEJdcwz5meLLIECNl6JsTAirxwur4nQMxsaTx3?=
+ =?us-ascii?Q?vurUJWSIEtlsIt9/2OSrqgRVVNVL9httS2mcCzGcrwE/TsLkOva6Nct4vnn9?=
+ =?us-ascii?Q?6li1f4UolSucy8BSxpronNhnVCAfrJInhUQU9EgJEIjx4Yj0oL3FxJMvzCa/?=
+ =?us-ascii?Q?DLTe2buINRZaEBhTIOzr1iEK5Ei9GjxyFwC1iFhreu1CE0pPHEQvZN1RdRiw?=
+ =?us-ascii?Q?u5+lgBZWhL9jvB2SWtthZazIJu79/eaScBtIhBGoKBSE6lUxF3fqdePiU0bF?=
+ =?us-ascii?Q?9qFdtqFFq5eqY90dC4nT8p016sFE3tOIMWepWJCaTxPHOJf2c/+P7f/8TYRp?=
+ =?us-ascii?Q?EFTQXITPDQeX1sUzrmPX+HPjRNk+hY/1g5Ch1TnwWiVY6VfyNqm8ZiQp+MH7?=
+ =?us-ascii?Q?IjDK4CJj2ky/gfWrVZMCDccqd9IEZmFu3MACCmmOXW+9arUAikuBoTXwZnO2?=
+ =?us-ascii?Q?QQqAaHhCX50Dg/foQda2kbRxaGlePtxtiAa8vXmBK1Rdz34qM8K8gOdni+lM?=
+ =?us-ascii?Q?3EsgZayykij0diKI6uLHypz2qDEQPQbdvI1ymd81dqYilK7gi4/hQe5sieRD?=
+ =?us-ascii?Q?DjdKx4T0mWkVv7m5XtHqLo+pJnb2w9JMbIgQPv+vs9I7XwfHO7sExWzTi642?=
+ =?us-ascii?Q?QZOwpJk+4aHYRzi2hc4OrvcLATClrisFu7leF2Qw/xgTLJJip7ofMhsQVaCW?=
+ =?us-ascii?Q?Cnuk5NvSz/ICjs7Izq/3r9v3W+anH1DexJAjDlpGEpqih2XGqdq13COau8zK?=
+ =?us-ascii?Q?XlyDE5ITwmYliRvN1swRTX8wfbdd1y/Ag0d5+PVSofdF4dggkBdaBRP8nRFS?=
+ =?us-ascii?Q?nmpzZZscEeLvqmFpQWVy8CjsOVXGG/cNrCHlYnFo+KLfEtZrqnKq4ojSixiS?=
+ =?us-ascii?Q?78Wt0DWuiJ4hYMitWNPrZDzTynCNhSep7lDrNqcfJqiSVUW/t6QVvnCWWkWm?=
+ =?us-ascii?Q?VJwrc1/Gc91SkWVQPEbytBo3XbEG67Y=3D?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -147,328 +149,160 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: OudNSBByvWw+eLfRa/KQPvERJdHLKvrjJIASTfCUHiO1LSIitrL3kybXlx5rouOiYXormz72i0b4JzrJHc0eMQLq5stYb4qb61904GSiGHU14D5NYH68kWmZZe6g1Y3pyufsog2Z+xaMGugjH8sjWdW29awWjDI2aEO+LLdswpeSDrlRjipT+cFAidd+EDAvRMCIzwp27tM4KGhD5xWQgo6QRML++MN9fDsFFGWJByg8Aj2p9ZilXtKO4+jS+iP2pCVT2U3ehMv3qLjfsWJHcV+3p3G+6dNTG4ZZxw7FhAZIeM8rZcKW2Ag5gS/bpwxB3dcLwwhsjXGOY5Mx9N9/iQ==
+X-Exchange-RoutingPolicyChecked: aMNcbK8dDW9IpCNwxreRbcuNCdVB/X2XiyMgNP8NacTMJFIqQroYaegwBdXMWC0r7QRIAk4oWdPFlqiunVyPUI5NjKYjMyHIX0lHY3T/e/PXI73QU+4Zm+26LDqPlQfwp87Jf+c1p/eTZjDrBKZP+pPRCDRT+EnE/IwDawLwKbBHApc2oqOkqXTts7oKyTk46xQTq+IZyRo2Ml92dI75eUkH8+sor0atOMEzrqMyreMm1rsQFx3zBuopQ/5/Ma5z+uM5bz78nKBm71tmKoLtG4gc8Uv0V7tISMUw9UDKZ2h6VqBP/wR2Aa2usmCJutxuE9vmzlzwj0TeEOo3ka/QOA==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f2c3dcda-9998-4ad6-4588-08df159bb8ab
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Sep 2026 15:44:27.1893
+X-MS-Exchange-CrossTenant-Network-Message-Id: ebfd2551-ff99-4bea-5f43-08df159bce47
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Sep 2026 15:45:03.4185
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 8j+YLQqT5VYzZO35ifCaQESdIuE+4cbXIwfJFkgHOQsDeTIpaPyNhpOCbMnoJ+dWqo8yrNnwkyvS5CK0v+yoEITwFwE/d/aU3Si689BvakI=
+X-MS-Exchange-CrossTenant-userprincipalname: Legmh8BRCRBijjiDZdkbB1fAuwePc/PFgv3DeK4NcN1c9a5LqroSXhRg7YTe/JUQT0okw6Xz2EKdstIyDnku/bL41thV4XtgvEbuRjxkk70=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF8622363CD
 X-OriginatorOrg: intel.com
 
 
 
 > -----Original Message-----
-> From: Nguyen, Anthony L <anthony.l.nguyen@intel.com>
-> Sent: Thursday, September 17, 2026 8:39 PM
-> To: davem@davemloft.net; kuba@kernel.org; pabeni@redhat.com;
-> edumazet@google.com; andrew+netdev@lunn.ch; netdev@vger.kernel.org
-> Cc: Marcin Szycik <marcin.szycik@linux.intel.com>; Nguyen, Anthony L
-> <anthony.l.nguyen@intel.com>; Loktionov, Aleksandr
-> <aleksandr.loktionov@intel.com>; Penigalapati, Sandeep
-> <sandeep.penigalapati@intel.com>; S, Ananth <ananth.s@intel.com>;
-> alexander.duyck@gmail.com; Rinitha, SX <sx.rinitha@intel.com>
-> Subject: [PATCH net-next v2 10/12] ice: add ACL reset recovery and
-> NTUPLE feature toggle
+> From: Tian Xun Ng <luckilystar08@gmail.com>
+> Sent: Thursday, September 17, 2026 12:52 PM
+> To: intel-wired-lan@lists.osuosl.org
+> Cc: netdev@vger.kernel.org; Nguyen, Anthony L
+> <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
+> <przemyslaw.kitszel@intel.com>; Lobakin, Aleksander
+> <aleksander.lobakin@intel.com>; Tantilov, Emil S
+> <emil.s.tantilov@intel.com>; andrew+netdev@lunn.ch;
+> davem@davemloft.net; edumazet@google.com; kuba@kernel.org;
+> pabeni@redhat.com; Tian Xun Ng <tianxun.ng@bytedance.com>
+> Subject: [PATCH iwl-net 1/2] idpf: keep the mailbox up while tearing
+> down vports on shutdown
 >=20
-> From: Marcin Szycik <marcin.szycik@linux.intel.com>
+> From: Tian Xun Ng <tianxun.ng@bytedance.com>
 >=20
-> Extend ACL support to survive PF resets. Add ice_acl_replay_flows() to
-> rebuild HW flow profiles from preserved SW state, and
-> ice_acl_replay_fltrs() to reprogram TCAM entries from the SW filter
-> list. Wire both into ice_rebuild(). On failure, don't fail reset,
-> rather delete all ACL filters from the SW list.
+> Since commit 4c9106f4906a ("idpf: fix adapter NULL pointer dereference
+> on reboot"), idpf_shutdown() calls idpf_vc_core_deinit() directly
+> instead of idpf_remove(), so IDPF_REMOVE_IN_PROG is not set on
+> shutdown.
+> idpf_vc_core_deinit() uses that flag to decide when to shut the
+> virtchnl transaction manager down. Without it,
+> libie_ctlq_xn_shutdown() runs before idpf_deinit_task() tears the
+> vports down, so every message sent during that teardown (disable
+> vport, disable queues, destroy vport) fails at once. The device is
+> never told to stop its queues and keeps them enabled, with the ring
+> addresses of the kernel that is going away.
 >=20
-> Reset per-profile HW extraction sequences and range checkers for all
-> profiles inside ice_acl_create_hw(). This state is separate from the
-> TCAM entries and survives a PF reset. Explicitly clearing it ensures
-> that the old configuration is erased.
+> After a warm reboot, the first queue reconfiguration of a port that
+> has not been opened yet (udev setting the MTU) sends
+> VIRTCHNL2_OP_DEL_QUEUES.
+> The device then drains the queues it still considers live and writes
+> SW_MARKER TX completions (qid_comptype_gen 0x2800 / 0xa800) to the
+> previous kernel's completion rings. With the IOMMU translating, those
+> writes fault on every such boot:
 >=20
-> Add the ICE_FLAG_ACL_ENA PF flag to track ACL status. ACL is always
-> available, so set it unconditionally in driver initialization. Use the
-> new flag to track the NTUPLE ethtool feature flag, alongside Flow
-> Director, as both blocks are used to implement ethtool NTUPLE filters.
-> Like with Flow Director, disabling the flag deletes all filters, but
-> enabling it does not reprogram filters.
+>   arm-smmu-v3 arm-smmu-v3.17.auto: event: F_TRANSLATION client:
+> 0016:01:00.0 sid: 0x30100 ssid: 0x0 iova: 0xffb70000 ipa: 0x0
+>   arm-smmu-v3 arm-smmu-v3.17.auto: unpriv data write s1 "Input address
+> caused fault" stag: 0x0
 >=20
-> Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-> Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at
-> Intel)
-> Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+> In IOMMU pass-through mode they land on pages the new kernel has
+> already reused. With page_poison=3D1 that shows as "pagealloc: memory
+> corruption"
+> on most boots. Without it, nodes crash in unrelated code, e.g.:
+>=20
+>   Unable to handle kernel NULL pointer dereference at virtual address
+> 000000000000a830
+>   pc : __tlb_remove_table_free+0x48/0x118
+>   Call trace:
+>    __tlb_remove_table_free
+>    tlb_remove_table_rcu
+>    rcu_do_batch
+>=20
+> or with a slab free pointer that decodes from a slot holding 0x2800:
+>=20
+>   Unable to handle kernel paging request at virtual address
+> 002613b73e862c6e
+>   pc : kmem_cache_alloc_noprof+0xc0/0x3d0
+>=20
+> The early shutdown exists to avoid waiting for transaction timeouts
+> when the mailbox is already gone. That is the hard reset case, where
+> idpf_vc_event_task() shuts the transaction manager down and sets
+> IDPF_HR_RESET_IN_PROG before idpf_init_hard_reset() calls
+> idpf_vc_core_deinit(). Key the early shutdown on a hard reset being in
+> progress or detected instead of on remove, so that both remove and
+> shutdown keep the mailbox up until the vports are gone.
+>=20
+> Hard reset behaviour is unchanged. Remove is unchanged unless a
+> hardware reset has been detected, in which case it no longer waits for
+> message timeouts. Shutdown now delivers the teardown messages; if the
+> device stops responding without a detectable reset, shutdown can wait
+> for the transaction timeouts, as remove already does.
+>=20
+> Tested on arm64 (64K pages) servers with two idpf functions, with this
+> change and the next patch backported to a 6.17 kernel: no stray device
+> writes in 151 warm reboots across IOMMU translated and pass-through
+> modes, against stray writes after 20 of 20 warm reboots without them.
+>=20
+> Fixes: 4c9106f4906a ("idpf: fix adapter NULL pointer dereference on
+> reboot")
+> Cc: stable@vger.kernel.org
+> Assisted-by: LLM
+> Signed-off-by: Tian Xun Ng <tianxun.ng@bytedance.com>
 > ---
->  drivers/net/ethernet/intel/ice/ice.h          |  4 +
->  drivers/net/ethernet/intel/ice/ice_acl.h      |  5 +-
->  drivers/net/ethernet/intel/ice/ice_acl_ctrl.c | 43 +++++-----
-> drivers/net/ethernet/intel/ice/ice_acl_main.c | 47 +++++++++++
-> drivers/net/ethernet/intel/ice/ice_acl_main.h |  1 +
->  .../ethernet/intel/ice/ice_ethtool_ntuple.c   | 79
-> +++++++++++++++++++
->  drivers/net/ethernet/intel/ice/ice_main.c     | 47 +++++++++++
->  7 files changed, 201 insertions(+), 25 deletions(-)
+>  .../net/ethernet/intel/idpf/idpf_virtchnl.c    | 18 +++++++++++++----
+> -
+>  1 file changed, 13 insertions(+), 5 deletions(-)
 >=20
-> diff --git a/drivers/net/ethernet/intel/ice/ice.h
-> b/drivers/net/ethernet/intel/ice/ice.h
-> index 61a320eaf3c5..fcf1130f511f 100644
-> --- a/drivers/net/ethernet/intel/ice/ice.h
-> +++ b/drivers/net/ethernet/intel/ice/ice.h
-> @@ -503,6 +503,7 @@ enum ice_pf_flags {
->  	ICE_FLAG_DCB_CAPABLE,
->  	ICE_FLAG_DCB_ENA,
->  	ICE_FLAG_FD_ENA,
-> +	ICE_FLAG_ACL_ENA,
->  	ICE_FLAG_PTP_SUPPORTED,		/* PTP is supported by NVM */
->  	ICE_FLAG_ADV_FEATURES,
->  	ICE_FLAG_TC_MQPRIO,		/* support for Multi queue TC */
-> @@ -1019,10 +1020,12 @@ int ice_init_rdma(struct ice_pf *pf);  void
-> ice_deinit_rdma(struct ice_pf *pf);  bool ice_is_wol_supported(struct
-> ice_hw *hw);  void ice_fdir_del_all_fltrs(struct ice_vsi *vsi);
-> +void ice_acl_del_all_fltrs(struct ice_vsi *vsi);
->  int
->  ice_fdir_write_fltr(struct ice_pf *pf, struct ice_ntuple_fltr *input,
-> bool add,
->  		    bool is_tun);
->  void ice_vsi_manage_fdir(struct ice_vsi *vsi, bool ena);
-> +void ice_vsi_manage_acl(struct ice_vsi *vsi, bool ena);
->  int ice_add_ntuple_ethtool(struct ice_vsi *vsi, struct ethtool_rxnfc
-> *cmd);  int ice_del_ntuple_ethtool(struct ice_vsi *vsi, struct
-> ethtool_rxnfc *cmd);  int ice_get_ethtool_fdir_entry(struct ice_hw
-> *hw, struct ethtool_rxnfc *cmd); @@ -1040,6 +1043,7 @@
-> ice_get_fdir_fltr_ids(struct ice_hw *hw, struct ethtool_rxnfc *cmd,
->  		      u32 *rule_locs);
->  void ice_fdir_rem_adq_chnl(struct ice_hw *hw, u16 vsi_idx);  void
-> ice_acl_rem_flows(struct ice_hw *hw);
-> +void ice_acl_replay_flows(struct ice_hw *hw);
->  void ice_fdir_release_flows(struct ice_hw *hw);  void
-> ice_fdir_replay_flows(struct ice_hw *hw);  void
-> ice_fdir_replay_fltrs(struct ice_pf *pf); diff --git
-> a/drivers/net/ethernet/intel/ice/ice_acl.h
-> b/drivers/net/ethernet/intel/ice/ice_acl.h
-> index 0c8163e585d9..65e16ad1c783 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_acl.h
-> +++ b/drivers/net/ethernet/intel/ice/ice_acl.h
-> @@ -6,6 +6,9 @@
->=20
->  #include "ice_common.h"
->=20
-> +/* Maximum number of ACL HW profiles */
-> +#define ICE_ACL_MAX_PROF		128
-> +
->  /* Marks a PF scenario slot as unused in the ACL profile extraction
-> table */
->  #define ICE_ACL_INVALID_SCEN		0x3f
->=20
-> @@ -124,7 +127,7 @@ struct ice_acl_cntrs {  };
->=20
->  int ice_acl_create_tbl(struct ice_hw *hw, struct ice_acl_tbl_params
-> *params); -int ice_acl_destroy_tbl(struct ice_hw *hw);
-> +void ice_acl_destroy_tbl(struct ice_hw *hw);
->  int ice_acl_create_scen(struct ice_hw *hw, u16 match_width, u16
-> num_entries,
->  			u16 *scen_id);
->  int ice_aq_alloc_acl_tbl(struct ice_hw *hw, struct ice_acl_alloc_tbl
-> *tbl, diff --git a/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c
-> b/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c
-> index 0ee86236bc37..4ea08bd9784c 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_acl_ctrl.c
-> @@ -877,9 +877,10 @@ static int ice_acl_destroy_scen(struct ice_hw
-> *hw, u16 scen_id)
->   * ice_acl_destroy_tbl - Destroy a previously created LEM table for
-> ACL
->   * @hw: pointer to the HW struct
->   *
-> - * Return: 0 on success, negative on error
-> + * Continue on AQ errors so SW state is always cleaned up - e.g.
-> after
-> + a reset,
-> + * where the HW tables might be already gone.
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+> b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+> index 1caf52706..646b6e074 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+> @@ -3197,14 +3197,22 @@ int idpf_vc_core_init(struct idpf_adapter
+> *adapter)
 >   */
-> -int ice_acl_destroy_tbl(struct ice_hw *hw)
-> +void ice_acl_destroy_tbl(struct ice_hw *hw)
->  {
->  	struct ice_acl_scen *pos_scen, *tmp_scen;
->  	struct ice_aqc_acl_generic resp_buf;
-> @@ -887,7 +888,7 @@ int ice_acl_destroy_tbl(struct ice_hw *hw)
->  	int err;
+>  void idpf_vc_core_deinit(struct idpf_adapter *adapter)  {
+> -	bool remove_in_prog;
+> +	bool reset_in_prog;
 >=20
->  	if (!hw->acl_tbl)
-> -		return -ENOENT;
-> +		return;
+>  	if (!test_bit(IDPF_VC_CORE_INIT, adapter->flags))
+>  		return;
 >=20
->  	/* Mark all the created scenario's TCAM to stop the packet
-> lookup and
->  	 * delete them afterward
-> @@ -898,44 +899,38 @@ int ice_acl_destroy_tbl(struct ice_hw *hw)
->  		if (err) {
->  			ice_debug(hw, ICE_DBG_ACL,
-> "ice_aq_query_acl_scen() failed. status: %d\n",
->  				  err);
-> -			return err;
-> -		}
-> -
-> -		for (int i =3D 0; i < ICE_AQC_ACL_SLICES; i++) {
-> -			buf.tcam_cfg[i].chnk_msk =3D 0;
-> -			buf.tcam_cfg[i].start_cmp_set =3D
-> -					ICE_AQC_ACL_ALLOC_SCE_START_CMP;
-> -		}
-> +		} else {
-> +			for (int i =3D 0; i < ICE_AQC_ACL_SLICES; i++) {
-> +				buf.tcam_cfg[i].chnk_msk =3D 0;
-> +				buf.tcam_cfg[i].start_cmp_set =3D
-> +
-> 	ICE_AQC_ACL_ALLOC_SCE_START_CMP;
-> +			}
+> -	/* Avoid transaction timeouts when called during reset */
+> -	remove_in_prog =3D test_bit(IDPF_REMOVE_IN_PROG, adapter->flags);
+> -	if (!remove_in_prog)
+> +	/* Shut the transaction manager down early only when the
+> mailbox is
+> +	 * already gone, i.e. a hard reset is in progress or has been
+> detected,
+> +	 * to avoid waiting for transaction timeouts. On remove and on
+> shutdown
+> +	 * the mailbox still works and must stay up until the vports
+> are torn
+> +	 * down. Otherwise the disable and destroy messages never reach
+> the
+> +	 * device, which keeps its queues enabled with ring addresses
+> from this
+> +	 * kernel after a warm reboot.
+> +	 */
+> +	reset_in_prog =3D test_bit(IDPF_HR_RESET_IN_PROG, adapter->flags)
+> ||
+> +			idpf_is_reset_detected(adapter);
+> +	if (reset_in_prog)
+>  		libie_ctlq_xn_shutdown(adapter->xnm);
 >=20
-> -		for (int i =3D 0; i < ICE_AQC_MAX_ACTION_MEMORIES; i++)
-> -			buf.act_mem_cfg[i] =3D 0;
-> +			for (int i =3D 0; i < ICE_AQC_MAX_ACTION_MEMORIES;
-> i++)
-> +				buf.act_mem_cfg[i] =3D 0;
+>  	idpf_ptp_release(adapter);
+> @@ -3213,7 +3221,7 @@ void idpf_vc_core_deinit(struct idpf_adapter
+> *adapter)
+>  	idpf_rel_rx_pt_lkup(adapter);
+>  	idpf_intr_rel(adapter);
 >=20
-> -		err =3D ice_aq_update_acl_scen(hw, pos_scen->id, &buf,
-> NULL);
-> -		if (err) {
-> -			ice_debug(hw, ICE_DBG_ACL,
-> "ice_aq_update_acl_scen() failed. status: %d\n",
-> -				  err);
-> -			return err;
-> +			err =3D ice_aq_update_acl_scen(hw, pos_scen->id,
-> &buf,
-> +						     NULL);
-> +			if (err)
-> +				ice_debug(hw, ICE_DBG_ACL, "scenario update
-> failed, status: %d\n",
-> +					  err);
->  		}
+> -	if (remove_in_prog)
+> +	if (!reset_in_prog)
+>  		libie_ctlq_xn_shutdown(adapter->xnm);
 >=20
->  		err =3D ice_acl_destroy_scen(hw, pos_scen->id);
->  		if (err) {
-> -			ice_debug(hw, ICE_DBG_ACL, "deletion of scenario
-> failed. status: %d\n",
-> +			ice_debug(hw, ICE_DBG_ACL, "deletion of scenario
-> failed, status:
-> +%d\n",
->  				  err);
-> -			return err;
->  		}
->  	}
->=20
->  	err =3D ice_aq_dealloc_acl_tbl(hw, hw->acl_tbl->id, &resp_buf,
-> NULL);
->  	if (err) {
-> -		ice_debug(hw, ICE_DBG_ACL, "AQ de-allocation of ACL
-> failed. status: %d\n",
-> +		ice_debug(hw, ICE_DBG_ACL, "AQ de-allocation of ACL
-> failed, status:
-> +%d\n",
->  			  err);
-> -		return err;
->  	}
->=20
->  	kfree(hw->acl_tbl);
->  	hw->acl_tbl =3D NULL;
-> -
-> -	return 0;
->  }
->=20
->  /**
-> diff --git a/drivers/net/ethernet/intel/ice/ice_acl_main.c
-> b/drivers/net/ethernet/intel/ice/ice_acl_main.c
-> index 171b7bf8519c..d13e8bc1b701 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_acl_main.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_acl_main.c
-> @@ -236,6 +236,53 @@ static void ice_acl_set_act_fwd_queue(struct
-> ice_flow_action *action,
->  	action->data.acl_act.value =3D cpu_to_le16(queue_index);  }
->=20
-> +/*
-> + * ice_acl_replay_fltrs - replay ACL filters from the SW filter list
-> + * @pf: board private structure
-> + *
-> + * Reprograms ACL TCAM entries after a reset using data preserved in
-> +the
-> + * SW filter list. Relies on ice_acl_replay_flows() having been
-> called
-> +first
-> + * to restore the flow profiles.
-> + */
-> +void ice_acl_replay_fltrs(struct ice_pf *pf) {
-> +	struct ice_vsi *vsi =3D ice_get_main_vsi(pf);
-> +	struct ice_hw *hw =3D &pf->hw;
-> +	struct ice_ntuple_fltr *f_rule;
-> +
-> +	if (!vsi)
-> +		return;
-> +
-> +	list_for_each_entry(f_rule, &hw->fdir_list_head, fltr_node) {
-> +		struct ice_flow_action acts[ICE_ACL_NUM_ACT];
-> +		struct ice_acl_hw_prof *hw_prof;
-> +		u64 entry_h =3D 0;
-> +		int err;
-> +
-> +		if (!f_rule->acl_fltr)
-> +			continue;
-> +
-> +		if (!hw->acl_prof || !hw->acl_prof[f_rule->flow_type])
-> +			continue;
-> +
-> +		hw_prof =3D hw->acl_prof[f_rule->flow_type];
-> +
-> +		memset(&acts, 0, sizeof(acts));
-> +		if (f_rule->dest_ctl =3D=3D
-> ICE_FLTR_PRGM_DESC_DEST_DROP_PKT)
-> +			ice_acl_set_act_drop(&acts[0]);
-> +		else
-> +			ice_acl_set_act_fwd_queue(&acts[0], f_rule-
-> >q_index);
-> +
-> +		err =3D ice_flow_add_entry(hw, ICE_BLK_ACL, hw_prof-
-> >prof_id,
-> +					 f_rule->fltr_id, vsi->idx,
-> +					 ICE_FLOW_PRIO_NORMAL, f_rule, acts,
-> +					 ICE_ACL_NUM_ACT, &entry_h);
-> +		if (err)
-> +			dev_warn(ice_pf_to_dev(pf), "Could not reprogram
-> filter %d, status %d\n",
-> +				 f_rule->fltr_id, err);
-> +	}
-> +}
-> +
->  /**
->   * ice_acl_comp_rules - compare two ACL filters
->   * @a: first ACL filter
-> diff --git a/drivers/net/ethernet/intel/ice/ice_acl_main.h
-> b/drivers/net/ethernet/intel/ice/ice_acl_main.h
-> index 6665af2e7053..54053954b244 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_acl_main.h
-> +++ b/drivers/net/ethernet/intel/ice/ice_acl_main.h
-> @@ -6,4 +6,5 @@
->  #include "ice.h"
->  #include <linux/ethtool.h>
->  int ice_acl_add_rule_ethtool(struct ice_vsi *vsi, struct
-> ethtool_rxnfc *cmd);
-> +void ice_acl_replay_fltrs(struct ice_pf *pf);
->  #endif /* _ICE_ACL_MAIN_H_ */
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
-> b/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
-> index 0ac44d38fdbd..fef8640d23fb 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_ethtool_ntuple.c
-> @@ -527,6 +527,37 @@ void ice_fdir_replay_flows(struct ice_hw *hw)
->  	}
->  }
->=20
-
-...
-
->  	if (vsi && vsi->netdev)
->  		netif_device_attach(vsi->netdev);
->=20
+>  	cancel_delayed_work_sync(&adapter->serv_task);
 > --
-> 2.47.1
+> 2.50.1 (Apple Git-155)
 
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
