@@ -1,136 +1,145 @@
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89064E50DA
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 16:24:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789748701; cv=pass; b=uX8kvdSisAi+XdPfVDpRvWm+xZ1LSj0RBdWnS6MkvawP07DLpF7STYNUXFzqQF+8dpgkPM+Ll2fjUOWK8K0ngNp8j2WyD1QVNPj7+6F3gbiI9B1x56x2wNhLRISGtfx2Fm6ZQqkGKaGjhvn4JlhrCxd/l9sD1e8MmUrk5WtRRcI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789748701; c=relaxed/simple;
-	bh=GyB+LxtWJ6Lbwne+97cZYzWC+/mtz0PeJakWuS8VxWk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XaGURuxVbwV0DL+k5uURuJgyj7U3RImeHwiImK+zANlgZPasleJ/rXOz8Y1t01M4C6oLDCYPD4BEaWqUfi9MRyPxgmOBifeR5TcKPHqKmxauoPMMoVQts50jyLM5/zlTGzJGwSP/oVtamJa4IqHhOmV90VQ8KfFARtaH5RIxS1g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=atk6CdIu; arc=pass smtp.client-ip=209.85.160.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB7E515988;
+	Fri, 18 Sep 2026 16:28:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789748898; cv=none; b=m9rBierl1pXGwI3HffRwwpJ+A1870K02t/k43KNt0VSETPpSlYQapumQaqS1REs1+ZBba/0A8c8YxAZXPT3XRZ8sGdMJLFbSELDAZS2LOuYjcXFwYhxGSNYv5VVQnZ/ysr476sY/egCWt2oyO80rqP1gY3yFskeNyV8OZcPpqKY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789748898; c=relaxed/simple;
+	bh=6Z8qKohBjG+nYdXMxSIz7GwXcSnl7h3FDD5QcnwlKuY=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=BZ+b62RjjpKMjLfIYdu5C7CDMQFQ/71cvjFZ5sFXFC46AtOq3B7PIv2/vw47VoUenH9WfjOjos80Ocagsd1vgiPFHY3N/W+GZ7WoDylM6peYB7VpSVI9PSKCYacNZU28wvmfMIqd1rImRkOhc+5YWxktKo/JKKOyxZoXhn5FdlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UB+YS1Us; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="atk6CdIu"
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-4678d3e490bso1506174fac.1
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 09:24:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789748697; cv=none;
-        d=google.com; s=arc-20260327;
-        b=bp6aJZYzA2iSmnV9mTzXn92A3ogO9x9LE+zwtNzs23gH/UrpLHUzCu5sasblwic6XN
-         wp0P09WXpblIbjnWQO8Z+1aHhbXSGx0Z9ns5mXYAbggLk2UUII69pmB4xoGF8ASRFjiD
-         eypb6WmPyHfaCcd8teseVCx881SJlN0dkvfx61Z3soOheVUnjeRHvOeaRxijKdg1NH4T
-         oX01yYUKAp4pVnetD385mAUbJEk4jCbcIySS9nDcExIpIOEyhazXACyR70JcR3PA+5A8
-         ZHCbZzfqhiIksB2S0ymMZ7wi45+Q7h3IPKNtn+bU+jeNpCIr56+WEO60EhTV1frieqa2
-         npVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=GyB+LxtWJ6Lbwne+97cZYzWC+/mtz0PeJakWuS8VxWk=;
-        fh=E95j6uwIFtrCeqjeMpfcVno11LNk/V+Dr+1Lx84tfxg=;
-        b=Hvpftzf2hT2jxpasJADsIowtwM3IPYKSSoli9dr0WasUOj6Qc3K3HrQj2j5ypE798A
-         Q5SFUWUjCtHviE/K7XPvCew0oTQ02Teog1JWbr4ajQAnk1yuhFNPUYpQkFoQtkZ6ruiT
-         VEl9BJGGmnXit9RA2mmG0X1TEW/Z2Rph+WXEbN4OLKD6lvXS2gD7DmZs0QJWBXQqkYyS
-         38zSXjl1x9Q0Ov6ozRw02UUfc6T33xtMZFPksSz6uReS8zxZSOj1BgMTSqbSGgsHJkWE
-         crRz6jOuGJFgaAS7Ry/DFt9QL8zhrUDb1TBvnUAVn1WGojmfpyXvIRcTqU3uJ1ZD5QKi
-         hkdg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789748697; x=1790353497; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=GyB+LxtWJ6Lbwne+97cZYzWC+/mtz0PeJakWuS8VxWk=;
-        b=atk6CdIunM6oWAXckr4IGh45HCWb/rOTvmf2cNjVwBPPN0OjaqoDcrbg03BajHBUO2
-         caIWOyiy0ifnMiZ8rvBXqk8HnJLyOMEsMu8jbRvGvlm0aIsLEF/6J4RU1hHpGs8L0QMN
-         8Mtw3zMKhw6F6vpeNcmhdgEAcYB4D4ZRq6bUfdgCdq8EIQuRrUXcIFOahO+woqlp0cj/
-         kzjU5Ddlokjvv4jnIDz5ttUVi49PAYbXgrbZ1+onqG+4eRUT8geEknVfdrkhU2YjuNsM
-         9n35U8x3ifX6uAvO9sx7FAKIOhLLF2vhfGU7zi095KUt/zOXzR2QcXUIr42S/HqBf2ZO
-         2/Mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789748697; x=1790353497;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GyB+LxtWJ6Lbwne+97cZYzWC+/mtz0PeJakWuS8VxWk=;
-        b=qE+2uj8YVh+l3ctTIQQQJgkfiaPzdkvPN6fKHnGaTXMUxxUBCBtZYQ27wDwql8ixsy
-         0VZJHe5xmXYULdJcDPOmkvPk1dQDGkSS0BU8V+8SQvZtLEydLa0EREp0/2CTBRAUEVpJ
-         bcMd9CYKdFbh43XNXruRMwATzJD5isyGhZzeVOuvudok++tjUx8LGK/5Pk/q5xp/OQBF
-         jmjyvsqfBWJpi1rZfAX95+lEVpxfHfAgeiA1JoFIGGE0fMcmkTGePR5qW+Sbv+GhDbnG
-         q6TbEsaEPrL2qowpD1WNr1qJrG2A3Of/7Qmf+EzRJTHx9ftCEQJEJEERfc7flFbhDa+l
-         uJaQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz787yGVHa78AU+JF8mED1y/jI99/V7FZzQLUlaMhm9ush7PpFwFfTwH85xYho1Hzfm3/RKLFU=@vger.kernel.org
-X-Gm-Message-State: AFuF++lg3ljkoH4iLLZhRiXWksdhRGjMxe7FIcrQUklCdaMiwzXl/+89
-	1gO91h86DDJGEHAik6m9ThosHsvJiBdO2FudOYHmhLmzRHVHDZUFoDg+xVByJDC4Sf/VETfY5lL
-	K2xvPgm6BGC31gTz9ijWzkcm4DQ+V+mQ=
-X-Gm-Gg: AYBFou3najDXqLOJLOOFgxY5jRN59UctqJtKvIlLQK9cmZ0NfmFW3yeRhqnlXjahsE6
-	SEepLt4hOvZtJAzzdpAz5YmYxkJjTPy+INUn4L7lY7df/s/8H9txNDnJlQQqvu+j4vB6qqJJGF6
-	/EyWLHIMBbNZc6guGWKDRyu8OGOFd8TK3Yoc/5xYi+AhXwyTz94XXtEYm/CeeyakHO/Br2BsPVe
-	I7dGSTu+wyKE02p5OWj+cPacoQHucwNMBzNsBHj7XuQSNz4dOuaf2lpnMcR2zyx00nRx8kt6B7W
-	YEk0Fk85n9t5iduMpjzddOHXkPgUV4TiAkJhouuwmr0TlGNXS/v/u8q/ryuYMQMuPOK8wYO2MfB
-	iEd1zSSEaxb6Ubv+tHYFbh8wGnBcrNhXMRW3hKAUpZHruM8wyflOp9WNMBXmWTxWJm8K4Hc/gHA
-	==
-X-Received: by 2002:a05:6820:4b91:b0:6b5:ec2f:3568 with SMTP id
- 006d021491bc7-6c8fde724bamr5429950eaf.25.1789748695420; Fri, 18 Sep 2026
- 09:24:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UB+YS1Us"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BCFC9C2BCF5;
+	Fri, 18 Sep 2026 16:28:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1789748897;
+	bh=6Z8qKohBjG+nYdXMxSIz7GwXcSnl7h3FDD5QcnwlKuY=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=UB+YS1UsxCALsNwNH0jSBd7fW29V3RBvgybAQ4h/xGNdUH/X3IfqjYN8WdmgjfUB3
+	 A//A3CjxLTkRhlJA5ehoK03Lii1bxtQend0rG8TZ16NIEvS5JoRZkaQFsZWNbp18A/
+	 7CKgtAFNV9FjigLPhMQnQr6UxSr68hIbLTgUhVX27qM4AEjcFSW2oTLG6PKXhBXyTP
+	 JyHcm6IOKNzCKAEH7kO6H8xzm6C+jNRqRj8qXEarbrhIhghjCrZiloEq0phxz2yRD1
+	 pHtBIAa8t1f59BWhVVUSxWxh7EHNDVgHodvfTapYuVHhfF0hjKQaKDUzCbLFzX5y0Q
+	 Ly2l/SGGIUbBw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 98C0CC982D7;
+	Fri, 18 Sep 2026 16:28:17 +0000 (UTC)
+From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.oss.qualcomm.com@kernel.org>
+Subject: [PATCH 0/4] net: qrtr: Add support for using identical MHI
+ endpoint devices
+Date: Fri, 18 Sep 2026 18:28:12 +0200
+Message-Id: <20260918-qrtr-multi-ep-v1-0-8a06caa368d3@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <178942021136.7700.4391219358260544104.stgit@ahduyck-xeon-server.home.arpa>
- <178967952944.22033.10329187569173798096@kernel.org> <CAKgT0Uf2xJr5hD_yAtNg67-2t5XS5d-QBf+gPscPJe+L1Miydg@mail.gmail.com>
- <20260918161451.GS51261@horms.kernel.org>
-In-Reply-To: <20260918161451.GS51261@horms.kernel.org>
-From: Alexander Duyck <alexander.duyck@gmail.com>
-Date: Fri, 18 Sep 2026 09:24:15 -0700
-X-Gm-Features: AcwNN1V6mGqWyxQH41wnf4KTLi-FvDoyAGTvB5SW8PB9lFq2_auBppHf31qV76Q
-Message-ID: <CAKgT0Ue_9o_dW-OJEJxJXLks6miwNvx8pA3Xuy8fBSXHRm6xFQ@mail.gmail.com>
-Subject: Re: [net PATCH v2 3/6] eth: fbnic: use the Rx queue napi pointer to
- find the napi vector
-To: Simon Horman <horms@kernel.org>
-Cc: netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAJxmrWoC/yXMQQ6CQAxG4auQrm3CTECFqxgXUH61BhA7AyEh3
+ N1Rl9/ivY0CTBGozjYyLBr0NSa4Q0byaMY7WLtk8rk/5pU789ui8TD3URkTiz+Jb6UsAEepmQw
+ 3XX+/y/XvMLdPSPxOaN8/x3mQHnEAAAA=
+X-Change-ID: 20260918-qrtr-multi-ep-c27c2bc54ee1
+To: Manivannan Sadhasivam <mani@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+ ath11k@lists.infradead.org, ath12k@lists.infradead.org, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ Chris Lew <christopher.lew@oss.qualcomm.com>, 
+ Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>, 
+ Raj Kumar Bhagat <raj.bhagat@oss.qualcomm.com>, 
+ Juha-Matti Tilli <juha-matti.tilli@iki.fi>, 
+ Jeff Hugo <jeff.hugo@oss.qualcomm.com>, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2798;
+ i=manivannan.sadhasivam@oss.qualcomm.com; h=from:subject:message-id;
+ bh=6Z8qKohBjG+nYdXMxSIz7GwXcSnl7h3FDD5QcnwlKuY=;
+ b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBqrWad4ZoZAEk0cQeZgtJ6b+1eEpkYMcmutGWLA
+ bVHEQdUHwSJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCaq1mnQAKCRBVnxHm/pHO
+ 9ajuB/9glk15Vu0tJD0QCmDRJJUz3pwSef4SYXyEyq4KwQWyU8SLii0UBPrZAO8Qc0i91NTNI6o
+ U43q/76VuAhZFJW60hvtqrjwOgMelpnds+dpqZER0h26ie9F9MKmgRJLfNhW7Mp8JYMzYSsMBE7
+ zSydfaCl33EE+Paw/sQMO1ktG35sGcQSi6pIvTaWBL4pLDRfG2oQHqPkwIrNGXZZ3xNB82jh6aX
+ 9xv42TRFy9qRwDQ0/7M/1BpSV4WZ32GfSxzXFKAZoH4BITmySewHu92P1NeI0dsRitKiXZlk016
+ Z+Fbq1Hr4crb5FBljkXN4jfcjzVhgEmR4VWmIWBenBt0UcZP
+X-Developer-Key: i=manivannan.sadhasivam@oss.qualcomm.com; a=openpgp;
+ fpr=C668AEC3C3188E4C611465E7488550E901166008
+X-Endpoint-Received: by B4 Relay for
+ manivannan.sadhasivam@oss.qualcomm.com/default with auth_id=461
+X-Original-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Reply-To: manivannan.sadhasivam@oss.qualcomm.com
 
-On Fri, Sep 18, 2026 at 9:14=E2=80=AFAM Simon Horman <horms@kernel.org> wro=
-te:
->
-> On Fri, Sep 18, 2026 at 08:11:04AM -0700, Alexander Duyck wrote:
-> > On Thu, Sep 17, 2026 at 2:12=E2=80=AFPM <netdev-bot+sashiko@kernel.org>=
- wrote:
-> > >
-> > > Thank you for your contribution! Sashiko AI review found 1 potential
-> > > issue(s) to consider:
->
-> ...
->
-> > I agree that this is a pre-existing bug, but I wouldn't fix it in this
-> > patch. I would probably introduce yet another patch to resolve it.
-> >
-> > By my count we have 3 pre-existing issues that aren't directly related
-> > to the original problem. If possible I would prefer to address them
-> > separately, otherwise I can tack on 3 additional diffs to the set and
-> > resubmit.
->
-> Yes, I agree that is a good approach.
->
-> I think that in the age of AI-generated reviews finding related bugs it i=
-s
-> best to adhere to a strict scope for a patch(set) combined with follow-up
-> fixes. Else a patchset may drown in scope creep.
->
-> Reviewed-by: Simon Horman <horms@kernel.org>
+Hi,
 
-Thanks for the review. Also it looks like there are only 2 outstanding
-since Bjorn submitted a fix for the page pool issue already in
-8e0b235bd918 ("eth: fbnic: Fix payload page pool error cleanup").
-Guess I wasn't the only one Sashiko dinged for that.
+This series reworks the QRTR driver to add support for using identical MHI
+endpoint devices at the same time. Currently, QRTR driver has a limitation on
+using more than one identical MHI endpoint devices like QCS6490 or any Qcom
+Endpoint device making use of QRTR at the same time. Because of the fact that
+these devices will have the identical QRTR node id, they cannot be used at the
+same time, on the same host machine.
+
+This limitation is a blocker for running upstream kernel on devices like Qcom
+based routers as they often have multiple identical WLAN Endpoint devices
+connected to the Router SoC.
+
+This series supersedes the following 2 series from Juha:
+https://lore.kernel.org/all/20260915054207.2513877-1-juha-matti.tilli@iki.fi
+https://lore.kernel.org/all/20260915074135.2567411-1-juha-matti.tilli@iki.fi
+
+Compared to the series from Juha, this series simplifies the multi-endpoint
+support by computing a unique node id for each MHI endpoint and uses it for the
+internal QRTR book keeping. This ensures that even if the MHI endpoint devices
+have same node ids, the host QRTR will always use a unique node id for each one
+of them.
+
+More details can be found in the individual patches.
+
+Testing
+=======
+
+Juha tested this series on multi ath11k setup by backporting this series to
+6.6.156 kernel. I'd appreciate a formal tested-by tag from Juha and other folks
+CCed to this series.
+
+Merge Strategy
+==============
+
+Since both QRTR and ath drivers are falling under the networking tree, the whole
+series can be merged through netdev tree.
+
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+---
+Manivannan Sadhasivam (4):
+      net: qrtr: Allow the host QRTR to assign a unique node id
+      net: qrtr: Assign unique node id for MHI endpoints
+      wifi: ath11k: Connect to the QMI server belonging to the device owned by this driver
+      wifi: ath12k: Connect to the QMI server belonging to the device owned by this driver
+
+ MAINTAINERS                           |  1 +
+ drivers/net/wireless/ath/ath11k/hif.h |  9 ++++++
+ drivers/net/wireless/ath/ath11k/pci.c |  9 ++++++
+ drivers/net/wireless/ath/ath11k/qmi.c | 10 ++++++
+ drivers/net/wireless/ath/ath12k/hif.h |  9 ++++++
+ drivers/net/wireless/ath/ath12k/pci.c |  9 ++++++
+ drivers/net/wireless/ath/ath12k/qmi.c | 11 +++++++
+ include/net/qrtr.h                    | 21 ++++++++++++
+ net/qrtr/af_qrtr.c                    | 61 +++++++++++++++++++++++++++++++----
+ net/qrtr/mhi.c                        |  4 ++-
+ 10 files changed, 136 insertions(+), 8 deletions(-)
+---
+base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+change-id: 20260918-qrtr-multi-ep-c27c2bc54ee1
+
+Best regards,
+--  
+மணிவண்ணன் சதாசிவம்
+
+
