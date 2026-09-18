@@ -1,343 +1,349 @@
-Received: from mail-oa2-f8.google.com (mail-oa2-f8.google.com [74.125.231.72])
+Received: from mail-oi2-f12.google.com (mail-oi2-f12.google.com [74.125.231.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63CD1D531
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 00:29:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972BC3403FA
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 00:38:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789691391; cv=none; b=NgHzaTW24//wpybPjSDApYc+NQCQr1JfGgSqwOLDFmj86zNyQgdK9HiClrn8nHFEXfYNq8ClaCG6ZaAVHi5mltPl97q2/pV2VkAV2TcRZItrm4xkSNZaGFQmarZOgPEW0N7pfZBH9+/5lIZS0AmgPvQhQRtPNnmuVwEejOGybCI=
+	t=1789691928; cv=none; b=mLWg3tGjtv79Fo0B3Upot4gbKR8tvbhFOFGPlZQ/NoOsOjelISFIwsHKokdLfThk/1VJosbr4I4dmTmijXOrxKUx4CU1eRJ6F+A3qtFS1Ce6tvbXZLemuBnF3zHVVj8vaRUiUD6Ubqxy0YOyevRHvd488ByoJ+KVDVFTj1JUjgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789691391; c=relaxed/simple;
-	bh=iZkcCY1qux46h/yYRscH8n6naf9L6e4Y1k0uaC4/yfs=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=TyU56LSAt4fX6uSj6F68ZNp1ZUgvh1cqpVR84mMeSQXPxuInHMZuhYgVuctxTh4GNnVJPAqHejYImptDj9JgulaiNOChqywApWhf2yXZFAny6pggobJtuff2TL+BwVwhKiV64OFHk7hAFqw0e9U1FFbeOWCBdogaK1ZUGiYXZ9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oa2-f8.google.com with SMTP id 586e51a60fabf-46683b030d9so125479fac.0
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 17:29:48 -0700 (PDT)
+	s=arc-20240116; t=1789691928; c=relaxed/simple;
+	bh=E6fPwDdzy5LiQlZlar/Y+mL5JhfsBh0GO85CGQeu/vk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=En2g+2pIve2S3UAMwwrvlEbTgfVuiNPwvx94HBIMWI/aY4ZNEPpzYyh+/hKN8RPxglegGpIFBnlg5GVQlCy2xMrTvR/O9ot5V9nXDIRtYl8Bmv00dDsIIR94r+C2T85VY1d0Qvz8hbTikoOpw4u5bzpzyk9ElvVpH1yc2vasu8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=UiWJ64jp; arc=none smtp.client-ip=74.125.231.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="UiWJ64jp"
+Received: by mail-oi2-f12.google.com with SMTP id 46e09a7af769-7f4f0d37f9dso57236a34.1
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 17:38:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1789691924; x=1790296724; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=GhJozD00AthdOkRnEqQ3NsR2mVTBAHP+/jT0CI2Cd9Q=;
+        b=UiWJ64jpGkGphARJEsNagOaQfmO5BKCaKyiGtXzplXf/vXZQmf2KuEEHTCgX+V4PCk
+         NCmRwATSKiwhsHWUDtQJqWQsik9ag3hJKypMbbXYNq1mNucJn/Wm/5YrsjlR1tY1Z1UK
+         d4yn5+jRA/TBKsGsmanM721FgkUXQWRoyH+jG/UJVmfGiGQ3U5gNpX0H1EyEEH2CYqfA
+         BdL4berwnkKkoeqhLVOmyKX4dcG225jfXgt4aGcsNYE+jYl5jmrGVKMgco8Ygu9o3Xy3
+         1nLK0/JQe3ejuVKIjMlAyN6fVv8DwA8gcbCJMF2+vLHKd/hKzXpB0FSrJyCpddAn3jQv
+         9SsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789691387; x=1790296187;
-        h=content-type:to:from:subject:message-id:date:mime-version
+        d=1e100.net; s=20260707; t=1789691924; x=1790296724;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=63iMA5C5dpzJOq5uyh8ePlxGGheh8OuECdRYwFgpXMQ=;
-        b=vD5Kocs3qIXLeAdiCoTcS46QeKXS1fsw0sbbHCSBzDzNLDdJCtKDMNVe4SiGB3mmh4
-         plpp364vG2u73bnbuNkfFW8Bo5f1vEH25VD7l/UEgzhsi8I17FC7+TGPlx3TNwtP/lqr
-         UJqsnFPsntqrMdtImsYt5Qq8ZBozEORTN0LliS24Bsv8yP8XAmmo5LGNhyIS60Qx3fHu
-         2ymmxSf15mYCImxaPOx4c7xKntjiS9FSs0EpQIKQ/m1rzeiGrJXnEm50k0VxAkHkVkSX
-         hDe6PmnFw+ZYJEBOZVuU4xaZiSU9SbEqe/2AuMNV4Ub+yzpVMxN6J4utNg0KdB5m8afh
-         VDSg==
-X-Forwarded-Encrypted: i=1; AKwUvBzpMgf+7ToMhKTRdleQZbRU5Mhw1o9qA8lNURDoLwF0XThVsFBapJybpgw7vY4wRM2Z6BQd5+s=@vger.kernel.org
-X-Gm-Message-State: AFuF++mhVl1h9O/C3+KTZdCRY72P8+VT5zIw1ANtwQfW98lanIAEt2sg
-	0ZMOElB1Miy3nXv513nuaebNGs842/InhwtJs0IUQmb2CNepzgcIoQNsdDjiwZx0PfiByXvr5gu
-	IDN6OP/lCVZNlA03TOlc0z31jSaO0NUSHGumd2fcXuV/XJMQxDAJXHf3uiM4=
+        bh=GhJozD00AthdOkRnEqQ3NsR2mVTBAHP+/jT0CI2Cd9Q=;
+        b=XrUcRKWOYpqHfoHE0Comz8NWZ0SF874a7gFAiw3oj/xHBOEDzJFFAy9L24krKtn7rX
+         x/HjfNZgpki9dMLovQnLC4vFEJOcNs13bsIojmdmIwrXdZIJojJ4xKIpMZXnkX9mTisM
+         hwtJQSi370ht66MTWkB5HOmn5JVz7oZftr2y11cSCuBMy5EHv7/zNShz/3Ja1QJfQRHi
+         0NdSJ+SGmpe06ygi4hU3d1BecOn4PylBERZDoHC1NfxTo85yddYl9qHK4axUkxBqYCOi
+         W39NVDs1fGOBCpYTzLom8P9lE5mF5hFRnOZ1wR2meDHBkymqGNOhwdEEHwu1UDiA8flz
+         JcxQ==
+X-Forwarded-Encrypted: i=1; AKwUvByk9M84LhWdkRkq1cawBZBzCtQG9q738LTbcJE+kDsT/C/PxQt99PFKfDGrAl0NE37Yg0QjrTI=@vger.kernel.org
+X-Gm-Message-State: AFuF++mDGB6xaA6AoliYBHjuyJJ6bMjwOFDwZ1xK5U+LOT7ooO5O4SsE
+	1Iu/qsv9/4GE5e4WaoRUQS8m739zYpZTed6yQJGwfL/LOnA6wIqkKVvlbaeeOLx7Who=
+X-Gm-Gg: AYBFou1AbfJ3J27SjzQQEtS17kQOZZ8vKLaq9oig6kAMT1UGlt28J5MufOSsg7rV/ZN
+	P91ulahL4E6HkbCR3VSVSW926G2yZMFfzmwd/lgZbMq2TquK5Wfnsuuwy/GMyuFnPHOGQRJf2qv
+	IcIATY3rnIZl0VHm2kKqQFuE3SL/PEWcJR7+PGTOUD6WAkeCglthAyWRLLCajnnSmQ6Rhvffr4E
+	68mVzFBcXyIWW7/odVt2z4yzk7S+qt+OOqNMu+Xje9uL/MlFY0UIhlSiWODIeBPgQecRcgyJ5f8
+	VL2All6I7pEel3LfXcz8bM8Da1TYv4AvoiFmAOI4ykYUv+n1voJhhU9VcTjA4KWOjge2rMQRtUC
+	hRRhdM7X1fu27G/0ZnTqvWbFe1VqDFLNndUrTBFuB8nlm/njgYAooqZdSHFb43QEspvOGrQ4xJs
+	tp835pmQTxXdjXv19/WRIrPl6nnEKpn6z1pey0A/4nMSPWULdsFipLBAg=
+X-Received: by 2002:a05:6808:13d6:b0:4b9:a829:f01c with SMTP id 5614622812f47-4ccf7debfcbmr1187229b6e.40.1789691924404;
+        Thu, 17 Sep 2026 17:38:44 -0700 (PDT)
+Received: from 20HS2G4 ([2a09:bac6:bf21:3064::4d2:22])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-80e52361af9sm120381a34.26.2026.09.17.17.38.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2026 17:38:43 -0700 (PDT)
+Date: Thu, 17 Sep 2026 19:38:40 -0500
+From: Chris Arges <carges@cloudflare.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
+	horms@kernel.org, idosch@nvidia.com, kernel-team@cloudflare.com,
+	kuba@kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org,
+	pabeni@redhat.com, shuah@kernel.org
+Subject: Re: [PATCH net-next v3 0/3] net: hash uncached route lists by device
+Message-ID: <aqyIEE5bRoxRyrFZ@20HS2G4>
+References: <20260917-hash-bucket-route-lists-v3-0-30493a37b6eb@cloudflare.com>
+ <20260917221203.1811779-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:3109:b0:6b7:46fa:1697 with SMTP id
- 006d021491bc7-6ca9bf49b9fmr773832eaf.44.1789691387231; Thu, 17 Sep 2026
- 17:29:47 -0700 (PDT)
-Date: Thu, 17 Sep 2026 17:29:47 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6aac85fb.87c06881.1db2b3.001d.GAE@google.com>
-Subject: [syzbot] [netfilter?] INFO: task hung in nf_tables_valid_genid (3)
-From: syzbot <syzbot+83439cb981624bd8d068@syzkaller.appspotmail.com>
-To: coreteam@netfilter.org, davem@davemloft.net, edumazet@google.com, 
-	fw@strlen.de, horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, pabeni@redhat.com, 
-	pablo@netfilter.org, phil@nwl.cc, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260917221203.1811779-1-kuniyu@google.com>
 
-Hello,
-
-syzbot found the following issue on:
-
-HEAD commit:    0f23d56f17fd Merge tag 'linux_kselftest-next-7.3-rc1' of g..
-git tree:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/torvalds/linux master
-console output: https://syzkaller.appspot.com/x/log.txt?x=10289c8e580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=78e810c74248bbb
-dashboard link: https://syzkaller.appspot.com/bug?extid=83439cb981624bd8d068
-compiler:       arm-linux-gnueabi-gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-userspace arch: arm
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11be9905580000
-
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/98a89b9f34e4/non_bootable_disk-0f23d56f.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/29f1f81851f8/vmlinux-0f23d56f.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/d12ab50ae201/zImage-0f23d56f.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+83439cb981624bd8d068@syzkaller.appspotmail.com
-
-INFO: task syz.1.416:5203 blocked for more than 430 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz.1.416       state:D stack:0     pid:5203  tgid:5199  ppid:3693   task_flags:0x400140 flags:0x00000001
-Call trace: 
-[<81b71894>] (__schedule) from [<81b72d2c>] (__schedule_loop kernel/sched/core.c:7311 [inline])
-[<81b71894>] (__schedule) from [<81b72d2c>] (schedule+0x2c/0xec kernel/sched/core.c:7326)
- r10:ed691a94 r9:ed691a9c r8:00000002 r7:60000013 r6:852b7ebc r5:858abd40
- r4:858abd40
-[<81b72d00>] (schedule) from [<81b72e70>] (schedule_preempt_disabled+0x18/0x24 kernel/sched/core.c:7383)
- r5:858abd40 r4:852b7eb8
-[<81b72e58>] (schedule_preempt_disabled) from [<81b75fe8>] (__mutex_lock_common kernel/locking/mutex.c:726 [inline])
-[<81b72e58>] (schedule_preempt_disabled) from [<81b75fe8>] (__mutex_lock.constprop.0+0x50c/0xa48 kernel/locking/mutex.c:821)
-[<81b75adc>] (__mutex_lock.constprop.0) from [<81b765f8>] (__mutex_lock_slowpath+0x14/0x18 kernel/locking/mutex.c:1164)
- r10:81e7de58 r9:85301000 r8:0000003c r7:852b7eb8 r6:852b7e80 r5:85301000
- r4:00000000
-[<81b765e4>] (__mutex_lock_slowpath) from [<81b76638>] (mutex_lock+0x3c/0x40 kernel/locking/mutex.c:319)
-[<81b765fc>] (mutex_lock) from [<817d505c>] (nf_tables_valid_genid+0x3c/0x70 net/netfilter/nf_tables_api.c:11512)
-[<817d5020>] (nf_tables_valid_genid) from [<8179b5cc>] (nfnetlink_rcv_batch+0x138/0x9b8 net/netfilter/nfnetlink.c:421)
- r7:00000014 r6:82e3d2cc r5:ed691b68 r4:84bac240
-[<8179b494>] (nfnetlink_rcv_batch) from [<8179bf74>] (nfnetlink_rcv_skb_batch net/netfilter/nfnetlink.c:647 [inline])
-[<8179b494>] (nfnetlink_rcv_batch) from [<8179bf74>] (nfnetlink_rcv+0x128/0x15c net/netfilter/nfnetlink.c:665)
- r10:86239d84 r9:85301000 r8:0000003c r7:00000014 r6:85778480 r5:00000000
- r4:833d2a80
-[<8179be4c>] (nfnetlink_rcv) from [<8176bff8>] (netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline])
-[<8179be4c>] (nfnetlink_rcv) from [<8176bff8>] (netlink_unicast+0x270/0x380 net/netlink/af_netlink.c:1345)
- r8:833d2a80 r7:85e32940 r6:0000003c r5:853dc464 r4:853dc400
-[<8176bd88>] (netlink_unicast) from [<8176c2d0>] (netlink_sendmsg+0x1c8/0x444 net/netlink/af_netlink.c:1900)
- r10:00000000 r9:00000000 r8:00000000 r7:86239c00 r6:0000003c r5:833d2a80
- r4:ed691f28
-[<8176c108>] (netlink_sendmsg) from [<8162f7c4>] (sock_sendmsg_nosec net/socket.c:800 [inline])
-[<8176c108>] (netlink_sendmsg) from [<8162f7c4>] (__sock_sendmsg+0x44/0x78 net/socket.c:815)
- r10:0000c050 r9:00000000 r8:ed691dd4 r7:00000000 r6:84d12cc0 r5:ed691f28
- r4:00000000
-[<8162f780>] (__sock_sendmsg) from [<81630864>] (____sys_sendmsg+0x238/0x2c4 net/socket.c:2709)
- r7:00000000 r6:00000000 r5:84d12cc0 r4:ed691f28
-[<8163062c>] (____sys_sendmsg) from [<81630c64>] (___sys_sendmsg+0x9c/0xd0 net/socket.c:2763)
- r10:00000128 r9:20000cc0 r8:0000c050 r7:00000000 r6:84d12cc0 r5:ed691f28
- r4:00000000
-[<81630bc8>] (___sys_sendmsg) from [<81632e3c>] (__sys_sendmsg+0x8c/0xe0 net/socket.c:2795)
- r9:858abd40 r8:861daf00 r7:0000c050 r6:20000cc0 r5:861daf01 r4:00000003
-[<81632db0>] (__sys_sendmsg) from [<81632ea4>] (__do_sys_sendmsg net/socket.c:2800 [inline])
-[<81632db0>] (__sys_sendmsg) from [<81632ea4>] (sys_sendmsg+0x14/0x18 net/socket.c:2798)
- r8:8020029c r7:00000128 r6:003563b0 r5:00000000 r4:00000000
-[<81632e90>] (sys_sendmsg) from [<80200060>] (ret_fast_syscall+0x0/0x1c arch/arm/mm/proc-v7.S:67)
-Exception stack(0xed691fa8 to 0xed691ff0)
-1fa0:                   00000000 00000000 00000003 20000cc0 0000c050 00000000
-1fc0: 00000000 00000000 003563b0 00000128 00356378 00000000 003d0f00 76f510dc
-1fe0: 76f50e88 76f50e78 00018fa0 00130a50
-INFO: task syz.1.416:5203 is blocked on a mutex likely owned by task syz.1.416:5201.
-task:syz.1.416       state:R  running task     stack:0     pid:5201  tgid:5199  ppid:3693   task_flags:0x400140 flags:0x00000001
-Call trace: 
-[<8028f53c>] (preempt_count_sub) from [<81b73128>] (preempt_schedule_irq+0x4c/0xa8 kernel/sched/core.c:7558)
-[<81b3abac>] (call_with_stack) from [<80200bec>] (__irq_svc+0x8c/0xbc arch/arm/kernel/entry-armv.S:228)
-Exception stack(0xed48d818 to 0xed48d860)
-d800:                                                       ed48d8b4 82b857b8
-d820: 80f0c938 85a0400c 82b857b8 80f0c938 ed48d8b4 8539a700 00000000 00000001
-d840: 85094d08 ed48d88c 8493ccc0 ed48d868 80f0ca28 816ac064 80000013 ffffffff
-[<816abf4c>] (flow_block_cb_setup_simple) from [<80f0ca28>] (nsim_setup_tc+0xa0/0xdc drivers/net/netdevsim/tc.c:87)
- r9:00000001 r8:00000000 r7:ed48d8e0 r6:85fa9d80 r5:00000000 r4:8539a000
-[<80f0c988>] (nsim_setup_tc) from [<817f991c>] (nft_block_offload_cmd+0x80/0xf4 net/netfilter/nf_tables_offload.c:397)
-[<817f989c>] (nft_block_offload_cmd) from [<817f9c78>] (nft_chain_offload_cmd net/netfilter/nf_tables_offload.c:451 [inline])
-[<817f989c>] (nft_block_offload_cmd) from [<817f9c78>] (nft_flow_block_chain+0x98/0x184 net/netfilter/nf_tables_offload.c:471)
- r7:85fa9d80 r6:00000000 r5:00000000 r4:85fb5300
-[<817f9be0>] (nft_flow_block_chain) from [<817fa7bc>] (nft_flow_offload_chain net/netfilter/nf_tables_offload.c:513 [inline])
-[<817f9be0>] (nft_flow_block_chain) from [<817fa7bc>] (nft_flow_rule_offload_commit+0x1a4/0x1f4 net/netfilter/nf_tables_offload.c:592)
- r10:ed48dac0 r9:85301000 r8:85301000 r7:ed48d9b8 r6:81e7f1da r5:852b7e88
- r4:8626d880
-[<817fa618>] (nft_flow_rule_offload_commit) from [<817eb044>] (nf_tables_commit+0x20c/0x2250 net/netfilter/nf_tables_api.c:10934)
- r10:ed48dac0 r9:85301000 r8:84193100 r7:00000011 r6:833d26c0 r5:852b7ea0
- r4:852b7e84
-[<817eae38>] (nf_tables_commit) from [<8179bc68>] (nfnetlink_rcv_batch+0x7d4/0x9b8 net/netfilter/nfnetlink.c:574)
- r10:81e7de58 r9:81e7e028 r8:84193100 r7:00000011 r6:857782d8 r5:ed48db68
- r4:833d2d80
-[<8179b494>] (nfnetlink_rcv_batch) from [<8179bf74>] (nfnetlink_rcv_skb_batch net/netfilter/nfnetlink.c:647 [inline])
-[<8179b494>] (nfnetlink_rcv_batch) from [<8179bf74>] (nfnetlink_rcv+0x128/0x15c net/netfilter/nfnetlink.c:665)
- r10:86239d84 r9:85301000 r8:000000ac r7:00000014 r6:85778240 r5:00000000
- r4:833d26c0
-[<8179be4c>] (nfnetlink_rcv) from [<8176bff8>] (netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline])
-[<8179be4c>] (nfnetlink_rcv) from [<8176bff8>] (netlink_unicast+0x270/0x380 net/netlink/af_netlink.c:1345)
- r8:833d26c0 r7:85e32940 r6:000000ac r5:853dc464 r4:853dc400
-[<8176bd88>] (netlink_unicast) from [<8176c2d0>] (netlink_sendmsg+0x1c8/0x444 net/netlink/af_netlink.c:1900)
- r10:00000000 r9:00000000 r8:00000000 r7:86239c00 r6:000000ac r5:833d26c0
- r4:ed48df28
-[<8176c108>] (netlink_sendmsg) from [<8162f7c4>] (sock_sendmsg_nosec net/socket.c:800 [inline])
-[<8176c108>] (netlink_sendmsg) from [<8162f7c4>] (__sock_sendmsg+0x44/0x78 net/socket.c:815)
- r10:00000000 r9:00000000 r8:ed48ddd4 r7:00000000 r6:84d12cc0 r5:ed48df28
- r4:00000000
-[<8162f780>] (__sock_sendmsg) from [<81630864>] (____sys_sendmsg+0x238/0x2c4 net/socket.c:2709)
- r7:00000000 r6:00000000 r5:84d12cc0 r4:ed48df28
-[<8163062c>] (____sys_sendmsg) from [<81630c64>] (___sys_sendmsg+0x9c/0xd0 net/socket.c:2763)
- r10:00000128 r9:2000c2c0 r8:00000000 r7:00000000 r6:84d12cc0 r5:ed48df28
- r4:00000000
-[<81630bc8>] (___sys_sendmsg) from [<81632e3c>] (__sys_sendmsg+0x8c/0xe0 net/socket.c:2795)
- r9:84193100 r8:861daf00 r7:00000000 r6:2000c2c0 r5:861daf01 r4:00000003
-[<81632db0>] (__sys_sendmsg) from [<81632ea4>] (__do_sys_sendmsg net/socket.c:2800 [inline])
-[<81632db0>] (__sys_sendmsg) from [<81632ea4>] (sys_sendmsg+0x14/0x18 net/socket.c:2798)
- r8:8020029c r7:00000128 r6:00356310 r5:00000000 r4:00000000
-[<81632e90>] (sys_sendmsg) from [<80200060>] (ret_fast_syscall+0x0/0x1c arch/arm/mm/proc-v7.S:67)
-Exception stack(0xed48dfa8 to 0xed48dff0)
-dfa0:                   00000000 00000000 00000003 2000c2c0 00000000 00000000
-dfc0: 00000000 00000000 00356310 00000128 003562d8 00000000 00000001 76f720dc
-dfe0: 76f71e88 76f71e78 00018fa0 00130a50
-INFO: task syz.3.417:5204 blocked for more than 430 seconds.
-      Not tainted syzkaller #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz.3.417       state:D stack:0     pid:5204  tgid:5200  ppid:3691   task_flags:0x400140 flags:0x00000001
-Call trace: 
-[<81b71894>] (__schedule) from [<81b72d2c>] (__schedule_loop kernel/sched/core.c:7311 [inline])
-[<81b71894>] (__schedule) from [<81b72d2c>] (schedule+0x2c/0xec kernel/sched/core.c:7326)
- r10:ed695ab4 r9:ed695abc r8:00000002 r7:60000013 r6:82e3d2d0 r5:84186e40
- r4:84186e40
-[<81b72d00>] (schedule) from [<81b72e70>] (schedule_preempt_disabled+0x18/0x24 kernel/sched/core.c:7383)
- r5:84186e40 r4:82e3d2cc
-[<81b72e58>] (schedule_preempt_disabled) from [<81b75fe8>] (__mutex_lock_common kernel/locking/mutex.c:726 [inline])
-[<81b72e58>] (schedule_preempt_disabled) from [<81b75fe8>] (__mutex_lock.constprop.0+0x50c/0xa48 kernel/locking/mutex.c:821)
-[<81b75adc>] (__mutex_lock.constprop.0) from [<81b765f8>] (__mutex_lock_slowpath+0x14/0x18 kernel/locking/mutex.c:1164)
- r10:8623a984 r9:85359000 r8:0000003c r7:00000014 r6:833d7840 r5:ed695b68
- r4:833d2f00
-[<81b765e4>] (__mutex_lock_slowpath) from [<81b76638>] (mutex_lock+0x3c/0x40 kernel/locking/mutex.c:319)
-[<81b765fc>] (mutex_lock) from [<8179b570>] (nfnl_lock net/netfilter/nfnetlink.c:96 [inline])
-[<81b765fc>] (mutex_lock) from [<8179b570>] (nfnetlink_rcv_batch+0xdc/0x9b8 net/netfilter/nfnetlink.c:392)
-[<8179b494>] (nfnetlink_rcv_batch) from [<8179bf74>] (nfnetlink_rcv_skb_batch net/netfilter/nfnetlink.c:647 [inline])
-[<8179b494>] (nfnetlink_rcv_batch) from [<8179bf74>] (nfnetlink_rcv+0x128/0x15c net/netfilter/nfnetlink.c:665)
- r10:8623a984 r9:85359000 r8:0000003c r7:00000014 r6:83137b00 r5:00000000
- r4:833d7840
-[<8179be4c>] (nfnetlink_rcv) from [<8176bff8>] (netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline])
-[<8179be4c>] (nfnetlink_rcv) from [<8176bff8>] (netlink_unicast+0x270/0x380 net/netlink/af_netlink.c:1345)
- r8:833d7840 r7:8506b300 r6:0000003c r5:851e5c64 r4:851e5c00
-[<8176bd88>] (netlink_unicast) from [<8176c2d0>] (netlink_sendmsg+0x1c8/0x444 net/netlink/af_netlink.c:1900)
- r10:00000000 r9:00000000 r8:00000000 r7:8623a800 r6:0000003c r5:833d7840
- r4:ed695f28
-[<8176c108>] (netlink_sendmsg) from [<8162f7c4>] (sock_sendmsg_nosec net/socket.c:800 [inline])
-[<8176c108>] (netlink_sendmsg) from [<8162f7c4>] (__sock_sendmsg+0x44/0x78 net/socket.c:815)
- r10:0000c050 r9:00000000 r8:ed695dd4 r7:00000000 r6:84d12f40 r5:ed695f28
- r4:00000000
-[<8162f780>] (__sock_sendmsg) from [<81630864>] (____sys_sendmsg+0x238/0x2c4 net/socket.c:2709)
- r7:00000000 r6:00000000 r5:84d12f40 r4:ed695f28
-[<8163062c>] (____sys_sendmsg) from [<81630c64>] (___sys_sendmsg+0x9c/0xd0 net/socket.c:2763)
- r10:00000128 r9:20000cc0 r8:0000c050 r7:00000000 r6:84d12f40 r5:ed695f28
- r4:00000000
-[<81630bc8>] (___sys_sendmsg) from [<81632e3c>] (__sys_sendmsg+0x8c/0xe0 net/socket.c:2795)
- r9:84186e40 r8:861dd080 r7:0000c050 r6:20000cc0 r5:861dd081 r4:00000003
-[<81632db0>] (__sys_sendmsg) from [<81632ea4>] (__do_sys_sendmsg net/socket.c:2800 [inline])
-[<81632db0>] (__sys_sendmsg) from [<81632ea4>] (sys_sendmsg+0x14/0x18 net/socket.c:2798)
- r8:8020029c r7:00000128 r6:003563b0 r5:00000000 r4:00000000
-[<81632e90>] (sys_sendmsg) from [<80200060>] (ret_fast_syscall+0x0/0x1c arch/arm/mm/proc-v7.S:67)
-Exception stack(0xed695fa8 to 0xed695ff0)
-5fa0:                   00000000 00000000 00000003 20000cc0 0000c050 00000000
-5fc0: 00000000 00000000 003563b0 00000128 00356378 00000000 003d0f00 76fd10dc
-5fe0: 76fd0e88 76fd0e78 00018fa0 00130a50
-INFO: task syz.3.417:5204 is blocked on a mutex likely owned by task syz.1.416:5203.
-NMI backtrace for cpu 0
-CPU: 0 UID: 0 PID: 29 Comm: khungtaskd Not tainted syzkaller #0 PREEMPT 
-Hardware name: ARM-Versatile Express
-Call trace: 
-[<80201998>] (dump_backtrace) from [<80201a8c>] (show_stack+0x18/0x1c arch/arm/kernel/traps.c:257)
- r7:60000193 r6:60000193 r5:82336570 r4:00000000
-[<80201a74>] (show_stack) from [<8021ec68>] (__dump_stack lib/dump_stack.c:94 [inline])
-[<80201a74>] (show_stack) from [<8021ec68>] (dump_stack_lvl+0x5c/0x70 lib/dump_stack.c:120)
-[<8021ec0c>] (dump_stack_lvl) from [<8021ec94>] (dump_stack+0x18/0x1c lib/dump_stack.c:129)
- r7:00000000 r6:00000113 r5:00000000 r4:00000001
-[<8021ec7c>] (dump_stack) from [<81b5aefc>] (nmi_cpu_backtrace+0x150/0x170 lib/nmi_backtrace.c:122)
-[<81b5adac>] (nmi_cpu_backtrace) from [<81b5b050>] (nmi_trigger_cpumask_backtrace+0x134/0x208 lib/nmi_backtrace.c:65)
- r7:82a0b150 r6:83178000 r5:82a1c7b8 r4:ffffffff
-[<81b5af1c>] (nmi_trigger_cpumask_backtrace) from [<802300d4>] (arch_trigger_cpumask_backtrace+0x18/0x1c arch/arm/kernel/smp.c:851)
- r9:82a0b2f0 r8:00000002 r7:82a1ce80 r6:82ccce2c r5:00007ec3 r4:00000048
-[<802300bc>] (arch_trigger_cpumask_backtrace) from [<81b62b8c>] (trigger_all_cpu_backtrace include/linux/nmi.h:162 [inline])
-[<802300bc>] (arch_trigger_cpumask_backtrace) from [<81b62b8c>] (__sys_info lib/sys_info.c:157 [inline])
-[<802300bc>] (arch_trigger_cpumask_backtrace) from [<81b62b8c>] (sys_info+0x68/0xa8 lib/sys_info.c:165)
-[<81b62b24>] (sys_info) from [<80390a60>] (check_hung_uninterruptible_tasks kernel/hung_task.c:353 [inline])
-[<81b62b24>] (sys_info) from [<80390a60>] (watchdog+0x3a0/0x848 kernel/hung_task.c:561)
- r5:00007ec3 r4:0000000a
-[<803906c0>] (watchdog) from [<802827b4>] (kthread+0x11c/0x154 kernel/kthread.c:436)
- r10:00000000 r9:df819e60 r8:83114000 r7:00000000 r6:803906c0 r5:83178000
- r4:83882900
-[<80282698>] (kthread) from [<80200114>] (ret_from_fork+0x14/0x20 arch/arm/kernel/entry-common.S:137)
-Exception stack(0xdf8d5fb0 to 0xdf8d5ff8)
-5fa0:                                     00000000 00000000 00000000 00000000
-5fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-5fe0: 00000000 00000000 00000000 00000000 00000013 00000000
- r9:00000000 r8:00000000 r7:00000000 r6:00000000 r5:80282698 r4:83882900
-Sending NMI from CPU 0 to CPUs 1:
-NMI backtrace for cpu 1
-CPU: 1 UID: 0 PID: 5202 Comm: syz.3.417 Not tainted syzkaller #0 PREEMPT 
-Hardware name: ARM-Versatile Express
-PC is at flow_block_cb_is_busy net/core/flow_offload.c:325 [inline]
-PC is at flow_block_cb_setup_simple+0x118/0x1fc net/core/flow_offload.c:351
-LR is at nsim_setup_tc+0xa0/0xdc drivers/net/netdevsim/tc.c:87
-pc : [<816ac064>]    lr : [<80f0ca28>]    psr: 80000013
-sp : ed055868  ip : 82b428d8  fp : ed05588c
-r10: 85fb6948  r9 : 00000001  r8 : 00000000
-r7 : 85366700  r6 : ed0558b4  r5 : 80f0c938  r4 : 82b857b8
-r3 : 828d2500  r2 : 80f0c938  r1 : 82b857b8  r0 : ed0558b4
-Flags: Nzcv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment none
-Control: 30c5387d  Table: 86288000  DAC: 00000000
-Call trace: 
-[<816abf4c>] (flow_block_cb_setup_simple) from [<80f0ca28>] (nsim_setup_tc+0xa0/0xdc drivers/net/netdevsim/tc.c:87)
- r9:00000001 r8:00000000 r7:ed0558e0 r6:85fa9f00 r5:00000000 r4:85366000
-[<80f0c988>] (nsim_setup_tc) from [<817f991c>] (nft_block_offload_cmd+0x80/0xf4 net/netfilter/nf_tables_offload.c:397)
-[<817f989c>] (nft_block_offload_cmd) from [<817f9c78>] (nft_chain_offload_cmd net/netfilter/nf_tables_offload.c:451 [inline])
-[<817f989c>] (nft_block_offload_cmd) from [<817f9c78>] (nft_flow_block_chain+0x98/0x184 net/netfilter/nf_tables_offload.c:471)
- r7:85fa9f00 r6:00000000 r5:00000000 r4:831df0c0
-[<817f9be0>] (nft_flow_block_chain) from [<817fa7bc>] (nft_flow_offload_chain net/netfilter/nf_tables_offload.c:513 [inline])
-[<817f9be0>] (nft_flow_block_chain) from [<817fa7bc>] (nft_flow_rule_offload_commit+0x1a4/0x1f4 net/netfilter/nf_tables_offload.c:592)
- r10:ed055ac0 r9:85359000 r8:85359000 r7:ed0559b8 r6:81e7f1da r5:85fb2c08
- r4:8626d580
-[<817fa618>] (nft_flow_rule_offload_commit) from [<817eb044>] (nf_tables_commit+0x20c/0x2250 net/netfilter/nf_tables_api.c:10934)
- r10:ed055ac0 r9:85359000 r8:858a8000 r7:00000011 r6:833d3540 r5:85fb2c20
- r4:85fb2c04
-[<817eae38>] (nf_tables_commit) from [<8179bc68>] (nfnetlink_rcv_batch+0x7d4/0x9b8 net/netfilter/nfnetlink.c:574)
- r10:81e7de58 r9:81e7e028 r8:858a8000 r7:00000011 r6:85769298 r5:ed055b68
- r4:833d29c0
-[<8179b494>] (nfnetlink_rcv_batch) from [<8179bf74>] (nfnetlink_rcv_skb_batch net/netfilter/nfnetlink.c:647 [inline])
-[<8179b494>] (nfnetlink_rcv_batch) from [<8179bf74>] (nfnetlink_rcv+0x128/0x15c net/netfilter/nfnetlink.c:665)
- r10:8623a984 r9:85359000 r8:000000ac r7:00000014 r6:85769200 r5:00000000
- r4:833d3540
-[<8179be4c>] (nfnetlink_rcv) from [<8176bff8>] (netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline])
-[<8179be4c>] (nfnetlink_rcv) from [<8176bff8>] (netlink_unicast+0x270/0x380 net/netlink/af_netlink.c:1345)
- r8:833d3540 r7:8506b300 r6:000000ac r5:851e5c64 r4:851e5c00
-[<8176bd88>] (netlink_unicast) from [<8176c2d0>] (netlink_sendmsg+0x1c8/0x444 net/netlink/af_netlink.c:1900)
- r10:00000000 r9:00000000 r8:00000000 r7:8623a800 r6:000000ac r5:833d3540
- r4:ed055f28
-[<8176c108>] (netlink_sendmsg) from [<8162f7c4>] (sock_sendmsg_nosec net/socket.c:800 [inline])
-[<8176c108>] (netlink_sendmsg) from [<8162f7c4>] (__sock_sendmsg+0x44/0x78 net/socket.c:815)
- r10:00000000 r9:00000000 r8:ed055dd4 r7:00000000 r6:84d12f40 r5:ed055f28
- r4:00000000
-[<8162f780>] (__sock_sendmsg) from [<81630864>] (____sys_sendmsg+0x238/0x2c4 net/socket.c:2709)
- r7:00000000 r6:00000000 r5:84d12f40 r4:ed055f28
-[<8163062c>] (____sys_sendmsg) from [<81630c64>] (___sys_sendmsg+0x9c/0xd0 net/socket.c:2763)
- r10:00000128 r9:2000c2c0 r8:00000000 r7:00000000 r6:84d12f40 r5:ed055f28
- r4:00000000
-[<81630bc8>] (___sys_sendmsg) from [<81632e3c>] (__sys_sendmsg+0x8c/0xe0 net/socket.c:2795)
- r9:858a8000 r8:861dd080 r7:00000000 r6:2000c2c0 r5:861dd081 r4:00000003
-[<81632db0>] (__sys_sendmsg) from [<81632ea4>] (__do_sys_sendmsg net/socket.c:2800 [inline])
-[<81632db0>] (__sys_sendmsg) from [<81632ea4>] (sys_sendmsg+0x14/0x18 net/socket.c:2798)
- r8:8020029c r7:00000128 r6:00356310 r5:00000000 r4:00000000
-[<81632e90>] (sys_sendmsg) from [<80200060>] (ret_fast_syscall+0x0/0x1c arch/arm/mm/proc-v7.S:67)
-Exception stack(0xed055fa8 to 0xed055ff0)
-5fa0:                   00000000 00000000 00000003 2000c2c0 00000000 00000000
-5fc0: 00000000 00000000 00356310 00000128 003562d8 00000000 00000001 76ff20dc
-5fe0: 76ff1e88 76ff1e78 00018fa0 00130a50
+On 2026-09-17 22:10:22, Kuniyuki Iwashima wrote:
+> From: Chris J Arges <carges@cloudflare.com>
+> Date: Thu, 17 Sep 2026 14:38:21 -0500
+> > We have observed hung tasks blocked on rtnl_mutex while network namespaces
+> > were being removed. The namespaces contained many network devices, and the
+> > host had accumulated a large population of entries on the global per-CPU
+> > uncached route lists. A perf profile collected during one incident
+> > attributed most of the cleanup worker's samples to rt_flush_dev():
+> > 
+> > ```
+> > 99.92% kworker/u384:3-  worker_thread
+> >   `-88.71% process_one_work
+> >       `-81.02% cleanup_net
+> >           `-81.00% unregister_netdevice_many_notify
+> >               `-79.42% notifier_call_chain
+> >                   `-78.05% fib_netdev_event
+> >                       `-77.92% rt_flush_dev
+> > ```
+> > 
+> > For each device, rt_flush_dev() visits every possible CPU and scans the
+> > global uncached route population while its caller holds rtnl_mutex. If N is
+> > the number of devices, C the number of possible CPUs, and R the number of
+> > uncached routes, the cost is O(N * (C + R)).
+> > 
+> > During namespace cleanup, other processes that issue RTNETLINK operations
+> > requiring the RTNL lock can stall until cleanup releases the lock.
+> > 
+> > A minimal reproducer is available here:
+> > https://github.com/arges/linux-reproducers/tree/main/rtnl-flush-storm
+> > 
+> > This series replaces each per-CPU uncached route list with a hash table
+> > using the network device as its key. Each table uses 64 buckets.
+> 
+> This sounds a bit overkill.  Also, this series still leaves
+> O(N * C) loops.
+> 
+> Given unregistering a single device is less common than
+> destroying netns, I think the right approach should be to
+> make the route flush once in cleanup_net() + outside RTNL.
+> 
+> Could you try this change ? (only compile-tested)
+> 
+Excellent, I'll test this and report back.
+Thanks,
+--chris
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+> ---8<---
+> diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
+> index 46b4c67e2966..d8ce7dc0fbdc 100644
+> --- a/include/net/net_namespace.h
+> +++ b/include/net/net_namespace.h
+> @@ -489,6 +489,7 @@ struct pernet_operations {
+>  	 */
+>  	int (*init)(struct net *net);
+>  	void (*pre_exit)(struct net *net);
+> +	void (*pre_exit_batch)(struct list_head *net_exit_list);
+>  	void (*exit)(struct net *net);
+>  	void (*exit_batch)(struct list_head *net_exit_list);
+>  	/* Following method is called with RTNL held. */
+> diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+> index da5f881fbd3b..7fc9bf45f3b6 100644
+> --- a/net/core/net_namespace.c
+> +++ b/net/core/net_namespace.c
+> @@ -160,6 +160,9 @@ static void ops_pre_exit_list(const struct pernet_operations *ops,
+>  		list_for_each_entry(net, net_exit_list, exit_list)
+>  			ops->pre_exit(net);
+>  	}
+> +
+> +	if (ops->pre_exit_batch)
+> +		ops->pre_exit_batch(net_exit_list);
+>  }
+>  
+>  static void ops_exit_rtnl_list(const struct list_head *ops_list,
+> diff --git a/net/ipv4/fib_frontend.c b/net/ipv4/fib_frontend.c
+> index 8a3dc04e8cac..b8d76b6279e1 100644
+> --- a/net/ipv4/fib_frontend.c
+> +++ b/net/ipv4/fib_frontend.c
+> @@ -1685,6 +1685,11 @@ static void __net_exit fib_net_pre_exit(struct net *net)
+>  	nl_fib_lookup_exit(net);
+>  }
+>  
+> +static void __net_exit fib_net_pre_exit_batch(struct list_head *net_exit_list)
+> +{
+> +	rt_flush_dev(NULL);
+> +}
+> +
+>  static void __net_exit fib_net_exit_rtnl(struct net *net,
+>  					 struct list_head *dev_kill_list)
+>  {
+> @@ -1704,6 +1709,7 @@ static void __net_exit fib_net_exit(struct net *net)
+>  static struct pernet_operations fib_net_ops = {
+>  	.init = fib_net_init,
+>  	.pre_exit = fib_net_pre_exit,
+> +	.pre_exit_batch = fib_net_pre_exit_batch,
+>  	.exit_rtnl = fib_net_exit_rtnl,
+>  	.exit = fib_net_exit,
+>  };
+> diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+> index d7da2f1acbb5..d35b66b33bbc 100644
+> --- a/net/ipv4/route.c
+> +++ b/net/ipv4/route.c
+> @@ -1554,14 +1554,28 @@ struct uncached_list {
+>  
+>  static DEFINE_PER_CPU_ALIGNED(struct uncached_list, rt_uncached_list);
+>  
+> +static void rt_replace_uncached_list(struct rtable *rt)
+> +{
+> +	struct net_device *dev = dst_dev(&rt->dst);
+> +
+> +	rcu_assign_pointer(rt->dst.dev_rcu, blackhole_netdev);
+> +	netdev_ref_replace(dev, blackhole_netdev,
+> +			   &rt->dst.dev_tracker, GFP_ATOMIC);
+> +}
+> +
+>  void rt_add_uncached_list(struct rtable *rt)
+>  {
+>  	struct uncached_list *ul = raw_cpu_ptr(&rt_uncached_list);
+>  
+> -	rt->dst.rt_uncached_list = ul;
+> -
+>  	spin_lock_bh(&ul->lock);
+> -	list_add_tail(&rt->dst.rt_uncached, &ul->head);
+> +
+> +	if (!check_net(dst_dev_net_rcu(&rt->dst))) {
+> +		rt_replace_uncached_list(rt);
+> +	} else {
+> +		rt->dst.rt_uncached_list = ul;
+> +		list_add_tail(&rt->dst.rt_uncached, &ul->head);
+> +	}
+> +
+>  	spin_unlock_bh(&ul->lock);
+>  }
+>  
+> @@ -1587,6 +1601,9 @@ void rt_flush_dev(struct net_device *dev)
+>  	struct rtable *rt, *safe;
+>  	int cpu;
+>  
+> +	if (dev && !check_net(dev_net(dev)))
+> +		return;
+> +
+>  	for_each_possible_cpu(cpu) {
+>  		struct uncached_list *ul = &per_cpu(rt_uncached_list, cpu);
+>  
+> @@ -1595,11 +1612,11 @@ void rt_flush_dev(struct net_device *dev)
+>  
+>  		spin_lock_bh(&ul->lock);
+>  		list_for_each_entry_safe(rt, safe, &ul->head, dst.rt_uncached) {
+> -			if (rt->dst.dev != dev)
+> +			if (rt->dst.dev != dev &&
+> +			    (dev || check_net(dev_net(rt->dst.dev))))
+>  				continue;
+> -			rcu_assign_pointer(rt->dst.dev_rcu, blackhole_netdev);
+> -			netdev_ref_replace(dev, blackhole_netdev,
+> -					   &rt->dst.dev_tracker, GFP_ATOMIC);
+> +
+> +			rt_replace_uncached_list(rt);
+>  			list_del_init(&rt->dst.rt_uncached);
+>  		}
+>  		spin_unlock_bh(&ul->lock);
+> diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+> index 7535b09068a0..28233197e1e1 100644
+> --- a/net/ipv6/route.c
+> +++ b/net/ipv6/route.c
+> @@ -135,14 +135,35 @@ struct uncached_list {
+>  
+>  static DEFINE_PER_CPU_ALIGNED(struct uncached_list, rt6_uncached_list);
+>  
+> +static void rt6_uncached_list_replace(struct rt6_info *rt)
+> +{
+> +	struct net_device *dev = dst_dev(&rt->dst);
+> +	struct inet6_dev *rt_idev = rt->rt6i_idev;
+> +
+> +	if (rt_idev) {
+> +		rt->rt6i_idev = in6_dev_get(blackhole_netdev);
+> +		in6_dev_put(rt_idev);
+> +	}
+> +
+> +	rcu_assign_pointer(rt->dst.dev_rcu, blackhole_netdev);
+> +	netdev_ref_replace(dev, blackhole_netdev,
+> +			   &rt->dst.dev_tracker,
+> +			   GFP_ATOMIC);
+> +}
+> +
+>  void rt6_uncached_list_add(struct rt6_info *rt)
+>  {
+>  	struct uncached_list *ul = raw_cpu_ptr(&rt6_uncached_list);
+>  
+> -	rt->dst.rt_uncached_list = ul;
+> -
+>  	spin_lock_bh(&ul->lock);
+> -	list_add_tail(&rt->dst.rt_uncached, &ul->head);
+> +
+> +	if (!check_net(dst_dev_net_rcu(&rt->dst))) {
+> +		rt6_uncached_list_replace(rt);
+> +	} else {
+> +		rt->dst.rt_uncached_list = ul;
+> +		list_add_tail(&rt->dst.rt_uncached, &ul->head);
+> +	}
+> +
+>  	spin_unlock_bh(&ul->lock);
+>  }
+>  
+> @@ -161,6 +182,9 @@ static void rt6_uncached_list_flush_dev(struct net_device *dev)
+>  {
+>  	int cpu;
+>  
+> +	if (dev && !check_net(dev_net(dev)))
+> +		return;
+> +
+>  	for_each_possible_cpu(cpu) {
+>  		struct uncached_list *ul = per_cpu_ptr(&rt6_uncached_list, cpu);
+>  		struct rt6_info *rt, *safe;
+> @@ -172,23 +196,17 @@ static void rt6_uncached_list_flush_dev(struct net_device *dev)
+>  		list_for_each_entry_safe(rt, safe, &ul->head, dst.rt_uncached) {
+>  			struct inet6_dev *rt_idev = rt->rt6i_idev;
+>  			struct net_device *rt_dev = rt->dst.dev;
+> -			bool handled = false;
+>  
+> -			if (rt_idev && rt_idev->dev == dev) {
+> -				rt->rt6i_idev = in6_dev_get(blackhole_netdev);
+> -				in6_dev_put(rt_idev);
+> -				handled = true;
+> +			if (dev) {
+> +				if (rt_dev != dev &&
+> +				    (!rt_idev || rt_idev->dev != dev))
+> +					continue;
+> +			} else if (check_net(dev_net(rt_dev))) {
+> +				continue;
+>  			}
+>  
+> -			if (rt_dev == dev) {
+> -				rt->dst.dev = blackhole_netdev;
+> -				netdev_ref_replace(rt_dev, blackhole_netdev,
+> -						   &rt->dst.dev_tracker,
+> -						   GFP_ATOMIC);
+> -				handled = true;
+> -			}
+> -			if (handled)
+> -				list_del_init(&rt->dst.rt_uncached);
+> +			rt6_uncached_list_replace(rt);
+> +			list_del_init(&rt->dst.rt_uncached);
+>  		}
+>  		spin_unlock_bh(&ul->lock);
+>  	}
+> @@ -6795,6 +6813,11 @@ static int __net_init ip6_route_net_init(struct net *net)
+>  	goto out;
+>  }
+>  
+> +static void __net_exit ip6_route_net_pre_exit_batch(struct list_head *net_exit_list)
+> +{
+> +	rt6_uncached_list_flush_dev(NULL);
+> +}
+> +
+>  static void __net_exit ip6_route_net_exit(struct net *net)
+>  {
+>  	kfree(net->ipv6.fib6_null_entry);
+> @@ -6833,6 +6856,7 @@ static void __net_exit ip6_route_net_exit_late(struct net *net)
+>  
+>  static struct pernet_operations ip6_route_net_ops = {
+>  	.init = ip6_route_net_init,
+> +	.pre_exit_batch = ip6_route_net_pre_exit_batch,
+>  	.exit = ip6_route_net_exit,
+>  };
+>  
+> ---8<---
