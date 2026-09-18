@@ -1,149 +1,118 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3873D4AE8D2
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 08:49:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E673A7F4B
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 08:50:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789721395; cv=none; b=q93HFxGr7zNnHpfG5WwXPVzN6egNGLsSoJ0g2XmmcDqWxYkchTt5mA/eDK3HhVUjOhricGvUgFWcRvIQEQN07ruI1gC4xa4OXxYb8ehDPw1ubGTxxRCt154jXI7ZUVqnRZ6cnUabN1jYiJ+yaC4+p5f6sMpEtyRQQhuQ+Hghho8=
+	t=1789721430; cv=none; b=p7Z0IZCesqFsn0TL3CZLy/6nSvN9edeXSlKKGRsNYIA3/CnUKnbmjMNeGw09oOCxvl5zSugd1nx7KfcBlLNtM8jnFkpFKjJDpAxkqeQqopb6sLDXM4sc6i013krtcmOi4R4/UxW57OuQSbZJlfBlHK9BQxyr240Bc/UqtO41GV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789721395; c=relaxed/simple;
-	bh=ne5pV0b3NmbGQn0lL6xAtGEOg7z70gJ6LRIvCmFWkN4=;
+	s=arc-20240116; t=1789721430; c=relaxed/simple;
+	bh=Qzu9FAXZ6o5sZG0iETjLN81B6N9bolaxFZ4DQnSd9UY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NAM5zofAh0nIMiBXfBf5JXiRz4g+LV3GCbMeVsIm+RUuews4xrpU66rHbJMy0suVdJJgWjUo93h1t+MRr/pHbayV6DY2k2I62316FGHep8wNWxivd/hZqXN02zv4ao9H7Tav51J9YA61OmXBQvXvMW9WQ3WorbeoBRfSU+RjZck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OB2lkrNa; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	 In-Reply-To:Content-Type; b=gxEZ8u/IhOAKv2xYdoPKwcliw3EY0ywFwTTyRf5djICNdiOY8qYxdGzGm+u7wkQTjMoOom9JnJ5Giij1nVQPkT/gDAsH8g/u2Uj1hVtezHWWUM2VCXR3GuJpusSVHt560hJNVU4Q4+eayOqXiZ38oqBpGeF80P+vyyHWGBc6mhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a4eU4ZZg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OB2lkrNa"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id AA1C64E408C8;
-	Fri, 18 Sep 2026 08:49:46 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 7592D60649;
-	Fri, 18 Sep 2026 08:49:46 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0CF9610328A4C;
-	Fri, 18 Sep 2026 10:49:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789721381; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=rF3oWfGzFnTY0SoCjVn3gmsNgNzzK1a/ublsZkNPNl4=;
-	b=OB2lkrNa0BtH49xDYO8RkPEalsTzlrnCb2g4M98IMO7BOpLVOL4JL2bzA8IgN2gdVA7oRX
-	gqAWz2Dxvh6c2HKzjU8N6KCHESSaz+8YovTYHY0se498AxMnNzmUmmGy1KbotSJX8VfgfV
-	t+LikhJTj3vI1WcW9h28jx4TEVamx1XdUJriSDKhn4b1QtG9Ui39RR723jkScpB/Ia7tLs
-	V7voptBHkjrEI94ojFBIpJ5ATMMYb0QbW9um8F9v1rPQNZ1sbJzkvS11tP6bft2XuzeNlz
-	KFajEVQ0uVm3zop6WB4+upKqDmq8uzwfJ/ChUQKeGGxoZ9VwoOdnZW0ZpHyNzw==
-Message-ID: <f765bde3-0527-472a-a706-49d7ad7aed79@bootlin.com>
-Date: Fri, 18 Sep 2026 10:49:33 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a4eU4ZZg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7291F000FF;
+	Fri, 18 Sep 2026 08:50:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789721427;
+	bh=qBwiNP2CxesAUjCcE0N9Qe9fUmYX2QYOHTgHgPx/NMU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=a4eU4ZZg1SgHnEIuXJj5YzGlhMC+rZsxAj1T4egzQ2dRfhkDpIWOhHXEoiwkkzsDH
+	 LizCqYRix3TVbRWE9j3JSmoC/z535EGIDijeKk7mL064U7Tc6Ty1XTagk9zeUwmQ/x
+	 t5Sw9ScjP8Y/eETGbUhBRnLQhMHsDUS/YoupHyV1BY2DkpnmOjsPjB1ZvS2nnY1n2J
+	 5uJmhTfQ48WylzEWkyPpfEfx4M91NGWXwq764alTPouILiMzTUzKkqUVuXat0yVubf
+	 j2LAk1HAYzaOs0FJyFecW/MLjd9wrR77n8Xv09z2e4kOUdl7EjcAj9Uq6Fkaj06atH
+	 glzeE93KZgVuA==
+Message-ID: <fdeeb840-13e1-46ea-92d1-319fb0fd6c30@kernel.org>
+Date: Fri, 18 Sep 2026 10:50:21 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Linux)
-Subject: Re: [PATCH net] net: bcmgenet: add hwtstamp callbacks to restore PHY
- timestamping
-To: Nicolai Buchwitz <nb@tipi-net.de>, James Clark <jjc@jclark.com>
-Cc: Doug Berger <opendmb@gmail.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>, netdev@vger.kernel.org,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Richard Cochran <richardcochran@gmail.com>
-References: <20260918030149.80398-1-jjc@jclark.com>
- <fe0a80d1f1f6aa553c1ea838cea52c18@tipi-net.de>
-From: Kory Maincent <kory.maincent@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <fe0a80d1f1f6aa553c1ea838cea52c18@tipi-net.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v1 net-next] tcp: Set unhashed_state in
+ inet_twsk_hashdance_schedule().
+Content-Language: fr
+To: Kuniyuki Iwashima <kuniyu@google.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Neal Cardwell <ncardwell@google.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>,
+ netdev@vger.kernel.org, Daniel Zahka <daniel.zahka@gmail.com>
+References: <20260917191554.1600494-1-kuniyu@google.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20260917191554.1600494-1-kuniyu@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+Hi Kuniyuki,
 
+On 17/09/2026 21:15, Kuniyuki Iwashima wrote:
+> inet_unhash() sets inet_csk(sk)->unhashed_state only when the
+> socket is hashed because tcp_set_state(sk, TCP_CLOSE) could be
+> called multiple times, e.g. tcp_abort() calls it directly and
+> tcp_done_with_error().
+> 
+> However, inet_twsk_hashdance_schedule() also unhashes a socket
+> when replacing it with twsk, allowing the socket to bypass
+> checks for inet_csk(sk)->unhashed_state.
+> 
+> Let's update inet_csk(sk)->unhashed_state there as well.
+Thank you for the fix!
 
-On 9/18/26 10:20, Nicolai Buchwitz wrote:
-> Hi James
-> 
-> On 18.9.2026 05:01, James Clark wrote:
->> Hardware timestamp configuration fails with EOPNOTSUPP on BCMGENET
->> interfaces connected to a timestamp-capable PHY. On a Raspberry Pi
->> CM4, "hwstamp_ctl -i eth0 -t 1 -r 12" fails with "SIOCSHWTSTAMP failed:
->> Operation not supported", preventing ptp4l from using hardware
->> timestamping.
->>
->> Commit 5062245a5a7f ("net: remove legacy way to get/set HW timestamp
->> config") removed the legacy ioctl fallback, assuming that all MAC
->> drivers supporting hardware timestamping implement ndo_hwtstamp_get()
->> and ndo_hwtstamp_set(), even when timestamping is provided only by
->> an attached PHY. BCMGENET does not implement these callbacks, so the
->> core rejects timestamp configuration requests before they reach
->> the PHY.
->>
->> Add ndo_hwtstamp_get() and ndo_hwtstamp_set() callbacks so the core
->> can dispatch timestamp configuration requests through its phylib
->> helpers. Both callbacks return -EOPNOTSUPP because the MAC itself
->> does not support hardware timestamping; requests for the PHY are
->> handled by the core without invoking these callbacks.
-> 
-> I've tested with and without your patch and can reproduce the issue / fix.
-> IMHO the commit message should mention that 'get' isn't restored - it was
-> already broken as the legacy path through phy_mii_ioctl() only handled
-> SIOCSHWTSTAMP.
-> 
->>
->> Fixes: 5062245a5a7f ("net: remove legacy way to get/set HW timestamp 
->> config")
->> Assisted-by: LLM
->> Signed-off-by: James Clark <jjc@jclark.com>
->> ---
->>  drivers/net/ethernet/broadcom/genet/bcmgenet.c | 15 +++++++++++++++
->>  1 file changed, 15 insertions(+)
->>
->> diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/ 
->> net/ethernet/broadcom/genet/bcmgenet.c
->> index a2305e642..8ead37ff9 100644
->> --- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
->> +++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
->> @@ -3712,6 +3712,19 @@ static int bcmgenet_change_carrier(struct 
->> net_device *dev, bool new_carrier)
->>      return 0;
->>  }
->>
->> +static int bcmgenet_hwtstamp_get(struct net_device *dev,
->> +                 struct kernel_hwtstamp_config *cfg)
->> +{
->> +    return -EOPNOTSUPP;
->> +}
->> +
->> +static int bcmgenet_hwtstamp_set(struct net_device *dev,
->> +                 struct kernel_hwtstamp_config *cfg,
->> +                 struct netlink_ext_ack *extack)
->> +{
->> +    return -EOPNOTSUPP;
->> +}
-> 
-> The check that rejects the request is in dev_set_hwtstamp():
-> 
->          if (!ops->ndo_hwtstamp_set)
->                  return -EOPNOTSUPP;
-> 
-> It runs before dev_set_hwtstamp_phylib() checks phy_is_default_hwtstamp()
-> and nothing about this is specific to bcmgenet. Personally, I think this 
-> should
-> be better handled by the core than adding -EOPNOTSUPP stubs to the drivers.
-> 
-> I will send a patch for this.
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-I agree. Now that the legacy ioctl fallback has been removed from all 
-NIC drivers we don't need this check to verify its support anymore.
-
-Regards,
+Cheers,
+Matt
 -- 
-Köry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+Sponsored by the NGI0 Core fund.
 
