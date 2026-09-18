@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A123C1F36;
-	Fri, 18 Sep 2026 02:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E8E36195A;
+	Fri, 18 Sep 2026 02:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789698078; cv=none; b=C5t4qeTbDz6uLpnSX8KeyTOmb4vChsmerHrt0iPE7KqxW9Y4Z0+50QNKjGM3dOymHhjqFvhrQkBXq405fEQNtfb4PD8edLcWZYGnpFR7aqTgrQFo3D2oRli7zNFmGcB+o+gg4iqFkIOQKzUuFpa39CcP4nChjhAF3feOnipFavk=
+	t=1789698080; cv=none; b=bbPy6wg1ouslYuQNNaX65jNyDd8McFb00vyJ3QVRNMl8JQBzghX4bVEb5+N0Rvrx/pCnX2F/cZHdSD/zhe5kiD8U8WnDFjx20Uary3Ep86ZB0aidDxxZWFiq127C5olRG57b1i73G2UTeTobqw19aT4vhmyiD6et9gsYjq8ht64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789698078; c=relaxed/simple;
-	bh=IWIE9ITQUbEX2rhLkNY4A1pPXvOhUe3mpLGYcjD3H+o=;
+	s=arc-20240116; t=1789698080; c=relaxed/simple;
+	bh=iPPicN9ox2TKyniGFk1Re7j1rvv5TIgFdrSUY8pSOrU=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=vB77wkHaeWeaiEDlXqann7TlGZLNX/cx6ByytOT0J6irvOYnKIbl2aktzi+yy5JR+/GaS5nZ5WpMLLzgrDF7G1bIBBNIfttN9HpT0FXclzeJ+MNB06JZA1y3WVVptXoH/+k9RadGb7+0pgV0fRSVpclR6CNAV3AkI9eQIoO1Gko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VPblNWnx; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=JpAPiV+6cdgkfFgzaqd5X1UDT81Akq7E9HEamVbtZuur60ANrpJCSfE9wzq3Uxu/GM3hI1ejF/ewv8E2Ax2rYvqVPrpV0GuyR/mHPkSVL5ZXyz4CrxZzT7PnZJOvurBKY55MACmVaSgtgguSs9TMsC8yd0DCVZLYcBwym5OM+bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=keLOILlG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VPblNWnx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 039741F000FF;
-	Fri, 18 Sep 2026 02:21:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="keLOILlG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7993B1F00893;
+	Fri, 18 Sep 2026 02:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789698071;
-	bh=zdIHct5+CdWLZDz9NehcVJAXm+AdWNRl0nhETEl0jtI=;
+	s=k20260515; t=1789698072;
+	bh=5ozNbeuk4U8g17BkfMkseX/ATONJrNLPfUSS9Svrwxg=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=VPblNWnxyO3SB1orOv1DobTMs0C3Hgnl5J65hdP/3N28c9Q6ZzD/rnPIb03mYSeRw
-	 wiSWAT9zEXKrgaEANYObj25HJn69kH719kjVk3iLHzyFtcz8AUKYJNgPeFE+yCxr40
-	 vkZjHmL2jcwPg2fSadeyFbDFuIVDVKxD8TVpbDWQf5ZKlreZEcSEFHG5rPdbwen5I4
-	 dG+dJVnevgqh5m8pZNYP7dPMW+ZL5rN3vthTB5mw6rZv4lNvnwuqsFVovdx6TnrVf+
-	 VvYmnHdcpGvgnreYMfK48f4rp8syAnRLsrwB8wmhv8lSvZ1SdSb14RryUrmhBPEibO
-	 V+VV05WCPDvvw==
+	b=keLOILlGcvXn/TtA1eq9K3vNN2co9clIGEvkcJAR9l2F2BRaPyaa/U6cn/wxdRtAf
+	 CZgSBL40LyUUPZrAd1AoFrZHoh5Suu9UXxRDgspYPSSSz9+v8WHieaMCm9GwiInKKk
+	 eOeHFWAu0nIWfbm7KQd+rAnKRO45xOw/HwVfJYRB0GuO0wPBVLuMd4bo7ahqIW3uZO
+	 OQhwfEoS/ImrfKT2UvuFk33ksau0cWg6saT4fjaB3GUaO0jH3059Xp/5iduRDKaSZS
+	 WccBoPq9zKj3IDlciP4Fgx/3VN9vF+P2UFreETnav1RUyOggJhBeMGFeEN0hOpDu8R
+	 YRYz4t9Vvh7eQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93925380820D;
-	Fri, 18 Sep 2026 02:20:05 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 197FB380820D;
+	Fri, 18 Sep 2026 02:20:07 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,38 +37,35 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] ipv4: fib: fix data-race and stale genid check
- around
- nh->nh_saddr
+Subject: Re: [PATCH net] net: txgbe: fix FDIR filter restore for VF rules
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178969800438.233063.10154141271443227227.git-patchwork-notify@kernel.org>
-Date: Fri, 18 Sep 2026 02:20:04 +0000
-References: <20260916125316.988044-1-xiaolinkui@126.com>
-In-Reply-To: <20260916125316.988044-1-xiaolinkui@126.com>
-To: Linkui Xiao <xiaolinkui@126.com>
-Cc: dsahern@kernel.org, idosch@nvidia.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, xiaolinkui@kylinos.cn
+ <178969800562.233063.9027842901959042931.git-patchwork-notify@kernel.org>
+Date: Fri, 18 Sep 2026 02:20:05 +0000
+References: <20260911091123.798931-1-zhangyunfei1@kylinos.cn>
+In-Reply-To: <20260911091123.798931-1-zhangyunfei1@kylinos.cn>
+To: Zhang Yunfei <zhangyunfei1@kylinos.cn>
+Cc: jiawenwu@trustnetic.com, mengyuanlou@net-swift.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 16 Sep 2026 20:53:16 +0800 you wrote:
-> From: Linkui Xiao <xiaolinkui@kylinos.cn>
-> 
-> fib_select_multipath() compares nexthop_nh->nh_saddr against the flow
-> source address with no lock held, while fib_info_update_nhc_saddr()
-> stores a new value from another CPU as soon as the preferred source
-> address of the egress device changes.
+On Fri, 11 Sep 2026 17:11:23 +0800 you wrote:
+> txgbe_fdir_filter_restore() reprograms every filter from
+> txgbe->fdir_filter_list after a reset. It extracts the ring part of
+> filter->action with ethtool_get_flow_spec_ring() and maps it onto a
+> PF rx ring, silently dropping the VF part of the cookie that
+> txgbe_add_ethtool_fdir_entry() stores there (input->action =
+> fsp->ring_cookie).
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3] ipv4: fib: fix data-race and stale genid check around nh->nh_saddr
-    https://git.kernel.org/netdev/net/c/46bc52d13594
+  - [net] net: txgbe: fix FDIR filter restore for VF rules
+    https://git.kernel.org/netdev/net/c/651010592bdc
 
 You are awesome, thank you!
 -- 
