@@ -1,84 +1,72 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3523368B2
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 00:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3343630AF;
+	Fri, 18 Sep 2026 00:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789692393; cv=none; b=bDzcADFqyF4dyWLLOBPt/uy/kF2UD+5YWgk/EnXdF+v0HcNzwy+F/PY4zMTcPk90M5iU30oZejXmpwQM3x6peT9CfDkS8TdTZuEF9przd4MlIRAsB34YoUWqt0NXkCCPQQkPCS1AkaLTFnkAX+wWZa+asUL6vN2bwOgD1gEM6V4=
+	t=1789692779; cv=none; b=BMGnS7R7iUcnVKZ0/57veItGKNSrj0ngrJcEZSWHxtxn2NVYTjqHNnTDd9LwHXbXmQmL9aDFU6+Oyxuvph8NZNXaLet4O/X0ID9H7lInTKtsen5ZtMZl9B0EuvvUS7siRrs1StxboNxkegplJkdRDdiB94kFnCwciEaqLQZs3Vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789692393; c=relaxed/simple;
-	bh=y+KcGmpG4eIc5iIo0u/HkKgmSBIqucSdI/8b1DL2VLU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V3R5+32hMokUbnpdSSvsGCQMjv8fFLriaNMGejCFhg9/HUN6ZnIVpYyPyaGHDAKDiygclD5OstY+LZsMY2joQB3FKBeN8rV9OcK78gat7b0jAVSER8xRG5lU4adoZnrP29bx0DlBM1v1ZEsn7OQUnlQCXv7M3Ash0apKnY7CiBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j03VaKIH; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789692779; c=relaxed/simple;
+	bh=MAGcvP6geABCHMrgoyp0wiFaGxNP98/yBIKndJkGMzM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=RUe4/NtmxjHweC90JFNfwC1fBp54ram91oUlnIxSL1MWRzMapMP0sHm+q1Nm5DWYJ4Ocfdy66ZIF/o2NF8h8ARao86Lm7UZhP9Y7ItPKnIJHsi+/uCKVfczSZiHFM/oBSMSnhDXjuHlADOovEbrd80hTgg+XAyJ9iZqxEsRaoHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ghhB9O26; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j03VaKIH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9111F000FF;
-	Fri, 18 Sep 2026 00:46:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ghhB9O26"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4518C1F00898;
+	Fri, 18 Sep 2026 00:52:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789692392;
-	bh=y+KcGmpG4eIc5iIo0u/HkKgmSBIqucSdI/8b1DL2VLU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=j03VaKIHynUwjYg2Df2jGjP+Uf0e6NR5oUx4wpOh2+RW2sGXqcMiQGh1KfTo7Tw4w
-	 uXbn72igD+0apTEK9YW4thnCqNSLcRuz95A/0KohSg2I6oX40Nex2DVhSnu4rylkal
-	 tGyem2chyQiejadx7g12fkn3wNesT8sg7gZS9k3210Bkwzi7SW+YEvfGPTAUbbEgHI
-	 sOgReamtGnUROH2a8SgyiJ1aOpd1XydiqCYuHEcXVORq8oU07sMhT1u/f5VZad3SUE
-	 xnRl0eYJAnB8o+7zUv4qWriu8Miz+IgP0l+M60ZAu2cnTNYG0mqaCuefhV9SlM/MrM
-	 rMvo8XnUcSLrw==
-Date: Thu, 17 Sep 2026 17:46:31 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Victor Nogueira <victor@mojatatu.com>, davem@davemloft.net,
- edumazet@google.com, pabeni@redhat.com, jiri@resnulli.us, horms@kernel.org,
- vega@nebusec.ai, netdev@vger.kernel.org, Yuan Tan <yuantan098@gmail.com>
-Subject: Re: [PATCH net] net/sched: Avoid quadratic handle scan in
- qdisc_alloc_handle
-Message-ID: <20260917174631.66cee526@kernel.org>
-In-Reply-To: <CAM0EoMn1SkkC0goKD3-OreQtEwYbfr3zYJdmfrDf8HTdHWrNjg@mail.gmail.com>
-References: <20260911133146.3440982-1-victor@mojatatu.com>
-	<20260914191108.55a1a4f1@kernel.org>
-	<CAM0EoMk7CZA2qAPEfvZ_+tUDkcUYF5nanaxER1soLJQZqMuXxQ@mail.gmail.com>
-	<20260915085304.775a829a@kernel.org>
-	<CAM0EoMmiw_kVnK4RjTT_dkquw0YLSB5VgO_7EoV2WT_pQXbCYw@mail.gmail.com>
-	<20260916170425.1c7a7cbe@kernel.org>
-	<CAM0EoMn1SkkC0goKD3-OreQtEwYbfr3zYJdmfrDf8HTdHWrNjg@mail.gmail.com>
+	s=k20260515; t=1789692777;
+	bh=5BNIj8BNGyST6arfh5kwxyIl6omywdbjBlhFJKJwhCQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ghhB9O2692MT4im0KMC8DxoRkDUJMw3+K5grZTmpqIYsKoU0gKTk+PJYy5rGC1n04
+	 odzqsKgm4QHXWEJDAHYBgZ2pE+1AP34OUiDEVZdYmfi/N2dGrdiswZndNbByoGzj6u
+	 g8FtYPcps1PKy2QWONeWlv9kpNeKFv6dKxJVorL4SaTMsBz2K+pfxL95kF6lgfpOXt
+	 vt3ZT+xHTmpeFpJ3ku84odLZC8kV5SLwFURFsnlb2Jc45qOk0ESmyMciSJItZT56L/
+	 sV2mwTkt8WL7rn41ZtpAA7zStlmHlJ1wYz3T02+uyaOWNTJ8E5SzG2iF0NumSSswef
+	 /8Xo2XltfHYqg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	Karl Mehltretter <kmehltretter@gmail.com>,
+	gregkh@linuxfoundation.org,
+	luiz.dentz@gmail.com,
+	luiz.von.dentz@intel.com,
+	marcel@holtmann.org,
+	johan.hedberg@gmail.com,
+	eadavis@qq.com,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev,
+	syzbot+b7f6f8c9303466e16c8a@syzkaller.appspotmail.com
+Subject: Re: [PATCH 5.10.y] Bluetooth: L2CAP: Fix deadlock
+Date: Thu, 17 Sep 2026 20:52:35 -0400
+Message-ID: <2026-09-17-daily-reply-0008-l2cap-deadlock-5-10@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260916193454.9996-1-kmehltretter@gmail.com>
+References: <20260916193454.9996-1-kmehltretter@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, 17 Sep 2026 07:24:05 -0400 Jamal Hadi Salim wrote:
-> On Wed, Sep 16, 2026 at 8:04=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> =
-wrote:
-> > > Given the flood, here are the priority rules we are using:
-> > > 1) submit net before net-next
-> > > 2) All bugs must be reproducible by our (semi-automated) system
-> > > (hybris). I dont even look at issues unless they are reproducible
-> > > (hence my nagging "do you have a PoC?" ;->)
-> > > 3) Assign a priority to each bug and submit the highest priority ones
-> > > first. The priorities are assigned as follows:
-> > > - base (reproduced, ACCURATE) +1
-> > > - Crash (oops/panic/NULL-deref/OOM/corruption) +2
-> > > - UAF +2
-> > > - Lockup (soft lockup/livelock/infinite loop) +1
-> > > - leak +1
-> > > - simple-trigger (plain tc/tdc, no special PoC) +1
-> > > - privilege required: (root) +1 / (unshare -Urn) +2
-> >
-> > nice system :)
-> > no distinction between control path-trigger an packet trigger?
+> [ Upstream commit f1a8f402f13f94263cf349216c257b2985100927 ]
 >
-> At the moment we dont make a distinction - the existing point system
-> would still work, I think. Do you see it differently?
+> This fixes the following deadlock introduced by 39a92a55be13
+> ("bluetooth/l2cap: sync sock recv cb and release")
 
-Right, a bit of a murky call. In abstract packet trigger could mean
-remote attacker can crash a middlebox, that's _so_ much more serious.
-But in practice most of our packet level attacks are for some insanely
-pre-cooked skbs from AF_PACKET and such :/
+Queued for 5.10, thanks.
 
-It was just a thought.=20
+89e856e124f9 ("bluetooth/l2cap: sync sock recv cb and release") is back
+on 5.10 as well, so the tree now has both halves rather than the revert.
+
+-- 
+Thanks,
+Sasha
