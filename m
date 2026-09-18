@@ -1,119 +1,103 @@
-Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339B44E9C2B
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 12:27:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022644AC143;
+	Fri, 18 Sep 2026 12:27:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789734474; cv=none; b=r/CF3oZE75BmWWirDd5ZNhr9r7DDZAP4zOFw1DRnC890/g5mj3nmLH87WyhVc9bPfl+EaBX/IVMa9u8JH5pxt1I6Jo83/NMtomyBKTsE5gASoHyw2LWjEVgjdQ86bXfesCsCkdZMSScUhBJ/MXobCQSGszoD43cvCqXgcZLyfQo=
+	t=1789734481; cv=none; b=l0hfaiWclj701Q3Km5+PJn0lyVmJPC/TKCSRP+D8E6MHOhtmiy2p1c9sPgPVrRFl1iA7fGS/FmV5GwG4/CkF0+wwTXJcjVkdcMvt5Kl1H2nq4p3f9EdgRJtj8IBE0U7As/W9L3ZkZDqOc/DTxEiNvUKDfoXdneBdEF+oMqYsStg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789734474; c=relaxed/simple;
-	bh=rPmI3FNZkhe+GHeaM7hnQAaJHP2GLzCXFHO62JGnIJc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EWNDxWwqG6AiZj8gO/zvyMEAcuz/bd0ZPtvp2Pf9mcYlwjN8zuPzBa6mLISoW9r3R+3U4h0EE1OE5lmh4UCRciAvf6cnWxpr7mIF2iBzU68HoCX3dQvuLlY49r+D+9GmMXViFRgfQNOyPQ4XJOtwHRwRXpBL4R/yo5O+R23Vkr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KYiqXQ4A; arc=none smtp.client-ip=74.125.225.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789734481; c=relaxed/simple;
+	bh=D4I03yeQGzjKpMCYkTB8uAyyeRUNwjiqewlK+eDXjMQ=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=pKVr85ZcTGOILSyQsQIeEAsK9v3bbXaqdsXsVzo3VqjQTWvoIFjk2xySokLhlNYh+/qGRIE8/+bOHREnCP4cmMISFJEXHvBEII7kLnCnv01nNxxO8HrgsJ/AX2a9W7IUXd68u+bcJl9kiucQpWzporhQ7IV5uE/ab9KZOOXDhfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=lRLSd3CW; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KYiqXQ4A"
-Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-48434392b02so489437f8f.3
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 05:27:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789734469; x=1790339269; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=gvjMDdsg/k5nMEjyepG3LV70ieB2SKZbmKFwt4EpOis=;
-        b=KYiqXQ4A1EqCwD9JcPNF7k4Zs/0c2rp7vnnqEnV8aEPoUdzBDVDRXN7UeU4tEZ4rbb
-         7t7xcIL1LJChf4R+0NP5RN77iJTNhRRG0seXsD1RzqUEh/9StjhVcA2mmJ+kEVpvg6mL
-         TXG9YbaOBReuZBTwOkf7r5aYM/6FsGmoVtQi7BxvoGxtojk4jP0NUlMOrGzO9lx+6egI
-         y1rfx0TofXqLMF2s51YJGxcvXOGfGcxoaO33mXXgmj38UU4sI65gCJNvIB3gJvIfM9e3
-         lg2tzfJceXp3bjupqlvwlPKEy23K2smUZ1NVW6RvzQH1xBCWiLNXj77rK3Vr/7hhcLIA
-         CtwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789734469; x=1790339269;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gvjMDdsg/k5nMEjyepG3LV70ieB2SKZbmKFwt4EpOis=;
-        b=e5kLZNkXJWxxmbakw839RE8P98/EbdB31F54zesqEs2JgpoqzYMTiXyNMKhMGobsn/
-         JQAbiProwmQzh/q6Rj3TPeroAd9MBRIcbvaYj4aITB5iwlNzvyZpPxDmsCgFHG02LmYy
-         ph+lJ8PtKzFNi2wNFgg+NCGt2pI8uBhWyZdOi0X0/Okbyw0BPzQoXNDvLnD33vkl6jRy
-         OvwDmnTfWdA86su4buKmSsXTjo5bd3wknD5FqUvWQ09sPpDw19qjw8usmY6M/mto3A5f
-         tY03uoVz256ohn29XknlQuZuEP6OZFd6i+G14uoN7eGdwMh2UIip20oeMwysp4GdxiGY
-         nmgA==
-X-Forwarded-Encrypted: i=1; AKwUvByKVhDTLIwXwObmLlWcZJ1lz18gT6vz5ZHAT9nqh0TgCxlejezVyCcH4oGHFAnh4sNPQewtI5U=@vger.kernel.org
-X-Gm-Message-State: AFuF++mNh/WDtWZ0rSSj9zK4wZ97sE6SqKaf/BebPcvSfMzaSkIS+PPI
-	4yS94T2htjdoioIxlQ8QTkF8bOl7rFBfHNGU4TgEXb2/r3V5do6EVhxBllLvkzOA
-X-Gm-Gg: AYBFou1TPnI0sedqz8FdVixxQQTVdKFQqDtF8T4bLAEcWsLSGZlCYamQJ0iwKaTNoeA
-	8dhliB7RVThQ5y2E8F1xQAjqYmv2+ZVqPhWbmo6JApLXN0igcJPJXQIWk9gDdwhfNrH3ChqOwj2
-	4fYT9P5ZIQsp0GnxU+F1Ww14hJHXCEZODIfS1F15lhwr4NwKYIiAo9JIIZ69gW6R/4cXS3+njSo
-	nulBfnj5esV6uD9w0AqbnnCIhoUrkdqgfmvZkYX/9m9jd4JFuJV2L6CiLMX/0y9Z8hXAMDJK2dA
-	RcfNDLqRbidayim3HWOYQdV/brTCJQEyM2NHhoaU8OLGieUnhCQe9GjPSKiFEPT7rWXNS0UW8S9
-	eY98O7t2TZBvcVoYUk3Y/7pyGBtz6wBHLCJAp0AD+Xlvckiii3Htdgy/72viVaPbfqzmZFiOkBc
-	88C7LqiIdGkIym1G5EiCI268vFuG6NgMbtVhFGjiNSj+EM/tDEvDpvLlvJSiLusObwJERar/PrB
-	6ZrYGmix3VFvoQ96ICj5JUYExGeO8UlR6wh5fzBMAXWm9k=
-X-Received: by 2002:a05:6000:990:b0:485:ad55:208d with SMTP id ffacd0b85a97d-4871e263f69mr7176550f8f.18.1789734469024;
-        Fri, 18 Sep 2026 05:27:49 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4871feb5636sm4043259f8f.5.2026.09.18.05.27.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 05:27:48 -0700 (PDT)
-Date: Fri, 18 Sep 2026 13:27:47 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: quanyeyang <quanyeyang@proton.me>
-Cc: Quanye Yang via B4 Relay <devnull+quanyeyang.proton.me@kernel.org>, Eric
- Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, "David S. Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, "Matthieu Baerts
- (NGI0)" <matttbe@kernel.org>, Geliang Tang <geliang@kernel.org>, Mat
- Martineau <martineau@kernel.org>, Jiayuan Chen <jiayuan.chen@linux.dev>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v4 1/2] tcp: annotate lockless access to
- sk->sk_err
-Message-ID: <20260918132747.6ac8beeb@pumpkin>
-In-Reply-To: <zEvCcu9s6PbTRajtbCvCik2zCOJsXozLWWvYsLfl6AV4IJLyXmS63i5nuaCmqk_5DsRajMO3IjRtFpOSpmRY55ByjpBJ8NmtwDk-kSpr9bM=@proton.me>
-References: <20260917-mptcp-sk-err-net-v4-0-1f04f52f2561@proton.me>
-	<20260917-mptcp-sk-err-net-v4-1-1f04f52f2561@proton.me>
-	<20260918105142.3dc675eb@pumpkin>
-	<zEvCcu9s6PbTRajtbCvCik2zCOJsXozLWWvYsLfl6AV4IJLyXmS63i5nuaCmqk_5DsRajMO3IjRtFpOSpmRY55ByjpBJ8NmtwDk-kSpr9bM=@proton.me>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="lRLSd3CW"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 75D0CA50C5;
+	Fri, 18 Sep 2026 14:27:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1789734474; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=Zx+UnW+U+8Lo3B9mBHhdyZeWG2LwXc0mc8VMD/jW+6g=;
+	b=lRLSd3CWhGDLQ+vXzCVIdV1a3BEPf07TTGGUMaNaYPPjsPTanjjtkqhMC4CfKanmZJKoce
+	gCJWNkWe16IPsmZwvkd+sFGY4vVF5Y/PqZ1U4d5a7GtBW3crzq3C9m6zxwCEhJrIk1Vg1n
+	MgBceIofv69LV9K1YIhI2hK1gntfTL8kMAxMONJ/Y/Raj6ikEXK3dAykYinQJt32zeUc72
+	qgJb0V7kspNs2n5rCBTyXnMT6BSc5tvcYhru5WpG4lXKdwsAJHO2sRCpWdG4qACpVJmHL2
+	OVkd18fA+Q/BKDyIEaO51tEVX5vsJHBSljm6u8RRuNnqsGNJpWboZ7u7qBx2nA==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Date: Fri, 18 Sep 2026 14:27:51 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: javen <javen_xu@realsil.com.cn>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, freddy_gu@realsil.com.cn, maxime.chevallier@bootlin.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, daniel@makrotopia.org,
+ vladimir.oltean@nxp.com
+Subject: Re: [PATCH net-next v1 1/3] net: phy: realtek: add support for
+ RTL8261CE_CG
+In-Reply-To: <20260916081444.497-2-javen_xu@realsil.com.cn>
+References: <20260916081444.497-1-javen_xu@realsil.com.cn>
+ <20260916081444.497-2-javen_xu@realsil.com.cn>
+Message-ID: <5f533ecb12674818c763153390619702@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Fri, 18 Sep 2026 10:33:04 +0000
-quanyeyang <quanyeyang@proton.me> wrote:
+On 16.9.2026 10:14, javen wrote:
+> From: Javen Xu <javen_xu@realsil.com.cn>
+> 
+> Add support for RTL8261CE_CG, its phy id is 0x001cc899. RTL8261CE_CG
+> share the same sub_phy_id and firmware with RTL8261C_CG.
+> 
+> Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
+> ---
+>  drivers/net/phy/realtek/realtek_main.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+> 
+> diff --git a/drivers/net/phy/realtek/realtek_main.c 
+> b/drivers/net/phy/realtek/realtek_main.c
+> index 97b0b67b9900..d0d09e8e8f5c 100644
+> --- a/drivers/net/phy/realtek/realtek_main.c
+> +++ b/drivers/net/phy/realtek/realtek_main.c
+> @@ -257,6 +257,7 @@
+>  #define RTL_8251B				0x001cc862
+>  #define RTL_8261C				0x001cc890
+>  #define RTL_8261C_CG				0x001cc898
+> +#define RTL_8261CE_CG				0x001cc899
+> 
+>  #define RTL8261C_CE_MODEL		0x00
+>  #define RTL8261D_MODEL			0x81
+> @@ -3363,6 +3364,19 @@ static struct phy_driver realtek_drvs[] = {
+>  		.soft_reset		= genphy_c45_pma_soft_reset,
+>  		.suspend		= genphy_c45_pma_suspend,
+>  		.resume			= genphy_c45_pma_resume,
+> +	}, {
+> +		PHY_ID_MATCH_EXACT(RTL_8261CE_CG),
+> +		.name			= "Realtek RTL8261CE 10Gbps PHY",
+> +		.probe			= rtl8261x_probe,
+> +		.config_init		= rtl8261x_config_init,
+> +		.get_features		= rtl8261x_get_features,
+> +		.config_aneg		= rtl8261x_config_aneg,
+> +		.read_status		= rtl8261x_read_status,
+> +		.config_intr		= rtl8261x_config_intr,
+> +		.handle_interrupt	= rtl8261x_handle_interrupt,
+> +		.soft_reset		= genphy_c45_pma_soft_reset,
+> +		.suspend		= genphy_c45_pma_suspend,
+> +		.resume			= genphy_c45_pma_resume,
+>  	},
+>  };
 
-> On Friday, September 18th, 2026 at AM 2:51, David Laight <david.laight.linux@gmail.com> wrote:
-> 
-> > Don't they need annotating with data_race() ?  
-> 
-> I think READ_ONCE() is the intended marker here.
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-If the race is with locked accesses I think you need both.
-
-David
-
-> 
-> These loads are part of the I/O control flow (stop send/recv/splice),
-> not diagnostic or heuristic reads. data_race() would silence KCSAN
-> but would not restrict compiler optimizations, so the load could still
-> be torn, fused or reissued. READ_ONCE() is a single-copy atomic load
-> and pairs with the existing WRITE_ONCE()/xchg() updates of sk_err,
-> same as tcp_poll() after e13ec3da05d1.
-> 
-> sock_error() uses data_race() only on the fast-path "is it zero?"
-> check, which is then validated by xchg(). That pattern does not
-> apply to these peeks.
-> 
-> Quanye
-> 
-
+Thanks,
+Nicolai
