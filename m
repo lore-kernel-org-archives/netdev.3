@@ -1,82 +1,103 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E00C52188A;
-	Fri, 18 Sep 2026 18:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E9F51DB0C;
+	Fri, 18 Sep 2026 18:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789756050; cv=none; b=WzALX5VoGtarrri+h3kvsF+bCNSFVfWYO+5/QLs522szpziLcdt5z1LWmYdQd4Q859Ifyncd6J2eUaLYi1tdOZRV8Uaht8KdXZidgianyyXWZsH8suDiPrmPCluIi7U5hMGnWG3A3D/1zRWulfwgmldV5cVLDoZii7vTCZ2mK78=
+	t=1789756275; cv=none; b=WQRtrjalyCaiR3kHCWVGubOeUYHp0STy5e8xohkLPiJURymdBWPabpgtEsNHOWjIUSI9pUAFmqob6/R/D5diGz9zOK9x/4Mr7cZtIdS1IHPaa754+cFuL+sN8fe1Srg9Yo6iqxBwCOL5/9XMhOw9Hpjh5yVhu5Abalnzh7eiIQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789756050; c=relaxed/simple;
-	bh=Dri96WREQxEfwj2wUP6PyuqNIP93ZOfNmQegkWad4mQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gg55eOibqWwWXic2NbWYv0bTaRiXsiQhPHZRCZZJzVz9xzDs/3d0hO00AzScqB8f9IRfcwYdRyjz5Dcrh3xGUgybNqXtTVQP58XuBMDeLdGQrnhcZNGd58v1kJlln8FXSsuusohbwHzld4sZB/McX/OLa7lXPKP8nQZYWYWgnLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UOhzJEHv; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789756275; c=relaxed/simple;
+	bh=4zEZMHh4DDkzBHZJnZViZeAC2JUpS8h+LtAC4/c1iYc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AFy5dVsD8of0zzmBvwj5QikDEvdxzJDXkfG6WbqtDgOrjhqpiH+euAthvMlmM5hy00zxkBv/Hy1l/30eyXxifUvisvIOqqgcj7GcjC5+Z5yBHzfOjJOdjWjSSzS0Koz2zR72FNvkPf+Tqhkr3ZHeW6AipzpTStCMyXAM5Dnuze4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IAubqxBX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UOhzJEHv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8821F000FF;
-	Fri, 18 Sep 2026 18:27:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IAubqxBX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D511F000FF;
+	Fri, 18 Sep 2026 18:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789756048;
-	bh=WLZnhkcbCs2cGW8z2qAspQRyV6RDHbz3ypUhIp/hIoE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UOhzJEHvKuUqYkqOMv6WEMzOnah9ODgXw77d8su//Qz/QRBWSYMq30HRBZyJfcBPs
-	 GIZ0OpjHyVy60b4/F1ETe9qo8pNdupvvo+ok3kKVVu8M+JCnDwuXZxoDENMojh7o5Y
-	 Xhd/tG3jhRVJnTgRENawjOtynb06j161CAXuxBExwL/NjG26R2w+bV+wQy6N6xbOQu
-	 jcuby6T2fvjbrjeFFjNRj7bTdtmRGglf5GCzVWBwZ/6MdTA/zbi7RPQ9WqDGWCfqfW
-	 0A3eJ8sE6AJR7jDevEuz8/ry5S9XKC/yaGsa5LxjZHwGj5TUEL5ShBFxDLx3dbv/nU
-	 KYurNwwtu06Kg==
-Date: Fri, 18 Sep 2026 13:27:27 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: muhammad.nazim.amirul.nazle.asmade@altera.com
-Cc: Dinh Nguyen <dinguyen@kernel.org>, linux-kernel@vger.kernel.org,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Paolo Abeni <pabeni@redhat.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	s=k20260515; t=1789756274;
+	bh=wpmIF6yy9SlhPeMU8vS+NXZkJWjaMaqH1VZ6cxj8qUo=;
+	h=From:To:Cc:Subject:Date;
+	b=IAubqxBXkF8yRkT/Z0gVRC+Q5xFYjiMns7vBrktrVtpfj5XC5XLjh04G1N7RftaIj
+	 02MVjEKQOsF1zbS+1onSU8oeBfnxjxLEdznysQF2AkaQSXZCBps6TAkj9VINcxGSoY
+	 7yX3Bfh/eNpjpA90ns3wWvX7CWtmmIuazS5m0NEGMqiwWDLq1VjMQYc22MBq8PXaJK
+	 8bfl9/040zOpwGMhFpb4uF5E+nV3cRUOh5JCbmA9DPFS5gaoBe0pTkYV1x+xdH1/MK
+	 J1oxGoi1Ek/fgDb9RtXAe6hW5QlYD+Nz776AG2anPexI8I1c6fbQwnzIxYyKj1c8v6
+	 zAZ28CXtkLM6A==
+From: Jakub Kicinski <kuba@kernel.org>
+To: pablo@netfilter.org,
+	fw@strlen.de
+Cc: netdev@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	devicetree@vger.kernel.org,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] dt-bindings: net: snps,dwmac: allow stmmaceth-ocp reset
- name
-Message-ID: <178975604551.1250907.16038130786685150489.robh@kernel.org>
-References: <20260909080559.2028-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+	phil@nwl.cc,
+	shuah@kernel.org,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH nf-next] selftests: netfilter: nft_queue.sh: only queue icmp echo request/reply
+Date: Fri, 18 Sep 2026 11:31:09 -0700
+Message-ID: <20260918183109.3918131-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260909080559.2028-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+Content-Transfer-Encoding: 8bit
 
+The bridge test flakes on debug kernels:
 
-On Wed, 09 Sep 2026 01:05:59 -0700, muhammad.nazim.amirul.nazle.asmade@altera.com wrote:
-> From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
-> 
-> Arria10 SoCFPGA DWMAC nodes use reset-names = "stmmaceth",
-> "stmmaceth-ocp", which matches what dwmac-socfpga looks up for the
-> OCP reset. The generic snps,dwmac binding only allowed "ahb" as the
-> second reset name, so Arria10 DTS failed schema validation.
-> 
-> Allow "stmmaceth-ocp" as an alternative second reset name and drop
-> the related TODO from the Altera SoCFPGA DWMAC binding.
-> 
-> Signed-off-by: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
-> ---
->  .../devicetree/bindings/net/altr,socfpga-stmmac.yaml          | 2 --
->  Documentation/devicetree/bindings/net/snps,dwmac.yaml         | 4 ++--
->  2 files changed, 2 insertions(+), 4 deletions(-)
-> 
+  FAIL: Expected 10 packets total, but got 24 packets total
+  hook 3 packets 00000008
+  hook 4 packets 00000010
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+The surplus are icmp fragment reassembly timeouts.  The udp flood in the
+stress test leaves incomplete datagrams behind in ns2 and ns3, 30 seconds
+later their reassembly queues expire and both namespaces send icmp time
+exceeded to ns1's pre-bridge address.  ns3 is not reconfigured when the
+router is turned into a bridge, so its messages arrive via veth2 and are
+then forwarded out of br0. Such packets are locally originated from the
+bridge point of view and are queued from the bridge output and
+postrouting hooks, which is why only those two counters are off.
+
+Restrict the ipv4 rule to echo request/reply, the icmpv6 rule already
+does this.
+
+We used to see 1 flake a day in NIPA before locally queuing this change,
+zero flakes since (over 9 days)
+
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+The difference between v4 and v6 has been there from day one,
+which makes it seem intentional, but I don't understand nft
+well enough to come up with any theories why..
+
+CC: pablo@netfilter.org
+CC: fw@strlen.de
+CC: phil@nwl.cc
+CC: shuah@kernel.org
+CC: netfilter-devel@vger.kernel.org
+CC: coreteam@netfilter.org
+CC: linux-kselftest@vger.kernel.org
+---
+ tools/testing/selftests/net/netfilter/nft_queue.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/testing/selftests/net/netfilter/nft_queue.sh b/tools/testing/selftests/net/netfilter/nft_queue.sh
+index 7c857a2e0f34..c8d1f2eb4133 100755
+--- a/tools/testing/selftests/net/netfilter/nft_queue.sh
++++ b/tools/testing/selftests/net/netfilter/nft_queue.sh
+@@ -92,7 +92,7 @@ load_ruleset() {
+ ip netns exec "$nsrouter" nft -f /dev/stdin <<EOF
+ table $family $name {
+ 	chain nfq {
+-		ip protocol icmp queue bypass
++		icmp type { "echo-request", "echo-reply" } queue bypass
+ 		icmpv6 type { "echo-request", "echo-reply" } queue num 1 bypass
+ 	}
+ 	chain pre {
+-- 
+2.55.0
 
