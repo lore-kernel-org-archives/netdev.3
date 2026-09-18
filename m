@@ -1,137 +1,110 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE1551AEC1;
-	Fri, 18 Sep 2026 18:23:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62CE51C343;
+	Fri, 18 Sep 2026 18:23:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789755795; cv=none; b=nuAN7hLKg1mIoeFTNlwx43eujMEfoYThA1dYBtW1jXhkr0XnRcvEX5wiWHJhpI8ZtY8DiHIJLBi4otNXZxi0S9q6STC9PoZbgKmGgohBY1qhtERNQKa2AXTjFcUdhLoGTT09tzAQG2ABGt8jTWEaOiEuP6ymFCcdMB4KPxdtqjk=
+	t=1789755798; cv=none; b=El7+0AkRmYDT47usBoUJxNwt9DoVBxoHiAr9wOI49DghRca10sdfMrYI4ZwU6ULadctl3tZNZH/EEUF2kh+BE/gDDnqntBuY1PWeJIiBZLTsexIXWP0N376arFHjDGaUSIx+h9FX/PUvHQLQd03GYBlJBSX8m0hJaoH9j7Ayj5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789755795; c=relaxed/simple;
-	bh=R4EGLP0NgUZ5EIEjB1r1udzgmhqJirLrudGKIdHuU6A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IXsr+/h4fqVvFsxMPzU1WnDYmg0Spl96YKvyfd3hhg4vwg/7VrQNfwjEarKojvXyYg+4tE4x6ikBiJyi4oQelijQyy7f4lEPqSiy8LdBImuyNuj6sDpAlC0IcWQ7L1VlN60aHUWbSMoQ/T49BQRWQ3D9wZ16dW1fCUkM+2oABDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=uBViZE7W; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1789755798; c=relaxed/simple;
+	bh=gHCFHvvzJ7jCE2Tto2KlkqyHoiE7Gu0jWU2dsqDsJ4c=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Z9/BrKW0Q14ye7X2IihZNRWS66Ki0wexpvDoc7zP7AyxpJMJJGuLdSAvMO9blPgXh3sJxUNiTQDhZI6ZuTpFlvk713HJqNG+TN2v5GwKeDkbf+UH07SV8EyUlbyoilKe1tTdATpQGozYOWM0eaPahPC+UyOhtFpwA5e8imCKyv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=xcQBp/jA; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="uBViZE7W"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 26133168F;
-	Fri, 18 Sep 2026 11:23:09 -0700 (PDT)
-Received: from [172.18.224.124] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DE73A3F86C;
-	Fri, 18 Sep 2026 11:22:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789755792; bh=R4EGLP0NgUZ5EIEjB1r1udzgmhqJirLrudGKIdHuU6A=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uBViZE7WYA5IezA8HXvATa7vZqxde4vQR9FDelx+5xM6B1jzQNnpEagcPgtVcXg4o
-	 QdPpJQBrzu93qd0jFcZXkH0sWXS7QIh0aXhmB/dNhF/hGUjElDA5Nl2Vq3pCEnZj7l
-	 tZGiCBiF0PRTjP35B7KYEyyc3evTy82EGHYUzdmY=
-Message-ID: <6b35feab-353c-4802-b47d-08ff6d226eca@arm.com>
-Date: Fri, 18 Sep 2026 20:22:57 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="xcQBp/jA"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 9875F4E407BD;
+	Fri, 18 Sep 2026 18:23:12 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5F7D960649;
+	Fri, 18 Sep 2026 18:23:12 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B903710328E70;
+	Fri, 18 Sep 2026 20:23:00 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789755787; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=tjjf402bMYV3OnGzbLEejRpkhzJwKU92sgnZVC1BoGE=;
+	b=xcQBp/jAcXU+bO9GSL2uT3RXfvwq5q5aRcpN1arlBzvv3gLgVe2jEHyGh8C0z25G+JOt7N
+	K8muqP3KBsKKN7QzVN8Ok8b7gvPI/OYKd7+RLwR4YUcxvPu/fld5X1KuFV1zqZo4UnJou/
+	kFAk5iPF72RNleMH3XE40qoJCicFUNtrHQts8zNu97/g/O+bRtd743euIfEE8mOPpe9yao
+	SwjlRF1R/ixifkU2iAmkfnxc13DljrMWThZ3uxUvrycfhBSJrsSeJbYyj+X8mt7hrRosUX
+	EYQs0S/bLcremMMvRqgezfuFOjREm0opkfOQJZpRE6v+ieIhV2ucQhBbi24LGA==
+From: "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
+Subject: [PATCH 6.12.y 0/3] netfilter: nf_conntrack_expect: use conntrack
+ GC to reap expectations
+Date: Fri, 18 Sep 2026 20:22:56 +0200
+Message-Id: <20260918-cve-2026-80668-v2-v1-0-fcefceb49144@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 3/3] net: stmmac: sun8i: add support for
- Allwinner H616 EMAC1
-To: James Hilliard <james.hilliard1@gmail.com>,
- Richard Genoud <richard.genoud@bootlin.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Giuseppe Cavallaro <peppe.cavallaro@st.com>,
- Jose Abreu <joabreu@synopsys.com>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: Maxime Ripard <mripard@kernel.org>,
- Alastair D'Silva <alastair@d-silva.org>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com
-References: <20260917-submit-h616-emac1-v1-v3-0-62cb8316e19b@gmail.com>
- <20260917-submit-h616-emac1-v1-v3-3-62cb8316e19b@gmail.com>
-Content-Language: en-GB
-From: Andre Przywara <andre.przywara@arm.com>
-In-Reply-To: <20260917-submit-h616-emac1-v1-v3-3-62cb8316e19b@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMwQ6CMBCE4Vchc3ZJ28Sm9VWMB1gXWA5gWm00h
+ He36PGbZP4NWZJKxqXZkKRo1nWpsKcGPHXLKKT3ajjjvIk2EBehAxSM94GKI+7OcTDM0seI+ns
+ kGfT9a17hW+vaD27/Pb/6Wfh5BLHvX7yiLPZ9AAAA
+X-Change-ID: 20260918-cve-2026-80668-v2-ca59f0cceb99
+To: stable@vger.kernel.org, Pablo Neira Ayuso <pablo@netfilter.org>, 
+ Jozsef Kadlecsik <kadlec@netfilter.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
+ Florian Westphal <fw@strlen.de>
+Cc: Benjamin Robin <benjamin.robin@bootlin.com>, 
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>, 
+ Sasha Levin <sashal@kernel.org>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789755780; l=2001;
+ i=miguel.gazquez@bootlin.com; s=20250708; h=from:subject:message-id;
+ bh=gHCFHvvzJ7jCE2Tto2KlkqyHoiE7Gu0jWU2dsqDsJ4c=;
+ b=QtOiqeKIY0rK0wNdxwHIPfs7TOn0R7klIJCI3dEF5C2z8hetPFAy/CkrWu5bItyW2qO5dwpX6
+ wtAMAEgGFpFD0DTaCdmSmflQDF75x9n6OpagQAZpl895ubFcj54uD1M
+X-Developer-Key: i=miguel.gazquez@bootlin.com; a=ed25519;
+ pk=k/2KI9jkmayaF0ghZ8QYUH9Wm/kFHDhl8QoZ0RHbr4w=
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hi,
+Backported two other patches in order for the fix to apply cleanly.
 
-On 9/17/26 19:55, James Hilliard wrote:
-> The H616 secondary EMAC uses a separate system-control clock register
-> and supports only RMII at 10/100 Mbps. It connects internally to the
-> co-packaged AC200 or AC300 EPHY and has no external PHY pins.
-> 
-> Add an EMAC1 variant using the dedicated register and enable only RMII.
-> Leave PHY initialization to the PHY driver instead of using the H3
-> internal-PHY controls. No RX or TX clock delays are configured for this
-> RMII-only variant.
-> 
-> Co-developed-by: Richard Genoud <richard.genoud@bootlin.com>
-> Signed-off-by: Richard Genoud <richard.genoud@bootlin.com>
-> Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+Signed-off-by: Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
+---
+Pablo Neira Ayuso (3):
+      netfilter: nf_conntrack_pptp: move GRE specific cleanup to GRE tracker
+      netfilter: conntrack: check NULL when retrieving ct extension
+      netfilter: nf_conntrack_expect: use conntrack GC to reap expectations
 
-Looks good to me, nice and minimal:
+ include/net/netfilter/ipv4/nf_conntrack_ipv4.h     |   4 +
+ include/net/netfilter/nf_conntrack_expect.h        |  16 +-
+ include/net/netfilter/nf_conntrack_helper.h        |   2 +
+ include/uapi/linux/netfilter/nf_conntrack_common.h |   1 +
+ net/ipv4/netfilter/nf_nat_h323.c                   |  12 ++
+ net/ipv4/netfilter/nf_nat_pptp.c                   |  14 +-
+ net/netfilter/nf_conntrack_broadcast.c             |   3 +
+ net/netfilter/nf_conntrack_core.c                  |  33 +++-
+ net/netfilter/nf_conntrack_expect.c                | 174 ++++++++++-----------
+ net/netfilter/nf_conntrack_ftp.c                   |   6 +
+ net/netfilter/nf_conntrack_h323_main.c             |  22 ++-
+ net/netfilter/nf_conntrack_helper.c                |  10 +-
+ net/netfilter/nf_conntrack_netlink.c               |  22 ++-
+ net/netfilter/nf_conntrack_pptp.c                  |  72 ++-------
+ net/netfilter/nf_conntrack_proto_gre.c             |  71 +++++++++
+ net/netfilter/nf_conntrack_sane.c                  |   3 +
+ net/netfilter/nf_conntrack_seqadj.c                |  17 +-
+ net/netfilter/nf_conntrack_sip.c                   |  54 +++++--
+ net/netfilter/nf_nat_sip.c                         |  12 ++
+ net/netfilter/nfnetlink_cthelper.c                 |   6 +
+ net/netfilter/nft_ct.c                             |   3 +-
+ 21 files changed, 363 insertions(+), 194 deletions(-)
+---
+base-commit: fa5b06866b643cce7072a4e7c6be7ee3f0f1b95c
+change-id: 20260918-cve-2026-80668-v2-ca59f0cceb99
 
-Reviewed-by: Andre Przywara <andre.przywara@arm.com>
-
-Cheers,
-Andre
-
-
-> ---
->   drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c | 16 ++++++++++++++++
->   1 file changed, 16 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-> index 4523a14f5e0c..1020168f1c3a 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c
-> @@ -81,6 +81,13 @@ static const struct reg_field sun8i_syscon_reg_field = {
->   	.msb = 31,
->   };
->   
-> +/* EMAC1 clock register @ 0x34 in the "system control" address range */
-> +static const struct reg_field sun8i_syscon_reg_field_emac1 = {
-> +	.reg = 0x34,
-> +	.lsb = 0,
-> +	.msb = 31,
-> +};
-> +
->   /* EMAC clock register @ 0x164 in the CCU address range */
->   static const struct reg_field sun8i_ccu_reg_field = {
->   	.reg = 0x164,
-> @@ -143,6 +150,13 @@ static const struct emac_variant emac_variant_h6 = {
->   	.tx_delay_max = 7,
->   };
->   
-> +static const struct emac_variant emac_variant_h616_emac1 = {
-> +	.syscon_field = &sun8i_syscon_reg_field_emac1,
-> +	/* The co-packaged AC200/AC300 PHY does not use the H3 PHY controls. */
-> +	.soc_has_internal_phy = false,
-> +	.support_rmii = true,
-> +};
-> +
->   #define EMAC_BASIC_CTL0 0x00
->   #define EMAC_BASIC_CTL1 0x04
->   #define EMAC_INT_STA    0x08
-> @@ -1276,6 +1290,8 @@ static const struct of_device_id sun8i_dwmac_match[] = {
->   		.data = &emac_variant_a64 },
->   	{ .compatible = "allwinner,sun50i-h6-emac",
->   		.data = &emac_variant_h6 },
-> +	{ .compatible = "allwinner,sun50i-h616-emac1",
-> +		.data = &emac_variant_h616_emac1 },
->   	{ }
->   };
->   MODULE_DEVICE_TABLE(of, sun8i_dwmac_match);
-> 
+Best regards,
+--  
+Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
 
