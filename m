@@ -1,147 +1,199 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F164E3FCB3D
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 09:51:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983F9233933;
+	Fri, 18 Sep 2026 09:55:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789725107; cv=none; b=JdQsP1EUkX2V5GY4Nse7U14AEEnvh8CAtqaEJtEEFv+yrTUbycEeiYmWe53Tzt0Bq/xau8oGcWGp2yJMQrZzn/TxI9xS1tfKbGTGRrCCfuKz43perbENprU3Os1joUoMcSJTo5dqkue3Vd1qj+hGsFzGH+MBf9wkrjAv8cMzGBw=
+	t=1789725362; cv=none; b=bD96DnAy3tnY8XkI5ULdoD0aKCyzdy8MOPTi96q8z6OzvdI7Opli/GfELsSdvTJsetMva65jb0KR6m7oObYYrlz9OVCd1TbaAqjR8oUdQaEqNkxc5wxy5f5Hureu96iuxrvx17KLqSHIG7QXBitL8Xkpctmj4TG8XmK3jmXGuH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789725107; c=relaxed/simple;
-	bh=evzl+Hpp+IV7r6sq9RYlAQhlhstCAiZc+kjLirAEVUg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MTiHBb4YdNsmDNLqhquuD/AF7zMO7grziWP9h5usAsQReajVAYHQa66Ng49PMkZtGHNWh8pfjx8BlNLZrX9xtIvGFG8Y8oDD70zfG+s3e7+HxSuUScwWTsuFcfO3x7tXc9ToTFrfo9O3qNX8yADOTnvOOHBbTOOO3ROT2G2gD80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LcFU0Iae; arc=none smtp.client-ip=74.125.225.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789725362; c=relaxed/simple;
+	bh=RloubzetdNOj3zTBg25Rv/u14MpkvCQNuwFPs/m9hxY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H3XkBYA4XlnavfVanVu9r3hHLKdNMUrYAVe4yx314FbWOKyS9vsWiZNbm2MwA+n3Zp2tRkdKJnUT5crUIWQAJacr3dgVvGNZIkwvuYUl8nUX4bftAwZsbj3OWnSujVTqb4NcUJla4vYTYLKVmxhtxyKKDL91kY6Q5aaABh7lMus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=IPIKaSh6; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LcFU0Iae"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e79a408deso2916585e9.2
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 02:51:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789725104; x=1790329904; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ISL90nqpfEm1wYjlP2uZ/EAEmky5Z6krLJs1OIlmB5U=;
-        b=LcFU0IaeQKk/Uwy9VYasBD54Z7EMSupJUx7b0akDHOXOujRiX6/MZNt+4QCdVn7cBi
-         mA9Z+udG27unmzr71W85MSKHeKMIGgIn3wQxH5mtKQqm6W35+vyk7wZ5FzroOIl4nwad
-         ru5HN7Mkxf47EuM62LqoledUk1ULBTtMEIhvm4B54+LsKsfg0fuOVPAEwkysV3o0npFR
-         0HOu23LhsEoV9Am6tHYvayMo0CJ2bYFGVZJKgTPw3IbBRFnF93ALcqGr4n2+UnNNvyIe
-         EB/6rwxXEgjpmDhGTgxVCMSr4mgcvzQjoPfv4nWq5DE93PjaQB5/65IOeGyuzfR0WWoJ
-         +9Jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789725104; x=1790329904;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ISL90nqpfEm1wYjlP2uZ/EAEmky5Z6krLJs1OIlmB5U=;
-        b=GUi4L1PWfB7l+M3Ua4MF1AuCsHtjzENl6iW9771re8lk3c3yQN577/0HgmjIKk/y4E
-         +N+eXUXcFZL4dzG6eCY09yxzygigBA72e3tOpNv1WETdfNX1fCaFgknCKfBd+J6AL2Hc
-         5nMmZLo43Gi220Uvr0fenmFBd/LF8k+x3C7ECrL28+E18QFLf1fDCtH68J7Q38qG6z8P
-         LCXudydNuePC4QWU1SMon52Ph1uXxc4YQ6SoQrTcy5/N0CU2X1d4nIwqcdG99WnUUbm9
-         ugIyLdUn8hdsWafYMAuginppUwzPYkfDY606RxVHoucAN2Ed8R/lCX6uTEMvX5k4fSSn
-         Z5tg==
-X-Forwarded-Encrypted: i=1; AKwUvByRLuFYdjqubPKHLvyRLpv1cigwRdXxfEtaLshAQW+ycS0YTk2Tr03twzIReea8XrewuGJ6Lt4=@vger.kernel.org
-X-Gm-Message-State: AFuF++ms1/Gh5Sr+8o58HHgn3Lw2LEjmrmklDovkxkweeYi9TnljSVqF
-	9RmckhfXIHo0T1yRj96J2LV6BpP3CTuz7QH9GeGscrkniL67Pjj8qMK9
-X-Gm-Gg: AYBFou29WBKM8Dq7EIwC3jIAVlYMz1OzeyINSl8TLmmEc3tYh5A9SifSdpnu05iENIU
-	0kfMxh/S5qAKAhxPQtlxam3rb3Gvg+i9LuYUjNZmm8R9ztBtje+Wt9kjX3ipYNOwWNnlDpY4KbN
-	X21aZjSFeyb0mDXfXiFI50dYSHxWBzXkTrgHkd0AVS/5abaFefMHMCllhT0ypa0qkH8l/oj3hhN
-	clvrjKl+YxrGMhur8fbaAUmeebOJUMJVR7HHHKIVw2pxWjfZmdfDIG8la3m/5m2CinO+Hs3O9KC
-	FmkIixzp0mSqBlzarqmdb09K1yenbD4rSEgAvl3DoGQWgAK6CnpeUMnGn1YGc2ZWcZMOMlQPpVK
-	WbVR3LCtVBSW70/70rogmIPyqK+/Gd7nBLyNGpHWk9NvZ2AzpSZQ6uEpqqpipVdpfaZBdAFTpMG
-	4n1tHJIrdEO7kJM7dq8t2yevykKLCQghaxeGCOphN0JAFAFKM+B4o8fKzpngvjAAv8iPtsflSsw
-	3QPTULOd4SC+q6iTq8op7tz7HfZGiMNDNzV
-X-Received: by 2002:a05:600c:83cd:b0:49c:c0d4:53d9 with SMTP id 5b1f17b1804b1-49fc56f7a11mr20119345e9.14.1789725104138;
-        Fri, 18 Sep 2026 02:51:44 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fc7d468b3sm40811125e9.13.2026.09.18.02.51.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 02:51:43 -0700 (PDT)
-Date: Fri, 18 Sep 2026 10:51:42 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Quanye Yang via B4 Relay <devnull+quanyeyang.proton.me@kernel.org>
-Cc: quanyeyang@proton.me, Eric Dumazet <edumazet@google.com>, Neal Cardwell
- <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, "David S.
- Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, "Matthieu
- Baerts (NGI0)" <matttbe@kernel.org>, Geliang Tang <geliang@kernel.org>, Mat
- Martineau <martineau@kernel.org>, Jiayuan Chen <jiayuan.chen@linux.dev>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v4 1/2] tcp: annotate lockless access to
- sk->sk_err
-Message-ID: <20260918105142.3dc675eb@pumpkin>
-In-Reply-To: <20260917-mptcp-sk-err-net-v4-1-1f04f52f2561@proton.me>
-References: <20260917-mptcp-sk-err-net-v4-0-1f04f52f2561@proton.me>
-	<20260917-mptcp-sk-err-net-v4-1-1f04f52f2561@proton.me>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="IPIKaSh6"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7FE6DA02D0;
+	Fri, 18 Sep 2026 11:55:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1789725345; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=fdr599RH+uTsb7aefNgR/cD0PKRqtTo+C8uj7tmQJ7o=;
+	b=IPIKaSh64fYTSmNViLLy94UAGJm0UZQS0g9nFgBe66v6NN+xxUIntI8KjzVwzL+wOSFLVu
+	4Kc50f5LD/DF/MFjfRFEnlmqlrBY9x1XDwqWj+x9/V5jmDbyZ5BQ7NmLKx3iY5AJDEwCrR
+	IUPIt7NTwJHqxUFj0cBBAYaESICxw85rj3OlIZYWZvt3OEZJvwiyAX15w99FMTVjWlzqAu
+	DgekQu0vAnuDuE6rkMjWR5eykSUXkCqTkwp9n+rdJfLQ7wgo8k/LxQ3WWNdh9NKHAYiV5v
+	/q/V5qw59SF4bh2tyeEGhRdXalZh6ZiXKeji0TehFl8kxAiwV14CLplCKspBmg==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: James Clark <jjc@jclark.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Doug Berger <opendmb@gmail.com>,
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] net: don't require the hwtstamp NDOs when a PHY provides timestamping
+Date: Fri, 18 Sep 2026 11:55:40 +0200
+Message-ID: <20260918095540.34286-1-nb@tipi-net.de>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Thu, 17 Sep 2026 06:41:22 -0700
-Quanye Yang via B4 Relay <devnull+quanyeyang.proton.me@kernel.org> wrote:
+Removing the legacy ioctl fallback made both hwtstamp NDOs mandatory. A
+device that only timestamps in its PHY implements neither, so
+SIOCSHWTSTAMP fails with EOPNOTSUPP before anything looks at the PHY and
+PTP stops working there.
 
-> From: Quanye Yang <quanyeyang@proton.me>
-> 
-> BUG: KCSAN: data-race in do_recvmmsg / mptcp_recvmsg
-> 
-> read-write (marked) to 0xffff8880134d391c of 4 bytes by task 2619 on cpu 1:
->  instrument_atomic_read_write include/linux/instrumented.h:113 [inline]
->  sock_error include/net/sock.h:2565 [inline]
->  do_recvmmsg+0x50c/0x580 net/socket.c:3049
->  __sys_recvmmsg net/socket.c:3144 [inline]
->  __do_sys_recvmmsg net/socket.c:3167 [inline]
->  __se_sys_recvmmsg net/socket.c:3160 [inline]
->  __x64_sys_recvmmsg+0x161/0x180 net/socket.c:3160
->  x64_sys_call+0x19c7/0x1ca0 arch/x86/include/generated/asm/syscalls_64.h:300
->  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
->  do_syscall_64+0xde/0x3d0 arch/x86/entry/syscall_64.c:84
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> read to 0xffff8880134d391c of 4 bytes by task 2620 on cpu 0:
->  tcp_recv_should_stop include/net/tcp.h:3086 [inline]
->  mptcp_recvmsg+0x54d/0xd50 net/mptcp/protocol.c:2466
->  inet_recvmsg+0x204/0x210 net/ipv4/af_inet.c:894
->  sock_recvmsg_nosec net/socket.c:1151 [inline]
->  sock_recvmsg+0x11a/0x140 net/socket.c:1173
->  ____sys_recvmsg+0x14b/0x3c0 net/socket.c:2933
->  ___sys_recvmsg+0x116/0x160 net/socket.c:2975
->  __sys_recvmsg net/socket.c:3008 [inline]
->  __do_sys_recvmsg net/socket.c:3014 [inline]
->  __se_sys_recvmsg net/socket.c:3011 [inline]
->  __x64_sys_recvmsg+0xeb/0x160 net/socket.c:3011
->  x64_sys_call+0x1319/0x1ca0 arch/x86/include/generated/asm/syscalls_64.h:48
->  do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
->  do_syscall_64+0xde/0x3d0 arch/x86/entry/syscall_64.c:84
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> value changed: 0x0000006b -> 0x00000000
-> 
-> Reported by Kernel Concurrency Sanitizer on:
-> CPU: 0 UID: 0 PID: 2620 Comm: syz.2.33 Not tainted 7.2.0-g39d4f32c5d53 #76 PREEMPT(full)
-> Hardware name: QEMU Ubuntu 26.04 PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1ubuntu1 04/01/2014
-> 
-> do_recvmmsg() and getsockopt(SO_ERROR) call sock_error() without the
-> socket lock. sock_error() clears sk_err with xchg(), which races with
-> unmarked loads of the same field.
-> 
-> KCSAN reported the unmarked peek in tcp_recv_should_stop(). The same
-> lockless writer races with the other plain sk_err reads on the TCP
-> send, recv and splice paths.
-> 
-> Annotate those peeks with READ_ONCE(). No extra ordering is needed:
-> the value is only used to decide whether I/O should stop. This does
-> not consume sk_err; the check-then-sock_error() TOCTOU on the no-data
-> paths is a separate issue. MPTCP peeks are handled in the next patch.
+The check only ever picked the legacy path. That path is gone, so drop it
+and test where the NDOs are actually called.
 
-Don't they need annotating with data_race() ?
+SIOCGHWTSTAMP is new here, not restored. The old path went through
+phy_mii_ioctl(), which only handled SIOCSHWTSTAMP.
 
-David
+Such a device now returns -ENODEV while absent instead of -EOPNOTSUPP,
+like the ones that do implement the NDOs.
+
+Fixes: 5062245a5a7f ("net: remove legacy way to get/set HW timestamp config")
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+---
+This is an alternative to James' patch, which adds -EOPNOTSUPP stubs to
+bcmgenet:
+
+  https://lore.kernel.org/netdev/20260918030149.80398-1-jjc@jclark.com/
+
+A quick grep finds a few dozen more drivers pointing ndo_eth_ioctl at
+phylib without either NDO. So this is better fixed in the core than by
+adding the same stubs everywhere.
+
+Left the HWTSTAMP_SOURCE_NETDEV branch alone on purpose, because hwprov
+only gets installed by ethnl_set_tsconfig(), which already wants both NDOs.
+
+Tested on a Raspberry Pi CM4 (BCM54213PE, PHC from bcm-phy-ptp) with
+bcmgenet unmodified, get and set with tx_type 1 and rx_filter 12:
+
+  before 5062245a5a7f   get EOPNOTSUPP   set ok
+  without this patch    get EOPNOTSUPP   set EOPNOTSUPP
+  with this patch       get ok           set ok
+
+tsconfig keeps its own copy of the check, but that one is older than
+5062245a5a7f and never worked for these devices, so IMHO this is an
+extra patch for net-next.
+
+ net/core/dev_ioctl.c | 25 +++++++++----------------
+ 1 file changed, 9 insertions(+), 16 deletions(-)
+
+diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
+index a320e264eaaf..164643140a52 100644
+--- a/net/core/dev_ioctl.c
++++ b/net/core/dev_ioctl.c
+@@ -276,19 +276,18 @@ int dev_get_hwtstamp_phylib(struct net_device *dev,
+ 	if (phy_is_default_hwtstamp(dev->phydev))
+ 		return phy_hwtstamp_get(dev->phydev, cfg);
+ 
++	if (!dev->netdev_ops->ndo_hwtstamp_get)
++		return -EOPNOTSUPP;
++
+ 	return dev->netdev_ops->ndo_hwtstamp_get(dev, cfg);
+ }
+ 
+ static int dev_get_hwtstamp(struct net_device *dev, struct ifreq *ifr)
+ {
+-	const struct net_device_ops *ops = dev->netdev_ops;
+ 	struct kernel_hwtstamp_config kernel_cfg = {};
+ 	struct hwtstamp_config cfg;
+ 	int err;
+ 
+-	if (!ops->ndo_hwtstamp_get)
+-		return -EOPNOTSUPP;
+-
+ 	if (!netif_device_present(dev))
+ 		return -ENODEV;
+ 
+@@ -359,12 +358,18 @@ int dev_set_hwtstamp_phylib(struct net_device *dev,
+ 	cfg->source = phy_ts ? HWTSTAMP_SOURCE_PHYLIB : HWTSTAMP_SOURCE_NETDEV;
+ 
+ 	if (phy_ts && dev->see_all_hwtstamp_requests) {
++		if (!ops->ndo_hwtstamp_get)
++			return -EOPNOTSUPP;
++
+ 		err = ops->ndo_hwtstamp_get(dev, &old_cfg);
+ 		if (err)
+ 			return err;
+ 	}
+ 
+ 	if (!phy_ts || dev->see_all_hwtstamp_requests) {
++		if (!ops->ndo_hwtstamp_set)
++			return -EOPNOTSUPP;
++
+ 		err = ops->ndo_hwtstamp_set(dev, cfg, extack);
+ 		if (err) {
+ 			if (extack->_msg)
+@@ -390,7 +395,6 @@ int dev_set_hwtstamp_phylib(struct net_device *dev,
+ 
+ static int dev_set_hwtstamp(struct net_device *dev, struct ifreq *ifr)
+ {
+-	const struct net_device_ops *ops = dev->netdev_ops;
+ 	struct kernel_hwtstamp_config kernel_cfg = {};
+ 	struct netlink_ext_ack extack = {};
+ 	struct hwtstamp_config cfg;
+@@ -413,9 +417,6 @@ static int dev_set_hwtstamp(struct net_device *dev, struct ifreq *ifr)
+ 		return err;
+ 	}
+ 
+-	if (!ops->ndo_hwtstamp_set)
+-		return -EOPNOTSUPP;
+-
+ 	if (!netif_device_present(dev))
+ 		return -ENODEV;
+ 
+@@ -441,15 +442,11 @@ static int dev_set_hwtstamp(struct net_device *dev, struct ifreq *ifr)
+ int generic_hwtstamp_get_lower(struct net_device *dev,
+ 			       struct kernel_hwtstamp_config *kernel_cfg)
+ {
+-	const struct net_device_ops *ops = dev->netdev_ops;
+ 	int err;
+ 
+ 	if (!netif_device_present(dev))
+ 		return -ENODEV;
+ 
+-	if (!ops->ndo_hwtstamp_get)
+-		return -EOPNOTSUPP;
+-
+ 	netdev_lock_ops(dev);
+ 	err = dev_get_hwtstamp_phylib(dev, kernel_cfg);
+ 	netdev_unlock_ops(dev);
+@@ -462,15 +459,11 @@ int generic_hwtstamp_set_lower(struct net_device *dev,
+ 			       struct kernel_hwtstamp_config *kernel_cfg,
+ 			       struct netlink_ext_ack *extack)
+ {
+-	const struct net_device_ops *ops = dev->netdev_ops;
+ 	int err;
+ 
+ 	if (!netif_device_present(dev))
+ 		return -ENODEV;
+ 
+-	if (!ops->ndo_hwtstamp_set)
+-		return -EOPNOTSUPP;
+-
+ 	netdev_lock_ops(dev);
+ 	err = dev_set_hwtstamp_phylib(dev, kernel_cfg, extack);
+ 	netdev_unlock_ops(dev);
+
+base-commit: c9151088f1674fd29ff26a20f5fc687acf53a2f0
+-- 
+2.53.0
+
