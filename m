@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A331F2D8762;
-	Fri, 18 Sep 2026 00:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCB73368A2;
+	Fri, 18 Sep 2026 00:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789690877; cv=none; b=vAtwV2ad4rQje98QrtDk43gA0uFzkMhjBKHSWkwjVkPhxVAqlEKQl7vctZhi5l2lAAIbjaRu8uppZyStEinau5TclH4SRwXijumB7BY9K4e32x5L+I1KBgXqas2rBLumPbyJO5DafY42w26Ad1SrcvrYVgHv1pYYhCVqQ8kGLLs=
+	t=1789690879; cv=none; b=cbV4xVgLi59kfiZC1aTurh+4jxrUvrXpxZUE+GEGPObHmpQ0ou+55M1q+qd770AlSfWaQseYRgVeRK6o9IxbggK90J9hgXeKsFdk4iNsOKd/Ssu3MwmdlwaeiN5J18wutUSfCzOqun9+KS1tGgs2vi5oymydpiiXFOOwWMeTIyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789690877; c=relaxed/simple;
-	bh=c0hbHtRV6PT9WDuzlQ7yVsaUEl2uDbXt//PGGg+IsOA=;
+	s=arc-20240116; t=1789690879; c=relaxed/simple;
+	bh=ogxIgiu+re9qjFRWo3Zk95wjf958Rx/4GDF4MsgOMhI=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=GxBi20bSMh14Wl/dgD7s6dXAMhtBiWPu0toA65SaU7QCl1m3KjqEba4T0+nB29eiOVjslZyIp09+LEngDSDXZey5Wfc2ZUivcC9qkxzdA86STvLkWZrZ1LRX7OExeqmsSbLVt/tyz1lJsbjJ17C6sSBtHS7ae+BcirRSe9d1u38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UFO7YPzD; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=ds3SljiJ+eD+0VOexqERtb8OFW282yK4hPcMZWIL3pVWCWh+GfvtQDgOXGUzkeQuZl4fNLQTNWOKlEKrvDLH8wLAEl4YfJi4bihxyB6qWLipYljhk/YJTZ9UCwUFAmdJjzjIVskuW6AuRUZbj5KKtUwaKlkSKfvaLAw6rLLxtzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QFm/pet7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UFO7YPzD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3317B1F000FF;
-	Fri, 18 Sep 2026 00:21:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QFm/pet7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC2D51F00893;
+	Fri, 18 Sep 2026 00:21:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789690875;
-	bh=giuuaSHLLdvbwVIzTGsYBZeI+5GUEQY4BWAyn1vnv7M=;
+	s=k20260515; t=1789690876;
+	bh=zG2gTwCsuwbIA/IuvMtPEJatS7OpfRzJIZ1SCCCdBMI=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=UFO7YPzDpfV7O/FP767mO32YfQen7drLSRjyGNnyjw7trBtxBsjWQcVy7VR6xciCC
-	 u51qyBWrCT6JnHa1k5GwiZlsWgHqu+QQJV62tUmWOY8QM/30AhPYT2va1HZtJDijOW
-	 sJn8YvwfdM//DkM3FvY+qkfnsrtWbWp9oHXVqe+mHaEi+6urWR/4J5bwVgtHOsE8LW
-	 QGs/h6Hx8agoYenTF/EASx/z+NCj6oV69eXcoN9gyCTBM9HW9Hb+lZ6bkghKkcXg1L
-	 otuo0xIGsMtFyt2nlQaJqXbdRUj/+g8RYDTgq1ravPv/kJkmqjlj/IZYPQStP8FtMX
-	 zTlMGdms7TC5g==
+	b=QFm/pet7gC9Xb9EqPHHfUFD+7AxLSM6Q7sGUOhIWcKyirSGOXUTxYdfldmE5v8aMu
+	 3K/CxmoXzt4rUcmQzmq8x4EQbQkmd9HbA6QDA6NQilZNnNHLg/E6Lnjg+bZ1ALcK6G
+	 qmXowDNW822Qv5lT0aMhhqHRQF+2Zs4TdcqE5RJ24EnO3LOYaiKXWVsg71x9WzgKb3
+	 vox1ThAdvn8ZhRi40+Sk4sqitIQ7WrC4A5ILuzFqo5Fzc2e1eymrpvYPnA6KCn8Rxr
+	 6NIFY2tmIwx8+Rbf+89VBTYiXpUgZjyxAH6hKFFcRVEDw7BXOMSpBMCPW60qGF8ZOR
+	 VfBDDof9dITog==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A2E380820D;
-	Fri, 18 Sep 2026 00:20:09 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568AC380820D;
+	Fri, 18 Sep 2026 00:20:11 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,15 +37,15 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] docs: networking: radiotap: Fix bracket
+Subject: Re: [PATCH] docs: ethtool: Fix bracket
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178969080863.193949.6456202227248004597.git-patchwork-notify@kernel.org>
-Date: Fri, 18 Sep 2026 00:20:08 +0000
-References: <20260916123458.314458-8-manuelebnerli@mailbox.org>
-In-Reply-To: <20260916123458.314458-8-manuelebnerli@mailbox.org>
+ <178969080988.193949.15966401895613459061.git-patchwork-notify@kernel.org>
+Date: Fri, 18 Sep 2026 00:20:09 +0000
+References: <20260916123458.314458-5-manuelebnerli@mailbox.org>
+In-Reply-To: <20260916123458.314458-5-manuelebnerli@mailbox.org>
 To: Manuel Ebner <manuelebnerli@mailbox.org>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+Cc: andrew@lunn.ch, kuba@kernel.org, davem@davemloft.net, edumazet@google.com,
  pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
  skhan@linuxfoundation.org, rdunlap@infradead.org, netdev@vger.kernel.org,
  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
@@ -55,17 +55,17 @@ Hello:
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 16 Sep 2026 14:34:58 +0200 you wrote:
-> Remove needless ')' from code.
+On Wed, 16 Sep 2026 14:34:55 +0200 you wrote:
+> Add missing ')' to sentence.
 > 
 > Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
 > ---
->  Documentation/networking/radiotap-headers.rst | 2 +-
+>  Documentation/networking/ethtool-netlink.rst | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Here is the summary with links:
-  - docs: networking: radiotap: Fix bracket
-    https://git.kernel.org/netdev/net-next/c/49969c37035b
+  - docs: ethtool: Fix bracket
+    https://git.kernel.org/netdev/net-next/c/35a4b983c511
 
 You are awesome, thank you!
 -- 
