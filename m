@@ -1,70 +1,98 @@
-Received: from forward502b.mail.yandex.net (forward502b.mail.yandex.net [178.154.239.146])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A236550E591;
-	Fri, 18 Sep 2026 16:35:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88955172D7;
+	Fri, 18 Sep 2026 16:38:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789749334; cv=none; b=FiaHbR1C9IXBsAz+qPhdJJvyLIBE5tdaqsoTpwPF4Xi28I++CC3JHLcmMG6SX6WTlHXlkBVauh4woXXG/fI7RsAkQwyRX5C7PdU1XDyHeEFmEtwkyS9LibZQw++k0dq6D5YPKwETq4V74okqtGoMkGRpHDll5vWS5eEqF9s7gr8=
+	t=1789749495; cv=none; b=FF9cRNLnoBnm9D5bCiLS0JJ/ZGtntd92Go88skoSGn0UoQ2j3UELczujhnYUfrqsMDqvSqGNF0iqbJ+yW2Ohb2Lkrapws91aO4QwxRoihYvX/T/6h+SUYJd6eEbbVJl7vuqj415XbxVBiVTRwhMDKAs63WPHxbAks7NiIfJyoHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789749334; c=relaxed/simple;
-	bh=NAU59vvsEmrYVpB8nv8x4xK1FUmZUpy8NnVvSLExP/A=;
-	h=From:To:Cc:In-Reply-To:References:Subject:MIME-Version:Date:
-	 Message-Id:Content-Type; b=Dj3weEmP+xpi3z4DhxWwSYb5kJYqxPnx2bGy2rjnMkmCuD0qhUQrhRVxbfWMpQo2LJ0+wJomFzSm/n+sBzvDDg9SkAmYvAeZkaj323BX80FLRdDRvXazQCDumeh9thK/KzBAnZPNIx9/Y5OD+LRDbNG+mR3e5XnG7f4xR2Pow88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=0upti.me; spf=pass smtp.mailfrom=0upti.me; dkim=pass (1024-bit key) header.d=0upti.me header.i=@0upti.me header.b=HweAqYwy; arc=none smtp.client-ip=178.154.239.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=0upti.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0upti.me
+	s=arc-20240116; t=1789749495; c=relaxed/simple;
+	bh=QLRvLTdFBHVr7X10cKNaAGFOnTS1+KBvwf5jbrECKU4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DsgY7K/6V961lgYz3NzureXQ+6qjVIv0Ya+lRo7tx+fgcUVDgHPHocJt6srSao7MZYd7bfJ5pwi+/GW0sTiVe/RXQfBhicqSRJ67eyKFmUkb8oSgHzSGZmE24OGCcx6pE6RCgzlEC72YxNsCM0GlBVwpoCp4VfX+iTsKld866vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JkRD28H2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=0upti.me header.i=@0upti.me header.b="HweAqYwy"
-Received: from mail-nwsmtp-mxback-production-main-59.sas.yp-c.yandex.net (mail-nwsmtp-mxback-production-main-59.sas.yp-c.yandex.net [IPv6:2a02:6b8:c11:501:0:640:c489:0])
-	by forward502b.mail.yandex.net (postfix) with ESMTPS id ADDA38CB2C;
-	Fri, 18 Sep 2026 19:27:27 +0300 (MSK)
-Received: from mail.yandex.ru (2a02:6b8:c1c:3147:0:640:b38b:0 [2a02:6b8:c1c:3147:0:640:b38b:0])
-	by mail-nwsmtp-mxback-production-main-59.sas.yp-c.yandex.net (mxback) with HTTPS id MRaVga1vk4Y0-2b5DlXr0;
-	Fri, 18 Sep 2026 19:27:27 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0upti.me; s=mail;
-	t=1789748847; bh=NAU59vvsEmrYVpB8nv8x4xK1FUmZUpy8NnVvSLExP/A=;
-	h=Message-Id:References:Date:Cc:Subject:In-Reply-To:To:From;
-	b=HweAqYwyNdpwVVygzSr8jyfDApylvClVKAdQdRXnHjhOrZTfIaJ2odJ9veG7qwXHf
-	 leCj3QHs3Rowv1kljnhTV3Jb7ZASZ2cODom4+PMNFYyTfchrtBl7rtKg1crZgPlxSE
-	 V/1VbSXA/0pFnrr4D9hMsccdD3zhGP+N+emsSYco=
-Authentication-Results: mail-nwsmtp-mxback-production-main-59.sas.yp-c.yandex.net; dkim=pass header.i=@0upti.me
-Received: by mail-sendbernar-production-main-91.sas.yp-c.yandex.net (sendbernar) with HTTPS id 5f39ae46106f62be9806b612ed5e658f;
-	Fri, 18 Sep 2026 19:27:26 +0300
-From: Ilya K <me@0upti.me>
-To: Ben Greear <greearb@candelatech.com>
-Cc: linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-mediatek@lists.infradead.org
-In-Reply-To: <1556871789207706@7dc9deb3-4292-4932-8568-de9b411208d8>
-References: <1767631788532094@64c4e675-cd08-4a74-816f-886742f9bfcd> <529a79bc-dab7-aa41-00bd-c47ecbefaa00@candelatech.com> <471221788538289@323ca970-5bd2-4c6b-b52d-2b863a718615> <3acf531c-bcc7-412b-b3bb-665069260e46@candelatech.com> <2028561788553569@f088f4ec-f441-47a1-b7e4-75a1052aa4df> <2418461788691106@84aa39c5-f501-4e64-8418-6a8b6eb88e21> <eb405366-6574-4e4c-a89d-363751ed848b@candelatech.com> <4175721788798939@f00554c7-d809-471c-9bcf-78e5d8eceab4> <1556871789207706@7dc9deb3-4292-4932-8568-de9b411208d8>
-Subject: Re:[bug] Triple whammy of mt7996e bugs on 7.2+
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JkRD28H2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940151F000FF;
+	Fri, 18 Sep 2026 16:38:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789749494;
+	bh=1jguSdZKVQAzVJWlUAqUKfAANJh6/U827CisOt7PoEo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=JkRD28H2C6Q6mO9N1fNjEs9X5ijRGwgAs+3y3CS7zBTPr4yNaUyaUviLNj9Ox1EZC
+	 LVTuu/+cv0rV00CarPU8rZtBj1D3Mluxs/wijbgxpTrjZBMm0o3ewr5PaDSCvEbiiw
+	 og4wtspCk2K0p6DPPk7VMaL1+ICBf95PxuCc7ZlA40JmXtbkYpjtoZyXbhTDqS4IdB
+	 TVuaZyuwvD0z7Wj66Qf/yfBxgZC7Pvdj3V4lPEg4qWr+ER6Raxa+bx/SPtY49/dUdz
+	 cdZ8HUzyHJHHd0648e3W1K6U7iUNy+tXYGh7j5+oWBtXJe5IMe5TJLqXZgS5D2No7Z
+	 Ow4voCum2bHMQ==
+Date: Fri, 18 Sep 2026 18:37:54 +0200
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Thorsten Leemhuis <linux@leemhuis.info>
+Cc: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, regressions@lists.linux.dev, 
+	Chris Lew <christopher.lew@oss.qualcomm.com>, Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>, 
+	Pranav Mahesh Phansalkar <pranav.phansalkar@oss.qualcomm.com>, Daniel J Blueman <daniel@quora.org>, 
+	Takashi Iwai <tiwai@suse.de>, Vlastimil Babka <vbabka@suse.com>, 
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: Re: [PATCH net] Revert "net: qrtr: Send HELLO message on endpoint
+ register"
+Message-ID: <lgyho3avi65edtr4xggbsrja47cjhqbamrnmchnfh4blmyygd6@bhotovqqqubj>
+References: <20260918101621.2848322-1-linux@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mailer: Yamail [ http://yandex.ru ] 5.0
-Date: Fri, 18 Sep 2026 19:27:26 +0300
-Message-Id: <1443771789748846@4a8ec5ae-80ed-44bc-b7d3-6bc660c90136>
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260918101621.2848322-1-linux@leemhuis.info>
 
-Yet another update: 7.2.6 + firmware from mtk-openwrt-feeds is stable for a few days, but then crashes with
+On Fri, Sep 18, 2026 at 12:16:21PM +0200, Thorsten Leemhuis wrote:
+> This reverts commit 544d85de4dc22c01badfd8cefa59829ce35c4858.
+> 
+> It causes suspend and resume problems for numerous people, including
+> maintainers and developers of ath wifi drivers. A fix was proposed[1],
+> but did not get any traction, so go for a revert instead.
+> 
+> Cc: Chris Lew <christopher.lew@oss.qualcomm.com>
+> Cc: Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>
+> Cc: Pranav Mahesh Phansalkar <pranav.phansalkar@oss.qualcomm.com>
+> Reported-by: Daniel J Blueman <daniel@quora.org>
+> Link: https://lore.kernel.org/all/20260909055846.16539-1-daniel@quora.org/ [1]
+> Reported-by: Takashi Iwai <tiwai@suse.de>
+> Link: https://lore.kernel.org/all/87a4plsg4w.wl-tiwai@suse.de/
+> Reported-by: Vlastimil Babka <vbabka@suse.com>
+> Link: https://lore.kernel.org/all/ab1491bb-cca5-4145-ac7d-31c966abf7b4@suse.com/
+> Reported-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+> Link: https://lore.kernel.org/all/6257c447-788d-4362-851e-0d552bcf7c56@oss.qualcomm.com/
+> Signed-off-by: Thorsten Leemhuis <linux@leemhuis.info>
+> ---
+> 
+> I'm not affected by this, but due to all those reporters mentioned above
+> it seems it would be good to get this fixed for 7.3-rc4, as Linus' rule
+> of thumb wrt to fixing regressions is "generally be 'within a week',
+> preferably before the next rc". Which is why I currently plan to ask
+> Linus to pull this directly. If this is a bad idea, just tell me.
+> 
+> The patch from Daniel linked above[1] could have fixed the problem, but
+> none of the developers of the culprit or the maintainers for this area
+> commented on it within a week
 
-[98876.837441] mt7996e 0000:01:00.0: Message 00130022 (seq 14) timeout
-[98879.483965] mt7996e 0000:01:00.0: HW/SW Version: 0x8a108a10, Build Time: 20260721003616a
-[98879.592297] mt7996e 0000:01:00.0: WM Firmware Version: ____000000, Build Time: 20260721003609
-[98879.631743] mt7996e 0000:01:00.0: DSP Firmware Version: ____000000, Build Time: 20260721002848
-[98879.657097] mt7996e 0000:01:00.0: WA Firmware Version: ____000000, Build Time: 20260721003453
-[98902.835490] mt7996e 0000:01:00.0: Message 001a0034 (seq 11) timeout
-(repeating from there)
+Really?
+https://lore.kernel.org/all/hcr4woicsnz3pbhzlguuwjlego7yli3znhjmsx4cdz66xa74zd@wjtle2yslc4b/
 
-I've picked a few more things from the latest mt76-fixes, specifically these three:
-- https://lore.kernel.org/all/20260729173632.14387-3-enderaoelyther@gmail.com/
-- https://lore.kernel.org/all/20260823053739.186748-1-gongtao0607@gmail.com/
-- https://lore.kernel.org/all/20260901092232.461379-1-nbd@nbd.name/
+FWIW, I don't mind a revert too, but the comment was misleading.
 
-Building this now, we'll see how it goes.
+In any case,
+
+Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
