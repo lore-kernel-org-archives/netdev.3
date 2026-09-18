@@ -1,318 +1,155 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi2-f24.google.com (mail-oi2-f24.google.com [74.125.231.216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18983525A98;
-	Fri, 18 Sep 2026 20:35:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F82222580
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 20:48:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789763743; cv=none; b=WTE5SFQJE5SSnOZ8shK7zCbBu8dpdf8qH+WcU465Pt9+5quvQtU5uEqRkqrt3DlJjxnqjTVgZMsGAhuwiUnjUkX1X83cuzFVr9CIOs67cGCZMps59GhsUQaKeFS7/EMfr4/fT23dVQ5iLKR79604hQ39qVh7kEkfYwni976Fjtk=
+	t=1789764526; cv=none; b=HbxrYhWH2ceyIH4MQ2qMKbuS2ymfhxmCUVbcpziVIWG4YFTfxZbS6JhL5ucDjp422Xf4TBW5lQ1L6FsM7o0mckRSp641qLTzfBQh0tLsTeTrV7PAKzvVtigJVJKW7smgVISnVd7TJnrNkcYAQMTTE2grRKG/mPjxF76imNrz1X8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789763743; c=relaxed/simple;
-	bh=lYVIRWYpEJbrhQ/oBp9dfFrspCsE0CzlZ1NBrrCWUHY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jOUTuqIfMkEfii3yDZ98tENf+M4JpViepm4/g2s2f+oW2bJhdZkys1pb8TKSTNEDHjPjwD06vVhlOGpM/rDixUkuv5fH2p3s6hyJjr5a6VkhfuYgaoPilibG0UNpZxg2D+LKlQQms5lZUFQxN+E9cLkIgEqg3oMNnYB9+72VYOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=vy3QbrTO; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1789764526; c=relaxed/simple;
+	bh=lIULnVXaHfRFnKyXSPLXe+B+3MNbWg24iPNhTFY0tY8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tvJSXfJzIAuGNtukgGFqxEzBt6Grv5gtRXBlrXXRklbrTl6FpspKV4J88jWvIX3f/ZHcCGNOZccsZjnRai0k9VhSxJQDfTMAKNkk6npWqLwsrO/Wz9q8hy7B1klo7yxFhRhA/B5Jip2yHcEBzh7OI8G4qRUHDBtlLddfUMz1Lig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=MpxylbWV; arc=none smtp.client-ip=74.125.231.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="vy3QbrTO"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id DCE161A0664;
-	Fri, 18 Sep 2026 20:35:34 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A85D360649;
-	Fri, 18 Sep 2026 20:35:34 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1D26F10329075;
-	Fri, 18 Sep 2026 22:35:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789763729; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=KiYXgWSHGS4Z5hj8EXdVamYzUDB+odt7GHe4rRMG7F4=;
-	b=vy3QbrTO9Wig4snJ1Qpm10xtVhOS1bVZh2/5ZLG3fWDcV5drqNg2MAJeePUsOxho0t7LaO
-	h02ZViA2wAz7qFFwuYGy60fr+z4dkLWfIDUrYtKpEnO+BR/xSjjR9YV7nJKYZP0yJjW4ZF
-	WOOqRN0PnJxESpOIueBtHQdtvK9DPrpssXO/muqp/Iyy9e33D0WIoAo/SuWPoswzTGxYC4
-	W1J7F5yVSjcA5QuxBVl16UB4QKTRog09gsL7j+iuY7v/X/NvNHGXch/TatrkLzkpwmXLlj
-	mN0kWJyplLMEiBfwGkLTGEejJpaYWnHw8X7KqDxwdSg+sERfKSBREm9Yp+uxtw==
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Date: Fri, 18 Sep 2026 22:35:06 +0200
-Subject: [PATCH net 3/3] net: macb: quiesce IRQs and drain BH on interface
- close
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="MpxylbWV"
+Received: by mail-oi2-f24.google.com with SMTP id 46e09a7af769-7f4f0d37dccso665021a34.3
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 13:48:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1789764522; x=1790369322; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ppEJDHuTUlQGSUDN/FO8Ik2+PuCaJNFQHPiMwbR7z+4=;
+        b=MpxylbWV8mXZjpP1d9RjcG5xs2WRhFCwoNWkKiEssMBss9q967o3UetYXz5mQVzcLR
+         zJ+QcyfLzHcRq/u1TBWr4+xZ/Il546Xr7E13aFMBU4kHtDjX/+c8mwsqlRas4IZ7AqLG
+         Px85tD9IsKfYCH7PhXkXha3addR6GK4RIRT5P2K8NmCU94zncAcHrJLoiHBGpxcyaVoh
+         DymEBfMy3XS+U3l/5TALT6tnGU1/SMOjsKn5e6OBlOj3pasxQvcNyeaEDZcU9tiwV0a8
+         M87W9IH4Ort8EfqJL9EvbibDL9rBnJRbeLePiDxkmem2E1GymKTopt8Anlmi6TztRvW6
+         +92Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789764522; x=1790369322;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ppEJDHuTUlQGSUDN/FO8Ik2+PuCaJNFQHPiMwbR7z+4=;
+        b=zLrMRaTV/l9CiJzm8jEToQblBkwPNdp4qdeUdKxEXedXDOdkTmkdBhEvf1JV7NIbK0
+         t2eyVcrlCKBE/vEI5nl1WO3vIPE3nwJAw0ZsWE0PW/CtKD6Kk7y5Hv2JmHsLkQOvSoGc
+         Ux8s8jmj65TczCCFSb9DrIZaWcReaNuzMO80g90t7/NT/FGWKgNxVxvx6GGvCqzBvk5y
+         paLnS0hX5znR8aieMGbD48dSauBbqxeGkb4fN5T8veXDdSZAzE4ErWfWJbFSpxHmn66Q
+         Td4W8M15GsjSKC+b7ByjjGgkLqA17GMBkFP2KaJC43YdoUhCBPAOlVJ/OYTU6QNKU1p2
+         tXEA==
+X-Forwarded-Encrypted: i=1; AKwUvBwGfyOYjfrSZfwFl9F7Cmtz23NaJX9Xj6uvXnIUu+NmWiIwER+fNt66lyxHieC/gUSn0i/BIJw=@vger.kernel.org
+X-Gm-Message-State: AFuF++kZBARyqPpySllZrinAmZfENpB7iNVZUjYK3Z1aRRGHbwd8UcnS
+	B+T2slI4qZypc6Fw1sq1hEgwp8XJqLtH/qHH5PkumQFgMkx+t+Fox3YOaBYVCtGq+pk=
+X-Gm-Gg: AYBFou1qT0L759stcswiQNqSwCNcDPZo+aSdzpvHlj8NlG48Ug9xIHD6Vgd8q0xmAX7
+	BUBjS6ConTmuhMbUl7J6DHjyNsNxiEu9ZQBbELj/sqxv4A0dR+vz3/MxdfkuMXpuFO3y/m4Y9Hu
+	bZZUXcJzdrMN8GlYTpT+tN/7aJQu4Jz5ty3S2HoYRHf83LmusLWjU8tcT50imdc7rCA51IsqRzN
+	vyQgncK2aLg4arlLtlaW2p5KHycEh2amG4XuZOok2USFU5Lz3u0ksdpm+zClYInYMm/WB3vRxyk
+	uorC39qmk+iw1CyFr1UgyT2lcY6/T81x0tgOEkU+HMlzq5FWCJOCfhtGaLnf1P60fkvRxJCe8rv
+	ZD5IpBVsigeYA24BsJAS+XlM8oaUcrry19PXp69TjMmX752NWmOeWoQ0gMwiJjJJk9xWHW2h8tr
+	izxN8yKrHegnGWUnsVrFMIaDxBcgl6TXh4wcyKTQjR6D9GoEa44GV+l4s=
+X-Received: by 2002:a9d:7441:0:b0:806:ab05:c1dd with SMTP id 46e09a7af769-80ddfd6c11amr3214332a34.4.1789764522401;
+        Fri, 18 Sep 2026 13:48:42 -0700 (PDT)
+Received: from 20HS2G4 ([2a09:bac6:bf21:1923::281:62])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-8107dd8bc84sm480328a34.9.2026.09.18.13.48.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Sep 2026 13:48:40 -0700 (PDT)
+Date: Fri, 18 Sep 2026 15:48:39 -0500
+From: Chris Arges <carges@cloudflare.com>
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	wireguard@lists.zx2c4.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-team@cloudflare.com
+Subject: Re: [PATCH net v2] wireguard: wait for per-peer crypto during removal
+Message-ID: <aq2jp8lXwSIqihaj@20HS2G4>
+References: <20260913-fix-wg-peer-removal-v2-1-0cade985245a@cloudflare.com>
+ <aqpqEIy_h0DIywRy@zx2c4.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260918-macb-close-v1-3-05e32ce98813@bootlin.com>
-References: <20260918-macb-close-v1-0-05e32ce98813@bootlin.com>
-In-Reply-To: <20260918-macb-close-v1-0-05e32ce98813@bootlin.com>
-To: Conor Dooley <conor.dooley@microchip.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Sean Anderson <sean.anderson@linux.dev>, 
- Antoine Tenart <atenart@kernel.org>, Russell King <linux@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Nicolai Buchwitz <nb@tipi-net.de>, 
- Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
- Gregory CLEMENT <gregory.clement@bootlin.com>, 
- Tawfik Bayouk <tawfik.bayouk@mobileye.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aqpqEIy_h0DIywRy@zx2c4.com>
 
-The macb_close() operation is facing races as it disables IRQs late in
-its sequence and keeps BH primitives alive while shutdown.
+On 2026-09-16 12:06:08, Jason A. Donenfeld wrote:
+> On Sun, Sep 13, 2026 at 07:19:08AM -0500, Chris J Arges wrote:
+> > Calling peer_remove_after_dead() currently flushes device-wide packet
+> > crypto and handshake workqueues while holding RTNL. This is problematic as
+> > unrelated peers can continue adding work to those queues, blocking other
+> > tasks that want to take the RTNL lock.
+> > 
+> > Instead, this patch tracks pending crypto handoffs for each peer using a
+> > counter. After marking the peer dead, synchronize_net() prevents new
+> > submissions. Next, wait for pending crypto workers to schedule TX work and
+> > for RX NAPI to drain the peer's RX queue. Then flush only the peer's TX
+> > packet and handshake work.
+> > 
+> > This scopes teardown synchronization to the removed peer and prevents
+> > unrelated peers from extending the RTNL hold time.
+> >  struct wg_device;
+> > @@ -161,6 +162,7 @@ static inline int wg_queue_enqueue_per_device_and_peer(
+> >  	 */
+> >  	if (unlikely(!wg_prev_queue_enqueue(peer_queue, skb)))
+> >  		return -ENOSPC;
+> > +	atomic_inc(&PACKET_PEER(skb)->packet_crypt_pending);
+> >  
+> >  	/* Then we queue it up in the device queue, which consumes the
+> >  	 * packet as soon as it can.
+> > @@ -182,6 +184,8 @@ static inline void wg_queue_enqueue_per_peer_tx(struct sk_buff *skb, enum packet
+> >  	atomic_set_release(&PACKET_CB(skb)->state, state);
+> >  	queue_work_on(wg_cpumask_choose_online(&peer->serial_work_cpu, peer->internal_id),
+> >  		      peer->device->packet_crypt_wq, &peer->transmit_packet_work);
+> > +	if (atomic_dec_and_test(&peer->packet_crypt_pending))
+> > +		wake_up_var(&peer->packet_crypt_pending);
+> >  	wg_peer_put(peer);
+> >  }
+> >  
+> > diff --git a/drivers/net/wireguard/receive.c b/drivers/net/wireguard/receive.c
+> > index 824bbefce61c..bb35e3205491 100644
+> > --- a/drivers/net/wireguard/receive.c
+> > +++ b/drivers/net/wireguard/receive.c
+> > @@ -476,9 +476,11 @@ int wg_packet_rx_poll(struct napi_struct *napi, int budget)
+> >  
+> >  next:
+> >  		wg_noise_keypair_put(keypair, false);
+> > -		wg_peer_put(peer);
+> >  		if (unlikely(free))
+> >  			dev_kfree_skb(skb);
+> > +		if (atomic_dec_and_test(&peer->packet_crypt_pending))
+> > +			wake_up_var(&peer->packet_crypt_pending);
+> > +		wg_peer_put(peer);
+> 
+> This adds two atomic updates to a per-peer counter for every RX packet
+> and TX batch. That could introduce contention across crypto workers. I
+> suppose it'd be good to see some measurements in if this changes
+> anything. Certainly it should change _something_. Question is by how
+> much.
+> 
+> Jason
 
-Non exhaustive list of races that could occur:
+Jason,
 
- - macb_tx_error_task() could be scheduled and access the buffers freed
-   by macb_close().
+I benchmarked a wg peer on a 2 vCPU and 8 vCPU setup with 1200 byte
+UDP payloads. Goal was stressing the path where these atomics are getting
+incremented.
+- patched 2 vCPU test showed ~1-2% reduction in throughput
+- patched 8 vCPU test showed ~6% reduction in throughput (more contention)
 
- - macb_tx_error_task() or macb_hresp_error_task() might re-enable
-   interrupts after the IDR write in macb_close().
+My main goal is reducing the amount of time holding rtnl_lock when we remove a
+peer. In our systems we frequently get hangs due to workloads bringing up and
+tearing down wg peers. So perhaps I'll need to look into another approach
+where we're not introducing something like a counter into the hotpath.
 
- - macb_close() calls napi_disable() meaning that if
-   macb_tx_error_task() occurs later, it will deadlock on napi_disable()
-   that shouldn't be called if NAPI is already disabled.
-
- - macb_hresp_error_task() might reinit every RX/TX ring under
-   macb_close()'s foot.
-
- - macb_interrupt() might re-enable NAPI just after it has been
-   disabled by macb_close().
-
-Instead, disable all our primitives one by one:
- - (1) mask and sync on IRQ handlers,
- - (2) drain any scheduled bp->hresp_err_bh_work,
- - (3) drain any scheduled queue->tx_error_task,
- - (4) drain queue->napi_rx/napi_tx,
- - (5) drain bp->tx_lpi_work.
-
-Careful! Ordering is important because our scheduling primitives can
-wake each other up. Recap table:
-
-|               |   enable/disable   |           schedule            |
-|               |----|-------|-------|------|----|----|--------|-----|
-|               |IRQs|napi_tx|napi_rx|tx_lpi|napi|napi|tx_error|hresp|
-| Context       |    |       |       | task | rx | tx |  task  |task |
-|===============|====|=======|=======|======|====|====|========|=====|
-| open          | X  |   X   |   X   |      |    |    |        |     |
-| link_up       | X  |       |       |      |    |    |        |     |
-| link_down     | X  |       |       |      |    |    |        |     |
-| close         | X  |   X   |   X   |      |    |    |        |     |
-| enable_tx_lpi |    |       |       |  X   |    |    |        |     |
-| swap          | X  |   X   |   X   |  X   |    |    |        |     |
-| suspend       | X  |   X   |   X   |      |    |    |        |     |
-| resume        | X  |   X   |   X   |      |    |    |        |     |
-|---------------|----|-------|-------|------|----|----|--------|-----|
-| irq & netpoll | X  |       |       |      | X  | X  |   X    | X   |
-|---------------|----|-------|-------|------|----|----|--------|-----|
-| napi_rx       | X  |       |       |      | X  |    |        |     |
-| napi_tx       | X  |       |       |  X   |    | X  |        |     |
-|---------------|----|-------|-------|------|----|----|--------|-----|
-| tx_error_task | X  |   X   |       |      |    |    |        |     |
-| hresp task    | X  |       |       |      |    |    |        |     |
-
-As example, one ordering constraint that can be deduced from the table:
-napi_tx can schedule tx_lpi_task meaning napi_tx must be disabled
-before tx_lpi_task, else we risk napi_tx re-enabling tx_lpi_task after
-it has been disabled by macb_close().
-
-We do *not* use IDR masking to shutdown IRQs because that risks
-conflicting with BH primitives we have not disabled yet. For example if
-we writel(IDR) in macb_close() and napi_rx is pending then IRQs might
-be unmasked by the NAPI poll. As for why we do not use disable_irq():
-we will have situations where we are quiesced but want to listen to
-some IRQs and (minor reason) we register shared IRQ handlers so we
-shouldn't disable the full IRQ line.
-
-Instead we introduce a bool that tells macb_interrupt() to self-disarm.
-Its default value is true as we start closed. It gets set to false
-while interface is active. Reading into my crystal ball, we'll reuse
-that flag in suspend/WOL, set_ringparam and change_mtu (context swap).
-
-Note that old IRQ handler tried preventing a race with close by
-self-disarming based on netif_running(). This might work, but it does
-not prevent a race with the error codepath of macb_open() which needs
-to run with IRQs dis-armed but netif_running() returns true during that
-time.
-
-Fixes: e86cd53afc59 ("net/macb: better manage tx errors")
-Cc: stable@vger.kernel.org
-Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
----
- drivers/net/ethernet/cadence/macb.h      |  5 ++
- drivers/net/ethernet/cadence/macb_main.c | 84 ++++++++++++++++++++++++--------
- 2 files changed, 69 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
-index cfaa0ca49f1a..1cb2778fe49e 100644
---- a/drivers/net/ethernet/cadence/macb.h
-+++ b/drivers/net/ethernet/cadence/macb.h
-@@ -1382,6 +1382,11 @@ struct macb {
- 	struct delayed_work	tx_lpi_work;
- 	u32			tx_lpi_timer;
- 
-+	/* ISR must not drive NAPI & BH mechanisms. True when the interface
-+	 * is closed. Protected by bp->lock.
-+	 */
-+	bool			irq_quiesced;
-+
- 	int	rx_bd_rd_prefetch;
- 	int	tx_bd_rd_prefetch;
- 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index c418f859cc34..75bbde81d62c 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -1995,6 +1995,53 @@ static int macb_tx_poll(struct napi_struct *napi, int budget)
- 	return work_done;
- }
- 
-+static void macb_quiesce_start(struct macb *bp)
-+{
-+	struct macb_queue *queue;
-+	unsigned long flags;
-+	unsigned int q;
-+
-+	spin_lock_irqsave(&bp->lock, flags);
-+	bp->irq_quiesced = true;
-+	spin_unlock_irqrestore(&bp->lock, flags);
-+
-+	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue)
-+		synchronize_irq(queue->irq);
-+
-+	cancel_work_sync(&bp->hresp_err_bh_work);
-+
-+	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
-+		/* Must be done before NAPI is disabled: the task ends with a
-+		 * napi_enable() call.
-+		 */
-+		cancel_work_sync(&queue->tx_error_task);
-+
-+		napi_disable(&queue->napi_rx);
-+		napi_disable(&queue->napi_tx);
-+	}
-+
-+	/* Must be done after napi_tx is disabled: its completion re-arms
-+	 * the LPI timer.
-+	 */
-+	cancel_delayed_work_sync(&bp->tx_lpi_work);
-+}
-+
-+static void macb_quiesce_end(struct macb *bp)
-+{
-+	struct macb_queue *queue;
-+	unsigned long flags;
-+	unsigned int q;
-+
-+	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
-+		napi_enable(&queue->napi_rx);
-+		napi_enable(&queue->napi_tx);
-+	}
-+
-+	spin_lock_irqsave(&bp->lock, flags);
-+	bp->irq_quiesced = false;
-+	spin_unlock_irqrestore(&bp->lock, flags);
-+}
-+
- static void macb_hresp_error_task(struct work_struct *work)
- {
- 	struct macb *bp = from_work(bp, work, hresp_err_bh_work);
-@@ -2137,8 +2184,8 @@ static irqreturn_t macb_interrupt(int irq, void *dev_id)
- 	spin_lock(&bp->lock);
- 
- 	while (status) {
--		/* close possible race with dev_close */
--		if (unlikely(!netif_running(netdev))) {
-+		/* self-disarm while the netdev is closed */
-+		if (unlikely(bp->irq_quiesced)) {
- 			queue_writel(queue, IDR, -1);
- 			macb_queue_isr_clear(bp, queue, -1);
- 			break;
-@@ -3155,8 +3202,6 @@ static int macb_open(struct net_device *netdev)
- {
- 	size_t bufsz = netdev->mtu + ETH_HLEN + ETH_FCS_LEN + NET_IP_ALIGN;
- 	struct macb *bp = netdev_priv(netdev);
--	struct macb_queue *queue;
--	unsigned int q;
- 	int err;
- 
- 	netdev_dbg(bp->netdev, "open\n");
-@@ -3180,10 +3225,7 @@ static int macb_open(struct net_device *netdev)
- 		goto free_rings;
- 	macb_init_buffers(bp);
- 
--	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
--		napi_enable(&queue->napi_rx);
--		napi_enable(&queue->napi_tx);
--	}
-+	macb_quiesce_end(bp);
- 
- 	macb_init_hw(bp);
- 
-@@ -3210,11 +3252,10 @@ static int macb_open(struct net_device *netdev)
- 	phy_power_off(bp->phy);
- 
- reset_hw:
-+	/* The netdev stays down: quiesce and drain, as macb_close() does. */
-+	macb_quiesce_start(bp);
-+
- 	macb_reset_hw(bp);
--	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
--		napi_disable(&queue->napi_rx);
--		napi_disable(&queue->napi_tx);
--	}
- free_rings:
- 	macb_free(bp);
- pm_exit:
-@@ -3225,19 +3266,17 @@ static int macb_open(struct net_device *netdev)
- static int macb_close(struct net_device *netdev)
- {
- 	struct macb *bp = netdev_priv(netdev);
--	struct macb_queue *queue;
- 	unsigned long flags;
- 	unsigned int q;
- 
-+	macb_quiesce_start(bp);
-+
-+	/* Drain the BH contexts before stopping the queues: NAPI completion
-+	 * and tx_error_task wake them up.
-+	 */
- 	netif_tx_stop_all_queues(netdev);
--
--	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
--		napi_disable(&queue->napi_rx);
--		napi_disable(&queue->napi_tx);
-+	for (q = 0; q < bp->num_queues; ++q)
- 		netdev_tx_reset_queue(netdev_get_tx_queue(netdev, q));
--	}
--
--	cancel_delayed_work_sync(&bp->tx_lpi_work);
- 
- 	phylink_stop(bp->phylink);
- 	phylink_disconnect_phy(bp->phylink);
-@@ -4759,6 +4798,11 @@ static int macb_init_dflt(struct platform_device *pdev)
- 	bp->tx_ring_size = DEFAULT_TX_RING_SIZE;
- 	bp->rx_ring_size = DEFAULT_RX_RING_SIZE;
- 
-+	/* No locking needed because the IRQs are not requested yet. The
-+	 * flag is cleared by macb_open() and re-armed by macb_close().
-+	 */
-+	bp->irq_quiesced = true;
-+
- 	/* set the queue register mapping once for all: queue0 has a special
- 	 * register mapping but we don't want to test the queue index then
- 	 * compute the corresponding register offset at run time.
-
--- 
-2.55.0
-
+Thanks,
+--chris
