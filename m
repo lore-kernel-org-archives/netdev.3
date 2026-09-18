@@ -1,122 +1,175 @@
-Received: from mail-lf2-f12.google.com (mail-lf2-f12.google.com [74.125.229.204])
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326052D8DD0
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 19:35:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.229.204
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789760141; cv=pass; b=H5wzLyhmR8sXS+Kzz45ShCWt+MM6SHYHJYeI+Z4Nrp6MFyo65pv7c9as6JtxAEz0nhkrVyEQ0F0o5dgiKdRxN1+5p7O9agocIHlyJ+YWe/PQTUgM/bfk7VqWQ3x+PMTNoIEkrTHs1gkkcim56l/v+QjSW4ug2Y+POab9OrcDNYE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789760141; c=relaxed/simple;
-	bh=HzvNuidgeL3juabceaGKuJfW0x/vamvj7Q7WND4DCxg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eXvL4QgSEjCnWNySUVxkl6LKN5A8HLsMofWhUC3ezWPpsvjt03q9DR9YUB52qv/bclR2Df9TVFoTNrYSw8EefYEpN0uzwLVlEOM3+UL49ZySK47IqgyA5Kny0E5kyDYs/TQ0dSdve5ytxa58rLMbdf+vjFeJXeH7J0SkX+wgGoI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tvmof/NP; arc=pass smtp.client-ip=74.125.229.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CAC83BCD1A
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 19:40:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789760405; cv=none; b=R0Tjjmq/R5rQpQnLamLumwJSzvrN9PDIDZGAx3+hdjq7Dj836oMI1Njd8ZCloGQ2Tj2dlgCLCOXnRa9Cnrmr29lOgNXjVfc3bL0oomA/Rz5W9jL95ewjDXJTE7zHXrvm/OJF+dlqIACJ504rl59IPyA+Y6N+IdekSqCw9E0R2r0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789760405; c=relaxed/simple;
+	bh=aluPD1H8ZhbUZyaIGRmSfAZiwosda9+zGSjWlUx2qVY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Wjvj72x2cM+oTge5WEEaEcWG2Eg8mSbkcqyTdhntcA1tAUiq+C3Y8KJe/TsZnnv9KNkZ3FWXbG+i8m2iSivBSzKYdmQOdWaIn3whISPFeVZNoDz+dYcY2f+0inpMbHMOX4fWv/ALdVWIlk9zj3K7HmqLsgmBitoXA59LTUqVVgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OwKcvcFp; arc=none smtp.client-ip=74.125.225.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tvmof/NP"
-Received: by mail-lf2-f12.google.com with SMTP id 2adb3069b0e04-5b5e4f13d7aso1535577e87.1
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 12:35:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789760138; cv=none;
-        d=google.com; s=arc-20260327;
-        b=pXKpxt+mCC3isUpxvJL5CwNta9YUFVlAXOxZ3FY/pzkatbbbLeuyW0Z3x5OLV08P6m
-         0MfzWY3PIfsQVTi/5cJ28lisoXGJXhNn9Ii5MrS8nB2RnSbnXHUSEaoJbFmKAONKIhbz
-         8nkgjJxveI8aYHkEGfiLM9yc8V4ddhp4lLkUA67feuKLDgN33kI3xZq4g+sBOjTNfzZV
-         I7T69NvnyVuqklaaLMk8qNERjfZbSmqsoYsIsyoAIS8eKCZL9/tCjaOW3Bum0ETNuejQ
-         sMAckcctaUhB7zEhgJ3BnZA9EEnmkLYpXXxL1O/Y2GiSZYWL/cSdP0QVb4H95/D+XXVo
-         WqMg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2nxFd75vNkOQ0e5yGedl+RZU+0EEEGzGt/S9Rcg/pPc=;
-        fh=RdxLWFkNX9urMN/OM6QDowq8MFQPfmZRQaJZX9URpks=;
-        b=D6JUOW4kCJRwdeHs6k1XOatMOzGOTR15/Akjj+DyNa3JxHTYtRyrQnyNi7Uwr4kcR5
-         HK6iv/TywLCqrcumiZKSXeZyO3tBNJkjSzC8uBQJBWFdzI6PLfxVPJENl2EfGYNvzMP1
-         SCUy5Y/dmQlaZggvrPh5f5jUHiVdRMyMAGOd2uqX+4cRi3OX4sPtRc70gjKzBL9Vy9fQ
-         55ZLKaaqybkxose0ywQbqo4LkPkTydGE4Psi3O/KQKvNuIR+rtXe7Ccu2g5747Mabwka
-         M8d39Ce6HywKp+12uF6xy++OllNsKbpAOfQnXFI1iBePvtEHeKRp3a4fC+NwpWaI5pz3
-         pFGg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OwKcvcFp"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49cd5462b69so6422445e9.1
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 12:40:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789760138; x=1790364938; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=2nxFd75vNkOQ0e5yGedl+RZU+0EEEGzGt/S9Rcg/pPc=;
-        b=Tvmof/NPM7ege0mtijP7zeeP8y6IVGoFRHpLtot42xLIcVn2xDEpBAqVRO6dT1MT2k
-         ae2hEJWJb+Msg4YVLLRLNFb/nf7FOKyHXjccuqppLJz26RWmTebRTYiYYeskssHRQ74x
-         XePvq+owocNPOX738LUVlSg7a/hBUWZ7kMnvAMOdLDsSYJpWSWTuCdzTzUK4MxihvrKg
-         yMBeLwRKQGcHr/JFqluvGwKw7s8Ep1DZMRu8SC3oi4W5H8aokf8kNQHd/8LhcWa7ZXzD
-         s5USyYBxF4pnV72GukZUeHGNTyXUcO+HCvfszYqFzghIXFa5YQGrrm6BuVVNY4TKV/vl
-         IEzA==
+        d=gmail.com; s=20251104; t=1789760400; x=1790365200; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=piGCPJ2qCNdqMxLVvRBEnvJKlYbS6Cmm7RmQcfiGn0Q=;
+        b=OwKcvcFpT0Yv7vrRt1TYs35iaTIJoMj0VbKI9lCBazHe7SiTmH1PW61TkkFbrhDsva
+         SuNPDqsA49DduiGCpr5hz+eCPeLgj80g/bjG72tWZnr/ZYNoDMwD6W6/Cyc3P9ImYO4e
+         csOln1/t9B+ukd+YNyduXs/lPdvQVNjKK+/BTKBDcE+47j364IVTfeFj8w8HzICcHIed
+         nacAf7E3eHOSu46d5u6TAnKyXW78Ir1HWWujfOSA+jX3ibFgjFIuF1AC/H/BvNfXQ0Bf
+         U18teNhkwr24gJ2ytuOxvDXoN52IGL88hietGUMQo6/d8vG4Ys1lxUhB13shArgHeLdz
+         Rfww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789760138; x=1790364938;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2nxFd75vNkOQ0e5yGedl+RZU+0EEEGzGt/S9Rcg/pPc=;
-        b=C7RvU8CnzRdo1uGiWJiMggNMae9PuGnzBkeqdf3upIEVzz3tUsSyn17Y/E0buadEFW
-         wDtfvTae+8x6t7iTeCuZmEqI88oHTthCm6bWsOSK7y5ocAia8XEXZ3AKdQ65Gwk9mUHd
-         faL5vsUMYbVpp9Um3+gb0fwfK0XKksMPDn8ld5ySQIg+J6Gwjdx+2Abr+U2ivA+BcknN
-         AFfTtFwtrJSY9cIDDPLI4d5InKLHtSdr/HTR9lpHQuTu4jQFYVahwP/kTt44FsjLRU1R
-         iw4Wpy9UQsbzuuIiSW2qP0va4fpb6wDbIQQEdBfwqaebMSoyLsUDteH7YDrPl7sNuAIv
-         NGOQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzXFbd8gpLzuCAyp0s5b+B/dJI780WaAd6ujTOQ1jtA2XfLWAn5jZdcCDiNt4gjPsG5f0mJeH4=@vger.kernel.org
-X-Gm-Message-State: AFuF++k1YHTjDZ9r4TY8qSKN8PzhPgzFACYThMVhLhQlJURnhql/Zu8r
-	g6y5RWFrgr+VyVGtPaoF2zwlgmjXJ+4/e6l+tdgQtASivKudtF0OPZxyEPrricagjPCk++b1/JI
-	bg5TV/vRiq4Oe9Ea9y71s5fv0VYBOIFw=
-X-Gm-Gg: AYBFou3PYljXiGYUJJeWjhFL9fhiJl/SOqE/wXQbQ/uxs6L0PBgJZjvJLdV6PSkSCkW
-	/OU5oOYsJKJ+dEtAkrK22llaTc5LxcIjrw71Why/neXaAtTYSqRmWTYYTpop6In7EHICtd2txZk
-	m4XaaMmsCrYHL3NSo0eymX9F4U51O5uJuPYcvaW3cc9TChq2ZlYj9/ZZ13Hbsiz8gVBgirBksNk
-	HuEGQ96xGHxRXebA69n+JExNg41SoEe+yjgePKwGpINouDAXMILqzn+StzXKkWUfbdj3hOO7bsI
-	RLSpb0uno472cpe0h3oNRxUb1nxs1Pz2q+vH4GUCMToTg8fwtNzQvzwt3Uz3aGyIjVURLcj9yaR
-	Z5X7m6X0dkFvhn9OlHbPb3Lx/xy26/O1xMPr6gDMvFjKSbQ0=
-X-Received: by 2002:a05:6512:a344:b0:5b8:c21e:28e8 with SMTP id
- 2adb3069b0e04-5b8c21e2a24mr835758e87.19.1789760137898; Fri, 18 Sep 2026
- 12:35:37 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1789760400; x=1790365200;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=piGCPJ2qCNdqMxLVvRBEnvJKlYbS6Cmm7RmQcfiGn0Q=;
+        b=2HYkEAfhSskhLT6gBzVy5e54RppTIrIdfgSAT1DUnrjzy/jAV12QvI0YYNIxtd/glx
+         um9h9+qqv5hWpNyeVsM8+CsjWGxmr8QwF7lZhOF75bT9/RQ5WSvb+3NxRsXyseJ7llyk
+         0ScGFhEJqwkgifN+ICA3hEopZscxV7L/l3iBXFqenDEzvkmSKvsdsaqMnnvyTd3gPt/6
+         8AulRC5PSXIvuccTl0xSrFO8a2QAyaN4/g+FF385yqCs6PGA9/LfeL5bA6OyhxxoODnH
+         Z6F4hfTa1pY1lRlwId0K9fr03Q46lFzTbmKVJZdi284LwKH+W6aSEW7D7Ny8CVJGLVYk
+         KoLw==
+X-Gm-Message-State: AFuF++kbugv/rw+xN0A6lhZWE3np9kBDtncfydLDEB9OtXvtkOCsqlJt
+	YjQXOsuC+UVj8B8ZnPfIXJihTzdFTds9FmZrZQKfF7vAImRNmfhFG+cJ
+X-Gm-Gg: AYBFou32byWR4vicrzsCmQryiCEclXrC+rVz8rN6ahASPAKigi/6AAxwPPLtt29ZvFs
+	j6Xmo4fagpaJVWuL5seLaT/OBZPlEaTMi6yVSvxN+Z4Juu0BbZCp72CQwNxu3NhSmGxGa+b+wvu
+	kwFYC6hqQWnHfwba3tO4f8Atz0wtqx2G7vfSEsyJLkToDkoYrIIhud8NEBKNIAmiHxTsnKhsINS
+	JEHLiyCOwNWO6oczavuJ1uPVV7Zfd7gniwrB6Ih9z0EE8sjqLux8Lw//w40m16UrsHk6qBMgMF8
+	KR5GKriXbLIlUPcI28IM4tFK4Gn2dv5U/OsXsJbCFP8aUwpM4NKEnOAYRtyDxmtmI1lgCXsh6kM
+	PuPKGwEimwDnqGklwX6cO0BK1Y36uD/Co/bMjwFVdnoc4u42yopcVq1QsTIm0dmLIglcDPtaTsX
+	xroKpcrATq2Vfy9sx3wvPnGeCjbEr7uDJZv8pf/0ycPA1smb3hv+64klgEfKbsvMJQ4OqHuUBgV
+	Eunv+RJYiyN55Iha1QcpXuIu2S5dLC7eHIs5EKhOD0E3oEcr0IA2pxyJRmmqRjVYWd7ZPejh9no
+	6pmvzjuH
+X-Received: by 2002:a05:600c:34c7:b0:49c:ff8d:b548 with SMTP id 5b1f17b1804b1-49fc5726cfcmr113665925e9.11.1789760400301;
+        Fri, 18 Sep 2026 12:40:00 -0700 (PDT)
+Received: from fedora ([41.198.134.163])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fcd2f7ef3sm10386765e9.0.2026.09.18.12.39.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Sep 2026 12:39:59 -0700 (PDT)
+From: jackyphuti <jackympoka22@gmail.com>
+To: bjorn@mork.no,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jackyphuti <jackympoka22@gmail.com>,
+	Copilot <223556219+Copilot@users.noreply.github.com>
+Subject: [PATCH] net: usb: qmi_wwan: add common Huawei modem IDs
+Date: Fri, 18 Sep 2026 21:36:45 +0200
+Message-ID: <20260918193645.59374-1-jackympoka22@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260911-fix-macsec-net-v1-1-c82aa58ae741@gmail.com>
- <178951752525.22033.8547704610100726932@kernel.org> <20260917180909.566fb795@kernel.org>
-In-Reply-To: <20260917180909.566fb795@kernel.org>
-From: Haseeb Malik <haseebulhaq55@gmail.com>
-Date: Fri, 18 Sep 2026 15:35:26 -0400
-X-Gm-Features: AcwNN1WpSFcsIQWeLcBWVspSvI8wcqej2JfgX23uUmxVKrtS9ZZ_74s9WB4btHQ
-Message-ID: <CAB4N2KPz-ARRDUdkos_S64Cyvm5cBfq-5NxP5wwL835wf+tO-Q@mail.gmail.com>
-Subject: Re: [PATCH net] macsec: initialize SecY before registering the netdevice
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev-bot+sashiko@kernel.org, sd@queasysnail.net, andrew+netdev@lunn.ch, 
-	horms@kernel.org, hangbin.liu@linux.dev, felix.walter@cloudandheat.com, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com, 
-	syzbot+f2f6312ad1b5a0bfe316@syzkaller.appspotmail.com, davem@davemloft.net, 
-	pabeni@redhat.com, edumazet@google.com, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Fixed in v2 by moving MAC address inheritance and SCI initialization
-before register_netdevice():
+Add common Huawei product IDs to qmi_wwan fixed-interface mappings
+for broader generic Huawei modem coverage.
 
-https://lore.kernel.org/netdev/20260918-fix-macsec-net-v2-1-784203ec4836@gm=
-ail.com/
+Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+Signed-off-by: jackyphuti <jackympoka22@gmail.com>
+---
+ drivers/net/usb/qmi_wwan.c | 38 +++++++++++++++++++++++++-------------
+ 1 file changed, 25 insertions(+), 13 deletions(-)
 
-Thanks,
-Haseeb
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index fdfdcf24ddcf..2809b6985f7a 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -216,10 +216,10 @@ static int qmimux_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 		if (netif_rx(skbn) != NET_RX_SUCCESS) {
+ 			net->stats.rx_errors++;
+ 			return 0;
+-		} else {
+-			dev_sw_netstats_rx_add(net, pkt_len);
+ 		}
+ 
++		dev_sw_netstats_rx_add(net, pkt_len);
++
+ skip:
+ 		offset += len + qmimux_hdr_sz;
+ 	}
+@@ -946,6 +946,13 @@ static const struct driver_info	qmi_wwan_info_quirk_dtr = {
+ };
+ 
+ #define HUAWEI_VENDOR_ID	0x12D1
++#define HUAWEI_PRODUCT_E1750	0x1406
++#define HUAWEI_PRODUCT_E173	0x140c
++#define HUAWEI_PRODUCT_K4505	0x1464
++#define HUAWEI_PRODUCT_K3765	0x1465
++#define HUAWEI_PRODUCT_K4605	0x14c6
++#define HUAWEI_PRODUCT_E1820	0x14ac
++#define HUAWEI_PRODUCT_E173S6	0x1c07
+ 
+ /* map QMI/wwan function by a fixed interface number */
+ #define QMI_FIXED_INTF(vend, prod, num) \
+@@ -1024,23 +1031,23 @@ static const struct usb_device_id products[] = {
+ 	},
+ 	{	/* Novatel USB551L and MC551 */
+ 		USB_DEVICE_AND_INTERFACE_INFO(0x1410, 0xb001,
+-		                              USB_CLASS_COMM,
+-		                              USB_CDC_SUBCLASS_ETHERNET,
+-		                              USB_CDC_PROTO_NONE),
++					      USB_CLASS_COMM,
++					      USB_CDC_SUBCLASS_ETHERNET,
++					      USB_CDC_PROTO_NONE),
+ 		.driver_info        = (unsigned long)&qmi_wwan_info,
+ 	},
+ 	{	/* Novatel E362 */
+ 		USB_DEVICE_AND_INTERFACE_INFO(0x1410, 0x9010,
+-		                              USB_CLASS_COMM,
+-		                              USB_CDC_SUBCLASS_ETHERNET,
+-		                              USB_CDC_PROTO_NONE),
++					      USB_CLASS_COMM,
++					      USB_CDC_SUBCLASS_ETHERNET,
++					      USB_CDC_PROTO_NONE),
+ 		.driver_info        = (unsigned long)&qmi_wwan_info,
+ 	},
+ 	{	/* Novatel Expedite E371 */
+ 		USB_DEVICE_AND_INTERFACE_INFO(0x1410, 0x9011,
+-		                              USB_CLASS_COMM,
+-		                              USB_CDC_SUBCLASS_ETHERNET,
+-		                              USB_CDC_PROTO_NONE),
++					      USB_CLASS_COMM,
++					      USB_CDC_SUBCLASS_ETHERNET,
++					      USB_CDC_PROTO_NONE),
+ 		.driver_info        = (unsigned long)&qmi_wwan_info,
+ 	},
+ 	{	/* Dell Wireless 5800 (Novatel E362) */
+@@ -1228,8 +1235,13 @@ static const struct usb_device_id products[] = {
+ 	{QMI_QUIRK_SET_DTR(0x05c6, 0x9625, 4)},	/* YUGA CLM920-NC5 */
+ 	{QMI_FIXED_INTF(0x0846, 0x68a2, 8)},
+ 	{QMI_FIXED_INTF(0x0846, 0x68d3, 8)},	/* Netgear Aircard 779S */
+-	{QMI_FIXED_INTF(0x12d1, 0x140c, 1)},	/* Huawei E173 */
+-	{QMI_FIXED_INTF(0x12d1, 0x14ac, 1)},	/* Huawei E1820 */
++	{QMI_FIXED_INTF(HUAWEI_VENDOR_ID, HUAWEI_PRODUCT_E1750, 1)},	/* Huawei E1750 */
++	{QMI_FIXED_INTF(HUAWEI_VENDOR_ID, HUAWEI_PRODUCT_E173, 1)},	/* Huawei E173 */
++	{QMI_FIXED_INTF(HUAWEI_VENDOR_ID, HUAWEI_PRODUCT_K4505, 1)},	/* Huawei K4505 */
++	{QMI_FIXED_INTF(HUAWEI_VENDOR_ID, HUAWEI_PRODUCT_K3765, 1)},	/* Huawei K3765 */
++	{QMI_FIXED_INTF(HUAWEI_VENDOR_ID, HUAWEI_PRODUCT_K4605, 1)},	/* Huawei K4605 */
++	{QMI_FIXED_INTF(HUAWEI_VENDOR_ID, HUAWEI_PRODUCT_E1820, 1)},	/* Huawei E1820 */
++	{QMI_FIXED_INTF(HUAWEI_VENDOR_ID, HUAWEI_PRODUCT_E173S6, 1)},	/* Huawei E173s-6 */
+ 	{QMI_FIXED_INTF(0x1435, 0x0918, 3)},	/* Wistron NeWeb D16Q1 */
+ 	{QMI_FIXED_INTF(0x1435, 0x0918, 4)},	/* Wistron NeWeb D16Q1 */
+ 	{QMI_FIXED_INTF(0x1435, 0x0918, 5)},	/* Wistron NeWeb D16Q1 */
+-- 
+2.55.0
 
-
-On Thu, Sep 17, 2026 at 9:09=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
->
-> On Wed, 16 Sep 2026 00:12:05 +0000 netdev-bot+sashiko@kernel.org wrote:
-> > - [Medium] Incomplete fix: the registration-time RTM_NEWLINK notificati=
-on
-> >   that this patch makes succeed now carries a bogus IFLA_MACSEC_SCI =3D=
- 0.
->
-> Looks legit
