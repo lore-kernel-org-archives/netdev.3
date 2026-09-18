@@ -1,200 +1,252 @@
-Received: from mail-qv2-f5.google.com (mail-qv2-f5.google.com [74.125.230.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B23F3A1A56
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 06:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.133
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789711603; cv=pass; b=ts7ZydHqaIl3kvmxChcdBtrMc1gLr5AU13YVNpSpV79i3xroN28meitPnEb6NasNiNQDnRWtRImZG8oVDKkDxDrjQgc38lv53KKA5f3r9PVylOfdmdNbOKJeLPEKt1UWiescFICYmuai2IpidrTqf8cvR6awKUfh4Eq1zE/O310=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789711603; c=relaxed/simple;
-	bh=t1ip8CfFi9vuGKam9e+Xd7qhZK6WDwDolruZauKHlow=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GAXgh2sIbQLXFTKUURkhrWxzt2Unv4x08v3nAs9MN6PElD1CAx8w/ANwZwx34PyjM+Bm1Tz/93IGgPmRRWfMkBdqjlCspuqn/MiQjPn62a6dABp6YGRuzUAbG0aigYcxIGbSr132jDlJOoDSLI9O/BIJeQakp+zYIA9/H1wHC2M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F5lP+ROO; arc=pass smtp.client-ip=74.125.230.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132DA5C613;
+	Fri, 18 Sep 2026 06:11:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789711865; cv=none; b=peGo6ALd3rrpjU50nSUz8V8jP9vb5F+tYMDmO3qXFaiN/ousMymsQzEoNdQuo9C0wmQSrhmL+78BSPeV2ojUH59lMBVde//+X+stc4OQSGl2w0BRgOFRc7L/cihJHxXx8/DEi+WhLx3gHCgz0FI3hmRvHIkbggvi8zxoQC/56os=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789711865; c=relaxed/simple;
+	bh=oOLwityMH5uePFglWNH9YcdbM8icNybmU0ycSiZckT0=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=NodMHCEWypvpBU9jbw+RZ1RFeDUgtIIpKwjxnqRKC7AoRt9BN8rqothL70MBxiGq2he4h/QHMTh6D4Hy5qYDk7/OixjuEDa6B4FMCKXVbN4ve4OPXrC+n3fZDbd11FHqemF4wZiBNgq2QgcnHYSXqNj1lIEBtsLEXSVLHH2OH6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l8P0g8Lw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F5lP+ROO"
-Received: by mail-qv2-f5.google.com with SMTP id 6a1803df08f44-90cd1be1f12so2465386d6.1
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 23:06:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789711600; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ECXFh3wM3ojYM/M/QlRJ5KcCTioznywi+1l1ij7UcYhMnH31pJL9hmrhTeq6iESOf1
-         yr3RC2BDBb15HCZOsmOx6s/cokkbEEq6QxU1zJDAwtNnzphOqNXHccWLXpp7it0ghT28
-         Wf12l4IILHpcn9oXfVHVmvWZzGenHguXHuL+09OCbUV/+wqtyxELnpOPtkTILyjMzQ6B
-         k0iRZNFoqjY2xqEaBN0qVZq6lJ3e7m9l4Jm/+b8kK0hmgIm46x4TnoaXscHzypFlk97m
-         kH4iS/rIEuHCxFaeuhd+3UJ/nPne2fQrTzb85oyoqKGEjOSUE4SYna8Xnn0mcF3pzhqu
-         lAmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1x0EChI+gJyyLvy8kTr3cIO2m+3bw6/l/GTas5ZCe1E=;
-        fh=OOgitwruX6EBA32MWtJp+Z+1PM03ogjTJZhfXyXLlyw=;
-        b=leStnrYBGWY0CXF/BeWy7BPQo77AShjICJpYgATyabADIgmrxpnPv4dyPLKtWiDV7p
-         3HEctaR7p1z7yNuFa0pxzko7jqCkhfd8LRnpgVwdCP+yu8RBgzA+61Fjzl/rFjamHhEJ
-         QbwIlhNLw/CwISA/RAOQAi/z69B/v1/c416plkYHWQBAc2NCB6fQVFe/PxiMD9LFJ4Rn
-         cxpq09l/kl0SGjaz3NtGOb9YFM+dPBzkcLLWZkrICS9vpR82GuUxkWEIFZc3ysvp5497
-         46JMuFcQ/CMqGe72WEFoWnTdOqu0Sqa+7Z3dY4PKsICXRbGSSw2I/Jzuiwd0GmwhxmEn
-         CeYQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789711600; x=1790316400; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1x0EChI+gJyyLvy8kTr3cIO2m+3bw6/l/GTas5ZCe1E=;
-        b=F5lP+ROOFEhEkhyhejk8K4pe0S+PlHmgDh2gZe0YXum4M/3/GQPj3PRJR19kojrdd4
-         7GHoQpgciPhpW5VcZvUoFkZR41loNzgRA0t3C58Ehv6ZYZLPpnpvMaPqwa4FG9XW7A12
-         L+DP8E1/C5dJWNaviio6Bi3fq/YuOVsdG6YVAC9zFh8WrtD9WVtTg5ksjVJcM0Q7CJJX
-         vyfnT2lWDKwTd99GQfE8gCNDAv+UkAHuqvOaBcEe6lf2k/u3oGyPamJeM5ulSsmojVaS
-         YGb1BFVDPPucVE9YXsexuGl0V4ykfQY+YE+roZPykl2tIaT7CgBoYgdds7iRaJFTdDRL
-         yoUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789711600; x=1790316400;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1x0EChI+gJyyLvy8kTr3cIO2m+3bw6/l/GTas5ZCe1E=;
-        b=gP5eVX6FshklGaTAKqsqrlOtAW3C+J1JeB4Ii70X2ftcFHaOL/gJj42aVNRsZjYsvo
-         wvnmC3WfiVstdthNTlcGKI5xXTUL4M5Fj1ZJfPW8uwltxThwshe5A1MF3gL0b/8ptc7z
-         o4LWMy2D+XCv2/7axIj6rqYeVUlRslXRO3gtqHmj2IkplsP8UKTVd5vUZr/5OQZeafRz
-         XkGe9oV+vQpi+ImHblYSCR3Hk2sjFfWVnCzr9q8RCFms/2VR0bcpSkfRyQLOzvH5wmFw
-         yQAp5Jhgwf6eJDPLC7IM+UjEqS9NMyo+4lTX5sKLWPulwYxUJONTi5LFUJYZzi8n8pZp
-         SwbQ==
-X-Gm-Message-State: AFuF++momqwVPU22yO0TKUuVX9OBT6NXIme6fgU+ROAJGxiEkbGRO4KL
-	HLOSOt7Lxw+H8ayYLSu7KUC5SSCVmiqEEpSt37zdlPpk8T0UuIbv2F+wM+tc8Um67xV+WfLQHj5
-	rzXRXva87Uzs3LpsNZtt8UkoYge4Sc7o=
-X-Gm-Gg: AYBFou3SdU+nbCujKfr6KvhI9RcaGL/4l+OA/7O+gY32U8LgpCekggutpfnP4UL+qlz
-	gLl/R0AzohnVnKjcJTxrKA4TfsopeSJp7jaK/mnYRklu89H32pFDuRDeIV1nacYE7t3kE3cXn0O
-	9hB3GtgFhZVh+MQkzT917uQOnpcMXuCQan2fnl2+xbZlmFCkGylQP8rZmr4Z7cJJnPd//4G0xGy
-	QfPx8P3I7dbsJsasufU6on+UuM8nuqmGnFwSWB4p0m4vL+cgEjB/kKuVH03WORhLPH7DdRFwwW/
-	1n9ZdLLC+9liF7l09eciELCDmYUSizG/wT6uHzQjy6u6S4TelcMTtxZC
-X-Received: by 2002:a0c:f80a:0:b0:912:517b:40e4 with SMTP id
- 6a1803df08f44-91254c23e25mr17001336d6.43.1789711600506; Thu, 17 Sep 2026
- 23:06:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l8P0g8Lw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC0F81F000FF;
+	Fri, 18 Sep 2026 06:11:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789711863;
+	bh=AQ9gdXJBc3uhyb3QTeXMIRSoXEAyu9HsvJeDL5xa9vE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=l8P0g8LwgAt0Uyf8xnVsVHBc4H1jLZbFFKiTVL6Y2cxgCgSBrqGtm+o2W9K1NrUTA
+	 ujY7i3B5e9+ztgTrut7E7iHrc8kIMzdW59Y+pw9LEWzvunrDAKj5HIF7TlbhtNX6VB
+	 cgC4D+PPdMmmzFhzftBsoo2fDwgEXxkVdDgfFFibfyhBQuFd79Dpy8IXeDz4qVmq1f
+	 QpcINLY8dfuI2SInoLhzBVYC2mOH3fDALQ1154j+5BU4StzzFkM/hLNAXyy4BK+JBS
+	 okTG4sdEvFrAu0QC22urPQnv+KLrk8+33gZMmMCX8v3ihAyONnrBLM5QKAp8w9eOne
+	 3r+RFEMvXuZKw==
+Subject: Re: [PATCH net] eth: fbnic: Keep real queue counts synchronized
+From: netdev-bot+sashiko@kernel.org
+To: bjorn@kernel.org
+Cc: alexanderduyck@fb.com, kuba@kernel.org, kernel-team@meta.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, linux@armlinux.org.uk, netdev@vger.kernel.org,
+ mohsin.bashr@gmail.com, mike.marciniszyn@gmail.com, leitao@debian.org,
+ horms@kernel.org, almasrymina@google.com, linux-kernel@vger.kernel.org,
+ netdev-bot+sashiko@kernel.org
+Date: Fri, 18 Sep 2026 06:11:02 +0000
+Message-ID: <178971186222.22033.14149428944925737019@kernel.org>
+In-Reply-To: <20260915180859.4157646-1-bjorn@kernel.org>
+References: <20260915180859.4157646-1-bjorn@kernel.org>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAFxp=AY2cVRQrZvB9WNnigbsobuw11NMG-cagHx0_V+ur2ToFw@mail.gmail.com>
- <e4054f5a-e60c-4253-bccf-d05cc7c615b7@nvidia.com>
-In-Reply-To: <e4054f5a-e60c-4253-bccf-d05cc7c615b7@nvidia.com>
-From: jiabin deng <dengjiabin2023@gmail.com>
-Date: Fri, 18 Sep 2026 14:06:28 +0800
-X-Gm-Features: AcwNN1WmPi8EXlHwAu7wu1rlDke4e_ZCXtICiqlZsZn4bp_rtke-3i1SLyRML6M
-Message-ID: <CAFxp=AapgUYLUhipVjR8oM0fRDSLDX60AQf0UP8=U4M1ASqmOA@mail.gmail.com>
-Subject: Re: mlx5e:zero-prefix corruption during TCP DMA-BUF RX - help requested
-To: Dragos Tatulea <dtatulea@nvidia.com>
-Cc: netdev@vger.kernel.org, saeedm@nvidia.com, tariqt@nvidia.com, 
-	mbloch@nvidia.com, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Dragos,
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
-Thank you for pointing us to this fix.
+Critical: 0 · High: 0 (2) · Medium: 2 · Low: 0
 
-Our original test used Ubuntu kernel 7.0.0-30-generic, based on
-v7.0.12, and did not include that change. We have now repeated the
-test using Ubuntu's mainline build of Linux 7.2.6
-(7.2.6-070206-generic), with its in-tree mlx5_core driver.
+- [Medium] Comment and changelog do not match the code:
+  `__fbnic_pm_resume()`…
+- [Medium] The new resume path makes a channel state reachable that
+  fbnic's own ethtool setter rejects.
 
-I checked the v7.2.6 source: it contains the small-frame guard from
-commit e2466392a0b8496000e12181cb1ee1535eb0da25  In
-mlx5e_handle_rx_cqe_mpwrq_shampo(), frames with
-cqe_bcnt <=3D ETH_ZLEN + 2 * VLAN_HLEN set match =3D false and
-flush =3D true [2].
+Pre-existing issues:
+- [High] NULL pointer dereference on interface open for a fully split
+  channel configuration at the 128-vector boundary.
+- [High] Error pointer passed to `page_pool_destroy()` plus leak of the
+  header page pool in `fbnic_alloc_qt_page_pools()`…
 
-The zero-filled corruption ending at the next 64-byte boundary in
-GPU memory still reproduces with this kernel.
+--
 
-We kept the same sender and receiver data-checking logic, with
-tcp-data-split on and rx-gro-hw on. One additional environment
-change is that the NVIDIA GPU driver was updated from 595.71.05 to
-595.91.07. The NIC firmware remains 32.43.2400 (MT_0000001117).
+eth: fbnic: Keep real queue counts synchronized
 
-We repeated the same eight message sizes, from 32 KiB to 4 MiB,
-with 50 iterations per size:
+The patch publishes the driver's private queue counts to the netdev real
+queue counts as soon as they change (defaults at alloc time and channel
+changes while the device is down), and stops clamping the private queue
+counts on resume so that memory-provider bindings on Rx queues are
+preserved. Only the NAPI layout is recomputed on resume.
 
-- All 400 iterations completed.
-- 105 iterations passed; 295 contained corrupted data.
-- 21,599 corrupted ranges were recorded, all zero-filled and
-  ending at the next 64-byte boundary in GPU memory.
-- For each size from 256 KiB through 4 MiB, all 50 iterations
-  contained corruption.
-- The full-message snapshots taken before and after
-  cuFlushGPUDirectRDMAWrites() were identical in all iterations.
+Link: https://lore.kernel.org/netdev/178915061000.219967.7726187707862333281@kernel.org/
 
-For example, in the first 32 KiB iteration, an 8-byte corrupted
-range starts at offset 2147495416 bytes from the beginning of the
-GPU buffer. This offset is 56 bytes into a 64-byte-aligned block,
-so the eight zero bytes end exactly at the next 64-byte boundary.
+A few questions on the resume path and on some surrounding code below.
 
-These results come from the reproducer's runtime byte comparisons.
+> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
+> index 0e47088ec44ba..bec6113873338 100644
+> --- a/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
+> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_ethtool.c
+> @@ -1626,6 +1626,13 @@ static int fbnic_set_channels(struct net_device *netdev,
+>  		return -EINVAL;
+>  
+>  	if (!netif_running(netdev)) {
+> +		unsigned int rx_count = ch->rx_count + ch->combined_count;
+> +		unsigned int tx_count = ch->tx_count + ch->combined_count;
+> +
+> +		err = netif_set_real_num_queues(netdev, tx_count, rx_count);
+> +		if (err)
+> +			return err;
+> +
+>  		fbnic_set_queues(fbn, ch, max_napis);
+>  		fbnic_reset_indir_tbl(fbn);
+>  		return 0;
 
-Could you suggest the next targeted checks or additional debug
-information that would help narrow this down?
+[Severity: High]
 
-Thanks,
-Jiabin Deng
+This isn't a bug introduced by this patch, but while looking at
+fbnic_set_channels() the validation just above this hunk seems to accept a
+configuration that the NAPI allocator cannot build.
 
+The check is:
 
-On Tue, Sep 15, 2026 at 8:21=E2=80=AFPM Dragos Tatulea <dtatulea@nvidia.com=
-> wrote:
->
-> Hi Jiabin,
->
-> On 15.09.26 03:49, jiabin deng wrote:
-> > Hello mlx5e and networking maintainers,
-> >
-> > We are investigating reproducible data corruption: with SHAMPO enabled,
-> > some TCP data is corrupted when received through mlx5e directly into
-> > CUDA-exported GPU DMA-BUF memory.
-> >
-> > The full expected number of bytes is received, but the prefixes of some
-> > payloads become zero. The corrupted ranges end exactly at the next
-> > 64-byte boundary in GPU memory.
-> >> [...]
-> >
-> > Each iteration uses a new TCP connection. Test connections do not run
-> > concurrently.
-> >
-> > Observed results:
-> >
-> > We tested eight message sizes from 32 KiB to 4 MiB, with 50 iterations
-> > per size:
-> >
-> > - 400 iterations completed.
-> > - 354 iterations contained at least one corrupted range.
-> > - 20,707 corrupted ranges were recorded.
-> > - All recorded corrupted ranges were zero-filled prefixes ending
-> >   at the next 64-byte boundary in GPU memory.
-> > - Corruption was present in both snapshots, before and after the
-> >   explicit GPUDirect write flush.
-> >
-> > A specific example:
-> >
-> > - Packet payload length: 1448 bytes.
-> > - Offset of the first payload byte from the start of the GPU buffer:
-> >   2149169912 bytes.
-> > - This byte offset modulo 64 bytes is 56 bytes.
-> > - First 8 bytes: zero.
-> > - Remaining 1440 bytes: correct.
-> >
-> This sounds a bit like the ethernet padding issue that was recently
-> fixed [1]. Did you have this patch when testing?
->
-> >
-> > [...]
-> >
->
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/co=
-mmit?id=3De2466392a0b8496000e12181cb1ee1535eb0da25
->
-> Thanks,
-> Dragos
+	if ((ch->rx_count && ch->tx_count && ch->combined_count) ||
+	    (standalone && standalone + ch->combined_count > max_napis) ||
+
+so on a host where max_napis == 128, ethtool -L eth0 rx 64 tx 64 combined 0
+passes (128 > 128 is false), and fbnic_set_queues() records
+num_rx_queues=64, num_tx_queues=64, num_napi=min(128, 128)=128.
+
+On the next open, fbnic_alloc_napi_vectors() skips its dedicated Tx/Rx
+branch because of the strict comparison at num_napi == FBNIC_MAX_TXQS:
+
+	if (num_napi < FBNIC_MAX_TXQS && num_napi == num_tx + num_rx) {
+
+The fallback pairing loop then allocates one Tx/Rx pair per vector
+(tqpv = DIV_ROUND_UP(64, 128) = 1, rqpv = 1) and returns 0 after filling
+only fbn->napi[0..63].
+
+fbnic_alloc_resources() still walks the configured count:
+
+	for (i = 0; i < fbn->num_napi; i++) {
+		err = fbnic_alloc_nv_resources(fbn, fbn->napi[i]);
+
+and fbnic_alloc_nv_resources() dereferences the NULL entry at
+for (i = 0; i < nv->txt_count; i++).
+
+Can this oops on open?  fbnic_free_napi_vectors() guards with
+if (fbn->napi[i]), which suggests partially populated arrays are expected,
+while the alloc walk has no such guard.
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+> index 8b9bc9e8ea56c..4dda566d580f4 100644
+> --- a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+> @@ -510,12 +511,17 @@ static int __fbnic_pm_resume(struct device *dev)
+>  
+>  	fbn = netdev_priv(netdev);
+>  
+> -	/* Reset the queues if needed */
+> -	fbnic_reset_queues(fbn, fbn->num_tx_queues, fbn->num_rx_queues);
+> -
+>  	rtnl_lock();
+>  	netdev_lock(netdev);
+>  
+> +	/* Preserve queue counts, as RX queues may have memory providers bound.
+> +	 * The RSS table indexes RX queues and remains valid. Rebuild only the
+> +	 * NAPI layout, sharing vectors if fewer IRQs are available.
+> +	 */
+> +	max_napis = fbd->num_irqs - FBNIC_NON_NAPI_VECTORS;
+> +	max_queues = max(fbn->num_tx_queues, fbn->num_rx_queues);
+> +	fbn->num_napi = min(max_queues, max_napis);
+
+[Severity: Medium]
+
+The comment says vectors are shared "if fewer IRQs are available", and the
+changelog says "share the remaining NAPI vectors when fewer IRQs are
+available".  Does this code look at the previously configured
+fbn->num_napi at all?
+
+Take a standalone layout configured with ethtool -L eth0 rx 4 tx 4
+combined 0.  fbnic_set_queues() records:
+
+	fbn->num_rx_queues = 4;
+	fbn->num_tx_queues = 4;
+	fbn->num_napi = min(4 + 4 + 0, max_napis) = 8;
+
+After a suspend/resume that obtains exactly the same number of IRQs,
+num_napi becomes min(max(4, 4), max_napis) = 4, so
+fbnic_alloc_napi_vectors() no longer takes its one queue per vector
+branch:
+
+	if (num_napi < FBNIC_MAX_TXQS && num_napi == num_tx + num_rx) {
+
+and fbnic_get_channels() then reports combined=4, rx=0, tx=0 instead of
+the rx=4 / tx=4 that was configured, with half the interrupt contexts.
+
+The collapse to max(tx, rx) matches what the removed
+fbnic_reset_queues() call already computed, so the behaviour itself is not
+new here, but the comment and changelog now describe something else.
+Would min(fbn->num_napi, max_napis) implement what they describe?
+
+[Severity: Medium]
+
+Preserving asymmetric queue counts while lowering num_napi also seems to
+make a state reachable that fbnic's own setter rejects.  Before this
+change, fbnic_reset_queues() clamped both queue counts to max_napis and
+then set num_napi = max(tx, rx), so num_napi >= num_rx_queues always held
+after resume.
+
+Now consider rx_count=4, combined_count=4 set while max_napis >= 8, so
+num_rx_queues=8, num_tx_queues=4, num_napi=8.  If resume gets only 4 NAPI
+IRQs, num_napi = min(8, 4) = 4, and fbnic_get_channels() takes this
+branch:
+
+	if (fbn->num_rx_queues > fbn->num_napi ||
+	    fbn->num_tx_queues > fbn->num_napi)
+		ch->combined_count = min(fbn->num_rx_queues,
+					 fbn->num_tx_queues);
+	...
+	ch->rx_count = fbn->num_rx_queues - ch->combined_count;
+	ch->tx_count = fbn->num_tx_queues - ch->combined_count;
+
+reporting combined=4, rx=4, tx=0, i.e. 8 channels while only 4 NAPI
+vectors exist.  Feeding those same values back to fbnic_set_channels()
+hits:
+
+	    (standalone && standalone + ch->combined_count > max_napis) ||
+
+with 4 + 4 > 4 and returns -EINVAL.  Is it intended that ethtool -l output
+can no longer be replayed through ethtool -L after such a resume, and that
+it describes more channels than there are vectors?
+
+One more observation outside the diff, in fbnic_alloc_qt_page_pools() in
+drivers/net/ethernet/meta/fbnic/fbnic_txrx.c:
+
+[Severity: High]
+
+This is a pre-existing issue and not something this patch changes, but for
+an Rx queue with an unreadable memory provider bound, the header pool is
+stored in qt->sub0.page_pool and the local pp is then reused for the
+payload pool.  When the second page_pool_create() fails, the error label
+is reached with pp holding the ERR_PTR:
+
+	err_destroy_sub0:
+		page_pool_destroy(pp);
+		return PTR_ERR(pp);
+
+page_pool_destroy() only checks for NULL:
+
+	void page_pool_destroy(struct page_pool *pool)
+	{
+		if (!pool)
+			return;
+
+		if (!page_pool_put(pool))
+			return;
+
+so does this dereference the error pointer in page_pool_put()?  And does
+the label also leak the header pool in qt->sub0.page_pool, which is never
+destroyed here?  Should the label destroy qt->sub0.page_pool while still
+returning PTR_ERR(pp)?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260915180859.4157646-1-bjorn%40kernel.org
