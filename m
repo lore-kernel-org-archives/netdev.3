@@ -1,140 +1,70 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from forward502b.mail.yandex.net (forward502b.mail.yandex.net [178.154.239.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95FD33D300E
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 16:30:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A236550E591;
+	Fri, 18 Sep 2026 16:35:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789749049; cv=none; b=FkJsiVktOFZF3S4Ky7xt0EspwKK9rixCfpVSk7KiOwaEZ4VwGEwgzK5+QcePRenIIAF6GgjAnw7DOCdUvkBD7/3OPVHE8Ewhhz8/2ejyQzlnQI4IYmQTzfrGBgUw6IQMLgAZIouBtHDF8MVFGHcRUvHzi6WcJGNdw3UshJfF1Lw=
+	t=1789749334; cv=none; b=FiaHbR1C9IXBsAz+qPhdJJvyLIBE5tdaqsoTpwPF4Xi28I++CC3JHLcmMG6SX6WTlHXlkBVauh4woXXG/fI7RsAkQwyRX5C7PdU1XDyHeEFmEtwkyS9LibZQw++k0dq6D5YPKwETq4V74okqtGoMkGRpHDll5vWS5eEqF9s7gr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789749049; c=relaxed/simple;
-	bh=NeJ//uueV251Gzxqgu9MjWRJnDnl1fN24s5ZL2pPQQw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qgygTHbGCHhtxFcabYImfEhql6EakgWZKg0UMIFL3L3V5IeK49bke0qsDhZPtgBgVPXZ4A9+CiZenBoB+z2Nk2sT6kf4LQrqgRBrc4UHScyPQvyRbzzQndBRQrMsQff3W4pJ7Pir0rCbn52jvJvVVqdw4n2M458Knuh0iqK1wV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sMQ/vf8h; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IHeYyYNT; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1789749334; c=relaxed/simple;
+	bh=NAU59vvsEmrYVpB8nv8x4xK1FUmZUpy8NnVvSLExP/A=;
+	h=From:To:Cc:In-Reply-To:References:Subject:MIME-Version:Date:
+	 Message-Id:Content-Type; b=Dj3weEmP+xpi3z4DhxWwSYb5kJYqxPnx2bGy2rjnMkmCuD0qhUQrhRVxbfWMpQo2LJ0+wJomFzSm/n+sBzvDDg9SkAmYvAeZkaj323BX80FLRdDRvXazQCDumeh9thK/KzBAnZPNIx9/Y5OD+LRDbNG+mR3e5XnG7f4xR2Pow88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=0upti.me; spf=pass smtp.mailfrom=0upti.me; dkim=pass (1024-bit key) header.d=0upti.me header.i=@0upti.me header.b=HweAqYwy; arc=none smtp.client-ip=178.154.239.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=0upti.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0upti.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sMQ/vf8h";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IHeYyYNT"
-Date: Fri, 18 Sep 2026 18:30:43 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1789749044;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dwTxMQYTMmq3jxVCerteLcIsqOAQQcm34no4lSszO8Q=;
-	b=sMQ/vf8hCJHVwYpakNnsyQxf6hrPCFTGWF3TwUqmnORU6rh+ZKI3KTyKHAKccYUF83IBnT
-	b0I+5LjTb9MQcJfnP3xP58sq7HDpeMtd/cwJEkx4m06oQi59xokHUbo8lR4DCOmuzT1pkn
-	JQlPECFLXHAgysZHj2PnbBoIxjS0oLe1SUmFGLLaoJujywOqsNn5YwbQuG+1Q+YmoEWVLw
-	sLCJfyrCDBts6I6yuwxqMdrXoAMz0Ldl/fmfZsXgN0EjJoSfGEl+rmvGlk/5mF2Tsbllv1
-	Kh3Jdd19IA59/1THu8i/8+FPvQMirvA17683P28OuN2ADWe8sTJ1C4O9y9UmIQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1789749044;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dwTxMQYTMmq3jxVCerteLcIsqOAQQcm34no4lSszO8Q=;
-	b=IHeYyYNTFKkIQ7rNmvj+3aS+i+Krocf3zvOTWhGYJvlADKWD4Ym6KhUogtmbtUFFIPHYsc
-	usw7OGV9Jz94njAQ==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
-	Chintan Vankar <c-vankar@ti.com>, Danish Anwar <danishanwar@ti.com>,
-	Daolin Qiu <d-qiu@ti.com>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Felix Maurer <fmaurer@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	Neelima Muralidharan <neelima@ti.com>,
-	Paolo Abeni <pabeni@redhat.com>, Praneeth Bajjuri <praneeth@ti.com>,
-	Pratheesh Gangadhar TK <pratheesh@ti.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Subject: Re: [PATCH net-next v5 3/8] hsr: Add a magic header for sending PTP
- packets
-Message-ID: <20260918163043.nBGatWbi@linutronix.de>
-References: <20260527-hsr_ptp-v5-0-158a7633eac0@linutronix.de>
- <20260527-hsr_ptp-v5-3-158a7633eac0@linutronix.de>
- <willemdebruijn.kernel.28f56d129e0b1@gmail.com>
+	dkim=pass (1024-bit key) header.d=0upti.me header.i=@0upti.me header.b="HweAqYwy"
+Received: from mail-nwsmtp-mxback-production-main-59.sas.yp-c.yandex.net (mail-nwsmtp-mxback-production-main-59.sas.yp-c.yandex.net [IPv6:2a02:6b8:c11:501:0:640:c489:0])
+	by forward502b.mail.yandex.net (postfix) with ESMTPS id ADDA38CB2C;
+	Fri, 18 Sep 2026 19:27:27 +0300 (MSK)
+Received: from mail.yandex.ru (2a02:6b8:c1c:3147:0:640:b38b:0 [2a02:6b8:c1c:3147:0:640:b38b:0])
+	by mail-nwsmtp-mxback-production-main-59.sas.yp-c.yandex.net (mxback) with HTTPS id MRaVga1vk4Y0-2b5DlXr0;
+	Fri, 18 Sep 2026 19:27:27 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0upti.me; s=mail;
+	t=1789748847; bh=NAU59vvsEmrYVpB8nv8x4xK1FUmZUpy8NnVvSLExP/A=;
+	h=Message-Id:References:Date:Cc:Subject:In-Reply-To:To:From;
+	b=HweAqYwyNdpwVVygzSr8jyfDApylvClVKAdQdRXnHjhOrZTfIaJ2odJ9veG7qwXHf
+	 leCj3QHs3Rowv1kljnhTV3Jb7ZASZ2cODom4+PMNFYyTfchrtBl7rtKg1crZgPlxSE
+	 V/1VbSXA/0pFnrr4D9hMsccdD3zhGP+N+emsSYco=
+Authentication-Results: mail-nwsmtp-mxback-production-main-59.sas.yp-c.yandex.net; dkim=pass header.i=@0upti.me
+Received: by mail-sendbernar-production-main-91.sas.yp-c.yandex.net (sendbernar) with HTTPS id 5f39ae46106f62be9806b612ed5e658f;
+	Fri, 18 Sep 2026 19:27:26 +0300
+From: Ilya K <me@0upti.me>
+To: Ben Greear <greearb@candelatech.com>
+Cc: linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-mediatek@lists.infradead.org
+In-Reply-To: <1556871789207706@7dc9deb3-4292-4932-8568-de9b411208d8>
+References: <1767631788532094@64c4e675-cd08-4a74-816f-886742f9bfcd> <529a79bc-dab7-aa41-00bd-c47ecbefaa00@candelatech.com> <471221788538289@323ca970-5bd2-4c6b-b52d-2b863a718615> <3acf531c-bcc7-412b-b3bb-665069260e46@candelatech.com> <2028561788553569@f088f4ec-f441-47a1-b7e4-75a1052aa4df> <2418461788691106@84aa39c5-f501-4e64-8418-6a8b6eb88e21> <eb405366-6574-4e4c-a89d-363751ed848b@candelatech.com> <4175721788798939@f00554c7-d809-471c-9bcf-78e5d8eceab4> <1556871789207706@7dc9deb3-4292-4932-8568-de9b411208d8>
+Subject: Re:[bug] Triple whammy of mt7996e bugs on 7.2+
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <willemdebruijn.kernel.28f56d129e0b1@gmail.com>
+X-Mailer: Yamail [ http://yandex.ru ] 5.0
+Date: Fri, 18 Sep 2026 19:27:26 +0300
+Message-Id: <1443771789748846@4a8ec5ae-80ed-44bc-b7d3-6bc660c90136>
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 2026-05-29 15:58:28 [-0400], Willem de Bruijn wrote:
-> > --- a/net/hsr/hsr_device.c
-> > +++ b/net/hsr/hsr_device.c
-> > @@ -223,24 +223,61 @@ static netdev_features_t hsr_fix_features(struct net_device *dev,
-> >  
-> >  static netdev_tx_t hsr_dev_xmit(struct sk_buff *skb, struct net_device *dev)
-> >  {
-> > +	enum hsr_port_type tx_port = HSR_PT_NONE;
-> >  	struct hsr_priv *hsr = netdev_priv(dev);
-> >  	struct hsr_port *master;
-> > +	bool has_header = false;
-> >  
-> >  	rcu_read_lock();
-> >  	master = hsr_port_get_hsr(hsr, HSR_PT_MASTER);
-> > -	if (master) {
-> > -		skb->dev = master->dev;
-> > -		skb_reset_mac_header(skb);
-> > -		skb_reset_mac_len(skb);
-> > -		spin_lock_bh(&hsr->seqnr_lock);
-> > -		hsr_forward_skb(skb, master);
-> > -		spin_unlock_bh(&hsr->seqnr_lock);
-> > -	} else {
-> > -		dev_core_stats_tx_dropped_inc(dev);
-> > -		dev_kfree_skb_any(skb);
-> > +	if (!master)
-> > +		goto drop;
-> > +
-> > +	skb->dev = master->dev;
-> > +	if (skb->protocol == htons(ETH_P_1588)) {
-> > +		struct hsr_inline_header *hsr_opt;
-> > +		unsigned int hdr_len;
-> > +
-> > +		BUILD_BUG_ON(sizeof(struct hsr_inline_header) != sizeof(struct ethhdr));
-> > +
-> > +		/* need to access the magic header */
-> > +		if (!pskb_may_pull(skb, sizeof(struct hsr_inline_header)))
-> > +			goto drop;
-> > +
-> > +		hsr_opt = (struct hsr_inline_header *)skb_mac_header(skb);
-> > +		if (hsr_opt->magic == htonl(HSR_INLINE_HDR)) {
-> > +			struct ethhdr *eth_hdr;
-> > +
-> > +			has_header = hsr_opt->hsr_hdr;
-> > +			tx_port = hsr_opt->tx_port;
-> > +			if (tx_port != HSR_PT_SLAVE_A && tx_port != HSR_PT_SLAVE_B)
-> > +				goto drop;
-> > +
-> > +			eth_hdr = skb_pull(skb, sizeof(struct hsr_inline_header));
-> > +			if (has_header)
-> > +				hdr_len = ETH_HLEN + HSR_HLEN;
-> > +			else
-> > +				hdr_len = ETH_HLEN;
-> > +			skb_set_network_header(skb, hdr_len);
-> > +			/* Ensure the header can be accessed */
-> > +			if (!pskb_may_pull(skb, hdr_len))
-> > +				goto drop;
-> > +			skb->protocol = eth_hdr->h_proto;
-> > +		}
-> 
-> Should the packet be dropped otherwise?
+Yet another update: 7.2.6 + firmware from mtk-openwrt-feeds is stable for a few days, but then crashes with
 
-We could make the inline header mandatory. Before this change sending
-would not work anyway so this wouldn't break anything.
-On the HSR side it mandatory and on PRP the stack isn't used here.
-Nothing broke after testing. Let me drop the packet if the header is
-missing.
+[98876.837441] mt7996e 0000:01:00.0: Message 00130022 (seq 14) timeout
+[98879.483965] mt7996e 0000:01:00.0: HW/SW Version: 0x8a108a10, Build Time: 20260721003616a
+[98879.592297] mt7996e 0000:01:00.0: WM Firmware Version: ____000000, Build Time: 20260721003609
+[98879.631743] mt7996e 0000:01:00.0: DSP Firmware Version: ____000000, Build Time: 20260721002848
+[98879.657097] mt7996e 0000:01:00.0: WA Firmware Version: ____000000, Build Time: 20260721003453
+[98902.835490] mt7996e 0000:01:00.0: Message 001a0034 (seq 11) timeout
+(repeating from there)
 
-Thank you Willem.
+I've picked a few more things from the latest mt76-fixes, specifically these three:
+- https://lore.kernel.org/all/20260729173632.14387-3-enderaoelyther@gmail.com/
+- https://lore.kernel.org/all/20260823053739.186748-1-gongtao0607@gmail.com/
+- https://lore.kernel.org/all/20260901092232.461379-1-nbd@nbd.name/
 
-> >  	}
-
-Sebastian
+Building this now, we'll see how it goes.
