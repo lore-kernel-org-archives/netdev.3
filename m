@@ -1,55 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D8E36F8E5;
-	Fri, 18 Sep 2026 00:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA08834EEFD;
+	Fri, 18 Sep 2026 01:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789692783; cv=none; b=pXMiZtRw0yBHEDfQzXkztoItWNTMbgy0pfqubx44q+88esfoQLJxP17G3m3z5UlDpijhkJg8TxbSKKyg6k7CVMFBejO8zaNb+8/iuaSxuaT5icpxGh6xKnjqJzNMRAo0hlB9jkQPLe5et139pjvGGFzMRhfS3Vazh91gnxt/+cM=
+	t=1789693276; cv=none; b=q074eW56TDoYenpS8pri1+wRfFAZLtUevA3ZOTfKpO2yzmEw+TyaU2CRIxL9WeeGFrIhrYfAdIUobaoAuLjQjR5rbbfkqx8tXOuF/RG0BbixI0EoCkaETmefT1k9jw90kMGVEtyAWwJ7nKjrFPQ3CUSnrjtkqzjqGNG3JC3D4Zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789692783; c=relaxed/simple;
-	bh=g5RZNF9tPHYnxTjTao/Qe4K5FWQrk358BezNw7gSAN0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WK/RjS4LSgqMiPuzUdVVwiTMIfUTB4tB3bMeK1Th6Y5gYZ5+VMmTqPJVbM51I0XAEX/oUF6xOpPEN4NFp45BPwMOl1b/TT0IdkMcmT2r32F8hHn3S344STfX3VoISuxZczdAiGnxr6dgcmO8wix94o7EAAlpp+S8eLeliz5wosA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mLLxNoII; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789693276; c=relaxed/simple;
+	bh=ggZwsaShIQ5aZQSXLneO7hkAC3zYT3R6vCxCN7e4cRE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=f5VGsa3I3+8s0So3YW7P2CWPIC54RU//aD2WW/U1eDx3t+DwnNX3dQ/8FT+rBLG69pTt8A5R4E4PpPrciQNNFVh+GldyyS3x2FuQtNyzdv9PrWN3DkyBoFJ8M7CCv+A7A/27/Sld6CQ8NYy7WZMinBMkhtqb2ZJUujsl6N4Y820=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XNF2tMTt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mLLxNoII"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39DDB1F0089A;
-	Fri, 18 Sep 2026 00:53:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XNF2tMTt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72CD51F000FF;
+	Fri, 18 Sep 2026 01:01:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789692781;
-	bh=KW7JYefcv10fFdJtdqBL6oXYa+3elg1lBk14sv+TqT4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mLLxNoIIw6DM814yZ11ckfQuWZ5biVUA6HXJifbqdZRiySvfSXeBFqLNQkMIZi+Y9
-	 aLp10Z0d+yTcoo681yiwv8VPD5hDEb82bjAwvL8Nd1KvkgWY7m8cmrEljhAjH4nu/o
-	 BsjBvhJnEYxjMEu4rp5FEezH84p0kClcVZpfzZdjZt9JYiaw9t8ohoV7ixnSytgjo9
-	 JxAuDfT9rGuoKv2sSMSMhmLZzdTFa1pWcVDaiX2xmwinre0mS49KCVa6eF8n/Pxgop
-	 23bVP+16o0J1EdQHdo+9fSPzgJ243rLokmJWVVKBd3OU/KLorovazQLlLc225phH3j
-	 jFoGDNG8r3F2g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>,
-	Karl Mehltretter <kmehltretter@gmail.com>,
-	gregkh@linuxfoundation.org,
-	luiz.dentz@gmail.com,
-	luiz.von.dentz@intel.com,
-	marcel@holtmann.org,
-	johan.hedberg@gmail.com,
-	eadavis@qq.com,
-	pav@iki.fi,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	syzbot+b7f6f8c9303466e16c8a@syzkaller.appspotmail.com
-Subject: Re: [PATCH 5.15.y 0/2] Bluetooth: L2CAP: fix connectionless receive path
-Date: Thu, 17 Sep 2026 20:52:37 -0400
-Message-ID: <2026-09-17-daily-reply-0010-l2cap-connectionless-5-15@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260917040004.21041-1-kmehltretter@gmail.com>
-References: <20260917040004.21041-1-kmehltretter@gmail.com>
+	s=k20260515; t=1789693274;
+	bh=6rTB3UCndzcR89Te2bYPvVcL7EVx+BCvmOmuYHa91Js=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=XNF2tMTtg3MdAdtKkT323as61CXh3F43xreHiaqhwuxBG1rhG1oL9ATahg1+B8Xmw
+	 W3xVL8mlC1tsrQs2US2K0oR9ZCAF1SQgYh0cyPb5H9J9CdO8qse9Dn0EZ9XgVuk8Df
+	 aIobJ5QT1afisuiQlNZ4ibyJvZT49OiM1Ggn3whzXjLKpTs2DzKTMgOCWZYSumfF3w
+	 vfBhoVE1dieqLg/EZgFF0raMyjKA+KxyeI5wXxhR9EjVtz/eAl7jv7AWBIbq8Yj5/x
+	 eBBIARiG5fsRCQarhj0x9/z+TaXNFcpOYWb/FJa/a8gxNGUsLBvhgxYPcthgaGRELY
+	 eooOnN56d+WwA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19984380820D;
+	Fri, 18 Sep 2026 01:00:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,15 +37,48 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net V3 0/3] net/mlx5: SD LAG and devcom stability fixes
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178969320763.204321.19372011582450217.git-patchwork-notify@kernel.org>
+Date: Fri, 18 Sep 2026 01:00:07 +0000
+References: <20260915113459.3934760-1-tariqt@nvidia.com>
+In-Reply-To: <20260915113459.3934760-1-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ agoldberger@nvidia.com, gal@nvidia.com, leon@kernel.org,
+ linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, mbloch@nvidia.com,
+ saeedm@nvidia.com, shayd@nvidia.com
 
-> 5.15.y has two problems on the L2CAP connectionless receive path. The first
-> comes from a backport that landed without its prerequisite, the second from
-> a fix that never landed at all. Upstream contains both fixes.
+Hello:
 
-Queued the series for 5.15, thanks. The write-up of why only the
-l2cap_core.c half of f1a8f402f13f ("Bluetooth: L2CAP: Fix deadlock")
-belongs here was useful.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
+On Tue, 15 Sep 2026 14:34:56 +0300 you wrote:
+> Hi,
+> 
+> This series by Shay fixes four bugs in the Socket Direct LAG and devcom
+> subsystems, all related to initialization/teardown ordering and
+> concurrent access to the LAG device.
+> 
+> Regards,
+> Tariq
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,V3,1/3] net/mlx5: devcom, Base component size on linked devices
+    https://git.kernel.org/netdev/net/c/d09e8f64653c
+  - [net,V3,2/3] net/mlx5: SD, unload reps on shared FDB create error path
+    https://git.kernel.org/netdev/net/c/e1e29ada2b93
+  - [net,V3,3/3] net/mlx5: LAG, reload IB reps of LAG master before the rest
+    https://git.kernel.org/netdev/net/c/bae23d1ae620
+
+You are awesome, thank you!
 -- 
-Thanks,
-Sasha
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
