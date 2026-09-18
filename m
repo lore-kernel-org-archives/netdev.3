@@ -1,64 +1,64 @@
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+Received: from mail-wr2-f27.google.com (mail-wr2-f27.google.com [74.125.225.91])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C29F4FECF9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07005013D1
 	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 15:29:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.141
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789745398; cv=none; b=E6ZTXLmVYqiCQFSwZIHdBwzkpMTgN3vhFvZeEA8uACy0Di0C5UI/WlA1+DzqnsNJpSdpi90EQvQnitRaTXD2Bb5hR/Gad5LKYIWFaZ4boMz935P2Q6zK5kwQA94ouh4ihI8JtMdkuXc+atXzDcoJYOcBs1Olx5ejRXNVVklpC6Q=
+	t=1789745399; cv=none; b=OhyT2Q94mq9abgoot/n6D1blsdRQKvGWOwWV2KTyxYsOrELx89NQrT19aQEnzYldS80mj24MXwCfiPuIUXfrau5D0P6n5cb4L7trz/8R5LllnvGc1ZESGLMfiEkHx0eF/whVSq1zUcmp9D5B1CDTFQgMuL2hRT52F4mAXKut49c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789745398; c=relaxed/simple;
-	bh=XYsfo8o5Asadzmw159ufKmUqiSadcrJylPnfHJNeQts=;
+	s=arc-20240116; t=1789745399; c=relaxed/simple;
+	bh=2EVShEmI/0rJNMpwjpQOmFmP5a9kka8l4gxp8+ZaUpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QKWFH8MhUTbpYmvmboWObovP7hf8d3HaL/4KX22R8/wluGLqPfXhCkS19hs6ziR4bcUt7Uf74/xJI6Ec42yQHlFzZvZkFya2gHfUZ3ETw/l+/zv/os9O38rtGsdrqvZfN/bFTpyBvNL4EU2Df4jkOwLKtlCnZXF3gKF7Hq1MDHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=Q5yjhc7o; arc=none smtp.client-ip=74.125.225.141
+	 MIME-Version; b=KgIIyS8vFfkFx6ynt+m55ot8NuyCO/7lKgidCqQWXDmLpHktXkmPz0EZSPw8P5P4aYPeaBRr8zSSAwMl6QYIh+RCmbgiIDxy0xrDVykQzz/xM2pubmBkRu0yvVnOGno30LC6454ltui7kcgdETQcTNDS1l2FKe+H5M+OzXE8QWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=TWaTLgeC; arc=none smtp.client-ip=74.125.225.91
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="Q5yjhc7o"
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49cd38e0f79so5907685e9.3
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 08:29:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="TWaTLgeC"
+Received: by mail-wr2-f27.google.com with SMTP id ffacd0b85a97d-4843796e373so507217f8f.1
+        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 08:29:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1789745395; x=1790350195; darn=vger.kernel.org;
+        d=blackwall.org; s=google; t=1789745396; x=1790350196; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=9rB3tIRMtglcqN6pGjAHeHm2M9HV8sIVhRduA6yeaWI=;
-        b=Q5yjhc7oUsyXPTrqW84L9uIBA5V21pkNXa9FYqbOIsGFcot21rNkwkN9ALukwMseQV
-         6At4a/dTHvsN9mlv9gc/OFwn410xiv8K5Jmi4M4TksYnuolwCCGgIBGhtMHlQeV1orOm
-         TTr+yyyflyScKZz7A0PMuj3aw9cLVyVob/y0ZUPLfujAFoohjAn64I9XD9441M4aAUvm
-         iTJAVaxfv/C4et80oAqN3mb7lgSDC5RZMGDMGsQiFGVD/DwfGNPijgUBpfEBOVCevRtK
-         vUpP4peCiwDDmXJXm51GL+a9YgrqFkxMd3pX1phInzOLZEMsOyWB9AeiBNayvqvGs4pt
-         zZ+Q==
+        bh=96oAyfpjzN0+/Y81mIOKiKNvJ2eV4pXY44RiiIB6xww=;
+        b=TWaTLgeCVAEGRDu/eU7k+djecp98OJT0wfxTXZgvzhH22CSvCDasOd+lseXY7ReLCJ
+         6efwDoS28W4OgebNBU9ozy/UwNHSIOrM3v5zkzIe0aFEv6sf4yN6/HxHSWPrWGClwve6
+         rLYioBtlfO5N9Xs/5PaAeV2CMATBX0DobK3tCUwBtblhX/jdomYoDePAxm6UK/8rO0eS
+         2XQnPIa64c1aZa23Tq6lFZLghxtpwltIr2XDd8tIGxzY+aT0AM95WQ8H7febKNpRY7RB
+         Kua9tdHmnPh7CE2+tN8cQRlLZ5PbWDq6Xcxy/KVAsJSToO7xlttfooJOgmDLncoA5qn8
+         aD+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789745395; x=1790350195;
+        d=1e100.net; s=20260707; t=1789745396; x=1790350196;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=9rB3tIRMtglcqN6pGjAHeHm2M9HV8sIVhRduA6yeaWI=;
-        b=zv1NuZZccAVvrNWpO3jjSkdxWuEeyVaDZ/qGgrylHywrlv0yRtHFbWNawKxDL4yEal
-         Z2X1wYKPFbB61l0YQqTy84+meRK5KK1uwyY5+597K5a0CTuBviYeOv1SqoI01OKSmkGN
-         0yYxQb4jC6w1rhZSGsw0kbpzYB0wRMdVhkbRGIZQUxhv/7Qq71HSDDzQuQp4d9D6M+5o
-         lTOq0Ewasof4kP/95SbzgKPOI0bLwBDaLDHZ+bzoc3nXSTOXnlaHMc+OQG8qxLPH1dL0
-         ZoC63D41VP1tJ85yxFn28QTSOENxo5I2DMIjp+ZVfMFZmBvhRqe1EvtjVpgkgP6jSY6F
-         s2+g==
-X-Gm-Message-State: AFuF++ltID9GbEo7JczmO/MVrjNF/gPmEjVVUrPOxc9nJhZfKp3dmUBw
-	QFdFzNgj8NxpEX3T2qnUH3L3ZwP+UNPCd030DXLJLVG7AvxqCwXmPdy04IGpjIKN6r4FQEnt+uj
-	S536J
-X-Gm-Gg: AYBFou1Y+QW0tkSmfcgmenccKWJuv6irD9rPZnmgOajT8wesGzVFlfIVo1j6M04Fqqu
-	dkmspIVIwcnlHascX4IK5qagZIUe6XRm1THB6w52LAc+B+uuA5e56sDivpP/4EZgilnN7qqte76
-	nQilMLEx7Ja438G4kPXAE7dp1YV1s196u1l5ZIzTBeSoKINpTMb75tlD6qcHeIrxbkknGDz01qq
-	iw4uhnr7QDFqNFTSXWmmVlaDihKMxadm+ZKiBqdSGjzt5C8Mac2Us1VQ5Aphy02aw1jC3PyU6Io
-	z64KwYYwnSrjJMMOotuYS/JAmAuQCXD3jd81ZPhLc+UIEkJ249IFgLHgBYWFyceEFqvI2g4vuwK
-	Ovj5xu42Gl3rYwKTpgt1S7G7ei8wA4LflGiThmbwtIrYUXl1a2R2NMNi8/ZTIiLtyz1RJN1mtYm
-	cetv/Y13g8J2VA/YXeZCBmT5S9K/B4DW+zPMSgvurf/3F18Wa5aNTHEOxqTCAowXROF2fD9TpCh
-	VBW2xCHXCpgzd+SgoVJ3g==
-X-Received: by 2002:a05:600c:5489:b0:49c:dca4:94c with SMTP id 5b1f17b1804b1-49fc573579amr81100765e9.13.1789745394563;
-        Fri, 18 Sep 2026 08:29:54 -0700 (PDT)
+        bh=96oAyfpjzN0+/Y81mIOKiKNvJ2eV4pXY44RiiIB6xww=;
+        b=dFkFjpKIswTvdIgBdH99ELx54pfHGjwFTwY2SAcfWJrShw1exmM1agtkMyj6c5UZmM
+         fEV96w4rcpsYlv/THatExp7iICzzbpbp5RVYU9rrb96DFjpZTYbM28l/PXfoxMxnoMoG
+         Lf14i36HVOsVeIKi3doNYzhXDzWujKQ4Qt+hdzt443ed7ekUDAeXBjXqEHm542W4ViDd
+         H0dn6bZqNy2KNnFppxxrEZ90D2UWYQAYo6KosOnEVpk8Bjw26WGx8F2X/ZOwSYkBivzY
+         M/5Os/p7UlvZiI2rinXlyl6LmEz0rl3uPsTRDpxGxTX52kwizFhzWZxpFCiAHQLzoJne
+         MVtQ==
+X-Gm-Message-State: AFuF++mEfsO9dvdGMoVhj1V29xuHbjufo93QlRQPC/rJhDADKed3SjKu
+	/VxcHhADil6YUIqw7xNSi6J+5onLA6PymkFGRgRD3UKnKeJUHfjVEklOC8BeL8IG6sNQT4sv7cH
+	JY1Hc
+X-Gm-Gg: AYBFou0jhFu2IFg9jCWNF5O6LtB/fMvX4u88KNqRgH/q1sfcFsWyidNbJJtI7wtKu4M
+	nKeCPAW6MGG2Zaul7dd1XV4j78RR/eVs0oY4gN+/ALXHNM+BOYb2MFiLGvCKhuWpDr863mAU7H7
+	HwbYNKhwBKAtbpHWdfl1/aiEl7hD+3/SS5vOksD/7hex5wdkE2CLa2sGqJ8bo1ycyZStODjqfoo
+	2jv+Ep43MO5SLyVCs8Yoie0yGFGRq4n9lVci+0cHtMaxn27dMeXAU3tpD69ecQ3kZZV9pK9Jvnz
+	McRnCvwm5PslvkkLeXv3hRcEw7hnuiHQ07xU5gxk5X+Th8YZxBQ94HEFh3r9F8Q2uHY9+ouinjG
+	mipxJdZ7L6/WRU6nv4NlsPQMN4mPPmmAlcXqwYPZz1/MnepkKl+LQugb8q4K2Y1w1QKzDVfUW3F
+	cwWz91C2cXzqewEksyLy/cNp74Lm+KGl0wPJn9Dr258qdSIoFqyNij4DMDf2umaXpyfIs9JSCrI
+	WPxycD2RutFQqqaDjaP2g==
+X-Received: by 2002:a05:6000:1acb:b0:487:767:b301 with SMTP id ffacd0b85a97d-4871e387052mr4220968f8f.57.1789745395848;
+        Fri, 18 Sep 2026 08:29:55 -0700 (PDT)
 Received: from localhost (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-49fcd0822fbsm1041815e9.3.2026.09.18.08.29.54
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-4871ff5551fsm4656235f8f.15.2026.09.18.08.29.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Sep 2026 08:29:54 -0700 (PDT)
+        Fri, 18 Sep 2026 08:29:55 -0700 (PDT)
 From: Nikolay Aleksandrov <razor@blackwall.org>
 To: netdev@vger.kernel.org
 Cc: idosch@nvidia.com,
@@ -69,9 +69,9 @@ Cc: idosch@nvidia.com,
 	horms@kernel.org,
 	bridge@lists.linux.dev,
 	Nikolay Aleksandrov <razor@blackwall.org>
-Subject: [PATCH net-next 1/9] net: bridge: factor out common flood completion handling
-Date: Fri, 18 Sep 2026 18:29:42 +0300
-Message-ID: <20260918152950.1938259-2-razor@blackwall.org>
+Subject: [PATCH net-next 2/9] net: bridge: factor out port flooding
+Date: Fri, 18 Sep 2026 18:29:43 +0300
+Message-ID: <20260918152950.1938259-3-razor@blackwall.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260918152950.1938259-1-razor@blackwall.org>
 References: <20260918152950.1938259-1-razor@blackwall.org>
@@ -83,125 +83,109 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Factor out the common flood completion handling shared by br_flood and
-br_multicast_flood into a new helper - br_flood_finish. No functional
-changes intended.
+Factor out port flooding code into its own helper, it will be used by later
+changes to flood to specific port VLANs. No functional changes intended.
 
 Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
 ---
- net/bridge/br_forward.c | 65 ++++++++++++++++++-----------------------
- 1 file changed, 29 insertions(+), 36 deletions(-)
+ net/bridge/br_forward.c | 77 +++++++++++++++++++++++------------------
+ 1 file changed, 43 insertions(+), 34 deletions(-)
 
 diff --git a/net/bridge/br_forward.c b/net/bridge/br_forward.c
-index 46c762ca5177..31d54125b441 100644
+index 31d54125b441..a696c6c128e3 100644
 --- a/net/bridge/br_forward.c
 +++ b/net/bridge/br_forward.c
-@@ -197,12 +197,33 @@ static struct net_bridge_port *maybe_deliver(
- 	return p;
+@@ -219,6 +219,48 @@ static void br_flood_finish(struct net_bridge_port *prev, struct sk_buff *skb,
+ 		__br_forward(prev, skb, local_orig);
  }
  
-+static void br_flood_finish(struct net_bridge_port *prev, struct sk_buff *skb,
-+			    bool local_rcv, bool local_orig)
++static void br_flood_port(struct net_bridge_port **prev,
++			  struct net_bridge_port *p, struct sk_buff *skb,
++			  enum br_pkt_type pkt_type, bool local_orig, u16 vid)
 +{
-+	enum skb_drop_reason reason = SKB_DROP_REASON_NO_TX_TARGET;
-+
-+	if (IS_ERR_OR_NULL(prev)) {
-+		if (IS_ERR(prev)) {
-+			reason = PTR_ERR(prev) == -ENOMEM ? SKB_DROP_REASON_NOMEM :
-+				 SKB_DROP_REASON_NOT_SPECIFIED;
-+		}
-+
-+		if (!local_rcv)
-+			kfree_skb_reason(skb, reason);
-+		return;
++	/* Do not flood unicast traffic to ports that turn it off, nor
++	 * other traffic if flood off, except for traffic we originate
++	 */
++	switch (pkt_type) {
++	case BR_PKT_UNICAST:
++		if (!test_bit(BR_FLOOD_BIT, &p->flags))
++			return;
++		break;
++	case BR_PKT_MULTICAST:
++		if (!test_bit(BR_MCAST_FLOOD_BIT, &p->flags) &&
++		    skb->dev != p->br->dev)
++			return;
++		break;
++	case BR_PKT_BROADCAST:
++		if (!test_bit(BR_BCAST_FLOOD_BIT, &p->flags) &&
++		    skb->dev != p->br->dev)
++			return;
++		break;
 +	}
 +
-+	if (local_rcv)
-+		deliver_clone(prev, skb, local_orig);
-+	else
-+		__br_forward(prev, skb, local_orig);
++	/* Do not flood to ports that enable proxy ARP */
++	if (test_bit(BR_PROXYARP_BIT, &p->flags))
++		return;
++	if (BR_INPUT_SKB_CB(skb)->proxyarp_replied) {
++		if (test_bit(BR_PROXYARP_WIFI_BIT, &p->flags))
++			return;
++		/* For gratuitous ARPs/NAs, check neigh_forward_grat.
++		 * For regular ARPs/NDs, check only neigh_suppress.
++		 */
++		if (br_is_neigh_suppress_enabled(p, vid) &&
++		    (!BR_INPUT_SKB_CB(skb)->grat_arp ||
++		     !br_is_neigh_forward_grat_enabled(p, vid)))
++			return;
++	}
++
++	*prev = maybe_deliver(*prev, p, skb, local_orig);
 +}
 +
  /* called under rcu_read_lock */
  void br_flood(struct net_bridge *br, struct sk_buff *skb,
  	      enum br_pkt_type pkt_type, bool local_rcv, bool local_orig,
- 	      u16 vid)
- {
--	enum skb_drop_reason reason = SKB_DROP_REASON_NO_TX_TARGET;
- 	struct net_bridge_port *prev = NULL;
- 	struct net_bridge_port *p;
+@@ -230,40 +272,7 @@ void br_flood(struct net_bridge *br, struct sk_buff *skb,
+ 	br_tc_skb_miss_set(skb, pkt_type != BR_PKT_BROADCAST);
  
-@@ -243,25 +264,11 @@ void br_flood(struct net_bridge *br, struct sk_buff *skb,
- 		}
- 
- 		prev = maybe_deliver(prev, p, skb, local_orig);
--		if (IS_ERR(prev)) {
--			reason = PTR_ERR(prev) == -ENOMEM ? SKB_DROP_REASON_NOMEM :
--				 SKB_DROP_REASON_NOT_SPECIFIED;
--			goto out;
+ 	list_for_each_entry_rcu(p, &br->port_list, list) {
+-		/* Do not flood unicast traffic to ports that turn it off, nor
+-		 * other traffic if flood off, except for traffic we originate
+-		 */
+-		switch (pkt_type) {
+-		case BR_PKT_UNICAST:
+-			if (!test_bit(BR_FLOOD_BIT, &p->flags))
+-				continue;
+-			break;
+-		case BR_PKT_MULTICAST:
+-			if (!test_bit(BR_MCAST_FLOOD_BIT, &p->flags) && skb->dev != br->dev)
+-				continue;
+-			break;
+-		case BR_PKT_BROADCAST:
+-			if (!test_bit(BR_BCAST_FLOOD_BIT, &p->flags) && skb->dev != br->dev)
+-				continue;
+-			break;
 -		}
-+		if (IS_ERR(prev))
-+			break;
- 	}
- 
--	if (!prev)
--		goto out;
 -
--	if (local_rcv)
--		deliver_clone(prev, skb, local_orig);
--	else
--		__br_forward(prev, skb, local_orig);
--	return;
--
--out:
--	if (!local_rcv)
--		kfree_skb_reason(skb, reason);
-+	br_flood_finish(prev, skb, local_rcv, local_orig);
- }
- 
- #ifdef CONFIG_BRIDGE_IGMP_SNOOPING
-@@ -301,7 +308,6 @@ void br_multicast_flood(struct net_bridge_mdb_entry *mdst,
- 			struct net_bridge_mcast *brmctx,
- 			bool local_rcv, bool local_orig)
- {
--	enum skb_drop_reason reason = SKB_DROP_REASON_NO_TX_TARGET;
- 	struct net_bridge_port *prev = NULL;
- 	struct net_bridge_port_group *p;
- 	bool allow_mode_include = true;
-@@ -343,11 +349,9 @@ void br_multicast_flood(struct net_bridge_mdb_entry *mdst,
- 		}
- 
- 		prev = maybe_deliver(prev, port, skb, local_orig);
--		if (IS_ERR(prev)) {
--			reason = PTR_ERR(prev) == -ENOMEM ? SKB_DROP_REASON_NOMEM :
--				 SKB_DROP_REASON_NOT_SPECIFIED;
--			goto out;
+-		/* Do not flood to ports that enable proxy ARP */
+-		if (test_bit(BR_PROXYARP_BIT, &p->flags))
+-			continue;
+-		if (BR_INPUT_SKB_CB(skb)->proxyarp_replied) {
+-			if (test_bit(BR_PROXYARP_WIFI_BIT, &p->flags))
+-				continue;
+-			/* For gratuitous ARPs/NAs, check neigh_forward_grat.
+-			 * For regular ARPs/NDs, check only neigh_suppress.
+-			 */
+-			if (br_is_neigh_suppress_enabled(p, vid) &&
+-			    (!BR_INPUT_SKB_CB(skb)->grat_arp ||
+-			     !br_is_neigh_forward_grat_enabled(p, vid)))
+-				continue;
 -		}
-+		if (IS_ERR(prev))
-+			break;
-+
- delivered:
- 		if ((unsigned long)lport >= (unsigned long)port)
- 			p = rcu_dereference(p->next);
-@@ -355,17 +359,6 @@ void br_multicast_flood(struct net_bridge_mdb_entry *mdst,
- 			rp = rcu_dereference(hlist_next_rcu(rp));
+-
+-		prev = maybe_deliver(prev, p, skb, local_orig);
++		br_flood_port(&prev, p, skb, pkt_type, local_orig, vid);
+ 		if (IS_ERR(prev))
+ 			break;
  	}
- 
--	if (!prev)
--		goto out;
--
--	if (local_rcv)
--		deliver_clone(prev, skb, local_orig);
--	else
--		__br_forward(prev, skb, local_orig);
--	return;
--
--out:
--	if (!local_rcv)
--		kfree_skb_reason(skb, reason);
-+	br_flood_finish(prev, skb, local_rcv, local_orig);
- }
- #endif
 -- 
 2.47.3
 
