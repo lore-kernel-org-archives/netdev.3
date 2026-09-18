@@ -1,162 +1,186 @@
-Received: from pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.35.192.45])
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazolkn19011031.outbound.protection.outlook.com [52.103.14.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC67154707E;
-	Fri, 18 Sep 2026 04:50:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.35.192.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789707032; cv=none; b=Z6YFIYROKJ1D+68ZMG5wZCbA1b49jkPlklDHMZz6+CAk1RRNzd7vmkE7BTw3wpV1f8Jb0REEtsdAOafw79pRLGm5RQs1OdEw3Njckm2rFdOPwEdkoaJFrI5MZ9eyN/C/4P9CYxKdQC9FfSBT6AtXkdx8Yl12RgwZCZDeUjNqFaM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789707032; c=relaxed/simple;
-	bh=n2piDbYsTAYFwqdXcKxPJVurKNps3aJYTe9GNTCvdd8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AMXs/SfqBgs/EO32w5OE0f0OEbkbr7Vu0XRfn35vb+9oA00fPqytsf61UhHxqdIX9SprxG5DH/12+4yM708uKqzw9ds94t++gyfxnuLutpNmeaJG2I9AFBxRUcyR7z/LVynNHnBHRJ2zqoJnoBEYbaZmR5w/9W/a45y0mPK7mco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=DCNMqRQM; arc=none smtp.client-ip=52.35.192.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC67F3F822F;
+	Fri, 18 Sep 2026 04:51:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.14.31
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789707086; cv=fail; b=Kd2A22/W032zyuDyGIoZs1QGGRV40XaDduZ12xlOy4hR/CeKUwU2Obd1vQDds2mOrYrxg4qfxfY0IftGyQrxe3WhzB+TSa7FY6rgrbTv4XCt+Xnng5BlST2vCvTwwKiSjLl9s88i2i7B+FbCd+KXGqu4RfSR452xzTDF2Hqtsg4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789707086; c=relaxed/simple;
+	bh=60UCVtho7V7fpxZl2s/jCEeLLZRxDzZ7qWLxPqXVWCY=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=asYl6AUeFgmAnZ3zBSD+03yBhLLMhC2XBmLzo+701cIcZNIqqLpynlWIiBm0N/I4SRZInEYrVp/dRNE7LAflfWUuP3qtJ41eewyJWesm0og74Nn8NFUSnyB1nXqWUGqkbNm4vX+/I8pbpLhKxcrmB0qL0W/VJFBCpZS+/bIiNwI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=sK8D/Xua; arc=fail smtp.client-ip=52.103.14.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="DCNMqRQM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1789707030; x=1821243030;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=SyFwGRaqH3oiMPjnkPS47mB6Cdto9junyyZzujrDe6s=;
-  b=DCNMqRQMjkVRhhROTSIQLHYLbDPcRvcW1TTC/o61SrczHEiZ885S6b0f
-   WglGbS3TzeZ8wigyrvi/3SK/dwAF15Gc0eZX7dL22vxLldsJCRG1zwFqn
-   L9oN4j8FVBCB2ydlH42jtPxrNXhqy0kDhQF3O362WmKnFWs1FwsLSAiI3
-   RSOw3UuF2T/A5OBWgXFtCOsASB1A2vQ1X9m9NdKqyuGXzKs6nuoRJALVa
-   K1220oobKfN8Pxy0yviMDl4S2tbJ5ySlS70Zm0WlEitdn5wTwKhM/fpHb
-   j7YxY5kjfIuqz1IepdFAKC9dxRTa/k5Z7YaAfOyjA6BIiQzZQV0kBzCQi
-   Q==;
-X-CSE-ConnectionGUID: BNh80O8jRzexf/r4DoH8og==
-X-CSE-MsgGUID: VtQlHfxkTZS7CXiOdcjmww==
-X-IronPort-AV: E=Sophos;i="6.27,103,1787011200"; 
-   d="scan'208";a="28762656"
-Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-011.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 04:50:30 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:30209]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.1.232:2525] with esmtp (Farcaster)
- id f7103714-67e9-45c2-bbf4-f7afe6d43e37; Fri, 18 Sep 2026 04:50:30 +0000 (UTC)
-X-Farcaster-Flow-ID: f7103714-67e9-45c2-bbf4-f7afe6d43e37
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.46;
- Fri, 18 Sep 2026 04:50:29 +0000
-Received: from 6c7e67c92ceb.amazon.com (10.187.170.24) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.46;
- Fri, 18 Sep 2026 04:50:29 +0000
-From: Nathan Gao <zcgao@amazon.com>
-To: <edumazet@google.com>, <ncardwell@google.com>, <davem@davemloft.net>,
-	<kuba@kernel.org>, <pabeni@redhat.com>
-CC: <kuniyu@google.com>, <horms@kernel.org>, <shuah@kernel.org>,
-	<netdev@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Nathan Gao <zcgao@amazon.com>
-Subject: [PATCH net-next] selftests/net: packetdrill: check rcv_ssthresh vs scaling_ratio changes
-Date: Thu, 17 Sep 2026 21:50:21 -0700
-Message-ID: <20260918045021.42138-1-zcgao@amazon.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="sK8D/Xua"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=epHOahm6dAFsiOhIap/nyTWOQE2bdqXYHJCUsmhopmcZKx6ljsAaR52nrAat31NAqYWrKRtDgujHiVLB8myKGXnGGfzGRR9BYbSZuA/xKuOCa9TQikjLMYIxYSF39XGQFMwIpijMlSW/Ag5nHkxPNz8fL6Kx/xE2lpWRgi28OJcR9WV23d/JRaIEPhE1vzZbWsOwQd/8UfCDOWn7RM/BARZFQnGioRewGQMz63teuqjeAlGonM+sf3cvkYU7xnez9aOCtBVKgQ5h6KMRwoU4Js2COCZXeP3coECc5/zXlW79jmvtjNPwAx0jwJUZqyIi4g2u3esWESYbsOeH5chOZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=u0ZTHwbMK/7r4hBA9ju7FJt89GnaVF/MzfQl91pS5B0=;
+ b=smlPWEKSNEtO/hXJEabtYxjdApKyY8cxC047R3KioMfJ8B5zk5ZeF76YtErfwsyMZ2W06a+rZwkLy4Ejjbgq5F9xBuakYvjvk9odj1wNCJ4AAeb/e43vES5HeoclM69r0I3y2Ky5Rdi1UvnYMZEfeiKo3mRm4t2w9UOdS5nFVPnIAJrv8ZMQ+RSHLgibwSXtso9PnaCK1dZdsgyvK49hyKvu0XtJIK9VVTMNgfNf2f1Mh5YunwVjleSz6oXoO1e6iEFNiEX+QeEyAICaVCtqhsadrw62CVwZ4iy3v1ac3b61D303281TINpv2cYvoSNDlsH6RYpsjK8gdNvMJPx60A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=u0ZTHwbMK/7r4hBA9ju7FJt89GnaVF/MzfQl91pS5B0=;
+ b=sK8D/Xuap3I35gXmiWsXxOeFcuVa/bgMya1tqbxVHatw3R0sQFz2PSQfSMhr6jqScWQUibKQWbycVRanLeaScA2J3Q7ilsIYc08FvCHaGNHjSi43Qwct430bwZoiZCdaTlYanyQhyzO0SJCJzTn7JkoIJmwrqYN/aIShNNer4yQfa69vNbI5CEzGwbYMOC+na1hvGpEjW1MM7h029dK/+VWZZv0F2Qfi8+YTRCIYq69Ldp+F6/izh1FYxitKhhN8v+/MzJbAH0QgQojTPL8Xxee8J16rNI9soe66bFlCa8zADSNt3zcDFfp8Ixljyu4aKzz/zNeZ/t7bp5ntqk2Siw==
+Received: from SJ2PR11MB8401.namprd11.prod.outlook.com (2603:10b6:a03:539::19)
+ by SJ5PPF2FCF00E1F.namprd11.prod.outlook.com (2603:10b6:a0f:fc02::81e) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Fri, 18 Sep
+ 2026 04:51:22 +0000
+Received: from SJ2PR11MB8401.namprd11.prod.outlook.com
+ ([fe80::ccc8:68f:2e82:ab65]) by SJ2PR11MB8401.namprd11.prod.outlook.com
+ ([fe80::ccc8:68f:2e82:ab65%5]) with mapi id 15.21.0406.014; Fri, 18 Sep 2026
+ 04:51:22 +0000
+From: Thomas Karpiniec <tom.karpiniec@outlook.com>
+To: netdev@vger.kernel.org
+Cc: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Coia Prant <coiaprant@gmail.com>,
+	linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v2 0/3] stmmac: fix ETHQOS SerDes interface handling
+Date: Fri, 18 Sep 2026 14:50:53 +1000
+Message-ID:
+ <SJ2PR11MB8401F5C3A075DE2A0013E063E4872@SJ2PR11MB8401.namprd11.prod.outlook.com>
+X-Mailer: git-send-email 2.54.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MEWP282CA0188.AUSP282.PROD.OUTLOOK.COM
+ (2603:10c6:220:1d6::16) To SJ2PR11MB8401.namprd11.prod.outlook.com
+ (2603:10b6:a03:539::19)
+X-Microsoft-Original-Message-ID:
+ <20260918045056.4294-1-tom.karpiniec@outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D036UWB003.ant.amazon.com (10.13.139.172) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR11MB8401:EE_|SJ5PPF2FCF00E1F:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2037a7ae-0bea-4012-814a-08df15407c1d
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|51005399006|37011999003|15080799012|23021999003|5072599009|25010399006|4140399003|24021099003|19110799012|8060799015|5062599005|40105399003|30101999006|2607281247196008|3412199025|440099028;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?MJU2Sg6jfNWN4iNF7aDPrlc+RrHpUW4jYtnYNZs1C7toLJ7S9KleVxQJS9Nf?=
+ =?us-ascii?Q?jN7b++pdkYH+nof4+4AIrMw3tm0s0rgAs8B3iNzemoDaS3tmJpMKq6lrRUZS?=
+ =?us-ascii?Q?bLbnL3jTt0PA/XXCGv77/jgi4JcASeAo24FhLJcYr6bgVJA+jY37PHO7a2BQ?=
+ =?us-ascii?Q?Bh3YSSU5X/IpXIEmze+clcWpn33q2BMEg5riu1dhXYzn1GtKf337CaWMtNqP?=
+ =?us-ascii?Q?+kvOxJzpitT4BwpVh3od80ApOF94nVpmXSyWopTXtrek9FlXsIBC89X5fxAj?=
+ =?us-ascii?Q?RjIraqzJ2CyUGRWJ8tlOK74cDFh6khvb9nx99djHpvesPIzFE4p8ICayqgJr?=
+ =?us-ascii?Q?WjSurOvyq4C/FnB1tpP9D4m/h82mk7quXtXJ4l6QNbaVvTU+eFNcL80CShL6?=
+ =?us-ascii?Q?K1nT6cBpJWgqyRlvnRKwpCl3cUPKF1DwsgOqR31DlELKcvoB9UV0tcS+cBQ/?=
+ =?us-ascii?Q?G6GjsmKXuZQs6hJ5byo32viupK9TBuJgnOqAdY0lNacwaL5TLhE99tdmMrM+?=
+ =?us-ascii?Q?nDbMpQCfmnhQKOOTnXwt8WrJp8+qUE0Rqx3DRorU7qDi/QUHeGpxMAE8MJBY?=
+ =?us-ascii?Q?MHnqitkdQXEWuDrGQ9Fdm+g6+IpfP8S8T6AHcNjb4hLM6YqqQejcJaIkY4lm?=
+ =?us-ascii?Q?hKwWmP71cT1YKxbG5uLCVpstE/HaUQ7kKtga4r7Oa8+3oSP2BrMAKE/1Yc13?=
+ =?us-ascii?Q?cNi0AMkI57vzA0ob90CtX7G+fk/VhjWJoHwLO6v5zxCZbd9w3wFGn8kvrwpk?=
+ =?us-ascii?Q?/Hfc1/G5L6yBgcrF3QJSD9LYGM79TQRV8ApHRYWIQMwkm4S3NqUnMk9ajEN3?=
+ =?us-ascii?Q?3boqy7lMLjJPFliqggyiNGSvvXx9aRGEvG0SONLNGzxYMie2kI5zQgK0ia74?=
+ =?us-ascii?Q?cytyXWYkMD73uDCj4HNPTz508nA2JdtwkdMs5cejCJLyycH4H+WsbfM2JJeO?=
+ =?us-ascii?Q?aSQv57rmXRSQF2vF7qolWrs1F6bW9/D6EAZdXiBDGQb2o4KHIdW05vEHBo71?=
+ =?us-ascii?Q?TYFoECdHIxmZyoCVXJakiEf32w=3D=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?mmTD24vNgYcqya98u9dYn3raUYm/yXFlgeZAPvZ9oL8qf7NsRYTZ6gXcMVk+?=
+ =?us-ascii?Q?DaWiAvRU0bf0bge8Tn1Zs7V6vi5VjKfw1d3nsaWNoL7YqXtFlE+OYCaCnQPi?=
+ =?us-ascii?Q?D2HzMk6NYhUoQTjjheEQ86uNQXhgSQG1XJmoQpPIRSp/bTDVOQAN4U5vLuRN?=
+ =?us-ascii?Q?7/UjOhMe2d9kjhsVNWQGJHHjYX1EmXixp4uMyUaGMEctjwSKKBAMOfL2F0qe?=
+ =?us-ascii?Q?rxtZv7CR9M7n6UGSU7yDxu4Y/Y+XYO3isw6q7NZZHx6sQqXWXQLYWzp1uOfU?=
+ =?us-ascii?Q?PxWR9FqVgTWXBP2owYGLhtNk2A0G4v79iWZMMWYkGxKiqzB6jJlqQEytg4tl?=
+ =?us-ascii?Q?8xc5aYaD80hqAeV7iqNfpQm8QkmtbgsDaJjdMmJLZDl+4Z19T5ny/5K4SJEh?=
+ =?us-ascii?Q?kfGA1AQA/Qc9zblSRMPwumCjK3d1Z70iIZMB+z2Qcq2pB29ockPhg6+lvusJ?=
+ =?us-ascii?Q?BhUV8dOR5rM4xDEQESxSy0g33pv9nyXQCgpMm5eBufqDwqTZLOLOvXGvw3g8?=
+ =?us-ascii?Q?Dv9K8aMSyYShRjnVuHP6OxGUhJOs53vaVuQlrGMBfBFqBC4aoJ+NgquWEZ9K?=
+ =?us-ascii?Q?JVQNoMoMFL142KJtXJ4PwneeZGbQUjzTfX+N1j3X1EwUfJRjYdoYYs1ucJRW?=
+ =?us-ascii?Q?0athmSqEE+zwFk4WK54ERsxTMTaI55nbkaMb0h60T4B1vYfsNWg9LHm/jVX/?=
+ =?us-ascii?Q?UvNk0wT8mtF5VQ9+w2RLfKVwp8PeDEL5t1oYdcNazVXue8YK1RJg0kHh1eCG?=
+ =?us-ascii?Q?qakAtvdp0tq44aday3oteEjY+tzMyd+ithhLoITxI9cD8840Q39v6Z0bWx9t?=
+ =?us-ascii?Q?4d1JYsOkJNr2qMFanLmR3AZ+kO0zisW0F2ISBILrUXHUS0fLIJtdRiEMdBqz?=
+ =?us-ascii?Q?o5YgKMSazHShGi8wGm9gZ4tBgoTBYvNVWYC3l57gDzlAzjwlPA/1aFXHfZoA?=
+ =?us-ascii?Q?zda4x6bReQWKbTaIfbjpiA18PL44URKUem8uV7R9HYHgnh9FDO/pQ2ZgrSMZ?=
+ =?us-ascii?Q?kmwFZ4Ilq8ecgL9K1kNTAD3+LUa441uxhkh5hirOzaOv7r3pr6TGwAQkSI2A?=
+ =?us-ascii?Q?HBz8RP5LsN5+jsp2+/0hMCbHjUCl716QY8sWf7ePbwBv27MG+ph9MUKr6kME?=
+ =?us-ascii?Q?lj3PpwCpp5MWEGi8mLqG6wHSVQgao5LyUXjTDvkzcchFaV+F2peGd7q+636r?=
+ =?us-ascii?Q?T99FCDsFxoo+KFju/KQrW16LiMGXo2BNuOkWyYn8NyGNMexnlkUw12Nkks7V?=
+ =?us-ascii?Q?eE5gE4NUvgkcBJxraZ4UA21xeXuGW7UVLDojsAoUjkDlT/z7hUjDYYyOMykT?=
+ =?us-ascii?Q?l/JLct2W3uj4RqZOILkmupC1vkm4JGsEZRdH0azf7PH92+xfmINoTCVQ2CRw?=
+ =?us-ascii?Q?73gaQZp4gJA/LYzBdRYpNW6CzFqDa9XP3B3I+wJ/5GXHORDqOPcqemt7W6rn?=
+ =?us-ascii?Q?GQ3RHY00fZZQSv2qJbtKUG63eCkO+KQo?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2037a7ae-0bea-4012-814a-08df15407c1d
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB8401.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Sep 2026 04:51:21.9083
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF2FCF00E1F
 
-tcp_measure_rcv_mss() recomputes tp->scaling_ratio from
-skb->len/skb->truesize and updates tp->window_clamp accordingly. Commit
-f5da7c45188e ("tcp: adjust rcvq_space after updating scaling ratio")
-made that update go through tcp_set_window_clamp(), which also shrinks
-tp->rcv_ssthresh, so every scaling_ratio dip cut the advertised window
-as well. Commit 0e125ecfe20c ("tcp: do not change rcv_ssthresh in
-tcp_measure_rcv_mss()") restored the plain window_clamp update.
+From: Thomas Karpiniec <tom@wendy.sh>
 
-Add a packetdrill test for it, as suggested during the review of that
-fix. A fixed SO_RCVBUF pins sk_rcvbuf, so window_clamp can only move
-when scaling_ratio does, and the peer announces TCP_MIN_MSS so that
-icsk_ack.rcv_mss sits at its 88 byte floor. A single 89 byte segment is
-then measured, and 89 bytes of payload in a ~900 byte skb is far below
-the 50% that TCP_DEFAULT_SCALING_RATIO assumes, so scaling_ratio and
-window_clamp drop sharply. Nothing puts the socket under memory
-pressure, so rcv_ssthresh must not move at all.
+With a QCA8081 PHY and phy-mode = "2500base-x", stmmac reports only
+2500BASE-X in phylink's supported interface bitmap. Phylink consequently
+removes the PHY's lower-speed copper modes, preventing a link with a
+gigabit switch.
 
-The test checks the state it depends on instead of assuming it.
-tcp_measure_rcv_mss() only measures segments of at least rcv_mss bytes,
-so rcv_mss is checked to be 88 before the segment is sent. It is checked
-to be 89 afterwards, because rcv_mss is only updated by the same code
-that recomputes scaling_ratio, so this proves the segment was measured.
-rcv_ssthresh is compared against the value it had right after the
-handshake, not against a fixed number, so the test does not depend on
-the receive buffer size or on how the architecture accounts skb memory.
+The QCA8081 uses SGMII for lower copper speeds and 2500BASE-X for 2.5Gbps.
+ETHQOS already switches the SerDes accordingly. Add the integrated PCS
+interface bitmap to phylink's supported interfaces and mark the Qualcomm
+SerDes as supporting 2500BASE-X. Also propagate platform mac_finish()
+errors instead of reporting a successfully configured link.
 
-Verified on net-next, where it passes for ipv4, ipv6 and
-ipv4-mapped-ipv6, and on the same tree with the fix reverted, where it
-fails in all three modes with rcv_ssthresh cut from 260684 to 51200.
+The existing Qualcomm PCS ANE handling is unchanged. Physical cable swaps
+produced transient PCS events during the unplug interval, but carrier and
+PCS counters remained unchanged for 60 seconds after each final link.
 
-Signed-off-by: Nathan Gao <zcgao@amazon.com>
----
- .../tcp_rcv_ssthresh_scaling_ratio.pkt        | 46 +++++++++++++++++++
- 1 file changed, 46 insertions(+)
- create mode 100644 tools/testing/selftests/net/packetdrill/tcp_rcv_ssthresh_scaling_ratio.pkt
+This exact series was tested on an IQ-8275 EVK with cold boots and
+physical cable swaps at 1Gbps and 2.5Gbps. Two 100-packet tests at 1Gbps
+had no loss. Injecting -ETIMEDOUT from mac_finish() held carrier down at
+both speeds, and both recovered after disabling injection and restarting
+the interface. The test did not cover a speed transition with the cable
+remaining connected or traffic at 2.5Gbps.
 
-diff --git a/tools/testing/selftests/net/packetdrill/tcp_rcv_ssthresh_scaling_ratio.pkt b/tools/testing/selftests/net/packetdrill/tcp_rcv_ssthresh_scaling_ratio.pkt
-new file mode 100644
-index 0000000000000..f99ecb8a224f7
---- /dev/null
-+++ b/tools/testing/selftests/net/packetdrill/tcp_rcv_ssthresh_scaling_ratio.pkt
-@@ -0,0 +1,46 @@
-+// SPDX-License-Identifier: GPL-2.0
-+// tcp_measure_rcv_mss() lowers tp->window_clamp when a segment carries less
-+// payload per byte of memory than the ratio it had assumed. Test that it does
-+// not lower tp->rcv_ssthresh as well: rcv_ssthresh is cut back under
-+// memory pressure, and it only grows back slowly, through tcp_grow_window().
-+
-+--mss=1000
-+
-+`./defaults.sh`
-+
-+// A fixed SO_RCVBUF keeps sk_rcvbuf from moving, so window_clamp can only
-+// change when the ratio does. The MSS of 88 (TCP_MIN_MSS) is the smallest
-+// segment size TCP will measure, and window scaling lets rcv_ssthresh start
-+// well above 64 KB. The window the peer announces does not matter here, this
-+// side never sends data.
-+   +0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-+   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-+   +0 setsockopt(3, SOL_SOCKET, SO_RCVBUF, [262144], 4) = 0
-+   +0 bind(3, ..., ...) = 0
-+   +0 listen(3, 1) = 0
-+
-+   +0 < S 0:0(0) win 65535 <mss 88,nop,nop,sackOK,nop,wscale 7>
-+   +0 > S. 0:0(0) ack 1 <...>
-+  +.1 < . 1:1(0) ack 1 win 65535
-+
-+   +0 accept(3, ..., ...) = 4
-+
-+// Only segments of at least rcv_mss bytes are measured. Note it down, along
-+// with the rcv_ssthresh the connection starts with.
-+   +0 %{
-+assert tcpi_rcv_mss == 88, tcpi_rcv_mss
-+ssthresh_0 = tcpi_rcv_ssthresh
-+}%
-+
-+// One segment, one byte above that threshold. 89 bytes of payload sit in an
-+// skb of about 900 bytes, far below the 50% ratio TCP assumes by default, so
-+// window_clamp drops sharply.
-+   +0 < P. 1:90(89) ack 1 win 65535
-+   +0 > . 1:1(0) ack 90
-+
-+// rcv_mss is only updated by the code that recomputes the ratio, so 89 here
-+// means the segment was measured. rcv_ssthresh must have been left alone.
-+   +0 %{
-+assert tcpi_rcv_mss == 89, tcpi_rcv_mss
-+assert tcpi_rcv_ssthresh >= ssthresh_0, (tcpi_rcv_ssthresh, ssthresh_0)
-+}%
+The tests used regulator_ignore_unused: without it, the upstream board
+tree loses PCS link because it lacks the vendor REFGEN always-on
+workaround. No other kernel or device-tree patches were applied.
 
-base-commit: 4982d3552a3bf94de503acf93433277d08421de6
+Changes in v2:
+- Replace the qcom-ethqos get_interfaces() callback with integrated PCS
+  interface propagation and the 2500BASE-X capability flag.
+
+Thomas Karpiniec (3):
+  net: stmmac: propagate platform mac_finish errors
+  net: stmmac: advertise integrated PCS interfaces to phylink
+  net: stmmac: qcom-ethqos: enable 2500BASE-X in integrated PCS
+
+ .../net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c    |  1 +
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c      | 10 ++++++++--
+ 2 files changed, 9 insertions(+), 2 deletions(-)
+
+
+base-commit: 46bc52d13594848023e681860df8700c8db14354
 -- 
-2.50.1
-
+2.54.0 (Apple Git-157)
