@@ -1,212 +1,347 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376BA47208E
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 18:13:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9704551C325;
+	Fri, 18 Sep 2026 18:15:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789755228; cv=none; b=FT2xlOqRyz/AIiKZGiw//1AMEV+EYFOP6XGAmfWubtqCyF3CE1bSx6XaEMS58bLp+oX6g7a7JpOauXLjW489lGx9JKdcLJuYhdL0+N7h2XeEx3SEAuwn9KIQH+TxEtbdSCqSUVLeP49QBmBOD/xHYQGu22jUQqXZ77yxG/WrRTQ=
+	t=1789755314; cv=none; b=ULqiyKu69VtqE6YE9im9AfGZK+A0QZII/+GxKxqAj2BzP6IACgj6JDlpGWOkx3HFAmVk4ZcS2u2cSCpuUICvYzATA19BFERbIHlFc0D7qEZ7/c+tUhEiE7fvRKYONcoQYgKzKSl+6ltsYcWnwkLHZpcpzkdwqcNHnnKA6x5wGxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789755228; c=relaxed/simple;
-	bh=Dlx/PfGUh6GfEk2g3gR+hejrW0fiMomk39XMRrdIbOc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nyQiYzr3zDH6WDfdw/LgPnyeIswGOZ9SUTkKrBQz2nf3Ua7clKCMQo6BehsXklz03LPWfSRslPqiNc6Vi8UhlfAWmJnV0WVYd8lSzgHtRcrd+hlJBkePlcrTvQ69JqszBCdry+OVGjNbhiH9NoFzx+CygQVXXLmq38x8rKxWEQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=QnSiSkrB; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Wgexgwh7; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1789755314; c=relaxed/simple;
+	bh=KesATRdhFDzUzoGKlmNPfiHB+MI42bRZAdGLQVkZ+RA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UyFO+XiOBuWgblaSUlqj6M5sV23WzCxhx5ndvLPkTfo05Q2M1F61NyYgLTBd0gWp+HCXhcNRMGcMEl3tfpj1aaLwkYZITj7tGkP7PbuKeS3ZuwWIXxuFRex4qQ4lIS14OJ+8vL7C+z/jyzyar+yTHZwhKLmaLglcz5p5nvCuSCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ktj/G0Wq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="QnSiSkrB";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Wgexgwh7"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68IGnwsT508343
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 18:13:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	vlrqp6hzEyvS2JuXrzVg/2ASZasMwkiKMUs6oP7YPjU=; b=QnSiSkrBsQffLT2m
-	/WdGxKrll1bdiyVF5lVP37RUWAP1kVlS37YajVydWd+bTWHY6SP/0NFwUhDO3ZtV
-	6MySMjpuVY0RQ2x4J5kye9lloYTC3mXXc6vvo3X0jOSro38GWRDRcsh8RpdMQ7f8
-	wrNG+VRzNNNH5fLuQleWYapmnEAalGWb1GK/KXXOiNBrfQ9hUzLprhbZlNR+IUmN
-	TIO2uA3b5iLJHP+LR8RBcPKra+YAIWPs6LpaXgIOERPuhUUce1tQ5KVY7wvGd/l0
-	lnnY6vzkGGO1jB4EYQShfL3YJvlnTT+FV0fDMJZsaCFrmL7ozjCRRNkiWO532YSX
-	fBGxlQ==
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gs84a0q7b-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 18:13:46 +0000 (GMT)
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38e1118e4abso1845443a91.0
-        for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 11:13:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1789755226; x=1790360026; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vlrqp6hzEyvS2JuXrzVg/2ASZasMwkiKMUs6oP7YPjU=;
-        b=Wgexgwh7WkKWRuH7D17ZcmhrXNgbiv0LvH0P1w8kYgjSUf9bT1FEbVQ2plmylH5wHk
-         5J/tptQpqwtf2lMi0bF5ZsAvIBRfHxHwgeeRSeoD2zjWGZ0Uya5FCWZDis81xbu6pARk
-         wRWHob4NyBjtitcT4VnG4oVLoiXcd/2rOgG0mD6AjIdwoDeld9yW8PEI/JiBWRt5STH1
-         Fb7aY23J6yO/5VPOBF/ibVHK5x2SFvqNohlVt59UWShqa0fLG1Q2X/oxRC7Nspm5dbrV
-         D2aTy7x7Q4WOk4l9p4/nJtJ900kVP+w7R6ya5rsvp+DBpNdAoseg2BjEwzPCcaT6gWzB
-         MaQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789755226; x=1790360026;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vlrqp6hzEyvS2JuXrzVg/2ASZasMwkiKMUs6oP7YPjU=;
-        b=RMXhvrXVA10021gwSVu/mR+1rftXOUImBna2NasXRMCoFymGUrSC7tkfP0n+UlCw12
-         TIFtGdfUygvnk/BQm//VOFH0hKa3J136wAwr5b8VXDrAN1Jyh3oZ8ubQPQZpyTT47WBw
-         +FXXV0Cam4oUbZSiUvIeu4Y/fTVONPTOaupicnt6pbsfEwZaqMwdtPnuHLDbG/KvCNx5
-         MVlrPyFKlX3MBroiChpaPSZj8HALOETVmtzxIKOLj8PqjKZxSTB6jZVQb1vYPnzjNBDD
-         GLu1X2O380V2dQGb7KM3IF3+KARsxkWMnES/PhMhlrI+u1Shfl4y/9hN9WbQsYyd+7IG
-         88Og==
-X-Forwarded-Encrypted: i=1; AKwUvByPzGpsvtwVl+bUB4ExQ+JGLp7aIM4YOE3r47dGU5gYDBbLAK02L8tw/UulERSRE1IQbSiJQpY=@vger.kernel.org
-X-Gm-Message-State: AFuF++kkelDCcejnAsVRn5FDID/1rM8suBtA2eqvMeQBYk4jb73rir6u
-	rciWGGYCtmEzMOlsdZI+K+DzIqbDi4PhRT7rQgV8joFMTW1fMaQgWT/dNvIXPpD1l9bI5ZsX5zM
-	MKQCgXmx/Q/5aLSvMNmID+ExSe8ZjrjEjzY369F2N4P1LUqr91av3SKRghUw=
-X-Gm-Gg: AYBFou0ttLhGGrv2hQkwkH/YME1UFFNDCI1Np5hruPql2HPo4OaMC0kB1fsD+AKsWa2
-	/Jb/nGB6/HxsLKeI2BMHndev1iUGdZWF0hq/jQjCCEHNOCRzPDLV+iI+DNOi2rWm8taym2Ez8SE
-	TbVLYCCrr+KrDul1cDpu/gqFdKOsXnGBgZPE3hpHEdJCtNzfk+X+QIMnGhiqDZNlLeB2nJIjzTR
-	QrJpvNFQvQeXf+CpWsz8ABCfi39B0IpdCgqzNrIbyTjfXvcdkH92CL2V1HP0hUq2uMpm2/bN/yf
-	eAwoiBi7F4WvdK1zZzw2pDH7sFSREnWN/1Vbow/RY/XPYJvSEE35Yq8tq974JYi3suAkxIdI6WH
-	8Cs8cU6eofBI3nP1Aui0ru56iVIrUCBBW9R15i/kYQsIM3i/aKjhKB1UXsg==
-X-Received: by 2002:a17:90b:134f:b0:39d:febe:7460 with SMTP id 98e67ed59e1d1-39e54d3651cmr7028576a91.22.1789755225602;
-        Fri, 18 Sep 2026 11:13:45 -0700 (PDT)
-X-Received: by 2002:a17:90b:134f:b0:39d:febe:7460 with SMTP id 98e67ed59e1d1-39e54d3651cmr7028536a91.22.1789755225051;
-        Fri, 18 Sep 2026 11:13:45 -0700 (PDT)
-Received: from [192.168.1.20] (33.sub-75-218-193.myvzw.com. [75.218.193.33])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33c331433besm467963eec.16.2026.09.18.11.13.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Sep 2026 11:13:44 -0700 (PDT)
-Message-ID: <4e0481c1-9288-42d4-94c9-e18da5cf8e5d@oss.qualcomm.com>
-Date: Fri, 18 Sep 2026 11:13:42 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ktj/G0Wq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C71E1F000FF;
+	Fri, 18 Sep 2026 18:15:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789755312;
+	bh=CbhXPRPJzPhnC7eGr+2poQlhUAHpaFK7HRpRDPeuPsU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ktj/G0Wqt43Q8JVUKtdjIxDlECxpTb81j7LuFwY4MTGxTsji3X8jAIGFdYMZzuvIj
+	 ztAD59fwFf5BXIdZ7RlnUUPYA/mcko7PcO280exjookUWqGxa6StWCAYvhUaAfURuB
+	 HwvD4heR9IXqrZVolpO7TgFiOPm5ZHN7iBUZ3QT3pQTpoNjR9sERxPWiEVf4yLK3gi
+	 vnmPh/URbMpnWMpHImcd9xjoL11mAFcErmviIk+2M+IKo4aAl4IBSfw3K/sibAa3sm
+	 mBKeQrVEoUvivqKAY32Gypywqsvj0PYafjlQZvdQZTVSoM/F1G1nOuk8Up55dgyGly
+	 4SModAFf5nk+A==
+Date: Fri, 18 Sep 2026 13:15:10 -0500
+From: Rob Herring <robh@kernel.org>
+To: Srinivas Neeli <srinivas.neeli@amd.com>
+Cc: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rt-devel@lists.linux.dev, neelisrinivas18@gmail.com,
+	git@amd.com
+Subject: Re: [PATCH net-next v2 1/8] dt-bindings: net: add Xilinx TSN
+ Endpoint Ethernet MAC
+Message-ID: <20260918181510.GA1086854-robh@kernel.org>
+References: <20260909-patches_v2_external-v2-0-3a40babaff4c@amd.com>
+ <20260909-patches_v2_external-v2-1-3a40babaff4c@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/4] net: qrtr: Add support for using identical MHI
- endpoint devices
-To: manivannan.sadhasivam@oss.qualcomm.com,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Jeff Johnson <jjohnson@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org, ath12k@lists.infradead.org,
-        Bjorn Andersson <andersson@kernel.org>,
-        Chris Lew <christopher.lew@oss.qualcomm.com>,
-        Deepak Kumar Singh <deepak.singh@oss.qualcomm.com>,
-        Raj Kumar Bhagat <raj.bhagat@oss.qualcomm.com>,
-        Juha-Matti Tilli <juha-matti.tilli@iki.fi>,
-        Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-References: <20260918-qrtr-multi-ep-v1-0-8a06caa368d3@oss.qualcomm.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Content-Language: en-US
-In-Reply-To: <20260918-qrtr-multi-ep-v1-0-8a06caa368d3@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: jvp-rrtI1ozwvLZ8hH1BqcgDu0L9KAfC
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTE4MDI2MSBTYWx0ZWRfX99eaaNyxKXnD
- OPbM1ecd0B+mUCgwoboE+b70hqCknq8p/hTudbzpjjkPAntSk4/XqaEkkd/b2lnw5dYikyp5Fe9
- biEjvbfiwd08UZ7mOMZqHp4+Ma5FyGQ=
-X-Proofpoint-ORIG-GUID: jvp-rrtI1ozwvLZ8hH1BqcgDu0L9KAfC
-X-Authority-Analysis: v=2.4 cv=MLD1C8Zl c=1 sm=1 tr=0 ts=6aad7f5a cx=c_pps
- a=0uOsjrqzRL749jD1oC5vDA==:117 a=AnolQpdaNwb4XK4FG+QP+g==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=KAMPhC-K3bquQAzTacoA:9 a=QEXdDO2ut3YA:10
- a=mQ_c8vxmzFEMiUWkPHU9:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTE4MDI2MSBTYWx0ZWRfX6kkl3rBjVdtr
- QmCRi7g3Vh1tpwcyBszgMu95S3eF9CBFESD0tenHUItogrOBHLtJUJF4rMnmA0ZBZzpgJUrnVh/
- br7GmirOtyJvuvkHXqpFWv8/s+EtsxcrAha+SlhA4xU7x86Cyiz9hbdHRaxN9lkUgs39tx3j2CG
- nNc+CjcpszlwdMMVFwmPvZssqqpV9LZGfqz31BXB/2OAL6LKOVoA3tbpjVMcxRMkQ75+zjLBAwH
- YmNTvVRa/wbGb7XZVApfX9WYcxK8EjoC0ZA1xcJ8IEK5Gl4l1lLfRMVmDv1hjlwA0qDFtVou43Q
- zzPTR0+UL87NKB1Y0PFWnx9QRbkxRYhRFNoJG4/iEW7OkNYXiaz+MieLLY0TQV6ByaaKZvbDTmL
- jBfnQ+t2GqWD2nPIY27ExGHu7Ot2M73Mu/M9nUT6aPRzpepd3j1zpLIznwMTCrlrnY9p3WZPzRm
- qLkWsnvDz8gE+TWKsVg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-18_05,2026-09-16_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 phishscore=0 clxscore=1015 lowpriorityscore=0
- priorityscore=1501 bulkscore=0 impostorscore=0 spamscore=0 suspectscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609180261
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260909-patches_v2_external-v2-1-3a40babaff4c@amd.com>
 
-On 9/18/2026 9:28 AM, Manivannan Sadhasivam via B4 Relay wrote:
-> Hi,
+On Wed, Sep 09, 2026 at 12:49:49AM +0530, Srinivas Neeli wrote:
+> Add a binding for the Xilinx TSN Endpoint Ethernet MAC IP. The
+> top-level node describes the IP wrapper, which owns the six shared
+> IP clocks and the xlnx,num-priorities parameter, and has two
+> children:
 > 
-> This series reworks the QRTR driver to add support for using identical MHI
-> endpoint devices at the same time. Currently, QRTR driver has a limitation on
-> using more than one identical MHI endpoint devices like QCS6490 or any Qcom
-> Endpoint device making use of QRTR at the same time. Because of the fact that
-> these devices will have the identical QRTR node id, they cannot be used at the
-> same time, on the same host machine.
+>   - xlnx,tsn-ep-mac: the endpoint MAC, owning the host-side DMA
+>     channels (dmas / dma-names / tx-queues-config).
 > 
-> This limitation is a blocker for running upstream kernel on devices like Qcom
-> based routers as they often have multiple identical WLAN Endpoint devices
-> connected to the Router SoC.
+>   - xlnx,tsn-switch: the three-port Ethernet switch covering the
+>     switch fabric and the two per-MAC register windows. The MDIO
+>     controllers and PTP register blocks sit at fixed offsets inside
+>     the per-MAC windows, accessed through the mdio-1 / mdio-2
+>     children and per-MAC interrupt-names entries. Each external
+>     port@N references its PHY through a phy-handle in the matching
+>     mdio-<N> child.
 > 
-> This series supersedes the following 2 series from Juha:
-> https://lore.kernel.org/all/20260915054207.2513877-1-juha-matti.tilli@iki.fi
-> https://lore.kernel.org/all/20260915074135.2567411-1-juha-matti.tilli@iki.fi
+> Co-developed-by: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
+> Signed-off-by: Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
+> Signed-off-by: Srinivas Neeli <srinivas.neeli@amd.com>
 > 
-> Compared to the series from Juha, this series simplifies the multi-endpoint
-> support by computing a unique node id for each MHI endpoint and uses it for the
-> internal QRTR book keeping. This ensures that even if the MHI endpoint devices
-> have same node ids, the host QRTR will always use a unique node id for each one
-> of them.
-> 
-> More details can be found in the individual patches.
-> 
-> Testing
-> =======
-> 
-> Juha tested this series on multi ath11k setup by backporting this series to
-> 6.6.156 kernel. I'd appreciate a formal tested-by tag from Juha and other folks
-> CCed to this series.
-> 
-> Merge Strategy
-> ==============
-> 
-> Since both QRTR and ath drivers are falling under the networking tree, the whole
-> series can be merged through netdev tree.
-> 
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 > ---
-> Manivannan Sadhasivam (4):
->       net: qrtr: Allow the host QRTR to assign a unique node id
->       net: qrtr: Assign unique node id for MHI endpoints
->       wifi: ath11k: Connect to the QMI server belonging to the device owned by this driver
->       wifi: ath12k: Connect to the QMI server belonging to the device owned by this driver
-> 
->  MAINTAINERS                           |  1 +
->  drivers/net/wireless/ath/ath11k/hif.h |  9 ++++++
->  drivers/net/wireless/ath/ath11k/pci.c |  9 ++++++
->  drivers/net/wireless/ath/ath11k/qmi.c | 10 ++++++
->  drivers/net/wireless/ath/ath12k/hif.h |  9 ++++++
->  drivers/net/wireless/ath/ath12k/pci.c |  9 ++++++
->  drivers/net/wireless/ath/ath12k/qmi.c | 11 +++++++
->  include/net/qrtr.h                    | 21 ++++++++++++
->  net/qrtr/af_qrtr.c                    | 61 +++++++++++++++++++++++++++++++----
->  net/qrtr/mhi.c                        |  4 ++-
->  10 files changed, 136 insertions(+), 8 deletions(-)
+> Changes in v2:
+> - Describe only the Bridged Endpoint configuration. The IP has so far been
+>   simulated only as a bridged endpoint, so the binding and driver describe
+>   that configuration alone. Support for an Endpoint-only design will be added
+>   once that IP variant is simulated.
+> - Rename ep-mac@ to ethernet@ and mdio-mac1/mdio-mac2 to mdio-1/mdio-2, and
+>   anchor the node names (^ethernet@[0-9a-f]+$, ^switch@[0-9a-f]+$), per
+>   ethernet-controller.yaml and mdio.yaml.
+> - Cap TX at 8 and RX at 8 channels. The IP exposes 8 priorities, so it
+>   drives at most 8 TX and 8 RX MCDMA channels. dma-names lists both
+>   directions, so its combined maxItems is 16 (8 TX + 8 RX). V1 allowed up
+>   to 16 per direction, which the hardware cannot use.
+> - Set additionalProperties: false on tx-queues-config and its queue nodes.
+> - Drop reg from the wrapper node. It has no registers of its own, ranges
+>   already describes the child windows.
+> - Add minItems: 7 to the switch interrupts to match interrupt-names.
+> - Use a ^(ethernet-)?ports$ container with additionalProperties: false and its
+>   own #address-cells/#size-cells, and require either ports or ethernet-ports.
+> - Require ethernet on the CPU port@0.
+> - Add reg (enum [1, 2]) on the external port@[1-2] ports and require reg,
+>   phy-mode and phy-handle. MAC1 and MAC2 use gmii/rgmii/rgmii-id.
+> - Require port@0, port@1 and port@2. The IP is a fixed three-port bridged
+>   design (port@0 CPU, port@1 MAC1, port@2 MAC2), so a device tree missing
+>   any of them cannot describe working hardware.
+> - Add #address-cells and #size-cells (both const 1) on the wrapper node,
+>   which the child ethernet@/switch@ windows need now that reg is dropped,
+>   and set unevaluatedProperties: false on the endpoint node.
 > ---
-> base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+>  .../net/xlnx,tsn-endpoint-ethernet-mac.yaml        | 364 +++++++++++++++++++++
+>  MAINTAINERS                                        |   7 +
+>  2 files changed, 371 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml b/Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml
+> new file mode 100644
+> index 000000000000..4e65d1710da7
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/xlnx,tsn-endpoint-ethernet-mac.yaml
+> @@ -0,0 +1,364 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/xlnx,tsn-endpoint-ethernet-mac.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Xilinx TSN Endpoint Ethernet MAC
+> +
+> +description:
+> +  TSN Endpoint Ethernet MAC IP implements IEEE 802.1 Time-Sensitive
+> +  Networking (TSN) standards and provides low-latency network connectivity
+> +  in the Bridged Endpoint configuration. The IP integrates a three-port
+> +  switch, with two ports connected to the external network and one port
+> +  connected to an internal endpoint. It also supports GMII/RGMII interfaces
+> +  for connection to an external PHY, enabling full-duplex operation at
+> +  100 Mb/s and 1 Gb/s speeds.
+> +
+> +maintainers:
+> +  - Srinivas Neeli <srinivas.neeli@amd.com>
+> +  - Nagadheeraj Rottela <nagadheeraj.rottela@amd.com>
+> +
+> +properties:
+> +  compatible:
+> +    const: xlnx,tsn-endpoint-ethernet-mac-3.0
+> +
+> +  clocks:
+> +    items:
+> +      - description: GTX clock for transmitter logic and RTC
+> +      - description: GTX 90-degree phase shifted clock for RGMII
+> +      - description: Host RX FIFO clock
+> +      - description: Host TX FIFO clock
+> +      - description: Reference clock for IDELAY control
+> +      - description: AXI-Lite register interface clock
+> +
+> +  clock-names:
+> +    items:
+> +      - const: gtx
+> +      - const: gtx90
+> +      - const: host_rxfifo
+> +      - const: host_txfifo
+> +      - const: ref
+> +      - const: s_axi
+> +
+> +  ranges: true
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 1
+> +
+> +  xlnx,num-priorities:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    minimum: 2
+> +    maximum: 8
+> +    description:
+> +      Number of traffic classes (priorities) configured in the IP.
+> +      This is an IP configuration parameter that determines the number of
+> +      priority queues available for QoS scheduling. Traffic classes map to
+> +      IEEE 802.1Q priority levels (0-7).
+> +
+> +patternProperties:
+> +  "^ethernet@[0-9a-f]+$":
+> +    type: object
+> +    $ref: /schemas/net/ethernet-controller.yaml#
+> +    unevaluatedProperties: false
+> +    description:
+> +      Endpoint MAC sub-node. Provides the host-side data path through the
+> +      DMA channels described by its dmas / dma-names.
+> +    properties:
+> +      compatible:
+> +        const: xlnx,tsn-ep-mac
+> +
+> +      reg:
+> +        maxItems: 1
+> +
+> +      dmas:
+> +        minItems: 2
+> +        maxItems: 16
+> +
+> +      dma-names:
+> +        minItems: 2
+> +        maxItems: 16
+> +        items:
+> +          pattern: "^(tx|rx)_chan[0-7]$"
+> +        description: |
+> +          Names matching the entries in 'dmas', one per DMA channel and in
+> +          the same order. TX channel names use "tx_chan<N>" and RX channel
+> +          names use "rx_chan<N>", where N is 0..7. Example: "tx_chan0",
+> +          "tx_chan1", ..., "rx_chan0", "rx_chan1", ....
+> +
+> +      tx-queues-config:
+> +        type: object
+> +        additionalProperties: false
+> +        description:
+> +          TX queue configuration node that maps IP priority queues to
+> +          DMA TX channels. The TSN IP supports multiple priority queues for
+> +          QoS scheduling, and each queue can be connected to a specific DMA
+> +          channel. This mapping defines which DMA TX channel is used to
+> +          transmit packets for each priority queue. For example, queue0
+> +          with xlnx,dma-channel-num set to 5 means priority queue 0 uses
+> +          tx_chan5 for data transfer.
+> +
+> +        patternProperties:
+> +          "^queue[0-7]$":
+> +            type: object
+> +            additionalProperties: false
+> +
+> +            description:
+> +              Each subnode represents a priority queue. The
+> +              xlnx,dma-channel-num property specifies which DMA TX channel
+> +              (tx_chan0 to tx_chan7) is connected to this queue for
+> +              transmitting packets.
+> +            properties:
+> +              xlnx,dma-channel-num:
+> +                $ref: /schemas/types.yaml#/definitions/uint32
+> +                description:
+> +                  DMA channel that transmits this priority queue, given as
+> +                  the N of the tx_chanN entry in dma-names.
+> +                minimum: 0
+> +                maximum: 7
+> +
+> +            required:
+> +              - xlnx,dma-channel-num
+> +
+> +    required:
+> +      - compatible
+> +      - reg
+> +      - dmas
+> +      - dma-names
+> +      - tx-queues-config
+> +
+> +  "^switch@[0-9a-f]+$":
+> +    type: object
+> +    $ref: /schemas/net/dsa/dsa.yaml#/$defs/ethernet-ports
+> +    description:
+> +      Three-port Ethernet switch sub-node. Contains the switch fabric
+> +      register window and the two per-MAC register windows. Each per-MAC
+> +      window houses an MDIO controller and a PTP register block at fixed
+> +      offsets. The IP's per-MAC and PTP-timer interrupts are exposed here.
+> +
+> +    properties:
+> +      compatible:
+> +        const: xlnx,tsn-switch
+> +
+> +      reg:
+> +        items:
+> +          - description: Switch fabric register window
+> +          - description: MAC1 register window (includes MDIO and PTP)
+> +          - description: MAC2 register window (includes MDIO and PTP)
+> +
+> +      reg-names:
+> +        items:
+> +          - const: switch
+> +          - const: mac1
+> +          - const: mac2
+> +
+> +      interrupts:
+> +        minItems: 7
+> +        maxItems: 7
+> +
+> +      interrupt-names:
+> +        items:
+> +          - const: ptp_rx_mac1
+> +          - const: ptp_tx_mac1
+> +          - const: mac_irq_mac1
+> +          - const: ptp_timer
+> +          - const: ptp_rx_mac2
+> +          - const: ptp_tx_mac2
+> +          - const: mac_irq_mac2
+> +
+> +      mdio-1:
+> +        $ref: /schemas/net/mdio.yaml#
+> +        description:
+> +          MDIO bus controller for MAC1. Registers reside inside the mac1
+> +          reg-names window.
+> +        unevaluatedProperties: false
+> +
+> +      mdio-2:
+> +        $ref: /schemas/net/mdio.yaml#
+> +        description:
+> +          MDIO bus controller for MAC2. Registers reside inside the mac2
+> +          reg-names window.
+> +        unevaluatedProperties: false
+> +
+> +    patternProperties:
+> +      "^(ethernet-)?ports$":
 
-I see this is based upon v7.3-rc1 (current release tree).
-This series doesn't cleanly apply on the net-next tree.
+'ethernet-' doesn't need to be optional for new bindings.
 
-Are you planning on netdev taking this through current or next?
+> +        type: object
+> +        additionalProperties: false
+> +
+> +        properties:
+> +          '#address-cells':
+> +            const: 1
+> +
+> +          '#size-cells':
+> +            const: 0
+> +
+> +          port@0:
 
-And an alternate merge strategy would be for netdev to take the first two
-patches and then after wireless fast-forwards and ath fast-forwards, I could
-take the last two though the ath tree.
+ethernet-port@0
 
+> +            type: object
+> +            unevaluatedProperties: true
+> +            description:
+> +              CPU port. Wired internally to the endpoint MAC sibling.
+> +
+> +            properties:
+> +              reg:
+> +                const: 0
+> +
+> +              phy-mode:
+> +                const: internal
+> +
+> +            required:
+> +              - ethernet
+> +
+> +        patternProperties:
+> +          "^port@[1-2]$":
+
+ethernet-port
+
+Rob
