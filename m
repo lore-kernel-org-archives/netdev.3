@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B494B7A53
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 10:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D714F4D17A9
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 10:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789729170; cv=none; b=IE0/Sdgj/pfLA9UJUwkR7leL2VFvEWgHOmFSuVaX1vH6e+A4hARsPSBotST4oXRLIGKbl3tELc0Ac0F9a5uyqa9QPEEzapIWPEtC/ZMxrDhf3tZZNgIUZvY/EjkUtfQZN1smPyIEdLvkHAq+k3u4cWyVOtYM4G/nYExIB9VDxf8=
+	t=1789729171; cv=none; b=MEyp1aClbJk797zBqt4esBFexzYod0NhH2ZrjP0K9c7d6aIZMW1PhfAAu9FSy+dn9xreycL/4wrtpxCx59xwabEHnENVZjbIg+JhaFWI8YL7MFC5q7iSgg1WCNmoVkW5xUSw6CjZCjagMHuYaNeI47lIJbyntCYrWm8RbYJpyYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789729170; c=relaxed/simple;
-	bh=AcDFCafRo2dWzqDrygtj4E/BQkmkjXu8068HVPZ47WY=;
+	s=arc-20240116; t=1789729171; c=relaxed/simple;
+	bh=IPmchnQ/Z0yMO/GV+DkdinpjjofYNs5SCvaTlPwl2hU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UFo1z0z1rX/6okR77TIj3svZILI9X7tuQePVh+p/SPrBRZt4sLj/qXIVgjG8sC52RxY0bNJb4RLZNbvng4NkXqPJu0LJGWIuFGyO9QNHnUg2S0wFUWqTZDUojjtv8yHi5fmWWa7KeWQs9SkE83B0y170ws9S4ZnxVxIm2IEUddI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WbunNsJm; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=R+PjeIdKg3nD6Gj8DdyebLVbnmIkONrT9zxf5OWYKg0W9u2aseXlrfbDlIFiOQtH9tpuSfXQ2du9y4AAYcHNinAhIaKCDbAHyPkR2IG4Ei9giam+kCngbeCg2iM5Y44TG6pZOs7gqefnwYGJRN54NxlGTZQw8pV0+AjiuI1j3z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cMOAloPG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WbunNsJm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F741F00893;
-	Fri, 18 Sep 2026 10:59:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cMOAloPG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A528D1F000FF;
+	Fri, 18 Sep 2026 10:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789729168;
-	bh=TGf9DS3bELe5EjqZiMRaxNC5L4u3dD6FgIx0hvAw/ZA=;
+	s=k20260515; t=1789729169;
+	bh=LxV3ZLOmVQI62Slczz0H9oeQOvMK0rVuSBj9Qwa3DVI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=WbunNsJmt7MNrpb0IRYUOMJIBcKmvRsGNP2Mxw/gCeV7JMbXitQyu28/CYhFKbXf3
-	 mKdLVLkuiYaM8/jdT7Zqdu7+UYmEzNKFSn2JEdZZ8s59YE5hT3DiELDRYYG42jtVbC
-	 WZU+j/Jpc/rifcytr3O70oNy3xIo/XnTLtawhGHRhMYoS3OAlQm5bYX/DmCO9jRTUy
-	 8J41ZIAF+7dscck0W/y1fCZIuThpvXXR3UV8BoXl6gHBJD73WE3Sb9hQ5aKI80bZM1
-	 kbeMTdy7vAbM6bhvq+lqtys+LHupylEszUtI+tV0lKGO1f/LHeIVEkQanIJbmW7q9+
-	 RHpkNu8n+vJFQ==
-Subject: Re: [PATCH net v3 1/2] net/sched: sch_hfsc: bound the classify
- inner-filter walk with a drift budget
+	b=cMOAloPGJ9bsnO5MXn8tcuQvXu9YmZzXFTMARdUZ5z27+7XZc38H8xQQTzvL3MZd3
+	 aCsU29spDpMxIi2wLUuUjsJZtsKYK7l/KlM4ID42MtyP4KiN5Q3hqhQv03brq/pdJQ
+	 2Kf8XmS0QsTWHRqzXorOM3bwyZ3a/t86fN0zosaR9NMBf0o/KxO6rJ57Uabvud2V+B
+	 S7JS0YPDoV5qXVVWVqyyQCh8Iy6IQ7vh/47DWRTCIZADZ3Suir+JYP1sPJFR5Q4h9V
+	 6fzYGaRz7Bftuo0/qNZBStIyKZyxGnxqQsc0CDomHP//hp6S/AdoIcve3UXmRFVuef
+	 G+j15awpuXUkg==
+Subject: Re: [PATCH net v3 2/2] selftests: tc-testing: add a lateral-drift
+ hfsc classify-walk test
 From: netdev-bot+sashiko@kernel.org
 To: jhs@mojatatu.com
 Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net,
  edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
  victor@mojatatu.com, hybris@mojatatu.ai, sashiko-bot@kernel.org
-Date: Fri, 18 Sep 2026 10:59:27 +0000
-Message-ID: <178972916706.22033.3797727234207529111@kernel.org>
-In-Reply-To: <QDISC-CTUU.v3.20260916184908@mojatatu.com>
-References: <QDISC-CTUU.v3.20260916184908@mojatatu.com>
+Date: Fri, 18 Sep 2026 10:59:28 +0000
+Message-ID: <178972916822.22033.1837892067044749195@kernel.org>
+In-Reply-To: <QDISC-CTUU.v3.20260916184908@mojatatu.com.2>
+References: <QDISC-CTUU.v3.20260916184908@mojatatu.com.2>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -47,127 +47,62 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
 
-- [Medium] net/sched/sch_hfsc.c: the new drift budget in hfsc_classify()
-  conflates "budget exhausted" with "the chain cycles", and the two new…
+- [Medium] The commit message of "selftests: tc-testing: add a lateral-
+  drift hfsc classify-walk test" misdescribes the kernel behaviour it…
+- [Medium] The hop guard this test is written to validate
+  (HFSC_CLASSIFY_MAX_DRIFT in hfsc_classify(), added by the immediately…
+- [Low] The new setup step invokes a bare `ip` binary (`"ip link set lo
+  up"`) instead of the `$IP` keyword that tdc_config.py exists to…
 
 --
 
-net/sched: sch_hfsc: bound the classify inner-filter walk with a drift budget
+selftests: tc-testing: add a lateral-drift hfsc classify-walk test
 
-The patch adds a budget of non-descending hops to the hfsc_classify()
-inner-filter walk so that a filter chain made cyclic by post-bind level
-drift can no longer spin with the qdisc lock held.  Once the budget is
-exhausted the packet is dropped with a rate-limited warning.
+This adds tdc case 8c39 to tools/testing/selftests/tc-testing/tc-tests/
+qdiscs/hfsc.json.  The setup builds a two-hop lateral chain by binding
+each filter while its target is still a leaf and only then adding
+children to deepen it, then pings 127.0.0.1 and checks that class 1:31
+counted packets.
 
-Link: https://sashiko.dev/#/patchset/QDISC-CTUU.v2.20260913192614@mojatatu.com
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-CTUU.v2.20260913192614%40mojatatu.com
+No Link: tags present in the commit header.
 
-> diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-> index e87f5021a1995..284490fd6ca91 100644
-> --- a/net/sched/sch_hfsc.c
-> +++ b/net/sched/sch_hfsc.c
-> @@ -386,6 +386,15 @@ cftree_update(struct hfsc_class *cl)
->  #define	SM_MASK		((1ULL << SM_SHIFT) - 1)
->  #define	ISM_MASK	((1ULL << ISM_SHIFT) - 1)
->  
-> +/*
-> + * Cap on the non-descending hops a classify walk may take before its
-> + * filter chain is treated as misconfigured. A flowid binding that was
-> + * legal at bind time can become lateral once hfsc_adjust_levels()
-> + * raises a class level; a few such hops are legitimate, an unbounded
-> + * run means the chain cycles.
-> + */
-> +#define	HFSC_CLASSIFY_MAX_DRIFT	8
-> +
->  static inline u64
->  seg_x2y(u64 x, u64 sm)
->  {
-> @@ -1133,6 +1142,7 @@ hfsc_classify(struct sk_buff *skb, struct Qdisc *sch, int *qerr)
->  	struct hfsc_class *head, *cl;
->  	struct tcf_result res;
->  	struct tcf_proto *tcf;
-> +	unsigned int drift;
->  	int result;
->  
->  	if (TC_H_MAJ(skb->priority ^ sch->handle) == 0 &&
-> @@ -1142,6 +1152,7 @@ hfsc_classify(struct sk_buff *skb, struct Qdisc *sch, int *qerr)
->  
->  	*qerr = NET_XMIT_SUCCESS | __NET_XMIT_BYPASS;
->  	head = &q->root;
-> +	drift = HFSC_CLASSIFY_MAX_DRIFT;
->  	tcf = rcu_dereference_bh(q->root.filter_list);
->  	while (tcf && (result = tcf_classify_qdisc(skb, tcf, &res, false)) >= 0) {
->  #ifdef CONFIG_NET_CLS_ACT
-> @@ -1167,6 +1178,17 @@ hfsc_classify(struct sk_buff *skb, struct Qdisc *sch, int *qerr)
->  		if (cl->level == 0)
->  			return cl; /* hit leaf class */
->  
-> +		/*
-> +		 * flowid binds skip the level check above (res.class is set
-> +		 * at bind time and levels drift after), so a walk can follow
-> +		 * lateral hops without descending; a bounded number of them
-> +		 * is legal, more means the chain cycles.
-> +		 */
-> +		if (cl->level >= head->level && drift-- == 0) {
-> +			pr_warn_ratelimited("hfsc: classify hop budget exhausted, dropping packet\n");
-> +			return NULL;
-> +		}
-> +
+Two notes are about the changelog and about the coverage the case
+provides, and one is about the harness keyword used in setup.
+
+> The default class is 1:30, distinct from the asserted leaf, and the
+> verify pattern is anchored to the 1:31 stats line, so neither a
+> fall-through to the default nor a nonzero count on another class can
+> satisfy the check. On the patched kernel the test passes; with the bound
+> forced to zero the walk falls to the default and 1:31 stays idle, so the
+> test fails.
 
 [Severity: Medium]
+Is "the walk falls to the default" the actual behaviour when the bound is
+exhausted?  In hfsc_classify() the budget arm returns NULL rather than
+breaking out of the loop:
 
-The walk does terminate: any cycle over head classes has to contain at
-least one non-descending hop per lap, descending hops strictly lower
-head->level, and the budget never comes back.  A couple of questions
-about the wording and about the drop, though.
-
-Is drift really a "run" of non-descending hops?  It is initialised once
-before the loop:
-
-	drift = HFSC_CLASSIFY_MAX_DRIFT;
-
-and is never reset, so it is a cumulative total for the whole walk.  The
-macro comment says "an unbounded run means the chain cycles" and the
-inline comment says "a bounded number of them is legal, more means the
-chain cycles", neither of which mentions that the counter is cumulative
-and must not be reset.
-
-The v3 notes say the comments were reworded to "describe the cumulative
-non-descending hop budget that is implemented, and explain why it is
-deliberately not reset on a descending hop", but that description only
-appears in the changelog.  Since resetting the budget on a descent would
-re-open the loop (a cycle can hide one lateral hop per lap behind
-arbitrarily many descents), should the in-tree comments spell the
-never-reset property out?
-
-Can this also drop packets for an acyclic chain that would have reached a
-leaf?  hfsc_bind_tcf() validates a bind only against the levels present
-at bind time:
-
-net/sched/sch_hfsc.c:hfsc_bind_tcf() {
-	if (cl != NULL) {
-		if (p != NULL && p->level <= cl->level)
-			return 0;
-		qdisc_class_get(&cl->cl_common);
+net/sched/sch_hfsc.c:hfsc_classify() {
+	...
+	if (cl->level >= head->level && drift-- == 0) {
+		pr_warn_ratelimited("hfsc: classify hop budget exhausted, dropping packet\n");
+		return NULL;
 	}
+	...
+	/* classification failed, try default class */
+	cl = hfsc_find_class(TC_H_MAKE(TC_H_MAJ(sch->handle),
+				       READ_ONCE(q->defcls)), sch);
 }
 
-So each bind can be created while its target is still a leaf, and adding
-a child under that target afterwards raises its level in
-hfsc_adjust_levels() without revalidating the bind.  Chaining ten sibling
-classes that way (C0 bound to C1, C1 bound to C2, ... C8 bound to C9,
-each bind made before the target gained a child) gives eight lateral hops
-that consume the budget, and the ninth hop C8->C9 satisfies
+The default-class lookup sits after the while loop, so it is only reached
+from the two break paths (invalid classid, or a non-descending hop with no
+bound class), not from the drift branch.
 
-	if (cl->level >= head->level && drift-- == 0)
-
-so hfsc_classify() returns NULL even though C9's filter points at a leaf
-and the walk contains no cycle.  hfsc_enqueue() then drops the packet:
+hfsc_enqueue() then turns that NULL into a drop:
 
 net/sched/sch_hfsc.c:hfsc_enqueue() {
 	cl = hfsc_classify(skb, sch, &err);
@@ -175,30 +110,140 @@ net/sched/sch_hfsc.c:hfsc_enqueue() {
 		if (err & __NET_XMIT_BYPASS)
 			qdisc_qstats_drop(sch);
 		__qdisc_drop(skb, to_free);
-		return err;
-	}
+	...
 }
 
-Is the asymmetry with the neighbouring path for the same class of
-misconfiguration intended?  The classid case breaks out and falls through
-to the default class:
+So with HFSC_CLASSIFY_MAX_DRIFT forced to 0 the first lateral hop
+(head = 1:1 level 1, cl = 1:2 level 1) discards every ICMP packet and
+ping -n -c 10 -W 1 127.0.0.1 exits nonzero.
 
-			if (cl->level >= head->level)
-				break; /* filter may only point downwards */
+tdc.py compares exit_code != int(tidx["expExitCode"]) in test_runner() and
+marks the case failed before running verifyCmd, so the negative control
+fails on the ping exit status and the 1:31 stats pattern described as the
+discriminator never gets evaluated.
 
-while budget exhaustion returns NULL and bypasses the default-class
-fallback.  Would break be the better match here too?
+Could the changelog describe the exhaustion path as a packet drop instead
+of a fall-through to the default class?
 
-Related to that, where does 8 come from?  HTB derives its bound from
-TC_HTB_MAXDEPTH via ++hops > TC_HTB_MAXDEPTH, but HFSC has no comparable
-structural limit (hfsc_change_class() bounds neither chain length nor
-class count), so a chain of more than eight lateral hops is not
-necessarily cyclic.  Could the warning say something like "non-descending
-hop budget exhausted" instead of attributing the case to a cycle?
+> diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/hfsc.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/hfsc.json
+> index c98c339424d4e..4f6bbb8b57f93 100644
+> --- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/hfsc.json
+> +++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/hfsc.json
+> @@ -169,5 +169,39 @@
+>          "teardown": [
+>              "$TC qdisc del dev $DUMMY handle 1: root"
+>          ]
+> +    },
+> +    {
+> +        "id": "8c39",
+> +        "name": "HFSC classify walk still reaches leaf after lateral drift",
+> +        "category": [
+> +            "qdisc",
+> +            "hfsc"
+> +        ],
+> +        "plugins": {
+> +            "requires": "nsPlugin"
+> +        },
+> +        "setup": [
+> +            "ip link set lo up",
 
->  		/* apply inner filter chain */
->  		tcf = rcu_dereference_bh(cl->filter_list);
->  		head = cl;
+[Severity: Low]
+This isn't a bug, but should this use the $IP keyword like the rest of the
+suite?  replace_keywords() in tdc.py only substitutes $-prefixed names from
+NAMES, and exec_cmd() runs commands with:
+
+	proc = subprocess.Popen(command,
+		shell=True,
+		stdout=subprocess.PIPE,
+		stderr=subprocess.PIPE,
+		env=ENVIR)
+
+with ENVIR = { } in tdc_config.py, so a bare ip resolves through the
+shell's built-in default PATH rather than NAMES['IP'].  A tdc_config_local.py
+that points 'IP' at a locally built iproute2 would not affect this step.
+This appears to be the only bare ip invocation under
+tools/testing/selftests/tc-testing/tc-tests.
+
+> +            "$TC qdisc add dev lo handle 1: root hfsc default 30",
+> +            "$TC class add dev lo parent 1: classid 1:1 hfsc rt m2 100kbit",
+> +            "$TC class add dev lo parent 1:1 classid 1:10 hfsc rt m2 50kbit",
+> +            "$TC class add dev lo parent 1: classid 1:2 hfsc rt m2 100kbit",
+> +            "$TC filter add dev lo parent 1: protocol ip prio 1 u32 match u8 0 0 at 0 flowid 1:1",
+> +            "$TC filter add dev lo parent 1:1 protocol ip prio 1 u32 match u8 0 0 at 0 flowid 1:2",
+> +            "$TC class add dev lo parent 1:2 classid 1:20 hfsc rt m2 10kbit",
+
+[Severity: Medium]
+The bind-then-deepen construction used here is repeatable, so should the
+case also cover the point where the guard starts dropping legal traffic?
+
+hfsc_bind_tcf() only rejects a bind when the target is not deeper:
+
+net/sched/sch_hfsc.c:hfsc_bind_tcf() {
+	if (cl != NULL) {
+		if (p != NULL && p->level <= cl->level)
+			return 0;
+	...
+}
+
+so binding 1:k -> 1:(k+1) succeeds while 1:(k+1) is still a leaf, and the
+later class add raises that level through hfsc_adjust_levels() with no
+revalidation of the existing bind and no error to the administrator:
+
+net/sched/sch_hfsc.c:hfsc_adjust_levels() {
+	do {
+		level = 0;
+		list_for_each_entry(p, &cl->children, siblings) {
+			if (p->level >= level)
+				level = p->level + 1;
+		}
+		WRITE_ONCE(cl->level, level);
+	} while ((cl = cl->cl_parent) != NULL);
+}
+
+Repeating the same two setup steps for ten sibling interior classes gives
+nine lateral hops of level 1 -> level 1.  Hops one through eight consume
+HFSC_CLASSIFY_MAX_DRIFT and hop nine hits:
+
+	if (cl->level >= head->level && drift-- == 0) {
+		pr_warn_ratelimited("hfsc: classify hop budget exhausted, dropping packet\n");
+		return NULL;
+	}
+
+which hfsc_enqueue() turns into qdisc_qstats_drop(sch) plus
+__qdisc_drop(skb, to_free), i.e. all traffic on that chain is discarded
+with only a rate-limited warning, on a configuration where every tc
+command succeeded and which classified to its leaf before the guard.
+
+That chain is finite and cycle-free, which does not match the comment
+above HFSC_CLASSIFY_MAX_DRIFT:
+
+	 * legal at bind time can become lateral once hfsc_adjust_levels()
+	 * raises a class level; a few such hops are legitimate, an unbounded
+	 * run means the chain cycles.
+
+The new case builds two lateral hops out of the budget of eight, so it
+does not exercise the boundary.  Would it be worth extending the case past
+eight hops, or making the exhaustion arm break to the default class the way
+the neighbouring misconfiguration exits do?
+
+> +            "$TC class add dev lo parent 1: classid 1:3 hfsc rt m2 100kbit",
+> +            "$TC filter add dev lo parent 1:2 protocol ip prio 1 u32 match u8 0 0 at 0 flowid 1:3",
+> +            "$TC class add dev lo parent 1:3 classid 1:30 hfsc rt m2 10kbit",
+> +            "$TC class add dev lo parent 1:3 classid 1:31 hfsc rt m2 100kbit",
+> +            "$TC filter add dev lo parent 1:3 protocol ip prio 1 u32 match u8 0 0 at 0 flowid 1:31"
+> +        ],
+> +        "cmdUnderTest": "ping -n -c 10 -W 1 127.0.0.1",
+> +        "expExitCode": "0",
+> +        "verifyCmd": "$TC -s class show dev lo",
+> +        "matchPattern": "class hfsc 1:31 parent 1:3 rt[^\\n]*\\n Sent [0-9]+ bytes [1-9][0-9]* pkt",
+> +        "matchCount": "1",
+> +        "teardown": [
+> +            "$TC qdisc del dev lo handle 1: root"
+> +        ]
+>      }
+>  ]
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/QDISC-CTUU.v3.20260916184908%40mojatatu.com
