@@ -1,75 +1,70 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C914C226E;
-	Fri, 18 Sep 2026 11:51:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3384B048F;
+	Fri, 18 Sep 2026 11:54:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789732290; cv=none; b=K90hBuB8TdyDXBZNdtrxWhi17LdR2UdNqP30eX6AZM8GguQwsFU74lqeTQ0IIMmWgt1AyYWGioGcmCktuDjqD5tKPyPWccl2buq3tqBJ7q1PUAp+1tBhCCUO9+W/+tDVprQ8+bhQs/Vhzp/Nnsb3G+ysBMEJOrbvPdJIwBHDP44=
+	t=1789732445; cv=none; b=jD4hjVPqjQRw/qlDpGEUGW4X+DVZ1/inWLsT5F8AvIVzal1WVS28Kejja5Yv7yJJF8ubUzJJmLgyWcq+SF6lhOHZ7AapaHd/CjUGQ8TsEVS6r+odHX3mD6xggLad7Jld1t09yX9R0dM1mFKzFSRQXZ8wRXiRFf1YqkMwySinKM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789732290; c=relaxed/simple;
-	bh=jQj8j7/MpUHFoOIcbUDA4h6+pn5febKM1rz7kTRuPNI=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=RCMG6ON7x0gfinGwmPz3LgeGbZyAxChXx0sxdsSzUk9wXuM4YF3uGaKZl1EyWFGHJO6sk/xt+u812xzdukDGt0JPOuRi3JCCIkDJbjYY5fKtrUnaZmaf9zB/bQJ2euXimGSLspVduin6J9eR8G2LgC4jRkp0aDeE5QqRXsLaXJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=uDfZOzDV; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1789732445; c=relaxed/simple;
+	bh=Tg6sUZbO12kr69TGuRX2+TW8rG6HSgB8VQPilIPhGII=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bbqyGupW9wMQ4rZJ2QNokAvmSa0PHP5g2wqWNwCTk/eCu0yrj5AzdDNEoZjnZnIRzOvqXm2MybIYfquPOa5RdC9L3wW0koFdx5JMNRubNm2985NHIqjNaXg4PGGgLIuc7KzfUUvSMt3yKGCnCD3LQBb/7NL/5YYAOpOcQacqVEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=cuFI9FDE; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="uDfZOzDV"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0828EA50C5;
-	Fri, 18 Sep 2026 13:51:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1789732284; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=bzwUFzxNStbeC5AJy25lOTYmfriyH5qibHDFZbGncIc=;
-	b=uDfZOzDVNpZDIVekSq3KLiHLs3l4EQU+uW/bCecH5URqdBuck542vpm8QEfIOFr2OlyM/r
-	AN6FKOqrnnCC+C61f1xrVg15dlUP8uNv5eFJSlPOvXnR764wbAmuIpSahsInRWa/DsD9ue
-	TlYjO5F3qHzsd0M5D+eFa44SGH8xIBCxIt2/9rpzcLEaJjKZ11DUAGXSWEXNfHOzPltFFj
-	3P6+YleNRyl7vR4RtPVtP9YfZYp4UXU/NhG1QE5q/VyNZhOGFPNpoyJ80hoqP9qMipSbIJ
-	KH6C1jeEMlFkXBO8P9+N/yEqYfGfZ8MSQXYoJDNLh6BAYqGldUE/i8fUEEDsXA==
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="cuFI9FDE"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=19PmKoo5d7cVYVpSiRTEt7PfX902d55BNS+Eq3QkL8o=; b=cuFI9FDE5WIKKQNKCxDMX1Ruy5
+	k4FYVNSa9Dho+4uGi0ZjZY1l7Ier74EmfH/TUtoCSVp6AChYgjs1Ww8+rqoZn356cRGT7KODMR2Mn
+	knj1XbxvhWTRm4DRR15AQdVaC0iRH+MzrpcYfJ17+nZIOdBLcA6bdMqv/qtmbIGRGs+0=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x7XA7-005ri5-1N; Fri, 18 Sep 2026 13:53:51 +0200
+Date: Fri, 18 Sep 2026 13:53:51 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Tiezhu Yang <yangtiezhu@loongson.cn>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Yao Zi <me@ziyao.cc>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v1] net: stmmac: Default DWMAC_MOTORCOMM to m on
+ MACH_LOONGSON64
+Message-ID: <f57f9a1d-72cd-4997-9895-202654a81b52@lunn.ch>
+References: <20260915073206.6665-1-yangtiezhu@loongson.cn>
+ <90a666a8-9f6a-4640-a219-731f3d551c66@bootlin.com>
+ <f6b93b98-e0d3-9e28-e366-4df126e6ab5f@loongson.cn>
+ <a10c8361-648e-476b-8b04-8716ad274fc4@lunn.ch>
+ <36a43b65-f94e-4836-b511-715fb136c10d@loongson.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 18 Sep 2026 13:51:22 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next v2 2/3] selftests: drv-net: Check the features
- set by set_ethtool_feat()
-In-Reply-To: <20260918112529.96039-3-ovidiu.panait.rb@renesas.com>
-References: <20260918112529.96039-1-ovidiu.panait.rb@renesas.com>
- <20260918112529.96039-3-ovidiu.panait.rb@renesas.com>
-Message-ID: <fa78063df06ec598208eff3d9708c38d@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <36a43b65-f94e-4836-b511-715fb136c10d@loongson.cn>
 
-Hi Ovidiu
+> drivers/net/ethernet/marvell/octeontx2/Kconfig:54:	default m
+> drivers/net/ethernet/hisilicon/Kconfig:106:	default m
+> drivers/net/ethernet/hisilicon/Kconfig:134:	default m
+> drivers/net/ethernet/sun/Kconfig:77:	default m
+> drivers/net/ethernet/sun/Kconfig:81:	default m
+> drivers/net/ethernet/sun/Kconfig:89:	default m
+> drivers/net/ethernet/mellanox/mlxsw/Kconfig:37:	default m
+> drivers/net/ethernet/mellanox/mlxsw/Kconfig:47:	default m
+> drivers/net/ethernet/mellanox/mlxsw/Kconfig:67:	default m
+> drivers/net/ethernet/mellanox/mlxsw/Kconfig:86:	default m
 
-On 18.9.2026 13:25, Ovidiu Panait wrote:
-> Read back the features after running ethtool -K to check if they were
-> actually applied. The drivers might refuse to set a feature silently 
-> and
-> the test could run with a different configuration than the requested 
-> one.
-> 
-> Add a 'check' parameter to skip this, as the GRO "hw" mode handles the
-> case where HW GRO is cleared by the driver.
-> 
-> Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-> ---
+Look deeper at these. Apart from the sun cases, which are very old,
+default m is only used for optional parts of a module, not the module
+as a whole.
 
-> [...]
-
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
-
-Thanks,
-Nicolai
+   Andrew
