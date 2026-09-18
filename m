@@ -1,90 +1,85 @@
-Received: from mail-pj2-f8.google.com (mail-pj2-f8.google.com [74.125.227.136])
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67D03BFE3E
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 02:49:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8A039E6CD
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 02:56:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789699762; cv=none; b=ehdlRcr4/rDlSInoHnZpEzrLm850B2WpsK2DmpyO2HzhQ8gKuhbv2CGOZ++1wIVxcW/eyQx2XhmQmLjYiecWAx0Zc9w6c74Vkdxo3S3Em19EPmR8dsCY0Rroo8/6bsyUrEGUmBydDsYepjYRbNKRzyYF8frI4sy1g4tZyEfV30Q=
+	t=1789700225; cv=none; b=BUZAtiLSyxw3s3tDQ7Z4ijnCJZK92csREkJTsFceLU+QgnRxRtVSYfRDheZQ5LLB0zbvuUKQHrDvUn/VyxDaIxAQjl9FbIQ74J7Pu1sNtstdjwA2vN2hNat2BI6hOzuJS+8ZMKnaNh+EetfeTQOF+FxV9Cuer3lSuQtHV9dGrNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789699762; c=relaxed/simple;
-	bh=7mZyvLsdD7rZFz20RtO0OYHMdBvBnkDzPt/82DlOJfo=;
+	s=arc-20240116; t=1789700225; c=relaxed/simple;
+	bh=WH/rnE12a+uaVlNTry7gwUg4MsviWYt1nqi8WX9vXi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KZ3cu32pkYT9QPG3oMk2fM8shF1e6cF9lpaTQZamoaDwi8d0kwxr9S3UxVyfMTSoAt3XuC6pWIjB3AMFxMdijgK7hn8rQ92hXxVivAHpIVKaWYH79XlrZGfd7rDQ2UBonn8QinKcy0cyGEF45trtWfOhBQUtCzQrNxFfkitq2Ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n9GCvagV; arc=none smtp.client-ip=74.125.227.136
+	 MIME-Version; b=ICwKHDDdIPUs1T8ayM82B3KbfA7014eGhfX8R9Mvjljbpm6kkW/aJxBnjqmPYDUsKUsJbxt5IB1fR1Shnmk81FtREyw/bkgtzd0+4rkRis0cvHj8KsdQ9dGRDrIvImui18pMAV/EymVZ+lICzzQBixKxON8uSFeDpqceAos7pT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=clNNZkJG; arc=none smtp.client-ip=74.125.227.140
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n9GCvagV"
-Received: by mail-pj2-f8.google.com with SMTP id d9443c01a7336-2d8fcda61c8so1056695ad.1
-        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 19:49:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="clNNZkJG"
+Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d747ec6185so1539905ad.0
+        for <netdev@vger.kernel.org>; Thu, 17 Sep 2026 19:56:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789699753; x=1790304553; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789700216; x=1790305016; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=zt8G0xpIOOhfoNc/LpRJ6HNqd0QOLFO5B7X1F4wwr9s=;
-        b=n9GCvagV4vzLOItApOQYz25/x/JPn5IyIANJKNYuUakigjbbk3G/p3jAk61QXVs6PF
-         pTwKFM1QOpCVkIJKWgHeRrZhYzMVJgwnAMrkz+AzzJw4PApVE/NNnviquQKEGuyiM1/4
-         1NkP4mxZjlWmwqLyPROy50C/fmW0yDNi07rI4yBb4IjY8Xma/fkXcSRUnMrM+X/dP0ls
-         WQSURO18KI3OJOYvPTg3V0H72Rb2ul0RvWWdOYDQfp3J30dKgIZ3K0kHTeFtCF0ofLgY
-         bQWk3++paG2OU6hPkI4AGhP4BYZqrM5mTabqohBWKNBq+CK1dTiJZOTS/pr8JxlXoHrN
-         2R8g==
+        bh=WH/rnE12a+uaVlNTry7gwUg4MsviWYt1nqi8WX9vXi4=;
+        b=clNNZkJG562ToNrLE3Cu8NKoJn1kjRqSfvGdob1UUiHd6STXZr07fKOScqWbTRiEjI
+         Ehp/KSeIyKyNcJsmKl+x/+kh8BOL644uLZny57bf0uAhnjr7MmT3wvHIY0ODSk1tm7ab
+         +haxeFBVHP/+MQR3+7fxX2/JfI5i9OUbtgJl1Z+WCY6UbT+atHc2cg/qaMpRCdfJb0PV
+         /HcvpA0ml5TJekYHepfVcZSB6y7MD2F1rEcmI/oI4RINHu1/tH4EBRkxNRK7m3Q4jLkU
+         GadmRjScFiTxatV6lzGyP3QGkNaqWALY7Ti2jUbJvaCSuROXrDD2Ii1BYudA4GjTdhTH
+         rZ/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789699753; x=1790304553;
+        d=1e100.net; s=20260707; t=1789700216; x=1790305016;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zt8G0xpIOOhfoNc/LpRJ6HNqd0QOLFO5B7X1F4wwr9s=;
-        b=zxVIndNK867sPzZDApN0Vet/NKwzKSQiu40tkywoknUBeetPPQSBn2/uR2qiA7mHQk
-         Ll0VJ3FDykFlUlgffCRsgkqdB5vu4o3jRcZbJOQHlbZ6JPU6luIqa3zNpGnUxlrauPUq
-         RDhZOrDv45OoOnjQo5tgAzl1ZYi94OGhFg2HdiRxZ4UMt09qpIdXL/z3ES51NSMCdyVj
-         DTe12FYxI2prOEOpDzPDeW5AotIK81+JjZx6KZUeMx3JL//J1+Hazx6gcVRB/RgbW0YF
-         eXI0fdZZVETICj2UmxG5UodJodD6iwbsq/Eohl7saY3oF2S22JMzY6BBVN/9banFPRIp
-         sYpg==
-X-Forwarded-Encrypted: i=1; AKwUvBxk11ltsqqdqabs0ObHBoxQJecGs6v+lX1tNhCQs1YuyQhNog0SRZAp7rR2ieqKX+Pb9N/wJOc=@vger.kernel.org
-X-Gm-Message-State: AFuF++mbzsRIX70x1gyGRjVYCgVLngbQC2N9b7zqsfUZO2CdR+hC65Wz
-	sHFYvb4JB1PDCKPfbeoXK3UFyMZ4UoyyoiGts0BCJT54cszWUq6aieEi
-X-Gm-Gg: AYBFou3Pdfu9jv6rwciV182g+Eu/h6JSkAARwvmYgoXhnWKuLyDUJyucGsfU2WXgvCD
-	7TnbyP4T2/6BdirYcqGq4LFG10iD6W4MojsETE971tcpmspMJQa6dtuSaiMizbOVRJLMnBmKeM4
-	aLazoMX7iLyKaLYCg1+irEVXjqOnqQswqHh75llIr0opEewfM/y4ZRgWwwgnO1e9+vxn8HWU1qx
-	PQUxn072nERYHo6qwn7RzT735bMQvL+xwbehtL4oNzHWzkDnv8g7BWMKhmaOvaH+IJxQW1PEtZc
-	qYsXPnIaA3853wBZue6ezukuOsKY5MQPRN3HbP0h7s5l5/C2l1YMZBUpINhwPlNMdQD0RqYiyS7
-	U7z0uGLAD6IOo1ckBbS9f80jbo7Kwvb6k2085VbT85CWEHsuvlh+ZlDj3Fgcv6q+x+PZc4pEG+k
-	zTxrn8ZyNr6bTN9HKXfwjhYOpnVcepO/cdBieomSbQ9t8EZ6WU4EekXB2Q0xfDPjG+RfL/zI44Z
-	UNrHPXJMa7+7lRIgVAwCWK5SMhNy8qvTtM9xYjvBEJR1aEu
-X-Received: by 2002:a17:903:46d0:b0:2d6:3c2f:6a4 with SMTP id d9443c01a7336-2ddb1b04363mr24129965ad.13.1789699753092;
-        Thu, 17 Sep 2026 19:49:13 -0700 (PDT)
-Received: from localhost.localdomain ([38.60.126.44])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33c287b023bsm388217eec.23.2026.09.17.19.49.08
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 17 Sep 2026 19:49:12 -0700 (PDT)
-From: Haobin Wu <853555@gmail.com>
-To: ericvh@kernel.org,
-	lucho@ionkov.net,
-	asmadeus@codewreck.org,
-	v9fs@lists.linux.dev
-Cc: linux_oss@crudebyte.com,
-	jack@suse.cz,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
+        bh=WH/rnE12a+uaVlNTry7gwUg4MsviWYt1nqi8WX9vXi4=;
+        b=BWUqMl8CTCUfZ/ingOGFmlkhjnUqo+wf/1aE4V+JXkvR+kTg385TFA89bjtLidHtG5
+         sGoq0W7VTb+c9V/1cS5JLoTndoqQ1QzQqqclwze7dBNoKWVgktlhLgCrO+1sbr4aPtVY
+         uzsmw1u+MLexqmtHbj8aUE9bESisZ5VPaDgLhDIywic81cLeP5+J2JgoafUdZjfZz7Od
+         0nTof9o35PkNW5XebIZ+9vqLo1XZ1nw5at4FO3iIB+i6ptOL5UNFEUFP8nkLETJL2YCh
+         IuQ2vtWRdNG+CiMvf2blROvZQFcP1JORftcqdCuz4yGUr3/e36KcWoJFP3kg8NFsWU3H
+         F3wg==
+X-Forwarded-Encrypted: i=1; AKwUvBwbTDMebuPuISH0de9g/CqN75V7/zwjPQGVe2B9n3+SIDC2kzLbXc5UQVP1zUdzGJ7MeRj5xSI=@vger.kernel.org
+X-Gm-Message-State: AFuF++mdWrvlPnZsIauuoM4KUbsNY6USppdKWIgRAuUGHNlhiV2zT/Fo
+	RP+e89hBlUEeNdIaXCggQVBgnMS/5H7EQGnhR5UMs344bMwdZsInrOuQ
+X-Gm-Gg: AYBFou2Jz5a9oI4I2ss2pstlCVGDsvm7ekAKtbvTWS+9oIcYVDLpFINxxmBIrZ2hIPI
+	BkvISSKLFrDCtIF5CxKsatXP7q7YhCLa+C5Pvon7tiIdc4LzWq0mZ9Pr00rdNHLDS2JGk8es7oH
+	QGLoLUIHeS7S/YjTYBsivHzSHl5G6qaD01D8C4D3x/HWisUUoWbE+o06bZwCi2jGsZ3vypfFndF
+	cQMlDuy5z6Zm25ylHPUjNikbme6hHBK8Yeu0dEKXQIjlegG6r/LoM9Thrb5WB6E+xeP4wlpZMT7
+	oioWnurP+dD1E+n9XRvMZn8FaD2Quz5hyaGb26sIuo8LYlODsfABXA/fZwTqKs6CTpc+df3kSdk
+	zYrgYoQVhEJ3pTa0MFrs/0JcNWhou4e1+56UNVaVgIifjY06ODXan9nXMA5j0AiIfIR3hyhdMmu
+	j3/KqE8QJyh5oZ572spL/jI1CY/nE7qh0XYqT8Wq+3aYNRoTiwIFu+rNUf0x+MidDG
+X-Received: by 2002:a17:903:2f8f:b0:2dd:ad74:ac32 with SMTP id d9443c01a7336-2ddb1baf0a0mr24255345ad.27.1789700216039;
+        Thu, 17 Sep 2026 19:56:56 -0700 (PDT)
+Received: from bloom.localdomain ([2604:3d09:178e:e100::c570])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ddb75b52e2sm734085ad.60.2026.09.17.19.56.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Sep 2026 19:56:55 -0700 (PDT)
+From: Ivy Lopez <skunkolee@gmail.com>
+To: kys@microsoft.com
+Cc: haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	longli@microsoft.com,
+	sgarzare@redhat.com,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	horms@kernel.org,
-	aneesh.kumar@linux.vnet.ibm.com,
-	willy@infradead.org,
-	dhowells@redhat.com,
-	viro@zeniv.linux.org.uk,
-	brauner@kernel.org
-Subject: [PATCH v3 3/3] 9p: skip over-long directory entry names for legacy 9p2000 too
-Date: Fri, 18 Sep 2026 10:48:51 +0800
-Message-ID: <20260918024851.51229-4-853555@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260918024851.51229-1-853555@gmail.com>
-References: <20260918024851.51229-1-853555@gmail.com>
+	linux-hyperv@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] vsock/hv_sock: fix socket/table leak when rescind races the delayed close
+Date: Thu, 17 Sep 2026 20:56:50 -0600
+Message-ID: <20260918025650.15990-1-skunkolee@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260917220213.56102-1-bartlomiej.dmitruk@isec.pl>
+References: <20260917220213.56102-1-bartlomiej.dmitruk@isec.pl>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -93,58 +88,6 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The legacy 9p2000 and 9p2000.u readdir path, v9fs_dir_readdir(), parses
-each entry with p9stat_read() and, unlike the 9p2000.L path, never had
-a 256-byte name limit: a name of any length up to the wire maximum was
-handed to dir_emit(). getdents64() therefore returned names longer than
-NAME_MAX that no later syscall can use, and failed with -EIO for names
-of PATH_MAX bytes or more.
+LGTM.
 
-Apply the same NAME_MAX check as the previous patch does for
-v9fs_dir_readdir_dotl(), so both protocol variants behave the same.
-
-Note that this is a behaviour change for 9p2000 and 9p2000.u: entries
-with names longer than NAME_MAX used to be listed and are now skipped.
-
-Suggested-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-Link: https://lore.kernel.org/all/3910569.MHq7AAxBmi@weasel/
-Signed-off-by: Haobin Wu <853555@gmail.com>
----
- fs/9p/vfs_dir.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
-
-diff --git a/fs/9p/vfs_dir.c b/fs/9p/vfs_dir.c
-index 08d1a3429654..31de9ac913f0 100644
---- a/fs/9p/vfs_dir.c
-+++ b/fs/9p/vfs_dir.c
-@@ -119,6 +119,8 @@ static int v9fs_dir_readdir(struct file *file, struct dir_context *ctx)
- 			rdir->tail = n;
- 		}
- 		while (rdir->head < rdir->tail) {
-+			size_t namelen;
-+
- 			err = p9stat_read(fid->clnt, rdir->buf + rdir->head,
- 					  rdir->tail - rdir->head, &st);
- 			if (err <= 0) {
-@@ -126,8 +128,16 @@ static int v9fs_dir_readdir(struct file *file, struct dir_context *ctx)
- 				return -EIO;
- 			}
- 
--			over = !dir_emit(ctx, st.name, strlen(st.name),
--					QID2INO(&st.qid), dt_type(&st));
-+			namelen = strlen(st.name);
-+			if (namelen > NAME_MAX) {
-+				p9_debug(P9_DEBUG_ERROR,
-+					 "skip dentry: name length %zu > NAME_MAX\n",
-+					 namelen);
-+				over = false;
-+			} else {
-+				over = !dir_emit(ctx, st.name, namelen,
-+						 QID2INO(&st.qid), dt_type(&st));
-+			}
- 			p9stat_free(&st);
- 			if (over)
- 				return 0;
--- 
-2.54.0 (Apple Git-157)
-
+Should this need a Fixes: tag and possibly a Cc: stable@vger.kernel.org?
