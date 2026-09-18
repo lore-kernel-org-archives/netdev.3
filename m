@@ -1,155 +1,127 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.5])
+Received: from mail.sprinte.eu (mail.sprinte.eu [141.95.128.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530CA4F7CDD
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 13:34:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC3D4A5C56
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 13:37:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.95.128.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789738494; cv=none; b=T2GpNyfA/B+alBXmsvP9AhAjdsji/aqz5933DUIKnbiLWZZtWqForGBNWSIjwAEnK8wsAEDOf/5ODrGO+X7Oiw7oozRvPAB9tWMHRwq+IUMNkYTyQ10WK3FHm+xiWHAo8sXNPqkoeQLg0vG0OmEy9+fcM3cz/97qjmAz/0pkqTs=
+	t=1789738651; cv=none; b=NCS+3LbJoiUNN3WboY3C0D6Tw56yTDVevUbv/KyBUfrvMixz3QEWhlRFS1Z2z44LSqO/fOzBgv1IJTQO6gZZBGEpcmPJ/Jn0AD+h2T6cLdf9uOTmA7CZCKOl0wQUkqBLAurlgfJr5a0CLds+5TaKmCBIRSpN0XhSslwf3yh91qM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789738494; c=relaxed/simple;
-	bh=alPd3jIpdS35on6zf2c81Y02DU9c1ZRoSXkBLUj8oEs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=opJTLvT/Q28urfguwOZgf8hkvcwg/pHREYx+u4x3XLL83SFSjKwrIgcKDCliTAen/45Ax09nGaexw5/nQVNRNF3BNpByuxx5V+01cV5N+grrqBeH0NiFnyBOHOobrdGdrUVqbGYGfXLog9lN46iGZGz0Pc698/H0MbI9LnK6jQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jyzswVPN; arc=none smtp.client-ip=192.198.163.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1789738651; c=relaxed/simple;
+	bh=YBWv0K3jAuhQYpatcMfbvIlLZm0nZQfRuQpOVRj8hzo=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=GnsLY1f1hFpaWPXEJKj9Mf3ZR6K/OijpMIGtoXNekJKh9uF0FHdQuLONT5pUYxZYPZYUtmOYFpIQIhi43IWNmOtv9H0rBcVyZH7VQHi5WvYpkt5ozeYD0wJGrQANj8v0o4lI7XFQ4EiPYiKBlN6XHrtRuDAQi8AvkRjuUuzjbDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sprinte.eu; spf=pass smtp.mailfrom=sprinte.eu; dkim=pass (2048-bit key) header.d=sprinte.eu header.i=@sprinte.eu header.b=uaHg5Oi3; arc=none smtp.client-ip=141.95.128.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sprinte.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sprinte.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jyzswVPN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789738493; x=1821274493;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=alPd3jIpdS35on6zf2c81Y02DU9c1ZRoSXkBLUj8oEs=;
-  b=jyzswVPN7EldigBsfFqrAJUZoWHjLe2/Z+qaAcEpKij9ZPQ3Bw4PyF2x
-   7LvigYoCo1707ieaBofCY2zjxwdhKL1mZUEAHM5H2+juNUcrjM6gu38wd
-   gonOj9utSL7x5ac8FOdZuK1ZsaoGeAh5myLYTlZYpCEmof/rBf4WHw7+G
-   ESEXAgmnhzhbbVtjkOMl9rnuciUeawVah7m10ev0lnrCyg0Wt8ZN2AzFi
-   nTy4i+Ooa0g7F9esQRV7P5dshKWpoZCOiTMqnU9K4RGf0N0M+fUi4esLf
-   FBJFqk2M5acX5CqTGYY10UgdUxcaCLoKKRXaWxDWn1DVpENYR1IdmRlcq
-   Q==;
-X-CSE-ConnectionGUID: Xg9dWTJIS9+XtYKYlxRK3w==
-X-CSE-MsgGUID: KU1VOlv1Q3+SYAFypOzy7g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11908"; a="744158"
-X-IronPort-AV: E=Sophos;i="6.27,109,1787036400"; 
-   d="scan'208";a="744158"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa115.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2026 06:34:53 -0700
-X-CSE-ConnectionGUID: ZnUoGYpdRJiMkT+yZZOcag==
-X-CSE-MsgGUID: xEebdWUVSQKoVfaV1sak/A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,109,1787036400"; 
-   d="scan'208";a="299513973"
-Received: from amlin-019-225.igk.intel.com ([10.102.19.225])
-  by fmviesa001.fm.intel.com with ESMTP; 18 Sep 2026 06:33:33 -0700
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-To: intel-wired-lan@lists.osuosl.org,
-	anthony.l.nguyen@intel.com,
-	aleksandr.loktionov@intel.com
-Cc: netdev@vger.kernel.org,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH iwl-next v2] ixgbe: remove ixgbe_ping_all_vfs() from link state change handlers
-Date: Fri, 18 Sep 2026 15:33:27 +0200
-Message-ID: <20260918133327.4170034-1-aleksandr.loktionov@intel.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=sprinte.eu header.i=@sprinte.eu header.b="uaHg5Oi3"
+Received: from S1044812.EX793143.lan (2001:41d0:11b:2f00::8d5f:80ce) by
+ S1044812.EX793143.lan (2001:41d0:11b:2f00::8d5f:80ce) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Fri, 18 Sep 2026 15:37:18 +0200
+Received: from S1044812.EX793143.lan ([fe80::90d1:6ba3:6aa1:fae0]) by
+ S1044812.EX793143.lan ([fe80::90d1:6ba3:6aa1:fae0%6]) with mapi id
+ 15.02.2562.049; Fri, 18 Sep 2026 15:37:18 +0200
+From: Julien Blanc <julien.blanc@sprinte.eu>
+To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC: "o.rempel@pengutronix.de" <o.rempel@pengutronix.de>,
+	"hkallweit1@gmail.com" <hkallweit1@gmail.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "andrew@lunn.ch" <andrew@lunn.ch>
+Subject: [PATCH net-next v4] Add config phase for dp83td510e phy
+Thread-Topic: [PATCH net-next v4] Add config phase for dp83td510e phy
+Thread-Index: AQHdR3LTlRILAepBM0Ok9DEDOklW4A==
+Date: Fri, 18 Sep 2026 13:37:18 +0000
+Message-ID: <ba60884812731055376a8e541a84bc03dd9a1717.camel@sprinte.eu>
+Accept-Language: fr-FR, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <7467E86D72E6EF4AB0705AF79710F398@EX793143.lan>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+DKIM-Signature: v=1; a=rsa-sha256; d=sprinte.eu; s=ovhex803668-selector1;
+ c=relaxed/relaxed; t=1789738639; h=from:to:subject:date;
+ bh=YBWv0K3jAuhQYpatcMfbvIlLZm0nZQfRuQpOVRj8hzo=;
+ b=uaHg5Oi3NE3FDbduwoTkYEXbgKoRS7wfQEbgibnKHzijBFmGOPoFxDTY17ScdVJ5Jk8FyoW+xodqczYMM4WXCoj2rbFBlTrczDnTa87NonKL2jpX2/CJzCHEIvTp30mc90QnG52WwQtq2BfvNmqz2/1wIq683XNPOvf7nlJzlUdScG24Dn0CkiAGaqmVo/tDT/CSJxJJC+mfYbIg2fgQ4KIX7lK5Fa6prNYFYh1rAd/T+FVxsmee4c+7wbUrZFYq8DsewV7eVe3NzQYIgM9a8wD3uK+Ji1ZTyKMC9vm9zG0gkUkcCgUqzm76eQxClB8+mI0H/dvsROACWjwMvDDU0A==
 
-When multiple VFs are brought up simultaneously, a VF can receive a CTS
-(Clear To Send) mailbox message instead of the expected RESET | (N)ACK
-response, because the watchdog fires a gratuitous ping right as the VF
-mailbox transaction is in progress.
-
-Remove the ixgbe_ping_all_vfs() call from both ixgbe_watchdog_link_is_up()
-and ixgbe_watchdog_link_is_down().  Both paths contain an identical call
-with the same race window during VF initialization: link-state changes
-(up or down) can arrive while VFs are mid-initialization, and the
-gratuitous ping from either direction collides with the VF mailbox state
-machine for the same reason.
-
-Link-state changes are already communicated to VFs through the normal
-mailbox protocol; these extra pings are redundant on both paths.
-
-This removes the last two callers of ixgbe_ping_all_vfs(), so remove
-the now-unused function and its declaration as well.
-
-Suggested-by: Sebastian Basierski <sebastianx.basierski@intel.com>
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
----
-v1 -> v2: no code changes, resending to pick up Reviewed-by
----
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c  |  6 ------
- drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c | 14 --------------
- drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.h |  1 -
- 3 files changed, 21 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-index f918564..365acf8 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-@@ -8181,9 +8181,6 @@ static void ixgbe_watchdog_link_is_up(struct ixgbe_adapter *adapter)
- 
- 	/* update the default user priority for VFs */
- 	ixgbe_update_default_up(adapter);
--
--	/* ping all the active vfs to let them know link has changed */
--	ixgbe_ping_all_vfs(adapter);
- }
- 
- /**
-@@ -8214,9 +8211,6 @@ static void ixgbe_watchdog_link_is_down(struct ixgbe_adapter *adapter)
- 
- 	e_info(drv, "NIC Link is Down\n");
- 	netif_carrier_off(netdev);
--
--	/* ping all the active vfs to let them know link has changed */
--	ixgbe_ping_all_vfs(adapter);
- }
- 
- static bool ixgbe_ring_tx_pending(struct ixgbe_adapter *adapter)
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-index 431d77d..da641e9 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-@@ -1515,20 +1515,6 @@ static inline void ixgbe_ping_vf(struct ixgbe_adapter *adapter, int vf)
- 	ixgbe_write_mbx(hw, &ping, 1, vf);
- }
- 
--void ixgbe_ping_all_vfs(struct ixgbe_adapter *adapter)
--{
--	struct ixgbe_hw *hw = &adapter->hw;
--	u32 ping;
--	int i;
--
--	for (i = 0 ; i < adapter->num_vfs; i++) {
--		ping = IXGBE_PF_CONTROL_MSG;
--		if (adapter->vfinfo[i].clear_to_send)
--			ping |= IXGBE_VT_MSGTYPE_CTS;
--		ixgbe_write_mbx(hw, &ping, 1, i);
--	}
--}
--
- /**
-  * ixgbe_set_all_vfs - update vfs queues
-  * @adapter: Pointer to adapter struct
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.h
-index bc4cab9..f755bfd 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.h
-@@ -18,7 +18,6 @@ void ixgbe_restore_vf_multicasts(struct ixgbe_adapter *adapter);
- bool ixgbe_check_mdd_event(struct ixgbe_adapter *adapter);
- void ixgbe_msg_task(struct ixgbe_adapter *adapter);
- int ixgbe_vf_configuration(struct pci_dev *pdev, unsigned int event_mask);
--void ixgbe_ping_all_vfs(struct ixgbe_adapter *adapter);
- void ixgbe_set_all_vfs(struct ixgbe_adapter *adapter);
- int ixgbe_ndo_set_vf_mac(struct net_device *netdev, int queue, u8 *mac);
- int ixgbe_ndo_set_vf_vlan(struct net_device *netdev, int queue, u16 vlan,
--- 
-2.52.0
-
+QWRkIGEgY29uZmlnIHBoYXNlIGZvciB0aGUgVGV4YXMgSW5zdHJ1bWVudHMgRFA4M1RENTEwRSBl
+dGhlbmV0IFBIWQ0KDQpUaGUgY29uZmlnIHBoYXNlIGN1cnJlbnRseSBzZXRzIHRoZSBmb2xsb3dp
+bmcgcHJvcGVydGllcyBmcm9tIHRoZQ0KZGV2aWNlIHRyZWU6DQogICogUk1JSSAvIFJHTUlJIG1v
+ZGUgKG5vdGUgOiBSTUlJIG1hc3RlciAvIHNsYXZlIGNhbiBvbmx5IGJlIHNldA0KICAgIGJ5IHN0
+cmFwcyBhbmQgY2Fubm90IGJlIGNoYW5nZWQgYXQgcnVudGltZSkNCiAgKiBSR01JSSBkZWxheXMu
+IFRoZXNlIGRlbGF5cyBjYW4gYmUgZW5hYmxlZCBvbiB0aGUgcGh5IHNpZGUsIG9ubHkNCiAgICBh
+cyBhIGJvb2xlYW4uIERlbGF5cyBhcmUgZW5hYmxlZCBpZiBwaHktbW9kZSBpcyByZ21paS1pZCwg
+b3INCiAgICByZ21paS1bcnh8dHhdaWQgd2hpY2ggZW5hYmxlcyBvbmx5IHRoZSBjb3JyZXNwb25k
+aW5nIGRlbGF5Lg0KICAqIEluIGNhc2UgYW5vdGhlciBtb2RlIGlzIGVuY291bnRlcmVkLCBkbyBu
+b3RoaW5nIGFuZCByZXR1cm4NCiAgICBzdWNjZXNzIChrZWVwIG9sZCBiZWhhdmlvcikNCg0KU2ln
+bmVkLW9mZi1ieTogSnVsaWVuIEJsYW5jIDxqdWxpZW4uYmxhbmNAc3ByaW50ZS5ldT4NCg0KUmV2
+aWV3ZWQtYnk6IEFuZHJldyBMdW5uIDxhbmRyZXdAbHVubi5jaD4NCi0tLQ0KQ2hhbmdlcyBpbiB2
+NDoNCi0gZml4ZXMgZm9ybWF0dGluZyBhbmQgY29tbWVudCBzdHlsZSBpc3N1ZXMNCg0KQ2hhbmdl
+cyBpbiB2MzoNCi0gZml4IHJldHVybmluZyBhbiB1bmluaXRpYWxpemVkIHZhbHVlIGlmIG1vZGUg
+d2FzIG5vdCByZ21paVsteHhdDQogIG9yIHJtaWkgKG1paSBpcyBhIHZhbGlkIG1vZGUgZm9yIHRo
+aXMgcGh5IGFzIHdlbGwpLiBSZXR1cm4NCiAgc3VjY2VzcyBpbiB0aGF0IGNhc2UgdG8ga2VlcCB0
+aGUgb2xkIGRyaXZlciBiZWhhdmlvci4NCi0gdXBkYXRlZCBjb21taXQgZGVzY3JpcHRpb24gYWNj
+b3JkaW5nbHkNCg0KQ2hhbmdlcyBpbiB2MjoNCi0gcmVtb3ZlIHRoZSB1c2FnZSBvZiBwaHlfZ2V0
+X2ludGVybmFsX2RlbGF5DQotIHVzZSBib29sZWFucyB0byBtYWtlIGl0IGNsZWFyIHRoYXQgdGh5
+IHBoeSBzdXBwb3J0cyBvbmx5IGENCiAgZml4ZWQgZGVsYXkgYWN0aXZhdGlvbiwgbm8gY29uZmln
+dXJhYmxlIGRlbGF5DQoNCiBkcml2ZXJzL25ldC9waHkvZHA4M3RkNTEwLmMgfCA2OSArKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrDQogMSBmaWxlIGNoYW5nZWQsIDY5IGluc2Vy
+dGlvbnMoKykNCg0KZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3BoeS9kcDgzdGQ1MTAuYyBiL2Ry
+aXZlcnMvbmV0L3BoeS9kcDgzdGQ1MTAuYw0KaW5kZXggOWU5YTQxYmY2NDU3Li5hYTYxMjIwZGJj
+ZTMgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL25ldC9waHkvZHA4M3RkNTEwLmMNCisrKyBiL2RyaXZl
+cnMvbmV0L3BoeS9kcDgzdGQ1MTAuYw0KQEAgLTMwLDYgKzMwLDEyIEBADQogI2RlZmluZSBEUDgz
+VEQ1MTBFX0lOVDFfTElOSwkJCUJJVCgxMykNCiAjZGVmaW5lIERQODNURDUxMEVfSU5UMV9MSU5L
+X0VOCQkJQklUKDUpDQogDQorI2RlZmluZSBEUDgzVEQ1MTBFX1JDU1IJCQkJMHgxNw0KKyNkZWZp
+bmUgRFA4M1RENTEwRV9STUlJX01PREVfRU4JCQlCSVQoNSkNCisjZGVmaW5lIERQODNURDUxMEVf
+UkdNSUlfTU9ERV9FTgkJQklUKDkpDQorI2RlZmluZSBEUDgzVEQ1MTBFX1RYX0NMS19TSElGVAkJ
+CUJJVCgxMSkNCisjZGVmaW5lIERQODNURDUxMEVfUlhfQ0xLX1NISUZUCQkJQklUKDEyKQ0KKw0K
+ICNkZWZpbmUgRFA4M1RENTEwRV9DVFJMCQkJCTB4MWYNCiAjZGVmaW5lIERQODNURDUxMEVfQ1RS
+TF9IV19SRVNFVAkJQklUKDE1KQ0KICNkZWZpbmUgRFA4M1RENTEwRV9DVFJMX1NXX1JFU0VUCQlC
+SVQoMTQpDQpAQCAtNjQ5LDYgKzY1NSw2OCBAQCBzdGF0aWMgaW50IGRwODN0ZDUxMF9jb25maWdf
+YW5lZyhzdHJ1Y3QgcGh5X2RldmljZSAqcGh5ZGV2KQ0KIAlyZXR1cm4gZ2VucGh5X2M0NV9jaGVj
+a19hbmRfcmVzdGFydF9hbmVnKHBoeWRldiwgY2hhbmdlZCk7DQogfQ0KIA0KK3N0YXRpYyBib29s
+IGRwODN0ZDUxMF9jb25maWdfcmdtaWlfcnhfZGVsYXkoc3RydWN0IHBoeV9kZXZpY2UgKnBoeWRl
+dikNCit7DQorCXJldHVybiBwaHlkZXYtPmludGVyZmFjZSA9PSBQSFlfSU5URVJGQUNFX01PREVf
+UkdNSUlfSUQgfHwNCisJICAgICAgIHBoeWRldi0+aW50ZXJmYWNlID09IFBIWV9JTlRFUkZBQ0Vf
+TU9ERV9SR01JSV9SWElEOw0KK30NCisNCitzdGF0aWMgYm9vbCBkcDgzdGQ1MTBfY29uZmlnX3Jn
+bWlpX3R4X2RlbGF5KHN0cnVjdCBwaHlfZGV2aWNlICpwaHlkZXYpDQorew0KKwlyZXR1cm4gcGh5
+ZGV2LT5pbnRlcmZhY2UgPT0gUEhZX0lOVEVSRkFDRV9NT0RFX1JHTUlJX0lEIHx8DQorCSAgICAg
+ICBwaHlkZXYtPmludGVyZmFjZSA9PSBQSFlfSU5URVJGQUNFX01PREVfUkdNSUlfVFhJRDsNCit9
+DQorDQorc3RhdGljIGludCBkcDgzdGQ1MTBfY29uZmlnX2luaXQoc3RydWN0IHBoeV9kZXZpY2Ug
+KnBoeWRldikNCit7DQorCWludCByZ21paV9kZWxheSA9IDA7DQorCWJvb2wgcnhfaW50X2RlbGF5
+Ow0KKwlib29sIHR4X2ludF9kZWxheTsNCisJaW50IHJldDsNCisNCisJaWYgKHBoeV9pbnRlcmZh
+Y2VfaXNfcmdtaWkocGh5ZGV2KSkgew0KKwkJcnhfaW50X2RlbGF5ID0gZHA4M3RkNTEwX2NvbmZp
+Z19yZ21paV9yeF9kZWxheShwaHlkZXYpOw0KKwkJaWYgKHJ4X2ludF9kZWxheSkNCisJCQlyZ21p
+aV9kZWxheSB8PSBEUDgzVEQ1MTBFX1JYX0NMS19TSElGVDsNCisNCisJCXR4X2ludF9kZWxheSA9
+IGRwODN0ZDUxMF9jb25maWdfcmdtaWlfdHhfZGVsYXkocGh5ZGV2KTsNCisNCisJCWlmICh0eF9p
+bnRfZGVsYXkpDQorCQkJcmdtaWlfZGVsYXkgfD0gRFA4M1RENTEwRV9UWF9DTEtfU0hJRlQ7DQor
+DQorCQlyZXQgPSBwaHlfbW9kaWZ5X21tZChwaHlkZXYsIE1ESU9fTU1EX1ZFTkQyLCBEUDgzVEQ1
+MTBFX1JDU1IsDQorCQkJCSAgICAgRFA4M1RENTEwRV9SWF9DTEtfU0hJRlQgfA0KKwkJCQkgICAg
+IERQODNURDUxMEVfVFhfQ0xLX1NISUZULA0KKwkJCQkgICAgIHJnbWlpX2RlbGF5KTsNCisJCWlm
+IChyZXQpDQorCQkJcmV0dXJuIHJldDsNCisNCisJCXJldCA9IHBoeV9zZXRfYml0c19tbWQocGh5
+ZGV2LCBNRElPX01NRF9WRU5EMiwNCisJCQkJICAgICAgIERQODNURDUxMEVfUkNTUiwNCkRQODNU
+RDUxMEVfUkdNSUlfTU9ERV9FTik7DQorDQorCQlpZiAocmV0KQ0KKwkJCXJldHVybiByZXQ7DQor
+DQorCX0gZWxzZSBpZiAocGh5ZGV2LT5pbnRlcmZhY2UgPT0gUEhZX0lOVEVSRkFDRV9NT0RFX1JN
+SUkpIHsNCisJCS8qIHNldCBSTUlJX01PREVfRU4sIGNsZWFyIFJHTUlJX01PREVfRU4gKGV4Y2x1
+c2l2ZSkgKi8NCisJCXJldCA9IHBoeV9tb2RpZnlfbW1kKHBoeWRldiwgTURJT19NTURfVkVORDIs
+IERQODNURDUxMEVfUkNTUiwNCisJCQkJICAgICBEUDgzVEQ1MTBFX1JNSUlfTU9ERV9FTiB8DQor
+CQkJCSAgICAgRFA4M1RENTEwRV9SR01JSV9NT0RFX0VOLA0KKwkJCQkgICAgIERQODNURDUxMEVf
+Uk1JSV9NT0RFX0VOKTsNCisJCWlmIChyZXQpDQorCQkJcmV0dXJuIHJldDsNCisJfSBlbHNlIHsN
+CisJCS8qIG1heSBiZSBNSUksIHdoaWNoIGlzIHN1cHBvcnRlZCwgb3Igc29tZXRoaW5nIGVsc2Uu
+IEp1c3QNCisJCSAqIHJldHVybiBzdWNjZXNzIHRvIGtlZXAgdGhlIG9sZCBiZWhhdmlvciBhbmQg
+bm90IGJyZWFrDQorCQkgKiBhbnl0aGluZy4gQ29uZmlndXJhdGlvbiBtYXkgaGF2ZSBiZWVuIGRv
+bmUgYnkgc3RyYXBzIHNvDQorCQkgKiBpdCdzIGJldHRlciB0byBub3QgdG91Y2ggaXQuDQorCQkg
+Ki8NCisJCXJldCA9IDA7DQorCX0NCisNCisJcmV0dXJuIHJldDsNCit9DQorDQogc3RhdGljIGlu
+dCBkcDgzdGQ1MTBfZ2V0X3NxaShzdHJ1Y3QgcGh5X2RldmljZSAqcGh5ZGV2KQ0KIHsNCiAJaW50
+IHNxaSwgcmV0Ow0KQEAgLTk0Miw2ICsxMDEwLDcgQEAgc3RhdGljIHN0cnVjdCBwaHlfZHJpdmVy
+IGRwODN0ZDUxMF9kcml2ZXJbXSA9IHsNCiAJLm5hbWUJCT0gIlRJIERQODNURDUxMEUiLA0KIA0K
+IAkuZmxhZ3MgICAgICAgICAgPSBQSFlfUE9MTF9DQUJMRV9URVNULA0KKwkuY29uZmlnX2luaXQJ
+PSBkcDgzdGQ1MTBfY29uZmlnX2luaXQsDQogCS5wcm9iZQkJPSBkcDgzdGQ1MTBfcHJvYmUsDQog
+CS5jb25maWdfYW5lZwk9IGRwODN0ZDUxMF9jb25maWdfYW5lZywNCiAJLnJlYWRfc3RhdHVzCT0g
+ZHA4M3RkNTEwX3JlYWRfc3RhdHVzLA0KLS0gDQoyLjQ3LjMNCg==
