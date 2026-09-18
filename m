@@ -1,125 +1,135 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from mout-b-112.mailbox.org (mout-b-112.mailbox.org [195.10.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33647492E26;
-	Fri, 18 Sep 2026 20:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307BB3822AB
+	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 20:27:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.10.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789762238; cv=none; b=Ca8KVgh3IUQWwf/B4sXoQTqWytml7Aa976HnkOf1D0H5Yl+QwCVS4ez2czHoFMwoEsWnFtYWlkwMoPeJ/qwyV6KueqTCgTdwkXa0SObeYBbsnPKnPWvw1yXe7ze8cUpmg9txUq5Afh+c0zxHt6YtfhUiL2gs48Ek+V8QwAIiNQ0=
+	t=1789763262; cv=none; b=OqXHkEUAaefFTdEqhzc3P7INYrYvsmvkC+BRB8qU92qD5CHtM3f+YXzPVYOeSH06dMNUxTmR5PKyAk0/Zd9Ih9LfdvnEEPYa35ojbq8JbmCbF5+F45RUgx4ZEkDmpOrfCKaynzT4NJrH8F1Q0bEzcGFUu278R+exxQQLs41ZOxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789762238; c=relaxed/simple;
-	bh=hkIw7zFGx6FzXsWIzPFaO6mhHbNUTJ1Tx5WZHrJbPVs=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=NWSRsc+Yy1hWd1FdSmYuJMn9scDfHGnBPDPXLMTu3aqegPcJBrCG4CLSmy6UDRU4hJ9/AyDnvJSRtEaNgAeG9S0dL8xMfAyejdHs7O6EON3SZPh1XJksGWTeKQHl1JTRYJre9OJBNU5WLG5xrdnMorYu28yHLmkOy9We+Ut5lbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=iaS9PGQI; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1789763262; c=relaxed/simple;
+	bh=9ZP4qUtGrA5wcV12vFN3xrWPZ/+jBofHH+reMFstS90=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XH+B0gxebKwGau9iHxFJfK9jA0sSYqX5WorWVWugbpLhdSXZGjpLZUHNTcIEkQv0MSTLewIM/Esr54yCifNfdtPpDP4LoffNldJYxc7DGBG7ZrYuCkaa7JMXwTdpwiW235Mic2d8R5eMcxuM8GWdXn38nYZXvkhSh/sLJJjS0pI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com; spf=pass smtp.mailfrom=mandelbit.com; dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b=DE9Le/WK; arc=none smtp.client-ip=195.10.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mandelbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mandelbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="iaS9PGQI"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0D5BDA8E53;
-	Fri, 18 Sep 2026 22:10:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1789762230; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=MbZ4PjXhvExVlTqbwqbIHq7pRdDYaSJpFUR4LtFdkNw=;
-	b=iaS9PGQIRAkL0FExUmM2zFgrEgM9ns7IHpnlChwiaJ0q1GZkZY5oYztjVbLcs0buYpq4a5
-	5lkLC7FV7CFnYbRW7hw7EZGV0qmkJWUMj0lA93pTugH4MldC3oZ7sW2P9NaN9VkMio9nsC
-	fez4dQggz5YGnzZD6qU4xNs9Op/UIwrBqbN3UysprTj0HAXlqnzET0vti5pvS0Gg/9QvPf
-	WSWOcUGp3WIXUNb3jEZPJcr3rFkyRtBPqbPV6xZdfqAlr4v/famlVV77MYpfTkLIkwhvsO
-	52rjAGN/MEA7HfC3b3qz5c0gsG1Obv3YQTnao8yTrCeB3Wkc5IRSqlwsu4fb6g==
+	dkim=pass (2048-bit key) header.d=mandelbit.com header.i=@mandelbit.com header.b="DE9Le/WK"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-b-112.mailbox.org (Postfix) with ESMTPS id 4hmkgz70fJz5wgx;
+	Fri, 18 Sep 2026 22:27:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mandelbit.com;
+	s=MBO0001; t=1789763248;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8xNpb/4mA+bU2vUcIwGkf37qoxfPsYMbcbPE9au6TeM=;
+	b=DE9Le/WKQKO7TfdzWKg25/y7aFarbsk6f2qx+Fp6wo4j0PdrM7w0fZ6nK0xTH87FcsT2hT
+	i+dwFgp+pjwwPAINzViO+OSWhELeVZ9Db7wOUxtkbAftBn9m4bz+/AJ31Dig3Y6+cLJIEJ
+	NGecuOH5W0W2v+MP0d0Ei1oNH5eDbOKOLRp77MYNB0ebDADyrdzwF7cBHDsHk7Axkgr73j
+	4CrK2NE9RKXKEucGc1Oi3mIzRHUzd+EYuVlA93TZqN51fzJEVbYzWQc8O0ads/raO67Eg3
+	sDOw0ycFQXFlreKtrVObB1d8jpR29poGlVMruVnAQyBJqFtrmHCwqaoMG5IXOw==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of ralf@mandelbit.com designates 2001:67c:2050:b231:465::202 as permitted sender) smtp.mailfrom=ralf@mandelbit.com
+From: Ralf Lici <ralf@mandelbit.com>
+To: David Ahern <dsahern@kernel.org>
+Cc: netdev@vger.kernel.org,
+	Antonio Quartulli <antonio@openvpn.net>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>
+Subject: Re: [PATCH net 1/1] ovpn: avoid caching stale IPv6 dst after FIB changes
+Date: Fri, 18 Sep 2026 22:27:18 +0200
+Message-ID: <20260918202718.36933-1-ralf@mandelbit.com>
+In-Reply-To: <b6a3076f-7459-4c24-a7f2-fe5c6c88b9d1@kernel.org>
+References: <b6a3076f-7459-4c24-a7f2-fe5c6c88b9d1@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 18 Sep 2026 22:10:26 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Cc: Conor Dooley <conor.dooley@microchip.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Nicolas Ferre
- <nicolas.ferre@microchip.com>, Sean Anderson <sean.anderson@linux.dev>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Vladimir Kondratiev
- <vladimir.kondratiev@mobileye.com>, Gregory CLEMENT
- <gregory.clement@bootlin.com>, Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org
-Subject: Re: [PATCH net] net: macb: fix dma_alloc_coherent() leak on
- macb_alloc() error paths
-In-Reply-To: <20260918-macb-alloc-leak-v1-1-aba9a3d4f6e3@bootlin.com>
-References: <20260918-macb-alloc-leak-v1-1-aba9a3d4f6e3@bootlin.com>
-Message-ID: <f66297b8318f8217778b786d3b02b2e5@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-Rspamd-Queue-Id: 4hmkgz70fJz5wgx
 
-Hi Théo
+On Fri, 18 Sep 2026 12:42:40 -0600, David Ahern <dsahern@kernel.org> wrote:
+> On 9/18/26 12:51 AM, Ralf Lici wrote:
+> > On Thu, 17 Sep 2026 13:09:10 -0600, David Ahern <dsahern@kernel.org> wrote:
+> >> On 9/17/26 4:09 AM, Ralf Lici wrote:
+> >>> diff --git a/drivers/net/ovpn/udp.c b/drivers/net/ovpn/udp.c
+> >>> index 7f69e8890b5b..a28974cc36e8 100644
+> >>> --- a/drivers/net/ovpn/udp.c
+> >>> +++ b/drivers/net/ovpn/udp.c
+> >>> @@ -250,7 +252,11 @@ static int ovpn_udp6_output(struct ovpn_peer *peer, struct ovpn_bind *bind,
+> >>>  		dst_cache_reset(cache);
+> >>>  	}
+> >>>  
+> >>> -	dst = ip6_dst_lookup_flow(sock_net(sk), sk, &fl, NULL);
+> >>> +	gen0 = rt_genid_ipv6(net);
+> >>
+> >> this detail about routes should not be buried here. rt_genid_ipv6 really
+> >> should be local to net/ipv6/route.c
+> >>
+> >>
+> > 
+> > I agree. Keeping this detail inside the IPv6 routing code is exactly why
+> > I sent the RFC linked from the cover letter, and I would appreciate your
+> > thoughts on the proposed approach:
+> > 
+> > https://lore.kernel.org/netdev/20260901122501.482920-1-ralf@mandelbit.com/
+> > 
+> > The pattern of obtaining a dst and only later sampling its validation
+> > cookie when publishing it into a persistent cache is widespread in both
+> > drivers and the networking core. It is racy for IPv6 routes with
+> > rt6_info::sernum == 0, because rt6_get_cookie then reads the current
+> > fib6_node::fn_sernum, not necessarily the value corresponding to the
+> > lookup which returned that dst.
+> > 
+>
+> the patch is focused on detecting a genid change at the time the dst is
+> cached. Why? It can just as easily change immediately after the double
+> genid check, so you are not really solving the problem.
+>
+> Staleness is irrelevant until it is used again (ie, genid can change
+> many times between dst_cache_set and next use). That is the proper time
+> to recheck the genid and refresh the dst as needed.
+>
 
-On 18.9.2026 21:53, Théo Lebrun wrote:
-> Fix 3 leaks in macb_alloc() error paths:
-> - Tx buffer allocated but crossing a 4G boundary: Tx leaked.
-> - Rx buffer allocation fails: Tx leaked.
-> - Rx buffer allocated but crossing a 4G boundary: Tx & Rx leaked.
-> 
-> This is because our error handling calls macb_free(bp) which in turn
-> frees the buffers stored in bp->queues[0], but nothing has been stored
-> in there. Fix by storing allocated buffers into bp->queues[0] ASAP.
-> 
-> Fixes: 78d901897b3c ("net: macb: single dma_alloc_coherent() for DMA 
-> descriptors")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
-> ---
->  drivers/net/ethernet/cadence/macb_main.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c 
-> b/drivers/net/ethernet/cadence/macb_main.c
-> index b8234ac4b602..8e5c034dc3a4 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
-> @@ -2749,14 +2749,24 @@ static int macb_alloc(struct macb *bp)
-> 
->  	size = bp->num_queues * macb_tx_ring_size_per_queue(bp);
->  	tx = dma_alloc_coherent(dev, size, &tx_dma, GFP_KERNEL);
-> -	if (!tx || upper_32_bits(tx_dma) != upper_32_bits(tx_dma + size - 1))
-> +	if (!tx)
-> +		goto out_err;
-> +	/* Record the buffer so that the error path frees it. */
-> +	bp->queues[0].tx_ring = tx;
-> +	bp->queues[0].tx_ring_dma = tx_dma;
-> +	if (upper_32_bits(tx_dma) != upper_32_bits(tx_dma + size - 1))
->  		goto out_err;
->  	netdev_dbg(bp->netdev, "Allocated %zu bytes for %u TX rings at %08lx 
-> (mapped %p)\n",
->  		   size, bp->num_queues, (unsigned long)tx_dma, tx);
-> 
->  	size = bp->num_queues * macb_rx_ring_size_per_queue(bp);
->  	rx = dma_alloc_coherent(dev, size, &rx_dma, GFP_KERNEL);
-> -	if (!rx || upper_32_bits(rx_dma) != upper_32_bits(rx_dma + size - 1))
-> +	if (!rx)
-> +		goto out_err;
-> +	/* Record the buffer so that the error path frees it. */
-> +	bp->queues[0].rx_ring = rx;
-> +	bp->queues[0].rx_ring_dma = rx_dma;
-> +	if (upper_32_bits(rx_dma) != upper_32_bits(rx_dma + size - 1))
->  		goto out_err;
->  	netdev_dbg(bp->netdev, "Allocated %zu bytes for %u RX rings at %08lx 
-> (mapped %p)\n",
->  		   size, bp->num_queues, (unsigned long)rx_dma, rx);
-> 
-> ---
-> base-commit: 994db8ab9d90c64dd641b7ead6efe2eaea7a50dc
-> change-id: 20260918-macb-alloc-leak-ef38989605c7
-> 
-> Best regards,
-> --
-> Théo Lebrun <theo.lebrun@bootlin.com>
+The double generation check is not intended to guarantee that the dst
+cannot become stale after the final read. Its purpose is to ensure that
+a pre-change dst is not cached with a post-change cookie. And that is
+enough because dst_cache_get_ip6, on the next run, misses the cache if
+it's no longer valid.
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+For example, suppose the lookup returns D0 under cookie C0. If a
+relevant FIB change to C1 happens after the final generation read (even
+if it happens before dst_cache_set_ip6_cookie) the cache stores (D0, C0).
+On the next use, dst_cache_get_ip6 invokes the ipv6 dst check, which
+compares the cached C0 with the node's current C1 and rejects the entry.
 
-Thanks,
-Nicolai
+The problematic sequence is instead:
+
+lookup returns D0 under C0
+FIB changes to C1
+dst_cache_set_ip6 samples C1 from D0's fib6 node
+cache stores (D0, C1)
+
+The reuse-time check then compares the cached C1 with the current C1 and
+accepts D0, potentially until another relevant FIB change. The patch
+ensures that the saved cookie is either coherent with the lookup or
+conservatively old, so the existing check at reuse remains meaningful.
+
+-- 
+Ralf Lici
+Mandelbit Srl
