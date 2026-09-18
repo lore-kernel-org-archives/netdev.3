@@ -1,92 +1,151 @@
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94077246788;
-	Fri, 18 Sep 2026 07:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8023822AB;
+	Fri, 18 Sep 2026 07:21:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789715891; cv=none; b=ruRyKl3ARYsKMC4k5Nh+FDbWWKVWOT6nE+rD2nzjsp7EmVTCLgOHTRgJ7uutlWnzuSiK+/TZu213EoQjjvIB0oNJgBL3Jn1nPpxHvbmUVMWDoJa1C7iAtsO9ik8V02sRjLWGdzkNFIGMjwO41nE1Pn2qd8niAg1NQ9QYhIBs+sY=
+	t=1789716086; cv=none; b=AoodoNTFhPfAppf+qUgog/OAGk1K1OcBMG95HWANPFCkgaf5abgZZ3wTQsmqs0TBOGkdhixfhiGlzCMLe54v3ZMQqbN0UR+IpxQ3OA7EQhl5pjmJrkEJ3JWmdMmJvC82ok2s/JbU9yC45I5i6Bt7GSOaQ5WC+PD9dqEriqBY9TA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789715891; c=relaxed/simple;
-	bh=vcExdwYskntjQZFH0CJIvqJvt3cF0ureSfkjMoJf2jY=;
+	s=arc-20240116; t=1789716086; c=relaxed/simple;
+	bh=Iy7bkh5vIebmNDnBZ9FlcoTjXHFsR7t/BHeRh/TiS5U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZzCV8p6Ftt2zp4gyu7gZkTcVvFueb2+A3sE++7FoTukgTL65qjj5AXfV2PlB6yaldEkILOWG8mwLi2GH1yzY5juBBMtksKBemF89uKwK6SvryF0KYzJgs9KnPZcTEquUV+As11+H71rx5t/40eSqmCsTIEDNigD/QNoUUM+Yxtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=DrDMPcu6; arc=none smtp.client-ip=217.70.183.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=ote9+Kva0NZM9RgNhrTe1T3ou2Y9/aHZKNdZ4Wvjw3lZtwgjOcPowMPdiQ7B0IablGM1O2Jv1SCfM6hlpo/CzGVq/bpzksK5uh3SdnceeKt5PSO9L+zQGFy4mOMbhUcE9D4RAMl2CTMWi6wKWs/kkvwIRdVD9kqOXwv9SXIx9Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NIyTlj5N; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="DrDMPcu6"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 667903F09D;
-	Fri, 18 Sep 2026 07:17:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
-	s=gm1; t=1789715878; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:in-reply-to:in-reply-to:  references:references;
-	bh=9qUr1LV8CWjtdoDUyhqFtHVCDXB6fURXnL18iR4Q5iE=;
-	b=DrDMPcu6+VrSPkbnRj5PUfmgF9qWcYf39pVrau4IM/HPnsX/q5M4sfStQEZWagT+OYjv4+
-	cEpEvAEJdDtMxKCMRiyTknxchoU4/6evSAHBuUD1+BILs9y+ZwCxbzQ57pgidhWMPLpuay
-	5490lE4zBdziRSq/Ben6rYdmq/ue6w9Wo81leoeQ0wY2wqL5Vnc6h/ajEaNYMgzHtg0bl9
-	FSXbFRsgiTl63veRmLHsqiagQj0bQmbXaeeLb+sUIfDqqt3hlZLwFVfPv3+utCY9f6Nk3J
-	nNywIkUKCxUeSPru9N6FgDxQq9PORMokUMuwDePmSIS51Tc9W9cNm4RgXmkWXg==
-Date: Fri, 18 Sep 2026 09:17:54 +0200
-From: Arthur Crepin Leblond <arthur@marmottus.net>
-To: netdev-bot+sashiko@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, arnd@arndb.de,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v8 2/3] dt-bindings: net: wiznet,w5100: add link
- status interrupt
-Message-ID: <20260918071754.GA30413@marmottus.net>
-Reply-To: arthur@marmottus.net
-References: <20260915-wiznet-link-gpio-v8-2-d173622474cc@marmottus.net>
- <178967573088.22033.12415855189978378014@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NIyTlj5N"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDEC21F000FF;
+	Fri, 18 Sep 2026 07:21:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789716084;
+	bh=obg8mrHZCzteuKsjo7uKdsL8y41j6SI2KsHB7Htsuzk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=NIyTlj5NJMuaPvyQ0XBnI1g4RrH1i2vsqeU5lgtPy1mcmGtvatA8gdIG2GifZnvBT
+	 8Rsiih3bsJlYTSvo6buCgjlOkIXwIumRxGoV5i3swZs+YbwhwPxVw/NylyqbgWvUFm
+	 2pzeZO4Ic3AtUaTeL/lJWqjQmBDOxnf6O4XctyuNRsyUUdd6ce89XQxHZAw0eHCMG1
+	 vTl+7z+qj2O0FweW32GKRGefz09ejUwtNWjgeiXKAjkwHUABi28uBAC83Zp7Mivq21
+	 VwNzwVrfZ5UdW+Vb+SqPxPixX/bOhscg1YZ5skM5x9iClqTW9d4n+l+ZKEIVSJdtDW
+	 NwZ6DaeJ040oA==
+Date: Fri, 18 Sep 2026 09:21:18 +0200
+From: Joel Granados <joel.granados@kernel.org>
+To: Yury Norov <ynorov@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Jason A. Donenfeld" <Jason@zx2c4.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Matthew Wilcox <willy@infradead.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	Waiman Long <longman@redhat.com>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Christoph Lameter <cl@gentwo.org>, "Paul E. McKenney" <paulmck@kernel.org>, 
+	Frederic Weisbecker <frederic@kernel.org>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
+	Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett <josh@joshtriplett.org>, 
+	Uladzislau Rezki <urezki@gmail.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	Zqiang <qiang.zhang@linux.dev>, Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, 
+	Kees Cook <kees@kernel.org>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+	Thomas Gleixner <tglx@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
+	Mike Rapoport <rppt@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowangio@gmail.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, wireguard@lists.zx2c4.com, 
+	netdev@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	rcu@vger.kernel.org, virtualization@lists.linux.dev, linux-rt-devel@lists.linux.dev, 
+	llvm@lists.linux.dev, Yury Norov <yury.norov@gmail.com>
+Subject: Re: [PATCH 17/17] sysctl: assert static storage for
+ DEFINE_CTL_TABLE_POLL()
+Message-ID: <av3s3fgets23siaqxbtyu5gvcekqpq2nmyey6oa6o6amfj6jbi@zomsnfvvxtf4>
+References: <20260915030336.1192299-1-ynorov@nvidia.com>
+ <20260915031334.1194975-12-ynorov@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ds2q3rrmscwpm7nx"
 Content-Disposition: inline
-In-Reply-To: <178967573088.22033.12415855189978378014@kernel.org>
-X-GND-Sasl: arthur@marmottus.net
-X-GND-State: clean
-X-GND-Score: 0
-X-GND-Cause: dmFkZTGMeemy83JBcSmIIQa0nTbEB9WWvLbOiWJ1uNkZWW3E6pqDUT8rvnRUTg7tyjD0NtGnxgHfqdUlQNBxHo+Ym6+fbMHaEbIheP2FQ1MxV7H5UdFEFhdvsvWWLrT8QgtvLkOnBmLdCu6q3gxVETUhDVI/3GCMl8Zvapm8viYHdUjSj9La3U14THUCaVAfK2CI2pAPef4FMAD1ZfuTaj5rXR0AuDWkM1RkhjWvy4nmvMpmQfmVGmzqo9ORwHzN+vRViM9IU1eDEmXHPQPVeqIbsWKji8Yi+645IdkNIaEawtUQgqJZB5ugIc90th7LXlsSE+suk/psQuCAgEh/OUmTC6a2Y7mIhjNU/cxWBrpS5xmkUmscjR6NQl+2E7+CF8aLrcJV6JBMjdMJBkd5MU4ccGWV24IIaHoSogAETPs2g2XArM+bwZV5XYb35V4LOtuWtrnyG3OmRcH0Nl5B1Ua7ap6/l0yVmJ1dDqrPRIru2C+GxfD2Rcyhd/vGfJNtLxWZ3j1YBN84F0VO0nEhFYkAKtBhq47oAOTmedQD1zQ6zuMJPtrmcyuWPNLzML7B1tQ9QgXBdY0P2sUcaaQ3yQ6+CVnO7qYAA2PZKi9xUtvTb2gB2TI3jtvzNz0I+VXDPUsZCsvyn7B7ICvVWBtBL406gexCEWBd+IIhh5EcHT61wOS78Q
+In-Reply-To: <20260915031334.1194975-12-ynorov@nvidia.com>
 
-On Thu, Sep 17, 2026 at 08:08:50PM +0000, netdev-bot+sashiko@kernel.org wrote:
->[Severity: Low]
->Is this else branch describing the hardware, or the current Linux driver?
->
->The LINKLED output exists on the w5100 and w5200 packages as well, so a
->board that routes w5100/w5200 LINKLED to a host GPIO cannot be described
->here:
->
->  compatible = "wiznet,w5200";
->  interrupts = <25 IRQ_TYPE_LEVEL_LOW>, <24 IRQ_TYPE_EDGE_BOTH>;
->
->The second entry is rejected by maxItems: 1 during dt_binding_check.
->
->The only in-tree justification found for the w5500 restriction is the
->driver gate added later in this series, in w5100_probe():
->
->  priv->link_irq = ops->chip_id == W5500 ?
->                   fwnode_irq_get(dev_fwnode(dev), 1) : -EINVAL;
->
->which is a software limitation (register readback of link state via w5500
->PHYCFGR) rather than absence of the pin.  Would it be preferable to allow
->two interrupts for all three compatibles and note in the interrupts
->description which parts can actually report link state, so this constraint
->does not have to be relaxed later?
 
-The LINKLED pin exists on w5100/w5200 but cannot be reliably used as a
-trigger to check the carrier state as it also blinks on RX/TX activity.
+--ds2q3rrmscwpm7nx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-   Link LED
-     Low: Link (10/100M)
-     High: Un-Link
-     link: TX or RX state on Link
+On Mon, Sep 14, 2026 at 11:13:32PM -0400, Yury Norov wrote:
+> DEFINE_CTL_TABLE_POLL() statically initializes an embedded wait queue.
+> An automatic local poll object cannot provide the persistent lockdep
+> class key expected by its wait queue lock.
+>=20
+> Add ASSERT_STATIC_STORAGE() to reject automatic declarations while
+> preserving file-scope and static local definitions. Leave the underlying
+> initializer available for embedded objects.
+>=20
+> Assisted-by: OpenAI Codex
+> Signed-off-by: Yury Norov <ynorov@nvidia.com>
+> ---
+>  include/linux/sysctl.h | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/include/linux/sysctl.h b/include/linux/sysctl.h
+> index e5d7226ab6f5..be79359346af 100644
+> --- a/include/linux/sysctl.h
+> +++ b/include/linux/sysctl.h
+> @@ -22,6 +22,7 @@
+>  #ifndef _LINUX_SYSCTL_H
+>  #define _LINUX_SYSCTL_H
+> =20
+> +#include <linux/compiler.h>
+>  #include <linux/list.h>
+>  #include <linux/rcupdate.h>
+>  #include <linux/wait.h>
+> @@ -216,7 +217,8 @@ static inline void *proc_sys_poll_event(struct ctl_ta=
+ble_poll *poll)
+>  	.wait =3D __WAIT_QUEUE_HEAD_INITIALIZER(name.wait) }
+> =20
+>  #define DEFINE_CTL_TABLE_POLL(name)					\
+> -	struct ctl_table_poll name =3D __CTL_TABLE_POLL_INITIALIZER(name)
+> +	struct ctl_table_poll name =3D __CTL_TABLE_POLL_INITIALIZER(name);	\
+> +	ASSERT_STATIC_STORAGE(name)
+> =20
+>  /* A sysctl table is an array of struct ctl_table: */
+>  struct ctl_table {
+> --=20
+> 2.53.0
+>=20
 
-Arthur
+This looks OK for sysctl and the two users of DEFINE_CTL_TABLE_POLL in
+utsname_sysctl.c (hostname_poll and domainname_poll)
+
+Reviewed-by: Joel Granados <joel.granados@kernel.org>
+
+Best
+
+--ds2q3rrmscwpm7nx
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmqs5mgACgkQupfNUreW
+QU+Slwv/V1va9Xy3ewVVGpZbKof7lX0SuxpAV+wYGoQU9hE6Ofexe2lgpstvBg5q
+R4BplT9ThJvF8d3hzCkPNWmWHuXW19VfnmKKdy7zNHYo8lyVLEyFmOlw+3sZ6czr
+e7JVfspT2rWbf/0oF8GiQvMCV31pFqQty+c4bb5ZV64xBCKqIxBX9DMXYOstdt1z
+hRlSyBTjYabun1LJPo7Nkj/puYlCklMcipRzJNONXZgWt0LFRsCYSZRrAdk2ISeP
+y7e87NG2DiVBd/d58WvPvdwdpmhX4vHSNXdSbeLwTn26F3bg7yaNsXd2sCSVTu/o
+4S0G/bMFUP/e2oNe/wtaO+XBnDhJYPk3DGvYkFf/C8DFyCVi36tjb4SrQv3D0QV9
+PGWE2Hek8KHr3W4oRbZIQm6zMUwg9/fu4speRR5+1xnuBlVsRXtEOQgEr/DkWYHw
+8SYHe3rOXtaFsbMWdItXR1CRib516haep77aGjErq93c3ViZF1JEEMBQdXjqjWmm
+LKs/7uqR
+=5LAv
+-----END PGP SIGNATURE-----
+
+--ds2q3rrmscwpm7nx--
