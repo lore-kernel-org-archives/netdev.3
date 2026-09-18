@@ -1,91 +1,117 @@
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+Received: from m16.mail.126.com (m16.mail.126.com [117.135.210.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB4E31E857;
-	Fri, 18 Sep 2026 07:03:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD0428852E;
+	Fri, 18 Sep 2026 07:04:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789714995; cv=none; b=ffseEx7BoiLJ7/kVuWkFVA/iYEegIBlj3y8BsoRe5zwo8idV31rTtlc4bcQc5jvqwA5fbbKYy0OgLYHZTmuPK4ZydNRtDjDopdjlRI2UmosH7ZnuXiiGk9anIYM1M/DQ5OiW16T939yCupQ/FG4uGyqiLm+l7QOEy04LsML1ya8=
+	t=1789715095; cv=none; b=Id1MnvlPBmWDYimHrPRY9IwqMFf2q2j6WdrqazAHJl6Gi88qr6ilTuVqHWwJSL3oG2BTBhju0uZZhkffqklvh4a26Zs/NFUkhow0KlroQnSBQrrPdW0Lcpa17r6KD6YfhdR3+hYUWHCXSu9VxpXNbYSFiZfxYNOhON3HlW2RSQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789714995; c=relaxed/simple;
-	bh=qKgn4VfjpM1+mtgs8P9dnXzjLcJPeaMJrhazv9TUqVI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NAvjLp7Prglyectl+VlF0QxIpJT834REG6Qot66msGAa9zaL0kZ2yuJ3JYMJOWgY/DIagqzsDv8+TXo+s/r8wcdFHFByjW3C2BmYz5fRtN1FuKr6Kfn7QyNwkizwrkcotI3UxgwlYDck1gqBroQx5tiG8lGYxtfchmMqnrVAI0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=FYDKqqzf; arc=none smtp.client-ip=217.70.183.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
+	s=arc-20240116; t=1789715095; c=relaxed/simple;
+	bh=hR+/QcjXLVBg/OA5uxcD0A1A2eJ0jNKsGFfieacRsdE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cgcqk8Gdrg2AXaipKBpmp6nwLHctVzh/P4VtXB1PDHnrU8NO2VS6gnTGuUi3mo5woTQ2r9Q5kvIq9HgMdHW6HKfTlNpOvP8GAcYF53o1G9nIi8KXPHb5DjDUXXTLo2Ko/yNa3T/C8c0OS8zSi6sILaSAZ7qYs5nS5rerdDmQtww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=OaNWEyyk; arc=none smtp.client-ip=117.135.210.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="FYDKqqzf"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8B41E3EF8B;
-	Fri, 18 Sep 2026 07:03:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
-	s=gm1; t=1789714985; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:in-reply-to:in-reply-to:  references:references;
-	bh=GumGYp+cZSxuCV/vggU6CfFLl2osu3Yi7rq4u6xZB40=;
-	b=FYDKqqzfI1/+QmURCALbya+IA+a2XFEbhIRo17LICNpQ+8wkEYGhLoXcW5ctzp8bIv3PwZ
-	vOxVHg4bGmUqag6GP+/ZICgNNDxINxWJHtO+iAqGBnx13n59SX4a9U//0yoWUEXicpR1m8
-	+Hf9v/1T5WmdPB7pHMTYKWUVZyNYuKxfI01J3Lgg1asJKwIVOQbmOvC3HGHPcCuo9VzsC8
-	LFLTW7+EyoIGjmzV5B1X0iqotxwjSVRSrQXQW4lJE3j1lmVhYslcZCOFeXHutAgLrx8AD0
-	Me65WlIVo49WJWaDDgW05RUMTyq5SiLyVoGCrRwmBg9MSiD+Tp3reticC6b31g==
-Date: Fri, 18 Sep 2026 09:03:01 +0200
-From: Arthur Crepin Leblond <arthur@marmottus.net>
-To: netdev-bot+sashiko@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, arnd@arndb.de,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v8 1/3] dt-bindings: net: wiznet,w5100: convert
- to DT schema
-Message-ID: <20260918070301.GA21010@marmottus.net>
-Reply-To: arthur@marmottus.net
-References: <20260915-wiznet-link-gpio-v8-1-d173622474cc@marmottus.net>
- <178967572953.22033.7825853149442957564@kernel.org>
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="OaNWEyyk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=TFXPRkcvIArOupySeAX0TcSgTELR2YOuovnW88kaN4E=;
+	b=OaNWEyykQ2H3a9b9taiUfs0Ct8uJtuvU2o8mfGSjo5l5wGLXXEokbkyHrUexzg
+	4lSzZe4p7bL2fG3DTUZrDQ5Xt6Pj5aku8XuiL9kWrqmw8PtojtrLJ2JrR13ez3SL
+	QCJ8LmUP/PlQnQebRWrUlQaM+wDtEQW0wBexYGNi6vVKg=
+Message-ID: <cf1a87f3-acd5-4959-bd42-b88b25f48311@126.com>
+Date: Fri, 18 Sep 2026 15:03:18 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <178967572953.22033.7825853149442957564@kernel.org>
-X-GND-Sasl: arthur@marmottus.net
-X-GND-State: clean
-X-GND-Score: 0
-X-GND-Cause: dmFkZTG0WQYNJKjuTrZ7Jv8Q2MRe38byAzd4dVJebt3ZtAEPlfpgKrYdTS91pVnnM3Y85X9cS0VNpaaXXoocY/wzwmeDfS+MW5oBHdtRnUCADAqUuBVYUjKEzA3fVW+lcMOwVjvbC1C3lFKpq2s2kQjLvddX/w1Y3ulQmvZJR2O6wAIf/SBJ0PqWih2LJ1pOg0O3TYuLAfobQV3Sm6CApjYlU7F8CAI4y0eWcZ3yhP41mrrQgariGskOoByt6FlxiPUweaMaNc5z4N6cJK+h3gbVvSTOh/5ye7AFcNmIeN4C2Nkq4AQZJ3c37NCphFuMWg4xpcnpjZDctOaeqO5zvutgiEgmpLKctVwhNnZLm1+w1jNB2kAUmaM6UYUn3IuwnZG932HDvW9VBhOAV9KglywrEU5SoHlcv34P9sQ+1cc/iFGmcQ2KJz2PmMO7VU0hNnN2CBS7rjlEwY9Bp+YUE9HdMz8QJ1DbFmCHyJ8j8Jk2n+5JNiK8fePH++TwjTro/AuCLjcyuVe14Y5wlAFo+x2D3MVugFVv42yMSy24tnpTRNxuj0lFest6lhJX2NIzAwkMDOtW4T5DHKjJYlr9ndgDbmF6gZkfvd6lYXAyptk5OH8uSC/2S/W1E861nBM85i1/Evf9gWPTByjjmK8QdtV9PNHqEWacLnsdf803IQmKy58WVg
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: stmmac: ethtool: validate TX coalesce before
+ reprogramming RX
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Linkui Xiao <xiaolinkui@kylinos.cn>, stable@vger.kernel.org
+References: <20260917131235.1360959-1-xiaolinkui@126.com>
+ <15b8cbc2-f3ca-4845-9a93-7fff6c5aede6@lunn.ch>
+Content-Language: en-US
+From: Linkui Xiao <xiaolinkui@126.com>
+In-Reply-To: <15b8cbc2-f3ca-4845-9a93-7fff6c5aede6@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:_____wD33wE24qxqKV86Bg--.60104S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJw45Wr43Zw4UtFWkKFWkCrg_yoW5GrWUpr
+	Z5Ga4YkryDtr4Iqwn3Xa10qFyYq34xtFZ8Gr18tryfWrs8GF9Yqryaqr4rW3W7CrW0qrya
+	qF4Duas7uan8A3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UcBMNUUUUU=
+X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBlBiMY2qs4jhZZwAA3B
 
-On Thu, Sep 17, 2026 at 08:08:49PM +0000, netdev-bot+sashiko@kernel.org wrote:
->[Severity: Low]
->The description says the 14 MHz limit applies only to w5100 while 80 MHz
->applies to w5200/w5500, but the single maximum: 80000000 is applied to all
->three compatibles.  Should the w5100 limit be expressed as a conditional so
->dt_binding_check can enforce it?
->
+Hi Andrew,
 
-The user should know which SPI speed to use here. I don't think
-leaving the scheme open to higher speeds is a real issue.
+On 2026/9/17 23:05, Andrew Lunn wrote:
+> On Thu, Sep 17, 2026 at 09:12:35PM +0800, Linkui Xiao wrote:
+>> From: Linkui Xiao <xiaolinkui@kylinos.cn>
+>>
+>> __stmmac_set_coalesce() applies the RX part of the request first and
+>> only afterwards checks the TX parameters. The RX path already calls
+>> stmmac_rx_watchdog() and stores rx_riwt[] and rx_coal_frames[], so when
+>> the TX check rejects the request the driver returns -EINVAL after having
+>> silently changed the hardware. A following ethtool -c then reports the
+>> new RX values even though the command failed.
+>>
+>> This became easy to hit once the per-queue interface was added.
+>> __stmmac_get_coalesce() reports tx-usecs and tx-frames as 0 for a queue
+>> index that is RX-only, and ethtool applies per-queue coalesce by reading
+>> the current values first and sending them straight back. The next set is
+>> therefore guaranteed to trip the test for both TX fields being zero,
+>> right after the RX watchdog has been reprogrammed.
+>>
+>> Move both TX checks in front of the RX block so a request is either
+>> applied completely or rejected without touching the device.
+>>
+>> Fixes: db2f2842e6f5 ("net: stmmac: add per-queue TX & RX coalesce ethtool support")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+>> ---
+>>   .../ethernet/stmicro/stmmac/stmmac_ethtool.c  | 21 ++++++++++++-------
+>>   1 file changed, 13 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+>> index 154cc0c7623d..325db062f72a 100644
+>> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+>> @@ -850,6 +850,19 @@ static int __stmmac_set_coalesce(struct net_device *dev,
+>>   	else if (queue >= max_cnt)
+>>   		return -EINVAL;
+>>   
+>> +	/* Check the TX parameters before anything is applied: the RX part
+>> +	 * below already writes to the hardware, so rejecting the request
+>> +	 * afterwards would leave the device with only half of the settings
+>> +	 * the caller asked for while reporting a failure.
+>> +	 */
+> 
+> Why such a verbose comment? Look at the rest of the code and make your
+> comments similar in verbosity.
+Thanks for the review. You're right, the comment is far more verbose
+than the surrounding code, and the rationale is already covered by the
+commit message.
 
->[Severity: Low]
->This changes the recommended trigger type from IRQ_TYPE_EDGE_FALLING in the
->removed .txt binding to IRQ_TYPE_LEVEL_LOW, and the deleted text also
->claimed "w5x00 natively generates falling edge interrupts".  Could the
->commit message mention this correction?
->
->The new value agrees with the driver, which requests the device interrupt
->level-low in w5100_probe():
->
->    err = request_threaded_irq(priv->irq, NULL, w5100_interrupt,
->                               IRQF_TRIGGER_LOW | IRQF_ONESHOT,
->                               netdev_name(ndev), ndev);
->
->The commit message body only says the binding is converted from plain text
->to DT schema.  The only record of the trigger change is the v8 changelog
->line "Change edge-falling to level-low" below the --- separator, which git
->does not keep.
->
+I'll shorten it to a single line in v2 and send it shortly.
 
-Nitpicky but I can add a line in the commit body.
+Thanks,
+Linkui
+> 
+>      Andrew
+> 
+> ---
+> pw-bot: cr
+> 
 
-Arthur
