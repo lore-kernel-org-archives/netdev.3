@@ -1,44 +1,46 @@
-Received: from mta0.migadu.com (out-223.mta0.migadu.com [91.218.175.223])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8DA3AAF73
-	for <netdev@vger.kernel.org>; Fri, 18 Sep 2026 09:29:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C581F09AD;
+	Fri, 18 Sep 2026 09:31:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789723766; cv=none; b=YFfVHfyrLyjaXO/eskdHB8q/NoB5aYmFUTaK17t/WnzIGHXaAbxmb88xfcAvJQZiESvPCy3pM/37iqkrktKvbCEk16gPWxfc3wRhMZeOr3NcgsIU3APl9Lcap6gXFtEzQb4mGRkMaI9Nvn2K8GlDX0TFWeYD5VydQp/WymOaFag=
+	t=1789723863; cv=none; b=uT9tD/Gxk+vUBpEEHmS+gS1pkXysOikz+5onD1ufjYhsd9fsxmijYYDCVHqhDR+xDXDJAfKGzSOz/97Mvn3byjLuAH5Te8ORzg08AtJAW1F53ovcg2v6D4WvRHXtOc8bNdvhrBptA1vH9wRHTd2h4FRZ6Y/0R7N4n0ll33QaAEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789723766; c=relaxed/simple;
-	bh=uIXp6ItDkFGo8F8Dis+92NlTOitMauccvrzKhGW+T9M=;
+	s=arc-20240116; t=1789723863; c=relaxed/simple;
+	bh=L4YM+nBivMLSNNtlGU9JKIs4iMpnJtMwEQj+J8hlrd0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Nl0n38iB/U9VP39ze0N7C28QwCW4Mc3TGbhX6lAcy4by83MYDh1134Wd6rwKbe3WY2MdIb8nRGPGgxr6NYMsvqc9iZULfp07ypO5UboLx2DlIYbbiYD7iGJskFknqY0PYj71XyqZn3VjKYir8ogq0CFHH86gtGmY+VPzwch93e4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CdTdJ9mi; arc=none smtp.client-ip=91.218.175.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	 Content-Type:Content-Disposition:In-Reply-To; b=AosQmBBfFm/j1TyK3DYFwaXVl2yvHnXyuRWyXCxz/RQZia3r2ANGjL+WNe4D8UpyI9+LqVwACgHUP7eFJrOOHkEFRSFv7i5YjF/p5rOAaxzga/KVk1LIoGFc9w/tNbJJ+a6kv8URzKhGSpWODvZnee/zfyirL5QRoDhLALKRaj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A1uBqEnN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="CdTdJ9mi"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=uIXp6ItDkFGo8F8Dis+92NlTOitMauccvrzKhGW+T9M=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789723760; v=1; x=1790328560;
- b=CdTdJ9mieHa03nPMqyHpSvhoaji0deW664LodFQYZ4Mow2F4xHzf/qrO71mL4vLm1QNqcm8R
- JJgg9iZ9QFI3LZszY5AQnUbyWh5aCIPHMYhX+tEXZxvmkRhEoFARvxky2iBJZf/a9a3QCqfZiKv
- 2+AiodGNS/RHLdeAjJ0U6Q5I=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta12.migadu.com with ESMTPS id 5f095623597664b9;
-	Fri, 18 Sep 2026 09:29:20 +0000
-X-Mizu-Trace-ID: 5f095623597664b9
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 18 Sep 2026 17:29:12 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: sashiko-reviews@lists.linux.dev
-Cc: netdev@vger.kernel.org
-Subject: Re: [PATCH net-next 2/6] tools: ynl: convert enum selector to string
- for sub-message parsing
-Message-ID: <aq0EaDMtiQehDGlt@fedora>
-References: <20260917-ynl_rt_encap-v1-0-fbbe6e680571@kylinos.cn>
- <20260917-ynl_rt_encap-v1-2-fbbe6e680571@kylinos.cn>
- <20260918063657.4D10F1F00899@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A1uBqEnN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538861F000FF;
+	Fri, 18 Sep 2026 09:30:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789723862;
+	bh=jUkv5B4pUOLxWKcrJ90ETrNmPqz8J2MnsOKX2jmyHv4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=A1uBqEnNDp4mapzjtRXODSu6/BBte8RVWokujt+OS4A12yrHyExHF0j7OXoB0U0LO
+	 VCwOZBeCBbPPusOtU+vU+Lk6/uEc6GfXvxkQjTBvIsrYP+IO7yDC5ceHdu7LXCpn5u
+	 BpMNelI/Z2NsM/MxxtaiFMsJtx5LBCKOATr1qAorj6Jt6jzowkjovGJCQ/rIVyaAxI
+	 fxs4Dn/bWwSPqytRV8RRsmCxGu1bMYFg8/mdPvuVeJnOW/TObFWznWQjMU7RSRZ5Ds
+	 u7AP4mTm1GTBzAznQTTvD+Rs4gkjOtJzpXhzX5zH8xsoLxS//lK9aeBIg9ZeCBvZRE
+	 IojTcHoJa044A==
+Date: Fri, 18 Sep 2026 10:30:56 +0100
+From: Simon Horman <horms@kernel.org>
+To: Guangshuo Li <lgs201920130244@gmail.com>
+Cc: Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>, Jeff Garzik <jeff@garzik.org>,
+	Scott Wood <scottwood@freescale.com>, linuxppc-dev@lists.ozlabs.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] net: fs_enet: fix platform info memory leak on remove
+Message-ID: <20260918093056.GG51261@horms.kernel.org>
+References: <20260916031414.2875022-1-lgs201920130244@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,53 +49,24 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260918063657.4D10F1F00899@smtp.kernel.org>
+In-Reply-To: <20260916031414.2875022-1-lgs201920130244@gmail.com>
 
-On Fri, Sep 18, 2026 at 06:36:56AM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] ynl: NULL pointer dereference in generated sub-message parser
-> --
+On Wed, Sep 16, 2026 at 11:14:14AM +0800, Guangshuo Li wrote:
+> fs_enet_probe() allocates the platform information structure with
+> kzalloc_obj() and stores it in fep->fpi.
 > 
-> commit fe174a522fe7b9577c0684fb882e6edfa773326f
-> Author: Hangbin Liu <liuhangbin@kylinos.cn>
+> The probe failure paths release this allocation with kfree(). However,
+> after a successful probe, fs_enet_remove() tears down the network
+> device without freeing fep->fpi, leaving the platform information
+> structure allocated after driver removal.
 > 
-> tools: ynl: convert enum selector to string for sub-message parsing
->     
-> YNL sub-message parsing expects a string selector for strcmp(). So for
-> non-external enum selectors, convert the integer value to its string form
-> via the family's {enum}_str() helper. This enables correct decoding of
-> sub-messages keyed by enum values.
+> Free fep->fpi before releasing the network device.
 > 
-> > diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-> > index 2b3483db1b60c..45bd7bc834b49 100755
-> > --- a/tools/net/ynl/pyynl/ynl_gen_c.py
-> > +++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-> > @@ -951,9 +951,17 @@ class TypeSubMessage(TypeNest):
-> >              sel_var = f"_sel_{sel}"
-> >          else:
-> >              sel_var = f"{var}->{sel}"
-> > +
-> > +        parse_sel = sel_var
-> > +        if not self.selector.is_external() and self.selector.attr and \
-> > +           "enum" in self.selector.attr.attr:
-> > +            enum_name = self.selector.attr.attr["enum"]
-> > +            str_fn = c_lower(self.family.ident_name + "-" + enum_name) + "_str"
-> > +            parse_sel = f"{str_fn}({sel_var})"
-> > +
-> >          get_lines = [f'if (!{sel_var})',
-> >                       f'return ynl_submsg_failed(yarg, "{self.name}", "{selector}");',
-> > -                     f"if ({self.nested_render_name}_parse(&parg, {sel_var}, attr))",
-> > +                     f"if ({self.nested_render_name}_parse(&parg, {parse_sel}, attr))",
+> This issue was found by manual code inspection.
 > 
-> [Severity: High]
-> Can this generated code cause a null pointer dereference in the user-space
-> client when it communicates with a newer kernel?
-> 
-> The generated code checks if (!sel_var) first, which only catches a 0 value.
-> However, if a non-zero unknown enum value is received, the auto-generated
-> {enum}_str(sel_var) helper returns a null pointer.
+> Fixes: 976de6a8c304 ("fs_enet: Be an of_platform device when CONFIG_PPC_CPM_NEW_BINDING is set.")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
 
-Thanks, I will add a var to get the string first. And then check the new
-parse_sel via 'if (!{parse_sel})'.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Hangbin
